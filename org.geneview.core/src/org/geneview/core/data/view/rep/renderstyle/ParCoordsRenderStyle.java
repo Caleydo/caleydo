@@ -19,22 +19,25 @@ extends GeneralRenderStyle
 	public static final float[] POLYLINE_NO_OCCLUSION_PREV_COLOR = {0.0f, 0.0f, 0.0f, 1.0f};
 	
 	public static final float[] POLYLINE_SELECTED_COLOR = {1.0f, 0.0f, 0.0f, 1.0f};
-	public static final float SELECTED_POLYLINE_LINE_WIDTH = 5.0f;
+	public static final float SELECTED_POLYLINE_LINE_WIDTH = 4.0f;
 	
 	public static final float[] POLYLINE_MOUSE_OVER_COLOR = {0.0f, 1.0f, 0.0f, 1.0f};
-	public static final float MOUSE_OVER_POLYLINE_LINE_WIDTH = 5.0f;
+	public static final float MOUSE_OVER_POLYLINE_LINE_WIDTH = 4.0f;
 
 	public static final float DESELECTED_POLYLINE_LINE_WIDTH = 1.0f;
 	
 	
 
 	public static final float[] Y_AXIS_COLOR = {0.0f, 0.0f, 0.0f, 1.0f};
+	public static final float Y_AXIS_LINE_WIDTH = 1.0f;
 	public static final float[] Y_AXIS_SELECTED_COLOR = {1.0f, 0.0f, 0.0f, 1.0f};
+	public static final float Y_AXIS_SELECTED_LINE_WIDTH = 4.0f;
 	public static final float[] Y_AXIS_MOUSE_OVER_COLOR = {0.0f, 1.0f, 0.0f, 1.0f};
+	public static final float Y_AXIS_MOUSE_OVER_LINE_WIDTH = 4.0f;
 	
 	public static final float[] X_AXIS_COLOR = {0.0f, 0.0f, 1.0f, 1.0f};
-	public static final float Y_AXIS_LINE_WIDTH = 1.0f;
 	public static final float X_AXIS_LINE_WIDTH = 3.0f;
+	
 	public static final float AXIS_Z = 0.0f;
 	
 	public static final float[] CANVAS_COLOR = {1.0f, 1.0f, 1.0f, 1.0f};

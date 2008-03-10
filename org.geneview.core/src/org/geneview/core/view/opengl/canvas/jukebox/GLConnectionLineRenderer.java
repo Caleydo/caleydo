@@ -80,9 +80,9 @@ public class GLConnectionLineRenderer {
 		matSrc.makeIdent();
 		matDest.makeIdent();
 		
-		gl.glLineWidth(4);
-		Vec3f tmpLineColor = new PathwayRenderStyle().getLayerConnectionLinesColor();
-		gl.glColor4f(tmpLineColor.x(), tmpLineColor.y(), tmpLineColor.z(), 1);
+		
+		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_AREA_LINE_COLOR, 0);
+		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
 		
 		vecTranslationSrc = underInteractionLayer.getTransformByPositionIndex(1).getTranslation();
 		vecScaleSrc = underInteractionLayer.getTransformByPositionIndex(1).getScale();
@@ -202,10 +202,10 @@ public class GLConnectionLineRenderer {
 	
 	private void renderConnection(final GL gl, final ArrayList<Vec3f> alSrcPoints, final ArrayList<Vec3f> alDestPoints)
 	{
-		gl.glLineWidth(4);
-		Vec3f tmpLineColor = new PathwayRenderStyle().getLayerConnectionLinesColor();
-		gl.glColor4f(tmpLineColor.x(), tmpLineColor.y(), tmpLineColor.z(), 1);
-	
+		
+		
+		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_AREA_LINE_COLOR, 0);
+		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
 		if(alSrcPoints.size() == 1 && alDestPoints.size() == 1)
 		{
 			Vec3f vecSrcPoint = alSrcPoints.get(0);
@@ -240,6 +240,16 @@ public class GLConnectionLineRenderer {
 	
 	private void renderPlanes(final GL gl, final Vec3f vecPoint, final ArrayList<Vec3f> alPoints)
 	{
+		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_AREA_LINE_COLOR, 0);
+		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
+		gl.glBegin(GL.GL_LINES);		
+		for(Vec3f vecCurrent : alPoints)
+		{
+			gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z());
+			gl.glVertex3f(vecCurrent.x(), vecCurrent.y(), vecCurrent.z());
+		}
+		gl.glEnd();
+		
 		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_AREA_COLOR, 0);
 		gl.glBegin(GL.GL_TRIANGLE_FAN);
 		gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z());
@@ -249,14 +259,7 @@ public class GLConnectionLineRenderer {
 		}
 		gl.glEnd();
 		
-		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_AREA_LINE_COLOR, 0);
-		gl.glBegin(GL.GL_LINES);		
-		for(Vec3f vecCurrent : alPoints)
-		{
-			gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z());
-			gl.glVertex3f(vecCurrent.x(), vecCurrent.y(), vecCurrent.z());
-		}
-		gl.glEnd();
+	
 		
 	}
 	

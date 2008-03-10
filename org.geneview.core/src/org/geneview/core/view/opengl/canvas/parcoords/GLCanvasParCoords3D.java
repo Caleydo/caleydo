@@ -404,7 +404,10 @@ implements IMediatorReceiver, IMediatorSender
 //		{
 //			alTempList.add(iArTemp[iCount]);
 //		}
-		
+		if(alTempList == null)
+		{
+			alTempList = new ArrayList<Integer>();
+		}
 		mapSelections.put(ESelectionType.EXTERNAL_SELECTION, alTempList);
 
 		//int iStorageLength = alDataStorages.get(0).getArrayFloat().length;
@@ -644,8 +647,7 @@ implements IMediatorReceiver, IMediatorSender
 		textRenderer.setColor(0, 0, 0, 1);
 
 		// draw X-Axis
-		gl.glColor4fv(ParCoordsRenderStyle.X_AXIS_COLOR, 0);
-				
+		gl.glColor4fv(ParCoordsRenderStyle.X_AXIS_COLOR, 0);				
 		gl.glLineWidth(ParCoordsRenderStyle.X_AXIS_LINE_WIDTH);
 		
 		gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.X_AXIS_SELECTION, 1));
@@ -658,8 +660,6 @@ implements IMediatorReceiver, IMediatorSender
 		gl.glPopName();
 		
 		// draw all Y-Axis
-		gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH);			
-		
 		Set<Integer> selectedSet = axisSelectionManager.getElements(EViewInternalSelectionType.SELECTION);
 		Set<Integer> mouseOverSet = axisSelectionManager.getElements(EViewInternalSelectionType.MOUSE_OVER);
 		ArrayList<Integer> alAxisSelection;
@@ -673,13 +673,21 @@ implements IMediatorReceiver, IMediatorSender
 		int iCount = 0;
 		while (iCount < iNumberAxis)
 		{
-			if(selectedSet.contains(alAxisSelection.get(iCount)))				
+			if(selectedSet.contains(alAxisSelection.get(iCount)))	
+			{
 				gl.glColor4fv(ParCoordsRenderStyle.Y_AXIS_SELECTED_COLOR, 0);
+				gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_SELECTED_LINE_WIDTH);
+			}
 			else if (mouseOverSet.contains(alAxisSelection.get(iCount)))
+			{
 				gl.glColor4fv(ParCoordsRenderStyle.Y_AXIS_MOUSE_OVER_COLOR, 0);
+				gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_MOUSE_OVER_LINE_WIDTH);
+			}
 			else
+			{
 				gl.glColor4fv(ParCoordsRenderStyle.Y_AXIS_COLOR, 0);
-			
+				gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH);
+			}
 			gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.Y_AXIS_SELECTION, alAxisSelection.get(iCount)));
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(iCount * fAxisSpacing, 
@@ -695,7 +703,7 @@ implements IMediatorReceiver, IMediatorSender
 					renderStyle.getAxisHeight(), 
 					ParCoordsRenderStyle.AXIS_Z);			
 			gl.glEnd();				
-			gl.glPopName();
+			
 			
 			
 			String sAxisLabel = null;
@@ -711,8 +719,7 @@ implements IMediatorReceiver, IMediatorSender
 			default:
 				sAxisLabel = "No Label";
 			}
-			gl.glPushAttrib(GL.GL_CURRENT_BIT);
-			
+			gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 			gl.glTranslatef(iCount * fAxisSpacing, renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing(), 0);
 			gl.glRotatef(25, 0, 0, 1);
 			textRenderer.begin3DRendering();	
@@ -728,7 +735,7 @@ implements IMediatorReceiver, IMediatorSender
 								renderStyle.getAxisHeight(), 0, renderStyle.getSmallFontScalingFactor());
 			textRenderer.end3DRendering();
 			gl.glPopAttrib();
-			
+			gl.glPopName();
 			// render Buttons
 			
 			int iNumberOfButtons = 0;
@@ -789,7 +796,7 @@ implements IMediatorReceiver, IMediatorSender
 		
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 		
-		gl.glPushAttrib(GL.GL_CURRENT_BIT);
+		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		gl.glColor4f(1, 1, 1, 1);
 		gl.glPushName(iPickingID);
 		gl.glBegin(GL.GL_POLYGON);		
@@ -902,7 +909,7 @@ implements IMediatorReceiver, IMediatorSender
 		if(fYOrigin < 0)
 			return;
 		
-		gl.glPushAttrib(GL.GL_CURRENT_BIT);
+		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH);
 		gl.glColor4fv(ParCoordsRenderStyle.Y_AXIS_COLOR, 0);
 		
@@ -928,7 +935,6 @@ implements IMediatorReceiver, IMediatorSender
 							0.0021f, renderStyle.getSmallFontScalingFactor());
 		textRenderer.end3DRendering();
 		gl.glPopAttrib();
-
 	}	
 
 	private void handleDragging(GL gl)
@@ -1094,9 +1100,10 @@ implements IMediatorReceiver, IMediatorSender
 			final Pick pick)
 	{
 		// Check if selection occurs in the pool layer of the bucket
-		if (glToolboxRenderer.getContainingLayer() != null 
-				&& glToolboxRenderer.getContainingLayer().getCapacity() >= 10)
-			return;
+
+		if (glToolboxRenderer.getContainingLayer() != null)
+			if (glToolboxRenderer.getContainingLayer().getCapacity() >= 10)
+				return;
 		
 		switch (ePickingType)
 		{
@@ -1104,10 +1111,16 @@ implements IMediatorReceiver, IMediatorSender
 			switch (ePickingMode)
 			{						
 				case CLICKED:				
+					Set<Integer> selectedSet = polyLineSelectionManager.getElements(EViewInternalSelectionType.SELECTION);
+					ArrayList<Integer> iAlOldSelection = new ArrayList<Integer>();
+					for(Integer iCurrent : selectedSet)
+					{
+						iAlOldSelection.add(iCurrent);
+					}
 					
-					Set<Integer> selectedSet = polyLineSelectionManager.getElements(EViewInternalSelectionType.SELECTION);					
+					
 					polyLineSelectionManager.clearSelection(EViewInternalSelectionType.SELECTION);							
-					polyLineSelectionManager.addToType(EViewInternalSelectionType.SELECTION,
+					polyLineSelectionManager.addToType(EViewInternalSelectionType.SELECTION, 
 							iExternalID);
 					
 					if (ePolylineDataType == EInputDataType.GENE)
@@ -1135,7 +1148,7 @@ implements IMediatorReceiver, IMediatorSender
 									createElementRep(iExternalID), ESelectionMode.ReplacePick);
 						}							
 							
-						for(Integer iCurrent : selectedSet)
+						for(Integer iCurrent : iAlOldSelection)
 						{
 							iAccessionID = getAccesionIDFromStorageIndex(iCurrent);
 							if(iAccessionID != -1)
@@ -1407,6 +1420,7 @@ implements IMediatorReceiver, IMediatorSender
 				String sAccessionCode = generalManager.getSingelton().getGenomeIdManager()
 					.getIdStringFromIntByMapping(iSelectedAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
 			
+				System.out.println("Accession ID: " + iSelectedAccessionID);
 				System.out.println("Accession Code: " +sAccessionCode);			
 				System.out.println("Expression stroage index: " +iSelectedStorageIndex);
 				

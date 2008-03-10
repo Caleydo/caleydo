@@ -364,6 +364,7 @@ extends GeneralRenderStyle {
 		return highlightedNodeColor;
 	}
 	
+	// TODO: deprecated here
 	public Vec3f getLayerConnectionLinesColor() {
 		
 		return layerConnectionLinesColor;
