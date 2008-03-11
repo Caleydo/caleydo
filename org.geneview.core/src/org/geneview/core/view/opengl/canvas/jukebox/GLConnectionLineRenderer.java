@@ -14,6 +14,8 @@ import org.geneview.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.geneview.core.data.view.rep.selection.SelectedElementRep;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.view.SelectionManager;
+import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
 import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 
@@ -62,61 +64,6 @@ public class GLConnectionLineRenderer {
 		renderConnectionLines(gl);
 	}
 	
-	public void renderTestViewConnectionLines(final GL gl) {
-		
-		Vec3f vecMatSrc = new Vec3f(0, 0, 0);
-		Vec3f vecMatDest = new Vec3f(0, 0, 0);
-		Vec3f vecTransformedSrc = new Vec3f(0, 0, 0);
-		Vec3f vecTransformedDest = new Vec3f(0, 0, 0);
-		
-		Vec3f vecTranslationSrc;
-		Vec3f vecTranslationDest;
-		Vec3f vecScaleSrc;
-		Vec3f vecScaleDest;
-		Rotf rotSrc;
-		Rotf rotDest;
-		Mat4f matSrc = new Mat4f();
-		Mat4f matDest = new Mat4f();
-		matSrc.makeIdent();
-		matDest.makeIdent();
-		
-		
-		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_AREA_LINE_COLOR, 0);
-		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
-		
-		vecTranslationSrc = underInteractionLayer.getTransformByPositionIndex(1).getTranslation();
-		vecScaleSrc = underInteractionLayer.getTransformByPositionIndex(1).getScale();
-		rotSrc = underInteractionLayer.getTransformByPositionIndex(1).getRotation();
-
-		vecTranslationDest = underInteractionLayer.getTransformByPositionIndex(0).getTranslation();
-		vecScaleDest = underInteractionLayer.getTransformByPositionIndex(0).getScale();
-		rotDest = underInteractionLayer.getTransformByPositionIndex(0).getRotation();
-				
-		vecMatSrc.set(1 * GLPathwayManager.SCALING_FACTOR_X, 1 * GLPathwayManager.SCALING_FACTOR_Y, 0);
-		vecMatDest.set(1 * GLPathwayManager.SCALING_FACTOR_X, 1 * GLPathwayManager.SCALING_FACTOR_Y, 0);
-		
-		rotSrc.toMatrix(matSrc);
-		rotDest.toMatrix(matDest);
-
-		matSrc.xformPt(vecMatSrc, vecTransformedSrc);
-		matDest.xformPt(vecMatDest, vecTransformedDest);
-
-		vecTransformedSrc.componentMul(vecScaleSrc);
-		vecTransformedSrc.add(vecTranslationSrc);
-		vecTransformedDest.componentMul(vecScaleDest);
-		vecTransformedDest.add(vecTranslationDest);
-		
-		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(vecTransformedSrc.x(),
-				vecTransformedSrc.y(),
-				vecTransformedSrc.z());
-		gl.glVertex3f(vecTransformedDest.x(),
-				vecTransformedDest.y(),
-				vecTransformedDest.z());
-		gl.glEnd();		
-		
-		gl.glLineWidth(1);
-	}
 	
 	private void renderConnectionLines(final GL gl) {
 		
@@ -135,11 +82,16 @@ public class GLConnectionLineRenderer {
 		Iterator<Integer> iterSelectedElementID = 
 			selectionManager.getAllSelectedElements().iterator();
 		
+		ArrayList<ArrayList<Vec3f>> alSrcPointLists = new ArrayList<ArrayList<Vec3f>>();
+		ArrayList<ArrayList<Vec3f>> alDestPointLists = new ArrayList<ArrayList<Vec3f>>();
+	
 		while(iterSelectedElementID.hasNext()) 
 		{
 			int iSelectedElementID = iterSelectedElementID.next();
 			Iterator<SelectedElementRep> iterSelectedElementRep = 
 				selectionManager.getSelectedElementRepsByElementID(iSelectedElementID).iterator();
+			
+			
 			
 			while (iterSelectedElementRep.hasNext())
 			{
@@ -155,44 +107,58 @@ public class GLConnectionLineRenderer {
 					rotSrc = underInteractionLayer.getTransformByElementId(
 							selectedElementRepSrc.getContainingViewID()).getRotation();
 					
-					Iterator<SelectedElementRep> iterSelectedElementRepInner = 
-						selectionManager.getSelectedElementRepsByElementID(iSelectedElementID).iterator();
 					
-					while(iterSelectedElementRepInner.hasNext())
+					ArrayList<Vec3f> alSrcPoints = selectedElementRepSrc.getPoints();
+					ArrayList<Vec3f> alSrcPointsTransformed = new ArrayList<Vec3f>();
+					
+					for (Vec3f vecCurrentPoint : alSrcPoints)
 					{
-						SelectedElementRep selectedElementRepDest = iterSelectedElementRepInner.next();
-						
-						// Check if element is in stack view
-						if (stackLayer.containsElement(selectedElementRepDest.getContainingViewID()))
-						{
-							vecTranslationDest = stackLayer.getTransformByElementId(
-									selectedElementRepDest.getContainingViewID()).getTranslation();
-							vecScaleDest = stackLayer.getTransformByElementId(
-									selectedElementRepDest.getContainingViewID()).getScale();
-							rotDest = stackLayer.getTransformByElementId(
-									selectedElementRepDest.getContainingViewID()).getRotation();
-							
-							ArrayList<Vec3f> alSrcPoints = selectedElementRepSrc.getPoints();
-							ArrayList<Vec3f> alSrcPointsTransformed = new ArrayList<Vec3f>();
-							
-							for (Vec3f vecCurrentPoint : alSrcPoints)
-							{
-								alSrcPointsTransformed.add(transform(vecCurrentPoint, vecTranslationSrc, vecScaleSrc, rotSrc));
-							}
-							
-							ArrayList<Vec3f> alDestPoints = selectedElementRepDest.getPoints();
-							ArrayList<Vec3f> alDestPointsTransformed = new ArrayList<Vec3f>();
-							for (Vec3f vecCurrentPoint : alDestPoints)
-							{
-								alDestPointsTransformed.add(transform(vecCurrentPoint, vecTranslationDest, vecScaleDest, rotDest));
-							}				
-							
-					
-							renderConnection(gl, alSrcPointsTransformed, alDestPointsTransformed);
-					
-						}
+						alSrcPointsTransformed.add(transform(vecCurrentPoint, vecTranslationSrc, vecScaleSrc, rotSrc));
 					}
+					
+					alSrcPointLists.add(alSrcPointsTransformed);
+					
 				}
+			}
+			
+			Iterator<SelectedElementRep> iterSelectedElementRepInner = 
+				selectionManager.getSelectedElementRepsByElementID(iSelectedElementID).iterator();
+			
+			while(iterSelectedElementRepInner.hasNext())
+			{
+				SelectedElementRep selectedElementRepDest = iterSelectedElementRepInner.next();
+				
+				// Check if element is in stack view
+				if (stackLayer.containsElement(selectedElementRepDest.getContainingViewID()))
+				{
+					vecTranslationDest = stackLayer.getTransformByElementId(
+							selectedElementRepDest.getContainingViewID()).getTranslation();
+					vecScaleDest = stackLayer.getTransformByElementId(
+							selectedElementRepDest.getContainingViewID()).getScale();
+					rotDest = stackLayer.getTransformByElementId(
+							selectedElementRepDest.getContainingViewID()).getRotation();
+					
+			
+					
+					ArrayList<Vec3f> alDestPoints = selectedElementRepDest.getPoints();
+					ArrayList<Vec3f> alDestPointsTransformed = new ArrayList<Vec3f>();
+					for (Vec3f vecCurrentPoint : alDestPoints)
+					{
+						alDestPointsTransformed.add(transform(vecCurrentPoint, vecTranslationDest, vecScaleDest, rotDest));
+					}								
+			
+					
+					alDestPointLists.add(alDestPointsTransformed);
+					//renderLineBundling(gl, alSrcPointsTransformed, alDestPointsTransformed);
+					//renderConnection(gl, alSrcPointsTransformed, alDestPointsTransformed);
+			
+				}
+			}
+			if(alSrcPointLists.size() > 0 && alDestPointLists.size() > 0)	
+			{
+				renderLineBundling(gl, alSrcPointLists, alDestPointLists);
+				alSrcPointLists.clear();
+				alDestPointLists.clear();
 			}
 			
 		}
@@ -200,43 +166,66 @@ public class GLConnectionLineRenderer {
 		gl.glLineWidth(1);
 	}
 	
-	private void renderConnection(final GL gl, final ArrayList<Vec3f> alSrcPoints, final ArrayList<Vec3f> alDestPoints)
+	private void renderLineBundling(final GL gl, 
+			final ArrayList<ArrayList<Vec3f>> alSrcPointLists, 
+			final ArrayList<ArrayList<Vec3f>> alDestPointLists)
 	{
+		Vec3f vecSrcCenter = calculateCenter(alSrcPointLists);
+		Vec3f vecDestCenter = calculateCenter(alDestPointLists);
 		
+		Vec3f vecDirection = new Vec3f();
+		vecDirection = vecDestCenter.minus(vecSrcCenter);
+		float fLength = vecDirection.length();
+		vecDirection.normalize();
 		
-		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_AREA_LINE_COLOR, 0);
-		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
-		if(alSrcPoints.size() == 1 && alDestPoints.size() == 1)
+		Vec3f vecSrcBundlingPoint = new Vec3f();
+		//Vec3f vecDestBundingPoint = new Vec3f();
+		
+		vecSrcBundlingPoint = vecDirection.copy();
+		vecSrcBundlingPoint.scale(fLength / 3);
+		
+		vecSrcBundlingPoint.add(vecSrcCenter);
+		
+		// is not normalized any more after this
+		vecDirection.scale(fLength / 3);
+		
+		Vec3f vecDestBundlingPoint = vecDestCenter.minus(vecDirection);
+		
+		int iNumberOfLines = 0;
+		
+		// condition is true for polylines (planes)
+		if(alSrcPointLists.size() == 1 && alSrcPointLists.get(0).size() > 1)
 		{
-			Vec3f vecSrcPoint = alSrcPoints.get(0);
-			Vec3f vecDestPoint = alDestPoints.get(0);
-			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(vecSrcPoint.x(),
-					vecSrcPoint.y(),
-					vecSrcPoint.z());
-			gl.glVertex3f(vecDestPoint.x(),
-					vecDestPoint.y(),
-					vecDestPoint.z());
-			gl.glEnd();	
-			return;
-		}		
-		
-		ArrayList<Vec3f> alPoints;
-		Vec3f vecPoint;
-		if(alSrcPoints.size() == 1 && alDestPoints.size() > 1)
-		{
-			alPoints = alDestPoints;
-			vecPoint = alSrcPoints.get(0);	
-			renderPlanes(gl, vecPoint, alPoints);
+			renderPlanes(gl, vecSrcBundlingPoint, alSrcPointLists.get(0));
 		}
-		else if(alSrcPoints.size() > 1 && alDestPoints.size() == 1)
+		else
 		{
-			alPoints = alSrcPoints;
-			vecPoint = alDestPoints.get(0);
-			renderPlanes(gl, vecPoint, alPoints);
+			renderLines(gl, vecSrcBundlingPoint, alSrcPointLists);
+			iNumberOfLines = alSrcPointLists.size();
 		}
-	
+		// condition is true for polylines (planes)
+		if(alDestPointLists.size() == 1 && alDestPointLists.get(0).size() > 1)
+		{
+			renderPlanes(gl, vecDestBundlingPoint, alDestPointLists.get(0));
+		}
+		else
+		{
+			renderLines(gl, vecDestBundlingPoint, alDestPointLists);
+			iNumberOfLines = alDestPointLists.size();
+		}
+		
+		// TODO: render LineS
+//		renderPlanes(gl, vecSrcBundlingPoint, alSrcPointList);
+//		
+//		renderPlanes(gl, vecDestBundingPoint, alDestPoints);
+		
+		
+		renderLine(gl, vecSrcBundlingPoint, vecDestBundlingPoint, iNumberOfLines);
+		
+
 	}
+	
+
 	
 	private void renderPlanes(final GL gl, final Vec3f vecPoint, final ArrayList<Vec3f> alPoints)
 	{
@@ -257,9 +246,63 @@ public class GLConnectionLineRenderer {
 		{
 			gl.glVertex3f(vecCurrent.x(), vecCurrent.y(), vecCurrent.z());
 		}
-		gl.glEnd();
-		
+		gl.glEnd();		
+	}
 	
+	private void renderLines(final GL gl, final Vec3f vecPoint, final ArrayList<ArrayList<Vec3f>> alPointLists)
+	{
+		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_AREA_LINE_COLOR, 0);
+		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
+		gl.glBegin(GL.GL_LINES);		
+		for(ArrayList<Vec3f> alCurrent : alPointLists)
+		{
+			if (alCurrent.size() > 1)
+			{
+				throw new GeneViewRuntimeException("GLConnectionLineRenderer: " +
+						"Selected Element Rep should not have more than one point in renderLines", GeneViewRuntimeExceptionType.VIEW);
+			}
+			Vec3f vecCurrent = alCurrent.get(0);
+			gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z());
+			gl.glVertex3f(vecCurrent.x(), vecCurrent.y(), vecCurrent.z());
+		}
+		gl.glEnd();
+	}
+	
+	private void renderLine(final GL gl, 
+			final Vec3f vecSrcPoint, 
+			final Vec3f vecDestPoint, 
+			final int iNumberOfLines)
+	{
+		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_AREA_LINE_COLOR, 0);
+		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + iNumberOfLines);
+		gl.glBegin(GL.GL_LINES);
+		gl.glVertex3f(vecSrcPoint.x(),
+				vecSrcPoint.y(),
+				vecSrcPoint.z());
+		gl.glVertex3f(vecDestPoint.x(),
+				vecDestPoint.y(),
+				vecDestPoint.z());
+		gl.glEnd();	
+	}
+	
+
+	
+	private Vec3f calculateCenter(ArrayList<ArrayList<Vec3f>> alPointLists)
+	{
+		Vec3f vecCenterPoint = new Vec3f(0, 0 , 0);
+		
+		int iCount = 0;
+		for(ArrayList<Vec3f> currentList : alPointLists)
+		{
+			for(Vec3f vecCurrent : currentList)
+			{
+				vecCenterPoint.add(vecCurrent);
+				iCount++;
+			}
+			
+		}
+		vecCenterPoint.scale(1.0f/iCount);
+		return vecCenterPoint;
 		
 	}
 	
