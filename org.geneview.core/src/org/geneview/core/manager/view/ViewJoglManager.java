@@ -22,6 +22,7 @@ import org.geneview.core.view.IView;
 import org.geneview.core.view.IViewRep;
 import org.geneview.core.view.ViewType;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
 import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn;
 import org.geneview.core.view.opengl.canvas.jukebox.GLCanvasOverallJukebox3D;
 import org.geneview.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
@@ -434,6 +435,14 @@ implements IViewGLCanvasManager {
 				
 			case CREATE_GL_PARALLEL_COORDINATES_3D:
 				return new GLCanvasParCoords3D(
+						generalManager, 
+						iUniqueId,
+						iGLCanvasID, 
+						sLabel,
+						viewFrustum);
+				
+			case CREATE_GL_HEAT_MAP_3D:
+				return new GLCanvasHeatMap(
 						generalManager, 
 						iUniqueId,
 						iGLCanvasID, 

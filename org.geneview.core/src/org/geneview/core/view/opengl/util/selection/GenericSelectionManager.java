@@ -31,8 +31,8 @@ public class GenericSelectionManager
 	 * @param selectionTypes
 	 * @param normalType
 	 */
-	public GenericSelectionManager(ArrayList<EViewInternalSelectionType> selectionTypes, 
-			EViewInternalSelectionType normalType)//SelectionEnumeration selectionEnumeration)
+	public GenericSelectionManager(final ArrayList<EViewInternalSelectionType> selectionTypes, 
+			final EViewInternalSelectionType normalType)//SelectionEnumeration selectionEnumeration)
 	{
 		this.selectionTypes = selectionTypes;
 		this.eNormalType = normalType;

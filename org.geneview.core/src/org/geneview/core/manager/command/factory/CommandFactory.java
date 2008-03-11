@@ -19,6 +19,7 @@ import org.geneview.core.command.system.CmdSystemLoadFileLookupTable;
 import org.geneview.core.command.system.CmdSystemLoadFileNStorages;
 import org.geneview.core.command.system.CmdSystemLoadFileViaImporter;
 import org.geneview.core.command.system.path.CmdSetPathwayDatabasePath;
+import org.geneview.core.command.view.opengl.CmdGlObjectHeatMap3D;
 import org.geneview.core.command.view.opengl.CmdGlObjectHeatmap;
 import org.geneview.core.command.view.opengl.CmdGlObjectHeatmap2D;
 import org.geneview.core.command.view.opengl.CmdGlObjectHistogram2D;
@@ -450,6 +451,15 @@ implements ICommandFactory {
 		{
  			createdCommand =
 				new CmdGlObjectParCoords3D(
+						generalManager,
+						commandManager,
+						cmdType);	
+			break;
+		}
+		case CREATE_GL_HEAT_MAP_3D:
+		{
+ 			createdCommand =
+				new CmdGlObjectHeatMap3D(
 						generalManager,
 						commandManager,
 						cmdType);	

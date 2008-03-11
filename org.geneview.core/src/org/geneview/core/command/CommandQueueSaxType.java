@@ -44,9 +44,10 @@ implements IGeneViewDefaultType <CommandQueueSaxType> {
 	
 	CREATE_GL_TRIANGLE_TEST(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_TEXTURE2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
-	CREATE_GL_HEATMAP(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
+	CREATE_GL_HEATMAP(ManagerType.VIEW,"cmd","type","-1", "Create Heat Map"),
 	CREATE_GL_HEATMAP2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_HEATMAP2DCOLUMN(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
+	CREATE_GL_HEAT_MAP_3D(ManagerType.VIEW,"cmd","type","-1", "Create Heat Map"),
 	CREATE_GL_HISTOGRAM2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_SCATTERPLOT2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_LAYERED_PATHWAY_3D(ManagerType.VIEW,"cmd","type","-1", "Create Layered Pathway 3D"),

@@ -81,7 +81,14 @@
 							gl_rotation="0 0 0 0"					
 							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
 							attrib4="transparency 0.6" 
-							detail="35101 36101 37101 39101 84101 85101" /> 						
+							detail="35101 36101 37101 39101 84101 85101" /> 
+							
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEAT_MAP_3D"		cmdId="69994"	uniqueId="84401" parent="99076" label="Parallel Coordinates" 
+							gl_origin="0 0 0" 
+							gl_rotation="0 0 0 0"					
+							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
+							attrib4="transparency 0.6" 
+							detail="35101 36101 37101 39101 86101 87101" /> 						
 			
 		<!-- Window	12331	-->	
 		<!--
@@ -113,8 +120,10 @@
 							detail="" /> 
 			    
 	  	<!-- Mediator -->
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator: Pathway - PC" 		attrib1="85401 86401 87401 88401 89401 90401 91401" attrib2="82401" detail="SELECTION_MEDIATOR" /> 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator: PC - Pathway" 		attrib1="82401" attrib2="85401 86401 87401 88401 89401 90401 91401" detail="SELECTION_MEDIATOR" />  
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator: Pathway - PC / Heatmap" 		attrib1="85401 86401 87401 88401 89401 90401 91401" attrib2="82401 84401" detail="SELECTION_MEDIATOR" /> 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator: PC - Pathway / Heatmap" 		attrib1="82401" attrib2="84401 85401 86401 87401 88401 89401 90401 91401" detail="SELECTION_MEDIATOR" />  
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator: HeatMap - Pathway / PC" 		attrib1="84401" attrib2="82401 85401 86401 87401 88401 89401 90401 91401" detail="SELECTION_MEDIATOR" />  
+			
 							    
    </CommandBuffer>
     

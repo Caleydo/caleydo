@@ -32,6 +32,7 @@ public class GLSharedObjects {
 	
 	public static void drawViewFrustum(final GL gl, final IViewFrustum viewFrustum)
 	{
+		gl.glColor3f(1, 0, 0);
 		gl.glBegin(GL.GL_LINE_STRIP);
 		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
 		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), 0);

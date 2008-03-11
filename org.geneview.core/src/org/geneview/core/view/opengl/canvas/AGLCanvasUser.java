@@ -66,7 +66,7 @@ implements GLEventListener {
 	protected IViewCamera viewCamera;
 	
 	protected GLToolboxRenderer glToolboxRenderer;
-
+		
 	/**
 	 * Constructor.
 	 * 

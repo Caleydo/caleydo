@@ -16,7 +16,6 @@ import javax.media.opengl.GL;
 
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.data.collection.SetType;
 import org.geneview.core.data.collection.set.selection.ISetSelection;
 import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.data.view.camera.IViewFrustum;
@@ -24,15 +23,14 @@ import org.geneview.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.geneview.core.data.view.rep.selection.SelectedElementRep;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.data.IGenomeIdManager;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
 import org.geneview.core.manager.view.EPickingMode;
 import org.geneview.core.manager.view.EPickingType;
 import org.geneview.core.manager.view.ESelectionMode;
 import org.geneview.core.manager.view.Pick;
-import org.geneview.core.manager.view.SelectionManager;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
+import org.geneview.core.view.opengl.canvas.AGLCanvasStorageBasedView;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.util.EIconTextures;
 import org.geneview.core.view.opengl.util.GLCoordinateUtils;
@@ -54,8 +52,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  *
  */
 public class GLCanvasParCoords3D 
-extends AGLCanvasUser
-implements IMediatorReceiver, IMediatorSender 
+extends AGLCanvasStorageBasedView
 {
 	
 	private float fAxisSpacing = 0;
@@ -64,10 +61,8 @@ implements IMediatorReceiver, IMediatorSender
 	private int iGLDisplayListIndexRemote;
 	private int iGLDisplayListToCall = 0;
 		
-	// flag whether one array should be a polyline or an axis
-	private boolean bRenderArrayAsPolyline = false;
-	// flag whether the whole data or the selection should be rendered
-	private boolean bRenderSelection = true;
+
+
 	// flag whether to take measures against occlusion or not
 	private boolean bPreventOcclusion = true;	
 	
@@ -75,22 +70,7 @@ implements IMediatorReceiver, IMediatorSender
 	// Is used for meta information, such as captions
 	private EInputDataType eAxisDataType = EInputDataType.EXPERIMENT;
 	private EInputDataType ePolylineDataType = EInputDataType.GENE;
-	
-	// Specify which type of selection is currently active
-	private ESelectionType eWhichContentSelection = ESelectionType.EXTERNAL_SELECTION;
-	private ESelectionType eWhichStorageSelection = ESelectionType.STORAGE_SELECTION;
-	
-	// the list of all selection arrays
-	private EnumMap<ESelectionType, ArrayList<Integer>> mapSelections;
-	
-	// the currently active selection arrays for content and storage 
-	// (references to mapSelection entries)
-	private ArrayList<Integer> alContentSelection;
-	private ArrayList<Integer> alStorageSelection;
-	
-	private boolean bIsDisplayListDirtyLocal = true;
-	private boolean bIsDisplayListDirtyRemote = true;
-	
+		
 	private boolean bIsDraggingActive = false;
 	private EPickingType draggedObject;
 		
@@ -105,14 +85,7 @@ implements IMediatorReceiver, IMediatorSender
 	
 	private ParCoordsRenderStyle renderStyle;
 	
-	// internal management of polyline selections, use 
-	// EPolylineSelectionType for types 
-	private GenericSelectionManager polyLineSelectionManager;
-	
 
-	// internal management of axis selections, use
-	// EAxisSelectionTypes for types
-	private GenericSelectionManager axisSelectionManager;
 	
 	private TextRenderer textRenderer;	
 	
@@ -121,14 +94,7 @@ implements IMediatorReceiver, IMediatorSender
 	private boolean bRenderInfoArea = false;
 	private boolean bInfoAreaFirstTime = false;
 	
-	private IGenomeIdManager IDManager;	
-	
-	
-	private ArrayList<IStorage> alDataStorages;
-	
 	private DecimalFormat decimalFormat;
-	
-	private SelectionManager extSelectionManager;
 	
 	
 	// holds the textures for the icons
@@ -154,7 +120,7 @@ implements IMediatorReceiver, IMediatorSender
 		{
 			alSelectionType.add(selectionType);
 		}		
-		polyLineSelectionManager = new GenericSelectionManager(
+		horizontalSelectionManager = new GenericSelectionManager(
 				alSelectionType, EViewInternalSelectionType.NORMAL);	
 		
 		// initialize axis selection manager
@@ -163,18 +129,17 @@ implements IMediatorReceiver, IMediatorSender
 		{
 			alSelectionType.add(selectionType);
 		}
-		axisSelectionManager = new GenericSelectionManager(
+		verticalSelectionManager = new GenericSelectionManager(
 				alSelectionType, EViewInternalSelectionType.NORMAL);
 		
 		textRenderer = new TextRenderer(new Font("Arial",
 				Font.BOLD, 16), false);
 		
 		decimalFormat = new DecimalFormat("#####.##");
-		IDManager = generalManager.getSingelton().getGenomeIdManager();
+		
 		mapSelections = new EnumMap<ESelectionType, ArrayList<Integer>>(ESelectionType.class);	
 	
-		extSelectionManager = generalManager.
-			getSingelton().getViewGLCanvasManager().getSelectionManager();
+	
 	
 	}
 	
@@ -220,8 +185,8 @@ implements IMediatorReceiver, IMediatorSender
 		iconTextureManager = new GLIconTextureManager(gl);	
 		// initialize selection to an empty array with 
 //		s
-		initSelections();
-		initPolyLineLists();
+		initData();
+		initLists();
 	}
 	
 	/*
@@ -307,14 +272,14 @@ implements IMediatorReceiver, IMediatorSender
 	 *  
 	 * @param bRenderArrayAsPolyline if true array contents make up a polyline, else array is an axis
 	 */
-	public void renderArrayAsPolyline(boolean bRenderArrayAsPolyline)
+	public void renderStorageAsPolyline(boolean bRenderArrayAsPolyline)
 	{
-		this.bRenderArrayAsPolyline = bRenderArrayAsPolyline;
+		this.bRenderStorageHorizontally = bRenderArrayAsPolyline;
 		bRenderInfoArea = false;
 		EInputDataType eTempType = eAxisDataType;
 		eAxisDataType = ePolylineDataType;
 		ePolylineDataType = eTempType;
-		initPolyLineLists();
+		initLists();
 	}
 	
 	/**
@@ -356,8 +321,8 @@ implements IMediatorReceiver, IMediatorSender
 			fArGateBottomHeight[iCount] = renderStyle.getGateYOffset() -
 				renderStyle.getGateTipHeight();
 		}
-		polyLineSelectionManager.clearSelections();
-		axisSelectionManager.clearSelections();
+		horizontalSelectionManager.clearSelections();
+		verticalSelectionManager.clearSelections();
 		
 		bRenderInfoArea = false;
 	}
@@ -367,68 +332,10 @@ implements IMediatorReceiver, IMediatorSender
 	 */
 	public void refresh()
 	{
-		initPolyLineLists();
+		initLists();
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
 		bRenderInfoArea = false;
-	}
-	
-	
-	private void initSelections()
-	{
-		// TODO: check if I only get in here once
-		alDataStorages.clear();
-		
-		
-		if (alSetData == null)
-			return;
-		
-		if (alSetSelection == null)
-			return;				
-				
-		
-		Iterator<ISet> iterSetData = alSetData.iterator();
-		while (iterSetData.hasNext())
-		{
-			ISet tmpSet = iterSetData.next();
-						
-			if (tmpSet.getSetType().equals(SetType.SET_GENE_EXPRESSION_DATA))
-			{
-				alDataStorages.add(tmpSet.getStorageByDimAndIndex(0, 0));
-			}
-		}	
-		
-		ArrayList<Integer> alTempList = alSetSelection.get(0).getSelectionIdArray();
-//		A iArTemp = ;
-//		for(int iCount = 0; iCount < iArTemp.length; iCount++)
-//		{
-//			alTempList.add(iArTemp[iCount]);
-//		}
-		if(alTempList == null)
-		{
-			alTempList = new ArrayList<Integer>();
-		}
-		mapSelections.put(ESelectionType.EXTERNAL_SELECTION, alTempList);
-
-		//int iStorageLength = alDataStorages.get(0).getArrayFloat().length;
-		int iStorageLength = 1000;
-		alTempList = new ArrayList<Integer>(iStorageLength);
-		// initialize full list
-		for(int iCount = 0; iCount < iStorageLength; iCount++)
-		{
-			alTempList.add(iCount);
-		}
-		
-		mapSelections.put(ESelectionType.COMPLETE_SELECTION, alTempList);
-		
-		alTempList = new ArrayList<Integer>();
-		
-		for(int iCount = 0; iCount < alDataStorages.size(); iCount++)
-		{
-			alTempList.add(iCount);
-		}
-		
-		mapSelections.put(ESelectionType.STORAGE_SELECTION, alTempList);
 	}
 	
 	
@@ -437,10 +344,11 @@ implements IMediatorReceiver, IMediatorSender
 	 * Must be run at program start, 
 	 * every time you exchange axis and polylines and
 	 * every time you change storages or selections
+	 * TODO: remove this from here and write a initGate for gates
 	 */
-	private void initPolyLineLists()
+	protected void initLists()
 	{						
-		polyLineSelectionManager.resetSelectionManager();
+		horizontalSelectionManager.resetSelectionManager();
 		
 		int iNumberOfEntriesToRender = 0;		
 
@@ -451,7 +359,7 @@ implements IMediatorReceiver, IMediatorSender
 		int iNumberOfPolyLinesToRender = 0;		
 		
 		// if true one array corresponds to one polyline, number of arrays is number of polylines
-		if (bRenderArrayAsPolyline)
+		if (bRenderStorageHorizontally)
 		{			
 			iNumberOfPolyLinesToRender = alStorageSelection.size();
 			iNumberOfAxis = iNumberOfEntriesToRender;			
@@ -476,19 +384,19 @@ implements IMediatorReceiver, IMediatorSender
 		// this for loop executes once per polyline
 		for (int iPolyLineCount = 0; iPolyLineCount < iNumberOfPolyLinesToRender; iPolyLineCount++)
 		{	
-			if(bRenderArrayAsPolyline)
-				polyLineSelectionManager.initialAdd(alStorageSelection.get(iPolyLineCount));
+			if(bRenderStorageHorizontally)
+				horizontalSelectionManager.initialAdd(alStorageSelection.get(iPolyLineCount));
 			else
-				polyLineSelectionManager.initialAdd(alContentSelection.get(iPolyLineCount));
+				horizontalSelectionManager.initialAdd(alContentSelection.get(iPolyLineCount));
 		}
 		
 		// this for loop executes one per axis
 		for (int iAxisCount = 0; iAxisCount < iNumberOfAxis; iAxisCount++)
 		{
-			if(bRenderArrayAsPolyline)
-				axisSelectionManager.initialAdd(alContentSelection.get(iAxisCount));
+			if(bRenderStorageHorizontally)
+				verticalSelectionManager.initialAdd(alContentSelection.get(iAxisCount));
 			else
-				axisSelectionManager.initialAdd(alStorageSelection.get(iAxisCount));
+				verticalSelectionManager.initialAdd(alStorageSelection.get(iAxisCount));
 		}
 		
 		//fScaling = 1f;
@@ -541,7 +449,7 @@ implements IMediatorReceiver, IMediatorSender
 		switch (renderMode)
 		{
 			case NORMAL:
-				setDataToRender = polyLineSelectionManager.getElements(renderMode);
+				setDataToRender = horizontalSelectionManager.getElements(renderMode);
 				if(bPreventOcclusion)				
 					gl.glColor4fv(renderStyle.
 							getPolylineOcclusionPrevColor(setDataToRender.size()), 0);									
@@ -551,24 +459,24 @@ implements IMediatorReceiver, IMediatorSender
 				gl.glLineWidth(ParCoordsRenderStyle.POLYLINE_LINE_WIDTH);
 				break;
 			case SELECTION:	
-				setDataToRender = polyLineSelectionManager.getElements(renderMode);
+				setDataToRender = horizontalSelectionManager.getElements(renderMode);
 				gl.glColor4fv(ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR, 0);
 				gl.glLineWidth(ParCoordsRenderStyle.SELECTED_POLYLINE_LINE_WIDTH);
 				break;
 			case MOUSE_OVER:
-				setDataToRender = polyLineSelectionManager.getElements(renderMode);
+				setDataToRender = horizontalSelectionManager.getElements(renderMode);
 				gl.glColor4fv(ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR, 0);
 				gl.glLineWidth(ParCoordsRenderStyle.MOUSE_OVER_POLYLINE_LINE_WIDTH);
 				break;
 			case DESELECTED:	
-				setDataToRender = polyLineSelectionManager.getElements(renderMode);				
+				setDataToRender = horizontalSelectionManager.getElements(renderMode);				
 				gl.glColor4fv(renderStyle.
 						getPolylineDeselectedOcclusionPrevColor(setDataToRender.size()),
 						0);
 				gl.glLineWidth(ParCoordsRenderStyle.DESELECTED_POLYLINE_LINE_WIDTH);
 				break;
 			default:
-				setDataToRender = polyLineSelectionManager.getElements(
+				setDataToRender = horizontalSelectionManager.getElements(
 						EViewInternalSelectionType.NORMAL);
 		}
 		
@@ -583,7 +491,7 @@ implements IMediatorReceiver, IMediatorSender
 			IStorage currentStorage = null;
 			
 			// decide on which storage to use when array is polyline
-			if(bRenderArrayAsPolyline)
+			if(bRenderStorageHorizontally)
 			{
 				int iWhichStorage = iPolyLineID;				
 				//currentStorage = alDataStorages.get(alStorageSelection.get(iWhichStorage));
@@ -601,7 +509,7 @@ implements IMediatorReceiver, IMediatorSender
 				int iStorageIndex = 0;
 				
 				// get the index if array as polyline
-				if (bRenderArrayAsPolyline)
+				if (bRenderStorageHorizontally)
 				{
 					iStorageIndex = alContentSelection.get(iVertricesCount);
 				}
@@ -660,11 +568,11 @@ implements IMediatorReceiver, IMediatorSender
 		gl.glPopName();
 		
 		// draw all Y-Axis
-		Set<Integer> selectedSet = axisSelectionManager.getElements(EViewInternalSelectionType.SELECTION);
-		Set<Integer> mouseOverSet = axisSelectionManager.getElements(EViewInternalSelectionType.MOUSE_OVER);
+		Set<Integer> selectedSet = verticalSelectionManager.getElements(EViewInternalSelectionType.SELECTION);
+		Set<Integer> mouseOverSet = verticalSelectionManager.getElements(EViewInternalSelectionType.MOUSE_OVER);
 		ArrayList<Integer> alAxisSelection;
 		
-		if(bRenderArrayAsPolyline)
+		if(bRenderStorageHorizontally)
 			alAxisSelection = alContentSelection;			
 		else
 			alAxisSelection = alStorageSelection;
@@ -1012,12 +920,12 @@ implements IMediatorReceiver, IMediatorSender
 		IStorage currentStorage = null;
 		
 		// for every polyline
-		for (int iPolylineCount = 0; iPolylineCount < polyLineSelectionManager.getNumberOfElements(); iPolylineCount++)
+		for (int iPolylineCount = 0; iPolylineCount < horizontalSelectionManager.getNumberOfElements(); iPolylineCount++)
 		{	
 			int iStorageIndex = 0;
 			
 			// get the index if array as polyline
-			if (bRenderArrayAsPolyline)
+			if (bRenderStorageHorizontally)
 			{
 				currentStorage = alDataStorages.get(alStorageSelection.get(iPolylineCount));
 
@@ -1033,14 +941,14 @@ implements IMediatorReceiver, IMediatorSender
 			if(fCurrentValue < fArGateTipHeight[iAxisNumber] 
 			                                    && fCurrentValue > fArGateBottomHeight[iAxisNumber])
 			{	
-				if(polyLineSelectionManager.checkStatus(EViewInternalSelectionType.SELECTION, iPolylineCount))
+				if(horizontalSelectionManager.checkStatus(EViewInternalSelectionType.SELECTION, iPolylineCount))
 					bRenderInfoArea = false;
 				
-				if(bRenderArrayAsPolyline)
-					polyLineSelectionManager.addToType(EViewInternalSelectionType.DESELECTED, 
+				if(bRenderStorageHorizontally)
+					horizontalSelectionManager.addToType(EViewInternalSelectionType.DESELECTED, 
 							alStorageSelection.get(iPolylineCount));
 				else
-					polyLineSelectionManager.addToType(EViewInternalSelectionType.DESELECTED, 
+					horizontalSelectionManager.addToType(EViewInternalSelectionType.DESELECTED, 
 							alContentSelection.get(iPolylineCount));
 			}
 			else
@@ -1051,7 +959,7 @@ implements IMediatorReceiver, IMediatorSender
 				for (int iLocalAxisCount = 0; iLocalAxisCount < iNumberOfAxis; iLocalAxisCount++)
 				{					
 					int iLocalStorageIndex = 0;
-					if(bRenderArrayAsPolyline)
+					if(bRenderStorageHorizontally)
 					{
 						if(!bRenderSelection)					
 							iLocalStorageIndex = iLocalAxisCount;	
@@ -1080,11 +988,11 @@ implements IMediatorReceiver, IMediatorSender
 				}
 				if (!bIsBlocked)
 				{
-					if(bRenderArrayAsPolyline)
-						polyLineSelectionManager.removeFromType(EViewInternalSelectionType.DESELECTED,
+					if(bRenderStorageHorizontally)
+						horizontalSelectionManager.removeFromType(EViewInternalSelectionType.DESELECTED,
 								alStorageSelection.get(iPolylineCount));
 					else
-						polyLineSelectionManager.removeFromType(EViewInternalSelectionType.DESELECTED,
+						horizontalSelectionManager.removeFromType(EViewInternalSelectionType.DESELECTED,
 								alContentSelection.get(iPolylineCount));
 				}				
 			}
@@ -1111,7 +1019,7 @@ implements IMediatorReceiver, IMediatorSender
 			switch (ePickingMode)
 			{						
 				case CLICKED:				
-					Set<Integer> selectedSet = polyLineSelectionManager.getElements(EViewInternalSelectionType.SELECTION);
+					Set<Integer> selectedSet = horizontalSelectionManager.getElements(EViewInternalSelectionType.SELECTION);
 					ArrayList<Integer> iAlOldSelection = new ArrayList<Integer>();
 					for(Integer iCurrent : selectedSet)
 					{
@@ -1119,8 +1027,8 @@ implements IMediatorReceiver, IMediatorSender
 					}
 					
 					
-					polyLineSelectionManager.clearSelection(EViewInternalSelectionType.SELECTION);							
-					polyLineSelectionManager.addToType(EViewInternalSelectionType.SELECTION, 
+					horizontalSelectionManager.clearSelection(EViewInternalSelectionType.SELECTION);							
+					horizontalSelectionManager.addToType(EViewInternalSelectionType.SELECTION, 
 							iExternalID);
 					
 					if (ePolylineDataType == EInputDataType.GENE)
@@ -1168,8 +1076,8 @@ implements IMediatorReceiver, IMediatorSender
 					break;	
 				case MOUSE_OVER:
 
-					polyLineSelectionManager.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
-					polyLineSelectionManager.addToType(EViewInternalSelectionType.MOUSE_OVER, iExternalID);
+					horizontalSelectionManager.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
+					horizontalSelectionManager.addToType(EViewInternalSelectionType.MOUSE_OVER, iExternalID);
 					bIsDisplayListDirtyLocal = true;
 					bIsDisplayListDirtyRemote = true;
 					break;					
@@ -1186,17 +1094,17 @@ implements IMediatorReceiver, IMediatorSender
 			switch (ePickingMode)
 			{
 			case CLICKED:
-				axisSelectionManager.clearSelection(
+				verticalSelectionManager.clearSelection(
 						EViewInternalSelectionType.SELECTION);
-				axisSelectionManager.addToType(
+				verticalSelectionManager.addToType(
 						EViewInternalSelectionType.SELECTION, iExternalID);
 				bIsDisplayListDirtyLocal = true;
 				bIsDisplayListDirtyRemote = true;
 				break;
 			case MOUSE_OVER:
-				axisSelectionManager.clearSelection(
+				verticalSelectionManager.clearSelection(
 						EViewInternalSelectionType.MOUSE_OVER);
-				axisSelectionManager.addToType(
+				verticalSelectionManager.addToType(
 						EViewInternalSelectionType.MOUSE_OVER, iExternalID);
 				bIsDisplayListDirtyLocal = true;
 				bIsDisplayListDirtyRemote = true;
@@ -1246,10 +1154,10 @@ implements IMediatorReceiver, IMediatorSender
 				case CLICKED:	
 					if(iExternalID == EIconIDs.TOGGLE_RENDER_ARRAY_AS_POLYLINE.ordinal())
 					{							
-						if (bRenderArrayAsPolyline == true)
-							renderArrayAsPolyline(false);
+						if (bRenderStorageHorizontally == true)
+							renderStorageAsPolyline(false);
 						else
-							renderArrayAsPolyline(true);
+							renderStorageAsPolyline(true);
 					}
 					else if(iExternalID == EIconIDs.TOGGLE_PREVENT_OCCLUSION.ordinal())
 					{
@@ -1284,7 +1192,7 @@ implements IMediatorReceiver, IMediatorSender
 			{						
 				case CLICKED:	
 					//int iSelection = 0;
-					if(bRenderArrayAsPolyline)
+					if(bRenderStorageHorizontally)
 					{
 						alContentSelection.remove(iExternalID);	
 					}
@@ -1305,7 +1213,7 @@ implements IMediatorReceiver, IMediatorSender
 				case CLICKED:	
 					
 					ArrayList<Integer> alSelection;
-					if(bRenderArrayAsPolyline)							
+					if(bRenderStorageHorizontally)							
 						alSelection = alContentSelection;							
 					else						
 						alSelection = alStorageSelection;								
@@ -1330,7 +1238,7 @@ implements IMediatorReceiver, IMediatorSender
 			{						
 				case CLICKED:	
 					ArrayList<Integer> alSelection;
-					if(bRenderArrayAsPolyline)							
+					if(bRenderStorageHorizontally)							
 						alSelection = alContentSelection;							
 					else						
 						alSelection = alStorageSelection;
@@ -1353,7 +1261,7 @@ implements IMediatorReceiver, IMediatorSender
 			{						
 				case CLICKED:	
 					ArrayList<Integer> alSelection;
-					if(bRenderArrayAsPolyline)							
+					if(bRenderStorageHorizontally)							
 						alSelection = alContentSelection;							
 					else						
 						alSelection = alStorageSelection;
@@ -1375,98 +1283,13 @@ implements IMediatorReceiver, IMediatorSender
 		}
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object,
-	 *      org.geneview.core.data.collection.ISet)
-	 */
-	public void updateReceiver(Object eventTrigger, ISet updatedSet) 
-	{		
-		generalManager.getSingelton().logMsg(
-				this.getClass().getSimpleName()
-						+ " ("+iUniqueId+"): updateReceiver(Object eventTrigger, ISet updatedSet): Update called by "
-						+ eventTrigger.getClass().getSimpleName()+" ("+((AGLCanvasUser)eventTrigger).getId(),
-				LoggerType.VERBOSE);
-		
-		ISetSelection refSetSelection = (ISetSelection) updatedSet;
-
-		refSetSelection.getReadToken();
-		// contains all genes in center pathway (not yet)
-		ArrayList<Integer> iAlSelection = refSetSelection.getSelectionIdArray();
-
-		// contains type - 0 for not selected 1 for selected
-		ArrayList<Integer> iAlGroup = refSetSelection.getGroupArray();
-		ArrayList<Integer> iAlOptional = refSetSelection.getOptionalDataArray();
-		// iterate here		
-		ArrayList<Integer> iAlSelectionStorageIndices = convertAccessionToExpressionIndices(iAlSelection);
-		iAlSelectionStorageIndices = cleanSelection(iAlSelectionStorageIndices, iAlGroup);
-		setSelection(iAlSelectionStorageIndices, iAlGroup, iAlOptional);
-		
-		int iSelectedAccessionID = 0;
-		int iSelectedStorageIndex = 0;
-		
-		bIsDisplayListDirtyLocal = true;
-		bIsDisplayListDirtyRemote = true;
-		
-		for(int iSelectionCount = 0; iSelectionCount < iAlSelectionStorageIndices.size();  iSelectionCount++)
-		{
-			// TODO: set this to 1 resp. later to a enum as soon as I get real data
-			if(iAlGroup.get(iSelectionCount) == 1)
-			{
-				iSelectedAccessionID = iAlSelection.get(iSelectionCount);
-				iSelectedStorageIndex = iAlSelectionStorageIndices.get(iSelectionCount);
-				
-				String sAccessionCode = generalManager.getSingelton().getGenomeIdManager()
-					.getIdStringFromIntByMapping(iSelectedAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
-			
-				System.out.println("Accession ID: " + iSelectedAccessionID);
-				System.out.println("Accession Code: " +sAccessionCode);			
-				System.out.println("Expression stroage index: " +iSelectedStorageIndex);
-				
-				if (iSelectedStorageIndex >= 0)
-				{						
-					if(!bRenderArrayAsPolyline)
-					{				
-						// handle local selection
-						polyLineSelectionManager.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
-						polyLineSelectionManager.addToType(EViewInternalSelectionType.MOUSE_OVER, iSelectedStorageIndex);
-						
-						// handle external selection
-						extSelectionManager.modifySelection(iSelectedAccessionID, 
-								createElementRep(iSelectedStorageIndex), ESelectionMode.AddPick);
-					}
-					else
-					{
-						axisSelectionManager.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
-						axisSelectionManager.addToType(EViewInternalSelectionType.MOUSE_OVER, iSelectedStorageIndex);
-						
-						extSelectionManager.modifySelection(iSelectedAccessionID, createElementRep(iSelectedStorageIndex), ESelectionMode.AddPick);
-					}
-				}
-			}
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#updateReceiver(java.lang.Object)
-	 */
-	public void updateReceiver(Object eventTrigger) {
-
-		generalManager.getSingelton().logMsg(
-				this.getClass().getSimpleName()
-						+ ": updateReceiver(Object eventTrigger): Update called by "
-						+ eventTrigger.getClass().getSimpleName(),
-				LoggerType.VERBOSE);
-	}
 	
-	private SelectedElementRep createElementRep(int iStorageIndex)
+	protected SelectedElementRep createElementRep(int iStorageIndex)
 	{
 		
-		SelectedElementRep elemntRep;
+		SelectedElementRep elementRep;
 		
-		if(!bRenderArrayAsPolyline)
+		if(!bRenderStorageHorizontally)
 		{
 			ArrayList<Vec3f> alPoints = new ArrayList<Vec3f>();
 			float fYValue;
@@ -1481,7 +1304,7 @@ implements IMediatorReceiver, IMediatorSender
 				iCount++;
 			}		
 		
-			elemntRep = new SelectedElementRep(iUniqueId, alPoints);
+			elementRep = new SelectedElementRep(iUniqueId, alPoints);
 		
 		}
 		else
@@ -1494,80 +1317,10 @@ implements IMediatorReceiver, IMediatorSender
 			alPoints.add(new Vec3f(fXValue, renderStyle.getBottomSpacing() + 
 					renderStyle.getAxisHeight(), 0));
 			
-			elemntRep = new SelectedElementRep(iUniqueId, alPoints);
+			elementRep = new SelectedElementRep(iUniqueId, alPoints);
 		}
-		return elemntRep;
+		return elementRep;
 		
-	}
-	
-	protected ArrayList<Integer>  cleanSelection(ArrayList<Integer> iAlSelection, ArrayList<Integer> iAlGroup)
-	{
-		ArrayList<Integer> alDelete = new ArrayList<Integer>(1);
-		for (int iCount = 0; iCount < iAlSelection.size(); iCount++)
-		{
-			// TODO remove elements if -1
-			if(iAlSelection.get(iCount) == -1)
-			{
-				alDelete.add(iCount);
-				continue;		
-			}
-			iAlSelection.set(iCount, iAlSelection.get(iCount) / 1000);	
-//			System.out.println("Storageindexalex: " + iAlSelection[iCount]);
-		}		
-		
-		for(int iCount = alDelete.size()-1; iCount >= 0; iCount--)
-		{
-			iAlSelection.remove(iCount);
-			iAlGroup.remove(iCount);
-		}
-		
-		return iAlSelection;
-	}
-	
-	protected void setSelection(ArrayList<Integer> iAlSelection, 
-			ArrayList<Integer> iAlGroup,
-			ArrayList<Integer> iAlOptional)
-	{	
-		alSetSelection.get(0).mergeSelection(iAlSelection, iAlGroup, iAlOptional);
-		
-		initSelections();
-		initPolyLineLists();
-	}
-	
-	protected ArrayList<Integer> convertAccessionToExpressionIndices(ArrayList<Integer> iAlSelection)
-	{
-		ArrayList<Integer> iAlSelectionStorageIndices = new ArrayList<Integer>();
-		for(int iCount = 0; iCount < iAlSelection.size(); iCount++)
-		{
-			int iTmp = generalManager.getSingelton().getGenomeIdManager()
-				.getIdIntFromIntByMapping(iAlSelection.get(iCount), EGenomeMappingType.ACCESSION_2_MICROARRAY_EXPRESSION);
-			
-			if (iTmp == -1)
-				continue;
-			
-			iAlSelectionStorageIndices.add(iTmp);
-		}
-		
-		return iAlSelectionStorageIndices;
-	}
-	
-	private int getAccesionIDFromStorageIndex(int index)
-	{
-		int iAccessionID = IDManager.getIdIntFromIntByMapping(index*1000+770, 
-				EGenomeMappingType.MICROARRAY_EXPRESSION_2_ACCESSION);
-		return iAccessionID;
-	}
-	
-	private String getAccessionNumberFromStorageIndex(int index)
-	{
-			
-		// Convert expression storage ID to accession ID
-		int iAccessionID = getAccesionIDFromStorageIndex(index);
-		String sAccessionNumber = IDManager.getIdStringFromIntByMapping(iAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
-		if(sAccessionNumber == "")
-			return "Unkonwn Gene";
-		else
-			return sAccessionNumber;		
 	}	
 	
 	/*

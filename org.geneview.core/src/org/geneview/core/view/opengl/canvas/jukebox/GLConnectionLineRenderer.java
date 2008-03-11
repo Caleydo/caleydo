@@ -258,8 +258,10 @@ public class GLConnectionLineRenderer {
 		{
 			if (alCurrent.size() > 1)
 			{
-				throw new GeneViewRuntimeException("GLConnectionLineRenderer: " +
-						"Selected Element Rep should not have more than one point in renderLines", GeneViewRuntimeExceptionType.VIEW);
+				renderPlanes(gl, vecPoint, alCurrent);
+				continue;
+//				throw new GeneViewRuntimeException("GLConnectionLineRenderer: " +
+//						"Selected Element Rep should not have more than one point in renderLines", GeneViewRuntimeExceptionType.VIEW);
 			}
 			Vec3f vecCurrent = alCurrent.get(0);
 			gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z());
