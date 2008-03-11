@@ -127,6 +127,8 @@ implements GLEventListener {
 		generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
 			.initInfoInPlace(viewFrustum);
 		
+		pickingTriggerMouseAdapter.addGLCanvas(this);
+		
 		((GLEventListener)parentGLCanvas).init(drawable);
 		
 		initLocal(drawable.getGL());

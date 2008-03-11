@@ -44,6 +44,7 @@ implements GLEventListener {
 		// Register mouse listener to GL canvas
 		this.addMouseListener(joglMouseListener);
 		this.addMouseMotionListener(joglMouseListener);
+		this.addMouseWheelListener(joglMouseListener);
 	}
 	
 	public void init(GLAutoDrawable drawable) {

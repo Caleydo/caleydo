@@ -7,6 +7,8 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -20,7 +22,7 @@ import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
  */
 
 public class JoglMouseListener 
-implements MouseListener, MouseMotionListener {
+implements MouseListener, MouseMotionListener, MouseWheelListener {
 
 	protected ArrayList<AGLCanvasUser> alGlCanvas;
 	
@@ -250,28 +252,28 @@ implements MouseListener, MouseMotionListener {
 	    	}
 		    else
 	    	{
-		    	/**
-		    	 *   --- ZOOMING ---
-		    	 */				    
-			    float zoomX = fZoomScale * (float)(x-prevMouseX);
-			    float zoomY = fZoomScale * (float)(prevMouseY-y);
-			    
-			    /* take abs(zoomX) */
-			    if ((zoomX < 0.0f )&&(zoomY>0.0f)) {
-			    	zoomX = -zoomX;
-			    }
-			    
-		    	prevMouseX = x;
-			    prevMouseY = y;
-			    
-			    /* set new paramters to ViewCamera */
-			    Iterator<AGLCanvasUser> iterGLCanvas = alGlCanvas.iterator();
-			    
-			    while (iterGLCanvas.hasNext())
-			    {
-			    	iterGLCanvas.next().getViewCamera().addCameraScale(
-				    		new Vec3f( 0, 0, zoomY +zoomX) );
-			    }
+//		    	/**
+//		    	 *   --- ZOOMING ---
+//		    	 */				    
+//			    float zoomX = fZoomScale * (float)(x-prevMouseX);
+//			    float zoomY = fZoomScale * (float)(prevMouseY-y);
+//			    
+//			    /* take abs(zoomX) */
+//			    if ((zoomX < 0.0f )&&(zoomY>0.0f)) {
+//			    	zoomX = -zoomX;
+//			    }
+//			    
+//		    	prevMouseX = x;
+//			    prevMouseY = y;
+//			    
+//			    /* set new paramters to ViewCamera */
+//			    Iterator<AGLCanvasUser> iterGLCanvas = alGlCanvas.iterator();
+//			    
+//			    while (iterGLCanvas.hasNext())
+//			    {
+//			    	iterGLCanvas.next().getViewCamera().addCameraScale(
+//				    		new Vec3f( 0, 0, zoomY +zoomX) );
+//			    }
 	    	}
 		} 
 		else
@@ -301,5 +303,25 @@ implements MouseListener, MouseMotionListener {
 	public void addGLCanvas(final AGLCanvasUser gLCanvas) {
 		
 		alGlCanvas.add(gLCanvas);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see java.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.MouseWheelEvent)
+	 */
+	public void mouseWheelMoved(MouseWheelEvent e) {
+		
+	   	/**
+	   	 *   --- NORMAL ZOOM ---
+	   	 */			
+		float fZoom = fZoomScale * e.getWheelRotation(); 
+	
+	    Iterator<AGLCanvasUser> iterGLCanvas = alGlCanvas.iterator();
+	    
+	    while (iterGLCanvas.hasNext())
+	    {
+	    	iterGLCanvas.next().getViewCamera().addCameraScale(
+		    		new Vec3f( 0, 0, fZoom) );
+	    }
 	}
 }

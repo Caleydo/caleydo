@@ -65,6 +65,8 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private int iDraggedViewID = -1;
 	
+	private BucketMouseWheelListener bucketMouseWheelListener;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -126,6 +128,12 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		glConnectionLineRenderer = new GLConnectionLineRenderer(generalManager,
 				underInteractionLayer, stackLayer, poolLayer);
+		
+		bucketMouseWheelListener = new BucketMouseWheelListener(this);
+		// Unregister standard mouse wheel listener
+		parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
+		// Register specialized bucket mouse wheel listener
+		parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
 	}
 
 	/*
@@ -214,17 +222,27 @@ implements IMediatorReceiver, IMediatorSender {
 		doSlerpActions(gl);
 		
 //		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-		renderLayer(gl, transitionLayer);
-		renderLayer(gl, poolLayer);
-		renderLayer(gl, stackLayer);
+
 		renderLayer(gl, underInteractionLayer);
+		
+		// If user zooms to the bucket bottom all but the under
+		// interaction layer is _not_ rendered.
+		if (!bucketMouseWheelListener.isBucketBottomReached())
+		{
+			renderLayer(gl, transitionLayer);
+			renderLayer(gl, poolLayer);
+			renderLayer(gl, stackLayer);
+			
+			glConnectionLineRenderer.render(gl);
+		}
+		
 //		renderUnderInteractionLayer(gl);
 //		gl.glEndList();
 		
-		glConnectionLineRenderer.render(gl);
-		
 		// TODO: add dirty flag
 //		gl.glCallList(iGLDisplayListIndex);
+		
+		bucketMouseWheelListener.render();
 	}
 
 	private void retrieveContainedViews(final GL gl) {
