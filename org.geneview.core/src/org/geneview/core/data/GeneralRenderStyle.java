@@ -19,7 +19,7 @@ public class GeneralRenderStyle
 	public static final float MINIVEW_Z = 0.02f;
 	
 	public static final float[] SELECTED_COLOR = {0, 0, 1, 1};
-	public static final float[] MOUSE_OVER_COLOR = {0, 1, 1, 1};
+	public static final float[] MOUSE_OVER_COLOR = {1, 0, 1, 1};
 	public static final float SELECTED_LINE_WIDTH = 3;
 	public static final float MOUSE_OVER_LINE_WIDTH = 3;
 	

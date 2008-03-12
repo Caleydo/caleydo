@@ -1062,7 +1062,7 @@ extends AGLCanvasStorageBasedView
 							if(iAccessionID != -1)
 							{
 								iAlTmpSelectionId.add(iAccessionID);
-								iAlTmpGroup.add(-1);
+								iAlTmpGroup.add(0);
 							}
 						}
 

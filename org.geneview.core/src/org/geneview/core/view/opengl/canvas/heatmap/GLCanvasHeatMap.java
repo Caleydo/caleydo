@@ -1,5 +1,6 @@
 package org.geneview.core.view.opengl.canvas.heatmap;
 
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ import org.geneview.core.util.mapping.color.ColorMapping;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasStorageBasedView;
 import org.geneview.core.view.opengl.canvas.parcoords.ESelectionType;
+import org.geneview.core.view.opengl.util.GLSharedObjects;
 import org.geneview.core.view.opengl.util.GLToolboxRenderer;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 import org.geneview.core.view.opengl.util.selection.EViewInternalSelectionType;
@@ -54,7 +56,7 @@ extends AGLCanvasStorageBasedView
 		horizontalSelectionManager = new GenericSelectionManager(alSelectionTypes, EViewInternalSelectionType.NORMAL);
 		verticalSelectionManager = new GenericSelectionManager(alSelectionTypes, EViewInternalSelectionType.NORMAL);
 	
-		renderStyle = new HeatMapRenderStyle(viewFrustum);
+		
 		colorMapper = new ColorMapping(0, 1);
 	}
 	
@@ -63,6 +65,7 @@ extends AGLCanvasStorageBasedView
 	{
 		initData();
 		initLists();
+		renderStyle = new HeatMapRenderStyle(viewFrustum, verticalSelectionManager, alContentSelection);
 	}
 
 	@Override
@@ -118,6 +121,7 @@ extends AGLCanvasStorageBasedView
 	public void display(GL gl) 
 	{
 		//GLSharedObjects.drawViewFrustum(gl, viewFrustum);
+		//GLSharedObjects.drawAxis(gl);
 		renderHeatMap(gl);
 		renderSelection(gl, EViewInternalSelectionType.MOUSE_OVER);
 		renderSelection(gl, EViewInternalSelectionType.SELECTION);
@@ -169,23 +173,29 @@ extends AGLCanvasStorageBasedView
 	private void renderHeatMap(final GL gl)
 	{	
 		float fXPosition = 0;
-		float fYPosition = renderStyle.getBottomSpacing();
+		float fYPosition = 0;
+		renderStyle.clearFieldWidths();
 		
+		// TODO: NullPointer if storage is empty
+		Vec2f vecFieldWidthAndHeight = null;
 		if(bRenderStorageHorizontally)
 		{
-			for(Integer iStorageIndex : alStorageSelection)
-			{
-				for(Integer iContentIndex: alContentSelection)
+			int iCount = 0;
+			for(Integer iContentIndex: alContentSelection)
+			{	
+				
+				vecFieldWidthAndHeight = renderStyle.getAndInitFieldWidthAndHeight(iCount);
+				fYPosition = renderStyle.getYCenter() - vecFieldWidthAndHeight.y() * alStorageSelection.size() / 2;
+				for(Integer iStorageIndex : alStorageSelection)
 				{
 					renderElement(gl, iStorageIndex, iContentIndex, 
-							fXPosition, fYPosition);
-					fXPosition += renderStyle.getFieldWidth();
+							fXPosition, fYPosition, vecFieldWidthAndHeight);
+					
+					fYPosition += vecFieldWidthAndHeight.y();				
 				}
-				fXPosition = 0;
-				fYPosition += renderStyle.getFieldHeight();
-			}
-		
-			
+				iCount++;
+				fXPosition += vecFieldWidthAndHeight.x();					
+			}			
 		}
 	}
 	
@@ -193,24 +203,29 @@ extends AGLCanvasStorageBasedView
 			final int iStorageIndex, 
 			final int iContentIndex, 
 			final float fXPosition,
-			final float fYPosition)
+			final float fYPosition,
+			final Vec2f vecFieldWidthAndHeight)
 	{
 		float fLookupValue = alDataStorages.get(iStorageIndex).getArrayFloat()[iContentIndex];
 		Vec3f vecMappingColor = colorMapper.colorMappingLookup(fLookupValue);
 		gl.glColor3f(vecMappingColor.x(), vecMappingColor.y(), vecMappingColor.z());
+		
+		
+		
 		gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.FIELD_SELECTION, iContentIndex));
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(fXPosition, fYPosition, HeatMapRenderStyle.FIELD_Z);
-		gl.glVertex3f(fXPosition + renderStyle.getFieldWidth(), fYPosition, 
+		gl.glVertex3f(fXPosition + vecFieldWidthAndHeight.x(), fYPosition, 
 				HeatMapRenderStyle.FIELD_Z);
-		gl.glVertex3f(fXPosition + renderStyle.getFieldWidth(), 
-				fYPosition + renderStyle.getFieldHeight(), 
+		gl.glVertex3f(fXPosition + vecFieldWidthAndHeight.x(), 
+				fYPosition + vecFieldWidthAndHeight.y(), 
 				HeatMapRenderStyle.FIELD_Z);
 		gl.glVertex3f(fXPosition, 
-				fYPosition + renderStyle.getFieldHeight(), 
+				fYPosition + vecFieldWidthAndHeight.y(), 
 				HeatMapRenderStyle.FIELD_Z);
 		gl.glEnd();
 		gl.glPopName();
+		
 	}
 	
 	private void renderSelection(final GL gl,
@@ -219,7 +234,7 @@ extends AGLCanvasStorageBasedView
 		Set<Integer> selectedSet = verticalSelectionManager.getElements(eSelectionType);
 		float fHeight = 0;
 		float fXPosition = 0;
-		float fYPosition = renderStyle.getBottomSpacing();
+		float fYPosition = 0;
 		
 		switch(eSelectionType)
 		{
@@ -235,18 +250,24 @@ extends AGLCanvasStorageBasedView
 		
 		for(Integer iCurrentColumn : selectedSet)
 		{	
-			
-			if(bRenderStorageHorizontally)
-			{
-				fHeight = alStorageSelection.size() * renderStyle.getFieldHeight();
-				fXPosition = alContentSelection.indexOf(iCurrentColumn) * renderStyle.getFieldWidth();
+			//int iColumnIndex = 0;
+			// TODO
+			int iColumnIndex = alContentSelection.indexOf(iCurrentColumn);
+			Vec2f vecFieldWidthAndHeight = renderStyle.getFieldWidthAndHeight(iColumnIndex);
+// TODO: render vertically
+			//			if(bRenderStorageHorizontally)
+//			{
 				
-			}
+				fHeight = alStorageSelection.size() * vecFieldWidthAndHeight.y();
+				fXPosition = renderStyle.getXDistanceAt(iColumnIndex);
+				fYPosition = renderStyle.getYCenter() - vecFieldWidthAndHeight.y() * alStorageSelection.size() / 2;
+				
+//			}
 			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(fXPosition, fYPosition, HeatMapRenderStyle.SELECTION_Z);
-			gl.glVertex3f(fXPosition + renderStyle.getFieldWidth(), fYPosition, 
+			gl.glVertex3f(fXPosition + vecFieldWidthAndHeight.x(), fYPosition, 
 					HeatMapRenderStyle.SELECTION_Z);
-			gl.glVertex3f(fXPosition + renderStyle.getFieldWidth(), 
+			gl.glVertex3f(fXPosition + vecFieldWidthAndHeight.x(), 
 					fYPosition + fHeight, 
 					HeatMapRenderStyle.SELECTION_Z);
 			gl.glVertex3f(fXPosition, 
@@ -285,11 +306,12 @@ extends AGLCanvasStorageBasedView
 			elementRep = new SelectedElementRep(iUniqueId, 0, 0, 0);
 		}
 		else
-		{			
-			float fXValue = alContentSelection.indexOf(iStorageIndex) 
-				* renderStyle.getFieldWidth() + renderStyle.getFieldWidth() / 2;// + renderStyle.getXSpacing();
+		{	
+			int iContentIndex = alContentSelection.indexOf(iStorageIndex);
+			Vec2f vecFieldWithAndHeight = renderStyle.getFieldWidthAndHeight(iContentIndex);
+			float fXValue = renderStyle.getXDistanceAt(iContentIndex) + vecFieldWithAndHeight.x() / 2;// + renderStyle.getXSpacing();
 		
-			float fYValue = renderStyle.getBottomSpacing() + renderStyle.getFieldHeight() * alStorageSelection.size();
+			float fYValue = renderStyle.getYCenter() + vecFieldWithAndHeight.y() * alStorageSelection.size() / 2;
 			
 			elementRep = new SelectedElementRep(iUniqueId, fXValue, fYValue, 0);
 //			ArrayList<Vec3f> alPoints = new ArrayList<Vec3f>();
