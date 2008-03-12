@@ -27,7 +27,7 @@ extends GeneralRenderStyle
 	private float fNormalFieldWidth = 0.05f;
 	private float fNormalFieldHeight = 0.4f;
 	
-	private int iLevels = 8;
+	private int iLevels = 3;
 	private int iNotSelectedLevel = 1000;
 	
 	private ArrayList<Float> fAlFieldWidths;
@@ -168,6 +168,11 @@ extends GeneralRenderStyle
 	{
 		// TODO: this is only correct for 4 rows
 		return (fFrustumHeight / 2);
+	}
+	
+	public float getXCenter()
+	{
+		return (fFrustumWidth / 2);
 	}
 	
 //	public float getXSpacing()

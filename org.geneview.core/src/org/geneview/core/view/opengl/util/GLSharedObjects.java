@@ -1,5 +1,7 @@
 package org.geneview.core.view.opengl.util;
 
+import gleem.linalg.Vec3f;
+
 import javax.media.opengl.GL;
 
 import org.geneview.core.data.view.camera.IViewFrustum;
@@ -16,16 +18,16 @@ public class GLSharedObjects {
 	
 	public static void drawAxis(final GL gl) {
 		
-		gl.glLineWidth(4);
+		gl.glLineWidth(3);
 	    gl.glBegin(GL.GL_LINES);
 	    gl.glColor4f(1, 0, 0, 1);
-	    gl.glVertex3f(0,  0,  0);
+	    gl.glVertex3f(-10,  0,  0);
 	    gl.glVertex3f(10,  0,  0);
 	    gl.glColor4f(0, 1, 0, 1);
-	    gl.glVertex3f( 0,  0,  0);
+	    gl.glVertex3f( 0,  -10,  0);
 	    gl.glVertex3f( 0, 10,  0);
 	    gl.glColor4f(0, 0, 1, 1);
-	    gl.glVertex3f( 0,  0,  0);
+	    gl.glVertex3f( 0,  0,  -10);
 	    gl.glVertex3f( 0,  0, 10);
 	    gl.glEnd();
 	}
@@ -40,5 +42,17 @@ public class GLSharedObjects {
 		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(), 0);
 		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
 		gl.glEnd();
+	}
+	
+	public static void drawPointAt(final GL gl, final Vec3f vecPoint)
+	{
+		gl.glColor4f(1, 0, 0, 1);
+		gl.glLineWidth(3);
+	    gl.glBegin(GL.GL_LINES);	    
+	    gl.glVertex3f(vecPoint.x() -10,  vecPoint.y(),  0);
+	    gl.glVertex3f(vecPoint.x() + 10,  vecPoint.y(),  0);
+	    gl.glVertex3f(vecPoint.x(), vecPoint.y() - 10,  0);
+	    gl.glVertex3f(vecPoint.x(), vecPoint.y() + 10,  0);
+	    gl.glEnd();
 	}
 }

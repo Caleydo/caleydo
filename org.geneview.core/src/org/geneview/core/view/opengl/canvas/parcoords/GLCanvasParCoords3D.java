@@ -3,7 +3,6 @@ package org.geneview.core.view.opengl.canvas.parcoords;
 
 import gleem.linalg.Vec3f;
 
-import java.awt.Font;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.text.DecimalFormat;
@@ -14,24 +13,17 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
-import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.data.collection.set.selection.ISetSelection;
-import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.geneview.core.data.view.rep.selection.SelectedElementRep;
 import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.event.mediator.IMediatorReceiver;
-import org.geneview.core.manager.event.mediator.IMediatorSender;
 import org.geneview.core.manager.view.EPickingMode;
 import org.geneview.core.manager.view.EPickingType;
 import org.geneview.core.manager.view.ESelectionMode;
 import org.geneview.core.manager.view.Pick;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasStorageBasedView;
-import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.util.EIconTextures;
 import org.geneview.core.view.opengl.util.GLCoordinateUtils;
 import org.geneview.core.view.opengl.util.GLIconTextureManager;
@@ -39,7 +31,6 @@ import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 import org.geneview.core.view.opengl.util.selection.EViewInternalSelectionType;
 import org.geneview.core.view.opengl.util.selection.GenericSelectionManager;
 
-import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -65,6 +56,8 @@ extends AGLCanvasStorageBasedView
 
 	// flag whether to take measures against occlusion or not
 	private boolean bPreventOcclusion = true;	
+	// flag whether one array should be a polyline or an axis
+	//protected boolean bRenderHorizontally = false;
 	
 	// Specify the current input data type for the axis and polylines
 	// Is used for meta information, such as captions
@@ -83,13 +76,7 @@ extends AGLCanvasStorageBasedView
 	private float fXTranslation = 0;
 	private float fYTranslation = 0;
 	
-	private ParCoordsRenderStyle renderStyle;
-	
-
-	
-	private TextRenderer textRenderer;	
-	
-	//protected HashMap <ESelectionType, ISetSelection> hashSetSelection;
+	private ParCoordsRenderStyle renderStyle;	
 	
 	private boolean bRenderInfoArea = false;
 	private boolean bInfoAreaFirstTime = false;
@@ -132,8 +119,7 @@ extends AGLCanvasStorageBasedView
 		verticalSelectionManager = new GenericSelectionManager(
 				alSelectionType, EViewInternalSelectionType.NORMAL);
 		
-		textRenderer = new TextRenderer(new Font("Arial",
-				Font.BOLD, 16), false);
+		
 		
 		decimalFormat = new DecimalFormat("#####.##");
 		
@@ -186,7 +172,11 @@ extends AGLCanvasStorageBasedView
 		// initialize selection to an empty array with 
 //		s
 		initData();
-		initLists();
+		
+		fXTranslation = renderStyle.getXSpacing();
+		fYTranslation = renderStyle.getBottomSpacing();
+	
+		
 	}
 	
 	/*
@@ -280,6 +270,7 @@ extends AGLCanvasStorageBasedView
 		eAxisDataType = ePolylineDataType;
 		ePolylineDataType = eTempType;
 		initLists();
+		
 	}
 	
 	/**
@@ -343,8 +334,7 @@ extends AGLCanvasStorageBasedView
 	 * Initializes the array lists that contain the data. 
 	 * Must be run at program start, 
 	 * every time you exchange axis and polylines and
-	 * every time you change storages or selections
-	 * TODO: remove this from here and write a initGate for gates
+	 * every time you change storages or selections	 * 
 	 */
 	protected void initLists()
 	{						
@@ -371,15 +361,7 @@ extends AGLCanvasStorageBasedView
 			iNumberOfAxis = alStorageSelection.size();
 		}
 		
-		fArGateTipHeight = new float[iNumberOfAxis];
-		fArGateBottomHeight = new float[iNumberOfAxis];
-		
-		for(int iCount = 0; iCount < fArGateTipHeight.length; iCount++)
-		{
-			fArGateTipHeight[iCount] = 0;
-			fArGateBottomHeight[iCount] = renderStyle.getGateYOffset() - 
-				renderStyle.getGateTipHeight();
-		}
+
 			
 		// this for loop executes once per polyline
 		for (int iPolyLineCount = 0; iPolyLineCount < iNumberOfPolyLinesToRender; iPolyLineCount++)
@@ -397,25 +379,24 @@ extends AGLCanvasStorageBasedView
 				verticalSelectionManager.initialAdd(alContentSelection.get(iAxisCount));
 			else
 				verticalSelectionManager.initialAdd(alStorageSelection.get(iAxisCount));
-		}
-		
-		//fScaling = 1f;
-		
-		System.out.println("Frustum height: " + (viewFrustum.getTop() - viewFrustum.getBottom()));
-		System.out.println("Frustum right: " + (viewFrustum.getRight()));
-		System.out.println("Frustum left: " + (viewFrustum.getLeft()));
-		
-//		fXTranslation = viewFrustum.getLeft() + renderStyle.getXSpacing();
-//		fYTranslation = viewFrustum.getBottom() + renderStyle.getBottomSpacing();
-//		
-		fXTranslation = renderStyle.getXSpacing();
-		fYTranslation = renderStyle.getBottomSpacing();
-	
+		}		
 		fAxisSpacing = renderStyle.getAxisSpacing(iNumberOfAxis);
 		
+		initGates();
 	}
 	
-
+	private void initGates()
+	{
+		fArGateTipHeight = new float[iNumberOfAxis];
+		fArGateBottomHeight = new float[iNumberOfAxis];
+		
+		for(int iCount = 0; iCount < fArGateTipHeight.length; iCount++)
+		{
+			fArGateTipHeight[iCount] = 0;
+			fArGateBottomHeight[iCount] = renderStyle.getGateYOffset() - 
+				renderStyle.getGateTipHeight();
+		}
+	}
 	
 	private void buildPolyLineDisplayList(final GL gl, int iGLDisplayListIndex)
 	{		
@@ -1015,67 +996,36 @@ extends AGLCanvasStorageBasedView
 		
 		switch (ePickingType)
 		{
-		case POLYLINE_SELECTION:
+		case POLYLINE_SELECTION:		
 			switch (ePickingMode)
-			{						
-				case CLICKED:				
-					Set<Integer> selectedSet = horizontalSelectionManager.getElements(EViewInternalSelectionType.SELECTION);
-					ArrayList<Integer> iAlOldSelection = new ArrayList<Integer>();
-					for(Integer iCurrent : selectedSet)
-					{
-						iAlOldSelection.add(iCurrent);
-					}
+			{				
+			
+				case CLICKED:	
 					
-					
+					ArrayList<Integer> iAlOldSelection = 
+						prepareSelection(horizontalSelectionManager, EViewInternalSelectionType.SELECTION);					
+									
 					horizontalSelectionManager.clearSelection(EViewInternalSelectionType.SELECTION);							
 					horizontalSelectionManager.addToType(EViewInternalSelectionType.SELECTION, 
 							iExternalID);
 					
 					if (ePolylineDataType == EInputDataType.GENE)
 					{
+						propagateGeneSelection(iExternalID, iAlOldSelection);
 						
-						int iAccessionID = getAccesionIDFromStorageIndex(iExternalID);								
-						System.out.println("Accession ID: " + iAccessionID);
-						//generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
-						//	.setData(iAccessionID, ePolylineDataType, pick.getPickedPoint());
-						bRenderInfoArea = true;
-						bInfoAreaFirstTime = true;								
-						
-						// Write currently selected vertex to selection set
-						// and trigger update event
-						ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>(2);
-						//iAlTmpSelectionId.add(1);
-						ArrayList<Integer> iAlTmpGroup = new ArrayList<Integer>(2);
-						
-						if (iAccessionID != -1)
-						{						
-							
-							iAlTmpSelectionId.add(iAccessionID);
-							iAlTmpGroup.add(2);
-							extSelectionManager.modifySelection(iAccessionID, 
-									createElementRep(iExternalID), ESelectionMode.ReplacePick);
-						}							
-							
-						for(Integer iCurrent : iAlOldSelection)
-						{
-							iAccessionID = getAccesionIDFromStorageIndex(iCurrent);
-							if(iAccessionID != -1)
-							{
-								iAlTmpSelectionId.add(iAccessionID);
-								iAlTmpGroup.add(0);
-							}
-						}
-
-						alSetSelection.get(1).getWriteToken();
-						alSetSelection.get(1).updateSelectionSet(iUniqueId, 
-								iAlTmpSelectionId, iAlTmpGroup, null);
-						alSetSelection.get(1).returnWriteToken();	
 					}
 					bIsDisplayListDirtyLocal = true;
 					bIsDisplayListDirtyRemote = true;
 					break;	
 				case MOUSE_OVER:
-
+					if (ePolylineDataType == EInputDataType.GENE)
+					{
+						//propagateGeneSelection(iExternalID, iAlOldSelection);
+						generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
+							.setData(iUniqueId, getAccesionIDFromStorageIndex(iExternalID), EInputDataType.GENE, getInfo());
+					
+					}
+						
 					horizontalSelectionManager.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
 					horizontalSelectionManager.addToType(EViewInternalSelectionType.MOUSE_OVER, iExternalID);
 					bIsDisplayListDirtyLocal = true;
@@ -1094,10 +1044,20 @@ extends AGLCanvasStorageBasedView
 			switch (ePickingMode)
 			{
 			case CLICKED:
+				ArrayList<Integer> iAlOldSelection = 
+					prepareSelection(verticalSelectionManager, EViewInternalSelectionType.SELECTION);					
+			
+				
 				verticalSelectionManager.clearSelection(
 						EViewInternalSelectionType.SELECTION);
 				verticalSelectionManager.addToType(
 						EViewInternalSelectionType.SELECTION, iExternalID);
+				
+				if(eAxisDataType == EInputDataType.GENE)
+				{
+					propagateGeneSelection(iExternalID, iAlOldSelection);
+				}
+				
 				bIsDisplayListDirtyLocal = true;
 				bIsDisplayListDirtyRemote = true;
 				break;
@@ -1106,6 +1066,13 @@ extends AGLCanvasStorageBasedView
 						EViewInternalSelectionType.MOUSE_OVER);
 				verticalSelectionManager.addToType(
 						EViewInternalSelectionType.MOUSE_OVER, iExternalID);
+				
+				if(eAxisDataType == EInputDataType.GENE)
+				{
+					generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
+						.setData(iUniqueId, getAccesionIDFromStorageIndex(iExternalID), EInputDataType.GENE, getInfo());
+				}
+				
 				bIsDisplayListDirtyLocal = true;
 				bIsDisplayListDirtyRemote = true;
 				break;
@@ -1283,6 +1250,8 @@ extends AGLCanvasStorageBasedView
 		}
 	}
 	
+
+	
 	
 	protected SelectedElementRep createElementRep(int iStorageIndex)
 	{
@@ -1330,7 +1299,15 @@ extends AGLCanvasStorageBasedView
 	public ArrayList<String> getInfo() {
 		
 		ArrayList<String> sAlInfo = new ArrayList<String>();
-		sAlInfo.add("No info available!");
+		sAlInfo.add("Type: Parallel Coordinates");
+		if(!bRenderStorageHorizontally)
+		{
+			sAlInfo.add("Showing genes as " + alContentSelection.size() +" polylines and experiments as " + iNumberOfAxis + " axis.");			
+		}
+		else
+		{
+			sAlInfo.add("Showing experiments as " + alStorageSelection.size() +" polylines and genes as " + iNumberOfAxis + " axis.");			
+		}
 		return sAlInfo;
 	}
 }

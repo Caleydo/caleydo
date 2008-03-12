@@ -1,8 +1,10 @@
 package org.geneview.core.view.opengl.canvas;
 
+import java.awt.Font;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Iterator;
+import java.util.Set;
 
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.IStorage;
@@ -18,9 +20,12 @@ import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
 import org.geneview.core.manager.view.ESelectionMode;
 import org.geneview.core.manager.view.SelectionManager;
+import org.geneview.core.view.opengl.canvas.parcoords.EInputDataType;
 import org.geneview.core.view.opengl.canvas.parcoords.ESelectionType;
 import org.geneview.core.view.opengl.util.selection.EViewInternalSelectionType;
 import org.geneview.core.view.opengl.util.selection.GenericSelectionManager;
+
+import com.sun.opengl.util.j2d.TextRenderer;
 
 
 public abstract class AGLCanvasStorageBasedView 
@@ -64,6 +69,10 @@ implements IMediatorReceiver, IMediatorSender
 	// flag whether the whole data or the selection should be rendered
 	protected boolean bRenderSelection = true;
 	
+	protected TextRenderer textRenderer;	
+	
+	
+	
 	public AGLCanvasStorageBasedView(final IGeneralManager generalManager,
 			final int iViewId,
 			final int iGLCanvasID,
@@ -80,6 +89,9 @@ implements IMediatorReceiver, IMediatorSender
 		
 		extSelectionManager = generalManager.
 		getSingelton().getViewGLCanvasManager().getSelectionManager();
+		
+		textRenderer = new TextRenderer(new Font("Arial",
+				Font.BOLD, 16), false);
 		
 	}
 	
@@ -120,7 +132,7 @@ implements IMediatorReceiver, IMediatorSender
 		mapSelections.put(ESelectionType.EXTERNAL_SELECTION, alTempList);
 
 		//int iStorageLength = alDataStorages.get(0).getArrayFloat().length;
-		int iStorageLength = 1000;
+		int iStorageLength = 100;
 		alTempList = new ArrayList<Integer>(iStorageLength);
 		// initialize full list
 		for(int iCount = 0; iCount < iStorageLength; iCount++)
@@ -138,63 +150,10 @@ implements IMediatorReceiver, IMediatorSender
 		}
 		
 		mapSelections.put(ESelectionType.STORAGE_SELECTION, alTempList);
+		initLists();
 	}
 	
-	protected void initLists()
-	{		
-		int iNumberOfColumns;
-		
-		horizontalSelectionManager.resetSelectionManager();
-		
-		int iNumberOfEntriesToRender = 0;		
-
-		alContentSelection = mapSelections.get(eWhichContentSelection);
-		alStorageSelection = mapSelections.get(eWhichStorageSelection);
-		iNumberOfEntriesToRender = alContentSelection.size();
 	
-		int iNumberOfRowsToRender = 0;		
-		
-		// if true one array corresponds to one polyline, number of arrays is number of polylines
-		if (bRenderStorageHorizontally)
-		{			
-			iNumberOfRowsToRender = alStorageSelection.size();
-			iNumberOfColumns = iNumberOfEntriesToRender;			
-		}
-		// render polylines across storages - first element of storage 1 to n makes up polyline
-		else
-		{						
-			iNumberOfRowsToRender = iNumberOfEntriesToRender;
-			iNumberOfColumns = alStorageSelection.size();
-		}		
-				
-			
-		// this for loop executes once per polyline
-		for (int iRowCount = 0; iRowCount < iNumberOfRowsToRender; iRowCount++)
-		{	
-			if(bRenderStorageHorizontally)
-				horizontalSelectionManager.initialAdd(alStorageSelection.get(iRowCount));
-			else
-				horizontalSelectionManager.initialAdd(alContentSelection.get(iRowCount));
-		}
-		
-		// this for loop executes one per axis
-		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++)
-		{
-			if(bRenderStorageHorizontally)
-				verticalSelectionManager.initialAdd(alContentSelection.get(iColumnCount));
-			else
-				verticalSelectionManager.initialAdd(alStorageSelection.get(iColumnCount));
-		}		
-		
-//		fXTranslation = viewFrustum.getLeft() + renderStyle.getXSpacing();
-//		fYTranslation = viewFrustum.getBottom() + renderStyle.getBottomSpacing();
-//		
-//		fXTranslation = renderStyle.getXSpacing();
-//		fYTranslation = renderStyle.getBottomSpacing();
-//	
-//		fAxisSpacing = renderStyle.getAxisSpacing(iNumberOfAxis);
-		
-	}
 	
 	protected ArrayList<Integer> convertAccessionToExpressionIndices(ArrayList<Integer> iAlSelection)
 	{
@@ -245,11 +204,11 @@ implements IMediatorReceiver, IMediatorSender
 		alSetSelection.get(0).mergeSelection(iAlSelection, iAlGroup, iAlOptional);
 		
 		initData();
-		initLists();
 	}
 	
 	protected abstract SelectedElementRep createElementRep(int iStorageIndex);
 	
+	protected abstract void initLists();
 	
 	protected int getAccesionIDFromStorageIndex(int index)
 	{
@@ -300,8 +259,8 @@ implements IMediatorReceiver, IMediatorSender
 		
 		for(int iSelectionCount = 0; iSelectionCount < iAlSelectionStorageIndices.size();  iSelectionCount++)
 		{
-			// TODO: set this to 1 resp. later to a enum as soon as I get real data
-			if(iAlGroup.get(iSelectionCount) == 1)
+			// TODO: same for click and mouse over atm
+			if(iAlGroup.get(iSelectionCount) == 1 || iAlGroup.get(iSelectionCount) == 2)
 			{
 				iSelectedAccessionID = iAlSelection.get(iSelectionCount);
 				iSelectedStorageIndex = iAlSelectionStorageIndices.get(iSelectionCount);
@@ -348,6 +307,65 @@ implements IMediatorReceiver, IMediatorSender
 						+ ": updateReceiver(Object eventTrigger): Update called by "
 						+ eventTrigger.getClass().getSimpleName(),
 				LoggerType.VERBOSE);
+	}
+	
+	
+	protected void propagateGeneSelection(int iExternalID, ArrayList<Integer> iAlOldSelection)
+	{
+		int iAccessionID = getAccesionIDFromStorageIndex(iExternalID);	
+		
+		generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
+		.setData(iUniqueId, iAccessionID, EInputDataType.GENE, getInfo());					
+
+		//System.out.println("Accession ID: " + iAccessionID);
+		//generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
+		//	.setData(iAccessionID, ePolylineDataType, pick.getPickedPoint());
+//		bRenderInfoArea = true;
+//		bInfoAreaFirstTime = true;								
+		
+		// Write currently selected vertex to selection set
+		// and trigger update event
+		ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>(2);
+		//iAlTmpSelectionId.add(1);
+		ArrayList<Integer> iAlTmpGroup = new ArrayList<Integer>(2);
+		
+		if (iAccessionID != -1)
+		{						
+			
+			iAlTmpSelectionId.add(iAccessionID);
+			iAlTmpGroup.add(2);
+			extSelectionManager.modifySelection(iAccessionID, 
+					createElementRep(iExternalID), ESelectionMode.ReplacePick);
+		}							
+			
+		for(Integer iCurrent : iAlOldSelection)
+		{
+			iAccessionID = getAccesionIDFromStorageIndex(iCurrent);
+			if(iAccessionID != -1)
+			{
+				iAlTmpSelectionId.add(iAccessionID);
+				iAlTmpGroup.add(0);
+			}
+		}
+
+		alSetSelection.get(1).getWriteToken();
+		alSetSelection.get(1).updateSelectionSet(iUniqueId, 
+				iAlTmpSelectionId, iAlTmpGroup, null);
+		alSetSelection.get(1).returnWriteToken();
+	}
+	
+	protected ArrayList<Integer> prepareSelection(GenericSelectionManager selectionManager, 
+			EViewInternalSelectionType selectionType)
+	{
+		Set<Integer> selectedSet;
+		ArrayList<Integer> iAlOldSelection;
+		selectedSet = selectionManager.getElements(selectionType);
+		iAlOldSelection = new ArrayList<Integer>();
+		for(Integer iCurrent : selectedSet)
+		{
+			iAlOldSelection.add(iCurrent);
+		}
+		return iAlOldSelection;
 	}
 
 }
