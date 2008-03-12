@@ -25,6 +25,7 @@ import org.geneview.core.util.system.SystemTime;
 import org.geneview.core.util.system.Time;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 
 /**
@@ -37,7 +38,8 @@ import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
  */
 public class GLCanvasOverallJukebox3D
 extends AGLCanvasUser
-implements IMediatorReceiver, IMediatorSender {
+implements IMediatorReceiver, IMediatorSender 
+{
 	
 	private static final int MAX_LOADED_VIEWS = 10;
 	private static final float SCALING_FACTOR_UNDER_INTERACTION_LAYER = 0.5f;
@@ -75,7 +77,8 @@ implements IMediatorReceiver, IMediatorSender {
 			final int iViewId,
 			final int iGLCanvasID,
 			final String sLabel,
-			final IViewFrustum viewFrustum) {
+			final IViewFrustum viewFrustum)
+	{
 
 		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
 		
@@ -140,7 +143,8 @@ implements IMediatorReceiver, IMediatorSender {
 	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media.opengl.GL)
 	 */	
-	public void initLocal(final GL gl) {
+	public void initLocal(final GL gl) 
+	{
 	
 		init(gl);
 	}
@@ -163,7 +167,8 @@ implements IMediatorReceiver, IMediatorSender {
 	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl.GL)
 	 */
-	public void init(final GL gl) {
+	public void init(final GL gl) 
+	{
 		
 	    time = new SystemTime();
 	    ((SystemTime) time).rebase();
@@ -178,7 +183,8 @@ implements IMediatorReceiver, IMediatorSender {
 	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#displayLocal(javax.media.opengl.GL)
 	 */
-	public void displayLocal(final GL gl) {
+	public void displayLocal(final GL gl) 
+	{
 		
 		pickingManager.handlePicking(iUniqueId, gl, true);
 //		if(bIsDisplayListDirtyLocal)
@@ -195,7 +201,8 @@ implements IMediatorReceiver, IMediatorSender {
 	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#displayRemote(javax.media.opengl.GL)
 	 */
-	public void displayRemote(final GL gl) {
+	public void displayRemote(final GL gl) 
+	{
 	
 //		if(bIsDisplayListDirtyRemote)
 //		{
@@ -210,7 +217,8 @@ implements IMediatorReceiver, IMediatorSender {
 	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#display(javax.media.opengl.GL)
 	 */
-	public void display(final GL gl) {
+	public void display(final GL gl) 
+	{
 		
 		checkForHits();
 		
@@ -245,7 +253,8 @@ implements IMediatorReceiver, IMediatorSender {
 		bucketMouseWheelListener.render();
 	}
 
-	private void retrieveContainedViews(final GL gl) {
+	private void retrieveContainedViews(final GL gl) 
+	{
 		
 		Iterator<GLEventListener> iterGLEventListener = 
 			generalManager.getSingelton().getViewGLCanvasManager()
@@ -289,7 +298,8 @@ implements IMediatorReceiver, IMediatorSender {
 		}
 	}
 	
-	private void buildStackLayer(final GL gl) {
+	private void buildStackLayer(final GL gl) 
+	{
 		
 		float fTiltAngleDegree = 90; // degree
 		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
@@ -331,7 +341,8 @@ implements IMediatorReceiver, IMediatorSender {
 		stackLayer.setTransformByPositionIndex(3, transform);
 	}
 	
-	private void buildPoolLayer(final GL gl) {
+	private void buildPoolLayer(final GL gl) 
+	{
 		
 		for (int iViewIndex = 0; iViewIndex < poolLayer.getCapacity(); iViewIndex++)
 		{		
@@ -341,12 +352,13 @@ implements IMediatorReceiver, IMediatorSender {
 			transform.setScale(new Vec3f(SCALING_FACTOR_POOL_LAYER,
 					SCALING_FACTOR_POOL_LAYER,
 					SCALING_FACTOR_POOL_LAYER));		
-			poolLayer.setTransformByPositionIndex(iViewIndex, transform);		}
+			poolLayer.setTransformByPositionIndex(iViewIndex, transform);		
+		}
 	}
 
 		
-	private void renderBucketWall(final GL gl) {
-		
+	private void renderBucketWall(final GL gl) 
+	{	
 		gl.glColor4f(0.4f, 0.4f, 0.4f, 0.8f);
 		gl.glLineWidth(4);
 		
@@ -368,7 +380,8 @@ implements IMediatorReceiver, IMediatorSender {
 	}
 	
 	private void renderLayer(final GL gl, 
-			final JukeboxHierarchyLayer layer) {
+			final JukeboxHierarchyLayer layer) 
+	{
 
 		Iterator<Integer> iterElementList = layer.getElementList().iterator();
 		int iViewId = 0;
@@ -389,11 +402,15 @@ implements IMediatorReceiver, IMediatorSender {
 		
 	private void renderViewById(final GL gl,
 			final int iViewId, 
-			final JukeboxHierarchyLayer layer) {
+			final JukeboxHierarchyLayer layer) 
+	{
 		
 		// Check if view is visible
 		if(!layer.getElementVisibilityById(iViewId))
 			return;
+		
+		AGLCanvasUser tmpCanvasUser = ((AGLCanvasUser) generalManager.getSingelton()
+				.getViewGLCanvasManager().getItem(iViewId));
 		
 		gl.glPushMatrix();
 		
@@ -404,10 +421,19 @@ implements IMediatorReceiver, IMediatorSender {
 		Vec3f axis = new Vec3f();
 		float fAngle = rot.get(axis);
 		
+//		if (layer.equals(stackLayer) && tmpCanvasUser instanceof GLCanvasHeatMap
+//				&& (layer.getPositionIndexByElementId(iViewId) == 1 
+//						|| layer.getPositionIndexByElementId(iViewId) == 3))
+//		{
+//			gl.glTranslatef(0, (tmpCanvasUser.getViewFrustum().getRight() - 
+//					tmpCanvasUser.getViewFrustum().getLeft()) / 2, 0);
+//			gl.glRotatef(90,1,0,0);
+//		}
+		
 		gl.glTranslatef(translation.x(), translation.y(), translation.z());
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z() );
-
+		
 //		GLSharedObjects.drawAxis(gl);
 
 		if (!layer.equals(transitionLayer) && !layer.equals(poolLayer))
@@ -428,13 +454,96 @@ implements IMediatorReceiver, IMediatorSender {
 			gl.glEnd();
 		}
 		
-		((AGLCanvasUser) generalManager.getSingelton()
-				.getViewGLCanvasManager().getItem(iViewId)).displayRemote(gl);
+		tmpCanvasUser.displayRemote(gl);
+		
+//		if (!layer.equals(transitionLayer) && !layer.equals(poolLayer))
+//		{
+//			renderNavigationOverlay(gl);
+//		}
 		
 		gl.glPopMatrix();	
 	}
 	
-	private void doSlerpActions(final GL gl) {
+	private void renderNavigationOverlay(final GL gl)
+	{
+		gl.glColor4f(1, 1, 1, 1);
+		gl.glLineWidth(4);
+		
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(2.66f, 2.66f, 0.01f);
+		gl.glVertex3f(2.66f, 5.33f, 0.01f);
+		gl.glVertex3f(5.33f, 5.33f, 0.01f);
+		gl.glVertex3f(5.33f, 2.66f, 0.01f);
+		gl.glEnd();
+		
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(0, 0, 0.01f);
+		gl.glVertex3f(2.66f, 2.66f, 0.01f);
+		gl.glVertex3f(5.33f, 2.66f, 0.01f);
+		gl.glVertex3f(8, 0, 0.01f);
+		gl.glEnd();
+		
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(8, 0, 0.01f);
+		gl.glVertex3f(5.33f, 2.66f, 0.01f);
+		gl.glVertex3f(5.33f, 5.33f, 0.01f);
+		gl.glVertex3f(8, 8, 0.01f);
+		gl.glEnd();
+
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(0, 8, 0.01f);
+		gl.glVertex3f(8, 8, 0.01f);
+		gl.glVertex3f(5.33f, 5.33f, 0.01f);
+		gl.glVertex3f(2.66f, 5.33f, 0.01f);
+		gl.glEnd();
+		
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(0, 0, 0.01f);
+		gl.glVertex3f(0, 8, 0.01f);
+		gl.glVertex3f(2.66f, 5.33f, 0.01f);
+		gl.glVertex3f(2.66f, 2.66f, 0.01f);
+		gl.glEnd();
+
+		gl.glColor4f(0.9f, 0.9f, 0.9f, 0.5f);
+		
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(2.66f, 2.66f, 0.01f);
+		gl.glVertex3f(2.66f, 5.33f, 0.01f);
+		gl.glVertex3f(5.33f, 5.33f, 0.01f);
+		gl.glVertex3f(5.33f, 2.66f, 0.01f);
+		gl.glEnd();
+		
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(0, 0, 0.02f);
+		gl.glVertex3f(2.66f, 2.66f, 0.02f);
+		gl.glVertex3f(5.33f, 2.66f, 0.02f);
+		gl.glVertex3f(8, 0, 0.02f);
+		gl.glEnd();
+		
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(8, 0, 0.02f);
+		gl.glVertex3f(5.33f, 2.66f, 0.02f);
+		gl.glVertex3f(5.33f, 5.33f, 0.02f);
+		gl.glVertex3f(8, 8, 0.02f);
+		gl.glEnd();
+
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(0, 8, 0.02f);
+		gl.glVertex3f(8, 8, 0.02f);
+		gl.glVertex3f(5.33f, 5.33f, 0.02f);
+		gl.glVertex3f(2.66f, 5.33f, 0.02f);
+		gl.glEnd();
+		
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(0, 0, 0.02f);
+		gl.glVertex3f(0, 8, 0.02f);
+		gl.glVertex3f(2.66f, 5.33f, 0.02f);
+		gl.glVertex3f(2.66f, 2.66f, 0.02f);
+		gl.glEnd();
+	}
+	
+	private void doSlerpActions(final GL gl) 
+	{
 
 		if (arSlerpActions.isEmpty())
 			return;
@@ -467,7 +576,8 @@ implements IMediatorReceiver, IMediatorSender {
 		slerpView(gl, tmpSlerpAction);
 	}
 	
-	private void slerpView(final GL gl, SlerpAction slerpAction) {
+	private void slerpView(final GL gl, SlerpAction slerpAction) 
+	{
 
 		int iViewId = slerpAction.getElementId();
 		SlerpMod slerpMod = new SlerpMod();
@@ -677,7 +787,8 @@ implements IMediatorReceiver, IMediatorSender {
 		pickingManager.flushHits(iUniqueId, EPickingType.VIEW_SELECTION);
 	}
 	
-	private void loadViewToUnderInteractionLayer(final int iViewID) {
+	private void loadViewToUnderInteractionLayer(final int iViewID) 
+	{
 
 		generalManager
 				.getSingelton()
@@ -801,14 +912,16 @@ implements IMediatorReceiver, IMediatorSender {
 	}
 
 	@Override
-	public void updateReceiver(Object eventTrigger) {
+	public void updateReceiver(Object eventTrigger) 
+	{
 
 		// TODO Auto-generated method stub
 		
 	}
 
 	@Override
-	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
+	public void updateReceiver(Object eventTrigger, ISet updatedSet) 
+	{
 
 		// TODO Auto-generated method stub
 		
@@ -830,7 +943,8 @@ implements IMediatorReceiver, IMediatorSender {
 	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#getInfo()
 	 */
-	public ArrayList<String> getInfo() {
+	public ArrayList<String> getInfo()
+	{
 		
 		ArrayList<String> sAlInfo = new ArrayList<String>();
 		sAlInfo.add("No info available!");

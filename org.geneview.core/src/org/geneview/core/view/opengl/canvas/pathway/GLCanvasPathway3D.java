@@ -5,8 +5,6 @@ import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
-import java.util.Random;
 
 import javax.media.opengl.GL;
 
@@ -62,8 +60,6 @@ implements IMediatorReceiver, IMediatorSender {
 	private boolean bIsDisplayListDirtyRemote = true;
 	
 	private boolean bEnablePathwayTexture = true;
-	private boolean bSelectionChanged = false;
-	private boolean bUpdateReceived = false;
 
 	private IPathwayManager pathwayManager;
 	
@@ -671,14 +667,37 @@ implements IMediatorReceiver, IMediatorSender {
 				.setData(iUniqueId, iAccessionID, EInputDataType.GENE, getInfo());
 			
 			selectionManager.clear();
-
-			int iPathwayHeight = ((PathwayGraph)generalManager.getSingelton().getPathwayManager().getItem(iPathwayID)).getHeight();
 			
-			selectionManager.modifySelection(iAccessionID, new SelectedElementRep(this.getId(), 
-					(tmpVertexGraphItemRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X) * vecScaling.x()  + vecTranslation.x(),
-					((iPathwayHeight - tmpVertexGraphItemRep.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y) * vecScaling.y() + vecTranslation.y(), 0), 
-					ESelectionMode.AddPick);
-
+			Iterator<IGraphItem> iterPathwayVertexGraphItemRep = 
+				tmpVertexGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
+			
+			PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep = null;
+			while (iterPathwayVertexGraphItemRep.hasNext())
+			{
+				tmpPathwayVertexGraphItemRep = 
+					((PathwayVertexGraphItemRep)iterPathwayVertexGraphItemRep.next());
+				
+				// Check if vertex is contained in this pathway viewFrustum
+				if (!((PathwayGraph)generalManager.getSingelton().getPathwayManager()
+						.getItem(iPathwayID)).containsItem(tmpPathwayVertexGraphItemRep))
+					continue;
+				
+				int iPathwayHeight = ((PathwayGraph)generalManager.getSingelton().getPathwayManager().getItem(iPathwayID)).getHeight();
+				
+				selectionManager.modifySelection(iAccessionID, new SelectedElementRep(this.getId(), 
+						(tmpPathwayVertexGraphItemRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X) * vecScaling.x()  + vecTranslation.x(),
+						((iPathwayHeight - tmpPathwayVertexGraphItemRep.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y) * vecScaling.y() + vecTranslation.y(), 0), 
+						ESelectionMode.AddPick);
+			}
+			
+//			selectionManager.clear();
+//
+//			
+//			selectionManager.modifySelection(iAccessionID, new SelectedElementRep(this.getId(), 
+//					(tmpVertexGraphItemRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X) * vecScaling.x()  + vecTranslation.x(),
+//					((iPathwayHeight - tmpVertexGraphItemRep.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y) * vecScaling.y() + vecTranslation.y(), 0), 
+//					ESelectionMode.AddPick);
+			
 			// Write currently selected vertex to selection set and trigger update
 			ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>(1);
 			ArrayList<Integer> iAlTmpGroupId = new ArrayList<Integer>(1);
@@ -695,8 +714,7 @@ implements IMediatorReceiver, IMediatorSender {
 			alSetSelection.get(0).returnWriteToken();
 
 			pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
-			break;
-			
+			break;			
 		}
 	}
 	
