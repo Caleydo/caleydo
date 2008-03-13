@@ -11,6 +11,7 @@ import org.geneview.core.view.opengl.util.selection.EViewInternalSelectionType;
 import org.geneview.core.view.opengl.util.selection.GenericSelectionManager;
 
 /**
+ * Heat Map render styles
  * 
  * @author Alexander Lex
  *
@@ -23,9 +24,7 @@ extends GeneralRenderStyle
 	public static final float SELECTION_Z = 0.001f;
 	
 	private float fSelectedFieldWidth = 0.3f;
-	private float fSelectedFieldHeight = 0.6f;
 	private float fNormalFieldWidth = 0.05f;
-	private float fNormalFieldHeight = 0.4f;
 	
 	private int iLevels = 3;
 	private int iNotSelectedLevel = 1000;
@@ -91,8 +90,7 @@ extends GeneralRenderStyle
 							(iCount < 0 && iCount >= iCurrentLevel) || 
 							(iCount >= 0 && iCount <= iCurrentLevel)) 
 						iCurrentLevel = iCount;
-				}
-				
+				}				
 			}
 		}
 		
@@ -100,19 +98,7 @@ extends GeneralRenderStyle
 		Vec2f vecWidthAndHeight = new Vec2f();
 		float fWidth = hashLevelToWidth.get(iCurrentLevel);
 		vecWidthAndHeight.set(fWidth, calcHeightFromWidth(fWidth));
-		
-//		if(verticalSelectionManager.
-//				checkStatus(EViewInternalSelectionType.SELECTION, iStorageIndex) ||
-//				verticalSelectionManager.checkStatus(
-//						EViewInternalSelectionType.MOUSE_OVER, iStorageIndex))
-//		{			
-//			vecWidthAndHeight.set(fSelectedFieldWidth, fSelectedFieldHeight);	
-//		}
-//		else
-//		{
-//			vecWidthAndHeight.set(fNormalFieldWidth, fNormalFieldHeight);
-//		}
-		
+			
 		fAlFieldWidths.add(fWidth);
 		return vecWidthAndHeight;
 	}
@@ -158,11 +144,6 @@ extends GeneralRenderStyle
 		
 		return vecWidthAndHeight;
 	}
-	
-//	public float getFieldHeight(int iIndex)
-//	{
-//		return 0.4f;
-//	}
 	
 	public float getYCenter()
 	{

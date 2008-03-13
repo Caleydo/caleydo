@@ -49,10 +49,12 @@ public class GLSharedObjects {
 		gl.glColor4f(1, 0, 0, 1);
 		gl.glLineWidth(3);
 	    gl.glBegin(GL.GL_LINES);	    
-	    gl.glVertex3f(vecPoint.x() -10,  vecPoint.y(),  0);
-	    gl.glVertex3f(vecPoint.x() + 10,  vecPoint.y(),  0);
-	    gl.glVertex3f(vecPoint.x(), vecPoint.y() - 10,  0);
-	    gl.glVertex3f(vecPoint.x(), vecPoint.y() + 10,  0);
+	    gl.glVertex3f(vecPoint.x() -10,  vecPoint.y(),  vecPoint.z());
+	    gl.glVertex3f(vecPoint.x() + 10,  vecPoint.y(),  vecPoint.z());
+	    gl.glVertex3f(vecPoint.x(), vecPoint.y() - 10,  vecPoint.z());
+	    gl.glVertex3f(vecPoint.x(), vecPoint.y() + 10,  vecPoint.z());
+	    gl.glVertex3f(vecPoint.x(), vecPoint.y(),  vecPoint.z() - 10);
+	    gl.glVertex3f(vecPoint.x(), vecPoint.y(),  vecPoint.z() + 10);
 	    gl.glEnd();
 	}
 }
