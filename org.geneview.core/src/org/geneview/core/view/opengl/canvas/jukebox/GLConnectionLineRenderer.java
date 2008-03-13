@@ -10,13 +10,9 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 
 import org.geneview.core.data.view.rep.renderstyle.ConnectionLineRenderStyle;
-import org.geneview.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.geneview.core.data.view.rep.selection.SelectedElementRep;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.view.SelectionManager;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
-import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 
 /**
@@ -193,33 +189,58 @@ public class GLConnectionLineRenderer {
 		
 		int iNumberOfLines = 0;
 		
-		// condition is true for polylines (planes)
-		if(alSrcPointLists.size() == 1 && alSrcPointLists.get(0).size() > 1)
+		for(ArrayList<Vec3f> alCurrentSrc : alSrcPointLists)
 		{
-			renderPlanes(gl, vecSrcBundlingPoint, alSrcPointLists.get(0));
+			if (alCurrentSrc.size() > 1)
+			{
+				renderPlanes(gl, vecSrcBundlingPoint, alCurrentSrc);
+			}
+			else
+			{
+				renderLine(gl, vecSrcBundlingPoint, alCurrentSrc.get(0), 0);
+				
+			}
 		}
-		else
+		
+		for(ArrayList<Vec3f> alCurrentDest : alDestPointLists)
 		{
-			renderLines(gl, vecSrcBundlingPoint, alSrcPointLists);
-			iNumberOfLines = alSrcPointLists.size();
+			if (alCurrentDest.size() > 1)
+			{
+				renderPlanes(gl, vecDestBundlingPoint, alCurrentDest);
+			}
+			else
+			{
+				renderLine(gl, vecDestBundlingPoint, alCurrentDest.get(0), 0);
+				
+			}
 		}
-		// condition is true for polylines (planes)
-		if(alDestPointLists.size() == 1 && alDestPointLists.get(0).size() > 1)
-		{
-			renderPlanes(gl, vecDestBundlingPoint, alDestPointLists.get(0));
-		}
-		else
-		{
-			renderLines(gl, vecDestBundlingPoint, alDestPointLists);
-			iNumberOfLines = alDestPointLists.size();
-		}
+//		// condition is true for polylines (planes)
+//		if(alSrcPointLists.size() == 1 && alSrcPointLists.get(0).size() > 1)
+//		{
+//			
+//		}
+//		else
+//		{
+//			
+//			
+//		}
+//		// condition is true for polylines (planes)
+//		if(alDestPointLists.size() == 1 && alDestPointLists.get(0).size() > 1)
+//		{
+//			renderPlanes(gl, vecDestBundlingPoint, alDestPointLists.get(0));
+//		}
+//		else
+//		{
+//			renderLines(gl, vecDestBundlingPoint, alDestPointLists);
+//			iNumberOfLines = alDestPointLists.size();
+//		}
 		
 		// TODO: render LineS
 //		renderPlanes(gl, vecSrcBundlingPoint, alSrcPointList);
 //		
 //		renderPlanes(gl, vecDestBundingPoint, alDestPoints);
 		
-		
+		iNumberOfLines = 2;//alSrcPointLists.size();
 		renderLine(gl, vecSrcBundlingPoint, vecDestBundlingPoint, iNumberOfLines);
 		
 
@@ -229,6 +250,17 @@ public class GLConnectionLineRenderer {
 	
 	private void renderPlanes(final GL gl, final Vec3f vecPoint, final ArrayList<Vec3f> alPoints)
 	{
+		
+		gl.glColor4f(1, 1, 1, 1);
+		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 4);
+		gl.glBegin(GL.GL_LINES);		
+		for(Vec3f vecCurrent : alPoints)
+		{
+			gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z() - 0.001f);
+			gl.glVertex3f(vecCurrent.x(), vecCurrent.y(), vecCurrent.z() - 0.001f);
+		}
+		gl.glEnd();
+		
 		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_AREA_LINE_COLOR, 0);
 		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
 		gl.glBegin(GL.GL_LINES);		
@@ -246,7 +278,11 @@ public class GLConnectionLineRenderer {
 		{
 			gl.glVertex3f(vecCurrent.x(), vecCurrent.y(), vecCurrent.z());
 		}
-		gl.glEnd();		
+		gl.glEnd();	
+		
+		
+	
+		
 	}
 	
 	private void renderLines(final GL gl, final Vec3f vecPoint, final ArrayList<ArrayList<Vec3f>> alPointLists)
@@ -275,6 +311,18 @@ public class GLConnectionLineRenderer {
 			final Vec3f vecDestPoint, 
 			final int iNumberOfLines)
 	{
+		
+		gl.glColor4f(1, 1, 1, 1);
+		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + iNumberOfLines + 4);
+		gl.glBegin(GL.GL_LINES);
+		gl.glVertex3f(vecSrcPoint.x(),
+				vecSrcPoint.y(),
+				vecSrcPoint.z() - 0.001f);
+		gl.glVertex3f(vecDestPoint.x(),
+				vecDestPoint.y(),
+				vecDestPoint.z() - 0.001f);
+		gl.glEnd();
+		
 		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_AREA_LINE_COLOR, 0);
 		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + iNumberOfLines);
 		gl.glBegin(GL.GL_LINES);
