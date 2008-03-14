@@ -419,4 +419,11 @@ extends AGLCanvasStorageBasedView
 		return elementRep;
 	}
 
+	@Override
+	protected void rePosition(int elementID) {
+
+		// TODO Auto-generated method stub
+		
+	}
+
 }

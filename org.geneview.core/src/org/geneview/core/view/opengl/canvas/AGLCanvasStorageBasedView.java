@@ -288,7 +288,7 @@ implements IMediatorReceiver, IMediatorSender
 					{
 						verticalSelectionManager.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
 						verticalSelectionManager.addToType(EViewInternalSelectionType.MOUSE_OVER, iSelectedStorageIndex);
-						
+						rePosition(iSelectedStorageIndex);
 						extSelectionManager.modifySelection(iSelectedAccessionID, createElementRep(iSelectedStorageIndex), ESelectionMode.AddPick);
 					}
 				}
@@ -367,5 +367,7 @@ implements IMediatorReceiver, IMediatorSender
 		}
 		return iAlOldSelection;
 	}
+	
+	protected abstract void rePosition(int iElementID);
 
 }

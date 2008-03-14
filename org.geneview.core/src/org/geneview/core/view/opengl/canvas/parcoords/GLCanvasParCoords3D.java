@@ -20,7 +20,6 @@ import org.geneview.core.data.view.rep.selection.SelectedElementRep;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.view.EPickingMode;
 import org.geneview.core.manager.view.EPickingType;
-import org.geneview.core.manager.view.ESelectionMode;
 import org.geneview.core.manager.view.Pick;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasStorageBasedView;
@@ -73,8 +72,12 @@ extends AGLCanvasStorageBasedView
 	private float[] fArGateBottomHeight;
 	private int iDraggedGateNumber = 0;
 	
+	private float fXDefaultTranslation = 0;
 	private float fXTranslation = 0;
 	private float fYTranslation = 0;
+	
+	private float fXTargetTranslation = 0;
+	private boolean bIsTranslationActive = false;
 	
 	private ParCoordsRenderStyle renderStyle;	
 	
@@ -83,6 +86,8 @@ extends AGLCanvasStorageBasedView
 	
 	private DecimalFormat decimalFormat;
 	
+	
+	SelectedElementRep elementRep;
 	
 	// holds the textures for the icons
 	private GLIconTextureManager iconTextureManager;
@@ -117,16 +122,12 @@ extends AGLCanvasStorageBasedView
 			alSelectionType.add(selectionType);
 		}
 		verticalSelectionManager = new GenericSelectionManager(
-				alSelectionType, EViewInternalSelectionType.NORMAL);
-		
-		
+				alSelectionType, EViewInternalSelectionType.NORMAL);		
 		
 		decimalFormat = new DecimalFormat("#####.##");
 		
 		mapSelections = new EnumMap<ESelectionType, ArrayList<Integer>>(ESelectionType.class);	
-	
-	
-	
+		
 	}
 	
 	/*
@@ -173,7 +174,7 @@ extends AGLCanvasStorageBasedView
 //		s
 		initData();
 		
-		fXTranslation = renderStyle.getXSpacing();
+		fXDefaultTranslation = renderStyle.getXSpacing();
 		fYTranslation = renderStyle.getBottomSpacing();
 	
 		
@@ -184,8 +185,14 @@ extends AGLCanvasStorageBasedView
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#displayLocal(javax.media.opengl.GL)
 	 */
 	public void displayLocal(final GL gl) 
-	{		
+	{	
+		if(bIsTranslationActive)
+		{	
+			doTranslation();
+		}
+		
 		pickingManager.handlePicking(iUniqueId, gl, true);
+	
 		if(bIsDisplayListDirtyLocal)
 		{
 			buildPolyLineDisplayList(gl, iGLDisplayListIndexLocal);
@@ -206,6 +213,11 @@ extends AGLCanvasStorageBasedView
 	 */
 	public void displayRemote(final GL gl) 
 	{		
+		if(bIsTranslationActive)
+		{	
+			doTranslation();
+		}
+		
 		if(bIsDisplayListDirtyRemote)
 		{
 			buildPolyLineDisplayList(gl, iGLDisplayListIndexRemote);
@@ -224,35 +236,36 @@ extends AGLCanvasStorageBasedView
 	 */
 	public void display(final GL gl) 
 	{	
-		//GLSharedObjects.drawViewFrustum(gl, viewFrustum);
+//		GLSharedObjects.drawAxis(gl);
+//		GLSharedObjects.drawViewFrustum(gl, viewFrustum);
 		// FIXME: translation here not nice, operations are not in display lists
 		if(bIsDraggingActive)
 		{			
-			gl.glTranslatef(fXTranslation, fYTranslation, 0.0f);
+			gl.glTranslatef(fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
 			//gl.glScalef(fScaling, fScaling, 1.0f);
 			handleDragging(gl);
 	
 			//gl.glScalef(1/fScaling, 1/fScaling, 1.0f);
-			gl.glTranslatef(-fXTranslation, -fYTranslation, 0.0f);			
+			gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);			
 		}
-		if(bRenderInfoArea)
-		{
-			gl.glTranslatef(fXTranslation, fYTranslation, 0.0f);
-			//gl.glScalef(fScaling, fScaling, 1.0f);
-			
-//			infoAreaManager.renderInfoArea(gl, bInfoAreaFirstTime);
-			bInfoAreaFirstTime = false;
-		
-			//gl.glScalef(1/fScaling, 1/fScaling, 1.0f);
-			gl.glTranslatef(-fXTranslation, -fYTranslation, 0.0f);
-		}
+//		if(bRenderInfoArea)
+//		{
+//			gl.glTranslatef(fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
+//			//gl.glScalef(fScaling, fScaling, 1.0f);
+//			
+////			infoAreaManager.renderInfoArea(gl, bInfoAreaFirstTime);
+//			bInfoAreaFirstTime = false;
+//		
+//			//gl.glScalef(1/fScaling, 1/fScaling, 1.0f);
+//			gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
+//		}
 
 		gl.glCallList(iGLDisplayListToCall);
 		
-		gl.glTranslatef(fXTranslation - renderStyle.getXSpacing(), 
+		gl.glTranslatef(fXDefaultTranslation - renderStyle.getXSpacing(), 
 				fYTranslation - renderStyle.getBottomSpacing(), 0.0f);
 		glToolboxRenderer.render(gl);
-		gl.glTranslatef(-fXTranslation + renderStyle.getXSpacing(),
+		gl.glTranslatef(-fXDefaultTranslation + renderStyle.getXSpacing(),
 				-fYTranslation + renderStyle.getBottomSpacing(), 0.0f);
 	}
 		
@@ -269,6 +282,8 @@ extends AGLCanvasStorageBasedView
 		EInputDataType eTempType = eAxisDataType;
 		eAxisDataType = ePolylineDataType;
 		ePolylineDataType = eTempType;
+		fXTranslation = 0;
+		extSelectionManager.clear();
 		initLists();
 		
 	}
@@ -404,7 +419,7 @@ extends AGLCanvasStorageBasedView
 
 //		if(bIsDraggingActive)
 //			handleDragging(gl);
-		gl.glTranslatef(fXTranslation, fYTranslation, 0.0f);
+		gl.glTranslatef(fXDefaultTranslation  + fXTranslation, fYTranslation, 0.0f);
 		//gl.glScalef(fScaling, fScaling, 1.0f);
 		
 		renderCoordinateSystem(gl, iNumberOfAxis);	
@@ -417,7 +432,7 @@ extends AGLCanvasStorageBasedView
 		renderGates(gl, iNumberOfAxis);				
 		
 		//gl.glScalef(1/fScaling, 1/fScaling, 1.0f);
-		gl.glTranslatef(-fXTranslation, -fYTranslation, 0.0f);		
+		gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);		
 		gl.glEndList();
 	}
 	
@@ -1056,8 +1071,9 @@ extends AGLCanvasStorageBasedView
 				if(eAxisDataType == EInputDataType.GENE)
 				{
 					propagateGeneSelection(iExternalID, iAlOldSelection);
-				}
+				}		
 				
+				rePosition(iExternalID);
 				bIsDisplayListDirtyLocal = true;
 				bIsDisplayListDirtyRemote = true;
 				break;
@@ -1254,9 +1270,7 @@ extends AGLCanvasStorageBasedView
 	
 	
 	protected SelectedElementRep createElementRep(int iStorageIndex)
-	{
-		
-		SelectedElementRep elementRep;
+	{	
 		
 		if(!bRenderStorageHorizontally)
 		{
@@ -1268,7 +1282,7 @@ extends AGLCanvasStorageBasedView
 			{
 				fYValue = alDataStorages.get(iCurrent).getArrayFloat()[iStorageIndex];
 				fYValue = fYValue * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
-				fXValue = iCount * fAxisSpacing + renderStyle.getXSpacing();
+				fXValue = iCount * fAxisSpacing + renderStyle.getXSpacing() + fXTranslation;
 				alPoints.add(new Vec3f(fXValue, fYValue, 0));
 				iCount++;
 			}		
@@ -1279,7 +1293,7 @@ extends AGLCanvasStorageBasedView
 		else
 		{			
 			float fXValue = alContentSelection.indexOf(iStorageIndex) 
-				* fAxisSpacing + renderStyle.getXSpacing();
+				* fAxisSpacing + renderStyle.getXSpacing() + fXTranslation;
 		
 			ArrayList<Vec3f> alPoints = new ArrayList<Vec3f>();
 			alPoints.add(new Vec3f(fXValue, renderStyle.getBottomSpacing(), 0));
@@ -1309,5 +1323,75 @@ extends AGLCanvasStorageBasedView
 			sAlInfo.add("Showing experiments as " + alStorageSelection.size() +" polylines and genes as " + iNumberOfAxis + " axis.");			
 		}
 		return sAlInfo;
+	}
+	
+	protected void rePosition(int iElementID)
+	{
+		ArrayList<Integer> alSelection;
+		if(bRenderStorageHorizontally)
+		{
+			alSelection = alContentSelection;
+		
+		}	
+		else
+		{
+			alSelection = alStorageSelection;
+			// TODO implement this
+		}
+		
+		float fCurrentPosition = alSelection.indexOf(iElementID) * fAxisSpacing + renderStyle.getXSpacing();
+		
+		float fFrustumLength = viewFrustum.getRight() - viewFrustum.getLeft();
+		float fLength = (alSelection.size() - 1) * fAxisSpacing;
+
+		fXTargetTranslation = -(fCurrentPosition - fFrustumLength / 2);
+		
+		if(-fXTargetTranslation > fLength - fFrustumLength)
+			fXTargetTranslation = -(fLength - fFrustumLength + 2 * renderStyle.getXSpacing());
+		else if(fXTargetTranslation > 0)
+			fXTargetTranslation = 0;
+		else if(-fXTargetTranslation < -fXTranslation + fFrustumLength  / 2  - renderStyle.getXSpacing() && 
+				-fXTargetTranslation > -fXTranslation - fFrustumLength / 2 + renderStyle.getXSpacing())
+		{
+			fXTargetTranslation = fXTranslation;
+			return;
+		}
+		
+		bIsTranslationActive = true;
+	}
+	
+	private void doTranslation()
+	{
+		float fDelta = 0;
+		if(fXTargetTranslation < fXTranslation - 0.3)
+		{
+			
+			fDelta = -0.3f;
+		
+		}
+		else if (fXTargetTranslation > fXTranslation + 0.3)
+		{
+			fDelta = 0.3f;
+		}
+		else
+		{
+			fDelta = fXTargetTranslation - fXTranslation;
+			bIsTranslationActive = false;
+		}
+		
+		
+		if(elementRep != null)
+		{
+			ArrayList<Vec3f> alPoints = elementRep.getPoints();
+			for(Vec3f currentPoint : alPoints)
+			{
+				currentPoint.setX(currentPoint.x() + fDelta);
+			}			
+		}
+		
+		fXTranslation += fDelta;
+		
+		bIsDisplayListDirtyLocal = true;
+		bIsDisplayListDirtyRemote  = true;
 	}
 }

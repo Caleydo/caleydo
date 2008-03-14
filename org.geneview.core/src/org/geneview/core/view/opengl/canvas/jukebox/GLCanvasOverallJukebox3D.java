@@ -26,6 +26,7 @@ import org.geneview.core.util.system.Time;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
+import org.geneview.core.view.opengl.util.GLSharedObjects;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 
 /**
@@ -68,6 +69,8 @@ implements IMediatorReceiver, IMediatorSender
 	private int iDraggedViewID = -1;
 	
 	private BucketMouseWheelListener bucketMouseWheelListener;
+	
+	
 	
 	/**
 	 * Constructor.
@@ -177,6 +180,31 @@ implements IMediatorReceiver, IMediatorSender
 		
 	    buildPoolLayer(gl);
 		buildStackLayer(gl);
+		
+//		float[] fArLightPosition = {-2, 0, 5, 0};
+//		float[] fArLight1Position = {2, 0, 5, 0};
+//		float[] fArLModelAmbient = {0.1f, 0.1f, 0.1f, 1.0f};
+//		float[] fArMatSpecular = {1, 1, 1, 1};
+//		float[] fArWhiteLight = {1, 1, 1, 1};
+//		float[] fArMatShininess = {50};
+//		//float[] fArSpotDirection = {0, 0, -1};
+//		gl.glShadeModel(GL.GL_SMOOTH);
+//		gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, fArMatSpecular, 0);
+//		gl.glMaterialfv(GL.GL_FRONT, GL.GL_SHININESS, fArMatShininess, 0);
+//		gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION,	fArLightPosition, 0);
+//		gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, fArWhiteLight, 0);
+//		gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR, fArWhiteLight, 0);
+//		
+//		gl.glLightfv(GL.GL_LIGHT1, GL.GL_POSITION,	fArLight1Position, 0);
+//		gl.glLightfv(GL.GL_LIGHT1, GL.GL_DIFFUSE, fArWhiteLight, 0);
+//		gl.glLightfv(GL.GL_LIGHT1, GL.GL_SPECULAR, fArWhiteLight, 0);
+//		
+//		//gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPOT_DIRECTION, fArSpotDirection, 0);
+//		gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, fArLModelAmbient, 0);
+//		gl.glEnable(GL.GL_LIGHTING);
+//		gl.glEnable(GL.GL_LIGHT0);
+//		gl.glEnable(GL.GL_LIGHT1);
+//		//gl.glEnable(GL.GL_DEPTH_TEST);
 	}
 	
 	/*
@@ -219,7 +247,6 @@ implements IMediatorReceiver, IMediatorSender
 	 */
 	public void display(final GL gl) 
 	{
-		
 		checkForHits();
 		
 //		if (bRebuildVisiblePathwayDisplayLists)

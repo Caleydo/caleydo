@@ -36,6 +36,9 @@ public class GLConnectionLineRenderer {
 	
 	private boolean bEnableRendering = true;
 	
+
+	
+	
 	private HashMap<Integer, ArrayList<ArrayList<Vec3f>>> hashViewToPointLists;
 	
 	/**

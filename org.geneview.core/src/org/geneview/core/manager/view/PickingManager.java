@@ -505,7 +505,7 @@ public class PickingManager extends AAbstractManager
 	
 	private void checkViewID(int iViewID)
 	{
-		if (iViewID > 99999 || iViewID < 10000)
+		if (iViewID > 999999 || iViewID < 1000)
 		{
 			throw new GeneViewRuntimeException(
 					"PickingManager: The view id has to have exactly 5 digits",
