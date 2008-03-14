@@ -66,6 +66,11 @@ implements GLEventListener {
 	protected IViewCamera viewCamera;
 	
 	protected GLToolboxRenderer glToolboxRenderer;
+	
+	/**
+	 * If the view is remote rendered this is the layer in the bucket
+	 */
+	protected JukeboxHierarchyLayer containedHierarchyLayer = null;
 		
 	/**
 	 * Constructor.
@@ -539,6 +544,11 @@ implements GLEventListener {
 						Pick tempPick = alHits.get(iCount);
 						int iPickingID = tempPick.getPickingID();
 						int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
+						
+						//FIXME: Is this ok?
+						if(iExternalID == -1)
+							continue;
+						
 						EPickingMode ePickingMode = tempPick.getPickingMode();
 						handleEvents(ePickingType, ePickingMode, iExternalID, tempPick);					
 					}

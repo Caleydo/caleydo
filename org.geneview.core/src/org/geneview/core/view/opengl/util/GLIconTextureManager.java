@@ -22,6 +22,11 @@ public class GLIconTextureManager
 	
 	EnumMap<EIconTextures, Texture> mapIconTextures;
 	
+	/**
+	 * Constructor.
+	 * 
+	 * @param gl
+	 */
 	public GLIconTextureManager(final GL gl)
 	{
 		mapIconTextures = new EnumMap<EIconTextures, Texture>(EIconTextures.class);
@@ -50,6 +55,4 @@ public class GLIconTextureManager
 	{
 		return mapIconTextures.get(eIconTextures);
 	}
-	
-	
 }

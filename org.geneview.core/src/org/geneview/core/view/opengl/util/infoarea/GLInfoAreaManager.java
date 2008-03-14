@@ -54,6 +54,8 @@ public class GLInfoAreaManager
 	
 	private boolean bUpdateViewInfo = true;
 	
+	private boolean bEnableRendering = true;
+	
 	/**
 	 * Constructor. 
 	 * 
@@ -120,6 +122,9 @@ public class GLInfoAreaManager
 
 	public void renderInfoOverlay(final int iViewID, final GLAutoDrawable drawable) 
 	{	
+		if (!bEnableRendering)
+			return;
+			
 		hashViewIDToInfoOverlay.get(iViewID).render(drawable);
 	}
 	
@@ -183,5 +188,10 @@ public class GLInfoAreaManager
 	public void setMiniViewData(ArrayList<IStorage> alStorages, ArrayList<SetSelection> alSetSelection)
 	{
 		infoArea.setMiniViewData(alStorages, alSetSelection);
+	}
+	
+	public void enable(final boolean bEnableRendering)
+	{
+		this.bEnableRendering = bEnableRendering;
 	}
 }

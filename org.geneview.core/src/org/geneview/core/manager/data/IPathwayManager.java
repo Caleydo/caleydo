@@ -46,4 +46,9 @@ extends IGeneralManager {
 	public int searchPathwayIdByName(final String sPathwayName);
 	
 	public PathwayDatabase getPathwayDatabaseByType(EPathwayDatabaseType type);
+	
+	public void setPathwayVisibilityStateByID(final int iPathwayID,
+			final boolean bVisibilityState);
+	
+	public boolean isPathwayVisible(final int iPathwayID);
 }

@@ -54,6 +54,23 @@ public class SlerpAction {
 		init(iElementId, originHierarchyLayer, destinationHierarchyLayer);
 	}
 	
+	/**
+	 * Constructor.
+	 * 
+	 * @param iElementId
+	 * @param originHierarchyLayer
+	 * @param destinationHierarchyLayer
+	 * @param iDestinationPosIndex
+	 */
+	public SlerpAction(int iElementId, 
+			JukeboxHierarchyLayer originHierarchyLayer,
+			JukeboxHierarchyLayer destinationHierarchyLayer,
+			int iDestinationPosIndex) {
+		
+		this.iDestinationPosIndex = iDestinationPosIndex;
+		init(iElementId, originHierarchyLayer, destinationHierarchyLayer);
+	}
+	
 	private void init(int iElementId, 
 			JukeboxHierarchyLayer originHierarchyLayer,
 			JukeboxHierarchyLayer destinationHierarchyLayer) {
@@ -66,18 +83,25 @@ public class SlerpAction {
 	public void start() {
 	
 		iOriginPosIndex = originHierarchyLayer.getPositionIndexByElementId(iElementId);
-		
-		// If pathway is already in this layer - slerp to the existing position.
-		if (destinationHierarchyLayer.containsElement(iElementId))
-			this.iDestinationPosIndex = destinationHierarchyLayer.getPositionIndexByElementId(iElementId);
-		else
-			this.iDestinationPosIndex = destinationHierarchyLayer.getNextPositionIndex();
-		
-		// Only add element if it is not contained already in this layer
-		if (!destinationHierarchyLayer.containsElement(iElementId))
+	
+		if (iDestinationPosIndex == -1)
 		{
-			destinationHierarchyLayer.addElement(iElementId);
+			if (destinationHierarchyLayer.containsElement(-1))
+				this.iDestinationPosIndex = destinationHierarchyLayer.getPositionIndexByElementId(-1);
+			else
+				this.iDestinationPosIndex = destinationHierarchyLayer.getNextPositionIndex();			
 		}
+		
+//		// Only add element if it is not contained already in this layer
+//		if (!destinationHierarchyLayer.containsElement(iElementId))
+//		{
+			originHierarchyLayer.removeElement(iElementId);
+			
+			if (destinationHierarchyLayer.getElementList().size() < destinationHierarchyLayer.getCapacity())
+				destinationHierarchyLayer.addElement(iElementId);
+			else
+				destinationHierarchyLayer.replaceElement(iElementId, iDestinationPosIndex);
+//		}
 	}
 	
 	public int getElementId() {

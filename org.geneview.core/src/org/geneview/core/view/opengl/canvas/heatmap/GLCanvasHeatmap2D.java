@@ -549,7 +549,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 //		if ( pickingTriggerMouseAdapter.wasMouseMoved())
 //		pickingTriggerMouseAdapter.wasMouseMoved()
 		
-		if (pickingTriggerMouseAdapter.wasMousePressed())
+		if (pickingTriggerMouseAdapter.wasLeftMouseButtonPressed())
 		{
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 //			bIsMousePickingEvent = true;

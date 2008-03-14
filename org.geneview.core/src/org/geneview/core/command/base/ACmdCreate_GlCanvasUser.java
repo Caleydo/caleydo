@@ -1,7 +1,5 @@
 package org.geneview.core.command.base;
 
-import gleem.CameraParameters;
-
 import java.util.StringTokenizer;
 
 import javax.media.opengl.GLEventListener;
@@ -14,6 +12,7 @@ import org.geneview.core.manager.ICommandManager;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.IViewGLCanvasManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
+import org.geneview.core.manager.type.ManagerObjectType;
 import org.geneview.core.parser.parameter.IParameterHandler;
 import org.geneview.core.util.system.StringConversionTool;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
@@ -118,6 +117,18 @@ extends ACmdCreate_IdTargetParentGLObject {
 							+ ": Error in extracting view frustum from XML argument!",
 					LoggerType.ERROR);
 		}
+	}
+	
+	public void setAttributes(final ViewFrustumBase.ProjectionMode projectionMode,
+			final float fLeft,
+			final float fRight,
+			final float fTop,
+			final float fBottom,
+			final float fNear,
+			final float fFar) 
+	{
+		viewFrustum = new ViewFrustumBase(projectionMode, 
+				fLeft, fRight, fBottom, fTop, fNear, fFar);
 	}
 	
 	/*

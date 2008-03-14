@@ -18,10 +18,11 @@ implements MouseWheelListener {
 
 	private AGLCanvasUser bucketCanvas;
 	
-	private static float BUCKET_ZOOM_MAX = 4f;
-	private static float BUCKET_ZOOM_STEP = 0.15f;
+	private static int BUCKET_ZOOM_MAX = 400;
+	private static int BUCKET_ZOOM_STEP = 16;
 	
-	private float fCurrentBucketZoom = 0;
+	private int iCurrentBucketZoom = 0;
+	private int iAnimationZoomCounter = 0;
 	
 //	private float fBucketTransparency = 1;
 	
@@ -58,37 +59,38 @@ implements MouseWheelListener {
 		if (!bZoomActionRunning)
 			return;
 		
-		if (Math.abs(fCurrentBucketZoom) < BUCKET_ZOOM_MAX)
+		if (iAnimationZoomCounter == 0 || iCurrentBucketZoom % BUCKET_ZOOM_MAX != 0)
 		{
 			if (bZoomIn)
 			{
-				fCurrentBucketZoom += BUCKET_ZOOM_STEP;
+				iCurrentBucketZoom += BUCKET_ZOOM_STEP;
+				iAnimationZoomCounter += BUCKET_ZOOM_STEP;
 			
 				bucketCanvas.getViewCamera().addCameraScale(
-			    		new Vec3f( 0, 0, BUCKET_ZOOM_STEP));	
+			    		new Vec3f( 0, 0, BUCKET_ZOOM_STEP / 100f));	
 
 //				fBucketTransparency = fCurrentBucketZoom / BUCKET_ZOOM_MAX;
 			}
 			else
 			{		
-				fCurrentBucketZoom -= BUCKET_ZOOM_STEP;
+				iCurrentBucketZoom -= BUCKET_ZOOM_STEP;
+				iAnimationZoomCounter -= BUCKET_ZOOM_STEP;
 
 				bucketCanvas.getViewCamera().addCameraScale(
-			    		new Vec3f( 0, 0, -BUCKET_ZOOM_STEP));	
+			    		new Vec3f( 0, 0, -BUCKET_ZOOM_STEP / 100f));	
 				
 //				fBucketTransparency = fCurrentBucketZoom / -BUCKET_ZOOM_MAX;
 			}
+			
+			if (iCurrentBucketZoom == BUCKET_ZOOM_MAX)
+				bBucketBottomReached = true;
+			else if (iCurrentBucketZoom == 0)
+				bBucketBottomReached = false;
 		}
 		else
-		{
-			if (fCurrentBucketZoom >= BUCKET_ZOOM_MAX)
-				bBucketBottomReached = true;
-			else if (fCurrentBucketZoom <= -BUCKET_ZOOM_MAX)
-				bBucketBottomReached = false;
-			
-			fCurrentBucketZoom = 0;
+		{	
+			iAnimationZoomCounter = 0;
 			bZoomActionRunning = false;
-			return;
 		}				
 	}
 	

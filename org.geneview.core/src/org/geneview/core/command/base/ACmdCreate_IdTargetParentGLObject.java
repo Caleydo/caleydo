@@ -46,6 +46,7 @@ extends	ACmdCreate_IdTargetLabelParent {
 				refCommandQueueSaxType);
 		
 		cameraRotation = new Rotf();
+		cameraOrigin = new Vec3f(0,0,0);
 	}
 	
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {

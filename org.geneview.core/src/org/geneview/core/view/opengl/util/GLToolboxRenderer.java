@@ -122,12 +122,12 @@ public class GLToolboxRenderer
 		
 		if(layer != null)
 		{
-			addIcon(gl, iRemoteViewID, EPickingType.BUCKET_MOVE_HIERARCHY_UP_ICON_SELECTION, 
-					iContainingViewID, EIconTextures.ARROW_LEFT);
-			addIcon(gl, iRemoteViewID, EPickingType.BUCKET_REMOVE_ICON_SELECTION, 
-					iContainingViewID, EIconTextures.ARROW_LEFT);
-			addIcon(gl, iRemoteViewID, EPickingType.BUCKET_SWITCH_ICON_SELECTION, 
-					iContainingViewID, EIconTextures.ARROW_LEFT);
+//			addIcon(gl, iRemoteViewID, EPickingType.BUCKET_MOVE_HIERARCHY_UP_ICON_SELECTION, 
+//					iContainingViewID, EIconTextures.ARROW_LEFT);
+//			addIcon(gl, iRemoteViewID, EPickingType.BUCKET_REMOVE_ICON_SELECTION, 
+//					iContainingViewID, EIconTextures.ARROW_LEFT);
+//			addIcon(gl, iRemoteViewID, EPickingType.BUCKET_SWITCH_ICON_SELECTION, 
+//					iContainingViewID, EIconTextures.ARROW_LEFT);
 		}
 		fOverallRenderLength = fRenderLenght;
 		fRenderLenght = 0;
@@ -149,13 +149,6 @@ public class GLToolboxRenderer
 		
 		gl.glColor4f(1, 1, 1, 1);
 		gl.glPushName(pickingManager.getPickingID(iContainingViewID, ePickingType, iIconID));	
-		
-//		gl.glBegin(GL.GL_POLYGON);
-//		gl.glVertex3f(-0.5f, -0.5f, 0);
-//		gl.glVertex3f(-0.5f, 0.5f, 0);
-//		gl.glVertex3f(0.5f, 0.5f, 0);
-//		gl.glVertex3f(0.5f, -0.5f, 0);
-//		gl.glEnd();
 		
 		gl.glBegin(GL.GL_POLYGON);
 		if(bRenderLeftToRight)

@@ -51,6 +51,13 @@ public class JukeboxHierarchyLayer {
 		this.iCapacity = iCapacity;
 		this.fScalingFactor = fScalingFactor;
 		this.pathwayTextureManager = pathwayTextureManager;
+		
+		// Initialize elements with -1
+		for (int iPositionIndex = 0; iPositionIndex < iCapacity; iPositionIndex++)
+		{
+			llElementId.add(-1);
+			llElementIdVisibleState.add(false);
+		}
 	}
 	
 	public void setParentLayer(final JukeboxHierarchyLayer parentLayer) {
@@ -73,6 +80,13 @@ public class JukeboxHierarchyLayer {
 		return childLayer;
 	}
 	
+	public void replaceElement(int iElementId, int iDestinationPosIndex)
+	{
+		llElementId.set(iDestinationPosIndex, iElementId);
+		llElementIdVisibleState.set(iDestinationPosIndex, false);
+		llElementIdImportanceQueue.addFirst(iElementId);	
+	}
+	
 	/**
 	 * Add the element permanently to that layer.
 	 * If all positions are occupied apply the FIFO 
@@ -86,11 +100,11 @@ public class JukeboxHierarchyLayer {
 	 */
 	public int addElement(int iElementId) {
 		
-		// Check if element is already contained and do nothing in this case
-		if (llElementId.contains(iElementId))
-		{
-			return 0;
-		}
+//		// Check if element is already contained and do nothing in this case
+//		if (llElementId.contains(iElementId))
+//		{
+//			return 0;
+//		}
 		
 		if (llElementId.contains(-1))
 		{
@@ -103,9 +117,9 @@ public class JukeboxHierarchyLayer {
 			return 0;
 		}
 		
-		// Check if element limit is reached
-		if (llElementId.size() >= iCapacity)
-		{
+//		// Check if element limit is reached
+//		if (llElementId.size() > iCapacity)
+//		{
 			// Find and remove least important element
 			int iLeastImportantElementId = llElementIdImportanceQueue.removeLast();
 
@@ -123,19 +137,19 @@ public class JukeboxHierarchyLayer {
 			
 			return iLeastImportantElementId;
 			//return llElementId.set(iReplacePosition, iElementId);			
-		}
-		else
-		{
-			// Add to the end of the stack (because there is free space)
-			llElementId.addLast(iElementId);
-			llElementIdVisibleState.addLast(false);
-			llElementIdImportanceQueue.addFirst(iElementId);
-		
-			if (iCapacity < 5)
-				calculatePathwayScaling(iElementId);
-			
-			return 0;
-		}
+//		}
+//		else
+//		{
+//			// Add to the end of the stack (because there is free space)
+//			llElementId.addLast(iElementId);
+//			llElementIdVisibleState.addLast(false);
+//			llElementIdImportanceQueue.addFirst(iElementId);
+//		
+//			if (iCapacity < 5)
+//				calculatePathwayScaling(iElementId);
+//			
+//			return 0;
+//		}
 	}
 
 //	public void setElement(int iPosIndex, int iElementId) {
@@ -267,6 +281,10 @@ public class JukeboxHierarchyLayer {
 		return fScalingFactor;
 	}
 	
+	/**
+	 * @deprecated
+	 * @param iPathwayId
+	 */
 	private void calculatePathwayScaling(final int iPathwayId) {
 		
 		if (pathwayTextureManager == null)

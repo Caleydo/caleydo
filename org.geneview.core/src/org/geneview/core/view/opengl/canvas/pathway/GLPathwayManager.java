@@ -49,7 +49,7 @@ public class GLPathwayManager {
 	public static final float SCALING_FACTOR_X = 0.0025f;
 	public static final float SCALING_FACTOR_Y = 0.0025f;
 	
-	private static final float Z_OFFSET = 0.015f;
+	private static final float Z_OFFSET = 0.0001f;
 	
 	private int iEnzymeNodeDisplayListId = -1;
 	private int iCompoundNodeDisplayListId = -1;
@@ -568,7 +568,7 @@ public class GLPathwayManager {
 			else
 				gl.glColor4f(1, 1, 0, 1);
 
-			gl.glLineWidth(3);
+			gl.glLineWidth(2);
 			gl.glBegin(GL.GL_LINE_STRIP);			
 			for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++)
 			{

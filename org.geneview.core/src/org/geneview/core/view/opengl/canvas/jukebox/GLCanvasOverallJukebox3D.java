@@ -2,32 +2,60 @@ package org.geneview.core.view.opengl.canvas.jukebox;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
+import gleem.linalg.Vec4f;
 import gleem.linalg.open.Transform;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLEventListener;
 
+import org.geneview.core.command.CommandQueueSaxType;
+import org.geneview.core.command.data.CmdDataCreateSelectionSetMakro;
+import org.geneview.core.command.view.opengl.CmdGlObjectPathway3D;
 import org.geneview.core.data.collection.ISet;
+import org.geneview.core.data.collection.set.selection.ISetSelection;
+import org.geneview.core.data.graph.core.PathwayGraph;
+import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
+import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.data.view.camera.IViewFrustum;
+import org.geneview.core.data.view.camera.ViewFrustumBase.ProjectionMode;
+import org.geneview.core.data.view.rep.selection.SelectedElementRep;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
+import org.geneview.core.manager.type.ManagerObjectType;
 import org.geneview.core.manager.view.EPickingMode;
 import org.geneview.core.manager.view.EPickingType;
+import org.geneview.core.manager.view.ESelectionMode;
 import org.geneview.core.manager.view.Pick;
+import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.util.slerp.SlerpAction;
 import org.geneview.core.util.slerp.SlerpMod;
+import org.geneview.core.util.system.StringConversionTool;
 import org.geneview.core.util.system.SystemTime;
 import org.geneview.core.util.system.Time;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
-import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
+import org.geneview.core.view.opengl.canvas.parcoords.ESelectionType;
+import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
+import org.geneview.core.view.opengl.util.EIconTextures;
+import org.geneview.core.view.opengl.util.GLIconTextureManager;
 import org.geneview.core.view.opengl.util.GLSharedObjects;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.geneview.core.view.opengl.util.selection.EViewInternalSelectionType;
+import org.geneview.util.graph.EGraphItemHierarchy;
+import org.geneview.util.graph.EGraphItemProperty;
+import org.geneview.util.graph.IGraphItem;
+
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureCoords;
+import com.sun.opengl.util.texture.TextureIO;
 
 /**
  * Implementation of the overall Jukebox setup.
@@ -41,12 +69,11 @@ public class GLCanvasOverallJukebox3D
 extends AGLCanvasUser
 implements IMediatorReceiver, IMediatorSender 
 {
-	
-	private static final int MAX_LOADED_VIEWS = 10;
+	private static final int MAX_LOADED_VIEWS = 100;
 	private static final float SCALING_FACTOR_UNDER_INTERACTION_LAYER = 0.5f;
 	private static final float SCALING_FACTOR_TRANSITION_LAYER = 0.05f;
 	private static final float SCALING_FACTOR_STACK_LAYER = 0.5f;
-	private static final float SCALING_FACTOR_POOL_LAYER = 0.05f;
+	private static final float SCALING_FACTOR_POOL_LAYER = 0.01f;
 	
 	private static final int SLERP_RANGE = 1000;
 	private static final int SLERP_SPEED = 1300;
@@ -70,8 +97,19 @@ implements IMediatorReceiver, IMediatorSender
 	
 	private BucketMouseWheelListener bucketMouseWheelListener;
 	
+	private int iNavigationMouseOverViewID_left = -1;
+	private int iNavigationMouseOverViewID_right = -1;
+	private int iNavigationMouseOverViewID_out = -1;
+	private int iNavigationMouseOverViewID_in = -1;	
+	private int iNavigationMouseOverViewID_lock = -1;
 	
+	private boolean bEnableNavigationOverlay = false;
 	
+	// FIXME: should be a singleton
+	private GLIconTextureManager glIconTextureManager;
+	
+	private ArrayList<Integer> iAlUninitializedViewIDs;
+
 	/**
 	 * Constructor.
 	 * 
@@ -118,7 +156,6 @@ implements IMediatorReceiver, IMediatorSender
 				SCALING_FACTOR_UNDER_INTERACTION_LAYER,
 				SCALING_FACTOR_UNDER_INTERACTION_LAYER,
 				SCALING_FACTOR_UNDER_INTERACTION_LAYER));
-
 		underInteractionLayer.setTransformByPositionIndex(0, transformUnderInteraction);
 		
 		Transform transformTransition = new Transform();
@@ -127,7 +164,6 @@ implements IMediatorReceiver, IMediatorSender
 				SCALING_FACTOR_TRANSITION_LAYER,
 				SCALING_FACTOR_TRANSITION_LAYER,
 				SCALING_FACTOR_TRANSITION_LAYER));
-		
 		transitionLayer.setTransformByPositionIndex(0, transformTransition);
 		
 		arSlerpActions = new ArrayList<SlerpAction>();
@@ -140,6 +176,8 @@ implements IMediatorReceiver, IMediatorSender
 		parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
 		// Register specialized bucket mouse wheel listener
 		parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
+		
+		iAlUninitializedViewIDs = new ArrayList<Integer>();
 	}
 
 	/*
@@ -148,7 +186,6 @@ implements IMediatorReceiver, IMediatorSender
 	 */	
 	public void initLocal(final GL gl) 
 	{
-	
 		init(gl);
 	}
 	
@@ -172,6 +209,7 @@ implements IMediatorReceiver, IMediatorSender
 	 */
 	public void init(final GL gl) 
 	{
+		glIconTextureManager = new GLIconTextureManager(gl);
 		
 	    time = new SystemTime();
 	    ((SystemTime) time).rebase();
@@ -213,6 +251,10 @@ implements IMediatorReceiver, IMediatorSender
 	 */
 	public void displayLocal(final GL gl) 
 	{
+		if (pickingTriggerMouseAdapter.wasRightMouseButtonPressed())
+		{
+			bEnableNavigationOverlay = !bEnableNavigationOverlay;
+		}
 		
 		pickingManager.handlePicking(iUniqueId, gl, true);
 //		if(bIsDisplayListDirtyLocal)
@@ -221,6 +263,9 @@ implements IMediatorReceiver, IMediatorSender
 //			bIsDisplayListDirtyLocal = false;			
 //		}	
 		display(gl);
+		
+		checkForHits(gl);
+		
 		pickingTriggerMouseAdapter.resetEvents();
 //		gl.glCallList(iGLDisplayListIndexLocal);
 	}
@@ -247,8 +292,7 @@ implements IMediatorReceiver, IMediatorSender
 	 */
 	public void display(final GL gl) 
 	{
-		checkForHits();
-		
+
 //		if (bRebuildVisiblePathwayDisplayLists)
 //			rebuildVisiblePathwayDisplayLists(gl);
 		
@@ -264,7 +308,7 @@ implements IMediatorReceiver, IMediatorSender
 		// interaction layer is _not_ rendered.
 		if (!bucketMouseWheelListener.isBucketBottomReached())
 		{
-			renderLayer(gl, transitionLayer);
+			renderLayer(gl, transitionLayer);			
 			renderLayer(gl, poolLayer);
 			renderLayer(gl, stackLayer);
 			
@@ -282,7 +326,6 @@ implements IMediatorReceiver, IMediatorSender
 
 	private void retrieveContainedViews(final GL gl) 
 	{
-		
 		Iterator<GLEventListener> iterGLEventListener = 
 			generalManager.getSingelton().getViewGLCanvasManager()
 			.getAllGLEventListeners().iterator();
@@ -296,7 +339,7 @@ implements IMediatorReceiver, IMediatorSender
 			
 			int iViewId = ((AGLCanvasUser)tmpGLEventListener).getId();
 			
-			if (underInteractionLayer.getElementList().size() < underInteractionLayer.getCapacity())
+			if (underInteractionLayer.containsElement(-1))
 			{
 				underInteractionLayer.addElement(iViewId);
 				underInteractionLayer.setElementVisibilityById(true, iViewId);
@@ -304,22 +347,21 @@ implements IMediatorReceiver, IMediatorSender
 				tmpGLEventListener.initRemote(gl, iUniqueId, underInteractionLayer, pickingTriggerMouseAdapter);
 
 			}
-			else if (stackLayer.getElementList().size() < stackLayer.getCapacity())
+			else if (stackLayer.containsElement(-1))
 			{
 				stackLayer.addElement(iViewId);
 				stackLayer.setElementVisibilityById(true, iViewId);
 				
 				tmpGLEventListener.initRemote(gl, iUniqueId, stackLayer, pickingTriggerMouseAdapter);
-
 			}
-			else if (poolLayer.getElementList().size() < poolLayer.getCapacity())
+			else if (poolLayer.containsElement(-1))
 			{
 				poolLayer.addElement(iViewId);
 				poolLayer.setElementVisibilityById(true, iViewId);
 				
 				tmpGLEventListener.initRemote(gl, iUniqueId, poolLayer, pickingTriggerMouseAdapter);
 			}
-						
+			
 //			pickingTriggerMouseAdapter.addGLCanvas(tmpGLEventListener);
 			pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_SELECTION, iViewId);
 		}
@@ -347,7 +389,7 @@ implements IMediatorReceiver, IMediatorSender
 				SCALING_FACTOR_STACK_LAYER,
 				SCALING_FACTOR_STACK_LAYER));		
 		transform.setRotation(new Rotf(new Vec3f(-1, 0, 0), fTiltAngleRad));
-		stackLayer.setTransformByPositionIndex(1, transform);
+		stackLayer.setTransformByPositionIndex(2, transform);
 
 		// LEFT BUCKET WALL
 		transform = new Transform();
@@ -356,7 +398,7 @@ implements IMediatorReceiver, IMediatorSender
 				SCALING_FACTOR_STACK_LAYER,
 				SCALING_FACTOR_STACK_LAYER));		
 		transform.setRotation(new Rotf(new Vec3f(0, 1, 0), fTiltAngleRad));
-		stackLayer.setTransformByPositionIndex(2, transform);
+		stackLayer.setTransformByPositionIndex(1, transform);
 
 		// RIGHT BUCKET WALL
 		transform = new Transform();
@@ -370,15 +412,14 @@ implements IMediatorReceiver, IMediatorSender
 	
 	private void buildPoolLayer(final GL gl) 
 	{
-		
 		for (int iViewIndex = 0; iViewIndex < poolLayer.getCapacity(); iViewIndex++)
 		{		
 			Transform transform = new Transform();
 			transform.setTranslation(new Vec3f(4.1f, 
-					0.5f * iViewIndex, 4));
+					0.1f * iViewIndex, 4));
 			transform.setScale(new Vec3f(SCALING_FACTOR_POOL_LAYER,
 					SCALING_FACTOR_POOL_LAYER,
-					SCALING_FACTOR_POOL_LAYER));		
+					SCALING_FACTOR_POOL_LAYER));	
 			poolLayer.setTransformByPositionIndex(iViewIndex, transform);		
 		}
 	}
@@ -409,59 +450,96 @@ implements IMediatorReceiver, IMediatorSender
 	private void renderLayer(final GL gl, 
 			final JukeboxHierarchyLayer layer) 
 	{
-
 		Iterator<Integer> iterElementList = layer.getElementList().iterator();
 		int iViewId = 0;
+		int iLayerPositionIndex = 0;
 		
 		while(iterElementList.hasNext())
 		{		
 			iViewId = iterElementList.next();		
 			
-			// Check if pathway is valid
+			// Check if spot in layer is currently empty
 			if(iViewId == -1)
-				continue;
+			{
+				renderEmptyBucketWall(gl, layer, iLayerPositionIndex);
+			}
+			else
+			{
+				gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_SELECTION, iViewId));
+				renderViewByID(gl, iViewId, layer);		
+				gl.glPopName();
+			}
 			
-			gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_SELECTION, iViewId));
-			renderViewById(gl, iViewId, layer);		
-			gl.glPopName();
+			iLayerPositionIndex++;
 		}
 	}
 		
-	private void renderViewById(final GL gl,
-			final int iViewId, 
+	private void renderViewByID(final GL gl,
+			final int iViewID, 
 			final JukeboxHierarchyLayer layer) 
 	{
+		// Init newly created pathways
+		// FIXME: Scheduling problem because of creation in update at arbitrary time spot?
+		if (!iAlUninitializedViewIDs.isEmpty())
+		{
+			Iterator<Integer> iterUninitializedViewIDs = iAlUninitializedViewIDs.iterator();
+			while (iterUninitializedViewIDs.hasNext())
+			{				
+				int iTmpViewID = iterUninitializedViewIDs.next();
+				
+				if (underInteractionLayer.containsElement(-1))
+				{
+					underInteractionLayer.addElement(iTmpViewID);
+					underInteractionLayer.setElementVisibilityById(true, iTmpViewID);
+					
+					((AGLCanvasUser)generalManager.getSingelton().getViewGLCanvasManager()
+							.getItem(iTmpViewID)).initRemote(gl, iUniqueId, underInteractionLayer, pickingTriggerMouseAdapter);	
+				}
+				else if (stackLayer.containsElement(-1))
+				{
+					stackLayer.addElement(iTmpViewID);
+					stackLayer.setElementVisibilityById(true, iTmpViewID);
+					
+					((AGLCanvasUser)generalManager.getSingelton().getViewGLCanvasManager()
+							.getItem(iTmpViewID)).initRemote(gl, iUniqueId, stackLayer, pickingTriggerMouseAdapter);	
+				}
+				else if (poolLayer.containsElement(-1))
+				{
+					poolLayer.addElement(iTmpViewID);
+					poolLayer.setElementVisibilityById(true, iTmpViewID);
+
+					((AGLCanvasUser)generalManager.getSingelton().getViewGLCanvasManager()
+							.getItem(iTmpViewID)).initRemote(gl, iUniqueId, poolLayer, pickingTriggerMouseAdapter);	
+				}				
+				
+			}
+
+			iAlUninitializedViewIDs.clear();
+		}
+
 		
 		// Check if view is visible
-		if(!layer.getElementVisibilityById(iViewId))
+		if(!layer.getElementVisibilityById(iViewID))
 			return;
 		
 		AGLCanvasUser tmpCanvasUser = ((AGLCanvasUser) generalManager.getSingelton()
-				.getViewGLCanvasManager().getItem(iViewId));
+				.getViewGLCanvasManager().getItem(iViewID));
+		
+		if (tmpCanvasUser == null)
+			throw new GeneViewRuntimeException("Cannot render canvas object which is null!");
 		
 		gl.glPushMatrix();
 		
-		Transform transform = layer.getTransformByElementId(iViewId);
+		Transform transform = layer.getTransformByElementId(iViewID);
 		Vec3f translation = transform.getTranslation();
 		Rotf rot = transform.getRotation();
 		Vec3f scale = transform.getScale();		
 		Vec3f axis = new Vec3f();
 		float fAngle = rot.get(axis);
 		
-//		if (layer.equals(stackLayer) && tmpCanvasUser instanceof GLCanvasHeatMap
-//				&& (layer.getPositionIndexByElementId(iViewId) == 1 
-//						|| layer.getPositionIndexByElementId(iViewId) == 3))
-//		{
-//			gl.glTranslatef(0, (tmpCanvasUser.getViewFrustum().getRight() - 
-//					tmpCanvasUser.getViewFrustum().getLeft()) / 2, 0);
-//			gl.glRotatef(90,1,0,0);
-//		}
-		
 		gl.glTranslatef(translation.x(), translation.y(), translation.z());
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z() );
-		
-//		GLSharedObjects.drawAxis(gl);
 
 		if (!layer.equals(transitionLayer) && !layer.equals(poolLayer))
 		{
@@ -483,95 +561,361 @@ implements IMediatorReceiver, IMediatorSender
 		
 		tmpCanvasUser.displayRemote(gl);
 		
-//		if (!layer.equals(transitionLayer) && !layer.equals(poolLayer))
-//		{
-//			renderNavigationOverlay(gl);
-//		}
+		if (layer.equals(stackLayer))
+		{
+			renderNavigationOverlay(gl, iViewID);
+		}
 		
-		gl.glPopMatrix();	
+		gl.glPopMatrix();
 	}
 	
-	private void renderNavigationOverlay(final GL gl)
+	public void renderEmptyBucketWall(final GL gl,
+			final JukeboxHierarchyLayer layer,
+			final int iLayerPositionIndex)
 	{
-		gl.glColor4f(1, 1, 1, 1);
+		gl.glPushMatrix();
+		
+		Transform transform = layer.getTransformByPositionIndex(iLayerPositionIndex);
+		Vec3f translation = transform.getTranslation();
+		Rotf rot = transform.getRotation();
+		Vec3f scale = transform.getScale();		
+		Vec3f axis = new Vec3f();
+		float fAngle = rot.get(axis);
+		
+		gl.glTranslatef(translation.x(), translation.y(), translation.z());
+		gl.glScalef(scale.x(), scale.y(), scale.z());
+		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z() );
+
+		if (!layer.equals(transitionLayer) && !layer.equals(poolLayer))
+		{
+			renderBucketWall(gl);
+		}
+		
+		gl.glPopMatrix();
+	}
+	
+	private void renderNavigationOverlay(final GL gl, final int iViewID)
+	{
+		if (!bEnableNavigationOverlay)
+			return;
+		
+		generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager().enable(false);
+		glConnectionLineRenderer.enableRendering(false);
+		
+		EPickingType leftWallPickingType = null;
+		EPickingType rightWallPickingType = null;
+		EPickingType topWallPickingType = null;
+		EPickingType bottomWallPickingType = null;
+		
+		Vec4f tmpColor_out = new Vec4f(0.9f,0.9f,0.9f,0.9f);
+		Vec4f tmpColor_in = new Vec4f(0.9f,0.9f,0.9f,0.9f);
+		Vec4f tmpColor_left = new Vec4f(0.9f,0.9f,0.9f,0.9f);
+		Vec4f tmpColor_right = new Vec4f(0.9f,0.9f,0.9f,0.9f);
+		Vec4f tmpColor_lock = new Vec4f(0.9f,0.9f,0.9f,0.9f);	
+		
+		Texture textureLock = glIconTextureManager.getIconTexture(EIconTextures.LOCK);
+		Texture textureMoveLeft = null;
+		Texture textureMoveRight = null;
+		Texture textureMoveOut = null;
+		Texture textureMoveIn = null;
+		
+		TextureCoords texCoords = textureLock.getImageTexCoords();
+		
+		if (iNavigationMouseOverViewID_lock == iViewID)
+			tmpColor_lock.set(1, 0.3f, 0.3f, 0.9f);
+		
+		if (stackLayer.getPositionIndexByElementId(iViewID) == 0) // top
+		{
+			topWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
+			bottomWallPickingType = EPickingType.BUCKET_MOVE_IN_ICON_SELECTION;
+			leftWallPickingType = EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
+			rightWallPickingType = EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
+			
+			if (iNavigationMouseOverViewID_out == iViewID)
+				tmpColor_out.set(1, 0.3f, 0.3f, 0.9f);
+			else if (iNavigationMouseOverViewID_in == iViewID)
+				tmpColor_in.set(1, 0.3f, 0.3f, 0.9f);
+			else if (iNavigationMouseOverViewID_left == iViewID)
+				tmpColor_left.set(1, 0.3f, 0.3f, 0.9f);
+			else if (iNavigationMouseOverViewID_right == iViewID)
+				tmpColor_right.set(1, 0.3f, 0.3f, 0.9f);		
+			
+			textureMoveIn = glIconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
+			textureMoveOut = glIconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
+			textureMoveLeft = glIconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
+			textureMoveRight = glIconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
+		}
+		else if (stackLayer.getPositionIndexByElementId(iViewID) == 2) // bottom
+		{
+			topWallPickingType = EPickingType.BUCKET_MOVE_IN_ICON_SELECTION;
+			bottomWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
+			leftWallPickingType = EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
+			rightWallPickingType = EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
+			
+			if (iNavigationMouseOverViewID_out == iViewID)
+				tmpColor_in.set(1, 0.3f, 0.3f, 0.9f);
+			else if (iNavigationMouseOverViewID_in == iViewID)
+				tmpColor_out.set(1, 0.3f, 0.3f, 0.9f);
+			else if (iNavigationMouseOverViewID_left == iViewID)
+				tmpColor_right.set(1, 0.3f, 0.3f, 0.9f);
+			else if (iNavigationMouseOverViewID_right == iViewID)
+				tmpColor_left.set(1, 0.3f, 0.3f, 0.9f);
+			
+			textureMoveIn = glIconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
+			textureMoveOut = glIconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
+			textureMoveLeft = glIconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
+			textureMoveRight = glIconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
+		}
+		else if (stackLayer.getPositionIndexByElementId(iViewID) == 1) // left
+		{
+			topWallPickingType = EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
+			bottomWallPickingType = EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
+			leftWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
+			rightWallPickingType = EPickingType.BUCKET_MOVE_IN_ICON_SELECTION;
+			
+			if (iNavigationMouseOverViewID_out == iViewID)
+				tmpColor_left.set(1, 0.3f, 0.3f, 0.9f);
+			else if (iNavigationMouseOverViewID_in == iViewID)
+				tmpColor_right.set(1, 0.3f, 0.3f, 0.9f);
+			else if (iNavigationMouseOverViewID_left == iViewID)
+				tmpColor_in.set(1, 0.3f, 0.3f, 0.9f);
+			else if (iNavigationMouseOverViewID_right == iViewID)
+				tmpColor_out.set(1, 0.3f, 0.3f, 0.9f);	
+			
+			textureMoveIn = glIconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
+			textureMoveOut = glIconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
+			textureMoveLeft = glIconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
+			textureMoveRight = glIconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
+		}
+		else if (stackLayer.getPositionIndexByElementId(iViewID) == 3) // right
+		{
+			topWallPickingType = EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
+			bottomWallPickingType = EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
+			leftWallPickingType = EPickingType.BUCKET_MOVE_IN_ICON_SELECTION;
+			rightWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
+			
+			if (iNavigationMouseOverViewID_out == iViewID)
+				tmpColor_right.set(1, 0.3f, 0.3f, 0.9f);
+			else if (iNavigationMouseOverViewID_in == iViewID)
+				tmpColor_left.set(1, 0.3f, 0.3f, 0.9f);
+			else if (iNavigationMouseOverViewID_left == iViewID)
+				tmpColor_out.set(1, 0.3f, 0.3f, 0.9f);
+			else if (iNavigationMouseOverViewID_right == iViewID)
+				tmpColor_in.set(1, 0.3f, 0.3f, 0.9f);
+			
+			textureMoveIn = glIconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
+			textureMoveOut = glIconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
+			textureMoveLeft = glIconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
+			textureMoveRight = glIconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
+		}
+//		else if (underInteractionLayer.containsElement(iViewID))
+//		{
+//			topWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
+//			bottomWallPickingType = EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
+//			leftWallPickingType = EPickingType.BUCKET_MOVE_IN_ICON_SELECTION;
+//			rightWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
+//		}
+		
 		gl.glLineWidth(4);
-		
-		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(2.66f, 2.66f, 0.01f);
-		gl.glVertex3f(2.66f, 5.33f, 0.01f);
-		gl.glVertex3f(5.33f, 5.33f, 0.01f);
-		gl.glVertex3f(5.33f, 2.66f, 0.01f);
-		gl.glEnd();
-		
-		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(0, 0, 0.01f);
-		gl.glVertex3f(2.66f, 2.66f, 0.01f);
-		gl.glVertex3f(5.33f, 2.66f, 0.01f);
-		gl.glVertex3f(8, 0, 0.01f);
-		gl.glEnd();
-		
-		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(8, 0, 0.01f);
-		gl.glVertex3f(5.33f, 2.66f, 0.01f);
-		gl.glVertex3f(5.33f, 5.33f, 0.01f);
-		gl.glVertex3f(8, 8, 0.01f);
-		gl.glEnd();
+			
+		// CENTER - NAVIGATION: LOCK
+		gl.glPushName(pickingManager.getPickingID(iUniqueId, 
+				EPickingType.BUCKET_LOCK_ICON_SELECTION, 
+				iViewID));
 
+		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(0, 8, 0.01f);
-		gl.glVertex3f(8, 8, 0.01f);
-		gl.glVertex3f(5.33f, 5.33f, 0.01f);
-		gl.glVertex3f(2.66f, 5.33f, 0.01f);
+		gl.glVertex3f(2.66f, 2.66f, 0.02f);
+		gl.glVertex3f(2.66f, 5.33f, 0.02f);
+		gl.glVertex3f(5.33f, 5.33f, 0.02f);
+		gl.glVertex3f(5.33f, 2.66f, 0.02f);
 		gl.glEnd();
 		
+		textureLock.enable();
+		textureLock.bind();		
+		
+		gl.glColor4f(tmpColor_lock.x(), tmpColor_lock.y(), tmpColor_lock.z(), tmpColor_lock.w());
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(2.66f, 2.66f, 0.03f); 
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(2.66f, 5.33f, 0.03f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(5.33f, 5.33f, 0.03f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom()); 
+		gl.glVertex3f(5.33f, 2.66f, 0.03f);
+		gl.glEnd();
+		
+		textureLock.disable();
+		
+		gl.glPopName();	
+		
+		// BOTTOM - NAVIGATION: MOVE IN
+		gl.glPushName(pickingManager.getPickingID(iUniqueId, 
+				bottomWallPickingType, 
+				iViewID));
+		
+		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(0, 0, 0.01f);
-		gl.glVertex3f(0, 8, 0.01f);
-		gl.glVertex3f(2.66f, 5.33f, 0.01f);
-		gl.glVertex3f(2.66f, 2.66f, 0.01f);
-		gl.glEnd();
-
-		gl.glColor4f(0.9f, 0.9f, 0.9f, 0.5f);
-		
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(2.66f, 2.66f, 0.01f);
-		gl.glVertex3f(2.66f, 5.33f, 0.01f);
-		gl.glVertex3f(5.33f, 5.33f, 0.01f);
-		gl.glVertex3f(5.33f, 2.66f, 0.01f);
-		gl.glEnd();
-		
-		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(0, 0, 0.02f);
 		gl.glVertex3f(2.66f, 2.66f, 0.02f);
 		gl.glVertex3f(5.33f, 2.66f, 0.02f);
 		gl.glVertex3f(8, 0, 0.02f);
 		gl.glEnd();
 		
+		gl.glColor4f(tmpColor_in.x(), tmpColor_in.y(), tmpColor_in.z(), tmpColor_in.w());
+				
 		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(0.05f, 0.05f, 0.02f); 
+		gl.glVertex3f(2.66f, 2.66f, 0.02f);
+		gl.glVertex3f(5.33f, 2.66f, 0.02f);
+		gl.glVertex3f(7.95f, 0.02f, 0.02f);
+		gl.glEnd();
+		
+		textureMoveIn.enable();
+		textureMoveIn.bind();	
+//		texCoords = textureMoveIn.getImageTexCoords();
+//		gl.glColor4f(1,0.3f,0.3f,0.9f);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(2.66f, 0.05f, 0.03f); 
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(2.66f, 2.66f, 0.03f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(5.33f, 2.66f, 0.03f);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top()); 
+		gl.glVertex3f(5.33f, 0.05f, 0.03f);
+		gl.glEnd();		
+		
+		textureMoveIn.disable();
+		
+		gl.glPopName();
+		
+		// RIGHT - NAVIGATION: MOVE RIGHT
+		gl.glPushName(pickingManager.getPickingID(iUniqueId, 
+				rightWallPickingType, 
+				iViewID));
+		
+		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
+		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(8, 0, 0.02f);
 		gl.glVertex3f(5.33f, 2.66f, 0.02f);
 		gl.glVertex3f(5.33f, 5.33f, 0.02f);
 		gl.glVertex3f(8, 8, 0.02f);
 		gl.glEnd();
-
+		
+		gl.glColor4f(tmpColor_right.x(), tmpColor_right.y(), tmpColor_right.z(), tmpColor_right.w());
+		
 		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(7.95f, 0.05f, 0.02f);
+		gl.glVertex3f(5.33f, 2.66f, 0.02f);
+		gl.glVertex3f(5.33f, 5.33f, 0.02f);
+		gl.glVertex3f(7.95f, 7.95f, 0.02f);
+		gl.glEnd();
+		
+		textureMoveRight.enable();
+		textureMoveRight.bind();
+		
+//		gl.glColor4f(0,1,0,1);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(7.95f, 2.66f, 0.03f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(5.33f, 2.66f, 0.03f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(5.33f, 5.33f, 0.03f);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top()); 
+		gl.glVertex3f(7.95f, 5.33f, 0.03f);
+		gl.glEnd();		
+		
+		textureMoveRight.disable();
+		
+		gl.glPopName();
+		
+		// LEFT - NAVIGATION: MOVE LEFT
+		gl.glPushName(pickingManager.getPickingID(iUniqueId, 
+				leftWallPickingType, 
+				iViewID));
+		
+		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(0, 0, 0.02f);
+		gl.glVertex3f(0, 8, 0.02f);
+		gl.glVertex3f(2.66f, 5.33f, 0.02f);
+		gl.glVertex3f(2.66f, 2.66f, 0.02f);
+		gl.glEnd();
+		
+		gl.glColor4f(tmpColor_left.x(), tmpColor_left.y(), tmpColor_left.z(), tmpColor_left.w());
+		
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(0.05f, 0.05f, 0.02f);
+		gl.glVertex3f(0.05f, 7.95f, 0.02f);
+		gl.glVertex3f(2.66f, 5.33f, 0.02f);
+		gl.glVertex3f(2.66f, 2.66f, 0.02f);
+		gl.glEnd();
+		
+		textureMoveLeft.enable();
+		textureMoveLeft.bind();
+		
+//		gl.glColor4f(0,1,0,1);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(0.05f, 2.66f, 0.03f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(0.05f, 5.33f, 0.03f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(2.66f, 5.33f, 0.03f);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top()); 
+		gl.glVertex3f(2.66f, 2.66f, 0.03f);
+		gl.glEnd();		
+		
+		textureMoveLeft.disable();
+		
+		gl.glPopName();
+		
+		// TOP - NAVIGATION: MOVE OUT
+		gl.glPushName(pickingManager.getPickingID(iUniqueId, 
+				topWallPickingType, 
+				iViewID));
+		
+		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
+		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(0, 8, 0.02f);
 		gl.glVertex3f(8, 8, 0.02f);
 		gl.glVertex3f(5.33f, 5.33f, 0.02f);
 		gl.glVertex3f(2.66f, 5.33f, 0.02f);
 		gl.glEnd();
 		
+		gl.glColor4f(tmpColor_out.x(), tmpColor_out.y(), tmpColor_out.z(), tmpColor_out.w());
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(0, 0, 0.02f);
-		gl.glVertex3f(0, 8, 0.02f);
+		gl.glVertex3f(0.05f, 7.95f, 0.02f);
+		gl.glVertex3f(7.95f, 7.95f, 0.02f);
+		gl.glVertex3f(5.33f, 5.33f, 0.02f);
 		gl.glVertex3f(2.66f, 5.33f, 0.02f);
-		gl.glVertex3f(2.66f, 2.66f, 0.02f);
 		gl.glEnd();
+		
+		textureMoveOut.enable();
+		textureMoveOut.bind();
+		
+//		gl.glColor4f(0,1,0,1);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(2.66f, 7.95f, 0.03f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(5.33f, 7.95f, 0.03f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(5.33f, 5.33f, 0.03f);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top()); 
+		gl.glVertex3f(2.66f, 5.33f, 0.03f);
+		gl.glEnd();		
+		
+		textureMoveOut.disable();
+		
+		gl.glPopName();
 	}
 	
 	private void doSlerpActions(final GL gl) 
 	{
-
 		if (arSlerpActions.isEmpty())
 			return;
 		
@@ -581,9 +925,9 @@ implements IMediatorReceiver, IMediatorSender
 		{
 			tmpSlerpAction.start();
 			
-			tmpSlerpAction.getOriginHierarchyLayer().setElementVisibilityById(false, 
-					tmpSlerpAction.getOriginHierarchyLayer().getElementIdByPositionIndex(
-							tmpSlerpAction.getOriginPosIndex()));
+//			tmpSlerpAction.getOriginHierarchyLayer().setElementVisibilityById(false, 
+//					tmpSlerpAction.getOriginHierarchyLayer().getElementIdByPositionIndex(
+//							tmpSlerpAction.getOriginPosIndex()));
 			
 			// Update layer in toolbox renderer
 			((AGLCanvasUser)generalManager.getSingelton().getViewGLCanvasManager().getItem(
@@ -632,14 +976,16 @@ implements IMediatorReceiver, IMediatorSender
 
 		if (iSlerpFactor >= SLERP_RANGE)
 		{
-			slerpAction.getDestinationHierarchyLayer()
-					.setElementVisibilityById(true, iViewId);
-
 			arSlerpActions.remove(slerpAction);
 			
-			// Remove view from origin layer after slerping
-			slerpAction.getOriginHierarchyLayer().removeElement(
-					slerpAction.getElementId());
+//			if (!slerpAction.getOriginHierarchyLayer().equals(slerpAction.getDestinationHierarchyLayer()))
+//			{
+				// Remove view from origin layer after slerping
+//				slerpAction.getOriginHierarchyLayer().removeElement(iViewId);
+//			}
+				
+			slerpAction.getDestinationHierarchyLayer()
+				.setElementVisibilityById(true, iViewId);		
 			
 			iSlerpFactor = 0;
 		}
@@ -649,183 +995,15 @@ implements IMediatorReceiver, IMediatorSender
 			glConnectionLineRenderer.enableRendering(true);
 	}
 	
-	protected void checkForHits() 
-	{
-		ArrayList<Pick> alHits = null;		
-		
-		alHits = pickingManager.getHits(iUniqueId, EPickingType.VIEW_SELECTION);		
-		if(alHits != null)
-		{			
-			if (alHits.size() != 0 )
-			{
-				for (int iCount = 0; iCount < alHits.size(); iCount++)
-				{
-					Pick tempPick = alHits.get(iCount);
-					int iPickingID = tempPick.getPickingID();
-					int iViewID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
-						
-					switch (tempPick.getPickingMode())
-					{			
-						case MOUSE_OVER:
-							
-							generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
-								.setDataAboutView(iViewID);
-							
-							break;
-					
-						case CLICKED:			
-					
-//							if (iDraggedViewID == -1 || iViewID == iDraggedViewID)
-//							{
-//								pickingManager.flushHits(iUniqueId, EPickingType.VIEW_SELECTION);
-//								return;
-//							}
-							
-							generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
-								.setDataAboutView(iViewID);
-							
-							if (poolLayer.containsElement(iViewID) || stackLayer.containsElement(iViewID))
-							{
-								loadViewToUnderInteractionLayer(iViewID);
-							}
-							
-//							// TODO: Should be done using slerping
-//							if (stackLayer.containsElement(iViewID))
-//							{
-//								int iDestPositionIndex = stackLayer.getPositionIndexByElementId(iViewID);
-//								
-//								if (stackLayer.containsElement(iDraggedViewID))
-//								{
-//									int iSrcPositionIndex = stackLayer.getPositionIndexByElementId(iDraggedViewID);
-//									stackLayer.setElementByPositionIndex(iSrcPositionIndex, iViewID);
-//								}		
-//								else if (underInteractionLayer.containsElement(iDraggedViewID))
-//								{
-//									int iSrcPositionIndex = underInteractionLayer.getPositionIndexByElementId(iDraggedViewID);
-//									underInteractionLayer.setElementByPositionIndex(iSrcPositionIndex, iViewID);
-//								}
-//								
-//								stackLayer.setElementByPositionIndex(iDestPositionIndex, iDraggedViewID);
-//							}		
-//							else if (underInteractionLayer.containsElement(iViewID))
-//							{
-//								int iDestPositionIndex = underInteractionLayer.getPositionIndexByElementId(iViewID);
-//								
-//								if (stackLayer.containsElement(iDraggedViewID))
-//								{
-//									int iSrcPositionIndex = stackLayer.getPositionIndexByElementId(iDraggedViewID);
-//									stackLayer.setElementByPositionIndex(iSrcPositionIndex, iViewID);
-//								}		
-//								
-//								underInteractionLayer.setElementByPositionIndex(iDestPositionIndex, iDraggedViewID);
-//							}	
-							
-							// Reset dragged view
-							iDraggedViewID = -1;
-							
-							break;
-					}
-				}
-			}
-		}	
-		
-		if (iDraggedViewID != -1)
-		{
-			pickingManager.flushHits(iUniqueId, EPickingType.BUCKET_MOVE_HIERARCHY_UP_ICON_SELECTION);
-			pickingManager.flushHits(iUniqueId, EPickingType.BUCKET_REMOVE_ICON_SELECTION);
-			pickingManager.flushHits(iUniqueId, EPickingType.BUCKET_SWITCH_ICON_SELECTION);
-			pickingManager.flushHits(iUniqueId, EPickingType.VIEW_SELECTION);
-			return;
-		}
-		
-		alHits = pickingManager.getHits(iUniqueId, EPickingType.BUCKET_MOVE_HIERARCHY_UP_ICON_SELECTION);		
-		if(alHits != null)
-		{			
-			if (alHits.size() != 0 )
-			{
-				for (int iCount = 0; iCount < alHits.size(); iCount++)
-				{
-					Pick tempPick = alHits.get(iCount);
-					int iPickingID = tempPick.getPickingID();
-					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
-						
-					switch (tempPick.getPickingMode())
-					{						
-						case CLICKED:
-							loadViewToUnderInteractionLayer(iExternalID);
-							break;
-					}
-				}
-			}
-		}	
-		
-		alHits = pickingManager.getHits(iUniqueId, EPickingType.BUCKET_REMOVE_ICON_SELECTION);		
-		if(alHits != null)
-		{			
-			if (alHits.size() != 0 )
-			{
-				for (int iCount = 0; iCount < alHits.size(); iCount++)
-				{
-					Pick tempPick = alHits.get(iCount);
-					int iPickingID = tempPick.getPickingID();
-					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
-						
-					switch (tempPick.getPickingMode())
-					{						
-						case CLICKED:
-
-							if (underInteractionLayer.containsElement(iExternalID))
-								underInteractionLayer.removeElement(iExternalID);
-							if (stackLayer.containsElement(iExternalID))
-								stackLayer.removeElement(iExternalID);
-							
-							break;
-					}
-				}
-			}
-		}	
-		
-		alHits = pickingManager.getHits(iUniqueId, EPickingType.BUCKET_SWITCH_ICON_SELECTION);		
-		if(alHits != null)
-		{			
-			if (alHits.size() != 0 )
-			{
-				for (int iCount = 0; iCount < alHits.size(); iCount++)
-				{
-					Pick tempPick = alHits.get(iCount);
-					int iPickingID = tempPick.getPickingID();
-					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
-						
-					switch (tempPick.getPickingMode())
-					{						
-						case CLICKED:
-
-							iDraggedViewID = iExternalID;	
-							
-							break;
-					}
-				}
-			}
-		}	
-		
-		pickingManager.flushHits(iUniqueId, EPickingType.BUCKET_MOVE_HIERARCHY_UP_ICON_SELECTION);
-		pickingManager.flushHits(iUniqueId, EPickingType.BUCKET_REMOVE_ICON_SELECTION);
-		pickingManager.flushHits(iUniqueId, EPickingType.BUCKET_SWITCH_ICON_SELECTION);
-		pickingManager.flushHits(iUniqueId, EPickingType.VIEW_SELECTION);
-	}
-	
 	private void loadViewToUnderInteractionLayer(final int iViewID) 
 	{
-
-		generalManager
-				.getSingelton()
-				.logMsg(this.getClass().getSimpleName()
+		generalManager.getSingelton().logMsg(this.getClass().getSimpleName()
 								+ ": loadPathwayToUnderInteractionPosition(): View with ID "
 								+ iViewID + " is under interaction.", LoggerType.VERBOSE);
 
-		// Check if pathway is already under interaction
-		if (underInteractionLayer.containsElement(iViewID))
-			return;
+//		// Check if pathway is already under interaction
+//		if (underInteractionLayer.containsElement(iViewID))
+//			return;
 				
 		// Check if other slerp action is currently running
 		if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE)
@@ -845,21 +1023,31 @@ implements IMediatorReceiver, IMediatorSender
 //		else
 //		{
 
-		// Check if layered layer has free spot to switch out view under interaction
-		if (stackLayer.getElementList().size() < stackLayer.getCapacity())
-		{
-			// Slerp current view back to layered view
-			if (!underInteractionLayer.getElementList().isEmpty())
-			{
-				SlerpAction reverseSlerpAction = new SlerpAction(
-						underInteractionLayer.getElementIdByPositionIndex(0),
-						underInteractionLayer, true);
-	
-				arSlerpActions.add(reverseSlerpAction);
-			}
-		}
-		else
-		{
+//		// Check if stack layer has a free spot to switch out view under interaction
+//		if (stackLayer.containsElement(-1))
+//		{
+//			// Slerp current view back to layered view
+//			if (!underInteractionLayer.getElementList().isEmpty())
+//			{
+//				// Slerp selected view to under interaction transition position
+//				SlerpAction slerpActionTransition = new SlerpAction(
+//						iViewID, poolLayer, transitionLayer);	
+//				arSlerpActions.add(slerpActionTransition);
+//				
+//				// Slerp under interaction view to free spot in stack
+//				SlerpAction reverseSlerpAction = new SlerpAction(
+//						underInteractionLayer.getElementIdByPositionIndex(0),
+//						underInteractionLayer, stackLayer);
+//				arSlerpActions.add(reverseSlerpAction);	
+//				
+//				// Slerp selected view from transition position to under interaction position
+//				SlerpAction slerpAction = new SlerpAction(
+//						iViewID, transitionLayer, underInteractionLayer);	
+//				arSlerpActions.add(slerpAction);	
+//			}
+//		}
+//		else
+//		{
 			// Check if view is already loaded in the stack layer
 			if (stackLayer.containsElement(iViewID))
 			{
@@ -869,10 +1057,10 @@ implements IMediatorReceiver, IMediatorSender
 				arSlerpActions.add(slerpActionTransition);
 				
 				// Slerp under interaction view to free spot in stack
-				SlerpAction reverseSlerpAction2 = new SlerpAction(
+				SlerpAction reverseSlerpAction = new SlerpAction(
 						underInteractionLayer.getElementIdByPositionIndex(0),
 						underInteractionLayer, stackLayer);
-				arSlerpActions.add(reverseSlerpAction2);	
+				arSlerpActions.add(reverseSlerpAction);	
 				
 				// Slerp selected view from transition position to under interaction position
 				SlerpAction slerpAction = new SlerpAction(
@@ -903,8 +1091,8 @@ implements IMediatorReceiver, IMediatorSender
 						iViewID, transitionLayer, underInteractionLayer);	
 				arSlerpActions.add(slerpAction);	
 			}
-		}
-		
+//		}
+//		
 		iSlerpFactor = 0;
 		
 //		// Slerp current pathway back to layered view
@@ -949,21 +1137,352 @@ implements IMediatorReceiver, IMediatorSender
 	@Override
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) 
 	{
-
-		// TODO Auto-generated method stub
+		generalManager.getSingelton().logMsg(
+				this.getClass().getSimpleName()
+						+ " ("+iUniqueId+"): updateReceiver(Object eventTrigger, ISet updatedSet): Update called by "
+						+ eventTrigger.getClass().getSimpleName()+" ("+((AGLCanvasUser)eventTrigger).getId()+")",
+				LoggerType.VERBOSE);
 		
+		ISetSelection refSetSelection = (ISetSelection) updatedSet;
+
+		refSetSelection.getReadToken();
+		ArrayList<Integer> iAlSelection = refSetSelection.getSelectionIdArray();
+		ArrayList<Integer> iAlSelectionGroup = refSetSelection.getGroupArray();
+		ArrayList<IGraphItem> alPathwayVertexGraphItem = new ArrayList<IGraphItem>();
+		
+		for (int iSelectionIndex = 0; iSelectionIndex < iAlSelection.size(); iSelectionIndex++)
+		{			
+			int iAccessionID = iAlSelection.get(iSelectionIndex);
+			
+			if (iAlSelectionGroup.get(iSelectionIndex) != 2)
+				continue;
+			
+			String sAccessionCode = generalManager.getSingelton().getGenomeIdManager()
+				.getIdStringFromIntByMapping(iAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
+		
+			System.out.println("Accession Code: " +sAccessionCode);
+								
+			int iNCBIGeneID = generalManager.getSingelton().getGenomeIdManager()
+				.getIdIntFromIntByMapping(iAccessionID, EGenomeMappingType.ACCESSION_2_NCBI_GENEID);
+
+			String sNCBIGeneIDCode = generalManager.getSingelton().getGenomeIdManager()
+				.getIdStringFromIntByMapping(iNCBIGeneID, EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
+		
+			int iNCBIGeneIDCode = StringConversionTool.convertStringToInt(sNCBIGeneIDCode, -1);
+			
+			PathwayVertexGraphItem tmpPathwayVertexGraphItem = 
+				((PathwayVertexGraphItem)generalManager.getSingelton().getPathwayItemManager().getItem(
+					generalManager.getSingelton().getPathwayItemManager().getPathwayVertexGraphItemIdByNCBIGeneId(iNCBIGeneIDCode)));
+		
+			alPathwayVertexGraphItem.add(tmpPathwayVertexGraphItem);
+		}
+		
+		if (!alPathwayVertexGraphItem.isEmpty())
+			loadDependentPathways(alPathwayVertexGraphItem);
+		
+	}
+	
+	public void loadDependentPathways(final List<IGraphItem> alVertex) {
+
+		// Remove pathways from stacked layer view
+//		poolLayer.removeAllElements();
+		
+		Iterator<IGraphItem> iterPathwayGraphItem = alVertex.iterator();
+		Iterator<IGraphItem> iterIdenticalPathwayGraphItemRep = null;
+		
+		IGraphItem pathwayGraphItem;
+		int iPathwayID = 0;
+		
+		while (iterPathwayGraphItem.hasNext())
+		{
+			pathwayGraphItem = iterPathwayGraphItem.next();
+			
+			iterIdenticalPathwayGraphItemRep = 
+				pathwayGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
+
+			while (iterIdenticalPathwayGraphItemRep.hasNext())
+			{
+				iPathwayID = ((PathwayGraph)iterIdenticalPathwayGraphItemRep.next()
+						.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT).toArray()[0]).getId();
+
+				// Check if pathway is already loaded in bucket
+				if (generalManager.getSingelton().getPathwayManager().isPathwayVisible(iPathwayID))
+					continue;
+							
+				ArrayList<Integer> iArSetIDs = new ArrayList<Integer>();
+				iArSetIDs.add(35101);
+				iArSetIDs.add(36101);
+				iArSetIDs.add(37101);
+				iArSetIDs.add(39101);
+				
+				// Create new selection set
+				int iSelectionSetID = generalManager.getSingelton().getSetManager().createId(ManagerObjectType.SET);
+				CmdDataCreateSelectionSetMakro selectedSetCmd = (CmdDataCreateSelectionSetMakro) generalManager.getSingelton().getCommandManager()
+					.createCommandByType(CommandQueueSaxType.CREATE_SET_SELECTION_MAKRO);
+				selectedSetCmd.setAttributes(iSelectionSetID);
+				selectedSetCmd.doCommand();
+				
+				iArSetIDs.add(iSelectionSetID);
+				
+				int iGeneratedViewID = generalManager.getSingelton().getViewGLCanvasManager().createId(ManagerObjectType.VIEW);
+				
+				// Create Pathway3D view
+				CmdGlObjectPathway3D cmdPathway = (CmdGlObjectPathway3D) generalManager.getSingelton()
+					.getCommandManager().createCommandByType(CommandQueueSaxType.CREATE_GL_PATHWAY_3D);
+				
+				cmdPathway.setAttributes(iGeneratedViewID, iPathwayID, iArSetIDs, 
+						ProjectionMode.ORTHOGRAPHIC, -4, 4, 4, -4, -20, 20);
+					
+				cmdPathway.doCommand();
+				
+				iAlUninitializedViewIDs.add(iGeneratedViewID);
+				
+//				// Slerp to layered pathway view
+//				SlerpAction slerpAction = new SlerpAction(iPathwayId,
+//						poolLayer, false);
+//		
+//				arSlerpActions.add(slerpAction);
+			}
+			
+			iSlerpFactor = 0;
+		}
 	}
 	
 	/*
 	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.geneview.core.manager.view.EPickingType, org.geneview.core.manager.view.EPickingMode, int, org.geneview.core.manager.view.Pick)
 	 */
-	protected void handleEvents(final EPickingType ePickingType, 
-			final EPickingMode ePickingMode, 
-			final int iExternalID,
-			final Pick pick)
+	protected void handleEvents(EPickingType pickingType,
+			EPickingMode pickingMode, int iExternalID, Pick pick) 
 	{
+		switch (pickingType)
+		{
+		case VIEW_SELECTION:
+			switch (pickingMode)
+			{
+			case MOUSE_OVER:
+				
+				generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
+					.setDataAboutView(iExternalID);
+				
+				break;
 		
+			case CLICKED:			
+				
+				generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
+					.setDataAboutView(iExternalID);
+				
+				if (poolLayer.containsElement(iExternalID))// || stackLayer.containsElement(iViewID))
+				{
+					loadViewToUnderInteractionLayer(iExternalID);
+				}
+				
+				break;
+			}
+		
+		pickingManager.flushHits(iUniqueId, EPickingType.VIEW_SELECTION);
+			
+		break;
+		
+		case BUCKET_LOCK_ICON_SELECTION:
+			switch (pickingMode)
+			{
+			case CLICKED:
+
+				break;
+				
+			case MOUSE_OVER:
+				
+				iNavigationMouseOverViewID_lock = iExternalID;
+				iNavigationMouseOverViewID_left = -1;
+				iNavigationMouseOverViewID_right = -1;
+				iNavigationMouseOverViewID_out = -1;
+				iNavigationMouseOverViewID_in = -1;
+				
+				break;
+			}
+			
+		pickingManager.flushHits(iUniqueId, EPickingType.BUCKET_LOCK_ICON_SELECTION);	
+			
+		break;
+		
+		case BUCKET_MOVE_IN_ICON_SELECTION:
+			switch (pickingMode)
+			{
+			case CLICKED:
+				loadViewToUnderInteractionLayer(iExternalID);							
+				bEnableNavigationOverlay = false;
+				break;
+				
+			case MOUSE_OVER:
+				
+				iNavigationMouseOverViewID_left = -1;
+				iNavigationMouseOverViewID_right = -1;
+				iNavigationMouseOverViewID_out = -1;
+				iNavigationMouseOverViewID_in = iExternalID;
+				iNavigationMouseOverViewID_lock = -1;
+				
+				break;
+			}
+			
+		pickingManager.flushHits(iUniqueId, EPickingType.BUCKET_MOVE_IN_ICON_SELECTION);
+		
+		break;
+		
+		case BUCKET_MOVE_OUT_ICON_SELECTION:
+			switch (pickingMode)
+			{
+			case CLICKED:
+				
+				// Check if other slerp action is currently running
+				if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE)
+					break;
+
+				arSlerpActions.clear();
+				
+				glConnectionLineRenderer.enableRendering(false);
+				
+				SlerpAction slerpActionTransition = new SlerpAction(
+						iExternalID, stackLayer, poolLayer);	
+				arSlerpActions.add(slerpActionTransition);
+				
+				bEnableNavigationOverlay = false;
+
+				break;
+				
+			case MOUSE_OVER:
+				
+				iNavigationMouseOverViewID_left = -1;
+				iNavigationMouseOverViewID_right = -1;
+				iNavigationMouseOverViewID_out = iExternalID;
+				iNavigationMouseOverViewID_in = -1;
+				iNavigationMouseOverViewID_lock = -1;
+				
+				break;
+			}
+
+		pickingManager.flushHits(iUniqueId, EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION);	
+			
+		break;
+		
+		case BUCKET_MOVE_LEFT_ICON_SELECTION:
+			switch (pickingMode)
+			{
+			case CLICKED:
+				// Check if other slerp action is currently running
+				if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE)
+					break;
+
+				arSlerpActions.clear();
+				
+				glConnectionLineRenderer.enableRendering(false);
+				
+				int iDestinationPosIndex = stackLayer.getPositionIndexByElementId(iExternalID);
+				
+				if (iDestinationPosIndex == 3)
+					iDestinationPosIndex = 0;
+				else
+					iDestinationPosIndex++;
+				
+				if(stackLayer.getElementIdByPositionIndex(iDestinationPosIndex) == -1)
+				{
+					SlerpAction slerpAction= new SlerpAction(iExternalID, 
+							stackLayer, stackLayer, stackLayer.getPositionIndexByElementId(-1));	
+					arSlerpActions.add(slerpAction);
+				}
+				else
+				{	
+					SlerpAction slerpActionTransition = new SlerpAction(
+							iExternalID, stackLayer, transitionLayer);	
+					arSlerpActions.add(slerpActionTransition);
+					
+					SlerpAction slerpAction= new SlerpAction(
+							stackLayer.getElementIdByPositionIndex(iDestinationPosIndex), 
+							stackLayer, stackLayer, stackLayer.getPositionIndexByElementId(iExternalID));	
+					arSlerpActions.add(slerpAction);
+					
+					SlerpAction slerpActionTransitionReverse= new SlerpAction(
+							iExternalID, transitionLayer, stackLayer, iDestinationPosIndex);	
+					arSlerpActions.add(slerpActionTransitionReverse);
+				}
+				
+				bEnableNavigationOverlay = false;
+				
+				break;
+				
+			case MOUSE_OVER:
+				
+				iNavigationMouseOverViewID_left = iExternalID;
+				iNavigationMouseOverViewID_right = -1;
+				iNavigationMouseOverViewID_out = -1;
+				iNavigationMouseOverViewID_in = -1;
+				iNavigationMouseOverViewID_lock = -1;
+				
+				break;
+			}
+			
+		pickingManager.flushHits(iUniqueId, EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION);	
+		
+		break;
+		
+		case BUCKET_MOVE_RIGHT_ICON_SELECTION:
+			switch (pickingMode)
+			{
+			case CLICKED:
+				// Check if other slerp action is currently running
+				if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE)
+					break;
+
+				arSlerpActions.clear();
+				
+				glConnectionLineRenderer.enableRendering(false);
+				
+				int iDestinationPosIndex = stackLayer.getPositionIndexByElementId(iExternalID);
+				
+				if (iDestinationPosIndex == 0)
+					iDestinationPosIndex = 3;
+				else
+					iDestinationPosIndex--;
+				
+				if(stackLayer.getElementIdByPositionIndex(iDestinationPosIndex) == -1)
+				{
+					SlerpAction slerpAction= new SlerpAction(iExternalID, 
+							stackLayer, stackLayer, stackLayer.getPositionIndexByElementId(-1));	
+					arSlerpActions.add(slerpAction);
+				}
+				else
+				{
+					SlerpAction slerpActionTransition = new SlerpAction(
+							iExternalID, stackLayer, transitionLayer);	
+					arSlerpActions.add(slerpActionTransition);
+					
+					SlerpAction slerpAction= new SlerpAction(
+							stackLayer.getElementIdByPositionIndex(iDestinationPosIndex), 
+							stackLayer, stackLayer, stackLayer.getPositionIndexByElementId(iExternalID));	
+					arSlerpActions.add(slerpAction);
+					
+					SlerpAction slerpActionTransitionReverse= new SlerpAction(
+							iExternalID, transitionLayer, stackLayer, iDestinationPosIndex);	
+					arSlerpActions.add(slerpActionTransitionReverse);	
+				}	
+					
+				bEnableNavigationOverlay = false;				
+					
+				break;
+			
+			case MOUSE_OVER:
+				
+				iNavigationMouseOverViewID_left = -1;
+				iNavigationMouseOverViewID_right = iExternalID;
+				iNavigationMouseOverViewID_out = -1;
+				iNavigationMouseOverViewID_in = -1;
+				iNavigationMouseOverViewID_lock = -1;
+			
+				break;
+			}
+		
+			break;
+		}
 	}
 	
 	/*
@@ -971,8 +1490,7 @@ implements IMediatorReceiver, IMediatorSender
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#getInfo()
 	 */
 	public ArrayList<String> getInfo()
-	{
-		
+	{	
 		ArrayList<String> sAlInfo = new ArrayList<String>();
 		sAlInfo.add("No info available!");
 		return sAlInfo;

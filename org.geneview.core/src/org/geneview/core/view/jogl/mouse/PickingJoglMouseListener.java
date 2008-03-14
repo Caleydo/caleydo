@@ -21,7 +21,8 @@ extends JoglMouseListener {
 	
 	protected Point pickedPointCurrent;
 	
-	protected boolean bMousePressed = false;
+	protected boolean bLeftMouseButtonPressed = false;
+	protected boolean bRightMouseButtonPressed = false;
 	
 	protected boolean bMouseReleased = false;
 	
@@ -45,10 +46,13 @@ extends JoglMouseListener {
 
 		super.mousePressed(mouseEvent);
 		
-		if (mouseEvent.getButton() == MouseEvent.BUTTON1_MASK)
+		if (mouseEvent.getButton() == MouseEvent.BUTTON1)
 		{
-			/** Left mouse button clicked.. */
-			bMousePressed = true;
+			bLeftMouseButtonPressed = true;
+		}
+		else if (mouseEvent.getButton() == MouseEvent.BUTTON3)
+		{
+			bRightMouseButtonPressed = true;
 		}
 		
 		pickedPointDragStart.setLocation(mouseEvent.getPoint());
@@ -74,8 +78,11 @@ extends JoglMouseListener {
 	
 		super.mouseReleased(mouseEvent);
 		
-		bMouseReleased = true;
-		pickedPointCurrent = mouseEvent.getPoint();
+		if (mouseEvent.getButton() == MouseEvent.BUTTON1)
+		{
+			bMouseReleased = true;
+			pickedPointCurrent = mouseEvent.getPoint();
+		}
 	}
 	
 	/*
@@ -90,12 +97,19 @@ extends JoglMouseListener {
 		pickedPointCurrent = mouseEvent.getPoint();
 	}
     
-    public final boolean wasMousePressed() {
+    public final boolean wasLeftMouseButtonPressed() {
     	
-    	boolean bTmp = bMousePressed;
+    	boolean bTmp = bLeftMouseButtonPressed;
     	
     	return bTmp;
     }
+    
+    public final boolean wasRightMouseButtonPressed() {
+    	
+    	boolean bTmp = bRightMouseButtonPressed;
+    	
+    	return bTmp;
+    }    
     
     public final boolean wasMouseMoved() {
     	
@@ -139,7 +153,7 @@ extends JoglMouseListener {
     	bMouseDragged = false;
     	bMouseReleased = false;
     	bMouseMoved = false;
-    	bMousePressed = false;
+    	bLeftMouseButtonPressed = false;
+    	bRightMouseButtonPressed = false;
     }
-
 }

@@ -32,9 +32,11 @@ implements IPathwayManager {
 
 	private HashMap<Integer, PathwayGraph> hashPathwayIdToPathwayGraphLUT;
 	
+	private HashMap<Integer, Boolean> hashPathwayIdToVisibilityState;
+	
 	private HashMap<String, Integer> hashPathwayTitleToPathwayIdLUT;
 	
-	private HashMap<EPathwayDatabaseType, PathwayDatabase> hashPathwayDatabase;
+	private HashMap<EPathwayDatabaseType, PathwayDatabase> hashPathwayDatabase;	
 	
 	/**
 	 * Root pathway contains all nodes that are loaded into the system.
@@ -62,6 +64,7 @@ implements IPathwayManager {
 		hashPathwayIdToPathwayGraphLUT = new HashMap<Integer, PathwayGraph>();
 		hashPathwayTitleToPathwayIdLUT = new HashMap<String, Integer>();
 		hashPathwayDatabase = new HashMap<EPathwayDatabaseType, PathwayDatabase>();
+		hashPathwayIdToVisibilityState = new HashMap<Integer, Boolean>();
 		
 		rootPathwayGraph = new Graph(0);
 	}
@@ -101,6 +104,7 @@ implements IPathwayManager {
 
 		hashPathwayIdToPathwayGraphLUT.put(iPathwayId, pathway);
 		hashPathwayTitleToPathwayIdLUT.put(sTitle, iPathwayId);
+		hashPathwayIdToVisibilityState.put(iPathwayId, false);
 		
 		rootPathwayGraph.addGraph(pathway, EGraphItemHierarchy.GRAPH_CHILDREN);
 	
@@ -219,7 +223,26 @@ implements IPathwayManager {
 		
 		return rootPathwayGraph;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.manager.data.IPathwayManager#setPathwayVisibilityStateByID(int, boolean)
+	 */
+	public void setPathwayVisibilityStateByID(final int iPathwayID,
+			final boolean bVisibilityState) {
 		
+		hashPathwayIdToVisibilityState.put(iPathwayID, bVisibilityState);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.manager.data.IPathwayManager#isPathwayVisible(int)
+	 */
+	public boolean isPathwayVisible(final int iPathwayID) {
+		
+		return hashPathwayIdToVisibilityState.get(iPathwayID);
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.geneview.core.manager.data.IPathwayManager#createPathwayImageMap(java.lang.String)

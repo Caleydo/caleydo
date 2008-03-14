@@ -3,15 +3,18 @@ package org.geneview.core.view.opengl.util;
 
 public enum EIconTextures
 {
-	ARROW_LEFT ("resources/icons/go-previous.png"),
-	ARROW_RIGHT ("resources/icons/go-next.png"),
-	REMOVE ("resources/icons/emblem-unreadable.png"),
+	ARROW_LEFT ("resources/icons/arrow-left.png"),
+	ARROW_RIGHT ("resources/icons/arrow-right.png"),
+	ARROW_UP ("resources/icons/arrow-up.png"),
+	ARROW_DOWN ("resources/icons/arrow-down.png"),
+	REMOVE ("resources/icons/remove.png"),
+	LOCK ("resources/icons/lock.png"),
 	DUPLICATE ("resources/icons/edit-copy.png"),
 	POLYLINE_TO_AXIS ("resources/icons/transform-rotate.png"),
 	PREVENT_OCCLUSION ("resources/icons/selection-exclude.png"),
 	RENDER_SELECTION ("resources/icons/render-selection.png"),
 	RESET_SELECTIONS ("resources/icons/view-refresh.png"),
-	SEARCH_PATHWAY ("resources/icons/go-next.png");
+	SEARCH_PATHWAY ("resources/icons/arrow-right.png");
 	
 	private String sFileName;
 	

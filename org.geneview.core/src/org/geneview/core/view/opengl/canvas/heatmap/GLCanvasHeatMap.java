@@ -100,6 +100,8 @@ extends AGLCanvasStorageBasedView
 		glToolboxRenderer = new GLToolboxRenderer(gl, generalManager,
 				iUniqueId, iRemoteViewID, new Vec3f (0, 0, 0), layer, true, renderStyle);
 		
+		containedHierarchyLayer = layer;
+		
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
 		
 		init(gl);
@@ -199,7 +201,10 @@ extends AGLCanvasStorageBasedView
 		return alInfo;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.geneview.core.manager.view.EPickingType, org.geneview.core.manager.view.EPickingMode, int, org.geneview.core.manager.view.Pick)
+	 */
 	protected void handleEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) 
 	{
@@ -292,7 +297,7 @@ extends AGLCanvasStorageBasedView
 				textRenderer.draw3D(sContent,						
 						 (fYPosition + vecFieldWidthAndHeight.y() / 3),
 						- (fXPosition + vecFieldWidthAndHeight.x() / 2),// - renderStyle.getXCenter(), 
-						0.1f,
+						0.01f,
 						fFontScaling);
 				textRenderer.end3DRendering();
 				gl.glRotatef(-90, 0, 0, 1);

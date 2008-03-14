@@ -245,7 +245,7 @@ public class GLConnectionLineRenderer {
 			final int iNumberOfLines)
 	{
 		
-		gl.glColor4f(1, 1, 1, 1);
+		gl.glColor4f(1, 1, 1, 0.6f);
 		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + iNumberOfLines + 4);
 		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(vecSrcPoint.x(),

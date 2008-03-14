@@ -46,9 +46,7 @@ public class PickingManager extends AAbstractManager
 	
 	private HashMap<Integer, Long> hashViewIDToLastMouseMovedTimeStamp;
 	private HashMap<Integer, Boolean> hashViewIDToIsMouseOverPickingEvent;
-	
-	
-	// TODO: replace AUniqueManagedObject with view id
+
 	
 	/**
 	 * Constructor 
@@ -134,7 +132,7 @@ public class PickingManager extends AAbstractManager
 
 		EPickingMode ePickingMode = EPickingMode.CLICKED;		
 		
-		if (pickingTriggerMouseAdapter.wasMousePressed()
+		if (pickingTriggerMouseAdapter.wasLeftMouseButtonPressed()
 				|| bMouseReleased)
 		{			
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
@@ -301,7 +299,11 @@ public class PickingManager extends AAbstractManager
 	{
 		//TODO: exceptions
 		int iSignature = getSignatureFromPickingID(iPickingID, iViewID);
-		return hashSignatureToPickingIDHashMap.get(iSignature).get(iPickingID);
+		HashMap<Integer, Integer> hashMap = hashSignatureToPickingIDHashMap.get(iSignature);
+		if (hashMap == null)
+			return -1;
+		
+		return hashMap.get(iPickingID);
 	}
 	
 	/**
@@ -353,7 +355,7 @@ public class PickingManager extends AAbstractManager
 			hashSignatureToHitList.get(getSignature(iViewID, iType)).clear();
 		}			
 	}
-			
+	
 	private int calculateID(int iViewID, int iType)
 	{		
 		iIDCounter++;
@@ -431,11 +433,16 @@ public class PickingManager extends AAbstractManager
 		
 			int iType = getTypeFromPickingID(iPickingID);
 						
-			// check here for all icons in the toolbox that the overall should handle
-			// FIXME: longterm: not the nicest thing, removes generality from picking manager
-			if(iType == EPickingType.BUCKET_MOVE_HIERARCHY_UP_ICON_SELECTION.ordinal()
-					|| iType == EPickingType.BUCKET_REMOVE_ICON_SELECTION.ordinal()
-					|| iType == EPickingType.BUCKET_SWITCH_ICON_SELECTION.ordinal())
+//			// check here for all icons in the toolbox that the bucket should handle
+//			// FIXME: longterm: not the nicest thing, removes generality from picking manager
+			if(iType == EPickingType.BUCKET_MOVE_IN_ICON_SELECTION.ordinal()
+					|| iType == EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION.ordinal()
+					|| iType == EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION.ordinal()
+					|| iType == EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION.ordinal()
+					|| iType == EPickingType.BUCKET_LOCK_ICON_SELECTION.ordinal()
+					|| iType == EPickingType.VIEW_SELECTION.ordinal())
+//					|| iType == EPickingType.BUCKET_REMOVE_ICON_SELECTION.ordinal()
+//					|| iType == EPickingType.BUCKET_SWITCH_ICON_SELECTION.ordinal())
 			{
 				
 				iSignature = getSignatureFromPickingID(iPickingID, iViewID);

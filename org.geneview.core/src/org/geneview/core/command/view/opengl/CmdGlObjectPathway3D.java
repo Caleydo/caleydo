@@ -5,8 +5,10 @@ import java.util.StringTokenizer;
 
 import org.geneview.core.command.CommandQueueSaxType;
 import org.geneview.core.command.base.ACmdCreate_GlCanvasUser;
+import org.geneview.core.data.view.camera.ViewFrustumBase;
 import org.geneview.core.manager.ICommandManager;
 import org.geneview.core.manager.IGeneralManager;
+import org.geneview.core.manager.type.ManagerObjectType;
 import org.geneview.core.parser.parameter.IParameterHandler;
 import org.geneview.core.parser.parameter.IParameterHandler.ParameterHandlerType;
 import org.geneview.core.util.ConversionStringInteger;
@@ -71,6 +73,25 @@ extends ACmdCreate_GlCanvasUser {
 				ParameterHandlerType.INT, "1");		
 		
 		iPathwayID = StringConversionTool.convertStringToInt(sAttribute4, -1);
+	}
+	
+	public void setAttributes(final int iUniqueID,
+			final int iPathwayID,
+			final ArrayList<Integer> iArSetIDs,
+			final ViewFrustumBase.ProjectionMode projectionMode,
+			final float fLeft,
+			final float fRight,
+			final float fTop,
+			final float fBottom,
+			final float fNear,
+			final float fFar)
+	{
+		super.setAttributes(projectionMode, fLeft, fRight, fTop, fBottom, fNear, fFar);
+		
+		this.iArSetIDs = iArSetIDs;
+		this.iPathwayID = iPathwayID;
+		this.iUniqueId = iUniqueID;
+		iParentContainerId = -1;
 	}
 	
 	/*

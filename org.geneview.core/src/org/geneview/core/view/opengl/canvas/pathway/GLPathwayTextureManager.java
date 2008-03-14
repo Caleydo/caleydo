@@ -23,8 +23,6 @@ import com.sun.opengl.util.texture.TextureIO;
  *
  */
 public class GLPathwayTextureManager {
-
-	public static final int PATHWAY_TEXTURE_SELECTION = 2;
 	
 	private IGeneralManager generalManager;
 	
@@ -118,8 +116,8 @@ public class GLPathwayTextureManager {
 		float fTextureHeight = GLPathwayManager.SCALING_FACTOR_Y * 
 			((PathwayGraph)generalManager.getSingelton().getPathwayManager().getItem(iPathwayId)).getHeight();
 		
-		gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager().getPickingManager()
-				.getPickingID(containingView.getId(), EPickingType.PATHWAY_TEXTURE_SELECTION, iPathwayId));
+//		gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager().getPickingManager()
+//				.getPickingID(containingView.getId(), EPickingType.PATHWAY_TEXTURE_SELECTION, iPathwayId));
 				
 		gl.glBegin(GL.GL_QUADS);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom()); 
@@ -153,7 +151,7 @@ public class GLPathwayTextureManager {
 		gl.glVertex3f(0.0f, 0.0f, 0.0f);; 				
 		gl.glEnd();
 		
-		gl.glPopName();
+//		gl.glPopName();
 	}
 	
 	/**

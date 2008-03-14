@@ -19,34 +19,33 @@
 				<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="19401" 
 				  	gl_canvas="99078" parent="13331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
 			-->	
-				
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="85401" parent="99078" label="Pathway" 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="88401" parent="99081" label="Pathway" 
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
 							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
-							attrib4="405600"
-							detail="35101 36101 37101 39101 90101 91101" /> 							
-						
+							attrib4="403600"							
+							detail="35101 36101 37101 39101 96101 97101" />
+			<!--
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="86401" parent="99079" label="Pathway" 
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
 							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"	
 							attrib4="10600"						
 							detail="35101 36101 37101 39101 92101 93101" /> 	
-													
+			
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="85401" parent="99078" label="Pathway" 
+							gl_origin="0 0 0" 
+							gl_rotation="0 0 0 0"					
+							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
+							attrib4="405600"
+							detail="35101 36101 37101 39101 90101 91101" /> 							
+																	
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="87401" parent="99080" label="Pathway" 
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
 							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
 							attrib4="404600"
-							detail="35101 36101 37101 39101 94101 95101" /> 						
-	
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="88401" parent="99081" label="Pathway" 
-							gl_origin="0 0 0" 
-							gl_rotation="0 0 0 0"					
-							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
-							attrib4="403600"							
-							detail="35101 36101 37101 39101 96101 97101" /> 
+							detail="35101 36101 37101 39101 94101 95101" /> 						 
 							
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="89401" parent="99081" label="Pathway" 
 							gl_origin="0 0 0" 
@@ -67,7 +66,9 @@
 							gl_rotation="0 0 0 0"					
 							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
 							attrib4="409600"							
-							detail="35101 36101 37101 39101 82101 83101" /> 																					
+							detail="35101 36101 37101 39101 82101 83101" /> 	
+			-->																			
+																																							
 							
 		<!-- Window	11331	-->
 			<!--
@@ -90,21 +91,6 @@
 							attrib4="transparency 0.6" 
 							detail="35101 36101 37101 39101 86101 87101" /> 						
 			
-		<!-- Window	12331	-->	
-		<!--
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="12331"
-				label="Heatmap" attrib1="ROW	HORIZONTAL"	/>	 
-				 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	 
-			  	uniqueId="18401" parent="12331" gl_forwarder="99077" label="Canvas" attrib2="300 300" detail="1077991"	/>
-  		
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2D"			cmdId="68993"	uniqueId="84401" parent="18401" label="Heatmap"	
-				gl_origin="0 0 0" gl_rotation="1 0 0 15"						
-				attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
-				attrib4="0 100"	
-				detail="35101 36101 37101 39101" />													
-		-->
-							
 		<!-- Window	10331 -->	
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="10331" 
 				label="Overall Jukebox 3D" attrib1="ROW	HORIZONTAL"	/>	 
@@ -120,9 +106,9 @@
 							detail="" /> 
 			    
 	  	<!-- Mediator -->
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator: Pathway - PC / Heatmap" 		attrib1="85401 86401 87401 88401 89401 90401 91401" attrib2="82401 84401" detail="SELECTION_MEDIATOR" /> 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator: PC - Pathway / Heatmap" 		attrib1="82401" attrib2="84401 85401 86401 87401 88401 89401 90401 91401" detail="SELECTION_MEDIATOR" />  
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator: HeatMap - Pathway / PC" 		attrib1="84401" attrib2="82401 85401 86401 87401 88401 89401 90401 91401" detail="SELECTION_MEDIATOR" />  
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator: Pathway - PC / Heatmap" 		attrib1="85401 86401 87401 88401 89401 90401 91401" attrib2="82401 83401 84401" detail="SELECTION_MEDIATOR" /> 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator: PC - Pathway / Heatmap" 		attrib1="82401" attrib2="83401 84401 85401 86401 87401 88401 89401 90401 91401" detail="SELECTION_MEDIATOR" />  
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator: HeatMap - Pathway / PC" 		attrib1="84401" attrib2="82401 83401 85401 86401 87401 88401 89401 90401 91401" detail="SELECTION_MEDIATOR" />  
 			
 							    
    </CommandBuffer>

@@ -118,13 +118,20 @@ implements IMediatorReceiver, IMediatorSender {
 		{
 			alSelectionType.add(selectionType);
 		}		
+		
 		pathwayVertexSelectionManager = new GenericSelectionManager(
 				alSelectionType, EViewInternalSelectionType.NORMAL);		
 	}
 
 	public void setPathwayID(final int iPathwayID) {
 		
+		
+		IPathwayManager pathwayManager = 
+			generalManager.getSingelton().getPathwayManager();
+		
+		pathwayManager.setPathwayVisibilityStateByID(this.iPathwayID, false);
 		this.iPathwayID = iPathwayID;
+		pathwayManager.setPathwayVisibilityStateByID(iPathwayID, true);
 	}
 	
 	/*
@@ -151,7 +158,13 @@ implements IMediatorReceiver, IMediatorSender {
 		glToolboxRenderer = new GLToolboxRenderer(gl, generalManager,
 				iUniqueId, iRemoteViewID, new Vec3f (0, 0, 0), layer, true, renderStyle);
 		
+		containedHierarchyLayer = layer;
+				
 		init(gl);
+
+		// Only send out contained genes for pathways inside the bucket (not in pool)
+		if (containedHierarchyLayer != null && containedHierarchyLayer.getCapacity() <= 4)
+			initialContainedGenePropagation(); 
 	}
 	
 	/*
@@ -161,8 +174,6 @@ implements IMediatorReceiver, IMediatorSender {
 	public void init(final GL gl) {
 
 		initPathwayData(gl);
-		// FIXME: should only be called one
-		initialContainedGenePropagation(); 
 	}
 	
 	/*
@@ -601,27 +612,25 @@ implements IMediatorReceiver, IMediatorSender {
 		refGLPathwayManager.enableAnnotation(bEnableAnnotation);
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.geneview.core.manager.view.EPickingType, org.geneview.core.manager.view.EPickingMode, int, org.geneview.core.manager.view.Pick)
-	 */
-	protected void handleEvents(final EPickingType ePickingType, 
-			final EPickingMode ePickingMode, 
-			final int iExternalID,
-			final Pick pick)
+	@Override
+	protected void handleEvents(EPickingType pickingType,
+			EPickingMode pickingMode, int iExternalID, Pick pick) 
 	{
-		// Check if selection occurs in the pool layer of the bucket
-		if (glToolboxRenderer.getContainingLayer() != null 
-				&& glToolboxRenderer.getContainingLayer().getCapacity() >= 10)
-			return;
+//		// Check if selection occurs in the pool layer of the bucket
+//		if (containedHierarchyLayer != null 
+//				&& containedHierarchyLayer.getCapacity() >= 10)
+//		{
+//			
+//			return;
+//		}
 		
-		switch (ePickingType)
+		switch (pickingType)
 		{	
 		case PATHWAY_ELEMENT_SELECTION:
 			
 			PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) generalManager.getSingelton()
 				.getPathwayItemManager().getItem(iExternalID);
-			
+		
 			PathwayVertexGraphItem tmpVertexGraphItem = (PathwayVertexGraphItem) tmpVertexGraphItemRep
 				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0);
 			
@@ -632,7 +641,7 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			int iUnselectAccessionID = generalManager.getSingelton().getGenomeIdManager()
 				.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
-
+	
 			// Remove old vertex from internal selection manager
 			if (selectedVertex != null)
 			{
@@ -656,8 +665,7 @@ implements IMediatorReceiver, IMediatorSender {
 					
 			if (iGeneID == -1)
 			{	
-				pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
-				return;
+				break;
 			}
 			
 			int iAccessionID = generalManager.getSingelton().getGenomeIdManager()
@@ -690,31 +698,42 @@ implements IMediatorReceiver, IMediatorSender {
 						ESelectionMode.AddPick);
 			}
 			
-//			selectionManager.clear();
-//
-//			
-//			selectionManager.modifySelection(iAccessionID, new SelectedElementRep(this.getId(), 
-//					(tmpVertexGraphItemRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X) * vecScaling.x()  + vecTranslation.x(),
-//					((iPathwayHeight - tmpVertexGraphItemRep.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y) * vecScaling.y() + vecTranslation.y(), 0), 
-//					ESelectionMode.AddPick);
-			
 			// Write currently selected vertex to selection set and trigger update
-			ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>(1);
-			ArrayList<Integer> iAlTmpGroupId = new ArrayList<Integer>(1);
-		
-			iAlTmpSelectionId.add(iAccessionID);
-			iAlTmpGroupId.add(1); 
+			ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>(2);
+			ArrayList<Integer> iAlTmpGroupId = new ArrayList<Integer>(2);
 			
-			// Active unselection
-			iAlTmpSelectionId.add(iUnselectAccessionID);
-			iAlTmpGroupId.add(0);
+//			// Active unselection
+//			iAlTmpSelectionId.add(iUnselectAccessionID);
+//			iAlTmpGroupId.add(0);
 			
-			alSetSelection.get(0).getWriteToken();
-			alSetSelection.get(0).updateSelectionSet(iUniqueId, iAlTmpSelectionId, iAlTmpGroupId, null);
-			alSetSelection.get(0).returnWriteToken();
+			switch (pickingMode)
+			{
+			case CLICKED:
+				
+				iAlTmpSelectionId.add(iAccessionID);
+				iAlTmpGroupId.add(2); 
+				
+				alSetSelection.get(0).getWriteToken();
+				alSetSelection.get(0).updateSelectionSet(iUniqueId, iAlTmpSelectionId, iAlTmpGroupId, null);
+				alSetSelection.get(0).returnWriteToken();
+				
+				break;
+				
+			case MOUSE_OVER:
+
+				iAlTmpSelectionId.add(iAccessionID);
+				iAlTmpGroupId.add(1); 
+//				
+//				alSetSelection.get(0).getWriteToken();
+//				alSetSelection.get(0).updateSelectionSet(iUniqueId, iAlTmpSelectionId, iAlTmpGroupId, null);
+//				alSetSelection.get(0).returnWriteToken();
+				
+				break;
+			}	
 
 			pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
-			break;			
+			pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_TEXTURE_SELECTION);
+			break;					
 		}
 	}
 	

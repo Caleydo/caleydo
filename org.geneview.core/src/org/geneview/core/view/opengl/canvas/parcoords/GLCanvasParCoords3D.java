@@ -158,6 +158,8 @@ extends AGLCanvasStorageBasedView
 		
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
 	
+		containedHierarchyLayer = layer;
+		
 		iGLDisplayListIndexRemote = gl.glGenLists(1);	
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);		
