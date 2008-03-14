@@ -78,6 +78,8 @@ implements IMediatorReceiver, IMediatorSender
 	private static final int SLERP_RANGE = 1000;
 	private static final int SLERP_SPEED = 1300;
 	
+	private int iMouseOverViewID = -1;
+	
 	private JukeboxHierarchyLayer underInteractionLayer;
 	private JukeboxHierarchyLayer stackLayer;
 	private JukeboxHierarchyLayer poolLayer;
@@ -292,6 +294,7 @@ implements IMediatorReceiver, IMediatorSender
 	 */
 	public void display(final GL gl) 
 	{
+		updatePoolLayer();
 
 //		if (bRebuildVisiblePathwayDisplayLists)
 //			rebuildVisiblePathwayDisplayLists(gl);
@@ -413,14 +416,52 @@ implements IMediatorReceiver, IMediatorSender
 	private void buildPoolLayer(final GL gl) 
 	{
 		for (int iViewIndex = 0; iViewIndex < poolLayer.getCapacity(); iViewIndex++)
-		{		
+		{				
+			//poolLayer.getElementList();
 			Transform transform = new Transform();
 			transform.setTranslation(new Vec3f(4.1f, 
 					0.1f * iViewIndex, 4));
+	
 			transform.setScale(new Vec3f(SCALING_FACTOR_POOL_LAYER,
 					SCALING_FACTOR_POOL_LAYER,
 					SCALING_FACTOR_POOL_LAYER));	
-			poolLayer.setTransformByPositionIndex(iViewIndex, transform);		
+			poolLayer.setTransformByPositionIndex(iViewIndex, transform);	
+			
+		}
+	}
+	
+	private void updatePoolLayer()
+	{
+		float fSelectedScaling = 1;
+		float fYAdd = 0;
+		
+		int iSelectedViewIndex = poolLayer.getPositionIndexByElementId(iMouseOverViewID);
+	
+		
+		for (int iViewIndex = 0; iViewIndex < poolLayer.getCapacity(); iViewIndex++)
+		{		
+			if(iViewIndex == iSelectedViewIndex)
+			{
+				fSelectedScaling = 8;
+				
+			}
+			else				
+			{
+				fSelectedScaling = 1;	
+			}
+			Transform transform = new Transform();
+			transform.setTranslation(new Vec3f(4.1f, 
+					0.1f * iViewIndex + fYAdd, 4));
+			if(iViewIndex == iSelectedViewIndex)
+			{
+				fYAdd += 0.1 * fSelectedScaling;
+			}
+	
+			transform.setScale(new Vec3f(SCALING_FACTOR_POOL_LAYER * fSelectedScaling,
+					SCALING_FACTOR_POOL_LAYER * fSelectedScaling,
+					SCALING_FACTOR_POOL_LAYER * fSelectedScaling));		
+			poolLayer.setTransformByPositionIndex(iViewIndex, transform);	
+			
 		}
 	}
 
@@ -993,8 +1034,9 @@ implements IMediatorReceiver, IMediatorSender
 		// After last slerp action is done the line connections are turned on again
 		if (arSlerpActions.isEmpty())
 			glConnectionLineRenderer.enableRendering(true);
-	}
-	
+	}						
+							
+		
 	private void loadViewToUnderInteractionLayer(final int iViewID) 
 	{
 		generalManager.getSingelton().logMsg(this.getClass().getSimpleName()
@@ -1261,7 +1303,7 @@ implements IMediatorReceiver, IMediatorSender
 			switch (pickingMode)
 			{
 			case MOUSE_OVER:
-				
+				iMouseOverViewID = iExternalID;
 				generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
 					.setDataAboutView(iExternalID);
 				

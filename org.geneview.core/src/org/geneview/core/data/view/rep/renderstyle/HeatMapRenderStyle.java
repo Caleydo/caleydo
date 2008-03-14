@@ -37,10 +37,10 @@ extends GeneralRenderStyle
 	
 	
 	public HeatMapRenderStyle(final IViewFrustum viewFrustum, 
-			final GenericSelectionManager horizontalSelectionManager, final ArrayList<Integer> alContentSelection)
+			final GenericSelectionManager verticalSelectionManager, final ArrayList<Integer> alContentSelection)
 	{
 		super(viewFrustum);
-		this.verticalSelectionManager = horizontalSelectionManager;
+		this.verticalSelectionManager = verticalSelectionManager;
 		this.alContentSelection = alContentSelection;
 		fAlFieldWidths = new ArrayList<Float>();
 		
