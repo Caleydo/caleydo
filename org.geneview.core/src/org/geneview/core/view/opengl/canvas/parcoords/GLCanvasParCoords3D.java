@@ -734,8 +734,7 @@ extends AGLCanvasStorageBasedView
 		gl.glColor4fv(ParCoordsRenderStyle.GATE_COLOR, 0);
 		
 		final float fGateWidth = renderStyle.getGateWidth();
-		final float fGateTipHeight = renderStyle.getGateTipHeight();
-		final float fGateYOffset = renderStyle.getGateYOffset();
+		final float fGateTipHeight = renderStyle.getGateTipHeight();		
 		int iCount = 0;
 		while (iCount < iNumberAxis)
 		{			
@@ -1130,9 +1129,10 @@ extends AGLCanvasStorageBasedView
 					iDraggedGateNumber = iExternalID;
 					break;
 				default:
-					// do nothing
+				
 			}
 			pickingManager.flushHits(iUniqueId, ePickingType);
+			break;
 		case PC_ICON_SELECTION:	
 			switch (ePickingMode)
 			{						
@@ -1161,7 +1161,47 @@ extends AGLCanvasStorageBasedView
 					else if(iExternalID == EIconIDs.RESET_SELECTIONS.ordinal())
 					{
 						resetSelections();
-					}							
+					}
+					else if(iExternalID == EIconIDs.SAVE_SELECTIONS.ordinal())
+					{
+						GenericSelectionManager selectionManager;
+						if(bRenderStorageHorizontally)
+							selectionManager = verticalSelectionManager;
+						else
+							selectionManager = horizontalSelectionManager;
+						
+						ArrayList<Integer> iAlSelection = new ArrayList<Integer>();
+						ArrayList<Integer> iAlGroup = new ArrayList<Integer>();
+						
+						if(bRenderSelection)
+						{
+							Set<Integer> deselectedSet = selectionManager.getElements(
+									EViewInternalSelectionType.DESELECTED);
+							
+							addSetToSelection(deselectedSet,
+									iAlSelection, iAlGroup, -1);							
+						}
+						else
+						{
+							Set<Integer> set = selectionManager.getElements(
+									EViewInternalSelectionType.NORMAL);
+							addSetToSelection(set, iAlSelection, iAlGroup, 0);
+							
+							set = selectionManager.getElements(
+									EViewInternalSelectionType.MOUSE_OVER);
+							addSetToSelection(set, iAlSelection, iAlGroup, 1);
+							
+							set = selectionManager.getElements(
+									EViewInternalSelectionType.SELECTION);
+							addSetToSelection(set, iAlSelection, iAlGroup, 2);				
+						}
+						mergeSelection(iAlSelection, iAlGroup, null);
+						propagateGeneSet(iAlSelection, iAlGroup);
+						renderSelection(true);
+						
+						
+						//alContentSelection.
+					}
 					
 					bIsDisplayListDirtyLocal = true;
 					bIsDisplayListDirtyRemote = true;
@@ -1266,10 +1306,7 @@ extends AGLCanvasStorageBasedView
 			// do nothing		
 		
 		}
-	}
-	
-
-	
+	}	
 	
 	protected SelectedElementRep createElementRep(int iStorageIndex)
 	{	
@@ -1338,7 +1375,7 @@ extends AGLCanvasStorageBasedView
 		else
 		{
 			alSelection = alStorageSelection;
-			// TODO implement this
+			// TODO test this
 		}
 		
 		float fCurrentPosition = alSelection.indexOf(iElementID) * fAxisSpacing + renderStyle.getXSpacing();
@@ -1395,5 +1432,17 @@ extends AGLCanvasStorageBasedView
 		
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote  = true;
+	}
+	
+	private void addSetToSelection(Set<Integer> sourceSet, 
+			ArrayList<Integer> iAlTargetSelection, 
+			ArrayList<Integer> iAlGroupSelection,
+			int iGroupID)
+	{
+		for(Integer iCurrent : sourceSet)
+		{
+			iAlTargetSelection.add(iCurrent);
+			iAlGroupSelection.add(iGroupID);
+		}
 	}
 }

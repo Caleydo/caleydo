@@ -197,7 +197,7 @@ implements IMediatorReceiver, IMediatorSender
 		return iAlSelection;
 	}
 	
-	protected void setSelection(ArrayList<Integer> iAlSelection, 
+	protected void mergeSelection(ArrayList<Integer> iAlSelection, 
 			ArrayList<Integer> iAlGroup,
 			ArrayList<Integer> iAlOptional)
 	{	
@@ -249,7 +249,7 @@ implements IMediatorReceiver, IMediatorSender
 		// iterate here		
 		ArrayList<Integer> iAlSelectionStorageIndices = convertAccessionToExpressionIndices(iAlSelection);
 		iAlSelectionStorageIndices = cleanSelection(iAlSelectionStorageIndices, iAlGroup);
-		setSelection(iAlSelectionStorageIndices, iAlGroup, iAlOptional);
+		mergeSelection(iAlSelectionStorageIndices, iAlGroup, iAlOptional);
 		
 		int iSelectedAccessionID = 0;
 		int iSelectedStorageIndex = 0;
@@ -316,12 +316,6 @@ implements IMediatorReceiver, IMediatorSender
 		
 		generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
 		.setData(iUniqueId, iAccessionID, EInputDataType.GENE, getInfo());					
-
-		//System.out.println("Accession ID: " + iAccessionID);
-		//generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
-		//	.setData(iAccessionID, ePolylineDataType, pick.getPickedPoint());
-//		bRenderInfoArea = true;
-//		bInfoAreaFirstTime = true;								
 		
 		// Write currently selected vertex to selection set
 		// and trigger update event
@@ -348,10 +342,15 @@ implements IMediatorReceiver, IMediatorSender
 			}
 		}
 
+		propagateGeneSet(iAlTmpSelectionId, iAlTmpGroup);
+	}
+	
+	protected void propagateGeneSet(ArrayList<Integer> iAlSelection, ArrayList<Integer> iAlGroup)
+	{
 		alSetSelection.get(1).getWriteToken();
 		alSetSelection.get(1).updateSelectionSet(iUniqueId, 
-				iAlTmpSelectionId, iAlTmpGroup, null);
-		alSetSelection.get(1).returnWriteToken();
+				iAlSelection, iAlGroup, null);
+		alSetSelection.get(1).returnWriteToken();		
 	}
 	
 	protected ArrayList<Integer> prepareSelection(GenericSelectionManager selectionManager, 

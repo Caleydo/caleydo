@@ -132,8 +132,8 @@ public class PickingManager extends AAbstractManager
 
 		EPickingMode ePickingMode = EPickingMode.CLICKED;		
 		
-		if (pickingTriggerMouseAdapter.wasLeftMouseButtonPressed()
-				|| bMouseReleased)
+		if (pickingTriggerMouseAdapter.wasLeftMouseButtonPressed())
+				//|| bMouseReleased)
 		{			
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			//bIsMouseOverPickingEvent = false;
