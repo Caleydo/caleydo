@@ -86,22 +86,15 @@ public class SlerpAction {
 	
 		if (iDestinationPosIndex == -1)
 		{
-			if (destinationHierarchyLayer.containsElement(-1))
-				this.iDestinationPosIndex = destinationHierarchyLayer.getPositionIndexByElementId(-1);
-			else
-				this.iDestinationPosIndex = destinationHierarchyLayer.getNextPositionIndex();			
+			this.iDestinationPosIndex = destinationHierarchyLayer.getNextPositionIndex();			
 		}
 		
-//		// Only add element if it is not contained already in this layer
-//		if (!destinationHierarchyLayer.containsElement(iElementId))
-//		{
-			originHierarchyLayer.removeElement(iElementId);
-			
-			if (destinationHierarchyLayer.getElementList().size() < destinationHierarchyLayer.getCapacity())
-				destinationHierarchyLayer.addElement(iElementId);
-			else
-				destinationHierarchyLayer.replaceElement(iElementId, iDestinationPosIndex);
-//		}
+		originHierarchyLayer.removeElement(iElementId);
+		
+		if (destinationHierarchyLayer.getElementList().size() < destinationHierarchyLayer.getCapacity())
+			destinationHierarchyLayer.addElement(iElementId);
+		else
+			destinationHierarchyLayer.replaceElement(iElementId, iDestinationPosIndex);
 	}
 	
 	public int getElementId() {

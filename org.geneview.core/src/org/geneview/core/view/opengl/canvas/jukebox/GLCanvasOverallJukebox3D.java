@@ -73,7 +73,7 @@ implements IMediatorReceiver, IMediatorSender
 	private static final float SCALING_FACTOR_UNDER_INTERACTION_LAYER = 0.5f;
 	private static final float SCALING_FACTOR_TRANSITION_LAYER = 0.05f;
 	private static final float SCALING_FACTOR_STACK_LAYER = 0.5f;
-	private static final float SCALING_FACTOR_POOL_LAYER = 0.01f;
+	private static final float SCALING_FACTOR_POOL_LAYER = 0.03f;
 	
 	private static final int SLERP_RANGE = 1000;
 	private static final int SLERP_SPEED = 1300;
@@ -252,10 +252,13 @@ implements IMediatorReceiver, IMediatorSender
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#displayLocal(javax.media.opengl.GL)
 	 */
 	public void displayLocal(final GL gl) 
-	{
+	{	
 		if (pickingTriggerMouseAdapter.wasRightMouseButtonPressed())
 		{
 			bEnableNavigationOverlay = !bEnableNavigationOverlay;
+			
+			generalManager.getSingelton().getViewGLCanvasManager()
+				.getInfoAreaManager().enable(!bEnableNavigationOverlay);
 		}
 		
 		pickingManager.handlePicking(iUniqueId, gl, true);
@@ -296,9 +299,6 @@ implements IMediatorReceiver, IMediatorSender
 	{
 		updatePoolLayer();
 
-//		if (bRebuildVisiblePathwayDisplayLists)
-//			rebuildVisiblePathwayDisplayLists(gl);
-		
 		time.update();
 
 		doSlerpActions(gl);
@@ -372,7 +372,6 @@ implements IMediatorReceiver, IMediatorSender
 	
 	private void buildStackLayer(final GL gl) 
 	{
-		
 		float fTiltAngleDegree = 90; // degree
 		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
 		
@@ -420,7 +419,7 @@ implements IMediatorReceiver, IMediatorSender
 			//poolLayer.getElementList();
 			Transform transform = new Transform();
 			transform.setTranslation(new Vec3f(4.1f, 
-					0.1f * iViewIndex, 4));
+					0.2f * iViewIndex, 4));
 	
 			transform.setScale(new Vec3f(SCALING_FACTOR_POOL_LAYER,
 					SCALING_FACTOR_POOL_LAYER,
@@ -436,14 +435,12 @@ implements IMediatorReceiver, IMediatorSender
 		float fYAdd = 0;
 		
 		int iSelectedViewIndex = poolLayer.getPositionIndexByElementId(iMouseOverViewID);
-	
-		
+
 		for (int iViewIndex = 0; iViewIndex < poolLayer.getCapacity(); iViewIndex++)
 		{		
 			if(iViewIndex == iSelectedViewIndex)
 			{
-				fSelectedScaling = 8;
-				
+				fSelectedScaling = 4;		
 			}
 			else				
 			{
@@ -451,10 +448,10 @@ implements IMediatorReceiver, IMediatorSender
 			}
 			Transform transform = new Transform();
 			transform.setTranslation(new Vec3f(4.1f, 
-					0.1f * iViewIndex + fYAdd, 4));
+					0.2f * iViewIndex + fYAdd, 4));
 			if(iViewIndex == iSelectedViewIndex)
 			{
-				fYAdd += 0.1 * fSelectedScaling;
+				fYAdd += 0.2 * fSelectedScaling;
 			}
 	
 			transform.setScale(new Vec3f(SCALING_FACTOR_POOL_LAYER * fSelectedScaling,
@@ -640,7 +637,6 @@ implements IMediatorReceiver, IMediatorSender
 		if (!bEnableNavigationOverlay)
 			return;
 		
-		generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager().enable(false);
 		glConnectionLineRenderer.enableRendering(false);
 		
 		EPickingType leftWallPickingType = null;
@@ -1033,7 +1029,12 @@ implements IMediatorReceiver, IMediatorSender
 		
 		// After last slerp action is done the line connections are turned on again
 		if (arSlerpActions.isEmpty())
+		{
 			glConnectionLineRenderer.enableRendering(true);
+		
+			generalManager.getSingelton().getViewGLCanvasManager()
+				.getInfoAreaManager().enable(!bEnableNavigationOverlay);
+		}
 	}						
 							
 		
@@ -1116,11 +1117,14 @@ implements IMediatorReceiver, IMediatorSender
 						iViewID, poolLayer, transitionLayer);	
 				arSlerpActions.add(slerpActionTransition);
 				
-				// Slerp view from stack to pool
-				SlerpAction reverseSlerpAction = new SlerpAction(
-						stackLayer.getElementIdByPositionIndex(stackLayer.getNextPositionIndex()),
-						stackLayer, true);
-				arSlerpActions.add(reverseSlerpAction);		
+				if (!stackLayer.containsElement(-1))
+				{
+					// Slerp view from stack to pool
+					SlerpAction reverseSlerpAction = new SlerpAction(
+							stackLayer.getElementIdByPositionIndex(stackLayer.getNextPositionIndex()),
+							stackLayer, true);
+					arSlerpActions.add(reverseSlerpAction);		
+				}
 				
 				// Slerp under interaction view to free spot in stack
 				SlerpAction reverseSlerpAction2 = new SlerpAction(
@@ -1429,7 +1433,7 @@ implements IMediatorReceiver, IMediatorSender
 				if(stackLayer.getElementIdByPositionIndex(iDestinationPosIndex) == -1)
 				{
 					SlerpAction slerpAction= new SlerpAction(iExternalID, 
-							stackLayer, stackLayer, stackLayer.getPositionIndexByElementId(-1));	
+							stackLayer, stackLayer, iDestinationPosIndex);	
 					arSlerpActions.add(slerpAction);
 				}
 				else
@@ -1486,10 +1490,11 @@ implements IMediatorReceiver, IMediatorSender
 				else
 					iDestinationPosIndex--;
 				
+				// Check if spot is free
 				if(stackLayer.getElementIdByPositionIndex(iDestinationPosIndex) == -1)
 				{
 					SlerpAction slerpAction= new SlerpAction(iExternalID, 
-							stackLayer, stackLayer, stackLayer.getPositionIndexByElementId(-1));	
+							stackLayer, stackLayer, iDestinationPosIndex);	
 					arSlerpActions.add(slerpAction);
 				}
 				else
@@ -1523,6 +1528,8 @@ implements IMediatorReceiver, IMediatorSender
 				break;
 			}
 		
+			pickingManager.flushHits(iUniqueId, EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION);	
+			
 			break;
 		}
 	}

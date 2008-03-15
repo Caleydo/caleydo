@@ -100,12 +100,6 @@ public class JukeboxHierarchyLayer {
 	 */
 	public int addElement(int iElementId) {
 		
-//		// Check if element is already contained and do nothing in this case
-//		if (llElementId.contains(iElementId))
-//		{
-//			return 0;
-//		}
-		
 		if (llElementId.contains(-1))
 		{
 			int iReplacePosition = llElementId.indexOf(-1);
@@ -117,39 +111,22 @@ public class JukeboxHierarchyLayer {
 			return 0;
 		}
 		
-//		// Check if element limit is reached
-//		if (llElementId.size() > iCapacity)
-//		{
-			// Find and remove least important element
-			int iLeastImportantElementId = llElementIdImportanceQueue.removeLast();
+		// Find and remove least important element
+		int iLeastImportantElementId = llElementIdImportanceQueue.removeLast();
 
-			int iReplacePosition = llElementId.indexOf(iLeastImportantElementId);
+		int iReplacePosition = llElementId.indexOf(iLeastImportantElementId);
 
-			// FIFO replace strategy
-			llElementIdImportanceQueue.addFirst(iElementId);	
+		// FIFO replace strategy
+		llElementIdImportanceQueue.addFirst(iElementId);	
 
-			llElementIdVisibleState.set(iReplacePosition, false);
-			
-			llElementId.set(iReplacePosition, iElementId);
-			
-			if (iCapacity < 5)
-				calculatePathwayScaling(iElementId);
-			
-			return iLeastImportantElementId;
-			//return llElementId.set(iReplacePosition, iElementId);			
-//		}
-//		else
-//		{
-//			// Add to the end of the stack (because there is free space)
-//			llElementId.addLast(iElementId);
-//			llElementIdVisibleState.addLast(false);
-//			llElementIdImportanceQueue.addFirst(iElementId);
-//		
-//			if (iCapacity < 5)
-//				calculatePathwayScaling(iElementId);
-//			
-//			return 0;
-//		}
+		llElementIdVisibleState.set(iReplacePosition, false);
+		
+		llElementId.set(iReplacePosition, iElementId);
+		
+		if (iCapacity < 5)
+			calculatePathwayScaling(iElementId);
+		
+		return iLeastImportantElementId;	
 	}
 
 //	public void setElement(int iPosIndex, int iElementId) {
@@ -237,13 +214,7 @@ public class JukeboxHierarchyLayer {
 	
 	public final int getNextPositionIndex() {
 		
-		// Check if a spot is free
-		if (llElementId.size() < iCapacity)
-		{	
-			// Append to the end of the list
-			return llElementId.size(); 
-		}
-		else if (llElementId.contains(-1))
+		if (llElementId.contains(-1))
 		{
 			return llElementId.indexOf(-1);
 		}
@@ -265,9 +236,6 @@ public class JukeboxHierarchyLayer {
 	
 	public final boolean getElementVisibilityById(final int iElementId) {
 
-//		if (!llElementId.contains(iElementId))
-//			return true;
-		
 		return llElementIdVisibleState.get(llElementId.indexOf(iElementId));
 	}
 	

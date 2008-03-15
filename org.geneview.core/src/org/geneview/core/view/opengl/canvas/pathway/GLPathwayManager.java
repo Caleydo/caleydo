@@ -117,10 +117,10 @@ public class GLPathwayManager {
 			final AUniqueManagedObject containingView,
 			final int iPathwayId) {
 		
-		refGeneralManager.getSingelton().logMsg(
-				this.getClass().getSimpleName()
-				+ ": buildPathwayDisplayList(): Build display list for pathway: "+iPathwayId,
-				LoggerType.VERBOSE);
+//		refGeneralManager.getSingelton().logMsg(
+//				this.getClass().getSimpleName()
+//				+ ": buildPathwayDisplayList(): Build display list for pathway: "+iPathwayId,
+//				LoggerType.VERBOSE);
 		
 		PathwayGraph refTmpPathway = (PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().
 			getItem(iPathwayId);

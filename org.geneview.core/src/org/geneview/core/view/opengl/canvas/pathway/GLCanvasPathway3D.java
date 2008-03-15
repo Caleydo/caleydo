@@ -477,36 +477,7 @@ implements IMediatorReceiver, IMediatorSender {
 //		bIsDisplayListDirtyLocal = true;
 //		bIsDisplayListDirtyRemote = true;
 //	}
-//
-//	private void rebuildPathwayDisplayList(final GL gl) {
-//
-////		// Reset rebuild trigger flag
-////		bRebuildVisiblePathwayDisplayLists = false;
-////		
-////		refGLPathwayManager.clearOldPickingIDs();
-////
-////		if (selectedVertex != null)
-////		{
-////			// Write currently selected vertex to selection set
-////			int[] iArTmpSelectionId = new int[1];
-////			int[] iArTmpDepth = new int[1];
-////			iArTmpSelectionId[0] = selectedVertex.getId();
-////			iArTmpDepth[0] = 0;
-////			alSetSelection.get(0).getWriteToken();
-////			alSetSelection.get(0).updateSelectionSet(iUniqueId, iArTmpSelectionId, iArTmpDepth, new int[0]);
-////			alSetSelection.get(0).returnWriteToken();
-////		}
-////			
-////		refGLPathwayManager.performIdenticalNodeHighlighting();
-////		
-////
-////		refGLPathwayManager.buildPathwayDisplayList(gl, this, 261);
-////		
-////		// Cleanup unused textures
-//////		refGLPathwayTextureManager.unloadUnusedTextures(getVisiblePathways());
-//
-//	}
-	
+
 	private void calculatePathwayScaling(final GL gl, final int iPathwayId) {
 		
 		if (refHashGLcontext2TextureManager.get(gl) == null)
