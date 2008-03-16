@@ -310,7 +310,7 @@ implements IMediatorReceiver, IMediatorSender
 	}
 	
 	
-	protected void propagateGeneSelection(int iExternalID, ArrayList<Integer> iAlOldSelection)
+	protected void propagateGeneSelection(int iExternalID, int iNewGroupID, ArrayList<Integer> iAlOldSelection)
 	{
 		int iAccessionID = getAccesionIDFromStorageIndex(iExternalID);	
 		
@@ -327,7 +327,7 @@ implements IMediatorReceiver, IMediatorSender
 		{						
 			
 			iAlTmpSelectionId.add(iAccessionID);
-			iAlTmpGroup.add(2);
+			iAlTmpGroup.add(iNewGroupID);
 			extSelectionManager.modifySelection(iAccessionID, 
 					createElementRep(iExternalID), ESelectionMode.ReplacePick);
 		}							

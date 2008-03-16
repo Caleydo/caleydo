@@ -208,6 +208,7 @@ extends AGLCanvasStorageBasedView
 	protected void handleEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) 
 	{
+		ArrayList<Integer> iAlOldSelection;
 		switch (pickingType)
 		{
 		case FIELD_SELECTION:
@@ -215,7 +216,7 @@ extends AGLCanvasStorageBasedView
 			{
 			case CLICKED:
 				extSelectionManager.clear();
-				ArrayList<Integer> iAlOldSelection = 
+				iAlOldSelection = 
 					prepareSelection(verticalSelectionManager, EViewInternalSelectionType.SELECTION);					
 				
 				verticalSelectionManager.clearSelection(
@@ -225,7 +226,7 @@ extends AGLCanvasStorageBasedView
 				
 				if (eFieldDataType == EInputDataType.GENE)
 				{
-					propagateGeneSelection(iExternalID, iAlOldSelection);
+					propagateGeneSelection(iExternalID, 2, iAlOldSelection);
 					
 				}
 				
@@ -233,6 +234,9 @@ extends AGLCanvasStorageBasedView
 				
 			case MOUSE_OVER:
 				extSelectionManager.clear();
+				iAlOldSelection = 
+					prepareSelection(verticalSelectionManager, EViewInternalSelectionType.SELECTION);					
+				
 				verticalSelectionManager.clearSelection(
 						EViewInternalSelectionType.MOUSE_OVER);
 				verticalSelectionManager.addToType(
@@ -240,8 +244,9 @@ extends AGLCanvasStorageBasedView
 				
 				if(eFieldDataType == EInputDataType.GENE)
 				{
-					generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
-					.setData(iUniqueId, getAccesionIDFromStorageIndex(iExternalID), EInputDataType.GENE, getInfo());					
+					propagateGeneSelection(iExternalID, 1, iAlOldSelection);
+					//generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
+					//.setData(iUniqueId, getAccesionIDFromStorageIndex(iExternalID), EInputDataType.GENE, getInfo());					
 				}
 				break;
 			}	

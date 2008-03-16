@@ -89,6 +89,9 @@ extends GLToolboxRenderer
 		addIcon(gl, iContainingViewID, EPickingType.PC_ICON_SELECTION,
 				EIconIDs.SAVE_SELECTIONS.ordinal(),
 				EIconTextures.SAVE_SELECTIONS);
+		addIcon(gl, iContainingViewID, EPickingType.PC_ICON_SELECTION,
+				EIconIDs.ANGULAR_BRUSHING.ordinal(),
+				EIconTextures.ANGULAR_BRUSHING);
 		
 		fOverallRenderLength = fRenderLenght;
 		fRenderLenght = 0;

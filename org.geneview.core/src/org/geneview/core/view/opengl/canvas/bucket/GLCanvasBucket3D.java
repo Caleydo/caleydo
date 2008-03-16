@@ -1422,6 +1422,7 @@ implements IMediatorReceiver, IMediatorSender
 
 				arSlerpActions.clear();
 				
+				// TODO: what's that here?
 				glConnectionLineRenderer.enableRendering(false);
 				
 				SlerpAction slerpActionTransition = new SlerpAction(

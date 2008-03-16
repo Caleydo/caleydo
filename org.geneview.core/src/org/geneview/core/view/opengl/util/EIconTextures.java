@@ -15,7 +15,8 @@ public enum EIconTextures
 	RENDER_SELECTION ("resources/icons/render-selection.png"),
 	RESET_SELECTIONS ("resources/icons/edit-delete.png"),
 	SEARCH_PATHWAY ("resources/icons/arrow-right.png"),
-	SAVE_SELECTIONS ("resources/icons/document-save.png");
+	SAVE_SELECTIONS ("resources/icons/document-save.png"),
+	ANGULAR_BRUSHING ("resources/icons/angle.png");
 	
 	private String sFileName;
 	

@@ -1,6 +1,7 @@
 package org.geneview.core.view.opengl.canvas.parcoords;
 
 
+import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
 import java.awt.Point;
@@ -12,6 +13,9 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.glu.GLU;
+import javax.media.opengl.glu.GLUnurbs;
+import javax.xml.bind.JAXBElement.GlobalScope;
 
 import org.geneview.core.data.collection.IStorage;
 import org.geneview.core.data.view.camera.IViewFrustum;
@@ -26,10 +30,13 @@ import org.geneview.core.view.opengl.canvas.AGLCanvasStorageBasedView;
 import org.geneview.core.view.opengl.util.EIconTextures;
 import org.geneview.core.view.opengl.util.GLCoordinateUtils;
 import org.geneview.core.view.opengl.util.GLIconTextureManager;
+import org.geneview.core.view.opengl.util.GLSharedObjects;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 import org.geneview.core.view.opengl.util.selection.EViewInternalSelectionType;
 import org.geneview.core.view.opengl.util.selection.GenericSelectionManager;
 
+import com.sun.media.sound.AlawCodec;
+import com.sun.opengl.util.GLUT;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -83,6 +90,16 @@ extends AGLCanvasStorageBasedView
 	
 	private boolean bRenderInfoArea = false;
 	private boolean bInfoAreaFirstTime = false;
+	
+	private boolean bIsAngularBrushingActive = false;
+	private boolean bIsAngularBrushingFirstTime = false;
+	private Vec3f vecAngularBrusingPoint;
+	//private boolean bIsLineSelected = false;
+	private int iSelectedLineID = -1;
+	private Pick linePick;
+	
+	private ArrayList<Integer> alPolylineSelection;
+	private ArrayList<Integer> alAxisSelection;
 	
 	private DecimalFormat decimalFormat;
 	
@@ -172,9 +189,12 @@ extends AGLCanvasStorageBasedView
 	public void init(final GL gl) 
 	{		
 		iconTextureManager = new GLIconTextureManager(gl);	
+
+		
 		// initialize selection to an empty array with 
 //		s
 		initData();
+		
 		
 		fXDefaultTranslation = renderStyle.getXSpacing();
 		fYTranslation = renderStyle.getBottomSpacing();
@@ -240,30 +260,24 @@ extends AGLCanvasStorageBasedView
 	{	
 //		GLSharedObjects.drawAxis(gl);
 //		GLSharedObjects.drawViewFrustum(gl, viewFrustum);
-		// FIXME: translation here not nice, operations are not in display lists
+		
+		gl.glTranslatef(fXDefaultTranslation  + fXTranslation, fYTranslation, 0.0f);
+		
 		if(bIsDraggingActive)
-		{			
-			gl.glTranslatef(fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
-			//gl.glScalef(fScaling, fScaling, 1.0f);
 			handleDragging(gl);
 	
-			//gl.glScalef(1/fScaling, 1/fScaling, 1.0f);
-			gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);			
-		}
 //		if(bRenderInfoArea)
-//		{
-//			gl.glTranslatef(fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
-//			//gl.glScalef(fScaling, fScaling, 1.0f);
-//			
-////			infoAreaManager.renderInfoArea(gl, bInfoAreaFirstTime);
+//			infoAreaManager.renderInfoArea(gl, bInfoAreaFirstTime);
 //			bInfoAreaFirstTime = false;
-//		
-//			//gl.glScalef(1/fScaling, 1/fScaling, 1.0f);
-//			gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
-//		}
 
+
+		if(bIsAngularBrushingActive && iSelectedLineID != -1)
+			handleAngularBrushing(gl);
+		
 		gl.glCallList(iGLDisplayListToCall);
 		
+		gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);		
+
 		gl.glTranslatef(fXDefaultTranslation - renderStyle.getXSpacing(), 
 				fYTranslation - renderStyle.getBottomSpacing(), 0.0f);
 		glToolboxRenderer.render(gl);
@@ -274,18 +288,26 @@ extends AGLCanvasStorageBasedView
 	/**
 	 * Choose whether to render one array as a polyline and every entry across arrays is an axis 
 	 * or whether the array corresponds to an axis and every entry across arrays is a polyline
-	 *  
-	 * @param bRenderArrayAsPolyline if true array contents make up a polyline, else array is an axis
 	 */
-	public void renderStorageAsPolyline(boolean bRenderArrayAsPolyline)
+	public void renderStorageAsPolyline()
 	{
-		this.bRenderStorageHorizontally = bRenderArrayAsPolyline;
+		bRenderStorageHorizontally = !bRenderStorageHorizontally;
 		bRenderInfoArea = false;
 		EInputDataType eTempType = eAxisDataType;
 		eAxisDataType = ePolylineDataType;
 		ePolylineDataType = eTempType;
 		fXTranslation = 0;
 		extSelectionManager.clear();
+		if(bRenderStorageHorizontally)
+		{
+			alAxisSelection = alContentSelection;
+			alPolylineSelection = alStorageSelection;
+		}
+		else
+		{
+			alAxisSelection = alStorageSelection;
+			alPolylineSelection = alContentSelection;
+		}
 		initLists();
 		
 	}
@@ -361,6 +383,18 @@ extends AGLCanvasStorageBasedView
 
 		alContentSelection = mapSelections.get(eWhichContentSelection);
 		alStorageSelection = mapSelections.get(eWhichStorageSelection);
+
+		if(bRenderStorageHorizontally)
+		{
+			alPolylineSelection = alStorageSelection;
+			alAxisSelection = alContentSelection;
+		}
+		else
+		{
+			alPolylineSelection = alContentSelection;
+			alAxisSelection = alStorageSelection;
+		}
+		
 		iNumberOfEntriesToRender = alContentSelection.size();
 	
 		int iNumberOfPolyLinesToRender = 0;		
@@ -368,6 +402,7 @@ extends AGLCanvasStorageBasedView
 		// if true one array corresponds to one polyline, number of arrays is number of polylines
 		if (bRenderStorageHorizontally)
 		{			
+			
 			iNumberOfPolyLinesToRender = alStorageSelection.size();
 			iNumberOfAxis = iNumberOfEntriesToRender;			
 		}
@@ -421,8 +456,6 @@ extends AGLCanvasStorageBasedView
 
 //		if(bIsDraggingActive)
 //			handleDragging(gl);
-		gl.glTranslatef(fXDefaultTranslation  + fXTranslation, fYTranslation, 0.0f);
-		//gl.glScalef(fScaling, fScaling, 1.0f);
 		
 		renderCoordinateSystem(gl, iNumberOfAxis);	
 		
@@ -432,9 +465,7 @@ extends AGLCanvasStorageBasedView
 		renderPolylines(gl, EViewInternalSelectionType.SELECTION);		
 		
 		renderGates(gl, iNumberOfAxis);				
-		
-		//gl.glScalef(1/fScaling, 1/fScaling, 1.0f);
-		gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);		
+
 		gl.glEndList();
 	}
 	
@@ -1009,36 +1040,46 @@ extends AGLCanvasStorageBasedView
 		if (glToolboxRenderer.getContainingLayer() != null)
 			if (glToolboxRenderer.getContainingLayer().getCapacity() >= 10)
 				return;
+		ArrayList<Integer> iAlOldSelection;
 		
 		switch (ePickingType)
 		{
-		case POLYLINE_SELECTION:		
+		case POLYLINE_SELECTION:
+			
 			switch (ePickingMode)
 			{				
 			
 				case CLICKED:	
-					
-					ArrayList<Integer> iAlOldSelection = 
-						prepareSelection(horizontalSelectionManager, EViewInternalSelectionType.SELECTION);					
-									
+										
+					iAlOldSelection = prepareSelection(horizontalSelectionManager, EViewInternalSelectionType.SELECTION);					
+										
 					horizontalSelectionManager.clearSelection(EViewInternalSelectionType.SELECTION);							
 					horizontalSelectionManager.addToType(EViewInternalSelectionType.SELECTION, 
 							iExternalID);
 					
 					if (ePolylineDataType == EInputDataType.GENE)
 					{
-						propagateGeneSelection(iExternalID, iAlOldSelection);
+						propagateGeneSelection(iExternalID, 2, iAlOldSelection);
 						
 					}
 					bIsDisplayListDirtyLocal = true;
 					bIsDisplayListDirtyRemote = true;
+			
+					if(bIsAngularBrushingActive)
+					{
+						iSelectedLineID = iExternalID;
+						linePick = pick;
+						bIsAngularBrushingFirstTime = true;
+					}
 					break;	
 				case MOUSE_OVER:
+					iAlOldSelection = prepareSelection(horizontalSelectionManager, EViewInternalSelectionType.SELECTION);			
+					
 					if (ePolylineDataType == EInputDataType.GENE)
 					{
-						//propagateGeneSelection(iExternalID, iAlOldSelection);
-						generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
-							.setData(iUniqueId, getAccesionIDFromStorageIndex(iExternalID), EInputDataType.GENE, getInfo());
+						propagateGeneSelection(iExternalID, 1, iAlOldSelection);
+						//generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
+						//	.setData(iUniqueId, getAccesionIDFromStorageIndex(iExternalID), EInputDataType.GENE, getInfo());
 					
 					}
 						
@@ -1060,9 +1101,7 @@ extends AGLCanvasStorageBasedView
 			switch (ePickingMode)
 			{
 			case CLICKED:
-				ArrayList<Integer> iAlOldSelection = 
-					prepareSelection(verticalSelectionManager, EViewInternalSelectionType.SELECTION);					
-			
+				iAlOldSelection = prepareSelection(verticalSelectionManager, EViewInternalSelectionType.SELECTION);			
 				
 				verticalSelectionManager.clearSelection(
 						EViewInternalSelectionType.SELECTION);
@@ -1071,7 +1110,7 @@ extends AGLCanvasStorageBasedView
 				
 				if(eAxisDataType == EInputDataType.GENE)
 				{
-					propagateGeneSelection(iExternalID, iAlOldSelection);
+					propagateGeneSelection(iExternalID, 2, iAlOldSelection);
 				}		
 				
 				rePosition(iExternalID);
@@ -1079,6 +1118,8 @@ extends AGLCanvasStorageBasedView
 				bIsDisplayListDirtyRemote = true;
 				break;
 			case MOUSE_OVER:
+				iAlOldSelection = prepareSelection(verticalSelectionManager, EViewInternalSelectionType.MOUSE_OVER);			
+				
 				verticalSelectionManager.clearSelection(
 						EViewInternalSelectionType.MOUSE_OVER);
 				verticalSelectionManager.addToType(
@@ -1086,8 +1127,9 @@ extends AGLCanvasStorageBasedView
 				
 				if(eAxisDataType == EInputDataType.GENE)
 				{
-					generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
-						.setData(iUniqueId, getAccesionIDFromStorageIndex(iExternalID), EInputDataType.GENE, getInfo());
+					propagateGeneSelection(iExternalID, 1, iAlOldSelection);
+					//generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
+					//	.setData(iUniqueId, getAccesionIDFromStorageIndex(iExternalID), EInputDataType.GENE, getInfo());
 				}
 				
 				bIsDisplayListDirtyLocal = true;
@@ -1140,9 +1182,9 @@ extends AGLCanvasStorageBasedView
 					if(iExternalID == EIconIDs.TOGGLE_RENDER_ARRAY_AS_POLYLINE.ordinal())
 					{							
 						if (bRenderStorageHorizontally == true)
-							renderStorageAsPolyline(false);
+							renderStorageAsPolyline();
 						else
-							renderStorageAsPolyline(true);
+							renderStorageAsPolyline();
 					}
 					else if(iExternalID == EIconIDs.TOGGLE_PREVENT_OCCLUSION.ordinal())
 					{
@@ -1164,18 +1206,12 @@ extends AGLCanvasStorageBasedView
 					}
 					else if(iExternalID == EIconIDs.SAVE_SELECTIONS.ordinal())
 					{
-						GenericSelectionManager selectionManager;
-						if(bRenderStorageHorizontally)
-							selectionManager = verticalSelectionManager;
-						else
-							selectionManager = horizontalSelectionManager;
-						
 						ArrayList<Integer> iAlSelection = new ArrayList<Integer>();
 						ArrayList<Integer> iAlGroup = new ArrayList<Integer>();
 						
 						if(bRenderSelection)
 						{
-							Set<Integer> deselectedSet = selectionManager.getElements(
+							Set<Integer> deselectedSet = horizontalSelectionManager.getElements(
 									EViewInternalSelectionType.DESELECTED);
 							
 							addSetToSelection(deselectedSet,
@@ -1183,15 +1219,15 @@ extends AGLCanvasStorageBasedView
 						}
 						else
 						{
-							Set<Integer> set = selectionManager.getElements(
+							Set<Integer> set = horizontalSelectionManager.getElements(
 									EViewInternalSelectionType.NORMAL);
 							addSetToSelection(set, iAlSelection, iAlGroup, 0);
 							
-							set = selectionManager.getElements(
+							set = horizontalSelectionManager.getElements(
 									EViewInternalSelectionType.MOUSE_OVER);
 							addSetToSelection(set, iAlSelection, iAlGroup, 1);
 							
-							set = selectionManager.getElements(
+							set = horizontalSelectionManager.getElements(
 									EViewInternalSelectionType.SELECTION);
 							addSetToSelection(set, iAlSelection, iAlGroup, 2);				
 						}
@@ -1202,6 +1238,11 @@ extends AGLCanvasStorageBasedView
 						
 						//alContentSelection.
 					}
+					else if (iExternalID == EIconIDs.ANGULAR_BRUSHING.ordinal())
+					{
+						bIsAngularBrushingActive = true;
+					}
+				
 					
 					bIsDisplayListDirtyLocal = true;
 					bIsDisplayListDirtyRemote = true;
@@ -1428,10 +1469,7 @@ extends AGLCanvasStorageBasedView
 			}			
 		}
 		
-		fXTranslation += fDelta;
-		
-		bIsDisplayListDirtyLocal = true;
-		bIsDisplayListDirtyRemote  = true;
+		fXTranslation += fDelta;	
 	}
 	
 	private void addSetToSelection(Set<Integer> sourceSet, 
@@ -1444,5 +1482,105 @@ extends AGLCanvasStorageBasedView
 			iAlTargetSelection.add(iCurrent);
 			iAlGroupSelection.add(iGroupID);
 		}
+	}
+	
+	private void handleAngularBrushing(final GL gl)
+	{
+		if(bIsAngularBrushingFirstTime)
+		{
+			Point currentPoint = linePick.getPickedPoint();
+			float[] fArPoint = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
+			vecAngularBrusingPoint = new Vec3f(fArPoint[0], fArPoint[1], fArPoint[2]);
+			bIsAngularBrushingFirstTime = false;
+		}
+		
+		
+		//GLSharedObjects.drawPointAt(gl, new Vec3f(fArPoint[0], fArPoint[1], fArPoint[2]));
+		
+		
+		int iPosition = (int)(vecAngularBrusingPoint.x() / fAxisSpacing);
+		int iAxisLeftIndex;
+		int iAxisRightIndex;
+		
+		iAxisLeftIndex = alAxisSelection.get(iPosition);
+		iAxisRightIndex = alAxisSelection.get(iPosition + 1);
+		
+		int iPolylineIndex = alPolylineSelection.get(iSelectedLineID);
+		
+		Vec3f vecLeftPoint = new Vec3f(0,0,0);
+		Vec3f vecRightPoint = new Vec3f(0,0,0);
+		
+		if(bRenderStorageHorizontally)
+		{
+			vecLeftPoint.setY(alDataStorages.get(iPolylineIndex).
+					getArrayFloat()[iAxisLeftIndex] * renderStyle.getAxisHeight());
+			vecRightPoint.setY(alDataStorages.get(iPolylineIndex).
+					getArrayFloat()[iAxisRightIndex] * renderStyle.getAxisHeight());
+		}
+		else
+		{
+			vecLeftPoint.setY(alDataStorages.get(iAxisLeftIndex).
+					getArrayFloat()[iPolylineIndex] * renderStyle.getAxisHeight());
+			vecRightPoint.setY(alDataStorages.get(iAxisRightIndex).
+					getArrayFloat()[iPolylineIndex] * renderStyle.getAxisHeight());
+		}
+		
+		vecLeftPoint.setX(iPosition * fAxisSpacing);
+		vecRightPoint.setX((iPosition + 1) * fAxisSpacing);
+	
+		//GLSharedObjects.drawPointAt(gl, vecLeftPoint);
+		//GLSharedObjects.drawPointAt(gl, vecRightPoint);
+		
+		Vec3f vecDirectional = vecRightPoint.minus(vecLeftPoint);
+		float fLength = vecDirectional.length();
+		vecDirectional.normalize();
+		Vec3f vecTriangleOrigin = vecLeftPoint.addScaled(
+				fLength / 4, vecDirectional);
+		//GLSharedObjects.drawPointAt(gl, vecTriangleOrigin);
+	
+		Vec3f vecTriangleLimit = vecLeftPoint.addScaled(
+				fLength / 4 * 3, vecDirectional);
+		
+		Rotf rotf = new Rotf();
+		
+		rotf.set(new Vec3f(0, 0, 1), (float)Math.PI / 6);
+		
+		Vec3f vecCenterLine = vecTriangleLimit.minus(vecTriangleOrigin);
+		Vec3f vecUpperPoint = rotf.rotateVector(vecCenterLine);
+		rotf.set(new Vec3f(0, 0, 1), -(float)Math.PI / 6);
+		Vec3f vecLowerPoint = rotf.rotateVector(vecCenterLine);
+		
+		vecUpperPoint.add(vecTriangleOrigin);
+		vecLowerPoint.add(vecTriangleOrigin);
+		
+		gl.glBegin(GL.GL_LINES);
+		gl.glVertex3f(vecTriangleOrigin.x(), 
+				vecTriangleOrigin.y(),
+				vecTriangleOrigin.z());
+		gl.glVertex3f(vecUpperPoint.x(),
+				vecUpperPoint.y(),
+				vecUpperPoint.z());
+		gl.glVertex3f(vecTriangleOrigin.x(), 
+				vecTriangleOrigin.y(),
+				vecTriangleOrigin.z());
+		gl.glVertex3f(vecLowerPoint.x(),
+				vecLowerPoint.y(),
+				vecLowerPoint.z());
+		
+		gl.glEnd();
+		
+		gl.glBegin(GL.GL_POLYGON); 
+//		double x;
+//		double y;
+//		for (double a=0; a<360; a+=1) 
+//		{    
+//			x = 0.2 * (Math.cos(a)) + vecTriangleLimit.x();
+//			y = 0.2 * (Math.sin(a)) + vecTriangleLimit.y();
+//			 gl.glVertex2d(x, y); 
+//		} gl.glEnd();
+		//GLSharedObjects.drawPointAt(gl, vecUpperPoint);
+		//GLSharedObjects.drawPointAt(gl, vecLowerLine);
+		
+		
 	}
 }
