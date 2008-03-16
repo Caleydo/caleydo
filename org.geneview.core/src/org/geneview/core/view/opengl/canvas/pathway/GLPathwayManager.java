@@ -77,7 +77,7 @@ public class GLPathwayManager {
 	
 	private HashMap<Integer, ArrayList<Vec3f>> hashElementId2MappingColorArray;
 	
-	private int iMappingRowCount = -1;
+	private int iMappingRowCount = 1;
 	
 	/**
 	 * Constructor.
@@ -215,7 +215,7 @@ public class GLPathwayManager {
 					hashSelectedVertexRepId2Depth.put(
 							identicalNode.getId(), 0);
 				
-					performNeighborhoodAlgorithm(identicalNode);
+//					performNeighborhoodAlgorithm(identicalNode);
 				}
 			}	
 		}

@@ -125,13 +125,11 @@ implements IMediatorReceiver, IMediatorSender {
 
 	public void setPathwayID(final int iPathwayID) {
 		
+		// Unregister former pathway in visibility list
+		if (iPathwayID != -1)
+			generalManager.getSingelton().getPathwayManager().setPathwayVisibilityStateByID(this.iPathwayID, false);
 		
-		IPathwayManager pathwayManager = 
-			generalManager.getSingelton().getPathwayManager();
-		
-		pathwayManager.setPathwayVisibilityStateByID(this.iPathwayID, false);
 		this.iPathwayID = iPathwayID;
-		pathwayManager.setPathwayVisibilityStateByID(iPathwayID, true);
 	}
 	
 	/*
@@ -227,9 +225,11 @@ implements IMediatorReceiver, IMediatorSender {
 			refHashGLcontext2TextureManager.put(gl, 
 					new GLPathwayTextureManager(generalManager));	
 		}		
-		
+				
 		loadAllPathways(gl);
 
+		pathwayManager.setPathwayVisibilityStateByID(iPathwayID, true);
+		
 //		refGLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
 	}
 
@@ -340,6 +340,15 @@ implements IMediatorReceiver, IMediatorSender {
 						+ eventTrigger.getClass().getSimpleName()+" ("+((AGLCanvasUser)eventTrigger).getId(),
 				LoggerType.VERBOSE);
 		
+		pathwayVertexSelectionManager.clearSelection(
+				EViewInternalSelectionType.MOUSE_OVER);
+		
+		// Rebuild display list to remove old selection highlighting
+		bIsDisplayListDirtyLocal = true;
+		bIsDisplayListDirtyRemote = true;
+		
+		selectedVertex = null;
+		
 		ISetSelection refSetSelection = (ISetSelection) updatedSet;
 
 		refSetSelection.getReadToken();
@@ -381,13 +390,6 @@ implements IMediatorReceiver, IMediatorSender {
 				tmpPathwayVertexGraphItemRep = 
 					((PathwayVertexGraphItemRep)iterPathwayVertexGraphItemRep.next());
 				
-				// Remove old vertex from internal selection manager
-				if (selectedVertex != null)
-				{
-					pathwayVertexSelectionManager.removeFromType(
-						EViewInternalSelectionType.MOUSE_OVER, selectedVertex.getId());
-				}
-				
 				// Check if vertex is contained in this pathway viewFrustum
 				if (!((PathwayGraph)generalManager.getSingelton().getPathwayManager()
 						.getItem(iPathwayID)).containsItem(tmpPathwayVertexGraphItemRep))
@@ -402,10 +404,7 @@ implements IMediatorReceiver, IMediatorSender {
 				
 				// Add new vertex to internal selection manager
 				pathwayVertexSelectionManager.addToType(
-						EViewInternalSelectionType.MOUSE_OVER, selectedVertex.getId());
-													
-				bIsDisplayListDirtyLocal = true;
-				bIsDisplayListDirtyRemote = true;
+						EViewInternalSelectionType.MOUSE_OVER, tmpPathwayVertexGraphItemRep.getId());
 			}
 		}
 	}
@@ -592,17 +591,19 @@ implements IMediatorReceiver, IMediatorSender {
 	protected void handleEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) 
 	{
-		// Check if selection occurs in the pool layer of the bucket
-		if (containedHierarchyLayer != null 
-				&& containedHierarchyLayer.getCapacity() >= 10)
-		{
-			
-			return;
-		}
+//		// Check if selection occurs in the pool layer of the bucket
+//		if (containedHierarchyLayer != null 
+//				&& containedHierarchyLayer.getCapacity() >= 10)
+//		{
+//			
+//			return;
+//		}
 		
 		switch (pickingType)
 		{	
 		case PATHWAY_ELEMENT_SELECTION:
+			
+			pathwayVertexSelectionManager.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
 			
 			PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) generalManager.getSingelton()
 				.getPathwayItemManager().getItem(iExternalID);
@@ -617,16 +618,10 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			int iUnselectAccessionID = generalManager.getSingelton().getGenomeIdManager()
 				.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
-	
-			// Remove old vertex from internal selection manager
-			if (selectedVertex != null)
-			{
-				pathwayVertexSelectionManager.removeFromType(
-					EViewInternalSelectionType.MOUSE_OVER, selectedVertex.getId());
-			}
+
 			
 			selectedVertex = tmpVertexGraphItemRep;
-			
+
 			// Add new vertex to internal selection manager
 			pathwayVertexSelectionManager.addToType(
 					EViewInternalSelectionType.MOUSE_OVER, selectedVertex.getId());

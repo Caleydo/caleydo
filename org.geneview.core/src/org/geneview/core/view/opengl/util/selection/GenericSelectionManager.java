@@ -79,7 +79,7 @@ public class GenericSelectionManager
 	}
 	
 	/**
-	 * Clear one specific selction type
+	 * Clear one specific selection type
 	 * The elements are added to the "normal" type
 	 * 
 	 * @param sSelectionType the selection type to be cleared
