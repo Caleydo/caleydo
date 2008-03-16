@@ -40,7 +40,7 @@ public class GLPathwayTextureManager {
 	}
 	
 	public Texture loadPathwayTextureById(int iPathwayId) {
-		
+			
 		if (hashPathwayIdToTexture.containsKey(iPathwayId))
 			return hashPathwayIdToTexture.get(iPathwayId);
 		

@@ -163,6 +163,9 @@ public class GLPathwayMemoPad {
 		{
 			int iPathwayId = iterMemoPathwayIndex.next();
 
+			if (iPathwayId == -1)
+				continue;
+			
 			gl.glPushMatrix();
 
 			Transform transform = memoPad.getTransformByElementId(iPathwayId);

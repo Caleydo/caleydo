@@ -108,6 +108,9 @@ public class JukeboxHierarchyLayer {
 			llElementIdVisibleState.set(iReplacePosition, false);
 			llElementIdImportanceQueue.addFirst(iElementId);	
 			
+			if (iCapacity < 5)
+				calculatePathwayScaling(iElementId);
+			
 			return 0;
 		}
 		

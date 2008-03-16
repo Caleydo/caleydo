@@ -420,6 +420,9 @@ implements IMediatorReceiver, IMediatorSender {
 			final int iPathwayId, 
 			final JukeboxHierarchyLayer layer) {
 		
+		if (iPathwayId == -1)
+			return;
+		
 		// Check if pathway is visible
 		if(!layer.getElementVisibilityById(iPathwayId))
 			return;
@@ -567,6 +570,9 @@ implements IMediatorReceiver, IMediatorSender {
 //			// Ignore all list elements that are of no interest at the moment 
 //			if (alMagnificationFactor.get(iPathwayIndex) == 0)
 //				break;
+
+			if (iPathwayId == -1)
+				continue;
 			
 			gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager().getPickingManager()
 					.getPickingID(iUniqueId, EPickingType.PATHWAY_POOL_SELECTION, iPathwayId));
@@ -741,14 +747,13 @@ implements IMediatorReceiver, IMediatorSender {
 
 		refSetSelection.getReadToken();
 		ArrayList<Integer> iAlOptional = refSetSelection.getOptionalDataArray();
-		if (iAlOptional.size() != 0)
+		if (iAlOptional != null && iAlOptional.size() != 0)
 		{
-			iLazyPathwayLoadingId = 
-				refSetSelection.getOptionalDataArray().get(0);
+			iLazyPathwayLoadingId = iAlOptional.get(0);
 		}
 		
 		ArrayList<Integer> iAlSelectionId = refSetSelection.getSelectionIdArray();
-		if (iAlSelectionId.size() != 0)
+		if (iAlSelectionId != null &&iAlSelectionId.size() != 0)
 		{
 			selectedVertex = (PathwayVertexGraphItemRep) generalManager.getSingelton()
 				.getPathwayItemManager().getItem(iAlSelectionId.get(0));
@@ -777,6 +782,13 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		infoAreaRenderer.resetPoint();
 				
+		SlerpAction tmpSlerpAction = arSlerpActions.get(0);
+		
+		if (iSlerpFactor == 0)
+		{
+			tmpSlerpAction.start();
+		}
+		
 		if (iSlerpFactor < 1000)
 		{
 			// Makes animation rendering speed independent
@@ -786,7 +798,7 @@ implements IMediatorReceiver, IMediatorSender {
 				iSlerpFactor = 1000;
 		}
 		
-		slerpPathway(gl, arSlerpActions.get(0));
+		slerpPathway(gl, tmpSlerpAction);
 		// selectedVertex = null;
 	}
 
@@ -1089,7 +1101,7 @@ implements IMediatorReceiver, IMediatorSender {
 		}
 
 		// Slerp current pathway back to layered view
-		if (!pathwayUnderInteractionLayer.getElementList().isEmpty())
+		if (pathwayUnderInteractionLayer.getElementIdByPositionIndex(0) != -1)
 		{
 			SlerpAction reverseSlerpAction = new SlerpAction(
 					pathwayUnderInteractionLayer.getElementIdByPositionIndex(0),

@@ -122,6 +122,9 @@ public class GLPathwayManager {
 //				+ ": buildPathwayDisplayList(): Build display list for pathway: "+iPathwayId,
 //				LoggerType.VERBOSE);
 		
+		if (iPathwayId == -1)
+			return;		
+		
 		PathwayGraph refTmpPathway = (PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().
 			getItem(iPathwayId);
 		
@@ -215,7 +218,7 @@ public class GLPathwayManager {
 					hashSelectedVertexRepId2Depth.put(
 							identicalNode.getId(), 0);
 				
-//					performNeighborhoodAlgorithm(identicalNode);
+					performNeighborhoodAlgorithm(identicalNode);
 				}
 			}	
 		}

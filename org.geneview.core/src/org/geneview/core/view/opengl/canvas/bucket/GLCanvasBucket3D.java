@@ -5,7 +5,6 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import gleem.linalg.open.Transform;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -21,22 +20,18 @@ import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.set.selection.ISetSelection;
 import org.geneview.core.data.graph.core.PathwayGraph;
 import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
-import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.data.view.camera.ViewFrustumBase.ProjectionMode;
-import org.geneview.core.data.view.rep.selection.SelectedElementRep;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.manager.IEventPublisher.MediatorType;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.event.mediator.IMediator;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
 import org.geneview.core.manager.event.mediator.MediatorUpdateType;
 import org.geneview.core.manager.type.ManagerObjectType;
 import org.geneview.core.manager.view.EPickingMode;
 import org.geneview.core.manager.view.EPickingType;
-import org.geneview.core.manager.view.ESelectionMode;
 import org.geneview.core.manager.view.Pick;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.util.slerp.SlerpAction;
@@ -46,20 +41,15 @@ import org.geneview.core.util.system.SystemTime;
 import org.geneview.core.util.system.Time;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
-import org.geneview.core.view.opengl.canvas.parcoords.ESelectionType;
-import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
 import org.geneview.core.view.opengl.util.EIconTextures;
 import org.geneview.core.view.opengl.util.GLIconTextureManager;
-import org.geneview.core.view.opengl.util.GLSharedObjects;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
-import org.geneview.core.view.opengl.util.selection.EViewInternalSelectionType;
 import org.geneview.util.graph.EGraphItemHierarchy;
 import org.geneview.util.graph.EGraphItemProperty;
 import org.geneview.util.graph.IGraphItem;
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
-import com.sun.opengl.util.texture.TextureIO;
 
 /**
  * Implementation of the bucket setup.
@@ -78,6 +68,8 @@ implements IMediatorReceiver, IMediatorSender
 	private static final float SCALING_FACTOR_TRANSITION_LAYER = 0.05f;
 	private static final float SCALING_FACTOR_STACK_LAYER = 0.5f;
 	private static final float SCALING_FACTOR_POOL_LAYER = 0.03f;
+	private static final float SCALING_FACTOR_SPAWN_LAYER = 0.01f;
+	
 	
 	private static final int SLERP_RANGE = 1000;
 	private static final int SLERP_SPEED = 1300;
@@ -88,6 +80,7 @@ implements IMediatorReceiver, IMediatorSender
 	private JukeboxHierarchyLayer stackLayer;
 	private JukeboxHierarchyLayer poolLayer;
 	private JukeboxHierarchyLayer transitionLayer;
+	private JukeboxHierarchyLayer spawnLayer;
 	
 	private ArrayList<SlerpAction> arSlerpActions;
 	private Time time;
@@ -99,7 +92,7 @@ implements IMediatorReceiver, IMediatorSender
 	
 	private GLConnectionLineRenderer glConnectionLineRenderer;
 	
-	private int iDraggedViewID = -1;
+//	private int iDraggedViewID = -1;
 	
 	private BucketMouseWheelListener bucketMouseWheelListener;
 	
@@ -117,6 +110,8 @@ implements IMediatorReceiver, IMediatorSender
 	private ArrayList<Integer> iAlUninitializedPathwayIDs;
 	
 	private int iBucketEventMediatorID = -1;
+	
+	
 
 	/**
 	 * Constructor.
@@ -153,6 +148,11 @@ implements IMediatorReceiver, IMediatorSender
 				SCALING_FACTOR_TRANSITION_LAYER, 
 				null);
 		
+		spawnLayer = new JukeboxHierarchyLayer(generalManager,
+				1, 
+				SCALING_FACTOR_SPAWN_LAYER, 
+				null);
+		
 		underInteractionLayer.setParentLayer(stackLayer);
 		stackLayer.setChildLayer(underInteractionLayer);
 		stackLayer.setParentLayer(poolLayer);
@@ -173,6 +173,14 @@ implements IMediatorReceiver, IMediatorSender
 				SCALING_FACTOR_TRANSITION_LAYER,
 				SCALING_FACTOR_TRANSITION_LAYER));
 		transitionLayer.setTransformByPositionIndex(0, transformTransition);
+		
+		Transform transformSpawn = new Transform();
+		transformTransition.setTranslation(new Vec3f(0f, 0f, 0.1f));
+		transformTransition.setScale(new Vec3f(
+				SCALING_FACTOR_SPAWN_LAYER,
+				SCALING_FACTOR_SPAWN_LAYER,
+				SCALING_FACTOR_SPAWN_LAYER));
+		spawnLayer.setTransformByPositionIndex(0, transformSpawn);
 		
 		arSlerpActions = new ArrayList<SlerpAction>();
 		
@@ -322,6 +330,7 @@ implements IMediatorReceiver, IMediatorSender
 			renderLayer(gl, transitionLayer);			
 			renderLayer(gl, poolLayer);
 			renderLayer(gl, stackLayer);
+			renderLayer(gl, spawnLayer);
 			
 			glConnectionLineRenderer.render(gl);
 		}
@@ -541,17 +550,19 @@ implements IMediatorReceiver, IMediatorSender
 	{
 		// Init newly created pathways
 		// FIXME: this specialization to pathways in the bucket is not good!
-		if (!iAlUninitializedPathwayIDs.isEmpty())
+		if (!iAlUninitializedPathwayIDs.isEmpty() && arSlerpActions.isEmpty())
 		{
-			Iterator<Integer> iterUninitializedViewIDs = iAlUninitializedPathwayIDs.iterator();
-			while (iterUninitializedViewIDs.hasNext())
+			
+//			Iterator<Integer> iterUninitializedViewIDs = iAlUninitializedPathwayIDs.iterator();
+//			while (iterUninitializedViewIDs.hasNext())
+//			{				
+//				int iTmpPathwayID = iterUninitializedViewIDs.next();
+	
+			int iTmpPathwayID = iAlUninitializedPathwayIDs.get(0);
+			
+			// Check if pathway is already loaded in bucket
+			if (!generalManager.getSingelton().getPathwayManager().isPathwayVisible(iTmpPathwayID))
 			{				
-				int iTmpPathwayID = iterUninitializedViewIDs.next();
-				
-				// Check if pathway is already loaded in bucket
-				if (generalManager.getSingelton().getPathwayManager().isPathwayVisible(iTmpPathwayID))
-					continue;
-				
 				ArrayList<Integer> iArSetIDs = new ArrayList<Integer>();
 				iArSetIDs.add(35101);
 				iArSetIDs.add(36101);
@@ -596,31 +607,37 @@ implements IMediatorReceiver, IMediatorSender
 				
 				if (underInteractionLayer.containsElement(-1))
 				{
-					underInteractionLayer.addElement(iGeneratedViewID);
-					underInteractionLayer.setElementVisibilityById(true, iGeneratedViewID);
+					SlerpAction slerpActionTransition = new SlerpAction(
+							iGeneratedViewID, spawnLayer, underInteractionLayer);	
+					arSlerpActions.add(slerpActionTransition);
 					
 					((AGLCanvasUser)generalManager.getSingelton().getViewGLCanvasManager()
 							.getItem(iGeneratedViewID)).initRemote(gl, iUniqueId, underInteractionLayer, pickingTriggerMouseAdapter);	
 				}
 				else if (stackLayer.containsElement(-1))
 				{
-					stackLayer.addElement(iGeneratedViewID);
-					stackLayer.setElementVisibilityById(true, iGeneratedViewID);
+					SlerpAction slerpActionTransition = new SlerpAction(
+							iGeneratedViewID, spawnLayer, stackLayer);	
+					arSlerpActions.add(slerpActionTransition);
 					
 					((AGLCanvasUser)generalManager.getSingelton().getViewGLCanvasManager()
 							.getItem(iGeneratedViewID)).initRemote(gl, iUniqueId, stackLayer, pickingTriggerMouseAdapter);	
 				}
 				else if (poolLayer.containsElement(-1))
 				{
-					poolLayer.addElement(iGeneratedViewID);
-					poolLayer.setElementVisibilityById(true, iGeneratedViewID);
+					SlerpAction slerpActionTransition = new SlerpAction(
+							iGeneratedViewID, spawnLayer, poolLayer);	
+					arSlerpActions.add(slerpActionTransition);
 
 					((AGLCanvasUser)generalManager.getSingelton().getViewGLCanvasManager()
 							.getItem(iGeneratedViewID)).initRemote(gl, iUniqueId, poolLayer, pickingTriggerMouseAdapter);	
-				}	
+				}		
+
+				spawnLayer.addElement(iGeneratedViewID);
 			}
 
-			iAlUninitializedPathwayIDs.clear();
+			iAlUninitializedPathwayIDs.remove(0);
+//			iAlUninitializedPathwayIDs.clear();
 		}
 
 		
