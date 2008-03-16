@@ -1121,8 +1121,6 @@ implements IMediatorReceiver, IMediatorSender
 			return;
 
 		arSlerpActions.clear();
-		
-		glConnectionLineRenderer.enableRendering(false);
 
 //		// Check if under interaction layer is free
 //		if (underInteractionLayer.getElementList().isEmpty())
