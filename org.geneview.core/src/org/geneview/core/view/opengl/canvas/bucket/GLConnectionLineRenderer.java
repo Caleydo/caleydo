@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.canvas.jukebox;
+package org.geneview.core.view.opengl.canvas.bucket;
 
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
@@ -20,8 +20,8 @@ import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 
 /**
  * Class is responsible for rendering and drawing
- * of connection lines (resp. planes) between views in the overall 
- * jukebox setup.
+ * of connection lines (resp. planes) between views in the 
+ * bucket setup.
  * 
  * @author Marc Streit
  * @author Alexander Lex

@@ -22,9 +22,9 @@ import org.geneview.core.view.IView;
 import org.geneview.core.view.IViewRep;
 import org.geneview.core.view.ViewType;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+import org.geneview.core.view.opengl.canvas.bucket.GLCanvasBucket3D;
 import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
 import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn;
-import org.geneview.core.view.opengl.canvas.jukebox.GLCanvasOverallJukebox3D;
 import org.geneview.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
 import org.geneview.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import org.geneview.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
@@ -449,8 +449,8 @@ implements IViewGLCanvasManager {
 						sLabel,
 						viewFrustum);
 				
-			case CREATE_GL_OVERALL_JUKEBOX_3D:
-				return new GLCanvasOverallJukebox3D(
+			case CREATE_GL_BUCKET_3D:
+				return new GLCanvasBucket3D(
 						generalManager, 
 						iUniqueId,
 						iGLCanvasID, 

@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.canvas.jukebox;
+package org.geneview.core.view.opengl.canvas.bucket;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
@@ -15,6 +15,7 @@ import javax.media.opengl.GLEventListener;
 
 import org.geneview.core.command.CommandQueueSaxType;
 import org.geneview.core.command.data.CmdDataCreateSelectionSetMakro;
+import org.geneview.core.command.event.CmdEventCreateMediator;
 import org.geneview.core.command.view.opengl.CmdGlObjectPathway3D;
 import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.set.selection.ISetSelection;
@@ -26,9 +27,12 @@ import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.geneview.core.data.view.rep.selection.SelectedElementRep;
 import org.geneview.core.manager.IGeneralManager;
+import org.geneview.core.manager.IEventPublisher.MediatorType;
 import org.geneview.core.manager.ILoggerManager.LoggerType;
+import org.geneview.core.manager.event.mediator.IMediator;
 import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
+import org.geneview.core.manager.event.mediator.MediatorUpdateType;
 import org.geneview.core.manager.type.ManagerObjectType;
 import org.geneview.core.manager.view.EPickingMode;
 import org.geneview.core.manager.view.EPickingType;
@@ -58,14 +62,14 @@ import com.sun.opengl.util.texture.TextureCoords;
 import com.sun.opengl.util.texture.TextureIO;
 
 /**
- * Implementation of the overall Jukebox setup.
+ * Implementation of the bucket setup.
  * It supports the user with the ability to navigate
  * and interact with arbitrary views.
  * 
  * @author Marc Streit
  *
  */
-public class GLCanvasOverallJukebox3D
+public class GLCanvasBucket3D
 extends AGLCanvasUser
 implements IMediatorReceiver, IMediatorSender 
 {
@@ -110,13 +114,15 @@ implements IMediatorReceiver, IMediatorSender
 	// FIXME: should be a singleton
 	private GLIconTextureManager glIconTextureManager;
 	
-	private ArrayList<Integer> iAlUninitializedViewIDs;
+	private ArrayList<Integer> iAlUninitializedPathwayIDs;
+	
+	private int iBucketEventMediatorID = -1;
 
 	/**
 	 * Constructor.
 	 * 
 	 */
-	public GLCanvasOverallJukebox3D(final IGeneralManager generalManager,
+	public GLCanvasBucket3D(final IGeneralManager generalManager,
 			final int iViewId,
 			final int iGLCanvasID,
 			final String sLabel,
@@ -179,9 +185,11 @@ implements IMediatorReceiver, IMediatorSender
 		// Register specialized bucket mouse wheel listener
 		parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
 		
-		iAlUninitializedViewIDs = new ArrayList<Integer>();
+		iAlUninitializedPathwayIDs = new ArrayList<Integer>();
+		
+		createEventMediator();
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media.opengl.GL)
@@ -340,33 +348,48 @@ implements IMediatorReceiver, IMediatorSender
 			if(tmpGLEventListener == this)
 				continue;
 			
-			int iViewId = ((AGLCanvasUser)tmpGLEventListener).getId();
+			int iViewID = ((AGLCanvasUser)tmpGLEventListener).getId();
 			
 			if (underInteractionLayer.containsElement(-1))
 			{
-				underInteractionLayer.addElement(iViewId);
-				underInteractionLayer.setElementVisibilityById(true, iViewId);
+				underInteractionLayer.addElement(iViewID);
+				underInteractionLayer.setElementVisibilityById(true, iViewID);
 				
 				tmpGLEventListener.initRemote(gl, iUniqueId, underInteractionLayer, pickingTriggerMouseAdapter);
 
 			}
 			else if (stackLayer.containsElement(-1))
 			{
-				stackLayer.addElement(iViewId);
-				stackLayer.setElementVisibilityById(true, iViewId);
+				stackLayer.addElement(iViewID);
+				stackLayer.setElementVisibilityById(true, iViewID);
 				
 				tmpGLEventListener.initRemote(gl, iUniqueId, stackLayer, pickingTriggerMouseAdapter);
 			}
 			else if (poolLayer.containsElement(-1))
 			{
-				poolLayer.addElement(iViewId);
-				poolLayer.setElementVisibilityById(true, iViewId);
+				poolLayer.addElement(iViewID);
+				poolLayer.setElementVisibilityById(true, iViewID);
 				
 				tmpGLEventListener.initRemote(gl, iUniqueId, poolLayer, pickingTriggerMouseAdapter);
 			}
 			
 //			pickingTriggerMouseAdapter.addGLCanvas(tmpGLEventListener);
-			pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_SELECTION, iViewId);
+			pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_SELECTION, iViewID);
+			
+			// Register new view to mediator
+//			generalManager.getSingelton().getEventPublisher()
+//				.registerSenderToMediator(iBucketEventMediatorID, iViewID);
+//			generalManager.getSingelton().getEventPublisher()
+//				.registerSenderToMediator(iBucketEventMediatorID, iViewID);
+			
+			ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
+			arMediatorIDs.add(iViewID);			
+			generalManager.getSingelton().getEventPublisher().addSendersAndReceiversToMediator(
+					generalManager.getSingelton().getEventPublisher().getItemMediator(iBucketEventMediatorID),
+					arMediatorIDs,
+					arMediatorIDs, 
+					MediatorType.SELECTION_MEDIATOR,
+					MediatorUpdateType.MEDIATOR_DEFAULT);
 		}
 	}
 	
@@ -517,42 +540,87 @@ implements IMediatorReceiver, IMediatorSender
 			final JukeboxHierarchyLayer layer) 
 	{
 		// Init newly created pathways
-		// FIXME: Scheduling problem because of creation in update at arbitrary time spot?
-		if (!iAlUninitializedViewIDs.isEmpty())
+		// FIXME: this specialization to pathways in the bucket is not good!
+		if (!iAlUninitializedPathwayIDs.isEmpty())
 		{
-			Iterator<Integer> iterUninitializedViewIDs = iAlUninitializedViewIDs.iterator();
+			Iterator<Integer> iterUninitializedViewIDs = iAlUninitializedPathwayIDs.iterator();
 			while (iterUninitializedViewIDs.hasNext())
 			{				
-				int iTmpViewID = iterUninitializedViewIDs.next();
+				int iTmpPathwayID = iterUninitializedViewIDs.next();
+				
+				// Check if pathway is already loaded in bucket
+				if (generalManager.getSingelton().getPathwayManager().isPathwayVisible(iTmpPathwayID))
+					continue;
+				
+				ArrayList<Integer> iArSetIDs = new ArrayList<Integer>();
+				iArSetIDs.add(35101);
+				iArSetIDs.add(36101);
+				iArSetIDs.add(37101);
+				iArSetIDs.add(39101);
+				
+				// Create new selection set
+				int iSelectionSetID = generalManager.getSingelton().getSetManager().createId(ManagerObjectType.SET);
+				CmdDataCreateSelectionSetMakro selectedSetCmd = (CmdDataCreateSelectionSetMakro) generalManager.getSingelton().getCommandManager()
+					.createCommandByType(CommandQueueSaxType.CREATE_SET_SELECTION_MAKRO);
+				selectedSetCmd.setAttributes(iSelectionSetID);
+				selectedSetCmd.doCommand();
+				
+				iArSetIDs.add(iSelectionSetID);
+				
+				int iGeneratedViewID = generalManager.getSingelton().getViewGLCanvasManager()
+					.createId(ManagerObjectType.VIEW);
+				
+				// Create Pathway3D view
+				CmdGlObjectPathway3D cmdPathway = (CmdGlObjectPathway3D) generalManager.getSingelton()
+					.getCommandManager().createCommandByType(CommandQueueSaxType.CREATE_GL_PATHWAY_3D);
+				
+				cmdPathway.setAttributes(iGeneratedViewID, iTmpPathwayID, iArSetIDs, 
+						ProjectionMode.ORTHOGRAPHIC, -4, 4, 4, -4, -20, 20);
+					
+				cmdPathway.doCommand();
+				
+				//FIXME: Do this in initRemote of the view
+				// Register new view to mediator
+//				generalManager.getSingelton().getEventPublisher()
+//					.registerSenderToMediator(iBucketEventMediatorID, iGeneratedViewID);
+//				generalManager.getSingelton().getEventPublisher()
+//					.registerSenderToMediator(iBucketEventMediatorID, iGeneratedViewID);
+				ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
+				arMediatorIDs.add(iGeneratedViewID);			
+				generalManager.getSingelton().getEventPublisher().addSendersAndReceiversToMediator(
+						generalManager.getSingelton().getEventPublisher().getItemMediator(iBucketEventMediatorID),
+						arMediatorIDs,
+						arMediatorIDs, 
+						MediatorType.SELECTION_MEDIATOR,
+						MediatorUpdateType.MEDIATOR_DEFAULT);
 				
 				if (underInteractionLayer.containsElement(-1))
 				{
-					underInteractionLayer.addElement(iTmpViewID);
-					underInteractionLayer.setElementVisibilityById(true, iTmpViewID);
+					underInteractionLayer.addElement(iGeneratedViewID);
+					underInteractionLayer.setElementVisibilityById(true, iGeneratedViewID);
 					
 					((AGLCanvasUser)generalManager.getSingelton().getViewGLCanvasManager()
-							.getItem(iTmpViewID)).initRemote(gl, iUniqueId, underInteractionLayer, pickingTriggerMouseAdapter);	
+							.getItem(iGeneratedViewID)).initRemote(gl, iUniqueId, underInteractionLayer, pickingTriggerMouseAdapter);	
 				}
 				else if (stackLayer.containsElement(-1))
 				{
-					stackLayer.addElement(iTmpViewID);
-					stackLayer.setElementVisibilityById(true, iTmpViewID);
+					stackLayer.addElement(iGeneratedViewID);
+					stackLayer.setElementVisibilityById(true, iGeneratedViewID);
 					
 					((AGLCanvasUser)generalManager.getSingelton().getViewGLCanvasManager()
-							.getItem(iTmpViewID)).initRemote(gl, iUniqueId, stackLayer, pickingTriggerMouseAdapter);	
+							.getItem(iGeneratedViewID)).initRemote(gl, iUniqueId, stackLayer, pickingTriggerMouseAdapter);	
 				}
 				else if (poolLayer.containsElement(-1))
 				{
-					poolLayer.addElement(iTmpViewID);
-					poolLayer.setElementVisibilityById(true, iTmpViewID);
+					poolLayer.addElement(iGeneratedViewID);
+					poolLayer.setElementVisibilityById(true, iGeneratedViewID);
 
 					((AGLCanvasUser)generalManager.getSingelton().getViewGLCanvasManager()
-							.getItem(iTmpViewID)).initRemote(gl, iUniqueId, poolLayer, pickingTriggerMouseAdapter);	
-				}				
-				
+							.getItem(iGeneratedViewID)).initRemote(gl, iUniqueId, poolLayer, pickingTriggerMouseAdapter);	
+				}	
 			}
 
-			iAlUninitializedViewIDs.clear();
+			iAlUninitializedPathwayIDs.clear();
 		}
 
 		
@@ -1250,38 +1318,8 @@ implements IMediatorReceiver, IMediatorSender
 			{
 				iPathwayID = ((PathwayGraph)iterIdenticalPathwayGraphItemRep.next()
 						.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT).toArray()[0]).getId();
-
-				// Check if pathway is already loaded in bucket
-				if (generalManager.getSingelton().getPathwayManager().isPathwayVisible(iPathwayID))
-					continue;
-							
-				ArrayList<Integer> iArSetIDs = new ArrayList<Integer>();
-				iArSetIDs.add(35101);
-				iArSetIDs.add(36101);
-				iArSetIDs.add(37101);
-				iArSetIDs.add(39101);
 				
-				// Create new selection set
-				int iSelectionSetID = generalManager.getSingelton().getSetManager().createId(ManagerObjectType.SET);
-				CmdDataCreateSelectionSetMakro selectedSetCmd = (CmdDataCreateSelectionSetMakro) generalManager.getSingelton().getCommandManager()
-					.createCommandByType(CommandQueueSaxType.CREATE_SET_SELECTION_MAKRO);
-				selectedSetCmd.setAttributes(iSelectionSetID);
-				selectedSetCmd.doCommand();
-				
-				iArSetIDs.add(iSelectionSetID);
-				
-				int iGeneratedViewID = generalManager.getSingelton().getViewGLCanvasManager().createId(ManagerObjectType.VIEW);
-				
-				// Create Pathway3D view
-				CmdGlObjectPathway3D cmdPathway = (CmdGlObjectPathway3D) generalManager.getSingelton()
-					.getCommandManager().createCommandByType(CommandQueueSaxType.CREATE_GL_PATHWAY_3D);
-				
-				cmdPathway.setAttributes(iGeneratedViewID, iPathwayID, iArSetIDs, 
-						ProjectionMode.ORTHOGRAPHIC, -4, 4, 4, -4, -20, 20);
-					
-				cmdPathway.doCommand();
-				
-				iAlUninitializedViewIDs.add(iGeneratedViewID);
+				iAlUninitializedPathwayIDs.add(iPathwayID);
 				
 //				// Slerp to layered pathway view
 //				SlerpAction slerpAction = new SlerpAction(iPathwayId,
@@ -1543,5 +1581,22 @@ implements IMediatorReceiver, IMediatorSender
 		ArrayList<String> sAlInfo = new ArrayList<String>();
 		sAlInfo.add("No info available!");
 		return sAlInfo;
+	}
+	
+	private void createEventMediator() 
+	{
+		// Create event mediator that connects all views in the bucket
+		iBucketEventMediatorID = generalManager.createId(ManagerObjectType.EVENT_MEDIATOR_CREATE);
+		
+		CmdEventCreateMediator tmpMediatorCmd = (CmdEventCreateMediator) generalManager.getSingelton().getCommandManager()
+			.createCommandByType(CommandQueueSaxType.CREATE_EVENT_MEDIATOR);
+
+		ArrayList<Integer> iAlSenderIDs = new ArrayList<Integer>();
+		ArrayList<Integer> iAlReceiverIDs = new ArrayList<Integer>();
+		iAlSenderIDs.add(iUniqueId);
+		iAlReceiverIDs.add(iUniqueId);
+		tmpMediatorCmd.setAttributes(iBucketEventMediatorID, 
+			iAlSenderIDs, iAlReceiverIDs, MediatorType.SELECTION_MEDIATOR);
+		tmpMediatorCmd.doCommand();
 	}
 }

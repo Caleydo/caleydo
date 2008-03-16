@@ -23,7 +23,7 @@ import org.geneview.core.command.view.opengl.CmdGlObjectHeatMap3D;
 import org.geneview.core.command.view.opengl.CmdGlObjectHeatmap;
 import org.geneview.core.command.view.opengl.CmdGlObjectHeatmap2D;
 import org.geneview.core.command.view.opengl.CmdGlObjectHistogram2D;
-import org.geneview.core.command.view.opengl.CmdGlObjectOverallJukebox3D;
+import org.geneview.core.command.view.opengl.CmdGlObjectBucket3D;
 import org.geneview.core.command.view.opengl.CmdGlObjectParCoords3D;
 import org.geneview.core.command.view.opengl.CmdGlObjectPathway3D;
 import org.geneview.core.command.view.opengl.CmdGlObjectPathway3DJukebox;
@@ -465,10 +465,10 @@ implements ICommandFactory {
 						cmdType);	
 			break;
 		}
-		case CREATE_GL_OVERALL_JUKEBOX_3D:
+		case CREATE_GL_BUCKET_3D:
 		{
  			createdCommand =
-				new CmdGlObjectOverallJukebox3D(
+				new CmdGlObjectBucket3D(
 						generalManager,
 						commandManager,
 						cmdType);	

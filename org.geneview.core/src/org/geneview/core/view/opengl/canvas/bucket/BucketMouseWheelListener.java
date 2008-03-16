@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.canvas.jukebox;
+package org.geneview.core.view.opengl.canvas.bucket;
 
 import gleem.linalg.Vec3f;
 
@@ -34,7 +34,7 @@ implements MouseWheelListener {
 	/**
 	 * Constructor.
 	 */
-	public BucketMouseWheelListener(final GLCanvasOverallJukebox3D bucketCanvas) 
+	public BucketMouseWheelListener(final GLCanvasBucket3D bucketCanvas) 
 	{
 		this.bucketCanvas = bucketCanvas;
 	}

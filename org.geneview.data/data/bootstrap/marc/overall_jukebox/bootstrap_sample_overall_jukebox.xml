@@ -93,12 +93,12 @@
 			
 		<!-- Window	10331 -->	
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="10331" 
-				label="Overall Jukebox 3D" attrib1="ROW	HORIZONTAL"	/>	 
+				label="Bucket View 3D" attrib1="ROW	HORIZONTAL"	/>	 
 				 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="17401" 
 			  	gl_canvas="99075" parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
 				
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_OVERALL_JUKEBOX_3D"		cmdId="69994"	uniqueId="83401" parent="99075" label="Overall Jukebox" 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_BUCKET_3D"		cmdId="69994"	uniqueId="83401" parent="99075" label="Bucket" 
 							gl_origin="-2 -2 -8" 
 							gl_rotation="0 0 0 0"					
 							attrib3="PERSPECTIVE -1.5 1.5 -1.5 1.5 3 100"
@@ -106,10 +106,11 @@
 							detail="" /> 
 			    
 	  	<!-- Mediator -->
+	  	<!--
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator: Pathway - PC / Heatmap" 		attrib1="85401 86401 87401 88401 89401 90401 91401" attrib2="82401 83401 84401" detail="SELECTION_MEDIATOR" /> 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator: PC - Pathway / Heatmap" 		attrib1="82401" attrib2="83401 84401 85401 86401 87401 88401 89401 90401 91401" detail="SELECTION_MEDIATOR" />  
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator: HeatMap - Pathway / PC" 		attrib1="84401" attrib2="82401 83401 85401 86401 87401 88401 89401 90401 91401" detail="SELECTION_MEDIATOR" />  
-			
+		-->
 							    
    </CommandBuffer>
     

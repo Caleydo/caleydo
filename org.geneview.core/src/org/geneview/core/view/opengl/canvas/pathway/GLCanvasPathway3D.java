@@ -162,8 +162,8 @@ implements IMediatorReceiver, IMediatorSender {
 				
 		init(gl);
 
-		// Only send out contained genes for pathways inside the bucket (not in pool)
-		if (containedHierarchyLayer != null && containedHierarchyLayer.getCapacity() <= 4)
+//		// Only send out contained genes for pathways inside the bucket (not in pool)
+//		if (containedHierarchyLayer != null && containedHierarchyLayer.getCapacity() <= 4)
 			initialContainedGenePropagation(); 
 	}
 	
@@ -344,11 +344,16 @@ implements IMediatorReceiver, IMediatorSender {
 
 		refSetSelection.getReadToken();
 		ArrayList<Integer> iAlSelection = refSetSelection.getSelectionIdArray();
+		ArrayList<Integer> iAlSelectionMode = refSetSelection.getGroupArray();
 		if (iAlSelection.size() != 0)
 		{
 			int iPathwayHeight = ((PathwayGraph)generalManager.getSingelton().getPathwayManager().getItem(iPathwayID)).getHeight();
 			
 			int iAccessionID = iAlSelection.get(0);
+			
+			// Ignore initial gene propagation
+			if (iAlSelectionMode.get(0) == 0)
+				return;
 			
 			String sAccessionCode = generalManager.getSingelton().getGenomeIdManager()
 				.getIdStringFromIntByMapping(iAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
@@ -587,13 +592,13 @@ implements IMediatorReceiver, IMediatorSender {
 	protected void handleEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) 
 	{
-//		// Check if selection occurs in the pool layer of the bucket
-//		if (containedHierarchyLayer != null 
-//				&& containedHierarchyLayer.getCapacity() >= 10)
-//		{
-//			
-//			return;
-//		}
+		// Check if selection occurs in the pool layer of the bucket
+		if (containedHierarchyLayer != null 
+				&& containedHierarchyLayer.getCapacity() >= 10)
+		{
+			
+			return;
+		}
 		
 		switch (pickingType)
 		{	
@@ -694,10 +699,10 @@ implements IMediatorReceiver, IMediatorSender {
 
 				iAlTmpSelectionId.add(iAccessionID);
 				iAlTmpGroupId.add(1); 
-//				
-//				alSetSelection.get(0).getWriteToken();
-//				alSetSelection.get(0).updateSelectionSet(iUniqueId, iAlTmpSelectionId, iAlTmpGroupId, null);
-//				alSetSelection.get(0).returnWriteToken();
+				
+				alSetSelection.get(0).getWriteToken();
+				alSetSelection.get(0).updateSelectionSet(iUniqueId, iAlTmpSelectionId, iAlTmpGroupId, null);
+				alSetSelection.get(0).returnWriteToken();
 				
 				break;
 			}	
@@ -748,7 +753,7 @@ implements IMediatorReceiver, IMediatorSender {
 				if (iTmpAccessionID == -1)
 					continue;
 				
-				pathwayVertexSelectionManager.initialAdd(iTmpAccessionID);
+//				pathwayVertexSelectionManager.initialAdd(iTmpAccessionID);
 				
 				iAlSelectedGenes.add(iTmpAccessionID);
 				iAlTmpGroupId.add(0);

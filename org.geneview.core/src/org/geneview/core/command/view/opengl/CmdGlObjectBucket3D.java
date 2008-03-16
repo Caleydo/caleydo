@@ -9,17 +9,17 @@ import org.geneview.core.manager.ICommandManager;
 import org.geneview.core.manager.IGeneralManager;
 import org.geneview.core.parser.parameter.IParameterHandler;
 import org.geneview.core.util.system.StringConversionTool;
+import org.geneview.core.view.opengl.canvas.bucket.GLCanvasBucket3D;
 import org.geneview.core.view.opengl.canvas.histogram.GLCanvasHistogram2D;
-import org.geneview.core.view.opengl.canvas.jukebox.GLCanvasOverallJukebox3D;
 
 /**
- * Create overall jukebox view
+ * Create bucket view
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
  *
  */
-public class CmdGlObjectOverallJukebox3D 
+public class CmdGlObjectBucket3D 
 extends ACmdCreate_GlCanvasUser {
 
 	protected ArrayList<Integer> iArSetIDs;
@@ -28,7 +28,7 @@ extends ACmdCreate_GlCanvasUser {
 	 * Constructor.
 	 * 
 	 */
-	public CmdGlObjectOverallJukebox3D(
+	public CmdGlObjectBucket3D(
 			final IGeneralManager generalManager,
 			final ICommandManager commandManager,
 			final CommandQueueSaxType commandQueueSaxType)
@@ -37,7 +37,7 @@ extends ACmdCreate_GlCanvasUser {
 				
 		iArSetIDs = new ArrayList<Integer>();
 
-		localManagerObjectType = CommandQueueSaxType.CREATE_GL_OVERALL_JUKEBOX_3D;
+		localManagerObjectType = CommandQueueSaxType.CREATE_GL_BUCKET_3D;
 	}
 
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
@@ -77,7 +77,7 @@ extends ACmdCreate_GlCanvasUser {
 		for(int index = 0; index < iArSetIDs.size(); index++)
 			iArTmp[index] = iArSetIDs.get(index);
 		
-		((GLCanvasOverallJukebox3D)gLEventListener).addSetId(iArTmp);	
+		((GLCanvasBucket3D)gLEventListener).addSetId(iArTmp);	
 	}
 
 	/*
