@@ -9,6 +9,7 @@ import java.awt.geom.Rectangle2D;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -77,6 +78,8 @@ extends AGLCanvasStorageBasedView
 	
 	private float[] fArGateTipHeight;
 	private float[] fArGateBottomHeight;
+	private ArrayList<ArrayList<Integer>> alIsGateBlocking;
+	private ArrayList<ArrayList<Integer>> alIsAngleBlocking;
 	private int iDraggedGateNumber = 0;
 	
 	private float fXDefaultTranslation = 0;
@@ -91,9 +94,14 @@ extends AGLCanvasStorageBasedView
 	private boolean bRenderInfoArea = false;
 	private boolean bInfoAreaFirstTime = false;
 	
+	private boolean bAngularBrushingSelectPolyline = false;
 	private boolean bIsAngularBrushingActive = false;
 	private boolean bIsAngularBrushingFirstTime = false;
+	private boolean bIsAngularDraggingActive = false;
 	private Vec3f vecAngularBrusingPoint;
+	private float fDefaultAngle = (float)Math.PI / 6;
+	private float fCurrentAngle = 0;
+	
 	//private boolean bIsLineSelected = false;
 	private int iSelectedLineID = -1;
 	private Pick linePick;
@@ -144,7 +152,9 @@ extends AGLCanvasStorageBasedView
 		decimalFormat = new DecimalFormat("#####.##");
 		
 		mapSelections = new EnumMap<ESelectionType, ArrayList<Integer>>(ESelectionType.class);	
-		
+	
+		alIsAngleBlocking = new ArrayList<ArrayList<Integer>>();
+		alIsAngleBlocking.add(new ArrayList<Integer>());
 	}
 	
 	/*
@@ -272,7 +282,11 @@ extends AGLCanvasStorageBasedView
 
 
 		if(bIsAngularBrushingActive && iSelectedLineID != -1)
+		{
 			handleAngularBrushing(gl);
+			
+		}
+		checkUnselection();
 		
 		gl.glCallList(iGLDisplayListToCall);
 		
@@ -319,13 +333,16 @@ extends AGLCanvasStorageBasedView
 	 */
 	public void renderSelection(boolean bRenderSelection)
 	{
-		this.bRenderSelection = bRenderSelection;		
+		this.bRenderSelection = bRenderSelection;	
+		resetSelections();
 		if(bRenderSelection)
 		{
 			eWhichContentSelection = ESelectionType.EXTERNAL_SELECTION;
 		}
 		else
 			eWhichContentSelection = ESelectionType.COMPLETE_SELECTION;
+		
+	
 		refresh();
 		//initPolyLineLists();
 	}
@@ -355,6 +372,16 @@ extends AGLCanvasStorageBasedView
 		verticalSelectionManager.clearSelections();
 		
 		bRenderInfoArea = false;
+		bIsAngularBrushingActive = false;
+		
+		for(ArrayList<Integer> alCurrent : alIsAngleBlocking)
+		{
+			alCurrent.clear();
+		}
+		for(ArrayList<Integer> alCurrent : alIsGateBlocking)
+		{
+			alCurrent.clear();
+		}
 	}
 	
 	/**
@@ -443,12 +470,15 @@ extends AGLCanvasStorageBasedView
 		fArGateTipHeight = new float[iNumberOfAxis];
 		fArGateBottomHeight = new float[iNumberOfAxis];
 		
+		alIsGateBlocking = new ArrayList<ArrayList<Integer>>();
 		for(int iCount = 0; iCount < fArGateTipHeight.length; iCount++)
 		{
 			fArGateTipHeight[iCount] = 0;
 			fArGateBottomHeight[iCount] = renderStyle.getGateYOffset() - 
 				renderStyle.getGateTipHeight();
+			alIsGateBlocking.add(new ArrayList<Integer>());
 		}
+		
 	}
 	
 	private void buildPolyLineDisplayList(final GL gl, int iGLDisplayListIndex)
@@ -946,6 +976,8 @@ extends AGLCanvasStorageBasedView
 	 */
 	private void handleUnselection(int iAxisNumber)
 	{	
+		ArrayList<Integer> alCurrentGateBlocks = alIsGateBlocking.get(iAxisNumber);
+		alCurrentGateBlocks.clear();
 		IStorage currentStorage = null;
 		
 		// for every polyline
@@ -973,60 +1005,94 @@ extends AGLCanvasStorageBasedView
 				if(horizontalSelectionManager.checkStatus(EViewInternalSelectionType.SELECTION, iPolylineCount))
 					bRenderInfoArea = false;
 				
-				if(bRenderStorageHorizontally)
-					horizontalSelectionManager.addToType(EViewInternalSelectionType.DESELECTED, 
-							alStorageSelection.get(iPolylineCount));
-				else
-					horizontalSelectionManager.addToType(EViewInternalSelectionType.DESELECTED, 
-							alContentSelection.get(iPolylineCount));
+				
+//				horizontalSelectionManager.addToType(EViewInternalSelectionType.DESELECTED, 
+//						alPolylineSelection.get(iPolylineCount));
+				alCurrentGateBlocks.add(alPolylineSelection.get(iPolylineCount));
+			
+			}
+//			else
+//			{
+//				boolean bIsBlocked = false;
+//				
+//				// every axis
+//				for (int iLocalAxisCount = 0; iLocalAxisCount < iNumberOfAxis; iLocalAxisCount++)
+//				{					
+//					int iLocalStorageIndex = 0;
+//					if(bRenderStorageHorizontally)
+//					{
+//						if(!bRenderSelection)					
+//							iLocalStorageIndex = iLocalAxisCount;	
+//						else
+//							iLocalStorageIndex = alContentSelection.get(iLocalAxisCount);
+//						
+//						fCurrentValue = currentStorage.getArrayFloat()[iLocalStorageIndex] * renderStyle.getAxisHeight();
+//						if(fCurrentValue < fArGateTipHeight[iLocalAxisCount] 
+//						                                    && fCurrentValue > fArGateBottomHeight[iLocalAxisCount])
+//						{						
+//							bIsBlocked = true;
+//							break;
+//						}			
+//					}
+//					else
+//					{					
+//						iLocalStorageIndex = alContentSelection.get(iPolylineCount);
+//						fCurrentValue = alDataStorages.get(alStorageSelection.get(iLocalAxisCount)).getArrayFloat()[iLocalStorageIndex] * renderStyle.getAxisHeight();
+//						if(fCurrentValue < fArGateTipHeight[iLocalAxisCount] 
+//						                                    && fCurrentValue > fArGateBottomHeight[iLocalAxisCount])
+//						{
+//							bIsBlocked = true;
+//							break;
+//						}						
+//					}							
+//				}
+//				if (!bIsBlocked)
+//				{
+//					if(bRenderStorageHorizontally)
+//						horizontalSelectionManager.removeFromType(EViewInternalSelectionType.DESELECTED,
+//								alStorageSelection.get(iPolylineCount));
+//					else
+//						horizontalSelectionManager.removeFromType(EViewInternalSelectionType.DESELECTED,
+//								alContentSelection.get(iPolylineCount));
+//				}				
+//			}
+		}		
+	} 
+	
+
+	private void checkUnselection()
+	{
+		HashMap<Integer, Boolean> hashDeselectedPolylines = new HashMap<Integer, Boolean>();
+		
+		for(ArrayList<Integer> alCurrent : alIsGateBlocking)
+		{
+			for (Integer iCurrent : alCurrent)
+			{
+				hashDeselectedPolylines.put(iCurrent, true);
+			}
+		}
+		
+		for(ArrayList<Integer> alCurrent : alIsAngleBlocking)
+		{
+			for (Integer iCurrent : alCurrent)
+			{
+				hashDeselectedPolylines.put(iCurrent, true);
+			}
+		}
+		
+		for(Integer iCurrent : alPolylineSelection)
+		{
+			if(hashDeselectedPolylines.get(iCurrent) != null)
+			{
+				horizontalSelectionManager.addToType(EViewInternalSelectionType.DESELECTED, iCurrent);
 			}
 			else
 			{
-				boolean bIsBlocked = false;
-				
-				// every axis
-				for (int iLocalAxisCount = 0; iLocalAxisCount < iNumberOfAxis; iLocalAxisCount++)
-				{					
-					int iLocalStorageIndex = 0;
-					if(bRenderStorageHorizontally)
-					{
-						if(!bRenderSelection)					
-							iLocalStorageIndex = iLocalAxisCount;	
-						else
-							iLocalStorageIndex = alContentSelection.get(iLocalAxisCount);
-						
-						fCurrentValue = currentStorage.getArrayFloat()[iLocalStorageIndex] * renderStyle.getAxisHeight();
-						if(fCurrentValue < fArGateTipHeight[iLocalAxisCount] 
-						                                    && fCurrentValue > fArGateBottomHeight[iLocalAxisCount])
-						{						
-							bIsBlocked = true;
-							break;
-						}			
-					}
-					else
-					{					
-						iLocalStorageIndex = alContentSelection.get(iPolylineCount);
-						fCurrentValue = alDataStorages.get(alStorageSelection.get(iLocalAxisCount)).getArrayFloat()[iLocalStorageIndex] * renderStyle.getAxisHeight();
-						if(fCurrentValue < fArGateTipHeight[iLocalAxisCount] 
-						                                    && fCurrentValue > fArGateBottomHeight[iLocalAxisCount])
-						{
-							bIsBlocked = true;
-							break;
-						}						
-					}							
-				}
-				if (!bIsBlocked)
-				{
-					if(bRenderStorageHorizontally)
-						horizontalSelectionManager.removeFromType(EViewInternalSelectionType.DESELECTED,
-								alStorageSelection.get(iPolylineCount));
-					else
-						horizontalSelectionManager.removeFromType(EViewInternalSelectionType.DESELECTED,
-								alContentSelection.get(iPolylineCount));
-				}				
+				horizontalSelectionManager.removeFromType(EViewInternalSelectionType.DESELECTED, iCurrent);
 			}
-		}		
-	} 
+		}
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.geneview.core.manager.view.EPickingType, org.geneview.core.manager.view.EPickingMode, int, org.geneview.core.manager.view.Pick)
@@ -1058,7 +1124,7 @@ extends AGLCanvasStorageBasedView
 					horizontalSelectionManager.addToType(EViewInternalSelectionType.SELECTION, 
 							iExternalID);
 					
-					if (ePolylineDataType == EInputDataType.GENE)
+					if (ePolylineDataType == EInputDataType.GENE && !bAngularBrushingSelectPolyline)
 					{
 						propagateGeneSelection(iExternalID, 2, iAlOldSelection);
 						
@@ -1066,8 +1132,10 @@ extends AGLCanvasStorageBasedView
 					bIsDisplayListDirtyLocal = true;
 					bIsDisplayListDirtyRemote = true;
 			
-					if(bIsAngularBrushingActive)
+					if(bAngularBrushingSelectPolyline)
 					{
+						bAngularBrushingSelectPolyline = false;
+						bIsAngularBrushingActive = true;
 						iSelectedLineID = iExternalID;
 						linePick = pick;
 						bIsAngularBrushingFirstTime = true;
@@ -1088,9 +1156,7 @@ extends AGLCanvasStorageBasedView
 					horizontalSelectionManager.addToType(EViewInternalSelectionType.MOUSE_OVER, iExternalID);
 					bIsDisplayListDirtyLocal = true;
 					bIsDisplayListDirtyRemote = true;
-					break;					
-				default:
-				
+					break;									
 			}
 			pickingManager.flushHits(iUniqueId, ePickingType);
 			break;
@@ -1170,9 +1236,7 @@ extends AGLCanvasStorageBasedView
 					bIsDraggingActive = true;
 					draggedObject = EPickingType.LOWER_GATE_BOTTOM_SELECTION;
 					iDraggedGateNumber = iExternalID;
-					break;
-				default:
-				
+					break;				
 			}
 			pickingManager.flushHits(iUniqueId, ePickingType);
 			break;
@@ -1235,21 +1299,16 @@ extends AGLCanvasStorageBasedView
 						mergeSelection(iAlSelection, iAlGroup, null);
 						propagateGeneSet(iAlSelection, iAlGroup);
 						renderSelection(true);
-						
-						
-						//alContentSelection.
 					}
 					else if (iExternalID == EIconIDs.ANGULAR_BRUSHING.ordinal())
 					{
-						bIsAngularBrushingActive = true;
+						bAngularBrushingSelectPolyline = true;
 					}
 				
 					
 					bIsDisplayListDirtyLocal = true;
 					bIsDisplayListDirtyRemote = true;
 					break;
-				default:
-					// do nothing
 			}
 		
 			pickingManager.flushHits(iUniqueId, EPickingType.PC_ICON_SELECTION);
@@ -1269,8 +1328,6 @@ extends AGLCanvasStorageBasedView
 					}
 					refresh();
 					break;
-				default:
-					// do nothing
 			}		
 			pickingManager.flushHits(iUniqueId, EPickingType.REMOVE_AXIS);
 			break;
@@ -1294,8 +1351,6 @@ extends AGLCanvasStorageBasedView
 					}
 
 					break;
-				default:
-					// do nothing
 			}
 			pickingManager.flushHits(iUniqueId, EPickingType.MOVE_AXIS_LEFT);
 			break;
@@ -1318,8 +1373,6 @@ extends AGLCanvasStorageBasedView
 						refresh();
 					}						
 					break;
-				default:
-					// do nothing
 			}			
 			pickingManager.flushHits(iUniqueId, EPickingType.MOVE_AXIS_RIGHT);
 			break;
@@ -1339,15 +1392,30 @@ extends AGLCanvasStorageBasedView
 						refresh();
 //					}						
 					break;
-				default:
-					// do nothing
 			}		
 			pickingManager.flushHits(iUniqueId, EPickingType.DUPLICATE_AXIS);			
-			break;			
-		default:
-			// do nothing		
-		
+			break;
+		case ANGULAR_UPPER:
+			switch (ePickingMode)
+			{
+			case DRAGGED:
+				bIsAngularDraggingActive = true;
+			}
+			pickingManager.flushHits(iUniqueId, EPickingType.ANGULAR_UPPER);
+			break;
+			
+		case ANGULAR_LOWER:
+			switch (ePickingMode)
+			{
+			case DRAGGED:
+				bIsAngularDraggingActive = true;
+			}
+			break;
 		}
+		
+	 
+		
+		
 	}	
 	
 	protected SelectedElementRep createElementRep(int iStorageIndex)
@@ -1489,15 +1557,15 @@ extends AGLCanvasStorageBasedView
 	{
 		if(bIsAngularBrushingFirstTime)
 		{
+			
+			fCurrentAngle = fDefaultAngle;
 			Point currentPoint = linePick.getPickedPoint();
 			float[] fArPoint = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
 			vecAngularBrusingPoint = new Vec3f(fArPoint[0], fArPoint[1], fArPoint[2]);
 			bIsAngularBrushingFirstTime = false;
-		}
-		
-		
-		//GLSharedObjects.drawPointAt(gl, new Vec3f(fArPoint[0], fArPoint[1], fArPoint[2]));
-		
+			
+		}		
+		alIsAngleBlocking.get(0).clear();
 		
 		int iPosition = (int)(vecAngularBrusingPoint.x() / fAxisSpacing);
 		int iAxisLeftIndex;
@@ -1506,24 +1574,24 @@ extends AGLCanvasStorageBasedView
 		iAxisLeftIndex = alAxisSelection.get(iPosition);
 		iAxisRightIndex = alAxisSelection.get(iPosition + 1);
 		
-		int iPolylineIndex = alPolylineSelection.get(iSelectedLineID);
+		//int iPolylineIndex = alPolylineSelection.indexOf(iSelectedLineID);
 		
 		Vec3f vecLeftPoint = new Vec3f(0,0,0);
 		Vec3f vecRightPoint = new Vec3f(0,0,0);
 		
 		if(bRenderStorageHorizontally)
 		{
-			vecLeftPoint.setY(alDataStorages.get(iPolylineIndex).
-					getArrayFloat()[iAxisLeftIndex] * renderStyle.getAxisHeight());
-			vecRightPoint.setY(alDataStorages.get(iPolylineIndex).
-					getArrayFloat()[iAxisRightIndex] * renderStyle.getAxisHeight());
+//			vecLeftPoint.setY(alDataStorages.get(iPolylineIndex).
+//					getArrayFloat()[iAxisLeftIndex] * renderStyle.getAxisHeight());
+//			vecRightPoint.setY(alDataStorages.get(iPolylineIndex).
+//					getArrayFloat()[iAxisRightIndex] * renderStyle.getAxisHeight());
 		}
 		else
 		{
 			vecLeftPoint.setY(alDataStorages.get(iAxisLeftIndex).
-					getArrayFloat()[iPolylineIndex] * renderStyle.getAxisHeight());
+					getArrayFloat()[iSelectedLineID] * renderStyle.getAxisHeight());
 			vecRightPoint.setY(alDataStorages.get(iAxisRightIndex).
-					getArrayFloat()[iPolylineIndex] * renderStyle.getAxisHeight());
+					getArrayFloat()[iSelectedLineID] * renderStyle.getAxisHeight());
 		}
 		
 		vecLeftPoint.setX(iPosition * fAxisSpacing);
@@ -1535,6 +1603,7 @@ extends AGLCanvasStorageBasedView
 		Vec3f vecDirectional = vecRightPoint.minus(vecLeftPoint);
 		float fLength = vecDirectional.length();
 		vecDirectional.normalize();
+		
 		Vec3f vecTriangleOrigin = vecLeftPoint.addScaled(
 				fLength / 4, vecDirectional);
 		//GLSharedObjects.drawPointAt(gl, vecTriangleOrigin);
@@ -1544,33 +1613,108 @@ extends AGLCanvasStorageBasedView
 		
 		Rotf rotf = new Rotf();
 		
-		rotf.set(new Vec3f(0, 0, 1), (float)Math.PI / 6);
-		
 		Vec3f vecCenterLine = vecTriangleLimit.minus(vecTriangleOrigin);
+		
+		if(bIsAngularDraggingActive)
+		{
+			Point pickedPoint = pickingTriggerMouseAdapter.getPickedPoint();
+			float fArPoint[] = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, pickedPoint.x, pickedPoint.y);
+			Vec3f vecPickedPoint = new Vec3f(fArPoint[0], fArPoint[1], fArPoint[2]);			
+			Vec3f vecTempLine = vecPickedPoint.minus(vecTriangleOrigin);			
+			
+			fCurrentAngle = getAngle(vecTempLine, vecCenterLine);
+			
+			bIsDisplayListDirtyLocal = true;
+			bIsDisplayListDirtyRemote = true;
+		}
+		
+		
+		
+		rotf.set(new Vec3f(0, 0, 1), fCurrentAngle);
+		
+		
 		Vec3f vecUpperPoint = rotf.rotateVector(vecCenterLine);
-		rotf.set(new Vec3f(0, 0, 1), -(float)Math.PI / 6);
+		rotf.set(new Vec3f(0, 0, 1), -fCurrentAngle);
 		Vec3f vecLowerPoint = rotf.rotateVector(vecCenterLine);
 		
 		vecUpperPoint.add(vecTriangleOrigin);
 		vecLowerPoint.add(vecTriangleOrigin);
 		
+		gl.glColor4fv(ParCoordsRenderStyle.ANGULAR_COLOR, 0);
+		gl.glLineWidth(ParCoordsRenderStyle.ANGLUAR_LINE_WIDTH);
+		
+		gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.ANGULAR_UPPER, iPosition));
 		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(vecTriangleOrigin.x(), 
 				vecTriangleOrigin.y(),
-				vecTriangleOrigin.z());
+				vecTriangleOrigin.z() + 0.02f);
 		gl.glVertex3f(vecUpperPoint.x(),
 				vecUpperPoint.y(),
-				vecUpperPoint.z());
+				vecUpperPoint.z() + 0.02f);
+		gl.glEnd();
+		gl.glPopName();
+		
+		
+		gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.ANGULAR_UPPER, iPosition));
+		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(vecTriangleOrigin.x(), 
 				vecTriangleOrigin.y(),
-				vecTriangleOrigin.z());
+				vecTriangleOrigin.z() + 0.02f);
 		gl.glVertex3f(vecLowerPoint.x(),
 				vecLowerPoint.y(),
-				vecLowerPoint.z());
-		
+				vecLowerPoint.z() + 0.02f);		
 		gl.glEnd();
+		gl.glPopName();
 		
-		gl.glBegin(GL.GL_POLYGON); 
+		
+	
+		for(Integer iCurrent : alPolylineSelection)
+		{
+			if(bRenderStorageHorizontally)
+			{
+				vecLeftPoint.setY(alDataStorages.get(iCurrent).
+						getArrayFloat()[iAxisLeftIndex] * renderStyle.getAxisHeight());
+				vecRightPoint.setY(alDataStorages.get(iCurrent).
+						getArrayFloat()[iAxisRightIndex] * renderStyle.getAxisHeight());
+			}
+			else
+			{
+				vecLeftPoint.setY(alDataStorages.get(iAxisLeftIndex).
+						getArrayFloat()[iCurrent] * renderStyle.getAxisHeight());
+				vecRightPoint.setY(alDataStorages.get(iAxisRightIndex).
+						getArrayFloat()[iCurrent] * renderStyle.getAxisHeight());
+			}
+			
+			vecLeftPoint.setX(iPosition * fAxisSpacing);
+			vecRightPoint.setX((iPosition + 1) * fAxisSpacing);
+				
+			//Vec3f vecCompareLine = vecLeftPoint.minus(vecRightPoint);
+			Vec3f vecCompareLine = vecRightPoint.minus(vecLeftPoint);
+			float fCompareAngle = getAngle(vecCompareLine, vecCenterLine);
+			
+			if(fCompareAngle > fCurrentAngle || fCompareAngle < -fCurrentAngle)
+					//!(fCompareAngle < fAngle && fCompareAngle < -fAngle))
+			{
+				//horizontalSelectionManager.addToType(EViewInternalSelectionType.DESELECTED, iCurrent);
+				alIsAngleBlocking.get(0).add(iCurrent);
+			}
+//			else
+//			{
+//				// TODO combinations
+//				//horizontalSelectionManager.addToType(EViewInternalSelectionType.NORMAL, iCurrent);
+//			}
+	
+		
+		}
+		
+		if(pickingTriggerMouseAdapter.wasMouseReleased())
+		{
+			bIsAngularDraggingActive = false;
+			//bIsAngularBrushingActive = false;
+		}
+		
+		
+		//gl.glBegin(GL.GL_POLYGON); 
 //		double x;
 //		double y;
 //		for (double a=0; a<360; a+=1) 
@@ -1580,8 +1724,25 @@ extends AGLCanvasStorageBasedView
 //			 gl.glVertex2d(x, y); 
 //		} gl.glEnd();
 		//GLSharedObjects.drawPointAt(gl, vecUpperPoint);
-		//GLSharedObjects.drawPointAt(gl, vecLowerLine);
+		//GLSharedObjects.drawPointAt(gl, vecLowerLine)
 		
+//		GLU glu = new GLU();
+//		GLUnurbs theNurb = glu.gluNewNurbsRenderer();
+//		glu.gluBeginCurve(theNurb);
+//		//glu.gluNurbsCurve(theNurb, arg1, arg2, arg3, arg4, arg5, arg6)
+//		glu.gluEndCurve(theNurb);
 		
 	}
+	
+	private float getAngle(final Vec3f vecOne, final Vec3f vecTwo)
+	{
+		Vec3f vecNewOne = vecOne.copy();
+		Vec3f vecNewTwo = vecTwo.copy();
+		
+		vecNewOne.normalize();
+		vecNewTwo.normalize();
+		float fTmp = vecNewOne.dot(vecNewTwo); 
+		return (float)Math.acos(fTmp);
+	}
+	
 }

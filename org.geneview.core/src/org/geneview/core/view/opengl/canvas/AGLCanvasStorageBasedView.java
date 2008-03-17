@@ -294,7 +294,6 @@ implements IMediatorReceiver, IMediatorSender
 				}
 			}
 		}
-		//initData();
 	}
 	
 	/*

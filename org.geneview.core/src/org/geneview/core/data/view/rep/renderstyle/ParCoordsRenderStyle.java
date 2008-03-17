@@ -44,6 +44,8 @@ extends GeneralRenderStyle
 	
 	public static final float[] GATE_COLOR = {0.61f, 0.705f, 1.0f, 0.8f};
 	
+	public static final float[] ANGULAR_COLOR = {0, 0, 1, 1};
+	public static final float ANGLUAR_LINE_WIDTH = 2;
 
 
 	// Line widths
@@ -89,7 +91,7 @@ extends GeneralRenderStyle
 	public float[] getPolylineOcclusionPrevColor(int iNumberOfRenderedLines) 
 	{
 	
-		fOcclusionPrevAlpha = (float) (4/Math.sqrt(iNumberOfRenderedLines));
+		fOcclusionPrevAlpha = (float) (6/Math.sqrt(iNumberOfRenderedLines));
 		
 		polylineOcclusionPrevColor[3] = fOcclusionPrevAlpha;
 		
