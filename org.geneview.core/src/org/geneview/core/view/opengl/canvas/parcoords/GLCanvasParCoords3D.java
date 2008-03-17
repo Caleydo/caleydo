@@ -383,6 +383,7 @@ extends AGLCanvasStorageBasedView
 
 		alContentSelection = mapSelections.get(eWhichContentSelection);
 		alStorageSelection = mapSelections.get(eWhichStorageSelection);
+		
 
 		if(bRenderStorageHorizontally)
 		{

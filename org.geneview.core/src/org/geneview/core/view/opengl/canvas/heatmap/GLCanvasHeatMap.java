@@ -174,6 +174,10 @@ extends AGLCanvasStorageBasedView
 
 		alContentSelection = mapSelections.get(eWhichContentSelection);
 		alStorageSelection = mapSelections.get(eWhichStorageSelection);		
+		if(renderStyle != null)
+		{
+			renderStyle.setContentSelection(alContentSelection);
+		}
 				
 		int iNumberOfRowsToRender = alStorageSelection.size();
 		int	iNumberOfColumns =  alContentSelection.size();				

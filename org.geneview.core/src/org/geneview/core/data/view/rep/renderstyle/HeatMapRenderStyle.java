@@ -103,6 +103,11 @@ extends GeneralRenderStyle
 		return vecWidthAndHeight;
 	}
 	
+	public void setContentSelection(ArrayList<Integer> alContentSelection)
+	{
+		this.alContentSelection = alContentSelection;
+	}
+	
 	private float calcHeightFromWidth(float fWidth)
 	{
 		return 2.5f*fWidth;
