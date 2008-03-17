@@ -10,7 +10,7 @@ import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.parser.parameter.IParameterHandler;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.util.system.StringConversionTool;
-import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap;
+import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmapOld;
 import org.geneview.core.view.opengl.canvas.histogram.GLCanvasHistogram2D;
 
 /**

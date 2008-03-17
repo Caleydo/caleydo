@@ -24,7 +24,7 @@ import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
  * @author Michael Kalkusch
  *
  */
-public class GLCanvasHeatmap 
+public class GLCanvasHeatmapOld 
 extends AGLCanvasUser {
 	
 	protected int[] iResolution;
@@ -35,7 +35,7 @@ extends AGLCanvasUser {
 	 * Constructor.
 	 * 
 	 */
-	public GLCanvasHeatmap(final IGeneralManager generalManager,
+	public GLCanvasHeatmapOld(final IGeneralManager generalManager,
 			final int iViewId,
 			final int iGLCanvasID,
 			final String sLabel,

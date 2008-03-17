@@ -3,11 +3,11 @@ package org.geneview.core.data.view.rep.renderstyle;
 import org.geneview.core.data.GeneralRenderStyle;
 import org.geneview.core.data.view.camera.IViewFrustum;
 
-public class HeatmapRenderStyle 
+public class HeatmapRenderStyleOld 
 extends GeneralRenderStyle 
 {
 
-	HeatmapRenderStyle(IViewFrustum viewFrustum)
+	HeatmapRenderStyleOld(IViewFrustum viewFrustum)
 	{
 		super(viewFrustum);
 	}
