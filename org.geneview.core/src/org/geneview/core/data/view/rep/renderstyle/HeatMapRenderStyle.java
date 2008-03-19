@@ -43,13 +43,13 @@ extends GeneralRenderStyle
 		
 		if(bRenderVertical)
 		{
-			fSelectedFieldWidth = (viewFrustum.getRight() - viewFrustum.getLeft()) /  iNumElements / 7;
+			fSelectedFieldWidth = (viewFrustum.getRight() - viewFrustum.getLeft()) /  iNumElements / 3;
 		}
 		else
 		{
-			fSelectedFieldWidth = (viewFrustum.getTop() - viewFrustum.getBottom()) / iNumElements / 7;
+			fSelectedFieldWidth = (viewFrustum.getTop() - viewFrustum.getBottom()) / iNumElements / 3;
 		}
-		fNormalFieldWidth = fSelectedFieldWidth / 3;
+		fNormalFieldWidth = fSelectedFieldWidth / 4;
 		
 		this.verticalSelectionManager = verticalSelectionManager;
 		this.alContentSelection = alContentSelection;
@@ -121,7 +121,7 @@ extends GeneralRenderStyle
 	
 	private float calcHeightFromWidth(float fWidth)
 	{
-		return 5f*fWidth;
+		return 2.2f*fWidth;
 	}
 	
 	public void clearFieldWidths()

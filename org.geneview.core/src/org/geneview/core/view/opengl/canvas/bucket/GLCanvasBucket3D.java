@@ -331,9 +331,11 @@ implements IMediatorReceiver, IMediatorSender
 			renderLayer(gl, stackLayer);
 			renderLayer(gl, spawnLayer);
 			renderPoolLayerBackground(gl);
+		
+			glConnectionLineRenderer.render(gl);
 		}
-//		renderUnderInteractionLayer(gl);
-//		gl.glEndList();
+		
+		//		gl.glEndList();
 		
 		// TODO: add dirty flag
 //		gl.glCallList(iGLDisplayListIndex);
