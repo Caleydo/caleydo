@@ -76,7 +76,9 @@ extends AGLCanvasStorageBasedView
 		bRenderStorageHorizontally = true;
 		initData();
 		initLists();
-		renderStyle = new HeatMapRenderStyle(viewFrustum, verticalSelectionManager, alContentSelection);
+		renderStyle = new HeatMapRenderStyle(
+				viewFrustum, verticalSelectionManager, 
+				alContentSelection, alStorageSelection.size(), true);
 	
 		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
 	}

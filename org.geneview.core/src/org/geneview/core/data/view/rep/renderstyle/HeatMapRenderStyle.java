@@ -37,9 +37,20 @@ extends GeneralRenderStyle
 	
 	
 	public HeatMapRenderStyle(final IViewFrustum viewFrustum, 
-			final GenericSelectionManager verticalSelectionManager, final ArrayList<Integer> alContentSelection)
+			final GenericSelectionManager verticalSelectionManager, final ArrayList<Integer> alContentSelection, int iNumElements, boolean bRenderVertical)
 	{
 		super(viewFrustum);
+		
+		if(bRenderVertical)
+		{
+			fSelectedFieldWidth = (viewFrustum.getRight() - viewFrustum.getLeft()) /  iNumElements / 7;
+		}
+		else
+		{
+			fSelectedFieldWidth = (viewFrustum.getTop() - viewFrustum.getBottom()) / iNumElements / 7;
+		}
+		fNormalFieldWidth = fSelectedFieldWidth / 3;
+		
 		this.verticalSelectionManager = verticalSelectionManager;
 		this.alContentSelection = alContentSelection;
 		fAlFieldWidths = new ArrayList<Float>();
@@ -110,7 +121,7 @@ extends GeneralRenderStyle
 	
 	private float calcHeightFromWidth(float fWidth)
 	{
-		return 2.5f*fWidth;
+		return 5f*fWidth;
 	}
 	
 	public void clearFieldWidths()
