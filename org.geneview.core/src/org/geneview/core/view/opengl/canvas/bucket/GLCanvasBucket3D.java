@@ -67,12 +67,11 @@ implements IMediatorReceiver, IMediatorSender
 	private static final float SCALING_FACTOR_UNDER_INTERACTION_LAYER = 0.5f;
 	private static final float SCALING_FACTOR_TRANSITION_LAYER = 0.05f;
 	private static final float SCALING_FACTOR_STACK_LAYER = 0.5f;
-	private static final float SCALING_FACTOR_POOL_LAYER = 0.03f;
+	private static final float SCALING_FACTOR_POOL_LAYER = 0.04f;
 	private static final float SCALING_FACTOR_SPAWN_LAYER = 0.01f;
 	
-	
 	private static final int SLERP_RANGE = 1000;
-	private static final int SLERP_SPEED = 1300;
+	private static final int SLERP_SPEED = 1200;
 	
 	private int iMouseOverViewID = -1;
 	
@@ -175,8 +174,8 @@ implements IMediatorReceiver, IMediatorSender
 		transitionLayer.setTransformByPositionIndex(0, transformTransition);
 		
 		Transform transformSpawn = new Transform();
-		transformTransition.setTranslation(new Vec3f(0f, 0f, 0.1f));
-		transformTransition.setScale(new Vec3f(
+		transformSpawn.setTranslation(new Vec3f(4.4f, 3.9f, 4.1f));
+		transformSpawn.setScale(new Vec3f(
 				SCALING_FACTOR_SPAWN_LAYER,
 				SCALING_FACTOR_SPAWN_LAYER,
 				SCALING_FACTOR_SPAWN_LAYER));
@@ -331,10 +330,8 @@ implements IMediatorReceiver, IMediatorSender
 			renderLayer(gl, poolLayer);
 			renderLayer(gl, stackLayer);
 			renderLayer(gl, spawnLayer);
-			
-			glConnectionLineRenderer.render(gl);
+			renderPoolLayerBackground(gl);
 		}
-		
 //		renderUnderInteractionLayer(gl);
 //		gl.glEndList();
 		
@@ -451,7 +448,7 @@ implements IMediatorReceiver, IMediatorSender
 			//poolLayer.getElementList();
 			Transform transform = new Transform();
 			transform.setTranslation(new Vec3f(4.1f, 
-					0.2f * iViewIndex, 4));
+					0.32f * iViewIndex, 4));
 	
 			transform.setScale(new Vec3f(SCALING_FACTOR_POOL_LAYER,
 					SCALING_FACTOR_POOL_LAYER,
@@ -472,7 +469,7 @@ implements IMediatorReceiver, IMediatorSender
 		{		
 			if(iViewIndex == iSelectedViewIndex)
 			{
-				fSelectedScaling = 4;		
+				fSelectedScaling = 3;		
 			}
 			else				
 			{
@@ -480,10 +477,10 @@ implements IMediatorReceiver, IMediatorSender
 			}
 			Transform transform = new Transform();
 			transform.setTranslation(new Vec3f(4.1f, 
-					0.2f * iViewIndex + fYAdd, 4));
+					0.32f * iViewIndex + fYAdd, 4));
 			if(iViewIndex == iSelectedViewIndex)
 			{
-				fYAdd += 0.2 * fSelectedScaling;
+				fYAdd += 0.2f * fSelectedScaling;
 			}
 	
 			transform.setScale(new Vec3f(SCALING_FACTOR_POOL_LAYER * fSelectedScaling,
@@ -529,7 +526,7 @@ implements IMediatorReceiver, IMediatorSender
 			iViewId = iterElementList.next();		
 			
 			// Check if spot in layer is currently empty
-			if(iViewId == -1)
+			if(iViewId == -1 && !layer.equals(spawnLayer))
 			{
 				renderEmptyBucketWall(gl, layer, iLayerPositionIndex);
 			}
@@ -664,7 +661,7 @@ implements IMediatorReceiver, IMediatorSender
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z() );
 
-		if (!layer.equals(transitionLayer) && !layer.equals(poolLayer))
+		if (layer.equals(underInteractionLayer) || layer.equals(stackLayer))
 		{
 			renderBucketWall(gl);
 		}
@@ -715,6 +712,42 @@ implements IMediatorReceiver, IMediatorSender
 		}
 		
 		gl.glPopMatrix();
+	}
+	
+	public void renderPoolLayerBackground(final GL gl)
+	{
+		gl.glColor4f(0.4f, 0.4f, 0.4f, 0.8f);
+		gl.glLineWidth(4);
+		
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(4, 0, 4);
+		gl.glVertex3f(4, 4, 4);
+		gl.glVertex3f(5.1f, 4, 4);
+		gl.glVertex3f(5.1f, 0, 4);
+		gl.glEnd();
+		
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(0, 0, 4);
+		gl.glVertex3f(0, 4, 4);
+		gl.glVertex3f(-1.1f, 4, 4);
+		gl.glVertex3f(-1.1f, 0, 4);
+		gl.glEnd();
+		
+		gl.glColor4f(0.9f, 0.9f, 0.9f, 0.5f);
+		
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(4, 0, 4);
+		gl.glVertex3f(4, 4, 4);
+		gl.glVertex3f(5.1f, 4, 4);
+		gl.glVertex3f(5.1f, 0, 4);
+		gl.glEnd();
+		
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(0, 0, 4);
+		gl.glVertex3f(0, 4, 4);
+		gl.glVertex3f(-1.1f, 4, 4);
+		gl.glVertex3f(-1.1f, 0, 4);
+		gl.glEnd();
 	}
 	
 	private void renderNavigationOverlay(final GL gl, final int iViewID)

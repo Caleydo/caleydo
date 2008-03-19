@@ -1,5 +1,6 @@
 package org.geneview.core.view.jogl.mouse;
 
+import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
 import java.awt.Dimension;
@@ -12,6 +13,7 @@ import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.geneview.core.math.MathUtil;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 
 /**
@@ -238,17 +240,22 @@ implements MouseListener, MouseMotionListener, MouseWheelListener {
 //		   	    currentRotX.set(new Vec3f(0,1,0), 
 //		   	    		fpercentX* MathUtil.PI);
 //		   	    
-//		   	    currentRotY.set(new Vec3f(0,1,0), 
+//		   	    currentRotY.set(new Vec3f(1,0,0), 
 //			    		fpercentY* MathUtil.PI);
 //		   	    
-//		   	    /* concatinate roations.. */
+//		   	    /* concatinate rotations.. */
 //		   	    currentRotX = currentRotX.times(currentRotY);
 //		   	    
 //			    prevMouseX = x;
 //			    prevMouseY = y;
 //			    
 //			    /* set new paramters to ViewCamera */
-//			    gLCanvas.getViewCamera().addCameraRotation(currentRotX);		    
+//			    Iterator<AGLCanvasUser> iterGLCanvas = alGlCanvas.iterator();
+//			    
+//			    while (iterGLCanvas.hasNext())
+//			    {
+//			    	iterGLCanvas.next().getViewCamera().addCameraRotation(currentRotX);
+//			    }
 	    	}
 		    else
 	    	{
@@ -289,7 +296,6 @@ implements MouseListener, MouseMotionListener, MouseWheelListener {
 			prevMouseX = x;
 			prevMouseY = y;
 
-		    /* set new paramters to ViewCamera */
 		    /* set new paramters to ViewCamera */
 		    Iterator<AGLCanvasUser> iterGLCanvas = alGlCanvas.iterator();
 		    

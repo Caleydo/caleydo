@@ -132,7 +132,7 @@ implements IMediatorReceiver, IMediatorSender
 		mapSelections.put(ESelectionType.EXTERNAL_SELECTION, alTempList);
 
 		//int iStorageLength = alDataStorages.get(0).getArrayFloat().length;
-		int iStorageLength = 100;
+		int iStorageLength = 1000;
 		alTempList = new ArrayList<Integer>(iStorageLength);
 		// initialize full list
 		for(int iCount = 0; iCount < iStorageLength; iCount++)
