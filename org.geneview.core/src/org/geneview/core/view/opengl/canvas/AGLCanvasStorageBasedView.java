@@ -10,6 +10,7 @@ import org.geneview.core.data.collection.ISet;
 import org.geneview.core.data.collection.IStorage;
 import org.geneview.core.data.collection.SetType;
 import org.geneview.core.data.collection.set.selection.ISetSelection;
+import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.geneview.core.data.mapping.EGenomeMappingType;
 import org.geneview.core.data.view.camera.IViewFrustum;
 import org.geneview.core.data.view.rep.selection.SelectedElementRep;
@@ -20,6 +21,7 @@ import org.geneview.core.manager.event.mediator.IMediatorReceiver;
 import org.geneview.core.manager.event.mediator.IMediatorSender;
 import org.geneview.core.manager.view.ESelectionMode;
 import org.geneview.core.manager.view.SelectionManager;
+import org.geneview.core.util.system.StringConversionTool;
 import org.geneview.core.view.opengl.canvas.parcoords.EInputDataType;
 import org.geneview.core.view.opengl.canvas.parcoords.ESelectionType;
 import org.geneview.core.view.opengl.util.selection.EViewInternalSelectionType;
@@ -117,7 +119,8 @@ implements IMediatorReceiver, IMediatorSender
 			{
 				alDataStorages.add(tmpSet.getStorageByDimAndIndex(0, 0));
 			}
-		}	
+		}		
+		
 		
 		ArrayList<Integer> alTempList = alSetSelection.get(0).getSelectionIdArray();
 //		A iArTemp = ;
@@ -131,12 +134,47 @@ implements IMediatorReceiver, IMediatorSender
 		}
 		mapSelections.put(ESelectionType.EXTERNAL_SELECTION, alTempList);
 
-		//int iStorageLength = alDataStorages.get(0).getArrayFloat().length;
-		int iStorageLength = 1000;
+		int iStorageLength = alDataStorages.get(0).getArrayFloat().length;
+		//int iStorageLength = 3000;
 		alTempList = new ArrayList<Integer>(iStorageLength);
 		// initialize full list
 		for(int iCount = 0; iCount < iStorageLength; iCount++)
 		{
+			int iAccessionID = getAccesionIDFromStorageIndex(iCount);
+			
+			
+			if(iAccessionID == -1)
+				continue;
+			else
+			{			
+				// Check if gene occurs in one pathway
+				int iNCBIGeneID = generalManager.getSingelton().getGenomeIdManager()
+				.getIdIntFromIntByMapping(iAccessionID, EGenomeMappingType.ACCESSION_2_NCBI_GENEID);
+
+				String sNCBIGeneIDCode = generalManager.getSingelton().getGenomeIdManager()
+					.getIdStringFromIntByMapping(iNCBIGeneID, EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
+			
+				int iNCBIGeneIDCode = StringConversionTool.convertStringToInt(sNCBIGeneIDCode, -1);
+				
+				if(iNCBIGeneID == -1)
+				{
+					//System.out.println("Error: No Gene ID for accession");
+					continue;
+				}
+				
+				PathwayVertexGraphItem tmpPathwayVertexGraphItem = 
+					((PathwayVertexGraphItem)generalManager.getSingelton().getPathwayItemManager().getItem(
+						generalManager.getSingelton().getPathwayItemManager().getPathwayVertexGraphItemIdByNCBIGeneId(iNCBIGeneIDCode)));
+	
+				if(tmpPathwayVertexGraphItem == null)
+				{
+//					generalManager.getSingelton().logMsg(
+//							this.getClass().getSimpleName()
+//									+ " ("+iUniqueId+"): Irgendwas mit graph vertex item das eigentlich net passiern sullt ",
+//							LoggerType.VERBOSE);
+					continue;					
+				}
+			}
 			alTempList.add(iCount);
 		}
 		
@@ -324,8 +362,7 @@ implements IMediatorReceiver, IMediatorSender
 		ArrayList<Integer> iAlTmpGroup = new ArrayList<Integer>(2);
 		
 		if (iAccessionID != -1)
-		{						
-			
+		{			
 			iAlTmpSelectionId.add(iAccessionID);
 			iAlTmpGroup.add(iNewGroupID);
 			extSelectionManager.modifySelection(iAccessionID, 
@@ -334,22 +371,41 @@ implements IMediatorReceiver, IMediatorSender
 			
 		for(Integer iCurrent : iAlOldSelection)
 		{
+					
 			iAccessionID = getAccesionIDFromStorageIndex(iCurrent);
+			
+			
 			if(iAccessionID != -1)
-			{
+			{			
 				iAlTmpSelectionId.add(iAccessionID);
 				iAlTmpGroup.add(0);
 			}
 		}
 
-		propagateGeneSet(iAlTmpSelectionId, iAlTmpGroup);
-	}
-	
-	protected void propagateGeneSet(ArrayList<Integer> iAlSelection, ArrayList<Integer> iAlGroup)
-	{
 		alSetSelection.get(1).getWriteToken();
 		alSetSelection.get(1).updateSelectionSet(iUniqueId, 
-				iAlSelection, iAlGroup, null);
+				iAlTmpSelectionId, iAlTmpGroup, null);
+		alSetSelection.get(1).returnWriteToken();
+		
+		//propagateGeneSet(iAlTmpSelectionId, iAlTmpGroup);
+	}
+	
+	protected void propagateGeneSet()//ArrayList<Integer> iAlSelection, ArrayList<Integer> iAlGroup)
+	{
+		
+		ArrayList<Integer> iAlGroup = alSetSelection.get(0).getGroupArray();
+		ArrayList<Integer> iAlSelection = alSetSelection.get(0).getSelectionIdArray();	
+		
+		ArrayList<Integer> iAlGeneSelection = new ArrayList<Integer>(iAlSelection.size());
+		
+		for(Integer iCurrent : iAlSelection)
+		{
+			iAlGeneSelection.add(getAccesionIDFromStorageIndex(iCurrent));
+		}
+		
+		alSetSelection.get(1).getWriteToken();
+		alSetSelection.get(1).updateSelectionSet(iUniqueId, 
+				iAlGeneSelection, iAlGroup, null);
 		alSetSelection.get(1).returnWriteToken();		
 	}
 	

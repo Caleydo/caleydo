@@ -171,8 +171,9 @@ extends AGLCanvasStorageBasedView
 	protected void initLists()
 	{		
 		
+		Set<Integer> setMouseOver = verticalSelectionManager.getElements(EViewInternalSelectionType.MOUSE_OVER);
 		horizontalSelectionManager.resetSelectionManager();
-		verticalSelectionManager.resetSelectionManager();			
+		//verticalSelectionManager.resetSelectionManager();			
 
 		alContentSelection = mapSelections.get(eWhichContentSelection);
 		alStorageSelection = mapSelections.get(eWhichStorageSelection);		
@@ -187,15 +188,27 @@ extends AGLCanvasStorageBasedView
 		// this for loop executes once per r
 		for (int iRowCount = 0; iRowCount < iNumberOfRowsToRender; iRowCount++)
 		{				
-			horizontalSelectionManager.initialAdd(alStorageSelection.get(iRowCount));		
+			horizontalSelectionManager.initialAdd(alStorageSelection.get(iRowCount));				
+		
 		}
 		
 		// this for loop executes one per axis
 		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++)
 		{			
 			verticalSelectionManager.initialAdd(alContentSelection.get(iColumnCount));		
-		}		
-			
+			if(setMouseOver.contains(alContentSelection.get(iColumnCount)))
+			{
+				verticalSelectionManager.addToType(
+						EViewInternalSelectionType.MOUSE_OVER, 
+						alContentSelection.get(iColumnCount));
+			}
+		}
+		
+//		for(Integer iCurrent : setMouseOver)
+//		{
+//			if(true) // check if element is contained
+//					horizontalSelectionManager.addToType(EViewInternalSelectionType.MOUSE_OVER, iCurrent));
+//		}
 	}
 	
 

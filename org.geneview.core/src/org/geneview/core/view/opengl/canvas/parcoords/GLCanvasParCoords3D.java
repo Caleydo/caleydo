@@ -1117,7 +1117,7 @@ extends AGLCanvasStorageBasedView
 			{				
 			
 				case CLICKED:	
-										
+					extSelectionManager.clear();					
 					iAlOldSelection = prepareSelection(horizontalSelectionManager, EViewInternalSelectionType.SELECTION);					
 										
 					horizontalSelectionManager.clearSelection(EViewInternalSelectionType.SELECTION);							
@@ -1126,11 +1126,8 @@ extends AGLCanvasStorageBasedView
 					
 					if (ePolylineDataType == EInputDataType.GENE && !bAngularBrushingSelectPolyline)
 					{
-						propagateGeneSelection(iExternalID, 2, iAlOldSelection);
-						
-					}
-					bIsDisplayListDirtyLocal = true;
-					bIsDisplayListDirtyRemote = true;
+						propagateGeneSelection(iExternalID, 2, iAlOldSelection);						
+					}					
 			
 					if(bAngularBrushingSelectPolyline)
 					{
@@ -1140,8 +1137,11 @@ extends AGLCanvasStorageBasedView
 						linePick = pick;
 						bIsAngularBrushingFirstTime = true;
 					}
+					bIsDisplayListDirtyLocal = true;
+					bIsDisplayListDirtyRemote = true;					
 					break;	
 				case MOUSE_OVER:
+					extSelectionManager.clear();
 					iAlOldSelection = prepareSelection(horizontalSelectionManager, EViewInternalSelectionType.SELECTION);			
 					
 					if (ePolylineDataType == EInputDataType.GENE)
@@ -1297,7 +1297,7 @@ extends AGLCanvasStorageBasedView
 							addSetToSelection(set, iAlSelection, iAlGroup, 2);				
 						}
 						mergeSelection(iAlSelection, iAlGroup, null);
-						propagateGeneSet(iAlSelection, iAlGroup);
+						propagateGeneSet();//iAlSelection, iAlGroup);
 						renderSelection(true);
 					}
 					else if (iExternalID == EIconIDs.ANGULAR_BRUSHING.ordinal())
@@ -1665,6 +1665,16 @@ extends AGLCanvasStorageBasedView
 				vecLowerPoint.z() + 0.02f);		
 		gl.glEnd();
 		gl.glPopName();
+		
+//		gl.glLineStipple(1, GL.GL_LINE_STIPPLE_PATTERN);
+		gl.glBegin(GL.GL_LINES);
+		gl.glVertex3f(vecTriangleOrigin.x(), 
+				vecTriangleOrigin.y(),
+				vecTriangleOrigin.z() + 0.02f);
+		gl.glVertex3f(vecTriangleLimit.x(),
+				vecTriangleLimit.y(),
+				vecLowerPoint.z() + 0.02f);		
+		gl.glEnd();
 		
 		
 	

@@ -528,7 +528,7 @@ implements IMediatorReceiver, IMediatorSender
 			iViewId = iterElementList.next();		
 			
 			// Check if spot in layer is currently empty
-			if(iViewId == -1 && !layer.equals(spawnLayer))
+			if(iViewId == -1 || layer.equals(spawnLayer))
 			{
 				renderEmptyBucketWall(gl, layer, iLayerPositionIndex);
 			}
@@ -1360,6 +1360,15 @@ implements IMediatorReceiver, IMediatorSender
 		while (iterPathwayGraphItem.hasNext())
 		{
 			pathwayGraphItem = iterPathwayGraphItem.next();
+		
+			if(pathwayGraphItem == null)
+			{
+				generalManager.getSingelton().logMsg(
+						this.getClass().getSimpleName()
+								+ " ("+iUniqueId+"): pathway graph item is null.  ",
+								LoggerType.VERBOSE);
+				continue;
+			}
 			
 			iterIdenticalPathwayGraphItemRep = 
 				pathwayGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();

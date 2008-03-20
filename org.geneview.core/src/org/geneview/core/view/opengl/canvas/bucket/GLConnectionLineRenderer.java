@@ -205,24 +205,31 @@ public class GLConnectionLineRenderer {
 	private void renderPlanes(final GL gl, final Vec3f vecPoint, final ArrayList<Vec3f> alPoints)
 	{
 		
-		gl.glColor4f(1, 1, 1, 1);
-		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 4);
-		gl.glBegin(GL.GL_LINES);		
-		for(Vec3f vecCurrent : alPoints)
-		{
-			gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z() - 0.001f);
-			gl.glVertex3f(vecCurrent.x(), vecCurrent.y(), vecCurrent.z() - 0.001f);
-		}
-		gl.glEnd();
+//		gl.glColor4f(1, 1, 1, 1);
+//		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 4);
+//		gl.glBegin(GL.GL_LINES);		
+//		for(Vec3f vecCurrent : alPoints)
+//		{
+//			gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z() - 0.001f);
+//			gl.glVertex3f(vecCurrent.x(), vecCurrent.y(), vecCurrent.z() - 0.001f);
+//		}
+//		gl.glEnd();
 		
 		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_AREA_LINE_COLOR, 0);
 		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
 		gl.glBegin(GL.GL_LINES);		
-		for(Vec3f vecCurrent : alPoints)
-		{
-			gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z());
-			gl.glVertex3f(vecCurrent.x(), vecCurrent.y(), vecCurrent.z());
-		}
+//		for(Vec3f vecCurrent : alPoints)
+//		{
+//			gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z());
+//			gl.glVertex3f(vecCurrent.x(), vecCurrent.y(), vecCurrent.z());
+//		}
+		gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z());
+		gl.glVertex3f(alPoints.get(0).x(), alPoints.get(0).y(), alPoints.get(0).z());
+		
+		gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z());
+		gl.glVertex3f(alPoints.get(alPoints.size()-1).x(), alPoints.get(alPoints.size()-1).y(), alPoints.get(0).z());
+	
+		
 		gl.glEnd();
 		
 		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_AREA_COLOR, 0);
@@ -230,6 +237,7 @@ public class GLConnectionLineRenderer {
 		gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z());
 		for(Vec3f vecCurrent : alPoints)
 		{
+			
 			gl.glVertex3f(vecCurrent.x(), vecCurrent.y(), vecCurrent.z());
 		}
 		gl.glEnd();	

@@ -5,6 +5,7 @@ import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.logging.Logger;
 
 import javax.media.opengl.GL;
 
@@ -377,10 +378,26 @@ implements IMediatorReceiver, IMediatorSender {
 		
 			int iNCBIGeneIDCode = StringConversionTool.convertStringToInt(sNCBIGeneIDCode, -1);
 			
+			if(iNCBIGeneID == -1)
+			{
+				System.out.println("Error: No Gene ID for accession");
+				return;
+			}
+			
 			PathwayVertexGraphItem tmpPathwayVertexGraphItem = 
 				((PathwayVertexGraphItem)generalManager.getSingelton().getPathwayItemManager().getItem(
 					generalManager.getSingelton().getPathwayItemManager().getPathwayVertexGraphItemIdByNCBIGeneId(iNCBIGeneIDCode)));
 
+			if(tmpPathwayVertexGraphItem == null)
+			{
+				generalManager.getSingelton().logMsg(
+						this.getClass().getSimpleName()
+								+ " ("+iUniqueId+"): Irgendwas mit graph vertex item das eigentlich net passiern sullt "
+								+ eventTrigger.getClass().getSimpleName()+" ("+((AGLCanvasUser)eventTrigger).getId(),
+						LoggerType.VERBOSE);
+				return;
+			}
+			
 			Iterator<IGraphItem> iterPathwayVertexGraphItemRep = 
 				tmpPathwayVertexGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
 			

@@ -292,7 +292,12 @@ implements ISetSelection
 				else
 				{	
 					if(iAlSelectionGroup != null)
-						iAlSelectionGroup.set(iIndex, iAlNewSelectionGroup.get(iCount));
+					{
+						int iBiggerSelection = Math.max(iAlNewSelectionGroup.get(iCount),
+								iAlSelectionGroup.get(iCount));
+						
+						iAlSelectionGroup.set(iIndex, iBiggerSelection);
+					}
 					if(iAlSelectionOptionalData != null)
 						iAlSelectionOptionalData.set(iIndex, iAlNewOptional.get(iCount));
 				}
