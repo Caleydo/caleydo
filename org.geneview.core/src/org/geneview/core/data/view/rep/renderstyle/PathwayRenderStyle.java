@@ -95,6 +95,7 @@ extends GeneralRenderStyle {
 	private void init()
 	{
 			
+		//TODO: use float[] constants for colors
 		
 		enzymeNodeShape 	= NodeShape.RECTANGULAR;
 		compoundNodeShape 	= NodeShape.ROUND;
@@ -106,7 +107,7 @@ extends GeneralRenderStyle {
 		compoundNodeColorGeneMapped = new Vec3f(0.3f,0.3f,0.3f);
 		pathwayNodeColor 			= new Vec3f(0.5f, 1f, 0.5f);
 		pathwayNodeColorGeneMapped 	= new Vec3f(0.8f,0.8f,0.8f); // light gray
-		highlightedNodeColor 		= new Vec3f(0,0,1);
+		highlightedNodeColor 		= new Vec3f(1,0,0); 
 		neighborhoodNodeColorArray 	= new Vec3f [neighborhoodNodeColorArraysize];
 		
 		/* currently highlighted */

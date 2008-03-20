@@ -569,7 +569,7 @@ public class GLPathwayManager {
 				gl.glColor4f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z(), 1);
 			}
 			else
-				gl.glColor4f(1, 1, 0, 1);
+				gl.glColor4f(0.5f, 0.5f, 0.5f, 1); // TODO color constant
 
 			gl.glLineWidth(2);
 			gl.glBegin(GL.GL_LINE_STRIP);			
