@@ -415,7 +415,7 @@ public class GLPathwayManager {
 	protected void fillNodeDisplayListFrame(final GL gl,
 			final float fNodeWidth, final float fNodeHeight) {
 	
-		gl.glLineWidth(3);
+		gl.glLineWidth(5);
 		
 		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(-fNodeWidth, fNodeHeight, 0.02f);
@@ -567,11 +567,14 @@ public class GLPathwayManager {
 			{
 				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
 				gl.glColor4f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z(), 1);
+				gl.glLineWidth(5);
 			}
 			else
-				gl.glColor4f(0.5f, 0.5f, 0.5f, 1); // TODO color constant
+			{
+				gl.glColor4f(0.8f, 0.8f, 0.8f, 1); // TODO color constant
+				gl.glLineWidth(3);				
+			}
 
-			gl.glLineWidth(2);
 			gl.glBegin(GL.GL_LINE_STRIP);			
 			for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++)
 			{

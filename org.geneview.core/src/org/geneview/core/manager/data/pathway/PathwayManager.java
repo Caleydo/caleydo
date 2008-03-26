@@ -7,6 +7,8 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import javax.media.opengl.GL;
+
 import org.geneview.core.data.graph.core.PathwayGraph;
 import org.geneview.core.data.view.rep.jgraph.PathwayImageMap;
 import org.geneview.core.manager.IGeneralManager;
@@ -78,6 +80,8 @@ implements IPathwayManager {
 				sXMLPath, sImagePath, sImagePath);
 		
 		hashPathwayDatabase.put(type, tmpPathwayDatabase);
+		
+		loadAllPathwaysByType(type);
 	}
 	
 	/*

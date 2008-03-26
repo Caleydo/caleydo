@@ -1,11 +1,3 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.geneview.core.manager.singleton;
 
 import org.geneview.core.manager.ICommandManager;
@@ -29,7 +21,7 @@ import org.geneview.core.manager.type.ManagerType;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
 
 /**
- * Global object contining and handling several managers.
+ * Global object containing and handling several managers.
  * 
  * Design Pattern "ISingelton"
  * 
@@ -38,8 +30,6 @@ import org.geneview.core.util.exception.GeneViewRuntimeException;
  */
 public class SingletonManager 
 implements ISingelton {
-
-//	private final IGeneralManager refGeneralManager;
 		
 	protected IStorageManager refStorageManager;
 	/**
@@ -79,16 +69,7 @@ implements ISingelton {
 	 * @see org.geneview.core.manager.IGeneralManager#iUniqueId_WorkspaceOffset
 	 */
 	private int iNetworkApplicationIdPostfix = 0;
-	
-	/**
-	 * Constructor
-	 */
-	public SingletonManager( final IGeneralManager refGeneralManager ) {
-				
-//		this.refGeneralManager = refGeneralManager;			
 		
-	}
-	
 	/**
 	 * Initialize the objects
 	 *

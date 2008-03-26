@@ -107,7 +107,7 @@ implements IGeneralManagerSingleton
 
 		if (refSingeltonManager == null)
 		{
-			refSingeltonManager = new SingletonManager(this);
+			refSingeltonManager = new SingletonManager();
 			refSingeltonManager.initManager();
 		} else
 		{
@@ -166,10 +166,10 @@ implements IGeneralManagerSingleton
 		refMenuManager = new SwingMenuManager(this);
 		refViewGLCanvasManager = new ViewJoglManager(this);
 		refSWTGUIManager = new SWTGUIManager(this);
-		refPathwayManager = new PathwayManager(this);
-		refPathwayItemManager = new PathwayItemManager(this);
 		refEventPublisher = new EventPublisher(this);
 		refGenomeIdManager = new DynamicGenomeIdManager(this);
+		refPathwayManager = new PathwayManager(this);
+		refPathwayItemManager = new PathwayItemManager(this);
 		
 		/**
 		 * Insert all Manager objects handling registered objects to 

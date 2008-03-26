@@ -34,7 +34,7 @@ implements IGeneralManager {
 		if ( dummySingelton != null ) {
 			this.singelton = dummySingelton;
 		} else {
-			this.singelton = new SingletonManager( this );	
+			this.singelton = new SingletonManager();	
 		}
 		
 	}

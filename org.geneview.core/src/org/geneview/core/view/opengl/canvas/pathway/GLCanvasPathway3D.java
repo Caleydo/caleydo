@@ -226,9 +226,8 @@ implements IMediatorReceiver, IMediatorSender {
 			refHashGLcontext2TextureManager.put(gl, 
 					new GLPathwayTextureManager(generalManager));	
 		}		
-				
-		loadAllPathways(gl);
-
+		
+		calculatePathwayScaling(gl, iPathwayID);
 		pathwayManager.setPathwayVisibilityStateByID(iPathwayID, true);
 		
 //		refGLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
@@ -238,28 +237,6 @@ implements IMediatorReceiver, IMediatorSender {
 	public void renderScene(final GL gl) {
 		
 		renderPathwayById(gl, iPathwayID);
-	}
-
-
-	private void loadAllPathways(final GL gl) {
-		
-		// Check if pathways are already loaded
-		if (pathwayManager.getRootPathway().getAllGraphByType(
-				EGraphItemHierarchy.GRAPH_CHILDREN).size() <= 1) // <= 1 not clean - due to pathway2D 
-		{
-			// Load KEGG pathways
-			pathwayManager.loadAllPathwaysByType(EPathwayDatabaseType.KEGG);
-
-			// Load BioCarta pathways
-			pathwayManager.loadAllPathwaysByType(EPathwayDatabaseType.BIOCARTA);
-		}
-		
-//		Random rand = new Random();
-//		
-//		List<IGraph> tmp = pathwayManager.getRootPathway().getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN);
-//		iPathwayID = tmp.get(rand.nextInt(500)).getId();
-		
-		calculatePathwayScaling(gl, iPathwayID);
 	}
 
 	private void renderPathwayById(final GL gl,

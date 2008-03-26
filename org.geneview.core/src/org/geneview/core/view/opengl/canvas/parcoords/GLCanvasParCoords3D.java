@@ -1292,11 +1292,10 @@ extends AGLCanvasStorageBasedView
 							set = horizontalSelectionManager.getElements(
 									EViewInternalSelectionType.MOUSE_OVER);
 							addSetToSelection(set, iAlSelection, iAlGroup, 1);
-							
+		
 							set = horizontalSelectionManager.getElements(
 									EViewInternalSelectionType.SELECTION);
 							addSetToSelection(set, iAlSelection, iAlGroup, 2);	
-							
 						}
 						mergeSelection(iAlSelection, iAlGroup, null);						
 						propagateGeneSet();//iAlSelection, iAlGroup);

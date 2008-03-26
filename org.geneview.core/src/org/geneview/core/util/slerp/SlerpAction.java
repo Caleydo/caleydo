@@ -1,5 +1,6 @@
 package org.geneview.core.util.slerp;
 
+import org.geneview.core.util.exception.GeneViewRuntimeException;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 
 /**
@@ -103,21 +104,34 @@ public class SlerpAction {
 	}
 
 	public JukeboxHierarchyLayer getOriginHierarchyLayer() {
-	
+
+		if (originHierarchyLayer == null)
+			throw new GeneViewRuntimeException("Slerp origin layer is null!");
+		
 		return originHierarchyLayer;
+	}
+
+	public JukeboxHierarchyLayer getDestinationHierarchyLayer() {
+
+		if (destinationHierarchyLayer == null)
+			throw new GeneViewRuntimeException("Slerp destination layer is null!");
+
+		return destinationHierarchyLayer;
 	}
 	
 	public int getOriginPosIndex() {
 	
+		if (iOriginPosIndex == -1)
+			throw new GeneViewRuntimeException("Invalid slerp origin position (-1)!");
+		
 		return iOriginPosIndex;
 	}
 
 	public int getDestinationPosIndex() {
-	
+
+		if (iDestinationPosIndex == -1)
+			throw new GeneViewRuntimeException("Invalid slerp destination position (-1)!");
+		
 		return iDestinationPosIndex;
-	}
-	
-	public JukeboxHierarchyLayer getDestinationHierarchyLayer() {
-		return destinationHierarchyLayer;
 	}
 }

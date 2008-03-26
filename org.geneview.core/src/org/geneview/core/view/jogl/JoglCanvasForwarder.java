@@ -72,6 +72,8 @@ implements GLEventListener {
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 		
+		gl.glEnable(GL.GL_POINT_SMOOTH);
+		gl.glHint(GL.GL_POINT_SMOOTH_HINT, GL.GL_NICEST);		
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
 		gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);

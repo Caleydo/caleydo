@@ -233,7 +233,7 @@ implements IMediatorReceiver, IMediatorSender
 	    
 		retrieveContainedViews(gl);
 		
-	    buildPoolLayer(gl);
+	    updatePoolLayer();
 		buildStackLayer(gl);
 		
 //		float[] fArLightPosition = {-2, 0, 5, 0};
@@ -272,8 +272,7 @@ implements IMediatorReceiver, IMediatorSender
 		{
 			bEnableNavigationOverlay = !bEnableNavigationOverlay;
 			
-			generalManager.getSingelton().getViewGLCanvasManager()
-				.getInfoAreaManager().enable(!bEnableNavigationOverlay);
+			glConnectionLineRenderer.enableRendering(!bEnableNavigationOverlay);		
 		}
 		
 		pickingManager.handlePicking(iUniqueId, gl, true);
@@ -327,11 +326,11 @@ implements IMediatorReceiver, IMediatorSender
 		if (!bucketMouseWheelListener.isBucketBottomReached())
 		{
 			renderLayer(gl, transitionLayer);			
-			renderLayer(gl, poolLayer);
 			renderLayer(gl, stackLayer);
 			renderLayer(gl, spawnLayer);
-			renderPoolLayerBackground(gl);
-		
+			renderPoolLayerBackground(gl);	
+			renderLayer(gl, poolLayer);
+	
 			glConnectionLineRenderer.render(gl);
 		}
 		
@@ -443,27 +442,10 @@ implements IMediatorReceiver, IMediatorSender
 		stackLayer.setTransformByPositionIndex(3, transform);
 	}
 	
-	private void buildPoolLayer(final GL gl) 
-	{
-		for (int iViewIndex = 0; iViewIndex < poolLayer.getCapacity(); iViewIndex++)
-		{				
-			//poolLayer.getElementList();
-			Transform transform = new Transform();
-			transform.setTranslation(new Vec3f(4.1f, 
-					0.32f * iViewIndex, 4));
-	
-			transform.setScale(new Vec3f(SCALING_FACTOR_POOL_LAYER,
-					SCALING_FACTOR_POOL_LAYER,
-					SCALING_FACTOR_POOL_LAYER));	
-			poolLayer.setTransformByPositionIndex(iViewIndex, transform);	
-			
-		}
-	}
-	
 	private void updatePoolLayer()
 	{
 		float fSelectedScaling = 1;
-		float fYAdd = 0;
+		float fYAdd = 0.1f;
 		
 		int iSelectedViewIndex = poolLayer.getPositionIndexByElementId(iMouseOverViewID);
 
@@ -478,18 +460,15 @@ implements IMediatorReceiver, IMediatorSender
 				fSelectedScaling = 1;	
 			}
 			Transform transform = new Transform();
-			transform.setTranslation(new Vec3f(4.1f, 
-					0.32f * iViewIndex + fYAdd, 4));
-			if(iViewIndex == iSelectedViewIndex)
-			{
-				fYAdd += 0.2f * fSelectedScaling;
-			}
+			
+			transform.setTranslation(new Vec3f(4.08f, fYAdd, 4f));
+	
+			fYAdd += 0.35f * fSelectedScaling;
 	
 			transform.setScale(new Vec3f(SCALING_FACTOR_POOL_LAYER * fSelectedScaling,
 					SCALING_FACTOR_POOL_LAYER * fSelectedScaling,
 					SCALING_FACTOR_POOL_LAYER * fSelectedScaling));		
 			poolLayer.setTransformByPositionIndex(iViewIndex, transform);	
-			
 		}
 	}
 
@@ -528,8 +507,11 @@ implements IMediatorReceiver, IMediatorSender
 			iViewId = iterElementList.next();		
 			
 			// Check if spot in layer is currently empty
-			if(iViewId == -1 || layer.equals(spawnLayer))
+			if(iViewId == -1)
 			{
+				if (layer.equals(spawnLayer))
+					return;
+				
 				renderEmptyBucketWall(gl, layer, iLayerPositionIndex);
 			}
 			else
@@ -638,7 +620,6 @@ implements IMediatorReceiver, IMediatorSender
 			iAlUninitializedPathwayIDs.remove(0);
 //			iAlUninitializedPathwayIDs.clear();
 		}
-
 		
 		// Check if view is visible
 		if(!layer.getElementVisibilityById(iViewID))
@@ -1081,6 +1062,12 @@ implements IMediatorReceiver, IMediatorSender
 		if (iSlerpFactor == 0)
 		{
 			tmpSlerpAction.start();
+
+			if (tmpSlerpAction.getDestinationHierarchyLayer().equals(stackLayer) ||
+					tmpSlerpAction.getDestinationHierarchyLayer().equals(underInteractionLayer))
+			{
+				glConnectionLineRenderer.enableRendering(false);
+			}
 			
 //			tmpSlerpAction.getOriginHierarchyLayer().setElementVisibilityById(false, 
 //					tmpSlerpAction.getOriginHierarchyLayer().getElementIdByPositionIndex(
@@ -1106,7 +1093,6 @@ implements IMediatorReceiver, IMediatorSender
 	
 	private void slerpView(final GL gl, SlerpAction slerpAction) 
 	{
-
 		int iViewId = slerpAction.getElementId();
 		SlerpMod slerpMod = new SlerpMod();
 		
@@ -1483,9 +1469,6 @@ implements IMediatorReceiver, IMediatorSender
 
 				arSlerpActions.clear();
 				
-				// TODO: what's that here?
-				glConnectionLineRenderer.enableRendering(false);
-				
 				SlerpAction slerpActionTransition = new SlerpAction(
 						iExternalID, stackLayer, poolLayer);	
 				arSlerpActions.add(slerpActionTransition);
@@ -1518,8 +1501,6 @@ implements IMediatorReceiver, IMediatorSender
 					break;
 
 				arSlerpActions.clear();
-				
-				glConnectionLineRenderer.enableRendering(false);
 				
 				int iDestinationPosIndex = stackLayer.getPositionIndexByElementId(iExternalID);
 				
@@ -1578,8 +1559,6 @@ implements IMediatorReceiver, IMediatorSender
 					break;
 
 				arSlerpActions.clear();
-				
-				glConnectionLineRenderer.enableRendering(false);
 				
 				int iDestinationPosIndex = stackLayer.getPositionIndexByElementId(iExternalID);
 				

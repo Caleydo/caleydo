@@ -21,14 +21,14 @@ public class GLSharedObjects {
 		gl.glLineWidth(3);
 	    gl.glBegin(GL.GL_LINES);
 	    gl.glColor4f(1, 0, 0, 1);
-	    gl.glVertex3f(-10,  0,  0);
-	    gl.glVertex3f(10,  0,  0);
+	    gl.glVertex3f(-1,  0,  0);
+	    gl.glVertex3f(1,  0,  0);
 	    gl.glColor4f(0, 1, 0, 1);
-	    gl.glVertex3f( 0,  -10,  0);
-	    gl.glVertex3f( 0, 10,  0);
+	    gl.glVertex3f( 0,  -1,  0);
+	    gl.glVertex3f( 0, 1,  0);
 	    gl.glColor4f(0, 0, 1, 1);
-	    gl.glVertex3f( 0,  0,  -10);
-	    gl.glVertex3f( 0,  0, 10);
+	    gl.glVertex3f( 0,  0,  -1);
+	    gl.glVertex3f( 0,  0, 1);
 	    gl.glEnd();
 	}
 	

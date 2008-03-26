@@ -19,7 +19,7 @@ extends AColorMapping {
 	private static final int MAPPING_WIDTH = 100;
 	
 	private Vec3f color_1 = new Vec3f(0,1,0); // green
-	private Vec3f color_2 = new Vec3f(1,1,0); // yellow
+	private Vec3f color_2 = new Vec3f(0,0,0); // yellow
 	private Vec3f color_3 = new Vec3f(1,0,0); // red
 
 	private float fMappingWidth_div_Mid;
