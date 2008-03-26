@@ -6,11 +6,11 @@
   
     <CommandBuffer>  							
 						
-		<!-- Creating Data -->
-			<read-xml-file target="data/bootstrap/marc/overall_jukebox/load_data.xml" />	   										
-
       	<!-- Creating GenomeId mapping -->
 		  	<read-xml-file target="data/bootstrap/marc/overall_jukebox/load_genome_id_mapping.xml" />	   				
+						
+		<!-- Creating Data -->
+			<read-xml-file target="data/bootstrap/marc/overall_jukebox/load_data.xml" />	   														
 						
 		<!-- Window	13331	-->	
 			<!--				
@@ -19,14 +19,13 @@
 				<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="19401" 
 				  	gl_canvas="99078" parent="13331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
 			-->	
-
+			
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="88401" parent="99081" label="Pathway" 
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
 							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
 							attrib4="403600"							
 							detail="33101 34101 35101 36101 37101 39101 96101 97101" />
-
 			<!--
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="86401" parent="99079" label="Pathway" 
 							gl_origin="0 0 0" 
