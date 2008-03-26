@@ -387,6 +387,8 @@ extends AGLCanvasStorageBasedView
 		for(Integer iCurrentColumn : selectedSet)
 		{				
 			int iColumnIndex = alContentSelection.indexOf(iCurrentColumn);
+			if(iColumnIndex == -1)
+				continue;
 			Vec2f vecFieldWidthAndHeight = renderStyle.getFieldWidthAndHeight(iColumnIndex);
 
 			fHeight = alStorageSelection.size() * vecFieldWidthAndHeight.y();
