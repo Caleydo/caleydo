@@ -396,6 +396,14 @@ implements IMediatorReceiver, IMediatorSender
 		ArrayList<Integer> iAlGroup = alSetSelection.get(0).getGroupArray();
 		ArrayList<Integer> iAlSelection = alSetSelection.get(0).getSelectionIdArray();	
 		
+		propagateGenes(iAlSelection, iAlGroup);
+		
+	}
+	
+	protected void propagateGenes(ArrayList<Integer> iAlSelection, 
+			ArrayList<Integer> iAlGroup)
+	{
+		
 		ArrayList<Integer> iAlGeneSelection = new ArrayList<Integer>(iAlSelection.size());
 		
 		for(Integer iCurrent : iAlSelection)
@@ -406,7 +414,7 @@ implements IMediatorReceiver, IMediatorSender
 		alSetSelection.get(1).getWriteToken();
 		alSetSelection.get(1).updateSelectionSet(iUniqueId, 
 				iAlGeneSelection, iAlGroup, null);
-		alSetSelection.get(1).returnWriteToken();		
+		alSetSelection.get(1).returnWriteToken();	
 	}
 	
 	protected ArrayList<Integer> prepareSelection(GenericSelectionManager selectionManager, 

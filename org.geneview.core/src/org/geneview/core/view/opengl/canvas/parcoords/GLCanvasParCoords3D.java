@@ -1280,7 +1280,8 @@ extends AGLCanvasStorageBasedView
 									EViewInternalSelectionType.DESELECTED);
 							
 							addSetToSelection(deselectedSet,
-									iAlSelection, iAlGroup, -1);							
+									iAlSelection, iAlGroup, -1);	
+							propagateGenes(iAlSelection, iAlGroup);
 						}
 						else
 						{
@@ -1294,9 +1295,10 @@ extends AGLCanvasStorageBasedView
 							
 							set = horizontalSelectionManager.getElements(
 									EViewInternalSelectionType.SELECTION);
-							addSetToSelection(set, iAlSelection, iAlGroup, 2);				
+							addSetToSelection(set, iAlSelection, iAlGroup, 2);	
+							
 						}
-						mergeSelection(iAlSelection, iAlGroup, null);
+						mergeSelection(iAlSelection, iAlGroup, null);						
 						propagateGeneSet();//iAlSelection, iAlGroup);
 						renderSelection(true);
 					}
