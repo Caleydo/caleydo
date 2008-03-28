@@ -8,9 +8,8 @@ import java.util.LinkedList;
 
 import org.geneview.core.data.graph.core.PathwayGraph;
 import org.geneview.core.manager.IGeneralManager;
+import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.canvas.pathway.GLPathwayTextureManager;
-
-import com.sun.opengl.util.texture.Texture;
 
 
 public class JukeboxHierarchyLayer {
@@ -43,6 +42,16 @@ public class JukeboxHierarchyLayer {
 			final float fScalingFactor,
 			final GLPathwayTextureManager pathwayTextureManager) {
 		
+		this(generalManager, iCapacity, fScalingFactor);
+		
+		this.pathwayTextureManager = pathwayTextureManager;
+	}
+	
+	public JukeboxHierarchyLayer(
+			final IGeneralManager generalManager,
+			final int iCapacity, 
+			final float fScalingFactor) {
+		
 		this.generalManager = generalManager;
 		hashElementPositionIndexToTransform = new HashMap<Integer, Transform>();
 		llElementId = new LinkedList<Integer>();
@@ -50,7 +59,6 @@ public class JukeboxHierarchyLayer {
 		llElementIdVisibleState = new LinkedList<Boolean>();
 		this.iCapacity = iCapacity;
 		this.fScalingFactor = fScalingFactor;
-		this.pathwayTextureManager = pathwayTextureManager;
 		
 		// Initialize elements with -1
 		for (int iPositionIndex = 0; iPositionIndex < iCapacity; iPositionIndex++)
@@ -99,6 +107,11 @@ public class JukeboxHierarchyLayer {
 	 * @return Replaced element
 	 */
 	public int addElement(int iElementId) {
+		
+//		// If the element is a view - update its containing layer
+//		AGLCanvasUser tmpGLCanvasUser = (AGLCanvasUser) generalManager.getSingelton().getViewGLCanvasManager().getItem(iElementId);
+//		if (tmpGLCanvasUser != null)
+//			tmpGLCanvasUser.updataContainedHierarchyLayer(this);
 		
 		if (llElementId.contains(-1))
 		{

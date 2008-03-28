@@ -583,4 +583,9 @@ implements GLEventListener {
 		
 		return viewCamera;
 	}	
+	
+//	public void updataContainedHierarchyLayer(final JukeboxHierarchyLayer layer) 
+//	{
+//		containedHierarchyLayer = layer;
+//	}
 }

@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.util;
+package org.geneview.core.view.opengl.util.memopad;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
@@ -14,6 +14,7 @@ import org.geneview.core.manager.view.EPickingType;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
 import org.geneview.core.view.opengl.canvas.pathway.GLPathwayTextureManager;
+import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;

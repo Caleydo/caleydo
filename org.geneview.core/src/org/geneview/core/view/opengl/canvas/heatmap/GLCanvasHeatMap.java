@@ -221,6 +221,13 @@ extends AGLCanvasStorageBasedView
 	protected void handleEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) 
 	{
+//		// Check if selection occurs in the pool or memo layer of the bucket
+//		if (containedHierarchyLayer != null 
+//				&& containedHierarchyLayer.getCapacity() >= 5)
+//		{
+//			return;
+//		}
+		
 		ArrayList<Integer> iAlOldSelection;
 		switch (pickingType)
 		{

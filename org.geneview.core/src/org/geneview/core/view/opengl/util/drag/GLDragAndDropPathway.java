@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.util;
+package org.geneview.core.view.opengl.util.drag;
 
 //import java.awt.Color;
 import java.awt.Point;
@@ -18,7 +18,7 @@ import com.sun.opengl.util.texture.Texture;
  * @author Marc Streit
  *
  */
-public class GLDragAndDrop {
+public class GLDragAndDropPathway {
 
 	private int iDragObjectId = -1;
 	
@@ -28,7 +28,7 @@ public class GLDragAndDrop {
 	
 	private GLPathwayTextureManager pathwayTextureManager;
 	
-	public GLDragAndDrop(
+	public GLDragAndDropPathway(
 			final GLPathwayTextureManager pathwayTextureManager) {
 		
 		this.pathwayTextureManager = pathwayTextureManager;

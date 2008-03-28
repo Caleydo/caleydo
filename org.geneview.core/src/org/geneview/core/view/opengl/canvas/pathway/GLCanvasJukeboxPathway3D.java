@@ -42,10 +42,10 @@ import org.geneview.core.util.system.SystemTime;
 import org.geneview.core.util.system.Time;
 import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
-import org.geneview.core.view.opengl.util.GLDragAndDrop;
-import org.geneview.core.view.opengl.util.GLPathwayMemoPad;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.geneview.core.view.opengl.util.drag.GLDragAndDropPathway;
 import org.geneview.core.view.opengl.util.infoarea.GLInfoAreaRenderer;
+import org.geneview.core.view.opengl.util.memopad.GLPathwayMemoPad;
 import org.geneview.core.view.opengl.util.selection.EViewInternalSelectionType;
 import org.geneview.core.view.opengl.util.selection.GenericSelectionManager;
 import org.geneview.util.graph.EGraphItemHierarchy;
@@ -110,7 +110,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private GLPathwayMemoPad memoPad;
 
-	private GLDragAndDrop dragAndDrop;
+	private GLDragAndDropPathway dragAndDrop;
 	
 	private Time time;
 	
@@ -170,7 +170,7 @@ implements IMediatorReceiver, IMediatorSender {
 				refGLPathwayManager,
 				refGLPathwayTextureManager);
 
-		dragAndDrop = new GLDragAndDrop(refGLPathwayTextureManager);
+		dragAndDrop = new GLDragAndDropPathway(refGLPathwayTextureManager);
 		
 		textRenderer = new TextRenderer(new Font("Arial",
 				Font.BOLD, 16), false);

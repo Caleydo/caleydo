@@ -505,19 +505,23 @@ implements IMediatorReceiver, IMediatorSender {
 		if (fTmpPathwayWidth > (viewFrustum.getRight() - viewFrustum.getLeft())
 				&& fTmpPathwayWidth > fTmpPathwayHeight)
 		{			
-			vecScaling.setX((viewFrustum.getRight() - viewFrustum.getLeft()) / (iImageWidth * GLPathwayManager.SCALING_FACTOR_X));
+			vecScaling.setX((viewFrustum.getRight() - viewFrustum.getLeft()) / (iImageWidth * GLPathwayManager.SCALING_FACTOR_X) * 0.9f);
 			vecScaling.setY(vecScaling.x());	
 
-			vecTranslation.set(0, (viewFrustum.getTop() - viewFrustum.getBottom() - 
+			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft() - 
+					iImageWidth * GLPathwayManager.SCALING_FACTOR_X * vecScaling.x()) / 2.0f, 
+					(viewFrustum.getTop() - viewFrustum.getBottom() - 
 							iImageHeight * GLPathwayManager.SCALING_FACTOR_Y * vecScaling.y()) / 2.0f, 0);
 		}
 		else if (fTmpPathwayHeight > (viewFrustum.getTop() - viewFrustum.getBottom()))
 		{
-			vecScaling.setY((viewFrustum.getTop() - viewFrustum.getBottom()) / (iImageHeight * GLPathwayManager.SCALING_FACTOR_Y));
+			vecScaling.setY((viewFrustum.getTop() - viewFrustum.getBottom()) / (iImageHeight * GLPathwayManager.SCALING_FACTOR_Y) * 0.9f);
 			vecScaling.setX(vecScaling.y());
 
 			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft() - 
-							iImageWidth * GLPathwayManager.SCALING_FACTOR_X * vecScaling.x()) / 2.0f, 0, 0);
+							iImageWidth * GLPathwayManager.SCALING_FACTOR_X * vecScaling.x()) / 2.0f, 
+							(viewFrustum.getTop() - viewFrustum.getBottom() - 
+									iImageHeight * GLPathwayManager.SCALING_FACTOR_Y * vecScaling.y()) / 2.0f, 0);
 		}
 		else
 		{
@@ -585,11 +589,10 @@ implements IMediatorReceiver, IMediatorSender {
 	protected void handleEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) 
 	{
-//		// Check if selection occurs in the pool layer of the bucket
+//		// Check if selection occurs in the pool or memo layer of the bucket
 //		if (containedHierarchyLayer != null 
-//				&& containedHierarchyLayer.getCapacity() >= 10)
+//				&& containedHierarchyLayer.getCapacity() >= 5)
 //		{
-//			
 //			return;
 //		}
 		

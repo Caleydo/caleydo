@@ -5,6 +5,8 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import gleem.linalg.open.Transform;
 
+import java.awt.Font;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -44,12 +46,15 @@ import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.core.view.opengl.util.EIconTextures;
 import org.geneview.core.view.opengl.util.GLIconTextureManager;
 import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.geneview.core.view.opengl.util.drag.GLDragAndDrop;
 import org.geneview.util.graph.EGraphItemHierarchy;
 import org.geneview.util.graph.EGraphItemProperty;
 import org.geneview.util.graph.IGraphItem;
 
+import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
+import com.sun.opengl.util.texture.TextureIO;
 
 /**
  * Implementation of the bucket setup.
@@ -63,12 +68,13 @@ public class GLCanvasBucket3D
 extends AGLCanvasUser
 implements IMediatorReceiver, IMediatorSender 
 {
-	private static final int MAX_LOADED_VIEWS = 100;
+	private static final int MAX_LOADED_VIEWS = 10;
 	private static final float SCALING_FACTOR_UNDER_INTERACTION_LAYER = 0.5f;
 	private static final float SCALING_FACTOR_TRANSITION_LAYER = 0.05f;
 	private static final float SCALING_FACTOR_STACK_LAYER = 0.5f;
 	private static final float SCALING_FACTOR_POOL_LAYER = 0.04f;
 	private static final float SCALING_FACTOR_SPAWN_LAYER = 0.01f;
+	private static final float SCALING_FACTOR_MEMO_LAYER = 0.08f;
 	
 	private static final int SLERP_RANGE = 1000;
 	private static final int SLERP_SPEED = 1200;
@@ -80,6 +86,7 @@ implements IMediatorReceiver, IMediatorSender
 	private JukeboxHierarchyLayer poolLayer;
 	private JukeboxHierarchyLayer transitionLayer;
 	private JukeboxHierarchyLayer spawnLayer;
+	private JukeboxHierarchyLayer memoLayer;
 	
 	private ArrayList<SlerpAction> arSlerpActions;
 	private Time time;
@@ -110,8 +117,17 @@ implements IMediatorReceiver, IMediatorSender
 	
 	private int iBucketEventMediatorID = -1;
 	
+	// Memo pad variables
+	// TODO: move to own class
+	private static String TRASH_BIN_PATH = "resources/icons/trashcan_empty.png";
+	private static final int MEMO_PAD_PICKING_ID = 1;
+	private static final int MEMO_PAD_TRASH_CAN_PICKING_ID = 2;
+	private TextRenderer textRenderer;
 	
-
+	private Texture trashCanTexture;
+	
+	private GLDragAndDrop dragAndDrop;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -128,29 +144,23 @@ implements IMediatorReceiver, IMediatorSender
 		pickingTriggerMouseAdapter.addGLCanvas(this);
 		
 		underInteractionLayer = new JukeboxHierarchyLayer(generalManager,
-				1, 
-				SCALING_FACTOR_UNDER_INTERACTION_LAYER, 
-				null);
+				1, SCALING_FACTOR_UNDER_INTERACTION_LAYER);
 		
 		stackLayer = new JukeboxHierarchyLayer(generalManager,
-				4, 
-				SCALING_FACTOR_STACK_LAYER, 
-				null);
+				4, SCALING_FACTOR_STACK_LAYER);
 		
 		poolLayer = new JukeboxHierarchyLayer(generalManager,
 				MAX_LOADED_VIEWS, 
-				SCALING_FACTOR_POOL_LAYER, 
-				null);
+				SCALING_FACTOR_POOL_LAYER);
 		
 		transitionLayer = new JukeboxHierarchyLayer(generalManager,
-				1, 
-				SCALING_FACTOR_TRANSITION_LAYER, 
-				null);
+				1, SCALING_FACTOR_TRANSITION_LAYER);
 		
 		spawnLayer = new JukeboxHierarchyLayer(generalManager,
-				1, 
-				SCALING_FACTOR_SPAWN_LAYER, 
-				null);
+				1, SCALING_FACTOR_SPAWN_LAYER);
+		
+		memoLayer = new JukeboxHierarchyLayer(generalManager,
+				5, SCALING_FACTOR_MEMO_LAYER);
 		
 		underInteractionLayer.setParentLayer(stackLayer);
 		stackLayer.setChildLayer(underInteractionLayer);
@@ -195,6 +205,8 @@ implements IMediatorReceiver, IMediatorSender
 		iAlUninitializedPathwayIDs = new ArrayList<Integer>();
 		
 		createEventMediator();
+		
+		dragAndDrop = new GLDragAndDrop();
 	}
 	
 	/*
@@ -235,6 +247,7 @@ implements IMediatorReceiver, IMediatorSender
 		
 	    updatePoolLayer();
 		buildStackLayer(gl);
+		buildMemoLayer(gl);
 		
 //		float[] fArLightPosition = {-2, 0, 5, 0};
 //		float[] fArLight1Position = {2, 0, 5, 0};
@@ -283,7 +296,13 @@ implements IMediatorReceiver, IMediatorSender
 //		}	
 		display(gl);
 		
+		if (pickingTriggerMouseAdapter.getPickedPoint() != null)
+			dragAndDrop.setCurrentMousePos(gl, pickingTriggerMouseAdapter.getPickedPoint());
+		
 		checkForHits(gl);
+		
+		if (pickingTriggerMouseAdapter.wasMouseReleased())
+			dragAndDrop.stopDragAction();
 		
 		pickingTriggerMouseAdapter.resetEvents();
 //		gl.glCallList(iGLDisplayListIndexLocal);
@@ -329,7 +348,15 @@ implements IMediatorReceiver, IMediatorSender
 			renderLayer(gl, stackLayer);
 			renderLayer(gl, spawnLayer);
 			renderPoolLayerBackground(gl);	
+			
 			renderLayer(gl, poolLayer);
+
+			renderMemoPad(gl);
+
+			gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager().getPickingManager()
+					.getPickingID(iUniqueId, EPickingType.MEMO_PAD_SELECTION, MEMO_PAD_PICKING_ID));
+			renderLayer(gl, memoLayer);
+			gl.glPopName();
 	
 			glConnectionLineRenderer.render(gl);
 		}
@@ -442,6 +469,49 @@ implements IMediatorReceiver, IMediatorSender
 		stackLayer.setTransformByPositionIndex(3, transform);
 	}
 	
+	private void buildMemoLayer(final GL gl) {
+		
+		// Create free memo spots
+		Transform transform;
+		float fMemoPos = 0.46f;
+		for (int iMemoIndex = 0; iMemoIndex < memoLayer.getCapacity(); iMemoIndex++)
+		{
+			// Store current model-view matrix
+			transform = new Transform();
+			transform.setTranslation(new Vec3f(-0.65f, fMemoPos, 4.1f));
+			transform.setScale(new Vec3f(
+					SCALING_FACTOR_MEMO_LAYER,
+					SCALING_FACTOR_MEMO_LAYER,
+					SCALING_FACTOR_MEMO_LAYER));
+			memoLayer.setTransformByPositionIndex(iMemoIndex,
+					transform);			
+
+			fMemoPos += 0.7f;
+		}
+		
+		try {			
+			
+			if (this.getClass().getClassLoader().getResource(TRASH_BIN_PATH) != null)
+			{
+				trashCanTexture = TextureIO.newTexture(TextureIO
+						.newTextureData(this.getClass().getClassLoader().getResourceAsStream(TRASH_BIN_PATH), false, "PNG"));
+			}
+			else
+			{
+				trashCanTexture = TextureIO.newTexture(TextureIO
+						.newTextureData(new File(TRASH_BIN_PATH), false, "PNG"));
+			}
+			
+		} catch (Exception e)
+		{
+			System.out.println("GLPathwayMemoPad.init() Error loading texture from " + TRASH_BIN_PATH);
+			e.printStackTrace();
+		}		
+		
+		textRenderer = new TextRenderer(new Font("Arial",
+				Font.BOLD, 96), false);
+	}
+	
 	private void updatePoolLayer()
 	{
 		float fSelectedScaling = 1;
@@ -453,7 +523,7 @@ implements IMediatorReceiver, IMediatorSender
 		{		
 			if(iViewIndex == iSelectedViewIndex)
 			{
-				fSelectedScaling = 3;		
+				fSelectedScaling = 2;		
 			}
 			else				
 			{
@@ -461,7 +531,7 @@ implements IMediatorReceiver, IMediatorSender
 			}
 			Transform transform = new Transform();
 			
-			transform.setTranslation(new Vec3f(4.08f, fYAdd, 4f));
+			transform.setTranslation(new Vec3f(4.0f, fYAdd, 4.1f));
 	
 			fYAdd += 0.35f * fSelectedScaling;
 	
@@ -485,7 +555,7 @@ implements IMediatorReceiver, IMediatorSender
 		gl.glVertex3f(8, 0, -0.01f);
 		gl.glEnd();
 		
-		gl.glColor4f(0.9f, 0.9f, 0.9f, 0.5f);
+		gl.glColor4f(0.9f, 0.9f, 0.9f, 0.4f);
 		
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(0, 0, -0.01f);
@@ -505,16 +575,11 @@ implements IMediatorReceiver, IMediatorSender
 		while(iterElementList.hasNext())
 		{		
 			iViewId = iterElementList.next();		
+
+			renderEmptyBucketWall(gl, layer, iLayerPositionIndex);				
 			
 			// Check if spot in layer is currently empty
-			if(iViewId == -1)
-			{
-				if (layer.equals(spawnLayer))
-					return;
-				
-				renderEmptyBucketWall(gl, layer, iLayerPositionIndex);
-			}
-			else
+			if (iViewId != -1)
 			{
 				gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_SELECTION, iViewId));
 				renderViewByID(gl, iViewId, layer);		
@@ -612,7 +677,15 @@ implements IMediatorReceiver, IMediatorSender
 
 					((AGLCanvasUser)generalManager.getSingelton().getViewGLCanvasManager()
 							.getItem(iGeneratedViewID)).initRemote(gl, iUniqueId, poolLayer, pickingTriggerMouseAdapter);	
-				}		
+				}	
+				else
+				{
+					generalManager.getSingelton().logMsg(this.getClass().getSimpleName()
+							+ ": renderViewByID(): BUCKET IS FULL!!", LoggerType.VERBOSE);
+					
+					iAlUninitializedPathwayIDs.remove(0);
+					return;
+				}
 
 				spawnLayer.addElement(iGeneratedViewID);
 			}
@@ -652,7 +725,7 @@ implements IMediatorReceiver, IMediatorSender
 		// Render transparent plane for picking views without texture (e.g. PC)
 		if (layer.equals(poolLayer))
 		{
-			gl.glColor4f(1,1,1,1);
+			gl.glColor4f(1,1,1,0);
 			
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glVertex3f(0, 0, -0.01f);
@@ -689,7 +762,7 @@ implements IMediatorReceiver, IMediatorSender
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z() );
 
-		if (!layer.equals(transitionLayer) && !layer.equals(poolLayer))
+		if (!layer.equals(transitionLayer) && !layer.equals(spawnLayer))
 		{
 			renderBucketWall(gl);
 		}
@@ -716,7 +789,7 @@ implements IMediatorReceiver, IMediatorSender
 		gl.glVertex3f(-1.1f, 0, 4);
 		gl.glEnd();
 		
-		gl.glColor4f(0.9f, 0.9f, 0.9f, 0.5f);
+		gl.glColor4f(0.9f, 0.9f, 0.3f, 0.5f);
 		
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(4, 0, 4);
@@ -1304,7 +1377,12 @@ implements IMediatorReceiver, IMediatorSender
 		{			
 			int iAccessionID = iAlSelection.get(iSelectionIndex);
 			
-			if (iAlSelectionGroup.get(iSelectionIndex) != 2)
+			if (iAlSelectionGroup.get(iSelectionIndex) == -1)
+			{
+				generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager().clear();
+				continue;
+			}
+			else if (iAlSelectionGroup.get(iSelectionIndex) != 2)
 				continue;
 			
 			String sAccessionCode = generalManager.getSingelton().getGenomeIdManager()
@@ -1405,6 +1483,13 @@ implements IMediatorReceiver, IMediatorSender
 				{
 					loadViewToUnderInteractionLayer(iExternalID);
 				}
+				
+				break;
+				
+			case DRAGGED:	
+				
+				if (!dragAndDrop.isDragActionRunning())
+					dragAndDrop.startDragAction(iExternalID);
 				
 				break;
 			}
@@ -1608,6 +1693,57 @@ implements IMediatorReceiver, IMediatorSender
 			pickingManager.flushHits(iUniqueId, EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION);	
 			
 			break;
+			
+		case MEMO_PAD_SELECTION:
+			switch (pickingMode)
+			{
+			case CLICKED:
+				
+				break;
+			
+			case DRAGGED:
+				
+				int iDraggedObjectId = dragAndDrop.getDraggedObjectedId();
+				
+				if (iExternalID == MEMO_PAD_TRASH_CAN_PICKING_ID)
+				{
+					if (iDraggedObjectId != -1)
+					{
+//						if (memoLayer.containsElement(iDraggedObjectId))
+//						{
+							memoLayer.removeElement(iDraggedObjectId);
+//							dragAndDrop.stopDragAction();
+//							break;
+//						}
+						
+						underInteractionLayer.removeElement(iDraggedObjectId);
+						stackLayer.removeElement(iDraggedObjectId);
+						poolLayer.removeElement(iDraggedObjectId);
+					
+						dragAndDrop.stopDragAction();
+					}
+				}
+				else if (iExternalID == MEMO_PAD_PICKING_ID)
+				{
+					if (iDraggedObjectId != -1)
+					{
+						if (!memoLayer.containsElement(iDraggedObjectId))
+						{
+							memoLayer.addElement(iDraggedObjectId);
+							memoLayer.setElementVisibilityById(true, iDraggedObjectId);
+						}
+						
+						dragAndDrop.stopDragAction();
+					}
+				} 
+				
+				break;
+			}
+			
+		pickingManager.flushHits(iUniqueId, EPickingType.MEMO_PAD_SELECTION);
+		
+		break;
+		
 		}
 	}
 	
@@ -1637,5 +1773,74 @@ implements IMediatorReceiver, IMediatorSender
 		tmpMediatorCmd.setAttributes(iBucketEventMediatorID, 
 			iAlSenderIDs, iAlReceiverIDs, MediatorType.SELECTION_MEDIATOR);
 		tmpMediatorCmd.doCommand();
+	}
+	
+	public void renderMemoPad(final GL gl) {
+
+		if (trashCanTexture == null)
+			return;
+		
+		TextureCoords texCoords = trashCanTexture.getImageTexCoords();
+
+		gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager().getPickingManager()
+				.getPickingID(iUniqueId, EPickingType.MEMO_PAD_SELECTION, MEMO_PAD_TRASH_CAN_PICKING_ID));
+		
+		trashCanTexture.enable();
+		trashCanTexture.bind();
+
+		gl.glColor3f(1, 1, 1);
+		
+		gl.glBegin(GL.GL_QUADS);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(-0.1f, 0.09f, 4.1f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(-0.5f, 0.09f, 4.1f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(-0.5f, 0.455f, 4.1f);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(-0.1f, 0.455f, 4.1f);
+		gl.glEnd();
+
+		trashCanTexture.disable();
+
+		gl.glPopName();
+		
+		if (textRenderer == null)
+			return;
+		
+		String sTmp = "MEMO AREA";
+		
+		textRenderer.begin3DRendering();
+		textRenderer.setColor(0.7f, 0.7f, 0.7f, 1.0f);
+		
+		float fPosition = 3f;
+		for (int iCharacterIndex = 0; iCharacterIndex < sTmp.length(); iCharacterIndex++)
+		{
+			textRenderer.draw3D(sTmp.subSequence(iCharacterIndex, iCharacterIndex+1),
+					-1.03f, 
+					fPosition, 
+					4.001f,
+					0.003f);  // scale factor
+			
+			fPosition -= 0.3f;
+		}
+		
+		// TODO: move this to a display list and out of this method
+		sTmp = "POOL AREA";
+		
+		fPosition = 3f;
+		for (int iCharacterIndex = 0; iCharacterIndex < sTmp.length(); iCharacterIndex++)
+		{
+			textRenderer.draw3D(sTmp.subSequence(iCharacterIndex, iCharacterIndex+1),
+					4.79f, 
+					fPosition, 
+					4.001f,
+					0.003f);  // scale factor
+			
+			fPosition -= 0.3f;
+		}
+		
+		
+		textRenderer.end3DRendering();
 	}
 }
