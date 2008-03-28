@@ -201,8 +201,8 @@ implements IMediatorReceiver, IMediatorSender
 			int iTmp = generalManager.getSingelton().getGenomeIdManager()
 				.getIdIntFromIntByMapping(iAlSelection.get(iCount), EGenomeMappingType.ACCESSION_2_MICROARRAY_EXPRESSION);
 			
-			if (iTmp == -1)
-				continue;
+//			if (iTmp == -1)
+//				continue;
 			
 			iAlSelectionStorageIndices.add(iTmp);
 		}
@@ -211,7 +211,7 @@ implements IMediatorReceiver, IMediatorSender
 	}
 	
 	
-	protected ArrayList<Integer>  cleanSelection(ArrayList<Integer> iAlSelection, ArrayList<Integer> iAlGroup)
+	protected void cleanSelection(ArrayList<Integer> iAlSelection, ArrayList<Integer> iAlGroup)
 	{
 		ArrayList<Integer> alDelete = new ArrayList<Integer>(1);
 		for (int iCount = 0; iCount < iAlSelection.size(); iCount++)
@@ -227,12 +227,10 @@ implements IMediatorReceiver, IMediatorSender
 		}		
 		
 		for(int iCount = alDelete.size()-1; iCount >= 0; iCount--)
-		{
-			iAlSelection.remove(iCount);
-			iAlGroup.remove(iCount);
+		{			
+			iAlSelection.remove(alDelete.get(iCount).intValue());
+			iAlGroup.remove(alDelete.get(iCount).intValue());
 		}
-		
-		return iAlSelection;
 	}
 	
 	protected void mergeSelection(ArrayList<Integer> iAlSelection, 
@@ -286,7 +284,7 @@ implements IMediatorReceiver, IMediatorSender
 		ArrayList<Integer> iAlOptional = refSetSelection.getOptionalDataArray();
 		// iterate here		
 		ArrayList<Integer> iAlSelectionStorageIndices = convertAccessionToExpressionIndices(iAlSelection);
-		iAlSelectionStorageIndices = cleanSelection(iAlSelectionStorageIndices, iAlGroup);
+		cleanSelection(iAlSelectionStorageIndices, iAlGroup);
 		mergeSelection(iAlSelectionStorageIndices, iAlGroup, iAlOptional);
 		
 		int iSelectedAccessionID = 0;

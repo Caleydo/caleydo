@@ -173,7 +173,7 @@ extends AGLCanvasStorageBasedView
 		
 		Set<Integer> setMouseOver = verticalSelectionManager.getElements(EViewInternalSelectionType.MOUSE_OVER);
 		horizontalSelectionManager.resetSelectionManager();
-		//verticalSelectionManager.resetSelectionManager();			
+		verticalSelectionManager.resetSelectionManager();			
 
 		alContentSelection = mapSelections.get(eWhichContentSelection);
 		alStorageSelection = mapSelections.get(eWhichStorageSelection);		
@@ -185,11 +185,10 @@ extends AGLCanvasStorageBasedView
 		int iNumberOfRowsToRender = alStorageSelection.size();
 		int	iNumberOfColumns =  alContentSelection.size();				
 			
-		// this for loop executes once per r
+
 		for (int iRowCount = 0; iRowCount < iNumberOfRowsToRender; iRowCount++)
 		{				
 			horizontalSelectionManager.initialAdd(alStorageSelection.get(iRowCount));				
-		
 		}
 		
 		// this for loop executes one per axis
@@ -203,12 +202,6 @@ extends AGLCanvasStorageBasedView
 						alContentSelection.get(iColumnCount));
 			}
 		}
-		
-//		for(Integer iCurrent : setMouseOver)
-//		{
-//			if(true) // check if element is contained
-//					horizontalSelectionManager.addToType(EViewInternalSelectionType.MOUSE_OVER, iCurrent));
-//		}
 	}
 	
 
@@ -217,6 +210,7 @@ extends AGLCanvasStorageBasedView
 
 		ArrayList<String> alInfo = new ArrayList<String>();
 		alInfo.add("Heat Map");
+		alInfo.add("Showing expression values of " + alContentSelection.size() + " genes");
 		return alInfo;
 	}
 

@@ -164,7 +164,16 @@ implements ISetSelection
 //		this.returnReadToken();
 //		
 //		return tmp;
-		return iAlSelectionID;
+		if (iAlSelectionID ==  null)
+			return null;
+		
+		ArrayList<Integer> alTmp = new ArrayList<Integer>();
+		for (Integer iCurrent : iAlSelectionID)
+		{
+			alTmp.add(iCurrent.intValue());
+		}
+		
+		return alTmp;
 	}
 	
 	/*
@@ -178,7 +187,15 @@ implements ISetSelection
 //		this.returnReadToken();
 //		
 //		return tmp;
-		return iAlSelectionGroup;
+		if (iAlSelectionGroup ==  null)
+			return null;
+		
+		ArrayList<Integer> alTmp = new ArrayList<Integer>();
+		for (Integer iCurrent : iAlSelectionGroup)
+		{
+			alTmp.add(iCurrent.intValue());
+		}
+		return alTmp;
 	}
 	
 	/*
@@ -257,6 +274,7 @@ implements ISetSelection
 			ArrayList<Integer> iAlNewSelectionGroup,
 			ArrayList<Integer> iAlNewOptional)
 	{
+		
 		if(iAlSelectionID == null)
 		{
 			iAlSelectionID = new ArrayList<Integer>();
@@ -294,7 +312,7 @@ implements ISetSelection
 					if(iAlSelectionGroup != null)
 					{
 						int iBiggerSelection = Math.max(iAlNewSelectionGroup.get(iCount),
-								iAlSelectionGroup.get(iCount));
+								iAlSelectionGroup.get(iIndex));
 						
 						iAlSelectionGroup.set(iIndex, iBiggerSelection);
 					}
@@ -308,7 +326,7 @@ implements ISetSelection
 				if(iAlSelectionGroup != null)
 					iAlSelectionGroup.add(iAlNewSelectionGroup.get(iCount));
 				if(iAlSelectionOptionalData != null)
-					iAlSelectionOptionalData.add(iAlNewSelectionGroup.get(iCount));
+					iAlSelectionOptionalData.add(iAlNewOptional.get(iCount));
 			}
 			iCount++;
 		}
