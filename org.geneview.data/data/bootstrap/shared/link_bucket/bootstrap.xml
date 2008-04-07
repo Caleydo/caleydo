@@ -7,10 +7,10 @@
     <CommandBuffer>  							
 						
       	<!-- Creating GenomeId mapping -->
-		  	<read-xml-file target="data/bootstrap/marc/overall_jukebox/load_genome_id_mapping.xml" />	   				
+		  	<read-xml-file target="data/bootstrap/shared/rcp/link_bucket/load_genome_id_mapping.xml" />	   				
 						
 		<!-- Creating Data -->
-			<read-xml-file target="data/bootstrap/marc/overall_jukebox/load_data.xml" />	   														
+			<read-xml-file target="data/bootstrap/shared/rcp/link_bucket/load_data.xml" />	   														
 						
 		<!-- Window	13331	-->	
 			<!--				

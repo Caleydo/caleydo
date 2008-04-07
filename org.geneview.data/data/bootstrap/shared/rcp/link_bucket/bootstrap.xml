@@ -10,39 +10,36 @@
             <read-xml-file target="data/genome/pathway/imagemap/map01100.xml" />
 
 		<!-- Creating Data -->
-			<read-xml-file target="data/bootstrap/shared/rcp/vis08/load_set_storage_virtual-array.xml" />	   				
+			<read-xml-file target="data/bootstrap/shared/rcp/link_bucket/load_set_storage_virtual-array.xml" />	   				
 
       	<!-- Creating GenomeId mapping -->
-		  	<read-xml-file target="data/bootstrap/shared/rcp/vis08/load_genome_id_mapping_HSA.xml" />	   				
-
+		  	<read-xml-file target="data/bootstrap/shared/rcp/link_bucket/load_genome_id_mapping_HSA.xml" />	   				
+				
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PARALLEL_COORDINATES_3D"		cmdId="69994"	uniqueId="82401" parent="99076" label="Parallel Coordinates" 
+							gl_origin="0 0 0" 
+							gl_rotation="0 0 0 0"					
+							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
+							attrib4="transparency 0.6" 
+							detail="33101 34101 35101 36101 37101 39101 84101 85101" /> 
+							
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEAT_MAP_3D"		cmdId="69994"	uniqueId="84401" parent="99076" label="Parallel Coordinates" 
+							gl_origin="0 0 0" 
+							gl_rotation="0 0 0 0"					
+							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
+							attrib4="transparency 0.6" 
+							detail="33101 34101 35101 36101 37101 39101 86101 87101" /> 	
+			
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_RCP_GLCANVAS"	cmdId="69991"	uniqueId="24" 
 			  	gl_canvas="24"
 				parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
 				
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="82401" parent="24" label="Pathway" 
-							gl_origin="0 0 0" 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_BUCKET_3D"		cmdId="69994"	uniqueId="83401" parent="24" label="LinkBucket" 
+							gl_origin="-2 -2 -8" 
 							gl_rotation="0 0 0 0"					
-							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
-							detail="85101 87101 86101 88101 60101 61101" /> 				
-				
-			<!--
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_JUKEBOX_PATHWAY_3D"		cmdId="69994"	uniqueId="82401" parent="24" label="GL Jukebox Pathway 3D" 
-							gl_origin="0 0 0" 
-							gl_rotation="0 0 0 0"					
-							attrib3="ORTHOGRAPHIC -2.35 2.35 -2.35 2.35 -20 20"								attrib4="transparency 0.6"
-							attrib1="2"								
-							detail="85101 87101 86101 88101 60101 61101" /> 
-			-->
-			 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_RCP_GLCANVAS"	cmdId="69991"	uniqueId="25" 
-			  	gl_canvas="25"
-				parent="11331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
-				
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PARALLEL_COORDINATES_3D"		cmdId="69994"	uniqueId="83401" parent="25" label="GL Parallel Coordinates" 
-							gl_origin="0 0 0" 
-							gl_rotation="0 0 0 0"					
-							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
-							detail="85101 87101 86101 88101 60101 61101" /> 
+							attrib3="PERSPECTIVE -1.5 1.5 -1.5 1.5 2.9 100"
+							attrib4="transparency 1" 								
+							detail="" /> 				
+			
 			
 	    <!-- Search View -->
 	      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_ENTITY_SEARCHER" 	cmdId="69991" uniqueId="12345" label="Data Entity Search" 	detail="82401" /> 				
