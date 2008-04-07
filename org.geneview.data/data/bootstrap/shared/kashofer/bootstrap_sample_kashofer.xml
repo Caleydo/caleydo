@@ -9,11 +9,11 @@
         <!-- External loading of XML files -->
             <read-xml-file target="data/genome/pathway/imagemap/map01100.xml" />
 
-		<!-- Creating Data -->
-			<read-xml-file target="data/bootstrap/shared/kashofer/load_set_storage_virtual-array_for_pathways_kashofer.xml" />	   				
-
       	<!-- Creating GenomeId mapping -->
 		  	<read-xml-file target="data/bootstrap/shared/kashofer/load_genome_id_mapping_kashofer.xml" />	   				
+
+		<!-- Creating Data -->
+			<read-xml-file target="data/bootstrap/shared/kashofer/load_set_storage_virtual-array_for_pathways_kashofer.xml" />	   				
 			
 		<!-- Window 11331 -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" uniqueId="11331" label="Pathway 2D" attrib1="ROW HORIZONTAL" />   

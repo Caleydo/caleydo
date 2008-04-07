@@ -47,5 +47,6 @@
 					
 	<!-- Data filtering (preprocessing) -->
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="DATA_FILTER_MATH"			cmdId="99010"	uniqueId="-1"	attrib1="NORMALIZE"	attrib2="45301 46301 47301 48301" />								
+							
 
 </details>

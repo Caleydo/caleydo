@@ -45,6 +45,7 @@
 			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT"				attrib2="33101" attrib3="1 -1" />	
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/txt_format/F_X.txt"	
 			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT"				attrib2="34101" attrib3="1 -1" />							
+
 	<!-- Data filtering (preprocessing) -->
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="DATA_FILTER_MATH"			cmdId="99010"	uniqueId="-1"	attrib1="LIN_2_LOG"	attrib2="43301 44301 45301 46301 47301 49301" />								
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="DATA_FILTER_MATH"			cmdId="99010"	uniqueId="-1"	attrib1="NORMALIZE"	attrib2="43301 44301 45301 46301 47301 49301" />								
