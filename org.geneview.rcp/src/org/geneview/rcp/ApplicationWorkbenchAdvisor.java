@@ -14,6 +14,7 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 import org.geneview.core.view.jogl.JoglCanvasForwarder;
 import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
 import org.geneview.rcp.views.AGLViewPart;
+import org.geneview.rcp.views.GLBucket3DView;
 import org.geneview.rcp.views.GLHeatmap2DView;
 import org.geneview.rcp.views.GLJukeboxPathwayView;
 import org.geneview.rcp.views.GLParCoordsView;
@@ -71,10 +72,14 @@ extends WorkbenchAdvisor {
 			tmpGLEventListener = iterGLEventListener.next();
 			tmpCanvasForwarder = ((AGLCanvasUser)tmpGLEventListener).getParentGLCanvas();
 			
+			// Ignore this event listener if there is no containing canvas view.
+			if (tmpCanvasForwarder == null)
+				continue;
+			
 			try 
 			{	
 				if (tmpGLEventListener.getClass().equals(
-						org.geneview.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D.class)) 
+						org.geneview.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D.class))
 				{	
 					viewPart = (GLJukeboxPathwayView) PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getActivePage().showView(GLJukeboxPathwayView.ID,
@@ -100,7 +105,14 @@ extends WorkbenchAdvisor {
 					viewPart = (GLPathway3DView) PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getActivePage().showView(GLPathway3DView.ID,
 								Integer.toString(iInstanceNum), IWorkbenchPage.VIEW_ACTIVATE);
-				}			
+				}	
+				else if (tmpGLEventListener.getClass().equals(
+						org.geneview.core.view.opengl.canvas.bucket.GLCanvasBucket3D.class))
+				{
+					viewPart = (GLBucket3DView) PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getActivePage().showView(GLBucket3DView.ID,
+								Integer.toString(iInstanceNum), IWorkbenchPage.VIEW_ACTIVATE);
+				}	
 				
 				if (viewPart == null)
 					continue;

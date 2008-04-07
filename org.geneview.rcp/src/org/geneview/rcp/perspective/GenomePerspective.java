@@ -34,7 +34,7 @@ implements IPerspectiveFactory {
 //		folder.addView(GLHeatmap2DView.ID + ":1");
 //		folder.addView(GLHeatmap2DView_second.ID + ":1");		
 //		folder.addView(GLHeatmap2DView_third.ID + ":1");
-		folder.addView(Pathway2DView.ID + ":1");
+//		folder.addView(Pathway2DView.ID + ":1");
 		folder.addView(HTMLBrowserView.ID + ":1");
 //		folder.addView(IBrowserConstants.BROWSER_VIEW_ID);
 //		folder.addView(GLJukeboxPathwayView.ID + ":2");

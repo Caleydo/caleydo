@@ -55,6 +55,15 @@
       </view> 
       
       <view
+            allowMultiple="true"
+            category="org.geneview.rcp.jogl.view.jframe"
+            class="org.geneview.rcp.views.GLBucket3DView"
+            icon="resources/icons/pathway3D.png"
+            id="org.geneview.rcp.views.GLBucket3DView"
+            name="GLBucket3DView">
+      </view> 
+      
+      <view
             id="org.geneview.rcp.views.browser.browserView"
             name="GeneView browser"
             icon="icons/sample.gif"

@@ -27,7 +27,7 @@ extends ViewPart {
 		IViewManager viewManager = ((IViewManager) Application.refGeneralManager
 				.getManagerByBaseType(ManagerObjectType.VIEW));
 		
-		int iUniqueId = 84401;
+		int iUniqueId = 80401;
 		
 		Pathway2DViewRep pathwayView = (Pathway2DViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_PATHWAY,

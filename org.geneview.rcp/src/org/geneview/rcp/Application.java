@@ -4,8 +4,6 @@ import java.util.Map;
 
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
@@ -17,7 +15,8 @@ import org.geneview.rcp.dialog.file.OpenXmlConfigFileDialog;
 /**
  * This class controls all aspects of the application's execution
  */
-public class Application implements IApplication {
+public class Application 
+implements IApplication {
 
 	public static final String debugMsgPrefix = "RCP: ";
 	
