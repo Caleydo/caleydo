@@ -125,7 +125,7 @@ extends AGLCanvasStorageBasedView
 	{		
 		display(gl);
 		checkForHits(gl);
-		pickingTriggerMouseAdapter.resetEvents();		
+//		pickingTriggerMouseAdapter.resetEvents();		
 	}
 	
 	@Override

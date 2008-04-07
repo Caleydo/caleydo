@@ -299,10 +299,10 @@ implements IMediatorReceiver, IMediatorSender
 		if (pickingTriggerMouseAdapter.getPickedPoint() != null)
 			dragAndDrop.setCurrentMousePos(gl, pickingTriggerMouseAdapter.getPickedPoint());
 		
-		checkForHits(gl);
-		
 		if (pickingTriggerMouseAdapter.wasMouseReleased())
 			dragAndDrop.stopDragAction();
+		
+		checkForHits(gl);
 		
 		pickingTriggerMouseAdapter.resetEvents();
 //		gl.glCallList(iGLDisplayListIndexLocal);
@@ -1484,12 +1484,14 @@ implements IMediatorReceiver, IMediatorSender
 					loadViewToUnderInteractionLayer(iExternalID);
 				}
 				
+				if (!dragAndDrop.isDragActionRunning())
+					dragAndDrop.startDragAction(iExternalID);
+				
 				break;
 				
 			case DRAGGED:	
 				
-				if (!dragAndDrop.isDragActionRunning())
-					dragAndDrop.startDragAction(iExternalID);
+
 				
 				break;
 			}
@@ -1719,8 +1721,6 @@ implements IMediatorReceiver, IMediatorSender
 						underInteractionLayer.removeElement(iDraggedObjectId);
 						stackLayer.removeElement(iDraggedObjectId);
 						poolLayer.removeElement(iDraggedObjectId);
-					
-						dragAndDrop.stopDragAction();
 					}
 				}
 				else if (iExternalID == MEMO_PAD_PICKING_ID)
@@ -1732,10 +1732,10 @@ implements IMediatorReceiver, IMediatorSender
 							memoLayer.addElement(iDraggedObjectId);
 							memoLayer.setElementVisibilityById(true, iDraggedObjectId);
 						}
-						
-						dragAndDrop.stopDragAction();
 					}
 				} 
+				
+				dragAndDrop.stopDragAction();
 				
 				break;
 			}
@@ -1792,13 +1792,13 @@ implements IMediatorReceiver, IMediatorSender
 		
 		gl.glBegin(GL.GL_QUADS);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(-0.1f, 0.09f, 4.1f);
+		gl.glVertex3f(-0.15f, 0.09f, 4.1f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 		gl.glVertex3f(-0.5f, 0.09f, 4.1f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(-0.5f, 0.455f, 4.1f);
+		gl.glVertex3f(-0.5f, 0.41f, 4.1f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(-0.1f, 0.455f, 4.1f);
+		gl.glVertex3f(-0.15f, 0.41f, 4.1f);
 		gl.glEnd();
 
 		trashCanTexture.disable();
@@ -1839,7 +1839,6 @@ implements IMediatorReceiver, IMediatorSender
 			
 			fPosition -= 0.3f;
 		}
-		
 		
 		textRenderer.end3DRendering();
 	}

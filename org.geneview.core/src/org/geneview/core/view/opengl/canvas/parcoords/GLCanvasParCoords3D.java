@@ -259,7 +259,7 @@ extends AGLCanvasStorageBasedView
 		display(gl);
 		
 		checkForHits(gl);
-		pickingTriggerMouseAdapter.resetEvents();
+//		pickingTriggerMouseAdapter.resetEvents();
 	}
 	
 	/*
@@ -998,9 +998,10 @@ extends AGLCanvasStorageBasedView
 				iStorageIndex = alContentSelection.get(iPolylineCount);			
 				currentStorage = alDataStorages.get(alStorageSelection.get(iAxisNumber));						
 			}							
+			
 			float fCurrentValue = currentStorage.getArrayFloat()[iStorageIndex] * renderStyle.getAxisHeight();
-			if(fCurrentValue < fArGateTipHeight[iAxisNumber] 
-			                                    && fCurrentValue > fArGateBottomHeight[iAxisNumber])
+			if(fCurrentValue <= fArGateTipHeight[iAxisNumber] 
+			                                     && fCurrentValue >= fArGateBottomHeight[iAxisNumber])
 			{	
 				if(horizontalSelectionManager.checkStatus(EViewInternalSelectionType.SELECTION, iPolylineCount))
 					bRenderInfoArea = false;
@@ -1300,6 +1301,8 @@ extends AGLCanvasStorageBasedView
 						mergeSelection(iAlSelection, iAlGroup, null);						
 						propagateGeneSet();//iAlSelection, iAlGroup);
 						renderSelection(true);
+						
+						extSelectionManager.clear();
 					}
 					else if (iExternalID == EIconIDs.ANGULAR_BRUSHING.ordinal())
 					{
