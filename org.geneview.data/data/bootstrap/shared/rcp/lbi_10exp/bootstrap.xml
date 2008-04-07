@@ -6,14 +6,11 @@
   
     <CommandBuffer>  			
 
-        <!-- External loading of XML files -->
-            <read-xml-file target="data/genome/pathway/imagemap/map01100.xml" />
+      	<!-- Creating GenomeId mapping -->
+		  	<read-xml-file target="data/bootstrap/shared/rcp/lbi_10exp/load_genome_id_mapping_HSA_LBI.xml" />	   				
 
 		<!-- Creating Data -->
 			<read-xml-file target="data/bootstrap/shared/rcp/lbi_10exp/load_set_storage_virtual-array_for_pathways_LBI.xml" />	   				
-
-      	<!-- Creating GenomeId mapping -->
-		  	<read-xml-file target="data/bootstrap/shared/rcp/lbi_10exp/load_genome_id_mapping_HSA_LBI.xml" />	   				
 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_RCP_GLCANVAS"	cmdId="69991"	uniqueId="24" 
 			  	gl_canvas="24"
