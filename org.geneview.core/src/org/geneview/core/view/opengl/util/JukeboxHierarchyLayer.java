@@ -92,7 +92,10 @@ public class JukeboxHierarchyLayer {
 	{
 		llElementId.set(iDestinationPosIndex, iElementId);
 		llElementIdVisibleState.set(iDestinationPosIndex, false);
-		llElementIdImportanceQueue.addFirst(iElementId);	
+		llElementIdImportanceQueue.addFirst(iElementId);
+		
+		if (iCapacity < 5)
+			calculatePathwayScaling(iElementId);
 	}
 	
 	/**
@@ -191,20 +194,6 @@ public class JukeboxHierarchyLayer {
 		
 		return llElementId.contains(iElementId);
 	}
-	
-//	public int replaceElement(int iElementToReplaceId, int iNewElementId) {
-//		
-//		if (llElementId.contains(iElementToReplaceId))
-//			llElementId.set(llElementId.indexOf(iElementToReplaceId),iNewElementId);
-//			
-//		if (llElementIdImportanceQueue.contains(iElementToReplaceId))
-//			llElementIdImportanceQueue.set(llElementIdImportanceQueue.indexOf(iElementToReplaceId),iNewElementId);
-//		
-////		if (llElementIdVisibleState.contains(iElementToReplaceId))
-////			llElementIdVisibleState.set(llElementIdVisibleState.indexOf(iElementToReplaceId), true);
-//		
-//		return llElementId.indexOf(iNewElementId);
-//	}
 	
 	public void setElementByPositionIndex(final int iPositionIndex,
 			final int iElementId) {

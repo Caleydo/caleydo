@@ -1,23 +1,14 @@
 package org.geneview.core.application.core;
 
-//import org.geneview.core.manager.IGeneralManager;
-//import org.geneview.core.manager.IViewManager;
 import org.geneview.core.manager.ILoggerManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.ISWTGUIManager;
 import org.geneview.core.manager.ISingelton;
 import org.geneview.core.manager.IXmlParserManager;
+import org.geneview.core.manager.ILoggerManager.LoggerType;
 import org.geneview.core.manager.parser.XmlParserManager;
 import org.geneview.core.manager.singleton.IGeneralManagerSingleton;
 import org.geneview.core.manager.singleton.OneForAllManager;
 import org.geneview.core.util.exception.GeneViewRuntimeException;
-//import org.geneview.core.util.system.GeneViewInputStream;
-
-//import org.geneview.core.parser.handler.IXmlParserHandler;
-//import org.geneview.core.parser.handler.command.CommandSaxHandler;
-//import org.geneview.core.parser.handler.command.CommandSaxHandler;
-
-
 import org.studierstube.net.protocol.muddleware.ClientByteStreamHandler;
 import org.studierstube.net.protocol.muddleware.IMessage;
 import org.studierstube.net.protocol.muddleware.IOperation;

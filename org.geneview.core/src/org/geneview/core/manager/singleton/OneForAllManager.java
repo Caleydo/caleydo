@@ -206,8 +206,6 @@ implements IGeneralManagerSingleton
 		refSingeltonManager.setPathwayItemManager(refPathwayItemManager);
 		refSingeltonManager.setEventPublisher(refEventPublisher);
 		refSingeltonManager.setGenomeIdManager( refGenomeIdManager );
-		
-		refSetManager.initManager();
 	}
 
 	/* (non-Javadoc)

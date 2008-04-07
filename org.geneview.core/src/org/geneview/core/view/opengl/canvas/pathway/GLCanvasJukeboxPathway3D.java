@@ -119,6 +119,9 @@ implements IMediatorReceiver, IMediatorSender {
 	private TextRenderer textRenderer;
 	
 	private GenericSelectionManager pathwayVertexSelectionManager;
+	
+//	private Vec3f vecScaling;
+//	private Vec3f vecTranslation;
 
 	/**
 	 * Constructor.
@@ -182,7 +185,10 @@ implements IMediatorReceiver, IMediatorSender {
 			alSelectionType.add(selectionType);
 		}		
 		pathwayVertexSelectionManager = new GenericSelectionManager(
-				alSelectionType, EViewInternalSelectionType.NORMAL);	
+				alSelectionType, EViewInternalSelectionType.NORMAL);
+		
+//		vecScaling = new Vec3f(1,1,1);
+//		vecTranslation = new Vec3f(0,0,0);
 	}
 	
 	/*
@@ -372,17 +378,17 @@ implements IMediatorReceiver, IMediatorSender {
 			pathwayPoolLayer.setTransformByPositionIndex(iLineIndex, transform);
 		}
 		
-		// Load KEGG pathways
-		generalManager.getSingelton().getPathwayManager()
-			.loadAllPathwaysByType(EPathwayDatabaseType.KEGG);
-
-		// Load BioCarta pathways
-		generalManager.getSingelton().getPathwayManager()
-			.loadAllPathwaysByType(EPathwayDatabaseType.BIOCARTA);
-		
-		Iterator<IGraph> iterPathwayGraphs = generalManager.getSingelton()
-			.getPathwayManager().getRootPathway().getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN).iterator();
-
+//		// Load KEGG pathways
+//		generalManager.getSingelton().getPathwayManager()
+//			.loadAllPathwaysByType(EPathwayDatabaseType.KEGG);
+//
+//		// Load BioCarta pathways
+//		generalManager.getSingelton().getPathwayManager()
+//			.loadAllPathwaysByType(EPathwayDatabaseType.BIOCARTA);
+//		
+//		Iterator<IGraph> iterPathwayGraphs = generalManager.getSingelton()
+//			.getPathwayManager().getRootPathway().getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN).iterator();
+//
 //		while(iterPathwayGraphs.hasNext())
 //		{
 //			pathwayPoolLayer.addElement((iterPathwayGraphs.next()).getId());
@@ -837,10 +843,11 @@ implements IMediatorReceiver, IMediatorSender {
 
 		if (iSlerpFactor >= 1000)
 		{
+			arSlerpActions.remove(slerpAction);
+			
 			slerpAction.getDestinationHierarchyLayer()
 					.setElementVisibilityById(true, iPathwayId);
 
-			arSlerpActions.remove(slerpAction);
 			iSlerpFactor = 0;
 		}
 
@@ -1437,6 +1444,62 @@ implements IMediatorReceiver, IMediatorSender {
 			}	
 		}
 	}
+	
+//	private void calculatePathwayScaling(final GL gl, final int iPathwayId) {
+//		
+////		if (refHashGLcontext2TextureManager.get(gl) == null)
+////			return;
+//		
+//		int iImageWidth = ((PathwayGraph)generalManager.getSingelton()
+//				.getPathwayManager().getItem(iPathwayId)).getWidth();
+//		int iImageHeight = ((PathwayGraph)generalManager.getSingelton()
+//				.getPathwayManager().getItem(iPathwayId)).getHeight();
+//	
+//		float fAspectRatio = (float)iImageWidth / (float)iImageHeight;
+//		float fPathwayScalingFactor = 0;
+//		
+//		if (((PathwayGraph)generalManager.getSingelton().getPathwayManager()
+//				.getItem(iPathwayId)).getType().equals(EPathwayDatabaseType.BIOCARTA))
+//		{
+//			fPathwayScalingFactor = 5;
+//		}
+//		else
+//		{
+//			fPathwayScalingFactor = 3.2f;
+//		}
+//		
+//		float fTmpPathwayWidth = iImageWidth * GLPathwayManager.SCALING_FACTOR_X * fPathwayScalingFactor;
+//		float fTmpPathwayHeight = iImageHeight * GLPathwayManager.SCALING_FACTOR_Y * fPathwayScalingFactor;
+//		
+//		if (fTmpPathwayWidth > (viewFrustum.getRight() - viewFrustum.getLeft())
+//				&& fTmpPathwayWidth > fTmpPathwayHeight)
+//		{			
+//			vecScaling.setX((viewFrustum.getRight() - viewFrustum.getLeft()) / (iImageWidth * GLPathwayManager.SCALING_FACTOR_X) * 0.9f);
+//			vecScaling.setY(vecScaling.x());	
+//
+//			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft() - 
+//					iImageWidth * GLPathwayManager.SCALING_FACTOR_X * vecScaling.x()) / 2.0f, 
+//					(viewFrustum.getTop() - viewFrustum.getBottom() - 
+//							iImageHeight * GLPathwayManager.SCALING_FACTOR_Y * vecScaling.y()) / 2.0f, 0);
+//		}
+//		else if (fTmpPathwayHeight > (viewFrustum.getTop() - viewFrustum.getBottom()))
+//		{
+//			vecScaling.setY((viewFrustum.getTop() - viewFrustum.getBottom()) / (iImageHeight * GLPathwayManager.SCALING_FACTOR_Y) * 0.9f);
+//			vecScaling.setX(vecScaling.y());
+//
+//			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft() - 
+//							iImageWidth * GLPathwayManager.SCALING_FACTOR_X * vecScaling.x()) / 2.0f, 
+//							(viewFrustum.getTop() - viewFrustum.getBottom() - 
+//									iImageHeight * GLPathwayManager.SCALING_FACTOR_Y * vecScaling.y()) / 2.0f, 0);
+//		}
+//		else
+//		{
+//			vecScaling.set(fPathwayScalingFactor, fPathwayScalingFactor, 1f);			
+//		
+//			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft()) / 2.0f - fTmpPathwayWidth / 2.0f,
+//					(viewFrustum.getTop() - viewFrustum.getBottom()) / 2.0f - fTmpPathwayHeight / 2.0f, 0);
+//		}
+//	}
 	
 	public void enableGeneMapping(final boolean bEnableMapping) {
 		

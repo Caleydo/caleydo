@@ -610,10 +610,12 @@ implements IMediatorReceiver, IMediatorSender
 			if (!generalManager.getSingelton().getPathwayManager().isPathwayVisible(iTmpPathwayID))
 			{				
 				ArrayList<Integer> iArSetIDs = new ArrayList<Integer>();
-				iArSetIDs.add(35101);
-				iArSetIDs.add(36101);
-				iArSetIDs.add(37101);
-				iArSetIDs.add(39101);
+				
+				// FIXME: think of other way instead of hard coded set IDs
+				iArSetIDs.add(85101);
+				iArSetIDs.add(87101);
+				iArSetIDs.add(86101);
+				iArSetIDs.add(88101);
 				
 				// Create new selection set
 				int iSelectionSetID = generalManager.getSingelton().getSetManager().createId(ManagerObjectType.SET);
