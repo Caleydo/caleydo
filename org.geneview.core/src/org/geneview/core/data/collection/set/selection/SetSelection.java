@@ -209,6 +209,8 @@ implements ISetSelection
 //		this.returnReadToken();
 //		
 //		return tmp;	
+		// FIXME: copy this
+		
 		return iAlSelectionOptionalData;
 	}
 	
