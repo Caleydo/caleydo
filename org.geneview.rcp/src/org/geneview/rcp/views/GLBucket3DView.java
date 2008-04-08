@@ -1,12 +1,14 @@
 package org.geneview.rcp.views;
 
 
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
+import org.geneview.rcp.util.search.SearchBar;
 
 public class GLBucket3DView 
 extends AGLViewPart {
@@ -47,6 +49,11 @@ extends AGLViewPart {
 	
 	protected void fillLocalToolBar(IToolBarManager manager) {
 
+		IContributionItem searchBar = 
+			new SearchBar("Quick search");
+
+		manager.add(new Separator());
+		manager.add(searchBar);
 	}
 
 	/**

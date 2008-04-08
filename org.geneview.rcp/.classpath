@@ -17,5 +17,11 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/org.geneview.data"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.geneview.lib"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.geneview.util.gleem"/>
+	<classpathentry kind="lib" path="/org.geneview.lib/lib/swt/swt.jar" sourcepath="/org.geneview.lib/lib_src/swt/swt_3.3.0_src.zip">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/org.geneview.lib/lib_src/swt/swt_3.2.1_javadoc.zip!/doc"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="/org.geneview.lib/lib/jface/org.eclipse.ui.workbench_3.1.2.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -29,44 +29,44 @@ extends ViewPart {
 	public void createPartControl(Composite parent) {
 
 		//parent.setLayout(new RowLayout(SWT.VERTICAL));
-		
-		IViewManager viewManager = ((IViewManager) Application.refGeneralManager
-				.getManagerByBaseType(ManagerObjectType.VIEW));
-		
-		int iUniqueId = 85401;
-		
-		HTMLBrowserViewRep browserView = (HTMLBrowserViewRep)viewManager
-				.createView(ManagerObjectType.VIEW_SWT_BROWSER,
-						iUniqueId,
-						-1, 
-						"Browser");
-		
-		viewManager.registerItem(
-				browserView, 
-				iUniqueId, 
-				ManagerObjectType.VIEW);
-
-		browserView.setAttributes(1000, 800);
-		browserView.initViewRCP(parent);
-		browserView.drawView();	
-		
-		ArrayList<Integer> iAlSender = new ArrayList<Integer>();
-		ArrayList<Integer> iAlReceiver = new ArrayList<Integer>();
-		iAlSender.add(iUniqueId);
-		//iAlReceiver.add(85401); 
-		iAlReceiver.add(84401);
-		iAlReceiver.add(82401);
-		
-		// Connect browser to 2D pathway
-		CmdEventCreateMediator cmd = (CmdEventCreateMediator)Application.refGeneralManager.getSingelton().getCommandManager()
-		 	.createCommandByType(CommandQueueSaxType.CREATE_EVENT_MEDIATOR);
-		cmd.setAttributes(-1, iAlSender, iAlReceiver, MediatorType.SELECTION_MEDIATOR);
-		cmd.doCommand();
-
-		CmdEventCreateMediator cmdReverse = (CmdEventCreateMediator)Application.refGeneralManager.getSingelton().getCommandManager()
-	 		.createCommandByType(CommandQueueSaxType.CREATE_EVENT_MEDIATOR);
-		cmdReverse.setAttributes(-1, iAlReceiver, iAlSender, MediatorType.SELECTION_MEDIATOR);
-		cmdReverse.doCommand();
+//		
+//		IViewManager viewManager = ((IViewManager) Application.refGeneralManager
+//				.getManagerByBaseType(ManagerObjectType.VIEW));
+//		
+//		int iUniqueId = 85401;
+//		
+//		HTMLBrowserViewRep browserView = (HTMLBrowserViewRep)viewManager
+//				.createView(ManagerObjectType.VIEW_SWT_BROWSER,
+//						iUniqueId,
+//						-1, 
+//						"Browser");
+//		
+//		viewManager.registerItem(
+//				browserView, 
+//				iUniqueId, 
+//				ManagerObjectType.VIEW);
+//
+//		browserView.setAttributes(1000, 800);
+//		browserView.initViewRCP(parent);
+//		browserView.drawView();	
+//		
+//		ArrayList<Integer> iAlSender = new ArrayList<Integer>();
+//		ArrayList<Integer> iAlReceiver = new ArrayList<Integer>();
+//		iAlSender.add(iUniqueId);
+//		//iAlReceiver.add(85401); 
+//		iAlReceiver.add(84401);
+//		iAlReceiver.add(82401);
+//		
+//		// Connect browser to 2D pathway
+//		CmdEventCreateMediator cmd = (CmdEventCreateMediator)Application.refGeneralManager.getSingelton().getCommandManager()
+//		 	.createCommandByType(CommandQueueSaxType.CREATE_EVENT_MEDIATOR);
+//		cmd.setAttributes(-1, iAlSender, iAlReceiver, MediatorType.SELECTION_MEDIATOR);
+//		cmd.doCommand();
+//
+//		CmdEventCreateMediator cmdReverse = (CmdEventCreateMediator)Application.refGeneralManager.getSingelton().getCommandManager()
+//	 		.createCommandByType(CommandQueueSaxType.CREATE_EVENT_MEDIATOR);
+//		cmdReverse.setAttributes(-1, iAlReceiver, iAlSender, MediatorType.SELECTION_MEDIATOR);
+//		cmdReverse.doCommand();
 	}
 
 	/*
