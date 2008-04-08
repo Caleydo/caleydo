@@ -1,0 +1,93 @@
+<!-- must be called inside a CommandBuffer section-->
+
+<details>
+
+	<!-- Setting paths -->	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set KEGG Pathway Path" 
+		detail="KEGG"
+		attrib1="data/genome/pathway/xml/hsa/" 
+		attrib2="data/genome/pathway/images/hsa/" 
+		attrib3="data/genome/pathway/imagemap/" /> 
+		
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set Biocarta Pathway Paths" 
+		detail="BIOCARTA"
+		attrib1="data/genome/pathway/biocarta/imagemap/" 
+		attrib2="data/genome/pathway/biocarta/image/" 
+		attrib3="data/genome/pathway/biocarta/imagemap/" /> 	
+	
+    <!-- Set for 2D pathway view -->
+    <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="49301" label="Pathway list storage"		attrib1="INT" attrib2="271" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"		cmdId="22991"	uniqueId="49201" label="Pathway list virtual array" attrib1="3 0 0 1"	/>
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="37991"	uniqueId="49101" label="Pathway list" 				attrib1="49201" attrib2="49301" />
+	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_SELECTION_MAKRO" 	cmdId="69991"   uniqueId="60101" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_SELECTION_MAKRO" 	cmdId="69991"   uniqueId="61101" />	
+	
+	<!-- Expression data set/storage/virtual array -->
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"		cmdId="22991"	uniqueId="35201" label="Select file" attrib1="30 200 0 1"	/>	
+
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="45301" label="Storage	file for expression mapping 1"	attrib1="STRING" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="46301" label="Storage	file for expression mapping 2" 	attrib1="STRING" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="47301" label="Storage	file for expression mapping 3" 	attrib1="STRING" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="48301" label="Storage	file for expression mapping 4" 	attrib1="STRING" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="49301" label="Storage	file for expression mapping 5" 	attrib1="STRING" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="50301" label="Storage	file for expression mapping 6" 	attrib1="STRING" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="51301" label="Storage	file for expression mapping 7" 	attrib1="STRING" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="52301" label="Storage	file for expression mapping 8" 	attrib1="STRING" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="53301" label="Storage	file for expression mapping 9" 	attrib1="STRING" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="54301" label="Storage	file for expression mapping 10" attrib1="STRING" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="55301" label="Storage	file for expression mapping 11" attrib1="STRING" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="56301" label="Storage	file for expression mapping 12" attrib1="STRING" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="57301" label="Storage	file for expression mapping 13" attrib1="STRING" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="58301" label="Storage	file for expression mapping 14" attrib1="STRING" attrib2="test data	from file" />
+
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="85101" label=""  attrib1="35201" attrib2="45301" attrib3="SET_GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="86101" label=""  attrib1="35201" attrib2="46301" attrib3="SET_GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="87101" label=""  attrib1="35201" attrib2="47301" attrib3="SET_GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="88101" label=""  attrib1="35201" attrib2="48301" attrib3="SET_GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="89101" label=""  attrib1="35201" attrib2="49301" attrib3="SET_GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="90101" label=""  attrib1="35201" attrib2="50301" attrib3="SET_GENE_EXPRESSION_DATA" />	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="85101" label=""  attrib1="35201" attrib2="45301" attrib3="SET_GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="91101" label=""  attrib1="35201" attrib2="51301" attrib3="SET_GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="92101" label=""  attrib1="35201" attrib2="52301" attrib3="SET_GENE_EXPRESSION_DATA" />	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="85101" label=""  attrib1="35201" attrib2="45301" attrib3="SET_GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="93101" label=""  attrib1="35201" attrib2="53301" attrib3="SET_GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="94101" label=""  attrib1="35201" attrib2="54301" attrib3="SET_GENE_EXPRESSION_DATA" />	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="85101" label=""  attrib1="35201" attrib2="45301" attrib3="SET_GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="95101" label=""  attrib1="35201" attrib2="55301" attrib3="SET_GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="96101" label=""  attrib1="35201" attrib2="56301" attrib3="SET_GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="97101" label=""  attrib1="35201" attrib2="57301" attrib3="SET_GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="98101" label=""  attrib1="35201" attrib2="58301" attrib3="SET_GENE_EXPRESSION_DATA" />
+	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+			attrib1="FLOAT;ABORT"																	attrib2="85101" attrib3="1 -1" />								
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+			attrib1="SKIP;FLOAT;ABORT"																attrib2="86101" attrib3="1 -1" />			
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+			attrib1="SKIP;SKIP;FLOAT;ABORT"															attrib2="87101" attrib3="1 -1" />			
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+			attrib1="SKIP;SKIP;SKIP;FLOAT;ABORT"													attrib2="88101" attrib3="1 -1" />			
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+			attrib1="SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT"												attrib2="89101" attrib3="1 -1" />			
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT"											attrib2="90101" attrib3="1 -1" />			
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT"										attrib2="91101" attrib3="1 -1" />			
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT"								attrib2="92101" attrib3="1 -1" />			
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT"							attrib2="93101" attrib3="1 -1" />			
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT"						attrib2="94101" attrib3="1 -1" />			
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT"					attrib2="95101" attrib3="1 -1" />			
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT"			attrib2="96101" attrib3="1 -1" />			
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT"		attrib2="97101" attrib3="1 -1" />			
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT"	attrib2="98101" attrib3="1 -1" />			
+								
+						
+	<!-- Data filtering (preprocessing) -->
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="DATA_FILTER_MATH"			cmdId="99010"	uniqueId="-1"	attrib1="LIN_2_LOG"	attrib2="45301 46301 47301" />	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="DATA_FILTER_MATH"			cmdId="99010"	uniqueId="-1"	attrib1="NORMALIZE"	attrib2="45301 46301 47301" />								
+
+</details>
