@@ -112,14 +112,31 @@ implements IMediatorSender{;
 		if (iFoundAccessionId == -1)
 			return false;
 		
-		int iNCBIGeneId = generalManager.getSingelton().getGenomeIdManager().getIdIntFromIntByMapping(iFoundAccessionId, 
-				EGenomeMappingType.ACCESSION_2_NCBI_GENEID);
-
-		if (iNCBIGeneId == -1)
-			return false;
+		ArrayList<Integer> iAlSelectionId = new ArrayList<Integer>();
+		ArrayList<Integer> iAlSelectionGroupId = new ArrayList<Integer>();
 		
-		return searchForNCBIGeneId(generalManager.getSingelton().getGenomeIdManager()
-				.getIdStringFromIntByMapping(iNCBIGeneId, EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE));
+		iAlSelectionId.add(iFoundAccessionId);
+		iAlSelectionGroupId.add(2);
+		
+		triggerUpdate(iAlSelectionId, iAlSelectionGroupId, null);
+
+//		iAlSelectionId.clear();
+//		iAlSelectionGroupId.clear();
+//		iAlSelectionId.add(iFoundAccessionId);
+//		iAlSelectionGroupId.add(1);
+//		
+//		triggerUpdate(iAlSelectionId, iAlSelectionGroupId, null);
+		
+		return true;
+		
+//		int iNCBIGeneId = generalManager.getSingelton().getGenomeIdManager().getIdIntFromIntByMapping(iFoundAccessionId, 
+//				EGenomeMappingType.ACCESSION_2_NCBI_GENEID);
+//
+//		if (iNCBIGeneId == -1)
+//			return false;
+//		
+//		return searchForNCBIGeneId(generalManager.getSingelton().getGenomeIdManager()
+//				.getIdStringFromIntByMapping(iNCBIGeneId, EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE));
 
 	}
 	
@@ -157,10 +174,9 @@ implements IMediatorSender{;
 		
 		ArrayList<Integer> iAlSelectionDepth = new ArrayList<Integer>(0);
 		
-		
 		for ( int i=0; i < iAlSelectionId.size(); i++) 
 		{
-			iAlSelectionDepth.add(0);
+			iAlSelectionDepth.add(2);
 		}
 		
 		triggerUpdate(iAlSelectionId, iAlSelectionDepth, iAlPathwayId);
@@ -187,10 +203,12 @@ implements IMediatorSender{;
 		SetSelection tmpSelectionSet = 
 			(SetSelection) generalManager.getSingelton().getSetManager().getItemSet(iSearchSelectionSetId);
 		
+		tmpSelectionSet.getWriteToken();
 		tmpSelectionSet.updateSelectionSet(iUniqueId, 
 				iAlSelectionId,
 				iAlSelectionDepth, 
 				iAlOptional);
+		tmpSelectionSet.returnWriteToken();
 	}
 
 	@Override

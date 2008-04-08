@@ -16,7 +16,7 @@ import java.util.Set;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUnurbs;
-import javax.xml.bind.JAXBElement.GlobalScope;
+//import javax.xml.bind.JAXBElement.GlobalScope;
 
 import org.geneview.core.data.collection.IStorage;
 import org.geneview.core.data.view.camera.IViewFrustum;
