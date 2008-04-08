@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.manager.data.genome;
+package org.caleydo.core.manager.data.genome;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -9,9 +9,9 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import org.geneview.core.data.mapping.EGenomeMappingDataType;
-import org.geneview.core.data.mapping.EGenomeMappingType;
-import org.geneview.core.manager.data.IGenomeIdManager;
+import org.caleydo.core.data.mapping.EGenomeMappingDataType;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.manager.data.IGenomeIdManager;
 
 
 /**
@@ -53,7 +53,7 @@ implements IGenomeIdMap {
 	
 	
 	/**
-	 * @see org.geneview.core.manager.data.genome.IGenomeIdMap#size()
+	 * @see org.caleydo.core.manager.data.genome.IGenomeIdMap#size()
 	 * @see java.util.Map#size()
 	 */
 	public final int size() {
@@ -61,7 +61,7 @@ implements IGenomeIdMap {
 	}
 	
 	/**
-	 * @see org.geneview.core.manager.data.genome.IGenomeIdMap#getReversedMap()
+	 * @see org.caleydo.core.manager.data.genome.IGenomeIdMap#getReversedMap()
 	 */
 	public final IGenomeIdMap getReversedMap() {
 		IGenomeIdMap reversedMap = null;
@@ -117,7 +117,7 @@ implements IGenomeIdMap {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.data.genome.IGenomeIdMap#getCodeResolvedMap(org.geneview.core.manager.data.IGenomeIdManager, org.geneview.core.data.mapping.EGenomeMappingType, org.geneview.core.data.mapping.EGenomeMappingType)
+	 * @see org.caleydo.core.manager.data.genome.IGenomeIdMap#getCodeResolvedMap(org.caleydo.core.manager.data.IGenomeIdManager, org.caleydo.core.data.mapping.EGenomeMappingType, org.caleydo.core.data.mapping.EGenomeMappingType)
 	 */
 	public final IGenomeIdMap getCodeResolvedMap(
 			IGenomeIdManager refGenomeIdManager,
@@ -212,7 +212,7 @@ implements IGenomeIdMap {
 	/* -----  Methods to overload in subclasses  ----- */
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.manager.event.IEventPublisherMap#getIntByInt(int)
+	 * @see org.caleydo.core.manager.event.IEventPublisherMap#getIntByInt(int)
 	 */
 	public int getIntByInt(int key) {
 
@@ -221,7 +221,7 @@ implements IGenomeIdMap {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.manager.event.IEventPublisherMap#getIntByString(Stringt)
+	 * @see org.caleydo.core.manager.event.IEventPublisherMap#getIntByString(Stringt)
 	 */
 	public int getIntByString(String key) {
 
@@ -230,7 +230,7 @@ implements IGenomeIdMap {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.manager.event.IEventPublisherMap#getStringByInt(int)
+	 * @see org.caleydo.core.manager.event.IEventPublisherMap#getStringByInt(int)
 	 */
 	public String getStringByInt(int key) {
 
@@ -239,7 +239,7 @@ implements IGenomeIdMap {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.manager.event.IEventPublisherMap#getStringByString(Stringt)
+	 * @see org.caleydo.core.manager.event.IEventPublisherMap#getStringByString(Stringt)
 	 */
 	public String getStringByString(String key) {
 
@@ -248,7 +248,7 @@ implements IGenomeIdMap {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.manager.event.IEventPublisherMap#getIntByIntChecked(int)
+	 * @see org.caleydo.core.manager.event.IEventPublisherMap#getIntByIntChecked(int)
 	 */
 	public int getIntByIntChecked(int key) {
 
@@ -257,7 +257,7 @@ implements IGenomeIdMap {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.manager.event.IEventPublisherMap#getIntByStringChecked(Stringt)
+	 * @see org.caleydo.core.manager.event.IEventPublisherMap#getIntByStringChecked(Stringt)
 	 */
 	public int getIntByStringChecked(String key) {
 
@@ -266,7 +266,7 @@ implements IGenomeIdMap {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.manager.event.IEventPublisherMap#getStringByIntChecked(int)
+	 * @see org.caleydo.core.manager.event.IEventPublisherMap#getStringByIntChecked(int)
 	 */
 	public String getStringByIntChecked(int key) {
 
@@ -275,7 +275,7 @@ implements IGenomeIdMap {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.manager.event.IEventPublisherMap#getStringByStringChecked(Stringt)
+	 * @see org.caleydo.core.manager.event.IEventPublisherMap#getStringByStringChecked(Stringt)
 	 */
 	public String getStringByStringChecked(String key) {
 

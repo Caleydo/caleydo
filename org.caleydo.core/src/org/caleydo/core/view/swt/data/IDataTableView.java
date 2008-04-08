@@ -1,6 +1,6 @@
-package org.geneview.core.view.swt.data;
+package org.caleydo.core.view.swt.data;
 
-import org.geneview.core.view.IView;
+import org.caleydo.core.view.IView;
 
 public interface IDataTableView extends IView
 {	

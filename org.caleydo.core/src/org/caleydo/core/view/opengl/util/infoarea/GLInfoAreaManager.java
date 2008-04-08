@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.util.infoarea;
+package org.caleydo.core.view.opengl.util.infoarea;
 
 import gleem.linalg.Vec3f;
 
@@ -10,14 +10,14 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
-import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.data.collection.set.selection.SetSelection;
-import org.geneview.core.data.view.camera.IViewFrustum;
-import org.geneview.core.data.view.rep.renderstyle.InfoAreaRenderStyle;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
-import org.geneview.core.view.opengl.canvas.parcoords.EInputDataType;
-import org.geneview.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.set.selection.SetSelection;
+import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.data.view.rep.renderstyle.InfoAreaRenderStyle;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
+import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 
 /**
  * 
@@ -167,17 +167,17 @@ public class GLInfoAreaManager
 	/**
 	 * Set the data to be rendered.
 	 * 
-	 * @param iGeneViewID
+	 * @param iCaleydoID
 	 * @param eInputDataTypes
 	 * @param pickedPoint
 	 */
-	public void setData(int iGeneViewID, EInputDataType eInputDataTypes, Point pickedPoint) 
+	public void setData(int iCaleydoID, EInputDataType eInputDataTypes, Point pickedPoint) 
 	{
-		//this.sContent = contentCreator.getStringContentForID(iGeneViewID, eInputDataTypes);
+		//this.sContent = contentCreator.getStringContentForID(iCaleydoID, eInputDataTypes);
 		this.pickedPoint = pickedPoint;
 		vecLowerLeft = new Vec3f();
 		
-		infoArea.setData(iGeneViewID, eInputDataTypes);
+		infoArea.setData(iCaleydoID, eInputDataTypes);
 		//miniView =  new AGLParCoordsMiniView();
 //		fXOrigin = 0;
 //		fYOrigin = 0;

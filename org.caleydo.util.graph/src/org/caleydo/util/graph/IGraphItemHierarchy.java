@@ -1,4 +1,4 @@
-package org.geneview.util.graph;
+package org.caleydo.util.graph;
 
 import java.util.List;
 
@@ -6,8 +6,8 @@ import java.util.List;
 /**
  * Handling of IGraph inside IGraphItem.
  * 
- * @see org.geneview.util.graph.IGraph
- * @see org.geneview.util.graph.IGraphItem
+ * @see org.caleydo.util.graph.IGraph
+ * @see org.caleydo.util.graph.IGraphItem
  * 
  * @author Michael Kalkusch
  */
@@ -50,7 +50,7 @@ public interface IGraphItemHierarchy {
 	 * 
 	 * Note, if type == EGraphItemHierarchy.GRAPH_NONE or null all types are matched.
 	 * 
-	 * @see org.geneview.util.graph.IGraphItem#containsOtherGraph(IGraph)
+	 * @see org.caleydo.util.graph.IGraphItem#containsOtherGraph(IGraph)
 	 * 
 	 * @param graph graph to be tested
 	 * @param type define type; if type == EGraphItemHierarchy.GRAPH_NONE or null all types are matched
@@ -63,8 +63,8 @@ public interface IGraphItemHierarchy {
 	 * 
 	 * Note this method is intended for IGraphItem#disposeItem().
 	 * 
-	 * @see org.geneview.util.graph.IGraphItem#containsGraph(IGraph, EGraphItemHierarchy)
-	 * @see org.geneview.util.graph.IGraphItem#disposeItem()
+	 * @see org.caleydo.util.graph.IGraphItem#containsGraph(IGraph, EGraphItemHierarchy)
+	 * @see org.caleydo.util.graph.IGraphItem#disposeItem()
 	 * 
 	 * @param graph test if only this graph is referenced by this IGraphItem object
 	 * @return FALSE if no other graphs are linked from this IGraphItem, TURE if other graphs than the tested graph are linked

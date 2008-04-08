@@ -1,4 +1,4 @@
-package org.geneview.core.application.mapping;
+package org.caleydo.core.application.mapping;
 
 //import gov.nih.nlm.ncbi.www.soap.eutils.EUtilsServiceLocator;
 //import gov.nih.nlm.ncbi.www.soap.eutils.EUtilsServiceSoap;
@@ -11,7 +11,7 @@ import java.io.PrintWriter;
 
 import javax.xml.rpc.ServiceException;
 
-import org.geneview.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IGeneralManager;
 
 import keggapi.Definition;
 import keggapi.KEGGLocator;

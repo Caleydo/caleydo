@@ -1,16 +1,16 @@
 /**
  * 
  */
-package org.geneview.core.parser.ascii.lookuptable;
+package org.caleydo.core.parser.ascii.lookuptable;
 
 
-import org.geneview.core.data.map.MultiHashArrayIntegerMap;
-import org.geneview.core.data.map.MultiHashArrayStringMap;
-import org.geneview.core.data.mapping.EGenomeMappingType;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.data.IGenomeIdManager;
-import org.geneview.core.manager.data.genome.IGenomeIdMap;
-import org.geneview.core.parser.ascii.lookuptable.ILookupTableLoader;
+import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
+import org.caleydo.core.data.map.MultiHashArrayStringMap;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.data.IGenomeIdManager;
+import org.caleydo.core.manager.data.genome.IGenomeIdMap;
+import org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader;
 
 
 /**
@@ -64,7 +64,7 @@ implements ILookupTableLoader {
 	 * empty method, must be overrwitten by sub-class, 
 	 * if required by logic of sub-class.
 	 * 
-	 * @see org.geneview.core.parser.ascii.lookuptable.LookupTableMultiMapStringLoader#setMultiMapInteger(MultiHashArrayIntegerMap, EGenomeMappingType)
+	 * @see org.caleydo.core.parser.ascii.lookuptable.LookupTableMultiMapStringLoader#setMultiMapInteger(MultiHashArrayIntegerMap, EGenomeMappingType)
 	 */
 	public void setMultiMapInteger(MultiHashArrayIntegerMap setHashMap, 
 			EGenomeMappingType type) {
@@ -75,7 +75,7 @@ implements ILookupTableLoader {
 	 * empty method, must be overrwitten by sub-class,
 	 * if required by logic of sub-class.
 	 * 
-	 * @see org.geneview.core.parser.ascii.lookuptable.LookupTableMultiMapIntLoader#setMultiMapInteger(MultiHashArrayIntegerMap, EGenomeMappingType)
+	 * @see org.caleydo.core.parser.ascii.lookuptable.LookupTableMultiMapIntLoader#setMultiMapInteger(MultiHashArrayIntegerMap, EGenomeMappingType)
 	 */
 	public void setMultiMapString(MultiHashArrayStringMap setHashMap, 
 			EGenomeMappingType type) {
@@ -86,7 +86,7 @@ implements ILookupTableLoader {
 	 * empty method, must be overrwitten by sub-class,
 	 * if required by logic of sub-class.
 	 * 
-	 * @see org.geneview.core.parser.ascii.lookuptable.LookupTableHashMapLoader#setHashMap(IGenomeIdMap, EGenomeMappingType)
+	 * @see org.caleydo.core.parser.ascii.lookuptable.LookupTableHashMapLoader#setHashMap(IGenomeIdMap, EGenomeMappingType)
 	 */
 	public void setHashMap( final IGenomeIdMap setHashMap,
 			final EGenomeMappingType type) {
@@ -98,7 +98,7 @@ implements ILookupTableLoader {
 	 * If internal data strucutres need to be allocated, 
 	 * the sub-class must implement this method.
 	 *
-	 * @see org.geneview.core.parser.ascii.lookuptable.ILookupTableLoader#initLUT()
+	 * @see org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader#initLUT()
 	 */
 	public void initLUT() {
 
@@ -109,7 +109,7 @@ implements ILookupTableLoader {
 	 * If internal data strucutres were allocated, 
 	 * the sub-class must implement this method.
 	 * 
-	 * @see org.geneview.core.parser.ascii.lookuptable.ILookupTableLoader#destroyLUT()
+	 * @see org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader#destroyLUT()
 	 */
 	public void destroyLUT() {
 

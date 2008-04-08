@@ -1,4 +1,4 @@
-package org.geneview.core.data.collection;
+package org.caleydo.core.data.collection;
 
 
 /**

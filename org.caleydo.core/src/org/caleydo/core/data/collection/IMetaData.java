@@ -6,7 +6,7 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection;
+package org.caleydo.core.data.collection;
 
 /**
  * Meta data defines a state for each object it is bound to.

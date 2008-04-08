@@ -1,4 +1,4 @@
-package org.geneview.rcp.views.awt;
+package org.caleydo.rcp.views.awt;
 
 import java.awt.Dimension;
 import java.awt.event.*;

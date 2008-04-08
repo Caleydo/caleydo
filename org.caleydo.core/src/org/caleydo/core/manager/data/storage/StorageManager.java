@@ -6,25 +6,25 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.manager.data.storage;
+package org.caleydo.core.manager.data.storage;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
 //import java.util.Iterator;
 import java.util.LinkedList;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.data.ACollectionManager;
-import org.geneview.core.manager.data.IStorageManager;
-import org.geneview.core.manager.type.ManagerType;
-import org.geneview.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.data.ACollectionManager;
+import org.caleydo.core.manager.data.IStorageManager;
+import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.manager.type.ManagerObjectType;
 
-import org.geneview.core.data.collection.IStorage;
-//import org.geneview.core.data.collection.StorageType;
-//import org.geneview.core.data.collection.set.SetPlanarSimple;
-import org.geneview.core.data.collection.storage.FlatThreadStorageSimple;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.data.collection.IStorage;
+//import org.caleydo.core.data.collection.StorageType;
+//import org.caleydo.core.data.collection.set.SetPlanarSimple;
+import org.caleydo.core.data.collection.storage.FlatThreadStorageSimple;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * @author Michael Kalkusch
@@ -64,12 +64,12 @@ implements IStorageManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.StorageManager#createStorage()
+	 * @see org.caleydo.core.data.manager.StorageManager#createStorage()
 	 */
 	public IStorage createStorage( final ManagerObjectType useStorageType ) {
 		
 		if ( useStorageType.getGroupType() != ManagerType.DATA_STORAGE ) {
-			throw new GeneViewRuntimeException("try to create object with wrong type " + useStorageType.name() );
+			throw new CaleydoRuntimeException("try to create object with wrong type " + useStorageType.name() );
 		}
 
 		
@@ -81,7 +81,7 @@ implements IStorageManager {
 				return new FlatThreadStorageSimple( iNewId, generalManager, null );				
 				
 			default:
-				throw new GeneViewRuntimeException("StorageManagerSimple.createStorage() failed due to unhandled type [" +
+				throw new CaleydoRuntimeException("StorageManagerSimple.createStorage() failed due to unhandled type [" +
 						useStorageType.toString() + "]");
 		}
 		
@@ -91,7 +91,7 @@ implements IStorageManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.StorageManager#deleteStorage(org.geneview.core.data.collection.IStorage)
+	 * @see org.caleydo.core.data.manager.StorageManager#deleteStorage(org.caleydo.core.data.collection.IStorage)
 	 */
 	public boolean deleteStorage(IStorage deleteStorage ) {
 		int iIndexStorage = 
@@ -102,7 +102,7 @@ implements IStorageManager {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.StorageManager#deleteStorage(org.geneview.core.data.collection.IStorage)
+	 * @see org.caleydo.core.data.manager.StorageManager#deleteStorage(org.caleydo.core.data.collection.IStorage)
 	 */
 	public boolean deleteStorage( final int iItemId ) {
 		try {
@@ -117,7 +117,7 @@ implements IStorageManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.StorageManager#getItemStorage(int)
+	 * @see org.caleydo.core.data.manager.StorageManager#getItemStorage(int)
 	 */
 	public IStorage getItemStorage( final int iItemId) {		
 		return vecStorage.get( iItemId );		
@@ -125,7 +125,7 @@ implements IStorageManager {
 
 	/**
 	 *  
-	 * @see org.geneview.core.manager.IGeneralManager#getItem(int)
+	 * @see org.caleydo.core.manager.IGeneralManager#getItem(int)
 	 * 
 	 * @throws ArrayIndexOutOfBoundsException
 	 */
@@ -134,7 +134,7 @@ implements IStorageManager {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.StorageManager#getAllStorageItems()
+	 * @see org.caleydo.core.data.manager.StorageManager#getAllStorageItems()
 	 */
 	public IStorage[] getAllStorageItems() {
 		
@@ -151,7 +151,7 @@ implements IStorageManager {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.data.manager.StorageManager#getAllStorageItemsVector()
+	 * @see org.caleydo.core.data.manager.StorageManager#getAllStorageItemsVector()
 	 */
 	public LinkedList<IStorage> getAllStorageItemsVector() {
 		
@@ -168,14 +168,14 @@ implements IStorageManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.GeneralManagerInterface#hasItem(int)
+	 * @see org.caleydo.core.data.manager.GeneralManagerInterface#hasItem(int)
 	 */
 	public final boolean hasItem(int iItemId) {
 		return vecStorage.containsKey( iItemId );	
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.GeneralManagerInterface#size()
+	 * @see org.caleydo.core.data.manager.GeneralManagerInterface#size()
 	 */
 	public final int size() {		
 		return vecStorage.size();

@@ -1,13 +1,13 @@
 /**
  * 
  */
-package org.geneview.core.math.statistics.minmax;
+package org.caleydo.core.math.statistics.minmax;
 
-import org.geneview.core.data.collection.IVirtualArray;
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.IStorage;
-//import org.geneview.core.data.collection.set.SetMultiDim;
-import org.geneview.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IStorage;
+//import org.caleydo.core.data.collection.set.SetMultiDim;
+import org.caleydo.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 
 /**
  * @author Michael Kalkusch

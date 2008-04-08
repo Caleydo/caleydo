@@ -1,4 +1,4 @@
-package org.geneview.rcp;
+package org.caleydo.rcp;
 
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.application.ActionBarAdvisor;

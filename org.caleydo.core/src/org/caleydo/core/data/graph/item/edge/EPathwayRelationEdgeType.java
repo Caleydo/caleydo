@@ -1,4 +1,4 @@
-package org.geneview.core.data.graph.item.edge;
+package org.caleydo.core.data.graph.item.edge;
 
 
 public enum EPathwayRelationEdgeType

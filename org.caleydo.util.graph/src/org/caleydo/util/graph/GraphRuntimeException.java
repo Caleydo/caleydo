@@ -1,12 +1,12 @@
 /**
  * 
  */
-package org.geneview.util.graph;
+package org.caleydo.util.graph;
 
 /**
  * RuntimeException for graphs.
  * 
- * @see org.geneview.util.graph.IGraph
+ * @see org.caleydo.util.graph.IGraph
  * 
  * @author Michael Kalkusch
  *

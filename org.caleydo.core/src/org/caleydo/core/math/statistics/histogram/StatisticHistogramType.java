@@ -1,9 +1,9 @@
 /**
  * 
  */
-package org.geneview.core.math.statistics.histogram;
+package org.caleydo.core.math.statistics.histogram;
 
-import org.geneview.core.util.IGeneViewDefaultType;
+import org.caleydo.core.util.ICaleydoDefaultType;
 
 /**
  * Define type of statistic histogram.
@@ -12,7 +12,7 @@ import org.geneview.core.util.IGeneViewDefaultType;
  *
  */
 public enum StatisticHistogramType
-implements IGeneViewDefaultType <StatisticHistogramType> {
+implements ICaleydoDefaultType <StatisticHistogramType> {
 
 	REGULAR_LINEAR("Regular spacing, linear distribution"),
 	
@@ -98,7 +98,7 @@ implements IGeneViewDefaultType <StatisticHistogramType> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.util.IGeneViewDefaultType#getTypeDefault()
+	 * @see org.caleydo.core.util.ICaleydoDefaultType#getTypeDefault()
 	 */
 	public StatisticHistogramType getTypeDefault() {
 

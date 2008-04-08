@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.util.infoarea;
+package org.caleydo.core.view.opengl.util.infoarea;
 
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
@@ -10,15 +10,15 @@ import java.util.Iterator;
 
 import javax.media.opengl.GL;
 
-import org.geneview.core.data.GeneralRenderStyle;
-import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.data.collection.set.selection.SetSelection;
-import org.geneview.core.data.view.camera.IViewFrustum;
-import org.geneview.core.data.view.rep.renderstyle.InfoAreaRenderStyle;
-import org.geneview.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.view.opengl.canvas.parcoords.EInputDataType;
-import org.geneview.core.view.opengl.miniview.AGLMiniView;
+import org.caleydo.core.data.GeneralRenderStyle;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.set.selection.SetSelection;
+import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.data.view.rep.renderstyle.InfoAreaRenderStyle;
+import org.caleydo.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
+import org.caleydo.core.view.opengl.miniview.AGLMiniView;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -69,13 +69,13 @@ public class GLTextInfoAreaRenderer
 	/**
 	 * Set the data to be rendered.
 	 * 
-	 * @param iGeneViewID
+	 * @param iCaleydoID
 	 * @param eInputDataTypes
 	 * @param pickedPoint
 	 */
-	public void setData(int iGeneViewID, EInputDataType eInputDataTypes) 
+	public void setData(int iCaleydoID, EInputDataType eInputDataTypes) 
 	{
-		this.sContent = contentCreator.getStringContentForID(iGeneViewID, eInputDataTypes);
+		this.sContent = contentCreator.getStringContentForID(iCaleydoID, eInputDataTypes);
 		//this.pickedPoint = pickedPoint;
 		//miniView =  new GLParCoordsMiniView();
 		fHeight = 0;

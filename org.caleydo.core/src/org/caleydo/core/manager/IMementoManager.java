@@ -6,14 +6,14 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.manager;
+package org.caleydo.core.manager;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
 
-import org.geneview.core.command.memento.IMemento;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.command.memento.IMemento;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Administration of IMemento's
@@ -34,7 +34,7 @@ extends IGeneralManager
 	 * @throws exception on errors
 	 */
 	public abstract int pushMemento(IMemento addMemento)
-		throws GeneViewRuntimeException;
+		throws CaleydoRuntimeException;
 	
 	
 	/**

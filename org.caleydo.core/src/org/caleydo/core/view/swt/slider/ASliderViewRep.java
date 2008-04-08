@@ -1,14 +1,14 @@
-package org.geneview.core.view.swt.slider;
+package org.caleydo.core.view.swt.slider;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Slider;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.event.mediator.IMediatorReceiver;
-import org.geneview.core.manager.event.mediator.IMediatorSender;
-import org.geneview.core.view.AViewRep;
-import org.geneview.core.view.ViewType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
+import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.ViewType;
 
 /**
  * The view representation of a slider.
@@ -16,7 +16,7 @@ import org.geneview.core.view.ViewType;
  * selection and the first storage in the specified Set.
  * The Set is represented by the local variable setId.
  * 
- * @see org.geneview.core.view.IView
+ * @see org.caleydo.core.view.IView
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -41,8 +41,8 @@ implements IMediatorSender, IMediatorReceiver {
 	
 	/**
 	 * 
-	 * @see org.geneview.core.view.AViewRep#retrieveGUIContainer()
-	 * @see org.geneview.core.view.IView#initView()
+	 * @see org.caleydo.core.view.AViewRep#retrieveGUIContainer()
+	 * @see org.caleydo.core.view.IView#initView()
 	 */
 	protected void initViewSwtComposit(Composite swtContainer) {
 		

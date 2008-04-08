@@ -1,19 +1,19 @@
-package org.geneview.core.command.view.opengl;
+package org.caleydo.core.command.view.opengl;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.base.ACmdCreate_GlCanvasUser;
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.parser.parameter.IParameterHandler;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.util.system.StringConversionTool;
-import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2D;
-import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn;
-import org.geneview.core.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.base.ACmdCreate_GlCanvasUser;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2D;
+import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn;
+import org.caleydo.core.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D;
 
 /**
  * Creates IGLCanvasHeatmap2D or GLCanvasHeatmap2DColumn objects.
@@ -35,8 +35,8 @@ import org.geneview.core.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D;
  *				attrib4="0 50 1"	
  *				detail="35101" />		
  * 
- * @see org.geneview.core.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D
- * @see org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn
+ * @see org.caleydo.core.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D
+ * @see org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn
  * 
  * @author Michael Kalkusch
  *
@@ -58,7 +58,7 @@ extends ACmdCreate_GlCanvasUser {
 	/**
 	 * If of Set to be read data from
 	 * 
-	 * @see org.geneview.core.data.collection.ISet
+	 * @see org.caleydo.core.data.collection.ISet
 	 */
 	//protected int iTargetCollectionSetId;
 	
@@ -201,7 +201,7 @@ extends ACmdCreate_GlCanvasUser {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.command.base.ACmdCreate_GlCanvasUser#doCommand()
+	 * @see org.caleydo.core.command.base.ACmdCreate_GlCanvasUser#doCommand()
 	 */
 	public final void doCommand() {
 		
@@ -323,7 +323,7 @@ extends ACmdCreate_GlCanvasUser {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.command.base.ACmdCreate_GlCanvasUser#undoCommand()
+	 * @see org.caleydo.core.command.base.ACmdCreate_GlCanvasUser#undoCommand()
 	 */
 	public final void undoCommand() {
 		super.undoCommand();	

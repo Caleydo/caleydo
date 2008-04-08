@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.parser.ascii.lookuptable;
+package org.caleydo.core.parser.ascii.lookuptable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -9,12 +9,12 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
-import org.geneview.core.data.mapping.EGenomeMappingType;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.data.genome.IGenomeIdMap;
-import org.geneview.core.parser.ascii.lookuptable.ALookupTableLoader;
-import org.geneview.core.parser.ascii.lookuptable.ILookupTableLoader;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.data.genome.IGenomeIdMap;
+import org.caleydo.core.parser.ascii.lookuptable.ALookupTableLoader;
+import org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader;
 
 
 /**
@@ -41,7 +41,7 @@ implements ILookupTableLoader {
 
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.ascii.lookuptable.ILookupTableLoader#loadDataParseFileLUT(java.io.BufferedReader, int)
+	 * @see org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader#loadDataParseFileLUT(java.io.BufferedReader, int)
 	 */
 	public int loadDataParseFileLUT(BufferedReader brFile,
 			int iNumberOfLinesInFile ) throws IOException {
@@ -143,8 +143,8 @@ implements ILookupTableLoader {
 
 	/**
 	 * Write back data to IGenomeIdManager
-	 * @see org.geneview.core.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
-	 * @see org.geneview.core.manager.data.IGenomeIdManager
+	 * @see org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
+	 * @see org.caleydo.core.manager.data.IGenomeIdManager
 	 */
 	public void wirteBackMapToGenomeIdManager() {
 		

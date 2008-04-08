@@ -1,11 +1,11 @@
-package org.geneview.core.data.graph.item.vertex;
+package org.caleydo.core.data.graph.item.vertex;
 
 import java.util.StringTokenizer;
 
-import org.geneview.core.util.system.StringConversionTool;
-import org.geneview.util.graph.EGraphItemKind;
-import org.geneview.util.graph.EGraphItemProperty;
-import org.geneview.util.graph.item.GraphItem;
+import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.util.graph.EGraphItemKind;
+import org.caleydo.util.graph.EGraphItemProperty;
+import org.caleydo.util.graph.item.GraphItem;
 
 public class PathwayVertexGraphItemRep 
 extends GraphItem {

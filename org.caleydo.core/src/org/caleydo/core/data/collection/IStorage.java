@@ -6,14 +6,14 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection;
+package org.caleydo.core.data.collection;
 
 import java.util.Hashtable;
 
-import org.geneview.core.data.collection.StorageType;
-import org.geneview.core.data.collection.ICollection;
-import org.geneview.core.data.collection.thread.ICollectionThreadObject;
-import org.geneview.core.data.xml.IMementoNetEventXML;
+import org.caleydo.core.data.collection.StorageType;
+import org.caleydo.core.data.collection.ICollection;
+import org.caleydo.core.data.collection.thread.ICollectionThreadObject;
+import org.caleydo.core.data.xml.IMementoNetEventXML;
 
 /**
  * @author Michael Kalkusch
@@ -82,7 +82,7 @@ extends ICollection, IMementoNetEventXML, ICollectionThreadObject {
 	 * ISet size of all containers.
 	 * Note: allocate() must be called to make the change permanent.
 	 * 
-	 * @see org.geneview.core.data.collection.IStorage#getMaximumLengthOfAllArrays()
+	 * @see org.caleydo.core.data.collection.IStorage#getMaximumLengthOfAllArrays()
 	 * 
 	 * @param size
 	 */
@@ -122,7 +122,7 @@ extends ICollection, IMementoNetEventXML, ICollectionThreadObject {
 	/**
 	 * Get the size of the largest array in the storage.
 	 * 
-	 * @see org.geneview.core.data.collection.IStorage#getAllSize()
+	 * @see org.caleydo.core.data.collection.IStorage#getAllSize()
 	 * 
 	 * @return size of largest array
 	 */

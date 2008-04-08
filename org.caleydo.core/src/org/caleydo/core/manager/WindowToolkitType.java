@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.manager;
+package org.caleydo.core.manager;
 
 /**
  * Define kind of window toolkit.

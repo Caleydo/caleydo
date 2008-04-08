@@ -7,7 +7,7 @@
          point="org.eclipse.core.runtime.applications">
       <application>
          <run
-               class="org.geneview.rcp.Application">
+               class="org.caleydo.rcp.Application">
          </run>
       </application>
    </extension>
@@ -15,78 +15,78 @@
    <extension
          point="org.eclipse.ui.views">
       <category
-            name="GeneView"
-            id="org.geneview.rcp.jogl.view.jframe">
+            name="Caleydo"
+            id="org.caleydo.rcp.jogl.view.jframe">
       </category>
       <view
             allowMultiple="true"
-            category="org.geneview.rcp.jogl.view.jframe"
-            class="org.geneview.rcp.views.GLJukeboxPathwayView"
+            category="org.caleydo.rcp.jogl.view.jframe"
+            class="org.caleydo.rcp.views.GLJukeboxPathwayView"
             icon="resources/icons/pathway3D.png"
-            id="org.geneview.rcp.views.GLJukeboxPathwayView"
+            id="org.caleydo.rcp.views.GLJukeboxPathwayView"
             name="GLJukeboxPathwayView">
       </view>
       
       <view
             allowMultiple="true"
-            category="org.geneview.rcp.jogl.view.jframe"
-            class="org.geneview.rcp.views.GLHeatmap2DView"
+            category="org.caleydo.rcp.jogl.view.jframe"
+            class="org.caleydo.rcp.views.GLHeatmap2DView"
             icon="resources/icons/heatmap.png"
-            id="org.geneview.rcp.views.GLHeatmap2DView"
+            id="org.caleydo.rcp.views.GLHeatmap2DView"
             name="GLHeatmap2DView">
       </view>      
 
       <view
             allowMultiple="true"
-            category="org.geneview.rcp.jogl.view.jframe"
-            class="org.geneview.rcp.views.GLParCoordsView"
+            category="org.caleydo.rcp.jogl.view.jframe"
+            class="org.caleydo.rcp.views.GLParCoordsView"
             icon="resources/icons/heatmap.png"
-            id="org.geneview.rcp.views.GLParCoordsView"
+            id="org.caleydo.rcp.views.GLParCoordsView"
             name="GLParCoordsView">
       </view>         
       
       <view
             allowMultiple="true"
-            category="org.geneview.rcp.jogl.view.jframe"
-            class="org.geneview.rcp.views.GLPathway3DView"
+            category="org.caleydo.rcp.jogl.view.jframe"
+            class="org.caleydo.rcp.views.GLPathway3DView"
             icon="resources/icons/pathway3D.png"
-            id="org.geneview.rcp.views.GLPathway3DView"
+            id="org.caleydo.rcp.views.GLPathway3DView"
             name="GLPathway3DView">
       </view> 
       
       <view
             allowMultiple="true"
-            category="org.geneview.rcp.jogl.view.jframe"
-            class="org.geneview.rcp.views.GLBucket3DView"
+            category="org.caleydo.rcp.jogl.view.jframe"
+            class="org.caleydo.rcp.views.GLBucket3DView"
             icon="resources/icons/pathway3D.png"
-            id="org.geneview.rcp.views.GLBucket3DView"
+            id="org.caleydo.rcp.views.GLBucket3DView"
             name="GLBucket3DView">
       </view> 
       
       <view
-            id="org.geneview.rcp.views.browser.browserView"
-            name="GeneView browser"
+            id="org.caleydo.rcp.views.browser.browserView"
+            name="Caleydo browser"
             icon="icons/sample.gif"
-            class="org.geneview.rcp.views.browser.BrowserView"
-            category="org.geneview.rcp.jogl.view.jframe"
+            class="org.caleydo.rcp.views.browser.BrowserView"
+            category="org.caleydo.rcp.jogl.view.jframe"
             allowMultiple="true">
       </view>
       
       <view
-            id="org.geneview.rcp.views.Pathway2DView"
+            id="org.caleydo.rcp.views.Pathway2DView"
             name="Pathway 2D"
             icon="resources/icons/pathway2D.png"
-            class="org.geneview.rcp.views.Pathway2DView"
-            category="org.geneview.rcp.jogl.view.jframe"
+            class="org.caleydo.rcp.views.Pathway2DView"
+            category="org.caleydo.rcp.jogl.view.jframe"
             allowMultiple="true">
       </view>      
       
       <view
-            id="org.geneview.rcp.views.HTMLBrowserView"
+            id="org.caleydo.rcp.views.HTMLBrowserView"
             name="Browser"
             icon="resources/icons/browser.png"
-            class="org.geneview.rcp.views.HTMLBrowserView"
-            category="org.geneview.rcp.jogl.view.jframe"
+            class="org.caleydo.rcp.views.HTMLBrowserView"
+            category="org.caleydo.rcp.jogl.view.jframe"
             allowMultiple="true">
       </view>    
       
@@ -96,19 +96,19 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             name="RCP Perspective"
-            class="org.geneview.rcp.perspective.GenomePerspective"
-            id="org.geneview.rcp.perspective">
+            class="org.caleydo.rcp.perspective.GenomePerspective"
+            id="org.caleydo.rcp.perspective">
       </perspective>
    </extension>
    <extension
          id="product"
          point="org.eclipse.core.runtime.products">
       <product
-            application="org.geneview.rcp.application"
-            name="GeneView Product">
+            application="org.caleydo.rcp.application"
+            name="Caleydo Product">
          <property
                name="appName"
-               value="GeneView Product">
+               value="Caleydo Product">
          </property>
          <property
                name="aboutImage"
@@ -116,7 +116,7 @@
          </property>
          <property
                name="aboutText"
-               value="GeneView visualization framework&#x0A;GeneView is a general purpose visualization framework.&#x0A;See: www.geneview.org&#x0A;&#x0A;(c) Copyright by www.geneview.org and Institute for Computer Graphics and Vision (ICG)&#x0A;Graz University of Technology - 2007.&#x0A;All Rights Reserved.">
+               value="Caleydo visualization framework&#x0A;Caleydo is a general purpose visualization framework.&#x0A;See: www.geneview.org&#x0A;&#x0A;(c) Copyright by www.geneview.org and Institute for Computer Graphics and Vision (ICG)&#x0A;Graz University of Technology - 2007.&#x0A;All Rights Reserved.">
          </property>
       </product>
    </extension>

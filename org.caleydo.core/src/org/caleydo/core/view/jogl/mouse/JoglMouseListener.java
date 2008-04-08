@@ -1,4 +1,4 @@
-package org.geneview.core.view.jogl.mouse;
+package org.caleydo.core.view.jogl.mouse;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
@@ -13,8 +13,8 @@ import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.geneview.core.math.MathUtil;
-import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.math.MathUtil;
+import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 
 /**
  * Jogl mouse event listener

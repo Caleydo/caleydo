@@ -1,4 +1,4 @@
-package org.geneview.rcp;
+package org.caleydo.rcp;
 
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.ICoolBarManager;
@@ -13,10 +13,10 @@ import org.eclipse.ui.actions.ContributionItemFactory;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
-import org.geneview.rcp.action.file.FileOpenCsvDataFileAction;
-import org.geneview.rcp.action.file.FileOpenXmlConfigFileAction;
-import org.geneview.rcp.action.search.OpenSearchDataEntityAction;
-import org.geneview.rcp.action.update.UpdateAction;
+import org.caleydo.rcp.action.file.FileOpenCsvDataFileAction;
+import org.caleydo.rcp.action.file.FileOpenXmlConfigFileAction;
+import org.caleydo.rcp.action.search.OpenSearchDataEntityAction;
+import org.caleydo.rcp.action.update.UpdateAction;
 
 public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
@@ -129,7 +129,7 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		 * HELP menu
 		 */
 		aboutAction = ActionFactory.ABOUT.create(window);	
-		aboutAction.setText("About GeneView");
+		aboutAction.setText("About Caleydo");
 		register(aboutAction);
 		
 		updateAction = new UpdateAction(window);

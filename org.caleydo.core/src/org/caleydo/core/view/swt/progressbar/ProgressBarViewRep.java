@@ -1,16 +1,16 @@
 /**
  * 
  */
-package org.geneview.core.view.swt.progressbar;
+package org.caleydo.core.view.swt.progressbar;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ProgressBar;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.view.AViewRep;
-import org.geneview.core.view.IView;
-import org.geneview.core.view.ViewType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.IView;
+import org.caleydo.core.view.ViewType;
 
 /**
  * Simple slider view that can be set between 0 and 100 percent.
@@ -53,7 +53,7 @@ implements IView {
 	 * 
 	 * @see org.eclipse.swt.SWT
 	 * @see org.eclipse.swt.widgets.ProgressBar
-	 * @see org.geneview.core.view.swt.progressbar.ProgressBarViewRep#retrieveNewGUIContainer()
+	 * @see org.caleydo.core.view.swt.progressbar.ProgressBarViewRep#retrieveNewGUIContainer()
 	 * 
 	 * @param setStyle
 	 */
@@ -108,7 +108,7 @@ implements IView {
 
 	/**
 	 * 
-	 * @see org.geneview.core.view.IView#initView()
+	 * @see org.caleydo.core.view.IView#initView()
 	 */
 	protected void initViewSwtComposit(Composite swtContainer) {
 		

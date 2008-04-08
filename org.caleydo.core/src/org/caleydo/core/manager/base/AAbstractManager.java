@@ -1,10 +1,10 @@
-package org.geneview.core.manager.base;
+package org.caleydo.core.manager.base;
 
-import org.geneview.core.manager.IAbstractManager;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ISingelton;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.manager.type.ManagerType;
+import org.caleydo.core.manager.IAbstractManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ISingelton;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.ManagerType;
 
 /**
  * Base class for manager classes, that connect to the IGeneralManager.
@@ -55,14 +55,14 @@ implements IAbstractManager  {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.IAbstractManager#getGeneralManager()
+	 * @see org.caleydo.core.manager.IAbstractManager#getGeneralManager()
 	 */
 	public final IGeneralManager getGeneralManager() {
 		return generalManager;
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.manager.IAbstractManager#getSingelton()
+	 * @see org.caleydo.core.manager.IAbstractManager#getSingelton()
 	 */
 	public final ISingelton getSingelton() {
 		return singelton;
@@ -70,21 +70,21 @@ implements IAbstractManager  {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.IAbstractManager#setGeneralManager(org.geneview.core.manager.IGeneralManager)
+	 * @see org.caleydo.core.manager.IAbstractManager#setGeneralManager(org.caleydo.core.manager.IGeneralManager)
 	 */
 	public final void setGeneralManager( IGeneralManager setGeneralManager ) {
 		throw new RuntimeException("AAbstractManager::setGeneralManager() is not supported!");
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.manager.IAbstractManager#setSingelton(org.geneview.core.manager.singelton.SingeltonManager)
+	 * @see org.caleydo.core.manager.IAbstractManager#setSingelton(org.caleydo.core.manager.singelton.SingeltonManager)
 	 */
 	public final void setSingelton( ISingelton setSingeltonManager ) {
 		throw new RuntimeException("AAbstractManager::setSingelton() is not supported!");
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.GeneralManager#createNewId(org.geneview.core.data.manager.BaseManagerType)
+	 * @see org.caleydo.core.data.manager.GeneralManager#createNewId(org.caleydo.core.data.manager.BaseManagerType)
 	 */
 	public int createId(ManagerObjectType setNewBaseType) {
 		

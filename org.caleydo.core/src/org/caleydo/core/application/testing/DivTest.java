@@ -1,9 +1,9 @@
-package org.geneview.core.application.testing;
+package org.caleydo.core.application.testing;
 
-import org.geneview.core.math.MathUtil;
+import org.caleydo.core.math.MathUtil;
 
 /**
- * Test org.geneview.core.math.MathUtil implementation.
+ * Test org.caleydo.core.math.MathUtil implementation.
  * 
  * @author Michael Kalkusch
  *

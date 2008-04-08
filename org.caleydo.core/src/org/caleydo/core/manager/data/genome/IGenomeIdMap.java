@@ -1,14 +1,14 @@
-package org.geneview.core.manager.data.genome;
+package org.caleydo.core.manager.data.genome;
 
 //import java.util.HashMap;
 
 import java.util.Collection;
 import java.util.Set;
 
-import org.geneview.core.data.mapping.EGenomeMappingDataType;
-import org.geneview.core.data.mapping.EGenomeMappingType;
-import org.geneview.core.manager.data.IGenomeIdManager;
-//import org.geneview.core.data.mapping.EGenomeMappingDataType;
+import org.caleydo.core.data.mapping.EGenomeMappingDataType;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.manager.data.IGenomeIdManager;
+//import org.caleydo.core.data.mapping.EGenomeMappingDataType;
 
 
 /**
@@ -17,8 +17,8 @@ import org.geneview.core.manager.data.IGenomeIdManager;
  * @author Michael Kalkusch
  * @author Marc Streit
  * 
- * @see org.geneview.core.data.map.MultiHashArrayStringMap
- * @see org.geneview.core.data.map.MultiHashArrayIntegerMap
+ * @see org.caleydo.core.data.map.MultiHashArrayStringMap
+ * @see org.caleydo.core.data.map.MultiHashArrayIntegerMap
  */
 public interface IGenomeIdMap {
 

@@ -1,13 +1,13 @@
 /**
  * 
  */
-package org.geneview.core.data.collection.thread.impl;
+package org.caleydo.core.data.collection.thread.impl;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.data.AUniqueManagedObject;
-import org.geneview.core.data.collection.thread.ICollectionThreadObject;
-import org.geneview.core.data.collection.thread.lock.ICollectionLock;
-import org.geneview.core.data.collection.thread.lock.ICollectionReadWriteLock;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.data.AUniqueManagedObject;
+import org.caleydo.core.data.collection.thread.ICollectionThreadObject;
+import org.caleydo.core.data.collection.thread.lock.ICollectionLock;
+import org.caleydo.core.data.collection.thread.lock.ICollectionReadWriteLock;
 //import prometheus.manager.BaseManagerType;
 
 /**

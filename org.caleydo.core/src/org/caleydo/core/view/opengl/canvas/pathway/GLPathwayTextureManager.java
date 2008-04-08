@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.canvas.pathway;
+package org.caleydo.core.view.opengl.canvas.pathway;
 
 import java.io.File;
 import java.util.HashMap;
@@ -6,12 +6,12 @@ import java.util.LinkedList;
 
 import javax.media.opengl.GL;
 
-import org.geneview.core.data.graph.core.PathwayGraph;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
-import org.geneview.core.manager.view.EPickingType;
-import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.data.graph.core.PathwayGraph;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.view.EPickingType;
+import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;

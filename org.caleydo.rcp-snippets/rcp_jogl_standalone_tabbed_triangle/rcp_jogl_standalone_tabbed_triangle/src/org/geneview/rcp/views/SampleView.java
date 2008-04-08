@@ -1,4 +1,4 @@
-package org.geneview.rcp.views;
+package org.caleydo.rcp.views;
 
 
 import org.eclipse.swt.widgets.Composite;

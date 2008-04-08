@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.parser.ascii;
+package org.caleydo.core.parser.ascii;
 
 /**
  * Provides methods vor initialization aund cleanup of parser.

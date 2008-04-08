@@ -1,4 +1,4 @@
-package org.geneview.core.command.view.rcp;
+package org.caleydo.core.command.view.rcp;
 
 
 public enum EExternalActionType

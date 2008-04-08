@@ -1,26 +1,26 @@
-package org.geneview.core.manager.event;
+package org.caleydo.core.manager.event;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.manager.IEventPublisher;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.base.AAbstractManager;
-import org.geneview.core.manager.event.mediator.IMediator;
-import org.geneview.core.manager.event.mediator.IMediatorReceiver;
-import org.geneview.core.manager.event.mediator.IMediatorSender;
-import org.geneview.core.manager.event.mediator.LockableMediator;
-import org.geneview.core.manager.event.mediator.LockableExclusivFilterMediator;
-import org.geneview.core.manager.event.mediator.LockableIngoreFilterMediator;
-import org.geneview.core.manager.event.mediator.MediatorUpdateType;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.manager.type.ManagerType;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.event.mediator.IMediator;
+import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
+import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.event.mediator.LockableMediator;
+import org.caleydo.core.manager.event.mediator.LockableExclusivFilterMediator;
+import org.caleydo.core.manager.event.mediator.LockableIngoreFilterMediator;
+import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.ManagerType;
 
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 public class EventPublisher 
 extends AAbstractManager
@@ -109,10 +109,10 @@ implements IEventPublisher {
 		ArrayList <IMediator> bufferArrayList = insertIntoHashMap.get(sender);
 		
 		if ( bufferArrayList.contains( sender ) ) {
-			throw new GeneViewRuntimeException("Try to insert an existing object! " + 
+			throw new CaleydoRuntimeException("Try to insert an existing object! " + 
 					sender.toString() + " ==> " + newMediator.toString() + 
 					" inside map" + bufferArrayList.toString(),
-					GeneViewRuntimeExceptionType.OBSERVER);
+					CaleydoRuntimeExceptionType.OBSERVER);
 		}
 		
 		bufferArrayList.add(newMediator);
@@ -248,10 +248,10 @@ implements IEventPublisher {
 //					break;
 //					
 //				default:
-//					throw new GeneViewRuntimeException(
+//					throw new CaleydoRuntimeException(
 //							"createMediator() unknown type sender: " + 
 //							mediatorType.toString(),
-//							GeneViewRuntimeExceptionType.OBSERVER);
+//							CaleydoRuntimeExceptionType.OBSERVER);
 //				
 //				} //switch ( mediatorType ) {
 //			
@@ -356,10 +356,10 @@ implements IEventPublisher {
 					break;
 					
 				default:
-					throw new GeneViewRuntimeException(
+					throw new CaleydoRuntimeException(
 							"createMediator() unknown type sender: " + 
 							mediatorType.toString(),
-							GeneViewRuntimeExceptionType.OBSERVER);
+							CaleydoRuntimeExceptionType.OBSERVER);
 				
 				} //switch ( mediatorType ) {
 			
@@ -439,10 +439,10 @@ implements IEventPublisher {
 					break;
 					
 					default:
-						throw new GeneViewRuntimeException(
+						throw new CaleydoRuntimeException(
 								"createMediator() unknown type receiver: " + 
 								mediatorType.toString(),
-								GeneViewRuntimeExceptionType.OBSERVER);
+								CaleydoRuntimeExceptionType.OBSERVER);
 				} // switch ( mediatorType ) {
 			
 				singelton.logMsg("EventPublisher: successful added senderId(s)" +
@@ -526,7 +526,7 @@ implements IEventPublisher {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.manager.IEventPublisher#update(java.lang.Object)
+	 * @see org.caleydo.core.manager.IEventPublisher#update(java.lang.Object)
 	 */
 	public void updateReceiver(Object eventTrigger) {
 
@@ -571,7 +571,7 @@ implements IEventPublisher {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.manager.IEventPublisher#updateReceiver(java.lang.Object, org.geneview.core.data.collection.ISet)
+	 * @see org.caleydo.core.manager.IEventPublisher#updateReceiver(java.lang.Object, org.caleydo.core.data.collection.ISet)
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 		

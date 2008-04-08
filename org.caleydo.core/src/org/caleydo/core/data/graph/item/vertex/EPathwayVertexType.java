@@ -1,4 +1,4 @@
-package org.geneview.core.data.graph.item.vertex;
+package org.caleydo.core.data.graph.item.vertex;
 
 public enum EPathwayVertexType
 {

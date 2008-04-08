@@ -6,23 +6,23 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection;
+package org.caleydo.core.data.collection;
 
 import java.util.Iterator;
 import java.util.Vector;
 
-//import org.geneview.core.data.IUniqueManagedObject;
-import org.geneview.core.data.collection.IStorage;
+//import org.caleydo.core.data.IUniqueManagedObject;
+import org.caleydo.core.data.collection.IStorage;
 
-import org.geneview.core.data.collection.ISubSet;
-import org.geneview.core.data.collection.IMetaDataHandler;
-import org.geneview.core.data.collection.ICollection;
-import org.geneview.core.data.collection.SetDataType;
-import org.geneview.core.data.collection.SetType;
-import org.geneview.core.data.collection.thread.ICollectionThreadObject;
-import org.geneview.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
-//import org.geneview.core.data.collection.virtualarray.iterator.VirtualArrayVectorIterator;
-import org.geneview.core.data.xml.IMementoItemXML;
+import org.caleydo.core.data.collection.ISubSet;
+import org.caleydo.core.data.collection.IMetaDataHandler;
+import org.caleydo.core.data.collection.ICollection;
+import org.caleydo.core.data.collection.SetDataType;
+import org.caleydo.core.data.collection.SetType;
+import org.caleydo.core.data.collection.thread.ICollectionThreadObject;
+import org.caleydo.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+//import org.caleydo.core.data.collection.virtualarray.iterator.VirtualArrayVectorIterator;
+import org.caleydo.core.data.xml.IMementoItemXML;
 
 /**
  * Defines a set containing of VirtualArrays and storage
@@ -115,7 +115,7 @@ public interface ISet
 	/**
 	 * Get the size of one dimension addressed by iAtDimension.
 	 * 
-	 * @see org.geneview.core.data.collection#setDimensionSize()
+	 * @see org.caleydo.core.data.collection#setDimensionSize()
 	 * 
 	 * @param iAtDimension
 	 * @return size of the dimension defined by the set.
@@ -208,7 +208,7 @@ public interface ISet
 	/**
 	 * Test if cache has changed without reevaluating the stats of the children.
 	 * 
-	 * @see org.geneview.core.data.collection.thread.ICollectionThreadObject#hasCacheChanged(int)
+	 * @see org.caleydo.core.data.collection.thread.ICollectionThreadObject#hasCacheChanged(int)
 	 * 
 	 * @param iCompareCacheId
 	 */
@@ -270,7 +270,7 @@ public interface ISet
 //	/**
 //	 * Get the size of one dimension addressed by iAtDimension.
 //	 * 
-//	 * @see org.geneview.core.data.collection#setDimensionSize()
+//	 * @see org.caleydo.core.data.collection#setDimensionSize()
 //	 * 
 //	 * @param iAtDimension
 //	 * @return size of the dimension defined by the set.

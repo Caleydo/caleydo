@@ -6,12 +6,12 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.manager.data.storage;
+package org.caleydo.core.manager.data.storage;
 
 import java.util.Vector;
 
-import org.geneview.core.manager.ISingelton;
-import org.geneview.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.ISingelton;
+import org.caleydo.core.manager.type.ManagerObjectType;
 
 
 /**

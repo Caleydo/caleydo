@@ -6,7 +6,7 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection;
+package org.caleydo.core.data.collection;
 
 //import prometheus.data.UniqueManagedInterface;
 //import prometheus.data.collection.CollectionCache;

@@ -6,7 +6,7 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection.iterator;
+package org.caleydo.core.data.collection.iterator;
 
 /**
  * Base iterator interface for Collection.

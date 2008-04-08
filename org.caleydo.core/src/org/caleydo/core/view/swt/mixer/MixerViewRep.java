@@ -1,4 +1,4 @@
-package org.geneview.core.view.swt.mixer;
+package org.caleydo.core.view.swt.mixer;
 
 import java.util.ArrayList;
 
@@ -7,11 +7,11 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Slider;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.view.AViewRep;
-import org.geneview.core.view.IView;
-import org.geneview.core.view.ViewType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.IView;
+import org.caleydo.core.view.ViewType;
 
 /**
  * Class implements a slider mixer representation.
@@ -47,7 +47,7 @@ implements IView {
 	 * Maximum slider value = 100.
 	 * We use a fill layout to fill the available space optimally.
 	 * 
-	 * @see org.geneview.core.view.IView#initView()
+	 * @see org.caleydo.core.view.IView#initView()
 	 */
 	protected void initViewSwtComposit(Composite swtContainer) {
 		
@@ -85,7 +85,7 @@ implements IView {
 			refSliderList.get(iSliderIndex).setSelection(iSliderValue);
 
 		}catch(Exception e) {
-			throw new GeneViewRuntimeException(
+			throw new CaleydoRuntimeException(
 					"Mixer Slider with index " +iSliderIndex +" does not exist!");
 		}
 	}
@@ -103,7 +103,7 @@ implements IView {
 			return refSliderList.get(iSliderIndex).getSelection();
 
 		}catch(Exception e) {
-			throw new GeneViewRuntimeException(
+			throw new CaleydoRuntimeException(
 					"Mixer Slider with index " +iSliderIndex +" does not exist!");
 		}	
 	}

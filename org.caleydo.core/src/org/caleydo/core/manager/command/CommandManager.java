@@ -6,7 +6,7 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.manager.command;
+package org.caleydo.core.manager.command;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -14,21 +14,21 @@ import java.util.Iterator;
 import java.util.Vector;
 //import java.util.Iterator;
 
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.base.AAbstractManager;
-import org.geneview.core.manager.command.factory.CommandFactory;
-import org.geneview.core.manager.command.factory.ICommandFactory;
-//import org.geneview.core.manager.singelton.SingeltonManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.manager.type.ManagerType;
-import org.geneview.core.parser.parameter.IParameterHandler;
-import org.geneview.core.view.swt.undoredo.UndoRedoViewRep;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.command.factory.CommandFactory;
+import org.caleydo.core.manager.command.factory.ICommandFactory;
+//import org.caleydo.core.manager.singelton.SingeltonManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.ICommand;
-import org.geneview.core.command.ICommandListener;
-import org.geneview.core.command.queue.ICommandQueue;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.ICommand;
+import org.caleydo.core.command.ICommandListener;
+import org.caleydo.core.command.queue.ICommandQueue;
 
 /**
  * @author Michael Kalkusch
@@ -90,7 +90,7 @@ public class CommandManager
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.CommandManager#addCommandListener(org.geneview.core.command.ICommandListener)
+	 * @see org.caleydo.core.data.manager.CommandManager#addCommandListener(org.caleydo.core.command.ICommandListener)
 	 */
 	public void addCommandListener(ICommandListener addCommandListener) {
 		// TODO Auto-generated method stub
@@ -98,7 +98,7 @@ public class CommandManager
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.CommandManager#removeCommandListener(org.geneview.core.command.ICommandListener)
+	 * @see org.caleydo.core.data.manager.CommandManager#removeCommandListener(org.caleydo.core.command.ICommandListener)
 	 */
 	public boolean removeCommandListener(ICommandListener removeCommandListener) {
 		// TODO Auto-generated method stub
@@ -106,7 +106,7 @@ public class CommandManager
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.CommandManager#hasCommandListener(org.geneview.core.command.ICommandListener)
+	 * @see org.caleydo.core.data.manager.CommandManager#hasCommandListener(org.caleydo.core.command.ICommandListener)
 	 */
 	public boolean hasCommandListener(ICommandListener hasCommandListener) {
 		// TODO Auto-generated method stub
@@ -114,7 +114,7 @@ public class CommandManager
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.ICommandActionListener#handleCommand(org.geneview.core.command.ICommand)
+	 * @see org.caleydo.core.command.ICommandActionListener#handleCommand(org.caleydo.core.command.ICommand)
 	 */
 	public void handleCommand(ICommand addCommand) {
 		
@@ -123,7 +123,7 @@ public class CommandManager
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.ICommandActionListener#scheduleCommand(org.geneview.core.command.ICommand)
+	 * @see org.caleydo.core.command.ICommandActionListener#scheduleCommand(org.caleydo.core.command.ICommand)
 	 */
 	public void scheduleCommand(ICommand addCommand) {
 		
@@ -133,21 +133,21 @@ public class CommandManager
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.GeneralManager#hasItem(int)
+	 * @see org.caleydo.core.data.manager.GeneralManager#hasItem(int)
 	 */
 	public boolean hasItem(int iItemId) {
 		return hash_CommandId.containsKey( iItemId );
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.GeneralManager#getItem(int)
+	 * @see org.caleydo.core.data.manager.GeneralManager#getItem(int)
 	 */
 	public Object getItem(int iItemId) {
 		return hash_CommandId.get( iItemId );
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.GeneralManager#size()
+	 * @see org.caleydo.core.data.manager.GeneralManager#size()
 	 */
 	public int size() {
 		return hash_CommandId.size();
@@ -155,7 +155,7 @@ public class CommandManager
 
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.GeneralManager#registerItem(java.lang.Object, int, org.geneview.core.data.manager.BaseManagerType)
+	 * @see org.caleydo.core.data.manager.GeneralManager#registerItem(java.lang.Object, int, org.caleydo.core.data.manager.BaseManagerType)
 	 */
 	public boolean registerItem(Object registerItem, int iItemId,
 			ManagerObjectType type) {
@@ -176,7 +176,7 @@ public class CommandManager
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.GeneralManager#unregisterItem(int, org.geneview.core.data.manager.BaseManagerType)
+	 * @see org.caleydo.core.data.manager.GeneralManager#unregisterItem(int, org.caleydo.core.data.manager.BaseManagerType)
 	 */
 	public boolean unregisterItem(int iItemId, ManagerObjectType type) {	
 		
@@ -245,7 +245,7 @@ public class CommandManager
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.manager.ICommandManager#getCommandQueueByCmdQueueId(int)
+	 * @see org.caleydo.core.manager.ICommandManager#getCommandQueueByCmdQueueId(int)
 	 */
 	public ICommandQueue getCommandQueueByCmdQueueId( final int iCmdQueueId ) {
 		return hash_CommandQueueId.get( iCmdQueueId );
@@ -275,7 +275,7 @@ public class CommandManager
 	}
 
 	/**
-	 * @see org.geneview.core.manager.ICommandManager#runDoCommand(org.geneview.core.command.ICommand)
+	 * @see org.caleydo.core.manager.ICommandManager#runDoCommand(org.caleydo.core.command.ICommand)
 	 */
 	public synchronized void  runDoCommand(ICommand runCmd) {
 
@@ -300,7 +300,7 @@ public class CommandManager
 	}
 
 	/**
-	 * @see org.geneview.core.manager.ICommandManager#runUndoCommand(org.geneview.core.command.ICommand)
+	 * @see org.caleydo.core.manager.ICommandManager#runUndoCommand(org.caleydo.core.command.ICommand)
 	 */
 	public synchronized void runUndoCommand(ICommand runCmd) {
 

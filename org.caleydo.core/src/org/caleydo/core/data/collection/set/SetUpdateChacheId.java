@@ -1,12 +1,12 @@
 /**
  * 
  */
-package org.geneview.core.data.collection.set;
+package org.caleydo.core.data.collection.set;
 
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.geneview.core.data.collection.ICollectionCache;
+import org.caleydo.core.data.collection.ICollectionCache;
 
 /**
  * @author Michael Kalkusch

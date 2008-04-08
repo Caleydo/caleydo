@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.miniview;
+package org.caleydo.core.view.opengl.miniview;
 
 import gleem.linalg.Vec3f;
 
@@ -6,10 +6,10 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
-import org.geneview.core.data.GeneralRenderStyle;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.util.mapping.AGenomeMapper;
-import org.geneview.core.util.mapping.EGenomeMappingCascadeType;
+import org.caleydo.core.data.GeneralRenderStyle;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.util.mapping.AGenomeMapper;
+import org.caleydo.core.util.mapping.EGenomeMappingCascadeType;
 
 /**
  * Color Mapping for Expression data

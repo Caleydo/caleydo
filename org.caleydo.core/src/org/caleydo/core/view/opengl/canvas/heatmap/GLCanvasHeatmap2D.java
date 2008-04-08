@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.canvas.heatmap;
+package org.caleydo.core.view.opengl.canvas.heatmap;
 
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
@@ -13,22 +13,22 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.data.collection.IVirtualArray;
-import org.geneview.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
-import org.geneview.core.data.view.camera.IViewFrustum;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.event.mediator.IMediatorReceiver;
-import org.geneview.core.manager.event.mediator.IMediatorSender;
-import org.geneview.core.manager.view.EPickingMode;
-import org.geneview.core.manager.view.EPickingType;
-import org.geneview.core.manager.view.Pick;
-import org.geneview.core.math.statistics.minmax.MinMaxDataInteger;
-import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
-import org.geneview.core.view.opengl.canvas.parcoords.GLParCoordsToolboxRenderer;
-import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
+import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.view.EPickingMode;
+import org.caleydo.core.manager.view.EPickingType;
+import org.caleydo.core.manager.view.Pick;
+import org.caleydo.core.math.statistics.minmax.MinMaxDataInteger;
+import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.canvas.parcoords.GLParCoordsToolboxRenderer;
+import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.GLUT;
@@ -36,7 +36,7 @@ import com.sun.opengl.util.GLUT;
 /**
  * @author Michael Kalkusch
  * 
- * @see org.geneview.core.view.opengl.IGLCanvasUser
+ * @see org.caleydo.core.view.opengl.IGLCanvasUser
  */
 public class GLCanvasHeatmap2D 
 extends AGLCanvasHeatmap2D
@@ -146,7 +146,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media.opengl.GL)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media.opengl.GL)
 	 */	
 	public void initLocal(final GL gl)
 	{
@@ -156,7 +156,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, int, org.geneview.core.view.opengl.util.JukeboxHierarchyLayer, org.geneview.core.view.jogl.mouse.PickingJoglMouseListener)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, int, org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer, org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener)
 	 */
 	public void initRemote(final GL gl, 
 			final int iRemoteViewID, 
@@ -172,7 +172,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl.GL)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl.GL)
 	 */
 	public void init(final GL gl) {
 		
@@ -180,7 +180,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#displayLocal(javax.media.opengl.GL)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#displayLocal(javax.media.opengl.GL)
 	 */
 	public void displayLocal(final GL gl) {
 		
@@ -192,7 +192,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#displayRemote(javax.media.opengl.GL)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#displayRemote(javax.media.opengl.GL)
 	 */
 	public void displayRemote(final GL gl) {
 	
@@ -201,7 +201,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#display(javax.media.opengl.GL)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#display(javax.media.opengl.GL)
 	 */
 	public void display(final GL gl) {
 		
@@ -740,7 +740,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D#setTargetSetId(int)
+	 * @see org.caleydo.core.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D#setTargetSetId(int)
 	 */
 	public void setTargetSetId( final int iTargetCollectionSetId ) {
 		
@@ -1181,7 +1181,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
     
     
     /* (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D#setSelectionItems(int[], int[], int[], int[])
+	 * @see org.caleydo.core.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D#setSelectionItems(int[], int[], int[], int[])
 	 */
     public void setSelectionItems( int[] selectionStartAtIndexX, 
     		int[] selectionLengthX,
@@ -1256,7 +1256,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.geneview.core.manager.view.EPickingType, org.geneview.core.manager.view.EPickingMode, int, org.geneview.core.manager.view.Pick)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.caleydo.core.manager.view.EPickingType, org.caleydo.core.manager.view.EPickingMode, int, org.caleydo.core.manager.view.Pick)
 	 */
 	protected void handleEvents(final EPickingType ePickingType, 
 			final EPickingMode ePickingMode, 
@@ -1267,7 +1267,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#getInfo()
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#getInfo()
 	 */
 	public ArrayList<String> getInfo() {
 		

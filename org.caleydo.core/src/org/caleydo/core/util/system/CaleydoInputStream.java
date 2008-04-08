@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.util.system;
+package org.caleydo.core.util.system;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -17,21 +17,21 @@ import org.xml.sax.helpers.XMLReaderFactory;
 
 import org.ccil.cowan.tagsoup.HTMLSchema;
 import org.ccil.cowan.tagsoup.Parser;
-import org.geneview.core.manager.ILoggerManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.parser.xml.sax.handler.IXmlBaseHandler;
+import org.caleydo.core.manager.ILoggerManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.parser.xml.sax.handler.IXmlBaseHandler;
 
 /**
  * @author Michael Kalkusch
  *
  */
-public class GeneViewInputStream
+public class CaleydoInputStream
 {
 
 	/**
 	 * 
 	 */
-	private GeneViewInputStream()
+	private CaleydoInputStream()
 	{
 		
 	}
@@ -57,7 +57,7 @@ public class GeneViewInputStream
 			return inStream;
 		}
 		catch ( FileNotFoundException fnfe) {
-			refLoggerManager.logMsg("GeneViewInputStream.openInputStreamFromFile() File not found " + fnfe.toString(),
+			refLoggerManager.logMsg("CaleydoInputStream.openInputStreamFromFile() File not found " + fnfe.toString(),
 					LoggerType.ERROR );
 		}
 		return null;
@@ -82,7 +82,7 @@ public class GeneViewInputStream
 			return inStream;
 		} catch (IOException e)
 		{
-			refLoggerManager.logMsg("GeneViewInputStream.openInputStreamFromUrl(): Error loading resource.",
+			refLoggerManager.logMsg("CaleydoInputStream.openInputStreamFromUrl(): Error loading resource.",
 					LoggerType.ERROR );
 			
 			e.printStackTrace();
@@ -92,7 +92,7 @@ public class GeneViewInputStream
 	
 	/**
 	 * 
-	 * @see org.geneview.core.manager.IXmlParserManager
+	 * @see org.caleydo.core.manager.IXmlParserManager
 	 * @see org.xml.sax.ContentHandler
 	 * @see org.xml.sax.EntityResolver;
 	 * @see org.xml.sax.DTDHandler;
@@ -110,7 +110,7 @@ public class GeneViewInputStream
 		
 		if ( handler == null ) 
 		{
-			refLoggerManager.logMsg("GeneViewInputStream.parseOnce( " +
+			refLoggerManager.logMsg("CaleydoInputStream.parseOnce( " +
 					sInputStreamLabel +
 					") error because handler is null!",
 					LoggerType.ERROR );
@@ -119,7 +119,7 @@ public class GeneViewInputStream
 		} //if
 		
 		if ( inStream==null ) {
-			refLoggerManager.logMsg("GeneViewInputStream.parseOnce( " +
+			refLoggerManager.logMsg("CaleydoInputStream.parseOnce( " +
 					sInputStreamLabel +
 					") error no input stream; skip file",
 					LoggerType.ERROR );
@@ -161,7 +161,7 @@ public class GeneViewInputStream
 			} 
 			catch (SAXParseException saxe)
 			{
-				refLoggerManager.logMsg("GeneViewInputStream.parseOnce( " +
+				refLoggerManager.logMsg("CaleydoInputStream.parseOnce( " +
 						sInputStreamLabel +
 						") SAXParser-error during parsing: line=" + saxe.getLineNumber() +
 						" at column=" + saxe.getColumnNumber() +
@@ -171,7 +171,7 @@ public class GeneViewInputStream
 			}
 			catch ( IOException e) 
 			{
-				refLoggerManager.logMsg("GeneViewInputStream.parseOnce( " +
+				refLoggerManager.logMsg("CaleydoInputStream.parseOnce( " +
 						sInputStreamLabel +
 						") IO-error during parsing: " +
 						e.toString(),
@@ -179,7 +179,7 @@ public class GeneViewInputStream
 			} // try
 			catch ( Exception e) 
 			{
-				refLoggerManager.logMsg("GeneViewInputStream.parseOnce( " +
+				refLoggerManager.logMsg("CaleydoInputStream.parseOnce( " +
 						sInputStreamLabel +
 						") error during parsing: " +
 						e.toString() + "\n",
@@ -210,7 +210,7 @@ public class GeneViewInputStream
 		} // try
 		catch (SAXException se) 
 		{
-			refLoggerManager.logMsg("GeneViewInputStream.parseOnce( " +
+			refLoggerManager.logMsg("CaleydoInputStream.parseOnce( " +
 					sInputStreamLabel +
 					") SAXError  while parsing: " +
 					se.toString(),
@@ -218,7 +218,7 @@ public class GeneViewInputStream
 		} // end try-catch SAXException
 		catch (IOException ioe) 
 		{
-			refLoggerManager.logMsg("GeneViewInputStream.parseOnce( " +
+			refLoggerManager.logMsg("CaleydoInputStream.parseOnce( " +
 					sInputStreamLabel +
 					") IO-error while parsing: " +
 					ioe.toString(),
@@ -226,7 +226,7 @@ public class GeneViewInputStream
 		} // end try-catch SAXException, IOException
 		catch (Exception e) 
 		{
-			refLoggerManager.logMsg("GeneViewInputStream.parseOnce( " +
+			refLoggerManager.logMsg("CaleydoInputStream.parseOnce( " +
 					sInputStreamLabel +
 					") general error while parsing: " +
 					e.toString(),

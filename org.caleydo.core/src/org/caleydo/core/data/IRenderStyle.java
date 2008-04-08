@@ -1,4 +1,4 @@
-package org.geneview.core.data;
+package org.caleydo.core.data;
 
 public interface IRenderStyle {
 

@@ -6,28 +6,28 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.manager.data.set;
+package org.caleydo.core.manager.data.set;
 
 import java.util.Collection;
 import java.util.Hashtable;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.data.ACollectionManager;
-import org.geneview.core.manager.data.ISetManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.manager.type.ManagerType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.data.ACollectionManager;
+import org.caleydo.core.manager.data.ISetManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.ManagerType;
 
-//import org.geneview.core.command.CommandQueueSaxType;
-//import org.geneview.core.data.collection.IStorage;
-//import org.geneview.core.data.collection.IVirtualArray;
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.SetType;
-import org.geneview.core.data.collection.set.SetFlatThreadSimple;
-import org.geneview.core.data.collection.set.SetPlanarSimple;
-import org.geneview.core.data.collection.set.SetMultiDim;
-import org.geneview.core.data.collection.set.selection.SetSelection;
-import org.geneview.core.data.collection.set.viewdata.SetViewData;
+//import org.caleydo.core.command.CommandQueueSaxType;
+//import org.caleydo.core.data.collection.IStorage;
+//import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.SetType;
+import org.caleydo.core.data.collection.set.SetFlatThreadSimple;
+import org.caleydo.core.data.collection.set.SetPlanarSimple;
+import org.caleydo.core.data.collection.set.SetMultiDim;
+import org.caleydo.core.data.collection.set.selection.SetSelection;
+import org.caleydo.core.data.collection.set.viewdata.SetViewData;
 
 
 /**
@@ -107,7 +107,7 @@ implements ISetManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.SetManager#createSet()
+	 * @see org.caleydo.core.data.manager.SetManager#createSet()
 	 */
 	public ISet createSet( final SetType setType ) {
 			
@@ -156,7 +156,7 @@ implements ISetManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.SetManager#deleteSet(org.geneview.core.data.collection.ISet)
+	 * @see org.caleydo.core.data.manager.SetManager#deleteSet(org.caleydo.core.data.collection.ISet)
 	 */
 	public boolean deleteSet(ISet deleteSet ) {
 		
@@ -164,7 +164,7 @@ implements ISetManager {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.SetManager#deleteSet(org.geneview.core.data.collection.ISet)
+	 * @see org.caleydo.core.data.manager.SetManager#deleteSet(org.caleydo.core.data.collection.ISet)
 	 */
 	public boolean deleteSet( final int iItemId ) {
 		
@@ -181,7 +181,7 @@ implements ISetManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.SetManager#getItemSet(int)
+	 * @see org.caleydo.core.data.manager.SetManager#getItemSet(int)
 	 */
 	public ISet getItemSet( final int iItemId) {
 		return hashId2Set.get( iItemId );
@@ -189,14 +189,14 @@ implements ISetManager {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.data.manager.GeneralManager#getItem(int)
+	 * @see org.caleydo.core.data.manager.GeneralManager#getItem(int)
 	 */
 	public final Object getItem( final int iItemId) {
 		return getItemSet(iItemId);
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.SetManager#getAllSetItems()
+	 * @see org.caleydo.core.data.manager.SetManager#getAllSetItems()
 	 */
 	public Collection<ISet> getAllSetItems() {
 		
@@ -204,14 +204,14 @@ implements ISetManager {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.GeneralManagerInterface#hasItem(int)
+	 * @see org.caleydo.core.data.manager.GeneralManagerInterface#hasItem(int)
 	 */
 	public final boolean hasItem(int iItemId) {
 		return hashId2Set.containsKey( iItemId );
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.GeneralManagerInterface#size()
+	 * @see org.caleydo.core.data.manager.GeneralManagerInterface#size()
 	 */
 	public final int size() {		
 		return hashId2Set.size();

@@ -1,7 +1,7 @@
-package org.geneview.core.manager;
+package org.caleydo.core.manager;
 
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.manager.type.ManagerType;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.ManagerType;
 
 public interface IGeneralManager {
 
@@ -16,9 +16,9 @@ public interface IGeneralManager {
 	 * 
 	 * examples: [12][03][9]
 	 * 
-	 * @see org.geneview.core.manager.IGeneralManager#iUniqueId_TypeOffsetMultiplyer
-	 * @see org.geneview.core.manager.IGeneralManager#iUniqueId_Increment
-	 * @see org.geneview.core.manager.IGeneralManager#createNewId(org.geneview.core.manager.type.ManagerObjectType)
+	 * @see org.caleydo.core.manager.IGeneralManager#iUniqueId_TypeOffsetMultiplyer
+	 * @see org.caleydo.core.manager.IGeneralManager#iUniqueId_Increment
+	 * @see org.caleydo.core.manager.IGeneralManager#createNewId(org.caleydo.core.manager.type.ManagerObjectType)
 	 */
 	public static final int iUniqueId_WorkspaceOffset = 10;
 	
@@ -31,18 +31,18 @@ public interface IGeneralManager {
 	 * 
 	 * examples: [12][03][9]
 	 * 
-	 * @see org.geneview.core.manager.IGeneralManager#iUniqueId_Increment
-	 * @see org.geneview.core.manager.IGeneralManager#iUniqueId_WorkspaceOffset
-	 * @see org.geneview.core.manager.IGeneralManager#createNewId(org.geneview.core.manager.type.ManagerObjectType)
+	 * @see org.caleydo.core.manager.IGeneralManager#iUniqueId_Increment
+	 * @see org.caleydo.core.manager.IGeneralManager#iUniqueId_WorkspaceOffset
+	 * @see org.caleydo.core.manager.IGeneralManager#createNewId(org.caleydo.core.manager.type.ManagerObjectType)
 	 */
 	public static final int iUniqueId_TypeOffsetMultiplyer = 10;
 	
 	/**
 	 * Increment from one Id to the next unique id.
 	 * 
-	 * @see org.geneview.core.manager.GeneralManager#iUniqueId_TypeOffsetMultiplyer
-	 * @see org.geneview.core.manager.GeneralManager#iUniqueId_Workspace
-	 * @see org.geneview.core.manager.GeneralManager#createNewId(org.geneview.core.manager.type.ManagerObjectType)
+	 * @see org.caleydo.core.manager.GeneralManager#iUniqueId_TypeOffsetMultiplyer
+	 * @see org.caleydo.core.manager.GeneralManager#iUniqueId_Workspace
+	 * @see org.caleydo.core.manager.GeneralManager#createNewId(org.caleydo.core.manager.type.ManagerObjectType)
 	 */
 	public static final int iUniqueId_Increment = 1000;
 		
@@ -222,8 +222,8 @@ public interface IGeneralManager {
 	 * @return new unique Id
 	 * @param setNewBaseType type of object the id shall be created for
 	 * 
-	 * @see org.geneview.core.manager.IGeneralManager#iUniqueId_TypeOffsetMultiplyer
-	 * @see org.geneview.core.manager.IGeneralManager#iUniqueId_WorkspaceOffset
+	 * @see org.caleydo.core.manager.IGeneralManager#iUniqueId_TypeOffsetMultiplyer
+	 * @see org.caleydo.core.manager.IGeneralManager#iUniqueId_WorkspaceOffset
 	 */
 	public int createId( final ManagerObjectType setNewBaseType );
 

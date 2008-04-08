@@ -1,4 +1,4 @@
-package org.geneview.core.util.texture;
+package org.caleydo.core.util.texture;
 
 import com.sun.opengl.util.BufferUtil;
 

@@ -6,14 +6,14 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection.parser;
+package org.caleydo.core.data.collection.parser;
 
 //import java.lang.NullPointerException;
 import org.xml.sax.Attributes;
 
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.parser.xml.sax.ASaxParserHandler;
-import org.geneview.core.parser.xml.sax.ISaxParserHandler;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.parser.xml.sax.ASaxParserHandler;
+import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
 //import org.xml.sax.SAXException;
 //import org.xml.sax.SAXParseException;
@@ -93,7 +93,7 @@ implements ISaxParserHandler
 	 * 
 	 * Important: derived classes must call super.reset() inside thier reset().
 	 * 
-	 * @see org.geneview.core.parser.xml.sax.ISaxParserHandler#reset()
+	 * @see org.caleydo.core.parser.xml.sax.ISaxParserHandler#reset()
 	 */
 	public void reset() {
 		super.reset();	

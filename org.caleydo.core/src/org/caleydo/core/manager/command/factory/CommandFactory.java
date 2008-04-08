@@ -1,56 +1,56 @@
-package org.geneview.core.manager.command.factory;
+package org.caleydo.core.manager.command.factory;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.ICommand;
-import org.geneview.core.command.data.CmdDataCreatePathwayStorage;
-import org.geneview.core.command.data.CmdDataCreateSelectionSetMakro;
-import org.geneview.core.command.data.CmdDataCreateSet;
-import org.geneview.core.command.data.CmdDataCreateSetViewdata;
-import org.geneview.core.command.data.CmdDataCreateStorage;
-import org.geneview.core.command.data.CmdDataCreateVirtualArray;
-import org.geneview.core.command.data.filter.CmdDataFilterMath;
-import org.geneview.core.command.data.filter.CmdDataFilterMinMax;
-import org.geneview.core.command.event.CmdEventCreateMediator;
-import org.geneview.core.command.event.CmdEventMediatorAddObject;
-import org.geneview.core.command.queue.CmdSystemRunCmdQueue;
-import org.geneview.core.command.queue.CommandQueueVector;
-import org.geneview.core.command.system.CmdSystemExit;
-import org.geneview.core.command.system.CmdSystemLoadFileLookupTable;
-import org.geneview.core.command.system.CmdSystemLoadFileNStorages;
-import org.geneview.core.command.system.CmdSystemLoadFileViaImporter;
-import org.geneview.core.command.system.path.CmdSetPathwayDatabasePath;
-import org.geneview.core.command.view.opengl.CmdGlObjectHeatMap3D;
-import org.geneview.core.command.view.opengl.CmdGlObjectHeatmap;
-import org.geneview.core.command.view.opengl.CmdGlObjectHeatmap2D;
-import org.geneview.core.command.view.opengl.CmdGlObjectHistogram2D;
-import org.geneview.core.command.view.opengl.CmdGlObjectBucket3D;
-import org.geneview.core.command.view.opengl.CmdGlObjectParCoords3D;
-import org.geneview.core.command.view.opengl.CmdGlObjectPathway3D;
-import org.geneview.core.command.view.opengl.CmdGlObjectPathway3DJukebox;
-import org.geneview.core.command.view.rcp.CmdExternalActionTrigger;
-import org.geneview.core.command.view.rcp.CmdExternalFlagSetter;
-import org.geneview.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
-import org.geneview.core.command.view.swt.CmdViewCreateDataEntitySearcher;
-import org.geneview.core.command.view.swt.CmdViewCreateDataExchanger;
-import org.geneview.core.command.view.swt.CmdViewCreateDataExplorer;
-import org.geneview.core.command.view.swt.CmdViewCreateGears;
-import org.geneview.core.command.view.swt.CmdViewCreateHTMLBrowser;
-import org.geneview.core.command.view.swt.CmdViewCreateImage;
-import org.geneview.core.command.view.swt.CmdViewCreateMixer;
-import org.geneview.core.command.view.swt.CmdViewCreatePathway;
-import org.geneview.core.command.view.swt.CmdViewCreateProgressBar;
-import org.geneview.core.command.view.swt.CmdViewCreateSelectionSlider;
-import org.geneview.core.command.view.swt.CmdViewCreateSetEditor;
-import org.geneview.core.command.view.swt.CmdViewCreateStorageSlider;
-import org.geneview.core.command.view.swt.CmdViewCreateSwtGLCanvas;
-import org.geneview.core.command.view.swt.CmdViewCreateUndoRedo;
-import org.geneview.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
-import org.geneview.core.command.window.swt.CmdContainerCreate;
-import org.geneview.core.command.window.swt.CmdWindowCreate;
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.ICommand;
+import org.caleydo.core.command.data.CmdDataCreatePathwayStorage;
+import org.caleydo.core.command.data.CmdDataCreateSelectionSetMakro;
+import org.caleydo.core.command.data.CmdDataCreateSet;
+import org.caleydo.core.command.data.CmdDataCreateSetViewdata;
+import org.caleydo.core.command.data.CmdDataCreateStorage;
+import org.caleydo.core.command.data.CmdDataCreateVirtualArray;
+import org.caleydo.core.command.data.filter.CmdDataFilterMath;
+import org.caleydo.core.command.data.filter.CmdDataFilterMinMax;
+import org.caleydo.core.command.event.CmdEventCreateMediator;
+import org.caleydo.core.command.event.CmdEventMediatorAddObject;
+import org.caleydo.core.command.queue.CmdSystemRunCmdQueue;
+import org.caleydo.core.command.queue.CommandQueueVector;
+import org.caleydo.core.command.system.CmdSystemExit;
+import org.caleydo.core.command.system.CmdSystemLoadFileLookupTable;
+import org.caleydo.core.command.system.CmdSystemLoadFileNStorages;
+import org.caleydo.core.command.system.CmdSystemLoadFileViaImporter;
+import org.caleydo.core.command.system.path.CmdSetPathwayDatabasePath;
+import org.caleydo.core.command.view.opengl.CmdGlObjectHeatMap3D;
+import org.caleydo.core.command.view.opengl.CmdGlObjectHeatmap;
+import org.caleydo.core.command.view.opengl.CmdGlObjectHeatmap2D;
+import org.caleydo.core.command.view.opengl.CmdGlObjectHistogram2D;
+import org.caleydo.core.command.view.opengl.CmdGlObjectBucket3D;
+import org.caleydo.core.command.view.opengl.CmdGlObjectParCoords3D;
+import org.caleydo.core.command.view.opengl.CmdGlObjectPathway3D;
+import org.caleydo.core.command.view.opengl.CmdGlObjectPathway3DJukebox;
+import org.caleydo.core.command.view.rcp.CmdExternalActionTrigger;
+import org.caleydo.core.command.view.rcp.CmdExternalFlagSetter;
+import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
+import org.caleydo.core.command.view.swt.CmdViewCreateDataEntitySearcher;
+import org.caleydo.core.command.view.swt.CmdViewCreateDataExchanger;
+import org.caleydo.core.command.view.swt.CmdViewCreateDataExplorer;
+import org.caleydo.core.command.view.swt.CmdViewCreateGears;
+import org.caleydo.core.command.view.swt.CmdViewCreateHTMLBrowser;
+import org.caleydo.core.command.view.swt.CmdViewCreateImage;
+import org.caleydo.core.command.view.swt.CmdViewCreateMixer;
+import org.caleydo.core.command.view.swt.CmdViewCreatePathway;
+import org.caleydo.core.command.view.swt.CmdViewCreateProgressBar;
+import org.caleydo.core.command.view.swt.CmdViewCreateSelectionSlider;
+import org.caleydo.core.command.view.swt.CmdViewCreateSetEditor;
+import org.caleydo.core.command.view.swt.CmdViewCreateStorageSlider;
+import org.caleydo.core.command.view.swt.CmdViewCreateSwtGLCanvas;
+import org.caleydo.core.command.view.swt.CmdViewCreateUndoRedo;
+import org.caleydo.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
+import org.caleydo.core.command.window.swt.CmdContainerCreate;
+import org.caleydo.core.command.window.swt.CmdWindowCreate;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Class is responsible for creating the commands.
@@ -588,9 +588,9 @@ implements ICommandFactory {
 			break;
 		}
 		default: 
-			throw new GeneViewRuntimeException("CommandFactory::createCommand() Unsupported CommandQueue key= [" + 
+			throw new CaleydoRuntimeException("CommandFactory::createCommand() Unsupported CommandQueue key= [" + 
 					cmdType + "]",
-					GeneViewRuntimeExceptionType.SAXPARSER);
+					CaleydoRuntimeExceptionType.SAXPARSER);
 		} // end switch	
 		
 		return createdCommand;
@@ -623,8 +623,8 @@ implements ICommandFactory {
 		}
 		catch ( IllegalArgumentException iae ) 
 		{
-			throw new GeneViewRuntimeException("Undefined CommandQueue key= [" + sCmdType + "]",
-					GeneViewRuntimeExceptionType.SAXPARSER);
+			throw new CaleydoRuntimeException("Undefined CommandQueue key= [" + sCmdType + "]",
+					CaleydoRuntimeExceptionType.SAXPARSER);
 		}
 			
 		switch (queueType) 
@@ -646,8 +646,8 @@ implements ICommandFactory {
 					iCmdQueueId);
 			
 			default:
-				throw new GeneViewRuntimeException("Unsupported CommandQueue key= [" + sCmdType + "]",
-						GeneViewRuntimeExceptionType.SAXPARSER);
+				throw new CaleydoRuntimeException("Unsupported CommandQueue key= [" + sCmdType + "]",
+						CaleydoRuntimeExceptionType.SAXPARSER);
 		}
 		
 	}
@@ -667,21 +667,21 @@ implements ICommandFactory {
 	 * Call doCommand() inside a try catch block.
 	 * 
 	 * @param refCommand
-	 * @throws GeneViewRuntimeException
+	 * @throws CaleydoRuntimeException
 	 */
-	public static final void doCommandSafe(ICommand refCommand) throws GeneViewRuntimeException {
+	public static final void doCommandSafe(ICommand refCommand) throws CaleydoRuntimeException {
 		try {
 			refCommand.doCommand();
-		} catch (GeneViewRuntimeException pe) {
-			throw new GeneViewRuntimeException( refCommand.getClass().getName() +
+		} catch (CaleydoRuntimeException pe) {
+			throw new CaleydoRuntimeException( refCommand.getClass().getName() +
 					"doCommand() failed with "+
 					pe.toString(),
-					GeneViewRuntimeExceptionType.COMMAND );
+					CaleydoRuntimeExceptionType.COMMAND );
 		} catch (Exception e) {
-			throw new GeneViewRuntimeException( refCommand.getClass().getName() +
+			throw new CaleydoRuntimeException( refCommand.getClass().getName() +
 					"doCommand() failed with "+
 					e.toString(),
-					GeneViewRuntimeExceptionType.COMMAND );
+					CaleydoRuntimeExceptionType.COMMAND );
 		}
 	}
 
@@ -690,21 +690,21 @@ implements ICommandFactory {
 	 * Call undoCommand() inside a try catch block.
 	 * 
 	 * @param refCommand
-	 * @throws GeneViewRuntimeException
+	 * @throws CaleydoRuntimeException
 	 */
-	public static final void undoCommandSafe(ICommand refCommand) throws GeneViewRuntimeException {
+	public static final void undoCommandSafe(ICommand refCommand) throws CaleydoRuntimeException {
 		try {
 			refCommand.undoCommand();
-		} catch (GeneViewRuntimeException pe) {
-			throw new GeneViewRuntimeException( refCommand.getClass().getName() +
+		} catch (CaleydoRuntimeException pe) {
+			throw new CaleydoRuntimeException( refCommand.getClass().getName() +
 					"undoCommand() failed with "+
 					pe.toString(),
-					GeneViewRuntimeExceptionType.COMMAND );
+					CaleydoRuntimeExceptionType.COMMAND );
 		} catch (Exception e) {
-			throw new GeneViewRuntimeException( refCommand.getClass().getName() +
+			throw new CaleydoRuntimeException( refCommand.getClass().getName() +
 					"undoCommand() failed with "+
 					e.toString(),
-					GeneViewRuntimeExceptionType.COMMAND );
+					CaleydoRuntimeExceptionType.COMMAND );
 		}
 	}
 }

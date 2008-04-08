@@ -1,10 +1,10 @@
-package org.geneview.rcp;
+package org.caleydo.rcp;
 
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 import org.eclipse.ui.IViewLayout;
-import org.geneview.rcp.views.SnippetJFrameView;
+import org.caleydo.rcp.views.SnippetJFrameView;
 
 public class Perspective implements IPerspectiveFactory {
 

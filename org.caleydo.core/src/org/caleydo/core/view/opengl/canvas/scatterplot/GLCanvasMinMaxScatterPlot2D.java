@@ -1,7 +1,7 @@
 ///**
 // * 
 // */
-//package org.geneview.core.view.opengl.canvas.scatterplot;
+//package org.caleydo.core.view.opengl.canvas.scatterplot;
 //
 //
 //import javax.media.opengl.GL;
@@ -11,23 +11,23 @@
 ////import gleem.linalg.Vec3f;
 ////import gleem.linalg.Vec4f;
 //
-//import org.geneview.core.data.collection.IVirtualArray;
-//import org.geneview.core.data.collection.ISet;
-//import org.geneview.core.data.collection.IStorage;
-//import org.geneview.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
-//import org.geneview.core.manager.IGeneralManager;
-//import org.geneview.core.manager.ILoggerManager.LoggerType;
-//import org.geneview.core.manager.type.ManagerObjectType;
+//import org.caleydo.core.data.collection.IVirtualArray;
+//import org.caleydo.core.data.collection.ISet;
+//import org.caleydo.core.data.collection.IStorage;
+//import org.caleydo.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+//import org.caleydo.core.manager.IGeneralManager;
+//import org.caleydo.core.manager.ILoggerManager.LoggerType;
+//import org.caleydo.core.manager.type.ManagerObjectType;
 //
-//import org.geneview.core.math.statistics.minmax.MinMaxDataInteger;
-//import org.geneview.core.view.opengl.GLCanvasStatics;
-//import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+//import org.caleydo.core.math.statistics.minmax.MinMaxDataInteger;
+//import org.caleydo.core.view.opengl.GLCanvasStatics;
+//import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 //
 ///**
 // * @author Michael Kalkusch
 // *
-// * @see org.geneview.core.view.opengl.IGLCanvasUser
-// * @see org.geneview.core.manager.event.mediator.IMediatorReceiver
+// * @see org.caleydo.core.view.opengl.IGLCanvasUser
+// * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver
 // */
 //public class GLCanvasMinMaxScatterPlot2D 
 //extends AGLCanvasUser 

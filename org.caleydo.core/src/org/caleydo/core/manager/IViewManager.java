@@ -1,14 +1,14 @@
-package org.geneview.core.manager;
+package org.caleydo.core.manager;
 
 import java.util.ArrayList;
 import java.util.Collection;
 
 import javax.swing.JFrame;
 
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.view.IView;
-import org.geneview.core.view.IViewRep;
-import org.geneview.core.view.ViewType;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.view.IView;
+import org.caleydo.core.view.IViewRep;
+import org.caleydo.core.view.ViewType;
 
 /**
  * Manage all canvas, view, ViewRep's and GLCanvas objects.

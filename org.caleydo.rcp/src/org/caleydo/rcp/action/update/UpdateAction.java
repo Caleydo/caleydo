@@ -1,4 +1,4 @@
-package org.geneview.rcp.action.update;
+package org.caleydo.rcp.action.update;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -16,7 +16,7 @@ import org.eclipse.update.search.UpdateSearchRequest;
 import org.eclipse.update.search.UpdateSearchScope;
 import org.eclipse.update.ui.UpdateJob;
 import org.eclipse.update.ui.UpdateManagerUI;
-import org.geneview.rcp.Activator;
+import org.caleydo.rcp.Activator;
 
 public class UpdateAction extends Action implements IAction {
 
@@ -24,13 +24,13 @@ public class UpdateAction extends Action implements IAction {
 
 	public UpdateAction(IWorkbenchWindow window) {
 		this.window = window;
-		setId("org.geneview.update");
+		setId("org.caleydo.update");
 		setText("&Update...");
-		setToolTipText("Search for updates to GeneView");
+		setToolTipText("Search for updates to Caleydo");
 		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/usearch_obj.gif"));
 		window.getWorkbench().getHelpSystem().setHelp(this,
-				"org.geneview.update");
+				"org.caleydo.update");
 	}
 
 	public void run() {
@@ -53,13 +53,13 @@ public class UpdateAction extends Action implements IAction {
 		UpdateSearchScope scope = new UpdateSearchScope();
 		try {
 			String homeBase = System
-					.getProperty("org.geneview.rcp",
-							//"file:/home/mstreit/projects/geneview/SVN/org.geneview.update/");
-							"http://galactica.icg.tugraz.at/geneview/");
+					.getProperty("org.caleydo.rcp",
+							//"file:/home/mstreit/projects/caleydo/SVN/org.caleydo.update/");
+							"http://galactica.icg.tugraz.at/caleydo/");
 						
 			URL url = new URL(homeBase);
 			
-			scope.addSearchSite("GeneView", url, null);
+			scope.addSearchSite("Caleydo", url, null);
 
 		} catch (MalformedURLException e) {
 			// skip bad URLs

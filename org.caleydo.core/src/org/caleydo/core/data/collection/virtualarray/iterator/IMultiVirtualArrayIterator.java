@@ -7,11 +7,11 @@
  *  
  */
 
-package org.geneview.core.data.collection.virtualarray.iterator;
+package org.caleydo.core.data.collection.virtualarray.iterator;
 
 import java.lang.ArrayIndexOutOfBoundsException;
-import org.geneview.core.data.collection.iterator.ICollectionIterator;
-import org.geneview.core.data.collection.IVirtualArray;
+import org.caleydo.core.data.collection.iterator.ICollectionIterator;
+import org.caleydo.core.data.collection.IVirtualArray;
 
 /**
  * Iterator handling several Selections at once.

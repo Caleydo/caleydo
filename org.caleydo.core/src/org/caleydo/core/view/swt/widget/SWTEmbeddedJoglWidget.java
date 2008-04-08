@@ -1,10 +1,10 @@
-package org.geneview.core.view.swt.widget;
+package org.caleydo.core.view.swt.widget;
 
 import javax.media.opengl.GLCanvas;
 
 import org.eclipse.swt.widgets.Composite;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.view.jogl.JoglCanvasForwarder;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.view.jogl.JoglCanvasForwarder;
 
 
 /**

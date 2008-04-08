@@ -1,9 +1,9 @@
-package org.geneview.core.view.opengl.util;
+package org.caleydo.core.view.opengl.util;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.geneview.core.data.view.camera.ViewFrustumBase;
+import org.caleydo.core.data.view.camera.ViewFrustumBase;
 
 
 public class GLCoordinateUtils 

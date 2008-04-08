@@ -1,12 +1,12 @@
 /**
  * 
  */
-package org.geneview.core.data.map;
+package org.caleydo.core.data.map;
 
 //import java.util.ArrayList;
 //import java.util.Map;
 
-import org.geneview.core.data.map.GenericMultiMap;
+import org.caleydo.core.data.map.GenericMultiMap;
 
 /** 
  * This is simply a Map with slightly different semantics.

@@ -6,9 +6,9 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data;
+package org.caleydo.core.data;
 
-import org.geneview.core.data.IUniqueObject;
+import org.caleydo.core.data.IUniqueObject;
 
 /**
  * Abstract class providing methods defined in IUniqueManagedObject.

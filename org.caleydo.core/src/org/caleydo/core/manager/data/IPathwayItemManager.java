@@ -1,12 +1,12 @@
-package org.geneview.core.manager.data;
+package org.caleydo.core.manager.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.geneview.util.graph.IGraph;
-import org.geneview.util.graph.IGraphItem;
+import org.caleydo.util.graph.IGraph;
+import org.caleydo.util.graph.IGraphItem;
 
-import org.geneview.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IGeneralManager;
 
 public interface IPathwayItemManager 
 extends IGeneralManager {
@@ -53,7 +53,7 @@ extends IGeneralManager {
 	/**
 	 * Expose HashMap NCBI_GENE_ID ==> PathwayVertexGraphItem
 	 * 
-	 * @see org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn
+	 * @see org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn
 	 * 
 	 * @return HashMap NCBI_GENE_ID ==> PathwayVertexGraphItem
 	 */

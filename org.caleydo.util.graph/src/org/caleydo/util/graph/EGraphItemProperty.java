@@ -1,12 +1,12 @@
 /**
  * 
  */
-package org.geneview.util.graph;
+package org.caleydo.util.graph;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import org.geneview.util.graph.GraphRuntimeException;
+import org.caleydo.util.graph.GraphRuntimeException;
 
 /**
  * Graph properties like "INCOMING","OUTGOING" and "ALIAS_PARENT","ALIAS_CHILD" as well as "NONE"
@@ -14,10 +14,10 @@ import org.geneview.util.graph.GraphRuntimeException;
  * "INCOMING","OUTGOING" are one pair; ALIAS_PARENT","ALIAS_CHILD" is also one pair specifying hierarchies of nodes/edges.
  * A hierarchy of nodes or edges consists of a root node, that refers to all its children. The child refers only to the parent node.
  * 
- * @see org.geneview.util.graph.IGraphItem#getAllItemsByProp(EGraphItemProperty)
- * @see org.geneview.util.graph.EGraphProperty
- * @see org.geneview.util.graph.EGraphItemHierarchy
- * @see org.geneview.util.graph.EGraphItemKind
+ * @see org.caleydo.util.graph.IGraphItem#getAllItemsByProp(EGraphItemProperty)
+ * @see org.caleydo.util.graph.EGraphProperty
+ * @see org.caleydo.util.graph.EGraphItemHierarchy
+ * @see org.caleydo.util.graph.EGraphItemKind
  * 
  * @author Michael Kalkusch
  */
@@ -69,9 +69,9 @@ public enum EGraphItemProperty {
 	/**
 	 * Get a list of active EGraphItemProperty items.
 	 * 
-	 * @see org.geneview.util.graph.item.GraphItem#GraphItem(int,EGraphItemKind)
-	 * @see org.geneview.util.graph.EGraphItemHierarchy#getActiveItems()
-	 * @see org.geneview.util.graph.EGraphItemKind#getActiveItems()
+	 * @see org.caleydo.util.graph.item.GraphItem#GraphItem(int,EGraphItemKind)
+	 * @see org.caleydo.util.graph.EGraphItemHierarchy#getActiveItems()
+	 * @see org.caleydo.util.graph.EGraphItemKind#getActiveItems()
 	 * 
 	 * @return list of active EGraphItemHierarchy items
 	 */

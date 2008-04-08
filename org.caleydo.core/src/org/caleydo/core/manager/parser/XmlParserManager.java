@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.manager.parser;
+package org.caleydo.core.manager.parser;
 
 //import java.io.StringReader;
 import java.net.URL;
@@ -13,27 +13,27 @@ import org.xml.sax.InputSource;
 //import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager;
-//import org.geneview.core.manager.IXmlParserManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.parser.xml.sax.handler.IXmlParserHandler;
-import org.geneview.core.parser.xml.sax.handler.command.CommandSaxHandler;
-import org.geneview.core.parser.xml.sax.handler.pathway.BioCartaPathwayImageMapSaxHandler;
-import org.geneview.core.parser.xml.sax.handler.pathway.KgmlSaxHandler;
-import org.geneview.core.parser.xml.sax.handler.pathway.PathwayImageMapSaxHandler;
-import org.geneview.core.parser.xml.sax.handler.recursion.OpenExternalXmlFileSaxHandler;
-import org.geneview.core.util.system.GeneViewInputStream;
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager;
+//import org.caleydo.core.manager.IXmlParserManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
+import org.caleydo.core.parser.xml.sax.handler.command.CommandSaxHandler;
+import org.caleydo.core.parser.xml.sax.handler.pathway.BioCartaPathwayImageMapSaxHandler;
+import org.caleydo.core.parser.xml.sax.handler.pathway.KgmlSaxHandler;
+import org.caleydo.core.parser.xml.sax.handler.pathway.PathwayImageMapSaxHandler;
+import org.caleydo.core.parser.xml.sax.handler.recursion.OpenExternalXmlFileSaxHandler;
+import org.caleydo.core.util.system.CaleydoInputStream;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Administer several XML-SaxHandelers.
  * Switches between several XML-SaxHandeler automatical, based by a registered tag.
  * Acts as proxy for other derived objects from IXmlParserManager
  * 
- * @see org.geneview.core.parser.xml.sax.handler.IXmlParserHandler
- * @see org.geneview.core.manager.IXmlParserManager
+ * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler
+ * @see org.caleydo.core.manager.IXmlParserManager
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -185,7 +185,7 @@ extends AXmlParserManager {
 	}
 
 	/**
-	 * @see org.geneview.core.manager.IXmlParserManager#startElement_search4Tag(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
+	 * @see org.caleydo.core.manager.IXmlParserManager#startElement_search4Tag(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 */
 	public void startElement_search4Tag(String uri, 
 			String localName, 
@@ -282,7 +282,7 @@ extends AXmlParserManager {
 	
 	
 	/**
-	 * @see org.geneview.core.manager.IXmlParserManager#endElement_search4Tag(Stringt, Stringt, Stringt)
+	 * @see org.caleydo.core.manager.IXmlParserManager#endElement_search4Tag(Stringt, Stringt, Stringt)
 	 */
 	public void endElement_search4Tag(String uri, 
 			String localName, 
@@ -316,8 +316,8 @@ extends AXmlParserManager {
 		 * 
 		 */
 		if ( currentHandler != handler ) {
-			throw new GeneViewRuntimeException("sectionFinishedByHandler() called by wrong handler!",
-					GeneViewRuntimeExceptionType.SAXPARSER);
+			throw new CaleydoRuntimeException("sectionFinishedByHandler() called by wrong handler!",
+					CaleydoRuntimeExceptionType.SAXPARSER);
 		}
 				
 		closeCurrentTag();				
@@ -330,7 +330,7 @@ extends AXmlParserManager {
 
 	
 	/**
-	 * @see org.geneview.core.manager.IXmlParserManager#parseXmlFileByName(java.lang.String)
+	 * @see org.caleydo.core.manager.IXmlParserManager#parseXmlFileByName(java.lang.String)
 	 */
 	public boolean parseXmlString( final String sMuddlewareXPath, final String xmlString ) {
 		
@@ -345,7 +345,7 @@ extends AXmlParserManager {
 			refLoggerManager.logMsg("XmlParserManager.parseXmlString( XPath=[" + sMuddlewareXPath + "] , ..) done.",
 					LoggerType.VERBOSE_EXTRA );
 			
-			boolean status = GeneViewInputStream.parseOnce( inStream ,
+			boolean status = CaleydoInputStream.parseOnce( inStream ,
 					sMuddlewareXPath,
 					this,
 					refLoggerManager );
@@ -356,10 +356,10 @@ extends AXmlParserManager {
 			return 	status;
 		
 		} 
-		catch (GeneViewRuntimeException gve)
+		catch (CaleydoRuntimeException gve)
 		{
 			refLoggerManager.logMsg("XmlParserManager.parseXmlString( " + sMuddlewareXPath + 
-					"," + xmlString + ") failed; geneview_error: " +
+					"," + xmlString + ") failed; caleydo_error: " +
 					gve.toString(),
 					LoggerType.MINOR_ERROR_XML );
 			
@@ -377,7 +377,7 @@ extends AXmlParserManager {
 	}
 	
 	/**
-	 * @see org.geneview.core.manager.IXmlParserManager#parseXmlFileByName(Stringt)
+	 * @see org.caleydo.core.manager.IXmlParserManager#parseXmlFileByName(Stringt)
 	 */
 	public boolean parseXmlFileByName( final String filename ) {
 		
@@ -389,18 +389,18 @@ extends AXmlParserManager {
 			InputSource inSource = null;
 			
 			if (resourceUrl != null) {
-				inSource = GeneViewInputStream.openInputStreamFromUrl(resourceUrl,	refLoggerManager );			
+				inSource = CaleydoInputStream.openInputStreamFromUrl(resourceUrl,	refLoggerManager );			
 			}
 			else
 			{
-				inSource = GeneViewInputStream.openInputStreamFromFile(filename, refLoggerManager);
+				inSource = CaleydoInputStream.openInputStreamFromFile(filename, refLoggerManager);
 			}
 			
 			refLoggerManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") parse...",
 					LoggerType.VERBOSE_EXTRA );
 		
 		
-			boolean status = GeneViewInputStream.parseOnce( inSource ,
+			boolean status = CaleydoInputStream.parseOnce( inSource ,
 					filename,
 					this,
 					refLoggerManager );
@@ -411,9 +411,9 @@ extends AXmlParserManager {
 			return 	status;
 			
 		} 
-		catch (GeneViewRuntimeException gve)
+		catch (CaleydoRuntimeException gve)
 		{
-			refLoggerManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") failed; geneview_error: " +
+			refLoggerManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") failed; caleydo_error: " +
 					gve.toString(),
 					LoggerType.MINOR_ERROR_XML );
 			
@@ -430,7 +430,7 @@ extends AXmlParserManager {
 	}
 	
 	/**
-	 * @see org.geneview.core.manager.IXmlParserManager#parseXmlFileByName(Stringt)
+	 * @see org.caleydo.core.manager.IXmlParserManager#parseXmlFileByName(Stringt)
 	 */
 	public boolean parseXmlFileByNameAndHandler( final String filename, 
 			final OpenExternalXmlFileSaxHandler openFileHandler ) {
@@ -444,22 +444,22 @@ extends AXmlParserManager {
 			InputSource inSource = null;
 			
 			if (resourceUrl != null) {
-				inSource = GeneViewInputStream.openInputStreamFromUrl(resourceUrl,	refLoggerManager );			
+				inSource = CaleydoInputStream.openInputStreamFromUrl(resourceUrl,	refLoggerManager );			
 			}
 			else
 			{
-				inSource = GeneViewInputStream.openInputStreamFromFile(filename, refLoggerManager);
+				inSource = CaleydoInputStream.openInputStreamFromFile(filename, refLoggerManager);
 			}
 			
-			return GeneViewInputStream.parseOnce( inSource , 
+			return CaleydoInputStream.parseOnce( inSource , 
 					filename,
 					this,
 					refLoggerManager );		
 			
 		} 
-		catch (GeneViewRuntimeException gve)
+		catch (CaleydoRuntimeException gve)
 		{
-			refLoggerManager.logMsg("XmlParserManager.parseXmlFileByNameAndHandler( " + filename + ") failed; geneview_error: " +
+			refLoggerManager.logMsg("XmlParserManager.parseXmlFileByNameAndHandler( " + filename + ") failed; caleydo_error: " +
 					gve.toString(),
 					LoggerType.MINOR_ERROR_XML );
 			
@@ -477,7 +477,7 @@ extends AXmlParserManager {
 	
 	
 	/**
-	 * @see org.geneview.core.manager.IXmlParserManager#parseXmlFileByInputStream(org.xml.sax.InputSource)
+	 * @see org.caleydo.core.manager.IXmlParserManager#parseXmlFileByInputStream(org.xml.sax.InputSource)
 	 */
 	public boolean parseXmlFileByInputStream( InputSource inputStream,
 			final String inputStreamText ) {
@@ -485,14 +485,14 @@ extends AXmlParserManager {
 		iCountOpenedFiles++;
 		try {
 			
-			return GeneViewInputStream.parseOnce( inputStream ,
+			return CaleydoInputStream.parseOnce( inputStream ,
 					inputStreamText,
 					this,
 					refLoggerManager );	
 		} 
-		catch (GeneViewRuntimeException gve)
+		catch (CaleydoRuntimeException gve)
 		{
-			refLoggerManager.logMsg("XmlParserManager.parseXmlFileByInputStream( ) failed; geneview_error: " +
+			refLoggerManager.logMsg("XmlParserManager.parseXmlFileByInputStream( ) failed; caleydo_error: " +
 					gve.toString(),
 					LoggerType.MINOR_ERROR_XML );
 			

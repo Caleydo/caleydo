@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.data.map;
+package org.caleydo.core.data.map;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,19 +11,19 @@ import java.util.Map;
 import java.util.Set;
 //import java.util.Map.Entry;
 
-//import org.geneview.core.data.mapping.EGenomeMappingDataType;
-import org.geneview.core.data.mapping.EGenomeMappingType;
-import org.geneview.core.manager.data.IGenomeIdManager;
-//import org.geneview.core.manager.data.genome.GenomeIdMapInt2Int;
-//import org.geneview.core.manager.data.genome.IGenomeIdMap;
+//import org.caleydo.core.data.mapping.EGenomeMappingDataType;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.manager.data.IGenomeIdManager;
+//import org.caleydo.core.manager.data.genome.GenomeIdMapInt2Int;
+//import org.caleydo.core.manager.data.genome.IGenomeIdMap;
 
 
 
 /**
  * @author Michael Kalkusch
  *
- * @see org.geneview.core.data.map.MultiHashArrayIntegerMap
- * @see org.geneview.core.manager.data.genome.IGenomeIdMap
+ * @see org.caleydo.core.data.map.MultiHashArrayIntegerMap
+ * @see org.caleydo.core.manager.data.genome.IGenomeIdMap
  */
 public class MultiHashArrayStringMap 
 extends HashMap <String,ArrayList<String>> 

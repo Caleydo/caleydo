@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.canvas.bucket;
+package org.caleydo.core.view.opengl.canvas.bucket;
 
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
@@ -12,11 +12,11 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
-import org.geneview.core.data.view.rep.renderstyle.ConnectionLineRenderStyle;
-import org.geneview.core.data.view.rep.selection.SelectedElementRep;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.view.SelectionManager;
-import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.caleydo.core.data.view.rep.renderstyle.ConnectionLineRenderStyle;
+import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.view.SelectionManager;
+import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 
 /**
  * Class is responsible for rendering and drawing

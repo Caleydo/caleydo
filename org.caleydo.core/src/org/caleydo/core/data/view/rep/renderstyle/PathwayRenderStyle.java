@@ -1,10 +1,10 @@
-package org.geneview.core.data.view.rep.renderstyle;
+package org.caleydo.core.data.view.rep.renderstyle;
 
 import gleem.linalg.Vec3f;
 
-import org.geneview.core.data.GeneralRenderStyle;
-import org.geneview.core.data.view.camera.IViewFrustum;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.data.GeneralRenderStyle;
+import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 public class PathwayRenderStyle 
 extends GeneralRenderStyle {
@@ -373,15 +373,15 @@ extends GeneralRenderStyle {
 	
 	/**
 	 * 
-	 * @see org.geneview.core.data.view.rep.renderstyle.PathwayRenderStyle#neighborhoodNodeColorArraysize
-	 * @see org.geneview.core.data.view.rep.renderstyle.PathwayRenderStyle#highlightedNodeColor
+	 * @see org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle#neighborhoodNodeColorArraysize
+	 * @see org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle#highlightedNodeColor
 	 * 
 	 * @param depth [0..1.. (neighborhoodNodeColorArraysize-1) ] ; if depth ==0 highlightedNodeColor is returened
 	 * @return
 	 */
 	public Vec3f getNeighborhoodNodeColorByDepth( final int depth ) {
 		if ( depth >= neighborhoodNodeColorArraysize) {
-			throw new GeneViewRuntimeException("getNeighborhoodNodeColorByDepth(" + depth + ") exceed range!");
+			throw new CaleydoRuntimeException("getNeighborhoodNodeColorByDepth(" + depth + ") exceed range!");
 		}
 		return this.neighborhoodNodeColorArray[depth];
 	}

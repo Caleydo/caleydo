@@ -6,9 +6,9 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.command.base;
+package org.caleydo.core.command.base;
 
-import org.geneview.core.data.collection.ISet;
+import org.caleydo.core.data.collection.ISet;
 
 /**
  * Classes that need a ISet implement this interface. 

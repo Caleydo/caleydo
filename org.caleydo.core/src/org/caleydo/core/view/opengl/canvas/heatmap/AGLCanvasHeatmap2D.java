@@ -1,10 +1,10 @@
-package org.geneview.core.view.opengl.canvas.heatmap;
+package org.caleydo.core.view.opengl.canvas.heatmap;
 
-import org.geneview.core.data.view.camera.IViewCamera;
-import org.geneview.core.data.view.camera.IViewFrustum;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.data.view.camera.IViewCamera;
+import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 
 
 /**
@@ -49,7 +49,7 @@ implements IGLCanvasHeatmap2D {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#destroyGLCanvas()
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#destroyGLCanvas()
 	 */
 	public final void destroyGLCanvas()
 	{
@@ -59,7 +59,7 @@ implements IGLCanvasHeatmap2D {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D#setResolution(float[])
+	 * @see org.caleydo.core.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D#setResolution(float[])
 	 */
 	public final void setResolution( float[] setResolution ) {
 		

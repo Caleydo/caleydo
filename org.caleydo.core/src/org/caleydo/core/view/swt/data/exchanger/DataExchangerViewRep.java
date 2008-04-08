@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.view.swt.data.exchanger;
+package org.caleydo.core.view.swt.data.exchanger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -19,13 +19,13 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.util.system.StringConversionTool;
-import org.geneview.core.view.AViewRep;
-import org.geneview.core.view.IView;
-import org.geneview.core.view.ViewType;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.IView;
+import org.caleydo.core.view.ViewType;
 
 /**
  * Data Exchanger View makes it possible
@@ -74,7 +74,7 @@ implements IView {
 
 	/**
 	 * 
-	 * @see org.geneview.core.view.IView#initView()
+	 * @see org.caleydo.core.view.IView#initView()
 	 */
 	protected void initViewSwtComposit(Composite swtContainer) {
 		

@@ -13,7 +13,7 @@
  * Contributors:
  *     Jean-Michel Lemieux and Jeff McAffer - initial implementation
  *******************************************************************************/
-package org.geneview.rcp.model;
+package org.caleydo.rcp.model;
 
 public class ContactsEntry extends Contact {
 

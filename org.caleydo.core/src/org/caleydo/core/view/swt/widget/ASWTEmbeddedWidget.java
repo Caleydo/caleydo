@@ -1,4 +1,4 @@
-package org.geneview.core.view.swt.widget;
+package org.caleydo.core.view.swt.widget;
 
 import java.awt.Frame;
 

@@ -1,4 +1,4 @@
-package org.geneview.rcp.jogl.view.jframe;
+package org.caleydo.rcp.jogl.view.jframe;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -10,7 +10,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.geneview.rcp.jogl.view.jframe";
+	public static final String PLUGIN_ID = "org.caleydo.rcp.jogl.view.jframe";
 
 	// The shared instance
 	private static Activator plugin;

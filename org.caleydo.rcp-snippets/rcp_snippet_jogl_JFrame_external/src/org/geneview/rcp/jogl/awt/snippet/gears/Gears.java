@@ -1,4 +1,4 @@
-package org.geneview.rcp.jogl.awt.snippet.gears;
+package org.caleydo.rcp.jogl.awt.snippet.gears;
 
 import java.awt.Dimension;
 import java.awt.event.*;

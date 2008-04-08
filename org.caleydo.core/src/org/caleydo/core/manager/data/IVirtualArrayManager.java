@@ -6,14 +6,14 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.manager.data;
+package org.caleydo.core.manager.data;
 
 import java.util.Vector;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
 
-import org.geneview.core.data.collection.IVirtualArray;
+import org.caleydo.core.data.collection.IVirtualArray;
 
 /**
  * Manage all IVirtualArray's.

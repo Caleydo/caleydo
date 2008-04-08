@@ -1,8 +1,8 @@
-package org.geneview.core.command;
+package org.caleydo.core.command;
 
-import org.geneview.core.data.IUniqueObject;
-import org.geneview.core.parser.parameter.IParameterHandler;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Design Pattern "Command" ;behaviour pattern
@@ -23,7 +23,7 @@ extends IUniqueObject {
 	 * @throws PrometheusCommandException if an error occurs.
 	 */
 	public abstract void doCommand() 
-		throws GeneViewRuntimeException;
+		throws CaleydoRuntimeException;
 	
 	/**
 	 * Undo the command.
@@ -31,7 +31,7 @@ extends IUniqueObject {
 	 * @throws PrometheusCommandException if an error occurs.
 	 */
 	public abstract void undoCommand() 
-		throws GeneViewRuntimeException;
+		throws CaleydoRuntimeException;
 	
 	public abstract void setParameterHandler( IParameterHandler refParameterHandler);
 		
@@ -50,7 +50,7 @@ extends IUniqueObject {
 	 * 
 	 * @throws PrometheusCommandException
 	 * 
-	 * @see org.geneview.core.command.factory.CommandFactory.getCommandType()
+	 * @see org.caleydo.core.command.factory.CommandFactory.getCommandType()
 	 */
 	public abstract CommandQueueSaxType getCommandType();	
 	

@@ -1,14 +1,14 @@
 /**
  * 
  */
-package org.geneview.core.manager;
+package org.caleydo.core.manager;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 //import org.xml.sax.SAXException;
 
-import org.geneview.core.parser.xml.sax.handler.IXmlBaseHandler;
-import org.geneview.core.parser.xml.sax.handler.IXmlParserHandler;
+import org.caleydo.core.parser.xml.sax.handler.IXmlBaseHandler;
+import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 
 
 /**
@@ -41,9 +41,9 @@ extends IXmlBaseHandler
 	 * registers the handler using this data.
 	 * Also calles initHandler() on the new Handler.
 	 * 
-	 * @see org.geneview.core.parser.xml.sax.handler.IXmlParserHandler#initHandler()
-	 * @see org.geneview.core.parser.xml.sax.handler.IXmlParserHandler#isHandlerDestoryedAfterClosingTag()
-	 * @see org.geneview.core.parser.xml.sax.handler.IXmlParserHandler#getXmlActivationTag()
+	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler#initHandler()
+	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler#isHandlerDestoryedAfterClosingTag()
+	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler#getXmlActivationTag()
 	 * 
 	 * @param handler register handler to an opening tag.
 	 * @param sOpeningAndClosingTag defines opening and closing tag tiggering the handler to become active.
@@ -54,9 +54,9 @@ extends IXmlBaseHandler
 	
 	
 //	/**
-//	 * Calls org.geneview.core.xml.parser.base.IXmlParserHandler#destroyHandler()
+//	 * Calls org.caleydo.core.xml.parser.base.IXmlParserHandler#destroyHandler()
 //	 * 
-//	 * @see org.geneview.core.parser.handler.IXmlParserHandler#destroyHandler()
+//	 * @see org.caleydo.core.parser.handler.IXmlParserHandler#destroyHandler()
 //	 * 
 //	 * @param handler handel, that should be unregistered.
 //	 * 
@@ -75,9 +75,9 @@ extends IXmlBaseHandler
 	
 	
 	/**
-	 * Callback called by org.geneview.core.parser.handler.IXmlParserHandler if clasing tag is read in endElement()
+	 * Callback called by org.caleydo.core.parser.handler.IXmlParserHandler if clasing tag is read in endElement()
 	 * 
-	 * @see org.geneview.core.parser.xml.sax.handler.IXmlParserHandler
+	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler
 	 * @see orl.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
 	 * 
 	 * @param handler calling handler, that just read its closing tag
@@ -121,15 +121,15 @@ extends IXmlBaseHandler
 //	 * if TRUE is returened newHandler.startElement( uri,localName,qName,attrib ) and currentHandler.startElement( uri,localName,qName,attrib )
 //	 * has top be called!
 //	 * IF FALSE is returned only currentHandler.startElement( uri,localName,qName,attrib ) has to be called. 
-//	 * This is implemented as a final method inside org.geneview.core.manager.parser.AXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager)
-//	 * so please derive from org.geneview.core.manager.parser.AXmlParserManager .
+//	 * This is implemented as a final method inside org.caleydo.core.manager.parser.AXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager)
+//	 * so please derive from org.caleydo.core.manager.parser.AXmlParserManager .
 //	 *  
 //	 * 
 //	 * @param newHandler add new recursive reader
 //	 * @param refIXmlParserManager retefence to SmlParserManager to ensure, that only this class can call this method!
 //	 * @return TRUE indicates that newHandler.startElement( uri,localName,qName,attrib ) and currentHandler.startElement( uri,localName,qName,attrib ) must be called whiel FALSE indicates that only currentHandler.startElement( uri,localName,qName,attrib ) must be called
 //	 * 
-//	 * @see org.geneview.core.manager.parser.AXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager)
+//	 * @see org.caleydo.core.manager.parser.AXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager)
 //	 */
 //	public boolean openCurrentTagForRecursiveReader( 
 //			OpenExternalXmlFileSaxHandler newHandler,
@@ -146,9 +146,9 @@ extends IXmlBaseHandler
 	/**
 	 * Call this method if the current tag was not handled by 
 	 * endElement(Stringt, Stringt, Stringt)
-	 * of org.geneview.core.parser.handler.IXmlParserHandler
+	 * of org.caleydo.core.parser.handler.IXmlParserHandler
 	 * 
-	 * @see org.geneview.core.parser.xml.sax.handler.IXmlParserHandler
+	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler
 	 * @see org.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
 	 * 
 	 */
@@ -160,9 +160,9 @@ extends IXmlBaseHandler
 	/**
 	 * Call this method, if current tag was not handled by 
 	 * startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
-	 * of org.geneview.core.parser.handler.IXmlParserHandler
+	 * of org.caleydo.core.parser.handler.IXmlParserHandler
 	 * 
-	 * @see org.geneview.core.parser.xml.sax.handler.IXmlParserHandler
+	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler
 	 * @see org.xml.sax.ContentHandler#startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 * 
 	 */

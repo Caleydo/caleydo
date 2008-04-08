@@ -1,4 +1,4 @@
-package org.geneview.core.view;
+package org.caleydo.core.view;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -6,24 +6,24 @@ import java.util.Iterator;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Composite;
 
-import org.geneview.core.data.AUniqueManagedObject;
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.SetType;
-import org.geneview.core.data.collection.set.selection.SetSelection;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.data.ISetManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.view.ViewType;
-import org.geneview.core.view.swt.widget.SWTNativeWidget;
+import org.caleydo.core.data.AUniqueManagedObject;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.SetType;
+import org.caleydo.core.data.collection.set.selection.SetSelection;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.data.ISetManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.view.ViewType;
+import org.caleydo.core.view.swt.widget.SWTNativeWidget;
 
 /**
  * Abstract class that is the base of all view representations.
  * It holds the the own view ID, the parent ID and the attributes that
  * needs to be processed.
  * 
- * @see org.geneview.core.manager.event.mediator.IMediatorReceiver
- * @see org.geneview.core.manager.event.mediator.IMediatorSender
+ * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver
+ * @see org.caleydo.core.manager.event.mediator.IMediatorSender
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -125,7 +125,7 @@ implements IViewRep {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.IView#initView()
+	 * @see org.caleydo.core.view.IView#initView()
 	 */
 	public void initView() {
 	
@@ -152,7 +152,7 @@ implements IViewRep {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#update(java.lang.Object)
+	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#update(java.lang.Object)
 	 */
 	public void updateReceiver( Object eventTrigger ) {
 		
@@ -162,7 +162,7 @@ implements IViewRep {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, org.geneview.core.data.collection.ISet)
+	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, org.caleydo.core.data.collection.ISet)
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 
@@ -172,7 +172,7 @@ implements IViewRep {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.IView#getLabel()
+	 * @see org.caleydo.core.view.IView#getLabel()
 	 */
 	public final String getLabel() {
 		
@@ -181,7 +181,7 @@ implements IViewRep {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.IView#getLabel()
+	 * @see org.caleydo.core.view.IView#getLabel()
 	 */
 	public final void setLabel(String label) {
 				
@@ -201,7 +201,7 @@ implements IViewRep {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.view.IView#setViewType(org.geneview.core.view.ViewType)
+	 * @see org.caleydo.core.view.IView#setViewType(org.caleydo.core.view.ViewType)
 	 */
 	public final void setViewType(ViewType viewType) {
 		
@@ -209,7 +209,7 @@ implements IViewRep {
 	}
 	
 	/**
-	 * @see org.geneview.core.view.IViewRep#getViewType()
+	 * @see org.caleydo.core.view.IViewRep#getViewType()
 	 */
 	public final ViewType getViewType() {
 		return viewType;
@@ -217,7 +217,7 @@ implements IViewRep {
 	
 
 	/**
-	 * @see org.geneview.core.view.IView#addSetId(int[])
+	 * @see org.caleydo.core.view.IView#addSetId(int[])
 	 */
 	public final void addSetId( int [] iSet) {
 		
@@ -265,7 +265,7 @@ implements IViewRep {
 	}
 	
 	/**
-	 * @see org.geneview.core.view.IView#removeAllSetIdByType(org.geneview.core.data.collection.SetType)
+	 * @see org.caleydo.core.view.IView#removeAllSetIdByType(org.caleydo.core.data.collection.SetType)
 	 */
 	public final void removeAllSetIdByType( SetType setType ) {
 		
@@ -286,7 +286,7 @@ implements IViewRep {
 	}
 	
 	/**
-	 * @see org.geneview.core.view.IView#removeSetId(int[])
+	 * @see org.caleydo.core.view.IView#removeSetId(int[])
 	 */
 	public final void removeSetId( int [] iSet) {
 		
@@ -336,7 +336,7 @@ implements IViewRep {
 	
 
 	/**
-	 * @see org.geneview.core.view.IView#getAllSetId()
+	 * @see org.caleydo.core.view.IView#getAllSetId()
 	 */
 	public final synchronized int[] getAllSetId() {
 		
@@ -370,7 +370,7 @@ implements IViewRep {
 	
 
 	/**
-	 * @see org.geneview.core.view.IView#hasSetId(int)
+	 * @see org.caleydo.core.view.IView#hasSetId(int)
 	 */
 	public final boolean hasSetId( int iSetId) {
 		ISet refCurrentSet = refSetManager.getItemSet(iSetId);

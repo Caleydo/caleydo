@@ -7,9 +7,9 @@
  *  
  */
 
-package org.geneview.core.data;
+package org.caleydo.core.data;
 
-import org.geneview.core.data.IDataItem;
+import org.caleydo.core.data.IDataItem;
 
 import java.util.Collection;
 

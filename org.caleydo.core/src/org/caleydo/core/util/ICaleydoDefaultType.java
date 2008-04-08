@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.util;
+package org.caleydo.core.util;
 
 /**
  * Base type for all Enumerations.
@@ -9,7 +9,7 @@ package org.geneview.core.util;
  * @author Michael Kalkusch
  *
  */
-public interface IGeneViewDefaultType <E> {
+public interface ICaleydoDefaultType <E> {
 
 	public abstract E getTypeDefault();
 	

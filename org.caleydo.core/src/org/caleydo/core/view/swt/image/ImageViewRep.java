@@ -1,17 +1,17 @@
 /**
  * 
  */
-package org.geneview.core.view.swt.image;
+package org.caleydo.core.view.swt.image;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.view.AViewRep;
-import org.geneview.core.view.IView;
-import org.geneview.core.view.ViewType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.IView;
+import org.caleydo.core.view.ViewType;
 
 /**
  * Image view.
@@ -40,7 +40,7 @@ implements IView {
 
 	/**
 	 * 
-	 * @see org.geneview.core.view.IView#initView()
+	 * @see org.caleydo.core.view.IView#initView()
 	 */
 	protected void initViewSwtComposit(Composite swtContainer) {
 		

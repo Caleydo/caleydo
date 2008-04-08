@@ -1,12 +1,12 @@
-package org.geneview.core.manager.base;
+package org.caleydo.core.manager.base;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ISingelton;
-import org.geneview.core.manager.singleton.SingletonManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.manager.type.ManagerType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ISingelton;
+import org.caleydo.core.manager.singleton.SingletonManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.ManagerType;
 
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Abstract class for general manager
@@ -50,21 +50,21 @@ implements IGeneralManager {
 		/** Check for inconsistency... */
 		if (generalManager.getSingelton() != null ) 
 		{
-			throw new GeneViewRuntimeException("AGeneralManager() refGeneralManager already has a  proper ISingelton!");
+			throw new CaleydoRuntimeException("AGeneralManager() refGeneralManager already has a  proper ISingelton!");
 		}
 		
 		this.singelton = singeltonManager;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.manager.IGeneralManager#getGeneralManager()
+	 * @see org.caleydo.core.manager.IGeneralManager#getGeneralManager()
 	 */
 	public final IGeneralManager getGeneralManager() {
 		return this.generalManager;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.manager.IGeneralManager#getSingelton()
+	 * @see org.caleydo.core.manager.IGeneralManager#getSingelton()
 	 */
 	public final ISingelton getSingelton() {
 		return this.singelton;
@@ -72,7 +72,7 @@ implements IGeneralManager {
 
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.manager.IGeneralManager#createNewId(org.geneview.core.manager.type.ManagerObjectType)
+	 * @see org.caleydo.core.manager.IGeneralManager#createNewId(org.caleydo.core.manager.type.ManagerObjectType)
 	 */
 	public final int createNewId(ManagerObjectType setNewBaseType) {
 		return createNewIdByManager( setNewBaseType.getGroupType() );
@@ -83,7 +83,7 @@ implements IGeneralManager {
 		switch ( setManagerType ) {
 			case COMMAND:
 			
-			default: throw new GeneViewRuntimeException("AGeneralManager: Can not handle type [" +
+			default: throw new CaleydoRuntimeException("AGeneralManager: Can not handle type [" +
 					setManagerType.toString() + "]");
 		}				
 	}

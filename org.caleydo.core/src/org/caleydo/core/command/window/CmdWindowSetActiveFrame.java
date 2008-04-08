@@ -6,13 +6,13 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.command.window;
+package org.caleydo.core.command.window;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.base.ACommand;
-//import org.geneview.core.net.dwt.swing.jogl.WorkspaceSwingFrame;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.base.ACommand;
+//import org.caleydo.core.net.dwt.swing.jogl.WorkspaceSwingFrame;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * @author Michael Kalkusch
@@ -68,9 +68,9 @@ extends ACommand {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#doCommand()
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws GeneViewRuntimeException {
+	public void doCommand() throws CaleydoRuntimeException {
 		
 //		WorkspaceSwingFrame targetFrame = 
 //			refViewCanvasManager.getItemWorkspace( iTargetFrameId );
@@ -88,9 +88,9 @@ extends ACommand {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#undoCommand()
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws GeneViewRuntimeException {
+	public void undoCommand() throws CaleydoRuntimeException {
 		// TODO Auto-generated method stub
 
 	}

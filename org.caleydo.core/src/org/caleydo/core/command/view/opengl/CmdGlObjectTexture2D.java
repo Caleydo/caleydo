@@ -1,16 +1,16 @@
-//package org.geneview.core.command.view.opengl;
+//package org.caleydo.core.command.view.opengl;
 //
 //import java.util.StringTokenizer;
 //
-//import org.geneview.core.command.CommandQueueSaxType;
-//import org.geneview.core.command.base.ACmdCreate_GlCanvasUser;
-//import org.geneview.core.manager.ICommandManager;
-//import org.geneview.core.manager.IGeneralManager;
-//import org.geneview.core.manager.ILoggerManager.LoggerType;
-//import org.geneview.core.parser.parameter.IParameterHandler;
-//import org.geneview.core.util.exception.GeneViewRuntimeException;
-//import org.geneview.core.util.system.StringConversionTool;
-//import org.geneview.core.view.opengl.canvas.texture.GLCanvasTexture2D;
+//import org.caleydo.core.command.CommandQueueSaxType;
+//import org.caleydo.core.command.base.ACmdCreate_GlCanvasUser;
+//import org.caleydo.core.manager.ICommandManager;
+//import org.caleydo.core.manager.IGeneralManager;
+//import org.caleydo.core.manager.ILoggerManager.LoggerType;
+//import org.caleydo.core.parser.parameter.IParameterHandler;
+//import org.caleydo.core.util.exception.CaleydoRuntimeException;
+//import org.caleydo.core.util.system.StringConversionTool;
+//import org.caleydo.core.view.opengl.canvas.texture.GLCanvasTexture2D;
 //
 ///**
 // * @author Michael Kalkusch
@@ -56,7 +56,7 @@
 //
 //
 //	@Override
-//	public void doCommandPart() throws GeneViewRuntimeException {
+//	public void doCommandPart() throws CaleydoRuntimeException {
 //		
 //		GLCanvasTexture2D canvas = 
 //			(GLCanvasTexture2D) openGLCanvasUser;
@@ -74,7 +74,7 @@
 //	}
 //
 //	@Override
-//	public void undoCommandPart() throws GeneViewRuntimeException {
+//	public void undoCommandPart() throws CaleydoRuntimeException {
 //		
 //		GLCanvasTexture2D canvas = 
 //			(GLCanvasTexture2D) openGLCanvasUser;

@@ -17,7 +17,7 @@
  *
  * For further information please contact Dieter Schmalstieg under
  * <schmalstieg@icg.tu-graz.ac.at> or write to Dieter Schmalstieg,
- * Graz University of Technology, Institut für Maschinelles Sehen und Darstellen,
+ * Graz University of Technology, Institut fï¿½r Maschinelles Sehen und Darstellen,
  * Inffeldgasse 16a, 8010 Graz, Austria.
  * ========================================================================
  * PROJECT: Muddleware
@@ -26,7 +26,7 @@
  *  @author Michael Kalkusch
  *  
  */
-package org.geneview.core.view.opengl.canvas.isosurface;
+package org.caleydo.core.view.opengl.canvas.isosurface;
 
 import java.io.EOFException;
 //import java.io.IOException;

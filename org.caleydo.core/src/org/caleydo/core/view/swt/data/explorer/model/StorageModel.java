@@ -1,4 +1,4 @@
-package org.geneview.core.view.swt.data.explorer.model;
+package org.caleydo.core.view.swt.data.explorer.model;
 
 
 public class StorageModel extends AModel

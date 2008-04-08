@@ -1,14 +1,14 @@
-package org.geneview.core.command.view.swt;
+package org.caleydo.core.command.view.swt;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.base.ACmdCreate_IdTargetLabelParentXY;
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.IViewManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.parser.parameter.IParameterHandler;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.view.swt.data.exchanger.DataExchangerViewRep;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.view.swt.data.exchanger.DataExchangerViewRep;
 
 /**
  * Class implements the command for 
@@ -37,7 +37,7 @@ extends ACmdCreate_IdTargetLabelParentXY  {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.command.base.ACmdCreate_IdTargetLabelParentXY#setParameterHandler(org.geneview.core.parser.parameter.IParameterHandler)
+	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
 	 */
 	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 		
@@ -48,7 +48,7 @@ extends ACmdCreate_IdTargetLabelParentXY  {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#doCommand()
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
 	public void doCommand() {
 		
@@ -77,7 +77,7 @@ extends ACmdCreate_IdTargetLabelParentXY  {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#undoCommand()
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() {
 

@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.util.infoarea;
+package org.caleydo.core.view.opengl.util.infoarea;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
@@ -10,7 +10,7 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
-import org.geneview.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IGeneralManager;
 
 import com.sun.opengl.util.j2d.Overlay;
 

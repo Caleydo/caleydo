@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.parser.ascii.lookuptable;
+package org.caleydo.core.parser.ascii.lookuptable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,26 +13,26 @@ import java.util.Set;
 //import java.util.NoSuchElementException;
 //import java.util.StringTokenizer;
 
-//import org.geneview.core.base.map.MultiHashArrayMap;
-//import org.geneview.core.base.map.MultiHashArrayStringMap;
-//import org.geneview.core.data.collection.parser.ParserTokenHandler;
-import org.geneview.core.data.map.MultiHashArrayIntegerMap;
-import org.geneview.core.data.map.MultiHashArrayStringMap;
-import org.geneview.core.data.mapping.EGenomeMappingType;
-import org.geneview.core.data.mapping.EGenomeMappingDataType;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-//import org.geneview.core.manager.data.genome.AGenomeIdMap;
-import org.geneview.core.manager.data.genome.DynamicGenomeIdManager;
-import org.geneview.core.manager.data.genome.IGenomeIdMap;
-import org.geneview.core.parser.ascii.AbstractLoader;
-import org.geneview.core.parser.xml.sax.ISaxParserHandler;
+//import org.caleydo.core.base.map.MultiHashArrayMap;
+//import org.caleydo.core.base.map.MultiHashArrayStringMap;
+//import org.caleydo.core.data.collection.parser.ParserTokenHandler;
+import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
+import org.caleydo.core.data.map.MultiHashArrayStringMap;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.mapping.EGenomeMappingDataType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+//import org.caleydo.core.manager.data.genome.AGenomeIdMap;
+import org.caleydo.core.manager.data.genome.DynamicGenomeIdManager;
+import org.caleydo.core.manager.data.genome.IGenomeIdMap;
+import org.caleydo.core.parser.ascii.AbstractLoader;
+import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
 /**
  * @author Michael Kalkusch
  *
- * @see org.geneview.core.parser.ascii.IParserObject
+ * @see org.caleydo.core.parser.ascii.IParserObject
  */
 public final class LookupTableLoaderProxy 
 extends AbstractLoader {
@@ -165,7 +165,7 @@ extends AbstractLoader {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.handler.importer.ascii.AbstractLoader#loadDataParseFile(java.io.BufferedReader, int)
+	 * @see org.caleydo.core.parser.handler.importer.ascii.AbstractLoader#loadDataParseFile(java.io.BufferedReader, int)
 	 */
 	@Override
 	protected int loadDataParseFile(BufferedReader brFile,
@@ -200,11 +200,11 @@ extends AbstractLoader {
 	}
 
 	/**
-	 * Writes back Map to IGenomeIdManager by calling org.geneview.core.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
+	 * Writes back Map to IGenomeIdManager by calling org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
 	 * 
-	 * @see org.geneview.core.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#copyDataToInternalDataStructures()
-	 * @see org.geneview.core.manager.data.IGenomeIdManager
+	 * @see org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#copyDataToInternalDataStructures()
+	 * @see org.caleydo.core.manager.data.IGenomeIdManager
 	 */
 	@Override
 	protected boolean copyDataToInternalDataStructures() {
@@ -225,7 +225,7 @@ extends AbstractLoader {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.xml.IMementoXML#setMementoXML_usingHandler(org.geneview.core.xml.parser.ISaxParserHandler)
+	 * @see org.caleydo.core.data.xml.IMementoXML#setMementoXML_usingHandler(org.caleydo.core.xml.parser.ISaxParserHandler)
 	 */
 	public boolean setMementoXML_usingHandler(ISaxParserHandler refSaxHandler) {
 
@@ -233,14 +233,14 @@ extends AbstractLoader {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.xml.parser.IParserObject#init()
+	 * @see org.caleydo.core.xml.parser.IParserObject#init()
 	 */
 	public void init() {
 		
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.xml.parser.IParserObject#destroy()
+	 * @see org.caleydo.core.xml.parser.IParserObject#destroy()
 	 */
 	public void destroy() {
 		refProxyLookupTableLoader.destroyLUT();

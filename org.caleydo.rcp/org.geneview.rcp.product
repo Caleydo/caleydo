@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.1"?>
 
-<product name="GeneView Product" id="org.geneview.rcp.product" application="org.geneview.rcp.application" useFeatures="true">
+<product name="Caleydo Product" id="org.caleydo.rcp.product" application="org.caleydo.rcp.application" useFeatures="true">
 
    <aboutInfo>
-      <image path="/org.geneview.rcp/resources/geneview_logo_small.png"/>
+      <image path="/org.caleydo.rcp/resources/geneview_logo_small.png"/>
       <text>
-         GeneView visualization framework
-GeneView is a general purpose visualization framework.
+         Caleydo visualization framework
+Caleydo is a general purpose visualization framework.
 See: www.geneview.org
 
 (c) Copyright by www.geneview.org and Institute for Computer Graphics and Vision (ICG)
@@ -26,7 +26,7 @@ All Rights Reserved.
    <windowImages/>
 
    <splash
-      location="org.geneview.rcp" />
+      location="org.caleydo.rcp" />
    <launcher name="geneview">
       <solaris/>
       <win useIco="false">
@@ -77,11 +77,11 @@ All Rights Reserved.
       <plugin id="org.eclipse.update.core.linux" fragment="true"/>
       <plugin id="org.eclipse.update.core.win32" fragment="true"/>
       <plugin id="org.eclipse.update.ui"/>
-      <plugin id="org.geneview.rcp"/>
+      <plugin id="org.caleydo.rcp"/>
    </plugins>
 
    <features>
-      <feature id="org.geneview.rcp.feature" version="1.0.0"/>
+      <feature id="org.caleydo.rcp.feature" version="1.0.0"/>
    </features>
 
 </product>

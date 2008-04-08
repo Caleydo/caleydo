@@ -1,20 +1,20 @@
 /**
  * 
  */
-package org.geneview.core.view.swt.pathway;
+package org.caleydo.core.view.swt.pathway;
 
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.event.mediator.IMediatorReceiver;
-import org.geneview.core.manager.event.mediator.IMediatorSender;
-import org.geneview.core.view.AViewRep;
-import org.geneview.core.view.IView;
-import org.geneview.core.view.ViewType;
-import org.geneview.core.view.swt.pathway.jgraph.PathwayGraphViewRep;
-import org.geneview.core.view.swt.toolbar.Pathway2DToolbar;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
+import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.IView;
+import org.caleydo.core.view.ViewType;
+import org.caleydo.core.view.swt.pathway.jgraph.PathwayGraphViewRep;
+import org.caleydo.core.view.swt.toolbar.Pathway2DToolbar;
 
 /**
  * Pathway view.
@@ -52,7 +52,7 @@ implements IView, IMediatorSender, IMediatorReceiver {
 
 	/**
 	 * 
-	 * @see org.geneview.core.view.IView#initView()
+	 * @see org.caleydo.core.view.IView#initView()
 	 */
 	protected void initViewSwtComposit(Composite swtContainer) {
 		
@@ -96,7 +96,7 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.AViewRep#updateReceiver(java.lang.Object, org.geneview.core.data.collection.ISet)
+	 * @see org.caleydo.core.view.AViewRep#updateReceiver(java.lang.Object, org.caleydo.core.data.collection.ISet)
 	 */
 	public void updateReceiver(Object eventTrigger, 
 			ISet updatedSet) {

@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.canvas;
+package org.caleydo.core.view.opengl.canvas;
 
 import java.awt.Font;
 import java.util.ArrayList;
@@ -6,26 +6,26 @@ import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.data.collection.SetType;
-import org.geneview.core.data.collection.set.selection.ISetSelection;
-import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
-import org.geneview.core.data.mapping.EGenomeMappingType;
-import org.geneview.core.data.view.camera.IViewFrustum;
-import org.geneview.core.data.view.rep.selection.SelectedElementRep;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.data.IGenomeIdManager;
-import org.geneview.core.manager.event.mediator.IMediatorReceiver;
-import org.geneview.core.manager.event.mediator.IMediatorSender;
-import org.geneview.core.manager.view.ESelectionMode;
-import org.geneview.core.manager.view.SelectionManager;
-import org.geneview.core.util.system.StringConversionTool;
-import org.geneview.core.view.opengl.canvas.parcoords.EInputDataType;
-import org.geneview.core.view.opengl.canvas.parcoords.ESelectionType;
-import org.geneview.core.view.opengl.util.selection.EViewInternalSelectionType;
-import org.geneview.core.view.opengl.util.selection.GenericSelectionManager;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.SetType;
+import org.caleydo.core.data.collection.set.selection.ISetSelection;
+import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.data.IGenomeIdManager;
+import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
+import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.view.ESelectionMode;
+import org.caleydo.core.manager.view.SelectionManager;
+import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
+import org.caleydo.core.view.opengl.canvas.parcoords.ESelectionType;
+import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
+import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -334,7 +334,7 @@ implements IMediatorReceiver, IMediatorSender
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#updateReceiver(java.lang.Object)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#updateReceiver(java.lang.Object)
 	 */
 	public void updateReceiver(Object eventTrigger) {
 

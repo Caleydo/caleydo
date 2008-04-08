@@ -37,7 +37,7 @@
  * and developed by Kenneth Bradley Russell and Christopher John Kline.
  */
 
-package org.geneview.core.util.system;
+package org.caleydo.core.util.system;
 
 /** Implementation of {@link demos.util.Time} interface based
  on {@link java.lang.System.currentTimeMillis}. Performs smoothing

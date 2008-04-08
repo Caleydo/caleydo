@@ -6,14 +6,14 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.view.camera;
+package org.caleydo.core.data.view.camera;
 
 import java.lang.IndexOutOfBoundsException;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
-import org.geneview.core.data.view.camera.ViewCameraBase;
+import org.caleydo.core.data.view.camera.ViewCameraBase;
 
 
 /**
@@ -21,7 +21,7 @@ import org.geneview.core.data.view.camera.ViewCameraBase;
  * 
  * Note: using OpenGL camera convention. camera viewing in -z direction onto the x-y plane.
  * 
- * @see org.geneview.core.data.view.camera.IViewCamera
+ * @see org.caleydo.core.data.view.camera.IViewCamera
  * 
  * @author Michael Kalkusch
  *

@@ -1,10 +1,10 @@
 /**
  * 
  */
-package org.geneview.core.manager;
+package org.caleydo.core.manager;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.util.IGeneViewDefaultType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.util.ICaleydoDefaultType;
 
 /**
  * @author Michael Kalkusch
@@ -14,7 +14,7 @@ public interface ILoggerManager
 extends IGeneralManager 
 {
 	public static enum LoggerType 
-	implements IGeneViewDefaultType <LoggerType> {
+	implements ICaleydoDefaultType <LoggerType> {
 		
 		ERROR			(  0, "E: ", "show error only" ),
 		MINOR_ERROR		(  5, "M: ", "show any errors" ),
@@ -73,7 +73,7 @@ extends IGeneralManager
 
 		/*
 		 * (non-Javadoc)
-		 * @see org.geneview.core.util.IGeneViewDefaultType#getTypeDefault()
+		 * @see org.caleydo.core.util.ICaleydoDefaultType#getTypeDefault()
 		 */
 		public LoggerType getTypeDefault() {
 

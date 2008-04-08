@@ -1,4 +1,4 @@
-package org.geneview.core.view.swt.toolbar;
+package org.caleydo.core.view.swt.toolbar;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;

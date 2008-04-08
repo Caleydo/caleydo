@@ -1,13 +1,13 @@
-package org.geneview.rcp.perspective;
+package org.caleydo.rcp.perspective;
 
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 import org.eclipse.ui.IViewLayout;
-import org.geneview.rcp.Application;
-import org.geneview.rcp.views.GLJukeboxPathwayView;
-import org.geneview.rcp.views.HTMLBrowserView;
-import org.geneview.rcp.views.Pathway2DView;
+import org.caleydo.rcp.Application;
+import org.caleydo.rcp.views.GLJukeboxPathwayView;
+import org.caleydo.rcp.views.HTMLBrowserView;
+import org.caleydo.rcp.views.Pathway2DView;
 
 public class GenomePerspective 
 implements IPerspectiveFactory {

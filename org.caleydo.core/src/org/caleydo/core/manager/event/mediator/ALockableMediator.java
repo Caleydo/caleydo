@@ -3,17 +3,17 @@
  *  
  */
 
-package org.geneview.core.manager.event.mediator;
+package org.caleydo.core.manager.event.mediator;
 
-import org.geneview.core.manager.IEventPublisher;
-import org.geneview.core.manager.event.mediator.MediatorUpdateType;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
+import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Abstract class for the mediator that belongs to the event mechanism.
  * 
- * @see org.geneview.core.manager.event.mediator.IMediator
+ * @see org.caleydo.core.manager.event.mediator.IMediator
  * 
  * @author Micheal Kalkusch
  * @author Marc Streit
@@ -58,7 +58,7 @@ extends ALockableMediatorReceiver {
 	/**
 	 * Implement cleanup inside this function.
 	 * 
-	 * @see org.geneview.core.manager.event.mediator.ALockableMediator#destroyMediator(IEventPublisher)
+	 * @see org.caleydo.core.manager.event.mediator.ALockableMediator#destroyMediator(IEventPublisher)
 	 * 
 	 * @param sender callling object 
 	 */
@@ -69,13 +69,13 @@ extends ALockableMediatorReceiver {
 	/**
 	 * Test if caller is creator and calls destroyMediatorObject(IMediatorSender).
 	 * 
-	 * @see org.geneview.core.manager.event.mediator.IMediator#destroyMediator()
-	 * @see org.geneview.core.manager.event.mediator.ALockableMediator#destroyMediatorDerivedObject(IMediatorSender)
+	 * @see org.caleydo.core.manager.event.mediator.IMediator#destroyMediator()
+	 * @see org.caleydo.core.manager.event.mediator.ALockableMediator#destroyMediatorDerivedObject(IMediatorSender)
 	 */
 	public final void destroyMediator( final IEventPublisher sender )
 	{
 		if ( ! refEventPublisher.equals(sender)) {
-			throw new GeneViewRuntimeException("IMediator.destroyMediator() may only be callled by its creator!");
+			throw new CaleydoRuntimeException("IMediator.destroyMediator() may only be callled by its creator!");
 		}
 
 		destroyMediatorDerivedObject( sender );
@@ -83,7 +83,7 @@ extends ALockableMediatorReceiver {
 	
 
 	/**
-	 * @see org.geneview.core.data.IUniqueObject#getId()
+	 * @see org.caleydo.core.data.IUniqueObject#getId()
 	 */
 	public final int getId() {
 
@@ -93,12 +93,12 @@ extends ALockableMediatorReceiver {
 	/**
 	 * Since the MediatorId is final this method must not be called.
 	 * 
-	 * @see org.geneview.core.data.IUniqueObject#setId(int)
+	 * @see org.caleydo.core.data.IUniqueObject#setId(int)
 	 */
 	public final void setId(int isetId) {
 		
-		throw new GeneViewRuntimeException("setId() must not be called.",
-				GeneViewRuntimeExceptionType.OBSERVER);
+		throw new CaleydoRuntimeException("setId() must not be called.",
+				CaleydoRuntimeExceptionType.OBSERVER);
 		
 		//this.iMediatorId = isetId;
 		

@@ -1,7 +1,7 @@
-package org.geneview.core.data.collection.thread;
+package org.caleydo.core.data.collection.thread;
 
-import org.geneview.core.data.collection.thread.lock.ICollectionLock;
-import org.geneview.core.data.IUniqueObject;
+import org.caleydo.core.data.collection.thread.lock.ICollectionLock;
+import org.caleydo.core.data.IUniqueObject;
 
 public interface ICollectionThreadItem 
 	extends IUniqueObject {

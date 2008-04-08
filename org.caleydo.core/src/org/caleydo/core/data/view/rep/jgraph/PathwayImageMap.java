@@ -1,4 +1,4 @@
-package org.geneview.core.data.view.rep.jgraph;
+package org.caleydo.core.data.view.rep.jgraph;
 
 import java.awt.Point;
 import java.awt.Rectangle;

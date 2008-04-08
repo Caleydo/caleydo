@@ -7,9 +7,9 @@
  *  
  */
 
-package org.geneview.core.view.swt.widget;
+package org.caleydo.core.view.swt.widget;
 
-import org.geneview.core.view.swt.widget.ASWTWidget;
+import org.caleydo.core.view.swt.widget.ASWTWidget;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;

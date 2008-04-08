@@ -6,9 +6,9 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection;
+package org.caleydo.core.data.collection;
 
-import org.geneview.core.data.collection.ISet;
+import org.caleydo.core.data.collection.ISet;
 
 /**
  * @author Michael Kalkusch

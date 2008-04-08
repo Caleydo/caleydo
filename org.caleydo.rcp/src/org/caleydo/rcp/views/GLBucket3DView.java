@@ -1,4 +1,4 @@
-package org.geneview.rcp.views;
+package org.caleydo.rcp.views;
 
 
 import org.eclipse.jface.action.IContributionItem;
@@ -8,12 +8,12 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.geneview.rcp.util.search.SearchBar;
+import org.caleydo.rcp.util.search.SearchBar;
 
 public class GLBucket3DView 
 extends AGLViewPart {
 
-	public static final String ID = "org.geneview.rcp.views.GLBucket3DView";
+	public static final String ID = "org.caleydo.rcp.views.GLBucket3DView";
 
 	protected int iGLCanvasDirectorId;
 	

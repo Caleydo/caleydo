@@ -6,14 +6,14 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.command.memento.sample;
+package org.caleydo.core.command.memento.sample;
 
-import org.geneview.core.command.memento.IGeneralMemento;
-import org.geneview.core.command.memento.IMemento;
-import org.geneview.core.command.memento.IMementoCreator;
-import org.geneview.core.command.memento.sample.SampleMementoState;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
+import org.caleydo.core.command.memento.IGeneralMemento;
+import org.caleydo.core.command.memento.IMemento;
+import org.caleydo.core.command.memento.IMementoCreator;
+import org.caleydo.core.command.memento.sample.SampleMementoState;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 
 /**
@@ -79,7 +79,7 @@ public class SampleObjectShowUsageOfMemento implements IMementoCreator {
 	 * @see prometheus.command.memento.MementoCreator#setMemento(prometheus.command.memento.Memento)
 	 */
 	public void setMemento(IMemento setMemento)
-			throws GeneViewRuntimeException {
+			throws CaleydoRuntimeException {
 		
 		SampleMementoState 	bufferMementoState 	= null;
 		
@@ -93,8 +93,8 @@ public class SampleObjectShowUsageOfMemento implements IMementoCreator {
 			this.fMyData = bufferMementoState.getPostData();
 				
 		} catch (Exception e) {
-			throw new GeneViewRuntimeException("setMemento() with wrong IMementoState! "+ e.toString(),
-					GeneViewRuntimeExceptionType.MEMENTO );
+			throw new CaleydoRuntimeException("setMemento() with wrong IMementoState! "+ e.toString(),
+					CaleydoRuntimeExceptionType.MEMENTO );
 		}
 
 	}

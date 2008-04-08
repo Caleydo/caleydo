@@ -1,11 +1,11 @@
-package org.geneview.core.view.swt.data.meta;
+package org.caleydo.core.view.swt.data.meta;
 
 import org.eclipse.swt.widgets.Composite;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.view.AViewRep;
-import org.geneview.core.view.ViewType;
-import org.geneview.core.view.swt.data.IDataTableView;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.ViewType;
+import org.caleydo.core.view.swt.data.IDataTableView;
 
 public class MetaTableViewRep extends AViewRep implements IDataTableView
 {	

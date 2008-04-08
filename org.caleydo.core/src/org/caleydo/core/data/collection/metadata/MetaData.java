@@ -6,9 +6,9 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection.metadata;
+package org.caleydo.core.data.collection.metadata;
 
-import org.geneview.core.data.collection.IMetaData;
+import org.caleydo.core.data.collection.IMetaData;
 
 /**
  * Keep a state of an object linked to. 

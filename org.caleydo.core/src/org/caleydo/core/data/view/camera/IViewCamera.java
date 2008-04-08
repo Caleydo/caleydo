@@ -6,20 +6,20 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.view.camera;
+package org.caleydo.core.data.view.camera;
 
-//import org.geneview.core.math.MathUtil;
+//import org.caleydo.core.math.MathUtil;
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
-import org.geneview.core.data.IUniqueObject;
+import org.caleydo.core.data.IUniqueObject;
 
 /**
  * View camera interface
  * 
- * @see org.geneview.core.data.collection.SetDataType
- * @see org.geneview.core.data.collection.set.viewdata.ISetViewData
+ * @see org.caleydo.core.data.collection.SetDataType
+ * @see org.caleydo.core.data.collection.set.viewdata.ISetViewData
  *  
  * @author Michael Kalkusch
  *
@@ -84,10 +84,10 @@ extends IUniqueObject {
 	
 	/**
 	 * Get camera rotation as axis and rotation angle in degrees.
-	 * Note: uses org.geneview.core.math.MathUtil#radiant2Grad(float)
+	 * Note: uses org.caleydo.core.math.MathUtil#radiant2Grad(float)
 	 * 
 	 * @see gleem.linalg.Rotf#get(Vec3f)
-	 * @see org.geneview.core.math.MathUtil#radiant2Grad(float)
+	 * @see org.caleydo.core.math.MathUtil#radiant2Grad(float)
 	 * 
 	 * @param axis 
 	 * @return angel of rotation around axis (quaternion)

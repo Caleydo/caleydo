@@ -6,11 +6,11 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.command.memento.sample;
+package org.caleydo.core.command.memento.sample;
 
 import java.io.Serializable;
 
-import org.geneview.core.command.memento.IMementoState;
+import org.caleydo.core.command.memento.IMementoState;
 
 /**
  * Sample code for a IMemento state.

@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.canvas.parcoords;
+package org.caleydo.core.view.opengl.canvas.parcoords;
 
 
 public enum EInputDataType

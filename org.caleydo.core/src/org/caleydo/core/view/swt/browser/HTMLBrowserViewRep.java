@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.view.swt.browser;
+package org.caleydo.core.view.swt.browser;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
@@ -13,14 +13,14 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.data.CmdDataCreateSelectionSetMakro;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.view.AViewRep;
-import org.geneview.core.view.IView;
-import org.geneview.core.view.ViewType;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.data.CmdDataCreateSelectionSetMakro;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.IView;
+import org.caleydo.core.view.ViewType;
 
 /**
  * Simple HTML browser.
@@ -34,11 +34,11 @@ implements IView {
 
 	public EBrowserType browserType;
 	
-	public static String GENEVIEW_HOME = "http://www.geneview.org";
+	public static String CALEYDO_HOME = "http://www.caleydo.org";
 	
     protected HookedBrowser refBrowser;
     
-    protected String sUrl = GENEVIEW_HOME;
+    protected String sUrl = CALEYDO_HOME;
     
     protected Text refTextField;
     
@@ -81,7 +81,7 @@ implements IView {
 	
 	/**
 	 * 
-	 * @see org.geneview.core.view.IView#initView()
+	 * @see org.caleydo.core.view.IView#initView()
 	 */
 	protected void initViewSwtComposit(Composite swtContainer) {
 		

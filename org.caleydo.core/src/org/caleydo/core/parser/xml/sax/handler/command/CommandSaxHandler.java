@@ -1,29 +1,29 @@
-package org.geneview.core.parser.xml.sax.handler.command;
+package org.caleydo.core.parser.xml.sax.handler.command;
 
 import org.xml.sax.SAXException;
 import org.xml.sax.Attributes;
 //import org.xml.sax.helpers.DefaultHandler;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.ICommand;
-import org.geneview.core.command.queue.ICommandQueue;
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.IXmlParserManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.parser.parameter.IParameterHandler;
-import org.geneview.core.parser.parameter.ParameterHandler;
-import org.geneview.core.parser.parameter.IParameterHandler.ParameterHandlerType;
-//import org.geneview.core.manager.IMenuManager;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.parser.xml.sax.handler.AXmlParserHandler;
-import org.geneview.core.parser.xml.sax.handler.SXmlParserHandler;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.ICommand;
+import org.caleydo.core.command.queue.ICommandQueue;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IXmlParserManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.parser.parameter.ParameterHandler;
+import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
+//import org.caleydo.core.manager.IMenuManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
+import org.caleydo.core.parser.xml.sax.handler.SXmlParserHandler;
 
 
 /**
  * Create Menus in Frames from XML file.
  * 
- * @see org.geneview.core.parser.xml.sax.handler.IXmlParserHandler
+ * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler
  * 
  * @author Michael Kalkusch
  *
@@ -229,7 +229,7 @@ extends AXmlParserHandler
 			return lastCommand;
 			
 		}
-		catch ( GeneViewRuntimeException gve) 
+		catch ( CaleydoRuntimeException gve) 
 		{
 			String sDetails = "";
 			if ( lastCommand != null ) 
@@ -364,7 +364,7 @@ extends AXmlParserHandler
 		} //switch (currentType) {
 		
 
-//			throw new GeneViewRuntimeException( "can not create command from [" +
+//			throw new CaleydoRuntimeException( "can not create command from [" +
 //					attrs.toString() + "]");
 	}
 	

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.manager.parser;
+package org.caleydo.core.manager.parser;
 
 import java.util.Hashtable;
 //import java.util.Iterator;
@@ -10,12 +10,12 @@ import java.util.LinkedList;
 //import org.xml.sax.Attributes;
 import org.xml.sax.helpers.DefaultHandler;
 
-import org.geneview.core.data.IManagedObject;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.IXmlParserManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.parser.xml.sax.handler.IXmlParserHandler;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.data.IManagedObject;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IXmlParserManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 /**
  * @author Michael Kalkusch
  *
@@ -79,7 +79,7 @@ implements IXmlParserManager, IManagedObject
 	protected final boolean closeCurrentTag() {
 		
 		if ( this.currentHandler == null ) {
-			throw new GeneViewRuntimeException("AXmlParserManager.closeCurrentTag() current handler is null! Can not close handler");
+			throw new CaleydoRuntimeException("AXmlParserManager.closeCurrentTag() current handler is null! Can not close handler");
 			//return false;
 		}
 		
@@ -162,12 +162,12 @@ implements IXmlParserManager, IManagedObject
 //		
 //		if ( ! refIXmlParserManager.equals( this) ) 
 //		{
-//			throw new GeneViewRuntimeException("AXmlParserManager.openCurrentTagForRecursiveReader() must be called by IXmlParserManager!");			
+//			throw new CaleydoRuntimeException("AXmlParserManager.openCurrentTagForRecursiveReader() must be called by IXmlParserManager!");			
 //		}
 //		
 //		if ( newHandler == null ) 
 //		{
-//			throw new GeneViewRuntimeException("AXmlParserManager.openCurrentTagForRecursiveReader() new handler is null!");
+//			throw new CaleydoRuntimeException("AXmlParserManager.openCurrentTagForRecursiveReader() new handler is null!");
 //		}
 //		
 //		if ( currentHandler != null ) 
@@ -202,33 +202,33 @@ implements IXmlParserManager, IManagedObject
 //	}
 	
 	/**
-	 * @see org.geneview.core.data.collection.UniqueManagedInterface#getManager()
+	 * @see org.caleydo.core.data.collection.UniqueManagedInterface#getManager()
 	 */
 	public final IGeneralManager getManager() {
 		return this.refGeneralManager;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.xml.parser.manager.IXmlParserManager#registerAndInitSaxHandler(IXmlParserHandler)
+	 * @see org.caleydo.core.xml.parser.manager.IXmlParserManager#registerAndInitSaxHandler(IXmlParserHandler)
 	 */
 	public final boolean registerAndInitSaxHandler(IXmlParserHandler handler )
 	{
 		assert handler != null : "Can not handle null pointer as handler";
 		
 		if ( bProcessingXmlDataNow ) {
-			throw new GeneViewRuntimeException("AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because Xml file is processed now!");			
+			throw new CaleydoRuntimeException("AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because Xml file is processed now!");			
 			//return false;
 		}
 		
 		if ( hashTag2XmlParser.contains( handler ) ) {
-			throw new GeneViewRuntimeException("AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because it is already registered!");
+			throw new CaleydoRuntimeException("AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because it is already registered!");
 			//return false;
 		}
 		
 		String key = handler.getXmlActivationTag();
 		
 		if ( hashTag2XmlParser.containsKey( key ) ) {
-			throw new GeneViewRuntimeException("AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because String [" + 
+			throw new CaleydoRuntimeException("AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because String [" + 
 					handler.getXmlActivationTag() + 
 					"] is already registered!");
 			//return false;
@@ -250,19 +250,19 @@ implements IXmlParserManager, IManagedObject
 	
 	
 	/**
-	 * @see org.geneview.core.manager.IXmlParserManager#unregisterSaxHandler(Stringt)
+	 * @see org.caleydo.core.manager.IXmlParserManager#unregisterSaxHandler(Stringt)
 	 */
 	public final boolean unregisterSaxHandler( final String sActivationXmlTag)
 	{
 		assert sActivationXmlTag != null : "Can not handle null pointer as handler";
 		
 		if ( bProcessingXmlDataNow ) {
-			throw new GeneViewRuntimeException("AXmlParserManager.registerSaxHandler() can not register Handler, because Xml file is processed now!");			
+			throw new CaleydoRuntimeException("AXmlParserManager.registerSaxHandler() can not register Handler, because Xml file is processed now!");			
 			//return false;
 		}
 		
 		if ( ! hashTag2XmlParser.containsKey( sActivationXmlTag ) ) {
-			throw new GeneViewRuntimeException("AXmlParserManager.unregisterSaxHandler() can not unregister Handler, because it is not registered!");
+			throw new CaleydoRuntimeException("AXmlParserManager.unregisterSaxHandler() can not unregister Handler, because it is not registered!");
 			//return false;
 		}
 		
@@ -301,7 +301,7 @@ implements IXmlParserManager, IManagedObject
 //	 * 
 //	 * @deprecated not used any more. use openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager) instead.
 //	 * 
-//	 * @see org.geneview.core.manager.IXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager) 
+//	 * @see org.caleydo.core.manager.IXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager) 
 //	 */
 //	protected final void swapXmlParserHandler( IXmlParserHandler from, 
 //			IXmlParserHandler to ) {
@@ -345,7 +345,7 @@ implements IXmlParserManager, IManagedObject
 	
 
 	/*
-	 * @see org.geneview.core.xml.parser.manager.IXmlParserManager#getCurrentXmlParserHandler()
+	 * @see org.caleydo.core.xml.parser.manager.IXmlParserManager#getCurrentXmlParserHandler()
 	 */
 	public final IXmlParserHandler getCurrentXmlParserHandler() {
 		return this.currentHandler;

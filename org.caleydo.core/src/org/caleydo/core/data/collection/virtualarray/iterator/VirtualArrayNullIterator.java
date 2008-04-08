@@ -1,11 +1,11 @@
 /**
  * 
  */
-package org.geneview.core.data.collection.virtualarray.iterator;
+package org.caleydo.core.data.collection.virtualarray.iterator;
 
 import java.util.NoSuchElementException;
 
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Null iterator representing null obejct for iteration.
@@ -47,7 +47,7 @@ public final class VirtualArrayNullIterator implements IVirtualArrayIterator {
 	 * @see prometheus.data.collection.selection.iterator.SelectionIterator#setVirtualIndex(int)
 	 */
 	public void setVirtualIndex(int iSetVirtualIndex)
-			throws GeneViewRuntimeException {
+			throws CaleydoRuntimeException {
 		assert false : "Does not make sence to set idnex on null iterator.";
 	}
 

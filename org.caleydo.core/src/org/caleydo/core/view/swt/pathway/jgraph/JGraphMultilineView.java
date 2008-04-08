@@ -19,7 +19,7 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
  *
  */
-package org.geneview.core.view.swt.pathway.jgraph;
+package org.caleydo.core.view.swt.pathway.jgraph;
 
 //import java.awt.BasicStroke;
 import java.awt.Color;

@@ -6,13 +6,13 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection.virtualarray.iterator;
+package org.caleydo.core.data.collection.virtualarray.iterator;
 
-import org.geneview.core.data.collection.IVirtualArray;
+import org.caleydo.core.data.collection.IVirtualArray;
 //import prometheus.data.collection.SelectionType;
 
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Automatical creates the suitable iterator for several IVirtualArray's.
@@ -58,9 +58,9 @@ public class VirtualArrayIteratorFactory {
 			
 		default:
 			
-			throw new GeneViewRuntimeException("VirtualArrayProxyIterator.Constructor with unsuppoerte selection type: [" +
+			throw new CaleydoRuntimeException("VirtualArrayProxyIterator.Constructor with unsuppoerte selection type: [" +
 					setSelection.getSelectionType() + "] !",
-					GeneViewRuntimeExceptionType.VIRTUALARRAY );
+					CaleydoRuntimeExceptionType.VIRTUALARRAY );
 		}
 		
 		return refSelectionIterator;

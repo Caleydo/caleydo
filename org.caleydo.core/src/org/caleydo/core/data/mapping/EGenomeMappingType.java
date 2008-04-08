@@ -1,8 +1,8 @@
-package org.geneview.core.data.mapping;
+package org.caleydo.core.data.mapping;
 
-import org.geneview.core.data.mapping.EGenomeMappingDataType;
-import org.geneview.core.data.mapping.EGenomeIdType;
-import org.geneview.core.util.IGeneViewDefaultType;
+import org.caleydo.core.data.mapping.EGenomeMappingDataType;
+import org.caleydo.core.data.mapping.EGenomeIdType;
+import org.caleydo.core.util.ICaleydoDefaultType;
 
 /**
  * Enum defines possible combinations of 
@@ -13,7 +13,7 @@ import org.geneview.core.util.IGeneViewDefaultType;
  *
  */
 public enum EGenomeMappingType
-implements IGeneViewDefaultType <EGenomeMappingType> {
+implements ICaleydoDefaultType <EGenomeMappingType> {
 	
 	/* --- Accession Id --- */
 	ACCESSION_CODE_2_ACCESSION (
@@ -275,7 +275,7 @@ implements IGeneViewDefaultType <EGenomeMappingType> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.util.IGeneViewDefaultType#getTypeDefault()
+	 * @see org.caleydo.core.util.ICaleydoDefaultType#getTypeDefault()
 	 */
 	public EGenomeMappingType getTypeDefault() {
 		

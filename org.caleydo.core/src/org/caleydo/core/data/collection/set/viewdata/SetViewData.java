@@ -1,10 +1,10 @@
-package org.geneview.core.data.collection.set.viewdata;
+package org.caleydo.core.data.collection.set.viewdata;
 
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.SetType;
-import org.geneview.core.data.view.camera.IViewCamera;
-import org.geneview.core.data.view.camera.ViewCameraPitchRollYaw;
-import org.geneview.core.manager.IGeneralManager;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.SetType;
+import org.caleydo.core.data.view.camera.IViewCamera;
+import org.caleydo.core.data.view.camera.ViewCameraPitchRollYaw;
+import org.caleydo.core.manager.IGeneralManager;
 
 /**
  * A Set handling a ViewCamera.
@@ -41,7 +41,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISubSet#addSubSet(org.geneview.core.data.collection.ISet)
+	 * @see org.caleydo.core.data.collection.ISubSet#addSubSet(org.caleydo.core.data.collection.ISet)
 	 */
 	public final boolean addSubSet(ISet addSet) {
 		
@@ -50,7 +50,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISubSet#getSubSets()
+	 * @see org.caleydo.core.data.collection.ISubSet#getSubSets()
 	 */
 	public final ISet[] getSubSets() {
 
@@ -59,7 +59,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISubSet#hasSubSets()
+	 * @see org.caleydo.core.data.collection.ISubSet#hasSubSets()
 	 */
 	public final boolean hasSubSets() {
 
@@ -67,7 +67,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISubSet#removeSubSet(org.geneview.core.data.collection.ISet)
+	 * @see org.caleydo.core.data.collection.ISubSet#removeSubSet(org.caleydo.core.data.collection.ISet)
 	 */
 	public final boolean removeSubSet(ISet addSet) {
 
@@ -76,7 +76,7 @@ implements ISetViewData {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.set.ASetSimple#getCacheId()
+	 * @see org.caleydo.core.data.collection.set.ASetSimple#getCacheId()
 	 */
 	@Override
 	public final int getCacheId() {
@@ -88,7 +88,7 @@ implements ISetViewData {
 	 * 
 	 */
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.set.viewdata.ISetViewData#getViewCamera()
+	 * @see org.caleydo.core.data.collection.set.viewdata.ISetViewData#getViewCamera()
 	 */
 	public IViewCamera getViewCamera() {
 
@@ -97,14 +97,14 @@ implements ISetViewData {
 
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.set.viewdata.ISetViewData#setViewCamera(org.geneview.core.data.view.camera.IViewCamera)
+	 * @see org.caleydo.core.data.collection.set.viewdata.ISetViewData#setViewCamera(org.caleydo.core.data.view.camera.IViewCamera)
 	 */
 	public void setViewCamera(IViewCamera setViewCamera) {
 
 		refIViewCamera = setViewCamera;
 	}
 	/* (non-Javadoc)
-	 * @see org.geneview.core.view.jogl.IJoglMouseListener#hasViewCameraChanged()
+	 * @see org.caleydo.core.view.jogl.IJoglMouseListener#hasViewCameraChanged()
 	 */
 	public boolean hasViewCameraChanged() {
 

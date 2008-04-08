@@ -6,7 +6,7 @@
  *  creation date: 03-07-2006
  *  
  */
-package org.geneview.core.test.soap.kegg;
+package org.caleydo.core.test.soap.kegg;
 
 import keggapi.KEGGLocator;
 import keggapi.KEGGPortType;

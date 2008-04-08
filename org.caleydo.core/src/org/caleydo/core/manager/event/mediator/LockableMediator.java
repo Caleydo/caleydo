@@ -1,15 +1,15 @@
 /**
  * 
  */
-package org.geneview.core.manager.event.mediator;
+package org.caleydo.core.manager.event.mediator;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.manager.IEventPublisher;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.event.mediator.MediatorUpdateType;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
 
 /**
  * Attention: Since Mediator is also a IMediatorReceiver care 
@@ -43,7 +43,7 @@ implements IMediator {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.observer.mediator.IMediator#destroyMediator(org.geneview.core.observer.mediator.IMediatorSender)
+	 * @see org.caleydo.core.observer.mediator.IMediator#destroyMediator(org.caleydo.core.observer.mediator.IMediatorSender)
 	 */
 	protected final void destroyMediatorDerivedObject(final IEventPublisher sender) {
 		
@@ -54,14 +54,14 @@ implements IMediator {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.observer.mediator.IMediator#register(org.geneview.core.observer.mediator.IMediatorSender)
+	 * @see org.caleydo.core.observer.mediator.IMediator#register(org.caleydo.core.observer.mediator.IMediatorSender)
 	 */
 	public final boolean register(IMediatorSender sender) {
 		assert sender != null : "can not register null-pointer";
 		
 		if (arSender.contains(sender))
 		{
-			//throw new GeneViewRuntimeException("LockableMediator.register() receiver that is already registered!");
+			//throw new CaleydoRuntimeException("LockableMediator.register() receiver that is already registered!");
 			return false;
 		}
 
@@ -71,14 +71,14 @@ implements IMediator {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.observer.mediator.IMediator#register(org.geneview.core.observer.mediator.IMediatorReceiver)
+	 * @see org.caleydo.core.observer.mediator.IMediator#register(org.caleydo.core.observer.mediator.IMediatorReceiver)
 	 */
 	public final boolean register(IMediatorReceiver receiver) {
 		assert receiver != null : "can not register null-pointer";
 		
 		if (arReceiver.contains(receiver))
 		{
-			//throw new GeneViewRuntimeException("LockableMediator.register() receiver that is already registered!");
+			//throw new CaleydoRuntimeException("LockableMediator.register() receiver that is already registered!");
 			return false;
 		}
 
@@ -88,7 +88,7 @@ implements IMediator {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.observer.mediator.IMediator#unregister(org.geneview.core.observer.mediator.IMediatorSender)
+	 * @see org.caleydo.core.observer.mediator.IMediator#unregister(org.caleydo.core.observer.mediator.IMediatorSender)
 	 */
 	public final boolean unregister(IMediatorSender sender) {
 		assert sender != null : "can not register null-pointer";
@@ -97,7 +97,7 @@ implements IMediator {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.observer.mediator.IMediator#unregister(org.geneview.core.observer.mediator.IMediatorReceiver)
+	 * @see org.caleydo.core.observer.mediator.IMediator#unregister(org.caleydo.core.observer.mediator.IMediatorReceiver)
 	 */
 	public final boolean unregister(IMediatorReceiver receiver) {
 		assert receiver != null : "can not register null-pointer";
@@ -106,7 +106,7 @@ implements IMediator {
 	}
 
 	/**
-	 * @see org.geneview.core.manager.event.mediator.IMediator#hasReceiver(org.geneview.core.manager.event.mediator.IMediatorReceiver)
+	 * @see org.caleydo.core.manager.event.mediator.IMediator#hasReceiver(org.caleydo.core.manager.event.mediator.IMediatorReceiver)
 	 */
 	public final boolean hasReceiver( IMediatorReceiver receiver ) {
 		assert receiver != null : "can not handle null-pointer";
@@ -114,7 +114,7 @@ implements IMediator {
 	}
 	
 	/**
-	 * @see org.geneview.core.manager.event.mediator.IMediator#hasSender(org.geneview.core.manager.event.mediator.IMediatorSender)
+	 * @see org.caleydo.core.manager.event.mediator.IMediator#hasSender(org.caleydo.core.manager.event.mediator.IMediatorSender)
 	 */
 	public final boolean hasSender( IMediatorSender sender ) {
 		assert sender != null : "can not handle null-pointer";
@@ -127,8 +127,8 @@ implements IMediator {
 	 * Notification of update events.
 	 * Calles updateReceiver(IMediatorSender) internal if updates are not stalled.
 	 * 
-	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#updateReceiver(Object)
-	 * @see org.geneview.core.observer.mediator.AThreadedMediatorReceiver#updateReceiver(org.geneview.core.observer.mediator.IMediatorSender)
+	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver(Object)
+	 * @see org.caleydo.core.observer.mediator.AThreadedMediatorReceiver#updateReceiver(org.caleydo.core.observer.mediator.IMediatorSender)
 	 */
 	@Override
 	public void updateReceiver(Object eventTrigger) {
@@ -156,9 +156,9 @@ implements IMediator {
 	/**
 	 * Base implementation.
 	 * 
-	 * @see org.geneview.core.manager.event.mediator.LockableExclusivFilterMediator
-	 * @see org.geneview.core.manager.event.mediator.LockableIgnoreFilterMediator
-	 * @see org.geneview.core.manager.event.mediator.ALockableMediatorReceiver#updateReceiverSelection(java.lang.Object, org.geneview.core.data.collection.ISet)
+	 * @see org.caleydo.core.manager.event.mediator.LockableExclusivFilterMediator
+	 * @see org.caleydo.core.manager.event.mediator.LockableIgnoreFilterMediator
+	 * @see org.caleydo.core.manager.event.mediator.ALockableMediatorReceiver#updateReceiverSelection(java.lang.Object, org.caleydo.core.data.collection.ISet)
 	 */
 	@Override
 	public void updateReceiverSpecialMediator(Object eventTrigger,

@@ -6,26 +6,26 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection.storage;
+package org.caleydo.core.data.collection.storage;
 
 import java.lang.NullPointerException;
 import java.util.Hashtable;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.parser.xml.sax.ISaxParserHandler;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
 //import org.xml.sax.InputSource;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.data.filter.CmdDataFilterMinMax;
-import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.data.collection.StorageType;
-//import org.geneview.core.data.manager.DComponentManager;
-import org.geneview.core.data.xml.IMementoNetEventXML;
-import org.geneview.core.data.collection.parser.CollectionFlatStorageSaxParserHandler;
-import org.geneview.core.data.collection.thread.impl.ACollectionThreadItem;
-import org.geneview.core.data.collection.thread.lock.ICollectionLock;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.data.filter.CmdDataFilterMinMax;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.StorageType;
+//import org.caleydo.core.data.manager.DComponentManager;
+import org.caleydo.core.data.xml.IMementoNetEventXML;
+import org.caleydo.core.data.collection.parser.CollectionFlatStorageSaxParserHandler;
+import org.caleydo.core.data.collection.thread.impl.ACollectionThreadItem;
+import org.caleydo.core.data.collection.thread.lock.ICollectionLock;
 
 /**
  * @author Michael Kalkusch
@@ -113,7 +113,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#addStorageTypePerContainer(org.geneview.core.data.collection.StorageType)
+	 * @see org.caleydo.core.data.collection.IStorage#addStorageTypePerContainer(org.caleydo.core.data.collection.StorageType)
 	 */
 	public int addStorageTypePerContainer(StorageType setStorageType) {
 		
@@ -122,7 +122,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#setStorageTypePerContainer(org.geneview.core.data.collection.StorageType, int)
+	 * @see org.caleydo.core.data.collection.IStorage#setStorageTypePerContainer(org.caleydo.core.data.collection.StorageType, int)
 	 */
 	public void setStorageTypePerContainer(StorageType setStorageType,
 			int iAtContainerPosition) {
@@ -131,7 +131,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	}
 
 //	/* (non-Javadoc)
-//	 * @see org.geneview.core.data.collection.IStorage#getStorageTypePerContainer(int)
+//	 * @see org.caleydo.core.data.collection.IStorage#getStorageTypePerContainer(int)
 //	 */
 //	public StorageType getStorageTypePerContainer( StorageType type) {
 //		try {
@@ -143,7 +143,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 //	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#removeStorage(int)
+	 * @see org.caleydo.core.data.collection.IStorage#removeStorage(int)
 	 */
 	public void removeStorage(StorageType useStorageType) {
 
@@ -180,7 +180,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#allocate()
+	 * @see org.caleydo.core.data.collection.IStorage#allocate()
 	 */
 	public boolean allocate() {
 
@@ -197,7 +197,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	}
 
 //	/* (non-Javadoc)
-//	 * @see org.geneview.core.data.collection.IStorage#setAllSize(int[])
+//	 * @see org.caleydo.core.data.collection.IStorage#setAllSize(int[])
 //	 */
 //	public void setAllSize(int[] size) {
 //	
@@ -213,7 +213,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 //	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#setSize(int, int)
+	 * @see org.caleydo.core.data.collection.IStorage#setSize(int, int)
 	 */
 	public void setSize( final StorageType byStorageType, final int iSetSize) {
 		
@@ -337,7 +337,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#getSize(int)
+	 * @see org.caleydo.core.data.collection.IStorage#getSize(int)
 	 */
 	private boolean allocatePerIndex( final StorageType type, final int iAllocationSize) {
 
@@ -474,7 +474,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	
 	
 //	/* (non-Javadoc)
-//	 * @see org.geneview.core.data.collection.IStorage#getAllSize()
+//	 * @see org.caleydo.core.data.collection.IStorage#getAllSize()
 //	 */
 //	public int[] getAllSize() {
 //		final int iSize =  typePerContainer.length;
@@ -489,14 +489,14 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 //	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#getNumberArrays()
+	 * @see org.caleydo.core.data.collection.IStorage#getNumberArrays()
 	 */
 	public final int getNumberArrays() {
 		return FlatThreadStorageSimple.iNumerOfUsedArrays;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#getArrayInt()
+	 * @see org.caleydo.core.data.collection.IStorage#getArrayInt()
 	 */
 	public int[] getArrayInt() {
 		return dataInt;
@@ -504,7 +504,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#getMinInt()
+	 * @see org.caleydo.core.data.collection.IStorage#getMinInt()
 	 */
 	public int getMinInt() {
 
@@ -523,7 +523,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#getMaxInt()
+	 * @see org.caleydo.core.data.collection.IStorage#getMaxInt()
 	 */
 	public int getMaxInt() {
 
@@ -541,7 +541,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#getArray2DInt()
+	 * @see org.caleydo.core.data.collection.IStorage#getArray2DInt()
 	 */
 	public int[][] getArray2DInt() {
 		assert false: "not supported by FlatStorageSimple";
@@ -550,7 +550,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#getArrayFloat()
+	 * @see org.caleydo.core.data.collection.IStorage#getArrayFloat()
 	 */
 	public float[] getArrayFloat() {
 		return dataFloat;
@@ -558,7 +558,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#getMinFloat()
+	 * @see org.caleydo.core.data.collection.IStorage#getMinFloat()
 	 */
 	public float getMinFloat() 
 	{
@@ -577,7 +577,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#getMaxFloat()
+	 * @see org.caleydo.core.data.collection.IStorage#getMaxFloat()
 	 */
 	public float getMaxFloat() 
 	{	
@@ -594,7 +594,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#getArray2DFloat()
+	 * @see org.caleydo.core.data.collection.IStorage#getArray2DFloat()
 	 */
 	public float[][] getArray2DFloat() {
 		assert false: "not supported by FlatStorageSimple";
@@ -604,14 +604,14 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#setArrayDouble(double[])
+	 * @see org.caleydo.core.data.collection.IStorage#setArrayDouble(double[])
 	 */
 	public void setArrayDouble(double[] set) {
 		dataDouble = set;	
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#getArrayDouble()
+	 * @see org.caleydo.core.data.collection.IStorage#getArrayDouble()
 	 */
 	public double[] getArrayDouble() 
 	{
@@ -620,7 +620,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#getMinDouble()
+	 * @see org.caleydo.core.data.collection.IStorage#getMinDouble()
 	 */
 	public double getMinDouble() 
 	{
@@ -640,7 +640,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#getMaxDouble()
+	 * @see org.caleydo.core.data.collection.IStorage#getMaxDouble()
 	 */
 	public double getMaxDouble() 
 	{
@@ -664,7 +664,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#getArray2DDouble()
+	 * @see org.caleydo.core.data.collection.IStorage#getArray2DDouble()
 	 */
 	public double[][] getArray2DDouble() {
 		assert false: "not supported by FlatStorageSimple";
@@ -673,14 +673,14 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#getArrayString()
+	 * @see org.caleydo.core.data.collection.IStorage#getArrayString()
 	 */
 	public String[] getArrayString() {
 		return dataString;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#getArray2DString()
+	 * @see org.caleydo.core.data.collection.IStorage#getArray2DString()
 	 */
 	public String[][] getArray2DString() {
 		assert false: "not supported by FlatStorageSimple";
@@ -689,7 +689,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#getArrayObject()
+	 * @see org.caleydo.core.data.collection.IStorage#getArrayObject()
 	 */
 	public Object[] getArrayObject() {
 		assert false: "not supported by FlatStorageSimple";
@@ -698,7 +698,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#getArray2DObject()
+	 * @see org.caleydo.core.data.collection.IStorage#getArray2DObject()
 	 */
 	public Object[][] getArray2DObject() {
 		assert false: "not supported by FlatStorageSimple";
@@ -708,14 +708,14 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#getArrayBoolean()
+	 * @see org.caleydo.core.data.collection.IStorage#getArrayBoolean()
 	 */
 	public boolean[] getArrayBoolean() {
 		return dataBoolean;
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IStorage#getArray2DObject()
+	 * @see org.caleydo.core.data.collection.IStorage#getArray2DObject()
 	 */
 	public boolean[][] getArray2DBoolean() {
 		assert false: "not supported by FlatStorageSimple";
@@ -822,7 +822,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.data.collection.UniqueManagedInterface#getBaseType()
+	 * @see org.caleydo.core.data.collection.UniqueManagedInterface#getBaseType()
 	 */
 	public ManagerObjectType getBaseType() {
 		return ManagerObjectType.STORAGE_FLAT;
@@ -842,7 +842,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 
 	
 	/**
-	 * @see org.geneview.core.data.collection.ICollection#getCacheId()
+	 * @see org.caleydo.core.data.collection.ICollection#getCacheId()
 	 */
 	public int getCacheId() {
 		return this.iCacheId;

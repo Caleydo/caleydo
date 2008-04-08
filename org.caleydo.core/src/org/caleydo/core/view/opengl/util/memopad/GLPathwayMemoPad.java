@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.util.memopad;
+package org.caleydo.core.view.opengl.util.memopad;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
@@ -9,12 +9,12 @@ import java.util.Iterator;
 
 import javax.media.opengl.GL;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.view.EPickingType;
-import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
-import org.geneview.core.view.opengl.canvas.pathway.GLPathwayManager;
-import org.geneview.core.view.opengl.canvas.pathway.GLPathwayTextureManager;
-import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.view.EPickingType;
+import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.pathway.GLPathwayManager;
+import org.caleydo.core.view.opengl.canvas.pathway.GLPathwayTextureManager;
+import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;

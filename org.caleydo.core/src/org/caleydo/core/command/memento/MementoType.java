@@ -6,7 +6,7 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.command.memento;
+package org.caleydo.core.command.memento;
 
 /**
  * Define types of mementos.

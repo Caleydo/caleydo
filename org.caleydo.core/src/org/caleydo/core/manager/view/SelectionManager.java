@@ -1,16 +1,16 @@
-package org.geneview.core.manager.view;
+package org.caleydo.core.manager.view;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-import org.geneview.core.data.view.rep.selection.SelectedElementRep;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.base.AAbstractManager;
-import org.geneview.core.manager.type.ManagerType;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
-import org.geneview.util.graph.IGraph;
+import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.caleydo.util.graph.IGraph;
 
 /**
  * 
@@ -70,7 +70,7 @@ extends AAbstractManager  {
 			addSelection(iElementID, selectedElementRep);			
 			break;			
 		default:
-			throw new GeneViewRuntimeException("No selection mode specified",  GeneViewRuntimeExceptionType.MANAGER);			
+			throw new CaleydoRuntimeException("No selection mode specified",  CaleydoRuntimeExceptionType.MANAGER);			
 		}		
 	}
 	
@@ -141,8 +141,8 @@ extends AAbstractManager  {
 		ArrayList<SelectedElementRep> tempList = hashSelectedElementID2SelectedElementReps.get(iElementID);
 		
 		if(tempList == null)
-			throw new GeneViewRuntimeException(
-					"SelectionManager: No representations for this element ID", GeneViewRuntimeExceptionType.MANAGER);		
+			throw new CaleydoRuntimeException(
+					"SelectionManager: No representations for this element ID", CaleydoRuntimeExceptionType.MANAGER);		
 		return tempList;
 	}
 	

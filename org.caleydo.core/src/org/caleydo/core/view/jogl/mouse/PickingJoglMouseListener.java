@@ -1,9 +1,9 @@
-package org.geneview.core.view.jogl.mouse;
+package org.caleydo.core.view.jogl.mouse;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
-import org.geneview.core.view.jogl.JoglCanvasForwarder;
+import org.caleydo.core.view.jogl.JoglCanvasForwarder;
 
 /**
  * Mouse picking listener for JOGL views
@@ -40,7 +40,7 @@ extends JoglMouseListener {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.jogl.mouse.JoglMouseListener#mousePressed(java.awt.event.MouseEvent)
+	 * @see org.caleydo.core.view.jogl.mouse.JoglMouseListener#mousePressed(java.awt.event.MouseEvent)
 	 */
 	public void mousePressed(MouseEvent mouseEvent) {
 
@@ -60,7 +60,7 @@ extends JoglMouseListener {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.jogl.mouse.JoglMouseListener#mouseMoved(java.awt.event.MouseEvent)
+	 * @see org.caleydo.core.view.jogl.mouse.JoglMouseListener#mouseMoved(java.awt.event.MouseEvent)
 	 */
     public void mouseMoved(MouseEvent mouseEvent){
     	
@@ -72,7 +72,7 @@ extends JoglMouseListener {
     
     /*
      * (non-Javadoc)
-     * @see org.geneview.core.view.jogl.mouse.JoglMouseListener#mouseReleased(java.awt.event.MouseEvent)
+     * @see org.caleydo.core.view.jogl.mouse.JoglMouseListener#mouseReleased(java.awt.event.MouseEvent)
      */
 	public void mouseReleased(MouseEvent mouseEvent) {
 	
@@ -87,7 +87,7 @@ extends JoglMouseListener {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.jogl.mouse.JoglMouseListener#mouseDragged(java.awt.event.MouseEvent)
+	 * @see org.caleydo.core.view.jogl.mouse.JoglMouseListener#mouseDragged(java.awt.event.MouseEvent)
 	 */
 	public void mouseDragged(MouseEvent mouseEvent) {
 	

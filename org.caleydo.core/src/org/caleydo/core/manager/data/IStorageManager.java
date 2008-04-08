@@ -6,14 +6,14 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.manager.data;
+package org.caleydo.core.manager.data;
 
 import java.util.LinkedList;
 
-import org.geneview.core.data.collection.IStorage;
-//import org.geneview.core.data.collection.StorageType;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.type.ManagerObjectType;
+import org.caleydo.core.data.collection.IStorage;
+//import org.caleydo.core.data.collection.StorageType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
 
 /**
  * Manages all IStorage's.

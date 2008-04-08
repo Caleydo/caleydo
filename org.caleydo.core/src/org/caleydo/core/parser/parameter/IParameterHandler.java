@@ -1,4 +1,4 @@
-package org.geneview.core.parser.parameter;
+package org.caleydo.core.parser.parameter;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
@@ -7,13 +7,13 @@ import java.util.Vector;
 
 import org.xml.sax.Attributes;
 
-import org.geneview.core.math.statistics.histogram.StatisticHistogramType;
-import org.geneview.core.util.IGeneViewDefaultType;
+import org.caleydo.core.math.statistics.histogram.StatisticHistogramType;
+import org.caleydo.core.util.ICaleydoDefaultType;
 
 public interface IParameterHandler {
 
 	public enum ParameterHandlerType 
-	implements IGeneViewDefaultType <ParameterHandlerType> {
+	implements ICaleydoDefaultType <ParameterHandlerType> {
 		
 		BOOL(),
 		INT(),

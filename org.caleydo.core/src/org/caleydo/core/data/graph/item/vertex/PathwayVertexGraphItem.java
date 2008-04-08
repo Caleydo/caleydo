@@ -1,7 +1,7 @@
-package org.geneview.core.data.graph.item.vertex;
+package org.caleydo.core.data.graph.item.vertex;
 
-import org.geneview.util.graph.EGraphItemKind;
-import org.geneview.util.graph.item.GraphItem;
+import org.caleydo.util.graph.EGraphItemKind;
+import org.caleydo.util.graph.item.GraphItem;
 
 
 public class PathwayVertexGraphItem 

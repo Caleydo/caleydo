@@ -1,10 +1,10 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: JFrame Plug-in
-Bundle-SymbolicName: org.geneview.rcp.jogl.view.jframe; singleton:=true
+Bundle-SymbolicName: org.caleydo.rcp.jogl.view.jframe; singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Activator: org.geneview.rcp.jogl.view.jframe.Activator
-Bundle-Vendor: GeneView
+Bundle-Activator: org.caleydo.rcp.jogl.view.jframe.Activator
+Bundle-Vendor: Caleydo
 Bundle-Localization: plugin
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
@@ -17,6 +17,6 @@ Export-Package: com.sun.gluegen.runtime,
  demos.gears,
  javax.media.opengl,
  javax.media.opengl.glu,
- org.geneview.rcp.jogl.awt.snippet.gears,
- org.geneview.rcp.jogl.view.jframe,
- org.geneview.rcp.jogl.view.jframe.views
+ org.caleydo.rcp.jogl.awt.snippet.gears,
+ org.caleydo.rcp.jogl.view.jframe,
+ org.caleydo.rcp.jogl.view.jframe.views

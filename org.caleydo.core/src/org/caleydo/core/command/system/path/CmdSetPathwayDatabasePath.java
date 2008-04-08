@@ -6,16 +6,16 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.command.system.path;
+package org.caleydo.core.command.system.path;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.data.IPathwayManager;
-import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
-import org.geneview.core.parser.parameter.IParameterHandler;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.data.IPathwayManager;
+import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
+import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Command sets relevant file paths in PathwayMaanger.
@@ -49,9 +49,9 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	 *  - Image maps
 	 *  - Background overlay images/textures
 	 * 
-	 * @see org.geneview.core.command.ICommand#doCommand()
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws GeneViewRuntimeException {
+	public void doCommand() throws CaleydoRuntimeException {
 		
 		IPathwayManager pathwayManager = 
 			generalManager.getSingelton().getPathwayManager();
@@ -62,9 +62,9 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#undoCommand()
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws GeneViewRuntimeException {
+	public void undoCommand() throws CaleydoRuntimeException {
 
 		
 		refCommandManager.runUndoCommand(this);
@@ -72,7 +72,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.command.base.ACmdCreate_IdTargetLabelAttr#setParameterHandler(org.geneview.core.parser.parameter.IParameterHandler)
+	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttr#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
 	 */
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
 		

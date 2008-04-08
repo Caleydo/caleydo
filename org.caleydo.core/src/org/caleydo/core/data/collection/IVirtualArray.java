@@ -6,18 +6,18 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection;
+package org.caleydo.core.data.collection;
 
 
-//import org.geneview.core.data.IUniqueManagedObject;
-import org.geneview.core.data.collection.IMetaDataHandler;
-//import org.geneview.core.data.collection.CollectionInterface;
-import org.geneview.core.data.collection.VirtualArrayType;
-import org.geneview.core.data.collection.thread.ICollectionThreadObject;
-import org.geneview.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
-import org.geneview.core.data.xml.IMementoItemXML;
-import org.geneview.core.manager.event.mediator.IMediatorReceiver;
-import org.geneview.core.manager.event.mediator.IMediatorSender;
+//import org.caleydo.core.data.IUniqueManagedObject;
+import org.caleydo.core.data.collection.IMetaDataHandler;
+//import org.caleydo.core.data.collection.CollectionInterface;
+import org.caleydo.core.data.collection.VirtualArrayType;
+import org.caleydo.core.data.collection.thread.ICollectionThreadObject;
+import org.caleydo.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+import org.caleydo.core.data.xml.IMementoItemXML;
+import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
+import org.caleydo.core.manager.event.mediator.IMediatorSender;
 
 
 /**

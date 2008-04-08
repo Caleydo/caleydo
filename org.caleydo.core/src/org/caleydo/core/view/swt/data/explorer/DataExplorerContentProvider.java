@@ -1,4 +1,4 @@
-package org.geneview.core.view.swt.data.explorer;
+package org.caleydo.core.view.swt.data.explorer;
 
 import java.util.Iterator;
 
@@ -6,10 +6,10 @@ import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 
-import org.geneview.core.view.swt.data.explorer.model.DeltaEvent;
-import org.geneview.core.view.swt.data.explorer.model.IDeltaListener;
-import org.geneview.core.view.swt.data.explorer.model.AModel;
-import org.geneview.core.view.swt.data.explorer.model.DataCollectionModel;
+import org.caleydo.core.view.swt.data.explorer.model.DeltaEvent;
+import org.caleydo.core.view.swt.data.explorer.model.IDeltaListener;
+import org.caleydo.core.view.swt.data.explorer.model.AModel;
+import org.caleydo.core.view.swt.data.explorer.model.DataCollectionModel;
 
 public class DataExplorerContentProvider 
 implements ITreeContentProvider, IDeltaListener

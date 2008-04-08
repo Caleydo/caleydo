@@ -1,8 +1,8 @@
-package org.geneview.core.manager.event.mediator;
+package org.caleydo.core.manager.event.mediator;
 
-import org.geneview.core.data.IUniqueObject;
-import org.geneview.core.manager.IEventPublisher;
-import org.geneview.core.manager.event.mediator.IMediatorReceiver;
+import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 
 /**
  * 

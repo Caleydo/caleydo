@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.geneview.rcp.views.browser;
+package org.caleydo.rcp.views.browser;
 
 import java.util.ArrayList;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package org.geneview.rcp.views;
+package org.caleydo.rcp.views;
 
 //import java.awt.FlowLayout;
 //import org.eclipse.swt.SWT;
@@ -8,19 +8,19 @@ import java.util.ArrayList;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
-import org.geneview.rcp.Application;
+import org.caleydo.rcp.Application;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.event.CmdEventCreateMediator;
-import org.geneview.core.manager.IViewManager;
-import org.geneview.core.manager.IEventPublisher.MediatorType;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.view.swt.browser.HTMLBrowserViewRep;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.event.CmdEventCreateMediator;
+import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.IEventPublisher.MediatorType;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
 
 public class HTMLBrowserView 
 extends ViewPart {
 
-	public static final String ID = "org.geneview.rcp.views.HTMLBrowserView";
+	public static final String ID = "org.caleydo.rcp.views.HTMLBrowserView";
 	
 	/*
 	 * (non-Javadoc)

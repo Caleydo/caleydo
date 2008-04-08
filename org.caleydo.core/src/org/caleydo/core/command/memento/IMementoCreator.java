@@ -6,9 +6,9 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.command.memento;
+package org.caleydo.core.command.memento;
 
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Interface for creator-object's of IMemento's.
@@ -45,5 +45,5 @@ public interface IMementoCreator {
 	 * @param setMemento prometheus.command.memento.Memento to reset the obejct in a previouse state
 	 */
 	public void setMemento( IMemento setMemento )
-		throws GeneViewRuntimeException;
+		throws CaleydoRuntimeException;
 }

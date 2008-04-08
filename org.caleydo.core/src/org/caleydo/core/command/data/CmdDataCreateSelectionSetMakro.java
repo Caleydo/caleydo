@@ -1,13 +1,13 @@
-package org.geneview.core.command.data;
+package org.caleydo.core.command.data;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
-import org.geneview.core.data.collection.SetType;
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.parser.parameter.IParameterHandler;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
+import org.caleydo.core.data.collection.SetType;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Class creates a selection set 
@@ -45,7 +45,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 				refCommandQueueSaxType);
 	}
 
-	public void doCommand() throws GeneViewRuntimeException {
+	public void doCommand() throws CaleydoRuntimeException {
 		
 		// First the storages and virtual arrays are created.
 		createSelectionVirtualArray();
@@ -60,7 +60,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		refCommandManager.runDoCommand(this);
 	}
 	
-	public void undoCommand() throws GeneViewRuntimeException {
+	public void undoCommand() throws CaleydoRuntimeException {
 		
 		refCommandManager.runUndoCommand(this);		
 	}

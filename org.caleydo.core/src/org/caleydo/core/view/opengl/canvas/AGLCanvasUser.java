@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.canvas;
+package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec3f;
 
@@ -9,26 +9,26 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
-import org.geneview.core.data.AUniqueManagedObject;
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.SetType;
-import org.geneview.core.data.collection.set.selection.SetSelection;
-import org.geneview.core.data.view.camera.IViewCamera;
-import org.geneview.core.data.view.camera.IViewFrustum;
-import org.geneview.core.data.view.camera.ViewCameraBase;
-import org.geneview.core.data.view.camera.ViewFrustumBase.ProjectionMode;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.data.ISetManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.manager.view.EPickingMode;
-import org.geneview.core.manager.view.EPickingType;
-import org.geneview.core.manager.view.Pick;
-import org.geneview.core.manager.view.PickingManager;
-import org.geneview.core.view.jogl.JoglCanvasForwarder;
-import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
-import org.geneview.core.view.opengl.util.GLToolboxRenderer;
-import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.caleydo.core.data.AUniqueManagedObject;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.SetType;
+import org.caleydo.core.data.collection.set.selection.SetSelection;
+import org.caleydo.core.data.view.camera.IViewCamera;
+import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.data.view.camera.ViewCameraBase;
+import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.data.ISetManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.view.EPickingMode;
+import org.caleydo.core.manager.view.EPickingType;
+import org.caleydo.core.manager.view.Pick;
+import org.caleydo.core.manager.view.PickingManager;
+import org.caleydo.core.view.jogl.JoglCanvasForwarder;
+import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
+import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 
 
 /**
@@ -297,7 +297,7 @@ implements GLEventListener {
 	
 	
 	/**
-	 * @see org.geneview.core.view.IView#addSetId(int[])
+	 * @see org.caleydo.core.view.IView#addSetId(int[])
 	 */
 	public final void addSetId( int [] iSet) {
 		
@@ -347,7 +347,7 @@ implements GLEventListener {
 	}
 	
 	/**
-	 * @see org.geneview.core.view.IView#removeAllSetIdByType(org.geneview.core.data.collection.SetType)
+	 * @see org.caleydo.core.view.IView#removeAllSetIdByType(org.caleydo.core.data.collection.SetType)
 	 */
 	public final void removeAllSetIdByType( SetType setType ) {
 		
@@ -368,7 +368,7 @@ implements GLEventListener {
 	}
 	
 	/**
-	 * @see org.geneview.core.view.IView#removeSetId(int[])
+	 * @see org.caleydo.core.view.IView#removeSetId(int[])
 	 */
 	public final void removeSetId( int [] iSet) {
 		
@@ -418,7 +418,7 @@ implements GLEventListener {
 	
 
 	/**
-	 * @see org.geneview.core.view.IView#getAllSetId()
+	 * @see org.caleydo.core.view.IView#getAllSetId()
 	 */
 	public final synchronized int[] getAllSetId() {
 		
@@ -452,7 +452,7 @@ implements GLEventListener {
 	
 
 	/**
-	 * @see org.geneview.core.view.IView#hasSetId(int)
+	 * @see org.caleydo.core.view.IView#hasSetId(int)
 	 */
 	public final boolean hasSetId( int iSetId) {
 		ISet refCurrentSet = setManager.getItemSet(iSetId);

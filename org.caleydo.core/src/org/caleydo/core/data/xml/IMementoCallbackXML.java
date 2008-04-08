@@ -6,14 +6,14 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.xml;
+package org.caleydo.core.data.xml;
 
 //import java.io.InputStream;
 // import org.xml.sax.InputSource;
 
 //import prometheus.data.manager.GeneralManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.parser.xml.sax.ISaxParserHandler;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
 /**
  * Interface for loading and saving DNetEventComponentInterface objects to and from XML file.

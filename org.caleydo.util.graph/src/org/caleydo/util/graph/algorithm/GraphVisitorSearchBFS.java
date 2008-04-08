@@ -1,15 +1,15 @@
 /**
  * 
  */
-package org.geneview.util.graph.algorithm;
+package org.caleydo.util.graph.algorithm;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.geneview.util.graph.EGraphItemProperty;
-import org.geneview.util.graph.IGraphItem;
-import org.geneview.util.graph.algorithm.AGraphVisitorSearch;
+import org.caleydo.util.graph.EGraphItemProperty;
+import org.caleydo.util.graph.IGraphItem;
+import org.caleydo.util.graph.algorithm.AGraphVisitorSearch;
 
 /**
  * Breadth First Search Algorithm.
@@ -69,7 +69,7 @@ implements IGraphVisitorSearch {
 	
 
 	/* (non-Javadoc)
-	 * @see org.geneview.util.graph.algorithm.IGraphVisitorSearch#getSearchResult()
+	 * @see org.caleydo.util.graph.algorithm.IGraphVisitorSearch#getSearchResult()
 	 */
 	public List<IGraphItem> getSearchResult() {
 			
@@ -192,7 +192,7 @@ implements IGraphVisitorSearch {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.util.graph.algorithm.IGraphVisitorSearch#init()
+	 * @see org.caleydo.util.graph.algorithm.IGraphVisitorSearch#init()
 	 */
 	public boolean init() {
 		// TODO Auto-generated method stub
@@ -201,7 +201,7 @@ implements IGraphVisitorSearch {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.util.graph.algorithm.IGraphVisitorSearch#search()
+	 * @see org.caleydo.util.graph.algorithm.IGraphVisitorSearch#search()
 	 */
 	public void search() {
 		// TODO Auto-generated method stub
@@ -210,7 +210,7 @@ implements IGraphVisitorSearch {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.util.graph.algorithm.IGraphVisitorSearch#wipeTemporalDataFromGraph()
+	 * @see org.caleydo.util.graph.algorithm.IGraphVisitorSearch#wipeTemporalDataFromGraph()
 	 */
 	public void wipeTemporalDataFromGraph() {
 		// TODO Auto-generated method stub

@@ -6,7 +6,7 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection.parser;
+package org.caleydo.core.data.collection.parser;
 
 //import java.lang.NullPointerException;
 //import java.util.StringTokenizer;
@@ -14,17 +14,17 @@ import java.util.Vector;
 
 import org.xml.sax.Attributes;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.parser.xml.sax.ASaxParserHandler;
-import org.geneview.core.parser.xml.sax.ISaxParserHandler;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.parser.xml.sax.ASaxParserHandler;
+import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
 //import org.xml.sax.SAXException;
 //import org.xml.sax.SAXParseException;
 
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.util.system.StringConversionTool;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.system.StringConversionTool;
 
 /**
  * Parsing pices of information present in each Colleciton.
@@ -125,7 +125,7 @@ implements ISaxParserHandler
 	 * 
 	 * Important: derived classes must call super.reset() inside thier reset().
 	 * 
-	 * @see org.geneview.core.parser.xml.sax.ISaxParserHandler#reset()
+	 * @see org.caleydo.core.parser.xml.sax.ISaxParserHandler#reset()
 	 */
 	public void reset() {
 		super.reset();	
@@ -216,8 +216,8 @@ implements ISaxParserHandler
 				if ( qName.equals( sTag_XML_DataCollection_details ) ) {
 					
 					if ( attributes.getLength() < 2 ) {
-						throw new GeneViewRuntimeException("need attributes <... type=\"\" dim=\"*\">",
-								GeneViewRuntimeExceptionType.SAXPARSER );
+						throw new CaleydoRuntimeException("need attributes <... type=\"\" dim=\"*\">",
+								CaleydoRuntimeExceptionType.SAXPARSER );
 					}
 					
 					final String bufferType = attributes.getValue(sTag_XML_DataCollection_details_attr_A_type);
@@ -231,8 +231,8 @@ implements ISaxParserHandler
 							iCurrentDim = Integer.valueOf( bufferDim ).intValue();
 						}
 						catch ( NumberFormatException nfe ) {
-							throw new GeneViewRuntimeException("attributes <... dim=\"" + bufferDim + "\"> mut be an integer",
-									GeneViewRuntimeExceptionType.SAXPARSER );
+							throw new CaleydoRuntimeException("attributes <... dim=\"" + bufferDim + "\"> mut be an integer",
+									CaleydoRuntimeExceptionType.SAXPARSER );
 						}
 						bXML_Section_DataComponent_details_Select = true;
 					}

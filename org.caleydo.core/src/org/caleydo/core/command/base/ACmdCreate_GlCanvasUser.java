@@ -1,21 +1,21 @@
-package org.geneview.core.command.base;
+package org.caleydo.core.command.base;
 
 import java.util.StringTokenizer;
 
 import javax.media.opengl.GLEventListener;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.data.view.camera.IViewFrustum;
-import org.geneview.core.data.view.camera.ViewFrustumBase;
-import org.geneview.core.data.view.camera.ViewFrustumBase.ProjectionMode;
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.IViewGLCanvasManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.parser.parameter.IParameterHandler;
-import org.geneview.core.util.system.StringConversionTool;
-import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.data.view.camera.ViewFrustumBase;
+import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IViewGLCanvasManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 
 /**
  * 
@@ -57,7 +57,7 @@ extends ACmdCreate_IdTargetParentGLObject {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.command.base.ACmdCreate_IdTargetParentGLObject#setParameterHandler(org.geneview.core.parser.parameter.IParameterHandler)
+	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetParentGLObject#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
 	 */
 	public void setParameterHandler( 
 			final IParameterHandler refParameterHandler) {
@@ -133,7 +133,7 @@ extends ACmdCreate_IdTargetParentGLObject {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#doCommand()
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
 	public void doCommand()
 	{
@@ -155,7 +155,7 @@ extends ACmdCreate_IdTargetParentGLObject {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#undoCommand()
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
 	public void undoCommand()
 	{

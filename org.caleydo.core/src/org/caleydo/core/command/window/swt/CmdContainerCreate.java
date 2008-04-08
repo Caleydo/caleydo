@@ -1,11 +1,11 @@
-package org.geneview.core.command.window.swt;
+package org.caleydo.core.command.window.swt;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.base.ACmdCreate_IdTargetLabelParentAttr;
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.parser.parameter.IParameterHandler;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentAttr;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Command class triggers the creation of
@@ -36,7 +36,7 @@ extends ACmdCreate_IdTargetLabelParentAttr {
 				refCommandQueueSaxType);
 	}
 
-	public void doCommand() throws GeneViewRuntimeException
+	public void doCommand() throws CaleydoRuntimeException
 	{
 		generalManager.getSingelton().
 			getSWTGUIManager().createComposite(
@@ -56,7 +56,7 @@ extends ACmdCreate_IdTargetLabelParentAttr {
 		sLayoutAttributes = sAttribute2;
 	}
 	
-	public void undoCommand() throws GeneViewRuntimeException
+	public void undoCommand() throws CaleydoRuntimeException
 	{
 		refCommandManager.runUndoCommand(this);		
 	}

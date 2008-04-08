@@ -7,17 +7,17 @@
  *  
  */
 
-package org.geneview.core.parser.ascii;
+package org.caleydo.core.parser.ascii;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import org.geneview.core.data.xml.IMementoXML;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.gui.SWTGUIManager;
+import org.caleydo.core.data.xml.IMementoXML;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.gui.SWTGUIManager;
 
 
 /**
@@ -45,26 +45,26 @@ implements IMementoXML, IParserObject {
 	 * Defiens the nubmer of leines to beread from a file.
 	 * only usefull, if loadData_TestLinesToBeRead() was called before reading the file.
 	 * 
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(BufferedReader)
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(String)
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(BufferedReader)
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(String)
 	 */
 	private int iLinesInFileToBeRead = -1;
 		
 	/**
 	 * Position of progress bar stored in method progressBarSetStoreInitTitle()
 	 * 
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#progressBarSetStoreInitTitle(String, int, int)
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#progressBarResetTitle()
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#sLastProgressBarText
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarSetStoreInitTitle(String, int, int)
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarResetTitle()
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#sLastProgressBarText
 	 */
 	private int iProgressBarLastPosition;
 	
 	/**
 	 * Text progress bar stored in method progressBarSetStoreInitTitle()
 	 * 
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#progressBarSetStoreInitTitle(String, int, int)
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#progressBarResetTitle()
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#iProgressBarLastPosition	 
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarSetStoreInitTitle(String, int, int)
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarResetTitle()
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#iProgressBarLastPosition	 
 	 */
 	private String sLastProgressBarText;
 	
@@ -72,7 +72,7 @@ implements IMementoXML, IParserObject {
 	/**
 	 * Stores the current position of the progress bar.
 	 * 
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#progressBarCurrentPosition()
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarCurrentPosition()
 	 */
 	private int iProgressBarCurrentPosition;
 	
@@ -80,9 +80,9 @@ implements IMementoXML, IParserObject {
 	/**
 	 * Stores the current positon of the progress bar after calling
 	 * 
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#progressBarSetStoreInitTitle(String, int, int)
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#progressBarStoredIncrement()
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#fProgressBarInc
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarSetStoreInitTitle(String, int, int)
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarStoredIncrement()
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#fProgressBarInc
 	 */
 	private float fProgressBarIndex;
 	
@@ -90,8 +90,8 @@ implements IMementoXML, IParserObject {
 	 * Increments progressbar index.
 	 * Call progressBarIncrement() increment the progress bar.
 	 * 
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#progressBarStoredIncrement()
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#fProgressBarIndex
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarStoredIncrement()
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#fProgressBarIndex
 	 */
 	private float fProgressBarInc;
 	
@@ -354,9 +354,9 @@ implements IMementoXML, IParserObject {
 	/**
 	 * Get the nubmer of lines to be read from the current file.
 	 * 
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#iLinesInFileToBeRead
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(BufferedReader)
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(String)
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#iLinesInFileToBeRead
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(BufferedReader)
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(String)
 	 * 
 	 * @return -1 if invalid or number of liens to be read
 	 */
@@ -457,10 +457,10 @@ implements IMementoXML, IParserObject {
 	 * @param sText new text for progress bar
 	 * @param iPosition range [0..200]
 	 * 
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#fProgressBarInc
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#fProgressBarIndex
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#progressBarStoredIncrement()
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#progressBarResetTitle()
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#fProgressBarInc
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#fProgressBarIndex
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarStoredIncrement()
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarResetTitle()
 	 */
 	protected final void progressBarSetStoreInitTitle(final String sText, 
 			final int iCurrentProgressBarPosition,
@@ -494,7 +494,7 @@ implements IMementoXML, IParserObject {
 	 * @param iCurrentProgressBarPosition new progress bar position
 	 * @param iStepsTill100_Percent number of incremtens to reach 100 %
 	 * 
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#progressBarSetStoreInitTitle(String, int, int, int)
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarSetStoreInitTitle(String, int, int, int)
 	 */
 	protected final void progressBarSetStoreInitTitle(final String sText, 
 			final int iCurrentProgressBarPosition,

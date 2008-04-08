@@ -1,6 +1,6 @@
-package org.geneview.core.data;
+package org.caleydo.core.data;
 
-import org.geneview.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IGeneralManager;
 
 /**
  * Abstract class providing methods defined in IUniqueManagedObject.

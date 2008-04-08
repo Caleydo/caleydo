@@ -6,11 +6,11 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection.virtualarray.iterator;
+package org.caleydo.core.data.collection.virtualarray.iterator;
 
 
-import org.geneview.core.data.collection.iterator.ICollectionIterator;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.data.collection.iterator.ICollectionIterator;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 
 /**
@@ -50,10 +50,10 @@ extends ICollectionIterator {
 	 * Sets a new current virtual indexs.
 	 * 
 	 * @param iSetVirtualIndex new virtual index
-	 * @throws GeneViewRuntimeException if iSetVirtualIndex can not be set
+	 * @throws CaleydoRuntimeException if iSetVirtualIndex can not be set
 	 */
 	public void setVirtualIndex(int iSetVirtualIndex)
-			throws GeneViewRuntimeException;
+			throws CaleydoRuntimeException;
 	
 	/**
 	 * Sets iterator at + 1 element and terminates the iteration.

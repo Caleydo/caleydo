@@ -1,6 +1,6 @@
-package org.geneview.core.data.view.rep.renderstyle;
+package org.caleydo.core.data.view.rep.renderstyle;
 
-import org.geneview.core.data.GeneralRenderStyle;
+import org.caleydo.core.data.GeneralRenderStyle;
 
 
 public class ConnectionLineRenderStyle 

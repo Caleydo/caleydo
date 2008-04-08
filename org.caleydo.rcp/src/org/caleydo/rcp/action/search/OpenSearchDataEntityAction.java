@@ -1,11 +1,11 @@
-package org.geneview.rcp.action.search;
+package org.caleydo.rcp.action.search;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.geneview.rcp.dialog.search.OpenSearchDataEntityDialog;
-import org.geneview.rcp.image.IImageKeys;
+import org.caleydo.rcp.dialog.search.OpenSearchDataEntityDialog;
+import org.caleydo.rcp.image.IImageKeys;
 
 /**
  * 
@@ -18,7 +18,7 @@ implements ActionFactory.IWorkbenchAction {
 
 	private final IWorkbenchWindow window;
 	
-	public final static String ID = "org.geneview.rcp.openSearchDialog";
+	public final static String ID = "org.caleydo.rcp.openSearchDialog";
 
 	/**
 	 * Constructor 
@@ -32,7 +32,7 @@ implements ActionFactory.IWorkbenchAction {
 	    setToolTipText("Open data search entity dialog");
 	    setImageDescriptor(
 	        AbstractUIPlugin.imageDescriptorFromPlugin(
-	        "org.geneview.rcp", IImageKeys.FILE_OPEN_XML_CONFIG_FILE)); // TODO: change image
+	        "org.caleydo.rcp", IImageKeys.FILE_OPEN_XML_CONFIG_FILE)); // TODO: change image
 
 	}
 

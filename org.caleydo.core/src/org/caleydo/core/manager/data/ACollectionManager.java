@@ -6,17 +6,17 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.manager.data;
+package org.caleydo.core.manager.data;
 
 import java.util.Hashtable;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.base.AAbstractManager;
-import org.geneview.core.manager.type.ManagerType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.type.ManagerType;
 
 //import prometheus.manager.SetManager;
 //import prometheus.manager.StorageManager;
-//import org.geneview.core.util.exception.GeneViewRuntimeException;
+//import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Base interface for all manger objects.
@@ -27,8 +27,8 @@ import org.geneview.core.manager.type.ManagerType;
  * @author Michael Kalkusch
  *
  * @see prometheus.data.manager.SelectionManger
- * @see org.geneview.core.manager.data.ISetManager
- * @see org.geneview.core.manager.data.IStorageManager
+ * @see org.caleydo.core.manager.data.ISetManager
+ * @see org.caleydo.core.manager.data.IStorageManager
  * 
  */
 public abstract class ACollectionManager 

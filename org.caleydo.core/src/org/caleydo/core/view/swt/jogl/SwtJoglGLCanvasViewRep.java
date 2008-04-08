@@ -1,16 +1,16 @@
-package org.geneview.core.view.swt.jogl;
+package org.caleydo.core.view.swt.jogl;
 
 import javax.media.opengl.GLCanvas;
 
 import org.eclipse.swt.widgets.Composite;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ISWTGUIManager;
-import org.geneview.core.manager.IViewGLCanvasManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.view.AViewRep;
-import org.geneview.core.view.ViewType;
-import org.geneview.core.view.swt.widget.SWTEmbeddedJoglWidget;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ISWTGUIManager;
+import org.caleydo.core.manager.IViewGLCanvasManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.ViewType;
+import org.caleydo.core.view.swt.widget.SWTEmbeddedJoglWidget;
 
 
 /**

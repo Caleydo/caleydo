@@ -1,16 +1,16 @@
-package org.geneview.core.view.swt.browser;
+package org.caleydo.core.view.swt.browser;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.eclipse.swt.browser.LocationAdapter;
 import org.eclipse.swt.browser.LocationEvent;
-import org.geneview.core.data.collection.set.selection.SetSelection;
-import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.util.system.StringConversionTool;
-import org.geneview.util.graph.EGraphItemProperty;
-import org.geneview.util.graph.IGraphItem;
+import org.caleydo.core.data.collection.set.selection.SetSelection;
+import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.util.graph.EGraphItemProperty;
+import org.caleydo.util.graph.IGraphItem;
 
 
 public class IDExtractionLocationListener 

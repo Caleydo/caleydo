@@ -1,4 +1,4 @@
-package org.geneview.core.view.swt.browser;
+package org.caleydo.core.view.swt.browser;
 
 /**
  * This type is passed to browser to know how to handle the incoming string.

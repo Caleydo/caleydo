@@ -1,12 +1,12 @@
 /**
  * 
  */
-package org.geneview.core.math.statistics.histogram;
+package org.caleydo.core.math.statistics.histogram;
 
 
-import org.geneview.core.data.collection.ISet;
-//import org.geneview.core.data.collection.IVirtualArray;
-//import org.geneview.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.ISet;
+//import org.caleydo.core.data.collection.IVirtualArray;
+//import org.caleydo.core.data.collection.IStorage;
 
 /**
  * @author Michael Kalkusch
@@ -97,7 +97,7 @@ implements IHistogramStatistic {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticItem#setBorderIntervalLength(int)
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticItem#setBorderIntervalLength(int)
 	 */
 	protected final void setBorderIntervallLength( final int iSetLength ) {
 		
@@ -120,7 +120,7 @@ implements IHistogramStatistic {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#setIntervalBorders(T[])
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#setIntervalBorders(T[])
 	 */
 	public final void setIntervalBorders( final Number[] setBorders) {
 		
@@ -169,7 +169,7 @@ implements IHistogramStatistic {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#setIntervalEqualSpaced(int, boolean, T, T)
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#setIntervalEqualSpaced(int, boolean, T, T)
 	 */
 	public final void setIntervalEqualSpacedInt(
 			final int iNumberHistorgamLevel,
@@ -331,7 +331,7 @@ implements IHistogramStatistic {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#addDataValues(T[])
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#addDataValues(T[])
 	 */
 	public void addDataValues( final Number[] setData) {
 
@@ -363,7 +363,7 @@ implements IHistogramStatistic {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#updateHistogram()
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#updateHistogram()
 	 */
 	public synchronized boolean updateHistogram() {
 		
@@ -493,7 +493,7 @@ implements IHistogramStatistic {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#getUpdatedHistogramData()
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#getUpdatedHistogramData()
 	 */
 	public HistogramData getUpdatedHistogramData() {
 		if ( this.updateHistogram() ) {
@@ -507,28 +507,28 @@ implements IHistogramStatistic {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#getHistogramData()
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#getHistogramData()
 	 */
 	public final int[] getHistogramData() {
 		return iHistogramIntervallCounter;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#getHistogramDataPercent()
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#getHistogramDataPercent()
 	 */
 	public final float[] getHistogramDataPercent() {
 		return fHistogramIntervalCounter;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#getMaxValue()
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#getMaxValue()
 	 */
 	public final Number getMaxValue() {
 		return iMaxValue;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#getMinValue()
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#getMinValue()
 	 */
 	public final Number getMinValue() {
 		return iMinValue;
@@ -541,14 +541,14 @@ implements IHistogramStatistic {
 
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#getMeanValue()
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#getMeanValue()
 	 */
 	public final Number getMeanValue() {
 		return fMean;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#getVarianceValue()
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#getVarianceValue()
 	 */
 	public Number getVarianceValue() {
 				
@@ -565,14 +565,14 @@ implements IHistogramStatistic {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#getMaxValue()
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#getMaxValue()
 	 */
 	public final int getMaxValueI() {
 		return iMaxValue;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#getMinValue()
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#getMinValue()
 	 */
 	public final int getMinValueI() {
 		return iMinValue;
@@ -583,14 +583,14 @@ implements IHistogramStatistic {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#getMinValue()
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#getMinValue()
 	 */
 	public final float getMeanValueF() {
 		return fMean;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#getVarianceValue()
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#getVarianceValue()
 	 */
 	public float getVarianceValueF() {
 		if ( ! bVarianceIsCalculated ) {
@@ -603,7 +603,7 @@ implements IHistogramStatistic {
 	/**
 	 * Copy histogram intervall borders to a new Number array.
 	 * 
-	 * @see org.geneview.core.math.statistics.histogram.IHistogramStatistic#getHistogramIntervalls()
+	 * @see org.caleydo.core.math.statistics.histogram.IHistogramStatistic#getHistogramIntervalls()
 	 * 
 	 */
 	public final Number[] getHistogramIntervalls() {
@@ -620,7 +620,7 @@ implements IHistogramStatistic {
 	/**
 	 * Copy histogram intervall borders to a new Number array.
 	 * 
-	 * @see org.geneview.core.math.statistics.histogram.IHistogramStatistic#getHistogramIntervalls()
+	 * @see org.caleydo.core.math.statistics.histogram.IHistogramStatistic#getHistogramIntervalls()
 	 * 
 	 */
 	public final int[] getHistogramIntervallsToInt() {		

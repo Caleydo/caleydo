@@ -1,4 +1,4 @@
-package org.geneview.core.data.collection.thread.lock;
+package org.caleydo.core.data.collection.thread.lock;
 
 /**
  * Interface for locks used to make access to collections threadsafe.

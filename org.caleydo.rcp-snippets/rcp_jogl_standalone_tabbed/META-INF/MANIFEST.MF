@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: GeneView_RCP Plug-in
-Bundle-SymbolicName: org.geneview.rcp; singleton:=true
+Bundle-Name: Caleydo_RCP Plug-in
+Bundle-SymbolicName: org.caleydo.rcp; singleton:=true
 Bundle-Version: 1.0.0
-Bundle-Activator: org.geneview.rcp.Activator
+Bundle-Activator: org.caleydo.rcp.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime
 Eclipse-LazyStart: true

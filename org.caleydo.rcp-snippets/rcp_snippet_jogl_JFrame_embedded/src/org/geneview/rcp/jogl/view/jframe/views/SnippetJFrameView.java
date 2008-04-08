@@ -1,4 +1,4 @@
-package org.geneview.rcp.jogl.view.jframe.views;
+package org.caleydo.rcp.jogl.view.jframe.views;
 
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
@@ -26,7 +26,7 @@ import org.eclipse.swt.SWT;
 
 import com.sun.opengl.util.Animator;
 
-import org.geneview.rcp.jogl.awt.snippet.gears.Gears;
+import org.caleydo.rcp.jogl.awt.snippet.gears.Gears;
 
 /**
  * This sample class demonstrates how to plug-in a new

@@ -1,4 +1,4 @@
-package org.geneview.core.parser.xml.sax.handler.pathway;
+package org.caleydo.core.parser.xml.sax.handler.pathway;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,20 +6,20 @@ import java.util.StringTokenizer;
 
 import javax.swing.ImageIcon;
 
-import org.geneview.util.graph.EGraphItemProperty;
-import org.geneview.util.graph.IGraph;
-import org.geneview.util.graph.IGraphItem;
+import org.caleydo.util.graph.EGraphItemProperty;
+import org.caleydo.util.graph.IGraph;
+import org.caleydo.util.graph.IGraphItem;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import org.geneview.core.data.graph.item.edge.PathwayReactionEdgeGraphItem;
-import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
-import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.IXmlParserManager;
-import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
-import org.geneview.core.parser.xml.sax.handler.AXmlParserHandler;
-import org.geneview.core.parser.xml.sax.handler.IXmlParserHandler;
+import org.caleydo.core.data.graph.item.edge.PathwayReactionEdgeGraphItem;
+import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IXmlParserManager;
+import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
+import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
+import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 
 /**
  * 
@@ -576,8 +576,8 @@ implements IXmlParserHandler {
     }
 
 	/**
-	 * @see org.geneview.core.parser.handler.IXmlParserHandler#destroyHandler()
-	 * @see org.geneview.core.parser.handler.AXmlParserHandler#destroyHandler()
+	 * @see org.caleydo.core.parser.handler.IXmlParserHandler#destroyHandler()
+	 * @see org.caleydo.core.parser.handler.AXmlParserHandler#destroyHandler()
 	 * 
 	 */
 	public void destroyHandler() {

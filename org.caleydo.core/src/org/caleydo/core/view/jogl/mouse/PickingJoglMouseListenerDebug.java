@@ -1,4 +1,4 @@
-package org.geneview.core.view.jogl.mouse;
+package org.caleydo.core.view.jogl.mouse;
 
 import java.awt.event.MouseEvent;
 

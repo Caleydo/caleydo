@@ -1,13 +1,13 @@
-package org.geneview.core.view.swt.slider;
+package org.caleydo.core.view.swt.slider;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 
-import org.geneview.core.data.collection.IVirtualArray;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
 
 public class SelectionSliderViewRep 
 extends ASliderViewRep {

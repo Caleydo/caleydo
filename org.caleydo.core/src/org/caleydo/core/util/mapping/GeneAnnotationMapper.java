@@ -1,8 +1,8 @@
-package org.geneview.core.util.mapping;
+package org.caleydo.core.util.mapping;
 
-import org.geneview.core.data.mapping.EGenomeMappingType;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.data.IGenomeIdManager;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.data.IGenomeIdManager;
 
 
 public class GeneAnnotationMapper {

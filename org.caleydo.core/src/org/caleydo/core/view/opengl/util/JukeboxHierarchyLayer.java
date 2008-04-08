@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.util;
+package org.caleydo.core.view.opengl.util;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
@@ -6,10 +6,10 @@ import gleem.linalg.open.Transform;
 import java.util.HashMap;
 import java.util.LinkedList;
 
-import org.geneview.core.data.graph.core.PathwayGraph;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
-import org.geneview.core.view.opengl.canvas.pathway.GLPathwayTextureManager;
+import org.caleydo.core.data.graph.core.PathwayGraph;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.pathway.GLPathwayTextureManager;
 
 
 public class JukeboxHierarchyLayer {

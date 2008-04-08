@@ -1,4 +1,4 @@
-//package org.geneview.core.view.awt.jogl;
+//package org.caleydo.core.view.awt.jogl;
 //
 //import java.awt.Dimension;
 //import java.awt.Frame;
@@ -12,17 +12,17 @@
 //import javax.media.opengl.GLEventListener;
 //import javax.media.opengl.GLJPanel;
 //
-//import org.geneview.core.data.collection.ISet;
-//import org.geneview.core.data.collection.IStorage;
-//import org.geneview.core.data.collection.IVirtualArray;
-//import org.geneview.core.data.collection.SetType;
-//import org.geneview.core.manager.IGeneralManager;
-//import org.geneview.core.manager.singleton.OneForAllManager;
-//import org.geneview.core.manager.type.ManagerObjectType;
-//import org.geneview.core.math.statistics.histogram.HistogramStatisticInteger;
-//import org.geneview.core.math.statistics.histogram.StatisticHistogramType;
-//import org.geneview.core.view.jogl.IJoglMouseListener;
-//import org.geneview.core.view.jogl.mouse.JoglMouseListener;
+//import org.caleydo.core.data.collection.ISet;
+//import org.caleydo.core.data.collection.IStorage;
+//import org.caleydo.core.data.collection.IVirtualArray;
+//import org.caleydo.core.data.collection.SetType;
+//import org.caleydo.core.manager.IGeneralManager;
+//import org.caleydo.core.manager.singleton.OneForAllManager;
+//import org.caleydo.core.manager.type.ManagerObjectType;
+//import org.caleydo.core.math.statistics.histogram.HistogramStatisticInteger;
+//import org.caleydo.core.math.statistics.histogram.StatisticHistogramType;
+//import org.caleydo.core.view.jogl.IJoglMouseListener;
+//import org.caleydo.core.view.jogl.mouse.JoglMouseListener;
 //
 //import com.sun.opengl.util.Animator;
 //

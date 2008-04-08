@@ -1,12 +1,12 @@
 /**
  * 
  */
-package org.geneview.core.parser.parameter.data;
+package org.caleydo.core.parser.parameter.data;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-import org.geneview.core.parser.parameter.IParameterKeyValuePair;
+import org.caleydo.core.parser.parameter.IParameterKeyValuePair;
 
 /**
  * @author Michael Kalkusch
@@ -30,7 +30,7 @@ public final class ParameterKeyValueDataAndDefault < T > implements IParameterKe
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterKeyValueDefaultvalue#getValue(Stringt)
+	 * @see org.caleydo.core.parser.parameter.IParameterKeyValueDefaultvalue#getValue(Stringt)
 	 */
 	public T getValue( final String key ) {
 		return hashKey2Generic.get( key );
@@ -38,14 +38,14 @@ public final class ParameterKeyValueDataAndDefault < T > implements IParameterKe
 	
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterKeyValueDefaultvalue#getDefaultValue(Stringt)
+	 * @see org.caleydo.core.parser.parameter.IParameterKeyValueDefaultvalue#getDefaultValue(Stringt)
 	 */
 	public T getDefaultValue( final String key ) {
 		return hashKey2DefaultValue.get( key );
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterKeyValueDefaultvalue#getValueOrDefault(Stringt)
+	 * @see org.caleydo.core.parser.parameter.IParameterKeyValueDefaultvalue#getValueOrDefault(Stringt)
 	 */
 	public T getValueOrDefault( final String key ) {
 		T buffer = hashKey2Generic.get( key );
@@ -59,7 +59,7 @@ public final class ParameterKeyValueDataAndDefault < T > implements IParameterKe
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterKeyValueDefaultvalue#setValue(Stringt, T)
+	 * @see org.caleydo.core.parser.parameter.IParameterKeyValueDefaultvalue#setValue(Stringt, T)
 	 */
 	public void setValue( final String key,
 			final T value ) {
@@ -74,7 +74,7 @@ public final class ParameterKeyValueDataAndDefault < T > implements IParameterKe
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterKeyValueDefaultvalue#setDefaultValue(Stringt, T)
+	 * @see org.caleydo.core.parser.parameter.IParameterKeyValueDefaultvalue#setDefaultValue(Stringt, T)
 	 */
 	public void setDefaultValue( final String key,
 			final T value ) {
@@ -84,7 +84,7 @@ public final class ParameterKeyValueDataAndDefault < T > implements IParameterKe
 	
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterKeyValueDefaultvalue#clear()
+	 * @see org.caleydo.core.parser.parameter.IParameterKeyValueDefaultvalue#clear()
 	 */
 	public void clear() {		
 		synchronized( getClass() ) {
@@ -94,21 +94,21 @@ public final class ParameterKeyValueDataAndDefault < T > implements IParameterKe
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterKeyValueDefaultvalue#containsValue(Stringt)
+	 * @see org.caleydo.core.parser.parameter.IParameterKeyValueDefaultvalue#containsValue(Stringt)
 	 */
 	public boolean containsValue( final String key ) {
 		return hashKey2Generic.containsKey( key );
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterKeyValueDefaultvalue#containsDefaultValue(Stringt)
+	 * @see org.caleydo.core.parser.parameter.IParameterKeyValueDefaultvalue#containsDefaultValue(Stringt)
 	 */
 	public boolean containsDefaultValue( final String key ) {
 		return hashKey2DefaultValue.containsKey( key );
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterKeyValueDefaultvalue#containsValueAndDefaultValue(Stringt)
+	 * @see org.caleydo.core.parser.parameter.IParameterKeyValueDefaultvalue#containsValueAndDefaultValue(Stringt)
 	 */
 	public boolean containsValueAndDefaultValue( final String key ) {
 		if ( (hashKey2Generic.containsKey( key ))&&
@@ -120,7 +120,7 @@ public final class ParameterKeyValueDataAndDefault < T > implements IParameterKe
 
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterKeyValuePair#size()
+	 * @see org.caleydo.core.parser.parameter.IParameterKeyValuePair#size()
 	 */
 	public int size()
 	{
@@ -129,7 +129,7 @@ public final class ParameterKeyValueDataAndDefault < T > implements IParameterKe
 
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterKeyValuePair#isEmpty()
+	 * @see org.caleydo.core.parser.parameter.IParameterKeyValuePair#isEmpty()
 	 */
 	public boolean isEmpty()
 	{

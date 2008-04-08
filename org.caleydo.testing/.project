@@ -3,10 +3,10 @@
 	<name>org.caleydo.testing</name>
 	<comment></comment>
 	<projects>
-		<project>org.geneview.core</project>
-		<project>org.geneview.data</project>
-		<project>org.geneview.lib</project>
-		<project>org.geneview.rcp</project>
+		<project>org.caleydo.core</project>
+		<project>org.caleydo.data</project>
+		<project>org.caleydo.lib</project>
+		<project>org.caleydo.rcp</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

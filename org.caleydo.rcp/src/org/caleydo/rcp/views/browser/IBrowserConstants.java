@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.geneview.rcp.views.browser;
+package org.caleydo.rcp.views.browser;
 
 /**
  * Interface defining constants for use in the browser example.
@@ -19,7 +19,7 @@ public interface IBrowserConstants {
     /**
      * ID of the RCP Browser Example plug-in.
      */
-    public static final String PLUGIN_ID = "org.geneview.rcp.views.browser"; //$NON-NLS-1$
+    public static final String PLUGIN_ID = "org.caleydo.rcp.views.browser"; //$NON-NLS-1$
     
     /**
      * ID of the Browser perspective.

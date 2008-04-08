@@ -1,7 +1,7 @@
 
-package org.geneview.core.manager.event.mediator;
+package org.caleydo.core.manager.event.mediator;
 
-import org.geneview.core.data.collection.ISet;
+import org.caleydo.core.data.collection.ISet;
 
 /**
  * Object that shall receive an event.

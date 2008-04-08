@@ -1,16 +1,16 @@
 /**
  * 
  */
-package org.geneview.core.parser.xml.sax.handler;
+package org.caleydo.core.parser.xml.sax.handler;
 
 //import org.xml.sax.Locator;
 import org.xml.sax.helpers.DefaultHandler;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.IXmlParserManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IXmlParserManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * @author Michael Kalkusch
@@ -44,15 +44,15 @@ implements IXmlParserHandler
 		assert tag != null : "can not assing null as tag";
 		
 		if ( tag.length() < 2 ) {
-			throw new GeneViewRuntimeException("setXmlActivationTag() tag must be at least one char!",
-					GeneViewRuntimeExceptionType.SAXPARSER);
+			throw new CaleydoRuntimeException("setXmlActivationTag() tag must be at least one char!",
+					CaleydoRuntimeExceptionType.SAXPARSER);
 		}
 		
 		this.sOpeningTag = tag;
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.handler.IXmlParserHandler#getXmlActivationTag()
+	 * @see org.caleydo.core.parser.handler.IXmlParserHandler#getXmlActivationTag()
 	 */
 	public final String getXmlActivationTag()
 	{
@@ -60,7 +60,7 @@ implements IXmlParserHandler
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.handler.IXmlParserHandler#hasOpeningTagOnlyOnce()
+	 * @see org.caleydo.core.parser.handler.IXmlParserHandler#hasOpeningTagOnlyOnce()
 	 */
 	public final boolean isHandlerDestoryedAfterClosingTag()
 	{
@@ -81,7 +81,7 @@ implements IXmlParserHandler
 	/**
 	 * Sends init message to logger.
 	 * 
-	 * @see org.geneview.core.parser.xml.sax.handler.IXmlParserHandler#initHandler()
+	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler#initHandler()
 	 */
 	public void initHandler()
 	{
@@ -93,7 +93,7 @@ implements IXmlParserHandler
 	/**
 	 * Sends init message to logger.
 	 * 
-	 * @see org.geneview.core.parser.xml.sax.handler.IXmlParserHandler#destroyHandler()
+	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler#destroyHandler()
 	 */
 	public void destroyHandler()
 	{

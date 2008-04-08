@@ -1,4 +1,4 @@
-package org.geneview.core.manager.view;
+package org.caleydo.core.manager.view;
 
 import java.awt.Point;
 import java.nio.IntBuffer;
@@ -8,15 +8,15 @@ import java.util.HashMap;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.geneview.core.data.view.camera.IViewFrustum;
-import org.geneview.core.data.view.camera.ViewFrustumBase.ProjectionMode;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.base.AAbstractManager;
-import org.geneview.core.manager.type.ManagerType;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
-import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
-import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 
 import com.sun.opengl.util.BufferUtil;
 
@@ -514,9 +514,9 @@ public class PickingManager extends AAbstractManager
 	{
 		if (iViewID > 999999 || iViewID < 1000)
 		{
-			throw new GeneViewRuntimeException(
+			throw new CaleydoRuntimeException(
 					"PickingManager: The view id has to have exactly 5 digits",
-					GeneViewRuntimeExceptionType.MANAGER);
+					CaleydoRuntimeExceptionType.MANAGER);
 		}
 	}
 	
@@ -524,9 +524,9 @@ public class PickingManager extends AAbstractManager
 	{
 		if (iType > 99 || iType < 0)
 		{
-			throw new GeneViewRuntimeException(
+			throw new CaleydoRuntimeException(
 					"PickingManager: Type has to be larger then or exactly 0 and less than 100",
-					GeneViewRuntimeExceptionType.MANAGER);
+					CaleydoRuntimeExceptionType.MANAGER);
 		}
 	}
 	

@@ -6,10 +6,10 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data;
+package org.caleydo.core.data;
 
-import org.geneview.core.data.IManagedObject;
-import org.geneview.core.manager.type.ManagerObjectType;
+import org.caleydo.core.data.IManagedObject;
+import org.caleydo.core.manager.type.ManagerObjectType;
 
 /**
  * Interface to access prometheus.data.manager.CollectionManager

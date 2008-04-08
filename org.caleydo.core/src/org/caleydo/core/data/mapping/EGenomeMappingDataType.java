@@ -1,6 +1,6 @@
-package org.geneview.core.data.mapping;
+package org.caleydo.core.data.mapping;
 
-import org.geneview.core.util.IGeneViewDefaultType;
+import org.caleydo.core.util.ICaleydoDefaultType;
 
 /**
  * Enum that defines data mapping types for genome ID mapping.
@@ -10,7 +10,7 @@ import org.geneview.core.util.IGeneViewDefaultType;
  *
  */
 public enum EGenomeMappingDataType
-implements IGeneViewDefaultType <EGenomeMappingDataType> {
+implements ICaleydoDefaultType <EGenomeMappingDataType> {
 
 	INT2INT ( false, false ),
 	INT2STRING ( false, false ),
@@ -54,7 +54,7 @@ implements IGeneViewDefaultType <EGenomeMappingDataType> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.util.IGeneViewDefaultType#getTypeDefault()
+	 * @see org.caleydo.core.util.ICaleydoDefaultType#getTypeDefault()
 	 */
 	public EGenomeMappingDataType getTypeDefault() {
 

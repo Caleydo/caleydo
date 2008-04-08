@@ -6,10 +6,10 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data;
+package org.caleydo.core.data;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.data.IManagedObject;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.data.IManagedObject;
 
 /**
  * Abstract class stores reference to IGeneralManager.
@@ -17,7 +17,7 @@ import org.geneview.core.data.IManagedObject;
  * 
  * @author Michael Kalkusch
  *
- * @see org.geneview.core.data.AUniqueReManagedObject
+ * @see org.caleydo.core.data.AUniqueReManagedObject
  * @see prometheus.data.xml.MementiItemXML
  */
 public abstract class AManagedObject 

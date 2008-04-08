@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.util;
+package org.caleydo.core.view.opengl.util;
 
 import gleem.linalg.Mat4f;
 import gleem.linalg.Vec3f;
@@ -7,10 +7,10 @@ import java.util.EnumMap;
 
 import javax.media.opengl.GL;
 
-import org.geneview.core.data.GeneralRenderStyle;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.view.EPickingType;
-import org.geneview.core.manager.view.PickingManager;
+import org.caleydo.core.data.GeneralRenderStyle;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.view.EPickingType;
+import org.caleydo.core.manager.view.PickingManager;
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;

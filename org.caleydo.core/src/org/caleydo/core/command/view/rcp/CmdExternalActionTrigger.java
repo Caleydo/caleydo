@@ -1,18 +1,18 @@
-package org.geneview.core.command.view.rcp;
+package org.caleydo.core.command.view.rcp;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
-import org.geneview.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 
 
 /**
  * 
  * Command for triggering simple actions from the RCP interface that
- * are executed in org.geneview.core.
+ * are executed in org.caleydo.core.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -35,9 +35,9 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#doCommand()
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws GeneViewRuntimeException {
+	public void doCommand() throws CaleydoRuntimeException {
 
 		refCommandManager.runDoCommand(this);
 		
@@ -56,16 +56,16 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		}
 		catch ( Exception e )
 		{
-			throw new GeneViewRuntimeException("ERROR in CMD: " + e.toString(),
-					GeneViewRuntimeExceptionType.DATAHANDLING);
+			throw new CaleydoRuntimeException("ERROR in CMD: " + e.toString(),
+					CaleydoRuntimeExceptionType.DATAHANDLING);
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#undoCommand()
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws GeneViewRuntimeException {
+	public void undoCommand() throws CaleydoRuntimeException {
 
 		refCommandManager.runUndoCommand(this);
 	}

@@ -1,4 +1,4 @@
-package org.geneview.rcp.views;
+package org.caleydo.rcp.views;
 
 
 import org.eclipse.jface.action.Action;
@@ -15,7 +15,7 @@ import org.eclipse.ui.PlatformUI;
 public class GLHeatmap2DView 
 extends AGLViewPart {
 
-	public static final String ID = "org.geneview.rcp.views.GLHeatmap2DView";
+	public static final String ID = "org.caleydo.rcp.views.GLHeatmap2DView";
 	
 	protected Action action1;
 

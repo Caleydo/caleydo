@@ -1,23 +1,23 @@
 /**
  * 
  */
-package org.geneview.core.command.base;
+package org.caleydo.core.command.base;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.math.MathUtil;
-import org.geneview.core.parser.parameter.IParameterHandler;
-import org.geneview.core.parser.parameter.IParameterHandler.ParameterHandlerType;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.math.MathUtil;
+import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
 
 
 
 /**
- * @see org.geneview.core.command.ICommand
+ * @see org.caleydo.core.command.ICommand
  * 
  * @author Michael Kalkusch
  *

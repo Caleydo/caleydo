@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.rcp.action.file;
+package org.caleydo.rcp.action.file;
 
 import org.eclipse.core.runtime.PlatformObject;
 import org.eclipse.jface.action.Action;
@@ -14,10 +14,10 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.geneview.rcp.dialog.file.OpenCsvDataFileDialog;
-import org.geneview.rcp.image.IImageKeys;
-//import org.geneview.rcp.model.ContactsEntry;
-//import org.geneview.rcp.model.ContactsGroup;
+import org.caleydo.rcp.dialog.file.OpenCsvDataFileDialog;
+import org.caleydo.rcp.image.IImageKeys;
+//import org.caleydo.rcp.model.ContactsEntry;
+//import org.caleydo.rcp.model.ContactsGroup;
 //import org.eclipsercp.hyperbola.model.ContactsGroup;
 
 /**
@@ -28,7 +28,7 @@ public class FileOpenCsvDataFileAction extends Action implements
 		ISelectionListener, ActionFactory.IWorkbenchAction {
 
 	private final IWorkbenchWindow window;
-	public final static String ID = "org.geneview.rcp.openXmlConfiFile";
+	public final static String ID = "org.caleydo.rcp.openXmlConfiFile";
 	private IStructuredSelection selection;
 
 	  
@@ -39,7 +39,7 @@ public class FileOpenCsvDataFileAction extends Action implements
 	    setToolTipText("load CSV data into your workspace");
 	    setImageDescriptor(
 	        AbstractUIPlugin.imageDescriptorFromPlugin(
-	        "org.geneview.rcp", IImageKeys.FILE_OPEN_XML_CONFIG_FILE));
+	        "org.caleydo.rcp", IImageKeys.FILE_OPEN_XML_CONFIG_FILE));
 	    window.getSelectionService().addSelectionListener(this);
 	}
 	

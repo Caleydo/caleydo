@@ -1,11 +1,11 @@
 /**
  * 
  */
-package org.geneview.core.parser.xml.sax.handler;
+package org.caleydo.core.parser.xml.sax.handler;
 
 import org.xml.sax.Attributes;
 
-import org.geneview.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
  * @author Michael Kalkusch

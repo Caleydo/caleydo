@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.manager.data.genome;
+package org.caleydo.core.manager.data.genome;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,24 +12,24 @@ import java.util.Set;
 //import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-//import org.geneview.core.base.map.MultiHashArrayMap;
-//import org.geneview.core.data.mapping.EGenomeIdType;
-import org.geneview.core.data.map.MultiHashArrayIntegerMap;
-import org.geneview.core.data.map.MultiHashArrayStringMap;
-import org.geneview.core.data.mapping.EGenomeMappingDataType;
-import org.geneview.core.data.mapping.EGenomeMappingType;
-//import org.geneview.core.base.map.MultiHashArrayStringMap;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.base.AAbstractManager;
-import org.geneview.core.manager.data.IGenomeIdManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.manager.type.ManagerType;
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.util.mapping.AGenomeMapper;
-import org.geneview.core.util.mapping.EGenomeMappingCascadeType;
-import org.geneview.core.util.mapping.GenomeMapper_ENZYME_2_NCBI_GENEID_2_ACCESSION_2_MICROARRAY_EXPRESSION_STORAGE_INDEX;
+//import org.caleydo.core.base.map.MultiHashArrayMap;
+//import org.caleydo.core.data.mapping.EGenomeIdType;
+import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
+import org.caleydo.core.data.map.MultiHashArrayStringMap;
+import org.caleydo.core.data.mapping.EGenomeMappingDataType;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
+//import org.caleydo.core.base.map.MultiHashArrayStringMap;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.data.IGenomeIdManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.mapping.AGenomeMapper;
+import org.caleydo.core.util.mapping.EGenomeMappingCascadeType;
+import org.caleydo.core.util.mapping.GenomeMapper_ENZYME_2_NCBI_GENEID_2_ACCESSION_2_MICROARRAY_EXPRESSION_STORAGE_INDEX;
 
 
 /**
@@ -191,7 +191,7 @@ implements IGenomeIdManager {
 	}
 	
 	/**
-	 * @see org.geneview.core.manager.data.IGenomeIdManager#hasAnyMapByType(org.geneview.core.data.mapping.EGenomeMappingType)
+	 * @see org.caleydo.core.manager.data.IGenomeIdManager#hasAnyMapByType(org.caleydo.core.data.mapping.EGenomeMappingType)
 	 */
 	public final boolean hasAnyMapByType( final EGenomeMappingType codingLutType ) {
 		
@@ -223,7 +223,7 @@ implements IGenomeIdManager {
 	}	
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.manager.data.IGenomeIdManager#buildLUT_startEditingSetTypes(org.geneview.core.data.mapping.EGenomeIdType, org.geneview.core.data.mapping.EGenomeIdType)
+	 * @see org.caleydo.core.manager.data.IGenomeIdManager#buildLUT_startEditingSetTypes(org.caleydo.core.data.mapping.EGenomeIdType, org.caleydo.core.data.mapping.EGenomeIdType)
 	 */
 	public boolean buildLUT_startEditing( final EGenomeMappingType type ) {
 
@@ -245,10 +245,10 @@ implements IGenomeIdManager {
 			currentGenomeIdMap = hashType2Map.get( type );
 			
 			if ( currentGenomeIdMap == null ) {
-				throw new GeneViewRuntimeException(
+				throw new CaleydoRuntimeException(
 						"buildLUT_startEditingSetTypes(" + 
 						type + ") is not allocated!",
-						GeneViewRuntimeExceptionType.DATAHANDLING);
+						CaleydoRuntimeExceptionType.DATAHANDLING);
 			}
 			
 			return true;
@@ -260,7 +260,7 @@ implements IGenomeIdManager {
 
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.manager.data.IGenomeIdManager#buildLUT_stopEditing()
+	 * @see org.caleydo.core.manager.data.IGenomeIdManager#buildLUT_stopEditing()
 	 */
 	public boolean buildLUT_stopEditing( final EGenomeMappingType type ) {
 
@@ -283,7 +283,7 @@ implements IGenomeIdManager {
 		
 		if ( ! currentEditingType.equals( type ) ) 
 		{
-			throw new GeneViewRuntimeException("buildLUT_stopEditing(" + type +
+			throw new CaleydoRuntimeException("buildLUT_stopEditing(" + type +
 					") differs from current type=[" +
 					currentEditingType + "]");
 		}
@@ -295,14 +295,14 @@ implements IGenomeIdManager {
 
 	
 	public int getIdIntFromStringByMapping(
-			final String sGeneViewId, 
+			final String sCaleydoId, 
 			final EGenomeMappingType type) {
 
 		IGenomeIdMap buffer = hashType2Map.get( type );
 		
 		assert buffer == null : "getIdFromStringByMapping(" + type +") type is not allocated";
 		
-		return buffer.getIntByStringChecked( sGeneViewId );
+		return buffer.getIntByStringChecked( sCaleydoId );
 	}
 	
 
@@ -318,14 +318,14 @@ implements IGenomeIdManager {
 	}
 	
 	public String getIdStringFromStringByMapping(
-			final String sGeneViewId, 
+			final String sCaleydoId, 
 			final EGenomeMappingType type) {
 
 		IGenomeIdMap buffer = hashType2Map.get( type );
 		
 		assert buffer == null : "getStringIdFromStringByMapping(" + type +") type is not allocated";
 		
-		return buffer.getStringByStringChecked( sGeneViewId );
+		return buffer.getStringByStringChecked( sCaleydoId );
 	}
 
 
@@ -396,11 +396,11 @@ implements IGenomeIdManager {
 
 
 	/**
-	 * @see org.geneview.core.manager.data.IGenomeIdManager#setMapByType(org.geneview.core.data.mapping.EGenomeMappingType, java.lang.Object)
+	 * @see org.caleydo.core.manager.data.IGenomeIdManager#setMapByType(org.caleydo.core.data.mapping.EGenomeMappingType, java.lang.Object)
 	 * 
-	 * @see org.geneview.core.manager.data.genome.IGenomeIdMap
-	 * @see org.geneview.core.data.map.MultiHashArrayStringMap
-	 * @see org.geneview.core.data.map.MultiHashArrayIntegerMap
+	 * @see org.caleydo.core.manager.data.genome.IGenomeIdMap
+	 * @see org.caleydo.core.data.map.MultiHashArrayStringMap
+	 * @see org.caleydo.core.data.map.MultiHashArrayIntegerMap
 	 */
 	public void setMapByType(final EGenomeMappingType codingLutType, 
 			Object map) {
@@ -419,15 +419,15 @@ implements IGenomeIdManager {
 			hashType2Map.put(codingLutType, (IGenomeIdMap) map);
 		}
 		catch (NullPointerException npe) {
-			throw new GeneViewRuntimeException("setMapByType(final EGenomeMappingType codingLutType, Object map) unsupported object=" +
+			throw new CaleydoRuntimeException("setMapByType(final EGenomeMappingType codingLutType, Object map) unsupported object=" +
 					map.getClass().toString(),
-					GeneViewRuntimeExceptionType.DATAHANDLING);		
+					CaleydoRuntimeExceptionType.DATAHANDLING);		
 		}
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.data.IGenomeIdManager#removeMapByType(org.geneview.core.data.mapping.EGenomeMappingType)
+	 * @see org.caleydo.core.manager.data.IGenomeIdManager#removeMapByType(org.caleydo.core.data.mapping.EGenomeMappingType)
 	 */
 	public void removeMapByType(final EGenomeMappingType codingLutType) {
 		
@@ -538,7 +538,7 @@ implements IGenomeIdManager {
 			assert keyset == null : "EGenomeMappingType=[" + type + "] was not mapped to keys of type Integer";
 			
 			return keyset;		
-		} catch ( GeneViewRuntimeException gve ) {
+		} catch ( CaleydoRuntimeException gve ) {
 			singelton.logMsg("getValuesFromExposedDataStructues( " + type.toString() +
 					") failed, because String values could not be converted to Integer",
 					LoggerType.MINOR_ERROR_XML );

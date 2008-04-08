@@ -1,4 +1,4 @@
-package org.geneview.core.math;
+package org.caleydo.core.math;
 
 /**
  * 
@@ -204,8 +204,8 @@ public final class MathUtil {
 	}
 		
 	/**
-	 * Convert radiant for example: [ 0 .. 2*PI ] to degree [0.. 360°]
-	 * Note: if input value fRad is smaller than 0 oder larger than 2+PI the result is also either smalelr than 0° or larger than 360°
+	 * Convert radiant for example: [ 0 .. 2*PI ] to degree [0.. 360ï¿½]
+	 * Note: if input value fRad is smaller than 0 oder larger than 2+PI the result is also either smalelr than 0ï¿½ or larger than 360ï¿½
 	 * 
 	 * @param fRad radiant
 	 * @return degree
@@ -215,8 +215,8 @@ public final class MathUtil {
 	}
 	
 	/**
-	 * Convert degrees for example: [0.. 360°] to radiant [ 0 .. 2*PI ]
-	 * Note: if input value fRad is smaller than 0 oder larger than 2+PI the result is also either smalelr than 0° or larger than 360°
+	 * Convert degrees for example: [0.. 360ï¿½] to radiant [ 0 .. 2*PI ]
+	 * Note: if input value fRad is smaller than 0 oder larger than 2+PI the result is also either smalelr than 0ï¿½ or larger than 360ï¿½
 	 * 
 	 * @param fDegree degree, that will be converted to radiant
 	 * @return radiant
@@ -227,8 +227,8 @@ public final class MathUtil {
 	
 	
 	/**
-	 * Convert radiant for example: [ 0 .. 2*PI ] to degree [0.. 360°]
-	 * Note: if input value fRad is smaller than 0 oder larger than 2+PI the result is also either smalelr than 0° or larger than 360°
+	 * Convert radiant for example: [ 0 .. 2*PI ] to degree [0.. 360ï¿½]
+	 * Note: if input value fRad is smaller than 0 oder larger than 2+PI the result is also either smalelr than 0ï¿½ or larger than 360ï¿½
 	 * 
 	 * @param fRad radiant
 	 * @return degree
@@ -238,8 +238,8 @@ public final class MathUtil {
 	}
 	
 	/**
-	 * Convert degrees for example: [0.. 360°] to radiant [ 0 .. 2*PI ]
-	 * Note: if input value fRad is smaller than 0 oder larger than 2+PI the result is also either smalelr than 0° or larger than 360°
+	 * Convert degrees for example: [0.. 360ï¿½] to radiant [ 0 .. 2*PI ]
+	 * Note: if input value fRad is smaller than 0 oder larger than 2+PI the result is also either smalelr than 0ï¿½ or larger than 360ï¿½
 	 * 
 	 * @param fDegree degree, that will be converted to radiant
 	 * @return radiant

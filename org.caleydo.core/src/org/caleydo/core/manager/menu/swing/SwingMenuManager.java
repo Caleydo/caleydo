@@ -6,7 +6,7 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.manager.menu.swing;
+package org.caleydo.core.manager.menu.swing;
 
 import java.util.Hashtable;
 
@@ -14,18 +14,18 @@ import javax.swing.JMenuItem;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 
-//import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.IMenuManager;
-import org.geneview.core.manager.IViewGLCanvasManager;
-import org.geneview.core.manager.base.AAbstractManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.manager.type.ManagerType;
+//import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IMenuManager;
+import org.caleydo.core.manager.IViewGLCanvasManager;
+import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.ManagerType;
 
 //import prometheus.command.CommandType;
-import org.geneview.core.command.ICommand;
+import org.caleydo.core.command.ICommand;
 
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 //import prometheus.net.dwt.swing.jogl.WorkspaceSwingFrame;
 
@@ -179,7 +179,7 @@ public class SwingMenuManager
 				gui_menuBar.add( newMenuObject );
 //			}
 //			else {
-//				throw new GeneViewRuntimeException("DMenuBootStraper::add.. try to assign root menu a second time");
+//				throw new CaleydoRuntimeException("DMenuBootStraper::add.. try to assign root menu a second time");
 //			}	
 			
 		}
@@ -191,7 +191,7 @@ public class SwingMenuManager
 				parentMenuObject.add( newMenuObject );
 			}
 			else {
-				throw new GeneViewRuntimeException("DMenuBootStraper::add.. can not find parent menu ["+
+				throw new CaleydoRuntimeException("DMenuBootStraper::add.. can not find parent menu ["+
 						sRootMenuId + "] for child menu [" +
 						sMenuId + "]" );			
 			} // end if ( parentMenuObject != null ) ... else 
@@ -202,7 +202,7 @@ public class SwingMenuManager
 					return 0;
 				}
 				catch (NullPointerException npe) {
-					throw  new GeneViewRuntimeException("DMenuBootStraper::add.. can not add Seperator to non Menu item ["+
+					throw  new CaleydoRuntimeException("DMenuBootStraper::add.. can not add Seperator to non Menu item ["+
 							sRootMenuId + "]");
 				}
 			} // end if ( sMenuParentLookupName.equalsIgnoreCase( MENU_SEPERATOR ) ) {

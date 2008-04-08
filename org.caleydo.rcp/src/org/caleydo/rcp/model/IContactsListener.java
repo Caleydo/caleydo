@@ -12,7 +12,7 @@
  * Contributors:
  *     Jean-Michel Lemieux and Jeff McAffer - initial implementation
  *******************************************************************************/
-package org.geneview.rcp.model;
+package org.caleydo.rcp.model;
 
 public interface IContactsListener {
 	public void contactsChanged(ContactsGroup contacts, ContactsEntry entry);

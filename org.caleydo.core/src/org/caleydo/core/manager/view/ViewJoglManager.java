@@ -1,4 +1,4 @@
-package org.geneview.core.manager.view;
+package org.caleydo.core.manager.view;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,41 +9,41 @@ import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.swing.JFrame;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.data.view.camera.IViewFrustum;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.IViewGLCanvasManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.base.AAbstractManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.manager.type.ManagerType;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.view.IView;
-import org.geneview.core.view.IViewRep;
-import org.geneview.core.view.ViewType;
-import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
-import org.geneview.core.view.opengl.canvas.bucket.GLCanvasBucket3D;
-import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
-import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn;
-import org.geneview.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
-import org.geneview.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
-import org.geneview.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
-import org.geneview.core.view.opengl.util.infoarea.GLInfoAreaManager;
-import org.geneview.core.view.swt.browser.HTMLBrowserViewRep;
-import org.geneview.core.view.swt.data.exchanger.DataExchangerViewRep;
-import org.geneview.core.view.swt.data.exchanger.NewSetEditorViewRep;
-import org.geneview.core.view.swt.data.explorer.DataExplorerViewRep;
-import org.geneview.core.view.swt.data.search.DataEntitySearcherViewRep;
-import org.geneview.core.view.swt.image.ImageViewRep;
-import org.geneview.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
-import org.geneview.core.view.swt.jogl.gears.GearsViewRep;
-import org.geneview.core.view.swt.mixer.MixerViewRep;
-import org.geneview.core.view.swt.pathway.Pathway2DViewRep;
-import org.geneview.core.view.swt.progressbar.ProgressBarViewRep;
-import org.geneview.core.view.swt.slider.SelectionSliderViewRep;
-import org.geneview.core.view.swt.slider.StorageSliderViewRep;
-import org.geneview.core.view.swt.test.TestTableViewRep;
-import org.geneview.core.view.swt.undoredo.UndoRedoViewRep;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IViewGLCanvasManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.view.IView;
+import org.caleydo.core.view.IViewRep;
+import org.caleydo.core.view.ViewType;
+import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.bucket.GLCanvasBucket3D;
+import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
+import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn;
+import org.caleydo.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
+import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
+import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
+import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
+import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
+import org.caleydo.core.view.swt.data.exchanger.DataExchangerViewRep;
+import org.caleydo.core.view.swt.data.exchanger.NewSetEditorViewRep;
+import org.caleydo.core.view.swt.data.explorer.DataExplorerViewRep;
+import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
+import org.caleydo.core.view.swt.image.ImageViewRep;
+import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
+import org.caleydo.core.view.swt.jogl.gears.GearsViewRep;
+import org.caleydo.core.view.swt.mixer.MixerViewRep;
+import org.caleydo.core.view.swt.pathway.Pathway2DViewRep;
+import org.caleydo.core.view.swt.progressbar.ProgressBarViewRep;
+import org.caleydo.core.view.swt.slider.SelectionSliderViewRep;
+import org.caleydo.core.view.swt.slider.StorageSliderViewRep;
+import org.caleydo.core.view.swt.test.TestTableViewRep;
+import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
 
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
@@ -194,7 +194,7 @@ implements IViewGLCanvasManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.IViewManager#createView(org.geneview.core.manager.type.ManagerObjectType, int, int, java.lang.String)
+	 * @see org.caleydo.core.manager.IViewManager#createView(org.caleydo.core.manager.type.ManagerObjectType, int, int, java.lang.String)
 	 */
 	public IView createView(final ManagerObjectType useViewType, 
 			final int iViewID,
@@ -203,7 +203,7 @@ implements IViewGLCanvasManager {
 
 		if (useViewType.getGroupType() != ManagerType.VIEW)
 		{
-			throw new GeneViewRuntimeException(
+			throw new CaleydoRuntimeException(
 					"try to create object with wrong type "
 							+ useViewType.name());
 		}
@@ -257,7 +257,7 @@ implements IViewGLCanvasManager {
 						iParentContainerID, sLabel);	
 
 			default:
-				throw new GeneViewRuntimeException(
+				throw new CaleydoRuntimeException(
 						"StorageManagerSimple.createView() failed due to unhandled type ["
 								+ useViewType.toString() + "]");
 			}
@@ -277,7 +277,7 @@ implements IViewGLCanvasManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.IViewManager#createGLView(org.geneview.core.manager.type.ManagerObjectType, int, int, int, java.lang.String)
+	 * @see org.caleydo.core.manager.IViewManager#createGLView(org.caleydo.core.manager.type.ManagerObjectType, int, int, int, java.lang.String)
 	 */
 	public IView createGLView(final ManagerObjectType useViewType, 
 			final int iViewID,
@@ -287,7 +287,7 @@ implements IViewGLCanvasManager {
 
 		if (useViewType.getGroupType() != ManagerType.VIEW)
 		{
-			throw new GeneViewRuntimeException(
+			throw new CaleydoRuntimeException(
 					"try to create object with wrong type "
 							+ useViewType.name());
 		}
@@ -304,7 +304,7 @@ implements IViewGLCanvasManager {
 						iParentContainerID,	iGLCanvasID, sLabel);
 
 			default:
-				throw new GeneViewRuntimeException(
+				throw new CaleydoRuntimeException(
 						"StorageManagerSimple.createView() failed due to unhandled type ["
 								+ useViewType.toString() + "]");
 			}
@@ -458,7 +458,7 @@ implements IViewGLCanvasManager {
 						viewFrustum);	
 				
 			default:
-				throw new GeneViewRuntimeException(
+				throw new CaleydoRuntimeException(
 						"ViewJoglManager.createGLCanvasUser() failed due to unhandled type ["
 								+ useViewType.toString() + "]");
 			}
@@ -602,7 +602,7 @@ implements IViewGLCanvasManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.IViewManager#getAllViews()
+	 * @see org.caleydo.core.manager.IViewManager#getAllViews()
 	 */
 	public Collection<IView> getAllViews() {
 
@@ -611,7 +611,7 @@ implements IViewGLCanvasManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.IViewManager#getAllGLCanvasUsers()
+	 * @see org.caleydo.core.manager.IViewManager#getAllGLCanvasUsers()
 	 */
 	public Collection<GLCanvas> getAllGLCanvasUsers() {
 		

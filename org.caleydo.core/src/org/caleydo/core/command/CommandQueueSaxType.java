@@ -1,7 +1,7 @@
-package org.geneview.core.command;
+package org.caleydo.core.command;
 
-import org.geneview.core.manager.type.ManagerType;
-import org.geneview.core.util.IGeneViewDefaultType;
+import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.util.ICaleydoDefaultType;
 
 /**
  * Type of Command Queue "tag's" and "key's"
@@ -19,7 +19,7 @@ import org.geneview.core.util.IGeneViewDefaultType;
  *
  */
 public enum CommandQueueSaxType
-implements IGeneViewDefaultType <CommandQueueSaxType> {
+implements ICaleydoDefaultType <CommandQueueSaxType> {
 
 	/*
 	 * -------  COMMAND  --------
@@ -134,7 +134,7 @@ implements IGeneViewDefaultType <CommandQueueSaxType> {
 	WINDOW_SET_ACTIVE_FRAME("cmd","type","-1", "No description available!"),
 	WINDOW_IFRAME_NEW_INTERNAL_FRAME("cmd","type","-1", "No description available!"),
 	
-	SYSTEM_SHUT_DOWN(ManagerType.SYSTEM,"cmd","type","-1", "GeneView system shut down"),
+	SYSTEM_SHUT_DOWN(ManagerType.SYSTEM,"cmd","type","-1", "Caleydo system shut down"),
 	
 	WINDOW_IFRAME_OPEN_HEATMAP2D(),
 	WINDOW_IFRAME_OPEN_HISTOGRAM2D(),
@@ -323,7 +323,7 @@ implements IGeneViewDefaultType <CommandQueueSaxType> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.util.IGeneViewDefaultType#getTypeDefault()
+	 * @see org.caleydo.core.util.ICaleydoDefaultType#getTypeDefault()
 	 */
 	public CommandQueueSaxType getTypeDefault() {
 

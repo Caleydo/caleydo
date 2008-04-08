@@ -1,4 +1,4 @@
-package org.geneview.core.application.gui.swt;
+package org.caleydo.core.application.gui.swt;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

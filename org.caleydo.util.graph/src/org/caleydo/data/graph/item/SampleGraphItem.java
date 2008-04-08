@@ -1,10 +1,10 @@
 /**
  * 
  */
-package org.geneview.data.graph.item;
+package org.caleydo.data.graph.item;
 
-import org.geneview.util.graph.EGraphItemKind;
-import org.geneview.util.graph.item.GraphItem;
+import org.caleydo.util.graph.EGraphItemKind;
+import org.caleydo.util.graph.item.GraphItem;
 
 /**
  * Example for a graph item such as a node or an edge.

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.rcp.dialog.file;
+package org.caleydo.rcp.dialog.file;
 
 import org.eclipse.jface.dialogs.Dialog;
 //import org.eclipse.jface.window.IShellProvider;
@@ -16,12 +16,12 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.system.CmdSystemLoadFileViaImporter;
-import org.geneview.core.manager.ISWTGUIManager;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
-import org.geneview.rcp.Application;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.system.CmdSystemLoadFileViaImporter;
+import org.caleydo.core.manager.ISWTGUIManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.caleydo.rcp.Application;
 
 /**
  * copy of RCP tutorial "org.eclipsercp.hyperbola.AddContactDialog.java"
@@ -43,7 +43,7 @@ public class OpenCsvDataFileDialog extends Dialog {
 
 	private int targetSetId = 35101;
 	
-	protected String cvsPath = "D:/src/java/ICG/cerberus/org.geneview.data/data/genome/microarray/gpr_format";
+	protected String cvsPath = "D:/src/java/ICG/cerberus/org.caleydo.data/data/genome/microarray/gpr_format";
 	
 	/**
 	 * @param parentShell
@@ -148,10 +148,10 @@ public class OpenCsvDataFileDialog extends Dialog {
 		}
 
 		CmdSystemLoadFileViaImporter cmdLoadCsv = (CmdSystemLoadFileViaImporter) 
-			Application.geneview_core.getGeneralManager().getCommandManager().createCommandByType(
+			Application.caleydo_core.getGeneralManager().getCommandManager().createCommandByType(
 					CommandQueueSaxType.LOAD_DATA_FILE);
 		
-		ISWTGUIManager refISWTGUIManager= Application.geneview_core.getGeneralManager().getSingelton().getSWTGUIManager();
+		ISWTGUIManager refISWTGUIManager= Application.caleydo_core.getGeneralManager().getSingelton().getSWTGUIManager();
 		refISWTGUIManager.setProgressbarVisible(true);
 		
 		cmdLoadCsv.setAttributes(csvFileName, 
@@ -162,8 +162,8 @@ public class OpenCsvDataFileDialog extends Dialog {
 		
 		try {
 			cmdLoadCsv.doCommand();
-		} catch (GeneViewRuntimeException e) {
-			if ( e.getType().equals(GeneViewRuntimeExceptionType.SET)) {
+		} catch (CaleydoRuntimeException e) {
+			if ( e.getType().equals(CaleydoRuntimeExceptionType.SET)) {
 				MessageDialog.openError(getShell(), "Invalid SetId",
 				"targetSetId is invalid");
 				return;

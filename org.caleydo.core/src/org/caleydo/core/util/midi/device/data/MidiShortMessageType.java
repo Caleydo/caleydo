@@ -1,14 +1,14 @@
 /**
  * 
  */
-package org.geneview.core.util.midi.device.data;
+package org.caleydo.core.util.midi.device.data;
 
 /**
  * Enumeration for different short MIDI messages.
  * 
  * @author Michael Kalkusch
  *
- * @see org.geneview.core.util.midi.device.data.MidiData
+ * @see org.caleydo.core.util.midi.device.data.MidiData
  */
 public enum MidiShortMessageType {
 

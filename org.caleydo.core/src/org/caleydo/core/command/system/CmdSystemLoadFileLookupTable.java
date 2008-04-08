@@ -6,23 +6,23 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.command.system;
+package org.caleydo.core.command.system;
 
 import java.util.StringTokenizer;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.base.ACommand;
-import org.geneview.core.command.window.CmdWindowPopupInfo;
-import org.geneview.core.data.mapping.EGenomeMappingType;
-import org.geneview.core.data.mapping.EGenomeMappingDataType;
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.data.IGenomeIdManager;
-import org.geneview.core.parser.ascii.lookuptable.LookupTableLoaderProxy;
-import org.geneview.core.parser.parameter.IParameterHandler;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.util.system.StringConversionTool;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.base.ACommand;
+import org.caleydo.core.command.window.CmdWindowPopupInfo;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.mapping.EGenomeMappingDataType;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.data.IGenomeIdManager;
+import org.caleydo.core.parser.ascii.lookuptable.LookupTableLoaderProxy;
+import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.system.StringConversionTool;
 
 
 /**
@@ -31,8 +31,8 @@ import org.geneview.core.util.system.StringConversionTool;
  * @author Michael Kalkusch
  * @author Marc Streit
  *
- * @see org.geneview.core.data.collection.ISet
- * @see org.geneview.core.parser.ascii.microarray.MicroArrayLoader1Storage
+ * @see org.caleydo.core.data.collection.ISet
+ * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage
  */
 public class CmdSystemLoadFileLookupTable 
 extends ACommand {
@@ -60,25 +60,25 @@ extends ACommand {
 	/**
 	 * Define type of lookup table to be created.
 	 * 
-	 * @see org.geneview.core.data.mapping.EGenomeIdType
+	 * @see org.caleydo.core.data.mapping.EGenomeIdType
 	 */
 	protected String sLUT_Target;
 	
 	/**
 	 * Default is 32, because gpr files have a header of that size!
 	 * 
-	 * @see org.geneview.core.parser.ascii.microarray.MicroArrayLoader1Storage#iStartParsingAtLine
-	 * @see org.geneview.core.parser.ascii.microarray.MicroArrayLoader1Storage#getStartParsingAtLine()
-	 * @see org.geneview.core.parser.ascii.microarray.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int, int)
+	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#iStartParsingAtLine
+	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#getStartParsingAtLine()
+	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int, int)
 	 */
 	protected int iStartPareseFileAtLine = 0;
 	
 	/**
 	 * Default is -1 indicateing read till end of file.
 	 * 
-	 * @see org.geneview.core.parser.ascii.microarray.MicroArrayLoader1Storage#iStopParsingAtLine
-	 * @see org.geneview.core.parser.ascii.microarray.MicroArrayLoader1Storage#getStopParsingAtLine()
-	 * @see org.geneview.core.parser.ascii.microarray.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int, int)
+	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#iStopParsingAtLine
+	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#getStopParsingAtLine()
+	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int, int)
 	 */
 	protected int iStopPareseFileAtLine = -1;
 	
@@ -234,11 +234,11 @@ extends ACommand {
 	/**
 	 * Load data from file using a token pattern.
 	 * 
-	 * @see org.geneview.core.parser.ascii.microarray.MicroArrayLoader1Storage#loadData()
+	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#loadData()
 	 * 
-	 * @see org.geneview.core.command.ICommand#doCommand()
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws GeneViewRuntimeException {
+	public void doCommand() throws CaleydoRuntimeException {
 		
 		generalManager.getSingelton().logMsg(
 	    		"load file via importer... ([" +
@@ -435,9 +435,9 @@ extends ACommand {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#undoCommand()
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws GeneViewRuntimeException {
+	public void undoCommand() throws CaleydoRuntimeException {
 		refCommandManager.runUndoCommand(this);
 	}
 }

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.util;
+package org.caleydo.core.util;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -9,12 +9,12 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Convert SET <K> to SET <V> and Collection <K> to Collection <V> were K,V are elementOf(Integer, String) 
  * 
- * @see org.geneview.core.manager.data.genome.GenomeIdMapInt2Int#getValuesInteger()
+ * @see org.caleydo.core.manager.data.genome.GenomeIdMapInt2Int#getValuesInteger()
  * 
  * @author Michael Kalkusch
  *
@@ -42,7 +42,7 @@ public final class ConversionStringInteger {
 			
 			return result;
 		} catch (NumberFormatException nfe) {
-			throw new GeneViewRuntimeException("Can not convert String to Integer; " 
+			throw new CaleydoRuntimeException("Can not convert String to Integer; " 
 					+ nfe.toString());
 		}		
 		
@@ -90,7 +90,7 @@ public final class ConversionStringInteger {
 			
 			return result;
 		} catch (NumberFormatException nfe) {
-			throw new GeneViewRuntimeException("Can not convert String to Integer; " 
+			throw new CaleydoRuntimeException("Can not convert String to Integer; " 
 					+ nfe.toString());
 		}	
 	}

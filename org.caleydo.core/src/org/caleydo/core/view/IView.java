@@ -1,13 +1,13 @@
-package org.geneview.core.view;
+package org.caleydo.core.view;
 
 import org.eclipse.swt.widgets.Composite;
 
-import org.geneview.core.data.IUniqueObject;
-import org.geneview.core.data.collection.SetType;
-import org.geneview.core.view.ViewType;
+import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.data.collection.SetType;
+import org.caleydo.core.view.ViewType;
 
-//import org.geneview.core.command.ICommand;
-//import org.geneview.core.data.collection.ISet;
+//import org.caleydo.core.command.ICommand;
+//import org.caleydo.core.data.collection.ISet;
 
 /**
  * Interface for the view representations.
@@ -23,9 +23,9 @@ extends IUniqueObject {
 	 * by external creation of SWT Container.
 	 * 
 	 * @see IView#initView()
-	 * @see org.geneview.core.view.AViewRep#initView()
-	 * @see org.geneview.core.view.AViewRep#initViewRCP(Composite)
-	 * @see org.geneview.core.view.AViewRep#initViewSwtComposit(Composite)
+	 * @see org.caleydo.core.view.AViewRep#initView()
+	 * @see org.caleydo.core.view.AViewRep#initViewRCP(Composite)
+	 * @see org.caleydo.core.view.AViewRep#initViewSwtComposit(Composite)
 	 * 
 	 * @param swtContainer container to bind View to
 	 */
@@ -36,9 +36,9 @@ extends IUniqueObject {
 	 * All initialization sets must be accomplished in this method.
 	 * 
 	 * @see IView#initViewRCP(Composite)
-	 * @see org.geneview.core.view.AViewRep#initView()
-	 * @see org.geneview.core.view.AViewRep#initViewRCP(Composite)
-	 * @see org.geneview.core.view.AViewRep#initViewSwtComposit(Composite)
+	 * @see org.caleydo.core.view.AViewRep#initView()
+	 * @see org.caleydo.core.view.AViewRep#initViewRCP(Composite)
+	 * @see org.caleydo.core.view.AViewRep#initViewSwtComposit(Composite)
 	 */
 	public void initView();
 

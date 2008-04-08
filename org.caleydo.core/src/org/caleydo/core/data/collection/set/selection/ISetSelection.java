@@ -1,11 +1,11 @@
 /**
  * 
  */
-package org.geneview.core.data.collection.set.selection;
+package org.caleydo.core.data.collection.set.selection;
 
 import java.util.ArrayList;
 
-import org.geneview.core.data.collection.ISet;
+import org.caleydo.core.data.collection.ISet;
 
 /**
  * Special ISet for selection. 
@@ -14,7 +14,7 @@ import org.geneview.core.data.collection.ISet;
  * to the selection data.
  * 
  * @see cerverus.view.gui.AViewRep
- * @see org.geneview.core.manager.event.mediator.IMediatorReceiver
+ * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver
  * 
  * @author Michael Kalkusch
  * @author Marc Streit

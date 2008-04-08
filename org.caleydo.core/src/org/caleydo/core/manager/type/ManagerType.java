@@ -6,12 +6,12 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.manager.type;
+package org.caleydo.core.manager.type;
 
 /**
  * Group of Managers.
  * 
- * @see org.geneview.core.manager.type.ManagerObjectType
+ * @see org.caleydo.core.manager.type.ManagerObjectType
  * 
  * @author Michael Kalkusch
  *
@@ -130,8 +130,8 @@ public enum ManagerType {
 		/**
 		 * Get the postfix code of that Manager
 		 *
-		 * @see org.geneview.core.manager.IGeneralManager#iUniqueId_TypeOffsetMultiplyer
-		 * @see org.geneview.core.manager.IGeneralManager
+		 * @see org.caleydo.core.manager.IGeneralManager#iUniqueId_TypeOffsetMultiplyer
+		 * @see org.caleydo.core.manager.IGeneralManager
 		 *
 		 * @return [0..99]
 		 */

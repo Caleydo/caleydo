@@ -6,22 +6,22 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.command.data;
+package org.caleydo.core.command.data;
 
 
 import java.util.StringTokenizer;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.base.ACmdCreate_IdTargetLabel;
-import org.geneview.core.data.collection.IVirtualArray;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.data.IVirtualArrayManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.parser.parameter.IParameterHandler;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.util.system.StringConversionTool;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.base.ACmdCreate_IdTargetLabel;
+import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.data.IVirtualArrayManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.system.StringConversionTool;
 
 
 
@@ -31,8 +31,8 @@ import org.geneview.core.util.system.StringConversionTool;
  * 
  * @author Michael Kalkusch
  *
- * @see org.geneview.core.data.collection.ISet
- * @see org.geneview.core.parser.ascii.microarray.MicroArrayLoader1Storage
+ * @see org.caleydo.core.data.collection.ISet
+ * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage
  */
 public class CmdDataCreateVirtualArray 
 extends ACmdCreate_IdTargetLabel {
@@ -65,11 +65,11 @@ extends ACmdCreate_IdTargetLabel {
 	/**
 	 * Load data from file using a token pattern.
 	 * 
-	 * @see org.geneview.core.parser.ascii.microarray.MicroArrayLoader1Storage#loadData()
+	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#loadData()
 	 * 
-	 * @see org.geneview.core.command.ICommand#doCommand()
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws GeneViewRuntimeException {
+	public void doCommand() throws CaleydoRuntimeException {
 		
 		IVirtualArrayManager refVirtualArrayManager = 
 			generalManager.getSingelton().getVirtualArrayManager();
@@ -97,9 +97,9 @@ extends ACmdCreate_IdTargetLabel {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#undoCommand()
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws GeneViewRuntimeException {
+	public void undoCommand() throws CaleydoRuntimeException {
 		
 		generalManager.getSingelton().getVirtualArrayManager().unregisterItem( 
 				iUniqueId,

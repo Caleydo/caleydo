@@ -1,4 +1,4 @@
-package org.geneview.core.view.swt.toolbar;
+package org.caleydo.core.view.swt.toolbar;
 
 import java.awt.Dimension;
 import java.io.IOException;
@@ -13,9 +13,9 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolItem;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
-import org.geneview.core.view.swt.pathway.APathwayGraphViewRep;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
+import org.caleydo.core.view.swt.pathway.APathwayGraphViewRep;
 
 public class Pathway2DToolbar 
 extends AToolbar {

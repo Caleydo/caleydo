@@ -1,4 +1,4 @@
-package org.geneview.core.application.mapping;
+package org.caleydo.core.application.mapping;
 
 import java.io.BufferedReader;
 import java.io.FileReader;

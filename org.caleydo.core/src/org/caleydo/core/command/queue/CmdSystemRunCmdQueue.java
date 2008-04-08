@@ -1,15 +1,15 @@
 /**
  * 
  */
-package org.geneview.core.command.queue;
+package org.caleydo.core.command.queue;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.base.ACommand;
-import org.geneview.core.command.queue.ICommandQueue;
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
-//import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.base.ACommand;
+import org.caleydo.core.command.queue.ICommandQueue;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+//import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Runs a command queue.
@@ -43,29 +43,29 @@ extends ACommand {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#doCommand()
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws GeneViewRuntimeException {
+	public void doCommand() throws CaleydoRuntimeException {
 		ICommandQueue cmdQueue = 
 			this.generalManager.getSingelton().getCommandManager().getCommandQueueByCmdQueueId(iCommandQueueId);
 		
 		if ( cmdQueue == null ) {
-			throw new GeneViewRuntimeException("CmdSystemRunCmdQueue::doCommand() cmdQueue==null !");
+			throw new CaleydoRuntimeException("CmdSystemRunCmdQueue::doCommand() cmdQueue==null !");
 		}
 		
 		cmdQueue.doCommand();
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#undoCommand()
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws GeneViewRuntimeException {
+	public void undoCommand() throws CaleydoRuntimeException {
 		
 		ICommandQueue cmdQueue = 
 			this.generalManager.getSingelton().getCommandManager().getCommandQueueByCmdQueueId(iCommandQueueId);
 		
 		if ( cmdQueue == null ) {
-			throw new GeneViewRuntimeException("CmdSystemRunCmdQueue::doCommand() cmdQueue==null !");
+			throw new CaleydoRuntimeException("CmdSystemRunCmdQueue::doCommand() cmdQueue==null !");
 		}
 		
 		cmdQueue.doCommand();

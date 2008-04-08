@@ -1,22 +1,22 @@
-package org.geneview.rcp.views;
+package org.caleydo.rcp.views;
 
 import java.util.ArrayList;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
-import org.geneview.rcp.Application;
+import org.caleydo.rcp.Application;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.event.CmdEventCreateMediator;
-import org.geneview.core.manager.IViewManager;
-import org.geneview.core.manager.IEventPublisher.MediatorType;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.view.swt.pathway.Pathway2DViewRep;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.event.CmdEventCreateMediator;
+import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.IEventPublisher.MediatorType;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.view.swt.pathway.Pathway2DViewRep;
 
 public class Pathway2DView 
 extends ViewPart {
 
-	public static final String ID = "org.geneview.rcp.views.Pathway2DView";
+	public static final String ID = "org.caleydo.rcp.views.Pathway2DView";
 	
 	/*
 	 * (non-Javadoc)

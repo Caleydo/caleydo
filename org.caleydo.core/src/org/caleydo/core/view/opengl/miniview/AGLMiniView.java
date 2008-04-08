@@ -1,11 +1,11 @@
-package org.geneview.core.view.opengl.miniview;
+package org.caleydo.core.view.opengl.miniview;
 
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 
-import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.data.collection.set.selection.SetSelection;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.set.selection.SetSelection;
 
 
 public abstract class AGLMiniView 

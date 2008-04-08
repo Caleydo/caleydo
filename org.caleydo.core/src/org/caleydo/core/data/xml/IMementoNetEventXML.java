@@ -6,14 +6,14 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.xml;
+package org.caleydo.core.data.xml;
 
 //import java.io.InputStream;
 // import org.xml.sax.InputSource;
 
-import org.geneview.core.data.xml.IMementoXML;
-import org.geneview.core.data.xml.IMementoItemXML;
-import org.geneview.core.data.xml.IMementoCallbackXML;
+import org.caleydo.core.data.xml.IMementoXML;
+import org.caleydo.core.data.xml.IMementoItemXML;
+import org.caleydo.core.data.xml.IMementoCallbackXML;
 
 /**
  * Interface for loading and saving DNetEventComponentInterface objects to and from XML file.

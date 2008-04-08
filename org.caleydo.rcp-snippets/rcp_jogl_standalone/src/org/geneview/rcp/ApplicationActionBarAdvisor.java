@@ -1,4 +1,4 @@
-package org.geneview.rcp;
+package org.caleydo.rcp;
 
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.ui.IWorkbenchWindow;

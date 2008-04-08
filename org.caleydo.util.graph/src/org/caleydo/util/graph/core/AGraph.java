@@ -1,12 +1,12 @@
 /**
  * 
  */
-package org.geneview.util.graph.core;
+package org.caleydo.util.graph.core;
 
 import java.util.HashMap;
 
-import org.geneview.util.graph.EGraphProperty;
-import org.geneview.util.graph.IGraph;
+import org.caleydo.util.graph.EGraphProperty;
+import org.caleydo.util.graph.IGraph;
 
 /**
  * Base Class for all IGraph implementations handling EGraphProperty and GraphTypeId
@@ -17,25 +17,25 @@ import org.geneview.util.graph.IGraph;
 public abstract class AGraph implements IGraph {
 
 	/**
-	 * initial size of org.geneview.util.graph.core.AGraph#hashGraphProperties 
+	 * initial size of org.caleydo.util.graph.core.AGraph#hashGraphProperties 
 	 * 
-	 * @see org.geneview.util.graph.core.AGraph#hashGraphProperties
+	 * @see org.caleydo.util.graph.core.AGraph#hashGraphProperties
 	 */
 	private static final int iInitialSizeProperties = 3;
 	
 	/**
-	 * @see org.geneview.util.graph.core.AGraph#getId()
-	 * @see org.geneview.util.graph.core.AGraph#setId(int)
+	 * @see org.caleydo.util.graph.core.AGraph#getId()
+	 * @see org.caleydo.util.graph.core.AGraph#setId(int)
 	 */
 	private int iGraphId = 0;
 	
 	/**
 	 * HashMap for EGraphProperty.
 	 * 
-	 * @see org.geneview.util.graph.core.AGraph#hasGraphProperty(EGraphProperty)
-	 * @see org.geneview.util.graph.core.AGraph#setGraphProperty(EGraphProperty, boolean)
-	 * @see org.geneview.util.graph.IGraph#setGraphProperty(EGraphProperty, boolean)
-	 * @see org.geneview.util.graph.IGraph#hasGraphProperty(EGraphProperty)
+	 * @see org.caleydo.util.graph.core.AGraph#hasGraphProperty(EGraphProperty)
+	 * @see org.caleydo.util.graph.core.AGraph#setGraphProperty(EGraphProperty, boolean)
+	 * @see org.caleydo.util.graph.IGraph#setGraphProperty(EGraphProperty, boolean)
+	 * @see org.caleydo.util.graph.IGraph#hasGraphProperty(EGraphProperty)
 	 */
 	private HashMap <EGraphProperty,Boolean> hashGraphProperties;
 	
@@ -49,14 +49,14 @@ public abstract class AGraph implements IGraph {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.util.graph.IGraph#getTypeId()
+	 * @see org.caleydo.util.graph.IGraph#getTypeId()
 	 */
 	public final int getId() {
 		return iGraphId;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.util.graph.IGraph#hasGraphProperty(org.geneview.util.graph.EGraphProperty)
+	 * @see org.caleydo.util.graph.IGraph#hasGraphProperty(org.caleydo.util.graph.EGraphProperty)
 	 */
 	public final boolean hasGraphProperty(EGraphProperty test) {
 		return hashGraphProperties.containsKey(test);
@@ -73,7 +73,7 @@ public abstract class AGraph implements IGraph {
 
 
 	/* (non-Javadoc)
-	 * @see org.geneview.util.graph.IGraph#setTypeId(int)
+	 * @see org.caleydo.util.graph.IGraph#setTypeId(int)
 	 */
 	public final void setId(int type) {
 		if (type >= 0) 
@@ -88,9 +88,9 @@ public abstract class AGraph implements IGraph {
 
 	/**
 	 * Empty method by definition.
-	 * For details see org.geneview.util.graph.IGraphComponent#disposeItem().
+	 * For details see org.caleydo.util.graph.IGraphComponent#disposeItem().
 	 * 
-	 * @see org.geneview.util.graph.IGraphComponent#disposeItem()
+	 * @see org.caleydo.util.graph.IGraphComponent#disposeItem()
 	 */
 	public final void disposeItem() {
 		/** Graph does not dispose other objects; only IGraphItem need to dispose objects */

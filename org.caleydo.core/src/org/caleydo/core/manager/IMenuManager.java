@@ -6,12 +6,12 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.manager;
+package org.caleydo.core.manager;
 
 import javax.swing.JMenuItem;
 
 
-import org.geneview.core.command.ICommand;
+import org.caleydo.core.command.ICommand;
 
 /**
  * Manager for Menus.

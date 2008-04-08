@@ -8,7 +8,7 @@
  * Contributors:
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
-package org.geneview.rcp.views.browser;
+package org.caleydo.rcp.views.browser;
 
 /**
  * Marks a workbench part implementation as being a secondary part.

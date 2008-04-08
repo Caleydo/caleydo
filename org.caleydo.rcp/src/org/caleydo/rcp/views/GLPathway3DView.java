@@ -1,4 +1,4 @@
-package org.geneview.rcp.views;
+package org.caleydo.rcp.views;
 
 
 import org.eclipse.jface.action.IMenuManager;
@@ -11,7 +11,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 public class GLPathway3DView 
 extends AGLViewPart {
 
-	public static final String ID = "org.geneview.rcp.views.GLPathway3DView";
+	public static final String ID = "org.caleydo.rcp.views.GLPathway3DView";
 
 	protected int iGLCanvasDirectorId;
 	

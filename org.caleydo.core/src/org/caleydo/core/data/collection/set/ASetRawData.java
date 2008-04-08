@@ -1,14 +1,14 @@
 /**
  * 
  */
-package org.geneview.core.data.collection.set;
+package org.caleydo.core.data.collection.set;
 
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.SetDataType;
-import org.geneview.core.data.collection.SetType;
-import org.geneview.core.data.collection.thread.impl.ACollectionThreadItem;
-import org.geneview.core.data.collection.thread.lock.ICollectionLock;
-import org.geneview.core.manager.IGeneralManager;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.SetDataType;
+import org.caleydo.core.data.collection.SetType;
+import org.caleydo.core.data.collection.thread.impl.ACollectionThreadItem;
+import org.caleydo.core.data.collection.thread.lock.ICollectionLock;
+import org.caleydo.core.manager.IGeneralManager;
 
 
 /**
@@ -41,7 +41,7 @@ implements ISet {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISet#getSetType()
+	 * @see org.caleydo.core.data.collection.ISet#getSetType()
 	 */
 	public final SetType getSetType() {
 		return setType;

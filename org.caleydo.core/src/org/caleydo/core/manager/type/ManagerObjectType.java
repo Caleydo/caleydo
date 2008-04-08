@@ -1,9 +1,9 @@
-package org.geneview.core.manager.type;
+package org.caleydo.core.manager.type;
 
 /**
  * Types of managers
  * 
- * @see org.geneview.core.manager.enum.ManagerType
+ * @see org.caleydo.core.manager.enum.ManagerType
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -13,7 +13,7 @@ public enum ManagerObjectType {
 
 	
 	/**
-	 * see org.geneview.core.command.CommandQueueSaxType.CREATE_EVENT_MEDIATOR
+	 * see org.caleydo.core.command.CommandQueueSaxType.CREATE_EVENT_MEDIATOR
 	 */
 	EVENT_MEDIATOR_CREATE(ManagerType.EVENT_PUBLISHER),
 	EVENT_MEDIATOR_ADD_OBJECT(ManagerType.EVENT_PUBLISHER),

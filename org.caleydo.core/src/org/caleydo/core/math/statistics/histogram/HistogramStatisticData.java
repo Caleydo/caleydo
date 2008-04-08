@@ -1,12 +1,12 @@
 /**
  * 
  */
-package org.geneview.core.math.statistics.histogram;
+package org.caleydo.core.math.statistics.histogram;
 
 //import java.lang.Comparable;
 import java.lang.Number;
 
-import org.geneview.core.data.collection.ISet;
+import org.caleydo.core.data.collection.ISet;
 
 /**
  * @author Michael Kalkusch
@@ -26,7 +26,7 @@ public class HistogramStatisticData <T extends Number > {
 	/**
 	 * Number of histogram intervals.
 	 * 
-	 * @see org.geneview.core.math.statistics.histogram.HistogramStatisticData#iHistogramIntervalLength
+	 * @see org.caleydo.core.math.statistics.histogram.HistogramStatisticData#iHistogramIntervalLength
 	 */
 	protected int iHistogramBorderLength = 100;
 	
@@ -35,7 +35,7 @@ public class HistogramStatisticData <T extends Number > {
 	 * 
 	 * Note: always use setter method. do not assing directly!
 	 * 
-	 * @see org.geneview.core.math.statistics.histogram.HistogramStatisticData#iHistogramBorderLength
+	 * @see org.caleydo.core.math.statistics.histogram.HistogramStatisticData#iHistogramBorderLength
 	 */
 	private int iHistogramIntervalLength = 101;
 	
@@ -67,7 +67,7 @@ public class HistogramStatisticData <T extends Number > {
 
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#setIntervalBorders(T[])
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#setIntervalBorders(T[])
 	 */
 	public void setIntervalBorders( T[] setBorders ) {
 		
@@ -89,14 +89,14 @@ public class HistogramStatisticData <T extends Number > {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#length()
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#length()
 	 */
 	public int length() {
 		return this.iHistogramBorderLength;
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#setIntervalEqualSpaced(int, boolean, T, T)
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#setIntervalEqualSpaced(int, boolean, T, T)
 	 */
 	public void setIntervalEqualSpaced( 
 			final int iNumberHistorgamLevel,
@@ -235,21 +235,21 @@ public class HistogramStatisticData <T extends Number > {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#addDataValues(T[])
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#addDataValues(T[])
 	 */
 	public void addDataValues( T[] setData ) {
 		
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#updateHistogram()
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#updateHistogram()
 	 */
 	public void updateHistogram() {
 		
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#getHistogramData()
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#getHistogramData()
 	 */
 	public int[] getHistogramData() {
 		return iHistogramIntervalCounter;

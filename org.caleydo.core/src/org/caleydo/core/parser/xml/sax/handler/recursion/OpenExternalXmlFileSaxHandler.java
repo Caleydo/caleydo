@@ -1,16 +1,16 @@
 /**
  * 
  */
-package org.geneview.core.parser.xml.sax.handler.recursion;
+package org.caleydo.core.parser.xml.sax.handler.recursion;
 
 import org.xml.sax.Attributes;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.IXmlParserManager;
-import org.geneview.core.parser.xml.sax.handler.AXmlParserHandler;
-import org.geneview.core.parser.xml.sax.handler.IXmlParserHandler;
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IXmlParserManager;
+import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
+import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * @author Michael Kalkusch
@@ -66,8 +66,8 @@ implements IXmlParserHandler
 					attributes.getValue( sXML_attribute_target );
 					
 				if ( sTargetFileName == null ) {
-					throw new GeneViewRuntimeException( "no XML-file specified!",
-							GeneViewRuntimeExceptionType.SAXPARSER );
+					throw new CaleydoRuntimeException( "no XML-file specified!",
+							CaleydoRuntimeExceptionType.SAXPARSER );
 				}
 				
 				/**
@@ -76,13 +76,13 @@ implements IXmlParserHandler
 				refXmlParserManager.parseXmlFileByName( sTargetFileName);
 				
 			}
-			catch ( GeneViewRuntimeException cre)
+			catch ( CaleydoRuntimeException cre)
 			{
-				throw new GeneViewRuntimeException( "file [" +
+				throw new CaleydoRuntimeException( "file [" +
 						sTargetFileName + 
 						"] could not be loaded! Skip file... (Error=" +
 						cre.toString() + ")",
-						GeneViewRuntimeExceptionType.SAXPARSER );
+						CaleydoRuntimeExceptionType.SAXPARSER );
 			}
 				
 		

@@ -1,18 +1,18 @@
 /**
  * 
  */
-package org.geneview.core.parser.ascii.lookuptable;
+package org.caleydo.core.parser.ascii.lookuptable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
-import org.geneview.core.data.map.MultiHashArrayIntegerMap;
-import org.geneview.core.data.mapping.EGenomeMappingType;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.parser.ascii.lookuptable.ALookupTableLoader;
-import org.geneview.core.parser.ascii.lookuptable.ILookupTableLoader;
+import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.parser.ascii.lookuptable.ALookupTableLoader;
+import org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader;
 
 
 /**
@@ -37,7 +37,7 @@ public class LookupTableMultiMapIntLoader extends ALookupTableLoader
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.ascii.lookuptable.ILookupTableLoader#loadDataParseFileLUT(java.io.BufferedReader, int)
+	 * @see org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader#loadDataParseFileLUT(java.io.BufferedReader, int)
 	 */
 	public int loadDataParseFileLUT(BufferedReader brFile,
 			final int iNumberOfLinesInFile) throws IOException {
@@ -122,8 +122,8 @@ public class LookupTableMultiMapIntLoader extends ALookupTableLoader
 	
 	/**
 	 * Write back data to IGenomeIdManager
-	 * @see org.geneview.core.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
-	 * @see org.geneview.core.manager.data.IGenomeIdManager
+	 * @see org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
+	 * @see org.caleydo.core.manager.data.IGenomeIdManager
 	 */
 	public void wirteBackMapToGenomeIdManager() {
 

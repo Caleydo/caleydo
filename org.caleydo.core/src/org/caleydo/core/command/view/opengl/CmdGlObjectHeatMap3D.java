@@ -1,15 +1,15 @@
-package org.geneview.core.command.view.opengl;
+package org.caleydo.core.command.view.opengl;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.base.ACmdCreate_GlCanvasUser;
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.parser.parameter.IParameterHandler;
-import org.geneview.core.util.system.StringConversionTool;
-import org.geneview.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.base.ACmdCreate_GlCanvasUser;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
 
 /**
  * Create heat map view.
@@ -59,7 +59,7 @@ extends ACmdCreate_GlCanvasUser {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.command.base.ACmdCreate_GlCanvasUser#doCommand()
+	 * @see org.caleydo.core.command.base.ACmdCreate_GlCanvasUser#doCommand()
 	 */
 	public final void doCommand() {
 		
@@ -74,7 +74,7 @@ extends ACmdCreate_GlCanvasUser {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.command.base.ACmdCreate_GlCanvasUser#undoCommand()
+	 * @see org.caleydo.core.command.base.ACmdCreate_GlCanvasUser#undoCommand()
 	 */
 	public final void undoCommand() {
 		

@@ -1,8 +1,8 @@
-package org.geneview.core.util.midi.device.data;
+package org.caleydo.core.util.midi.device.data;
 
 import javax.sound.midi.ShortMessage;
 
-import org.geneview.core.util.midi.device.data.MidiShortMessageType;
+import org.caleydo.core.util.midi.device.data.MidiShortMessageType;
 
 /**
  * Container to store data from MIDI event.

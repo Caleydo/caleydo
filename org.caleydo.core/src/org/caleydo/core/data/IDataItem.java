@@ -7,14 +7,14 @@
  *  
  */
 
-package org.geneview.core.data;
+package org.caleydo.core.data;
 
 import java.util.Collection;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec2f;
 
-import org.geneview.core.data.IDimensionGroup;
+import org.caleydo.core.data.IDimensionGroup;
 
 /*
  * Iterface for all data items.

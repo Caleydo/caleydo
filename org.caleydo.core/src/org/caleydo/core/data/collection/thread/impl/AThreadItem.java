@@ -1,12 +1,12 @@
 /**
  * 
  */
-package org.geneview.core.data.collection.thread.impl;
+package org.caleydo.core.data.collection.thread.impl;
 
-import org.geneview.core.data.AUniqueItem;
-import org.geneview.core.data.collection.thread.ICollectionThreadItem;
-import org.geneview.core.data.collection.thread.lock.ICollectionLock;
-import org.geneview.core.data.collection.thread.lock.ICollectionReadWriteLock;
+import org.caleydo.core.data.AUniqueItem;
+import org.caleydo.core.data.collection.thread.ICollectionThreadItem;
+import org.caleydo.core.data.collection.thread.lock.ICollectionLock;
+import org.caleydo.core.data.collection.thread.lock.ICollectionReadWriteLock;
 
 /**
  * Provides a UniqueID and a ICollectionLock.
@@ -30,7 +30,7 @@ public abstract class AThreadItem
 	 * 
 	 * @param iSetCollectionId new unique Id of this object.
 	 * 
-	 * @see org.geneview.core.data.AUniqueItem#UniqueItem(int)
+	 * @see org.caleydo.core.data.AUniqueItem#UniqueItem(int)
 	 */
 	protected AThreadItem( int iSetCollectionId ) {
 		super( iSetCollectionId );
@@ -43,7 +43,7 @@ public abstract class AThreadItem
 	 * 
 	 * @param iSetCollectionId new unique Id of this object.
 	 * 
-	 * @see org.geneview.core.data.AUniqueItem#UniqueItem(int)
+	 * @see org.caleydo.core.data.AUniqueItem#UniqueItem(int)
 	 */
 	protected AThreadItem( int iSetCollectionId,
 			final ICollectionLock setCollectionLock ) {

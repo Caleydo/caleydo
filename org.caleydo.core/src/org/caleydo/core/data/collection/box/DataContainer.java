@@ -1,18 +1,18 @@
 /**
  * 
  */
-package org.geneview.core.data.collection.box;
+package org.caleydo.core.data.collection.box;
 
 import java.util.Vector;
 //import java.util.Iterator;
 
-//import org.geneview.core.data.collection.IVirtualArray;
-import org.geneview.core.data.collection.ISet;
-//import org.geneview.core.data.collection.IStorage;
+//import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.data.collection.ISet;
+//import org.caleydo.core.data.collection.IStorage;
 
-import org.geneview.core.data.collection.thread.ICollectionThreadItem;
-import org.geneview.core.data.collection.thread.impl.AThreadItem;
-import org.geneview.core.data.collection.thread.lock.ICollectionLock;
+import org.caleydo.core.data.collection.thread.ICollectionThreadItem;
+import org.caleydo.core.data.collection.thread.impl.AThreadItem;
+import org.caleydo.core.data.collection.thread.lock.ICollectionLock;
 
 
 /**
@@ -33,17 +33,17 @@ public class DataContainer extends AThreadItem implements
 	protected String sMetaBoxLabel;
 	
 	/**
-	 * Define a group of org.geneview.core.data.collection.ISet objects.
-	 * Each ISet may have a label stored in org.geneview.core.data.collection.box.DataContainer#vecLabelOfSet
+	 * Define a group of org.caleydo.core.data.collection.ISet objects.
+	 * Each ISet may have a label stored in org.caleydo.core.data.collection.box.DataContainer#vecLabelOfSet
 	 * 
-	 * @see org.geneview.core.data.collection.box.DataContainer#vecLabelOfSet
+	 * @see org.caleydo.core.data.collection.box.DataContainer#vecLabelOfSet
 	 */
 	protected Vector <ISet> vecSet;
 	
 	/**
 	 * Define a label for each set
 	 * 
-	 * @see org.geneview.core.data.collection.box.DataContainer#vecSet
+	 * @see org.caleydo.core.data.collection.box.DataContainer#vecSet
 	 */
 	protected Vector <String> vecLabelOfSet;
 		
@@ -96,7 +96,7 @@ public class DataContainer extends AThreadItem implements
 	}
 	
 	/**
-	 * @see org.geneview.core.data.collection.box.DataContainer#addSet(ISet, String)
+	 * @see org.caleydo.core.data.collection.box.DataContainer#addSet(ISet, String)
 	 * 
 	 * @param iUniqueSetId
 	 * @param label
@@ -107,8 +107,8 @@ public class DataContainer extends AThreadItem implements
 	
 	/**
 	 * 
-	 * @see org.geneview.core.data.collection.box.DataContainer#addItem(int, String)
-	 * @see org.geneview.core.data.collection.box.DataContainer#addSet(ISet, String)
+	 * @see org.caleydo.core.data.collection.box.DataContainer#addItem(int, String)
+	 * @see org.caleydo.core.data.collection.box.DataContainer#addSet(ISet, String)
 	 * 
 	 * @param iUniqueSetId
 	 */
@@ -129,8 +129,8 @@ public class DataContainer extends AThreadItem implements
 	/**
 	 * Remove all ISet objects from Box.
 	 * 
-	 * @see org.geneview.core.data.collection.box.DataContainer#addItem(int, String)
-	 * @see org.geneview.core.data.collection.box.DataContainer#addSet(ISet, String)
+	 * @see org.caleydo.core.data.collection.box.DataContainer#addItem(int, String)
+	 * @see org.caleydo.core.data.collection.box.DataContainer#addSet(ISet, String)
 	 * 
 	 *
 	 */

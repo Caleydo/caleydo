@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.canvas.pathway;
+package org.caleydo.core.view.opengl.canvas.pathway;
 
 import gleem.linalg.Vec3f;
 
@@ -9,42 +9,42 @@ import java.util.logging.Logger;
 
 import javax.media.opengl.GL;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
-import org.geneview.core.data.GeneralRenderStyle;
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.set.selection.ISetSelection;
-import org.geneview.core.data.graph.core.PathwayGraph;
-import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
-import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
-import org.geneview.core.data.mapping.EGenomeMappingType;
-import org.geneview.core.data.view.camera.IViewFrustum;
-import org.geneview.core.data.view.rep.selection.SelectedElementRep;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.data.IPathwayManager;
-import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
-import org.geneview.core.manager.event.mediator.IMediatorReceiver;
-import org.geneview.core.manager.event.mediator.IMediatorSender;
-import org.geneview.core.manager.view.EPickingMode;
-import org.geneview.core.manager.view.EPickingType;
-import org.geneview.core.manager.view.ESelectionMode;
-import org.geneview.core.manager.view.Pick;
-import org.geneview.core.manager.view.SelectionManager;
-import org.geneview.core.util.ConversionStringInteger;
-import org.geneview.core.util.system.StringConversionTool;
-import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
-import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
-import org.geneview.core.view.opengl.canvas.parcoords.EInputDataType;
-import org.geneview.core.view.opengl.util.GLToolboxRenderer;
-import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
-import org.geneview.core.view.opengl.util.selection.EViewInternalSelectionType;
-import org.geneview.core.view.opengl.util.selection.GenericSelectionManager;
-import org.geneview.util.graph.EGraphItemHierarchy;
-import org.geneview.util.graph.EGraphItemKind;
-import org.geneview.util.graph.EGraphItemProperty;
-import org.geneview.util.graph.IGraph;
-import org.geneview.util.graph.IGraphItem;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
+import org.caleydo.core.data.GeneralRenderStyle;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.selection.ISetSelection;
+import org.caleydo.core.data.graph.core.PathwayGraph;
+import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.data.IPathwayManager;
+import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
+import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.view.EPickingMode;
+import org.caleydo.core.manager.view.EPickingType;
+import org.caleydo.core.manager.view.ESelectionMode;
+import org.caleydo.core.manager.view.Pick;
+import org.caleydo.core.manager.view.SelectionManager;
+import org.caleydo.core.util.ConversionStringInteger;
+import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
+import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
+import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
+import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
+import org.caleydo.util.graph.EGraphItemHierarchy;
+import org.caleydo.util.graph.EGraphItemKind;
+import org.caleydo.util.graph.EGraphItemProperty;
+import org.caleydo.util.graph.IGraph;
+import org.caleydo.util.graph.IGraphItem;
 
 /**
  * Single OpenGL pathway view
@@ -135,7 +135,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media.opengl.GL)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media.opengl.GL)
 	 */	
 	public void initLocal(final GL gl)
 	{
@@ -146,7 +146,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, int, org.geneview.core.view.opengl.util.JukeboxHierarchyLayer, org.geneview.core.view.jogl.mouse.PickingJoglMouseListener)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, int, org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer, org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener)
 	 */
 	public void initRemote(final GL gl, 
 			final int iRemoteViewID, 
@@ -168,7 +168,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl.GL)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl.GL)
 	 */
 	public void init(final GL gl) {
 
@@ -177,7 +177,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#displayLocal(javax.media.opengl.GL)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#displayLocal(javax.media.opengl.GL)
 	 */
 	public void displayLocal(final GL gl) {
 		
@@ -193,7 +193,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#displayRemote(javax.media.opengl.GL)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#displayRemote(javax.media.opengl.GL)
 	 */
 	public void displayRemote(final GL gl) {
 		
@@ -207,7 +207,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#display(javax.media.opengl.GL)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#display(javax.media.opengl.GL)
 	 */
 	public void display(final GL gl) {
 		
@@ -307,8 +307,8 @@ implements IMediatorReceiver, IMediatorSender {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object,
-	 *      org.geneview.core.data.collection.ISet)
+	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object,
+	 *      org.caleydo.core.data.collection.ISet)
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 		
@@ -405,7 +405,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#updateReceiver(java.lang.Object)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#updateReceiver(java.lang.Object)
 	 */
 	public void updateReceiver(Object eventTrigger) {
 
@@ -759,7 +759,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#getInfo()
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#getInfo()
 	 */
 	public ArrayList<String> getInfo() {
 		

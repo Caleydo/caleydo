@@ -1,4 +1,4 @@
-package org.geneview.core.util.midi.device;
+package org.caleydo.core.util.midi.device;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

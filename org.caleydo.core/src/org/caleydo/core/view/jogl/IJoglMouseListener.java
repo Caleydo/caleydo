@@ -1,9 +1,9 @@
 /**
  * 
  */
-package org.geneview.core.view.jogl;
+package org.caleydo.core.view.jogl;
 
-import org.geneview.core.data.view.camera.IViewCamera;
+import org.caleydo.core.data.view.camera.IViewCamera;
 
 //import java.awt.event.MouseListener;
 //import java.awt.event.MouseMotionListener;
@@ -59,7 +59,7 @@ public interface IJoglMouseListener
 	/**
 	 * Returns true if any data of the camera has changed.
 	 * 
-	 * @see org.geneview.core.data.view.camera.IViewCamera#hasViewCameraChanged()
+	 * @see org.caleydo.core.data.view.camera.IViewCamera#hasViewCameraChanged()
 	 * 
 	 * @return
 	 */

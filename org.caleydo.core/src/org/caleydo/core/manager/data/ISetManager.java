@@ -6,13 +6,13 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.manager.data;
+package org.caleydo.core.manager.data;
 
 import java.util.Collection;
 
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.SetType;
-import org.geneview.core.manager.IGeneralManager;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.SetType;
+import org.caleydo.core.manager.IGeneralManager;
 
 
 /**

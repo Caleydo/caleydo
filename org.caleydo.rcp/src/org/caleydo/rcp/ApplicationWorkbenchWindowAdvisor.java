@@ -1,4 +1,4 @@
-package org.geneview.rcp;
+package org.caleydo.rcp;
 
 //import java.net.MalformedURLException;
 //import java.net.URL;
@@ -45,7 +45,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 //    	System.out.println("Browser support: " +browserSupport.isInternalWebBrowserAvailable());
 //    	
 //    	IWebBrowser browser = browserSupport.createBrowser(
-//    			IWorkbenchBrowserSupport.AS_EDITOR | IWorkbenchBrowserSupport.PERSISTENT, "browser100", "browser", "GeneView web browser");
+//    			IWorkbenchBrowserSupport.AS_EDITOR | IWorkbenchBrowserSupport.PERSISTENT, "browser100", "browser", "Caleydo web browser");
 //    	browser.openURL(new URL("http://www.google.at"));
 //
 //    } catch (PartInitException e) {
@@ -68,7 +68,7 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
     
 	protected void fillMenuBar(IMenuManager menuBar) {
 		MenuManager geneviewMenu = new MenuManager(
-		    "&GeneView", "geneview");
+		    "&Caleydo", "geneview");
 		///hyperbolaMenu.add(exitAction);
 		MenuManager helpMenu = new MenuManager("&Help", "help");
 		//helpMenu.add(aboutAction);

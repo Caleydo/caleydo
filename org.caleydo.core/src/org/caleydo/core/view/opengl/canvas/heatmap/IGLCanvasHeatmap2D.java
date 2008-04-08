@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.canvas.heatmap;
+package org.caleydo.core.view.opengl.canvas.heatmap;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
@@ -6,8 +6,8 @@ import gleem.linalg.Vec3f;
 /**
  * Interface for accessing Heatmap from a Command.
  * 
- * @see org.geneview.core.command.view.opengl.CmdGlObjectHeatmap2D#doCommand()
- * @see org.geneview.core.command.view.opengl.CmdGlObjectHeatmap2D#undoCommand()
+ * @see org.caleydo.core.command.view.opengl.CmdGlObjectHeatmap2D#doCommand()
+ * @see org.caleydo.core.command.view.opengl.CmdGlObjectHeatmap2D#undoCommand()
  * 
  * @author Michael Kalkusch
  *

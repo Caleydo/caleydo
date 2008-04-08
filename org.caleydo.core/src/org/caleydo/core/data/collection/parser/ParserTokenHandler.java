@@ -1,6 +1,6 @@
-package org.geneview.core.data.collection.parser;
+package org.caleydo.core.data.collection.parser;
 
-import org.geneview.core.data.collection.StorageType;
+import org.caleydo.core.data.collection.StorageType;
 
 //import prometheus.data.MultiDataTypeEnum;
 

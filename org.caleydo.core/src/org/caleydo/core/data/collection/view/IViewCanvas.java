@@ -6,15 +6,15 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection.view;
+package org.caleydo.core.data.collection.view;
 
 import java.awt.Graphics;
 
-import org.geneview.core.data.IUniqueManagedObject;
-//import org.geneview.core.data.collection.ISet;
+import org.caleydo.core.data.IUniqueManagedObject;
+//import org.caleydo.core.data.collection.ISet;
 //import prometheus.data.collection.BaseManagerItemInterface;
-import org.geneview.core.data.xml.IMementoItemXML;
-//import org.geneview.core.net.dwt.DNetEventComponentInterface;
+import org.caleydo.core.data.xml.IMementoItemXML;
+//import org.caleydo.core.net.dwt.DNetEventComponentInterface;
 
 /**
  * Defines a set containing of selections and storage

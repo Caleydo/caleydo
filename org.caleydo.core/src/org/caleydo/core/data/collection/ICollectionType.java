@@ -6,9 +6,9 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection;
+package org.caleydo.core.data.collection;
 
-import org.geneview.core.util.IGeneViewDefaultType;
+import org.caleydo.core.util.ICaleydoDefaultType;
 
 /**
  * Base calss for typse used to define collections.
@@ -17,7 +17,7 @@ import org.geneview.core.util.IGeneViewDefaultType;
  *
  */
 public interface ICollectionType <T> 
-extends IGeneViewDefaultType <T> {
+extends ICaleydoDefaultType <T> {
 
 	/**
 	 * Tells if this type provides data.

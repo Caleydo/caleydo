@@ -1,4 +1,4 @@
-package org.geneview.rcp.views;
+package org.caleydo.rcp.views;
 
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
@@ -29,8 +29,8 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
-import org.geneview.rcp.Application;
-import org.geneview.rcp.views.awt.Gears;
+import org.caleydo.rcp.Application;
+import org.caleydo.rcp.views.awt.Gears;
 
 import cerberus.view.jogl.JoglCanvasForwarder;
 import cerberus.view.jogl.JoglCanvasForwarderType;
@@ -60,7 +60,7 @@ import com.sun.opengl.util.Animator;
 
 public class SnippetJFrameView extends ViewPart {
 
-	public static final String ID = "org.geneview.rcp.views.SnippetJFrameView";
+	public static final String ID = "org.caleydo.rcp.views.SnippetJFrameView";
 	
 	private Action action1;
 	//private Action doubleClickAction;

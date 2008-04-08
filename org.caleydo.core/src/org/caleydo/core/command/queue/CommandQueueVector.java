@@ -1,25 +1,25 @@
 /**
  * 
  */
-package org.geneview.core.command.queue;
+package org.caleydo.core.command.queue;
 
 import java.util.Vector;
 import java.util.Iterator;
 import java.util.ListIterator;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.ICommand;
-import org.geneview.core.command.queue.ACommandQueue;
-import org.geneview.core.command.queue.ICommandQueue;
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.ICommand;
+import org.caleydo.core.command.queue.ACommandQueue;
+import org.caleydo.core.command.queue.ICommandQueue;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Create a queue of command's, that can be executed in a row.
  * 
- * @see org.geneview.core.command.ICommand
+ * @see org.caleydo.core.command.ICommand
  * 
  * @author Michael Kalkusch
  *
@@ -44,7 +44,7 @@ implements ICommandQueue
 	 * If set to true this queue has been executed at leaset once.
 	 * Default is FALSE.
 	 * 
-	 * @see org.geneview.core.command.queue.CommandQueueVector#bQueueCanBeExecutedSeveralTimes
+	 * @see org.caleydo.core.command.queue.CommandQueueVector#bQueueCanBeExecutedSeveralTimes
 	 */
 	protected boolean bQueueWasExcecuted = false;
 	
@@ -93,20 +93,20 @@ implements ICommandQueue
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#doCommand()
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws GeneViewRuntimeException {
+	public void doCommand() throws CaleydoRuntimeException {
 		
 		if ( bQueueIsExcecuting ) {
-			throw new GeneViewRuntimeException("Can not execute command queue, that is already processed!", 
-					GeneViewRuntimeExceptionType.COMMAND );
+			throw new CaleydoRuntimeException("Can not execute command queue, that is already processed!", 
+					CaleydoRuntimeExceptionType.COMMAND );
 			//return;
 		}
 				
 		if (( ! bQueueCanBeExecutedSeveralTimes )&&
 				( bQueueWasExcecuted )) {
-			throw new GeneViewRuntimeException("Can not execute command queue, that is already processed!",
-					GeneViewRuntimeExceptionType.COMMAND );
+			throw new CaleydoRuntimeException("Can not execute command queue, that is already processed!",
+					CaleydoRuntimeExceptionType.COMMAND );
 		}
 		/**
 		 * critical section
@@ -121,7 +121,7 @@ implements ICommandQueue
 				iter.next().doCommand();
 			}
 		
-		} catch (GeneViewRuntimeException pre) {
+		} catch (CaleydoRuntimeException pre) {
 			System.err.print("Exception during execution of CommandQueue [" + 
 					this.iCmdQueueId + "] with exception:[" +
 					pre.toString() + "]" );
@@ -135,18 +135,18 @@ implements ICommandQueue
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#undoCommand()
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws GeneViewRuntimeException {
+	public void undoCommand() throws CaleydoRuntimeException {
 		
 		if ( this.bQueueCanBeExecutedSeveralTimes ) {
-			throw new GeneViewRuntimeException("Can not call undo() on command queue, that can be executed several times!", 
-					GeneViewRuntimeExceptionType.COMMAND );
+			throw new CaleydoRuntimeException("Can not call undo() on command queue, that can be executed several times!", 
+					CaleydoRuntimeExceptionType.COMMAND );
 		}
 		
 		if ( this.bQueueIsExcecuting ) {
-			throw new GeneViewRuntimeException("Can not execute command queue, that is already processed!", 
-					GeneViewRuntimeExceptionType.COMMAND );
+			throw new CaleydoRuntimeException("Can not execute command queue, that is already processed!", 
+					CaleydoRuntimeExceptionType.COMMAND );
 		}		
 
 		

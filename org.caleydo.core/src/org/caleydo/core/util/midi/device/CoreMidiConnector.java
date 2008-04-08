@@ -1,4 +1,4 @@
-package org.geneview.core.util.midi.device;
+package org.caleydo.core.util.midi.device;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,7 +12,7 @@ import javax.sound.midi.MidiUnavailableException;
 //import javax.sound.midi.Synthesizer;
 import javax.sound.midi.Transmitter;
 
-import org.geneview.core.util.midi.device.IMidiCallback;
+import org.caleydo.core.util.midi.device.IMidiCallback;
 
 /**	<titleabbrev>MidiConnector</titleabbrev>
 <title>Listens to a MIDI port of a fader and a foot pedal and store the received events.</title>

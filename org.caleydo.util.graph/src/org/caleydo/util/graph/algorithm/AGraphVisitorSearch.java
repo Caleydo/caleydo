@@ -1,7 +1,7 @@
-package org.geneview.util.graph.algorithm;
+package org.caleydo.util.graph.algorithm;
 
-import org.geneview.util.graph.IGraph;
-import org.geneview.util.graph.IGraphItem;
+import org.caleydo.util.graph.IGraph;
+import org.caleydo.util.graph.IGraphItem;
 
 /**
  * Abstract base class with setter and getter for IGraph, IGraphItem and searchDepth.

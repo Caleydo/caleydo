@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.parser.parameter;
+package org.caleydo.core.parser.parameter;
 
 //import java.util.Hashtable;
 import java.util.Iterator;
@@ -9,8 +9,8 @@ import java.util.Vector;
 
 import org.xml.sax.Attributes;
 
-import org.geneview.core.parser.parameter.IParameterHandler;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Handles attributes from XML file used to create objects.
@@ -39,7 +39,7 @@ implements IParameterHandler {
 		} 
 		catch ( NumberFormatException nfe ) 
 		{
-			new GeneViewRuntimeException("ParameterHandler.setDefaultTypeAsString("+ key + "," + type + 
+			new CaleydoRuntimeException("ParameterHandler.setDefaultTypeAsString("+ key + "," + type + 
 					") no valid enumeration type!");
 			
 		}
@@ -54,7 +54,7 @@ implements IParameterHandler {
 		} 
 		catch ( NumberFormatException nfe ) 
 		{
-			new GeneViewRuntimeException("ParameterHandler.setDefaultTypeAsString("+ key + "," + type + 
+			new CaleydoRuntimeException("ParameterHandler.setDefaultTypeAsString("+ key + "," + type + 
 					") no valid enumeration type!");
 			
 		}

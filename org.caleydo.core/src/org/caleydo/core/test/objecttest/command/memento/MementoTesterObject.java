@@ -6,13 +6,13 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.test.objecttest.command.memento;
+package org.caleydo.core.test.objecttest.command.memento;
 
-import org.geneview.core.command.memento.IMemento;
-//import org.geneview.core.command.memento.MementoState;
-import org.geneview.core.command.memento.IMementoCreator;
+import org.caleydo.core.command.memento.IMemento;
+//import org.caleydo.core.command.memento.MementoState;
+import org.caleydo.core.command.memento.IMementoCreator;
 
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Class for testing IMemento.
@@ -50,7 +50,7 @@ public final class MementoTesterObject {
 				refCreator.setMemento( testMementos[i] );
 			}
 		}
-		catch (GeneViewRuntimeException pe) {
+		catch (CaleydoRuntimeException pe) {
 			return false;
 		}
 		catch (Exception e) {

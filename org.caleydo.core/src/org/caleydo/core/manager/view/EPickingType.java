@@ -1,4 +1,4 @@
-package org.geneview.core.manager.view;
+package org.caleydo.core.manager.view;
 
 
 public enum EPickingType

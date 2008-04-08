@@ -1,14 +1,14 @@
-package org.geneview.core.data.view.rep.renderstyle;
+package org.caleydo.core.data.view.rep.renderstyle;
 
 import gleem.linalg.Vec2f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.geneview.core.data.GeneralRenderStyle;
-import org.geneview.core.data.view.camera.IViewFrustum;
-import org.geneview.core.view.opengl.util.selection.EViewInternalSelectionType;
-import org.geneview.core.view.opengl.util.selection.GenericSelectionManager;
+import org.caleydo.core.data.GeneralRenderStyle;
+import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
+import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
 
 /**
  * Heat Map render styles

@@ -1,4 +1,4 @@
-package org.geneview.core.math.statistics.histogram;
+package org.caleydo.core.math.statistics.histogram;
 
 
 /**

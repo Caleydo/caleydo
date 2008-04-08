@@ -1,18 +1,18 @@
 /**
  * 
  */
-package org.geneview.core.data.collection.set.viewdata;
+package org.caleydo.core.data.collection.set.viewdata;
 
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.view.camera.IViewCamera;
-import org.geneview.core.view.jogl.IJoglMouseListener;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.view.camera.IViewCamera;
+import org.caleydo.core.view.jogl.IJoglMouseListener;
 
 /**
  * Create a Set that also is a IJoglMouseListener.
- * IJoglMouseListener provieds acces to org.geneview.core.data.view.camera.IViewCamera
+ * IJoglMouseListener provieds acces to org.caleydo.core.data.view.camera.IViewCamera
  * 
- * @see org.geneview.core.data.view.camera.IViewCamera
- * @see org.geneview.core.data.collection.SetDataType
+ * @see org.caleydo.core.data.view.camera.IViewCamera
+ * @see org.caleydo.core.data.collection.SetDataType
  * 
  * @author Michael Kalkusch
  *

@@ -1,4 +1,4 @@
-package org.geneview.core.view.swt.data;
+package org.caleydo.core.view.swt.data;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
@@ -17,16 +17,16 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
-import org.geneview.core.data.collection.IVirtualArray;
-import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.data.collection.StorageType;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.data.IVirtualArrayManager;
-import org.geneview.core.manager.data.IStorageManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.util.system.StringConversionTool;
-import org.geneview.core.view.AViewRep;
-import org.geneview.core.view.ViewType;
+import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.StorageType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.data.IVirtualArrayManager;
+import org.caleydo.core.manager.data.IStorageManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.ViewType;
 
 public class DataTableViewRep 
 extends AViewRep 
@@ -73,7 +73,7 @@ implements IDataTableView {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.AViewRep#initView(org.eclipse.swt.widgets.Composite)
+	 * @see org.caleydo.core.view.AViewRep#initView(org.eclipse.swt.widgets.Composite)
 	 */
 	public void initViewSwtComposit( Composite swtContainer ) {
 		

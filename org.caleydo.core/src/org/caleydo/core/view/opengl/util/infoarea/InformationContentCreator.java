@@ -1,13 +1,13 @@
-package org.geneview.core.view.opengl.util.infoarea;
+package org.caleydo.core.view.opengl.util.infoarea;
 
 import java.util.ArrayList;
 
-import org.geneview.core.data.graph.core.PathwayGraph;
-import org.geneview.core.data.mapping.EGenomeMappingType;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.data.IGenomeIdManager;
-import org.geneview.core.util.mapping.GeneAnnotationMapper;
-import org.geneview.core.view.opengl.canvas.parcoords.EInputDataType;
+import org.caleydo.core.data.graph.core.PathwayGraph;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.data.IGenomeIdManager;
+import org.caleydo.core.util.mapping.GeneAnnotationMapper;
+import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
 
 /**
  * 
@@ -105,9 +105,9 @@ public class InformationContentCreator
 	}
 	
 	
-	private String getAccessionNumberFromAccessionID(final int iGeneViewID)
+	private String getAccessionNumberFromAccessionID(final int iCaleydoID)
 	{
-		String sAccessionNumber = IDManager.getIdStringFromIntByMapping(iGeneViewID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
+		String sAccessionNumber = IDManager.getIdStringFromIntByMapping(iCaleydoID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
 		if(sAccessionNumber == "")
 			return "Unkonwn Gene";
 		else

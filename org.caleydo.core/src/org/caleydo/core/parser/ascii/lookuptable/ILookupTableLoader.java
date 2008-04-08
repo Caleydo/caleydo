@@ -1,13 +1,13 @@
-package org.geneview.core.parser.ascii.lookuptable;
+package org.caleydo.core.parser.ascii.lookuptable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 //import java.util.HashMap;
-//import org.geneview.core.base.map.MultiHashArrayMap;
-import org.geneview.core.data.map.MultiHashArrayIntegerMap;
-import org.geneview.core.data.map.MultiHashArrayStringMap;
-import org.geneview.core.data.mapping.EGenomeMappingType;
-import org.geneview.core.manager.data.genome.IGenomeIdMap;
+//import org.caleydo.core.base.map.MultiHashArrayMap;
+import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
+import org.caleydo.core.data.map.MultiHashArrayStringMap;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.manager.data.genome.IGenomeIdMap;
 
 /**
  * Interface for ASCII file loader.
@@ -31,14 +31,14 @@ public interface ILookupTableLoader {
 	/**
 	 * initialize the lookup table if neccessary.
 	 * 
-	 * @see org.geneview.core.parser.ascii.IParserObject#init()
+	 * @see org.caleydo.core.parser.ascii.IParserObject#init()
 	 */
 	public void initLUT();
 	
 	/**
 	 * Destroy and cleanup stored variables of the lookup table if neccessary.
 	 * 
-	 * @see org.geneview.core.parser.ascii.IParserObject#destroy()
+	 * @see org.caleydo.core.parser.ascii.IParserObject#destroy()
 	 */
 	public void destroyLUT();
 	
@@ -47,10 +47,10 @@ public interface ILookupTableLoader {
 	 * This mehtode is called by LookupTableLoaderProxy#copyDataToInternalDataStructures(), which
 	 * is derived from AbstractLoader#copyDataToInternalDataStructures().
 	 * 
-	 * @see org.geneview.core.parser.ascii.lookuptable.LookupTableLoaderProxy
-	 * @see org.geneview.core.parser.ascii.lookuptable.LookupTableLoaderProxy#copyDataToInternalDataStructures()
-	 * @see org.geneview.core.parser.ascii.AbstractLoader#copyDataToInternalDataStructures()
-	 * @see org.geneview.core.manager.data.IGenomeIdManager
+	 * @see org.caleydo.core.parser.ascii.lookuptable.LookupTableLoaderProxy
+	 * @see org.caleydo.core.parser.ascii.lookuptable.LookupTableLoaderProxy#copyDataToInternalDataStructures()
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#copyDataToInternalDataStructures()
+	 * @see org.caleydo.core.manager.data.IGenomeIdManager
 	 * 
 	 * @return TRUE on success.
 	 */

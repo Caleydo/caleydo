@@ -1,4 +1,4 @@
-package org.geneview.util.graph.item;
+package org.caleydo.util.graph.item;
 
 import java.util.Collection;
 

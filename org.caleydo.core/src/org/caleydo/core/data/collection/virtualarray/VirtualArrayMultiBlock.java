@@ -6,20 +6,20 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection.virtualarray;
+package org.caleydo.core.data.collection.virtualarray;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.event.mediator.IMediatorSender;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.parser.xml.sax.ISaxParserHandler;
-//import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.IVirtualArray;
-import org.geneview.core.data.collection.VirtualArrayType;
-import org.geneview.core.data.collection.parser.CollectionSelectionSaxParserHandler;
-import org.geneview.core.data.collection.thread.lock.ICollectionLock;
-import org.geneview.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
-import org.geneview.core.data.collection.virtualarray.iterator.VirtualArrayMultiBlockIterator;
-import org.geneview.core.data.xml.IMementoItemXML;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
+//import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.data.collection.VirtualArrayType;
+import org.caleydo.core.data.collection.parser.CollectionSelectionSaxParserHandler;
+import org.caleydo.core.data.collection.thread.lock.ICollectionLock;
+import org.caleydo.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+import org.caleydo.core.data.collection.virtualarray.iterator.VirtualArrayMultiBlockIterator;
+import org.caleydo.core.data.xml.IMementoItemXML;
 
 import java.lang.StringBuffer;
 
@@ -46,7 +46,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IVirtualArray#getSelectionType()
+	 * @see org.caleydo.core.data.collection.IVirtualArray#getSelectionType()
 	 */
 	public VirtualArrayType getSelectionType() {
 
@@ -54,7 +54,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IVirtualArray#getMultiRepeat()
+	 * @see org.caleydo.core.data.collection.IVirtualArray#getMultiRepeat()
 	 */
 	public int getMultiRepeat() {
 
@@ -62,7 +62,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IVirtualArray#getMultiOffset()
+	 * @see org.caleydo.core.data.collection.IVirtualArray#getMultiOffset()
 	 */
 	public int getMultiOffset() {
 
@@ -70,7 +70,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IVirtualArray#getIndexArray()
+	 * @see org.caleydo.core.data.collection.IVirtualArray#getIndexArray()
 	 */
 	public int[] getIndexArray() {
 
@@ -111,7 +111,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IVirtualArray#setMultiRepeat(int)
+	 * @see org.caleydo.core.data.collection.IVirtualArray#setMultiRepeat(int)
 	 */
 	public boolean setMultiRepeat(int iSetSize) {
 
@@ -125,7 +125,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IVirtualArray#setMultiOffset(int)
+	 * @see org.caleydo.core.data.collection.IVirtualArray#setMultiOffset(int)
 	 */
 	public boolean setMultiOffset(int iSetSize) {
 
@@ -139,7 +139,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IVirtualArray#setIndexArray(int[])
+	 * @see org.caleydo.core.data.collection.IVirtualArray#setIndexArray(int[])
 	 */
 	public void setIndexArray(int[] iSetIndexArray) {
 
@@ -203,7 +203,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 	/**
 	 * Create XML IMemento.
 	 * 
-	 * @see org.geneview.core.data.xml.IMementoXML#createMementoXML()
+	 * @see org.caleydo.core.data.xml.IMementoXML#createMementoXML()
 	 */
 	public String createMementoXML() {
 
@@ -228,7 +228,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.data.collection.UniqueManagedInterface#getBaseType()
+	 * @see org.caleydo.core.data.collection.UniqueManagedInterface#getBaseType()
 	 */
 	public ManagerObjectType getBaseType() {
 
@@ -237,7 +237,7 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ICollection#getCacheId()
+	 * @see org.caleydo.core.data.collection.ICollection#getCacheId()
 	 */
 	public int getCacheId() {
 

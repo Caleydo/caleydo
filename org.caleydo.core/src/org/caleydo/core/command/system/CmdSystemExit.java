@@ -6,16 +6,16 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.command.system;
+package org.caleydo.core.command.system;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.ICommand;
-import org.geneview.core.command.window.CmdWindowPopupInfo;
-import org.geneview.core.data.AUniqueManagedObject;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.parser.parameter.IParameterHandler;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.ICommand;
+import org.caleydo.core.command.window.CmdWindowPopupInfo;
+import org.caleydo.core.data.AUniqueManagedObject;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Command, shuts down application.
@@ -36,9 +36,9 @@ implements ICommand {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#doCommand()
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws GeneViewRuntimeException {
+	public void doCommand() throws CaleydoRuntimeException {
 		System.out.println("CmdSystemExit: shut down application...");
 		
 		CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo(generalManager,"");
@@ -53,9 +53,9 @@ implements ICommand {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#undoCommand()
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws GeneViewRuntimeException {
+	public void undoCommand() throws CaleydoRuntimeException {
 		// no undo of system shutdown!
 	}
 

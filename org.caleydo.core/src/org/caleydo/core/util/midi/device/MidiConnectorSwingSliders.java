@@ -1,4 +1,4 @@
-package org.geneview.core.util.midi.device;
+package org.caleydo.core.util.midi.device;
 
 import java.awt.FlowLayout;
 import java.awt.BorderLayout;
@@ -30,8 +30,8 @@ import javax.swing.JSlider;
 
 
 
-import org.geneview.core.util.midi.device.IMidiCallback;
-import org.geneview.core.util.midi.device.data.MsgBuilder;
+import org.caleydo.core.util.midi.device.IMidiCallback;
+import org.caleydo.core.util.midi.device.data.MsgBuilder;
 
 /**	<titleabbrev>MidiConnector</titleabbrev>
 <title>Listens to a MIDI port of a fader and a foot pedal and store the received events.</title>
@@ -255,7 +255,7 @@ public class MidiConnectorSwingSliders
 		
 		//midiConnector.initMidiDeviceByName("BCF2000 [01]");
 		//midiConnector.initMidiDeviceByName("USB Audio Device");
-		midiConnector.initMidiDeviceByName("USB-Audiogerät");
+		midiConnector.initMidiDeviceByName("USB-Audiogerï¿½t");
 		//midiConnector.initMidiDeviceByIndex(2);
 		
 		midiConnector.connect();

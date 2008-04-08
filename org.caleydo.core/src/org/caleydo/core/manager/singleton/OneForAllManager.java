@@ -1,44 +1,44 @@
-package org.geneview.core.manager.singleton;
+package org.caleydo.core.manager.singleton;
 
 import java.util.Iterator;
 import java.util.LinkedList;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.data.xml.IMementoXML;
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IEventPublisher;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager;
-import org.geneview.core.manager.IMementoManager;
-import org.geneview.core.manager.IMenuManager;
-import org.geneview.core.manager.ISWTGUIManager;
-import org.geneview.core.manager.ISingelton;
-import org.geneview.core.manager.IViewGLCanvasManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.command.CommandManager;
-import org.geneview.core.manager.data.IGenomeIdManager;
-import org.geneview.core.manager.data.IPathwayItemManager;
-import org.geneview.core.manager.data.IPathwayManager;
-import org.geneview.core.manager.data.ISetManager;
-import org.geneview.core.manager.data.IStorageManager;
-import org.geneview.core.manager.data.IVirtualArrayManager;
-import org.geneview.core.manager.data.genome.DynamicGenomeIdManager;
-import org.geneview.core.manager.data.pathway.PathwayItemManager;
-import org.geneview.core.manager.data.pathway.PathwayManager;
-import org.geneview.core.manager.data.set.SetManager;
-import org.geneview.core.manager.data.storage.StorageManager;
-import org.geneview.core.manager.data.virtualarray.VirtualArrayManager;
-import org.geneview.core.manager.event.EventPublisher;
-import org.geneview.core.manager.gui.SWTGUIManager;
-import org.geneview.core.manager.logger.ConsoleLogger;
-import org.geneview.core.manager.memento.MementoManager;
-import org.geneview.core.manager.menu.swing.SwingMenuManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.manager.type.ManagerType;
-import org.geneview.core.manager.view.ViewJoglManager;
-import org.geneview.core.parser.xml.sax.ISaxParserHandler;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.xml.IMementoXML;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager;
+import org.caleydo.core.manager.IMementoManager;
+import org.caleydo.core.manager.IMenuManager;
+import org.caleydo.core.manager.ISWTGUIManager;
+import org.caleydo.core.manager.ISingelton;
+import org.caleydo.core.manager.IViewGLCanvasManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.command.CommandManager;
+import org.caleydo.core.manager.data.IGenomeIdManager;
+import org.caleydo.core.manager.data.IPathwayItemManager;
+import org.caleydo.core.manager.data.IPathwayManager;
+import org.caleydo.core.manager.data.ISetManager;
+import org.caleydo.core.manager.data.IStorageManager;
+import org.caleydo.core.manager.data.IVirtualArrayManager;
+import org.caleydo.core.manager.data.genome.DynamicGenomeIdManager;
+import org.caleydo.core.manager.data.pathway.PathwayItemManager;
+import org.caleydo.core.manager.data.pathway.PathwayManager;
+import org.caleydo.core.manager.data.set.SetManager;
+import org.caleydo.core.manager.data.storage.StorageManager;
+import org.caleydo.core.manager.data.virtualarray.VirtualArrayManager;
+import org.caleydo.core.manager.event.EventPublisher;
+import org.caleydo.core.manager.gui.SWTGUIManager;
+import org.caleydo.core.manager.logger.ConsoleLogger;
+import org.caleydo.core.manager.memento.MementoManager;
+import org.caleydo.core.manager.menu.swing.SwingMenuManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.manager.view.ViewJoglManager;
+import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 
 /**
@@ -55,7 +55,7 @@ implements IGeneralManagerSingleton
 	/**
 	 * Defines, if initAll() was called.
 	 * 
-	 * @see org.geneview.core.manager.singleton.OneForAllManager#initAll()
+	 * @see org.caleydo.core.manager.singleton.OneForAllManager#initAll()
 	 */
 	private boolean bAllManagersInitialized = false;
 
@@ -91,16 +91,16 @@ implements IGeneralManagerSingleton
 
 	/**
 	 * Used to create a new item by a Fabrik.
-	 * used by org.geneview.core.data.manager.OneForAllManager#createNewId(ManagerObjectType)
+	 * used by org.caleydo.core.data.manager.OneForAllManager#createNewId(ManagerObjectType)
 	 * 
-	 * @see org.geneview.core.manager.singleton.OneForAllManager#createNewId(ManagerObjectType)
+	 * @see org.caleydo.core.manager.singleton.OneForAllManager#createNewId(ManagerObjectType)
 	 */
 	protected ManagerObjectType setCurrentType = ManagerObjectType.ALL_IN_ONE;
 
 	/**
 	 * Call initAll() before using this class!
 	 * 
-	 * @see org.geneview.core.data.manager.singelton.OneForAllManager#initAll()
+	 * @see org.caleydo.core.data.manager.singelton.OneForAllManager#initAll()
 	 */
 	public OneForAllManager(final SingletonManager sef_SingeltonManager)
 	{
@@ -116,8 +116,8 @@ implements IGeneralManagerSingleton
 
 		/**
 		 * The Network psotfix must be unique inside the network for 
-		 * destributed GeneView applications. 
-		 * For stand alone GeneView applications this id must match the XML file.
+		 * destributed Caleydo applications. 
+		 * For stand alone Caleydo applications this id must match the XML file.
 		 */
 		refSingeltonManager.setNetworkPostfix( 0 );
 		
@@ -128,7 +128,7 @@ implements IGeneralManagerSingleton
 
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.data.manager.GeneralManager#getSingelton()
+	 * @see org.caleydo.core.data.manager.GeneralManager#getSingelton()
 	 */
 	public final ISingelton getSingelton()
 	{
@@ -145,7 +145,7 @@ implements IGeneralManagerSingleton
 
 		if (bAllManagersInitialized)
 		{
-			throw new GeneViewRuntimeException(
+			throw new CaleydoRuntimeException(
 					"initAll() was called at least twice!");
 		}
 		bAllManagersInitialized = true;
@@ -209,7 +209,7 @@ implements IGeneralManagerSingleton
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.GeneralManager#hasItem(int)
+	 * @see org.caleydo.core.data.manager.GeneralManager#hasItem(int)
 	 */
 	public boolean hasItem(final int iItemId)
 	{
@@ -226,7 +226,7 @@ implements IGeneralManagerSingleton
 	}
 
 	/**
-	 * @see org.geneview.core.manager.IGeneralManager#hasItem(int)
+	 * @see org.caleydo.core.manager.IGeneralManager#hasItem(int)
 	 * 
 	 * @param iItemId unique Id used for lookup
 	 * @return Object bound to Id or null, if id was not found.
@@ -251,7 +251,7 @@ implements IGeneralManagerSingleton
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.GeneralManager#size()
+	 * @see org.caleydo.core.data.manager.GeneralManager#size()
 	 */
 	public int size()
 	{	
@@ -263,7 +263,7 @@ implements IGeneralManagerSingleton
 
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.data.manager.singelton.GeneralManagerSingelton#getCommandManager()
+	 * @see org.caleydo.core.data.manager.singelton.GeneralManagerSingelton#getCommandManager()
 	 */
 	public ICommandManager getCommandManager()
 	{
@@ -271,7 +271,7 @@ implements IGeneralManagerSingleton
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.GeneralManager#getManagerType()
+	 * @see org.caleydo.core.data.manager.GeneralManager#getManagerType()
 	 */
 	public ManagerType getManagerType()
 	{
@@ -279,7 +279,7 @@ implements IGeneralManagerSingleton
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.GeneralManager#getSingeltonManager()
+	 * @see org.caleydo.core.data.manager.GeneralManager#getSingeltonManager()
 	 */
 	public IGeneralManager getGeneralManager()
 	{
@@ -295,7 +295,7 @@ implements IGeneralManagerSingleton
 	//	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.singelton.SingeltonManager#createNewId(org.geneview.core.data.manager.BaseManagerType)
+	 * @see org.caleydo.core.data.manager.singelton.SingeltonManager#createNewId(org.caleydo.core.data.manager.BaseManagerType)
 	 */
 	public final int createId(final ManagerObjectType type)
 	{
@@ -336,7 +336,7 @@ implements IGeneralManagerSingleton
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.singelton.SingeltonManager#createNewItem(org.geneview.core.data.manager.BaseManagerType, Stringt)
+	 * @see org.caleydo.core.data.manager.singelton.SingeltonManager#createNewItem(org.caleydo.core.data.manager.BaseManagerType, Stringt)
 	 */
 	public Object createNewItem(final ManagerObjectType createNewType,
 			final String sNewTypeDetails)
@@ -371,7 +371,7 @@ implements IGeneralManagerSingleton
 			//return refDComponentManager.createSet( DGuiComponentType.valueOf(sNewTypeDetails) );
 
 		default:
-			throw new GeneViewRuntimeException(
+			throw new CaleydoRuntimeException(
 					"Error in OneForAllManager.createNewId() unknown type "
 							+ createNewType.toString());
 		} // end switch
@@ -430,7 +430,7 @@ implements IGeneralManagerSingleton
 //			}
 
 		default:
-			throw new GeneViewRuntimeException(
+			throw new CaleydoRuntimeException(
 					"Error in OneForAllManager.createNewId() unknown type "
 							+ type.name());
 		} // end switch ( type.getGroupType() )
@@ -474,7 +474,7 @@ implements IGeneralManagerSingleton
 			return refGenomeIdManager;
 			
 		default:
-			throw new GeneViewRuntimeException(
+			throw new CaleydoRuntimeException(
 					"Error in OneForAllManager.getManagerByBaseType() unsupported type "
 							+ managerType.name());
 		} // end switch ( type.getGroupType() )

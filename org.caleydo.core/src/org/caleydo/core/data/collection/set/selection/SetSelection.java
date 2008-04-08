@@ -1,19 +1,19 @@
 /**
  * 
  */
-package org.geneview.core.data.collection.set.selection;
+package org.caleydo.core.data.collection.set.selection;
 
 import java.util.ArrayList;
 import java.util.Vector;
 
-import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.data.collection.IVirtualArray;
-import org.geneview.core.data.collection.SetType;
-import org.geneview.core.data.collection.set.SetPlanarSimple;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.event.EventPublisher;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.data.collection.SetType;
+import org.caleydo.core.data.collection.set.SetPlanarSimple;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.event.EventPublisher;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 import com.sun.org.apache.bcel.internal.generic.IALOAD;
 
@@ -60,7 +60,7 @@ implements ISetSelection
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.data.collection.selection.ISetSelection#setSelectionIdArray(int[])
+	 * @see org.caleydo.core.data.collection.selection.ISetSelection#setSelectionIdArray(int[])
 	 */
 	public void setSelectionIdArray(ArrayList<Integer> iAlSelectionId) 
 	{
@@ -78,7 +78,7 @@ implements ISetSelection
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.data.collection.selection.ISetSelection#setGroupArray(int[])
+	 * @see org.caleydo.core.data.collection.selection.ISetSelection#setGroupArray(int[])
 	 */
 	public void setGroupArray(ArrayList<Integer> iAlSelectionGroup) {
 		
@@ -96,7 +96,7 @@ implements ISetSelection
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.data.collection.selection.ISetSelection#setOptionalDataArray(int[])
+	 * @see org.caleydo.core.data.collection.selection.ISetSelection#setOptionalDataArray(int[])
 	 */
 	public void setOptionalDataArray(ArrayList<Integer> iAlSelectionOptionalData)
 	{
@@ -115,7 +115,7 @@ implements ISetSelection
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.data.collection.selection.ISetSelection#setAllSelectionDataArrays(int[], int[], int[])
+	 * @see org.caleydo.core.data.collection.selection.ISetSelection#setAllSelectionDataArrays(int[], int[], int[])
 	 */
 	public void setAllSelectionDataArrays(ArrayList<Integer> iAlSelectionId, 
 			ArrayList<Integer> iAlSelectionGroup, 
@@ -127,7 +127,7 @@ implements ISetSelection
 //		if (( iArSelectionId.length != iArSelectionGroup.length )&&
 //				(iArSelectionGroup.length != iArSelectionOptionalData.length))
 //		{
-//			throw new GeneViewRuntimeException("Try to set a SetSelection wiht array of different length!");		
+//			throw new CaleydoRuntimeException("Try to set a SetSelection wiht array of different length!");		
 //		}
 //		
 //		this.getWriteToken();
@@ -147,7 +147,7 @@ implements ISetSelection
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISet#getDimensions()
+	 * @see org.caleydo.core.data.collection.ISet#getDimensions()
 	 */
 	public final int getDimensions() {
 		return 3;
@@ -155,7 +155,7 @@ implements ISetSelection
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.data.collection.selection.ISetSelection#getSelectionIdArray()
+	 * @see org.caleydo.core.data.collection.selection.ISetSelection#getSelectionIdArray()
 	 */
 	public ArrayList<Integer> getSelectionIdArray() {
 		
@@ -178,7 +178,7 @@ implements ISetSelection
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.data.collection.selection.ISetSelection#getGroupArray()
+	 * @see org.caleydo.core.data.collection.selection.ISetSelection#getGroupArray()
 	 */
 	public ArrayList<Integer> getGroupArray() {	
 
@@ -200,7 +200,7 @@ implements ISetSelection
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.data.collection.selection.ISetSelection#getOptionalDataArray()
+	 * @see org.caleydo.core.data.collection.selection.ISetSelection#getOptionalDataArray()
 	 */
 	public ArrayList<Integer> getOptionalDataArray() {
 
@@ -266,7 +266,7 @@ implements ISetSelection
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.data.collection.set.SetPlanarSimple#toString()
+	 * @see org.caleydo.core.data.collection.set.SetPlanarSimple#toString()
 	 */
 	public String toString() {
 		return sLabel;

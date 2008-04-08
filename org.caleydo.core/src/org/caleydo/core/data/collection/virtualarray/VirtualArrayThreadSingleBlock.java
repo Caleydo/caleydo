@@ -6,22 +6,22 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection.virtualarray;
+package org.caleydo.core.data.collection.virtualarray;
 
 import java.lang.NullPointerException;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.parser.xml.sax.ISaxParserHandler;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
-import org.geneview.core.data.collection.IVirtualArray;
-import org.geneview.core.data.collection.VirtualArrayType;
-import org.geneview.core.data.collection.parser.CollectionSelectionSaxParserHandler;
-import org.geneview.core.data.collection.thread.lock.ICollectionLock;
-import org.geneview.core.data.collection.virtualarray.AVirtualArray;
-import org.geneview.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
-import org.geneview.core.data.collection.virtualarray.iterator.VirtualArraySingleBlockIterator;
-import org.geneview.core.data.xml.IMementoItemXML;
+import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.data.collection.VirtualArrayType;
+import org.caleydo.core.data.collection.parser.CollectionSelectionSaxParserHandler;
+import org.caleydo.core.data.collection.thread.lock.ICollectionLock;
+import org.caleydo.core.data.collection.virtualarray.AVirtualArray;
+import org.caleydo.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+import org.caleydo.core.data.collection.virtualarray.iterator.VirtualArraySingleBlockIterator;
+import org.caleydo.core.data.xml.IMementoItemXML;
 
 /**
  * @author Michael Kalkusch
@@ -42,7 +42,7 @@ implements IVirtualArray, IMementoItemXML, ICollectionLock {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IVirtualArray#getSelectionType()
+	 * @see org.caleydo.core.data.collection.IVirtualArray#getSelectionType()
 	 */
 	public VirtualArrayType getSelectionType() {		
 		return VirtualArrayType.VIRTUAL_ARRAY_SINGLE_BLOCK;
@@ -50,7 +50,7 @@ implements IVirtualArray, IMementoItemXML, ICollectionLock {
 
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IVirtualArray#getMultiRepeat()
+	 * @see org.caleydo.core.data.collection.IVirtualArray#getMultiRepeat()
 	 */
 	public int getMultiRepeat() {			
 		//do nothing. this is not supported
@@ -58,7 +58,7 @@ implements IVirtualArray, IMementoItemXML, ICollectionLock {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IVirtualArray#getMultiOffset()
+	 * @see org.caleydo.core.data.collection.IVirtualArray#getMultiOffset()
 	 */
 	public int getMultiOffset() {
 		//do nothing. this is not supported
@@ -66,7 +66,7 @@ implements IVirtualArray, IMementoItemXML, ICollectionLock {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IVirtualArray#getIndexArray()
+	 * @see org.caleydo.core.data.collection.IVirtualArray#getIndexArray()
 	 */
 	public int[] getIndexArray() {
 		int[] indexArray = new int[ this.iSelectionLength ];
@@ -79,21 +79,21 @@ implements IVirtualArray, IMementoItemXML, ICollectionLock {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IVirtualArray#setMultiRepeat(int)
+	 * @see org.caleydo.core.data.collection.IVirtualArray#setMultiRepeat(int)
 	 */
 	public boolean setMultiRepeat(int iSetSize) {
 		return false;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IVirtualArray#setMultiOffset(int)
+	 * @see org.caleydo.core.data.collection.IVirtualArray#setMultiOffset(int)
 	 */
 	public boolean setMultiOffset(int iSetSize) {
 		return false;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IVirtualArray#setIndexArray(int[])
+	 * @see org.caleydo.core.data.collection.IVirtualArray#setIndexArray(int[])
 	 */
 	public void setIndexArray(int[] iSetIndexArray) {
 		throw new RuntimeException("VirtualArraySingleBlock.setIndexArray() is not supported.");
@@ -133,7 +133,7 @@ implements IVirtualArray, IMementoItemXML, ICollectionLock {
 	}
 
 	/**
-	 * @see org.geneview.core.data.xml.IMementoXML#createMementoXML()
+	 * @see org.caleydo.core.data.xml.IMementoXML#createMementoXML()
 	 * @return String containing all information on the state 
 	 * of the object in XML form with out a header.
 	 */
@@ -146,7 +146,7 @@ implements IVirtualArray, IMementoItemXML, ICollectionLock {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.data.collection.UniqueManagedInterface#getBaseType()
+	 * @see org.caleydo.core.data.collection.UniqueManagedInterface#getBaseType()
 	 */
 	public ManagerObjectType getBaseType() {
 		return ManagerObjectType.VIRTUAL_ARRAY_SINGLE_BLOCK;
@@ -154,7 +154,7 @@ implements IVirtualArray, IMementoItemXML, ICollectionLock {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ICollection#getCacheId()
+	 * @see org.caleydo.core.data.collection.ICollection#getCacheId()
 	 */
 	public int getCacheId() {
 		return this.iCacheId;
@@ -162,7 +162,7 @@ implements IVirtualArray, IMementoItemXML, ICollectionLock {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IVirtualArray#iterator()
+	 * @see org.caleydo.core.data.collection.IVirtualArray#iterator()
 	 */
 	public IVirtualArrayIterator iterator() {
 		return new VirtualArraySingleBlockIterator(this);

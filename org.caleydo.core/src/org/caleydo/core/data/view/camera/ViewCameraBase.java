@@ -1,12 +1,12 @@
-package org.geneview.core.data.view.camera;
+package org.caleydo.core.data.view.camera;
 
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
-import org.geneview.core.data.AUniqueItem;
-import org.geneview.core.data.view.camera.IViewCamera;
-import org.geneview.core.math.MathUtil;
+import org.caleydo.core.data.AUniqueItem;
+import org.caleydo.core.data.view.camera.IViewCamera;
+import org.caleydo.core.math.MathUtil;
 
 /**
  * @author Michael Kalkusch

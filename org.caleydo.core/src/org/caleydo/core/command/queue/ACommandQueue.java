@@ -6,12 +6,12 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.command.queue;
+package org.caleydo.core.command.queue;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.base.ACommand;
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.base.ACommand;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
 
 /**
  * @author Michael Kalkusch

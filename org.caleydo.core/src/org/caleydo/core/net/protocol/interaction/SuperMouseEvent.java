@@ -6,7 +6,7 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.net.protocol.interaction;
+package org.caleydo.core.net.protocol.interaction;
 
 import java.awt.Component;
 import java.awt.event.MouseEvent;

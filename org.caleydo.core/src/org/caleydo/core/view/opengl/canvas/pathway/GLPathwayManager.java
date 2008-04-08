@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.canvas.pathway;
+package org.caleydo.core.view.opengl.canvas.pathway;
 
 import gleem.linalg.Vec3f;
 
@@ -11,31 +11,31 @@ import java.util.Map.Entry;
 
 import javax.media.opengl.GL;
 
-import org.geneview.core.data.AUniqueManagedObject;
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.set.selection.SetSelection;
-import org.geneview.core.data.graph.core.PathwayGraph;
-import org.geneview.core.data.graph.item.edge.PathwayReactionEdgeGraphItemRep;
-import org.geneview.core.data.graph.item.edge.PathwayRelationEdgeGraphItemRep;
-import org.geneview.core.data.graph.item.vertex.EPathwayVertexShape;
-import org.geneview.core.data.graph.item.vertex.EPathwayVertexType;
-import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
-import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
-import org.geneview.core.data.view.rep.renderstyle.PathwayRenderStyle;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
-import org.geneview.core.manager.view.EPickingType;
-import org.geneview.core.util.mapping.AGenomeMapper;
-import org.geneview.core.util.mapping.EGenomeMappingCascadeType;
-import org.geneview.core.view.opengl.util.GLTextUtils;
-import org.geneview.core.view.opengl.util.selection.EViewInternalSelectionType;
-import org.geneview.core.view.opengl.util.selection.GenericSelectionManager;
-import org.geneview.util.graph.EGraphItemHierarchy;
-import org.geneview.util.graph.EGraphItemKind;
-import org.geneview.util.graph.EGraphItemProperty;
-import org.geneview.util.graph.IGraphItem;
-import org.geneview.util.graph.algorithm.GraphVisitorSearchBFS;
+import org.caleydo.core.data.AUniqueManagedObject;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.selection.SetSelection;
+import org.caleydo.core.data.graph.core.PathwayGraph;
+import org.caleydo.core.data.graph.item.edge.PathwayReactionEdgeGraphItemRep;
+import org.caleydo.core.data.graph.item.edge.PathwayRelationEdgeGraphItemRep;
+import org.caleydo.core.data.graph.item.vertex.EPathwayVertexShape;
+import org.caleydo.core.data.graph.item.vertex.EPathwayVertexType;
+import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.view.EPickingType;
+import org.caleydo.core.util.mapping.AGenomeMapper;
+import org.caleydo.core.util.mapping.EGenomeMappingCascadeType;
+import org.caleydo.core.view.opengl.util.GLTextUtils;
+import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
+import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
+import org.caleydo.util.graph.EGraphItemHierarchy;
+import org.caleydo.util.graph.EGraphItemKind;
+import org.caleydo.util.graph.EGraphItemProperty;
+import org.caleydo.util.graph.IGraphItem;
+import org.caleydo.util.graph.algorithm.GraphVisitorSearchBFS;
 
 /**
  * 
@@ -273,7 +273,7 @@ public class GLPathwayManager {
 			{
 				// Check if selected item is a vertex
 				if (lGraphItems.get(iItemIndex).getClass().equals
-						(org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep.class))
+						(org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItemRep.class))
 				{			
 					hashSelectedVertexRepId2Depth.put(
 							lGraphItems.get(iItemIndex).getId(), (iDepthIndex+1) / 2); // consider only vertices for depth

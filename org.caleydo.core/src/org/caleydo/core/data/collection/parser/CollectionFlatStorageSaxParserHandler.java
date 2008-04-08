@@ -6,36 +6,36 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection.parser;
+package org.caleydo.core.data.collection.parser;
 
 //import java.lang.NullPointerException;
 import java.util.StringTokenizer;
 
 import org.xml.sax.Attributes;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.parser.xml.sax.ASaxParserHandler;
-import org.geneview.core.parser.xml.sax.ISaxParserHandler;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.parser.xml.sax.ASaxParserHandler;
+import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
 //import org.xml.sax.SAXException;
 //import org.xml.sax.SAXParseException;
 
-import org.geneview.core.data.collection.StorageType;
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.data.collection.StorageType;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 
-//import org.geneview.core.util.exception.PrometheusSaxParserException;
+//import org.caleydo.core.util.exception.PrometheusSaxParserException;
 
 /**
  * Parsing pices of information present in each DComponent derived from JComponent.
  * 
  * @author Michael Kalkusch
  * 
- * @see org.geneview.core.net.dwt.swing.parser.DPanelSaxHandler
- * @see org.geneview.core.net.dwt.swing.parser.DButtonSaxHandler
- * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler
+ * @see org.caleydo.core.net.dwt.swing.parser.DPanelSaxHandler
+ * @see org.caleydo.core.net.dwt.swing.parser.DButtonSaxHandler
+ * @see org.caleydo.core.net.dwt.swing.parser.ASaxParserHandler
  * 
  * @see org.xml.sax.helpers.DefaultHandler
  *
@@ -98,7 +98,7 @@ implements ISaxParserHandler
 	 * 
 	 * Important: derived classes must call super.reset() inside thier reset().
 	 * 
-	 * @see org.geneview.core.parser.xml.sax.ISaxParserHandler#reset()
+	 * @see org.caleydo.core.parser.xml.sax.ISaxParserHandler#reset()
 	 */
 	public void reset() {
 		super.reset();	
@@ -128,9 +128,9 @@ implements ISaxParserHandler
 	
 	/**
 	 * 
-	 * @see org.geneview.core.net.dwt.swing.parser.AComponentSaxParserHandler#endElement_DComponent(String, String, String)
-	 * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler#endElement(String, String, String)
-	 * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler#startElement(String, String, String, Attributes)
+	 * @see org.caleydo.core.net.dwt.swing.parser.AComponentSaxParserHandler#endElement_DComponent(String, String, String)
+	 * @see org.caleydo.core.net.dwt.swing.parser.ASaxParserHandler#endElement(String, String, String)
+	 * @see org.caleydo.core.net.dwt.swing.parser.ASaxParserHandler#startElement(String, String, String, Attributes)
 	 * 
 	 * @return TRUE if the token was pased already, else false
 	 */
@@ -243,9 +243,9 @@ implements ISaxParserHandler
 	 *  
 	 * @return TRUE if the token was pased already, else false
 	 * 
-	 * @see org.geneview.core.net.dwt.swing.parser.ASaxParserHandler#endElement(String, String, String) 
+	 * @see org.caleydo.core.net.dwt.swing.parser.ASaxParserHandler#endElement(String, String, String) 
 	 * @see org.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)	 
-	 * @see org.geneview.core.net.dwt.swing.parser.AComponentSaxParserHandler#startElement_DComponent(String, String, String, Attributes)
+	 * @see org.caleydo.core.net.dwt.swing.parser.AComponentSaxParserHandler#startElement_DComponent(String, String, String, Attributes)
 	 */
 	final protected boolean endElement_DComponent( final String uri, 
 			final String localName, 
@@ -341,7 +341,7 @@ implements ISaxParserHandler
 	/**
 	 * Note: do not forget to call startElement_DComponent(String, String, String, Attributes)!
 	 * 
-	 * @see org.geneview.core.net.dwt.swing.parser.AComponentSaxParserHandler#startElement_DComponent(String, String, String, Attributes)
+	 * @see org.caleydo.core.net.dwt.swing.parser.AComponentSaxParserHandler#startElement_DComponent(String, String, String, Attributes)
 	 * @see org.xml.sax.ContentHandler#startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 */
 	public void startElement(String uri, String localName, String qName,
@@ -526,8 +526,8 @@ implements ISaxParserHandler
 			
 			
 			default:
-				throw new GeneViewRuntimeException("Can not handle unkonw type [" + details + "]",
-						GeneViewRuntimeExceptionType.SAXPARSER );
+				throw new CaleydoRuntimeException("Can not handle unkonw type [" + details + "]",
+						CaleydoRuntimeExceptionType.SAXPARSER );
 			
 			} // end switch
 		
@@ -570,7 +570,7 @@ implements ISaxParserHandler
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.net.dwt.swing.parser.DParseBaseSaxHandler#getXML_ViewCanvas_Type()
+	 * @see org.caleydo.core.net.dwt.swing.parser.DParseBaseSaxHandler#getXML_ViewCanvas_Type()
 	 */
 	public String getXML_ViewCanvas_Type() {		
 		return null;

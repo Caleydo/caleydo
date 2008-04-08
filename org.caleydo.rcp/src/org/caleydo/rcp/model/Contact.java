@@ -15,7 +15,7 @@
  *     
  *     org.eclipsercp.hyperbola.model.Contact
  *******************************************************************************/
-package org.geneview.rcp.model;
+package org.caleydo.rcp.model;
 
 import org.eclipse.core.runtime.PlatformObject;
 

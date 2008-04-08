@@ -1,20 +1,20 @@
 /**
  * 
  */
-package org.geneview.core.manager.data;
+package org.caleydo.core.manager.data;
 
 
 import java.util.Collection;
 import java.util.HashMap;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.data.genome.IGenomeIdMap;
-import org.geneview.core.util.mapping.AGenomeMapper;
-import org.geneview.core.util.mapping.EGenomeMappingCascadeType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.data.genome.IGenomeIdMap;
+import org.caleydo.core.util.mapping.AGenomeMapper;
+import org.caleydo.core.util.mapping.EGenomeMappingCascadeType;
 
-//import org.geneview.core.data.mapping.EGenomeIdType;
-import org.geneview.core.data.mapping.EGenomeMappingDataType;
-import org.geneview.core.data.mapping.EGenomeMappingType;
+//import org.caleydo.core.data.mapping.EGenomeIdType;
+import org.caleydo.core.data.mapping.EGenomeMappingDataType;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
 
 /**
  * Generic interface for genome ID managers.
@@ -39,11 +39,11 @@ extends IGeneralManager {
 //	public int getIdByTypeInt( final int iUniqueId, 
 //			final EGenomeIdType type );
 //	
-//	public int getIdByTypeString( final String sGeneViewId, 
+//	public int getIdByTypeString( final String sCaleydoId, 
 //			final EGenomeIdType type );
 	
 	
-	public int getIdIntFromStringByMapping( final String sGeneViewId, 
+	public int getIdIntFromStringByMapping( final String sCaleydoId, 
 			final EGenomeMappingType type );
 	
 	/**
@@ -90,13 +90,13 @@ extends IGeneralManager {
 	
 	/**
 	 * Get one "target" id as String mapped to one String as "origin" id 
-	 * defiend by sGeneViewId using type.
+	 * defiend by sCaleydoId using type.
 	 * 
-	 * @param sGeneViewId define "origin" id
+	 * @param sCaleydoId define "origin" id
 	 * @param type defines, which id is mapped to the other id
 	 * @return "target" id using type
 	 */
-	public String getIdStringFromStringByMapping(final String sGeneViewId, 
+	public String getIdStringFromStringByMapping(final String sCaleydoId, 
 			final EGenomeMappingType type);
 	
 	/**
@@ -174,9 +174,9 @@ extends IGeneralManager {
 	 * @param codingLutType define EGenomeMappingType used for identifying
 	 * @param map to be added, must be IGenomeIdMap
 	 * 
-	 * @see org.geneview.core.manager.data.genome.IGenomeIdMap
-	 * @see org.geneview.core.data.map.MultiHashArrayStringMap
-	 * @see org.geneview.core.data.map.MultiHashArrayIntegerMap
+	 * @see org.caleydo.core.manager.data.genome.IGenomeIdMap
+	 * @see org.caleydo.core.data.map.MultiHashArrayStringMap
+	 * @see org.caleydo.core.data.map.MultiHashArrayIntegerMap
 	 */
 	public void setMapByType( final EGenomeMappingType codingLutType, Object map );
 	
@@ -188,9 +188,9 @@ extends IGeneralManager {
 	 * 
 	 * @param codingLutType define EGenomeMappingType used for identifying
 	 * 
-	 * @see org.geneview.core.manager.data.genome.IGenomeIdMap
-	 * @see org.geneview.core.data.map.MultiHashArrayStringMap
-	 * @see org.geneview.core.data.map.MultiHashArrayIntegerMap
+	 * @see org.caleydo.core.manager.data.genome.IGenomeIdMap
+	 * @see org.caleydo.core.data.map.MultiHashArrayStringMap
+	 * @see org.caleydo.core.data.map.MultiHashArrayIntegerMap
 	 */
 	public void removeMapByType(final EGenomeMappingType codingLutType);
 	

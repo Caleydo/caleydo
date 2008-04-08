@@ -6,12 +6,12 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection.set;
+package org.caleydo.core.data.collection.set;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.SetType;
-import org.geneview.core.data.collection.set.ASetRawData;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.SetType;
+import org.caleydo.core.data.collection.set.ASetRawData;
 
 /**
  * @author Michael Kalkusch
@@ -42,14 +42,14 @@ implements ISet {
 	}
 
 //	/* (non-Javadoc)
-//	 * @see org.geneview.core.data.collection.ISet#getStorage()
+//	 * @see org.caleydo.core.data.collection.ISet#getStorage()
 //	 */
 //	public final IStorage getStorage() {
 //		return refFlatStorage[0];
 //	}
 //	
 //	/* (non-Javadoc)
-//	 * @see org.geneview.core.data.collection.ISet#setStorage(org.geneview.core.data.collection.IStorage)
+//	 * @see org.caleydo.core.data.collection.ISet#setStorage(org.caleydo.core.data.collection.IStorage)
 //	 */
 //	public final void setStorage(IStorage setStorage) {
 //		
@@ -61,7 +61,7 @@ implements ISet {
 	/**
 	 * Create "Header" for all Selections.
 	 * 
-	 * @see org.geneview.core.data.xml.IMementoXML#createMementoXML()
+	 * @see org.caleydo.core.data.xml.IMementoXML#createMementoXML()
 	 * 
 	 * @return String containign the XML-header for this selection
 	 */
@@ -76,14 +76,14 @@ implements ISet {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ICollection#getCacheId()
+	 * @see org.caleydo.core.data.collection.ICollection#getCacheId()
 	 */
 	public abstract int getCacheId();
 	
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ICollection#hasCacheChanged(int)
+	 * @see org.caleydo.core.data.collection.ICollection#hasCacheChanged(int)
 	 */
 	public final boolean hasCacheChanged( final int iCompareCacheId ) {
 		return (iCompareCacheId < this.getCacheId());
@@ -91,7 +91,7 @@ implements ISet {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISet#hasCacheChangedReadOnly(int)
+	 * @see org.caleydo.core.data.collection.ISet#hasCacheChangedReadOnly(int)
 	 */
 	public final boolean hasCacheChangedReadOnly( final int iCompareCacheId ) {
 		return (iCompareCacheId > this.iCacheId);

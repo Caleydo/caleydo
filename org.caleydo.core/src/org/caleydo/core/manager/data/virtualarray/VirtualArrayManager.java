@@ -6,25 +6,25 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.manager.data.virtualarray;
+package org.caleydo.core.manager.data.virtualarray;
 
 import java.util.Vector;
 import java.util.Iterator;
 
-import org.geneview.core.manager.IGeneralManager;
-//import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.data.ACollectionManager;
-import org.geneview.core.manager.data.IVirtualArrayManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.manager.type.ManagerType;
-//import org.geneview.core.parser.handler.importer.ascii.MicroArrayLoader1Storage;
+import org.caleydo.core.manager.IGeneralManager;
+//import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.data.ACollectionManager;
+import org.caleydo.core.manager.data.IVirtualArrayManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.ManagerType;
+//import org.caleydo.core.parser.handler.importer.ascii.MicroArrayLoader1Storage;
 
-import org.geneview.core.data.collection.IVirtualArray;
-//import org.geneview.core.data.collection.set.SetPlanarSimple;
-import org.geneview.core.data.collection.virtualarray.VirtualArrayMultiBlock;
-import org.geneview.core.data.collection.virtualarray.VirtualArraySingleBlock;
-//import org.geneview.core.data.collection.IVirtualArray;
+import org.caleydo.core.data.collection.IVirtualArray;
+//import org.caleydo.core.data.collection.set.SetPlanarSimple;
+import org.caleydo.core.data.collection.virtualarray.VirtualArrayMultiBlock;
+import org.caleydo.core.data.collection.virtualarray.VirtualArraySingleBlock;
+//import org.caleydo.core.data.collection.IVirtualArray;
 
 /**
  * @author Michael Kalkusch
@@ -98,7 +98,7 @@ implements IVirtualArrayManager
 	
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.SelectionManager#createSelection()
+	 * @see org.caleydo.core.data.manager.SelectionManager#createSelection()
 	 */
 	public IVirtualArray createVirtualArray( final ManagerObjectType useSelectionType ) {
 		
@@ -133,7 +133,7 @@ implements IVirtualArrayManager
 
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.SelectionManager#deleteSelection(org.geneview.core.data.collection.IVirtualArray)
+	 * @see org.caleydo.core.data.manager.SelectionManager#deleteSelection(org.caleydo.core.data.collection.IVirtualArray)
 	 */
 	public boolean deleteVirtualArray(IVirtualArray deleteSelection ) {
 		if ( vecVirtualArray == null ) 
@@ -144,7 +144,7 @@ implements IVirtualArrayManager
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.SelectionManager#deleteSelection(org.geneview.core.data.collection.IVirtualArray)
+	 * @see org.caleydo.core.data.manager.SelectionManager#deleteSelection(org.caleydo.core.data.collection.IVirtualArray)
 	 */
 	public boolean deleteVirtualArray( final int iItemId ) {
 		try {
@@ -162,7 +162,7 @@ implements IVirtualArrayManager
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.SelectionManager#getItemSelection(int)
+	 * @see org.caleydo.core.data.manager.SelectionManager#getItemSelection(int)
 	 */
 	public IVirtualArray getItemVirtualArray( final int iItemId) {
 		
@@ -186,14 +186,14 @@ implements IVirtualArrayManager
 
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.data.manager.GeneralManager#getItem(int)
+	 * @see org.caleydo.core.data.manager.GeneralManager#getItem(int)
 	 */
 	public final Object getItem( final int iItemId) {
 		return getItemVirtualArray(iItemId);
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.SelectionManager#getAllSelectionItems()
+	 * @see org.caleydo.core.data.manager.SelectionManager#getAllSelectionItems()
 	 */
 	public IVirtualArray[] getAllVirtualArrayItems() {
 		
@@ -213,7 +213,7 @@ implements IVirtualArrayManager
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.SelectionManager#getAllSelectionItems()
+	 * @see org.caleydo.core.data.manager.SelectionManager#getAllSelectionItems()
 	 */
 	public Vector<IVirtualArray> getAllVirtualArrayItemsVector() {
 		
@@ -226,14 +226,14 @@ implements IVirtualArrayManager
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.GeneralManagerInterface#hasItem(int)
+	 * @see org.caleydo.core.data.manager.GeneralManagerInterface#hasItem(int)
 	 */
 	public final boolean hasItem(int iItemId) {
 		return hasItem_withUniqueId( iItemId );
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.manager.GeneralManagerInterface#size()
+	 * @see org.caleydo.core.data.manager.GeneralManagerInterface#size()
 	 */
 	public final int size() {		
 		if ( vecVirtualArray == null ) 

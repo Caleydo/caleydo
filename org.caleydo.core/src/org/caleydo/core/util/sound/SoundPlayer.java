@@ -1,4 +1,4 @@
-package org.geneview.core.util.sound;
+package org.caleydo.core.util.sound;
 
 import java.io.File;
 

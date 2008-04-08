@@ -1,4 +1,4 @@
-package org.geneview.core.data.view.camera;
+package org.caleydo.core.data.view.camera;
 
 /**
  * Defines viewing volume of a OpenGL view.

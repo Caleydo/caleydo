@@ -6,20 +6,20 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.command.window;
+package org.caleydo.core.command.window;
 
 //import javax.swing.JComponent;
 //import javax.swing.JOptionPane;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.IViewGLCanvasManager;
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.base.ACommand;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IViewGLCanvasManager;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.base.ACommand;
 
-//import org.geneview.core.net.dwt.swing.jogl.WorkspaceSwingFrame;
-//import org.geneview.core.net.dwt.swing.mdi.DInternalFrame;
+//import org.caleydo.core.net.dwt.swing.jogl.WorkspaceSwingFrame;
+//import org.caleydo.core.net.dwt.swing.mdi.DInternalFrame;
 
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Creates a popup window dispaying info.
@@ -61,8 +61,8 @@ extends ACommand {
 //	/**
 //	 * Get the reference to the new created internal frame after calling doCommand() internal.
 //	 * 
-//	 * @see org.geneview.core.command.window.CmdWindowNewInternalFrame#getCurrentViewCanvas()
-//	 * @see org.geneview.core.command.window.CmdWindowNewInternalFrame#setTargetFrameId(String)
+//	 * @see org.caleydo.core.command.window.CmdWindowNewInternalFrame#getCurrentViewCanvas()
+//	 * @see org.caleydo.core.command.window.CmdWindowNewInternalFrame#setTargetFrameId(String)
 //	 * 
 //	 * @return new created IViewCanvas object 
 //	 */
@@ -74,8 +74,8 @@ extends ACommand {
 //	/**
 //	 * Get the last IViewCanvas created with doCommand().
 //	 * 
-//	 * @see org.geneview.core.command.window.CmdWindowNewInternalFrame#doCommand_getViewCanvas()
-//	 * @see org.geneview.core.command.window.CmdWindowNewInternalFrame#setTargetFrameId(String)
+//	 * @see org.caleydo.core.command.window.CmdWindowNewInternalFrame#doCommand_getViewCanvas()
+//	 * @see org.caleydo.core.command.window.CmdWindowNewInternalFrame#setTargetFrameId(String)
 //	 * 
 //	 * @return last IViewCanvas created by doCommand() 
 //	 */
@@ -89,8 +89,8 @@ extends ACommand {
 	/**
 	 * Reset the TargetFrameId for the next doCommand().
 	 * 
-	 * @see org.geneview.core.command.window.CmdWindowNewInternalFrame#getCurrentViewCanvas()
-	 * @see org.geneview.core.command.window.CmdWindowNewInternalFrame#doCommand_getViewCanvas()
+	 * @see org.caleydo.core.command.window.CmdWindowNewInternalFrame#getCurrentViewCanvas()
+	 * @see org.caleydo.core.command.window.CmdWindowNewInternalFrame#doCommand_getViewCanvas()
 	 * 
 	 * @param sTargetFrameId TargetFramId of the parent frame of the internal frame to be created
 	 */
@@ -103,9 +103,9 @@ extends ACommand {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#doCommand()
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws GeneViewRuntimeException {
+	public void doCommand() throws CaleydoRuntimeException {
 		
 //		WorkspaceSwingFrame refCallingFrame =
 //			this.refViewCanvasManager.getItemWorkspace( iCallingFrameId );
@@ -116,9 +116,9 @@ extends ACommand {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#undoCommand()
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws GeneViewRuntimeException {
+	public void undoCommand() throws CaleydoRuntimeException {
 		
 	}
 

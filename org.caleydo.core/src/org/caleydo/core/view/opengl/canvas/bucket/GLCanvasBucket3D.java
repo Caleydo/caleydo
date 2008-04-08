@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.canvas.bucket;
+package org.caleydo.core.view.opengl.canvas.bucket;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
@@ -14,43 +14,43 @@ import java.util.List;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLEventListener;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.data.CmdDataCreateSelectionSetMakro;
-import org.geneview.core.command.event.CmdEventCreateMediator;
-import org.geneview.core.command.view.opengl.CmdGlObjectPathway3D;
-import org.geneview.core.data.AUniqueManagedObject;
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.set.selection.ISetSelection;
-import org.geneview.core.data.graph.core.PathwayGraph;
-import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
-import org.geneview.core.data.mapping.EGenomeMappingType;
-import org.geneview.core.data.view.camera.IViewFrustum;
-import org.geneview.core.data.view.camera.ViewFrustumBase.ProjectionMode;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.IEventPublisher.MediatorType;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.event.mediator.IMediatorReceiver;
-import org.geneview.core.manager.event.mediator.IMediatorSender;
-import org.geneview.core.manager.event.mediator.MediatorUpdateType;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.manager.view.EPickingMode;
-import org.geneview.core.manager.view.EPickingType;
-import org.geneview.core.manager.view.Pick;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.util.slerp.SlerpAction;
-import org.geneview.core.util.slerp.SlerpMod;
-import org.geneview.core.util.system.StringConversionTool;
-import org.geneview.core.util.system.SystemTime;
-import org.geneview.core.util.system.Time;
-import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
-import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
-import org.geneview.core.view.opengl.util.EIconTextures;
-import org.geneview.core.view.opengl.util.GLIconTextureManager;
-import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
-import org.geneview.core.view.opengl.util.drag.GLDragAndDrop;
-import org.geneview.util.graph.EGraphItemHierarchy;
-import org.geneview.util.graph.EGraphItemProperty;
-import org.geneview.util.graph.IGraphItem;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.data.CmdDataCreateSelectionSetMakro;
+import org.caleydo.core.command.event.CmdEventCreateMediator;
+import org.caleydo.core.command.view.opengl.CmdGlObjectPathway3D;
+import org.caleydo.core.data.AUniqueManagedObject;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.set.selection.ISetSelection;
+import org.caleydo.core.data.graph.core.PathwayGraph;
+import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IEventPublisher.MediatorType;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
+import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.view.EPickingMode;
+import org.caleydo.core.manager.view.EPickingType;
+import org.caleydo.core.manager.view.Pick;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.slerp.SlerpAction;
+import org.caleydo.core.util.slerp.SlerpMod;
+import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.core.util.system.SystemTime;
+import org.caleydo.core.util.system.Time;
+import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.util.EIconTextures;
+import org.caleydo.core.view.opengl.util.GLIconTextureManager;
+import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.caleydo.core.view.opengl.util.drag.GLDragAndDrop;
+import org.caleydo.util.graph.EGraphItemHierarchy;
+import org.caleydo.util.graph.EGraphItemProperty;
+import org.caleydo.util.graph.IGraphItem;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
@@ -227,7 +227,7 @@ public class GLCanvasBucket3D extends AGLCanvasUser
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media.opengl.GL)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media.opengl.GL)
 	 */
 	public void initLocal(final GL gl) {
 
@@ -237,9 +237,9 @@ public class GLCanvasBucket3D extends AGLCanvasUser
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL,
-	 *      int, org.geneview.core.view.opengl.util.JukeboxHierarchyLayer,
-	 *      org.geneview.core.view.jogl.mouse.PickingJoglMouseListener)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL,
+	 *      int, org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer,
+	 *      org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener)
 	 */
 	public void initRemote(final GL gl, final int iRemoteViewID,
 			final JukeboxHierarchyLayer layer,
@@ -253,7 +253,7 @@ public class GLCanvasBucket3D extends AGLCanvasUser
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl.GL)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl.GL)
 	 */
 	public void init(final GL gl) {
 
@@ -298,7 +298,7 @@ public class GLCanvasBucket3D extends AGLCanvasUser
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#displayLocal(javax.media.opengl.GL)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#displayLocal(javax.media.opengl.GL)
 	 */
 	public void displayLocal(final GL gl) {
 
@@ -333,7 +333,7 @@ public class GLCanvasBucket3D extends AGLCanvasUser
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#displayRemote(javax.media.opengl.GL)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#displayRemote(javax.media.opengl.GL)
 	 */
 	public void displayRemote(final GL gl) {
 
@@ -349,7 +349,7 @@ public class GLCanvasBucket3D extends AGLCanvasUser
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#display(javax.media.opengl.GL)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#display(javax.media.opengl.GL)
 	 */
 	public void display(final GL gl) {
 
@@ -753,7 +753,7 @@ public class GLCanvasBucket3D extends AGLCanvasUser
 				.getSingelton().getViewGLCanvasManager().getItem(iViewID));
 
 		if (tmpCanvasUser == null)
-			throw new GeneViewRuntimeException(
+			throw new CaleydoRuntimeException(
 					"Cannot render canvas object which is null!");
 
 		gl.glPushMatrix();
@@ -1566,9 +1566,9 @@ public class GLCanvasBucket3D extends AGLCanvasUser
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.geneview.core.manager.view.EPickingType,
-	 *      org.geneview.core.manager.view.EPickingMode, int,
-	 *      org.geneview.core.manager.view.Pick)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.caleydo.core.manager.view.EPickingType,
+	 *      org.caleydo.core.manager.view.EPickingMode, int,
+	 *      org.caleydo.core.manager.view.Pick)
 	 */
 	protected void handleEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) {
@@ -1871,7 +1871,7 @@ public class GLCanvasBucket3D extends AGLCanvasUser
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#getInfo()
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#getInfo()
 	 */
 	public ArrayList<String> getInfo() {
 

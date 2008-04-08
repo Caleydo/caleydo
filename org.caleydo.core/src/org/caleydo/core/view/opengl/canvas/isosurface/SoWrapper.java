@@ -5,7 +5,7 @@
 //  TYPE:       c++ source code
 //  PROJECT:    Studierstube
 //  CONTENT:    Wrapper Surface extraction algorithm Implementation
-//              proposed by André Gueziec (1995)
+//              proposed by Andrï¿½ Gueziec (1995)
 //  VERSION:    2.0
 // ===========================================================================
 //  AUTHORS:    ab      Alexander Bornik
@@ -15,7 +15,7 @@
 // ===========================================================================
 
 
-package org.geneview.core.view.opengl.canvas.isosurface;
+package org.caleydo.core.view.opengl.canvas.isosurface;
 
 
 
@@ -75,7 +75,7 @@ import gleem.linalg.Vec3f;
 
 import gleem.linalg.open.Vec4fp;
 
-import org.geneview.core.view.opengl.canvas.isosurface.SoMarchBase;
+import org.caleydo.core.view.opengl.canvas.isosurface.SoMarchBase;
 
 public class SoWrapper extends SoMarchBase
 //: public SoMarchBase, public LiverPlannerBaseObject

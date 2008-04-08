@@ -37,7 +37,7 @@
  * and developed by Kenneth Bradley Russell and Christopher John Kline.
  */
 
-package org.geneview.core.view.opengl.util;
+package org.caleydo.core.view.opengl.util;
 
 import java.awt.Font;
 import java.awt.geom.*;

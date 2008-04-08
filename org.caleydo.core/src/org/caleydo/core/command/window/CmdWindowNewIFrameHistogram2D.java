@@ -6,21 +6,21 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.command.window;
+package org.caleydo.core.command.window;
 
 //import javax.swing.JComponent;
 //import javax.swing.JOptionPane;
 //import javax.swing.JLabel;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.command.ICommand;
-import org.geneview.core.command.base.ACmdHandleSet;
-import org.geneview.core.command.base.ICmdHandleSet;
-//import org.geneview.core.data.collection.ISet;
-//import org.geneview.core.net.dwt.swing.DSwingHistogramCanvas;
-////import org.geneview.core.net.dwt.swing.mdi.DDesktopPane;
-//import org.geneview.core.net.dwt.swing.mdi.DInternalFrame;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.command.ICommand;
+import org.caleydo.core.command.base.ACmdHandleSet;
+import org.caleydo.core.command.base.ICmdHandleSet;
+//import org.caleydo.core.data.collection.ISet;
+//import org.caleydo.core.net.dwt.swing.DSwingHistogramCanvas;
+////import org.caleydo.core.net.dwt.swing.mdi.DDesktopPane;
+//import org.caleydo.core.net.dwt.swing.mdi.DInternalFrame;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Creates a internal frame dispaying a 2D histogram.
@@ -51,9 +51,9 @@ implements ICommand, ICmdHandleSet {
 	
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#doCommand()
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws GeneViewRuntimeException {
+	public void doCommand() throws CaleydoRuntimeException {
 		
 		assert refGeneralManager != null:"can not handle null-pointer to IGeneralManager";
 
@@ -80,9 +80,9 @@ implements ICommand, ICmdHandleSet {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#undoCommand()
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws GeneViewRuntimeException {
+	public void undoCommand() throws CaleydoRuntimeException {
 		
 	}
 

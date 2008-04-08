@@ -1,22 +1,22 @@
 /**
  * 
  */
-package org.geneview.core.data.collection.set.viewdata;
+package org.caleydo.core.data.collection.set.viewdata;
 
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.geneview.core.data.collection.IMetaData;
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.data.collection.IVirtualArray;
-import org.geneview.core.data.collection.SetType;
-import org.geneview.core.data.collection.set.ASetSimple;
-import org.geneview.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
-import org.geneview.core.data.view.camera.IViewCamera;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.parser.xml.sax.ISaxParserHandler;
+import org.caleydo.core.data.collection.IMetaData;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.data.collection.SetType;
+import org.caleydo.core.data.collection.set.ASetSimple;
+import org.caleydo.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+import org.caleydo.core.data.view.camera.IViewCamera;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
 
 /**
@@ -48,7 +48,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISet#getDimensionSize(int)
+	 * @see org.caleydo.core.data.collection.ISet#getDimensionSize(int)
 	 */
 	public final int getDimensionSize(int iAtDimension) {
 
@@ -57,7 +57,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISet#getDimensionSizeForAllVirtualArrays()
+	 * @see org.caleydo.core.data.collection.ISet#getDimensionSizeForAllVirtualArrays()
 	 */
 	public final int[] getDimensionSizeForAllVirtualArrays() {
 
@@ -66,7 +66,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISet#getDimensions()
+	 * @see org.caleydo.core.data.collection.ISet#getDimensions()
 	 */
 	public final int getDimensions() {
 
@@ -75,7 +75,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISet#getStorageByDim(int)
+	 * @see org.caleydo.core.data.collection.ISet#getStorageByDim(int)
 	 */
 	public final IStorage[] getStorageByDim(int iAtDimension) {
 
@@ -84,7 +84,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISet#getStorageByDimAndIndex(int, int)
+	 * @see org.caleydo.core.data.collection.ISet#getStorageByDimAndIndex(int, int)
 	 */
 	public final IStorage getStorageByDimAndIndex(int iAtDimension, int iAtIndex) {
 
@@ -93,7 +93,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISet#getStorageVectorByDim(int)
+	 * @see org.caleydo.core.data.collection.ISet#getStorageVectorByDim(int)
 	 */
 	public final Vector<IStorage> getStorageVectorByDim(int iAtDimension) {
 
@@ -102,7 +102,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISet#getVirtualArrayByDim(int)
+	 * @see org.caleydo.core.data.collection.ISet#getVirtualArrayByDim(int)
 	 */
 	public final IVirtualArray[] getVirtualArrayByDim(int iAtDimension) {
 
@@ -111,7 +111,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISet#getVirtualArrayByDimAndIndex(int, int)
+	 * @see org.caleydo.core.data.collection.ISet#getVirtualArrayByDimAndIndex(int, int)
 	 */
 	public final IVirtualArray getVirtualArrayByDimAndIndex(int iAtDimension,
 			int iAtIndex) {
@@ -121,7 +121,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISet#getVirtualArrayVectorByDim(int)
+	 * @see org.caleydo.core.data.collection.ISet#getVirtualArrayVectorByDim(int)
 	 */
 	public final Vector<IVirtualArray> getVirtualArrayVectorByDim(int iAtDimension) {
 
@@ -130,7 +130,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISet#hasVirtualArray(org.geneview.core.data.collection.IVirtualArray, int)
+	 * @see org.caleydo.core.data.collection.ISet#hasVirtualArray(org.caleydo.core.data.collection.IVirtualArray, int)
 	 */
 	public final boolean hasVirtualArray(IVirtualArray testVirtualArray,
 			int iAtDimension) {
@@ -140,7 +140,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISet#hasVirtualArrayInSet(org.geneview.core.data.collection.IVirtualArray)
+	 * @see org.caleydo.core.data.collection.ISet#hasVirtualArrayInSet(org.caleydo.core.data.collection.IVirtualArray)
 	 */
 	public final boolean hasVirtualArrayInSet(IVirtualArray testVirtualArray) {
 
@@ -149,7 +149,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISet#iteratorStorageByDim(int)
+	 * @see org.caleydo.core.data.collection.ISet#iteratorStorageByDim(int)
 	 */
 	public final Iterator<IStorage> iteratorStorageByDim(int iAtDimension) {
 
@@ -158,7 +158,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISet#iteratorVirtualArrayByDim(int)
+	 * @see org.caleydo.core.data.collection.ISet#iteratorVirtualArrayByDim(int)
 	 */
 	public final IVirtualArrayIterator iteratorVirtualArrayByDim(int iAtDimension) {
 
@@ -167,7 +167,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISet#removeVirtualArray(org.geneview.core.data.collection.IVirtualArray[], int)
+	 * @see org.caleydo.core.data.collection.ISet#removeVirtualArray(org.caleydo.core.data.collection.IVirtualArray[], int)
 	 */
 	public final boolean removeVirtualArray(IVirtualArray[] removeVirtualArray,
 			int iFromDimension) {
@@ -177,7 +177,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISet#setStorageByDim(org.geneview.core.data.collection.IStorage[], int)
+	 * @see org.caleydo.core.data.collection.ISet#setStorageByDim(org.caleydo.core.data.collection.IStorage[], int)
 	 */
 	public final void setStorageByDim(IStorage[] setStorage, int iAtDimension) {
 
@@ -185,7 +185,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISet#setStorageByDim(java.util.Vector, int)
+	 * @see org.caleydo.core.data.collection.ISet#setStorageByDim(java.util.Vector, int)
 	 */
 	public final boolean setStorageByDim(Vector<IStorage> setStorage, int iAtDimension) {
 
@@ -194,7 +194,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISet#setStorageByDimAndIndex(org.geneview.core.data.collection.IStorage, int, int)
+	 * @see org.caleydo.core.data.collection.ISet#setStorageByDimAndIndex(org.caleydo.core.data.collection.IStorage, int, int)
 	 */
 	public final boolean setStorageByDimAndIndex(IStorage addStorage,
 			int iAtDimension, int iAtIndex) {
@@ -204,7 +204,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISet#setVirtualArrayByDim(org.geneview.core.data.collection.IVirtualArray[], int)
+	 * @see org.caleydo.core.data.collection.ISet#setVirtualArrayByDim(org.caleydo.core.data.collection.IVirtualArray[], int)
 	 */
 	public final boolean setVirtualArrayByDim(IVirtualArray[] addVirtualArray,
 			int iAtDimension) {
@@ -214,7 +214,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISet#setVirtualArrayByDim(java.util.Vector, int)
+	 * @see org.caleydo.core.data.collection.ISet#setVirtualArrayByDim(java.util.Vector, int)
 	 */
 	public final boolean setVirtualArrayByDim(Vector<IVirtualArray> addVirtualArray,
 			int iAtDimension) {
@@ -224,7 +224,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISet#setVirtualArrayByDimAndIndex(org.geneview.core.data.collection.IVirtualArray, int, int)
+	 * @see org.caleydo.core.data.collection.ISet#setVirtualArrayByDimAndIndex(org.caleydo.core.data.collection.IVirtualArray, int, int)
 	 */
 	public final boolean setVirtualArrayByDimAndIndex(IVirtualArray addVirtualArray,
 			int iAtDimension, int iAtIndex) {
@@ -234,7 +234,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IMetaDataHandler#getMetaData()
+	 * @see org.caleydo.core.data.collection.IMetaDataHandler#getMetaData()
 	 */
 	public final IMetaData getMetaData() {
 
@@ -243,7 +243,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.IMetaDataHandler#setMetaData(org.geneview.core.data.collection.IMetaData)
+	 * @see org.caleydo.core.data.collection.IMetaDataHandler#setMetaData(org.caleydo.core.data.collection.IMetaData)
 	 */
 	public final void setMetaData(IMetaData setMetaData) {
 
@@ -254,7 +254,7 @@ implements ISetViewData {
 
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.ISubSet#swapSubSet(org.geneview.core.data.collection.ISet, org.geneview.core.data.collection.ISet)
+	 * @see org.caleydo.core.data.collection.ISubSet#swapSubSet(org.caleydo.core.data.collection.ISet, org.caleydo.core.data.collection.ISet)
 	 */
 	public final boolean swapSubSet(ISet fromSet, ISet toSet) {
 
@@ -263,7 +263,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.xml.IMementoItemXML#createMementoXML()
+	 * @see org.caleydo.core.data.xml.IMementoItemXML#createMementoXML()
 	 */
 	public final String createMementoXML() {
 
@@ -272,7 +272,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.xml.IMementoXML#setMementoXML_usingHandler(org.geneview.core.xml.parser.ISaxParserHandler)
+	 * @see org.caleydo.core.data.xml.IMementoXML#setMementoXML_usingHandler(org.caleydo.core.xml.parser.ISaxParserHandler)
 	 */
 	public final boolean setMementoXML_usingHandler(ISaxParserHandler refSaxHandler) {
 
@@ -281,7 +281,7 @@ implements ISetViewData {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.IUniqueManagedObject#getBaseType()
+	 * @see org.caleydo.core.data.IUniqueManagedObject#getBaseType()
 	 */
 	public final ManagerObjectType getBaseType() {
 

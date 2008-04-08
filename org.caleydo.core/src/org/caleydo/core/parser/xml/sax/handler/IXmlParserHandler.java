@@ -1,18 +1,18 @@
 /**
  * 
  */
-package org.geneview.core.parser.xml.sax.handler;
+package org.caleydo.core.parser.xml.sax.handler;
 
 //import org.xml.sax.Attributes;
 
-//import org.geneview.core.xml.parser.manager.IXmlParserManager;
+//import org.caleydo.core.xml.parser.manager.IXmlParserManager;
 
 
 /**
  * Interface for all XML Handler's registered 
- * to the org.geneview.core.manager.IXmlParserManager
+ * to the org.caleydo.core.manager.IXmlParserManager
  * 
- * @see org.geneview.core.manager.IXmlParserManager
+ * @see org.caleydo.core.manager.IXmlParserManager
  *  
  * @author Michael Kalkusch
  *
@@ -27,7 +27,7 @@ extends IXmlBaseHandler
 	 * Initilisation of handler.
 	 * Called once by Manager before using the handler.
 	 *
-	 * @see org.geneview.core.manager.IXmlParserManager#registerAndInitSaxHandler(IXmlParserHandler)
+	 * @see org.caleydo.core.manager.IXmlParserManager#registerAndInitSaxHandler(IXmlParserHandler)
 	 */
 	public void initHandler();
 	
@@ -39,10 +39,10 @@ extends IXmlBaseHandler
 	
 	/**
 	 * Get the XmlActivationTag, which makes this Handler the current XMLHandler, 
-	 * that receives all events from the org.geneview.core.manager.IXmlParserManager.
+	 * that receives all events from the org.caleydo.core.manager.IXmlParserManager.
 	 * XmlActivationTag is set via the Constructor.
 	 * 
-	 * @return tag that enables this Handler inside the org.geneview.core.manager.IXmlParserManager
+	 * @return tag that enables this Handler inside the org.caleydo.core.manager.IXmlParserManager
 	 */
 	public String getXmlActivationTag();
 	
@@ -51,8 +51,8 @@ extends IXmlBaseHandler
 	/**
 	 * TRUE if handler is destoryed after activation tag is closed.
 	 * 
-	 * @see org.geneview.core.xml.parser.manager.IXmlParserHandler#setHandlerDestoryedAfterClosingTag(boolean)
-	 * @see org.geneview.core.manager.IXmlParserManager	 
+	 * @see org.caleydo.core.xml.parser.manager.IXmlParserHandler#setHandlerDestoryedAfterClosingTag(boolean)
+	 * @see org.caleydo.core.manager.IXmlParserManager	 
 	 * 
 	 * @return TRUE if handler is destoryed after activation tag is closed
 	 */
@@ -62,7 +62,7 @@ extends IXmlBaseHandler
 	/**
 	 * TRUE if handler is destoryed after activation tag is closed.
 	 * 
-	 * @see org.geneview.core.xml.parser.manager.IXmlParserHandler#isHandlerDestoryedAfterClosingTag()
+	 * @see org.caleydo.core.xml.parser.manager.IXmlParserHandler#isHandlerDestoryedAfterClosingTag()
 	 * @param setHandlerDestoryedAfterClosingTag
 	 */
 	public void setHandlerDestoryedAfterClosingTag( 

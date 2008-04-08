@@ -1,8 +1,8 @@
-package org.geneview.core.view.opengl.miniview;
+package org.caleydo.core.view.opengl.miniview;
 
 import javax.media.opengl.GL;
 
-import org.geneview.core.data.GeneralRenderStyle;
+import org.caleydo.core.data.GeneralRenderStyle;
 
 
 public class GLParCoordsMiniView 

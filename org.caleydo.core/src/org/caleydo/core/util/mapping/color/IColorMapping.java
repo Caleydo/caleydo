@@ -1,4 +1,4 @@
-package org.geneview.core.util.mapping.color;
+package org.caleydo.core.util.mapping.color;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;

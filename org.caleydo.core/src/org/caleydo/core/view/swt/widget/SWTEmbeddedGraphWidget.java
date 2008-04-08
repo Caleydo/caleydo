@@ -7,11 +7,11 @@
  *  
  */
 
-package org.geneview.core.view.swt.widget;
+package org.caleydo.core.view.swt.widget;
 
 import java.awt.Frame;
 
-import org.geneview.core.view.swt.widget.ASWTEmbeddedWidget;
+import org.caleydo.core.view.swt.widget.ASWTEmbeddedWidget;
 
 import org.eclipse.swt.widgets.Composite;
 

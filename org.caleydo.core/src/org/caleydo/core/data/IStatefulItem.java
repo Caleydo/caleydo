@@ -6,7 +6,7 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data;
+package org.caleydo.core.data;
 
 /**
  * Defines an item handling a internal state.

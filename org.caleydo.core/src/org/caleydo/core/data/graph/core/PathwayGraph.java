@@ -1,7 +1,7 @@
-package org.geneview.core.data.graph.core;
+package org.caleydo.core.data.graph.core;
 
-import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
-import org.geneview.util.graph.core.Graph;
+import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
+import org.caleydo.util.graph.core.Graph;
 
 /**
  * 

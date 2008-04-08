@@ -1,4 +1,4 @@
-package org.geneview.core.manager;
+package org.caleydo.core.manager;
 
 /**
  * Base interface for all managers. 

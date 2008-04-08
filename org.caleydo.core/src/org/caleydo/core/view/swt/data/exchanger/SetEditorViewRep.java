@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.view.swt.data.exchanger;
+package org.caleydo.core.view.swt.data.exchanger;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -25,16 +25,16 @@ import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Color;
 //import org.eclipse.swt.graphics.ImageData;
 
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.data.collection.IVirtualArray;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-//import org.geneview.core.util.system.StringConversionTool;
-import org.geneview.core.view.AViewRep;
-import org.geneview.core.view.IView;
-//import org.geneview.core.view.opengl.IGLCanvasUser;
-import org.geneview.core.view.ViewType;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+//import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.IView;
+//import org.caleydo.core.view.opengl.IGLCanvasUser;
+import org.caleydo.core.view.ViewType;
 
 /**
  * Data Exchanger View makes it possible

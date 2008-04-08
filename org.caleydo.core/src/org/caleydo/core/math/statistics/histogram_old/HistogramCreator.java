@@ -6,10 +6,10 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.math.statistics.histogram_old;
+package org.caleydo.core.math.statistics.histogram_old;
 
-import org.geneview.core.data.IStatefulItem;
-import org.geneview.core.data.collection.ISet;
+import org.caleydo.core.data.IStatefulItem;
+import org.caleydo.core.data.collection.ISet;
 
 
 /**

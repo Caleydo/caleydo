@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.util.graph;
+package org.caleydo.util.graph;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,9 +9,9 @@ import java.util.List;
 /**
  * Define GRAPH or GRAPH_ITEM as well as NODE and EDGE.
  * 
- * @see org.geneview.util.graph.EGraphProperty
- * @see org.geneview.util.graph.EGraphItemHierarchy
- * @see org.geneview.util.graph.EGraphItemProperty
+ * @see org.caleydo.util.graph.EGraphProperty
+ * @see org.caleydo.util.graph.EGraphItemHierarchy
+ * @see org.caleydo.util.graph.EGraphItemProperty
  * 
  * @author Michael Kalkusch
  */
@@ -55,8 +55,8 @@ public enum EGraphItemKind {
 	/**
 	 * Get a list of active EGraphItemKind items.
 	 * 
-	 * @see org.geneview.util.graph.EGraphItemHierarchy#getActiveItems()
-	 * @see org.geneview.util.graph.EGraphItemProperty#getActiveItems()
+	 * @see org.caleydo.util.graph.EGraphItemHierarchy#getActiveItems()
+	 * @see org.caleydo.util.graph.EGraphItemProperty#getActiveItems()
 	 * 
 	 * @return list of active EGraphItemHierarchy items
 	 */

@@ -1,4 +1,4 @@
-package org.geneview.core.manager.event.mediator;
+package org.caleydo.core.manager.event.mediator;
 
 /**
  * 

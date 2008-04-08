@@ -1,12 +1,12 @@
-package org.geneview.core.manager;
+package org.caleydo.core.manager;
 
 import java.util.ArrayList;
 
-import org.geneview.core.manager.event.mediator.IMediator;
-import org.geneview.core.manager.event.mediator.IMediatorReceiver;
-import org.geneview.core.manager.event.mediator.IMediatorSender;
-import org.geneview.core.manager.event.mediator.MediatorUpdateType;
-import org.geneview.core.util.IGeneViewDefaultType;
+import org.caleydo.core.manager.event.mediator.IMediator;
+import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
+import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
+import org.caleydo.core.util.ICaleydoDefaultType;
 
 /**
  * Handle events using Publish subsrib design pattern.
@@ -19,7 +19,7 @@ public interface IEventPublisher
 extends IGeneralManager, IMediatorReceiver {
 
 	public enum MediatorType 
-	implements IGeneViewDefaultType <MediatorType> {
+	implements ICaleydoDefaultType <MediatorType> {
 		DATA_MEDIATOR,
 		SELECTION_MEDIATOR,
 		VIEW_MEDIATOR; //for future usage
@@ -30,7 +30,7 @@ extends IGeneralManager, IMediatorReceiver {
 
 		/*
 		 * (non-Javadoc)
-		 * @see org.geneview.core.util.IGeneViewDefaultType#getTypeDefault()
+		 * @see org.caleydo.core.util.ICaleydoDefaultType#getTypeDefault()
 		 */
 		public MediatorType getTypeDefault() {
 

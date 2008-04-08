@@ -1,4 +1,4 @@
-package org.geneview.core.application.mapping;
+package org.caleydo.core.application.mapping;
 
 import gov.nih.nlm.ncbi.www.soap.eutils.EUtilsServiceLocator;
 import gov.nih.nlm.ncbi.www.soap.eutils.EUtilsServiceSoap;
@@ -15,7 +15,7 @@ import javax.xml.rpc.ServiceException;
 import keggapi.KEGGLocator;
 import keggapi.KEGGPortType;
 
-import org.geneview.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IGeneralManager;
 
 /**
  * Class generates a file that contains a mapping 

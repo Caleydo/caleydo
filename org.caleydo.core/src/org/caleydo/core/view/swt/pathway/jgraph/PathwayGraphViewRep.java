@@ -1,4 +1,4 @@
-package org.geneview.core.view.swt.pathway.jgraph;
+package org.caleydo.core.view.swt.pathway.jgraph;
 
 import gleem.linalg.Vec3f;
 
@@ -30,7 +30,7 @@ import org.eclipse.swt.SWTException;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.MessageBox;
-import org.geneview.util.graph.EGraphItemHierarchy;
+import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.jgraph.JGraph;
 import org.jgraph.graph.AttributeMap;
 import org.jgraph.graph.BasicMarqueeHandler;
@@ -43,25 +43,25 @@ import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 import org.jgraph.graph.GraphUndoManager;
 
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.data.collection.StorageType;
-import org.geneview.core.data.collection.set.SetFlatThreadSimple;
-import org.geneview.core.data.collection.set.selection.ISetSelection;
-import org.geneview.core.data.graph.core.PathwayGraph;
-import org.geneview.core.data.graph.item.vertex.EPathwayVertexShape;
-import org.geneview.core.data.graph.item.vertex.EPathwayVertexType;
-//import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
-import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
-import org.geneview.core.data.view.rep.renderstyle.PathwayRenderStyle;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.IViewGLCanvasManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.util.system.StringConversionTool;
-import org.geneview.core.view.swt.pathway.APathwayGraphViewRep;
-import org.geneview.core.view.swt.widget.SWTEmbeddedGraphWidget;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.StorageType;
+import org.caleydo.core.data.collection.set.SetFlatThreadSimple;
+import org.caleydo.core.data.collection.set.selection.ISetSelection;
+import org.caleydo.core.data.graph.core.PathwayGraph;
+import org.caleydo.core.data.graph.item.vertex.EPathwayVertexShape;
+import org.caleydo.core.data.graph.item.vertex.EPathwayVertexType;
+//import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IViewGLCanvasManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.core.view.swt.pathway.APathwayGraphViewRep;
+import org.caleydo.core.view.swt.widget.SWTEmbeddedGraphWidget;
 
 /**
  * In this class the real drawing of the Pathway happens. For the drawing the
@@ -178,8 +178,8 @@ extends APathwayGraphViewRep {
 	 * Method uses the parent container ID to retrieve the GUI widget by calling
 	 * the createWidget method from the SWT GUI Manager.
 	 * 
-	 * @see org.geneview.core.view.AViewRep#retrieveGUIContainer()
-	 * @see org.geneview.core.view.IView#initView()
+	 * @see org.caleydo.core.view.AViewRep#retrieveGUIContainer()
+	 * @see org.caleydo.core.view.IView#initView()
 	 */
 	public void initView() {
 
@@ -503,7 +503,7 @@ extends APathwayGraphViewRep {
 			
 			// Set vertex type to round rect
 			GPCellViewFactory.setViewClass(refGraphCell.getAttributes(),
-					"org.geneview.core.view.swt.pathway.jgraph.JGraphMultilineView");
+					"org.caleydo.core.view.swt.pathway.jgraph.JGraphMultilineView");
 
 			Vec3f tmpColor = refRenderStyle.getPathwayNodeColor(false);
 			GraphConstants.setBackground(changedMap, new Color(tmpColor.x(), tmpColor.y(), tmpColor.z()));
@@ -517,7 +517,7 @@ extends APathwayGraphViewRep {
 			
 			// Set vertex type to ellipse
 			GPCellViewFactory.setViewClass(refGraphCell.getAttributes(),
-					"org.geneview.core.view.swt.pathway.jgraph.JGraphEllipseView");
+					"org.caleydo.core.view.swt.pathway.jgraph.JGraphEllipseView");
 
 			if (!bShowBackgroundOverlay)
 			{
@@ -1173,8 +1173,8 @@ extends APathwayGraphViewRep {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object,
-	 *      org.geneview.core.data.collection.ISet)
+	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object,
+	 *      org.caleydo.core.data.collection.ISet)
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 

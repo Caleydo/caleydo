@@ -1,13 +1,13 @@
-package org.geneview.testing.command.data.filter;
+package org.caleydo.testing.command.data.filter;
 
 import java.util.ArrayList;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.data.filter.CmdDataFilterMath;
-import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.testing.testing_util.CoreStarter;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.data.filter.CmdDataFilterMath;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.testing.testing_util.CoreStarter;
 
 import junit.framework.TestCase;
 
@@ -17,22 +17,22 @@ public class CmdDataFilterMathTest extends TestCase {
 	private IGeneralManager myGeneralManager;
 
 	/**
-	 * Starting a GeneView Core
+	 * Starting a Caleydo Core
 	 */
 	protected void setUp() throws Exception {
 		super.setUp();
 		myCoreStarter = new CoreStarter();
-		myCoreStarter.startGeneViewCore("");
+		myCoreStarter.startCaleydoCore("");
 		myGeneralManager = myCoreStarter.getGeneralManager();
 
 	}
 
 	/**
-	 * Deleting a GeneView Core
+	 * Deleting a Caleydo Core
 	 */
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		myCoreStarter.disposeGeneViewCore();
+		myCoreStarter.disposeCaleydoCore();
 		
 	}	
 	

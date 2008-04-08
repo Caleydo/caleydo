@@ -6,13 +6,13 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.command.window;
+package org.caleydo.core.command.window;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.command.base.ACommand;
-//import org.geneview.core.net.dwt.swing.jogl.DSwingJoglCanvas;
-//import org.geneview.core.net.dwt.swing.jogl.listener.GLEventForwardListener;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.command.base.ACommand;
+//import org.caleydo.core.net.dwt.swing.jogl.DSwingJoglCanvas;
+//import org.caleydo.core.net.dwt.swing.jogl.listener.GLEventForwardListener;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Base class for Jogl classes provinding a GL rendering contexst inside an internal frame.
@@ -103,7 +103,7 @@ extends ACommand {
 	/* (non-Javadoc)
 	 * @see prometheus.command.ICommand#doCommand()
 	 */
-	protected void doCommand_IFrame() throws GeneViewRuntimeException {
+	protected void doCommand_IFrame() throws CaleydoRuntimeException {
 		
 //		if ( bEnableCreationOfNewIFrame ) {
 //			refCmdWindowNewIFrameJoglCanvas.doCommand();

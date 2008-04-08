@@ -1,19 +1,19 @@
-package org.geneview.core.data.collection;
+package org.caleydo.core.data.collection;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.util.IGeneViewDefaultType;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.util.ICaleydoDefaultType;
 
 /**
  * Specify one type of ISet.
  * 
- * @see org.geneview.core.data.collection.ISet#getSetType()
- * @see org.geneview.core.data.collection.ISet#getSetDataType()
+ * @see org.caleydo.core.data.collection.ISet#getSetType()
+ * @see org.caleydo.core.data.collection.ISet#getSetDataType()
  * 
  * @author Michael Kalkusch
  *
  */
 public enum SetDataType
-implements IGeneViewDefaultType <SetDataType> {
+implements ICaleydoDefaultType <SetDataType> {
 
 	/** 1-dimensional set */
 	SET_LINEAR,
@@ -30,8 +30,8 @@ implements IGeneViewDefaultType <SetDataType> {
 	/** 
 	 * Set for handlein IViewCamera 
 	 * 
-	 * @see org.geneview.core.data.view.camera.IViewCamera
-	 * @see org.geneview.core.data.collection.set.viewdata.ISetViewData
+	 * @see org.caleydo.core.data.view.camera.IViewCamera
+	 * @see org.caleydo.core.data.collection.set.viewdata.ISetViewData
 	 */
 	SET_VIEWCAMERA,
 	
@@ -80,7 +80,7 @@ implements IGeneViewDefaultType <SetDataType> {
 	 * 
 	 * @return SetDataType.SET_LINEAR
 	 * 
-	 * @see org.geneview.core.util.IGeneViewDefaultType#getDefault()
+	 * @see org.caleydo.core.util.ICaleydoDefaultType#getDefault()
 	 */
 	public final SetDataType getTypeDefault() {
 		return SetDataType.SET_LINEAR;

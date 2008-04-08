@@ -1,16 +1,16 @@
-package org.geneview.core.view.opengl.canvas.parcoords;
+package org.caleydo.core.view.opengl.canvas.parcoords;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 
 import javax.media.opengl.GL;
 
-import org.geneview.core.data.GeneralRenderStyle;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.view.EPickingType;
-import org.geneview.core.view.opengl.util.EIconTextures;
-import org.geneview.core.view.opengl.util.GLToolboxRenderer;
-import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.caleydo.core.data.GeneralRenderStyle;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.view.EPickingType;
+import org.caleydo.core.view.opengl.util.EIconTextures;
+import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
+import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 
 /**
  * Extends GLToolboxRenderer by the icons relevant for the PCs

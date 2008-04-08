@@ -1,18 +1,18 @@
-package org.geneview.core.parser.xml.sax.handler.pathway;
+package org.caleydo.core.parser.xml.sax.handler.pathway;
 
 import java.util.ArrayList;
 import java.util.Random;
 
-import org.geneview.core.data.graph.core.PathwayGraph;
-import org.geneview.core.data.mapping.EGenomeMappingType;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.IXmlParserManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.data.IGenomeIdManager;
-import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
-import org.geneview.core.parser.xml.sax.handler.AXmlParserHandler;
-import org.geneview.core.util.system.StringConversionTool;
-import org.geneview.util.graph.IGraphItem;
+import org.caleydo.core.data.graph.core.PathwayGraph;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IXmlParserManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.data.IGenomeIdManager;
+import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
+import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
+import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.util.graph.IGraphItem;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -254,8 +254,8 @@ extends AXmlParserHandler {
 	}
 	
 	/**
-	 * @see org.geneview.core.parser.xml.sax.handler.IXmlParserHandler#destroyHandler()
-	 * @see org.geneview.core.parser.xml.sax.handler.AXmlParserHandler#destroyHandler()
+	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler#destroyHandler()
+	 * @see org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler#destroyHandler()
 	 * 
 	 */
 	public void destroyHandler() {

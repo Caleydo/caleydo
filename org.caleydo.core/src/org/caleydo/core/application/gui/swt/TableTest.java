@@ -9,7 +9,7 @@
  *     IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package org.geneview.core.application.gui.swt;
+package org.caleydo.core.application.gui.swt;
 
 /*
  * Table example snippet: resize columns as table resizes

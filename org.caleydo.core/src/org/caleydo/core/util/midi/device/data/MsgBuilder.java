@@ -1,4 +1,4 @@
-package org.geneview.core.util.midi.device.data;
+package org.caleydo.core.util.midi.device.data;
 
 //import java.io.PrintStream;
 

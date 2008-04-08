@@ -1,14 +1,14 @@
 /**
  * 
  */
-package org.geneview.core.view.swt.browser;
+package org.caleydo.core.view.swt.browser;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.widgets.Composite;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
 
 /**
  * @author michael

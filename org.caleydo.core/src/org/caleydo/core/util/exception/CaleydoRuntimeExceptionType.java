@@ -6,9 +6,9 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.util.exception;
+package org.caleydo.core.util.exception;
 
-import org.geneview.core.util.IGeneViewDefaultType;
+import org.caleydo.core.util.ICaleydoDefaultType;
 
 /**
  * Enumeration of Exceptions.
@@ -16,10 +16,10 @@ import org.geneview.core.util.IGeneViewDefaultType;
  * @author Michael Kalkusch
  *
  */
-public enum GeneViewRuntimeExceptionType 
-implements IGeneViewDefaultType <GeneViewRuntimeExceptionType> {
+public enum CaleydoRuntimeExceptionType 
+implements ICaleydoDefaultType <CaleydoRuntimeExceptionType> {
 	
-	ANY_ERROR("GeneView-error"),
+	ANY_ERROR("Caleydo-error"),
 	COMMAND("Command"),
 	CONVERSION("NumberFormatError"),
 	DATAHANDLING("LOAD,SAVE"),
@@ -36,7 +36,7 @@ implements IGeneViewDefaultType <GeneViewRuntimeExceptionType> {
 	
 	private String sExceptionDetail;
 	
-	private GeneViewRuntimeExceptionType( String ssExceptionDetail ) {
+	private CaleydoRuntimeExceptionType( String ssExceptionDetail ) {
 		sExceptionDetail = ssExceptionDetail;
 	}
 	
@@ -46,11 +46,11 @@ implements IGeneViewDefaultType <GeneViewRuntimeExceptionType> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.util.IGeneViewDefaultType#getTypeDefault()
+	 * @see org.caleydo.core.util.ICaleydoDefaultType#getTypeDefault()
 	 */
-	public GeneViewRuntimeExceptionType getTypeDefault() {
+	public CaleydoRuntimeExceptionType getTypeDefault() {
 
-		return GeneViewRuntimeExceptionType.ANY_ERROR;
+		return CaleydoRuntimeExceptionType.ANY_ERROR;
 	}
 	
 

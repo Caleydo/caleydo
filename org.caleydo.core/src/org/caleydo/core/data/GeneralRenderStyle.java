@@ -1,6 +1,6 @@
-package org.geneview.core.data;
+package org.caleydo.core.data;
 
-import org.geneview.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.data.view.camera.IViewFrustum;
 
 /**
  * Render Styles for the whole system

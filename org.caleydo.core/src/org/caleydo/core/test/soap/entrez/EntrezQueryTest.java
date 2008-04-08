@@ -1,4 +1,4 @@
-package org.geneview.core.test.soap.entrez;
+package org.caleydo.core.test.soap.entrez;
 
 import gov.nih.nlm.ncbi.www.soap.eutils.EUtilsServiceLocator;
 import gov.nih.nlm.ncbi.www.soap.eutils.EUtilsServiceSoap;

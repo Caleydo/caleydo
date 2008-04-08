@@ -1,7 +1,7 @@
 ///**
 // * 
 // */
-//package org.geneview.core.view.opengl.canvas.texture;
+//package org.caleydo.core.view.opengl.canvas.texture;
 //
 //import java.io.File;
 //import java.io.FileNotFoundException;
@@ -10,10 +10,10 @@
 //import javax.media.opengl.GL;
 //import javax.media.opengl.GLException;
 //
-//import org.geneview.core.data.collection.ISet;
-//import org.geneview.core.manager.IGeneralManager;
-//import org.geneview.core.manager.ILoggerManager.LoggerType;
-//import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+//import org.caleydo.core.data.collection.ISet;
+//import org.caleydo.core.manager.IGeneralManager;
+//import org.caleydo.core.manager.ILoggerManager.LoggerType;
+//import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 //
 //import com.sun.opengl.util.texture.Texture;
 //import com.sun.opengl.util.texture.TextureCoords;
@@ -22,7 +22,7 @@
 ///**
 // * @author Michael Kalkusch
 // *
-// * @see org.geneview.core.view.opengl.IGLCanvasUser
+// * @see org.caleydo.core.view.opengl.IGLCanvasUser
 // */
 //public class GLCanvasTexture2D 
 //extends AGLCanvasUser 
@@ -42,7 +42,7 @@
 //	 * Defien number of histogram slots.
 //	 * Default is 0 to ensure valid settings. 
 //	 * 
-//	 *  @see org.geneview.core.view.opengl.canvas.histogram.GLCanvasHistogram2D#createHistogram(int)
+//	 *  @see org.caleydo.core.view.opengl.canvas.histogram.GLCanvasHistogram2D#createHistogram(int)
 //	 */
 //	private int iCurrentHistogramLength = 0;
 //	
@@ -220,7 +220,7 @@
 //	
 //	/*
 //	 *  (non-Javadoc)
-//	 * @see org.geneview.core.view.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
+//	 * @see org.caleydo.core.view.opengl.IGLCanvasUser#init(javax.media.opengl.GLAutoDrawable)
 //	 */
 //	public void initGLCanvasUser( GL gl ) {
 //		setInitGLDone();

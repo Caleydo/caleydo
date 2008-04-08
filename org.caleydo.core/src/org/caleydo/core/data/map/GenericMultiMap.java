@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.data.map;
+package org.caleydo.core.data.map;
 
 import java.util.ArrayList;
 import java.util.Map;

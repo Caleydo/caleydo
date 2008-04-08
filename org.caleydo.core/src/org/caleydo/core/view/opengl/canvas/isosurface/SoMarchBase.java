@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.view.opengl.canvas.isosurface;
+package org.caleydo.core.view.opengl.canvas.isosurface;
 
 // import javax.media.opengl.*;
 

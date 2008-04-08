@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.parser.parameter;
+package org.caleydo.core.parser.parameter;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
@@ -9,10 +9,10 @@ import gleem.linalg.Vec4f;
 import java.util.Hashtable;
 import java.util.StringTokenizer;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.parser.parameter.data.ParameterKeyValueDataAndDefault;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.parser.parameter.data.ParameterKeyValueDataAndDefault;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Handles attributes from XML file used to create objects.
@@ -63,7 +63,7 @@ extends AParameterHandler
 	
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterHandler#getValue(Stringt)
+	 * @see org.caleydo.core.parser.parameter.IParameterHandler#getValue(Stringt)
 	 */
 	public Object getValue( final String key ) {
 		
@@ -80,19 +80,19 @@ extends AParameterHandler
 				return getValueString(key);
 			
 			default:
-				throw new GeneViewRuntimeException("ParameterHandler.getValue("+ key + ") uses unregistered enumeration!");
+				throw new CaleydoRuntimeException("ParameterHandler.getValue("+ key + ") uses unregistered enumeration!");
 		}
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterHandler#getValueType(Stringt)
+	 * @see org.caleydo.core.parser.parameter.IParameterHandler#getValueType(Stringt)
 	 */
 	public ParameterHandlerType getValueType( final String key ) {		
 		return hashPrimarySwitch.get( key );
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterHandler#getValueInt(Stringt)
+	 * @see org.caleydo.core.parser.parameter.IParameterHandler#getValueInt(Stringt)
 	 */
 	public int getValueInt( final String key ) {
 		try {
@@ -100,12 +100,12 @@ extends AParameterHandler
 		}
 		catch ( NullPointerException npe) 
 		{
-			throw new GeneViewRuntimeException("getValueInt("+ key + ") failed, because key was not registered!");
+			throw new CaleydoRuntimeException("getValueInt("+ key + ") failed, because key was not registered!");
 		}
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterHandler#getValueInt(Stringt)
+	 * @see org.caleydo.core.parser.parameter.IParameterHandler#getValueInt(Stringt)
 	 */
 	public Vec3f getValueVec3f( final String key ) {
 		
@@ -121,12 +121,12 @@ extends AParameterHandler
 		}
 		catch ( NullPointerException npe) 
 		{
-			throw new GeneViewRuntimeException("getValueInt("+ key + ") failed, because key was not registered!");
+			throw new CaleydoRuntimeException("getValueInt("+ key + ") failed, because key was not registered!");
 		}
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterHandler#getValueInt(Stringt)
+	 * @see org.caleydo.core.parser.parameter.IParameterHandler#getValueInt(Stringt)
 	 */
 	public Vec4f getValueVec4f( final String key ) {
 		
@@ -145,34 +145,34 @@ extends AParameterHandler
 		}
 		catch ( NullPointerException npe) 
 		{
-			throw new GeneViewRuntimeException("getValueInt("+ key + ") failed, because key was not registered!");
+			throw new CaleydoRuntimeException("getValueInt("+ key + ") failed, because key was not registered!");
 		}
 	}
 	
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterHandler#getValueFloat(Stringt)
+	 * @see org.caleydo.core.parser.parameter.IParameterHandler#getValueFloat(Stringt)
 	 */
 	public float getValueFloat( final String key ) {
 		return hashKey2Float.getValue(key);
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterHandler#getValueString(Stringt)
+	 * @see org.caleydo.core.parser.parameter.IParameterHandler#getValueString(Stringt)
 	 */
 	public String getValueString( final String key ) {
 		return hashKey2String.getValue(key);
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterHandler#getValueBoolean(Stringt)
+	 * @see org.caleydo.core.parser.parameter.IParameterHandler#getValueBoolean(Stringt)
 	 */
 	public boolean getValueBoolean( final String key ) {		
 		return hashKey2Boolean.getValue(key);
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterHandler#setValue(Stringt, Stringt)
+	 * @see org.caleydo.core.parser.parameter.IParameterHandler#setValue(Stringt, Stringt)
 	 */
 	public void setValue( final String key, 
 			final String value ) {
@@ -181,7 +181,7 @@ extends AParameterHandler
 			hashPrimarySwitch.get( key );
 		
 		if ( currentType== null ) {
-			throw new GeneViewRuntimeException("ParameterHandler.setValue("+ key + " , * ) key was not registered as type!");			
+			throw new CaleydoRuntimeException("ParameterHandler.setValue("+ key + " , * ) key was not registered as type!");			
 		}
 		
 		try 
@@ -197,13 +197,13 @@ extends AParameterHandler
 					hashKey2String.setValue(key, value );break;
 				
 				default:
-					throw new GeneViewRuntimeException("ParameterHandler.setValue("+ key + ",*) uses unregistered enumeration!");
+					throw new CaleydoRuntimeException("ParameterHandler.setValue("+ key + ",*) uses unregistered enumeration!");
 			}
 			
 		} 
 		catch ( NumberFormatException nfe ) 
 		{
-			new GeneViewRuntimeException("ParameterHandler.setValue("+ key + "," + value + 
+			new CaleydoRuntimeException("ParameterHandler.setValue("+ key + "," + value + 
 					") value was not valid due to enumeration type=" + 
 					currentType.toString() + " !");
 			
@@ -211,7 +211,7 @@ extends AParameterHandler
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterHandler#setValueAndType(Stringt, Stringt, org.geneview.core.parser.parameter.ParameterHandler.ParameterHandlerType)
+	 * @see org.caleydo.core.parser.parameter.IParameterHandler#setValueAndType(Stringt, Stringt, org.caleydo.core.parser.parameter.ParameterHandler.ParameterHandlerType)
 	 */
 	public void setValueAndType( final String key, 
 			final String value, 
@@ -229,12 +229,12 @@ extends AParameterHandler
 					hashKey2String.setValue(key, value );break;
 				
 				default:
-					throw new GeneViewRuntimeException("ParameterHandler.setValueAndType("+ key + ") uses unregistered enumeration!");
+					throw new CaleydoRuntimeException("ParameterHandler.setValueAndType("+ key + ") uses unregistered enumeration!");
 			}
 		} 
 		catch ( NumberFormatException nfe ) 
 		{
-			new GeneViewRuntimeException("ParameterHandler.setValueAndType("+ key + "," + value + 
+			new CaleydoRuntimeException("ParameterHandler.setValueAndType("+ key + "," + value + 
 					") value was not valid due to enumeration type=" + 
 					type.toString() + " !");
 			
@@ -248,7 +248,7 @@ extends AParameterHandler
 	
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterHandler#setValueAndType(Stringt, Stringt, org.geneview.core.parser.parameter.ParameterHandler.ParameterHandlerType)
+	 * @see org.caleydo.core.parser.parameter.IParameterHandler#setValueAndType(Stringt, Stringt, org.caleydo.core.parser.parameter.ParameterHandler.ParameterHandlerType)
 	 */
 	public void setValueAndTypeAndDefault( final String key, 
 			final String value, 
@@ -324,12 +324,12 @@ extends AParameterHandler
 							IGeneralManager.sDelimiter_Parser_DataItems);
 					
 					if ( tokenizer.countTokens() != 3 ) {						
-						throw new GeneViewRuntimeException( 
+						throw new CaleydoRuntimeException( 
 								"Error in parameter " +
 								key +
 								"=[" + value + 
 								"] needs three float values!",
-								GeneViewRuntimeExceptionType.CONVERSION );
+								CaleydoRuntimeExceptionType.CONVERSION );
 					} // if
 					
 					for ( int i=0; tokenizer.hasMoreTokens(); i++ ) 
@@ -347,12 +347,12 @@ extends AParameterHandler
 							IGeneralManager.sDelimiter_Parser_DataItems);
 					
 					if ( tokenizer.countTokens() != 4 ) {						
-						throw new GeneViewRuntimeException( 
+						throw new CaleydoRuntimeException( 
 								"Error in parameter " +
 								key +
 								"=[" + value + 
 								"] needs four float values!",
-								GeneViewRuntimeExceptionType.CONVERSION );
+								CaleydoRuntimeExceptionType.CONVERSION );
 					} // if
 					
 					for ( int i=0; tokenizer.hasMoreTokens(); i++ ) 
@@ -365,12 +365,12 @@ extends AParameterHandler
 					break;
 					
 				default:
-					throw new GeneViewRuntimeException("ParameterHandler.setValueAndType("+ key + ") uses unregistered enumeration!");
+					throw new CaleydoRuntimeException("ParameterHandler.setValueAndType("+ key + ") uses unregistered enumeration!");
 			}
 		} 
 		catch ( NumberFormatException nfe ) 
 		{
-			new GeneViewRuntimeException("ParameterHandler.setValueAndTypeAndDefault("+ key + "," + defaultValue + 
+			new CaleydoRuntimeException("ParameterHandler.setValueAndTypeAndDefault("+ key + "," + defaultValue + 
 					") defaultValue was not valid due to enumeration type=" + 
 					type.toString() + " !");
 			
@@ -380,7 +380,7 @@ extends AParameterHandler
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterHandler#setDefaultValue(Stringt, Stringt, org.geneview.core.parser.parameter.ParameterHandler.ParameterHandlerType)
+	 * @see org.caleydo.core.parser.parameter.IParameterHandler#setDefaultValue(Stringt, Stringt, org.caleydo.core.parser.parameter.ParameterHandler.ParameterHandlerType)
 	 */
 	public void setDefaultValueAnyType( final String key, 
 			final String value, 
@@ -398,12 +398,12 @@ extends AParameterHandler
 					hashKey2String.setDefaultValue(key, value );break;
 				
 				default:
-					throw new GeneViewRuntimeException("ParameterHandler.setValueAndType("+ key + ") uses unregistered enumeration!");
+					throw new CaleydoRuntimeException("ParameterHandler.setValueAndType("+ key + ") uses unregistered enumeration!");
 			}
 		} 
 		catch ( NumberFormatException nfe ) 
 		{
-			new GeneViewRuntimeException("ParameterHandler.setValueAndType("+ key + "," + value + 
+			new CaleydoRuntimeException("ParameterHandler.setValueAndType("+ key + "," + value + 
 					") value was not valid due to enumeration type=" + 
 					type.toString() + " !");
 			
@@ -415,7 +415,7 @@ extends AParameterHandler
 	
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.parameter.IParameterHandler#setDefaultType(Stringt, org.geneview.core.parser.parameter.ParameterHandler.ParameterHandlerType)
+	 * @see org.caleydo.core.parser.parameter.IParameterHandler#setDefaultType(Stringt, org.caleydo.core.parser.parameter.ParameterHandler.ParameterHandlerType)
 	 */
 	public void setDefaultType( final String key, 
 			final ParameterHandlerType type ) {

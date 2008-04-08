@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.data.collection.thread.lock;
+package org.caleydo.core.data.collection.thread.lock;
 
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;

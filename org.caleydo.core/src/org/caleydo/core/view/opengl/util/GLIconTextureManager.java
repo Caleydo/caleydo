@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.util;
+package org.caleydo.core.view.opengl.util;
 
 import java.io.File;
 import java.io.IOException;

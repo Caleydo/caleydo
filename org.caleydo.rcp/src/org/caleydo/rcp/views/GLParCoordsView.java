@@ -1,4 +1,4 @@
-package org.geneview.rcp.views;
+package org.caleydo.rcp.views;
 
 
 import org.eclipse.jface.action.IMenuManager;
@@ -11,7 +11,7 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 public class GLParCoordsView 
 extends AGLViewPart {
 
-	public static final String ID = "org.geneview.rcp.views.GLParCoordsView";
+	public static final String ID = "org.caleydo.rcp.views.GLParCoordsView";
 
 	protected int iGLCanvasDirectorId;
 	

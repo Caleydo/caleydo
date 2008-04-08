@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.rcp.dialog.file;
+package org.caleydo.rcp.dialog.file;
 
 import org.eclipse.jface.dialogs.Dialog;
 //import org.eclipse.jface.window.IShellProvider;
@@ -16,9 +16,9 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 
-import org.geneview.core.manager.ISWTGUIManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.rcp.Application;
+import org.caleydo.core.manager.ISWTGUIManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.rcp.Application;
 
 /**
  * copy of RCP tutorial "org.eclipsercp.hyperbola.AddContactDialog.java"
@@ -91,7 +91,7 @@ extends Dialog {
 		
 		FileDialog fd = new FileDialog(parentShell);
         fd.setText("Open");
-        fd.setFilterPath("D:/src/java/ICG/cerberus/org.geneview.data/data/bootstrap");
+        fd.setFilterPath("D:/src/java/ICG/cerberus/org.caleydo.data/data/bootstrap");
         String[] filterExt = { "*.xml" };
         fd.setFilterExtensions(filterExt);
         String result = fd.open();
@@ -119,7 +119,7 @@ extends Dialog {
 			
 			FileDialog fd = new FileDialog(parentShell);
 	        fd.setText("Open");
-	        fd.setFilterPath("D:/src/java/ICG/cerberus/org.geneview.data/data/bootstrap");
+	        fd.setFilterPath("D:/src/java/ICG/cerberus/org.caleydo.data/data/bootstrap");
 	        String[] filterExt = { "*.xml" };
 	        fd.setFilterExtensions(filterExt);
 	        xmlFileName = fd.open();
@@ -128,17 +128,17 @@ extends Dialog {
 		}
 		
 		ISWTGUIManager refISWTGUIManager = 
-			Application.geneview_core.getGeneralManager().getSingelton().getSWTGUIManager();
+			Application.caleydo_core.getGeneralManager().getSingelton().getSWTGUIManager();
 		refISWTGUIManager.setProgressbarVisible(true);
 				
 		try 
 		{		
-			Application.geneview_core.setXmlFileName(xmlFileName);
+			Application.caleydo_core.setXmlFileName(xmlFileName);
 			super.okPressed();			
 		} 
 		catch (Exception e) 
 		{
-			Application.geneview_core.getGeneralManager().getSingelton().logMsg("Error while loading Xml file=[" +
+			Application.caleydo_core.getGeneralManager().getSingelton().logMsg("Error while loading Xml file=[" +
 					xmlFileName + "] " + e.toString(),
 					LoggerType.MINOR_ERROR_XML);
 			statusOnLoading.setText("system error while laoding XML file.");
@@ -155,7 +155,7 @@ extends Dialog {
 	 */
 	protected void cancelPressed() {
 
-		Application.geneview_core.setXmlFileName("");
+		Application.caleydo_core.setXmlFileName("");
 		super.cancelPressed();
 	}
 }

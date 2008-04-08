@@ -1,6 +1,6 @@
-package org.geneview.core.util.slerp;
+package org.caleydo.core.util.slerp;
 
-import org.geneview.core.util.sound.SoundPlayer;
+import org.caleydo.core.util.sound.SoundPlayer;
 
 import gleem.linalg.open.Slerp;
 

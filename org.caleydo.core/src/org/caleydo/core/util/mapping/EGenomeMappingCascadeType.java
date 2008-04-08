@@ -1,8 +1,8 @@
-package org.geneview.core.util.mapping;
+package org.caleydo.core.util.mapping;
 
 /**
  * Enum that defines all possible gene mapping cascades 
- * that can be mapped in the GeneView system.
+ * that can be mapped in the Caleydo system.
  * 
  * @author Marc Streit
  *

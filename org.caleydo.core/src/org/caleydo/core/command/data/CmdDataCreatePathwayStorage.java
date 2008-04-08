@@ -1,25 +1,25 @@
-package org.geneview.core.command.data;
+package org.caleydo.core.command.data;
 
 import java.util.LinkedList;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
 
-import org.geneview.core.data.collection.IStorage;
-//import org.geneview.core.data.collection.StorageType;
+import org.caleydo.core.data.collection.IStorage;
+//import org.caleydo.core.data.collection.StorageType;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.base.ACmdCreate_IdTargetLabel;
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.data.IStorageManager;
-import org.geneview.core.manager.data.pathway.EPathwayDatabaseType;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.base.ACmdCreate_IdTargetLabel;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.data.IStorageManager;
+import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
  * Command creates a new pathway storage.
@@ -101,7 +101,7 @@ extends ACmdCreate_IdTargetLabel {
 	 * Load data from file using a token pattern.
 	 *
 	 */
-	public void doCommand() throws GeneViewRuntimeException {
+	public void doCommand() throws CaleydoRuntimeException {
 		
 		assert llKEGGPathwayIDs != null : "Probably this doCommand() was already executed once!";
 		
@@ -204,9 +204,9 @@ extends ACmdCreate_IdTargetLabel {
 
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#undoCommand()
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws GeneViewRuntimeException {
+	public void undoCommand() throws CaleydoRuntimeException {
 		refCommandManager.runUndoCommand(this);		
 	}
 }

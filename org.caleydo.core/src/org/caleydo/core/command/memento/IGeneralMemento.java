@@ -2,18 +2,18 @@
  * Project: GenView
  *  
  */
-package org.geneview.core.command.memento;
+package org.caleydo.core.command.memento;
 
-//import org.geneview.core.manager.IMementoManager;
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+//import org.caleydo.core.manager.IMementoManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * One base implementation of the IMemento interface.
  * 
  * Desing Patern "IMemento"
  * 
- * @see org.geneview.core.manager.IMementoManager
+ * @see org.caleydo.core.manager.IMementoManager
  * 
  * @author Michael Kalkusch
  *
@@ -97,11 +97,11 @@ public class IGeneralMemento
 	 */
 	public void setMementoState(final Object setMementoCreator,
 			final IMementoState setMemetoState) 
-	throws GeneViewRuntimeException 
+	throws CaleydoRuntimeException 
 	{
 		if ( refMementoCreator != setMementoCreator) {
-			throw new GeneViewRuntimeException("IGeneralMemento.setMementoState() failed due to setting data not from the creator of the IMemento.",
-					GeneViewRuntimeExceptionType.MEMENTO );
+			throw new CaleydoRuntimeException("IGeneralMemento.setMementoState() failed due to setting data not from the creator of the IMemento.",
+					CaleydoRuntimeExceptionType.MEMENTO );
 		}
 		//assert  refMementoCreator == setMementoCreator: "IGeneralMemento.setMementoState() failed due to setting data not from the creator of the IMemento.";
 		

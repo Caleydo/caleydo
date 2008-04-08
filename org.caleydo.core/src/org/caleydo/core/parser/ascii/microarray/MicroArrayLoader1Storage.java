@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.parser.ascii.microarray;
+package org.caleydo.core.parser.ascii.microarray;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -11,16 +11,16 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.data.collection.IVirtualArray;
-import org.geneview.core.data.collection.StorageType;
-import org.geneview.core.data.collection.parser.CollectionSelectionSaxParserHandler;
-import org.geneview.core.data.collection.parser.ParserTokenHandler;
-import org.geneview.core.data.collection.virtualarray.VirtualArrayThreadSingleBlock;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.parser.xml.sax.ISaxParserHandler;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.data.collection.StorageType;
+import org.caleydo.core.data.collection.parser.CollectionSelectionSaxParserHandler;
+import org.caleydo.core.data.collection.parser.ParserTokenHandler;
+import org.caleydo.core.data.collection.virtualarray.VirtualArrayThreadSingleBlock;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
 /**
  * @author Michael Kalkusch
@@ -79,7 +79,7 @@ extends AMicroArrayLoader {
 	/**
 	 * Removes all data structures.
 	 * 
-	 * @see org.geneview.core.parser.ascii.IParserObject#destroy()
+	 * @see org.caleydo.core.parser.ascii.IParserObject#destroy()
 	 */
 	public final void destroy() {		
 		super.destroy();
@@ -470,7 +470,7 @@ extends AMicroArrayLoader {
 	/**
 	 * Init data structues. Use this to reset the stat also!
 	 * 
-	 * @see org.geneview.core.parser.ascii.IParserObject#init()
+	 * @see org.caleydo.core.parser.ascii.IParserObject#init()
 	 */
 	public void init() {
 		iLineInFile = 1;

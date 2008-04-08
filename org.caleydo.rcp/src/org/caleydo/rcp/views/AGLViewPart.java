@@ -1,4 +1,4 @@
-package org.geneview.rcp.views;
+package org.caleydo.rcp.views;
 
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
@@ -23,10 +23,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.part.ViewPart;
-import org.geneview.core.view.jogl.JoglCanvasForwarder;
+import org.caleydo.core.view.jogl.JoglCanvasForwarder;
 
 /**
- * Shared object for all GeneView viewPart objects.
+ * Shared object for all Caleydo viewPart objects.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit

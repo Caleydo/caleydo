@@ -6,11 +6,11 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection.virtualarray.iterator;
+package org.caleydo.core.data.collection.virtualarray.iterator;
 
-import org.geneview.core.data.collection.IVirtualArray;
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * @author Michael Kalkusch
@@ -48,8 +48,8 @@ public abstract class AVirtualArrayIterator implements IVirtualArrayIterator {
 	protected AVirtualArrayIterator( IVirtualArray setSelection ) {
 		
 		if ( setSelection == null ) {
-			throw new GeneViewRuntimeException("AVirtualArrayIterator.Constructor init with null-pointer to IVirtualArray.",
-					GeneViewRuntimeExceptionType.VIRTUALARRAY );
+			throw new CaleydoRuntimeException("AVirtualArrayIterator.Constructor init with null-pointer to IVirtualArray.",
+					CaleydoRuntimeExceptionType.VIRTUALARRAY );
 		}
 		
 		refSelection = setSelection;
@@ -58,28 +58,28 @@ public abstract class AVirtualArrayIterator implements IVirtualArrayIterator {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.iterator.SelectionIterator#size()
+	 * @see org.caleydo.core.data.collection.iterator.SelectionIterator#size()
 	 */
 	public final int size() {
 		return iSelectionLength;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.iterator.SelectionIterator#remaining()
+	 * @see org.caleydo.core.data.collection.iterator.SelectionIterator#remaining()
 	 */
 	public final int remaining() {
 		return iSelectionLength - iCurrentVirtualIndex;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.iterator.SelectionIterator#getVirtualIndex()
+	 * @see org.caleydo.core.data.collection.iterator.SelectionIterator#getVirtualIndex()
 	 */
 	public final int getVirtualIndex() {
 		return iCurrentVirtualIndex;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.iterator.ICollectionIterator#hasNext()
+	 * @see org.caleydo.core.data.collection.iterator.ICollectionIterator#hasNext()
 	 */
 	public final boolean hasNext() {
 		if ( iCurrentVirtualIndex < iSelectionLength ) {
@@ -90,7 +90,7 @@ public abstract class AVirtualArrayIterator implements IVirtualArrayIterator {
 
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.iterator.ICollectionIterator#begin()
+	 * @see org.caleydo.core.data.collection.iterator.ICollectionIterator#begin()
 	 */
 	public void begin() {
 		iSelectionLength = refSelection.length();
@@ -101,12 +101,12 @@ public abstract class AVirtualArrayIterator implements IVirtualArrayIterator {
 
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.iterator.SelectionIterator#setVirtualIndex(int)
+	 * @see org.caleydo.core.data.collection.iterator.SelectionIterator#setVirtualIndex(int)
 	 */
 	public abstract void setVirtualIndex(int iSetVirtualIndex);
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.iterator.ICollectionIterator#next()
+	 * @see org.caleydo.core.data.collection.iterator.ICollectionIterator#next()
 	 */
 	public abstract int next();
 

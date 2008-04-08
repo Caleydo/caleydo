@@ -1,25 +1,25 @@
-//package org.geneview.core.view.opengl.canvas.widgets;
+//package org.caleydo.core.view.opengl.canvas.widgets;
 //
 //
 //import javax.media.opengl.GL;
 //
-//import org.geneview.core.data.collection.ISet;
-//import org.geneview.core.data.collection.IStorage;
-//import org.geneview.core.data.collection.IVirtualArray;
-//import org.geneview.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
-//import org.geneview.core.manager.IGeneralManager;
-//import org.geneview.core.manager.ILoggerManager.LoggerType;
-//import org.geneview.core.manager.type.ManagerObjectType;
-//import org.geneview.core.math.statistics.minmax.MinMaxDataInteger;
-//import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
+//import org.caleydo.core.data.collection.ISet;
+//import org.caleydo.core.data.collection.IStorage;
+//import org.caleydo.core.data.collection.IVirtualArray;
+//import org.caleydo.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+//import org.caleydo.core.manager.IGeneralManager;
+//import org.caleydo.core.manager.ILoggerManager.LoggerType;
+//import org.caleydo.core.manager.type.ManagerObjectType;
+//import org.caleydo.core.math.statistics.minmax.MinMaxDataInteger;
+//import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 //
 //import com.sun.opengl.util.GLUT;
 //
 ///**
 // * @author Michael Kalkusch
 // *
-// * @see org.geneview.core.view.opengl.IGLCanvasUser
-// * @see org.geneview.core.manager.event.mediator.IMediatorReceiver
+// * @see org.caleydo.core.view.opengl.IGLCanvasUser
+// * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver
 // */
 //public class GLCanvasWidget 
 //extends AGLCanvasUser 

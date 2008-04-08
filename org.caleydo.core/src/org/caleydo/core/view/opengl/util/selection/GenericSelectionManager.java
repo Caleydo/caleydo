@@ -1,11 +1,11 @@
-package org.geneview.core.view.opengl.util.selection;
+package org.caleydo.core.view.opengl.util.selection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 
 /**
@@ -87,9 +87,9 @@ public class GenericSelectionManager
 	public void clearSelection(EViewInternalSelectionType eSelectionType)
 	{	
 		if(eSelectionType == eNormalType)
-			throw new GeneViewRuntimeException(
+			throw new CaleydoRuntimeException(
 					"SelectionManager: cannot reset selections of normal selection",
-					GeneViewRuntimeExceptionType.VIEW);
+					CaleydoRuntimeExceptionType.VIEW);
 		
 		hashSelectionTypes.get(eNormalType).putAll(hashSelectionTypes.get(eSelectionType));
 		hashSelectionTypes.get(eSelectionType).clear();
@@ -124,18 +124,18 @@ public class GenericSelectionManager
 			}		
 		}
 		
-//		throw new GeneViewRuntimeException(
+//		throw new CaleydoRuntimeException(
 //				"SelectionManager: element to be removed does not exist",
-//				GeneViewRuntimeExceptionType.VIEW);
+//				CaleydoRuntimeExceptionType.VIEW);
 //		
 	}
 	
 	public void removeFromType(EViewInternalSelectionType eSelectionType, int iElementID)
 	{
 		if (eSelectionType == eNormalType)
-			throw new GeneViewRuntimeException(
+			throw new CaleydoRuntimeException(
 					"SelectionManager: cannot remove from normal selection",
-					GeneViewRuntimeExceptionType.VIEW);
+					CaleydoRuntimeExceptionType.VIEW);
 		
 		if (hashSelectionTypes.get(eSelectionType).remove(iElementID) != null)
 			hashSelectionTypes.get(eNormalType).put(iElementID, true);		

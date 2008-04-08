@@ -1,15 +1,15 @@
-package org.geneview.core.command.view.rcp;
+package org.caleydo.core.command.view.rcp;
 
 import javax.media.opengl.GLCanvas;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL;
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.IViewGLCanvasManager;
-import org.geneview.core.parser.parameter.IParameterHandler;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.view.jogl.JoglCanvasForwarder;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IViewGLCanvasManager;
+import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.view.jogl.JoglCanvasForwarder;
 
 /**
  * Class implements the command for creating a RCP-Jogl canvas.
@@ -40,7 +40,7 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 	 * Method creates a test triangle view, sets the attributes 
 	 * and calls the init and draw method.
 	 */
-	public void doCommand() throws GeneViewRuntimeException {
+	public void doCommand() throws CaleydoRuntimeException {
 		
 		GLCanvas gLCanvas = new JoglCanvasForwarder(generalManager, iGLCanvasID);
 		
@@ -62,7 +62,7 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 		super.setParameterHandler(refParameterHandler);	
 	}
 	
-	public void undoCommand() throws GeneViewRuntimeException {
+	public void undoCommand() throws CaleydoRuntimeException {
 		
 		refCommandManager.runUndoCommand(this);
 	}

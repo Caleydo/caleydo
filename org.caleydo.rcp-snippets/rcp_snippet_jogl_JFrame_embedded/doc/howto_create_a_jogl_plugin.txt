@@ -5,7 +5,7 @@
 
   ==> lib/jogl/jogl.jar
   
-  [optional für das sample "Gears"]
+  [optional fï¿½r das sample "Gears"]
   ==> lib/jogl/jogl-demos.jar
       
 2) 
@@ -16,7 +16,7 @@
      javax.media.opengl
      javax.media.opengl.glu
      
-  [optional für das sample "Gears"]
+  [optional fï¿½r das sample "Gears"]
   ==>
      demos.common
      demos.greas
@@ -30,10 +30,10 @@
  
  
  
-## Beispiel neue Klasse   org.geneview.rcp.jogl.awt.snippet.gears.Gears
+## Beispiel neue Klasse   org.caleydo.rcp.jogl.awt.snippet.gears.Gears
  
   "Runtime"
   ==> Exported Pacakges ==> "Add.."
   
-  ==> org.geneview.rcp.jogl.awt.snippet.gears
+  ==> org.caleydo.rcp.jogl.awt.snippet.gears
  

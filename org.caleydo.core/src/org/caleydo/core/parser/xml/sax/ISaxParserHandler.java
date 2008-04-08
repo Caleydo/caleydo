@@ -2,7 +2,7 @@
  * Project: GenView
  *  
  */
-package org.geneview.core.parser.xml.sax;
+package org.caleydo.core.parser.xml.sax;
 
 import org.xml.sax.Attributes;
 

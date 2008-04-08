@@ -1,4 +1,4 @@
-package org.geneview.core.parser.xml.sax.handler.pathway;
+package org.caleydo.core.parser.xml.sax.handler.pathway;
 
 import java.awt.Rectangle;
 import java.util.StringTokenizer;
@@ -6,15 +6,15 @@ import java.util.StringTokenizer;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.IXmlParserManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.data.pathway.PathwayManager;
-import org.geneview.core.parser.xml.sax.handler.AXmlParserHandler;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IXmlParserManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.data.pathway.PathwayManager;
+import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 
 /**
  * 
- * @see org.geneview.core.parser.xml.sax.handler.IXmlParserHandler
+ * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler
  * 
  * @author Marc Streit
  * @author Michael Kalkusch
@@ -155,8 +155,8 @@ extends AXmlParserHandler {
 	}
 	
 	/**
-	 * @see org.geneview.core.parser.xml.sax.handler.IXmlParserHandler#destroyHandler()
-	 * @see org.geneview.core.parser.xml.sax.handler.AXmlParserHandler#destroyHandler()
+	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler#destroyHandler()
+	 * @see org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler#destroyHandler()
 	 * 
 	 */
 	public void destroyHandler() {

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.data.map;
+package org.caleydo.core.data.map;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -15,8 +15,8 @@ import java.util.Set;
 /**
  * @author Michael Kalkusch
  *
- * @see org.geneview.core.data.map.MultiHashArrayStringMap
- * @see org.geneview.core.manager.data.genome.IGenomeIdMap
+ * @see org.caleydo.core.data.map.MultiHashArrayStringMap
+ * @see org.caleydo.core.manager.data.genome.IGenomeIdMap
  */
 public class MultiHashArrayIntegerMap 
 extends HashMap <Integer,ArrayList<Integer>> 

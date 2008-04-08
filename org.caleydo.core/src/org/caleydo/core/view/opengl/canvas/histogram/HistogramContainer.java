@@ -1,9 +1,9 @@
 /**
  * 
  */
-package org.geneview.core.view.opengl.canvas.histogram;
+package org.caleydo.core.view.opengl.canvas.histogram;
 
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Container for each element of the histogram.
@@ -123,7 +123,7 @@ public class HistogramContainer {
 	public void setSelectionGroupSize( final int iNumberOfGroups ) {
 		
 		if ( iNumberOfGroups < 1) {
-			throw new GeneViewRuntimeException(this.getClass().getSimpleName() + ".setGroupSize( " + iNumberOfGroups + ") is out of range!");
+			throw new CaleydoRuntimeException(this.getClass().getSimpleName() + ".setGroupSize( " + iNumberOfGroups + ") is out of range!");
 		}
 		
 		if ( iSelectedItems_perGroup.length == iNumberOfGroups ) 

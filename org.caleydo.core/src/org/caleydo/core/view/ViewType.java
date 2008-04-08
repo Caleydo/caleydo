@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.view;
+package org.caleydo.core.view;
 
 /**
  * Define the type of the view.

@@ -1,4 +1,4 @@
-package org.geneview.core.manager.gui;
+package org.caleydo.core.manager.gui;
 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -15,18 +15,18 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ISWTGUIManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.base.AAbstractManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.manager.type.ManagerType;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.view.swt.ISWTWidget;
-import org.geneview.core.view.swt.widget.ASWTWidget;
-import org.geneview.core.view.swt.widget.SWTEmbeddedGraphWidget;
-import org.geneview.core.view.swt.widget.SWTEmbeddedJoglWidget;
-import org.geneview.core.view.swt.widget.SWTNativeWidget;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ISWTGUIManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.view.swt.ISWTWidget;
+import org.caleydo.core.view.swt.widget.ASWTWidget;
+import org.caleydo.core.view.swt.widget.SWTEmbeddedGraphWidget;
+import org.caleydo.core.view.swt.widget.SWTEmbeddedJoglWidget;
+import org.caleydo.core.view.swt.widget.SWTNativeWidget;
 
 /**
  * The SWTGUIManager is responsible for the creation 
@@ -67,7 +67,7 @@ implements ISWTGUIManager {
 	/**
 	 * Call createApplicationWindow() before using this object.
 	 * 
-	 * @see org.geneview.core.manager.gui.SWTGUIManager#createApplicationWindow()
+	 * @see org.caleydo.core.manager.gui.SWTGUIManager#createApplicationWindow()
 	 * 
 	 * @param setGeneralManager Reference to IGeneralManager
 	 */
@@ -94,7 +94,7 @@ implements ISWTGUIManager {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.manager.ISWTGUIManager#createWindow()
+	 * @see org.caleydo.core.manager.ISWTGUIManager#createWindow()
 	 */
 	public Shell createWindow() {
 
@@ -102,12 +102,12 @@ implements ISWTGUIManager {
 		final int iUniqueId = this.createId(ManagerObjectType.GUI_SWT_WINDOW);
 
 		// use default layout
-		return createWindow(iUniqueId, "GeneView", "ROW VERTICAL");
+		return createWindow(iUniqueId, "Caleydo", "ROW VERTICAL");
 	}
 
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.manager.ISWTGUIManager#createWindow(int, Stringt, Stringt)
+	 * @see org.caleydo.core.manager.ISWTGUIManager#createWindow(int, Stringt, Stringt)
 	 */
 	public Shell createWindow(int iUniqueId,
 			String sLabel,
@@ -118,7 +118,7 @@ implements ISWTGUIManager {
 		Shell refNewShell = new Shell(refDisplay);
 		refNewShell.setLayout(new GridLayout());
 		refNewShell.setMaximized(true);
-		refNewShell.setImage(new Image(refDisplay, "resources/icons/geneview.ico"));
+		refNewShell.setImage(new Image(refDisplay, "resources/icons/caleydo.ico"));
 		refNewShell.setText(sLabel);
 
 		refWindowMap.put(iUniqueId, refNewShell);
@@ -130,7 +130,7 @@ implements ISWTGUIManager {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.manager.ISWTGUIManager#createComposite(int, int, Stringt)
+	 * @see org.caleydo.core.manager.ISWTGUIManager#createComposite(int, int, Stringt)
 	 */
 	public void createComposite(int iUniqueId, int iUniqueParentContainerId,
 			String refLayoutAttributes) {
@@ -150,7 +150,7 @@ implements ISWTGUIManager {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.manager.ISWTGUIManager#createWidget(org.geneview.core.manager.type.ManagerObjectType, int, int, int)
+	 * @see org.caleydo.core.manager.ISWTGUIManager#createWidget(org.caleydo.core.manager.type.ManagerObjectType, int, int, int)
 	 */
 	public ISWTWidget createWidget(final ManagerObjectType useWidgetType,
 			int iUniqueParentContainerId, int iWidth, int iHeight) {
@@ -181,7 +181,7 @@ implements ISWTGUIManager {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.manager.ISWTGUIManager#createWidget(org.geneview.core.manager.type.ManagerObjectType, org.eclipse.swt.widgets.Composite, int, int)
+	 * @see org.caleydo.core.manager.ISWTGUIManager#createWidget(org.caleydo.core.manager.type.ManagerObjectType, org.eclipse.swt.widgets.Composite, int, int)
 	 */
 	public synchronized ISWTWidget createWidget(final ManagerObjectType useWidgetType,
 			final Composite refExternalParentComposite, int iWidth, int iHeight) {
@@ -207,7 +207,7 @@ implements ISWTGUIManager {
 			refWidgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		default:
-			throw new GeneViewRuntimeException(
+			throw new CaleydoRuntimeException(
 					"StorageManagerSimple.createView() failed due to unhandled type ["
 							+ useWidgetType.toString() + "]");
 		}
@@ -271,7 +271,7 @@ implements ISWTGUIManager {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.manager.ISWTGUIManager#runApplication()
+	 * @see org.caleydo.core.manager.ISWTGUIManager#runApplication()
 	 */
 	public void runApplication() {
 				
@@ -306,13 +306,13 @@ implements ISWTGUIManager {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.manager.ISWTGUIManager#createLoadingProgressBar()
+	 * @see org.caleydo.core.manager.ISWTGUIManager#createLoadingProgressBar()
 	 */
 	public void createLoadingProgressBar() {
 				
 		refLoadingProgressBarWindow = new Shell(refDisplay, SWT.TITLE | SWT.BORDER);
 		refLoadingProgressBarWindow.setMaximized(false);
-		refLoadingProgressBarWindow.setText("Loading org.geneview.core...");
+		refLoadingProgressBarWindow.setText("Loading org.caleydo.core...");
 		
 		refLoadingProgressBar = 
 			new ProgressBar(refLoadingProgressBarWindow, SWT.SMOOTH );
@@ -325,7 +325,7 @@ implements ISWTGUIManager {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.manager.ISWTGUIManager#setLoadingProgressBarPercentage(int)
+	 * @see org.caleydo.core.manager.ISWTGUIManager#setLoadingProgressBarPercentage(int)
 	 */
 	public boolean setLoadingProgressBarPercentage(int iPercentage) {
 		
@@ -373,7 +373,7 @@ implements ISWTGUIManager {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.manager.ISWTGUIManager#getLoadingProgressBarPercentage()
+	 * @see org.caleydo.core.manager.ISWTGUIManager#getLoadingProgressBarPercentage()
 	 */
 	public synchronized int getLoadingProgressBarPercentage() {
 

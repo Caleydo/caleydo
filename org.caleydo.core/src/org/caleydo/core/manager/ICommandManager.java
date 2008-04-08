@@ -6,16 +6,16 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.manager;
+package org.caleydo.core.manager;
 
-import org.geneview.core.command.CommandQueueSaxType;
-//import org.geneview.core.command.CommandType;
-import org.geneview.core.command.ICommand;
-import org.geneview.core.command.ICommandListener;
-import org.geneview.core.command.ICommandActionListener;
-import org.geneview.core.command.queue.ICommandQueue;
-import org.geneview.core.parser.parameter.IParameterHandler;
-import org.geneview.core.view.swt.undoredo.UndoRedoViewRep;
+import org.caleydo.core.command.CommandQueueSaxType;
+//import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ICommand;
+import org.caleydo.core.command.ICommandListener;
+import org.caleydo.core.command.ICommandActionListener;
+import org.caleydo.core.command.queue.ICommandQueue;
+import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
 
 /**
  * One Manager handle all ICommandListener.
@@ -59,7 +59,7 @@ extends ICommandActionListener, IGeneralManager {
 	/**
 	 * create a new command. Calls createCommandByType(CommandQueueSaxType) internal.
 	 * 
-	 * @see org.geneview.core.manager.ICommandManager#createCommandByType(CommandQueueSaxType)
+	 * @see org.caleydo.core.manager.ICommandManager#createCommandByType(CommandQueueSaxType)
 	 * 
 	 * @param phAttributes Define several attributes and assign them in new Command
 	 * @return new Command with attributes defined in phAttributes
@@ -120,20 +120,20 @@ extends ICommandActionListener, IGeneralManager {
 	public boolean hasCommandQueueId( final int iCmdQueueId );
 	
 	/**
-	 * Register a org.geneview.core.command.ICommand after it's doCommand() method was called.
+	 * Register a org.caleydo.core.command.ICommand after it's doCommand() method was called.
 	 * Used for redo-undo.
 	 * 
-	 * @see org.geneview.core.command.ICommand#doCommand()
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 * 
 	 * @param runCmd
 	 */
 	public void runDoCommand( ICommand runCmd );
 	
 	/**
-	 * Register a org.geneview.core.command.ICommand after it's undoCommand() method was called.
+	 * Register a org.caleydo.core.command.ICommand after it's undoCommand() method was called.
 	 * Used for redo-undo.
 	 * 
-	 * @see org.geneview.core.command.ICommand#undoCommand()
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 * 
 	 * @param runCmd
 	 */

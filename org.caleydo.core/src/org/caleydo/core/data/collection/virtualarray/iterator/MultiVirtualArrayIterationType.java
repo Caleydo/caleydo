@@ -6,10 +6,10 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection.virtualarray.iterator;
+package org.caleydo.core.data.collection.virtualarray.iterator;
 
-//import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.util.IGeneViewDefaultType;
+//import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.util.ICaleydoDefaultType;
 
 /**
  * Types of selections.
@@ -19,7 +19,7 @@ import org.geneview.core.util.IGeneViewDefaultType;
  * @see prometheus.data.set.SelectionInterface
  */
 public enum MultiVirtualArrayIterationType 
-implements IGeneViewDefaultType <MultiVirtualArrayIterationType> {
+implements ICaleydoDefaultType <MultiVirtualArrayIterationType> {
 
 	FIRST_TO_LAST_SUCCESSIVE("Abstract IVirtualArray, that has not been instaniated"),
 	FIRST_COLUMN_EACH_ROW("Abstract Virtual Array, that has not been defined"),
@@ -46,7 +46,7 @@ implements IGeneViewDefaultType <MultiVirtualArrayIterationType> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.util.IGeneViewDefaultType#getTypeDefault()
+	 * @see org.caleydo.core.util.ICaleydoDefaultType#getTypeDefault()
 	 */
 	public MultiVirtualArrayIterationType getTypeDefault() {
 

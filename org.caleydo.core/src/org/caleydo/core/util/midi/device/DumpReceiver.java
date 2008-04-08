@@ -1,4 +1,4 @@
-package org.geneview.core.util.midi.device;
+package org.caleydo.core.util.midi.device;
 
 import	java.io.PrintStream;
 
@@ -13,8 +13,8 @@ import	javax.sound.midi.MetaMessage;
 import	javax.sound.midi.SysexMessage;
 import	javax.sound.midi.Receiver;
 
-import org.geneview.core.util.midi.device.data.MidiData;
-import org.geneview.core.util.midi.device.data.MidiShortMessageType;
+import org.caleydo.core.util.midi.device.data.MidiData;
+import org.caleydo.core.util.midi.device.data.MidiShortMessageType;
 
 
 

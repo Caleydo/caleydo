@@ -1,12 +1,12 @@
-package org.geneview.core.view.opengl.util.drag;
+package org.caleydo.core.view.opengl.util.drag;
 
 import java.awt.Point;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.geneview.core.view.opengl.canvas.AGLCanvasUser;
-import org.geneview.core.view.opengl.canvas.pathway.GLPathwayTextureManager;
+import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.pathway.GLPathwayTextureManager;
 
 import com.sun.opengl.util.texture.Texture;
 

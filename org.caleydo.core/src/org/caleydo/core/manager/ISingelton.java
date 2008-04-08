@@ -1,13 +1,13 @@
-package org.geneview.core.manager;
+package org.caleydo.core.manager;
 
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.data.IGenomeIdManager;
-import org.geneview.core.manager.data.IPathwayItemManager;
-import org.geneview.core.manager.data.IPathwayManager;
-import org.geneview.core.manager.data.ISetManager;
-import org.geneview.core.manager.data.IStorageManager;
-import org.geneview.core.manager.data.IVirtualArrayManager;
-import org.geneview.core.manager.type.ManagerType;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.data.IGenomeIdManager;
+import org.caleydo.core.manager.data.IPathwayItemManager;
+import org.caleydo.core.manager.data.IPathwayManager;
+import org.caleydo.core.manager.data.ISetManager;
+import org.caleydo.core.manager.data.IStorageManager;
+import org.caleydo.core.manager.data.IVirtualArrayManager;
+import org.caleydo.core.manager.type.ManagerType;
 
 public interface ISingelton {
 
@@ -54,7 +54,7 @@ public interface ISingelton {
 	 * Identifies each application in the network with a unique Id form [1..99]
 	 * issued by the network server.
 	 * 
-	 * @see org.geneview.core.manager.IGeneralManager#iUniqueId_WorkspaceOffset
+	 * @see org.caleydo.core.manager.IGeneralManager#iUniqueId_WorkspaceOffset
 	 * 
 	 * @return unique networkHostId of this host.
 	 */
@@ -89,7 +89,7 @@ public interface ISingelton {
 	public abstract void setGenomeIdManager( IGenomeIdManager refIGenomeIdManager);
 	
 	/**
-	 * @see org.geneview.core.manager.ILoggerManager#logMsg(String, LoggerType)
+	 * @see org.caleydo.core.manager.ILoggerManager#logMsg(String, LoggerType)
 	 * 
 	 * @param info log message
 	 * @param logLevel type of message

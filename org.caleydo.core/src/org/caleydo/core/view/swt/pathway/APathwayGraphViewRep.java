@@ -1,23 +1,23 @@
-package org.geneview.core.view.swt.pathway;
+package org.caleydo.core.view.swt.pathway;
 
 import java.awt.Frame;
 import java.util.Iterator;
 
 import org.eclipse.swt.widgets.Composite;
-import org.geneview.util.graph.EGraphItemKind;
-import org.geneview.util.graph.IGraphItem;
+import org.caleydo.util.graph.EGraphItemKind;
+import org.caleydo.util.graph.IGraphItem;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
-import org.geneview.core.data.graph.core.PathwayGraph;
-import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
-import org.geneview.core.data.view.rep.jgraph.PathwayImageMap;
-import org.geneview.core.data.view.rep.renderstyle.PathwayRenderStyle;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.event.mediator.IMediatorReceiver;
-import org.geneview.core.manager.event.mediator.IMediatorSender;
-import org.geneview.core.view.AViewRep;
-import org.geneview.core.view.ViewType;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
+import org.caleydo.core.data.graph.core.PathwayGraph;
+import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.core.data.view.rep.jgraph.PathwayImageMap;
+import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
+import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.ViewType;
 
 public abstract class APathwayGraphViewRep 
 extends AViewRep

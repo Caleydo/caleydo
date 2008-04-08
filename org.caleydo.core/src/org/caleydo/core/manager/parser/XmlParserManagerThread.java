@@ -1,9 +1,9 @@
 /**
  * 
  */
-package org.geneview.core.manager.parser;
+package org.caleydo.core.manager.parser;
 
-import org.geneview.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IGeneralManager;
 
 
 /**

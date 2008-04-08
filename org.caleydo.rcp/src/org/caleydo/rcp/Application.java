@@ -1,4 +1,4 @@
-package org.geneview.rcp;
+package org.caleydo.rcp;
 
 import java.util.Map;
 
@@ -8,9 +8,9 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-import org.geneview.core.application.core.GeneViewBootloader;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.rcp.dialog.file.OpenXmlConfigFileDialog;
+import org.caleydo.core.application.core.CaleydoBootloader;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.rcp.dialog.file.OpenXmlConfigFileDialog;
 
 /**
  * This class controls all aspects of the application's execution
@@ -23,7 +23,7 @@ implements IApplication {
 	// FIXME: should not be static!
 	public static IGeneralManager refGeneralManager;	
 	
-	public static GeneViewBootloader geneview_core;
+	public static CaleydoBootloader caleydo_core;
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.IApplicationContext)
@@ -31,9 +31,9 @@ implements IApplication {
 	@SuppressWarnings("unchecked")
 	public Object start(IApplicationContext context) throws Exception {
 
-		System.out.println("GeneView_RCP: bootstrapping ...");
+		System.out.println("Caleydo_RCP: bootstrapping ...");
 		
-		String sGeneviewXMLfile = "";		
+		String sCaleydoXMLfile = "";		
 		Map <String,Object> map = (Map <String,Object>) context.getArguments();
 				
 		if ( map.size() > 0) 
@@ -44,8 +44,8 @@ implements IApplication {
 			{
 				if ( info.length > 0) 
 				{					
-					sGeneviewXMLfile = info[0];
-					System.out.println(debugMsgPrefix +"XML config file:" +sGeneviewXMLfile );
+					sCaleydoXMLfile = info[0];
+					System.out.println(debugMsgPrefix +"XML config file:" +sCaleydoXMLfile );
 					
 					if ( info.length > 1 ) {
 						System.err.println(debugMsgPrefix + "can not handle more than on argument! ignor other argumets.");
@@ -54,7 +54,7 @@ implements IApplication {
 			}
 		}
 			
-		startGeneViewCore(sGeneviewXMLfile);
+		startCaleydoCore(sCaleydoXMLfile);
 		
 		Display display = PlatformUI.createDisplay();
 		
@@ -65,7 +65,7 @@ implements IApplication {
 			else
 				return IApplication.EXIT_OK;
 		} finally {
-			disposeGeneViewCore();
+			disposeCaleydoCore();
 			display.dispose();
 			System.out.println(debugMsgPrefix + getClass().getSimpleName() + ".start() ==> display.dispose() ... [done]");
 		}
@@ -91,9 +91,9 @@ implements IApplication {
 		});
 	}
 
-	protected void startGeneViewCore( final String xmlFileName ) {
+	protected void startCaleydoCore( final String xmlFileName ) {
 		
-		geneview_core = new GeneViewBootloader();
+		caleydo_core = new CaleydoBootloader();
 		
 		// If no file is provided as command line argument a XML file open dialog is opened
 		if  (xmlFileName=="") 
@@ -105,39 +105,39 @@ implements IApplication {
 			OpenXmlConfigFileDialog openDialog = new OpenXmlConfigFileDialog(shell);
 			openDialog.open();
 			
-			if (geneview_core.getXmlFileName().isEmpty())
+			if (caleydo_core.getXmlFileName().isEmpty())
 				return;
 			
 			shell.dispose();
 			
-			Application.refGeneralManager = geneview_core.getGeneralManager();
-			geneview_core.run_SWT();
+			Application.refGeneralManager = caleydo_core.getGeneralManager();
+			caleydo_core.run_SWT();
 			
 			return;
 		}
 		// Load as command line argument provided XML config file name.
 		else
 		{
-			geneview_core.setXmlFileName(xmlFileName); 
-			Application.refGeneralManager = geneview_core.getGeneralManager();
-			geneview_core.run_SWT();			
+			caleydo_core.setXmlFileName(xmlFileName); 
+			Application.refGeneralManager = caleydo_core.getGeneralManager();
+			caleydo_core.run_SWT();			
 		}
 	}
 	
-	protected void disposeGeneViewCore() {
+	protected void disposeCaleydoCore() {
 		
-		System.out.println(debugMsgPrefix + getClass().getSimpleName() + ".disposeGeneViewCore() shutdown ...");
+		System.out.println(debugMsgPrefix + getClass().getSimpleName() + ".disposeCaleydoCore() shutdown ...");
 		
-		if ( geneview_core != null ) 
+		if ( caleydo_core != null ) 
 		{
-			if ( geneview_core.isRunning() ) 
+			if ( caleydo_core.isRunning() ) 
 			{
-				geneview_core.stop();
-				geneview_core = null;
+				caleydo_core.stop();
+				caleydo_core = null;
 			}
 			else 
 			{
-				System.err.println(debugMsgPrefix + getClass().getSimpleName() + ".disposeGeneViewCore() core was already stopped!");
+				System.err.println(debugMsgPrefix + getClass().getSimpleName() + ".disposeCaleydoCore() core was already stopped!");
 			}
 		}
 	}

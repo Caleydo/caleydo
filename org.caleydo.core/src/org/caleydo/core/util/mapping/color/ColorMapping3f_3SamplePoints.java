@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.util.mapping.color;
+package org.caleydo.core.util.mapping.color;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
@@ -92,7 +92,7 @@ public class ColorMapping3f_3SamplePoints extends AColorMappingVecf <Vec3f> {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.util.mapping.IColorMapping#addColorPoint(java.awt.Color, float)
+	 * @see org.caleydo.core.util.mapping.IColorMapping#addColorPoint(java.awt.Color, float)
 	 */
 	@Override
 	public final void addSamplingPoint_Color(final Color color, final float value) {
@@ -105,7 +105,7 @@ public class ColorMapping3f_3SamplePoints extends AColorMappingVecf <Vec3f> {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.util.mapping.IColorMapping#colorMapping(int)
+	 * @see org.caleydo.core.util.mapping.IColorMapping#colorMapping(int)
 	 */
 	public Vec4f colorMapping4f(final float lookupValue) {
 
@@ -113,7 +113,7 @@ public class ColorMapping3f_3SamplePoints extends AColorMappingVecf <Vec3f> {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.util.mapping.IColorMapping#colorMapping(int)
+	 * @see org.caleydo.core.util.mapping.IColorMapping#colorMapping(int)
 	 */
 	public Vec3f colorMapping3f(final float lookupValue) {
 		

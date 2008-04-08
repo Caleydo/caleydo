@@ -6,16 +6,16 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.command.base;
+package org.caleydo.core.command.base;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.command.window.CmdWindowNewInternalFrame;
-import org.geneview.core.data.collection.ISet;
-//import org.geneview.core.data.collection.ViewCanvas;
-//import org.geneview.core.manager.BaseManagerType;
-//import org.geneview.core.manager.singelton.SingeltonManager;
-//import org.geneview.core.net.dwt.swing.mdi.DInternalFrame;
-//import org.geneview.core.net.dwt.swing.mdi.DDesktopPane;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.command.window.CmdWindowNewInternalFrame;
+import org.caleydo.core.data.collection.ISet;
+//import org.caleydo.core.data.collection.ViewCanvas;
+//import org.caleydo.core.manager.BaseManagerType;
+//import org.caleydo.core.manager.singelton.SingeltonManager;
+//import org.caleydo.core.net.dwt.swing.mdi.DInternalFrame;
+//import org.caleydo.core.net.dwt.swing.mdi.DDesktopPane;
 
 
 /**
@@ -34,7 +34,7 @@ implements ICmdHandleSet {
 	/**
 	 * Reference to current ISet.
 	 * 
-	 * @see org.geneview.core.command.base.ACmdHandleSet#setSet(ISet)
+	 * @see org.caleydo.core.command.base.ACmdHandleSet#setSet(ISet)
 	 */
 	protected ISet refCurrentSet;
 	
@@ -74,7 +74,7 @@ implements ICmdHandleSet {
 	}
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.base.ICmdHandleSet#setSet(org.geneview.core.data.collection.ISet)
+	 * @see org.caleydo.core.command.base.ICmdHandleSet#setSet(org.caleydo.core.data.collection.ISet)
 	 */
 	public final void setSet( final ISet useSet) {
 		refCurrentSet = useSet;

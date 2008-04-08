@@ -1,4 +1,4 @@
-package org.geneview.core.data.collection.set.iterator;
+package org.caleydo.core.data.collection.set.iterator;
 
 //import java.util.Iterator;
 

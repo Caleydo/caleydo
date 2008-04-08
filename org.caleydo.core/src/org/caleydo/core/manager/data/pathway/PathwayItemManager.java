@@ -1,26 +1,26 @@
-package org.geneview.core.manager.data.pathway;
+package org.caleydo.core.manager.data.pathway;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.geneview.core.data.graph.item.edge.PathwayReactionEdgeGraphItem;
-import org.geneview.core.data.graph.item.edge.PathwayReactionEdgeGraphItemRep;
-import org.geneview.core.data.graph.item.edge.PathwayRelationEdgeGraphItem;
-import org.geneview.core.data.graph.item.edge.PathwayRelationEdgeGraphItemRep;
-import org.geneview.core.data.graph.item.vertex.EPathwayVertexType;
-import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
-import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.base.AAbstractManager;
-import org.geneview.core.manager.data.IPathwayItemManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.manager.type.ManagerType;
-import org.geneview.core.util.system.StringConversionTool;
-import org.geneview.util.graph.EGraphItemHierarchy;
-import org.geneview.util.graph.EGraphItemProperty;
-import org.geneview.util.graph.IGraph;
-import org.geneview.util.graph.IGraphItem;
+import org.caleydo.core.data.graph.item.edge.PathwayReactionEdgeGraphItem;
+import org.caleydo.core.data.graph.item.edge.PathwayReactionEdgeGraphItemRep;
+import org.caleydo.core.data.graph.item.edge.PathwayRelationEdgeGraphItem;
+import org.caleydo.core.data.graph.item.edge.PathwayRelationEdgeGraphItemRep;
+import org.caleydo.core.data.graph.item.vertex.EPathwayVertexType;
+import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.data.IPathwayItemManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.util.graph.EGraphItemHierarchy;
+import org.caleydo.util.graph.EGraphItemProperty;
+import org.caleydo.util.graph.IGraph;
+import org.caleydo.util.graph.IGraphItem;
 
 /**
  * The element manager is in charge for handling the items. Items are
@@ -278,7 +278,7 @@ implements IPathwayItemManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.IGeneralManager#getItem(int)
+	 * @see org.caleydo.core.manager.IGeneralManager#getItem(int)
 	 */
 	public Object getItem(int iItemId) {
 
@@ -306,7 +306,7 @@ implements IPathwayItemManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.IGeneralManager#hasItem(int)
+	 * @see org.caleydo.core.manager.IGeneralManager#hasItem(int)
 	 */
 	public boolean hasItem(int iItemId) {
 

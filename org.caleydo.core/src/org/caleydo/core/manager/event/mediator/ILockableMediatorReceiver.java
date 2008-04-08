@@ -1,5 +1,5 @@
 
-package org.geneview.core.manager.event.mediator;
+package org.caleydo.core.manager.event.mediator;
 
 
 /**
@@ -14,8 +14,8 @@ extends IMediatorReceiver {
 	/**
 	 * Blocks update() until method updateRunPipe() is called.
 	 * 
-	 * @see org.geneview.core.manager.event.mediator.ILockableMediatorReceiver#updateReceiver(Object)
-	 * @see org.geneview.core.manager.event.mediator.ILockableMediatorReceiver#updateContinue(Object)
+	 * @see org.caleydo.core.manager.event.mediator.ILockableMediatorReceiver#updateReceiver(Object)
+	 * @see org.caleydo.core.manager.event.mediator.ILockableMediatorReceiver#updateContinue(Object)
 	 * 
 	 * @param eventTrigger calling object, that created the update
 	 */
@@ -24,8 +24,8 @@ extends IMediatorReceiver {
 	/**
 	 * Test, if currently updates are stalled.
 	 * 
-	 * @see org.geneview.core.manager.event.mediator.ILockableMediatorReceiver#updateStall()
-	 * @see org.geneview.core.manager.event.mediator.ILockableMediatorReceiver#updateContinue(Object)
+	 * @see org.caleydo.core.manager.event.mediator.ILockableMediatorReceiver#updateStall()
+	 * @see org.caleydo.core.manager.event.mediator.ILockableMediatorReceiver#updateContinue(Object)
 	 * 	
 	 * @return TRUE if upate() methods are stalled, fales if update() methods are preocessed
 	 */
@@ -34,8 +34,8 @@ extends IMediatorReceiver {
 	/**
 	 * calls update() and frees lock from updateStall().
 	 * 
-	 * @see org.geneview.core.manager.event.mediator.ILockableMediatorReceiver#updateReceiver(Object)
-	 * @see org.geneview.core.manager.event.mediator.ILockableMediatorReceiver#updateStall()
+	 * @see org.caleydo.core.manager.event.mediator.ILockableMediatorReceiver#updateReceiver(Object)
+	 * @see org.caleydo.core.manager.event.mediator.ILockableMediatorReceiver#updateStall()
  	 * 
 	 * @param eventTrigger calling object, that created the update
 	 */

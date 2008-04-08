@@ -6,12 +6,12 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection.set;
+package org.caleydo.core.data.collection.set;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.thread.impl.ACollectionThreadItem;
-import org.geneview.core.data.collection.thread.lock.ICollectionLock;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.thread.impl.ACollectionThreadItem;
+import org.caleydo.core.data.collection.thread.lock.ICollectionLock;
 
 /**
  * @author Michael Kalkusch
@@ -40,14 +40,14 @@ implements ISet {
 	
 
 //	/* (non-Javadoc)
-//	 * @see org.geneview.core.data.collection.ISet#getStorage()
+//	 * @see org.caleydo.core.data.collection.ISet#getStorage()
 //	 */
 //	final public IStorage getStorage() {
 //		return refFlatStorage[0];
 //	}
 //	
 //	/* (non-Javadoc)
-//	 * @see org.geneview.core.data.collection.ISet#setStorage(org.geneview.core.data.collection.IStorage)
+//	 * @see org.caleydo.core.data.collection.ISet#setStorage(org.caleydo.core.data.collection.IStorage)
 //	 */
 //	final public void setStorage(IStorage setStorage) {
 //		
@@ -59,7 +59,7 @@ implements ISet {
 	/**
 	 * Create "Header" for all Selections.
 	 * 
-	 * @see org.geneview.core.data.xml.IMementoXML#createMementoXML()
+	 * @see org.caleydo.core.data.xml.IMementoXML#createMementoXML()
 	 * 
 	 * @return String containign the XML-header for this selection
 	 */
@@ -74,13 +74,13 @@ implements ISet {
 	
 //	/*
 //	 *  (non-Javadoc)
-//	 * @see org.geneview.core.data.collection.BaseManagerLabeledItem#getCacheId()
+//	 * @see org.caleydo.core.data.collection.BaseManagerLabeledItem#getCacheId()
 //	 */
 //	abstract public int getCacheId();
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.data.collection.BaseManagerLabeledItem#hasCacheChanged(int)
+	 * @see org.caleydo.core.data.collection.BaseManagerLabeledItem#hasCacheChanged(int)
 	 */
 	final public boolean hasCacheChanged( final int iCompareCacheId ) {
 		return (iCompareCacheId > this.iCacheId);

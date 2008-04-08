@@ -1,14 +1,14 @@
 /**
  * 
  */
-package org.geneview.core.manager;
+package org.caleydo.core.manager;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.singleton.OneForAllManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.singleton.OneForAllManager;
 
 /**
  * Create or assign a Singleton.
- * Per default a org.geneview.core.manager.singelton.OneForAllManager is created.
+ * Per default a org.caleydo.core.manager.singelton.OneForAllManager is created.
  * Also another IGeneralManager can be assigned 
  *  
  * @author Michael Kalkusch

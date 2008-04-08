@@ -6,23 +6,23 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data;
+package org.caleydo.core.data;
 
-import org.geneview.core.manager.IGeneralManager;
-//import org.geneview.core.manager.type.BaseManagerType;
-import org.geneview.core.data.IUniqueManagedObject;
-import org.geneview.core.data.AUniqueItem;
+import org.caleydo.core.manager.IGeneralManager;
+//import org.caleydo.core.manager.type.BaseManagerType;
+import org.caleydo.core.data.IUniqueManagedObject;
+import org.caleydo.core.data.AUniqueItem;
 
 /**
  * Abstract class providing methods defiend in IUniqueManagedObject.
  * Stores reference to creator of item in private variable.
  * 
- * Same as org.geneview.core.data.AUniqueManagedObject but GeneralManger may be reassinged.
+ * Same as org.caleydo.core.data.AUniqueManagedObject but GeneralManger may be reassinged.
  * 
  * @author Michael Kalkusch
  *
  * @see prometheus.data.xml.MementiItemXML
- * @see org.geneview.core.data.AUniqueManagedObject
+ * @see org.caleydo.core.data.AUniqueManagedObject
  */
 public abstract class AUniqueReManagedObject 
 extends AUniqueItem
@@ -56,7 +56,7 @@ implements IUniqueManagedObject {
 	/**
 	 * Reset the IGeneralManager.
 	 * 
-	 * @see org.geneview.core.data.IUniqueManagedObject#getGeneralManager()
+	 * @see org.caleydo.core.data.IUniqueManagedObject#getGeneralManager()
 	 */
 	final protected void setManager( final IGeneralManager setGeneralManager) {
 		this.refGeneralManager = setGeneralManager;

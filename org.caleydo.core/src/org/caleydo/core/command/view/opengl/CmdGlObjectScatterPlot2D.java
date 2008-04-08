@@ -1,23 +1,23 @@
 ///**
 // * 
 // */
-//package org.geneview.core.command.view.opengl;
+//package org.caleydo.core.command.view.opengl;
 //
 //
 //import java.util.StringTokenizer;
 //
-//import org.geneview.core.command.CommandQueueSaxType;
-//import org.geneview.core.command.base.ACmdCreate_GlCanvasUser;
-//import org.geneview.core.manager.ICommandManager;
-//import org.geneview.core.manager.IGeneralManager;
-//import org.geneview.core.parser.parameter.IParameterHandler;
-////import org.geneview.core.manager.ILoggerManager.LoggerType;
-////import org.geneview.core.manager.command.factory.CommandFactory;
-//import org.geneview.core.util.exception.GeneViewRuntimeException;
-//import org.geneview.core.util.system.StringConversionTool;
-////import org.geneview.core.view.opengl.canvas.scatterplot.GLCanvasScatterPlot2D;
-//import org.geneview.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
-//import org.geneview.core.view.opengl.canvas.scatterplot.GLMinMaxScatterplot2Dinteractive;
+//import org.caleydo.core.command.CommandQueueSaxType;
+//import org.caleydo.core.command.base.ACmdCreate_GlCanvasUser;
+//import org.caleydo.core.manager.ICommandManager;
+//import org.caleydo.core.manager.IGeneralManager;
+//import org.caleydo.core.parser.parameter.IParameterHandler;
+////import org.caleydo.core.manager.ILoggerManager.LoggerType;
+////import org.caleydo.core.manager.command.factory.CommandFactory;
+//import org.caleydo.core.util.exception.CaleydoRuntimeException;
+//import org.caleydo.core.util.system.StringConversionTool;
+////import org.caleydo.core.view.opengl.canvas.scatterplot.GLCanvasScatterPlot2D;
+//import org.caleydo.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
+//import org.caleydo.core.view.opengl.canvas.scatterplot.GLMinMaxScatterplot2Dinteractive;
 //
 ///**
 // * @author Michael Kalkusch
@@ -31,7 +31,7 @@
 //	/**
 //	 * If of Set to be read data from
 //	 * 
-//	 * @see org.geneview.core.data.collection.ISet
+//	 * @see org.caleydo.core.data.collection.ISet
 //	 */
 //	protected int iTargetCollectionSetId;
 //	
@@ -81,7 +81,7 @@
 //
 //	/*
 //	 * (non-Javadoc)
-//	 * @see org.geneview.core.command.base.ACmdCreate_GlCanvasUser#doCommand()
+//	 * @see org.caleydo.core.command.base.ACmdCreate_GlCanvasUser#doCommand()
 //	 */
 //	public final void doCommand()
 //	{
@@ -96,7 +96,7 @@
 //
 //	/*
 //	 * (non-Javadoc)
-////	 * @see org.geneview.core.command.base.ACmdCreate_GlCanvasUser#undoCommand()
+////	 * @see org.caleydo.core.command.base.ACmdCreate_GlCanvasUser#undoCommand()
 //	 */
 //	public final void undoCommand()
 //	{
@@ -104,7 +104,7 @@
 //	}
 //
 //	@Override
-//	public void doCommandPart() throws GeneViewRuntimeException
+//	public void doCommandPart() throws CaleydoRuntimeException
 //	{
 //		GLMinMaxScatterplot2Dinteractive canvas = 
 //			(GLMinMaxScatterplot2Dinteractive) openGLCanvasUser;
@@ -115,7 +115,7 @@
 //	}
 //
 //	@Override
-//	public void undoCommandPart() throws GeneViewRuntimeException
+//	public void undoCommandPart() throws CaleydoRuntimeException
 //	{
 //		GLMinMaxScatterplot2Dinteractive canvas =
 //			(GLMinMaxScatterplot2Dinteractive) openGLCanvasUser;

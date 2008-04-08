@@ -1,11 +1,11 @@
-package org.geneview.core.manager.singleton;
+package org.caleydo.core.manager.singleton;
 
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
-//import org.geneview.core.manager.ViewCanvasManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.manager.type.ManagerType;
-import org.geneview.core.data.xml.IMementoCallbackXML;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+//import org.caleydo.core.manager.ViewCanvasManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.data.xml.IMementoCallbackXML;
 
 public interface IGeneralManagerSingleton 
 extends IGeneralManager, IMementoCallbackXML {
@@ -19,8 +19,8 @@ extends IGeneralManager, IMementoCallbackXML {
 //	 * 
 //	 * @return int new unique Id
 //	 * 
-//	 * @see org.geneview.core.manager.singelton.OneForAllManager#setNewType(ManagerObjectType)
-//	 * @see org.geneview.core.manager.singelton.OneForAllManager#createNewId(ManagerObjectType)
+//	 * @see org.caleydo.core.manager.singelton.OneForAllManager#setNewType(ManagerObjectType)
+//	 * @see org.caleydo.core.manager.singelton.OneForAllManager#createNewId(ManagerObjectType)
 //	 */
 //	public abstract int createNewId(ManagerObjectType setNewBaseType);
 

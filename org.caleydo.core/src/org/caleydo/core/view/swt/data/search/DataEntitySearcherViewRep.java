@@ -1,27 +1,27 @@
-package org.geneview.core.view.swt.data.search;
+package org.caleydo.core.view.swt.data.search;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Composite;
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.data.CmdDataCreateSelectionSetMakro;
-import org.geneview.core.command.event.CmdEventCreateMediator;
-import org.geneview.core.data.collection.set.selection.SetSelection;
-import org.geneview.core.data.graph.core.PathwayGraph;
-import org.geneview.core.data.mapping.EGenomeMappingType;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.IEventPublisher.MediatorType;
-import org.geneview.core.manager.event.mediator.IMediatorSender;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.util.system.StringConversionTool;
-import org.geneview.core.view.AViewRep;
-import org.geneview.core.view.ViewType;
-import org.geneview.util.graph.EGraphItemHierarchy;
-import org.geneview.util.graph.EGraphItemProperty;
-import org.geneview.util.graph.IGraph;
-import org.geneview.util.graph.IGraphItem;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.data.CmdDataCreateSelectionSetMakro;
+import org.caleydo.core.command.event.CmdEventCreateMediator;
+import org.caleydo.core.data.collection.set.selection.SetSelection;
+import org.caleydo.core.data.graph.core.PathwayGraph;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IEventPublisher.MediatorType;
+import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.ViewType;
+import org.caleydo.util.graph.EGraphItemHierarchy;
+import org.caleydo.util.graph.EGraphItemProperty;
+import org.caleydo.util.graph.IGraph;
+import org.caleydo.util.graph.IGraphItem;
 
 /**
  * 

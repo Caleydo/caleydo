@@ -1,8 +1,8 @@
-package org.geneview.core.data.collection.set.iterator;
+package org.caleydo.core.data.collection.set.iterator;
 
 //import java.util.Iterator;
 
-import org.geneview.core.data.collection.IVirtualArray;
+import org.caleydo.core.data.collection.IVirtualArray;
 
 public interface ISetIndexIterator {
 

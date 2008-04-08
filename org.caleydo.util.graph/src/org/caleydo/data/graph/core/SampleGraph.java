@@ -1,9 +1,9 @@
 /**
  * 
  */
-package org.geneview.data.graph.core;
+package org.caleydo.data.graph.core;
 
-import org.geneview.util.graph.core.Graph;
+import org.caleydo.util.graph.core.Graph;
 
 /**
  * Example for a graph.

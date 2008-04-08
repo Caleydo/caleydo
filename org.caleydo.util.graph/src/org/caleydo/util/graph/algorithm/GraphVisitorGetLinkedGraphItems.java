@@ -1,14 +1,14 @@
 /**
  * 
  */
-package org.geneview.util.graph.algorithm;
+package org.caleydo.util.graph.algorithm;
 
 import java.util.List;
 import java.util.Iterator;
 
-import org.geneview.util.graph.EGraphItemProperty;
-import org.geneview.util.graph.IGraphItem;
-import org.geneview.util.graph.algorithm.IGraphVisitorSearch;
+import org.caleydo.util.graph.EGraphItemProperty;
+import org.caleydo.util.graph.IGraphItem;
+import org.caleydo.util.graph.algorithm.IGraphVisitorSearch;
 
 /**
  * Search for adjacencies in a graph starting with an item.
@@ -56,7 +56,7 @@ implements IGraphVisitorSearch {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.util.graph.algorithm.IGraphVisitorSearch#init()
+	 * @see org.caleydo.util.graph.algorithm.IGraphVisitorSearch#init()
 	 */
 	public final boolean init() {
 		return false;	
@@ -64,7 +64,7 @@ implements IGraphVisitorSearch {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.util.graph.algorithm.IGraphVisitorSearch#search()
+	 * @see org.caleydo.util.graph.algorithm.IGraphVisitorSearch#search()
 	 */
 	public final void search() {
 		/** algorithm is done inside method getSearchResult() */
@@ -72,7 +72,7 @@ implements IGraphVisitorSearch {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.util.graph.algorithm.IGraphVisitorSearch#wipeTemporalDataFromGraph()
+	 * @see org.caleydo.util.graph.algorithm.IGraphVisitorSearch#wipeTemporalDataFromGraph()
 	 */
 	public final void wipeTemporalDataFromGraph() {
 		/** not temporal data was created inside the graphs. */	
@@ -80,7 +80,7 @@ implements IGraphVisitorSearch {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.util.graph.algorithm.IGraphVisitorSearch#getSearchResult()
+	 * @see org.caleydo.util.graph.algorithm.IGraphVisitorSearch#getSearchResult()
 	 */
 	public List<IGraphItem> getSearchResult() {
 		
@@ -96,7 +96,7 @@ implements IGraphVisitorSearch {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.util.graph.algorithm.IGraphVisitorSearch#getSearchResultDepthOrdered()
+	 * @see org.caleydo.util.graph.algorithm.IGraphVisitorSearch#getSearchResultDepthOrdered()
 	 */
 	public List<List<IGraphItem>> getSearchResultDepthOrdered() {
 		

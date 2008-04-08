@@ -1,17 +1,17 @@
-package org.geneview.core.command.data.filter;
+package org.caleydo.core.command.data.filter;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.base.ACmdCreate_IdTargetLabelAttr;
-import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.data.collection.StorageType;
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.parser.parameter.IParameterHandler;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttr;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.StorageType;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * @author Marc Streit
@@ -94,7 +94,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 	{
 		if (iAlSrcStorageId.size() != iAlTargetStorageId.size())
 		{
-			throw new GeneViewRuntimeException("Size of specified src and target storage are different", GeneViewRuntimeExceptionType.COMMAND);
+			throw new CaleydoRuntimeException("Size of specified src and target storage are different", CaleydoRuntimeExceptionType.COMMAND);
 		}
 		this.iAlTargetStorageId = iAlTargetStorageId;
 		setAttributes(dataFilterMathType, iAlSrcStorageId);		
@@ -114,9 +114,9 @@ extends ACmdCreate_IdTargetLabelAttr {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#doCommand()
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws GeneViewRuntimeException {
+	public void doCommand() throws CaleydoRuntimeException {
 
 		//Iterator<Integer> iterStorageId = iAlSrcStorageId.iterator();
 		IStorage tmpStorage = null;
@@ -180,9 +180,9 @@ extends ACmdCreate_IdTargetLabelAttr {
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see org.geneview.core.command.ICommand#undoCommand()
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws GeneViewRuntimeException {
+	public void undoCommand() throws CaleydoRuntimeException {
 
 		// TODO Auto-generated method stub
 		

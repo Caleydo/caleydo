@@ -1,11 +1,11 @@
 /**
  * 
  */
-package org.geneview.core.test.base.map;
+package org.caleydo.core.test.base.map;
 
 import java.util.ArrayList;
 
-import org.geneview.core.data.map.MultiHashArrayGMap;
+import org.caleydo.core.data.map.MultiHashArrayGMap;
 
 /**
  * @author Michael Kalkusch

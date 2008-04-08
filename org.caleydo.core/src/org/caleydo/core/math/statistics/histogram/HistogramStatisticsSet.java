@@ -1,13 +1,13 @@
 /**
  * 
  */
-package org.geneview.core.math.statistics.histogram;
+package org.caleydo.core.math.statistics.histogram;
 
-import org.geneview.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+import org.caleydo.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.IVirtualArray;
-import org.geneview.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.data.collection.IStorage;
 
 /**
  * @author Michael Kalkusch
@@ -30,7 +30,7 @@ implements IHistogramStatistic {
 
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#addDataValues(T[])
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#addDataValues(T[])
 	 */
 	public void addData( final ISet useSet ) {
 		refSet = useSet;
@@ -75,7 +75,7 @@ implements IHistogramStatistic {
 	/**
 	 * Attention: ReadLock for ISet must be valid!
 	 *  
-	 * @see org.geneview.core.math.statistics.histogram.HistogramStatisticInteger#calculateVariance(float)
+	 * @see org.caleydo.core.math.statistics.histogram.HistogramStatisticInteger#calculateVariance(float)
 	 */
 	protected synchronized float calculateVariance( final float fUseEstimate ) {
 
@@ -107,7 +107,7 @@ implements IHistogramStatistic {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticInteger#calculateVarianceDouble(double)
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticInteger#calculateVarianceDouble(double)
 	 */
 	protected synchronized double calculateVarianceDouble( final double dUseEstimate ) {
 		assert false : "Not supported yet";
@@ -116,7 +116,7 @@ implements IHistogramStatistic {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#addDataValues(T[])
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#addDataValues(T[])
 	 */
 	public void addDataValues(int[] setData) {
 		assert false : "Not supported yet";
@@ -126,7 +126,7 @@ implements IHistogramStatistic {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticInteger#addDataValues(java.lang.Number[])
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticInteger#addDataValues(java.lang.Number[])
 	 */
 	public void addDataValues(Number[] setData) {
 		assert false : "Not supported yet";
@@ -136,7 +136,7 @@ implements IHistogramStatistic {
 
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#updateHistogram()
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#updateHistogram()
 	 */
 	public boolean updateHistogram() {
 		
@@ -265,7 +265,7 @@ implements IHistogramStatistic {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.math.statistics.HistogramStatisticBase#getUpdatedHistogramData()
+	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#getUpdatedHistogramData()
 	 */
 	public HistogramData getUpdatedHistogramData() {
 		if ( this.updateHistogram() ) {

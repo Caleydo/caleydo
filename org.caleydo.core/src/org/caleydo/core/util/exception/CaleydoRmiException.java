@@ -2,7 +2,7 @@
  * Created on Jul 19, 2003
  *
  */
-package org.geneview.core.util.exception;
+package org.caleydo.core.util.exception;
 
 import java.rmi.RemoteException;
 
@@ -12,7 +12,7 @@ import java.rmi.RemoteException;
  * @author Michael Kalkusch
  *
  */
-public class GeneViewRmiException 
+public class CaleydoRmiException 
 	extends RemoteException {
 
 	final static long serialVersionUID = 7700;
@@ -20,14 +20,14 @@ public class GeneViewRmiException
 	/**
 	 * 
 	 */
-	public GeneViewRmiException() {
+	public CaleydoRmiException() {
 		super();		
 	}
 
 	/**
 	 * @param s
 	 */
-	public GeneViewRmiException(String s) {
+	public CaleydoRmiException(String s) {
 		super(s);
 	}
 
@@ -35,7 +35,7 @@ public class GeneViewRmiException
 	 * @param s
 	 * @param ex
 	 */
-	public GeneViewRmiException(String s, Throwable ex) {
+	public CaleydoRmiException(String s, Throwable ex) {
 		super(s, ex);
 	}
 

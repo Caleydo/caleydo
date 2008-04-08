@@ -1,14 +1,14 @@
 /**
  * 
  */
-package org.geneview.core.view.opengl.canvas.histogram;
+package org.caleydo.core.view.opengl.canvas.histogram;
 
 import java.util.HashMap;
 
-import org.geneview.core.data.view.camera.IViewFrustum;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.view.opengl.canvas.histogram.HistogramContainer;
+import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.view.opengl.canvas.histogram.HistogramContainer;
 
 /**
  * @author Michael Kalkusch
@@ -110,7 +110,7 @@ public class GLCanvasHistogram2Dinteractive extends GLCanvasHistogram2D {
 	public final void setSizeOfGroups(final int sizeOfGrous) {
 	
 		if ( sizeOfGrous < 1 ) {
-			throw new GeneViewRuntimeException(this.getClass().getSimpleName() + 
+			throw new CaleydoRuntimeException(this.getClass().getSimpleName() + 
 					".setSizeOfGrous() called with value smaller than 1!");
 		}
 		

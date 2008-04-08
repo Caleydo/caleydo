@@ -1,8 +1,8 @@
-package org.geneview.core.data.mapping;
+package org.caleydo.core.data.mapping;
 
-import org.geneview.core.data.collection.StorageType;
-import org.geneview.core.data.mapping.EGenomeMappingType;
-import org.geneview.core.util.IGeneViewDefaultType;
+import org.caleydo.core.data.collection.StorageType;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.util.ICaleydoDefaultType;
 
 /**
  * Enum that defines all genome data types that could possibly be loaded
@@ -15,7 +15,7 @@ import org.geneview.core.util.IGeneViewDefaultType;
  *
  */
 public enum EGenomeIdType
-implements IGeneViewDefaultType <EGenomeIdType> {
+implements ICaleydoDefaultType <EGenomeIdType> {
 
 	ACCESSION(StorageType.INT, 
 			EGenomeMappingType.ACCESSION_CODE_2_ACCESSION,
@@ -132,7 +132,7 @@ implements IGeneViewDefaultType <EGenomeIdType> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.util.IGeneViewDefaultType#getTypeDefault()
+	 * @see org.caleydo.core.util.ICaleydoDefaultType#getTypeDefault()
 	 */
 	public EGenomeIdType getTypeDefault() {
 

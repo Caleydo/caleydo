@@ -13,7 +13,7 @@
  * Contributors:
  *     Jean-Michel Lemieux and Jeff McAffer - initial API and implementation
  *******************************************************************************/
-package org.geneview.rcp.image;
+package org.caleydo.rcp.image;
 
 public interface IImageKeys {
 	public static final String ONLINE = "icons/online.gif";

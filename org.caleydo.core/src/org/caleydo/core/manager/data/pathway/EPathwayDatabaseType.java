@@ -1,4 +1,4 @@
-package org.geneview.core.manager.data.pathway;
+package org.caleydo.core.manager.data.pathway;
 
 /**
  * Class holds all supported pathway database types.

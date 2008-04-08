@@ -6,7 +6,7 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.manager.memento;
+package org.caleydo.core.manager.memento;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -14,17 +14,17 @@ import java.util.Vector;
 import java.util.Iterator;
 import java.util.Hashtable;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.IMementoManager;
-import org.geneview.core.manager.base.AAbstractManager;
-import org.geneview.core.manager.type.ManagerType;
-import org.geneview.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IMementoManager;
+import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.manager.type.ManagerObjectType;
 //import java.util.Enumeration;
 
-import org.geneview.core.command.memento.IMemento;
+import org.caleydo.core.command.memento.IMemento;
 //import prometheus.data.collection.Set;
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Simple IMemento Manager, that stores all IMemento's in a Vector.
@@ -81,8 +81,8 @@ public class MementoManager
 			return iUniqueId;
 
 		} catch (Exception e) {
-			throw new GeneViewRuntimeException("setMemento(IMemento) failed. " + e.toString(),
-					GeneViewRuntimeExceptionType.MEMENTO );
+			throw new CaleydoRuntimeException("setMemento(IMemento) failed. " + e.toString(),
+					CaleydoRuntimeExceptionType.MEMENTO );
 		}
 	}
 
@@ -191,7 +191,7 @@ public class MementoManager
 	/**
 	 * Mementos are internal structures and can not be search for.
 	 * 
-	 * @see org.geneview.core.manager.IGeneralManager#hasItem(int)
+	 * @see org.caleydo.core.manager.IGeneralManager#hasItem(int)
 	 */
 	public final boolean hasItem(final int iItemId) {
 		return false;

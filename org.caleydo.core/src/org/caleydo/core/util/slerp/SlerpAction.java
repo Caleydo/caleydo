@@ -1,7 +1,7 @@
-package org.geneview.core.util.slerp;
+package org.caleydo.core.util.slerp;
 
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 
 /**
  * Slerp action in 3D scene.
@@ -106,7 +106,7 @@ public class SlerpAction {
 	public JukeboxHierarchyLayer getOriginHierarchyLayer() {
 
 		if (originHierarchyLayer == null)
-			throw new GeneViewRuntimeException("Slerp origin layer is null!");
+			throw new CaleydoRuntimeException("Slerp origin layer is null!");
 		
 		return originHierarchyLayer;
 	}
@@ -114,7 +114,7 @@ public class SlerpAction {
 	public JukeboxHierarchyLayer getDestinationHierarchyLayer() {
 
 		if (destinationHierarchyLayer == null)
-			throw new GeneViewRuntimeException("Slerp destination layer is null!");
+			throw new CaleydoRuntimeException("Slerp destination layer is null!");
 
 		return destinationHierarchyLayer;
 	}
@@ -122,7 +122,7 @@ public class SlerpAction {
 	public int getOriginPosIndex() {
 	
 		if (iOriginPosIndex == -1)
-			throw new GeneViewRuntimeException("Invalid slerp origin position (-1)!");
+			throw new CaleydoRuntimeException("Invalid slerp origin position (-1)!");
 		
 		return iOriginPosIndex;
 	}
@@ -130,7 +130,7 @@ public class SlerpAction {
 	public int getDestinationPosIndex() {
 
 		if (iDestinationPosIndex == -1)
-			throw new GeneViewRuntimeException("Invalid slerp destination position (-1)!");
+			throw new CaleydoRuntimeException("Invalid slerp destination position (-1)!");
 		
 		return iDestinationPosIndex;
 	}

@@ -6,16 +6,16 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.math.statistics.histogram_old;
+package org.caleydo.core.math.statistics.histogram_old;
 
 //import java.util.Vector;
 
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.IVirtualArray;
-import org.geneview.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.data.collection.IStorage;
 
-import org.geneview.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
-import org.geneview.core.data.collection.virtualarray.iterator.VirtualArrayProxyIterator;
+import org.caleydo.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
+import org.caleydo.core.data.collection.virtualarray.iterator.VirtualArrayProxyIterator;
 
 
 /**
@@ -45,14 +45,14 @@ public class HistogramCreatorSimple implements HistogramCreator {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.statistic.histogram.HistogramCreator#clear()
+	 * @see org.caleydo.core.statistic.histogram.HistogramCreator#clear()
 	 */
 	public void clear() {
 		arrayHistogram = null;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.statistic.histogram.HistogramCreator#update()
+	 * @see org.caleydo.core.statistic.histogram.HistogramCreator#update()
 	 */
 	public void updateState() {
 		if ( arrayHistogram == null ) {
@@ -178,21 +178,21 @@ public class HistogramCreatorSimple implements HistogramCreator {
 	
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.statistic.histogram.HistogramCreator#getCounterPerRow()
+	 * @see org.caleydo.core.statistic.histogram.HistogramCreator#getCounterPerRow()
 	 */
 	public int[] getCounterPerRow() {
 		return arrayHistogram;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.statistic.histogram.HistogramCreator#getRowWidth()
+	 * @see org.caleydo.core.statistic.histogram.HistogramCreator#getRowWidth()
 	 */
 	public int getRowWidth() {
 		return iHistogramWidth;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.statistic.histogram.HistogramCreator#setRowWidth(int)
+	 * @see org.caleydo.core.statistic.histogram.HistogramCreator#setRowWidth(int)
 	 */
 	public void setRowWidth(int iSetRowWidth) {
 		if ( iSetRowWidth > 1 ) {
@@ -201,14 +201,14 @@ public class HistogramCreatorSimple implements HistogramCreator {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.statistic.histogram.HistogramCreator#getSelection()
+	 * @see org.caleydo.core.statistic.histogram.HistogramCreator#getSelection()
 	 */
 	public ISet getSet() {
 		return refSet;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.statistic.histogram.HistogramCreator#setSelection(org.geneview.core.data.set.Selection)
+	 * @see org.caleydo.core.statistic.histogram.HistogramCreator#setSelection(org.caleydo.core.data.set.Selection)
 	 */
 	public void setSet( ISet setSet ) {
 		refSet = setSet;

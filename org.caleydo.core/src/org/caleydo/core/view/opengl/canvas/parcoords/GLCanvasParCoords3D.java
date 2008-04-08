@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.canvas.parcoords;
+package org.caleydo.core.view.opengl.canvas.parcoords;
 
 
 import gleem.linalg.Rotf;
@@ -18,23 +18,23 @@ import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUnurbs;
 //import javax.xml.bind.JAXBElement.GlobalScope;
 
-import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.data.view.camera.IViewFrustum;
-import org.geneview.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
-import org.geneview.core.data.view.rep.selection.SelectedElementRep;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.view.EPickingMode;
-import org.geneview.core.manager.view.EPickingType;
-import org.geneview.core.manager.view.Pick;
-import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
-import org.geneview.core.view.opengl.canvas.AGLCanvasStorageBasedView;
-import org.geneview.core.view.opengl.util.EIconTextures;
-import org.geneview.core.view.opengl.util.GLCoordinateUtils;
-import org.geneview.core.view.opengl.util.GLIconTextureManager;
-import org.geneview.core.view.opengl.util.GLSharedObjects;
-import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
-import org.geneview.core.view.opengl.util.selection.EViewInternalSelectionType;
-import org.geneview.core.view.opengl.util.selection.GenericSelectionManager;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
+import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.view.EPickingMode;
+import org.caleydo.core.manager.view.EPickingType;
+import org.caleydo.core.manager.view.Pick;
+import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.canvas.AGLCanvasStorageBasedView;
+import org.caleydo.core.view.opengl.util.EIconTextures;
+import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.GLIconTextureManager;
+import org.caleydo.core.view.opengl.util.GLSharedObjects;
+import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
+import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
 
 import com.sun.media.sound.AlawCodec;
 import com.sun.opengl.util.GLUT;
@@ -159,7 +159,7 @@ extends AGLCanvasStorageBasedView
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media.opengl.GL)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media.opengl.GL)
 	 */	
 	public void initLocal(final GL gl)
 	{
@@ -173,7 +173,7 @@ extends AGLCanvasStorageBasedView
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, int, org.geneview.core.view.opengl.util.JukeboxHierarchyLayer, org.geneview.core.view.jogl.mouse.PickingJoglMouseListener)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, int, org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer, org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener)
 	 */
 	public void initRemote(final GL gl, 
 			final int iRemoteViewID, 
@@ -194,7 +194,7 @@ extends AGLCanvasStorageBasedView
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl.GL)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl.GL)
 	 */
 	public void init(final GL gl) 
 	{		
@@ -214,7 +214,7 @@ extends AGLCanvasStorageBasedView
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#displayLocal(javax.media.opengl.GL)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#displayLocal(javax.media.opengl.GL)
 	 */
 	public void displayLocal(final GL gl) 
 	{	
@@ -241,7 +241,7 @@ extends AGLCanvasStorageBasedView
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#displayRemote(javax.media.opengl.GL)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#displayRemote(javax.media.opengl.GL)
 	 */
 	public void displayRemote(final GL gl) 
 	{		
@@ -264,7 +264,7 @@ extends AGLCanvasStorageBasedView
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#display(javax.media.opengl.GL)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#display(javax.media.opengl.GL)
 	 */
 	public void display(final GL gl) 
 	{	
@@ -1096,7 +1096,7 @@ extends AGLCanvasStorageBasedView
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.geneview.core.manager.view.EPickingType, org.geneview.core.manager.view.EPickingMode, int, org.geneview.core.manager.view.Pick)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.caleydo.core.manager.view.EPickingType, org.caleydo.core.manager.view.EPickingMode, int, org.caleydo.core.manager.view.Pick)
 	 */
 	protected void handleEvents(final EPickingType ePickingType, 
 			final EPickingMode ePickingMode, 
@@ -1461,7 +1461,7 @@ extends AGLCanvasStorageBasedView
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#getInfo()
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#getInfo()
 	 */
 	public ArrayList<String> getInfo() {
 		

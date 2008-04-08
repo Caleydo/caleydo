@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.parser.ascii.lookuptable;
+package org.caleydo.core.parser.ascii.lookuptable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -12,15 +12,15 @@ import java.util.NoSuchElementException;
 import java.util.Set;
 import java.util.StringTokenizer;
 
-import org.geneview.core.data.map.MultiHashArrayIntegerMap;
-import org.geneview.core.data.map.MultiHashArrayStringMap;
-import org.geneview.core.data.mapping.EGenomeIdType;
-import org.geneview.core.data.mapping.EGenomeMappingType;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.data.IGenomeIdManager;
-import org.geneview.core.manager.data.genome.IGenomeIdMap;
-import org.geneview.core.parser.ascii.lookuptable.ALookupTableLoader;
-import org.geneview.core.parser.ascii.lookuptable.ILookupTableLoader;
+import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
+import org.caleydo.core.data.map.MultiHashArrayStringMap;
+import org.caleydo.core.data.mapping.EGenomeIdType;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.data.IGenomeIdManager;
+import org.caleydo.core.manager.data.genome.IGenomeIdMap;
+import org.caleydo.core.parser.ascii.lookuptable.ALookupTableLoader;
+import org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader;
 
 
 /**
@@ -35,8 +35,8 @@ implements ILookupTableLoader {
 	 * Switch between loadDataParseFileLUT_multipleStringPerLine() == TRUE and
 	 * loadDataParseFileLUT_oneStringPerLine()and == FALSE 
 	 * 
-	 * @see org.geneview.core.parser.ascii.lookuptable.LookupTableMultiMapStringLoader#loadDataParseFileLUT_oneStringPerLine(BufferedReader, int, int, int)
-	 * @see org.geneview.core.parser.ascii.lookuptable.LookupTableMultiMapStringLoader#loadDataParseFileLUT_multipleStringPerLine(BufferedReader, int, int, int)
+	 * @see org.caleydo.core.parser.ascii.lookuptable.LookupTableMultiMapStringLoader#loadDataParseFileLUT_oneStringPerLine(BufferedReader, int, int, int)
+	 * @see org.caleydo.core.parser.ascii.lookuptable.LookupTableMultiMapStringLoader#loadDataParseFileLUT_multipleStringPerLine(BufferedReader, int, int, int)
 	 */
 	protected boolean bOneLineConaintsMultipleStrings = true;
 	
@@ -280,7 +280,7 @@ implements ILookupTableLoader {
 	/**
 	 * TRUE if only multple values my be in one line assigned to one key.
 	 * 
-	 * @see org.geneview.core.parser.ascii.lookuptable.LookupTableMultiMapStringLoader#setOneLineHasMultipleStrings(boolean)
+	 * @see org.caleydo.core.parser.ascii.lookuptable.LookupTableMultiMapStringLoader#setOneLineHasMultipleStrings(boolean)
 	 * @return
 	 */
 	public final boolean hasOneLineMultipleStrings() {
@@ -296,7 +296,7 @@ implements ILookupTableLoader {
 	 *         .. <br>
 	 *        [key1, value_n] <br>
 	 *        
-	 * @see org.geneview.core.parser.ascii.lookuptable.LookupTableMultiMapStringLoader#hasOneLineMultipleStrings()
+	 * @see org.caleydo.core.parser.ascii.lookuptable.LookupTableMultiMapStringLoader#hasOneLineMultipleStrings()
 	 * 
 	 * @param bset TRUE for parsing multiple Strings per line
 	 */
@@ -306,7 +306,7 @@ implements ILookupTableLoader {
 	
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.parser.ascii.lookuptable.ILookupTableLoader#loadDataParseFileLUT(java.io.BufferedReader, int)
+	 * @see org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader#loadDataParseFileLUT(java.io.BufferedReader, int)
 	 */
 	public int loadDataParseFileLUT(BufferedReader brFile,
 			final int iNumberOfLinesInFile) throws IOException {
@@ -338,8 +338,8 @@ implements ILookupTableLoader {
 	
 	/**
 	 * Write back data to IGenomeIdManager
-	 * @see org.geneview.core.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
-	 * @see org.geneview.core.manager.data.IGenomeIdManager
+	 * @see org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
+	 * @see org.caleydo.core.manager.data.IGenomeIdManager
 	 */
 	public void wirteBackMapToGenomeIdManager() {
 		

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.geneview.core.view.opengl.canvas.histogram;
+package org.caleydo.core.view.opengl.canvas.histogram;
 
 import java.util.ArrayList;
 
@@ -40,7 +40,7 @@ public class HistogramContainerIndexAware extends HistogramContainer {
 	 * updateTotalItems_perContainer() will call setTotalItems_perContainer(int) internally
 	 * 
 	 * @see HistogramContainerIndexAware#updateTotalItems_perContainer()
-	 * @see org.geneview.core.view.opengl.canvas.histogram.HistogramContainer#setTotalItems_perContainer(int)
+	 * @see org.caleydo.core.view.opengl.canvas.histogram.HistogramContainer#setTotalItems_perContainer(int)
 	 * 
 	 * @param index
 	 */
@@ -52,7 +52,7 @@ public class HistogramContainerIndexAware extends HistogramContainer {
 	 * @Override method from super class; redirect it to updateTotalItems_perContainer()
 	 * 
 	 * @see HistogramContainerIndexAware#updateTotalItems_perContainer()
-	 * @see org.geneview.core.view.opengl.canvas.histogram.HistogramContainer#setTotalItems_perContainer(int)
+	 * @see org.caleydo.core.view.opengl.canvas.histogram.HistogramContainer#setTotalItems_perContainer(int)
 	 */
 	@Override
 	public final void setTotalItems_perContainer(final int totalItems_perContainer) {

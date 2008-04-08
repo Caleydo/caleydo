@@ -1,10 +1,10 @@
-package org.geneview.core.command.base;
+package org.caleydo.core.command.base;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.parser.parameter.IParameterHandler;
 
 
 /**

@@ -1,4 +1,4 @@
-package org.geneview.core.view.swt.pathway.jgraph;
+package org.caleydo.core.view.swt.pathway.jgraph;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;

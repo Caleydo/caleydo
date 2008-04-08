@@ -6,29 +6,29 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.command.window;
+package org.caleydo.core.command.window;
 
 //import javax.swing.JComponent;
 //import javax.swing.JOptionPane;
 //import javax.swing.JLabel;
 
-import org.geneview.core.manager.IGeneralManager;
-//import org.geneview.core.command.factory.CommandFactory;
-//import org.geneview.core.command.base.CmdHandleSetInterface;
-//import org.geneview.core.command.base.CommandAbstractBase;
-//import org.geneview.core.command.window.CmdHandleSetBase;
-//import org.geneview.core.command.window.CmdWindowNewIFrameJoglCanvas;
-import org.geneview.core.command.window.CmdWindowNewIFrameJoglBase;
-////import org.geneview.core.manager.BaseManagerType;
-//import org.geneview.core.net.dwt.swing.jogl.DSwingJoglCanvas;
-//import org.geneview.core.net.dwt.swing.jogl.DSwingJoglScatterplotCanvas;
-//import org.geneview.core.net.dwt.swing.jogl.listener.GLEventForwardListener;
-//import org.geneview.core.net.dwt.swing.jogl.mouse.AWTRegionMouseEventHandler;
-////import org.geneview.core.net.dwt.swing.jogl.listener.GLEventListenerSingleSource;
-////import org.geneview.core.net.dwt.swing.jogl.listener.GLEventListenerMultiSource;
-////import org.geneview.core.net.dwt.swing.mdi.DDesktopPane;
-////import org.geneview.core.net.dwt.swing.mdi.DInternalFrame;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.manager.IGeneralManager;
+//import org.caleydo.core.command.factory.CommandFactory;
+//import org.caleydo.core.command.base.CmdHandleSetInterface;
+//import org.caleydo.core.command.base.CommandAbstractBase;
+//import org.caleydo.core.command.window.CmdHandleSetBase;
+//import org.caleydo.core.command.window.CmdWindowNewIFrameJoglCanvas;
+import org.caleydo.core.command.window.CmdWindowNewIFrameJoglBase;
+////import org.caleydo.core.manager.BaseManagerType;
+//import org.caleydo.core.net.dwt.swing.jogl.DSwingJoglCanvas;
+//import org.caleydo.core.net.dwt.swing.jogl.DSwingJoglScatterplotCanvas;
+//import org.caleydo.core.net.dwt.swing.jogl.listener.GLEventForwardListener;
+//import org.caleydo.core.net.dwt.swing.jogl.mouse.AWTRegionMouseEventHandler;
+////import org.caleydo.core.net.dwt.swing.jogl.listener.GLEventListenerSingleSource;
+////import org.caleydo.core.net.dwt.swing.jogl.listener.GLEventListenerMultiSource;
+////import org.caleydo.core.net.dwt.swing.mdi.DDesktopPane;
+////import org.caleydo.core.net.dwt.swing.mdi.DInternalFrame;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Creates a internal frame dispaying a 2D histogram in JOGL.
@@ -63,13 +63,13 @@ extends CmdWindowNewIFrameJoglBase {
 
 	
 	/** 
-	 * Example for using org.geneview.core.command.window.CmdWindowNewIFrameJoglBase#doCommand_IFrame()
+	 * Example for using org.caleydo.core.command.window.CmdWindowNewIFrameJoglBase#doCommand_IFrame()
 	 * as a spuer class.
 	 * 
-	 * @see org.geneview.core.command.window.CmdWindowNewIFrameJoglBase#doCommand_IFrame()
-	 * @see org.geneview.core.command.ICommand#doCommand()
+	 * @see org.caleydo.core.command.window.CmdWindowNewIFrameJoglBase#doCommand_IFrame()
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws GeneViewRuntimeException {	
+	public void doCommand() throws CaleydoRuntimeException {	
 		
 		super.doCommand_IFrame();
 
@@ -95,9 +95,9 @@ extends CmdWindowNewIFrameJoglBase {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#undoCommand()
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws GeneViewRuntimeException {
+	public void undoCommand() throws CaleydoRuntimeException {
 		
 	}
 

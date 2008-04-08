@@ -1,4 +1,4 @@
-package org.geneview.core.view.swt.data.explorer;
+package org.caleydo.core.view.swt.data.explorer;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -13,26 +13,26 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.data.collection.IVirtualArray;
-import org.geneview.core.data.collection.SetType;
-import org.geneview.core.data.collection.set.selection.ISetSelection;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.data.ISetManager;
-import org.geneview.core.manager.data.IStorageManager;
-import org.geneview.core.manager.data.IVirtualArrayManager;
-import org.geneview.core.manager.event.mediator.IMediatorReceiver;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.view.AViewRep;
-import org.geneview.core.view.IView;
-import org.geneview.core.view.ViewType;
-import org.geneview.core.view.swt.data.DataTableViewRep;
-import org.geneview.core.view.swt.data.explorer.model.AModel;
-import org.geneview.core.view.swt.data.explorer.model.DataCollectionModel;
-import org.geneview.core.view.swt.data.explorer.model.SelectionModel;
-import org.geneview.core.view.swt.data.explorer.model.StorageModel;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.data.collection.SetType;
+import org.caleydo.core.data.collection.set.selection.ISetSelection;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.data.ISetManager;
+import org.caleydo.core.manager.data.IStorageManager;
+import org.caleydo.core.manager.data.IVirtualArrayManager;
+import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.IView;
+import org.caleydo.core.view.ViewType;
+import org.caleydo.core.view.swt.data.DataTableViewRep;
+import org.caleydo.core.view.swt.data.explorer.model.AModel;
+import org.caleydo.core.view.swt.data.explorer.model.DataCollectionModel;
+import org.caleydo.core.view.swt.data.explorer.model.SelectionModel;
+import org.caleydo.core.view.swt.data.explorer.model.StorageModel;
 
 public class DataExplorerViewRep 
 extends AViewRep 
@@ -80,7 +80,7 @@ implements IView, IMediatorReceiver {
 
 //	/**
 //	 * 
-//	 * @see org.geneview.core.view.IView#initView()
+//	 * @see org.caleydo.core.view.IView#initView()
 //	 */
 //	public void initView() {
 //		
@@ -342,7 +342,7 @@ implements IView, IMediatorReceiver {
 
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#update(java.lang.Object)
+	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#update(java.lang.Object)
 	 */
 	public void updateReceiver(Object eventTrigger) {
 
@@ -359,7 +359,7 @@ implements IView, IMediatorReceiver {
 	
 	/*
 	 *  (non-Javadoc)
-	 * @see org.geneview.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, org.geneview.core.data.collection.ISet)
+	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, org.caleydo.core.data.collection.ISet)
 	 */
 	public void updateReceiver(Object eventTrigger, final ISet updatedSet) {
 

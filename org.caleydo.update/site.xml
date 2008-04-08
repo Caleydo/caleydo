@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
    <description url="http://galactica.icg.tugraz.at/geneview/">
-      GeneView Update Site
+      Caleydo Update Site
    </description>
-   <feature url="features/org.geneview.rcp.feature_1.0.1.jar" id="org.geneview.rcp.feature" version="1.0.1" os="linux,win32" ws="gtk,win32" nl="en_US" arch="x86,x86_64">
-      <category name="geneview_core"/>
+   <feature url="features/org.caleydo.rcp.feature_1.0.1.jar" id="org.caleydo.rcp.feature" version="1.0.1" os="linux,win32" ws="gtk,win32" nl="en_US" arch="x86,x86_64">
+      <category name="caleydo_core"/>
    </feature>
-   <feature url="features/org.geneview.rcp.feature_1.1.0.jar" id="org.geneview.rcp.feature" version="1.1.0" os="linux,win32" ws="gtk,win32" nl="en_US" arch="x86,x86_64">
-      <category name="geneview_core"/>
+   <feature url="features/org.caleydo.rcp.feature_1.1.0.jar" id="org.caleydo.rcp.feature" version="1.1.0" os="linux,win32" ws="gtk,win32" nl="en_US" arch="x86,x86_64">
+      <category name="caleydo_core"/>
    </feature>
-   <category-def name="geneview_core" label="GeneView Core"/>
+   <category-def name="caleydo_core" label="Caleydo Core"/>
 </site>

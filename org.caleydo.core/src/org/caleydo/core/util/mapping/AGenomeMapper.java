@@ -1,21 +1,21 @@
-package org.geneview.core.util.mapping;
+package org.caleydo.core.util.mapping;
 
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.data.collection.SetType;
-import org.geneview.core.data.graph.item.vertex.EPathwayVertexType;
-import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItem;
-import org.geneview.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
-import org.geneview.core.data.mapping.EGenomeMappingType;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.data.IGenomeIdManager;
-import org.geneview.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.SetType;
+import org.caleydo.core.data.graph.item.vertex.EPathwayVertexType;
+import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.data.IGenomeIdManager;
+import org.caleydo.core.util.mapping.color.ColorMapping;
 
 /**
  * Class is responsible for mapping gene expression data

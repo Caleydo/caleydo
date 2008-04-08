@@ -1,17 +1,17 @@
-package org.geneview.core.command.data.filter;
+package org.caleydo.core.command.data.filter;
 
 //import java.util.ArrayList;
 //import java.util.Iterator;
 
-import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
-import org.geneview.core.data.collection.ISet;
-import org.geneview.core.data.collection.StorageType;
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
-//import org.geneview.core.data.collection.storage.FlatThreadStorageSimple;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.StorageType;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+//import org.caleydo.core.data.collection.storage.FlatThreadStorageSimple;
 
 
 /**
@@ -67,7 +67,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail
 	 * Calculates the minimum and the maximum of either a set or a storage
 	 * depending on what has been set using the setAttributes methods	
 	 */
-	public void doCommand() throws GeneViewRuntimeException 
+	public void doCommand() throws CaleydoRuntimeException 
 	{
 		if(myStorage == null && mySet != null)
 		{
@@ -79,15 +79,15 @@ extends ACmdCreate_IdTargetLabelAttrDetail
 		}
 		else
 		{
-		//	throw GeneViewRuntimeException("You have to initialize the filter before using it");
+		//	throw CaleydoRuntimeException("You have to initialize the filter before using it");
 		}		
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#undoCommand()
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws GeneViewRuntimeException 
+	public void undoCommand() throws CaleydoRuntimeException 
 	{
 		// TODO Auto-generated method stub
 	}

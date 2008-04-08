@@ -6,21 +6,21 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection;
+package org.caleydo.core.data.collection;
 
-import org.geneview.core.util.IGeneViewDefaultType;
+import org.caleydo.core.util.ICaleydoDefaultType;
 
 /**
  * Defines different types of sets containing data.
  * 
  * @author Michael Kalkusch
  * 
- * @see org.geneview.core.data.collection.SetDataType;
- * @see org.geneview.core.data.collection.SetType;
+ * @see org.caleydo.core.data.collection.SetDataType;
+ * @see org.caleydo.core.data.collection.SetType;
  *
  */
 public enum SetDetailedDataType 
-implements IGeneViewDefaultType <SetDetailedDataType> {
+implements ICaleydoDefaultType <SetDetailedDataType> {
 	
 	/** raw data without any tag */
 	RAW_DATA(),
@@ -47,7 +47,7 @@ implements IGeneViewDefaultType <SetDetailedDataType> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.util.IGeneViewDefaultType#getTypeDefault()
+	 * @see org.caleydo.core.util.ICaleydoDefaultType#getTypeDefault()
 	 */
 	public SetDetailedDataType getTypeDefault() {
 

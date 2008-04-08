@@ -6,12 +6,12 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.command.window;
+package org.caleydo.core.command.window;
 
 import javax.swing.JProgressBar;
 
-import org.geneview.core.command.base.ACommand;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.command.base.ACommand;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Creates a popup window dispaying info.
@@ -85,9 +85,9 @@ extends ACommand {
 	
 	
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#doCommand()
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws GeneViewRuntimeException {
+	public void doCommand() throws CaleydoRuntimeException {
 		
 		
 		progressBar.setStringPainted( true );
@@ -96,9 +96,9 @@ extends ACommand {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#undoCommand()
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws GeneViewRuntimeException {
+	public void undoCommand() throws CaleydoRuntimeException {
 		progressBar.setVisible( false );
 		
 		progressBar = null;

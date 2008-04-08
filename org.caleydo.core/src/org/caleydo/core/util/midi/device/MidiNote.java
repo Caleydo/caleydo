@@ -1,4 +1,4 @@
-package org.geneview.core.util.midi.device;
+package org.caleydo.core.util.midi.device;
 
 
 import javax.sound.midi.InvalidMidiDataException;

@@ -1,4 +1,4 @@
-package org.geneview.rcp.util.search;
+package org.caleydo.rcp.util.search;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;

@@ -1,7 +1,7 @@
-package org.geneview.core.command.queue;
+package org.caleydo.core.command.queue;
 
-import org.geneview.core.command.ICommand;
-import org.geneview.core.parser.ascii.IParserObject;
+import org.caleydo.core.command.ICommand;
+import org.caleydo.core.parser.ascii.IParserObject;
 
 public interface ICommandQueue 
 extends ICommand, IParserObject {

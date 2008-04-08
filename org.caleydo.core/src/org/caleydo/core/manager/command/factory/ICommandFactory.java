@@ -1,7 +1,7 @@
-package org.geneview.core.manager.command.factory;
+package org.caleydo.core.manager.command.factory;
 
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.ICommand;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.ICommand;
 
 /**
  * Base class for Command factory.
@@ -23,7 +23,7 @@ public interface ICommandFactory {
 	public ICommand createCommandByType(final CommandQueueSaxType cmdType);
 	
 	/**
-	 * @see org.geneview.core.manager.ICommandManager#createCommandQueue(String, String, int, int, int, int)
+	 * @see org.caleydo.core.manager.ICommandManager#createCommandQueue(String, String, int, int, int, int)
 	 */
 	public ICommand createCommandQueue( final String sCmdType,
 			final String sProcessType,

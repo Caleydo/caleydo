@@ -1,4 +1,4 @@
-package org.geneview.core.view.opengl.canvas.heatmap;
+package org.caleydo.core.view.opengl.canvas.heatmap;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec2f;
@@ -10,22 +10,22 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
-import org.geneview.core.data.view.camera.IViewFrustum;
-import org.geneview.core.data.view.rep.renderstyle.HeatMapRenderStyle;
-import org.geneview.core.data.view.rep.selection.SelectedElementRep;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.view.EPickingMode;
-import org.geneview.core.manager.view.EPickingType;
-import org.geneview.core.manager.view.Pick;
-import org.geneview.core.util.mapping.color.ColorMapping;
-import org.geneview.core.view.jogl.mouse.PickingJoglMouseListener;
-import org.geneview.core.view.opengl.canvas.AGLCanvasStorageBasedView;
-import org.geneview.core.view.opengl.canvas.parcoords.EInputDataType;
-import org.geneview.core.view.opengl.canvas.parcoords.ESelectionType;
-import org.geneview.core.view.opengl.util.GLToolboxRenderer;
-import org.geneview.core.view.opengl.util.JukeboxHierarchyLayer;
-import org.geneview.core.view.opengl.util.selection.EViewInternalSelectionType;
-import org.geneview.core.view.opengl.util.selection.GenericSelectionManager;
+import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.data.view.rep.renderstyle.HeatMapRenderStyle;
+import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.view.EPickingMode;
+import org.caleydo.core.manager.view.EPickingType;
+import org.caleydo.core.manager.view.Pick;
+import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.canvas.AGLCanvasStorageBasedView;
+import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
+import org.caleydo.core.view.opengl.canvas.parcoords.ESelectionType;
+import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
+import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
+import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
 
 /**
  * Rendering the HeatMap
@@ -216,7 +216,7 @@ extends AGLCanvasStorageBasedView
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.geneview.core.manager.view.EPickingType, org.geneview.core.manager.view.EPickingMode, int, org.geneview.core.manager.view.Pick)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.caleydo.core.manager.view.EPickingType, org.caleydo.core.manager.view.EPickingMode, int, org.caleydo.core.manager.view.Pick)
 	 */
 	protected void handleEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) 

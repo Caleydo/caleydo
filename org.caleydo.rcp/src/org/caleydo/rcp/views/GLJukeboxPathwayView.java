@@ -1,4 +1,4 @@
-package org.geneview.rcp.views;
+package org.caleydo.rcp.views;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IContributionItem;
@@ -8,19 +8,19 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.geneview.core.command.CommandQueueSaxType;
-import org.geneview.core.command.view.rcp.CmdExternalActionTrigger;
-import org.geneview.core.command.view.rcp.CmdExternalFlagSetter;
-import org.geneview.core.command.view.rcp.EExternalActionType;
-import org.geneview.core.command.view.rcp.EExternalFlagSetterType;
-import org.geneview.rcp.Application;
-import org.geneview.rcp.util.search.SearchBar;
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.view.rcp.CmdExternalActionTrigger;
+import org.caleydo.core.command.view.rcp.CmdExternalFlagSetter;
+import org.caleydo.core.command.view.rcp.EExternalActionType;
+import org.caleydo.core.command.view.rcp.EExternalFlagSetterType;
+import org.caleydo.rcp.Application;
+import org.caleydo.rcp.util.search.SearchBar;
 
 
 public class GLJukeboxPathwayView 
 extends AGLViewPart {
 
-	public static final String ID = "org.geneview.rcp.views.GLJukeboxPathwayView";
+	public static final String ID = "org.caleydo.rcp.views.GLJukeboxPathwayView";
 
 	public static final String ACTION_ENABLE_ANIMATOR_ICON = "resources/icons/PathwayEditor/animator.png";
 	public static final String ACTION_ENABLE_PATHWAY_TEXTURES_TEXT = "Turn on/off pathway textures";

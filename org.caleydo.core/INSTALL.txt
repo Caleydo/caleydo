@@ -1,5 +1,5 @@
 
- How to install GeneView?
+ How to install Caleydo?
 ==========================
 
 Eclipse 3.4.0

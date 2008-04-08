@@ -1,9 +1,9 @@
-package org.geneview.core.manager;
+package org.caleydo.core.manager;
 
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.view.swt.ISWTWidget;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.view.swt.ISWTWidget;
 
 public interface ISWTGUIManager 
 extends IGeneralManager {

@@ -1,18 +1,18 @@
 /**
  * 
  */
-package org.geneview.util.graph.core;
+package org.caleydo.util.graph.core;
 
 import java.util.List;
 import java.util.Iterator;
 
-import org.geneview.util.graph.EGraphItemHierarchy;
-import org.geneview.util.graph.EGraphItemKind;
-import org.geneview.util.graph.EGraphItemProperty;
-import org.geneview.util.graph.GraphRuntimeException;
-import org.geneview.util.graph.IGraph;
-import org.geneview.util.graph.IGraphItem;
-import org.geneview.util.graph.item.GraphGenericContainer;
+import org.caleydo.util.graph.EGraphItemHierarchy;
+import org.caleydo.util.graph.EGraphItemKind;
+import org.caleydo.util.graph.EGraphItemProperty;
+import org.caleydo.util.graph.GraphRuntimeException;
+import org.caleydo.util.graph.IGraph;
+import org.caleydo.util.graph.IGraphItem;
+import org.caleydo.util.graph.item.GraphGenericContainer;
 
 /**
  * @author Michael Kalkusch
@@ -46,7 +46,7 @@ public class Graph extends AGraph {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.util.graph.IGraph#addGraph(org.geneview.util.graph.IGraph, org.geneview.util.graph.EGraphItemHierarchy)
+	 * @see org.caleydo.util.graph.IGraph#addGraph(org.caleydo.util.graph.IGraph, org.caleydo.util.graph.EGraphItemHierarchy)
 	 */
 	public boolean addGraph(IGraph graph, EGraphItemHierarchy type)
 			throws GraphRuntimeException {
@@ -57,7 +57,7 @@ public class Graph extends AGraph {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.util.graph.IGraph#addItem(org.geneview.util.graph.IGraphItem)
+	 * @see org.caleydo.util.graph.IGraph#addItem(org.caleydo.util.graph.IGraphItem)
 	 */
 	public boolean addItem(IGraphItem item) {
 		items.addGraphComponent(item, item.getGraphKind());
@@ -66,7 +66,7 @@ public class Graph extends AGraph {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.util.graph.IGraph#clearGraph()
+	 * @see org.caleydo.util.graph.IGraph#clearGraph()
 	 */
 	public void clearGraph() {
 		
@@ -97,14 +97,14 @@ public class Graph extends AGraph {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.util.graph.IGraph#containsItem(org.geneview.util.graph.IGraphItem)
+	 * @see org.caleydo.util.graph.IGraph#containsItem(org.caleydo.util.graph.IGraphItem)
 	 */
 	public boolean containsItem(IGraphItem item) {
 		return items.getAllGraphComponent(item.getGraphKind()).contains(item);
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.util.graph.IGraph#isEmpty()
+	 * @see org.caleydo.util.graph.IGraph#isEmpty()
 	 */
 	public final boolean isEmpty() {
 		if (( graphs.isEmpty()) &&
@@ -116,7 +116,7 @@ public class Graph extends AGraph {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.util.graph.IGraph#removeAllByKind(org.geneview.util.graph.EGraphItemKind)
+	 * @see org.caleydo.util.graph.IGraph#removeAllByKind(org.caleydo.util.graph.EGraphItemKind)
 	 */
 	public void removeAllByKind(EGraphItemKind kind) {
 		
@@ -136,21 +136,21 @@ public class Graph extends AGraph {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.util.graph.IGraph#removeGraph(org.geneview.util.graph.IGraph, org.geneview.util.graph.EGraphItemHierarchy)
+	 * @see org.caleydo.util.graph.IGraph#removeGraph(org.caleydo.util.graph.IGraph, org.caleydo.util.graph.EGraphItemHierarchy)
 	 */
 	public boolean removeGraph(IGraph graph, EGraphItemHierarchy type) {
 		return graphs.removeGraphComponent(graph, type);
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.util.graph.IGraph#removeItem(org.geneview.util.graph.IGraphItem)
+	 * @see org.caleydo.util.graph.IGraph#removeItem(org.caleydo.util.graph.IGraphItem)
 	 */
 	public boolean removeItem(IGraphItem item) {
 		return items.removeGraphComponent(item, item.getGraphKind());
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.util.graph.IGraph#updateItem(org.geneview.util.graph.IGraphItem)
+	 * @see org.caleydo.util.graph.IGraph#updateItem(org.caleydo.util.graph.IGraphItem)
 	 */
 	public boolean updateItem(IGraphItem item) {
 		EGraphItemKind itemNewKind = item.getGraphKind();
@@ -182,14 +182,14 @@ public class Graph extends AGraph {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.util.graph.IGraph#getAllItemsByKind(org.geneview.util.graph.EGraphItemKind)
+	 * @see org.caleydo.util.graph.IGraph#getAllItemsByKind(org.caleydo.util.graph.EGraphItemKind)
 	 */
 	public List<IGraphItem> getAllItemsByKind(EGraphItemKind kind) {		
 		return items.getAllGraphComponent(kind);
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.util.graph.IGraphItemHierarchy#getAllGraphByType(org.geneview.util.graph.EGraphItemHierarchy)
+	 * @see org.caleydo.util.graph.IGraphItemHierarchy#getAllGraphByType(org.caleydo.util.graph.EGraphItemHierarchy)
 	 */
 	public List<IGraph> getAllGraphByType(EGraphItemHierarchy type) {
 		return graphs.getAllGraphComponent(type);	

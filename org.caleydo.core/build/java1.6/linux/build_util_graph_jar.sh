@@ -1,3 +1,3 @@
 #!/bin/bash
 
-jar -cvfM ../../../../org.geneview.rcp/lib/org.geneview.util.graph_bin.jar -C ../../../../org.geneview.util.graph/bin/ .    
+jar -cvfM ../../../../org.caleydo.rcp/lib/org.caleydo.util.graph_bin.jar -C ../../../../org.caleydo.util.graph/bin/ .    

@@ -1,8 +1,8 @@
-package org.geneview.core.command;
+package org.caleydo.core.command;
 
-import org.geneview.core.manager.ICommandManager;
-import org.geneview.core.command.ICommandActionListener;
-import org.geneview.core.data.xml.IMementoNetEventXML;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.command.ICommandActionListener;
+import org.caleydo.core.data.xml.IMementoNetEventXML;
 
 /**
  * Handles commands.

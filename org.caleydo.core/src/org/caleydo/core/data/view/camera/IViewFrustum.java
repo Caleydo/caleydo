@@ -1,6 +1,6 @@
-package org.geneview.core.data.view.camera;
+package org.caleydo.core.data.view.camera;
 
-import org.geneview.core.data.view.camera.ViewFrustumBase.ProjectionMode;
+import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 
 
 /**

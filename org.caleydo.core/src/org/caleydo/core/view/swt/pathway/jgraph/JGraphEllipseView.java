@@ -1,4 +1,4 @@
-package org.geneview.core.view.swt.pathway.jgraph;
+package org.caleydo.core.view.swt.pathway.jgraph;
 
 import java.awt.BasicStroke;
 import java.awt.Dimension;

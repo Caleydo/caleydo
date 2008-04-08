@@ -1,4 +1,4 @@
-package org.geneview.core.view.swt;
+package org.caleydo.core.view.swt;
 
 public interface ISWTWidget
 {

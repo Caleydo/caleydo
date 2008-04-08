@@ -1,26 +1,26 @@
-package org.geneview.testing.testing_util;
+package org.caleydo.testing.testing_util;
 
-import org.geneview.core.application.core.GeneViewBootloader;
-import org.geneview.core.manager.IGeneralManager;
+import org.caleydo.core.application.core.CaleydoBootloader;
+import org.caleydo.core.manager.IGeneralManager;
 
 public class CoreStarter {
 	
 	//private IGeneralManager refGeneralManager;	
 	
-	private GeneViewBootloader geneviewCore;
+	private CaleydoBootloader geneviewCore;
 	
 	
 	/**
-	 * Starts GeneView with the specified XML File. A simple sample is used 
+	 * Starts Caleydo with the specified XML File. A simple sample is used 
 	 * if no XML file is specified. Returns the core, which can be also accessed
-	 * with getGeneViewCore
+	 * with getCaleydoCore
 	 * @param xmlFileName
 	 * @return
 	 */
-	public GeneViewBootloader startGeneViewCore( final String xmlFileName ) 
+	public CaleydoBootloader startCaleydoCore( final String xmlFileName ) 
 	{
 		
-		geneviewCore = new GeneViewBootloader();
+		geneviewCore = new CaleydoBootloader();
 			
 		if  (xmlFileName=="") 
 		{
@@ -36,9 +36,9 @@ public class CoreStarter {
 	/**
 	 * Deletes the core
 	 */
-	public void disposeGeneViewCore() {
+	public void disposeCaleydoCore() {
 		
-		System.out.println(getClass().getSimpleName() + ".disposeGeneViewCore() shutdown ...");
+		System.out.println(getClass().getSimpleName() + ".disposeCaleydoCore() shutdown ...");
 		
 		if ( geneviewCore != null ) 
 		{
@@ -49,12 +49,12 @@ public class CoreStarter {
 			}
 			else 
 			{
-				System.err.println(getClass().getSimpleName() + ".disposeGeneViewCore() core was already stopped!");
+				System.err.println(getClass().getSimpleName() + ".disposeCaleydoCore() core was already stopped!");
 			}
 		}
 	}
 	
-	public GeneViewBootloader getGeneViewCore()
+	public CaleydoBootloader getCaleydoCore()
 	{
 		return geneviewCore;		
 	}

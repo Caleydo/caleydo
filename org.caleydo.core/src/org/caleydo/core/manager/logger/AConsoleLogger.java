@@ -1,21 +1,21 @@
 /**
  * 
  */
-package org.geneview.core.manager.logger;
+package org.caleydo.core.manager.logger;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager;
-//import org.geneview.core.manager.ILoggerManager.LoggerType;
-//import org.geneview.core.manager.ISingelton;
-import org.geneview.core.manager.base.AAbstractManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.manager.type.ManagerType;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager;
+//import org.caleydo.core.manager.ILoggerManager.LoggerType;
+//import org.caleydo.core.manager.ISingelton;
+import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * 
- * @see org.geneview.core.manager.ILoggerManager
- * @see org.geneview.core.manager.IGeneralManager
+ * @see org.caleydo.core.manager.ILoggerManager
+ * @see org.caleydo.core.manager.IGeneralManager
  * 
  * @author Michael Kalkusch
  *
@@ -41,7 +41,7 @@ public abstract class AConsoleLogger
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.manager.ILoggerManager#setLogLevel(short)
+	 * @see org.caleydo.core.manager.ILoggerManager#setLogLevel(short)
 	 */
 	public final void setLogLevel(LoggerType level) {
 		logLevel = level;
@@ -49,7 +49,7 @@ public abstract class AConsoleLogger
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.manager.ILoggerManager#getLogLevel()
+	 * @see org.caleydo.core.manager.ILoggerManager#getLogLevel()
 	 */
 	public final LoggerType getLogLevel() {
 		return logLevel;
@@ -58,7 +58,7 @@ public abstract class AConsoleLogger
 	/** 
 	 * Since the logger prints to system.out it is always flushed.
 	 * 
-	 * @see org.geneview.core.manager.ILoggerManager#isLogFlushed()
+	 * @see org.caleydo.core.manager.ILoggerManager#isLogFlushed()
 	 */
 	public final boolean isLogFlushed() {
 		return bIsLogFlushed;
@@ -67,7 +67,7 @@ public abstract class AConsoleLogger
 	/**
 	 * Do nothing, since all messages are loged any way.
 	 * 
-	 * @see org.geneview.core.manager.ILoggerManager#setSystemLogLevel(short)
+	 * @see org.caleydo.core.manager.ILoggerManager#setSystemLogLevel(short)
 	 */
 	public final void setSystemLogLevel(LoggerType systemLogLevel)
 	{
@@ -80,7 +80,7 @@ public abstract class AConsoleLogger
 	/**
 	 * Do nothing, since all messages are loged any way.
 	 * 
-	 * @see org.geneview.core.manager.ILoggerManager#getSystemLogLevel()
+	 * @see org.caleydo.core.manager.ILoggerManager#getSystemLogLevel()
 	 */
 	public final LoggerType getSystemLogLevel()
 	{
@@ -88,21 +88,21 @@ public abstract class AConsoleLogger
 	}
 	
 	/**
-	 * @see org.geneview.core.manager.IGeneralManager#hasItem(int)
+	 * @see org.caleydo.core.manager.IGeneralManager#hasItem(int)
 	 */
 	public final boolean hasItem(final int iItemId) {
-		throw new GeneViewRuntimeException("LOGGER: does not support this method hasItem()");
+		throw new CaleydoRuntimeException("LOGGER: does not support this method hasItem()");
 	}
 
 	/**
-	 * @see org.geneview.core.manager.IGeneralManager#getItem(int)
+	 * @see org.caleydo.core.manager.IGeneralManager#getItem(int)
 	 */
 	public final Object getItem( final int iItemId) {
-		throw new GeneViewRuntimeException("LOGGER: does not support this method getItem()");
+		throw new CaleydoRuntimeException("LOGGER: does not support this method getItem()");
 	}
 	
 	/**
-	 * @see org.geneview.core.manager.IGeneralManager#size()
+	 * @see org.caleydo.core.manager.IGeneralManager#size()
 	 */
 	public int size() {
 		return 0;
@@ -110,22 +110,22 @@ public abstract class AConsoleLogger
 	
 
 	/**
-	 * @see org.geneview.core.manager.IGeneralManager#registerItem(java.lang.Object, int, org.geneview.core.manager.type.ManagerObjectType)
+	 * @see org.caleydo.core.manager.IGeneralManager#registerItem(java.lang.Object, int, org.caleydo.core.manager.type.ManagerObjectType)
 	 */
 	public final boolean registerItem( final Object registerItem, 
 			final int iItemId , 
 			final ManagerObjectType type )
 	{
-		throw new GeneViewRuntimeException("LOGGER: does not support this method registerItem()");
+		throw new CaleydoRuntimeException("LOGGER: does not support this method registerItem()");
 	}
 	
 	
 	
 	/**
-	 * @see org.geneview.core.manager.IGeneralManager#unregisterItem(int, org.geneview.core.manager.type.ManagerObjectType)
+	 * @see org.caleydo.core.manager.IGeneralManager#unregisterItem(int, org.caleydo.core.manager.type.ManagerObjectType)
 	 */
 	public final boolean unregisterItem( final int iItemId, final ManagerObjectType type  ) {
-		throw new GeneViewRuntimeException("LOGGER: does not support this method unregisterItem()");
+		throw new CaleydoRuntimeException("LOGGER: does not support this method unregisterItem()");
 	}
 
 }

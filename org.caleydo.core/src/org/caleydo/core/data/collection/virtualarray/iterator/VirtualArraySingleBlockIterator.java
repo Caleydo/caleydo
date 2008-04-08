@@ -6,11 +6,11 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection.virtualarray.iterator;
+package org.caleydo.core.data.collection.virtualarray.iterator;
 
-import org.geneview.core.data.collection.IVirtualArray;
-import org.geneview.core.util.exception.GeneViewRuntimeExceptionType;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Iterator for Selecion VirtualArraySingleBlock
@@ -35,22 +35,22 @@ implements IVirtualArrayIterator {
 
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.iterator.SelectionIterator#setVirtualIndex(int)
+	 * @see org.caleydo.core.data.collection.iterator.SelectionIterator#setVirtualIndex(int)
 	 */
 	public void setVirtualIndex(int iSetVirtualIndex)
-			throws GeneViewRuntimeException {
+			throws CaleydoRuntimeException {
 		
 		if (( iSetVirtualIndex < 0 ) || 
 				( iSetVirtualIndex >= iSelectionLength) ) {
-			throw new GeneViewRuntimeException("setVirtualIndex() with index that was out of bounds.",
-							GeneViewRuntimeExceptionType.VIRTUALARRAY );
+			throw new CaleydoRuntimeException("setVirtualIndex() with index that was out of bounds.",
+							CaleydoRuntimeExceptionType.VIRTUALARRAY );
 		}
 		
 		iCurrentVirtualIndex = iSetVirtualIndex;
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.data.collection.iterator.ICollectionIterator#next()
+	 * @see org.caleydo.core.data.collection.iterator.ICollectionIterator#next()
 	 */
 	public int next() {
 		final int iCurrentRealIndex = iCurrentVirtualIndex + iSelectionOffset;

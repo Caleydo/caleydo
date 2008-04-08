@@ -6,10 +6,10 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.collection;
+package org.caleydo.core.data.collection;
 
-import org.geneview.core.data.collection.ICollectionType;
-import org.geneview.core.data.collection.SetDataType;
+import org.caleydo.core.data.collection.ICollectionType;
+import org.caleydo.core.data.collection.SetDataType;
 
 /**
  * Defines different types of sets.
@@ -77,7 +77,7 @@ implements ICollectionType <SetType> {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.util.IGeneViewDefaultType#getTypeDefault()
+	 * @see org.caleydo.core.util.ICaleydoDefaultType#getTypeDefault()
 	 */
 	public SetType getTypeDefault() {
 

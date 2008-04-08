@@ -1,4 +1,4 @@
-package org.geneview.rcp.dialog.search;
+package org.caleydo.rcp.dialog.search;
 
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
@@ -11,7 +11,7 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
-import org.geneview.rcp.Application;
+import org.caleydo.rcp.Application;
 
 /**
  * 
@@ -82,7 +82,7 @@ extends Dialog
 	 */
 	protected void okPressed() {
 
-		boolean bFound = Application.geneview_core.getGeneralManager().getSingelton().getViewGLCanvasManager().getDataEntitySearcher()
+		boolean bFound = Application.caleydo_core.getGeneralManager().getSingelton().getViewGLCanvasManager().getDataEntitySearcher()
 			.searchForEntity(searchText.getText());
 		
 		if (bFound)

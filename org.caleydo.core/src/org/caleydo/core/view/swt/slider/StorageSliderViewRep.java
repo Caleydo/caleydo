@@ -1,7 +1,7 @@
-package org.geneview.core.view.swt.slider;
+package org.caleydo.core.view.swt.slider;
 
-import org.geneview.core.data.collection.IVirtualArray;
-import org.geneview.core.manager.IGeneralManager;
+import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.manager.IGeneralManager;
 
 public class StorageSliderViewRep 
 extends ASliderViewRep {

@@ -1,4 +1,4 @@
-package org.geneview.testing.command.data.filter;
+package org.caleydo.testing.command.data.filter;
 
 
 import junit.framework.Test;
@@ -8,7 +8,7 @@ public class AllTests {
 
 	public static Test suite() {
 		TestSuite suite = new TestSuite(
-				"Test for org.geneview.testing.command.data.filter");
+				"Test for org.caleydo.testing.command.data.filter");
 		//$JUnit-BEGIN$
 		suite.addTestSuite(CmdDataFiterMinMaxTest.class);
 		suite.addTestSuite(CmdDataFilterMathTest.class);

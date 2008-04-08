@@ -6,7 +6,7 @@
  *  creation date: 03-07-2006
  *  
  */
-package org.geneview.core.test.jgraph.kegg;
+package org.caleydo.core.test.jgraph.kegg;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;

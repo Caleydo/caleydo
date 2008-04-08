@@ -1,4 +1,4 @@
-package org.geneview.core.manager.data.pathway;
+package org.caleydo.core.manager.data.pathway;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -9,16 +9,16 @@ import java.util.regex.Pattern;
 
 import javax.media.opengl.GL;
 
-import org.geneview.core.data.graph.core.PathwayGraph;
-import org.geneview.core.data.view.rep.jgraph.PathwayImageMap;
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.manager.ILoggerManager.LoggerType;
-import org.geneview.core.manager.base.AAbstractManager;
-import org.geneview.core.manager.data.IPathwayManager;
-import org.geneview.core.manager.type.ManagerObjectType;
-import org.geneview.core.manager.type.ManagerType;
-import org.geneview.util.graph.EGraphItemHierarchy;
-import org.geneview.util.graph.core.Graph;
+import org.caleydo.core.data.graph.core.PathwayGraph;
+import org.caleydo.core.data.view.rep.jgraph.PathwayImageMap;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.data.IPathwayManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.util.graph.EGraphItemHierarchy;
+import org.caleydo.util.graph.core.Graph;
 
 /**
  * The pathway manager is in charge for 
@@ -86,7 +86,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.data.IPathwayManagerNew#createPathway(java.lang.String, java.lang.String, java.lang.String, java.lang.String, int)
+	 * @see org.caleydo.core.manager.data.IPathwayManagerNew#createPathway(java.lang.String, java.lang.String, java.lang.String, java.lang.String, int)
 	 */
 	public PathwayGraph createPathway(
 			final EPathwayDatabaseType type,
@@ -117,7 +117,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.data.IPathwayManager#loadPathwayById(int)
+	 * @see org.caleydo.core.manager.data.IPathwayManager#loadPathwayById(int)
 	 */
 	public boolean loadPathwayById(final int iPathwayID) {
 		
@@ -173,7 +173,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.data.IPathwayManager#loadAllPathwaysByType(org.geneview.core.manager.data.pathway.EPathwayDatabaseType)
+	 * @see org.caleydo.core.manager.data.IPathwayManager#loadAllPathwaysByType(org.caleydo.core.manager.data.pathway.EPathwayDatabaseType)
 	 */
 	public void loadAllPathwaysByType(final EPathwayDatabaseType type) {
 		
@@ -196,7 +196,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.data.IPathwayManager#searchPathwayByName(java.lang.String)
+	 * @see org.caleydo.core.manager.data.IPathwayManager#searchPathwayByName(java.lang.String)
 	 */
 	public int searchPathwayIdByName(final String sPathwayName) {
 		
@@ -221,7 +221,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.data.IPathwayManager#getRootPathway()
+	 * @see org.caleydo.core.manager.data.IPathwayManager#getRootPathway()
 	 */
 	public Graph getRootPathway() {
 		
@@ -230,7 +230,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.data.IPathwayManager#setPathwayVisibilityStateByID(int, boolean)
+	 * @see org.caleydo.core.manager.data.IPathwayManager#setPathwayVisibilityStateByID(int, boolean)
 	 */
 	public void setPathwayVisibilityStateByID(final int iPathwayID,
 			final boolean bVisibilityState) {
@@ -240,7 +240,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.data.IPathwayManager#isPathwayVisible(int)
+	 * @see org.caleydo.core.manager.data.IPathwayManager#isPathwayVisible(int)
 	 */
 	public boolean isPathwayVisible(final int iPathwayID) {
 		
@@ -249,7 +249,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.data.IPathwayManager#createPathwayImageMap(java.lang.String)
+	 * @see org.caleydo.core.manager.data.IPathwayManager#createPathwayImageMap(java.lang.String)
 	 */
 	public void createPathwayImageMap(final String sImageLink) {
 		
@@ -263,7 +263,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.data.IPathwayManager#getCurrentPathwayImageMap()
+	 * @see org.caleydo.core.manager.data.IPathwayManager#getCurrentPathwayImageMap()
 	 */
 	public PathwayImageMap getCurrentPathwayImageMap () {
 		
@@ -272,7 +272,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.IGeneralManager#getItem(int)
+	 * @see org.caleydo.core.manager.IGeneralManager#getItem(int)
 	 */
 	public Object getItem(int iItemId) {
 
@@ -281,7 +281,7 @@ implements IPathwayManager {
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.IGeneralManager#hasItem(int)
+	 * @see org.caleydo.core.manager.IGeneralManager#hasItem(int)
 	 */
 	public boolean hasItem(int iItemId) {
 
@@ -293,7 +293,7 @@ implements IPathwayManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.IGeneralManager#registerItem(java.lang.Object, int, org.geneview.core.manager.type.ManagerObjectType)
+	 * @see org.caleydo.core.manager.IGeneralManager#registerItem(java.lang.Object, int, org.caleydo.core.manager.type.ManagerObjectType)
 	 */
 	public boolean registerItem(Object registerItem, int itemId,
 			ManagerObjectType type) {
@@ -304,7 +304,7 @@ implements IPathwayManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.IGeneralManager#size()
+	 * @see org.caleydo.core.manager.IGeneralManager#size()
 	 */
 	public int size() {
 
@@ -314,7 +314,7 @@ implements IPathwayManager {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.geneview.core.manager.IGeneralManager#unregisterItem(int, org.geneview.core.manager.type.ManagerObjectType)
+	 * @see org.caleydo.core.manager.IGeneralManager#unregisterItem(int, org.caleydo.core.manager.type.ManagerObjectType)
 	 */
 	public boolean unregisterItem(int itemId, ManagerObjectType type) {
 

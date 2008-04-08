@@ -1,4 +1,4 @@
-package org.geneview.rcp.util.search;
+package org.caleydo.rcp.util.search;
 
 import java.util.List;
 
@@ -18,10 +18,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.geneview.core.data.graph.core.PathwayGraph;
-import org.geneview.rcp.Application;
-import org.geneview.util.graph.EGraphItemHierarchy;
-import org.geneview.util.graph.IGraph;
+import org.caleydo.core.data.graph.core.PathwayGraph;
+import org.caleydo.rcp.Application;
+import org.caleydo.util.graph.EGraphItemHierarchy;
+import org.caleydo.util.graph.IGraph;
 
 /**
  * Search bar that allows searching for genes and pathways.
@@ -69,7 +69,7 @@ extends ControlContribution {
 		searchBox.addFocusListener(new FocusAdapter() {
 	        public void focusGained(FocusEvent e) {
 				
-				List<IGraph> lLoadedGraphs = Application.geneview_core
+				List<IGraph> lLoadedGraphs = Application.caleydo_core
 				.getGeneralManager().getSingelton()
 					.getPathwayManager().getRootPathway()
 						.getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN);
@@ -95,7 +95,7 @@ extends ControlContribution {
 		    	 String sSearchEntity = searchBox.getItem(searchBox.getSelectionIndex());
 		    	 sSearchEntity = sSearchEntity.substring(0, sSearchEntity.indexOf(" ("));
 		    	 
-		    	 Application.geneview_core.getGeneralManager()
+		    	 Application.caleydo_core.getGeneralManager()
 					.getSingelton().getViewGLCanvasManager()
 						.getDataEntitySearcher().searchForEntity(sSearchEntity);
 		     }
@@ -119,7 +119,7 @@ extends ControlContribution {
 				switch (event.keyCode) {
 				case SWT.CR: 
 				{
-					boolean bFound = Application.geneview_core
+					boolean bFound = Application.caleydo_core
 							.getGeneralManager().getSingelton()
 							.getViewGLCanvasManager().getDataEntitySearcher()
 							.searchForEntity(geneSearchText.getText());

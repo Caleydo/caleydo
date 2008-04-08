@@ -6,10 +6,10 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.data.xml;
+package org.caleydo.core.data.xml;
 
-import org.geneview.core.data.IUniqueObject;
-import org.geneview.core.data.xml.IMementoXML;
+import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.data.xml.IMementoXML;
 
 /**
  * Interface for one item.

@@ -25,7 +25,7 @@ SET class_files=..\..\..\%destination%
 
 
 rem path and filename of resulting jar file
-SET jar_file_name=..\..\..\lib\org.geneview.graph_%destination%.jar
+SET jar_file_name=..\..\..\lib\org.caleydo.graph_%destination%.jar
 
 echo info= %class_files%   %jar_file_name%
 

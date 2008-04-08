@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.geneview.rcp.feature"
-      label="GeneView"
+      id="org.caleydo.rcp.feature"
+      label="Caleydo"
       version="1.0.0"
       provider-name="geneview.org"
-      plugin="org.geneview.rcp"
+      plugin="org.caleydo.rcp"
       os="linux,win32"
       ws="gtk,win32"
       nl="en_US"
       arch="x86,x86_64">
 
    <description url="http://www.geneview.org">
-      GeneView is a visualization framework for biomedical data.
+      Caleydo is a visualization framework for biomedical data.
    </description>
 
    <copyright url="http://www.geneview.org">
@@ -27,8 +27,8 @@ All Rights Reserved.
    </license>
 
    <url>
-      <update label="GeneView Update Site" url="http://galactica.icg.tugraz.at/geneview/"/>
-      <discovery label="GeneView website" url="http://www.geneview.org"/>
+      <update label="Caleydo Update Site" url="http://galactica.icg.tugraz.at/geneview/"/>
+      <discovery label="Caleydo website" url="http://www.geneview.org"/>
       <discovery label="Graz University of Technology - Institute for Computer Graphics and Visison (ICG)" url="http://www.icg.tugraz.at"/>
    </url>
 
@@ -118,7 +118,7 @@ All Rights Reserved.
          unpack="false"/>
 
    <plugin
-         id="org.geneview.rcp"
+         id="org.caleydo.rcp"
          download-size="0"
          install-size="0"
          version="0.0.0"

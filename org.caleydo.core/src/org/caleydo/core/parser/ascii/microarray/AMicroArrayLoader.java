@@ -7,7 +7,7 @@
  *  
  */
 
-package org.geneview.core.parser.ascii.microarray;
+package org.caleydo.core.parser.ascii.microarray;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -22,24 +22,24 @@ import java.io.BufferedReader;
 //import java.io.FileReader;s
 import java.io.IOException;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.parser.ascii.AbstractLoader;
-import org.geneview.core.parser.ascii.IParserObject;
-import org.geneview.core.parser.xml.sax.ISaxParserHandler;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.parser.ascii.AbstractLoader;
+import org.caleydo.core.parser.ascii.IParserObject;
+import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
 //import java.util.*;
 
 //import prometheus.data.DataStorageInterface;
-//import org.geneview.core.data.collection.IStorage;
-import org.geneview.core.data.collection.StorageType;
-import org.geneview.core.data.collection.ISet;
-//import org.geneview.core.data.collection.IVirtualArray;
-//import org.geneview.core.data.collection.virtualarray.VirtualArrayThreadSingleBlock;
-import org.geneview.core.data.xml.IMementoXML;
-//import org.geneview.core.data.collection.parser.CollectionSelectionSaxParserHandler;
-//import org.geneview.core.data.collection.parser.ParserTokenType;
-import org.geneview.core.data.collection.parser.ParserTokenHandler;
-//import org.geneview.core.manager.ILoggerManager.LoggerType;
+//import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.StorageType;
+import org.caleydo.core.data.collection.ISet;
+//import org.caleydo.core.data.collection.IVirtualArray;
+//import org.caleydo.core.data.collection.virtualarray.VirtualArrayThreadSingleBlock;
+import org.caleydo.core.data.xml.IMementoXML;
+//import org.caleydo.core.data.collection.parser.CollectionSelectionSaxParserHandler;
+//import org.caleydo.core.data.collection.parser.ParserTokenType;
+import org.caleydo.core.data.collection.parser.ParserTokenHandler;
+//import org.caleydo.core.manager.ILoggerManager.LoggerType;
 
 
 /**
@@ -341,8 +341,8 @@ implements IMementoXML, IParserObject {
 	/**
 	 * Removes all data structures.
 	 * 
-	 * @see org.geneview.core.parser.ascii.IParserObject#destroy()
-	 * @see org.geneview.core.parser.ascii.microarray.AMicroArrayLoader#destroy()
+	 * @see org.caleydo.core.parser.ascii.IParserObject#destroy()
+	 * @see org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#destroy()
 	 */
 	public void destroy() {
 		

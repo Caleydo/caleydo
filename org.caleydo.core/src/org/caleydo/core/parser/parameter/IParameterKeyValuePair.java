@@ -1,4 +1,4 @@
-package org.geneview.core.parser.parameter;
+package org.caleydo.core.parser.parameter;
 
 public interface IParameterKeyValuePair<T>
 {

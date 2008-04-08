@@ -6,14 +6,14 @@
  *  creation date: 18-05-2005
  *  
  */
-package org.geneview.core.command.window;
+package org.caleydo.core.command.window;
 
-import org.geneview.core.manager.IGeneralManager;
-import org.geneview.core.command.base.ACmdHandleSet;
-//import org.geneview.core.command.window.CmdWindowNewInternalFrame;
-//import org.geneview.core.net.dwt.swing.collection.DSwingStorageCanvas;
-//import org.geneview.core.net.dwt.swing.mdi.DInternalFrame;
-import org.geneview.core.util.exception.GeneViewRuntimeException;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.command.base.ACmdHandleSet;
+//import org.caleydo.core.command.window.CmdWindowNewInternalFrame;
+//import org.caleydo.core.net.dwt.swing.collection.DSwingStorageCanvas;
+//import org.caleydo.core.net.dwt.swing.mdi.DInternalFrame;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Creates a internal frame dispaying a 2D histogram.
@@ -42,9 +42,9 @@ extends ACmdHandleSet  {
 
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#doCommand()
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws GeneViewRuntimeException {
+	public void doCommand() throws CaleydoRuntimeException {
 			
 		//TODO: include header
 		//setGuiTextHeader( "IStorage" );
@@ -63,9 +63,9 @@ extends ACmdHandleSet  {
 	}
 
 	/* (non-Javadoc)
-	 * @see org.geneview.core.command.ICommand#undoCommand()
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws GeneViewRuntimeException {
+	public void undoCommand() throws CaleydoRuntimeException {
 		
 	}
 
