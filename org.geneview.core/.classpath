@@ -7,52 +7,52 @@
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Compiler/java/jre1.6/jre/lib"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.geneview.lib"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.geneview.data"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/jogl/demos/jogl-demos.jar"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/jogl/demos/jogl-demos-util_mod.jar"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/jogl/demos/jogl-demos-util.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.geneview.util.gleem"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/swt/swt.jar" sourcepath="/org.geneview.lib/lib_src/swt/swt_3.3.0_src.zip">
+	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.lib"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.data"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jogl/demos/jogl-demos.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jogl/demos/jogl-demos-util_mod.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jogl/demos/jogl-demos-util.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.util.gleem"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/swt/swt.jar" sourcepath="/org.caleydo.lib/lib_src/swt/swt_3.3.0_src.zip">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/org.geneview.lib/lib_src/swt/swt_3.2.1_javadoc.zip!/doc"/>
+			<attribute name="javadoc_location" value="jar:platform:/resource/org.caleydo.lib/lib_src/swt/swt_3.2.1_javadoc.zip!/doc"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/jogl/gluegen-rt.jar" sourcepath="/org.geneview.lib/lib_src/jogl/jogl-src_1.1.0.zip"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/jogl/jogl.jar" sourcepath="/org.geneview.lib/lib_src/jogl/jogl-src_1.1.0.zip"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/tagsoup/tagsoup-1.1.3.jar"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/jgraph/jgraph.jar" sourcepath="/org.geneview.lib/lib_src/jgraph/jgraph-latest-stable-src_5_9.jar">
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jogl/gluegen-rt.jar" sourcepath="/org.caleydo.lib/lib_src/jogl/jogl-src_1.1.0.zip"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jogl/jogl.jar" sourcepath="/org.caleydo.lib/lib_src/jogl/jogl-src_1.1.0.zip"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/tagsoup/tagsoup-1.1.3.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jgraph/jgraph.jar" sourcepath="/org.caleydo.lib/lib_src/jgraph/jgraph-latest-stable-src_5_9.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/org.geneview.lib/lib_src/jgraph/jgraph-latest-stable-src_5_9.jar!/doc/api"/>
+			<attribute name="javadoc_location" value="jar:platform:/resource/org.caleydo.lib/lib_src/jgraph/jgraph-latest-stable-src_5_9.jar!/doc/api"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/axis/axis.jar" sourcepath="/org.geneview.lib/lib_src/axis/axis-src-1_4.zip">
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/axis.jar" sourcepath="/org.caleydo.lib/lib_src/axis/axis-src-1_4.zip">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/org.geneview.lib/lib_src/axis/axis-src-1_4.zip!/axis-1_4/docs"/>
+			<attribute name="javadoc_location" value="jar:platform:/resource/org.caleydo.lib/lib_src/axis/axis-src-1_4.zip!/axis-1_4/docs"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/axis/axis-ant.jar"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/axis/commons-discovery-0.2.jar"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/axis/commons-logging-1.0.4.jar"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/axis/jaxrpc.jar"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/axis/log4j-1.2.8.jar"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/axis/saaj.jar"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/axis/wsdl4j-1.5.1.jar"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/entrez/entrez_SOAP_2006_12_18.jar" sourcepath="/org.geneview.lib/lib_src/entrez/entrez_SOAP_2006_12_18_src.zip"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/gleem/gleem_mod_class.jar"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/jface/org.eclipse.core.resources_3.1.2.jar"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/jface/org.eclipse.core.runtime_3.1.2.jar"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/jface/org.eclipse.jface_3.1.1.jar"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/jface/org.eclipse.jface.text_3.1.2.jar"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/jface/org.eclipse.osgi_3.1.2.jar"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/jface/org.eclipse.ui.workbench_3.1.2.jar"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/kegg/keggapi.jar"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/muddleware/muddleware.jar"/>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/weka/weka.jar" sourcepath="/org.geneview.lib/lib_src/weka/weka-src.jar">
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/axis-ant.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/commons-discovery-0.2.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/jaxrpc.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/log4j-1.2.8.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/saaj.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/wsdl4j-1.5.1.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/entrez/entrez_SOAP_2006_12_18.jar" sourcepath="/org.caleydo.lib/lib_src/entrez/entrez_SOAP_2006_12_18_src.zip"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/gleem/gleem_mod_class.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.core.resources_3.1.2.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.core.runtime_3.1.2.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.jface_3.1.1.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.jface.text_3.1.2.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.osgi_3.1.2.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.ui.workbench_3.1.2.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/kegg/keggapi.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/muddleware/muddleware.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/weka/weka.jar" sourcepath="/org.caleydo.lib/lib_src/weka/weka-src.jar">
 		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/org.geneview.lib/doc/weka_javadoc.zip!/doc"/>
+			<attribute name="javadoc_location" value="jar:platform:/resource/org.caleydo.lib/doc/weka_javadoc.zip!/doc"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/org.geneview.lib/lib/org.geneview/util/graph/org.geneview.graph_bin.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/org.geneview/util/graph/org.geneview.graph_bin.jar"/>
 	<classpathentry kind="output" path="bin/class"/>
 </classpath>

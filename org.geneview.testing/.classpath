@@ -3,10 +3,11 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.geneview.core"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.geneview.data"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.geneview.lib"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.geneview.rcp"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.geneview.util.gleem"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.core"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.data"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.lib"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.rcp"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.util.gleem"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.calyedo.util.graph"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
