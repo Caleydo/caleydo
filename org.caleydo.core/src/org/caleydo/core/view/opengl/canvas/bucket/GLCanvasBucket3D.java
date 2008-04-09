@@ -1942,8 +1942,8 @@ public class GLCanvasBucket3D extends AGLCanvasUser
 		float fPosition = 3f;
 		for (int iCharacterIndex = 0; iCharacterIndex < sTmp.length(); iCharacterIndex++)
 		{
-			textRenderer.draw3D(sTmp.subSequence(iCharacterIndex,
-					iCharacterIndex + 1), -1.03f, fPosition, 4.001f, 0.003f); // scale
+			textRenderer.draw3D((String)(sTmp.subSequence(iCharacterIndex,
+					iCharacterIndex + 1)), -1.03f, fPosition, 4.001f, 0.003f); // scale
 																				// factor
 
 			fPosition -= 0.3f;
@@ -1955,8 +1955,8 @@ public class GLCanvasBucket3D extends AGLCanvasUser
 		fPosition = 3f;
 		for (int iCharacterIndex = 0; iCharacterIndex < sTmp.length(); iCharacterIndex++)
 		{
-			textRenderer.draw3D(sTmp.subSequence(iCharacterIndex,
-					iCharacterIndex + 1), 4.79f, fPosition, 4.001f, 0.003f); // scale
+			textRenderer.draw3D((String)(sTmp.subSequence(iCharacterIndex,
+					iCharacterIndex + 1)), 4.79f, fPosition, 4.001f, 0.003f); // scale
 																				// factor
 
 			fPosition -= 0.3f;

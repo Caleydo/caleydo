@@ -14,9 +14,6 @@ import java.util.Iterator;
 import java.util.Set;
 
 import javax.media.opengl.GL;
-import javax.media.opengl.glu.GLU;
-import javax.media.opengl.glu.GLUnurbs;
-//import javax.xml.bind.JAXBElement.GlobalScope;
 
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.view.camera.IViewFrustum;
@@ -31,13 +28,10 @@ import org.caleydo.core.view.opengl.canvas.AGLCanvasStorageBasedView;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.GLIconTextureManager;
-import org.caleydo.core.view.opengl.util.GLSharedObjects;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
 import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
 
-import com.sun.media.sound.AlawCodec;
-import com.sun.opengl.util.GLUT;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 

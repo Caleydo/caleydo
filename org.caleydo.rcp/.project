@@ -3,6 +3,7 @@
 	<name>org.caleydo.rcp</name>
 	<comment></comment>
 	<projects>
+		<project>org.caleydo.lib</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
