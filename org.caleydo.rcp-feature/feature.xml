@@ -3,7 +3,7 @@
       id="org.caleydo.rcp.feature"
       label="Caleydo"
       version="1.0.0"
-      provider-name="geneview.org"
+      provider-name="caleydo.org"
       plugin="org.caleydo.rcp"
       os="linux,win32"
       ws="gtk,win32"
@@ -27,7 +27,7 @@ All Rights Reserved.
    </license>
 
    <url>
-      <update label="Caleydo Update Site" url="http://galactica.icg.tugraz.at/geneview/"/>
+      <update label="Caleydo Update Site" url="http://galactica.icg.tugraz.at/caleydo/"/>
       <discovery label="Caleydo website" url="http://www.geneview.org"/>
       <discovery label="Graz University of Technology - Institute for Computer Graphics and Visison (ICG)" url="http://www.icg.tugraz.at"/>
    </url>
