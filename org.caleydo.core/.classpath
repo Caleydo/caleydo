@@ -49,11 +49,11 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/org.caleydo/util/graph/org.caleydo.graph_bin.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.calyedo.util.graph"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/swt/swt.jar" sourcepath="/org.caleydo.lib/lib_src/swt/swt_3.3.0_src.zip">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/org.caleydo.lib/lib_src/swt/swt_3.2.1_javadoc.zip!/doc"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.util.graph"/>
 	<classpathentry kind="output" path="bin/class"/>
 </classpath>

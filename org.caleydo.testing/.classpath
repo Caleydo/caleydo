@@ -8,6 +8,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.lib"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.rcp"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.util.gleem"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.calyedo.util.graph"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.util.graph"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
