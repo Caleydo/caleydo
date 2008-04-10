@@ -107,7 +107,7 @@ extends WorkbenchAdvisor {
 								Integer.toString(iInstanceNum), IWorkbenchPage.VIEW_ACTIVATE);
 				}	
 				else if (tmpGLEventListener.getClass().equals(
-						org.caleydo.core.view.opengl.canvas.bucket.GLCanvasBucket3D.class))
+						org.caleydo.core.view.opengl.canvas.remote.bucket.GLCanvasBucket3D.class))
 				{
 					viewPart = (GLBucket3DView) PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getActivePage().showView(GLBucket3DView.ID,

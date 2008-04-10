@@ -56,6 +56,7 @@ implements ICaleydoDefaultType <CommandQueueSaxType> {
 	CREATE_GL_PATHWAY_3D(ManagerType.VIEW,"cmd","type","-1", "Create Pathway 3D"),		
 	CREATE_GL_PARALLEL_COORDINATES_3D(ManagerType.VIEW,"cmd","type","-1", "Create Parallel Coordinates 3D"),		
 	CREATE_GL_BUCKET_3D(ManagerType.VIEW,"cmd","type","-1", "Create Bucket 3D"),
+	CREATE_GL_JUKEBOX_3D(ManagerType.VIEW,"cmd","type","-1", "Create Jukebox 3D"),
 	CREATE_GL_MINMAX_SCATTERPLOT2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_MINMAX_SCATTERPLOT3D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_ISOSURFACE3D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),

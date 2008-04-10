@@ -22,12 +22,13 @@ import org.caleydo.core.view.IView;
 import org.caleydo.core.view.IViewRep;
 import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
-import org.caleydo.core.view.opengl.canvas.bucket.GLCanvasBucket3D;
 import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
 import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn;
 import org.caleydo.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
+import org.caleydo.core.view.opengl.canvas.remote.bucket.GLCanvasBucket3D;
+import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLCanvasJukebox3D;
 import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
 import org.caleydo.core.view.swt.data.exchanger.DataExchangerViewRep;
@@ -456,6 +457,14 @@ implements IViewGLCanvasManager {
 						iGLCanvasID, 
 						sLabel,
 						viewFrustum);	
+				
+			case CREATE_GL_JUKEBOX_3D:
+				return new GLCanvasJukebox3D(
+						generalManager, 
+						iUniqueId,
+						iGLCanvasID, 
+						sLabel,
+						viewFrustum);					
 				
 			default:
 				throw new CaleydoRuntimeException(

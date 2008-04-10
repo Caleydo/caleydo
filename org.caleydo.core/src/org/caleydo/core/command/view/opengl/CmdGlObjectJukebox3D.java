@@ -9,15 +9,15 @@ import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.system.StringConversionTool;
-import org.caleydo.core.view.opengl.canvas.remote.bucket.GLCanvasBucket3D;
+import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLCanvasJukebox3D;
 
 /**
- * Create bucket view
+ * Create jukebox view
  * 
  * @author Marc Streit
  *
  */
-public class CmdGlObjectBucket3D 
+public class CmdGlObjectJukebox3D 
 extends ACmdCreate_GlCanvasUser {
 
 	protected ArrayList<Integer> iArSetIDs;
@@ -26,7 +26,7 @@ extends ACmdCreate_GlCanvasUser {
 	 * Constructor.
 	 * 
 	 */
-	public CmdGlObjectBucket3D(
+	public CmdGlObjectJukebox3D(
 			final IGeneralManager generalManager,
 			final ICommandManager commandManager,
 			final CommandQueueSaxType commandQueueSaxType)
@@ -35,7 +35,7 @@ extends ACmdCreate_GlCanvasUser {
 				
 		iArSetIDs = new ArrayList<Integer>();
 
-		localManagerObjectType = CommandQueueSaxType.CREATE_GL_BUCKET_3D;
+		localManagerObjectType = CommandQueueSaxType.CREATE_GL_JUKEBOX_3D;
 	}
 
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
@@ -75,7 +75,7 @@ extends ACmdCreate_GlCanvasUser {
 		for(int index = 0; index < iArSetIDs.size(); index++)
 			iArTmp[index] = iArSetIDs.get(index);
 		
-		((GLCanvasBucket3D)gLEventListener).addSetId(iArTmp);	
+		((GLCanvasJukebox3D)gLEventListener).addSetId(iArTmp);	
 	}
 
 	/*

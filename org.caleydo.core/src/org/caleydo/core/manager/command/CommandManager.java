@@ -310,15 +310,6 @@ public class CommandManager
 		vecRedo.addElement( runCmd );
 	}
 
-//	/**
-//	 * @deprecated use createCommandByType(final CommandQueueSaxType cmdType)
-//	 */
-//	public ICommand createCommand(CommandType cmdType, String details) {
-//
-//		assert false : "update to new command creation strucutre!";
-//		return null;
-//	}
-
 	public void addUndoRedoViewRep(UndoRedoViewRep refUndoRedoViewRep) {
 		
 		arUndoRedoViews.add(refUndoRedoViewRep);		

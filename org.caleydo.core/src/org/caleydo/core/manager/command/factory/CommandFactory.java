@@ -19,11 +19,12 @@ import org.caleydo.core.command.system.CmdSystemLoadFileLookupTable;
 import org.caleydo.core.command.system.CmdSystemLoadFileNStorages;
 import org.caleydo.core.command.system.CmdSystemLoadFileViaImporter;
 import org.caleydo.core.command.system.path.CmdSetPathwayDatabasePath;
+import org.caleydo.core.command.view.opengl.CmdGlObjectBucket3D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectHeatMap3D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectHeatmap;
 import org.caleydo.core.command.view.opengl.CmdGlObjectHeatmap2D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectHistogram2D;
-import org.caleydo.core.command.view.opengl.CmdGlObjectBucket3D;
+import org.caleydo.core.command.view.opengl.CmdGlObjectJukebox3D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectParCoords3D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectPathway3D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectPathway3DJukebox;
@@ -382,33 +383,6 @@ implements ICommandFactory {
 						cmdType);		
 			break;
 		}
-//		case CREATE_GL_ISOSURFACE3D:
-//		{
-// 			createdCommand =
-//				new CmdGlObjectIsosurface3D(
-//						generalManager,
-//						commandManager,
-//						cmdType);		
-//			break;
-//		}
-//		case CREATE_GL_SCATTERPLOT2D:
-//		{
-//			createdCommand =
-//				new CmdGlObjectScatterPlot2D(
-//						generalManager,
-//						commandManager,
-//						cmdType);		
-//			break;
-//		}
-//		case CREATE_GL_TEXTURE2D:
-//		{
-//			createdCommand =
-//				new CmdGlObjectTexture2D(
-//						generalManager,
-//						commandManager,
-//						cmdType);		
-//			break;
-//		}
 		case CREATE_GL_HEATMAP2D:
 		{
 			createdCommand =
@@ -437,7 +411,7 @@ implements ICommandFactory {
 						commandManager,
 						cmdType);	
 			break;
-		}
+		}		
 		case CREATE_GL_PATHWAY_3D:
 		{
  			createdCommand =
@@ -474,6 +448,15 @@ implements ICommandFactory {
 						cmdType);	
 			break;
 		}
+		case CREATE_GL_JUKEBOX_3D:
+		{
+ 			createdCommand =
+				new CmdGlObjectJukebox3D(
+						generalManager,
+						commandManager,
+						cmdType);	
+			break;
+		}
 //		case CREATE_GL_MINMAX_SCATTERPLOT2D:
 //		{
 //			createdCommand =
@@ -499,6 +482,33 @@ implements ICommandFactory {
 //						generalManager,
 //						commandManager,
 //						cmdType);
+//			break;
+//		}
+//		case CREATE_GL_ISOSURFACE3D:
+//		{
+// 			createdCommand =
+//				new CmdGlObjectIsosurface3D(
+//						generalManager,
+//						commandManager,
+//						cmdType);		
+//			break;
+//		}
+//		case CREATE_GL_SCATTERPLOT2D:
+//		{
+//			createdCommand =
+//				new CmdGlObjectScatterPlot2D(
+//						generalManager,
+//						commandManager,
+//						cmdType);		
+//			break;
+//		}
+//		case CREATE_GL_TEXTURE2D:
+//		{
+//			createdCommand =
+//				new CmdGlObjectTexture2D(
+//						generalManager,
+//						commandManager,
+//						cmdType);		
 //			break;
 //		}
 		case EXTERNAL_FLAG_SETTER:

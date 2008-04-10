@@ -17,6 +17,8 @@ import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
+ * 
+ * @deprecated Use CmdGlObjectJukexbox3D instead
  *
  */
 public class CmdGlObjectPathway3DJukebox 

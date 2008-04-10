@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.bucket;
+package org.caleydo.core.view.opengl.canvas.remote;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
@@ -44,6 +44,7 @@ import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.remote.bucket.GLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLIconTextureManager;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
@@ -58,28 +59,29 @@ import com.sun.opengl.util.texture.TextureCoords;
 import com.sun.opengl.util.texture.TextureIO;
 
 /**
- * Implementation of the bucket setup. It supports the user with the ability to
- * navigate and interact with arbitrary views.
+ * Abstract class that is able to remotely rendering views.
+ * Subclasses implement the positioning of the views (bucket, jukebox, etc.).
  * 
  * @author Marc Streit
  * 
  */
-public class GLCanvasBucket3D extends AGLCanvasUser
-		implements IMediatorReceiver, IMediatorSender {
-
+public abstract class AGLRemoteRendering3D 
+extends AGLCanvasUser
+implements IMediatorReceiver, IMediatorSender 
+{
 	private static final int MAX_LOADED_VIEWS = 10;
 
-	private static final float SCALING_FACTOR_UNDER_INTERACTION_LAYER = 0.5f;
+	protected static final float SCALING_FACTOR_UNDER_INTERACTION_LAYER = 0.5f;
 
-	private static final float SCALING_FACTOR_TRANSITION_LAYER = 0.05f;
+	protected static final float SCALING_FACTOR_TRANSITION_LAYER = 0.05f;
 
-	private static final float SCALING_FACTOR_STACK_LAYER = 0.5f;
+	protected static final float SCALING_FACTOR_STACK_LAYER = 0.5f;
 
-	private static final float SCALING_FACTOR_POOL_LAYER = 0.04f;
+	protected static final float SCALING_FACTOR_POOL_LAYER = 0.04f;
 
-	private static final float SCALING_FACTOR_SPAWN_LAYER = 0.01f;
+	protected static final float SCALING_FACTOR_SPAWN_LAYER = 0.01f;
 
-	private static final float SCALING_FACTOR_MEMO_LAYER = 0.08f;
+	protected static final float SCALING_FACTOR_MEMO_LAYER = 0.08f;
 
 	private static final int SLERP_RANGE = 1000;
 
@@ -89,15 +91,15 @@ public class GLCanvasBucket3D extends AGLCanvasUser
 
 	private JukeboxHierarchyLayer underInteractionLayer;
 
-	private JukeboxHierarchyLayer stackLayer;
+	protected JukeboxHierarchyLayer stackLayer;
 
-	private JukeboxHierarchyLayer poolLayer;
+	protected JukeboxHierarchyLayer poolLayer;
 
-	private JukeboxHierarchyLayer transitionLayer;
+	protected JukeboxHierarchyLayer transitionLayer;
 
-	private JukeboxHierarchyLayer spawnLayer;
+	protected JukeboxHierarchyLayer spawnLayer;
 
-	private JukeboxHierarchyLayer memoLayer;
+	protected JukeboxHierarchyLayer memoLayer;
 
 	private ArrayList<SlerpAction> arSlerpActions;
 
@@ -109,10 +111,6 @@ public class GLCanvasBucket3D extends AGLCanvasUser
 	private int iSlerpFactor = 0;
 
 	private GLConnectionLineRenderer glConnectionLineRenderer;
-
-	// private int iDraggedViewID = -1;
-
-	private BucketMouseWheelListener bucketMouseWheelListener;
 
 	private int iNavigationMouseOverViewID_left = -1;
 
@@ -151,7 +149,7 @@ public class GLCanvasBucket3D extends AGLCanvasUser
 	 * Constructor.
 	 * 
 	 */
-	public GLCanvasBucket3D(final IGeneralManager generalManager,
+	public AGLRemoteRendering3D(final IGeneralManager generalManager,
 			final int iViewId,
 			final int iGLCanvasID,
 			final String sLabel,
@@ -211,12 +209,6 @@ public class GLCanvasBucket3D extends AGLCanvasUser
 		glConnectionLineRenderer = new GLConnectionLineRenderer(generalManager,
 				underInteractionLayer, stackLayer, poolLayer);
 
-		bucketMouseWheelListener = new BucketMouseWheelListener(this);
-		// Unregister standard mouse wheel listener
-		parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
-		// Register specialized bucket mouse wheel listener
-		parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
-
 		iAlUninitializedPathwayIDs = new ArrayList<Integer>();
 
 		createEventMediator();
@@ -267,32 +259,6 @@ public class GLCanvasBucket3D extends AGLCanvasUser
 		updatePoolLayer();
 		buildStackLayer(gl);
 		buildMemoLayer(gl);
-
-		// float[] fArLightPosition = {-2, 0, 5, 0};
-		// float[] fArLight1Position = {2, 0, 5, 0};
-		// float[] fArLModelAmbient = {0.1f, 0.1f, 0.1f, 1.0f};
-		// float[] fArMatSpecular = {1, 1, 1, 1};
-		// float[] fArWhiteLight = {1, 1, 1, 1};
-		// float[] fArMatShininess = {50};
-		// //float[] fArSpotDirection = {0, 0, -1};
-		// gl.glShadeModel(GL.GL_SMOOTH);
-		// gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, fArMatSpecular, 0);
-		// gl.glMaterialfv(GL.GL_FRONT, GL.GL_SHININESS, fArMatShininess, 0);
-		// gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, fArLightPosition, 0);
-		// gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, fArWhiteLight, 0);
-		// gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR, fArWhiteLight, 0);
-		//		
-		// gl.glLightfv(GL.GL_LIGHT1, GL.GL_POSITION, fArLight1Position, 0);
-		// gl.glLightfv(GL.GL_LIGHT1, GL.GL_DIFFUSE, fArWhiteLight, 0);
-		// gl.glLightfv(GL.GL_LIGHT1, GL.GL_SPECULAR, fArWhiteLight, 0);
-		//		
-		// //gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPOT_DIRECTION, fArSpotDirection,
-		// 0);
-		// gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, fArLModelAmbient, 0);
-		// gl.glEnable(GL.GL_LIGHTING);
-		// gl.glEnable(GL.GL_LIGHT0);
-		// gl.glEnable(GL.GL_LIGHT1);
-		// //gl.glEnable(GL.GL_DEPTH_TEST);
 	}
 
 	/*
@@ -310,11 +276,7 @@ public class GLCanvasBucket3D extends AGLCanvasUser
 		}
 
 		pickingManager.handlePicking(iUniqueId, gl, true);
-		// if(bIsDisplayListDirtyLocal)
-		// {
-		// buildDisplayList(gl, iGLDisplayListIndexLocal);
-		// bIsDisplayListDirtyLocal = false;
-		// }
+
 		display(gl);
 
 		if (pickingTriggerMouseAdapter.getPickedPoint() != null)
@@ -337,13 +299,7 @@ public class GLCanvasBucket3D extends AGLCanvasUser
 	 */
 	public void displayRemote(final GL gl) {
 
-		// if(bIsDisplayListDirtyRemote)
-		// {
-		// buildPathwayDisplayList(gl, iGLDisplayListIndexRemote);
-		// bIsDisplayListDirtyRemote = false;
-		// }
 		display(gl);
-		// gl.glCallList(iGLDisplayListIndexRemote);
 	}
 
 	/*
@@ -359,14 +315,12 @@ public class GLCanvasBucket3D extends AGLCanvasUser
 
 		doSlerpActions(gl);
 
-		// gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-
 		renderLayer(gl, underInteractionLayer);
 
-		// If user zooms to the bucket bottom all but the under
-		// interaction layer is _not_ rendered.
-		if (!bucketMouseWheelListener.isBucketBottomReached())
-		{
+//		// If user zooms to the bucket bottom all but the under
+//		// interaction layer is _not_ rendered.
+//		if (!bucketMouseWheelListener.isBucketBottomReached())
+//		{
 			renderLayer(gl, transitionLayer);
 			renderLayer(gl, stackLayer);
 			renderLayer(gl, spawnLayer);
@@ -384,14 +338,7 @@ public class GLCanvasBucket3D extends AGLCanvasUser
 			gl.glPopName();
 
 			glConnectionLineRenderer.render(gl);
-		}
-
-		// gl.glEndList();
-
-		// TODO: add dirty flag
-		// gl.glCallList(iGLDisplayListIndex);
-
-		bucketMouseWheelListener.render();
+//		}
 	}
 
 	private void retrieveContainedViews(final GL gl) {
@@ -456,45 +403,7 @@ public class GLCanvasBucket3D extends AGLCanvasUser
 		}
 	}
 
-	private void buildStackLayer(final GL gl) {
-
-		float fTiltAngleDegree = 90; // degree
-		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
-
-		// TOP BUCKET WALL
-		Transform transform = new Transform();
-		transform
-				.setTranslation(new Vec3f(0, 8 * SCALING_FACTOR_STACK_LAYER, 0));
-		transform.setScale(new Vec3f(SCALING_FACTOR_STACK_LAYER,
-				SCALING_FACTOR_STACK_LAYER, SCALING_FACTOR_STACK_LAYER));
-		transform.setRotation(new Rotf(new Vec3f(1, 0, 0), fTiltAngleRad));
-		stackLayer.setTransformByPositionIndex(0, transform);
-
-		// BOTTOM BUCKET WALL
-		transform = new Transform();
-		transform.setTranslation(new Vec3f(0, 0, 4));
-		transform.setScale(new Vec3f(SCALING_FACTOR_STACK_LAYER,
-				SCALING_FACTOR_STACK_LAYER, SCALING_FACTOR_STACK_LAYER));
-		transform.setRotation(new Rotf(new Vec3f(-1, 0, 0), fTiltAngleRad));
-		stackLayer.setTransformByPositionIndex(2, transform);
-
-		// LEFT BUCKET WALL
-		transform = new Transform();
-		transform.setTranslation(new Vec3f(0, 0, 4));
-		transform.setScale(new Vec3f(SCALING_FACTOR_STACK_LAYER,
-				SCALING_FACTOR_STACK_LAYER, SCALING_FACTOR_STACK_LAYER));
-		transform.setRotation(new Rotf(new Vec3f(0, 1, 0), fTiltAngleRad));
-		stackLayer.setTransformByPositionIndex(1, transform);
-
-		// RIGHT BUCKET WALL
-		transform = new Transform();
-		transform
-				.setTranslation(new Vec3f(8 * SCALING_FACTOR_STACK_LAYER, 0, 0));
-		transform.setScale(new Vec3f(SCALING_FACTOR_STACK_LAYER,
-				SCALING_FACTOR_STACK_LAYER, SCALING_FACTOR_STACK_LAYER));
-		transform.setRotation(new Rotf(new Vec3f(0, -1f, 0), fTiltAngleRad));
-		stackLayer.setTransformByPositionIndex(3, transform);
-	}
+	protected abstract void buildStackLayer(final GL gl);
 
 	private void buildMemoLayer(final GL gl) {
 

@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.bucket;
+package org.caleydo.core.view.opengl.canvas.remote.bucket;
 
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;

@@ -19,7 +19,6 @@ import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.selection.ISetSelection;
-import org.caleydo.core.data.collection.set.selection.SetSelection;
 import org.caleydo.core.data.graph.core.PathwayGraph;
 import org.caleydo.core.data.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
@@ -29,7 +28,6 @@ import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.data.IPathwayItemManager;
-import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.view.EPickingMode;
@@ -50,7 +48,6 @@ import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
 import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
-import org.caleydo.util.graph.IGraph;
 import org.caleydo.util.graph.IGraphItem;
 
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -59,6 +56,9 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * Jukebox setup for pathways that supports slerp animation.
  * 
  * @author Marc Streit
+ *
+ * @deprecated Use GLCanvasJukebox3D instead
+ * 
  */
 public class GLCanvasJukeboxPathway3D 
 extends AGLCanvasUser

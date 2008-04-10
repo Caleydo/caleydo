@@ -99,7 +99,7 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="17401" 
 			  	gl_canvas="99075" parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
 				
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_BUCKET_3D"		cmdId="69994"	uniqueId="83401" parent="99075" label="Bucket" 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_JUKEBOX_3D"		cmdId="69994"	uniqueId="83401" parent="99075" label="Bucket" 
 							gl_origin="-2 -2 -8" 
 							gl_rotation="0 0 0 0"					
 							attrib3="PERSPECTIVE -1.5 1.5 -1.5 1.5 2.9 100"
