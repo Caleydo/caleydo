@@ -123,7 +123,7 @@ public abstract class AGLConnectionLineRenderer {
 	private void renderPlanes(final GL gl, final Vec3f vecPoint, final ArrayList<Vec3f> alPoints)
 	{
 		
-		gl.glColor4f(0.3f, 0.3f, 0.3f, 0.6f);
+		gl.glColor4f(0.3f, 0.3f, 0.3f, 1f);//0.6f);
 		gl.glLineWidth(2 + 4);
 		gl.glBegin(GL.GL_LINES);		
 		for(Vec3f vecCurrent : alPoints)
@@ -171,7 +171,7 @@ public abstract class AGLConnectionLineRenderer {
 			final int iNumberOfLines)
 	{	
 		// Line shadow
-		gl.glColor4f(0.3f, 0.3f, 0.3f, 0.6f);
+		gl.glColor4f(0.3f, 0.3f, 0.3f, 1);//, 0.6f);
 		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + iNumberOfLines + 4);
 		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(vecSrcPoint.x(),

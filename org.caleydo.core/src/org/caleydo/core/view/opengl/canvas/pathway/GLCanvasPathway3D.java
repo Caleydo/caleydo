@@ -244,8 +244,13 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		if (bEnablePathwayTexture)
 		{
+			float fPathwayTransparency = 1.0f;
+			
+			if (containedHierarchyLayer.getCapacity() == 4) // check if layer is the stack layer (todo: better would be a stack type)
+				fPathwayTransparency = 0.6f;
+				
 			refHashGLcontext2TextureManager.get(gl).renderPathway(
-					gl, this, iPathwayId, 1.0f, false);
+					gl, this, iPathwayId, fPathwayTransparency, false);
 		}
 
 		float tmp = GLPathwayManager.SCALING_FACTOR_Y * 
