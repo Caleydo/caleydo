@@ -94,7 +94,7 @@
 
 		<!-- Window	10331 -->	
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="10331" 
-				label="Bucket View 3D" attrib1="ROW	HORIZONTAL"	/>	 
+				label="Bucket 3D" attrib1="ROW	HORIZONTAL"	/>	 
 				 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="17401" 
 			  	gl_canvas="99075" parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	

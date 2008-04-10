@@ -34,23 +34,19 @@ public class JukeboxHierarchyLayer {
 	
 	private int iCapacity = 0;
 	
-	private float fScalingFactor = 0;
-	
 	public JukeboxHierarchyLayer(
 			final IGeneralManager generalManager,
 			final int iCapacity, 
-			final float fScalingFactor,
 			final GLPathwayTextureManager pathwayTextureManager) {
 		
-		this(generalManager, iCapacity, fScalingFactor);
+		this(generalManager, iCapacity);
 		
 		this.pathwayTextureManager = pathwayTextureManager;
 	}
 	
 	public JukeboxHierarchyLayer(
 			final IGeneralManager generalManager,
-			final int iCapacity, 
-			final float fScalingFactor) {
+			final int iCapacity) {
 		
 		this.generalManager = generalManager;
 		hashElementPositionIndexToTransform = new HashMap<Integer, Transform>();
@@ -58,7 +54,6 @@ public class JukeboxHierarchyLayer {
 		llElementIdImportanceQueue = new LinkedList<Integer>();
 		llElementIdVisibleState = new LinkedList<Boolean>();
 		this.iCapacity = iCapacity;
-		this.fScalingFactor = fScalingFactor;
 		
 		// Initialize elements with -1
 		for (int iPositionIndex = 0; iPositionIndex < iCapacity; iPositionIndex++)
@@ -94,8 +89,8 @@ public class JukeboxHierarchyLayer {
 		llElementIdVisibleState.set(iDestinationPosIndex, false);
 		llElementIdImportanceQueue.addFirst(iElementId);
 		
-		if (iCapacity < 5)
-			calculatePathwayScaling(iElementId);
+//		if (iCapacity < 5)
+//			calculatePathwayScaling(iElementId);
 	}
 	
 	/**
@@ -124,8 +119,8 @@ public class JukeboxHierarchyLayer {
 			llElementIdVisibleState.set(iReplacePosition, false);
 			llElementIdImportanceQueue.addFirst(iElementId);	
 			
-			if (iCapacity < 5)
-				calculatePathwayScaling(iElementId);
+//			if (iCapacity < 5)
+//				calculatePathwayScaling(iElementId);
 			
 			return 0;
 		}
@@ -142,8 +137,8 @@ public class JukeboxHierarchyLayer {
 		
 		llElementId.set(iReplacePosition, iElementId);
 		
-		if (iCapacity < 5)
-			calculatePathwayScaling(iElementId);
+//		if (iCapacity < 5)
+//			calculatePathwayScaling(iElementId);
 		
 		return iLeastImportantElementId;	
 	}
@@ -249,46 +244,46 @@ public class JukeboxHierarchyLayer {
 		return iCapacity;
 	}
 	
-	public final float getScalingFactor() {
-		
-		return fScalingFactor;
-	}
-	
-	/**
-	 * @deprecated
-	 * @param iPathwayId
-	 */
-	private void calculatePathwayScaling(final int iPathwayId) {
-		
-		if (pathwayTextureManager == null)
-			return;
-		
-		int iImageWidth = ((PathwayGraph)generalManager.getSingelton()
-				.getPathwayManager().getItem(iPathwayId)).getWidth();
-		int iImageHeight = ((PathwayGraph)generalManager.getSingelton()
-				.getPathwayManager().getItem(iPathwayId)).getHeight();
-	
-		float fTmpScalingFactor = 1;
-		if (iImageHeight > 570 && iImageHeight > iImageWidth)
-		{
-			fTmpScalingFactor = 570f / iImageHeight;
-			fTmpScalingFactor *= getScalingFactor();
-			
-			getTransformByElementId(iPathwayId)
-				.setScale(new Vec3f(fTmpScalingFactor, fTmpScalingFactor, 1f));
-		}
-		else if (iImageWidth > 750)
-		{
-			fTmpScalingFactor = 750f / iImageWidth;
-			fTmpScalingFactor *= getScalingFactor();
-			
-			getTransformByElementId(iPathwayId)
-				.setScale(new Vec3f(fTmpScalingFactor, fTmpScalingFactor, 1f));
-		}
-		else
-		{
-			getTransformByElementId(iPathwayId)
-				.setScale(new Vec3f(fScalingFactor, fScalingFactor, fScalingFactor));
-		}
-	}
+//	public final float getScalingFactor() {
+//		
+//		return fScalingFactor;
+//	}
+//	
+//	/**
+//	 * @deprecated
+//	 * @param iPathwayId
+//	 */
+//	private void calculatePathwayScaling(final int iPathwayId) {
+//		
+//		if (pathwayTextureManager == null)
+//			return;
+//		
+//		int iImageWidth = ((PathwayGraph)generalManager.getSingelton()
+//				.getPathwayManager().getItem(iPathwayId)).getWidth();
+//		int iImageHeight = ((PathwayGraph)generalManager.getSingelton()
+//				.getPathwayManager().getItem(iPathwayId)).getHeight();
+//	
+//		float fTmpScalingFactor = 1;
+//		if (iImageHeight > 570 && iImageHeight > iImageWidth)
+//		{
+//			fTmpScalingFactor = 570f / iImageHeight;
+//			fTmpScalingFactor *= getScalingFactor();
+//			
+//			getTransformByElementId(iPathwayId)
+//				.setScale(new Vec3f(fTmpScalingFactor, fTmpScalingFactor, 1f));
+//		}
+//		else if (iImageWidth > 750)
+//		{
+//			fTmpScalingFactor = 750f / iImageWidth;
+//			fTmpScalingFactor *= getScalingFactor();
+//			
+//			getTransformByElementId(iPathwayId)
+//				.setScale(new Vec3f(fTmpScalingFactor, fTmpScalingFactor, 1f));
+//		}
+//		else
+//		{
+//			getTransformByElementId(iPathwayId)
+//				.setScale(new Vec3f(fScalingFactor, fScalingFactor, fScalingFactor));
+//		}
+//	}
 }

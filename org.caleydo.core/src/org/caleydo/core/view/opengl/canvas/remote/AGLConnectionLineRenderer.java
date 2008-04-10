@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.remote.bucket;
+package org.caleydo.core.view.opengl.canvas.remote;
 
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
@@ -7,13 +7,11 @@ import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Set;
 
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.view.rep.renderstyle.ConnectionLineRenderStyle;
-import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.view.SelectionManager;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
@@ -27,24 +25,21 @@ import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
  * @author Alexander Lex
  *
  */
-public class GLConnectionLineRenderer {
+public abstract class AGLConnectionLineRenderer {
 	
-	private JukeboxHierarchyLayer underInteractionLayer;
-	private JukeboxHierarchyLayer stackLayer;
+	protected JukeboxHierarchyLayer underInteractionLayer;
+	protected JukeboxHierarchyLayer stackLayer;
 	
-	private SelectionManager selectionManager;
+	protected SelectionManager selectionManager;
 	
-	private boolean bEnableRendering = true;
+	protected boolean bEnableRendering = true;
 	
-
-	
-	
-	private HashMap<Integer, ArrayList<ArrayList<Vec3f>>> hashViewToPointLists;
+	protected HashMap<Integer, ArrayList<ArrayList<Vec3f>>> hashViewToPointLists;
 	
 	/**
 	 * Constructor.
 	 */
-	public GLConnectionLineRenderer(final IGeneralManager generalManager,
+	public AGLConnectionLineRenderer(final IGeneralManager generalManager,
 			final JukeboxHierarchyLayer underInteractionLayer,
 			final JukeboxHierarchyLayer stackLayer,
 			final JukeboxHierarchyLayer poolLayer) 
@@ -74,87 +69,10 @@ public class GLConnectionLineRenderer {
 		renderConnectionLines(gl);
 	}
 	
+	protected abstract void renderConnectionLines(final GL gl); 
 	
-	private void renderConnectionLines(final GL gl) 
-	{
-		
-		Vec3f vecTranslation;
-		Vec3f vecScale;
-		
-		Rotf rotation;
-		Mat4f matSrc = new Mat4f();
-		Mat4f matDest = new Mat4f();
-		matSrc.makeIdent();
-		matDest.makeIdent();
-
-		Iterator<Integer> iterSelectedElementID = 
-			selectionManager.getAllSelectedElements().iterator();
-		
-		
-		ArrayList<ArrayList<Vec3f>> alPointLists = null;// 
-		
-		while(iterSelectedElementID.hasNext()) 
-		{
-			int iSelectedElementID = iterSelectedElementID.next();
-			Iterator<SelectedElementRep> iterSelectedElementRep = 
-				selectionManager.getSelectedElementRepsByElementID(iSelectedElementID).iterator();			
-			
-			while (iterSelectedElementRep.hasNext())
-			{
-				SelectedElementRep selectedElementRep = iterSelectedElementRep.next();
-
-				JukeboxHierarchyLayer activeLayer = null;
-				// Check if element is in under interaction layer
-				if (underInteractionLayer.containsElement(selectedElementRep.getContainingViewID()))
-				{
-					activeLayer = underInteractionLayer;
-				}
-				else if(stackLayer.containsElement(selectedElementRep.getContainingViewID()))
-				{
-					activeLayer = stackLayer;
-				}
-				
-				if(activeLayer != null)
-				{
-					vecTranslation = activeLayer.getTransformByElementId(
-							selectedElementRep.getContainingViewID()).getTranslation();
-					vecScale = activeLayer.getTransformByElementId(
-							selectedElementRep.getContainingViewID()).getScale();
-					rotation = activeLayer.getTransformByElementId(
-							selectedElementRep.getContainingViewID()).getRotation();
-										
-					ArrayList<Vec3f> alPoints = selectedElementRep.getPoints();
-					ArrayList<Vec3f> alPointsTransformed = new ArrayList<Vec3f>();
-					
-					for (Vec3f vecCurrentPoint : alPoints)
-					{
-						alPointsTransformed.add(transform(vecCurrentPoint, vecTranslation, vecScale, rotation));
-					}
-					int iKey = selectedElementRep.getContainingViewID();
-					
-					alPointLists = hashViewToPointLists.get(iKey);
-					if(alPointLists == null)						
-					{
-						alPointLists = new ArrayList<ArrayList<Vec3f>>();
-						hashViewToPointLists.put(iKey, alPointLists);
-					}
-					alPointLists.add(alPointsTransformed);
-					
-				}					
-			}
-	
-			if(hashViewToPointLists.size() > 1)	
-			{
-				
-				renderLineBundling(gl);				
-				hashViewToPointLists.clear();
-			}			
-		}		
-	}
-	
-	private void renderLineBundling(final GL gl)
-	{
-		
+	protected void renderLineBundling(final GL gl)
+	{	
 		Set<Integer> keySet =  hashViewToPointLists.keySet();
 		HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
 		
@@ -244,19 +162,14 @@ public class GLConnectionLineRenderer {
 			
 			gl.glVertex3f(vecCurrent.x(), vecCurrent.y(), vecCurrent.z());
 		}
-		gl.glEnd();	
-		
-		
-	
-		
+		gl.glEnd();		
 	}
 	
 	private void renderLine(final GL gl, 
 			final Vec3f vecSrcPoint, 
 			final Vec3f vecDestPoint, 
 			final int iNumberOfLines)
-	{
-		
+	{	
 		// Line shadow
 		gl.glColor4f(0.3f, 0.3f, 0.3f, 0.6f);
 		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + iNumberOfLines + 4);
@@ -280,8 +193,6 @@ public class GLConnectionLineRenderer {
 				vecDestPoint.z());
 		gl.glEnd();	
 	}
-	
-
 	
 	private Vec3f calculateCenter(ArrayList<ArrayList<Vec3f>> alPointLists)
 	{
@@ -318,9 +229,7 @@ public class GLConnectionLineRenderer {
 		return vecCenterPoint;		
 	}
 	
-	
-	
-	private Vec3f transform(Vec3f vecOriginalPoint, Vec3f vecTranslation, Vec3f vecScale, Rotf rotation)
+	protected Vec3f transform(Vec3f vecOriginalPoint, Vec3f vecTranslation, Vec3f vecScale, Rotf rotation)
 	{
 	
 		Mat4f matSrc = new Mat4f();
@@ -337,6 +246,4 @@ public class GLConnectionLineRenderer {
 		
 		return vecTransformedPoint;
 	}
-	
-
 }

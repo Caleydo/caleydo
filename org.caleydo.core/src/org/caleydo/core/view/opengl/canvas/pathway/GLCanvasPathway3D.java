@@ -5,7 +5,6 @@ import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.logging.Logger;
 
 import javax.media.opengl.GL;
 
@@ -31,7 +30,6 @@ import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.ESelectionMode;
 import org.caleydo.core.manager.view.Pick;
 import org.caleydo.core.manager.view.SelectionManager;
-import org.caleydo.core.util.ConversionStringInteger;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
@@ -40,10 +38,8 @@ import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
 import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
-import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
-import org.caleydo.util.graph.IGraph;
 import org.caleydo.util.graph.IGraphItem;
 
 /**

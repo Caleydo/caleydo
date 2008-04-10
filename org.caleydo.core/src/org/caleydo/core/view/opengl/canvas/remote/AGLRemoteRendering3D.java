@@ -44,7 +44,6 @@ import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
-import org.caleydo.core.view.opengl.canvas.remote.bucket.GLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLIconTextureManager;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
@@ -71,34 +70,16 @@ implements IMediatorReceiver, IMediatorSender
 {
 	private static final int MAX_LOADED_VIEWS = 10;
 
-	protected static final float SCALING_FACTOR_UNDER_INTERACTION_LAYER = 0.5f;
-
-	protected static final float SCALING_FACTOR_TRANSITION_LAYER = 0.05f;
-
-	protected static final float SCALING_FACTOR_STACK_LAYER = 0.5f;
-
-	protected static final float SCALING_FACTOR_POOL_LAYER = 0.04f;
-
-	protected static final float SCALING_FACTOR_SPAWN_LAYER = 0.01f;
-
-	protected static final float SCALING_FACTOR_MEMO_LAYER = 0.08f;
-
 	private static final int SLERP_RANGE = 1000;
-
 	private static final int SLERP_SPEED = 1200;
 
-	private int iMouseOverViewID = -1;
+	protected int iMouseOverViewID = -1;
 
-	private JukeboxHierarchyLayer underInteractionLayer;
-
+	protected JukeboxHierarchyLayer underInteractionLayer;
 	protected JukeboxHierarchyLayer stackLayer;
-
 	protected JukeboxHierarchyLayer poolLayer;
-
 	protected JukeboxHierarchyLayer transitionLayer;
-
 	protected JukeboxHierarchyLayer spawnLayer;
-
 	protected JukeboxHierarchyLayer memoLayer;
 
 	private ArrayList<SlerpAction> arSlerpActions;
@@ -110,16 +91,12 @@ implements IMediatorReceiver, IMediatorSender
 	 */
 	private int iSlerpFactor = 0;
 
-	private GLConnectionLineRenderer glConnectionLineRenderer;
+	protected AGLConnectionLineRenderer glConnectionLineRenderer;
 
 	private int iNavigationMouseOverViewID_left = -1;
-
 	private int iNavigationMouseOverViewID_right = -1;
-
 	private int iNavigationMouseOverViewID_out = -1;
-
 	private int iNavigationMouseOverViewID_in = -1;
-
 	private int iNavigationMouseOverViewID_lock = -1;
 
 	private boolean bEnableNavigationOverlay = false;
@@ -133,15 +110,14 @@ implements IMediatorReceiver, IMediatorSender
 
 	// Memo pad variables
 	// TODO: move to own class
-	private static String TRASH_BIN_PATH = "resources/icons/trashcan_empty.png";
+	protected static String TRASH_BIN_PATH = "resources/icons/trashcan_empty.png";
 
 	private static final int MEMO_PAD_PICKING_ID = 1;
+	protected static final int MEMO_PAD_TRASH_CAN_PICKING_ID = 2;
 
-	private static final int MEMO_PAD_TRASH_CAN_PICKING_ID = 2;
+	protected TextRenderer textRenderer;
 
-	private TextRenderer textRenderer;
-
-	private Texture trashCanTexture;
+	protected Texture trashCanTexture;
 
 	private GLDragAndDrop dragAndDrop;
 
@@ -159,55 +135,19 @@ implements IMediatorReceiver, IMediatorSender
 
 		pickingTriggerMouseAdapter.addGLCanvas(this);
 
-		underInteractionLayer = new JukeboxHierarchyLayer(generalManager, 1,
-				SCALING_FACTOR_UNDER_INTERACTION_LAYER);
-
-		stackLayer = new JukeboxHierarchyLayer(generalManager, 4,
-				SCALING_FACTOR_STACK_LAYER);
-
-		poolLayer = new JukeboxHierarchyLayer(generalManager, MAX_LOADED_VIEWS,
-				SCALING_FACTOR_POOL_LAYER);
-
-		transitionLayer = new JukeboxHierarchyLayer(generalManager, 1,
-				SCALING_FACTOR_TRANSITION_LAYER);
-
-		spawnLayer = new JukeboxHierarchyLayer(generalManager, 1,
-				SCALING_FACTOR_SPAWN_LAYER);
-
-		memoLayer = new JukeboxHierarchyLayer(generalManager, 5,
-				SCALING_FACTOR_MEMO_LAYER);
+		underInteractionLayer = new JukeboxHierarchyLayer(generalManager, 1);
+		stackLayer = new JukeboxHierarchyLayer(generalManager, 4);
+		poolLayer = new JukeboxHierarchyLayer(generalManager, MAX_LOADED_VIEWS);
+		transitionLayer = new JukeboxHierarchyLayer(generalManager, 1);
+		spawnLayer = new JukeboxHierarchyLayer(generalManager, 1);
+		memoLayer = new JukeboxHierarchyLayer(generalManager, 5);
 
 		underInteractionLayer.setParentLayer(stackLayer);
 		stackLayer.setChildLayer(underInteractionLayer);
 		stackLayer.setParentLayer(poolLayer);
 		poolLayer.setChildLayer(stackLayer);
 
-		Transform transformUnderInteraction = new Transform();
-		transformUnderInteraction.setTranslation(new Vec3f(0, 0, 0f));
-		transformUnderInteraction.setScale(new Vec3f(
-				SCALING_FACTOR_UNDER_INTERACTION_LAYER,
-				SCALING_FACTOR_UNDER_INTERACTION_LAYER,
-				SCALING_FACTOR_UNDER_INTERACTION_LAYER));
-		underInteractionLayer.setTransformByPositionIndex(0,
-				transformUnderInteraction);
-
-		Transform transformTransition = new Transform();
-		transformTransition.setTranslation(new Vec3f(1.9f, 0, 0.1f));
-		transformTransition.setScale(new Vec3f(SCALING_FACTOR_TRANSITION_LAYER,
-				SCALING_FACTOR_TRANSITION_LAYER,
-				SCALING_FACTOR_TRANSITION_LAYER));
-		transitionLayer.setTransformByPositionIndex(0, transformTransition);
-
-		Transform transformSpawn = new Transform();
-		transformSpawn.setTranslation(new Vec3f(4.4f, 3.9f, 4.1f));
-		transformSpawn.setScale(new Vec3f(SCALING_FACTOR_SPAWN_LAYER,
-				SCALING_FACTOR_SPAWN_LAYER, SCALING_FACTOR_SPAWN_LAYER));
-		spawnLayer.setTransformByPositionIndex(0, transformSpawn);
-
 		arSlerpActions = new ArrayList<SlerpAction>();
-
-		glConnectionLineRenderer = new GLConnectionLineRenderer(generalManager,
-				underInteractionLayer, stackLayer, poolLayer);
 
 		iAlUninitializedPathwayIDs = new ArrayList<Integer>();
 
@@ -256,9 +196,9 @@ implements IMediatorReceiver, IMediatorSender
 
 		retrieveContainedViews(gl);
 
-		updatePoolLayer();
 		buildStackLayer(gl);
 		buildMemoLayer(gl);
+		updatePoolLayer();
 	}
 
 	/*
@@ -309,23 +249,23 @@ implements IMediatorReceiver, IMediatorSender
 	 */
 	public void display(final GL gl) {
 
-		updatePoolLayer();
-
 		time.update();
 
+		updatePoolLayer();
 		doSlerpActions(gl);
-
-		renderLayer(gl, underInteractionLayer);
 
 //		// If user zooms to the bucket bottom all but the under
 //		// interaction layer is _not_ rendered.
 //		if (!bucketMouseWheelListener.isBucketBottomReached())
 //		{
+
+			glConnectionLineRenderer.render(gl);
+		
 			renderLayer(gl, transitionLayer);
 			renderLayer(gl, stackLayer);
 			renderLayer(gl, spawnLayer);
 			renderPoolLayerBackground(gl);
-
+			renderLayer(gl, underInteractionLayer);
 			renderLayer(gl, poolLayer);
 
 			renderMemoPad(gl);
@@ -336,9 +276,9 @@ implements IMediatorReceiver, IMediatorSender
 							MEMO_PAD_PICKING_ID));
 			renderLayer(gl, memoLayer);
 			gl.glPopName();
-
-			glConnectionLineRenderer.render(gl);
 //		}
+			
+		
 	}
 
 	private void retrieveContainedViews(final GL gl) {
@@ -402,83 +342,10 @@ implements IMediatorReceiver, IMediatorSender
 							MediatorUpdateType.MEDIATOR_DEFAULT);
 		}
 	}
-
 	protected abstract void buildStackLayer(final GL gl);
-
-	private void buildMemoLayer(final GL gl) {
-
-		// Create free memo spots
-		Transform transform;
-		float fMemoPos = 0.46f;
-		for (int iMemoIndex = 0; iMemoIndex < memoLayer.getCapacity(); iMemoIndex++)
-		{
-			// Store current model-view matrix
-			transform = new Transform();
-			transform.setTranslation(new Vec3f(-0.65f, fMemoPos, 4.1f));
-			transform.setScale(new Vec3f(SCALING_FACTOR_MEMO_LAYER,
-					SCALING_FACTOR_MEMO_LAYER, SCALING_FACTOR_MEMO_LAYER));
-			memoLayer.setTransformByPositionIndex(iMemoIndex, transform);
-
-			fMemoPos += 0.7f;
-		}
-
-		try
-		{
-
-			if (this.getClass().getClassLoader().getResource(TRASH_BIN_PATH) != null)
-			{
-				trashCanTexture = TextureIO.newTexture(TextureIO
-						.newTextureData(this.getClass().getClassLoader()
-								.getResourceAsStream(TRASH_BIN_PATH), false,
-								"PNG"));
-			} else
-			{
-				trashCanTexture = TextureIO
-						.newTexture(TextureIO.newTextureData(new File(
-								TRASH_BIN_PATH), false, "PNG"));
-			}
-
-		} catch (Exception e)
-		{
-			System.out
-					.println("GLPathwayMemoPad.init() Error loading texture from "
-							+ TRASH_BIN_PATH);
-			e.printStackTrace();
-		}
-
-		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 96), false);
-	}
-
-	private void updatePoolLayer() {
-
-		float fSelectedScaling = 1;
-		float fYAdd = 0.1f;
-
-		int iSelectedViewIndex = poolLayer
-				.getPositionIndexByElementId(iMouseOverViewID);
-
-		for (int iViewIndex = 0; iViewIndex < poolLayer.getCapacity(); iViewIndex++)
-		{
-			if (iViewIndex == iSelectedViewIndex)
-			{
-				fSelectedScaling = 2;
-			} else
-			{
-				fSelectedScaling = 1;
-			}
-			Transform transform = new Transform();
-
-			transform.setTranslation(new Vec3f(4.0f, fYAdd, 4.1f));
-
-			fYAdd += 0.35f * fSelectedScaling;
-
-			transform.setScale(new Vec3f(SCALING_FACTOR_POOL_LAYER
-					* fSelectedScaling, SCALING_FACTOR_POOL_LAYER
-					* fSelectedScaling, SCALING_FACTOR_POOL_LAYER
-					* fSelectedScaling));
-			poolLayer.setTransformByPositionIndex(iViewIndex, transform);
-		}
-	}
+	protected abstract void buildMemoLayer(final GL gl);
+	// FIXME: not necessary to be abstract
+	protected abstract void updatePoolLayer();
 
 	private void renderBucketWall(final GL gl) {
 
@@ -733,41 +600,7 @@ implements IMediatorReceiver, IMediatorSender
 		gl.glPopMatrix();
 	}
 
-	public void renderPoolLayerBackground(final GL gl) {
-
-		gl.glColor4f(0.4f, 0.4f, 0.4f, 0.8f);
-		gl.glLineWidth(4);
-
-		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(4, 0, 4);
-		gl.glVertex3f(4, 4, 4);
-		gl.glVertex3f(5.1f, 4, 4);
-		gl.glVertex3f(5.1f, 0, 4);
-		gl.glEnd();
-
-		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(0, 0, 4);
-		gl.glVertex3f(0, 4, 4);
-		gl.glVertex3f(-1.1f, 4, 4);
-		gl.glVertex3f(-1.1f, 0, 4);
-		gl.glEnd();
-
-		gl.glColor4f(0.9f, 0.9f, 0.3f, 0.5f);
-
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(4, 0, 4);
-		gl.glVertex3f(4, 4, 4);
-		gl.glVertex3f(5.1f, 4, 4);
-		gl.glVertex3f(5.1f, 0, 4);
-		gl.glEnd();
-
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(0, 0, 4);
-		gl.glVertex3f(0, 4, 4);
-		gl.glVertex3f(-1.1f, 4, 4);
-		gl.glVertex3f(-1.1f, 0, 4);
-		gl.glEnd();
-	}
+	protected abstract void renderPoolLayerBackground(final GL gl);
 
 	private void renderNavigationOverlay(final GL gl, final int iViewID) {
 
@@ -1808,69 +1641,5 @@ implements IMediatorReceiver, IMediatorSender
 		tmpMediatorCmd.doCommand();
 	}
 
-	public void renderMemoPad(final GL gl) {
-
-		if (trashCanTexture == null)
-			return;
-
-		TextureCoords texCoords = trashCanTexture.getImageTexCoords();
-
-		gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager()
-				.getPickingManager().getPickingID(iUniqueId,
-						EPickingType.MEMO_PAD_SELECTION,
-						MEMO_PAD_TRASH_CAN_PICKING_ID));
-
-		trashCanTexture.enable();
-		trashCanTexture.bind();
-
-		gl.glColor3f(1, 1, 1);
-
-		gl.glBegin(GL.GL_QUADS);
-		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(-0.15f, 0.09f, 4.1f);
-		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(-0.5f, 0.09f, 4.1f);
-		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(-0.5f, 0.41f, 4.1f);
-		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(-0.15f, 0.41f, 4.1f);
-		gl.glEnd();
-
-		trashCanTexture.disable();
-
-		gl.glPopName();
-
-		if (textRenderer == null)
-			return;
-
-		String sTmp = "MEMO AREA";
-
-		textRenderer.begin3DRendering();
-		textRenderer.setColor(0.7f, 0.7f, 0.7f, 1.0f);
-
-		float fPosition = 3f;
-		for (int iCharacterIndex = 0; iCharacterIndex < sTmp.length(); iCharacterIndex++)
-		{
-			textRenderer.draw3D((String)(sTmp.subSequence(iCharacterIndex,
-					iCharacterIndex + 1)), -1.03f, fPosition, 4.001f, 0.003f); // scale
-																				// factor
-
-			fPosition -= 0.3f;
-		}
-
-		// TODO: move this to a display list and out of this method
-		sTmp = "POOL AREA";
-
-		fPosition = 3f;
-		for (int iCharacterIndex = 0; iCharacterIndex < sTmp.length(); iCharacterIndex++)
-		{
-			textRenderer.draw3D((String)(sTmp.subSequence(iCharacterIndex,
-					iCharacterIndex + 1)), 4.79f, fPosition, 4.001f, 0.003f); // scale
-																				// factor
-
-			fPosition -= 0.3f;
-		}
-
-		textRenderer.end3DRendering();
-	}
+	protected abstract void renderMemoPad(final GL gl);
 }

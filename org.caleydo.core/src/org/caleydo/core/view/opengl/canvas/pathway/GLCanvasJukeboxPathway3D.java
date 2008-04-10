@@ -143,12 +143,16 @@ implements IMediatorReceiver, IMediatorSender {
 		refHashPathwayContainingSelectedVertex2VertexCount = new HashMap<Integer, Integer>();
 
 		// Create Jukebox hierarchy
-		pathwayUnderInteractionLayer = new JukeboxHierarchyLayer(generalManager,
-				1, SCALING_FACTOR_UNDER_INTERACTION_LAYER, refGLPathwayTextureManager);
-		pathwayLayeredLayer = new JukeboxHierarchyLayer(generalManager,
-				4, SCALING_FACTOR_LAYERED_LAYER, refGLPathwayTextureManager);
-		pathwayPoolLayer = new JukeboxHierarchyLayer(generalManager,
-				MAX_LOADED_PATHWAYS, SCALING_FACTOR_POOL_LAYER, refGLPathwayTextureManager);
+//		pathwayUnderInteractionLayer = new JukeboxHierarchyLayer(generalManager,
+//				1, SCALING_FACTOR_UNDER_INTERACTION_LAYER, refGLPathwayTextureManager);
+//		pathwayLayeredLayer = new JukeboxHierarchyLayer(generalManager,
+//				4, SCALING_FACTOR_LAYERED_LAYER, refGLPathwayTextureManager);
+//		pathwayPoolLayer = new JukeboxHierarchyLayer(generalManager,
+//				MAX_LOADED_PATHWAYS, SCALING_FACTOR_POOL_LAYER, refGLPathwayTextureManager);
+		pathwayUnderInteractionLayer = new JukeboxHierarchyLayer(generalManager, 1, refGLPathwayTextureManager);
+		pathwayLayeredLayer = new JukeboxHierarchyLayer(generalManager, 4, refGLPathwayTextureManager);
+		pathwayPoolLayer = new JukeboxHierarchyLayer(generalManager, MAX_LOADED_PATHWAYS, refGLPathwayTextureManager);
+		
 		pathwayUnderInteractionLayer.setParentLayer(pathwayLayeredLayer);
 		pathwayLayeredLayer.setChildLayer(pathwayUnderInteractionLayer);
 		pathwayLayeredLayer.setParentLayer(pathwayPoolLayer);

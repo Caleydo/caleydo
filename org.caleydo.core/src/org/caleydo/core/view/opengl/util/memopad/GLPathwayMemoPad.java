@@ -51,13 +51,12 @@ public class GLPathwayMemoPad {
 	
 	private Texture trashCanTexture;
 	
-	public GLPathwayMemoPad(
-			final IGeneralManager generalManager,
+	public GLPathwayMemoPad(final IGeneralManager generalManager,
 			final GLPathwayManager gLPathwayManager,
 			final GLPathwayTextureManager gLPathwayTextureManager) {
 		
 		memoPad = new JukeboxHierarchyLayer(generalManager,
-				4, SCALING_FACTOR_MEMO_PAD, gLPathwayTextureManager);
+				4, gLPathwayTextureManager);
 		
 		this.generalManager = generalManager;
 		this.gLPathwayManager = gLPathwayManager;
