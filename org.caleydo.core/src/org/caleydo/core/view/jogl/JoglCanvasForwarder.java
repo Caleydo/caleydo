@@ -1,7 +1,5 @@
 package org.caleydo.core.view.jogl;
 
-import java.util.ArrayList;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
@@ -11,7 +9,6 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
-import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.util.FPSCounter;
 
 /**

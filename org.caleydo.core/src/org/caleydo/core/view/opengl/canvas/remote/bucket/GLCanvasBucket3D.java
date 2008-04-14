@@ -172,8 +172,6 @@ extends AGLRemoteRendering3D
 							+ TRASH_BIN_PATH);
 			e.printStackTrace();
 		}
-
-		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 96), false);
 	}
 	
 	protected void updatePoolLayer() {

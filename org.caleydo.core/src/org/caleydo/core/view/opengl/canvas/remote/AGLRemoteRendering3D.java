@@ -154,6 +154,9 @@ implements IMediatorReceiver, IMediatorSender
 		createEventMediator();
 
 		dragAndDrop = new GLDragAndDrop();
+		
+		textRenderer = new TextRenderer(new Font("Arial",
+				Font.BOLD, 24), false);
 	}
 
 	/*
@@ -562,6 +565,19 @@ implements IMediatorReceiver, IMediatorSender
 			gl.glVertex3f(8, 8, -0.01f);
 			gl.glVertex3f(8, 0, -0.01f);
 			gl.glEnd();
+			
+			String sRenderText = tmpCanvasUser.getInfo().get(1);
+			
+//			// Limit pathway name in length
+//			if(sRenderText.length()> 35)
+//				sRenderText = sRenderText.subSequence(0, 35) + "...";
+//			
+			textRenderer.begin3DRendering();	
+			textRenderer.setColor(1,0,0,1);
+			textRenderer.draw3D(sRenderText,
+					0, 0, 0,
+					1f);  // scale factor
+			textRenderer.end3DRendering();
 		}
 
 		tmpCanvasUser.displayRemote(gl);
@@ -1035,9 +1051,7 @@ implements IMediatorReceiver, IMediatorSender
 
 	private void loadViewToUnderInteractionLayer(final int iViewID) {
 
-		generalManager
-				.getSingelton()
-				.logMsg(
+		generalManager.getSingelton().logMsg(
 						this.getClass().getSimpleName()
 								+ ": loadPathwayToUnderInteractionPosition(): View with ID "
 								+ iViewID + " is under interaction.",

@@ -593,7 +593,6 @@ implements IMediatorReceiver, IMediatorSender {
 			gl.glTranslatef(translation.x(), translation.y(), translation.z()
 					+ fZPos);
 
-			// Append identical vertex count to pathway title
 			if (alMagnificationFactor.get(iPathwayIndex) != 0)
 			{
 				sRenderText = ((PathwayGraph) generalManager.getSingelton()
@@ -603,7 +602,8 @@ implements IMediatorReceiver, IMediatorSender {
 			// Limit pathway name in length
 			if(sRenderText.length()> 35 && alMagnificationFactor.get(iPathwayIndex) <= 2)
 				sRenderText = sRenderText.subSequence(0, 35) + "...";
-			
+
+			// Append identical vertex count to pathway title
 			if (refHashPathwayContainingSelectedVertex2VertexCount.containsKey(iPathwayId))
 			{	
 				sRenderText = sRenderText

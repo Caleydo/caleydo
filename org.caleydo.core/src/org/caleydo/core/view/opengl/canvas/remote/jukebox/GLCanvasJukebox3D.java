@@ -161,8 +161,6 @@ extends AGLRemoteRendering3D
 							+ TRASH_BIN_PATH);
 			e.printStackTrace();
 		}
-
-		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 96), false);
 	}
 	
 	protected void updatePoolLayer() {
@@ -245,38 +243,38 @@ extends AGLRemoteRendering3D
 
 		gl.glPopName();
 
-		if (textRenderer == null)
-			return;
-
-		String sTmp = "MEMO AREA";
-
-		textRenderer.begin3DRendering();
-		textRenderer.setColor(0.7f, 0.7f, 0.7f, 1.0f);
-
-		float fPosition = 3f;
-		for (int iCharacterIndex = 0; iCharacterIndex < sTmp.length(); iCharacterIndex++)
-		{
-			textRenderer.draw3D((String)(sTmp.subSequence(iCharacterIndex,
-					iCharacterIndex + 1)), -1.03f, fPosition, 4.001f, 0.003f); // scale
-																				// factor
-
-			fPosition -= 0.3f;
-		}
-
-		// TODO: move this to a display list and out of this method
-		sTmp = "POOL AREA";
-
-		fPosition = 3f;
-		for (int iCharacterIndex = 0; iCharacterIndex < sTmp.length(); iCharacterIndex++)
-		{
-			textRenderer.draw3D((String)(sTmp.subSequence(iCharacterIndex,
-					iCharacterIndex + 1)), 4.79f, fPosition, 4.001f, 0.003f); // scale
-																				// factor
-
-			fPosition -= 0.3f;
-		}
-
-		textRenderer.end3DRendering();
+//		if (textRenderer == null)
+//			return;
+//
+//		String sTmp = "MEMO AREA";
+//
+//		textRenderer.begin3DRendering();
+//		textRenderer.setColor(0.7f, 0.7f, 0.7f, 1.0f);
+//
+//		float fPosition = 3f;
+//		for (int iCharacterIndex = 0; iCharacterIndex < sTmp.length(); iCharacterIndex++)
+//		{
+//			textRenderer.draw3D((String)(sTmp.subSequence(iCharacterIndex,
+//					iCharacterIndex + 1)), -1.03f, fPosition, 4.001f, 0.003f); // scale
+//																				// factor
+//
+//			fPosition -= 0.3f;
+//		}
+//
+//		// TODO: move this to a display list and out of this method
+//		sTmp = "POOL AREA";
+//
+//		fPosition = 3f;
+//		for (int iCharacterIndex = 0; iCharacterIndex < sTmp.length(); iCharacterIndex++)
+//		{
+//			textRenderer.draw3D((String)(sTmp.subSequence(iCharacterIndex,
+//					iCharacterIndex + 1)), 4.79f, fPosition, 4.001f, 0.003f); // scale
+//																				// factor
+//
+//			fPosition -= 0.3f;
+//		}
+//
+//		textRenderer.end3DRendering();
 	}
 	
 	protected void renderPoolLayerBackground(final GL gl) {
