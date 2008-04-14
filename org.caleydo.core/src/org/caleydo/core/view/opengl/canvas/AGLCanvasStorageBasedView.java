@@ -71,9 +71,15 @@ implements IMediatorReceiver, IMediatorSender
 	// flag whether the whole data or the selection should be rendered
 	protected boolean bRenderSelection = true;
 	
-	protected TextRenderer textRenderer;	
+	protected TextRenderer textRenderer;
 	
 	
+	protected boolean bRenderOnlyContext = false;
+	
+	public void renderOnlyContext(boolean bRenderOnlyContext)
+	{
+		this.bRenderOnlyContext = bRenderOnlyContext;
+	}
 	
 	public AGLCanvasStorageBasedView(final IGeneralManager generalManager,
 			final int iViewId,
@@ -134,45 +140,53 @@ implements IMediatorReceiver, IMediatorSender
 		}
 		mapSelections.put(ESelectionType.EXTERNAL_SELECTION, alTempList);
 
-		int iStorageLength = alDataStorages.get(0).getArrayFloat().length;
-		//int iStorageLength = 3000;
+		//int iStorageLength = alDataStorages.get(0).getArrayFloat().length;
+		int iStorageLength = 500;
 		alTempList = new ArrayList<Integer>(iStorageLength);
 		// initialize full list
+		
+		
 		for(int iCount = 0; iCount < iStorageLength; iCount++)
 		{
-			int iAccessionID = getAccesionIDFromStorageIndex(iCount);
 			
+			if (bRenderOnlyContext)
+			{
+				// FIXME: not general, only for genes
 			
-			if(iAccessionID == -1)
-				continue;
-			else
-			{			
-				// Check if gene occurs in one pathway
-				int iNCBIGeneID = generalManager.getSingelton().getGenomeIdManager()
-				.getIdIntFromIntByMapping(iAccessionID, EGenomeMappingType.ACCESSION_2_NCBI_GENEID);
-
-				String sNCBIGeneIDCode = generalManager.getSingelton().getGenomeIdManager()
-					.getIdStringFromIntByMapping(iNCBIGeneID, EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
-			
-				int iNCBIGeneIDCode = StringConversionTool.convertStringToInt(sNCBIGeneIDCode, -1);
+				int iAccessionID = getAccesionIDFromStorageIndex(iCount);
 				
-				if(iNCBIGeneID == -1)
-				{
-					//System.out.println("Error: No Gene ID for accession");
+				
+				if(iAccessionID == -1)
 					continue;
-				}
-				
-				PathwayVertexGraphItem tmpPathwayVertexGraphItem = 
-					((PathwayVertexGraphItem)generalManager.getSingelton().getPathwayItemManager().getItem(
-						generalManager.getSingelton().getPathwayItemManager().getPathwayVertexGraphItemIdByNCBIGeneId(iNCBIGeneIDCode)));
+				else
+				{			
+					// Check if gene occurs in one pathway
+					int iNCBIGeneID = generalManager.getSingelton().getGenomeIdManager()
+					.getIdIntFromIntByMapping(iAccessionID, EGenomeMappingType.ACCESSION_2_NCBI_GENEID);
 	
-				if(tmpPathwayVertexGraphItem == null)
-				{
-//					generalManager.getSingelton().logMsg(
-//							this.getClass().getSimpleName()
-//									+ " ("+iUniqueId+"): Irgendwas mit graph vertex item das eigentlich net passiern sullt ",
-//							LoggerType.VERBOSE);
-					continue;					
+					String sNCBIGeneIDCode = generalManager.getSingelton().getGenomeIdManager()
+						.getIdStringFromIntByMapping(iNCBIGeneID, EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
+				
+					int iNCBIGeneIDCode = StringConversionTool.convertStringToInt(sNCBIGeneIDCode, -1);
+					
+					if(iNCBIGeneID == -1)
+					{
+						//System.out.println("Error: No Gene ID for accession");
+						continue;
+					}
+					
+					PathwayVertexGraphItem tmpPathwayVertexGraphItem = 
+						((PathwayVertexGraphItem)generalManager.getSingelton().getPathwayItemManager().getItem(
+							generalManager.getSingelton().getPathwayItemManager().getPathwayVertexGraphItemIdByNCBIGeneId(iNCBIGeneIDCode)));
+		
+					if(tmpPathwayVertexGraphItem == null)
+					{
+	//					generalManager.getSingelton().logMsg(
+	//							this.getClass().getSimpleName()
+	//									+ " ("+iUniqueId+"): Irgendwas mit graph vertex item das eigentlich net passiern sullt ",
+	//							LoggerType.VERBOSE);
+						continue;					
+					}
 				}
 			}
 			alTempList.add(iCount);
