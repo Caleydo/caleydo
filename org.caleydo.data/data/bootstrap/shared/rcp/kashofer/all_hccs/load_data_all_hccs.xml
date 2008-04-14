@@ -56,33 +56,33 @@
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="97101" label=""  attrib1="35201" attrib2="57301" attrib3="SET_GENE_EXPRESSION_DATA" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="98101" label=""  attrib1="35201" attrib2="58301" attrib3="SET_GENE_EXPRESSION_DATA" />
 	
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/all_hcc.csv"	
 			attrib1="FLOAT;ABORT"																	attrib2="85101" attrib3="1 -1" />								
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/all_hcc.csv"	
 			attrib1="SKIP;FLOAT;ABORT"																attrib2="86101" attrib3="1 -1" />			
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/all_hcc.csv"	
 			attrib1="SKIP;SKIP;FLOAT;ABORT"															attrib2="87101" attrib3="1 -1" />			
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/all_hcc.csv"	
 			attrib1="SKIP;SKIP;SKIP;FLOAT;ABORT"													attrib2="88101" attrib3="1 -1" />			
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/all_hcc.csv"	
 			attrib1="SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT"												attrib2="89101" attrib3="1 -1" />			
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/all_hcc.csv"	
 			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT"											attrib2="90101" attrib3="1 -1" />			
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/all_hcc.csv"	
 			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT"										attrib2="91101" attrib3="1 -1" />			
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/all_hcc.csv"	
 			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT"								attrib2="92101" attrib3="1 -1" />			
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/all_hcc.csv"	
 			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT"							attrib2="93101" attrib3="1 -1" />			
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/all_hcc.csv"	
 			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT"						attrib2="94101" attrib3="1 -1" />			
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/all_hcc.csv"	
 			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT"					attrib2="95101" attrib3="1 -1" />			
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/all_hcc.csv"	
 			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT"			attrib2="96101" attrib3="1 -1" />			
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/all_hcc.csvv"	
 			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT"		attrib2="97101" attrib3="1 -1" />			
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_hccs.csv"	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/all_hcc.csv"	
 			attrib1="SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT"	attrib2="98101" attrib3="1 -1" />			
 								
 						
