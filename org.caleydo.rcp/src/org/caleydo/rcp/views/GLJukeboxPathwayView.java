@@ -90,13 +90,13 @@ extends AGLViewPart {
 	}
 
 	private void fillLocalPullDown(IMenuManager manager) {
-		manager.add(actToggleAnimatorRunningState);
-		manager.add(actEnableGeneMapping);
-		manager.add(actEnablePathwayTextures);
-		manager.add(actEnableNeighborhood);
-		manager.add(actEnableIdenticalNodeHighlighting);
-		manager.add(actEnableAnnotation);
-		manager.add(actClearAllPathways);
+//		manager.add(actToggleAnimatorRunningState);
+//		manager.add(actEnableGeneMapping);
+//		manager.add(actEnablePathwayTextures);
+//		manager.add(actEnableNeighborhood);
+//		manager.add(actEnableIdenticalNodeHighlighting);
+//		manager.add(actEnableAnnotation);
+//		manager.add(actClearAllPathways);
 	}
 
 	protected void fillLocalToolBar(IToolBarManager manager) {

@@ -52,6 +52,11 @@ implements IViewFrustum {
 		return projectionMode;
 	}
 	
+	public void setProjectionMode(final ProjectionMode projectionMode) {
+		
+		this.projectionMode = projectionMode;
+	}
+	
 	public float getLeft() {
 		return fLeft;
 	}

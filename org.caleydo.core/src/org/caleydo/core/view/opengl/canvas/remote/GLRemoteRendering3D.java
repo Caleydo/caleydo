@@ -6,7 +6,6 @@ import gleem.linalg.Vec4f;
 import gleem.linalg.open.Transform;
 
 import java.awt.Font;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -26,6 +25,10 @@ import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
+import org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle;
+import org.caleydo.core.data.view.rep.renderstyle.layout.BucketLayoutRenderStyle;
+import org.caleydo.core.data.view.rep.renderstyle.layout.JukeboxLayoutRenderStyle;
+import org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle.LayoutMode;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IEventPublisher.MediatorType;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
@@ -44,6 +47,9 @@ import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListener;
+import org.caleydo.core.view.opengl.canvas.remote.bucket.GLConnectionLineRendererBucket;
+import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLConnectionLineRendererJukebox;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLIconTextureManager;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
@@ -55,7 +61,6 @@ import org.caleydo.util.graph.IGraphItem;
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
-import com.sun.opengl.util.texture.TextureIO;
 
 /**
  * Abstract class that is able to remotely rendering views.
@@ -64,11 +69,11 @@ import com.sun.opengl.util.texture.TextureIO;
  * @author Marc Streit
  * 
  */
-public abstract class AGLRemoteRendering3D 
+public class GLRemoteRendering3D 
 extends AGLCanvasUser
 implements IMediatorReceiver, IMediatorSender 
 {
-	private static final int MAX_LOADED_VIEWS = 10;
+	private ARemoteViewLayoutRenderStyle.LayoutMode layoutMode;
 
 	private static final int SLERP_RANGE = 1000;
 	private static final int SLERP_SPEED = 1200;
@@ -120,32 +125,62 @@ implements IMediatorReceiver, IMediatorSender
 	protected Texture trashCanTexture;
 
 	private GLDragAndDrop dragAndDrop;
+	
+	private ARemoteViewLayoutRenderStyle layoutRenderStyle;
+	
+	private BucketMouseWheelListener bucketMouseWheelListener;
 
 	/**
 	 * Constructor.
 	 * 
 	 */
-	public AGLRemoteRendering3D(final IGeneralManager generalManager,
+	public GLRemoteRendering3D(final IGeneralManager generalManager,
 			final int iViewId,
 			final int iGLCanvasID,
 			final String sLabel,
-			final IViewFrustum viewFrustum) {
+			final IViewFrustum viewFrustum,
+			final ARemoteViewLayoutRenderStyle.LayoutMode layoutMode) {
 
 		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
 
+		this.layoutMode = layoutMode;
+		
+		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
+		{
+			layoutRenderStyle = new BucketLayoutRenderStyle(generalManager);			
+
+			bucketMouseWheelListener = new BucketMouseWheelListener(this);
+			
+			// Unregister standard mouse wheel listener
+			parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
+			// Register specialized bucket mouse wheel listener
+			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
+
+		}
+		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX))
+		{
+			layoutRenderStyle = new JukeboxLayoutRenderStyle(generalManager);
+		}
+				
+		underInteractionLayer = layoutRenderStyle.initUnderInteractionLayer();
+		stackLayer = layoutRenderStyle.initStackLayer();
+		poolLayer =layoutRenderStyle.initPoolLayer(-1);
+		memoLayer = layoutRenderStyle.initMemoLayer();
+		transitionLayer = layoutRenderStyle.initTransitionLayer();
+		spawnLayer = layoutRenderStyle.initSpawnLayer();
+		
+		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
+		{
+			glConnectionLineRenderer = new GLConnectionLineRendererBucket(generalManager,
+					underInteractionLayer, stackLayer, poolLayer);
+		}
+		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX))
+		{
+			glConnectionLineRenderer = new GLConnectionLineRendererJukebox(generalManager,
+					underInteractionLayer, stackLayer, poolLayer);
+		}
+		
 		pickingTriggerMouseAdapter.addGLCanvas(this);
-
-		underInteractionLayer = new JukeboxHierarchyLayer(generalManager, 1);
-		stackLayer = new JukeboxHierarchyLayer(generalManager, 4);
-		poolLayer = new JukeboxHierarchyLayer(generalManager, MAX_LOADED_VIEWS);
-		transitionLayer = new JukeboxHierarchyLayer(generalManager, 1);
-		spawnLayer = new JukeboxHierarchyLayer(generalManager, 1);
-		memoLayer = new JukeboxHierarchyLayer(generalManager, 5);
-
-		underInteractionLayer.setParentLayer(stackLayer);
-		stackLayer.setChildLayer(underInteractionLayer);
-		stackLayer.setParentLayer(poolLayer);
-		poolLayer.setChildLayer(stackLayer);
 
 		arSlerpActions = new ArrayList<SlerpAction>();
 
@@ -156,9 +191,9 @@ implements IMediatorReceiver, IMediatorSender
 		dragAndDrop = new GLDragAndDrop();
 		
 		textRenderer = new TextRenderer(new Font("Arial",
-				Font.BOLD, 24), false);
+				Font.BOLD, 96), false);
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -196,12 +231,8 @@ implements IMediatorReceiver, IMediatorSender
 
 		time = new SystemTime();
 		((SystemTime) time).rebase();
-
+		
 		retrieveContainedViews(gl);
-
-		buildStackLayer(gl);
-		buildMemoLayer(gl);
-		updatePoolLayer();
 	}
 
 	/*
@@ -254,7 +285,7 @@ implements IMediatorReceiver, IMediatorSender
 
 		time.update();
 
-		updatePoolLayer();
+		layoutRenderStyle.initPoolLayer(iMouseOverViewID);
 		doSlerpActions(gl);
 
 //		// If user zooms to the bucket bottom all but the under
@@ -267,11 +298,11 @@ implements IMediatorReceiver, IMediatorSender
 			renderLayer(gl, transitionLayer);
 			renderLayer(gl, stackLayer);
 			renderLayer(gl, spawnLayer);
-			renderPoolLayerBackground(gl);
+//			renderPoolLayerBackground(gl);
 			renderLayer(gl, underInteractionLayer);
 			renderLayer(gl, poolLayer);
 
-			renderMemoPad(gl);
+//			renderMemoPad(gl);
 
 			gl.glPushName(generalManager.getSingelton()
 					.getViewGLCanvasManager().getPickingManager().getPickingID(
@@ -281,7 +312,10 @@ implements IMediatorReceiver, IMediatorSender
 			gl.glPopName();
 //		}
 			
-		
+		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
+		{
+			bucketMouseWheelListener.render();	
+		}
 	}
 
 	private void retrieveContainedViews(final GL gl) {
@@ -345,10 +379,6 @@ implements IMediatorReceiver, IMediatorSender
 							MediatorUpdateType.MEDIATOR_DEFAULT);
 		}
 	}
-	protected abstract void buildStackLayer(final GL gl);
-	protected abstract void buildMemoLayer(final GL gl);
-	// FIXME: not necessary to be abstract
-	protected abstract void updatePoolLayer();
 
 	private void renderBucketWall(final GL gl) {
 
@@ -549,10 +579,10 @@ implements IMediatorReceiver, IMediatorSender
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(),
 				axis.z());
 
-		if (layer.equals(underInteractionLayer) || layer.equals(stackLayer))
-		{
-			renderBucketWall(gl);
-		}
+//		if (layer.equals(underInteractionLayer) || layer.equals(stackLayer))
+//		{
+//			renderBucketWall(gl);
+//		}
 
 		// Render transparent plane for picking views without texture (e.g. PC)
 		if (layer.equals(poolLayer))
@@ -568,19 +598,19 @@ implements IMediatorReceiver, IMediatorSender
 			
 			String sRenderText = tmpCanvasUser.getInfo().get(1);
 			
-//			// Limit pathway name in length
-//			if(sRenderText.length()> 35)
-//				sRenderText = sRenderText.subSequence(0, 35) + "...";
-//			
+			// Limit pathway name in length
+			if(sRenderText.length()> 35)
+				sRenderText = sRenderText.subSequence(0, 30) + "...";
+			
 			textRenderer.begin3DRendering();	
-			textRenderer.setColor(1,0,0,1);
+			textRenderer.setColor(0,0,0,1);
 			textRenderer.draw3D(sRenderText,
-					0, 0, 0,
-					1f);  // scale factor
+					8, 3, 0,
+					0.025f);  // scale factor
 			textRenderer.end3DRendering();
 		}
 
-		tmpCanvasUser.displayRemote(gl);
+		tmpCanvasUser.displayRemote(gl);			
 
 		if (layer.equals(stackLayer))
 		{
@@ -608,15 +638,13 @@ implements IMediatorReceiver, IMediatorSender
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(),
 				axis.z());
 
-		if (!layer.equals(transitionLayer) && !layer.equals(spawnLayer))
+		if (!layer.equals(transitionLayer) && !layer.equals(spawnLayer) && !layer.equals(poolLayer))
 		{
 			renderBucketWall(gl);
 		}
 
 		gl.glPopMatrix();
 	}
-
-	protected abstract void renderPoolLayerBackground(final GL gl);
 
 	private void renderNavigationOverlay(final GL gl, final int iViewID) {
 
@@ -648,61 +676,13 @@ implements IMediatorReceiver, IMediatorSender
 		if (iNavigationMouseOverViewID_lock == iViewID)
 			tmpColor_lock.set(1, 0.3f, 0.3f, 0.9f);
 
-		if (stackLayer.getPositionIndexByElementId(iViewID) == 0) // top
-		{
-			topWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
-			bottomWallPickingType = EPickingType.BUCKET_MOVE_IN_ICON_SELECTION;
-			leftWallPickingType = EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
-			rightWallPickingType = EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
-
-			if (iNavigationMouseOverViewID_out == iViewID)
-				tmpColor_out.set(1, 0.3f, 0.3f, 0.9f);
-			else if (iNavigationMouseOverViewID_in == iViewID)
-				tmpColor_in.set(1, 0.3f, 0.3f, 0.9f);
-			else if (iNavigationMouseOverViewID_left == iViewID)
-				tmpColor_left.set(1, 0.3f, 0.3f, 0.9f);
-			else if (iNavigationMouseOverViewID_right == iViewID)
-				tmpColor_right.set(1, 0.3f, 0.3f, 0.9f);
-
-			textureMoveIn = glIconTextureManager
-					.getIconTexture(EIconTextures.ARROW_LEFT);
-			textureMoveOut = glIconTextureManager
-					.getIconTexture(EIconTextures.ARROW_DOWN);
-			textureMoveLeft = glIconTextureManager
-					.getIconTexture(EIconTextures.ARROW_DOWN);
-			textureMoveRight = glIconTextureManager
-					.getIconTexture(EIconTextures.ARROW_LEFT);
-		} else if (stackLayer.getPositionIndexByElementId(iViewID) == 2) // bottom
-		{
-			topWallPickingType = EPickingType.BUCKET_MOVE_IN_ICON_SELECTION;
-			bottomWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
-			leftWallPickingType = EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
-			rightWallPickingType = EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
-
-			if (iNavigationMouseOverViewID_out == iViewID)
-				tmpColor_in.set(1, 0.3f, 0.3f, 0.9f);
-			else if (iNavigationMouseOverViewID_in == iViewID)
-				tmpColor_out.set(1, 0.3f, 0.3f, 0.9f);
-			else if (iNavigationMouseOverViewID_left == iViewID)
-				tmpColor_right.set(1, 0.3f, 0.3f, 0.9f);
-			else if (iNavigationMouseOverViewID_right == iViewID)
-				tmpColor_left.set(1, 0.3f, 0.3f, 0.9f);
-
-			textureMoveIn = glIconTextureManager
-					.getIconTexture(EIconTextures.ARROW_LEFT);
-			textureMoveOut = glIconTextureManager
-					.getIconTexture(EIconTextures.ARROW_DOWN);
-			textureMoveLeft = glIconTextureManager
-					.getIconTexture(EIconTextures.ARROW_DOWN);
-			textureMoveRight = glIconTextureManager
-					.getIconTexture(EIconTextures.ARROW_LEFT);
-		} else if (stackLayer.getPositionIndexByElementId(iViewID) == 1) // left
+		if (layoutMode.equals(LayoutMode.JUKEBOX))
 		{
 			topWallPickingType = EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
 			bottomWallPickingType = EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
 			leftWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
 			rightWallPickingType = EPickingType.BUCKET_MOVE_IN_ICON_SELECTION;
-
+			
 			if (iNavigationMouseOverViewID_out == iViewID)
 				tmpColor_left.set(1, 0.3f, 0.3f, 0.9f);
 			else if (iNavigationMouseOverViewID_in == iViewID)
@@ -712,38 +692,110 @@ implements IMediatorReceiver, IMediatorSender
 			else if (iNavigationMouseOverViewID_right == iViewID)
 				tmpColor_out.set(1, 0.3f, 0.3f, 0.9f);
 
-			textureMoveIn = glIconTextureManager
-					.getIconTexture(EIconTextures.ARROW_LEFT);
-			textureMoveOut = glIconTextureManager
-					.getIconTexture(EIconTextures.ARROW_DOWN);
-			textureMoveLeft = glIconTextureManager
-					.getIconTexture(EIconTextures.ARROW_DOWN);
-			textureMoveRight = glIconTextureManager
-					.getIconTexture(EIconTextures.ARROW_LEFT);
-		} else if (stackLayer.getPositionIndexByElementId(iViewID) == 3) // right
+			textureMoveIn = glIconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
+			textureMoveOut = glIconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
+			textureMoveLeft = glIconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
+			textureMoveRight = glIconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
+		}
+		else
 		{
-			topWallPickingType = EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
-			bottomWallPickingType = EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
-			leftWallPickingType = EPickingType.BUCKET_MOVE_IN_ICON_SELECTION;
-			rightWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
-
-			if (iNavigationMouseOverViewID_out == iViewID)
-				tmpColor_right.set(1, 0.3f, 0.3f, 0.9f);
-			else if (iNavigationMouseOverViewID_in == iViewID)
-				tmpColor_left.set(1, 0.3f, 0.3f, 0.9f);
-			else if (iNavigationMouseOverViewID_left == iViewID)
-				tmpColor_out.set(1, 0.3f, 0.3f, 0.9f);
-			else if (iNavigationMouseOverViewID_right == iViewID)
-				tmpColor_in.set(1, 0.3f, 0.3f, 0.9f);
-
-			textureMoveIn = glIconTextureManager
-					.getIconTexture(EIconTextures.ARROW_LEFT);
-			textureMoveOut = glIconTextureManager
-					.getIconTexture(EIconTextures.ARROW_DOWN);
-			textureMoveLeft = glIconTextureManager
-					.getIconTexture(EIconTextures.ARROW_DOWN);
-			textureMoveRight = glIconTextureManager
-					.getIconTexture(EIconTextures.ARROW_LEFT);
+			if (stackLayer.getPositionIndexByElementId(iViewID) == 0) // top
+			{
+				topWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
+				bottomWallPickingType = EPickingType.BUCKET_MOVE_IN_ICON_SELECTION;
+				leftWallPickingType = EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
+				rightWallPickingType = EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
+	
+				if (iNavigationMouseOverViewID_out == iViewID)
+					tmpColor_out.set(1, 0.3f, 0.3f, 0.9f);
+				else if (iNavigationMouseOverViewID_in == iViewID)
+					tmpColor_in.set(1, 0.3f, 0.3f, 0.9f);
+				else if (iNavigationMouseOverViewID_left == iViewID)
+					tmpColor_left.set(1, 0.3f, 0.3f, 0.9f);
+				else if (iNavigationMouseOverViewID_right == iViewID)
+					tmpColor_right.set(1, 0.3f, 0.3f, 0.9f);
+	
+				textureMoveIn = glIconTextureManager
+						.getIconTexture(EIconTextures.ARROW_LEFT);
+				textureMoveOut = glIconTextureManager
+						.getIconTexture(EIconTextures.ARROW_DOWN);
+				textureMoveLeft = glIconTextureManager
+						.getIconTexture(EIconTextures.ARROW_DOWN);
+				textureMoveRight = glIconTextureManager
+						.getIconTexture(EIconTextures.ARROW_LEFT);
+			} else if (stackLayer.getPositionIndexByElementId(iViewID) == 2) // bottom
+			{
+				topWallPickingType = EPickingType.BUCKET_MOVE_IN_ICON_SELECTION;
+				bottomWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
+				leftWallPickingType = EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
+				rightWallPickingType = EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
+	
+				if (iNavigationMouseOverViewID_out == iViewID)
+					tmpColor_in.set(1, 0.3f, 0.3f, 0.9f);
+				else if (iNavigationMouseOverViewID_in == iViewID)
+					tmpColor_out.set(1, 0.3f, 0.3f, 0.9f);
+				else if (iNavigationMouseOverViewID_left == iViewID)
+					tmpColor_right.set(1, 0.3f, 0.3f, 0.9f);
+				else if (iNavigationMouseOverViewID_right == iViewID)
+					tmpColor_left.set(1, 0.3f, 0.3f, 0.9f);
+	
+				textureMoveIn = glIconTextureManager
+						.getIconTexture(EIconTextures.ARROW_LEFT);
+				textureMoveOut = glIconTextureManager
+						.getIconTexture(EIconTextures.ARROW_DOWN);
+				textureMoveLeft = glIconTextureManager
+						.getIconTexture(EIconTextures.ARROW_DOWN);
+				textureMoveRight = glIconTextureManager
+						.getIconTexture(EIconTextures.ARROW_LEFT);
+			} else if (stackLayer.getPositionIndexByElementId(iViewID) == 1) // left
+			{
+				topWallPickingType = EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
+				bottomWallPickingType = EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
+				leftWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
+				rightWallPickingType = EPickingType.BUCKET_MOVE_IN_ICON_SELECTION;
+	
+				if (iNavigationMouseOverViewID_out == iViewID)
+					tmpColor_left.set(1, 0.3f, 0.3f, 0.9f);
+				else if (iNavigationMouseOverViewID_in == iViewID)
+					tmpColor_right.set(1, 0.3f, 0.3f, 0.9f);
+				else if (iNavigationMouseOverViewID_left == iViewID)
+					tmpColor_in.set(1, 0.3f, 0.3f, 0.9f);
+				else if (iNavigationMouseOverViewID_right == iViewID)
+					tmpColor_out.set(1, 0.3f, 0.3f, 0.9f);
+	
+				textureMoveIn = glIconTextureManager
+						.getIconTexture(EIconTextures.ARROW_LEFT);
+				textureMoveOut = glIconTextureManager
+						.getIconTexture(EIconTextures.ARROW_DOWN);
+				textureMoveLeft = glIconTextureManager
+						.getIconTexture(EIconTextures.ARROW_DOWN);
+				textureMoveRight = glIconTextureManager
+						.getIconTexture(EIconTextures.ARROW_LEFT);
+			} else if (stackLayer.getPositionIndexByElementId(iViewID) == 3) // right
+			{
+				topWallPickingType = EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
+				bottomWallPickingType = EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
+				leftWallPickingType = EPickingType.BUCKET_MOVE_IN_ICON_SELECTION;
+				rightWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
+	
+				if (iNavigationMouseOverViewID_out == iViewID)
+					tmpColor_right.set(1, 0.3f, 0.3f, 0.9f);
+				else if (iNavigationMouseOverViewID_in == iViewID)
+					tmpColor_left.set(1, 0.3f, 0.3f, 0.9f);
+				else if (iNavigationMouseOverViewID_left == iViewID)
+					tmpColor_out.set(1, 0.3f, 0.3f, 0.9f);
+				else if (iNavigationMouseOverViewID_right == iViewID)
+					tmpColor_in.set(1, 0.3f, 0.3f, 0.9f);
+	
+				textureMoveIn = glIconTextureManager
+						.getIconTexture(EIconTextures.ARROW_LEFT);
+				textureMoveOut = glIconTextureManager
+						.getIconTexture(EIconTextures.ARROW_DOWN);
+				textureMoveLeft = glIconTextureManager
+						.getIconTexture(EIconTextures.ARROW_DOWN);
+				textureMoveRight = glIconTextureManager
+						.getIconTexture(EIconTextures.ARROW_LEFT);
+			}
 		}
 		// else if (underInteractionLayer.containsElement(iViewID))
 		// {
@@ -1654,6 +1706,57 @@ implements IMediatorReceiver, IMediatorSender
 				iAlReceiverIDs, MediatorType.SELECTION_MEDIATOR);
 		tmpMediatorCmd.doCommand();
 	}
+	
+	public void toggleLayoutMode()
+	{
+		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
+			layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX;
+		else
+			layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET;
+		
+		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
+		{
+			layoutRenderStyle = new BucketLayoutRenderStyle(generalManager, layoutRenderStyle);			
 
-	protected abstract void renderMemoPad(final GL gl);
+			bucketMouseWheelListener = new BucketMouseWheelListener(this);
+			
+			// Unregister standard mouse wheel listener
+			parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
+			// Register specialized bucket mouse wheel listener
+			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
+		}
+		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX))
+		{
+			layoutRenderStyle = new JukeboxLayoutRenderStyle(generalManager, layoutRenderStyle);
+			
+			// Unregister bucket wheel listener
+			parentGLCanvas.removeMouseWheelListener(bucketMouseWheelListener);
+			// Register standard mouse wheel listener
+			parentGLCanvas.addMouseWheelListener(pickingTriggerMouseAdapter);
+		}
+		
+		underInteractionLayer = layoutRenderStyle.initUnderInteractionLayer();
+		stackLayer = layoutRenderStyle.initStackLayer();
+		poolLayer =layoutRenderStyle.initPoolLayer(-1);
+		memoLayer = layoutRenderStyle.initMemoLayer();
+		transitionLayer = layoutRenderStyle.initTransitionLayer();
+		spawnLayer = layoutRenderStyle.initSpawnLayer();
+		
+		viewFrustum.setProjectionMode(layoutRenderStyle.getProjectionMode());
+		
+		// Trigger reshape to apply new projection mode
+		// Is there a better way to achieve this? :)
+		parentGLCanvas.setSize(parentGLCanvas.getWidth(), parentGLCanvas.getHeight());
+		
+		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
+		{
+			glConnectionLineRenderer = new GLConnectionLineRendererBucket(generalManager,
+					underInteractionLayer, stackLayer, poolLayer);
+		}
+		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX))
+		{
+			glConnectionLineRenderer = new GLConnectionLineRendererJukebox(generalManager,
+					underInteractionLayer, stackLayer, poolLayer);
+		}
+	}
 }

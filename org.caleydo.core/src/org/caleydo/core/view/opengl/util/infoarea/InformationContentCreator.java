@@ -89,7 +89,7 @@ public class InformationContentCreator
 			String sPathwayTitle = pathway.getTitle();
 			
 			sContent.add("Type: " +pathway.getType().getName() +"Pathway");
-			sContent.add("Pathway: " +sPathwayTitle);
+			sContent.add("PW: " +sPathwayTitle);
 			break;
 			
 		case EXPERIMENT:

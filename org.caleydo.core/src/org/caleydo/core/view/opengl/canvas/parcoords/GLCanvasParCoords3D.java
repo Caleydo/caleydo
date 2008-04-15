@@ -1463,11 +1463,11 @@ extends AGLCanvasStorageBasedView
 		sAlInfo.add("Type: Parallel Coordinates");
 		if(!bRenderStorageHorizontally)
 		{
-			sAlInfo.add("Showing genes as " + alContentSelection.size() +" polylines and experiments as " + iNumberOfAxis + " axis.");			
+			sAlInfo.add("PC: Showing genes as " + alContentSelection.size() +" polylines and experiments as " + iNumberOfAxis + " axis.");			
 		}
 		else
 		{
-			sAlInfo.add("Showing experiments as " + alStorageSelection.size() +" polylines and genes as " + iNumberOfAxis + " axis.");			
+			sAlInfo.add("PC: Showing experiments as " + alStorageSelection.size() +" polylines and genes as " + iNumberOfAxis + " axis.");			
 		}
 		return sAlInfo;
 	}

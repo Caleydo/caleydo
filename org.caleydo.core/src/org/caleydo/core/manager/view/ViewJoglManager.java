@@ -11,6 +11,7 @@ import javax.swing.JFrame;
 
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
@@ -27,8 +28,7 @@ import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn;
 import org.caleydo.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
-import org.caleydo.core.view.opengl.canvas.remote.bucket.GLCanvasBucket3D;
-import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLCanvasJukebox3D;
+import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering3D;
 import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
 import org.caleydo.core.view.swt.data.exchanger.DataExchangerViewRep;
@@ -451,20 +451,22 @@ implements IViewGLCanvasManager {
 						viewFrustum);
 				
 			case CREATE_GL_BUCKET_3D:
-				return new GLCanvasBucket3D(
+				return new GLRemoteRendering3D(
 						generalManager, 
 						iUniqueId,
 						iGLCanvasID, 
 						sLabel,
-						viewFrustum);	
+						viewFrustum,
+						ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET);	
 				
 			case CREATE_GL_JUKEBOX_3D:
-				return new GLCanvasJukebox3D(
+				return new GLRemoteRendering3D(
 						generalManager, 
 						iUniqueId,
 						iGLCanvasID, 
 						sLabel,
-						viewFrustum);					
+						viewFrustum,
+						ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX);					
 				
 			default:
 				throw new CaleydoRuntimeException(

@@ -52,13 +52,10 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 			case PATHWAY_ENABLE_GENE_MAPPING: 
 				((GLCanvasJukeboxPathway3D)viewObject).enableGeneMapping(bFlag);
 				break;
-				
 			case PATHWAY_ENABLE_ANNOTATION:
 				((GLCanvasJukeboxPathway3D)viewObject).enableAnnotation(bFlag);
 				break;
-				
 			case PATHWAY_ENABLE_IDENTICAL_NODE_HIGHLIGHTING:
-			
 				((GLCanvasJukeboxPathway3D)viewObject).enableIdenticalNodeHighlighting(bFlag);			
 				break;
 			case PATHWAY_ENABLE_NEIGHBORHOOD:			

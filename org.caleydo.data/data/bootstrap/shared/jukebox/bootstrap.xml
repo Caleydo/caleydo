@@ -102,7 +102,7 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_JUKEBOX_3D"		cmdId="69994"	uniqueId="83401" parent="99075" label="Jukebox" 
 							gl_origin="-2 -2 -8" 
 							gl_rotation="0 0 0 0"					
-							attrib3="ORTHOGONAL -1.5 1.5 -1.5 1.5 2.9 100"
+							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
 							attrib4="transparency 1" 								
 							detail="88101" /> 
 			    

@@ -14,6 +14,8 @@ public interface IViewFrustum {
 	
 	public ProjectionMode getProjectionMode();
 	
+	public void setProjectionMode(final ProjectionMode projectionMode);
+	
 	public float getLeft();
 	
 	public float getRight();

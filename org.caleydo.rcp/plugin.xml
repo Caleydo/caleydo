@@ -57,10 +57,10 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.jogl.view.jframe"
-            class="org.caleydo.rcp.views.GLBucket3DView"
+            class="org.caleydo.rcp.views.GLRemoteRendering3DView"
             icon="resources/icons/pathway3D.png"
-            id="org.caleydo.rcp.views.GLBucket3DView"
-            name="GLBucket3DView">
+            id="org.caleydo.rcp.views.GLRemoteRendering3DView"
+            name="GLRemoteRendering3DView">
       </view> 
       
       <view

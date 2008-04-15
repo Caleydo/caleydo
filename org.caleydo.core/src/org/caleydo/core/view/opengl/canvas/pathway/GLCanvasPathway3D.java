@@ -772,7 +772,7 @@ implements IMediatorReceiver, IMediatorSender {
 		String sPathwayTitle = pathway.getTitle();
 		
 		sAlInfo.add("Type: " +pathway.getType().getName() +" Pathway");
-		sAlInfo.add("Pathway: " +sPathwayTitle);
+		sAlInfo.add("PW: " +sPathwayTitle);
 		
 		return sAlInfo;
 	}

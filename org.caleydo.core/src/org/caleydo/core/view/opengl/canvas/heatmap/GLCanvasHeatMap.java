@@ -209,8 +209,8 @@ extends AGLCanvasStorageBasedView
 	public ArrayList<String> getInfo() {
 
 		ArrayList<String> alInfo = new ArrayList<String>();
-		alInfo.add("Heat Map");
-		alInfo.add("Showing expression values of " + alContentSelection.size() + " genes");
+		alInfo.add("Type: Heat Map");
+		alInfo.add("HM: Showing expression values of " + alContentSelection.size() + " genes");
 		return alInfo;
 	}
 

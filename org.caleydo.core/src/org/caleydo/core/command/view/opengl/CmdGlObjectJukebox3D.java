@@ -9,7 +9,7 @@ import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.system.StringConversionTool;
-import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLCanvasJukebox3D;
+import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering3D;
 
 /**
  * Create jukebox view
@@ -75,7 +75,7 @@ extends ACmdCreate_GlCanvasUser {
 		for(int index = 0; index < iArSetIDs.size(); index++)
 			iArTmp[index] = iArSetIDs.get(index);
 		
-		((GLCanvasJukebox3D)gLEventListener).addSetId(iArTmp);	
+		((GLRemoteRendering3D)gLEventListener).addSetId(iArTmp);	
 	}
 
 	/*

@@ -11,19 +11,41 @@
 
 		<!-- Creating Data -->
 			<read-xml-file target="data/bootstrap/shared/rcp/kashofer/all_hccs/load_data_all_hccs.xml" />	   				
-
-        <!-- External loading of XML files -->
-            <read-xml-file target="data/genome/pathway/imagemap/map01100.xml" />
-
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_RCP_GLCANVAS"	cmdId="69991"	uniqueId="24" 
-			  	gl_canvas="24"
-				parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
-				
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_JUKEBOX_PATHWAY_3D"		cmdId="69994"	uniqueId="82401" parent="24" label="GL Jukebox Pathway 3D" 
+		
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="88401" parent="99081" label="Pathway" 
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
-							attrib3="ORTHOGRAPHIC -2.35 2.35 -2.35 2.35 -20 20"		attrib1="1"								
-							detail="85101 86101 87101 88101 89101 90101 91101 92101 93101 94101 95101 96101 97101 98101 60101 61101" /> 
+							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
+							attrib4="403600"							
+							detail="85101 86101 87101 88101 89101 90101 91101 92101 93101 94101 95101 96101 97101 98101 60101" />
+																																			
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PARALLEL_COORDINATES_3D"		cmdId="69994"	uniqueId="82401" parent="99076" label="Parallel Coordinates" 
+							gl_origin="0 0 0" 
+							gl_rotation="0 0 0 0"					
+							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
+							attrib4="transparency 0.6" 
+							detail="85101 86101 87101 88101 89101 90101 91101 92101 93101 94101 95101 96101 97101 98101 61101" /> 
+							
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEAT_MAP_3D"		cmdId="69994"	uniqueId="84401" parent="99076" label="Parallel Coordinates" 
+							gl_origin="0 0 0" 
+							gl_rotation="0 0 0 0"					
+							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
+							attrib4="transparency 0.6" 
+							detail="85101 86101 87101 88101 89101 90101 91101 92101 93101 94101 95101 96101 97101 98101 62101" /> 						
+
+		<!-- Window	10331 -->	
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="10331" 
+				label="Jukebox 3D" attrib1="ROW	HORIZONTAL"	/>	 
+				 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="17401" 
+			  	gl_canvas="99075" parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
+				
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_JUKEBOX_3D"		cmdId="69994"	uniqueId="83401" parent="99075" label="Jukebox" 
+							gl_origin="-2 -2 -8" 
+							gl_rotation="0 0 0 0"					
+							attrib3="ORTHOGRAPHIC -1.5 1.5 -1.5 1.5 2.9 100"
+							attrib4="transparency 1" 								
+							detail="63101" /> 
 
 	    <!-- Search View -->
 	      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_ENTITY_SEARCHER" 	cmdId="69991" uniqueId="12345" label="Data Entity Search" 	detail="82401" /> 				

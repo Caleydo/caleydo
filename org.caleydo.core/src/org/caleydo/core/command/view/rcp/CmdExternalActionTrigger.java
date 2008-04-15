@@ -7,6 +7,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
+import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering3D;
 
 
 /**
@@ -51,6 +52,13 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 				if (externalActionType.equals(EExternalActionType.PATHWAY_CLEAR_ALL))
 				{
 					((GLCanvasJukeboxPathway3D)viewObject).clearAllPathways();
+				}
+			}
+			else if (viewObject.getClass().equals(GLRemoteRendering3D.class))
+			{
+				if (externalActionType.equals(EExternalActionType.REMOTE_RENDONG_TOGGLE_LAYOUT_MODE))
+				{
+					((GLRemoteRendering3D)viewObject).toggleLayoutMode();
 				}
 			}
 		}

@@ -4,6 +4,15 @@ import java.util.Iterator;
 
 import javax.media.opengl.GLEventListener;
 
+import org.caleydo.core.view.jogl.JoglCanvasForwarder;
+import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering3D;
+import org.caleydo.rcp.views.AGLViewPart;
+import org.caleydo.rcp.views.GLHeatmap2DView;
+import org.caleydo.rcp.views.GLJukeboxPathwayView;
+import org.caleydo.rcp.views.GLParCoordsView;
+import org.caleydo.rcp.views.GLPathway3DView;
+import org.caleydo.rcp.views.GLRemoteRendering3DView;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
@@ -11,14 +20,6 @@ import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
-import org.caleydo.core.view.jogl.JoglCanvasForwarder;
-import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
-import org.caleydo.rcp.views.AGLViewPart;
-import org.caleydo.rcp.views.GLBucket3DView;
-import org.caleydo.rcp.views.GLHeatmap2DView;
-import org.caleydo.rcp.views.GLJukeboxPathwayView;
-import org.caleydo.rcp.views.GLParCoordsView;
-import org.caleydo.rcp.views.GLPathway3DView;
 
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
@@ -56,7 +57,7 @@ extends WorkbenchAdvisor {
 	
 	protected void openLoadedViews() {
 		
-		// Initialize all GL view in RCP
+		// Initialize all GL views in RCP
 		Iterator<GLEventListener> iterGLEventListener = Application.refGeneralManager.getSingelton()
 			.getViewGLCanvasManager().getAllGLEventListeners().iterator();
 		
@@ -107,10 +108,10 @@ extends WorkbenchAdvisor {
 								Integer.toString(iInstanceNum), IWorkbenchPage.VIEW_ACTIVATE);
 				}	
 				else if (tmpGLEventListener.getClass().equals(
-						org.caleydo.core.view.opengl.canvas.remote.bucket.GLCanvasBucket3D.class))
+						org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering3D.class))
 				{
-					viewPart = (GLBucket3DView) PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow().getActivePage().showView(GLBucket3DView.ID,
+					viewPart = (GLRemoteRendering3DView) PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getActivePage().showView(GLRemoteRendering3DView.ID,
 								Integer.toString(iInstanceNum), IWorkbenchPage.VIEW_ACTIVATE);
 				}	
 				
