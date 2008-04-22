@@ -39,9 +39,11 @@ extends ARemoteViewLayoutRenderStyle {
 		super(generalManager, previousLayoutStyle);
 		
 		projectionMode = ProjectionMode.PERSPECTIVE;
+		
+		initLayout();
 	}
 	
-	public void initLayout() 
+	private void initLayout() 
 	{
 		fScalingFactorUnderInteractionLayer = 0.5f;
 		fScalingFactorStackLayer = 0.5f;

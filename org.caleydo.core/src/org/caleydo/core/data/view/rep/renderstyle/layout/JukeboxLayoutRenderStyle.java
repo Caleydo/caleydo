@@ -43,7 +43,7 @@ extends ARemoteViewLayoutRenderStyle {
 		initLayout();
 	}
 
-	public void initLayout() 
+	private void initLayout() 
 	{
 		fScalingFactorUnderInteractionLayer = 0.3f;
 		fScalingFactorStackLayer = 0.13f;

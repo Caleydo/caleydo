@@ -142,6 +142,4 @@ extends GeneralRenderStyle {
 	
 		return fTrashCanHeight;
 	}
-	
-	public abstract void initLayout();
 }

@@ -7,10 +7,10 @@
     <CommandBuffer>  			   				
 
       	<!-- Creating GenomeId mapping -->
-		  	<read-xml-file target="data/bootstrap/shared/rcp/link_bucket/load_genome_id_mapping_HSA.xml" />	   				
+		  	<read-xml-file target="data/bootstrap/shared/rcp/remote/load_genome_id_mapping_HSA.xml" />	   				
 				
 		<!-- Creating Data -->
-			<read-xml-file target="data/bootstrap/shared/rcp/link_bucket/load_data.xml" />					
+			<read-xml-file target="data/bootstrap/shared/rcp/remote/load_data.xml" />					
 						
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="88401" parent="-1" label="Pathway" 
 							gl_origin="0 0 0" 

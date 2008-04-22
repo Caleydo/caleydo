@@ -52,8 +52,6 @@ public class TrashCan {
 	
 		trashCanTexture.enable();
 		trashCanTexture.bind();
-	
-		layoutStyle.initLayout();
 		
 		gl.glColor3f(1, 1, 1);
 	
