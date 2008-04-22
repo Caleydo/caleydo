@@ -23,6 +23,7 @@ import org.caleydo.core.view.IView;
 import org.caleydo.core.view.IViewRep;
 import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyph;
 import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
 import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn;
 import org.caleydo.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
@@ -441,6 +442,14 @@ implements IViewGLCanvasManager {
 						iGLCanvasID, 
 						sLabel,
 						viewFrustum);
+				
+			case CREATE_GL_GLYPH:
+				return new GLCanvasGlyph(
+						generalManager, 
+						iUniqueId,
+						iGLCanvasID, 
+						sLabel,
+						viewFrustum);				
 				
 			case CREATE_GL_HEAT_MAP_3D:
 				return new GLCanvasHeatMap(

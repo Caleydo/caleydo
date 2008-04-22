@@ -54,6 +54,7 @@ import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLIconTextureManager;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 import org.caleydo.core.view.opengl.util.drag.GLDragAndDrop;
+import org.caleydo.core.view.opengl.util.trashcan.TrashCan;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
@@ -114,21 +115,18 @@ implements IMediatorReceiver, IMediatorSender
 	private int iBucketEventMediatorID = -1;
 
 	// Memo pad variables
-	// TODO: move to own class
-	protected static String TRASH_BIN_PATH = "resources/icons/trashcan_empty.png";
-
 	private static final int MEMO_PAD_PICKING_ID = 1;
-	protected static final int MEMO_PAD_TRASH_CAN_PICKING_ID = 2;
+	private static final int TRASH_CAN_PICKING_ID = 2;
 
 	protected TextRenderer textRenderer;
-
-	protected Texture trashCanTexture;
 
 	private GLDragAndDrop dragAndDrop;
 	
 	private ARemoteViewLayoutRenderStyle layoutRenderStyle;
 	
 	private BucketMouseWheelListener bucketMouseWheelListener;
+	
+	private TrashCan trashCan;
 
 	/**
 	 * Constructor.
@@ -192,6 +190,8 @@ implements IMediatorReceiver, IMediatorSender
 		
 		textRenderer = new TextRenderer(new Font("Arial",
 				Font.BOLD, 96), false);
+		
+		trashCan = new TrashCan();
 	}
 	
 	/*
@@ -233,6 +233,8 @@ implements IMediatorReceiver, IMediatorSender
 		((SystemTime) time).rebase();
 		
 		retrieveContainedViews(gl);
+		
+		trashCan.init(gl);
 	}
 
 	/*
@@ -316,6 +318,13 @@ implements IMediatorReceiver, IMediatorSender
 		{
 			bucketMouseWheelListener.render();	
 		}
+		
+		gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager()
+				.getPickingManager().getPickingID(iUniqueId,
+						EPickingType.MEMO_PAD_SELECTION,
+						TRASH_CAN_PICKING_ID));
+		trashCan.render(gl);
+		gl.glPopName();
 	}
 
 	private void retrieveContainedViews(final GL gl) {
@@ -585,17 +594,17 @@ implements IMediatorReceiver, IMediatorSender
 //		}
 
 		// Render transparent plane for picking views without texture (e.g. PC)
-		if (layer.equals(poolLayer))
-		{
-			gl.glColor4f(1, 1, 1, 0);
+		gl.glColor4f(1, 1, 1, 0);
 
-			gl.glBegin(GL.GL_POLYGON);
-			gl.glVertex3f(0, 0, -0.01f);
-			gl.glVertex3f(0, 8, -0.01f);
-			gl.glVertex3f(8, 8, -0.01f);
-			gl.glVertex3f(8, 0, -0.01f);
-			gl.glEnd();
-			
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(0, 0, -0.01f);
+		gl.glVertex3f(0, 8, -0.01f);
+		gl.glVertex3f(8, 8, -0.01f);
+		gl.glVertex3f(8, 0, -0.01f);
+		gl.glEnd();
+		
+		if (layer.equals(poolLayer))
+		{	
 			String sRenderText = tmpCanvasUser.getInfo().get(1);
 			
 			// Limit pathway name in length
@@ -1636,7 +1645,7 @@ implements IMediatorReceiver, IMediatorSender
 
 				int iDraggedObjectId = dragAndDrop.getDraggedObjectedId();
 
-				if (iExternalID == MEMO_PAD_TRASH_CAN_PICKING_ID)
+				if (iExternalID == TRASH_CAN_PICKING_ID)
 				{
 					if (iDraggedObjectId != -1)
 					{

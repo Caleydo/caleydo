@@ -20,6 +20,7 @@ import org.caleydo.core.command.system.CmdSystemLoadFileNStorages;
 import org.caleydo.core.command.system.CmdSystemLoadFileViaImporter;
 import org.caleydo.core.command.system.path.CmdSetPathwayDatabasePath;
 import org.caleydo.core.command.view.opengl.CmdGlObjectBucket3D;
+import org.caleydo.core.command.view.opengl.CmdGlObjectGlyph;
 import org.caleydo.core.command.view.opengl.CmdGlObjectHeatMap3D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectHeatmap;
 import org.caleydo.core.command.view.opengl.CmdGlObjectHeatmap2D;
@@ -416,6 +417,15 @@ implements ICommandFactory {
 		{
  			createdCommand =
 				new CmdGlObjectPathway3D(
+						generalManager,
+						commandManager,
+						cmdType);	
+			break;
+		}
+		case CREATE_GL_GLYPH:
+		{
+ 			createdCommand =
+				new CmdGlObjectGlyph(
 						generalManager,
 						commandManager,
 						cmdType);	
