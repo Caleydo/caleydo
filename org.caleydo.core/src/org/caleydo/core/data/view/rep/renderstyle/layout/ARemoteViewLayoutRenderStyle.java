@@ -39,6 +39,11 @@ extends GeneralRenderStyle {
 	protected float fScalingFactorTransitionLayer;
 	protected float fScalingFactorSpawnLayer;
 	
+	protected float fTrashCanXPos;
+	protected float fTrashCanYPos;
+	protected float fTrashCanWidth;
+	protected float fTrashCanHeight;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -117,4 +122,26 @@ extends GeneralRenderStyle {
 		
 		return projectionMode;
 	}
+	
+	public float getTrashCanXPos() {
+	
+		return fTrashCanXPos;
+	}
+
+	public float getTrashCanYPos() {
+	
+		return fTrashCanYPos;
+	}
+
+	public float getTrashCanWidth() {
+	
+		return fTrashCanWidth;
+	}
+	
+	public float getTrashCanHeight() {
+	
+		return fTrashCanHeight;
+	}
+	
+	public abstract void initLayout();
 }

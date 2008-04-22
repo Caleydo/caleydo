@@ -1,5 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.glyph;
 
+import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 
 import javax.media.opengl.GL;
@@ -11,6 +13,7 @@ import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.Pick;
 import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.parcoords.GLParCoordsToolboxRenderer;
 import org.caleydo.core.view.opengl.util.GLSharedObjects;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 
@@ -69,6 +72,9 @@ extends AGLCanvasUser
 			JukeboxHierarchyLayer layer,
 			PickingJoglMouseListener pickingTriggerMouseAdapter) 
 	{
+		glToolboxRenderer = new GLParCoordsToolboxRenderer(gl, generalManager,
+				iUniqueId, iRemoteViewID, new Vec3f (0, 0, 0), layer, true, null);
+		
 		init(gl);
 	}
 

@@ -323,7 +323,7 @@ implements IMediatorReceiver, IMediatorSender
 				.getPickingManager().getPickingID(iUniqueId,
 						EPickingType.MEMO_PAD_SELECTION,
 						TRASH_CAN_PICKING_ID));
-		trashCan.render(gl);
+		trashCan.render(gl, layoutRenderStyle);
 		gl.glPopName();
 	}
 

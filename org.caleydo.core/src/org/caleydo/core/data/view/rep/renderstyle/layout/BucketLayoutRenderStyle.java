@@ -27,12 +27,7 @@ extends ARemoteViewLayoutRenderStyle {
 		
 		projectionMode = ProjectionMode.PERSPECTIVE;
 		
-		fScalingFactorUnderInteractionLayer = 0.5f;
-		fScalingFactorStackLayer = 0.5f;
-		fScalingFactorPoolLayer = 0.04f;
-		fScalingFactorMemoLayer = 0.08f;
-		fScalingFactorTransitionLayer = 0.05f;
-		fScalingFactorSpawnLayer = 0.01f;
+		initLayout();
 	}
 	
 	/**
@@ -44,13 +39,21 @@ extends ARemoteViewLayoutRenderStyle {
 		super(generalManager, previousLayoutStyle);
 		
 		projectionMode = ProjectionMode.PERSPECTIVE;
-		
+	}
+	
+	public void initLayout() 
+	{
 		fScalingFactorUnderInteractionLayer = 0.5f;
 		fScalingFactorStackLayer = 0.5f;
 		fScalingFactorPoolLayer = 0.04f;
 		fScalingFactorMemoLayer = 0.08f;
 		fScalingFactorTransitionLayer = 0.05f;
 		fScalingFactorSpawnLayer = 0.01f;
+		
+		fTrashCanXPos = -0.15f;
+		fTrashCanYPos = -0.5f;
+		fTrashCanWidth = 0.35f;
+		fTrashCanHeight = 0.35f;
 	}
 	
 	/*

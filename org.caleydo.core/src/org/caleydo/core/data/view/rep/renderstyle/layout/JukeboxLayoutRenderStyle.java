@@ -27,12 +27,7 @@ extends ARemoteViewLayoutRenderStyle {
 		
 		projectionMode = ProjectionMode.ORTHOGRAPHIC;
 		
-		fScalingFactorUnderInteractionLayer = 0.3f;
-		fScalingFactorStackLayer = 0.13f;
-		fScalingFactorPoolLayer = 0.02f;
-		fScalingFactorMemoLayer = 0.05f;
-		fScalingFactorTransitionLayer = 0.025f;
-		fScalingFactorSpawnLayer = 0.005f;
+		initLayout();
 	}
 	
 	/**
@@ -45,14 +40,24 @@ extends ARemoteViewLayoutRenderStyle {
 		
 		projectionMode = ProjectionMode.ORTHOGRAPHIC;
 		
+		initLayout();
+	}
+
+	public void initLayout() 
+	{
 		fScalingFactorUnderInteractionLayer = 0.3f;
 		fScalingFactorStackLayer = 0.13f;
 		fScalingFactorPoolLayer = 0.02f;
 		fScalingFactorMemoLayer = 0.05f;
 		fScalingFactorTransitionLayer = 0.025f;
 		fScalingFactorSpawnLayer = 0.005f;
+		
+		fTrashCanXPos = 3.8f;
+		fTrashCanYPos = 0.62f;
+		fTrashCanWidth = 0.35f;
+		fTrashCanHeight = 0.35f;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle#initUnderInteractionLayer()
