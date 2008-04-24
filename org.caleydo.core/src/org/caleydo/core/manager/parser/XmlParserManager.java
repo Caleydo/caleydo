@@ -75,7 +75,7 @@ extends AXmlParserManager {
 		
 		super( generalManager );
 		
-		refLoggerManager = generalManager.getSingelton().getLoggerManager();
+		refLoggerManager = generalManager.getSingleton().getLoggerManager();
 		
 		this.logLevel = LoggerType.VERBOSE;
 		
@@ -233,7 +233,7 @@ extends AXmlParserManager {
 				 * Regular case: register new handler ...
 				 */
 				
-				refGeneralManager.getSingelton().logMsg(
+				refGeneralManager.getSingleton().logMsg(
 						"AXmlParserManager.openCurrentTag( key=[" + 
 						handler.getXmlActivationTag() + "] " +
 						handler.getClass().getSimpleName() +	" )",

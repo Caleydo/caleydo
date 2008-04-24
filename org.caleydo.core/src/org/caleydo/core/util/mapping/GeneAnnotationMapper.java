@@ -18,7 +18,7 @@ public class GeneAnnotationMapper {
 	 */
 	public GeneAnnotationMapper (final IGeneralManager refGeneralManager) {
 	
-		iDManager = refGeneralManager.getSingelton().getGenomeIdManager();
+		iDManager = refGeneralManager.getSingleton().getGenomeIdManager();
 	}
 	
 	public final String getGeneShortNameByNCBIGeneId(

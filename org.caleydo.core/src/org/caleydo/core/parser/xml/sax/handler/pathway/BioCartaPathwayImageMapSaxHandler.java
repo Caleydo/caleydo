@@ -164,7 +164,7 @@ extends AXmlParserHandler {
 		if (sImageLink.isEmpty() || sName.isEmpty())
 			return;
 		
-		currentPathway = refGeneralManager.getSingelton().getPathwayManager().
+		currentPathway = refGeneralManager.getSingleton().getPathwayManager().
 			createPathway(EPathwayDatabaseType.BIOCARTA, "<name>", sTitle, 
 					sImageLink, BIOCARTA_EXTERNAL_URL_PATHWAY + sName,
 					iWidth, iHeight);
@@ -215,11 +215,11 @@ extends AXmlParserHandler {
 		if(sName.isEmpty())
 			return;
 		
-		IGraphItem vertex = refGeneralManager.getSingelton().getPathwayItemManager()
+		IGraphItem vertex = refGeneralManager.getSingleton().getPathwayItemManager()
 			.createVertex(sName, "gene", 
 					BIOCARTA_EXTERNAL_URL_VERTEX +  sExternalLink, "");
 		
-		refGeneralManager.getSingelton()
+		refGeneralManager.getSingleton()
 			.getPathwayItemManager().createVertexRep(
 			currentPathway, 
 			vertex, 
@@ -232,7 +232,7 @@ extends AXmlParserHandler {
 		
 		// Convert BioCarta ID to NCBI_GENEID
 		IGenomeIdManager genomeIdManager = 
-			refGeneralManager.getSingelton().getGenomeIdManager();
+			refGeneralManager.getSingleton().getGenomeIdManager();
 		
 		int iAccession = genomeIdManager.getIdIntFromStringByMapping(sBioCartaId, 
 				EGenomeMappingType.BIOCARTA_GENEID_2_ACCESSION);

@@ -170,13 +170,6 @@ public enum ManagerObjectType {
 	 */
 	MEMENTO(ManagerType.MEMENTO),
 
-	
-	/*
-	 * MENU
-	 */
-	MENU(ManagerType.MENU),
-	
-	
 	/*
 	 * Command 
 	 */

@@ -40,7 +40,7 @@ implements IVirtualArrayManager
 	protected Vector<IVirtualArray> vecVirtualArray;
 	
 	private void debugNullPointer() {
-		generalManager.getSingelton().logMsg("current vecVirtualArray == null! ", 
+		generalManager.getSingleton().logMsg("current vecVirtualArray == null! ", 
 				LoggerType.MINOR_ERROR_XML);
 	}
 	
@@ -66,14 +66,14 @@ implements IVirtualArrayManager
 		{
 			if ( vecVirtualArray.size() != iInitSizeContainer )
 			{
-				generalManager.getSingelton().logMsg("current vecVirtualArray.size()=["
+				generalManager.getSingleton().logMsg("current vecVirtualArray.size()=["
 						+ vecVirtualArray.size() + 
 						"] is != setSize(" + 
 						iInitSizeContainer +")", 
 						LoggerType.MINOR_ERROR_XML);
 			}
 		}
-		generalManager.getSingelton().setVirtualArrayManager( this );
+		generalManager.getSingleton().setVirtualArrayManager( this );
 		
 //		/**
 //		 * Test IVirtualArray...

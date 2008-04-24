@@ -54,7 +54,7 @@ extends AViewRep {
 	
 	public void initViewSwtComposit(Composite swtContainer) {
 			
-		ISWTGUIManager refISWTGUIManager = generalManager.getSingelton().getSWTGUIManager();
+		ISWTGUIManager refISWTGUIManager = generalManager.getSingleton().getSWTGUIManager();
 		
 		SWTEmbeddedJoglWidget refSWTEmbeddedJoglWidget = 
 			(SWTEmbeddedJoglWidget) refISWTGUIManager.createWidget(
@@ -73,7 +73,7 @@ extends AViewRep {
 		//gLCanvas.addGLEventListener((GLEventListener)gLCanvas);
 		
 		IViewGLCanvasManager canvasManager = 
-			generalManager.getSingelton().getViewGLCanvasManager();
+			generalManager.getSingleton().getViewGLCanvasManager();
 		
 		// Register GL canvas to view manager
 		canvasManager.registerGLCanvas(gLCanvas, iGLCanvasID);
@@ -86,7 +86,7 @@ extends AViewRep {
 
 	public void destroyDirector() {
 		
-		generalManager.getSingelton().logMsg("SwtJoglCanvasViewRep.destroyDirector()  id=" +
+		generalManager.getSingleton().logMsg("SwtJoglCanvasViewRep.destroyDirector()  id=" +
 				iUniqueId,
 				LoggerType.STATUS );
 	}
@@ -103,7 +103,7 @@ extends AViewRep {
 	}
 	
 	public void drawView() {
-		 generalManager.getSingelton().logMsg(
+		 generalManager.getSingleton().logMsg(
 					"SwtJoglGLCanvasViewRep.drawView() [" + 
 					this.iUniqueId + "]"
 					,LoggerType.VERBOSE );

@@ -406,7 +406,7 @@ extends AToolbar {
 	        	  refPathwayGraphViewRep.setPathwayLevel(1);
 	        	  
 	        	  refPathwayGraphViewRep.loadImageMapFromFile(
-	        			  refGeneralManager.getSingelton().getPathwayManager()
+	        			  refGeneralManager.getSingleton().getPathwayManager()
 	        			  		.getPathwayDatabaseByType(EPathwayDatabaseType.KEGG).
 	        			  				getImageMapPath() + "map01100.xml");
 	          }

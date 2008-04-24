@@ -68,7 +68,7 @@ public abstract class ACollectionManager
 		
 		return (iUniqueId_Increment +
 			iSetUniqueId_TypeOffset * iUniqueId_WorkspaceOffset +
-			useRefSingeltonManager.getSingelton().getNetworkPostfix() );
+			useRefSingeltonManager.getSingleton().getNetworkPostfix() );
 	}
 	
 	

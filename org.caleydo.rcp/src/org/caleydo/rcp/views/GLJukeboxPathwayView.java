@@ -234,7 +234,7 @@ extends AGLViewPart {
 		actClearAllPathways = new Action() {
 			public void run() {
 
-				triggerCmdExternalAction(EExternalActionType.PATHWAY_CLEAR_ALL);
+				triggerCmdExternalAction(EExternalActionType.CLEAR_ALL);
 			}
 		};
 
@@ -260,7 +260,7 @@ extends AGLViewPart {
 			EExternalFlagSetterType type) {
 
 		CmdExternalFlagSetter tmpCmd = (CmdExternalFlagSetter) Application.refGeneralManager
-				.getSingelton().getCommandManager().createCommandByType(
+				.getSingleton().getCommandManager().createCommandByType(
 						CommandQueueSaxType.EXTERNAL_FLAG_SETTER);
 
 		// FIXME: hard coded view ID
@@ -271,7 +271,7 @@ extends AGLViewPart {
 	public void triggerCmdExternalAction(EExternalActionType type) {
 
 		CmdExternalActionTrigger tmpCmd = (CmdExternalActionTrigger) Application.refGeneralManager
-				.getSingelton().getCommandManager().createCommandByType(
+				.getSingleton().getCommandManager().createCommandByType(
 						CommandQueueSaxType.EXTERNAL_ACTION_TRIGGER);
 
 		// FIXME: hard coded view ID

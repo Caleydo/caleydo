@@ -22,14 +22,16 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.IViewRep;
 import org.caleydo.core.view.ViewType;
+import org.caleydo.core.view.jogl.JoglCanvasForwarder;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyph;
 import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
 import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn;
+import org.caleydo.core.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D;
 import org.caleydo.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
-import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
 import org.caleydo.core.view.swt.data.exchanger.DataExchangerViewRep;
@@ -117,7 +119,7 @@ implements IViewGLCanvasManager {
 		arHTMLBrowserViewRep = new ArrayList<IViewRep>();
 		arWorkspaceJFrame = new ArrayList<JFrame>();
 
-		generalManager.getSingelton().setViewGLCanvasManager(this);
+		generalManager.getSingleton().setViewGLCanvasManager(this);
 	}
 
 
@@ -180,7 +182,7 @@ implements IViewGLCanvasManager {
 			//default: // do nothing			
 		} // switch ( registerView.getViewType() ) {
 		
-		generalManager.getSingelton().logMsg(
+		generalManager.getSingleton().logMsg(
 				"registerItem( " + iItemId + " ) as View", 
 				LoggerType.VERBOSE);
 
@@ -341,6 +343,10 @@ implements IViewGLCanvasManager {
 		
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IViewGLCanvasManager#createGLCanvas(org.caleydo.core.command.CommandQueueSaxType, int, int, java.lang.String, org.caleydo.core.data.view.camera.IViewFrustum)
+	 */
 	public GLEventListener createGLCanvas(CommandQueueSaxType useViewType,
 			final int iUniqueId, 
 			final int iGLCanvasID,
@@ -460,7 +466,7 @@ implements IViewGLCanvasManager {
 						viewFrustum);
 				
 			case CREATE_GL_BUCKET_3D:
-				return new GLRemoteRendering3D(
+				return new GLCanvasRemoteRendering3D(
 						generalManager, 
 						iUniqueId,
 						iGLCanvasID, 
@@ -469,7 +475,7 @@ implements IViewGLCanvasManager {
 						ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET);	
 				
 			case CREATE_GL_JUKEBOX_3D:
-				return new GLRemoteRendering3D(
+				return new GLCanvasRemoteRendering3D(
 						generalManager, 
 						iUniqueId,
 						iGLCanvasID, 
@@ -496,13 +502,17 @@ implements IViewGLCanvasManager {
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IViewGLCanvasManager#registerGLCanvas(javax.media.opengl.GLCanvas, int)
+	 */
 	public boolean registerGLCanvas(final GLCanvas glCanvas, final int iCanvasId) {
 
 		assert iCanvasId != 0 : "registerItem(Object,int) must not use iItemId==0";
 		
 		if (hashGLCanvasID2GLCanvas.containsKey(iCanvasId))
 		{
-			generalManager.getSingelton().logMsg(
+			generalManager.getSingleton().logMsg(
 					"registerGLCanvas() id " + iCanvasId
 					+ " is already registered!",
 					LoggerType.FULL );
@@ -510,7 +520,7 @@ implements IViewGLCanvasManager {
 		}
 		if (hashGLCanvasID2GLCanvas.containsValue(glCanvas))
 		{
-			generalManager.getSingelton().logMsg(
+			generalManager.getSingleton().logMsg(
 					"registerGLCanvas() canvas bound to id " + iCanvasId
 					+ " is already registered!",
 					LoggerType.FULL );
@@ -522,6 +532,26 @@ implements IViewGLCanvasManager {
 		return true;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IViewGLCanvasManager#unregisterGLCanvas(javax.media.opengl.GLCanvas)
+	 */
+	public boolean unregisterGLCanvas(final GLCanvas canvas) {
+
+		// TODO: IMPLEMENT!
+		
+		generalManager
+				.getSingleton().logMsg(
+						"unregisterGLCanvas() canvas object was not found inside ViewJogleManager!",
+						LoggerType.FULL );
+
+		return false;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IViewGLCanvasManager#registerGLEventListenerByGLCanvasID(int, javax.media.opengl.GLEventListener)
+	 */
 	public void registerGLEventListenerByGLCanvasID(final int iGLCanvasID,
 			final GLEventListener gLEventListener) {
 		
@@ -537,22 +567,34 @@ implements IViewGLCanvasManager {
 		hashGLCanvasID2GLEventListeners.get(iGLCanvasID).add(gLEventListener);
 	}
 
-	public boolean unregisterGLCanvas(final GLCanvas canvas) {
 
-		// TODO: IMPLEMENT!
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IViewGLCanvasManager#unregisterGLEventListener()
+	 */
+	public void unregisterGLEventListener(final int iGLEventListenerID) {
+
+		GLEventListener gLEventListenerToRemove = 
+			hashGLEventListenerID2GLEventListener.get(iGLEventListenerID);
 		
-		generalManager
-				.getSingelton().logMsg(
-						"unregisterGLCanvas() canvas object was not found inside ViewJogleManager!",
-						LoggerType.FULL );
+		JoglCanvasForwarder parentGLCanvas = ((AGLCanvasUser)gLEventListenerToRemove).getParentGLCanvas();
+		
+		if (parentGLCanvas != null)
+		{
+			parentGLCanvas.removeGLEventListener(gLEventListenerToRemove);
+			hashGLCanvasID2GLEventListeners.get(parentGLCanvas.getID()).remove(gLEventListenerToRemove);	
+		}
 
-		return false;
+		hashGLEventListenerID2GLEventListener.remove(iGLEventListenerID);
 	}
 	
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.base.AAbstractManager#destroyOnExit()
+	 */
 	public void destroyOnExit() {
 
-		generalManager.getSingelton().logMsg(
+		generalManager.getSingleton().logMsg(
 				"ViewJoglManager.destroyOnExit()  ...[DONE]",
 				LoggerType.FULL );
 	}

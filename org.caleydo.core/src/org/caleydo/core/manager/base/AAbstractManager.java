@@ -2,7 +2,7 @@ package org.caleydo.core.manager.base;
 
 import org.caleydo.core.manager.IAbstractManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ISingelton;
+import org.caleydo.core.manager.ISingleton;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 
@@ -27,7 +27,7 @@ implements IAbstractManager  {
 	/**
 	 * Reference to ISingelton assigned via Constructor
 	 */
-	protected final ISingelton singelton;
+	protected final ISingleton singelton;
 	
 	/**
 	 * Constructor.
@@ -41,7 +41,7 @@ implements IAbstractManager  {
 		this.generalManager = generalManager;
 		this.managerType = managerType;
 		
-		singelton = generalManager.getSingelton();
+		singelton = generalManager.getSingleton();
 				
 		iUniqueId_current = calculateInitialUniqueId( iUniqueId_type_offset);
 	}
@@ -50,7 +50,7 @@ implements IAbstractManager  {
 		
 		return iUniqueId_type_offset * 
 			IGeneralManager.iUniqueId_TypeOffsetMultiplyer +
-			generalManager.getSingelton().getNetworkPostfix();
+			generalManager.getSingleton().getNetworkPostfix();
 	}
 	
 	/*
@@ -64,7 +64,7 @@ implements IAbstractManager  {
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.manager.IAbstractManager#getSingelton()
 	 */
-	public final ISingelton getSingelton() {
+	public final ISingleton getSingleton() {
 		return singelton;
 	}
 	
@@ -79,7 +79,7 @@ implements IAbstractManager  {
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.manager.IAbstractManager#setSingelton(org.caleydo.core.manager.singelton.SingeltonManager)
 	 */
-	public final void setSingelton( ISingelton setSingeltonManager ) {
+	public final void setSingleton( ISingleton setSingletonManager ) {
 		throw new RuntimeException("AAbstractManager::setSingelton() is not supported!");
 	}
 	

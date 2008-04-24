@@ -227,7 +227,7 @@ implements ILookupTableLoader {
 			 * Convert MultiMap<String> to Multimap<Integer>
 			 */
 			
-			IGenomeIdManager gidmng = refGeneralManager.getSingelton().getGenomeIdManager();
+			IGenomeIdManager gidmng = refGeneralManager.getSingleton().getGenomeIdManager();
 			
 			EGenomeIdType originType = this.currentGenomeIdType.getTypeOrigin();
 			EGenomeIdType targetType = this.currentGenomeIdType.getTypeTarget();			

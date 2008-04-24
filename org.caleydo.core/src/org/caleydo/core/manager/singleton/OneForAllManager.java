@@ -11,9 +11,8 @@ import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ILoggerManager;
 import org.caleydo.core.manager.IMementoManager;
-import org.caleydo.core.manager.IMenuManager;
 import org.caleydo.core.manager.ISWTGUIManager;
-import org.caleydo.core.manager.ISingelton;
+import org.caleydo.core.manager.ISingleton;
 import org.caleydo.core.manager.IViewGLCanvasManager;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.command.CommandManager;
@@ -33,7 +32,6 @@ import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.gui.SWTGUIManager;
 import org.caleydo.core.manager.logger.ConsoleLogger;
 import org.caleydo.core.manager.memento.MementoManager;
-import org.caleydo.core.manager.menu.swing.SwingMenuManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 import org.caleydo.core.manager.view.ViewJoglManager;
@@ -70,8 +68,6 @@ implements IGeneralManagerSingleton
 	protected IVirtualArrayManager refVirtualArrayManager;
 
 	protected IMementoManager refMementoManager;
-
-	protected IMenuManager refMenuManager;
 
 	protected ICommandManager refCommandManager;
 
@@ -130,7 +126,7 @@ implements IGeneralManagerSingleton
 	 *  (non-Javadoc)
 	 * @see org.caleydo.core.data.manager.GeneralManager#getSingelton()
 	 */
-	public final ISingelton getSingelton()
+	public final ISingleton getSingleton()
 	{
 		return refSingeltonManager;
 	}
@@ -163,7 +159,6 @@ implements IGeneralManagerSingleton
 		refSetManager = new SetManager(this, 4);
 		refMementoManager = new MementoManager(this);
 		refCommandManager = new CommandManager(this);
-		refMenuManager = new SwingMenuManager(this);
 		refViewGLCanvasManager = new ViewJoglManager(this);
 		refSWTGUIManager = new SWTGUIManager(this);
 		refEventPublisher = new EventPublisher(this);
@@ -182,24 +177,19 @@ implements IGeneralManagerSingleton
 		llAllManagerObjects.add( refPathwayManager );
 		llAllManagerObjects.add( refPathwayItemManager );
 		llAllManagerObjects.add( refGenomeIdManager );
-		
 		llAllManagerObjects.add( refEventPublisher );
 		llAllManagerObjects.add( refViewGLCanvasManager );
 		llAllManagerObjects.add( refSWTGUIManager );
-		
-		llAllManagerObjects.add( refMenuManager );
 		llAllManagerObjects.add( refCommandManager );
 		llAllManagerObjects.add( refMementoManager );
 		
 		/**
-		 * Register managers to singelton ...
-		 */
-		
+		 * Register managers to singleton ...
+		 */	
 		refSingeltonManager.setCommandManager(refCommandManager);
 		refSingeltonManager.setVirtualArrayManager(refVirtualArrayManager);
 		refSingeltonManager.setSetManager(refSetManager);
 		refSingeltonManager.setStorageManager(refStorageManager);
-		refSingeltonManager.setMenuManager(refMenuManager);
 		refSingeltonManager.setViewGLCanvasManager(refViewGLCanvasManager);
 		refSingeltonManager.setSWTGUIManager(refSWTGUIManager);
 		refSingeltonManager.setPathwayManager(refPathwayManager);

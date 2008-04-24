@@ -95,7 +95,7 @@ implements IGenomeIdManager {
 		
 		if ( hashType2Map.containsKey( codingLutType ) ) 
 		{
-			generalManager.getSingelton().logMsg(
+			generalManager.getSingleton().logMsg(
 					"createMapByType(" + 
 					codingLutType.toString() + "," +
 					dataType.toString() + ",*) WARNING! type is already registered!",

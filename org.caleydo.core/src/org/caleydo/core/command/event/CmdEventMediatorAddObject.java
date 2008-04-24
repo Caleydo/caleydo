@@ -41,7 +41,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 				refCommandManager,
 				refCommandQueueSaxType);
 		
-		super.setId( refGeneralManager.getSingelton().getEventPublisher().createId( 
+		super.setId( refGeneralManager.getSingleton().getEventPublisher().createId( 
 				ManagerObjectType.EVENT_MEDIATOR_ADD_OBJECT));
 		
 		iArSenderIDs = new ArrayList<Integer>();

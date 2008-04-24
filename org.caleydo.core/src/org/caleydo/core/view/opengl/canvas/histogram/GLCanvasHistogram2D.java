@@ -203,17 +203,17 @@ extends AGLCanvasUser {
 	public void setTargetSetId( final int iTargetCollectionSetId ) {
 		
 		targetSet = 
-			generalManager.getSingelton().getSetManager(
+			generalManager.getSingleton().getSetManager(
 					).getItemSet( iTargetCollectionSetId );
 		
 		if ( targetSet == null ) {
-			generalManager.getSingelton().logMsg(
+			generalManager.getSingleton().logMsg(
 					"GLCanvasScatterPlot2D.setTargetSetId(" +
 					iTargetCollectionSetId + ") failed, because Set is not registed!",
 					LoggerType.ERROR );
 		}
 		
-		generalManager.getSingelton().logMsg(
+		generalManager.getSingleton().logMsg(
 				"GLCanvasScatterPlot2D.setTargetSetId(" +
 				iTargetCollectionSetId + ") done!",
 				LoggerType.STATUS );
@@ -226,7 +226,7 @@ extends AGLCanvasUser {
 	
 	public void destroyGLCanvas()
 	{
-		generalManager.getSingelton().logMsg( "GLCanvasHistogram2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId,
+		generalManager.getSingleton().logMsg( "GLCanvasHistogram2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId,
 				LoggerType.STATUS );
 	}
 	
@@ -236,14 +236,14 @@ extends AGLCanvasUser {
 	  
 	  if ( targetSet == null ) 
 	  {
-		  generalManager.getSingelton().logMsg(
+		  generalManager.getSingleton().logMsg(
 				  "createHistogram() can not create Histogram, because targetSet=null",
 				  LoggerType.STATUS );
 		  return;
 	  }
 	  
 	  if ( iHistogramLevels < 1) {
-		  generalManager.getSingelton().logMsg(
+		  generalManager.getSingleton().logMsg(
 				  "createHistogram() can not create Histogram, because histogramLevels are outside range [1..max]",
 				  LoggerType.FULL );
 		  return;
@@ -252,7 +252,7 @@ extends AGLCanvasUser {
 	  IStorage refBufferStorage = targetSet.getStorageByDimAndIndex(0,0);
 	  IVirtualArray refBufferSelection = targetSet.getVirtualArrayByDimAndIndex(0,0);
   		  
-	  generalManager.getSingelton().logMsg(
+	  generalManager.getSingleton().logMsg(
 			  "createHistogram() use IVirtualArray(" + refBufferSelection.getLabel() + ":" + refBufferSelection.toString() + ")",
 			  LoggerType.FULL );
 	  
@@ -273,7 +273,7 @@ extends AGLCanvasUser {
 	  HistogramData refResultBuffer = 
 		  histogramCreatorSet.getUpdatedHistogramData();
 	 
-	  generalManager.getSingelton().logMsg( 
+	  generalManager.getSingleton().logMsg( 
 			  "HISTOGRAM:\n  " + refResultBuffer.toString(),
 			  LoggerType.FULL );
 	  

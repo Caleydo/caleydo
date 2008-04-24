@@ -180,7 +180,7 @@ implements IMediator {
 			} 
 			else 
 			{
-				refEventPublisher.getSingelton().logMsg(
+				refEventPublisher.getSingleton().logMsg(
 						this.getClass().toString() + 
 						".updateReceiverSpecialMediator(Object eventTrigger=[" +
 						eventTrigger.toString() +

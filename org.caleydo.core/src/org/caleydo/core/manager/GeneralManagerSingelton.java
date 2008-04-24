@@ -36,7 +36,7 @@ public final class GeneralManagerSingelton {
 			
 			/** Test if setIGeneralManager!=null and if a valid Singleton-object exists.. */
 			if ((setIGeneralManager!= null)&&
-					( setIGeneralManager.getSingelton()!= null )) {		
+					( setIGeneralManager.getSingleton()!= null )) {		
 				
 				refGeneralManagerSingelton = setIGeneralManager;
 				return true;				

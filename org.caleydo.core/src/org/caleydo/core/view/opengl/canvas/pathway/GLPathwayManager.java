@@ -107,7 +107,7 @@ public class GLPathwayManager {
 		iArSelectedEdgeRepId = new ArrayList<Integer>();
 		
 		// Initialize genome mapper
-		genomeMapper = refGeneralManager.getSingelton().getGenomeIdManager()
+		genomeMapper = refGeneralManager.getSingleton().getGenomeIdManager()
 			.getGenomeMapperByMappingCascadeType(
 					EGenomeMappingCascadeType.ENZYME_2_NCBI_GENEID_2_ACCESSION_2_MICROARRAY_EXPRESSION_STORAGE_INDEX);
 		genomeMapper.setMappingData(alSetData);
@@ -125,7 +125,7 @@ public class GLPathwayManager {
 		if (iPathwayId == -1)
 			return;		
 		
-		PathwayGraph refTmpPathway = (PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().
+		PathwayGraph refTmpPathway = (PathwayGraph)refGeneralManager.getSingleton().getPathwayManager().
 			getItem(iPathwayId);
 		
 		int iVerticesDisplayListId = -1;
@@ -199,7 +199,7 @@ public class GLPathwayManager {
 //				continue;
 			
 			Iterator<IGraphItem> iterGraphItems = 
-				((IGraphItem) refGeneralManager.getSingelton().getPathwayItemManager()
+				((IGraphItem) refGeneralManager.getSingleton().getPathwayItemManager()
 						.getItem(iAlTmpSelectedGraphItemIds.get(iItemIndex))).getAllItemsByProp(
 								EGraphItemProperty.ALIAS_PARENT).iterator();
 			Iterator<IGraphItem> iterIdenticalGraphItemReps;
@@ -480,7 +480,7 @@ public class GLPathwayManager {
 		
 		Vec3f tmpNodeColor = null;
 
-		gl.glPushName(refGeneralManager.getSingelton().getViewGLCanvasManager().getPickingManager()
+		gl.glPushName(refGeneralManager.getSingleton().getViewGLCanvasManager().getPickingManager()
 				.getPickingID(containingView.getId(), EPickingType.PATHWAY_ELEMENT_SELECTION, vertexRep.getId()));
 		
 		EPathwayVertexShape shape = vertexRep.getShapeType();
@@ -735,7 +735,7 @@ public class GLPathwayManager {
 	private void renderLabels(final GL gl, final int iPathwayID) {
 
 	    PathwayVertexGraphItemRep vertexRep;
-		PathwayGraph tmpPathway = (PathwayGraph)refGeneralManager.getSingelton().getPathwayManager().
+		PathwayGraph tmpPathway = (PathwayGraph)refGeneralManager.getSingleton().getPathwayManager().
 			getItem(iPathwayID);
 		
 		// Don't annotate BioCarta pathways - because of good texture annotation

@@ -81,7 +81,7 @@ extends ACmdCreate_GlCanvasUser {
 		}
 		else 
 		{
-			generalManager.getSingelton().logMsg( 
+			generalManager.getSingleton().logMsg( 
 					"CmdGLObjectHistogram2D no set defined!", 
 					LoggerType.STATUS);
 		}

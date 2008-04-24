@@ -76,7 +76,7 @@ implements IPathwayItemManager {
     	
 		hashVertexIdToGraphItem.put(iGeneratedId, pathwayVertex);
     	
-    	generalManager.getSingelton().getPathwayManager()
+    	generalManager.getSingleton().getPathwayManager()
 				.getRootPathway().addItem(pathwayVertex);
     	
     	hashVertexNameToGraphItem.put(sName, pathwayVertex);
@@ -181,7 +181,7 @@ implements IPathwayItemManager {
 		IGraphItem pathwayRelationEdge = new PathwayRelationEdgeGraphItem(
 				iGeneratedId, sType);
 		
-		IGraph rootPathway = generalManager.getSingelton()
+		IGraph rootPathway = generalManager.getSingleton()
 				.getPathwayManager().getRootPathway();
 		
 		// Add edge to root pathway
@@ -248,7 +248,7 @@ implements IPathwayItemManager {
 		IGraphItem pathwayReactionEdgeRep =
 			new PathwayReactionEdgeGraphItemRep(iGeneratedId);
 	
-		IGraph rootPathway = generalManager.getSingelton()
+		IGraph rootPathway = generalManager.getSingleton()
 			.getPathwayManager().getRootPathway();
 		
 		// Add edge to root pathway

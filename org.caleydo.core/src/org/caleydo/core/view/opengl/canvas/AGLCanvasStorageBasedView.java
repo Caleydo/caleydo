@@ -93,10 +93,10 @@ implements IMediatorReceiver, IMediatorSender
 		alDataStorages = new ArrayList<IStorage>();
 		mapSelections = new EnumMap<ESelectionType, ArrayList<Integer>>(ESelectionType.class);	
 		
-		IDManager = generalManager.getSingelton().getGenomeIdManager();
+		IDManager = generalManager.getSingleton().getGenomeIdManager();
 		
 		extSelectionManager = generalManager.
-		getSingelton().getViewGLCanvasManager().getSelectionManager();
+		getSingleton().getViewGLCanvasManager().getSelectionManager();
 		
 		textRenderer = new TextRenderer(new Font("Arial",
 				Font.BOLD, 16), false);
@@ -161,10 +161,10 @@ implements IMediatorReceiver, IMediatorSender
 				else
 				{			
 					// Check if gene occurs in one pathway
-					int iNCBIGeneID = generalManager.getSingelton().getGenomeIdManager()
+					int iNCBIGeneID = generalManager.getSingleton().getGenomeIdManager()
 					.getIdIntFromIntByMapping(iAccessionID, EGenomeMappingType.ACCESSION_2_NCBI_GENEID);
 	
-					String sNCBIGeneIDCode = generalManager.getSingelton().getGenomeIdManager()
+					String sNCBIGeneIDCode = generalManager.getSingleton().getGenomeIdManager()
 						.getIdStringFromIntByMapping(iNCBIGeneID, EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
 				
 					int iNCBIGeneIDCode = StringConversionTool.convertStringToInt(sNCBIGeneIDCode, -1);
@@ -176,8 +176,8 @@ implements IMediatorReceiver, IMediatorSender
 					}
 					
 					PathwayVertexGraphItem tmpPathwayVertexGraphItem = 
-						((PathwayVertexGraphItem)generalManager.getSingelton().getPathwayItemManager().getItem(
-							generalManager.getSingelton().getPathwayItemManager().getPathwayVertexGraphItemIdByNCBIGeneId(iNCBIGeneIDCode)));
+						((PathwayVertexGraphItem)generalManager.getSingleton().getPathwayItemManager().getItem(
+							generalManager.getSingleton().getPathwayItemManager().getPathwayVertexGraphItemIdByNCBIGeneId(iNCBIGeneIDCode)));
 		
 					if(tmpPathwayVertexGraphItem == null)
 					{
@@ -212,7 +212,7 @@ implements IMediatorReceiver, IMediatorSender
 		ArrayList<Integer> iAlSelectionStorageIndices = new ArrayList<Integer>();
 		for(int iCount = 0; iCount < iAlSelection.size(); iCount++)
 		{
-			int iTmp = generalManager.getSingelton().getGenomeIdManager()
+			int iTmp = generalManager.getSingleton().getGenomeIdManager()
 				.getIdIntFromIntByMapping(iAlSelection.get(iCount), EGenomeMappingType.ACCESSION_2_MICROARRAY_EXPRESSION);
 			
 //			if (iTmp == -1)
@@ -281,7 +281,7 @@ implements IMediatorReceiver, IMediatorSender
 	
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) 
 	{		
-		generalManager.getSingelton().logMsg(
+		generalManager.getSingleton().logMsg(
 				this.getClass().getSimpleName()
 						+ " ("+iUniqueId+"): updateReceiver(Object eventTrigger, ISet updatedSet): Update called by "
 						+ eventTrigger.getClass().getSimpleName()+" ("+((AGLCanvasUser)eventTrigger).getId(),
@@ -315,7 +315,7 @@ implements IMediatorReceiver, IMediatorSender
 				iSelectedAccessionID = iAlSelection.get(iSelectionCount);
 				iSelectedStorageIndex = iAlSelectionStorageIndices.get(iSelectionCount);
 				
-				String sAccessionCode = generalManager.getSingelton().getGenomeIdManager()
+				String sAccessionCode = generalManager.getSingleton().getGenomeIdManager()
 					.getIdStringFromIntByMapping(iSelectedAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
 			
 				System.out.println("Accession ID: " + iSelectedAccessionID);
@@ -352,7 +352,7 @@ implements IMediatorReceiver, IMediatorSender
 	 */
 	public void updateReceiver(Object eventTrigger) {
 
-		generalManager.getSingelton().logMsg(
+		generalManager.getSingleton().logMsg(
 				this.getClass().getSimpleName()
 						+ ": updateReceiver(Object eventTrigger): Update called by "
 						+ eventTrigger.getClass().getSimpleName(),
@@ -364,7 +364,7 @@ implements IMediatorReceiver, IMediatorSender
 	{
 		int iAccessionID = getAccesionIDFromStorageIndex(iExternalID);	
 		
-		generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
+		generalManager.getSingleton().getViewGLCanvasManager().getInfoAreaManager()
 		.setData(iUniqueId, iAccessionID, EInputDataType.GENE, getInfo());					
 		
 		// Write currently selected vertex to selection set

@@ -55,11 +55,11 @@ extends AGLCanvasUser {
 	public void setTargetSetId( final int iTargetCollectionSetId ) {
 		
 		targetSet = 
-			generalManager.getSingelton().getSetManager(
+			generalManager.getSingleton().getSetManager(
 					).getItemSet( iTargetCollectionSetId );
 		
 		if ( targetSet == null ) {
-			generalManager.getSingelton().logMsg(
+			generalManager.getSingleton().logMsg(
 					"GLCanvasObjectHeatmap.setTargetSetId(" +
 					iTargetCollectionSetId + ") failed, because Set is not registed!",
 					LoggerType.FULL );

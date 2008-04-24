@@ -47,7 +47,7 @@ extends ACommand {
 	 */
 	public void doCommand() throws CaleydoRuntimeException {
 		ICommandQueue cmdQueue = 
-			this.generalManager.getSingelton().getCommandManager().getCommandQueueByCmdQueueId(iCommandQueueId);
+			this.generalManager.getSingleton().getCommandManager().getCommandQueueByCmdQueueId(iCommandQueueId);
 		
 		if ( cmdQueue == null ) {
 			throw new CaleydoRuntimeException("CmdSystemRunCmdQueue::doCommand() cmdQueue==null !");
@@ -62,7 +62,7 @@ extends ACommand {
 	public void undoCommand() throws CaleydoRuntimeException {
 		
 		ICommandQueue cmdQueue = 
-			this.generalManager.getSingelton().getCommandManager().getCommandQueueByCmdQueueId(iCommandQueueId);
+			this.generalManager.getSingleton().getCommandManager().getCommandQueueByCmdQueueId(iCommandQueueId);
 		
 		if ( cmdQueue == null ) {
 			throw new CaleydoRuntimeException("CmdSystemRunCmdQueue::doCommand() cmdQueue==null !");

@@ -70,13 +70,13 @@ extends LocationAdapter
 			String sExtractedID = 
 				event.location.substring(sSearchPhrase_NCBIGeneId.length());
 
-			int iPathwayGraphItemId = refGeneralManager.getSingelton().getPathwayItemManager()
+			int iPathwayGraphItemId = refGeneralManager.getSingleton().getPathwayItemManager()
 				.getPathwayVertexGraphItemIdByNCBIGeneId(StringConversionTool.convertStringToInt(sExtractedID, -1));
 		
 			if (iPathwayGraphItemId == -1)
 				return;
 			
-			PathwayVertexGraphItem vertexItemBuffer = (PathwayVertexGraphItem) refGeneralManager.getSingelton()
+			PathwayVertexGraphItem vertexItemBuffer = (PathwayVertexGraphItem) refGeneralManager.getSingleton()
 				.getPathwayItemManager().getItem(iPathwayGraphItemId);
 			
 			Iterator <IGraphItem> iterList = 
@@ -128,7 +128,7 @@ extends LocationAdapter
 		}
 		
 		SetSelection tmpSelectionSet = 
-			(SetSelection) refGeneralManager.getSingelton().getSetManager().getItemSet(iSelectionSetId);
+			(SetSelection) refGeneralManager.getSingleton().getSetManager().getItemSet(iSelectionSetId);
 		tmpSelectionSet.updateSelectionSet(iBrowserId, 
 				iAlSelectionId,
 				iAlSelectionDepth, 

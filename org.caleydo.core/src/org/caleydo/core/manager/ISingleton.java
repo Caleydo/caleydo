@@ -9,7 +9,7 @@ import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.data.IVirtualArrayManager;
 import org.caleydo.core.manager.type.ManagerType;
 
-public interface ISingelton {
+public interface ISingleton {
 
 	/**
 	 * Initialize the singelton. 
@@ -24,11 +24,7 @@ public interface ISingelton {
 
 	public abstract IVirtualArrayManager getVirtualArrayManager();
 
-	public abstract IMenuManager getMenuManager();
-
 	public abstract ISetManager getSetManager();
-
-//	public abstract IViewCanvasManager getViewCanvasManager();
 
 	public abstract ICommandManager getCommandManager();
 
@@ -62,8 +58,6 @@ public interface ISingelton {
 
 	public abstract void setNetworkPostfix(int iSetNetworkPrefix);
 
-	public abstract void setMenuManager(IMenuManager setMenuManager);
-
 	public abstract void setMementoManager(IMementoManager setMementoManager);
 
 	public abstract void setStorageManager(IStorageManager setStorageManager);
@@ -71,10 +65,7 @@ public interface ISingelton {
 	public abstract void setVirtualArrayManager(
 			IVirtualArrayManager setVirtualArrayManager);
 
-	public abstract void setSetManager(ISetManager setSetManager);
-
-//	public abstract void setViewCanvasManager(
-//			IViewCanvasManager setViewCanvasManager);
+	public abstract void setSetManager(ISetManager setSetManager);;
 
 	public abstract void setCommandManager(ICommandManager setCommandManager);
 

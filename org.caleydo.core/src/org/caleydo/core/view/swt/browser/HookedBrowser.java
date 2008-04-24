@@ -29,7 +29,7 @@ public class HookedBrowser extends Browser {
 		super(parent, style | SWT.NO_FOCUS );
 		this.refGeneralManager = refGeneralManager;
 		
-		refGeneralManager.getSingelton().logMsg(
+		refGeneralManager.getSingleton().logMsg(
 				"HookedBrowser( parent=[" + parent.toString() + "] , style=[" + style + "] ) Constructor",
 				LoggerType.VERBOSE);
 	}
@@ -49,7 +49,7 @@ public class HookedBrowser extends Browser {
 	 */
 	public void refresh() {
 		
-		refGeneralManager.getSingelton().logMsg("HookedBrowser.refresh()",
+		refGeneralManager.getSingleton().logMsg("HookedBrowser.refresh()",
 				LoggerType.VERBOSE);
 		super.refresh();		
 	}
@@ -60,7 +60,7 @@ public class HookedBrowser extends Browser {
 	 */
 	public void stop() {
 		
-		refGeneralManager.getSingelton().logMsg("HookedBrowser.stop()",
+		refGeneralManager.getSingleton().logMsg("HookedBrowser.stop()",
 				LoggerType.VERBOSE);
 		super.stop();		
 	}
@@ -71,7 +71,7 @@ public class HookedBrowser extends Browser {
 	 */
 	public boolean setUrl(String url) {
 		
-		refGeneralManager.getSingelton().logMsg("HookedBrowser.setUrl(" +  url + ")",
+		refGeneralManager.getSingleton().logMsg("HookedBrowser.setUrl(" +  url + ")",
 				LoggerType.VERBOSE);
 		return super.setUrl(url);
 	}
@@ -82,7 +82,7 @@ public class HookedBrowser extends Browser {
 	 */
 	public boolean setText(String html) {
 		
-		refGeneralManager.getSingelton().logMsg("HookedBrowser.setText(" +  html + ")",
+		refGeneralManager.getSingleton().logMsg("HookedBrowser.setText(" +  html + ")",
 				LoggerType.VERBOSE);
 		return super.setText(html);
 	}
@@ -94,7 +94,7 @@ public class HookedBrowser extends Browser {
 	public String getUrl() {
 		
 		String info = super.getUrl();
-		refGeneralManager.getSingelton().logMsg("HookedBrowser.getUrl() => " + info,
+		refGeneralManager.getSingleton().logMsg("HookedBrowser.getUrl() => " + info,
 				LoggerType.VERBOSE);
 		
 		return info;
@@ -106,7 +106,7 @@ public class HookedBrowser extends Browser {
 	 */
 	public boolean execute(String script) {
 		
-		refGeneralManager.getSingelton().logMsg("HookedBrowser.execute(" + script+ ")",
+		refGeneralManager.getSingleton().logMsg("HookedBrowser.execute(" + script+ ")",
 				LoggerType.VERBOSE);
 		
 		return super.execute(script);		

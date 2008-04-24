@@ -294,7 +294,7 @@ implements IMediatorReceiver, IMediatorSender {
 			// unpack selection item reps
 			ArrayList<Integer> iAlSelectionId = alSetSelection.get(1).getSelectionIdArray();
 			ArrayList<IGraphItem> alSelectedVertexReps = new ArrayList<IGraphItem>();
-			IPathwayItemManager pathwayItemManager = generalManager.getSingelton().getPathwayItemManager();
+			IPathwayItemManager pathwayItemManager = generalManager.getSingleton().getPathwayItemManager();
 			for (int iItemIndex = 0; iItemIndex < iAlSelectionId.size(); iItemIndex++)
 			{
 				alSelectedVertexReps.add(
@@ -479,7 +479,7 @@ implements IMediatorReceiver, IMediatorSender {
 		}
 
 		float tmp = GLPathwayManager.SCALING_FACTOR_Y * ((PathwayGraph)generalManager
-				.getSingelton().getPathwayManager().getItem(iPathwayId)).getHeight();
+				.getSingleton().getPathwayManager().getItem(iPathwayId)).getHeight();
 		
 		// Pathway texture height is subtracted from Y to align pathways to
 		// front level
@@ -584,7 +584,7 @@ implements IMediatorReceiver, IMediatorSender {
 			if (iPathwayId == -1)
 				continue;
 			
-			gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager().getPickingManager()
+			gl.glPushName(generalManager.getSingleton().getViewGLCanvasManager().getPickingManager()
 					.getPickingID(iUniqueId, EPickingType.PATHWAY_POOL_SELECTION, iPathwayId));
 
 			Transform transform = pathwayPoolLayer
@@ -595,7 +595,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 			if (alMagnificationFactor.get(iPathwayIndex) != 0)
 			{
-				sRenderText = ((PathwayGraph) generalManager.getSingelton()
+				sRenderText = ((PathwayGraph) generalManager.getSingleton()
 						.getPathwayManager().getItem(iPathwayId)).getTitle();
 			}
 			
@@ -747,7 +747,7 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 
-		generalManager.getSingelton().logMsg(
+		generalManager.getSingleton().logMsg(
 				this.getClass().getSimpleName()
 						+ ": updateReceiver(): Update called by "
 						+ eventTrigger.getClass().getSimpleName(),
@@ -765,7 +765,7 @@ implements IMediatorReceiver, IMediatorSender {
 		ArrayList<Integer> iAlSelectionId = refSetSelection.getSelectionIdArray();
 		if (iAlSelectionId != null &&iAlSelectionId.size() != 0)
 		{
-			selectedVertex = (PathwayVertexGraphItemRep) generalManager.getSingelton()
+			selectedVertex = (PathwayVertexGraphItemRep) generalManager.getSingleton()
 				.getPathwayItemManager().getItem(iAlSelectionId.get(0));
 			
 			bRebuildVisiblePathwayDisplayLists = true;
@@ -837,7 +837,7 @@ implements IMediatorReceiver, IMediatorSender {
 				fTextureTransparency, true);
 
 		float tmp = GLPathwayManager.SCALING_FACTOR_Y * ((PathwayGraph)generalManager
-				.getSingelton().getPathwayManager().getItem(iPathwayId)).getHeight();
+				.getSingleton().getPathwayManager().getItem(iPathwayId)).getHeight();
 		
 		gl.glTranslatef(0, tmp, 0);
 		refGLPathwayManager.renderPathway(gl, iPathwayId, false);
@@ -879,7 +879,7 @@ implements IMediatorReceiver, IMediatorSender {
 					int iPickedElementID = pickingManager.getExternalIDFromPickingID(iUniqueId, iPickingID);
 
 					PathwayVertexGraphItemRep pickedVertexRep = (PathwayVertexGraphItemRep) generalManager
-						.getSingelton().getPathwayItemManager().getItem(iPickedElementID);
+						.getSingleton().getPathwayItemManager().getItem(iPickedElementID);
 				
 					if (pickedVertexRep == null)
 						return;
@@ -1086,7 +1086,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private void loadPathwayToUnderInteractionPosition(final int iPathwayId) {
 
-		generalManager.getSingelton()
+		generalManager.getSingleton()
 				.logMsg(this.getClass().getSimpleName()
 								+ ": loadPathwayToUnderInteractionPosition(): Pathway with ID "
 								+ iPathwayId + " is under interaction.",
@@ -1097,7 +1097,7 @@ implements IMediatorReceiver, IMediatorSender {
 			return;
 		
 		loadNodeInformationInBrowser(((PathwayGraph)generalManager
-				.getSingelton().getPathwayManager().getItem(iPathwayId)).getExternalLink());
+				.getSingleton().getPathwayManager().getItem(iPathwayId)).getExternalLink());
 		
 		// Check if other slerp action is currently running
 		if (iSlerpFactor > 0 && iSlerpFactor < 1000)
@@ -1106,7 +1106,7 @@ implements IMediatorReceiver, IMediatorSender {
 		arSlerpActions.clear();
 
 		// Check if selected pathway is loaded.
-		if (!generalManager.getSingelton().getPathwayManager().hasItem(iPathwayId))
+		if (!generalManager.getSingleton().getPathwayManager().hasItem(iPathwayId))
 		{
 			return;
 		}
@@ -1313,7 +1313,7 @@ implements IMediatorReceiver, IMediatorSender {
 			return;
 
 		CmdViewLoadURLInHTMLBrowser createdCmd = (CmdViewLoadURLInHTMLBrowser) generalManager
-				.getSingelton().getCommandManager().createCommandByType(
+				.getSingleton().getCommandManager().createCommandByType(
 						CommandQueueSaxType.LOAD_URL_IN_BROWSER);
 
 		createdCmd.setAttributes(sUrl);
@@ -1416,11 +1416,11 @@ implements IMediatorReceiver, IMediatorSender {
 									EGraphItemHierarchy.GRAPH_PARENT).get(0)).getKeggId())
 						{		
 							vecMatSrc.set(tmpVertexGraphItemRepSrc.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X,
-									 (((PathwayGraph)generalManager.getSingelton().getPathwayManager().getItem(iPathwayIdSrc)).getHeight()
+									 (((PathwayGraph)generalManager.getSingleton().getPathwayManager().getItem(iPathwayIdSrc)).getHeight()
 											 -tmpVertexGraphItemRepSrc.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y, 0);
 							
 							vecMatDest.set(tmpVertexGraphItemRepDest.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X,
-									 (((PathwayGraph)generalManager.getSingelton().getPathwayManager().getItem(iPathwayIdDest)).getHeight()
+									 (((PathwayGraph)generalManager.getSingleton().getPathwayManager().getItem(iPathwayIdDest)).getHeight()
 											 -tmpVertexGraphItemRepDest.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y, 0);
 							
 							rotSrc.toMatrix(matSrc);

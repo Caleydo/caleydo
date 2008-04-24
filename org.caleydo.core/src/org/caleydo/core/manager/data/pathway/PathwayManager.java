@@ -124,7 +124,7 @@ implements IPathwayManager {
 		// Check if pathway was previously loaded
 		if (hashPathwayIdToPathwayGraphLUT.containsKey(iPathwayID))
 		{
-			generalManager.getSingelton().logMsg(
+			generalManager.getSingleton().logMsg(
 					this.getClass().getSimpleName() + 
 					": loadPathwayById(): Pathway "+ iPathwayID + " is already loaded. SKIP.",
 					LoggerType.VERBOSE);
@@ -154,12 +154,12 @@ implements IPathwayManager {
 		
 		sPathwayFilePath = hashPathwayDatabase.get(EPathwayDatabaseType.KEGG).getXMLPath() + sPathwayFilePath +".xml";		
 		
-		bLoadingOK = generalManager.getSingelton().getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
+		bLoadingOK = generalManager.getSingleton().getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
 
 		if (bLoadingOK)
 			return true;
 		
-		generalManager.getSingelton().logMsg(
+		generalManager.getSingleton().logMsg(
 				this.getClass().getSimpleName() + 
 				": loadPathwayById(): No HSA pathway available - " +
 				"try to load reference pathway.",
@@ -168,7 +168,7 @@ implements IPathwayManager {
 		// Replace HSA with MAP and therefore try to load reference pathway
 		sPathwayFilePath = sPathwayFilePath.replace("hsa", "map");
 		
-		return generalManager.getSingelton().getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
+		return generalManager.getSingleton().getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
 	}
 	
 	/*
@@ -189,7 +189,7 @@ implements IPathwayManager {
 	    			&& !sPathwayFilePath.contains("h_"))
 	    		continue;
 	    	
-			generalManager.getSingelton().getXmlParserManager()
+			generalManager.getSingleton().getXmlParserManager()
 				.parseXmlFileByName(sPathwayFilePath);
 	    }
 	}

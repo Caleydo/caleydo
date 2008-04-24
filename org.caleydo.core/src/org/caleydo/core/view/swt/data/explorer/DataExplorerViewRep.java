@@ -220,7 +220,7 @@ implements IView, IMediatorReceiver {
 								} else
 								{
 									generalManager
-											.getSingelton()
+											.getSingleton()
 											.getLoggerManager()
 											.logMsg(
 													"Error in DataExplorerViewRep currentStorage==null!",
@@ -349,7 +349,7 @@ implements IView, IMediatorReceiver {
 		
 		//int triggerId = ((IVirtualArray) eventTrigger).getId();
 		
-		generalManager.getSingelton().logMsg(
+		generalManager.getSingleton().logMsg(
 				"Data Explorer update called by " + eventTrigger.getClass().getSimpleName(),
 				LoggerType.VERBOSE);
 
@@ -370,7 +370,7 @@ implements IView, IMediatorReceiver {
 		
 		final ISetSelection refSetSelection = (ISetSelection)updatedSet;
 		
-		generalManager.getSingelton().logMsg(
+		generalManager.getSingleton().logMsg(
 				"Data Explorer selection update called by " 
 				+ eventTrigger.getClass().getSimpleName(),
 				LoggerType.VERBOSE);

@@ -43,7 +43,7 @@ public abstract class AGenomeMapper {
 	
 		this.refGeneralManager = refGeneralManager;
 		alMappingStorage = new ArrayList<IStorage>();
-		refGenomeIdManager = refGeneralManager.getSingelton().getGenomeIdManager();
+		refGenomeIdManager = refGeneralManager.getSingleton().getGenomeIdManager();
 		
 		expressionColorMapping = new ColorMapping(0, 1);
 	}
@@ -138,7 +138,7 @@ public abstract class AGenomeMapper {
 			float[] bufferFloatArray = refExpressionStorage.getArrayFloat();
 			
 			if ( bufferFloatArray == null ) {
-				this.refGeneralManager.getSingelton().logMsg("color mapping failed, Storage=[" +
+				this.refGeneralManager.getSingleton().logMsg("color mapping failed, Storage=[" +
 						refExpressionStorage.getLabel() + "][" +
 						refExpressionStorage.toString() +
 						"] does not contain float[]!",LoggerType.ERROR);

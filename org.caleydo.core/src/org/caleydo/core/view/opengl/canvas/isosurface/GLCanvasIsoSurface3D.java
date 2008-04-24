@@ -205,24 +205,24 @@ extends AGLCanvasUser
 	public void setTargetSetId( final int iTargetCollectionSetId ) {
 		
 		targetSet = 
-			generalManager.getSingelton().getSetManager(
+			generalManager.getSingleton().getSetManager(
 					).getItemSet( iTargetCollectionSetId );
 		
 		if ( targetSet == null ) {
-			generalManager.getSingelton().logMsg(
+			generalManager.getSingleton().logMsg(
 					"GLCanvasIsosurface3D.setTargetSetId(" +
 					iTargetCollectionSetId + ") failed, because Set is not registed!",
 					LoggerType.ERROR );
 		}
 		
-		generalManager.getSingelton().logMsg(
+		generalManager.getSingleton().logMsg(
 				"GLCanvasIsosurface3D.setTargetSetId(" +
 				iTargetCollectionSetId + ") done!",
 				LoggerType.STATUS );
 		
 		if ( iCurrentHistogramLength > 0 ) 
 		{
-			generalManager.getSingelton().logMsg(
+			generalManager.getSingleton().logMsg(
 					"GLCanvasIsosurface3D.setTargetSetId(" +
 					iTargetCollectionSetId + ") skip isovalue (not implemented yet!",
 					LoggerType.STATUS );
@@ -270,7 +270,7 @@ extends AGLCanvasUser
 
 	public void destroyGLCanvas()
 	{
-		generalManager.getSingelton().logMsg( "GLCanvasHistogram2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId ,
+		generalManager.getSingleton().logMsg( "GLCanvasHistogram2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId ,
 				LoggerType.STATUS );
 	}
   

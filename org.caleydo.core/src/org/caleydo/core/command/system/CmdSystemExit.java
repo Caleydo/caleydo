@@ -1,16 +1,7 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.command.system;
 
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.ICommand;
-import org.caleydo.core.command.window.CmdWindowPopupInfo;
 import org.caleydo.core.data.AUniqueManagedObject;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
@@ -40,14 +31,8 @@ implements ICommand {
 	 */
 	public void doCommand() throws CaleydoRuntimeException {
 		System.out.println("CmdSystemExit: shut down application...");
-		
-		CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo(generalManager,"");
-		exitWarning.setText("WARNING","Close application. Current state is stored..");
-		exitWarning.doCommand();
-		
 		System.out.println("CmdSystemExit: ...cleanup.. ");
 		System.out.println("CmdSystemExit: shut down done!");
-		
 		
 		System.exit( 0 );
 	}

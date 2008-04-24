@@ -42,7 +42,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 
 		refCommandManager.runDoCommand(this);
 		
-		Object viewObject = generalManager.getSingelton().getViewGLCanvasManager()
+		Object viewObject = generalManager.getSingleton().getViewGLCanvasManager()
 			.getItem(iViewId);
 		
 		if (viewObject.getClass().equals(GLCanvasJukeboxPathway3D.class))

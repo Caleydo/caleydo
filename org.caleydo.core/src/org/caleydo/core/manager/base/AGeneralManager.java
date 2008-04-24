@@ -1,7 +1,7 @@
 package org.caleydo.core.manager.base;
 
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ISingelton;
+import org.caleydo.core.manager.ISingleton;
 import org.caleydo.core.manager.singleton.SingletonManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
@@ -19,7 +19,7 @@ implements IGeneralManager {
 
 	protected final IGeneralManager generalManager;
 	
-	protected final ISingelton singelton;
+	protected final ISingleton singelton;
 	
 	/**
 	 * Get ISingelton from refGeneralManager. 
@@ -29,7 +29,7 @@ implements IGeneralManager {
 
 		this.generalManager = generalManager;
 				
-		ISingelton dummySingelton = generalManager.getSingelton();
+		ISingleton dummySingelton = generalManager.getSingleton();
 		
 		if ( dummySingelton != null ) {
 			this.singelton = dummySingelton;
@@ -48,7 +48,7 @@ implements IGeneralManager {
 		this.generalManager = generalManager;
 		
 		/** Check for inconsistency... */
-		if (generalManager.getSingelton() != null ) 
+		if (generalManager.getSingleton() != null ) 
 		{
 			throw new CaleydoRuntimeException("AGeneralManager() refGeneralManager already has a  proper ISingelton!");
 		}
@@ -66,7 +66,7 @@ implements IGeneralManager {
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.manager.IGeneralManager#getSingelton()
 	 */
-	public final ISingelton getSingelton() {
+	public final ISingleton getSingleton() {
 		return this.singelton;
 	}
 

@@ -96,11 +96,11 @@ extends AXmlParserHandler {
 		if (sAttributeName.equals("image"))
 			sImageLink = attributes.getValue(0); 
 		
-		refGeneralManager.getSingelton().logMsg( 
+		refGeneralManager.getSingleton().logMsg( 
 				"Load image map from: " + sImageLink,
 				LoggerType.FULL );
 		
-		refGeneralManager.getSingelton().getPathwayManager().
+		refGeneralManager.getSingleton().getPathwayManager().
 			createPathwayImageMap(sImageLink);
 	}
 
@@ -150,7 +150,7 @@ extends AXmlParserHandler {
     	rectArea.add(Integer.parseInt(token.nextToken()),  
     			Integer.parseInt(token.nextToken()));
 				
-		((PathwayManager)(refGeneralManager.getSingelton().getPathwayManager())).
+		((PathwayManager)(refGeneralManager.getSingleton().getPathwayManager())).
 			getCurrentPathwayImageMap().addArea(rectArea, sImageLink);
 	}
 	

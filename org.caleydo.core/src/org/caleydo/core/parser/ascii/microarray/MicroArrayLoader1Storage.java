@@ -274,7 +274,7 @@ extends AMicroArrayLoader {
 			
 		    } // end: while ((sLine = brFile.readLine()) != null) { 
 		    
-		refGeneralManager.getSingelton().logMsg("  parsed #" + 
+		refGeneralManager.getSingleton().logMsg("  parsed #" + 
 				this.iLineInFile_CurrentDataIndex + "  [" + 			
 				this.iStartParsingAtLine + " -> " +
 				this.iStopParsingAtLine +  "] stoped at line #" +

@@ -1,20 +1,11 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.command.system;
 
 import java.util.StringTokenizer;
 
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACommand;
-import org.caleydo.core.command.window.CmdWindowPopupInfo;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.data.mapping.EGenomeMappingDataType;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
@@ -217,7 +208,7 @@ extends ACommand {
 			{
 				if (( iArrayStartStop[0] > iArrayStartStop[1] )&&
 						( iArrayStartStop[1] != -1 )) {
-					generalManager.getSingelton().logMsg(
+					generalManager.getSingleton().logMsg(
 							"CmdSystemLoadFileLookupTable ignore stop index=(" + 
 							iArrayStartStop[1]  + 
 							"), because it is smaller than start index (" + 
@@ -240,12 +231,12 @@ extends ACommand {
 	 */
 	public void doCommand() throws CaleydoRuntimeException {
 		
-		generalManager.getSingelton().logMsg(
+		generalManager.getSingleton().logMsg(
 	    		"load file via importer... ([" +
 				sFileName + "]",
 				LoggerType.STATUS );
 		
-		generalManager.getSingelton().logMsg(
+		generalManager.getSingleton().logMsg(
 	    		"load file via importer: [LUT-tpye:[" +
 				sLookupTableType + "]  cast=[" + 
 				iTargetSetId + "])",
@@ -254,7 +245,7 @@ extends ACommand {
 		LookupTableLoaderProxy loader = null;
 		
 		IGenomeIdManager refGenomeIdManager = 
-			generalManager.getSingelton().getGenomeIdManager();
+			generalManager.getSingleton().getGenomeIdManager();
 		
 		try 
 		{
@@ -416,13 +407,9 @@ extends ACommand {
 			
 			e.printStackTrace();
 			
-			generalManager.getSingelton().logMsg(
+			generalManager.getSingleton().logMsg(
 					errorMsg,
 					LoggerType.ERROR );
-			
-			CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo(generalManager,"");
-			exitWarning.setText("ERROR",errorMsg);
-			exitWarning.doCommand();
 		} // catch
 		finally 
 		{

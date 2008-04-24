@@ -154,7 +154,7 @@ implements IMementoXML, IParserObject {
 
 		refGeneralManager = setGeneralManager;
 		
-		refSWTGUIManager = (SWTGUIManager) this.refGeneralManager.getSingelton().getSWTGUIManager();
+		refSWTGUIManager = (SWTGUIManager) this.refGeneralManager.getSingleton().getSWTGUIManager();
 		
 		assert refGeneralManager!= null :"null-pointer in constructor";		
 		
@@ -235,7 +235,7 @@ implements IMementoXML, IParserObject {
 		if ( iStartParsingAtLine > iStopParsingAtLine )
 		{
 			this.iStopParsingAtLine = Integer.MAX_VALUE;
-			refGeneralManager.getSingelton().logMsg(
+			refGeneralManager.getSingleton().logMsg(
 					"AMicroArrayLoader.setStartParsingStopParsingAtLine() stop index is smaller than start index. set stop index to end of file!",
 					LoggerType.MINOR_ERROR );			
 			return;
@@ -293,7 +293,7 @@ implements IMementoXML, IParserObject {
 		    brFile.close();
 		}
 		catch (IOException ioe) {
-			refGeneralManager.getSingelton().logMsg(
+			refGeneralManager.getSingleton().logMsg(
 					"AbstractLoader: IO-error line=[" + iLineInFile +
 					"] while testing file: " + ioe.toString(),
 					LoggerType.MINOR_ERROR );
@@ -303,7 +303,7 @@ implements IMementoXML, IParserObject {
 		    //System.exit(1);
 		}
 		catch (Exception ex) {
-			refGeneralManager.getSingelton().logMsg(
+			refGeneralManager.getSingleton().logMsg(
 					"AbstractLoader: ERROR line=[" + iLineInFile +
 					"] while testing file: " + ex.toString(),
 					LoggerType.ERROR );
@@ -389,7 +389,7 @@ implements IMementoXML, IParserObject {
 		    }		   
 		    		
 		    // sample line: 1110 Kybernetik
-		    refGeneralManager.getSingelton().logMsg(
+		    refGeneralManager.getSingleton().logMsg(
 		    		"Read file \""+ 
 				       this.sFileName + "\" ...",
 				       LoggerType.VERBOSE );
@@ -405,7 +405,7 @@ implements IMementoXML, IParserObject {
 		    
 		    // sample line: E016|Zentrale Medienstelle|Media Centre|00
 		    
-		    refGeneralManager.getSingelton().logMsg(
+		    refGeneralManager.getSingleton().logMsg(
 		    		" read file \""+ 
 				       this.sFileName + "\"  ....  [DONE]",
 				     LoggerType.STATUS );
@@ -414,14 +414,14 @@ implements IMementoXML, IParserObject {
 		    
 		 
 		    
-		    refGeneralManager.getSingelton().logMsg(
+		    refGeneralManager.getSingleton().logMsg(
 		    		"  Read file \""+ 
 				       this.sFileName + "\" .... copy to storage ...[DONE]",
 				       LoggerType.VERBOSE_EXTRA );
 		    
 		}
 		catch (IOException ioe) {
-			refGeneralManager.getSingelton().logMsg(
+			refGeneralManager.getSingleton().logMsg(
 					"MicroArrayLoader: IO-error line=[" + iLineInFile +
 					"] while parsing: " + ioe.toString(),
 					LoggerType.MINOR_ERROR );
@@ -430,7 +430,7 @@ implements IMementoXML, IParserObject {
 		    //System.exit(1);
 		}
 		catch (Exception ex) {
-			refGeneralManager.getSingelton().logMsg(
+			refGeneralManager.getSingleton().logMsg(
 					"MicroArrayLoader: ERROR line=[" + iLineInFile +
 					"] while parsing: " + ex.toString(),
 					LoggerType.ERROR );

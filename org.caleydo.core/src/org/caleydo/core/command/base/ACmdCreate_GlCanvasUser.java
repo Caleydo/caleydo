@@ -112,7 +112,7 @@ extends ACmdCreate_IdTargetParentGLObject {
 		
 		}catch (Exception e) {
 			
-			generalManager.getSingelton()
+			generalManager.getSingleton()
 				.logMsg(this.getClass().getSimpleName()
 							+ ": Error in extracting view frustum from XML argument!",
 					LoggerType.ERROR);
@@ -138,7 +138,7 @@ extends ACmdCreate_IdTargetParentGLObject {
 	public void doCommand()
 	{
 		IViewGLCanvasManager glCanvasManager = 
-			generalManager.getSingelton().getViewGLCanvasManager();
+			generalManager.getSingleton().getViewGLCanvasManager();
 		
 		gLEventListener = glCanvasManager.createGLCanvas(
 				localManagerObjectType,

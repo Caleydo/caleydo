@@ -91,9 +91,9 @@ implements GLEventListener {
 		alSetData = new ArrayList <ISet> ();
 		alSetSelection = new ArrayList <SetSelection> ();
 
-		setManager = generalManager.getSingelton().getSetManager();
+		setManager = generalManager.getSingleton().getSetManager();
 		
-		parentGLCanvas = ((JoglCanvasForwarder)generalManager.getSingelton().getViewGLCanvasManager()
+		parentGLCanvas = ((JoglCanvasForwarder)generalManager.getSingleton().getViewGLCanvasManager()
 				.getItem(iGLCanvasID));
 		
 		if (parentGLCanvas != null)
@@ -101,7 +101,7 @@ implements GLEventListener {
 			// Register GL event listener view to GL canvas
 			parentGLCanvas.addGLEventListener(this);
 			
-			generalManager.getSingelton().getViewGLCanvasManager()
+			generalManager.getSingleton().getViewGLCanvasManager()
 				.registerGLEventListenerByGLCanvasID(parentGLCanvas.getID(), this);
 
 			pickingTriggerMouseAdapter = parentGLCanvas.getJoglMouseListener();
@@ -109,7 +109,7 @@ implements GLEventListener {
 		// Frustum will only be remotely rendered by another view
 		else
 		{
-			generalManager.getSingelton().getViewGLCanvasManager()
+			generalManager.getSingleton().getViewGLCanvasManager()
 				.registerGLEventListenerByGLCanvasID(-1, this);
 		}
 
@@ -117,7 +117,7 @@ implements GLEventListener {
 
 		viewCamera = new ViewCameraBase(iUniqueId); // FIXME: generate own ID for camera
 		
-		pickingManager = generalManager.getSingelton().getViewGLCanvasManager().getPickingManager();
+		pickingManager = generalManager.getSingleton().getViewGLCanvasManager().getPickingManager();
 	}
 
 	/*
@@ -126,10 +126,10 @@ implements GLEventListener {
 	 */
 	public void init(GLAutoDrawable drawable) {
 		
-		generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
+		generalManager.getSingleton().getViewGLCanvasManager().getInfoAreaManager()
 			.initInfoOverlay(iUniqueId, drawable);
 		
-		generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
+		generalManager.getSingleton().getViewGLCanvasManager().getInfoAreaManager()
 			.initInfoInPlace(viewFrustum);
 		
 		pickingTriggerMouseAdapter.addGLCanvas(this);
@@ -167,7 +167,7 @@ implements GLEventListener {
 		
 		displayLocal(gl);
 		
-		generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
+		generalManager.getSingleton().getViewGLCanvasManager().getInfoAreaManager()
 			.renderInfoOverlay(iUniqueId, drawable);
 	}
 
@@ -190,7 +190,7 @@ implements GLEventListener {
 
 	    GL gl = drawable.getGL();
 
-		generalManager.getSingelton().logMsg(
+		generalManager.getSingleton().logMsg(
 				"\n---------------------------------------------------"+
 				"\nGLEventListener with ID " +iUniqueId+ " RESHAPE GL" +
 				"\nGL_VENDOR: " + gl.glGetString(GL.GL_VENDOR)+
@@ -309,7 +309,7 @@ implements GLEventListener {
 			
 			if ( refCurrentSet == null ) 
 			{
-				setManager.getSingelton().logMsg(
+				setManager.getSingleton().logMsg(
 						"addSetId(" + iSet[i] + ") is not registered at SetManager!",
 						LoggerType.MINOR_ERROR);
 				
@@ -330,7 +330,7 @@ implements GLEventListener {
 					break;
 					
 				default:
-					setManager.getSingelton().logMsg(
+					setManager.getSingleton().logMsg(
 							"addSetId() unsupported SetType!",
 							LoggerType.ERROR);
 				} // switch (refCurrentSet.getSetType()) {
@@ -338,7 +338,7 @@ implements GLEventListener {
 			} //if ( ! hasSetId_ByReference(refCurrentSet) )
 			else 
 			{ 
-				setManager.getSingelton().logMsg(
+				setManager.getSingleton().logMsg(
 						"addSetId(" + iSet[i] + ") ISet is already registered!",
 						LoggerType.MINOR_ERROR);
 			} //if ( ! hasSetId_ByReference(refCurrentSet) ) {...} else {...}
@@ -361,7 +361,7 @@ implements GLEventListener {
 			break;
 			
 		default:
-			generalManager.getSingelton().logMsg(
+			generalManager.getSingleton().logMsg(
 					"addSetId() unsupported SetType!",
 					LoggerType.ERROR);
 		} // switch (setType) {
@@ -380,7 +380,7 @@ implements GLEventListener {
 			
 			if ( refCurrentSet == null ) 
 			{
-				generalManager.getSingelton().logMsg(
+				generalManager.getSingleton().logMsg(
 						"removeSetId(" + iSet[i] + ") is not registered at SetManager!",
 						LoggerType.MINOR_ERROR);
 				
@@ -399,7 +399,7 @@ implements GLEventListener {
 					break;
 					
 				default:
-					generalManager.getSingelton().logMsg(
+					generalManager.getSingleton().logMsg(
 							"removeSetId() unsupported SetType!",
 							LoggerType.ERROR);
 				} // switch (refCurrentSet.getSetType()) {
@@ -407,7 +407,7 @@ implements GLEventListener {
 			} //if ( ! hasSetId_ByReference(refCurrentSet) )
 			else 
 			{ 
-				generalManager.getSingelton().logMsg(
+				generalManager.getSingleton().logMsg(
 						"removeSetId(" + iSet[i] + ") ISet was not registered!",
 						LoggerType.MINOR_ERROR);
 			} //if ( ! hasSetId_ByReference(refCurrentSet) ) {...} else {...}

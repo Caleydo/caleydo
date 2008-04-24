@@ -44,7 +44,7 @@ public class MuddlewareMessageCallback implements IOperationCallback {
 
 		try
 		{
-			this.refXmlParserManager.getManager().getSingelton().logMsg("MuddlewareMessageCallback.callbackOperationOnReceive() receiver Xpath=[" + 
+			this.refXmlParserManager.getManager().getSingleton().logMsg("MuddlewareMessageCallback.callbackOperationOnReceive() receiver Xpath=[" + 
 					received.getXPath() + 
 					" ==> ["  +
 					received.getNodeString() + "]",

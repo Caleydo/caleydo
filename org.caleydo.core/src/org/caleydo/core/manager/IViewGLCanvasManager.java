@@ -42,6 +42,8 @@ extends IViewManager {
 	public void registerGLEventListenerByGLCanvasID(final int iGLCanvasID,
 			final GLEventListener gLEventListener);
 	
+	public void unregisterGLEventListener(final int iGLEventListenerID);
+	
 	public DataEntitySearcherViewRep getDataEntitySearcher();
 	
 	/**

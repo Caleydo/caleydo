@@ -121,7 +121,7 @@ public class PickingManager extends AAbstractManager
 				final boolean bIsMaster)
 	{	
 		
-		AGLCanvasUser canvasUser = (AGLCanvasUser)(generalManager.getSingelton().getViewGLCanvasManager().getItem(iViewID));
+		AGLCanvasUser canvasUser = (AGLCanvasUser)(generalManager.getSingleton().getViewGLCanvasManager().getItem(iViewID));
 		PickingJoglMouseListener pickingTriggerMouseAdapter =  canvasUser.getParentGLCanvas().getJoglMouseListener();
 		
 		Point pickPoint = null;

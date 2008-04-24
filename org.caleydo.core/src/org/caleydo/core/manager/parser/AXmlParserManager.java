@@ -85,7 +85,7 @@ implements IXmlParserManager, IManagedObject
 		
 		IXmlParserHandler buffer = currentHandler;
 		
-		refGeneralManager.getSingelton().logMsg(
+		refGeneralManager.getSingleton().logMsg(
 				"AXmlParserManger.closeCurrentTag() key=[" +
 				currentHandler.getXmlActivationTag() + "] " +
 				currentHandler.getClass().getSimpleName(),
@@ -96,7 +96,7 @@ implements IXmlParserManager, IManagedObject
 			//llXmlParserStack.removeLast();
 			
 			if ( ! llXmlParserStack.remove( buffer ) ) {
-				refGeneralManager.getSingelton().logMsg(
+				refGeneralManager.getSingleton().logMsg(
 						"AXmlParserManger.closeCurrentTag() can not remove IXmlParserHandler from list, because it is not inside!",
 						LoggerType.MINOR_ERROR);
 				return false;
@@ -137,7 +137,7 @@ implements IXmlParserManager, IManagedObject
 		} 
 		else
 		{
-			refGeneralManager.getSingelton().logMsg(
+			refGeneralManager.getSingleton().logMsg(
 					"AXmlParserManger.closeCurrentTag() key=[" +
 					buffer.getXmlActivationTag() + "] " +
 					buffer.getClass().getSimpleName() + 
@@ -236,7 +236,7 @@ implements IXmlParserManager, IManagedObject
 		
 		hashTag2XmlParser.put( key, handler );
 		
-		refGeneralManager.getSingelton().logMsg(
+		refGeneralManager.getSingleton().logMsg(
 				"XmlParserManager.registerAndInitSaxHandler( key=["
 				+ handler.getXmlActivationTag() + "] " +
 				handler.getClass().getSimpleName() + " ) done.",
@@ -270,7 +270,7 @@ implements IXmlParserManager, IManagedObject
 		
 		if ( refParserHandler != null ) {	
 						
-			refGeneralManager.getSingelton().logMsg(
+			refGeneralManager.getSingleton().logMsg(
 					"XmlParserManager.unregisterHandler( key=[" 
 					+ sActivationXmlTag + "] "
 					+ refParserHandler.getClass().getSimpleName()
@@ -280,7 +280,7 @@ implements IXmlParserManager, IManagedObject
 			return true;
 		}
 		
-		refGeneralManager.getSingelton().logMsg(
+		refGeneralManager.getSingleton().logMsg(
 				"XmlParserManager.unregisterHandler( "
 				+ sActivationXmlTag + " ) failed to unload!",
 				LoggerType.ERROR );

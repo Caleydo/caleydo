@@ -70,7 +70,7 @@ extends AXmlParserHandler
 		setXmlActivationTag( "CommandBuffer" );
 		
 		refCommandManager = 
-			refGeneralManager.getSingelton().getCommandManager();
+			refGeneralManager.getSingleton().getCommandManager();
 		
 		assert refCommandManager != null : "ICommandManager was not created by ISingelton!";
 	}
@@ -168,7 +168,7 @@ extends AXmlParserHandler
 					CommandQueueSaxType.TAG_DETAIL.getDefault(),
 					ParameterHandlerType.STRING );										 
 
-			refGeneralManager.getSingelton().logMsg(
+			refGeneralManager.getSingleton().logMsg(
 					"XML-TAG= " +  phAttributes.getValueString( 
 					CommandQueueSaxType.TAG_LABEL.getXmlKey() ),
 					LoggerType.FULL );
@@ -181,7 +181,7 @@ extends AXmlParserHandler
 		{
 			if ( lastCommand != null ) 
 			{
-				refGeneralManager.getSingelton().logMsg(
+				refGeneralManager.getSingleton().logMsg(
 						"CommandSaxHandler.readCommandData(" +
 						attrs.toString() + 
 						") ERROR while parsing " + 
@@ -192,7 +192,7 @@ extends AXmlParserHandler
 			}
 			else
 			{
-				refGeneralManager.getSingelton().logMsg(
+				refGeneralManager.getSingleton().logMsg(
 						"CommandSaxHandler.readCommandData(" +
 						attrs.toString() + 
 						") ERROR while parsing --no command--" + 
@@ -215,14 +215,14 @@ extends AXmlParserHandler
 				
 				if (sData_Cmd_process.equals( CommandQueueSaxType.RUN_CMD_NOW.toString() ))
 				{				
-					refGeneralManager.getSingelton().logMsg("do command: " + 
+					refGeneralManager.getSingleton().logMsg("do command: " + 
 						lastCommand.toString(),
 						LoggerType.FULL );
 					lastCommand.doCommand();
 				}
 			}
 			else {
-				refGeneralManager.getSingelton().logMsg("do command: command=null!", 						
+				refGeneralManager.getSingleton().logMsg("do command: command=null!", 						
 						LoggerType.VERBOSE );
 			}
 			
@@ -236,7 +236,7 @@ extends AXmlParserHandler
 			{
 				sDetails = lastCommand.getClass().getSimpleName();
 			}			
-			refGeneralManager.getSingelton().logMsg(
+			refGeneralManager.getSingleton().logMsg(
 					"CommandSaxHandler.readCommandData(" +
 					attrs.toString() + 
 					")\n  ERROR while executing command " +
@@ -253,7 +253,7 @@ extends AXmlParserHandler
 			{
 				sDetails = lastCommand.getClass().getSimpleName();
 			}
-			refGeneralManager.getSingelton().logMsg(
+			refGeneralManager.getSingleton().logMsg(
 					"CommandSaxHandler.readCommandData(" +
 					attrs.toString() + 
 					")\n  ERROR while executing command " +
@@ -418,7 +418,7 @@ extends AXmlParserHandler
 							} 
 							else 
 							{
-								refGeneralManager.getSingelton().logMsg(
+								refGeneralManager.getSingleton().logMsg(
 										"CommandQueue: no Command to add. skip it.",
 										LoggerType.VERBOSE );
 							}
@@ -437,7 +437,7 @@ extends AXmlParserHandler
 							
 							if ( lastCommand == null ) 
 							{
-								refGeneralManager.getSingelton().logMsg(
+								refGeneralManager.getSingleton().logMsg(
 										"Command: can not execute command due to error while parsing. skip it.",
 										LoggerType.VERBOSE );
 							}

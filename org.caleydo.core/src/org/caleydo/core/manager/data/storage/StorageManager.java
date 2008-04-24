@@ -60,7 +60,7 @@ implements IStorageManager {
 		vecStorage = new Hashtable<Integer,IStorage> ( iInitSizeContainer );
 		vecStorage_reverse = new Hashtable<IStorage,Integer> ( iInitSizeContainer );
 		
-		generalManager.getSingelton().setStorageManager( this );		
+		generalManager.getSingleton().setStorageManager( this );		
 	}
 
 	/* (non-Javadoc)
@@ -193,7 +193,7 @@ implements IStorageManager {
 		
 		if ( vecStorage.containsKey( iItemId ) ) 
 		{
-			generalManager.getSingelton().logMsg(
+			generalManager.getSingleton().logMsg(
 					"try to register id that was already used!",
 					LoggerType.ERROR );
 			

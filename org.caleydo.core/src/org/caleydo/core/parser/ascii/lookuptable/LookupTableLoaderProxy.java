@@ -56,12 +56,12 @@ extends AbstractLoader {
 				setFileName,
 				enableMultipeThreads);
 
-		refLoggerManager = setGeneralManager.getSingelton().getLoggerManager();
+		refLoggerManager = setGeneralManager.getSingleton().getLoggerManager();
 		
 		bRequiredSizeOfReadableLines = true;
 		
 		DynamicGenomeIdManager dgi_mng = 
-			(DynamicGenomeIdManager) refGeneralManager.getSingelton().getGenomeIdManager();
+			(DynamicGenomeIdManager) refGeneralManager.getSingleton().getGenomeIdManager();
 		
 		switch ( type ) {
 		
@@ -183,7 +183,7 @@ extends AbstractLoader {
 				brFile, 
 				iNumberOfLinesInFile );
 		
-		refGeneralManager.getSingelton().logMsg("  parsed #" + 
+		refGeneralManager.getSingleton().logMsg("  parsed #" + 
 				this.iLineInFile_CurrentDataIndex + "  [" + 			
 				this.iStartParsingAtLine + " -> " +
 				this.iStopParsingAtLine +  "] stoped at line #" +
@@ -260,7 +260,7 @@ extends AbstractLoader {
 		}
 		
 		DynamicGenomeIdManager dgi_mng = 
-			(DynamicGenomeIdManager) refGeneralManager.getSingelton().getGenomeIdManager();
+			(DynamicGenomeIdManager) refGeneralManager.getSingleton().getGenomeIdManager();
 		
 		IGenomeIdMap refOrigionMap = dgi_mng.getMapByType(originMultiMapType);
 		
@@ -295,7 +295,7 @@ extends AbstractLoader {
 		}
 		
 		DynamicGenomeIdManager dgi_mng = 
-			(DynamicGenomeIdManager) refGeneralManager.getSingelton().getGenomeIdManager();
+			(DynamicGenomeIdManager) refGeneralManager.getSingleton().getGenomeIdManager();
 		
 		MultiHashArrayIntegerMap refIntMultiMapOrigin = 
 			dgi_mng.getMultiMapIntegerByType(originMultiMapType);
@@ -354,7 +354,7 @@ extends AbstractLoader {
 		}
 		
 		DynamicGenomeIdManager dgi_mng = 
-			(DynamicGenomeIdManager) refGeneralManager.getSingelton().getGenomeIdManager();
+			(DynamicGenomeIdManager) refGeneralManager.getSingleton().getGenomeIdManager();
 		
 		MultiHashArrayStringMap refStringMultiMapOrigin = 
 			dgi_mng.getMultiMapStringByType(originMultiMapType);
@@ -396,7 +396,7 @@ extends AbstractLoader {
 			EGenomeMappingDataType sourceMapMappingType) {
 	
 		DynamicGenomeIdManager dgi_mng = 
-			(DynamicGenomeIdManager) refGeneralManager.getSingelton().getGenomeIdManager();
+			(DynamicGenomeIdManager) refGeneralManager.getSingleton().getGenomeIdManager();
 		
 		IGenomeIdMap refMapToConvert = dgi_mng.getMapByType(originMapMappingType);
 		
@@ -421,7 +421,7 @@ extends AbstractLoader {
 			EGenomeMappingType genomeMappingLUT_2) {
 	
 		DynamicGenomeIdManager dgi_mng = 
-			(DynamicGenomeIdManager) refGeneralManager.getSingelton().getGenomeIdManager();
+			(DynamicGenomeIdManager) refGeneralManager.getSingleton().getGenomeIdManager();
 		
 		MultiHashArrayStringMap refMapToConvert = dgi_mng.getMultiMapStringByType(originMapMappingType);
 		

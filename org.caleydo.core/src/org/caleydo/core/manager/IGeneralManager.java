@@ -189,7 +189,7 @@ public interface IGeneralManager {
 	 * 
 	 * @return ISingelton object
 	 */
-	public ISingelton getSingelton();
+	public ISingleton getSingleton();
 	
 	/**
 	 * Registers one Id and links it to the reference.

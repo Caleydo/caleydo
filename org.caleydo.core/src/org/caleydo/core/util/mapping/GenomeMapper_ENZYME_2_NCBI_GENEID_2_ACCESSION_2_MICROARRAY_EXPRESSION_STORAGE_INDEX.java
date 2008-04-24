@@ -111,7 +111,7 @@ extends AGenomeMapper{
 				int [] bufferIntArray = refExpressionStorage.getArrayInt();
 				
 				if ( bufferIntArray == null ) {
-					this.refGeneralManager.getSingelton().logMsg("color mapping failed, Storage=[" +
+					this.refGeneralManager.getSingleton().logMsg("color mapping failed, Storage=[" +
 							refExpressionStorage.getLabel() + "][" +
 							refExpressionStorage.toString() +
 							"] does not contain int[]!",LoggerType.ERROR);

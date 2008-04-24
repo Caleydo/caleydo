@@ -512,7 +512,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 		if (minInt == java.lang.Integer.MAX_VALUE)
 		{
 			CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) generalManager
-		    .getSingelton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+		    .getSingleton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
 			
 			createdCmd.setAttributes(this, StorageType.INT);
 			createdCmd.doCommand();
@@ -531,7 +531,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 		if (maxInt == java.lang.Integer.MIN_VALUE)
 		{
 			CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) generalManager
-		    .getSingelton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+		    .getSingleton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
 			
 			createdCmd.setAttributes(this, StorageType.INT);
 			createdCmd.doCommand();
@@ -566,7 +566,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 		if (minFloat == java.lang.Float.POSITIVE_INFINITY)
 		{
 			CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) generalManager
-		    .getSingelton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+		    .getSingleton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
 			
 			createdCmd.setAttributes(this, StorageType.FLOAT);
 			createdCmd.doCommand();
@@ -584,7 +584,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 		if (maxFloat == java.lang.Float.NEGATIVE_INFINITY)
 		{
 			CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) generalManager
-		    .getSingelton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+		    .getSingleton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
 			
 			createdCmd.setAttributes(this, StorageType.FLOAT);
 			createdCmd.doCommand();
@@ -628,7 +628,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 		if (minDouble == java.lang.Double.POSITIVE_INFINITY)
 		{
 			CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) generalManager
-		    .getSingelton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+		    .getSingleton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
 			
 			createdCmd.setAttributes(this, StorageType.DOUBLE);
 			createdCmd.doCommand();
@@ -647,7 +647,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 		if (maxDouble == java.lang.Double.NEGATIVE_INFINITY)
 		{
 			CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) generalManager
-		    .getSingelton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+		    .getSingleton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
 			
 			createdCmd.setAttributes(this, StorageType.DOUBLE);
 			createdCmd.doCommand();

@@ -2,7 +2,7 @@ package org.caleydo.core.application.core;
 
 import org.caleydo.core.manager.ILoggerManager;
 import org.caleydo.core.manager.ISWTGUIManager;
-import org.caleydo.core.manager.ISingelton;
+import org.caleydo.core.manager.ISingleton;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.parser.XmlParserManager;
@@ -24,6 +24,7 @@ import org.studierstube.net.protocol.muddleware.OperationEnum;
  * Requires package: org.studierstube.net.protocol.muddleware.*
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public class CaleydoBootloader
@@ -48,13 +49,11 @@ public class CaleydoBootloader
 	private ClientByteStreamHandler connection;
 
 	/**
-	 * Reference to Singelton. Is also the reference to the IGeneralManager.
+	 * Reference to Singleton. Is also the reference to the IGeneralManager.
 	 * 
 	 * @see import org.caleydo.core.manager.IGeneralManager
 	 */
 	protected final IGeneralManagerSingleton refOneForAllManager;
-	
-	//protected final IGeneralManager refGeneralManager;
 	
 	/**
 	 * This reference is used for starting the GUI
@@ -84,22 +83,22 @@ public class CaleydoBootloader
 		refOneForAllManager = new OneForAllManager(null);
 		refOneForAllManager.initAll();
 
-		final ISingelton refSingelton = refOneForAllManager.getSingelton();
+		final ISingleton refSingleton = refOneForAllManager.getSingleton();
 		
-		logger = refSingelton.getLoggerManager();		
+		logger = refSingleton.getLoggerManager();		
 		logger.logMsg("===========================", LoggerType.STATUS);
 		logger.logMsg("... Start Caleydo Core ...", LoggerType.STATUS);
 		logger.logMsg("===========================", LoggerType.STATUS);
 		logger.logMsg(" ", LoggerType.STATUS);
 		
-		refSWTGUIManager = refSingelton.getSWTGUIManager();			
+		refSWTGUIManager = refSingleton.getSWTGUIManager();			
 		
 		/**
 		 * create the parser manager..
 		 */
 		refXmlParserManager = new XmlParserManager(refOneForAllManager);
 		
-		refSingelton.setXmlParserManager(refXmlParserManager);
+		refSingleton.setXmlParserManager(refXmlParserManager);
 		
 		/**
 		 * Register additional SaxParserHandler here:

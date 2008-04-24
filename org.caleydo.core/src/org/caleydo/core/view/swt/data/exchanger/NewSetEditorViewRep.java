@@ -240,7 +240,7 @@ implements IView {
 	
 	public void drawView() {
 		
-		generalManager.getSingelton().logMsg(
+		generalManager.getSingleton().logMsg(
 				this.getClass().getSimpleName() + 
 				": drawView()", 
 				LoggerType.VERBOSE );		
@@ -289,7 +289,7 @@ implements IView {
 		hashVirtualArray2VirtualArraySetIndex.clear();
 		
 		ISet selectedSet = 
-			generalManager.getSingelton().getSetManager().getItemSet(iSelectedSetDataId);
+			generalManager.getSingleton().getSetManager().getItemSet(iSelectedSetDataId);
 		
 		// Fill storage data
 		TableItem tableItem = null;
@@ -374,7 +374,7 @@ implements IView {
 	    			new ArrayList<Integer>();
 
 	    		Iterator<IStorage> iterStorages = 
-	    			generalManager.getSingelton().getStorageManager().
+	    			generalManager.getSingleton().getStorageManager().
 	    			getAllStorageItemsVector().iterator();
 	    		IStorage tmpStorage = null;
 	    		
@@ -450,7 +450,7 @@ implements IView {
 
 								// Get the selected storage object
 								IStorage tmpStorage = 
-									generalManager.getSingelton().getStorageManager().getItemStorage(new Integer(combo.getText()));
+									generalManager.getSingleton().getStorageManager().getItemStorage(new Integer(combo.getText()));
 								
 								if (item.getText(1).equals("ID?"))
 								{
@@ -467,13 +467,13 @@ implements IView {
 						    				0);
 						    		
 						        	// Save previously selected storage for updating in SET
-						        	IStorage oldStorage = generalManager.getSingelton().getStorageManager().getItemStorage(
+						        	IStorage oldStorage = generalManager.getSingleton().getStorageManager().getItemStorage(
 						        			new Integer(item.getText(1)));
 						    		
 						    		if (hashStorage2StorageSetIndex.isEmpty())
 						    			return;
 						    		
-						    		ISet tmpSet = generalManager.getSingelton().getSetManager().getItemSet(iSelectedSetDataId);
+						    		ISet tmpSet = generalManager.getSingleton().getSetManager().getItemSet(iSelectedSetDataId);
 						    		int iStorageIndexInSet = hashStorage2StorageSetIndex.get(oldStorage);
 						    		
 						    		tmpSet.getWriteToken();
@@ -516,7 +516,7 @@ implements IView {
 	    			new ArrayList<Integer>();
 
 	    		Iterator<IVirtualArray> iterVirtualArrays = 
-	    			generalManager.getSingelton().getVirtualArrayManager().
+	    			generalManager.getSingleton().getVirtualArrayManager().
 	    			getAllVirtualArrayItemsVector().iterator();
 	    		IVirtualArray tmpVirtualArray = null;
 	    		
@@ -592,7 +592,7 @@ implements IView {
 
 								// Get the selected virtual array object
 								IVirtualArray tmpVirtualArray = 
-									generalManager.getSingelton().getVirtualArrayManager().getItemVirtualArray(new Integer(combo.getText()));
+									generalManager.getSingleton().getVirtualArrayManager().getItemVirtualArray(new Integer(combo.getText()));
 					    		
 								if (item.getText(1).equals("ID?"))
 								{
@@ -604,13 +604,13 @@ implements IView {
 									// Condition: Edit existing virtual array
 									
 						        	// Save previously virtual array virtual array for updating in SET
-						    		IVirtualArray oldVirtualArray = generalManager.getSingelton().getVirtualArrayManager().getItemVirtualArray(
+						    		IVirtualArray oldVirtualArray = generalManager.getSingleton().getVirtualArrayManager().getItemVirtualArray(
 						        			new Integer(item.getText(1)));
 						    		
 						    		if (hashVirtualArray2VirtualArraySetIndex.isEmpty())
 						    			return;
 						    		
-						    		ISet tmpSet = generalManager.getSingelton().getSetManager().getItemSet(iSelectedSetId);
+						    		ISet tmpSet = generalManager.getSingleton().getSetManager().getItemSet(iSelectedSetId);
 						    		int iVirtualArrayIndexInSet = hashVirtualArray2VirtualArraySetIndex.get(oldVirtualArray);
 						    		
 						    		tmpSet.getWriteToken();
@@ -639,7 +639,7 @@ implements IView {
 	protected void fillSetData(Combo setDataCombo) {
 		
 		Collection<ISet> allSets = 
-			generalManager.getSingelton().getSetManager().getAllSetItems();
+			generalManager.getSingleton().getSetManager().getAllSetItems();
 		
 		Iterator<ISet> iterSets = allSets.iterator();
 		int iTmpSetId = 0;
@@ -664,11 +664,11 @@ implements IView {
 	protected int createNewSet() {
 		
 	    // Create new SET
-	    int iNewSetId = generalManager.getSingelton().getSetManager().
+	    int iNewSetId = generalManager.getSingleton().getSetManager().
 	    	createId(ManagerObjectType.SET_PLANAR);
 
 		CmdDataCreateSet createdCommand = 
-			(CmdDataCreateSet) generalManager.getSingelton().getCommandManager()
+			(CmdDataCreateSet) generalManager.getSingleton().getCommandManager()
 				.createCommandByType(CommandQueueSaxType.CREATE_SET_DATA);
 
 		String sStorageIDs = "";

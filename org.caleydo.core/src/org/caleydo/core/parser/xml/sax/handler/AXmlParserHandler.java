@@ -85,7 +85,7 @@ implements IXmlParserHandler
 	 */
 	public void initHandler()
 	{
-		refGeneralManager.getSingelton().logMsg(
+		refGeneralManager.getSingleton().logMsg(
 				this.getClass().getSimpleName() + 
 				": initHandler", LoggerType.VERBOSE_EXTRA );
 	}
@@ -97,7 +97,7 @@ implements IXmlParserHandler
 	 */
 	public void destroyHandler()
 	{
-		refGeneralManager.getSingelton().logMsg(
+		refGeneralManager.getSingleton().logMsg(
 				this.getClass().getSimpleName() + 
 				": destroyHandler", 
 				LoggerType.VERBOSE );

@@ -64,7 +64,7 @@ public class MementoManager
 		assert setGeneralManager !=null : "MementoSimpleManager init with null-pointer for SingeltonManager";
 		refGeneralManager = setGeneralManager;
 		
-		refGeneralManager.getSingelton().setMementoManager( this );
+		refGeneralManager.getSingleton().setMementoManager( this );
 	}
 
 	

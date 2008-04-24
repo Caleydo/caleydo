@@ -144,7 +144,7 @@ extends ACmdCreate_GlCanvasUser {
 				
 				if ( bufferOne.length() > 0 ) {
 					selectionArrayX = StringConversionTool.convertStringToIntArrayVariableLength(
-							generalManager.getSingelton().getLoggerManager(), 
+							generalManager.getSingleton().getLoggerManager(), 
 							bufferOne, 
 							IGeneralManager.sDelimiter_Parser_DataItems);
 				}  //if ( bufferOne.length() > 0 ) {
@@ -155,7 +155,7 @@ extends ACmdCreate_GlCanvasUser {
 				
 				if  (splitter.hasMoreTokens()) {
 					selectionArrayY = StringConversionTool.convertStringToIntArrayVariableLength(
-							generalManager.getSingelton().getLoggerManager(), 
+							generalManager.getSingleton().getLoggerManager(), 
 							splitter.nextToken(), 
 							IGeneralManager.sDelimiter_Parser_DataItems);
 				} //if  (splitter.hasMoreTokens()) {
@@ -169,7 +169,7 @@ extends ACmdCreate_GlCanvasUser {
 			{
 				
 				selectionArrayX = StringConversionTool.convertStringToIntArrayVariableLength(
-						generalManager.getSingelton().getLoggerManager(), 
+						generalManager.getSingleton().getLoggerManager(), 
 						this.sAttribute4, 
 						IGeneralManager.sDelimiter_Parser_DataItems);
 				
@@ -231,7 +231,7 @@ extends ACmdCreate_GlCanvasUser {
 //		}
 //		else 
 //		{
-//			refGeneralManager.getSingelton().logMsg( "CmdGLObjectHistogram2D no set defined!",
+//			refGeneralManager.getSingleton().logMsg( "CmdGLObjectHistogram2D no set defined!",
 //					LoggerType.ERROR );
 //		}
 		

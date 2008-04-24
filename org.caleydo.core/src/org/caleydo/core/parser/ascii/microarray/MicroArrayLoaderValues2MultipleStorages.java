@@ -85,7 +85,7 @@ extends AMicroArrayLoader {
 		this.refImportDataToSet = refUseSet;
 		
 		if ( refImportDataToSet.getBaseType() != ManagerObjectType.SET_MULTI_DIM ) {
-			refGeneralManager.getSingelton().logMsg(" need a MultiSet; got [" +
+			refGeneralManager.getSingleton().logMsg(" need a MultiSet; got [" +
 					refImportDataToSet.getBaseType()  + "] !",
 					LoggerType.MINOR_ERROR );
 		}
@@ -398,14 +398,14 @@ extends AMicroArrayLoader {
 						
 						if ( bufferIter == null ) 
 						{
-							refGeneralManager.getSingelton().logMsg(
+							refGeneralManager.getSingleton().logMsg(
 								"Can not parse element, skip value: " + 
 								nfe.getMessage(),
 								LoggerType.ERROR );
 						}
 						else
 						{
-							refGeneralManager.getSingelton().logMsg(
+							refGeneralManager.getSingleton().logMsg(
 									"Can not parse element, skip value: Assumed type=[" + 
 									bufferIter.getType() + "] => " + 
 									nfe.getMessage(),
@@ -429,7 +429,7 @@ extends AMicroArrayLoader {
 						
 						info +=  "} " + aie.toString();
 						
-						refGeneralManager.getSingelton().logMsg(
+						refGeneralManager.getSingleton().logMsg(
 								info,
 								LoggerType.ERROR );	
 						
@@ -458,7 +458,7 @@ extends AMicroArrayLoader {
 		iLineInFile = lineInFile;
 		iLineInFile_CurrentDataIndex = lineInFile_CurrentDataIndex;
 		
-		refGeneralManager.getSingelton().logMsg(
+		refGeneralManager.getSingleton().logMsg(
 				"  parsed " + this.iLineInFile_CurrentDataIndex + 
 				" lines, stoped at line " + 
 				(this.iLineInFile - 1) + "  [" +

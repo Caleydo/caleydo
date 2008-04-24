@@ -7,7 +7,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
-import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 
 
 /**
@@ -44,26 +44,35 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		
 		try 
 		{
-			Object viewObject = generalManager.getSingelton().getViewGLCanvasManager()
+			Object viewObject = generalManager.getSingleton().getViewGLCanvasManager()
 				.getItem(iViewId);
 		
 			if (viewObject.getClass().equals(GLCanvasJukeboxPathway3D.class))
 			{
-				if (externalActionType.equals(EExternalActionType.PATHWAY_CLEAR_ALL))
+				if (externalActionType.equals(EExternalActionType.CLEAR_ALL))
 				{
 					((GLCanvasJukeboxPathway3D)viewObject).clearAllPathways();
 				}
 			}
-			else if (viewObject.getClass().equals(GLRemoteRendering3D.class))
+			else if (viewObject.getClass().equals(GLCanvasRemoteRendering3D.class))
 			{
-				if (externalActionType.equals(EExternalActionType.REMOTE_RENDONG_TOGGLE_LAYOUT_MODE))
+				if (externalActionType.equals(EExternalActionType.CLEAR_ALL))
 				{
-					((GLRemoteRendering3D)viewObject).toggleLayoutMode();
+					((GLCanvasRemoteRendering3D)viewObject).clearAll();
+				}
+			}
+			else if (viewObject.getClass().equals(GLCanvasRemoteRendering3D.class))
+			{
+				if (externalActionType.equals(EExternalActionType.REMOTE_RENDERING_TOGGLE_LAYOUT_MODE))
+				{
+					((GLCanvasRemoteRendering3D)viewObject).toggleLayoutMode();
 				}
 			}
 		}
 		catch ( Exception e )
 		{
+			e.printStackTrace();
+			
 			throw new CaleydoRuntimeException("ERROR in CMD: " + e.toString(),
 					CaleydoRuntimeExceptionType.DATAHANDLING);
 		}

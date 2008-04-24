@@ -70,7 +70,7 @@ implements ISetManager {
 		
 		hashId2Set = new Hashtable <Integer, ISet > ();
 		
-		generalManager.getSingelton().setSetManager( this );		
+		generalManager.getSingleton().setSetManager( this );		
 		
 		
 	}
@@ -171,7 +171,7 @@ implements ISetManager {
 		ISet removedObj = hashId2Set.remove( iItemId );
 		
 		if ( removedObj == null ) {
-			generalManager.getSingelton().logMsg( 
+			generalManager.getSingleton().logMsg( 
 					"deleteSet(" + 
 					iItemId + ") falied, because Set was not registered!",
 					LoggerType.STATUS );
@@ -223,7 +223,7 @@ implements ISetManager {
 		ISet buffer = hashId2Set.remove(iItemId);
 		
 		if  ( buffer == null ) {
-			this.generalManager.getSingelton().logMsg(
+			this.generalManager.getSingleton().logMsg(
 					"unregisterItem(" + 
 					iItemId + ") failed because Set was not registered!",
 					LoggerType.STATUS );

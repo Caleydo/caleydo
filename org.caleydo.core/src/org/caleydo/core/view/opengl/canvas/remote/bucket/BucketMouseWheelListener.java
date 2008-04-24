@@ -6,7 +6,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
-import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 
 /**
  * Specialized mouse wheel listener for "diving" into the bucket.
@@ -35,7 +35,7 @@ implements MouseWheelListener {
 	/**
 	 * Constructor.
 	 */
-	public BucketMouseWheelListener(final GLRemoteRendering3D remoteRendering3D) 
+	public BucketMouseWheelListener(final GLCanvasRemoteRendering3D remoteRendering3D) 
 	{
 		this.bucketCanvas = remoteRendering3D;
 	}

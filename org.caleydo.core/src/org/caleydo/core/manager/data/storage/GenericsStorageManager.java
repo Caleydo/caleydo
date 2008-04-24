@@ -10,7 +10,7 @@ package org.caleydo.core.manager.data.storage;
 
 import java.util.Vector;
 
-import org.caleydo.core.manager.ISingelton;
+import org.caleydo.core.manager.ISingleton;
 import org.caleydo.core.manager.type.ManagerObjectType;
 
 
@@ -21,13 +21,13 @@ import org.caleydo.core.manager.type.ManagerObjectType;
 public class GenericsStorageManager< T > 
 {
 
-	protected ISingelton refSingeltonManager = null;
+	protected ISingleton refSingeltonManager = null;
 	
 	protected ManagerObjectType refBaseManagerType = ManagerObjectType.STORAGE;
 	
 	protected Vector<T> vecItems;
 	
-	public GenericsStorageManager( ISingelton setSingeltonManager,
+	public GenericsStorageManager( ISingleton setSingeltonManager,
 			final int iInitSizeContainer,
 			final ManagerObjectType initBaseManagerType) {
 		

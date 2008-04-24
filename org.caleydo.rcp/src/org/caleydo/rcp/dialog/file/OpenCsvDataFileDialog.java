@@ -151,7 +151,7 @@ public class OpenCsvDataFileDialog extends Dialog {
 			Application.caleydo_core.getGeneralManager().getCommandManager().createCommandByType(
 					CommandQueueSaxType.LOAD_DATA_FILE);
 		
-		ISWTGUIManager refISWTGUIManager= Application.caleydo_core.getGeneralManager().getSingelton().getSWTGUIManager();
+		ISWTGUIManager refISWTGUIManager= Application.caleydo_core.getGeneralManager().getSingleton().getSWTGUIManager();
 		refISWTGUIManager.setProgressbarVisible(true);
 		
 		cmdLoadCsv.setAttributes(csvFileName, 

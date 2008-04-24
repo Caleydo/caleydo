@@ -52,7 +52,7 @@ implements ILookupTableLoader {
 		this.currentGenomeIdType = genomeIdType;
 		
 		refGenomeIdManager = 
-			refGeneralManager.getSingelton().getGenomeIdManager();
+			refGeneralManager.getSingleton().getGenomeIdManager();
 		
 		refLookupTableLoaderProxy.setTokenSeperator( 
 				IGeneralManager.sDelimiter_Parser_DataType);

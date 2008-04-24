@@ -59,7 +59,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 		undoRedoView.drawView();
 		
 		// Register UNDO/REDO view to command manager.
-		generalManager.getSingelton().getCommandManager().
+		generalManager.getSingleton().getCommandManager().
 			addUndoRedoViewRep(undoRedoView);
 		
 		refCommandManager.runDoCommand(this);

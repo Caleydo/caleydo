@@ -32,7 +32,7 @@ extends AGLMiniView
 	public GLColorMappingMiniView(IGeneralManager generalManager) 
 	{
 
-		genomeMapper = generalManager.getSingelton().getGenomeIdManager()
+		genomeMapper = generalManager.getSingleton().getGenomeIdManager()
 		.getGenomeMapperByMappingCascadeType(
 				EGenomeMappingCascadeType.ENZYME_2_NCBI_GENEID_2_ACCESSION_2_MICROARRAY_EXPRESSION_STORAGE_INDEX);
 	//	genomeMapper.setMappingData(alSetData);

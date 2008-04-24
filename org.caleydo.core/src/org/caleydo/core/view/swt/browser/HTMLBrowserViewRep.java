@@ -61,10 +61,10 @@ implements IView {
 		// Default browser type
 		this.browserType = EBrowserType.GENERAL;
 		
-		iSelectionSetId = refGeneralManager.getSingelton().getSetManager()
+		iSelectionSetId = refGeneralManager.getSingleton().getSetManager()
 			.createId(ManagerObjectType.SET_LINEAR);
 		
-		CmdDataCreateSelectionSetMakro selectedSetCmd = (CmdDataCreateSelectionSetMakro) refGeneralManager.getSingelton().getCommandManager()
+		CmdDataCreateSelectionSetMakro selectedSetCmd = (CmdDataCreateSelectionSetMakro) refGeneralManager.getSingleton().getCommandManager()
 			.createCommandByType(CommandQueueSaxType.CREATE_SET_SELECTION_MAKRO);
 		
 		selectedSetCmd.setAttributes(iSelectionSetId);
@@ -166,7 +166,7 @@ implements IView {
 
 	public void drawView() {
 		
-		generalManager.getSingelton().logMsg(
+		generalManager.getSingleton().logMsg(
 				this.getClass().getSimpleName() + 
 				": drawView(): Load "+sUrl, 
 				LoggerType.VERBOSE );
@@ -198,7 +198,7 @@ implements IView {
 		}
 			catch (SWTException swte) 
 		{
-				generalManager.getSingelton().logMsg(
+				generalManager.getSingleton().logMsg(
 						this.getClass().getSimpleName() + 
 						": error while setURL ["+sUrl + "]", 
 						LoggerType.STATUS );

@@ -22,11 +22,15 @@ extends AGLViewPart {
 	public static final String ID = "org.caleydo.rcp.views.GLRemoteRendering3DView";
 
 	public static final String ACTION_TOGGLE_LAYOUT_MODE_TEXT = "Toggle Jukebox/Bucket";
-	public static final String ACTION_TOGGLE_LAYOUT_MODE_ICON = "resources/icons/PathwayEditor/gene_mapping.png";
+	public static final String ACTION_TOGGLE_LAYOUT_MODE_ICON = "resources/icons/toggle.png";
+	
+	public static final String ACTION_CLEAR_ALL_TEXT = "Clear all";
+	public static final String ACTION_CLEAR_ALL_ICON = "resources/icons/eraser.png";
 
 	protected int iGLCanvasDirectorId;
 	
 	private Action actToggleLayoutMode;
+	private Action actClearAll;
 	
 	/**
 	 * Constructor.
@@ -45,6 +49,7 @@ extends AGLViewPart {
 		super.createPartControlSWT(parent);
 		
 		createToggleLayoutStyleAction();
+		createClearAllAction();
 		
 		contributeToActionBars();
 	}
@@ -55,11 +60,7 @@ extends AGLViewPart {
 		fillLocalToolBar(bars.getToolBarManager());
 	}
 
-	protected void fillLocalPullDown(IMenuManager manager) {		
-
-//		manager.add(new Separator());
-//		manager.add(actToggleLayoutMode);
-	}
+	protected void fillLocalPullDown(IMenuManager manager) {}
 	
 	protected void fillLocalToolBar(IToolBarManager manager) {
 
@@ -69,6 +70,7 @@ extends AGLViewPart {
 		manager.add(new Separator());
 		manager.add(searchBar);
 		manager.add(actToggleLayoutMode);
+		manager.add(actClearAll);
 	}
 
 	/**
@@ -94,7 +96,7 @@ extends AGLViewPart {
 		actToggleLayoutMode = new Action() {
 			public void run() {
 
-				triggerCmdExternalAction(EExternalActionType.REMOTE_RENDONG_TOGGLE_LAYOUT_MODE);
+				triggerCmdExternalAction(EExternalActionType.REMOTE_RENDERING_TOGGLE_LAYOUT_MODE);
 			}
 		};
 
@@ -105,10 +107,25 @@ extends AGLViewPart {
 						ACTION_TOGGLE_LAYOUT_MODE_ICON)));
 	}
 	
+	private void createClearAllAction() {
+
+		actClearAll = new Action() {
+			public void run() {
+
+				triggerCmdExternalAction(EExternalActionType.CLEAR_ALL);
+			}
+		};
+
+		actClearAll.setText(ACTION_CLEAR_ALL_TEXT);
+		actClearAll.setToolTipText(ACTION_CLEAR_ALL_TEXT);
+		actClearAll.setImageDescriptor(ImageDescriptor.createFromURL(
+				this.getClass().getClassLoader().getResource(ACTION_CLEAR_ALL_ICON)));
+	}
+	
 	public void triggerCmdExternalAction(EExternalActionType type) {
 
 		CmdExternalActionTrigger tmpCmd = (CmdExternalActionTrigger) Application.refGeneralManager
-				.getSingelton().getCommandManager().createCommandByType(
+				.getSingleton().getCommandManager().createCommandByType(
 						CommandQueueSaxType.EXTERNAL_ACTION_TRIGGER);
 
 		// FIXME: hard coded view ID

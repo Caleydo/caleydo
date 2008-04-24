@@ -72,7 +72,7 @@ extends ACmdCreate_IdTargetLabel {
 	public void doCommand() throws CaleydoRuntimeException {
 		
 		IVirtualArrayManager refVirtualArrayManager = 
-			generalManager.getSingelton().getVirtualArrayManager();
+			generalManager.getSingleton().getVirtualArrayManager();
 		
 		IVirtualArray newObject = (IVirtualArray) refVirtualArrayManager.createVirtualArray(
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
@@ -88,7 +88,7 @@ extends ACmdCreate_IdTargetLabel {
 				iUniqueId, 
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 
-		generalManager.getSingelton().logMsg( 
+		generalManager.getSingleton().logMsg( 
 				"DO new SEL: " + 
 				newObject.toString(),
 				LoggerType.VERBOSE );
@@ -101,11 +101,11 @@ extends ACmdCreate_IdTargetLabel {
 	 */
 	public void undoCommand() throws CaleydoRuntimeException {
 		
-		generalManager.getSingelton().getVirtualArrayManager().unregisterItem( 
+		generalManager.getSingleton().getVirtualArrayManager().unregisterItem( 
 				iUniqueId,
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		
-		generalManager.getSingelton().logMsg( 
+		generalManager.getSingleton().logMsg( 
 				"UNDO new SEL: " + 
 				iUniqueId,
 				LoggerType.VERBOSE );

@@ -48,7 +48,7 @@ public abstract class AGLConnectionLineRenderer {
 		this.underInteractionLayer = underInteractionLayer;
 		this.stackLayer = stackLayer;
 		
-		selectionManager = generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager();
+		selectionManager = generalManager.getSingleton().getViewGLCanvasManager().getSelectionManager();
 		
 		hashViewToPointLists = new HashMap<Integer, ArrayList<ArrayList<Vec3f>>>();
 	}

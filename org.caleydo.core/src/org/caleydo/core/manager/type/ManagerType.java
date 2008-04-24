@@ -40,9 +40,7 @@ public enum ManagerType {
 		
 		LOGGER("logger manager", -1),
 		
-		MEMENTO("memento manager", 95),		
-		
-		MENU("view menu manager", ManagerType.VIEW, 39 ),							
+		MEMENTO("memento manager", 95),									
 		
 		NONE("no type set", -1),
 		

@@ -9,7 +9,7 @@ import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.system.StringConversionTool;
-import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 
 /**
  * Create bucket view
@@ -75,7 +75,7 @@ extends ACmdCreate_GlCanvasUser {
 		for(int index = 0; index < iArSetIDs.size(); index++)
 			iArTmp[index] = iArSetIDs.get(index);
 		
-		((GLRemoteRendering3D)gLEventListener).addSetId(iArTmp);	
+		((GLCanvasRemoteRendering3D)gLEventListener).addSetId(iArTmp);	
 	}
 
 	/*

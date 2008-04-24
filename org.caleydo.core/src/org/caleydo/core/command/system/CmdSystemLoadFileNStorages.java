@@ -1,20 +1,8 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.command.system;
-
-//import java.util.LinkedList;
-//import java.util.Iterator;
 
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACommand;
-import org.caleydo.core.command.window.CmdWindowPopupInfo;
-//import org.caleydo.core.command.window.CmdWindowPopupInfo;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
@@ -22,8 +10,6 @@ import org.caleydo.core.parser.ascii.microarray.MicroArrayLoaderValues2MultipleS
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.system.StringConversionTool;
-
-import org.caleydo.core.data.collection.ISet;
 
 
 /**
@@ -112,7 +98,7 @@ extends ACommand {
 				
 				if (( iArrayStartStop[0] > iArrayStartStop[1] )&&
 						(iArrayStartStop[1] != -1 )) {
-					generalManager.getSingelton().logMsg(
+					generalManager.getSingleton().logMsg(
 							"CmdSystemLoadFileNStorages ignore stop index=(" + 
 							iArrayStartStop[1]  + 
 							"), because it is smaller than start index (" + 
@@ -152,14 +138,14 @@ extends ACommand {
 	 */
 	public void doCommand() throws CaleydoRuntimeException {
 		
-		generalManager.getSingelton().logMsg(
+		generalManager.getSingleton().logMsg(
 	    		"load file via importer... ([" +
 				sFileName + "] tokens:[" +
 				sTokenPattern + "]  targetSet(s)=[" +
 				iTargetSetId + "])",
 				LoggerType.STATUS );
 		
-		ISet useSet = generalManager.getSingelton().getSetManager(
+		ISet useSet = generalManager.getSingleton().getSetManager(
 				).getItemSet( iTargetSetId );
 		
 		if ( useSet == null ) {
@@ -168,13 +154,10 @@ extends ACommand {
 			sTokenPattern + "]  targetSet(s)=[" +
 			iTargetSetId + "])";
 			
-			generalManager.getSingelton().logMsg(
+			generalManager.getSingleton().logMsg(
 					errorMsg,
 					LoggerType.ERROR );
-			
-			CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo(generalManager,"");
-			exitWarning.setText("ERROR",errorMsg);
-			exitWarning.doCommand();
+	
 			return;
 		}
 		
@@ -203,13 +186,9 @@ extends ACommand {
 				sTokenPattern + "]  targetSet(s)=[" +
 				iTargetSetId + "])";
 			
-			generalManager.getSingelton().logMsg(
+			generalManager.getSingleton().logMsg(
 					errorMsg,
 					LoggerType.ERROR );
-			
-			CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo(generalManager,"");
-			exitWarning.setText("ERROR",errorMsg);
-			exitWarning.doCommand();
 		} // catch
 		finally 
 		{

@@ -47,6 +47,7 @@ import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListener;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.GLConnectionLineRendererBucket;
 import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLConnectionLineRendererJukebox;
@@ -70,7 +71,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  * @author Marc Streit
  * 
  */
-public class GLRemoteRendering3D 
+public class GLCanvasRemoteRendering3D 
 extends AGLCanvasUser
 implements IMediatorReceiver, IMediatorSender 
 {
@@ -132,7 +133,7 @@ implements IMediatorReceiver, IMediatorSender
 	 * Constructor.
 	 * 
 	 */
-	public GLRemoteRendering3D(final IGeneralManager generalManager,
+	public GLCanvasRemoteRendering3D(final IGeneralManager generalManager,
 			final int iViewId,
 			final int iGLCanvasID,
 			final String sLabel,
@@ -309,14 +310,14 @@ implements IMediatorReceiver, IMediatorSender
 
 //			renderMemoPad(gl);
 
-			gl.glPushName(generalManager.getSingelton()
+			gl.glPushName(generalManager.getSingleton()
 					.getViewGLCanvasManager().getPickingManager().getPickingID(
 							iUniqueId, EPickingType.MEMO_PAD_SELECTION,
 							MEMO_PAD_PICKING_ID));
 			renderLayer(gl, memoLayer);
 			gl.glPopName();
 		
-			gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager()
+			gl.glPushName(generalManager.getSingleton().getViewGLCanvasManager()
 					.getPickingManager().getPickingID(iUniqueId,
 							EPickingType.MEMO_PAD_SELECTION,
 							TRASH_CAN_PICKING_ID));
@@ -333,7 +334,7 @@ implements IMediatorReceiver, IMediatorSender
 	private void retrieveContainedViews(final GL gl) {
 
 		Iterator<GLEventListener> iterGLEventListener = generalManager
-				.getSingelton().getViewGLCanvasManager()
+				.getSingleton().getViewGLCanvasManager()
 				.getAllGLEventListeners().iterator();
 
 		while (iterGLEventListener.hasNext())
@@ -375,16 +376,16 @@ implements IMediatorReceiver, IMediatorSender
 					iViewID);
 
 			// Register new view to mediator
-			// generalManager.getSingelton().getEventPublisher()
+			// generalManager.getSingleton().getEventPublisher()
 			// .registerSenderToMediator(iBucketEventMediatorID, iViewID);
-			// generalManager.getSingelton().getEventPublisher()
+			// generalManager.getSingleton().getEventPublisher()
 			// .registerSenderToMediator(iBucketEventMediatorID, iViewID);
 
 			ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
 			arMediatorIDs.add(iViewID);
-			generalManager.getSingelton().getEventPublisher()
+			generalManager.getSingleton().getEventPublisher()
 					.addSendersAndReceiversToMediator(
-							generalManager.getSingelton().getEventPublisher()
+							generalManager.getSingleton().getEventPublisher()
 									.getItemMediator(iBucketEventMediatorID),
 							arMediatorIDs, arMediatorIDs,
 							MediatorType.SELECTION_MEDIATOR,
@@ -455,7 +456,7 @@ implements IMediatorReceiver, IMediatorSender
 			int iTmpPathwayID = iAlUninitializedPathwayIDs.get(0);
 
 			// Check if pathway is already loaded in bucket
-			if (!generalManager.getSingelton().getPathwayManager()
+			if (!generalManager.getSingleton().getPathwayManager()
 					.isPathwayVisible(iTmpPathwayID))
 			{
 				ArrayList<Integer> iArSetIDs = new ArrayList<Integer>();
@@ -467,10 +468,10 @@ implements IMediatorReceiver, IMediatorSender
 				iArSetIDs.add(88101);
 
 				// Create new selection set
-				int iSelectionSetID = generalManager.getSingelton()
+				int iSelectionSetID = generalManager.getSingleton()
 						.getSetManager().createId(ManagerObjectType.SET);
 				CmdDataCreateSelectionSetMakro selectedSetCmd = (CmdDataCreateSelectionSetMakro) generalManager
-						.getSingelton().getCommandManager()
+						.getSingleton().getCommandManager()
 						.createCommandByType(
 								CommandQueueSaxType.CREATE_SET_SELECTION_MAKRO);
 				selectedSetCmd.setAttributes(iSelectionSetID);
@@ -478,13 +479,13 @@ implements IMediatorReceiver, IMediatorSender
 
 				iArSetIDs.add(iSelectionSetID);
 
-				int iGeneratedViewID = generalManager.getSingelton()
+				int iGeneratedViewID = generalManager.getSingleton()
 						.getViewGLCanvasManager().createId(
 								ManagerObjectType.VIEW);
 
 				// Create Pathway3D view
 				CmdGlObjectPathway3D cmdPathway = (CmdGlObjectPathway3D) generalManager
-						.getSingelton().getCommandManager()
+						.getSingleton().getCommandManager()
 						.createCommandByType(
 								CommandQueueSaxType.CREATE_GL_PATHWAY_3D);
 
@@ -496,17 +497,17 @@ implements IMediatorReceiver, IMediatorSender
 
 				// FIXME: Do this in initRemote of the view
 				// Register new view to mediator
-				// generalManager.getSingelton().getEventPublisher()
+				// generalManager.getSingleton().getEventPublisher()
 				// .registerSenderToMediator(iBucketEventMediatorID,
 				// iGeneratedViewID);
-				// generalManager.getSingelton().getEventPublisher()
+				// generalManager.getSingleton().getEventPublisher()
 				// .registerSenderToMediator(iBucketEventMediatorID,
 				// iGeneratedViewID);
 				ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
 				arMediatorIDs.add(iGeneratedViewID);
-				generalManager.getSingelton().getEventPublisher()
+				generalManager.getSingleton().getEventPublisher()
 						.addSendersAndReceiversToMediator(
-								generalManager.getSingelton()
+								generalManager.getSingleton()
 										.getEventPublisher().getItemMediator(
 												iBucketEventMediatorID),
 								arMediatorIDs, arMediatorIDs,
@@ -519,7 +520,7 @@ implements IMediatorReceiver, IMediatorSender
 							iGeneratedViewID, spawnLayer, underInteractionLayer);
 					arSlerpActions.add(slerpActionTransition);
 
-					((AGLCanvasUser) generalManager.getSingelton()
+					((AGLCanvasUser) generalManager.getSingleton()
 							.getViewGLCanvasManager().getItem(iGeneratedViewID))
 							.initRemote(gl, iUniqueId, underInteractionLayer,
 									pickingTriggerMouseAdapter);
@@ -529,7 +530,7 @@ implements IMediatorReceiver, IMediatorSender
 							iGeneratedViewID, spawnLayer, stackLayer);
 					arSlerpActions.add(slerpActionTransition);
 
-					((AGLCanvasUser) generalManager.getSingelton()
+					((AGLCanvasUser) generalManager.getSingleton()
 							.getViewGLCanvasManager().getItem(iGeneratedViewID))
 							.initRemote(gl, iUniqueId, stackLayer,
 									pickingTriggerMouseAdapter);
@@ -539,13 +540,13 @@ implements IMediatorReceiver, IMediatorSender
 							iGeneratedViewID, spawnLayer, poolLayer);
 					arSlerpActions.add(slerpActionTransition);
 
-					((AGLCanvasUser) generalManager.getSingelton()
+					((AGLCanvasUser) generalManager.getSingleton()
 							.getViewGLCanvasManager().getItem(iGeneratedViewID))
 							.initRemote(gl, iUniqueId, poolLayer,
 									pickingTriggerMouseAdapter);
 				} else
 				{
-					generalManager.getSingelton().logMsg(
+					generalManager.getSingleton().logMsg(
 							this.getClass().getSimpleName()
 									+ ": renderViewByID(): BUCKET IS FULL!!",
 							LoggerType.VERBOSE);
@@ -559,7 +560,7 @@ implements IMediatorReceiver, IMediatorSender
 
 			iAlUninitializedPathwayIDs.remove(0);
 			
-			generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager().clear();
+			generalManager.getSingleton().getViewGLCanvasManager().getSelectionManager().clear();
 			
 			// Trigger mouse over update if an entity is currently selected
 			alSetSelection.get(0).updateSelectionSet(iUniqueId);
@@ -570,7 +571,7 @@ implements IMediatorReceiver, IMediatorSender
 			return;
 
 		AGLCanvasUser tmpCanvasUser = ((AGLCanvasUser) generalManager
-				.getSingelton().getViewGLCanvasManager().getItem(iViewID));
+				.getSingleton().getViewGLCanvasManager().getItem(iViewID));
 
 		if (tmpCanvasUser == null)
 			throw new CaleydoRuntimeException(
@@ -1037,7 +1038,7 @@ implements IMediatorReceiver, IMediatorSender
 			// tmpSlerpAction.getOriginPosIndex()));
 
 			// Update layer in toolbox renderer
-			((AGLCanvasUser) generalManager.getSingelton()
+			((AGLCanvasUser) generalManager.getSingleton()
 					.getViewGLCanvasManager().getItem(
 							tmpSlerpAction.getElementId()))
 					.getToolboxRenderer().updateLayer(
@@ -1077,7 +1078,7 @@ implements IMediatorReceiver, IMediatorSender
 
 		slerpMod.applySlerp(gl, transform);
 
-		((AGLCanvasUser) generalManager.getSingelton().getViewGLCanvasManager()
+		((AGLCanvasUser) generalManager.getSingleton().getViewGLCanvasManager()
 				.getItem(iViewId)).displayRemote(gl);
 
 		gl.glPopMatrix();
@@ -1105,14 +1106,14 @@ implements IMediatorReceiver, IMediatorSender
 		{
 			glConnectionLineRenderer.enableRendering(true);
 
-			generalManager.getSingelton().getViewGLCanvasManager()
+			generalManager.getSingleton().getViewGLCanvasManager()
 					.getInfoAreaManager().enable(!bEnableNavigationOverlay);
 		}
 	}
 
 	private void loadViewToUnderInteractionLayer(final int iViewID) {
 
-		generalManager.getSingelton().logMsg(
+		generalManager.getSingleton().logMsg(
 						this.getClass().getSimpleName()
 								+ ": loadPathwayToUnderInteractionPosition(): View with ID "
 								+ iViewID + " is under interaction.",
@@ -1258,7 +1259,7 @@ implements IMediatorReceiver, IMediatorSender
 	@Override
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) 
 	{
-		generalManager.getSingelton().logMsg(
+		generalManager.getSingleton().logMsg(
 				this.getClass().getSimpleName()
 						+ " ("+iUniqueId+"): updateReceiver(Object eventTrigger, ISet updatedSet): Update called by "
 						+ eventTrigger.getClass().getSimpleName()+" ("+((AUniqueManagedObject)eventTrigger).getId()+")",
@@ -1288,7 +1289,7 @@ implements IMediatorReceiver, IMediatorSender
 				
 				if (iAlSelectionGroup.get(iSelectionIndex) == -1)
 				{
-					generalManager.getSingelton().getViewGLCanvasManager().getSelectionManager().clear();
+					generalManager.getSingleton().getViewGLCanvasManager().getSelectionManager().clear();
 					continue;
 				}
 				else if (iAlSelectionGroup.get(iSelectionIndex) != 2)
@@ -1296,22 +1297,22 @@ implements IMediatorReceiver, IMediatorSender
 				
 				alSetSelection.get(0).clearAllSelectionArrays();
 				
-				String sAccessionCode = generalManager.getSingelton().getGenomeIdManager()
+				String sAccessionCode = generalManager.getSingleton().getGenomeIdManager()
 					.getIdStringFromIntByMapping(iAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
 			
 				System.out.println("Accession Code: " +sAccessionCode);
 									
-				int iNCBIGeneID = generalManager.getSingelton().getGenomeIdManager()
+				int iNCBIGeneID = generalManager.getSingleton().getGenomeIdManager()
 					.getIdIntFromIntByMapping(iAccessionID, EGenomeMappingType.ACCESSION_2_NCBI_GENEID);
 	
-				String sNCBIGeneIDCode = generalManager.getSingelton().getGenomeIdManager()
+				String sNCBIGeneIDCode = generalManager.getSingleton().getGenomeIdManager()
 					.getIdStringFromIntByMapping(iNCBIGeneID, EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
 			
 				int iNCBIGeneIDCode = StringConversionTool.convertStringToInt(sNCBIGeneIDCode, -1);
 				
 				PathwayVertexGraphItem tmpPathwayVertexGraphItem = 
-					((PathwayVertexGraphItem)generalManager.getSingelton().getPathwayItemManager().getItem(
-						generalManager.getSingelton().getPathwayItemManager().getPathwayVertexGraphItemIdByNCBIGeneId(iNCBIGeneIDCode)));
+					((PathwayVertexGraphItem)generalManager.getSingleton().getPathwayItemManager().getItem(
+						generalManager.getSingleton().getPathwayItemManager().getPathwayVertexGraphItemIdByNCBIGeneId(iNCBIGeneIDCode)));
 			
 				alPathwayVertexGraphItem.add(tmpPathwayVertexGraphItem);
 				
@@ -1355,7 +1356,7 @@ implements IMediatorReceiver, IMediatorSender
 
 			if (pathwayGraphItem == null)
 			{
-				generalManager.getSingelton().logMsg(
+				generalManager.getSingleton().logMsg(
 						this.getClass().getSimpleName() + " (" + iUniqueId
 								+ "): pathway graph item is null.  ",
 						LoggerType.VERBOSE);
@@ -1403,14 +1404,14 @@ implements IMediatorReceiver, IMediatorSender
 			case MOUSE_OVER:
 				
 				iMouseOverViewID = iExternalID;
-				generalManager.getSingelton().getViewGLCanvasManager()
+				generalManager.getSingleton().getViewGLCanvasManager()
 						.getInfoAreaManager().setDataAboutView(iExternalID);
 
 				break;
 
 			case CLICKED:
 
-				generalManager.getSingelton().getViewGLCanvasManager()
+				generalManager.getSingleton().getViewGLCanvasManager()
 						.getInfoAreaManager().setDataAboutView(iExternalID);
 
 				if (poolLayer.containsElement(iExternalID))// ||
@@ -1710,7 +1711,7 @@ implements IMediatorReceiver, IMediatorSender
 				.createId(ManagerObjectType.EVENT_MEDIATOR_CREATE);
 
 		CmdEventCreateMediator tmpMediatorCmd = (CmdEventCreateMediator) generalManager
-				.getSingelton().getCommandManager().createCommandByType(
+				.getSingleton().getCommandManager().createCommandByType(
 						CommandQueueSaxType.CREATE_EVENT_MEDIATOR);
 
 		ArrayList<Integer> iAlSenderIDs = new ArrayList<Integer>();
@@ -1772,6 +1773,48 @@ implements IMediatorReceiver, IMediatorSender
 		{
 			glConnectionLineRenderer = new GLConnectionLineRendererJukebox(generalManager,
 					underInteractionLayer, stackLayer, poolLayer);
+		}
+	}
+	
+	public void clearAll() 
+	{
+		// Remove all pathway views
+		Iterator<GLEventListener> iterGLEventListener = 
+			generalManager.getSingleton().getViewGLCanvasManager().getAllGLEventListeners().iterator();
+		
+		AGLCanvasUser tmpGLEventListener = null;
+		int iGLEventListenerId = -1;
+		ArrayList<GLEventListener> tmpGLEventListenerToRemove = new ArrayList<GLEventListener>();
+		
+		while(iterGLEventListener.hasNext())
+		{
+			tmpGLEventListener = (AGLCanvasUser) iterGLEventListener.next();
+			iGLEventListenerId = tmpGLEventListener.getId();
+		
+			if (tmpGLEventListener.getClass().equals(GLCanvasPathway3D.class))
+			{
+				if (poolLayer.containsElement(iGLEventListenerId))
+					poolLayer.removeElement(iGLEventListenerId);
+				else if (stackLayer.containsElement(iGLEventListenerId))
+					stackLayer.removeElement(iGLEventListenerId);
+				else if (underInteractionLayer.containsElement(iGLEventListenerId))
+					underInteractionLayer.removeElement(iGLEventListenerId);
+				else if (memoLayer.containsElement(iGLEventListenerId))
+					memoLayer.removeElement(iGLEventListenerId);
+				else if (transitionLayer.containsElement(iGLEventListenerId))
+					transitionLayer.removeElement(iGLEventListenerId);
+				else if (spawnLayer.containsElement(iGLEventListenerId))
+					spawnLayer.removeElement(iGLEventListenerId);
+				
+				tmpGLEventListenerToRemove.add(tmpGLEventListener);
+			}
+		}
+		
+		for (int iGLEventListenerIndex = 0; iGLEventListenerIndex < tmpGLEventListenerToRemove.size(); 
+			iGLEventListenerIndex++)
+		{
+			generalManager.getSingleton().getViewGLCanvasManager().unregisterGLEventListener(
+					((AGLCanvasUser)tmpGLEventListenerToRemove.get(iGLEventListenerIndex)).getId());
 		}
 	}
 }

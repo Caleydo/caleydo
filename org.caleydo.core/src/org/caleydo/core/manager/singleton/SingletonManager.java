@@ -5,9 +5,8 @@ import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ILoggerManager;
 import org.caleydo.core.manager.IMementoManager;
-import org.caleydo.core.manager.IMenuManager;
 import org.caleydo.core.manager.ISWTGUIManager;
-import org.caleydo.core.manager.ISingelton;
+import org.caleydo.core.manager.ISingleton;
 import org.caleydo.core.manager.IViewGLCanvasManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
@@ -26,15 +25,14 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  * Design Pattern "ISingelton"
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public class SingletonManager 
-implements ISingelton {
+implements ISingleton {
 		
 	protected IStorageManager refStorageManager;
-	/**
-	 * Store all undo& redo Mementos
-	 */
+	
 	protected IMementoManager refMementoManager;
 	
 	protected IVirtualArrayManager refVirtualArrayManager;
@@ -42,8 +40,6 @@ implements ISingelton {
 	protected ISetManager refSetManager;
 	
 	protected ICommandManager refCommandManager;
-	
-	protected IMenuManager refMenuManager;
 	
 	protected ILoggerManager refLoggerManager;
 	
@@ -97,13 +93,6 @@ implements ISingelton {
 	 */
 	public IVirtualArrayManager getVirtualArrayManager() {
 		return refVirtualArrayManager;
-	}
-	
-	/* (non-Javadoc)
-	 * @see org.caleydo.core.manager.singelton.Singelton#getMenuManager()
-	 */
-	public IMenuManager getMenuManager() {
-		return this.refMenuManager;
 	}
 	
 	/* (non-Javadoc)
@@ -175,10 +164,6 @@ implements ISingelton {
 		
 	public IGenomeIdManager getGenomeIdManager() {
 		return this.refIGenomeIdManager;
-	}
-	
-	public void setMenuManager( IMenuManager setMenuManager ) {
-		this.refMenuManager = setMenuManager;
 	}
 	
 	public void setMementoManager( IMementoManager setMementoManager ) {
@@ -271,8 +256,6 @@ implements ISingelton {
 			case MEMENTO: return this.refMementoManager;
 				
 			case VIEW: return this.refViewManager;
-		
-			case MENU: return this.refMenuManager;
 			
 			case VIEW_GUI_SWT: return this.refSWTGUIManager;
 		

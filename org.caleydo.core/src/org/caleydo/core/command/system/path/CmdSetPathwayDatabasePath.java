@@ -54,7 +54,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	public void doCommand() throws CaleydoRuntimeException {
 		
 		IPathwayManager pathwayManager = 
-			generalManager.getSingelton().getPathwayManager();
+			generalManager.getSingleton().getPathwayManager();
 		
 		pathwayManager.createPathwayDatabase(type, sXMLPath, sImagePath, sImageMapPath);
 

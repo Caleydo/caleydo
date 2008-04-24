@@ -79,7 +79,7 @@ implements ISWTGUIManager {
 
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
 
-		generalManager.getSingelton().setSWTGUIManager(this);
+		generalManager.getSingleton().setSWTGUIManager(this);
 
 		refWidgetMap = new Vector<ISWTWidget>();
 
@@ -288,7 +288,7 @@ implements ISWTGUIManager {
 			refCurrentShell.setVisible(true);//open();
 		}
 		
-		generalManager.getSingelton().getViewGLCanvasManager().createAnimator();
+		generalManager.getSingleton().getViewGLCanvasManager().createAnimator();
 		//refGeneralManager.getSingelton().getViewGLCanvasManager().getAnimator().start();
 
 		shellIterator = refWindowMap.values().iterator();				

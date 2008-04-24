@@ -85,7 +85,7 @@ implements ILookupTableLoader {
 						}
 						else
 						{
-							refGeneralManager.getSingelton().logMsg(
+							refGeneralManager.getSingleton().logMsg(
 									"(Key,Value) [" +
 									buffer + ", ?? ] value is missing (ignore key-value pair) in line " +
 									iLineInFile,

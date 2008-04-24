@@ -122,7 +122,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 		if (( llRefStorage_nDim.isEmpty() )||
 				( llRefVirtualArray_nDim.isEmpty()))
 		{
-			generalManager.getSingelton().logMsg(
+			generalManager.getSingleton().logMsg(
 					"CmdDataCreateSet.setAttributes().assingLinearSet() not sufficient data available!",
 					LoggerType.MINOR_ERROR );
 			
@@ -137,7 +137,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 				ll_VirtualArray_1dim.iterator();
 	
 			IVirtualArrayManager refVirtualArrayManager = 
-				generalManager.getSingelton().getVirtualArrayManager();
+				generalManager.getSingleton().getVirtualArrayManager();
 			
 			/**
 			 * init data structures..
@@ -170,7 +170,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			
 			
 			IStorageManager refStorageManager = 
-				generalManager.getSingelton().getStorageManager();
+				generalManager.getSingleton().getStorageManager();
 			
 			Vector <IStorage> vecStorage = 
 				new Vector <IStorage> (ll_Storage_1dim.size());
@@ -188,7 +188,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			newObject.setStorageByDim( vecStorage, 0 );
 
 			if ( vecStorage.size() != vecVirtualArray.size() ) {
-				generalManager.getSingelton().logMsg(
+				generalManager.getSingleton().logMsg(
 						"CmdDataCreateSet.setAttributes().assingLinearSet() # Selections differs from # Storages! Skip it!",
 						LoggerType.MINOR_ERROR );
 				
@@ -197,7 +197,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 
 			
 		} catch (NumberFormatException nfe) {
-			generalManager.getSingelton().logMsg(
+			generalManager.getSingleton().logMsg(
 					"error while creation of ISet!",
 					LoggerType.MINOR_ERROR );
 		}
@@ -211,7 +211,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 		if (( llRefStorage_nDim.isEmpty() )||
 				( llRefVirtualArray_nDim.isEmpty()))
 		{
-			generalManager.getSingelton().logMsg(
+			generalManager.getSingleton().logMsg(
 					"CmdDataCreateSet.setAttributes().assingPlanarOrMultiDimensionalSet() not sufficient data available!",
 					LoggerType.MINOR_ERROR );
 			
@@ -227,9 +227,9 @@ extends ACmdCreate_IdTargetLabelAttr {
 		try {
 				
 			IVirtualArrayManager refVirtualArrayManager = 
-				generalManager.getSingelton().getVirtualArrayManager();
+				generalManager.getSingleton().getVirtualArrayManager();
 			IStorageManager refStorageManager = 
-				generalManager.getSingelton().getStorageManager();
+				generalManager.getSingleton().getStorageManager();
 			
 			
 			Iterator < LinkedList <String> > iter_VirtualArray_nDim =
@@ -271,7 +271,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 				 */
 				if ( vecVirtualArray.isEmpty() )
 				{
-					generalManager.getSingelton().logMsg( this.getClass().getSimpleName() + 
+					generalManager.getSingleton().logMsg( this.getClass().getSimpleName() + 
 							" parsing; VirtualArray[" + iIndexDimensionVirtualArray +
 							"] contains no data! This is most probably a miss configuration! uniqueId=[" +
 							newObject.getId() + "]", 
@@ -315,7 +315,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 				 */
 				if ( vecStorage.isEmpty() )
 				{
-					generalManager.getSingelton().logMsg( this.getClass().getSimpleName() + 
+					generalManager.getSingleton().logMsg( this.getClass().getSimpleName() + 
 							" parsing; Storage[" + iIndexDimensionVirtualArray +
 							"] contains no data! This is most probably a miss configuration! uniqueId=[" +
 							newObject.getId() + "]", 
@@ -330,7 +330,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 				 */
 				if ( vecStorage.size() != vecVirtualArray.size() )
 				{
-					generalManager.getSingelton().logMsg(
+					generalManager.getSingleton().logMsg(
 							"SET: #storages=" +
 							ll_Storage_1dim.size() + 
 							" differs from #VirtualArrays=" +
@@ -363,14 +363,14 @@ extends ACmdCreate_IdTargetLabelAttr {
 			 * Consistency check..
 			 */
 			if ( iter_VirtualArray_nDim.hasNext() ) {
-				generalManager.getSingelton().logMsg(
+				generalManager.getSingleton().logMsg(
 						"SET: WARNING: there are more VirtualArray-is's available, than storage-id's, skip remainig VirtualArray-is's.",
 						LoggerType.VERBOSE );
 			} 
 			else
 			{
 				if ( iter_Storage_nDim.hasNext() ) {
-				generalManager.getSingelton().logMsg(
+				generalManager.getSingleton().logMsg(
 						"SET: WARNING: there are more storage-id's available, than VirtualArray-id's, skip remainig storage-id's.",
 						LoggerType.VERBOSE );
 			} 
@@ -378,7 +378,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			
 			if ( iIndexDimensionStorage != iIndexDimensionVirtualArray)
 			{
-				generalManager.getSingelton().logMsg(
+				generalManager.getSingleton().logMsg(
 						"SET: dimension(storage) != dimension(VirtualArray) ",
 						LoggerType.VERBOSE );
 				
@@ -387,7 +387,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			
 			if ( bErrorWhileParsing ) 
 			{
-				generalManager.getSingelton().logMsg(
+				generalManager.getSingleton().logMsg(
 						"SET: error while parsing!",
 						LoggerType.MINOR_ERROR );
 				return false;
@@ -398,7 +398,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 		} 
 		catch (NumberFormatException nfe) 
 		{
-			generalManager.getSingelton().logMsg(
+			generalManager.getSingleton().logMsg(
 					"error while creation of ISet! " + 
 					nfe.toString(),
 					LoggerType.ERROR );
@@ -420,7 +420,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 		assert llRefStorage_nDim != null : "Probably this doCommand() was already executed once!";
 		
 		ISetManager refSetManager = 
-			generalManager.getSingelton().getSetManager();
+			generalManager.getSingleton().getSetManager();
 		
 		newObject = null;
 
@@ -440,13 +440,13 @@ extends ACmdCreate_IdTargetLabelAttr {
 			
 		case SET_MULTI_DIM_VARIABLE:
 		case SET_CUBIC:
-			generalManager.getSingelton().logMsg(
+			generalManager.getSingleton().logMsg(
 					"CmdDataCreateSet.doCommand() known type=[" +
 					setDataType + "] but yet now usb-class exists",
 					LoggerType.VERBOSE );
 			
 		default:
-			generalManager.getSingelton().logMsg(
+			generalManager.getSingleton().logMsg(
 						"CmdDataCreateSet.doCommand() failed because type=[" +
 						setDataType + "] is not supported!",
 						LoggerType.ERROR );
@@ -459,12 +459,12 @@ extends ACmdCreate_IdTargetLabelAttr {
 		/**
 		 * Register Set...
 		 */
-		generalManager.getSingelton().getSetManager().registerItem( 
+		generalManager.getSingleton().getSetManager().registerItem( 
 				newObject, 
 				newObject.getId(),
 				newObject.getBaseType() );
 		
-		generalManager.getSingelton().logMsg(
+		generalManager.getSingleton().logMsg(
 				"SET: " +
 				newObject.getClass().getSimpleName() + 
 				" done; " + 
@@ -472,7 +472,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 				LoggerType.FULL );
 		
 
-		generalManager.getSingelton().logMsg( 
+		generalManager.getSingleton().logMsg( 
 				"DO new SET: " + 
 				iUniqueId,
 				LoggerType.VERBOSE );
@@ -490,11 +490,11 @@ extends ACmdCreate_IdTargetLabelAttr {
 	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CaleydoRuntimeException {
-		generalManager.getSingelton().getVirtualArrayManager().unregisterItem( 
+		generalManager.getSingleton().getVirtualArrayManager().unregisterItem( 
 				iUniqueId,
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		
-		generalManager.getSingelton().logMsg( 
+		generalManager.getSingleton().logMsg( 
 				"UNDO new SEL: " + 
 				iUniqueId,
 				LoggerType.MINOR_ERROR);
@@ -577,7 +577,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			}
 			else
 			{
-				generalManager.getSingelton().logMsg(
+				generalManager.getSingleton().logMsg(
 						"CmdDataCreateSet.setAttributes() empty token inside [" +
 						CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() + "]='" +
 						strToken_VirtualArrayBlock.toString() + "'",
@@ -631,7 +631,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			}
 			else
 			{
-				generalManager.getSingelton().logMsg(
+				generalManager.getSingleton().logMsg(
 						"CmdDataCreateSet.setAttributes() empty token inside [" +
 						CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey() + "]='" +
 						strToken_StorageBlock.toString() + "'",
@@ -645,7 +645,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 		
 		if ( bErrorOnLoadingXMLData ) 
 		{
-			generalManager.getSingelton().logMsg(
+			generalManager.getSingleton().logMsg(
 					"CmdDataCreateSet.setAttributes() empty token! skip line!",
 					LoggerType.MINOR_ERROR );
 			bErrorOnLoadingXMLData = true;
@@ -733,7 +733,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			}
 			else
 			{
-				generalManager.getSingelton().logMsg(
+				generalManager.getSingleton().logMsg(
 						"CmdDataCreateSet.setAttributes() empty token inside [" +
 						CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() + "]='" +
 						strToken_VirtualArrayBlock.toString() + "'",
@@ -784,7 +784,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 			}
 			else
 			{
-				generalManager.getSingelton().logMsg(
+				generalManager.getSingleton().logMsg(
 						"CmdDataCreateSet.setAttributes() empty token inside [" +
 						CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey() + "]='" +
 						strToken_StorageBlock.toString() + "'",

@@ -6,7 +6,7 @@ import javax.media.opengl.GLEventListener;
 
 import org.caleydo.core.view.jogl.JoglCanvasForwarder;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
-import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 import org.caleydo.rcp.views.AGLViewPart;
 import org.caleydo.rcp.views.GLHeatmap2DView;
 import org.caleydo.rcp.views.GLJukeboxPathwayView;
@@ -58,7 +58,7 @@ extends WorkbenchAdvisor {
 	protected void openLoadedViews() {
 		
 		// Initialize all GL views in RCP
-		Iterator<GLEventListener> iterGLEventListener = Application.refGeneralManager.getSingelton()
+		Iterator<GLEventListener> iterGLEventListener = Application.refGeneralManager.getSingleton()
 			.getViewGLCanvasManager().getAllGLEventListeners().iterator();
 		
 		JoglCanvasForwarder tmpCanvasForwarder;
@@ -108,7 +108,7 @@ extends WorkbenchAdvisor {
 								Integer.toString(iInstanceNum), IWorkbenchPage.VIEW_ACTIVATE);
 				}	
 				else if (tmpGLEventListener.getClass().equals(
-						org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering3D.class))
+						org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D.class))
 				{
 					viewPart = (GLRemoteRendering3DView) PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getActivePage().showView(GLRemoteRendering3DView.ID,
