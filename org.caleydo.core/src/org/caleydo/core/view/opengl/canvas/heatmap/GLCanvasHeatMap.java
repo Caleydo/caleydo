@@ -511,7 +511,7 @@ extends AGLCanvasStorageBasedView
 		float fCurrentPosition = alSelection.indexOf(iElementID) * renderStyle.getNormalFieldWidth();// + renderStyle.getXSpacing();
 		
 		float fFrustumLength = viewFrustum.getRight() - viewFrustum.getLeft();
-		float fLength = (alSelection.size() - 1) * renderStyle.getNormalFieldWidth();
+		float fLength = (alSelection.size() - 1) * renderStyle.getNormalFieldWidth() + 1.5f; // MARC: 1.5 = correction of lens effect in heatmap
 
 		fAnimationTargetTranslation = -(fCurrentPosition - fFrustumLength / 2);
 		
@@ -532,15 +532,15 @@ extends AGLCanvasStorageBasedView
 	private void doTranslation()
 	{
 		float fDelta = 0;
-		if(fAnimationTargetTranslation < fAnimationTranslation - 0.3)
+		if(fAnimationTargetTranslation < fAnimationTranslation - 0.5f)
 		{
 			
-			fDelta = -0.3f;
+			fDelta = -0.5f;
 		
 		}
-		else if (fAnimationTargetTranslation > fAnimationTranslation + 0.3)
+		else if (fAnimationTargetTranslation > fAnimationTranslation + 0.5f)
 		{
-			fDelta = 0.3f;
+			fDelta = 0.5f;
 		}
 		else
 		{
