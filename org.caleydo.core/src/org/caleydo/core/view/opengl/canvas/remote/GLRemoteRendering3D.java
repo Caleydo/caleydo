@@ -189,7 +189,7 @@ implements IMediatorReceiver, IMediatorSender
 		dragAndDrop = new GLDragAndDrop();
 		
 		textRenderer = new TextRenderer(new Font("Arial",
-				Font.BOLD, 96), false);
+				Font.BOLD, 24), false);
 		
 		trashCan = new TrashCan();
 	}
@@ -290,11 +290,14 @@ implements IMediatorReceiver, IMediatorSender
 		layoutRenderStyle.initPoolLayer(iMouseOverViewID);
 		doSlerpActions(gl);
 
+		layoutRenderStyle.initUnderInteractionLayer();
+		
 		renderLayer(gl, underInteractionLayer);
 		
 		// If user zooms to the bucket bottom all but the under
 		// interaction layer is _not_ rendered.
-		if (!bucketMouseWheelListener.isBucketBottomReached())
+		if (bucketMouseWheelListener == null ||
+				!bucketMouseWheelListener.isBucketBottomReached())
 		{
 			glConnectionLineRenderer.render(gl);
 		
@@ -609,12 +612,12 @@ implements IMediatorReceiver, IMediatorSender
 			// Limit pathway name in length
 			if(sRenderText.length()> 35)
 				sRenderText = sRenderText.subSequence(0, 30) + "...";
-			
+
 			textRenderer.begin3DRendering();	
 			textRenderer.setColor(0,0,0,1);
 			textRenderer.draw3D(sRenderText,
-					8, 3, 0,
-					0.025f);  // scale factor
+					8.5f, 3, 0,
+					0.1f);  // scale factor
 			textRenderer.end3DRendering();
 		}
 

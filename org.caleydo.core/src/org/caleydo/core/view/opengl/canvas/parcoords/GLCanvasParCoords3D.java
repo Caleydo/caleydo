@@ -230,6 +230,7 @@ extends AGLCanvasStorageBasedView
 	 */
 	public void displayRemote(final GL gl) 
 	{			
+		
 		if(bIsTranslationActive)
 		{	
 			doTranslation();
@@ -245,6 +246,7 @@ extends AGLCanvasStorageBasedView
 		display(gl);
 		
 		checkForHits(gl);
+		
 //		pickingTriggerMouseAdapter.resetEvents();
 	}
 	
@@ -1476,11 +1478,11 @@ extends AGLCanvasStorageBasedView
 		sAlInfo.add("Type: Parallel Coordinates");
 		if(!bRenderStorageHorizontally)
 		{
-			sAlInfo.add("PC: Showing genes as " + alContentSelection.size() +" polylines and experiments as " + iNumberOfAxis + " axis.");			
+			sAlInfo.add(alContentSelection.size() + " genes as polylines and " + iNumberOfAxis + " experiments as axis.");			
 		}
 		else
 		{
-			sAlInfo.add("PC: Showing experiments as " + alStorageSelection.size() +" polylines and genes as " + iNumberOfAxis + " axis.");			
+			sAlInfo.add(alStorageSelection.size() + "experiments as polylines and " + iNumberOfAxis + " genes as axis.");			
 		}
 		return sAlInfo;
 	}

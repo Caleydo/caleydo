@@ -246,8 +246,8 @@ implements IMediatorReceiver, IMediatorSender {
 		{
 			float fPathwayTransparency = 1.0f;
 			
-			if (containedHierarchyLayer.getCapacity() == 4) // check if layer is the stack layer (todo: better would be a stack type)
-				fPathwayTransparency = 0.6f;
+//			if (containedHierarchyLayer.getCapacity() == 4) // check if layer is the stack layer (todo: better would be a stack type)
+//				fPathwayTransparency = 0.6f;
 				
 			refHashGLcontext2TextureManager.get(gl).renderPathway(
 					gl, this, iPathwayId, fPathwayTransparency, false);
@@ -772,7 +772,7 @@ implements IMediatorReceiver, IMediatorSender {
 		String sPathwayTitle = pathway.getTitle();
 		
 		sAlInfo.add("Type: " +pathway.getType().getName() +" Pathway");
-		sAlInfo.add("PW: " +sPathwayTitle);
+		sAlInfo.add(sPathwayTitle);
 		
 		return sAlInfo;
 	}

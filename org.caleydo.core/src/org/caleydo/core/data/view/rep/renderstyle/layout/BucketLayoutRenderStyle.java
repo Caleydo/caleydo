@@ -45,13 +45,13 @@ extends ARemoteViewLayoutRenderStyle {
 		
 		fScalingFactorUnderInteractionLayer = 0.5f;
 		fScalingFactorStackLayer = 0.5f;
-		fScalingFactorPoolLayer = 0.04f;
+		fScalingFactorPoolLayer = 0.025f;
 		fScalingFactorMemoLayer = 0.08f;
 		fScalingFactorTransitionLayer = 0.05f;
 		fScalingFactorSpawnLayer = 0.01f;
 		
-		fTrashCanXPos = -0.15f;
-		fTrashCanYPos = -0.5f;
+		fTrashCanXPos = -0.5f;
+		fTrashCanYPos = 0.05f;
 		fTrashCanWidth = 0.35f;
 		fTrashCanHeight = 0.35f;
 	}
@@ -117,7 +117,7 @@ extends ARemoteViewLayoutRenderStyle {
 	 * @see org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle#initPoolLayer()
 	 */
 	public JukeboxHierarchyLayer initPoolLayer(final int iMouseOverViewID) {
-
+		
 		float fSelectedScaling = 1;
 		float fYAdd = 0.1f;
 
@@ -128,7 +128,7 @@ extends ARemoteViewLayoutRenderStyle {
 		{
 			if (iViewIndex == iSelectedViewIndex)
 			{
-				fSelectedScaling = 2;
+				fSelectedScaling = 3f;
 			} else
 			{
 				fSelectedScaling = 1;
@@ -137,7 +137,7 @@ extends ARemoteViewLayoutRenderStyle {
 
 			transform.setTranslation(new Vec3f(4.0f, fYAdd, 4.1f));
 
-			fYAdd += 0.35f * fSelectedScaling;
+			fYAdd += 0.2f * fSelectedScaling;
 
 			transform.setScale(new Vec3f(fScalingFactorPoolLayer * fSelectedScaling, 
 					fScalingFactorPoolLayer	* fSelectedScaling, 

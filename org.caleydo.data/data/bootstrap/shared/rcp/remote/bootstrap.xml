@@ -11,14 +11,16 @@
 				
 		<!-- Creating Data -->
 			<read-xml-file target="data/bootstrap/shared/rcp/remote/load_data.xml" />					
-						
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="88401" parent="-1" label="Pathway" 
+				
+			<!--			
+				<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="88401" parent="-1" label="Pathway" 
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
 							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
 							attrib4="403600"							
 							detail="33101 34101 35101 36101 37101 39101 90101 91101" />					
-				
+			-->
+			
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEAT_MAP_3D"		cmdId="69994"	uniqueId="84401" parent="-1" label="Parallel Coordinates" 
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
