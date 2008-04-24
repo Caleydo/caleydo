@@ -34,7 +34,6 @@ implements ICaleydoDefaultType <CommandQueueSaxType> {
 	LOAD_LOOKUP_TABLE_FILE(ManagerType.SYSTEM,"cmd","type","", "Load a lookup table"),
 	LOAD_ON_DEMAND(ManagerType.SYSTEM,"cmd", "process","LOAD_ON_DEMAND", "No description available!"),
 	LOAD_URL_IN_BROWSER(ManagerType.EVENT_PUBLISHER,"cmd", "type", "-1", "Load URL in browser"),
-	//OPEN_VIEW("cmd","type"),
 
 	DATA_FILTER_MATH(ManagerType.DATA_STORAGE, "cmd", "type", "-1", "Filter data by using math operations"),
 	DATA_FILTER_MIN_MAX(ManagerType.DATA_STORAGE, "cmd", "type", "-1", "Evaluate min and max of an entity"),
@@ -50,8 +49,6 @@ implements ICaleydoDefaultType <CommandQueueSaxType> {
 	CREATE_GL_HEAT_MAP_3D(ManagerType.VIEW,"cmd","type","-1", "Create Heat Map"),
 	CREATE_GL_HISTOGRAM2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_SCATTERPLOT2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
-	CREATE_GL_LAYERED_PATHWAY_3D(ManagerType.VIEW,"cmd","type","-1", "Create Layered Pathway 3D"),
-	CREATE_GL_PANEL_PATHWAY_3D(ManagerType.VIEW,"cmd","type","-1", "Create Panel Pathway 3D"),	
 	CREATE_GL_GLYPH(ManagerType.VIEW,"cmd","type","-1", "Create Glyph"),	
 	CREATE_GL_JUKEBOX_PATHWAY_3D(ManagerType.VIEW,"cmd","type","-1", "Create Jukebox Pathway 3D"),		
 	CREATE_GL_PATHWAY_3D(ManagerType.VIEW,"cmd","type","-1", "Create Pathway 3D"),		
@@ -138,17 +135,17 @@ implements ICaleydoDefaultType <CommandQueueSaxType> {
 	
 	SYSTEM_SHUT_DOWN(ManagerType.SYSTEM,"cmd","type","-1", "Caleydo system shut down"),
 	
-	WINDOW_IFRAME_OPEN_HEATMAP2D(),
-	WINDOW_IFRAME_OPEN_HISTOGRAM2D(),
-	WINDOW_IFRAME_OPEN_SELECTION(),
-	WINDOW_IFRAME_OPEN_STORAGE(),
-	WINDOW_IFRAME_OPEN_JOGL_HISTOGRAM(),
-	WINDOW_IFRAME_OPEN_JOGL_HEATMAP(),
-	WINDOW_IFRAME_OPEN_JOGL_SCATTERPLOT(),
-	WINDOW_POPUP_CREDITS(),
-	WINDOW_POPUP_INFO(),
-	SYSTEM_NEW_FRAME(),
-	SYSTEM_NOP(),
+//	WINDOW_IFRAME_OPEN_HEATMAP2D(),
+//	WINDOW_IFRAME_OPEN_HISTOGRAM2D(),
+//	WINDOW_IFRAME_OPEN_SELECTION(),
+//	WINDOW_IFRAME_OPEN_STORAGE(),
+//	WINDOW_IFRAME_OPEN_JOGL_HISTOGRAM(),
+//	WINDOW_IFRAME_OPEN_JOGL_HEATMAP(),
+//	WINDOW_IFRAME_OPEN_JOGL_SCATTERPLOT(),
+//	WINDOW_POPUP_CREDITS(),
+//	WINDOW_POPUP_INFO(),
+//	SYSTEM_NEW_FRAME(),
+//	SYSTEM_NOP(),
 	
 	/*
 	 * ==================================================

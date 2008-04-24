@@ -1,6 +1,7 @@
 package org.caleydo.core.command.view.rcp;
 
 import javax.media.opengl.GLCanvas;
+import javax.media.opengl.GLCapabilities;
 
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL;
@@ -42,7 +43,10 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 	 */
 	public void doCommand() throws CaleydoRuntimeException {
 		
-		GLCanvas gLCanvas = new JoglCanvasForwarder(generalManager, iGLCanvasID);
+        GLCapabilities glCapabilities = new GLCapabilities();
+        glCapabilities.setStencilBits(1);
+		
+		GLCanvas gLCanvas = new JoglCanvasForwarder(generalManager, iGLCanvasID, glCapabilities);
 		
 		assert gLCanvas != null : "GLCanvas was not be created";
 		

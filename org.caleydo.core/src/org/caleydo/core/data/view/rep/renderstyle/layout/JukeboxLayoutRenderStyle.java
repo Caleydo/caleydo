@@ -24,9 +24,7 @@ extends ARemoteViewLayoutRenderStyle {
 	public JukeboxLayoutRenderStyle(final IGeneralManager generalManager) 
 	{
 		super(generalManager);
-		
-		projectionMode = ProjectionMode.ORTHOGRAPHIC;
-		
+	
 		initLayout();
 	}
 	
@@ -38,13 +36,13 @@ extends ARemoteViewLayoutRenderStyle {
 	{
 		super(generalManager, previousLayoutStyle);
 		
-		projectionMode = ProjectionMode.ORTHOGRAPHIC;
-		
 		initLayout();
 	}
 
 	private void initLayout() 
 	{
+		projectionMode = ProjectionMode.ORTHOGRAPHIC;
+		
 		fScalingFactorUnderInteractionLayer = 0.3f;
 		fScalingFactorStackLayer = 0.13f;
 		fScalingFactorPoolLayer = 0.02f;

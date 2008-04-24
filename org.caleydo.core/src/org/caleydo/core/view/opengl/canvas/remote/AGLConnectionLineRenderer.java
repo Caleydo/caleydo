@@ -121,8 +121,7 @@ public abstract class AGLConnectionLineRenderer {
 	}
 	
 	private void renderPlanes(final GL gl, final Vec3f vecPoint, final ArrayList<Vec3f> alPoints)
-	{
-		
+	{	
 		gl.glColor4f(0.3f, 0.3f, 0.3f, 1f);//0.6f);
 		gl.glLineWidth(2 + 4);
 		gl.glBegin(GL.GL_LINES);		
@@ -223,7 +222,6 @@ public abstract class AGLConnectionLineRenderer {
 			vecCenterPoint.add(vecCurrent);
 			iCount++;
 		}
-			
 		
 		vecCenterPoint.scale(1.0f/iCount);
 		return vecCenterPoint;		
@@ -237,7 +235,6 @@ public abstract class AGLConnectionLineRenderer {
 		
 		rotation.toMatrix(matSrc);
 
-		
 		matSrc.xformPt(vecOriginalPoint, vecTransformedPoint);		
 
 		vecTransformedPoint.componentMul(vecScale);

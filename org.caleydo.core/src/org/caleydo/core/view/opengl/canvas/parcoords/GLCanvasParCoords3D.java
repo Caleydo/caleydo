@@ -28,6 +28,7 @@ import org.caleydo.core.view.opengl.canvas.AGLCanvasStorageBasedView;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.GLIconTextureManager;
+import org.caleydo.core.view.opengl.util.GLSharedObjects;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
 import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
@@ -52,8 +53,6 @@ extends AGLCanvasStorageBasedView
 	private int iGLDisplayListIndexLocal;
 	private int iGLDisplayListIndexRemote;
 	private int iGLDisplayListToCall = 0;
-		
-
 
 	// flag whether to take measures against occlusion or not
 	private boolean bPreventOcclusion = true;	
@@ -105,8 +104,7 @@ extends AGLCanvasStorageBasedView
 	
 	private DecimalFormat decimalFormat;
 	
-	
-	SelectedElementRep elementRep;
+	private SelectedElementRep elementRep;
 	
 	// holds the textures for the icons
 	private GLIconTextureManager iconTextureManager;
@@ -162,7 +160,6 @@ extends AGLCanvasStorageBasedView
 		init(gl);
 		
 		glToolboxRenderer = new GLParCoordsToolboxRenderer(gl, generalManager, iUniqueId, new Vec3f (0, 0, 0), true, renderStyle);
-		
 	}
 	
 	/*
@@ -193,17 +190,12 @@ extends AGLCanvasStorageBasedView
 	public void init(final GL gl) 
 	{		
 		iconTextureManager = new GLIconTextureManager(gl);	
-
 		
 		// initialize selection to an empty array with 
-//		s
 		initData();
-		
 		
 		fXDefaultTranslation = renderStyle.getXSpacing();
 		fYTranslation = renderStyle.getBottomSpacing();
-	
-		
 	}
 	
 	/*
@@ -228,7 +220,6 @@ extends AGLCanvasStorageBasedView
 	
 		display(gl);
 		checkForHits(gl);	
-			
 		
 		pickingTriggerMouseAdapter.resetEvents();
 	}
@@ -238,7 +229,7 @@ extends AGLCanvasStorageBasedView
 	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#displayRemote(javax.media.opengl.GL)
 	 */
 	public void displayRemote(final GL gl) 
-	{		
+	{			
 		if(bIsTranslationActive)
 		{	
 			doTranslation();
@@ -249,6 +240,7 @@ extends AGLCanvasStorageBasedView
 			buildPolyLineDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
 		}	
+
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		display(gl);
 		
@@ -265,6 +257,29 @@ extends AGLCanvasStorageBasedView
 //		GLSharedObjects.drawAxis(gl);
 //		GLSharedObjects.drawViewFrustum(gl, viewFrustum);
 		
+		gl.glClear( GL.GL_STENCIL_BUFFER_BIT);
+		gl.glColorMask(false,false,false,false);
+        gl.glClearStencil(0);  // Clear The Stencil Buffer To 0
+        gl.glEnable(GL.GL_DEPTH_TEST);  // Enables Depth Testing
+        gl.glDepthFunc(GL.GL_LEQUAL);  // The Type Of Depth Testing To Do
+		gl.glEnable(GL.GL_STENCIL_TEST);
+		gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);						
+		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);												
+		gl.glDisable(GL.GL_DEPTH_TEST);						
+		
+		// Clip region that renders in stencil buffer (in this case the frustum)
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(0, 0, -0.01f);
+		gl.glVertex3f(0, 8, -0.01f);
+		gl.glVertex3f(8, 8, -0.01f);
+		gl.glVertex3f(8, 0, -0.01f);
+		gl.glEnd();
+		
+		gl.glEnable(GL.GL_DEPTH_TEST);
+		gl.glColorMask(true,true,true,true);
+		gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
+		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
+
 		gl.glTranslatef(fXDefaultTranslation  + fXTranslation, fYTranslation, 0.0f);
 		
 		if(bIsDraggingActive)
@@ -273,13 +288,13 @@ extends AGLCanvasStorageBasedView
 //		if(bRenderInfoArea)
 //			infoAreaManager.renderInfoArea(gl, bInfoAreaFirstTime);
 //			bInfoAreaFirstTime = false;
-
-
+		
 		if(bIsAngularBrushingActive && iSelectedLineID != -1)
 		{
 			handleAngularBrushing(gl);
 			
 		}
+		
 		checkUnselection();
 		
 		gl.glCallList(iGLDisplayListToCall);
@@ -291,6 +306,8 @@ extends AGLCanvasStorageBasedView
 		glToolboxRenderer.render(gl);
 		gl.glTranslatef(-fXDefaultTranslation + renderStyle.getXSpacing(),
 				-fYTranslation + renderStyle.getBottomSpacing(), 0.0f);
+		
+		gl.glDisable(GL.GL_STENCIL_TEST);
 	}
 		
 	/**
@@ -1102,6 +1119,7 @@ extends AGLCanvasStorageBasedView
 		if (glToolboxRenderer.getContainingLayer() != null)
 			if (glToolboxRenderer.getContainingLayer().getCapacity() >= 10)
 				return;
+		
 		ArrayList<Integer> iAlOldSelection;
 		
 		switch (ePickingType)
@@ -1409,16 +1427,11 @@ extends AGLCanvasStorageBasedView
 				bIsAngularDraggingActive = true;
 			}
 			break;
-		}
-		
-	 
-		
-		
+		}	
 	}	
 	
 	protected SelectedElementRep createElementRep(int iStorageIndex)
 	{	
-		
 		if(!bRenderStorageHorizontally)
 		{
 			ArrayList<Vec3f> alPoints = new ArrayList<Vec3f>();

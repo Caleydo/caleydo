@@ -1,6 +1,7 @@
 package org.caleydo.core.view.swt.widget;
 
 import javax.media.opengl.GLCanvas;
+import javax.media.opengl.GLCapabilities;
 
 import org.eclipse.swt.widgets.Composite;
 import org.caleydo.core.manager.IGeneralManager;
@@ -39,7 +40,10 @@ extends ASWTEmbeddedWidget {
 		
 		assert gLCanvas == null : "GLCanvas was already created!";
 			
-		gLCanvas = new JoglCanvasForwarder(generalManager, iGLCanvasID);
+        GLCapabilities glCapabilities = new GLCapabilities();
+        glCapabilities.setStencilBits(1);
+		
+		gLCanvas = new JoglCanvasForwarder(generalManager, iGLCanvasID, glCapabilities);
 		
 		refEmbeddedFrame.add(gLCanvas);
 	}

@@ -16,7 +16,7 @@ import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 
 /**
  * 
- * Specialized connection line renderer for jukebox view.
+ * Specialized connection line renderer for bucket view.
  * 
  * @author Marc Streit
  *
@@ -53,7 +53,6 @@ extends AGLConnectionLineRenderer {
 
 		Iterator<Integer> iterSelectedElementID = 
 			selectionManager.getAllSelectedElements().iterator();
-		
 		
 		ArrayList<ArrayList<Vec3f>> alPointLists = null;// 
 		
@@ -102,14 +101,13 @@ extends AGLConnectionLineRenderer {
 						alPointLists = new ArrayList<ArrayList<Vec3f>>();
 						hashViewToPointLists.put(iKey, alPointLists);
 					}
-					alPointLists.add(alPointsTransformed);
 					
+					alPointLists.add(alPointsTransformed);		
 				}					
 			}
 	
 			if(hashViewToPointLists.size() > 1)	
-			{
-				
+			{	
 				renderLineBundling(gl);				
 				hashViewToPointLists.clear();
 			}			

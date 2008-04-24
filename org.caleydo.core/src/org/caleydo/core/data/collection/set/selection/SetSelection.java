@@ -333,4 +333,11 @@ implements ISetSelection
 			iCount++;
 		}
 	}
+	
+	public void clearAllSelectionArrays() 
+	{
+		iAlSelectionID = null;
+		iAlSelectionGroup = null;
+		iAlSelectionOptionalData = null;
+	}
 }

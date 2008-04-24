@@ -33,12 +33,9 @@ import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
  * @author Alexander Lex
  *
  */
-
 public class GLCanvasHeatMap 
 extends AGLCanvasStorageBasedView
-
 {
-	
 	private HeatMapRenderStyle renderStyle;
 	
 	private ColorMapping colorMapper;
@@ -49,6 +46,14 @@ extends AGLCanvasStorageBasedView
 	
 	private Vec4f vecRotation = new Vec4f(-90, 0, 0, 1);   
 	private Vec3f vecTranslation;
+	
+	private float fAnimationDefaultTranslation = 0;
+	private float fAnimationTranslation = 0;
+	
+	private boolean bIsTranslationAnimationActive = false;
+	private float fAnimationTargetTranslation = 0;
+	
+	private SelectedElementRep elementRep;
 	
 	public GLCanvasHeatMap(final IGeneralManager generalManager,
 			final int iViewId,
@@ -112,6 +117,10 @@ extends AGLCanvasStorageBasedView
 	@Override
 	public void displayLocal(GL gl) 
 	{
+		if(bIsTranslationAnimationActive)
+		{	
+			doTranslation();
+		}
 		
 		pickingManager.handlePicking(iUniqueId, gl, true);
 	
@@ -123,6 +132,11 @@ extends AGLCanvasStorageBasedView
 	@Override
 	public void displayRemote(GL gl) 
 	{		
+		if(bIsTranslationAnimationActive)
+		{	
+			doTranslation();
+		}
+		
 		display(gl);
 		checkForHits(gl);
 //		pickingTriggerMouseAdapter.resetEvents();		
@@ -133,6 +147,30 @@ extends AGLCanvasStorageBasedView
 	{
 		//GLSharedObjects.drawViewFrustum(gl, viewFrustum);
 		//GLSharedObjects.drawAxis(gl);
+		
+		gl.glClear( GL.GL_STENCIL_BUFFER_BIT);
+		gl.glColorMask(false,false,false,false);
+        gl.glClearStencil(0);  // Clear The Stencil Buffer To 0
+        gl.glEnable(GL.GL_DEPTH_TEST);  // Enables Depth Testing
+        gl.glDepthFunc(GL.GL_LEQUAL);  // The Type Of Depth Testing To Do
+		gl.glEnable(GL.GL_STENCIL_TEST);
+		gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);						
+		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);												
+		gl.glDisable(GL.GL_DEPTH_TEST);						
+		
+		// Clip region that renders in stencil buffer (in this case the frustum)
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(0, 0, -0.01f);
+		gl.glVertex3f(0, 8, -0.01f);
+		gl.glVertex3f(8, 8, -0.01f);
+		gl.glVertex3f(8, 0, -0.01f);
+		gl.glEnd();
+		
+		gl.glEnable(GL.GL_DEPTH_TEST);
+		gl.glColorMask(true,true,true,true);
+		gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
+		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
+		
 		bRenderHorizontally = false;
 		if(!bRenderHorizontally)
 		{		
@@ -143,15 +181,18 @@ extends AGLCanvasStorageBasedView
 					vecRotation.y(),
 					vecRotation.z(),
 					vecRotation.w());	
-		
 		}
+		
+		gl.glTranslatef(fAnimationTranslation, 0.0f, 0.0f);
+		
 		renderHeatMap(gl);
 		renderSelection(gl, EViewInternalSelectionType.MOUSE_OVER);
-		renderSelection(gl, EViewInternalSelectionType.SELECTION);
+		renderSelection(gl, EViewInternalSelectionType.SELECTION);	
 		
+		gl.glTranslatef(-fAnimationTranslation, 0.0f, 0.0f);
+
 		if(!bRenderHorizontally)
 		{			
-			
 			gl.glRotatef(-vecRotation.x(),
 					vecRotation.y(),
 					vecRotation.z(),
@@ -161,6 +202,7 @@ extends AGLCanvasStorageBasedView
 					-vecTranslation.z());
 		}
 		
+		gl.glDisable(GL.GL_STENCIL_TEST);
 	}
 	
 	public void renderHorizontally(boolean bRenderHorizontally)
@@ -417,9 +459,6 @@ extends AGLCanvasStorageBasedView
 	@Override
 	protected SelectedElementRep createElementRep(int iStorageIndex) 
 	{
-		
-		SelectedElementRep elementRep;		
-
 		int iContentIndex = alContentSelection.indexOf(iStorageIndex);
 		renderStyle.clearFieldWidths();
 		Vec2f vecFieldWithAndHeight = null;
@@ -437,7 +476,7 @@ extends AGLCanvasStorageBasedView
 			
 		if(bRenderHorizontally)
 		{
-			elementRep = new SelectedElementRep(iUniqueId, fXValue, fYValue, 0);
+			elementRep = new SelectedElementRep(iUniqueId, fXValue + fAnimationTranslation, fYValue, 0);
 
 		}
 		else
@@ -445,17 +484,81 @@ extends AGLCanvasStorageBasedView
 			Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float)Math.PI/2);
 			Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
 			vecPoint.setY(vecPoint.y() + vecTranslation.y());
-			elementRep = new SelectedElementRep(iUniqueId, vecPoint.x(), vecPoint.y(), 0);
+			elementRep = new SelectedElementRep(iUniqueId, vecPoint.x(), vecPoint.y() - fAnimationTranslation, 0);
 
 		}			
 		return elementRep;
 	}
 
-	@Override
-	protected void rePosition(int elementID) {
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasStorageBasedView#rePosition(int)
+	 */
+	protected void rePosition(int iElementID) {
 
-		// TODO Auto-generated method stub
+		ArrayList<Integer> alSelection;
+		if(bRenderStorageHorizontally)
+		{
+			alSelection = alContentSelection;
 		
+		}	
+		else
+		{
+			alSelection = alStorageSelection;
+			// TODO test this
+		}
+		
+		float fCurrentPosition = alSelection.indexOf(iElementID) * renderStyle.getNormalFieldWidth();// + renderStyle.getXSpacing();
+		
+		float fFrustumLength = viewFrustum.getRight() - viewFrustum.getLeft();
+		float fLength = (alSelection.size() - 1) * renderStyle.getNormalFieldWidth();
+
+		fAnimationTargetTranslation = -(fCurrentPosition - fFrustumLength / 2);
+		
+		if(-fAnimationTargetTranslation > fLength - fFrustumLength)
+			fAnimationTargetTranslation = -(fLength - fFrustumLength + 2 * 0.00f);
+		else if(fAnimationTargetTranslation > 0)
+			fAnimationTargetTranslation = 0;
+		else if(-fAnimationTargetTranslation < -fAnimationTranslation + fFrustumLength  / 2  - 0.00f && 
+				-fAnimationTargetTranslation > -fAnimationTranslation - fFrustumLength / 2 + 0.00f)
+		{
+			fAnimationTargetTranslation = fAnimationTranslation;
+			return;
+		}
+		
+		bIsTranslationAnimationActive = true;
+	}
+	
+	private void doTranslation()
+	{
+		float fDelta = 0;
+		if(fAnimationTargetTranslation < fAnimationTranslation - 0.3)
+		{
+			
+			fDelta = -0.3f;
+		
+		}
+		else if (fAnimationTargetTranslation > fAnimationTranslation + 0.3)
+		{
+			fDelta = 0.3f;
+		}
+		else
+		{
+			fDelta = fAnimationTargetTranslation - fAnimationTranslation;
+			bIsTranslationAnimationActive = false;
+		}
+		
+		
+		if(elementRep != null)
+		{
+			ArrayList<Vec3f> alPoints = elementRep.getPoints();
+			for(Vec3f currentPoint : alPoints)
+			{
+				currentPoint.setY(currentPoint.y() - fDelta);
+			}			
+		}
+		
+		fAnimationTranslation += fDelta;	
 	}
 
 }

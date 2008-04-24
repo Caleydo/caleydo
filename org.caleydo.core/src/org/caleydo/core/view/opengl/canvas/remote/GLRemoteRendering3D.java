@@ -290,18 +290,18 @@ implements IMediatorReceiver, IMediatorSender
 		layoutRenderStyle.initPoolLayer(iMouseOverViewID);
 		doSlerpActions(gl);
 
-//		// If user zooms to the bucket bottom all but the under
-//		// interaction layer is _not_ rendered.
-//		if (!bucketMouseWheelListener.isBucketBottomReached())
-//		{
-
+		renderLayer(gl, underInteractionLayer);
+		
+		// If user zooms to the bucket bottom all but the under
+		// interaction layer is _not_ rendered.
+		if (!bucketMouseWheelListener.isBucketBottomReached())
+		{
 			glConnectionLineRenderer.render(gl);
 		
 			renderLayer(gl, transitionLayer);
 			renderLayer(gl, stackLayer);
 			renderLayer(gl, spawnLayer);
 //			renderPoolLayerBackground(gl);
-			renderLayer(gl, underInteractionLayer);
 			renderLayer(gl, poolLayer);
 
 //			renderMemoPad(gl);
@@ -312,19 +312,19 @@ implements IMediatorReceiver, IMediatorSender
 							MEMO_PAD_PICKING_ID));
 			renderLayer(gl, memoLayer);
 			gl.glPopName();
-//		}
-			
+		
+			gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager()
+					.getPickingManager().getPickingID(iUniqueId,
+							EPickingType.MEMO_PAD_SELECTION,
+							TRASH_CAN_PICKING_ID));
+			trashCan.render(gl, layoutRenderStyle);
+			gl.glPopName();
+		}
+		
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
 		{
 			bucketMouseWheelListener.render();	
 		}
-		
-		gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager()
-				.getPickingManager().getPickingID(iUniqueId,
-						EPickingType.MEMO_PAD_SELECTION,
-						TRASH_CAN_PICKING_ID));
-		trashCan.render(gl, layoutRenderStyle);
-		gl.glPopName();
 	}
 
 	private void retrieveContainedViews(final GL gl) {
@@ -443,7 +443,6 @@ implements IMediatorReceiver, IMediatorSender
 		// FIXME: this specialization to pathways in the bucket is not good!
 		if (!iAlUninitializedPathwayIDs.isEmpty() && arSlerpActions.isEmpty())
 		{
-
 			// Iterator<Integer> iterUninitializedViewIDs =
 			// iAlUninitializedPathwayIDs.iterator();
 			// while (iterUninitializedViewIDs.hasNext())
@@ -1024,13 +1023,11 @@ implements IMediatorReceiver, IMediatorSender
 		{
 			tmpSlerpAction.start();
 
-			if (tmpSlerpAction.getDestinationHierarchyLayer()
-					.equals(stackLayer)
-					|| tmpSlerpAction.getDestinationHierarchyLayer().equals(
-							underInteractionLayer))
-			{
-				glConnectionLineRenderer.enableRendering(false);
-			}
+//			if (tmpSlerpAction.getDestinationHierarchyLayer().equals(stackLayer)
+//					|| tmpSlerpAction.getDestinationHierarchyLayer().equals(underInteractionLayer))
+//			{
+//				glConnectionLineRenderer.enableRendering(false);
+//			}
 
 			// tmpSlerpAction.getOriginHierarchyLayer().setElementVisibilityById(false,
 			// tmpSlerpAction.getOriginHierarchyLayer().getElementIdByPositionIndex(
@@ -1275,7 +1272,11 @@ implements IMediatorReceiver, IMediatorSender
 		ArrayList<Integer> iAlTmpGroupId = new ArrayList<Integer>(2);
 		
 		if (iAlSelection != null && iAlSelectionGroup != null)
-		{			
+		{		
+//			// MARC: Donno if ok here and needed
+//			if (iAlSelection.size() != 0)
+//				alSetSelection.get(0).clearAllSelectionArrays();
+			
 			ArrayList<IGraphItem> alPathwayVertexGraphItem = new ArrayList<IGraphItem>();
 			
 			for (int iSelectionIndex = 0; iSelectionIndex < iAlSelection.size(); iSelectionIndex++)
@@ -1289,6 +1290,8 @@ implements IMediatorReceiver, IMediatorSender
 				}
 				else if (iAlSelectionGroup.get(iSelectionIndex) != 2)
 					continue;
+				
+				alSetSelection.get(0).clearAllSelectionArrays();
 				
 				String sAccessionCode = generalManager.getSingelton().getGenomeIdManager()
 					.getIdStringFromIntByMapping(iAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
@@ -1382,7 +1385,6 @@ implements IMediatorReceiver, IMediatorSender
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.caleydo.core.manager.view.EPickingType,
 	 *      org.caleydo.core.manager.view.EPickingMode, int,
 	 *      org.caleydo.core.manager.view.Pick)
@@ -1396,6 +1398,7 @@ implements IMediatorReceiver, IMediatorSender
 			switch (pickingMode)
 			{
 			case MOUSE_OVER:
+				
 				iMouseOverViewID = iExternalID;
 				generalManager.getSingelton().getViewGLCanvasManager()
 						.getInfoAreaManager().setDataAboutView(iExternalID);

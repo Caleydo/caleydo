@@ -182,6 +182,9 @@ extends GeneralRenderStyle
 //		
 //	}
 	
-	
+	public float getNormalFieldWidth()
+	{
+		return fNormalFieldWidth;
+	}
 	
 }

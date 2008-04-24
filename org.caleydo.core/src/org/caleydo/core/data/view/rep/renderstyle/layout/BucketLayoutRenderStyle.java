@@ -24,9 +24,7 @@ extends ARemoteViewLayoutRenderStyle {
 	public BucketLayoutRenderStyle(final IGeneralManager generalManager) 
 	{
 		super(generalManager);
-		
-		projectionMode = ProjectionMode.PERSPECTIVE;
-		
+
 		initLayout();
 	}
 	
@@ -38,13 +36,13 @@ extends ARemoteViewLayoutRenderStyle {
 	{
 		super(generalManager, previousLayoutStyle);
 		
-		projectionMode = ProjectionMode.PERSPECTIVE;
-		
 		initLayout();
 	}
 	
 	private void initLayout() 
-	{
+	{		
+		projectionMode = ProjectionMode.PERSPECTIVE;
+		
 		fScalingFactorUnderInteractionLayer = 0.5f;
 		fScalingFactorStackLayer = 0.5f;
 		fScalingFactorPoolLayer = 0.04f;

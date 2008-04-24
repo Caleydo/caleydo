@@ -619,6 +619,11 @@ implements IViewGLCanvasManager {
 			assert false : "Error,  getViewType() returned unexpected (class)";
 		} //try .. catch ( NullPointerException npe)
 	}
+	
+	public void removeAllGLCanvasByType() 
+	{
+		
+	}
 
 	/*
 	 * (non-Javadoc)

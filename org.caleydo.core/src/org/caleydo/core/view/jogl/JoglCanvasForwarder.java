@@ -3,6 +3,7 @@ package org.caleydo.core.view.jogl;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
+import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 
 import org.caleydo.core.manager.IGeneralManager;
@@ -30,7 +31,10 @@ implements GLEventListener {
 	private PickingJoglMouseListener joglMouseListener;
 	
 	public JoglCanvasForwarder(final IGeneralManager generalManager,
-			final int iGLCanvasID) {
+			final int iGLCanvasID,
+			final GLCapabilities glCapabilities) {
+		
+		super(glCapabilities);
 		
 		this.generalManager = generalManager;
 		
@@ -47,7 +51,8 @@ implements GLEventListener {
 	public void init(GLAutoDrawable drawable) {
 
 		generalManager.getSingelton().logMsg(
-				"JoglCanvasForwarder [" + iGLCanvasID + "] init() ... ",
+				"JoglCanvasForwarder [" + iGLCanvasID + "] init() ... " + 
+				"\n Chosen GLCapabilities: " + drawable.getChosenGLCapabilities(),
 				LoggerType.STATUS);
 		
 		GL gl = drawable.getGL();
@@ -61,7 +66,7 @@ implements GLEventListener {
 		gl.glShadeModel(GL.GL_SMOOTH); // Enables Smooth Shading
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // white Background
 		gl.glClearDepth(1.0f); // Depth Buffer Setup
-		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT | GL.GL_STENCIL_BUFFER_BIT);
 		
 		gl.glEnable(GL.GL_DEPTH_TEST);
 		gl.glDepthFunc(GL.GL_LEQUAL);
