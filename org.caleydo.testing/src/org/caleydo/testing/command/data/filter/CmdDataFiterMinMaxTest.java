@@ -46,9 +46,9 @@ public class CmdDataFiterMinMaxTest extends TestCase {
 	public void testForFloat() 
 	{		
 		
-		IStorage myStorage = myGeneralManager.getSingelton().getStorageManager().getItemStorage(46301);
+		IStorage myStorage = myGeneralManager.getSingleton().getStorageManager().getItemStorage(46301);
 		
-		CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) myGeneralManager.getSingelton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+		CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) myGeneralManager.getSingleton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
 		
 		createdCmd.setAttributes(myStorage, StorageType.FLOAT);
 		
@@ -60,9 +60,9 @@ public class CmdDataFiterMinMaxTest extends TestCase {
 	
 	public void testForInt()
 	{
-		IStorage myStorage = myGeneralManager.getSingelton().getStorageManager().getItemStorage(45301);
+		IStorage myStorage = myGeneralManager.getSingleton().getStorageManager().getItemStorage(45301);
 		
-		CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) myGeneralManager.getSingelton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+		CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) myGeneralManager.getSingleton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
 		
 		createdCmd.setAttributes(myStorage, StorageType.INT);
 		
@@ -75,9 +75,9 @@ public class CmdDataFiterMinMaxTest extends TestCase {
 	
 	public void testForDouble()
 	{
-		IStorage myStorage = myGeneralManager.getSingelton().getStorageManager().getItemStorage(47301);
+		IStorage myStorage = myGeneralManager.getSingleton().getStorageManager().getItemStorage(47301);
 		
-		CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) myGeneralManager.getSingelton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+		CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) myGeneralManager.getSingleton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
 		
 		createdCmd.setAttributes(myStorage, StorageType.DOUBLE);
 		

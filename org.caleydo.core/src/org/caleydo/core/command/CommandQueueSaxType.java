@@ -59,6 +59,7 @@ implements ICaleydoDefaultType <CommandQueueSaxType> {
 	CREATE_GL_MINMAX_SCATTERPLOT3D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_ISOSURFACE3D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_WIDGET(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
+	CREATE_GL_WII_TEST(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	
 	EXTERNAL_FLAG_SETTER(ManagerType.VIEW, "cmd", "type", "-1", "External flag setter"),
 	EXTERNAL_ACTION_TRIGGER(ManagerType.VIEW, "cmd", "type", "-1", "External action trigger"),

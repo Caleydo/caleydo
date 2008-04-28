@@ -27,11 +27,11 @@ import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyph;
 import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
 import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn;
-import org.caleydo.core.view.opengl.canvas.heatmap.IGLCanvasHeatmap2D;
 import org.caleydo.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
 import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.wii.GLCanvasWiiTest;
 import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
 import org.caleydo.core.view.swt.data.exchanger.DataExchangerViewRep;
@@ -481,7 +481,15 @@ implements IViewGLCanvasManager {
 						iGLCanvasID, 
 						sLabel,
 						viewFrustum,
-						ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX);					
+						ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX);	
+				
+			case CREATE_GL_WII_TEST:
+				return new GLCanvasWiiTest(
+						generalManager, 
+						iUniqueId,
+						iGLCanvasID, 
+						sLabel,
+						viewFrustum);				
 				
 			default:
 				throw new CaleydoRuntimeException(

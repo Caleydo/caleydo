@@ -50,7 +50,7 @@ extends ARemoteViewLayoutRenderStyle {
 		fScalingFactorTransitionLayer = 0.05f;
 		fScalingFactorSpawnLayer = 0.01f;
 		
-		fTrashCanXPos = -0.5f;
+		fTrashCanXPos = 4.07f;
 		fTrashCanYPos = 0.05f;
 		fTrashCanWidth = 0.35f;
 		fTrashCanHeight = 0.35f;
@@ -135,7 +135,7 @@ extends ARemoteViewLayoutRenderStyle {
 			}
 			Transform transform = new Transform();
 
-			transform.setTranslation(new Vec3f(4.0f, fYAdd, 4.1f));
+			transform.setTranslation(new Vec3f(-1.25f, fYAdd, 4.1f));
 
 			fYAdd += 0.2f * fSelectedScaling;
 
@@ -161,7 +161,7 @@ extends ARemoteViewLayoutRenderStyle {
 		{
 			// Store current model-view matrix
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(-0.65f, fMemoPos, 4.1f));
+			transform.setTranslation(new Vec3f(4.0f, fMemoPos, 4.1f));
 			transform.setScale(new Vec3f(fScalingFactorMemoLayer, fScalingFactorMemoLayer, fScalingFactorMemoLayer));
 			memoLayer.setTransformByPositionIndex(iMemoIndex, transform);
 

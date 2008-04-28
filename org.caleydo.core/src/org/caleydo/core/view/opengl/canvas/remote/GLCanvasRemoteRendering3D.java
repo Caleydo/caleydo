@@ -46,7 +46,10 @@ import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.canvas.AGLCanvasStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
+import org.caleydo.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListener;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.GLConnectionLineRendererBucket;
@@ -1037,12 +1040,12 @@ implements IMediatorReceiver, IMediatorSender
 			// tmpSlerpAction.getOriginHierarchyLayer().getElementIdByPositionIndex(
 			// tmpSlerpAction.getOriginPosIndex()));
 
-			// Update layer in toolbox renderer
-			((AGLCanvasUser) generalManager.getSingleton()
-					.getViewGLCanvasManager().getItem(
-							tmpSlerpAction.getElementId()))
-					.getToolboxRenderer().updateLayer(
-							tmpSlerpAction.getDestinationHierarchyLayer());
+//			// Update layer in toolbox renderer
+//			((AGLCanvasUser) generalManager.getSingleton()
+//					.getViewGLCanvasManager().getItem(
+//							tmpSlerpAction.getElementId()))
+//					.getToolboxRenderer().updateLayer(
+//							tmpSlerpAction.getDestinationHierarchyLayer());
 		}
 
 		if (iSlerpFactor < SLERP_RANGE)
@@ -1808,13 +1811,31 @@ implements IMediatorReceiver, IMediatorSender
 				
 				tmpGLEventListenerToRemove.add(tmpGLEventListener);
 			}
+			else if (tmpGLEventListener.getClass().equals(GLCanvasHeatMap.class) ||
+					tmpGLEventListener.getClass().equals(GLCanvasParCoords3D.class))
+			{
+				// Remove all elements from heatmap and parallel coordinates
+				((AGLCanvasStorageBasedView)tmpGLEventListener).clearAllSelections();
+			}
 		}
 		
+		int iGLEventListenerIdToRemove = -1;
 		for (int iGLEventListenerIndex = 0; iGLEventListenerIndex < tmpGLEventListenerToRemove.size(); 
 			iGLEventListenerIndex++)
 		{
-			generalManager.getSingleton().getViewGLCanvasManager().unregisterGLEventListener(
-					((AGLCanvasUser)tmpGLEventListenerToRemove.get(iGLEventListenerIndex)).getId());
+			iGLEventListenerIdToRemove = ((AGLCanvasUser)tmpGLEventListenerToRemove.get(iGLEventListenerIndex)).getId();
+			
+			// Unregister removed pathways from event mediator
+			ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
+			arMediatorIDs.add(iGLEventListenerIdToRemove);
+			generalManager.getSingleton().getEventPublisher().addSendersAndReceiversToMediator(
+					generalManager.getSingleton().getEventPublisher()
+							.getItemMediator(iBucketEventMediatorID),
+					arMediatorIDs, arMediatorIDs,
+					MediatorType.SELECTION_MEDIATOR,
+					MediatorUpdateType.MEDIATOR_DEFAULT);
+			
+			generalManager.getSingleton().getViewGLCanvasManager().unregisterGLEventListener(iGLEventListenerIdToRemove);
 		}
 	}
 }

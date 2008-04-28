@@ -10,6 +10,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.SetType;
 import org.caleydo.core.data.collection.set.selection.ISetSelection;
+import org.caleydo.core.data.collection.set.selection.SetSelection;
 import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
@@ -34,8 +35,6 @@ public abstract class AGLCanvasStorageBasedView
 extends AGLCanvasUser 
 implements IMediatorReceiver, IMediatorSender 
 {
-	
-	
 	protected ArrayList<IStorage> alDataStorages;
 	
 	// Specify which type of selection is currently active
@@ -72,7 +71,6 @@ implements IMediatorReceiver, IMediatorSender
 	protected boolean bRenderSelection = true;
 	
 	protected TextRenderer textRenderer;
-	
 	
 	protected boolean bRenderOnlyContext = false;
 	
@@ -115,7 +113,6 @@ implements IMediatorReceiver, IMediatorSender
 		if (alSetSelection == null)
 			return;				
 				
-		
 		Iterator<ISet> iterSetData = alSetData.iterator();
 		while (iterSetData.hasNext())
 		{
@@ -444,5 +441,28 @@ implements IMediatorReceiver, IMediatorSender
 	}
 	
 	protected abstract void rePosition(int iElementID);
+	
+	public void clearAllSelections() 
+	{
+		extSelectionManager.clear();
+		horizontalSelectionManager.clearSelections();
+		verticalSelectionManager.clearSelections();
 
+		if (alSetSelection == null)
+			return;				
+				
+		Iterator<SetSelection> iterSetSelection = alSetSelection.iterator();
+		while (iterSetSelection.hasNext())
+		{
+			SetSelection tmpSet = iterSetSelection.next();
+			tmpSet.getWriteToken();
+			tmpSet.updateSelectionSet(iUniqueId, null, null, null);
+			tmpSet.returnWriteToken();
+		}	
+
+		bIsDisplayListDirtyLocal = true;
+		bIsDisplayListDirtyRemote = true;
+		
+		initData();
+	}
 }

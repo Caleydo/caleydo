@@ -29,6 +29,7 @@ import org.caleydo.core.command.view.opengl.CmdGlObjectJukebox3D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectParCoords3D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectPathway3D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectPathway3DJukebox;
+import org.caleydo.core.command.view.opengl.CmdGlObjectWiiTest;
 import org.caleydo.core.command.view.rcp.CmdExternalActionTrigger;
 import org.caleydo.core.command.view.rcp.CmdExternalFlagSetter;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
@@ -462,6 +463,15 @@ implements ICommandFactory {
 		{
  			createdCommand =
 				new CmdGlObjectJukebox3D(
+						generalManager,
+						commandManager,
+						cmdType);	
+			break;
+		}
+		case CREATE_GL_WII_TEST:
+		{
+ 			createdCommand =
+				new CmdGlObjectWiiTest(
 						generalManager,
 						commandManager,
 						cmdType);	

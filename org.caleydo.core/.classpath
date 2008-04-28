@@ -55,5 +55,7 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.util.graph"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/wii/WiiRemoteJ.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/wii/avetanaBT.jar"/>
 	<classpathentry kind="output" path="bin/class"/>
 </classpath>
