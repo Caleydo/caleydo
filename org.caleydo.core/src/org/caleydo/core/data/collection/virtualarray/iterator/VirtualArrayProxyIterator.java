@@ -1,23 +1,13 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data.collection.virtualarray.iterator;
 
 import org.caleydo.core.data.collection.IVirtualArray;
-//import prometheus.data.collection.SelectionType;
-
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Automatical creates the suitable iterator for several IVirtualArray's.
  * 
- * Desing Pattern "Factory"
+ * Design Pattern "Factory"
  * 
  * @author Michael Kalkusch
  *

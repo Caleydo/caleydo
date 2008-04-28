@@ -1,11 +1,3 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.command.data;
 
 import java.util.LinkedList;
@@ -117,93 +109,93 @@ extends ACmdCreate_IdTargetLabelAttr {
 	}
 	
 
-	private boolean assingLinearSet( ISet newObject )
-	{
-		if (( llRefStorage_nDim.isEmpty() )||
-				( llRefVirtualArray_nDim.isEmpty()))
-		{
-			generalManager.getSingleton().logMsg(
-					"CmdDataCreateSet.setAttributes().assingLinearSet() not sufficient data available!",
-					LoggerType.MINOR_ERROR );
-			
-			return false;
-		}
-		
-		try {
-				
-			LinkedList <String> ll_VirtualArray_1dim = 
-				llRefVirtualArray_nDim.getFirst();
-			Iterator <String> iter_ll_VirtualArray_1dim = 
-				ll_VirtualArray_1dim.iterator();
-	
-			IVirtualArrayManager refVirtualArrayManager = 
-				generalManager.getSingleton().getVirtualArrayManager();
-			
-			/**
-			 * init data structures..
-			 */
-			
-			Vector <IVirtualArray> vecVirtualArray = 
-				new Vector <IVirtualArray> ( ll_VirtualArray_1dim.size() );
-			
-			
-			while ( iter_ll_VirtualArray_1dim.hasNext() )
-			{
-				int iBufferdId = 
-					Integer.valueOf( iter_ll_VirtualArray_1dim.next() );
-				
-				vecVirtualArray.addElement( 
-					refVirtualArrayManager.getItemVirtualArray( iBufferdId ) );	
-					
-			} //while ( iter_ll_Selection_1dim.hasNext() )
-			
-			newObject.setVirtualArrayByDim( vecVirtualArray, 0 );
-			
-			
-			/**
-			 * assign Storage ...
-			 */
-			LinkedList <String> ll_Storage_1dim = 
-				llRefStorage_nDim.getFirst();
-			Iterator <String> iter_ll_Storage_1dim = 
-				ll_Storage_1dim.iterator();
-			
-			
-			IStorageManager refStorageManager = 
-				generalManager.getSingleton().getStorageManager();
-			
-			Vector <IStorage> vecStorage = 
-				new Vector <IStorage> (ll_Storage_1dim.size());
-			
-			while ( iter_ll_Storage_1dim.hasNext() )
-			{
-				int iBufferdId = 
-					Integer.valueOf( iter_ll_Storage_1dim.next() );
-				
-				vecStorage.addElement( 
-					refStorageManager.getItemStorage( iBufferdId ) );	
-					
-			} //while ( iter_ll_Storage_1dim.hasNext() )
-			
-			newObject.setStorageByDim( vecStorage, 0 );
-
-			if ( vecStorage.size() != vecVirtualArray.size() ) {
-				generalManager.getSingleton().logMsg(
-						"CmdDataCreateSet.setAttributes().assingLinearSet() # Selections differs from # Storages! Skip it!",
-						LoggerType.MINOR_ERROR );
-				
-				return false;
-			}
-
-			
-		} catch (NumberFormatException nfe) {
-			generalManager.getSingleton().logMsg(
-					"error while creation of ISet!",
-					LoggerType.MINOR_ERROR );
-		}
-		
-		return true;
-	}
+//	private boolean assingLinearSet( ISet newObject )
+//	{
+//		if (( llRefStorage_nDim.isEmpty() )||
+//				( llRefVirtualArray_nDim.isEmpty()))
+//		{
+//			generalManager.getSingleton().logMsg(
+//					"CmdDataCreateSet.setAttributes().assingLinearSet() not sufficient data available!",
+//					LoggerType.MINOR_ERROR );
+//			
+//			return false;
+//		}
+//		
+//		try {
+//				
+//			LinkedList <String> ll_VirtualArray_1dim = 
+//				llRefVirtualArray_nDim.getFirst();
+//			Iterator <String> iter_ll_VirtualArray_1dim = 
+//				ll_VirtualArray_1dim.iterator();
+//	
+//			IVirtualArrayManager refVirtualArrayManager = 
+//				generalManager.getSingleton().getVirtualArrayManager();
+//			
+//			/**
+//			 * init data structures..
+//			 */
+//			
+//			Vector <IVirtualArray> vecVirtualArray = 
+//				new Vector <IVirtualArray> ( ll_VirtualArray_1dim.size() );
+//			
+//			
+//			while ( iter_ll_VirtualArray_1dim.hasNext() )
+//			{
+//				int iBufferdId = 
+//					Integer.valueOf( iter_ll_VirtualArray_1dim.next() );
+//				
+//				vecVirtualArray.addElement( 
+//					refVirtualArrayManager.getItemVirtualArray( iBufferdId ) );	
+//					
+//			} //while ( iter_ll_Selection_1dim.hasNext() )
+//			
+//			newObject.setVirtualArrayByDim( vecVirtualArray, 0 );
+//			
+//			
+//			/**
+//			 * assign Storage ...
+//			 */
+//			LinkedList <String> ll_Storage_1dim = 
+//				llRefStorage_nDim.getFirst();
+//			Iterator <String> iter_ll_Storage_1dim = 
+//				ll_Storage_1dim.iterator();
+//			
+//			
+//			IStorageManager refStorageManager = 
+//				generalManager.getSingleton().getStorageManager();
+//			
+//			Vector <IStorage> vecStorage = 
+//				new Vector <IStorage> (ll_Storage_1dim.size());
+//			
+//			while ( iter_ll_Storage_1dim.hasNext() )
+//			{
+//				int iBufferdId = 
+//					Integer.valueOf( iter_ll_Storage_1dim.next() );
+//				
+//				vecStorage.addElement( 
+//					refStorageManager.getItemStorage( iBufferdId ) );	
+//					
+//			} //while ( iter_ll_Storage_1dim.hasNext() )
+//			
+//			newObject.setStorageByDim( vecStorage, 0 );
+//
+//			if ( vecStorage.size() != vecVirtualArray.size() ) {
+//				generalManager.getSingleton().logMsg(
+//						"CmdDataCreateSet.setAttributes().assingLinearSet() # Selections differs from # Storages! Skip it!",
+//						LoggerType.MINOR_ERROR );
+//				
+//				return false;
+//			}
+//
+//			
+//		} catch (NumberFormatException nfe) {
+//			generalManager.getSingleton().logMsg(
+//					"error while creation of ISet!",
+//					LoggerType.MINOR_ERROR );
+//		}
+//		
+//		return true;
+//	}
 	
 	
 	private boolean assingPlanarOrMultiDimensionalSet( ISet newObject )

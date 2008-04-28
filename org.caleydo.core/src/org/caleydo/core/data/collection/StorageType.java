@@ -1,17 +1,8 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data.collection;
 
-import org.caleydo.core.data.collection.ICollectionType;
 
 /**
- * Collection of diferent data types used in stograge.
+ * Collection of different data types used in storage.
  * 
  * @author Michael Kalkusch
  *

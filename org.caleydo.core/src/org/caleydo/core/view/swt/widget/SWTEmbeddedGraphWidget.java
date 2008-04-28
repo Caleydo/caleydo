@@ -1,17 +1,6 @@
-/*
- * Project: GenView
- * 
- * Author: Marc Streit
- * 
- * Creation date: 26-07-2006
- *  
- */
-
 package org.caleydo.core.view.swt.widget;
 
 import java.awt.Frame;
-
-import org.caleydo.core.view.swt.widget.ASWTEmbeddedWidget;
 
 import org.eclipse.swt.widgets.Composite;
 

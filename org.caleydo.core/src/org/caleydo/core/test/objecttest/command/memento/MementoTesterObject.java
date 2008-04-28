@@ -1,15 +1,6 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.test.objecttest.command.memento;
 
 import org.caleydo.core.command.memento.IMemento;
-//import org.caleydo.core.command.memento.MementoState;
 import org.caleydo.core.command.memento.IMementoCreator;
 
 import org.caleydo.core.util.exception.CaleydoRuntimeException;

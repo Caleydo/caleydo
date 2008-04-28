@@ -1,33 +1,21 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.manager.data.set;
 
 import java.util.Collection;
 import java.util.Hashtable;
 
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.SetType;
+import org.caleydo.core.data.collection.set.SetFlatThreadSimple;
+import org.caleydo.core.data.collection.set.SetMultiDim;
+import org.caleydo.core.data.collection.set.SetPlanarSimple;
+import org.caleydo.core.data.collection.set.selection.SetSelection;
+import org.caleydo.core.data.collection.set.viewdata.SetViewData;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.data.ACollectionManager;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
-
-//import org.caleydo.core.command.CommandQueueSaxType;
-//import org.caleydo.core.data.collection.IStorage;
-//import org.caleydo.core.data.collection.IVirtualArray;
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.SetType;
-import org.caleydo.core.data.collection.set.SetFlatThreadSimple;
-import org.caleydo.core.data.collection.set.SetPlanarSimple;
-import org.caleydo.core.data.collection.set.SetMultiDim;
-import org.caleydo.core.data.collection.set.selection.SetSelection;
-import org.caleydo.core.data.collection.set.viewdata.SetViewData;
 
 
 /**
@@ -37,25 +25,11 @@ import org.caleydo.core.data.collection.set.viewdata.SetViewData;
 public class SetManager 
 extends ACollectionManager
 implements ISetManager {
-
-	/**
-	 * Reference to the singelton manager.
-	 * 
-	 * Note: See "Design Pattern" ISingelton
-	 */
-	//protected IGeneralManager refGeneralManager = null;
-	
-	/**
-	 * Vector holds a list of all ISet's
-	 */
-	//protected Vector<ISet> vecSets;
 	
 	protected Hashtable <Integer, ISet > hashId2Set;
 	
-	//private ISet testSet;
-	
 	/**
-	 * 
+	 * Constructor.
 	 */
 	public SetManager( IGeneralManager setSingelton,
 			final int iInitSizeContainer ) {
@@ -66,44 +40,16 @@ implements ISetManager {
 		assert setSingelton != null : "Constructor with null-pointer to singelton";
 		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";
 		
-		//vecSets = new Vector< ISet > ( iInitSizeContainer );
-		
 		hashId2Set = new Hashtable <Integer, ISet > ();
 		
 		generalManager.getSingleton().setSetManager( this );		
-		
-		
 	}
 	
 	/**
 	 * Create a test ISet.
 	 */
 	public void initManager() {
-		/**
-		 * Test ISet...
-		 */
-//		testSet = new SetPlanarSimple( this.createNewId(ManagerObjectType.SET_PLANAR ),
-//				refGeneralManager );
-//		
-//		this.registerItem( testSet, testSet.getId(), ManagerObjectType.SET_PLANAR );
-//		
-//		refGeneralManager.getSingelton().logMsg( "SET: testSet created with Id =[" +
-//				testSet.getId() +"]");
-//		
-//		IVirtualArray getSelectionById = (IVirtualArray) refGeneralManager.getItem( 15201 );
-//		IStorage getStorageById = (IStorage) refGeneralManager.getItem( 15301 );
-//		
-//		/* register IVirtualArray & IStorage to ISet ... */
-//		testSet.setSelectionByDimAndIndex( getSelectionById, 0, 0 );
-//		testSet.setStorageByDimAndIndex( getStorageById, 0, 0 );
-//		
-//		ISet testMySet = (ISet) refGeneralManager.getItem( 15101 );
-//		
-//		refGeneralManager.getSingelton().logMsg( "SET: testSet get ISet by Id; [" +
-//				testSet.getId() +"] == [" + testMySet.getId() + "]_(test)");
-		/**
-		 * END: Test ISet...
-		 */
+
 	}
 
 	/* (non-Javadoc)

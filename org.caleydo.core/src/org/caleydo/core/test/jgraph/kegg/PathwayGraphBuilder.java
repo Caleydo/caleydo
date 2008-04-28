@@ -1,11 +1,3 @@
-/*
- * Project: GenView
- * 
- * Author: Marc Streit
- * 
- *  creation date: 03-07-2006
- *  
- */
 package org.caleydo.core.test.jgraph.kegg;
 
 import java.awt.Color;
@@ -23,6 +15,12 @@ import org.jgraph.graph.GraphConstants;
 import org.jgraph.graph.GraphLayoutCache;
 import org.jgraph.graph.GraphModel;
 
+/**
+ * Pathway graph builder
+ * 
+ * @author Marc Streit
+ * 
+ */
 public class PathwayGraphBuilder 
 {
 	private GraphModel model;

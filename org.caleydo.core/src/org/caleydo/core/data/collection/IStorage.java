@@ -1,17 +1,7 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data.collection;
 
 import java.util.Hashtable;
 
-import org.caleydo.core.data.collection.StorageType;
-import org.caleydo.core.data.collection.ICollection;
 import org.caleydo.core.data.collection.thread.ICollectionThreadObject;
 import org.caleydo.core.data.xml.IMementoNetEventXML;
 

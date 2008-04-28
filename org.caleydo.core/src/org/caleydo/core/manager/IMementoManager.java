@@ -1,16 +1,7 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.manager;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
 
 import org.caleydo.core.command.memento.IMemento;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;

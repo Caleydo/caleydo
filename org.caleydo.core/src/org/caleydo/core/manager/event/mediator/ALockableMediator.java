@@ -1,8 +1,3 @@
-/*
- * Project: GenView
- *  
- */
-
 package org.caleydo.core.manager.event.mediator;
 
 import org.caleydo.core.manager.IEventPublisher;
@@ -28,6 +23,7 @@ extends ALockableMediatorReceiver {
 	public final int iMediatorId;
 	
 	/**
+	 * Constructor.
 	 * 
 	 * @param iMediatorId
 	 * @param mediatorUpdateType if ==NULL, MediatorUpdateType.MEDIATOR_DEFAULT is used as default 
@@ -101,7 +97,5 @@ extends ALockableMediatorReceiver {
 				CaleydoRuntimeExceptionType.OBSERVER);
 		
 		//this.iMediatorId = isetId;
-		
 	}
-
 }

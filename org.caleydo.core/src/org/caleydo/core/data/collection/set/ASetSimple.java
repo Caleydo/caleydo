@@ -1,17 +1,8 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data.collection.set;
 
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.SetType;
-import org.caleydo.core.data.collection.set.ASetRawData;
+import org.caleydo.core.manager.IGeneralManager;
 
 /**
  * @author Michael Kalkusch

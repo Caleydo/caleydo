@@ -41,24 +41,24 @@ implements ICaleydoDefaultType <CommandQueueSaxType> {
 	CREATE_EVENT_MEDIATOR(ManagerType.EVENT_PUBLISHER,"cmd", "type", null, "Create Event Mediator"),
 	EVENT_MEDIATOR_ADD_OBJECT("cmd", "type", null, "Add Objects ad sender or receiver to Event Mediator"),
 	
-	CREATE_GL_TRIANGLE_TEST(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
-	CREATE_GL_TEXTURE2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
+//	CREATE_GL_TRIANGLE_TEST(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
+//	CREATE_GL_TEXTURE2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_HEATMAP(ManagerType.VIEW,"cmd","type","-1", "Create Heat Map"),
 	CREATE_GL_HEATMAP2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_HEATMAP2DCOLUMN(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_HEAT_MAP_3D(ManagerType.VIEW,"cmd","type","-1", "Create Heat Map"),
 	CREATE_GL_HISTOGRAM2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
-	CREATE_GL_SCATTERPLOT2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
+//	CREATE_GL_SCATTERPLOT2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_GLYPH(ManagerType.VIEW,"cmd","type","-1", "Create Glyph"),	
 	CREATE_GL_JUKEBOX_PATHWAY_3D(ManagerType.VIEW,"cmd","type","-1", "Create Jukebox Pathway 3D"),		
 	CREATE_GL_PATHWAY_3D(ManagerType.VIEW,"cmd","type","-1", "Create Pathway 3D"),		
 	CREATE_GL_PARALLEL_COORDINATES_3D(ManagerType.VIEW,"cmd","type","-1", "Create Parallel Coordinates 3D"),		
 	CREATE_GL_BUCKET_3D(ManagerType.VIEW,"cmd","type","-1", "Create Bucket 3D"),
 	CREATE_GL_JUKEBOX_3D(ManagerType.VIEW,"cmd","type","-1", "Create Jukebox 3D"),
-	CREATE_GL_MINMAX_SCATTERPLOT2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
-	CREATE_GL_MINMAX_SCATTERPLOT3D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
-	CREATE_GL_ISOSURFACE3D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
-	CREATE_GL_WIDGET(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
+//	CREATE_GL_MINMAX_SCATTERPLOT2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
+//	CREATE_GL_MINMAX_SCATTERPLOT3D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
+//	CREATE_GL_ISOSURFACE3D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
+//	CREATE_GL_WIDGET(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_WII_TEST(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	
 	EXTERNAL_FLAG_SETTER(ManagerType.VIEW, "cmd", "type", "-1", "External flag setter"),
@@ -131,8 +131,8 @@ implements ICaleydoDefaultType <CommandQueueSaxType> {
 	 * =================================================
 	 */
 	
-	WINDOW_SET_ACTIVE_FRAME("cmd","type","-1", "No description available!"),
-	WINDOW_IFRAME_NEW_INTERNAL_FRAME("cmd","type","-1", "No description available!"),
+//	WINDOW_SET_ACTIVE_FRAME("cmd","type","-1", "No description available!"),
+//	WINDOW_IFRAME_NEW_INTERNAL_FRAME("cmd","type","-1", "No description available!"),
 	
 	SYSTEM_SHUT_DOWN(ManagerType.SYSTEM,"cmd","type","-1", "Caleydo system shut down"),
 	
@@ -169,8 +169,8 @@ implements ICaleydoDefaultType <CommandQueueSaxType> {
 	TAG_PROCESS("cmd","process","RUN_CMD_NOW"),
 	TAG_LABEL("cmd","label",""),
 	
-	TAG_POS_WIDTH_X("cmd","iWidthX","-1"),
-	TAG_POS_HEIGHT_Y("cmd","iHeightY","-1"),
+//	TAG_POS_WIDTH_X("cmd","iWidthX","-1"),
+//	TAG_POS_HEIGHT_Y("cmd","iHeightY","-1"),
 	
 	TAG_POS_GL_ORIGIN("cmd","gl_origin","0 0 0"),
 	
@@ -207,16 +207,6 @@ implements ICaleydoDefaultType <CommandQueueSaxType> {
 	 * Define type of manager group
 	 */
 	private final ManagerType eGroupType;
-	
-	private CommandQueueSaxType() 
-	{
-		this.sXmlTag = null;		
-		this.sXmlKey = null;
-		this.sDefaultValue = null;
-		this.sInfoText = null;
-		this.eGroupType = null;
-		
-	}
 	
 	/**
 	 * Constructor.

@@ -1,31 +1,18 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data.collection.storage;
 
-import java.lang.NullPointerException;
 import java.util.Hashtable;
-
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
-
-//import org.xml.sax.InputSource;
 
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.data.filter.CmdDataFilterMinMax;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.StorageType;
-//import org.caleydo.core.data.manager.DComponentManager;
-import org.caleydo.core.data.xml.IMementoNetEventXML;
 import org.caleydo.core.data.collection.parser.CollectionFlatStorageSaxParserHandler;
 import org.caleydo.core.data.collection.thread.impl.ACollectionThreadItem;
 import org.caleydo.core.data.collection.thread.lock.ICollectionLock;
+import org.caleydo.core.data.xml.IMementoNetEventXML;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
 /**
  * @author Michael Kalkusch

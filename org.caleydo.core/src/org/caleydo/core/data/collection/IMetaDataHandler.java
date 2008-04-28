@@ -1,21 +1,13 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data.collection;
 
 
-/*
- * Methodes for meta data handling.
+/**
+ * Methods for meta data handling.
  */
 public interface IMetaDataHandler {
 
 	/**
-	 * Get the meta data from a prometheus.data.collection.selection.Selection
+	 * Get the meta data from a caleydo.data.collection.selection.Selection
 	 */
 	public IMetaData getMetaData();
 	

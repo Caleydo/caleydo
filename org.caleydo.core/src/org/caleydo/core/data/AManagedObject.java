@@ -1,15 +1,6 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data;
 
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.data.IManagedObject;
 
 /**
  * Abstract class stores reference to IGeneralManager.
@@ -18,7 +9,7 @@ import org.caleydo.core.data.IManagedObject;
  * @author Michael Kalkusch
  *
  * @see org.caleydo.core.data.AUniqueReManagedObject
- * @see prometheus.data.xml.MementiItemXML
+ * @see org.caleydo.core.data.xml.MementiItemXML
  */
 public abstract class AManagedObject 
 implements IManagedObject {
@@ -29,7 +20,7 @@ implements IManagedObject {
 	protected final IGeneralManager refGeneralManager;
 	
 	/**
-	 * 
+	 * Constructor.
 	 */
 	protected AManagedObject( final  IGeneralManager setGeneralManager ) {
 		
@@ -45,5 +36,4 @@ implements IManagedObject {
 	public final IGeneralManager getManager() {
 		return this.refGeneralManager;
 	}
-	
 }

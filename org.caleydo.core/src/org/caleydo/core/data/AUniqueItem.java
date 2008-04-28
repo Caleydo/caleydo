@@ -1,22 +1,12 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data;
 
-import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.manager.IGeneralManager;
 
 /**
  * Abstract class providing methods defined in IUniqueManagedObject.
  * Stores reference to creator of item in private variable.
  * 
  * @author Michael Kalkusch
- *
- * @see prometheus.data.xml.MementiItemXML
  */
 public abstract class AUniqueItem 
 implements IUniqueObject {
@@ -60,5 +50,4 @@ implements IUniqueObject {
 		
 		this.iUniqueId = iSetDNetEventId;
 	}
-
 }

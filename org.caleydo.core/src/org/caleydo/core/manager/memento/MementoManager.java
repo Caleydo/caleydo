@@ -1,30 +1,19 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.manager.memento;
 
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.Vector;
-import java.util.Iterator;
 import java.util.Hashtable;
+import java.util.Iterator;
+import java.util.Vector;
 
+import org.caleydo.core.command.memento.IMemento;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IMementoManager;
 import org.caleydo.core.manager.base.AAbstractManager;
-import org.caleydo.core.manager.type.ManagerType;
 import org.caleydo.core.manager.type.ManagerObjectType;
-//import java.util.Enumeration;
-
-import org.caleydo.core.command.memento.IMemento;
-//import prometheus.data.collection.Set;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.caleydo.core.manager.type.ManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Simple IMemento Manager, that stores all IMemento's in a Vector.
@@ -33,8 +22,8 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  *
  */
 public class MementoManager 
- extends AAbstractManager
- implements IMementoManager {
+extends AAbstractManager
+implements IMementoManager {
 	
 	private int iVecMementoStorageSize;
 	
@@ -239,5 +228,4 @@ public class MementoManager
 		assert false:"not done yet";
 		return false;
 	}
-
 }

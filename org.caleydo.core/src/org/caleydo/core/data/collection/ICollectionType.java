@@ -1,17 +1,9 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data.collection;
 
 import org.caleydo.core.util.ICaleydoDefaultType;
 
 /**
- * Base calss for typse used to define collections.
+ * Base calls for types used to define collections.
  * 
  * @author Michael Kalkusch
  *

@@ -1,12 +1,7 @@
-/*
- * Project: GenView
- *  
- */
 package org.caleydo.core.command.memento;
 
-//import org.caleydo.core.manager.IMementoManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * One base implementation of the IMemento interface.

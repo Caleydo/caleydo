@@ -1,45 +1,19 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
-
 package org.caleydo.core.parser.ascii.microarray;
 
+import java.io.BufferedReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
-//import java.util.ListIterator;
-//import java.util.LinkedList;
-//import java.util.Iterator;
-//import java.util.Vector;
-//import java.util.NoSuchElementException;
 
-import java.io.BufferedReader;
-//import java.io.FileReader;s
-import java.io.IOException;
-
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.StorageType;
+import org.caleydo.core.data.collection.parser.ParserTokenHandler;
+import org.caleydo.core.data.xml.IMementoXML;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.ascii.AbstractLoader;
 import org.caleydo.core.parser.ascii.IParserObject;
 import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
-
-//import java.util.*;
-
-//import prometheus.data.DataStorageInterface;
-//import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.StorageType;
-import org.caleydo.core.data.collection.ISet;
-//import org.caleydo.core.data.collection.IVirtualArray;
-//import org.caleydo.core.data.collection.virtualarray.VirtualArrayThreadSingleBlock;
-import org.caleydo.core.data.xml.IMementoXML;
-//import org.caleydo.core.data.collection.parser.CollectionSelectionSaxParserHandler;
-//import org.caleydo.core.data.collection.parser.ParserTokenType;
-import org.caleydo.core.data.collection.parser.ParserTokenHandler;
-//import org.caleydo.core.manager.ILoggerManager.LoggerType;
 
 
 /**
@@ -60,9 +34,6 @@ implements IMementoXML, IParserObject {
 	
 	protected LinkedList<String> LLString = null;
 	
-	
-	//protected IDataStorage refDataStorage;
-	
 	/**
 	 * Imports data from file to this set.
 	 * uses first storage and overwrites first selection.
@@ -81,17 +52,18 @@ implements IMementoXML, IParserObject {
 	 */
 	private final int iInitialParseTokenSize = 8;
 	
-//	/**
-//	 * Inistial size for the allocation of Gene-data sets
-//	 */
-//	private int iInitialArraylistSize = 39000;
-	
-	/*
+	/**
 	 * Defines index 
 	 */
 	protected int iIndexPerArray[];
 	
-	
+	/**
+	 * Constructor.
+	 * 
+	 * @param setGeneralManager
+	 * @param setFileName
+	 * @param enableMultipeThreads
+	 */
 	protected AMicroArrayLoader(final IGeneralManager setGeneralManager, 
 			final String setFileName,
 			final boolean enableMultipeThreads) {
@@ -115,16 +87,7 @@ implements IMementoXML, IParserObject {
 	 * @param refUseSet target set.
 	 */
 	public abstract void setTargetSet(ISet refUseSet);
-	
-	
-	
-//	public void setFileDataStorage(MultiDataInterface setDataStorage) {
-//		this.refDataStorage = setDataStorage;
-//	}
-//	
-//	public MultiDataInterface getFileDataStorage( ) {
-//		return this.refDataStorage;
-//	}
+
 	
 	/**
 	 * @param brFile input stream
@@ -133,79 +96,6 @@ implements IMementoXML, IParserObject {
 	protected abstract int loadDataParseFile( BufferedReader brFile,
 			final int iNumberOfLinesInFile )
 		throws IOException; 
-	
-	//protected abstract boolean copyDataToInternalDataStructures();
-
-	
-//	public boolean loadData() {			
-//		
-//		
-//		allocateStorageBufferForTokenPattern();
-//		
-//		int iNumberOfLinesInFile = -1;
-//		
-//		if ( bRequiredSizeOfReadableLines ) 
-//		{
-//			iNumberOfLinesInFile = 
-//				this.loadData_TestLinesToBeRead( this.getFileName() );
-//		}
-//		
-//		
-//		try {
-//		    BufferedReader brFile = 
-//			new BufferedReader( new FileReader( this.getFileName() ) );
-//		   
-//		    		
-//		    // sample line: 1110 Kybernetik
-//		    refGeneralManager.getSingelton().logMsg(
-//		    		"Read file \""+ 
-//				       this.getFileName() + "\" ...",
-//				       LoggerType.VERBOSE );
-//
-//		    this.loadDataParseFile( brFile, iNumberOfLinesInFile );
-//		    
-//		    if ( brFile != null ) {
-//		    	brFile.close();
-//		    }
-//		    
-//		   
-//		    
-//		    // sample line: E016|Zentrale Medienstelle|Media Centre|00
-//		    
-//		    refGeneralManager.getSingelton().logMsg(
-//		    		" read file \""+ 
-//				       this.getFileName() + "\"  ....  [DONE]",
-//				     LoggerType.STATUS );
-//
-//		    copyDataToInternalDataStructures();
-//		    
-//		    refGeneralManager.getSingelton().logMsg(
-//		    		"  Read file \""+ 
-//				       this.getFileName() + "\" .... copy to storage ...[DONE]",
-//				       LoggerType.VERBOSE );
-//		    
-//		}
-//		catch (IOException ioe) {
-//			refGeneralManager.getSingelton().logMsg(
-//					"MicroArrayLoader: IO-error line=[" + iLineInFile +
-//					"] while parsing: " + ioe.toString(),
-//					LoggerType.MINOR_ERROR );
-//		    
-//		    return false;
-//		    //System.exit(1);
-//		}
-//		catch (Exception ex) {
-//			refGeneralManager.getSingelton().logMsg(
-//					"MicroArrayLoader: ERROR line=[" + iLineInFile +
-//					"] while parsing: " + ex.toString(),
-//					LoggerType.ERROR );
-//			
-//			ex.printStackTrace();
-//		    return false;
-//		}		
-//		
-//		return true;
-//	}
 
 	
 	/** 

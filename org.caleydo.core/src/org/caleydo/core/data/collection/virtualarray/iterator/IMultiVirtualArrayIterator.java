@@ -1,17 +1,7 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
-
 package org.caleydo.core.data.collection.virtualarray.iterator;
 
-import java.lang.ArrayIndexOutOfBoundsException;
-import org.caleydo.core.data.collection.iterator.ICollectionIterator;
 import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.data.collection.iterator.ICollectionIterator;
 
 /**
  * Iterator handling several Selections at once.

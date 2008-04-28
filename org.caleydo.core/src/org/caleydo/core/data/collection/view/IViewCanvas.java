@@ -1,20 +1,9 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data.collection.view;
 
 import java.awt.Graphics;
 
 import org.caleydo.core.data.IUniqueManagedObject;
-//import org.caleydo.core.data.collection.ISet;
-//import prometheus.data.collection.BaseManagerItemInterface;
 import org.caleydo.core.data.xml.IMementoItemXML;
-//import org.caleydo.core.net.dwt.DNetEventComponentInterface;
 
 /**
  * Defines a set containing of selections and storage

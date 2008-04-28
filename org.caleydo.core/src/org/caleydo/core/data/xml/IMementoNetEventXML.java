@@ -1,19 +1,4 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data.xml;
-
-//import java.io.InputStream;
-// import org.xml.sax.InputSource;
-
-import org.caleydo.core.data.xml.IMementoXML;
-import org.caleydo.core.data.xml.IMementoItemXML;
-import org.caleydo.core.data.xml.IMementoCallbackXML;
 
 /**
  * Interface for loading and saving DNetEventComponentInterface objects to and from XML file.
@@ -27,11 +12,9 @@ extends IMementoXML, IMementoItemXML, IMementoCallbackXML {
 	
 	
 	/**
-	 * Creates a memento containing all infomation for this component.
+	 * Creates a memento containing all information for this component.
 	 * 
 	 * @return String containing a XML definition for this component
 	 */
-	public String createMementoXMLperObject();
-	
-		
+	public String createMementoXMLperObject();		
 }

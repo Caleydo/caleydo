@@ -1,30 +1,17 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.manager.data.virtualarray;
 
-import java.util.Vector;
 import java.util.Iterator;
+import java.util.Vector;
 
+import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.data.collection.virtualarray.VirtualArrayMultiBlock;
+import org.caleydo.core.data.collection.virtualarray.VirtualArraySingleBlock;
 import org.caleydo.core.manager.IGeneralManager;
-//import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.data.ACollectionManager;
 import org.caleydo.core.manager.data.IVirtualArrayManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
-//import org.caleydo.core.parser.handler.importer.ascii.MicroArrayLoader1Storage;
-
-import org.caleydo.core.data.collection.IVirtualArray;
-//import org.caleydo.core.data.collection.set.SetPlanarSimple;
-import org.caleydo.core.data.collection.virtualarray.VirtualArrayMultiBlock;
-import org.caleydo.core.data.collection.virtualarray.VirtualArraySingleBlock;
-//import org.caleydo.core.data.collection.IVirtualArray;
 
 /**
  * @author Michael Kalkusch
@@ -45,7 +32,7 @@ implements IVirtualArrayManager
 	}
 	
 	/**
-	 * 
+	 * Constructor.
 	 */
 	public VirtualArrayManager( IGeneralManager setGeneralManager,
 			final int iInitSizeContainer ) {

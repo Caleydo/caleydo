@@ -1,11 +1,3 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.command.data;
 
 
@@ -44,9 +36,6 @@ extends ACmdCreate_IdTargetLabel {
 	protected int iMultiRepeat = 1;
 	
 	protected int iMultiOffset = 0;
-
-	protected String sTokenPattern;
-
 
 	/**
 	 * Constructor.

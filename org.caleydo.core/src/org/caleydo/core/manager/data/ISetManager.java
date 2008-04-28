@@ -1,11 +1,3 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.manager.data;
 
 import java.util.Collection;
@@ -16,9 +8,7 @@ import org.caleydo.core.manager.IGeneralManager;
 
 
 /**
- * Manges all ISet's.
- * 
- * Note: the ISetManager must register itself to the singelton prometheus.app.SingeltonManager
+ * Manages all ISet's.
  * 
  * @author Michael Kalkusch
  *
@@ -26,7 +16,6 @@ import org.caleydo.core.manager.IGeneralManager;
 public interface ISetManager
 extends IGeneralManager
 {
-	
 	public ISet createSet( final SetType setType );
 	
 	public boolean deleteSet( ISet deleteSet );

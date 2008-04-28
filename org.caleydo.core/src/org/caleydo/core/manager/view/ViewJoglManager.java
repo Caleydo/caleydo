@@ -102,7 +102,7 @@ implements IViewGLCanvasManager {
 
 		super(generalManager, 
 				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT,
-				ManagerType.VIEW_GUI_SWT );
+				ManagerType.VIEW);
 
 		assert generalManager != null : "Constructor with null-pointer to singelton";
 

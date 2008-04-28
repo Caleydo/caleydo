@@ -1,23 +1,12 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data;
 
 import org.caleydo.core.manager.IGeneralManager;
-//import org.caleydo.core.manager.type.BaseManagerType;
-import org.caleydo.core.data.IUniqueManagedObject;
-import org.caleydo.core.data.AUniqueItem;
 
 /**
- * Abstract class providing methods defiend in IUniqueManagedObject.
+ * Abstract class providing methods defined in IUniqueManagedObject.
  * Stores reference to creator of item in private variable.
  * 
- * Same as org.caleydo.core.data.AUniqueManagedObject but GeneralManger may be reassinged.
+ * Same as org.caleydo.core.data.AUniqueManagedObject but GeneralManger may be reassigned.
  * 
  * @author Michael Kalkusch
  *
@@ -34,7 +23,7 @@ implements IUniqueManagedObject {
 	protected IGeneralManager refGeneralManager;
 	
 	/**
-	 * 
+	 * Constructor.
 	 */
 	protected AUniqueReManagedObject( int iSetCollectionId, IGeneralManager setGeneralManager ) {
 

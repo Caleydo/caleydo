@@ -1,35 +1,19 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data.collection.parser;
 
-//import java.lang.NullPointerException;
 import java.util.StringTokenizer;
 
-import org.xml.sax.Attributes;
-
+import org.caleydo.core.data.collection.StorageType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.parser.xml.sax.ASaxParserHandler;
 import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
-
-//import org.xml.sax.SAXException;
-//import org.xml.sax.SAXParseException;
-
-import org.caleydo.core.data.collection.StorageType;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.xml.sax.Attributes;
 
-
-//import org.caleydo.core.util.exception.PrometheusSaxParserException;
 
 /**
- * Parsing pices of information present in each DComponent derived from JComponent.
+ * Parsing pieces of information present in each DComponent derived from JComponent.
  * 
  * @author Michael Kalkusch
  * 

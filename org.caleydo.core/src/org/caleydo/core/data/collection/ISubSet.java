@@ -1,14 +1,5 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data.collection;
 
-import org.caleydo.core.data.collection.ISet;
 
 /**
  * @author Michael Kalkusch

@@ -1,24 +1,14 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.parser.xml.sax;
 
-//import java.lang.NullPointerException;
+import org.caleydo.core.data.xml.IMementoCallbackXML;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.xml.sax.Attributes;
-import org.xml.sax.helpers.DefaultHandler;
+import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
-import org.xml.sax.Locator;
+import org.xml.sax.helpers.DefaultHandler;
 import org.xml.sax.helpers.LocatorImpl;
-
-import org.caleydo.core.data.xml.IMementoCallbackXML;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Base class for SAX Parser containing several useful methods.

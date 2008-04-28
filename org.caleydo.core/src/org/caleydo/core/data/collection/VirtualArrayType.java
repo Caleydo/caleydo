@@ -1,21 +1,11 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data.collection;
 
-import org.caleydo.core.data.collection.ICollectionType;
 
 /**
  * Types of selections.
  * 
  * @author Michael Kalkusch
  *
- * @see prometheus.data.set.SelectionInterface
  */
 public enum VirtualArrayType
 implements ICollectionType <VirtualArrayType> {
@@ -23,7 +13,6 @@ implements ICollectionType <VirtualArrayType> {
 	VIRTUAL_ARRAY_ABSTRACT(false,
 			"Abstract IVirtualArray, that has not been instaniated"),
 	
-	// --- instanitated Virtual Array's ---
 	VIRTUAL_ARRAY_SINGLE_BLOCK(true,
 			"Virtual Array of a single block"),
 	

@@ -34,14 +34,6 @@ extends IUniqueObject {
 		throws CaleydoRuntimeException;
 	
 	public abstract void setParameterHandler( IParameterHandler refParameterHandler);
-		
-	/**
-	 * Tests, if two commands are of the same type.
-	 * 
-	 * @param compareToObject
-	 * @return TRUE if both commands are of the same type.
-	 */
-	abstract boolean isEqualType(ICommand compareToObject);
 	
 	/**
 	 * Get type information on this command.

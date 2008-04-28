@@ -1,17 +1,5 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data.xml;
 
-//import java.io.InputStream;
-// import org.xml.sax.InputSource;
-
-//import prometheus.data.manager.GeneralManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
@@ -19,25 +7,20 @@ import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
  * Interface for loading and saving DNetEventComponentInterface objects to and from XML file.
  * 
  * @author Michael Kalkusch
- * @see prometheus.net.dwt.DNetEventComponentInterface
- * 
- * @see prometheus.data.xml.IMementoNetEventXML
- * @see prometheus.data.xml.IMementoItemXML
- * @see prometheus.data.xml.IMementoXML
  */
 public interface IMementoCallbackXML {
 	
 	/**
-	 * Defines a callback, that can be triggert by the parser once a cetain tag is reached.
+	 * Defines a callback, that can be triggered by the parser once a certain tag is reached.
 	 * 
 	 * Note: this is used to notify the end of a tag in most cases, 
 	 * to be able to create an object with the information provided.
 	 * 
-	 * This callback is triggert via the reference passed to the parser in the constructor.
+	 * This callback is triggered via the reference passed to the parser in the constructor.
 	 * 
 	 * @param type type of object
 	 * @param tag_causes_callback Tag that cased the callback
-	 * @param details additional inforamtion
+	 * @param details additional information
 	 * @param refSaxHandler SaxHandler with state for object from XML file
 	 */
 	public void callbackForParser( final ManagerObjectType type,

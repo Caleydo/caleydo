@@ -1,11 +1,3 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.net.protocol.interaction;
 
 import java.awt.Component;
@@ -25,8 +17,6 @@ public class SuperMouseEvent extends MouseEvent
 	 * Requested by interface Serializable
 	 */ 
 	static final long serialVersionUID = 80008000;
-	
-	//private MouseEvent cloneMouseEvent = null;
 	
 	private boolean bIsDragged = false;
 	

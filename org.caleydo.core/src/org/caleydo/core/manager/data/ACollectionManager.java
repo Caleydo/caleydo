@@ -1,11 +1,3 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.manager.data;
 
 import java.util.Hashtable;
@@ -14,15 +6,11 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.base.AAbstractManager;
 import org.caleydo.core.manager.type.ManagerType;
 
-//import prometheus.manager.SetManager;
-//import prometheus.manager.StorageManager;
-//import org.caleydo.core.util.exception.CaleydoRuntimeException;
-
 /**
  * Base interface for all manger objects.
  * 
  * Note: each ACollectionManager like SelectionManger, ISetManager and IStorageManager must register 
- * itself to the singelton prometheus.app.SingeltonManager
+ * itself to the singleton prometheus.app.SingeltonManager
  * 
  * @author Michael Kalkusch
  *
@@ -41,7 +29,13 @@ public abstract class ACollectionManager
 	 */
 	private Hashtable<Integer,Integer> hashId2IndexLookup;
 	
-	
+	/**
+	 * Constructor.
+	 * 
+	 * @param setSingeltonManager
+	 * @param iUniqueId_type_offset
+	 * @param setManagerType
+	 */
 	protected ACollectionManager( final IGeneralManager setSingeltonManager,
 			final int iUniqueId_type_offset,
 			final ManagerType setManagerType ) {

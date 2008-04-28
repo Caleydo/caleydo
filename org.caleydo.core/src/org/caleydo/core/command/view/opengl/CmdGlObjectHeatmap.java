@@ -10,7 +10,6 @@ import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.system.StringConversionTool;
-import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatmapOld;
 import org.caleydo.core.view.opengl.canvas.histogram.GLCanvasHistogram2D;
 
 /**

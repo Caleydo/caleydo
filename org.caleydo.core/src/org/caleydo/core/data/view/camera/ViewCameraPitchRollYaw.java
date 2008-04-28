@@ -1,19 +1,7 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data.view.camera;
-
-import java.lang.IndexOutOfBoundsException;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
-
-import org.caleydo.core.data.view.camera.ViewCameraBase;
 
 
 /**

@@ -1,11 +1,3 @@
-/*
- * Project: GenView
- * 
- * Author: Marc Streit
- * 
- * Creation date: 26-07-2006
- *  
- */
 package org.caleydo.core.view.swt.widget;
 
 import org.eclipse.swt.widgets.Composite;
@@ -13,7 +5,13 @@ import org.eclipse.swt.widgets.Composite;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.view.swt.ISWTWidget;
 
-abstract public class ASWTWidget 
+/**
+ * Base class for SWT views.
+ * 
+ * @author Marc Streit
+ *
+ */
+public abstract class ASWTWidget 
 implements IUniqueObject, ISWTWidget {
 	
 	/**

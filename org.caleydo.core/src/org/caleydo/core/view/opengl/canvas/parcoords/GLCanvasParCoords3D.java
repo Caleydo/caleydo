@@ -1116,11 +1116,12 @@ extends AGLCanvasStorageBasedView
 			final int iExternalID,
 			final Pick pick)
 	{
-		// Check if selection occurs in the pool layer of the bucket
-
-		if (glToolboxRenderer.getContainingLayer() != null)
-			if (glToolboxRenderer.getContainingLayer().getCapacity() >= 10)
-				return;
+//		// Check if selection occurs in the pool or memo layer of the bucket
+//		if (containedHierarchyLayer != null 
+//				&& containedHierarchyLayer.getCapacity() >= 5)
+//		{
+//			return;
+//		}
 		
 		ArrayList<Integer> iAlOldSelection;
 		

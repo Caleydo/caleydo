@@ -1,11 +1,3 @@
-/*
- * Project: GenView
- * 
- * Author: Marc Streit
- * 
- *  creation date: 03-07-2006
- *  
- */
 package org.caleydo.core.test.soap.kegg;
 
 import keggapi.KEGGLocator;
@@ -31,17 +23,3 @@ class KEGGQueryTest {
 		}
 	}
 }
-
-/*
- * import keggapi.*;
- * 
- * class KEGG_Test { public static void main(String[] args) throws Exception {
- * KEGGLocator locator = new KEGGLocator(); KEGGPortType serv =
- * locator.getKEGGPort();
- * 
- * String query = "eco:b1002"; String[] results =
- * serv.get_genes_by_pathway(query);
- * 
- * System.out.println("here we go..."); for (int i = 0; i < results.length; i++) {
- * System.out.println(results[i]); } } }
- */

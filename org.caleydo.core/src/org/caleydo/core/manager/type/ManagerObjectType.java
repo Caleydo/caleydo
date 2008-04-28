@@ -114,36 +114,9 @@ public enum ManagerObjectType {
 
 	VIEW_NEW_FRAME(ManagerType.VIEW),
 	
-//	Deprecated
-	
-//	VIEW_HISTOGRAM2D(ManagerType.VIEW),
-//	
-//	VIEW_HEATMAP2D(ManagerType.VIEW),
-//	
-//	/** Create new JOGL canvas with a single GLEventListener */
-//	VIEW_JOGL_CANVAS_SINGLE(ManagerType.VIEW),
-//	
-//	/** Create new JOGL canvas with a multiple GLEventListener */
-//	VIEW_JOGL_CANVAS_MULTIPLE(ManagerType.VIEW),
-//	
-//	VIEW_JOGL_HISTOGRAM(ManagerType.VIEW),
-//
-//	
-//	/** Creates a new internal frame */
-//	VIEW_NEW_IFRAME(ManagerType.VIEW),
-	
-// 	VIEW_OPENGL_CANVAS(ManagerType.VIEW),
-//	VIEW_OPENGL_TEST_TRIANGLE(ManagerType.VIEW),
-//	VIEW_OPENGL_HEATMAP(ManagerType.VIEW),
-//	VIEW_OPENGL_SCATTERPLOT2D(ManagerType.VIEW),
-//	VIEW_SWT_SCATTERPLOT2D(ManagerType.VIEW),
-//	VIEW_SWT_SCATTERPLOT3D(ManagerType.VIEW),
-	
-	
 	/*
 	 * GUI_COMPONENT
 	 */
-	
 	GUI_AWT(ManagerType.VIEW_GUI_AWT),
 	
 	GUI_SWT(ManagerType.VIEW_GUI_SWT),

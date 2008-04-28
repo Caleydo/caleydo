@@ -1,18 +1,4 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data.collection.virtualarray;
-
-import java.lang.NullPointerException;
-
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
 import org.caleydo.core.data.collection.IVirtualArray;
 import org.caleydo.core.data.collection.VirtualArrayType;
@@ -21,6 +7,9 @@ import org.caleydo.core.data.collection.thread.lock.ICollectionLock;
 import org.caleydo.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import org.caleydo.core.data.collection.virtualarray.iterator.VirtualArraySingleBlockIterator;
 import org.caleydo.core.data.xml.IMementoItemXML;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
 /**
  * @author Michael Kalkusch
@@ -33,7 +22,7 @@ implements IVirtualArray, IMementoItemXML
 
 	
 	/**
-	 * 
+	 * Constructor.
 	 */
 	public VirtualArraySingleBlock( final int iCollectionId, 
 			final IGeneralManager refBaseManager,

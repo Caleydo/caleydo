@@ -1,14 +1,10 @@
-/*
- * Project: GenView
- *  
- */
 package org.caleydo.core.parser.xml.sax;
 
 import org.xml.sax.Attributes;
 
 
 /**
- * Iterface for all all D*Components parser using SAX.
+ * Interface for all all D*Components parser using SAX.
  * 
  * @author Michael Kalkusch
  *
@@ -27,7 +23,7 @@ public interface ISaxParserHandler {
 	public abstract void reset();
 
 	/**
-	 * startElement() for pareser callbacks
+	 * startElement() for parser callbacks
 	 * 
 	 * @see org.xml.sax.helpers.DefaultHandler#startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 * @see prometheus.net.dwt.swing.parser.ASaxParserHandler#startElement(String, String, String, Attributes)

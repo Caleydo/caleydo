@@ -1,22 +1,18 @@
-/*
- * Project: GenView
- * 
- * Author: Marc Streit
- * 
- *  creation date: 03-07-2006
- *  
- */
 package org.caleydo.core.test.jgraph.kegg;
-
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
-
-//import java.lang.Integer;
-
-public class KgmlSaxHandler extends DefaultHandler 
+/**
+ * 
+ * Kgml test sax parser
+ * 
+ * @author Marc Streit
+ *
+ */
+public class KgmlSaxHandler 
+extends DefaultHandler 
 {
 	private PathwayGraphBuilder pathwayGraphBuilder;
 	

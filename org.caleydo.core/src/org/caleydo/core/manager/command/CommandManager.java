@@ -1,34 +1,23 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.manager.command;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
-//import java.util.Iterator;
-
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.base.AAbstractManager;
-import org.caleydo.core.manager.command.factory.CommandFactory;
-import org.caleydo.core.manager.command.factory.ICommandFactory;
-//import org.caleydo.core.manager.singelton.SingeltonManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.manager.type.ManagerType;
-import org.caleydo.core.parser.parameter.IParameterHandler;
-import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
 
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.command.ICommandListener;
 import org.caleydo.core.command.queue.ICommandQueue;
+import org.caleydo.core.manager.ICommandManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.command.factory.CommandFactory;
+import org.caleydo.core.manager.command.factory.ICommandFactory;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
 
 /**
  * @author Michael Kalkusch
@@ -64,7 +53,7 @@ public class CommandManager
 	
 	
 	/**
-	 * 
+	 * Constructor.
 	 */
 	public CommandManager( IGeneralManager setGeneralManager ) {
 		super( setGeneralManager, 

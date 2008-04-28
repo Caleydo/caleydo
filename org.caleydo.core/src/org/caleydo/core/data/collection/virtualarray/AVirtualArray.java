@@ -1,24 +1,15 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data.collection.virtualarray;
 
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.event.EventPublisher;
-//import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.data.collection.IMetaData;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IVirtualArray;
 import org.caleydo.core.data.collection.thread.impl.ACollectionThreadItem;
 import org.caleydo.core.data.collection.thread.lock.ICollectionLock;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.event.EventPublisher;
 
 /**
- * Abstract calss for all virtual arrays.
+ * Abstract calls for all virtual arrays.
  * Implements several methods, that are suitable for all virtual arrays.
  * 
  * @author Michael Kalkusch

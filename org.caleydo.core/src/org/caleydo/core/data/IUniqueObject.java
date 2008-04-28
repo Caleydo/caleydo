@@ -1,16 +1,4 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data;
-
-//import prometheus.manager.BaseManagerType;
-//import prometheus.manager.GeneralManager;
-
 
 /**
  * Interface to access prometheus.data.manager.CollectionManager
@@ -32,13 +20,4 @@ public interface IUniqueObject {
 	 * @return unique Id
 	 */
 	public int getId();
-	
-//	/**
-//	 * Get the type of this object.
-//	 * 
-//	 * @return type of this object
-//	 */
-//	//public ManagerObjectType getBaseType();
-
-	
 }

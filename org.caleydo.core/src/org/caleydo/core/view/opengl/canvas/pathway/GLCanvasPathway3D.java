@@ -68,11 +68,11 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private PathwayVertexGraphItemRep selectedVertex;
 
-	/**
-	 * Hash map stores which pathways contain the currently selected vertex and
-	 * how often this vertex is contained.
-	 */
-	private HashMap<Integer, Integer> refHashPathwayContainingSelectedVertex2VertexCount;
+//	/**
+//	 * Hash map stores which pathways contain the currently selected vertex and
+//	 * how often this vertex is contained.
+//	 */
+//	private HashMap<Integer, Integer> refHashPathwayContainingSelectedVertex2VertexCount;
 	
 	/**
 	 * Own texture manager is needed for each GL context, 
@@ -101,7 +101,7 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		refGLPathwayManager = new GLPathwayManager(generalManager);
 		refHashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
-		refHashPathwayContainingSelectedVertex2VertexCount = new HashMap<Integer, Integer>();
+//		refHashPathwayContainingSelectedVertex2VertexCount = new HashMap<Integer, Integer>();
 		
 		selectionManager = generalManager.getSingleton().getViewGLCanvasManager().getSelectionManager();
 	

@@ -1,18 +1,5 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data.collection;
 
-
-//import org.caleydo.core.data.IUniqueManagedObject;
-import org.caleydo.core.data.collection.IMetaDataHandler;
-//import org.caleydo.core.data.collection.CollectionInterface;
-import org.caleydo.core.data.collection.VirtualArrayType;
 import org.caleydo.core.data.collection.thread.ICollectionThreadObject;
 import org.caleydo.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import org.caleydo.core.data.xml.IMementoItemXML;

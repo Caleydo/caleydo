@@ -1,11 +1,3 @@
-/*
- * Project: GenView
- * 
- * Author: Marc Streit
- * 
- *  creation date: 03-07-2006
- *  
- */
 package org.caleydo.core.test.jgraph.kegg;
 
 import java.io.File;

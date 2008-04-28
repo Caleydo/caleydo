@@ -1,11 +1,3 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data.collection.virtualarray.iterator;
 
 import org.caleydo.core.data.collection.IVirtualArray;
@@ -13,9 +5,9 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
- * Iterator for Selecion VirtualArraySingleBlock
+ * Iterator for Selection VirtualArraySingleBlock
  * 
- * Desing Pattern "Iterator"
+ * Design Pattern "Iterator"
  * 
  * @author Michael Kalkusch
  *

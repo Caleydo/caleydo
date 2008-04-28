@@ -1,18 +1,9 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.manager;
 
 import org.caleydo.core.command.CommandQueueSaxType;
-//import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.ICommand;
-import org.caleydo.core.command.ICommandListener;
 import org.caleydo.core.command.ICommandActionListener;
+import org.caleydo.core.command.ICommandListener;
 import org.caleydo.core.command.queue.ICommandQueue;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
@@ -28,13 +19,6 @@ import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
  */
 public interface ICommandManager 
 extends ICommandActionListener, IGeneralManager {
-
-	//public ICommand createCommand( final ManagerObjectType useSelectionType );
-	
-//	/**
-//	 * Create a new command using a String.
-//	 */
-//	public ICommand createCommand( final String useSelectionType );
 	
 	/**
 	 * Create a new CommandQueue object.
@@ -74,9 +58,6 @@ extends ICommandActionListener, IGeneralManager {
 	 * @return
 	 */
 	public ICommand createCommandByType(final CommandQueueSaxType cmdType);
-	
-//	public ICommand createCommand(final CommandType cmdType, 
-//			String details);
 
 	
 	/**
@@ -140,5 +121,4 @@ extends ICommandActionListener, IGeneralManager {
 	public void runUndoCommand( ICommand runCmd );
 	
 	public void addUndoRedoViewRep ( UndoRedoViewRep refUndoRedoViewRep);
-	
 }

@@ -1,31 +1,19 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data.collection.set;
 
 import java.util.Iterator;
 import java.util.Vector;
-//import java.util.Iterator;
-
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
 import org.caleydo.core.data.collection.IMetaData;
-import org.caleydo.core.data.collection.IVirtualArray;
-import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.IVirtualArray;
 import org.caleydo.core.data.collection.SetType;
-//import org.caleydo.core.data.collection.parser.CollectionSetParseSaxHandler;
-import org.caleydo.core.data.collection.set.ASetRawData;
 import org.caleydo.core.data.collection.thread.lock.ICollectionLock;
 import org.caleydo.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import org.caleydo.core.data.collection.virtualarray.iterator.VirtualArrayVectorIterator;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
 /**
  * @author Michael Kalkusch

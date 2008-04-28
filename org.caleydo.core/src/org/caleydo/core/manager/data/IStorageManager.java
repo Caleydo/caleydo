@@ -1,17 +1,8 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.manager.data;
 
 import java.util.LinkedList;
 
 import org.caleydo.core.data.collection.IStorage;
-//import org.caleydo.core.data.collection.StorageType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 
@@ -26,7 +17,6 @@ import org.caleydo.core.manager.type.ManagerObjectType;
 public interface IStorageManager
 extends IGeneralManager
 {
-	
 	public IStorage createStorage( final ManagerObjectType useStorageType );
 	
 	public boolean deleteStorage( IStorage deleteStorage );
@@ -38,7 +28,4 @@ extends IGeneralManager
 	public IStorage[] getAllStorageItems();
 	
 	public LinkedList<IStorage> getAllStorageItemsVector();
-	
-	//public ManagerObjectType getManagerType();
-	
 }

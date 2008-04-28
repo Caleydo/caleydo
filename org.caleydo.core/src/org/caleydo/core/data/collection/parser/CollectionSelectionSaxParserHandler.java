@@ -1,14 +1,5 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data.collection.parser;
 
-//import java.lang.NullPointerException;
 import java.util.StringTokenizer;
 
 import org.xml.sax.Attributes;
@@ -18,12 +9,9 @@ import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.parser.xml.sax.ASaxParserHandler;
 import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
-//import org.xml.sax.SAXException;
-//import org.xml.sax.SAXParseException;
-
 
 /**
- * Parsing pices of information present in each Colleciton.
+ * Parsing pieces of information present in each Colleciton.
  * 
  * @author Michael Kalkusch
  * 

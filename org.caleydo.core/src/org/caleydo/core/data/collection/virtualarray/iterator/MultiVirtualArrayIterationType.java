@@ -1,14 +1,5 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.data.collection.virtualarray.iterator;
 
-//import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.util.ICaleydoDefaultType;
 
 /**

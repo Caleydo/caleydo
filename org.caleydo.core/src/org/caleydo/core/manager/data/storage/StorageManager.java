@@ -1,29 +1,17 @@
-/*
- * Project: GenView
- * 
- * Author: Michael Kalkusch
- * 
- *  creation date: 18-05-2005
- *  
- */
 package org.caleydo.core.manager.data.storage;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
-//import java.util.Iterator;
 import java.util.LinkedList;
 
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.storage.FlatThreadStorageSimple;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.data.ACollectionManager;
 import org.caleydo.core.manager.data.IStorageManager;
-import org.caleydo.core.manager.type.ManagerType;
 import org.caleydo.core.manager.type.ManagerObjectType;
-
-import org.caleydo.core.data.collection.IStorage;
-//import org.caleydo.core.data.collection.StorageType;
-//import org.caleydo.core.data.collection.set.SetPlanarSimple;
-import org.caleydo.core.data.collection.storage.FlatThreadStorageSimple;
+import org.caleydo.core.manager.type.ManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
@@ -45,7 +33,7 @@ implements IStorageManager {
 	protected Hashtable<IStorage,Integer> vecStorage_reverse;
 	
 	/**
-	 * 
+	 * Constructor.
 	 */
 	public StorageManager( IGeneralManager setGeneralManager,
 			final int iInitSizeContainer ) {
