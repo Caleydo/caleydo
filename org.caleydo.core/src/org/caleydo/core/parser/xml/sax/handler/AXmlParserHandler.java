@@ -1,16 +1,11 @@
-/**
- * 
- */
 package org.caleydo.core.parser.xml.sax.handler;
-
-//import org.xml.sax.Locator;
-import org.xml.sax.helpers.DefaultHandler;
 
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * @author Michael Kalkusch
@@ -22,7 +17,7 @@ implements IXmlParserHandler
 {
 	private boolean bDestroyHandlerAfterClosingTag = false;
 		
-	protected final IGeneralManager refGeneralManager;
+	protected final IGeneralManager generalManager;
 	
 	protected final IXmlParserManager refXmlParserManager;
 	
@@ -31,10 +26,10 @@ implements IXmlParserHandler
 	/**
 	 * 
 	 */
-	protected AXmlParserHandler( final IGeneralManager refGeneralManager,
+	protected AXmlParserHandler( final IGeneralManager generalManager,
 			final IXmlParserManager refXmlParserManager )
 	{
-		this.refGeneralManager = refGeneralManager;
+		this.generalManager = generalManager;
 		this.refXmlParserManager = refXmlParserManager;
 	}
 
@@ -85,7 +80,7 @@ implements IXmlParserHandler
 	 */
 	public void initHandler()
 	{
-		refGeneralManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				this.getClass().getSimpleName() + 
 				": initHandler", LoggerType.VERBOSE_EXTRA );
 	}
@@ -97,7 +92,7 @@ implements IXmlParserHandler
 	 */
 	public void destroyHandler()
 	{
-		refGeneralManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				this.getClass().getSimpleName() + 
 				": destroyHandler", 
 				LoggerType.VERBOSE );

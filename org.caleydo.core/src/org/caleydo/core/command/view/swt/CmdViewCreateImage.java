@@ -44,7 +44,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	public void doCommand() throws CaleydoRuntimeException {
 		
 		IViewManager viewManager = ((IViewManager) generalManager
-				.getManagerByBaseType(ManagerObjectType.VIEW));
+				.getManagerByObjectType(ManagerObjectType.VIEW));
 		
 		ImageViewRep imageView = (ImageViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_IMAGE,

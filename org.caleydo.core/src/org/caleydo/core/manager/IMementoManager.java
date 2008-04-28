@@ -13,7 +13,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  *
  */
 public interface IMementoManager 
-extends IGeneralManager
+extends IManager
 {
 
 	/**

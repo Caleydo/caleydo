@@ -3,16 +3,6 @@ package org.caleydo.core.view.swt.data.explorer;
 import java.util.Collection;
 import java.util.Iterator;
 
-import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
-//import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Text;
-
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.IVirtualArray;
@@ -20,11 +10,7 @@ import org.caleydo.core.data.collection.SetType;
 import org.caleydo.core.data.collection.set.selection.ISetSelection;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
-import org.caleydo.core.manager.data.ISetManager;
-import org.caleydo.core.manager.data.IStorageManager;
-import org.caleydo.core.manager.data.IVirtualArrayManager;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
-import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.view.AViewRep;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
@@ -33,6 +19,14 @@ import org.caleydo.core.view.swt.data.explorer.model.AModel;
 import org.caleydo.core.view.swt.data.explorer.model.DataCollectionModel;
 import org.caleydo.core.view.swt.data.explorer.model.SelectionModel;
 import org.caleydo.core.view.swt.data.explorer.model.StorageModel;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 
 public class DataExplorerViewRep 
 extends AViewRep 
@@ -153,8 +147,7 @@ implements IView, IMediatorReceiver {
 		rootViewModel = new DataCollectionModel(0, "VIEW");
 		rootModel.add(rootViewModel);
 
-		allSetItems = ((ISetManager) generalManager
-				.getManagerByBaseType(ManagerObjectType.SET)).getAllSetItems();
+		allSetItems = generalManager.getSetManager().getAllSetItems();
 		
 		try
 		{
@@ -219,32 +212,25 @@ implements IView, IMediatorReceiver {
 									currentSetModel.add(currentStorageModel);
 								} else
 								{
-									generalManager
-											.getSingleton()
-											.getLoggerManager()
-											.logMsg(
+									generalManager.logMsg(
 													"Error in DataExplorerViewRep currentStorage==null!",
 													LoggerType.MINOR_ERROR);
 								}
 							}
 						} catch (Exception e)
 						{
-							System.err
-									.println("Error in DataExplorerViewRep while (IStorage) getStorageByDim()..");
+							System.err.println("Error in DataExplorerViewRep while (IStorage) getStorageByDim()..");
 							throw new RuntimeException(e.toString());
 						}
 					} // for ...
 				} // if
 				else
 				{
-					System.err
-							.println("Error in DataExplorerViewRep currentSet==null !");
+					System.err.println("Error in DataExplorerViewRep currentSet==null !");
 				}
 			}
 
-			allStorageItems = ((IStorageManager) generalManager
-					.getManagerByBaseType(ManagerObjectType.STORAGE))
-					.getAllStorageItems();
+			allStorageItems = generalManager.getStorageManager().getAllStorageItems();
 
 			try
 			{
@@ -265,9 +251,7 @@ implements IView, IMediatorReceiver {
 				throw new RuntimeException(e.toString());
 			}
 
-			allSelectionItems = ((IVirtualArrayManager) generalManager
-					.getManagerByBaseType(ManagerObjectType.VIRTUAL_ARRAY))
-					.getAllVirtualArrayItems();
+			allSelectionItems = generalManager.getVirtualArrayManager().getAllVirtualArrayItems();
 
 			try
 			{
@@ -349,7 +333,7 @@ implements IView, IMediatorReceiver {
 		
 		//int triggerId = ((IVirtualArray) eventTrigger).getId();
 		
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				"Data Explorer update called by " + eventTrigger.getClass().getSimpleName(),
 				LoggerType.VERBOSE);
 
@@ -370,7 +354,7 @@ implements IView, IMediatorReceiver {
 		
 		final ISetSelection refSetSelection = (ISetSelection)updatedSet;
 		
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				"Data Explorer selection update called by " 
 				+ eventTrigger.getClass().getSimpleName(),
 				LoggerType.VERBOSE);

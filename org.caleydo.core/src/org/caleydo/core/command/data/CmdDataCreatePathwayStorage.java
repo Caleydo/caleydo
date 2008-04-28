@@ -64,7 +64,7 @@ extends ACmdCreate_IdTargetLabel {
 		
 		while (iterPathwayIDs.hasNext()) {
 
-//			refGeneralManager.getSingleton().logMsg(
+//			generalManager.logMsg(
 //					"Load pathway with ID " +iPathwayId,
 //					LoggerType.VERBOSE);
 			
@@ -87,11 +87,11 @@ extends ACmdCreate_IdTargetLabel {
 				sPathwayFilePath = "hsa0" + Integer.toString(iPathwayId);
 			}
 			
-			sPathwayFilePath = generalManager.getSingleton()
+			sPathwayFilePath = generalManager
 					.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.KEGG).getXMLPath()
 							+ sPathwayFilePath + ".xml";			
 			
-			generalManager.getSingleton().
+			generalManager.
 				getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
 		}
 	}
@@ -106,7 +106,7 @@ extends ACmdCreate_IdTargetLabel {
 		assert llKEGGPathwayIDs != null : "Probably this doCommand() was already executed once!";
 		
 		IStorageManager refStorageManager = 
-			generalManager.getSingleton().getStorageManager();
+			generalManager.getStorageManager();
 		
 		IStorage newObject = (IStorage) refStorageManager.createStorage(
 				ManagerObjectType.STORAGE_FLAT );
@@ -156,7 +156,7 @@ extends ACmdCreate_IdTargetLabel {
 				newObject.getId(), 
 				newObject.getBaseType() );
 
-		generalManager.getSingleton().logMsg( 
+		generalManager.logMsg( 
 				"DO new Pathway STO: " + 
 				newObject.toString(),
 				LoggerType.VERBOSE );

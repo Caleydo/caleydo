@@ -6,11 +6,11 @@ import java.util.Set;
 
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.base.AManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
-import org.caleydo.util.graph.IGraph;
 
 /**
  * 
@@ -27,7 +27,7 @@ import org.caleydo.util.graph.IGraph;
  *
  */
 public class SelectionManager  
-extends AAbstractManager  {
+extends AManager  {
 
 	HashMap<Integer, ArrayList<SelectedElementRep>> hashSelectedElementID2SelectedElementReps;
 	
@@ -152,5 +152,41 @@ extends AAbstractManager  {
 	public void clear() 
 	{		
 		hashSelectedElementID2SelectedElementReps.clear();
+	}
+
+	@Override
+	public Object getItem(int itemId) {
+
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean hasItem(int itemId) {
+
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean registerItem(Object registerItem, int itemId,
+			ManagerObjectType type) {
+
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int size() {
+
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean unregisterItem(int itemId, ManagerObjectType type) {
+
+		// TODO Auto-generated method stub
+		return false;
 	}	
 }

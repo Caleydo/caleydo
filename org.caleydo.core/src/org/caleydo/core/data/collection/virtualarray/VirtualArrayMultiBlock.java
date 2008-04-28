@@ -28,10 +28,10 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 	 * @param setRefBaseManager
 	 */
 	public VirtualArrayMultiBlock(int iSetCollectionId,
-			final IGeneralManager setRefBaseManager,
+			final IGeneralManager generalManager,
 			final ICollectionLock setCollectionLock) {
 
-		super(iSetCollectionId, setRefBaseManager, setCollectionLock);
+		super(iSetCollectionId, generalManager, setCollectionLock);
 	}
 
 	/* (non-Javadoc)
@@ -173,11 +173,11 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 			setMultiOffset(parser.getXML_DataMultiOffset());
 			setMultiRepeat(parser.getXML_DataMultiRepeat());
 
-			getManager().unregisterItem(getId(),
-					ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK);
-
-			getManager().registerItem(this, parser.getXML_DataComponent_Id(),
-					ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK);
+//			generalManager.getVirtualArrayManager().unregisterItem(getId(),
+//					ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK);
+//
+//			getManager().registerItem(this, parser.getXML_DataComponent_Id(),
+//					ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK);
 
 			setId(parser.getXML_DataComponent_Id());
 

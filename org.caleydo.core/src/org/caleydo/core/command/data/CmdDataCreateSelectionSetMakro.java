@@ -95,11 +95,11 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	protected void createSelectionVirtualArray() {
 		
 		// Retrieve new ID
-		iSelectionVirtualArrayId = generalManager.getSingleton().getVirtualArrayManager()
+		iSelectionVirtualArrayId = generalManager.getVirtualArrayManager()
 			.createId(ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK);
 		
 		CmdDataCreateVirtualArray createdCommand = 
-			(CmdDataCreateVirtualArray) generalManager.getSingleton().getCommandManager()
+			(CmdDataCreateVirtualArray) generalManager.getCommandManager()
 				.createCommandByType(CommandQueueSaxType.CREATE_VIRTUAL_ARRAY);
 		
 		createdCommand.setAttributes(iSelectionVirtualArrayId, 3, 0, 0, 1);	
@@ -113,11 +113,11 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	protected void createSelectionIdStorage() {
 
 		// Retrieve new ID
-		iSelectionIdStorageId = generalManager.getSingleton().getStorageManager()
+		iSelectionIdStorageId = generalManager.getStorageManager()
 			.createId(ManagerObjectType.STORAGE_FLAT);
 				
 		CmdDataCreateStorage createdCommand = 
-			(CmdDataCreateStorage) generalManager.getSingleton().getCommandManager()
+			(CmdDataCreateStorage) generalManager.getCommandManager()
 				.createCommandByType(CommandQueueSaxType.CREATE_STORAGE);
 
 		// The storage will be empty after creation.
@@ -133,11 +133,11 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	protected void createSelectionGroupStorage() {
 	
 		// Retrieve new ID
-		iSelectionGroupStorageId = generalManager.getSingleton().getStorageManager()
+		iSelectionGroupStorageId = generalManager.getStorageManager()
 			.createId(ManagerObjectType.STORAGE_FLAT);
 			
 		CmdDataCreateStorage createdCommand = 
-			(CmdDataCreateStorage) generalManager.getSingleton().getCommandManager()
+			(CmdDataCreateStorage) generalManager.getCommandManager()
 				.createCommandByType(CommandQueueSaxType.CREATE_STORAGE);
 
 		// The storage will be empty after creation.
@@ -154,11 +154,11 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	protected void createSelectionOptionalStorage() {
 
 		// Retrieve new ID
-		iSelectionOptionalStorageId = generalManager.getSingleton().getStorageManager()
+		iSelectionOptionalStorageId = generalManager.getStorageManager()
 			.createId(ManagerObjectType.STORAGE_FLAT);
 			
 		CmdDataCreateStorage createdCommand = 
-			(CmdDataCreateStorage) generalManager.getSingleton().getCommandManager()
+			(CmdDataCreateStorage) generalManager.getCommandManager()
 				.createCommandByType(CommandQueueSaxType.CREATE_STORAGE);
 
 		// The storage will be empty after creation.
@@ -176,7 +176,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	protected void createSelectionSet() {
 			
 		CmdDataCreateSet createdCommand = 
-			(CmdDataCreateSet) generalManager.getSingleton().getCommandManager()
+			(CmdDataCreateSet) generalManager.getCommandManager()
 				.createCommandByType(CommandQueueSaxType.CREATE_SET_DATA);
 
 		StringBuffer stBuffer = new StringBuffer();

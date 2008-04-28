@@ -4,8 +4,7 @@
 package org.caleydo.core.manager.event.mediator;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
+import org.caleydo.core.manager.IGeneralManager;
 
 /**
  * Ignore one special SelectionSet and let all other SelectionSet's pass when calling
@@ -25,11 +24,11 @@ extends LockableMediator {
 	 * @param refEventPublisher
 	 * @param iMediatorId
 	 */
-	public LockableIngoreFilterMediator(IEventPublisher refEventPublisher,
+	public LockableIngoreFilterMediator(final IGeneralManager generalManager,
 			int iMediatorId,
 			final ISet setExclusiveSet) {
 
-		super(refEventPublisher, iMediatorId, MediatorUpdateType.MEDIATOR_FILTER_ALL_EXPECT_SET);
+		super(generalManager, iMediatorId, MediatorUpdateType.MEDIATOR_FILTER_ALL_EXPECT_SET);
 		
 		this.refIgnoreSet = setExclusiveSet;
 	}

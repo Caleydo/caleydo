@@ -3,20 +3,18 @@ package org.caleydo.core.data.collection.set;
 import java.util.Iterator;
 import java.util.Vector;
 
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
-
 import org.caleydo.core.data.collection.IMetaData;
-import org.caleydo.core.data.collection.IVirtualArray;
-import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.IVirtualArray;
 import org.caleydo.core.data.collection.SetType;
 import org.caleydo.core.data.collection.parser.CollectionSetSaxParserHandler;
-import org.caleydo.core.data.collection.set.ASetRawData;
 import org.caleydo.core.data.collection.thread.lock.ICollectionLock;
 import org.caleydo.core.data.collection.virtualarray.iterator.IVirtualArrayIterator;
 import org.caleydo.core.data.collection.virtualarray.iterator.VirtualArrayVectorIterator;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
 /**
  * @author Michael Kalkusch
@@ -48,7 +46,7 @@ implements ISet {
 	protected int iSizeDimension = 0;
 
 	/**
-	 * 
+	 * Constructor.
 	 */
 	public SetFlatThreadSimple( int iSetCollectionId, 
 			final IGeneralManager setGeneralManager,
@@ -354,7 +352,7 @@ implements ISet {
 			for ( int iIndex=0; iIndex< iListOfSellectionId.length ; iIndex++ ) {
 				
 				try {					
-					Object buffer = getManager().getItem( iListOfSellectionId[iIndex] );
+					Object buffer = generalManager.getVirtualArrayManager().getItem( iListOfSellectionId[iIndex] );
 					refFlatSelection[iIndex] = (IVirtualArray) buffer;
 				}
 				catch ( NullPointerException npe) {
@@ -371,7 +369,7 @@ implements ISet {
 			for ( int iIndex=0; iIndex< iListOfStorageId.length ; iIndex++ ) {
 				
 				try {					
-					Object buffer = getManager().getItem( iListOfStorageId[iIndex] );
+					Object buffer = generalManager.getStorageManager().getItem( iListOfStorageId[iIndex] );
 					refFlatStorage[iIndex] = (IStorage) buffer;
 				}
 				catch ( NullPointerException npe) {
@@ -380,10 +378,10 @@ implements ISet {
 				}
 			}
 			
-			getManager().unregisterItem( getId(), 
+			generalManager.getSetManager().unregisterItem( getId(), 
 					ManagerObjectType.SET_LINEAR );
 			
-			getManager().registerItem( this, 
+			getManager().getSetManager().registerItem(this, 
 					parser.getXML_DataComponent_Id(), 
 					ManagerObjectType.SET_LINEAR );
 			

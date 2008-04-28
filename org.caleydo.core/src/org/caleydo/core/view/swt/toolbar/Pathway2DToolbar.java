@@ -3,6 +3,9 @@ package org.caleydo.core.view.swt.toolbar;
 import java.awt.Dimension;
 import java.io.IOException;
 
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
+import org.caleydo.core.view.swt.pathway.APathwayGraphViewRep;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
@@ -13,9 +16,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolItem;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
-import org.caleydo.core.view.swt.pathway.APathwayGraphViewRep;
 
 public class Pathway2DToolbar 
 extends AToolbar {
@@ -31,9 +31,9 @@ extends AToolbar {
 	private static String BACKGROUND_OVERLAY_ICON_PATH = "resources/icons/PathwayEditor/background_image.gif";
 	private static String HOME_ICON_PATH = "resources/icons/PathwayEditor/home.gif";
 	
-	protected APathwayGraphViewRep refPathwayGraphViewRep;
+	protected APathwayGraphViewRep pathwayGraphViewRep;
 	
-	protected IGeneralManager refGeneralManager;
+	protected IGeneralManager generalManager;
 	
 	protected ToolItem refAddEnzymeNodeItem;
 	protected ToolItem refZoomOrigItem;
@@ -47,14 +47,21 @@ extends AToolbar {
 	protected ToolItem refBackgroundOverlayItem;
 	protected ToolItem refKeggMetabolicPathwaysMapItem;
 	
+	/**
+	 * Constructor.
+	 * 
+	 * @param refSWTContainer
+	 * @param refPathwayGraphViewRep
+	 * @param generalManager
+	 */
 	public Pathway2DToolbar(Composite refSWTContainer,
 			APathwayGraphViewRep refPathwayGraphViewRep,
-			IGeneralManager refGeneralManager) {
+			final IGeneralManager generalManager) {
 
 		super(refSWTContainer);
 		
-		this.refPathwayGraphViewRep = refPathwayGraphViewRep;
-		this.refGeneralManager = refGeneralManager;
+		this.pathwayGraphViewRep = refPathwayGraphViewRep;
+		this.generalManager = generalManager;
 
 		initToolbar();
 		createActionListener();
@@ -317,15 +324,15 @@ extends AToolbar {
 	          
 	          if (sToolItemIdentifier.equals("Zoom standard"))
 	          {
-	        	  refPathwayGraphViewRep.zoomOrig();
+	        	  pathwayGraphViewRep.zoomOrig();
 	          }
 	          else if (sToolItemIdentifier.equals("Zoom in"))
 	          {
-	        	  refPathwayGraphViewRep.zoomIn();  
+	        	  pathwayGraphViewRep.zoomIn();  
 	          }
 	          else if (sToolItemIdentifier.equals("Zoom out"))
 	          {
-	        	  refPathwayGraphViewRep.zoomOut();
+	        	  pathwayGraphViewRep.zoomOut();
 	          }	   
 	          else if (sToolItemIdentifier.equals(
 	        		  "Show neighborhood within a distance of 1"))
@@ -335,11 +342,11 @@ extends AToolbar {
 	        	  
 	        	  if (refOneNeighborhoodItem.getSelection() == true)
 	        	  {
-		        	  refPathwayGraphViewRep.setNeighbourhoodDistance(1);
+		        	  pathwayGraphViewRep.setNeighbourhoodDistance(1);
 	        	  }
 	        	  else
 	        	  {
-	        		  refPathwayGraphViewRep.setNeighbourhoodDistance(0);
+	        		  pathwayGraphViewRep.setNeighbourhoodDistance(0);
 	        	  }
 	
 	          }
@@ -351,11 +358,11 @@ extends AToolbar {
 	        	  
 	        	  if (refTwoNeighborhoodItem.getSelection() == true)
 	        	  {
-		        	  refPathwayGraphViewRep.setNeighbourhoodDistance(2);
+		        	  pathwayGraphViewRep.setNeighbourhoodDistance(2);
 	        	  }
 	        	  else
 	        	  {
-	        		  refPathwayGraphViewRep.setNeighbourhoodDistance(0);
+	        		  pathwayGraphViewRep.setNeighbourhoodDistance(0);
 	        	  }
 	          } 
 	          else if (sToolItemIdentifier.equals(
@@ -366,21 +373,21 @@ extends AToolbar {
 	        	  
 	        	  if (refThreeNeighborhoodItem.getSelection() == true)
 	        	  {
-		        	  refPathwayGraphViewRep.setNeighbourhoodDistance(3);
+		        	  pathwayGraphViewRep.setNeighbourhoodDistance(3);
 	        	  }
 	        	  else
 	        	  {
-	        		  refPathwayGraphViewRep.setNeighbourhoodDistance(0);
+	        		  pathwayGraphViewRep.setNeighbourhoodDistance(0);
 	        	  }
 	          }
 	          else if (sToolItemIdentifier.equals("Show overview map"))
 	          {
-	        	  refPathwayGraphViewRep.
+	        	  pathwayGraphViewRep.
 	        	  	showOverviewMapInNewWindow(new Dimension(250, 250));
 	          }
 	          else if (sToolItemIdentifier.equals("Show background overlay"))
 	          {
-	        	  refPathwayGraphViewRep.showBackgroundOverlay(
+	        	  pathwayGraphViewRep.showBackgroundOverlay(
 	        			  refBackgroundOverlayItem.getSelection());
 	        	  
 	        	  if (refBackgroundOverlayItem.getSelection() == true)
@@ -403,10 +410,10 @@ extends AToolbar {
 	          else if (sToolItemIdentifier.equals("" +
 	          		"Go to KEGG Metabolic Pathways Overview Map"))
 	          {
-	        	  refPathwayGraphViewRep.setPathwayLevel(1);
+	        	  pathwayGraphViewRep.setPathwayLevel(1);
 	        	  
-	        	  refPathwayGraphViewRep.loadImageMapFromFile(
-	        			  refGeneralManager.getSingleton().getPathwayManager()
+	        	  pathwayGraphViewRep.loadImageMapFromFile(
+	        			  generalManager.getPathwayManager()
 	        			  		.getPathwayDatabaseByType(EPathwayDatabaseType.KEGG).
 	        			  				getImageMapPath() + "map01100.xml");
 	          }

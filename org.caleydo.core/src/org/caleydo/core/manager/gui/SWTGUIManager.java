@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
-import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.base.AManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
@@ -40,7 +40,7 @@ import org.caleydo.core.view.swt.widget.SWTNativeWidget;
  * 
  */
 public class SWTGUIManager 
-extends AAbstractManager 
+extends AManager 
 implements ISWTGUIManager {
 
 	public static final int PROGRESSBAR_MAXIMUM = 200;
@@ -65,21 +65,13 @@ implements ISWTGUIManager {
 	protected ProgressBar refLoadingProgressBar;
 
 	/**
-	 * Call createApplicationWindow() before using this object.
-	 * 
-	 * @see org.caleydo.core.manager.gui.SWTGUIManager#createApplicationWindow()
-	 * 
-	 * @param setGeneralManager Reference to IGeneralManager
+	 * Constructor.
 	 */
-	public SWTGUIManager(IGeneralManager setGeneralManager) {
+	public SWTGUIManager(final IGeneralManager generalManager) {
 
-		super(setGeneralManager, 
+		super(generalManager, 
 				IGeneralManager.iUniqueId_TypeOffset_GUI_SWT,
 				ManagerType.VIEW_GUI_SWT );
-
-		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
-
-		generalManager.getSingleton().setSWTGUIManager(this);
 
 		refWidgetMap = new Vector<ISWTWidget>();
 
@@ -167,7 +159,7 @@ implements ISWTGUIManager {
 			
 			if (refComposite == null)
 			{
-				singelton.logMsg( getClass().getSimpleName() + ".createWidget(" +
+				generalManager.logMsg( getClass().getSimpleName() + ".createWidget(" +
 						useWidgetType.toString() + ", parentId=" +
 						iUniqueParentContainerId + 
 						", iWidth, iHeight) parent SWT canvas does not exist!", 
@@ -288,7 +280,7 @@ implements ISWTGUIManager {
 			refCurrentShell.setVisible(true);//open();
 		}
 		
-		generalManager.getSingleton().getViewGLCanvasManager().createAnimator();
+		generalManager.getViewGLCanvasManager().createAnimator();
 		//refGeneralManager.getSingelton().getViewGLCanvasManager().getAnimator().start();
 
 		shellIterator = refWindowMap.values().iterator();				

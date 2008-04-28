@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.core.parser.ascii.microarray;
 
 import java.io.BufferedReader;
@@ -28,23 +25,16 @@ import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
  */
 public class MicroArrayLoader1Storage 
 extends AMicroArrayLoader {
-
-
 	
 	/**
 	 * Reference to the current DataStorage.
 	 */
 	private IStorage refDataStorage;
 	
-	/**
-	 * 
-	 */
 	private IVirtualArray refImportDataOverrideSelection;
 	
-	
-	
 	/**
-	 * 
+	 * Constructor.
 	 */
 	public MicroArrayLoader1Storage(final IGeneralManager setGeneralManager,
 			final String setFileName,
@@ -57,15 +47,10 @@ extends AMicroArrayLoader {
 		this.bRequiredSizeOfReadableLines = true;
 	}
 	
-	
-	
 	protected void allocateStorageBufferForTokenPattern( ) {
 		
 		allocateStorageBufferForTokenPatternAbstractClass();		
 	}
-	
-	
-	
 	
 	/**
 	 * Assign a ISet to write the data to.
@@ -274,7 +259,7 @@ extends AMicroArrayLoader {
 			
 		    } // end: while ((sLine = brFile.readLine()) != null) { 
 		    
-		refGeneralManager.getSingleton().logMsg("  parsed #" + 
+		generalManager.logMsg("  parsed #" + 
 				this.iLineInFile_CurrentDataIndex + "  [" + 			
 				this.iStartParsingAtLine + " -> " +
 				this.iStopParsingAtLine +  "] stoped at line #" +
@@ -411,7 +396,7 @@ extends AMicroArrayLoader {
 		    refDataStorage.setArrayString( stringBuffer );
 		    
 		    IVirtualArray selFloat = 
-		    	new VirtualArrayThreadSingleBlock(1, refGeneralManager, null);
+		    	new VirtualArrayThreadSingleBlock(1, generalManager, null);
 		    selFloat.setLabel("import STRING");
 		    selFloat.setLength( LLString.size() );
 		    
@@ -448,7 +433,7 @@ extends AMicroArrayLoader {
 				throw new RuntimeException("MicroArrayLoader1Storage.setMementoXML_usingHandler() failed. need <DataComponentItemDetails type=RandomLookup> tag.");
 			}
 			try {
-				refDataStorage= (IStorage) refGeneralManager.getItem( iLinkToIdList[0] );
+				refDataStorage= (IStorage) generalManager.getStorageManager().getItem( iLinkToIdList[0] );
 				
 				setTokenPattern( handler.getXML_MicroArray_TokenPattern().trim() );
 				//setTokenPattern( "SKIP;SKIP;SKIP;STRING;STRING;INT;INT;ABORT" );
@@ -468,7 +453,7 @@ extends AMicroArrayLoader {
 	}
 
 	/**
-	 * Init data structues. Use this to reset the stat also!
+	 * Init data structures. Use this to reset the state also!
 	 * 
 	 * @see org.caleydo.core.parser.ascii.IParserObject#init()
 	 */

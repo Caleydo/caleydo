@@ -1,20 +1,15 @@
-/**
- * 
- */
 package org.caleydo.core.manager.data;
 
 
 import java.util.Collection;
 import java.util.HashMap;
 
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.data.mapping.EGenomeMappingDataType;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.manager.IManager;
 import org.caleydo.core.manager.data.genome.IGenomeIdMap;
 import org.caleydo.core.util.mapping.AGenomeMapper;
 import org.caleydo.core.util.mapping.EGenomeMappingCascadeType;
-
-//import org.caleydo.core.data.mapping.EGenomeIdType;
-import org.caleydo.core.data.mapping.EGenomeMappingDataType;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
 
 /**
  * Generic interface for genome ID managers.
@@ -24,25 +19,8 @@ import org.caleydo.core.data.mapping.EGenomeMappingType;
  *
  */
 public interface IGenomeIdManager 
-extends IGeneralManager {
-
-//	/**
-//	 * Search inside all Map's for the id.
-//	 * 
-//	 * @param iUniqueId
-//	 * @return
-//	 */
-//	public String getNameById( int iUniqueId );
-//	
-//	public int getIdByName( String name );
-//	
-//	public int getIdByTypeInt( final int iUniqueId, 
-//			final EGenomeIdType type );
-//	
-//	public int getIdByTypeString( final String sCaleydoId, 
-//			final EGenomeIdType type );
-	
-	
+extends IManager
+{	
 	public int getIdIntFromStringByMapping( final String sCaleydoId, 
 			final EGenomeMappingType type );
 	

@@ -54,7 +54,7 @@ implements IXmlParserManager, IManagedObject
 	/**
 	 * Reference to manager, who created this object.
 	 */
-	protected final IGeneralManager refGeneralManager;	
+	protected final IGeneralManager generalManager;	
 	
 	
 	/**
@@ -64,7 +64,7 @@ implements IXmlParserManager, IManagedObject
 	{
 		assert generalManager != null: "SetFlatSimple() with null pointer";		
 		
-		refGeneralManager = generalManager;
+		this.generalManager = generalManager;
 		
 		hashTag2XmlParser = new Hashtable < String, IXmlParserHandler > ();
 		
@@ -85,7 +85,7 @@ implements IXmlParserManager, IManagedObject
 		
 		IXmlParserHandler buffer = currentHandler;
 		
-		refGeneralManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				"AXmlParserManger.closeCurrentTag() key=[" +
 				currentHandler.getXmlActivationTag() + "] " +
 				currentHandler.getClass().getSimpleName(),
@@ -96,7 +96,7 @@ implements IXmlParserManager, IManagedObject
 			//llXmlParserStack.removeLast();
 			
 			if ( ! llXmlParserStack.remove( buffer ) ) {
-				refGeneralManager.getSingleton().logMsg(
+				generalManager.logMsg(
 						"AXmlParserManger.closeCurrentTag() can not remove IXmlParserHandler from list, because it is not inside!",
 						LoggerType.MINOR_ERROR);
 				return false;
@@ -137,7 +137,7 @@ implements IXmlParserManager, IManagedObject
 		} 
 		else
 		{
-			refGeneralManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					"AXmlParserManger.closeCurrentTag() key=[" +
 					buffer.getXmlActivationTag() + "] " +
 					buffer.getClass().getSimpleName() + 
@@ -205,7 +205,7 @@ implements IXmlParserManager, IManagedObject
 	 * @see org.caleydo.core.data.collection.UniqueManagedInterface#getManager()
 	 */
 	public final IGeneralManager getManager() {
-		return this.refGeneralManager;
+		return this.generalManager;
 	}
 
 	/* (non-Javadoc)
@@ -236,7 +236,7 @@ implements IXmlParserManager, IManagedObject
 		
 		hashTag2XmlParser.put( key, handler );
 		
-		refGeneralManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				"XmlParserManager.registerAndInitSaxHandler( key=["
 				+ handler.getXmlActivationTag() + "] " +
 				handler.getClass().getSimpleName() + " ) done.",
@@ -270,7 +270,7 @@ implements IXmlParserManager, IManagedObject
 		
 		if ( refParserHandler != null ) {	
 						
-			refGeneralManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					"XmlParserManager.unregisterHandler( key=[" 
 					+ sActivationXmlTag + "] "
 					+ refParserHandler.getClass().getSimpleName()
@@ -280,7 +280,7 @@ implements IXmlParserManager, IManagedObject
 			return true;
 		}
 		
-		refGeneralManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				"XmlParserManager.unregisterHandler( "
 				+ sActivationXmlTag + " ) failed to unload!",
 				LoggerType.ERROR );
@@ -350,6 +350,4 @@ implements IXmlParserManager, IManagedObject
 	public final IXmlParserHandler getCurrentXmlParserHandler() {
 		return this.currentHandler;
 	}
-	
-
 }

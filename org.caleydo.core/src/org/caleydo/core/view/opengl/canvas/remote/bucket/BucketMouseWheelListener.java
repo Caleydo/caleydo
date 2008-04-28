@@ -5,6 +5,7 @@ import gleem.linalg.Vec3f;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 
@@ -17,6 +18,8 @@ import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 public class BucketMouseWheelListener 
 implements MouseWheelListener {
 
+	private IGeneralManager generalManager;
+	
 	private AGLCanvasUser bucketCanvas;
 	
 	private static int BUCKET_ZOOM_MAX = 400;
@@ -35,9 +38,11 @@ implements MouseWheelListener {
 	/**
 	 * Constructor.
 	 */
-	public BucketMouseWheelListener(final GLCanvasRemoteRendering3D remoteRendering3D) 
+	public BucketMouseWheelListener(final GLCanvasRemoteRendering3D remoteRendering3D,
+			final IGeneralManager generalManager) 
 	{
 		this.bucketCanvas = remoteRendering3D;
+		this.generalManager = generalManager;
 	}
 	
 	/*
@@ -47,6 +52,9 @@ implements MouseWheelListener {
 	public void mouseWheelMoved(MouseWheelEvent event) 
 	{
 		bZoomActionRunning = true;
+		
+		// Turn off picking while zoom action is running
+		generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(false);
 		
 	    int notches = event.getWheelRotation();
 	    if (notches < 0)
@@ -84,7 +92,9 @@ implements MouseWheelListener {
 			}
 			
 			if (iCurrentBucketZoom == BUCKET_ZOOM_MAX)
+			{
 				bBucketBottomReached = true;
+			}	
 			else if (iCurrentBucketZoom == 0)
 				bBucketBottomReached = false;
 		}
@@ -92,6 +102,9 @@ implements MouseWheelListener {
 		{	
 			iAnimationZoomCounter = 0;
 			bZoomActionRunning = false;
+			
+			// Turn on picking after zoom action is done
+			generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(true);
 		}				
 	}
 	

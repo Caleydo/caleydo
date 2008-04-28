@@ -50,7 +50,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	protected void checkOpenGLSetting() {
 		
 		if ( iGLCanvasID < 1) {
-			this.generalManager.getSingleton().logMsg(" tag [" + 
+			this.generalManager.logMsg(" tag [" + 
 					CommandQueueSaxType.TAG_GLCANVAS.getXmlKey() +
 					"] is not assinged!",
 					LoggerType.MINOR_ERROR_XML);

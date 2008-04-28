@@ -1,13 +1,13 @@
 package org.caleydo.core.manager;
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.view.swt.ISWTWidget;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 
 public interface ISWTGUIManager 
-extends IGeneralManager {
-	
+extends IManager
+{	
 	public ISWTWidget createWidget(
 			final ManagerObjectType useWidgetType, 
 			int iUniqueParentWindowId, 

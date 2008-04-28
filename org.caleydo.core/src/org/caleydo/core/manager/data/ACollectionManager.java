@@ -3,7 +3,7 @@ package org.caleydo.core.manager.data;
 import java.util.Hashtable;
 
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.base.AManager;
 import org.caleydo.core.manager.type.ManagerType;
 
 /**
@@ -20,10 +20,8 @@ import org.caleydo.core.manager.type.ManagerType;
  * 
  */
 public abstract class ACollectionManager 
- extends AAbstractManager
- implements IGeneralManager {
-
-	
+extends AManager
+{
 	/**
 	 * Contains a lookup of unique Id to Object
 	 */
@@ -54,15 +52,15 @@ public abstract class ACollectionManager
 	 * by the SingeltonManager and the type-offset information.
 	 * 
 	 * @param iSetUniqueId_TypeOffset offset per type
-	 * @param useRefSingeltonManager reference to singelton using getNetworkPostfix()
+	 * @param useRefSingeltonManager reference to singleton using getNetworkPostfix()
 	 * @return initial unique Id
 	 */
 	public final static int calculateId( final int iSetUniqueId_TypeOffset, 
-			final IGeneralManager useRefSingeltonManager) {
+			final IGeneralManager generalManager) {
 		
-		return (iUniqueId_Increment +
-			iSetUniqueId_TypeOffset * iUniqueId_WorkspaceOffset +
-			useRefSingeltonManager.getSingleton().getNetworkPostfix() );
+		return (IGeneralManager.iUniqueId_Increment +
+			iSetUniqueId_TypeOffset * IGeneralManager.iUniqueId_WorkspaceOffset +
+			generalManager.getNetworkPostfix() );
 	}
 	
 	

@@ -25,7 +25,7 @@ extends ViewPart {
 	public void createPartControl(Composite parent) {
 
 //		IViewManager viewManager = ((IViewManager) Application.refGeneralManager
-//				.getManagerByBaseType(ManagerObjectType.VIEW));
+//				.getManagerByObjectType(ManagerObjectType.VIEW));
 //		
 //		int iUniqueId = 80401;
 //		

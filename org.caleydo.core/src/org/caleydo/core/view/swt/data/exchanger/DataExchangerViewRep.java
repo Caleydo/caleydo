@@ -156,7 +156,7 @@ implements IView {
 
 	public void drawView() {
 		
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				this.getClass().getSimpleName() + 
 				": drawView()", 
 				LoggerType.VERBOSE );		
@@ -207,7 +207,7 @@ implements IView {
 	protected void fillDataSets(Combo viewCombo, Combo dataCombo) {
 		
 		Collection<ISet> allSets = 
-			generalManager.getSingleton().getSetManager().getAllSetItems();
+			generalManager.getSetManager().getAllSetItems();
 		
 		Iterator<ISet> iterSets = allSets.iterator();
 		int iTmpSetId = 0;

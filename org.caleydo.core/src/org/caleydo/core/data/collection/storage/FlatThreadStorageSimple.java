@@ -67,25 +67,6 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	
 	private int [] setSizeForAllocation = null;
 	
-//	/**
-//	 * Defines type per index.
-//	 */
-//	private StorageType[] typePerContainer = 
-//		  { StorageType.INT, 
-//			StorageType.FLOAT,
-//			StorageType.STRING,
-//			StorageType.BOOLEAN,
-//			StorageType.DOUBLE,
-//			StorageType.OBJECT };
-	
-//	private final static int INT = 0;  
-//	private final static int FLOAT = 1;
-//	private final static int STRING = 2;  
-//	private final static int BOOLEAN = 3; 
-//	private final static int DOUBLE = 4; 
-//	private final static int OBJECT = 5;
-	
-	
 	/**
 	 * TODO: Doku
 	 * 
@@ -499,7 +480,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 		if (minInt == java.lang.Integer.MAX_VALUE)
 		{
 			CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) generalManager
-		    .getSingleton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+				.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
 			
 			createdCmd.setAttributes(this, StorageType.INT);
 			createdCmd.doCommand();
@@ -518,7 +499,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 		if (maxInt == java.lang.Integer.MIN_VALUE)
 		{
 			CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) generalManager
-		    .getSingleton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+		    	.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
 			
 			createdCmd.setAttributes(this, StorageType.INT);
 			createdCmd.doCommand();
@@ -553,7 +534,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 		if (minFloat == java.lang.Float.POSITIVE_INFINITY)
 		{
 			CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) generalManager
-		    .getSingleton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+		    	.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
 			
 			createdCmd.setAttributes(this, StorageType.FLOAT);
 			createdCmd.doCommand();
@@ -571,7 +552,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 		if (maxFloat == java.lang.Float.NEGATIVE_INFINITY)
 		{
 			CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) generalManager
-		    .getSingleton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+		    	.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
 			
 			createdCmd.setAttributes(this, StorageType.FLOAT);
 			createdCmd.doCommand();
@@ -615,7 +596,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 		if (minDouble == java.lang.Double.POSITIVE_INFINITY)
 		{
 			CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) generalManager
-		    .getSingleton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+		    	.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
 			
 			createdCmd.setAttributes(this, StorageType.DOUBLE);
 			createdCmd.doCommand();
@@ -634,7 +615,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 		if (maxDouble == java.lang.Double.NEGATIVE_INFINITY)
 		{
 			CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) generalManager
-		    .getSingleton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+		    	.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
 			
 			createdCmd.setAttributes(this, StorageType.DOUBLE);
 			createdCmd.doCommand();
@@ -642,13 +623,6 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 		}
 		return maxDouble;
 	}
-
-
-
-
-
-
-
 
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.data.collection.IStorage#getArray2DDouble()
@@ -786,7 +760,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 			//handler.getDataLong();
 			//handler.getDataShort();
 			
-			getManager().registerItem( this, 
+			generalManager.getStorageManager().registerItem( this, 
 					handler.getXML_DataComponent_Id(),
 					ManagerObjectType.STORAGE_FLAT );
 			

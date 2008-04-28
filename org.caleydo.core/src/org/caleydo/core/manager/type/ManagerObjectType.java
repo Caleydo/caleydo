@@ -173,9 +173,7 @@ public enum ManagerObjectType {
 	/*
 	 * Logger
 	 */
-	LOGGER(ManagerType.LOGGER ),
-	
-	ALL_IN_ONE(ManagerType.SINGELTON);
+	LOGGER(ManagerType.LOGGER );
 	
 	/**
 	 * Define type of manager group
@@ -204,7 +202,6 @@ public enum ManagerObjectType {
 		eGroupType = setGroupType;
 		iId_TypeOffset = iSetUniqueId_TypeOffset;
 	}
-	
 	
 	/**
 	 * Get the group type for this manager.

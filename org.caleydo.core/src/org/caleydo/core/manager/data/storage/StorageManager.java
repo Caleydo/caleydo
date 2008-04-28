@@ -46,9 +46,7 @@ implements IStorageManager {
 		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";
 			
 		vecStorage = new Hashtable<Integer,IStorage> ( iInitSizeContainer );
-		vecStorage_reverse = new Hashtable<IStorage,Integer> ( iInitSizeContainer );
-		
-		generalManager.getSingleton().setStorageManager( this );		
+		vecStorage_reverse = new Hashtable<IStorage,Integer> ( iInitSizeContainer );		
 	}
 
 	/* (non-Javadoc)
@@ -181,7 +179,7 @@ implements IStorageManager {
 		
 		if ( vecStorage.containsKey( iItemId ) ) 
 		{
-			generalManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					"try to register id that was already used!",
 					LoggerType.ERROR );
 			

@@ -184,7 +184,7 @@ extends APathwayGraphViewRep {
 	public void initView() {
 
 		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = (SWTEmbeddedGraphWidget) generalManager
-				.getSingleton().getSWTGUIManager().createWidget(
+				.getSWTGUIManager().createWidget(
 						ManagerObjectType.GUI_SWT_EMBEDDED_JGRAPH_WIDGET,
 						refEmbeddedFrameComposite, iWidth, iHeight);
 
@@ -265,18 +265,16 @@ extends APathwayGraphViewRep {
 
 					if (sLink == null || sLink.equals(""))
 					{
-						generalManager
-								.getSingleton()
-								.logMsg(
-										this.getClass().getSimpleName()
-												+ ":mousePressed(): No pathway link is available for that clicked point. Click ignored.",
-										LoggerType.VERBOSE);
+						generalManager.logMsg(
+							this.getClass().getSimpleName()
+							+ ":mousePressed(): No pathway link is available for that clicked point. Click ignored.",
+							LoggerType.VERBOSE);
 
 						return;
 					}
 
 					// Append file path
-					sLink = generalManager.getSingleton()
+					sLink = generalManager
 								.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.KEGG)
 									.getImageMapPath() + sLink;
 
@@ -676,7 +674,7 @@ extends APathwayGraphViewRep {
 
 		} catch (NullPointerException npe)
 		{
-			generalManager.getSingleton()
+			generalManager
 					.logMsg("Error while rendering JGraph part!",
 							LoggerType.ERROR);
 
@@ -719,13 +717,13 @@ extends APathwayGraphViewRep {
 		refCurrentPathwayImageMap = null;
 		resetPathway();
 
-		generalManager.getSingleton().getXmlParserManager()
+		generalManager.getXmlParserManager()
 				.parseXmlFileByName(sImageMapPath);
 
-		refCurrentPathwayImageMap = generalManager.getSingleton()
+		refCurrentPathwayImageMap = generalManager
 				.getPathwayManager().getCurrentPathwayImageMap();
 
-		loadBackgroundOverlayImage(generalManager.getSingleton()
+		loadBackgroundOverlayImage(generalManager
 				.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.KEGG)
 						.getImageMapPath() + refCurrentPathwayImageMap.getImageLink());
 
@@ -872,8 +870,7 @@ extends APathwayGraphViewRep {
 	 */
 	public void showOverviewMapInNewWindow(Dimension dim) {
 
-		IViewGLCanvasManager refViewCanvasMng = generalManager
-				.getSingleton().getViewGLCanvasManager();
+		IViewGLCanvasManager refViewCanvasMng = generalManager.getViewGLCanvasManager();
 		JFrame workspaceFrame = refViewCanvasMng.createWorkspace(
 				ManagerObjectType.VIEW_NEW_FRAME, "");
 
@@ -963,11 +960,11 @@ extends APathwayGraphViewRep {
 			// Build current pathway file path of GIF
 			String sPathwayImageFilePath = refCurrentPathway.getName();
 			sPathwayImageFilePath = sPathwayImageFilePath.substring(5);
-			sPathwayImageFilePath = generalManager.getSingleton()
+			sPathwayImageFilePath = generalManager
 					.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.KEGG)
 							.getImagePath() + sPathwayImageFilePath + ".gif";
 
-			generalManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					"Load background pathway from file: "
 							+ sPathwayImageFilePath, LoggerType.VERBOSE);
 
@@ -1040,7 +1037,7 @@ extends APathwayGraphViewRep {
 
 	public void loadBackgroundOverlayImage(String sPathwayImageFilePath) {
 
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				"Load background pathway image from file: "
 						+ sPathwayImageFilePath, LoggerType.VERBOSE);
 
@@ -1072,19 +1069,19 @@ extends APathwayGraphViewRep {
 			
 			//Load pathway
 			boolean bLoadingOK = 
-				generalManager.getSingleton()
+				generalManager
 					.getPathwayManager().loadPathwayById(tmpStorage.getArrayInt()[0]);
 			
 			if (!bLoadingOK)
 				return;
 
-			refCurrentPathway = (PathwayGraph) generalManager.getSingleton()
+			refCurrentPathway = (PathwayGraph) generalManager
 				.getPathwayManager().getItem(tmpStorage.getArrayInt()[0]);
 			
 			return;
 		}
 
-		generalManager.getSingleton().logMsg("no valid Set",
+		generalManager.logMsg("no valid Set",
 				LoggerType.ERROR);
 	}
 
@@ -1127,7 +1124,7 @@ extends APathwayGraphViewRep {
 			
 		}catch (StringIndexOutOfBoundsException e) {
 			
-			generalManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					this.getClass().getSimpleName() + ": ERROR! Can not convert String to Integer! " 
 					+ e.toString(), LoggerType.ERROR);
 			
@@ -1146,7 +1143,7 @@ extends APathwayGraphViewRep {
 			}
 				catch (SWTException swte) 
 			{
-					generalManager.getSingleton().logMsg(
+					generalManager.logMsg(
 							this.getClass().getSimpleName() + 
 							": error while setURL ["+sUrl + "]", 
 							LoggerType.STATUS );
@@ -1178,7 +1175,7 @@ extends APathwayGraphViewRep {
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				"2D Pathway update called by "
 						+ eventTrigger.getClass().getSimpleName(),
 				LoggerType.VERBOSE);
@@ -1212,7 +1209,7 @@ extends APathwayGraphViewRep {
 			{
 	
 				PathwayVertexGraphItemRep selectedVertex = 
-					(PathwayVertexGraphItemRep) generalManager.getSingleton()
+					(PathwayVertexGraphItemRep) generalManager
 						.getPathwayItemManager().getItem(
 								iAlSelectionId.get(iSelectedVertexIndex));
 				

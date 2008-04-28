@@ -43,7 +43,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	public void doCommand() throws CaleydoRuntimeException {
 		
 		IViewManager viewManager = ((IViewManager) generalManager
-				.getManagerByBaseType(ManagerObjectType.VIEW));
+				.getManagerByObjectType(ManagerObjectType.VIEW));
 		
 		ProgressBarViewRep progressBarView = (ProgressBarViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_PROGRESS_BAR,

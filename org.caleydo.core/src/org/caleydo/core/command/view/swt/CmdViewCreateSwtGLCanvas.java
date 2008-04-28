@@ -44,7 +44,7 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 		try
 		{
 			IViewGLCanvasManager viewManager = ((IViewGLCanvasManager) generalManager
-					.getManagerByBaseType(ManagerObjectType.VIEW));
+					.getManagerByObjectType(ManagerObjectType.VIEW));
 			
 			SwtJoglGLCanvasViewRep swtGLCanvasView = (SwtJoglGLCanvasViewRep)viewManager			
 					.createGLView(ManagerObjectType.VIEW_SWT_JOGL_MULTI_GLCANVAS,
@@ -73,7 +73,7 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 		} 	
 		catch ( CaleydoRuntimeException ce)
 		{
-			generalManager.getSingleton().logMsg("Can not open Jogl frame inside SWT container! " + ce.toString(),
+			generalManager.logMsg("Can not open Jogl frame inside SWT container! " + ce.toString(),
 					LoggerType.ERROR );
 			ce.printStackTrace();
 		}

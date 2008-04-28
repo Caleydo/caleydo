@@ -21,7 +21,7 @@ implements IApplication {
 	public static final String debugMsgPrefix = "RCP: ";
 	
 	// FIXME: should not be static!
-	public static IGeneralManager refGeneralManager;	
+	public static IGeneralManager generalManager;	
 	
 	public static CaleydoBootloader caleydo_core;
 	
@@ -110,7 +110,7 @@ implements IApplication {
 			
 			shell.dispose();
 			
-			Application.refGeneralManager = caleydo_core.getGeneralManager();
+			Application.generalManager = caleydo_core.getGeneralManager();
 			caleydo_core.run_SWT();
 			
 			return;
@@ -119,7 +119,7 @@ implements IApplication {
 		else
 		{
 			caleydo_core.setXmlFileName(xmlFileName); 
-			Application.refGeneralManager = caleydo_core.getGeneralManager();
+			Application.generalManager = caleydo_core.getGeneralManager();
 			caleydo_core.run_SWT();			
 		}
 	}

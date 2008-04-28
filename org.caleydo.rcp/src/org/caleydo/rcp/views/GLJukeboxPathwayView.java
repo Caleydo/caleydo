@@ -259,8 +259,8 @@ extends AGLViewPart {
 	public void triggerCmdSExternalFlagSetter(final boolean bFlag,
 			EExternalFlagSetterType type) {
 
-		CmdExternalFlagSetter tmpCmd = (CmdExternalFlagSetter) Application.refGeneralManager
-				.getSingleton().getCommandManager().createCommandByType(
+		CmdExternalFlagSetter tmpCmd = (CmdExternalFlagSetter) Application.generalManager
+				.getCommandManager().createCommandByType(
 						CommandQueueSaxType.EXTERNAL_FLAG_SETTER);
 
 		// FIXME: hard coded view ID
@@ -270,8 +270,8 @@ extends AGLViewPart {
 
 	public void triggerCmdExternalAction(EExternalActionType type) {
 
-		CmdExternalActionTrigger tmpCmd = (CmdExternalActionTrigger) Application.refGeneralManager
-				.getSingleton().getCommandManager().createCommandByType(
+		CmdExternalActionTrigger tmpCmd = (CmdExternalActionTrigger) Application.generalManager
+				.getCommandManager().createCommandByType(
 						CommandQueueSaxType.EXTERNAL_ACTION_TRIGGER);
 
 		// FIXME: hard coded view ID

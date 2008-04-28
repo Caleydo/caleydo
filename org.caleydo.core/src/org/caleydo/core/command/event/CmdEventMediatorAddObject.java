@@ -41,7 +41,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 				refCommandManager,
 				refCommandQueueSaxType);
 		
-		super.setId( refGeneralManager.getSingleton().getEventPublisher().createId( 
+		super.setId( generalManager.getEventPublisher().createId( 
 				ManagerObjectType.EVENT_MEDIATOR_ADD_OBJECT));
 		
 		iArSenderIDs = new ArrayList<Integer>();
@@ -50,9 +50,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 
 	public void doCommand() throws CaleydoRuntimeException {
 			
-		IEventPublisher refEventPublisher = (IEventPublisher) generalManager.
-				getManagerByBaseType(ManagerObjectType.EVENT_PUBLISHER);
-				
+		IEventPublisher refEventPublisher = generalManager.getEventPublisher();
 		IMediator refMediator = refEventPublisher.getItemMediator(iUniqueId);
 		
 		if  (refMediator == null ) {

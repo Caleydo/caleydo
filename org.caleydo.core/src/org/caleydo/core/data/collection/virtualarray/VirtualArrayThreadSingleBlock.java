@@ -103,12 +103,12 @@ implements IVirtualArray, IMementoItemXML, ICollectionLock {
 			setLength( parser.getXML_DataLength() );
 			setOffset( parser.getXML_DataOffset() );
 			
-			getManager().unregisterItem( getId(), 
-					ManagerObjectType.VIRTUAL_ARRAY_SINGLE_BLOCK );
-			
-			getManager().registerItem( this, 
-					parser.getXML_DataComponent_Id(), 
-					ManagerObjectType.VIRTUAL_ARRAY_SINGLE_BLOCK );
+//			getManager().unregisterItem( getId(), 
+//					ManagerObjectType.VIRTUAL_ARRAY_SINGLE_BLOCK );
+//			
+//			getManager().registerItem( this, 
+//					parser.getXML_DataComponent_Id(), 
+//					ManagerObjectType.VIRTUAL_ARRAY_SINGLE_BLOCK );
 			
 			setId( parser.getXML_DataComponent_Id() );			
 			

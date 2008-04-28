@@ -208,7 +208,7 @@ extends ACommand {
 			{
 				if (( iArrayStartStop[0] > iArrayStartStop[1] )&&
 						( iArrayStartStop[1] != -1 )) {
-					generalManager.getSingleton().logMsg(
+					generalManager.logMsg(
 							"CmdSystemLoadFileLookupTable ignore stop index=(" + 
 							iArrayStartStop[1]  + 
 							"), because it is smaller than start index (" + 
@@ -231,12 +231,12 @@ extends ACommand {
 	 */
 	public void doCommand() throws CaleydoRuntimeException {
 		
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 	    		"load file via importer... ([" +
 				sFileName + "]",
 				LoggerType.STATUS );
 		
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 	    		"load file via importer: [LUT-tpye:[" +
 				sLookupTableType + "]  cast=[" + 
 				iTargetSetId + "])",
@@ -245,7 +245,7 @@ extends ACommand {
 		LookupTableLoaderProxy loader = null;
 		
 		IGenomeIdManager refGenomeIdManager = 
-			generalManager.getSingleton().getGenomeIdManager();
+			generalManager.getGenomeIdManager();
 		
 		try 
 		{
@@ -320,7 +320,7 @@ extends ACommand {
 				
 				if (genomeDataType == EGenomeMappingDataType.MULTI_INT2INT)
 				{
-					LookupTableLoaderProxy.createCodeResolvedMultiMapFromMultiMapString(
+					loader.createCodeResolvedMultiMapFromMultiMapString(
 							generalManager, 
 							lut_genome_type, 
 							genomeMappingLUT_1, 
@@ -328,7 +328,7 @@ extends ACommand {
 				}
 				else 
 				{
-					LookupTableLoaderProxy.createCodeResolvedMapFromMap(
+					loader.createCodeResolvedMapFromMap(
 							generalManager, 
 							lut_genome_type, 
 							genomeMappingLUT_1, 
@@ -362,14 +362,14 @@ extends ACommand {
 					switch (lut_genome_reverse_type.getTypeOrigin().getStorageType()) 
 					{
 					case INT:
-						LookupTableLoaderProxy.createReverseMultiMapFromMultiMapInt(
+						loader.createReverseMultiMapFromMultiMapInt(
 								generalManager, 
 								lut_genome_type, 
 								lut_genome_reverse_type);
 						break;
 						
 					case STRING:
-						LookupTableLoaderProxy.createReverseMultiMapFromMultiMapString(
+						loader.createReverseMultiMapFromMultiMapString(
 								generalManager, 
 								lut_genome_type, 
 								lut_genome_reverse_type);
@@ -387,7 +387,7 @@ extends ACommand {
 				} //if ( lut_genome_reverse_type.isMultiMap() ) 
 				else
 				{			
-					LookupTableLoaderProxy.createReverseMapFromMap(generalManager, 
+					loader.createReverseMapFromMap(generalManager, 
 							lut_genome_type, 
 							lut_genome_reverse_type);				
 					
@@ -407,7 +407,7 @@ extends ACommand {
 			
 			e.printStackTrace();
 			
-			generalManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					errorMsg,
 					LoggerType.ERROR );
 		} // catch

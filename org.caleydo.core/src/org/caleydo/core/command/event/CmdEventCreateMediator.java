@@ -10,10 +10,9 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IEventPublisher.MediatorType;
 import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
 import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.system.StringConversionTool;
-import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
  * Class creates a mediator, extracts the sender and receiver IDs
@@ -40,7 +39,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 				refCommandManager,
 				refCommandQueueSaxType);
 		
-		super.setId( refGeneralManager.getSingleton().getEventPublisher().createId( 
+		super.setId( generalManager.getEventPublisher().createId( 
 				ManagerObjectType.EVENT_MEDIATOR_CREATE));
 		
 		iArSenderIDs = new ArrayList<Integer>();
@@ -49,9 +48,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 
 	public void doCommand() throws CaleydoRuntimeException {
 			
-		((IEventPublisher)generalManager.
-				getManagerByBaseType(ManagerObjectType.EVENT_PUBLISHER)).
-					createMediator(iUniqueId,
+		generalManager.getEventPublisher().createMediator(iUniqueId,
 							iArSenderIDs, 
 							iArReceiverIDs, 
 							mediatorType,

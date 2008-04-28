@@ -58,7 +58,7 @@ extends WorkbenchAdvisor {
 	protected void openLoadedViews() {
 		
 		// Initialize all GL views in RCP
-		Iterator<GLEventListener> iterGLEventListener = Application.refGeneralManager.getSingleton()
+		Iterator<GLEventListener> iterGLEventListener = Application.generalManager
 			.getViewGLCanvasManager().getAllGLEventListeners().iterator();
 		
 		JoglCanvasForwarder tmpCanvasForwarder;

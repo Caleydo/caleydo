@@ -180,7 +180,7 @@ implements IXmlParserHandler {
 		String sPathwayTexturePath = sImageLink.substring(
 				sImageLink.lastIndexOf('/') + 1, 
 				sImageLink.length());
-		sPathwayTexturePath = refGeneralManager.getSingleton().getPathwayManager()
+		sPathwayTexturePath = generalManager.getPathwayManager()
 				.getPathwayDatabaseByType(EPathwayDatabaseType.KEGG).getImagePath() + sPathwayTexturePath;
 		
 		ImageIcon img = new ImageIcon(sPathwayTexturePath);
@@ -188,7 +188,7 @@ implements IXmlParserHandler {
 		int iHeight = img.getIconHeight();
 		img = null;
 		
-		currentPathway = refGeneralManager.getSingleton().getPathwayManager().
+		currentPathway = generalManager.getPathwayManager().
 			createPathway(EPathwayDatabaseType.KEGG, sName, sTitle, 
 					sImageLink, sExternalLink, iWidth, iHeight);
     }
@@ -249,7 +249,7 @@ implements IXmlParserHandler {
 			
 			while (strTokenText.hasMoreTokens()) 
 			{
-	    		currentVertex = refGeneralManager.getSingleton().getPathwayItemManager()
+	    		currentVertex = generalManager.getPathwayItemManager()
     				.createVertex(strTokenText.nextToken(), sType, sExternalLink, sReactionId);
 	    		
 	    		alCurrentVertex.add(currentVertex);
@@ -257,7 +257,7 @@ implements IXmlParserHandler {
     	}
     	else
     	{
-    		currentVertex = refGeneralManager.getSingleton().getPathwayItemManager()
+    		currentVertex = generalManager.getPathwayItemManager()
     			.createVertex(sName, sType, sExternalLink, sReactionId);
     		
     		alCurrentVertex.add(currentVertex);
@@ -316,7 +316,7 @@ implements IXmlParserHandler {
    			}
    		}
 
-		IGraphItem vertexRep = refGeneralManager.getSingleton()
+		IGraphItem vertexRep = generalManager
 			.getPathwayItemManager().createVertexRep(
 				currentPathway, 
 				alCurrentVertex, 
@@ -367,12 +367,12 @@ implements IXmlParserHandler {
 		IGraphItem graphItemOut = hashKgmlEntryIdToVertexRepId.get(iTargetVertexId);
 		
 		// Create edge (data)
-		IGraphItem relationEdge = refGeneralManager.getSingleton().getPathwayItemManager().
+		IGraphItem relationEdge = generalManager.getPathwayItemManager().
 			createRelationEdge(((PathwayVertexGraphItemRep)graphItemIn).getPathwayVertexGraphItem(), 
 					((PathwayVertexGraphItemRep)graphItemOut).getPathwayVertexGraphItem(), sType);
     
 		// Create edge representation
-		refGeneralManager.getSingleton().getPathwayItemManager().
+		generalManager.getPathwayItemManager().
 			createRelationEdgeRep(currentPathway, relationEdge, graphItemIn, graphItemOut);
 		
     }
@@ -449,10 +449,10 @@ implements IXmlParserHandler {
 			}
 		}  	
 		
-		currentReactionSubstrateEdgeRep = refGeneralManager.getSingleton().getPathwayItemManager().
+		currentReactionSubstrateEdgeRep = generalManager.getPathwayItemManager().
 			createReactionEdge(currentPathway, sReactionName, sReactionType);
 
-		currentReactionProductEdgeRep = refGeneralManager.getSingleton().getPathwayItemManager().
+		currentReactionProductEdgeRep = generalManager.getPathwayItemManager().
 			createReactionEdge(currentPathway, sReactionName, sReactionType);
     
     }

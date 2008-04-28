@@ -36,8 +36,6 @@ public enum ManagerType {
 		
 		NONE("no type set", -1),
 		
-		SINGELTON("onyl used for singelton", 1 ),
-		
 		SYSTEM("run system or thread requests",7),
 		
 		VIEW("view manager", 30),

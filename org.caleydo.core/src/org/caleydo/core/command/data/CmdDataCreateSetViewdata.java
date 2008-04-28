@@ -40,7 +40,7 @@ extends ACmdCreate_IdTargetParentGLObject {
 	 */
 	public void doCommand() throws CaleydoRuntimeException {
 
-		ISetManager refISetManager =  generalManager.getSingleton().getSetManager();
+		ISetManager refISetManager =  generalManager.getSetManager();
 		ISetViewData refISetViewData = (ISetViewData) refISetManager.createSet(SetType.SET_VIEW_DATA);
 		
 		IViewCamera refViewCamera = refISetViewData.getViewCamera();
@@ -60,7 +60,7 @@ extends ACmdCreate_IdTargetParentGLObject {
 	 */
 	public void undoCommand() throws CaleydoRuntimeException {
 
-		ISetManager refISetManager =  generalManager.getSingleton().getSetManager();
+		ISetManager refISetManager =  generalManager.getSetManager();
 		refISetManager.unregisterItem(iUniqueId, ManagerObjectType.SET_VIEWDATA);
 
 	}

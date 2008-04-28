@@ -41,7 +41,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	public void doCommand() throws CaleydoRuntimeException {
 		
 		IViewManager viewManager = ((IViewManager) generalManager
-				.getManagerByBaseType(ManagerObjectType.VIEW));
+				.getManagerByObjectType(ManagerObjectType.VIEW));
 		
 		UndoRedoViewRep undoRedoView = (UndoRedoViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_UNDO_REDO,
@@ -59,7 +59,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 		undoRedoView.drawView();
 		
 		// Register UNDO/REDO view to command manager.
-		generalManager.getSingleton().getCommandManager().
+		generalManager.getCommandManager().
 			addUndoRedoViewRep(undoRedoView);
 		
 		refCommandManager.runDoCommand(this);

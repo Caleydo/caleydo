@@ -51,7 +51,7 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 		assert gLCanvas != null : "GLCanvas was not be created";
 		
 		IViewGLCanvasManager canvasManager = 
-			generalManager.getSingleton().getViewGLCanvasManager();
+			generalManager.getViewGLCanvasManager();
 		
 		// Register GL canvas to view manager
 		canvasManager.registerGLCanvas(gLCanvas, iGLCanvasID);

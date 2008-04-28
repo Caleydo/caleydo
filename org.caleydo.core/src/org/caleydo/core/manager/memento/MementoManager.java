@@ -9,7 +9,7 @@ import java.util.Vector;
 import org.caleydo.core.command.memento.IMemento;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IMementoManager;
-import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.base.AManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
@@ -22,7 +22,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  *
  */
 public class MementoManager 
-extends AAbstractManager
+extends AManager
 implements IMementoManager {
 	
 	private int iVecMementoStorageSize;
@@ -33,27 +33,20 @@ implements IMementoManager {
 	
 	protected final int iInitSizeMementoVector = 40;
 	
-	protected IGeneralManager refGeneralManager = null;
-	
 	/**
 	 * Constructor. 
 	 * 
 	 * Allocates Vector and Hashtable.
 	 */
-	public MementoManager(final IGeneralManager setGeneralManager) {
+	public MementoManager(final IGeneralManager generalManager) {
 		
-		super( setGeneralManager,
+		super(generalManager,
 				IGeneralManager.iUniqueId_TypeOffset_Memento,
 				ManagerType.MEMENTO );
 		
 		vecMemento = new Vector<IMemento>(iInitSizeMementoVector);
 		hashMementoId2Index = new Hashtable<Integer,Integer>(iInitSizeMementoVector*2);
 		iVecMementoStorageSize = 0;
-		
-		assert setGeneralManager !=null : "MementoSimpleManager init with null-pointer for SingeltonManager";
-		refGeneralManager = setGeneralManager;
-		
-		refGeneralManager.getSingleton().setMementoManager( this );
 	}
 
 	

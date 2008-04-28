@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.testing.command.data.filter;
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.data.filter.CmdDataFilterMinMax;
@@ -13,12 +10,11 @@ import org.caleydo.testing.testing_util.CoreStarter;
 import junit.framework.TestCase;
 
 /**
- * @author alexsb
+ * @author Alexander Lex
  *
  */
 public class CmdDataFiterMinMaxTest extends TestCase {
 
-	
 	
 	private CoreStarter myCoreStarter;
 	private IGeneralManager myGeneralManager;
@@ -46,9 +42,9 @@ public class CmdDataFiterMinMaxTest extends TestCase {
 	public void testForFloat() 
 	{		
 		
-		IStorage myStorage = myGeneralManager.getSingleton().getStorageManager().getItemStorage(46301);
+		IStorage myStorage = myGeneralManager.getStorageManager().getItemStorage(46301);
 		
-		CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) myGeneralManager.getSingleton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+		CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) myGeneralManager.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
 		
 		createdCmd.setAttributes(myStorage, StorageType.FLOAT);
 		
@@ -60,9 +56,9 @@ public class CmdDataFiterMinMaxTest extends TestCase {
 	
 	public void testForInt()
 	{
-		IStorage myStorage = myGeneralManager.getSingleton().getStorageManager().getItemStorage(45301);
+		IStorage myStorage = myGeneralManager.getStorageManager().getItemStorage(45301);
 		
-		CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) myGeneralManager.getSingleton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+		CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) myGeneralManager.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
 		
 		createdCmd.setAttributes(myStorage, StorageType.INT);
 		
@@ -75,9 +71,9 @@ public class CmdDataFiterMinMaxTest extends TestCase {
 	
 	public void testForDouble()
 	{
-		IStorage myStorage = myGeneralManager.getSingleton().getStorageManager().getItemStorage(47301);
+		IStorage myStorage = myGeneralManager.getStorageManager().getItemStorage(47301);
 		
-		CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) myGeneralManager.getSingleton().getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+		CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) myGeneralManager.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
 		
 		createdCmd.setAttributes(myStorage, StorageType.DOUBLE);
 		

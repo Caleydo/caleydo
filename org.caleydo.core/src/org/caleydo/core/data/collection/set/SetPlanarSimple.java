@@ -414,10 +414,10 @@ implements ISet {
 
 			//final IGeneralManager refManger = getManager();
 			
-			getManager().unregisterItem( getId(), 
+			generalManager.getSetManager().unregisterItem( getId(), 
 					ManagerObjectType.SET_PLANAR );
 			
-			getManager().registerItem( this, 
+			generalManager.getSetManager().registerItem(this, 
 					parser.getXML_DataComponent_Id(), 
 					ManagerObjectType.SET_PLANAR );
 			

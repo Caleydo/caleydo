@@ -65,7 +65,7 @@ extends AGenomeMapper{
 		Collection<Integer> iArTmpAccessionId = null;
 		Iterator<IStorage> iterMappingStorage = alMappingStorage.iterator();
 		
-		int iEnzymeID = refGenomeIdManager.getIdIntFromStringByMapping(sEnzymeCode, 
+		int iEnzymeID = genomeIdManager.getIdIntFromStringByMapping(sEnzymeCode, 
 				EGenomeMappingType.ENZYME_CODE_2_ENZYME);
 		
 		if (iEnzymeID == -1)
@@ -74,7 +74,7 @@ extends AGenomeMapper{
 			return arMappingColor;
 		}
 		
-		Collection<Integer> iTmpGeneId = refGenomeIdManager.getIdIntListByType(iEnzymeID, 
+		Collection<Integer> iTmpGeneId = genomeIdManager.getIdIntListByType(iEnzymeID, 
 				EGenomeMappingType.ENZYME_2_NCBI_GENEID);
 		
 		if(iTmpGeneId == null)
@@ -89,13 +89,13 @@ extends AGenomeMapper{
 		{
 			iGeneID = iterTmpGeneId.next();
 						
-			iAccessionID = refGenomeIdManager.getIdIntFromIntByMapping(iGeneID, 
+			iAccessionID = genomeIdManager.getIdIntFromIntByMapping(iGeneID, 
 					EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
 	
 			if (iAccessionID == -1)
 				break;
 							
-			iArTmpAccessionId = refGenomeIdManager.getIdIntListByType(iAccessionID, 
+			iArTmpAccessionId = genomeIdManager.getIdIntListByType(iAccessionID, 
 					EGenomeMappingType.ACCESSION_2_MICROARRAY);
 			
 			if(iArTmpAccessionId == null)
@@ -111,7 +111,7 @@ extends AGenomeMapper{
 				int [] bufferIntArray = refExpressionStorage.getArrayInt();
 				
 				if ( bufferIntArray == null ) {
-					this.refGeneralManager.getSingleton().logMsg("color mapping failed, Storage=[" +
+					this.generalManager.logMsg("color mapping failed, Storage=[" +
 							refExpressionStorage.getLabel() + "][" +
 							refExpressionStorage.toString() +
 							"] does not contain int[]!",LoggerType.ERROR);
@@ -121,7 +121,7 @@ extends AGenomeMapper{
 				{
 					int iMicroArrayId = iterTmpAccessionId.next();
 									
-					int iExpressionStorageIndex = refGenomeIdManager.getIdIntFromIntByMapping(
+					int iExpressionStorageIndex = genomeIdManager.getIdIntFromIntByMapping(
 							iMicroArrayId, EGenomeMappingType.MICROARRAY_2_MICROARRAY_EXPRESSION);
 					
 					// Get rid of 770 internal ID identifier

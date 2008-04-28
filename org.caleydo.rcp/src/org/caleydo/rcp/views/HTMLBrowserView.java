@@ -31,7 +31,7 @@ extends ViewPart {
 		//parent.setLayout(new RowLayout(SWT.VERTICAL));
 //		
 //		IViewManager viewManager = ((IViewManager) Application.refGeneralManager
-//				.getManagerByBaseType(ManagerObjectType.VIEW));
+//				.getManagerByObjectType(ManagerObjectType.VIEW));
 //		
 //		int iUniqueId = 85401;
 //		

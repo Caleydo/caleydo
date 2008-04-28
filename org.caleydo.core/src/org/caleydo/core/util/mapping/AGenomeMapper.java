@@ -26,9 +26,9 @@ import org.caleydo.core.util.mapping.color.ColorMapping;
  */
 public abstract class AGenomeMapper {
 
-	protected IGeneralManager refGeneralManager;
+	protected IGeneralManager generalManager;
 	
-	protected IGenomeIdManager refGenomeIdManager;
+	protected IGenomeIdManager genomeIdManager;
 	
 	protected ArrayList<IStorage> alMappingStorage;
 	
@@ -37,13 +37,13 @@ public abstract class AGenomeMapper {
 	/**
 	 * Constructor. 
 	 * 
-	 * @param refGeneralManager
+	 * @param generalManager
 	 */
-	public AGenomeMapper(final IGeneralManager refGeneralManager) {
+	public AGenomeMapper(final IGeneralManager generalManager) {
 	
-		this.refGeneralManager = refGeneralManager;
+		this.generalManager = generalManager;
 		alMappingStorage = new ArrayList<IStorage>();
-		refGenomeIdManager = refGeneralManager.getSingleton().getGenomeIdManager();
+		genomeIdManager = generalManager.getGenomeIdManager();
 		
 		expressionColorMapping = new ColorMapping(0, 1);
 	}
@@ -97,7 +97,7 @@ public abstract class AGenomeMapper {
 		
 		ArrayList<Vec3f> arMappingColor = new ArrayList<Vec3f>();
 		
-		int iGeneID = refGenomeIdManager.getIdIntFromStringByMapping(sGeneID, 
+		int iGeneID = genomeIdManager.getIdIntFromStringByMapping(sGeneID, 
 				EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
 				
 		if (iGeneID == -1)
@@ -106,7 +106,7 @@ public abstract class AGenomeMapper {
 			return arMappingColor;
 		}
 		
-		int iAccessionID = refGenomeIdManager.getIdIntFromIntByMapping(iGeneID, 
+		int iAccessionID = genomeIdManager.getIdIntFromIntByMapping(iGeneID, 
 				EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
 	
 		if (iAccessionID == -1)
@@ -115,7 +115,7 @@ public abstract class AGenomeMapper {
 			return arMappingColor;
 		}
 
-		int iExpressionStorageIndex = refGenomeIdManager.getIdIntFromIntByMapping(iAccessionID,
+		int iExpressionStorageIndex = genomeIdManager.getIdIntFromIntByMapping(iAccessionID,
 				EGenomeMappingType.ACCESSION_2_MICROARRAY_EXPRESSION);
 
 		if (iExpressionStorageIndex == -1)
@@ -138,7 +138,7 @@ public abstract class AGenomeMapper {
 			float[] bufferFloatArray = refExpressionStorage.getArrayFloat();
 			
 			if ( bufferFloatArray == null ) {
-				this.refGeneralManager.getSingleton().logMsg("color mapping failed, Storage=[" +
+				this.generalManager.logMsg("color mapping failed, Storage=[" +
 						refExpressionStorage.getLabel() + "][" +
 						refExpressionStorage.toString() +
 						"] does not contain float[]!",LoggerType.ERROR);

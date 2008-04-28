@@ -12,7 +12,7 @@ import org.caleydo.core.data.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.base.AManager;
 import org.caleydo.core.manager.data.IPathwayItemManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
@@ -30,7 +30,7 @@ import org.caleydo.util.graph.IGraphItem;
  * @author Michael Kalkusch
  */
 public class PathwayItemManager
-extends AAbstractManager
+extends AManager
 implements IPathwayItemManager {
 
 	private HashMap<Integer, IGraphItem> hashVertexIdToGraphItem;
@@ -76,7 +76,7 @@ implements IPathwayItemManager {
     	
 		hashVertexIdToGraphItem.put(iGeneratedId, pathwayVertex);
     	
-    	generalManager.getSingleton().getPathwayManager()
+    	generalManager.getPathwayManager()
 				.getRootPathway().addItem(pathwayVertex);
     	
     	hashVertexNameToGraphItem.put(sName, pathwayVertex);
@@ -181,7 +181,7 @@ implements IPathwayItemManager {
 		IGraphItem pathwayRelationEdge = new PathwayRelationEdgeGraphItem(
 				iGeneratedId, sType);
 		
-		IGraph rootPathway = generalManager.getSingleton()
+		IGraph rootPathway = generalManager
 				.getPathwayManager().getRootPathway();
 		
 		// Add edge to root pathway
@@ -248,7 +248,7 @@ implements IPathwayItemManager {
 		IGraphItem pathwayReactionEdgeRep =
 			new PathwayReactionEdgeGraphItemRep(iGeneratedId);
 	
-		IGraph rootPathway = generalManager.getSingleton()
+		IGraph rootPathway = generalManager
 			.getPathwayManager().getRootPathway();
 		
 		// Add edge to root pathway

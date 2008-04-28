@@ -63,7 +63,7 @@ public class GLToolboxRenderer
 			final GeneralRenderStyle renderStyle)
 	{
 		this.generalManager = generalManager;
-		pickingManager = generalManager.getSingleton().getViewGLCanvasManager().getPickingManager();
+		pickingManager = generalManager.getViewGLCanvasManager().getPickingManager();
 		this.iContainingViewID = iContainingViewID;
 		this.vecLeftPoint = vecLeftPoint;
 

@@ -1,5 +1,14 @@
 package org.caleydo.core.view.swt.data;
 
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.data.collection.StorageType;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.data.IStorageManager;
+import org.caleydo.core.manager.data.IVirtualArrayManager;
+import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.ViewType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -17,26 +26,15 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
-import org.caleydo.core.data.collection.IVirtualArray;
-import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.StorageType;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.data.IVirtualArrayManager;
-import org.caleydo.core.manager.data.IStorageManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.util.system.StringConversionTool;
-import org.caleydo.core.view.AViewRep;
-import org.caleydo.core.view.ViewType;
-
 public class DataTableViewRep 
 extends AViewRep 
 implements IDataTableView {
 	
 	private static final int MAX_TABLE_ROWS = 15;
 	
-	protected IStorageManager refStorageManager;
+	protected IStorageManager storageManager;
 
-	protected IVirtualArrayManager refSelectionManager;
+	protected IVirtualArrayManager virtualArrayManager;
 
 	protected IStorage[] refAllStorageItems;
 
@@ -77,11 +75,8 @@ implements IDataTableView {
 	 */
 	public void initViewSwtComposit( Composite swtContainer ) {
 		
-		refStorageManager = (IStorageManager) generalManager
-				.getManagerByBaseType(ManagerObjectType.STORAGE);
-
-		refSelectionManager = (IVirtualArrayManager) generalManager
-				.getManagerByBaseType(ManagerObjectType.VIRTUAL_ARRAY);
+		storageManager = generalManager.getStorageManager();
+		virtualArrayManager = generalManager.getVirtualArrayManager();
 	}
 
 	public void drawView() {
@@ -136,7 +131,7 @@ implements IDataTableView {
 
 	public void createStorageTable(int iRequestedStorageId) {
 		
-		refCurrentStorage = refStorageManager
+		refCurrentStorage = storageManager
 			.getItemStorage(iRequestedStorageId);
 		
 		// Reset paging
@@ -335,7 +330,7 @@ implements IDataTableView {
 				SWT.NONE);
 		multiRepeatColumn.setText("MultiRepeat");
 
-		refCurrentSelection = refSelectionManager
+		refCurrentSelection = virtualArrayManager
 				.getItemVirtualArray(iRequestedSelectionId);
 
 		item = new TableItem(refTable, SWT.NONE);
@@ -454,7 +449,7 @@ implements IDataTableView {
 			int iColumnIndexOfItem) {
 		
 		IVirtualArray tmpSelection =
-			refSelectionManager.getItemVirtualArray(iCurrentlyRequestedCollectionId);
+			virtualArrayManager.getItemVirtualArray(iCurrentlyRequestedCollectionId);
 		
 		tmpSelection.getWriteToken();
 		

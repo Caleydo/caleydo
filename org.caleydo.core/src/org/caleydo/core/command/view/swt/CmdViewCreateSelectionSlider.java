@@ -46,7 +46,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	public void doCommand() throws CaleydoRuntimeException {
 		
 		IViewManager viewManager = ((IViewManager) generalManager
-				.getManagerByBaseType(ManagerObjectType.VIEW));
+				.getManagerByObjectType(ManagerObjectType.VIEW));
 		
 		SelectionSliderViewRep sliderView = (SelectionSliderViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_SELECTION_SLIDER,

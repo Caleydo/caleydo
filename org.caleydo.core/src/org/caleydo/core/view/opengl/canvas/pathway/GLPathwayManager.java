@@ -13,7 +13,6 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.AUniqueManagedObject;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.selection.SetSelection;
 import org.caleydo.core.data.graph.core.PathwayGraph;
 import org.caleydo.core.data.graph.item.edge.PathwayReactionEdgeGraphItemRep;
 import org.caleydo.core.data.graph.item.edge.PathwayRelationEdgeGraphItemRep;
@@ -23,7 +22,6 @@ import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.util.mapping.AGenomeMapper;
@@ -38,13 +36,14 @@ import org.caleydo.util.graph.IGraphItem;
 import org.caleydo.util.graph.algorithm.GraphVisitorSearchBFS;
 
 /**
+ * OpenGL pathway manager.
  * 
  * @author Marc Streit
  *
  */
 public class GLPathwayManager {
 
-	private IGeneralManager refGeneralManager;
+	private IGeneralManager generalManager;
 	
 	public static final float SCALING_FACTOR_X = 0.0025f;
 	public static final float SCALING_FACTOR_Y = 0.0025f;
@@ -82,9 +81,9 @@ public class GLPathwayManager {
 	/**
 	 * Constructor.
 	 */
-	public GLPathwayManager(final IGeneralManager refGeneralManager) {
+	public GLPathwayManager(final IGeneralManager generalManager) {
 		
-		this.refGeneralManager = refGeneralManager;
+		this.generalManager = generalManager;
 		
 		refRenderStyle = new PathwayRenderStyle();
 		hashPathwayId2VerticesDisplayListId = new HashMap<Integer, Integer>();
@@ -107,7 +106,7 @@ public class GLPathwayManager {
 		iArSelectedEdgeRepId = new ArrayList<Integer>();
 		
 		// Initialize genome mapper
-		genomeMapper = refGeneralManager.getSingleton().getGenomeIdManager()
+		genomeMapper = generalManager.getGenomeIdManager()
 			.getGenomeMapperByMappingCascadeType(
 					EGenomeMappingCascadeType.ENZYME_2_NCBI_GENEID_2_ACCESSION_2_MICROARRAY_EXPRESSION_STORAGE_INDEX);
 		genomeMapper.setMappingData(alSetData);
@@ -125,7 +124,7 @@ public class GLPathwayManager {
 		if (iPathwayId == -1)
 			return;		
 		
-		PathwayGraph refTmpPathway = (PathwayGraph)refGeneralManager.getSingleton().getPathwayManager().
+		PathwayGraph refTmpPathway = (PathwayGraph)generalManager.getPathwayManager().
 			getItem(iPathwayId);
 		
 		int iVerticesDisplayListId = -1;
@@ -199,7 +198,7 @@ public class GLPathwayManager {
 //				continue;
 			
 			Iterator<IGraphItem> iterGraphItems = 
-				((IGraphItem) refGeneralManager.getSingleton().getPathwayItemManager()
+				((IGraphItem) generalManager.getPathwayItemManager()
 						.getItem(iAlTmpSelectedGraphItemIds.get(iItemIndex))).getAllItemsByProp(
 								EGraphItemProperty.ALIAS_PARENT).iterator();
 			Iterator<IGraphItem> iterIdenticalGraphItemReps;
@@ -480,7 +479,7 @@ public class GLPathwayManager {
 		
 		Vec3f tmpNodeColor = null;
 
-		gl.glPushName(refGeneralManager.getSingleton().getViewGLCanvasManager().getPickingManager()
+		gl.glPushName(generalManager.getViewGLCanvasManager().getPickingManager()
 				.getPickingID(containingView.getId(), EPickingType.PATHWAY_ELEMENT_SELECTION, vertexRep.getId()));
 		
 		EPathwayVertexShape shape = vertexRep.getShapeType();
@@ -735,7 +734,7 @@ public class GLPathwayManager {
 	private void renderLabels(final GL gl, final int iPathwayID) {
 
 	    PathwayVertexGraphItemRep vertexRep;
-		PathwayGraph tmpPathway = (PathwayGraph)refGeneralManager.getSingleton().getPathwayManager().
+		PathwayGraph tmpPathway = (PathwayGraph)generalManager.getPathwayManager().
 			getItem(iPathwayID);
 		
 		// Don't annotate BioCarta pathways - because of good texture annotation

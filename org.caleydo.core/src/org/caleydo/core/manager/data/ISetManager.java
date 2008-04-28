@@ -4,7 +4,7 @@ import java.util.Collection;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.SetType;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IManager;
 
 
 /**
@@ -14,7 +14,7 @@ import org.caleydo.core.manager.IGeneralManager;
  *
  */
 public interface ISetManager
-extends IGeneralManager
+extends IManager
 {
 	public ISet createSet( final SetType setType );
 	
@@ -30,6 +30,5 @@ extends IGeneralManager
 	 * Initialize data structures prior using this manager.
 	 *
 	 */
-	public void initManager();
-	
+	public void initManager();	
 }

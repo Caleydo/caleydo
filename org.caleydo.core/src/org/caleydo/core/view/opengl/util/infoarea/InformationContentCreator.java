@@ -36,7 +36,7 @@ public class InformationContentCreator
 	{
 		this.generalManager = generalManager;
 		sContent = new ArrayList<String>();
-		IDManager = this.generalManager.getSingleton().getGenomeIdManager();
+		IDManager = this.generalManager.getGenomeIdManager();
 		// TODO Auto-generated constructor stub
 		mapper = new GeneAnnotationMapper(generalManager);
 	}
@@ -78,7 +78,7 @@ public class InformationContentCreator
 			
 		case PATHWAY:
 			
-			PathwayGraph pathway = ((PathwayGraph)generalManager.getSingleton().getPathwayManager()
+			PathwayGraph pathway = ((PathwayGraph)generalManager.getPathwayManager()
 					.getItem(iUniqueID));
 			
 			if (pathway == null)

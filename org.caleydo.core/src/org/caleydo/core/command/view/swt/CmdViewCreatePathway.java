@@ -51,7 +51,7 @@ extends ACmdCreate_IdTargetLabelParentXY  {
 	public void doCommand() throws CaleydoRuntimeException {	
 		
 		IViewManager viewManager = ((IViewManager) generalManager
-				.getManagerByBaseType(ManagerObjectType.VIEW));
+				.getManagerByObjectType(ManagerObjectType.VIEW));
 		
 		Pathway2DViewRep pathwayView = (Pathway2DViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_PATHWAY,

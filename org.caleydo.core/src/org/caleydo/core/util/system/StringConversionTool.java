@@ -53,11 +53,11 @@ public final class StringConversionTool
 	 * 
 	 * @param sInput String to convert
 	 * @param iDefault default value
-	 * @param refLoggerManager reference to Logger
+	 * @param generalManager reference to Logger
 	 * @return converted int or default value, if (String) could not be converted to (int).
 	 */
 	public static final int convertStringToInt( 
-			final ILoggerManager refLoggerManager,
+			final ILoggerManager generalManager,
 			final String sInput, 
 			final int iDefault ) {
 		try {
@@ -65,7 +65,7 @@ public final class StringConversionTool
 		}
 		catch ( NumberFormatException nfe ) 
 		{			
-			refLoggerManager.logMsg( "convertStringToInt( " +
+			generalManager.logMsg( "convertStringToInt( " +
 					sInput + ") invalid String, use default=[" +
 					iDefault + "]",
 					LoggerType.VERBOSE );
@@ -213,7 +213,7 @@ public final class StringConversionTool
 	 * @return a new array of int[]
 	 */
 	public static final int[] convertStringToIntArray(
-			final ILoggerManager refLoggerManager,
+			final ILoggerManager generalManager,
 			final String sInput, 
 			final int iDimension ) {
 		
@@ -230,7 +230,7 @@ public final class StringConversionTool
 		{
 			if ( i >= iDimension )
 			{
-				refLoggerManager.logMsg( "parsing [" + sInput + "] should contain [" + 
+				generalManager.logMsg( "parsing [" + sInput + "] should contain [" + 
 						iDimension + "] values. Skip remaining values!",
 						LoggerType.VERBOSE );
 				break;
@@ -241,7 +241,7 @@ public final class StringConversionTool
 		}
 		
 		if ( i < iDimension ) {
-			refLoggerManager.logMsg( "parsing [" + sInput + "] should contain [" + 
+			generalManager.logMsg( "parsing [" + sInput + "] should contain [" + 
 					iDimension + "] values. use valeu '0' for remaining values!",
 					LoggerType.VERBOSE );
 		}
@@ -292,14 +292,14 @@ public final class StringConversionTool
 	 * If number of integer values in sInput is smaller than iDimension the remaining values are "0".
 	 * Also if a non-integer value is found it is replaced by "0".
 	 * 
-	 * @param refLoggerManager reference to Logger
+	 * @param generalManager reference to Logger
 	 * @param sInput input to be converted into an array of int[]
 	 * @param iDimension size of the array of int[]
 	 * @param iDefaultArray use this array as default array in case sInput conrains no  or wrong values.
 	 * @return a new array of int[]
 	 */
 	public static final int[] convertStringToIntArray(
-			final ILoggerManager refLoggerManager,
+			final ILoggerManager generalManager,
 			final String sInput, 
 			final int iDimension,
 			final int[] iDefaultArray ) {
@@ -315,7 +315,7 @@ public final class StringConversionTool
 		{
 			if ( i >= iDimension )
 			{
-				refLoggerManager.logMsg("convertStringToIntArray() Skip remaining tokens in array [" +
+				generalManager.logMsg("convertStringToIntArray() Skip remaining tokens in array [" +
 						sInput + 
 						"] result=[" +
 						resultIntArray.toString() + "]",
@@ -324,7 +324,7 @@ public final class StringConversionTool
 			}
 			
 			resultIntArray[i] = convertStringToInt( 
-					refLoggerManager,
+					generalManager,
 					tokenize.nextToken(), 
 					iDefaultArray[i] );					
 		}
@@ -338,14 +338,14 @@ public final class StringConversionTool
 	 * If number of integer values in sInput is smaller than iDimension the remaining values are "0".
 	 * Also if a non-integer value is found it is replaced by "0".
 	 * 
-	 * @param refLoggerManager reference to Logger
+	 * @param generalManager reference to Logger
 	 * @param sInput input to be converted into an array of int[]
 	 * @param sDelimiter delimiter used while parsing String
 	 * 
 	 * @return a new array of int[]
 	 */
 	public static final int[] convertStringToIntArrayVariableLength(
-			final ILoggerManager refLoggerManager,
+			final ILoggerManager generalManager,
 			final String sInput,
 			final String sDelimiter ) { 
 		
@@ -356,7 +356,7 @@ public final class StringConversionTool
 		
 		if ( resultIntArray.length < 1 ) 
 		{
-			refLoggerManager.logMsg("Can not read int[] array with length 0!",
+			generalManager.logMsg("Can not read int[] array with length 0!",
 					LoggerType.MINOR_ERROR ); 
 		}
 		

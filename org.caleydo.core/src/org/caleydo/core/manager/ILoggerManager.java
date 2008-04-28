@@ -3,7 +3,6 @@
  */
 package org.caleydo.core.manager;
 
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.ICaleydoDefaultType;
 
 /**
@@ -11,7 +10,7 @@ import org.caleydo.core.util.ICaleydoDefaultType;
  *
  */
 public interface ILoggerManager 
-extends IGeneralManager 
+extends IManager 
 {
 	public static enum LoggerType 
 	implements ICaleydoDefaultType <LoggerType> {

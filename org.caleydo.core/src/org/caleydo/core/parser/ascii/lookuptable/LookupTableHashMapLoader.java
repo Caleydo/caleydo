@@ -49,9 +49,9 @@ implements ILookupTableLoader {
 		String sLine;
 		
 		int iLineInFile = 1;
-		int iStartParsingAtLine = refLookupTableLoaderProxy.getStartParsingAtLine();
-		int iStopParsingAtLine  = refLookupTableLoaderProxy.getStopParsingAtLine();		
-		String sOuterTokenSeperator = refLookupTableLoaderProxy.getTokenSeperator();
+		int iStartParsingAtLine = lookupTableLoaderProxy.getStartParsingAtLine();
+		int iStopParsingAtLine  = lookupTableLoaderProxy.getStopParsingAtLine();		
+		String sOuterTokenSeperator = lookupTableLoaderProxy.getTokenSeperator();
 		
 	    while ( ((sLine = brFile.readLine()) != null)&&
 	    		( iLineInFile <= iStopParsingAtLine) )  
@@ -85,7 +85,7 @@ implements ILookupTableLoader {
 						}
 						else
 						{
-							refGeneralManager.getSingleton().logMsg(
+							generalManager.logMsg(
 									"(Key,Value) [" +
 									buffer + ", ?? ] value is missing (ignore key-value pair) in line " +
 									iLineInFile,
@@ -115,7 +115,7 @@ implements ILookupTableLoader {
 				} // end of: while (( strToken.hasMoreTokens() )&&(bMaintainLoop)) {
 				
 				
-				refLookupTableLoaderProxy.progressBarStoredIncrement();
+				lookupTableLoaderProxy.progressBarStoredIncrement();
 				
 			} // end of: if( iLineInFile > this.iHeaderLinesSize) {			
 			
@@ -148,6 +148,6 @@ implements ILookupTableLoader {
 	 */
 	public void wirteBackMapToGenomeIdManager() {
 		
-		refGenomeIdManager.setMapByType(currentGenomeIdType, refGenomeIdMap);
+		genomeIdManager.setMapByType(currentGenomeIdType, refGenomeIdMap);
 	}
 }

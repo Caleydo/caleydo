@@ -82,7 +82,7 @@ extends Dialog
 	 */
 	protected void okPressed() {
 
-		boolean bFound = Application.caleydo_core.getGeneralManager().getSingleton().getViewGLCanvasManager().getDataEntitySearcher()
+		boolean bFound = Application.caleydo_core.getGeneralManager().getViewGLCanvasManager().getDataEntitySearcher()
 			.searchForEntity(searchText.getText());
 		
 		if (bFound)

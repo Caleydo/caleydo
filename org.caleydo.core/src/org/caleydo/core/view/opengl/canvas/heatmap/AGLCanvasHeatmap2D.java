@@ -53,7 +53,7 @@ implements IGLCanvasHeatmap2D {
 	 */
 	public final void destroyGLCanvas()
 	{
-		generalManager.getSingleton().logMsg( 
+		generalManager.logMsg( 
 				"IGLCanvasHeatmap2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId,
 				LoggerType.FULL );
 	}

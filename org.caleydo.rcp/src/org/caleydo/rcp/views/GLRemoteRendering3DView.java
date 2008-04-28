@@ -124,8 +124,8 @@ extends AGLViewPart {
 	
 	public void triggerCmdExternalAction(EExternalActionType type) {
 
-		CmdExternalActionTrigger tmpCmd = (CmdExternalActionTrigger) Application.refGeneralManager
-				.getSingleton().getCommandManager().createCommandByType(
+		CmdExternalActionTrigger tmpCmd = (CmdExternalActionTrigger) Application.generalManager
+				.getCommandManager().createCommandByType(
 						CommandQueueSaxType.EXTERNAL_ACTION_TRIGGER);
 
 		// FIXME: hard coded view ID

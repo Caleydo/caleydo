@@ -1,7 +1,7 @@
-package org.caleydo.core.manager.singleton;
+package org.caleydo.core.manager.general;
 
+import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.LinkedList;
 
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.data.collection.IStorage;
@@ -10,10 +10,11 @@ import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ILoggerManager;
+import org.caleydo.core.manager.IManager;
 import org.caleydo.core.manager.IMementoManager;
 import org.caleydo.core.manager.ISWTGUIManager;
-import org.caleydo.core.manager.ISingleton;
 import org.caleydo.core.manager.IViewGLCanvasManager;
+import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.command.CommandManager;
 import org.caleydo.core.manager.data.IGenomeIdManager;
@@ -32,9 +33,10 @@ import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.gui.SWTGUIManager;
 import org.caleydo.core.manager.logger.ConsoleLogger;
 import org.caleydo.core.manager.memento.MementoManager;
+import org.caleydo.core.manager.parser.XmlParserManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
-import org.caleydo.core.manager.view.ViewJoglManager;
+import org.caleydo.core.manager.view.ViewGLCanvasManager;
 import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
@@ -46,156 +48,115 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  * @author Marc Streit
  *
  */
-public class OneForAllManager 
-implements IGeneralManagerSingleton
+public class GeneralManager 
+implements IGeneralManager
 {
-
-	/**
-	 * Defines, if initAll() was called.
-	 * 
-	 * @see org.caleydo.core.manager.singleton.OneForAllManager#initAll()
-	 */
 	private boolean bAllManagersInitialized = false;
 
-	private LinkedList <IGeneralManager> llAllManagerObjects;
-	
-	protected SingletonManager refSingeltonManager;
-
-	protected ISetManager refSetManager;
+	private ArrayList<IManager> llAllManagerObjects;
 
 	protected IStorageManager refStorageManager;
-
-	protected IVirtualArrayManager refVirtualArrayManager;
-
-	protected IMementoManager refMementoManager;
-
-	protected ICommandManager refCommandManager;
-
-	protected ILoggerManager refLoggerManager;
 	
-	protected IGenomeIdManager refGenomeIdManager;
-
-	protected IViewGLCanvasManager refViewGLCanvasManager;
-
+	protected IMementoManager refMementoManager;
+	
+	protected IVirtualArrayManager refVirtualArrayManager;
+	
+	protected ISetManager refSetManager;
+	
+	protected ICommandManager refCommandManager;
+	
+	protected ILoggerManager generalManager;
+	
 	protected ISWTGUIManager refSWTGUIManager;
-
+	
+	protected IViewGLCanvasManager refViewGLCanvasManager;
+	
 	protected IPathwayManager refPathwayManager;
 	
 	protected IPathwayItemManager refPathwayItemManager;
 	
 	protected IEventPublisher refEventPublisher;
+	
+	protected IXmlParserManager refXmlParserManager;
+	
+	protected IGenomeIdManager refGenomeIdManager;
+	
+	protected ILoggerManager refLoggerManager;
+	
+	/**
+	 * Unique Id per each application over the network.
+	 * Used to identify and create Id's unique for distributed applications. 
+	 * 
+	 * @see org.caleydo.core.manager.IGeneralManager#iUniqueId_WorkspaceOffset
+	 */
+	private int iNetworkApplicationIdPostfix = 0;
 
 	/**
-	 * Used to create a new item by a Fabrik.
-	 * used by org.caleydo.core.data.manager.OneForAllManager#createNewId(ManagerObjectType)
-	 * 
-	 * @see org.caleydo.core.manager.singleton.OneForAllManager#createNewId(ManagerObjectType)
+	 * Constructor.
 	 */
-	protected ManagerObjectType setCurrentType = ManagerObjectType.ALL_IN_ONE;
-
-	/**
-	 * Call initAll() before using this class!
-	 * 
-	 * @see org.caleydo.core.data.manager.singelton.OneForAllManager#initAll()
-	 */
-	public OneForAllManager(final SingletonManager sef_SingeltonManager)
+	public GeneralManager()
 	{
-
-		if (refSingeltonManager == null)
-		{
-			refSingeltonManager = new SingletonManager();
-			refSingeltonManager.initManager();
-		} else
-		{
-			refSingeltonManager = sef_SingeltonManager;
-		}
-
 		/**
-		 * The Network psotfix must be unique inside the network for 
-		 * destributed Caleydo applications. 
+		 * The Network postfix must be unique inside the network for 
+		 * distributed Caleydo applications. 
 		 * For stand alone Caleydo applications this id must match the XML file.
 		 */
-		refSingeltonManager.setNetworkPostfix( 0 );
+		setNetworkPostfix(0);
 		
-		llAllManagerObjects = new LinkedList <IGeneralManager> ();
+		llAllManagerObjects = new ArrayList<IManager>();
 		
-		//initAll();
-	}
-
-	/*
-	 *  (non-Javadoc)
-	 * @see org.caleydo.core.data.manager.GeneralManager#getSingelton()
-	 */
-	public final ISingleton getSingleton()
-	{
-		return refSingeltonManager;
+		initManager();
 	}
 
 	/**
 	 * Must be called right after the constructor before using this class.
-	 * Initialzes all Mangeger obejcts.
+	 * Initializes all manager objects.
 	 *
 	 */
-	public void initAll()
+	public void initManager()
 	{
-
 		if (bAllManagersInitialized)
 		{
 			throw new CaleydoRuntimeException(
 					"initAll() was called at least twice!");
 		}
+		
 		bAllManagersInitialized = true;
 
-		/** int logger first! */
 		refLoggerManager = new ConsoleLogger(this);
 		refLoggerManager.setSystemLogLevel( 
 				// ILoggerManager.LoggerType.FULL );
 				ILoggerManager.LoggerType.VERBOSE );
-		refSingeltonManager.setLoggerManager(refLoggerManager);
-		/* end init logger */
-		
+
 		refStorageManager = new StorageManager(this, 4);
 		refVirtualArrayManager = new VirtualArrayManager(this, 4);
 		refSetManager = new SetManager(this, 4);
 		refMementoManager = new MementoManager(this);
 		refCommandManager = new CommandManager(this);
-		refViewGLCanvasManager = new ViewJoglManager(this);
+		refViewGLCanvasManager = new ViewGLCanvasManager(this);
 		refSWTGUIManager = new SWTGUIManager(this);
 		refEventPublisher = new EventPublisher(this);
 		refGenomeIdManager = new DynamicGenomeIdManager(this);
 		refPathwayManager = new PathwayManager(this);
 		refPathwayItemManager = new PathwayItemManager(this);
+		refXmlParserManager = new XmlParserManager(this);
 		
 		/**
 		 * Insert all Manager objects handling registered objects to 
 		 * the LinkedList
 		 */
-		llAllManagerObjects.add( refSetManager );
-		llAllManagerObjects.add( refVirtualArrayManager );
-		llAllManagerObjects.add( refStorageManager );
-		
-		llAllManagerObjects.add( refPathwayManager );
-		llAllManagerObjects.add( refPathwayItemManager );
-		llAllManagerObjects.add( refGenomeIdManager );
-		llAllManagerObjects.add( refEventPublisher );
-		llAllManagerObjects.add( refViewGLCanvasManager );
-		llAllManagerObjects.add( refSWTGUIManager );
-		llAllManagerObjects.add( refCommandManager );
-		llAllManagerObjects.add( refMementoManager );
-		
-		/**
-		 * Register managers to singleton ...
-		 */	
-		refSingeltonManager.setCommandManager(refCommandManager);
-		refSingeltonManager.setVirtualArrayManager(refVirtualArrayManager);
-		refSingeltonManager.setSetManager(refSetManager);
-		refSingeltonManager.setStorageManager(refStorageManager);
-		refSingeltonManager.setViewGLCanvasManager(refViewGLCanvasManager);
-		refSingeltonManager.setSWTGUIManager(refSWTGUIManager);
-		refSingeltonManager.setPathwayManager(refPathwayManager);
-		refSingeltonManager.setPathwayItemManager(refPathwayItemManager);
-		refSingeltonManager.setEventPublisher(refEventPublisher);
-		refSingeltonManager.setGenomeIdManager( refGenomeIdManager );
+		llAllManagerObjects.add(refSetManager);
+		llAllManagerObjects.add(refVirtualArrayManager);
+		llAllManagerObjects.add(refStorageManager);
+		llAllManagerObjects.add(refPathwayManager);
+		llAllManagerObjects.add(refPathwayItemManager);
+		llAllManagerObjects.add(refGenomeIdManager);
+		llAllManagerObjects.add(refEventPublisher);
+		llAllManagerObjects.add(refViewGLCanvasManager);
+		llAllManagerObjects.add(refSWTGUIManager);
+		llAllManagerObjects.add(refCommandManager);
+		llAllManagerObjects.add(refMementoManager);
+		llAllManagerObjects.add(refLoggerManager);
 	}
 
 	/* (non-Javadoc)
@@ -203,8 +164,7 @@ implements IGeneralManagerSingleton
 	 */
 	public boolean hasItem(final int iItemId)
 	{
-
-		Iterator <IGeneralManager> iter = llAllManagerObjects.iterator();
+		Iterator <IManager> iter = llAllManagerObjects.iterator();
 		
 		while ( iter.hasNext() ) 
 		{
@@ -223,12 +183,11 @@ implements IGeneralManagerSingleton
 	 */
 	public Object getItem(final int iItemId)
 	{
-
-		Iterator <IGeneralManager> iter = llAllManagerObjects.iterator();
+		Iterator <IManager> iter = llAllManagerObjects.iterator();
 		
 		while ( iter.hasNext() ) 
 		{
-			IGeneralManager buffer = iter.next();
+			IManager buffer = iter.next();
 			
 			if ( buffer.hasItem(iItemId) ) 
 			{
@@ -260,23 +219,6 @@ implements IGeneralManagerSingleton
 		return refCommandManager;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.caleydo.core.data.manager.GeneralManager#getManagerType()
-	 */
-	public ManagerType getManagerType()
-	{
-		return ManagerType.SINGELTON;
-	}
-
-	/* (non-Javadoc)
-	 * @see org.caleydo.core.data.manager.GeneralManager#getSingeltonManager()
-	 */
-	public IGeneralManager getGeneralManager()
-	{
-		return this;
-	}
-
-
 	//	/**
 	//	 * Create a new Id using the ManagerObjectType set with 
 	//	 */
@@ -292,7 +234,7 @@ implements IGeneralManagerSingleton
 
 		assert type != null : "registerItem called with type == null!";
 		
-		IGeneralManager buffer = this.getManagerByBaseType( type );		
+		IManager buffer = this.getManagerByObjectType( type );		
 		assert buffer != null : "createNewId type does not address manager!";
 		
 		return buffer.createId(type);
@@ -303,7 +245,7 @@ implements IGeneralManagerSingleton
 	{
 		assert type != null : "registerItem called with type == null!";
 		
-		IGeneralManager buffer = this.getManagerByBaseType( type );
+		IManager buffer = this.getManagerByObjectType( type );
 		
 		if ( buffer != null ) 
 		{
@@ -318,7 +260,7 @@ implements IGeneralManagerSingleton
 	{
 		assert type != null : "registerItem called with type == null!";
 		
-		IGeneralManager buffer = this.getManagerByBaseType( type );
+		IManager buffer = this.getManagerByObjectType( type );
 		
 		assert buffer != null : "registerItem type does not address manager!";
 		
@@ -427,31 +369,25 @@ implements IGeneralManagerSingleton
 
 	}
 	
-	
-	public IGeneralManager getManagerByBaseType(ManagerObjectType managerType) 
+	public IManager getManagerByObjectType(final ManagerObjectType managerType) 
 	{
 		return getManagerByType(managerType.getGroupType());
 	}
 	
-	public IGeneralManager getManagerByType(ManagerType managerType)
+	public IManager getManagerByType(final ManagerType managerType)
 	{
-
 		assert managerType != null : "type is null!";
 
 		switch (managerType)
 		{
 		case MEMENTO:
 			return refMementoManager;
-//		case VIEW_DISTRIBUTE_GUI:
-//			return refDComponentManager;
 		case DATA_VIRTUAL_ARRAY:
 			return refVirtualArrayManager;
 		case DATA_SET:
 			return refSetManager;
 		case DATA_STORAGE:
 			return refStorageManager;
-		case SINGELTON:
-			return this;
 		case VIEW:
 			return refViewGLCanvasManager;
 		case COMMAND:
@@ -465,27 +401,22 @@ implements IGeneralManagerSingleton
 			
 		default:
 			throw new CaleydoRuntimeException(
-					"Error in OneForAllManager.getManagerByBaseType() unsupported type "
+					"Error in OneForAllManager.getManagerByObjectType() unsupported type "
 							+ managerType.name());
 		} // end switch ( type.getGroupType() )
 	}
-
-//	public IViewCanvasManager getViewCanvasManager()
-//	{
-//		return refViewCanvasManager;
-//	}
 	
 	public void destroyOnExit() {
 		
-		refLoggerManager.logMsg("OneForAllManager.destroyOnExit()", LoggerType.STATUS );
+		generalManager.logMsg("OneForAllManager.destroyOnExit()", LoggerType.STATUS );
 		
 		this.refViewGLCanvasManager.destroyOnExit();
 		
-		Iterator <IGeneralManager> iter = llAllManagerObjects.iterator();
+		Iterator <IManager> iter = llAllManagerObjects.iterator();
 		
 		while ( iter.hasNext() ) 
 		{
-			IGeneralManager buffer = iter.next();
+			IManager buffer = iter.next();
 			
 			if ( buffer != null ) {
 				buffer.destroyOnExit();
@@ -493,15 +424,15 @@ implements IGeneralManagerSingleton
 			
 		} // while ( iter.hasNext() ) 
 		
-		refLoggerManager.logMsg("OneForAllManager.destroyOnExit()  ...[DONE]", LoggerType.STATUS);
+		generalManager.logMsg("OneForAllManager.destroyOnExit()  ...[DONE]", LoggerType.STATUS);
 	}
 
 	public boolean setCreateNewId(ManagerType setNewBaseType, int iCurrentId) {
 
-		IGeneralManager refSecialManager = getManagerByType( setNewBaseType );
+		IManager refSecialManager = getManagerByType( setNewBaseType );
 		
 		if ( ! refSecialManager.setCreateNewId(setNewBaseType, iCurrentId) ) {
-			refLoggerManager.logMsg("setCreateNewId failed!", LoggerType.MINOR_ERROR );
+			generalManager.logMsg("setCreateNewId failed!", LoggerType.MINOR_ERROR );
 			return false;
 		}
 		
@@ -513,4 +444,112 @@ implements IGeneralManagerSingleton
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	public int getNetworkPostfix() {
+		return iNetworkApplicationIdPostfix;
+	}
+	
+	public void setNetworkPostfix( int iSetNetworkPrefix ) {
+		if (( iSetNetworkPrefix < IGeneralManager.iUniqueId_WorkspaceOffset) && 
+				( iSetNetworkPrefix >= 0)) { 
+			iNetworkApplicationIdPostfix = iSetNetworkPrefix;
+			return;
+		}
+		throw new RuntimeException("SIngeltonManager.setNetworkPostfix() exceeded range [0.." +
+				IGeneralManager.iUniqueId_WorkspaceOffset + "] ");
+	}
+
+	public final void logMsg( final String info, final LoggerType logLevel) {
+		refLoggerManager.logMsg( info, logLevel );		
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.caleydo.core.manager.singelton.Singelton#getMementoManager()
+	 */
+	public IMementoManager getMementoManager() {
+		return refMementoManager;
+	}
+	
+	/* (non-Javadoc)	
+	 * @see org.caleydo.core.manager.singelton.Singelton#getStorageManager()
+	 */
+	public IStorageManager getStorageManager() {
+		return refStorageManager;
+	}
+		
+	/* (non-Javadoc)
+	 * @see org.caleydo.core.manager.singelton.Singelton#getVirtualArrayManager()
+	 */
+	public IVirtualArrayManager getVirtualArrayManager() {
+		return refVirtualArrayManager;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.caleydo.core.manager.singelton.Singelton#getSetManager()
+	 */
+	public ISetManager getSetManager() {
+		return refSetManager;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.caleydo.core.manager.singelton.Singelton#getViewGLCanvasManager()
+	 */
+	public IViewGLCanvasManager getViewGLCanvasManager() {
+		return refViewGLCanvasManager;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.ISingelton#getPathwayManager()
+	 */
+	public IPathwayManager getPathwayManager() {
+		
+		return refPathwayManager;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.ISingelton#getPathwayItemManager()
+	 */
+	public IPathwayItemManager getPathwayItemManager() {
+		
+		return refPathwayItemManager;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.caleydo.core.manager.singelton.Singelton#getSWTGUIManager()
+	 */
+	public ISWTGUIManager getSWTGUIManager() {
+		return refSWTGUIManager;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.caleydo.core.manager.singelton.Singelton#getEventManager()
+	 */
+	public IEventPublisher getEventPublisher() {
+		return refEventPublisher;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.caleydo.core.manager.singelton.Singelton#getLoggerManager()
+	 */
+	public ILoggerManager getLoggerManager() {
+		return this.generalManager;
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.caleydo.core.manager.singelton.Singelton#getXmlParserManager()
+	 */
+	public IXmlParserManager getXmlParserManager() {
+		return this.refXmlParserManager;
+	}
+		
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IGeneralManager#getGenomeIdManager()
+	 */
+	public IGenomeIdManager getGenomeIdManager() {
+		return this.refGenomeIdManager;
+	}
 }
+

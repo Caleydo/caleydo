@@ -50,7 +50,7 @@ implements GLEventListener {
 	
 	public void init(GLAutoDrawable drawable) {
 
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				"JoglCanvasForwarder [" + iGLCanvasID + "] init() ... " + 
 				"\n Chosen GLCapabilities: " + drawable.getChosenGLCapabilities(),
 				LoggerType.STATUS);

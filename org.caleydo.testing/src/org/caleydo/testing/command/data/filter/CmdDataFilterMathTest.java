@@ -38,7 +38,7 @@ public class CmdDataFilterMathTest extends TestCase {
 	
 	public void testNormalizeOverwiteFloat()
 	{	
-		CmdDataFilterMath createdCmd = (CmdDataFilterMath) myGeneralManager.getSingleton()
+		CmdDataFilterMath createdCmd = (CmdDataFilterMath) myGeneralManager
 			.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MATH);
 		
 		ArrayList<Integer> floatStorageIDs = new ArrayList<Integer>();
@@ -48,7 +48,7 @@ public class CmdDataFilterMathTest extends TestCase {
 		
 		createdCmd.doCommand();	
 		
-		IStorage myStorage = myGeneralManager.getSingleton().getStorageManager().getItemStorage(46301);
+		IStorage myStorage = myGeneralManager.getStorageManager().getItemStorage(46301);
 		assertEquals(0.453824601f, myStorage.getArrayFloat()[0], 0.000001f);
 		assertEquals(0.541304228f, myStorage.getArrayFloat()[1], 0.000001f);
 		assertEquals(0.937810171f, myStorage.getArrayFloat()[2], 0.000001f);
@@ -61,15 +61,15 @@ public class CmdDataFilterMathTest extends TestCase {
 	
 	public void testNormalizeCopyFloat()
 	{	
-		CmdDataFilterMath createdCmd = (CmdDataFilterMath) myGeneralManager.getSingleton()
+		CmdDataFilterMath createdCmd = (CmdDataFilterMath) myGeneralManager
 			.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MATH);
 		
 		ArrayList<Integer> floatStorageIDs = new ArrayList<Integer>();
 		floatStorageIDs.add(46301);		
 		
-		IStorage myTargetStorage = myGeneralManager.getSingleton()
+		IStorage myTargetStorage = myGeneralManager
 			.getStorageManager().createStorage(ManagerObjectType.STORAGE_FLAT);
-		myGeneralManager.getSingleton().getStorageManager()
+		myGeneralManager.getStorageManager()
 			.registerItem(myTargetStorage, myTargetStorage.getId(), ManagerObjectType.STORAGE_FLAT);		
 		
 		ArrayList<Integer> iAlFloatTargetStorageIDs = new ArrayList<Integer>();
@@ -92,7 +92,7 @@ public class CmdDataFilterMathTest extends TestCase {
 	
 	public void testLinToLogOverwriteFloat()
 	{	
-		CmdDataFilterMath createdCmd = (CmdDataFilterMath) myGeneralManager.getSingleton()
+		CmdDataFilterMath createdCmd = (CmdDataFilterMath) myGeneralManager
 			.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MATH);
 		
 		ArrayList<Integer> floatStorageIDs = new ArrayList<Integer>();
@@ -102,7 +102,7 @@ public class CmdDataFilterMathTest extends TestCase {
 		
 		createdCmd.doCommand();	
 		
-		IStorage myStorage = myGeneralManager.getSingleton().getStorageManager().getItemStorage(46301);
+		IStorage myStorage = myGeneralManager.getStorageManager().getItemStorage(46301);
 		assertEquals(4.42005482f, myStorage.getArrayFloat()[0], 0.001f);
 		assertEquals(4.49252293f, myStorage.getArrayFloat()[1], 0.001f);
 		assertEquals(4.72209895f, myStorage.getArrayFloat()[2], 0.001f);
@@ -115,15 +115,15 @@ public class CmdDataFilterMathTest extends TestCase {
 	
 	public void testLinToLogCopyFloat()
 	{
-		CmdDataFilterMath createdCmd = (CmdDataFilterMath) myGeneralManager.getSingleton()
+		CmdDataFilterMath createdCmd = (CmdDataFilterMath) myGeneralManager
 			.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MATH);
 		
 		ArrayList<Integer> floatStorageIDs = new ArrayList<Integer>();
 		floatStorageIDs.add(46301);		
 		
-		IStorage myTargetStorage = myGeneralManager.getSingleton()
+		IStorage myTargetStorage = myGeneralManager
 			.getStorageManager().createStorage(ManagerObjectType.STORAGE_FLAT);
-		myGeneralManager.getSingleton().getStorageManager()
+		myGeneralManager.getStorageManager()
 			.registerItem(myTargetStorage, myTargetStorage.getId(), ManagerObjectType.STORAGE_FLAT);		
 		
 		ArrayList<Integer> iAlFloatTargetStorageIDs = new ArrayList<Integer>();
@@ -146,17 +146,17 @@ public class CmdDataFilterMathTest extends TestCase {
 	
 	public void testLogToLinOverwriteFloat()
 	{
-		CmdDataFilterMath createdCmd = (CmdDataFilterMath) myGeneralManager.getSingleton()
+		CmdDataFilterMath createdCmd = (CmdDataFilterMath) myGeneralManager
 			.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MATH);
 		
 		ArrayList<Integer> floatStorageIDs = new ArrayList<Integer>();
 		floatStorageIDs.add(46301);
 		
 		
-		IStorage myOriginalStorage = myGeneralManager.getSingleton()
+		IStorage myOriginalStorage = myGeneralManager
 		.getStorageManager().createStorage(ManagerObjectType.STORAGE_FLAT);
 
-		myOriginalStorage.setArrayFloat(myGeneralManager.getSingleton().getStorageManager().getItemStorage(46301).getArrayFloat());
+		myOriginalStorage.setArrayFloat(myGeneralManager.getStorageManager().getItemStorage(46301).getArrayFloat());
 		
 		createdCmd.setAttributes(CmdDataFilterMath.EDataFilterMathType.LIN_2_LOG,
 								floatStorageIDs);
@@ -169,7 +169,7 @@ public class CmdDataFilterMathTest extends TestCase {
 		createdCmd.doCommand();	
 		
 		
-		IStorage myStorage = myGeneralManager.getSingleton().getStorageManager().getItemStorage(46301);
+		IStorage myStorage = myGeneralManager.getStorageManager().getItemStorage(46301);
 	
 		assertEquals(myOriginalStorage.getArrayFloat()[0], myStorage.getArrayFloat()[0], 2.0f);
 		assertEquals(myOriginalStorage.getArrayFloat()[1], myStorage.getArrayFloat()[1], 2.0f);
@@ -184,21 +184,21 @@ public class CmdDataFilterMathTest extends TestCase {
 	public void testLogToLinCopyFloat()
 	{
 			
-		CmdDataFilterMath createdCmd = (CmdDataFilterMath) myGeneralManager.getSingleton()
+		CmdDataFilterMath createdCmd = (CmdDataFilterMath) myGeneralManager
 			.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MATH);
 		
 		ArrayList<Integer> floatStorageIDs = new ArrayList<Integer>();
 		floatStorageIDs.add(46301);
 		
 		
-		IStorage myOriginalStorage = myGeneralManager.getSingleton()
+		IStorage myOriginalStorage = myGeneralManager
 		.getStorageManager().createStorage(ManagerObjectType.STORAGE_FLAT);
 
-		myOriginalStorage.setArrayFloat(myGeneralManager.getSingleton().getStorageManager().getItemStorage(46301).getArrayFloat());
+		myOriginalStorage.setArrayFloat(myGeneralManager.getStorageManager().getItemStorage(46301).getArrayFloat());
 		
-		IStorage myTargetStorage = myGeneralManager.getSingleton()
+		IStorage myTargetStorage = myGeneralManager
 		.getStorageManager().createStorage(ManagerObjectType.STORAGE_FLAT);
-		myGeneralManager.getSingleton().getStorageManager()
+		myGeneralManager.getStorageManager()
 		.registerItem(myTargetStorage, myTargetStorage.getId(), ManagerObjectType.STORAGE_FLAT);		
 	
 		ArrayList<Integer> iAlFloatTargetStorageIDs = new ArrayList<Integer>();

@@ -7,18 +7,18 @@ import org.caleydo.core.manager.data.IGenomeIdManager;
 
 public class GeneAnnotationMapper {
 
-	protected IGeneralManager refGeneralManager;
+	protected IGeneralManager generalManager;
 	
-	protected IGenomeIdManager iDManager;
+	protected IGenomeIdManager genomeIDManager;
 	
 	/**
 	 * Constructor.
 	 * 
 	 * @param refGeneralManager
 	 */
-	public GeneAnnotationMapper (final IGeneralManager refGeneralManager) {
+	public GeneAnnotationMapper (final IGeneralManager generalManager) {
 	
-		iDManager = refGeneralManager.getSingleton().getGenomeIdManager();
+		genomeIDManager = generalManager.getGenomeIdManager();
 	}
 	
 	public final String getGeneShortNameByNCBIGeneId(
@@ -27,7 +27,7 @@ public class GeneAnnotationMapper {
 		// Remove prefix ("hsa:")
 		sGeneId = sGeneId.substring(4);
 				
-		int iGeneId = iDManager.getIdIntFromStringByMapping(sGeneId, 
+		int iGeneId = genomeIDManager.getIdIntFromStringByMapping(sGeneId, 
 				EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
 				
 		if (iGeneId == -1)
@@ -35,14 +35,14 @@ public class GeneAnnotationMapper {
 			return "N.A.";
 		}
 		
-		return iDManager.getIdStringFromIntByMapping(
+		return genomeIDManager.getIdStringFromIntByMapping(
 				iGeneId, EGenomeMappingType.NCBI_GENEID_2_GENE_SHORT_NAME);
 	}
 	
 	public final String getGeneShortNameByAccession(int iAccession)
 	{
-		int sNcbiID = iDManager.getIdIntFromIntByMapping(iAccession, EGenomeMappingType.ACCESSION_2_NCBI_GENEID);						
-		return iDManager.getIdStringFromIntByMapping(sNcbiID, EGenomeMappingType.NCBI_GENEID_2_GENE_SHORT_NAME);
+		int sNcbiID = genomeIDManager.getIdIntFromIntByMapping(iAccession, EGenomeMappingType.ACCESSION_2_NCBI_GENEID);						
+		return genomeIDManager.getIdStringFromIntByMapping(sNcbiID, EGenomeMappingType.NCBI_GENEID_2_GENE_SHORT_NAME);
 	
 	}
 	
@@ -51,7 +51,7 @@ public class GeneAnnotationMapper {
 		// Remove prefix ("hsa:")
 		sNCBIGeneIdCode = sNCBIGeneIdCode.substring(4);
 		
-		int iGeneID = iDManager.getIdIntFromStringByMapping(sNCBIGeneIdCode, 
+		int iGeneID = genomeIDManager.getIdIntFromStringByMapping(sNCBIGeneIdCode, 
 				EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
 				
 		if (iGeneID == -1)
@@ -59,7 +59,7 @@ public class GeneAnnotationMapper {
 			return "invalid";
 		}
 		
-		int iAccessionID = iDManager.getIdIntFromIntByMapping(iGeneID, 
+		int iAccessionID = genomeIDManager.getIdIntFromIntByMapping(iGeneID, 
 				EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
 	
 		if (iAccessionID == -1)
@@ -67,7 +67,7 @@ public class GeneAnnotationMapper {
 			return "invalid";
 		}
 		
-		return iDManager.getIdStringFromIntByMapping(
+		return genomeIDManager.getIdStringFromIntByMapping(
 				iAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
 
 	}

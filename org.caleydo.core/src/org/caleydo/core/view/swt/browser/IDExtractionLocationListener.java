@@ -3,22 +3,21 @@ package org.caleydo.core.view.swt.browser;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.eclipse.swt.browser.LocationAdapter;
-import org.eclipse.swt.browser.LocationEvent;
 import org.caleydo.core.data.collection.set.selection.SetSelection;
 import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
+import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.browser.LocationAdapter;
+import org.eclipse.swt.browser.LocationEvent;
 
 
 public class IDExtractionLocationListener 
 extends LocationAdapter 
 {
-	private IGeneralManager refGeneralManager;
-	
-	private HookedBrowser browser;
+	private IGeneralManager generalManager;
 	
 	private int iBrowserId;
 	
@@ -27,12 +26,11 @@ extends LocationAdapter
 	private boolean bSkipNextChangeEvent = false;
 	
 	public IDExtractionLocationListener(final IGeneralManager refGeneralManager,
-			final HookedBrowser browser,
+			final Browser browser,
 			final int iBrowserId,
 			final int iSelectionSetId) {
 	
-		this.refGeneralManager = refGeneralManager;
-		this.browser = browser;
+		this.generalManager = refGeneralManager;
 		this.iBrowserId = iBrowserId;
 		this.iSelectionSetId = iSelectionSetId;
 
@@ -70,13 +68,13 @@ extends LocationAdapter
 			String sExtractedID = 
 				event.location.substring(sSearchPhrase_NCBIGeneId.length());
 
-			int iPathwayGraphItemId = refGeneralManager.getSingleton().getPathwayItemManager()
+			int iPathwayGraphItemId = generalManager.getPathwayItemManager()
 				.getPathwayVertexGraphItemIdByNCBIGeneId(StringConversionTool.convertStringToInt(sExtractedID, -1));
 		
 			if (iPathwayGraphItemId == -1)
 				return;
 			
-			PathwayVertexGraphItem vertexItemBuffer = (PathwayVertexGraphItem) refGeneralManager.getSingleton()
+			PathwayVertexGraphItem vertexItemBuffer = (PathwayVertexGraphItem) generalManager
 				.getPathwayItemManager().getItem(iPathwayGraphItemId);
 			
 			Iterator <IGraphItem> iterList = 
@@ -128,7 +126,7 @@ extends LocationAdapter
 		}
 		
 		SetSelection tmpSelectionSet = 
-			(SetSelection) refGeneralManager.getSingleton().getSetManager().getItemSet(iSelectionSetId);
+			(SetSelection) generalManager.getSetManager().getItemSet(iSelectionSetId);
 		tmpSelectionSet.updateSelectionSet(iBrowserId, 
 				iAlSelectionId,
 				iAlSelectionDepth, 

@@ -338,9 +338,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 
 		if (alTargetSet.isEmpty())
 		{
-			generalManager
-					.getSingleton()
-					.logMsg(
+			generalManager.logMsg(
 							"createHistogram() can not create Heatmap, because targetSet=null",
 							LoggerType.STATUS);
 			return;
@@ -348,9 +346,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 
 		if (iValuesInRow < 1)
 		{
-			generalManager
-					.getSingleton()
-					.logMsg(
+			generalManager.logMsg(
 							"createHistogram() can not create Heatmap, because histogramLevels are outside range [1..max]",
 							LoggerType.FULL);
 			return;
@@ -466,7 +462,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 
 		bEnablePicking = enablePicking;
 
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				this.getClass().getSimpleName() + ".setEnablePicking( "
 						+ Boolean.toString(enablePicking) + " )",
 				LoggerType.STATUS);
@@ -725,8 +721,8 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 	protected void init_External2InternalHashMap() {
 
 		HashMap<Integer, Integer> hashNCBI_GENEID_2_internalGraphVertexId = generalManager
-				.getSingleton().getPathwayItemManager()
-				.getHashNCBIGeneIdToPathwayVertexGraphItemId();
+				.getPathwayItemManager()
+					.getHashNCBIGeneIdToPathwayVertexGraphItemId();
 
 		// IGenomeIdManager refIGenomeIdManager =
 		// refGeneralManager.getSingelton()
@@ -1048,8 +1044,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 				}
 
 				PathwayVertexGraphItem vertexItemBuffer = (PathwayVertexGraphItem) generalManager
-						.getSingleton().getPathwayItemManager().getItem(
-								lookupValue.intValue());
+						.getPathwayItemManager().getItem(lookupValue.intValue());
 
 				Iterator<IGraphItem> iterList = vertexItemBuffer
 						.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)
@@ -1099,9 +1094,9 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 					iAlSelectionGroup, alSelectionId_PathwayId);
 
 			// Calls update with the ID of the PathwayViewRep
-			((EventPublisher) generalManager.getSingleton()
+			((EventPublisher) generalManager
 					.getEventPublisher()).updateReceiver(this, selectionSet);
-			generalManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					this.getClass().getSimpleName()
 							+ ".broadcast selection event! "
 							+ selectionSet.toString(), LoggerType.STATUS);
@@ -1168,8 +1163,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 				}
 
 				PathwayVertexGraphItem vertexItemBuffer = (PathwayVertexGraphItem) generalManager
-						.getSingleton().getPathwayItemManager().getItem(
-								lookupValue.intValue());
+						.getPathwayItemManager().getItem(lookupValue.intValue());
 
 				Iterator<IGraphItem> iterList = vertexItemBuffer
 						.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)
@@ -1217,9 +1211,9 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 					iAlSelectionGroup, alSelectionId_PathwayId);
 
 			// Calls update with the ID of the PathwayViewRep
-			((EventPublisher) generalManager.getSingleton()
+			((EventPublisher) generalManager
 					.getEventPublisher()).updateReceiver(this, selectionSet);
-			generalManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					"broadcast selection event! " + selectionSet.toString(),
 					LoggerType.STATUS);
 		}
@@ -1324,7 +1318,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 		render_displayListHeatmap(gl);
 		gl.glEndList();
 
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				"createHeatmap() create DsiplayList)", LoggerType.FULL);
 
 	}
@@ -1463,7 +1457,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 	// public int[] createHistogram(final int iHistogramLevels) {
 	public void renderHeatmap(final int iHistogramLevels) {
 
-		generalManager.getSingleton().logMsg("HEATMAP: set  ",
+		generalManager.logMsg("HEATMAP: set  ",
 				LoggerType.FULL);
 
 	}
@@ -1534,9 +1528,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 			this.iRenderIndexStop = iSetRenderIndexStop;
 		} else
 		{
-			generalManager
-					.getSingleton()
-					.logMsg(
+			generalManager.logMsg(
 							"Ignore render start/stop=["
 									+ iSetRenderIndexStart
 									+ "/"
@@ -1561,12 +1553,12 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 
 		boolean bUpdateColorMapping = alTargetSet.isEmpty();
 
-		ISet addTargetSet = generalManager.getSingleton().getSetManager()
+		ISet addTargetSet = generalManager.getSetManager()
 				.getItemSet(iTargetCollectionSetId);
 
 		if (addTargetSet == null)
 		{
-			generalManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					"GLCanvasScatterPlot2D.setTargetSetId("
 							+ iTargetCollectionSetId
 							+ ") failed, because Set is not registered!",
@@ -1575,7 +1567,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 
 		alTargetSet.add(addTargetSet);
 
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				"GLCanvasScatterPlot2D.setTargetSetId("
 						+ iTargetCollectionSetId + ") done!", LoggerType.FULL);
 
@@ -2422,7 +2414,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 
 	public void updateReceiver(Object eventTrigger) {
 
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				this.getClass().getSimpleName() + ": updateReceiver( ("
 						+ eventTrigger.getClass().getSimpleName() + ") "
 						+ eventTrigger.toString() + ")", LoggerType.STATUS);
@@ -2430,12 +2422,12 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				this.getClass().getSimpleName() + ": updateReceiver( ("
 						+ eventTrigger.getClass().getSimpleName() + ") "
 						+ eventTrigger.toString() + ")", LoggerType.STATUS);
 
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				this.getClass().getSimpleName()
 						+ ": updateReceiver() udateSet: "
 						+ updatedSet.toString(), LoggerType.STATUS);
@@ -2464,9 +2456,8 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 		{
 			/* lookup id.. */
 			Iterator<IGraphItem> iterGraphItemRep = ((IGraphItem) generalManager
-					.getSingleton().getPathwayItemManager().getItem(
-							intBuffer[j])).getAllItemsByProp(
-					EGraphItemProperty.ALIAS_PARENT).iterator();
+					.getPathwayItemManager().getItem(intBuffer[j])).getAllItemsByProp(
+							EGraphItemProperty.ALIAS_PARENT).iterator();
 
 			while (iterGraphItemRep.hasNext())
 			{
@@ -2639,7 +2630,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 		}
 
 		GLCanvasHeatmap2DColumn parentHeatmap = (GLCanvasHeatmap2DColumn) generalManager
-				.getSingleton().getViewGLCanvasManager().getItem(id);
+				.getViewGLCanvasManager().getItem(id);
 
 		if (!alExternalWindow_Link2Parent.contains(parentHeatmap))
 		{

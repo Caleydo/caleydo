@@ -242,20 +242,19 @@ implements ISetSelection
 	public void updateSelectionSet(int iUniqueTriggerID) {
 		
 		try {	
-			generalManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					this.getClass().getSimpleName() + 
 					": updateSelectionSet(): Set selection data and trigger update.",
 					LoggerType.VERBOSE );
 			
 	 		// Calls update with the ID of the view
-	 		((EventPublisher)generalManager.getSingleton().
-				getEventPublisher()).updateReceiver(generalManager.
-						getSingleton().getViewGLCanvasManager().
+	 		((EventPublisher)generalManager.
+				getEventPublisher()).updateReceiver(generalManager.getViewGLCanvasManager().
 							getItem(iUniqueTriggerID), this);
 	 		
 		} catch (Exception e)
 		{
-			generalManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					this.getClass().getSimpleName() + 
 					": updateSelectionSet(): Problem during selection update triggering.",
 					LoggerType.MINOR_ERROR );

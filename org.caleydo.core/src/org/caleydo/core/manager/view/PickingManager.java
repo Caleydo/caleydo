@@ -11,7 +11,8 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.base.AManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
@@ -21,12 +22,9 @@ import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import com.sun.opengl.util.BufferUtil;
 
 /**
- * 
- * @author Alexander Lex
- * 
  * Manages Picking IDs in a system-wide unique way and stores them locally
  * 
- * Do NOT store picking ids in classes that use this class
+ * Do NOT store picking IDs in classes that use this class
  * 
  * Syntax for Picking IDs
  * 
@@ -34,18 +32,24 @@ import com.sun.opengl.util.BufferUtil;
  * rest: counter
  * 
  * C*TT
+ * 
+ * @author Alexander Lex
  *
  */
-
-public class PickingManager extends AAbstractManager 
+public class PickingManager 
+extends AManager 
 {	
 	private HashMap<Integer, HashMap<Integer, Integer>> hashSignatureToPickingIDHashMap;
 	private HashMap<Integer, HashMap<Integer, Integer>> hashSignatureToExternalIDHashMap;
+	
 	private int iIDCounter = 0;
+	
 	private HashMap<Integer, ArrayList<Pick>> hashSignatureToHitList;
 	
 	private HashMap<Integer, Long> hashViewIDToLastMouseMovedTimeStamp;
 	private HashMap<Integer, Boolean> hashViewIDToIsMouseOverPickingEvent;
+	
+	private boolean bEnablePicking = true;
 
 	
 	/**
@@ -65,7 +69,6 @@ public class PickingManager extends AAbstractManager
 		hashSignatureToExternalIDHashMap = new HashMap<Integer, HashMap<Integer, Integer>>();
 		hashViewIDToLastMouseMovedTimeStamp = new HashMap<Integer, Long>();
 		hashViewIDToIsMouseOverPickingEvent = new HashMap<Integer, Boolean>();
-		
 	}
 	
 	/**
@@ -120,15 +123,17 @@ public class PickingManager extends AAbstractManager
 				final GL gl,				
 				final boolean bIsMaster)
 	{	
+		if (bEnablePicking == false)
+			return;
 		
-		AGLCanvasUser canvasUser = (AGLCanvasUser)(generalManager.getSingleton().getViewGLCanvasManager().getItem(iViewID));
+		AGLCanvasUser canvasUser = (AGLCanvasUser)(generalManager.getViewGLCanvasManager().getItem(iViewID));
 		PickingJoglMouseListener pickingTriggerMouseAdapter =  canvasUser.getParentGLCanvas().getJoglMouseListener();
 		
 		Point pickPoint = null;
 
-		//FIXME: hack to conserve the mouse state - Discuss
-		boolean bMouseReleased =
-			pickingTriggerMouseAdapter.wasMouseReleased();
+//		//FIXME: hack to conserve the mouse state - Discuss
+//		boolean bMouseReleased =
+//			pickingTriggerMouseAdapter.wasMouseReleased();
 
 		EPickingMode ePickingMode = EPickingMode.CLICKED;		
 		
@@ -530,4 +535,49 @@ public class PickingManager extends AAbstractManager
 		}
 	}
 	
+	/**
+	 * Turn on/off picking
+	 * 
+	 * @param bEnablePicking
+	 */
+	public void enablePicking(final boolean bEnablePicking) 
+	{
+		this.bEnablePicking = bEnablePicking;
+	}
+
+	@Override
+	public Object getItem(int itemId) {
+
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean hasItem(int itemId) {
+
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public boolean registerItem(Object registerItem, int itemId,
+			ManagerObjectType type) {
+
+		// TODO Auto-generated method stub
+		return false;
+	}
+
+	@Override
+	public int size() {
+
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean unregisterItem(int itemId, ManagerObjectType type) {
+
+		// TODO Auto-generated method stub
+		return false;
+	}
 }

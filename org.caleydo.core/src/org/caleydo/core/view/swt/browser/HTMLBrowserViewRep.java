@@ -3,16 +3,6 @@
  */
 package org.caleydo.core.view.swt.browser;
 
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.SWTException;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Text;
-import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.swt.widgets.ToolItem;
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.data.CmdDataCreateSelectionSetMakro;
 import org.caleydo.core.manager.IGeneralManager;
@@ -21,6 +11,17 @@ import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.view.AViewRep;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.SWTException;
+import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.Text;
+import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.swt.widgets.ToolItem;
 
 /**
  * Simple HTML browser.
@@ -36,7 +37,7 @@ implements IView {
 	
 	public static String CALEYDO_HOME = "http://www.caleydo.org";
 	
-    protected HookedBrowser refBrowser;
+    protected Browser refBrowser;
     
     protected String sUrl = CALEYDO_HOME;
     
@@ -61,10 +62,10 @@ implements IView {
 		// Default browser type
 		this.browserType = EBrowserType.GENERAL;
 		
-		iSelectionSetId = refGeneralManager.getSingleton().getSetManager()
+		iSelectionSetId = generalManager.getSetManager()
 			.createId(ManagerObjectType.SET_LINEAR);
 		
-		CmdDataCreateSelectionSetMakro selectedSetCmd = (CmdDataCreateSelectionSetMakro) refGeneralManager.getSingleton().getCommandManager()
+		CmdDataCreateSelectionSetMakro selectedSetCmd = (CmdDataCreateSelectionSetMakro) generalManager.getCommandManager()
 			.createCommandByType(CommandQueueSaxType.CREATE_SET_SELECTION_MAKRO);
 		
 		selectedSetCmd.setAttributes(iSelectionSetId);
@@ -148,9 +149,7 @@ implements IView {
 		});
 		
 		
-		refBrowser = new HookedBrowser (
-				refSWTContainer, 
-				SWT.NONE, generalManager);
+		refBrowser = new Browser (refSWTContainer, SWT.NONE);
 				
 		idExtractionLocationListener = new IDExtractionLocationListener(generalManager,
 				refBrowser, iUniqueId, iSelectionSetId);
@@ -166,7 +165,7 @@ implements IView {
 
 	public void drawView() {
 		
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				this.getClass().getSimpleName() + 
 				": drawView(): Load "+sUrl, 
 				LoggerType.VERBOSE );
@@ -198,7 +197,7 @@ implements IView {
 		}
 			catch (SWTException swte) 
 		{
-				generalManager.getSingleton().logMsg(
+				generalManager.logMsg(
 						this.getClass().getSimpleName() + 
 						": error while setURL ["+sUrl + "]", 
 						LoggerType.STATUS );

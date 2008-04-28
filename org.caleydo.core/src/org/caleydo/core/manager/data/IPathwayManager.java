@@ -2,7 +2,7 @@ package org.caleydo.core.manager.data;
 
 import org.caleydo.core.data.graph.core.PathwayGraph;
 import org.caleydo.core.data.view.rep.jgraph.PathwayImageMap;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IManager;
 import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.data.pathway.PathwayDatabase;
 import org.caleydo.util.graph.core.Graph;
@@ -14,8 +14,8 @@ import org.caleydo.util.graph.core.Graph;
  *
  */
 public interface IPathwayManager
-extends IGeneralManager {
-
+extends IManager
+{
 	public PathwayGraph createPathway(
 			final EPathwayDatabaseType type,
 			final String sName, 

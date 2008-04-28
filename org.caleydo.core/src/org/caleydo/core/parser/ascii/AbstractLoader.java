@@ -19,9 +19,13 @@ import org.caleydo.core.manager.gui.SWTGUIManager;
  */
 public abstract class AbstractLoader 
 implements IMementoXML, IParserObject {
-
+	
+	protected final IGeneralManager generalManager;
+	
+	protected final SWTGUIManager sWTGUIManager;	
+	
 	/**
-	 * Work around, disabel progressbar, 
+	 * Work around, disable progressbar, 
 	 * because it is not threadsafe yet.
 	 */
 	private final boolean bUseMultipleThreads;
@@ -33,8 +37,8 @@ implements IMementoXML, IParserObject {
 	
 	
 	/**
-	 * Defiens the nubmer of leines to beread from a file.
-	 * only usefull, if loadData_TestLinesToBeRead() was called before reading the file.
+	 * Defines the number of lines to be read from a file.
+	 * only useful, if loadData_TestLinesToBeRead() was called before reading the file.
 	 * 
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(BufferedReader)
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(String)
@@ -69,7 +73,7 @@ implements IMementoXML, IParserObject {
 	
 
 	/**
-	 * Stores the current positon of the progress bar after calling
+	 * Stores the current position of the progress bar after calling
 	 * 
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarSetStoreInitTitle(String, int, int)
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarStoredIncrement()
@@ -85,18 +89,6 @@ implements IMementoXML, IParserObject {
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#fProgressBarIndex
 	 */
 	private float fProgressBarInc;
-	
-	
-	/**
-	 * ref to singelton
-	 */
-	protected final IGeneralManager refGeneralManager;
-	
-	/**
-	 * ref to SwtGuiManager.
-	 */
-	protected final SWTGUIManager refSWTGUIManager;	
-
 	
 	/**
 	 * Define numbers of lines to skip as assumed to be the header of a file.
@@ -114,20 +106,20 @@ implements IMementoXML, IParserObject {
 
 	
 	/**
-	 * Define the speperator
+	 * Define the separator
 	 * TAB is the default token.
 	 */
 	protected String sTokenSeperator = IGeneralManager.sDelimiter_Parser_DataItems_Tab;
 	
 	/**
-	 * Define the speperator
+	 * Define the separator
 	 * TAB is the default token.
 	 */
 	protected String sTokenInnerLoopSeperator = IGeneralManager.sDelimiter_Parser_DataItems;
 	
 	/**
 	 * Define, if exact file size need to be computed prior to loading the file.
-	 * Default is fales.
+	 * Default is false.
 	 * 
 	 * @see AbstractLoader#loadData_TestLinesToBeRead(BufferedReader)
 	 */
@@ -138,16 +130,22 @@ implements IMementoXML, IParserObject {
 	protected int iLineInFile_CurrentDataIndex = 0;
 
 
-	
-	public AbstractLoader(final IGeneralManager setGeneralManager, 
+	/**
+	 * Constructor.
+	 * 
+	 * @param generalManager
+	 * @param setFileName
+	 * @param enableMultipeThreads
+	 */
+	public AbstractLoader(final IGeneralManager generalManager, 
 			final String setFileName,
 			final boolean enableMultipeThreads) {
 
-		refGeneralManager = setGeneralManager;
+		this.generalManager = generalManager;
 		
-		refSWTGUIManager = (SWTGUIManager) this.refGeneralManager.getSingleton().getSWTGUIManager();
+		sWTGUIManager = (SWTGUIManager) generalManager.getSWTGUIManager();
 		
-		assert refGeneralManager!= null :"null-pointer in constructor";		
+		assert generalManager!= null :"null-pointer in constructor";		
 		
 		this.sFileName = setFileName;
 		
@@ -157,9 +155,9 @@ implements IMementoXML, IParserObject {
 	}
 	
 	/**
-	 * Set the current token seperator.
+	 * Set the current token separator.
 	 * 
-	 * @param token current token seperator
+	 * @param token current token separator
 	 */
 	public final void setTokenSeperator(final String token) {			
 		sTokenSeperator = token;
@@ -226,7 +224,7 @@ implements IMementoXML, IParserObject {
 		if ( iStartParsingAtLine > iStopParsingAtLine )
 		{
 			this.iStopParsingAtLine = Integer.MAX_VALUE;
-			refGeneralManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					"AMicroArrayLoader.setStartParsingStopParsingAtLine() stop index is smaller than start index. set stop index to end of file!",
 					LoggerType.MINOR_ERROR );			
 			return;
@@ -284,7 +282,7 @@ implements IMementoXML, IParserObject {
 		    brFile.close();
 		}
 		catch (IOException ioe) {
-			refGeneralManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					"AbstractLoader: IO-error line=[" + iLineInFile +
 					"] while testing file: " + ioe.toString(),
 					LoggerType.MINOR_ERROR );
@@ -294,7 +292,7 @@ implements IMementoXML, IParserObject {
 		    //System.exit(1);
 		}
 		catch (Exception ex) {
-			refGeneralManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					"AbstractLoader: ERROR line=[" + iLineInFile +
 					"] while testing file: " + ex.toString(),
 					LoggerType.ERROR );
@@ -380,7 +378,7 @@ implements IMementoXML, IParserObject {
 		    }		   
 		    		
 		    // sample line: 1110 Kybernetik
-		    refGeneralManager.getSingleton().logMsg(
+		    generalManager.logMsg(
 		    		"Read file \""+ 
 				       this.sFileName + "\" ...",
 				       LoggerType.VERBOSE );
@@ -396,7 +394,7 @@ implements IMementoXML, IParserObject {
 		    
 		    // sample line: E016|Zentrale Medienstelle|Media Centre|00
 		    
-		    refGeneralManager.getSingleton().logMsg(
+		    generalManager.logMsg(
 		    		" read file \""+ 
 				       this.sFileName + "\"  ....  [DONE]",
 				     LoggerType.STATUS );
@@ -405,14 +403,14 @@ implements IMementoXML, IParserObject {
 		    
 		 
 		    
-		    refGeneralManager.getSingleton().logMsg(
+		    generalManager.logMsg(
 		    		"  Read file \""+ 
 				       this.sFileName + "\" .... copy to storage ...[DONE]",
 				       LoggerType.VERBOSE_EXTRA );
 		    
 		}
 		catch (IOException ioe) {
-			refGeneralManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					"MicroArrayLoader: IO-error line=[" + iLineInFile +
 					"] while parsing: " + ioe.toString(),
 					LoggerType.MINOR_ERROR );
@@ -421,7 +419,7 @@ implements IMementoXML, IParserObject {
 		    //System.exit(1);
 		}
 		catch (Exception ex) {
-			refGeneralManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					"MicroArrayLoader: ERROR line=[" + iLineInFile +
 					"] while parsing: " + ex.toString(),
 					LoggerType.ERROR );
@@ -460,16 +458,16 @@ implements IMementoXML, IParserObject {
 		
 		int iMaxPosition = iMaxProgressBarPosition;
 		
-		if ( iMaxProgressBarPosition > SWTGUIManager.PROGRESSBAR_MAXIMUM  ) 
+		if ( iMaxProgressBarPosition > sWTGUIManager.PROGRESSBAR_MAXIMUM  ) 
 		{
-			iMaxPosition = SWTGUIManager.PROGRESSBAR_MAXIMUM;
+			iMaxPosition = sWTGUIManager.PROGRESSBAR_MAXIMUM;
 		}
 		
 		assert sText != null : "can not init text with 'null'";
 		assert iMaxPosition > iCurrentProgressBarPosition : "iMaxPosition is smaller than iCurrentProgressBarPosition !";
 		
-		iProgressBarLastPosition = refSWTGUIManager.getLoadingProgressBarPercentage();
-		sLastProgressBarText = refSWTGUIManager.setLoadingProgressBarTitle(
+		iProgressBarLastPosition = sWTGUIManager.getLoadingProgressBarPercentage();
+		sLastProgressBarText = sWTGUIManager.setLoadingProgressBarTitle(
 				"load " + this.getFileName(), 
 				iCurrentProgressBarPosition);	
 		
@@ -495,7 +493,7 @@ implements IMementoXML, IParserObject {
 		{
 			progressBarSetStoreInitTitle(sText,
 					iCurrentProgressBarPosition,
-					SWTGUIManager.PROGRESSBAR_MAXIMUM ,
+					sWTGUIManager.PROGRESSBAR_MAXIMUM ,
 					iStepsTill100_Percent);
 		}
 	}
@@ -508,7 +506,7 @@ implements IMementoXML, IParserObject {
 			
 			if ( (int)fProgressBarIndex != iProgressBarCurrentPosition ) {
 				iProgressBarCurrentPosition = (int)fProgressBarIndex;			
-				refSWTGUIManager.setLoadingProgressBarPercentage( iProgressBarCurrentPosition );
+				sWTGUIManager.setLoadingProgressBarPercentage( iProgressBarCurrentPosition );
 			}
 		}
 	}
@@ -521,7 +519,7 @@ implements IMementoXML, IParserObject {
 		/* Multi Threaded Version: remove next lines or make call thread safe */		
 		if ( !bUseMultipleThreads )
 		{
-			refSWTGUIManager.setLoadingProgressBarTitle(sLastProgressBarText,iProgressBarLastPosition);
+			sWTGUIManager.setLoadingProgressBarTitle(sLastProgressBarText,iProgressBarLastPosition);
 			
 			assert fProgressBarInc != 0.0f : "call progressBarResetTitle() without calling progressBarSetStoreInitTitle() first!";
 			
@@ -540,7 +538,7 @@ implements IMementoXML, IParserObject {
 		if ( !bUseMultipleThreads )
 		{
 			iProgressBarCurrentPosition += iTicks;
-			refSWTGUIManager.setLoadingProgressBarPercentage( iProgressBarCurrentPosition );
+			sWTGUIManager.setLoadingProgressBarPercentage( iProgressBarCurrentPosition );
 		}
 	}
 	

@@ -42,7 +42,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	public void doCommand() throws CaleydoRuntimeException {
 		
 		IViewManager viewManager = ((IViewManager) generalManager
-				.getManagerByBaseType(ManagerObjectType.VIEW));
+				.getManagerByObjectType(ManagerObjectType.VIEW));
 		
 		NewSetEditorViewRep setEditorView = (NewSetEditorViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_DATA_SET_EDITOR,

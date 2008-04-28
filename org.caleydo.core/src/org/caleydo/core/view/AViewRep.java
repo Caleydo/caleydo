@@ -89,7 +89,7 @@ implements IViewRep {
 		alSetData = new ArrayList <ISet> ();
 		alSetSelection = new ArrayList <SetSelection> ();
 		
-		refSetManager = refGeneralManager.getSingleton().getSetManager();
+		refSetManager = generalManager.getSetManager();
 	}
 	
 	protected abstract void initViewSwtComposit(Composite swtContainer);
@@ -138,7 +138,7 @@ implements IViewRep {
 		 */
 		
 		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) generalManager
-		.getSingleton().getSWTGUIManager().createWidget(
+			.getSWTGUIManager().createWidget(
 				ManagerObjectType.GUI_SWT_NATIVE_WIDGET,
 				iParentContainerId, iWidth, iHeight);
 
@@ -229,7 +229,7 @@ implements IViewRep {
 			
 			if ( refCurrentSet == null ) 
 			{
-				generalManager.getSingleton().logMsg(
+				generalManager.logMsg(
 						"addSetId(" + iSet[i] + ") is not registered at SetManager!",
 						LoggerType.MINOR_ERROR);
 				
@@ -248,7 +248,7 @@ implements IViewRep {
 					break;
 					
 				default:
-					generalManager.getSingleton().logMsg(
+					generalManager.logMsg(
 							"addSetId() unsupported SetType!",
 							LoggerType.ERROR);
 				} // switch (refCurrentSet.getSetType()) {
@@ -256,7 +256,7 @@ implements IViewRep {
 			} //if ( ! hasSetId_ByReference(refCurrentSet) )
 			else 
 			{ 
-				generalManager.getSingleton().logMsg(
+				generalManager.logMsg(
 						"addSetId(" + iSet[i] + ") ISet is already registered!",
 						LoggerType.MINOR_ERROR);
 			} //if ( ! hasSetId_ByReference(refCurrentSet) ) {...} else {...}
@@ -279,7 +279,7 @@ implements IViewRep {
 			break;
 			
 		default:
-			generalManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					"addSetId() unsupported SetType!",
 					LoggerType.ERROR);
 		} // switch (setType) {
@@ -298,7 +298,7 @@ implements IViewRep {
 			
 			if ( refCurrentSet == null ) 
 			{
-				generalManager.getSingleton().logMsg(
+				generalManager.logMsg(
 						"removeSetId(" + iSet[i] + ") is not registered at SetManager!",
 						LoggerType.MINOR_ERROR);
 				
@@ -317,7 +317,7 @@ implements IViewRep {
 					break;
 					
 				default:
-					generalManager.getSingleton().logMsg(
+					generalManager.logMsg(
 							"removeSetId() unsupported SetType!",
 							LoggerType.ERROR);
 				} // switch (refCurrentSet.getSetType()) {
@@ -325,7 +325,7 @@ implements IViewRep {
 			} //if ( ! hasSetId_ByReference(refCurrentSet) )
 			else 
 			{ 
-				generalManager.getSingleton().logMsg(
+				generalManager.logMsg(
 						"removeSetId(" + iSet[i] + ") ISet was not registered!",
 						LoggerType.MINOR_ERROR);
 			} //if ( ! hasSetId_ByReference(refCurrentSet) ) {...} else {...}

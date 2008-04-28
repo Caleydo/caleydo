@@ -40,7 +40,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 	
 	public void doCommand() throws CaleydoRuntimeException
 	{
-		generalManager.getSingleton().
+		generalManager.
 			getSWTGUIManager().createWindow( 
 					iUniqueId, sLabel, sLayoutAttributes);	
 		

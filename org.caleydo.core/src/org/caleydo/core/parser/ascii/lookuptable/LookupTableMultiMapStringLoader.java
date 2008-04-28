@@ -77,7 +77,7 @@ implements ILookupTableLoader {
 				boolean bMaintainLoop = true;
 				StringTokenizer strTokenText = 
 					new StringTokenizer(sLine, 
-							refLookupTableLoaderProxy.getTokenSeperator());
+							lookupTableLoaderProxy.getTokenSeperator());
 				
 				/**
 				 * Read all tokens
@@ -113,7 +113,7 @@ implements ILookupTableLoader {
 				
 				
 				
-				refLookupTableLoaderProxy.progressBarStoredIncrement();
+				lookupTableLoaderProxy.progressBarStoredIncrement();
 				
 				if ( ! bMaintainLoop )
 				{
@@ -135,8 +135,8 @@ implements ILookupTableLoader {
 			final int iStartParsingAtLine,
 			final int iStopParsingAtLine ) throws IOException {
 		
-		final String sTokenDelimiterOuterLoop = refLookupTableLoaderProxy.getTokenSeperator();
-		final String sTokenDelimiterInnerLoop = refLookupTableLoaderProxy.getTokenSeperatorInnerLoop();
+		final String sTokenDelimiterOuterLoop = lookupTableLoaderProxy.getTokenSeperator();
+		final String sTokenDelimiterInnerLoop = lookupTableLoaderProxy.getTokenSeperatorInnerLoop();
 		String sLine;
 			
 		int iLineInFile = 1;
@@ -195,7 +195,7 @@ implements ILookupTableLoader {
 				
 				} // end of: while (( strToken.hasMoreTokens() )&&(bMaintainLoop)) {
 				
-				refLookupTableLoaderProxy.progressBarStoredIncrement();
+				lookupTableLoaderProxy.progressBarStoredIncrement();
 				
 				if ( ! bMaintainLoop ) 
 				{
@@ -227,7 +227,7 @@ implements ILookupTableLoader {
 			 * Convert MultiMap<String> to Multimap<Integer>
 			 */
 			
-			IGenomeIdManager gidmng = refGeneralManager.getSingleton().getGenomeIdManager();
+			IGenomeIdManager gidmng = generalManager.getGenomeIdManager();
 			
 			EGenomeIdType originType = this.currentGenomeIdType.getTypeOrigin();
 			EGenomeIdType targetType = this.currentGenomeIdType.getTypeTarget();			
@@ -312,8 +312,8 @@ implements ILookupTableLoader {
 			final int iNumberOfLinesInFile) throws IOException {
 
 		
-		int iStartParsingAtLine = refLookupTableLoaderProxy.getStartParsingAtLine();
-		int iStopParsingAtLine  = refLookupTableLoaderProxy.getStopParsingAtLine();
+		int iStartParsingAtLine = lookupTableLoaderProxy.getStartParsingAtLine();
+		int iStopParsingAtLine  = lookupTableLoaderProxy.getStopParsingAtLine();
 		
 		if ( bOneLineConaintsMultipleStrings ) {
 			return loadDataParseFileLUT_multipleStringPerLine(brFile,
@@ -343,7 +343,7 @@ implements ILookupTableLoader {
 	 */
 	public void wirteBackMapToGenomeIdManager() {
 		
-		refGenomeIdManager.setMapByType(currentGenomeIdType, refMultiHashMapString);
+		genomeIdManager.setMapByType(currentGenomeIdType, refMultiHashMapString);
 	}
 
 }

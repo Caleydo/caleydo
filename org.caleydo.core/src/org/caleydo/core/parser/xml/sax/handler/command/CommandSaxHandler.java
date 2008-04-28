@@ -40,8 +40,6 @@ extends AXmlParserHandler
 		CommandQueueSaxType.TAG_CMD_QUEUE.getXmlKey();
 	/* END: XML Tags */
 	
-	private final ICommandManager refCommandManager;
-	
 	/**
 	 * Since the opening tag is handled by the external handler
 	 * this fal is set to true by default.
@@ -49,7 +47,6 @@ extends AXmlParserHandler
 	private boolean bCommandBuffer_isActive = false;
 	
 	private boolean bCommandQueue_isActive = false;
-
 	
 	protected ICommandQueue refCommandQueueIter = null;
 
@@ -62,17 +59,12 @@ extends AXmlParserHandler
 	 *  </CommandBuffer>
 	 * </Application>
 	 */
-	public CommandSaxHandler( final IGeneralManager setGeneralManager,
+	public CommandSaxHandler( final IGeneralManager generalManager,
 			final IXmlParserManager refXmlParserManager ) {
 		
-		super( setGeneralManager, refXmlParserManager );
+		super(generalManager, refXmlParserManager );
 		
 		setXmlActivationTag( "CommandBuffer" );
-		
-		refCommandManager = 
-			refGeneralManager.getSingleton().getCommandManager();
-		
-		assert refCommandManager != null : "ICommandManager was not created by ISingelton!";
 	}
 
 	
@@ -168,20 +160,19 @@ extends AXmlParserHandler
 					CommandQueueSaxType.TAG_DETAIL.getDefault(),
 					ParameterHandlerType.STRING );										 
 
-			refGeneralManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					"XML-TAG= " +  phAttributes.getValueString( 
 					CommandQueueSaxType.TAG_LABEL.getXmlKey() ),
 					LoggerType.FULL );
 				
-			lastCommand = 
-				refCommandManager.createCommand( phAttributes );
+			lastCommand = generalManager.getCommandManager().createCommand( phAttributes );
 			
 		}
 		catch ( Exception e) 
 		{
 			if ( lastCommand != null ) 
 			{
-				refGeneralManager.getSingleton().logMsg(
+				generalManager.logMsg(
 						"CommandSaxHandler.readCommandData(" +
 						attrs.toString() + 
 						") ERROR while parsing " + 
@@ -192,7 +183,7 @@ extends AXmlParserHandler
 			}
 			else
 			{
-				refGeneralManager.getSingleton().logMsg(
+				generalManager.logMsg(
 						"CommandSaxHandler.readCommandData(" +
 						attrs.toString() + 
 						") ERROR while parsing --no command--" + 
@@ -215,14 +206,14 @@ extends AXmlParserHandler
 				
 				if (sData_Cmd_process.equals( CommandQueueSaxType.RUN_CMD_NOW.toString() ))
 				{				
-					refGeneralManager.getSingleton().logMsg("do command: " + 
+					generalManager.logMsg("do command: " + 
 						lastCommand.toString(),
 						LoggerType.FULL );
 					lastCommand.doCommand();
 				}
 			}
 			else {
-				refGeneralManager.getSingleton().logMsg("do command: command=null!", 						
+				generalManager.logMsg("do command: command=null!", 						
 						LoggerType.VERBOSE );
 			}
 			
@@ -236,7 +227,7 @@ extends AXmlParserHandler
 			{
 				sDetails = lastCommand.getClass().getSimpleName();
 			}			
-			refGeneralManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					"CommandSaxHandler.readCommandData(" +
 					attrs.toString() + 
 					")\n  ERROR while executing command " +
@@ -253,7 +244,7 @@ extends AXmlParserHandler
 			{
 				sDetails = lastCommand.getClass().getSimpleName();
 			}
-			refGeneralManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					"CommandSaxHandler.readCommandData(" +
 					attrs.toString() + 
 					")\n  ERROR while executing command " +
@@ -323,7 +314,7 @@ extends AXmlParserHandler
 					CommandQueueSaxType.CMD_THREAD_POOL_WAIT_ID.getXmlKey(),
 					-1  );
 			
-			lastCommand = refCommandManager.createCommandQueue( 
+			lastCommand = generalManager.getCommandManager().createCommandQueue( 
 					sData_Queue_type,
 					sData_Queue_process,
 					iData_Queue_CmdId,
@@ -418,7 +409,7 @@ extends AXmlParserHandler
 							} 
 							else 
 							{
-								refGeneralManager.getSingleton().logMsg(
+								generalManager.logMsg(
 										"CommandQueue: no Command to add. skip it.",
 										LoggerType.VERBOSE );
 							}
@@ -437,7 +428,7 @@ extends AXmlParserHandler
 							
 							if ( lastCommand == null ) 
 							{
-								refGeneralManager.getSingleton().logMsg(
+								generalManager.logMsg(
 										"Command: can not execute command due to error while parsing. skip it.",
 										LoggerType.VERBOSE );
 							}

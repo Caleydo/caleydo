@@ -53,7 +53,7 @@ extends ACmdCreate_IdTargetLabelParentXY  {
 	public void doCommand() {
 		
 		IViewManager viewManager = ((IViewManager) generalManager
-				.getManagerByBaseType(ManagerObjectType.VIEW));
+				.getManagerByObjectType(ManagerObjectType.VIEW));
 		
 		DataExchangerViewRep dataExchangerView = (DataExchangerViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_DATA_EXCHANGER,

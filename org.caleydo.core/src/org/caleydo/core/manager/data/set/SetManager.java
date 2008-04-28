@@ -40,9 +40,7 @@ implements ISetManager {
 		assert setSingelton != null : "Constructor with null-pointer to singelton";
 		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";
 		
-		hashId2Set = new Hashtable <Integer, ISet > ();
-		
-		generalManager.getSingleton().setSetManager( this );		
+		hashId2Set = new Hashtable <Integer, ISet > ();		
 	}
 	
 	/**
@@ -60,7 +58,7 @@ implements ISetManager {
 		// Check if requested set is a selection set
 		if (setType.equals(SetType.SET_SELECTION))
 		{
-			return new SetSelection(4, getGeneralManager());
+			return new SetSelection(4, generalManager);
 		}
 		else
 		{
@@ -68,23 +66,23 @@ implements ISetManager {
 			{
 			case SET_LINEAR:
 				return new SetFlatThreadSimple(4, 
-						getGeneralManager(),
+						generalManager,
 						null,
 						setType);
 				
 			case SET_PLANAR: 
-				return new SetPlanarSimple(4, getGeneralManager());
+				return new SetPlanarSimple(4, generalManager);
 			
 			case SET_MULTI_DIM:  
 				return new SetMultiDim(4, 
-						getGeneralManager(),
+						generalManager,
 						null,
 						3,
 						setType);
 			
 			case SET_VIEWCAMERA:
 				return new SetViewData(4, 
-						getGeneralManager(),
+						generalManager,
 						null,
 						setType);
 				
@@ -117,7 +115,7 @@ implements ISetManager {
 		ISet removedObj = hashId2Set.remove( iItemId );
 		
 		if ( removedObj == null ) {
-			generalManager.getSingleton().logMsg( 
+			generalManager.logMsg( 
 					"deleteSet(" + 
 					iItemId + ") falied, because Set was not registered!",
 					LoggerType.STATUS );
@@ -169,7 +167,7 @@ implements ISetManager {
 		ISet buffer = hashId2Set.remove(iItemId);
 		
 		if  ( buffer == null ) {
-			this.generalManager.getSingleton().logMsg(
+			this.generalManager.logMsg(
 					"unregisterItem(" + 
 					iItemId + ") failed because Set was not registered!",
 					LoggerType.STATUS );

@@ -3,19 +3,17 @@ package org.caleydo.core.manager.data;
 import java.util.Vector;
 
 import org.caleydo.core.data.collection.IVirtualArray;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 
 /**
  * Manage all IVirtualArray's.
  * 
- * Note: the ISelectionManager must register itself to the singelton prometheus.app.SingeltonManager
- * 
  * @author Michael Kalkusch
  *
  */
 public interface IVirtualArrayManager
-extends IGeneralManager
+extends IManager
 {
 	public IVirtualArray createVirtualArray( final ManagerObjectType useSelectionType );
 	

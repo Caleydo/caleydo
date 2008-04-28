@@ -3,19 +3,16 @@ package org.caleydo.core.manager.data;
 import java.util.LinkedList;
 
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 
 /**
  * Manages all IStorage's.
  * 
- * Note: the IStorageManager must register itself to the singelton prometheus.app.SingeltonManager
- * 
  * @author Michael Kalkusch
- *
  */
 public interface IStorageManager
-extends IGeneralManager
+extends IManager
 {
 	public IStorage createStorage( final ManagerObjectType useStorageType );
 	

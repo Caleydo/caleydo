@@ -98,7 +98,7 @@ extends ACommand {
 				
 				if (( iArrayStartStop[0] > iArrayStartStop[1] )&&
 						(iArrayStartStop[1] != -1 )) {
-					generalManager.getSingleton().logMsg(
+					generalManager.logMsg(
 							"CmdSystemLoadFileNStorages ignore stop index=(" + 
 							iArrayStartStop[1]  + 
 							"), because it is smaller than start index (" + 
@@ -138,14 +138,14 @@ extends ACommand {
 	 */
 	public void doCommand() throws CaleydoRuntimeException {
 		
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 	    		"load file via importer... ([" +
 				sFileName + "] tokens:[" +
 				sTokenPattern + "]  targetSet(s)=[" +
 				iTargetSetId + "])",
 				LoggerType.STATUS );
 		
-		ISet useSet = generalManager.getSingleton().getSetManager(
+		ISet useSet = generalManager.getSetManager(
 				).getItemSet( iTargetSetId );
 		
 		if ( useSet == null ) {
@@ -154,7 +154,7 @@ extends ACommand {
 			sTokenPattern + "]  targetSet(s)=[" +
 			iTargetSetId + "])";
 			
-			generalManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					errorMsg,
 					LoggerType.ERROR );
 	
@@ -186,7 +186,7 @@ extends ACommand {
 				sTokenPattern + "]  targetSet(s)=[" +
 				iTargetSetId + "])";
 			
-			generalManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					errorMsg,
 					LoggerType.ERROR );
 		} // catch

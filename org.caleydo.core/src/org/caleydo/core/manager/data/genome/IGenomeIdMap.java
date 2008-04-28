@@ -1,14 +1,11 @@
 package org.caleydo.core.manager.data.genome;
 
-//import java.util.HashMap;
-
 import java.util.Collection;
 import java.util.Set;
 
 import org.caleydo.core.data.mapping.EGenomeMappingDataType;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.data.IGenomeIdManager;
-//import org.caleydo.core.data.mapping.EGenomeMappingDataType;
 
 
 /**
@@ -23,9 +20,7 @@ import org.caleydo.core.manager.data.IGenomeIdManager;
 public interface IGenomeIdMap {
 
 	public static final boolean ENABLE_DEBUG = false;
-	
-//	public Object getObjectByType( final Object byObject, EGenomeMappingDataType type );
-	
+		
 	public int getIntByInt( final int key);
 	
 	public int getIntByString( final String key);
@@ -101,12 +96,7 @@ public interface IGenomeIdMap {
 	 */
 	public void put( final String key, 
 			final String value);
-	
-//	// Object cast to int or String
-//	public int getInt( final Object byObject);
-//	
-//	public String getString( final Object byObject);
-	
+		
 	/**
 	 * Get size of the map.
 	 * 

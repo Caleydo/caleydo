@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.core.util.system;
 
 import java.io.File;
@@ -9,33 +6,24 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ILoggerManager;
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.parser.xml.sax.handler.IXmlBaseHandler;
+import org.ccil.cowan.tagsoup.HTMLSchema;
+import org.ccil.cowan.tagsoup.Parser;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
-import org.ccil.cowan.tagsoup.HTMLSchema;
-import org.ccil.cowan.tagsoup.Parser;
-import org.caleydo.core.manager.ILoggerManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
-import org.caleydo.core.parser.xml.sax.handler.IXmlBaseHandler;
-
 /**
  * @author Michael Kalkusch
- *
+ * @author Marc Streit
  */
 public class CaleydoInputStream
 {
-
-	/**
-	 * 
-	 */
-	private CaleydoInputStream()
-	{
-		
-	}
-	
 	/**
 	 * Opens a file and returns an input stream to that file.
 	 * 
@@ -43,7 +31,7 @@ public class CaleydoInputStream
 	 * @return input stream of the file, or null
 	 */
 	public static InputSource openInputStreamFromFile( final String sXMLFileName,
-			final ILoggerManager refLoggerManager ) {
+			final IGeneralManager generalManager ) {
 		
 		try {
 			File inputFile = new File( sXMLFileName );		
@@ -51,13 +39,13 @@ public class CaleydoInputStream
 			
 			InputSource inStream = new InputSource( inReader );
 			
-			refLoggerManager.logMsg("open input stream  [" + sXMLFileName + "]",
+			generalManager.logMsg("open input stream  [" + sXMLFileName + "]",
 					LoggerType.VERBOSE_EXTRA );
 			
 			return inStream;
 		}
 		catch ( FileNotFoundException fnfe) {
-			refLoggerManager.logMsg("CaleydoInputStream.openInputStreamFromFile() File not found " + fnfe.toString(),
+			generalManager.logMsg("CaleydoInputStream.openInputStreamFromFile() File not found " + fnfe.toString(),
 					LoggerType.ERROR );
 		}
 		return null;
@@ -67,22 +55,22 @@ public class CaleydoInputStream
 	 * Opens a resource and returns an input stream to that resource.
 	 * 
 	 * @param resourceUrl
-	 * @param refLoggerManager
+	 * @param generalManager
 	 * @return
 	 */
 	public static InputSource openInputStreamFromUrl( final URL resourceUrl,
-			final ILoggerManager refLoggerManager ) {
+			final IGeneralManager generalManager ) {
 		
 		try {	
 			InputSource inStream = new InputSource(resourceUrl.openStream());
 			
-			refLoggerManager.logMsg("open input stream  [" + resourceUrl.toString() + "]",
+			generalManager.logMsg("open input stream  [" + resourceUrl.toString() + "]",
 					LoggerType.VERBOSE_EXTRA );
 			
 			return inStream;
 		} catch (IOException e)
 		{
-			refLoggerManager.logMsg("CaleydoInputStream.openInputStreamFromUrl(): Error loading resource.",
+			generalManager.logMsg("CaleydoInputStream.openInputStreamFromUrl(): Error loading resource.",
 					LoggerType.ERROR );
 			
 			e.printStackTrace();
@@ -100,17 +88,17 @@ public class CaleydoInputStream
 	 * @param inStream
 	 * @param sInputStreamLabel
 	 * @param handler
-	 * @param refLoggerManager
+	 * @param generalManager
 	 * @return
 	 */
 	public static boolean parseOnce( InputSource inStream,
 			final String sInputStreamLabel,
 			IXmlBaseHandler handler,
-			final ILoggerManager refLoggerManager ) {
+			final IGeneralManager generalManager ) {
 		
 		if ( handler == null ) 
 		{
-			refLoggerManager.logMsg("CaleydoInputStream.parseOnce( " +
+			generalManager.logMsg("CaleydoInputStream.parseOnce( " +
 					sInputStreamLabel +
 					") error because handler is null!",
 					LoggerType.ERROR );
@@ -119,7 +107,7 @@ public class CaleydoInputStream
 		} //if
 		
 		if ( inStream==null ) {
-			refLoggerManager.logMsg("CaleydoInputStream.parseOnce( " +
+			generalManager.logMsg("CaleydoInputStream.parseOnce( " +
 					sInputStreamLabel +
 					") error no input stream; skip file",
 					LoggerType.ERROR );
@@ -161,7 +149,7 @@ public class CaleydoInputStream
 			} 
 			catch (SAXParseException saxe)
 			{
-				refLoggerManager.logMsg("CaleydoInputStream.parseOnce( " +
+				generalManager.logMsg("CaleydoInputStream.parseOnce( " +
 						sInputStreamLabel +
 						") SAXParser-error during parsing: line=" + saxe.getLineNumber() +
 						" at column=" + saxe.getColumnNumber() +
@@ -171,7 +159,7 @@ public class CaleydoInputStream
 			}
 			catch ( IOException e) 
 			{
-				refLoggerManager.logMsg("CaleydoInputStream.parseOnce( " +
+				generalManager.logMsg("CaleydoInputStream.parseOnce( " +
 						sInputStreamLabel +
 						") IO-error during parsing: " +
 						e.toString(),
@@ -179,7 +167,7 @@ public class CaleydoInputStream
 			} // try
 			catch ( Exception e) 
 			{
-				refLoggerManager.logMsg("CaleydoInputStream.parseOnce( " +
+				generalManager.logMsg("CaleydoInputStream.parseOnce( " +
 						sInputStreamLabel +
 						") error during parsing: " +
 						e.toString() + "\n",
@@ -202,7 +190,7 @@ public class CaleydoInputStream
 				inStream.getCharacterStream().close();
 			}
 			
-			refLoggerManager.logMsg("close input stream [" + 
+			generalManager.logMsg("close input stream [" + 
 					sInputStreamLabel + 
 					"]",
 					LoggerType.VERBOSE_EXTRA );
@@ -210,7 +198,7 @@ public class CaleydoInputStream
 		} // try
 		catch (SAXException se) 
 		{
-			refLoggerManager.logMsg("CaleydoInputStream.parseOnce( " +
+			generalManager.logMsg("CaleydoInputStream.parseOnce( " +
 					sInputStreamLabel +
 					") SAXError  while parsing: " +
 					se.toString(),
@@ -218,7 +206,7 @@ public class CaleydoInputStream
 		} // end try-catch SAXException
 		catch (IOException ioe) 
 		{
-			refLoggerManager.logMsg("CaleydoInputStream.parseOnce( " +
+			generalManager.logMsg("CaleydoInputStream.parseOnce( " +
 					sInputStreamLabel +
 					") IO-error while parsing: " +
 					ioe.toString(),
@@ -226,7 +214,7 @@ public class CaleydoInputStream
 		} // end try-catch SAXException, IOException
 		catch (Exception e) 
 		{
-			refLoggerManager.logMsg("CaleydoInputStream.parseOnce( " +
+			generalManager.logMsg("CaleydoInputStream.parseOnce( " +
 					sInputStreamLabel +
 					") general error while parsing: " +
 					e.toString(),
@@ -238,5 +226,4 @@ public class CaleydoInputStream
 		
 		return true;
 	}
-
 }

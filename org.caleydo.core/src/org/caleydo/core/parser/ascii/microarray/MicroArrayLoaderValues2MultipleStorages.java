@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.core.parser.ascii.microarray;
 
 import java.io.BufferedReader;
@@ -18,7 +15,6 @@ import org.caleydo.core.data.collection.StorageType;
 import org.caleydo.core.data.collection.parser.CollectionSelectionSaxParserHandler;
 import org.caleydo.core.data.collection.parser.ParserTokenHandler;
 import org.caleydo.core.data.collection.virtualarray.VirtualArrayThreadSingleBlock;
-//import org.caleydo.core.data.collection.set.SetMultiDim;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.type.ManagerObjectType;
@@ -32,15 +28,7 @@ import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 public class MicroArrayLoaderValues2MultipleStorages 
 extends AMicroArrayLoader {
 
-//	private LinkedList<Integer> LLInteger = null;
-//	
-//	private LinkedList<Float> LLFloat = null;
-//	
-//	private LinkedList<String> LLString = null;
-	
 	private IStorage[] refArrayDataStorage = null;
-	
-//	private int iArrayDataStorageLength = -1;
 	
 	/**
 	 * Reference to the current DataStorage.
@@ -85,7 +73,7 @@ extends AMicroArrayLoader {
 		this.refImportDataToSet = refUseSet;
 		
 		if ( refImportDataToSet.getBaseType() != ManagerObjectType.SET_MULTI_DIM ) {
-			refGeneralManager.getSingleton().logMsg(" need a MultiSet; got [" +
+			generalManager.logMsg(" need a MultiSet; got [" +
 					refImportDataToSet.getBaseType()  + "] !",
 					LoggerType.MINOR_ERROR );
 		}
@@ -398,14 +386,14 @@ extends AMicroArrayLoader {
 						
 						if ( bufferIter == null ) 
 						{
-							refGeneralManager.getSingleton().logMsg(
+							generalManager.logMsg(
 								"Can not parse element, skip value: " + 
 								nfe.getMessage(),
 								LoggerType.ERROR );
 						}
 						else
 						{
-							refGeneralManager.getSingleton().logMsg(
+							generalManager.logMsg(
 									"Can not parse element, skip value: Assumed type=[" + 
 									bufferIter.getType() + "] => " + 
 									nfe.getMessage(),
@@ -429,7 +417,7 @@ extends AMicroArrayLoader {
 						
 						info +=  "} " + aie.toString();
 						
-						refGeneralManager.getSingleton().logMsg(
+						generalManager.logMsg(
 								info,
 								LoggerType.ERROR );	
 						
@@ -458,7 +446,7 @@ extends AMicroArrayLoader {
 		iLineInFile = lineInFile;
 		iLineInFile_CurrentDataIndex = lineInFile_CurrentDataIndex;
 		
-		refGeneralManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				"  parsed " + this.iLineInFile_CurrentDataIndex + 
 				" lines, stoped at line " + 
 				(this.iLineInFile - 1) + "  [" +
@@ -543,7 +531,7 @@ extends AMicroArrayLoader {
 		    refDataStorage.setArrayString( stringBuffer );
 		    
 		    IVirtualArray selFloat = 
-		    	new VirtualArrayThreadSingleBlock(1, refGeneralManager, null);
+		    	new VirtualArrayThreadSingleBlock(1, generalManager, null);
 		    selFloat.setLabel("import STRING");
 		    selFloat.setLength( LLString.size() );
 		    
@@ -580,7 +568,7 @@ extends AMicroArrayLoader {
 				throw new RuntimeException("MicroArrayLoader.setMementoXML_usingHandler() failed. need <DataComponentItemDetails type=RandomLookup> tag.");
 			}
 			try {
-				refDataStorage= (IStorage) refGeneralManager.getItem( iLinkToIdList[0] );
+				refDataStorage= (IStorage) generalManager.getStorageManager().getItem( iLinkToIdList[0] );
 				
 				setTokenPattern( handler.getXML_MicroArray_TokenPattern().trim() );
 				//setTokenPattern( "SKIP;SKIP;SKIP;STRING;STRING;INT;INT;ABORT" );

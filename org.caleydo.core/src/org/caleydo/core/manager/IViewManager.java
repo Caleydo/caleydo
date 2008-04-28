@@ -17,8 +17,8 @@ import org.caleydo.core.view.ViewType;
  * @author Marc Streit
  */
 public interface IViewManager 
-extends IGeneralManager {
-		
+extends IManager
+{		
 	public IView createView(final ManagerObjectType useViewType, 
 			final int iUniqueId,
 			final int iParentContainerId,

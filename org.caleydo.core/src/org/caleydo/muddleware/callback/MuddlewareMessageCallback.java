@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.muddleware.callback;
 
 import org.studierstube.net.protocol.muddleware.IOperation;
@@ -44,7 +41,7 @@ public class MuddlewareMessageCallback implements IOperationCallback {
 
 		try
 		{
-			this.refXmlParserManager.getManager().getSingleton().logMsg("MuddlewareMessageCallback.callbackOperationOnReceive() receiver Xpath=[" + 
+			this.refXmlParserManager.getManager().logMsg("MuddlewareMessageCallback.callbackOperationOnReceive() receiver Xpath=[" + 
 					received.getXPath() + 
 					" ==> ["  +
 					received.getNodeString() + "]",

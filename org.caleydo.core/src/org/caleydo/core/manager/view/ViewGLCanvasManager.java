@@ -15,7 +15,7 @@ import org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRender
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
-import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.base.AManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
@@ -58,8 +58,8 @@ import com.sun.opengl.util.FPSAnimator;
  * @author Michael Kalkusch
  * @author Marc Streit
  */
-public class ViewJoglManager 
-extends AAbstractManager
+public class ViewGLCanvasManager 
+extends AManager
 implements IViewGLCanvasManager {
 
 	protected HashMap<Integer, IView> hashViewId2View;
@@ -98,7 +98,7 @@ implements IViewGLCanvasManager {
 	 * 
 	 * @param setGeneralManager
 	 */
-	public ViewJoglManager(IGeneralManager generalManager) {
+	public ViewGLCanvasManager(final IGeneralManager generalManager) {
 
 		super(generalManager, 
 				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT,
@@ -118,8 +118,6 @@ implements IViewGLCanvasManager {
 		arDataExplorerViewRep = new ArrayList<IViewRep>();
 		arHTMLBrowserViewRep = new ArrayList<IViewRep>();
 		arWorkspaceJFrame = new ArrayList<JFrame>();
-
-		generalManager.getSingleton().setViewGLCanvasManager(this);
 	}
 
 
@@ -182,7 +180,7 @@ implements IViewGLCanvasManager {
 			//default: // do nothing			
 		} // switch ( registerView.getViewType() ) {
 		
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				"registerItem( " + iItemId + " ) as View", 
 				LoggerType.VERBOSE);
 
@@ -269,7 +267,7 @@ implements IViewGLCanvasManager {
 		} 
 		catch (NullPointerException e)
 		{
-			singelton.logMsg("Error while creating view; createView(" +
+			generalManager.logMsg("Error while creating view; createView(" +
 					useViewType.toString() +
 					", " + iViewID + 
 					", " + iParentContainerID + 
@@ -315,7 +313,7 @@ implements IViewGLCanvasManager {
 		} 
 		catch (NullPointerException e)
 		{
-			singelton.logMsg("Error while creating view; createView(" +
+			generalManager.logMsg("Error while creating view; createView(" +
 					useViewType.toString() +
 					", " + iViewID + 
 					", " + iParentContainerID + 
@@ -500,7 +498,7 @@ implements IViewGLCanvasManager {
 		} 
 		catch (NullPointerException e)
 		{
-			singelton.logMsg("Error while creating view; createView(" +
+			generalManager.logMsg("Error while creating view; createView(" +
 					useViewType.toString() +
 					", " + iUniqueId + 
 					", " + iGLCanvasID + 
@@ -520,7 +518,7 @@ implements IViewGLCanvasManager {
 		
 		if (hashGLCanvasID2GLCanvas.containsKey(iCanvasId))
 		{
-			generalManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					"registerGLCanvas() id " + iCanvasId
 					+ " is already registered!",
 					LoggerType.FULL );
@@ -528,7 +526,7 @@ implements IViewGLCanvasManager {
 		}
 		if (hashGLCanvasID2GLCanvas.containsValue(glCanvas))
 		{
-			generalManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					"registerGLCanvas() canvas bound to id " + iCanvasId
 					+ " is already registered!",
 					LoggerType.FULL );
@@ -548,8 +546,7 @@ implements IViewGLCanvasManager {
 
 		// TODO: IMPLEMENT!
 		
-		generalManager
-				.getSingleton().logMsg(
+		generalManager.logMsg(
 						"unregisterGLCanvas() canvas object was not found inside ViewJogleManager!",
 						LoggerType.FULL );
 
@@ -602,7 +599,7 @@ implements IViewGLCanvasManager {
 	 */
 	public void destroyOnExit() {
 
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				"ViewJoglManager.destroyOnExit()  ...[DONE]",
 				LoggerType.FULL );
 	}

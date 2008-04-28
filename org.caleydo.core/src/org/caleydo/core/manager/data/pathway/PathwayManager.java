@@ -13,7 +13,7 @@ import org.caleydo.core.data.graph.core.PathwayGraph;
 import org.caleydo.core.data.view.rep.jgraph.PathwayImageMap;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
-import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.base.AManager;
 import org.caleydo.core.manager.data.IPathwayManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
@@ -29,7 +29,7 @@ import org.caleydo.util.graph.core.Graph;
  *
  */
 public class PathwayManager 
-extends AAbstractManager
+extends AManager
 implements IPathwayManager {
 
 	private HashMap<Integer, PathwayGraph> hashPathwayIdToPathwayGraphLUT;
@@ -124,7 +124,7 @@ implements IPathwayManager {
 		// Check if pathway was previously loaded
 		if (hashPathwayIdToPathwayGraphLUT.containsKey(iPathwayID))
 		{
-			generalManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					this.getClass().getSimpleName() + 
 					": loadPathwayById(): Pathway "+ iPathwayID + " is already loaded. SKIP.",
 					LoggerType.VERBOSE);
@@ -154,12 +154,12 @@ implements IPathwayManager {
 		
 		sPathwayFilePath = hashPathwayDatabase.get(EPathwayDatabaseType.KEGG).getXMLPath() + sPathwayFilePath +".xml";		
 		
-		bLoadingOK = generalManager.getSingleton().getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
+		bLoadingOK = generalManager.getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
 
 		if (bLoadingOK)
 			return true;
 		
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				this.getClass().getSimpleName() + 
 				": loadPathwayById(): No HSA pathway available - " +
 				"try to load reference pathway.",
@@ -168,7 +168,7 @@ implements IPathwayManager {
 		// Replace HSA with MAP and therefore try to load reference pathway
 		sPathwayFilePath = sPathwayFilePath.replace("hsa", "map");
 		
-		return generalManager.getSingleton().getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
+		return generalManager.getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
 	}
 	
 	/*
@@ -189,7 +189,7 @@ implements IPathwayManager {
 	    			&& !sPathwayFilePath.contains("h_"))
 	    		continue;
 	    	
-			generalManager.getSingleton().getXmlParserManager()
+			generalManager.getXmlParserManager()
 				.parseXmlFileByName(sPathwayFilePath);
 	    }
 	}

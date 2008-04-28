@@ -46,17 +46,17 @@ public class GLPathwayTextureManager {
 		
 		Texture refPathwayTexture = null;
 
-		String sPathwayTexturePath = ((PathwayGraph)generalManager.getSingleton()
+		String sPathwayTexturePath = ((PathwayGraph)generalManager
 				.getPathwayManager().getItem(iPathwayId)).getImageLink();
 
 		sPathwayTexturePath = sPathwayTexturePath.substring(
 				sPathwayTexturePath.lastIndexOf('/') + 1, 
 				sPathwayTexturePath.length());
 		
-		EPathwayDatabaseType type = ((PathwayGraph)generalManager.getSingleton()
+		EPathwayDatabaseType type = ((PathwayGraph)generalManager
 				.getPathwayManager().getItem(iPathwayId)).getType();
 		
-		sPathwayTexturePath = generalManager.getSingleton().getPathwayManager()
+		sPathwayTexturePath = generalManager.getPathwayManager()
 				.getPathwayDatabaseByType(type).getImagePath() + sPathwayTexturePath;	
 		
 		try
@@ -77,7 +77,7 @@ public class GLPathwayTextureManager {
 			
 			hashPathwayIdToTexture.put(iPathwayId, refPathwayTexture);
 			
-			generalManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					this.getClass().getSimpleName() + 
 					": loadPathwayTexture(): Loaded Texture for Pathway with ID: " +iPathwayId,
 					LoggerType.VERBOSE );
@@ -112,9 +112,9 @@ public class GLPathwayTextureManager {
 		TextureCoords texCoords = refTmpPathwayTexture.getImageTexCoords();
 
 		float fTextureWidth = GLPathwayManager.SCALING_FACTOR_X * 
-			((PathwayGraph)generalManager.getSingleton().getPathwayManager().getItem(iPathwayId)).getWidth();
+			((PathwayGraph)generalManager.getPathwayManager().getItem(iPathwayId)).getWidth();
 		float fTextureHeight = GLPathwayManager.SCALING_FACTOR_Y * 
-			((PathwayGraph)generalManager.getSingleton().getPathwayManager().getItem(iPathwayId)).getHeight();
+			((PathwayGraph)generalManager.getPathwayManager().getItem(iPathwayId)).getHeight();
 		
 //		gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager().getPickingManager()
 //				.getPickingID(containingView.getId(), EPickingType.PATHWAY_TEXTURE_SELECTION, iPathwayId));
@@ -185,7 +185,7 @@ public class GLPathwayTextureManager {
 				// Remove and dispose texture
 				hashPathwayIdToTexture.remove(iTmpPathwayId).dispose();
 
-				generalManager.getSingleton().logMsg(
+				generalManager.logMsg(
 						this.getClass().getSimpleName() 
 						+": unloadUnusedTextures(): Unloading pathway texture with ID " + iTmpPathwayId,
 						LoggerType.VERBOSE);

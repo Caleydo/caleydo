@@ -43,7 +43,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	public void doCommand() throws CaleydoRuntimeException {
 		
 		IViewManager viewManager = ((IViewManager) generalManager
-				.getManagerByBaseType(ManagerObjectType.VIEW));
+				.getManagerByObjectType(ManagerObjectType.VIEW));
 		
 		MixerViewRep mixerView = (MixerViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_MIXER,

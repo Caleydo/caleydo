@@ -1,8 +1,22 @@
 package org.caleydo.core.manager;
 
+import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import org.caleydo.core.manager.data.IGenomeIdManager;
+import org.caleydo.core.manager.data.IPathwayItemManager;
+import org.caleydo.core.manager.data.IPathwayManager;
+import org.caleydo.core.manager.data.ISetManager;
+import org.caleydo.core.manager.data.IStorageManager;
+import org.caleydo.core.manager.data.IVirtualArrayManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 
+/**
+ * Interface for general manager.
+ * 
+ * @author Marc Streit
+ * @author Michael Kalkusch
+ *
+ */
 public interface IGeneralManager {
 
 	public static final boolean bEnableMultipelThreads = false;
@@ -113,14 +127,14 @@ public interface IGeneralManager {
 	
 	public static final int iUniqueId_TypeOffset_Command = 99;
 	
-	
-	/**
-	 * Deprecated ID ranges
-	 */
-	
-	public static final int iUniqueId_TypeOffset_GuiComponent = 30;
-	
-	public static final int iUniqueId_TypeOffset_GUI_AWT_Menu = 39;
+//	
+//	/**
+//	 * Deprecated ID ranges
+//	 */
+//	
+//	public static final int iUniqueId_TypeOffset_GuiComponent = 30;
+//	
+//	public static final int iUniqueId_TypeOffset_GUI_AWT_Menu = 39;
 	
 	
 	/*
@@ -143,107 +157,59 @@ public interface IGeneralManager {
 	public static final String sDelimiter_Parser_DataType 		= ";";
 	
 	public static final String sDelimiter_Parser_DataItems_Tab	= "\t";
-		
-	/**
-	 * Tests, if a cairtain iItemId is handled by the manager.
-	 * 
-	 * @param iItemId to identify an item that is tested
-	 * @return TRUE if iItemId exists
-	 */
-	public boolean hasItem(final int iItemId);
-
-	/**
-	 * Return the item bound to the iItemId or null if the id is not 
-	 * bound to an item.
-	 * 
-	 * @param iItemId uniqu id used for lookup
-	 * @return object bound to iItemId
-	 */
-	public Object getItem( final int iItemId);
 	
 	/**
-	 * Get the number of current handled items.
-	 * 
-	 * @return number of items
-	 */
-	public int size();
-
-	/**
-	 * Type of the manager
-	 * 
-	 * @return type of the manager
-	 */
-	public ManagerType getManagerType();
-	
-	/**
-	 * Returns the reference to the prometheus.app.SingeltonManager.
-	 * 
-	 * Note: Do not forget to set the reference to the SingeltonManager inside the constructor.
-	 * 
-	 * @return reference to SingeltonManager
-	 */
-	public IGeneralManager getGeneralManager();
-	
-	/**
-	 * Get the Singleton obejct.
-	 * 
-	 * @return ISingelton object
-	 */
-	public ISingleton getSingleton();
-	
-	/**
-	 * Registers one Id and links it to the reference.
-	 * 
-	 * @param registerItem Object to be registered
-	 * @param iItemId unique Id
-	 * @param type defines type, can also be null if type is not known
-	 * 
-	 * @return TRUE if item was unregistered by this manager
-	 */
-	public boolean registerItem( final Object registerItem, 
-			final int iItemId , 
-			final ManagerObjectType type );
-	
-	
-	/**
-	 * Unregisters an item using it's Id.
-	 * 
-	 * @param iItemId unique Id
-	 * @param type defines type, can also be null if type is not known
-	 * 
-	 * @return TRUE if item was unregistered by this manager
-	 */
-	public boolean unregisterItem( final int iItemId, 
-			final ManagerObjectType type  );
-	
-	/**
-	 * Create a new unique Id.
-	 * 
-	 * @return new unique Id
-	 * @param setNewBaseType type of object the id shall be created for
-	 * 
-	 * @see org.caleydo.core.manager.IGeneralManager#iUniqueId_TypeOffsetMultiplyer
-	 * @see org.caleydo.core.manager.IGeneralManager#iUniqueId_WorkspaceOffset
-	 */
-	public int createId( final ManagerObjectType setNewBaseType );
-
-	/**
-	 * Set the current Id, what is incremented once the next time createNewId() is called.
-	 * 
-	 * Attention: this method must be called from a synchronized block on the actual manager!
-	 * 
-	 * @param setNewBaseType test if manager may create such an id
-	 * @param iCurrentId set the new current Id
-	 * @return true if the new current Id was valid, which is the case if it is larger than the current NewId!
-	 */
-	public boolean setCreateNewId(ManagerType setNewBaseType, final int iCurrentId );
-	
-	public IGeneralManager getManagerByBaseType(ManagerObjectType managerType);
-		
-	/**
-	 * Remove all data and stop all threads.
+	 * Initialize the singleton. 
+	 * Call this method before using the singleton.
 	 *
 	 */
-	public void destroyOnExit();
+	public void initManager();
 	
+	public abstract IManager getManagerByObjectType(final ManagerObjectType managerType);
+	
+	public abstract IManager getManagerByType(final ManagerType managerType);
+	
+	public abstract IMementoManager getMementoManager();
+
+	public abstract IStorageManager getStorageManager();
+
+	public abstract IVirtualArrayManager getVirtualArrayManager();
+
+	public abstract ISetManager getSetManager();
+
+	public abstract ICommandManager getCommandManager();
+
+	public abstract ILoggerManager getLoggerManager();
+
+	public abstract ISWTGUIManager getSWTGUIManager();
+	
+	public abstract IViewGLCanvasManager getViewGLCanvasManager();
+	
+	public abstract IEventPublisher getEventPublisher();
+	
+	public abstract IXmlParserManager getXmlParserManager();
+	
+	public abstract IPathwayManager getPathwayManager();
+	
+	public abstract IPathwayItemManager getPathwayItemManager();
+
+	public abstract IGenomeIdManager getGenomeIdManager();
+	
+	/**
+	 * Identifies each application in the network with a unique Id form [1..99]
+	 * issued by the network server.
+	 * 
+	 * @see org.caleydo.core.manager.IGeneralManager#iUniqueId_WorkspaceOffset
+	 * 
+	 * @return unique networkHostId of this host.
+	 */
+	public abstract int getNetworkPostfix();
+	
+	/**
+	 * @see org.caleydo.core.manager.ILoggerManager#logMsg(String, LoggerType)
+	 * 
+	 * @param info log message
+	 * @param logLevel type of message
+	 */
+	public abstract void logMsg( final String info, final LoggerType logLevel );
 }

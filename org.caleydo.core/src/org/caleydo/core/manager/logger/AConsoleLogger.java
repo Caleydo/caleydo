@@ -7,7 +7,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ILoggerManager;
 //import org.caleydo.core.manager.ILoggerManager.LoggerType;
 //import org.caleydo.core.manager.ISingelton;
-import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.base.AManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
@@ -21,7 +21,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  *
  */
 public abstract class AConsoleLogger 
-	extends AAbstractManager 
+	extends AManager 
 	implements ILoggerManager {
 
 	protected LoggerType logLevel = LoggerType.ERROR;

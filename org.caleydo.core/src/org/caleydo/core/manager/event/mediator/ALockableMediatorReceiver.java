@@ -22,21 +22,20 @@ implements ILockableMediatorReceiver {
 	
 	/**
 	 * Thread safe boolean.
-	 * TURE indicates the updates are stelled,
-	 * FALSE indicates that upates are proecessed.
+	 * TURE indicates the updates are stalled,
+	 * FALSE indicates that updates are proecessed.
 	 * Default is FALSE.
 	 */
 	protected AtomicBoolean bUpdateIsStalled;
 	
 	
 	/**
-	 * 
+	 * Constructor.
 	 */
 	protected ALockableMediatorReceiver() {
 		
 		bUpdateIsStalled = new AtomicBoolean( false );
 	}
-
 
 	/**
 	 * 

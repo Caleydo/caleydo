@@ -212,14 +212,14 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 	
 		  if ( targetSet == null ) 
 		  {
-			  generalManager.getSingleton().logMsg(
+			  generalManager.logMsg(
 					  "createHistogram() can not create Heatmap, because targetSet=null",
 					  LoggerType.STATUS );
 			  return;
 		  }
 		  
 		  if ( iValuesInRow < 1) {
-			  generalManager.getSingleton().logMsg(
+			  generalManager.logMsg(
 					  "createHistogram() can not create Heatmap, because histogramLevels are outside range [1..max]",
 					  LoggerType.FULL );
 			  return;
@@ -244,7 +244,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 				
 				render_createDisplayLists( gl );
 				
-				  generalManager.getSingleton().logMsg(
+				  generalManager.logMsg(
 						  "createHistogram() use IVirtualArray(" + refBufferSelection.getLabel() + ":" + refBufferSelection.toString() + ")",
 						  LoggerType.FULL );
 				  
@@ -665,7 +665,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 	
 		bEnablePicking = enablePicking;
 		
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				this.getClass().getSimpleName() + ".setEnablePicking( " +
 				Boolean.toString(enablePicking) + " )",
 				LoggerType.STATUS);
@@ -745,17 +745,17 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 	public void setTargetSetId( final int iTargetCollectionSetId ) {
 		
 		targetSet = 
-			generalManager.getSingleton().getSetManager(
+			generalManager.getSetManager(
 					).getItemSet( iTargetCollectionSetId );
 		
 		if ( targetSet == null ) {
-			generalManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					"GLCanvasScatterPlot2D.setTargetSetId(" +
 					iTargetCollectionSetId + ") failed, because Set is not registed!",
 					LoggerType.FULL );
 		}
 		
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				"GLCanvasScatterPlot2D.setTargetSetId(" +
 				iTargetCollectionSetId + ") done!",
 				LoggerType.FULL );
@@ -773,7 +773,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 		render_displayListHeatmap( gl );
 		gl.glEndList();
 		
-		  generalManager.getSingleton().logMsg(
+		  generalManager.logMsg(
 				  "createHeatmap() create DsiplayList)",
 				  LoggerType.FULL );
 		  
@@ -983,7 +983,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
  //public int[] createHistogram(final int iHistogramLevels) {
   public void renderHeatmap(final int iHistogramLevels) {
 
-	  generalManager.getSingleton().logMsg( "HEATMAP: set  ", LoggerType.FULL );
+	  generalManager.logMsg( "HEATMAP: set  ", LoggerType.FULL );
 	  
   }
 
@@ -1214,7 +1214,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 	
 	public void updateReceiver(Object eventTrigger) {
 		
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				this.getClass().getSimpleName()+
 				": updateReceiver( (" + 
 				eventTrigger.getClass().getSimpleName() + ") " +
@@ -1226,7 +1226,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 	public void updateReceiver(Object eventTrigger, 
 			ISet updatedSet) {
 		
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				this.getClass().getSimpleName()+
 				": updateReceiver( (" + 
 				eventTrigger.getClass().getSimpleName() + ") " +

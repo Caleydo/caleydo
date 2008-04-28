@@ -97,13 +97,13 @@ implements IMediatorReceiver, IMediatorSender {
 
 		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
 		
-		pathwayManager = generalManager.getSingleton().getPathwayManager();
+		pathwayManager = generalManager.getPathwayManager();
 		
 		refGLPathwayManager = new GLPathwayManager(generalManager);
 		refHashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
 //		refHashPathwayContainingSelectedVertex2VertexCount = new HashMap<Integer, Integer>();
 		
-		selectionManager = generalManager.getSingleton().getViewGLCanvasManager().getSelectionManager();
+		selectionManager = generalManager.getViewGLCanvasManager().getSelectionManager();
 	
 		vecScaling = new Vec3f(1,1,1);
 		vecTranslation = new Vec3f(0,0,0);
@@ -124,7 +124,7 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		// Unregister former pathway in visibility list
 		if (iPathwayID != -1)
-			generalManager.getSingleton().getPathwayManager().setPathwayVisibilityStateByID(this.iPathwayID, false);
+			generalManager.getPathwayManager().setPathwayVisibilityStateByID(this.iPathwayID, false);
 		
 		this.iPathwayID = iPathwayID;
 	}
@@ -313,7 +313,7 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 		
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				this.getClass().getSimpleName()
 						+ " ("+iUniqueId+"): updateReceiver(Object eventTrigger, ISet updatedSet): Update called by "
 						+ eventTrigger.getClass().getSimpleName()+" ("+((AGLCanvasUser)eventTrigger).getId(),
@@ -335,7 +335,7 @@ implements IMediatorReceiver, IMediatorSender {
 		ArrayList<Integer> iAlSelectionMode = refSetSelection.getGroupArray();
 		if (iAlSelection.size() != 0)
 		{
-			int iPathwayHeight = ((PathwayGraph)generalManager.getSingleton().getPathwayManager().getItem(iPathwayID)).getHeight();
+			int iPathwayHeight = ((PathwayGraph)generalManager.getPathwayManager().getItem(iPathwayID)).getHeight();
 			
 			int iAccessionID = iAlSelection.get(0);
 			
@@ -343,15 +343,15 @@ implements IMediatorReceiver, IMediatorSender {
 			if (iAlSelectionMode.get(0) == 0)
 				return;
 			
-			String sAccessionCode = generalManager.getSingleton().getGenomeIdManager()
+			String sAccessionCode = generalManager.getGenomeIdManager()
 				.getIdStringFromIntByMapping(iAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
 		
 			System.out.println("Accession Code: " +sAccessionCode);
 								
-			int iNCBIGeneID = generalManager.getSingleton().getGenomeIdManager()
+			int iNCBIGeneID = generalManager.getGenomeIdManager()
 				.getIdIntFromIntByMapping(iAccessionID, EGenomeMappingType.ACCESSION_2_NCBI_GENEID);
 
-			String sNCBIGeneIDCode = generalManager.getSingleton().getGenomeIdManager()
+			String sNCBIGeneIDCode = generalManager.getGenomeIdManager()
 				.getIdStringFromIntByMapping(iNCBIGeneID, EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
 		
 			int iNCBIGeneIDCode = StringConversionTool.convertStringToInt(sNCBIGeneIDCode, -1);
@@ -363,12 +363,12 @@ implements IMediatorReceiver, IMediatorSender {
 			}
 			
 			PathwayVertexGraphItem tmpPathwayVertexGraphItem = 
-				((PathwayVertexGraphItem)generalManager.getSingleton().getPathwayItemManager().getItem(
-					generalManager.getSingleton().getPathwayItemManager().getPathwayVertexGraphItemIdByNCBIGeneId(iNCBIGeneIDCode)));
+				((PathwayVertexGraphItem)generalManager.getPathwayItemManager().getItem(
+					generalManager.getPathwayItemManager().getPathwayVertexGraphItemIdByNCBIGeneId(iNCBIGeneIDCode)));
 
 			if(tmpPathwayVertexGraphItem == null)
 			{
-				generalManager.getSingleton().logMsg(
+				generalManager.logMsg(
 						this.getClass().getSimpleName()
 								+ " ("+iUniqueId+"): Irgendwas mit graph vertex item das eigentlich net passiern sullt "
 								+ eventTrigger.getClass().getSimpleName()+" ("+((AGLCanvasUser)eventTrigger).getId(),
@@ -386,7 +386,7 @@ implements IMediatorReceiver, IMediatorSender {
 					((PathwayVertexGraphItemRep)iterPathwayVertexGraphItemRep.next());
 				
 				// Check if vertex is contained in this pathway viewFrustum
-				if (!((PathwayGraph)generalManager.getSingleton().getPathwayManager()
+				if (!((PathwayGraph)generalManager.getPathwayManager()
 						.getItem(iPathwayID)).containsItem(tmpPathwayVertexGraphItemRep))
 					continue;
 				
@@ -410,7 +410,7 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void updateReceiver(Object eventTrigger) {
 
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				this.getClass().getSimpleName()
 						+ ": updateReceiver(Object eventTrigger): Update called by "
 						+ eventTrigger.getClass().getSimpleName(),
@@ -482,15 +482,15 @@ implements IMediatorReceiver, IMediatorSender {
 		if (refHashGLcontext2TextureManager.get(gl) == null)
 			return;
 		
-		int iImageWidth = ((PathwayGraph)generalManager.getSingleton()
+		int iImageWidth = ((PathwayGraph)generalManager
 				.getPathwayManager().getItem(iPathwayId)).getWidth();
-		int iImageHeight = ((PathwayGraph)generalManager.getSingleton()
+		int iImageHeight = ((PathwayGraph)generalManager
 				.getPathwayManager().getItem(iPathwayId)).getHeight();
 	
 		float fAspectRatio = (float)iImageWidth / (float)iImageHeight;
 		float fPathwayScalingFactor = 0;
 		
-		if (((PathwayGraph)generalManager.getSingleton().getPathwayManager()
+		if (((PathwayGraph)generalManager.getPathwayManager()
 				.getItem(iPathwayId)).getType().equals(EPathwayDatabaseType.BIOCARTA))
 		{
 			fPathwayScalingFactor = 5;
@@ -539,8 +539,7 @@ implements IMediatorReceiver, IMediatorSender {
 			return;
 
 		CmdViewLoadURLInHTMLBrowser createdCmd = (CmdViewLoadURLInHTMLBrowser) generalManager
-				.getSingleton().getCommandManager().createCommandByType(
-						CommandQueueSaxType.LOAD_URL_IN_BROWSER);
+				.getCommandManager().createCommandByType(CommandQueueSaxType.LOAD_URL_IN_BROWSER);
 
 		createdCmd.setAttributes(sUrl);
 		createdCmd.doCommand();
@@ -603,18 +602,18 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			pathwayVertexSelectionManager.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
 			
-			PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) generalManager.getSingleton()
+			PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) generalManager
 				.getPathwayItemManager().getItem(iExternalID);
 		
 			PathwayVertexGraphItem tmpVertexGraphItem = (PathwayVertexGraphItem) tmpVertexGraphItemRep
 				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0);
 			
 			// Actively deselect previously selected gene
-			int iGeneID = generalManager.getSingleton().getGenomeIdManager()
+			int iGeneID = generalManager.getGenomeIdManager()
 				.getIdIntFromStringByMapping(tmpVertexGraphItem.getName().substring(4), 
 					EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
 			
-			int iUnselectAccessionID = generalManager.getSingleton().getGenomeIdManager()
+			int iUnselectAccessionID = generalManager.getGenomeIdManager()
 				.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
 
 			
@@ -627,7 +626,7 @@ implements IMediatorReceiver, IMediatorSender {
 			bIsDisplayListDirtyLocal = true;
 			bIsDisplayListDirtyRemote = true;
 			
-			iGeneID = generalManager.getSingleton().getGenomeIdManager()
+			iGeneID = generalManager.getGenomeIdManager()
 				.getIdIntFromStringByMapping(
 						tmpVertexGraphItem.getName().substring(4), 
 						EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
@@ -637,10 +636,10 @@ implements IMediatorReceiver, IMediatorSender {
 				break;
 			}
 			
-			int iAccessionID = generalManager.getSingleton().getGenomeIdManager()
+			int iAccessionID = generalManager.getGenomeIdManager()
 				.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
 			
-			generalManager.getSingleton().getViewGLCanvasManager().getInfoAreaManager()
+			generalManager.getViewGLCanvasManager().getInfoAreaManager()
 				.setData(iUniqueId, iAccessionID, EInputDataType.GENE, getInfo());
 			
 			selectionManager.clear();
@@ -655,11 +654,11 @@ implements IMediatorReceiver, IMediatorSender {
 					((PathwayVertexGraphItemRep)iterPathwayVertexGraphItemRep.next());
 				
 				// Check if vertex is contained in this pathway viewFrustum
-				if (!((PathwayGraph)generalManager.getSingleton().getPathwayManager()
+				if (!((PathwayGraph)generalManager.getPathwayManager()
 						.getItem(iPathwayID)).containsItem(tmpPathwayVertexGraphItemRep))
 					continue;
 				
-				int iPathwayHeight = ((PathwayGraph)generalManager.getSingleton().getPathwayManager().getItem(iPathwayID)).getHeight();
+				int iPathwayHeight = ((PathwayGraph)generalManager.getPathwayManager().getItem(iPathwayID)).getHeight();
 				
 				selectionManager.modifySelection(iAccessionID, new SelectedElementRep(this.getId(), 
 						(tmpPathwayVertexGraphItemRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X) * vecScaling.x()  + vecTranslation.x(),
@@ -710,7 +709,7 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		// TODO: Move to own method (outside this class)
 		// Store all genes in that pathway with selection group 0
-		Iterator<IGraphItem> iterPathwayVertexGraphItem = ((PathwayGraph)generalManager.getSingleton()
+		Iterator<IGraphItem> iterPathwayVertexGraphItem = ((PathwayGraph)generalManager
 				.getPathwayManager().getItem(iPathwayID)).getAllItemsByKind(EGraphItemKind.NODE).iterator();
 		
 		ArrayList<Integer> iAlSelectedGenes = new ArrayList<Integer>();
@@ -733,14 +732,14 @@ implements IMediatorReceiver, IMediatorSender {
 				
 				sGeneID = sGeneID.substring(4);
 				
-				iGeneID = generalManager.getSingleton().getGenomeIdManager()
+				iGeneID = generalManager.getGenomeIdManager()
 					.getIdIntFromStringByMapping(sGeneID, 
 						EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
 						
 				if (iGeneID == -1)
 					continue;
 				
-				int iTmpAccessionID = generalManager.getSingleton().getGenomeIdManager()
+				int iTmpAccessionID = generalManager.getGenomeIdManager()
 					.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
 			
 				if (iTmpAccessionID == -1)
@@ -766,7 +765,7 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		ArrayList<String> sAlInfo = new ArrayList<String>();
 		
-		PathwayGraph pathway = ((PathwayGraph)generalManager.getSingleton().getPathwayManager()
+		PathwayGraph pathway = ((PathwayGraph)generalManager.getPathwayManager()
 				.getItem(iPathwayID));
 	
 		String sPathwayTitle = pathway.getTitle();

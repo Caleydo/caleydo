@@ -4,11 +4,10 @@
 package org.caleydo.core.manager.event.mediator;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
+import org.caleydo.core.manager.IGeneralManager;
 
 /**
- * Exclusiv accept one SelectionSet and blockes all other SelectionSet's when calling
+ * Exclusively accept one SelectionSet and blocks all other SelectionSet's when calling
  * org.caleydo.core.manager.event.mediator.IMediator#updateReceiverSelection(Object, ISet).
  * 
  * @see org.caleydo.core.manager.event.mediator.IMediator#updateReceiverSelection(Object, ISet)
@@ -25,11 +24,11 @@ extends LockableMediator {
 	 * @param refEventPublisher
 	 * @param iMediatorId
 	 */
-	public LockableExclusivFilterMediator(IEventPublisher refEventPublisher,
+	public LockableExclusivFilterMediator(final IGeneralManager generalManager,
 			int iMediatorId,
 			final ISet setExclusiveSelectionSet) {
 
-		super(refEventPublisher, iMediatorId, MediatorUpdateType.MEDIATOR_FILTER_ONLY_SET);
+		super(generalManager, iMediatorId, MediatorUpdateType.MEDIATOR_FILTER_ONLY_SET);
 		
 		this.refExclusiveSet = setExclusiveSelectionSet;
 	}

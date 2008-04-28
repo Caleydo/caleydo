@@ -38,7 +38,7 @@ extends ACmdCreate_IdTargetLabelParentAttr {
 
 	public void doCommand() throws CaleydoRuntimeException
 	{
-		generalManager.getSingleton().
+		generalManager.
 			getSWTGUIManager().createComposite(
 					iUniqueId, 
 					iParentContainerId, 

@@ -58,21 +58,21 @@ implements IMediatorSender{;
 	
 	public void setAttributes(final ArrayList<Integer> iAlViewReceiverIDs) {
 
-		iSearchSelectionSetId = generalManager.getSingleton().getSetManager()
+		iSearchSelectionSetId = generalManager.getSetManager()
 			.createId(ManagerObjectType.SET_LINEAR);
 
-		CmdDataCreateSelectionSetMakro selectedSetCmd = (CmdDataCreateSelectionSetMakro) generalManager.getSingleton().getCommandManager()
+		CmdDataCreateSelectionSetMakro selectedSetCmd = (CmdDataCreateSelectionSetMakro) generalManager.getCommandManager()
 			.createCommandByType(CommandQueueSaxType.CREATE_SET_SELECTION_MAKRO);
 	
 		selectedSetCmd.setAttributes(iSearchSelectionSetId);
 		selectedSetCmd.doCommand();
 	
-		CmdEventCreateMediator tmpMediatorCmd = (CmdEventCreateMediator) generalManager.getSingleton().getCommandManager()
+		CmdEventCreateMediator tmpMediatorCmd = (CmdEventCreateMediator) generalManager.getCommandManager()
 			.createCommandByType(CommandQueueSaxType.CREATE_EVENT_MEDIATOR);
 		
 		ArrayList<Integer> iAlSenderIDs = new ArrayList<Integer>();
 		iAlSenderIDs.add(iUniqueId);
-		tmpMediatorCmd.setAttributes(generalManager.createId(ManagerObjectType.EVENT_MEDIATOR_CREATE), 
+		tmpMediatorCmd.setAttributes(generalManager.getEventPublisher().createId(ManagerObjectType.EVENT_MEDIATOR_CREATE), 
 				iAlSenderIDs, iAlViewReceiverIDs, MediatorType.SELECTION_MEDIATOR);
 		tmpMediatorCmd.doCommand();
 	}
@@ -91,7 +91,7 @@ implements IMediatorSender{;
 	private boolean searchForPathway(final String sEntity) {
 		
 		int iFoundPathwayId = 
-			generalManager.getSingleton().getPathwayManager().searchPathwayIdByName(sEntity);
+			generalManager.getPathwayManager().searchPathwayIdByName(sEntity);
 		
 		if(iFoundPathwayId == -1)
 			return false;
@@ -106,7 +106,7 @@ implements IMediatorSender{;
 	
 	private boolean searchForAccession(final String sEntity) {
 		
-		int iFoundAccessionId = generalManager.getSingleton().getGenomeIdManager().getIdIntFromStringByMapping(sEntity, 
+		int iFoundAccessionId = generalManager.getGenomeIdManager().getIdIntFromStringByMapping(sEntity, 
 			EGenomeMappingType.ACCESSION_CODE_2_ACCESSION);
 		
 		if (iFoundAccessionId == -1)
@@ -148,14 +148,14 @@ implements IMediatorSender{;
 		if (iNCBIGeneIdCode == -1)
 			return false;
 		
-		int iPathwayGraphItemId = generalManager.getSingleton().getPathwayItemManager()
+		int iPathwayGraphItemId = generalManager.getPathwayItemManager()
 			.getPathwayVertexGraphItemIdByNCBIGeneId(iNCBIGeneIdCode);
 	
 		if (iPathwayGraphItemId == -1)
 			return false;
 		
 		Iterator <IGraphItem> iterList = 
-			((IGraphItem) generalManager.getSingleton().getPathwayItemManager().getItem(iPathwayGraphItemId))
+			((IGraphItem) generalManager.getPathwayItemManager().getItem(iPathwayGraphItemId))
 				.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
 	
 		ArrayList<Integer> iAlSelectionId = new ArrayList<Integer>();
@@ -186,13 +186,13 @@ implements IMediatorSender{;
 	
 	private boolean searchForGeneShortName(final String sEntity) {
 		
-		int iNCBIGeneId = generalManager.getSingleton().getGenomeIdManager().getIdIntFromStringByMapping(sEntity, 
+		int iNCBIGeneId = generalManager.getGenomeIdManager().getIdIntFromStringByMapping(sEntity, 
 				EGenomeMappingType.GENE_SHORT_NAME_2_NCBI_GENEID);
 		
 		if (iNCBIGeneId == -1)
 			return false;
 		
-		return searchForNCBIGeneId(generalManager.getSingleton().getGenomeIdManager()
+		return searchForNCBIGeneId(generalManager.getGenomeIdManager()
 				.getIdStringFromIntByMapping(iNCBIGeneId, EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE));
 	}
 	
@@ -201,7 +201,7 @@ implements IMediatorSender{;
 			ArrayList<Integer> iAlOptional) {
 		
 		SetSelection tmpSelectionSet = 
-			(SetSelection) generalManager.getSingleton().getSetManager().getItemSet(iSearchSelectionSetId);
+			(SetSelection) generalManager.getSetManager().getItemSet(iSearchSelectionSetId);
 		
 		tmpSelectionSet.getWriteToken();
 		tmpSelectionSet.updateSelectionSet(iUniqueId, 

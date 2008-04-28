@@ -1,8 +1,4 @@
-/**
- * 
- */
 package org.caleydo.core.parser.ascii.lookuptable;
-
 
 import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
 import org.caleydo.core.data.map.MultiHashArrayStringMap;
@@ -10,7 +6,6 @@ import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.IGenomeIdManager;
 import org.caleydo.core.manager.data.genome.IGenomeIdMap;
-import org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader;
 
 
 /**
@@ -18,21 +13,17 @@ import org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader;
  *
  */
 public abstract class ALookupTableLoader 
-//extends AbstractLoader 
 implements ILookupTableLoader {
 
-//	protected final IGenomeIdManager refGenomeIdManager;
-	
 	protected String sFileName;
 	
 	protected EGenomeMappingType currentGenomeIdType;
 	
-	protected final IGeneralManager refGeneralManager;
+	protected final IGeneralManager generalManager;
 	
-	protected final IGenomeIdManager refGenomeIdManager;
+	protected final IGenomeIdManager genomeIdManager;
 	
-	protected LookupTableLoaderProxy refLookupTableLoaderProxy;
-
+	protected LookupTableLoaderProxy lookupTableLoaderProxy;
 	
 	protected int iInitialSizeMultiHashMap = 1000;
 	
@@ -40,21 +31,21 @@ implements ILookupTableLoader {
 	 * @param setGeneralManager
 	 * @param setFileName
 	 */
-	public ALookupTableLoader( final IGeneralManager setGeneralManager,
+	public ALookupTableLoader( final IGeneralManager generalManager,
 			final String setFileName,
 			final EGenomeMappingType genomeIdType,
 			final LookupTableLoaderProxy setLookupTableLoaderProxy ) {
 
-		refGeneralManager = setGeneralManager;
-		refLookupTableLoaderProxy = setLookupTableLoaderProxy;
+		this.generalManager = generalManager;
+		lookupTableLoaderProxy = setLookupTableLoaderProxy;
 		sFileName = setFileName;	
 	
 		this.currentGenomeIdType = genomeIdType;
 		
-		refGenomeIdManager = 
-			refGeneralManager.getSingleton().getGenomeIdManager();
+		genomeIdManager = 
+			generalManager.getGenomeIdManager();
 		
-		refLookupTableLoaderProxy.setTokenSeperator( 
+		lookupTableLoaderProxy.setTokenSeperator( 
 				IGeneralManager.sDelimiter_Parser_DataType);
 	}
 	

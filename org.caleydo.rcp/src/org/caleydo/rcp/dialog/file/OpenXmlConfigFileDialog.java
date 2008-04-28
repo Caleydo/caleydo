@@ -128,7 +128,7 @@ extends Dialog {
 		}
 		
 		ISWTGUIManager refISWTGUIManager = 
-			Application.caleydo_core.getGeneralManager().getSingleton().getSWTGUIManager();
+			Application.caleydo_core.getGeneralManager().getSWTGUIManager();
 		refISWTGUIManager.setProgressbarVisible(true);
 				
 		try 
@@ -138,7 +138,7 @@ extends Dialog {
 		} 
 		catch (Exception e) 
 		{
-			Application.caleydo_core.getGeneralManager().getSingleton().logMsg("Error while loading Xml file=[" +
+			Application.caleydo_core.getGeneralManager().logMsg("Error while loading Xml file=[" +
 					xmlFileName + "] " + e.toString(),
 					LoggerType.MINOR_ERROR_XML);
 			statusOnLoading.setText("system error while laoding XML file.");

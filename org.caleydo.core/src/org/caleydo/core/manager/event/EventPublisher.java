@@ -8,7 +8,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
-import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.base.AManager;
 import org.caleydo.core.manager.event.mediator.IMediator;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
@@ -22,8 +22,14 @@ import org.caleydo.core.manager.type.ManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
+/**
+ * Implements event mediator pattern.
+ * 
+ * @author Marc Streit
+ * @author Michael Kalkusch
+ */
 public class EventPublisher 
-extends AAbstractManager
+extends AManager
 implements IEventPublisher {
 
 	protected HashMap<Integer, IMediator> hashMediatorId2Mediator;
@@ -46,11 +52,11 @@ implements IEventPublisher {
 	/**
 	 * Constructor.
 	 * 
-	 * @param refGeneralManager
+	 * @param generalManager
 	 */
-	public EventPublisher(final IGeneralManager refGeneralManager) {
+	public EventPublisher(final IGeneralManager generalManager) {
 
-		super( refGeneralManager,  
+		super( generalManager,  
 				IGeneralManager.iUniqueId_TypeOffset_EventPublisher,
 				ManagerType.EVENT_PUBLISHER );
 		
@@ -133,7 +139,7 @@ implements IEventPublisher {
 		{
 			newMediator = hashMediatorId2Mediator.get(iMediatorId);
 			
-			singelton.logMsg("createMediator(" + iMediatorId + 
+			generalManager.logMsg("createMediator(" + iMediatorId + 
 					") mediator already exists. add Senders and Receivers now.",
 					LoggerType.VERBOSE);
 		}
@@ -143,22 +149,21 @@ implements IEventPublisher {
 		
 			switch (mediatorUpdateType) {
 			case MEDIATOR_DEFAULT:
-				newMediator = 
-					new LockableMediator(this, 
+				newMediator = new LockableMediator(generalManager, 
 							iMediatorId, 
 							MediatorUpdateType.MEDIATOR_DEFAULT);
 				break;
 				
 			case MEDIATOR_FILTER_ONLY_SET:
 				newMediator = 
-					new LockableExclusivFilterMediator(this, 
+					new LockableExclusivFilterMediator(generalManager, 
 							iMediatorId, 
 							null);
 				break;
 				
 			case MEDIATOR_FILTER_ALL_EXPECT_SET:
 				newMediator = 
-					new LockableIngoreFilterMediator(this, 
+					new LockableIngoreFilterMediator(generalManager, 
 							iMediatorId, 
 							null);
 				break;
@@ -265,7 +270,7 @@ implements IEventPublisher {
 				mediatorType, 
 				mediatorUpdateType);
 		
-		singelton.logMsg("EventPublisher: success registering senderId(s)=[" +
+		generalManager.logMsg("EventPublisher: success registering senderId(s)=[" +
 				arSenderIDs.toString() + "] and receiverId(s)=[" +
 				arReceiverIDs.toString() + "]",
 				LoggerType.VERBOSE);
@@ -292,15 +297,14 @@ implements IEventPublisher {
 			
 			try
 			{
-				sender = (IMediatorSender) generalManager
-						.getItem(iCurrentSenderId);
+				sender = (IMediatorSender) generalManager.getViewGLCanvasManager().getItem(iCurrentSenderId); // TODO: change to getItem from generalManager
 			} 
 			catch ( ClassCastException cce)
 			{
-				singelton.logMsg("EventPublisher.createMediator() failed because referenced sender object id=[" +
+				generalManager.logMsg("EventPublisher.createMediator() failed because referenced sender object id=[" +
 						iCurrentSenderId + 
 						"] does not implement interface IMediatorSender " +
-						generalManager.getItem(iCurrentSenderId).getClass(),
+						generalManager.getViewGLCanvasManager().getItem(iCurrentSenderId).getClass(),
 						LoggerType.ERROR);
 				
 				assert false : "receiver object does not implement interface IMediatorSender";
@@ -308,7 +312,7 @@ implements IEventPublisher {
 			}
 	
 			if ( sender == null ) {
-				singelton.logMsg("EventPublisher: invalid SenderId=[" +
+				generalManager.logMsg("EventPublisher: invalid SenderId=[" +
 						iCurrentSenderId + "] => receiverId=" + 
 						arReceiverIDs.toString() + 
 						" ignore sender!",
@@ -368,9 +372,9 @@ implements IEventPublisher {
 		} //while (iterSenderIDs.hasNext())
 	
 		// are there any valid senders?
-		if ( ! bHasValidSender ) 
+		if (!bHasValidSender) 
 		{
-			singelton.logMsg("EventPublisher: all SenderId(s)=" +
+			generalManager.logMsg("EventPublisher: all SenderId(s)=" +
 					arSenderIDs.toString() + " are invalid; ignore all receivers=" +
 					arReceiverIDs.toString() + " also!",
 					LoggerType.MINOR_ERROR);
@@ -389,15 +393,14 @@ implements IEventPublisher {
 			IMediatorReceiver receiver = null;
 			try 
 			{
-				receiver = (IMediatorReceiver) generalManager
-					.getItem(iCurrentReceiverId);
+				receiver = (IMediatorReceiver)generalManager.getViewGLCanvasManager().getItem(iCurrentReceiverId); // TODO: change to getItem from generalManager
 			} 
 			catch ( ClassCastException cce)
 			{
-				singelton.logMsg("EventPublisher.createMediator() failed because referenced receiver object id=[" +
+				generalManager.logMsg("EventPublisher.createMediator() failed because referenced receiver object id=[" +
 						iCurrentReceiverId + 
 						"] does not implement interface IMediatorReceiver " +
-						generalManager.getItem(iCurrentReceiverId).getClass(),
+						generalManager.getViewGLCanvasManager().getItem(iCurrentReceiverId).getClass(),
 						LoggerType.ERROR);
 				
 				assert false : "receiver object does not implement interface IMediatorReceiver";
@@ -405,7 +408,7 @@ implements IEventPublisher {
 			}
 	
 			if ( receiver == null ) {
-				singelton.logMsg("EventPublisher: sender(s) " +
+				generalManager.logMsg("EventPublisher: sender(s) " +
 						arSenderIDs.toString() + " ==> invalid ReceiverId=[" +
 						iCurrentReceiverId + "] ignore receiver!",
 						LoggerType.MINOR_ERROR);
@@ -445,7 +448,7 @@ implements IEventPublisher {
 								CaleydoRuntimeExceptionType.OBSERVER);
 				} // switch ( mediatorType ) {
 			
-				singelton.logMsg("EventPublisher: successful added senderId(s)" +
+				generalManager.logMsg("EventPublisher: successful added senderId(s)" +
 						arSenderIDs.toString() + " => [" +
 						iCurrentReceiverId + "]",
 						LoggerType.VERBOSE);
@@ -456,14 +459,14 @@ implements IEventPublisher {
 		
 		if ( ! bHasValidReceiver )
 		{
-			singelton.logMsg("EventPublisher: ignore command with senderId(s)=[" +
+			generalManager.logMsg("EventPublisher: ignore command with senderId(s)=[" +
 					arSenderIDs.toString() + "] and receiverId(s)=[" +
 					arReceiverIDs.toString() + "] because no valid receiver was found!",
 					LoggerType.MINOR_ERROR);
 			return;
 		}
 		
-		singelton.logMsg("EventPublisher: Mediator " + newMediator.toString() + 
+		generalManager.logMsg("EventPublisher: Mediator " + newMediator.toString() + 
 				" success registering senderId(s)=[" +
 				arSenderIDs.toString() + "] and receiverId(s)=[" +
 				arReceiverIDs.toString() + "]",

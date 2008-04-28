@@ -44,8 +44,8 @@ public class LookupTableMultiMapIntLoader extends ALookupTableLoader
 
 		String sLine;
 		int iLineInFile = 1;
-		int iStartParsingAtLine = refLookupTableLoaderProxy.getStartParsingAtLine();
-		int iStopParsingAtLine  = refLookupTableLoaderProxy.getStopParsingAtLine();
+		int iStartParsingAtLine = lookupTableLoaderProxy.getStartParsingAtLine();
+		int iStopParsingAtLine  = lookupTableLoaderProxy.getStopParsingAtLine();
 		
 	    while ( ((sLine = brFile.readLine()) != null)&&
 	    		( iLineInFile <= iStopParsingAtLine) )  
@@ -60,7 +60,7 @@ public class LookupTableMultiMapIntLoader extends ALookupTableLoader
 				boolean bMaintainLoop = true;
 				StringTokenizer strTokenText = 
 					new StringTokenizer(sLine, 
-							refLookupTableLoaderProxy.getTokenSeperator());
+							lookupTableLoaderProxy.getTokenSeperator());
 				
 				/**
 				 * Read all tokens
@@ -96,11 +96,11 @@ public class LookupTableMultiMapIntLoader extends ALookupTableLoader
 				
 		
 				 if ( ! bMaintainLoop ) {
-					refLookupTableLoaderProxy.progressBarStoredIncrement();
+					lookupTableLoaderProxy.progressBarStoredIncrement();
 				    return -1;
 				 }
 				 
-				refLookupTableLoaderProxy.progressBarStoredIncrement();
+				lookupTableLoaderProxy.progressBarStoredIncrement();
 				
 			} // end of: if( iLineInFile > this.iHeaderLinesSize) {			
 			
@@ -127,7 +127,7 @@ public class LookupTableMultiMapIntLoader extends ALookupTableLoader
 	 */
 	public void wirteBackMapToGenomeIdManager() {
 
-		refGenomeIdManager.setMapByType(currentGenomeIdType, refMultiHashMapInteger);
+		genomeIdManager.setMapByType(currentGenomeIdType, refMultiHashMapInteger);
 	}
 
 }

@@ -3,14 +3,13 @@ package org.caleydo.core.manager.data;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.caleydo.core.manager.IManager;
 import org.caleydo.util.graph.IGraph;
 import org.caleydo.util.graph.IGraphItem;
 
-import org.caleydo.core.manager.IGeneralManager;
-
 public interface IPathwayItemManager 
-extends IGeneralManager {
-
+extends IManager
+{
 	public IGraphItem createVertex(
 			final String sName,
 			final String sType,

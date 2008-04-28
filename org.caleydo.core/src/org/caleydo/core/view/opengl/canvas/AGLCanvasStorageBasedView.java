@@ -91,10 +91,9 @@ implements IMediatorReceiver, IMediatorSender
 		alDataStorages = new ArrayList<IStorage>();
 		mapSelections = new EnumMap<ESelectionType, ArrayList<Integer>>(ESelectionType.class);	
 		
-		IDManager = generalManager.getSingleton().getGenomeIdManager();
+		IDManager = generalManager.getGenomeIdManager();
 		
-		extSelectionManager = generalManager.
-		getSingleton().getViewGLCanvasManager().getSelectionManager();
+		extSelectionManager = generalManager.getViewGLCanvasManager().getSelectionManager();
 		
 		textRenderer = new TextRenderer(new Font("Arial",
 				Font.BOLD, 16), false);
@@ -158,10 +157,10 @@ implements IMediatorReceiver, IMediatorSender
 				else
 				{			
 					// Check if gene occurs in one pathway
-					int iNCBIGeneID = generalManager.getSingleton().getGenomeIdManager()
+					int iNCBIGeneID = generalManager.getGenomeIdManager()
 					.getIdIntFromIntByMapping(iAccessionID, EGenomeMappingType.ACCESSION_2_NCBI_GENEID);
 	
-					String sNCBIGeneIDCode = generalManager.getSingleton().getGenomeIdManager()
+					String sNCBIGeneIDCode = generalManager.getGenomeIdManager()
 						.getIdStringFromIntByMapping(iNCBIGeneID, EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
 				
 					int iNCBIGeneIDCode = StringConversionTool.convertStringToInt(sNCBIGeneIDCode, -1);
@@ -173,8 +172,8 @@ implements IMediatorReceiver, IMediatorSender
 					}
 					
 					PathwayVertexGraphItem tmpPathwayVertexGraphItem = 
-						((PathwayVertexGraphItem)generalManager.getSingleton().getPathwayItemManager().getItem(
-							generalManager.getSingleton().getPathwayItemManager().getPathwayVertexGraphItemIdByNCBIGeneId(iNCBIGeneIDCode)));
+						((PathwayVertexGraphItem)generalManager.getPathwayItemManager().getItem(
+							generalManager.getPathwayItemManager().getPathwayVertexGraphItemIdByNCBIGeneId(iNCBIGeneIDCode)));
 		
 					if(tmpPathwayVertexGraphItem == null)
 					{
@@ -209,7 +208,7 @@ implements IMediatorReceiver, IMediatorSender
 		ArrayList<Integer> iAlSelectionStorageIndices = new ArrayList<Integer>();
 		for(int iCount = 0; iCount < iAlSelection.size(); iCount++)
 		{
-			int iTmp = generalManager.getSingleton().getGenomeIdManager()
+			int iTmp = generalManager.getGenomeIdManager()
 				.getIdIntFromIntByMapping(iAlSelection.get(iCount), EGenomeMappingType.ACCESSION_2_MICROARRAY_EXPRESSION);
 			
 //			if (iTmp == -1)
@@ -278,7 +277,7 @@ implements IMediatorReceiver, IMediatorSender
 	
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) 
 	{		
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				this.getClass().getSimpleName()
 						+ " ("+iUniqueId+"): updateReceiver(Object eventTrigger, ISet updatedSet): Update called by "
 						+ eventTrigger.getClass().getSimpleName()+" ("+((AGLCanvasUser)eventTrigger).getId(),
@@ -312,7 +311,7 @@ implements IMediatorReceiver, IMediatorSender
 				iSelectedAccessionID = iAlSelection.get(iSelectionCount);
 				iSelectedStorageIndex = iAlSelectionStorageIndices.get(iSelectionCount);
 				
-				String sAccessionCode = generalManager.getSingleton().getGenomeIdManager()
+				String sAccessionCode = generalManager.getGenomeIdManager()
 					.getIdStringFromIntByMapping(iSelectedAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
 			
 				System.out.println("Accession ID: " + iSelectedAccessionID);
@@ -349,7 +348,7 @@ implements IMediatorReceiver, IMediatorSender
 	 */
 	public void updateReceiver(Object eventTrigger) {
 
-		generalManager.getSingleton().logMsg(
+		generalManager.logMsg(
 				this.getClass().getSimpleName()
 						+ ": updateReceiver(Object eventTrigger): Update called by "
 						+ eventTrigger.getClass().getSimpleName(),
@@ -361,7 +360,7 @@ implements IMediatorReceiver, IMediatorSender
 	{
 		int iAccessionID = getAccesionIDFromStorageIndex(iExternalID);	
 		
-		generalManager.getSingleton().getViewGLCanvasManager().getInfoAreaManager()
+		generalManager.getViewGLCanvasManager().getInfoAreaManager()
 		.setData(iUniqueId, iAccessionID, EInputDataType.GENE, getInfo());					
 		
 		// Write currently selected vertex to selection set

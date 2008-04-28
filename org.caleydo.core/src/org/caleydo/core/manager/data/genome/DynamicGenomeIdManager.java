@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.core.manager.data.genome;
 
 import java.util.ArrayList;
@@ -8,25 +5,20 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
-//import java.util.Iterator;
-//import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-//import org.caleydo.core.base.map.MultiHashArrayMap;
-//import org.caleydo.core.data.mapping.EGenomeIdType;
 import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
 import org.caleydo.core.data.map.MultiHashArrayStringMap;
 import org.caleydo.core.data.mapping.EGenomeMappingDataType;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
-//import org.caleydo.core.base.map.MultiHashArrayStringMap;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
-import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.base.AManager;
 import org.caleydo.core.manager.data.IGenomeIdManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.mapping.AGenomeMapper;
 import org.caleydo.core.util.mapping.EGenomeMappingCascadeType;
 import org.caleydo.core.util.mapping.GenomeMapper_ENZYME_2_NCBI_GENEID_2_ACCESSION_2_MICROARRAY_EXPRESSION_STORAGE_INDEX;
@@ -38,7 +30,7 @@ import org.caleydo.core.util.mapping.GenomeMapper_ENZYME_2_NCBI_GENEID_2_ACCESSI
  *
  */
 public class DynamicGenomeIdManager
-extends AAbstractManager
+extends AManager
 implements IGenomeIdManager {
 
 	private static final int iSortBufferInitialsize = 200;
@@ -66,9 +58,9 @@ implements IGenomeIdManager {
 	 * 
 	 * @param setGeneralManager
 	 */
-	public DynamicGenomeIdManager(final IGeneralManager setGeneralManager) {
+	public DynamicGenomeIdManager(final IGeneralManager generalManager) {
 
-		super(setGeneralManager, 66, ManagerType.DATA_GENOME_ID );
+		super(generalManager, 66, ManagerType.DATA_GENOME_ID );
 		
 		hashType2Map = new HashMap<EGenomeMappingType, IGenomeIdMap> (iInitialCountAllLookupTables);
 		
@@ -95,7 +87,7 @@ implements IGenomeIdManager {
 		
 		if ( hashType2Map.containsKey( codingLutType ) ) 
 		{
-			generalManager.getSingleton().logMsg(
+			generalManager.logMsg(
 					"createMapByType(" + 
 					codingLutType.toString() + "," +
 					dataType.toString() + ",*) WARNING! type is already registered!",
@@ -111,7 +103,7 @@ implements IGenomeIdManager {
 		
 		IGenomeIdMap newMap = null;
 		
-		singelton.logMsg("createMapByType(" +
+		generalManager.logMsg("createMapByType(" +
 				codingLutType.toString() + "," +
 				dataType.toString() + ",*) ...",
 				LoggerType.VERBOSE);
@@ -539,11 +531,11 @@ implements IGenomeIdManager {
 			
 			return keyset;		
 		} catch ( CaleydoRuntimeException gve ) {
-			singelton.logMsg("getValuesFromExposedDataStructues( " + type.toString() +
+			generalManager.logMsg("getValuesFromExposedDataStructues( " + type.toString() +
 					") failed, because String values could not be converted to Integer",
 					LoggerType.MINOR_ERROR_XML );
 			/* more details on exception .. */
-			singelton.logMsg("getValuesFromExposedDataStructues( " + type.toString() + 
+			generalManager.logMsg("getValuesFromExposedDataStructues( " + type.toString() + 
 					") failed; Exception= " + gve.toString(),
 					LoggerType.VERBOSE );
 			

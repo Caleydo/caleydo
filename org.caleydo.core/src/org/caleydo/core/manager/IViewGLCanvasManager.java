@@ -23,8 +23,8 @@ import com.sun.opengl.util.Animator;
  *
  */
 public interface IViewGLCanvasManager 
-extends IViewManager {
-	
+extends IViewManager, IManager
+{
 	public GLEventListener createGLCanvas(CommandQueueSaxType useViewType,
 			final int iUniqueId, 
 			final int iGLCanvasID,

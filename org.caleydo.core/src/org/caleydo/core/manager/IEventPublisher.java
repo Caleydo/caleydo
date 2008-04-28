@@ -16,7 +16,7 @@ import org.caleydo.core.util.ICaleydoDefaultType;
  * 
  */
 public interface IEventPublisher 
-extends IGeneralManager, IMediatorReceiver {
+extends IManager, IMediatorReceiver {
 
 	public enum MediatorType 
 	implements ICaleydoDefaultType <MediatorType> {

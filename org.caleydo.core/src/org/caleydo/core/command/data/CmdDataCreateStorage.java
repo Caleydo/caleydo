@@ -96,7 +96,7 @@ extends ACmdCreate_IdTargetLabel {
 		assert llDataTypes != null : "Probably this doCommand() was already executed once!";
 		
 		IStorageManager refStorageManager = 
-			generalManager.getSingleton().getStorageManager();
+			generalManager.getStorageManager();
 		
 		IStorage newObject = (IStorage) refStorageManager.createStorage(
 				ManagerObjectType.STORAGE_FLAT );
@@ -151,11 +151,11 @@ extends ACmdCreate_IdTargetLabel {
 						iTokenIndex++;
 					}
 					catch (NumberFormatException nfe) {
-						generalManager.getSingleton().logMsg(
+						generalManager.logMsg(
 								"Can not convert (String) to (int) at index=[" +
 								iTokenIndex + "]  => skip raw data:",
 								LoggerType.ERROR );
-						generalManager.getSingleton().logMsg(
+						generalManager.logMsg(
 								"  SKIP: " + strToParse,
 								LoggerType.ERROR );
 						
@@ -197,11 +197,11 @@ extends ACmdCreate_IdTargetLabel {
 						iTokenIndex++;
 					}
 					catch (NumberFormatException nfe) {
-						generalManager.getSingleton().logMsg(
+						generalManager.logMsg(
 								"Can not convert (String) to (float) at index=[" +
 								iTokenIndex + "]  => skip raw data:",
 								LoggerType.ERROR );
-						generalManager.getSingleton().logMsg(
+						generalManager.logMsg(
 								"  SKIP: " + strToParse,
 								LoggerType.ERROR );
 						
@@ -243,11 +243,11 @@ extends ACmdCreate_IdTargetLabel {
 						iTokenIndex++;
 					}
 					catch (NumberFormatException nfe) {
-						generalManager.getSingleton().logMsg(
+						generalManager.logMsg(
 								"Can not convert (String) to (double) at index=[" +
 								iTokenIndex + "]  => skip raw data:",
 								LoggerType.ERROR );
-						generalManager.getSingleton().logMsg(
+						generalManager.logMsg(
 								"  SKIP: " + strToParse,
 								LoggerType.ERROR );
 						
@@ -310,7 +310,7 @@ extends ACmdCreate_IdTargetLabel {
 				newObject.getId(), 
 				newObject.getBaseType() );
 
-		generalManager.getSingleton().logMsg( 
+		generalManager.logMsg( 
 				"DO new STO: " + 
 				newObject.toString(),
 				LoggerType.VERBOSE );
@@ -327,11 +327,11 @@ extends ACmdCreate_IdTargetLabel {
 	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CaleydoRuntimeException {
-		generalManager.getSingleton().getVirtualArrayManager().unregisterItem( 
+		generalManager.getVirtualArrayManager().unregisterItem( 
 				iUniqueId,
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		
-		generalManager.getSingleton().logMsg( 
+		generalManager.logMsg( 
 				"UNDO new SEL: " + 
 				iUniqueId,
 				LoggerType.VERBOSE );	

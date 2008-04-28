@@ -11,7 +11,7 @@ import org.caleydo.core.command.ICommandListener;
 import org.caleydo.core.command.queue.ICommandQueue;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.base.AAbstractManager;
+import org.caleydo.core.manager.base.AManager;
 import org.caleydo.core.manager.command.factory.CommandFactory;
 import org.caleydo.core.manager.command.factory.ICommandFactory;
 import org.caleydo.core.manager.type.ManagerObjectType;
@@ -24,8 +24,8 @@ import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
  *
  */
 public class CommandManager 
- extends AAbstractManager 
- implements ICommandManager {
+extends AManager 
+implements ICommandManager {
 
 	private ICommandFactory refCommandFactory;
 	

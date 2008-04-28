@@ -18,7 +18,7 @@ import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
  *
  */
 public interface ICommandManager 
-extends ICommandActionListener, IGeneralManager {
+extends ICommandActionListener, IManager {
 	
 	/**
 	 * Create a new CommandQueue object.
