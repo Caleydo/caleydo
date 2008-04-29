@@ -87,7 +87,6 @@ public class MappingBuilder_BioCartaGeneID2Accession {
 	
 		outputWriter.println(sAccessionNumber + ";" + sBioCartaGeneID);
 //		boolean err = outputWriter.checkError();
-//		System.out.println(err);
 		outputWriter.flush();
 	}
 	

@@ -33,7 +33,7 @@ implements IViewCamera {
 	protected Vec3f v3fCameraRotationEuler = new Vec3f(0,0,0);
 	
 	/**
-	 * Rotation stored as qaternion.
+	 * Rotation stored as quaternion.
 	 */
 	protected Rotf  rotfCameraRotation;
 	
@@ -63,13 +63,11 @@ implements IViewCamera {
 		rotfCameraRotation = new Rotf();
 		
 		mat4fCameraViewMatrix = Mat4f.MAT4F_UNITY;		
-		
-		System.err.println("ViewCameraBase constructor [" + Integer.toString(iId) + "]");
 	}
 	
 	/**
-	 * Updates the matrix using Roatation Pan and Zoom. 
-	 * Note: Does not influence homogenouse coordinates.	 
+	 * Updates the matrix using rotation, pan and zoom. 
+	 * Note: Does not influence homogeneous coordinates.	 
 	 */
 	protected void updateMatrix() {
 		mat4fCameraViewMatrix.setRotation( rotfCameraRotation );

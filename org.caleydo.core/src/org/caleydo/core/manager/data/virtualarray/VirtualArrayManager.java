@@ -14,7 +14,10 @@ import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 
 /**
+ * Singleton that manages all virtual arrays.
+ * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public class VirtualArrayManager 
@@ -26,11 +29,6 @@ implements IVirtualArrayManager
 	 */
 	protected Vector<IVirtualArray> vecVirtualArray;
 	
-	private void debugNullPointer() {
-		generalManager.logMsg("current vecVirtualArray == null! ", 
-				LoggerType.MINOR_ERROR_XML);
-	}
-	
 	/**
 	 * Constructor.
 	 */
@@ -41,7 +39,7 @@ implements IVirtualArrayManager
 				ManagerType.DATA_VIRTUAL_ARRAY );
 
 		assert setGeneralManager != null : "Constructor with null-pointer to singelton";
-		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";
+//		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";
 			
 		vecVirtualArray = new Vector< IVirtualArray > ( iInitSizeContainer );
 
@@ -49,17 +47,17 @@ implements IVirtualArrayManager
 		{
 			debugNullPointer();
 		}
-		else 
-		{
-			if ( vecVirtualArray.size() != iInitSizeContainer )
-			{
-				generalManager.logMsg("current vecVirtualArray.size()=["
-						+ vecVirtualArray.size() + 
-						"] is != setSize(" + 
-						iInitSizeContainer +")", 
-						LoggerType.MINOR_ERROR_XML);
-			}
-		}
+//		else 
+//		{
+//			if ( vecVirtualArray.size() != iInitSizeContainer )
+//			{
+//				generalManager.logMsg("current vecVirtualArray.size()=["
+//						+ vecVirtualArray.size() + 
+//						"] is != setSize(" + 
+//						iInitSizeContainer +")", 
+//						LoggerType.MINOR_ERROR_XML);
+//			}
+//		}
 		
 //		/**
 //		 * Test IVirtualArray...
@@ -80,8 +78,10 @@ implements IVirtualArrayManager
 //		 */
 	}
 
-
-	
+	private void debugNullPointer() {
+		generalManager.logMsg("current vecVirtualArray == null! ", 
+				LoggerType.MINOR_ERROR_XML);
+	}
 	
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.data.manager.SelectionManager#createSelection()

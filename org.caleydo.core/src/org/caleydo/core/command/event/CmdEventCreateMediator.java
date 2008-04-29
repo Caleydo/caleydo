@@ -85,9 +85,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		
 		String sMediatorType = refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_DETAIL.getXmlKey());
-		
-		System.out.println("CmdEventCreateMediator.setParameterHandler() TYPE= [" + sMediatorType + "]");
-		
+				
 		if ( sMediatorType.length() > 0 ) 
 		{
 			mediatorType = MediatorType.valueOf( sMediatorType );

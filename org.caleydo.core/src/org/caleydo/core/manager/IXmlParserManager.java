@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.core.manager;
 
 import org.xml.sax.Attributes;
@@ -12,9 +9,10 @@ import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 
 
 /**
- * Forwarded/proxy fro several XMLHandlers.
+ * Forwarded/proxy for several XMLHandlers.
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  * 
  * @see org.xml.sax.ContentHandler;
  * @see org.xml.sax.EntityResolver;
@@ -24,14 +22,8 @@ extends IXmlBaseHandler
 {
 
 	/**
-	 * Returns the reference to the prometheus.app.SingeltonManager.
+	 * Returns the reference to the generalManager.
 	 * 
-	 * Note: Do not forget to set the reference to the SingeltonManager inside the constructor.
-	 *
-	 * @param handler register handler to an opening tag.
-	 * @param bOpeningTagExistsOnlyOnce Defines if tag may be present several times. If TURE closing tag unregistes handler and calls destroyHandler()
-	 *
-	 * @return reference to SingeltonManager
 	 */
 	public IGeneralManager getManager();
 	
@@ -39,7 +31,7 @@ extends IXmlBaseHandler
 	 * Register a SaxHandler by its opening Tag.
 	 * Calls getXmlActivationTag() and hasOpeningTagOnlyOnce() for each handler and
 	 * registers the handler using this data.
-	 * Also calles initHandler() on the new Handler.
+	 * Also calls initHandler() on the new Handler.
 	 * 
 	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler#initHandler()
 	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler#isHandlerDestoryedAfterClosingTag()
@@ -52,18 +44,6 @@ extends IXmlBaseHandler
 	 */
 	public boolean registerAndInitSaxHandler( final IXmlParserHandler handler );		
 	
-	
-//	/**
-//	 * Calls org.caleydo.core.xml.parser.base.IXmlParserHandler#destroyHandler()
-//	 * 
-//	 * @see org.caleydo.core.parser.handler.IXmlParserHandler#destroyHandler()
-//	 * 
-//	 * @param handler handel, that should be unregistered.
-//	 * 
-//	 * @return TRUE if handle was removed.
-//	 */
-//	public boolean unregisterSaxHandler( final IXmlParserHandler handler );	
-	
 	/**
 	 * Unregister a Handler by its String
 	 * 
@@ -75,7 +55,7 @@ extends IXmlBaseHandler
 	
 	
 	/**
-	 * Callback called by org.caleydo.core.parser.handler.IXmlParserHandler if clasing tag is read in endElement()
+	 * Callback called by org.caleydo.core.parser.handler.IXmlParserHandler if closing tag is read in endElement()
 	 * 
 	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler
 	 * @see orl.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
@@ -113,28 +93,6 @@ extends IXmlBaseHandler
 	 */
 	public void destroyHandler();
 	
-
-	
-//	/**
-//	 * Special case of recursive xml file parser/reader.
-//	 * Attention: beware of side effect due to return value of this method, because
-//	 * if TRUE is returened newHandler.startElement( uri,localName,qName,attrib ) and currentHandler.startElement( uri,localName,qName,attrib )
-//	 * has top be called!
-//	 * IF FALSE is returned only currentHandler.startElement( uri,localName,qName,attrib ) has to be called. 
-//	 * This is implemented as a final method inside org.caleydo.core.manager.parser.AXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager)
-//	 * so please derive from org.caleydo.core.manager.parser.AXmlParserManager .
-//	 *  
-//	 * 
-//	 * @param newHandler add new recursive reader
-//	 * @param refIXmlParserManager retefence to SmlParserManager to ensure, that only this class can call this method!
-//	 * @return TRUE indicates that newHandler.startElement( uri,localName,qName,attrib ) and currentHandler.startElement( uri,localName,qName,attrib ) must be called whiel FALSE indicates that only currentHandler.startElement( uri,localName,qName,attrib ) must be called
-//	 * 
-//	 * @see org.caleydo.core.manager.parser.AXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager)
-//	 */
-//	public boolean openCurrentTagForRecursiveReader( 
-//			OpenExternalXmlFileSaxHandler newHandler,
-//			final IXmlParserManager refIXmlParserManager );
-	
 	/**
 	 * Get the current XmlSaxParser handler or null if no handler ist active.
 	 * 
@@ -145,7 +103,7 @@ extends IXmlBaseHandler
 	
 	/**
 	 * Call this method if the current tag was not handled by 
-	 * endElement(Stringt, Stringt, Stringt)
+	 * endElement(String, String, String)
 	 * of org.caleydo.core.parser.handler.IXmlParserHandler
 	 * 
 	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler
@@ -159,7 +117,7 @@ extends IXmlBaseHandler
 	
 	/**
 	 * Call this method, if current tag was not handled by 
-	 * startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
+	 * startElement(String, String, String, org.xml.sax.Attributes)
 	 * of org.caleydo.core.parser.handler.IXmlParserHandler
 	 * 
 	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler

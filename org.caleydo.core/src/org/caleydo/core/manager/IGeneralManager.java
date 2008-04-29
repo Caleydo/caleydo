@@ -127,16 +127,6 @@ public interface IGeneralManager {
 	
 	public static final int iUniqueId_TypeOffset_Command = 99;
 	
-//	
-//	/**
-//	 * Deprecated ID ranges
-//	 */
-//	
-//	public static final int iUniqueId_TypeOffset_GuiComponent = 30;
-//	
-//	public static final int iUniqueId_TypeOffset_GUI_AWT_Menu = 39;
-	
-	
 	/*
 	 * Derived static attributes:
 	 */

@@ -164,7 +164,7 @@ public class CaleydoBootloader
 			
 			refXmlParserManager.parseXmlString( op.getXPath(), op.getNodeString() );
 			
-			System.out.println("CaleydoBootloader PARSE using Muddleware done.");
+			generalManager.logMsg("CaleydoBootloader PARSE using Muddleware done.", LoggerType.FULL);
 			
 		} else {
 			generalManager.logMsg("CaleydoBootloader Muddleware server has no data on canvas settings.",

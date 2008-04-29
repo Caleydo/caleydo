@@ -21,9 +21,8 @@ public enum ManagerObjectType {
 	/*
 	 * STORAGE
 	 */
-	
 	/**
-	 * This class is the fabrik itself befor assinging a type.
+	 * This class is the fabrik itself before assigning a type.
 	 */
 	STORAGE(ManagerType.DATA_STORAGE),
 	
@@ -242,5 +241,4 @@ public enum ManagerObjectType {
 		
 		return strBuffer.toString();
 	}
-	
 }

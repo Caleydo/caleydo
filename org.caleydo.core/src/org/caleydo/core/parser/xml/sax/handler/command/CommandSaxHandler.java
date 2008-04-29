@@ -1,23 +1,19 @@
 package org.caleydo.core.parser.xml.sax.handler.command;
 
-import org.xml.sax.SAXException;
-import org.xml.sax.Attributes;
-//import org.xml.sax.helpers.DefaultHandler;
-
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.command.queue.ICommandQueue;
-import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.parser.parameter.ParameterHandler;
 import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
-//import org.caleydo.core.manager.IMenuManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.caleydo.core.parser.xml.sax.handler.SXmlParserHandler;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 
 /**
@@ -277,12 +273,9 @@ extends AXmlParserHandler
 		int iData_Queue_CmdQueueId;
 		int iData_Queue_ThreadPool_Id = -1;					
 		int iData_Queue_ThreadPool_Wait_Id = -1;
-		
-		
+			
 		try 
-		{
-			
-			
+		{	
 			/* create new Frame */
 			sData_Queue_process = 
 				SXmlParserHandler.assignStringValue( attrs, 

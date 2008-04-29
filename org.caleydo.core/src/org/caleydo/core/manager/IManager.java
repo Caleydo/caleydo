@@ -3,6 +3,14 @@ package org.caleydo.core.manager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 
+/**
+ * Interface for all managers that allow classes to 
+ * access managed objects.
+ * 
+ * @author Michael Kalkusch
+ * @author Marc Streit
+ *
+ */
 public interface IManager {
 			
 	/**
@@ -28,13 +36,6 @@ public interface IManager {
 	 * @return number of items
 	 */
 	public int size();
-
-	/**
-	 * Type of the manager
-	 * 
-	 * @return type of the manager
-	 */
-	public ManagerType getManagerType();
 		
 	/**
 	 * Registers one Id and links it to the reference.
@@ -72,18 +73,16 @@ public interface IManager {
 	 */
 	public int createId( final ManagerObjectType setNewBaseType );
 
-	/**
-	 * Set the current Id, what is incremented once the next time createNewId() is called.
-	 * 
-	 * Attention: this method must be called from a synchronized block on the actual manager!
-	 * 
-	 * @param setNewBaseType test if manager may create such an id
-	 * @param iCurrentId set the new current Id
-	 * @return true if the new current Id was valid, which is the case if it is larger than the current NewId!
-	 */
-	public boolean setCreateNewId(ManagerType setNewBaseType, final int iCurrentId );
-	
-	public IGeneralManager getManagerByObjectType(ManagerObjectType managerType);
+//	/**
+//	 * Set the current Id, what is incremented once the next time createNewId() is called.
+//	 * 
+//	 * Attention: this method must be called from a synchronized block on the actual manager!
+//	 * 
+//	 * @param setNewBaseType test if manager may create such an id
+//	 * @param iCurrentId set the new current Id
+//	 * @return true if the new current Id was valid, which is the case if it is larger than the current NewId!
+//	 */
+//	public boolean setCreateNewId(ManagerType setNewBaseType, final int iCurrentId );
 		
 	/**
 	 * Remove all data and stop all threads.

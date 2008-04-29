@@ -39,8 +39,8 @@ implements IManager
 	public int calculateInitialUniqueId( final int iUniqueId_type_offset ) {
 		
 		return iUniqueId_type_offset * 
-			IGeneralManager.iUniqueId_TypeOffsetMultiplyer;// +
-//			this.getNetworkPostfix();
+			IGeneralManager.iUniqueId_TypeOffsetMultiplyer +
+			generalManager.getNetworkPostfix();
 	}
 		
 	/* (non-Javadoc)
@@ -70,16 +70,11 @@ implements IManager
 		
 		return true;
 	}
-
-	public final IGeneralManager getManagerByObjectType(ManagerObjectType managerType) {
-		assert false : "Do not call this method. use singelton only.";
-		return null;
-	}
 	
-	public final ManagerType getManagerType() {
-		return managerType;
-	}
-	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IManager#destroyOnExit()
+	 */
 	public void destroyOnExit() {
 		
 	}
