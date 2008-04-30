@@ -6,7 +6,6 @@ import javax.media.opengl.GLEventListener;
 
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 import org.caleydo.rcp.views.AGLViewPart;
 import org.caleydo.rcp.views.GLHeatmap2DView;
 import org.caleydo.rcp.views.GLJukeboxPathwayView;
@@ -84,13 +83,6 @@ extends WorkbenchAdvisor {
 				{	
 					viewPart = (GLJukeboxPathwayView) PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getActivePage().showView(GLJukeboxPathwayView.ID,
-								Integer.toString(iInstanceNum), IWorkbenchPage.VIEW_ACTIVATE);
-				}
-				else if (tmpGLEventListener.getClass().equals(
-						org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn.class))
-				{
-					viewPart = (GLHeatmap2DView) PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow().getActivePage().showView(GLHeatmap2DView.ID,
 								Integer.toString(iInstanceNum), IWorkbenchPage.VIEW_ACTIVATE);
 				}
 				else if (tmpGLEventListener.getClass().equals(

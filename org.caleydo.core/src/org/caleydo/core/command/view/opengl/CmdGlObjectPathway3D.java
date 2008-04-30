@@ -8,10 +8,8 @@ import org.caleydo.core.command.base.ACmdCreate_GlCanvasUser;
 import org.caleydo.core.data.view.camera.ViewFrustumBase;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
-import org.caleydo.core.util.ConversionStringInteger;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
 

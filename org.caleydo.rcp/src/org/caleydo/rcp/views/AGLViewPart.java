@@ -1,14 +1,13 @@
 package org.caleydo.rcp.views;
 
 import java.awt.Frame;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.media.opengl.GLCanvas;
 
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -23,7 +22,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.part.ViewPart;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 
 /**
  * Shared object for all Caleydo viewPart objects.
