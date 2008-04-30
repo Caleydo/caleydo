@@ -21,7 +21,7 @@ import org.caleydo.core.command.system.CmdSystemLoadFileViaImporter;
 import org.caleydo.core.command.system.path.CmdSetPathwayDatabasePath;
 import org.caleydo.core.command.view.opengl.CmdGlObjectBucket3D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectGlyph;
-import org.caleydo.core.command.view.opengl.CmdGlObjectHeatmap;
+import org.caleydo.core.command.view.opengl.CmdGlObjectHeatMap3D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectHistogram2D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectJukebox3D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectParCoords3D;
@@ -366,10 +366,10 @@ implements ICommandFactory {
 		 *        OPEN GL
 		 * ----------------------
 		 */	
-		case CREATE_GL_HEATMAP:
+		case CREATE_GL_HEAT_MAP_3D:
 		{
 			createdCommand =
-				new CmdGlObjectHeatmap(
+				new CmdGlObjectHeatMap3D(
 						generalManager,
 						commandManager,
 						cmdType);	

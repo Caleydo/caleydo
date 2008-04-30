@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.rcp.dialog.file;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -46,7 +43,7 @@ public class OpenCsvDataFileDialog extends Dialog {
 	protected String cvsPath = "D:/src/java/ICG/cerberus/org.caleydo.data/data/genome/microarray/gpr_format";
 	
 	/**
-	 * @param parentShell
+	 * Constructor.
 	 */
 	public OpenCsvDataFileDialog(Shell parentShell) {
 		super(parentShell);

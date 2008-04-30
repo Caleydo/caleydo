@@ -41,7 +41,7 @@ implements ICaleydoDefaultType <CommandQueueSaxType> {
 	CREATE_EVENT_MEDIATOR(ManagerType.EVENT_PUBLISHER,"cmd", "type", null, "Create Event Mediator"),
 	EVENT_MEDIATOR_ADD_OBJECT("cmd", "type", null, "Add Objects ad sender or receiver to Event Mediator"),
 	
-	CREATE_GL_HEATMAP(ManagerType.VIEW,"cmd","type","-1", "Create Heat Map"),
+	CREATE_GL_HEAT_MAP_3D(ManagerType.VIEW,"cmd","type","-1", "Create Heat Map"),
 	CREATE_GL_HISTOGRAM2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_GLYPH(ManagerType.VIEW,"cmd","type","-1", "Create Glyph"),	
 	CREATE_GL_JUKEBOX_PATHWAY_3D(ManagerType.VIEW,"cmd","type","-1", "Create Jukebox Pathway 3D"),		

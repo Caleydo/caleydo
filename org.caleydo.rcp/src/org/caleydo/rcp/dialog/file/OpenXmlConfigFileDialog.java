@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.rcp.dialog.file;
 
 import java.util.logging.Level;
