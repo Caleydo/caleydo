@@ -8,19 +8,17 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.event.mediator.IMediator;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
-import org.caleydo.core.manager.event.mediator.LockableMediator;
 import org.caleydo.core.manager.event.mediator.LockableExclusivFilterMediator;
 import org.caleydo.core.manager.event.mediator.LockableIngoreFilterMediator;
+import org.caleydo.core.manager.event.mediator.LockableMediator;
 import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
-
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Implements event mediator pattern.

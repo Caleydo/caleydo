@@ -1,40 +1,30 @@
-/**
- * 
- */
 package org.caleydo.core.view.swt.data.exchanger;
 
 import java.util.ArrayList;
 import java.util.Collection;
-//import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Vector;
-
-//import org.eclipse.core.internal.resources.Container;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.FocusAdapter;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Combo;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Color;
-//import org.eclipse.swt.graphics.ImageData;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.IVirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
-//import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.AViewRep;
 import org.caleydo.core.view.IView;
-//import org.caleydo.core.view.opengl.IGLCanvasUser;
 import org.caleydo.core.view.ViewType;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 
 /**
  * Data Exchanger View makes it possible

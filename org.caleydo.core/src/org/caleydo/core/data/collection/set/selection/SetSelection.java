@@ -1,21 +1,11 @@
-/**
- * 
- */
 package org.caleydo.core.data.collection.set.selection;
 
 import java.util.ArrayList;
-import java.util.Vector;
 
-import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.IVirtualArray;
 import org.caleydo.core.data.collection.SetType;
 import org.caleydo.core.data.collection.set.SetPlanarSimple;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-
-import com.sun.org.apache.bcel.internal.generic.IALOAD;
 
 /**
  * Selection SET that gives access to

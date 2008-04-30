@@ -1,8 +1,8 @@
 package org.caleydo.core.view.opengl.canvas.isosurface;
 
-import java.util.ArrayList;
-
 import gleem.linalg.Vec3f;
+
+import java.util.ArrayList;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -11,7 +11,6 @@ import javax.media.opengl.GLEventListener;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.view.EPickingMode;
 import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.Pick;

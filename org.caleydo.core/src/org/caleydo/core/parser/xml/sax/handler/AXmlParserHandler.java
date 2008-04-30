@@ -2,7 +2,6 @@ package org.caleydo.core.parser.xml.sax.handler;
 
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.xml.sax.helpers.DefaultHandler;

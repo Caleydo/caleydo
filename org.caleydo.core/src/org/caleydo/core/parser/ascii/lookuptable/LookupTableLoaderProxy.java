@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.core.parser.ascii.lookuptable;
 
 import java.io.BufferedReader;
@@ -8,22 +5,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Set;
-//import java.util.HashMap;
-//import java.util.ListIterator;
-//import java.util.NoSuchElementException;
-//import java.util.StringTokenizer;
 
-//import org.caleydo.core.base.map.MultiHashArrayMap;
-//import org.caleydo.core.base.map.MultiHashArrayStringMap;
-//import org.caleydo.core.data.collection.parser.ParserTokenHandler;
 import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
 import org.caleydo.core.data.map.MultiHashArrayStringMap;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.data.mapping.EGenomeMappingDataType;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
-//import org.caleydo.core.manager.data.genome.AGenomeIdMap;
 import org.caleydo.core.manager.data.genome.DynamicGenomeIdManager;
 import org.caleydo.core.manager.data.genome.IGenomeIdMap;
 import org.caleydo.core.parser.ascii.AbstractLoader;

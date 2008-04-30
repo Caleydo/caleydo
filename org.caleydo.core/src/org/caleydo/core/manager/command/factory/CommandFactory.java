@@ -21,9 +21,7 @@ import org.caleydo.core.command.system.CmdSystemLoadFileViaImporter;
 import org.caleydo.core.command.system.path.CmdSetPathwayDatabasePath;
 import org.caleydo.core.command.view.opengl.CmdGlObjectBucket3D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectGlyph;
-import org.caleydo.core.command.view.opengl.CmdGlObjectHeatMap3D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectHeatmap;
-import org.caleydo.core.command.view.opengl.CmdGlObjectHeatmap2D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectHistogram2D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectJukebox3D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectParCoords3D;
@@ -386,26 +384,6 @@ implements ICommandFactory {
 						cmdType);		
 			break;
 		}
-		case CREATE_GL_HEATMAP2D:
-		{
-			createdCommand =
-				new CmdGlObjectHeatmap2D(
-						generalManager,
-						commandManager,
-						cmdType,
-						true);			
-			break;
-		}
-		case CREATE_GL_HEATMAP2DCOLUMN:
-		{
-			createdCommand =
-				new CmdGlObjectHeatmap2D(
-						generalManager,
-						commandManager,
-						cmdType,
-						false);			
-			break;
-		}
 		case CREATE_GL_JUKEBOX_PATHWAY_3D:
 		{
  			createdCommand =
@@ -437,15 +415,6 @@ implements ICommandFactory {
 		{
  			createdCommand =
 				new CmdGlObjectParCoords3D(
-						generalManager,
-						commandManager,
-						cmdType);	
-			break;
-		}
-		case CREATE_GL_HEAT_MAP_3D:
-		{
- 			createdCommand =
-				new CmdGlObjectHeatMap3D(
 						generalManager,
 						commandManager,
 						cmdType);	

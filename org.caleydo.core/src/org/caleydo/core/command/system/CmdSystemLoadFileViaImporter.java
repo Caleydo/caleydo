@@ -5,7 +5,6 @@ import org.caleydo.core.command.base.ACommand;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;

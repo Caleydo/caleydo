@@ -1,13 +1,9 @@
 package org.caleydo.core.parser.xml.sax.handler.pathway;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import org.caleydo.core.data.graph.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.data.IGenomeIdManager;
 import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;

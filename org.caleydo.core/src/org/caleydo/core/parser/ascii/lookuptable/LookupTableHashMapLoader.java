@@ -1,20 +1,13 @@
-/**
- * 
- */
 package org.caleydo.core.parser.ascii.lookuptable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-//import java.util.HashMap;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.data.genome.IGenomeIdMap;
-import org.caleydo.core.parser.ascii.lookuptable.ALookupTableLoader;
-import org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader;
 
 
 /**

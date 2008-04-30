@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 
 import org.caleydo.core.data.xml.IMementoXML;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.gui.SWTGUIManager;
 
 

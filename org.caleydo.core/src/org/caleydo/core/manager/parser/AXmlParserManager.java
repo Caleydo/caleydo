@@ -1,21 +1,15 @@
-/**
- * 
- */
 package org.caleydo.core.manager.parser;
 
 import java.util.Hashtable;
-//import java.util.Iterator;
 import java.util.LinkedList;
-
-//import org.xml.sax.Attributes;
-import org.xml.sax.helpers.DefaultHandler;
 
 import org.caleydo.core.data.IManagedObject;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.xml.sax.helpers.DefaultHandler;
+
 /**
  * @author Michael Kalkusch
  *

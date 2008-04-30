@@ -3,19 +3,16 @@ package org.caleydo.core.view;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.eclipse.swt.SWTException;
-import org.eclipse.swt.widgets.Composite;
-
 import org.caleydo.core.data.AUniqueManagedObject;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.SetType;
 import org.caleydo.core.data.collection.set.selection.SetSelection;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.swt.widget.SWTNativeWidget;
+import org.eclipse.swt.SWTException;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * Abstract class that is the base of all view representations.

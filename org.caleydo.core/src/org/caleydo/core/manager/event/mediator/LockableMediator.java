@@ -6,8 +6,6 @@ import java.util.Iterator;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
-import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
 
 /**
  * Attention: Since Mediator is also a IMediatorReceiver care 

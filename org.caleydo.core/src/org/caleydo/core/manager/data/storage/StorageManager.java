@@ -7,7 +7,6 @@ import java.util.LinkedList;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.FlatThreadStorageSimple;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.data.ACollectionManager;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.type.ManagerObjectType;

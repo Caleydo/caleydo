@@ -5,6 +5,17 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.Vector;
 
+import org.caleydo.core.manager.AManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ISWTGUIManager;
+import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.view.swt.ISWTWidget;
+import org.caleydo.core.view.swt.widget.ASWTWidget;
+import org.caleydo.core.view.swt.widget.SWTEmbeddedGraphWidget;
+import org.caleydo.core.view.swt.widget.SWTEmbeddedJoglWidget;
+import org.caleydo.core.view.swt.widget.SWTNativeWidget;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -15,18 +26,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
-import org.caleydo.core.manager.AManager;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ISWTGUIManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
-import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.manager.type.ManagerType;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.view.swt.ISWTWidget;
-import org.caleydo.core.view.swt.widget.ASWTWidget;
-import org.caleydo.core.view.swt.widget.SWTEmbeddedGraphWidget;
-import org.caleydo.core.view.swt.widget.SWTEmbeddedJoglWidget;
-import org.caleydo.core.view.swt.widget.SWTNativeWidget;
 
 /**
  * The SWTGUIManager is responsible for the creation 

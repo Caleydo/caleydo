@@ -9,7 +9,6 @@ import org.caleydo.core.data.collection.IVirtualArray;
 import org.caleydo.core.data.collection.SetType;
 import org.caleydo.core.data.collection.set.selection.ISetSelection;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.view.AViewRep;
 import org.caleydo.core.view.IView;
@@ -56,6 +55,9 @@ implements IView, IMediatorReceiver {
 
 	// private ISelectionChangedListener refISelectionChangedListener;
 
+	/**
+	 * Constructor.
+	 */
 	public DataExplorerViewRep(IGeneralManager refGeneralManager,
 			int iViewId,
 			int iParentContainerId,

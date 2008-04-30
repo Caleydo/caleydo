@@ -8,9 +8,7 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.graph.core.PathwayGraph;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
-import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 
 import com.sun.opengl.util.texture.Texture;
@@ -19,6 +17,8 @@ import com.sun.opengl.util.texture.TextureIO;
 
 
 /**
+ * OpenGL pathway texture manager
+ * 
  * @author Marc Streit
  *
  */

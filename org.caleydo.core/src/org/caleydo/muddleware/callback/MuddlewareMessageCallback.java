@@ -1,14 +1,11 @@
 package org.caleydo.muddleware.callback;
 
+import org.caleydo.core.manager.IXmlParserManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.studierstube.net.protocol.muddleware.IOperation;
 import org.studierstube.net.thread.INetworkHanlderClientManager;
 import org.studierstube.net.thread.IOperationCallback;
-
 import org.xml.sax.InputSource;
-
-import org.caleydo.core.manager.IXmlParserManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Callback triggered by incoming message from Muddleware server.

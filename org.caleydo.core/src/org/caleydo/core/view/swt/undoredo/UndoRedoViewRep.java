@@ -3,18 +3,16 @@ package org.caleydo.core.view.swt.undoredo;
 import java.util.Iterator;
 import java.util.Vector;
 
+import org.caleydo.core.command.ICommand;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.IView;
+import org.caleydo.core.view.ViewType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-
-import org.caleydo.core.command.ICommand;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
-import org.caleydo.core.view.AViewRep;
-import org.caleydo.core.view.IView;
-import org.caleydo.core.view.ViewType;
 
 /**
  * UNDO/REDO view.

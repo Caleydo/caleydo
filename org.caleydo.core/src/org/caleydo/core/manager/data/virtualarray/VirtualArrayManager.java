@@ -7,7 +7,6 @@ import org.caleydo.core.data.collection.IVirtualArray;
 import org.caleydo.core.data.collection.virtualarray.VirtualArrayMultiBlock;
 import org.caleydo.core.data.collection.virtualarray.VirtualArraySingleBlock;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.data.ACollectionManager;
 import org.caleydo.core.manager.data.IVirtualArrayManager;
 import org.caleydo.core.manager.type.ManagerObjectType;

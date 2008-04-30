@@ -2,15 +2,14 @@ package org.caleydo.core.view.swt.jogl;
 
 import javax.media.opengl.GLCanvas;
 
-import org.eclipse.swt.widgets.Composite;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.view.AViewRep;
 import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.swt.widget.SWTEmbeddedJoglWidget;
+import org.eclipse.swt.widgets.Composite;
 
 
 /**

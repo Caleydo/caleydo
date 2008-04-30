@@ -24,8 +24,6 @@ import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyph;
-import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
-import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn;
 import org.caleydo.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
@@ -354,25 +352,7 @@ implements IViewGLCanvasManager {
 		try
 		{
 			switch (useViewType)
-			{
-//			case CREATE_GL_TRIANGLE_TEST:
-//				return new GLCanvasTestTriangle(refGeneralManager, iUniqueId, sLabel);
-//	
-//			case CREATE_GL_HEATMAP:
-//				return new GLCanvasHeatmap(refGeneralManager, iUniqueId, sLabel);
-//	
-			case CREATE_GL_HEATMAP2D:
-				return new GLCanvasHeatmap2DColumn(generalManager, 
-						iUniqueId, iGLCanvasID, sLabel, viewFrustum);
-				/*
-				return new GLCanvasHeatmap2D(refGeneralManager, iUniqueId,
-						iGlForwarderId, sLabel);
-				*/
-//				
-//			case CREATE_GL_HEATMAP2DCOLUMN:
-//				return new GLCanvasHeatmap2DColumn(refGeneralManager, iUniqueId,
-//						iGlForwarderId, sLabel);
-//				
+			{	
 //			case CREATE_GL_SCATTERPLOT2D:
 //				return new GLCanvasScatterPlot2D(refGeneralManager, iUniqueId,
 //						iGlForwarderId, sLabel);
@@ -408,20 +388,7 @@ implements IViewGLCanvasManager {
 //						iUniqueId, 
 //						iGlForwarderId, 
 //						sLabel);
-//				
-//			case CREATE_GL_LAYERED_PATHWAY_3D:
-//				return new GLCanvasLayeredPathway3D(
-//						refGeneralManager, 
-//						iUniqueId,
-//						iGlForwarderId, 
-//						sLabel);
-//				
-//			case CREATE_GL_PANEL_PATHWAY_3D:
-//				return new GLCanvasPanelPathway3D(
-//						refGeneralManager, 
-//						iUniqueId,
-//						iGlForwarderId, 
-//						sLabel);	
+
 //	
 			case CREATE_GL_JUKEBOX_PATHWAY_3D:
 				return new GLCanvasJukeboxPathway3D(
@@ -454,14 +421,6 @@ implements IViewGLCanvasManager {
 						iGLCanvasID, 
 						sLabel,
 						viewFrustum);				
-				
-			case CREATE_GL_HEAT_MAP_3D:
-				return new GLCanvasHeatMap(
-						generalManager, 
-						iUniqueId,
-						iGLCanvasID, 
-						sLabel,
-						viewFrustum);
 				
 			case CREATE_GL_BUCKET_3D:
 				return new GLCanvasRemoteRendering3D(

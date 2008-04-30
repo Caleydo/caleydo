@@ -1,25 +1,19 @@
 package org.caleydo.core.command.data;
 
-import java.util.LinkedList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.StringTokenizer;
-
-
-import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.StorageType;
 
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabel;
-//import org.caleydo.core.command.window.CmdWindowPopupInfo;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.StorageType;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.data.IStorageManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-
-
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Command, creates a new storage.

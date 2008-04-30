@@ -11,7 +11,6 @@ import org.caleydo.core.data.collection.set.SetPlanarSimple;
 import org.caleydo.core.data.collection.set.selection.SetSelection;
 import org.caleydo.core.data.collection.set.viewdata.SetViewData;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.data.ACollectionManager;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.type.ManagerObjectType;

@@ -5,7 +5,6 @@ import org.caleydo.core.command.ICommand;
 import org.caleydo.core.command.queue.ICommandQueue;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.parser.parameter.ParameterHandler;
 import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
@@ -17,7 +16,7 @@ import org.xml.sax.SAXException;
 
 
 /**
- * Create Menus in Frames from XML file.
+ * Create commands
  * 
  * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler
  * 
