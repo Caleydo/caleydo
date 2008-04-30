@@ -10,7 +10,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.view.jogl.JoglCanvasForwarder;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 
 /**
  * Class implements the command for creating a RCP-Jogl canvas.
@@ -46,7 +46,7 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
         GLCapabilities glCapabilities = new GLCapabilities();
         glCapabilities.setStencilBits(1);
 		
-		GLCanvas gLCanvas = new JoglCanvasForwarder(generalManager, iGLCanvasID, glCapabilities);
+		GLCanvas gLCanvas = new GLCaleydoCanvas(generalManager, iGLCanvasID, glCapabilities);
 		
 		assert gLCanvas != null : "GLCanvas was not be created";
 		

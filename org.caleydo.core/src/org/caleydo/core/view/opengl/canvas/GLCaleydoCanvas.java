@@ -1,4 +1,6 @@
-package org.caleydo.core.view.jogl;
+package org.caleydo.core.view.opengl.canvas;
+
+import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -7,20 +9,22 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
-import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.FPSCounter;
 
 /**
- *
+ * Class implements a GL canvas.
+ * The canvas is registered in the ViewGLCanvasManager and
+ * automatically rendered in the animator loop.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
  */
-public class JoglCanvasForwarder 
+public class GLCaleydoCanvas 
 extends GLCanvas 
 implements GLEventListener {
+
+	private static final long serialVersionUID = 1L;
 
 	private IGeneralManager generalManager;
 	
@@ -30,7 +34,7 @@ implements GLEventListener {
 	
 	private PickingJoglMouseListener joglMouseListener;
 	
-	public JoglCanvasForwarder(final IGeneralManager generalManager,
+	public GLCaleydoCanvas(final IGeneralManager generalManager,
 			final int iGLCanvasID,
 			final GLCapabilities glCapabilities) {
 		
@@ -50,10 +54,9 @@ implements GLEventListener {
 	
 	public void init(GLAutoDrawable drawable) {
 
-		generalManager.logMsg(
-				"JoglCanvasForwarder [" + iGLCanvasID + "] init() ... " + 
-				"\n Chosen GLCapabilities: " + drawable.getChosenGLCapabilities(),
-				LoggerType.STATUS);
+		generalManager.getLogger().log(Level.INFO, 
+			"Creating canvas with ID " +iGLCanvasID +"." +
+			"\nOpenGL capabilities:" +drawable.getChosenGLCapabilities());		
 		
 		GL gl = drawable.getGL();
 		
@@ -123,13 +126,6 @@ implements GLEventListener {
 			final boolean modeChanged,
 			final boolean deviceChanged) {
 
-	}
-	
-	/*
-	 * 
-	 */
-	public final ManagerObjectType getBaseType() {
-		return ManagerObjectType.VIEW_CANVAS_FORWARDER;
 	}
 	
 	public final PickingJoglMouseListener getJoglMouseListener() {

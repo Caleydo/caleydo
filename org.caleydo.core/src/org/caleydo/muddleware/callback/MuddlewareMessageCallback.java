@@ -41,11 +41,11 @@ public class MuddlewareMessageCallback implements IOperationCallback {
 
 		try
 		{
-			this.refXmlParserManager.getManager().logMsg("MuddlewareMessageCallback.callbackOperationOnReceive() receiver Xpath=[" + 
-					received.getXPath() + 
-					" ==> ["  +
-					received.getNodeString() + "]",
-					LoggerType.VERBOSE );
+//			this.refXmlParserManager.getManager().logMsg("MuddlewareMessageCallback.callbackOperationOnReceive() receiver Xpath=[" + 
+//					received.getXPath() + 
+//					" ==> ["  +
+//					received.getNodeString() + "]",
+//					LoggerType.VERBOSE );
 			
 			InputSource inSource = new InputSource( received.getNodeString() );
 			refXmlParserManager.parseXmlFileByInputStream(inSource, received.getNodeString() );

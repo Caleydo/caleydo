@@ -144,7 +144,7 @@ extends ACmdCreate_GlCanvasUser {
 				
 				if ( bufferOne.length() > 0 ) {
 					selectionArrayX = StringConversionTool.convertStringToIntArrayVariableLength(
-							generalManager.getLoggerManager(), 
+							generalManager, 
 							bufferOne, 
 							IGeneralManager.sDelimiter_Parser_DataItems);
 				}  //if ( bufferOne.length() > 0 ) {
@@ -155,7 +155,7 @@ extends ACmdCreate_GlCanvasUser {
 				
 				if  (splitter.hasMoreTokens()) {
 					selectionArrayY = StringConversionTool.convertStringToIntArrayVariableLength(
-							generalManager.getLoggerManager(), 
+							generalManager, 
 							splitter.nextToken(), 
 							IGeneralManager.sDelimiter_Parser_DataItems);
 				} //if  (splitter.hasMoreTokens()) {
@@ -169,7 +169,7 @@ extends ACmdCreate_GlCanvasUser {
 			{
 				
 				selectionArrayX = StringConversionTool.convertStringToIntArrayVariableLength(
-						generalManager.getLoggerManager(), 
+						generalManager, 
 						this.sAttribute4, 
 						IGeneralManager.sDelimiter_Parser_DataItems);
 				

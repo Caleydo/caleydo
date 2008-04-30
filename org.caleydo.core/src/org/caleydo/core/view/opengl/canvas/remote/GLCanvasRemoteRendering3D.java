@@ -45,7 +45,6 @@ import org.caleydo.core.util.slerp.SlerpMod;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
-import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
@@ -54,6 +53,7 @@ import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListener;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.GLConnectionLineRendererBucket;
 import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLConnectionLineRendererJukebox;
+import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLIconTextureManager;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
@@ -546,10 +546,10 @@ implements IMediatorReceiver, IMediatorSender
 									pickingTriggerMouseAdapter);
 				} else
 				{
-					generalManager.logMsg(
-							this.getClass().getSimpleName()
-									+ ": renderViewByID(): BUCKET IS FULL!!",
-							LoggerType.VERBOSE);
+//					generalManager.logMsg(
+//							this.getClass().getSimpleName()
+//									+ ": renderViewByID(): BUCKET IS FULL!!",
+//							LoggerType.VERBOSE);
 
 					iAlUninitializedPathwayIDs.remove(0);
 					return;
@@ -1113,11 +1113,11 @@ implements IMediatorReceiver, IMediatorSender
 
 	private void loadViewToUnderInteractionLayer(final int iViewID) {
 
-		generalManager.logMsg(
-						this.getClass().getSimpleName()
-								+ ": loadPathwayToUnderInteractionPosition(): View with ID "
-								+ iViewID + " is under interaction.",
-						LoggerType.VERBOSE);
+//		generalManager.logMsg(
+//						this.getClass().getSimpleName()
+//								+ ": loadPathwayToUnderInteractionPosition(): View with ID "
+//								+ iViewID + " is under interaction.",
+//						LoggerType.VERBOSE);
 
 		// // Check if pathway is already under interaction
 		// if (underInteractionLayer.containsElement(iViewID))
@@ -1259,11 +1259,11 @@ implements IMediatorReceiver, IMediatorSender
 	@Override
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) 
 	{
-		generalManager.logMsg(
-				this.getClass().getSimpleName()
-						+ " ("+iUniqueId+"): updateReceiver(Object eventTrigger, ISet updatedSet): Update called by "
-						+ eventTrigger.getClass().getSimpleName()+" ("+((AUniqueManagedObject)eventTrigger).getId()+")",
-				LoggerType.VERBOSE);
+//		generalManager.logMsg(
+//				this.getClass().getSimpleName()
+//						+ " ("+iUniqueId+"): updateReceiver(Object eventTrigger, ISet updatedSet): Update called by "
+//						+ eventTrigger.getClass().getSimpleName()+" ("+((AUniqueManagedObject)eventTrigger).getId()+")",
+//				LoggerType.VERBOSE);
 		
 		ISetSelection refSetSelection = (ISetSelection) updatedSet;
 
@@ -1356,10 +1356,10 @@ implements IMediatorReceiver, IMediatorSender
 
 			if (pathwayGraphItem == null)
 			{
-				generalManager.logMsg(
-						this.getClass().getSimpleName() + " (" + iUniqueId
-								+ "): pathway graph item is null.  ",
-						LoggerType.VERBOSE);
+//				generalManager.logMsg(
+//						this.getClass().getSimpleName() + " (" + iUniqueId
+//								+ "): pathway graph item is null.  ",
+//						LoggerType.VERBOSE);
 				continue;
 			}
 

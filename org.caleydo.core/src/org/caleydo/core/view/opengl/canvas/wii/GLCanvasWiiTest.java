@@ -17,8 +17,8 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.view.EPickingMode;
 import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.Pick;
-import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 
 import wiiremotej.IRLight;

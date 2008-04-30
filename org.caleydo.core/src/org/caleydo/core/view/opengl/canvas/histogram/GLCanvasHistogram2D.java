@@ -21,8 +21,8 @@ import org.caleydo.core.manager.view.Pick;
 import org.caleydo.core.math.statistics.histogram.HistogramData;
 import org.caleydo.core.math.statistics.histogram.HistogramStatisticsSet;
 import org.caleydo.core.math.statistics.histogram.StatisticHistogramType;
-import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 
 import com.sun.opengl.util.GLUT;
@@ -207,16 +207,16 @@ extends AGLCanvasUser {
 					).getItemSet( iTargetCollectionSetId );
 		
 		if ( targetSet == null ) {
-			generalManager.logMsg(
-					"GLCanvasScatterPlot2D.setTargetSetId(" +
-					iTargetCollectionSetId + ") failed, because Set is not registed!",
-					LoggerType.ERROR );
+//			generalManager.logMsg(
+//					"GLCanvasScatterPlot2D.setTargetSetId(" +
+//					iTargetCollectionSetId + ") failed, because Set is not registed!",
+//					LoggerType.ERROR );
 		}
 		
-		generalManager.logMsg(
-				"GLCanvasScatterPlot2D.setTargetSetId(" +
-				iTargetCollectionSetId + ") done!",
-				LoggerType.STATUS );
+//		generalManager.logMsg(
+//				"GLCanvasScatterPlot2D.setTargetSetId(" +
+//				iTargetCollectionSetId + ") done!",
+//				LoggerType.STATUS );
 		
 		if ( iCurrentHistogramLength > 0 ) 
 		{
@@ -226,8 +226,8 @@ extends AGLCanvasUser {
 	
 	public void destroyGLCanvas()
 	{
-		generalManager.logMsg( "GLCanvasHistogram2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId,
-				LoggerType.STATUS );
+//		generalManager.logMsg( "GLCanvasHistogram2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId,
+//				LoggerType.STATUS );
 	}
 	
 
@@ -236,25 +236,25 @@ extends AGLCanvasUser {
 	  
 	  if ( targetSet == null ) 
 	  {
-		  generalManager.logMsg(
-				  "createHistogram() can not create Histogram, because targetSet=null",
-				  LoggerType.STATUS );
+//		  generalManager.logMsg(
+//				  "createHistogram() can not create Histogram, because targetSet=null",
+//				  LoggerType.STATUS );
 		  return;
 	  }
 	  
 	  if ( iHistogramLevels < 1) {
-		  generalManager.logMsg(
-				  "createHistogram() can not create Histogram, because histogramLevels are outside range [1..max]",
-				  LoggerType.FULL );
+//		  generalManager.logMsg(
+//				  "createHistogram() can not create Histogram, because histogramLevels are outside range [1..max]",
+//				  LoggerType.FULL );
 		  return;
 	  }
 	  
 	  IStorage refBufferStorage = targetSet.getStorageByDimAndIndex(0,0);
 	  IVirtualArray refBufferSelection = targetSet.getVirtualArrayByDimAndIndex(0,0);
   		  
-	  generalManager.logMsg(
-			  "createHistogram() use IVirtualArray(" + refBufferSelection.getLabel() + ":" + refBufferSelection.toString() + ")",
-			  LoggerType.FULL );
+//	  generalManager.logMsg(
+//			  "createHistogram() use IVirtualArray(" + refBufferSelection.getLabel() + ":" + refBufferSelection.toString() + ")",
+//			  LoggerType.FULL );
 	  
 	   
 	  if ( refBufferStorage == null ) {
@@ -273,9 +273,9 @@ extends AGLCanvasUser {
 	  HistogramData refResultBuffer = 
 		  histogramCreatorSet.getUpdatedHistogramData();
 	 
-	  generalManager.logMsg( 
-			  "HISTOGRAM:\n  " + refResultBuffer.toString(),
-			  LoggerType.FULL );
+//	  generalManager.logMsg( 
+//			  "HISTOGRAM:\n  " + refResultBuffer.toString(),
+//			  LoggerType.FULL );
 	  
 	  listHistogramData.clear();
 	  

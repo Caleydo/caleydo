@@ -229,9 +229,9 @@ implements IViewRep {
 			
 			if ( refCurrentSet == null ) 
 			{
-				generalManager.logMsg(
-						"addSetId(" + iSet[i] + ") is not registered at SetManager!",
-						LoggerType.MINOR_ERROR);
+//				generalManager.logMsg(
+//						"addSetId(" + iSet[i] + ") is not registered at SetManager!",
+//						LoggerType.MINOR_ERROR);
 				
 				continue;
 			}
@@ -248,17 +248,17 @@ implements IViewRep {
 					break;
 					
 				default:
-					generalManager.logMsg(
-							"addSetId() unsupported SetType!",
-							LoggerType.ERROR);
+//					generalManager.logMsg(
+//							"addSetId() unsupported SetType!",
+//							LoggerType.ERROR);
 				} // switch (refCurrentSet.getSetType()) {
 					
 			} //if ( ! hasSetId_ByReference(refCurrentSet) )
 			else 
 			{ 
-				generalManager.logMsg(
-						"addSetId(" + iSet[i] + ") ISet is already registered!",
-						LoggerType.MINOR_ERROR);
+//				generalManager.logMsg(
+//						"addSetId(" + iSet[i] + ") ISet is already registered!",
+//						LoggerType.MINOR_ERROR);
 			} //if ( ! hasSetId_ByReference(refCurrentSet) ) {...} else {...}
 			
 		} //for ( int i=0; i < iSet.length; i++)
@@ -279,9 +279,9 @@ implements IViewRep {
 			break;
 			
 		default:
-			generalManager.logMsg(
-					"addSetId() unsupported SetType!",
-					LoggerType.ERROR);
+//			generalManager.logMsg(
+//					"addSetId() unsupported SetType!",
+//					LoggerType.ERROR);
 		} // switch (setType) {
 	}
 	
@@ -298,9 +298,9 @@ implements IViewRep {
 			
 			if ( refCurrentSet == null ) 
 			{
-				generalManager.logMsg(
-						"removeSetId(" + iSet[i] + ") is not registered at SetManager!",
-						LoggerType.MINOR_ERROR);
+//				generalManager.logMsg(
+//						"removeSetId(" + iSet[i] + ") is not registered at SetManager!",
+//						LoggerType.MINOR_ERROR);
 				
 				continue;
 			}
@@ -317,17 +317,17 @@ implements IViewRep {
 					break;
 					
 				default:
-					generalManager.logMsg(
-							"removeSetId() unsupported SetType!",
-							LoggerType.ERROR);
+//					generalManager.logMsg(
+//							"removeSetId() unsupported SetType!",
+//							LoggerType.ERROR);
 				} // switch (refCurrentSet.getSetType()) {
 					
 			} //if ( ! hasSetId_ByReference(refCurrentSet) )
 			else 
 			{ 
-				generalManager.logMsg(
-						"removeSetId(" + iSet[i] + ") ISet was not registered!",
-						LoggerType.MINOR_ERROR);
+//				generalManager.logMsg(
+//						"removeSetId(" + iSet[i] + ") ISet was not registered!",
+//						LoggerType.MINOR_ERROR);
 			} //if ( ! hasSetId_ByReference(refCurrentSet) ) {...} else {...}
 			
 		} //for ( int i=0; i < iSet.length; i++)

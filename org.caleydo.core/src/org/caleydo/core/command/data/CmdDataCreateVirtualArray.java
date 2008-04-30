@@ -77,10 +77,10 @@ extends ACmdCreate_IdTargetLabel {
 				iUniqueId, 
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 
-		generalManager.logMsg( 
-				"DO new SEL: " + 
-				newObject.toString(),
-				LoggerType.VERBOSE );
+//		generalManager.logMsg( 
+//				"DO new SEL: " + 
+//				newObject.toString(),
+//				LoggerType.VERBOSE );
 		
 		refCommandManager.runDoCommand(this);
 	}
@@ -94,10 +94,10 @@ extends ACmdCreate_IdTargetLabel {
 				iUniqueId,
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		
-		generalManager.logMsg( 
-				"UNDO new SEL: " + 
-				iUniqueId,
-				LoggerType.VERBOSE );
+//		generalManager.logMsg( 
+//				"UNDO new SEL: " + 
+//				iUniqueId,
+//				LoggerType.VERBOSE );
 		
 		refCommandManager.runUndoCommand(this);
 	}

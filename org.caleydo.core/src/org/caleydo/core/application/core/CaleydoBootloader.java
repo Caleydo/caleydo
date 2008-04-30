@@ -1,13 +1,11 @@
 package org.caleydo.core.application.core;
 
+import java.util.logging.Level;
+
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager;
-import org.caleydo.core.manager.IManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.IXmlParserManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.parser.XmlParserManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.studierstube.net.protocol.muddleware.ClientByteStreamHandler;
 import org.studierstube.net.protocol.muddleware.IMessage;
@@ -15,7 +13,6 @@ import org.studierstube.net.protocol.muddleware.IOperation;
 import org.studierstube.net.protocol.muddleware.Message;
 import org.studierstube.net.protocol.muddleware.Operation;
 import org.studierstube.net.protocol.muddleware.OperationEnum;
-
 
 /**
  * Basic Caleydo Bootloader, starts application either 
@@ -77,11 +74,10 @@ public class CaleydoBootloader
 		 */
 		generalManager = new GeneralManager();
 
-		generalManager.logMsg("===========================", LoggerType.STATUS);
-		generalManager.logMsg("... Start Caleydo Core ...", LoggerType.STATUS);
-		generalManager.logMsg("===========================", LoggerType.STATUS);
-		generalManager.logMsg(" ", LoggerType.STATUS);
-		
+		generalManager.getLogger().log(Level.CONFIG, "===========================");
+		generalManager.getLogger().log(Level.CONFIG, "... Start Caleydo Core ...");
+		generalManager.getLogger().log(Level.CONFIG, "===========================");
+
 		refSWTGUIManager = generalManager.getSWTGUIManager();
 		refXmlParserManager = generalManager.getXmlParserManager();
 		
@@ -117,8 +113,7 @@ public class CaleydoBootloader
 	 */
 	protected final boolean runUsingMuddleWare( final String sXPath ) {
 		
-		generalManager.logMsg("   bootloader read data from muddleware server.. ",
-				LoggerType.STATUS);
+		generalManager.getLogger().log(Level.CONFIG, "bootloader read data from muddleware server.. ");
 		
 		/**
 		 * initialize connection...
@@ -131,8 +126,8 @@ public class CaleydoBootloader
 		connection.setServerNameAndPort( "localhost", 20000 );
 		
 		if ( connection.connect() ) {
-			generalManager.logMsg("CaleydoBootloader can not connect to Muddleware server.",
-					LoggerType.MINOR_ERROR_XML);
+			generalManager.getLogger().log(Level.WARNING, 
+					"CaleydoBootloader can not connect to Muddleware server.");
 			return false;
 		}
 		
@@ -145,8 +140,8 @@ public class CaleydoBootloader
 		IMessage receiveMsg = connection.sendReceiveMessage( sendMsg );
 		
 		if (( receiveMsg == null )||( receiveMsg.getNumOperations() < 1 )) {
-			generalManager.logMsg("CaleydoBootloader XPath does not exist, Muddleware server has no data on canvas settings.",
-					LoggerType.MINOR_ERROR_XML);
+			generalManager.getLogger().log(Level.WARNING, 
+					"CaleydoBootloader XPath does not exist, Muddleware server has no data on canvas settings.");
 			connection.disconnect();
 			return false;
 		}
@@ -164,11 +159,10 @@ public class CaleydoBootloader
 			
 			refXmlParserManager.parseXmlString( op.getXPath(), op.getNodeString() );
 			
-			generalManager.logMsg("CaleydoBootloader PARSE using Muddleware done.", LoggerType.FULL);
+			generalManager.getLogger().log(Level.CONFIG, "CaleydoBootloader PARSE using Muddleware done.");
 			
 		} else {
-			generalManager.logMsg("CaleydoBootloader Muddleware server has no data on canvas settings.",
-					LoggerType.MINOR_ERROR_XML);
+			generalManager.getLogger().log(Level.CONFIG, "CaleydoBootloader Muddleware server has no data on canvas settings.");
 			connection.disconnect();
 			return false;
 		}
@@ -259,12 +253,11 @@ public class CaleydoBootloader
 		try 
 		{
 			run_parseXmlConfigFile( getXmlFileName() );		
-			generalManager.logMsg("  config loaded, start GUI ... ", LoggerType.STATUS);
+			generalManager.getLogger().log(Level.CONFIG, "  config loaded, start GUI ... ");
 		}
 		catch (CaleydoRuntimeException gre)
 		{
-			generalManager.logMsg(" loading GUI config failed! " +
-					gre.toString() , LoggerType.MINOR_ERROR_XML);
+			generalManager.getLogger().log(Level.CONFIG, " loading GUI config failed! " +gre.toString());
 			bIsRunning = false;
 			return;
 		}
@@ -272,17 +265,15 @@ public class CaleydoBootloader
 		try 
 		{
 			refSWTGUIManager.runApplication(); 			
-			generalManager.logMsg("  config loaded ... [DONE]", LoggerType.STATUS);
+			generalManager.getLogger().log(Level.CONFIG, "  config loaded ... [DONE]");
 		}
 		catch (CaleydoRuntimeException gre)
 		{
-			generalManager.logMsg("run_SWT() failed. " +
-					gre.toString() , LoggerType.MINOR_ERROR_XML);
+			generalManager.getLogger().log(Level.CONFIG, "run_SWT() failed. " +gre.toString());
 			bIsRunning = false;
 		}
 		catch (Exception e) {
-			generalManager.logMsg("run_SWT() caused system error. " +
-					e.toString() , LoggerType.ERROR);
+			generalManager.getLogger().log(Level.SEVERE, "run_SWT() caused system error. " +e.toString());
 			bIsRunning = false;
 		}	
 	}
@@ -311,13 +302,13 @@ public class CaleydoBootloader
 		}
 		catch (CaleydoRuntimeException gre)
 		{
-			generalManager.logMsg("run_parseXmlConfigFile(" + fileName + ") failed. " +
-					gre.toString() , LoggerType.MINOR_ERROR_XML);
+			generalManager.getLogger().log(Level.SEVERE, "run_parseXmlConfigFile(" + fileName + ") failed. " +
+					gre.toString());
 			return false;
 		}
 		catch (Exception e) {
-			generalManager.logMsg("run_parseXmlConfigFile(" + fileName + ") caused system error. " +
-					e.toString() , LoggerType.ERROR);
+			generalManager.getLogger().log(Level.SEVERE, "run_parseXmlConfigFile(" + fileName + ") caused system error. " +
+					e.toString());
 			return false;
 		}			
 	}
@@ -330,7 +321,7 @@ public class CaleydoBootloader
 			/**
 			 * Load configuration from Muddleware server.
 			 */
-			generalManager.logMsg("  load config via Muddleware server ...", LoggerType.STATUS);			
+			generalManager.getLogger().log(Level.CONFIG, "load config via Muddleware server ...");			
 			runUsingMuddleWare( "/caleydo/workspace" );
 		}
 		else
@@ -338,7 +329,7 @@ public class CaleydoBootloader
 			/**
 			 * Load configuration from local XML file.
 			 */
-			generalManager.logMsg("  load config via local XML file ... ", LoggerType.STATUS);			
+			generalManager.getLogger().log(Level.CONFIG, "load config via local XML file ... ");			
 			refXmlParserManager.parseXmlFileByName( getXmlFileName() );		
 		}
 		
@@ -355,13 +346,13 @@ public class CaleydoBootloader
 		{		
 			if ( generalManager!= null ) 
 			{
-				generalManager.logMsg("Caleydo core   clean up...", LoggerType.STATUS);	
+				generalManager.getLogger().log(Level.CONFIG, "Caleydo core clean up...");	
 				
 				//TODO!!!!!!
 //				generalManager.destroyOnExit();
 				
-				generalManager.logMsg("Caleydo core   clean up... [done]\n", LoggerType.STATUS);		
-				generalManager.logMsg("... Stop Caleydo Core ...", LoggerType.STATUS);
+				generalManager.getLogger().log(Level.CONFIG, "Caleydo core   clean up... [done]\n");		
+				generalManager.getLogger().log(Level.CONFIG, "... Stop Caleydo Core ...");
 				
 				bIsRunning = false;
 			}
@@ -370,7 +361,7 @@ public class CaleydoBootloader
 		{
 			if ( generalManager != null ) 
 			{
-				generalManager.logMsg("Caleydo core was not running and can not be stopped!", LoggerType.ERROR);
+				generalManager.getLogger().log(Level.SEVERE, "Caleydo core was not running and can not be stopped!");
 			}
 			else 
 			{

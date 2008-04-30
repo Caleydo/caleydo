@@ -95,9 +95,9 @@ implements IView {
 		refSWTContainer.getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				refUndoRedoCombo.add(refCommand.getInfoText());				
-				generalManager.logMsg(
-						"DEBUG: " + refCommand.getInfoText() + " " + refCommand.toString(),
-						LoggerType.VERBOSE);
+//				generalManager.logMsg(
+//						"DEBUG: " + refCommand.getInfoText() + " " + refCommand.toString(),
+//						LoggerType.VERBOSE);
 			}
 		});
 	}

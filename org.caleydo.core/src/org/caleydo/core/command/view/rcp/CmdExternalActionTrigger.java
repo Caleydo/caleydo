@@ -26,6 +26,13 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	
 	private int iViewId;
 	
+	/**
+	 * Constructor.
+	 * 
+	 * @param refGeneralManager
+	 * @param refCommandManager
+	 * @param refCommandQueueSaxType
+	 */
 	public CmdExternalActionTrigger(
 			final IGeneralManager refGeneralManager,
 			final ICommandManager refCommandManager,
@@ -60,10 +67,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 				{
 					((GLCanvasRemoteRendering3D)viewObject).clearAll();
 				}
-			}
-			else if (viewObject.getClass().equals(GLCanvasRemoteRendering3D.class))
-			{
-				if (externalActionType.equals(EExternalActionType.REMOTE_RENDERING_TOGGLE_LAYOUT_MODE))
+				else if (externalActionType.equals(EExternalActionType.REMOTE_RENDERING_TOGGLE_LAYOUT_MODE))
 				{
 					((GLCanvasRemoteRendering3D)viewObject).toggleLayoutMode();
 				}

@@ -259,12 +259,12 @@ extends AMicroArrayLoader {
 			
 		    } // end: while ((sLine = brFile.readLine()) != null) { 
 		    
-		generalManager.logMsg("  parsed #" + 
-				this.iLineInFile_CurrentDataIndex + "  [" + 			
-				this.iStartParsingAtLine + " -> " +
-				this.iStopParsingAtLine +  "] stoped at line #" +
-				(this.iLineInFile-1),
-				LoggerType.VERBOSE );				
+//		generalManager.logMsg("  parsed #" + 
+//				this.iLineInFile_CurrentDataIndex + "  [" + 			
+//				this.iStartParsingAtLine + " -> " +
+//				this.iStopParsingAtLine +  "] stoped at line #" +
+//				(this.iLineInFile-1),
+//				LoggerType.VERBOSE );				
 		
 		/**
 		 * reset progressbar...

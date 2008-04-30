@@ -73,9 +73,9 @@ extends AMicroArrayLoader {
 		this.refImportDataToSet = refUseSet;
 		
 		if ( refImportDataToSet.getBaseType() != ManagerObjectType.SET_MULTI_DIM ) {
-			generalManager.logMsg(" need a MultiSet; got [" +
-					refImportDataToSet.getBaseType()  + "] !",
-					LoggerType.MINOR_ERROR );
+//			generalManager.logMsg(" need a MultiSet; got [" +
+//					refImportDataToSet.getBaseType()  + "] !",
+//					LoggerType.MINOR_ERROR );
 		}
 		
 		int iSizeStoragesInSet =  refImportDataToSet.getDimensions();
@@ -386,18 +386,18 @@ extends AMicroArrayLoader {
 						
 						if ( bufferIter == null ) 
 						{
-							generalManager.logMsg(
-								"Can not parse element, skip value: " + 
-								nfe.getMessage(),
-								LoggerType.ERROR );
+//							generalManager.logMsg(
+//								"Can not parse element, skip value: " + 
+//								nfe.getMessage(),
+//								LoggerType.ERROR );
 						}
 						else
 						{
-							generalManager.logMsg(
-									"Can not parse element, skip value: Assumed type=[" + 
-									bufferIter.getType() + "] => " + 
-									nfe.getMessage(),
-									LoggerType.ERROR );							
+//							generalManager.logMsg(
+//									"Can not parse element, skip value: Assumed type=[" + 
+//									bufferIter.getType() + "] => " + 
+//									nfe.getMessage(),
+//									LoggerType.ERROR );							
 						}
 					}
 					catch (ArrayIndexOutOfBoundsException aie)
@@ -417,9 +417,9 @@ extends AMicroArrayLoader {
 						
 						info +=  "} " + aie.toString();
 						
-						generalManager.logMsg(
-								info,
-								LoggerType.ERROR );	
+//						generalManager.logMsg(
+//								info,
+//								LoggerType.ERROR );	
 						
 						System.out.println("index out of bounce; skip index [" + 
 								iDataArrayIndexPerLine + 
@@ -446,13 +446,13 @@ extends AMicroArrayLoader {
 		iLineInFile = lineInFile;
 		iLineInFile_CurrentDataIndex = lineInFile_CurrentDataIndex;
 		
-		generalManager.logMsg(
-				"  parsed " + this.iLineInFile_CurrentDataIndex + 
-				" lines, stoped at line " + 
-				(this.iLineInFile - 1) + "  [" +
-				this.iStartParsingAtLine + " -> " +
-				this.iStopParsingAtLine + "]",
-				LoggerType.VERBOSE);
+//		generalManager.logMsg(
+//				"  parsed " + this.iLineInFile_CurrentDataIndex + 
+//				" lines, stoped at line " + 
+//				(this.iLineInFile - 1) + "  [" +
+//				this.iStartParsingAtLine + " -> " +
+//				this.iStopParsingAtLine + "]",
+//				LoggerType.VERBOSE);
 
 		super.progressBarResetTitle();
 		super.progressBarIncrement( 10 );

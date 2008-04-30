@@ -96,10 +96,10 @@ extends AXmlParserHandler {
 		if (sAttributeName.equals("image"))
 			sImageLink = attributes.getValue(0); 
 		
-		generalManager.logMsg( 
-				"Load image map from: " + sImageLink,
-				LoggerType.FULL );
-		
+//		generalManager.logMsg( 
+//				"Load image map from: " + sImageLink,
+//				LoggerType.FULL );
+//		
 		generalManager.getPathwayManager().
 			createPathwayImageMap(sImageLink);
 	}

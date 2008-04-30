@@ -15,9 +15,9 @@ import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.view.EPickingMode;
 import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.Pick;
-import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.parcoords.GLParCoordsToolboxRenderer;
+import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 
 /**
@@ -59,10 +59,10 @@ extends AGLCanvasUser {
 					).getItemSet( iTargetCollectionSetId );
 		
 		if ( targetSet == null ) {
-			generalManager.logMsg(
-					"GLCanvasObjectHeatmap.setTargetSetId(" +
-					iTargetCollectionSetId + ") failed, because Set is not registed!",
-					LoggerType.FULL );
+//			generalManager.logMsg(
+//					"GLCanvasObjectHeatmap.setTargetSetId(" +
+//					iTargetCollectionSetId + ") failed, because Set is not registed!",
+//					LoggerType.FULL );
 		}
 	}
 	

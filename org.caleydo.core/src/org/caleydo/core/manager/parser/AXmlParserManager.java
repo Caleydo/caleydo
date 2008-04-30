@@ -85,20 +85,20 @@ implements IXmlParserManager, IManagedObject
 		
 		IXmlParserHandler buffer = currentHandler;
 		
-		generalManager.logMsg(
-				"AXmlParserManger.closeCurrentTag() key=[" +
-				currentHandler.getXmlActivationTag() + "] " +
-				currentHandler.getClass().getSimpleName(),
-				LoggerType.VERBOSE_EXTRA );
+//		generalManager.logMsg(
+//				"AXmlParserManger.closeCurrentTag() key=[" +
+//				currentHandler.getXmlActivationTag() + "] " +
+//				currentHandler.getClass().getSimpleName(),
+//				LoggerType.VERBOSE_EXTRA );
 		
 		if ( ! llXmlParserStack.isEmpty() ) {
 			
 			//llXmlParserStack.removeLast();
 			
 			if ( ! llXmlParserStack.remove( buffer ) ) {
-				generalManager.logMsg(
-						"AXmlParserManger.closeCurrentTag() can not remove IXmlParserHandler from list, because it is not inside!",
-						LoggerType.MINOR_ERROR);
+//				generalManager.logMsg(
+//						"AXmlParserManger.closeCurrentTag() can not remove IXmlParserHandler from list, because it is not inside!",
+//						LoggerType.MINOR_ERROR);
 				return false;
 			}
 			
@@ -137,12 +137,12 @@ implements IXmlParserManager, IManagedObject
 		} 
 		else
 		{
-			generalManager.logMsg(
-					"AXmlParserManger.closeCurrentTag() key=[" +
-					buffer.getXmlActivationTag() + "] " +
-					buffer.getClass().getSimpleName() + 
-					" do not destroyHandler() since it may be needed later on.",
-					LoggerType.FULL );
+//			generalManager.logMsg(
+//					"AXmlParserManger.closeCurrentTag() key=[" +
+//					buffer.getXmlActivationTag() + "] " +
+//					buffer.getClass().getSimpleName() + 
+//					" do not destroyHandler() since it may be needed later on.",
+//					LoggerType.FULL );
 		}
 		
 		return true;
@@ -236,11 +236,11 @@ implements IXmlParserManager, IManagedObject
 		
 		hashTag2XmlParser.put( key, handler );
 		
-		generalManager.logMsg(
-				"XmlParserManager.registerAndInitSaxHandler( key=["
-				+ handler.getXmlActivationTag() + "] " +
-				handler.getClass().getSimpleName() + " ) done.",
-				LoggerType.TRANSITION );
+//		generalManager.logMsg(
+//				"XmlParserManager.registerAndInitSaxHandler( key=["
+//				+ handler.getXmlActivationTag() + "] " +
+//				handler.getClass().getSimpleName() + " ) done.",
+//				LoggerType.TRANSITION );
 		
 		handler.initHandler();
 		
@@ -270,20 +270,20 @@ implements IXmlParserManager, IManagedObject
 		
 		if ( refParserHandler != null ) {	
 						
-			generalManager.logMsg(
-					"XmlParserManager.unregisterHandler( key=[" 
-					+ sActivationXmlTag + "] "
-					+ refParserHandler.getClass().getSimpleName()
-					+ " ) done.",
-					LoggerType.TRANSITION );
+//			generalManager.logMsg(
+//					"XmlParserManager.unregisterHandler( key=[" 
+//					+ sActivationXmlTag + "] "
+//					+ refParserHandler.getClass().getSimpleName()
+//					+ " ) done.",
+//					LoggerType.TRANSITION );
 			
 			return true;
 		}
 		
-		generalManager.logMsg(
-				"XmlParserManager.unregisterHandler( "
-				+ sActivationXmlTag + " ) failed to unload!",
-				LoggerType.ERROR );
+//		generalManager.logMsg(
+//				"XmlParserManager.unregisterHandler( "
+//				+ sActivationXmlTag + " ) failed to unload!",
+//				LoggerType.ERROR );
 		
 		return false;
 	}

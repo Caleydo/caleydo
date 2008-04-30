@@ -115,10 +115,10 @@ implements ISetManager {
 		ISet removedObj = hashId2Set.remove( iItemId );
 		
 		if ( removedObj == null ) {
-			generalManager.logMsg( 
-					"deleteSet(" + 
-					iItemId + ") falied, because Set was not registered!",
-					LoggerType.STATUS );
+//			generalManager.logMsg( 
+//					"deleteSet(" + 
+//					iItemId + ") falied, because Set was not registered!",
+//					LoggerType.STATUS );
 			return false;
 		}
 		return true;
@@ -167,10 +167,10 @@ implements ISetManager {
 		ISet buffer = hashId2Set.remove(iItemId);
 		
 		if  ( buffer == null ) {
-			this.generalManager.logMsg(
-					"unregisterItem(" + 
-					iItemId + ") failed because Set was not registered!",
-					LoggerType.STATUS );
+//			this.generalManager.logMsg(
+//					"unregisterItem(" + 
+//					iItemId + ") failed because Set was not registered!",
+//					LoggerType.STATUS );
 			return false;
 		}
 		return true;

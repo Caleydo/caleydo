@@ -97,11 +97,11 @@ extends AXmlParserManager {
 		
 		if ( currentHandler != null ) 
 		{
-			generalManager.logMsg( "XmlParserManager.endDocument()  key=[" +
-					currentHandler.getXmlActivationTag() + "]  call " +
-					currentHandler.getClass().getSimpleName() + 
-					".endDocument() ...",
-					LoggerType.FULL );
+//			generalManager.logMsg( "XmlParserManager.endDocument()  key=[" +
+//					currentHandler.getXmlActivationTag() + "]  call " +
+//					currentHandler.getClass().getSimpleName() + 
+//					".endDocument() ...",
+//					LoggerType.FULL );
 			
 			currentHandler.endDocument();
 		} // if ( currentHandler != null ) 
@@ -125,8 +125,8 @@ extends AXmlParserManager {
 		
 		if ( currentHandler == null ) 
 		{
-			generalManager.logMsg( " < TAG= " + qName,
-					LoggerType.FULL );
+//			generalManager.logMsg( " < TAG= " + qName,
+//					LoggerType.FULL );
 			
 			startElement_search4Tag(uri,
 					localName, 
@@ -209,11 +209,11 @@ extends AXmlParserManager {
 				 * Regular case: register new handler ...
 				 */
 				
-				generalManager.logMsg(
-						"AXmlParserManager.openCurrentTag( key=[" + 
-						handler.getXmlActivationTag() + "] " +
-						handler.getClass().getSimpleName() +	" )",
-						LoggerType.VERBOSE_EXTRA );
+//				generalManager.logMsg(
+//						"AXmlParserManager.openCurrentTag( key=[" + 
+//						handler.getXmlActivationTag() + "] " +
+//						handler.getClass().getSimpleName() +	" )",
+//						LoggerType.VERBOSE_EXTRA );
 				
 				/**
 				 * register new handler ...
@@ -224,9 +224,9 @@ extends AXmlParserManager {
 			} // try
 			catch (SAXException se) 
 			{
-				generalManager.logMsg( "XmlParserManager.startElement_search4Tag() SAX error: " +
-						se.toString(),
-						LoggerType.ERROR );
+//				generalManager.logMsg( "XmlParserManager.startElement_search4Tag() SAX error: " +
+//						se.toString(),
+//						LoggerType.ERROR );
 				
 			} // try .. catch (SAXException se) 		
 			
@@ -240,8 +240,8 @@ extends AXmlParserManager {
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
 		
-		generalManager.logMsg( "        " + qName + " TAG -->",
-				LoggerType.FULL );
+//		generalManager.logMsg( "        " + qName + " TAG -->",
+//				LoggerType.FULL );
 		
 		if ( currentHandler != null ) {
 //			if ( sCurrentClosingTag.equals( qName ) ) {
@@ -313,40 +313,40 @@ extends AXmlParserManager {
 		iCountOpenedFiles++;
 		try 
 		{
-			generalManager.logMsg("XmlParserManager.parseXmlString( " + sMuddlewareXPath + ") parse...",
-					LoggerType.VERBOSE );
+//			generalManager.logMsg("XmlParserManager.parseXmlString( " + sMuddlewareXPath + ") parse...",
+//					LoggerType.VERBOSE );
 			
 			InputSource inStream = new InputSource( xmlString );	
 			
-			generalManager.logMsg("XmlParserManager.parseXmlString( XPath=[" + sMuddlewareXPath + "] , ..) done.",
-					LoggerType.VERBOSE_EXTRA );
+//			generalManager.logMsg("XmlParserManager.parseXmlString( XPath=[" + sMuddlewareXPath + "] , ..) done.",
+//					LoggerType.VERBOSE_EXTRA );
 			
 			boolean status = CaleydoInputStream.parseOnce( inStream ,
 					sMuddlewareXPath,
 					this,
 					generalManager );
 			
-			generalManager.logMsg("XmlParserManager.parseXmlFileByName( XPath=[" + sMuddlewareXPath + "], ..) done.",
-					LoggerType.STATUS );
+//			generalManager.logMsg("XmlParserManager.parseXmlFileByName( XPath=[" + sMuddlewareXPath + "], ..) done.",
+//					LoggerType.STATUS );
 			
 			return 	status;
 		
 		} 
 		catch (CaleydoRuntimeException gve)
 		{
-			generalManager.logMsg("XmlParserManager.parseXmlString( " + sMuddlewareXPath + 
-					"," + xmlString + ") failed; caleydo_error: " +
-					gve.toString(),
-					LoggerType.MINOR_ERROR_XML );
+//			generalManager.logMsg("XmlParserManager.parseXmlString( " + sMuddlewareXPath + 
+//					"," + xmlString + ") failed; caleydo_error: " +
+//					gve.toString(),
+//					LoggerType.MINOR_ERROR_XML );
 			
 			return false;
 		}	
 		catch (RuntimeException e)
 		{
-			generalManager.logMsg("XmlParserManager.parseXmlString( " + sMuddlewareXPath + 
-					"," + xmlString + ") failed; system_error: " +
-					e.toString(),
-					LoggerType.MINOR_ERROR_XML );			
+//			generalManager.logMsg("XmlParserManager.parseXmlString( " + sMuddlewareXPath + 
+//					"," + xmlString + ") failed; system_error: " +
+//					e.toString(),
+//					LoggerType.MINOR_ERROR_XML );			
 			
 			return false;
 		}	
@@ -372,8 +372,8 @@ extends AXmlParserManager {
 				inSource = CaleydoInputStream.openInputStreamFromFile(filename, generalManager);
 			}
 			
-			generalManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") parse...",
-					LoggerType.VERBOSE_EXTRA );
+//			generalManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") parse...",
+//					LoggerType.VERBOSE_EXTRA );
 		
 		
 			boolean status = CaleydoInputStream.parseOnce( inSource ,
@@ -381,25 +381,25 @@ extends AXmlParserManager {
 					this,
 					generalManager );
 			
-			generalManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") done.",
-					LoggerType.STATUS );
+//			generalManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") done.",
+//					LoggerType.STATUS );
 			
 			return 	status;
 			
 		} 
 		catch (CaleydoRuntimeException gve)
 		{
-			generalManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") failed; caleydo_error: " +
-					gve.toString(),
-					LoggerType.MINOR_ERROR_XML );
+//			generalManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") failed; caleydo_error: " +
+//					gve.toString(),
+//					LoggerType.MINOR_ERROR_XML );
 			
 			return false;
 		}	
 		catch (RuntimeException e)
 		{
-			generalManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") failed; system_error: " +
-					e.toString(),
-					LoggerType.MINOR_ERROR_XML );			
+//			generalManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") failed; system_error: " +
+//					e.toString(),
+//					LoggerType.MINOR_ERROR_XML );			
 			
 			return false;
 		}			
@@ -435,17 +435,17 @@ extends AXmlParserManager {
 		} 
 		catch (CaleydoRuntimeException gve)
 		{
-			generalManager.logMsg("XmlParserManager.parseXmlFileByNameAndHandler( " + filename + ") failed; caleydo_error: " +
-					gve.toString(),
-					LoggerType.MINOR_ERROR_XML );
+//			generalManager.logMsg("XmlParserManager.parseXmlFileByNameAndHandler( " + filename + ") failed; caleydo_error: " +
+//					gve.toString(),
+//					LoggerType.MINOR_ERROR_XML );
 			
 			return false;
 		}	
 		catch (RuntimeException e)
 		{
-			generalManager.logMsg("XmlParserManager.parseXmlFileByNameAndHandler( " + filename + ") failed; system_error: " +
-					e.toString(),
-					LoggerType.MINOR_ERROR_XML );			
+//			generalManager.logMsg("XmlParserManager.parseXmlFileByNameAndHandler( " + filename + ") failed; system_error: " +
+//					e.toString(),
+//					LoggerType.MINOR_ERROR_XML );			
 			
 			return false;
 		}		
@@ -468,17 +468,17 @@ extends AXmlParserManager {
 		} 
 		catch (CaleydoRuntimeException gve)
 		{
-			generalManager.logMsg("XmlParserManager.parseXmlFileByInputStream( ) failed; caleydo_error: " +
-					gve.toString(),
-					LoggerType.MINOR_ERROR_XML );
+//			generalManager.logMsg("XmlParserManager.parseXmlFileByInputStream( ) failed; caleydo_error: " +
+//					gve.toString(),
+//					LoggerType.MINOR_ERROR_XML );
 			
 			return false;
 		}	
 		catch (RuntimeException e)
 		{
-			generalManager.logMsg("XmlParserManager.parseXmlFileByInputStream( ) failed; system_error: " +
-					e.toString(),
-					LoggerType.MINOR_ERROR_XML );			
+//			generalManager.logMsg("XmlParserManager.parseXmlFileByInputStream( ) failed; system_error: " +
+//					e.toString(),
+//					LoggerType.MINOR_ERROR_XML );			
 			
 			return false;
 		}	
@@ -487,8 +487,8 @@ extends AXmlParserManager {
 
 	public void destroyHandler() {
 		
-		generalManager.logMsg( "XmlParserManager.destoryHandler() ... ",
-				LoggerType.VERBOSE );
+//		generalManager.logMsg( "XmlParserManager.destoryHandler() ... ",
+//				LoggerType.VERBOSE );
 		
 		/**
 		 * Linked list...
@@ -496,13 +496,13 @@ extends AXmlParserManager {
 		
 		if ( llXmlParserStack == null )
 		{
-			generalManager.logMsg( "XmlParserManager.destoryHandler() llXmlParserStack is null",
-					LoggerType.FULL );
+//			generalManager.logMsg( "XmlParserManager.destoryHandler() llXmlParserStack is null",
+//					LoggerType.FULL );
 		} // if ( llXmlParserStack == null )
 		else 
 		{
-			generalManager.logMsg( "XmlParserManager.destoryHandler() llXmlParserStack remove objects..",
-					LoggerType.FULL );
+//			generalManager.logMsg( "XmlParserManager.destoryHandler() llXmlParserStack remove objects..",
+//					LoggerType.FULL );
 			
 			if ( ! llXmlParserStack.isEmpty() ) 
 			{
@@ -531,13 +531,13 @@ extends AXmlParserManager {
 		
 		if ( hashTag2XmlParser == null )
 		{
-			generalManager.logMsg( "XmlParserManager.destoryHandler() hashTag2XmlParser is null",
-					LoggerType.FULL );
+//			generalManager.logMsg( "XmlParserManager.destoryHandler() hashTag2XmlParser is null",
+//					LoggerType.FULL );
 		} // if ( hashTag2XmlParser == null )
 		else
 		{
-			generalManager.logMsg( "XmlParserManager.destoryHandler() hashTag2XmlParser remove objects..",
-					LoggerType.FULL );
+//			generalManager.logMsg( "XmlParserManager.destoryHandler() hashTag2XmlParser remove objects..",
+//					LoggerType.FULL );
 			
 			if ( ! hashTag2XmlParser.isEmpty() ) {
 				Iterator <IXmlParserHandler> iterHandler =  hashTag2XmlParser.values().iterator();
@@ -561,11 +561,11 @@ extends AXmlParserManager {
 			
 		} // else .. if ( hashTag2XmlParser == null )
 		
-		generalManager.logMsg( "XmlParserManager.destoryHandler() ... done!",
-				LoggerType.FULL );
+//		generalManager.logMsg( "XmlParserManager.destoryHandler() ... done!",
+//				LoggerType.FULL );
 		
-		generalManager.logMsg( "XML file was read sucessfully.",
-				LoggerType.STATUS );
+//		generalManager.logMsg( "XML file was read sucessfully.",
+//				LoggerType.STATUS );
 		
 	}
 }

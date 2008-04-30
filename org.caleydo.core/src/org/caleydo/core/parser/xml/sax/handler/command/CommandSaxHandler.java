@@ -156,10 +156,10 @@ extends AXmlParserHandler
 					CommandQueueSaxType.TAG_DETAIL.getDefault(),
 					ParameterHandlerType.STRING );										 
 
-			generalManager.logMsg(
-					"XML-TAG= " +  phAttributes.getValueString( 
-					CommandQueueSaxType.TAG_LABEL.getXmlKey() ),
-					LoggerType.FULL );
+//			generalManager.logMsg(
+//					"XML-TAG= " +  phAttributes.getValueString( 
+//					CommandQueueSaxType.TAG_LABEL.getXmlKey() ),
+//					LoggerType.FULL );
 				
 			lastCommand = generalManager.getCommandManager().createCommand( phAttributes );
 			
@@ -168,24 +168,24 @@ extends AXmlParserHandler
 		{
 			if ( lastCommand != null ) 
 			{
-				generalManager.logMsg(
-						"CommandSaxHandler.readCommandData(" +
-						attrs.toString() + 
-						") ERROR while parsing " + 
-						lastCommand.toString() + 
-						" error=" + 
-						e.toString(),
-						LoggerType.TRANSITION );
+//				generalManager.logMsg(
+//						"CommandSaxHandler.readCommandData(" +
+//						attrs.toString() + 
+//						") ERROR while parsing " + 
+//						lastCommand.toString() + 
+//						" error=" + 
+//						e.toString(),
+//						LoggerType.TRANSITION );
 			}
 			else
 			{
-				generalManager.logMsg(
-						"CommandSaxHandler.readCommandData(" +
-						attrs.toString() + 
-						") ERROR while parsing --no command--" + 
-						" error=" + 
-						e.toString(),
-						LoggerType.TRANSITION );
+//				generalManager.logMsg(
+//						"CommandSaxHandler.readCommandData(" +
+//						attrs.toString() + 
+//						") ERROR while parsing --no command--" + 
+//						" error=" + 
+//						e.toString(),
+//						LoggerType.TRANSITION );
 			}
 			
 			e.printStackTrace();
@@ -202,15 +202,15 @@ extends AXmlParserHandler
 				
 				if (sData_Cmd_process.equals( CommandQueueSaxType.RUN_CMD_NOW.toString() ))
 				{				
-					generalManager.logMsg("do command: " + 
-						lastCommand.toString(),
-						LoggerType.FULL );
+//					generalManager.logMsg("do command: " + 
+//						lastCommand.toString(),
+//						LoggerType.FULL );
 					lastCommand.doCommand();
 				}
 			}
 			else {
-				generalManager.logMsg("do command: command=null!", 						
-						LoggerType.VERBOSE );
+//				generalManager.logMsg("do command: command=null!", 						
+//						LoggerType.VERBOSE );
 			}
 			
 			return lastCommand;
@@ -223,13 +223,13 @@ extends AXmlParserHandler
 			{
 				sDetails = lastCommand.getClass().getSimpleName();
 			}			
-			generalManager.logMsg(
-					"CommandSaxHandler.readCommandData(" +
-					attrs.toString() + 
-					")\n  ERROR while executing command " +
-					sDetails + "  ==> " 
-					+ gve.toString() + "\n",
-					LoggerType.MINOR_ERROR_XML );
+//			generalManager.logMsg(
+//					"CommandSaxHandler.readCommandData(" +
+//					attrs.toString() + 
+//					")\n  ERROR while executing command " +
+//					sDetails + "  ==> " 
+//					+ gve.toString() + "\n",
+//					LoggerType.MINOR_ERROR_XML );
 			
 			return null;					
 		}
@@ -240,13 +240,13 @@ extends AXmlParserHandler
 			{
 				sDetails = lastCommand.getClass().getSimpleName();
 			}
-			generalManager.logMsg(
-					"CommandSaxHandler.readCommandData(" +
-					attrs.toString() + 
-					")\n  ERROR while executing command " +
-					sDetails + "  ==> " 
-					+ e.toString() + "\n",
-					LoggerType.TRANSITION );
+//			generalManager.logMsg(
+//					"CommandSaxHandler.readCommandData(" +
+//					attrs.toString() + 
+//					")\n  ERROR while executing command " +
+//					sDetails + "  ==> " 
+//					+ e.toString() + "\n",
+//					LoggerType.TRANSITION );
 					
 			e.printStackTrace();
 			
@@ -402,9 +402,9 @@ extends AXmlParserHandler
 							} 
 							else 
 							{
-								generalManager.logMsg(
-										"CommandQueue: no Command to add. skip it.",
-										LoggerType.VERBOSE );
+//								generalManager.logMsg(
+//										"CommandQueue: no Command to add. skip it.",
+//										LoggerType.VERBOSE );
 							}
 							
 							
@@ -421,9 +421,9 @@ extends AXmlParserHandler
 							
 							if ( lastCommand == null ) 
 							{
-								generalManager.logMsg(
-										"Command: can not execute command due to error while parsing. skip it.",
-										LoggerType.VERBOSE );
+//								generalManager.logMsg(
+//										"Command: can not execute command due to error while parsing. skip it.",
+//										LoggerType.VERBOSE );
 							}
 							
 						

@@ -15,10 +15,10 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
+import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
-import org.caleydo.core.manager.base.AManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
@@ -159,11 +159,11 @@ implements ISWTGUIManager {
 			
 			if (refComposite == null)
 			{
-				generalManager.logMsg( getClass().getSimpleName() + ".createWidget(" +
-						useWidgetType.toString() + ", parentId=" +
-						iUniqueParentContainerId + 
-						", iWidth, iHeight) parent SWT canvas does not exist!", 
-						LoggerType.MINOR_ERROR_XML);
+//				generalManager.logMsg( getClass().getSimpleName() + ".createWidget(" +
+//						useWidgetType.toString() + ", parentId=" +
+//						iUniqueParentContainerId + 
+//						", iWidth, iHeight) parent SWT canvas does not exist!", 
+//						LoggerType.MINOR_ERROR_XML);
 				return null;
 			}
 		}

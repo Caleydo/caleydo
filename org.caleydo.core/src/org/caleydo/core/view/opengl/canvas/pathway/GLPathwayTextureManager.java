@@ -77,10 +77,10 @@ public class GLPathwayTextureManager {
 			
 			hashPathwayIdToTexture.put(iPathwayId, refPathwayTexture);
 			
-			generalManager.logMsg(
-					this.getClass().getSimpleName() + 
-					": loadPathwayTexture(): Loaded Texture for Pathway with ID: " +iPathwayId,
-					LoggerType.VERBOSE );
+//			generalManager.logMsg(
+//					this.getClass().getSimpleName() + 
+//					": loadPathwayTexture(): Loaded Texture for Pathway with ID: " +iPathwayId,
+//					LoggerType.VERBOSE );
 			
 			return refPathwayTexture;
 			
@@ -185,10 +185,10 @@ public class GLPathwayTextureManager {
 				// Remove and dispose texture
 				hashPathwayIdToTexture.remove(iTmpPathwayId).dispose();
 
-				generalManager.logMsg(
-						this.getClass().getSimpleName() 
-						+": unloadUnusedTextures(): Unloading pathway texture with ID " + iTmpPathwayId,
-						LoggerType.VERBOSE);
+//				generalManager.logMsg(
+//						this.getClass().getSimpleName() 
+//						+": unloadUnusedTextures(): Unloading pathway texture with ID " + iTmpPathwayId,
+//						LoggerType.VERBOSE);
 			}
 		}
 	}

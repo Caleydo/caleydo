@@ -80,9 +80,9 @@ implements IXmlParserHandler
 	 */
 	public void initHandler()
 	{
-		generalManager.logMsg(
-				this.getClass().getSimpleName() + 
-				": initHandler", LoggerType.VERBOSE_EXTRA );
+//		generalManager.logMsg(
+//				this.getClass().getSimpleName() + 
+//				": initHandler", LoggerType.VERBOSE_EXTRA );
 	}
 	
 	/**
@@ -92,9 +92,9 @@ implements IXmlParserHandler
 	 */
 	public void destroyHandler()
 	{
-		generalManager.logMsg(
-				this.getClass().getSimpleName() + 
-				": destroyHandler", 
-				LoggerType.VERBOSE );
+//		generalManager.logMsg(
+//				this.getClass().getSimpleName() + 
+//				": destroyHandler", 
+//				LoggerType.VERBOSE );
 	}
 }

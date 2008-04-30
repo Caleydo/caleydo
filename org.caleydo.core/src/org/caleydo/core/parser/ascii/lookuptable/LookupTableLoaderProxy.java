@@ -143,10 +143,10 @@ extends AbstractLoader
 	public void setHashMap( final IGenomeIdMap setHashMap,
 			final EGenomeMappingType type) {
 		
-		generalManager.logMsg(
-				"setHashMap(" + setHashMap.toString() + " , " +
-				type.toString() + ") called from outside!",
-				LoggerType.VERBOSE );
+//		generalManager.logMsg(
+//				"setHashMap(" + setHashMap.toString() + " , " +
+//				type.toString() + ") called from outside!",
+//				LoggerType.VERBOSE );
 		
 		refProxyLookupTableLoader.setHashMap( setHashMap, type);
 	}
@@ -176,12 +176,12 @@ extends AbstractLoader
 				brFile, 
 				iNumberOfLinesInFile );
 		
-		generalManager.logMsg("  parsed #" + 
-				this.iLineInFile_CurrentDataIndex + "  [" + 			
-				this.iStartParsingAtLine + " -> " +
-				this.iStopParsingAtLine +  "] stoped at line #" +
-				iTotalNumerOfLinesRed,
-				LoggerType.VERBOSE );	
+//		generalManager.logMsg("  parsed #" + 
+//				this.iLineInFile_CurrentDataIndex + "  [" + 			
+//				this.iStartParsingAtLine + " -> " +
+//				this.iStopParsingAtLine +  "] stoped at line #" +
+//				iTotalNumerOfLinesRed,
+//				LoggerType.VERBOSE );	
 		
 		/**
 		 * reset progressbar...
@@ -208,9 +208,9 @@ extends AbstractLoader
 		}
 		catch (Exception e) {
 
-			generalManager.logMsg("copyDataToInternalDataStructures() calling wirteBackMapToGenomeIdManager() failed!\n  error=" + 
-					e.toString(), 
-					LoggerType.ERROR);
+//			generalManager.logMsg("copyDataToInternalDataStructures() calling wirteBackMapToGenomeIdManager() failed!\n  error=" + 
+//					e.toString(), 
+//					LoggerType.ERROR);
 			
 			e.printStackTrace();
 			return false;

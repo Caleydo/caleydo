@@ -81,9 +81,9 @@ extends ACmdCreate_GlCanvasUser {
 		}
 		else 
 		{
-			generalManager.logMsg( 
-					"CmdGLObjectHistogram2D no set defined!", 
-					LoggerType.STATUS);
+//			generalManager.logMsg( 
+//					"CmdGLObjectHistogram2D no set defined!", 
+//					LoggerType.STATUS);
 		}
 		((GLCanvasHistogram2D)gLEventListener).setHistogramLength( iHistogramLevel );
 	}

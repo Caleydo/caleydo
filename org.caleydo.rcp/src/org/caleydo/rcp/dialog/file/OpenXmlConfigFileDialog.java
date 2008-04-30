@@ -3,10 +3,11 @@
  */
 package org.caleydo.rcp.dialog.file;
 
+import java.util.logging.Level;
+
+import org.caleydo.core.manager.ISWTGUIManager;
+import org.caleydo.rcp.Application;
 import org.eclipse.jface.dialogs.Dialog;
-//import org.eclipse.jface.window.IShellProvider;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -15,13 +16,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
-
-import org.caleydo.core.manager.ISWTGUIManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
-import org.caleydo.rcp.Application;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 /**
- * copy of RCP tutorial "org.eclipsercp.hyperbola.AddContactDialog.java"
+ * Copy of RCP tutorial "org.eclipsercp.hyperbola.AddContactDialog.java"
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -138,9 +137,9 @@ extends Dialog {
 		} 
 		catch (Exception e) 
 		{
-			Application.caleydo_core.getGeneralManager().logMsg("Error while loading Xml file=[" +
-					xmlFileName + "] " + e.toString(),
-					LoggerType.MINOR_ERROR_XML);
+			Application.caleydo_core.getGeneralManager().getLogger().log(Level.SEVERE, 
+					"Error while loading XML file="+xmlFileName, e);
+			
 			statusOnLoading.setText("system error while laoding XML file.");
 		}
 		finally 

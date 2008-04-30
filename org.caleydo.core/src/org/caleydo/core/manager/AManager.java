@@ -1,7 +1,5 @@
-package org.caleydo.core.manager.base;
+package org.caleydo.core.manager;
 
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 

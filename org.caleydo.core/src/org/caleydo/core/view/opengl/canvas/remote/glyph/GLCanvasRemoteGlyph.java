@@ -1,10 +1,12 @@
-package org.caleydo.core.view.opengl.canvas.glyph;
+package org.caleydo.core.view.opengl.canvas.remote.glyph;
 
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GLEventListener;
 
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.manager.IGeneralManager;
@@ -12,19 +14,20 @@ import org.caleydo.core.manager.view.EPickingMode;
 import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.Pick;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyph;
 import org.caleydo.core.view.opengl.canvas.parcoords.GLParCoordsToolboxRenderer;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLSharedObjects;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 
 /**
- * Rendering the Glyph View
+ * Rendering glyph views remotely.
  * 
  * @author Stefan Sauer
- *
+ * @author Marc Streit
  */
 
-public class GLCanvasGlyph 
+public class GLCanvasRemoteGlyph 
 extends AGLCanvasUser
 {	
 	/**
@@ -37,13 +40,16 @@ extends AGLCanvasUser
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLCanvasGlyph(final IGeneralManager generalManager,
+	public GLCanvasRemoteGlyph(final IGeneralManager generalManager,
 			final int iViewId,
 			final int iGLCanvasID,
 			final String sLabel,
 			final IViewFrustum viewFrustum)
 	{
-		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);				
+		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);	
+		
+		// Deregister old mouse listener
+		// Create and register own remote glyph mouse listener
 	}
 	
 	/*
@@ -52,7 +58,7 @@ extends AGLCanvasUser
 	 */
 	public void init(GL gl) 
 	{
-
+		retrieveContainedViews(gl);
 	}
 
 	/*
@@ -84,7 +90,6 @@ extends AGLCanvasUser
 	 */
 	public void displayLocal(GL gl) 
 	{
-		
 		pickingManager.handlePicking(iUniqueId, gl, true);
 	
 		display(gl);
@@ -111,8 +116,28 @@ extends AGLCanvasUser
 	{
 		GLSharedObjects.drawAxis(gl);
 		GLSharedObjects.drawViewFrustum(gl, viewFrustum);
+		
+		// Iterate over glyph views and set tranlation / rotation / scaleing
 	}
 
+	private void retrieveContainedViews(final GL gl) {
+
+		Iterator<GLEventListener> iterGLEventListener = generalManager
+				.getViewGLCanvasManager().getAllGLEventListeners().iterator();
+
+		while (iterGLEventListener.hasNext())
+		{
+			AGLCanvasUser tmpGLEventListener = (AGLCanvasUser) iterGLEventListener.next();
+
+			if (tmpGLEventListener == this || !tmpGLEventListener.equals(GLCanvasGlyph.class))
+				continue;
+
+			int iViewID = ((AGLCanvasUser) tmpGLEventListener).getId();
+			// Add to interal array
+		}
+	}
+
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#getInfo()

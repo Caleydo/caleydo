@@ -6,14 +6,14 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.logging.Level;
 
 import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
 import org.caleydo.core.data.map.MultiHashArrayStringMap;
 import org.caleydo.core.data.mapping.EGenomeMappingDataType;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
-import org.caleydo.core.manager.base.AManager;
 import org.caleydo.core.manager.data.IGenomeIdManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
@@ -25,6 +25,8 @@ import org.caleydo.core.util.mapping.GenomeMapper_ENZYME_2_NCBI_GENEID_2_ACCESSI
 
 
 /**
+ * Manages mapping tables for genomic entities.
+ * 
  * @author Michael Kalkusch
  * @author Marc Streit
  *
@@ -82,16 +84,13 @@ implements IGenomeIdManager {
 			final EGenomeMappingDataType dataType,
 			final int iSetInitialSizeHashMap ) {
 		
-		/* conisitency check */
+		/* consistency check */
 		int iCurrentInitialSizeHashMap = iSetInitialSizeHashMap;
 		
 		if ( hashType2Map.containsKey( codingLutType ) ) 
 		{
-			generalManager.logMsg(
-					"createMapByType(" + 
-					codingLutType.toString() + "," +
-					dataType.toString() + ",*) WARNING! type is already registered!",
-					LoggerType.VERBOSE);
+			generalManager.getLogger().log(Level.SEVERE, 
+					"Mapping type=" +codingLutType +" is alreay registered!");
 			
 			return false;
 		}
@@ -103,10 +102,7 @@ implements IGenomeIdManager {
 		
 		IGenomeIdMap newMap = null;
 		
-		generalManager.logMsg("createMapByType(" +
-				codingLutType.toString() + "," +
-				dataType.toString() + ",*) ...",
-				LoggerType.VERBOSE);
+		generalManager.getLogger().log(Level.INFO, "Create lookup table for type=" +codingLutType);
 		
 		try //catch ( OutOfMemoryError oee ) 
 		{
@@ -157,9 +153,8 @@ implements IGenomeIdManager {
 		} 
 		catch ( OutOfMemoryError oee ) 
 		{
-			System.err.println(" Could not allocate memory for HashMap [" +
-					codingLutType + "] tpye=[" + dataType + "]");
-					
+			generalManager.getLogger().log(Level.SEVERE, 
+					"Could not allocate memory for lookup table with the type=" +codingLutType, oee);
 			throw oee;
 //			return false;
 		}
@@ -530,14 +525,9 @@ implements IGenomeIdManager {
 			assert keyset == null : "EGenomeMappingType=[" + type + "] was not mapped to keys of type Integer";
 			
 			return keyset;		
-		} catch ( CaleydoRuntimeException gve ) {
-			generalManager.logMsg("getValuesFromExposedDataStructues( " + type.toString() +
-					") failed, because String values could not be converted to Integer",
-					LoggerType.MINOR_ERROR_XML );
-			/* more details on exception .. */
-			generalManager.logMsg("getValuesFromExposedDataStructues( " + type.toString() + 
-					") failed; Exception= " + gve.toString(),
-					LoggerType.VERBOSE );
+		} catch ( CaleydoRuntimeException cre ) {
+			
+			generalManager.getLogger().log(Level.SEVERE, "Type convertsion problem!", cre);
 			
 			/* return empty collection .. */
 			return new ArrayList <Integer> ();
@@ -639,7 +629,9 @@ implements IGenomeIdManager {
 			return resultHashMap;
 			
 		} catch (OutOfMemoryError e) {
-			System.err.println("Out of memroy while allocation of memory! " + e.getStackTrace());			
+			
+			generalManager.getLogger().log(Level.SEVERE, 
+					"Could not allocate memory for lookup table.", e);		
 			throw e;
 		}
 	}

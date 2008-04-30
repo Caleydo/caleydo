@@ -277,11 +277,11 @@ implements IMediatorReceiver, IMediatorSender
 	
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) 
 	{		
-		generalManager.logMsg(
-				this.getClass().getSimpleName()
-						+ " ("+iUniqueId+"): updateReceiver(Object eventTrigger, ISet updatedSet): Update called by "
-						+ eventTrigger.getClass().getSimpleName()+" ("+((AGLCanvasUser)eventTrigger).getId(),
-				LoggerType.VERBOSE);
+//		generalManager.logMsg(
+//				this.getClass().getSimpleName()
+//						+ " ("+iUniqueId+"): updateReceiver(Object eventTrigger, ISet updatedSet): Update called by "
+//						+ eventTrigger.getClass().getSimpleName()+" ("+((AGLCanvasUser)eventTrigger).getId(),
+//				LoggerType.VERBOSE);
 		
 		ISetSelection refSetSelection = (ISetSelection) updatedSet;
 
@@ -348,11 +348,11 @@ implements IMediatorReceiver, IMediatorSender
 	 */
 	public void updateReceiver(Object eventTrigger) {
 
-		generalManager.logMsg(
-				this.getClass().getSimpleName()
-						+ ": updateReceiver(Object eventTrigger): Update called by "
-						+ eventTrigger.getClass().getSimpleName(),
-				LoggerType.VERBOSE);
+//		generalManager.logMsg(
+//				this.getClass().getSimpleName()
+//						+ ": updateReceiver(Object eventTrigger): Update called by "
+//						+ eventTrigger.getClass().getSimpleName(),
+//				LoggerType.VERBOSE);
 	}
 	
 	

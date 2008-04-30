@@ -151,13 +151,13 @@ extends ACmdCreate_IdTargetLabel {
 						iTokenIndex++;
 					}
 					catch (NumberFormatException nfe) {
-						generalManager.logMsg(
-								"Can not convert (String) to (int) at index=[" +
-								iTokenIndex + "]  => skip raw data:",
-								LoggerType.ERROR );
-						generalManager.logMsg(
-								"  SKIP: " + strToParse,
-								LoggerType.ERROR );
+//						generalManager.logMsg(
+//								"Can not convert (String) to (int) at index=[" +
+//								iTokenIndex + "]  => skip raw data:",
+//								LoggerType.ERROR );
+//						generalManager.logMsg(
+//								"  SKIP: " + strToParse,
+//								LoggerType.ERROR );
 						
 						/** 
 						 * terminate while loop...
@@ -197,13 +197,13 @@ extends ACmdCreate_IdTargetLabel {
 						iTokenIndex++;
 					}
 					catch (NumberFormatException nfe) {
-						generalManager.logMsg(
-								"Can not convert (String) to (float) at index=[" +
-								iTokenIndex + "]  => skip raw data:",
-								LoggerType.ERROR );
-						generalManager.logMsg(
-								"  SKIP: " + strToParse,
-								LoggerType.ERROR );
+//						generalManager.logMsg(
+//								"Can not convert (String) to (float) at index=[" +
+//								iTokenIndex + "]  => skip raw data:",
+//								LoggerType.ERROR );
+//						generalManager.logMsg(
+//								"  SKIP: " + strToParse,
+//								LoggerType.ERROR );
 						
 						/** 
 						 * terminate while loop...
@@ -243,13 +243,13 @@ extends ACmdCreate_IdTargetLabel {
 						iTokenIndex++;
 					}
 					catch (NumberFormatException nfe) {
-						generalManager.logMsg(
-								"Can not convert (String) to (double) at index=[" +
-								iTokenIndex + "]  => skip raw data:",
-								LoggerType.ERROR );
-						generalManager.logMsg(
-								"  SKIP: " + strToParse,
-								LoggerType.ERROR );
+//						generalManager.logMsg(
+//								"Can not convert (String) to (double) at index=[" +
+//								iTokenIndex + "]  => skip raw data:",
+//								LoggerType.ERROR );
+//						generalManager.logMsg(
+//								"  SKIP: " + strToParse,
+//								LoggerType.ERROR );
 						
 						/** 
 						 * terminate while loop...
@@ -310,10 +310,10 @@ extends ACmdCreate_IdTargetLabel {
 				newObject.getId(), 
 				newObject.getBaseType() );
 
-		generalManager.logMsg( 
-				"DO new STO: " + 
-				newObject.toString(),
-				LoggerType.VERBOSE );
+//		generalManager.logMsg( 
+//				"DO new STO: " + 
+//				newObject.toString(),
+//				LoggerType.VERBOSE );
 		
 		if ( bDisposeDataAfterDoCommand ) {
 			llDataTypes = null;
@@ -331,10 +331,10 @@ extends ACmdCreate_IdTargetLabel {
 				iUniqueId,
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		
-		generalManager.logMsg( 
-				"UNDO new SEL: " + 
-				iUniqueId,
-				LoggerType.VERBOSE );	
+//		generalManager.logMsg( 
+//				"UNDO new SEL: " + 
+//				iUniqueId,
+//				LoggerType.VERBOSE );	
 		
 		refCommandManager.runUndoCommand(this);
 	}

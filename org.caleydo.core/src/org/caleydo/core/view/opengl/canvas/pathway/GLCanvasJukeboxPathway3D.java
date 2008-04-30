@@ -38,8 +38,8 @@ import org.caleydo.core.util.slerp.SlerpMod;
 import org.caleydo.core.util.sound.SoundPlayer;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
-import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 import org.caleydo.core.view.opengl.util.drag.GLDragAndDropPathway;
 import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaRenderer;
@@ -747,11 +747,11 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 
-		generalManager.logMsg(
-				this.getClass().getSimpleName()
-						+ ": updateReceiver(): Update called by "
-						+ eventTrigger.getClass().getSimpleName(),
-				LoggerType.VERBOSE);
+//		generalManager.logMsg(
+//				this.getClass().getSimpleName()
+//						+ ": updateReceiver(): Update called by "
+//						+ eventTrigger.getClass().getSimpleName(),
+//				LoggerType.VERBOSE);
 
 		ISetSelection refSetSelection = (ISetSelection) updatedSet;
 
@@ -1086,11 +1086,11 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private void loadPathwayToUnderInteractionPosition(final int iPathwayId) {
 
-		generalManager
-				.logMsg(this.getClass().getSimpleName()
-								+ ": loadPathwayToUnderInteractionPosition(): Pathway with ID "
-								+ iPathwayId + " is under interaction.",
-						LoggerType.VERBOSE);
+//		generalManager
+//				.logMsg(this.getClass().getSimpleName()
+//								+ ": loadPathwayToUnderInteractionPosition(): Pathway with ID "
+//								+ iPathwayId + " is under interaction.",
+//						LoggerType.VERBOSE);
 
 		// Check if pathway is already under interaction
 		if (pathwayUnderInteractionLayer.containsElement(iPathwayId))

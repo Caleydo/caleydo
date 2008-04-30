@@ -1,9 +1,10 @@
 package org.caleydo.core.command.base;
 
+import java.util.logging.Level;
+
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
 
@@ -20,7 +21,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	 * GLEventListener Id used for OpenGL
 	 *  
 	 */
-	protected int iGLCanvasID = 0;
+	protected int iGLCanvasID = -1;
 	
 	/**
 	 * @param refGeneralManager
@@ -49,11 +50,9 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	 */
 	protected void checkOpenGLSetting() {
 		
-		if ( iGLCanvasID < 1) {
-			this.generalManager.logMsg(" tag [" + 
-					CommandQueueSaxType.TAG_GLCANVAS.getXmlKey() +
-					"] is not assinged!",
-					LoggerType.MINOR_ERROR_XML);
+		if ( iGLCanvasID == -1) 
+		{	
+			generalManager.getLogger().log(Level.SEVERE, "GL Canvas ID is not assigned in XML file.");
 		}
 	}
 }

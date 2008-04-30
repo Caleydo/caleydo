@@ -179,9 +179,9 @@ implements IStorageManager {
 		
 		if ( vecStorage.containsKey( iItemId ) ) 
 		{
-			generalManager.logMsg(
-					"try to register id that was already used!",
-					LoggerType.ERROR );
+//			generalManager.logMsg(
+//					"try to register id that was already used!",
+//					LoggerType.ERROR );
 			
 			return false;
 		}

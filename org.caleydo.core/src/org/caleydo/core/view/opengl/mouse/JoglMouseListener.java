@@ -1,4 +1,4 @@
-package org.caleydo.core.view.jogl.mouse;
+package org.caleydo.core.view.opengl.mouse;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
@@ -259,28 +259,28 @@ implements MouseListener, MouseMotionListener, MouseWheelListener {
 	    	}
 		    else
 	    	{
-//		    	/**
-//		    	 *   --- ZOOMING ---
-//		    	 */				    
-//			    float zoomX = fZoomScale * (float)(x-prevMouseX);
-//			    float zoomY = fZoomScale * (float)(prevMouseY-y);
-//			    
-//			    /* take abs(zoomX) */
-//			    if ((zoomX < 0.0f )&&(zoomY>0.0f)) {
-//			    	zoomX = -zoomX;
-//			    }
-//			    
-//		    	prevMouseX = x;
-//			    prevMouseY = y;
-//			    
-//			    /* set new paramters to ViewCamera */
-//			    Iterator<AGLCanvasUser> iterGLCanvas = alGlCanvas.iterator();
-//			    
-//			    while (iterGLCanvas.hasNext())
-//			    {
-//			    	iterGLCanvas.next().getViewCamera().addCameraScale(
-//				    		new Vec3f( 0, 0, zoomY +zoomX) );
-//			    }
+		    	/**
+		    	 *   --- ZOOMING ---
+		    	 */				    
+			    float zoomX = fZoomScale * (float)(x-prevMouseX);
+			    float zoomY = fZoomScale * (float)(prevMouseY-y);
+			    
+			    /* take abs(zoomX) */
+			    if ((zoomX < 0.0f )&&(zoomY>0.0f)) {
+			    	zoomX = -zoomX;
+			    }
+			    
+		    	prevMouseX = x;
+			    prevMouseY = y;
+			    
+			    /* set new paramters to ViewCamera */
+			    Iterator<AGLCanvasUser> iterGLCanvas = alGlCanvas.iterator();
+			    
+			    while (iterGLCanvas.hasNext())
+			    {
+			    	iterGLCanvas.next().getViewCamera().addCameraScale(
+				    		new Vec3f( 0, 0, zoomY +zoomX) );
+			    }
 	    	}
 		} 
 		else

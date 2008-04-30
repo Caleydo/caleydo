@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ILoggerManager.LoggerType;
-import org.caleydo.core.manager.base.AManager;
 import org.caleydo.core.manager.event.mediator.IMediator;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
@@ -139,9 +139,9 @@ implements IEventPublisher {
 		{
 			newMediator = hashMediatorId2Mediator.get(iMediatorId);
 			
-			generalManager.logMsg("createMediator(" + iMediatorId + 
-					") mediator already exists. add Senders and Receivers now.",
-					LoggerType.VERBOSE);
+//			generalManager.logMsg("createMediator(" + iMediatorId + 
+//					") mediator already exists. add Senders and Receivers now.",
+//					LoggerType.VERBOSE);
 		}
 		else
 		{  //if ( hashMediatorId2Mediator.containsKey(iMediatorId) ) {..} else
@@ -270,10 +270,10 @@ implements IEventPublisher {
 				mediatorType, 
 				mediatorUpdateType);
 		
-		generalManager.logMsg("EventPublisher: success registering senderId(s)=[" +
-				arSenderIDs.toString() + "] and receiverId(s)=[" +
-				arReceiverIDs.toString() + "]",
-				LoggerType.VERBOSE);
+//		generalManager.logMsg("EventPublisher: success registering senderId(s)=[" +
+//				arSenderIDs.toString() + "] and receiverId(s)=[" +
+//				arReceiverIDs.toString() + "]",
+//				LoggerType.VERBOSE);
 	}
 
 	
@@ -301,22 +301,22 @@ implements IEventPublisher {
 			} 
 			catch ( ClassCastException cce)
 			{
-				generalManager.logMsg("EventPublisher.createMediator() failed because referenced sender object id=[" +
-						iCurrentSenderId + 
-						"] does not implement interface IMediatorSender " +
-						generalManager.getViewGLCanvasManager().getItem(iCurrentSenderId).getClass(),
-						LoggerType.ERROR);
+//				generalManager.logMsg("EventPublisher.createMediator() failed because referenced sender object id=[" +
+//						iCurrentSenderId + 
+//						"] does not implement interface IMediatorSender " +
+//						generalManager.getViewGLCanvasManager().getItem(iCurrentSenderId).getClass(),
+//						LoggerType.ERROR);
 				
 				assert false : "receiver object does not implement interface IMediatorSender";
 				break;
 			}
 	
 			if ( sender == null ) {
-				generalManager.logMsg("EventPublisher: invalid SenderId=[" +
-						iCurrentSenderId + "] => receiverId=" + 
-						arReceiverIDs.toString() + 
-						" ignore sender!",
-						LoggerType.MINOR_ERROR);
+//				generalManager.logMsg("EventPublisher: invalid SenderId=[" +
+//						iCurrentSenderId + "] => receiverId=" + 
+//						arReceiverIDs.toString() + 
+//						" ignore sender!",
+//						LoggerType.MINOR_ERROR);
 			}
 			else 
 			{
@@ -374,10 +374,10 @@ implements IEventPublisher {
 		// are there any valid senders?
 		if (!bHasValidSender) 
 		{
-			generalManager.logMsg("EventPublisher: all SenderId(s)=" +
-					arSenderIDs.toString() + " are invalid; ignore all receivers=" +
-					arReceiverIDs.toString() + " also!",
-					LoggerType.MINOR_ERROR);
+//			generalManager.logMsg("EventPublisher: all SenderId(s)=" +
+//					arSenderIDs.toString() + " are invalid; ignore all receivers=" +
+//					arReceiverIDs.toString() + " also!",
+//					LoggerType.MINOR_ERROR);
 			return;
 		}
 		
@@ -397,21 +397,21 @@ implements IEventPublisher {
 			} 
 			catch ( ClassCastException cce)
 			{
-				generalManager.logMsg("EventPublisher.createMediator() failed because referenced receiver object id=[" +
-						iCurrentReceiverId + 
-						"] does not implement interface IMediatorReceiver " +
-						generalManager.getViewGLCanvasManager().getItem(iCurrentReceiverId).getClass(),
-						LoggerType.ERROR);
+//				generalManager.logMsg("EventPublisher.createMediator() failed because referenced receiver object id=[" +
+//						iCurrentReceiverId + 
+//						"] does not implement interface IMediatorReceiver " +
+//						generalManager.getViewGLCanvasManager().getItem(iCurrentReceiverId).getClass(),
+//						LoggerType.ERROR);
 				
 				assert false : "receiver object does not implement interface IMediatorReceiver";
 				break;
 			}
 	
 			if ( receiver == null ) {
-				generalManager.logMsg("EventPublisher: sender(s) " +
-						arSenderIDs.toString() + " ==> invalid ReceiverId=[" +
-						iCurrentReceiverId + "] ignore receiver!",
-						LoggerType.MINOR_ERROR);
+//				generalManager.logMsg("EventPublisher: sender(s) " +
+//						arSenderIDs.toString() + " ==> invalid ReceiverId=[" +
+//						iCurrentReceiverId + "] ignore receiver!",
+//						LoggerType.MINOR_ERROR);
 			}
 			else 
 			{
@@ -448,10 +448,10 @@ implements IEventPublisher {
 								CaleydoRuntimeExceptionType.OBSERVER);
 				} // switch ( mediatorType ) {
 			
-				generalManager.logMsg("EventPublisher: successful added senderId(s)" +
-						arSenderIDs.toString() + " => [" +
-						iCurrentReceiverId + "]",
-						LoggerType.VERBOSE);
+//				generalManager.logMsg("EventPublisher: successful added senderId(s)" +
+//						arSenderIDs.toString() + " => [" +
+//						iCurrentReceiverId + "]",
+//						LoggerType.VERBOSE);
 				
 			} // if ( receiver == null ) {...} else {..
 			
@@ -459,18 +459,18 @@ implements IEventPublisher {
 		
 		if ( ! bHasValidReceiver )
 		{
-			generalManager.logMsg("EventPublisher: ignore command with senderId(s)=[" +
-					arSenderIDs.toString() + "] and receiverId(s)=[" +
-					arReceiverIDs.toString() + "] because no valid receiver was found!",
-					LoggerType.MINOR_ERROR);
+//			generalManager.logMsg("EventPublisher: ignore command with senderId(s)=[" +
+//					arSenderIDs.toString() + "] and receiverId(s)=[" +
+//					arReceiverIDs.toString() + "] because no valid receiver was found!",
+//					LoggerType.MINOR_ERROR);
 			return;
 		}
 		
-		generalManager.logMsg("EventPublisher: Mediator " + newMediator.toString() + 
-				" success registering senderId(s)=[" +
-				arSenderIDs.toString() + "] and receiverId(s)=[" +
-				arReceiverIDs.toString() + "]",
-				LoggerType.VERBOSE);
+//		generalManager.logMsg("EventPublisher: Mediator " + newMediator.toString() + 
+//				" success registering senderId(s)=[" +
+//				arSenderIDs.toString() + "] and receiverId(s)=[" +
+//				arReceiverIDs.toString() + "]",
+//				LoggerType.VERBOSE);
 	}
 
 	public void registerSenderToMediator(int iMediatorId, IMediatorSender sender) {

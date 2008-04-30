@@ -73,8 +73,8 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 		} 	
 		catch ( CaleydoRuntimeException ce)
 		{
-			generalManager.logMsg("Can not open Jogl frame inside SWT container! " + ce.toString(),
-					LoggerType.ERROR );
+//			generalManager.logMsg("Can not open Jogl frame inside SWT container! " + ce.toString(),
+//					LoggerType.ERROR );
 			ce.printStackTrace();
 		}
 	}

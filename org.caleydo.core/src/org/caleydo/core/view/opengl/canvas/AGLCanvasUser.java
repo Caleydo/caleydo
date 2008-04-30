@@ -18,15 +18,13 @@ import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.camera.ViewCameraBase;
 import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.view.EPickingMode;
 import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.Pick;
 import org.caleydo.core.manager.view.PickingManager;
-import org.caleydo.core.view.jogl.JoglCanvasForwarder;
-import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 
@@ -44,7 +42,7 @@ extends AUniqueManagedObject
 implements GLEventListener {
 	
 	// TODO: should be a list of parent canvas object to be generic
-	protected JoglCanvasForwarder parentGLCanvas;
+	protected GLCaleydoCanvas parentGLCanvas;
 	
 	/**
 	 * List for all ISet objects providing data for this ViewRep.
@@ -93,7 +91,7 @@ implements GLEventListener {
 
 		setManager = generalManager.getSetManager();
 		
-		parentGLCanvas = ((JoglCanvasForwarder)generalManager.getViewGLCanvasManager()
+		parentGLCanvas = ((GLCaleydoCanvas)generalManager.getViewGLCanvasManager()
 				.getItem(iGLCanvasID));
 		
 		if (parentGLCanvas != null)
@@ -190,13 +188,13 @@ implements GLEventListener {
 
 	    GL gl = drawable.getGL();
 
-		generalManager.logMsg(
-				"\n---------------------------------------------------"+
-				"\nGLEventListener with ID " +iUniqueId+ " RESHAPE GL" +
-				"\nGL_VENDOR: " + gl.glGetString(GL.GL_VENDOR)+
-				"\nGL_RENDERER: " + gl.glGetString(GL.GL_RENDERER) +
-				"\nGL_VERSION: " + gl.glGetString(GL.GL_VERSION),
-				LoggerType.STATUS);
+//		generalManager.logMsg(
+//				"\n---------------------------------------------------"+
+//				"\nGLEventListener with ID " +iUniqueId+ " RESHAPE GL" +
+//				"\nGL_VENDOR: " + gl.glGetString(GL.GL_VENDOR)+
+//				"\nGL_RENDERER: " + gl.glGetString(GL.GL_RENDERER) +
+//				"\nGL_VERSION: " + gl.glGetString(GL.GL_VERSION),
+//				LoggerType.STATUS);
 	    
 	    double fAspectRatio = (double) height / (double) width;
 
@@ -309,9 +307,9 @@ implements GLEventListener {
 			
 			if ( refCurrentSet == null ) 
 			{
-				generalManager.logMsg(
-						"addSetId(" + iSet[i] + ") is not registered at SetManager!",
-						LoggerType.MINOR_ERROR);
+//				generalManager.logMsg(
+//						"addSetId(" + iSet[i] + ") is not registered at SetManager!",
+//						LoggerType.MINOR_ERROR);
 				
 				continue;
 			}
@@ -330,17 +328,17 @@ implements GLEventListener {
 					break;
 					
 				default:
-					generalManager.logMsg(
-							"addSetId() unsupported SetType!",
-							LoggerType.ERROR);
+//					generalManager.logMsg(
+//							"addSetId() unsupported SetType!",
+//							LoggerType.ERROR);
 				} // switch (refCurrentSet.getSetType()) {
 					
 			} //if ( ! hasSetId_ByReference(refCurrentSet) )
 			else 
 			{ 
-				generalManager.logMsg(
-						"addSetId(" + iSet[i] + ") ISet is already registered!",
-						LoggerType.MINOR_ERROR);
+//				generalManager.logMsg(
+//						"addSetId(" + iSet[i] + ") ISet is already registered!",
+//						LoggerType.MINOR_ERROR);
 			} //if ( ! hasSetId_ByReference(refCurrentSet) ) {...} else {...}
 			
 		} //for ( int i=0; i < iSet.length; i++)
@@ -361,9 +359,9 @@ implements GLEventListener {
 			break;
 			
 		default:
-			generalManager.logMsg(
-					"addSetId() unsupported SetType!",
-					LoggerType.ERROR);
+//			generalManager.logMsg(
+//					"addSetId() unsupported SetType!",
+//					LoggerType.ERROR);
 		} // switch (setType) {
 	}
 	
@@ -380,9 +378,9 @@ implements GLEventListener {
 			
 			if ( refCurrentSet == null ) 
 			{
-				generalManager.logMsg(
-						"removeSetId(" + iSet[i] + ") is not registered at SetManager!",
-						LoggerType.MINOR_ERROR);
+//				generalManager.logMsg(
+//						"removeSetId(" + iSet[i] + ") is not registered at SetManager!",
+//						LoggerType.MINOR_ERROR);
 				
 				continue;
 			}
@@ -399,17 +397,17 @@ implements GLEventListener {
 					break;
 					
 				default:
-					generalManager.logMsg(
-							"removeSetId() unsupported SetType!",
-							LoggerType.ERROR);
+//					generalManager.logMsg(
+//							"removeSetId() unsupported SetType!",
+//							LoggerType.ERROR);
 				} // switch (refCurrentSet.getSetType()) {
 					
 			} //if ( ! hasSetId_ByReference(refCurrentSet) )
 			else 
 			{ 
-				generalManager.logMsg(
-						"removeSetId(" + iSet[i] + ") ISet was not registered!",
-						LoggerType.MINOR_ERROR);
+//				generalManager.logMsg(
+//						"removeSetId(" + iSet[i] + ") ISet was not registered!",
+//						LoggerType.MINOR_ERROR);
 			} //if ( ! hasSetId_ByReference(refCurrentSet) ) {...} else {...}
 			
 		} //for ( int i=0; i < iSet.length; i++)
@@ -469,7 +467,7 @@ implements GLEventListener {
 	/**
 	 * Test both ArrayList's alSetData and alSetSelection for refSet.
 	 * 
-	 * @param refSet test if this ISet is refered to
+	 * @param refSet test if this ISet is referred to
 	 * @return TRUE if exists in any of the two ArrayList's
 	 */
 	public final boolean hasSetId_ByReference(final ISet refSet) {
@@ -488,7 +486,7 @@ implements GLEventListener {
 		return false;			
 	}
 	
-	public final JoglCanvasForwarder getParentGLCanvas() {
+	public final GLCaleydoCanvas getParentGLCanvas() {
 		
 		return parentGLCanvas;
 	}

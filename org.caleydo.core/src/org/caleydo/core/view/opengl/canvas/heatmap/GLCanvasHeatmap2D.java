@@ -26,8 +26,8 @@ import org.caleydo.core.manager.view.EPickingMode;
 import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.Pick;
 import org.caleydo.core.math.statistics.minmax.MinMaxDataInteger;
-import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.canvas.parcoords.GLParCoordsToolboxRenderer;
+import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 
 import com.sun.opengl.util.BufferUtil;
@@ -212,16 +212,16 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 	
 		  if ( targetSet == null ) 
 		  {
-			  generalManager.logMsg(
-					  "createHistogram() can not create Heatmap, because targetSet=null",
-					  LoggerType.STATUS );
+//			  generalManager.logMsg(
+//					  "createHistogram() can not create Heatmap, because targetSet=null",
+//					  LoggerType.STATUS );
 			  return;
 		  }
 		  
 		  if ( iValuesInRow < 1) {
-			  generalManager.logMsg(
-					  "createHistogram() can not create Heatmap, because histogramLevels are outside range [1..max]",
-					  LoggerType.FULL );
+//			  generalManager.logMsg(
+//					  "createHistogram() can not create Heatmap, because histogramLevels are outside range [1..max]",
+//					  LoggerType.FULL );
 			  return;
 		  }
 		  
@@ -244,9 +244,9 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 				
 				render_createDisplayLists( gl );
 				
-				  generalManager.logMsg(
-						  "createHistogram() use IVirtualArray(" + refBufferSelection.getLabel() + ":" + refBufferSelection.toString() + ")",
-						  LoggerType.FULL );
+//				  generalManager.logMsg(
+//						  "createHistogram() use IVirtualArray(" + refBufferSelection.getLabel() + ":" + refBufferSelection.toString() + ")",
+//						  LoggerType.FULL );
 				  
 			}
 		  
@@ -665,10 +665,10 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 	
 		bEnablePicking = enablePicking;
 		
-		generalManager.logMsg(
-				this.getClass().getSimpleName() + ".setEnablePicking( " +
-				Boolean.toString(enablePicking) + " )",
-				LoggerType.STATUS);
+//		generalManager.logMsg(
+//				this.getClass().getSimpleName() + ".setEnablePicking( " +
+//				Boolean.toString(enablePicking) + " )",
+//				LoggerType.STATUS);
 	}
 	
 	/* -----   END: PICKING  ----- */
@@ -749,16 +749,16 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 					).getItemSet( iTargetCollectionSetId );
 		
 		if ( targetSet == null ) {
-			generalManager.logMsg(
-					"GLCanvasScatterPlot2D.setTargetSetId(" +
-					iTargetCollectionSetId + ") failed, because Set is not registed!",
-					LoggerType.FULL );
+//			generalManager.logMsg(
+//					"GLCanvasScatterPlot2D.setTargetSetId(" +
+//					iTargetCollectionSetId + ") failed, because Set is not registed!",
+//					LoggerType.FULL );
 		}
 		
-		generalManager.logMsg(
-				"GLCanvasScatterPlot2D.setTargetSetId(" +
-				iTargetCollectionSetId + ") done!",
-				LoggerType.FULL );
+//		generalManager.logMsg(
+//				"GLCanvasScatterPlot2D.setTargetSetId(" +
+//				iTargetCollectionSetId + ") done!",
+//				LoggerType.FULL );
 		
 		refMinMaxDataInteger.useSet( targetSet );
 		initColorMapping( fColorMappingShiftFromMean );
@@ -773,9 +773,9 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 		render_displayListHeatmap( gl );
 		gl.glEndList();
 		
-		  generalManager.logMsg(
-				  "createHeatmap() create DsiplayList)",
-				  LoggerType.FULL );
+//		  generalManager.logMsg(
+//				  "createHeatmap() create DsiplayList)",
+//				  LoggerType.FULL );
 		  
 	}
 	
@@ -983,7 +983,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
  //public int[] createHistogram(final int iHistogramLevels) {
   public void renderHeatmap(final int iHistogramLevels) {
 
-	  generalManager.logMsg( "HEATMAP: set  ", LoggerType.FULL );
+//	  generalManager.logMsg( "HEATMAP: set  ", LoggerType.FULL );
 	  
   }
 
@@ -1214,25 +1214,25 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasHeatmap2D {
 	
 	public void updateReceiver(Object eventTrigger) {
 		
-		generalManager.logMsg(
-				this.getClass().getSimpleName()+
-				": updateReceiver( (" + 
-				eventTrigger.getClass().getSimpleName() + ") " +
-				eventTrigger.toString() + ")",
-				LoggerType.STATUS );
+//		generalManager.logMsg(
+//				this.getClass().getSimpleName()+
+//				": updateReceiver( (" + 
+//				eventTrigger.getClass().getSimpleName() + ") " +
+//				eventTrigger.toString() + ")",
+//				LoggerType.STATUS );
 	}
 	
 	
 	public void updateReceiver(Object eventTrigger, 
 			ISet updatedSet) {
 		
-		generalManager.logMsg(
-				this.getClass().getSimpleName()+
-				": updateReceiver( (" + 
-				eventTrigger.getClass().getSimpleName() + ") " +
-				eventTrigger.toString() + ", (ISet) " + 
-				updatedSet.toString() +	")",
-				LoggerType.STATUS );
+//		generalManager.logMsg(
+//				this.getClass().getSimpleName()+
+//				": updateReceiver( (" + 
+//				eventTrigger.getClass().getSimpleName() + ") " +
+//				eventTrigger.toString() + ", (ISet) " + 
+//				updatedSet.toString() +	")",
+//				LoggerType.STATUS );
 	}
 
 	

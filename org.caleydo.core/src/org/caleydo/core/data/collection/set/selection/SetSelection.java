@@ -242,10 +242,10 @@ implements ISetSelection
 	public void updateSelectionSet(int iUniqueTriggerID) {
 		
 		try {	
-			generalManager.logMsg(
-					this.getClass().getSimpleName() + 
-					": updateSelectionSet(): Set selection data and trigger update.",
-					LoggerType.VERBOSE );
+//			generalManager.logMsg(
+//					this.getClass().getSimpleName() + 
+//					": updateSelectionSet(): Set selection data and trigger update.",
+//					LoggerType.VERBOSE );
 			
 	 		// Calls update with the ID of the view
 	 		((EventPublisher)generalManager.
@@ -254,10 +254,10 @@ implements ISetSelection
 	 		
 		} catch (Exception e)
 		{
-			generalManager.logMsg(
-					this.getClass().getSimpleName() + 
-					": updateSelectionSet(): Problem during selection update triggering.",
-					LoggerType.MINOR_ERROR );
+//			generalManager.logMsg(
+//					this.getClass().getSimpleName() + 
+//					": updateSelectionSet(): Problem during selection update triggering.",
+//					LoggerType.MINOR_ERROR );
 	
 			e.printStackTrace();
 		}

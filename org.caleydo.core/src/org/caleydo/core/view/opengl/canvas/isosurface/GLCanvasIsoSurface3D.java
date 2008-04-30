@@ -15,8 +15,8 @@ import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.view.EPickingMode;
 import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.Pick;
-import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 
 import com.sun.opengl.util.GLUT;
@@ -209,23 +209,23 @@ extends AGLCanvasUser
 					).getItemSet( iTargetCollectionSetId );
 		
 		if ( targetSet == null ) {
-			generalManager.logMsg(
-					"GLCanvasIsosurface3D.setTargetSetId(" +
-					iTargetCollectionSetId + ") failed, because Set is not registed!",
-					LoggerType.ERROR );
+//			generalManager.logMsg(
+//					"GLCanvasIsosurface3D.setTargetSetId(" +
+//					iTargetCollectionSetId + ") failed, because Set is not registed!",
+//					LoggerType.ERROR );
 		}
 		
-		generalManager.logMsg(
-				"GLCanvasIsosurface3D.setTargetSetId(" +
-				iTargetCollectionSetId + ") done!",
-				LoggerType.STATUS );
+//		generalManager.logMsg(
+//				"GLCanvasIsosurface3D.setTargetSetId(" +
+//				iTargetCollectionSetId + ") done!",
+//				LoggerType.STATUS );
 		
 		if ( iCurrentHistogramLength > 0 ) 
 		{
-			generalManager.logMsg(
-					"GLCanvasIsosurface3D.setTargetSetId(" +
-					iTargetCollectionSetId + ") skip isovalue (not implemented yet!",
-					LoggerType.STATUS );
+//			generalManager.logMsg(
+//					"GLCanvasIsosurface3D.setTargetSetId(" +
+//					iTargetCollectionSetId + ") skip isovalue (not implemented yet!",
+//					LoggerType.STATUS );
 			
 			//createIsoSurface( iCurrentHistogramLength );
 		}
@@ -270,8 +270,8 @@ extends AGLCanvasUser
 
 	public void destroyGLCanvas()
 	{
-		generalManager.logMsg( "GLCanvasHistogram2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId ,
-				LoggerType.STATUS );
+//		generalManager.logMsg( "GLCanvasHistogram2D.destroy(GLCanvas canvas)  id=" + this.iUniqueId ,
+//				LoggerType.STATUS );
 	}
   
   public void setIsoValue( final int iSetLegth ) {

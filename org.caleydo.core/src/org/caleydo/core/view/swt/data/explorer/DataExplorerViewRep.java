@@ -212,9 +212,9 @@ implements IView, IMediatorReceiver {
 									currentSetModel.add(currentStorageModel);
 								} else
 								{
-									generalManager.logMsg(
-													"Error in DataExplorerViewRep currentStorage==null!",
-													LoggerType.MINOR_ERROR);
+//									generalManager.logMsg(
+//													"Error in DataExplorerViewRep currentStorage==null!",
+//													LoggerType.MINOR_ERROR);
 								}
 							}
 						} catch (Exception e)
@@ -333,9 +333,9 @@ implements IView, IMediatorReceiver {
 		
 		//int triggerId = ((IVirtualArray) eventTrigger).getId();
 		
-		generalManager.logMsg(
-				"Data Explorer update called by " + eventTrigger.getClass().getSimpleName(),
-				LoggerType.VERBOSE);
+//		generalManager.logMsg(
+//				"Data Explorer update called by " + eventTrigger.getClass().getSimpleName(),
+//				LoggerType.VERBOSE);
 
 		//treeViewer.setInput(getInitalInput());
 		//refDataTableViewRep.updateSelection(triggerId);
@@ -354,10 +354,10 @@ implements IView, IMediatorReceiver {
 		
 		final ISetSelection refSetSelection = (ISetSelection)updatedSet;
 		
-		generalManager.logMsg(
-				"Data Explorer selection update called by " 
-				+ eventTrigger.getClass().getSimpleName(),
-				LoggerType.VERBOSE);
+//		generalManager.logMsg(
+//				"Data Explorer selection update called by " 
+//				+ eventTrigger.getClass().getSimpleName(),
+//				LoggerType.VERBOSE);
 		
 		refSWTContainer.getDisplay().asyncExec(new Runnable() {
 			public void run() {

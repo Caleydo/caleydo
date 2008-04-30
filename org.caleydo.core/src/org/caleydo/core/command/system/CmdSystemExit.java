@@ -34,7 +34,7 @@ implements ICommand {
 	 */
 	public void doCommand() throws CaleydoRuntimeException {
 		
-		generalManager.logMsg("CmdSystemExit.doCommand(): shut down application.", LoggerType.FULL);	
+//		generalManager.logMsg("CmdSystemExit.doCommand(): shut down application.", LoggerType.FULL);	
 		System.exit( 0 );
 	}
 

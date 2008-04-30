@@ -2,21 +2,17 @@ package org.caleydo.core.util.mapping;
 
 import gleem.linalg.Vec3f;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.logging.Level;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.util.graph.EGraphItemProperty;
-
 
 public class GenomeMapper_ENZYME_2_NCBI_GENEID_2_ACCESSION_2_MICROARRAY_EXPRESSION_STORAGE_INDEX 
 extends AGenomeMapper{
@@ -110,11 +106,10 @@ extends AGenomeMapper{
 				
 				int [] bufferIntArray = refExpressionStorage.getArrayInt();
 				
-				if ( bufferIntArray == null ) {
-					this.generalManager.logMsg("color mapping failed, Storage=[" +
-							refExpressionStorage.getLabel() + "][" +
-							refExpressionStorage.toString() +
-							"] does not contain int[]!",LoggerType.ERROR);
+				if ( bufferIntArray == null ) 
+				{
+					generalManager.getLogger().log(Level.SEVERE, 
+						"Color mapping failed!");
 				}
 				
 				while (iterTmpAccessionId.hasNext())

@@ -65,10 +65,10 @@ extends ACmdCreate_IdTargetLabelParentXY {
 
 		} catch (Exception e)
 		{
-			generalManager.logMsg(
-					this.getClass().getSimpleName() + 
-					": doCommand(): Invalid view ID. Requested view is not a browser!",
-					LoggerType.MINOR_ERROR );
+//			generalManager.logMsg(
+//					this.getClass().getSimpleName() + 
+//					": doCommand(): Invalid view ID. Requested view is not a browser!",
+//					LoggerType.MINOR_ERROR );
 			
 			e.printStackTrace();
 		} 

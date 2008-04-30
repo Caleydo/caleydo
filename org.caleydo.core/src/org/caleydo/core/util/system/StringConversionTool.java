@@ -1,34 +1,18 @@
-/**
- * 
- */
 package org.caleydo.core.util.system;
 
 import java.util.StringTokenizer;
+import java.util.logging.Level;
 
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
-
-//import org.caleydo.core.util.exception.CaleydoRuntimeException;
-//import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
  * Conversion of String to int and boolean using default values, 
- * in case conversion failes.
+ * in case conversion fails.
  * 
  * @author Michael Kalkusch
  */
 public final class StringConversionTool
 {
-
-	/**
-	 * Hidden constructor
-	 */
-	private StringConversionTool()
-	{
-		
-	}
-
 	/**
 	 * Convert String to int.
 	 * 
@@ -57,7 +41,7 @@ public final class StringConversionTool
 	 * @return converted int or default value, if (String) could not be converted to (int).
 	 */
 	public static final int convertStringToInt( 
-			final ILoggerManager generalManager,
+			final IGeneralManager generalManager,
 			final String sInput, 
 			final int iDefault ) {
 		try {
@@ -65,10 +49,10 @@ public final class StringConversionTool
 		}
 		catch ( NumberFormatException nfe ) 
 		{			
-			generalManager.logMsg( "convertStringToInt( " +
+			generalManager.getLogger().logp(Level.FINE, "StringConversionTool", 
+					"convertStringToInt", "convertStringToInt( " +
 					sInput + ") invalid String, use default=[" +
-					iDefault + "]",
-					LoggerType.VERBOSE );
+					iDefault + "]");
 			return iDefault; 
 		}
 	}
@@ -213,7 +197,7 @@ public final class StringConversionTool
 	 * @return a new array of int[]
 	 */
 	public static final int[] convertStringToIntArray(
-			final ILoggerManager generalManager,
+			final IGeneralManager generalManager,
 			final String sInput, 
 			final int iDimension ) {
 		
@@ -230,9 +214,11 @@ public final class StringConversionTool
 		{
 			if ( i >= iDimension )
 			{
-				generalManager.logMsg( "parsing [" + sInput + "] should contain [" + 
-						iDimension + "] values. Skip remaining values!",
-						LoggerType.VERBOSE );
+				generalManager.getLogger().logp(Level.FINE, "StringConversionTool", 
+						"convertStringToIntArray", 
+						"parsing [" + sInput + "] should contain [" + 
+						iDimension + "] values. Skip remaining values!");
+			
 				break;
 			}
 			
@@ -241,9 +227,11 @@ public final class StringConversionTool
 		}
 		
 		if ( i < iDimension ) {
-			generalManager.logMsg( "parsing [" + sInput + "] should contain [" + 
-					iDimension + "] values. use valeu '0' for remaining values!",
-					LoggerType.VERBOSE );
+
+			generalManager.getLogger().logp(Level.FINE, "StringConversionTool", 
+					"convertStringToIntArray", 
+					 "parsing [" + sInput + "] should contain [" + 
+						iDimension + "] values. use valeu '0' for remaining values!");
 		}
 		
 		return resultIntArray;		
@@ -299,7 +287,7 @@ public final class StringConversionTool
 	 * @return a new array of int[]
 	 */
 	public static final int[] convertStringToIntArray(
-			final ILoggerManager generalManager,
+			final IGeneralManager generalManager,
 			final String sInput, 
 			final int iDimension,
 			final int[] iDefaultArray ) {
@@ -315,11 +303,13 @@ public final class StringConversionTool
 		{
 			if ( i >= iDimension )
 			{
-				generalManager.logMsg("convertStringToIntArray() Skip remaining tokens in array [" +
+				generalManager.getLogger().logp(Level.FINE, "StringConversionTool", 
+						"convertStringToIntArray", 
+						"Skip remaining tokens in array [" +
 						sInput + 
 						"] result=[" +
-						resultIntArray.toString() + "]",
-						LoggerType.STATUS );
+						resultIntArray.toString() + "]");
+				
 				break;
 			}
 			
@@ -345,7 +335,7 @@ public final class StringConversionTool
 	 * @return a new array of int[]
 	 */
 	public static final int[] convertStringToIntArrayVariableLength(
-			final ILoggerManager generalManager,
+			final IGeneralManager generalManager,
 			final String sInput,
 			final String sDelimiter ) { 
 		
@@ -356,8 +346,8 @@ public final class StringConversionTool
 		
 		if ( resultIntArray.length < 1 ) 
 		{
-			generalManager.logMsg("Can not read int[] array with length 0!",
-					LoggerType.MINOR_ERROR ); 
+			generalManager.getLogger().logp(Level.WARNING, "StringConversionTool", 
+					"convertStringToIntArrayVaraibleLength", "Can not read int[] array with length 0!"); 
 		}
 		
 		for ( int i=0; tokenize.hasMoreTokens(); i++ ) 
@@ -371,7 +361,7 @@ public final class StringConversionTool
 	}
 	
 	/**
-	 * Convert a String sInput into an array of intergers.
+	 * Convert a String sInput into an array of integers.
 	 * The Int array size is asigns dynamically depending on the size of provided integer values inside the string sInput.
 	 * If number of integer values in sInput is smaller than iDimension the remaining values are "0".
 	 * Also if a non-integer value is found it is replaced by "0".
@@ -476,5 +466,4 @@ public final class StringConversionTool
 		
 		return resultArray;
 	}
-	
 }

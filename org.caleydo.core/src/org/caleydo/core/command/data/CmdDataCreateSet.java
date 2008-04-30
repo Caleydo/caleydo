@@ -1,37 +1,33 @@
 package org.caleydo.core.command.data;
 
-import java.util.LinkedList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.StringTokenizer;
 import java.util.Vector;
-
-
-import org.caleydo.core.data.collection.IVirtualArray;
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.SetDataType;
-import org.caleydo.core.data.collection.SetType;
+import java.util.logging.Level;
 
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttr;
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.data.collection.SetDataType;
+import org.caleydo.core.data.collection.SetType;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
-import org.caleydo.core.manager.data.IVirtualArrayManager;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.data.IStorageManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-
-
+import org.caleydo.core.manager.data.IVirtualArrayManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Command, creates a new storage.
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
- * @see org.caleydo.core.data.collection.IStorage
  */
 public class CmdDataCreateSet 
 extends ACmdCreate_IdTargetLabelAttr {
@@ -62,15 +58,6 @@ extends ACmdCreate_IdTargetLabelAttr {
 	 */
 	protected LinkedList< LinkedList<String> > llRefVirtualArray_nDim;
 	
-		
-	/**
-	 * Define if data from llDataRaw and llDataTypes shall be removed after
-	 * executing this command.
-	 * 
-	 * Default TRUE
-	 */
-	private final boolean bDisposeDataAfterDoCommand;
-	
 	/**
 	 * Constructor.
 	 */
@@ -83,15 +70,11 @@ extends ACmdCreate_IdTargetLabelAttr {
 				refCommandManager,
 				refCommandQueueSaxType);
 		
-		this.bDisposeDataAfterDoCommand = bDisposeDataAfterDoCommand;
-		
 		llRefStorage_nDim 	= new LinkedList< LinkedList<String> > ();
 		llRefVirtualArray_nDim 	= new LinkedList< LinkedList<String> > ();
 		
 		setType = SetType.SET_NONE;
 	}
-	
-
 	
 	private void wipeLinkedLists() 
 	{
@@ -106,8 +89,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 		{
 			llRefStorage_nDim.clear();
 		}
-	}
-	
+	}	
 
 //	private boolean assingLinearSet( ISet newObject )
 //	{
@@ -203,10 +185,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 		if (( llRefStorage_nDim.isEmpty() )||
 				( llRefVirtualArray_nDim.isEmpty()))
 		{
-			generalManager.logMsg(
-					"CmdDataCreateSet.setAttributes().assingPlanarOrMultiDimensionalSet() not sufficient data available!",
-					LoggerType.MINOR_ERROR );
-			
+			generalManager.getLogger().log(Level.SEVERE, "Not efficient data available for creating storage.");			
 			return false;
 		}
 		
@@ -263,11 +242,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 				 */
 				if ( vecVirtualArray.isEmpty() )
 				{
-					generalManager.logMsg( this.getClass().getSimpleName() + 
-							" parsing; VirtualArray[" + iIndexDimensionVirtualArray +
-							"] contains no data! This is most probably a miss configuration! uniqueId=[" +
-							newObject.getId() + "]", 
-							LoggerType.MINOR_ERROR_XML);
+					generalManager.getLogger().log(Level.WARNING, "Virtual array contains no data!");	
 				}
 				
 				newObject.setVirtualArrayByDim( vecVirtualArray,
@@ -307,11 +282,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 				 */
 				if ( vecStorage.isEmpty() )
 				{
-					generalManager.logMsg( this.getClass().getSimpleName() + 
-							" parsing; Storage[" + iIndexDimensionVirtualArray +
-							"] contains no data! This is most probably a miss configuration! uniqueId=[" +
-							newObject.getId() + "]", 
-							LoggerType.MINOR_ERROR_XML);
+					generalManager.getLogger().log(Level.WARNING, "Storage array contains no data!");
 				}
 				newObject.setStorageByDim( vecStorage,
 						iIndexDimensionStorage );				
@@ -322,17 +293,17 @@ extends ACmdCreate_IdTargetLabelAttr {
 				 */
 				if ( vecStorage.size() != vecVirtualArray.size() )
 				{
-					generalManager.logMsg(
-							"SET: #storages=" +
-							ll_Storage_1dim.size() + 
-							" differs from #VirtualArrays=" +
-							ll_VirtualArray_1dim.size() + 
-							"; storage=[" +	
-							ll_Storage_1dim.toString() +
-							"] VirtualArray=[" +
-							ll_VirtualArray_1dim.toString() +
-							"]",
-							LoggerType.VERBOSE );
+//					generalManager.logMsg(
+//							"SET: #storages=" +
+//							ll_Storage_1dim.size() + 
+//							" differs from #VirtualArrays=" +
+//							ll_VirtualArray_1dim.size() + 
+//							"; storage=[" +	
+//							ll_Storage_1dim.toString() +
+//							"] VirtualArray=[" +
+//							ll_VirtualArray_1dim.toString() +
+//							"]",
+//							LoggerType.VERBOSE );
 					
 //					bErrorWhileParsing = true;
 					
@@ -355,33 +326,33 @@ extends ACmdCreate_IdTargetLabelAttr {
 			 * Consistency check..
 			 */
 			if ( iter_VirtualArray_nDim.hasNext() ) {
-				generalManager.logMsg(
-						"SET: WARNING: there are more VirtualArray-is's available, than storage-id's, skip remainig VirtualArray-is's.",
-						LoggerType.VERBOSE );
+//				generalManager.logMsg(
+//						"SET: WARNING: there are more VirtualArray-is's available, than storage-id's, skip remainig VirtualArray-is's.",
+//						LoggerType.VERBOSE );
 			} 
 			else
 			{
 				if ( iter_Storage_nDim.hasNext() ) {
-				generalManager.logMsg(
-						"SET: WARNING: there are more storage-id's available, than VirtualArray-id's, skip remainig storage-id's.",
-						LoggerType.VERBOSE );
+//				generalManager.logMsg(
+//						"SET: WARNING: there are more storage-id's available, than VirtualArray-id's, skip remainig storage-id's.",
+//						LoggerType.VERBOSE );
 			} 
 			}
 			
 			if ( iIndexDimensionStorage != iIndexDimensionVirtualArray)
 			{
-				generalManager.logMsg(
-						"SET: dimension(storage) != dimension(VirtualArray) ",
-						LoggerType.VERBOSE );
+//				generalManager.logMsg(
+//						"SET: dimension(storage) != dimension(VirtualArray) ",
+//						LoggerType.VERBOSE );
 				
 				bErrorWhileParsing = true;
 			}
 			
 			if ( bErrorWhileParsing ) 
 			{
-				generalManager.logMsg(
-						"SET: error while parsing!",
-						LoggerType.MINOR_ERROR );
+//				generalManager.logMsg(
+//						"SET: error while parsing!",
+//						LoggerType.MINOR_ERROR );
 				return false;
 			}
 			
@@ -390,10 +361,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 		} 
 		catch (NumberFormatException nfe) 
 		{
-			generalManager.logMsg(
-					"error while creation of ISet! " + 
-					nfe.toString(),
-					LoggerType.ERROR );
+			generalManager.getLogger().log(Level.SEVERE, "Problem while creating set!", nfe);
 		}
 		
 		return true;
@@ -431,22 +399,14 @@ extends ACmdCreate_IdTargetLabelAttr {
 			break;
 			
 		case SET_MULTI_DIM_VARIABLE:
-		case SET_CUBIC:
-			generalManager.logMsg(
-					"CmdDataCreateSet.doCommand() known type=[" +
-					setDataType + "] but yet now usb-class exists",
-					LoggerType.VERBOSE );
-			
+		case SET_CUBIC:		
 		default:
-			generalManager.logMsg(
-						"CmdDataCreateSet.doCommand() failed because type=[" +
-						setDataType + "] is not supported!",
-						LoggerType.ERROR );
+			generalManager.getLogger().log(Level.SEVERE, 
+					"Cannot create set because type=!" +setDataType + " is not supported yet!");
 			return;
 		}
 				
 		newObject.setLabel( sLabel );
-		
 		
 		/**
 		 * Register Set...
@@ -456,27 +416,13 @@ extends ACmdCreate_IdTargetLabelAttr {
 				newObject.getId(),
 				newObject.getBaseType() );
 		
-		generalManager.logMsg(
-				"SET: " +
-				newObject.getClass().getSimpleName() + 
-				" done; " + 
-				newObject.toString() ,
-				LoggerType.FULL );
-		
+		generalManager.getLogger().log(Level.INFO, "New Set with ID " +iUniqueId +" created.");
 
-		generalManager.logMsg( 
-				"DO new SET: " + 
-				iUniqueId,
-				LoggerType.VERBOSE );
-		
 //		// Set detailed set data type
 //		newObject.set(setDetailedDataType);
 		
 		refCommandManager.runDoCommand(this);
 	}
-
-
-	
 	
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.command.ICommand#undoCommand()
@@ -486,15 +432,8 @@ extends ACmdCreate_IdTargetLabelAttr {
 				iUniqueId,
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		
-		generalManager.logMsg( 
-				"UNDO new SEL: " + 
-				iUniqueId,
-				LoggerType.MINOR_ERROR);
-		
 		refCommandManager.runUndoCommand(this);
 	}
-	
-
 	
 	/**
 	 * 
@@ -512,28 +451,9 @@ extends ACmdCreate_IdTargetLabelAttr {
 		 */
 		wipeLinkedLists();
 		
-//		/**
-//		 * Read TAG_ATTRIBUTE1 "attrib1" for storage!
-//		 */		
-//		String sDetail = 
-//			refParameterHandler.getValueString( 
-//					CommandQueueSaxType.TAG_DETAIL.getXmlKey() );
-//	
-//		if ( sDetail.length() > 0 ) {
-//			try 
-//			{
-//				setDataType = SetDataType.valueOf( sDetail );
-//			}
-//			catch ( IllegalArgumentException iae )
-//			{
-//				setDataType = SetDataType.getDefault();
-//			}
-//		}
-		
 		/**
 		 * Separate "text1@text2"
 		 */
-		
 		StringTokenizer strToken_VirtualArrayBlock = 
 			new StringTokenizer( 
 					refParameterHandler.getValueString( 
@@ -569,11 +489,9 @@ extends ACmdCreate_IdTargetLabelAttr {
 			}
 			else
 			{
-				generalManager.logMsg(
-						"CmdDataCreateSet.setAttributes() empty token inside [" +
-						CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() + "]='" +
-						strToken_VirtualArrayBlock.toString() + "'",
-						LoggerType.STATUS );
+				generalManager.getLogger().log(Level.SEVERE, 
+						"Error in provided list of virtual arrays during creation of set.");
+				
 				bErrorOnLoadingXMLData = true;
 			}
 			
@@ -623,27 +541,22 @@ extends ACmdCreate_IdTargetLabelAttr {
 			}
 			else
 			{
-				generalManager.logMsg(
-						"CmdDataCreateSet.setAttributes() empty token inside [" +
-						CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey() + "]='" +
-						strToken_StorageBlock.toString() + "'",
-						LoggerType.STATUS );
+				generalManager.getLogger().log(Level.SEVERE, 
+					"Error in provided list of storages during creation of set.");
+				
 				bErrorOnLoadingXMLData = true;
 			}
 			
 		} // while ( strToken_VirtualArrayBlock.hasMoreTokens() ) 
 		
-		
-		
 		if ( bErrorOnLoadingXMLData ) 
 		{
-			generalManager.logMsg(
-					"CmdDataCreateSet.setAttributes() empty token! skip line!",
-					LoggerType.MINOR_ERROR );
+			generalManager.getLogger().log(Level.SEVERE, 
+				"Empty token detected during creation of set.");
+			
 			bErrorOnLoadingXMLData = true;
 			
-			wipeLinkedLists();
-			
+			wipeLinkedLists();	
 		}
 		
 		/**
@@ -670,23 +583,12 @@ extends ACmdCreate_IdTargetLabelAttr {
 		iUniqueId = iSetId;
 		this.setType = setType;
 		
+		
+		
 		/**
 		 * Wipe all lists
 		 */
 		wipeLinkedLists();
-		
-		/**
-		 * Read TAG_ATTRIBUTE1 "attrib1" for storage!
-		 */
-		
-		/**
-		String sDetail = 
-			refParameterHandler.getValueString( 
-					CommandQueueSaxType.TAG_DETAIL.getXmlKey() );
-	
-		if ( sDetail.length() > 0 ) {
-			this.setDataType = CommandQueueSaxType.valueOf( sDetail );
-		}
 		
 		/**
 		 * Separate "text1@text2"
@@ -725,11 +627,8 @@ extends ACmdCreate_IdTargetLabelAttr {
 			}
 			else
 			{
-				generalManager.logMsg(
-						"CmdDataCreateSet.setAttributes() empty token inside [" +
-						CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() + "]='" +
-						strToken_VirtualArrayBlock.toString() + "'",
-						LoggerType.STATUS );
+				generalManager.getLogger().log(Level.SEVERE, 
+					"Error in provided list of virtual arrays during creation of set.");
 			}
 			
 		} // while ( strToken_VirtualArrayBlock.hasMoreTokens() )
@@ -776,11 +675,8 @@ extends ACmdCreate_IdTargetLabelAttr {
 			}
 			else
 			{
-				generalManager.logMsg(
-						"CmdDataCreateSet.setAttributes() empty token inside [" +
-						CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey() + "]='" +
-						strToken_StorageBlock.toString() + "'",
-						LoggerType.STATUS );
+				generalManager.getLogger().log(Level.SEVERE, 
+					"Error in provided list of storages during creation of set.");
 			}
 			
 		} // while ( strToken_VirtualArrayBlock.hasMoreTokens() ) 
@@ -802,5 +698,4 @@ extends ACmdCreate_IdTargetLabelAttr {
 		
 		return result;
 	}
-
 }

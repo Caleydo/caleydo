@@ -1,6 +1,7 @@
 package org.caleydo.core.manager;
 
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
+import java.util.logging.Logger;
+
 import org.caleydo.core.manager.data.IGenomeIdManager;
 import org.caleydo.core.manager.data.IPathwayItemManager;
 import org.caleydo.core.manager.data.IPathwayManager;
@@ -169,8 +170,6 @@ public interface IGeneralManager {
 
 	public abstract ICommandManager getCommandManager();
 
-	public abstract ILoggerManager getLoggerManager();
-
 	public abstract ISWTGUIManager getSWTGUIManager();
 	
 	public abstract IViewGLCanvasManager getViewGLCanvasManager();
@@ -196,10 +195,8 @@ public interface IGeneralManager {
 	public abstract int getNetworkPostfix();
 	
 	/**
-	 * @see org.caleydo.core.manager.ILoggerManager#logMsg(String, LoggerType)
-	 * 
-	 * @param info log message
-	 * @param logLevel type of message
+	 * Returns the logger.
+	 * @return logger
 	 */
-	public abstract void logMsg( final String info, final LoggerType logLevel );
+	public abstract Logger getLogger();
 }

@@ -4,8 +4,8 @@ import java.util.Iterator;
 
 import javax.media.opengl.GLEventListener;
 
-import org.caleydo.core.view.jogl.JoglCanvasForwarder;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 import org.caleydo.rcp.views.AGLViewPart;
 import org.caleydo.rcp.views.GLHeatmap2DView;
@@ -61,7 +61,7 @@ extends WorkbenchAdvisor {
 		Iterator<GLEventListener> iterGLEventListener = Application.generalManager
 			.getViewGLCanvasManager().getAllGLEventListeners().iterator();
 		
-		JoglCanvasForwarder tmpCanvasForwarder;
+		GLCaleydoCanvas tmpCanvasForwarder;
 		GLEventListener tmpGLEventListener;
 		int iInstanceNum = 0;
 		AGLViewPart viewPart = null;

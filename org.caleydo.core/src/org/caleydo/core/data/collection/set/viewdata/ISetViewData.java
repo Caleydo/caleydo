@@ -5,7 +5,7 @@ package org.caleydo.core.data.collection.set.viewdata;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.view.camera.IViewCamera;
-import org.caleydo.core.view.jogl.IJoglMouseListener;
+import org.caleydo.core.view.opengl.IJoglMouseListener;
 
 /**
  * Create a Set that also is a IJoglMouseListener.

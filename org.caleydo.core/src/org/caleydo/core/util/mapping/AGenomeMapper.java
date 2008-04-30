@@ -4,6 +4,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Level;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
@@ -13,7 +14,6 @@ import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.data.IGenomeIdManager;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 
@@ -137,11 +137,10 @@ public abstract class AGenomeMapper {
 			
 			float[] bufferFloatArray = refExpressionStorage.getArrayFloat();
 			
-			if ( bufferFloatArray == null ) {
-				this.generalManager.logMsg("color mapping failed, Storage=[" +
-						refExpressionStorage.getLabel() + "][" +
-						refExpressionStorage.toString() +
-						"] does not contain float[]!",LoggerType.ERROR);
+			if ( bufferFloatArray == null ) 
+			{
+				generalManager.getLogger().log(Level.SEVERE, 
+					"Color mapping failed!.");
 			}
 						
 			float fExpressionValue = bufferFloatArray[iExpressionStorageIndex];	

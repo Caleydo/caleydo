@@ -208,12 +208,12 @@ extends ACommand {
 			{
 				if (( iArrayStartStop[0] > iArrayStartStop[1] )&&
 						( iArrayStartStop[1] != -1 )) {
-					generalManager.logMsg(
-							"CmdSystemLoadFileLookupTable ignore stop index=(" + 
-							iArrayStartStop[1]  + 
-							"), because it is smaller than start index (" + 
-							iArrayStartStop[0] + ") !",
-							LoggerType.STATUS );
+//					generalManager.logMsg(
+//							"CmdSystemLoadFileLookupTable ignore stop index=(" + 
+//							iArrayStartStop[1]  + 
+//							"), because it is smaller than start index (" + 
+//							iArrayStartStop[0] + ") !",
+//							LoggerType.STATUS );
 					return;
 				}
 				iStopPareseFileAtLine = iArrayStartStop[1];
@@ -231,16 +231,16 @@ extends ACommand {
 	 */
 	public void doCommand() throws CaleydoRuntimeException {
 		
-		generalManager.logMsg(
-	    		"load file via importer... ([" +
-				sFileName + "]",
-				LoggerType.STATUS );
+//		generalManager.logMsg(
+//	    		"load file via importer... ([" +
+//				sFileName + "]",
+//				LoggerType.STATUS );
 		
-		generalManager.logMsg(
-	    		"load file via importer: [LUT-tpye:[" +
-				sLookupTableType + "]  cast=[" + 
-				iTargetSetId + "])",
-				LoggerType.VERBOSE );
+//		generalManager.logMsg(
+//	    		"load file via importer: [LUT-tpye:[" +
+//				sLookupTableType + "]  cast=[" + 
+//				iTargetSetId + "])",
+//				LoggerType.VERBOSE );
 		
 		LookupTableLoaderProxy loader = null;
 		
@@ -407,9 +407,9 @@ extends ACommand {
 			
 			e.printStackTrace();
 			
-			generalManager.logMsg(
-					errorMsg,
-					LoggerType.ERROR );
+//			generalManager.logMsg(
+//					errorMsg,
+//					LoggerType.ERROR );
 		} // catch
 		finally 
 		{

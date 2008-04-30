@@ -2,17 +2,18 @@ package org.caleydo.core.manager.general;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager;
 import org.caleydo.core.manager.IManager;
 import org.caleydo.core.manager.IMementoManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
 import org.caleydo.core.manager.IXmlParserManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.command.CommandManager;
 import org.caleydo.core.manager.data.IGenomeIdManager;
 import org.caleydo.core.manager.data.IPathwayItemManager;
@@ -28,7 +29,6 @@ import org.caleydo.core.manager.data.storage.StorageManager;
 import org.caleydo.core.manager.data.virtualarray.VirtualArrayManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.gui.SWTGUIManager;
-import org.caleydo.core.manager.logger.ConsoleLogger;
 import org.caleydo.core.manager.memento.MementoManager;
 import org.caleydo.core.manager.parser.XmlParserManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
@@ -60,9 +60,7 @@ implements IGeneralManager
 	protected ISetManager refSetManager;
 	
 	protected ICommandManager refCommandManager;
-	
-	protected ILoggerManager generalManager;
-	
+
 	protected ISWTGUIManager refSWTGUIManager;
 	
 	protected IViewGLCanvasManager refViewGLCanvasManager;
@@ -77,7 +75,8 @@ implements IGeneralManager
 	
 	protected IGenomeIdManager refGenomeIdManager;
 	
-	protected ILoggerManager refLoggerManager;
+	private Logger logger;
+	private FileHandler loggerFileHandler;
 	
 	/**
 	 * Unique Id per each application over the network.
@@ -101,6 +100,7 @@ implements IGeneralManager
 		
 		llAllManagerObjects = new ArrayList<IManager>();
 		
+		initLogger();
 		initManager();
 	}
 
@@ -118,11 +118,6 @@ implements IGeneralManager
 		}
 		
 		bAllManagersInitialized = true;
-
-		refLoggerManager = new ConsoleLogger(this);
-		refLoggerManager.setSystemLogLevel( 
-				// ILoggerManager.LoggerType.FULL );
-				ILoggerManager.LoggerType.VERBOSE );
 
 		refStorageManager = new StorageManager(this, 4);
 		refVirtualArrayManager = new VirtualArrayManager(this, 4);
@@ -152,9 +147,25 @@ implements IGeneralManager
 		llAllManagerObjects.add(refSWTGUIManager);
 		llAllManagerObjects.add(refCommandManager);
 		llAllManagerObjects.add(refMementoManager);
-		llAllManagerObjects.add(refLoggerManager);
 	}
 
+	/**
+	 * Initialize the Java internal logger
+	 */
+	private void initLogger() {
+		
+		logger = Logger.getLogger("Caleydo Log");
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IGeneralManager#getLogger()
+	 */
+	public final Logger getLogger() {
+		return logger;
+	}
+
+	
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.data.manager.GeneralManager#hasItem(int)
 	 */
@@ -255,7 +266,7 @@ implements IGeneralManager
 	
 	public void destroyOnExit() {
 		
-		generalManager.logMsg("OneForAllManager.destroyOnExit()", LoggerType.STATUS );
+//		generalManager.logMsg("OneForAllManager.destroyOnExit()", LoggerType.STATUS );
 		
 		this.refViewGLCanvasManager.destroyOnExit();
 		
@@ -271,7 +282,7 @@ implements IGeneralManager
 			
 		} // while ( iter.hasNext() ) 
 		
-		generalManager.logMsg("OneForAllManager.destroyOnExit()  ...[DONE]", LoggerType.STATUS);
+		logger.log(Level.FINE, "OneForAllManager.destroyOnExit()  ...[DONE]");
 	}
 
 //	public boolean setCreateNewId(ManagerType setNewBaseType, int iCurrentId) {
@@ -299,11 +310,7 @@ implements IGeneralManager
 		throw new RuntimeException("SIngeltonManager.setNetworkPostfix() exceeded range [0.." +
 				IGeneralManager.iUniqueId_WorkspaceOffset + "] ");
 	}
-
-	public final void logMsg( final String info, final LoggerType logLevel) {
-		refLoggerManager.logMsg( info, logLevel );		
-	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IGeneralManager#getMementoManager()
@@ -376,14 +383,6 @@ implements IGeneralManager
 	 */
 	public IEventPublisher getEventPublisher() {
 		return refEventPublisher;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#getLoggerManager()
-	 */
-	public ILoggerManager getLoggerManager() {
-		return this.generalManager;
 	}
 
 	/*

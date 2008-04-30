@@ -265,10 +265,10 @@ extends APathwayGraphViewRep {
 
 					if (sLink == null || sLink.equals(""))
 					{
-						generalManager.logMsg(
-							this.getClass().getSimpleName()
-							+ ":mousePressed(): No pathway link is available for that clicked point. Click ignored.",
-							LoggerType.VERBOSE);
+//						generalManager.logMsg(
+//							this.getClass().getSimpleName()
+//							+ ":mousePressed(): No pathway link is available for that clicked point. Click ignored.",
+//							LoggerType.VERBOSE);
 
 						return;
 					}
@@ -674,9 +674,9 @@ extends APathwayGraphViewRep {
 
 		} catch (NullPointerException npe)
 		{
-			generalManager
-					.logMsg("Error while rendering JGraph part!",
-							LoggerType.ERROR);
+//			generalManager
+//					.logMsg("Error while rendering JGraph part!",
+//							LoggerType.ERROR);
 
 			System.out.println("PathwayGraphViewRep.finishGraphBuilding() ERROR! : " + vecVertices.toString());
 
@@ -964,9 +964,9 @@ extends APathwayGraphViewRep {
 					.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.KEGG)
 							.getImagePath() + sPathwayImageFilePath + ".gif";
 
-			generalManager.logMsg(
-					"Load background pathway from file: "
-							+ sPathwayImageFilePath, LoggerType.VERBOSE);
+//			generalManager.logMsg(
+//					"Load background pathway from file: "
+//							+ sPathwayImageFilePath, LoggerType.VERBOSE);
 
 			// Set background image
 			if (this.getClass().getClassLoader().getResource(sPathwayImageFilePath) != null)
@@ -1037,9 +1037,9 @@ extends APathwayGraphViewRep {
 
 	public void loadBackgroundOverlayImage(String sPathwayImageFilePath) {
 
-		generalManager.logMsg(
-				"Load background pathway image from file: "
-						+ sPathwayImageFilePath, LoggerType.VERBOSE);
+//		generalManager.logMsg(
+//				"Load background pathway image from file: "
+//						+ sPathwayImageFilePath, LoggerType.VERBOSE);
 
 		// Set background image
 		refPathwayGraph.setBackgroundImage(new ImageIcon(sPathwayImageFilePath));
@@ -1081,8 +1081,8 @@ extends APathwayGraphViewRep {
 			return;
 		}
 
-		generalManager.logMsg("no valid Set",
-				LoggerType.ERROR);
+//		generalManager.logMsg("no valid Set",
+//				LoggerType.ERROR);
 	}
 
 	/**
@@ -1124,9 +1124,9 @@ extends APathwayGraphViewRep {
 			
 		}catch (StringIndexOutOfBoundsException e) {
 			
-			generalManager.logMsg(
-					this.getClass().getSimpleName() + ": ERROR! Can not convert String to Integer! " 
-					+ e.toString(), LoggerType.ERROR);
+//			generalManager.logMsg(
+//					this.getClass().getSimpleName() + ": ERROR! Can not convert String to Integer! " 
+//					+ e.toString(), LoggerType.ERROR);
 			
 			try {
 				refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
@@ -1143,10 +1143,10 @@ extends APathwayGraphViewRep {
 			}
 				catch (SWTException swte) 
 			{
-					generalManager.logMsg(
-							this.getClass().getSimpleName() + 
-							": error while setURL ["+sUrl + "]", 
-							LoggerType.STATUS );
+//					generalManager.logMsg(
+//							this.getClass().getSimpleName() + 
+//							": error while setURL ["+sUrl + "]", 
+//							LoggerType.STATUS );
 			}
 				
 			return false;
@@ -1175,10 +1175,10 @@ extends APathwayGraphViewRep {
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 
-		generalManager.logMsg(
-				"2D Pathway update called by "
-						+ eventTrigger.getClass().getSimpleName(),
-				LoggerType.VERBOSE);
+//		generalManager.logMsg(
+//				"2D Pathway update called by "
+//						+ eventTrigger.getClass().getSimpleName(),
+//				LoggerType.VERBOSE);
 
 		ISetSelection refSetSelection = (ISetSelection) updatedSet;
 

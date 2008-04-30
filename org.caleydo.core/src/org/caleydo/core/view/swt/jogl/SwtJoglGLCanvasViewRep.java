@@ -85,10 +85,10 @@ extends AViewRep {
 	
 
 	public void destroyDirector() {
-		
-		generalManager.logMsg("SwtJoglCanvasViewRep.destroyDirector()  id=" +
-				iUniqueId,
-				LoggerType.STATUS );
+//		
+//		generalManager.logMsg("SwtJoglCanvasViewRep.destroyDirector()  id=" +
+//				iUniqueId,
+//				LoggerType.STATUS );
 	}
 
 	
@@ -103,9 +103,9 @@ extends AViewRep {
 	}
 	
 	public void drawView() {
-		 generalManager.logMsg(
-					"SwtJoglGLCanvasViewRep.drawView() [" + 
-					this.iUniqueId + "]"
-					,LoggerType.VERBOSE );
+//		 generalManager.logMsg(
+//					"SwtJoglGLCanvasViewRep.drawView() [" + 
+//					this.iUniqueId + "]"
+//					,LoggerType.VERBOSE );
 	}
 }

@@ -224,9 +224,9 @@ implements IMementoXML, IParserObject {
 		if ( iStartParsingAtLine > iStopParsingAtLine )
 		{
 			this.iStopParsingAtLine = Integer.MAX_VALUE;
-			generalManager.logMsg(
-					"AMicroArrayLoader.setStartParsingStopParsingAtLine() stop index is smaller than start index. set stop index to end of file!",
-					LoggerType.MINOR_ERROR );			
+//			generalManager.logMsg(
+//					"AMicroArrayLoader.setStartParsingStopParsingAtLine() stop index is smaller than start index. set stop index to end of file!",
+//					LoggerType.MINOR_ERROR );			
 			return;
 		}		
 		this.iStopParsingAtLine = iStopParsingAtLine;
@@ -282,20 +282,20 @@ implements IMementoXML, IParserObject {
 		    brFile.close();
 		}
 		catch (IOException ioe) {
-			generalManager.logMsg(
-					"AbstractLoader: IO-error line=[" + iLineInFile +
-					"] while testing file: " + ioe.toString(),
-					LoggerType.MINOR_ERROR );
+//			generalManager.logMsg(
+//					"AbstractLoader: IO-error line=[" + iLineInFile +
+//					"] while testing file: " + ioe.toString(),
+//					LoggerType.MINOR_ERROR );
 		    
 			 iLinesInFileToBeRead = -1;
 		    return -1;
 		    //System.exit(1);
 		}
 		catch (Exception ex) {
-			generalManager.logMsg(
-					"AbstractLoader: ERROR line=[" + iLineInFile +
-					"] while testing file: " + ex.toString(),
-					LoggerType.ERROR );
+//			generalManager.logMsg(
+//					"AbstractLoader: ERROR line=[" + iLineInFile +
+//					"] while testing file: " + ex.toString(),
+//					LoggerType.ERROR );
 			
 			ex.printStackTrace();
 			iLinesInFileToBeRead = -1;
@@ -378,10 +378,10 @@ implements IMementoXML, IParserObject {
 		    }		   
 		    		
 		    // sample line: 1110 Kybernetik
-		    generalManager.logMsg(
-		    		"Read file \""+ 
-				       this.sFileName + "\" ...",
-				       LoggerType.VERBOSE );
+//		    generalManager.logMsg(
+//		    		"Read file \""+ 
+//				       this.sFileName + "\" ...",
+//				       LoggerType.VERBOSE );
 
 		    this.loadDataParseFile( brFile, iNumberOfLinesInFile );
 		    
@@ -394,35 +394,35 @@ implements IMementoXML, IParserObject {
 		    
 		    // sample line: E016|Zentrale Medienstelle|Media Centre|00
 		    
-		    generalManager.logMsg(
-		    		" read file \""+ 
-				       this.sFileName + "\"  ....  [DONE]",
-				     LoggerType.STATUS );
+//		    generalManager.logMsg(
+//		    		" read file \""+ 
+//				       this.sFileName + "\"  ....  [DONE]",
+//				     LoggerType.STATUS );
 
 		    copyDataToInternalDataStructures();
 		    
 		 
 		    
-		    generalManager.logMsg(
-		    		"  Read file \""+ 
-				       this.sFileName + "\" .... copy to storage ...[DONE]",
-				       LoggerType.VERBOSE_EXTRA );
+//		    generalManager.logMsg(
+//		    		"  Read file \""+ 
+//				       this.sFileName + "\" .... copy to storage ...[DONE]",
+//				       LoggerType.VERBOSE_EXTRA );
 		    
 		}
 		catch (IOException ioe) {
-			generalManager.logMsg(
-					"MicroArrayLoader: IO-error line=[" + iLineInFile +
-					"] while parsing: " + ioe.toString(),
-					LoggerType.MINOR_ERROR );
+//			generalManager.logMsg(
+//					"MicroArrayLoader: IO-error line=[" + iLineInFile +
+//					"] while parsing: " + ioe.toString(),
+//					LoggerType.MINOR_ERROR );
 		    
 		    return false;
 		    //System.exit(1);
 		}
 		catch (Exception ex) {
-			generalManager.logMsg(
-					"MicroArrayLoader: ERROR line=[" + iLineInFile +
-					"] while parsing: " + ex.toString(),
-					LoggerType.ERROR );
+//			generalManager.logMsg(
+//					"MicroArrayLoader: ERROR line=[" + iLineInFile +
+//					"] while parsing: " + ex.toString(),
+//					LoggerType.ERROR );
 			
 			ex.printStackTrace();
 		    return false;

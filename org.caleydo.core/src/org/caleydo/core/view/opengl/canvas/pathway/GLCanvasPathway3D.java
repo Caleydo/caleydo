@@ -31,9 +31,9 @@ import org.caleydo.core.manager.view.ESelectionMode;
 import org.caleydo.core.manager.view.Pick;
 import org.caleydo.core.manager.view.SelectionManager;
 import org.caleydo.core.util.system.StringConversionTool;
-import org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
+import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
@@ -313,11 +313,11 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 		
-		generalManager.logMsg(
-				this.getClass().getSimpleName()
-						+ " ("+iUniqueId+"): updateReceiver(Object eventTrigger, ISet updatedSet): Update called by "
-						+ eventTrigger.getClass().getSimpleName()+" ("+((AGLCanvasUser)eventTrigger).getId(),
-				LoggerType.VERBOSE);
+//		generalManager.logMsg(
+//				this.getClass().getSimpleName()
+//						+ " ("+iUniqueId+"): updateReceiver(Object eventTrigger, ISet updatedSet): Update called by "
+//						+ eventTrigger.getClass().getSimpleName()+" ("+((AGLCanvasUser)eventTrigger).getId(),
+//				LoggerType.VERBOSE);
 		
 		pathwayVertexSelectionManager.clearSelection(
 				EViewInternalSelectionType.MOUSE_OVER);
@@ -368,11 +368,11 @@ implements IMediatorReceiver, IMediatorSender {
 
 			if(tmpPathwayVertexGraphItem == null)
 			{
-				generalManager.logMsg(
-						this.getClass().getSimpleName()
-								+ " ("+iUniqueId+"): Irgendwas mit graph vertex item das eigentlich net passiern sullt "
-								+ eventTrigger.getClass().getSimpleName()+" ("+((AGLCanvasUser)eventTrigger).getId(),
-						LoggerType.VERBOSE);
+//				generalManager.logMsg(
+//						this.getClass().getSimpleName()
+//								+ " ("+iUniqueId+"): Irgendwas mit graph vertex item das eigentlich net passiern sullt "
+//								+ eventTrigger.getClass().getSimpleName()+" ("+((AGLCanvasUser)eventTrigger).getId(),
+//						LoggerType.VERBOSE);
 				return;
 			}
 			
@@ -410,11 +410,11 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void updateReceiver(Object eventTrigger) {
 
-		generalManager.logMsg(
-				this.getClass().getSimpleName()
-						+ ": updateReceiver(Object eventTrigger): Update called by "
-						+ eventTrigger.getClass().getSimpleName(),
-				LoggerType.VERBOSE);
+//		generalManager.logMsg(
+//				this.getClass().getSimpleName()
+//						+ ": updateReceiver(Object eventTrigger): Update called by "
+//						+ eventTrigger.getClass().getSimpleName(),
+//				LoggerType.VERBOSE);
 	}
 	
 //	public void loadDependentPathwayBySingleVertex(final GL gl,

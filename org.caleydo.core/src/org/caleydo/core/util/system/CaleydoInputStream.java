@@ -5,10 +5,9 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.util.logging.Level;
 
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.parser.xml.sax.handler.IXmlBaseHandler;
 import org.ccil.cowan.tagsoup.HTMLSchema;
 import org.ccil.cowan.tagsoup.Parser;
@@ -19,6 +18,8 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
+ * Static convenience methods to handle input streams.
+ * 
  * @author Michael Kalkusch
  * @author Marc Streit
  */
@@ -39,14 +40,17 @@ public class CaleydoInputStream
 			
 			InputSource inStream = new InputSource( inReader );
 			
-			generalManager.logMsg("open input stream  [" + sXMLFileName + "]",
-					LoggerType.VERBOSE_EXTRA );
+			generalManager.getLogger().logp(Level.FINE, "CaleydoInputStream", 
+					"openInputStreamFromFile", 
+					"open input stream  [" + sXMLFileName + "]");
 			
 			return inStream;
 		}
 		catch ( FileNotFoundException fnfe) {
-			generalManager.logMsg("CaleydoInputStream.openInputStreamFromFile() File not found " + fnfe.toString(),
-					LoggerType.ERROR );
+			
+			generalManager.getLogger().logp(Level.SEVERE, "CaleydoInputStream", 
+					"openInputStreamFromFile", 
+					"File not found " + fnfe.toString());
 		}
 		return null;
 	}
@@ -63,27 +67,19 @@ public class CaleydoInputStream
 		
 		try {	
 			InputSource inStream = new InputSource(resourceUrl.openStream());
-			
-			generalManager.logMsg("open input stream  [" + resourceUrl.toString() + "]",
-					LoggerType.VERBOSE_EXTRA );
+
+			generalManager.getLogger().log(Level.INFO, "Open input stream " +resourceUrl.toString());
 			
 			return inStream;
 		} catch (IOException e)
 		{
-			generalManager.logMsg("CaleydoInputStream.openInputStreamFromUrl(): Error loading resource.",
-					LoggerType.ERROR );
-			
-			e.printStackTrace();
+			generalManager.getLogger().log(Level.SEVERE, "Error loading resource.", e);
 		}
 		return null;
 	}
 	
 	/**
 	 * 
-	 * @see org.caleydo.core.manager.IXmlParserManager
-	 * @see org.xml.sax.ContentHandler
-	 * @see org.xml.sax.EntityResolver;
-	 * @see org.xml.sax.DTDHandler;
 	 * 
 	 * @param inStream
 	 * @param sInputStreamLabel
@@ -98,19 +94,13 @@ public class CaleydoInputStream
 		
 		if ( handler == null ) 
 		{
-			generalManager.logMsg("CaleydoInputStream.parseOnce( " +
-					sInputStreamLabel +
-					") error because handler is null!",
-					LoggerType.ERROR );
-			
+			generalManager.getLogger().log(Level.SEVERE, "Error during parsing. Handler is null.");				
 			return false;
 		} //if
 		
-		if ( inStream==null ) {
-			generalManager.logMsg("CaleydoInputStream.parseOnce( " +
-					sInputStreamLabel +
-					") error no input stream; skip file",
-					LoggerType.ERROR );
+		if ( inStream==null ) 
+		{
+			generalManager.getLogger().log(Level.SEVERE, "Error during parsing. No input stream; skip file");	
 			return false;
 		}
 		
@@ -149,38 +139,22 @@ public class CaleydoInputStream
 			} 
 			catch (SAXParseException saxe)
 			{
-				generalManager.logMsg("CaleydoInputStream.parseOnce( " +
-						sInputStreamLabel +
-						") SAXParser-error during parsing: line=" + saxe.getLineNumber() +
-						" at column=" + saxe.getColumnNumber() +
-						"  SAXParser-error during parsing:" + 
-						saxe.toString(),
-						LoggerType.ERROR );
+				generalManager.getLogger().log(Level.SEVERE, 
+						"SAXParser-error during parsing line=" +saxe.getLineNumber() 
+						+" at column="  + saxe.getColumnNumber()+".\n SAX error: "+saxe.toString(), saxe);
 			}
 			catch ( IOException e) 
 			{
-				generalManager.logMsg("CaleydoInputStream.parseOnce( " +
-						sInputStreamLabel +
-						") IO-error during parsing: " +
-						e.toString(),
-						LoggerType.ERROR );
+				generalManager.getLogger().log(Level.SEVERE, "IO-error during parsing", e);
 			} // try
 			catch ( Exception e) 
 			{
-				generalManager.logMsg("CaleydoInputStream.parseOnce( " +
-						sInputStreamLabel +
-						") error during parsing: " +
-						e.toString() + "\n",
-						LoggerType.ERROR );
-				
-				e.printStackTrace();
+				generalManager.getLogger().log(Level.SEVERE, "Error during parsing", e);
 			} // try
-			
 			
 			/**
 			 * close file...
 			 */
-		
 			if (inStream.getByteStream() != null)
 			{
 				inStream.getByteStream().close();
@@ -190,39 +164,22 @@ public class CaleydoInputStream
 				inStream.getCharacterStream().close();
 			}
 			
-			generalManager.logMsg("close input stream [" + 
-					sInputStreamLabel + 
-					"]",
-					LoggerType.VERBOSE_EXTRA );
+			generalManager.getLogger().log(Level.INFO, "Close input stream: "+sInputStreamLabel);
 			
 		} // try
-		catch (SAXException se) 
+		catch (SAXException saxe) 
 		{
-			generalManager.logMsg("CaleydoInputStream.parseOnce( " +
-					sInputStreamLabel +
-					") SAXError  while parsing: " +
-					se.toString(),
-					LoggerType.ERROR );
-		} // end try-catch SAXException
+			generalManager.getLogger().log(Level.SEVERE, 
+					"SAXParser-error during parsing.\n SAX error: "+saxe.toString(), saxe);
+		}
 		catch (IOException ioe) 
 		{
-			generalManager.logMsg("CaleydoInputStream.parseOnce( " +
-					sInputStreamLabel +
-					") IO-error while parsing: " +
-					ioe.toString(),
-					LoggerType.ERROR );
-		} // end try-catch SAXException, IOException
+			generalManager.getLogger().log(Level.SEVERE, "IO-error during parsing", ioe);
+		}
 		catch (Exception e) 
 		{
-			generalManager.logMsg("CaleydoInputStream.parseOnce( " +
-					sInputStreamLabel +
-					") general error while parsing: " +
-					e.toString(),
-					LoggerType.ERROR );
-			
-			e.printStackTrace();
-		} // end try-catch SAXException, IOException
-		
+			generalManager.getLogger().log(Level.SEVERE, "Error during parsing", e);
+		}
 		
 		return true;
 	}

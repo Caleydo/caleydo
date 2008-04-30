@@ -1,4 +1,4 @@
-package org.caleydo.core.view.jogl.mouse;
+package org.caleydo.core.view.opengl.mouse;
 
 import java.awt.event.MouseEvent;
 

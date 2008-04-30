@@ -1,6 +1,7 @@
 package org.caleydo.core.command.base;
 
 import java.util.StringTokenizer;
+import java.util.logging.Level;
 
 import javax.media.opengl.GLEventListener;
 
@@ -11,8 +12,6 @@ import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
-import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
@@ -112,10 +111,7 @@ extends ACmdCreate_IdTargetParentGLObject {
 		
 		}catch (Exception e) {
 			
-			generalManager
-				.logMsg(this.getClass().getSimpleName()
-							+ ": Error in extracting view frustum from XML argument!",
-					LoggerType.ERROR);
+			generalManager.getLogger().log(Level.SEVERE, "Error in extraction view frustum from XML argument.", e);
 		}
 	}
 	
@@ -159,9 +155,7 @@ extends ACmdCreate_IdTargetParentGLObject {
 	 */
 	public void undoCommand()
 	{
-
 		//TODO: Proper cleanup
-		
 		refCommandManager.runUndoCommand(this);
 	}
 }

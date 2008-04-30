@@ -92,9 +92,9 @@ extends ASliderViewRep {
 	public void updateReceiver(Object eventTrigger) {
 		
 		int triggerId = ((IVirtualArray)eventTrigger).getId();	
-		generalManager.logMsg( 
-				"Slider update called by " +triggerId,
-				LoggerType.VERBOSE );
+//		generalManager.logMsg( 
+//				"Slider update called by " +triggerId,
+//				LoggerType.VERBOSE );
 		
 		if (eventTrigger instanceof IVirtualArray)
 		{	

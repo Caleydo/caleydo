@@ -1,25 +1,20 @@
 package org.caleydo.core.command.data;
 
-import java.util.LinkedList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.StringTokenizer;
-
-
-import org.caleydo.core.data.collection.IStorage;
-//import org.caleydo.core.data.collection.StorageType;
+import java.util.logging.Level;
 
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabel;
+import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.ILoggerManager.LoggerType;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-
-
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Command creates a new pathway storage.
@@ -64,9 +59,7 @@ extends ACmdCreate_IdTargetLabel {
 		
 		while (iterPathwayIDs.hasNext()) {
 
-//			generalManager.logMsg(
-//					"Load pathway with ID " +iPathwayId,
-//					LoggerType.VERBOSE);
+			generalManager.getLogger().log(Level.INFO, "Load pathway with ID" +iPathwayId);
 			
 			iPathwayId = iterPathwayIDs.next();
 			
@@ -123,43 +116,12 @@ extends ACmdCreate_IdTargetLabel {
 		}
 
 		newObject.setArrayInt(bufferedArray);
-
-//			//String strToParse = iterKEGGPathwayIDs.next();
-//			
-////			StringTokenizer tokenizer = 
-////				new StringTokenizer( strToParse, 
-////						IGeneralManager.sDelimiter_Parser_DataItems );
-////				
-//			int iSizeArray = tokenizer.countTokens();
-////			int iTokenIndex = 0;
-////			iTokenIndex = 0;
-//			
-//			String[] bufferedArray = new String[iSizeArray];							
-//			bufferedArray
-//			
-//			while (tokenizer.hasMoreTokens()) 
-//			{				
-//				bufferedArray[iTokenIndex] = tokenizer.nextToken();	
-//				iTokenIndex++;
-//			} // end while (tokenizer.hasMoreTokens()) 
-//					
-//			/**
-//			 * copy result to IStorage...
-//			 */
-//			newObject.setArrayString(bufferedArray);
-//			
-//			bufferedArray = null;
-//
-//		} //end: while (iterKEGGPathwayIDs.hasNext()) {
 			
 		refStorageManager.registerItem( newObject, 
 				newObject.getId(), 
 				newObject.getBaseType() );
 
-		generalManager.logMsg( 
-				"DO new Pathway STO: " + 
-				newObject.toString(),
-				LoggerType.VERBOSE );
+		generalManager.getLogger().log(Level.INFO, "Create new Pathway Storage with ID " +newObject.getId());
 
 		triggerPathwayParsing();
 	

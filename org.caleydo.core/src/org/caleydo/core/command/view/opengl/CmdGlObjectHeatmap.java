@@ -67,9 +67,9 @@ extends ACmdCreate_GlCanvasUser {
 			String logMessage = "CmdGlObjectHeatmap.setAttributesHeatmapWidthHeight() failed! 3 values are excpected, but only " +
 			i + " are present";
 			
-			generalManager.logMsg(
-					logMessage,
-					LoggerType.MINOR_ERROR );
+//			generalManager.logMsg(
+//					logMessage,
+//					LoggerType.MINOR_ERROR );
 			
 			throw new CaleydoRuntimeException( logMessage );
 		}

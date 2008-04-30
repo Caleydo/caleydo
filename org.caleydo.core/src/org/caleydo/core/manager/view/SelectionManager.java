@@ -5,8 +5,8 @@ import java.util.HashMap;
 import java.util.Set;
 
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
+import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.base.AManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;

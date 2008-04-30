@@ -98,12 +98,12 @@ extends ACommand {
 			{
 				if (( iArrayStartStop[0] > iArrayStartStop[1] )&&
 				   ( iArrayStartStop[1] != -1 )){
-					generalManager.logMsg(
-							"CmdSystemLoadFileViaImporter ignore stop index=(" + 
-							iArrayStartStop[1]  + 
-							"), because it is smaller than start index (" + 
-							iArrayStartStop[0] + ") !",
-							LoggerType.STATUS );
+//					generalManager.logMsg(
+//							"CmdSystemLoadFileViaImporter ignore stop index=(" + 
+//							iArrayStartStop[1]  + 
+//							"), because it is smaller than start index (" + 
+//							iArrayStartStop[0] + ") !",
+//							LoggerType.STATUS );
 					return;
 				}
 				iStopPareseFileAtLine = iArrayStartStop[1];
@@ -149,12 +149,12 @@ extends ACommand {
 	 */
 	public void doCommand() throws CaleydoRuntimeException {
 		
-		generalManager.logMsg(
-	    		"load file via importer... ([" +
-				sFileName + "] tokens:[" +
-				sTokenPattern + "]  targetSet(s)=[" +
-				iTargetSetId + "])",
-				LoggerType.STATUS );
+//		generalManager.logMsg(
+//	    		"load file via importer... ([" +
+//				sFileName + "] tokens:[" +
+//				sTokenPattern + "]  targetSet(s)=[" +
+//				iTargetSetId + "])",
+//				LoggerType.STATUS );
 		
 		ISet useSet = generalManager.getSetManager(
 				).getItemSet( iTargetSetId );
@@ -165,9 +165,9 @@ extends ACommand {
 			sTokenPattern + "]  targetSet(s)=[" +
 			iTargetSetId + "]) CmdSystemLoadfileViaImporter";
 			
-			generalManager.logMsg(
-					errorMsg,
-					LoggerType.ERROR );
+//			generalManager.logMsg(
+//					errorMsg,
+//					LoggerType.ERROR );
 			
 			throw new CaleydoRuntimeException("Set is not valid!",
 					CaleydoRuntimeExceptionType.SET);
@@ -203,9 +203,9 @@ extends ACommand {
 				sTokenPattern + "]  targetSet(s)=[" +
 				iTargetSetId + "])";
 			
-			generalManager.logMsg(
-					errorMsg,
-					LoggerType.ERROR );
+//			generalManager.logMsg(
+//					errorMsg,
+//					LoggerType.ERROR );
 		} // catch
 		finally 
 		{

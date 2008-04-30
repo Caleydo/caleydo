@@ -23,7 +23,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.part.ViewPart;
-import org.caleydo.core.view.jogl.JoglCanvasForwarder;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 
 /**
  * Shared object for all Caleydo viewPart objects.
@@ -38,7 +38,7 @@ extends ViewPart {
 	protected Frame frameGL;
 	protected Shell swtShell;
 	protected Composite swtComposite;
-	protected JoglCanvasForwarder canvasForwarder;
+	protected GLCaleydoCanvas canvasForwarder;
 	protected GLCanvas glCanvas;
 	
 	public static final String ACTION_WRITE_SCREENSHOT_TEXT = "Save screenshot";
@@ -54,7 +54,7 @@ extends ViewPart {
 		super();
 	}
 	
-	public void setCanvasForwader(final JoglCanvasForwarder canvasForwarder) {
+	public void setCanvasForwader(final GLCaleydoCanvas canvasForwarder) {
 		this.canvasForwarder = canvasForwarder;
 	}
 	

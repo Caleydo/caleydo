@@ -165,10 +165,10 @@ implements IView {
 
 	public void drawView() {
 		
-		generalManager.logMsg(
-				this.getClass().getSimpleName() + 
-				": drawView(): Load "+sUrl, 
-				LoggerType.VERBOSE );
+//		generalManager.logMsg(
+//				this.getClass().getSimpleName() + 
+//				": drawView(): Load "+sUrl, 
+//				LoggerType.VERBOSE );
 
 //		// Check internet connection
 //		try
@@ -197,10 +197,10 @@ implements IView {
 		}
 			catch (SWTException swte) 
 		{
-				generalManager.logMsg(
-						this.getClass().getSimpleName() + 
-						": error while setURL ["+sUrl + "]", 
-						LoggerType.STATUS );
+//				generalManager.logMsg(
+//						this.getClass().getSimpleName() + 
+//						": error while setURL ["+sUrl + "]", 
+//						LoggerType.STATUS );
 		}
 	}
 	

@@ -2,8 +2,8 @@ package org.caleydo.core.manager.data;
 
 import java.util.Hashtable;
 
+import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.base.AManager;
 import org.caleydo.core.manager.type.ManagerType;
 
 /**

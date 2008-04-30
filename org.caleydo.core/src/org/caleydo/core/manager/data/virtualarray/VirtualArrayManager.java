@@ -79,8 +79,8 @@ implements IVirtualArrayManager
 	}
 
 	private void debugNullPointer() {
-		generalManager.logMsg("current vecVirtualArray == null! ", 
-				LoggerType.MINOR_ERROR_XML);
+//		generalManager.logMsg("current vecVirtualArray == null! ", 
+//				LoggerType.MINOR_ERROR_XML);
 	}
 	
 	/* (non-Javadoc)

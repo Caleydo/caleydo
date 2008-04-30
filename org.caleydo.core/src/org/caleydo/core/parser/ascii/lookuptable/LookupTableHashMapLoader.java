@@ -85,11 +85,11 @@ implements ILookupTableLoader {
 						}
 						else
 						{
-							generalManager.logMsg(
-									"(Key,Value) [" +
-									buffer + ", ?? ] value is missing (ignore key-value pair) in line " +
-									iLineInFile,
-									LoggerType.FULL);
+//							generalManager.logMsg(
+//									"(Key,Value) [" +
+//									buffer + ", ?? ] value is missing (ignore key-value pair) in line " +
+//									iLineInFile,
+//									LoggerType.FULL);
 						}
 						
 					

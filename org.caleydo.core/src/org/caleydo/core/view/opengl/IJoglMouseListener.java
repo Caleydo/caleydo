@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.caleydo.core.view.jogl;
+package org.caleydo.core.view.opengl;
 
 import org.caleydo.core.data.view.camera.IViewCamera;
 

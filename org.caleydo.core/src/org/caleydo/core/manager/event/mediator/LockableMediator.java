@@ -182,12 +182,12 @@ implements IMediator {
 			} 
 			else 
 			{
-				generalManager.logMsg(
-						this.getClass().toString() + 
-						".updateReceiverSpecialMediator(Object eventTrigger=[" +
-						eventTrigger.toString() +
-						"]) is also a receiver! Cycle detected!",
-						LoggerType.MINOR_ERROR);
+//				generalManager.logMsg(
+//						this.getClass().toString() + 
+//						".updateReceiverSpecialMediator(Object eventTrigger=[" +
+//						eventTrigger.toString() +
+//						"]) is also a receiver! Cycle detected!",
+//						LoggerType.MINOR_ERROR);
 			}
 		}
 	}

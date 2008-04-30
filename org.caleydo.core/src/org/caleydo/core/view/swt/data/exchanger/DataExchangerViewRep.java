@@ -156,10 +156,10 @@ implements IView {
 
 	public void drawView() {
 		
-		generalManager.logMsg(
-				this.getClass().getSimpleName() + 
-				": drawView()", 
-				LoggerType.VERBOSE );		
+//		generalManager.logMsg(
+//				this.getClass().getSimpleName() + 
+//				": drawView()", 
+//				LoggerType.VERBOSE );		
 	}
 	
 	public void setAttributes(int iWidth, int iHeight, String sImagePath) {
