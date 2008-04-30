@@ -54,7 +54,7 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/org.caleydo.lib/lib_src/swt/swt_3.2.1_javadoc.zip!/doc"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.util.graph"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/org.caleydo.util.graph"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/wii/WiiRemoteJ.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/wii/avetanaBT.jar"/>
 	<classpathentry kind="output" path="bin/class"/>

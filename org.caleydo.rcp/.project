@@ -4,6 +4,7 @@
 	<comment></comment>
 	<projects>
 		<project>org.caleydo.lib</project>
+		<project>org.calyedo.util.graph</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

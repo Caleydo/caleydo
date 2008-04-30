@@ -136,7 +136,7 @@ implements IMediatorReceiver, IMediatorSender
 		mapSelections.put(ESelectionType.EXTERNAL_SELECTION, alTempList);
 
 		//int iStorageLength = alDataStorages.get(0).getArrayFloat().length;
-		int iStorageLength = 500;
+		int iStorageLength = 2000;
 		alTempList = new ArrayList<Integer>(iStorageLength);
 		// initialize full list
 		
@@ -439,12 +439,13 @@ implements IMediatorReceiver, IMediatorSender
 	}
 	
 	protected abstract void rePosition(int iElementID);
+
 	
 	public void clearAllSelections() 
 	{
-		extSelectionManager.clear();
-		horizontalSelectionManager.clearSelections();
-		verticalSelectionManager.clearSelections();
+//		extSelectionManager.clear();
+//		horizontalSelectionManager.clearSelections();
+//		verticalSelectionManager.clearSelections();
 
 		if (alSetSelection == null)
 			return;				
@@ -457,7 +458,6 @@ implements IMediatorReceiver, IMediatorSender
 			tmpSet.updateSelectionSet(iUniqueId, null, null, null);
 			tmpSet.returnWriteToken();
 		}	
-
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
 		
