@@ -373,8 +373,7 @@ implements IMediatorReceiver, IMediatorSender
 			}
 
 			// pickingTriggerMouseAdapter.addGLCanvas(tmpGLEventListener);
-			pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_SELECTION,
-					iViewID);
+			pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_SELECTION, iViewID);
 
 			// Register new view to mediator
 			// generalManager.getEventPublisher()
@@ -1379,11 +1378,8 @@ implements IMediatorReceiver, IMediatorSender
 
 				iAlUninitializedPathwayIDs.add(iPathwayID);
 
-				// // Slerp to layered pathway view
-				// SlerpAction slerpAction = new SlerpAction(iPathwayId,
-				// poolLayer, false);
-				//		
-				// arSlerpActions.add(slerpAction);
+				// Disable picking until pathways are loaded
+				generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(false);				
 			}
 
 			iSlerpFactor = 0;

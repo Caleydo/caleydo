@@ -591,7 +591,7 @@ implements IMediatorReceiver, IMediatorSender {
 				.getPathwayItemManager().getItem(iExternalID);
 
 			// Do nothing if new selection is the same as previous selection
-			if (tmpVertexGraphItemRep == selectedVertex)
+			if (tmpVertexGraphItemRep == selectedVertex && !pickingMode.equals(EPickingMode.CLICKED))
 				return;
 
 			PathwayVertexGraphItem tmpVertexGraphItem = (PathwayVertexGraphItem) tmpVertexGraphItemRep
