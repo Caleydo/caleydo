@@ -10,14 +10,14 @@ import org.caleydo.core.command.data.CmdDataCreateStorage;
 import org.caleydo.core.command.data.CmdDataCreateVirtualArray;
 import org.caleydo.core.command.data.filter.CmdDataFilterMath;
 import org.caleydo.core.command.data.filter.CmdDataFilterMinMax;
+import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
+import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
+import org.caleydo.core.command.data.parser.CmdLoadFileViaImporter;
 import org.caleydo.core.command.event.CmdEventCreateMediator;
 import org.caleydo.core.command.event.CmdEventMediatorAddObject;
 import org.caleydo.core.command.queue.CmdSystemRunCmdQueue;
 import org.caleydo.core.command.queue.CommandQueueVector;
 import org.caleydo.core.command.system.CmdSystemExit;
-import org.caleydo.core.command.system.CmdSystemLoadFileLookupTable;
-import org.caleydo.core.command.system.CmdSystemLoadFileNStorages;
-import org.caleydo.core.command.system.CmdSystemLoadFileViaImporter;
 import org.caleydo.core.command.system.path.CmdSetPathwayDatabasePath;
 import org.caleydo.core.command.view.opengl.CmdGlObjectBucket3D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectGlyph;
@@ -101,7 +101,7 @@ implements ICommandFactory {
 		 */
 		case LOAD_LOOKUP_TABLE_FILE: 
 		{
-			createdCommand = new CmdSystemLoadFileLookupTable( 
+			createdCommand = new CmdLoadFileLookupTable( 
 						generalManager,
 						commandManager,
 						cmdType);
@@ -109,7 +109,7 @@ implements ICommandFactory {
 		}	
 		case LOAD_DATA_FILE: 
 		{
-			createdCommand = new CmdSystemLoadFileViaImporter(
+			createdCommand = new CmdLoadFileViaImporter(
 						generalManager,
 						commandManager,
 						cmdType);
@@ -117,7 +117,7 @@ implements ICommandFactory {
 		}
 		case LOAD_DATA_FILE_N_STORAGES:
 		{
-			createdCommand = new CmdSystemLoadFileNStorages( 
+			createdCommand = new CmdLoadFileNStorages( 
 						generalManager,
 						commandManager,
 						cmdType);

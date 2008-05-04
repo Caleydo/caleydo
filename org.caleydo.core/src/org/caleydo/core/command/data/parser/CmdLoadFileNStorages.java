@@ -1,27 +1,26 @@
-package org.caleydo.core.command.system;
+package org.caleydo.core.command.data.parser;
 
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACommand;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage;
+import org.caleydo.core.parser.ascii.microarray.MicroArrayLoaderValues2MultipleStorages;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.system.StringConversionTool;
 
 
 /**
  * Command, load data from file using a token pattern and a target ISet.
- * Use MicroArrayLoader1Storage to load data set.
+ * Use AMicroArrayLoader to load dataset.
  * 
  * @author Michael Kalkusch
  *
  * @see org.caleydo.core.data.collection.ISet
- * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage
+ * @see org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader
  */
-public class CmdSystemLoadFileViaImporter 
+public class CmdLoadFileNStorages 
 extends ACommand {
 	
 	protected String sFileName;
@@ -31,45 +30,45 @@ extends ACommand {
 	/**
 	 * Default is 32, because gpr files have a header of that size!
 	 * 
-	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#iStartParsingAtLine
-	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#getStartParsingAtLine()
-	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int, int)
+	 * @see org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#iStartParsingAtLine
+	 * @see org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#getStartParsingAtLine()
+	 * @see org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#setStartParsingStopParsingAtLine(int, int)
 	 */
 	protected int iStartPareseFileAtLine = 32;
 	
 	/**
 	 * Default is -1 indicateing read till end of file.
 	 * 
-	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#iStopParsingAtLine
-	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#getStopParsingAtLine()
-	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int, int)
+	 * @see org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#iStopParsingAtLine
+	 * @see org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#getStopParsingAtLine()
+	 * @see org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#setStartParsingStopParsingAtLine(int, int)
 	 */
 	protected int iStopPareseFileAtLine = -1;
 	
 	protected int iTargetSetId;
 	
-	
 	/**
 	 * Constructor.
 	 * 
-	 * @param refGeneralManager
+	 * @param generalManager
 	 * @param refCommandManager
 	 * @param refCommandQueueSaxType
 	 */
-	public CmdSystemLoadFileViaImporter( 
-			final IGeneralManager refGeneralManager,
+	public CmdLoadFileNStorages( 
+			final IGeneralManager generalManager,
 			final ICommandManager refCommandManager,
 			final CommandQueueSaxType refCommandQueueSaxType) {
 		
 		super(-1,
-				refGeneralManager,
+				generalManager,
 				refCommandManager,
 				refCommandQueueSaxType);
 		
-		setCommandQueueSaxType(CommandQueueSaxType.LOAD_DATA_FILE_BY_IMPORTER);
+		setCommandQueueSaxType(CommandQueueSaxType.LOAD_DATA_FILE_N_STORAGES);	
 	}
 	
-	public void setParameterHandler( IParameterHandler refParameterHandler) {
+	
+	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
 		super.setParameterHandler(refParameterHandler);
 		
 		this.setId( refParameterHandler.getValueInt( 
@@ -95,10 +94,11 @@ extends ACommand {
 			
 			if ( iArrayStartStop.length > 1 ) 
 			{
+				
 				if (( iArrayStartStop[0] > iArrayStartStop[1] )&&
-				   ( iArrayStartStop[1] != -1 )){
+						(iArrayStartStop[1] != -1 )) {
 //					generalManager.logMsg(
-//							"CmdSystemLoadFileViaImporter ignore stop index=(" + 
+//							"CmdSystemLoadFileNStorages ignore stop index=(" + 
 //							iArrayStartStop[1]  + 
 //							"), because it is smaller than start index (" + 
 //							iArrayStartStop[0] + ") !",
@@ -110,39 +110,28 @@ extends ACommand {
 		} // if ( iArrayStartStop.length > 0 ) 
 	}
 	
-//	/**
-//	 * Use 
-//	 * 
-//	 * @see org.caleydo.core.parser.handler.importer.ascii.MicroArrayLoader1Storage
-//	 */
-//	public CmdSystemLoadFileViaImporter( IGeneralManager refGeneralManager,
-//			String fileName, 
-//			String tokenPattern,
-//			final int iTargetSet ) {
-//		
-//		this.refGeneralManager = refGeneralManager;		
-//		this.sFileName = fileName;		
-//		this.sTokenPattern =tokenPattern;
-//		this.iTargetSetId = iTargetSet;
-//	}
-
-	public void setAttributes(String fileName,
-			String tokenPattern,
-			int startPareseFileAtLine,
-			int stopPareseFileAtLine,
-			int targetSetId) {
-		
-		sFileName = fileName;		
-		sTokenPattern = tokenPattern;		
-		iStartPareseFileAtLine = startPareseFileAtLine;		
-		iStopPareseFileAtLine = stopPareseFileAtLine;		
-		iTargetSetId = targetSetId;
-	}
 	
+	
+	/**
+	 * Set attributes.
+	 * 
+	 * @param fileName
+	 * @param tokenPattern
+	 * @param iTargetSet
+	 */
+	public void setAttributes( String fileName, 
+			String tokenPattern,
+			final int iTargetSet ) {
+			
+		this.sFileName = fileName;		
+		this.sTokenPattern =tokenPattern;
+		this.iTargetSetId = iTargetSet;
+	}
+
 	/**
 	 * Load data from file using a token pattern.
 	 * 
-	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#loadData()
+	 * @see org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#loadData()
 	 * 
 	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
@@ -159,30 +148,24 @@ extends ACommand {
 				).getItemSet( iTargetSetId );
 		
 		if ( useSet == null ) {
-			String errorMsg = "Could not load data via MicroArrayLoader1Storage, target Set is not valid! file=["+
+			String errorMsg = "Could not load data via MicroArrayLoaderValues2MultipleStorages, target Set is not valid! file=["+
 			sFileName + "] tokens:[" +
 			sTokenPattern + "]  targetSet(s)=[" +
-			iTargetSetId + "]) CmdSystemLoadfileViaImporter";
+			iTargetSetId + "])";
 			
 //			generalManager.logMsg(
 //					errorMsg,
 //					LoggerType.ERROR );
-			
-			throw new CaleydoRuntimeException("Set is not valid!",
-					CaleydoRuntimeExceptionType.SET);
-			
-//			CmdWindowPopupInfo exitWarning = new CmdWindowPopupInfo(refGeneralManager,"");
-//			exitWarning.setText("ERROR",errorMsg);
-//			exitWarning.doCommand();
-//			return;
+	
+			return;
 		}
 		
-		MicroArrayLoader1Storage loader = null;
+		MicroArrayLoaderValues2MultipleStorages loader = null;
 		
 		try 
 		{
-			loader = new MicroArrayLoader1Storage( generalManager, 
-					sFileName,
+			loader = new MicroArrayLoaderValues2MultipleStorages( generalManager,
+					sFileName, 
 					IGeneralManager.bEnableMultipelThreads );
 			
 			//loader.setFileName( sFileName );
@@ -197,7 +180,7 @@ extends ACommand {
 		} //try
 		catch ( Exception e ) 
 		{
-			String errorMsg = "Could not load data via MicroArrayLoader1Storage, error during loading! file=["+
+			String errorMsg = "Could not load data via MicroArrayLoaderValues2MultipleStorages, error during loading! file=["+
 				sFileName + "] tokens:[" +
 				sTokenPattern + "]  targetSet(s)=[" +
 				iTargetSetId + "])";
@@ -215,13 +198,13 @@ extends ACommand {
 			}
 		} // finally
 		
-		refCommandManager.runDoCommand(this);
+		
 	}
 
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CaleydoRuntimeException {
-		refCommandManager.runUndoCommand(this);
+		// no undo of system shutdown!
 	}
 }

@@ -9,6 +9,8 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import org.caleydo.core.data.AUniqueManagedObject;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.SetType;
@@ -586,4 +588,16 @@ implements GLEventListener {
 //	{
 //		containedHierarchyLayer = layer;
 //	}
+	
+	public void loadURLInBrowser(final String sUrl) {
+
+		if (sUrl.isEmpty())
+			return;
+
+		CmdViewLoadURLInHTMLBrowser createdCmd = (CmdViewLoadURLInHTMLBrowser) generalManager
+				.getCommandManager().createCommandByType(CommandQueueSaxType.LOAD_URL_IN_BROWSER);
+
+		createdCmd.setAttributes(sUrl);
+		createdCmd.doCommand();
+	}
 }

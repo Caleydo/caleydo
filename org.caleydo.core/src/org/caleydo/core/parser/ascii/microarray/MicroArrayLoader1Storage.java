@@ -20,6 +20,7 @@ import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
 /**
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public class MicroArrayLoader1Storage 
@@ -69,7 +70,10 @@ extends AMicroArrayLoader {
 		super.destroy();
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#loadDataParseFile(java.io.BufferedReader, int)
+	 */
 	protected int loadDataParseFile(BufferedReader brFile,
 			final int iNumberOfLinesInFile ) 
 		throws IOException {
@@ -261,7 +265,7 @@ extends AMicroArrayLoader {
 //		generalManager.logMsg("  parsed #" + 
 //				this.iLineInFile_CurrentDataIndex + "  [" + 			
 //				this.iStartParsingAtLine + " -> " +
-//				this.iStopParsingAtLine +  "] stoped at line #" +
+//				this.iStopParsingAtLine +  "] stopped at line #" +
 //				(this.iLineInFile-1),
 //				LoggerType.VERBOSE );				
 		
@@ -274,13 +278,15 @@ extends AMicroArrayLoader {
 		return iLineInFile-this.iStartParsingAtLine;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#copyDataToInternalDataStructures()
+	 */
 	protected boolean copyDataToInternalDataStructures() {
 
-		   /**
+		/**
 	     * Copy valued to refStorage...
-	     */
-	    		   
+	     */ 		   
 	    refImportDataToSet.setLabel("microarray loader set " + this.getFileName() );
 	    refDataStorage.setLabel( "microarray loader storage " + this.getFileName() );
 	    
@@ -312,8 +318,7 @@ extends AMicroArrayLoader {
 		    refImportDataOverrideSelection.setCacheId(
 		    		refImportDataOverrideSelection.getCacheId() + 1 );
 		    
-		    refImportDataToSet.setStorageByDimAndIndex(
-		    		refDataStorage,0,0);
+		    refImportDataToSet.setStorageByDimAndIndex(refDataStorage,0,0);
 		    refImportDataToSet.setVirtualArrayByDimAndIndex(
 		    		refImportDataOverrideSelection,0,0);
 	    }
@@ -399,10 +404,8 @@ extends AMicroArrayLoader {
 		    selFloat.setLabel("import STRING");
 		    selFloat.setLength( LLString.size() );
 		    
-		    refImportDataToSet.setStorageByDimAndIndex(
-		    		refDataStorage,0,2);
-		    refImportDataToSet.setVirtualArrayByDimAndIndex(
-		    		selFloat,0,2);
+		    refImportDataToSet.setStorageByDimAndIndex(refDataStorage,0,2);
+		    refImportDataToSet.setVirtualArrayByDimAndIndex(selFloat,0,2);
 	    }
 	    
 	    //TODO: test if cacheId concept works fine...

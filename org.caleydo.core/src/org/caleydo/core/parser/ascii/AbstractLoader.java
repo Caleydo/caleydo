@@ -14,6 +14,7 @@ import org.caleydo.core.manager.gui.SWTGUIManager;
  * Loader for MircoArray data sets in *.gpr format.
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public abstract class AbstractLoader 
@@ -24,13 +25,13 @@ implements IMementoXML, IParserObject {
 	protected final SWTGUIManager sWTGUIManager;	
 	
 	/**
-	 * Work around, disable progressbar, 
-	 * because it is not threadsafe yet.
+	 * Work around, disable progress bar, 
+	 * because it is not thread safe yet.
 	 */
 	private final boolean bUseMultipleThreads;
 	
 	/**
-	 *  file name of *.gpr file
+	 *  File name
 	 */  
 	private String sFileName = "";
 	
@@ -81,7 +82,7 @@ implements IMementoXML, IParserObject {
 	private float fProgressBarIndex;
 	
 	/**
-	 * Increments progressbar index.
+	 * Increments progress bar index.
 	 * Call progressBarIncrement() increment the progress bar.
 	 * 
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarStoredIncrement()
@@ -376,7 +377,6 @@ implements IMementoXML, IParserObject {
 		    	brFile = new BufferedReader(new FileReader(sFileName));
 		    }		   
 		    		
-		    // sample line: 1110 Kybernetik
 //		    generalManager.logMsg(
 //		    		"Read file \""+ 
 //				       this.sFileName + "\" ...",
@@ -388,19 +388,13 @@ implements IMementoXML, IParserObject {
 		    if ( brFile != null ) {
 		    	brFile.close();
 		    }
-		    
-		   
-		    
-		    // sample line: E016|Zentrale Medienstelle|Media Centre|00
-		    
+		    		    
 //		    generalManager.logMsg(
 //		    		" read file \""+ 
 //				       this.sFileName + "\"  ....  [DONE]",
 //				     LoggerType.STATUS );
 
 		    copyDataToInternalDataStructures();
-		    
-		 
 		    
 //		    generalManager.logMsg(
 //		    		"  Read file \""+ 

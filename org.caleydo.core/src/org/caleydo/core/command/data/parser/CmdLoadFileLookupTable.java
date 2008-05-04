@@ -1,4 +1,4 @@
-package org.caleydo.core.command.system;
+package org.caleydo.core.command.data.parser;
 
 import java.util.StringTokenizer;
 
@@ -24,7 +24,7 @@ import org.caleydo.core.util.system.StringConversionTool;
  * @see org.caleydo.core.data.collection.ISet
  * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage
  */
-public class CmdSystemLoadFileLookupTable 
+public class CmdLoadFileLookupTable 
 extends ACommand {
 
 	public static final String sCommaSeperatedFileExtension = ".csv";
@@ -107,7 +107,7 @@ extends ACommand {
 	 * @param refCommandManager
 	 * @param refCommandQueueSaxType
 	 */
-	public CmdSystemLoadFileLookupTable( 
+	public CmdLoadFileLookupTable( 
 			final IGeneralManager generalManager,
 			final ICommandManager refCommandManager,
 			final CommandQueueSaxType refCommandQueueSaxType) {
@@ -291,8 +291,7 @@ extends ACommand {
 				loader.setTokenSeperator( IGeneralManager.sDelimiter_Parser_DataType );
 			}
 			
-			loader.setStartParsingStopParsingAtLine( iStartPareseFileAtLine,
-					iStopPareseFileAtLine );
+			loader.setStartParsingStopParsingAtLine( iStartPareseFileAtLine, iStopPareseFileAtLine );
 			
 			refGenomeIdManager.buildLUT_startEditing( lut_genome_type );
 			loader.loadData();

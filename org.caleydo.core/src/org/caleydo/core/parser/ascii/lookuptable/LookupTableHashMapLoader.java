@@ -11,8 +11,10 @@ import org.caleydo.core.manager.data.genome.IGenomeIdMap;
 
 
 /**
+ * Loads a lookuptable mapping an ID to another.
+ * 
  * @author Michael Kalkusch
- *
+ * @author Marc Streit
  */
 public class LookupTableHashMapLoader 
 extends ALookupTableLoader

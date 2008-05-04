@@ -1,5 +1,7 @@
 package org.caleydo.core.view.swt.browser;
 
+import java.util.logging.Level;
+
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.data.CmdDataCreateSelectionSetMakro;
 import org.caleydo.core.manager.IGeneralManager;
@@ -31,7 +33,7 @@ implements IView {
 
 	public EBrowserType browserType;
 	
-	public static String CALEYDO_HOME = "http://www.caleydo.org";
+	public final static String CALEYDO_HOME = "http://www.caleydo.org";
 	
     protected Browser refBrowser;
     
@@ -161,10 +163,7 @@ implements IView {
 
 	public void drawView() {
 		
-//		generalManager.logMsg(
-//				this.getClass().getSimpleName() + 
-//				": drawView(): Load "+sUrl, 
-//				LoggerType.VERBOSE );
+		generalManager.getLogger().log(Level.INFO, "Load " +sUrl);
 
 //		// Check internet connection
 //		try
@@ -192,11 +191,8 @@ implements IView {
 			});
 		}
 			catch (SWTException swte) 
-		{
-//				generalManager.logMsg(
-//						this.getClass().getSimpleName() + 
-//						": error while setURL ["+sUrl + "]", 
-//						LoggerType.STATUS );
+		{		
+				generalManager.getLogger().log(Level.SEVERE, "Error while loading " +sUrl);
 		}
 	}
 	

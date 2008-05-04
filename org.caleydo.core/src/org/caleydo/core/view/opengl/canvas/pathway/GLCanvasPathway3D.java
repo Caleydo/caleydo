@@ -8,8 +8,6 @@ import java.util.Iterator;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.command.CommandQueueSaxType;
-import org.caleydo.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import org.caleydo.core.data.GeneralRenderStyle;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.selection.ISetSelection;
@@ -269,8 +267,8 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private void rebuildPathwayDisplayList(final GL gl) {
 		
-//		if (selectedVertex != null)
-//		{
+		if (selectedVertex != null)
+		{
 //			// Write currently selected vertex to selection set
 //			// Selected elements are rendered highlighted by GLPathwayManager
 //			ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>();
@@ -295,10 +293,10 @@ implements IMediatorReceiver, IMediatorSender {
 //			alSetSelection.get(1).mergeSelection(iAlTmpSelectionId, iAlTmpGroup, null);
 //			alSetSelection.get(1).returnWriteToken();
 //			
-//			loadNodeInformationInBrowser(((PathwayVertexGraphItem)selectedVertex.getAllItemsByProp(
-//					EGraphItemProperty.ALIAS_PARENT).get(0)).getExternalLink());
-//		
-//		}
+			loadURLInBrowser(((PathwayVertexGraphItem)selectedVertex.getAllItemsByProp(
+					EGraphItemProperty.ALIAS_PARENT).get(0)).getExternalLink());
+		
+		}
 		
 		refGLPathwayManager.performIdenticalNodeHighlighting();
 		refGLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
@@ -531,18 +529,6 @@ implements IMediatorReceiver, IMediatorSender {
 					(viewFrustum.getTop() - viewFrustum.getBottom()) / 2.0f - fTmpPathwayHeight / 2.0f, 0);
 		}
 	}
-
-	public void loadNodeInformationInBrowser(String sUrl) {
-
-		if (sUrl.isEmpty())
-			return;
-
-		CmdViewLoadURLInHTMLBrowser createdCmd = (CmdViewLoadURLInHTMLBrowser) generalManager
-				.getCommandManager().createCommandByType(CommandQueueSaxType.LOAD_URL_IN_BROWSER);
-
-		createdCmd.setAttributes(sUrl);
-		createdCmd.doCommand();
-	}
 	
 	public void setMappingRowCount(final int iMappingRowCount) {
 		
@@ -603,7 +589,11 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) generalManager
 				.getPathwayItemManager().getItem(iExternalID);
-		
+
+			// Do nothing if new selection is the same as previous selection
+			if (tmpVertexGraphItemRep == selectedVertex)
+				return;
+
 			PathwayVertexGraphItem tmpVertexGraphItem = (PathwayVertexGraphItem) tmpVertexGraphItemRep
 				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0);
 			
@@ -612,10 +602,9 @@ implements IMediatorReceiver, IMediatorSender {
 				.getIdIntFromStringByMapping(tmpVertexGraphItem.getName().substring(4), 
 					EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
 			
-			int iUnselectAccessionID = generalManager.getGenomeIdManager()
-				.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
+//			int iUnselectAccessionID = generalManager.getGenomeIdManager()
+//				.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
 
-			
 			selectedVertex = tmpVertexGraphItemRep;
 
 			// Add new vertex to internal selection manager

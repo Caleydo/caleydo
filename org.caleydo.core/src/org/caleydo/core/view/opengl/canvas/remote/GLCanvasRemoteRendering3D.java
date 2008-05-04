@@ -9,6 +9,7 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLEventListener;
@@ -456,8 +457,7 @@ implements IMediatorReceiver, IMediatorSender
 			int iTmpPathwayID = iAlUninitializedPathwayIDs.get(0);
 
 			// Check if pathway is already loaded in bucket
-			if (!generalManager.getPathwayManager()
-					.isPathwayVisible(iTmpPathwayID))
+			if (!generalManager.getPathwayManager().isPathwayVisible(iTmpPathwayID))
 			{
 				ArrayList<Integer> iArSetIDs = new ArrayList<Integer>();
 
@@ -544,11 +544,7 @@ implements IMediatorReceiver, IMediatorSender
 									pickingTriggerMouseAdapter);
 				} else
 				{
-//					generalManager.logMsg(
-//							this.getClass().getSimpleName()
-//									+ ": renderViewByID(): BUCKET IS FULL!!",
-//							LoggerType.VERBOSE);
-
+					generalManager.getLogger().log(Level.SEVERE, "No empty space left to add new pathway!");	
 					iAlUninitializedPathwayIDs.remove(0);
 					return;
 				}
@@ -557,6 +553,12 @@ implements IMediatorReceiver, IMediatorSender
 			}
 
 			iAlUninitializedPathwayIDs.remove(0);
+
+			// Enable picking after last pathway was loaded
+			if (iAlUninitializedPathwayIDs.isEmpty())
+			{
+				generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(true);
+			}
 			
 			generalManager.getViewGLCanvasManager().getSelectionManager().clear();
 			
@@ -1332,6 +1334,9 @@ implements IMediatorReceiver, IMediatorSender
 		{	
 			int iPathwayIDToLoad = refSetSelection.getOptionalDataArray().get(0);
 			iAlUninitializedPathwayIDs.add(iPathwayIDToLoad);
+			
+			// Disable picking until pathways are loaded
+			generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(false);
 		}
 
 		refSetSelection.returnReadToken();

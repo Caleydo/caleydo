@@ -18,6 +18,7 @@ import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
 /**
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  * @see org.caleydo.core.parser.ascii.IParserObject
  */
