@@ -14,7 +14,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 
 import org.caleydo.core.command.CommandQueueSaxType;
-import org.caleydo.core.command.system.CmdSystemLoadFileViaImporter;
+import org.caleydo.core.command.data.parser.CmdLoadFileViaImporter;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
@@ -144,7 +144,7 @@ public class OpenCsvDataFileDialog extends Dialog {
 			return;
 		}
 
-		CmdSystemLoadFileViaImporter cmdLoadCsv = (CmdSystemLoadFileViaImporter) 
+		CmdLoadFileViaImporter cmdLoadCsv = (CmdLoadFileViaImporter) 
 			Application.caleydo_core.getGeneralManager().getCommandManager().createCommandByType(
 					CommandQueueSaxType.LOAD_DATA_FILE);
 		
