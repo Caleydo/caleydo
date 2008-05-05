@@ -293,8 +293,6 @@ implements IMediatorReceiver, IMediatorSender {
 //			alSetSelection.get(1).mergeSelection(iAlTmpSelectionId, iAlTmpGroup, null);
 //			alSetSelection.get(1).returnWriteToken();
 //			
-			loadURLInBrowser(((PathwayVertexGraphItem)selectedVertex.getAllItemsByProp(
-					EGraphItemProperty.ALIAS_PARENT).get(0)).getExternalLink());
 		
 		}
 		
@@ -589,11 +587,7 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) generalManager
 				.getPathwayItemManager().getItem(iExternalID);
-
-			// Do nothing if new selection is the same as previous selection
-			if (tmpVertexGraphItemRep == selectedVertex && !pickingMode.equals(EPickingMode.CLICKED))
-				return;
-
+			
 			PathwayVertexGraphItem tmpVertexGraphItem = (PathwayVertexGraphItem) tmpVertexGraphItemRep
 				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0);
 			
@@ -605,11 +599,9 @@ implements IMediatorReceiver, IMediatorSender {
 //			int iUnselectAccessionID = generalManager.getGenomeIdManager()
 //				.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
 
-			selectedVertex = tmpVertexGraphItemRep;
-
 			// Add new vertex to internal selection manager
 			pathwayVertexSelectionManager.addToType(
-					EViewInternalSelectionType.MOUSE_OVER, selectedVertex.getId());
+					EViewInternalSelectionType.MOUSE_OVER, tmpVertexGraphItemRep.getId());
 												
 			bIsDisplayListDirtyLocal = true;
 			bIsDisplayListDirtyRemote = true;
@@ -629,6 +621,15 @@ implements IMediatorReceiver, IMediatorSender {
 			
 			generalManager.getViewGLCanvasManager().getInfoAreaManager()
 				.setData(iUniqueId, iAccessionID, EInputDataType.GENE, getInfo());
+			
+			// Do nothing if new selection is the same as previous selection
+			if (tmpVertexGraphItemRep == selectedVertex && !pickingMode.equals(EPickingMode.CLICKED))
+				return;
+			
+			selectedVertex = tmpVertexGraphItemRep;
+			
+			loadURLInBrowser(((PathwayVertexGraphItem)selectedVertex.getAllItemsByProp(
+					EGraphItemProperty.ALIAS_PARENT).get(0)).getExternalLink());
 			
 			selectionManager.clear();
 			

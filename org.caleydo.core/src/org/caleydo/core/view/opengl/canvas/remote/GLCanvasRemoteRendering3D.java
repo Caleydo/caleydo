@@ -557,6 +557,11 @@ implements IMediatorReceiver, IMediatorSender
 			if (iAlUninitializedPathwayIDs.isEmpty())
 			{
 				generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(true);
+				gl.glClearColor(1, 1, 1, 1); // white background
+			}
+			else	
+			{
+				gl.glClearColor(1, 1, 0.6f, 1f); // yellowish background (busy mode)
 			}
 			
 			generalManager.getViewGLCanvasManager().getSelectionManager().clear();

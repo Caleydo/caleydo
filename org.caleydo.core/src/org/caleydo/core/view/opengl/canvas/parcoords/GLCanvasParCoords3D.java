@@ -1180,47 +1180,47 @@ extends AGLCanvasStorageBasedView
 		case X_AXIS_SELECTION:
 			pickingManager.flushHits(iUniqueId, ePickingType);
 			break;
-		case Y_AXIS_SELECTION:
-			switch (ePickingMode)
-			{
-			case CLICKED:
-				iAlOldSelection = prepareSelection(verticalSelectionManager, EViewInternalSelectionType.SELECTION);			
-				
-				verticalSelectionManager.clearSelection(
-						EViewInternalSelectionType.SELECTION);
-				verticalSelectionManager.addToType(
-						EViewInternalSelectionType.SELECTION, iExternalID);
-				
-				if(eAxisDataType == EInputDataType.GENE)
-				{
-					propagateGeneSelection(iExternalID, 2, iAlOldSelection);
-				}		
-				
-				rePosition(iExternalID);
-				bIsDisplayListDirtyLocal = true;
-				bIsDisplayListDirtyRemote = true;
-				break;
-			case MOUSE_OVER:
-				iAlOldSelection = prepareSelection(verticalSelectionManager, EViewInternalSelectionType.MOUSE_OVER);			
-				
-				verticalSelectionManager.clearSelection(
-						EViewInternalSelectionType.MOUSE_OVER);
-				verticalSelectionManager.addToType(
-						EViewInternalSelectionType.MOUSE_OVER, iExternalID);
-				
-				if(eAxisDataType == EInputDataType.GENE)
-				{
-					propagateGeneSelection(iExternalID, 1, iAlOldSelection);
-					//generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
-					//	.setData(iUniqueId, getAccesionIDFromStorageIndex(iExternalID), EInputDataType.GENE, getInfo());
-				}
-				
-				bIsDisplayListDirtyLocal = true;
-				bIsDisplayListDirtyRemote = true;
-				break;
-			}
-			pickingManager.flushHits(iUniqueId, ePickingType);
-			break;
+//		case Y_AXIS_SELECTION:
+//			switch (ePickingMode)
+//			{
+//			case CLICKED:
+//				iAlOldSelection = prepareSelection(verticalSelectionManager, EViewInternalSelectionType.SELECTION);			
+//				
+//				verticalSelectionManager.clearSelection(
+//						EViewInternalSelectionType.SELECTION);
+//				verticalSelectionManager.addToType(
+//						EViewInternalSelectionType.SELECTION, iExternalID);
+//				
+//				if(eAxisDataType == EInputDataType.GENE)
+//				{
+//					propagateGeneSelection(iExternalID, 2, iAlOldSelection);
+//				}		
+//				
+//				rePosition(iExternalID);
+//				bIsDisplayListDirtyLocal = true;
+//				bIsDisplayListDirtyRemote = true;
+//				break;
+//			case MOUSE_OVER:
+//				iAlOldSelection = prepareSelection(verticalSelectionManager, EViewInternalSelectionType.MOUSE_OVER);			
+//				
+//				verticalSelectionManager.clearSelection(
+//						EViewInternalSelectionType.MOUSE_OVER);
+//				verticalSelectionManager.addToType(
+//						EViewInternalSelectionType.MOUSE_OVER, iExternalID);
+//				
+//				if(eAxisDataType == EInputDataType.GENE)
+//				{
+//					propagateGeneSelection(iExternalID, 1, iAlOldSelection);
+//					//generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
+//					//	.setData(iUniqueId, getAccesionIDFromStorageIndex(iExternalID), EInputDataType.GENE, getInfo());
+//				}
+//				
+//				bIsDisplayListDirtyLocal = true;
+//				bIsDisplayListDirtyRemote = true;
+//				break;
+//			}
+//			pickingManager.flushHits(iUniqueId, ePickingType);
+//			break;
 		case LOWER_GATE_TIP_SELECTION:
 			switch (ePickingMode)
 			{
