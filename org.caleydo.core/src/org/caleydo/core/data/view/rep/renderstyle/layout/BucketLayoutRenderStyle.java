@@ -18,7 +18,8 @@ import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 public class BucketLayoutRenderStyle 
 extends ARemoteViewLayoutRenderStyle {
 	
-	private float fTiltAngleDegree = 0;
+	private float fTiltAngleDegree_Horizontal = 90;
+	private float fTiltAngleDegree_Vertical = 90;
 	
 	/**
 	 * Constructor.
@@ -80,34 +81,35 @@ extends ARemoteViewLayoutRenderStyle {
 	 */
 	public JukeboxHierarchyLayer initStackLayer() {
 		
-		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
-
+		float fTiltAngleRad_Horizontal = Vec3f.convertGrad2Radiant(fTiltAngleDegree_Horizontal);
+		float fTiltAngleRad_Vertical = Vec3f.convertGrad2Radiant(fTiltAngleDegree_Vertical);
+		
 		// TOP BUCKET WALL
 		Transform transform = new Transform();
 		transform.setTranslation(new Vec3f(0, 8 * fScalingFactorStackLayer, 0));
 		transform.setScale(new Vec3f(fScalingFactorStackLayer, fScalingFactorStackLayer, fScalingFactorStackLayer));
-		transform.setRotation(new Rotf(new Vec3f(1, 0, 0), fTiltAngleRad));
+		transform.setRotation(new Rotf(new Vec3f(1, 0, 0), fTiltAngleRad_Vertical));
 		stackLayer.setTransformByPositionIndex(0, transform);
 
 		// BOTTOM BUCKET WALL
 		transform = new Transform();
-		transform.setTranslation(new Vec3f(0, -4f * (float)Math.cos(fTiltAngleRad), (float)Math.sin(fTiltAngleRad) * 4f));
+		transform.setTranslation(new Vec3f(0, -4f * (float)Math.cos(fTiltAngleRad_Vertical), (float)Math.sin(fTiltAngleRad_Vertical) * 4f));
 		transform.setScale(new Vec3f(fScalingFactorStackLayer, fScalingFactorStackLayer, fScalingFactorStackLayer));
-		transform.setRotation(new Rotf(new Vec3f(-1, 0, 0), fTiltAngleRad));
+		transform.setRotation(new Rotf(new Vec3f(-1, 0, 0), fTiltAngleRad_Vertical));
 		stackLayer.setTransformByPositionIndex(2, transform);
 
 		// LEFT BUCKET WALL
 		transform = new Transform();
-		transform.setTranslation(new Vec3f(-4f * (float)Math.cos(fTiltAngleRad), 0, (float)Math.sin(fTiltAngleRad) * 4f));
+		transform.setTranslation(new Vec3f(-4f * (float)Math.cos(fTiltAngleRad_Horizontal), 0, (float)Math.sin(fTiltAngleRad_Horizontal) * 4f));
 		transform.setScale(new Vec3f(fScalingFactorStackLayer, fScalingFactorStackLayer, fScalingFactorStackLayer));
-		transform.setRotation(new Rotf(new Vec3f(0, 1, 0), fTiltAngleRad));
+		transform.setRotation(new Rotf(new Vec3f(0, 1, 0), fTiltAngleRad_Horizontal));
 		stackLayer.setTransformByPositionIndex(1, transform);
 
 		// RIGHT BUCKET WALL
 		transform = new Transform();
 		transform.setTranslation(new Vec3f(8 * fScalingFactorStackLayer, 0, 0));
 		transform.setScale(new Vec3f(fScalingFactorStackLayer, fScalingFactorStackLayer, fScalingFactorStackLayer));
-		transform.setRotation(new Rotf(new Vec3f(0, -1f, 0), fTiltAngleRad));
+		transform.setRotation(new Rotf(new Vec3f(0, -1f, 0), fTiltAngleRad_Horizontal));
 		stackLayer.setTransformByPositionIndex(3, transform);
 		
 		return stackLayer;
@@ -202,13 +204,23 @@ extends ARemoteViewLayoutRenderStyle {
 		return spawnLayer;
 	}
 	
-	public void setTiltAngleDegree(final float fTiltAngleDegree)
+	public void setHorizontalTiltAngleDegree(final float fTiltAngleDegree_Horizontal)
 	{
-		this.fTiltAngleDegree = fTiltAngleDegree;
+		this.fTiltAngleDegree_Horizontal = fTiltAngleDegree_Horizontal;
 	}
 	
-	public float getTiltAngleDegree() 
+	public void setVerticalTiltAngleDegree(final float fTiltAngleDegree_Vertical)
 	{
-		return fTiltAngleDegree;
+		this.fTiltAngleDegree_Vertical = fTiltAngleDegree_Vertical;
 	}
+	
+	public float getHorizontalTiltAngleDegree() 
+	{
+		return fTiltAngleDegree_Horizontal;
+	}
+	
+	public float getVerticalTiltAngleDegree() 
+	{
+		return fTiltAngleDegree_Vertical;
+	}	
 }

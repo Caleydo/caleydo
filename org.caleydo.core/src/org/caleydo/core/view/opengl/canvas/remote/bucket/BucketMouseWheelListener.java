@@ -56,24 +56,48 @@ extends MouseAdapter {
 	 */
 	public void mouseWheelMoved(MouseWheelEvent event) 
 	{
-		// Change bucket tilt angle if CTRL is down
-		if (event.isControlDown())
+		// Change bucket tilt angle
+		if (event.isControlDown() || event.isAltDown())
 		{
-			float fTmpAngle = bucketLayoutRenderStyle.getTiltAngleDegree();
+			float fTmpAngle = 0;
 			float fStepSize = 5;
-			
 		    int notches = event.getWheelRotation();
-		    if (notches < 0)
-		    	fTmpAngle += fStepSize;
-		    else
-		    	fTmpAngle -= fStepSize;	
 			
-			if (fTmpAngle >= 90)
-				bucketLayoutRenderStyle.setTiltAngleDegree(90);
-			else if (fTmpAngle <= 1)
-				bucketLayoutRenderStyle.setTiltAngleDegree(1);
-			else
-				bucketLayoutRenderStyle.setTiltAngleDegree(fTmpAngle);
+			// Change bucket tilt angle of left and right wall if CTRL is down
+			if (event.isControlDown())
+			{
+				fTmpAngle = bucketLayoutRenderStyle.getHorizontalTiltAngleDegree();
+				
+			    if (notches < 0)
+			    	fTmpAngle += fStepSize;
+			    else
+			    	fTmpAngle -= fStepSize;	
+			    
+				if (fTmpAngle >= 90)
+					bucketLayoutRenderStyle.setHorizontalTiltAngleDegree(90);
+				else if (fTmpAngle <= 1)
+					bucketLayoutRenderStyle.setHorizontalTiltAngleDegree(1);
+				else
+					bucketLayoutRenderStyle.setHorizontalTiltAngleDegree(fTmpAngle);
+			}
+			
+			// Change bucket tilt angle of top and bottom wall if CTRL is down
+			if (event.isAltDown())
+			{
+				fTmpAngle = bucketLayoutRenderStyle.getVerticalTiltAngleDegree();
+				
+			    if (notches < 0)
+			    	fTmpAngle += fStepSize;
+			    else
+			    	fTmpAngle -= fStepSize;	
+			    
+				if (fTmpAngle >= 90)
+					bucketLayoutRenderStyle.setVerticalTiltAngleDegree(90);
+				else if (fTmpAngle <= 1)
+					bucketLayoutRenderStyle.setVerticalTiltAngleDegree(1);
+				else
+					bucketLayoutRenderStyle.setVerticalTiltAngleDegree(fTmpAngle);
+			}
 			
 			bucketLayoutRenderStyle.initStackLayer();
 		}
