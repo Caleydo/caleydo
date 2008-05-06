@@ -2,12 +2,14 @@ package org.caleydo.core.view.opengl.canvas.remote.bucket;
 
 import gleem.linalg.Vec3f;
 
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelEvent;
-import java.awt.event.MouseWheelListener;
 
+import org.caleydo.core.data.view.rep.renderstyle.layout.BucketLayoutRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
+import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 
 /**
  * Specialized mouse wheel listener for "diving" into the bucket.
@@ -16,7 +18,7 @@ import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
  *
  */
 public class BucketMouseWheelListener 
-implements MouseWheelListener {
+extends MouseAdapter {
 
 	private IGeneralManager generalManager;
 	
@@ -34,15 +36,18 @@ implements MouseWheelListener {
 	private boolean bZoomIn = true;
 	private boolean bBucketBottomReached = false;
 	
+	private BucketLayoutRenderStyle bucketLayoutRenderStyle;
 	
 	/**
 	 * Constructor.
 	 */
 	public BucketMouseWheelListener(final GLCanvasRemoteRendering3D remoteRendering3D,
-			final IGeneralManager generalManager) 
+			final IGeneralManager generalManager, 
+			final BucketLayoutRenderStyle bucketLayoutRenderStyle) 
 	{
 		this.bucketCanvas = remoteRendering3D;
 		this.generalManager = generalManager;
+		this.bucketLayoutRenderStyle = bucketLayoutRenderStyle;
 	}
 	
 	/*
@@ -51,16 +56,40 @@ implements MouseWheelListener {
 	 */
 	public void mouseWheelMoved(MouseWheelEvent event) 
 	{
-		bZoomActionRunning = true;
-		
-		// Turn off picking while zoom action is running
-		generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(false);
-		
-	    int notches = event.getWheelRotation();
-	    if (notches < 0)
-	    	bZoomIn = true;
-	    else
-	    	bZoomIn = false;
+		// Change bucket tilt angle if CTRL is down
+		if (event.isControlDown())
+		{
+			float fTmpAngle = bucketLayoutRenderStyle.getTiltAngleDegree();
+			float fStepSize = 5;
+			
+		    int notches = event.getWheelRotation();
+		    if (notches < 0)
+		    	fTmpAngle += fStepSize;
+		    else
+		    	fTmpAngle -= fStepSize;	
+			
+			if (fTmpAngle >= 90)
+				bucketLayoutRenderStyle.setTiltAngleDegree(90);
+			else if (fTmpAngle <= 1)
+				bucketLayoutRenderStyle.setTiltAngleDegree(1);
+			else
+				bucketLayoutRenderStyle.setTiltAngleDegree(fTmpAngle);
+			
+			bucketLayoutRenderStyle.initStackLayer();
+		}
+		else // zoom to bottom of the bucket
+		{
+			bZoomActionRunning = true;
+			
+			// Turn off picking while zoom action is running
+			generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(false);
+			
+		    int notches = event.getWheelRotation();
+		    if (notches < 0)
+		    	bZoomIn = true;
+		    else
+		    	bZoomIn = false;	
+		}
 	}
 	
 	public void render() 

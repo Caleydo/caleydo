@@ -150,7 +150,8 @@ implements IMediatorReceiver, IMediatorSender
 		{
 			layoutRenderStyle = new BucketLayoutRenderStyle(generalManager);			
 
-			bucketMouseWheelListener = new BucketMouseWheelListener(this, generalManager);
+			bucketMouseWheelListener = new BucketMouseWheelListener(this, generalManager, 
+					(BucketLayoutRenderStyle)layoutRenderStyle);
 			
 			// Unregister standard mouse wheel listener
 			parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
@@ -162,7 +163,7 @@ implements IMediatorReceiver, IMediatorSender
 		{
 			layoutRenderStyle = new JukeboxLayoutRenderStyle(generalManager);
 		}
-				
+		
 		underInteractionLayer = layoutRenderStyle.initUnderInteractionLayer();
 		stackLayer = layoutRenderStyle.initStackLayer();
 		poolLayer =layoutRenderStyle.initPoolLayer(-1);
@@ -292,8 +293,6 @@ implements IMediatorReceiver, IMediatorSender
 
 		layoutRenderStyle.initPoolLayer(iMouseOverViewID);
 		doSlerpActions(gl);
-
-		layoutRenderStyle.initUnderInteractionLayer();
 		
 		renderLayer(gl, underInteractionLayer);
 		
@@ -592,8 +591,7 @@ implements IMediatorReceiver, IMediatorSender
 
 		gl.glTranslatef(translation.x(), translation.y(), translation.z());
 		gl.glScalef(scale.x(), scale.y(), scale.z());
-		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(),
-				axis.z());
+		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
 
 //		if (layer.equals(underInteractionLayer) || layer.equals(stackLayer))
 //		{
@@ -1738,7 +1736,8 @@ implements IMediatorReceiver, IMediatorSender
 		{
 			layoutRenderStyle = new BucketLayoutRenderStyle(generalManager, layoutRenderStyle);			
 
-			bucketMouseWheelListener = new BucketMouseWheelListener(this, generalManager);
+			bucketMouseWheelListener = new BucketMouseWheelListener(this, generalManager, 
+					(BucketLayoutRenderStyle)layoutRenderStyle);
 			
 			// Unregister standard mouse wheel listener
 			parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);

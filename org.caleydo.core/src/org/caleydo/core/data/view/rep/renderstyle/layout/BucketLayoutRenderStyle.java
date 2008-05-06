@@ -18,6 +18,8 @@ import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 public class BucketLayoutRenderStyle 
 extends ARemoteViewLayoutRenderStyle {
 	
+	private float fTiltAngleDegree = 0;
+	
 	/**
 	 * Constructor.
 	 */
@@ -78,7 +80,6 @@ extends ARemoteViewLayoutRenderStyle {
 	 */
 	public JukeboxHierarchyLayer initStackLayer() {
 		
-		float fTiltAngleDegree = 90; // degree
 		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
 
 		// TOP BUCKET WALL
@@ -90,14 +91,14 @@ extends ARemoteViewLayoutRenderStyle {
 
 		// BOTTOM BUCKET WALL
 		transform = new Transform();
-		transform.setTranslation(new Vec3f(0, 0, 4));
+		transform.setTranslation(new Vec3f(0, -4f * (float)Math.cos(fTiltAngleRad), (float)Math.sin(fTiltAngleRad) * 4f));
 		transform.setScale(new Vec3f(fScalingFactorStackLayer, fScalingFactorStackLayer, fScalingFactorStackLayer));
 		transform.setRotation(new Rotf(new Vec3f(-1, 0, 0), fTiltAngleRad));
 		stackLayer.setTransformByPositionIndex(2, transform);
 
 		// LEFT BUCKET WALL
 		transform = new Transform();
-		transform.setTranslation(new Vec3f(0, 0, 4));
+		transform.setTranslation(new Vec3f(-4f * (float)Math.cos(fTiltAngleRad), 0, (float)Math.sin(fTiltAngleRad) * 4f));
 		transform.setScale(new Vec3f(fScalingFactorStackLayer, fScalingFactorStackLayer, fScalingFactorStackLayer));
 		transform.setRotation(new Rotf(new Vec3f(0, 1, 0), fTiltAngleRad));
 		stackLayer.setTransformByPositionIndex(1, transform);
@@ -199,5 +200,15 @@ extends ARemoteViewLayoutRenderStyle {
 		spawnLayer.setTransformByPositionIndex(0, transformSpawn);
 		
 		return spawnLayer;
+	}
+	
+	public void setTiltAngleDegree(final float fTiltAngleDegree)
+	{
+		this.fTiltAngleDegree = fTiltAngleDegree;
+	}
+	
+	public float getTiltAngleDegree() 
+	{
+		return fTiltAngleDegree;
 	}
 }
