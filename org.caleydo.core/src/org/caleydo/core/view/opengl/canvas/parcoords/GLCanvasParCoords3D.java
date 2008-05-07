@@ -28,7 +28,6 @@ import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.GLIconTextureManager;
-import org.caleydo.core.view.opengl.util.GLSharedObjects;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
 import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
@@ -46,15 +45,12 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public class GLCanvasParCoords3D 
 extends AGLCanvasStorageBasedView
-{
-	
+{	
 	private float fAxisSpacing = 0;
-		
-	private int iGLDisplayListIndexLocal;
-	private int iGLDisplayListIndexRemote;
-	private int iGLDisplayListToCall = 0;
 
-	// flag whether to take measures against occlusion or not
+	/**
+	 * Flag whether to take measures against occlusion or not
+	 */
 	private boolean bPreventOcclusion = true;	
 	// flag whether one array should be a polyline or an axis
 	//protected boolean bRenderHorizontally = false;
@@ -84,8 +80,8 @@ extends AGLCanvasStorageBasedView
 	
 	private ParCoordsRenderStyle renderStyle;	
 	
-	private boolean bRenderInfoArea = false;
-	private boolean bInfoAreaFirstTime = false;
+//	private boolean bRenderInfoArea = false;
+//	private boolean bInfoAreaFirstTime = false;
 	
 	private boolean bAngularBrushingSelectPolyline = false;
 	private boolean bIsAngularBrushingActive = false;
@@ -294,7 +290,6 @@ extends AGLCanvasStorageBasedView
 		if(bIsAngularBrushingActive && iSelectedLineID != -1)
 		{
 			handleAngularBrushing(gl);
-			
 		}
 		
 		checkUnselection();
@@ -319,7 +314,7 @@ extends AGLCanvasStorageBasedView
 	public void renderStorageAsPolyline()
 	{
 		bRenderStorageHorizontally = !bRenderStorageHorizontally;
-		bRenderInfoArea = false;
+//		bRenderInfoArea = false;
 		EInputDataType eTempType = eAxisDataType;
 		eAxisDataType = ePolylineDataType;
 		ePolylineDataType = eTempType;
@@ -384,7 +379,7 @@ extends AGLCanvasStorageBasedView
 		horizontalSelectionManager.clearSelections();
 		verticalSelectionManager.clearSelections();
 		
-		bRenderInfoArea = false;
+//		bRenderInfoArea = false;
 		bIsAngularBrushingActive = false;
 		
 		for(ArrayList<Integer> alCurrent : alIsAngleBlocking)
@@ -405,7 +400,7 @@ extends AGLCanvasStorageBasedView
 		initLists();
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
-		bRenderInfoArea = false;
+//		bRenderInfoArea = false;
 	}
 	
 	
@@ -515,7 +510,6 @@ extends AGLCanvasStorageBasedView
 	
 	private void renderPolylines(GL gl, EViewInternalSelectionType renderMode)
 	{				
-		
 		Set<Integer> setDataToRender = null;
 		float fZDepth = 0.0f;
 		
@@ -1016,9 +1010,8 @@ extends AGLCanvasStorageBasedView
 			if(fCurrentValue <= fArGateTipHeight[iAxisNumber] 
 			                                     && fCurrentValue >= fArGateBottomHeight[iAxisNumber])
 			{	
-				if(horizontalSelectionManager.checkStatus(EViewInternalSelectionType.SELECTION, iPolylineCount))
-					bRenderInfoArea = false;
-				
+//				if(horizontalSelectionManager.checkStatus(EViewInternalSelectionType.SELECTION, iPolylineCount))
+//					bRenderInfoArea = false;
 				
 //				horizontalSelectionManager.addToType(EViewInternalSelectionType.DESELECTED, 
 //						alPolylineSelection.get(iPolylineCount));

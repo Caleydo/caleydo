@@ -21,7 +21,7 @@ extends GeneralRenderStyle {
 		JUKEBOX
 	}
 	
-	private static final int MAX_LOADED_VIEWS = 30;
+	private static final int MAX_LOADED_VIEWS = 100;
 	
 	protected JukeboxHierarchyLayer underInteractionLayer;
 	protected JukeboxHierarchyLayer stackLayer;

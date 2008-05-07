@@ -51,6 +51,10 @@ implements IMediatorReceiver, IMediatorSender
 	protected boolean bIsDisplayListDirtyLocal = true;
 	protected boolean bIsDisplayListDirtyRemote = true;
 	
+	protected int iGLDisplayListIndexLocal;
+	protected int iGLDisplayListIndexRemote;
+	protected int iGLDisplayListToCall = 0;
+	
 	protected IGenomeIdManager IDManager;	
 	
 	protected SelectionManager extSelectionManager;

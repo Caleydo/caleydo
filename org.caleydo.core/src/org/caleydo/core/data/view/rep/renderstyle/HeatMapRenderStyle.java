@@ -90,7 +90,6 @@ extends GeneralRenderStyle
 				continue;
 			else
 			{
-				
 				if(verticalSelectionManager.
 						checkStatus(EViewInternalSelectionType.SELECTION, alContentSelection.get(iContentSelectionIndex + iCount)) ||
 						verticalSelectionManager.checkStatus(
@@ -104,8 +103,7 @@ extends GeneralRenderStyle
 				}				
 			}
 		}
-		
-		
+	
 		Vec2f vecWidthAndHeight = new Vec2f();
 		float fWidth = hashLevelToWidth.get(iCurrentLevel);
 		vecWidthAndHeight.set(fWidth, calcHeightFromWidth(fWidth));

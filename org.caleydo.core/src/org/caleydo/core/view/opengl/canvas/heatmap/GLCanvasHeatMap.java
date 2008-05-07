@@ -31,6 +31,7 @@ import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
  * Rendering the HeatMap
  * 
  * @author Alexander Lex
+ * @author Marc Streit
  *
  */
 public class GLCanvasHeatMap 
@@ -55,6 +56,15 @@ extends AGLCanvasStorageBasedView
 	
 	private SelectedElementRep elementRep;
 	
+	/**
+	 * Constructor.
+	 * 
+	 * @param generalManager
+	 * @param iViewId
+	 * @param iGLCanvasID
+	 * @param sLabel
+	 * @param viewFrustum
+	 */
 	public GLCanvasHeatMap(final IGeneralManager generalManager,
 			final int iViewId,
 			final int iGLCanvasID,
@@ -75,7 +85,10 @@ extends AGLCanvasStorageBasedView
 		colorMapper = new ColorMapping(0, 1);
 	}
 	
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl.GL)
+	 */
 	public void init(GL gl) 
 	{
 		bRenderStorageHorizontally = true;
@@ -88,15 +101,24 @@ extends AGLCanvasStorageBasedView
 		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media.opengl.GL)
+	 */
 	public void initLocal(GL gl) 
 	{
 		eWhichContentSelection = ESelectionType.COMPLETE_SELECTION;
 		bRenderHorizontally = true;
+
+		iGLDisplayListIndexLocal = gl.glGenLists(1);
+		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, int, org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer, org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener)
+	 */
 	public void initRemote(GL gl, int iRemoteViewID,
 			JukeboxHierarchyLayer layer,
 			PickingJoglMouseListener pickingTriggerMouseAdapter) 
@@ -111,10 +133,15 @@ extends AGLCanvasStorageBasedView
 		
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
 		
-		init(gl);
+		iGLDisplayListIndexRemote = gl.glGenLists(1);	
+		iGLDisplayListToCall = iGLDisplayListIndexRemote;
+		init(gl);	
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#displayLocal(javax.media.opengl.GL)
+	 */
 	public void displayLocal(GL gl) 
 	{
 		if(bIsTranslationAnimationActive)
@@ -124,12 +151,22 @@ extends AGLCanvasStorageBasedView
 		
 		pickingManager.handlePicking(iUniqueId, gl, true);
 	
+		if(bIsDisplayListDirtyLocal)
+		{
+			buildDisplayList(gl, iGLDisplayListIndexLocal);
+			bIsDisplayListDirtyLocal = false;			
+		}	
+		iGLDisplayListToCall = iGLDisplayListIndexLocal;
+		
 		display(gl);
 		checkForHits(gl);
 		pickingTriggerMouseAdapter.resetEvents();
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#displayRemote(javax.media.opengl.GL)
+	 */
 	public void displayRemote(GL gl) 
 	{		
 		if(bIsTranslationAnimationActive)
@@ -137,17 +174,87 @@ extends AGLCanvasStorageBasedView
 			doTranslation();
 		}
 		
+		if(bIsDisplayListDirtyRemote)
+		{
+			buildDisplayList(gl, iGLDisplayListIndexRemote);
+			bIsDisplayListDirtyRemote = false;
+		}	
+		iGLDisplayListToCall = iGLDisplayListIndexRemote;
+		
 		display(gl);
 		checkForHits(gl);
 //		pickingTriggerMouseAdapter.resetEvents();		
 	}
 	
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#display(javax.media.opengl.GL)
+	 */
 	public void display(GL gl) 
 	{
-		//GLSharedObjects.drawViewFrustum(gl, viewFrustum);
-		//GLSharedObjects.drawAxis(gl);
+		gl.glCallList(iGLDisplayListToCall);
 		
+//		gl.glClear( GL.GL_STENCIL_BUFFER_BIT);
+//		gl.glColorMask(false,false,false,false);
+//        gl.glClearStencil(0);  // Clear The Stencil Buffer To 0
+//        gl.glEnable(GL.GL_DEPTH_TEST);  // Enables Depth Testing
+//        gl.glDepthFunc(GL.GL_LEQUAL);  // The Type Of Depth Testing To Do
+//		gl.glEnable(GL.GL_STENCIL_TEST);
+//		gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);						
+//		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);												
+//		gl.glDisable(GL.GL_DEPTH_TEST);						
+//		
+//		// Clip region that renders in stencil buffer (in this case the frustum)
+//		gl.glBegin(GL.GL_POLYGON);
+//		gl.glVertex3f(0, 0, -0.01f);
+//		gl.glVertex3f(0, 8, -0.01f);
+//		gl.glVertex3f(8, 8, -0.01f);
+//		gl.glVertex3f(8, 0, -0.01f);
+//		gl.glEnd();
+//		
+//		gl.glEnable(GL.GL_DEPTH_TEST);
+//		gl.glColorMask(true,true,true,true);
+//		gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
+//		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
+//		
+//		bRenderHorizontally = false;
+//		if(!bRenderHorizontally)
+//		{		
+//			gl.glTranslatef(vecTranslation.x(), 
+//					vecTranslation.y(), 
+//					vecTranslation.z());
+//			gl.glRotatef(vecRotation.x(),
+//					vecRotation.y(),
+//					vecRotation.z(),
+//					vecRotation.w());	
+//		}
+//		
+//		gl.glTranslatef(fAnimationTranslation, 0.0f, 0.0f);
+//		
+//		renderHeatMap(gl);
+//		renderSelection(gl, EViewInternalSelectionType.MOUSE_OVER);
+//		renderSelection(gl, EViewInternalSelectionType.SELECTION);	
+//		
+//		gl.glTranslatef(-fAnimationTranslation, 0.0f, 0.0f);
+//
+//		if(!bRenderHorizontally)
+//		{			
+//			gl.glRotatef(-vecRotation.x(),
+//					vecRotation.y(),
+//					vecRotation.z(),
+//					vecRotation.w());
+//			gl.glTranslatef(-vecTranslation.x(),
+//					-vecTranslation.y(),
+//					-vecTranslation.z());
+//		}
+//		
+//		gl.glDisable(GL.GL_STENCIL_TEST);
+	}
+	
+	private void buildDisplayList(final GL gl, int iGLDisplayListIndex)
+	{
+		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);	
+			
 		gl.glClear( GL.GL_STENCIL_BUFFER_BIT);
 		gl.glColorMask(false,false,false,false);
         gl.glClearStencil(0);  // Clear The Stencil Buffer To 0
@@ -203,6 +310,8 @@ extends AGLCanvasStorageBasedView
 		}
 		
 		gl.glDisable(GL.GL_STENCIL_TEST);
+		
+		gl.glEndList();
 	}
 	
 	public void renderHorizontally(boolean bRenderHorizontally)
@@ -212,7 +321,6 @@ extends AGLCanvasStorageBasedView
 	
 	protected void initLists()
 	{		
-		
 		Set<Integer> setMouseOver = verticalSelectionManager.getElements(EViewInternalSelectionType.MOUSE_OVER);
 		horizontalSelectionManager.resetSelectionManager();
 		verticalSelectionManager.resetSelectionManager();			
@@ -244,10 +352,12 @@ extends AGLCanvasStorageBasedView
 						alContentSelection.get(iColumnCount));
 			}
 		}
-	}
-	
+	}	
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#getInfo()
+	 */
 	public ArrayList<String> getInfo() {
 
 		ArrayList<String> alInfo = new ArrayList<String>();
@@ -312,11 +422,13 @@ extends AGLCanvasStorageBasedView
 				}
 				break;
 			}	
+			
+			bIsDisplayListDirtyLocal = true;
+			bIsDisplayListDirtyRemote = true;
+			
 			pickingManager.flushHits(iUniqueId, pickingType);
 			break;
 		}
-	
-
 	}	
 	
 	private void renderHeatMap(final GL gl)
@@ -328,14 +440,32 @@ extends AGLCanvasStorageBasedView
 		// TODO: NullPointer if storage is empty
 		Vec2f vecFieldWidthAndHeight = null;
 
+		String sContent = "";  
+//		for(Integer iStorageIndex : alStorageSelection)
+//		{		
+//			sContent = "Experiment " +iStorageIndex; // FIXME: from where should we get a proper name?
+//			
+//			// Render heat map experiment name
+//			gl.glRotatef(45, 0, 0, 1);
+//			textRenderer.setColor(0, 0, 0, 1);
+//			textRenderer.begin3DRendering();
+//			textRenderer.draw3D(sContent,						
+//					 fYPosition,
+//					-fXPosition,
+//					0.01f,
+//					renderStyle.getHeadingFontScalingFactor());
+//			textRenderer.end3DRendering();
+//			gl.glRotatef(-45, 0, 0, 1);
+//		}
+		
 		int iCount = 0;
 		for(Integer iContentIndex: alContentSelection)
 		{	
-			
 			vecFieldWidthAndHeight = renderStyle.getAndInitFieldWidthAndHeight(iCount);
 			fYPosition = renderStyle.getYCenter() - vecFieldWidthAndHeight.y() * alStorageSelection.size() / 2;
+			
 			for(Integer iStorageIndex : alStorageSelection)
-			{
+			{				
 				renderElement(gl, iStorageIndex, iContentIndex, 
 						fXPosition, fYPosition, vecFieldWidthAndHeight);
 				
@@ -345,7 +475,6 @@ extends AGLCanvasStorageBasedView
 			float fFontScaling = 0;
 			if(vecFieldWidthAndHeight.x() > 0.1f)
 			{			
-			
 				if(vecFieldWidthAndHeight.x() < 0.2f)
 				{
 					fFontScaling = renderStyle.getSmallFontScalingFactor();
@@ -355,10 +484,9 @@ extends AGLCanvasStorageBasedView
 					fFontScaling = renderStyle.getHeadingFontScalingFactor();
 				}
 				
-				
-				
+				// Render heat map element name
 				gl.glRotatef(90, 0, 0, 1);
-				String sContent = getAccessionNumberFromStorageIndex(iContentIndex);
+				sContent = getAccessionNumberFromStorageIndex(iContentIndex);
 				textRenderer.setColor(0, 0, 0, 1);
 				textRenderer.begin3DRendering();
 				textRenderer.draw3D(sContent,						
@@ -367,13 +495,11 @@ extends AGLCanvasStorageBasedView
 						0.01f,
 						fFontScaling);
 				textRenderer.end3DRendering();
-				gl.glRotatef(-90, 0, 0, 1);
-				
+				gl.glRotatef(-90, 0, 0, 1);	
 			}
 			iCount++;
 			fXPosition += vecFieldWidthAndHeight.x();	
 		}			
-
 	}
 	
 	private void renderElement(final GL gl, 
@@ -386,8 +512,6 @@ extends AGLCanvasStorageBasedView
 		float fLookupValue = alDataStorages.get(iStorageIndex).getArrayFloat()[iContentIndex];
 		Vec3f vecMappingColor = colorMapper.colorMappingLookup(fLookupValue);
 		gl.glColor3f(vecMappingColor.x(), vecMappingColor.y(), vecMappingColor.z());
-		
-		
 		
 		gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.FIELD_SELECTION, iContentIndex));
 		gl.glBegin(GL.GL_POLYGON);
@@ -402,9 +526,7 @@ extends AGLCanvasStorageBasedView
 				HeatMapRenderStyle.FIELD_Z);
 		gl.glEnd();
 
-		
 		gl.glPopName();
-		
 	}
 	
 	private void renderSelection(final GL gl,
@@ -456,7 +578,10 @@ extends AGLCanvasStorageBasedView
 		}		
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasStorageBasedView#createElementRep(int)
+	 */
 	protected SelectedElementRep createElementRep(int iStorageIndex) 
 	{
 		int iContentIndex = alContentSelection.indexOf(iStorageIndex);
