@@ -92,7 +92,7 @@ public class GLInfoOverlayRenderer
 		g2d.fillRect(iXPos, iYPos, AInfoOverlayRenderStyle.OVERLAY_WIDTH, panelHeight);
 
 		g2d.setColor(AInfoOverlayRenderStyle.borderColor);
-		g2d.drawRect(iXPos, iYPos, AInfoOverlayRenderStyle.OVERLAY_WIDTH, panelHeight);
+		g2d.drawRect(iXPos, iYPos, AInfoOverlayRenderStyle.OVERLAY_WIDTH -1, panelHeight);
 
 		g2d.setColor(AInfoOverlayRenderStyle.fontColor);
 		g2d.setFont(font);
