@@ -1,6 +1,7 @@
 package org.caleydo.core.manager.data.pathway;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.regex.Matcher;
@@ -26,7 +27,9 @@ import org.caleydo.util.graph.core.Graph;
  */
 public class PathwayManager 
 extends AManager
-implements IPathwayManager {
+implements IPathwayManager, Serializable {
+
+	private static final long serialVersionUID = 1L;
 
 	private HashMap<Integer, PathwayGraph> hashPathwayIdToPathwayGraphLUT;
 	
@@ -51,7 +54,7 @@ implements IPathwayManager {
 	private PathwayImageMap refCurrentPathwayImageMap;
 	
 	/**
-	 * Constructor
+	 * Constructor.
 	 */
 	public PathwayManager(final IGeneralManager refGeneralManager) {
 
@@ -71,6 +74,10 @@ implements IPathwayManager {
 			final String sXMLPath, 
 			final String sImagePath,
 			final String sImageMapPath) {
+		
+		// Check if requested pathway database is already loaded (e.g. using caching)
+		if (hashPathwayDatabase.containsKey(type))
+			return;
 		
 		PathwayDatabase tmpPathwayDatabase = new PathwayDatabase(type,
 				sXMLPath, sImagePath, sImagePath);

@@ -685,5 +685,4 @@ extends AGLCanvasStorageBasedView
 		
 		fAnimationTranslation += fDelta;	
 	}
-
 }

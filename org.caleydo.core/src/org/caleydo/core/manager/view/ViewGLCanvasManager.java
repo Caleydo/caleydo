@@ -573,11 +573,9 @@ implements IViewGLCanvasManager {
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.base.AAbstractManager#destroyOnExit()
 	 */
-	public void destroyOnExit() {
+	public void destroyOnExit() 
+	{
 
-//		generalManager.logMsg(
-//				"ViewJoglManager.destroyOnExit()  ...[DONE]",
-//				LoggerType.FULL );
 	}
 	
 	public void addViewRep(final IView refView) {

@@ -1,12 +1,22 @@
 package org.caleydo.core.data.graph.item.vertex;
 
+import java.io.Serializable;
+
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.item.GraphItem;
 
-
+/**
+ * Pathway vertex that belongs to the overall pathway graph.
+ * 
+ * @author Marc Streit
+ *
+ */
 public class PathwayVertexGraphItem 
-extends GraphItem {
-
+extends GraphItem 
+implements Serializable 
+{	
+	private static final long serialVersionUID = 1L;
+	
 	final String sName;
 	
 	final EPathwayVertexType type;
@@ -15,6 +25,15 @@ extends GraphItem {
 	
 	final String sReactionId;
 	
+	/**
+	 * Constructor.
+	 * 
+	 * @param iId
+	 * @param sName
+	 * @param sType
+	 * @param sExternalLink
+	 * @param sReactionId
+	 */
 	public PathwayVertexGraphItem(
 			final int iId,
 			final String sName,

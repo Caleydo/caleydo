@@ -199,4 +199,6 @@ public interface IGeneralManager {
 	 * @return logger
 	 */
 	public abstract Logger getLogger();
+
+	public void destroyOnExit();
 }

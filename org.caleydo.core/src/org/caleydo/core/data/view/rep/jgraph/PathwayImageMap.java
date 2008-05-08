@@ -2,6 +2,7 @@ package org.caleydo.core.data.view.rep.jgraph;
 
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -10,11 +11,13 @@ import java.util.ArrayList;
  * a link that should followed when the user clicks in
  * the (rectangular) region.
  * 
- * @author	Michael Kalkusch
  * @author	Marc Streit
  */
 
-public class PathwayImageMap {
+public class PathwayImageMap 
+implements Serializable 
+{
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * Path to the image file that is the basis of the 
@@ -27,11 +30,11 @@ public class PathwayImageMap {
 	protected ArrayList<String> refImageLinkArray;
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
 	 * @param sLink
 	 */
-	public PathwayImageMap(String sImageLink) {
+	public PathwayImageMap(final String sImageLink) {
 		
 		refRectArray = new ArrayList<Rectangle>();
 		refImageLinkArray = new ArrayList<String>();

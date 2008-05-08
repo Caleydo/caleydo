@@ -1,16 +1,22 @@
 package org.caleydo.core.data.graph.core;
 
+import java.io.Serializable;
+
 import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
 import org.caleydo.util.graph.core.Graph;
 
 /**
+ * Overall graph that holds all pathways
  * 
  * @author Marc Streit
  *
  */
 public class PathwayGraph
-extends Graph {
+extends Graph
+implements Serializable {
 	
+	private static final long serialVersionUID = 1L;
+
 	private EPathwayDatabaseType type;
 	
 	private int iKeggId;

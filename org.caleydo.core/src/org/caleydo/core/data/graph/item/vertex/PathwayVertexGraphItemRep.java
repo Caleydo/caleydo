@@ -1,5 +1,6 @@
 package org.caleydo.core.data.graph.item.vertex;
 
+import java.io.Serializable;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.util.system.StringConversionTool;
@@ -7,9 +8,18 @@ import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.item.GraphItem;
 
+/**
+ * Pathway vertex representation stored in the overall pathway graph.
+ * 
+ * @author Marc Streit
+ *
+ */
 public class PathwayVertexGraphItemRep 
-extends GraphItem {
-
+extends GraphItem 
+implements Serializable 
+{	
+	private static final long serialVersionUID = 1L;
+	
 	private String sName;
 	
 	private EPathwayVertexShape shape;

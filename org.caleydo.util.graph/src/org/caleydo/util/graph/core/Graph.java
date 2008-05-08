@@ -1,36 +1,36 @@
-/**
- * 
- */
 package org.caleydo.util.graph.core;
 
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemKind;
-import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.GraphRuntimeException;
 import org.caleydo.util.graph.IGraph;
 import org.caleydo.util.graph.IGraphItem;
 import org.caleydo.util.graph.item.GraphGenericContainer;
 
 /**
+ * Generic graph.
+ * 
  * @author Michael Kalkusch
  *
  */
-public class Graph extends AGraph {
+public class Graph 
+extends AGraph {
 	
-	static final int initialSizeItems = 10;
-	
-	static final int initialSizeGraph = 3;
-	
-	protected GraphGenericContainer <IGraphItem,EGraphItemKind> items;
-	
-	protected GraphGenericContainer <IGraph,EGraphItemHierarchy> graphs;
+	private static final long serialVersionUID = 1L;
 
+	private static final int initialSizeItems = 10;
 	
+	private static final int initialSizeGraph = 3;
+	
+	protected GraphGenericContainer <IGraphItem, EGraphItemKind> items;
+	
+	protected GraphGenericContainer <IGraph, EGraphItemHierarchy> graphs;
+
 	/**
-	 * 
+	 * Constructor.
 	 */
 	public Graph(final int id) {
 		

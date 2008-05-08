@@ -1760,6 +1760,5 @@ extends AGLCanvasStorageBasedView
 		vecNewTwo.normalize();
 		float fTmp = vecNewOne.dot(vecNewTwo); 
 		return (float)Math.acos(fTmp);
-	}
-	
+	}	
 }

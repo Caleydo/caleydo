@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.util.graph.item;
 
 import java.util.List;
@@ -16,10 +13,15 @@ import org.caleydo.util.graph.item.GraphGenericContainer;
 
 /**
  * Base class for IGraphItem.
+ * 
  * @author Michael Kalkusch
  *
  */
-public class GraphItem extends AGraphDataHandler implements IGraphItem {
+public class GraphItem 
+extends AGraphDataHandler 
+implements IGraphItem 
+{
+	private static final long serialVersionUID = 1L;
 
 	private int iGraphItemId = 0;
 	

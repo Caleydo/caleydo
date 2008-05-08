@@ -1,5 +1,7 @@
 package org.caleydo.core.manager.data.pathway;
 
+import java.io.Serializable;
+
 /**
  * 
  * Class that holds information about a specific pathway database.
@@ -7,7 +9,10 @@ package org.caleydo.core.manager.data.pathway;
  * @author Marc Streit
  *
  */
-public class PathwayDatabase {
+public class PathwayDatabase 
+implements Serializable 
+{
+	private static final long serialVersionUID = 1L;
 
 	private EPathwayDatabaseType type;
 	

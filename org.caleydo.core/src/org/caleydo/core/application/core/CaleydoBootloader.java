@@ -170,9 +170,6 @@ public class CaleydoBootloader
 		return true;
 	}
 	
-
-	
-	
 	/**
 	 * Set local XML file name.
 	 * Is case the XML file is received from the Muddleware server
@@ -346,13 +343,12 @@ public class CaleydoBootloader
 		{		
 			if ( generalManager!= null ) 
 			{
-				generalManager.getLogger().log(Level.CONFIG, "Caleydo core clean up...");	
+				generalManager.getLogger().log(Level.INFO, "Caleydo core clean up...");	
 				
-				//TODO!!!!!!
-//				generalManager.destroyOnExit();
+				generalManager.destroyOnExit();
 				
-				generalManager.getLogger().log(Level.CONFIG, "Caleydo core   clean up... [done]\n");		
-				generalManager.getLogger().log(Level.CONFIG, "... Stop Caleydo Core ...");
+				generalManager.getLogger().log(Level.INFO, "[done]\n");		
+				generalManager.getLogger().log(Level.INFO, "Bye bye!");
 				
 				bIsRunning = false;
 			}
@@ -385,6 +381,10 @@ public class CaleydoBootloader
 		
 		prototype.run_SWT();
 		prototype.stop();
+		
+		System.exit(0);
+
+		return;
 	}
 
 }

@@ -421,6 +421,7 @@ implements ISWTGUIManager {
 	
 	public void destroyOnExit() {
 		refLoadingProgressBarWindow.close();	
+		refComposite.dispose();
 		refDisplay.dispose();
 	}
 }

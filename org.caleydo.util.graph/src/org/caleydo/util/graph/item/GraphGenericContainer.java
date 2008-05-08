@@ -1,12 +1,10 @@
-/**
- * 
- */
 package org.caleydo.util.graph.item;
 
+import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
 import org.caleydo.util.graph.GraphRuntimeException;
 import org.caleydo.util.graph.IGraphComponent;
@@ -24,7 +22,11 @@ import org.caleydo.util.graph.IGraphComponent;
  * @author Michael Kalkusch
  *
  */
-public class GraphGenericContainer <GraphComponent extends IGraphComponent,GraphEnum> {
+public class GraphGenericContainer <GraphComponent 
+extends IGraphComponent,GraphEnum>  
+implements Serializable 
+{	
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * initial size for type2ArrayList.

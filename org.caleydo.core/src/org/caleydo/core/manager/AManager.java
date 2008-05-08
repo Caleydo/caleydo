@@ -1,5 +1,7 @@
 package org.caleydo.core.manager;
 
+import java.io.Serializable;
+
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 
@@ -11,9 +13,11 @@ import org.caleydo.core.manager.type.ManagerType;
  *
  */
 public abstract class AManager 
-implements IManager
+implements IManager, Serializable
 {
-	protected final IGeneralManager generalManager;
+	private static final long serialVersionUID = 1L;
+
+	protected final transient IGeneralManager generalManager;
 	
 	protected final ManagerType managerType;
 	

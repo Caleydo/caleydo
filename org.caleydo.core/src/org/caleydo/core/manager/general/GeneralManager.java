@@ -1,8 +1,13 @@
 package org.caleydo.core.manager.general;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.logging.FileHandler;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -76,7 +81,6 @@ implements IGeneralManager
 	protected IGenomeIdManager refGenomeIdManager;
 	
 	private Logger logger;
-	private FileHandler loggerFileHandler;
 	
 	/**
 	 * Unique Id per each application over the network.
@@ -129,6 +133,7 @@ implements IGeneralManager
 		refEventPublisher = new EventPublisher(this);
 		refGenomeIdManager = new DynamicGenomeIdManager(this);
 		refPathwayManager = new PathwayManager(this);
+//		serializationInputTest();
 		refPathwayItemManager = new PathwayItemManager(this);
 		refXmlParserManager = new XmlParserManager(this);
 		
@@ -282,7 +287,9 @@ implements IGeneralManager
 			
 		} // while ( iter.hasNext() ) 
 		
-		logger.log(Level.FINE, "OneForAllManager.destroyOnExit()  ...[DONE]");
+		logger.log(Level.INFO, "OneForAllManager.destroyOnExit()  ...[DONE]");
+		
+//		serializationOutputTest();
 	}
 
 //	public boolean setCreateNewId(ManagerType setNewBaseType, int iCurrentId) {
@@ -408,6 +415,51 @@ implements IGeneralManager
 	public ICommandManager getCommandManager() {
 		return refCommandManager;
 	}
-
+	
+//	public void serializationOutputTest() {
+//		
+//		try
+//		{
+//			ObjectOutputStream out = new ObjectOutputStream(
+//					new FileOutputStream("data/serialize_test.out"));
+//			
+//			out.writeObject(refPathwayManager);
+//			out.close();
+//			
+//		} catch (FileNotFoundException e)
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e)
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
+//	
+//	public void serializationInputTest() {
+//		
+//		try
+//		{
+//			ObjectInputStream in = new ObjectInputStream(
+//					new FileInputStream("data/serialize_test.out"));
+//			
+//			refPathwayManager = (PathwayManager) in.readObject();
+//			in.close();
+//			
+//		} catch (FileNotFoundException e)
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (IOException e)
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		} catch (ClassNotFoundException e)
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//	}
 }
 

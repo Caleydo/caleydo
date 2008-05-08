@@ -1,5 +1,6 @@
 package org.caleydo.core.manager.data.pathway;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -31,7 +32,9 @@ import org.caleydo.util.graph.IGraphItem;
  */
 public class PathwayItemManager
 extends AManager
-implements IPathwayItemManager {
+implements IPathwayItemManager, Serializable 
+{
+	private static final long serialVersionUID = 1L;
 
 	private HashMap<Integer, IGraphItem> hashVertexIdToGraphItem;
 	
