@@ -13,9 +13,9 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.view.EPickingMode;
 import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.Pick;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyph;
-import org.caleydo.core.view.opengl.canvas.parcoords.GLParCoordsToolboxRenderer;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLSharedObjects;
@@ -31,6 +31,10 @@ import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 public class GLCanvasRemoteGlyph 
 extends AGLCanvasUser
 {	
+	
+	private ArrayList<Integer> viewIDs_; 
+	private GlyphMouseListener mouseWheelListener_;
+	
 	/**
 	 * 
 	 * Constructor.
@@ -49,8 +53,14 @@ extends AGLCanvasUser
 	{
 		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);	
 		
-		// Deregister old mouse listener
-		// Create and register own remote glyph mouse listener
+		
+		viewIDs_ = new ArrayList<Integer>();
+		mouseWheelListener_ = new GlyphMouseListener(this, generalManager);
+
+		// Unregister standard mouse wheel listener
+		//parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
+		// Register specialized bucket mouse wheel listener
+		//parentGLCanvas.addMouseWheelListener(mouseWheelListener_);
 	}
 	
 	/*
@@ -60,6 +70,20 @@ extends AGLCanvasUser
 	public void init(GL gl) 
 	{
 		retrieveContainedViews(gl);
+
+		Iterator<Integer> it = viewIDs_.iterator();
+		int iViewId;
+		
+		while( it.hasNext() ) {
+			iViewId = it.next();
+			AGLCanvasUser tmpCanvasUser = ((AGLCanvasUser) generalManager
+					.getViewGLCanvasManager().getItem(iViewId));
+
+			if (tmpCanvasUser == null)
+				throw new CaleydoRuntimeException(
+						"Cannot render canvas object which is null!");
+			tmpCanvasUser.init(gl);			
+		}
 	}
 
 	/*
@@ -114,10 +138,54 @@ extends AGLCanvasUser
 	 */
 	public void display(GL gl) 
 	{
-		GLSharedObjects.drawAxis(gl);
-		GLSharedObjects.drawViewFrustum(gl, viewFrustum);
+		
+		gl.glTranslatef(0f,0f,-5f);
+
+		//GLSharedObjects.drawAxis(gl);
+		//GLSharedObjects.drawViewFrustum(gl, viewFrustum);
 		
 		// Iterate over glyph views and set tranlation / rotation / scaleing
+		
+		Iterator<Integer> it = viewIDs_.iterator();
+		int iViewId;
+		
+	    ArrayList<Vec3f> scale = new ArrayList<Vec3f>();
+	    ArrayList<Vec3f> pos = new ArrayList<Vec3f>();
+	    
+	    scale.add(new Vec3f(2f,2f,2f) );
+	    scale.add(new Vec3f(0.5f,0.5f,0.5f) );
+	    scale.add(new Vec3f(1f,1f,1f) );
+	    
+	    pos.add(new Vec3f(  0f,-2f,0f));
+	    pos.add(new Vec3f( 1f, 2f,0f));
+	    pos.add(new Vec3f(-4f, 0f,0f));
+	    
+	    
+	    gl.glPushMatrix();
+		
+		int counter=0;
+		while( it.hasNext() ) {
+			iViewId = it.next();
+			
+			gl.glTranslatef(pos.get(counter).get(0), 
+							pos.get(counter).get(1),
+							pos.get(counter).get(2));
+			gl.glScalef(scale.get(counter).get(0),
+						scale.get(counter).get(1),
+						scale.get(counter).get(2));
+			
+			GLSharedObjects.drawViewFrustum(gl, viewFrustum);
+			renderViewByID(gl, iViewId);
+
+			++counter;
+		}
+
+		//gl.glTranslatef(-5f,0f,0f);
+		
+		gl.glPopMatrix();
+		
+		gl.glTranslatef(0f,0f,5f);
+		//mouseWheelListener_.render();
 	}
 
 	private void retrieveContainedViews(final GL gl) {
@@ -125,16 +193,36 @@ extends AGLCanvasUser
 		Iterator<GLEventListener> iterGLEventListener = generalManager
 				.getViewGLCanvasManager().getAllGLEventListeners().iterator();
 
+		viewIDs_ = new ArrayList<Integer>();
+
 		while (iterGLEventListener.hasNext())
 		{
 			AGLCanvasUser tmpGLEventListener = (AGLCanvasUser) iterGLEventListener.next();
 
-			if (tmpGLEventListener == this || !tmpGLEventListener.equals(GLCanvasGlyph.class))
+			if (tmpGLEventListener == this || tmpGLEventListener.getClass() != GLCanvasGlyph.class )
 				continue;
 
 			int iViewID = ((AGLCanvasUser) tmpGLEventListener).getId();
-			// Add to interal array
+
+			viewIDs_.add(iViewID);
 		}
+
+	}
+	
+	
+	private void renderViewByID(final GL gl, final int iViewID) {
+		
+		AGLCanvasUser tmpCanvasUser = ((AGLCanvasUser) generalManager
+				.getViewGLCanvasManager().getItem(iViewID));
+
+		if (tmpCanvasUser == null)
+			throw new CaleydoRuntimeException(
+					"Cannot render canvas object which is null!");
+	
+		
+		tmpCanvasUser.displayRemote(gl);			
+		
+		//System.out.println(iViewID);
 	}
 
 	
