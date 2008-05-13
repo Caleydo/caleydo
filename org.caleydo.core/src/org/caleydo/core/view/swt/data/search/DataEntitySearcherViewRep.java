@@ -82,7 +82,7 @@ implements IMediatorSender{;
 		if (searchForPathway(sEntity)
 				|| searchForNCBIGeneId(sEntity)
 				|| searchForGeneShortName(sEntity)
-				|| searchForAccession(sEntity))
+				|| searchForRefSeq(sEntity))
 			return true;
 		
 		return false;
@@ -104,52 +104,38 @@ implements IMediatorSender{;
 		return true;
 	}
 	
-	private boolean searchForAccession(final String sEntity) {
+	private boolean searchForRefSeq(final String sEntity) {
 		
-		int iFoundAccessionId = generalManager.getGenomeIdManager().getIdIntFromStringByMapping(sEntity, 
-			EGenomeMappingType.ACCESSION_CODE_2_ACCESSION);
+		int iDavidId = generalManager.getGenomeIdManager().getIdIntFromStringByMapping(sEntity, 
+			EGenomeMappingType.REFSEQ_MRNA_2_DAVID);
 		
-		if (iFoundAccessionId == -1)
+		if (iDavidId == -1)
 			return false;
 		
 		ArrayList<Integer> iAlSelectionId = new ArrayList<Integer>();
 		ArrayList<Integer> iAlSelectionGroupId = new ArrayList<Integer>();
 		
-		iAlSelectionId.add(iFoundAccessionId);
+		iAlSelectionId.add(iDavidId);
 		iAlSelectionGroupId.add(2);
 		
 		triggerUpdate(iAlSelectionId, iAlSelectionGroupId, null);
-
-//		iAlSelectionId.clear();
-//		iAlSelectionGroupId.clear();
-//		iAlSelectionId.add(iFoundAccessionId);
-//		iAlSelectionGroupId.add(1);
-//		
-//		triggerUpdate(iAlSelectionId, iAlSelectionGroupId, null);
-		
+	
 		return true;
-		
-//		int iNCBIGeneId = generalManager.getSingelton().getGenomeIdManager().getIdIntFromIntByMapping(iFoundAccessionId, 
-//				EGenomeMappingType.ACCESSION_2_NCBI_GENEID);
-//
-//		if (iNCBIGeneId == -1)
-//			return false;
-//		
-//		return searchForNCBIGeneId(generalManager.getSingelton().getGenomeIdManager()
-//				.getIdStringFromIntByMapping(iNCBIGeneId, EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE));
-
 	}
 	
 	// TODO: make case insensitive
-	private boolean searchForNCBIGeneId(final String sNCBIGeneIdCode) {
+	private boolean searchForNCBIGeneId(final String sNCBIGeneId) {
 		
-		int iNCBIGeneIdCode = StringConversionTool.convertStringToInt(sNCBIGeneIdCode, -1);
+		int iNCBIGeneId = StringConversionTool.convertStringToInt(sNCBIGeneId, -1);
 		
-		if (iNCBIGeneIdCode == -1)
+		if (iNCBIGeneId == -1)
 			return false;
 		
+		int iDavidId = generalManager.getGenomeIdManager().getIdIntFromIntByMapping(
+				iNCBIGeneId, EGenomeMappingType.ENTREZ_GENE_ID_2_DAVID);
+		
 		int iPathwayGraphItemId = generalManager.getPathwayItemManager()
-			.getPathwayVertexGraphItemIdByNCBIGeneId(iNCBIGeneIdCode);
+			.getPathwayVertexGraphItemIdByDavidId(iDavidId);
 	
 		if (iPathwayGraphItemId == -1)
 			return false;
@@ -186,14 +172,16 @@ implements IMediatorSender{;
 	
 	private boolean searchForGeneShortName(final String sEntity) {
 		
-		int iNCBIGeneId = generalManager.getGenomeIdManager().getIdIntFromStringByMapping(sEntity, 
-				EGenomeMappingType.GENE_SHORT_NAME_2_NCBI_GENEID);
+//		int iNCBIGeneId = generalManager.getGenomeIdManager().getIdIntFromStringByMapping(sEntity, 
+//				EGenomeMappingType.DA);
+//		
+//		if (iNCBIGeneId == -1)
+//			return false;
+//		
+//		return searchForNCBIGeneId(generalManager.getGenomeIdManager()
+//				.getIdStringFromIntByMapping(iNCBIGeneId, EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE));
 		
-		if (iNCBIGeneId == -1)
-			return false;
-		
-		return searchForNCBIGeneId(generalManager.getGenomeIdManager()
-				.getIdStringFromIntByMapping(iNCBIGeneId, EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE));
+		return false;
 	}
 	
 	private void triggerUpdate(ArrayList<Integer> iAlSelectionId,

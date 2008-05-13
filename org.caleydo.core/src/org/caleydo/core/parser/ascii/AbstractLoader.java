@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.logging.Level;
 
 import org.caleydo.core.data.xml.IMementoXML;
 import org.caleydo.core.manager.IGeneralManager;
@@ -159,32 +160,36 @@ implements IMementoXML, IParserObject {
 	 * 
 	 * @param token current token separator
 	 */
-	public final void setTokenSeperator(final String token) {			
-		sTokenSeperator = token;
+	public final void setTokenSeperator(final String token) {	
+		
+		if (token.equals("\\t"))
+			sTokenSeperator = "\t";
+		else
+			sTokenSeperator = token;
 	}
 	
 	/**
-	 * Get the current token seperator.
+	 * Get the current token separator.
 	 * 
-	 * @return current token seperator
+	 * @return current token separator
 	 */
 	public final String getTokenSeperator() {			
 		return sTokenSeperator;
 	}
 	
 	/**
-	 * Set the current token seperator.
+	 * Set the current token separator.
 	 * 
-	 * @param token current token seperator
+	 * @param token current token separator
 	 */
 	public final void setTokenSeperatorInnerLoop(final String token) {			
 		sTokenInnerLoopSeperator = token;
 	}
 	
 	/**
-	 * Get the current token seperator.
+	 * Get the current token separator.
 	 * 
-	 * @return current token seperator
+	 * @return current token separator
 	 */
 	public final String getTokenSeperatorInnerLoop() {			
 		return sTokenInnerLoopSeperator;
@@ -376,48 +381,25 @@ implements IMementoXML, IParserObject {
 		    {
 		    	brFile = new BufferedReader(new FileReader(sFileName));
 		    }		   
-		    		
-//		    generalManager.logMsg(
-//		    		"Read file \""+ 
-//				       this.sFileName + "\" ...",
-//				       LoggerType.VERBOSE );
-
+		    
+		    generalManager.getLogger().log(Level.INFO, "Start loading file " +sFileName +"...");
+		    
 		    this.loadDataParseFile( brFile, iNumberOfLinesInFile );
 		    
-
 		    if ( brFile != null ) {
 		    	brFile.close();
 		    }
-		    		    
-//		    generalManager.logMsg(
-//		    		" read file \""+ 
-//				       this.sFileName + "\"  ....  [DONE]",
-//				     LoggerType.STATUS );
+		    
+		    generalManager.getLogger().log(Level.INFO, "File " +sFileName +" successfully loaded.");
 
 		    copyDataToInternalDataStructures();
-		    
-//		    generalManager.logMsg(
-//		    		"  Read file \""+ 
-//				       this.sFileName + "\" .... copy to storage ...[DONE]",
-//				       LoggerType.VERBOSE_EXTRA );
-		    
 		}
 		catch (IOException ioe) {
-//			generalManager.logMsg(
-//					"MicroArrayLoader: IO-error line=[" + iLineInFile +
-//					"] while parsing: " + ioe.toString(),
-//					LoggerType.MINOR_ERROR );
-		    
+
 		    return false;
-		    //System.exit(1);
 		}
 		catch (Exception ex) {
-//			generalManager.logMsg(
-//					"MicroArrayLoader: ERROR line=[" + iLineInFile +
-//					"] while parsing: " + ex.toString(),
-//					LoggerType.ERROR );
-			
-			ex.printStackTrace();
+
 		    return false;
 		}		
 		

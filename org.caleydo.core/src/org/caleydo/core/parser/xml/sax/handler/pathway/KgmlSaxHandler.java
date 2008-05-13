@@ -3,6 +3,7 @@ package org.caleydo.core.parser.xml.sax.handler.pathway;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
 
 import javax.swing.ImageIcon;
 
@@ -15,11 +16,13 @@ import org.xml.sax.SAXException;
 import org.caleydo.core.data.graph.item.edge.PathwayReactionEdgeGraphItem;
 import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
+import org.caleydo.core.util.system.StringConversionTool;
 
 /**
  * 
@@ -93,16 +96,16 @@ implements IXmlParserHandler {
 				handleEntryTag();
 			else if (sElementName.equals("graphics"))
 				handleGraphicsTag();
-			else if (sElementName.equals("relation"))
-				handleRelationTag();
+//			else if (sElementName.equals("relation"))
+//				handleRelationTag();
 //			else if (sElementName.equals("subtype"))
 //				handleSubtypeTag();
-			else if (sElementName.equals("reaction"))
-				handleReactionTag();
-			else if (sElementName.equals("product"))
-				handleReactionProductTag();
-			else if (sElementName.equals("substrate"))
-				handleReactionSubstrateTag();
+//			else if (sElementName.equals("reaction"))
+//				handleReactionTag();
+//			else if (sElementName.equals("product"))
+//				handleReactionProductTag();
+//			else if (sElementName.equals("substrate"))
+//				handleReactionSubstrateTag();
 		}
     }
 
@@ -158,10 +161,10 @@ implements IXmlParserHandler {
 			{
 				sTitle = attributes.getValue(iAttributeIndex); 
 			}
-			else if (sAttributeName.equals("number"))
-			{
+//			else if (sAttributeName.equals("number"))
+//			{
 //				iKeggId = new Integer(attributes.getValue(iAttributeIndex)); 
-			}
+//			}
    			else if (sAttributeName.equals("image"))
    			{
    				sImageLink = attributes.getValue(iAttributeIndex); 
@@ -244,13 +247,28 @@ implements IXmlParserHandler {
     	
     	if (sType.equals("gene"))
     	{
-			StringTokenizer strTokenText = 
-				new StringTokenizer(sName, " ");
+			StringTokenizer sTokenText = new StringTokenizer(sName, " ");
+			int iDavidId = -1;
+			String sTmpVertexName = "";
 			
-			while (strTokenText.hasMoreTokens()) 
+			while (sTokenText.hasMoreTokens()) 
 			{
+				sTmpVertexName = sTokenText.nextToken();
+				
+				iDavidId = generalManager.getGenomeIdManager().getIdIntFromIntByMapping(
+						StringConversionTool.convertStringToInt(sTmpVertexName.substring(4), -1), 
+								EGenomeMappingType.ENTREZ_GENE_ID_2_DAVID); 
+				
+				if (iDavidId == -1)
+				{
+					generalManager.getLogger().log(Level.WARNING, 
+							"NCBI Gene ID "+sTmpVertexName +" cannot be mapped to David Id.");
+					
+					return;
+				}
+				
 	    		currentVertex = generalManager.getPathwayItemManager()
-    				.createVertex(strTokenText.nextToken(), sType, sExternalLink, sReactionId);
+    				.createVertexGene(sTmpVertexName, sType, sExternalLink, sReactionId, iDavidId);
 	    		
 	    		alCurrentVertex.add(currentVertex);
 			}	
@@ -326,9 +344,10 @@ implements IXmlParserHandler {
 				shYPosition, 
 				shWidth, 
 				shHeight);
-    	hashKgmlEntryIdToVertexRepId.put(iCurrentEntryId, vertexRep);
-    	hashKgmlNameToVertexRepId.put(((PathwayVertexGraphItem)currentVertex).getName(), vertexRep);
-    	hashKgmlReactionIdToVertexRepId.put(((PathwayVertexGraphItem)currentVertex).getReactionId(), vertexRep);
+		
+//    	hashKgmlEntryIdToVertexRepId.put(iCurrentEntryId, vertexRep);
+//    	hashKgmlNameToVertexRepId.put(((PathwayVertexGraphItem)currentVertex).getName(), vertexRep);
+//    	hashKgmlReactionIdToVertexRepId.put(((PathwayVertexGraphItem)currentVertex).getReactionId(), vertexRep);
     }
     
 	/**
@@ -583,5 +602,9 @@ implements IXmlParserHandler {
 	public void destroyHandler() {
 		
 		super.destroyHandler();
+		
+		hashKgmlEntryIdToVertexRepId.clear();
+		hashKgmlNameToVertexRepId.clear();
+		hashKgmlReactionIdToVertexRepId.clear();
 	}
 }

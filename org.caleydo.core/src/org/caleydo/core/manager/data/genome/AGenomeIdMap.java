@@ -132,8 +132,7 @@ implements IGenomeIdMap {
 		{
 		case INT2INT:
 		{
-			codeResolvedMap = new GenomeIdMapInt2Int(targetMappingDataType,
-					this.size());
+			codeResolvedMap = new GenomeIdMapInt2Int(targetMappingDataType, this.size());
 			
 			/** 
 			 * Read HashMap and write it to new HashMap
@@ -173,8 +172,7 @@ implements IGenomeIdMap {
 		}
 		case INT2STRING:
 		{
-			codeResolvedMap = new GenomeIdMapInt2String(targetMappingDataType,
-					this.size());	
+			codeResolvedMap = new GenomeIdMapInt2String(targetMappingDataType, this.size());	
 			
 			/** 
 			 * Read HashMap and write it to new HashMap
@@ -195,6 +193,34 @@ implements IGenomeIdMap {
 				
 				codeResolvedMap.put(new Integer(iResolvedID_1).toString(), 
 						entryBuffer.getValue().toString());
+			}
+				
+			break;
+		}
+		case STRING2INT:
+		{
+			codeResolvedMap = new GenomeIdMapString2Int(targetMappingDataType, this.size());	
+			
+			/** 
+			 * Read HashMap and write it to new HashMap
+			 */
+			Set <Entry<K,V>> entrySet = hashGeneric.entrySet();			
+			Iterator <Entry<K,V>> iterOrigin = entrySet.iterator();
+			int iResolvedID = 0;
+			
+			Entry<K,V> entryBuffer = null;
+			
+			while ( iterOrigin.hasNext() ) 
+			{
+				entryBuffer = iterOrigin.next();
+							
+				iResolvedID = refGenomeIdManager.getIdIntFromStringByMapping(
+						entryBuffer.getValue().toString(), genomeMappingLUT_2);
+				
+//				if (iResolvedID == -1)
+//					System.out.println("Cannot resolve LUT"); 
+				
+				codeResolvedMap.put(entryBuffer.getKey().toString(), new Integer(iResolvedID).toString());
 			}
 				
 			break;

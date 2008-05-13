@@ -16,51 +16,6 @@ import org.caleydo.core.util.ICaleydoDefaultType;
  */
 public enum EGenomeIdType
 implements ICaleydoDefaultType <EGenomeIdType> {
-
-	ACCESSION(StorageType.INT, 
-			EGenomeMappingType.ACCESSION_CODE_2_ACCESSION,
-			"acc","accession"),
-	ACCESSION_CODE    (StorageType.STRING,
-			EGenomeMappingType.ACCESSION_CODE_2_ACCESSION,
-			"acc","accession_code"),
-			
-	ENZYME(StorageType.INT,
-			EGenomeMappingType.ENZYME_CODE_2_ENZYME,
-			"ec","EC_number"),
-	ENZYME_CODE(StorageType.STRING,
-			EGenomeMappingType.ENZYME_CODE_2_ENZYME,
-			"ec","EC_number as String"),
-			
-	METABOLIT(StorageType.INT,
-			EGenomeMappingType.METABOLIT_CODE_2_METABOLIT,
-			"ko","methobliot"),
-	METABOLIT_CODE(StorageType.STRING,
-			EGenomeMappingType.METABOLIT_CODE_2_METABOLIT,
-			"ko","methobliot"),
-			
-	MICROARRAY(StorageType.INT,
-			EGenomeMappingType.MICROARRAY_CODE_2_MICROARRAY,
-			"IMAGp","Microarray LUT"),
-	MICROARRAY_CODE   (StorageType.STRING,
-			EGenomeMappingType.MICROARRAY_CODE_2_MICROARRAY,
-			"IMAGp","Microarray LUT"),
-	MICROARRAY_EXPRESSION   (StorageType.INT,
-			EGenomeMappingType.MICROARRAY_2_MICROARRAY_EXPRESSION,
-			"expression","Microarray Expression Value"),
-			
-	NCBI_GENEID(StorageType.INT,
-			EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID,
-			"ncbi-geneid","ncbi-geneid"),
-	NCBI_GENEID_CODE  (StorageType.STRING,
-			EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID,
-			"ncbi-geneid","ncbi-geneid"),
-	
-	PATHWAY(StorageType.INT,
-			EGenomeMappingType.NON_MAPPING,
-			"path","pathway-id"),		
-	PATHWAY_CODE      (StorageType.STRING,
-			EGenomeMappingType.NON_MAPPING,
-			"path","pathway-id"),
 			
 	GENE_NAME(StorageType.STRING,
 			EGenomeMappingType.NON_MAPPING,
@@ -69,18 +24,29 @@ implements ICaleydoDefaultType <EGenomeIdType> {
 			EGenomeMappingType.NON_MAPPING,
 			"gene-short-name","gene pseudo short name"),
 			
-	BIOCARTA_GENEID(StorageType.STRING,
+	BIOCARTA_GENE_ID(StorageType.STRING,
 			EGenomeMappingType.NON_MAPPING,
-			"biocarta geneid","biocarta geneid"),			
-					
-	KEGG(StorageType.INT,
-			EGenomeMappingType.KEGG_CODE_2_KEGG,
-			"kegg","kegg-id"),
+			"biocarta geneid","biocarta geneid"),
 		
+	DAVID(StorageType.INT,
+			EGenomeMappingType.NON_MAPPING,
+			"david","david-id"),
+			
+	REFSEQ_MRNA(StorageType.INT,
+			EGenomeMappingType.NON_MAPPING,
+			"refseq-mrna","refseq-mrna-id"),
+			
+	ENTREZ_GENE_ID(StorageType.INT,
+			EGenomeMappingType.NON_MAPPING,
+			"entrez-gene-id","entrez-gene-id"),
+				
+	EXPRESSION_STORAGE_ID(StorageType.INT,
+			EGenomeMappingType.NON_MAPPING,
+			"expression-storage-id", "expression-storage-id"),			
+			
 	NONE(StorageType.NONE,
 			EGenomeMappingType.NON_MAPPING,
 			"none","none");
-	
 	
 	private final StorageType storageType;
 	

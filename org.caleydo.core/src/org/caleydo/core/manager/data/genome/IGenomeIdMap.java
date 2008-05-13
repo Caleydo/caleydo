@@ -94,8 +94,7 @@ public interface IGenomeIdMap {
 	 * @param key
 	 * @param value
 	 */
-	public void put( final String key, 
-			final String value);
+	public void put( final String key, final String value);
 		
 	/**
 	 * Get size of the map.
@@ -118,7 +117,7 @@ public interface IGenomeIdMap {
 	public IGenomeIdMap getReversedMap();
 	
 	/**
-	 * Method reolves the codes in the map.
+	 * Method resolves the codes in the map.
 	 * That means all codes are looked up the mapping tables
 	 * (Code -> ID) and the Codes are replaced by the internal
 	 * IDs.

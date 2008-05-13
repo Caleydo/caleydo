@@ -16,6 +16,7 @@ import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
  * it returns an AL of Relevant data
  * 
  * @author Alexander Lex
+ * @author Marc Streit
  *
  */
 
@@ -57,22 +58,24 @@ public class InformationContentCreator
 		{
 		case GENE:
 			
-			String sAccessionNumber;
+			String sRefSeq;
 			String sGeneName;
 			
 			if (iUniqueID == -1)
 			{
-				sAccessionNumber = "unknown";
+				sRefSeq = "unknown";
 				sGeneName = "unknown";
 			}
 			else
 			{
-				sAccessionNumber = getAccessionNumberFromAccessionID(iUniqueID);							
-				sGeneName = mapper.getGeneShortNameByAccession(iUniqueID);
+				sRefSeq = generalManager.getGenomeIdManager().getIdStringFromIntByMapping(
+						iUniqueID, EGenomeMappingType.DAVID_2_REFSEQ_MRNA);							
+				sGeneName = "TODO";//mapper.getGeneShortNameByAccession(iUniqueID);
 			}
+			
 			sContent.add("Type: Gene");
 			sContent.add("Name: " + sGeneName);			
-			sContent.add("Acc.: " + sAccessionNumber);
+			sContent.add("RefSeq: " + sRefSeq);
 		
 			break;
 			
@@ -103,15 +106,4 @@ public class InformationContentCreator
 		
 		return sContent;
 	}
-	
-	
-	private String getAccessionNumberFromAccessionID(final int iCaleydoID)
-	{
-		String sAccessionNumber = IDManager.getIdStringFromIntByMapping(iCaleydoID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
-		if(sAccessionNumber == "")
-			return "Unkonwn Gene";
-		else
-			return sAccessionNumber;		
-	}
-
 }

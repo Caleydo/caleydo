@@ -1,5 +1,7 @@
 package org.caleydo.core.parser.xml.sax.handler.pathway;
 
+import java.util.logging.Level;
+
 import org.caleydo.core.data.graph.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IGeneralManager;
@@ -99,10 +101,6 @@ extends AXmlParserHandler {
 		{
 			sTitle += ch[iCharIndex];
 		}
-		
-//		refGeneralManager.getSingelton().logMsg( 
-//				"Load 'BIOCARTA pathway titled: " + sTitle,
-//					LoggerType.VERBOSE );
 		
 		bReadTitle = false;
 	}
@@ -206,14 +204,22 @@ extends AXmlParserHandler {
    			}
 		} 	
 
-		sName = convertBioCartaIdToNCBIGeneIdCode(sName);
+		// Convert BioCarta ID to DAVID ID
+		IGenomeIdManager genomeIdManager = generalManager.getGenomeIdManager();
 		
-		if(sName.isEmpty())
+		int iDavidId = genomeIdManager.getIdIntFromStringByMapping(
+				sName, EGenomeMappingType.BIOCARTA_GENE_ID_2_DAVID);
+		
+		if(iDavidId == -1 || iDavidId == 0)
+		{
+			generalManager.getLogger().log(Level.WARNING, 
+					"Cannot map BioCarta ID " +sName +" to David ID");
 			return;
-		
+		}
+	
 		IGraphItem vertex = generalManager.getPathwayItemManager()
-			.createVertex(sName, "gene", 
-					BIOCARTA_EXTERNAL_URL_VERTEX +  sExternalLink, "");
+			.createVertexGene(sName, "gene", 
+					BIOCARTA_EXTERNAL_URL_VERTEX +  sExternalLink, "", iDavidId);
 		
 		generalManager
 			.getPathwayItemManager().createVertexRep(
@@ -222,31 +228,6 @@ extends AXmlParserHandler {
 			sName, 
 			sShape, 
 			sCoords);
-	}
-	
-	private String convertBioCartaIdToNCBIGeneIdCode(final String sBioCartaId) {
-		
-		// Convert BioCarta ID to NCBI_GENEID
-		IGenomeIdManager genomeIdManager = 
-			generalManager.getGenomeIdManager();
-		
-		int iAccession = genomeIdManager.getIdIntFromStringByMapping(sBioCartaId, 
-				EGenomeMappingType.BIOCARTA_GENEID_2_ACCESSION);
-		
-		if (iAccession == -1)
-			return "";
-		
-		int iNCBIGeneId = genomeIdManager.getIdIntFromIntByMapping(iAccession, 
-				EGenomeMappingType.ACCESSION_2_NCBI_GENEID);
-		
-		if (iNCBIGeneId == -1)
-			return "";
-		
-		String sNCBIGeneIdCode = genomeIdManager.getIdStringFromIntByMapping(iNCBIGeneId,
-				EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
-		
-		// Convert to KEGG format
-		return("hsa:" + sNCBIGeneIdCode);
 	}
 	
 	/**

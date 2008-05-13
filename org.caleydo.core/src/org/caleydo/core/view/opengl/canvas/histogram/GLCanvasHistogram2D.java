@@ -21,6 +21,7 @@ import org.caleydo.core.math.statistics.histogram.HistogramData;
 import org.caleydo.core.math.statistics.histogram.HistogramStatisticsSet;
 import org.caleydo.core.math.statistics.histogram.StatisticHistogramType;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 
@@ -123,15 +124,17 @@ extends AGLCanvasUser {
 	}
 	
 	/*
-		/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, int, org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer, org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, int, org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer, org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener, org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D)
 	 */
 	public void initRemote(final GL gl, 
-			final int iRemoteViewID, 
+			final int iRemoteViewID,
 			final JukeboxHierarchyLayer layer,
-			final PickingJoglMouseListener pickingTriggerMouseAdapter)
+			final PickingJoglMouseListener pickingTriggerMouseAdapter,
+			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas) 
 	{
+		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
+	
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
 	
 		//iGLDisplayListIndexRemote = gl.glGenLists(1);	

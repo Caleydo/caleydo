@@ -123,26 +123,11 @@ extends AbstractLoader
 		
 		refProxyLookupTableLoader.initLUT();
 	}
-//
-//	public void setMultiHashMap( final MultiHashArrayMap setMultiHashMap ) {
-//		refProxyLookupTableLoader.setMultiHashMap( setMultiHashMap );
-//	}
 	
 	public void setHashMap( final IGenomeIdMap setHashMap,
 			final EGenomeMappingType type) {
 		
-//		generalManager.logMsg(
-//				"setHashMap(" + setHashMap.toString() + " , " +
-//				type.toString() + ") called from outside!",
-//				LoggerType.VERBOSE );
-		
 		refProxyLookupTableLoader.setHashMap( setHashMap, type);
-	}
-	
-	public void setMultiMap( final MultiHashArrayIntegerMap setMultiMap,
-			final EGenomeMappingType type) {
-		
-		refProxyLookupTableLoader.setMultiMapInteger( setMultiMap, type );
 	}
 	
 	/* (non-Javadoc)
@@ -382,7 +367,8 @@ extends AbstractLoader
 		IGenomeIdMap refMapToConvert = dgi_mng.getMapByType(originMapMappingType);
 		
 		IGenomeIdMap refTargetMap = refMapToConvert.getCodeResolvedMap(
-				dgi_mng, genomeMappingLUT_1, 
+				dgi_mng, 
+				genomeMappingLUT_1, 
 				genomeMappingLUT_2,
 				originMapMappingType.getDataMapppingType(),
 				sourceMapMappingType);

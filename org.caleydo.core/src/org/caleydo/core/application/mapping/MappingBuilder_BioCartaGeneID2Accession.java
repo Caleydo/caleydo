@@ -17,7 +17,7 @@ public class MappingBuilder_BioCartaGeneID2Accession {
 		"data/genome/pathway/biocarta/gene";
 	
 	private static String OUTPUT_FILE_PATH = 
-		"data/genome/mapping/accession_code_2_biocarta_geneid.map";
+		"data/genome/mapping/BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt";
 	
 	private PrintWriter outputWriter;	
 	
@@ -42,14 +42,17 @@ public class MappingBuilder_BioCartaGeneID2Accession {
 	
 	public void searchForAccessionInFile(final File file) {
 
+		// Ignore mouse genes.
+		if (file.getName().contains("ORG=Mm"))
+			return;
+		
 		try
 		{	
 			FileInputStream fis = new FileInputStream(file);
 
 			FileChannel fc = fis.getChannel();
 
-			MappedByteBuffer mbf = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc
-					.size());
+			MappedByteBuffer mbf = fc.map(FileChannel.MapMode.READ_ONLY, 0, fc.size());
 
 			byte[] bArTmp = new byte[(int) (fc.size())];
 			mbf.get(bArTmp);
@@ -85,8 +88,7 @@ public class MappingBuilder_BioCartaGeneID2Accession {
 	public void appendMappingToFile(final String sBioCartaGeneID, 
 			final String sAccessionNumber) {
 	
-		outputWriter.println(sAccessionNumber + ";" + sBioCartaGeneID);
-//		boolean err = outputWriter.checkError();
+		outputWriter.println(sBioCartaGeneID  + ";" + sAccessionNumber);
 		outputWriter.flush();
 	}
 	

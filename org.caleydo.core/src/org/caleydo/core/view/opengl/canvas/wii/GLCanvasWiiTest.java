@@ -18,6 +18,7 @@ import org.caleydo.core.manager.view.EPickingMode;
 import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.Pick;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 
@@ -691,7 +692,7 @@ public class GLCanvasWiiTest extends AGLCanvasUser implements Runnable,
 //            
             GLCanvasWiiTest.this.pointerVisible = positionData;
 
-             System.out.println("---------------");
+            System.out.println("---------------");
         }
     }
 
@@ -731,12 +732,16 @@ public class GLCanvasWiiTest extends AGLCanvasUser implements Runnable,
 		
 	}
 
-	@Override
-	public void initRemote(GL gl, int remoteViewID,
-			JukeboxHierarchyLayer layer,
-			PickingJoglMouseListener pickingTriggerMouseAdapter) {
-
-		// TODO Auto-generated method stub
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, int, org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer, org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener, org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D)
+	 */
+	public void initRemote(final GL gl, 
+			final int iRemoteViewID,
+			final JukeboxHierarchyLayer layer,
+			final PickingJoglMouseListener pickingTriggerMouseAdapter,
+			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas) 
+	{
 		
 	}
 }

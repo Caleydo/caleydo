@@ -11,7 +11,7 @@ import org.caleydo.core.manager.data.genome.IGenomeIdMap;
 
 
 /**
- * Loads a lookuptable mapping an ID to another.
+ * Loads a lookup table mapping an ID to another.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -23,15 +23,17 @@ implements ILookupTableLoader {
 	protected IGenomeIdMap refGenomeIdMap;
 	
 	/**
+	 * Constructor.
+	 * 
 	 * @param setGeneralManager
 	 * @param setFileName
 	 */
-	public LookupTableHashMapLoader(final IGeneralManager setGeneralManager,
-			final String setFileName,
+	public LookupTableHashMapLoader(final IGeneralManager generalManager,
+			final String sFileName,
 			final EGenomeMappingType genomeIdType,
-			final LookupTableLoaderProxy setLookupTableLoaderProxy ) {
+			final LookupTableLoaderProxy lookupTableLoaderProxy ) {
 
-		super(setGeneralManager, setFileName, genomeIdType, setLookupTableLoaderProxy);
+		super(generalManager, sFileName, genomeIdType, lookupTableLoaderProxy);
 	}
 
 
@@ -51,32 +53,32 @@ implements ILookupTableLoader {
 	    while ( ((sLine = brFile.readLine()) != null)&&
 	    		( iLineInFile <= iStopParsingAtLine) )  
 	    {
-			
 	    	/**
 	    	 * Start parsing if current line 
 	    	 * iLineInFile is larger than iStartParsingAtLine ..
 	    	 */
-			if( iLineInFile > iStartParsingAtLine ){
+			if( iLineInFile > iStartParsingAtLine )
+			{
 				
 				boolean bMaintainLoop = true;
-				StringTokenizer strTokenText = 
-					new StringTokenizer(sLine, sOuterTokenSeperator );
+				StringTokenizer strTokenText = new StringTokenizer(sLine, sOuterTokenSeperator );
 				
-				/**
-				 * Read all tokens
-				 */
-				while (( strTokenText.hasMoreTokens() )&&(bMaintainLoop)) {
-					
-					/**
-					 * Excpect two Integer values in one row!
-					 */
-					
+				// Read all tokens
+				while (( strTokenText.hasMoreTokens() )&& bMaintainLoop) 
+				{
+					// Expect two Integer values in one row!
 					try {
 						String buffer = strTokenText.nextToken();
 						
-						if  ( strTokenText.hasMoreTokens() ) 
+						if  (strTokenText.hasMoreTokens()) 
 						{
-							refGenomeIdMap.put(buffer,strTokenText.nextToken());
+							// Special case for creating indexing of storages
+							if (currentGenomeIdType.equals(EGenomeMappingType.DAVID_2_EXPRESSION_STORAGE_ID))
+								refGenomeIdMap.put(buffer, Integer.toString(iLineInFile-iStartParsingAtLine));
+							else
+								refGenomeIdMap.put(buffer, strTokenText.nextToken());
+							
+							break;
 						}
 						else
 						{
@@ -86,8 +88,6 @@ implements ILookupTableLoader {
 //									iLineInFile,
 //									LoggerType.FULL);
 						}
-						
-					
 					} catch ( NoSuchElementException  nsee) {
 						/* no ABORT was set. 
 						 * since no more tokens are in ParserTokenHandler skip rest of line..*/

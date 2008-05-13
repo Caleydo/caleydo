@@ -30,28 +30,28 @@
 
  			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="799010"	uniqueId="-1"	
 		   		detail="data/genome/mapping/microarray_code_2_accession_code.map"	
-		   		attrib1="MICROARRAY_2_ACCESSION REVERSE LUT_2" 
+		   		attrib1="MICROARRAY_2_ACCESSION REVERSE LUT_BOTH" 
 		   		attrib2=";" 
 		   		attrib3="1 -1" 
 		   		attrib4="MICROARRAY_CODE_2_MICROARRAY ACCESSION_CODE_2_ACCESSION" />
 
  	 		<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="699010"	uniqueId="-1"	
 		   		detail="data/genome/mapping/accession_code_2_ncbi_geneid_code.map"	
-		   		attrib1="ACCESSION_2_NCBI_GENEID REVERSE LUT_2" 
+		   		attrib1="ACCESSION_2_NCBI_GENEID REVERSE LUT_BOTH" 
 		   		attrib2=";" 
 		   		attrib3="1 -1" 
 		   		attrib4="ACCESSION_CODE_2_ACCESSION NCBI_GENEID_CODE_2_NCBI_GENEID" />
 
  			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="599010"	uniqueId="-1"	
 		   		detail="data/genome/mapping/ncbi_geneid_code_2_enzyme_code.map"	
-		   		attrib1="NCBI_GENEID_2_ENZYME REVERSE LUT_2" 
+		   		attrib1="NCBI_GENEID_2_ENZYME REVERSE LUT_BOTH" 
 		   		attrib2=";" 
 		   		attrib3="1 -1" 
 		   		attrib4="NCBI_GENEID_CODE_2_NCBI_GENEID ENZYME_CODE_2_ENZYME" />		   		
 
  			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="599010"	uniqueId="-1"	
 		   		detail="data/genome/mapping/accession_code_2_gene_name.map"	
-		   		attrib1="ACCESSION_2_GENE_NAME LUT" 
+		   		attrib1="ACCESSION_2_GENE_NAME LUT_1" 
 		   		attrib2="#" 
 		   		attrib3="2 -1" 
 		   		attrib4="ACCESSION_CODE_2_ACCESSION" />	

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
@@ -75,7 +76,7 @@ implements IMediatorReceiver, IMediatorSender
 	
 	protected TextRenderer textRenderer;
 	
-	protected boolean bRenderOnlyContext = false;
+	protected boolean bRenderOnlyContext = true;
 	
 	public void renderOnlyContext(boolean bRenderOnlyContext)
 	{
@@ -139,44 +140,25 @@ implements IMediatorReceiver, IMediatorSender
 		}
 		mapSelections.put(ESelectionType.EXTERNAL_SELECTION, alTempList);
 
-		//int iStorageLength = alDataStorages.get(0).getArrayFloat().length;
-		int iStorageLength = 2000;
+		int iStorageLength = alDataStorages.get(0).getArrayFloat().length;
+//		int iStorageLength = 2000;
 		alTempList = new ArrayList<Integer>(iStorageLength);
 		// initialize full list
 		
-		
 		for(int iCount = 0; iCount < iStorageLength; iCount++)
 		{
-			
 			if (bRenderOnlyContext)
 			{
 				// FIXME: not general, only for genes
-			
-				int iAccessionID = getAccesionIDFromStorageIndex(iCount);
+				int iDavidId = getDavidIDFromStorageIndex(iCount);
 				
-				
-				if(iAccessionID == -1)
+				if(iDavidId == -1)
 					continue;
 				else
-				{			
-					// Check if gene occurs in one pathway
-					int iNCBIGeneID = generalManager.getGenomeIdManager()
-					.getIdIntFromIntByMapping(iAccessionID, EGenomeMappingType.ACCESSION_2_NCBI_GENEID);
-	
-					String sNCBIGeneIDCode = generalManager.getGenomeIdManager()
-						.getIdStringFromIntByMapping(iNCBIGeneID, EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
-				
-					int iNCBIGeneIDCode = StringConversionTool.convertStringToInt(sNCBIGeneIDCode, -1);
-					
-					if(iNCBIGeneID == -1)
-					{
-						//System.out.println("Error: No Gene ID for accession");
-						continue;
-					}
-					
+				{								
 					PathwayVertexGraphItem tmpPathwayVertexGraphItem = 
 						((PathwayVertexGraphItem)generalManager.getPathwayItemManager().getItem(
-							generalManager.getPathwayItemManager().getPathwayVertexGraphItemIdByNCBIGeneId(iNCBIGeneIDCode)));
+							generalManager.getPathwayItemManager().getPathwayVertexGraphItemIdByDavidId(iDavidId)));
 		
 					if(tmpPathwayVertexGraphItem == null)
 					{
@@ -206,13 +188,13 @@ implements IMediatorReceiver, IMediatorSender
 	
 	
 	
-	protected ArrayList<Integer> convertAccessionToExpressionIndices(ArrayList<Integer> iAlSelection)
+	protected ArrayList<Integer> convertDavidIdToExpressionIndices(ArrayList<Integer> iAlSelection)
 	{
 		ArrayList<Integer> iAlSelectionStorageIndices = new ArrayList<Integer>();
 		for(int iCount = 0; iCount < iAlSelection.size(); iCount++)
 		{
-			int iTmp = generalManager.getGenomeIdManager()
-				.getIdIntFromIntByMapping(iAlSelection.get(iCount), EGenomeMappingType.ACCESSION_2_MICROARRAY_EXPRESSION);
+			int iTmp = generalManager.getGenomeIdManager().getIdIntFromIntByMapping(
+					iAlSelection.get(iCount), EGenomeMappingType.DAVID_2_EXPRESSION_STORAGE_ID);
 			
 //			if (iTmp == -1)
 //				continue;
@@ -235,7 +217,7 @@ implements IMediatorReceiver, IMediatorSender
 				alDelete.add(iCount);
 				continue;		
 			}
-			iAlSelection.set(iCount, iAlSelection.get(iCount) / 1000);	
+//			iAlSelection.set(iCount, iAlSelection.get(iCount) / 1000);	
 //			System.out.println("Storageindexalex: " + iAlSelection[iCount]);
 		}		
 		
@@ -259,48 +241,44 @@ implements IMediatorReceiver, IMediatorSender
 	
 	protected abstract void initLists();
 	
-	protected int getAccesionIDFromStorageIndex(int index)
+	protected int getDavidIDFromStorageIndex(int index)
 	{
-		int iAccessionID = IDManager.getIdIntFromIntByMapping(index*1000+770, 
-				EGenomeMappingType.MICROARRAY_EXPRESSION_2_ACCESSION);
-		return iAccessionID;
+		int iDavidId = IDManager.getIdIntFromIntByMapping(index, 
+				EGenomeMappingType.EXPRESSION_STORAGE_ID_2_DAVID);
+		return iDavidId;
 	}
 	
-	protected String getAccessionNumberFromStorageIndex(int index)
+	protected String getRefSeqFromStorageIndex(int index)
 	{
-			
-		// Convert expression storage ID to accession ID
-		int iAccessionID = getAccesionIDFromStorageIndex(index);
-		String sAccessionNumber = IDManager.getIdStringFromIntByMapping(iAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
-		if(sAccessionNumber == "")
+		// Convert expression storage ID to RefSeq
+		int iDavidId = getDavidIDFromStorageIndex(index);
+		String sRefSeq = IDManager.getIdStringFromIntByMapping(iDavidId, 
+				EGenomeMappingType.DAVID_2_REFSEQ_MRNA);
+		if(sRefSeq == "")
 			return "Unkonwn Gene";
 		else
-			return sAccessionNumber;		
+			return sRefSeq;		
 	}
 	
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) 
 	{		
-//		generalManager.logMsg(
-//				this.getClass().getSimpleName()
-//						+ " ("+iUniqueId+"): updateReceiver(Object eventTrigger, ISet updatedSet): Update called by "
-//						+ eventTrigger.getClass().getSimpleName()+" ("+((AGLCanvasUser)eventTrigger).getId(),
-//				LoggerType.VERBOSE);
+		generalManager.getLogger().log(Level.INFO, "Update called by "
+				+eventTrigger.getClass().getSimpleName());
 		
 		ISetSelection refSetSelection = (ISetSelection) updatedSet;
 
 		refSetSelection.getReadToken();
 		// contains all genes in center pathway (not yet)
 		ArrayList<Integer> iAlSelection = refSetSelection.getSelectionIdArray();
-
 		// contains type - 0 for not selected 1 for selected
 		ArrayList<Integer> iAlGroup = refSetSelection.getGroupArray();
 		ArrayList<Integer> iAlOptional = refSetSelection.getOptionalDataArray();
 		// iterate here		
-		ArrayList<Integer> iAlSelectionStorageIndices = convertAccessionToExpressionIndices(iAlSelection);
+		ArrayList<Integer> iAlSelectionStorageIndices = convertDavidIdToExpressionIndices(iAlSelection);
 		cleanSelection(iAlSelectionStorageIndices, iAlGroup);
 		mergeSelection(iAlSelectionStorageIndices, iAlGroup, iAlOptional);
 		
-		int iSelectedAccessionID = 0;
+		int iSelectedDavidId = 0;
 		int iSelectedStorageIndex = 0;
 		
 		bIsDisplayListDirtyLocal = true;
@@ -311,15 +289,12 @@ implements IMediatorReceiver, IMediatorSender
 			// TODO: same for click and mouse over atm
 			if(iAlGroup.get(iSelectionCount) == 1 || iAlGroup.get(iSelectionCount) == 2)
 			{
-				iSelectedAccessionID = iAlSelection.get(iSelectionCount);
+				iSelectedDavidId = iAlSelection.get(iSelectionCount);
 				iSelectedStorageIndex = iAlSelectionStorageIndices.get(iSelectionCount);
-				
-				String sAccessionCode = generalManager.getGenomeIdManager()
-					.getIdStringFromIntByMapping(iSelectedAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
 			
-				System.out.println("Accession ID: " + iSelectedAccessionID);
-				System.out.println("Accession Code: " +sAccessionCode);			
-				System.out.println("Expression stroage index: " +iSelectedStorageIndex);
+//				System.out.println("Accession ID: " + iSelectedAccessionID);
+//				System.out.println("Accession Code: " +sAccessionCode);			
+//				System.out.println("Expression stroage index: " +iSelectedStorageIndex);
 				
 				if (iSelectedStorageIndex >= 0)
 				{						
@@ -330,7 +305,7 @@ implements IMediatorReceiver, IMediatorSender
 						horizontalSelectionManager.addToType(EViewInternalSelectionType.MOUSE_OVER, iSelectedStorageIndex);
 						
 						// handle external selection
-						extSelectionManager.modifySelection(iSelectedAccessionID, 
+						extSelectionManager.modifySelection(iSelectedDavidId, 
 								createElementRep(iSelectedStorageIndex), ESelectionMode.AddPick);
 					}
 					else
@@ -338,7 +313,8 @@ implements IMediatorReceiver, IMediatorSender
 						verticalSelectionManager.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
 						verticalSelectionManager.addToType(EViewInternalSelectionType.MOUSE_OVER, iSelectedStorageIndex);
 						rePosition(iSelectedStorageIndex);
-						extSelectionManager.modifySelection(iSelectedAccessionID, createElementRep(iSelectedStorageIndex), ESelectionMode.AddPick);
+						extSelectionManager.modifySelection(iSelectedDavidId, 
+								createElementRep(iSelectedStorageIndex), ESelectionMode.AddPick);
 					}
 				}
 			}
@@ -361,10 +337,10 @@ implements IMediatorReceiver, IMediatorSender
 	
 	protected void propagateGeneSelection(int iExternalID, int iNewGroupID, ArrayList<Integer> iAlOldSelection)
 	{
-		int iAccessionID = getAccesionIDFromStorageIndex(iExternalID);	
+		int iDavidId = getDavidIDFromStorageIndex(iExternalID);	
 		
 		generalManager.getViewGLCanvasManager().getInfoAreaManager()
-		.setData(iUniqueId, iAccessionID, EInputDataType.GENE, getInfo());					
+			.setData(iUniqueId, iDavidId, EInputDataType.GENE, getInfo());					
 		
 		// Write currently selected vertex to selection set
 		// and trigger update event
@@ -372,23 +348,21 @@ implements IMediatorReceiver, IMediatorSender
 		//iAlTmpSelectionId.add(1);
 		ArrayList<Integer> iAlTmpGroup = new ArrayList<Integer>(2);
 		
-		if (iAccessionID != -1)
+		if (iDavidId != -1)
 		{			
-			iAlTmpSelectionId.add(iAccessionID);
+			iAlTmpSelectionId.add(iDavidId);
 			iAlTmpGroup.add(iNewGroupID);
-			extSelectionManager.modifySelection(iAccessionID, 
+			extSelectionManager.modifySelection(iDavidId, 
 					createElementRep(iExternalID), ESelectionMode.ReplacePick);
 		}							
 			
 		for(Integer iCurrent : iAlOldSelection)
 		{
-					
-			iAccessionID = getAccesionIDFromStorageIndex(iCurrent);
+			iDavidId = getDavidIDFromStorageIndex(iCurrent);
 			
-			
-			if(iAccessionID != -1)
+			if(iDavidId != -1)
 			{			
-				iAlTmpSelectionId.add(iAccessionID);
+				iAlTmpSelectionId.add(iDavidId);
 				iAlTmpGroup.add(0);
 			}
 		}
@@ -419,7 +393,7 @@ implements IMediatorReceiver, IMediatorSender
 		
 		for(Integer iCurrent : iAlSelection)
 		{
-			iAlGeneSelection.add(getAccesionIDFromStorageIndex(iCurrent));
+			iAlGeneSelection.add(getDavidIDFromStorageIndex(iCurrent));
 		}
 		
 		alSetSelection.get(1).getWriteToken();

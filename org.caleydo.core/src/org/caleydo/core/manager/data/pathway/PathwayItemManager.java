@@ -17,6 +17,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.IPathwayItemManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.util.ConversionStringInteger;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
@@ -40,9 +41,11 @@ implements IPathwayItemManager, Serializable
 	
 	private HashMap<String, IGraphItem> hashVertexNameToGraphItem;
 	
-	private HashMap<Integer, Integer> hashNCBIGeneIdToPathwayVertexGraphItemId;
+	private HashMap<Integer, Integer> hashDavidIdToPathwayVertexGraphItemId;
 	
-	private boolean bHashNCBIGeneIdToPathwayVertexGraphItemIdInvalid = true;
+	private HashMap<Integer, Integer> hashPathwayVertexGraphItemIdToDavidId;
+	
+	private boolean bHashDavidIdToPathwayVertexGraphItemIdInvalid = true;
 	
 	/**
 	 * Constructor.
@@ -56,7 +59,8 @@ implements IPathwayItemManager, Serializable
 	
 		hashVertexIdToGraphItem = new HashMap<Integer, IGraphItem>();
 		hashVertexNameToGraphItem = new HashMap<String, IGraphItem>();
-		hashNCBIGeneIdToPathwayVertexGraphItemId = new HashMap<Integer, Integer>();
+		hashDavidIdToPathwayVertexGraphItemId = new HashMap<Integer, Integer>();
+		hashPathwayVertexGraphItemIdToDavidId = new HashMap<Integer, Integer>();
 	}
 	
 	public IGraphItem createVertex(
@@ -84,31 +88,23 @@ implements IPathwayItemManager, Serializable
     	
     	hashVertexNameToGraphItem.put(sName, pathwayVertex);
     	
-    	//Check if vertex is gene 
-    	if (sType.equals(EPathwayVertexType.gene.toString()))
-    	{
-//    		assert bHashNCBIGeneIdToPathwayVertexGraphItemIdInvalid == false : 
-//    			"HashMap NCBI GeneId to PathwayVertexGraphItemId might be invalid!";
-    		
-    		int iGeneId = StringConversionTool.convertStringToInt( 
-    				sName.substring(4), 
-    				0 );
-    		
-//    		if ( bHashNCBIGeneIdToPathwayVertexGraphItemIdInvalid ) 
-//    		{
-//    			refSingelton.logMsg("HashMap NCBI GeneId to PathwayVertexGraphItemId might be invalid! NCBI_GeneId=["
-//    					+ sName + "] <key,value>= <" +
-//    					iGeneId +"," +
-//    					iGeneratedId +">",
-//    					LoggerType.MINOR_ERROR_XML);
-//    		}
-    		
-    		// Extract NCBI gene ID and add element 
-        	hashNCBIGeneIdToPathwayVertexGraphItemId.put(
-        			iGeneId, iGeneratedId);
-    	}
-    	
     	return pathwayVertex;
+	}
+	
+	public IGraphItem createVertexGene(
+			final String sName,
+			final String sType,
+			final String sExternalLink,
+			final String sReactionId,
+			final int iDavidId) {
+		
+		IGraphItem tmpGraphItem = createVertex(sName, sType, sExternalLink, sReactionId);
+		
+		// Extract David gene ID and add element 
+    	hashDavidIdToPathwayVertexGraphItemId.put(iDavidId, tmpGraphItem.getId());
+    	hashPathwayVertexGraphItemIdToDavidId.put(tmpGraphItem.getId(), iDavidId);
+		
+		return tmpGraphItem;
 	}
 	
 	public IGraphItem createVertexRep(
@@ -291,22 +287,31 @@ implements IPathwayItemManager, Serializable
 		return hashVertexIdToGraphItem.get(iItemId);
 	}
 	
-	public final HashMap<Integer, Integer> getHashNCBIGeneIdToPathwayVertexGraphItemId() {
-		
-		assert false : "should not call!!";
-		bHashNCBIGeneIdToPathwayVertexGraphItemIdInvalid = false;
-		return hashNCBIGeneIdToPathwayVertexGraphItemId;
-	}
-	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.data.IPathwayItemManager#getPathwayVertexGraphItemIdByDavidId(int)
+	 */
 	// TODO: throw exception
-	public final int getPathwayVertexGraphItemIdByNCBIGeneId (final int iNCBIGeneId) {
+	public final int getPathwayVertexGraphItemIdByDavidId (final int iDavidId) {
 		
-		if (hashNCBIGeneIdToPathwayVertexGraphItemId.containsKey(iNCBIGeneId))
-			return hashNCBIGeneIdToPathwayVertexGraphItemId.get(iNCBIGeneId);
+		if (hashDavidIdToPathwayVertexGraphItemId.containsKey(iDavidId))
+			return hashDavidIdToPathwayVertexGraphItemId.get(iDavidId);
 		
 		return -1;
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.data.IPathwayItemManager#getDavidIdByPathwayVertexGraphItemId(int)
+	 */
+	public int getDavidIdByPathwayVertexGraphItemId(final int iPathwayVertexGraphItemId) {
+		
+		if (hashPathwayVertexGraphItemIdToDavidId.containsKey(iPathwayVertexGraphItemId))
+			return hashPathwayVertexGraphItemIdToDavidId.get(iPathwayVertexGraphItemId);
+	
+		return -1;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IGeneralManager#hasItem(int)

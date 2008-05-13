@@ -26,6 +26,7 @@ import org.caleydo.core.manager.view.EPickingMode;
 import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.Pick;
 import org.caleydo.core.manager.view.PickingManager;
+import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
@@ -66,12 +67,9 @@ implements GLEventListener {
 	protected IViewCamera viewCamera;
 	
 	protected GLToolboxRenderer glToolboxRenderer;
+			
+	protected IGLCanvasRemoteRendering3D remoteRenderingGLCanvas;
 	
-	/**
-	 * If the view is remote rendered this is the layer in the bucket
-	 */
-	protected JukeboxHierarchyLayer containedHierarchyLayer = null;
-		
 	/**
 	 * Constructor.
 	 * 
@@ -270,7 +268,8 @@ implements GLEventListener {
 	public abstract void initRemote(final GL gl,
 			final int iRemoteViewID, 
 			final JukeboxHierarchyLayer layer,
-			final PickingJoglMouseListener pickingTriggerMouseAdapter);
+			final PickingJoglMouseListener pickingTriggerMouseAdapter,
+			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas);
 	
 	/**
 	 * GL display method that has to be called in all cases
@@ -294,7 +293,6 @@ implements GLEventListener {
 	 * @param gl
 	 */
 	public abstract void displayRemote(final GL gl);
-	
 	
 	/**
 	 * @see org.caleydo.core.view.IView#addSetId(int[])

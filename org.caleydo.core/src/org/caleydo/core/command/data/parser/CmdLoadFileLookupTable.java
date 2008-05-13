@@ -41,12 +41,6 @@ extends ACommand {
 	 */
 	protected String sLookupTableOptions;
 	
-//	protected String sLookupTableDataType;
-	
-//	protected String sLookupTableTypeOptionalTarget;
-	
-//	protected String sLookupTableTargetType;
-	
 	/**
 	 * Define type of lookup table to be created.
 	 * 
@@ -80,13 +74,14 @@ extends ACommand {
 	 * Boolean indicates if one column of the mapping needs
 	 * to be resolved. Resolving means replacing codes by internal IDs. 
 	 */	
-	protected boolean bResolveCodeMappingUsingCodeToId_LUT = false;
+	protected boolean bResolveCodeMappingUsingCodeToId_LUT_1 = false;
+	protected boolean bResolveCodeMappingUsingCodeToId_LUT_2 = false;
 	
 	/**
 	 * Boolean indicates if both columns of the mapping needs
 	 * to be resolved. Resolving means replacing codes by internal IDs. 
 	 */
-	protected boolean bResolveCodeMappingUsingCodeToId_LUT_2 = false;
+	protected boolean bResolveCodeMappingUsingCodeToId_LUT_BOTH = false;
 	
 	/**
 	 * Variable contains the lookup table types 
@@ -146,9 +141,9 @@ extends ACommand {
 			{
 				bCreateReverseMap = true;
 			}
-			else if (sLookupTableOptions.equals("LUT"))
+			else if (sLookupTableOptions.equals("LUT_1"))
 			{
-				sCodeResolvingLUTTypes =	refParameterHandler.getValueString( 
+				sCodeResolvingLUTTypes = refParameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_ATTRIBUTE4.getXmlKey());
 				
 				tokenizer = new StringTokenizer(sCodeResolvingLUTTypes,
@@ -156,9 +151,21 @@ extends ACommand {
 				
 				sCodeResolvingLUTMappingType_1 = tokenizer.nextToken();
 				
-				bResolveCodeMappingUsingCodeToId_LUT = true;
+				bResolveCodeMappingUsingCodeToId_LUT_1 = true;
 			}
 			else if (sLookupTableOptions.equals("LUT_2"))
+			{
+				sCodeResolvingLUTTypes = refParameterHandler.getValueString( 
+						CommandQueueSaxType.TAG_ATTRIBUTE4.getXmlKey());
+				
+				tokenizer = new StringTokenizer(sCodeResolvingLUTTypes,
+						IGeneralManager.sDelimiter_Parser_DataItems);
+				
+				sCodeResolvingLUTMappingType_2 = tokenizer.nextToken();
+				
+				bResolveCodeMappingUsingCodeToId_LUT_2 = true;
+			}
+			else if (sLookupTableOptions.equals("LUT_BOTH"))
 			{
 				sCodeResolvingLUTTypes = refParameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_ATTRIBUTE4.getXmlKey());
@@ -169,34 +176,19 @@ extends ACommand {
 				sCodeResolvingLUTMappingType_1 = tokenizer.nextToken();
 				sCodeResolvingLUTMappingType_2 = tokenizer.nextToken();
 				
-				bResolveCodeMappingUsingCodeToId_LUT_2 = true;
+				bResolveCodeMappingUsingCodeToId_LUT_BOTH = true;
 			}
 		}
-		
-//		sLookupTableDataType = tokenizer.nextToken();
-		
-//		if  (tokenizer.hasMoreTokens()) 
-//		{
-//			sLookupTableTargetType = tokenizer.nextToken();
-//			bCreateReverseMap = true;
-//		}
-//		
-//		if ( tokenizer.hasMoreTokens() )
-//		{
-//			sLookupTableTypeOptionalTarget = tokenizer.nextToken();
-//		}
 		
 		this.sLUT_Target =	refParameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey());
 		
 		this.iTargetSetId =	StringConversionTool.convertStringToInt(
-				refParameterHandler.getValueString( 
-						CommandQueueSaxType.TAG_UNIQUE_ID.getXmlKey()),
+				refParameterHandler.getValueString(CommandQueueSaxType.TAG_UNIQUE_ID.getXmlKey()),
 				-1 );
 		
 		int[] iArrayStartStop = StringConversionTool.convertStringToIntArrayVariableLength(
-				refParameterHandler.getValueString( 
-						CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey() ),
+				refParameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey() ),
 				" " );
 		
 		if ( iArrayStartStop.length > 0 ) 
@@ -255,7 +247,9 @@ extends ACommand {
 			
 			genomeDataType = lut_genome_type.getDataMapppingType();
 
-			if (bResolveCodeMappingUsingCodeToId_LUT_2)
+			
+			// FIXME: find solution for lut resolve process
+			if (bResolveCodeMappingUsingCodeToId_LUT_BOTH)
 			{
 				if (genomeDataType == EGenomeMappingDataType.INT2INT)
 				{
@@ -266,8 +260,8 @@ extends ACommand {
 					genomeDataType = EGenomeMappingDataType.MULTI_STRING2STRING;
 				}
 			}
-			else if (bResolveCodeMappingUsingCodeToId_LUT)
-			{
+			else if (bResolveCodeMappingUsingCodeToId_LUT_1)
+			{	
 				if (genomeDataType == EGenomeMappingDataType.INT2STRING)
 				{
 					genomeDataType = EGenomeMappingDataType.STRING2STRING;
@@ -277,7 +271,17 @@ extends ACommand {
 					genomeDataType = EGenomeMappingDataType.STRING2INT;
 				}
 			}
-			
+			else if (bResolveCodeMappingUsingCodeToId_LUT_2)
+			{	
+				if (genomeDataType == EGenomeMappingDataType.STRING2INT)
+				{
+					genomeDataType = EGenomeMappingDataType.STRING2STRING;
+				}
+				else if (genomeDataType == EGenomeMappingDataType.INT2INT)
+				{
+					genomeDataType = EGenomeMappingDataType.INT2STRING;
+				}
+			}
 			loader = new LookupTableLoaderProxy( 
 					generalManager, 
 					sFileName,
@@ -287,9 +291,9 @@ extends ACommand {
 			
 			loader.setTokenSeperator(sLUT_Target);
 			
-			if ( sFileName.endsWith( sCommaSeperatedFileExtension )) {
-				loader.setTokenSeperator( IGeneralManager.sDelimiter_Parser_DataType );
-			}
+//			if ( sFileName.endsWith( sCommaSeperatedFileExtension )) {
+//				loader.setTokenSeperator( IGeneralManager.sDelimiter_Parser_DataType );
+//			}
 			
 			loader.setStartParsingStopParsingAtLine( iStartPareseFileAtLine, iStopPareseFileAtLine );
 			
@@ -299,14 +303,18 @@ extends ACommand {
 			
 			
 			/* --- Map codes in LUT to IDs --- */
-			if (bResolveCodeMappingUsingCodeToId_LUT || bResolveCodeMappingUsingCodeToId_LUT_2)
+			if (bResolveCodeMappingUsingCodeToId_LUT_1 || 
+					bResolveCodeMappingUsingCodeToId_LUT_2 || bResolveCodeMappingUsingCodeToId_LUT_BOTH)
 			{
-				EGenomeMappingType genomeMappingLUT_1 = 
-					EGenomeMappingType.valueOf( sCodeResolvingLUTMappingType_1 );
-				
+				EGenomeMappingType genomeMappingLUT_1 = null;
 				EGenomeMappingType genomeMappingLUT_2 = null;
 				
-				if(bResolveCodeMappingUsingCodeToId_LUT_2)
+				if(bResolveCodeMappingUsingCodeToId_LUT_1 || bResolveCodeMappingUsingCodeToId_LUT_BOTH)
+				{
+					genomeMappingLUT_1 = EGenomeMappingType.valueOf( sCodeResolvingLUTMappingType_1 );
+				}
+				
+				if(bResolveCodeMappingUsingCodeToId_LUT_2 || bResolveCodeMappingUsingCodeToId_LUT_BOTH)
 				{
 					genomeMappingLUT_2 = EGenomeMappingType.valueOf( sCodeResolvingLUTMappingType_2 );
 				}

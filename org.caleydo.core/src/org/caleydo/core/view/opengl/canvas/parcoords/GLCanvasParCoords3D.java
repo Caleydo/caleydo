@@ -24,6 +24,7 @@ import org.caleydo.core.manager.view.EPickingMode;
 import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.Pick;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasStorageBasedView;
+import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -160,20 +161,21 @@ extends AGLCanvasStorageBasedView
 	
 	/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, int, org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer, org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, int, org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer, org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener, org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D)
 	 */
 	public void initRemote(final GL gl, 
-			final int iRemoteViewID, 
+			final int iRemoteViewID,
 			final JukeboxHierarchyLayer layer,
-			final PickingJoglMouseListener pickingTriggerMouseAdapter)
+			final PickingJoglMouseListener pickingTriggerMouseAdapter,
+			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas) 
 	{
+		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
+	
 		glToolboxRenderer = new GLParCoordsToolboxRenderer(gl, generalManager,
 				iUniqueId, iRemoteViewID, new Vec3f (0, 0, 0), layer, true, renderStyle);
 		
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
 	
-		containedHierarchyLayer = layer;
-		
 		iGLDisplayListIndexRemote = gl.glGenLists(1);	
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);		
@@ -689,7 +691,7 @@ extends AGLCanvasStorageBasedView
 				//sAxisLabel = alSetData.get(alStorageSelection.get(iCount)).getLabel();
 				break;
 			case GENE:				
-				sAxisLabel = getAccessionNumberFromStorageIndex(alContentSelection.get(iCount));
+				sAxisLabel = getRefSeqFromStorageIndex(alContentSelection.get(iCount));
 				break;
 			default:
 				sAxisLabel = "No Label";
@@ -1109,12 +1111,12 @@ extends AGLCanvasStorageBasedView
 			final int iExternalID,
 			final Pick pick)
 	{
-//		// Check if selection occurs in the pool or memo layer of the bucket
-//		if (containedHierarchyLayer != null 
-//				&& containedHierarchyLayer.getCapacity() >= 5)
-//		{
-//			return;
-//		}
+		// Check if selection occurs in the pool or memo layer of the remote rendered view (i.e. bucket, jukebox)
+		if (remoteRenderingGLCanvas.getHierarchyLayerByGLCanvasListenerId(
+				iUniqueId).getCapacity() > 5)
+		{
+			return;
+		}
 		
 		ArrayList<Integer> iAlOldSelection;
 		
@@ -1154,12 +1156,7 @@ extends AGLCanvasStorageBasedView
 					iAlOldSelection = prepareSelection(horizontalSelectionManager, EViewInternalSelectionType.SELECTION);			
 					
 					if (ePolylineDataType == EInputDataType.GENE)
-					{
 						propagateGeneSelection(iExternalID, 1, iAlOldSelection);
-						//generalManager.getSingelton().getViewGLCanvasManager().getInfoAreaManager()
-						//	.setData(iUniqueId, getAccesionIDFromStorageIndex(iExternalID), EInputDataType.GENE, getInfo());
-					
-					}
 						
 					horizontalSelectionManager.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
 					horizontalSelectionManager.addToType(EViewInternalSelectionType.MOUSE_OVER, iExternalID);

@@ -21,6 +21,7 @@ import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
 import org.caleydo.core.view.opengl.canvas.parcoords.ESelectionType;
+import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
 import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
@@ -117,19 +118,21 @@ extends AGLCanvasStorageBasedView
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, int, org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer, org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, int, org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer, org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener, org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D)
 	 */
-	public void initRemote(GL gl, int iRemoteViewID,
-			JukeboxHierarchyLayer layer,
-			PickingJoglMouseListener pickingTriggerMouseAdapter) 
+	public void initRemote(final GL gl, 
+			final int iRemoteViewID,
+			final JukeboxHierarchyLayer layer,
+			final PickingJoglMouseListener pickingTriggerMouseAdapter,
+			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas) 
 	{
+		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
+		
 		eWhichContentSelection = ESelectionType.EXTERNAL_SELECTION;
 		bRenderHorizontally = true;
 		
 		glToolboxRenderer = new GLToolboxRenderer(gl, generalManager,
 				iUniqueId, iRemoteViewID, new Vec3f (0, 0, 0), layer, true, renderStyle);
-		
-		containedHierarchyLayer = layer;
 		
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
 		
@@ -373,12 +376,12 @@ extends AGLCanvasStorageBasedView
 	protected void handleEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) 
 	{
-//		// Check if selection occurs in the pool or memo layer of the bucket
-//		if (containedHierarchyLayer != null 
-//				&& containedHierarchyLayer.getCapacity() >= 5)
-//		{
-//			return;
-//		}
+		// Check if selection occurs in the pool or memo layer of the remote rendered view (i.e. bucket, jukebox)
+		if (remoteRenderingGLCanvas.getHierarchyLayerByGLCanvasListenerId(
+				iUniqueId).getCapacity() > 5)
+		{
+			return;
+		}
 		
 		ArrayList<Integer> iAlOldSelection;
 		switch (pickingType)
@@ -406,8 +409,8 @@ extends AGLCanvasStorageBasedView
 				
 			case MOUSE_OVER:
 				extSelectionManager.clear();
-				iAlOldSelection = 
-					prepareSelection(verticalSelectionManager, EViewInternalSelectionType.SELECTION);					
+				iAlOldSelection = prepareSelection(
+						verticalSelectionManager, EViewInternalSelectionType.SELECTION);					
 				
 				verticalSelectionManager.clearSelection(
 						EViewInternalSelectionType.MOUSE_OVER);
@@ -486,7 +489,7 @@ extends AGLCanvasStorageBasedView
 				
 				// Render heat map element name
 				gl.glRotatef(90, 0, 0, 1);
-				sContent = getAccessionNumberFromStorageIndex(iContentIndex);
+				sContent = getRefSeqFromStorageIndex(iContentIndex);
 				textRenderer.setColor(0, 0, 0, 1);
 				textRenderer.begin3DRendering();
 				textRenderer.draw3D(sContent,						

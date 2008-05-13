@@ -16,6 +16,7 @@ import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.IGenomeIdManager;
 import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.system.StringConversionTool;
 
 /**
  * Class is responsible for mapping gene expression data
@@ -89,34 +90,32 @@ public abstract class AGenomeMapper {
 		return new ArrayList<Vec3f>();
 	}
 	
-	public ArrayList<Vec3f> getMappingColorArrayByGeneID(
-			String sGeneID) {
+	public ArrayList<Vec3f> getMappingColorArrayByGeneID(String sGeneID) {
 		
 		// Remove prefix ("hsa:")
 		sGeneID = sGeneID.substring(4);
 		
 		ArrayList<Vec3f> arMappingColor = new ArrayList<Vec3f>();
 		
-		int iGeneID = genomeIdManager.getIdIntFromStringByMapping(sGeneID, 
-				EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
-				
+		int iGeneID = StringConversionTool.convertStringToInt(sGeneID, -1);
+		
 		if (iGeneID == -1)
 		{	
 			arMappingColor.add(new Vec3f(-1, -1, -1)); // invalid color
 			return arMappingColor;
 		}
 		
-		int iAccessionID = genomeIdManager.getIdIntFromIntByMapping(iGeneID, 
-				EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
+		int iDavidId = genomeIdManager.getIdIntFromIntByMapping(iGeneID, 
+				EGenomeMappingType.ENTREZ_GENE_ID_2_DAVID);
 	
-		if (iAccessionID == -1)
+		if (iDavidId == -1)
 		{	
 			arMappingColor.add(new Vec3f(-1, -1, -1)); // invalid color
 			return arMappingColor;
 		}
 
-		int iExpressionStorageIndex = genomeIdManager.getIdIntFromIntByMapping(iAccessionID,
-				EGenomeMappingType.ACCESSION_2_MICROARRAY_EXPRESSION);
+		int iExpressionStorageIndex = genomeIdManager.getIdIntFromIntByMapping(iDavidId,
+				EGenomeMappingType.DAVID_2_EXPRESSION_STORAGE_ID);
 
 		if (iExpressionStorageIndex == -1)
 		{	
@@ -124,9 +123,6 @@ public abstract class AGenomeMapper {
 			return arMappingColor;
 		}
 		
-		// Get rid of 770 internal ID identifier
-		iExpressionStorageIndex = (int)(((float)iExpressionStorageIndex - 770.0f) / 1000.0f);
-
 		Iterator<IStorage> iterMappingStorage = alMappingStorage.iterator();
 		IStorage refExpressionStorage = null;
 		
@@ -153,6 +149,6 @@ public abstract class AGenomeMapper {
 	protected abstract ArrayList<Vec3f> getMappingColorArrayByGeneVertexRep(
 			final PathwayVertexGraphItemRep pathwayVertexRep);
 	
-	protected abstract ArrayList<Vec3f> getMappingColorArrayByEnzymeVertex(
-			final PathwayVertexGraphItem pathwayVertex);
+//	protected abstract ArrayList<Vec3f> getMappingColorArrayByEnzymeVertex(
+//			final PathwayVertexGraphItem pathwayVertex);
 }

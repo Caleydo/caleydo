@@ -5,6 +5,7 @@ import java.util.Iterator;
 
 import org.caleydo.core.data.collection.set.selection.SetSelection;
 import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.util.graph.EGraphItemProperty;
@@ -65,11 +66,16 @@ extends LocationAdapter
 		
 		if(event.location.contains(sSearchPhrase_NCBIGeneId))
 		{
-			String sExtractedID = 
-				event.location.substring(sSearchPhrase_NCBIGeneId.length());
+			String sExtractedID = event.location.substring(sSearchPhrase_NCBIGeneId.length());
 
+			int iDavidId = generalManager.getGenomeIdManager().getIdIntFromIntByMapping(
+					StringConversionTool.convertStringToInt(sExtractedID, -1), EGenomeMappingType.ENTREZ_GENE_ID_2_DAVID);
+			
+			if (iDavidId == -1)
+				return;
+			
 			int iPathwayGraphItemId = generalManager.getPathwayItemManager()
-				.getPathwayVertexGraphItemIdByNCBIGeneId(StringConversionTool.convertStringToInt(sExtractedID, -1));
+				.getPathwayVertexGraphItemIdByDavidId(iDavidId);
 		
 			if (iPathwayGraphItemId == -1)
 				return;

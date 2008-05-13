@@ -7,6 +7,12 @@ import org.caleydo.core.manager.IManager;
 import org.caleydo.util.graph.IGraph;
 import org.caleydo.util.graph.IGraphItem;
 
+/**
+ * Pathway item manager handles creation of all pathway vertices and edges.
+ * 
+ * @author Marc Streit
+ *
+ */
 public interface IPathwayItemManager 
 extends IManager
 {
@@ -15,6 +21,13 @@ extends IManager
 			final String sType,
 			final String sExternalLink,
 			final String sReactionId);
+	
+	public IGraphItem createVertexGene(
+			final String sName,
+			final String sType,
+			final String sExternalLink,
+			final String sReactionId,
+			final int iDavidId);
 	
 	public IGraphItem createVertexRep(
 			final IGraph parentPathway,
@@ -49,14 +62,7 @@ extends IManager
 			final String sReactionName, 
 			final String sReactionType);
 	
-	/**
-	 * Expose HashMap NCBI_GENE_ID ==> PathwayVertexGraphItem
-	 * 
-	 * @see org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatmap2DColumn
-	 * 
-	 * @return HashMap NCBI_GENE_ID ==> PathwayVertexGraphItem
-	 */
-	public HashMap<Integer, Integer> getHashNCBIGeneIdToPathwayVertexGraphItemId();
+	public int getPathwayVertexGraphItemIdByDavidId(final int iDavidId);
 	
-	public int getPathwayVertexGraphItemIdByNCBIGeneId (final int iNCBIGeneId);
+	public int getDavidIdByPathwayVertexGraphItemId(final int iPathwayVertexGraphItemId);
 }

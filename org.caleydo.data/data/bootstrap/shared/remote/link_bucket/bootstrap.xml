@@ -16,42 +16,26 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" uniqueId="14331" label="Caleydo Browser" 		attrib1="ROW HORIZONTAL" />   
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_BROWSER"			cmdId="64991" uniqueId="85401" label="Browser"				parent="14331"  />
 					
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="88401" parent="99081" label="Pathway" 
+						gl_origin="0 0 0" 
+						gl_rotation="0 0 0 0"					
+						attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
+						attrib4="403600"							
+						detail="35101 36101 37101 38101 90101 91101" />																																		
+
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PARALLEL_COORDINATES_3D"		cmdId="69994"	uniqueId="82401" parent="99076" label="Parallel Coordinates" 
+						gl_origin="0 0 0" 
+						gl_rotation="0 0 0 0"					
+						attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
+						attrib4="transparency 0.6" 
+						detail="35101 36101 37101 38101 92101 93101" /> 
 						
-		<!-- Window	13331	-->	
-			<!--				
-				<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="13331" label="Pathway" attrib1="ROW	HORIZONTAL"	/>	 
-				 
-				<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="19401" 
-				  	gl_canvas="99078" parent="13331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
-			-->	
-			
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="88401" parent="99081" label="Pathway" 
-							gl_origin="0 0 0" 
-							gl_rotation="0 0 0 0"					
-							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
-							attrib4="403600"							
-							detail="33101 34101 35101 36101 37101 39101 96101 97101" />																																		
-							
-		<!-- Window	11331	-->
-			<!--
-				<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="11331" label="Parallel Coordinates" attrib1="ROW	HORIZONTAL"	/>	 
-				 
-				<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="16401" 
-			  		gl_canvas="99076" parent="11331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
-			-->	
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PARALLEL_COORDINATES_3D"		cmdId="69994"	uniqueId="82401" parent="99076" label="Parallel Coordinates" 
-							gl_origin="0 0 0" 
-							gl_rotation="0 0 0 0"					
-							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
-							attrib4="transparency 0.6" 
-							detail="33101 34101 35101 36101 37101 39101 84101 85101" /> 
-							
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEAT_MAP_3D"		cmdId="69994"	uniqueId="84401" parent="99076" label="Parallel Coordinates" 
-							gl_origin="0 0 0" 
-							gl_rotation="0 0 0 0"					
-							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
-							attrib4="transparency 0.6" 
-							detail="33101 34101 35101 36101 37101 39101 86101 87101" /> 						
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEAT_MAP_3D"		cmdId="69994"	uniqueId="84401" parent="99076" label="Parallel Coordinates" 
+						gl_origin="0 0 0" 
+						gl_rotation="0 0 0 0"					
+						attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
+						attrib4="transparency 0.6" 
+						detail="35101 36101 37101 38101 94101 95101" /> 						
 
 		<!-- Window	10331 -->	
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="10331" 
@@ -65,14 +49,7 @@
 							gl_rotation="0 0 0 0"					
 							attrib3="PERSPECTIVE -1.5 1.5 -1.5 1.5 2.9 100"
 							attrib4="transparency 1" 								
-							detail="88101" /> 				    
-			    
-	  	<!-- Mediator -->
-	  	<!--
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator: Pathway - PC / Heatmap" 		attrib1="85401 86401 87401 88401 89401 90401 91401" attrib2="82401 83401 84401" detail="SELECTION_MEDIATOR" /> 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator: PC - Pathway / Heatmap" 		attrib1="82401" attrib2="83401 84401 85401 86401 87401 88401 89401 90401 91401" detail="SELECTION_MEDIATOR" />  
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator: HeatMap - Pathway / PC" 		attrib1="84401" attrib2="82401 83401 85401 86401 87401 88401 89401 90401 91401" detail="SELECTION_MEDIATOR" />  
-		-->
+							detail="96101" /> 				    
 							    
    </CommandBuffer>
     

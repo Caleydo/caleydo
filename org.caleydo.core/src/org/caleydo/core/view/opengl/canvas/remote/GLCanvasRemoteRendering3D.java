@@ -22,7 +22,6 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.selection.ISetSelection;
 import org.caleydo.core.data.graph.core.PathwayGraph;
 import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle;
@@ -41,7 +40,6 @@ import org.caleydo.core.manager.view.Pick;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.slerp.SlerpAction;
 import org.caleydo.core.util.slerp.SlerpMod;
-import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasStorageBasedView;
@@ -75,7 +73,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public class GLCanvasRemoteRendering3D 
 extends AGLCanvasUser
-implements IMediatorReceiver, IMediatorSender 
+implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D 
 {
 	private ARemoteViewLayoutRenderStyle.LayoutMode layoutMode;
 
@@ -210,18 +208,15 @@ implements IMediatorReceiver, IMediatorSender
 
 	/*
 	 * (non-Javadoc)
-	 * 
-	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL,
-	 *      int, org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer,
-	 *      org.caleydo.core.view.jogl.mouse.PickingJoglMouseListener)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, int, org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer, org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener, org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D)
 	 */
-	public void initRemote(final GL gl, final int iRemoteViewID,
+	public void initRemote(final GL gl, 
+			final int iRemoteViewID,
 			final JukeboxHierarchyLayer layer,
-			final PickingJoglMouseListener pickingTriggerMouseAdapter) {
-
-		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
-
-		init(gl);
+			final PickingJoglMouseListener pickingTriggerMouseAdapter,
+			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas) 
+	{
+		// not implemented for a remote view
 	}
 
 	/*
@@ -353,7 +348,7 @@ implements IMediatorReceiver, IMediatorSender
 				underInteractionLayer.setElementVisibilityById(true, iViewID);
 
 				tmpGLEventListener.initRemote(gl, iUniqueId,
-						underInteractionLayer, pickingTriggerMouseAdapter);
+						underInteractionLayer, pickingTriggerMouseAdapter, this);
 
 			} else if (stackLayer.containsElement(-1))
 			{
@@ -361,14 +356,14 @@ implements IMediatorReceiver, IMediatorSender
 				stackLayer.setElementVisibilityById(true, iViewID);
 
 				tmpGLEventListener.initRemote(gl, iUniqueId, stackLayer,
-						pickingTriggerMouseAdapter);
+						pickingTriggerMouseAdapter, this);
 			} else if (poolLayer.containsElement(-1))
 			{
 				poolLayer.addElement(iViewID);
 				poolLayer.setElementVisibilityById(true, iViewID);
 
 				tmpGLEventListener.initRemote(gl, iUniqueId, poolLayer,
-						pickingTriggerMouseAdapter);
+						pickingTriggerMouseAdapter, this);
 			}
 
 			// pickingTriggerMouseAdapter.addGLCanvas(tmpGLEventListener);
@@ -519,7 +514,7 @@ implements IMediatorReceiver, IMediatorSender
 					((AGLCanvasUser) generalManager
 							.getViewGLCanvasManager().getItem(iGeneratedViewID))
 							.initRemote(gl, iUniqueId, underInteractionLayer,
-									pickingTriggerMouseAdapter);
+									pickingTriggerMouseAdapter, this);
 				} else if (stackLayer.containsElement(-1))
 				{
 					SlerpAction slerpActionTransition = new SlerpAction(
@@ -529,7 +524,7 @@ implements IMediatorReceiver, IMediatorSender
 					((AGLCanvasUser) generalManager
 							.getViewGLCanvasManager().getItem(iGeneratedViewID))
 							.initRemote(gl, iUniqueId, stackLayer,
-									pickingTriggerMouseAdapter);
+									pickingTriggerMouseAdapter, this);
 				} else if (poolLayer.containsElement(-1))
 				{
 					SlerpAction slerpActionTransition = new SlerpAction(
@@ -539,7 +534,7 @@ implements IMediatorReceiver, IMediatorSender
 					((AGLCanvasUser) generalManager
 							.getViewGLCanvasManager().getItem(iGeneratedViewID))
 							.initRemote(gl, iUniqueId, poolLayer,
-									pickingTriggerMouseAdapter);
+									pickingTriggerMouseAdapter, this);
 				} else
 				{
 					generalManager.getLogger().log(Level.SEVERE, "No empty space left to add new pathway!");	
@@ -1261,11 +1256,8 @@ implements IMediatorReceiver, IMediatorSender
 	@Override
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) 
 	{
-//		generalManager.logMsg(
-//				this.getClass().getSimpleName()
-//						+ " ("+iUniqueId+"): updateReceiver(Object eventTrigger, ISet updatedSet): Update called by "
-//						+ eventTrigger.getClass().getSimpleName()+" ("+((AUniqueManagedObject)eventTrigger).getId()+")",
-//				LoggerType.VERBOSE);
+		generalManager.getLogger().log(Level.INFO, "Update called by "
+				+eventTrigger.getClass().getSimpleName());
 		
 		ISetSelection refSetSelection = (ISetSelection) updatedSet;
 
@@ -1287,7 +1279,7 @@ implements IMediatorReceiver, IMediatorSender
 			
 			for (int iSelectionIndex = 0; iSelectionIndex < iAlSelection.size(); iSelectionIndex++)
 			{			
-				int iAccessionID = iAlSelection.get(iSelectionIndex);
+				int iDavidId = iAlSelection.get(iSelectionIndex);
 				
 				if (iAlSelectionGroup.get(iSelectionIndex) == -1)
 				{
@@ -1299,26 +1291,13 @@ implements IMediatorReceiver, IMediatorSender
 				
 				alSetSelection.get(0).clearAllSelectionArrays();
 				
-				String sAccessionCode = generalManager.getGenomeIdManager()
-					.getIdStringFromIntByMapping(iAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
-			
-				System.out.println("Accession Code: " +sAccessionCode);
-									
-				int iNCBIGeneID = generalManager.getGenomeIdManager()
-					.getIdIntFromIntByMapping(iAccessionID, EGenomeMappingType.ACCESSION_2_NCBI_GENEID);
-	
-				String sNCBIGeneIDCode = generalManager.getGenomeIdManager()
-					.getIdStringFromIntByMapping(iNCBIGeneID, EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE);
-			
-				int iNCBIGeneIDCode = StringConversionTool.convertStringToInt(sNCBIGeneIDCode, -1);
-				
 				PathwayVertexGraphItem tmpPathwayVertexGraphItem = 
 					((PathwayVertexGraphItem)generalManager.getPathwayItemManager().getItem(
-						generalManager.getPathwayItemManager().getPathwayVertexGraphItemIdByNCBIGeneId(iNCBIGeneIDCode)));
+						generalManager.getPathwayItemManager().getPathwayVertexGraphItemIdByDavidId(iDavidId)));
 			
 				alPathwayVertexGraphItem.add(tmpPathwayVertexGraphItem);
 				
-				iAlTmpSelectionId.add(iAccessionID);
+				iAlTmpSelectionId.add(iDavidId);
 				iAlTmpGroupId.add(1); // mouse over
 			}
 			
@@ -1375,9 +1354,7 @@ implements IMediatorReceiver, IMediatorSender
 			while (iterIdenticalPathwayGraphItemRep.hasNext())
 			{
 				iPathwayID = ((PathwayGraph) iterIdenticalPathwayGraphItemRep
-						.next().getAllGraphByType(
-								EGraphItemHierarchy.GRAPH_PARENT).toArray()[0])
-						.getId();
+						.next().getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT).toArray()[0]).getId();
 
 				iAlUninitializedPathwayIDs.add(iPathwayID);
 
@@ -1837,5 +1814,31 @@ implements IMediatorReceiver, IMediatorSender
 			
 			generalManager.getViewGLCanvasManager().unregisterGLEventListener(iGLEventListenerIdToRemove);
 		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D#getHierarchyLayerByGLCanvasListenerId(int)
+	 */
+	public JukeboxHierarchyLayer getHierarchyLayerByGLCanvasListenerId(
+			final int iGLEvnetListenerId) {
+
+		if (underInteractionLayer.containsElement(iGLEvnetListenerId))
+			return underInteractionLayer;
+		else if (stackLayer.containsElement(iGLEvnetListenerId))
+			return stackLayer;
+		else if (poolLayer.containsElement(iGLEvnetListenerId))
+			return poolLayer;
+		else if (transitionLayer.containsElement(iGLEvnetListenerId))
+			return transitionLayer;
+		else if (spawnLayer.containsElement(iGLEvnetListenerId))
+			return spawnLayer;
+		else if (memoLayer.containsElement(iGLEvnetListenerId))
+			return memoLayer;
+
+		generalManager.getLogger().log(Level.WARNING, 
+				"GL Event Listener " +iGLEvnetListenerId +" is not contained in any layer!");
+
+		return null;
 	}
 }
