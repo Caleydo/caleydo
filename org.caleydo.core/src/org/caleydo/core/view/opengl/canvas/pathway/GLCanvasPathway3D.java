@@ -402,7 +402,7 @@ implements IMediatorReceiver, IMediatorSender {
 		// Missing power of two texture GL extension workaround
 		PathwayGraph tmpPathwayGraph = (PathwayGraph)generalManager.getPathwayManager().getItem(iPathwayId);
 		ImageIcon img = new ImageIcon(generalManager.getPathwayManager()
-				.getPathwayDatabaseByType(EPathwayDatabaseType.KEGG).getImagePath() 
+				.getPathwayDatabaseByType(tmpPathwayGraph.getType()).getImagePath() 
 				+ tmpPathwayGraph.getImageLink());
 		int iImageWidth = img.getIconWidth();
 		int iImageHeight = img.getIconHeight();
