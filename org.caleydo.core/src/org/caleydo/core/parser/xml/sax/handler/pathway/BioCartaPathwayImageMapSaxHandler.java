@@ -123,8 +123,8 @@ extends AXmlParserHandler {
 		
 		String sName = "";
     	String sImageLink = "";
-    	int iWidth = -1;
-    	int iHeight = -1;
+//    	int iWidth = -1;
+//    	int iHeight = -1;
 
 		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
 		{
@@ -143,25 +143,28 @@ extends AXmlParserHandler {
    			{
    				sName = attributes.getValue(iAttributeIndex); 
    			}
-   			else if (sAttributeName.equals("width"))
-   			{
-   				iWidth = StringConversionTool.convertStringToInt(
-   						attributes.getValue(iAttributeIndex), -1); 
-   			}
-   			else if (sAttributeName.equals("height"))
-   			{
-   				iHeight = StringConversionTool.convertStringToInt(
-   						attributes.getValue(iAttributeIndex), -1); 
-   			}			
+//   			else if (sAttributeName.equals("width"))
+//   			{
+//   				iWidth = StringConversionTool.convertStringToInt(
+//   						attributes.getValue(iAttributeIndex), -1); 
+//   			}
+//   			else if (sAttributeName.equals("height"))
+//   			{
+//   				iHeight = StringConversionTool.convertStringToInt(
+//   						attributes.getValue(iAttributeIndex), -1); 
+//   			}			
 		} 	
 		
 		if (sImageLink.isEmpty() || sName.isEmpty())
 			return;
 		
+		sImageLink = sImageLink.substring(
+				sImageLink.lastIndexOf('/') + 1, 
+				sImageLink.length());
+		
 		currentPathway = generalManager.getPathwayManager().
 			createPathway(EPathwayDatabaseType.BIOCARTA, "<name>", sTitle, 
-					sImageLink, BIOCARTA_EXTERNAL_URL_PATHWAY + sName,
-					iWidth, iHeight);
+					sImageLink, BIOCARTA_EXTERNAL_URL_PATHWAY + sName);
 		
 		sTitle = "";
 	}

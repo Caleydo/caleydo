@@ -21,9 +21,7 @@ extends IManager
 			final String sName, 
 			final String sTitle, 
 			final String sImageLink,
-			final String sExternalLink,
-			final int iWidth,
-			final int iHeight);
+			final String sExternalLink);
 	
 	public void createPathwayDatabase(final EPathwayDatabaseType type,
 			final String sXMLPath,

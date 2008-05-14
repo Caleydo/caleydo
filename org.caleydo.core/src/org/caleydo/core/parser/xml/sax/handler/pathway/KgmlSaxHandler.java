@@ -183,17 +183,10 @@ implements IXmlParserHandler {
 		String sPathwayTexturePath = sImageLink.substring(
 				sImageLink.lastIndexOf('/') + 1, 
 				sImageLink.length());
-		sPathwayTexturePath = generalManager.getPathwayManager()
-				.getPathwayDatabaseByType(EPathwayDatabaseType.KEGG).getImagePath() + sPathwayTexturePath;
-		
-		ImageIcon img = new ImageIcon(sPathwayTexturePath);
-		int iWidth = img.getIconWidth();
-		int iHeight = img.getIconHeight();
-		img = null;
 		
 		currentPathway = generalManager.getPathwayManager().
 			createPathway(EPathwayDatabaseType.KEGG, sName, sTitle, 
-					sImageLink, sExternalLink, iWidth, iHeight);
+					sPathwayTexturePath, sExternalLink);
     }
     
 	/**

@@ -102,9 +102,7 @@ implements IPathwayManager, Serializable {
 			final String sName,
 			final String sTitle, 
 			final String sImageLink, 
-			final String sExternalLink,
-			final int iWidth,
-			final int iHeight) {
+			final String sExternalLink) {
 
 //		if (hashPathwayIdToPathwayGraphLUT.containsKey(iKEGGId))
 //			return hashPathwayIdToPathwayGraphLUT.get(iKEGGId);
@@ -112,8 +110,7 @@ implements IPathwayManager, Serializable {
 		int iPathwayId = this.createId(null);
 		
 		PathwayGraph pathway = new PathwayGraph(
-				type, iPathwayId, sName, sTitle, sImageLink, sExternalLink,
-				iWidth, iHeight);
+				type, iPathwayId, sName, sTitle, sImageLink, sExternalLink);
 
 		hashPathwayIdToPathwayGraphLUT.put(iPathwayId, pathway);
 		hashPathwayTitleToPathwayIdLUT.put(sTitle, iPathwayId);

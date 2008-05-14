@@ -2,6 +2,8 @@ package org.caleydo.core.data.graph.core;
 
 import java.io.Serializable;
 
+import javax.swing.ImageIcon;
+
 import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
 import org.caleydo.util.graph.core.Graph;
 
@@ -29,9 +31,9 @@ implements Serializable {
 
 	private String sExternalLink;
 	
-	private int iWidth;
+	private int iWidth = -1;
 	
-	private int iHeight;
+	private int iHeight = -1;
 	
 	public PathwayGraph(
 			final EPathwayDatabaseType type,
@@ -39,9 +41,7 @@ implements Serializable {
 			final String sName,
 			final String sTitle,
 			final String sImageLink,
-			final String sLink,
-			final int iWidth,
-			final int iHeight) {
+			final String sLink) {
 
 		super(iKeggId);
 		
@@ -51,8 +51,6 @@ implements Serializable {
 		this.sTitle = sTitle;
 		this.sImageLink = sImageLink;
 		this.sExternalLink = sLink;
-		this.iWidth = iWidth;
-		this.iHeight = iHeight;
 	}
 	
 	public int getKeggId() {
@@ -93,6 +91,16 @@ implements Serializable {
 	public final int getHeight() {
 		
 		return iHeight;
+	}
+	
+	public void setWidth(final int iWidth) {
+		
+		this.iWidth = iWidth;
+	}
+
+	public void setHeight(final int iHeight) {
+		
+		this.iHeight = iHeight;
 	}
 	
 	@Override

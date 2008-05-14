@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 
@@ -486,7 +487,8 @@ public class GLPathwayManager {
 
 		if (vertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).toArray().length == 0)
 		{
-			System.out.println("BLA");
+			generalManager.getLogger().log(Level.WARNING, 
+					"Cannot create pathway vertex. Pathway node representation " +vertexRep.getName() +" has not parent in graph!");
 			return;
 		}
 		

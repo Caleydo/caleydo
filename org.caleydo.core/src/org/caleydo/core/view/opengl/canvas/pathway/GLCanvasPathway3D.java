@@ -8,6 +8,7 @@ import java.util.Iterator;
 import java.util.logging.Level;
 
 import javax.media.opengl.GL;
+import javax.swing.ImageIcon;
 
 import org.caleydo.core.data.GeneralRenderStyle;
 import org.caleydo.core.data.collection.ISet;
@@ -398,12 +399,17 @@ implements IMediatorReceiver, IMediatorSender {
 		if (refHashGLcontext2TextureManager.get(gl) == null)
 			return;
 		
-		int iImageWidth = ((PathwayGraph)generalManager
-				.getPathwayManager().getItem(iPathwayId)).getWidth();
-		int iImageHeight = ((PathwayGraph)generalManager
-				.getPathwayManager().getItem(iPathwayId)).getHeight();
+		// Missing power of two texture GL extension workaround
+		PathwayGraph tmpPathwayGraph = (PathwayGraph)generalManager.getPathwayManager().getItem(iPathwayId);
+		ImageIcon img = new ImageIcon(generalManager.getPathwayManager()
+				.getPathwayDatabaseByType(EPathwayDatabaseType.KEGG).getImagePath() 
+				+ tmpPathwayGraph.getImageLink());
+		int iImageWidth = img.getIconWidth();
+		int iImageHeight = img.getIconHeight();
+		tmpPathwayGraph.setWidth(iImageWidth);
+		tmpPathwayGraph.setHeight(iImageHeight);
+		img = null;
 	
-		float fAspectRatio = (float)iImageWidth / (float)iImageHeight;
 		float fPathwayScalingFactor = 0;
 		
 		if (((PathwayGraph)generalManager.getPathwayManager()

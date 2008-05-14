@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 
 import javax.media.opengl.GL;
+import javax.swing.ImageIcon;
 
 import org.caleydo.core.data.graph.core.PathwayGraph;
 import org.caleydo.core.manager.IGeneralManager;
@@ -48,10 +49,6 @@ public class GLPathwayTextureManager {
 
 		String sPathwayTexturePath = ((PathwayGraph)generalManager
 				.getPathwayManager().getItem(iPathwayId)).getImageLink();
-
-		sPathwayTexturePath = sPathwayTexturePath.substring(
-				sPathwayTexturePath.lastIndexOf('/') + 1, 
-				sPathwayTexturePath.length());
 		
 		EPathwayDatabaseType type = ((PathwayGraph)generalManager
 				.getPathwayManager().getItem(iPathwayId)).getType();
@@ -98,7 +95,7 @@ public class GLPathwayTextureManager {
 			final int iPathwayId, 
 			final float fTextureTransparency,
 			final boolean bHighlight) {
-
+		
 		Texture refTmpPathwayTexture = loadPathwayTextureById(iPathwayId);
 		
 		refTmpPathwayTexture.enable();
