@@ -1,6 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.remote;
 
-import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**
  * Interface for accessing views that remotely render other views.
@@ -10,6 +10,6 @@ import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
  */
 public interface IGLCanvasRemoteRendering3D 
 {
-	public JukeboxHierarchyLayer getHierarchyLayerByGLCanvasListenerId(
+	public RemoteHierarchyLayer getHierarchyLayerByGLCanvasListenerId(
 			final int iGLCanvasListenerId);
 }

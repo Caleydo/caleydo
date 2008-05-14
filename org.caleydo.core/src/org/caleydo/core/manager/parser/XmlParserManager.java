@@ -2,6 +2,7 @@ package org.caleydo.core.manager.parser;
 
 import java.net.URL;
 import java.util.Iterator;
+import java.util.logging.Level;
 
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
@@ -350,8 +351,9 @@ extends AXmlParserManager {
 		}	
 	}
 	
-	/**
-	 * @see org.caleydo.core.manager.IXmlParserManager#parseXmlFileByName(Stringt)
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IXmlParserManager#parseXmlFileByName(java.lang.String)
 	 */
 	public boolean parseXmlFileByName( final String filename ) {
 		
@@ -370,17 +372,14 @@ extends AXmlParserManager {
 				inSource = CaleydoInputStream.openInputStreamFromFile(filename, generalManager);
 			}
 			
-//			generalManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") parse...",
-//					LoggerType.VERBOSE_EXTRA );
-		
+			generalManager.getLogger().log(Level.INFO, "Start parsing file " +filename);
 		
 			boolean status = CaleydoInputStream.parseOnce( inSource ,
 					filename,
 					this,
 					generalManager );
 			
-//			generalManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") done.",
-//					LoggerType.STATUS );
+			generalManager.getLogger().log(Level.INFO, "Finished parsing file " +filename);
 			
 			return 	status;
 			

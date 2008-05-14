@@ -1,7 +1,7 @@
 package org.caleydo.core.util.slerp;
 
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**
  * Slerp action in 3D scene.
@@ -13,9 +13,9 @@ public class SlerpAction {
 
 	private int iElementId = -1;
 	
-	private JukeboxHierarchyLayer originHierarchyLayer;
+	private RemoteHierarchyLayer originHierarchyLayer;
 	
-	private JukeboxHierarchyLayer destinationHierarchyLayer;
+	private RemoteHierarchyLayer destinationHierarchyLayer;
 
 	private int iOriginPosIndex = -1;
 	
@@ -30,7 +30,7 @@ public class SlerpAction {
 	 * @param bSlerpUpInHierarchy
 	 */
 	public SlerpAction(int iElementId, 
-			JukeboxHierarchyLayer originHierarchyLayer,
+			RemoteHierarchyLayer originHierarchyLayer,
 			boolean bSlerpUpInHierarchy) {
 		
 		if (bSlerpUpInHierarchy)
@@ -49,8 +49,8 @@ public class SlerpAction {
 	 * @param destinationHierarchyLayer
 	 */
 	public SlerpAction(int iElementId, 
-			JukeboxHierarchyLayer originHierarchyLayer,
-			JukeboxHierarchyLayer destinationHierarchyLayer) {
+			RemoteHierarchyLayer originHierarchyLayer,
+			RemoteHierarchyLayer destinationHierarchyLayer) {
 		
 		init(iElementId, originHierarchyLayer, destinationHierarchyLayer);
 	}
@@ -64,8 +64,8 @@ public class SlerpAction {
 	 * @param iDestinationPosIndex
 	 */
 	public SlerpAction(int iElementId, 
-			JukeboxHierarchyLayer originHierarchyLayer,
-			JukeboxHierarchyLayer destinationHierarchyLayer,
+			RemoteHierarchyLayer originHierarchyLayer,
+			RemoteHierarchyLayer destinationHierarchyLayer,
 			int iDestinationPosIndex) {
 		
 		this.iDestinationPosIndex = iDestinationPosIndex;
@@ -73,8 +73,8 @@ public class SlerpAction {
 	}
 	
 	private void init(int iElementId, 
-			JukeboxHierarchyLayer originHierarchyLayer,
-			JukeboxHierarchyLayer destinationHierarchyLayer) {
+			RemoteHierarchyLayer originHierarchyLayer,
+			RemoteHierarchyLayer destinationHierarchyLayer) {
 		
 		this.iElementId = iElementId;
 		this.originHierarchyLayer = originHierarchyLayer;
@@ -103,7 +103,7 @@ public class SlerpAction {
 		return iElementId;
 	}
 
-	public JukeboxHierarchyLayer getOriginHierarchyLayer() {
+	public RemoteHierarchyLayer getOriginHierarchyLayer() {
 
 		if (originHierarchyLayer == null)
 			throw new CaleydoRuntimeException("Slerp origin layer is null!");
@@ -111,7 +111,7 @@ public class SlerpAction {
 		return originHierarchyLayer;
 	}
 
-	public JukeboxHierarchyLayer getDestinationHierarchyLayer() {
+	public RemoteHierarchyLayer getDestinationHierarchyLayer() {
 
 		if (destinationHierarchyLayer == null)
 			throw new CaleydoRuntimeException("Slerp destination layer is null!");

@@ -251,9 +251,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 				
 				/**
 				 * read Storage data..
-				 */
-				
-		
+				 */	
 				LinkedList <String> ll_Storage_1dim = 
 					iter_Storage_nDim.next();
 				Iterator <String> iter_ll_Storage_1dim = 

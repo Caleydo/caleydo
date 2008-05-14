@@ -53,8 +53,8 @@ import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLConnectionLineRender
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLIconTextureManager;
-import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 import org.caleydo.core.view.opengl.util.drag.GLDragAndDrop;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 import org.caleydo.core.view.opengl.util.trashcan.TrashCan;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
@@ -82,12 +82,12 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 
 	protected int iMouseOverViewID = -1;
 
-	protected JukeboxHierarchyLayer underInteractionLayer;
-	protected JukeboxHierarchyLayer stackLayer;
-	protected JukeboxHierarchyLayer poolLayer;
-	protected JukeboxHierarchyLayer transitionLayer;
-	protected JukeboxHierarchyLayer spawnLayer;
-	protected JukeboxHierarchyLayer memoLayer;
+	protected RemoteHierarchyLayer underInteractionLayer;
+	protected RemoteHierarchyLayer stackLayer;
+	protected RemoteHierarchyLayer poolLayer;
+	protected RemoteHierarchyLayer transitionLayer;
+	protected RemoteHierarchyLayer spawnLayer;
+	protected RemoteHierarchyLayer memoLayer;
 
 	private ArrayList<SlerpAction> arSlerpActions;
 
@@ -146,7 +146,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 		
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
 		{
-			layoutRenderStyle = new BucketLayoutRenderStyle(generalManager);			
+			layoutRenderStyle = new BucketLayoutRenderStyle();			
 
 			bucketMouseWheelListener = new BucketMouseWheelListener(this, generalManager, 
 					(BucketLayoutRenderStyle)layoutRenderStyle);
@@ -212,7 +212,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 	 */
 	public void initRemote(final GL gl, 
 			final int iRemoteViewID,
-			final JukeboxHierarchyLayer layer,
+			final RemoteHierarchyLayer layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas) 
 	{
@@ -409,7 +409,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 		gl.glEnd();
 	}
 
-	private void renderLayer(final GL gl, final JukeboxHierarchyLayer layer) {
+	private void renderLayer(final GL gl, final RemoteHierarchyLayer layer) {
 
 		Iterator<Integer> iterElementList = layer.getElementList().iterator();
 		int iViewId = 0;
@@ -435,7 +435,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 	}
 
 	private void renderViewByID(final GL gl, final int iViewID,
-			final JukeboxHierarchyLayer layer) {
+			final RemoteHierarchyLayer layer) {
 
 		// Init newly created pathways
 		// FIXME: this specialization to pathways in the bucket is not good!
@@ -630,7 +630,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 	}
 
 	public void renderEmptyBucketWall(final GL gl,
-			final JukeboxHierarchyLayer layer, final int iLayerPositionIndex) {
+			final RemoteHierarchyLayer layer, final int iLayerPositionIndex) {
 
 		gl.glPushMatrix();
 
@@ -1820,7 +1820,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D#getHierarchyLayerByGLCanvasListenerId(int)
 	 */
-	public JukeboxHierarchyLayer getHierarchyLayerByGLCanvasListenerId(
+	public RemoteHierarchyLayer getHierarchyLayerByGLCanvasListenerId(
 			final int iGLEvnetListenerId) {
 
 		if (underInteractionLayer.containsElement(iGLEvnetListenerId))

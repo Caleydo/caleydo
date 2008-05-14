@@ -28,15 +28,14 @@ import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.ESelectionMode;
 import org.caleydo.core.manager.view.Pick;
 import org.caleydo.core.manager.view.SelectionManager;
-import org.caleydo.core.util.ConversionStringInteger;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
-import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.caleydo.core.view.opengl.util.hierarchy.EHierarchyLevel;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
 import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
 import org.caleydo.util.graph.EGraphItemKind;
@@ -147,7 +146,7 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void initRemote(final GL gl, 
 			final int iRemoteViewID,
-			final JukeboxHierarchyLayer layer,
+			final RemoteHierarchyLayer layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas) 
 	{
@@ -261,7 +260,10 @@ implements IMediatorReceiver, IMediatorSender {
 		// Pathway texture height is subtracted from Y to align pathways to
 		// front level
 		gl.glTranslatef(0, tmp, 0);
-		refGLPathwayManager.renderPathway(gl, iPathwayId, false);
+		if (remoteRenderingGLCanvas.getHierarchyLayerByGLCanvasListenerId(iUniqueId).getLevel().equals(EHierarchyLevel.UNDER_INTERACTION))
+			refGLPathwayManager.renderPathway(gl, iPathwayId, true);
+		else
+			refGLPathwayManager.renderPathway(gl, iPathwayId, false);
 		gl.glTranslatef(0, -tmp, 0);
 		
 		gl.glScalef(1/vecScaling.x(), 1/vecScaling.y(),1/ vecScaling.z());

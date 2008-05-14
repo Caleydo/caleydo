@@ -7,6 +7,7 @@ import java.util.LinkedList;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.StorageType;
 import org.caleydo.core.data.collection.parser.ParserTokenHandler;
 import org.caleydo.core.data.xml.IMementoXML;
@@ -15,11 +16,11 @@ import org.caleydo.core.parser.ascii.AbstractLoader;
 import org.caleydo.core.parser.ascii.IParserObject;
 import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
-
 /**
- * Loader for MircoArray data sets in *.gpr format.
+ * Loader for micro array data sets.
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public abstract class AMicroArrayLoader 
@@ -38,7 +39,7 @@ implements IMementoXML, IParserObject {
 	 * Imports data from file to this set.
 	 * uses first storage and overwrites first selection.
 	 */
-	protected ISet refImportDataToSet;
+	protected ArrayList<IStorage> alTargetStorages;
 
 	
 	/**
@@ -46,6 +47,10 @@ implements IMementoXML, IParserObject {
 	 */
 	protected ArrayList<ParserTokenHandler> alTokenTargetToParserTokenType;
 	
+	/**
+	 * Reference to the current DataStorage.
+	 */
+	protected IStorage currentDataStorage;
 	
 	/**
 	 * Default size for the token-ArrayList's
@@ -72,6 +77,7 @@ implements IMementoXML, IParserObject {
 				setFileName, 
 				enableMultipeThreads);
 		
+		alTargetStorages = new ArrayList<IStorage>();
 		alTokenTargetToParserTokenType = 
 			new ArrayList<ParserTokenHandler> (iInitialParseTokenSize);
 		
@@ -83,10 +89,8 @@ implements IMementoXML, IParserObject {
 	
 	/**
 	 * Assign a ISet to write the data to.
-	 * 
-	 * @param refUseSet target set.
 	 */
-	public abstract void setTargetSet(ISet refUseSet);
+	public abstract void setTargetStorages(final ArrayList<Integer> iAlTargetStorageId);
 
 	
 	/**
@@ -101,7 +105,7 @@ implements IMementoXML, IParserObject {
 	/** 
 	 * Defines a pattern for parsing 
 	 */
-	public final boolean setTokenPattern( String tokenPattern ) {
+	public final boolean setTokenPattern(final String tokenPattern ) {
 		
 		boolean bAllTokensProper = true;
 		

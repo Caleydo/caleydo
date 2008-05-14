@@ -465,12 +465,11 @@ implements ISet {
 		
 		assert setStorage != null: "setStorage() with null-pointer";
 		
-		refFlatStorage = new IStorage[ setStorage.size() ];		
-		Iterator <IStorage> iter = setStorage.iterator();
-		int iIndex = 0;
-		
-		while ( iter.hasNext() ) {
-			refFlatStorage[ iIndex ] = iter.next();
+		refFlatStorage = new IStorage[setStorage.size()];		
+
+		for (int iStorageIndex = 0; iStorageIndex < setStorage.size(); iStorageIndex++)
+		{
+			refFlatStorage[iStorageIndex] = setStorage.get(iStorageIndex);
 		}
 		
 		return true;

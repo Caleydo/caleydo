@@ -484,6 +484,12 @@ public class GLPathwayManager {
 		
 		EPathwayVertexShape shape = vertexRep.getShapeType();
 
+		if (vertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).toArray().length == 0)
+		{
+			System.out.println("BLA");
+			return;
+		}
+		
 		EPathwayVertexType vertexType = 
 			((PathwayVertexGraphItem)vertexRep.getPathwayVertexGraphItem()).getType();
 		

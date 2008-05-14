@@ -14,7 +14,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.view.rep.renderstyle.ConnectionLineRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.view.SelectionManager;
-import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**
  * Class is responsible for rendering and drawing
@@ -27,8 +27,8 @@ import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
  */
 public abstract class AGLConnectionLineRenderer {
 	
-	protected JukeboxHierarchyLayer underInteractionLayer;
-	protected JukeboxHierarchyLayer stackLayer;
+	protected RemoteHierarchyLayer underInteractionLayer;
+	protected RemoteHierarchyLayer stackLayer;
 	
 	protected SelectionManager selectionManager;
 	
@@ -40,9 +40,9 @@ public abstract class AGLConnectionLineRenderer {
 	 * Constructor.
 	 */
 	public AGLConnectionLineRenderer(final IGeneralManager generalManager,
-			final JukeboxHierarchyLayer underInteractionLayer,
-			final JukeboxHierarchyLayer stackLayer,
-			final JukeboxHierarchyLayer poolLayer) 
+			final RemoteHierarchyLayer underInteractionLayer,
+			final RemoteHierarchyLayer stackLayer,
+			final RemoteHierarchyLayer poolLayer) 
 	{
 		
 		this.underInteractionLayer = underInteractionLayer;

@@ -30,12 +30,7 @@ extends IManager
 			final String sImagePath,
 			final String sImageMapPath);
 	
-	/**
-	 * @deprecated Use loadAllPathwaysByType(EPathwayDatabaseType type) instead
-	 */
-	public boolean loadPathwayById(final int iPathwayID);
-	
-	public void loadAllPathwaysByType(final EPathwayDatabaseType type);
+	public void triggerParsingPathwayDatabases();
 	
 	public Graph getRootPathway();
 	

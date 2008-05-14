@@ -40,8 +40,9 @@ import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
-import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
 import org.caleydo.core.view.opengl.util.drag.GLDragAndDropPathway;
+import org.caleydo.core.view.opengl.util.hierarchy.EHierarchyLevel;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaRenderer;
 import org.caleydo.core.view.opengl.util.memopad.GLPathwayMemoPad;
 import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
@@ -92,11 +93,11 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	private int iSlerpFactor = 0;
 
-	private JukeboxHierarchyLayer pathwayUnderInteractionLayer; 
+	private RemoteHierarchyLayer pathwayUnderInteractionLayer; 
 
-	private JukeboxHierarchyLayer pathwayLayeredLayer;
+	private RemoteHierarchyLayer pathwayLayeredLayer;
 
-	private JukeboxHierarchyLayer pathwayPoolLayer;
+	private RemoteHierarchyLayer pathwayPoolLayer;
 
 	private PathwayVertexGraphItemRep selectedVertex;
 
@@ -143,15 +144,9 @@ implements IMediatorReceiver, IMediatorSender {
 		refHashPathwayContainingSelectedVertex2VertexCount = new HashMap<Integer, Integer>();
 
 		// Create Jukebox hierarchy
-//		pathwayUnderInteractionLayer = new JukeboxHierarchyLayer(generalManager,
-//				1, SCALING_FACTOR_UNDER_INTERACTION_LAYER, refGLPathwayTextureManager);
-//		pathwayLayeredLayer = new JukeboxHierarchyLayer(generalManager,
-//				4, SCALING_FACTOR_LAYERED_LAYER, refGLPathwayTextureManager);
-//		pathwayPoolLayer = new JukeboxHierarchyLayer(generalManager,
-//				MAX_LOADED_PATHWAYS, SCALING_FACTOR_POOL_LAYER, refGLPathwayTextureManager);
-		pathwayUnderInteractionLayer = new JukeboxHierarchyLayer(generalManager, 1, refGLPathwayTextureManager);
-		pathwayLayeredLayer = new JukeboxHierarchyLayer(generalManager, 4, refGLPathwayTextureManager);
-		pathwayPoolLayer = new JukeboxHierarchyLayer(generalManager, MAX_LOADED_PATHWAYS, refGLPathwayTextureManager);
+		pathwayUnderInteractionLayer = new RemoteHierarchyLayer(EHierarchyLevel.UNDER_INTERACTION);
+		pathwayLayeredLayer = new RemoteHierarchyLayer(EHierarchyLevel.STACK);
+		pathwayPoolLayer = new RemoteHierarchyLayer(EHierarchyLevel.POOL);
 		
 		pathwayUnderInteractionLayer.setParentLayer(pathwayLayeredLayer);
 		pathwayLayeredLayer.setChildLayer(pathwayUnderInteractionLayer);
@@ -212,7 +207,7 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void initRemote(final GL gl, 
 			final int iRemoteViewID,
-			final JukeboxHierarchyLayer layer,
+			final RemoteHierarchyLayer layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas) 
 	{
@@ -431,7 +426,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	private void renderPathwayById(final GL gl,
 			final int iPathwayId, 
-			final JukeboxHierarchyLayer layer) {
+			final RemoteHierarchyLayer layer) {
 		
 		if (iPathwayId == -1)
 			return;

@@ -2,13 +2,14 @@ package org.caleydo.core.parser.ascii.microarray;
 
 import java.io.BufferedReader;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import java.util.Vector;
+import java.util.logging.Level;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.IVirtualArray;
 import org.caleydo.core.data.collection.StorageType;
@@ -16,32 +17,21 @@ import org.caleydo.core.data.collection.parser.CollectionSelectionSaxParserHandl
 import org.caleydo.core.data.collection.parser.ParserTokenHandler;
 import org.caleydo.core.data.collection.virtualarray.VirtualArrayThreadSingleBlock;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
 
 /**
+ * Load data file to multiple storages.
+ * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public class MicroArrayLoaderValues2MultipleStorages 
 extends AMicroArrayLoader {
-
-	private IStorage[] refArrayDataStorage = null;
-	
-	/**
-	 * Reference to the current DataStorage.
-	 */
-	private IStorage refDataStorage;
-	
-	/**
-	 * 
-	 */
-	private IVirtualArray refImportDataOverrideSelection;
-	
 		
 	/**
-	 * 
+	 * Constructor.
 	 */
 	public MicroArrayLoaderValues2MultipleStorages(final IGeneralManager setGeneralManager,
 			final String setFileName,
@@ -61,33 +51,14 @@ extends AMicroArrayLoader {
 		allocateStorageBufferForTokenPatternAbstractClass();
 	}
 	
-	
-	
-	/**
-	 * Assign a ISet to write the data to.
-	 * 
-	 * @param refUseSet target set.
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#setTargetSotrage(java.util.ArrayList)
 	 */
-	public final void setTargetSet(ISet refUseSet) {
-		this.refImportDataToSet = refUseSet;
-		
-		if ( refImportDataToSet.getBaseType() != ManagerObjectType.SET_MULTI_DIM ) {
-//			generalManager.logMsg(" need a MultiSet; got [" +
-//					refImportDataToSet.getBaseType()  + "] !",
-//					LoggerType.MINOR_ERROR );
-		}
-		
-		int iSizeStoragesInSet =  refImportDataToSet.getDimensions();
-		
-		refArrayDataStorage = new IStorage[iSizeStoragesInSet];
-		
-		for ( int i=0; i < iSizeStoragesInSet; i++ ) {
-			/**
-			 * Copy needed Storages from Set to local array...
-			 */			
-			refArrayDataStorage[i] = 
-				refImportDataToSet.getStorageByDimAndIndex(i,0);
-		}
+	public void setTargetStorages(final ArrayList<Integer> iAlTargetStorageId)
+	{
+		for (int iStorageId : iAlTargetStorageId)
+			alTargetStorages.add((IStorage) generalManager.getStorageManager().getItem(iStorageId));
 	}
 	
 	/**
@@ -101,36 +72,12 @@ extends AMicroArrayLoader {
 		
 	}
 
-	
-	
 	@Override
-	protected int loadDataParseFile(BufferedReader brFile,
-			final int iNumberOfLinesInFile )
+	protected int loadDataParseFile(BufferedReader brFile, final int iNumberOfLinesInFile )
 		throws IOException 
 	{
-
 		allocateStorageBufferForTokenPattern();
-		
-		/**
-		 * Consistency check: is a Set defined?
-		 */
-		
-		if ( refImportDataToSet == null ) {
-			if ( refDataStorage == null ) {
-				assert false: "No reference to IStorage was set!";
-			
-				return -1;
-			}
-			assert false : "deprecated call! need to assign a ISet!";
-		}
-		else {
-			/* refImportDataToSet != null */
-			refDataStorage = 
-				refImportDataToSet.getStorageByDimAndIndex(0,0);
-			refImportDataOverrideSelection = 
-				refImportDataToSet.getVirtualArrayByDimAndIndex(0,0);
-		}
-		
+
 		/**
 		 * Allocate storage inside Set...
 		 */
@@ -142,15 +89,13 @@ extends AMicroArrayLoader {
 		
 		Vector <StorageType> vecBuffersTorage = new Vector <StorageType>();
 		
-		/**
-		 * progress bar init
-		 */
-		progressBarSetStoreInitTitle("load " + this.getFileName(),
+		// Init progress bar
+		progressBarSetStoreInitTitle("Load data file " + this.getFileName(),
 				0,  // reset progress bar to 0
-				refArrayDataStorage.length );
+				alTargetStorages.size());
 		
 		
-		for ( int i=0; i < refArrayDataStorage.length; i++ ) 
+		for (IStorage tmpStorage : alTargetStorages) 
 		{ 			
 			boolean bStayInLoop = true;
 			
@@ -162,17 +107,17 @@ extends AMicroArrayLoader {
 				switch ( bufferAllocationTokenInit.getType() ) {
 				// case SKIP: do nothing, only consume current token.
 				case INT:
-					refArrayDataStorage[i].setSize(StorageType.INT,iNumberOfLinesInFile);
+					tmpStorage.setSize(StorageType.INT,iNumberOfLinesInFile);
 					vecBuffersTorage.addElement( StorageType.INT );
 					bStayInLoop = false;
 					break;
 				case FLOAT:
-					refArrayDataStorage[i].setSize(StorageType.FLOAT,iNumberOfLinesInFile);
+					tmpStorage.setSize(StorageType.FLOAT,iNumberOfLinesInFile);
 					vecBuffersTorage.addElement( StorageType.FLOAT );
 					bStayInLoop = false;
 					break;
 				case STRING:	
-					refArrayDataStorage[i].setSize(StorageType.STRING,iNumberOfLinesInFile);
+					tmpStorage.setSize(StorageType.STRING,iNumberOfLinesInFile);
 					vecBuffersTorage.addElement( StorageType.STRING );
 					bStayInLoop = false;
 					break;
@@ -210,8 +155,7 @@ extends AMicroArrayLoader {
 		while (((sLine = brFile.readLine()) != null)
 				&& (lineInFile <= iStopParsingAtLine))
 		{
-
-			if (lineInFile > this.iStartParsingAtLine)
+			if (lineInFile >= this.iStartParsingAtLine)
 			{
 
 				boolean bMaintainLoop = true;
@@ -228,8 +172,6 @@ extends AMicroArrayLoader {
 				{
 					strTokenText = new StringTokenizer(sLine.replace("\"\"",
 							"\" \""), "\"");
-					// System.out.println("Substitute [\"\"] ==> [\" \"] in
-					// line " + iLineInFile );
 				}
 
 				/**
@@ -261,15 +203,13 @@ extends AMicroArrayLoader {
 				{
 					strLineBuffer.append(sLine);
 				}
-
 				
 //				String intermediateLine = strLineBuffer.toString();
 //				
 //				System.out.println(" I:" + sLine );
 //				System.out.println(" X:" + intermediateLine );
 				
-				StringTokenizer strToken = new StringTokenizer(new String(
-						strLineBuffer));
+				StringTokenizer strToken = new StringTokenizer(new String(strLineBuffer));
 				ListIterator<ParserTokenHandler> iterPerLine = alTokenTargetToParserTokenType
 						.listIterator();
 
@@ -296,14 +236,12 @@ extends AMicroArrayLoader {
 						case INT:
 
 							int[] bufferIntArray = 
-								refArrayDataStorage[lineInFile_CurrentDataIndex ]  //[iDataArrayIndexPerLine]
-									.getArrayInt();
+								alTargetStorages.get(lineInFile_CurrentDataIndex).getArrayInt();
 							
 							if ( bufferIntArray == null ) 
 							{
-								System.err.println("index out of bounce; skip index [" + 
-										iDataArrayIndexPerLine + 
-										"] empty INTEGER[] array[]==null ");									
+								generalManager.getLogger().log(Level.SEVERE, "Index out of bounds!");
+								break;
 							}
 							
 							bufferIntArray[lineInFile_CurrentDataIndex] = 
@@ -313,38 +251,27 @@ extends AMicroArrayLoader {
 							break;
 						case FLOAT:
 
-							float[] bufferFloatArray = refArrayDataStorage[iDataArrayIndexPerLine]
+							float[] bufferFloatArray = alTargetStorages.get(iDataArrayIndexPerLine)
 									.getArrayFloat();							
-							bufferFloatArray[lineInFile_CurrentDataIndex] = new Float(
-									sTokenObject);
+							bufferFloatArray[lineInFile_CurrentDataIndex] = new Float(sTokenObject);
 
 							iDataArrayIndexPerLine++;
 							// LLFloat.add( new Float(sTokenObject) );
 							break;
 						case STRING:
-//							try 
-//							{
-								//if ( lineInFile_CurrentDataIndex)
-								bufferStringArray = refArrayDataStorage[lineInFile_CurrentDataIndex]	//[iDataArrayIndexPerLine]
-									.getArrayString();
+
+							bufferStringArray = alTargetStorages.get(lineInFile_CurrentDataIndex)
+								.getArrayString();
+						
+							if ( bufferStringArray == null ) 
+							{
+								generalManager.getLogger().log(Level.SEVERE, "Index out of bounds!");
+								break;
+							}
 							
-								if ( bufferStringArray == null ) 
-								{
-									System.err.println("index out of bounce; skip index [" + 
-											iDataArrayIndexPerLine + 
-											"] empty STRING[] array[]==null ");									
-								}
-								
-								bufferStringArray[lineInFile_CurrentDataIndex] =
-									sTokenObject;							
-//							}
-//							catch (ArrayIndexOutOfBoundsException aie)
-//							{
-//								System.err.println("index out of bounce; skip index [" + 
-//									iDataArrayIndexPerLine + 
-//									"] empty array[]= " + aie.toString()  );
-//							}
-								
+							bufferStringArray[lineInFile_CurrentDataIndex] =
+								sTokenObject;							
+	
 							if ( bufferStringArray.length > iDataArrayIndexPerLine )
 							{
 								iDataArrayIndexPerLine++;
@@ -401,7 +328,7 @@ extends AMicroArrayLoader {
 					}
 					catch (ArrayIndexOutOfBoundsException aie)
 					{
-						String info = "index out of bounce; skip index [" + 
+						String info = "index out of bounds; skip index [" + 
 						lineInFile_CurrentDataIndex + 
 						"] empty array[]= {";
 						
@@ -420,7 +347,7 @@ extends AMicroArrayLoader {
 //								info,
 //								LoggerType.ERROR );	
 						
-						System.out.println("index out of bounce; skip index [" + 
+						System.out.println("index out of bounds; skip index [" + 
 								iDataArrayIndexPerLine + 
 								"] empty array[]= " + aie.toString()  );
 						
@@ -430,7 +357,6 @@ extends AMicroArrayLoader {
 				} // end of: while (( strToken.hasMoreTokens()
 				// )&&(bMaintainLoop)) {
 
-				// iLineInFile_CurrentDataIndex++;
 				lineInFile_CurrentDataIndex++;
 
 			} // end of: if( iLineInFile > this.iHeaderLinesSize) {
@@ -444,14 +370,6 @@ extends AMicroArrayLoader {
 
 		iLineInFile = lineInFile;
 		iLineInFile_CurrentDataIndex = lineInFile_CurrentDataIndex;
-		
-//		generalManager.logMsg(
-//				"  parsed " + this.iLineInFile_CurrentDataIndex + 
-//				" lines, stoped at line " + 
-//				(this.iLineInFile - 1) + "  [" +
-//				this.iStartParsingAtLine + " -> " +
-//				this.iStopParsingAtLine + "]",
-//				LoggerType.VERBOSE);
 
 		super.progressBarResetTitle();
 		super.progressBarIncrement( 10 );
@@ -462,21 +380,19 @@ extends AMicroArrayLoader {
 	@Override
 	protected boolean copyDataToInternalDataStructures() {
 
-		   /**
-			 * Copy valued to refStorage...
-			 */
-	    		   
-	    refImportDataToSet.setLabel("microarray loader set " + this.getFileName() );
-	    refDataStorage.setLabel( "microarray loader storage " + this.getFileName() );
+	   /**
+		 * Copy valued to refStorage...
+		 */   		   
+	    currentDataStorage.setLabel( "microarray loader storage " + this.getFileName() );
 	    
 	    /*
 	     * notify storage cacheId of changed data...
 	     */
-	    refDataStorage.setCacheId( refDataStorage.getCacheId() + 1);
+	    currentDataStorage.setCacheId( currentDataStorage.getCacheId() + 1);
 	    
-	    refDataStorage.setSize(StorageType.INT,1);
-	    refDataStorage.setSize(StorageType.FLOAT,1);
-	    refDataStorage.setSize(StorageType.STRING,1);
+	    currentDataStorage.setSize(StorageType.INT,1);
+	    currentDataStorage.setSize(StorageType.FLOAT,1);
+	    currentDataStorage.setSize(StorageType.STRING,1);
 	    
 	    if ( LLInteger.size() > 1) {
 		    Iterator<Integer> iter_I = LLInteger.iterator();		    
@@ -484,22 +400,7 @@ extends AMicroArrayLoader {
 		    for ( int i=0; iter_I.hasNext() ;i++ ) {
 		    	intBuffer[i]=iter_I.next().intValue();
 		    }
-		    refDataStorage.setArrayInt( intBuffer );
-		    
-		    refImportDataOverrideSelection.setLabel("import INTEGER");
-		    refImportDataOverrideSelection.setOffset( 0 );
-		    refImportDataOverrideSelection.setLength( LLInteger.size() );
-		    
-		    /*
-		     * notify selection cacheId of changed data...
-		     */
-		    refImportDataOverrideSelection.setCacheId(
-		    		refImportDataOverrideSelection.getCacheId() + 1 );
-		    
-		    refImportDataToSet.setStorageByDimAndIndex(
-		    		refDataStorage,0,0);
-		    refImportDataToSet.setVirtualArrayByDimAndIndex(
-		    		refImportDataOverrideSelection,0,0);
+		    currentDataStorage.setArrayInt( intBuffer );
 	    }
 	    
 	    if ( LLFloat.size() > 1) {
@@ -508,17 +409,12 @@ extends AMicroArrayLoader {
 		    for ( int i=0; iter_F.hasNext() ;i++ ) {
 		    	floatBuffer[i]=iter_F.next().floatValue();
 		    }
-		    refDataStorage.setArrayFloat( floatBuffer );
+		    currentDataStorage.setArrayFloat( floatBuffer );
 		    
 		    IVirtualArray selFloat = 
 		    	new VirtualArrayThreadSingleBlock(1,null,null);
 		    selFloat.setLabel("import FLOAT");
 		    selFloat.setLength( LLFloat.size() );
-		    
-		    refImportDataToSet.setStorageByDimAndIndex(
-		    		refDataStorage,0,1);
-		    refImportDataToSet.setVirtualArrayByDimAndIndex(
-		    		selFloat,0,1);
 	    }
 	    
 	    if ( LLString.size() > 1) {
@@ -527,25 +423,13 @@ extends AMicroArrayLoader {
 		    for ( int i=0; iter_S.hasNext() ;i++ ) {
 		    	stringBuffer[i]=iter_S.next();
 		    }
-		    refDataStorage.setArrayString( stringBuffer );
+		    currentDataStorage.setArrayString( stringBuffer );
 		    
 		    IVirtualArray selFloat = 
 		    	new VirtualArrayThreadSingleBlock(1, generalManager, null);
 		    selFloat.setLabel("import STRING");
 		    selFloat.setLength( LLString.size() );
-		    
-		    refImportDataToSet.setStorageByDimAndIndex(
-		    		refDataStorage,0,2);
-		    refImportDataToSet.setVirtualArrayByDimAndIndex(
-		    		selFloat,0,2);
 	    }
-	    
-	    //TODO: test if cacheId concept works fine...
-	    
-	    /*
-	     * update cacheId of set by calling getCacheId() ...
-	     */
-	    refImportDataToSet.getCacheId();
 	    
 		return true;
 	}
@@ -567,7 +451,7 @@ extends AMicroArrayLoader {
 				throw new RuntimeException("MicroArrayLoader.setMementoXML_usingHandler() failed. need <DataComponentItemDetails type=RandomLookup> tag.");
 			}
 			try {
-				refDataStorage= (IStorage) generalManager.getStorageManager().getItem( iLinkToIdList[0] );
+				currentDataStorage= (IStorage) generalManager.getStorageManager().getItem( iLinkToIdList[0] );
 				
 				setTokenPattern( handler.getXML_MicroArray_TokenPattern().trim() );
 				//setTokenPattern( "SKIP;SKIP;SKIP;STRING;STRING;INT;INT;ABORT" );
@@ -575,7 +459,7 @@ extends AMicroArrayLoader {
 				//loadData();
 			}
 			catch (NullPointerException npe) {
-				refDataStorage = null;
+				currentDataStorage = null;
 			}
 			
 			return true;
@@ -587,11 +471,12 @@ extends AMicroArrayLoader {
 	}
 
 	/**
-	 * Init data structues. Use this to reset the stat also!
+	 * Init data structures. Use this to reset the state also!
 	 * 
 	 * @see org.caleydo.core.parser.ascii.IParserObject#init()
 	 */
-	public void init() {
+	public void init() 
+	{
 		iLineInFile = 1;
 		iLineInFile_CurrentDataIndex = 0;
 		

@@ -23,7 +23,7 @@ import org.caleydo.core.view.opengl.canvas.remote.glyph.GlyphMouseListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLSharedObjects;
-import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**
  * Rendering the Glyph View
@@ -102,7 +102,7 @@ extends AGLCanvasUser
 
 	public void initRemote(final GL gl, 
 			final int iRemoteViewID,
-			final JukeboxHierarchyLayer layer,
+			final RemoteHierarchyLayer layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas) 
 

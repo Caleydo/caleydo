@@ -22,7 +22,6 @@ import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.view.ESelectionMode;
 import org.caleydo.core.manager.view.SelectionManager;
-import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
 import org.caleydo.core.view.opengl.canvas.parcoords.ESelectionType;
 import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
@@ -30,7 +29,13 @@ import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
-
+/**
+ * Base class for OpenGL views that heavily use storages.
+ * 
+ * @author Alexander Lex
+ * @author Marc Streit
+ *
+ */
 public abstract class AGLCanvasStorageBasedView 
 extends AGLCanvasUser 
 implements IMediatorReceiver, IMediatorSender 
@@ -115,18 +120,16 @@ implements IMediatorReceiver, IMediatorSender
 		
 		if (alSetSelection == null)
 			return;				
-				
-		Iterator<ISet> iterSetData = alSetData.iterator();
-		while (iterSetData.hasNext())
+			
+		// Extract data
+		for (ISet tmpSet : alSetData)
 		{
-			ISet tmpSet = iterSetData.next();
-						
 			if (tmpSet.getSetType().equals(SetType.SET_GENE_EXPRESSION_DATA))
 			{
-				alDataStorages.add(tmpSet.getStorageByDimAndIndex(0, 0));
+				for (IStorage tmpStorage : tmpSet.getStorageByDim(0))
+					alDataStorages.add(tmpStorage);
 			}
-		}		
-		
+		}			
 		
 		ArrayList<Integer> alTempList = alSetSelection.get(0).getSelectionIdArray();
 //		A iArTemp = ;

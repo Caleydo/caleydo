@@ -6,7 +6,7 @@ import gleem.linalg.open.Transform;
 
 import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**
  * 
@@ -23,8 +23,7 @@ extends ARemoteViewLayoutRenderStyle {
 	 */
 	public JukeboxLayoutRenderStyle(final IGeneralManager generalManager) 
 	{
-		super(generalManager);
-	
+		super();	
 		initLayout();
 	}
 	
@@ -34,8 +33,7 @@ extends ARemoteViewLayoutRenderStyle {
 	public JukeboxLayoutRenderStyle(final IGeneralManager generalManager, 
 			final ARemoteViewLayoutRenderStyle previousLayoutStyle) 
 	{
-		super(generalManager, previousLayoutStyle);
-		
+		super(previousLayoutStyle);
 		initLayout();
 	}
 
@@ -60,7 +58,7 @@ extends ARemoteViewLayoutRenderStyle {
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle#initUnderInteractionLayer()
 	 */
-	public JukeboxHierarchyLayer initUnderInteractionLayer() {
+	public RemoteHierarchyLayer initUnderInteractionLayer() {
 
 		Transform transformUnderInteraction = new Transform();
 		transformUnderInteraction.setTranslation(new Vec3f(1.7f, 1.05f, 0f));
@@ -75,7 +73,7 @@ extends ARemoteViewLayoutRenderStyle {
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle#initStackLayer()
 	 */
-	public JukeboxHierarchyLayer initStackLayer() {
+	public RemoteHierarchyLayer initStackLayer() {
 
 		float fTiltAngleDegree = 57; // degree
 		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
@@ -108,7 +106,7 @@ extends ARemoteViewLayoutRenderStyle {
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle#initPoolLayer()
 	 */
-	public JukeboxHierarchyLayer initPoolLayer(final int iMouseOverViewID) {
+	public RemoteHierarchyLayer initPoolLayer(final int iMouseOverViewID) {
 
 		float fSelectedScaling = 1;
 		float fYAdd = 0.8f;
@@ -143,7 +141,7 @@ extends ARemoteViewLayoutRenderStyle {
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle#initMemoLayer()
 	 */
-	public JukeboxHierarchyLayer initMemoLayer() {
+	public RemoteHierarchyLayer initMemoLayer() {
 
 		// Create free memo spots
 		Transform transform;
@@ -166,7 +164,7 @@ extends ARemoteViewLayoutRenderStyle {
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle#initTransitionLayer()
 	 */
-	public JukeboxHierarchyLayer initTransitionLayer() {
+	public RemoteHierarchyLayer initTransitionLayer() {
 
 		Transform transformTransition = new Transform();
 		transformTransition.setTranslation(new Vec3f(1.7f, 2f, 0.1f));
@@ -181,7 +179,7 @@ extends ARemoteViewLayoutRenderStyle {
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle#initSpawnLayer()
 	 */
-	public JukeboxHierarchyLayer initSpawnLayer() {
+	public RemoteHierarchyLayer initSpawnLayer() {
 
 		Transform transformSpawn = new Transform();
 		transformSpawn.setTranslation(new Vec3f(-4.4f, 3.9f, 4.1f));

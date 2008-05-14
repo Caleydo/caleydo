@@ -280,7 +280,6 @@ implements ISWTGUIManager {
 		}
 		
 		generalManager.getViewGLCanvasManager().createAnimator();
-		//refGeneralManager.getSingelton().getViewGLCanvasManager().getAnimator().start();
 
 		shellIterator = refWindowMap.values().iterator();				
 		
@@ -420,8 +419,8 @@ implements ISWTGUIManager {
 	}
 	
 	public void destroyOnExit() {
-		refLoadingProgressBarWindow.close();	
-		refComposite.dispose();
-		refDisplay.dispose();
+//		refLoadingProgressBarWindow.close();	
+//		refComposite.dispose();
+//		refDisplay.dispose();
 	}
 }

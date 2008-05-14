@@ -2,8 +2,8 @@ package org.caleydo.core.data.view.rep.renderstyle.layout;
 
 import org.caleydo.core.data.GeneralRenderStyle;
 import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.caleydo.core.view.opengl.util.hierarchy.EHierarchyLevel;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**
  * 
@@ -21,14 +21,12 @@ extends GeneralRenderStyle {
 		JUKEBOX
 	}
 	
-	private static final int MAX_LOADED_VIEWS = 100;
-	
-	protected JukeboxHierarchyLayer underInteractionLayer;
-	protected JukeboxHierarchyLayer stackLayer;
-	protected JukeboxHierarchyLayer poolLayer;
-	protected JukeboxHierarchyLayer transitionLayer;
-	protected JukeboxHierarchyLayer spawnLayer;
-	protected JukeboxHierarchyLayer memoLayer;
+	protected RemoteHierarchyLayer underInteractionLayer;
+	protected RemoteHierarchyLayer stackLayer;
+	protected RemoteHierarchyLayer poolLayer;
+	protected RemoteHierarchyLayer transitionLayer;
+	protected RemoteHierarchyLayer spawnLayer;
+	protected RemoteHierarchyLayer memoLayer;
 	
 	protected ProjectionMode projectionMode;
 	
@@ -49,14 +47,14 @@ extends GeneralRenderStyle {
 	 * 
 	 * @param generalManager
 	 */
-	public ARemoteViewLayoutRenderStyle(final IGeneralManager generalManager) 
+	public ARemoteViewLayoutRenderStyle() 
 	{
-		underInteractionLayer = new JukeboxHierarchyLayer(generalManager, 1);
-		stackLayer = new JukeboxHierarchyLayer(generalManager, 4);
-		poolLayer = new JukeboxHierarchyLayer(generalManager, MAX_LOADED_VIEWS);
-		transitionLayer = new JukeboxHierarchyLayer(generalManager, 1);
-		spawnLayer = new JukeboxHierarchyLayer(generalManager, 1);
-		memoLayer = new JukeboxHierarchyLayer(generalManager, 5);
+		underInteractionLayer = new RemoteHierarchyLayer(EHierarchyLevel.UNDER_INTERACTION);
+		stackLayer = new RemoteHierarchyLayer(EHierarchyLevel.STACK);
+		poolLayer = new RemoteHierarchyLayer(EHierarchyLevel.POOL);
+		transitionLayer = new RemoteHierarchyLayer(EHierarchyLevel.TRANSITION);
+		spawnLayer = new RemoteHierarchyLayer(EHierarchyLevel.SPAWN);
+		memoLayer = new RemoteHierarchyLayer(EHierarchyLevel.MEMO);
 		
 		underInteractionLayer.setParentLayer(stackLayer);
 		stackLayer.setChildLayer(underInteractionLayer);
@@ -69,8 +67,7 @@ extends GeneralRenderStyle {
 	 * 
 	 * Copies layers from previous layer. Used for toggle between layouts.
 	 */
-	public ARemoteViewLayoutRenderStyle(final IGeneralManager generalManager,
-			final ARemoteViewLayoutRenderStyle previousLayoutStyle)
+	public ARemoteViewLayoutRenderStyle(final ARemoteViewLayoutRenderStyle previousLayoutStyle)
 	{
 		underInteractionLayer = previousLayoutStyle.getUnderInteractionLayer();
 		stackLayer = previousLayoutStyle.getStackLayer();
@@ -80,40 +77,40 @@ extends GeneralRenderStyle {
 		spawnLayer = previousLayoutStyle.getSpawnLayer();
 	}
 	
-	public abstract JukeboxHierarchyLayer initUnderInteractionLayer();
-	public abstract JukeboxHierarchyLayer initStackLayer();
-	public abstract JukeboxHierarchyLayer initPoolLayer(final int iMouseOverViewID);
-	public abstract JukeboxHierarchyLayer initMemoLayer();
-	public abstract JukeboxHierarchyLayer initTransitionLayer();
-	public abstract JukeboxHierarchyLayer initSpawnLayer();
+	public abstract RemoteHierarchyLayer initUnderInteractionLayer();
+	public abstract RemoteHierarchyLayer initStackLayer();
+	public abstract RemoteHierarchyLayer initPoolLayer(final int iMouseOverViewID);
+	public abstract RemoteHierarchyLayer initMemoLayer();
+	public abstract RemoteHierarchyLayer initTransitionLayer();
+	public abstract RemoteHierarchyLayer initSpawnLayer();
 
 	
-	public JukeboxHierarchyLayer getUnderInteractionLayer() {
+	public RemoteHierarchyLayer getUnderInteractionLayer() {
 	
 		return underInteractionLayer;
 	}
 
-	public JukeboxHierarchyLayer getStackLayer() {
+	public RemoteHierarchyLayer getStackLayer() {
 	
 		return stackLayer;
 	}
 	
-	public JukeboxHierarchyLayer getPoolLayer() {
+	public RemoteHierarchyLayer getPoolLayer() {
 	
 		return poolLayer;
 	}
 
-	public JukeboxHierarchyLayer getTransitionLayer() {
+	public RemoteHierarchyLayer getTransitionLayer() {
 	
 		return transitionLayer;
 	}
 	
-	public JukeboxHierarchyLayer getSpawnLayer() {
+	public RemoteHierarchyLayer getSpawnLayer() {
 	
 		return spawnLayer;
 	}
 
-	public JukeboxHierarchyLayer getMemoLayer() {
+	public RemoteHierarchyLayer getMemoLayer() {
 	
 		return memoLayer;
 	}

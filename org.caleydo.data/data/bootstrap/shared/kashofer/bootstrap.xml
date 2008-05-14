@@ -4,54 +4,53 @@
   
     <Application remote="no" IP="127.0.0.1" port="4000" >
   
-    <CommandBuffer>  			
-
+    <CommandBuffer>  							
+						
       	<!-- Creating GenomeId mapping -->
-		  	<read-xml-file target="data/bootstrap/shared/kashofer/load_genome_id_mapping_kashofer.xml" />	   				
-
+		  	<read-xml-file target="data/bootstrap/shared/mapping/david/load_genome_id_mapping.xml" />	   				
+						
 		<!-- Creating Data -->
-			<read-xml-file target="data/bootstrap/shared/kashofer/load_set_storage_virtual-array_for_pathways_kashofer.xml" />	   							
-			
-		<!-- Window 11331 -->
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" uniqueId="11331" label="Pathway 2D" attrib1="ROW HORIZONTAL" />   
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_PATHWAY" 		cmdId="63991" uniqueId="84401" label="Pathway" 			parent="11331" attrib2="800 950" detail="49101 95101" />
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_BROWSER"			cmdId="64991" uniqueId="85401" label="Browser"			parent="11331" attrib2="-1 950" />
+			<read-xml-file target="data/bootstrap/shared/data/kashofer/load_data.xml" />						   														
+					
+		<!-- Window 14331 -->
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" uniqueId="14331" label="Caleydo Browser" 		attrib1="ROW HORIZONTAL" />   
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_BROWSER"			cmdId="64991" uniqueId="85401" label="Browser"				parent="14331"  />
+					
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="88401" parent="99081" label="Pathway" 
+						gl_origin="0 0 0" 
+						gl_rotation="0 0 0 0"					
+						attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
+						attrib4="403600"							
+						detail="35101 36101 37101 38101 90101 91101" />																																		
 
-		<!-- Window	12331	-->	
-		<!--
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="12331"
-				label="Heatmap" attrib1="ROW	HORIZONTAL"	/>	 
-				 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	 
-			  	uniqueId="17401" parent="12331" gl_canvas="99076" label="Canvas" attrib2="300 300" detail="1077991"	/>
-  		
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEATMAP2D"			cmdId="68993"	uniqueId="83401" parent="99076" label="GL Triangle	C"	
-				gl_origin="0 0 0" gl_rotation="1 0 0 15"						
-				attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
-				attrib4="0 100"	
-				detail="35101 36101 37101" />
-		-->
-		<!-- Window	10331	-->	
-		
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PARALLEL_COORDINATES_3D"		cmdId="69994"	uniqueId="82401" parent="99076" label="Parallel Coordinates" 
+						gl_origin="0 0 0" 
+						gl_rotation="0 0 0 0"					
+						attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
+						attrib4="transparency 0.6" 
+						detail="35101 36101 37101 38101 92101 93101" /> 
+						
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEAT_MAP_3D"		cmdId="69994"	uniqueId="84401" parent="99076" label="Parallel Coordinates" 
+						gl_origin="0 0 0" 
+						gl_rotation="0 0 0 0"					
+						attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
+						attrib4="transparency 0.6" 
+						detail="35101 36101 37101 38101 94101 95101" /> 						
+
+		<!-- Window	10331 -->	
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="10331" 
-				label="Pathway 3D" attrib1="ROW	HORIZONTAL"	/>	 
+				label="Bucket 3D" attrib1="ROW	HORIZONTAL"	/>	 
 				 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="16401" 
-			  	gl_canvas="99075"
-				parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
-				
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_JUKEBOX_PATHWAY_3D"		cmdId="69994"	uniqueId="82401" parent="99075" label="GL Jukebox Pathway 3D" 
-							gl_origin="0 0 0" 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="17401" 
+			  	gl_canvas="99075" parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
+
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_BUCKET_3D"		cmdId="69994"	uniqueId="83401" parent="99075" label="Bucket" 
+							gl_origin="-2 -2 -8" 
 							gl_rotation="0 0 0 0"					
-							attrib3="ORTHOGRAPHIC -2.35 2.35 -2.35 2.35 -20 20"
-							attrib1="2"								
-							detail="35101 36101 37101 39101 85101 86101" /> 
-							
-	  	<!-- Mediator -->
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator Pathway" 		attrib1="84401" attrib2="82401 83401" detail="SELECTION_MEDIATOR" /> 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator Pathway Reverse" attrib1="82401" attrib2="84401 83401" detail="SELECTION_MEDIATOR" />  
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="95501" label="Mediator Heatmap2Pathway" attrib1="83401" attrib2="82401 84401" detail="SELECTION_MEDIATOR" />  
-     
+							attrib3="PERSPECTIVE -1.5 1.5 -1.5 1.5 2.9 100"
+							attrib4="transparency 1" 								
+							detail="96101" /> 				    
+							    
    </CommandBuffer>
     
   </Application>

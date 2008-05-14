@@ -11,6 +11,7 @@ import org.caleydo.core.data.GeneralRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.PickingManager;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -28,7 +29,7 @@ public class GLToolboxRenderer
 	protected final static float ELEMENT_SPACING = 0.02f;
 	
 	protected Vec3f vecLeftPoint;
-	protected JukeboxHierarchyLayer layer;
+	protected RemoteHierarchyLayer layer;
 	protected boolean bIsCalledLocally;
 	protected boolean bRenderLeftToRight;
 	
@@ -80,7 +81,7 @@ public class GLToolboxRenderer
 			final int iContainingViewID,
 			final int iRemoteViewID,
 			final Vec3f vecLeftPoint,			
-			final JukeboxHierarchyLayer layer,
+			final RemoteHierarchyLayer layer,
 			final boolean bRenderLeftToRight,
 			final GeneralRenderStyle renderStyle)
 	{
@@ -218,12 +219,12 @@ public class GLToolboxRenderer
 //		camPos.setZ(matrix[2] * camPos.x() + matrix[6] * camPos.y() + matrix[10] * camPos.z() + matrix[14]);
 //    }
 	
-	public void updateLayer(final JukeboxHierarchyLayer layer)
+	public void updateLayer(final RemoteHierarchyLayer layer)
 	{
 		this.layer = layer;
 	}
 	
-	public JukeboxHierarchyLayer getContainingLayer() 
+	public RemoteHierarchyLayer getContainingLayer() 
 	{
 		return layer;
 	}

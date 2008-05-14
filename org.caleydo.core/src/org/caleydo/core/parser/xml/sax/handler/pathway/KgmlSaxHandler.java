@@ -264,7 +264,7 @@ implements IXmlParserHandler {
 					generalManager.getLogger().log(Level.WARNING, 
 							"NCBI Gene ID "+sTmpVertexName +" cannot be mapped to David Id.");
 					
-					return;
+					continue;
 				}
 				
 	    		currentVertex = generalManager.getPathwayItemManager()

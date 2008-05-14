@@ -14,7 +14,8 @@ import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathwayManager;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathwayTextureManager;
-import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.caleydo.core.view.opengl.util.hierarchy.EHierarchyLevel;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
@@ -39,7 +40,7 @@ public class GLPathwayMemoPad {
 	
 	private static float SCALING_FACTOR_MEMO_PAD = 0.4f;
 	
-	private JukeboxHierarchyLayer memoPad;
+	private RemoteHierarchyLayer memoPad;
 	
 	private IGeneralManager generalManager;
 	
@@ -55,8 +56,7 @@ public class GLPathwayMemoPad {
 			final GLPathwayManager gLPathwayManager,
 			final GLPathwayTextureManager gLPathwayTextureManager) {
 		
-		memoPad = new JukeboxHierarchyLayer(generalManager,
-				4, gLPathwayTextureManager);
+		memoPad = new RemoteHierarchyLayer(EHierarchyLevel.MEMO);
 		
 		this.generalManager = generalManager;
 		this.gLPathwayManager = gLPathwayManager;

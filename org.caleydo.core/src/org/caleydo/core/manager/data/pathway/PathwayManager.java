@@ -1,6 +1,5 @@
 package org.caleydo.core.manager.data.pathway;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -83,8 +82,15 @@ implements IPathwayManager, Serializable {
 				sXMLPath, sImagePath, sImagePath);
 		
 		hashPathwayDatabase.put(type, tmpPathwayDatabase);
-		
-		loadAllPathwaysByType(type);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.data.IPathwayManager#triggerParsingPathwayDatabases()
+	 */
+	public void triggerParsingPathwayDatabases() 
+	{
+		new PathwayLoaderThread(generalManager, hashPathwayDatabase.values());
 	}
 	
 	/*
@@ -122,80 +128,52 @@ implements IPathwayManager, Serializable {
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.data.IPathwayManager#loadPathwayById(int)
 	 */
-	public boolean loadPathwayById(final int iPathwayID) {
-		
-		// Check if pathway was previously loaded
-		if (hashPathwayIdToPathwayGraphLUT.containsKey(iPathwayID))
-		{
-//			generalManager.logMsg(
-//					this.getClass().getSimpleName() + 
-//					": loadPathwayById(): Pathway "+ iPathwayID + " is already loaded. SKIP.",
-//					LoggerType.VERBOSE);
-			
-			return true;
-		}
-
-		String sPathwayFilePath = "";
-		boolean bLoadingOK = false;
-		
-		if (iPathwayID < 10)
-		{
-			sPathwayFilePath = "hsa0000" + Integer.toString(iPathwayID);
-		}
-		else if (iPathwayID < 100 && iPathwayID >= 10)
-		{
-			sPathwayFilePath = "hsa000" + Integer.toString(iPathwayID);
-		}
-		else if (iPathwayID < 1000 && iPathwayID >= 100)
-		{
-			sPathwayFilePath = "hsa00" + Integer.toString(iPathwayID);
-		}
-		else if (iPathwayID < 10000 && iPathwayID >= 1000)
-		{
-			sPathwayFilePath = "hsa0" + Integer.toString(iPathwayID);
-		}
-		
-		sPathwayFilePath = hashPathwayDatabase.get(EPathwayDatabaseType.KEGG).getXMLPath() + sPathwayFilePath +".xml";		
-		
-		bLoadingOK = generalManager.getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
-
-		if (bLoadingOK)
-			return true;
-		
-//		generalManager.logMsg(
-//				this.getClass().getSimpleName() + 
-//				": loadPathwayById(): No HSA pathway available - " +
-//				"try to load reference pathway.",
-//				LoggerType.VERBOSE);
-		
-		// Replace HSA with MAP and therefore try to load reference pathway
-		sPathwayFilePath = sPathwayFilePath.replace("hsa", "map");
-		
-		return generalManager.getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.data.IPathwayManager#loadAllPathwaysByType(org.caleydo.core.manager.data.pathway.EPathwayDatabaseType)
-	 */
-	public void loadAllPathwaysByType(final EPathwayDatabaseType type) {
-		
-	    File folder = new File(hashPathwayDatabase.get(type).getXMLPath());
-	    File[] arFiles = folder.listFiles();
-
-	    for (int iFileIndex = 0; iFileIndex < arFiles.length; iFileIndex++) 
-	    {		
-	    	// Skip subversion files
-	    	String sPathwayFilePath = arFiles[iFileIndex].toString();
-	    	
-	    	if (!sPathwayFilePath.endsWith(".xml") 
-	    			&& !sPathwayFilePath.contains("h_"))
-	    		continue;
-	    	
-			generalManager.getXmlParserManager()
-				.parseXmlFileByName(sPathwayFilePath);
-	    }
-	}
+//	public boolean loadPathwayById(final int iPathwayID) {
+//		
+//		// Check if pathway was previously loaded
+//		if (hashPathwayIdToPathwayGraphLUT.containsKey(iPathwayID))
+//		{
+//			generalManager.getLogger().log(
+//					Level.INFO, "Pathway " +iPathwayID +" is already loaded. SKIP.");
+//			
+//			return true;
+//		}
+//
+//		String sPathwayFilePath = "";
+//		boolean bLoadingOK = false;
+//		
+//		if (iPathwayID < 10)
+//		{
+//			sPathwayFilePath = "hsa0000" + Integer.toString(iPathwayID);
+//		}
+//		else if (iPathwayID < 100 && iPathwayID >= 10)
+//		{
+//			sPathwayFilePath = "hsa000" + Integer.toString(iPathwayID);
+//		}
+//		else if (iPathwayID < 1000 && iPathwayID >= 100)
+//		{
+//			sPathwayFilePath = "hsa00" + Integer.toString(iPathwayID);
+//		}
+//		else if (iPathwayID < 10000 && iPathwayID >= 1000)
+//		{
+//			sPathwayFilePath = "hsa0" + Integer.toString(iPathwayID);
+//		}
+//		
+//		sPathwayFilePath = hashPathwayDatabase.get(EPathwayDatabaseType.KEGG).getXMLPath() + sPathwayFilePath +".xml";		
+//		
+//		bLoadingOK = generalManager.getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
+//
+//		if (bLoadingOK)
+//			return true;
+//
+//		generalManager.getLogger().log(
+//				Level.WARNING, "No HSA pathway available. Try loading reference pathway instead.");
+//		
+//		// Replace HSA with MAP and therefore try to load reference pathway
+//		sPathwayFilePath = sPathwayFilePath.replace("hsa", "map");
+//		
+//		return generalManager.getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
+//	}
 	
 	/*
 	 * (non-Javadoc)

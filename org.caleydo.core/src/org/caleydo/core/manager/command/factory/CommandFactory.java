@@ -12,7 +12,6 @@ import org.caleydo.core.command.data.filter.CmdDataFilterMath;
 import org.caleydo.core.command.data.filter.CmdDataFilterMinMax;
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
-import org.caleydo.core.command.data.parser.CmdLoadFileViaImporter;
 import org.caleydo.core.command.event.CmdEventCreateMediator;
 import org.caleydo.core.command.event.CmdEventMediatorAddObject;
 import org.caleydo.core.command.queue.CmdSystemRunCmdQueue;
@@ -109,15 +108,7 @@ implements ICommandFactory {
 		}	
 		case LOAD_DATA_FILE: 
 		{
-			createdCommand = new CmdLoadFileViaImporter(
-						generalManager,
-						commandManager,
-						cmdType);
-			break;
-		}
-		case LOAD_DATA_FILE_N_STORAGES:
-		{
-			createdCommand = new CmdLoadFileNStorages( 
+			createdCommand = new CmdLoadFileNStorages(
 						generalManager,
 						commandManager,
 						cmdType);

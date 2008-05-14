@@ -29,8 +29,6 @@ implements ICaleydoDefaultType <CommandQueueSaxType> {
 	 * XML-value  ( XML-Tag , XML-key ) 
 	 */
 	LOAD_DATA_FILE(ManagerType.SYSTEM,"cmd","type","", "No description available!"),
-	LOAD_DATA_FILE_N_STORAGES(ManagerType.SYSTEM,"cmd","type","", "Load a file into n storages"),
-	LOAD_DATA_FILE_BY_IMPORTER(ManagerType.SYSTEM,"cmd","type","", "Load a file via importer"),
 	LOAD_LOOKUP_TABLE_FILE(ManagerType.SYSTEM,"cmd","type","", "Load a lookup table"),
 	LOAD_ON_DEMAND(ManagerType.SYSTEM,"cmd", "process","LOAD_ON_DEMAND", "No description available!"),
 	LOAD_URL_IN_BROWSER(ManagerType.EVENT_PUBLISHER,"cmd", "type", "-1", "Load URL in browser"),

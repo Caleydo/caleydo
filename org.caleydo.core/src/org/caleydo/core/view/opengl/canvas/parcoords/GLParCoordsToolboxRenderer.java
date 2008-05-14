@@ -10,7 +10,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
-import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**
  * Extends GLToolboxRenderer by the icons relevant for the PCs
@@ -56,7 +56,7 @@ extends GLToolboxRenderer
 			final int iContainingViewID,
 			final int iRemoteViewID,
 			final Vec3f vecLeftPoint,			
-			final JukeboxHierarchyLayer layer,
+			final RemoteHierarchyLayer layer,
 			final boolean bRenderLeftToRight,
 			final GeneralRenderStyle renderStyle)
 	{

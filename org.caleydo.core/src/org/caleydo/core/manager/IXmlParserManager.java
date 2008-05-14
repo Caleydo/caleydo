@@ -20,13 +20,6 @@ import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 public interface IXmlParserManager 
 extends IXmlBaseHandler
 {
-
-	/**
-	 * Returns the reference to the generalManager.
-	 * 
-	 */
-	public IGeneralManager getManager();
-	
 	/**
 	 * Register a SaxHandler by its opening Tag.
 	 * Calls getXmlActivationTag() and hasOpeningTagOnlyOnce() for each handler and
@@ -89,7 +82,7 @@ extends IXmlBaseHandler
 			final String xmlString );
 	
 	/**
-	 * Cleanup called by Mananger after Handler is not used any more. 
+	 * Cleanup called by Manager after Handler is not used any more. 
 	 */
 	public void destroyHandler();
 	

@@ -29,7 +29,7 @@ import org.caleydo.core.manager.view.PickingManager;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
-import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 
 /**
@@ -267,7 +267,7 @@ implements GLEventListener {
 	 */
 	public abstract void initRemote(final GL gl,
 			final int iRemoteViewID, 
-			final JukeboxHierarchyLayer layer,
+			final RemoteHierarchyLayer layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas);
 	
@@ -513,7 +513,7 @@ implements GLEventListener {
 	 */
 	public void renderToolbox(final GL gl, 
 			final Vec3f leftPoint,
-			final JukeboxHierarchyLayer layer,
+			final RemoteHierarchyLayer layer,
 			final boolean bIsCalledLocally,
 			final boolean bRenderLeftToRight)
 	{

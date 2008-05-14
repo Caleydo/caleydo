@@ -12,7 +12,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
-import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**
  * 
@@ -33,9 +33,9 @@ extends AGLConnectionLineRenderer {
 	 * @param poolLayer
 	 */
 	public GLConnectionLineRendererJukebox(final IGeneralManager generalManager,
-			final JukeboxHierarchyLayer underInteractionLayer,
-			final JukeboxHierarchyLayer stackLayer,
-			final JukeboxHierarchyLayer poolLayer) {
+			final RemoteHierarchyLayer underInteractionLayer,
+			final RemoteHierarchyLayer stackLayer,
+			final RemoteHierarchyLayer poolLayer) {
 
 		super(generalManager, underInteractionLayer, stackLayer, poolLayer);
 	}
@@ -71,7 +71,7 @@ extends AGLConnectionLineRenderer {
 					SelectedElementRep selectedElementRep = alSelectedElementRep.get(iElementIndex);
 					
 					// Check if element is in stack
-					JukeboxHierarchyLayer activeLayer = null;					
+					RemoteHierarchyLayer activeLayer = null;					
 					if(stackLayer.containsElement(selectedElementRep.getContainingViewID()))
 					{
 						activeLayer = stackLayer;

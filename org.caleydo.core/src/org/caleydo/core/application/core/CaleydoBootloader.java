@@ -250,11 +250,11 @@ public class CaleydoBootloader
 		try 
 		{
 			run_parseXmlConfigFile( getXmlFileName() );		
-			generalManager.getLogger().log(Level.CONFIG, "  config loaded, start GUI ... ");
+			generalManager.getLogger().log(Level.INFO, "  config loaded, start GUI ... ");
 		}
 		catch (CaleydoRuntimeException gre)
 		{
-			generalManager.getLogger().log(Level.CONFIG, " loading GUI config failed! " +gre.toString());
+			generalManager.getLogger().log(Level.SEVERE, " loading GUI config failed! " +gre.toString());
 			bIsRunning = false;
 			return;
 		}
@@ -262,11 +262,11 @@ public class CaleydoBootloader
 		try 
 		{
 			refSWTGUIManager.runApplication(); 			
-			generalManager.getLogger().log(Level.CONFIG, "  config loaded ... [DONE]");
+			generalManager.getLogger().log(Level.INFO, "  config loaded ... [DONE]");
 		}
 		catch (CaleydoRuntimeException gre)
 		{
-			generalManager.getLogger().log(Level.CONFIG, "run_SWT() failed. " +gre.toString());
+			generalManager.getLogger().log(Level.SEVERE, "run_SWT() failed. " +gre.toString());
 			bIsRunning = false;
 		}
 		catch (Exception e) {
@@ -294,6 +294,10 @@ public class CaleydoBootloader
 		
 		try {
 			parseXmlConfigFileLocalOrRemote(fileName);
+			
+			// FIXME: just for testing. make own trigger pathway loading command
+			generalManager.getPathwayManager().triggerParsingPathwayDatabases();
+			
 			bIsRunning = true;
 			return true;
 		}
@@ -338,7 +342,8 @@ public class CaleydoBootloader
 	 * @see CaleydoBootloader#run_SWT()
 	 * @see CaleydoBootloader#isRunning()
 	 */
-	public synchronized void stop() {
+	public synchronized void stop() 
+	{
 		if ( bIsRunning ) 
 		{		
 			if ( generalManager!= null ) 
@@ -372,15 +377,15 @@ public class CaleydoBootloader
 	 */
 	public static void main(String[] args) 
 	{
-		CaleydoBootloader prototype = new CaleydoBootloader();
+		CaleydoBootloader caleydo = new CaleydoBootloader();
 		
 		if ( args.length > 0 ) 
 		{
-			prototype.setXmlFileName( args[0] ); 	
+			caleydo.setXmlFileName( args[0] ); 	
 		}
 		
-		prototype.run_SWT();
-		prototype.stop();
+		caleydo.run_SWT();
+		caleydo.stop();
 		
 		System.exit(0);
 

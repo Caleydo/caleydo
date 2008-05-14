@@ -1061,14 +1061,11 @@ extends APathwayGraphViewRep {
 				.getStorageByDimAndIndex(0, 0);
 
 			// Assumes that the storage contains only one pathway item
-			
-			//Load pathway
-			boolean bLoadingOK = 
-				generalManager
-					.getPathwayManager().loadPathwayById(tmpStorage.getArrayInt()[0]);
-			
-			if (!bLoadingOK)
-				return;
+//			//Load pathway
+//			boolean bLoadingOK = generalManager.getPathwayManager().get(tmpStorage.getArrayInt()[0]);
+//			
+//			if (!bLoadingOK)
+//				return;
 
 			refCurrentPathway = (PathwayGraph) generalManager
 				.getPathwayManager().getItem(tmpStorage.getArrayInt()[0]);

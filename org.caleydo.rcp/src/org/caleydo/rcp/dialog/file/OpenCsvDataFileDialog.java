@@ -1,9 +1,12 @@
 package org.caleydo.rcp.dialog.file;
 
+import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
+import org.caleydo.core.manager.ISWTGUIManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.caleydo.rcp.Application;
 import org.eclipse.jface.dialogs.Dialog;
-//import org.eclipse.jface.window.IShellProvider;
-import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -12,13 +15,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
-
-import org.caleydo.core.command.CommandQueueSaxType;
-import org.caleydo.core.command.data.parser.CmdLoadFileViaImporter;
-import org.caleydo.core.manager.ISWTGUIManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
-import org.caleydo.rcp.Application;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 /**
  * copy of RCP tutorial "org.eclipsercp.hyperbola.AddContactDialog.java"
@@ -144,18 +142,19 @@ public class OpenCsvDataFileDialog extends Dialog {
 			return;
 		}
 
-		CmdLoadFileViaImporter cmdLoadCsv = (CmdLoadFileViaImporter) 
+		CmdLoadFileNStorages cmdLoadCsv = (CmdLoadFileNStorages) 
 			Application.caleydo_core.getGeneralManager().getCommandManager().createCommandByType(
 					CommandQueueSaxType.LOAD_DATA_FILE);
 		
 		ISWTGUIManager refISWTGUIManager= Application.caleydo_core.getGeneralManager().getSWTGUIManager();
 		refISWTGUIManager.setProgressbarVisible(true);
 		
-		cmdLoadCsv.setAttributes(csvFileName, 
-				inputPattern, 				
-				32,
-				-1,
-				targetSetId);
+		// FIXME: revise that section due to changes in command
+//		cmdLoadCsv.setAttributes(csvFileName, 
+//				inputPattern, 				
+//				32,
+//				-1,
+//				targetSetId);
 		
 		try {
 			cmdLoadCsv.doCommand();

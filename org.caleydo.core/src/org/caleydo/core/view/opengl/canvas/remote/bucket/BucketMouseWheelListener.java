@@ -9,7 +9,7 @@ import org.caleydo.core.data.view.rep.renderstyle.layout.BucketLayoutRenderStyle
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
-import org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**
  * Specialized mouse wheel listener for "diving" into the bucket.
