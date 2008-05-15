@@ -193,7 +193,7 @@ implements IMediatorSender, IMediatorReceiver
 				
 				gl.glTranslatef( (float)pos.x(), -(float)pos.y(), 0f);
 				gl.glPushName(pickingManager.getPickingID(iUniqueId,
-						EPickingType.FIELD_SELECTION, e.getID() ) );
+						EPickingType.GLYPH_FIELD_SELECTION, e.getID() ) );
 				gl.glCallList(e.getGlList(gl));
 				gl.glPopName();
 				gl.glTranslatef(-(float)pos.x(),  (float)pos.y(), 0f);
@@ -237,8 +237,8 @@ implements IMediatorSender, IMediatorReceiver
 	protected void handleEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) 
 	{
-//		if(pickingType != EPickingType.FIELD_SELECTION)
-//			return;
+		if(pickingType != EPickingType.GLYPH_FIELD_SELECTION)
+			return;
 		
 		switch(pickingMode) {
 			case CLICKED:

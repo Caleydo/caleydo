@@ -18,8 +18,6 @@ import org.caleydo.core.manager.data.IGenomeIdManager;
  * @see org.caleydo.core.data.map.MultiHashArrayIntegerMap
  */
 public interface IGenomeIdMap {
-
-	public static final boolean ENABLE_DEBUG = false;
 		
 	public int getIntByInt( final int key);
 	

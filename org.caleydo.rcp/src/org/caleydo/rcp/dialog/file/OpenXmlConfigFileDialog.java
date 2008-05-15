@@ -87,7 +87,6 @@ extends Dialog {
 		
 		FileDialog fd = new FileDialog(parentShell);
         fd.setText("Open");
-        fd.setFilterPath("D:/src/java/ICG/cerberus/org.caleydo.data/data/bootstrap");
         String[] filterExt = { "*.xml" };
         fd.setFilterExtensions(filterExt);
         String result = fd.open();
@@ -115,7 +114,6 @@ extends Dialog {
 			
 			FileDialog fd = new FileDialog(parentShell);
 	        fd.setText("Open");
-	        fd.setFilterPath("D:/src/java/ICG/cerberus/org.caleydo.data/data/bootstrap");
 	        String[] filterExt = { "*.xml" };
 	        fd.setFilterExtensions(filterExt);
 	        xmlFileName = fd.open();

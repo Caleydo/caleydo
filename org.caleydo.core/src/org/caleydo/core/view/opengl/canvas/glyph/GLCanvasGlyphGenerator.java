@@ -43,6 +43,8 @@ public class GLCanvasGlyphGenerator {
 	
 	private int generateSingleObject(GL gl, GlyphEntry glyph, boolean selected) {
 
+		gl.glPushMatrix();
+		
 		float xmin = 0f;
 		float ymin = 0f;
 		float zmin = 0.0f;
@@ -55,16 +57,14 @@ public class GLCanvasGlyphGenerator {
 		int dltemp = gl.glGenLists(1);
 		gl.glNewList(dltemp, GL.GL_COMPILE);
 		
-		
-
-		gl.glEnable(GL.GL_BLEND);
-		gl.glColorMaterial(GL.GL_FRONT_AND_BACK, GL.GL_AMBIENT_AND_DIFFUSE);
+//		gl.glEnable(GL.GL_BLEND);
+//		gl.glColorMaterial(GL.GL_FRONT_AND_BACK, GL.GL_AMBIENT_AND_DIFFUSE);
 
 		float[] mat_ambient = {1.0f, 1.0f, 1.0f, 1.0f };
 		float[] mat_diffuse = {1.0f, 1.0f, 1.0f, 1.0f };
 		
-		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, mat_diffuse,0);
-		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, mat_ambient,0);
+//		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, mat_diffuse,0);
+//		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, mat_ambient,0);
 
 	      gl.glEnable    ( GL.GL_AUTO_NORMAL);
 	      gl.glEnable    ( GL.GL_NORMALIZE);
@@ -82,10 +82,10 @@ public class GLCanvasGlyphGenerator {
 		
 		//light
 		
-		gl.glEnable(GL.GL_LIGHTING);
-		gl.glEnable(GL.GL_LIGHT0);
-		gl.glEnable(GL.GL_LIGHT1);
-		gl.glEnable(GL.GL_LIGHT2);
+//		gl.glEnable(GL.GL_LIGHTING);
+//		gl.glEnable(GL.GL_LIGHT0);
+//		gl.glEnable(GL.GL_LIGHT1);
+//		gl.glEnable(GL.GL_LIGHT2);
 
 	      float lc = 0.1f;
 
@@ -155,10 +155,10 @@ public class GLCanvasGlyphGenerator {
 
 		gl.glEndList();
 
-		gl.glDisable(GL.GL_LIGHTING);
-		gl.glDisable(GL.GL_LIGHT0);
-		gl.glDisable(GL.GL_LIGHT1);
-		gl.glDisable(GL.GL_LIGHT2);
+//		gl.glDisable(GL.GL_LIGHTING);
+//		gl.glDisable(GL.GL_LIGHT0);
+//		gl.glDisable(GL.GL_LIGHT1);
+//		gl.glDisable(GL.GL_LIGHT2);
 		
 		return dltemp;
 	}

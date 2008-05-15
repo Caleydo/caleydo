@@ -1,18 +1,20 @@
-/**
- * 
- */
 package org.caleydo.core.manager.data.genome;
 
 import java.util.Collection;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.caleydo.core.data.mapping.EGenomeMappingDataType;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.genome.AGenomeIdMap;
 import org.caleydo.core.manager.data.genome.IGenomeIdMap;
 import org.caleydo.core.util.ConversionStringInteger;
 
 /**
+ * Genome ID map for Integer to String
+ * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public class GenomeIdMapInt2String 
@@ -20,20 +22,22 @@ extends AGenomeIdMap <Integer,String>
 implements IGenomeIdMap {
 
 	/**
-	 * 
+	 * Constructor.
 	 */
-	public GenomeIdMapInt2String(final EGenomeMappingDataType dataType) {
-		super(dataType);
+	public GenomeIdMapInt2String(final IGeneralManager generalManager,
+			final EGenomeMappingDataType dataType) {
+		
+		super(generalManager, dataType);
 	}
 
 	/**
-	 * @param iSizeHashMap
+	 * Constructor.
 	 */
-	public GenomeIdMapInt2String(final EGenomeMappingDataType dataType, final int iSizeHashMap) {
-		super(dataType, iSizeHashMap);
+	public GenomeIdMapInt2String(final IGeneralManager generalManager,
+			final EGenomeMappingDataType dataType, int iSizeHashMap) {
 		
+		super(generalManager, dataType, iSizeHashMap);
 	}
-	
 	
 	/*
 	 * (non-Javadoc)
@@ -72,12 +76,10 @@ implements IGenomeIdMap {
 	}
 	
 	
-	public void put( final String key, 
-			final String value) {
+	public void put( final String key, final String value) {
+	
 		hashGeneric.put( Integer.valueOf(key), value);
 	}
-
-
 
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.manager.event.IEventPublisherMap#getStringByInt(int)
@@ -100,9 +102,10 @@ implements IGenomeIdMap {
 		}
 		else
 		{
-			System.err.println("No mapping found for requested code: " +key);
+			generalManager.getLogger().log(Level.FINE, 
+					"No mapping found for requested ID " +key);
+			
 			return "Invalid";
 		}
 	}
-
 }

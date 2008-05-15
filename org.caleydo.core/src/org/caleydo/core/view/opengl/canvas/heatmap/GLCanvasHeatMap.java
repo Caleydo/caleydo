@@ -332,7 +332,7 @@ extends AGLCanvasStorageBasedView
 		ArrayList<Integer> iAlOldSelection;
 		switch (pickingType)
 		{
-		case FIELD_SELECTION:
+		case HEAT_MAP_FIELD_SELECTION:
 			switch (pickingMode)
 			{
 			case CLICKED:
@@ -462,7 +462,7 @@ extends AGLCanvasStorageBasedView
 		Vec3f vecMappingColor = colorMapper.colorMappingLookup(fLookupValue);
 		gl.glColor3f(vecMappingColor.x(), vecMappingColor.y(), vecMappingColor.z());
 		
-		gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.FIELD_SELECTION, iContentIndex));
+		gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.HEAT_MAP_FIELD_SELECTION, iContentIndex));
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(fXPosition, fYPosition, HeatMapRenderStyle.FIELD_Z);
 		gl.glVertex3f(fXPosition + vecFieldWidthAndHeight.x(), fYPosition, 

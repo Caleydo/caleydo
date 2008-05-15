@@ -1,38 +1,42 @@
-/**
- * 
- */
 package org.caleydo.core.manager.data.genome;
 
 import java.util.Collection;
 import java.util.Set;
+import java.util.logging.Level;
 
 import org.caleydo.core.data.mapping.EGenomeMappingDataType;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.genome.AGenomeIdMap;
 import org.caleydo.core.manager.data.genome.IGenomeIdMap;
 import org.caleydo.core.util.ConversionStringInteger;
 
 /**
+ * Genome ID map for String to Integer
+ * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
- */
-public class GenomeIdMapString2Int
+ */public class GenomeIdMapString2Int
 extends AGenomeIdMap <String,Integer> 
 implements IGenomeIdMap {
 	
 	/**
-	 * 
+	 * Constructor.
 	 */
-	public GenomeIdMapString2Int(final EGenomeMappingDataType dataType) {
-		super(dataType);
+	public GenomeIdMapString2Int(final IGeneralManager generalManager,
+			final EGenomeMappingDataType dataType) {
+		
+		super(generalManager, dataType);
 	}
 
 	/**
-	 * @param iSizeHashMap
+	 * Constructor.
 	 */
-	public GenomeIdMapString2Int(final EGenomeMappingDataType dataType, final int iSizeHashMap) {
-		super(dataType, iSizeHashMap);
+	public GenomeIdMapString2Int(final IGeneralManager generalManager,
+			final EGenomeMappingDataType dataType, int iSizeHashMap) {
+		
+		super(generalManager, dataType, iSizeHashMap);
 	}
-
 
 	/*
 	 * (non-Javadoc)
@@ -89,19 +93,20 @@ implements IGenomeIdMap {
 		// Check if the ID has a mapping
 		if (dummy==null)
 		{
-			if  (ENABLE_DEBUG) {
-				System.err.println("No mapping found for requested ID: " +key);
-			}
-			
+			generalManager.getLogger().log(Level.FINE, 
+					"No mapping found for requested ID " +key);
 			return -1;
 		}
 		
 		return dummy.intValue();
 	}
 
-	public void put( final String key, 
-			final String value) {
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.data.genome.IGenomeIdMap#put(java.lang.String, java.lang.String)
+	 */
+	public void put( final String key, final String value) {
+		
 		hashGeneric.put( key, Integer.valueOf(value));
 	}
-
 }

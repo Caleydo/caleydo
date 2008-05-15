@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.core.manager.data.genome;
 
 import java.util.Collection;
@@ -8,38 +5,50 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.Map.Entry;
+import java.util.logging.Level;
 
 import org.caleydo.core.data.mapping.EGenomeMappingDataType;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.IGenomeIdManager;
 
 
 /**
+ * Abstract class of genome ID maps for all types.
+ * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public abstract class AGenomeIdMap <K,V> 
 implements IGenomeIdMap {
 
+	protected IGeneralManager generalManager;
+	
 	protected HashMap <K,V> hashGeneric;
 	
 	protected final EGenomeMappingDataType dataType;
 	
 	
 	/**
-	 * 
+	 * Constructor.
 	 */
-	public AGenomeIdMap(final EGenomeMappingDataType dataType) {
+	public AGenomeIdMap(final IGeneralManager generalManager,
+			final EGenomeMappingDataType dataType) {
+		
 		hashGeneric = new HashMap <K,V> ();
+		this.generalManager = generalManager;
 		this.dataType = dataType;
 	}
 	
 	/**
-	 * 
-	 * @param iSizeHashMap define size of hashmap
+	 * Constructor.
 	 */
-	protected AGenomeIdMap(final EGenomeMappingDataType dataType, final int iSizeHashMap) {
+	protected AGenomeIdMap(final IGeneralManager generalManager,
+			final EGenomeMappingDataType dataType, final int iSizeHashMap) {
+		
 		hashGeneric = new HashMap <K,V> (iSizeHashMap);
+		this.generalManager = generalManager;
 		this.dataType = dataType;
 	}
 
@@ -69,28 +78,26 @@ implements IGenomeIdMap {
 			switch ( dataType ) 
 			{
 			case INT2INT:
-				reversedMap = new GenomeIdMapInt2Int(dataType,
-						this.size());
+				reversedMap = new GenomeIdMapInt2Int(generalManager, 
+						dataType,this.size());
 				break;
 				
 			case STRING2STRING:
-				reversedMap = new GenomeIdMapString2String(dataType,
-						this.size());
+				reversedMap = new GenomeIdMapString2String(generalManager,
+						dataType, this.size());
 				break;
 				
 				/* invert type for reverse map! */
 			case INT2STRING:
 				/* ==> use STRING2INT */
-				reversedMap = new GenomeIdMapString2Int(
-						EGenomeMappingDataType.STRING2INT,
-						this.size());
+				reversedMap = new GenomeIdMapString2Int(generalManager,
+						EGenomeMappingDataType.STRING2INT,this.size());
 				break;
 				
 			case STRING2INT:
 				/* ==> use INT2STRING */
-				reversedMap = new GenomeIdMapInt2String(
-						EGenomeMappingDataType.INT2STRING,
-						this.size());
+				reversedMap = new GenomeIdMapInt2String(generalManager,
+						EGenomeMappingDataType.INT2STRING, this.size());
 				break;
 				
 				default:
@@ -132,7 +139,8 @@ implements IGenomeIdMap {
 		{
 		case INT2INT:
 		{
-			codeResolvedMap = new GenomeIdMapInt2Int(targetMappingDataType, this.size());
+			codeResolvedMap = new GenomeIdMapInt2Int(generalManager,
+					targetMappingDataType, this.size());
 			
 			/** 
 			 * Read HashMap and write it to new HashMap
@@ -172,7 +180,8 @@ implements IGenomeIdMap {
 		}
 		case INT2STRING:
 		{
-			codeResolvedMap = new GenomeIdMapInt2String(targetMappingDataType, this.size());	
+			codeResolvedMap = new GenomeIdMapInt2String(generalManager,
+					targetMappingDataType, this.size());	
 			
 			/** 
 			 * Read HashMap and write it to new HashMap
@@ -199,7 +208,8 @@ implements IGenomeIdMap {
 		}
 		case STRING2INT:
 		{
-			codeResolvedMap = new GenomeIdMapString2Int(targetMappingDataType, this.size());	
+			codeResolvedMap = new GenomeIdMapString2Int(generalManager,
+					targetMappingDataType, this.size());	
 			
 			/** 
 			 * Read HashMap and write it to new HashMap
@@ -217,9 +227,6 @@ implements IGenomeIdMap {
 				iResolvedID = refGenomeIdManager.getIdIntFromStringByMapping(
 						entryBuffer.getValue().toString(), genomeMappingLUT_2);
 				
-//				if (iResolvedID == -1)
-//					System.out.println("Cannot resolve LUT"); 
-				
 				codeResolvedMap.put(entryBuffer.getKey().toString(), new Integer(iResolvedID).toString());
 			}
 				
@@ -227,8 +234,8 @@ implements IGenomeIdMap {
 		}
 			
 		default:
-			System.err.println("unsupported data type= " +dataType.toString());
-			//assert false : "unsupported data type=" + dataType.toString();
+			generalManager.getLogger().log(Level.SEVERE, "Unspported data type " +dataType.toString());
+
 		}	
 			
 		return codeResolvedMap;

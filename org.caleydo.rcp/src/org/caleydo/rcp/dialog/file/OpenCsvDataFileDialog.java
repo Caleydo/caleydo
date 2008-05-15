@@ -38,7 +38,7 @@ public class OpenCsvDataFileDialog extends Dialog {
 
 	private int targetSetId = 35101;
 	
-	protected String cvsPath = "D:/src/java/ICG/cerberus/org.caleydo.data/data/genome/microarray/gpr_format";
+	protected String cvsPath = "";
 	
 	/**
 	 * Constructor.
