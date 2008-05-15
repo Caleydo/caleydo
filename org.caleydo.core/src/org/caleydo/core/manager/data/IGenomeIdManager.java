@@ -8,8 +8,6 @@ import org.caleydo.core.data.mapping.EGenomeMappingDataType;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IManager;
 import org.caleydo.core.manager.data.genome.IGenomeIdMap;
-import org.caleydo.core.util.mapping.AGenomeMapper;
-import org.caleydo.core.util.mapping.EGenomeMappingCascadeType;
 
 /**
  * Generic interface for genome ID managers.
@@ -187,7 +185,4 @@ extends IManager
 	//MARC: changed parameter from EGenomeIdType to EGenomeMappingType.
 	// Because in the hashType2MultiMapInt the maps are stored with the EGenomeMappingType as key.
 	public Collection<String> getIdStringListFromIdListByType(Collection<String > sIdList, EGenomeMappingType type);
-
-	public AGenomeMapper getGenomeMapperByMappingCascadeType(
-			final EGenomeMappingCascadeType mappingCascadeType);
 }

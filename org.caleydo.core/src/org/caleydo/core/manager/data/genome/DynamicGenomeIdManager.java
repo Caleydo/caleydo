@@ -19,9 +19,6 @@ import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
-import org.caleydo.core.util.mapping.AGenomeMapper;
-import org.caleydo.core.util.mapping.EGenomeMappingCascadeType;
-import org.caleydo.core.util.mapping.GenomeMapper_ENZYME_2_NCBI_GENEID_2_ACCESSION_2_MICROARRAY_EXPRESSION_STORAGE_INDEX;
 
 
 /**
@@ -634,15 +631,5 @@ implements IGenomeIdManager {
 					"Could not allocate memory for lookup table.", e);		
 			throw e;
 		}
-	}
-
-	public AGenomeMapper getGenomeMapperByMappingCascadeType(
-			final EGenomeMappingCascadeType mappingCascadeType) {
-		
-		if (mappingCascadeType.equals(EGenomeMappingCascadeType.ENZYME_2_NCBI_GENEID_2_ACCESSION_2_MICROARRAY_EXPRESSION_STORAGE_INDEX))
-			return new GenomeMapper_ENZYME_2_NCBI_GENEID_2_ACCESSION_2_MICROARRAY_EXPRESSION_STORAGE_INDEX(generalManager);
-
-		assert true : "No genome mapper is implemented for the requested mapping cascade!";
-		return null;
 	}
 }

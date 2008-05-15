@@ -235,8 +235,8 @@ extends AMicroArrayLoader {
 							break;
 						case INT:
 
-							int[] bufferIntArray = 
-								alTargetStorages.get(lineInFile_CurrentDataIndex).getArrayInt();
+							int[] bufferIntArray = alTargetStorages.get(iDataArrayIndexPerLine)
+								.getArrayInt();
 							
 							if ( bufferIntArray == null ) 
 							{
@@ -244,8 +244,7 @@ extends AMicroArrayLoader {
 								break;
 							}
 							
-							bufferIntArray[lineInFile_CurrentDataIndex] = 
-								new Integer(sTokenObject);
+							bufferIntArray[lineInFile_CurrentDataIndex] = new Integer(sTokenObject);
 							
 							iDataArrayIndexPerLine++;
 							break;
@@ -260,7 +259,7 @@ extends AMicroArrayLoader {
 							break;
 						case STRING:
 
-							bufferStringArray = alTargetStorages.get(lineInFile_CurrentDataIndex)
+							bufferStringArray = alTargetStorages.get(iDataArrayIndexPerLine)
 								.getArrayString();
 						
 							if ( bufferStringArray == null ) 
@@ -269,8 +268,7 @@ extends AMicroArrayLoader {
 								break;
 							}
 							
-							bufferStringArray[lineInFile_CurrentDataIndex] =
-								sTokenObject;							
+							bufferStringArray[lineInFile_CurrentDataIndex] = sTokenObject;							
 	
 							if ( bufferStringArray.length > iDataArrayIndexPerLine )
 							{

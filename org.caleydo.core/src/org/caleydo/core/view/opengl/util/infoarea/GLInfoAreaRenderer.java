@@ -365,9 +365,10 @@ public class GLInfoAreaRenderer {
 				float fNodeWidth = refRenderStyle.getEnzymeNodeWidth(true);
 				float fNodeHeight = refRenderStyle.getEnzymeNodeHeight(true);
 				
-				refGLPathwayManager.mapExpressionByGeneId(
-						gl, llMultipleMappingGenes.get(0).getName(), 
-						fNodeWidth, fNodeHeight, true);
+				//FIXME: revise this section - due to changes in ID management
+//				refGLPathwayManager.mapExpressionByGeneId(
+//						gl, llMultipleMappingGenes.get(0).getName(), 
+//						fNodeWidth, fNodeHeight, true);
 				
 				llMultipleMappingGenes.remove(0);
 			}

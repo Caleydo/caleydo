@@ -122,7 +122,7 @@ extends ACommand {
 		
 		generalManager.getLogger().log(Level.INFO, 
 				"Load data file " +sFileName +" using token pattern " 
-				+sTokenPattern +". Data is stored in Set with ID " +iAlTargetStorageId.toString());
+				+sTokenPattern +". Data is stored in Storage with ID " +iAlTargetStorageId.toString());
 		
 		MicroArrayLoaderValues2MultipleStorages loader = null;
 		

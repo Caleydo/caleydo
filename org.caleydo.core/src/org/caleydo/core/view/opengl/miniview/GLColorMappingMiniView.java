@@ -8,8 +8,7 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.GeneralRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.util.mapping.AGenomeMapper;
-import org.caleydo.core.util.mapping.EGenomeMappingCascadeType;
+import org.caleydo.core.util.mapping.GenomeMapper;
 
 /**
  * Color Mapping for Expression data
@@ -24,17 +23,18 @@ import org.caleydo.core.util.mapping.EGenomeMappingCascadeType;
 public class GLColorMappingMiniView 
 extends AGLMiniView 
 {
-
-	private AGenomeMapper genomeMapper;
+	private GenomeMapper genomeMapper;
 	private int iMappingRowCount = 1;
 	
-	
-	public GLColorMappingMiniView(IGeneralManager generalManager) 
+	/**
+	 * Constructor.
+	 * 
+	 * @param generalManager
+	 */
+	public GLColorMappingMiniView(final IGeneralManager generalManager) 
 	{
 
-		genomeMapper = generalManager.getGenomeIdManager()
-		.getGenomeMapperByMappingCascadeType(
-				EGenomeMappingCascadeType.ENZYME_2_NCBI_GENEID_2_ACCESSION_2_MICROARRAY_EXPRESSION_STORAGE_INDEX);
+		genomeMapper = new GenomeMapper(generalManager);
 	//	genomeMapper.setMappingData(alSetData);
 	}
 	
@@ -43,16 +43,6 @@ extends AGLMiniView
 
 		// TODO Auto-generated method stub
 
-	}
-	
-	public void mapExpressionByGeneId(final GL gl, 
-			String sGeneID, 
-			final float fNodeWidth,
-			final float fNodeHeight,
-			final boolean bEnableGrid) {
-
-		drawMapping(gl, genomeMapper.getMappingColorArrayByGeneID(sGeneID), 
-				fNodeWidth, fNodeHeight, bEnableGrid);
 	}
 	
 	private void drawMapping(final GL gl,

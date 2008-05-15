@@ -25,8 +25,7 @@ import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.view.EPickingType;
-import org.caleydo.core.util.mapping.AGenomeMapper;
-import org.caleydo.core.util.mapping.EGenomeMappingCascadeType;
+import org.caleydo.core.util.mapping.GenomeMapper;
 import org.caleydo.core.view.opengl.util.GLTextUtils;
 import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
 import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
@@ -68,7 +67,7 @@ public class GLPathwayManager {
 	
 	private HashMap<Integer, Integer> hashPathwayId2EdgesDisplayListId;	
 	
-	private AGenomeMapper genomeMapper;
+	private GenomeMapper genomeMapper;
 	
 	private GenericSelectionManager internalSelectionManager;
 	
@@ -107,9 +106,9 @@ public class GLPathwayManager {
 		iArSelectedEdgeRepId = new ArrayList<Integer>();
 		
 		// Initialize genome mapper
-		genomeMapper = generalManager.getGenomeIdManager()
-			.getGenomeMapperByMappingCascadeType(
-					EGenomeMappingCascadeType.ENZYME_2_NCBI_GENEID_2_ACCESSION_2_MICROARRAY_EXPRESSION_STORAGE_INDEX);
+		// TODO: move to a manager because more classes use the genome mapper
+		// maybe GenomeIdManager is the right place
+		genomeMapper = new GenomeMapper(generalManager);
 		genomeMapper.setMappingData(alSetData);
 	}
 	
@@ -793,16 +792,6 @@ public class GLPathwayManager {
 		}
 		
 		drawMapping(gl, alMappingColor, fNodeWidth, fNodeHeight, false);
-	}
-	
-	public void mapExpressionByGeneId(final GL gl, 
-			String sGeneID, 
-			final float fNodeWidth,
-			final float fNodeHeight,
-			final boolean bEnableGrid) {
-
-		drawMapping(gl, genomeMapper.getMappingColorArrayByGeneID(sGeneID), 
-				fNodeWidth, fNodeHeight, bEnableGrid);
 	}
 	
 	private void drawMapping(final GL gl,

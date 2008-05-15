@@ -284,9 +284,6 @@ implements IMediatorReceiver, IMediatorSender
 		int iSelectedDavidId = 0;
 		int iSelectedStorageIndex = 0;
 		
-		bIsDisplayListDirtyLocal = true;
-		bIsDisplayListDirtyRemote = true;
-		
 		for(int iSelectionCount = 0; iSelectionCount < iAlSelectionStorageIndices.size();  iSelectionCount++)
 		{
 			// TODO: same for click and mouse over atm
@@ -297,7 +294,7 @@ implements IMediatorReceiver, IMediatorSender
 			
 //				System.out.println("Accession ID: " + iSelectedAccessionID);
 //				System.out.println("Accession Code: " +sAccessionCode);			
-//				System.out.println("Expression stroage index: " +iSelectedStorageIndex);
+//				System.out.println("Expression storage index: " +iSelectedStorageIndex);
 				
 				if (iSelectedStorageIndex >= 0)
 				{						
@@ -322,6 +319,9 @@ implements IMediatorReceiver, IMediatorSender
 				}
 			}
 		}
+		
+		bIsDisplayListDirtyLocal = true;
+		bIsDisplayListDirtyRemote = true;
 	}
 	
 	/*

@@ -195,68 +195,13 @@ extends AGLCanvasStorageBasedView
 	 */
 	public void display(GL gl) 
 	{
-		gl.glCallList(iGLDisplayListToCall);
-		
-//		gl.glClear( GL.GL_STENCIL_BUFFER_BIT);
-//		gl.glColorMask(false,false,false,false);
-//        gl.glClearStencil(0);  // Clear The Stencil Buffer To 0
-//        gl.glEnable(GL.GL_DEPTH_TEST);  // Enables Depth Testing
-//        gl.glDepthFunc(GL.GL_LEQUAL);  // The Type Of Depth Testing To Do
-//		gl.glEnable(GL.GL_STENCIL_TEST);
-//		gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);						
-//		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);												
-//		gl.glDisable(GL.GL_DEPTH_TEST);						
-//		
-//		// Clip region that renders in stencil buffer (in this case the frustum)
-//		gl.glBegin(GL.GL_POLYGON);
-//		gl.glVertex3f(0, 0, -0.01f);
-//		gl.glVertex3f(0, 8, -0.01f);
-//		gl.glVertex3f(8, 8, -0.01f);
-//		gl.glVertex3f(8, 0, -0.01f);
-//		gl.glEnd();
-//		
-//		gl.glEnable(GL.GL_DEPTH_TEST);
-//		gl.glColorMask(true,true,true,true);
-//		gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
-//		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
-//		
-//		bRenderHorizontally = false;
-//		if(!bRenderHorizontally)
-//		{		
-//			gl.glTranslatef(vecTranslation.x(), 
-//					vecTranslation.y(), 
-//					vecTranslation.z());
-//			gl.glRotatef(vecRotation.x(),
-//					vecRotation.y(),
-//					vecRotation.z(),
-//					vecRotation.w());	
-//		}
-//		
-//		gl.glTranslatef(fAnimationTranslation, 0.0f, 0.0f);
-//		
-//		renderHeatMap(gl);
-//		renderSelection(gl, EViewInternalSelectionType.MOUSE_OVER);
-//		renderSelection(gl, EViewInternalSelectionType.SELECTION);	
-//		
-//		gl.glTranslatef(-fAnimationTranslation, 0.0f, 0.0f);
-//
-//		if(!bRenderHorizontally)
-//		{			
-//			gl.glRotatef(-vecRotation.x(),
-//					vecRotation.y(),
-//					vecRotation.z(),
-//					vecRotation.w());
-//			gl.glTranslatef(-vecTranslation.x(),
-//					-vecTranslation.y(),
-//					-vecTranslation.z());
-//		}
-//		
-//		gl.glDisable(GL.GL_STENCIL_TEST);
+//		gl.glCallList(iGLDisplayListToCall);
+		buildDisplayList(gl, iGLDisplayListIndexRemote);
 	}
 	
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex)
 	{
-		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);	
+//		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);	
 			
 		gl.glClear( GL.GL_STENCIL_BUFFER_BIT);
 		gl.glColorMask(false,false,false,false);
@@ -314,7 +259,7 @@ extends AGLCanvasStorageBasedView
 		
 		gl.glDisable(GL.GL_STENCIL_TEST);
 		
-		gl.glEndList();
+//		gl.glEndList();
 	}
 	
 	public void renderHorizontally(boolean bRenderHorizontally)

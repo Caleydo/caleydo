@@ -155,6 +155,11 @@ public class GLCanvasGlyphGenerator {
 
 		gl.glEndList();
 
+		gl.glDisable(GL.GL_LIGHTING);
+		gl.glDisable(GL.GL_LIGHT0);
+		gl.glDisable(GL.GL_LIGHT1);
+		gl.glDisable(GL.GL_LIGHT2);
+		
 		return dltemp;
 	}
 	
