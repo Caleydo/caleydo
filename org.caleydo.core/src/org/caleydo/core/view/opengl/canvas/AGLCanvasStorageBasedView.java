@@ -143,8 +143,10 @@ implements IMediatorReceiver, IMediatorSender
 		}
 		mapSelections.put(ESelectionType.EXTERNAL_SELECTION, alTempList);
 
+
 		int iStorageLength = alDataStorages.get(0).getArrayFloat().length;
-//		int iStorageLength = 2000;
+		//int iStorageLength = 125;
+
 		alTempList = new ArrayList<Integer>(iStorageLength);
 		// initialize full list
 		
@@ -402,7 +404,7 @@ implements IMediatorReceiver, IMediatorSender
 		alSetSelection.get(1).getWriteToken();
 		alSetSelection.get(1).updateSelectionSet(iUniqueId, 
 				iAlGeneSelection, iAlGroup, null);
-		alSetSelection.get(1).returnWriteToken();	
+		alSetSelection.get(1).returnWriteToken();
 	}
 	
 	protected ArrayList<Integer> prepareSelection(GenericSelectionManager selectionManager, 

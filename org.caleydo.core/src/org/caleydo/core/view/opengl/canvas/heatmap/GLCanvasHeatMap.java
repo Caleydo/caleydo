@@ -174,6 +174,7 @@ extends AGLCanvasStorageBasedView
 	{		
 		if(bIsTranslationAnimationActive)
 		{	
+			bIsDisplayListDirtyRemote = true;
 			doTranslation();
 		}
 		

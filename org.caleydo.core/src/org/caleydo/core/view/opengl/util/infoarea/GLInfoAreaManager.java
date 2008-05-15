@@ -54,7 +54,7 @@ public class GLInfoAreaManager
 	
 	private boolean bUpdateViewInfo = true;
 	
-	private boolean bEnableRendering = true;
+	private boolean bEnableRendering = false;
 	
 	/**
 	 * Constructor. 
@@ -192,6 +192,6 @@ public class GLInfoAreaManager
 	
 	public void enable(final boolean bEnableRendering)
 	{
-		this.bEnableRendering = bEnableRendering;
+		//this.bEnableRendering = bEnableRendering;
 	}
 }

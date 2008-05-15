@@ -130,6 +130,8 @@ implements GLEventListener {
 		generalManager.getViewGLCanvasManager().getInfoAreaManager()
 			.initInfoInPlace(viewFrustum);
 		
+		generalManager.getViewGLCanvasManager().getInfoAreaManager().enable(false);
+		
 		pickingTriggerMouseAdapter.addGLCanvas(this);
 		
 		((GLEventListener)parentGLCanvas).init(drawable);

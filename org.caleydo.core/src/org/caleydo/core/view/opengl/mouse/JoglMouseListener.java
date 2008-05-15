@@ -227,35 +227,35 @@ implements MouseListener, MouseMotionListener, MouseWheelListener {
 				/**
 		    	 *   --- ROTATION ---
 		    	 */
-		    	Rotf currentRotX = new Rotf();
-		    	Rotf currentRotY = new Rotf();
-		   	    
-		    	float fpercentX = (float)(x-prevMouseX)/(float)(size.width) 
-		    		* fMouseSensitivityRotation;
-		    	
-		    	float fpercentY = (float)(y-prevMouseY)/(float)(size.height) 
-		    		* fMouseSensitivityRotation;
-		    	
-		    	
-		   	    currentRotX.set(new Vec3f(0,1,0), 
-		   	    		fpercentX* MathUtil.PI);
-		   	    
-		   	    currentRotY.set(new Vec3f(1,0,0), 
-			    		fpercentY* MathUtil.PI);
-		   	    
-		   	    /* concatinate rotations.. */
-		   	    currentRotX = currentRotX.times(currentRotY);
-		   	    
-			    prevMouseX = x;
-			    prevMouseY = y;
-			    
-			    /* set new paramters to ViewCamera */
-			    Iterator<AGLCanvasUser> iterGLCanvas = alGlCanvas.iterator();
-			    
-			    while (iterGLCanvas.hasNext())
-			    {
-			    	iterGLCanvas.next().getViewCamera().addCameraRotation(currentRotX);
-			    }
+//		    	Rotf currentRotX = new Rotf();
+//		    	Rotf currentRotY = new Rotf();
+//		   	    
+//		    	float fpercentX = (float)(x-prevMouseX)/(float)(size.width) 
+//		    		* fMouseSensitivityRotation;
+//		    	
+//		    	float fpercentY = (float)(y-prevMouseY)/(float)(size.height) 
+//		    		* fMouseSensitivityRotation;
+//		    	
+//		    	
+//		   	    currentRotX.set(new Vec3f(0,1,0), 
+//		   	    		fpercentX* MathUtil.PI);
+//		   	    
+//		   	    currentRotY.set(new Vec3f(1,0,0), 
+//			    		fpercentY* MathUtil.PI);
+//		   	    
+//		   	    /* concatinate rotations.. */
+//		   	    currentRotX = currentRotX.times(currentRotY);
+//		   	    
+//			    prevMouseX = x;
+//			    prevMouseY = y;
+//			    
+//			    /* set new paramters to ViewCamera */
+//			    Iterator<AGLCanvasUser> iterGLCanvas = alGlCanvas.iterator();
+//			    
+//			    while (iterGLCanvas.hasNext())
+//			    {
+//			    	iterGLCanvas.next().getViewCamera().addCameraRotation(currentRotX);
+//			    }
 	    	}
 		    else
 	    	{
