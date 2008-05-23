@@ -19,7 +19,7 @@
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
 							attrib3="PERSPECTIVE -1.5 1.5 -1.5 1.5 2.9 1000"
-							detail="351010 651010 901010" /> 
+							detail="35101 90101" /> 
 <!--							attrib3="ORTHOGRAPHIC -80 80 -80 80 -200 200"-->
 <!--
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991" uniqueId="10332" label="Slider view" attrib1="ROW	HORIZONTAL"	/>	 					

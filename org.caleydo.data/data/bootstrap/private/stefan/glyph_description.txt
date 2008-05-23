@@ -1,0 +1,10 @@
+
+glyph
+0 = sort after parameter number
+1 = indexTopColor
+2 = indexBoxColor
+3 = indexHeight
+
+
+dataset
+columnnumber, beginning with 0
