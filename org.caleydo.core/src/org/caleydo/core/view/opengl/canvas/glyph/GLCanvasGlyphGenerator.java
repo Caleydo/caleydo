@@ -1,33 +1,79 @@
 package org.caleydo.core.view.opengl.canvas.glyph;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
 import javax.media.opengl.GL;
+
+import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.StorageType;
 
 
 public class GLCanvasGlyphGenerator {
 	int indexTopColor_ = -1;
 	int indexBoxColor_ = -1;
 	int indexHeight_ = -1;
+	int iMaxHeight = 1;
+	Integer[] aSortOrder;
 	
-	public GLCanvasGlyphGenerator() {
-		indexTopColor_ = 2;
-		indexBoxColor_ = 0;
-		indexHeight_ = 1;
+	
+	public GLCanvasGlyphGenerator(ISet glyphMapping) {
+		IStorage storageGlyph = glyphMapping.getStorageByDimAndIndex(0, 0);
+		IStorage storageData = glyphMapping.getStorageByDimAndIndex(0, 1);
+		
+		int[] g = storageGlyph.getArrayInt();
+		int[] d = storageData.getArrayInt();
+		
+		ArrayList<Integer> sort = new ArrayList<Integer>();
+		
+		for(int i=0;i<g.length;++i) {
+			if(g[i] == 0)
+				sort.add(d[i]);
+			if(g[i] == 1)
+				indexTopColor_ = d[i];
+			if(g[i] == 2)
+				indexBoxColor_ = d[i];
+			if(g[i] == 3)
+				indexHeight_ = d[i];
+		}
+		
+		aSortOrder = sort.toArray(new Integer[sort.size()]);
 	}
 	
-	public HashMap<Integer, GlyphEntry> loadGlyphs(GL gl) {
+	
+	public Integer[] getSortOrder() {
+		return aSortOrder;
+	}
+	
+	
+	public HashMap<Integer, GlyphEntry> loadGlyphs(GL gl, ISet glyphData) {
 		HashMap<Integer, GlyphEntry> glyphs = new HashMap<Integer, GlyphEntry>();
 		
-		Random rand = new Random();
-		
+		//Random rand = new Random();
 		int counter=1;
-		for(int i=0;i<1000;++i) {
-				GlyphEntry g = new GlyphEntry(counter, this);
-				g.addParameter(rand.nextInt(5));  // boxcolor
-				g.addParameter(rand.nextInt(10)); // height
-				g.addParameter(rand.nextInt(2));  // topcolor
+		
+		IStorage[] stores = glyphData.getStorageByDim(0);
+		
+		IStorage storageId = glyphData.getStorageByDimAndIndex(0, 0);
+		int size = storageId.getSize(StorageType.INT);
+		
+		
+		iMaxHeight = glyphData.getStorageByDimAndIndex(0, indexHeight_).getMaxInt();
+		
+		
+		
+		for(int i=0;i<size; ++i) {
+				GlyphEntry g = new GlyphEntry(storageId.getArrayInt()[i], this);
+				
+				for(IStorage s : stores)
+					g.addParameter(s.getArrayInt()[i]);
+
+				//g.addParameter(rand.nextInt(5));  // boxcolor
+				//g.addParameter(rand.nextInt(10)); // height
+				//g.addParameter(rand.nextInt(2));  // topcolor
+				
 				glyphs.put(counter, g);
 				++counter;
 		}
@@ -42,8 +88,6 @@ public class GLCanvasGlyphGenerator {
 
 	
 	private int generateSingleObject(GL gl, GlyphEntry glyph, boolean selected) {
-
-		gl.glPushMatrix();
 		
 		float xmin = 0f;
 		float ymin = 0f;
@@ -51,20 +95,23 @@ public class GLCanvasGlyphGenerator {
 		float xmax = 0.75f;
 		float ymax = 0.75f;
 		float zmax = 1.0f;
-		float box_h = (glyph.getParameter(indexHeight_)%10);
+		float box_h = 1.0f; //(glyph.getParameter(indexHeight_)%10);
 		float sockel_h = 0.15f;
 
+		
+		box_h = glyph.getParameter(indexHeight_) * 10.0f / iMaxHeight;
+		
 		int dltemp = gl.glGenLists(1);
 		gl.glNewList(dltemp, GL.GL_COMPILE);
 		
-//		gl.glEnable(GL.GL_BLEND);
-//		gl.glColorMaterial(GL.GL_FRONT_AND_BACK, GL.GL_AMBIENT_AND_DIFFUSE);
+		gl.glEnable(GL.GL_BLEND);
+		gl.glColorMaterial(GL.GL_FRONT_AND_BACK, GL.GL_AMBIENT_AND_DIFFUSE);
 
 		float[] mat_ambient = {1.0f, 1.0f, 1.0f, 1.0f };
 		float[] mat_diffuse = {1.0f, 1.0f, 1.0f, 1.0f };
 		
-//		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, mat_diffuse,0);
-//		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, mat_ambient,0);
+		gl.glMaterialfv(GL.GL_FRONT, GL.GL_DIFFUSE, mat_diffuse,0);
+		gl.glMaterialfv(GL.GL_FRONT, GL.GL_AMBIENT, mat_ambient,0);
 
 	      gl.glEnable    ( GL.GL_AUTO_NORMAL);
 	      gl.glEnable    ( GL.GL_NORMALIZE);
@@ -82,10 +129,10 @@ public class GLCanvasGlyphGenerator {
 		
 		//light
 		
-//		gl.glEnable(GL.GL_LIGHTING);
-//		gl.glEnable(GL.GL_LIGHT0);
-//		gl.glEnable(GL.GL_LIGHT1);
-//		gl.glEnable(GL.GL_LIGHT2);
+		gl.glEnable(GL.GL_LIGHTING);
+		gl.glEnable(GL.GL_LIGHT0);
+		gl.glEnable(GL.GL_LIGHT1);
+		gl.glEnable(GL.GL_LIGHT2);
 
 	      float lc = 0.1f;
 
@@ -119,6 +166,8 @@ public class GLCanvasGlyphGenerator {
 		
 		//boxcolor
 	    int n = glyph.getParameter(indexBoxColor_)%5;
+	    
+	    
 	    //TODO: add "standartverteilung" eg. double value of a glyph (lookup dictionary)
 	    float nv = 0.5f;
 	    
@@ -128,7 +177,7 @@ public class GLCanvasGlyphGenerator {
 	    
 	    switch(n) {
 	    	case 0:
-	    		gl.glColor4f(0.8f+nv, 0.8f+nv, 0.8f+nv, 1.0f);     // gray
+	    		gl.glColor4f( 1.0f, 1.0f, 1.0f, 1.0f); // white
 	    		break;
 	    	case 1:
 	    		gl.glColor4f( 0.0f, 0.4f + nv, 0.0f, 1.0f); // green
@@ -141,6 +190,9 @@ public class GLCanvasGlyphGenerator {
 	    		break;
 	    	case 4:
 	    		gl.glColor4f( 0.4f + nv, 0.0f, 0.0f, 1.0f); // red
+	    		break;
+	    	default:
+	    		gl.glColor4f(0.1f+nv, 0.1f+nv, 0.1f+nv, 1.0f); // gray
 	    		break;
 	    }
 	    
@@ -155,10 +207,12 @@ public class GLCanvasGlyphGenerator {
 
 		gl.glEndList();
 
-//		gl.glDisable(GL.GL_LIGHTING);
-//		gl.glDisable(GL.GL_LIGHT0);
-//		gl.glDisable(GL.GL_LIGHT1);
-//		gl.glDisable(GL.GL_LIGHT2);
+		gl.glDisable(GL.GL_LIGHTING);
+		gl.glDisable(GL.GL_LIGHT0);
+		gl.glDisable(GL.GL_LIGHT1);
+		gl.glDisable(GL.GL_LIGHT2);
+		
+		gl.glDisable(GL.GL_BLEND);
 		
 		return dltemp;
 	}
@@ -213,8 +267,9 @@ public class GLCanvasGlyphGenerator {
 	
 	
 	private void generateBox(GL gl, float xmin, float ymin, float zmin, float xmax, float ymax, float zmax, boolean topcolorblack) {
-/*
+
 		// der Boden
+		/*
 		gl.glBegin(GL.GL_QUADS); 
 		gl.glNormal3i (0, 0, -1);
 		gl.glVertex3f(xmin, ymax, zmin);    
@@ -223,7 +278,6 @@ public class GLCanvasGlyphGenerator {
 		gl.glVertex3f(xmin, ymin, zmin);
 		gl.glEnd( );
 */
-/*
 		gl.glBegin(GL.GL_QUADS);
 		gl.glNormal3i (0, 1, 0);
 		gl.glVertex3f(xmin, ymax, zmin);
@@ -231,8 +285,7 @@ public class GLCanvasGlyphGenerator {
 		gl.glVertex3f(xmax, ymax, zmax);
 		gl.glVertex3f(xmax, ymax, zmin);
 		gl.glEnd( );
-*/
-/*
+
 		gl.glBegin(GL.GL_QUADS);
 		gl.glNormal3i (1, 0, 0);    
 		gl.glVertex3f(xmax, ymin, zmax);
@@ -240,7 +293,7 @@ public class GLCanvasGlyphGenerator {
 		gl.glVertex3f(xmax, ymax, zmin);    
 		gl.glVertex3f(xmax, ymax, zmax);
 		gl.glEnd( );
-*/
+
 
 //front right
 		gl.glBegin(GL.GL_QUADS);

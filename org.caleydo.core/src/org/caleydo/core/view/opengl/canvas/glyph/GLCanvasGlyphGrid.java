@@ -10,6 +10,7 @@ import java.util.Vector;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.manager.IManager;
 import org.caleydo.core.manager.view.EPickingType;
@@ -21,13 +22,15 @@ public class GLCanvasGlyphGrid {
 	public enum POSITIONTYPES { rectangle , center }; 
 	
 	//Integer[][] gridArray_;
-	Vector<Vector<GlyphGridPosition>> glyphMap_;
+	private Vector<Vector<GlyphGridPosition>> glyphMap_;
 	
-	HashMap<Integer, GlyphEntry> glyphs_ = null;
+	private HashMap<Integer, GlyphEntry> glyphs_ = null;
 
 	int GLGridList_ = 0;
 	int GLGlyphList_ = 0;
 	private Vec4f gridColor_ = new Vec4f( 0.2f, 0.2f, 0.2f, 1f );
+	
+	private Integer[] aSortOrder = null;
 	
 	
 	
@@ -101,15 +104,19 @@ public class GLCanvasGlyphGrid {
 
 	
 	
-	public void buildGrid(GL gl) {
-		//load & set glyphs
-		GLCanvasGlyphGenerator gen = new GLCanvasGlyphGenerator();
+	public void loadGlyphs(GL gl,ISet glyphMapping, ISet glyphData) {
+		GLCanvasGlyphGenerator gen = new GLCanvasGlyphGenerator(glyphMapping);
 
-		glyphs_ = gen.loadGlyphs(gl);
-		//setGlyphPositionsRectangle();
-		setGlyphPositionsCenter();
+		glyphs_ = gen.loadGlyphs(gl, glyphData);
+		aSortOrder = gen.getSortOrder();
 		
-		
+		setGlyphPositionsRectangle();
+		//setGlyphPositionsCenter();
+	}
+
+	
+	
+	public void buildGrid(GL gl) {
 		
 		//draw grid
 		GLGridList_ = gl.glGenLists(1);
@@ -241,16 +248,25 @@ public class GLCanvasGlyphGrid {
 	private ArrayList<GlyphEntry> sortGlyphsRecursive( Collection<GlyphEntry> unsorted, int parameterindex) {
 		HashMap<Integer, ArrayList<GlyphEntry>> temp = new HashMap<Integer, ArrayList<GlyphEntry>>(); 
 		int maxp = 0;
+		
+		if(aSortOrder.length <= parameterindex) {
+			ArrayList<GlyphEntry> t = new ArrayList<GlyphEntry>();
+			t.addAll(unsorted);
+			return t;
+		}
+		
+		int sortIndex = aSortOrder[parameterindex];
+		
 
-		for(final GlyphEntry g : unsorted) {
-			int p = g.getParameter(parameterindex);
-
+		for(GlyphEntry g : unsorted) {
+			int p = g.getParameter(sortIndex);
+/*
 			if(p < 0) { //ups - no more parameter to sort after
 				ArrayList<GlyphEntry> t = new ArrayList<GlyphEntry>();
 				t.addAll(unsorted);
 				return t;
 			}
-			
+*/			
 			if(!temp.containsKey(p))
 				temp.put(p, new ArrayList<GlyphEntry>());
 			
@@ -260,7 +276,9 @@ public class GLCanvasGlyphGrid {
 		}
 		
 		ArrayList<GlyphEntry> temp2 = new ArrayList<GlyphEntry>();
-		for(int i=0;i<=maxp; ++i) {
+		
+		for( int i : temp.keySet() ) {
+		//for(int i=0;i<=maxp; ++i) {
 			if(!temp.containsKey(i))
 				continue;
 			

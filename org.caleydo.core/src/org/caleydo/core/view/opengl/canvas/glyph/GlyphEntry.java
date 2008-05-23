@@ -53,14 +53,8 @@ public class GlyphEntry {
 
 	public int getGlList(GL gl) {
 		if(selected_) {
-			if(glListSelected_ == 0)
-				glListSelected_ = generator_.generateGlyph(gl, this, selected_);
-			
 			return glListSelected_;
 		}
-		
-		if(glList_ == 0)
-			glList_ = generator_.generateGlyph(gl, this, selected_);
 		
 		return glList_;
 	}
@@ -73,6 +67,11 @@ public class GlyphEntry {
 		if(parameter_.size() <= index)
 			return -1;
 		return parameter_.get(index);
+	}
+
+	public void generateGLLists(GL gl) {
+		glListSelected_ = generator_.generateGlyph(gl, this, true);
+		glList_ = generator_.generateGlyph(gl, this, false);
 	}
 	
 	
