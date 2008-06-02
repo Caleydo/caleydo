@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.core.command.base;
 
 import gleem.linalg.Rotf;
@@ -14,13 +11,10 @@ import org.caleydo.core.math.MathUtil;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
 
-
-
 /**
- * @see org.caleydo.core.command.ICommand
  * 
  * @author Michael Kalkusch
- *
+ * @author Marc Streit
  */
 public abstract class ACmdCreate_IdTargetParentGLObject 
 extends	ACmdCreate_IdTargetLabelParent {
@@ -30,10 +24,6 @@ extends	ACmdCreate_IdTargetLabelParent {
 	protected Rotf cameraRotation;
 	
 	protected String sDetail;
-	
-	protected String sAttribute3;
-	
-	protected String sAttribute4;
 
 	
 	public ACmdCreate_IdTargetParentGLObject(

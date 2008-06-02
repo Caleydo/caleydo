@@ -7,7 +7,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 
 import org.caleydo.core.command.CommandQueueSaxType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttr;
+import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.IVirtualArray;
@@ -30,7 +30,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  *
  */
 public class CmdDataCreateSet 
-extends ACmdCreate_IdTargetLabelAttr {
+extends ACmdCreate_IdTargetLabelAttrDetail {
 	
 	private SetType setType;
 
@@ -419,7 +419,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 //		// Set detailed set data type
 //		newObject.set(setDetailedDataType);
 		
-		refCommandManager.runDoCommand(this);
+		commandManager.runDoCommand(this);
 	}
 	
 	/* (non-Javadoc)
@@ -430,7 +430,7 @@ extends ACmdCreate_IdTargetLabelAttr {
 				iUniqueId,
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		
-		refCommandManager.runUndoCommand(this);
+		commandManager.runUndoCommand(this);
 	}
 	
 	/**

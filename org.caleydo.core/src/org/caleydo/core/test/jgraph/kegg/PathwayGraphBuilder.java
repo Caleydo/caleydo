@@ -29,7 +29,7 @@ public class PathwayGraphBuilder
 	private DefaultGraphCell cell;
 	
 	/**
-	 * Constructor
+	 * Constructor.
 	 */
 	public PathwayGraphBuilder()
 	{		
@@ -70,8 +70,6 @@ public class PathwayGraphBuilder
 	
 	public void showPathwayGraph()
 	{
-
-		
 		JFrame frame = new JFrame();
 		frame.getContentPane().add(new JScrollPane(pathwayGraph));
 		frame.pack();

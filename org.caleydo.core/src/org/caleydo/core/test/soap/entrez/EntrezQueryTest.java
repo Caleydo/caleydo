@@ -8,6 +8,7 @@ import gov.nih.nlm.ncbi.www.soap.eutils.efetch.EFetchResult;
 //import gov.nih.nlm.ncbi.www.soap.eutils.esummary.ESummaryRequest;
 
 public class EntrezQueryTest {
+	
     public static void main(String[] args) throws Exception 
     {
         // fetch article from pubmed and displays its abstract

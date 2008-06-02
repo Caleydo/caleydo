@@ -62,7 +62,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 		generalManager.getCommandManager().
 			addUndoRedoViewRep(undoRedoView);
 		
-		refCommandManager.runDoCommand(this);
+		commandManager.runDoCommand(this);
 	}
 
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
@@ -74,6 +74,6 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	
 	public void undoCommand() throws CaleydoRuntimeException {
 
-		refCommandManager.runUndoCommand(this);
+		commandManager.runUndoCommand(this);
 	}
 }

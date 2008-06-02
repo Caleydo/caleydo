@@ -54,7 +54,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 							mediatorType,
 							MediatorUpdateType.MEDIATOR_DEFAULT);
 		
-		refCommandManager.runDoCommand(this);
+		commandManager.runDoCommand(this);
 	}
 	
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
@@ -109,7 +109,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	
 	public void undoCommand() throws CaleydoRuntimeException {
 		
-		refCommandManager.runUndoCommand(this);		
+		commandManager.runUndoCommand(this);		
 	}
 	
 	public String getInfoText() {

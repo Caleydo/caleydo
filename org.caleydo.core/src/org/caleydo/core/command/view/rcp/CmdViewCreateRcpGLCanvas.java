@@ -56,7 +56,7 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 		// Register GL canvas to view manager
 		canvasManager.registerGLCanvas(gLCanvas, iGLCanvasID);
 		
-		refCommandManager.runDoCommand(this);
+		commandManager.runDoCommand(this);
 	}
 
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
@@ -68,6 +68,6 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 	
 	public void undoCommand() throws CaleydoRuntimeException {
 		
-		refCommandManager.runUndoCommand(this);
+		commandManager.runUndoCommand(this);
 	}
 }

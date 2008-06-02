@@ -9,6 +9,8 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
 
 
 /**
+ * Abstract command that reads OpenGL canvas ID.
+ * 
  * @author Michael Kalkusch
  * @author Marc Streit
  *
@@ -16,9 +18,8 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
 public abstract class ACmdCreate_IdTargetLabelParentAttrOpenGL
 extends ACmdCreate_IdTargetLabelParentXY {
 
-	 
 	/**
-	 * GLEventListener Id used for OpenGL
+	 * GLEventListener ID used for OpenGL
 	 *  
 	 */
 	protected int iGLCanvasID = -1;

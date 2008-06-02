@@ -1,7 +1,7 @@
 package org.caleydo.core.command.window.swt;
 
 import org.caleydo.core.command.CommandQueueSaxType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentAttr;
+import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParent;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
@@ -16,8 +16,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  *
  */
 public class CmdContainerCreate
-extends ACmdCreate_IdTargetLabelParentAttr {
-	protected String sLayoutAttributes;
+extends ACmdCreate_IdTargetLabelParent {
 	
 	/**
 	 * Constructor.
@@ -36,28 +35,33 @@ extends ACmdCreate_IdTargetLabelParentAttr {
 				refCommandQueueSaxType);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.ICommand#doCommand()
+	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
-		generalManager.
-			getSWTGUIManager().createComposite(
+		generalManager.getSWTGUIManager().createComposite(
 					iUniqueId, 
 					iParentContainerId, 
-					sLayoutAttributes);	
+					sAttribute2);	
 		
-		refCommandManager.runDoCommand(this);
+		commandManager.runDoCommand(this);
 	}
-
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
+	 */
+	public void undoCommand() throws CaleydoRuntimeException {
+		
+		commandManager.runUndoCommand(this);		
+	}
+	
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
 		
 		assert refParameterHandler != null: "ParameterHandler object is null!";	
 		
 		super.setParameterHandler(refParameterHandler);	
-		
-		sLayoutAttributes = sAttribute2;
-	}
-	
-	public void undoCommand() throws CaleydoRuntimeException
-	{
-		refCommandManager.runUndoCommand(this);		
 	}
 }

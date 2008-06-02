@@ -5,7 +5,7 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
- * Design Pattern "Command" ;behaviour pattern
+ * Design Pattern "Command" ; behavior pattern
  * 
  * Is combined with Design Pattern "IMemento" to provide Do-Undo
  * 

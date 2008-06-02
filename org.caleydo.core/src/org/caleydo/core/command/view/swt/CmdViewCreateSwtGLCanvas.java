@@ -67,7 +67,7 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 			swtGLCanvasView.initViewSwtComposit(null);
 			swtGLCanvasView.drawView();
 			
-			refCommandManager.runDoCommand(this);
+			commandManager.runDoCommand(this);
 			
 		} 	
 		catch ( CaleydoRuntimeException ce)
@@ -127,6 +127,6 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 	
 	public void undoCommand() throws CaleydoRuntimeException {
 		
-		refCommandManager.runUndoCommand(this);
+		commandManager.runUndoCommand(this);
 	}
 }

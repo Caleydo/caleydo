@@ -21,7 +21,6 @@ import org.caleydo.core.command.system.path.CmdSetPathwayDatabasePath;
 import org.caleydo.core.command.view.opengl.CmdGlObjectBucket3D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectGlyph;
 import org.caleydo.core.command.view.opengl.CmdGlObjectHeatMap3D;
-import org.caleydo.core.command.view.opengl.CmdGlObjectHistogram2D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectJukebox3D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectParCoords3D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectPathway3D;
@@ -366,15 +365,6 @@ implements ICommandFactory {
 						cmdType);	
 			break;
 		}
-		case CREATE_GL_HISTOGRAM2D:
-		{
- 			createdCommand =
-				new CmdGlObjectHistogram2D(
-						generalManager,
-						commandManager,
-						cmdType);		
-			break;
-		}
 		case CREATE_GL_JUKEBOX_PATHWAY_3D:
 		{
  			createdCommand =
@@ -447,60 +437,6 @@ implements ICommandFactory {
 						cmdType);	
 			break;
 		}
-//		case CREATE_GL_MINMAX_SCATTERPLOT2D:
-//		{
-//			createdCommand =
-//				new CmdGlObjectMinMaxScatterPlot2D(
-//						generalManager,
-//						commandManager,
-//						cmdType);
-//			break;
-//		}
-//		case CREATE_GL_WIDGET:
-//		{
-//			createdCommand =
-//				new CmdGlObjectWidget(
-//						generalManager,
-//						commandManager,
-//						cmdType);
-//			break;
-//		}
-//		case CREATE_GL_MINMAX_SCATTERPLOT3D:
-//		{
-//			createdCommand =
-//				new CmdGlObjectMinMaxScatterPlot3D(
-//						generalManager,
-//						commandManager,
-//						cmdType);
-//			break;
-//		}
-//		case CREATE_GL_ISOSURFACE3D:
-//		{
-// 			createdCommand =
-//				new CmdGlObjectIsosurface3D(
-//						generalManager,
-//						commandManager,
-//						cmdType);		
-//			break;
-//		}
-//		case CREATE_GL_SCATTERPLOT2D:
-//		{
-//			createdCommand =
-//				new CmdGlObjectScatterPlot2D(
-//						generalManager,
-//						commandManager,
-//						cmdType);		
-//			break;
-//		}
-//		case CREATE_GL_TEXTURE2D:
-//		{
-//			createdCommand =
-//				new CmdGlObjectTexture2D(
-//						generalManager,
-//						commandManager,
-//						cmdType);		
-//			break;
-//		}
 		case EXTERNAL_FLAG_SETTER:
 		{
 			createdCommand =

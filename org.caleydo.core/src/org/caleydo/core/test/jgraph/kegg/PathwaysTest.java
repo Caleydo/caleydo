@@ -5,8 +5,15 @@ import java.io.File;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
-
+/**
+ * 
+ * Pathway parser test.
+ * 
+ * @author Marc Streit
+ *
+ */
 public class PathwaysTest {
+	
 	public static void main(String[] args) throws Exception 
 	{
 	  	PathwayGraphBuilder pathwayGraphBuilder = new PathwayGraphBuilder();

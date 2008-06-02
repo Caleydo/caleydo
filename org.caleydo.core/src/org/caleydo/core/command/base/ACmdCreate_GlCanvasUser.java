@@ -146,7 +146,7 @@ extends ACmdCreate_IdTargetParentGLObject {
 		((AGLCanvasUser)gLEventListener).getViewCamera().setCameraPosition(cameraOrigin);
 		((AGLCanvasUser)gLEventListener).getViewCamera().setCameraRotation(cameraRotation);		
 		
-		refCommandManager.runDoCommand(this);
+		commandManager.runDoCommand(this);
 	}
 
 	/*
@@ -156,6 +156,6 @@ extends ACmdCreate_IdTargetParentGLObject {
 	public void undoCommand()
 	{
 		//TODO: Proper cleanup
-		refCommandManager.runUndoCommand(this);
+		commandManager.runUndoCommand(this);
 	}
 }

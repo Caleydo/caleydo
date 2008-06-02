@@ -3,20 +3,20 @@ package org.caleydo.core.command.base;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.command.CommandQueueSaxType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentAttr;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
 
 /**
+ * Abstract command that reads width and height of an view.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
  *
  */
 public abstract class ACmdCreate_IdTargetLabelParentXY 
-extends ACmdCreate_IdTargetLabelParentAttr {
+extends ACmdCreate_IdTargetLabelParent {
 
 	/**
 	 * Width of the widget.

@@ -1,7 +1,5 @@
 package org.caleydo.core.command.base;
 
-
-
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
@@ -10,8 +8,8 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
 /**
  * Abstract command class stores and handles commandId, tragertId and label of object.
  * 
- *  @see org.caleydo.core.command.ICommand
  *  @author Michael Kalkusch
+ *  @author Marc Streit
  *
  */
 public abstract class ACmdCreate_IdTargetLabel 
@@ -42,8 +40,8 @@ extends ACommand {
 	protected ACmdCreate_IdTargetLabel(
 			final IGeneralManager refGeneralManager,
 			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType)
-	{
+			final CommandQueueSaxType refCommandQueueSaxType) {
+		
 		// set unique ID to -1 because it is unknown at this moment
 		super(-1, 
 				refGeneralManager,
@@ -53,20 +51,13 @@ extends ACommand {
 	
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
 		
-		/*
-		 * do not call empty method super.setParameterHandler()
-		 */
-		
-		this.setId( 
-				refParameterHandler.getValueInt( 
-						CommandQueueSaxType.TAG_CMD_ID.getXmlKey() ) );
+		this.setId(refParameterHandler.getValueInt( 
+					CommandQueueSaxType.TAG_CMD_ID.getXmlKey() ) );
 	
-		iUniqueId = 
-			refParameterHandler.getValueInt( 
+		iUniqueId = refParameterHandler.getValueInt( 
 					CommandQueueSaxType.TAG_UNIQUE_ID.getXmlKey() );
 		
 		sLabel = refParameterHandler.getValueString( 
 					CommandQueueSaxType.TAG_LABEL.getXmlKey() );
 	}
-	
 }

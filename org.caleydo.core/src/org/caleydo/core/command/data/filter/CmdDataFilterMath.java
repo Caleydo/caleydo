@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.command.CommandQueueSaxType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttr;
+import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.StorageType;
 import org.caleydo.core.manager.ICommandManager;
@@ -20,7 +20,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  *
  */
 public class CmdDataFilterMath 
-extends ACmdCreate_IdTargetLabelAttr {
+extends ACmdCreate_IdTargetLabelAttrDetail {
 
 	public enum EDataFilterMathType {
 		LIN_2_LOG,

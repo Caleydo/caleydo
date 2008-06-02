@@ -47,7 +47,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	 */
 	public void doCommand() throws CaleydoRuntimeException {
 
-		refCommandManager.runDoCommand(this);
+		commandManager.runDoCommand(this);
 		
 		try 
 		{
@@ -88,7 +88,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	 */
 	public void undoCommand() throws CaleydoRuntimeException {
 
-		refCommandManager.runUndoCommand(this);
+		commandManager.runUndoCommand(this);
 	}
 	
 	public void setAttributes(final int iViewId,

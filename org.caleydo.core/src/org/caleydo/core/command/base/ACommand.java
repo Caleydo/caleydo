@@ -9,7 +9,10 @@ import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
+ * Abstract base class for all commands.
+ * 
  * @author Michael Kalkusch
+ * @author Marc  Streit
  *
  */
 public abstract class ACommand 
@@ -17,21 +20,15 @@ extends AUniqueManagedObject
 implements ICommand {
 
 	/**
-	 * Reference ot ICommandManager
-	 * 
-	 * Used to
-	 * 
-	 * @see org.caleydo.core.manager.ICommandManager#runDoCommand(ICommand)
-	 * @see org.caleydo.core.manager.ICommandManager#runUndoCommand(ICommand)
-	 * @see org.caleydo.core.command.ICommand#doCommand()
-	 * @see org.caleydo.core.command.ICommand#undoCommand()
-	 * 
+	 * Reference to ICommandManager
 	 */
-	protected final ICommandManager refCommandManager;
+	protected final ICommandManager commandManager;
 	
 	private CommandQueueSaxType refCommandQueueSaxType;
 	
-	
+	/**
+	 * Constructor.
+	 */
 	public ACommand(final int iSetCollectionId,
 			final IGeneralManager refGeneralManager,
 			final ICommandManager refCommandManager,
@@ -40,15 +37,10 @@ implements ICommand {
 		
 		super( iSetCollectionId, refGeneralManager );
 		
-		this.refCommandManager = refCommandManager;
+		this.commandManager = refCommandManager;
 		this.refCommandQueueSaxType = refCommandQueueSaxType;
 	}
 
-	
-	/**
-	 * @see prometheus.command.ICommand#isEqualType(prometheus.command.ICommand)
-	 *  * @see base.AManagedCmd#isEqualType(org.caleydo.core.command.ICommand)
-	 */
 	public final boolean isEqualType(ICommand compareToObject) {
 		if ( compareToObject.getCommandType() == this.getCommandType() ) { 
 			return true;
@@ -76,7 +68,7 @@ implements ICommand {
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.command.ICommand#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
 	 */
-	public void setParameterHandler( IParameterHandler phHandler) {
+	public void setParameterHandler(final IParameterHandler phHandler) {
 		
 	}
 	
@@ -89,7 +81,7 @@ implements ICommand {
 		return refCommandQueueSaxType.getInfoText() + " [" + this.getId() + "]";
 	}
 	
-	protected final void setCommandQueueSaxType( final CommandQueueSaxType refCommandQueueSaxType) {
+	protected final void setCommandQueueSaxType(final CommandQueueSaxType refCommandQueueSaxType) {
 		this.refCommandQueueSaxType  =refCommandQueueSaxType;
 	}
 }

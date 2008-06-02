@@ -314,7 +314,7 @@ extends ACmdCreate_IdTargetLabel {
 			llDataRaw = null;
 		}
 		
-		refCommandManager.runDoCommand(this);
+		commandManager.runDoCommand(this);
 	}
 
 	/* (non-Javadoc)
@@ -330,7 +330,7 @@ extends ACmdCreate_IdTargetLabel {
 //				iUniqueId,
 //				LoggerType.VERBOSE );	
 		
-		refCommandManager.runUndoCommand(this);
+		commandManager.runUndoCommand(this);
 	}
 	
 

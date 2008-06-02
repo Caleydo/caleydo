@@ -9,13 +9,13 @@ import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.swt.data.exchanger.NewSetEditorViewRep;
-//import org.caleydo.core.view.swt.data.exchanger.SetEditorViewRep;
 
 /**
- * Class implementes the command for 
+ * Class implements the command for 
  * the data exchanger view.
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public class CmdViewCreateSetEditor 
@@ -61,7 +61,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 		setEditorView.initView();
 		setEditorView.drawView();
 		
-		refCommandManager.runDoCommand(this);
+		commandManager.runDoCommand(this);
 	}
 
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
@@ -73,6 +73,6 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	
 	public void undoCommand() throws CaleydoRuntimeException {
 
-		refCommandManager.runUndoCommand(this);
+		commandManager.runUndoCommand(this);
 	}
 }

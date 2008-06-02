@@ -17,6 +17,11 @@ public final class MementoTesterObject {
 	
 	private int iTestRuns;
 	
+	/**
+	 * Constructor.
+	 * 
+	 * @param iTestRuns
+	 */
 	public MementoTesterObject(final int iTestRuns) {
 		this.iTestRuns = iTestRuns;
 	}

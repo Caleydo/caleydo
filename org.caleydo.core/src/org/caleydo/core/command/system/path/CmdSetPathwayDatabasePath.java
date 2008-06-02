@@ -50,7 +50,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		
 		pathwayManager.createPathwayDatabase(type, sXMLPath, sImagePath, sImageMapPath);
 
-		refCommandManager.runDoCommand(this);
+		commandManager.runDoCommand(this);
 	}
 	
 	/* (non-Javadoc)
@@ -59,7 +59,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	public void undoCommand() throws CaleydoRuntimeException {
 
 		
-		refCommandManager.runUndoCommand(this);
+		commandManager.runUndoCommand(this);
 	}
 	
 	/*

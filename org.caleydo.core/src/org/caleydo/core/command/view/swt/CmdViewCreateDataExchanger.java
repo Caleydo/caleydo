@@ -72,7 +72,7 @@ extends ACmdCreate_IdTargetLabelParentXY  {
 		dataExchangerView.initView();
 		dataExchangerView.drawView();
 		
-		refCommandManager.runDoCommand(this);
+		commandManager.runDoCommand(this);
 	}
 	
 	/*
@@ -81,6 +81,6 @@ extends ACmdCreate_IdTargetLabelParentXY  {
 	 */
 	public void undoCommand() {
 
-		refCommandManager.runUndoCommand(this);
+		commandManager.runUndoCommand(this);
 	}
 }

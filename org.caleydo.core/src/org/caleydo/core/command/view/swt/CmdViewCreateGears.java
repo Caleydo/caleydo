@@ -11,7 +11,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.swt.jogl.gears.GearsViewRep;
 
 /**
- * Class implementes the command for creating a gears view.
+ * Class implements the command for creating a gears view.
  * 
  * @see org.caleydo.core.command.ICommand
  * 
@@ -60,7 +60,7 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL  {
 		gearsView.initView();
 		gearsView.drawView();
 		
-		refCommandManager.runDoCommand(this);
+		commandManager.runDoCommand(this);
 	}
 
 	
@@ -73,6 +73,6 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL  {
 	
 	public void undoCommand() throws CaleydoRuntimeException {
 		
-		refCommandManager.runUndoCommand(this);
+		commandManager.runUndoCommand(this);
 	}
 }

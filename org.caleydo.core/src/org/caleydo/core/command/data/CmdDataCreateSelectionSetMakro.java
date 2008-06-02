@@ -57,12 +57,12 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		// and the storages and VA is assigned to it.
 		createSelectionSet();
 		
-		refCommandManager.runDoCommand(this);
+		commandManager.runDoCommand(this);
 	}
 	
 	public void undoCommand() throws CaleydoRuntimeException {
 		
-		refCommandManager.runUndoCommand(this);		
+		commandManager.runUndoCommand(this);		
 	}
 	
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {

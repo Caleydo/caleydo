@@ -70,7 +70,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 		browserView.initView();
 		browserView.drawView();
 		
-		refCommandManager.runDoCommand(this);
+		commandManager.runDoCommand(this);
 	}
 
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
@@ -90,6 +90,6 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	
 	public void undoCommand() throws CaleydoRuntimeException {
 
-		refCommandManager.runUndoCommand(this);
+		commandManager.runUndoCommand(this);
 	}
 }

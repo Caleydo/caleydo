@@ -401,7 +401,7 @@ extends ACommand {
 				
 			} //if (bCreateReverseMap)
 			
-			refCommandManager.runDoCommand(this);
+			commandManager.runDoCommand(this);
 			
 		} //try
 		catch ( Exception e ) 
@@ -431,6 +431,6 @@ extends ACommand {
 	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CaleydoRuntimeException {
-		refCommandManager.runUndoCommand(this);
+		commandManager.runUndoCommand(this);
 	}
 }

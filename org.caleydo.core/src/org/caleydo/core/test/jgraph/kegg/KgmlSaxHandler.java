@@ -6,7 +6,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * 
- * Kgml test sax parser
+ * Kgml test SAX parser
  * 
  * @author Marc Streit
  *
@@ -16,6 +16,11 @@ extends DefaultHandler
 {
 	private PathwayGraphBuilder pathwayGraphBuilder;
 	
+	/**
+	 * Constructor.
+	 * 
+	 * @param pathwayGraphBuilder
+	 */
 	public KgmlSaxHandler(PathwayGraphBuilder pathwayGraphBuilder)
 	{
 		this.pathwayGraphBuilder = pathwayGraphBuilder;
@@ -27,12 +32,20 @@ extends DefaultHandler
         System.out.println("Start parsing the document.");
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.xml.sax.helpers.DefaultHandler#endDocument()
+     */
     public void endDocument()
     throws SAXException
     {
        	System.out.println("End parsing the document.");
     }
 	
+    /*
+     * (non-Javadoc)
+     * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+     */
     public void startElement(String namespaceURI,
             String sSimpleName,
             String sQualifiedName,
@@ -87,6 +100,10 @@ extends DefaultHandler
     	}
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+     */
     public void endElement(String namespaceURI,
           String sSimpleName,
           String sQualifiedName)

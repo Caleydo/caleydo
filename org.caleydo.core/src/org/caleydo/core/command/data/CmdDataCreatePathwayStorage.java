@@ -127,7 +127,7 @@ extends ACmdCreate_IdTargetLabel {
 	
 		llKEGGPathwayIDs = null;
 		
-		refCommandManager.runDoCommand(this);
+		commandManager.runDoCommand(this);
 	}
 
 	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
@@ -169,6 +169,6 @@ extends ACmdCreate_IdTargetLabel {
 	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CaleydoRuntimeException {
-		refCommandManager.runUndoCommand(this);		
+		commandManager.runUndoCommand(this);		
 	}
 }
