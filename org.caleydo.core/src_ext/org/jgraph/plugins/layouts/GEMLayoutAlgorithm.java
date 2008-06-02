@@ -197,7 +197,7 @@ public class GEMLayoutAlgorithm extends JGraphLayoutAlgorithm implements GraphMo
     /** 
      * the length of the Edges in Pixel, the algorithm tries to keep
      */
-    protected double prefEdgeLength = 100;
+    protected double pedgeLength = 100;
     
     /** 
      * the strength of the gravitation force, directed to the barycenter of the
@@ -259,7 +259,7 @@ public class GEMLayoutAlgorithm extends JGraphLayoutAlgorithm implements GraphMo
      * Describes a distance the algorithm tries to keep, when he detects a 
      * overlapping cell. 
      */
-    private double overlapPrefDistance;
+    private double overlapPdistance;
     
     /**
      * switches the feature to whatch for overlapping on/off
@@ -498,7 +498,7 @@ public class GEMLayoutAlgorithm extends JGraphLayoutAlgorithm implements GraphMo
             		GEMLayoutSettings.KEY_MIN_TEMPERATURE));
             maxTemperature           = Double.parseDouble((String)config.get(
             		GEMLayoutSettings.KEY_MAX_TEMPERATURE));
-            prefEdgeLength           = Double.parseDouble((String)config.get(
+            pedgeLength           = Double.parseDouble((String)config.get(
             		GEMLayoutSettings.KEY_PREF_EDGE_LENGTH));
             gravitation              = Double.parseDouble((String)config.get(
             		GEMLayoutSettings.KEY_GRAVITATION));
@@ -506,7 +506,7 @@ public class GEMLayoutAlgorithm extends JGraphLayoutAlgorithm implements GraphMo
             		GEMLayoutSettings.KEY_RANDOM_IMPULSE_RANGE));        
             overlapDetectWidth       = Double.parseDouble((String)config.get(
             		GEMLayoutSettings.KEY_OVERLAPPING_DETECTION_WIDTH));
-            overlapPrefDistance      = Double.parseDouble((String)config.get(
+            overlapPdistance      = Double.parseDouble((String)config.get(
             		GEMLayoutSettings.KEY_OVERLAPPING_PREF_DISTANCE));
             shouldEndPerAverage      = isTrue((String)config.get(
             		GEMLayoutSettings.KEY_COMPUTE_PERMUTATION));
@@ -537,7 +537,7 @@ public class GEMLayoutAlgorithm extends JGraphLayoutAlgorithm implements GraphMo
             		GEMLayoutSettings.KEY_LAYOUT_UPDATE_MIN_TEMPERATURE));
             maxTemperature           = Double.parseDouble((String)config.get(
             		GEMLayoutSettings.KEY_LAYOUT_UPDATE_MAX_TEMPERATURE));
-            prefEdgeLength           = Double.parseDouble((String)config.get(
+            pedgeLength           = Double.parseDouble((String)config.get(
             		GEMLayoutSettings.KEY_LAYOUT_UPDATE_PREF_EDGE_LENGTH));
             gravitation              = Double.parseDouble((String)config.get(
             		GEMLayoutSettings.KEY_LAYOUT_UPDATE_GRAVITATION));
@@ -545,7 +545,7 @@ public class GEMLayoutAlgorithm extends JGraphLayoutAlgorithm implements GraphMo
             		GEMLayoutSettings.KEY_LAYOUT_UPDATE_RANDOM_IMPULSE_RANGE));        
             overlapDetectWidth       = Double.parseDouble((String)config.get(
             		GEMLayoutSettings.KEY_LAYOUT_UPDATE_OVERLAPPING_DETECTION_WIDTH));
-            overlapPrefDistance      = Double.parseDouble((String)config.get(
+            overlapPdistance      = Double.parseDouble((String)config.get(
             		GEMLayoutSettings.KEY_LAYOUT_UPDATE_OVERLAPPING_PREF_DISTANCE));
             shouldEndPerAverage      = isTrue((String)config.get(
             		GEMLayoutSettings.KEY_LAYOUT_UPDATE_COMPUTE_PERMUTATION));
@@ -837,8 +837,8 @@ public class GEMLayoutAlgorithm extends JGraphLayoutAlgorithm implements GraphMo
                 
                 if( absDelta > equalsNull ){
                     repulsiveForce.add(new Point2D.Double(
-                        deltaX * ((prefEdgeLength * prefEdgeLength) / (absDelta * absDelta)),
-                        deltaY * ((prefEdgeLength * prefEdgeLength) / (absDelta * absDelta))));
+                        deltaX * ((pedgeLength * pedgeLength) / (absDelta * absDelta)),
+                        deltaY * ((pedgeLength * pedgeLength) / (absDelta * absDelta))));
                 }
 //                } 
             } 
@@ -876,8 +876,8 @@ public class GEMLayoutAlgorithm extends JGraphLayoutAlgorithm implements GraphMo
             double absDelta = MathExtensions.abs(deltaX,deltaY);
             
             attractiveForce.add(new Point2D.Double(
-                deltaX * (( absDelta * absDelta ) / ( prefEdgeLength * prefEdgeLength * massIndex )),
-                deltaY * (( absDelta * absDelta ) / ( prefEdgeLength * prefEdgeLength * massIndex ))));
+                deltaX * (( absDelta * absDelta ) / ( pedgeLength * pedgeLength * massIndex )),
+                deltaY * (( absDelta * absDelta ) / ( pedgeLength * pedgeLength * massIndex ))));
         }
         
         
@@ -916,7 +916,7 @@ public class GEMLayoutAlgorithm extends JGraphLayoutAlgorithm implements GraphMo
                 
                     double minDistance = 
                         (Math.max(viewSize.getWidth(),viewSize.getHeight())/2.0)+
-                        (Math.max(uSize.getWidth(),uSize.getHeight())/2.0)+overlapPrefDistance;
+                        (Math.max(uSize.getWidth(),uSize.getHeight())/2.0)+overlapPdistance;
                 
                     double deltaX = (pos.x - uPos.x);
                     double deltaY = (pos.y - uPos.y);

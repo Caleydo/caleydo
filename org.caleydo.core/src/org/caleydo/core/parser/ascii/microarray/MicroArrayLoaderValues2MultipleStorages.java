@@ -131,7 +131,7 @@ extends AMicroArrayLoader {
 			} // while ((iterForAllocation.hasNext())&& ...
 			
 			
-		} // for ( int i=0; i < refArrayDataStorage.length; i++ )
+		} // for ( int i=0; i < arrayDataStorage.length; i++ )
 			
 		/**
 		 * Array for StorageType...
@@ -379,7 +379,7 @@ extends AMicroArrayLoader {
 	protected boolean copyDataToInternalDataStructures() {
 
 	   /**
-		 * Copy valued to refStorage...
+		 * Copy valued to storage...
 		 */   		   
 	    currentDataStorage.setLabel( "microarray loader storage " + this.getFileName() );
 	    
@@ -434,11 +434,11 @@ extends AMicroArrayLoader {
 	
 	
 	public final boolean setMementoXML_usingHandler( 
-			final ISaxParserHandler refSaxHandler ) {
+			final ISaxParserHandler saxHandler ) {
 		
 		try {
 			CollectionSelectionSaxParserHandler handler = 
-				(CollectionSelectionSaxParserHandler) refSaxHandler;
+				(CollectionSelectionSaxParserHandler) saxHandler;
 			
 			setFileName( handler.getXML_MicroArray_FileName() );
 			

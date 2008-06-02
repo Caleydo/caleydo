@@ -44,22 +44,22 @@
 //	 * 
 //	 */
 //	public CmdGlObjectScatterPlot2D(
-//			final IGeneralManager refGeneralManager,
-//			final ICommandManager refCommandManager,
-//			final CommandQueueSaxType refCommandQueueSaxType)
+//			final IGeneralManager generalManager,
+//			final ICommandManager commandManager,
+//			final CommandQueueSaxType commandQueueSaxType)
 //	{
-//		super(refGeneralManager, 
-//				refCommandManager,
-//				refCommandQueueSaxType);
+//		super(generalManager, 
+//				commandManager,
+//				commandQueueSaxType);
 //		
 //		iResolution = new int[3];
 //		
 //		localManagerObjectType = CommandQueueSaxType.CREATE_GL_SCATTERPLOT2D;
 //	}
 //
-//	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+//	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 //		
-//		super.setParameterHandler(refParameterHandler);
+//		super.setParameterHandler(parameterHandler);
 //		StringTokenizer token = new StringTokenizer(
 //				sAttribute3,
 //				IGeneralManager.sDelimiter_Parser_DataItems);

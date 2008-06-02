@@ -19,10 +19,10 @@ public class TestTableViewRep
 extends AViewRep 
 implements IView {
 	
-	public TestTableViewRep(IGeneralManager refGeneralManager, 
+	public TestTableViewRep(IGeneralManager generalManager, 
 			int iViewId, int iParentContainerId, String sLabel) {
 		
-		super(refGeneralManager, 
+		super(generalManager, 
 				iViewId, 
 				iParentContainerId, 
 				sLabel,
@@ -47,7 +47,7 @@ implements IView {
 
 	protected void createTable()
 	{
-		final Table table = new Table(refSWTContainer, SWT.BORDER | SWT.V_SCROLL);
+		final Table table = new Table(swtContainer, SWT.BORDER | SWT.V_SCROLL);
 		table.setHeaderVisible(true);
 		table.setLinesVisible(true);
 		table.setSize(400, 300);
@@ -59,9 +59,9 @@ implements IView {
 			TableItem item = new TableItem(table, SWT.NONE);
 			item.setText(new String[] {"item 0" + i, "item 1"+i});
 		}
-		refSWTContainer.addControlListener(new ControlAdapter() {
+		swtContainer.addControlListener(new ControlAdapter() {
 			public void controlResized(ControlEvent e) {
-				Rectangle area = refSWTContainer.getClientArea();
+				Rectangle area = swtContainer.getClientArea();
 				Point preferredSize = table.computeSize(SWT.DEFAULT, SWT.DEFAULT);
 				int width = area.width - 2*table.getBorderWidth();
 				if (preferredSize.y > area.height + table.getHeaderHeight()) {

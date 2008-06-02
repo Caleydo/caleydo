@@ -21,11 +21,11 @@ public interface IMementoCallbackXML {
 	 * @param type type of object
 	 * @param tag_causes_callback Tag that cased the callback
 	 * @param details additional information
-	 * @param refSaxHandler SaxHandler with state for object from XML file
+	 * @param saxHandler SaxHandler with state for object from XML file
 	 */
 	public void callbackForParser( final ManagerObjectType type,
 			final String tag_causes_callback,
 			final String details,
-			final ISaxParserHandler refSaxHandler);	
+			final ISaxParserHandler saxHandler);	
 	
 }

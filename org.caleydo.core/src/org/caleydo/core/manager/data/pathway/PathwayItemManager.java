@@ -51,9 +51,9 @@ implements IPathwayItemManager, Serializable
 	 * Constructor.
 	 * 
 	 */
-	public PathwayItemManager(final IGeneralManager refGeneralManager) {
+	public PathwayItemManager(final IGeneralManager generalManager) {
 		
-		super( refGeneralManager, 
+		super( generalManager, 
 				IGeneralManager.iUniqueId_TypeOffset_Pathways_Vertex,
 				ManagerType.DATA_PATHWAY_ELEMENT );
 	

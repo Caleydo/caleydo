@@ -362,8 +362,8 @@ implements ISaxParserHandler
 				/**
 				 * trigger callback if reference is set...
 				 */
-				if ( refParentMementoCaller != null ) {
-					refParentMementoCaller.callbackForParser( 
+				if ( parentMementoCaller != null ) {
+					parentMementoCaller.callbackForParser( 
 							eSelectionType,
 							"",
 							sSelectionType, 

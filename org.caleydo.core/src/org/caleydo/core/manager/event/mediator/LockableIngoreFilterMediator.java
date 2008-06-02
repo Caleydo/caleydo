@@ -18,10 +18,10 @@ import org.caleydo.core.manager.IGeneralManager;
 public class LockableIngoreFilterMediator 
 extends LockableMediator {
 
-	protected ISet refIgnoreSet;
+	protected ISet ignoreSet;
 	
 	/**
-	 * @param refEventPublisher
+	 * @param eventPublisher
 	 * @param iMediatorId
 	 */
 	public LockableIngoreFilterMediator(final IGeneralManager generalManager,
@@ -30,15 +30,15 @@ extends LockableMediator {
 
 		super(generalManager, iMediatorId, MediatorUpdateType.MEDIATOR_FILTER_ALL_EXPECT_SET);
 		
-		this.refIgnoreSet = setExclusiveSet;
+		this.ignoreSet = setExclusiveSet;
 	}
 	
 	public ISet getIgnoreSet() {
-		return this.refIgnoreSet;
+		return this.ignoreSet;
 	}
 	
 	public void setIgnoreSet(ISet setIgnoreSet) {
-		this.refIgnoreSet = setIgnoreSet;
+		this.ignoreSet = setIgnoreSet;
 	}
 	
 
@@ -53,7 +53,7 @@ extends LockableMediator {
 		
 		assert updatedSet != null : "can not handle selectionSet null-pointer";
 		
-		if (refIgnoreSet != updatedSet) {
+		if (ignoreSet != updatedSet) {
 			super.updateReceiver(eventTrigger, updatedSet);
 		}		
 	}

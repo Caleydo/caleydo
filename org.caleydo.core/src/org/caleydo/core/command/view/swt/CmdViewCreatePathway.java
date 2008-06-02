@@ -33,13 +33,13 @@ extends ACmdCreate_IdTargetLabelParentXY  {
 	 * 
 	 */
 	public CmdViewCreatePathway(
-			final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType) {
+			final IGeneralManager generalManager,
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType) {
 		
-		super(refGeneralManager, 
-				refCommandManager,
-				refCommandQueueSaxType);
+		super(generalManager, 
+				commandManager,
+				commandQueueSaxType);
 		
 		iArSetIDs = new ArrayList<Integer>();
 	}
@@ -76,30 +76,30 @@ extends ACmdCreate_IdTargetLabelParentXY  {
 		commandManager.runDoCommand(this);
 	}
 	
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 				
-		assert refParameterHandler != null: "ParameterHandler object is null!";	
+		assert parameterHandler != null: "ParameterHandler object is null!";	
 		
-		super.setParameterHandler(refParameterHandler);	
+		super.setParameterHandler(parameterHandler);	
 	
 		//TODO: load browser ID dynamically
-//		refParameterHandler.setValueAndTypeAndDefault("iHTMLBrowserId",
-//				refParameterHandler.getValueString( 
+//		parameterHandler.setValueAndTypeAndDefault("iHTMLBrowserId",
+//				parameterHandler.getValueString( 
 //						CommandQueueSaxType.TAG_DETAIL.getXmlKey() ),
 //				IParameterHandler.ParameterHandlerType.INT,
 //				"-1");
 //		
-//		iHTMLBrowserId = refParameterHandler.getValueInt("iHTMLBrowserId");
+//		iHTMLBrowserId = parameterHandler.getValueInt("iHTMLBrowserId");
 		
 		// Read SET IDs (Data and Selection) 
 		String sPathwaySets = "";
-		refParameterHandler.setValueAndTypeAndDefault("sPathwaySets",
-				refParameterHandler.getValueString( 
+		parameterHandler.setValueAndTypeAndDefault("sPathwaySets",
+				parameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_DETAIL.getXmlKey() ),
 				IParameterHandler.ParameterHandlerType.STRING,
 				"-1");
 		
-		sPathwaySets = refParameterHandler.getValueString("sPathwaySets");
+		sPathwaySets = parameterHandler.getValueString("sPathwaySets");
 		
 		StringTokenizer setToken = new StringTokenizer(
 				sPathwaySets,

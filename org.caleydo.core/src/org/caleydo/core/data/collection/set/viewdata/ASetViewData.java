@@ -29,9 +29,9 @@ public abstract class ASetViewData
 extends ASetSimple 
 implements ISetViewData {
 	
-	IViewCamera refIViewCamera;
+	IViewCamera viewCamera;
 	
-	private final IStorage[] refIStorageArray; 
+	private final IStorage[] arStorageArray; 
 	
 	/**
 	 * @param iSetCollectionId
@@ -44,7 +44,7 @@ implements ISetViewData {
 
 		super(iSetCollectionId, setGeneralManager, setType);
 		
-		refIStorageArray = new IStorage[0];
+		arStorageArray = new IStorage[0];
 	}
 
 	/* (non-Javadoc)
@@ -80,7 +80,7 @@ implements ISetViewData {
 	public final IStorage[] getStorageByDim(int iAtDimension) {
 
 		assert false : "call dummy method";
-		return refIStorageArray;
+		return arStorageArray;
 	}
 
 	/* (non-Javadoc)
@@ -274,7 +274,7 @@ implements ISetViewData {
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.data.xml.IMementoXML#setMementoXML_usingHandler(org.caleydo.core.xml.parser.ISaxParserHandler)
 	 */
-	public final boolean setMementoXML_usingHandler(ISaxParserHandler refSaxHandler) {
+	public final boolean setMementoXML_usingHandler(ISaxParserHandler saxHandler) {
 
 		assert false : "call dummy method";
 		return false;

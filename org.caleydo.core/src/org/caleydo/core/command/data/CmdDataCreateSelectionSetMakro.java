@@ -21,7 +21,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 public class CmdDataCreateSelectionSetMakro 
 extends ACmdCreate_IdTargetLabelAttrDetail {
 	
-//	ISet refSelectionSet;
+//	ISet selectionSet;
 	
 	protected int iSelectionVirtualArrayId = -1;
 	protected int iSelectionIdStorageId = -1;
@@ -31,18 +31,18 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	/**
 	 * Constructor. 
 	 * 
-	 * @param refGeneralManager
-	 * @param refCommandManager
-	 * @param refCommandQueueSaxType
+	 * @param generalManager
+	 * @param commandManager
+	 * @param commandQueueSaxType
 	 */
 	public CmdDataCreateSelectionSetMakro(
-			final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType) {
+			final IGeneralManager generalManager,
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType) {
 
-		super(refGeneralManager,
-				refCommandManager,
-				refCommandQueueSaxType);
+		super(generalManager,
+				commandManager,
+				commandQueueSaxType);
 	}
 
 	public void doCommand() throws CaleydoRuntimeException {
@@ -65,11 +65,11 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		commandManager.runUndoCommand(this);		
 	}
 	
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 		
-		assert refParameterHandler != null: "ParameterHandler object is null!";	
+		assert parameterHandler != null: "ParameterHandler object is null!";	
 		
-		super.setParameterHandler(refParameterHandler);	
+		super.setParameterHandler(parameterHandler);	
 		
 		// Nothing else to do here because the command only
 		// needs an target Set ID, which is already

@@ -26,12 +26,12 @@ implements IView {
 	protected String sImagePath;
 	
 	public ImageViewRep(
-			IGeneralManager refGeneralManager, 
+			IGeneralManager generalManager, 
 			int iViewId, 
 			int iParentContainerId, 
 			String sLabel) {
 		
-		super(refGeneralManager, 
+		super(generalManager, 
 				iViewId, 
 				iParentContainerId, 
 				sLabel,
@@ -44,16 +44,16 @@ implements IView {
 	 */
 	protected void initViewSwtComposit(Composite swtContainer) {
 		
-		Image image = new Image(refSWTContainer.getDisplay(), sImagePath);
+		Image image = new Image(swtContainer.getDisplay(), sImagePath);
 
-		Label label = new Label(refSWTContainer, SWT.BORDER);
+		Label label = new Label(swtContainer, SWT.BORDER);
 		label.setSize(iWidth, iHeight);
 	    label.setImage(image);
 	}
 
 	public void drawView() {
 		
-//		refGeneralManager.getSingelton().logMsg(
+//		generalManager.getSingelton().logMsg(
 //				this.getClass().getSimpleName() + 
 //				": drawView(): Load "+sUrl, 
 //				LoggerType.VERBOSE );		

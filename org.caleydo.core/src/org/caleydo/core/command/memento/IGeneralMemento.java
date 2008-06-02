@@ -6,7 +6,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 /**
  * One base implementation of the IMemento interface.
  * 
- * Desing Patern "IMemento"
+ * Desing pattern "IMemento"
  * 
  * @see org.caleydo.core.manager.IMementoManager
  * 
@@ -18,24 +18,24 @@ public class IGeneralMemento
 
 	
 	/**
-	 * Stores all inforamtion needed to reset an object to a previouse state.
+	 * Stores all information needed to reset an object to a previous state.
 	 * Must only be used by the object, that created the IMemento!
 	 * Object which creates the IMemento must derive a class from MementoStateInterface
-	 * and cast to the derived class once the obejct revices the MementoStateInterface-object.
+	 * and cast to the derived class once the object receives the MementoStateInterface-object.
 	 * 
 	 */
-	protected IMementoState refMementoState = null;
+	protected IMementoState mementoState = null;
 	//TODO: write TEST for IMemento objects!
 
 	/**
 	 * Reference to creator of IMemento.
 	 */
-	final protected Object refMementoCreator;
+	final protected Object mementoCreator;
 	
 	/**
 	 * Define type of memento
 	 */
-	protected MementoType refMementoType = MementoType.GENERAL;
+	protected MementoType mementoType = MementoType.GENERAL;
 	
 	/**
 	 * Constructor.
@@ -45,7 +45,7 @@ public class IGeneralMemento
 	public IGeneralMemento(final Object setMementoCreator) {
 		assert setMementoCreator != null: "IMemento(Object)Can not creat a memento with null-pointer as parent";
 		
-		refMementoCreator = setMementoCreator;
+		mementoCreator = setMementoCreator;
 	}
 
 	/**
@@ -58,8 +58,8 @@ public class IGeneralMemento
 			final IMementoState setMementoData) {
 		assert setMementoCreator != null: "IMemento(Object,MementoType) Can not creat a memento with null-pointer as parent";
 		
-		refMementoCreator = setMementoCreator;
-		refMementoState = setMementoData;		
+		mementoCreator = setMementoCreator;
+		mementoState = setMementoData;		
 	}
 	
 	/**
@@ -72,18 +72,19 @@ public class IGeneralMemento
 	public IGeneralMemento(final Object setMementoCreator, 
 			final IMementoState setMementoData,
 			final MementoType setMementoType) {
+		
 		assert setMementoCreator != null: "IMemento(Object,MementoType,IMementoState)Can not creat a memento with null-pointer as parent";
 		
-		refMementoCreator = setMementoCreator;
-		refMementoType = setMementoType;
-		refMementoState = setMementoData;		
+		mementoCreator = setMementoCreator;
+		mementoType = setMementoType;
+		mementoState = setMementoData;		
 	}
 
 	/* (non-Javadoc)
 	 * @see prometheus.command.memento.Memento#getMementoType()
 	 */
 	public final MementoType getMementoType() {
-		return refMementoType;
+		return mementoType;
 	}
 	
 	/*
@@ -94,13 +95,13 @@ public class IGeneralMemento
 			final IMementoState setMemetoState) 
 	throws CaleydoRuntimeException 
 	{
-		if ( refMementoCreator != setMementoCreator) {
+		if ( mementoCreator != setMementoCreator) {
 			throw new CaleydoRuntimeException("IGeneralMemento.setMementoState() failed due to setting data not from the creator of the IMemento.",
 					CaleydoRuntimeExceptionType.MEMENTO );
 		}
-		//assert  refMementoCreator == setMementoCreator: "IGeneralMemento.setMementoState() failed due to setting data not from the creator of the IMemento.";
+		//assert  mementoCreator == setMementoCreator: "IGeneralMemento.setMementoState() failed due to setting data not from the creator of the IMemento.";
 		
-		this.refMementoState = setMemetoState;
+		this.mementoState = setMemetoState;
 	}
 
 	
@@ -111,9 +112,9 @@ public class IGeneralMemento
 	 * @see prometheus.command.memento.Memento#getMementoState(java.lang.Object)
 	 */
 	public IMementoState getMementoState(final Object setMementoCreator) {		
-		assert setMementoCreator != refMementoCreator :"getMemento() can only ba called by the creator of the memento!";
+		assert setMementoCreator != mementoCreator :"getMemento() can only ba called by the creator of the memento!";
 		
-		return refMementoState;
+		return mementoState;
 	}
 	
 	/**
@@ -127,14 +128,14 @@ public class IGeneralMemento
 	 * @see prometheus.command.memento.Memento#toString()
 	 */
 	public String toString() {
-		return refMementoState.toString();
+		return mementoState.toString();
 	}
 	
 	/* (non-Javadoc)
 	 * @see prometheus.command.memento.Memento#toStringRecursive()
 	 */
 	public String toStringRecursive() {
-		return refMementoState.toStringRecursive();
+		return mementoState.toStringRecursive();
 	}
 
 }

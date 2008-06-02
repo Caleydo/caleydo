@@ -33,7 +33,7 @@ implements IView, IMediatorReceiver {
 
 	protected static final Object StorageModel = null;
 
-	protected DataTableViewRep refDataTableViewRep;
+	protected DataTableViewRep dataTableViewRep;
 
 	protected TreeViewer treeViewer;
 
@@ -53,17 +53,17 @@ implements IView, IMediatorReceiver {
 	
 	protected DataCollectionModel rootViewModel;
 
-	// private ISelectionChangedListener refISelectionChangedListener;
+	// private ISelectionChangedListener iSelectionChangedListener;
 
 	/**
 	 * Constructor.
 	 */
-	public DataExplorerViewRep(IGeneralManager refGeneralManager,
+	public DataExplorerViewRep(IGeneralManager generalManager,
 			int iViewId,
 			int iParentContainerId,
 			String sLabel) {
 
-		super(refGeneralManager, 
+		super(generalManager, 
 				iViewId, 
 				iParentContainerId, 
 				sLabel,
@@ -71,7 +71,7 @@ implements IView, IMediatorReceiver {
 
 		// The simple data table is not created via the view manager
 		// because it is not needed in the global context.
-		refDataTableViewRep = new DataTableViewRep(refGeneralManager, iViewId);
+		dataTableViewRep = new DataTableViewRep(generalManager, iViewId);
 	}
 
 //	/**
@@ -86,13 +86,13 @@ implements IView, IMediatorReceiver {
 	protected void initViewSwtComposit(Composite swtContainer) {
 		FillLayout fillLayout = new FillLayout();
 		fillLayout.type = SWT.HORIZONTAL;
-		refSWTContainer.setLayout(fillLayout);
+		swtContainer.setLayout(fillLayout);
 	}
 	
 	public void drawView() {
 
 		// Create the tree viewer as a child of the composite parent
-		treeViewer = new TreeViewer(refSWTContainer);
+		treeViewer = new TreeViewer(swtContainer);
 		treeViewer.setContentProvider(new DataExplorerContentProvider());
 		labelProvider = new DataExplorerLabelProvider();
 		treeViewer.setLabelProvider(labelProvider);
@@ -104,8 +104,8 @@ implements IView, IMediatorReceiver {
 		treeViewer.setInput(getInitialInput());
 		treeViewer.expandAll();
 
-		refDataTableViewRep.setExternalGUIContainer(refSWTContainer);
-		refDataTableViewRep.initTable();
+		dataTableViewRep.setExternalGUIContainer(swtContainer);
+		dataTableViewRep.initTable();
 	}
 
 	/**
@@ -307,19 +307,19 @@ implements IView, IMediatorReceiver {
 						AModel model = (AModel) iterator.next();
 						if (model instanceof StorageModel)
 						{
-							refDataTableViewRep.createStorageTable(model
+							dataTableViewRep.createStorageTable(model
 									.getID());
 
 						} else if (model instanceof SelectionModel)
 						{
-							refDataTableViewRep.createSelectionTable(model
+							dataTableViewRep.createSelectionTable(model
 									.getID());
 						} else
 						{
-							refDataTableViewRep.reinitializeTable();
+							dataTableViewRep.reinitializeTable();
 						}
 
-						refDataTableViewRep.redrawTable();
+						dataTableViewRep.redrawTable();
 					}
 				}
 			}
@@ -340,7 +340,7 @@ implements IView, IMediatorReceiver {
 //				LoggerType.VERBOSE);
 
 		//treeViewer.setInput(getInitalInput());
-		//refDataTableViewRep.updateSelection(triggerId);
+		//dataTableViewRep.updateSelection(triggerId);
 	}
 	
 	/*
@@ -354,46 +354,46 @@ implements IView, IMediatorReceiver {
 			return;
 		}
 		
-		final ISetSelection refSetSelection = (ISetSelection)updatedSet;
+		final ISetSelection setSelection = (ISetSelection)updatedSet;
 		
 //		generalManager.logMsg(
 //				"Data Explorer selection update called by " 
 //				+ eventTrigger.getClass().getSimpleName(),
 //				LoggerType.VERBOSE);
 		
-		refSWTContainer.getDisplay().asyncExec(new Runnable() {
+		swtContainer.getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				
 				// insert new selection VIRTUAL_ARRAY with ID and label in the tree
-				IVirtualArray refSelectionVirtualArray = 
-					refSetSelection.getVirtualArrayByDimAndIndex(0, 0);
+				IVirtualArray selectionVirtualArray = 
+					setSelection.getVirtualArrayByDimAndIndex(0, 0);
 				SelectionModel currentSelectionVirtualArrayModel = 
-					new SelectionModel(refSelectionVirtualArray.getId(), 
-							refSelectionVirtualArray.getLabel());
+					new SelectionModel(selectionVirtualArray.getId(), 
+							selectionVirtualArray.getLabel());
 				rootSelectionModel.add(currentSelectionVirtualArrayModel);			
 				
 				// insert new selection data STORAGE with ID and label in the tree
-				IStorage refSelectionDataStorage = 
-					refSetSelection.getStorageByDimAndIndex(0, 0);
+				IStorage selectionDataStorage = 
+					setSelection.getStorageByDimAndIndex(0, 0);
 				StorageModel currentSelectionDataStorageModel = 
-					new StorageModel(refSelectionDataStorage.getId(), 
-							refSelectionDataStorage.getLabel());
+					new StorageModel(selectionDataStorage.getId(), 
+							selectionDataStorage.getLabel());
 				rootStorageModel.add(currentSelectionDataStorageModel);	
 				
 				//TODO: insert selection grouped STORAGE
 				
 //				// insert new selection optional STORAGE with ID and label in the tree
-//				IStorage refSelectionOptionalStorage = 
+//				IStorage selectionOptionalStorage = 
 //					updatedSelectionSet.getStorageByDimAndIndex(0, 1);
 //				StorageModel currentSelectionOptionalStorageModel = 
-//					new StorageModel(refSelectionOptionalStorage.getId(), 
-//							refSelectionOptionalStorage.getLabel());
+//					new StorageModel(selectionOptionalStorage.getId(), 
+//							selectionOptionalStorage.getLabel());
 //				rootStorageModel.add(currentSelectionOptionalStorageModel);		
 				
 				// insert new selection SET with ID and label in the tree
 				DataCollectionModel currentSelectionSetModel = 
-					new DataCollectionModel(refSetSelection.getId(),
-							refSetSelection.getLabel());
+					new DataCollectionModel(setSelection.getId(),
+							setSelection.getLabel());
 				currentSelectionSetModel.add(currentSelectionVirtualArrayModel);
 				currentSelectionSetModel.add(currentSelectionDataStorageModel);
 				//currentSelectionSetModel.add(currentSelectionOptionalStorageModel);
@@ -406,7 +406,7 @@ implements IView, IMediatorReceiver {
 
 //		PathwayModel currentPathwayModel;
 //		Pathway currentPathway =
-//			refGeneralManager.getSingelton().getPathwayManager().getCurrentPathway();
+//			generalManager.getSingelton().getPathwayManager().getCurrentPathway();
 //
 //		currentPathwayModel = new PathwayModel(
 //				currentPathway.getPathwayID(), currentPathway.getTitle());
@@ -419,7 +419,7 @@ implements IView, IMediatorReceiver {
 //		ViewModel tmpViewModel; 
 //		
 //		Iterator<IView> viewIter = 
-//			refGeneralManager.getSingelton().getViewGLCanvasManager().getViewIterator();
+//			generalManager.getSingelton().getViewGLCanvasManager().getViewIterator();
 ////		
 //		while(viewIter.hasNext())
 //		{

@@ -31,22 +31,22 @@ extends ACmdCreate_IdTargetLabelParent {
 	/**
 	 * Constructor.
 	 * 
-	 * @param refGeneralManager
+	 * @param generalManager
 	 */
 	protected ACmdCreate_IdTargetLabelParentXY(
-			final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType)
+			final IGeneralManager generalManager,
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType)
 	{
-		super(refGeneralManager,
-				refCommandManager,
-				refCommandQueueSaxType);
+		super(generalManager,
+				commandManager,
+				commandQueueSaxType);
 	}	
 	
 	
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 		
-		super.setParameterHandler(refParameterHandler);			
+		super.setParameterHandler(parameterHandler);			
 		
 		StringTokenizer token = new StringTokenizer(
 				sAttribute2,
@@ -54,30 +54,30 @@ extends ACmdCreate_IdTargetLabelParent {
 		
 		if  (token.hasMoreTokens())
 		{
-			refParameterHandler.setValueAndTypeAndDefault("iWidthX",
+			parameterHandler.setValueAndTypeAndDefault("iWidthX",
 					token.nextToken(), 
 					ParameterHandlerType.INT,
 					"-1" );
 		
 			if (token.hasMoreTokens())
 			{
-				refParameterHandler.setValueAndTypeAndDefault("iHeightY",
+				parameterHandler.setValueAndTypeAndDefault("iHeightY",
 						token.nextToken(), 
 						ParameterHandlerType.INT,
 						"-1" );
 			}
 			else
 			{
-				refParameterHandler.setValueAndType("iHeightY", "-1", ParameterHandlerType.INT);
+				parameterHandler.setValueAndType("iHeightY", "-1", ParameterHandlerType.INT);
 			}
 		}
 		else
 		{
-			refParameterHandler.setValueAndType("iWidthX", "-1", ParameterHandlerType.INT);
-			refParameterHandler.setValueAndType("iHeightY", "-1", ParameterHandlerType.INT);
+			parameterHandler.setValueAndType("iWidthX", "-1", ParameterHandlerType.INT);
+			parameterHandler.setValueAndType("iHeightY", "-1", ParameterHandlerType.INT);
 		}
 		
-		iWidthX = refParameterHandler.getValueInt("iWidthX");
-		iHeightY = refParameterHandler.getValueInt("iHeightY");
+		iWidthX = parameterHandler.getValueInt("iWidthX");
+		iHeightY = parameterHandler.getValueInt("iHeightY");
 	}
 }

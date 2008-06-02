@@ -23,9 +23,9 @@ implements IVirtualArray, IMementoItemXML, ICollectionLock {
 	 * Constructor.
 	 */
 	public VirtualArrayThreadSingleBlock( final int iCollectionId, 
-			final IGeneralManager refBaseManager,
+			final IGeneralManager baseManager,
 			final ICollectionLock setCollectionLock) {
-		super(iCollectionId, refBaseManager,setCollectionLock);
+		super(iCollectionId, baseManager,setCollectionLock);
 		
 	}
 
@@ -91,14 +91,14 @@ implements IVirtualArray, IMementoItemXML, ICollectionLock {
 	/**
 	 * Restore state of object by update data from SaxHandler
 	 * 
-	 * @param refSaxHandler reference to SaxHandler
+	 * @param saxHandler reference to SaxHandler
 	 * @return TRUE if the provided handler provided same Id as object.
 	 */
-	public boolean setMementoXML_usingHandler( final ISaxParserHandler refSaxHandler ) {
+	public boolean setMementoXML_usingHandler( final ISaxParserHandler saxHandler ) {
 		
 		try {
 			CollectionSelectionSaxParserHandler parser = 
-				(CollectionSelectionSaxParserHandler) refSaxHandler;
+				(CollectionSelectionSaxParserHandler) saxHandler;
 			
 			setLength( parser.getXML_DataLength() );
 			setOffset( parser.getXML_DataOffset() );

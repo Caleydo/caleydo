@@ -71,10 +71,10 @@ public class PathwayListBuilder {
     	
     	try {
     		
-        	PathwayListBuilder refPathwayListBuilder = 
+        	PathwayListBuilder pathwayListBuilder = 
         		new PathwayListBuilder();
         	
-        	refPathwayListBuilder.fillFile();
+        	pathwayListBuilder.fillFile();
     		
 		} catch (Exception e)
 		{

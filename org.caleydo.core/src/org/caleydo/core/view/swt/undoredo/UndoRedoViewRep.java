@@ -24,23 +24,23 @@ public class UndoRedoViewRep
 extends AViewRep 
 implements IView {
 
-	protected Combo refUndoRedoCombo;
+	protected Combo undoRedoCombo;
 	
 	/**
 	 * Constructor. 
 	 * 
-	 * @param refGeneralManager
+	 * @param generalManager
 	 * @param iViewId
 	 * @param iParentContainerId
 	 * @param sLabel
 	 */
 	public UndoRedoViewRep(
-			IGeneralManager refGeneralManager, 
+			IGeneralManager generalManager, 
 			int iViewId, 
 			int iParentContainerId, 
 			String sLabel) {
 		
-		super(refGeneralManager, 
+		super(generalManager, 
 				iViewId, 
 				iParentContainerId, 
 				sLabel,
@@ -53,18 +53,18 @@ implements IView {
 	 */
 	protected void initViewSwtComposit(Composite swtContainer) {
 		
-		refSWTContainer.setLayout(new RowLayout(SWT.HORIZONTAL));
+		swtContainer.setLayout(new RowLayout(SWT.HORIZONTAL));
 		
-		Label viewComboLabel = new Label(refSWTContainer, SWT.LEFT);
+		Label viewComboLabel = new Label(swtContainer, SWT.LEFT);
 		viewComboLabel.setText("Undo/Redo:");
 		viewComboLabel.setSize(300, 30);
 				
-		refUndoRedoCombo = new Combo(refSWTContainer, SWT.READ_ONLY);
+		undoRedoCombo = new Combo(swtContainer, SWT.READ_ONLY);
 	}
 
 	public void drawView() {
 		
-//		refGeneralManager.getSingelton().logMsg(
+//		generalManager.getSingelton().logMsg(
 //				this.getClass().getSimpleName() + 
 //				": drawView(): Load "+sUrl, 
 //				LoggerType.VERBOSE );		
@@ -77,24 +77,24 @@ implements IView {
 	
 	public void updateCommandList(Vector<ICommand> vecCommands) {
 		
-		refUndoRedoCombo.removeAll();
+		undoRedoCombo.removeAll();
 		
 		Iterator<ICommand> iterCommands = vecCommands.iterator();
 		
 		while(iterCommands.hasNext())
 		{
 			//ICommand bufferCmd = iterCommands.next();
-			refUndoRedoCombo.add( iterCommands.next().getInfoText() );
+			undoRedoCombo.add( iterCommands.next().getInfoText() );
 		}		
 	}
 	
-	public void addCommand(final ICommand refCommand) {
+	public void addCommand(final ICommand command) {
 	
-		refSWTContainer.getDisplay().asyncExec(new Runnable() {
+		swtContainer.getDisplay().asyncExec(new Runnable() {
 			public void run() {
-				refUndoRedoCombo.add(refCommand.getInfoText());				
+				undoRedoCombo.add(command.getInfoText());				
 //				generalManager.logMsg(
-//						"DEBUG: " + refCommand.getInfoText() + " " + refCommand.toString(),
+//						"DEBUG: " + command.getInfoText() + " " + command.toString(),
 //						LoggerType.VERBOSE);
 			}
 		});

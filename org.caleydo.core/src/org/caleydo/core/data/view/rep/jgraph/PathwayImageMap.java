@@ -25,9 +25,9 @@ implements Serializable
 	 */
 	protected String sImageLink;
 	
-	protected ArrayList<Rectangle> refRectArray;
+	protected ArrayList<Rectangle> rectArray;
 	
-	protected ArrayList<String> refImageLinkArray;
+	protected ArrayList<String> imageLinkArray;
 
 	/**
 	 * Constructor.
@@ -36,8 +36,8 @@ implements Serializable
 	 */
 	public PathwayImageMap(final String sImageLink) {
 		
-		refRectArray = new ArrayList<Rectangle>();
-		refImageLinkArray = new ArrayList<String>();
+		rectArray = new ArrayList<Rectangle>();
+		imageLinkArray = new ArrayList<String>();
 		
 		this.sImageLink = sImageLink;
 	}
@@ -45,8 +45,8 @@ implements Serializable
 	
 	public void addArea(Rectangle rect, String sImageLink) {
 		
-		refRectArray.add(rect);
-		refImageLinkArray.add(sImageLink);
+		rectArray.add(rect);
+		imageLinkArray.add(sImageLink);
 	}
 	
 	public String getImageLink() {
@@ -71,11 +71,11 @@ implements Serializable
 	 */
 	public String processPoint(Point point) {
 		
-		for (int iAreaIndex = 0; iAreaIndex < refRectArray.size(); iAreaIndex++)
+		for (int iAreaIndex = 0; iAreaIndex < rectArray.size(); iAreaIndex++)
 		{
-			if (refRectArray.get(iAreaIndex).contains(point))
+			if (rectArray.get(iAreaIndex).contains(point))
 			{
-				return refImageLinkArray.get(iAreaIndex);
+				return imageLinkArray.get(iAreaIndex);
 			} 
 		}
 		

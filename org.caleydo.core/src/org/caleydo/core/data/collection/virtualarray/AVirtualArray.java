@@ -35,7 +35,7 @@ implements IVirtualArray {
 	/**
 	 * Link to Collection-Meta data.
 	 */
-	protected IMetaData refCollectionMetaData = null;
+	protected IMetaData collectionMetaData = null;
 
 	/**
 	 * Default Conctructor, sets the unique collectionId.
@@ -94,7 +94,7 @@ implements IVirtualArray {
 	 */
 	public final IMetaData getMetaData()
 	{
-		return refCollectionMetaData;
+		return collectionMetaData;
 	}
 
 	/* (non-Javadoc)
@@ -102,7 +102,7 @@ implements IVirtualArray {
 	 */
 	public final void setMetaData(IMetaData setMetaData)
 	{
-		refCollectionMetaData = setMetaData;
+		collectionMetaData = setMetaData;
 	}
 
 	/**

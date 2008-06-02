@@ -20,6 +20,12 @@ import org.caleydo.util.graph.IGraphItem;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
+/**
+ * In place info area.
+ * 
+ * @author Marc Streit
+ * 
+ */
 public class GLInfoAreaRenderer {
 	
 	private float[] fArWorldCoordinatePosition;
@@ -29,8 +35,6 @@ public class GLInfoAreaRenderer {
 	private GLStarEffectRenderer starEffectRenderer;
 	
 	private float fZValue = 1f;
-	
-	private GLPathwayManager refGLPathwayManager;
 		
 	private LinkedList<PathwayVertexGraphItem> llMultipleMappingGenes;
 	
@@ -41,27 +45,29 @@ public class GLInfoAreaRenderer {
 	
 	private TextRenderer textRenderer;
 	
-	private PathwayRenderStyle refRenderStyle;
+	private PathwayRenderStyle renderStyle;
 	
 	private boolean bEnableColorMapping = false;
 	
-	public GLInfoAreaRenderer(final IGeneralManager refGeneralManager,
-			final GLPathwayManager refGLPathwayManager) {
+	/**
+	 * Constructor.
+	 * 
+	 * @param generalManager
+	 */
+	public GLInfoAreaRenderer(final IGeneralManager generalManager) {
 		
 		fArWorldCoordinatePosition = new float[3];
 		starEffectRenderer = new GLStarEffectRenderer();		
 		
-		this.refGLPathwayManager = refGLPathwayManager;
-		
 		llMultipleMappingGenes = new LinkedList<PathwayVertexGraphItem>();
 
 		geneAnnotationMapper = 
-			new GeneAnnotationMapper(refGeneralManager);
+			new GeneAnnotationMapper(generalManager);
 		
 		textRenderer = new TextRenderer(new Font("Arial",
 				Font.BOLD, 16), false);
 		
-		refRenderStyle = new PathwayRenderStyle();
+		renderStyle = new PathwayRenderStyle();
 	}
 	
     
@@ -362,11 +368,11 @@ public class GLInfoAreaRenderer {
 			gl.glScalef(6.0f, 6.0f, 6.0f);
 			if (tmpVertexGraphItem.getType().equals(EPathwayVertexType.gene))
 			{					
-				float fNodeWidth = refRenderStyle.getEnzymeNodeWidth(true);
-				float fNodeHeight = refRenderStyle.getEnzymeNodeHeight(true);
+				float fNodeWidth = renderStyle.getEnzymeNodeWidth(true);
+				float fNodeHeight = renderStyle.getEnzymeNodeHeight(true);
 				
 				//FIXME: revise this section - due to changes in ID management
-//				refGLPathwayManager.mapExpressionByGeneId(
+//				gLPathwayManager.mapExpressionByGeneId(
 //						gl, llMultipleMappingGenes.get(0).getName(), 
 //						fNodeWidth, fNodeHeight, true);
 				

@@ -32,9 +32,9 @@ extends IManager
 	
 	public void destroyOnExit();
 
-	public void addViewRep(IView refView);
+	public void addViewRep(IView view);
 	
-	public void removeViewRep(IView refView) ;
+	public void removeViewRep(IView view) ;
 	
 	public Collection<IView> getAllViews();
 	

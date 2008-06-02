@@ -355,37 +355,37 @@ implements IViewGLCanvasManager {
 			switch (useViewType)
 			{	
 //			case CREATE_GL_SCATTERPLOT2D:
-//				return new GLCanvasScatterPlot2D(refGeneralManager, iUniqueId,
+//				return new GLCanvasScatterPlot2D(generalManager, iUniqueId,
 //						iGlForwarderId, sLabel);
 //	
 //			case CREATE_GL_MINMAX_SCATTERPLOT2D:
-//				refSingelton.logMsg("CREATE_GL_MINMAX_SCATTERPLOT2D ==> create GLMinMaxScatterplot2Dinteractive instead",LoggerType.MINOR_ERROR_XML);
+//				singelton.logMsg("CREATE_GL_MINMAX_SCATTERPLOT2D ==> create GLMinMaxScatterplot2Dinteractive instead",LoggerType.MINOR_ERROR_XML);
 //				
-//				return new GLMinMaxScatterplot2Dinteractive(refGeneralManager, iUniqueId,
+//				return new GLMinMaxScatterplot2Dinteractive(generalManager, iUniqueId,
 //						iGlForwarderId, sLabel);
 //	
 //			case CREATE_GL_MINMAX_SCATTERPLOT3D:
-//				return new GLCanvasMinMaxScatterPlot3D(refGeneralManager, iUniqueId,
+//				return new GLCanvasMinMaxScatterPlot3D(generalManager, iUniqueId,
 //						iGlForwarderId, sLabel);
 //				
 //			case CREATE_GL_WIDGET:
-//				return new GLCanvasWidget(refGeneralManager, iUniqueId,
+//				return new GLCanvasWidget(generalManager, iUniqueId,
 //						iGlForwarderId, sLabel);
 //	
 //			case CREATE_GL_HISTOGRAM2D:
-//				return new GLCanvasHistogram2D(refGeneralManager, iUniqueId,
+//				return new GLCanvasHistogram2D(generalManager, iUniqueId,
 //						iGlForwarderId, sLabel);
 //	
 //			case CREATE_GL_ISOSURFACE3D:
 //				return new GLCanvasIsoSurface3D(
-//						refGeneralManager, 
+//						generalManager, 
 //						iUniqueId, 
 //						iGlForwarderId, 
 //						sLabel);
 //				
 //			case CREATE_GL_TEXTURE2D:
 //				return new GLCanvasTexture2D(
-//						refGeneralManager, 
+//						generalManager, 
 //						iUniqueId, 
 //						iGlForwarderId, 
 //						sLabel);
@@ -578,32 +578,32 @@ implements IViewGLCanvasManager {
 
 	}
 	
-	public void addViewRep(final IView refView) {
+	public void addViewRep(final IView view) {
 
 		try 
 		{	
-			switch ( refView.getViewType() )
+			switch ( view.getViewType() )
 			{
 			
 			case SWT_SET_EDITOR:
 			case SWT_DATA_EXCHANGER:
 				System.err.println("Ignore: addViewRep("+ 
-						refView.getViewType()+
+						view.getViewType()+
 						") type SWT_DATA_EXCHANGER!");
 				return;
 				
 			case SWT_DATA_EXPLORER:
-				arDataExplorerViewRep.add( (DataExplorerViewRep) refView);
+				arDataExplorerViewRep.add( (DataExplorerViewRep) view);
 				return;
 			case SWT_HTML_BROWSER:
-				arHTMLBrowserViewRep.add( (HTMLBrowserViewRep) refView);
+				arHTMLBrowserViewRep.add( (HTMLBrowserViewRep) view);
 				return;
 			case SWT_DATA_ENTITY_SEARCHER:
-				dataEntitySearcher = (DataEntitySearcherViewRep)refView;
+				dataEntitySearcher = (DataEntitySearcherViewRep)view;
 				
 			default:
-				assert false : "unsupported ViewType " + refView.getViewType();
-			} //switch ( refView.getViewType() )
+				assert false : "unsupported ViewType " + view.getViewType();
+			} //switch ( view.getViewType() )
 		}
 		catch ( NullPointerException npe)
 		{
@@ -614,23 +614,23 @@ implements IViewGLCanvasManager {
 	}
 	
 	
-	public void removeViewRep(final IView refView) {
+	public void removeViewRep(final IView view) {
 
 		try 
 		{	
-			switch ( refView.getViewType() )
+			switch ( view.getViewType() )
 			{
 			
 			case SWT_DATA_EXPLORER:
-				arDataExplorerViewRep.remove( (DataExplorerViewRep) refView);
+				arDataExplorerViewRep.remove( (DataExplorerViewRep) view);
 				return;
 			case SWT_HTML_BROWSER:
-				arDataExplorerViewRep.remove( (DataExplorerViewRep) refView);
+				arDataExplorerViewRep.remove( (DataExplorerViewRep) view);
 				return;
 				
 			default:
-				assert false : "unsupported ViewType " + refView.getViewType();
-			} //switch ( refView.getViewType() )
+				assert false : "unsupported ViewType " + view.getViewType();
+			} //switch ( view.getViewType() )
 			
 		}
 		catch ( NullPointerException npe)

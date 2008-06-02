@@ -17,9 +17,9 @@ public class HistogramStatisticsSet
 extends HistogramStatisticInteger 
 implements IHistogramStatistic {
 	
-	private ISet refSet = null;
-	private IVirtualArray refSelection = null;
-	private IStorage refStorage = null;
+	private ISet set = null;
+	private IVirtualArray selection = null;
+	private IStorage storage = null;
 	
 	/**
 	 * 
@@ -33,9 +33,9 @@ implements IHistogramStatistic {
 	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#addDataValues(T[])
 	 */
 	public void addData( final ISet useSet ) {
-		refSet = useSet;
+		set = useSet;
 				
-		assert refSet != null : "addData(null) !";
+		assert set != null : "addData(null) !";
 		
 		bRawDataIsValid = false;
 		bHistoramDataIsValid = false;
@@ -48,14 +48,14 @@ implements IHistogramStatistic {
 	 */
 	private boolean getReferencesFromSet() {
 		
-		if ( refSet.getReadTokenWait() ) {
-			refSelection = refSet.getVirtualArrayByDimAndIndex(0,0);
-			refStorage = refSet.getStorageByDimAndIndex(0,0);
+		if ( set.getReadTokenWait() ) {
+			selection = set.getVirtualArrayByDimAndIndex(0,0);
+			storage = set.getStorageByDimAndIndex(0,0);
 			
-			if (( this.refSelection == null )
-					||( this.refStorage == null )) {
+			if (( this.selection == null )
+					||( this.storage == null )) {
 				
-				refSet.returnReadToken();
+				set.returnReadToken();
 				bRawDataIsValid = false;
 				
 				assert false : "Only a singel value!";
@@ -85,7 +85,7 @@ implements IHistogramStatistic {
 			 
 			 float fBufferVariance = 0.0f;
 			
-			IVirtualArrayIterator iter = refSelection.iterator();
+			IVirtualArrayIterator iter = selection.iterator();
 			
 			/**
 			 * Variance =  1/(n-1)* SUM_n( (fUseEstimate - data_Value )^2 )
@@ -95,7 +95,7 @@ implements IHistogramStatistic {
 				fBufferVariance += buffer * buffer;
 			}
 			
-			fBufferVariance = fBufferVariance / (float) (refSelection.length() -1);
+			fBufferVariance = fBufferVariance / (float) (selection.length() -1);
 			
 			return fBufferVariance;
 		}
@@ -144,13 +144,13 @@ implements IHistogramStatistic {
 		
 		if ( ! getReferencesFromSet() ) {
 			System.err.println("updateHistogram() can not get lock for ISet=" +
-					this.refSet.toString() + " ==> no histogram!");
+					this.set.toString() + " ==> no histogram!");
 			return false;			
 		}
 		
-		iData = refStorage.getArrayInt();
+		iData = storage.getArrayInt();
 		
-		IVirtualArrayIterator iter = this.refSelection.iterator();
+		IVirtualArrayIterator iter = this.selection.iterator();
 		
 		int iFirstIndex = iter.next();
 		
@@ -186,7 +186,7 @@ implements IHistogramStatistic {
 		}
 		
 		if (!bHistoramRangeIsSet) {
-			refSet.returnReadToken();
+			set.returnReadToken();
 			
 			assert bHistoramRangeIsSet : "no borders are set!";	
 			return false;
@@ -211,7 +211,7 @@ implements IHistogramStatistic {
 			iHistogramIntervallCounter[k] = 0;
 		}
 		
-		iter = this.refSelection.iterator();
+		iter = this.selection.iterator();
 		
 		while (iter.hasNext()) {
 			
@@ -256,7 +256,7 @@ implements IHistogramStatistic {
 		fVariance = calculateVariance( fMean );
 		bVarianceIsCalculated = true;
 		
-		refSet.returnReadToken();
+		set.returnReadToken();
 		
 		bHistoramDataIsValid = true;
 		

@@ -55,7 +55,7 @@ public class GLPathwayManager {
 	private int iHighlightedEnzymeNodeDisplayListId = -1;
 	private int iHighlightedCompoundNodeDisplayListId = -1;
 		
-	private PathwayRenderStyle refRenderStyle;
+	private PathwayRenderStyle renderStyle;
 
 	private boolean bEnableGeneMapping = true;
 	private boolean bEnableEdgeRendering = false;
@@ -85,7 +85,7 @@ public class GLPathwayManager {
 		
 		this.generalManager = generalManager;
 		
-		refRenderStyle = new PathwayRenderStyle();
+		renderStyle = new PathwayRenderStyle();
 		hashPathwayId2VerticesDisplayListId = new HashMap<Integer, Integer>();
 		hashPathwayId2EdgesDisplayListId = new HashMap<Integer, Integer>();		
 		hashElementId2MappingColorArray = new HashMap<Integer, ArrayList<Vec3f>>();
@@ -116,7 +116,7 @@ public class GLPathwayManager {
 			final AUniqueManagedObject containingView,
 			final int iPathwayId) {
 		
-//		refGeneralManager.getSingelton().logMsg(
+//		generalManager.getSingelton().logMsg(
 //				this.getClass().getSimpleName()
 //				+ ": buildPathwayDisplayList(): Build display list for pathway: "+iPathwayId,
 //				LoggerType.VERBOSE);
@@ -124,7 +124,7 @@ public class GLPathwayManager {
 		if (iPathwayId == -1)
 			return;		
 		
-		PathwayGraph refTmpPathway = (PathwayGraph)generalManager.getPathwayManager().
+		PathwayGraph tmpPathway = (PathwayGraph)generalManager.getPathwayManager().
 			getItem(iPathwayId);
 		
 		int iVerticesDisplayListId = -1;
@@ -145,7 +145,7 @@ public class GLPathwayManager {
 //		performIdenticalNodeHighlighting();
 		
 		gl.glNewList(iVerticesDisplayListId, GL.GL_COMPILE);	
-		extractVertices(gl, containingView, refTmpPathway);
+		extractVertices(gl, containingView, tmpPathway);
 		gl.glEndList();
 		
 		if (hashPathwayId2EdgesDisplayListId.containsKey(iPathwayId))
@@ -161,7 +161,7 @@ public class GLPathwayManager {
 		}
 		
 		gl.glNewList(iEdgesDisplayListId, GL.GL_COMPILE);	
-		extractEdges(gl, refTmpPathway);
+		extractEdges(gl, tmpPathway);
 		gl.glEndList();
 	}
 
@@ -290,8 +290,8 @@ public class GLPathwayManager {
 		// Creating display list for node cube objects
 		iEnzymeNodeDisplayListId = gl.glGenLists(1);
 		
-		float fNodeWidth = refRenderStyle.getEnzymeNodeWidth(true);
-		float fNodeHeight = refRenderStyle.getEnzymeNodeHeight(true);
+		float fNodeWidth = renderStyle.getEnzymeNodeWidth(true);
+		float fNodeHeight = renderStyle.getEnzymeNodeHeight(true);
 		
 		gl.glNewList(iEnzymeNodeDisplayListId, GL.GL_COMPILE);
 		fillNodeDisplayList(gl, fNodeWidth, fNodeHeight);		
@@ -303,8 +303,8 @@ public class GLPathwayManager {
 		// Creating display list for node cube objects
 		iHighlightedEnzymeNodeDisplayListId = gl.glGenLists(1);
 		
-		float fNodeWidth = refRenderStyle.getEnzymeNodeWidth(true);
-		float fNodeHeight = refRenderStyle.getEnzymeNodeHeight(true);
+		float fNodeWidth = renderStyle.getEnzymeNodeWidth(true);
+		float fNodeHeight = renderStyle.getEnzymeNodeHeight(true);
 		
 		gl.glNewList(iHighlightedEnzymeNodeDisplayListId, GL.GL_COMPILE);
 		fillNodeDisplayListFrame(gl, fNodeWidth, fNodeHeight);		
@@ -316,8 +316,8 @@ public class GLPathwayManager {
 		// Creating display list for node cube objects
 		iCompoundNodeDisplayListId = gl.glGenLists(1);
 		
-		float fNodeWidth = refRenderStyle.getCompoundNodeWidth(true);
-		float fNodeHeight = refRenderStyle.getCompoundNodeHeight(true);
+		float fNodeWidth = renderStyle.getCompoundNodeWidth(true);
+		float fNodeHeight = renderStyle.getCompoundNodeHeight(true);
 		
 		gl.glNewList(iCompoundNodeDisplayListId, GL.GL_COMPILE);
 		fillNodeDisplayList(gl, fNodeWidth, fNodeHeight);
@@ -329,8 +329,8 @@ public class GLPathwayManager {
 		// Creating display list for node cube objects
 		iHighlightedCompoundNodeDisplayListId = gl.glGenLists(1);
 		
-		float fNodeWidth = refRenderStyle.getCompoundNodeWidth(true);
-		float fNodeHeight = refRenderStyle.getCompoundNodeHeight(true);
+		float fNodeWidth = renderStyle.getCompoundNodeWidth(true);
+		float fNodeHeight = renderStyle.getCompoundNodeHeight(true);
 		
 		gl.glNewList(iHighlightedCompoundNodeDisplayListId, GL.GL_COMPILE);
 		fillNodeDisplayListFrame(gl, fNodeWidth, fNodeHeight);
@@ -475,7 +475,7 @@ public class GLPathwayManager {
 	private void createVertex(final GL gl, 
 			final AUniqueManagedObject containingView,
 			PathwayVertexGraphItemRep vertexRep, 
-			PathwayGraph refContainingPathway) {
+			PathwayGraph containingPathway) {
 		
 		Vec3f tmpNodeColor = null;
 
@@ -508,7 +508,7 @@ public class GLPathwayManager {
 			// Handle selection highlighting of element
 			if (hashSelectedVertexRepId2Depth.containsKey(vertexRep.getId()))
 			{
-				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
+				tmpNodeColor = renderStyle.getHighlightedNodeColor();
 				
 				gl.glColor4f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z(), 1);
 				
@@ -516,9 +516,9 @@ public class GLPathwayManager {
 			}
 			
 			if (bEnableGeneMapping)
-				tmpNodeColor = refRenderStyle.getPathwayNodeColor(true);
+				tmpNodeColor = renderStyle.getPathwayNodeColor(true);
 			else
-				tmpNodeColor = refRenderStyle.getPathwayNodeColor(false);
+				tmpNodeColor = renderStyle.getPathwayNodeColor(false);
 				
 			gl.glColor4f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z(), 1);
 
@@ -538,16 +538,16 @@ public class GLPathwayManager {
 			// Handle selection highlighting of element
 			if (hashSelectedVertexRepId2Depth.containsKey(vertexRep.getId()))
 			{
-				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
+				tmpNodeColor = renderStyle.getHighlightedNodeColor();
 							
 				gl.glColor4f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z(), 1);
 				gl.glCallList(iHighlightedCompoundNodeDisplayListId);
 			}
 			
 			if (bEnableGeneMapping)
-				tmpNodeColor = refRenderStyle.getCompoundNodeColor(true);
+				tmpNodeColor = renderStyle.getCompoundNodeColor(true);
 			else
-				tmpNodeColor = refRenderStyle.getCompoundNodeColor(false);
+				tmpNodeColor = renderStyle.getCompoundNodeColor(false);
 			
 			gl.glColor4f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z(), 1);
 			gl.glCallList(iCompoundNodeDisplayListId);
@@ -571,7 +571,7 @@ public class GLPathwayManager {
 			// Handle selection highlighting of element
 			if (hashSelectedVertexRepId2Depth.containsKey(vertexRep.getId()))
 			{
-				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
+				tmpNodeColor = renderStyle.getHighlightedNodeColor();
 				gl.glColor4f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z(), 1);
 				gl.glLineWidth(5);
 			}
@@ -606,7 +606,7 @@ public class GLPathwayManager {
 			if (hashSelectedVertexRepId2Depth.containsKey(vertexRep.getId()))
 			{
 				int iDepth = hashSelectedVertexRepId2Depth.get(vertexRep.getId());
-				tmpNodeColor = refRenderStyle.getHighlightedNodeColor();
+				tmpNodeColor = renderStyle.getHighlightedNodeColor();
 				
 				if (iDepth != 0)
 				{
@@ -637,7 +637,7 @@ public class GLPathwayManager {
 			}
 			else
 			{
-				tmpNodeColor = refRenderStyle.getEnzymeNodeColor(bEnableGeneMapping);
+				tmpNodeColor = renderStyle.getEnzymeNodeColor(bEnableGeneMapping);
 				gl.glColor4f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z(), 1);
 				
 				gl.glCallList(iEnzymeNodeDisplayListId);
@@ -651,14 +651,14 @@ public class GLPathwayManager {
 	
 	private void createEdge(final GL gl, 
 			IGraphItem edgeRep, 
-			PathwayGraph refContainingPathway) {
+			PathwayGraph containingPathway) {
 
 		List<IGraphItem> listGraphItemsIn = edgeRep.getAllItemsByProp(EGraphItemProperty.INCOMING);
 		List<IGraphItem> listGraphItemsOut = edgeRep.getAllItemsByProp(EGraphItemProperty.OUTGOING);
 		
 		if (listGraphItemsIn.isEmpty() || listGraphItemsOut.isEmpty())
 		{
-//			refGeneralManager.getSingelton().logMsg(
+//			generalManager.getSingelton().logMsg(
 //					this.getClass().getSimpleName()
 //							+ ": createEdge(): Edge has either no incoming or outcoming vertex.",
 //					LoggerType.VERBOSE);
@@ -673,14 +673,14 @@ public class GLPathwayManager {
 		if (edgeRep.getClass().equals(
 				PathwayReactionEdgeGraphItemRep.class))
 		{
-			tmpColor = refRenderStyle.getReactionEdgeColor();
+			tmpColor = renderStyle.getReactionEdgeColor();
 			fReactionLineOffset = 0.01f;
 		}
 		// Check if edge is a relation
 		else if (edgeRep.getClass().equals(
 				PathwayRelationEdgeGraphItemRep.class))
 		{
-			tmpColor = refRenderStyle.getRelationEdgeColor();
+			tmpColor = renderStyle.getRelationEdgeColor();
 		}
 		else
 		{
@@ -814,7 +814,7 @@ public class GLPathwayManager {
 			
 			// Check if the mapping gave back a valid color
 			if (tmpNodeColor.x() == -1)
-				tmpNodeColor = refRenderStyle.getEnzymeNodeColor(true);
+				tmpNodeColor = renderStyle.getEnzymeNodeColor(true);
 
 		
 			gl.glColor3f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z());		

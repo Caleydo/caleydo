@@ -64,7 +64,6 @@ implements ICaleydoDefaultType <CommandQueueSaxType> {
 	CREATE_SET_DATA(ManagerType.DATA,"cmd","type","-1", "Create SET"),	
 	CREATE_SET_SELECTION(ManagerType.DATA_SET,"cmd","type","-1", "Create Selection SET!"),
 	CREATE_SET_SELECTION_MAKRO(ManagerType.DATA_SET,"cmd", "type","-1", "Create Selection SET incl. Storage and Virtual Array!"),
-	CREATE_SET_VIEW(ManagerType.DATA_SET,"cmd", "type","-1", "Create Set for a view"),
 	CREATE_STORAGE(ManagerType.DATA_STORAGE,"cmd","type","-1", "Create Storage"),		
 	CREATE_VIRTUAL_ARRAY(ManagerType.DATA_VIRTUAL_ARRAY,"cmd","type","-1", "Create VirtualArray"),
 

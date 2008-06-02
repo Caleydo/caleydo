@@ -111,7 +111,7 @@ implements IViewFrustum {
 		this.fFar = fFar;
 	}
 	
-//	protected IViewCamera refViewCamera;
+//	protected IViewCamera viewCamera;
 //	
 //	protected boolean bViewFrustumHasChanged = true;
 //	
@@ -123,7 +123,7 @@ implements IViewFrustum {
 //	 * 
 //	 */
 //	public ViewFrustumBase() {
-//		refViewCamera = new ViewCameraBase(99999);
+//		viewCamera = new ViewCameraBase(99999);
 //	}
 //
 //	/* (non-Javadoc)
@@ -132,7 +132,7 @@ implements IViewFrustum {
 //	public boolean hasChanged() {
 //		if ( bViewFrustumHasChanged ) return true;
 //		
-//		return refViewCamera.hasViewCameraChanged();
+//		return viewCamera.hasViewCameraChanged();
 //	}
 //
 //	/* (non-Javadoc)
@@ -212,16 +212,16 @@ implements IViewFrustum {
 //	 * @see prometheus.data.collection.view.camera.ViewFrustum#setViewCamera(prometheus.data.collection.view.camera.ViewCamera)
 //	 */
 //	public void setViewCamera( final IViewCamera setViewCamera) {
-//		refViewCamera = setViewCamera;
+//		viewCamera = setViewCamera;
 //		
-//		refViewCamera.setHasChanged( true );
+//		viewCamera.setHasChanged( true );
 //	}
 //
 //	/* (non-Javadoc)
 //	 * @see prometheus.data.collection.view.camera.ViewFrustum#getViewCamera()
 //	 */
 //	public IViewCamera getViewCamera() {
-//		return refViewCamera;
+//		return viewCamera;
 //	}
 
 }

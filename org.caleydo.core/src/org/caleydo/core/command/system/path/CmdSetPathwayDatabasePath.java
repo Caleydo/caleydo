@@ -25,13 +25,13 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	/**
 	 * Constructor.
 	 */
-	public CmdSetPathwayDatabasePath( final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType) {
+	public CmdSetPathwayDatabasePath( final IGeneralManager generalManager,
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType) {
 		
-		super(refGeneralManager,
-				refCommandManager,
-				refCommandQueueSaxType);
+		super(generalManager,
+				commandManager,
+				commandQueueSaxType);
 	}
 	
 	/**
@@ -66,11 +66,11 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttr#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
 	 */
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 		
-		assert refParameterHandler != null: "can not handle null object!";		
+		assert parameterHandler != null: "can not handle null object!";		
 		
-		super.setParameterHandler(refParameterHandler);
+		super.setParameterHandler(parameterHandler);
 		
 		type = EPathwayDatabaseType.valueOf(this.sDetail);
 		

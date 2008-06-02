@@ -127,7 +127,7 @@ implements IGenomeIdMap {
 	 * @see org.caleydo.core.manager.data.genome.IGenomeIdMap#getCodeResolvedMap(org.caleydo.core.manager.data.IGenomeIdManager, org.caleydo.core.data.mapping.EGenomeMappingType, org.caleydo.core.data.mapping.EGenomeMappingType)
 	 */
 	public final IGenomeIdMap getCodeResolvedMap(
-			IGenomeIdManager refGenomeIdManager,
+			IGenomeIdManager genomeIdManager,
 			EGenomeMappingType genomeMappingLUT_1,
 			EGenomeMappingType genomeMappingLUT_2,
 			EGenomeMappingDataType targetMappingDataType,
@@ -156,7 +156,7 @@ implements IGenomeIdMap {
 			{
 				entryBuffer = iterOrigin.next();
 												
-				iResolvedID_1 = refGenomeIdManager.getIdIntFromStringByMapping(
+				iResolvedID_1 = genomeIdManager.getIdIntFromStringByMapping(
 						entryBuffer.getKey().toString(), 
 						genomeMappingLUT_1);
 				
@@ -167,7 +167,7 @@ implements IGenomeIdMap {
 				}
 				else if (sourceMappingDataType == EGenomeMappingDataType.STRING2STRING)
 				{
-					iResolvedID_2 = refGenomeIdManager.getIdIntFromStringByMapping(
+					iResolvedID_2 = genomeIdManager.getIdIntFromStringByMapping(
 							entryBuffer.getValue().toString(),
 							genomeMappingLUT_2);
 
@@ -196,7 +196,7 @@ implements IGenomeIdMap {
 			{
 				entryBuffer = iterOrigin.next();
 							
-				iResolvedID_1 = refGenomeIdManager.getIdIntFromStringByMapping(
+				iResolvedID_1 = genomeIdManager.getIdIntFromStringByMapping(
 						entryBuffer.getKey().toString(), 
 						genomeMappingLUT_1);
 				
@@ -224,7 +224,7 @@ implements IGenomeIdMap {
 			{
 				entryBuffer = iterOrigin.next();
 							
-				iResolvedID = refGenomeIdManager.getIdIntFromStringByMapping(
+				iResolvedID = genomeIdManager.getIdIntFromStringByMapping(
 						entryBuffer.getValue().toString(), genomeMappingLUT_2);
 				
 				codeResolvedMap.put(entryBuffer.getKey().toString(), new Integer(iResolvedID).toString());

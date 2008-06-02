@@ -29,13 +29,13 @@ extends ACommand {
 	public CmdSystemRunCmdQueue(int iSetCmdId, 			
 			final IGeneralManager setGeneralManager,
 			final ICommandManager setCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType,
+			final CommandQueueSaxType commandQueueSaxType,
 			final int iCommandQueueId ) {
 		
 		super(iSetCmdId, 
 				setGeneralManager, 
 				setCommandManager,
-				refCommandQueueSaxType);
+				commandQueueSaxType);
 		
 		this.iCommandQueueId = iCommandQueueId;
 		

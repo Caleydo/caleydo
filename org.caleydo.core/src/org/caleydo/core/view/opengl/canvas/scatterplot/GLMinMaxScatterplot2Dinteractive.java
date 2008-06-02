@@ -143,7 +143,7 @@
 //	
 //	private int iSetCacheId = 0;
 //	
-//	private MinMaxDataInteger refMinMaxDataInteger;
+//	private MinMaxDataInteger minMaxDataInteger;
 //	
 //	private ArrayList <Vec2f> fIndexPickedCoored = new ArrayList <Vec2f> (1);
 //	
@@ -214,7 +214,7 @@
 //		fScatterplotMinMaxRange[Y] = viewingFrame[Y][MAX] - viewingFrame[Y][MIN];
 //		
 //
-//		refMinMaxDataInteger = new MinMaxDataInteger(1);
+//		minMaxDataInteger = new MinMaxDataInteger(1);
 //		
 //		
 //		//hashNCBI_GENE2index = new HashMap<Integer, Integer>();
@@ -656,7 +656,7 @@
 //////				if ( iNCBIGeneID != null) 
 //////				{
 //////					PathwayVertexGraphItem pickedGeneVertex;
-//////					pickedGeneVertex = (PathwayVertexGraphItem) refGeneralManager.getSingelton(
+//////					pickedGeneVertex = (PathwayVertexGraphItem) generalManager.getSingelton(
 //////							).getPathwayItemManager().getItem(iNCBIGeneID.intValue());
 //////					
 //////					infoAreaRenderer.renderInfoArea(gl, pickedGeneVertex);
@@ -676,7 +676,7 @@
 ////			if ( iNCBIGeneID != null) 
 ////			{
 ////				//PathwayVertexGraphItem pickedGeneVertex;
-////				pickedGeneVertex = (PathwayVertexGraphItem) refGeneralManager.getSingelton(
+////				pickedGeneVertex = (PathwayVertexGraphItem) generalManager.getSingelton(
 ////						).getPathwayItemManager().getItem(iNCBIGeneID.intValue());
 ////				
 ////				assert pickedGeneVertex != null : "should not get null-pointer!";
@@ -787,7 +787,7 @@
 ////		/* notify external objects via eventMediator.. */
 ////		if ( hashExternalId_2_HeatmapIndex_reverse != null ) {
 ////			/* data for SetSelection.. */
-////			SetSelection selectionSet = new SetSelection(-5, refGeneralManager);
+////			SetSelection selectionSet = new SetSelection(-5, generalManager);
 ////			
 ////			ArrayList <Integer> alSelectionId = new ArrayList <Integer> (resultPickPointCoord.length);
 ////			ArrayList <Integer> alSelectionId_PathwayId = new ArrayList <Integer> (resultPickPointCoord.length);
@@ -799,7 +799,7 @@
 ////					return;
 ////				}
 ////			
-////				PathwayVertexGraphItem vertexItemBuffer = (PathwayVertexGraphItem) refGeneralManager.getSingelton()
+////				PathwayVertexGraphItem vertexItemBuffer = (PathwayVertexGraphItem) generalManager.getSingelton()
 ////					.getPathwayItemManager().getItem(lookupValue.intValue());
 ////										
 ////				Iterator <IGraphItem> iterList = 
@@ -829,16 +829,16 @@
 ////			
 ////			IStorage [] storageArray = new IStorage [3];
 ////			for ( int i=0; i< 3 ; i++ ) {
-////				storageArray[i] = new FlatThreadStorageSimple( selectionSet.getId(), refGeneralManager, null);		
+////				storageArray[i] = new FlatThreadStorageSimple( selectionSet.getId(), generalManager, null);		
 ////				selectionSet.setStorageByDim(storageArray, 0);
 ////			}
 ////			
 ////			selectionSet.setAllSelectionDataArrays(iArSelectionId, iArSelectionDepthData, iArSelectionOptionalData );
 ////			
 ////			// Calls update with the ID of the PathwayViewRep
-////	 		((EventPublisher)refGeneralManager.getSingelton().
+////	 		((EventPublisher)generalManager.getSingelton().
 ////				getEventPublisher()).updateReceiver(this, selectionSet);
-////	 		refGeneralManager.getSingelton().logMsg(this.getClass().getSimpleName()+
+////	 		generalManager.getSingelton().logMsg(this.getClass().getSimpleName()+
 ////	 				".broadcast selection event! " + selectionSet.toString(),
 ////	 				LoggerType.STATUS);
 ////		}
@@ -1160,7 +1160,7 @@
 ////	// public int[] createHistogram(final int iHistogramLevels) {
 ////	public void renderHeatmap(final int iHistogramLevels) {
 ////
-////		refGeneralManager.getSingelton().logMsg("HEATMAP: set  ",
+////		generalManager.getSingelton().logMsg("HEATMAP: set  ",
 ////				LoggerType.FULL);
 ////
 ////	}
@@ -1240,14 +1240,14 @@
 //			return;
 //		}
 //		
-//		refMinMaxDataInteger =	new MinMaxDataInteger(alTargetSet.getDimensions());
-//		refMinMaxDataInteger.useSet( alTargetSet );
+//		minMaxDataInteger =	new MinMaxDataInteger(alTargetSet.getDimensions());
+//		minMaxDataInteger.useSet( alTargetSet );
 //
 //		generalManager.getSingelton().logMsg(
 //				"GLCanvasScatterPlot2D.setTargetSetId("
 //						+ iTargetCollectionSetId + ") done!", LoggerType.FULL);
 //		
-//		initScatterplot(alTargetSet.getDimensions(), refMinMaxDataInteger);
+//		initScatterplot(alTargetSet.getDimensions(), minMaxDataInteger);
 //
 //	}
 //

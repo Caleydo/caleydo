@@ -56,29 +56,29 @@ implements IGeneralManager
 
 	private ArrayList<IManager> llAllManagerObjects;
 
-	protected IStorageManager refStorageManager;
+	protected IStorageManager storageManager;
 	
-	protected IMementoManager refMementoManager;
+	protected IMementoManager mementoManager;
 	
-	protected IVirtualArrayManager refVirtualArrayManager;
+	protected IVirtualArrayManager virtualArrayManager;
 	
-	protected ISetManager refSetManager;
+	protected ISetManager setManager;
 	
-	protected ICommandManager refCommandManager;
+	protected ICommandManager commandManager;
 
-	protected ISWTGUIManager refSWTGUIManager;
+	protected ISWTGUIManager sWTGUIManager;
 	
-	protected IViewGLCanvasManager refViewGLCanvasManager;
+	protected IViewGLCanvasManager viewGLCanvasManager;
 	
-	protected IPathwayManager refPathwayManager;
+	protected IPathwayManager pathwayManager;
 	
-	protected IPathwayItemManager refPathwayItemManager;
+	protected IPathwayItemManager pathwayItemManager;
 	
-	protected IEventPublisher refEventPublisher;
+	protected IEventPublisher eventPublisher;
 	
-	protected IXmlParserManager refXmlParserManager;
+	protected IXmlParserManager xmlParserManager;
 	
-	protected IGenomeIdManager refGenomeIdManager;
+	protected IGenomeIdManager genomeIdManager;
 	
 	private Logger logger;
 	
@@ -123,35 +123,35 @@ implements IGeneralManager
 		
 		bAllManagersInitialized = true;
 
-		refStorageManager = new StorageManager(this, 4);
-		refVirtualArrayManager = new VirtualArrayManager(this, 4);
-		refSetManager = new SetManager(this, 4);
-		refMementoManager = new MementoManager(this);
-		refCommandManager = new CommandManager(this);
-		refViewGLCanvasManager = new ViewGLCanvasManager(this);
-		refSWTGUIManager = new SWTGUIManager(this);
-		refEventPublisher = new EventPublisher(this);
-		refGenomeIdManager = new DynamicGenomeIdManager(this);
-		refPathwayManager = new PathwayManager(this);
+		storageManager = new StorageManager(this, 4);
+		virtualArrayManager = new VirtualArrayManager(this, 4);
+		setManager = new SetManager(this, 4);
+		mementoManager = new MementoManager(this);
+		commandManager = new CommandManager(this);
+		viewGLCanvasManager = new ViewGLCanvasManager(this);
+		sWTGUIManager = new SWTGUIManager(this);
+		eventPublisher = new EventPublisher(this);
+		genomeIdManager = new DynamicGenomeIdManager(this);
+		pathwayManager = new PathwayManager(this);
 //		serializationInputTest();
-		refPathwayItemManager = new PathwayItemManager(this);
-		refXmlParserManager = new XmlParserManager(this);
+		pathwayItemManager = new PathwayItemManager(this);
+		xmlParserManager = new XmlParserManager(this);
 		
 		/**
 		 * Insert all Manager objects handling registered objects to 
 		 * the LinkedList
 		 */
-		llAllManagerObjects.add(refSetManager);
-		llAllManagerObjects.add(refVirtualArrayManager);
-		llAllManagerObjects.add(refStorageManager);
-		llAllManagerObjects.add(refPathwayManager);
-		llAllManagerObjects.add(refPathwayItemManager);
-		llAllManagerObjects.add(refGenomeIdManager);
-		llAllManagerObjects.add(refEventPublisher);
-		llAllManagerObjects.add(refViewGLCanvasManager);
-		llAllManagerObjects.add(refSWTGUIManager);
-		llAllManagerObjects.add(refCommandManager);
-		llAllManagerObjects.add(refMementoManager);
+		llAllManagerObjects.add(setManager);
+		llAllManagerObjects.add(virtualArrayManager);
+		llAllManagerObjects.add(storageManager);
+		llAllManagerObjects.add(pathwayManager);
+		llAllManagerObjects.add(pathwayItemManager);
+		llAllManagerObjects.add(genomeIdManager);
+		llAllManagerObjects.add(eventPublisher);
+		llAllManagerObjects.add(viewGLCanvasManager);
+		llAllManagerObjects.add(sWTGUIManager);
+		llAllManagerObjects.add(commandManager);
+		llAllManagerObjects.add(mementoManager);
 	}
 
 	/**
@@ -244,23 +244,23 @@ implements IGeneralManager
 		switch (managerType)
 		{
 		case MEMENTO:
-			return refMementoManager;
+			return mementoManager;
 		case DATA_VIRTUAL_ARRAY:
-			return refVirtualArrayManager;
+			return virtualArrayManager;
 		case DATA_SET:
-			return refSetManager;
+			return setManager;
 		case DATA_STORAGE:
-			return refStorageManager;
+			return storageManager;
 		case VIEW:
-			return refViewGLCanvasManager;
+			return viewGLCanvasManager;
 		case COMMAND:
-			return refCommandManager;
+			return commandManager;
 		case VIEW_GUI_SWT:
-			return refSWTGUIManager;
+			return sWTGUIManager;
 		case EVENT_PUBLISHER:
-			return refEventPublisher;
+			return eventPublisher;
 		case DATA_GENOME_ID:
-			return refGenomeIdManager;
+			return genomeIdManager;
 			
 		default:
 			throw new CaleydoRuntimeException(
@@ -273,7 +273,7 @@ implements IGeneralManager
 		
 //		generalManager.logMsg("OneForAllManager.destroyOnExit()", LoggerType.STATUS );
 		
-		this.refViewGLCanvasManager.destroyOnExit();
+		this.viewGLCanvasManager.destroyOnExit();
 		
 		Iterator <IManager> iter = llAllManagerObjects.iterator();
 		
@@ -294,9 +294,9 @@ implements IGeneralManager
 
 //	public boolean setCreateNewId(ManagerType setNewBaseType, int iCurrentId) {
 //
-//		IManager refSecialManager = getManagerByType( setNewBaseType );
+//		IManager secialManager = getManagerByType( setNewBaseType );
 //		
-//		if ( ! refSecialManager.setCreateNewId(setNewBaseType, iCurrentId) ) {
+//		if ( ! secialManager.setCreateNewId(setNewBaseType, iCurrentId) ) {
 //			generalManager.logMsg("setCreateNewId failed!", LoggerType.MINOR_ERROR );
 //			return false;
 //		}
@@ -323,7 +323,7 @@ implements IGeneralManager
 	 * @see org.caleydo.core.manager.IGeneralManager#getMementoManager()
 	 */
 	public IMementoManager getMementoManager() {
-		return refMementoManager;
+		return mementoManager;
 	}
 	
 	/*
@@ -331,7 +331,7 @@ implements IGeneralManager
 	 * @see org.caleydo.core.manager.IGeneralManager#getStorageManager()
 	 */
 	public IStorageManager getStorageManager() {
-		return refStorageManager;
+		return storageManager;
 	}
 
 	/*
@@ -339,7 +339,7 @@ implements IGeneralManager
 	 * @see org.caleydo.core.manager.IGeneralManager#getVirtualArrayManager()
 	 */
 	public IVirtualArrayManager getVirtualArrayManager() {
-		return refVirtualArrayManager;
+		return virtualArrayManager;
 	}
 	
 	/*
@@ -347,7 +347,7 @@ implements IGeneralManager
 	 * @see org.caleydo.core.manager.IGeneralManager#getSetManager()
 	 */
 	public ISetManager getSetManager() {
-		return refSetManager;
+		return setManager;
 	}
 	
 	/*
@@ -355,7 +355,7 @@ implements IGeneralManager
 	 * @see org.caleydo.core.manager.IGeneralManager#getViewGLCanvasManager()
 	 */
 	public IViewGLCanvasManager getViewGLCanvasManager() {
-		return refViewGLCanvasManager;
+		return viewGLCanvasManager;
 	}
 
 	/*
@@ -364,7 +364,7 @@ implements IGeneralManager
 	 */
 	public IPathwayManager getPathwayManager() {
 		
-		return refPathwayManager;
+		return pathwayManager;
 	}
 
 	/*
@@ -373,7 +373,7 @@ implements IGeneralManager
 	 */
 	public IPathwayItemManager getPathwayItemManager() {
 		
-		return refPathwayItemManager;
+		return pathwayItemManager;
 	}
 
 	/*
@@ -381,7 +381,7 @@ implements IGeneralManager
 	 * @see org.caleydo.core.manager.IGeneralManager#getSWTGUIManager()
 	 */
 	public ISWTGUIManager getSWTGUIManager() {
-		return refSWTGUIManager;
+		return sWTGUIManager;
 	}
 
 	/*
@@ -389,7 +389,7 @@ implements IGeneralManager
 	 * @see org.caleydo.core.manager.IGeneralManager#getEventPublisher()
 	 */
 	public IEventPublisher getEventPublisher() {
-		return refEventPublisher;
+		return eventPublisher;
 	}
 
 	/*
@@ -397,7 +397,7 @@ implements IGeneralManager
 	 * @see org.caleydo.core.manager.IGeneralManager#getXmlParserManager()
 	 */
 	public IXmlParserManager getXmlParserManager() {
-		return this.refXmlParserManager;
+		return this.xmlParserManager;
 	}
 		
 	/*
@@ -405,7 +405,7 @@ implements IGeneralManager
 	 * @see org.caleydo.core.manager.IGeneralManager#getGenomeIdManager()
 	 */
 	public IGenomeIdManager getGenomeIdManager() {
-		return this.refGenomeIdManager;
+		return this.genomeIdManager;
 	}
 	
 	/*
@@ -413,7 +413,7 @@ implements IGeneralManager
 	 * @see org.caleydo.core.manager.IGeneralManager#getCommandManager()
 	 */
 	public ICommandManager getCommandManager() {
-		return refCommandManager;
+		return commandManager;
 	}
 	
 //	public void serializationOutputTest() {
@@ -423,7 +423,7 @@ implements IGeneralManager
 //			ObjectOutputStream out = new ObjectOutputStream(
 //					new FileOutputStream("data/serialize_test.out"));
 //			
-//			out.writeObject(refPathwayManager);
+//			out.writeObject(pathwayManager);
 //			out.close();
 //			
 //		} catch (FileNotFoundException e)
@@ -444,7 +444,7 @@ implements IGeneralManager
 //			ObjectInputStream in = new ObjectInputStream(
 //					new FileInputStream("data/serialize_test.out"));
 //			
-//			refPathwayManager = (PathwayManager) in.readObject();
+//			pathwayManager = (PathwayManager) in.readObject();
 //			in.close();
 //			
 //		} catch (FileNotFoundException e)

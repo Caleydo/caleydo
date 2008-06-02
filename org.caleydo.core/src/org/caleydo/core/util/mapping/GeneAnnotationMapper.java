@@ -18,7 +18,7 @@ public class GeneAnnotationMapper {
 	/**
 	 * Constructor.
 	 * 
-	 * @param refGeneralManager
+	 * @param generalManager
 	 */
 	public GeneAnnotationMapper (final IGeneralManager generalManager) {
 	

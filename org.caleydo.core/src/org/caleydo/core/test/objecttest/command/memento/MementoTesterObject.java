@@ -13,7 +13,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  */
 public final class MementoTesterObject {
 
-	private IMementoCreator refCreator;
+	private IMementoCreator creator;
 	
 	private int iTestRuns;
 	
@@ -27,7 +27,7 @@ public final class MementoTesterObject {
 	}
 	
 	public void setMementoCreator( IMementoCreator creatorObject, final int iTestMementos ) {
-		refCreator = creatorObject;
+		creator = creatorObject;
 		if ( iTestRuns > 0 ) {
 			iTestRuns = iTestMementos;
 		}
@@ -38,12 +38,12 @@ public final class MementoTesterObject {
 		IMemento[] testMementos = new IMemento[iTestRuns];
 		
 		for ( int i=0; i < iTestRuns; i++ ) {
-			testMementos[i] = refCreator.createMemento();
+			testMementos[i] = creator.createMemento();
 		}
 				
 		try {
 			for ( int i=(iTestRuns-1); i > -1; i-- ) {
-				refCreator.setMemento( testMementos[i] );
+				creator.setMemento( testMementos[i] );
 			}
 		}
 		catch (CaleydoRuntimeException pe) {

@@ -33,13 +33,13 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	protected MediatorType mediatorType;
 	
 	public CmdEventMediatorAddObject(
-			final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType) {
+			final IGeneralManager generalManager,
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType) {
 
-		super(refGeneralManager,
-				refCommandManager,
-				refCommandQueueSaxType);
+		super(generalManager,
+				commandManager,
+				commandQueueSaxType);
 		
 		super.setId( generalManager.getEventPublisher().createId( 
 				ManagerObjectType.EVENT_MEDIATOR_ADD_OBJECT));
@@ -50,15 +50,15 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 
 	public void doCommand() throws CaleydoRuntimeException {
 			
-		IEventPublisher refEventPublisher = generalManager.getEventPublisher();
-		IMediator refMediator = refEventPublisher.getItemMediator(iUniqueId);
+		IEventPublisher eventPublisher = generalManager.getEventPublisher();
+		IMediator mediator = eventPublisher.getItemMediator(iUniqueId);
 		
-		if  (refMediator == null ) {
+		if  (mediator == null ) {
 			assert false : "can not find mediator";
 			return;
 		}
 		
-		refEventPublisher.addSendersAndReceiversToMediator( refMediator,
+		eventPublisher.addSendersAndReceiversToMediator( mediator,
 				iArSenderIDs, 
 				iArReceiverIDs, 
 				mediatorType,
@@ -67,11 +67,11 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		commandManager.runDoCommand(this);
 	}
 	
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 		
-		assert refParameterHandler != null: "ParameterHandler object is null!";	
+		assert parameterHandler != null: "ParameterHandler object is null!";	
 		
-		super.setParameterHandler(refParameterHandler);	
+		super.setParameterHandler(parameterHandler);	
 
 		StringTokenizer senderToken = new StringTokenizer(
 				sAttribute1,
@@ -93,7 +93,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 					receiverToken.nextToken(), -1));
 		}
 		
-		String sMediatorType = refParameterHandler.getValueString( 
+		String sMediatorType = parameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_DETAIL.getXmlKey());
 		
 		if ( sMediatorType.length() < 1 ) {

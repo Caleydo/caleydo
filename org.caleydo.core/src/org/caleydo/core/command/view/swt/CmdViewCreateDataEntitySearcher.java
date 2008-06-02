@@ -19,11 +19,11 @@ extends ACmdCreate_IdTargetLabelAttrDetail{
 
 	private ArrayList<Integer> iAlViewReceiverID;
 	
-	public CmdViewCreateDataEntitySearcher(final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType) {
+	public CmdViewCreateDataEntitySearcher(final IGeneralManager generalManager,
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType) {
 
-		super(refGeneralManager, refCommandManager, refCommandQueueSaxType);
+		super(generalManager, commandManager, commandQueueSaxType);
 		
 		iAlViewReceiverID = new ArrayList<Integer>();
 	}
@@ -32,11 +32,11 @@ extends ACmdCreate_IdTargetLabelAttrDetail{
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
 	 */
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 		
-		assert refParameterHandler != null: "ParameterHandler object is null!";	
+		assert parameterHandler != null: "ParameterHandler object is null!";	
 		
-		super.setParameterHandler(refParameterHandler);	
+		super.setParameterHandler(parameterHandler);	
 
 		StringTokenizer receiverToken = new StringTokenizer(
 				sDetail,

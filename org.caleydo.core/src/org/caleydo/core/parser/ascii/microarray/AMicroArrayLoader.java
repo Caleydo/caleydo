@@ -273,6 +273,6 @@ implements IMementoXML, IParserObject {
 	
 	
 	public abstract boolean setMementoXML_usingHandler( 
-			final ISaxParserHandler refSaxHandler );
+			final ISaxParserHandler saxHandler );
 	
 }

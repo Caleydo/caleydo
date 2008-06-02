@@ -26,13 +26,13 @@ extends ACmdCreate_IdTargetLabelParentXY  {
 	 * 
 	 */
 	public CmdViewCreateDataExchanger(
-			final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType) {
+			final IGeneralManager generalManager,
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType) {
 		
-		super(refGeneralManager,
-				refCommandManager,
-				refCommandQueueSaxType);
+		super(generalManager,
+				commandManager,
+				commandQueueSaxType);
 	}
 
 	/*

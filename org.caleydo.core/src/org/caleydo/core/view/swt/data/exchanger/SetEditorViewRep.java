@@ -59,15 +59,15 @@ implements IView {
     
     private Combo viewCombo;
     
-    private GC refGC;
+    private GC gC;
     
 	public SetEditorViewRep(
-			IGeneralManager refGeneralManager, 
+			IGeneralManager generalManager, 
 			int iViewId, 
 			int iParentContainerId, 
 			String sLabel) {
 		
-		super(refGeneralManager, 
+		super(generalManager, 
 				iViewId, 
 				iParentContainerId, 
 				sLabel,
@@ -85,26 +85,26 @@ implements IView {
 		int ifirst = (int)((float) offset/ (float) maxLength) * 100;
 		int ilast = (int)((float) (offset+lengthVA)/ (float) maxLength) * 100;
 		
-		refGC.drawRectangle( ifirst,0,ilast,20 );
+		gC.drawRectangle( ifirst,0,ilast,20 );
 		
-		refGC.drawLine(100,5,50,25);
+		gC.drawLine(100,5,50,25);
 	}
 	
-	public void setPercantage(final ISet refSet) {
+	public void setPercantage(final ISet set) {
 		
-		if ( refSet.getReadToken() ) {
+		if ( set.getReadToken() ) {
 			
-			int iDim = refSet.getDimensions();
+			int iDim = set.getDimensions();
 			iDim = 1;
 			
 			for(int i=0; i<iDim; i++)
 			{
-				IVirtualArray[] refVA= refSet.getVirtualArrayByDim(i);
-				IStorage[] refST = refSet.getStorageByDim(i);
+				IVirtualArray[] vA= set.getVirtualArrayByDim(i);
+				IStorage[] sT = set.getStorageByDim(i);
 				
-				int iOffset = refVA[0].getOffset();
-				int iLength = refVA[0].length();
-				int iRealLength = refST[0].getMaximumLengthOfAllArrays();
+				int iOffset = vA[0].getOffset();
+				int iLength = vA[0].length();
+				int iRealLength = sT[0].getMaximumLengthOfAllArrays();
 				
 				if ( (iOffset+ iLength) > iRealLength ) 
 				{
@@ -117,39 +117,39 @@ implements IView {
 			
 			}
 			
-			refSet.returnReadToken();
+			set.returnReadToken();
 		}
 		
 	}
 	
 	protected void initViewSwtComposit(Composite swtContainer) {
 
-		refSWTContainer.setLayout(new FillLayout(SWT.VERTICAL));
+		swtContainer.setLayout(new FillLayout(SWT.VERTICAL));
 
-		viewCombo = new Combo(refSWTContainer, SWT.SIMPLE |
+		viewCombo = new Combo(swtContainer, SWT.SIMPLE |
                 SWT.V_SCROLL | SWT.H_SCROLL| SWT.READ_ONLY);
         		
 	    //viewCombo.setBounds(50, 85, 150, 65);
 	    //viewCombo.setEnabled(true);
 		
-		labelStorage = new Label(refSWTContainer,SWT.BORDER);
-		labelId = new Label(refSWTContainer,SWT.BORDER);
-		labelDimension = new Label(refSWTContainer,SWT.BORDER);
+		labelStorage = new Label(swtContainer,SWT.BORDER);
+		labelId = new Label(swtContainer,SWT.BORDER);
+		labelDimension = new Label(swtContainer,SWT.BORDER);
 		
-		Display display = refSWTContainer.getDisplay();
+		Display display = swtContainer.getDisplay();
 	    image = new Image (display, 200, 30);
 		Color color = display.getSystemColor (SWT.COLOR_RED);
-		refGC = new GC (image);
-		refGC.setBackground (color);
-		refGC.fillRectangle (image.getBounds ());
-		refGC.drawLine(50,0,50,20);
+		gC = new GC (image);
+		gC.setBackground (color);
+		gC.fillRectangle (image.getBounds ());
+		gC.drawLine(50,0,50,20);
 		//gc.dispose ();
 		
 		labelStorage.setImage(image);
 		labelStorage.setEnabled(true);
 		labelStorage.pack();
 		
-		refSWTContainer.pack();
+		swtContainer.pack();
 		
 	    viewCombo.addFocusListener(new FocusAdapter() {
 	        public void focusGained(FocusEvent e) {

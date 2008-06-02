@@ -541,12 +541,12 @@ extends AXmlParserManager {
 										
 				while ( iterHandler.hasNext() ) 
 				{
-					IXmlParserHandler refHandler = iterHandler.next(); 
+					IXmlParserHandler handler = iterHandler.next(); 
 					
-					if ( refHandler != null )
+					if ( handler != null )
 					{
-						refHandler.destroyHandler();
-						refHandler = null;
+						handler.destroyHandler();
+						handler = null;
 					}
 					
 				} // while ( iterHandler.hasNext() ) 

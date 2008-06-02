@@ -53,7 +53,7 @@ public class HistogramStatisticData <T extends Number > {
 	
 	protected T[] t_histogramBorder;
 	
-	protected ISet refSet;
+	protected ISet set;
 	
 	protected boolean bUseMinMaxValueFromData = true;
 	
@@ -230,7 +230,7 @@ public class HistogramStatisticData <T extends Number > {
 		
 	}
 	
-	public void defineSet( final ISet refUseSet ) {
+	public void defineSet( final ISet useSet ) {
 		
 	}
 	

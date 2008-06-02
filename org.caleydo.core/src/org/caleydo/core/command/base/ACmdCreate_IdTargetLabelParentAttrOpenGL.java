@@ -25,22 +25,22 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	protected int iGLCanvasID = -1;
 	
 	/**
-	 * @param refGeneralManager
-	 * @param refCommandManager
-	 * @param refCommandQueueSaxType
+	 * @param generalManager
+	 * @param commandManager
+	 * @param commandQueueSaxType
 	 */
-	public ACmdCreate_IdTargetLabelParentAttrOpenGL(IGeneralManager refGeneralManager,
-			ICommandManager refCommandManager,
-			CommandQueueSaxType refCommandQueueSaxType) {
+	public ACmdCreate_IdTargetLabelParentAttrOpenGL(IGeneralManager generalManager,
+			ICommandManager commandManager,
+			CommandQueueSaxType commandQueueSaxType) {
 
-		super(refGeneralManager, refCommandManager, refCommandQueueSaxType);
+		super(generalManager, commandManager, commandQueueSaxType);
 	}
 	
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 		
-		super.setParameterHandler(refParameterHandler);
+		super.setParameterHandler(parameterHandler);
 				
-		iGLCanvasID = refParameterHandler.getValueInt( 
+		iGLCanvasID = parameterHandler.getValueInt( 
 				CommandQueueSaxType.TAG_GLCANVAS.getXmlKey() );
 				
 		checkOpenGLSetting();

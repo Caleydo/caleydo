@@ -44,7 +44,7 @@ implements ICommand {
 		// no undo of system shutdown!
 	}
 
-	public void setParameterHandler(IParameterHandler refParameterHandler) {
+	public void setParameterHandler(IParameterHandler parameterHandler) {
 		assert false : "Must not be called for this classs.";
 	}
 

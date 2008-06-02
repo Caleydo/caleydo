@@ -24,13 +24,13 @@ implements IXmlParserHandler
 	public static final String sXML_attribute_target = "target";
 	
 	/**
-	 * @param refGeneralManager
-	 * @param refXmlParserManager
+	 * @param generalManager
+	 * @param xmlParserManager
 	 */
-	public OpenExternalXmlFileSaxHandler(IGeneralManager refGeneralManager,
-			IXmlParserManager refXmlParserManager )
+	public OpenExternalXmlFileSaxHandler(IGeneralManager generalManager,
+			IXmlParserManager xmlParserManager )
 	{
-		super(refGeneralManager, refXmlParserManager);
+		super(generalManager, xmlParserManager);
 		
 		setXmlActivationTag( "read-xml-file" );	
 	}
@@ -73,7 +73,7 @@ implements IXmlParserHandler
 				/**
 				 * Recursion...
 				 */
-				refXmlParserManager.parseXmlFileByName( sTargetFileName);
+				xmlParserManager.parseXmlFileByName( sTargetFileName);
 				
 			}
 			catch ( CaleydoRuntimeException cre)
@@ -89,7 +89,7 @@ implements IXmlParserHandler
 		} // if ( qName.equalsIgnoreCase( this.sOpeningTag ) ) 
 		else
 		{
-			refXmlParserManager.startElement_search4Tag( uri, 
+			xmlParserManager.startElement_search4Tag( uri, 
 					localName,
 					qName, 
 					attributes );
@@ -111,7 +111,7 @@ implements IXmlParserHandler
 			String qName){
 		
 		if (qName.equals(sOpeningTag)) {	
-			refXmlParserManager.sectionFinishedByHandler( this );
+			xmlParserManager.sectionFinishedByHandler( this );
 		}
 	}
 

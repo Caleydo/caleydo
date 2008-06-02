@@ -13,8 +13,8 @@ public interface IMementoXML {
 	/**
 	 * Restore state of object by update data from SaxHandler
 	 * 
-	 * @param refSaxHandler reference to SaxHandler
+	 * @param saxHandler reference to SaxHandler
 	 * @return TRUE if the provided handler provided same Id as object.
 	 */
-	public boolean setMementoXML_usingHandler( final ISaxParserHandler refSaxHandler );
+	public boolean setMementoXML_usingHandler( final ISaxParserHandler saxHandler );
 }

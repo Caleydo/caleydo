@@ -5,7 +5,6 @@ import org.caleydo.core.command.ICommand;
 import org.caleydo.core.command.data.CmdDataCreatePathwayStorage;
 import org.caleydo.core.command.data.CmdDataCreateSelectionSetMakro;
 import org.caleydo.core.command.data.CmdDataCreateSet;
-import org.caleydo.core.command.data.CmdDataCreateSetViewdata;
 import org.caleydo.core.command.data.CmdDataCreateStorage;
 import org.caleydo.core.command.data.CmdDataCreateVirtualArray;
 import org.caleydo.core.command.data.filter.CmdDataFilterMath;
@@ -77,12 +76,12 @@ implements ICommandFactory {
 	 * @param setCommandType may be null if no command shall be created by the constructor
 	 */
 	public CommandFactory(  final IGeneralManager setRefGeneralManager,
-			final ICommandManager refCommandManager) {
+			final ICommandManager commandManager) {
 		
 		assert setRefGeneralManager != null:"Can not create CommandFactory from null-pointer to IGeneralManager";
 		
 		this.generalManager = setRefGeneralManager;		
-		this.commandManager = refCommandManager;
+		this.commandManager = commandManager;
 	}
 
 	
@@ -164,15 +163,6 @@ implements ICommandFactory {
 						commandManager,
 						cmdType,
 						true);
-			break;
-		}
-		case CREATE_SET_VIEW:
-		{
-			createdCommand =
-				new CmdDataCreateSetViewdata(
-						generalManager,
-						commandManager,
-						cmdType);
 			break;
 		}
 		case CREATE_SET_SELECTION_MAKRO:
@@ -602,19 +592,19 @@ implements ICommandFactory {
 	/**
 	 * Call doCommand() inside a try catch block.
 	 * 
-	 * @param refCommand
+	 * @param command
 	 * @throws CaleydoRuntimeException
 	 */
-	public static final void doCommandSafe(ICommand refCommand) throws CaleydoRuntimeException {
+	public static final void doCommandSafe(ICommand command) throws CaleydoRuntimeException {
 		try {
-			refCommand.doCommand();
+			command.doCommand();
 		} catch (CaleydoRuntimeException pe) {
-			throw new CaleydoRuntimeException( refCommand.getClass().getName() +
+			throw new CaleydoRuntimeException( command.getClass().getName() +
 					"doCommand() failed with "+
 					pe.toString(),
 					CaleydoRuntimeExceptionType.COMMAND );
 		} catch (Exception e) {
-			throw new CaleydoRuntimeException( refCommand.getClass().getName() +
+			throw new CaleydoRuntimeException( command.getClass().getName() +
 					"doCommand() failed with "+
 					e.toString(),
 					CaleydoRuntimeExceptionType.COMMAND );
@@ -625,19 +615,19 @@ implements ICommandFactory {
 	/**
 	 * Call undoCommand() inside a try catch block.
 	 * 
-	 * @param refCommand
+	 * @param command
 	 * @throws CaleydoRuntimeException
 	 */
-	public static final void undoCommandSafe(ICommand refCommand) throws CaleydoRuntimeException {
+	public static final void undoCommandSafe(ICommand command) throws CaleydoRuntimeException {
 		try {
-			refCommand.undoCommand();
+			command.undoCommand();
 		} catch (CaleydoRuntimeException pe) {
-			throw new CaleydoRuntimeException( refCommand.getClass().getName() +
+			throw new CaleydoRuntimeException( command.getClass().getName() +
 					"undoCommand() failed with "+
 					pe.toString(),
 					CaleydoRuntimeExceptionType.COMMAND );
 		} catch (Exception e) {
-			throw new CaleydoRuntimeException( refCommand.getClass().getName() +
+			throw new CaleydoRuntimeException( command.getClass().getName() +
 					"undoCommand() failed with "+
 					e.toString(),
 					CaleydoRuntimeExceptionType.COMMAND );

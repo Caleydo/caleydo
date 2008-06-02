@@ -26,35 +26,35 @@ extends ACmdCreate_IdTargetLabel {
 	/**
 	 * Constructor
 	 * 
-	 * @param refGeneralManager
+	 * @param generalManager
 	 */
 	protected ACmdCreate_IdTargetLabelAttrDetail(
-			final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType)
+			final IGeneralManager generalManager,
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType)
 	{
-		super(refGeneralManager,
-				refCommandManager,
-				refCommandQueueSaxType);
+		super(generalManager,
+				commandManager,
+				commandQueueSaxType);
 	}
 	
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 		
-		super.setParameterHandler(refParameterHandler);
+		super.setParameterHandler(parameterHandler);
 		
-		sAttribute1 = refParameterHandler.getValueString( 
+		sAttribute1 = parameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey());
 		
-		sAttribute2 = refParameterHandler.getValueString( 
+		sAttribute2 = parameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey());
 
-		sAttribute3 = refParameterHandler.getValueString( 
+		sAttribute3 = parameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey());	
 
-		sAttribute4 = refParameterHandler.getValueString( 
+		sAttribute4 = parameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE4.getXmlKey());
 		
-		sDetail = refParameterHandler.getValueString( 
+		sDetail = parameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_DETAIL.getXmlKey());
 	}
 	

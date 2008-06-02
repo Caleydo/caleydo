@@ -30,13 +30,13 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	 * 
 	 */
 	public CmdViewCreateSelectionSlider(
-			final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType) {
+			final IGeneralManager generalManager,
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType) {
 		
-		super(refGeneralManager, 
-				refCommandManager,
-				refCommandQueueSaxType);
+		super(generalManager, 
+				commandManager,
+				commandQueueSaxType);
 	}
 
 	/**
@@ -66,27 +66,27 @@ extends ACmdCreate_IdTargetLabelParentXY {
 		commandManager.runDoCommand(this);
 	}
 
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 		
-		assert refParameterHandler != null: "ParameterHandler object is null!";	
+		assert parameterHandler != null: "ParameterHandler object is null!";	
 		
-		super.setParameterHandler(refParameterHandler);	
+		super.setParameterHandler(parameterHandler);	
 		
-		refParameterHandler.setValueAndTypeAndDefault("iSelectionId",
-				refParameterHandler.getValueString( 
+		parameterHandler.setValueAndTypeAndDefault("iSelectionId",
+				parameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_DETAIL.getXmlKey() ),
 				IParameterHandler.ParameterHandlerType.INT,
 				"0");
 		
-		refParameterHandler.setValueAndTypeAndDefault("sSelectionFieldName",
-				refParameterHandler.getValueString( 
+		parameterHandler.setValueAndTypeAndDefault("sSelectionFieldName",
+				parameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey() ),
 				IParameterHandler.ParameterHandlerType.STRING,
 				"invalid selection field");
 		
-		iSelectionId = refParameterHandler.getValueInt( "iSelectionId" );
+		iSelectionId = parameterHandler.getValueInt( "iSelectionId" );
 		
-		sSelectionFieldName = refParameterHandler.getValueString( "sSelectionFieldName" );
+		sSelectionFieldName = parameterHandler.getValueString( "sSelectionFieldName" );
 
 	}
 	

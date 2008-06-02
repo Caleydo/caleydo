@@ -28,9 +28,9 @@ extends ASWTEmbeddedWidget {
 	 * @param Composite Reference to the composite 
 	 * that is supposed to be filled.
 	 */
-	public SWTEmbeddedJoglWidget(Composite refParentComposite) {
+	public SWTEmbeddedJoglWidget(Composite parentComposite) {
 	
-		super(refParentComposite);
+		super(parentComposite);
 	}
 	
 	public void createEmbeddedComposite(final IGeneralManager generalManager,
@@ -45,7 +45,7 @@ extends ASWTEmbeddedWidget {
 		
 		gLCanvas = new GLCaleydoCanvas(generalManager, iGLCanvasID, glCapabilities);
 		
-		refEmbeddedFrame.add(gLCanvas);
+		embeddedFrame.add(gLCanvas);
 	}
 
 	public GLCanvas getGLCanvas() {

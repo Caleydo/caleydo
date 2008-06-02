@@ -120,7 +120,7 @@ public interface IGenomeIdMap {
 	 * (Code -> ID) and the Codes are replaced by the internal
 	 * IDs.
 	 * 
-	 * @param refGenomeIdManager
+	 * @param genomeIdManager
 	 * @param genomeMappingLUT_1
 	 * @param genomeMappingLUT_2
 	 * @param targetMappingDataType
@@ -128,7 +128,7 @@ public interface IGenomeIdMap {
 	 * @return
 	 */
 	public IGenomeIdMap getCodeResolvedMap(
-			IGenomeIdManager refGenomeIdManager,
+			IGenomeIdManager genomeIdManager,
 			EGenomeMappingType genomeMappingLUT_1,
 			EGenomeMappingType genomeMappingLUT_2,
 			EGenomeMappingDataType targetMappingDataType,

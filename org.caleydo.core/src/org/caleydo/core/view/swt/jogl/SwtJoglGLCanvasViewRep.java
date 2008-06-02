@@ -29,20 +29,20 @@ extends AViewRep {
 	/**
 	 * Constructor.
 	 * 
-	 * @param refGeneralManager
+	 * @param generalManager
 	 * @param iViewId
 	 * @param iParentContainerId
 	 * @param iGLCanvasID
 	 * @param sLabel
 	 * @param type
 	 */
-	public SwtJoglGLCanvasViewRep(final IGeneralManager refGeneralManager, 
+	public SwtJoglGLCanvasViewRep(final IGeneralManager generalManager, 
 			int iViewId, 
 			int iParentContainerId,
 			int iGLCanvasID,
 			String sLabel) {
 		
-		super(refGeneralManager, 
+		super(generalManager, 
 				iViewId, 
 				iParentContainerId,
 				sLabel, 
@@ -53,18 +53,18 @@ extends AViewRep {
 	
 	public void initViewSwtComposit(Composite swtContainer) {
 			
-		ISWTGUIManager refISWTGUIManager = generalManager.getSWTGUIManager();
+		ISWTGUIManager iSWTGUIManager = generalManager.getSWTGUIManager();
 		
-		SWTEmbeddedJoglWidget refSWTEmbeddedJoglWidget = 
-			(SWTEmbeddedJoglWidget) refISWTGUIManager.createWidget(
+		SWTEmbeddedJoglWidget sWTEmbeddedJoglWidget = 
+			(SWTEmbeddedJoglWidget) iSWTGUIManager.createWidget(
 						ManagerObjectType.GUI_SWT_EMBEDDED_JOGL_WIDGET, 
 						iParentContainerId, -1, -1);
 				
-		refSWTContainer = refSWTEmbeddedJoglWidget.getParentComposite();
+		swtContainer = sWTEmbeddedJoglWidget.getParentComposite();
 	
-		refSWTEmbeddedJoglWidget.createEmbeddedComposite(generalManager, iGLCanvasID);
+		sWTEmbeddedJoglWidget.createEmbeddedComposite(generalManager, iGLCanvasID);
 
-		gLCanvas = refSWTEmbeddedJoglWidget.getGLCanvas();
+		gLCanvas = sWTEmbeddedJoglWidget.getGLCanvas();
 		
 		assert gLCanvas != null : "GLCanvas was not be created";
 		

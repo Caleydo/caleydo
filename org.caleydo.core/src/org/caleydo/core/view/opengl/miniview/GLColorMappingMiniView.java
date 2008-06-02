@@ -65,7 +65,7 @@ extends AGLMiniView
 			
 			// Check if the mapping gave back a valid color
 //			if (tmpNodeColor.x() == -1)
-//				tmpNodeColor = refRenderStyle.getEnzymeNodeColor(true);
+//				tmpNodeColor = renderStyle.getEnzymeNodeColor(true);
 
 		
 			gl.glColor3f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z());		

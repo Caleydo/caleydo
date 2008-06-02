@@ -28,15 +28,15 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	
 	protected int iHTMLBrowserId;
 	
-	protected APathwayGraphViewRep refPathwayGraphViewRep;
+	protected APathwayGraphViewRep pathwayGraphViewRep;
 	
 	public Pathway2DViewRep(
-			IGeneralManager refGeneralManager, 
+			IGeneralManager generalManager, 
 			int iViewId, 
 			int iParentContainerId, 
 			String sLabel) {
 		
-		super(refGeneralManager, 
+		super(generalManager, 
 				iViewId, 
 				iParentContainerId,
 				sLabel,
@@ -46,8 +46,8 @@ implements IView, IMediatorSender, IMediatorReceiver {
 		// the ID of the PathwayViewRep.
 		// That means that the PathwayViewRep and PathwayGraphViewRep are both
 		// put in the same parent composite.
-		refPathwayGraphViewRep = 
-			new PathwayGraphViewRep(refGeneralManager, iViewId);
+		pathwayGraphViewRep = 
+			new PathwayGraphViewRep(generalManager, iViewId);
 	}
 
 	/**
@@ -56,14 +56,14 @@ implements IView, IMediatorSender, IMediatorReceiver {
 	 */
 	protected void initViewSwtComposit(Composite swtContainer) {
 		
-		refSWTContainer.setLayout(new GridLayout(1, false));
+		swtContainer.setLayout(new GridLayout(1, false));
 		
-		new Pathway2DToolbar(refSWTContainer, 
-				refPathwayGraphViewRep,
+		new Pathway2DToolbar(swtContainer, 
+				pathwayGraphViewRep,
 				generalManager);
 		
 		// Graph initialization
-		refPathwayGraphViewRep.setExternalGUIContainer(refSWTContainer);
+		pathwayGraphViewRep.setExternalGUIContainer(swtContainer);
 		
 		// Convert ArrayList<Integer> to int[]
 		int[] iArSetDataTmp = new int[alSetData.size()];
@@ -75,14 +75,14 @@ implements IView, IMediatorSender, IMediatorReceiver {
 			iArSetSelectionTmp[index] = alSetSelection.get(index).getId();
 		
 		// Forwarding selection data to the JGraph ViewRep
-		refPathwayGraphViewRep.addSetId(iArSetDataTmp);
-		refPathwayGraphViewRep.addSetId(iArSetSelectionTmp);
+		pathwayGraphViewRep.addSetId(iArSetDataTmp);
+		pathwayGraphViewRep.addSetId(iArSetSelectionTmp);
 		
-		refPathwayGraphViewRep.initView();
+		pathwayGraphViewRep.initView();
 		
 		// Inside this method drawView is called
 		// (which is not optimal)
-		refPathwayGraphViewRep.showBackgroundOverlay(true);
+		pathwayGraphViewRep.showBackgroundOverlay(true);
 	}
 
 	public void setAttributes(int iHTMLBrowserId) {
@@ -102,6 +102,6 @@ implements IView, IMediatorSender, IMediatorReceiver {
 			ISet updatedSet) {
 		
 		// Just pass on to embedded JGraph 2D Pathway ViewRep
-		refPathwayGraphViewRep.updateReceiver(eventTrigger, updatedSet);
+		pathwayGraphViewRep.updateReceiver(eventTrigger, updatedSet);
 	}
 }

@@ -10,12 +10,12 @@ public interface IPathwayGraphView
 extends IView {
 	
 	public void createVertex(PathwayVertexGraphItemRep vertex, 
-			PathwayGraph refContainingPathway);
+			PathwayGraph containingPathway);
 	
 //	public void createEdge(int iVertexId1, 
 //			int iVertexId2, 
 //			boolean bDrawArrow,
-//			APathwayEdge refPathwayEdge);
+//			APathwayEdge pathwayEdge);
 		
 	public void loadPathwayFromFile(int iNewPathwayId);
 	

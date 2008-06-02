@@ -38,13 +38,13 @@ extends ACmdCreate_IdTargetLabel {
 	 * 
 	 */
 	public CmdDataCreateVirtualArray(
-			final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType) {
+			final IGeneralManager generalManager,
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType) {
 	
-		super(refGeneralManager,
-				refCommandManager,
-				refCommandQueueSaxType);			
+		super(generalManager,
+				commandManager,
+				commandQueueSaxType);			
 	}
 
 	/**
@@ -56,10 +56,10 @@ extends ACmdCreate_IdTargetLabel {
 	 */
 	public void doCommand() throws CaleydoRuntimeException {
 		
-		IVirtualArrayManager refVirtualArrayManager = 
+		IVirtualArrayManager virtualArrayManager = 
 			generalManager.getVirtualArrayManager();
 		
-		IVirtualArray newObject = (IVirtualArray) refVirtualArrayManager.createVirtualArray(
+		IVirtualArray newObject = (IVirtualArray) virtualArrayManager.createVirtualArray(
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		
 		newObject.setId( iUniqueId );
@@ -69,7 +69,7 @@ extends ACmdCreate_IdTargetLabel {
 		newObject.setMultiOffset( iMultiOffset );
 		newObject.setMultiRepeat( iMultiRepeat );
 		
-		refVirtualArrayManager.registerItem( newObject, 
+		virtualArrayManager.registerItem( newObject, 
 				iUniqueId, 
 				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 
@@ -99,11 +99,11 @@ extends ACmdCreate_IdTargetLabel {
 	}
 
 	
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 		
-		assert refParameterHandler != null: "can not handle null object!";		
+		assert parameterHandler != null: "can not handle null object!";		
 			
-		super.setParameterHandler(refParameterHandler);
+		super.setParameterHandler(parameterHandler);
 			
 			
 		/**
@@ -111,7 +111,7 @@ extends ACmdCreate_IdTargetLabel {
 		 */
 		
 		StringTokenizer token = new StringTokenizer(
-				refParameterHandler.getValueString( 
+				parameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() ),
 						IGeneralManager.sDelimiter_Parser_DataItems );
 		

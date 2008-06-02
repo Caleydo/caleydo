@@ -34,13 +34,13 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	 * 
 	 */
 	public CmdViewLoadURLInHTMLBrowser(
-			final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType) {
+			final IGeneralManager generalManager,
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType) {
 		
-		super(refGeneralManager, 
-				refCommandManager,
-				refCommandQueueSaxType);
+		super(generalManager, 
+				commandManager,
+				commandQueueSaxType);
 	}
 
 	/**
@@ -74,11 +74,11 @@ extends ACmdCreate_IdTargetLabelParentXY {
 		commandManager.runDoCommand(this);
 	}
 
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 		
-		assert refParameterHandler != null: "ParameterHandler object is null!";	
+		assert parameterHandler != null: "ParameterHandler object is null!";	
 		
-		super.setParameterHandler(refParameterHandler);	
+		super.setParameterHandler(parameterHandler);	
 	}
 	
 	public void setAttributes(String sTargetURL) {

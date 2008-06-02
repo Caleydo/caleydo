@@ -22,7 +22,7 @@ import org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader;
 public class LookupTableMultiMapIntLoader extends ALookupTableLoader
 		implements ILookupTableLoader {
 
-	protected MultiHashArrayIntegerMap refMultiHashMapInteger;
+	protected MultiHashArrayIntegerMap multiHashMapInteger;
 	
 	/**
 	 * @param setGeneralManager
@@ -78,7 +78,7 @@ public class LookupTableMultiMapIntLoader extends ALookupTableLoader
 						{
 							int iSecond = new Integer(strTokenText.nextToken());
 							
-							refMultiHashMapInteger.put(iFirst,iSecond);
+							multiHashMapInteger.put(iFirst,iSecond);
 						}
 						
 					
@@ -116,8 +116,8 @@ public class LookupTableMultiMapIntLoader extends ALookupTableLoader
 	public void setMultiMapInteger( MultiHashArrayIntegerMap setMultiHashMap,
 			EGenomeMappingType type ) {
 		
-		//refGenomeIdManager.
-		this.refMultiHashMapInteger = setMultiHashMap;
+		//genomeIdManager.
+		this.multiHashMapInteger = setMultiHashMap;
 	}	
 	
 	/**
@@ -127,7 +127,7 @@ public class LookupTableMultiMapIntLoader extends ALookupTableLoader
 	 */
 	public void wirteBackMapToGenomeIdManager() {
 
-		genomeIdManager.setMapByType(currentGenomeIdType, refMultiHashMapInteger);
+		genomeIdManager.setMapByType(currentGenomeIdType, multiHashMapInteger);
 	}
 
 }

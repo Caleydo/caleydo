@@ -20,7 +20,7 @@ implements IUniqueManagedObject {
 	/**
 	 * Reference to manager, who created this object.
 	 */
-	protected IGeneralManager refGeneralManager;
+	protected IGeneralManager generalManager;
 	
 	/**
 	 * Constructor.
@@ -31,7 +31,7 @@ implements IUniqueManagedObject {
 		
 		assert setGeneralManager != null: "SetFlatSimple() with null pointer";
 		
-		refGeneralManager = setGeneralManager;
+		generalManager = setGeneralManager;
 
 	}
 
@@ -39,7 +39,7 @@ implements IUniqueManagedObject {
 	 * @see prometheus.data.collection.UniqueManagedInterface#getManager()
 	 */
 	public final IGeneralManager getManager() {
-		return this.refGeneralManager;
+		return this.generalManager;
 	}
 
 	/**
@@ -48,7 +48,7 @@ implements IUniqueManagedObject {
 	 * @see org.caleydo.core.data.IUniqueManagedObject#getGeneralManager()
 	 */
 	final protected void setManager( final IGeneralManager setGeneralManager) {
-		this.refGeneralManager = setGeneralManager;
+		this.generalManager = setGeneralManager;
 	}
 	
 	

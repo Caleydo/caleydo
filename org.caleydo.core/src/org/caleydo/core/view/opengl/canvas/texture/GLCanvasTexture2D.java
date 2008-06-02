@@ -67,7 +67,7 @@
 //	
 //	protected ISet targetSet;
 //	
-//	protected Texture refGLTexture = null;
+//	protected Texture gLTexture = null;
 //	
 //	protected boolean bEnableMipMapping = false;
 //	
@@ -122,7 +122,7 @@
 //	
 //		try
 //		{
-//			refGLTexture = TextureIO.newTexture(new File(sTextureFromFile), 
+//			gLTexture = TextureIO.newTexture(new File(sTextureFromFile), 
 //					bEnableMipMapping);
 //		} 
 //			catch ( FileNotFoundException fnfe) 
@@ -140,8 +140,8 @@
 //		}
 //			
 //		try {
-//			refGLTexture.setTexParameteri(GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
-//			refGLTexture.setTexParameteri(GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
+//			gLTexture.setTexParameteri(GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
+//			gLTexture.setTexParameteri(GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
 //		}
 //		catch ( GLException gle) 
 //		{
@@ -232,7 +232,7 @@
 ////			iTextureId = genTextures_Id(gl);
 ////			gl.glBindTexture(GL.GL_TEXTURE_2D, iTextureId);
 ////			
-//			refGLTexture.bind();
+//			gLTexture.bind();
 //		}
 //	}	
 //	
@@ -249,7 +249,7 @@
 //		
 //		gl.glTranslatef( 0,0, 0.01f);
 //	
-//		if ( refGLTexture == null) {
+//		if ( gLTexture == null) {
 //			this.reloadTexture();
 //		}
 //		
@@ -332,17 +332,17 @@
 //				
 //				System.out.println("GLCanvasTexture2D - TEXTURE!");
 //				
-//				if ( refGLTexture == null ) {
+//				if ( gLTexture == null ) {
 //					System.err.println("GLCanvasTexture2D TEXTURE not bound!");
 //					return;
 //				}
 //				
-//			refGLTexture.bind();
+//			gLTexture.bind();
 //			
-//				TextureCoords texCoords = refGLTexture.getImageTexCoords();
+//				TextureCoords texCoords = gLTexture.getImageTexCoords();
 //
-////				System.err.println("Height: "+(float)refPathwayTexture.getImageHeight());
-////				System.err.println("Width: "+(float)refPathwayTexture.getImageWidth());
+////				System.err.println("Height: "+(float)pathwayTexture.getImageHeight());
+////				System.err.println("Width: "+(float)pathwayTexture.getImageWidth());
 ////					
 ////				System.err.println("Aspect ratio: " +fPathwayTextureAspectRatio);
 ////				System.err.println("texCoords left: " +texCoords.left());

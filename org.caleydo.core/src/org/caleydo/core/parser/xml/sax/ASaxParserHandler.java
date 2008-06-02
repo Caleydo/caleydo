@@ -40,13 +40,13 @@ implements ISaxParserHandler
 	/**
 	 * Reference to the local Locator
 	 */
-	private LocatorImpl refLocator;
+	private LocatorImpl locator;
 	
 	
 	/**
 	 * Reference to the calling MenmentoXML object.
 	 */
-	protected IMementoCallbackXML refParentMementoCaller = null;
+	protected IMementoCallbackXML parentMementoCaller = null;
 	
 	/**
 	 * This variabel defines, if a parsing error shall throw a org.xml.sax.SAXParseException.
@@ -112,7 +112,7 @@ implements ISaxParserHandler
 	 * @return eference to the current Locator
 	 */
 	final protected Locator getSaxHandlerLocator() {
-		return this.refLocator;
+		return this.locator;
 	}
 	
 	/**
@@ -128,8 +128,8 @@ implements ISaxParserHandler
 		
 		System.out.println("ASaxParserHandler.setSaxHandlerLocator() DUMDIDUM");
 		
-		this.refLocator = setLocator;
-		setDocumentLocator( refLocator );
+		this.locator = setLocator;
+		setDocumentLocator( locator );
 	}
 	
 	/**
@@ -139,8 +139,8 @@ implements ISaxParserHandler
 	 */
 	final protected String detailsOnLocationInXML() {
 		return " line=" +
-			refLocator.getLineNumber() + ":" +
-			refLocator.getColumnNumber();
+			locator.getLineNumber() + ":" +
+			locator.getColumnNumber();
 	}
 	
 	/**
@@ -166,7 +166,7 @@ implements ISaxParserHandler
 				this.fatalError( 
 						new SAXParseException(
 								"ParseException due to "+errorMessage,
-								refLocator ));
+								locator ));
 			}
 			catch (SAXException s_e) {
 				throw new CaleydoRuntimeException(s_e.toString(),
@@ -291,7 +291,7 @@ implements ISaxParserHandler
 	 * @param setRefParent reference to the parent obejct or the object, that sould be triggert in case of a callback action
 	 */
 	public void setParentMementoCaller( IMementoCallbackXML setRefParent ) {
-		refParentMementoCaller = setRefParent;
+		parentMementoCaller = setRefParent;
 	}
 
 	/* (non-Javadoc)

@@ -55,14 +55,14 @@ public class CaleydoBootloader
 	/**
 	 * This reference is used for starting the GUI
 	 */
-	protected ISWTGUIManager refSWTGUIManager;
+	protected ISWTGUIManager swtGUIManager;
 	
 	/**
 	 * Reference to XML parser. 
 	 * The parser does the bootstrapping of the Caleydo application 
 	 * using an XML input stream.
 	 */
-	protected IXmlParserManager refXmlParserManager;
+	protected IXmlParserManager xmlParserManager;
 	
 	/**
 	 * Constructor.
@@ -78,8 +78,8 @@ public class CaleydoBootloader
 		generalManager.getLogger().log(Level.CONFIG, "... Start Caleydo Core ...");
 		generalManager.getLogger().log(Level.CONFIG, "===========================");
 
-		refSWTGUIManager = generalManager.getSWTGUIManager();
-		refXmlParserManager = generalManager.getXmlParserManager();
+		swtGUIManager = generalManager.getSWTGUIManager();
+		xmlParserManager = generalManager.getXmlParserManager();
 		
 		/**
 		 * Register additional SaxParserHandler here:
@@ -87,9 +87,9 @@ public class CaleydoBootloader
 		 * sample code:<br>
 		 * <br>
 		 * AnySaxHandler myNewHandler = <br>
-		 *   new CommandSaxHandler( generalManager, refXmlParserManager );<br>
+		 *   new CommandSaxHandler( generalManager, xmlParserManager );<br>
 		 * <br>  
-		 * refXmlParserManager.registerAndInitSaxHandler( myNewHandler ); <br>
+		 * xmlParserManager.registerAndInitSaxHandler( myNewHandler ); <br>
 		 * <br>
 		 */		
 		
@@ -157,7 +157,7 @@ public class CaleydoBootloader
 						
 			IOperation op = receiveMsg.getOperation( 0 );					
 			
-			refXmlParserManager.parseXmlString( op.getXPath(), op.getNodeString() );
+			xmlParserManager.parseXmlString( op.getXPath(), op.getNodeString() );
 			
 			generalManager.getLogger().log(Level.CONFIG, "CaleydoBootloader PARSE using Muddleware done.");
 			
@@ -261,7 +261,7 @@ public class CaleydoBootloader
 		
 		try 
 		{
-			refSWTGUIManager.runApplication(); 			
+			swtGUIManager.runApplication(); 			
 			generalManager.getLogger().log(Level.INFO, "  config loaded ... [DONE]");
 		}
 		catch (CaleydoRuntimeException gre)
@@ -331,7 +331,7 @@ public class CaleydoBootloader
 			 * Load configuration from local XML file.
 			 */
 			generalManager.getLogger().log(Level.CONFIG, "load config via local XML file ... ");			
-			refXmlParserManager.parseXmlFileByName( getXmlFileName() );		
+			xmlParserManager.parseXmlFileByName( getXmlFileName() );		
 		}
 		
 	}

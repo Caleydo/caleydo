@@ -27,41 +27,41 @@ extends	ACmdCreate_IdTargetLabelParent {
 
 	
 	public ACmdCreate_IdTargetParentGLObject(
-			final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType)
+			final IGeneralManager generalManager,
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType)
 	{
-		super(refGeneralManager,
-				refCommandManager,
-				refCommandQueueSaxType);
+		super(generalManager,
+				commandManager,
+				commandQueueSaxType);
 		
 		cameraRotation = new Rotf();
 		cameraOrigin = new Vec3f(0,0,0);
 	}
 	
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 		
-		super.setParameterHandler(refParameterHandler);
+		super.setParameterHandler(parameterHandler);
 		
-		String sPositionGLOrigin = refParameterHandler.getValueString( 
+		String sPositionGLOrigin = parameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_POS_GL_ORIGIN.getXmlKey() );
 		
-		String sPositionGLRotation = refParameterHandler.getValueString( 
+		String sPositionGLRotation = parameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_POS_GL_ROTATION.getXmlKey() );
 		
-		sAttribute3 = refParameterHandler.getValueString( 
+		sAttribute3 = parameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey() );
 		
-		sAttribute4 = refParameterHandler.getValueString( 
+		sAttribute4 = parameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE4.getXmlKey() );
 		
-		sDetail = refParameterHandler.getValueString( 
+		sDetail = parameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_DETAIL.getXmlKey() );
 		
 		/* convert values.. */
 		if ( sPositionGLOrigin != null ) 
 		{
-			refParameterHandler.setValueAndTypeAndDefault( 
+			parameterHandler.setValueAndTypeAndDefault( 
 					CommandQueueSaxType.TAG_POS_GL_ORIGIN.getXmlKey(),
 					sPositionGLOrigin, 
 					ParameterHandlerType.VEC3F,
@@ -70,18 +70,18 @@ extends	ACmdCreate_IdTargetLabelParent {
 		
 		if ( sPositionGLRotation != null ) 
 		{
-			refParameterHandler.setValueAndTypeAndDefault( 
+			parameterHandler.setValueAndTypeAndDefault( 
 					CommandQueueSaxType.TAG_POS_GL_ROTATION.getXmlKey(),
 					sPositionGLRotation, 
 					ParameterHandlerType.VEC4F,
 					CommandQueueSaxType.TAG_POS_GL_ROTATION.getDefault() );
 		}
 		
-		cameraOrigin = refParameterHandler.getValueVec3f( 
+		cameraOrigin = parameterHandler.getValueVec3f( 
 				CommandQueueSaxType.TAG_POS_GL_ORIGIN.getXmlKey() );
 		
 		/* convert Vec4f to roation Rotf */
-		Vec4f vec4fRotation = refParameterHandler.getValueVec4f( 
+		Vec4f vec4fRotation = parameterHandler.getValueVec4f( 
 				CommandQueueSaxType.TAG_POS_GL_ROTATION.getXmlKey() );
 		
 		cameraRotation.set( new Vec3f(vec4fRotation.x(),vec4fRotation.y(),vec4fRotation.z()),

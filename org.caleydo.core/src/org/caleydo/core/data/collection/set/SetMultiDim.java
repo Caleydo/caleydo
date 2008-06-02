@@ -27,7 +27,7 @@ implements ISet {
 	 * Since only one Selections is stored only one 
 	 * MetaData object is needed. 
 	 */
-	protected IMetaData refMetaDataAllAndAny = null;
+	protected IMetaData metaDataAllAndAny = null;
 	
 	protected Vector< Vector<IVirtualArray> > vecSelectionDim;
 	
@@ -36,12 +36,12 @@ implements ISet {
 	/**
 	 * Store reference to the IVirtualArray.
 	 */
-	//protected IVirtualArray[] refFlatSelection = null;
+	//protected IVirtualArray[] flatSelection = null;
 	
 	/**
 	 * Store reference to the Storages.
 	 */
-	//protected IStorage[] refFlatStorage = null;
+	//protected IStorage[] flatStorage = null;
 	
 	/**
 	 * Variable for the dimension of this set.
@@ -255,14 +255,14 @@ implements ISet {
 		
 		assert setMetaData != null :"setMetaData() with null-pointer.";
 		
-		refMetaDataAllAndAny = setMetaData;
+		metaDataAllAndAny = setMetaData;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.data.collection.IMetaDataCollection#getMetaData()
 	 */
 	public IMetaData getMetaData() {
-		return refMetaDataAllAndAny;
+		return metaDataAllAndAny;
 	}
 	
 	/**
@@ -273,7 +273,7 @@ implements ISet {
 	 * @see org.caleydo.core.data.collection.IMetaDataSet#getMetaData()
 	 */
 	public IMetaData getMetaDataAny() {
-		return refMetaDataAllAndAny;
+		return metaDataAllAndAny;
 	}
 
 	/**
@@ -340,16 +340,16 @@ implements ISet {
 	/**
 	 * Restore state of object by update data from SaxHandler
 	 * 
-	 * @param refSaxHandler reference to SaxHandler
+	 * @param saxHandler reference to SaxHandler
 	 * @return TRUE if the provided handler provided same Id as object.
 	 */
-	public boolean setMementoXML_usingHandler( final ISaxParserHandler refSaxHandler ) {
+	public boolean setMementoXML_usingHandler( final ISaxParserHandler saxHandler ) {
 		
 		return false;
 		
 //		try {
 //			CollectionSetSaxParserHandler parser = 
-//				(CollectionSetSaxParserHandler) refSaxHandler;
+//				(CollectionSetSaxParserHandler) saxHandler;
 //			
 //			if ( parser.getDim() < 0 ) {
 //				assert false:"Parser does not return informations neede";
@@ -365,13 +365,13 @@ implements ISet {
 //			/**
 //			 * Store reference to the Selections.
 //			 */
-//			refFlatSelection = new IVirtualArray[iListOfSellectionId.length];
+//			flatSelection = new IVirtualArray[iListOfSellectionId.length];
 //			
 //			for ( int iIndex=0; iIndex< iListOfSellectionId.length ; iIndex++ ) {
 //				
 //				try {					
 //					Object buffer = getManager().getItem( iListOfSellectionId[iIndex] );
-//					refFlatSelection[iIndex] = (IVirtualArray) buffer;
+//					flatSelection[iIndex] = (IVirtualArray) buffer;
 //				}
 //				catch ( NullPointerException npe) {
 //					npe.printStackTrace();
@@ -382,13 +382,13 @@ implements ISet {
 //			/**
 //			 * Store reference to the Storages.
 //			 */
-//			refFlatStorage = new IStorage[iListOfStorageId.length];
+//			flatStorage = new IStorage[iListOfStorageId.length];
 //			
 //			for ( int iIndex=0; iIndex< iListOfStorageId.length ; iIndex++ ) {
 //				
 //				try {					
 //					Object buffer = getManager().getItem( iListOfStorageId[iIndex] );
-//					refFlatStorage[iIndex] = (IStorage) buffer;
+//					flatStorage[iIndex] = (IStorage) buffer;
 //				}
 //				catch ( NullPointerException npe) {
 //					npe.printStackTrace();

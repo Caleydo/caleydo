@@ -32,11 +32,11 @@ implements ISetViewData {
 		
 		if ( setViewCamera == null ) 
 		{
-			this.refIViewCamera = new ViewCameraPitchRollYaw(iSetCollectionId);
+			this.viewCamera = new ViewCameraPitchRollYaw(iSetCollectionId);
 		} //if ( setViewCamera == null ) 
 		else
 		{
-			this.refIViewCamera = setViewCamera;
+			this.viewCamera = setViewCamera;
 		} //if ( setViewCamera == null ) {..} else {..}
 	}
 
@@ -92,7 +92,7 @@ implements ISetViewData {
 	 */
 	public IViewCamera getViewCamera() {
 
-		return refIViewCamera;
+		return viewCamera;
 	}
 
 
@@ -101,13 +101,13 @@ implements ISetViewData {
 	 */
 	public void setViewCamera(IViewCamera setViewCamera) {
 
-		refIViewCamera = setViewCamera;
+		viewCamera = setViewCamera;
 	}
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.view.jogl.IJoglMouseListener#hasViewCameraChanged()
 	 */
 	public boolean hasViewCameraChanged() {
 
-		return this.refIViewCamera.hasViewCameraChanged();
+		return this.viewCamera.hasViewCameraChanged();
 	}
 }

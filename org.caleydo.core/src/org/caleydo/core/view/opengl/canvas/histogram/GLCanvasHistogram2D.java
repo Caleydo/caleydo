@@ -251,15 +251,15 @@ extends AGLCanvasUser {
 		  return;
 	  }
 	  
-	  IStorage refBufferStorage = targetSet.getStorageByDimAndIndex(0,0);
-	  IVirtualArray refBufferSelection = targetSet.getVirtualArrayByDimAndIndex(0,0);
+	  IStorage bufferStorage = targetSet.getStorageByDimAndIndex(0,0);
+	  IVirtualArray bufferSelection = targetSet.getVirtualArrayByDimAndIndex(0,0);
   		  
 //	  generalManager.logMsg(
-//			  "createHistogram() use IVirtualArray(" + refBufferSelection.getLabel() + ":" + refBufferSelection.toString() + ")",
+//			  "createHistogram() use IVirtualArray(" + bufferSelection.getLabel() + ":" + bufferSelection.toString() + ")",
 //			  LoggerType.FULL );
 	  
 	   
-	  if ( refBufferStorage == null ) {
+	  if ( bufferStorage == null ) {
 		  return;
 	  }
 	  
@@ -272,17 +272,17 @@ extends AGLCanvasUser {
 			  enumCurrentHistogramMode,
 			  true, 0 , 0 );
 	  
-	  HistogramData refResultBuffer = 
+	  HistogramData resultBuffer = 
 		  histogramCreatorSet.getUpdatedHistogramData();
 	 
 //	  generalManager.logMsg( 
-//			  "HISTOGRAM:\n  " + refResultBuffer.toString(),
+//			  "HISTOGRAM:\n  " + resultBuffer.toString(),
 //			  LoggerType.FULL );
 	  
 	  listHistogramData.clear();
 	  
-	  if ( refResultBuffer != null ) {
-		  listHistogramData.add( refResultBuffer );
+	  if ( resultBuffer != null ) {
+		  listHistogramData.add( resultBuffer );
 	  }
 	  
   }
@@ -349,9 +349,9 @@ extends AGLCanvasUser {
 
 	    if ( this.targetSet != null ) {
 	    	
-	    	IStorage refStorage = this.targetSet.getStorageByDimAndIndex(0,0);
+	    	IStorage storage = this.targetSet.getStorageByDimAndIndex(0,0);
 	    	
-	    	int[] i_dataValues = refStorage.getArrayInt();
+	    	int[] i_dataValues = storage.getArrayInt();
 	    	
 	    	if ( i_dataValues != null ) {
 	    		

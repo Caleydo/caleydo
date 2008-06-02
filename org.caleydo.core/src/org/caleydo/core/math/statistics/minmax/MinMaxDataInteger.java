@@ -27,9 +27,9 @@ public final class MinMaxDataInteger {
 	
 	protected boolean bIsValid = false;
 	
-	// protected SetMultiDim refSet = null;
+	// protected SetMultiDim set = null;
 	
-	protected ISet refSet = null;
+	protected ISet set = null;
 	
 	/**
 	 * 
@@ -66,28 +66,28 @@ public final class MinMaxDataInteger {
 //		
 //		bIsValid = false;
 //		
-//		  if ( refSet != null ) {
+//		  if ( set != null ) {
 //		    	
-//			  if ( refSet.getDimensions() < iDimensions ) {
+//			  if ( set.getDimensions() < iDimensions ) {
 //	    			System.out.println("MinMaxDataInteger.updateDataOld() deprecated method! Can not use a ISet with only one dimension!");
 //	    			return false;
 //			  }
 //			  
-//		    	if ( refSet.getReadToken() ) {
+//		    	if ( set.getReadToken() ) {
 //		    		
-//		    		//allocateMinMax( refSet.getDimensions() );
+//		    		//allocateMinMax( set.getDimensions() );
 //		    	
-//			    	IStorage refStorageX = refSet.getStorageByDimAndIndex(0,0);
-//			    	IStorage refStorageY = refSet.getStorageByDimAndIndex(1,0);
+//			    	IStorage storageX = set.getStorageByDimAndIndex(0,0);
+//			    	IStorage storageY = set.getStorageByDimAndIndex(1,0);
 //			    			    	
-//			    	int[] i_dataValuesX = refStorageX.getArrayInt();
-//			    	int[] i_dataValuesY = refStorageY.getArrayInt();
+//			    	int[] i_dataValuesX = storageX.getArrayInt();
+//			    	int[] i_dataValuesY = storageY.getArrayInt();
 //			    	
 //			    	if (( i_dataValuesX != null )&&
 //			    			( i_dataValuesY != null )) {
 //			    		
-//				    	IVirtualArrayIterator iterX = refSet.getVirtualArrayByDimAndIndex(0,0).iterator();
-//				    	IVirtualArrayIterator iterY = refSet.getVirtualArrayByDimAndIndex(1,0).iterator();
+//				    	IVirtualArrayIterator iterX = set.getVirtualArrayByDimAndIndex(0,0).iterator();
+//				    	IVirtualArrayIterator iterY = set.getVirtualArrayByDimAndIndex(1,0).iterator();
 //			    		
 //				    	/**
 //				    	 * update ...
@@ -126,16 +126,16 @@ public final class MinMaxDataInteger {
 //				    	fMeanValue[0] = (float) iSumX / (float) i;
 //				    	fMeanValue[1] = (float) iSumY / (float) i;
 //				    	
-//				    	refSet.returnReadToken();	
+//				    	set.returnReadToken();	
 //				    	bIsValid = true;
 //				    	return true;
 //			    	} //end: if (( i_dataValuesX != null )&&( i_dataValuesY != null )) {
 //			    	
-//			    	refSet.returnReadToken();
+//			    	set.returnReadToken();
 //			    	return false;
-//		    	} //end: if ( refSet.getReadToken() ) {
+//		    	} //end: if ( set.getReadToken() ) {
 //		    	
-//		  } //end: if (refSet != null) {
+//		  } //end: if (set != null) {
 //		  
 //		  return false;
 //	}
@@ -145,33 +145,33 @@ public final class MinMaxDataInteger {
 	{
 		bIsValid = false;
 		
-		if ( refSet != null ) 
+		if ( set != null ) 
 		{
 		   	
-		  if ( refSet.getDimensions() < iDimensions ) 
+		  if ( set.getDimensions() < iDimensions ) 
 		  {
 	    		System.out.println("MinMaxDataInteger.updateData()  Can not use a ISet with only one dimension!");
 	    		return false;
 		  }
 			  
-		  if ( refSet.getReadToken() ) 
+		  if ( set.getReadToken() ) 
 		  {
 		    		
-		  	//int iDimension = refSet.getDimensions();
+		  	//int iDimension = set.getDimensions();
 		  		
 		  	//this.allocateMinMax( iDimension );
 		    		
 		  	for ( int iIndex = 0; iIndex < iDimensions; iIndex++ ) 
 		  	{		    					
-		    	IVirtualArray select = refSet.getVirtualArrayByDimAndIndex(iIndex,0);		    			
+		    	IVirtualArray select = set.getVirtualArrayByDimAndIndex(iIndex,0);		    			
 		    	IVirtualArrayIterator iter = select.iterator();
-		    	IStorage refStorage = refSet.getStorageByDimAndIndex(iIndex,0);
+		    	IStorage storage = set.getStorageByDimAndIndex(iIndex,0);
 		    			
-		    	int[] i_dataValues = refStorage.getArrayInt();
+		    	int[] i_dataValues = storage.getArrayInt();
 		    			
 		    	if ( i_dataValues == null ) 
 		    	{
-		    		refSet.returnReadToken();
+		    		set.returnReadToken();
 		    		return false;
 		    	}
 		    			
@@ -206,11 +206,11 @@ public final class MinMaxDataInteger {
 		  	} // end: for ( int iIndex = 0; iIndex < iDimension; iIndex++ ) {
 		    					    	
 		    		
-			refSet.returnReadToken();
+			set.returnReadToken();
 			return true;
-		  } //end: if ( refSet.getReadToken() ) {
+		  } //end: if ( set.getReadToken() ) {
 		    	
-		} //end: if (refSet != null) {
+		} //end: if (set != null) {
 		  
 		return false;
 	}
@@ -223,7 +223,7 @@ public final class MinMaxDataInteger {
 	 * @param useSet ISet to calcualte min max and mean value from.
 	 */
 	public void useSet( ISet useSet ) {
-		refSet = useSet;		
+		set = useSet;		
 		//allocateMinMax( useSet.getDimensions() );		
 		bIsValid = updateData();	
 	}

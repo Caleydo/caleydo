@@ -270,14 +270,14 @@ implements IMediatorReceiver, IMediatorSender
 		generalManager.getLogger().log(Level.INFO, "Update called by "
 				+eventTrigger.getClass().getSimpleName());
 		
-		ISetSelection refSetSelection = (ISetSelection) updatedSet;
+		ISetSelection setSelection = (ISetSelection) updatedSet;
 
-		refSetSelection.getReadToken();
+		setSelection.getReadToken();
 		// contains all genes in center pathway (not yet)
-		ArrayList<Integer> iAlSelection = refSetSelection.getSelectionIdArray();
+		ArrayList<Integer> iAlSelection = setSelection.getSelectionIdArray();
 		// contains type - 0 for not selected 1 for selected
-		ArrayList<Integer> iAlGroup = refSetSelection.getGroupArray();
-		ArrayList<Integer> iAlOptional = refSetSelection.getOptionalDataArray();
+		ArrayList<Integer> iAlGroup = setSelection.getGroupArray();
+		ArrayList<Integer> iAlOptional = setSelection.getOptionalDataArray();
 		// iterate here		
 		ArrayList<Integer> iAlSelectionStorageIndices = convertDavidIdToExpressionIndices(iAlSelection);
 		cleanSelection(iAlSelectionStorageIndices, iAlGroup);

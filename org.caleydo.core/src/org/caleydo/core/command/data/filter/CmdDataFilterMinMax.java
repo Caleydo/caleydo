@@ -50,15 +50,15 @@ extends ACmdCreate_IdTargetLabelAttrDetail
 	/**
 	 * Constructor.
 	 * 
-	 * @param refGeneralManager
-	 * @param refCommandManager
-	 * @param refCommandQueueSaxType
+	 * @param generalManager
+	 * @param commandManager
+	 * @param commandQueueSaxType
 	 */
-	public CmdDataFilterMinMax(IGeneralManager refGeneralManager,
-			ICommandManager refCommandManager,
-			CommandQueueSaxType refCommandQueueSaxType) {
+	public CmdDataFilterMinMax(IGeneralManager generalManager,
+			ICommandManager commandManager,
+			CommandQueueSaxType commandQueueSaxType) {
 
-		super(refGeneralManager, refCommandManager, refCommandQueueSaxType);
+		super(generalManager, commandManager, commandQueueSaxType);
 		
 	//	iAlStorageId = new ArrayList<Integer>();
 	}

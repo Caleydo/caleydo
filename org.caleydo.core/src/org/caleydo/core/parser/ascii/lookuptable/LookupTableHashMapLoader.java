@@ -20,7 +20,7 @@ public class LookupTableHashMapLoader
 extends ALookupTableLoader
 implements ILookupTableLoader {
 	
-	protected IGenomeIdMap refGenomeIdMap;
+	protected IGenomeIdMap genomeIdMap;
 	
 	/**
 	 * Constructor.
@@ -74,9 +74,9 @@ implements ILookupTableLoader {
 						{
 							// Special case for creating indexing of storages
 							if (currentGenomeIdType.equals(EGenomeMappingType.DAVID_2_EXPRESSION_STORAGE_ID))
-								refGenomeIdMap.put(buffer, Integer.toString(iLineInFile-iStartParsingAtLine));
+								genomeIdMap.put(buffer, Integer.toString(iLineInFile-iStartParsingAtLine));
 							else
-								refGenomeIdMap.put(buffer, strTokenText.nextToken());
+								genomeIdMap.put(buffer, strTokenText.nextToken());
 							
 							break;
 						}
@@ -132,7 +132,7 @@ implements ILookupTableLoader {
 			return;
 		}
 		
-		refGenomeIdMap = setHashMap;		
+		genomeIdMap = setHashMap;		
 	}
 
 
@@ -143,6 +143,6 @@ implements ILookupTableLoader {
 	 */
 	public void wirteBackMapToGenomeIdManager() {
 		
-		genomeIdManager.setMapByType(currentGenomeIdType, refGenomeIdMap);
+		genomeIdManager.setMapByType(currentGenomeIdType, genomeIdMap);
 	}
 }

@@ -40,10 +40,10 @@ extends AXmlParserHandler {
 	
 	private String sTitle = "";
 	
-	public BioCartaPathwayImageMapSaxHandler(IGeneralManager refGeneralManager, 
-			IXmlParserManager refXmlParserManager) {
+	public BioCartaPathwayImageMapSaxHandler(IGeneralManager generalManager, 
+			IXmlParserManager xmlParserManager) {
 
-		super(refGeneralManager, refXmlParserManager);
+		super(generalManager, xmlParserManager);
 
 		setXmlActivationTag("span");
 	}	
@@ -83,7 +83,7 @@ extends AXmlParserHandler {
 			if (sName.equals("map")) 
 			{
 				// Early abort parsing current file
-				refXmlParserManager.sectionFinishedByHandler( this );
+				xmlParserManager.sectionFinishedByHandler( this );
 			}
 		}
     

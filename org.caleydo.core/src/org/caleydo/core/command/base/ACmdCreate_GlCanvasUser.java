@@ -37,17 +37,17 @@ extends ACmdCreate_IdTargetParentGLObject {
 	 *
 	 * Constructor.
 	 * 
-	 * @param refGeneralManager
-	 * @param refParameterHandler
+	 * @param generalManager
+	 * @param parameterHandler
 	 */
 	protected ACmdCreate_GlCanvasUser(
-			final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType)
+			final IGeneralManager generalManager,
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType)
 	{
-		super(refGeneralManager,
-				refCommandManager,
-				refCommandQueueSaxType);
+		super(generalManager,
+				commandManager,
+				commandQueueSaxType);
 		
 		// Create default view frustum
 		viewFrustum = new ViewFrustumBase(ProjectionMode.ORTHOGRAPHIC,
@@ -59,9 +59,9 @@ extends ACmdCreate_IdTargetParentGLObject {
 	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetParentGLObject#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
 	 */
 	public void setParameterHandler( 
-			final IParameterHandler refParameterHandler) {
+			final IParameterHandler parameterHandler) {
 		
-		super.setParameterHandler(refParameterHandler);
+		super.setParameterHandler(parameterHandler);
 		
 		StringTokenizer frustumToken = new StringTokenizer(
 				sAttribute3,

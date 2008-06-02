@@ -45,7 +45,7 @@ public class GLPathwayTextureManager {
 		if (hashPathwayIdToTexture.containsKey(iPathwayId))
 			return hashPathwayIdToTexture.get(iPathwayId);
 		
-		Texture refPathwayTexture = null;
+		Texture pathwayTexture = null;
 
 		String sPathwayTexturePath = ((PathwayGraph)generalManager
 				.getPathwayManager().getItem(iPathwayId)).getImageLink();
@@ -60,26 +60,26 @@ public class GLPathwayTextureManager {
 		{			
 			if (this.getClass().getClassLoader().getResource(sPathwayTexturePath) != null)
 			{
-				refPathwayTexture = TextureIO.newTexture(TextureIO.newTextureData(
+				pathwayTexture = TextureIO.newTexture(TextureIO.newTextureData(
 						this.getClass().getClassLoader().getResourceAsStream(sPathwayTexturePath), false, "GIF"));
 			}
 			else
 			{
-				refPathwayTexture = TextureIO.newTexture(TextureIO.newTextureData(
+				pathwayTexture = TextureIO.newTexture(TextureIO.newTextureData(
 						new File(sPathwayTexturePath), true, "GIF"));			
 			}
 		
-//			refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR); 
-//			refPathwayTexture.setTexParameteri(GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+//			pathwayTexture.setTexParameteri(GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR); 
+//			pathwayTexture.setTexParameteri(GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
 			
-			hashPathwayIdToTexture.put(iPathwayId, refPathwayTexture);
+			hashPathwayIdToTexture.put(iPathwayId, pathwayTexture);
 			
 //			generalManager.logMsg(
 //					this.getClass().getSimpleName() + 
 //					": loadPathwayTexture(): Loaded Texture for Pathway with ID: " +iPathwayId,
 //					LoggerType.VERBOSE );
 			
-			return refPathwayTexture;
+			return pathwayTexture;
 			
 		} catch (Exception e)
 		{
@@ -96,17 +96,17 @@ public class GLPathwayTextureManager {
 			final float fTextureTransparency,
 			final boolean bHighlight) {
 		
-		Texture refTmpPathwayTexture = loadPathwayTextureById(iPathwayId);
+		Texture tmpPathwayTexture = loadPathwayTextureById(iPathwayId);
 		
-		refTmpPathwayTexture.enable();
-		refTmpPathwayTexture.bind();
+		tmpPathwayTexture.enable();
+		tmpPathwayTexture.bind();
 
 		if (bHighlight)
 			gl.glColor4f(1f, 0.85f, 0.85f, fTextureTransparency);
 		else
 			gl.glColor4f(1f, 1f, 1f, fTextureTransparency);
 		
-		TextureCoords texCoords = refTmpPathwayTexture.getImageTexCoords();
+		TextureCoords texCoords = tmpPathwayTexture.getImageTexCoords();
 
 		float fTextureWidth = GLPathwayManager.SCALING_FACTOR_X * 
 			((PathwayGraph)generalManager.getPathwayManager().getItem(iPathwayId)).getWidth();
@@ -127,7 +127,7 @@ public class GLPathwayTextureManager {
 		gl.glVertex3f(0.0f, fTextureHeight, 0.0f);
 		gl.glEnd();	
 
-		refTmpPathwayTexture.disable();
+		tmpPathwayTexture.disable();
 		
 		if (bHighlight)
 		{

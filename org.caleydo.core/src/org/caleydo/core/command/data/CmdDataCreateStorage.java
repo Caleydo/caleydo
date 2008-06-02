@@ -61,14 +61,14 @@ extends ACmdCreate_IdTargetLabel {
 	 * Constructor.
 	 */
 	public CmdDataCreateStorage( 
-			final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType,
+			final IGeneralManager generalManager,
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType,
 			final boolean bDisposeDataAfterDoCommand ) {
 		
-		super(refGeneralManager, 
-				refCommandManager,
-				refCommandQueueSaxType);
+		super(generalManager, 
+				commandManager,
+				commandQueueSaxType);
 			
 		this.bDisposeDataAfterDoCommand = bDisposeDataAfterDoCommand;
 		
@@ -89,10 +89,10 @@ extends ACmdCreate_IdTargetLabel {
 		
 		assert llDataTypes != null : "Probably this doCommand() was already executed once!";
 		
-		IStorageManager refStorageManager = 
+		IStorageManager storageManager = 
 			generalManager.getStorageManager();
 		
-		IStorage newObject = (IStorage) refStorageManager.createStorage(
+		IStorage newObject = (IStorage) storageManager.createStorage(
 				ManagerObjectType.STORAGE_FLAT );
 		
 		newObject.setId( iUniqueId );
@@ -300,7 +300,7 @@ extends ACmdCreate_IdTargetLabel {
 		} //end: while ( iter_DataRaw.hasNext() ) {
 						
 		
-		refStorageManager.registerItem( newObject, 
+		storageManager.registerItem( newObject, 
 				newObject.getId(), 
 				newObject.getBaseType() );
 
@@ -334,18 +334,18 @@ extends ACmdCreate_IdTargetLabel {
 	}
 	
 
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 				
-		assert refParameterHandler != null: "can not handle null object!";		
+		assert parameterHandler != null: "can not handle null object!";		
 		
-		super.setParameterHandler(refParameterHandler);
+		super.setParameterHandler(parameterHandler);
 		
 		/**
 		 * Fill data type pattern...
 		 */
 		StringTokenizer strToken_DataTypes = 
 			new StringTokenizer( 
-					refParameterHandler.getValueString( 
+					parameterHandler.getValueString( 
 							CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() ),
 							
 						IGeneralManager.sDelimiter_Parser_DataType); 
@@ -361,7 +361,7 @@ extends ACmdCreate_IdTargetLabel {
 		 * Fill raw data...
 		 */
 		StringTokenizer strTokenLine = new StringTokenizer( 
-				refParameterHandler.getValueString( 
+				parameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey() ),
 					IGeneralManager.sDelimiter_Paser_DataItemBlock );
 		

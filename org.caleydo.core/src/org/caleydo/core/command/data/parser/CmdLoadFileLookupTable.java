@@ -99,33 +99,33 @@ extends ACommand {
 	 * Constructor.
 	 * 
 	 * @param generalManager
-	 * @param refCommandManager
-	 * @param refCommandQueueSaxType
+	 * @param commandManager
+	 * @param commandQueueSaxType
 	 */
 	public CmdLoadFileLookupTable( 
 			final IGeneralManager generalManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType) {
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType) {
 		
 		super(-1,
 				generalManager,
-				refCommandManager,
-				refCommandQueueSaxType);
+				commandManager,
+				commandQueueSaxType);
 		
 		setCommandQueueSaxType(CommandQueueSaxType.LOAD_LOOKUP_TABLE_FILE);
 	}
 	
 	
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
-		super.setParameterHandler(refParameterHandler);
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
+		super.setParameterHandler(parameterHandler);
 		
-		this.setId( refParameterHandler.getValueInt( 
+		this.setId( parameterHandler.getValueInt( 
 				CommandQueueSaxType.TAG_CMD_ID.getXmlKey()) );
 	
-		this.sFileName = refParameterHandler.getValueString( 
+		this.sFileName = parameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_DETAIL.getXmlKey() );
 		
-		String sLUT_info =  refParameterHandler.getValueString( 
+		String sLUT_info =  parameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() );
 
 		StringTokenizer tokenizer = new StringTokenizer( sLUT_info,
@@ -143,7 +143,7 @@ extends ACommand {
 			}
 			else if (sLookupTableOptions.equals("LUT_1"))
 			{
-				sCodeResolvingLUTTypes = refParameterHandler.getValueString( 
+				sCodeResolvingLUTTypes = parameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_ATTRIBUTE4.getXmlKey());
 				
 				tokenizer = new StringTokenizer(sCodeResolvingLUTTypes,
@@ -155,7 +155,7 @@ extends ACommand {
 			}
 			else if (sLookupTableOptions.equals("LUT_2"))
 			{
-				sCodeResolvingLUTTypes = refParameterHandler.getValueString( 
+				sCodeResolvingLUTTypes = parameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_ATTRIBUTE4.getXmlKey());
 				
 				tokenizer = new StringTokenizer(sCodeResolvingLUTTypes,
@@ -167,7 +167,7 @@ extends ACommand {
 			}
 			else if (sLookupTableOptions.equals("LUT_BOTH"))
 			{
-				sCodeResolvingLUTTypes = refParameterHandler.getValueString( 
+				sCodeResolvingLUTTypes = parameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_ATTRIBUTE4.getXmlKey());
 				
 				tokenizer = new StringTokenizer(sCodeResolvingLUTTypes,
@@ -180,15 +180,15 @@ extends ACommand {
 			}
 		}
 		
-		this.sLUT_Target =	refParameterHandler.getValueString( 
+		this.sLUT_Target =	parameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey());
 		
 		this.iTargetSetId =	StringConversionTool.convertStringToInt(
-				refParameterHandler.getValueString(CommandQueueSaxType.TAG_UNIQUE_ID.getXmlKey()),
+				parameterHandler.getValueString(CommandQueueSaxType.TAG_UNIQUE_ID.getXmlKey()),
 				-1 );
 		
 		int[] iArrayStartStop = StringConversionTool.convertStringToIntArrayVariableLength(
-				refParameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey() ),
+				parameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey() ),
 				" " );
 		
 		if ( iArrayStartStop.length > 0 ) 
@@ -235,7 +235,7 @@ extends ACommand {
 		
 		LookupTableLoaderProxy loader = null;
 		
-		IGenomeIdManager refGenomeIdManager = 
+		IGenomeIdManager genomeIdManager = 
 			generalManager.getGenomeIdManager();
 		
 		try 
@@ -297,9 +297,9 @@ extends ACommand {
 			
 			loader.setStartParsingStopParsingAtLine( iStartPareseFileAtLine, iStopPareseFileAtLine );
 			
-			refGenomeIdManager.buildLUT_startEditing( lut_genome_type );
+			genomeIdManager.buildLUT_startEditing( lut_genome_type );
 			loader.loadData();
-			refGenomeIdManager.buildLUT_stopEditing( lut_genome_type );
+			genomeIdManager.buildLUT_stopEditing( lut_genome_type );
 			
 			
 			/* --- Map codes in LUT to IDs --- */

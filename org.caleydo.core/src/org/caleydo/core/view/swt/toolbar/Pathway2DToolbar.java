@@ -35,32 +35,32 @@ extends AToolbar {
 	
 	protected IGeneralManager generalManager;
 	
-	protected ToolItem refAddEnzymeNodeItem;
-	protected ToolItem refZoomOrigItem;
-	protected ToolItem refZoomInItem;
-	protected ToolItem refZoomOutItem;
-	protected ToolItem refOneNeighborhoodItem;
-	protected ToolItem refTwoNeighborhoodItem;
-	protected ToolItem refThreeNeighborhoodItem;
-	protected ToolItem refShowOverviewMapItem;
-	protected ToolItem refFilterEdgesItem;
-	protected ToolItem refBackgroundOverlayItem;
-	protected ToolItem refKeggMetabolicPathwaysMapItem;
+	protected ToolItem addEnzymeNodeItem;
+	protected ToolItem zoomOrigItem;
+	protected ToolItem zoomInItem;
+	protected ToolItem zoomOutItem;
+	protected ToolItem oneNeighborhoodItem;
+	protected ToolItem twoNeighborhoodItem;
+	protected ToolItem threeNeighborhoodItem;
+	protected ToolItem showOverviewMapItem;
+	protected ToolItem filterEdgesItem;
+	protected ToolItem backgroundOverlayItem;
+	protected ToolItem keggMetabolicPathwaysMapItem;
 	
 	/**
 	 * Constructor.
 	 * 
-	 * @param refSWTContainer
-	 * @param refPathwayGraphViewRep
+	 * @param swtContainer
+	 * @param pathwayGraphViewRep
 	 * @param generalManager
 	 */
-	public Pathway2DToolbar(Composite refSWTContainer,
-			APathwayGraphViewRep refPathwayGraphViewRep,
+	public Pathway2DToolbar(Composite swtContainer,
+			APathwayGraphViewRep pathwayGraphViewRep,
 			final IGeneralManager generalManager) {
 
-		super(refSWTContainer);
+		super(swtContainer);
 		
-		this.pathwayGraphViewRep = refPathwayGraphViewRep;
+		this.pathwayGraphViewRep = pathwayGraphViewRep;
 		this.generalManager = generalManager;
 
 		initToolbar();
@@ -75,15 +75,15 @@ extends AToolbar {
 			Image addEnzymeIcon;
 			if (this.getClass().getClassLoader().getResource(ADD_ENZYME_ICON_PATH) != null)
 			{
-				addEnzymeIcon = new Image(refSWTContainer.getDisplay(), 
+				addEnzymeIcon = new Image(swtContainer.getDisplay(), 
 						this.getClass().getClassLoader().getResource(ADD_ENZYME_ICON_PATH).openStream());
 			}
 			else
 			{
-				addEnzymeIcon = new Image(refSWTContainer.getDisplay(), ADD_ENZYME_ICON_PATH);
+				addEnzymeIcon = new Image(swtContainer.getDisplay(), ADD_ENZYME_ICON_PATH);
 			}
 			
-			refAddEnzymeNodeItem = createToolItem(refToolBar,
+			addEnzymeNodeItem = createToolItem(toolBar,
 					SWT.PUSH,
 					"",
 					addEnzymeIcon,
@@ -93,15 +93,15 @@ extends AToolbar {
 			Image zoomOrigIcon;
 			if (this.getClass().getClassLoader().getResource(ZOOM_ORIG_ICON_PATH) != null)
 			{
-				zoomOrigIcon = new Image(refSWTContainer.getDisplay(), 
+				zoomOrigIcon = new Image(swtContainer.getDisplay(), 
 						this.getClass().getClassLoader().getResourceAsStream(ZOOM_ORIG_ICON_PATH));
 			}
 			else
 			{
-				zoomOrigIcon = new Image(refSWTContainer.getDisplay(), ZOOM_ORIG_ICON_PATH);
+				zoomOrigIcon = new Image(swtContainer.getDisplay(), ZOOM_ORIG_ICON_PATH);
 			}
 			
-			refZoomOrigItem = createToolItem(refToolBar,
+			zoomOrigItem = createToolItem(toolBar,
 					SWT.PUSH,
 					"",
 					zoomOrigIcon,
@@ -111,15 +111,15 @@ extends AToolbar {
 			Image zoomInIcon;
 			if (this.getClass().getClassLoader().getResource(ZOOM_IN_ICON_PATH) != null)
 			{
-				zoomInIcon = new Image(refSWTContainer.getDisplay(), 
+				zoomInIcon = new Image(swtContainer.getDisplay(), 
 						this.getClass().getClassLoader().getResourceAsStream(ZOOM_IN_ICON_PATH));
 			}
 			else
 			{
-				zoomInIcon = new Image(refSWTContainer.getDisplay(), ZOOM_IN_ICON_PATH);
+				zoomInIcon = new Image(swtContainer.getDisplay(), ZOOM_IN_ICON_PATH);
 			}
 			
-		    refZoomInItem = createToolItem(refToolBar,
+		    zoomInItem = createToolItem(toolBar,
 					SWT.PUSH,
 					"",
 					zoomInIcon,
@@ -129,35 +129,35 @@ extends AToolbar {
 			Image zoomOutIcon;
 			if (this.getClass().getClassLoader().getResource(ZOOM_OUT_ICON_PATH) != null)
 			{
-				zoomOutIcon = new Image(refSWTContainer.getDisplay(), 
+				zoomOutIcon = new Image(swtContainer.getDisplay(), 
 						this.getClass().getClassLoader().getResourceAsStream(ZOOM_OUT_ICON_PATH));
 			}
 			else
 			{
-				zoomOutIcon = new Image(refSWTContainer.getDisplay(), ZOOM_OUT_ICON_PATH);
+				zoomOutIcon = new Image(swtContainer.getDisplay(), ZOOM_OUT_ICON_PATH);
 			}
 		    
-			refZoomOutItem = createToolItem(refToolBar,
+			zoomOutItem = createToolItem(toolBar,
 					SWT.PUSH,
 					"",
 					zoomOutIcon,
 					null,
 					"Zoom out");
 		    
-		  	new ToolItem(refToolBar, SWT.SEPARATOR);
+		  	new ToolItem(toolBar, SWT.SEPARATOR);
 			
 			Image oneNeighborhoodIcon;
 			if (this.getClass().getClassLoader().getResource(ONE_NEIGHBORHOOD_ICON_PATH) != null)
 			{
-				oneNeighborhoodIcon = new Image(refSWTContainer.getDisplay(), 
+				oneNeighborhoodIcon = new Image(swtContainer.getDisplay(), 
 						this.getClass().getClassLoader().getResourceAsStream(ONE_NEIGHBORHOOD_ICON_PATH));
 			}
 			else
 			{
-				oneNeighborhoodIcon = new Image(refSWTContainer.getDisplay(), ONE_NEIGHBORHOOD_ICON_PATH);
+				oneNeighborhoodIcon = new Image(swtContainer.getDisplay(), ONE_NEIGHBORHOOD_ICON_PATH);
 			}
 		  	
-			refOneNeighborhoodItem = createToolItem(refToolBar,
+			oneNeighborhoodItem = createToolItem(toolBar,
 					SWT.CHECK,
 					"",
 					oneNeighborhoodIcon,
@@ -167,15 +167,15 @@ extends AToolbar {
 			Image twoNeighborhoodIcon;
 			if (this.getClass().getClassLoader().getResource(TWO_NEIGHBORHOOD_ICON_PATH) != null)
 			{
-				twoNeighborhoodIcon = new Image(refSWTContainer.getDisplay(), 
+				twoNeighborhoodIcon = new Image(swtContainer.getDisplay(), 
 						this.getClass().getClassLoader().getResourceAsStream(TWO_NEIGHBORHOOD_ICON_PATH));
 			}
 			else
 			{
-				twoNeighborhoodIcon = new Image(refSWTContainer.getDisplay(), TWO_NEIGHBORHOOD_ICON_PATH);
+				twoNeighborhoodIcon = new Image(swtContainer.getDisplay(), TWO_NEIGHBORHOOD_ICON_PATH);
 			}
 			
-			refTwoNeighborhoodItem = createToolItem(refToolBar,
+			twoNeighborhoodItem = createToolItem(toolBar,
 					SWT.CHECK,
 					"",
 					twoNeighborhoodIcon,
@@ -185,35 +185,35 @@ extends AToolbar {
 			Image threeNeighborhoodIcon;
 			if (this.getClass().getClassLoader().getResource(THREE_NEIGHBORHOOD_ICON_PATH) != null)
 			{
-				threeNeighborhoodIcon = new Image(refSWTContainer.getDisplay(), 
+				threeNeighborhoodIcon = new Image(swtContainer.getDisplay(), 
 						this.getClass().getClassLoader().getResourceAsStream(THREE_NEIGHBORHOOD_ICON_PATH));
 			}
 			else
 			{
-				threeNeighborhoodIcon = new Image(refSWTContainer.getDisplay(), THREE_NEIGHBORHOOD_ICON_PATH);
+				threeNeighborhoodIcon = new Image(swtContainer.getDisplay(), THREE_NEIGHBORHOOD_ICON_PATH);
 			}
 			
-			refThreeNeighborhoodItem = createToolItem(refToolBar,
+			threeNeighborhoodItem = createToolItem(toolBar,
 					SWT.CHECK,
 					"",
 					threeNeighborhoodIcon,
 					null,
 					"Show neighborhood within a distance of 3");
 			
-		  	new ToolItem(refToolBar, SWT.SEPARATOR);
+		  	new ToolItem(toolBar, SWT.SEPARATOR);
 			
 			Image overviewMapIcon;
 			if (this.getClass().getClassLoader().getResource(OVERVIEW_MAP_ICON_PATH) != null)
 			{
-				overviewMapIcon = new Image(refSWTContainer.getDisplay(), 
+				overviewMapIcon = new Image(swtContainer.getDisplay(), 
 						this.getClass().getClassLoader().getResourceAsStream(OVERVIEW_MAP_ICON_PATH));
 			}
 			else
 			{
-				overviewMapIcon = new Image(refSWTContainer.getDisplay(), OVERVIEW_MAP_ICON_PATH);
+				overviewMapIcon = new Image(swtContainer.getDisplay(), OVERVIEW_MAP_ICON_PATH);
 			}
 		  	
-			refShowOverviewMapItem = createToolItem(refToolBar,
+			showOverviewMapItem = createToolItem(toolBar,
 					SWT.PUSH,
 					"",
 					overviewMapIcon,
@@ -223,23 +223,23 @@ extends AToolbar {
 			Image backgroundOverlayIcon;
 			if (this.getClass().getClassLoader().getResource(BACKGROUND_OVERLAY_ICON_PATH) != null)
 			{
-				backgroundOverlayIcon = new Image(refSWTContainer.getDisplay(), 
+				backgroundOverlayIcon = new Image(swtContainer.getDisplay(), 
 						this.getClass().getClassLoader().getResourceAsStream(BACKGROUND_OVERLAY_ICON_PATH));
 			}
 			else
 			{
-				backgroundOverlayIcon = new Image(refSWTContainer.getDisplay(), BACKGROUND_OVERLAY_ICON_PATH);
+				backgroundOverlayIcon = new Image(swtContainer.getDisplay(), BACKGROUND_OVERLAY_ICON_PATH);
 			}
 			
-			refBackgroundOverlayItem = createToolItem(refToolBar,
+			backgroundOverlayItem = createToolItem(toolBar,
 					SWT.CHECK,
 					"",
 					backgroundOverlayIcon,
 					null,
 					"Show background overlay");
-			refBackgroundOverlayItem.setSelection(true);
+			backgroundOverlayItem.setSelection(true);
 			
-			refFilterEdgesItem = createToolItem(refToolBar, 
+			filterEdgesItem = createToolItem(toolBar, 
 					SWT.DROP_DOWN, 
 					"Filter edges",
 					null, 
@@ -249,15 +249,15 @@ extends AToolbar {
 			Image homeIcon;
 			if (this.getClass().getClassLoader().getResource(HOME_ICON_PATH) != null)
 			{
-				homeIcon = new Image(refSWTContainer.getDisplay(), 
+				homeIcon = new Image(swtContainer.getDisplay(), 
 						this.getClass().getClassLoader().getResourceAsStream(HOME_ICON_PATH));
 			}
 			else
 			{
-				homeIcon = new Image(refSWTContainer.getDisplay(), HOME_ICON_PATH);
+				homeIcon = new Image(swtContainer.getDisplay(), HOME_ICON_PATH);
 			}
 			
-			refKeggMetabolicPathwaysMapItem = createToolItem(refToolBar,
+			keggMetabolicPathwaysMapItem = createToolItem(toolBar,
 					SWT.PUSH,
 					"",
 					homeIcon,
@@ -272,17 +272,17 @@ extends AToolbar {
 	
 	protected void createActionListener() {
 		
-		final Menu filterEdgeMenu = new Menu (refSWTContainer.getShell(), SWT.POP_UP);
-		final MenuItem refShowRelationsItem = new MenuItem (filterEdgeMenu, SWT.CHECK);
-		refShowRelationsItem.setText ("Show relations");
-		final MenuItem refShowReactionsItem = new MenuItem (filterEdgeMenu, SWT.CHECK);
-		refShowReactionsItem.setText ("Show reactions");	
+		final Menu filterEdgeMenu = new Menu (swtContainer.getShell(), SWT.POP_UP);
+		final MenuItem showRelationsItem = new MenuItem (filterEdgeMenu, SWT.CHECK);
+		showRelationsItem.setText ("Show relations");
+		final MenuItem showReactionsItem = new MenuItem (filterEdgeMenu, SWT.CHECK);
+		showReactionsItem.setText ("Show reactions");	
 		
-		refFilterEdgesItem.addListener (SWT.Selection, new Listener () {
+		filterEdgesItem.addListener (SWT.Selection, new Listener () {
 			public void handleEvent (Event event) {
-				Rectangle rect = refFilterEdgesItem.getBounds ();
+				Rectangle rect = filterEdgesItem.getBounds ();
 				Point pt = new Point (rect.x, rect.y + rect.height);
-				pt = refToolBar.toDisplay (pt);
+				pt = toolBar.toDisplay (pt);
 				filterEdgeMenu.setLocation (pt.x, pt.y);
 				filterEdgeMenu.setVisible (true);	
 			}
@@ -300,20 +300,20 @@ extends AToolbar {
 //				
 //				if (((MenuItem)event.widget).getText().equals("Show relations"))
 //				{
-//					refPathwayGraphViewRep.showHideEdgesByType(
+//					pathwayGraphViewRep.showHideEdgesByType(
 //							clickedMenuItem.getSelection(),
 //							EdgeType.RELATION);
 //				}
 //				else if (((MenuItem)event.widget).getText().equals("Show reactions"))
 //				{
-//					refPathwayGraphViewRep.showHideEdgesByType(
+//					pathwayGraphViewRep.showHideEdgesByType(
 //							clickedMenuItem.getSelection(),
 //							EdgeType.REACTION);
 //				}					
 				
 //				// Get current states of edge filter
-//				refShowReactionsItem.setSelection(refPathwayGraphViewRep.getEdgeVisibilityStateByType(EdgeType.REACTION));
-//				refShowRelationsItem.setSelection(refPathwayGraphViewRep.getEdgeVisibilityStateByType(EdgeType.RELATION));
+//				showReactionsItem.setSelection(pathwayGraphViewRep.getEdgeVisibilityStateByType(EdgeType.REACTION));
+//				showRelationsItem.setSelection(pathwayGraphViewRep.getEdgeVisibilityStateByType(EdgeType.RELATION));
 			}
 		};	
 		
@@ -337,10 +337,10 @@ extends AToolbar {
 	          else if (sToolItemIdentifier.equals(
 	        		  "Show neighborhood within a distance of 1"))
 	          {
-	        	  refTwoNeighborhoodItem.setSelection(false);
-	        	  refThreeNeighborhoodItem.setSelection(false);
+	        	  twoNeighborhoodItem.setSelection(false);
+	        	  threeNeighborhoodItem.setSelection(false);
 	        	  
-	        	  if (refOneNeighborhoodItem.getSelection() == true)
+	        	  if (oneNeighborhoodItem.getSelection() == true)
 	        	  {
 		        	  pathwayGraphViewRep.setNeighbourhoodDistance(1);
 	        	  }
@@ -353,10 +353,10 @@ extends AToolbar {
 	          else if (sToolItemIdentifier.equals(
 	        		  "Show neighborhood within a distance of 2"))
 	          {
-	        	  refOneNeighborhoodItem.setSelection(false);
-	        	  refThreeNeighborhoodItem.setSelection(false);
+	        	  oneNeighborhoodItem.setSelection(false);
+	        	  threeNeighborhoodItem.setSelection(false);
 	        	  
-	        	  if (refTwoNeighborhoodItem.getSelection() == true)
+	        	  if (twoNeighborhoodItem.getSelection() == true)
 	        	  {
 		        	  pathwayGraphViewRep.setNeighbourhoodDistance(2);
 	        	  }
@@ -368,10 +368,10 @@ extends AToolbar {
 	          else if (sToolItemIdentifier.equals(
 						"Show neighborhood within a distance of 3"))
 	          {
-	        	  refOneNeighborhoodItem.setSelection(false);
-	        	  refTwoNeighborhoodItem.setSelection(false);
+	        	  oneNeighborhoodItem.setSelection(false);
+	        	  twoNeighborhoodItem.setSelection(false);
 	        	  
-	        	  if (refThreeNeighborhoodItem.getSelection() == true)
+	        	  if (threeNeighborhoodItem.getSelection() == true)
 	        	  {
 		        	  pathwayGraphViewRep.setNeighbourhoodDistance(3);
 	        	  }
@@ -388,23 +388,23 @@ extends AToolbar {
 	          else if (sToolItemIdentifier.equals("Show background overlay"))
 	          {
 	        	  pathwayGraphViewRep.showBackgroundOverlay(
-	        			  refBackgroundOverlayItem.getSelection());
+	        			  backgroundOverlayItem.getSelection());
 	        	  
-	        	  if (refBackgroundOverlayItem.getSelection() == true)
+	        	  if (backgroundOverlayItem.getSelection() == true)
 	        	  {
-	        		  refShowReactionsItem.setSelection(false);
-	        		  refShowRelationsItem.setSelection(false);
+	        		  showReactionsItem.setSelection(false);
+	        		  showRelationsItem.setSelection(false);
 	        		  
-//	        		  refPathwayGraphViewRep.showHideEdgesByType(false, EdgeType.REACTION);
-//	        		  refPathwayGraphViewRep.showHideEdgesByType(false, EdgeType.RELATION);	        		  
+//	        		  pathwayGraphViewRep.showHideEdgesByType(false, EdgeType.REACTION);
+//	        		  pathwayGraphViewRep.showHideEdgesByType(false, EdgeType.RELATION);	        		  
 	        	  }
 	        	  else
 	        	  {
-	        		  refShowReactionsItem.setSelection(true);
-	        		  refShowRelationsItem.setSelection(true);
+	        		  showReactionsItem.setSelection(true);
+	        		  showRelationsItem.setSelection(true);
 
-//	        		  refPathwayGraphViewRep.showHideEdgesByType(true, EdgeType.REACTION);
-//	        		  refPathwayGraphViewRep.showHideEdgesByType(true, EdgeType.RELATION);	        		  
+//	        		  pathwayGraphViewRep.showHideEdgesByType(true, EdgeType.REACTION);
+//	        		  pathwayGraphViewRep.showHideEdgesByType(true, EdgeType.RELATION);	        		  
 	        	  }
 	          }
 	          else if (sToolItemIdentifier.equals("" +
@@ -420,18 +420,18 @@ extends AToolbar {
 	        }
 	      };
 	      
-	      refZoomOrigItem.addListener(SWT.Selection, toolbarListener);
-	      refZoomInItem.addListener(SWT.Selection, toolbarListener);
-	      refZoomOutItem.addListener(SWT.Selection, toolbarListener);
-	      refOneNeighborhoodItem.addListener(SWT.Selection, toolbarListener);
-	      refTwoNeighborhoodItem.addListener(SWT.Selection, toolbarListener);
-	      refThreeNeighborhoodItem.addListener(SWT.Selection, toolbarListener);
-	      refShowOverviewMapItem.addListener(SWT.Selection, toolbarListener);
-	      refBackgroundOverlayItem.addListener(SWT.Selection, toolbarListener);
-	      refKeggMetabolicPathwaysMapItem.addListener(SWT.Selection, toolbarListener);
+	      zoomOrigItem.addListener(SWT.Selection, toolbarListener);
+	      zoomInItem.addListener(SWT.Selection, toolbarListener);
+	      zoomOutItem.addListener(SWT.Selection, toolbarListener);
+	      oneNeighborhoodItem.addListener(SWT.Selection, toolbarListener);
+	      twoNeighborhoodItem.addListener(SWT.Selection, toolbarListener);
+	      threeNeighborhoodItem.addListener(SWT.Selection, toolbarListener);
+	      showOverviewMapItem.addListener(SWT.Selection, toolbarListener);
+	      backgroundOverlayItem.addListener(SWT.Selection, toolbarListener);
+	      keggMetabolicPathwaysMapItem.addListener(SWT.Selection, toolbarListener);
 	      
-		  refShowRelationsItem.addListener(SWT.Selection, edgeFilterListener);
-		  refShowReactionsItem.addListener(SWT.Selection, edgeFilterListener);
+		  showRelationsItem.addListener(SWT.Selection, edgeFilterListener);
+		  showReactionsItem.addListener(SWT.Selection, edgeFilterListener);
 	}
 	
 }

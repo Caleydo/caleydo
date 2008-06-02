@@ -120,5 +120,5 @@ extends ICommandActionListener, IManager {
 	 */
 	public void runUndoCommand( ICommand runCmd );
 	
-	public void addUndoRedoViewRep ( UndoRedoViewRep refUndoRedoViewRep);
+	public void addUndoRedoViewRep ( UndoRedoViewRep undoRedoViewRep);
 }

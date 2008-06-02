@@ -29,9 +29,9 @@ public final class SetUpdateChacheId < T, V > {
 		Iterator< Vector< T > > iterDim = inVectorVector.iterator();
 		
 		while ( iterDim.hasNext() ) {
-			Vector< T > refVecSelect = iterDim.next();
+			Vector< T > vecSelect = iterDim.next();
 			
-			Iterator< T > iterSel = refVecSelect.iterator();
+			Iterator< T > iterSel = vecSelect.iterator();
 			while ( iterSel.hasNext() ) {
 				ICollectionCache buffer = 
 					(ICollectionCache) iterSel.next();
@@ -53,9 +53,9 @@ public final class SetUpdateChacheId < T, V > {
 		Iterator< Vector< V > > iterDim = inVectorVector.iterator();
 		
 		while ( iterDim.hasNext() ) {
-			Vector< V > refVecSelect = iterDim.next();
+			Vector< V > vecSelect = iterDim.next();
 			
-			Iterator< V > iterSel = refVecSelect.iterator();
+			Iterator< V > iterSel = vecSelect.iterator();
 			while ( iterSel.hasNext() ) {
 				ICollectionCache buffer = 
 					(ICollectionCache) iterSel.next();

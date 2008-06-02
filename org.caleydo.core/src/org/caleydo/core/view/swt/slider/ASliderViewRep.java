@@ -25,14 +25,14 @@ public abstract class ASliderViewRep
 extends AViewRep 
 implements IMediatorSender, IMediatorReceiver {
 	
-	protected Slider refSlider;
+	protected Slider slider;
 	
 	protected int iCurrentSliderValue = 50; //default value (middle position)
 	
-	public ASliderViewRep(IGeneralManager refGeneralManager, 
+	public ASliderViewRep(IGeneralManager generalManager, 
 			int iViewId, int iParentContainerId, String sLabel) {
 		
-		super(refGeneralManager, 
+		super(generalManager, 
 				iViewId, 
 				iParentContainerId, 
 				sLabel,
@@ -46,27 +46,27 @@ implements IMediatorSender, IMediatorReceiver {
 	 */
 	protected void initViewSwtComposit(Composite swtContainer) {
 		
-	    refSlider = new Slider(refSWTContainer, SWT.HORIZONTAL);
+	    slider = new Slider(swtContainer, SWT.HORIZONTAL);
 	    //slider.setBounds(115, 50, 25, 15);
-	    refSlider.setSize(iWidth, iHeight);
-	    refSlider.setMinimum(0);
-	    refSlider.setMaximum(100);
-	    //refSlider.setIncrement(1);
+	    slider.setSize(iWidth, iHeight);
+	    slider.setMinimum(0);
+	    slider.setMaximum(100);
+	    //slider.setIncrement(1);
 	}
 
 	public void drawView() {
 		
 	   // Check and reset minium and maximum of slider
-	   if (iCurrentSliderValue > refSlider.getMaximum())
+	   if (iCurrentSliderValue > slider.getMaximum())
 	   {
-		   refSlider.setMaximum(iCurrentSliderValue);
+		   slider.setMaximum(iCurrentSliderValue);
 	   }
-	   else if (iCurrentSliderValue < refSlider.getMinimum())
+	   else if (iCurrentSliderValue < slider.getMinimum())
 	   {
-		   refSlider.setMinimum(iCurrentSliderValue);
+		   slider.setMinimum(iCurrentSliderValue);
 	   }
 		
 	   // Set current slider value
-	   refSlider.setSelection(iCurrentSliderValue);
+	   slider.setSelection(iCurrentSliderValue);
 	}
 }

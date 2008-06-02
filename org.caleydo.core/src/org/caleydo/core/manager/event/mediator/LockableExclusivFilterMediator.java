@@ -18,10 +18,10 @@ import org.caleydo.core.manager.IGeneralManager;
 public class LockableExclusivFilterMediator 
 extends LockableMediator {
 
-	protected ISet refExclusiveSet;
+	protected ISet exclusiveSet;
 	
 	/**
-	 * @param refEventPublisher
+	 * @param eventPublisher
 	 * @param iMediatorId
 	 */
 	public LockableExclusivFilterMediator(final IGeneralManager generalManager,
@@ -30,15 +30,15 @@ extends LockableMediator {
 
 		super(generalManager, iMediatorId, MediatorUpdateType.MEDIATOR_FILTER_ONLY_SET);
 		
-		this.refExclusiveSet = setExclusiveSelectionSet;
+		this.exclusiveSet = setExclusiveSelectionSet;
 	}
 	
 	public ISet getExclusiveSet() {
-		return this.refExclusiveSet;
+		return this.exclusiveSet;
 	}
 	
 	public void setExclusiveSet(ISet setExclusiveSelectionSet) {
-		this.refExclusiveSet = setExclusiveSelectionSet;
+		this.exclusiveSet = setExclusiveSelectionSet;
 	}
 	
 	/**
@@ -52,7 +52,7 @@ extends LockableMediator {
 		
 		assert updatedSet != null : "can not handle selectionSet null-pointer";
 		
-		if (refExclusiveSet == updatedSet) {
+		if (exclusiveSet == updatedSet) {
 			super.updateReceiver(eventTrigger, updatedSet);
 		}		
 	}

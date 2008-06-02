@@ -29,7 +29,7 @@ public abstract class AViewRep
 extends AUniqueManagedObject
 implements IViewRep {
 	
-	private final ISetManager refSetManager;
+	private final ISetManager setManager;
 	
 	/**
 	 * List for all ISet objects providing data for this ViewRep.
@@ -57,24 +57,24 @@ implements IViewRep {
 	 */
 	protected int iHeight;
 	
-	protected Composite refSWTContainer;
+	protected Composite swtContainer;
 
 	/**
 	 * Constructor
 	 * 
-	 * @param refGeneralManager
+	 * @param generalManager
 	 * @param iViewId
 	 * @param iParentContainerId
 	 * @param sLabel
 	 */
 	public AViewRep(
-			final IGeneralManager refGeneralManager, 
+			final IGeneralManager generalManager, 
 			final int iUniqueId,
 			final int iParentContainerId,
 			final String sLabel,
 			final ViewType viewType ) {
 		
-		super ( iUniqueId, refGeneralManager );
+		super ( iUniqueId, generalManager );
 		
 		assert iParentContainerId != 0 : "Constructor iParentContainerId must not be 0!";
 		
@@ -86,7 +86,7 @@ implements IViewRep {
 		alSetData = new ArrayList <ISet> ();
 		alSetSelection = new ArrayList <SetSelection> ();
 		
-		refSetManager = generalManager.getSetManager();
+		setManager = generalManager.getSetManager();
 	}
 	
 	protected abstract void initViewSwtComposit(Composite swtContainer);
@@ -114,9 +114,9 @@ implements IViewRep {
 		this.iParentContainerId = iParentContainerId;
 	}
 	
-	public final void initViewRCP(Composite refSWTContainer) {
-		this.refSWTContainer = refSWTContainer;
-		initViewSwtComposit( refSWTContainer );
+	public final void initViewRCP(Composite swtContainer) {
+		this.swtContainer = swtContainer;
+		initViewSwtComposit( swtContainer );
 	}
 	
 	
@@ -134,16 +134,16 @@ implements IViewRep {
 		 * formally this was the method: retrieveGUIContainer() 
 		 */
 		
-		SWTNativeWidget refSWTNativeWidget = (SWTNativeWidget) generalManager
+		SWTNativeWidget sWTNativeWidget = (SWTNativeWidget) generalManager
 			.getSWTGUIManager().createWidget(
 				ManagerObjectType.GUI_SWT_NATIVE_WIDGET,
 				iParentContainerId, iWidth, iHeight);
 
-		refSWTContainer = refSWTNativeWidget.getSWTWidget();
+		swtContainer = sWTNativeWidget.getSWTWidget();
 
-		assert refSWTContainer != null : "empty SWT container";
+		assert swtContainer != null : "empty SWT container";
 				
-		initViewSwtComposit( refSWTContainer );
+		initViewSwtComposit( swtContainer );
 	}
 	
 	
@@ -184,11 +184,11 @@ implements IViewRep {
 				
 		this.sLabel = label;
 		
-		if  (refSWTContainer != null)
+		if  (swtContainer != null)
 		{
 			try 
 			{
-				refSWTContainer.getShell().setText(label);
+				swtContainer.getShell().setText(label);
 			}
 			catch (SWTException se) {
 				
@@ -222,9 +222,9 @@ implements IViewRep {
 		
 		for ( int i=0; i < iSet.length; i++)
 		{
-			ISet refCurrentSet = refSetManager.getItemSet(iSet[i]);
+			ISet currentSet = setManager.getItemSet(iSet[i]);
 			
-			if ( refCurrentSet == null ) 
+			if ( currentSet == null ) 
 			{
 //				generalManager.logMsg(
 //						"addSetId(" + iSet[i] + ") is not registered at SetManager!",
@@ -233,30 +233,30 @@ implements IViewRep {
 				continue;
 			}
 			
-			if ( ! hasSetId_ByReference(refCurrentSet) )
+			if ( ! hasSetId_ByReference(currentSet) )
 			{
-				switch (refCurrentSet.getSetType()) {
+				switch (currentSet.getSetType()) {
 				case SET_RAW_DATA:
-					alSetData.add(refCurrentSet);
+					alSetData.add(currentSet);
 					break;
 					
 				case SET_SELECTION:
-					alSetSelection.add((SetSelection)refCurrentSet);
+					alSetSelection.add((SetSelection)currentSet);
 					break;
 					
 				default:
 //					generalManager.logMsg(
 //							"addSetId() unsupported SetType!",
 //							LoggerType.ERROR);
-				} // switch (refCurrentSet.getSetType()) {
+				} // switch (currentSet.getSetType()) {
 					
-			} //if ( ! hasSetId_ByReference(refCurrentSet) )
+			} //if ( ! hasSetId_ByReference(currentSet) )
 			else 
 			{ 
 //				generalManager.logMsg(
 //						"addSetId(" + iSet[i] + ") ISet is already registered!",
 //						LoggerType.MINOR_ERROR);
-			} //if ( ! hasSetId_ByReference(refCurrentSet) ) {...} else {...}
+			} //if ( ! hasSetId_ByReference(currentSet) ) {...} else {...}
 			
 		} //for ( int i=0; i < iSet.length; i++)
 	}
@@ -291,9 +291,9 @@ implements IViewRep {
 		
 		for ( int i=0; i < iSet.length; i++)
 		{
-			ISet refCurrentSet = refSetManager.getItemSet(iSet[i]);
+			ISet currentSet = setManager.getItemSet(iSet[i]);
 			
-			if ( refCurrentSet == null ) 
+			if ( currentSet == null ) 
 			{
 //				generalManager.logMsg(
 //						"removeSetId(" + iSet[i] + ") is not registered at SetManager!",
@@ -302,30 +302,30 @@ implements IViewRep {
 				continue;
 			}
 			
-			if ( hasSetId_ByReference(refCurrentSet) )
+			if ( hasSetId_ByReference(currentSet) )
 			{
-				switch (refCurrentSet.getSetType()) {
+				switch (currentSet.getSetType()) {
 				case SET_RAW_DATA:
-					alSetData.remove(refCurrentSet);
+					alSetData.remove(currentSet);
 					break;
 					
 				case SET_SELECTION:
-					alSetSelection.remove(refCurrentSet);
+					alSetSelection.remove(currentSet);
 					break;
 					
 				default:
 //					generalManager.logMsg(
 //							"removeSetId() unsupported SetType!",
 //							LoggerType.ERROR);
-				} // switch (refCurrentSet.getSetType()) {
+				} // switch (currentSet.getSetType()) {
 					
-			} //if ( ! hasSetId_ByReference(refCurrentSet) )
+			} //if ( ! hasSetId_ByReference(currentSet) )
 			else 
 			{ 
 //				generalManager.logMsg(
 //						"removeSetId(" + iSet[i] + ") ISet was not registered!",
 //						LoggerType.MINOR_ERROR);
-			} //if ( ! hasSetId_ByReference(refCurrentSet) ) {...} else {...}
+			} //if ( ! hasSetId_ByReference(currentSet) ) {...} else {...}
 			
 		} //for ( int i=0; i < iSet.length; i++)
 		
@@ -370,32 +370,32 @@ implements IViewRep {
 	 * @see org.caleydo.core.view.IView#hasSetId(int)
 	 */
 	public final boolean hasSetId( int iSetId) {
-		ISet refCurrentSet = refSetManager.getItemSet(iSetId);
+		ISet currentSet = setManager.getItemSet(iSetId);
 		
-		if ( refCurrentSet == null )
+		if ( currentSet == null )
 		{
 			return false;
 		}
 		
-		return hasSetId_ByReference(refCurrentSet);
+		return hasSetId_ByReference(currentSet);
 	}
 	
 	
 	/**
-	 * Test both ArrayList's alSetData and alSetSelection for refSet.
+	 * Test both ArrayList's alSetData and alSetSelection for set.
 	 * 
-	 * @param refSet test if this ISet is refered to
+	 * @param set test if this ISet is refered to
 	 * @return TRUE if exists in any of the two ArrayList's
 	 */
-	public final boolean hasSetId_ByReference(final ISet refSet) {
+	public final boolean hasSetId_ByReference(final ISet set) {
 		
-		assert refSet != null : "Can not handle null-pointer";
+		assert set != null : "Can not handle null-pointer";
 			
-		if ( alSetData.contains(refSet) ) 
+		if ( alSetData.contains(set) ) 
 		{
 			return true;
 		}
-		if ( alSetSelection.contains(refSet) ) 
+		if ( alSetSelection.contains(set) ) 
 		{
 			return true;
 		}

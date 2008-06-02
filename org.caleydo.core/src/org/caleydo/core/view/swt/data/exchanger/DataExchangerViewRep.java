@@ -50,12 +50,12 @@ implements IView {
     protected int iCurrentSelectedSetId = 0;
     
 	public DataExchangerViewRep(
-			IGeneralManager refGeneralManager, 
+			IGeneralManager generalManager, 
 			int iViewId, 
 			int iParentContainerId, 
 			String sLabel) {
 		
-		super(refGeneralManager, 
+		super(generalManager, 
 				iViewId, 
 				iParentContainerId, 
 				sLabel,
@@ -73,19 +73,19 @@ implements IView {
 	 */
 	protected void initViewSwtComposit(Composite swtContainer) {
 		
-		refSWTContainer.setLayout(new RowLayout(SWT.VERTICAL));
+		swtContainer.setLayout(new RowLayout(SWT.VERTICAL));
 
-		Label viewComboLabel = new Label(refSWTContainer, SWT.LEFT);
+		Label viewComboLabel = new Label(swtContainer, SWT.LEFT);
 		viewComboLabel.setText("Select view:");
 		viewComboLabel.setLayoutData(new RowData(150, 30));
 				
-		final Combo viewCombo = new Combo(refSWTContainer, SWT.READ_ONLY);
+		final Combo viewCombo = new Combo(swtContainer, SWT.READ_ONLY);
 		
-		Label dataComboLabel = new Label(refSWTContainer, SWT.LEFT);
+		Label dataComboLabel = new Label(swtContainer, SWT.LEFT);
 		dataComboLabel.setText("Select new SET:");
 		dataComboLabel.setLayoutData(new RowData(150, 30));
 
-		final Combo dataCombo = new Combo(refSWTContainer, SWT.READ_ONLY);
+		final Combo dataCombo = new Combo(swtContainer, SWT.READ_ONLY);
         		
 		viewCombo.setLayoutData(new RowData(150, 30));
 	    viewCombo.setEnabled(true);
@@ -118,7 +118,7 @@ implements IView {
 	    		
 	    		fillDataSets(viewCombo, dataCombo);
 	    		
-//	    	    refGeneralManager.getSingelton().getViewCanvasManager().getItemCanvas(
+//	    	    generalManager.getSingelton().getViewCanvasManager().getItemCanvas(
 //	    	    		new Integer(arViewData.get(viewCombo.getSelectionIndex())));
 //	    	    
 //	    		dataCombo.add(new Integer(
@@ -164,10 +164,10 @@ implements IView {
 	
 	protected void fillCombos() {
 		
-//		Collection<IView> arViews = refGeneralManager.getSingelton().
+//		Collection<IView> arViews = generalManager.getSingelton().
 //			getViewGLCanvasManager().getAllViews();
 //		
-//		Collection<IGLCanvasUser> arGLCanvasUsers = refGeneralManager.getSingelton().
+//		Collection<IGLCanvasUser> arGLCanvasUsers = generalManager.getSingelton().
 //			getViewGLCanvasManager().getAllGLCanvasUsers();
 //
 //		Iterator<IView> iterViews = arViews.iterator();

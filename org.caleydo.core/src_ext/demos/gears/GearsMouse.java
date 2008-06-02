@@ -17,7 +17,7 @@ public class GearsMouse implements MouseListener, MouseMotionListener {
   
 
 
-	private GearsMain refGearsMain;
+	private GearsMain gearsMain;
 
   private float view_rotx = 20.0f, view_roty = 30.0f, view_rotz = 0.0f;
   //private float angle = 0.0f;
@@ -26,8 +26,8 @@ public class GearsMouse implements MouseListener, MouseMotionListener {
   
   private boolean mouseRButtonDown = false;
 
-	public GearsMouse( final GearsMain refParentGearsMain) {
-		this.refGearsMain = refParentGearsMain;
+	public GearsMouse( final GearsMain parentGearsMain) {
+		this.gearsMain = parentGearsMain;
 	}
 	
 	
@@ -84,7 +84,7 @@ public class GearsMouse implements MouseListener, MouseMotionListener {
     
     System.out.println("dragging...");
     
-    refGearsMain.setViewAngles( view_rotx, view_roty, view_rotz );
+    gearsMain.setViewAngles( view_rotx, view_roty, view_rotz );
   }
     
   public void mouseMoved(MouseEvent e) {}

@@ -32,7 +32,7 @@ public abstract class AVirtualArrayIterator implements IVirtualArrayIterator {
 	/**
 	 * Link to Collection-Meta data.
 	 */
-	protected IVirtualArray refSelection = null;
+	protected IVirtualArray selection = null;
 	
 	/**
 	 * 
@@ -44,7 +44,7 @@ public abstract class AVirtualArrayIterator implements IVirtualArrayIterator {
 					CaleydoRuntimeExceptionType.VIRTUALARRAY );
 		}
 		
-		refSelection = setSelection;
+		selection = setSelection;
 		
 		begin();
 	}
@@ -85,8 +85,8 @@ public abstract class AVirtualArrayIterator implements IVirtualArrayIterator {
 	 * @see org.caleydo.core.data.collection.iterator.ICollectionIterator#begin()
 	 */
 	public void begin() {
-		iSelectionLength = refSelection.length();
-		iSelectionOffset = refSelection.getOffset();
+		iSelectionLength = selection.length();
+		iSelectionOffset = selection.getOffset();
 		
 		iCurrentVirtualIndex = 0;
 	}

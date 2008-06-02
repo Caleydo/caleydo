@@ -17,9 +17,9 @@ public class GearsMain implements GLEventListener, MouseListener, MouseMotionLis
 	
   public static void main(String[] args) {
     
-    GearsMain refGearsMainRoot = new GearsMain();
+    GearsMain gearsMainRoot = new GearsMain();
     
-    refGearsMainRoot.runMain();
+    gearsMainRoot.runMain();
   }
   
   private GearsMouse gearsMouseListener;

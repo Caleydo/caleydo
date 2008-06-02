@@ -18,14 +18,14 @@ public class MuddlewareMessageCallback implements IOperationCallback {
 	/**
 	 * Send received messages to IXmlParserManager
 	 */
-	private IXmlParserManager refXmlParserManager;
+	private IXmlParserManager xmlParserManager;
 	
 	private INetworkHanlderClientManager muddlewareIO_handler;
 	
-	public MuddlewareMessageCallback(final IXmlParserManager refXmlParserManager ) {
-		assert refXmlParserManager != null : "Can not handle null pointer";
+	public MuddlewareMessageCallback(final IXmlParserManager xmlParserManager ) {
+		assert xmlParserManager != null : "Can not handle null pointer";
 		
-		this.refXmlParserManager = refXmlParserManager;
+		this.xmlParserManager = xmlParserManager;
 	}
 	
 
@@ -38,14 +38,14 @@ public class MuddlewareMessageCallback implements IOperationCallback {
 
 		try
 		{
-//			this.refXmlParserManager.getManager().logMsg("MuddlewareMessageCallback.callbackOperationOnReceive() receiver Xpath=[" + 
+//			this.xmlParserManager.getManager().logMsg("MuddlewareMessageCallback.callbackOperationOnReceive() receiver Xpath=[" + 
 //					received.getXPath() + 
 //					" ==> ["  +
 //					received.getNodeString() + "]",
 //					LoggerType.VERBOSE );
 			
 			InputSource inSource = new InputSource( received.getNodeString() );
-			refXmlParserManager.parseXmlFileByInputStream(inSource, received.getNodeString() );
+			xmlParserManager.parseXmlFileByInputStream(inSource, received.getNodeString() );
 			
 //			String configuration = receiveMsg.getOperation( 0 ).getNodeString();						
 //			InputSource inStream = new InputSource(new StringReader(configuration));	

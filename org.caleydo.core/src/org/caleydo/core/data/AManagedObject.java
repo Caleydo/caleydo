@@ -17,7 +17,7 @@ implements IManagedObject {
 	/**
 	 * Reference to manager, who created this object.
 	 */
-	protected final IGeneralManager refGeneralManager;
+	protected final IGeneralManager generalManager;
 	
 	/**
 	 * Constructor.
@@ -26,7 +26,7 @@ implements IManagedObject {
 		
 		assert setGeneralManager != null: "SetFlatSimple() with null pointer";
 		
-		refGeneralManager = setGeneralManager;
+		generalManager = setGeneralManager;
 
 	}
 
@@ -34,6 +34,6 @@ implements IManagedObject {
 	 * @see prometheus.data.collection.UniqueManagedInterface#getManager()
 	 */
 	public final IGeneralManager getManager() {
-		return this.refGeneralManager;
+		return this.generalManager;
 	}
 }

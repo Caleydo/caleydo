@@ -33,7 +33,7 @@ extends IUniqueObject {
 	public abstract void undoCommand() 
 		throws CaleydoRuntimeException;
 	
-	public abstract void setParameterHandler( IParameterHandler refParameterHandler);
+	public abstract void setParameterHandler( IParameterHandler parameterHandler);
 	
 	/**
 	 * Get type information on this command.

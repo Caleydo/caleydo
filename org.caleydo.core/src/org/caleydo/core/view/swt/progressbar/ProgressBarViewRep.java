@@ -28,16 +28,16 @@ implements IView {
 
 	protected int iProgressBarCurrentValue = 0;
 
-	protected ProgressBar refProgressBar;
+	protected ProgressBar progressBar;
 
 	protected int iProgressBarStyle = SWT.HORIZONTAL;
 	
 	public ProgressBarViewRep(
-			IGeneralManager refGeneralManager, 
+			IGeneralManager generalManager, 
 			int iViewId, 
 			int iParentContainerId, 
 			String sLabel) {
-		super(refGeneralManager, 
+		super(generalManager, 
 				iViewId, 
 				iParentContainerId, 
 				sLabel,
@@ -58,7 +58,7 @@ implements IView {
 	 * @param setStyle
 	 */
 	public final void setProgressBarStyle(int setStyle) {
-		if (this.refProgressBar != null)
+		if (this.progressBar != null)
 		{
 			System.out
 					.println("WARNING: setProgressBarStyle() has no influence, becaus ProgressBar is already created!");
@@ -112,23 +112,23 @@ implements IView {
 	 */
 	protected void initViewSwtComposit(Composite swtContainer) {
 		
-		if (this.refProgressBar != null)
+		if (this.progressBar != null)
 		{
 			System.err.println("call initView() more than once!");
 			return;
 		}
 
-		refProgressBar = new ProgressBar(refSWTContainer, iProgressBarStyle);
+		progressBar = new ProgressBar(swtContainer, iProgressBarStyle);
 
-		refProgressBar.setMinimum(this.iProgressBarMinValue);
-		refProgressBar.setMaximum(this.iProgressBarMaxValue);
-		refProgressBar.setSelection(this.iProgressBarCurrentValue);
-		refProgressBar.setSize(iWidth, iHeight);
+		progressBar.setMinimum(this.iProgressBarMinValue);
+		progressBar.setMaximum(this.iProgressBarMaxValue);
+		progressBar.setSelection(this.iProgressBarCurrentValue);
+		progressBar.setSize(iWidth, iHeight);
 	}
 
 	public void drawView() {
 		
-		refProgressBar.setSelection(this.iProgressBarCurrentValue);
+		progressBar.setSelection(this.iProgressBarCurrentValue);
 	}
 
 	public void setProgressBarPercentage(int iProgressBarCurrentValue) {

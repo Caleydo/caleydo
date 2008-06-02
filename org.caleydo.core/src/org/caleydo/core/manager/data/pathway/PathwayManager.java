@@ -50,14 +50,14 @@ implements IPathwayManager, Serializable {
 	 * can be loaded. The image map defines the clickable
 	 * regions on that pathway image.
 	 */
-	private PathwayImageMap refCurrentPathwayImageMap;
+	private PathwayImageMap currentPathwayImageMap;
 	
 	/**
 	 * Constructor.
 	 */
-	public PathwayManager(final IGeneralManager refGeneralManager) {
+	public PathwayManager(final IGeneralManager generalManager) {
 
-		super(refGeneralManager, 
+		super(generalManager, 
 			IGeneralManager.iUniqueId_TypeOffset_Pathways_Pathway,
 			ManagerType.DATA_PATHWAY_ELEMENT );
 		
@@ -231,7 +231,7 @@ implements IPathwayManager, Serializable {
 	 */
 	public void createPathwayImageMap(final String sImageLink) {
 		
-		refCurrentPathwayImageMap = new PathwayImageMap(sImageLink);
+		currentPathwayImageMap = new PathwayImageMap(sImageLink);
 	}
 	
 	public PathwayDatabase getPathwayDatabaseByType(EPathwayDatabaseType type) {
@@ -245,7 +245,7 @@ implements IPathwayManager, Serializable {
 	 */
 	public PathwayImageMap getCurrentPathwayImageMap () {
 		
-		return refCurrentPathwayImageMap;
+		return currentPathwayImageMap;
 	}
 	
 	/*

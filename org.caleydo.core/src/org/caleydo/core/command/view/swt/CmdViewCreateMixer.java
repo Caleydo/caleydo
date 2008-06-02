@@ -27,13 +27,13 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	 * 
 	 */
 	public CmdViewCreateMixer(
-			final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType) {
+			final IGeneralManager generalManager,
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType) {
 		
-		super(refGeneralManager, 
-				refCommandManager,
-				refCommandQueueSaxType);
+		super(generalManager, 
+				commandManager,
+				commandQueueSaxType);
 	}
 
 	/**
@@ -63,17 +63,17 @@ extends ACmdCreate_IdTargetLabelParentXY {
 		commandManager.runDoCommand(this);
 	}
 
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 		
-		assert refParameterHandler != null: "ParameterHandler object is null!";	
+		assert parameterHandler != null: "ParameterHandler object is null!";	
 		
-		super.setParameterHandler(refParameterHandler);	
+		super.setParameterHandler(parameterHandler);	
 
-		refParameterHandler.setValueAndTypeAndDefault("iNumberOfSliders",
-				refParameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey()),
+		parameterHandler.setValueAndTypeAndDefault("iNumberOfSliders",
+				parameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey()),
 				IParameterHandler.ParameterHandlerType.INT, "-1");
 		
-		iNumberOfSliders = refParameterHandler.getValueInt("iNumberOfSliders");
+		iNumberOfSliders = parameterHandler.getValueInt("iNumberOfSliders");
 	}
 	
 	public void undoCommand() throws CaleydoRuntimeException {

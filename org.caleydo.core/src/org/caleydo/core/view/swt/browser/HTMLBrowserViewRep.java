@@ -35,23 +35,23 @@ implements IView {
 	
 	public final static String CALEYDO_HOME = "http://www.caleydo.org";
 	
-    protected Browser refBrowser;
+    protected Browser browser;
     
     protected String sUrl = CALEYDO_HOME;
     
-    protected Text refTextField;
+    protected Text textField;
     
     protected int iSelectionSetId;
     
     private IDExtractionLocationListener idExtractionLocationListener;
 	
 	public HTMLBrowserViewRep(
-			final IGeneralManager refGeneralManager, 
+			final IGeneralManager generalManager, 
 			final int iViewId, 
 			final int iParentContainerId, 
 			final String sLabel) {
 		
-		super(refGeneralManager,
+		super(generalManager,
 				iViewId, 
 				iParentContainerId, 
 				sLabel,
@@ -84,10 +84,10 @@ implements IView {
 	 */
 	protected void initViewSwtComposit(Composite swtContainer) {
 		
-		refSWTContainer = swtContainer;
-		refSWTContainer.setLayout(new GridLayout(1, false));
+		swtContainer = swtContainer;
+		swtContainer.setLayout(new GridLayout(1, false));
 		
-	    ToolBar toolbar = new ToolBar(refSWTContainer, SWT.NONE);
+	    ToolBar toolbar = new ToolBar(swtContainer, SWT.NONE);
 	    toolbar.setBounds(0, 0, 300, 30);
 
 	    ToolItem goButton = new ToolItem(toolbar, SWT.PUSH);
@@ -99,14 +99,14 @@ implements IView {
 	    ToolItem stopButton = new ToolItem(toolbar, SWT.PUSH);
 	    stopButton.setText("Stop");
 
-	    refTextField = new Text(refSWTContainer, SWT.BORDER);
-	    //refTextField.setBounds(0, 30, 300, 25);
-	    refTextField.setText(sUrl);
+	    textField = new Text(swtContainer, SWT.BORDER);
+	    //textField.setBounds(0, 30, 300, 25);
+	    textField.setText(sUrl);
 	    
 		GridData data = new GridData();
 		data.horizontalAlignment = GridData.FILL;
 		data.grabExcessHorizontalSpace = true;
-		refTextField.setLayoutData(data);
+		textField.setLayoutData(data);
 	    
 		Listener listener = new Listener() {
 			public void handleEvent(Event event)
@@ -114,12 +114,12 @@ implements IView {
 				ToolItem item = (ToolItem) event.widget;
 				String string = item.getText();
 				if (string.equals("Back"))
-					refBrowser.back();
+					browser.back();
 				else if (string.equals("Stop"))
-					refBrowser.stop();
+					browser.stop();
 				else if (string.equals("Go"))
 				{
-					sUrl = refTextField.getText();
+					sUrl = textField.getText();
 					drawView();
 				}
 			}
@@ -129,16 +129,16 @@ implements IView {
 		backButton.addListener(SWT.Selection, listener);
 		stopButton.addListener(SWT.Selection, listener);
 
-		refTextField.addListener(SWT.DefaultSelection, new Listener()
+		textField.addListener(SWT.DefaultSelection, new Listener()
 		{
 			public void handleEvent(Event e)
 			{
-				sUrl = refTextField.getText();
+				sUrl = textField.getText();
 				drawView();
 			}
 		});
 		
-		refSWTContainer.getDisplay().addFilter(SWT.FocusIn, new Listener() {
+		swtContainer.getDisplay().addFilter(SWT.FocusIn, new Listener() {
 		    public void handleEvent(Event event) {
 		    	
 		        if(!(event.widget.getClass().equals(this.getClass()))) 
@@ -147,18 +147,18 @@ implements IView {
 		});
 		
 		
-		refBrowser = new Browser (refSWTContainer, SWT.NONE);
+		browser = new Browser (swtContainer, SWT.NONE);
 				
 		idExtractionLocationListener = new IDExtractionLocationListener(generalManager,
-				refBrowser, iUniqueId, iSelectionSetId);
-		refBrowser.addLocationListener(idExtractionLocationListener);
+				browser, iUniqueId, iSelectionSetId);
+		browser.addLocationListener(idExtractionLocationListener);
 		
 		data = new GridData();
 		data.horizontalAlignment = GridData.FILL;
 		data.verticalAlignment = GridData.FILL;
 		data.grabExcessHorizontalSpace = true;
 		data.grabExcessVerticalSpace = true;
-		refBrowser.setLayoutData(data);
+		browser.setLayoutData(data);
 	}
 
 	public void drawView() {
@@ -172,21 +172,21 @@ implements IView {
 //			
 //		} catch (UnknownHostException e)
 //		{
-//			refGeneralManager.getSingelton().logMsg(
+//			generalManager.getSingelton().logMsg(
 //					this.getClass().getSimpleName() + 
 //					": No internet connection found!", 
 //					LoggerType.VERBOSE );
 //			
-//			refTextField.setText("No internet connection found!");
+//			textField.setText("No internet connection found!");
 //			return;
 //		}
 		
 		try {
-			refSWTContainer.getDisplay().asyncExec(new Runnable() {
+			swtContainer.getDisplay().asyncExec(new Runnable() {
 				public void run() {
-					refTextField.setText(sUrl);				
-					refBrowser.setUrl(sUrl);
-					//refBrowser.refresh();
+					textField.setText(sUrl);				
+					browser.setUrl(sUrl);
+					//browser.refresh();
 				}
 			});
 		}

@@ -22,9 +22,9 @@ extends ASWTEmbeddedWidget {
 	 * @param Composite Reference to the composite 
 	 * that is supposed to be filled.
 	 */
-	public SWTEmbeddedGraphWidget(Composite refParentComposite) {
+	public SWTEmbeddedGraphWidget(Composite parentComposite) {
 		
-		super(refParentComposite);
+		super(parentComposite);
 	}
 
 	/**
@@ -34,6 +34,6 @@ extends ASWTEmbeddedWidget {
 	 */
 	public final Frame getEmbeddedFrame() {
 		
-		return refEmbeddedFrame;
+		return embeddedFrame;
 	}
 }

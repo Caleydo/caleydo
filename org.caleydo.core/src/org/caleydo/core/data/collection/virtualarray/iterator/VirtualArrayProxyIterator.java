@@ -18,7 +18,7 @@ implements IVirtualArrayIterator {
 	/**
 	 * Reference to the actual iterator.
 	 */
-	protected IVirtualArrayIterator refSelectionIterator = null;
+	protected IVirtualArrayIterator selectionIterator = null;
 	
 	public VirtualArrayProxyIterator() {
 		
@@ -34,11 +34,11 @@ implements IVirtualArrayIterator {
 		switch ( setSelection.getSelectionType() ) {
 		
 		case VIRTUAL_ARRAY_SINGLE_BLOCK:
-			refSelectionIterator = new VirtualArraySingleBlockIterator( setSelection );
+			selectionIterator = new VirtualArraySingleBlockIterator( setSelection );
 			break;
 			
 		case VIRTUAL_ARRAY_MULTI_BLOCK:
-			refSelectionIterator = new VirtualArrayMultiBlockIterator( setSelection );
+			selectionIterator = new VirtualArrayMultiBlockIterator( setSelection );
 			break;
 			
 		case VIRTUAL_ARRAY_MULTI_BLOCK_RLE:
@@ -46,7 +46,7 @@ implements IVirtualArrayIterator {
 		case VIRTUAL_ARRAY_RANDOM_BLOCK:
 			
 		default:
-			refSelectionIterator = null;
+			selectionIterator = null;
 			throw new CaleydoRuntimeException("VirtualArrayProxyIterator.Constructor with unsuppoerte selection type: [" +
 					setSelection.getSelectionType() + "] !",
 					CaleydoRuntimeExceptionType.VIRTUALARRAY );
@@ -58,21 +58,21 @@ implements IVirtualArrayIterator {
 	 * @see prometheus.data.collection.iterator.SelectionIterator#size()
 	 */
 	public int size() {
-		return refSelectionIterator.size();
+		return selectionIterator.size();
 	}
 
 	/* (non-Javadoc)
 	 * @see prometheus.data.collection.iterator.SelectionIterator#remaining()
 	 */
 	public int remaining() {
-		return refSelectionIterator.remaining();
+		return selectionIterator.remaining();
 	}
 
 	/* (non-Javadoc)
 	 * @see prometheus.data.collection.iterator.SelectionIterator#getVirtualIndex()
 	 */
 	public int getVirtualIndex() {
-		return refSelectionIterator.getVirtualIndex();
+		return selectionIterator.getVirtualIndex();
 	}
 
 	/* (non-Javadoc)
@@ -80,33 +80,33 @@ implements IVirtualArrayIterator {
 	 */
 	public void setVirtualIndex(int iSetVirtualIndex)
 			throws CaleydoRuntimeException {
-		refSelectionIterator.setVirtualIndex( iSetVirtualIndex );
+		selectionIterator.setVirtualIndex( iSetVirtualIndex );
 	}
 
 	/* (non-Javadoc)
 	 * @see prometheus.data.collection.iterator.CollectionIterator#begin()
 	 */
 	public void begin() {
-		refSelectionIterator.begin();
+		selectionIterator.begin();
 	}
 
 	/* (non-Javadoc)
 	 * @see prometheus.data.collection.iterator.CollectionIterator#next()
 	 */
 	public int next() {
-		return refSelectionIterator.next();
+		return selectionIterator.next();
 	}
 
 	/* (non-Javadoc)
 	 * @see prometheus.data.collection.iterator.CollectionIterator#hasNext()
 	 */
 	public boolean hasNext() {
-		return refSelectionIterator.hasNext();
+		return selectionIterator.hasNext();
 	}
 
 	public void setToEnd()
 	{
-		refSelectionIterator.setToEnd();		
+		selectionIterator.setToEnd();		
 	}
 
 }

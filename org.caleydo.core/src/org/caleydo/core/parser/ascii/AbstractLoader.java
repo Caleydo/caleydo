@@ -413,7 +413,7 @@ implements IMementoXML, IParserObject {
 	 * 
 	 * Call progressBarIncrement() to incremetn the progressabr using the settings.
 	 * 
-	 * Use progressBarResetTitle() to reset the progressbar to the previouse position.
+	 * Use progressBarResetTitle() to reset the progressbar to the previous position.
 	 * 
 	 * set fProgressBarIndex = iPosition
 	 * set fProgressBarInc = (200 - iPosition) / iStepsTill100_Percent
@@ -487,7 +487,7 @@ implements IMementoXML, IParserObject {
 	}
 	
 	/**
-	 * Reset to the previouse
+	 * Reset to the previous
 	 *
 	 */
 	protected final void progressBarResetTitle() {

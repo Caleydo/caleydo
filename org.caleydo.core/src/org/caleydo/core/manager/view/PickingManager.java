@@ -57,10 +57,10 @@ extends AManager
 	 * 
 	 * @param setGeneralManager
 	 */
-	public PickingManager(IGeneralManager refGeneralManager) 
+	public PickingManager(IGeneralManager generalManager) 
 	{
 
-		super(refGeneralManager, 
+		super(generalManager, 
 				IGeneralManager.iUniqueID_TypeOffset_PickingID, 
 				ManagerType.PICKING_MANAGER);
 		

@@ -28,17 +28,17 @@ implements ISet {
 	 * Since only one Selections is stored only one 
 	 * MetaData object is needed. 
 	 */
-	protected IMetaData refMetaDataAllAndAny = null;
+	protected IMetaData metaDataAllAndAny = null;
 	
 	/**
 	 * Store reference to the IVirtualArray.
 	 */
-	protected IVirtualArray[] refFlatSelection = null;
+	protected IVirtualArray[] flatSelection = null;
 	
 	/**
 	 * Store reference to the Storages.
 	 */
-	protected IStorage[] refFlatStorage = null;
+	protected IStorage[] flatStorage = null;
 	
 	/**
 	 * Variable for the dimension of this set.
@@ -58,9 +58,9 @@ implements ISet {
 				setCollectionLock,
 				setType);
 		
-		refFlatSelection = new IVirtualArray[1];
+		flatSelection = new IVirtualArray[1];
 		
-		refFlatStorage = new IStorage[1];
+		flatStorage = new IStorage[1];
 	}
 
 
@@ -69,11 +69,11 @@ implements ISet {
 	 */
 	public boolean setVirtualArrayByDim(IVirtualArray[] addVirtualArray, int iAtDimension) {		
 		
-		if ( iAtDimension >= refFlatSelection.length) {
+		if ( iAtDimension >= flatSelection.length) {
 			assert false :"Can not address dimension != 0";
 		}
 		//FIXME Test Range!
-		refFlatSelection[iAtDimension] = addVirtualArray[0];
+		flatSelection[iAtDimension] = addVirtualArray[0];
 		
 		return true;
 	}
@@ -82,21 +82,21 @@ implements ISet {
 			final int iAtDimension, 
 			final int iAtIndex ) {
 		
-		if ( iAtDimension >= refFlatSelection.length) {
+		if ( iAtDimension >= flatSelection.length) {
 			assert false :"Can not address dimension != 0";
 		}
 		
-		if ( refFlatSelection.length < iAtIndex) {
+		if ( flatSelection.length < iAtIndex) {
 			/* create a new IVirtualArray[] and copy to new IVirtualArray[]... */
 			IVirtualArray[] copyToNewSelectionArray = new IVirtualArray[iAtIndex+1];
 			
-			for ( int i=0; i < refFlatSelection.length; i++ ) {				
-				copyToNewSelectionArray[i] = refFlatSelection[i];
+			for ( int i=0; i < flatSelection.length; i++ ) {				
+				copyToNewSelectionArray[i] = flatSelection[i];
 			}
-			refFlatSelection = copyToNewSelectionArray;
+			flatSelection = copyToNewSelectionArray;
 		}
 		
-		refFlatSelection[iAtIndex] = addVirtualArray;
+		flatSelection[iAtIndex] = addVirtualArray;
 		
 		return true;
 	}
@@ -109,21 +109,21 @@ implements ISet {
 			final int iAtDimension, 
 			final int iAtIndex ) {
 		
-		if ( iAtDimension >= refFlatStorage.length) {
+		if ( iAtDimension >= flatStorage.length) {
 			assert false :"Can not address dimension != 0";
 		}
 		
-		if ( refFlatStorage.length < iAtIndex) {
+		if ( flatStorage.length < iAtIndex) {
 			/* create a new IVirtualArray[] and copy to new IVirtualArray[]... */
 			IStorage[] copyToNewSelectionArray = new IStorage[iAtIndex+1];
 			
-			for ( int i=0; i < refFlatStorage.length; i++ ) {				
-				copyToNewSelectionArray[i] = refFlatStorage[i];
+			for ( int i=0; i < flatStorage.length; i++ ) {				
+				copyToNewSelectionArray[i] = flatStorage[i];
 			}
-			refFlatStorage = copyToNewSelectionArray;
+			flatStorage = copyToNewSelectionArray;
 		}
 		
-		refFlatStorage[iAtIndex] = addStorage;
+		flatStorage[iAtIndex] = addStorage;
 		
 		return true;
 	}
@@ -134,8 +134,8 @@ implements ISet {
 	public boolean removeVirtualArray( final IVirtualArray[] removeVirtualArray, final int iFromDimension) {
 		
 		for ( int i=0; i< removeVirtualArray.length; i++ ) {
-			if ( refFlatSelection[iFromDimension] == removeVirtualArray[i] ) {
-				refFlatSelection[iFromDimension] = null;
+			if ( flatSelection[iFromDimension] == removeVirtualArray[i] ) {
+				flatSelection[iFromDimension] = null;
 				return true;
 			}
 		}
@@ -150,7 +150,7 @@ implements ISet {
 		assert testVirtualArray != null: "SetFlatSimple.hasSelection() test with null pointer!";
 		
 		//FIXME add range check...
-		if ( refFlatSelection[iAtDimension] ==  testVirtualArray ) {
+		if ( flatSelection[iAtDimension] ==  testVirtualArray ) {
 			return true;
 		}
 		return false;
@@ -163,8 +163,8 @@ implements ISet {
 		
 		//FIXME return index instead of true or false
 		
-		for ( int iIndex=0; iIndex < this.refFlatSelection.length ; iIndex++ ) {
-			if ( refFlatSelection[iIndex] ==  testVirtualArray)
+		for ( int iIndex=0; iIndex < this.flatSelection.length ; iIndex++ ) {
+			if ( flatSelection[iIndex] ==  testVirtualArray)
 				return true;
 		}
 		return false;
@@ -184,10 +184,10 @@ implements ISet {
 	 */
 	public int getDimensionSize(int iAtDimension) {
 		//FIXME what shall that function do?
-		assert refFlatSelection != null : "no IVirtualArray[] is set";
-		assert refFlatSelection.length > 0 : "no IVirtualArray is set";
+		assert flatSelection != null : "no IVirtualArray[] is set";
+		assert flatSelection.length > 0 : "no IVirtualArray is set";
 		
-		return refFlatSelection[0].length();
+		return flatSelection[0].length();
 	}
 
 	/* (non-Javadoc)
@@ -214,7 +214,7 @@ implements ISet {
 	 */
 	public IVirtualArray[] getVirtualArrayByDim(int iAtDimension) {
 		//FIXME add range check..
-		return refFlatSelection;
+		return flatSelection;
 	}
 
 	/*
@@ -223,7 +223,7 @@ implements ISet {
 	 */
 	public IVirtualArray getVirtualArrayByDimAndIndex( final int iAtDimension, 
 			final int iAtIndex ) {
-		return refFlatSelection[iAtIndex];
+		return flatSelection[iAtIndex];
 	}
 	
 
@@ -239,14 +239,14 @@ implements ISet {
 		
 		assert setMetaData != null :"setMetaData() with null-pointer.";
 		
-		refMetaDataAllAndAny = setMetaData;
+		metaDataAllAndAny = setMetaData;
 	}
 
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.data.collection.IMetaDataCollection#getMetaData()
 	 */
 	public IMetaData getMetaData() {
-		return refMetaDataAllAndAny;
+		return metaDataAllAndAny;
 	}
 	
 	/**
@@ -257,7 +257,7 @@ implements ISet {
 	 * @see org.caleydo.core.data.collection.IMetaDataSet#getMetaData()
 	 */
 	public IMetaData getMetaDataAny() {
-		return refMetaDataAllAndAny;
+		return metaDataAllAndAny;
 	}
 
 	/**
@@ -324,14 +324,14 @@ implements ISet {
 	/**
 	 * Restore state of object by update data from SaxHandler
 	 * 
-	 * @param refSaxHandler reference to SaxHandler
+	 * @param saxHandler reference to SaxHandler
 	 * @return TRUE if the provided handler provided same Id as object.
 	 */
-	public boolean setMementoXML_usingHandler( final ISaxParserHandler refSaxHandler ) {
+	public boolean setMementoXML_usingHandler( final ISaxParserHandler saxHandler ) {
 		
 		try {
 			CollectionSetSaxParserHandler parser = 
-				(CollectionSetSaxParserHandler) refSaxHandler;
+				(CollectionSetSaxParserHandler) saxHandler;
 			
 			if ( parser.getDim() < 0 ) {
 				assert false:"Parser does not return informations neede";
@@ -347,13 +347,13 @@ implements ISet {
 			/**
 			 * Store reference to the Selections.
 			 */
-			refFlatSelection = new IVirtualArray[iListOfSellectionId.length];
+			flatSelection = new IVirtualArray[iListOfSellectionId.length];
 			
 			for ( int iIndex=0; iIndex< iListOfSellectionId.length ; iIndex++ ) {
 				
 				try {					
 					Object buffer = generalManager.getVirtualArrayManager().getItem( iListOfSellectionId[iIndex] );
-					refFlatSelection[iIndex] = (IVirtualArray) buffer;
+					flatSelection[iIndex] = (IVirtualArray) buffer;
 				}
 				catch ( NullPointerException npe) {
 					npe.printStackTrace();
@@ -364,13 +364,13 @@ implements ISet {
 			/**
 			 * Store reference to the Storages.
 			 */
-			refFlatStorage = new IStorage[iListOfStorageId.length];
+			flatStorage = new IStorage[iListOfStorageId.length];
 			
 			for ( int iIndex=0; iIndex< iListOfStorageId.length ; iIndex++ ) {
 				
 				try {					
 					Object buffer = generalManager.getStorageManager().getItem( iListOfStorageId[iIndex] );
-					refFlatStorage[iIndex] = (IStorage) buffer;
+					flatStorage[iIndex] = (IStorage) buffer;
 				}
 				catch ( NullPointerException npe) {
 					npe.printStackTrace();
@@ -426,12 +426,12 @@ implements ISet {
 	 * @see org.caleydo.core.data.collection.ISet#getStorage()
 	 */
 	public final IStorage[] getStorageByDim( final int iAtDimension ) {
-		return refFlatStorage;
+		return flatStorage;
 	}
 	
 	public final IStorage getStorageByDimAndIndex( final int iAtDimension, 
 			final int iAtIndex ) {
-		return refFlatStorage[iAtIndex];
+		return flatStorage[iAtIndex];
 	}
 	
 	
@@ -442,7 +442,7 @@ implements ISet {
 		
 		assert setStorage != null: "setStorage() with null-pointer";
 		
-		refFlatStorage[0] = setStorage[0];
+		flatStorage[0] = setStorage[0];
 	}
 	
 
@@ -450,12 +450,12 @@ implements ISet {
 		
 		assert setSelection != null: "setStorage() with null-pointer";
 		
-		refFlatSelection = new IVirtualArray[ setSelection.size() ];		
+		flatSelection = new IVirtualArray[ setSelection.size() ];		
 		Iterator <IVirtualArray> iter = setSelection.iterator();
 		int iIndex = 0;
 		
 		while ( iter.hasNext() ) {
-			refFlatSelection[ iIndex ] = iter.next();
+			flatSelection[ iIndex ] = iter.next();
 		}
 		
 		return true;
@@ -465,11 +465,11 @@ implements ISet {
 		
 		assert setStorage != null: "setStorage() with null-pointer";
 		
-		refFlatStorage = new IStorage[setStorage.size()];		
+		flatStorage = new IStorage[setStorage.size()];		
 
 		for (int iStorageIndex = 0; iStorageIndex < setStorage.size(); iStorageIndex++)
 		{
-			refFlatStorage[iStorageIndex] = setStorage.get(iStorageIndex);
+			flatStorage[iStorageIndex] = setStorage.get(iStorageIndex);
 		}
 		
 		return true;
@@ -497,15 +497,15 @@ implements ISet {
 	 */
 	public int getCacheId() {
 		
-		if ( this.refFlatSelection != null ) {
-			for ( int i=0; i<refFlatSelection.length;i++) {
-				setCacheIdCompared( refFlatSelection[i].getCacheId());
+		if ( this.flatSelection != null ) {
+			for ( int i=0; i<flatSelection.length;i++) {
+				setCacheIdCompared( flatSelection[i].getCacheId());
 			}
 		}
 		
-		if ( this.refFlatStorage != null ) {
-			for ( int i=0; i<refFlatStorage.length;i++) {
-				setCacheIdCompared( refFlatStorage[i].getCacheId());
+		if ( this.flatStorage != null ) {
+			for ( int i=0; i<flatStorage.length;i++) {
+				setCacheIdCompared( flatStorage[i].getCacheId());
 			}
 		}
 		
@@ -535,10 +535,10 @@ implements ISet {
 	 */
 	public Iterator<IStorage> iteratorStorageByDim( final int iAtDimension ) {
 		
-		Vector<IStorage> vec_Storage = new Vector<IStorage> (refFlatStorage.length);
+		Vector<IStorage> vec_Storage = new Vector<IStorage> (flatStorage.length);
 		
-		for ( int i=0; i <refFlatStorage.length; i++ ) {					
-			vec_Storage.addElement( refFlatStorage[i] );
+		for ( int i=0; i <flatStorage.length; i++ ) {					
+			vec_Storage.addElement( flatStorage[i] );
 		}
 		
 		return vec_Storage.iterator();
@@ -550,10 +550,10 @@ implements ISet {
 	 */
 	public IVirtualArrayIterator iteratorVirtualArrayByDim( final int iAtDimension ) {
 		Vector<IVirtualArray> vec_Selection = 
-			new Vector<IVirtualArray> (refFlatSelection.length);
+			new Vector<IVirtualArray> (flatSelection.length);
 		
-		for ( int i=0; i <refFlatSelection.length; i++ ) {					
-			vec_Selection.addElement( refFlatSelection[i] );
+		for ( int i=0; i <flatSelection.length; i++ ) {					
+			vec_Selection.addElement( flatSelection[i] );
 		}
 		
 		VirtualArrayVectorIterator iterator = new VirtualArrayVectorIterator();
@@ -564,10 +564,10 @@ implements ISet {
 	
 	public final Vector<IStorage> getStorageVectorByDim( final int iAtDimension ) {
 		
-		Vector<IStorage> resultVector = new Vector<IStorage> (refFlatStorage.length);
+		Vector<IStorage> resultVector = new Vector<IStorage> (flatStorage.length);
 		
-		for ( int i=0; i < refFlatStorage.length; i++ ) {
-			resultVector.addElement( refFlatStorage[i] );
+		for ( int i=0; i < flatStorage.length; i++ ) {
+			resultVector.addElement( flatStorage[i] );
 		}
 		
 		return resultVector;
@@ -575,10 +575,10 @@ implements ISet {
 	
 	public final Vector<IVirtualArray> getVirtualArrayVectorByDim( final int iAtDimension ) {
 		
-		Vector<IVirtualArray> resultVector = new Vector<IVirtualArray> (refFlatSelection.length);
+		Vector<IVirtualArray> resultVector = new Vector<IVirtualArray> (flatSelection.length);
 		
-		for ( int i=0; i < refFlatSelection.length; i++ ) {
-			resultVector.addElement( refFlatSelection[i] );
+		for ( int i=0; i < flatSelection.length; i++ ) {
+			resultVector.addElement( flatSelection[i] );
 		}
 		
 		return resultVector;

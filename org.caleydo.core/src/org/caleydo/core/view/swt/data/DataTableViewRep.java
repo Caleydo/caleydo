@@ -36,17 +36,17 @@ implements IDataTableView {
 
 	protected IVirtualArrayManager virtualArrayManager;
 
-	protected IStorage[] refAllStorageItems;
+	protected IStorage[] allStorageItems;
 
-	protected IStorage refCurrentStorage;
+	protected IStorage currentStorage;
 
-	protected IVirtualArray refCurrentSelection;
+	protected IVirtualArray currentSelection;
 
-	protected Table refTable;
+	protected Table table;
 	
-	protected Button refPreviousPageButton;
+	protected Button previousPageButton;
 	
-	protected Button refNextPageButton;
+	protected Button nextPageButton;
 	
 	protected int iCurrentlyRequestedCollectionId;
 	
@@ -54,10 +54,10 @@ implements IDataTableView {
 	
 	protected int iCurrentTablePage;
 
-	public DataTableViewRep(IGeneralManager refGeneralManager, 
+	public DataTableViewRep(IGeneralManager generalManager, 
 			int iParentId) {
 		
-		super(refGeneralManager,
+		super(generalManager,
 				-1, 
 				iParentId,
 				"",
@@ -86,27 +86,27 @@ implements IDataTableView {
 
 	public void initTable() {
 
-		Composite dataTableComposite = new Composite(refSWTContainer, SWT.NONE);
+		Composite dataTableComposite = new Composite(swtContainer, SWT.NONE);
  		dataTableComposite.setLayout(new RowLayout());
 				
-		refTable = new Table(dataTableComposite, SWT.BORDER | SWT.V_SCROLL);
-		refTable.setHeaderVisible(true);
-		refTable.setLinesVisible(true);
-		//refTable.setSize(300, 400);
-		refTable.setLayoutData(new RowData(300, 400));
+		table = new Table(dataTableComposite, SWT.BORDER | SWT.V_SCROLL);
+		table.setHeaderVisible(true);
+		table.setLinesVisible(true);
+		//table.setSize(300, 400);
+		table.setLayoutData(new RowData(300, 400));
 
 		// Paging: previous
-		refPreviousPageButton = new Button(dataTableComposite, SWT.BOTTOM | SWT.PUSH);
-		refPreviousPageButton.setText("<");
-		refPreviousPageButton.setEnabled(false);
-		refPreviousPageButton.setLayoutData(new RowData(50, 40));
-		refPreviousPageButton.addSelectionListener(new SelectionAdapter() {
+		previousPageButton = new Button(dataTableComposite, SWT.BOTTOM | SWT.PUSH);
+		previousPageButton.setText("<");
+		previousPageButton.setEnabled(false);
+		previousPageButton.setLayoutData(new RowData(50, 40));
+		previousPageButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				iCurrentTablePage--;
 				
 				if (iCurrentTablePage == 0)
 				{
-					refPreviousPageButton.setEnabled(false);
+					previousPageButton.setEnabled(false);
 				}
 					
 				drawStorageTable();
@@ -114,14 +114,14 @@ implements IDataTableView {
 		});
 		
 		// Paging: next
-		refNextPageButton = new Button(dataTableComposite, SWT.BOTTOM | SWT.PUSH);
-		refNextPageButton.setText(">");
-		refNextPageButton.setEnabled(false);
-		refNextPageButton.setLayoutData(new RowData(50, 40));
-		refNextPageButton.addSelectionListener(new SelectionAdapter() {
+		nextPageButton = new Button(dataTableComposite, SWT.BOTTOM | SWT.PUSH);
+		nextPageButton.setText(">");
+		nextPageButton.setEnabled(false);
+		nextPageButton.setLayoutData(new RowData(50, 40));
+		nextPageButton.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent e) {
 				iCurrentTablePage++;
-				refPreviousPageButton.setEnabled(true);				
+				previousPageButton.setEnabled(true);				
 				drawStorageTable();
 			}
 		});
@@ -131,13 +131,13 @@ implements IDataTableView {
 
 	public void createStorageTable(int iRequestedStorageId) {
 		
-		refCurrentStorage = storageManager
+		currentStorage = storageManager
 			.getItemStorage(iRequestedStorageId);
 		
 		// Reset paging
 		iCurrentTablePage = 0;
-		refPreviousPageButton.setEnabled(false);
-		refNextPageButton.setEnabled(false);
+		previousPageButton.setEnabled(false);
+		nextPageButton.setEnabled(false);
 		
 		drawStorageTable();
 	}
@@ -149,7 +149,7 @@ implements IDataTableView {
 
 		int iTableColumnIndex = 0;
 		int iTmpNumberOfDataItems = 0;	
-		int iNumberOfTableItems = refCurrentStorage.getMaximumLengthOfAllArrays();
+		int iNumberOfTableItems = currentStorage.getMaximumLengthOfAllArrays();
 		int iStartItemIndex = iCurrentTablePage * MAX_TABLE_ROWS;
 		
 		reinitializeTable();
@@ -159,19 +159,19 @@ implements IDataTableView {
 		if (iNumberOfTableItems > MAX_TABLE_ROWS)
 		{
 			iNumberOfTableItemsToLoad = MAX_TABLE_ROWS;
-			refNextPageButton.setEnabled(true);
+			nextPageButton.setEnabled(true);
 		}
 
 		for (int iTableRowIndex = 0; iTableRowIndex < iNumberOfTableItemsToLoad; iTableRowIndex++)
 		{
-			new TableItem(refTable, SWT.NONE);
+			new TableItem(table, SWT.NONE);
 		}
 
-		if (refCurrentStorage.getSize(StorageType.INT) > 1)
+		if (currentStorage.getSize(StorageType.INT) > 1)
 		{
-			int[] intData = refCurrentStorage.getArrayInt();
+			int[] intData = currentStorage.getArrayInt();
 
-			column = new TableColumn(refTable, SWT.NONE);
+			column = new TableColumn(table, SWT.NONE);
 			column.setText("Int data");
 			
 			if (intData.length > iNumberOfTableItemsToLoad)
@@ -191,7 +191,7 @@ implements IDataTableView {
 				
 			for (int dataIndex = 0; dataIndex < iTmpNumberOfDataItems; dataIndex++)
 			{
-				item = refTable.getItem(dataIndex);
+				item = table.getItem(dataIndex);
 				item.setText(iTableColumnIndex, Float
 						.toString(intData[iStartItemIndex + dataIndex]));
 			}
@@ -200,11 +200,11 @@ implements IDataTableView {
 			iTableColumnIndex++;
 		}
 
-		if (refCurrentStorage.getSize(StorageType.FLOAT) > 1)
+		if (currentStorage.getSize(StorageType.FLOAT) > 1)
 		{
-			float[] floatData = refCurrentStorage.getArrayFloat();
+			float[] floatData = currentStorage.getArrayFloat();
 			
-			column = new TableColumn(refTable, SWT.NONE);
+			column = new TableColumn(table, SWT.NONE);
 			column.setText("Float data");
 
 			if (floatData.length > iNumberOfTableItemsToLoad)
@@ -224,7 +224,7 @@ implements IDataTableView {
 			
 			for (int dataIndex = 0; dataIndex < iTmpNumberOfDataItems; dataIndex++)
 			{
-				item = refTable.getItem(dataIndex);
+				item = table.getItem(dataIndex);
 				item.setText(iTableColumnIndex, Float
 						.toString(floatData[iStartItemIndex + dataIndex]));
 			}
@@ -233,11 +233,11 @@ implements IDataTableView {
 			iTableColumnIndex++;
 		}
 
-		if (refCurrentStorage.getSize(StorageType.STRING) > 1)
+		if (currentStorage.getSize(StorageType.STRING) > 1)
 		{
-			String[] stringData = refCurrentStorage.getArrayString();
+			String[] stringData = currentStorage.getArrayString();
 
-			column = new TableColumn(refTable, SWT.NONE);
+			column = new TableColumn(table, SWT.NONE);
 			column.setText("String data");
 
 			if (stringData.length > iNumberOfTableItemsToLoad)
@@ -257,7 +257,7 @@ implements IDataTableView {
 			
 			for (int dataIndex = 0; dataIndex < iTmpNumberOfDataItems; dataIndex++)
 			{
-				item = refTable.getItem(dataIndex);
+				item = table.getItem(dataIndex);
 				item.setText(iTableColumnIndex, stringData[iStartItemIndex + dataIndex]);
 			}
 
@@ -265,11 +265,11 @@ implements IDataTableView {
 			iTableColumnIndex++;
 		}
 
-		if (refCurrentStorage.getSize(StorageType.BOOLEAN) >= 1)
+		if (currentStorage.getSize(StorageType.BOOLEAN) >= 1)
 		{
-			boolean[] booleanData = refCurrentStorage.getArrayBoolean();
+			boolean[] booleanData = currentStorage.getArrayBoolean();
 
-			column = new TableColumn(refTable, SWT.NONE);
+			column = new TableColumn(table, SWT.NONE);
 			column.setText("Boolean data");
 
 			if (booleanData.length > iNumberOfTableItemsToLoad)
@@ -289,7 +289,7 @@ implements IDataTableView {
 			
 			for (int dataIndex = 0; dataIndex < iTmpNumberOfDataItems; dataIndex++)
 			{
-				item = refTable.getItem(dataIndex);
+				item = table.getItem(dataIndex);
 				item.setText(iTableColumnIndex, Boolean
 						.toString(booleanData[iStartItemIndex + dataIndex]));
 			}
@@ -301,7 +301,7 @@ implements IDataTableView {
 		// Check if last page is reached		
 		if (iCurrentTablePage >= (iNumberOfTableItems / (float)MAX_TABLE_ROWS - 1))
 		{
-			refNextPageButton.setEnabled(false);
+			nextPageButton.setEnabled(false);
 		}
 	}
 
@@ -312,33 +312,33 @@ implements IDataTableView {
 		reinitializeTable();
 		
 		// No paging needed for selections
-		refPreviousPageButton.setEnabled(false);
-		refNextPageButton.setEnabled(false);
+		previousPageButton.setEnabled(false);
+		nextPageButton.setEnabled(false);
 		
 		iCurrentlyRequestedCollectionId = iRequestedSelectionId;
 
-		final TableColumn offsetColumn = new TableColumn(refTable, 
+		final TableColumn offsetColumn = new TableColumn(table, 
 				SWT.NONE);
 		offsetColumn.setText("Offset");
-		final TableColumn lengthColumn = new TableColumn(refTable, 
+		final TableColumn lengthColumn = new TableColumn(table, 
 				SWT.NONE);
 		lengthColumn.setText("Length");
-		final TableColumn multiOffsetColumn = new TableColumn(refTable,
+		final TableColumn multiOffsetColumn = new TableColumn(table,
 				SWT.NONE);
 		multiOffsetColumn.setText("MultiOffset");
-		final TableColumn multiRepeatColumn = new TableColumn(refTable,
+		final TableColumn multiRepeatColumn = new TableColumn(table,
 				SWT.NONE);
 		multiRepeatColumn.setText("MultiRepeat");
 
-		refCurrentSelection = virtualArrayManager
+		currentSelection = virtualArrayManager
 				.getItemVirtualArray(iRequestedSelectionId);
 
-		item = new TableItem(refTable, SWT.NONE);
+		item = new TableItem(table, SWT.NONE);
 		item.setText(
-				new String[] { Integer.toString(refCurrentSelection.getOffset()),
-				Integer.toString(refCurrentSelection.length()),
-				Integer.toString(refCurrentSelection.getMultiOffset()),
-				Integer.toString(refCurrentSelection.getMultiRepeat()) });
+				new String[] { Integer.toString(currentSelection.getOffset()),
+				Integer.toString(currentSelection.length()),
+				Integer.toString(currentSelection.getMultiOffset()),
+				Integer.toString(currentSelection.getMultiRepeat()) });
 
 		offsetColumn.pack();
 		lengthColumn.pack();
@@ -348,48 +348,48 @@ implements IDataTableView {
 
 	public void redrawTable() {
 		
-		refSWTContainer.redraw();
+		swtContainer.redraw();
 	}
 
-	public void setExternalGUIContainer(Composite refSWTContainer) {
+	public void setExternalGUIContainer(Composite swtContainer) {
 		
-		this.refSWTContainer = refSWTContainer;
+		this.swtContainer = swtContainer;
 	}
 
 	public void reinitializeTable() {
 		
-		refTable.removeAll();
+		table.removeAll();
 
 		// remove old columns
-		for (int columnIndex = refTable.getColumnCount() - 1; columnIndex >= 0; columnIndex--)
+		for (int columnIndex = table.getColumnCount() - 1; columnIndex >= 0; columnIndex--)
 		{
-			refTable.getColumn(columnIndex).dispose();
+			table.getColumn(columnIndex).dispose();
 		}
 	}
 
 	protected void initTableEditor() {
 		
-		final TableEditor editor = new TableEditor(refTable);
+		final TableEditor editor = new TableEditor(table);
 		editor.horizontalAlignment = SWT.LEFT;
 		editor.grabHorizontal = true;
-		refTable.addListener(SWT.MouseDown, new Listener()
+		table.addListener(SWT.MouseDown, new Listener()
 		{
 			public void handleEvent(Event event)
 			{
-				Rectangle clientArea = refTable.getClientArea();
+				Rectangle clientArea = table.getClientArea();
 				Point pt = new Point(event.x, event.y);
-				int index = refTable.getTopIndex();
-				while (index < refTable.getItemCount())
+				int index = table.getTopIndex();
+				while (index < table.getItemCount())
 				{
 					boolean visible = false;
-					final TableItem item = refTable.getItem(index);
-					for (int columnIndex = 0; columnIndex < refTable.getColumnCount(); columnIndex++)
+					final TableItem item = table.getItem(index);
+					for (int columnIndex = 0; columnIndex < table.getColumnCount(); columnIndex++)
 					{
 						Rectangle rect = item.getBounds(columnIndex);
 						if (rect.contains(pt))
 						{
 							final int columnIndexFinal = columnIndex;
-							final Text text = new Text(refTable, SWT.NONE);
+							final Text text = new Text(table, SWT.NONE);
 							Listener textListener = new Listener()
 							{
 								public void handleEvent(final Event event)
@@ -445,7 +445,7 @@ implements IDataTableView {
 		});
 	}
 	
-	protected void updateData(TableItem refUpdatedItem, 
+	protected void updateData(TableItem updatedItem, 
 			int iColumnIndexOfItem) {
 		
 		IVirtualArray tmpSelection =
@@ -458,25 +458,25 @@ implements IDataTableView {
 		// offset
 		case 0:
 			tmpSelection.setOffset(StringConversionTool.convertStringToInt(
-					refUpdatedItem.getText(iColumnIndexOfItem), -1));
+					updatedItem.getText(iColumnIndexOfItem), -1));
 			tmpSelection.returnWriteToken();
 			break;
 		// length
 		case 1:
 			tmpSelection.setLength(StringConversionTool.convertStringToInt(
-					refUpdatedItem.getText(iColumnIndexOfItem), -1));	
+					updatedItem.getText(iColumnIndexOfItem), -1));	
 			tmpSelection.returnWriteToken();
 			break;
 		// mulit offset
 		case 2:
 			tmpSelection.setMultiOffset(StringConversionTool.convertStringToInt(
-					refUpdatedItem.getText(iColumnIndexOfItem), -1));
+					updatedItem.getText(iColumnIndexOfItem), -1));
 			tmpSelection.returnWriteToken();
 			break;
 		// multi repeat
 		case 3:
 			tmpSelection.setMultiRepeat(StringConversionTool.convertStringToInt(
-					refUpdatedItem.getText(iColumnIndexOfItem), -1));
+					updatedItem.getText(iColumnIndexOfItem), -1));
 			tmpSelection.returnWriteToken();
 			break;
 		default:

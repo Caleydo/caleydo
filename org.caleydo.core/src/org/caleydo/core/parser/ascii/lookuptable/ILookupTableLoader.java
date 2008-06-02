@@ -21,22 +21,22 @@ public interface ILookupTableLoader {
 	 * load and parse a file.
 	 * 
 	 * @param brFile handle to the file
-	 * @param iNumberOfLinesInFile total number of lines in file or Interger.MAX
+	 * @param iNumberOfLinesInFile total number of lines in file or Integer.MAX
 	 * @return real line red or -1 in case of an error
-	 * @throws IOException if somthing went wrong during file access
+	 * @throws IOException if something went wrong during file access
 	 */
 	public int loadDataParseFileLUT(BufferedReader brFile,
 			final int iNumberOfLinesInFile ) throws IOException;
 	
 	/**
-	 * initialize the lookup table if neccessary.
+	 * initialize the lookup table if necessary.
 	 * 
 	 * @see org.caleydo.core.parser.ascii.IParserObject#init()
 	 */
 	public void initLUT();
 	
 	/**
-	 * Destroy and cleanup stored variables of the lookup table if neccessary.
+	 * Destroy and cleanup stored variables of the lookup table if necessary.
 	 * 
 	 * @see org.caleydo.core.parser.ascii.IParserObject#destroy()
 	 */

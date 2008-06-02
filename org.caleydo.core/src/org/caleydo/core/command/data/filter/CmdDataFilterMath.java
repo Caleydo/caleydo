@@ -45,24 +45,24 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	 * 
 	 * TODO: implemented only for float
 	 * 
-	 * @param refGeneralManager
-	 * @param refCommandManager
-	 * @param refCommandQueueSaxType
+	 * @param generalManager
+	 * @param commandManager
+	 * @param commandQueueSaxType
 	 */
-	public CmdDataFilterMath(IGeneralManager refGeneralManager,
-			ICommandManager refCommandManager,
-			CommandQueueSaxType refCommandQueueSaxType) {
+	public CmdDataFilterMath(IGeneralManager generalManager,
+			ICommandManager commandManager,
+			CommandQueueSaxType commandQueueSaxType) {
 
-		super(refGeneralManager, refCommandManager, refCommandQueueSaxType);
+		super(generalManager, commandManager, commandQueueSaxType);
 		
 		iAlSrcStorageId = new ArrayList<Integer>();
 	}
 
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 		
-		assert refParameterHandler != null: "ParameterHandler object is null!";	
+		assert parameterHandler != null: "ParameterHandler object is null!";	
 		
-		super.setParameterHandler(refParameterHandler);	
+		super.setParameterHandler(parameterHandler);	
 		
 		dataFilterMathType = EDataFilterMathType.valueOf(sAttribute1);
 		

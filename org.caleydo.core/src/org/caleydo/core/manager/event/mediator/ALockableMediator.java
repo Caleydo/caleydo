@@ -16,7 +16,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 public abstract class ALockableMediator 
 extends ALockableMediatorReceiver {
 	
-	protected final IEventPublisher refEventPublisher;
+	protected final IEventPublisher eventPublisher;
 	
 	private final MediatorUpdateType mediatorUpdateType;
 		
@@ -28,13 +28,13 @@ extends ALockableMediatorReceiver {
 	 * @param iMediatorId
 	 * @param mediatorUpdateType if ==NULL, MediatorUpdateType.MEDIATOR_DEFAULT is used as default 
 	 */
-	protected ALockableMediator(final IEventPublisher refEventPublisher,
+	protected ALockableMediator(final IEventPublisher eventPublisher,
 			int iMediatorId,
 			final MediatorUpdateType mediatorUpdateType) {
 		
 		super();
 		
-		this.refEventPublisher = refEventPublisher;
+		this.eventPublisher = eventPublisher;
 		this.iMediatorId = iMediatorId;
 		
 		if ( mediatorUpdateType == null ) 
@@ -70,7 +70,7 @@ extends ALockableMediatorReceiver {
 	 */
 	public final void destroyMediator( final IEventPublisher sender )
 	{
-		if ( ! refEventPublisher.equals(sender)) {
+		if ( ! eventPublisher.equals(sender)) {
 			throw new CaleydoRuntimeException("IMediator.destroyMediator() may only be callled by its creator!");
 		}
 

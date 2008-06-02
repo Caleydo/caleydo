@@ -61,14 +61,14 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	/**
 	 * Constructor.
 	 */
-	public CmdDataCreateSet( final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType,
+	public CmdDataCreateSet( final IGeneralManager generalManager,
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType,
 			final boolean bDisposeDataAfterDoCommand ) {
 		
-		super(refGeneralManager,
-				refCommandManager,
-				refCommandQueueSaxType);
+		super(generalManager,
+				commandManager,
+				commandQueueSaxType);
 		
 		llRefStorage_nDim 	= new LinkedList< LinkedList<String> > ();
 		llRefVirtualArray_nDim 	= new LinkedList< LinkedList<String> > ();
@@ -110,7 +110,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 //			Iterator <String> iter_ll_VirtualArray_1dim = 
 //				ll_VirtualArray_1dim.iterator();
 //	
-//			IVirtualArrayManager refVirtualArrayManager = 
+//			IVirtualArrayManager virtualArrayManager = 
 //				generalManager.getVirtualArrayManager();
 //			
 //			/**
@@ -127,7 +127,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 //					Integer.valueOf( iter_ll_VirtualArray_1dim.next() );
 //				
 //				vecVirtualArray.addElement( 
-//					refVirtualArrayManager.getItemVirtualArray( iBufferdId ) );	
+//					virtualArrayManager.getItemVirtualArray( iBufferdId ) );	
 //					
 //			} //while ( iter_ll_Selection_1dim.hasNext() )
 //			
@@ -143,7 +143,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 //				ll_Storage_1dim.iterator();
 //			
 //			
-//			IStorageManager refStorageManager = 
+//			IStorageManager storageManager = 
 //				generalManager.getStorageManager();
 //			
 //			Vector <IStorage> vecStorage = 
@@ -155,7 +155,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 //					Integer.valueOf( iter_ll_Storage_1dim.next() );
 //				
 //				vecStorage.addElement( 
-//					refStorageManager.getItemStorage( iBufferdId ) );	
+//					storageManager.getItemStorage( iBufferdId ) );	
 //					
 //			} //while ( iter_ll_Storage_1dim.hasNext() )
 //			
@@ -197,9 +197,9 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		
 		try {
 				
-			IVirtualArrayManager refVirtualArrayManager = 
+			IVirtualArrayManager virtualArrayManager = 
 				generalManager.getVirtualArrayManager();
-			IStorageManager refStorageManager = 
+			IStorageManager storageManager = 
 				generalManager.getStorageManager();
 			
 			
@@ -233,7 +233,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 						Integer.valueOf( iter_ll_VirtualArray_1dim.next() );
 					
 					vecVirtualArray.addElement( 
-						refVirtualArrayManager.getItemVirtualArray( iBufferdId ) );	
+						virtualArrayManager.getItemVirtualArray( iBufferdId ) );	
 						
 				} //while ( iter_ll_VirtualArray_1dim.hasNext() )
 				
@@ -268,9 +268,9 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 						Integer.valueOf( iter_ll_Storage_1dim.next() );
 					
 					vecStorage.addElement( 
-						refStorageManager.getItemStorage( iBufferdId ) );	
+						storageManager.getItemStorage( iBufferdId ) );	
 						
-					//newObject.setStorageByDim(refStorageManager.getItemStorage( iBufferdId ), iIndexStorage);
+					//newObject.setStorageByDim(storageManager.getItemStorage( iBufferdId ), iIndexStorage);
 					
 					iIndexStorage++;
 				} //while ( iter_ll_Storage_1dim.hasNext() )
@@ -377,7 +377,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		
 		assert llRefStorage_nDim != null : "Probably this doCommand() was already executed once!";
 		
-		ISetManager refSetManager = 
+		ISetManager setManager = 
 			generalManager.getSetManager();
 		
 		newObject = null;
@@ -389,7 +389,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		case SET_LINEAR:
 		case SET_PLANAR:
 		case SET_MULTI_DIM:
-			newObject = (ISet) refSetManager.createSet(setType);
+			newObject = (ISet) setManager.createSet(setType);
 			
 			/* set id now to make debugging XML file easier in case of an XML miss configuration */
 			newObject.setId( iUniqueId );
@@ -436,11 +436,11 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	/**
 	 * 
 	 */
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 		
-		assert refParameterHandler != null: "can not handle null object!";		
+		assert parameterHandler != null: "can not handle null object!";		
 		
-		super.setParameterHandler(refParameterHandler);
+		super.setParameterHandler(parameterHandler);
 		
 		boolean bErrorOnLoadingXMLData = false;
 			
@@ -454,7 +454,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		 */
 		StringTokenizer strToken_VirtualArrayBlock = 
 			new StringTokenizer( 
-					refParameterHandler.getValueString( 
+					parameterHandler.getValueString( 
 							CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() ),	
 					IGeneralManager.sDelimiter_Paser_DataItemBlock);
 		
@@ -506,7 +506,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		 */
 		StringTokenizer strToken_StorageBlock = 
 			new StringTokenizer( 
-					refParameterHandler.getValueString( 
+					parameterHandler.getValueString( 
 							CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey() ),	
 							IGeneralManager.sDelimiter_Paser_DataItemBlock);
 		
@@ -560,7 +560,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		/**
 		 * read "attrib3" key ...
 		 */
-		String sAttrib3 = refParameterHandler.getValueString( 
+		String sAttrib3 = parameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey() );
 		
 		if ( sAttrib3.length() > 0 ) 

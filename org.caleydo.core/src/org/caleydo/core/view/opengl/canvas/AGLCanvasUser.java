@@ -305,9 +305,9 @@ implements GLEventListener {
 		
 		for ( int i=0; i < iSet.length; i++)
 		{
-			ISet refCurrentSet = setManager.getItemSet(iSet[i]);
+			ISet currentSet = setManager.getItemSet(iSet[i]);
 			
-			if ( refCurrentSet == null ) 
+			if ( currentSet == null ) 
 			{
 //				generalManager.logMsg(
 //						"addSetId(" + iSet[i] + ") is not registered at SetManager!",
@@ -316,32 +316,32 @@ implements GLEventListener {
 				continue;
 			}
 			
-			if ( ! hasSetId_ByReference(refCurrentSet) )
+			if ( ! hasSetId_ByReference(currentSet) )
 			{
-				switch (refCurrentSet.getSetType()) {
+				switch (currentSet.getSetType()) {
 				case SET_PATHWAY_DATA:
 				case SET_GENE_EXPRESSION_DATA:
 				case SET_RAW_DATA:
-					alSetData.add(refCurrentSet);
+					alSetData.add(currentSet);
 					break;
 					
 				case SET_SELECTION:
-					alSetSelection.add((SetSelection)refCurrentSet);
+					alSetSelection.add((SetSelection)currentSet);
 					break;
 					
 				default:
 //					generalManager.logMsg(
 //							"addSetId() unsupported SetType!",
 //							LoggerType.ERROR);
-				} // switch (refCurrentSet.getSetType()) {
+				} // switch (currentSet.getSetType()) {
 					
-			} //if ( ! hasSetId_ByReference(refCurrentSet) )
+			} //if ( ! hasSetId_ByReference(currentSet) )
 			else 
 			{ 
 //				generalManager.logMsg(
 //						"addSetId(" + iSet[i] + ") ISet is already registered!",
 //						LoggerType.MINOR_ERROR);
-			} //if ( ! hasSetId_ByReference(refCurrentSet) ) {...} else {...}
+			} //if ( ! hasSetId_ByReference(currentSet) ) {...} else {...}
 			
 		} //for ( int i=0; i < iSet.length; i++)
 	}
@@ -376,9 +376,9 @@ implements GLEventListener {
 		
 		for ( int i=0; i < iSet.length; i++)
 		{
-			ISet refCurrentSet = setManager.getItemSet(iSet[i]);
+			ISet currentSet = setManager.getItemSet(iSet[i]);
 			
-			if ( refCurrentSet == null ) 
+			if ( currentSet == null ) 
 			{
 //				generalManager.logMsg(
 //						"removeSetId(" + iSet[i] + ") is not registered at SetManager!",
@@ -387,30 +387,30 @@ implements GLEventListener {
 				continue;
 			}
 			
-			if ( hasSetId_ByReference(refCurrentSet) )
+			if ( hasSetId_ByReference(currentSet) )
 			{
-				switch (refCurrentSet.getSetType()) {
+				switch (currentSet.getSetType()) {
 				case SET_RAW_DATA:
-					alSetData.remove(refCurrentSet);
+					alSetData.remove(currentSet);
 					break;
 					
 				case SET_SELECTION:
-					alSetSelection.remove(refCurrentSet);
+					alSetSelection.remove(currentSet);
 					break;
 					
 				default:
 //					generalManager.logMsg(
 //							"removeSetId() unsupported SetType!",
 //							LoggerType.ERROR);
-				} // switch (refCurrentSet.getSetType()) {
+				} // switch (currentSet.getSetType()) {
 					
-			} //if ( ! hasSetId_ByReference(refCurrentSet) )
+			} //if ( ! hasSetId_ByReference(currentSet) )
 			else 
 			{ 
 //				generalManager.logMsg(
 //						"removeSetId(" + iSet[i] + ") ISet was not registered!",
 //						LoggerType.MINOR_ERROR);
-			} //if ( ! hasSetId_ByReference(refCurrentSet) ) {...} else {...}
+			} //if ( ! hasSetId_ByReference(currentSet) ) {...} else {...}
 			
 		} //for ( int i=0; i < iSet.length; i++)
 		
@@ -455,32 +455,32 @@ implements GLEventListener {
 	 * @see org.caleydo.core.view.IView#hasSetId(int)
 	 */
 	public final boolean hasSetId( int iSetId) {
-		ISet refCurrentSet = setManager.getItemSet(iSetId);
+		ISet currentSet = setManager.getItemSet(iSetId);
 		
-		if ( refCurrentSet == null )
+		if ( currentSet == null )
 		{
 			return false;
 		}
 		
-		return hasSetId_ByReference(refCurrentSet);
+		return hasSetId_ByReference(currentSet);
 	}
 	
 	
 	/**
-	 * Test both ArrayList's alSetData and alSetSelection for refSet.
+	 * Test both ArrayList's alSetData and alSetSelection for set.
 	 * 
-	 * @param refSet test if this ISet is referred to
+	 * @param set test if this ISet is referred to
 	 * @return TRUE if exists in any of the two ArrayList's
 	 */
-	public final boolean hasSetId_ByReference(final ISet refSet) {
+	public final boolean hasSetId_ByReference(final ISet set) {
 		
-		assert refSet != null : "Can not handle null-pointer";
+		assert set != null : "Can not handle null-pointer";
 			
-		if ( alSetData.contains(refSet) ) 
+		if ( alSetData.contains(set) ) 
 		{
 			return true;
 		}
-		if ( alSetSelection.contains(refSet) ) 
+		if ( alSetSelection.contains(set) ) 
 		{
 			return true;
 		}

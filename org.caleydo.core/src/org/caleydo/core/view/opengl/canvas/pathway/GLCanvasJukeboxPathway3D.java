@@ -82,9 +82,9 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private int iMouseOverPickedPathwayId = -1;
 
-	private GLPathwayManager refGLPathwayManager;
+	private GLPathwayManager gLPathwayManager;
 
-	private GLPathwayTextureManager refGLPathwayTextureManager;
+	private GLPathwayTextureManager gLPathwayTextureManager;
 	
 	private ArrayList<SlerpAction> arSlerpActions;
 
@@ -107,7 +107,7 @@ implements IMediatorReceiver, IMediatorSender {
 	 * Hash map stores which pathways contain the currently selected vertex and
 	 * how often this vertex is contained.
 	 */
-	private HashMap<Integer, Integer> refHashPathwayContainingSelectedVertex2VertexCount;
+	private HashMap<Integer, Integer> hashPathwayContainingSelectedVertex2VertexCount;
 
 	private GLPathwayMemoPad memoPad;
 
@@ -136,12 +136,12 @@ implements IMediatorReceiver, IMediatorSender {
 
 		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
 
-		refGLPathwayManager = new GLPathwayManager(generalManager);
-		refGLPathwayTextureManager = new GLPathwayTextureManager(
+		gLPathwayManager = new GLPathwayManager(generalManager);
+		gLPathwayTextureManager = new GLPathwayTextureManager(
 				generalManager);
 		arSlerpActions = new ArrayList<SlerpAction>();
 
-		refHashPathwayContainingSelectedVertex2VertexCount = new HashMap<Integer, Integer>();
+		hashPathwayContainingSelectedVertex2VertexCount = new HashMap<Integer, Integer>();
 
 		// Create Jukebox hierarchy
 		pathwayUnderInteractionLayer = new RemoteHierarchyLayer(EHierarchyLevel.UNDER_INTERACTION);
@@ -164,15 +164,14 @@ implements IMediatorReceiver, IMediatorSender {
 		pathwayUnderInteractionLayer.setTransformByPositionIndex(0,
 				transformPathwayUnderInteraction);
 
-		infoAreaRenderer = new GLInfoAreaRenderer(generalManager,
-				refGLPathwayManager);
+		infoAreaRenderer = new GLInfoAreaRenderer(generalManager);
 		infoAreaRenderer.enableColorMappingArea(true);
 		
 		memoPad = new GLPathwayMemoPad(generalManager,
-				refGLPathwayManager,
-				refGLPathwayTextureManager);
+				gLPathwayManager,
+				gLPathwayTextureManager);
 
-		dragAndDrop = new GLDragAndDropPathway(refGLPathwayTextureManager);
+		dragAndDrop = new GLDragAndDropPathway(gLPathwayTextureManager);
 		
 		textRenderer = new TextRenderer(new Font("Arial",
 				Font.BOLD, 16), false);
@@ -314,7 +313,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	protected void initPathwayData(final GL gl) {
 
-		refGLPathwayManager.init(gl, alSetData, pathwayVertexSelectionManager);
+		gLPathwayManager.init(gl, alSetData, pathwayVertexSelectionManager);
 		buildPathwayPool(gl);
 		buildLayeredPathways(gl);
 	}
@@ -460,18 +459,18 @@ implements IMediatorReceiver, IMediatorSender {
 			{
 				if (layer.equals(pathwayLayeredLayer))
 				{
-					refGLPathwayTextureManager.renderPathway(gl, this, iPathwayId,
+					gLPathwayTextureManager.renderPathway(gl, this, iPathwayId,
 							fTextureTransparency, true);					
 				}
 				else
 				{
-					refGLPathwayTextureManager.renderPathway(gl, this, iPathwayId,
+					gLPathwayTextureManager.renderPathway(gl, this, iPathwayId,
 							1.0f, true);
 				}
 			}
 			else
 			{
-				refGLPathwayTextureManager.renderPathway(gl, this, iPathwayId,
+				gLPathwayTextureManager.renderPathway(gl, this, iPathwayId,
 						fTextureTransparency, false);
 			}
 		}
@@ -485,11 +484,11 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		if (layer.equals(pathwayLayeredLayer))
 		{
-			refGLPathwayManager.renderPathway(gl, iPathwayId, false);
+			gLPathwayManager.renderPathway(gl, iPathwayId, false);
 		}
 		else
 		{
-			refGLPathwayManager.renderPathway(gl, iPathwayId, true);
+			gLPathwayManager.renderPathway(gl, iPathwayId, true);
 		}
 		
 		gl.glTranslatef(0, -tmp, 0);
@@ -511,7 +510,7 @@ implements IMediatorReceiver, IMediatorSender {
 //		pathwayPoolLayer.removeAllElements();
 //		
 //		Iterator<Integer> iterSelectedPathways = 
-//			refHashPathwayContainingSelectedVertex2VertexCount.keySet().iterator();
+//			hashPathwayContainingSelectedVertex2VertexCount.keySet().iterator();
 //		
 //		while(iterSelectedPathways.hasNext())
 //		{
@@ -556,7 +555,7 @@ implements IMediatorReceiver, IMediatorSender {
 			{
 				alMagnificationFactor.set(iPathwayIndex, 2);
 			} 
-			else if (refHashPathwayContainingSelectedVertex2VertexCount
+			else if (hashPathwayContainingSelectedVertex2VertexCount
 					.containsKey(iPathwayId))
 			{
 				alMagnificationFactor.set(iPathwayIndex, 1);
@@ -602,11 +601,11 @@ implements IMediatorReceiver, IMediatorSender {
 				sRenderText = sRenderText.subSequence(0, 35) + "...";
 
 			// Append identical vertex count to pathway title
-			if (refHashPathwayContainingSelectedVertex2VertexCount.containsKey(iPathwayId))
+			if (hashPathwayContainingSelectedVertex2VertexCount.containsKey(iPathwayId))
 			{	
 				sRenderText = sRenderText
 						+ " - "
-						+ refHashPathwayContainingSelectedVertex2VertexCount
+						+ hashPathwayContainingSelectedVertex2VertexCount
 								.get(iPathwayId).toString();
 			}
 			
@@ -751,16 +750,16 @@ implements IMediatorReceiver, IMediatorSender {
 //						+ eventTrigger.getClass().getSimpleName(),
 //				LoggerType.VERBOSE);
 
-		ISetSelection refSetSelection = (ISetSelection) updatedSet;
+		ISetSelection setSelection = (ISetSelection) updatedSet;
 
-		refSetSelection.getReadToken();
-		ArrayList<Integer> iAlOptional = refSetSelection.getOptionalDataArray();
+		setSelection.getReadToken();
+		ArrayList<Integer> iAlOptional = setSelection.getOptionalDataArray();
 		if (iAlOptional != null && iAlOptional.size() != 0)
 		{
 			iLazyPathwayLoadingId = iAlOptional.get(0);
 		}
 		
-		ArrayList<Integer> iAlSelectionId = refSetSelection.getSelectionIdArray();
+		ArrayList<Integer> iAlSelectionId = setSelection.getSelectionIdArray();
 		if (iAlSelectionId != null &&iAlSelectionId.size() != 0)
 		{
 			selectedVertex = (PathwayVertexGraphItemRep) generalManager
@@ -770,13 +769,13 @@ implements IMediatorReceiver, IMediatorSender {
 //			bSelectionChanged = true;
 			infoAreaRenderer.resetPoint();
 			
-//			refGLPathwayManager.updateSelectionSet(
-//					(SetSelection) refSetSelection);
+//			gLPathwayManager.updateSelectionSet(
+//					(SetSelection) setSelection);
 			
 			bUpdateReceived = true;
 		}
 		
-		refSetSelection.returnReadToken();	
+		setSelection.returnReadToken();	
 	}
 
 	public void updateReceiver(Object eventTrigger) {
@@ -817,7 +816,7 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		if (slerpAction.getDestinationHierarchyLayer().equals(pathwayLayeredLayer))
 		{	
-			refGLPathwayTextureManager.loadPathwayTextureById(iPathwayId);
+			gLPathwayTextureManager.loadPathwayTextureById(iPathwayId);
 		}
 		
 		Transform transform = slerpMod.interpolate(slerpAction
@@ -831,14 +830,14 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		slerpMod.applySlerp(gl, transform);
 		
-		refGLPathwayTextureManager.renderPathway(gl, this, iPathwayId,
+		gLPathwayTextureManager.renderPathway(gl, this, iPathwayId,
 				fTextureTransparency, true);
 
 		float tmp = GLPathwayManager.SCALING_FACTOR_Y * ((PathwayGraph)generalManager
 				.getPathwayManager().getItem(iPathwayId)).getHeight();
 		
 		gl.glTranslatef(0, tmp, 0);
-		refGLPathwayManager.renderPathway(gl, iPathwayId, false);
+		gLPathwayManager.renderPathway(gl, iPathwayId, false);
 		gl.glTranslatef(0, -tmp, 0);
 
 		gl.glPopMatrix();
@@ -1201,7 +1200,7 @@ implements IMediatorReceiver, IMediatorSender {
 		// Remove pathways from stacked layer view
 		pathwayLayeredLayer.removeAllElements();
 		pathwayPoolLayer.removeAllElements();
-		refHashPathwayContainingSelectedVertex2VertexCount.clear();
+		hashPathwayContainingSelectedVertex2VertexCount.clear();
 		
 		Iterator<IGraphItem> iterIdenticalPathwayGraphItemReps = 
 			alVertexRep.iterator();
@@ -1237,15 +1236,15 @@ implements IMediatorReceiver, IMediatorSender {
 			}
 
 			// Check if pathway has already a vertex counted
-			if (refHashPathwayContainingSelectedVertex2VertexCount.containsKey(iPathwayId))
+			if (hashPathwayContainingSelectedVertex2VertexCount.containsKey(iPathwayId))
 			{
 				// Increase current stored identical vertex count by 1
-				refHashPathwayContainingSelectedVertex2VertexCount.put(
-						iPathwayId, refHashPathwayContainingSelectedVertex2VertexCount.get(iPathwayId) + 1);
+				hashPathwayContainingSelectedVertex2VertexCount.put(
+						iPathwayId, hashPathwayContainingSelectedVertex2VertexCount.get(iPathwayId) + 1);
 			}
 			else
 			{
-				refHashPathwayContainingSelectedVertex2VertexCount.put(iPathwayId, 1);
+				hashPathwayContainingSelectedVertex2VertexCount.put(iPathwayId, 1);
 			}
 		}
 		
@@ -1257,7 +1256,7 @@ implements IMediatorReceiver, IMediatorSender {
 		// Reset rebuild trigger flag
 		bRebuildVisiblePathwayDisplayLists = false;
 		
-//		refGLPathwayManager.clearOldPickingIDs();
+//		gLPathwayManager.clearOldPickingIDs();
 
 		if (selectedVertex != null)
 		{
@@ -1272,7 +1271,7 @@ implements IMediatorReceiver, IMediatorSender {
 			alSetSelection.get(1).returnWriteToken();
 		}
 			
-		refGLPathwayManager.performIdenticalNodeHighlighting();
+		gLPathwayManager.performIdenticalNodeHighlighting();
 		
 		// Update display list if something changed
 		// Rebuild display lists for visible pathways in layered view
@@ -1281,7 +1280,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 		while (iterVisiblePathway.hasNext())
 		{
-			refGLPathwayManager.buildPathwayDisplayList(gl, this, iterVisiblePathway.next());
+			gLPathwayManager.buildPathwayDisplayList(gl, this, iterVisiblePathway.next());
 		}
 
 		// Rebuild display lists for visible pathways in focus position
@@ -1289,12 +1288,12 @@ implements IMediatorReceiver, IMediatorSender {
 				&& !pathwayLayeredLayer.containsElement(pathwayUnderInteractionLayer
 				.getElementIdByPositionIndex(0)))
 		{
-			refGLPathwayManager.buildPathwayDisplayList(gl, this,
+			gLPathwayManager.buildPathwayDisplayList(gl, this,
 					pathwayUnderInteractionLayer.getElementIdByPositionIndex(0));
 		}
 		
 		// Cleanup unused textures
-		refGLPathwayTextureManager.unloadUnusedTextures(getVisiblePathways());
+		gLPathwayTextureManager.unloadUnusedTextures(getVisiblePathways());
 
 		// Trigger update on current selection
 		//alSetSelection.get(0).updateSelectionSet(iUniqueId);
@@ -1319,7 +1318,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 	public void setMappingRowCount(final int iMappingRowCount) {
 		
-		refGLPathwayManager.setMappingRowCount(iMappingRowCount);
+		gLPathwayManager.setMappingRowCount(iMappingRowCount);
 	}
 	
 	// TODO: render connecting lines to display list
@@ -1448,7 +1447,7 @@ implements IMediatorReceiver, IMediatorSender {
 	
 //	private void calculatePathwayScaling(final GL gl, final int iPathwayId) {
 //		
-////		if (refHashGLcontext2TextureManager.get(gl) == null)
+////		if (hashGLcontext2TextureManager.get(gl) == null)
 ////			return;
 //		
 //		int iImageWidth = ((PathwayGraph)generalManager.getSingelton()
@@ -1504,13 +1503,13 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	public void enableGeneMapping(final boolean bEnableMapping) {
 		
-		refGLPathwayManager.enableGeneMapping(bEnableMapping);
+		gLPathwayManager.enableGeneMapping(bEnableMapping);
 		bRebuildVisiblePathwayDisplayLists = true;
 	}
 	
 	public void enablePathwayTextures(final boolean bEnablePathwayTextures) {
 		
-		refGLPathwayManager.enableEdgeRendering(!bEnablePathwayTextures);
+		gLPathwayManager.enableEdgeRendering(!bEnablePathwayTextures);
 		bRebuildVisiblePathwayDisplayLists = true;
 		
 		this.bEnablePathwayTextures = bEnablePathwayTextures;
@@ -1519,18 +1518,18 @@ implements IMediatorReceiver, IMediatorSender {
 	public void enableNeighborhood(final boolean bEnableNeighborhood) {
 		
 		bRebuildVisiblePathwayDisplayLists = true;
-		refGLPathwayManager.enableNeighborhood(bEnableNeighborhood);
+		gLPathwayManager.enableNeighborhood(bEnableNeighborhood);
 	}
 	
 	public void enableIdenticalNodeHighlighting(final boolean bEnableIdenticalNodeHighlighting) {
 		
 		bRebuildVisiblePathwayDisplayLists = true;
-		refGLPathwayManager.enableIdenticalNodeHighlighting(bEnableIdenticalNodeHighlighting);
+		gLPathwayManager.enableIdenticalNodeHighlighting(bEnableIdenticalNodeHighlighting);
 	}
 	
 	public void enableAnnotation(final boolean bEnableAnnotation) {
 		
-		refGLPathwayManager.enableAnnotation(bEnableAnnotation);
+		gLPathwayManager.enableAnnotation(bEnableAnnotation);
 	}
 	
 	public void clearAllPathways() {
@@ -1539,7 +1538,7 @@ implements IMediatorReceiver, IMediatorSender {
 		pathwayUnderInteractionLayer.removeAllElements();
 
 		bRebuildVisiblePathwayDisplayLists = true;
-		refHashPathwayContainingSelectedVertex2VertexCount.clear();
+		hashPathwayContainingSelectedVertex2VertexCount.clear();
 	}
 	
 	/*

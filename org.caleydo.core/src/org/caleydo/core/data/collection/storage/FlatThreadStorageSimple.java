@@ -728,11 +728,11 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	public void callbackForParser( final ManagerObjectType type,
 			final String tag_causes_callback,
 			final String details,
-			final ISaxParserHandler refSaxHandler) {
+			final ISaxParserHandler saxHandler) {
 		
 		if ( tag_causes_callback.equalsIgnoreCase( ManagerObjectType.STORAGE_FLAT.name() )) {
 			
-			setMementoXML_usingHandler( refSaxHandler );
+			setMementoXML_usingHandler( saxHandler );
 		}
 		
 		System.out.println("FlatThreadStorageSimple.callbackForParser() STORAGE CALLBACK!");
@@ -741,14 +741,14 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	/**
 	 * Restore state of object by update data from SaxHandler
 	 * 
-	 * @param refSaxHandler reference to SaxHandler
+	 * @param saxHandler reference to SaxHandler
 	 * @return TRUE if the provided handler provided same Id as object.
 	 */
-	public boolean setMementoXML_usingHandler( final ISaxParserHandler refSaxHandler ) {
+	public boolean setMementoXML_usingHandler( final ISaxParserHandler saxHandler ) {
 		
 		try {
 			CollectionFlatStorageSaxParserHandler handler =
-				(CollectionFlatStorageSaxParserHandler) refSaxHandler;
+				(CollectionFlatStorageSaxParserHandler) saxHandler;
 				
 			setId( handler.getXML_DataComponent_Id() );
 			

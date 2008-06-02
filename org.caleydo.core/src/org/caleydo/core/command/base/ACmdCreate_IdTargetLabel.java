@@ -35,29 +35,29 @@ extends ACommand {
 	/**
 	 * Constructor.
 	 * 
-	 * @param refGeneralManager
+	 * @param generalManager
 	 */
 	protected ACmdCreate_IdTargetLabel(
-			final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType) {
+			final IGeneralManager generalManager,
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType) {
 		
 		// set unique ID to -1 because it is unknown at this moment
 		super(-1, 
-				refGeneralManager,
-				refCommandManager,
-				refCommandQueueSaxType);
+				generalManager,
+				commandManager,
+				commandQueueSaxType);
 	}
 	
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 		
-		this.setId(refParameterHandler.getValueInt( 
+		this.setId(parameterHandler.getValueInt( 
 					CommandQueueSaxType.TAG_CMD_ID.getXmlKey() ) );
 	
-		iUniqueId = refParameterHandler.getValueInt( 
+		iUniqueId = parameterHandler.getValueInt( 
 					CommandQueueSaxType.TAG_UNIQUE_ID.getXmlKey() );
 		
-		sLabel = refParameterHandler.getValueString( 
+		sLabel = parameterHandler.getValueString( 
 					CommandQueueSaxType.TAG_LABEL.getXmlKey() );
 	}
 }

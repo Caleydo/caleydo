@@ -1,18 +1,16 @@
-/**
- * 
- */
 package org.caleydo.core.view;
 
 /**
  * Define the type of the view.
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  * 
  */
 public enum ViewType {
+	
 	SWT_DATA_EXPLORER,
 	SWT_PATHWAY2D,
-	SWT_PATHWAY_GRAPH,
 	SWT_PATHWAY3D,
 	SWT_HEATMAP,
 	SWT_SLIDER,

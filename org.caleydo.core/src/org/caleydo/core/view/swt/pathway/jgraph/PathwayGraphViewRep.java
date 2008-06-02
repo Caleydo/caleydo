@@ -79,13 +79,13 @@ extends APathwayGraphViewRep {
 
 	protected float fScalingFactor = 1.0f;
 	
-	protected PathwayGraph refCurrentPathway;
+	protected PathwayGraph currentPathway;
 
-	protected GraphModel refGraphModel;
+	protected GraphModel graphModel;
 
-	protected GraphLayoutCache refGraphLayoutCache;
+	protected GraphLayoutCache graphLayoutCache;
 
-	protected JGraph refPathwayGraph;
+	protected JGraph pathwayGraph;
 
 	protected HashMap<Integer, DefaultGraphCell> vertexIdToCellLUT;
 
@@ -93,9 +93,9 @@ extends APathwayGraphViewRep {
 
 	protected boolean bShowBackgroundOverlay = true;
 
-	protected GraphUndoManager refUndoManager;
+	protected GraphUndoManager undoManager;
 
-	protected GPOverviewPanel refOverviewPanel;
+	protected GPOverviewPanel overviewPanel;
 
 	protected Vector<DefaultEdge> vecRelationEdges;
 
@@ -148,10 +148,10 @@ extends APathwayGraphViewRep {
 
 	protected boolean bShowRelationEdges = false;
 
-	public PathwayGraphViewRep(IGeneralManager refGeneralManager,
+	public PathwayGraphViewRep(IGeneralManager generalManager,
 			int iParentContainerId) {
 
-		super(refGeneralManager, -1, iParentContainerId, "");
+		super(generalManager, -1, iParentContainerId, "");
 
 		vertexIdToCellLUT = new HashMap<Integer, DefaultGraphCell>();
 
@@ -178,13 +178,13 @@ extends APathwayGraphViewRep {
 	 */
 	public void initView() {
 
-		SWTEmbeddedGraphWidget refSWTEmbeddedGraphWidget = (SWTEmbeddedGraphWidget) generalManager
+		SWTEmbeddedGraphWidget sWTEmbeddedGraphWidget = (SWTEmbeddedGraphWidget) generalManager
 				.getSWTGUIManager().createWidget(
 						ManagerObjectType.GUI_SWT_EMBEDDED_JGRAPH_WIDGET,
-						refEmbeddedFrameComposite, iWidth, iHeight);
+						embeddedFrameComposite, iWidth, iHeight);
 
-		refSWTEmbeddedGraphWidget.createEmbeddedComposite();
-		refEmbeddedFrame = refSWTEmbeddedGraphWidget.getEmbeddedFrame();
+		sWTEmbeddedGraphWidget.createEmbeddedComposite();
+		embeddedFrame = sWTEmbeddedGraphWidget.getEmbeddedFrame();
 		
 		extractCurrentPathwayFromSet();
 
@@ -201,9 +201,9 @@ extends APathwayGraphViewRep {
 
 			public void mousePressed(final MouseEvent event) {
 
-				if (refCurrentPathway != null)
+				if (currentPathway != null)
 				{
-					DefaultGraphCell clickedCell = (DefaultGraphCell) refPathwayGraph
+					DefaultGraphCell clickedCell = (DefaultGraphCell) pathwayGraph
 							.getFirstCellForLocation(event.getX(), event.getY());
 
 					// Do nothing when there no specific node was clicked.
@@ -246,16 +246,16 @@ extends APathwayGraphViewRep {
 					}
 
 					ArrayList<Integer> iAlPathway = new ArrayList<Integer>(1);
-					iAlPathway.add(refCurrentPathway.getId());
+					iAlPathway.add(currentPathway.getId());
 					alSetSelection.get(0).updateSelectionSet(iParentContainerId,
 							iAlSelectedVertices, 
 							iAlNeighborDistance,
 							iAlPathway);
 
-				}// if(refCurrentPathway != 0)
-				else if (refCurrentPathwayImageMap != null)
+				}// if(currentPathway != 0)
+				else if (currentPathwayImageMap != null)
 				{
-					String sLink = refCurrentPathwayImageMap
+					String sLink = currentPathwayImageMap
 							.processPoint(new Point(event.getX(), event.getY()));
 
 					if (sLink == null || sLink.equals(""))
@@ -288,28 +288,28 @@ extends APathwayGraphViewRep {
 			}
 		}
 
-		refGraphModel = new DefaultGraphModel();
+		graphModel = new DefaultGraphModel();
 
-		refGraphLayoutCache = new GraphLayoutCache(refGraphModel,
+		graphLayoutCache = new GraphLayoutCache(graphModel,
 				new GPCellViewFactory(), true);
 
-		refPathwayGraph = new JGraph(refGraphModel, refGraphLayoutCache);
+		pathwayGraph = new JGraph(graphModel, graphLayoutCache);
 
 		// // Set own cell view factory
-		// refPathwayGraph.getGraphLayoutCache().setFactory(
+		// pathwayGraph.getGraphLayoutCache().setFactory(
 		// new GPCellViewFactory());
 
 		// Control-drag should clone selection
-		refPathwayGraph.setCloneable(true);
+		pathwayGraph.setCloneable(true);
 
 		// Turn on anti-aliasing
-		refPathwayGraph.setAntiAliased(true);
+		pathwayGraph.setAntiAliased(true);
 
-		refPathwayGraph.setMarqueeHandler(new PathwayMarqueeHandler());
+		pathwayGraph.setMarqueeHandler(new PathwayMarqueeHandler());
 
 		// Create and register Undo Manager
-		refUndoManager = new GraphUndoManager();
-		refGraphModel.addUndoableEditListener(refUndoManager);
+		undoManager = new GraphUndoManager();
+		graphModel.addUndoableEditListener(undoManager);
 	}
 
 	protected void initViewSwtComposit(Composite swtContainer) {
@@ -329,7 +329,7 @@ extends APathwayGraphViewRep {
 		{
 			for (int iUndoCount = 0; iUndoCount < iNeighbourhoodUndoCount; iUndoCount++)
 			{
-				refUndoManager.undo(refGraphLayoutCache);
+				undoManager.undo(graphLayoutCache);
 			}
 
 			iNeighbourhoodUndoCount = 0;
@@ -361,7 +361,7 @@ extends APathwayGraphViewRep {
 			{
 				for (int iUndoCount = 0; iUndoCount < iNeighbourhoodUndoCount; iUndoCount++)
 				{
-					refUndoManager.undo(refGraphLayoutCache);
+					undoManager.undo(graphLayoutCache);
 				}
 				iNeighbourhoodUndoCount = 0;
 				bNeighbourhoodShown = false;
@@ -424,21 +424,21 @@ extends APathwayGraphViewRep {
 	public void drawView() {
 
 		// TODO: add try catch for pathway null object
-		if (refCurrentPathway != null)
+		if (currentPathway != null)
 		{
-			extractVertices(refCurrentPathway);
-			//extractEdges(refCurrentPathway);
+			extractVertices(currentPathway);
+			//extractEdges(currentPathway);
 
 			finishGraphBuilding();
-			refPathwayGraph.repaint();
+			pathwayGraph.repaint();
 		}
 		// else if (iPathwayLevel == 1)
 		// {
-		// refCurrentPathwayImageMap =
-		// refGeneralManager.getSingelton().getPathwayManager().getCurrentPathwayImageMap();
+		// currentPathwayImageMap =
+		// generalManager.getSingelton().getPathwayManager().getCurrentPathwayImageMap();
 		//			
-		// loadBackgroundOverlayImage(refCurrentPathwayImageMap.getImageLink(),
-		// refCurrentPathway);
+		// loadBackgroundOverlayImage(currentPathwayImageMap.getImageLink(),
+		// currentPathway);
 		// }
 
 		// Check if graph is already added to the frame
@@ -447,16 +447,16 @@ extends APathwayGraphViewRep {
 			// final Dimension dimOverviewMap = new Dimension(200, 200);
 			final Dimension dimPathway = new Dimension(iWidth, iHeight);
 
-			JScrollPane refScrollPane = new JScrollPane(refPathwayGraph);
-			refScrollPane.setMinimumSize(dimPathway);
-			refScrollPane.setMaximumSize(dimPathway);
-			refScrollPane.setPreferredSize(dimPathway);
-			refScrollPane.setAlignmentX(0.5f);
-			refScrollPane.setAlignmentY(0.5f);
-			refEmbeddedFrame.add(refScrollPane);
+			JScrollPane scrollPane = new JScrollPane(pathwayGraph);
+			scrollPane.setMinimumSize(dimPathway);
+			scrollPane.setMaximumSize(dimPathway);
+			scrollPane.setPreferredSize(dimPathway);
+			scrollPane.setAlignmentX(0.5f);
+			scrollPane.setAlignmentY(0.5f);
+			embeddedFrame.add(scrollPane);
 
-			refOverviewPanel = new GPOverviewPanel(refPathwayGraph,
-					refScrollPane);
+			overviewPanel = new GPOverviewPanel(pathwayGraph,
+					scrollPane);
 
 			// showOverviewMapInNewWindow(dimOverviewMap);
 
@@ -466,22 +466,22 @@ extends APathwayGraphViewRep {
 
 	@SuppressWarnings("unchecked")
 	public void createVertex(PathwayVertexGraphItemRep vertexRep,
-			PathwayGraph refContainingPathway) {
+			PathwayGraph containingPathway) {
 
 		// create node
-		DefaultGraphCell refGraphCell = new DefaultGraphCell(vertexRep);
+		DefaultGraphCell graphCell = new DefaultGraphCell(vertexRep);
 
 
-		if(((PathwayVertexGraphItemRep) refGraphCell.getUserObject())
+		if(((PathwayVertexGraphItemRep) graphCell.getUserObject())
 				.getPathwayVertexGraphItem().getType().equals(EPathwayVertexType.group))
 		{
 			// Ignore KEGG groups
 			return;
 		}
 		
-		hashVertexRep2GraphCell.put(vertexRep, refGraphCell);
+		hashVertexRep2GraphCell.put(vertexRep, graphCell);
 
-		AttributeMap changedMap = refGraphCell.getAttributes();
+		AttributeMap changedMap = graphCell.getAttributes();
 
 		EPathwayVertexShape shape = vertexRep.getShapeType();
 
@@ -495,10 +495,10 @@ extends APathwayGraphViewRep {
 						vertexRep.getWidth(), vertexRep.getHeight());
 			
 			// Set vertex type to round rect
-			GPCellViewFactory.setViewClass(refGraphCell.getAttributes(),
+			GPCellViewFactory.setViewClass(graphCell.getAttributes(),
 					"org.caleydo.core.view.swt.pathway.jgraph.JGraphMultilineView");
 
-			Vec3f tmpColor = refRenderStyle.getPathwayNodeColor(false);
+			Vec3f tmpColor = renderStyle.getPathwayNodeColor(false);
 			GraphConstants.setBackground(changedMap, new Color(tmpColor.x(), tmpColor.y(), tmpColor.z()));
 		} 
 		else if (shape.equals(EPathwayVertexShape.circle))
@@ -509,7 +509,7 @@ extends APathwayGraphViewRep {
 						vertexRep.getWidth(), vertexRep.getHeight());
 			
 			// Set vertex type to ellipse
-			GPCellViewFactory.setViewClass(refGraphCell.getAttributes(),
+			GPCellViewFactory.setViewClass(graphCell.getAttributes(),
 					"org.caleydo.core.view.swt.pathway.jgraph.JGraphEllipseView");
 
 			if (!bShowBackgroundOverlay)
@@ -517,7 +517,7 @@ extends APathwayGraphViewRep {
 				GraphConstants.setAutoSize(changedMap, true);
 			}
 
-			Vec3f tmpColor = refRenderStyle.getCompoundNodeColor(false);
+			Vec3f tmpColor = renderStyle.getCompoundNodeColor(false);
 			GraphConstants.setBackground(changedMap, new Color(tmpColor.x(), tmpColor.y(), tmpColor.z()));
 		} 
 		else if (shape.equals(EPathwayVertexShape.rectangle))
@@ -525,9 +525,9 @@ extends APathwayGraphViewRep {
 			vertexRect = new Rectangle2D.Double(
 						(int) ((vertexRep.getXOrigin() - (vertexRep.getWidth() / 2)) * fScalingFactor),
 						(int) ((vertexRep.getYOrigin() - (vertexRep.getHeight() / 2)) * fScalingFactor),
-						refRenderStyle.getEnzymeNodeWidth(false), refRenderStyle.getEnzymeNodeHeight(false));
+						renderStyle.getEnzymeNodeWidth(false), renderStyle.getEnzymeNodeHeight(false));
 			
-			Vec3f tmpColor = refRenderStyle.getEnzymeNodeColor(false);
+			Vec3f tmpColor = renderStyle.getEnzymeNodeColor(false);
 			GraphConstants.setBackground(changedMap, new Color(tmpColor.x(), tmpColor.y(), tmpColor.z()));
 		}
 		else
@@ -542,16 +542,16 @@ extends APathwayGraphViewRep {
 		GraphConstants.setOpaque(changedMap, true);
 		GraphConstants.setSelectable(changedMap, false);
 		GraphConstants.setFont(changedMap, new Font("Arial", Font.BOLD, 11));
-		// GraphConstants.setAutoSize(refGraphCell.getAttributes(), true);
+		// GraphConstants.setAutoSize(graphCell.getAttributes(), true);
 
-		vecVertices.add(refGraphCell);
+		vecVertices.add(graphCell);
 
 		vertexIdToCellLUT.put(vertexRep.getPathwayVertexGraphItem().getId(),
-				refGraphCell);
+				graphCell);
 	}
 
 //	public void createEdge(int iVertexId1, int iVertexId2, boolean bDrawArrow,
-//			APathwayEdge refPathwayEdge) {
+//			APathwayEdge pathwayEdge) {
 //
 //		DefaultPort port1 = new DefaultPort();
 //		DefaultGraphCell cell1 = vertexIdToCellLUT.get(iVertexId1);
@@ -568,19 +568,19 @@ extends APathwayGraphViewRep {
 //		cell1.add(port1);
 //		cell2.add(port2);
 //
-//		DefaultEdge edge = new DefaultEdge(refPathwayEdge);
+//		DefaultEdge edge = new DefaultEdge(pathwayEdge);
 //		edge.setSource(cell1.getChildAt(0));
 //		edge.setTarget(cell2.getChildAt(0));
 //
 //		// Retrieve existing edges between nodes
 //		Object[] existingEdges = DefaultGraphModel.getEdgesBetween(
-//				refGraphModel, edge.getSource(), edge.getTarget(), false);
+//				graphModel, edge.getSource(), edge.getTarget(), false);
 //
 //		// Return if edge of same type between two nodes already exists
 //		for (int iEdgeCount = 0; iEdgeCount < existingEdges.length; iEdgeCount++)
 //		{
 //			if (((APathwayEdge) ((DefaultEdge) existingEdges[iEdgeCount])
-//					.getUserObject()).getEdgeType() == refPathwayEdge
+//					.getUserObject()).getEdgeType() == pathwayEdge
 //					.getEdgeType())
 //			{
 //				return;
@@ -600,37 +600,37 @@ extends APathwayGraphViewRep {
 //		// GraphConstants.ROUTING_SIMPLE);
 //
 //		// Differentiate between Relations and Reactions
-//		if (refPathwayEdge.getEdgeType() == EdgeType.REACTION)
+//		if (pathwayEdge.getEdgeType() == EdgeType.REACTION)
 //		{
-//			edgeLineStyle = refRenderStyle.getReactionEdgeLineStyle();
-//			edgeArrowHeadStyle = refRenderStyle.getReactionEdgeArrowHeadStyle();
-//			edgeColor = refRenderStyle.getReactionEdgeColor();
+//			edgeLineStyle = renderStyle.getReactionEdgeLineStyle();
+//			edgeArrowHeadStyle = renderStyle.getReactionEdgeArrowHeadStyle();
+//			edgeColor = renderStyle.getReactionEdgeColor();
 //
 //			GraphConstants.setLineColor(changedMap, edgeColor);
 //
 //			vecReactionEdges.add(edge);
-//		} else if (refPathwayEdge.getEdgeType() == EdgeType.RELATION)
+//		} else if (pathwayEdge.getEdgeType() == EdgeType.RELATION)
 //		{
 //			// In case when relations are maplinks
-//			if (((PathwayRelationEdge) refPathwayEdge).getEdgeRelationType() == EdgeRelationType.maplink)
+//			if (((PathwayRelationEdge) pathwayEdge).getEdgeRelationType() == EdgeRelationType.maplink)
 //			{
-//				edgeLineStyle = refRenderStyle.getMaplinkEdgeLineStyle();
-//				edgeArrowHeadStyle = refRenderStyle
+//				edgeLineStyle = renderStyle.getMaplinkEdgeLineStyle();
+//				edgeArrowHeadStyle = renderStyle
 //						.getMaplinkEdgeArrowHeadStyle();
-//				edgeColor = refRenderStyle.getMaplinkEdgeColor();
+//				edgeColor = renderStyle.getMaplinkEdgeColor();
 //			} else
 //			{
-//				edgeLineStyle = refRenderStyle.getRelationEdgeLineStyle();
-//				edgeArrowHeadStyle = refRenderStyle
+//				edgeLineStyle = renderStyle.getRelationEdgeLineStyle();
+//				edgeArrowHeadStyle = renderStyle
 //						.getRelationEdgeArrowHeadStyle();
-//				edgeColor = refRenderStyle.getRelationEdgeColor();
+//				edgeColor = renderStyle.getRelationEdgeColor();
 //			}
 //
 //			GraphConstants.setLineColor(changedMap, edgeColor);
 //
 //			vecRelationEdges.add(edge);
 //
-//		}// (refPathwayEdge.getEdgeType() == EdgeType.RELATION)
+//		}// (pathwayEdge.getEdgeType() == EdgeType.RELATION)
 //
 //		// Assign render style
 //		if (edgeLineStyle == EdgeLineStyle.DASHED)
@@ -654,17 +654,17 @@ extends APathwayGraphViewRep {
 //			GraphConstants.setEndFill(changedMap, false);
 //		}
 //
-//		refPathwayGraph.getGraphLayoutCache().insert(edge);
+//		pathwayGraph.getGraphLayoutCache().insert(edge);
 //	}
 
 	public void finishGraphBuilding() {
 
 		try
 		{
-			refPathwayGraph.getGraphLayoutCache().insert(vecVertices.toArray());
-			// refPathwayGraph.getGraphLayoutCache().insert(
+			pathwayGraph.getGraphLayoutCache().insert(vecVertices.toArray());
+			// pathwayGraph.getGraphLayoutCache().insert(
 			// vecRelationEdges.toArray());
-			// refPathwayGraph.getGraphLayoutCache().insert(
+			// pathwayGraph.getGraphLayoutCache().insert(
 			// vecReactionEdges.toArray());
 
 		} catch (NullPointerException npe)
@@ -683,7 +683,7 @@ extends APathwayGraphViewRep {
 
 //		//Load pathway
 //		boolean bLoadingOK = 
-//			refGeneralManager.getSingelton().getPathwayManager().loadPathwayById(iNewPathwayId);
+//			generalManager.getSingelton().getPathwayManager().loadPathwayById(iNewPathwayId);
 //		
 //		if (!bLoadingOK)
 //			return;
@@ -694,50 +694,50 @@ extends APathwayGraphViewRep {
 		tmpStorage.setArrayInt(iArTmp);
 		
 		// Clean up
-		refCurrentPathway = null;
-		refCurrentPathwayImageMap = null;
+		currentPathway = null;
+		currentPathwayImageMap = null;
 		lastClickedGraphCell = null;
 		resetPathway();
 
 		extractCurrentPathwayFromSet();
 
-		refPathwayGraph.setBackgroundImage(null);
+		pathwayGraph.setBackgroundImage(null);
 
 		showBackgroundOverlay(bShowBackgroundOverlay);
 	}
 
 	public void loadImageMapFromFile(String sImageMapPath) {
 
-		refCurrentPathway = null;
-		refCurrentPathwayImageMap = null;
+		currentPathway = null;
+		currentPathwayImageMap = null;
 		resetPathway();
 
 		generalManager.getXmlParserManager()
 				.parseXmlFileByName(sImageMapPath);
 
-		refCurrentPathwayImageMap = generalManager
+		currentPathwayImageMap = generalManager
 				.getPathwayManager().getCurrentPathwayImageMap();
 
 		loadBackgroundOverlayImage(generalManager
 				.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.KEGG)
-						.getImageMapPath() + refCurrentPathwayImageMap.getImageLink());
+						.getImageMapPath() + currentPathwayImageMap.getImageLink());
 
-		refPathwayGraph.repaint();
+		pathwayGraph.repaint();
 	}
 
 	public void zoomOrig() {
 
-		refPathwayGraph.setScale(1.0);
+		pathwayGraph.setScale(1.0);
 	}
 
 	public void zoomIn() {
 
-		refPathwayGraph.setScale(1.2 * refPathwayGraph.getScale());
+		pathwayGraph.setScale(1.2 * pathwayGraph.getScale());
 	}
 
 	public void zoomOut() {
 
-		refPathwayGraph.setScale(refPathwayGraph.getScale() / 1.2);
+		pathwayGraph.setScale(pathwayGraph.getScale() / 1.2);
 	}
 
 	/**
@@ -778,7 +778,7 @@ extends APathwayGraphViewRep {
 
 			if (iDistanceIndex < PathwayRenderStyle.neighborhoodNodeColorArraysize)
 			{
-				Vec3f tmpColor = refRenderStyle.getNeighborhoodNodeColorByDepth(iDistanceIndex);
+				Vec3f tmpColor = renderStyle.getNeighborhoodNodeColorByDepth(iDistanceIndex);
 				nodeColor = new Color(tmpColor.x(), tmpColor.y(), tmpColor.z());
 			} else
 			{
@@ -795,13 +795,13 @@ extends APathwayGraphViewRep {
 				{
 					hashSetVisitedNeighbors.add(tmpCell);
 
-					neighbourCells = refGraphLayoutCache.getNeighbours(tmpCell,
+					neighbourCells = graphLayoutCache.getNeighbours(tmpCell,
 							hashSetVisitedNeighbors, false, false);
 
-					List<DefaultEdge> listEdges = refGraphLayoutCache
+					List<DefaultEdge> listEdges = graphLayoutCache
 							.getOutgoingEdges(tmpCell, null, false, false);
 
-					listEdges.addAll(refGraphLayoutCache.getIncomingEdges(
+					listEdges.addAll(graphLayoutCache.getIncomingEdges(
 							tmpCell, null, false, false));
 
 					for (int iEdgeIndex = 0; iEdgeIndex < listEdges.size(); iEdgeIndex++)
@@ -810,7 +810,7 @@ extends APathwayGraphViewRep {
 
 						// Add cells from neighbors that are
 						// connected by a visible edge
-						if (refGraphLayoutCache.isVisible(tmpEdge) || bShowBackgroundOverlay)
+						if (graphLayoutCache.isVisible(tmpEdge) || bShowBackgroundOverlay)
 						{
 							if (neighbourCells.contains(((DefaultPort) (tmpEdge.getSource())).getParent()))
 							{
@@ -835,7 +835,7 @@ extends APathwayGraphViewRep {
 				}
 			}
 
-			refGraphLayoutCache.edit(nested, null, null, null);
+			graphLayoutCache.edit(nested, null, null, null);
 			iNeighbourhoodUndoCount++;
 			queueBFS = (ArrayList<DefaultGraphCell>) queueBFSNext.clone();
 			queueBFSNext.clear();
@@ -844,7 +844,7 @@ extends APathwayGraphViewRep {
 		return;
 	}
 
-	public void highlightCell(final DefaultGraphCell refCell, final Vec3f color) {
+	public void highlightCell(final DefaultGraphCell cell, final Vec3f color) {
 
 		Map<DefaultGraphCell, Map> nested = new Hashtable<DefaultGraphCell, Map>();
 		Map attributeMap = new Hashtable();
@@ -854,8 +854,8 @@ extends APathwayGraphViewRep {
 		GraphConstants.setBorder(attributeMap,
 				BorderFactory.createLineBorder(tmpColor) );
 		
-		nested.put(refCell, attributeMap);
-		refGraphLayoutCache.edit(nested, null, null, null);
+		nested.put(cell, attributeMap);
+		graphLayoutCache.edit(nested, null, null, null);
 	}
 
 	/**
@@ -865,8 +865,8 @@ extends APathwayGraphViewRep {
 	 */
 	public void showOverviewMapInNewWindow(Dimension dim) {
 
-		IViewGLCanvasManager refViewCanvasMng = generalManager.getViewGLCanvasManager();
-		JFrame workspaceFrame = refViewCanvasMng.createWorkspace(
+		IViewGLCanvasManager viewCanvasMng = generalManager.getViewGLCanvasManager();
+		JFrame workspaceFrame = viewCanvasMng.createWorkspace(
 				ManagerObjectType.VIEW_NEW_FRAME, "");
 
 		JFrame wnd = (JFrame) workspaceFrame;
@@ -874,7 +874,7 @@ extends APathwayGraphViewRep {
 		wnd.setSize(dim);
 		wnd.setVisible(true);
 
-		wnd.add(refOverviewPanel);
+		wnd.add(overviewPanel);
 	}
 
 	public void setNeighbourhoodDistance(int iNeighbourhoodDistance) {
@@ -908,23 +908,23 @@ extends APathwayGraphViewRep {
 
 //	public void showHideEdgesByType(boolean bShowEdges, EdgeType edgeType) {
 //
-//		refGraphModel.removeUndoableEditListener(refUndoManager);
+//		graphModel.removeUndoableEditListener(undoManager);
 //
 //		if (edgeType == EdgeType.REACTION)
 //		{
-//			refGraphLayoutCache.setVisible(vecRelationEdges.toArray(),
+//			graphLayoutCache.setVisible(vecRelationEdges.toArray(),
 //					bShowEdges);
 //
 //			bShowReactionEdges = bShowEdges;
 //		} else if (edgeType == EdgeType.RELATION)
 //		{
-//			refGraphLayoutCache.setVisible(vecReactionEdges.toArray(),
+//			graphLayoutCache.setVisible(vecReactionEdges.toArray(),
 //					bShowEdges);
 //
 //			bShowRelationEdges = bShowEdges;
 //		}
 //
-//		refGraphModel.addUndoableEditListener(refUndoManager);
+//		graphModel.addUndoableEditListener(undoManager);
 //		
 //		processSelectedCell();
 //	}
@@ -945,7 +945,7 @@ extends APathwayGraphViewRep {
 
 	public void showBackgroundOverlay(boolean bTurnOn) {
 
-		if (refCurrentPathway == null)
+		if (currentPathway == null)
 			return;
 
 		bShowBackgroundOverlay = bTurnOn;
@@ -953,7 +953,7 @@ extends APathwayGraphViewRep {
 		if (bShowBackgroundOverlay == true)
 		{
 			// Build current pathway file path of GIF
-			String sPathwayImageFilePath = refCurrentPathway.getName();
+			String sPathwayImageFilePath = currentPathway.getName();
 			sPathwayImageFilePath = sPathwayImageFilePath.substring(5);
 			sPathwayImageFilePath = generalManager
 					.getPathwayManager().getPathwayDatabaseByType(EPathwayDatabaseType.KEGG)
@@ -966,12 +966,12 @@ extends APathwayGraphViewRep {
 			// Set background image
 			if (this.getClass().getClassLoader().getResource(sPathwayImageFilePath) != null)
 			{
-				refPathwayGraph.setBackgroundImage(new ImageIcon(
+				pathwayGraph.setBackgroundImage(new ImageIcon(
 						this.getClass().getClassLoader().getResource(sPathwayImageFilePath)));
 			}
 			else
 			{
-				refPathwayGraph.setBackgroundImage(new ImageIcon(
+				pathwayGraph.setBackgroundImage(new ImageIcon(
 						sPathwayImageFilePath));
 			}
 
@@ -979,7 +979,7 @@ extends APathwayGraphViewRep {
 			fScalingFactor = 1.0f;
 		} else
 		{
-			refPathwayGraph.setBackgroundImage(null);
+			pathwayGraph.setBackgroundImage(null);
 			fScalingFactor = SCALING_FACTOR;
 		}
 
@@ -1011,16 +1011,16 @@ extends APathwayGraphViewRep {
 
 	public void resetPathway() {
 
-		// refCurrentPathway = null;
-		// refCurrentPathwayImageMap = null;
+		// currentPathway = null;
+		// currentPathwayImageMap = null;
 
-		refGraphModel = new DefaultGraphModel();
-		refPathwayGraph.setModel(refGraphModel);
-		refGraphLayoutCache.setModel(refGraphModel);
+		graphModel = new DefaultGraphModel();
+		pathwayGraph.setModel(graphModel);
+		graphLayoutCache.setModel(graphModel);
 
 		// Recreate and register Undo Manager
-		// refUndoManager = new GraphUndoManager();
-		refGraphModel.addUndoableEditListener(refUndoManager);
+		// undoManager = new GraphUndoManager();
+		graphModel.addUndoableEditListener(undoManager);
 
 		vecVertices.removeAllElements();
 		vecRelationEdges.removeAllElements();
@@ -1037,13 +1037,13 @@ extends APathwayGraphViewRep {
 //						+ sPathwayImageFilePath, LoggerType.VERBOSE);
 
 		// Set background image
-		refPathwayGraph.setBackgroundImage(new ImageIcon(sPathwayImageFilePath));
+		pathwayGraph.setBackgroundImage(new ImageIcon(sPathwayImageFilePath));
 
 		// Set scaling factor so that background image is an direct overlay
 		fScalingFactor = 1.0f;
 
 		// // Set edges to visible
-		// refGraphLayoutCache.setVisible(
+		// graphLayoutCache.setVisible(
 		// vecReactionEdges.toArray(), false);
 	}
 
@@ -1067,7 +1067,7 @@ extends APathwayGraphViewRep {
 //			if (!bLoadingOK)
 //				return;
 
-			refCurrentPathway = (PathwayGraph) generalManager
+			currentPathway = (PathwayGraph) generalManager
 				.getPathwayManager().getItem(tmpStorage.getArrayInt()[0]);
 			
 			return;
@@ -1121,10 +1121,10 @@ extends APathwayGraphViewRep {
 //					+ e.toString(), LoggerType.ERROR);
 			
 			try {
-				refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
+				embeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
 					public void run() {
 						MessageBox messageBox = 
-							new MessageBox(refEmbeddedFrameComposite.getShell(), 
+							new MessageBox(embeddedFrameComposite.getShell(), 
 									SWT.ICON_WARNING | SWT.ABORT);
 				        
 				        messageBox.setText("Warning");
@@ -1149,12 +1149,12 @@ extends APathwayGraphViewRep {
 	{
 		// Trigger update with current pathway that dependent pathways 
 		// know which pathway is currently under interaction
-		IStorage refTmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
+		IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
 		ArrayList<Integer> tmp = new ArrayList<Integer>(1);
 		tmp.add(iPathwayId);
 		int[] iArTmp = new int[1];
 		iArTmp[0] = iPathwayId;
-		refTmpStorage.setArrayInt(iArTmp);
+		tmpStorage.setArrayInt(iArTmp);
 		alSetSelection.get(0).updateSelectionSet(iParentContainerId,
 				null, null, tmp);
 	}
@@ -1172,31 +1172,31 @@ extends APathwayGraphViewRep {
 //						+ eventTrigger.getClass().getSimpleName(),
 //				LoggerType.VERBOSE);
 
-		ISetSelection refSetSelection = (ISetSelection) updatedSet;
+		ISetSelection setSelection = (ISetSelection) updatedSet;
 
-		refSetSelection.getReadToken();
-		ArrayList<Integer> iAlOptional = refSetSelection.getOptionalDataArray();
+		setSelection.getReadToken();
+		ArrayList<Integer> iAlOptional = setSelection.getOptionalDataArray();
 		if (iAlOptional.size() != 0)
 		{
-			IStorage refTmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
+			IStorage tmpStorage = alSetData.get(0).getStorageByDimAndIndex(0, 0);
 			int[] iArOptional = new int[iAlOptional.size()];
 			for(int iCount = 0; iCount < iAlOptional.size(); iCount++)
 			{
 				iArOptional[iCount] = iAlOptional.get(iCount);
 			}
 			                          
-			refTmpStorage.setArrayInt(iArOptional);
-			loadPathwayFromFile(refSetSelection.getOptionalDataArray().get(0));
+			tmpStorage.setArrayInt(iArOptional);
+			loadPathwayFromFile(setSelection.getOptionalDataArray().get(0));
 		}
 		
-		ArrayList<Integer> iAlSelectionId = refSetSelection.getSelectionIdArray();
+		ArrayList<Integer> iAlSelectionId = setSelection.getSelectionIdArray();
 		if (iAlSelectionId.size() != 0)
 		{
 			// Remove old selected vertices
 			iLLSelectedVertices.clear();
 			//iLLNeighborDistance.clear();
 	
-			for (int iSelectedVertexIndex = 0; iSelectedVertexIndex < ((IStorage) refSetSelection
+			for (int iSelectedVertexIndex = 0; iSelectedVertexIndex < ((IStorage) setSelection
 					.getStorageByDimAndIndex(0, 0)).getSize(StorageType.INT); iSelectedVertexIndex++)
 			{
 	
@@ -1208,7 +1208,7 @@ extends APathwayGraphViewRep {
 				if ( selectedVertex != null ) {
 
 					// Ignore vertex if is NOT in the current pathway!
-					if (!refCurrentPathway.equals(
+					if (!currentPathway.equals(
 							selectedVertex.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT).get(0)))
 					{
 						continue;
@@ -1226,7 +1226,7 @@ extends APathwayGraphViewRep {
 					iLLNeighborDistance.add(0);
 					
 					highlightCell(hashVertexRep2GraphCell.get(selectedVertex), 
-							refRenderStyle.getHighlightedNodeColor());
+							renderStyle.getHighlightedNodeColor());
 		
 					bNeighbourhoodShown = true;
 				}

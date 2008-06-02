@@ -17,7 +17,7 @@ implements IUniqueObject, ISWTWidget {
 	/**
 	 * Composite in which the content of the View should be placed.
 	 */
-	protected final Composite refParentComposite;
+	protected final Composite parentComposite;
 	
 	protected int iUniqueId;
 	
@@ -25,12 +25,12 @@ implements IUniqueObject, ISWTWidget {
 	 * Constructor that takes the composite in which it should 
 	 * place the content.
 	 * 
-	 * @param refComposite Reference to the composite 
+	 * @param composite Reference to the composite 
 	 * that is supposed to be filled.
 	 */
-	protected ASWTWidget(Composite refParentComposite) {
+	protected ASWTWidget(Composite parentComposite) {
 		
-		this.refParentComposite = refParentComposite;
+		this.parentComposite = parentComposite;
 	}
 	
 	public final void setId(int iUniqueId) {

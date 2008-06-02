@@ -13,7 +13,7 @@ import org.caleydo.core.data.collection.virtualarray.iterator.IVirtualArrayItera
  */
 public class SetIndexIteratorSingleOnly implements ISetIndexIterator {
 
-	protected ISet refSet;
+	protected ISet set;
 	
 	protected IVirtualArrayIterator selectIterator;
 	
@@ -24,7 +24,7 @@ public class SetIndexIteratorSingleOnly implements ISetIndexIterator {
 		
 		assert useSet == null : "Can not handel null pointer, need set";
 		
-		refSet = useSet;
+		set = useSet;
 		
 		
 	}

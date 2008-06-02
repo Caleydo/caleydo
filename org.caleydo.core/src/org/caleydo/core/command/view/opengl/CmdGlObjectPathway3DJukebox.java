@@ -46,19 +46,19 @@ extends ACmdCreate_GlCanvasUser {
 		localManagerObjectType = CommandQueueSaxType.CREATE_GL_JUKEBOX_PATHWAY_3D;
 	}
 
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 	
-		super.setParameterHandler(refParameterHandler);
+		super.setParameterHandler(parameterHandler);
 
 		// Read SET IDs (Data and Selection) 
 		String sPathwaySets = "";
-		refParameterHandler.setValueAndTypeAndDefault("sPathwaySets",
-				refParameterHandler.getValueString( 
+		parameterHandler.setValueAndTypeAndDefault("sPathwaySets",
+				parameterHandler.getValueString( 
 						CommandQueueSaxType.TAG_DETAIL.getXmlKey() ),
 				IParameterHandler.ParameterHandlerType.STRING,
 				"-1");
 		
-		sPathwaySets = refParameterHandler.getValueString("sPathwaySets");
+		sPathwaySets = parameterHandler.getValueString("sPathwaySets");
 		
 		StringTokenizer setToken = new StringTokenizer(
 				sPathwaySets,
@@ -74,11 +74,11 @@ extends ACmdCreate_GlCanvasUser {
 			StringConversionTool.convertStringToFloatArrayVariableLength(
 					sAttribute3);
 		
-		refParameterHandler.setValueAndTypeAndDefault("mapping_row_count", 
-				refParameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey()), 
+		parameterHandler.setValueAndTypeAndDefault("mapping_row_count", 
+				parameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey()), 
 				ParameterHandlerType.INT, "1");
 		
-		iMappingRowCount = refParameterHandler.getValueInt("mapping_row_count");
+		iMappingRowCount = parameterHandler.getValueInt("mapping_row_count");
 	}
 	
 	/*

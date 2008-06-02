@@ -24,15 +24,15 @@ public abstract class ACommandQueue
 	 * @param iCmdQueueId define cmd queue by this id
 	 */
 	protected ACommandQueue(final int iUniqueId,
-			final IGeneralManager refGeneralManager,	
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType,
+			final IGeneralManager generalManager,	
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType,
 			final int iCmdQueueId) {
 		
 		super( iUniqueId,
-				refGeneralManager, 
-				refCommandManager,
-				refCommandQueueSaxType);
+				generalManager, 
+				commandManager,
+				commandQueueSaxType);
 		
 		this.iCmdQueueId = iCmdQueueId;
 	}

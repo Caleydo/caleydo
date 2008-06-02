@@ -25,7 +25,7 @@ import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 public final class LookupTableLoaderProxy 
 extends AbstractLoader 
 {
-	private ILookupTableLoader refProxyLookupTableLoader;
+	private ILookupTableLoader proxyLookupTableLoader;
 		
 	/**
 	 * @param setGeneralManager
@@ -50,7 +50,7 @@ extends AbstractLoader
 		case INT2STRING:
 		case STRING2INT:
 		case STRING2STRING:
-			refProxyLookupTableLoader = new LookupTableHashMapLoader(
+			proxyLookupTableLoader = new LookupTableHashMapLoader(
 					generalManager,
 					sFileName,
 					genomeIdType,
@@ -61,12 +61,12 @@ extends AbstractLoader
 			
 			IGenomeIdMap setCurrentMap = dgi_mng.getMapByType( genomeIdType );
 			
-			refProxyLookupTableLoader.setHashMap( setCurrentMap, genomeIdType );
+			proxyLookupTableLoader.setHashMap( setCurrentMap, genomeIdType );
 			
 			break;
 			
 		case MULTI_INT2INT:
-			refProxyLookupTableLoader = new LookupTableMultiMapIntLoader(
+			proxyLookupTableLoader = new LookupTableMultiMapIntLoader(
 					generalManager,
 					sFileName,
 					genomeIdType,
@@ -77,16 +77,16 @@ extends AbstractLoader
 			MultiHashArrayIntegerMap setCurrentMultiMap = 
 				dgi_mng.getMultiMapIntegerByType( genomeIdType );
 			
-			refProxyLookupTableLoader.setMultiMapInteger( setCurrentMultiMap, genomeIdType );
+			proxyLookupTableLoader.setMultiMapInteger( setCurrentMultiMap, genomeIdType );
 			break;
 			
 //		case MULTI_STRING2STRING_USE_LUT:
-//			refProxyLookupTableLoader = new LookupTableMultiMapStringLoader(
+//			proxyLookupTableLoader = new LookupTableMultiMapStringLoader(
 //					setGeneralManager,
 //					setFileName,
 //					genomeIdType,
 //					this  );
-//			refProxyLookupTableLoader.setInitialSizeHashMap( 1000 );
+//			proxyLookupTableLoader.setInitialSizeHashMap( 1000 );
 //			
 //			dgi_mng.createMapByType( genomeIdType, 
 //					genomeIdType.getDataMapppingType() );
@@ -94,25 +94,25 @@ extends AbstractLoader
 //			MultiHashArrayIntegerMap mha_IntegerMap = 
 //				dgi_mng.getMultiMapIntegerByType( genomeIdType_optionalTarget );
 //			
-//			refProxyLookupTableLoader.setMultiMapInteger( mha_IntegerMap, 
+//			proxyLookupTableLoader.setMultiMapInteger( mha_IntegerMap, 
 //					genomeIdType_optionalTarget );
 //			
 //			break;
 			
 		case MULTI_STRING2STRING:
-			refProxyLookupTableLoader = new LookupTableMultiMapStringLoader(
+			proxyLookupTableLoader = new LookupTableMultiMapStringLoader(
 					generalManager,
 					sFileName,
 					genomeIdType,
 					this  );
-			refProxyLookupTableLoader.setInitialSizeHashMap( 1000 );
+			proxyLookupTableLoader.setInitialSizeHashMap( 1000 );
 			
 			dgi_mng.createMapByType( genomeIdType, type);//genomeIdType.getDataMapppingType() );
 			
 			MultiHashArrayStringMap mha_StringMap = 
 				dgi_mng.getMultiMapStringByType( genomeIdType );
 			
-			refProxyLookupTableLoader.setMultiMapString( mha_StringMap, genomeIdType );
+			proxyLookupTableLoader.setMultiMapString( mha_StringMap, genomeIdType );
 			
 			break;
 			
@@ -121,13 +121,13 @@ extends AbstractLoader
 			assert false : "unsupported type! " + type;
 		}
 		
-		refProxyLookupTableLoader.initLUT();
+		proxyLookupTableLoader.initLUT();
 	}
 	
 	public void setHashMap( final IGenomeIdMap setHashMap,
 			final EGenomeMappingType type) {
 		
-		refProxyLookupTableLoader.setHashMap( setHashMap, type);
+		proxyLookupTableLoader.setHashMap( setHashMap, type);
 	}
 	
 	/* (non-Javadoc)
@@ -145,7 +145,7 @@ extends AbstractLoader
 				iNumberOfLinesInFile );
 		
 		int iTotalNumerOfLinesRed = 
-			refProxyLookupTableLoader.loadDataParseFileLUT( 
+			proxyLookupTableLoader.loadDataParseFileLUT( 
 				brFile, 
 				iNumberOfLinesInFile );
 		
@@ -176,7 +176,7 @@ extends AbstractLoader
 	protected boolean copyDataToInternalDataStructures() {
 
 		try {
-			refProxyLookupTableLoader.wirteBackMapToGenomeIdManager();
+			proxyLookupTableLoader.wirteBackMapToGenomeIdManager();
 			return true;
 		}
 		catch (Exception e) {
@@ -193,7 +193,7 @@ extends AbstractLoader
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.data.xml.IMementoXML#setMementoXML_usingHandler(org.caleydo.core.xml.parser.ISaxParserHandler)
 	 */
-	public boolean setMementoXML_usingHandler(ISaxParserHandler refSaxHandler) {
+	public boolean setMementoXML_usingHandler(ISaxParserHandler saxHandler) {
 
 		return true;
 	}
@@ -209,11 +209,11 @@ extends AbstractLoader
 	 * @see org.caleydo.core.xml.parser.IParserObject#destroy()
 	 */
 	public void destroy() {
-		refProxyLookupTableLoader.destroyLUT();
+		proxyLookupTableLoader.destroyLUT();
 	}
 	
 	public final IGenomeIdMap createReverseMapFromMap( 
-			final IGeneralManager refGeneralManager,
+			final IGeneralManager generalManager,
 			final EGenomeMappingType originMultiMapType,
 			final EGenomeMappingType targetMultiMapType) {
 	
@@ -228,26 +228,26 @@ extends AbstractLoader
 		DynamicGenomeIdManager dgi_mng = 
 			(DynamicGenomeIdManager) generalManager.getGenomeIdManager();
 		
-		IGenomeIdMap refOrigionMap = dgi_mng.getMapByType(originMultiMapType);
+		IGenomeIdMap origionMap = dgi_mng.getMapByType(originMultiMapType);
 		
-		IGenomeIdMap refTargetMap = refOrigionMap.getReversedMap();
+		IGenomeIdMap targetMap = origionMap.getReversedMap();
 		
-		dgi_mng.setMapByType(targetMultiMapType, refTargetMap);
+		dgi_mng.setMapByType(targetMultiMapType, targetMap);
 		
-		return refTargetMap;
+		return targetMap;
 	}
 
 	/**
 	 * Creates a new MultiHashArrayIntegerMap inside the DynamicGenomeIdManager.
 	 * Fills the new MultiMap with data from originMultiMapType.
 	 * 
-	 * @param refGeneralManager
+	 * @param generalManager
 	 * @param originMultiMapType
 	 * @param targetMultiMapType
 	 * @return new MultiHashArrayIntegerMap
 	 */
 	public final MultiHashArrayIntegerMap createReverseMultiMapFromMultiMapInt( 
-			final IGeneralManager refGeneralManager,
+			final IGeneralManager generalManager,
 			final EGenomeMappingType originMultiMapType,
 			final EGenomeMappingType targetMultiMapType) {
 		
@@ -263,29 +263,29 @@ extends AbstractLoader
 		DynamicGenomeIdManager dgi_mng = 
 			(DynamicGenomeIdManager) generalManager.getGenomeIdManager();
 		
-		MultiHashArrayIntegerMap refIntMultiMapOrigin = 
+		MultiHashArrayIntegerMap intMultiMapOrigin = 
 			dgi_mng.getMultiMapIntegerByType(originMultiMapType);
 		
 		dgi_mng.createMapByType(targetMultiMapType, 
 				targetMultiMapType.getDataMapppingType(), 
-				refIntMultiMapOrigin.size());
+				intMultiMapOrigin.size());
 		
-		MultiHashArrayIntegerMap refIntMultiMapTarget = 
+		MultiHashArrayIntegerMap intMultiMapTarget = 
 			dgi_mng.getMultiMapIntegerByType(targetMultiMapType);
 
-		Set<Integer> setKeysOrigin = refIntMultiMapOrigin.keySet();
+		Set<Integer> setKeysOrigin = intMultiMapOrigin.keySet();
 		
 		Iterator <Integer> iterKeysOrigin = setKeysOrigin.iterator();
 		while ( iterKeysOrigin.hasNext())
 		{
 			int iKeyOrigin = iterKeysOrigin.next().intValue();
 			
-			ArrayList<Integer> buffer = refIntMultiMapOrigin.get(iKeyOrigin);			
+			ArrayList<Integer> buffer = intMultiMapOrigin.get(iKeyOrigin);			
 			Iterator <Integer> iterValues = buffer.iterator();				
-			//Iterator <Integer> iterValues = refIntMultiMapOrigin.get(iKeyOrigin).iterator();		
+			//Iterator <Integer> iterValues = intMultiMapOrigin.get(iKeyOrigin).iterator();		
 			while (iterValues.hasNext())
 			{				
-				refIntMultiMapTarget.put(
+				intMultiMapTarget.put(
 						iterValues.next().intValue(), 
 						iKeyOrigin);
 				
@@ -293,20 +293,20 @@ extends AbstractLoader
 			
 		} //while ( iterKeysOrigin.hasNext())
 		
-		return refIntMultiMapTarget;
+		return intMultiMapTarget;
 	}
 	
 	/**
 	 * Creates a new MultiHashArrayStringMap inside the DynamicGenomeIdManager.
 	 * Fills the new MultiMap with data from originMultiMapType.
 	 * 
-	 * @param refGeneralManager
+	 * @param generalManager
 	 * @param originMultiMapType
 	 * @param targetMultiMapType
 	 * @return new MultiHashArrayStringMap
 	 */
 	public final MultiHashArrayStringMap createReverseMultiMapFromMultiMapString( 
-			final IGeneralManager refGeneralManager,
+			final IGeneralManager generalManager,
 			final EGenomeMappingType originMultiMapType,
 			final EGenomeMappingType targetMultiMapType) {
 		
@@ -322,40 +322,40 @@ extends AbstractLoader
 		DynamicGenomeIdManager dgi_mng = 
 			(DynamicGenomeIdManager) generalManager.getGenomeIdManager();
 		
-		MultiHashArrayStringMap refStringMultiMapOrigin = 
+		MultiHashArrayStringMap stringMultiMapOrigin = 
 			dgi_mng.getMultiMapStringByType(originMultiMapType);
 		
 		dgi_mng.createMapByType(targetMultiMapType, 
 				targetMultiMapType.getDataMapppingType(), 
-				refStringMultiMapOrigin.size());
+				stringMultiMapOrigin.size());
 		
-		MultiHashArrayStringMap refStringMultiMapTarget = 
+		MultiHashArrayStringMap stringMultiMapTarget = 
 			dgi_mng.getMultiMapStringByType(targetMultiMapType);
 
-		Set<String> setKeysOrigin = refStringMultiMapOrigin.keySet();
+		Set<String> setKeysOrigin = stringMultiMapOrigin.keySet();
 		
 		Iterator <String> iterKeysOrigin = setKeysOrigin.iterator();
 		while ( iterKeysOrigin.hasNext())
 		{
 			String sKeyOrigin = iterKeysOrigin.next();
 			
-			ArrayList<String> buffer = refStringMultiMapOrigin.get(sKeyOrigin);			
+			ArrayList<String> buffer = stringMultiMapOrigin.get(sKeyOrigin);			
 			Iterator <String> iterValues = buffer.iterator();
-			//Iterator <String> iterValues = refIntMultiMapOrigin.get(sKeyOrigin).iterator();
+			//Iterator <String> iterValues = intMultiMapOrigin.get(sKeyOrigin).iterator();
 			while (iterValues.hasNext())
 			{				
-				refStringMultiMapTarget.put(iterValues.next(), 
+				stringMultiMapTarget.put(iterValues.next(), 
 						sKeyOrigin);
 				
 			} //while (iterValues.hasNext())
 			
 		} //while ( iterKeysOrigin.hasNext())
 		
-		return refStringMultiMapTarget;
+		return stringMultiMapTarget;
 	}
 	
 	public final IGenomeIdMap createCodeResolvedMapFromMap( 
-			final IGeneralManager refGeneralManager,		
+			final IGeneralManager generalManager,		
 			EGenomeMappingType originMapMappingType,
 			EGenomeMappingType genomeMappingLUT_1,
 			EGenomeMappingType genomeMappingLUT_2,
@@ -364,9 +364,9 @@ extends AbstractLoader
 		DynamicGenomeIdManager dgi_mng = 
 			(DynamicGenomeIdManager) generalManager.getGenomeIdManager();
 		
-		IGenomeIdMap refMapToConvert = dgi_mng.getMapByType(originMapMappingType);
+		IGenomeIdMap mapToConvert = dgi_mng.getMapByType(originMapMappingType);
 		
-		IGenomeIdMap refTargetMap = refMapToConvert.getCodeResolvedMap(
+		IGenomeIdMap targetMap = mapToConvert.getCodeResolvedMap(
 				dgi_mng, 
 				genomeMappingLUT_1, 
 				genomeMappingLUT_2,
@@ -376,13 +376,13 @@ extends AbstractLoader
 		// Removes old map that contains the codes instead of the IDs
 		dgi_mng.removeMapByType(originMapMappingType);
 		
-		dgi_mng.setMapByType(originMapMappingType, refTargetMap);
+		dgi_mng.setMapByType(originMapMappingType, targetMap);
 		
-		return refTargetMap;
+		return targetMap;
 	}
 	
 	public final MultiHashArrayIntegerMap createCodeResolvedMultiMapFromMultiMapString( 
-			final IGeneralManager refGeneralManager,		
+			final IGeneralManager generalManager,		
 			EGenomeMappingType originMapMappingType,
 			EGenomeMappingType genomeMappingLUT_1,
 			EGenomeMappingType genomeMappingLUT_2) {
@@ -390,17 +390,17 @@ extends AbstractLoader
 		DynamicGenomeIdManager dgi_mng = 
 			(DynamicGenomeIdManager) generalManager.getGenomeIdManager();
 		
-		MultiHashArrayStringMap refMapToConvert = dgi_mng.getMultiMapStringByType(originMapMappingType);
+		MultiHashArrayStringMap mapToConvert = dgi_mng.getMultiMapStringByType(originMapMappingType);
 		
-		MultiHashArrayIntegerMap refTargetMap = refMapToConvert.getCodeResolvedMap(
+		MultiHashArrayIntegerMap targetMap = mapToConvert.getCodeResolvedMap(
 				dgi_mng, genomeMappingLUT_1, 
 				genomeMappingLUT_2);
 		
 		// Removes old map that contains the codes instead of the IDs
 		dgi_mng.removeMapByType(originMapMappingType);
 		
-		dgi_mng.setMapByType(originMapMappingType, refTargetMap);
+		dgi_mng.setMapByType(originMapMappingType, targetMap);
 		
-		return refTargetMap;
+		return targetMap;
 	}
 }

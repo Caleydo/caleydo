@@ -43,7 +43,7 @@ extends AXmlParserHandler
 	
 	private boolean bCommandQueue_isActive = false;
 	
-	protected ICommandQueue refCommandQueueIter = null;
+	protected ICommandQueue commandQueueIter = null;
 
 
 	/**
@@ -55,9 +55,9 @@ extends AXmlParserHandler
 	 * </Application>
 	 */
 	public CommandSaxHandler( final IGeneralManager generalManager,
-			final IXmlParserManager refXmlParserManager ) {
+			final IXmlParserManager xmlParserManager ) {
 		
-		super(generalManager, refXmlParserManager );
+		super(generalManager, xmlParserManager );
 		
 		setXmlActivationTag( "CommandBuffer" );
 	}
@@ -329,17 +329,17 @@ extends AXmlParserHandler
 			if ( CommandQueueSaxType.valueOf(sData_Queue_process) == CommandQueueSaxType.RUN_QUEUE ) 
 			{
 				lastCommand.doCommand();				
-				refCommandQueueIter = null;
+				commandQueueIter = null;
 			}
 			break;
 			
 		case COMMAND_QUEUE_OPEN:
-			if (refCommandQueueIter != null)
+			if (commandQueueIter != null)
 			{
 				assert false : "COMMAND_QUEUE_OPEN: already one queue is beeing processed!";
 			}
 			
-			refCommandQueueIter = (ICommandQueue) lastCommand;
+			commandQueueIter = (ICommandQueue) lastCommand;
 			break;
 			
 			//no default section!
@@ -397,7 +397,7 @@ extends AXmlParserHandler
 								readCommandData( attrs, true );
 							
 							if ( lastCommand != null ) {
-								refCommandQueueIter.addCmdToQueue( lastCommand );
+								commandQueueIter.addCmdToQueue( lastCommand );
 							} 
 							else 
 							{
@@ -485,7 +485,7 @@ extends AXmlParserHandler
 						/**
 						 * section (xml block) finished, call callback function from IXmlParserManager
 						 */
-						refXmlParserManager.sectionFinishedByHandler( this );
+						xmlParserManager.sectionFinishedByHandler( this );
 						
 						return;
 					} else {
@@ -585,9 +585,9 @@ extends AXmlParserHandler
 	 */
 	public void destroyHandler() {
 				
-		if ( refCommandQueueIter != null ) {
-			refCommandQueueIter.destroy();
-			refCommandQueueIter = null;
+		if ( commandQueueIter != null ) {
+			commandQueueIter.destroy();
+			commandQueueIter = null;
 		}
 		
 		super.destroyHandler();		

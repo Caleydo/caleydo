@@ -35,20 +35,20 @@
 //	 * 
 //	 */
 //	public CmdGlObjectWidget(
-//			final IGeneralManager refGeneralManager,
-//			final ICommandManager refCommandManager,
-//			final CommandQueueSaxType refCommandQueueSaxType)
+//			final IGeneralManager generalManager,
+//			final ICommandManager commandManager,
+//			final CommandQueueSaxType commandQueueSaxType)
 //	{
-//		super(refGeneralManager, 
-//				refCommandManager,
-//				refCommandQueueSaxType);
+//		super(generalManager, 
+//				commandManager,
+//				commandQueueSaxType);
 //		
 //		localManagerObjectType = CommandQueueSaxType.CREATE_GL_WIDGET;
 //	}
 //
-//	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+//	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 //		
-//		super.setParameterHandler(refParameterHandler);
+//		super.setParameterHandler(parameterHandler);
 //		
 //		iTargetCollectionSetId = StringConversionTool.convertStringToInt( 
 //				this.sDetail, 
@@ -58,10 +58,10 @@
 //				sAttribute3,
 //				14 );
 //		
-//		String sColor = refParameterHandler.getValueString( 
+//		String sColor = parameterHandler.getValueString( 
 //				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() );
 //		
-//		sGridDetails = refParameterHandler.getValueString( 
+//		sGridDetails = parameterHandler.getValueString( 
 //				CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey() );
 //		
 //		if ( sColor != null ) 

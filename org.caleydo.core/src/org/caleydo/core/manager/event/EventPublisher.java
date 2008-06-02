@@ -187,15 +187,15 @@ implements IEventPublisher {
 //			
 //			try
 //			{
-//				sender = (IMediatorSender) refGeneralManager
+//				sender = (IMediatorSender) generalManager
 //						.getItem(iCurrentSenderId);
 //			} 
 //			catch ( ClassCastException cce)
 //			{
-//				refSingelton.logMsg("EventPublisher.createMediator() failed because referenced sender object id=[" +
+//				singelton.logMsg("EventPublisher.createMediator() failed because referenced sender object id=[" +
 //						iCurrentSenderId + 
 //						"] does not implement interface IMediatorSender " +
-//						refGeneralManager.getItem(iCurrentSenderId).getClass(),
+//						generalManager.getItem(iCurrentSenderId).getClass(),
 //						LoggerType.ERROR);
 //				
 //				assert false : "receiver object does not implement interface IMediatorSender";
@@ -203,7 +203,7 @@ implements IEventPublisher {
 //			}
 //
 //			if ( sender == null ) {
-//				refSingelton.logMsg("EventPublisher: invalid SenderId=[" +
+//				singelton.logMsg("EventPublisher: invalid SenderId=[" +
 //						iCurrentSenderId + "] => receiverId=" + 
 //						arReceiverIDs.toString() + 
 //						" ignore sender!",

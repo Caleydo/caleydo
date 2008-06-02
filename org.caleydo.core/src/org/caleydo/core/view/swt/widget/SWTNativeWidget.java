@@ -15,19 +15,19 @@ import org.eclipse.swt.widgets.Composite;
 public class SWTNativeWidget 
 extends ASWTWidget {
 	
-	protected Composite refComposite;
+	protected Composite composite;
 	
 	/**
 	 * Constructor 
 	 * 
-	 * @param refComposite Reference to the composite 
+	 * @param composite Reference to the composite 
 	 * that is supposed to be filled.
 	 */
-	public SWTNativeWidget(Composite refParentComposite) {
+	public SWTNativeWidget(Composite parentComposite) {
 		
-		super(refParentComposite);
+		super(parentComposite);
 		
-		refComposite = new Composite(refParentComposite, SWT.NONE);
+		composite = new Composite(parentComposite, SWT.NONE);
 		
 		GridData gridData = new GridData();
 		
@@ -36,7 +36,7 @@ extends ASWTWidget {
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.grabExcessVerticalSpace = true;
 		
-		refComposite.setLayoutData(gridData);
+		composite.setLayoutData(gridData);
 	}
 
 	/**
@@ -46,6 +46,6 @@ extends ASWTWidget {
 	 */
 	final public Composite getSWTWidget() {
 		
-		return refComposite;
+		return composite;
 	}
 }

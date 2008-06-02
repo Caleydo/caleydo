@@ -40,9 +40,9 @@ implements ILookupTableLoader {
 	 */
 	protected boolean bOneLineConaintsMultipleStrings = true;
 	
-	protected MultiHashArrayStringMap  refMultiHashMapString;
+	protected MultiHashArrayStringMap  multiHashMapString;
 	
-	protected MultiHashArrayIntegerMap refMultiHashMapInteger;
+	protected MultiHashArrayIntegerMap multiHashMapInteger;
 	
 	/**
 	 * @param setGeneralManager
@@ -95,7 +95,7 @@ implements ILookupTableLoader {
 						{
 							String sSecond = strTokenText.nextToken();
 							
-							refMultiHashMapString.put( sFirst, sSecond);
+							multiHashMapString.put( sFirst, sSecond);
 						}
 						
 					
@@ -175,7 +175,7 @@ implements ILookupTableLoader {
 							
 							while ( tokenizerInnerLoop.hasMoreTokens() ) 
 							{
-								refMultiHashMapString.put( sFirst, 
+								multiHashMapString.put( sFirst, 
 										tokenizerInnerLoop.nextToken() );
 								
 							} // while ( tokenizerInnerLoop.hasMoreTokens() ) 
@@ -213,16 +213,16 @@ implements ILookupTableLoader {
 	
 	public final void initLUT() {
 		
-		if ( refMultiHashMapString == null )
+		if ( multiHashMapString == null )
 		{
-			refMultiHashMapString = 
+			multiHashMapString = 
 				new MultiHashArrayStringMap( iInitialSizeMultiHashMap );
 		}
 	}
 	
 	public final void destroyLUT() {
 		
-		if ( refMultiHashMapInteger != null ) {
+		if ( multiHashMapInteger != null ) {
 			/**
 			 * Convert MultiMap<String> to Multimap<Integer>
 			 */
@@ -236,22 +236,22 @@ implements ILookupTableLoader {
 			IGenomeIdMap targetMap = gidmng.getMapByType( targetType.getBasicConversion() );
 			
 			
-			Set <String> refKeySet = 
-				refMultiHashMapString.keySet();
+			Set <String> keySet = 
+				multiHashMapString.keySet();
 			
-			if ( refKeySet == null ) {
+			if ( keySet == null ) {
 				assert false : "WARNING: empty key-set!";
 				return;
 			}
 			
-			Iterator <String> iter = refKeySet.iterator();
+			Iterator <String> iter = keySet.iterator();
 			
 			while ( iter.hasNext() ) 
 			{
 				String sKey = iter.next();
 				
 				ArrayList <String> alStringValue = 
-					refMultiHashMapString.get( sKey );							
+					multiHashMapString.get( sKey );							
 				Iterator <String> iterValue = 
 					alStringValue.iterator();
 				
@@ -265,16 +265,16 @@ implements ILookupTableLoader {
 					
 				} // while ( iterValue.hasNext() )
 				
-				refMultiHashMapInteger.put( 
+				multiHashMapInteger.put( 
 						originMap.getIntByString(sKey),
 						alIntValue );
 				
 			} // while ( iter.hasNext() ) 
 			
 			/* clean up MultiMap */
-			refMultiHashMapString.clear();
+			multiHashMapString.clear();
 			
-		} // if ( refMultiHashMapInteger != null ) {
+		} // if ( multiHashMapInteger != null ) {
 	}
 	
 	/**
@@ -333,7 +333,7 @@ implements ILookupTableLoader {
 	public void setMultiMapString( final MultiHashArrayStringMap setHashMap,
 			final EGenomeMappingType type) {
 	
-		refMultiHashMapString = setHashMap;
+		multiHashMapString = setHashMap;
 	}
 	
 	/**
@@ -343,7 +343,7 @@ implements ILookupTableLoader {
 	 */
 	public void wirteBackMapToGenomeIdManager() {
 		
-		genomeIdManager.setMapByType(currentGenomeIdType, refMultiHashMapString);
+		genomeIdManager.setMapByType(currentGenomeIdType, multiHashMapString);
 	}
 
 }

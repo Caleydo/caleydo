@@ -39,17 +39,17 @@ implements IMediatorSender{;
 	/**
 	 * Constructor.
 	 * 
-	 * @param refGeneralManager
+	 * @param generalManager
 	 * @param iViewId
 	 * @param iParentContainerId
 	 * @param sLabel
 	 */
-	public DataEntitySearcherViewRep(final IGeneralManager refGeneralManager, 
+	public DataEntitySearcherViewRep(final IGeneralManager generalManager, 
 			final int iViewId, 
 			final int iParentContainerId, 
 			final String sLabel) {
 
-		super(refGeneralManager, 
+		super(generalManager, 
 				iViewId, 
 				iParentContainerId, 
 				sLabel,

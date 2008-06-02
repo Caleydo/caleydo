@@ -8,26 +8,26 @@ import org.eclipse.swt.widgets.ToolItem;
 
 public abstract class AToolbar {
 
-	protected Composite refSWTContainer;
+	protected Composite swtContainer;
 	
-	protected ToolBar refToolBar;
+	protected ToolBar toolBar;
 	
 	protected int iWidth = 100;
 	
 	/**
 	 * Constructor
 	 * 
-	 * @param refPathwayGraphViewRep
+	 * @param pathwayGraphViewRep
 	 */
-	public AToolbar(Composite refSWTContainer) {
+	public AToolbar(Composite swtContainer) {
 		
-		this.refSWTContainer = refSWTContainer;
+		this.swtContainer = swtContainer;
 	}
 	
 	protected void initToolbar() {
 		
-		refToolBar = new ToolBar(refSWTContainer, SWT.NONE);
-		//refToolBar.setBounds(0, 0, iWidth, 30);
+		toolBar = new ToolBar(swtContainer, SWT.NONE);
+		//toolBar.setBounds(0, 0, iWidth, 30);
 	}
 	
 	/**

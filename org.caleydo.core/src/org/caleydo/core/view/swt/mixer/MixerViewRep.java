@@ -27,13 +27,13 @@ public class MixerViewRep
 extends AViewRep 
 implements IView {
 	
-	protected ArrayList<Slider> refSliderList;
+	protected ArrayList<Slider> sliderList;
 	
 	protected int iNumberOfSliders = 0;
 	
-	public MixerViewRep(IGeneralManager refGeneralManager, 
+	public MixerViewRep(IGeneralManager generalManager, 
 			int iViewId, int iParentContainerId, String sLabel) {
-		super(refGeneralManager, 
+		super(generalManager, 
 				iViewId, 
 				iParentContainerId, 
 				sLabel,
@@ -51,18 +51,18 @@ implements IView {
 	 */
 	protected void initViewSwtComposit(Composite swtContainer) {
 		
-		refSliderList = new ArrayList<Slider>();
-		refSWTContainer.setLayout(new FillLayout(SWT.HORIZONTAL));
+		sliderList = new ArrayList<Slider>();
+		swtContainer.setLayout(new FillLayout(SWT.HORIZONTAL));
 		
 		Slider tmpSlider = null;
 		for (int iSliderIndex = 0; iSliderIndex < iNumberOfSliders; iSliderIndex++)
 		{
-			tmpSlider = new Slider(refSWTContainer, SWT.VERTICAL);
+			tmpSlider = new Slider(swtContainer, SWT.VERTICAL);
 			tmpSlider.setMinimum(0);
 			tmpSlider.setMaximum(100);
 			tmpSlider.setSelection(50);
 			//tmpSlider.setSize((int)((float)iWidth/iNumberOfSliders), iHeight);
-			refSliderList.add(tmpSlider);
+			sliderList.add(tmpSlider);
 		}
 	}
 
@@ -82,7 +82,7 @@ implements IView {
 	public void setSliderValueByIndex(int iSliderIndex, int iSliderValue) {
 		
 		try {
-			refSliderList.get(iSliderIndex).setSelection(iSliderValue);
+			sliderList.get(iSliderIndex).setSelection(iSliderValue);
 
 		}catch(Exception e) {
 			throw new CaleydoRuntimeException(
@@ -100,7 +100,7 @@ implements IView {
 	public int getSliderValueByIndex(int iSliderIndex) {
 
 		try {
-			return refSliderList.get(iSliderIndex).getSelection();
+			return sliderList.get(iSliderIndex).getSelection();
 
 		}catch(Exception e) {
 			throw new CaleydoRuntimeException(

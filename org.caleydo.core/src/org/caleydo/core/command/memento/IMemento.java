@@ -7,7 +7,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  * IMemento has a public interface and a pseudo-private interface.
  * 
  * This pseudo-private interface is the "small" interface for the creator-object of the IMemento only.
- * The creator-object stores its state in a derived calss of IMementoState,
+ * The creator-object stores its state in a derived calls of IMementoState,
  * which contains all information needed to restore the current state.
  * 
  * @author Michael Kalkusch
@@ -42,22 +42,22 @@ public interface IMemento {
 			throws CaleydoRuntimeException;
 
 	/**
-	 * Each class is be able to restore it's previouse status using the information stored 
+	 * Each class is be able to restore it's previous status using the information stored 
 	 * in the IMementoState object.
 	 * 
-	 * @return IMementoState object to restore a previouse status.
+	 * @return IMementoState object to restore a previous status.
 	 */
 	public IMementoState getMementoState(final Object setMementoCreator);
 
 	/**
-	 * Overwrite toString() to get valueable debug information.
+	 * Overwrite toString() to get valuable debug information.
 	 * 
 	 * Note: This method is used by IMementoManager.toString()
 	 */
 	public String toString();
 
 	/**
-	 * Overwrite toString() to get valueable debug information.
+	 * Overwrite toString() to get valuable debug information.
 	 * 
 	 * Note: This method is used by IMementoManager.toString()
 	 */

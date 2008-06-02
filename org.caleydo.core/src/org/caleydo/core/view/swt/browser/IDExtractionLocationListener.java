@@ -26,12 +26,12 @@ extends LocationAdapter
 	
 	private boolean bSkipNextChangeEvent = false;
 	
-	public IDExtractionLocationListener(final IGeneralManager refGeneralManager,
+	public IDExtractionLocationListener(final IGeneralManager generalManager,
 			final Browser browser,
 			final int iBrowserId,
 			final int iSelectionSetId) {
 	
-		this.generalManager = refGeneralManager;
+		this.generalManager = generalManager;
 		this.iBrowserId = iBrowserId;
 		this.iSelectionSetId = iSelectionSetId;
 

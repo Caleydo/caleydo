@@ -24,21 +24,21 @@ implements ICommand {
 	 */
 	protected final ICommandManager commandManager;
 	
-	private CommandQueueSaxType refCommandQueueSaxType;
+	private CommandQueueSaxType commandQueueSaxType;
 	
 	/**
 	 * Constructor.
 	 */
 	public ACommand(final int iSetCollectionId,
-			final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType) {
+			final IGeneralManager generalManager,
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType) {
 		
 		
-		super( iSetCollectionId, refGeneralManager );
+		super( iSetCollectionId, generalManager );
 		
-		this.commandManager = refCommandManager;
-		this.refCommandQueueSaxType = refCommandQueueSaxType;
+		this.commandManager = commandManager;
+		this.commandQueueSaxType = commandQueueSaxType;
 	}
 
 	public final boolean isEqualType(ICommand compareToObject) {
@@ -61,7 +61,7 @@ implements ICommand {
 	 * @see org.caleydo.core.command.ICommand#getCommandType()
 	 */
 	public final CommandQueueSaxType getCommandType() {
-		return refCommandQueueSaxType;
+		return commandQueueSaxType;
 	}
 
 	/*
@@ -78,10 +78,10 @@ implements ICommand {
 	 */
 	public String getInfoText() {
 		
-		return refCommandQueueSaxType.getInfoText() + " [" + this.getId() + "]";
+		return commandQueueSaxType.getInfoText() + " [" + this.getId() + "]";
 	}
 	
-	protected final void setCommandQueueSaxType(final CommandQueueSaxType refCommandQueueSaxType) {
-		this.refCommandQueueSaxType  =refCommandQueueSaxType;
+	protected final void setCommandQueueSaxType(final CommandQueueSaxType commandQueueSaxType) {
+		this.commandQueueSaxType  =commandQueueSaxType;
 	}
 }

@@ -219,7 +219,7 @@ implements GenericMultiMap <String>  {
 	 * TODO: Maybe this method should moved to outside of this class.
 	 */
 	public MultiHashArrayIntegerMap getCodeResolvedMap(
-			IGenomeIdManager refGenomeIdManager,
+			IGenomeIdManager genomeIdManager,
 			EGenomeMappingType genomeMappingLUT_1,
 			EGenomeMappingType genomeMappingLUT_2) {
 		
@@ -242,7 +242,7 @@ implements GenericMultiMap <String>  {
 		{
 			entryBuffer = iterEntries.next();
 								
-			iResolvedID_1 = refGenomeIdManager.getIdIntFromStringByMapping(
+			iResolvedID_1 = genomeIdManager.getIdIntFromStringByMapping(
 					entryBuffer.getKey().toString(), 
 					genomeMappingLUT_1);
 			
@@ -253,7 +253,7 @@ implements GenericMultiMap <String>  {
 				String sTargetString = iterValues.next().toString();
 				
 				if ( sTargetString.length() > 0) {
-					iResolvedID_2 = refGenomeIdManager.getIdIntFromStringByMapping(
+					iResolvedID_2 = genomeIdManager.getIdIntFromStringByMapping(
 							sTargetString,
 							genomeMappingLUT_2);
 				

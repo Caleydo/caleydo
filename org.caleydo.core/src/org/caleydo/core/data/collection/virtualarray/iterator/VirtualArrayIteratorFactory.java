@@ -25,16 +25,16 @@ public class VirtualArrayIteratorFactory {
 		
 		assert setSelection != null : "can not handle null-pointer IVirtualArray";
 		
-		IVirtualArrayIterator refSelectionIterator = null;
+		IVirtualArrayIterator selectionIterator = null;
 		
 		switch ( setSelection.getSelectionType() ) {
 		
 		case VIRTUAL_ARRAY_SINGLE_BLOCK:
-			refSelectionIterator = new VirtualArraySingleBlockIterator( setSelection );
+			selectionIterator = new VirtualArraySingleBlockIterator( setSelection );
 			break;
 			
 		case VIRTUAL_ARRAY_MULTI_BLOCK:
-			refSelectionIterator = new VirtualArrayMultiBlockIterator( setSelection );
+			selectionIterator = new VirtualArrayMultiBlockIterator( setSelection );
 			break;
 			
 		case VIRTUAL_ARRAY_MULTI_BLOCK_RLE:
@@ -48,7 +48,7 @@ public class VirtualArrayIteratorFactory {
 					CaleydoRuntimeExceptionType.VIRTUALARRAY );
 		}
 		
-		return refSelectionIterator;
+		return selectionIterator;
 	}	
 
 }

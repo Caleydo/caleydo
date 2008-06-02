@@ -99,14 +99,14 @@ public class GenomeMapper {
 				}
 				
 				Iterator<IStorage> iterMappingStorage = alMappingStorage.iterator();
-				IStorage refExpressionStorage = null;
+				IStorage expressionStorage = null;
 				
 				while (iterMappingStorage.hasNext())
 				{
 					//Get expression value by MicroArrayID
-					refExpressionStorage = iterMappingStorage.next();
+					expressionStorage = iterMappingStorage.next();
 					
-					float[] bufferFloatArray = refExpressionStorage.getArrayFloat();
+					float[] bufferFloatArray = expressionStorage.getArrayFloat();
 					
 					if ( bufferFloatArray == null ) 
 					{

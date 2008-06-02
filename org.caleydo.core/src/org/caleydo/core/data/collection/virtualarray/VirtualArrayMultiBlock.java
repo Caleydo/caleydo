@@ -157,15 +157,15 @@ implements IVirtualArray, IMementoItemXML, IMediatorSender {
 	/**
 	 * Restore state of object by update data from SaxHandler
 	 * 
-	 * @param refSaxHandler reference to SaxHandler
+	 * @param saxHandler reference to SaxHandler
 	 * @return TRUE if the provided handler provided same Id as object.
 	 */
 	public boolean setMementoXML_usingHandler(
-			final ISaxParserHandler refSaxHandler) {
+			final ISaxParserHandler saxHandler) {
 
 		try
 		{
-			CollectionSelectionSaxParserHandler parser = (CollectionSelectionSaxParserHandler) refSaxHandler;
+			CollectionSelectionSaxParserHandler parser = (CollectionSelectionSaxParserHandler) saxHandler;
 
 			setLength(parser.getXML_DataLength());
 			setOffset(parser.getXML_DataOffset());

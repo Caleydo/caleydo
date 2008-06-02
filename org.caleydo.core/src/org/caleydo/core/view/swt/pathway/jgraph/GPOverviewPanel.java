@@ -78,14 +78,14 @@ public class GPOverviewPanel
 	/** GPOverviewPanel provides a 'birds-eye' view of the active document.
 	 * Must use the {@link #createOverviewPanel} method to create a new instance.
 	 */
-	public GPOverviewPanel(JGraph refGraph, JScrollPane refScrollPane) {
-		originalGraph = refGraph;
+	public GPOverviewPanel(JGraph graph, JScrollPane scrollPane) {
+		originalGraph = graph;
         //pad.getCurrentGraph();
-		v = new PannerViewfinder(this, refScrollPane.getViewport());
-		GraphLayoutCache view = new ViewRedirector(refGraph.getGraphLayoutCache());
+		v = new PannerViewfinder(this, scrollPane.getViewport());
+		GraphLayoutCache view = new ViewRedirector(graph.getGraphLayoutCache());
 		
 		graph = new JGraph();//(JGraph) GPPluginInvoker.instanciateObjectForKey("JGraph.class");
-        graph.setModel(refGraph.getModel());
+        graph.setModel(graph.getModel());
 		graph.setGraphLayoutCache(view);
 		graph.setAntiAliased(true);
 		graph.getModel().addGraphModelListener(this);
@@ -93,10 +93,10 @@ public class GPOverviewPanel
 		graph.addMouseListener(v);
 		graph.addMouseMotionListener(v);
 
-		refGraph.addPropertyChangeListener(JGraph.SCALE_PROPERTY, this);
+		graph.addPropertyChangeListener(JGraph.SCALE_PROPERTY, this);
 
 		addComponentListener(this);
-		refGraph.getGraphLayoutCache().addGraphLayoutCacheListener(this);
+		graph.getGraphLayoutCache().addGraphLayoutCacheListener(this);
 		setLayout(new BorderLayout());
 		add(graph, BorderLayout.CENTER);
 	}

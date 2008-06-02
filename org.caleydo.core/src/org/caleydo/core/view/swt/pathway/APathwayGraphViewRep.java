@@ -23,15 +23,15 @@ public abstract class APathwayGraphViewRep
 extends AViewRep
 implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 
-	protected Frame refEmbeddedFrame;
+	protected Frame embeddedFrame;
 	
-	protected Composite refEmbeddedFrameComposite;
+	protected Composite embeddedFrameComposite;
 	
-	protected PathwayRenderStyle refRenderStyle;
+	protected PathwayRenderStyle renderStyle;
 	
-	//protected Pathway refCurrentPathway;
+	//protected Pathway currentPathway;
 	
-	protected PathwayImageMap refCurrentPathwayImageMap;
+	protected PathwayImageMap currentPathwayImageMap;
 	
 	protected boolean bSelectionMediatorCreated = false;
 	
@@ -55,18 +55,18 @@ implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 	protected int iPathwayLevel = 1;
 	
 	public APathwayGraphViewRep(
-			IGeneralManager refGeneralManager, 
+			IGeneralManager generalManager, 
 			int iViewId, 
 			int iParentContainerId, 
 			String sLabel) {
 		
-		super(refGeneralManager, 
+		super(generalManager, 
 				iViewId, 
 				iParentContainerId, 
 				sLabel,
-				ViewType.SWT_PATHWAY_GRAPH);
+				ViewType.SWT_PATHWAY2D);
 
-		refRenderStyle = new PathwayRenderStyle();
+		renderStyle = new PathwayRenderStyle();
 		
 //		bShowRelationEdges = true;
 //		bShowReactionEdges = true;
@@ -77,9 +77,9 @@ implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 		//Nothing to do here.
 	}
 	
-	public void setExternalGUIContainer(Composite refSWTContainer) {
+	public void setExternalGUIContainer(Composite swtContainer) {
 		
-		refEmbeddedFrameComposite = refSWTContainer;
+		embeddedFrameComposite = swtContainer;
 	}
 
 	protected void extractVertices(PathwayGraph pathwayToExtract) {
@@ -99,11 +99,11 @@ implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
         }   
 	}
 	
-//	protected void extractEdges(Pathway refPathwayToExtract) {
+//	protected void extractEdges(Pathway pathwayToExtract) {
 //		
 //		// Process relation edges
 //	    Iterator<PathwayRelationEdge> relationEdgeIterator;
-//        relationEdgeIterator = refPathwayToExtract.getRelationEdgeIterator();
+//        relationEdgeIterator = pathwayToExtract.getRelationEdgeIterator();
 //        while (relationEdgeIterator.hasNext())
 //        {
 //        	extractRelationEdges(relationEdgeIterator.next()); 		
@@ -114,10 +114,10 @@ implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 //	    Iterator<PathwayVertex> vertexIterator;
 //	    PathwayVertex vertex;
 //		IPathwayElementManager pathwayElementManager = 
-//			((IPathwayElementManager)refGeneralManager.getSingelton().
+//			((IPathwayElementManager)generalManager.getSingelton().
 //				getPathwayElementManager());
 //		
-//        vertexIterator = refPathwayToExtract.getVertexListIterator();
+//        vertexIterator = pathwayToExtract.getVertexListIterator();
 //	    
 //	    while (vertexIterator.hasNext())
 //	    {
@@ -218,7 +218,7 @@ implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 	 */
 	public void loadNodeInformationInBrowser(final String sUrl) {
 		
-		refEmbeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
+		embeddedFrameComposite.getDisplay().asyncExec(new Runnable() {
 			public void run() {
 				CmdViewLoadURLInHTMLBrowser createdCmd = 
 					(CmdViewLoadURLInHTMLBrowser)generalManager.getCommandManager().

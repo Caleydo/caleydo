@@ -81,8 +81,8 @@ implements IVirtualArrayIterator {
 		
 		super.begin();
 		
-		iVirtualBlockOffset = refSelection.getMultiOffset();
-		iVirtualBlockRepeat = refSelection.getMultiRepeat();
+		iVirtualBlockOffset = selection.getMultiOffset();
+		iVirtualBlockRepeat = selection.getMultiRepeat();
 		
 		// set virtual block index to 0...
 		iCurrentBlockIndex = 1;

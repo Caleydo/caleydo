@@ -33,7 +33,7 @@ implements IXmlParserManager, IManagedObject
 	//protected String sCurrentClosingTag = "";
 	
 	/**
-	 * Contains the Handler of the previouse opening tags. 
+	 * Contains the Handler of the previous opening tags. 
 	 * If a new tag is opened the currentHandler is stored as last element of this vector.
 	 * If a closing tag is processed the currentHandler is set to the last element in the vector and the last element in the vector is removed.
 	 */
@@ -97,7 +97,7 @@ implements IXmlParserManager, IManagedObject
 			}
 			
 			/**
-			 * Get previouse item from stack ...
+			 * Get previous item from stack ...
 			 */
 			if ( llXmlParserStack.isEmpty() ) 
 			{
@@ -109,7 +109,7 @@ implements IXmlParserManager, IManagedObject
 			else 
 			{
 				/**
-				 * Get previouse item from stack.
+				 * Get previous item from stack.
 				 */
 				currentHandler = llXmlParserStack.getLast();
 			} // else .. if ( llXmlParserStack.isEmpty() ) 
@@ -152,9 +152,9 @@ implements IXmlParserManager, IManagedObject
 //	 */
 //	public final boolean openCurrentTagForRecursiveReader( 
 //			OpenExternalXmlFileSaxHandler newHandler,
-//			final IXmlParserManager refIXmlParserManager ) {
+//			final IXmlParserManager iXmlParserManager ) {
 //		
-//		if ( ! refIXmlParserManager.equals( this) ) 
+//		if ( ! iXmlParserManager.equals( this) ) 
 //		{
 //			throw new CaleydoRuntimeException("AXmlParserManager.openCurrentTagForRecursiveReader() must be called by IXmlParserManager!");			
 //		}
@@ -260,14 +260,14 @@ implements IXmlParserManager, IManagedObject
 			//return false;
 		}
 		
-		IXmlParserHandler refParserHandler = hashTag2XmlParser.remove( sActivationXmlTag );
+		IXmlParserHandler parserHandler = hashTag2XmlParser.remove( sActivationXmlTag );
 		
-		if ( refParserHandler != null ) {	
+		if ( parserHandler != null ) {	
 						
 //			generalManager.logMsg(
 //					"XmlParserManager.unregisterHandler( key=[" 
 //					+ sActivationXmlTag + "] "
-//					+ refParserHandler.getClass().getSimpleName()
+//					+ parserHandler.getClass().getSimpleName()
 //					+ " ) done.",
 //					LoggerType.TRANSITION );
 			
@@ -302,7 +302,7 @@ implements IXmlParserManager, IManagedObject
 //		int iIndexFrom = llXmlParserStack.indexOf( from );
 //		
 //		if ( iIndexFrom == -1 ) {
-//			refGeneralManager.getSingelton().logMsg( 
+//			generalManager.getSingelton().logMsg( 
 //					"Error: can not find IXmlParserHandler 'from' in AXmlParserManager! " +
 //					from.getXmlActivationTag(),
 //					LoggerType.ERROR );
@@ -312,7 +312,7 @@ implements IXmlParserManager, IManagedObject
 //		int iIndexTo = llXmlParserStack.indexOf( to );
 //		
 //		if ( iIndexTo == -1 ) {
-//			refGeneralManager.getSingelton().logMsg( 
+//			generalManager.getSingelton().logMsg( 
 //					"Error: can not find IXmlParserHandler 'to' in AXmlParserManager! " +
 //					from.getXmlActivationTag(),
 //					LoggerType.ERROR );

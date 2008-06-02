@@ -22,13 +22,13 @@ implements IView
 	 * Constructor
 	 * 
 	 */
-	public GearsViewRep(IGeneralManager refGeneralManager, 
+	public GearsViewRep(IGeneralManager generalManager, 
 			int iViewID, 
 			int iParentContainerID, 
 			int iGLCanvasID,
 			String sLabel)
 	{
-		super(refGeneralManager, 
+		super(generalManager, 
 				iViewID, 
 				iParentContainerID,
 				iGLCanvasID,

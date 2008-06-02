@@ -61,7 +61,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private IPathwayManager pathwayManager;
 	
-	private GLPathwayManager refGLPathwayManager;
+	private GLPathwayManager gLPathwayManager;
 
 	private SelectionManager selectionManager;
 	
@@ -73,13 +73,13 @@ implements IMediatorReceiver, IMediatorSender {
 //	 * Hash map stores which pathways contain the currently selected vertex and
 //	 * how often this vertex is contained.
 //	 */
-//	private HashMap<Integer, Integer> refHashPathwayContainingSelectedVertex2VertexCount;
+//	private HashMap<Integer, Integer> hashPathwayContainingSelectedVertex2VertexCount;
 	
 	/**
 	 * Own texture manager is needed for each GL context, 
 	 * because textures cannot be bound to multiple GL contexts.
 	 */
-	private HashMap<GL, GLPathwayTextureManager> refHashGLcontext2TextureManager;
+	private HashMap<GL, GLPathwayTextureManager> hashGLcontext2TextureManager;
 	
 	private Vec3f vecScaling;
 	private Vec3f vecTranslation;
@@ -100,9 +100,9 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		pathwayManager = generalManager.getPathwayManager();
 		
-		refGLPathwayManager = new GLPathwayManager(generalManager);
-		refHashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
-//		refHashPathwayContainingSelectedVertex2VertexCount = new HashMap<Integer, Integer>();
+		gLPathwayManager = new GLPathwayManager(generalManager);
+		hashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
+//		hashPathwayContainingSelectedVertex2VertexCount = new HashMap<Integer, Integer>();
 		
 		selectionManager = generalManager.getViewGLCanvasManager().getSelectionManager();
 	
@@ -216,19 +216,19 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	protected void initPathwayData(final GL gl) {
 
-		refGLPathwayManager.init(gl, alSetData, pathwayVertexSelectionManager);
+		gLPathwayManager.init(gl, alSetData, pathwayVertexSelectionManager);
 		
 		// Create new pathway manager for GL context
-		if(!refHashGLcontext2TextureManager.containsKey(gl))
+		if(!hashGLcontext2TextureManager.containsKey(gl))
 		{
-			refHashGLcontext2TextureManager.put(gl, 
+			hashGLcontext2TextureManager.put(gl, 
 					new GLPathwayTextureManager(generalManager));	
 		}		
 		
 		calculatePathwayScaling(gl, iPathwayID);
 		pathwayManager.setPathwayVisibilityStateByID(iPathwayID, true);
 		
-//		refGLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
+//		gLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
 	}
 
 
@@ -251,7 +251,7 @@ implements IMediatorReceiver, IMediatorSender {
 //			if (containedHierarchyLayer.getCapacity() == 4) // check if layer is the stack layer (todo: better would be a stack type)
 //				fPathwayTransparency = 0.6f;
 				
-			refHashGLcontext2TextureManager.get(gl).renderPathway(
+			hashGLcontext2TextureManager.get(gl).renderPathway(
 					gl, this, iPathwayId, fPathwayTransparency, false);
 		}
 
@@ -262,9 +262,9 @@ implements IMediatorReceiver, IMediatorSender {
 		// front level
 		gl.glTranslatef(0, tmp, 0);
 		if (remoteRenderingGLCanvas.getHierarchyLayerByGLCanvasListenerId(iUniqueId).getLevel().equals(EHierarchyLevel.UNDER_INTERACTION))
-			refGLPathwayManager.renderPathway(gl, iPathwayId, true);
+			gLPathwayManager.renderPathway(gl, iPathwayId, true);
 		else
-			refGLPathwayManager.renderPathway(gl, iPathwayId, false);
+			gLPathwayManager.renderPathway(gl, iPathwayId, false);
 		gl.glTranslatef(0, -tmp, 0);
 		
 		gl.glScalef(1/vecScaling.x(), 1/vecScaling.y(),1/ vecScaling.z());
@@ -304,8 +304,8 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		}
 		
-		refGLPathwayManager.performIdenticalNodeHighlighting();
-		refGLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
+		gLPathwayManager.performIdenticalNodeHighlighting();
+		gLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
 	}
 	
 	/*
@@ -328,11 +328,11 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		selectedVertex = null;
 		
-		ISetSelection refSetSelection = (ISetSelection) updatedSet;
+		ISetSelection setSelection = (ISetSelection) updatedSet;
 
-		refSetSelection.getReadToken();
-		ArrayList<Integer> iAlSelection = refSetSelection.getSelectionIdArray();
-		ArrayList<Integer> iAlSelectionMode = refSetSelection.getGroupArray();
+		setSelection.getReadToken();
+		ArrayList<Integer> iAlSelection = setSelection.getSelectionIdArray();
+		ArrayList<Integer> iAlSelectionMode = setSelection.getGroupArray();
 		if (iAlSelection.size() != 0)
 		{
 			int iPathwayHeight = ((PathwayGraph)generalManager.getPathwayManager().getItem(iPathwayID)).getHeight();
@@ -396,7 +396,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 	private void calculatePathwayScaling(final GL gl, final int iPathwayId) {
 		
-		if (refHashGLcontext2TextureManager.get(gl) == null)
+		if (hashGLcontext2TextureManager.get(gl) == null)
 			return;
 		
 		// Missing power of two texture GL extension workaround
@@ -457,19 +457,19 @@ implements IMediatorReceiver, IMediatorSender {
 	
 	public void setMappingRowCount(final int iMappingRowCount) {
 		
-		refGLPathwayManager.setMappingRowCount(iMappingRowCount);
+		gLPathwayManager.setMappingRowCount(iMappingRowCount);
 	}
 		
 	public void enableGeneMapping(final boolean bEnableMapping) {
 		
-		refGLPathwayManager.enableGeneMapping(bEnableMapping);
+		gLPathwayManager.enableGeneMapping(bEnableMapping);
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
 	}
 	
 	public void enablePathwayTextures(final boolean bEnablePathwayTexture) {
 		
-		refGLPathwayManager.enableEdgeRendering(!bEnablePathwayTexture);
+		gLPathwayManager.enableEdgeRendering(!bEnablePathwayTexture);
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
 		
@@ -480,19 +480,19 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
-		refGLPathwayManager.enableNeighborhood(bEnableNeighborhood);
+		gLPathwayManager.enableNeighborhood(bEnableNeighborhood);
 	}
 	
 	public void enableIdenticalNodeHighlighting(final boolean bEnableIdenticalNodeHighlighting) {
 		
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
-		refGLPathwayManager.enableIdenticalNodeHighlighting(bEnableIdenticalNodeHighlighting);
+		gLPathwayManager.enableIdenticalNodeHighlighting(bEnableIdenticalNodeHighlighting);
 	}
 	
 	public void enableAnnotation(final boolean bEnableAnnotation) {
 		
-		refGLPathwayManager.enableAnnotation(bEnableAnnotation);
+		gLPathwayManager.enableAnnotation(bEnableAnnotation);
 	}
 	
 	@Override

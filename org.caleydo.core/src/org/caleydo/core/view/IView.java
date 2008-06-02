@@ -1,13 +1,8 @@
 package org.caleydo.core.view;
 
-import org.eclipse.swt.widgets.Composite;
-
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.SetType;
-import org.caleydo.core.view.ViewType;
-
-//import org.caleydo.core.command.ICommand;
-//import org.caleydo.core.data.collection.ISet;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * Interface for the view representations.
@@ -46,20 +41,6 @@ extends IUniqueObject {
 	 * Method is responsible for filling the composite with content.
 	 */
 	public void drawView();
-	
-//	//method moved to AViewRep and AJoglViewRep
-	
-//	/**
-//	 * Method takes uses the parent container ID to retrieve the 
-//	 * GUI widget by calling the createWidget method from
-//	 * the SWT GUI Manager.
-//	 * Method is implemented in the subclasses because only there
-//	 * the type of the needed widget is available.
-//	 * 
-//	 * @deprecated use initView()
-//	 */
-//	public void retrieveGUIContainer();
-	
 	
 	/**
 	 * Sets the unique ID of the parent container.

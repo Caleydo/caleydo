@@ -31,13 +31,13 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	protected MediatorType mediatorType;
 	
 	public CmdEventCreateMediator(
-			final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType) {
+			final IGeneralManager generalManager,
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType) {
 
-		super(refGeneralManager,
-				refCommandManager,
-				refCommandQueueSaxType);
+		super(generalManager,
+				commandManager,
+				commandQueueSaxType);
 		
 		super.setId( generalManager.getEventPublisher().createId( 
 				ManagerObjectType.EVENT_MEDIATOR_CREATE));
@@ -57,11 +57,11 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		commandManager.runDoCommand(this);
 	}
 	
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 		
-		assert refParameterHandler != null: "ParameterHandler object is null!";	
+		assert parameterHandler != null: "ParameterHandler object is null!";	
 		
-		super.setParameterHandler(refParameterHandler);	
+		super.setParameterHandler(parameterHandler);	
 
 		StringTokenizer senderToken = new StringTokenizer(
 				sAttribute1,
@@ -83,7 +83,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 					receiverToken.nextToken(), -1));
 		}
 		
-		String sMediatorType = refParameterHandler.getValueString( 
+		String sMediatorType = parameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_DETAIL.getXmlKey());
 				
 		if ( sMediatorType.length() > 0 ) 

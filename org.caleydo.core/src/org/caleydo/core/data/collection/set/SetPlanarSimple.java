@@ -33,17 +33,17 @@ implements ISet {
 	/**
 	 *  Stores state of each IVirtualArray combined by AND.
 	 */
-	protected IMetaData refMetaDataAll = null;
+	protected IMetaData metaDataAll = null;
 	
 	/**
 	 * Stores state of each IVirtualArray combined by OR.
 	 */
-	protected IMetaData refMetaDataAny = null;
+	protected IMetaData metaDataAny = null;
 	
 //	/**
 //	 * Store reference to the only IStorage.
 //	 */
-//	protected IStorage refStorage = null;
+//	protected IStorage storage = null;
 	
 	/**
 	 * Store reference to the IVirtualArray.
@@ -396,23 +396,23 @@ implements ISet {
 	/**
 	 * Restore state of object by update data from SaxHandler
 	 * 
-	 * @param refSaxHandler reference to SaxHandler
+	 * @param saxHandler reference to SaxHandler
 	 * @return TRUE if the provided handler provided same Id as object.
 	 */
-	public boolean setMementoXML_usingHandler( final ISaxParserHandler refSaxHandler ) {
+	public boolean setMementoXML_usingHandler( final ISaxParserHandler saxHandler ) {
 		
 		assert false : "not impelemted yet";
 			
 		try {
 			CollectionSetSaxParserHandler parser = 
-				(CollectionSetSaxParserHandler) refSaxHandler;
+				(CollectionSetSaxParserHandler) saxHandler;
 			
 			if ( parser.getDim() < 0 ) {
 				assert false:"Parser does not return informations neede";
 				return false;
 			}
 
-			//final IGeneralManager refManger = getManager();
+			//final IGeneralManager manger = getManager();
 			
 			generalManager.getSetManager().unregisterItem( getId(), 
 					ManagerObjectType.SET_PLANAR );

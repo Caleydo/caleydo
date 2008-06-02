@@ -18,24 +18,24 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	protected int iParentContainerId;
 
 	/**
-	 * @param refGeneralManager
-	 * @param refParameterHandler
+	 * @param generalManager
+	 * @param parameterHandler
 	 */
 	protected ACmdCreate_IdTargetLabelParent(
-			final IGeneralManager refGeneralManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType)
+			final IGeneralManager generalManager,
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType)
 	{
-		super(refGeneralManager,
-				refCommandManager,
-				refCommandQueueSaxType);
+		super(generalManager,
+				commandManager,
+				commandQueueSaxType);
 	}
 
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 		
-		super.setParameterHandler(refParameterHandler);
+		super.setParameterHandler(parameterHandler);
 		
-		iParentContainerId = refParameterHandler.getValueInt(
+		iParentContainerId = parameterHandler.getValueInt(
 				CommandQueueSaxType.TAG_PARENT.getXmlKey() );
 	}
 }

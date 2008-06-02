@@ -14,12 +14,12 @@ extends ASliderViewRep {
 	
 	protected String sSelectionFieldName = "";
 	
-	public SelectionSliderViewRep(IGeneralManager refGeneralManager, 
+	public SelectionSliderViewRep(IGeneralManager generalManager, 
 			int iViewId, 
 			int iParentContainerId, 
 			String sLabel) {
 		
-		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
+		super(generalManager, iViewId, iParentContainerId, sLabel);
 	}
 	
 	protected void initViewSwtComposit(Composite swtContainer) {
@@ -47,7 +47,7 @@ extends ASliderViewRep {
 			iCurrentSliderValue = tmpSelection.getMultiRepeat();
 		}
 		
-	    refSlider.addListener (SWT.Selection, new Listener () {
+	    slider.addListener (SWT.Selection, new Listener () {
 			public void handleEvent (Event event) {
 				IVirtualArray tmpSelection =
 					generalManager.getVirtualArrayManager()
@@ -57,19 +57,19 @@ extends ASliderViewRep {
 				
 				if (sSelectionFieldName.equals("length"))
 				{
-					tmpSelection.setLength(refSlider.getSelection());
+					tmpSelection.setLength(slider.getSelection());
 				}
 				else if (sSelectionFieldName.equals("offset"))
 				{
-					tmpSelection.setOffset(refSlider.getSelection());
+					tmpSelection.setOffset(slider.getSelection());
 				}
 				else if (sSelectionFieldName.equals("multioffset"))
 				{
-					tmpSelection.setMultiOffset(refSlider.getSelection());
+					tmpSelection.setMultiOffset(slider.getSelection());
 				}
 				else if (sSelectionFieldName.equals("multirepeat"))
 				{
-					tmpSelection.setMultiRepeat(refSlider.getSelection());
+					tmpSelection.setMultiRepeat(slider.getSelection());
 				}	
 				
 				tmpSelection.returnWriteToken();

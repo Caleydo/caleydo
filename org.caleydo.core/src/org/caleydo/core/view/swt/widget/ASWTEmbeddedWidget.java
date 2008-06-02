@@ -19,29 +19,29 @@ extends ASWTWidget {
 	/**
 	 * Embedded AWT Frame.
 	 */
-	protected Frame refEmbeddedFrame;
+	protected Frame embeddedFrame;
 	
-	protected Composite refEmbeddedFrameComposite;
+	protected Composite embeddedFrameComposite;
 	
-	protected final Composite refParentComposite;
+	protected final Composite parentComposite;
 	
 	/**
-	 * @param refParentComposite
+	 * @param parentComposite
 	 */
-	public ASWTEmbeddedWidget(Composite refParentComposite) {
+	public ASWTEmbeddedWidget(Composite parentComposite) {
 		
-		super(refParentComposite);
+		super(parentComposite);
 		
-		this.refParentComposite = refParentComposite;
+		this.parentComposite = parentComposite;
 		
-		refEmbeddedFrame = null;
-		refEmbeddedFrameComposite = null;
+		embeddedFrame = null;
+		embeddedFrameComposite = null;
 	}
 
 	public void createEmbeddedComposite() {
 		
-		refEmbeddedFrameComposite = 
-			new Composite(refParentComposite, SWT.EMBEDDED);
+		embeddedFrameComposite = 
+			new Composite(parentComposite, SWT.EMBEDDED);
 			
 		GridData gridData = new GridData();
 		
@@ -50,9 +50,9 @@ extends ASWTWidget {
 		gridData.verticalAlignment = GridData.FILL;
 		gridData.grabExcessVerticalSpace = true;
 		
-		refEmbeddedFrameComposite.setLayoutData(gridData);
+		embeddedFrameComposite.setLayoutData(gridData);
 
-		refEmbeddedFrame = SWT_AWT.new_Frame(refEmbeddedFrameComposite);
+		embeddedFrame = SWT_AWT.new_Frame(embeddedFrameComposite);
 	}
 	
 	/**
@@ -62,7 +62,7 @@ extends ASWTWidget {
 	 */
 	public final Composite getEmbeddedFrameComposite() {
 		
-		return refEmbeddedFrameComposite;
+		return embeddedFrameComposite;
 	}	
 	
 	/**
@@ -72,7 +72,7 @@ extends ASWTWidget {
 	 */
 	public final Composite getParentComposite() {
 		
-		return refParentComposite;
+		return parentComposite;
 	}	
 	
 }

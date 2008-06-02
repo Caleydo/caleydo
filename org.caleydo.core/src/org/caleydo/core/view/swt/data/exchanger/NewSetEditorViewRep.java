@@ -93,12 +93,12 @@ implements IView {
 	protected ArrayList<IVirtualArray> iArVirtualArrayToAdd;
 	
 	public NewSetEditorViewRep(
-			IGeneralManager refGeneralManager, 
+			IGeneralManager generalManager, 
 			int iViewId, 
 			int iParentContainerId, 
 			String sLabel) {
 		
-		super(refGeneralManager, 
+		super(generalManager, 
 				iViewId, 
 				iParentContainerId, 
 				sLabel,
@@ -118,9 +118,9 @@ implements IView {
 	 */
 	protected void initViewSwtComposit(Composite swtContainer) {
 		
-		refSWTContainer.setLayout(new RowLayout(SWT.VERTICAL));
+		swtContainer.setLayout(new RowLayout(SWT.VERTICAL));
 
-		createSetButton = new Button(refSWTContainer, SWT.LEFT);
+		createSetButton = new Button(swtContainer, SWT.LEFT);
 		createSetButton.setText("Create new SET");
 		createSetButton.setLayoutData(new RowData(120, 30));
 		createSetButton.setEnabled(true);
@@ -180,11 +180,11 @@ implements IView {
 	        }
 	      });
 		
-		Label dataComboLabel = new Label(refSWTContainer, SWT.LEFT);
+		Label dataComboLabel = new Label(swtContainer, SWT.LEFT);
 		dataComboLabel.setText("Change existing SET:");
 		dataComboLabel.setLayoutData(new RowData(150, 30));
 
-		setDataCombo = new Combo(refSWTContainer, SWT.READ_ONLY);
+		setDataCombo = new Combo(swtContainer, SWT.READ_ONLY);
 
 		createEmptyTables(); 
 		
@@ -218,7 +218,7 @@ implements IView {
 	    });
 	    
 	      // Create SET finished button
-		setFinishedButton = new Button(refSWTContainer, SWT.PUSH);
+		setFinishedButton = new Button(swtContainer, SWT.PUSH);
 		setFinishedButton.setText("Finish SET");
 		setFinishedButton.setLayoutData(new RowData(150, 30));
 		setFinishedButton.setEnabled(false);
@@ -250,13 +250,13 @@ implements IView {
 	
 	protected void createEmptyTables() {
 		
-	    virtualArrayTable = new Table(refSWTContainer, SWT.SINGLE | SWT.FULL_SELECTION
+	    virtualArrayTable = new Table(swtContainer, SWT.SINGLE | SWT.FULL_SELECTION
 	        | SWT.HIDE_SELECTION);
 	    virtualArrayTable.setHeaderVisible(true);
 	    virtualArrayTable.setLinesVisible(true);
 		virtualArrayTable.setLayoutData(new RowData(300, 110));
 
-	    storageTable = new Table(refSWTContainer, SWT.SINGLE | SWT.FULL_SELECTION
+	    storageTable = new Table(swtContainer, SWT.SINGLE | SWT.FULL_SELECTION
 		        | SWT.HIDE_SELECTION);
 	    storageTable.setHeaderVisible(true);
 	    storageTable.setLinesVisible(true);

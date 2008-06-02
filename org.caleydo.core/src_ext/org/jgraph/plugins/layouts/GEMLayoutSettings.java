@@ -105,11 +105,11 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
     private JTextField tf_initTemperature;
     private JTextField tf_minTemperature;
     private JTextField tf_maxTemperature;
-    private JTextField tf_prefEdgeLength;
+    private JTextField tf_pedgeLength;
     private JTextField tf_gravitation;
     private JTextField tf_randomImpulseRange;
     private JTextField tf_overlapDetectWidth;
-    private JTextField tf_overlapPrefDistance;
+    private JTextField tf_overlapPdistance;
     private JTextField tf_alphaOsc;
     private JTextField tf_alphaRot;
     private JTextField tf_sigmaOsc;
@@ -118,11 +118,11 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
     private JTextField tf_lu_initTemperature;
     private JTextField tf_lu_minTemperature;
     private JTextField tf_lu_maxTemperature;
-    private JTextField tf_lu_prefEdgeLength;
+    private JTextField tf_lu_pedgeLength;
     private JTextField tf_lu_gravitation;
     private JTextField tf_lu_randomImpulseRange;
     private JTextField tf_lu_overlapDetectWidth;
-    private JTextField tf_lu_overlapPrefDistance;
+    private JTextField tf_lu_overlapPdistance;
     private JTextField tf_lu_alphaOsc;
     private JTextField tf_lu_alphaRot;
     private JTextField tf_lu_sigmaOsc;
@@ -309,11 +309,11 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
         double initTemperature    = Double.parseDouble((String)configuration.get(KEY_INIT_TEMPERATURE));
         double minTemperature     = Double.parseDouble((String)configuration.get(KEY_MIN_TEMPERATURE));
         double maxTemperature     = Double.parseDouble((String)configuration.get(KEY_MAX_TEMPERATURE));
-        double prefEdgeLength     = Double.parseDouble((String)configuration.get(KEY_PREF_EDGE_LENGTH));
+        double pedgeLength     = Double.parseDouble((String)configuration.get(KEY_PREF_EDGE_LENGTH));
         double gravitation        = Double.parseDouble((String)configuration.get(KEY_GRAVITATION));
         double randomImpulseRange = Double.parseDouble((String)configuration.get(KEY_RANDOM_IMPULSE_RANGE));
         double overlapDetectWidth = Double.parseDouble((String)configuration.get(KEY_OVERLAPPING_DETECTION_WIDTH));
-        double overlapPrefDist    = Double.parseDouble((String)configuration.get(KEY_OVERLAPPING_PREF_DISTANCE));
+        double overlapPdist    = Double.parseDouble((String)configuration.get(KEY_OVERLAPPING_PREF_DISTANCE));
         double alphaOsc           = Double.parseDouble((String)configuration.get(KEY_ALPHA_OSC));
         double alphaRot           = Double.parseDouble((String)configuration.get(KEY_ALPHA_ROT));
         double sigmaOsc           = Double.parseDouble((String)configuration.get(KEY_SIGMA_OSC));
@@ -329,11 +329,11 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
         double lu_initTemperature    = Double.parseDouble((String)configuration.get(KEY_LAYOUT_UPDATE_INIT_TEMPERATURE));
         double lu_minTemperature     = Double.parseDouble((String)configuration.get(KEY_LAYOUT_UPDATE_MIN_TEMPERATURE));
         double lu_maxTemperature     = Double.parseDouble((String)configuration.get(KEY_LAYOUT_UPDATE_MAX_TEMPERATURE));
-        double lu_prefEdgeLength     = Double.parseDouble((String)configuration.get(KEY_LAYOUT_UPDATE_PREF_EDGE_LENGTH));
+        double lu_pedgeLength     = Double.parseDouble((String)configuration.get(KEY_LAYOUT_UPDATE_PREF_EDGE_LENGTH));
         double lu_gravitation        = Double.parseDouble((String)configuration.get(KEY_LAYOUT_UPDATE_GRAVITATION));
         double lu_randomImpulseRange = Double.parseDouble((String)configuration.get(KEY_LAYOUT_UPDATE_RANDOM_IMPULSE_RANGE));
         double lu_overlapDetectWidth = Double.parseDouble((String)configuration.get(KEY_LAYOUT_UPDATE_OVERLAPPING_DETECTION_WIDTH));
-        double lu_overlapPrefDist    = Double.parseDouble((String)configuration.get(KEY_LAYOUT_UPDATE_OVERLAPPING_PREF_DISTANCE));
+        double lu_overlapPdist    = Double.parseDouble((String)configuration.get(KEY_LAYOUT_UPDATE_OVERLAPPING_PREF_DISTANCE));
         double lu_alphaOsc           = Double.parseDouble((String)configuration.get(KEY_LAYOUT_UPDATE_ALPHA_OSC));
         double lu_alphaRot           = Double.parseDouble((String)configuration.get(KEY_LAYOUT_UPDATE_ALPHA_ROT));
         double lu_sigmaOsc           = Double.parseDouble((String)configuration.get(KEY_LAYOUT_UPDATE_SIGMA_OSC));
@@ -361,11 +361,11 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
         setInitTemperature(initTemperature);
         setMinTemperature(minTemperature);
         setMaxTemperature(maxTemperature);
-        setPreferredEdgeLength(prefEdgeLength);
+        setPreferredEdgeLength(pedgeLength);
         setGravitation(gravitation);
         setRandomImpulseRange(randomImpulseRange);
         setOverlapDetectionWidth(overlapDetectWidth);
-        setOverlapPreferredDistance(overlapPrefDist);
+        setOverlapPreferredDistance(overlapPdist);
         setAlphaOsc(alphaOsc);
         setAlphaRot(alphaRot);
         setSigmaOsc(sigmaOsc);
@@ -379,11 +379,11 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
         setLayoutUpdateInitTemperature(lu_initTemperature);
         setLayoutUpdateMinTemperature(lu_minTemperature);
         setLayoutUpdateMaxTemperature(lu_maxTemperature);
-        setLayoutUpdatePreferredEdgeLength(lu_prefEdgeLength);
+        setLayoutUpdatePreferredEdgeLength(lu_pedgeLength);
         setLayoutUpdateGravitation(lu_gravitation);
         setLayoutUpdateRandomImpulseRange(lu_randomImpulseRange);
         setLayoutUpdateOverlapDetectionWidth(lu_overlapDetectWidth);
-        setLayoutUpdateOverlapPreferredDistance(lu_overlapPrefDist);
+        setLayoutUpdateOverlapPreferredDistance(lu_overlapPdist);
         setLayoutUpdateAlphaOsc(lu_alphaOsc);
         setLayoutUpdateAlphaRot(lu_alphaRot);
         setLayoutUpdateSigmaOsc(lu_sigmaOsc);
@@ -411,11 +411,11 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
         double initTemperature    = getInitTemperature();
         double minTemperature     = getMinTemperature();
         double maxTemperature     = getMaxTemperature();
-        double prefEdgeLength     = getPreferredEdgeLength();
+        double pedgeLength     = getPreferredEdgeLength();
         double gravitation        = getGravitation();
         double randomImpulseRange = getRandomImpulseRange();
         double overlapDetectWidth = getOverlapDetectionWidth();
-        double overlapPrefDist    = getOverlapPreferredDistance();
+        double overlapPdist    = getOverlapPreferredDistance();
         double alphaOsc           = getAlphaOsc();
         double alphaRot           = getAlphaRot();
         double sigmaOsc           = getSigmaOsc();
@@ -429,11 +429,11 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
         double lu_initTemperature    = getLayoutUpdateInitTemperature();
         double lu_minTemperature     = getLayoutUpdateMinTemperature();
         double lu_maxTemperature     = getLayoutUpdateMaxTemperature();
-        double lu_prefEdgeLength     = getLayoutUpdatePreferredEdgeLength();
+        double lu_pedgeLength     = getLayoutUpdatePreferredEdgeLength();
         double lu_gravitation        = getLayoutUpdateGravitation();
         double lu_randomImpulseRange = getLayoutUpdateRandomImpulseRange();
         double lu_overlapDetectWidth = getLayoutUpdateOverlapDetectionWidth();
-        double lu_overlapPrefDist    = getLayoutUpdateOverlapPreferredDistance();
+        double lu_overlapPdist    = getLayoutUpdateOverlapPreferredDistance();
         double lu_alphaOsc           = getLayoutUpdateAlphaOsc();
         double lu_alphaRot           = getLayoutUpdateAlphaRot();
         double lu_sigmaOsc           = getLayoutUpdateSigmaOsc();
@@ -456,11 +456,11 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
         configuration.put(KEY_INIT_TEMPERATURE           ,String.valueOf(initTemperature));
         configuration.put(KEY_MIN_TEMPERATURE            ,String.valueOf(minTemperature));
         configuration.put(KEY_MAX_TEMPERATURE            ,String.valueOf(maxTemperature));
-        configuration.put(KEY_PREF_EDGE_LENGTH           ,String.valueOf(prefEdgeLength));
+        configuration.put(KEY_PREF_EDGE_LENGTH           ,String.valueOf(pedgeLength));
         configuration.put(KEY_GRAVITATION                ,String.valueOf(gravitation));
         configuration.put(KEY_RANDOM_IMPULSE_RANGE       ,String.valueOf(randomImpulseRange));
         configuration.put(KEY_OVERLAPPING_DETECTION_WIDTH,String.valueOf(overlapDetectWidth));
-        configuration.put(KEY_OVERLAPPING_PREF_DISTANCE  ,String.valueOf(overlapPrefDist));
+        configuration.put(KEY_OVERLAPPING_PREF_DISTANCE  ,String.valueOf(overlapPdist));
         configuration.put(KEY_COMPUTE_PERMUTATION        ,String.valueOf(computePermut));
         configuration.put(KEY_END_CONDITION_AVERAGE      ,String.valueOf(endPerAverage));
         configuration.put(KEY_AVOID_OVERLAPPING          ,String.valueOf(avoidOverlapping));
@@ -474,11 +474,11 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
         configuration.put(KEY_LAYOUT_UPDATE_INIT_TEMPERATURE           ,String.valueOf(lu_initTemperature));
         configuration.put(KEY_LAYOUT_UPDATE_MIN_TEMPERATURE            ,String.valueOf(lu_minTemperature));
         configuration.put(KEY_LAYOUT_UPDATE_MAX_TEMPERATURE            ,String.valueOf(lu_maxTemperature));
-        configuration.put(KEY_LAYOUT_UPDATE_PREF_EDGE_LENGTH           ,String.valueOf(lu_prefEdgeLength));
+        configuration.put(KEY_LAYOUT_UPDATE_PREF_EDGE_LENGTH           ,String.valueOf(lu_pedgeLength));
         configuration.put(KEY_LAYOUT_UPDATE_GRAVITATION                ,String.valueOf(lu_gravitation));
         configuration.put(KEY_LAYOUT_UPDATE_RANDOM_IMPULSE_RANGE       ,String.valueOf(lu_randomImpulseRange));
         configuration.put(KEY_LAYOUT_UPDATE_OVERLAPPING_DETECTION_WIDTH,String.valueOf(lu_overlapDetectWidth));
-        configuration.put(KEY_LAYOUT_UPDATE_OVERLAPPING_PREF_DISTANCE  ,String.valueOf(lu_overlapPrefDist));
+        configuration.put(KEY_LAYOUT_UPDATE_OVERLAPPING_PREF_DISTANCE  ,String.valueOf(lu_overlapPdist));
         configuration.put(KEY_LAYOUT_UPDATE_COMPUTE_PERMUTATION        ,String.valueOf(lu_computePermut));
         configuration.put(KEY_LAYOUT_UPDATE_END_CONDITION_AVERAGE      ,String.valueOf(lu_endPerAverage));
         configuration.put(KEY_LAYOUT_UPDATE_AVOID_OVERLAPPING          ,String.valueOf(lu_avoidOverlapping));
@@ -541,20 +541,20 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
         tf_initTemperature       .setText((String)config.get(KEY_INIT_TEMPERATURE));
         tf_minTemperature        .setText((String)config.get(KEY_MIN_TEMPERATURE));
         tf_maxTemperature        .setText((String)config.get(KEY_MAX_TEMPERATURE));
-        tf_prefEdgeLength        .setText((String)config.get(KEY_PREF_EDGE_LENGTH));
+        tf_pedgeLength        .setText((String)config.get(KEY_PREF_EDGE_LENGTH));
         tf_gravitation           .setText((String)config.get(KEY_GRAVITATION));
         tf_randomImpulseRange    .setText((String)config.get(KEY_RANDOM_IMPULSE_RANGE));
         tf_overlapDetectWidth    .setText((String)config.get(KEY_OVERLAPPING_DETECTION_WIDTH));
-        tf_overlapPrefDistance   .setText((String)config.get(KEY_OVERLAPPING_PREF_DISTANCE));
+        tf_overlapPdistance   .setText((String)config.get(KEY_OVERLAPPING_PREF_DISTANCE));
         
         tf_lu_initTemperature    .setText((String)config.get(KEY_LAYOUT_UPDATE_INIT_TEMPERATURE));
         tf_lu_minTemperature     .setText((String)config.get(KEY_LAYOUT_UPDATE_MIN_TEMPERATURE));
         tf_lu_maxTemperature     .setText((String)config.get(KEY_LAYOUT_UPDATE_MAX_TEMPERATURE));
-        tf_lu_prefEdgeLength     .setText((String)config.get(KEY_LAYOUT_UPDATE_PREF_EDGE_LENGTH));
+        tf_lu_pedgeLength     .setText((String)config.get(KEY_LAYOUT_UPDATE_PREF_EDGE_LENGTH));
         tf_lu_gravitation        .setText((String)config.get(KEY_LAYOUT_UPDATE_GRAVITATION));
         tf_lu_randomImpulseRange .setText((String)config.get(KEY_LAYOUT_UPDATE_RANDOM_IMPULSE_RANGE));
         tf_lu_overlapDetectWidth .setText((String)config.get(KEY_LAYOUT_UPDATE_OVERLAPPING_DETECTION_WIDTH));
-        tf_lu_overlapPrefDistance.setText((String)config.get(KEY_LAYOUT_UPDATE_OVERLAPPING_PREF_DISTANCE));
+        tf_lu_overlapPdistance.setText((String)config.get(KEY_LAYOUT_UPDATE_OVERLAPPING_PREF_DISTANCE));
         tf_lu_cluster_initTemperature.setText((String)config.get(KEY_LAYOUT_UPDATE_CLUSTERING_INIT_TEMPERATURE));
         tf_lu_cluster_forceScalingFactor.setText((String)config.get(KEY_LAYOUT_UPDATE_CLUSTERING_FORCE_SCALING_FACTOR));
         tf_lu_cluster_factor     .setText((String)config.get(KEY_LAYOUT_UPDATE_CLUSTERING_FACTOR));
@@ -621,11 +621,11 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
         isOK &= assertDouble(tf_initTemperature.getText(),    KEY_INIT_TEMPERATURE           ,errList);
         isOK &= assertDouble(tf_minTemperature.getText(),     KEY_MIN_TEMPERATURE            ,errList);
         isOK &= assertDouble(tf_maxTemperature.getText(),     KEY_MIN_TEMPERATURE            ,errList);
-        isOK &= assertDouble(tf_prefEdgeLength.getText(),     KEY_PREF_EDGE_LENGTH           ,errList);
+        isOK &= assertDouble(tf_pedgeLength.getText(),     KEY_PREF_EDGE_LENGTH           ,errList);
         isOK &= assertDouble(tf_gravitation.getText(),        KEY_GRAVITATION                ,errList);
         isOK &= assertDouble(tf_randomImpulseRange.getText(), KEY_RANDOM_IMPULSE_RANGE       ,errList);
         isOK &= assertDouble(tf_overlapDetectWidth.getText(), KEY_OVERLAPPING_DETECTION_WIDTH,errList);
-        isOK &= assertDouble(tf_overlapPrefDistance.getText(),KEY_OVERLAPPING_PREF_DISTANCE  ,errList);
+        isOK &= assertDouble(tf_overlapPdistance.getText(),KEY_OVERLAPPING_PREF_DISTANCE  ,errList);
         isOK &= assertDouble(tf_alphaOsc.getText(),           KEY_ALPHA_OSC                  ,errList);
         isOK &= assertDouble(tf_alphaRot.getText(),           KEY_ALPHA_ROT                  ,errList);
         isOK &= assertDouble(tf_sigmaOsc.getText(),           KEY_SIGMA_OSC                  ,errList);
@@ -634,11 +634,11 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
         isOK &= assertDouble(tf_lu_initTemperature.getText(),    KEY_LAYOUT_UPDATE_INIT_TEMPERATURE           ,errList);
         isOK &= assertDouble(tf_lu_minTemperature.getText(),     KEY_LAYOUT_UPDATE_MIN_TEMPERATURE            ,errList);
         isOK &= assertDouble(tf_lu_maxTemperature.getText(),     KEY_LAYOUT_UPDATE_MAX_TEMPERATURE            ,errList);
-        isOK &= assertDouble(tf_lu_prefEdgeLength.getText(),     KEY_LAYOUT_UPDATE_PREF_EDGE_LENGTH           ,errList);
+        isOK &= assertDouble(tf_lu_pedgeLength.getText(),     KEY_LAYOUT_UPDATE_PREF_EDGE_LENGTH           ,errList);
         isOK &= assertDouble(tf_lu_gravitation.getText(),        KEY_LAYOUT_UPDATE_GRAVITATION                ,errList);
         isOK &= assertDouble(tf_lu_randomImpulseRange.getText(), KEY_LAYOUT_UPDATE_RANDOM_IMPULSE_RANGE       ,errList);
         isOK &= assertDouble(tf_lu_overlapDetectWidth.getText(), KEY_LAYOUT_UPDATE_OVERLAPPING_DETECTION_WIDTH,errList);
-        isOK &= assertDouble(tf_lu_overlapPrefDistance.getText(),KEY_LAYOUT_UPDATE_OVERLAPPING_PREF_DISTANCE  ,errList);
+        isOK &= assertDouble(tf_lu_overlapPdistance.getText(),KEY_LAYOUT_UPDATE_OVERLAPPING_PREF_DISTANCE  ,errList);
         isOK &= assertDouble(tf_lu_alphaOsc.getText(),           KEY_LAYOUT_UPDATE_ALPHA_OSC                  ,errList);
         isOK &= assertDouble(tf_lu_alphaRot.getText(),           KEY_LAYOUT_UPDATE_ALPHA_ROT                  ,errList);
         isOK &= assertDouble(tf_lu_sigmaOsc.getText(),           KEY_LAYOUT_UPDATE_SIGMA_OSC                  ,errList);
@@ -655,11 +655,11 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
             isOK &= assertMinimum(tf_initTemperature.getText(),0.0,false,KEY_INIT_TEMPERATURE,errList);
             isOK &= assertMinimum(tf_minTemperature.getText(),0.0,false,KEY_MIN_TEMPERATURE,errList);
             isOK &= assertMinimum(tf_maxTemperature.getText(),0.0,false,KEY_MAX_TEMPERATURE,errList);
-            isOK &= assertMinimum(tf_prefEdgeLength.getText(),0.0,false,KEY_PREF_EDGE_LENGTH,errList);
+            isOK &= assertMinimum(tf_pedgeLength.getText(),0.0,false,KEY_PREF_EDGE_LENGTH,errList);
             isOK &= assertRange(tf_gravitation.getText(),0.0,1.0,true,true,KEY_GRAVITATION,errList);
             isOK &= assertMinimum(tf_randomImpulseRange.getText(),0.0,false,KEY_RANDOM_IMPULSE_RANGE,errList);
             isOK &= assertMinimum(tf_overlapDetectWidth.getText(),0.0,false,KEY_OVERLAPPING_DETECTION_WIDTH,errList);
-            isOK &= assertMinimum(tf_overlapPrefDistance.getText(),0.0,false,KEY_OVERLAPPING_PREF_DISTANCE,errList);
+            isOK &= assertMinimum(tf_overlapPdistance.getText(),0.0,false,KEY_OVERLAPPING_PREF_DISTANCE,errList);
             isOK &= assertRange(tf_alphaOsc.getText(),0.0,360.0,true,false,KEY_ALPHA_OSC,errList);
             isOK &= assertRange(tf_alphaRot.getText(),0.0,360.0,true,false,KEY_ALPHA_ROT,errList);
             isOK &= assertRange(tf_sigmaOsc.getText(),0.0,360.0,true,false,KEY_SIGMA_OSC,errList);
@@ -668,11 +668,11 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
             isOK &= assertMinimum(tf_lu_initTemperature.getText(),0.0,false,KEY_LAYOUT_UPDATE_INIT_TEMPERATURE,errList);
             isOK &= assertMinimum(tf_lu_minTemperature.getText(),0.0,false,KEY_LAYOUT_UPDATE_MIN_TEMPERATURE,errList);
             isOK &= assertMinimum(tf_lu_maxTemperature.getText(),0.0,false,KEY_LAYOUT_UPDATE_MAX_TEMPERATURE,errList);
-            isOK &= assertMinimum(tf_lu_prefEdgeLength.getText(),0.0,false,KEY_LAYOUT_UPDATE_PREF_EDGE_LENGTH,errList);
+            isOK &= assertMinimum(tf_lu_pedgeLength.getText(),0.0,false,KEY_LAYOUT_UPDATE_PREF_EDGE_LENGTH,errList);
             isOK &= assertRange(tf_lu_gravitation.getText(),0.0,1.0,true,true,KEY_LAYOUT_UPDATE_GRAVITATION,errList);
             isOK &= assertMinimum(tf_lu_randomImpulseRange.getText(),0.0,false,KEY_LAYOUT_UPDATE_RANDOM_IMPULSE_RANGE,errList);
             isOK &= assertMinimum(tf_lu_overlapDetectWidth.getText(),0.0,false,KEY_LAYOUT_UPDATE_OVERLAPPING_DETECTION_WIDTH,errList);
-            isOK &= assertMinimum(tf_lu_overlapPrefDistance.getText(),0.0,false,KEY_LAYOUT_UPDATE_OVERLAPPING_PREF_DISTANCE,errList);
+            isOK &= assertMinimum(tf_lu_overlapPdistance.getText(),0.0,false,KEY_LAYOUT_UPDATE_OVERLAPPING_PREF_DISTANCE,errList);
             isOK &= assertRange(tf_lu_alphaOsc.getText(),0.0,360.0,true,false,KEY_LAYOUT_UPDATE_ALPHA_OSC,errList);
             isOK &= assertRange(tf_lu_alphaRot.getText(),0.0,360.0,true,false,KEY_LAYOUT_UPDATE_ALPHA_ROT,errList);
             isOK &= assertRange(tf_lu_sigmaOsc.getText(),0.0,360.0,true,false,KEY_LAYOUT_UPDATE_SIGMA_OSC,errList);
@@ -711,9 +711,9 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
  */
     private void switchVisibility(){            
         tf_overlapDetectWidth.setEnabled(cb_avoidOverlapping.isSelected());
-        tf_overlapPrefDistance.setEnabled(cb_avoidOverlapping.isSelected());
+        tf_overlapPdistance.setEnabled(cb_avoidOverlapping.isSelected());
         tf_lu_overlapDetectWidth.setEnabled(cb_lu_avoidOverlapping.isSelected());
-        tf_lu_overlapPrefDistance.setEnabled(cb_lu_avoidOverlapping.isSelected());
+        tf_lu_overlapPdistance.setEnabled(cb_lu_avoidOverlapping.isSelected());
         button_ConfigOptimizeAlg.setEnabled(cb_useOptimizationAlg.isSelected());
         button_lu_ConfigOptimizeAlg.setEnabled(cb_lu_useOptimizationAlg.isSelected());
         tf_lu_cluster_initTemperature.setEnabled(cb_lu_cluster_enable.isSelected());
@@ -823,7 +823,7 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
         tf_initTemperature    = new JTextField();
         tf_minTemperature     = new JTextField();
         tf_maxTemperature     = new JTextField();
-        tf_prefEdgeLength     = new JTextField();
+        tf_pedgeLength     = new JTextField();
         tf_gravitation        = new JTextField();
         tf_randomImpulseRange = new JTextField();
         
@@ -842,7 +842,7 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
         panelFields.add(tf_initTemperature);
         panelFields.add(tf_minTemperature);
         panelFields.add(tf_maxTemperature);
-        panelFields.add(tf_prefEdgeLength);
+        panelFields.add(tf_pedgeLength);
         panelFields.add(tf_gravitation);
         panelFields.add(tf_randomImpulseRange);
         panelFields.add(cb_computePermutation);
@@ -856,7 +856,7 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
         cb_avoidOverlapping = new JCheckBox();
         cb_avoidOverlapping.setOpaque(false);
         tf_overlapDetectWidth = new JTextField();
-        tf_overlapPrefDistance = new JTextField();
+        tf_overlapPdistance = new JTextField();
         
         
         JPanel panelOverlapSwitch = new JPanel(new GridLayout(1,2,10,4));
@@ -873,7 +873,7 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
         panelOverlap.add(new JLabel("detection width :"));
         panelOverlap.add(tf_overlapDetectWidth);
         panelOverlap.add(new JLabel("pref. distance :"));
-        panelOverlap.add(tf_overlapPrefDistance);
+        panelOverlap.add(tf_overlapPdistance);
         
         
         cb_useOptimizationAlg = new JCheckBox();
@@ -981,7 +981,7 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
         tf_lu_initTemperature    = new JTextField();
         tf_lu_minTemperature     = new JTextField();
         tf_lu_maxTemperature     = new JTextField();
-        tf_lu_prefEdgeLength     = new JTextField();
+        tf_lu_pedgeLength     = new JTextField();
         tf_lu_gravitation        = new JTextField();
         tf_lu_randomImpulseRange = new JTextField();
         
@@ -1010,7 +1010,7 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
         panelLUFields.add(tf_lu_initTemperature);
         panelLUFields.add(tf_lu_minTemperature);
         panelLUFields.add(tf_lu_maxTemperature);
-        panelLUFields.add(tf_lu_prefEdgeLength);
+        panelLUFields.add(tf_lu_pedgeLength);
         panelLUFields.add(tf_lu_gravitation);
         panelLUFields.add(tf_lu_randomImpulseRange);
         panelLUFields.add(cb_lu_computePermutation);
@@ -1058,7 +1058,7 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
         cb_lu_avoidOverlapping = new JCheckBox();
         cb_lu_avoidOverlapping.setOpaque(false);
         tf_lu_overlapDetectWidth = new JTextField();
-        tf_lu_overlapPrefDistance = new JTextField();
+        tf_lu_overlapPdistance = new JTextField();
         
 
         JPanel panelLUOverlapSwitch = new JPanel(new GridLayout(1,2,10,4));
@@ -1077,7 +1077,7 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
         panelLUOverlap.add(new JLabel("detection width :"));
         panelLUOverlap.add(tf_lu_overlapDetectWidth);
         panelLUOverlap.add(new JLabel("pref. distance :"));
-        panelLUOverlap.add(tf_lu_overlapPrefDistance);
+        panelLUOverlap.add(tf_lu_overlapPdistance);
         
         cb_lu_avoidOverlapping.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
@@ -1140,11 +1140,11 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
         tf_initTemperature       .setToolTipText("Temperature Cells will be initialised with");
         tf_minTemperature        .setToolTipText("Algorithm stops when all Temperatures/the average of all Temperatures is below this value");
         tf_maxTemperature        .setToolTipText("Value, no temperature will surmount");
-        tf_prefEdgeLength        .setToolTipText("preferred Length of Edges");
+        tf_pedgeLength        .setToolTipText("preferred Length of Edges");
         tf_gravitation           .setToolTipText("attracting Force to the Barycenter of the Graph");
         tf_randomImpulseRange    .setToolTipText("Power of disturbing Forces");
         tf_overlapDetectWidth    .setToolTipText("Distance around a cell that will be searched for overlapping of other cells");
-        tf_overlapPrefDistance   .setToolTipText("Distance the Algorithm try's to keep as mimimum between overlapped cells");
+        tf_overlapPdistance   .setToolTipText("Distance the Algorithm try's to keep as mimimum between overlapped cells");
         tf_alphaOsc              .setToolTipText("Angle in witch Oscillations are detected");
         tf_alphaRot              .setToolTipText("Angle in witch Rotations are detected");
         tf_sigmaOsc              .setToolTipText("Penaltyvalue for Oscillations (with a higher Value Temperature decreases more slowly)");
@@ -1153,11 +1153,11 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
         tf_lu_initTemperature    .setToolTipText(tf_initTemperature.getToolTipText());
         tf_lu_minTemperature     .setToolTipText(tf_minTemperature.getToolTipText());
         tf_lu_maxTemperature     .setToolTipText(tf_maxTemperature.getToolTipText());
-        tf_lu_prefEdgeLength     .setToolTipText(tf_prefEdgeLength.getToolTipText());
+        tf_lu_pedgeLength     .setToolTipText(tf_pedgeLength.getToolTipText());
         tf_lu_gravitation        .setToolTipText(tf_gravitation.getToolTipText());
         tf_lu_randomImpulseRange .setToolTipText(tf_randomImpulseRange.getToolTipText());
         tf_lu_overlapDetectWidth .setToolTipText(tf_overlapDetectWidth.getToolTipText());
-        tf_lu_overlapPrefDistance.setToolTipText(tf_overlapPrefDistance.getToolTipText());
+        tf_lu_overlapPdistance.setToolTipText(tf_overlapPdistance.getToolTipText());
         tf_lu_alphaOsc           .setToolTipText(tf_alphaOsc.getToolTipText());
         tf_lu_alphaRot           .setToolTipText(tf_alphaRot.getToolTipText());
         tf_lu_sigmaOsc           .setToolTipText(tf_sigmaOsc.getToolTipText());
@@ -1391,13 +1391,13 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
 /******************************************************************************/    
     
     public double getPreferredEdgeLength(){
-        return Double.parseDouble(tf_prefEdgeLength.getText());
+        return Double.parseDouble(tf_pedgeLength.getText());
     }
     
 /******************************************************************************/    
     
     public void setPreferredEdgeLength(double length){
-        tf_prefEdgeLength.setText(String.valueOf(length));
+        tf_pedgeLength.setText(String.valueOf(length));
     }
     
 /******************************************************************************/    
@@ -1439,13 +1439,13 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
 /******************************************************************************/    
     
     public double getOverlapPreferredDistance(){
-        return Double.parseDouble(tf_overlapPrefDistance.getText());
+        return Double.parseDouble(tf_overlapPdistance.getText());
     }
     
 /******************************************************************************/    
 
     public void setOverlapPreferredDistance(double distance){
-        tf_overlapPrefDistance.setText(String.valueOf(distance));
+        tf_overlapPdistance.setText(String.valueOf(distance));
     }
     
 /******************************************************************************/    
@@ -1572,13 +1572,13 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
 /******************************************************************************/    
     
     public double getLayoutUpdatePreferredEdgeLength(){
-        return Double.parseDouble(tf_lu_prefEdgeLength.getText());
+        return Double.parseDouble(tf_lu_pedgeLength.getText());
     }
     
 /******************************************************************************/    
     
     public void setLayoutUpdatePreferredEdgeLength(double length){
-        tf_lu_prefEdgeLength.setText(String.valueOf(length));
+        tf_lu_pedgeLength.setText(String.valueOf(length));
     }
     
 /******************************************************************************/    
@@ -1620,13 +1620,13 @@ public class GEMLayoutSettings extends JPanel implements JGraphLayoutSettings {
 /******************************************************************************/    
     
     public double getLayoutUpdateOverlapPreferredDistance(){
-        return Double.parseDouble(tf_lu_overlapPrefDistance.getText());
+        return Double.parseDouble(tf_lu_overlapPdistance.getText());
     }
     
 /******************************************************************************/    
 
     public void setLayoutUpdateOverlapPreferredDistance(double distance){
-        tf_lu_overlapPrefDistance.setText(String.valueOf(distance));
+        tf_lu_overlapPdistance.setText(String.valueOf(distance));
     }
     
 /******************************************************************************/    

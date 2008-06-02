@@ -36,9 +36,9 @@ extends ACmdCreate_GlCanvasUser {
 		localManagerObjectType = CommandQueueSaxType.CREATE_GL_WII_TEST;
 	}
 
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 	
-		super.setParameterHandler(refParameterHandler);
+		super.setParameterHandler(parameterHandler);
 	}
 
 	/*

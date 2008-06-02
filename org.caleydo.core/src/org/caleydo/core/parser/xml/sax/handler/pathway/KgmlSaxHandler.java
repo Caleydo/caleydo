@@ -60,10 +60,10 @@ implements IXmlParserHandler {
 	
 	private int iCurrentEntryId;
 	
-	public KgmlSaxHandler(  final IGeneralManager refGeneralManager,
-			final IXmlParserManager refXmlParserManager)
+	public KgmlSaxHandler(  final IGeneralManager generalManager,
+			final IXmlParserManager xmlParserManager)
 	{		
-		super( refGeneralManager, refXmlParserManager);
+		super( generalManager, xmlParserManager);
 		
 		hashKgmlEntryIdToVertexRepId = new HashMap<Integer, IGraphItem>();
 		hashKgmlNameToVertexRepId = new HashMap<String, IGraphItem>();
@@ -121,7 +121,7 @@ implements IXmlParserHandler {
 				/**
 				 * section (xml block) finished, call callback function from IXmlParserManager
 				 */
-				refXmlParserManager.sectionFinishedByHandler( this );
+				xmlParserManager.sectionFinishedByHandler( this );
 			}
 		}
 	}
@@ -426,7 +426,7 @@ implements IXmlParserHandler {
 //		if (sName.equals("compound"))
 //		{
 //			//retrieve the internal element ID and add the compound value to the edge
-//    		refGeneralManager.getSingelton().getPathwayElementManager().
+//    		generalManager.getSingelton().getPathwayElementManager().
 //				addRelationCompound(kgmlIdToElementIdLUT.get(iCompoundId));
 //		}
 //    }

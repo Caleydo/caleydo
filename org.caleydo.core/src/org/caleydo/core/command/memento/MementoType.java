@@ -3,7 +3,7 @@ package org.caleydo.core.command.memento;
 /**
  * Define types of mementos.
  * 
- * Used by mementofactory and prometheus.command.memento.Memento#getMementoType()
+ * Used by memento factory and org.caleydo.command.memento.Memento#getMementoType()
  * 
  * @author Michael Kalkusch
  *
@@ -21,7 +21,7 @@ public enum MementoType {
 	ABSOLUTE("absolute memento; contains hole state at once"),
 	
 	/**
-	 * This is one memento, that stores only the cahnges since the last update.
+	 * This is one memento, that stores only the changes since the last update.
 	 * It either links to other relative mementos or to an absolute memento.
 	 */
 	RELATIVE("relative memento; contains incremental states, which are proccessed to obtain state"),

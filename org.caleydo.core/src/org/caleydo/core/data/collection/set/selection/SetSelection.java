@@ -36,11 +36,11 @@ implements ISetSelection
 	 * @param setGeneralManager
 	 */
 	public SetSelection(int iSetCollectionId, 
-			IGeneralManager refGeneralManager) 
+			IGeneralManager generalManager) 
 	{
 
 		super(iSetCollectionId, 
-				refGeneralManager, 
+				generalManager, 
 				SetType.SET_SELECTION);
 		
 //		/** add missing objects for optional data */

@@ -6,8 +6,8 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  * Interface for creator-object's of IMemento's.
  * 
  * This interface must be implemented by all objects, that create Mementos 
- * and restore a prevoius state using the inforamtion stored in the IMemento.
- * Each creator-object must implement it's own state-storage class derived from prometheus.command.memento.MementoState .
+ * and restore a previous state using the information stored in the IMemento.
+ * Each creator-object must implement it's own state-storage class derived from org.caleydo.command.memento.MementoState .
  *   
  * Part of DesignPattern "IMemento"
  *   
@@ -19,22 +19,22 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 public interface IMementoCreator {
 
 	/**
-	 * Tell's the object ot create it's memento, stoing all information needed,
+	 * Tell's the object to create it's memento, storing all information needed,
 	 * to reset the object to the current state in future.
 	 * 
-	 * @return the created prometheus.command.memento.Memento
+	 * @return the created org.caleydo.command.memento.Memento
 	 */
 	public IMemento createMemento();
 	
 	/**
-	 * Restore a prevoius state using data stored in the IMemento.
+	 * Restore a previous state using data stored in the IMemento.
 	 * 
 	 * Throws PrometheusMementoException if an inappropriate MementoStateInterface-object
 	 * is passed inside the memento, or if the IMemento-object does not fit.
 	 * 
 	 * Derived class has to check, if IMemento-object fits.
 	 * 
-	 * @param setMemento prometheus.command.memento.Memento to reset the obejct in a previouse state
+	 * @param setMemento org.caleydo.command.memento.Memento to reset the object in a previous state
 	 */
 	public void setMemento( IMemento setMemento )
 		throws CaleydoRuntimeException;

@@ -25,10 +25,10 @@ extends AXmlParserHandler {
 	
 	protected String sAttributeName = "";
 	
-	public PathwayImageMapSaxHandler(IGeneralManager refGeneralManager, 
-			IXmlParserManager refXmlParserManager) {
+	public PathwayImageMapSaxHandler(IGeneralManager generalManager, 
+			IXmlParserManager xmlParserManager) {
 
-		super(refGeneralManager, refXmlParserManager);
+		super(generalManager, xmlParserManager);
 
 		setXmlActivationTag("imagemap");
 	}	
@@ -69,7 +69,7 @@ extends AXmlParserHandler {
 				/**
 				 * section (xml block) finished, call callback function from IXmlParserManager
 				 */
-				refXmlParserManager.sectionFinishedByHandler( this );
+				xmlParserManager.sectionFinishedByHandler( this );
 			}
 		}
 	}

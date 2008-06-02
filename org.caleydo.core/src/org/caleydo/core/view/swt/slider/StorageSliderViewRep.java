@@ -8,12 +8,12 @@ extends ASliderViewRep {
 	
 	protected int iSetId;
 	
-	public StorageSliderViewRep(IGeneralManager refGeneralManager, 
+	public StorageSliderViewRep(IGeneralManager generalManager, 
 			int iViewId, 
 			int iParentContainerId, 
 			String sLabel) {
 		
-		super(refGeneralManager, iViewId, iParentContainerId, sLabel);
+		super(generalManager, iViewId, iParentContainerId, sLabel);
 	}
 
 	public void setAttributes(int iWidth, int iHeight, int iSetId) {

@@ -36,7 +36,7 @@ implements ISet {
 //	 * @see org.caleydo.core.data.collection.ISet#getStorage()
 //	 */
 //	public final IStorage getStorage() {
-//		return refFlatStorage[0];
+//		return flatStorage[0];
 //	}
 //	
 //	/* (non-Javadoc)
@@ -46,7 +46,7 @@ implements ISet {
 //		
 //		assert setStorage != null: "setStorage() with null-pointer";
 //		
-//		refStorage = setStorage;
+//		storage = setStorage;
 //	}
 	
 	/**

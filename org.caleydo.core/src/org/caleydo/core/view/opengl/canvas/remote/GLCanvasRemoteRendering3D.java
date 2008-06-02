@@ -1259,12 +1259,12 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 		generalManager.getLogger().log(Level.INFO, "Update called by "
 				+eventTrigger.getClass().getSimpleName());
 		
-		ISetSelection refSetSelection = (ISetSelection) updatedSet;
+		ISetSelection setSelection = (ISetSelection) updatedSet;
 
-		refSetSelection.getReadToken();	
+		setSelection.getReadToken();	
 								
-		ArrayList<Integer> iAlSelection = refSetSelection.getSelectionIdArray();
-		ArrayList<Integer> iAlSelectionGroup = refSetSelection.getGroupArray();	
+		ArrayList<Integer> iAlSelection = setSelection.getSelectionIdArray();
+		ArrayList<Integer> iAlSelectionGroup = setSelection.getGroupArray();	
 		
 		ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>(2);
 		ArrayList<Integer> iAlTmpGroupId = new ArrayList<Integer>(2);
@@ -1311,16 +1311,16 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 			alSetSelection.get(0).returnWriteToken();
 		}
 		// Check if update set contains a pathway that was searched by the user
-		else if (refSetSelection.getOptionalDataArray() != null)
+		else if (setSelection.getOptionalDataArray() != null)
 		{	
-			int iPathwayIDToLoad = refSetSelection.getOptionalDataArray().get(0);
+			int iPathwayIDToLoad = setSelection.getOptionalDataArray().get(0);
 			iAlUninitializedPathwayIDs.add(iPathwayIDToLoad);
 			
 			// Disable picking until pathways are loaded
 			generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(false);
 		}
 
-		refSetSelection.returnReadToken();
+		setSelection.returnReadToken();
 	}
 
 	public void loadDependentPathways(final List<IGraphItem> alVertex) {

@@ -47,21 +47,21 @@ implements ISWTGUIManager {
 	/**
 	 * SWT Display represents a thread.
 	 */
-	protected final Display refDisplay;
+	protected final Display display;
 
-	protected Composite refComposite;
+	protected Composite composite;
 
-	protected Menu refMenuBar;
+	protected Menu menuBar;
 
-	protected final HashMap<Integer, Shell> refWindowMap;
+	protected final HashMap<Integer, Shell> windowMap;
 
-	protected final HashMap<Integer, Composite> refCompositeMap;
+	protected final HashMap<Integer, Composite> compositeMap;
 	
-	protected final Vector<ISWTWidget> refWidgetMap;
+	protected final Vector<ISWTWidget> widgetMap;
 	
-	protected Shell refLoadingProgressBarWindow;
+	protected Shell loadingProgressBarWindow;
 	
-	protected ProgressBar refLoadingProgressBar;
+	protected ProgressBar loadingProgressBar;
 
 	/**
 	 * Constructor.
@@ -72,13 +72,13 @@ implements ISWTGUIManager {
 				IGeneralManager.iUniqueId_TypeOffset_GUI_SWT,
 				ManagerType.VIEW_GUI_SWT );
 
-		refWidgetMap = new Vector<ISWTWidget>();
+		widgetMap = new Vector<ISWTWidget>();
 
-		refDisplay = new Display();
+		display = new Display();
 
-		refWindowMap = new HashMap<Integer, Shell>();
+		windowMap = new HashMap<Integer, Shell>();
 
-		refCompositeMap = new HashMap<Integer, Composite>();
+		compositeMap = new HashMap<Integer, Composite>();
 		
 		createLoadingProgressBar();
 	}
@@ -106,17 +106,17 @@ implements ISWTGUIManager {
 
 		assert iUniqueId != 0 :"createWindow() iUniqueId must not be 0!";
 		
-		Shell refNewShell = new Shell(refDisplay);
-		refNewShell.setLayout(new GridLayout());
-		refNewShell.setMaximized(true);
-		refNewShell.setImage(new Image(refDisplay, "resources/icons/caleydo.ico"));
-		refNewShell.setText(sLabel);
+		Shell newShell = new Shell(display);
+		newShell.setLayout(new GridLayout());
+		newShell.setMaximized(true);
+		newShell.setImage(new Image(display, "resources/icons/caleydo.ico"));
+		newShell.setText(sLabel);
 
-		refWindowMap.put(iUniqueId, refNewShell);
+		windowMap.put(iUniqueId, newShell);
 
-		setUpLayout(refNewShell, sLayoutAttributes);
+		setUpLayout(newShell, sLayoutAttributes);
 
-		return refNewShell;
+		return newShell;
 	}
 
 	/*
@@ -124,16 +124,16 @@ implements ISWTGUIManager {
 	 * @see org.caleydo.core.manager.ISWTGUIManager#createComposite(int, int, Stringt)
 	 */
 	public void createComposite(int iUniqueId, int iUniqueParentContainerId,
-			String refLayoutAttributes) {
+			String layoutAttributes) {
 
 		// TODO check if parent exists
-		Shell parentWindow = refWindowMap.get(iUniqueParentContainerId);
+		Shell parentWindow = windowMap.get(iUniqueParentContainerId);
 
 		Composite newComposite = new Composite(parentWindow, SWT.NONE);
 
-		refCompositeMap.put(iUniqueId, newComposite);
+		compositeMap.put(iUniqueId, newComposite);
 
-		setUpLayout(newComposite, refLayoutAttributes);
+		setUpLayout(newComposite, layoutAttributes);
 
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		newComposite.setLayoutData(gridData);
@@ -149,14 +149,14 @@ implements ISWTGUIManager {
 		// TODO Check if window id is valid and print error message
 
 		// Check if the parent is a window
-		refComposite = refWindowMap.get(iUniqueParentContainerId);
+		composite = windowMap.get(iUniqueParentContainerId);
 
-		if (refComposite == null)
+		if (composite == null)
 		{
 			// Check if the parent is a composite
-			refComposite = refCompositeMap.get(iUniqueParentContainerId);
+			composite = compositeMap.get(iUniqueParentContainerId);
 			
-			if (refComposite == null)
+			if (composite == null)
 			{
 //				generalManager.logMsg( getClass().getSimpleName() + ".createWidget(" +
 //						useWidgetType.toString() + ", parentId=" +
@@ -167,7 +167,7 @@ implements ISWTGUIManager {
 			}
 		}
 
-		return (createWidget(useWidgetType, refComposite, iWidth, iHeight));
+		return (createWidget(useWidgetType, composite, iWidth, iHeight));
 	}
 
 	/*
@@ -175,9 +175,9 @@ implements ISWTGUIManager {
 	 * @see org.caleydo.core.manager.ISWTGUIManager#createWidget(org.caleydo.core.manager.type.ManagerObjectType, org.eclipse.swt.widgets.Composite, int, int)
 	 */
 	public synchronized ISWTWidget createWidget(final ManagerObjectType useWidgetType,
-			final Composite refExternalParentComposite, int iWidth, int iHeight) {
+			final Composite externalParentComposite, int iWidth, int iHeight) {
 
-		assert refExternalParentComposite != null : "can not handel null-pointer";
+		assert externalParentComposite != null : "can not handel null-pointer";
 		
 		final int iUniqueId = this.createId(useWidgetType);
 		ASWTWidget newSWTWidget;
@@ -185,17 +185,17 @@ implements ISWTGUIManager {
 		switch (useWidgetType)
 		{
 		case GUI_SWT_NATIVE_WIDGET:
-			newSWTWidget = new SWTNativeWidget(refExternalParentComposite);
+			newSWTWidget = new SWTNativeWidget(externalParentComposite);
 			newSWTWidget.setId(iUniqueId);
-			refWidgetMap.add(newSWTWidget);
+			widgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		case GUI_SWT_EMBEDDED_JOGL_WIDGET:
-			newSWTWidget = new SWTEmbeddedJoglWidget(refExternalParentComposite);
-			refWidgetMap.add(newSWTWidget);
+			newSWTWidget = new SWTEmbeddedJoglWidget(externalParentComposite);
+			widgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		case GUI_SWT_EMBEDDED_JGRAPH_WIDGET:
-			newSWTWidget = new SWTEmbeddedGraphWidget(refExternalParentComposite);
-			refWidgetMap.add(newSWTWidget);
+			newSWTWidget = new SWTEmbeddedGraphWidget(externalParentComposite);
+			widgetMap.add(newSWTWidget);
 			return newSWTWidget;
 		default:
 			throw new CaleydoRuntimeException(
@@ -204,7 +204,7 @@ implements ISWTGUIManager {
 		}
 	}
 
-	protected void setUpLayout(Composite refNewComposite,
+	protected void setUpLayout(Composite newComposite,
 			String sLayoutAttributes) {
 
 		String layoutType; // GRID or ROW
@@ -233,16 +233,16 @@ implements ISWTGUIManager {
 		}
 
 		//gridLayout.makeColumnsEqualWidth = true;
-		refNewComposite.setLayout(gridLayout);
+		newComposite.setLayout(gridLayout);
 	}
 
-	protected Menu createMenuBar(Shell refShell) {
+	protected Menu createMenuBar(Shell shell) {
 
-		Menu menuBar = new Menu(refShell, SWT.BAR);
+		Menu menuBar = new Menu(shell, SWT.BAR);
 
 		MenuItem fileMenuHeader = new MenuItem(menuBar, SWT.CASCADE);
 		fileMenuHeader.setText("&File");
-		Menu fileMenu = new Menu(refShell, SWT.DROP_DOWN);
+		Menu fileMenu = new Menu(shell, SWT.DROP_DOWN);
 		fileMenuHeader.setMenu(fileMenu);
 
 		MenuItem newWindowMenuItem = new MenuItem(fileMenu, SWT.NULL);
@@ -267,29 +267,29 @@ implements ISWTGUIManager {
 	public void runApplication() {
 				
 		Iterator<Shell> shellIterator;
-		Shell refCurrentShell;
+		Shell currentShell;
 
 		// Close loading progress bar after bootstrapping is completed.
 		setProgressbarVisible(false);
 
-		shellIterator = refWindowMap.values().iterator();
+		shellIterator = windowMap.values().iterator();
 		while (shellIterator.hasNext())
 		{
-			refCurrentShell = shellIterator.next();
-			refCurrentShell.setVisible(true);//open();
+			currentShell = shellIterator.next();
+			currentShell.setVisible(true);//open();
 		}
 		
 		generalManager.getViewGLCanvasManager().createAnimator();
 
-		shellIterator = refWindowMap.values().iterator();				
+		shellIterator = windowMap.values().iterator();				
 		
 		while (shellIterator.hasNext())
 		{
-			refCurrentShell = shellIterator.next();
-			while (!refCurrentShell.isDisposed())
+			currentShell = shellIterator.next();
+			while (!currentShell.isDisposed())
 			{
-				if (!refDisplay.readAndDispatch())
-					refDisplay.sleep();
+				if (!display.readAndDispatch())
+					display.sleep();
 			}
 		}
 	}
@@ -300,17 +300,17 @@ implements ISWTGUIManager {
 	 */
 	public void createLoadingProgressBar() {
 				
-		refLoadingProgressBarWindow = new Shell(refDisplay, SWT.TITLE | SWT.BORDER);
-		refLoadingProgressBarWindow.setMaximized(false);
-		refLoadingProgressBarWindow.setText("Loading org.caleydo.core...");
+		loadingProgressBarWindow = new Shell(display, SWT.TITLE | SWT.BORDER);
+		loadingProgressBarWindow.setMaximized(false);
+		loadingProgressBarWindow.setText("Loading org.caleydo.core...");
 		
-		refLoadingProgressBar = 
-			new ProgressBar(refLoadingProgressBarWindow, SWT.SMOOTH );
-		refLoadingProgressBar.setBounds(10, 10, 430, 40);
-		refLoadingProgressBar.setSelection(10);
+		loadingProgressBar = 
+			new ProgressBar(loadingProgressBarWindow, SWT.SMOOTH );
+		loadingProgressBar.setBounds(10, 10, 430, 40);
+		loadingProgressBar.setSelection(10);
 		
-		refLoadingProgressBarWindow.setBounds(500, 500, 460, 90);
-		refLoadingProgressBarWindow.open();			
+		loadingProgressBarWindow.setBounds(500, 500, 460, 90);
+		loadingProgressBarWindow.open();			
 	}
 	
 	/*
@@ -319,14 +319,14 @@ implements ISWTGUIManager {
 	 */
 	public boolean setLoadingProgressBarPercentage(int iPercentage) {
 		
-		if (refLoadingProgressBar == null)
+		if (loadingProgressBar == null)
 			return false;
 		
 		if (iPercentage < 0 || iPercentage > PROGRESSBAR_MAXIMUM)
 			return false;
 		
-		refLoadingProgressBar.setSelection(iPercentage);
-		refLoadingProgressBar.update();
+		loadingProgressBar.setSelection(iPercentage);
+		loadingProgressBar.update();
 			
 		return true;
 	}
@@ -335,25 +335,25 @@ implements ISWTGUIManager {
 		
 		assert sText != null : "can not set 'null' text";
 		
-		if (refLoadingProgressBarWindow == null)
+		if (loadingProgressBarWindow == null)
 			return "--";
 		
-		refLoadingProgressBar.setSelection( iPosition );
+		loadingProgressBar.setSelection( iPosition );
 		
-		String sCurrentText = refLoadingProgressBarWindow.getText();
+		String sCurrentText = loadingProgressBarWindow.getText();
 		
-		refLoadingProgressBarWindow.setText( sText );
-		refLoadingProgressBarWindow.update();
+		loadingProgressBarWindow.setText( sText );
+		loadingProgressBarWindow.update();
 		
 //		/* Multi Threaded version */
-//		refLoadingProgressBarWindow.getDisplay().asyncExec(new Runnable() {
+//		loadingProgressBarWindow.getDisplay().asyncExec(new Runnable() {
 //			public void run() {
-//			refLoadingProgressBar.setSelection( iPosition );
+//			loadingProgressBar.setSelection( iPosition );
 //			
-//			String sCurrentText = refLoadingProgressBarWindow.getText();
+//			String sCurrentText = loadingProgressBarWindow.getText();
 //			
-//			refLoadingProgressBarWindow.setText( sText );
-//			refLoadingProgressBarWindow.update();
+//			loadingProgressBarWindow.setText( sText );
+//			loadingProgressBarWindow.update();
 //					
 //			}
 //		});
@@ -367,7 +367,7 @@ implements ISWTGUIManager {
 	 */
 	public synchronized int getLoadingProgressBarPercentage() {
 
-		return refLoadingProgressBar.getSelection();
+		return loadingProgressBar.getSelection();
 	}
 	
 	public boolean hasItem(int iItemId) {
@@ -403,24 +403,24 @@ implements ISWTGUIManager {
 	
 	public synchronized void setProgressbarVisible( final boolean state) {
 	
-		if ( this.refLoadingProgressBarWindow.isVisible() == state ) 
+		if ( this.loadingProgressBarWindow.isVisible() == state ) 
 		{
 			/* state is already set*/
 			return;
 		}
 		
 		/* toggle current state.. */
-		if ( ! refLoadingProgressBarWindow.isVisible() )
+		if ( ! loadingProgressBarWindow.isVisible() )
 		{
-			this.refDisplay.wake();
+			this.display.wake();
 		}
-		refLoadingProgressBarWindow.setVisible(state);
-		refLoadingProgressBar.setVisible(state);
+		loadingProgressBarWindow.setVisible(state);
+		loadingProgressBar.setVisible(state);
 	}
 	
 	public void destroyOnExit() {
-//		refLoadingProgressBarWindow.close();	
-//		refComposite.dispose();
-//		refDisplay.dispose();
+//		loadingProgressBarWindow.close();	
+//		composite.dispose();
+//		display.dispose();
 	}
 }

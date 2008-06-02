@@ -27,7 +27,7 @@ public class CommandManager
 extends AManager 
 implements ICommandManager {
 
-	private ICommandFactory refCommandFactory;
+	private ICommandFactory commandFactory;
 	
 	/**
 	 * List of all Commands to be excecuted as soon as possible
@@ -60,7 +60,7 @@ implements ICommandManager {
 				IGeneralManager.iUniqueId_TypeOffset_Command, 
 				ManagerType.COMMAND );
 		
-		refCommandFactory = new CommandFactory( setGeneralManager, 
+		commandFactory = new CommandFactory( setGeneralManager, 
 				this);
 		
 		vecCmd_handle = new Vector<ICommand> ();
@@ -187,7 +187,7 @@ implements ICommandManager {
 	
 	public ICommand createCommandByType(final CommandQueueSaxType cmdType) {
 
-		ICommand createdCommand = refCommandFactory.createCommandByType(cmdType);
+		ICommand createdCommand = commandFactory.createCommandByType(cmdType);
 		
 		//BUG! creating command is not executing command!
 //		//FIXME: should iterate over all undo/redo views.
@@ -248,7 +248,7 @@ implements ICommandManager {
 			final int sQueueThreadWait ) {
 		
 		ICommand newCmd = 
-			refCommandFactory.createCommandQueue( sCmdType,
+			commandFactory.createCommandQueue( sCmdType,
 			sProcessType,
 			iCmdId,
 			iCmdQueueId,
@@ -299,9 +299,9 @@ implements ICommandManager {
 		vecRedo.addElement( runCmd );
 	}
 
-	public void addUndoRedoViewRep(UndoRedoViewRep refUndoRedoViewRep) {
+	public void addUndoRedoViewRep(UndoRedoViewRep undoRedoViewRep) {
 		
-		arUndoRedoViews.add(refUndoRedoViewRep);		
+		arUndoRedoViews.add(undoRedoViewRep);		
 		arUndoRedoViews.get(0).updateCommandList(vecUndo);
 
 	}	

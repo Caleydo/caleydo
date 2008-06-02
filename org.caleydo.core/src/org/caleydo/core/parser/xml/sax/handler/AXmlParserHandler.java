@@ -18,7 +18,7 @@ implements IXmlParserHandler
 		
 	protected final IGeneralManager generalManager;
 	
-	protected final IXmlParserManager refXmlParserManager;
+	protected final IXmlParserManager xmlParserManager;
 	
 	protected String sOpeningTag = "";
 
@@ -26,10 +26,10 @@ implements IXmlParserHandler
 	 * 
 	 */
 	protected AXmlParserHandler( final IGeneralManager generalManager,
-			final IXmlParserManager refXmlParserManager )
+			final IXmlParserManager xmlParserManager )
 	{
 		this.generalManager = generalManager;
-		this.refXmlParserManager = refXmlParserManager;
+		this.xmlParserManager = xmlParserManager;
 	}
 
 

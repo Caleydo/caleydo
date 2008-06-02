@@ -222,8 +222,8 @@ implements ISaxParserHandler
 				/**
 				 * trigger callback if reference is set...
 				 */
-				if ( refParentMementoCaller != null ) {
-					refParentMementoCaller.callbackForParser( 
+				if ( parentMementoCaller != null ) {
+					parentMementoCaller.callbackForParser( 
 							eXML_DataComonent_type,
 							"",
 							sTag_XML_DataCollection_attr_type_value,

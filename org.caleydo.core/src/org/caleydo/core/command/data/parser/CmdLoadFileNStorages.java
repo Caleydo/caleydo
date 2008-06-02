@@ -54,14 +54,14 @@ extends ACommand {
 	 * Constructor.
 	 * 
 	 * @param generalManager
-	 * @param refCommandManager
-	 * @param refCommandQueueSaxType
+	 * @param commandManager
+	 * @param commandQueueSaxType
 	 */
 	public CmdLoadFileNStorages(final IGeneralManager generalManager,
-			final ICommandManager refCommandManager,
-			final CommandQueueSaxType refCommandQueueSaxType) {
+			final ICommandManager commandManager,
+			final CommandQueueSaxType commandQueueSaxType) {
 		
-		super(-1, generalManager, refCommandManager, refCommandQueueSaxType);
+		super(-1, generalManager, commandManager, commandQueueSaxType);
 		
 		setCommandQueueSaxType(CommandQueueSaxType.LOAD_DATA_FILE);	
 		
@@ -69,19 +69,19 @@ extends ACommand {
 	}
 	
 	
-	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
-		super.setParameterHandler(refParameterHandler);
+	public void setParameterHandler( final IParameterHandler parameterHandler ) {
+		super.setParameterHandler(parameterHandler);
 		
-		this.setId( refParameterHandler.getValueInt( 
+		this.setId( parameterHandler.getValueInt( 
 				CommandQueueSaxType.TAG_CMD_ID.getXmlKey()) );
 	
-		this.sFileName = refParameterHandler.getValueString( 
+		this.sFileName = parameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_DETAIL.getXmlKey() );
-		this.sTokenPattern =  refParameterHandler.getValueString( 
+		this.sTokenPattern =  parameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() );
 
 		StringTokenizer tokenizer = new StringTokenizer(
-				refParameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey()), 
+				parameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey()), 
 				GeneralManager.sDelimiter_Parser_DataItems);
 
 		while (tokenizer.hasMoreTokens())
@@ -90,7 +90,7 @@ extends ACommand {
 		}
 		
 		int[] iArrayStartStop = StringConversionTool.convertStringToIntArrayVariableLength(
-				refParameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey()), " " );
+				parameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey()), " " );
 		
 		if ( iArrayStartStop.length > 0 ) 
 		{

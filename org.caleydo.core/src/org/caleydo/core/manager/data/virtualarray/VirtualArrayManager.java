@@ -63,13 +63,13 @@ implements IVirtualArrayManager
 //		 */
 //		testSelection = new VirtualArrayMultiBlock( 
 //				this.createNewId(ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK),
-//				refGeneralManager,
+//				generalManager,
 //				/// pass no ICollectionLock 
 //				null );
 //		
 //		this.registerItem( testSelection, testSelection.getId(), ManagerObjectType.VIRTUAL_ARRAYMULTI_BLOCK );
 //		
-//		refGeneralManager.getSingelton().logMsg( 
+//		generalManager.getSingelton().logMsg( 
 //				"VIRTUAL_ARRAY: testSelection created with Id =[" +
 //				testSelection.getId() +"]", logLevel);
 //		/**

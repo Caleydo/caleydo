@@ -28,19 +28,19 @@
 //	 * 
 //	 */
 //	public CmdGlObjectTexture2D(
-//			final IGeneralManager refGeneralManager,
-//			final ICommandManager refCommandManager,
-//			final CommandQueueSaxType refCommandQueueSaxType) {
+//			final IGeneralManager generalManager,
+//			final ICommandManager commandManager,
+//			final CommandQueueSaxType commandQueueSaxType) {
 //		
-//		super(refGeneralManager, 
-//				refCommandManager,
-//				refCommandQueueSaxType);
+//		super(generalManager, 
+//				commandManager,
+//				commandQueueSaxType);
 //		
 //		localManagerObjectType = CommandQueueSaxType.CREATE_GL_TEXTURE2D;
 //	}
 //
-//	public void setParameterHandler( final IParameterHandler refParameterHandler ) {
-//		super.setParameterHandler(refParameterHandler);
+//	public void setParameterHandler( final IParameterHandler parameterHandler ) {
+//		super.setParameterHandler(parameterHandler);
 //		
 //		StringTokenizer token = new StringTokenizer(
 //				sAttribute3,

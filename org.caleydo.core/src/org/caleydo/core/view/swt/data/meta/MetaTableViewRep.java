@@ -9,10 +9,10 @@ import org.caleydo.core.view.swt.data.IDataTableView;
 
 public class MetaTableViewRep extends AViewRep implements IDataTableView
 {	
-	public MetaTableViewRep(IGeneralManager refGeneralManager, 
+	public MetaTableViewRep(IGeneralManager generalManager, 
 			int iViewId, int iParentContainerId, String sLabel)
 	{
-		super(refGeneralManager, 
+		super(generalManager, 
 				iViewId, 
 				iParentContainerId, 
 				sLabel,
