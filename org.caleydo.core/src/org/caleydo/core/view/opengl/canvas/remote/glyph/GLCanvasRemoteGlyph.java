@@ -16,6 +16,7 @@ import org.caleydo.core.manager.view.Pick;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyph;
+import org.caleydo.core.view.opengl.canvas.glyph.GlyphMouseListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLSharedObjects;

@@ -4,14 +4,17 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.open.Vec2i;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.logging.Level;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GLCanvas;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.set.selection.ISetSelection;
 import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.data.view.rep.renderstyle.GlyphRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
@@ -19,9 +22,7 @@ import org.caleydo.core.manager.view.EPickingMode;
 import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.Pick;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
-import org.caleydo.core.view.opengl.canvas.parcoords.GLParCoordsToolboxRenderer;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
-import org.caleydo.core.view.opengl.canvas.remote.glyph.GlyphMouseListener;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLSharedObjects;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
@@ -37,15 +38,19 @@ public class GLCanvasGlyph
 extends AGLCanvasUser
 implements IMediatorSender, IMediatorReceiver
 {	
-	//private Vec4f vecRotation = new Vec4f(1, 1, 1, 0);
-	//private Vec3f vecTranslation = new Vec3f(0,0,0);
 	
 	GLCanvasGlyphGrid grid_;
 	int displayList_ = -1;
 	int displayListGrid_ = -1;
+	int displayListButtons_ = -1;
 	boolean bRedrawDisplayList_ = true;
+	boolean bIsLocal = false;
+	
+	
 
 	private GlyphMouseListener mouseListener_ = null;
+	private GlyphKeyListener keyListener_ = null;
+	private GlyphRenderStyle renderStyle = null;
 	
 	/**
 	 * 
@@ -66,6 +71,8 @@ implements IMediatorSender, IMediatorReceiver
 		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
 		
 		mouseListener_ = new GlyphMouseListener(this, generalManager);
+		keyListener_ = new GlyphKeyListener();
+		renderStyle = new GlyphRenderStyle(viewFrustum);
 		
 	}
 	
@@ -75,10 +82,12 @@ implements IMediatorSender, IMediatorReceiver
 	 */
 	public void init(GL gl) 
 	{
-//	      gl.glEnable    ( GL.GL_DEPTH_TEST);
-	    
+		
+		glToolboxRenderer = new GLGlyphToolboxRenderer(gl, generalManager, iUniqueId, new Vec3f (0, 0, 0), true, renderStyle );
+		
 		ISet glyphMapping = null;
 		ISet glyphData = null;
+		ISet glyphDictionary = null;
 		
 		// Read test data
 		// Extract data
@@ -92,6 +101,8 @@ implements IMediatorSender, IMediatorReceiver
 			if(tmpSet.getLabel().equals("Set for clinical data"))
 				glyphData = tmpSet;
 
+			if(tmpSet.getLabel().equals("Set for glyph dictionary"))
+				glyphDictionary = tmpSet;
 			
 			/*
 			IStorage storagePatientID = tmpSet.getStorageByDimAndIndex(0, 0);
@@ -110,9 +121,11 @@ implements IMediatorSender, IMediatorReceiver
 //		alSetSelection.get(0).updateSelectionSet(iUniqueId, iAlTmpSelectionId, iAlTmpGroupId, null);
 //		alSetSelection.get(0).returnWriteToken();
 
-		grid_ = new GLCanvasGlyphGrid();
-		grid_.loadGlyphs(gl, glyphMapping, glyphData);
+		grid_ = new GLCanvasGlyphGrid(generalManager);
+		grid_.loadGlyphs(gl, glyphMapping, glyphData, glyphDictionary);
 		grid_.buildGrid(gl);
+		
+		
 		
 
 		
@@ -132,21 +145,31 @@ implements IMediatorSender, IMediatorReceiver
 	 */
 	public void initLocal(GL gl) 
 	{
+		bIsLocal = true;
+		
 		init(gl);
 
 		displayListGrid_ = grid_.getGridLayout();
 		
-		parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
+		//parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
 		// Register specialized mouse wheel listener
-		parentGLCanvas.addMouseWheelListener(mouseListener_);	
+		//parentGLCanvas.addMouseWheelListener(mouseListener_);
+		//parentGLCanvas.addMouseListener(mouseListener_);
+		
+		//parentGLCanvas.addMouseMotionListener(mouseListener_);
+		
+		parentGLCanvas.addKeyListener(keyListener_);
+		
+		//parentGLCanvas.removeMouseMotionListener( parentGLCanvas.getJoglMouseListener() );
+		//parentGLCanvas.addMouseMotionListener(mouseListener_);
+		
+		
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, int, org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer, org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener, org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D)
 	 */
-
-
 	public void initRemote(final GL gl, 
 			final int iRemoteViewID,
 			final RemoteHierarchyLayer layer,
@@ -155,12 +178,19 @@ implements IMediatorSender, IMediatorReceiver
 
 	{
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
-	
-		glToolboxRenderer = new GLParCoordsToolboxRenderer(gl, generalManager,
-				iUniqueId, iRemoteViewID, new Vec3f (0, 0, 0), layer, true, null);
+
+		Collection<GLCanvas> cc = generalManager.getViewGLCanvasManager().getAllGLCanvasUsers();
 		
-		//displayListGrid_ = grid_.getGridLayout();
+		//TODO: ask for real canvas!!!!!
+		for(GLCanvas c : cc) {
+			//System.out.println("canvas name:" + c.getName() );
+			c.addKeyListener(keyListener_);
+		}
+
 		init(gl);
+		
+		this.grid_.setGridSize(30, 60);
+		this.grid_.setGlyphPositions(EIconIDs.DISPLAY_RANDOM.ordinal());
 	}
 
 	/*
@@ -169,9 +199,12 @@ implements IMediatorSender, IMediatorReceiver
 	 */
 	public void displayLocal(GL gl) 
 	{
+		//GLSharedObjects.drawAxis(gl);
+		
 		gl.glTranslatef(0f, 0f, -10f);
 		gl.glRotatef( 45f, 1,0,0 );
-		gl.glRotatef( 80f, -1,0,0 );
+		//gl.glRotatef( 45f, -1,0,0 ); 
+		gl.glRotatef( 80f, -1,0,0 ); //35°
 		
 		pickingManager.handlePicking(iUniqueId, gl, true);
 
@@ -181,12 +214,15 @@ implements IMediatorSender, IMediatorReceiver
 		pickingTriggerMouseAdapter.resetEvents();
 	}
 
+	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#displayRemote(javax.media.opengl.GL)
 	 */
 	public void displayRemote(GL gl) 
 	{		
+
 		display(gl);
 		checkForHits(gl);
 //		pickingTriggerMouseAdapter.resetEvents();		
@@ -204,16 +240,19 @@ implements IMediatorSender, IMediatorReceiver
 		
 	    gl.glPushMatrix();
 
-	    //rotate grid
-		gl.glRotatef( 45f, 0,0,1 );
 
-	    
+		//rotate grid
+		gl.glRotatef( 45f, 0,0,1 );
+    
 		
 	    gl.glScalef(0.15f, 0.15f, 0.15f);
 		
-		//draw helplines
+
+	    //draw helplines
 		//GLSharedObjects.drawViewFrustum(gl, viewFrustum);
-		GLSharedObjects.drawAxis(gl);
+		//GLSharedObjects.drawAxis(gl);
+
+		gl.glTranslatef(8, 0, 0f);
 
 		
 		if(displayList_ < 0 || bRedrawDisplayList_) {
@@ -233,6 +272,7 @@ implements IMediatorSender, IMediatorReceiver
 			while(git.hasNext()) {
 				GlyphEntry e = git.next();
 				Vec2i pos = grid_.getGridPosition(e.getX(), e.getY());
+				if(pos == null) continue;
 				
 				gl.glTranslatef( (float)pos.x(), -(float)pos.y(), 0f);
 				gl.glPushName(pickingManager.getPickingID(iUniqueId,
@@ -253,12 +293,20 @@ implements IMediatorSender, IMediatorReceiver
 		if(displayList_ >= 0)
 			gl.glCallList(displayList_);
 		
-	    gl.glPopMatrix();
+		gl.glTranslatef( -7.0f, 0.0f, 0f);
+		gl.glRotatef( -45f, 0,0,1 );
 		
+		if(glToolboxRenderer != null)
+			glToolboxRenderer.render(gl);
+
+
 		if(mouseListener_ != null)
-			mouseListener_.render();
+			mouseListener_.render(gl);
+
+		gl.glPopMatrix();
 		
 	}
+	
 
 	/*
 	 * (non-Javadoc)
@@ -279,35 +327,82 @@ implements IMediatorSender, IMediatorReceiver
 	protected void handleEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) 
 	{
-		if(pickingType != EPickingType.GLYPH_FIELD_SELECTION)
-			return;
-		
-		switch(pickingMode) {
-			case CLICKED:
-				GlyphEntry g = grid_.getGlyph(iExternalID);
-				
-				int patientid = g.getParameter(1);
-				int stagingT = g.getParameter(2);
-				
-				System.out.println("picked object index: " + Integer.toString(iExternalID) + " on Point " +  g.getX() + " " + g.getY() + " with Patient ID " + patientid + " and T staging " + stagingT );
-				
-				grid_.deSelectAll();
-				g.select();
-				
-				bRedrawDisplayList_ = true;
-				
-				
-				
-				//push patient id to other screens
-				
-				//alSetSelection.get(0).getWriteToken();
-				//alSetSelection.get(0).updateSelectionSet(iUniqueId, iAlTmpSelectionId, iAlTmpGroupId, null);
-				//alSetSelection.get(0).returnWriteToken();
-				break;
-			default:
-				//System.out.println("picking Mode " + pickingMode.toString());
+		if(pickingType == EPickingType.GLYPH_FIELD_SELECTION) {
+			switch(pickingMode) {
+				case CLICKED:
 					
+					GlyphEntry g = grid_.getGlyph(iExternalID);
+				
+					if( g == null ) {
+						generalManager.getLogger().log(Level.WARNING, "Glyph with external ID " +iExternalID + " not found!" );
+						pickingManager.flushHits(iUniqueId, pickingType);
+						return;
+					}
+					
+					int patientid = g.getParameter(1);
+					int stagingT = g.getParameter(2);
+					
+					//create selection lists for other screens
+					ArrayList<Integer> ids = new ArrayList<Integer>();
+					ArrayList<Integer> selections = new ArrayList<Integer>();
+
+					
+					//boolean selected = g.isSelected();
+					
+					if(!keyListener_.isControlDown()) {
+						ArrayList<Integer> deselect = grid_.deSelectAll();
+						ids.addAll(deselect);
+						while(selections.size() < ids.size())
+							selections.add(-1);
+					}
+					
+					
+					if(!g.isSelected()) {
+						System.out.println("  select object index: " + Integer.toString(iExternalID) + " on Point " +  g.getX() + " " + g.getY() + " with Patient ID " + patientid + " and T staging " + stagingT );
+						g.select();
+						
+						ids.add(patientid);
+						selections.add(1);
+					} else {
+						System.out.println("DEselect object index: " + Integer.toString(iExternalID) + " on Point " +  g.getX() + " " + g.getY() + " with Patient ID " + patientid + " and T staging " + stagingT );
+						g.deSelect();
+						
+						ids.add(patientid);
+						selections.add(-1);
+					}
+				
+					if(grid_.getNumOfSelected() == 0) {
+						ArrayList<Integer> select = grid_.selectAll();
+						ids.addAll(select);
+						while(selections.size() < ids.size())
+							selections.add(1);
+					}
+					
+					bRedrawDisplayList_ = true;
+
+					//push patient id to other screens
+					alSetSelection.get(0).getWriteToken();
+					alSetSelection.get(0).updateSelectionSet(iUniqueId, ids, selections, null);
+					alSetSelection.get(0).returnWriteToken();
+					break;
+				default:
+					//System.out.println("picking Mode " + pickingMode.toString());
+					
+			}
 		}
+		
+		if(pickingType == EPickingType.PC_ICON_SELECTION) {
+			switch(pickingMode) {
+				case CLICKED:
+					this.grid_.setGlyphPositions(iExternalID);
+					//System.out.println("ICON id = " + iExternalID);
+					bRedrawDisplayList_ = true;
+					break;
+				default:
+			}
+			
+		}
+
 		
 		pickingManager.flushHits(iUniqueId, pickingType);
 	}
@@ -317,7 +412,6 @@ implements IMediatorSender, IMediatorReceiver
 	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object)
 	 */
 	public void updateReceiver(Object eventTrigger) {
-
 		generalManager.getLogger().log(Level.INFO, "Update called by "
 				+eventTrigger.getClass().getSimpleName());	
 	}
@@ -327,8 +421,35 @@ implements IMediatorSender, IMediatorReceiver
 	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, org.caleydo.core.data.collection.ISet)
 	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
-
 		generalManager.getLogger().log(Level.INFO, "Update called by "
-				+eventTrigger.getClass().getSimpleName());	
+				+eventTrigger.getClass().getSimpleName());
+		
+		ISetSelection refSetSelection = (ISetSelection) updatedSet;
+
+		refSetSelection.getReadToken();
+		ArrayList<Integer> iAlSelection = refSetSelection.getSelectionIdArray();
+		ArrayList<Integer> iAlSelectionMode = refSetSelection.getGroupArray();
+		
+		if (iAlSelection.size() != 0) {
+			for(int i=0;i<iAlSelection.size();++i) {
+				int sid = iAlSelection.get(i);
+				int gid = iAlSelectionMode.get(i);
+			
+			//for(int sid : iAlSelection ) {
+				Iterator<GlyphEntry> git = grid_.getGlyphList().values().iterator();
+				
+				while (git.hasNext()) {
+					GlyphEntry g = git.next();
+					if(g.getParameter(1) == sid)
+						if(gid == 1)
+							g.select();
+						else
+							g.deSelect();
+				}
+				bRedrawDisplayList_ = true;
+			}
+		}
+		updatedSet.returnReadToken();
+		
 	}
 }

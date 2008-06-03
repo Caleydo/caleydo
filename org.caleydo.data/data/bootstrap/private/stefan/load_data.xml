@@ -3,33 +3,24 @@
 <details>
 
 
-	<!-- Expression data set/storage/virtual array -->
+<!-- clinical data -->
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"		cmdId="22991"	uniqueId="352010" label="Select file" attrib1="0 -99 0 1"	/>
 
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453010" label="Storage	file for clinical data 01"	attrib1="INT" 	attrib2="test data	from file" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453020" label="Storage	file for clinical data 02"	attrib1="INT" 	attrib2="test data	from file" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453030" label="Storage	file for clinical data 03"	attrib1="INT" 	attrib2="test data	from file" />
+
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453040" label="Storage	file for clinical data 04"	attrib1="INT" 	attrib2="test data	from file" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453050" label="Storage	file for clinical data 05"	attrib1="INT" 	attrib2="test data	from file" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453060" label="Storage	file for clinical data 06"	attrib1="INT" 	attrib2="test data	from file" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453070" label="Storage	file for clinical data 07"	attrib1="INT" 	attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453080" label="Storage	file for clinical data 08"	attrib1="INT" 	attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453090" label="Storage	file for clinical data 09"	attrib1="INT" 	attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453100" label="Storage	file for clinical data 10"	attrib1="INT" 	attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453110" label="Storage	file for clinical data 11"	attrib1="INT" 	attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453120" label="Storage	file for clinical data 12"	attrib1="INT" 	attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453130" label="Storage	file for clinical data 13"	attrib1="INT" 	attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453140" label="Storage	file for clinical data 14"	attrib1="INT" 	attrib2="test data	from file" />
-<!--
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="45315" label="Storage	file for clinical data 15"	attrib1="STRING" 	attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="45316" label="Storage	file for clinical data 16"	attrib1="STRING" 	attrib2="test data	from file" />
--->
 
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="351010" label="Set for clinical data" attrib1="352010" attrib2="453010 453020 453030 453040 453050 453060 453070 453080 453090 453100 453110 453120 453130 453140" attrib3="SET_GENE_EXPRESSION_DATA" />
+
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="351010" label="Set for clinical data" attrib1="352010" attrib2="453010 453020 453030 453040 453050 453060 453070" attrib3="SET_GENE_EXPRESSION_DATA" />
 
 	<!-- Data file loading -->      
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/clinical/clinical_generated_test.csv"	
-			attrib1="INT;INT;INT;INT;INT;INT;INT;INT;INT;INT;INT;INT;INT;INT;ABORT" 						attrib2="453010 453020 453030 453040 453050 453060 453070 453080 453090 453100 453110 453120 453130 453140" attrib3="1 -1" />			
+			attrib1="INT;INT;INT;INT;INT;INT;INT;ABORT" 						attrib2="453010 453020 453030 453040 453050 453060 453070" attrib3="1 -1" />			
 
 
 	<!-- Create Selection Set -->
@@ -57,23 +48,21 @@
 
 
 
+<!-- dictionary  -->
 
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"		cmdId="22991"	uniqueId="552010" label="Select file" attrib1="0 -99 0 1"	/>
 
-<!-- dictionary (used only for string display) -->
-<!-- CANNOT LOAD STRINGS????
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"		cmdId="22991"	uniqueId="55201" label="Select file" attrib1="0 -99 0 1"	/>
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="553010" label="Storage file for dictionary 01"	attrib1="INT" 		attrib2="dictionary data from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="553020" label="Storage file for dictionary 02"	attrib1="STRING" 	attrib2="dictionary data from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="553030" label="Storage file for dictionary 03"	attrib1="STRING"	attrib2="dictionary data from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="553040" label="Storage file for dictionary 04"	attrib1="INT"	 	attrib2="dictionary data from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="553050" label="Storage file for dictionary 05"	attrib1="FLOAT" 	attrib2="dictionary data from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="553060" label="Storage file for dictionary 06"	attrib1="INT"	 	attrib2="dictionary data from file" />
 
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="55301" label="Storage	file for dictionary 01"	attrib1="INT" 		attrib2="dictionary data from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="55302" label="Storage	file for dictionary 02"	attrib1="STRING" 	attrib2="dictionary data from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="55303" label="Storage	file for dictionary 03"	attrib1="INT" 	attrib2="dictionary data from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="55304" label="Storage	file for dictionary 04"	attrib1="STRING" 		attrib2="dictionary data from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="55305" label="Storage	file for dictionary 05"	attrib1="FLOAT" 	attrib2="dictionary data from file" />
-
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="55101" label="Set for dictionary data" attrib1="55201" attrib2="55301 55302 55303 55304 55305" attrib3="SET_GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="551010" label="Set for glyph dictionary" attrib1="552010" attrib2="553010 553020 553030 553040 553050 55360" attrib3="SET_GENE_EXPRESSION_DATA" />
 
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/clinical/dictionary.csv"	
-			attrib1="INT;STRING;INT;STRING;FLOAT;ABORT" 						attrib2="55301 55302 55303 55304 55305" attrib3="1 -1" />			
--->
+			attrib1="INT;STRING;STRING;INT;FLOAT;INT;ABORT" 						attrib2="553010 553020 553030 553040 553050 55360" attrib3="1 -1" />			
 
 
 </details>

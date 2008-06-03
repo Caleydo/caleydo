@@ -50,6 +50,10 @@ public class GlyphEntry {
 		selected_ = false;
 	}
 	
+	public boolean isSelected() {
+	  return selected_;
+	}
+	
 
 	public int getGlList(GL gl) {
 		if(selected_) {

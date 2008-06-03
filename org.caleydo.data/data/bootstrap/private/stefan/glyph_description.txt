@@ -5,6 +5,10 @@ glyph
 2 = indexBoxColor
 3 = indexHeight
 
+4 = parameter number send to other views
+
 
 dataset
 columnnumber, beginning with 0
+
+

@@ -16,7 +16,12 @@ public enum EIconTextures
 	RESET_SELECTIONS ("resources/icons/edit-delete.png"),
 	SEARCH_PATHWAY ("resources/icons/arrow-right.png"),
 	SAVE_SELECTIONS ("resources/icons/document-save.png"),
-	ANGULAR_BRUSHING ("resources/icons/angle.png");
+	ANGULAR_BRUSHING ("resources/icons/angle.png"),
+	
+	GLYPH_SORT_RANDOM ("resources/icons/Glyph/sort_random.png"),
+	GLYPH_SORT_CIRCLE ("resources/icons/Glyph/sort_spirale.png"),
+	GLYPH_SORT_RECTANGLE ("resources/icons/Glyph/sort_zickzack.png");
+
 	
 	private String sFileName;
 	
