@@ -7,7 +7,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.data.IVirtualArrayManager;
 import org.caleydo.core.util.system.StringConversionTool;
-import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.AView;
 import org.caleydo.core.view.ViewType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 public class DataTableViewRep 
-extends AViewRep 
+extends AView 
 implements IDataTableView {
 	
 	private static final int MAX_TABLE_ROWS = 15;

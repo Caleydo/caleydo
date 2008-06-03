@@ -5,7 +5,7 @@ import java.util.Vector;
 
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
 import org.eclipse.swt.SWT;
@@ -21,7 +21,7 @@ import org.eclipse.swt.widgets.Label;
  * @author Marc Streit
  */
 public class UndoRedoViewRep 
-extends AViewRep 
+extends AView 
 implements IView {
 
 	protected Combo undoRedoCombo;

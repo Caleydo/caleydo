@@ -25,9 +25,9 @@ import org.eclipse.swt.widgets.Composite;
  * @author Michael Kalkusch
  * @author Marc Streit
  */
-public abstract class AViewRep 
+public abstract class AView 
 extends AUniqueManagedObject
-implements IViewRep {
+implements IView {
 	
 	private final ISetManager setManager;
 	
@@ -67,7 +67,7 @@ implements IViewRep {
 	 * @param iParentContainerId
 	 * @param sLabel
 	 */
-	public AViewRep(
+	public AView(
 			final IGeneralManager generalManager, 
 			final int iUniqueId,
 			final int iParentContainerId,
@@ -206,7 +206,7 @@ implements IViewRep {
 	}
 	
 	/**
-	 * @see org.caleydo.core.view.IViewRep#getViewType()
+	 * @see org.caleydo.core.view.IView#getViewType()
 	 */
 	public final ViewType getViewType() {
 		return viewType;

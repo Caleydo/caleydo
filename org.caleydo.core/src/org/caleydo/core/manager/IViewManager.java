@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.IViewRep;
+import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
 
 /**
@@ -38,7 +38,7 @@ extends IManager
 	
 	public Collection<IView> getAllViews();
 	
-	public ArrayList<IViewRep> getViewRepByType(ViewType viewType);
+	public ArrayList<IView> getViewRepByType(ViewType viewType);
 	
 	/**
 	 * Create a new JFrame.

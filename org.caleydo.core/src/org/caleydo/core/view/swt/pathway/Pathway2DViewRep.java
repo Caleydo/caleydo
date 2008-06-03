@@ -10,7 +10,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
-import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.swt.pathway.jgraph.PathwayGraphViewRep;
@@ -23,7 +23,7 @@ import org.caleydo.core.view.swt.toolbar.Pathway2DToolbar;
  * @author Marc Streit
  */
 public class Pathway2DViewRep 
-extends AViewRep 
+extends AView 
 implements IView, IMediatorSender, IMediatorReceiver {
 	
 	protected int iHTMLBrowserId;

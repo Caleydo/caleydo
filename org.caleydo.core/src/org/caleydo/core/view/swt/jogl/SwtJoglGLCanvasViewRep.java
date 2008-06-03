@@ -6,7 +6,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.AView;
 import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.swt.widget.SWTEmbeddedJoglWidget;
 import org.eclipse.swt.widgets.Composite;
@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Composite;
  *
  */
 public class SwtJoglGLCanvasViewRep 
-extends AViewRep {
+extends AView {
 	
 	protected int iGLCanvasID;
 	

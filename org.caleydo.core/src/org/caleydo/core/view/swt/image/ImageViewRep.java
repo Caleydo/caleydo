@@ -9,7 +9,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
 
@@ -20,7 +20,7 @@ import org.caleydo.core.view.ViewType;
  * @author Marc Streit
  */
 public class ImageViewRep 
-extends AViewRep 
+extends AView 
 implements IView {
 	
 	protected String sImagePath;

@@ -13,7 +13,7 @@ import org.caleydo.core.data.collection.ISet;
  * Interface provides writing and reading access
  * to the selection data.
  * 
- * @see cerverus.view.gui.AViewRep
+ * @see AView.view.gui.AViewRep
  * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver
  * 
  * @author Michael Kalkusch

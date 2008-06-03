@@ -10,7 +10,7 @@ import org.caleydo.core.data.collection.SetType;
 import org.caleydo.core.data.collection.set.selection.ISetSelection;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
-import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.swt.data.DataTableViewRep;
@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 public class DataExplorerViewRep 
-extends AViewRep 
+extends AView 
 implements IView, IMediatorReceiver {
 
 	protected static final Object StorageModel = null;

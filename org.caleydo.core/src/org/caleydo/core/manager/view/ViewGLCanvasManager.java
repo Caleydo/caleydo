@@ -19,7 +19,6 @@ import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.IViewRep;
 import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
@@ -73,12 +72,12 @@ implements IViewGLCanvasManager {
 	 * List of data explorer view reps (needed for mediator registration 
 	 * when data is created).
 	 */
-	protected ArrayList<IViewRep> arDataExplorerViewRep;
+	protected ArrayList<IView> arDataExplorerViewRep;
 	
 	/**
 	 * List of HTML browser view reps
 	 */
-	protected ArrayList<IViewRep> arHTMLBrowserViewRep;
+	protected ArrayList<IView> arHTMLBrowserViewRep;
 		
 	protected ArrayList<JFrame> arWorkspaceJFrame;
 	
@@ -114,8 +113,8 @@ implements IViewGLCanvasManager {
 		hashGLCanvasID2GLEventListeners = new HashMap<Integer, ArrayList<GLEventListener>>();
 		hashGLEventListenerID2GLEventListener = new HashMap<Integer, GLEventListener>();
 		
-		arDataExplorerViewRep = new ArrayList<IViewRep>();
-		arHTMLBrowserViewRep = new ArrayList<IViewRep>();
+		arDataExplorerViewRep = new ArrayList<IView>();
+		arHTMLBrowserViewRep = new ArrayList<IView>();
 		arWorkspaceJFrame = new ArrayList<JFrame>();
 	}
 
@@ -323,7 +322,7 @@ implements IViewGLCanvasManager {
 		
 	}
 
-	public ArrayList<IViewRep> getViewRepByType(ViewType viewType) {
+	public ArrayList<IView> getViewRepByType(ViewType viewType) {
 
 		switch (viewType)
 		{

@@ -11,12 +11,12 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
 
 public class TestTableViewRep 
-extends AViewRep 
+extends AView 
 implements IView {
 	
 	public TestTableViewRep(IGeneralManager generalManager, 

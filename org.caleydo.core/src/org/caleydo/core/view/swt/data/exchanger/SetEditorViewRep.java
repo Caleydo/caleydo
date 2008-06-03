@@ -9,7 +9,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.IVirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
 import org.eclipse.swt.SWT;
@@ -33,7 +33,7 @@ import org.eclipse.swt.widgets.Label;
  * @author Michael Kalkusch
  */
 public class SetEditorViewRep 
-extends AViewRep 
+extends AView 
 implements IView {
 	
     protected String viewComboItems[];

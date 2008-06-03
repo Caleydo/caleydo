@@ -173,7 +173,7 @@ extends APathwayGraphViewRep {
 	 * Method uses the parent container ID to retrieve the GUI widget by calling
 	 * the createWidget method from the SWT GUI Manager.
 	 * 
-	 * @see org.caleydo.core.view.AViewRep#retrieveGUIContainer()
+	 * @see org.caleydo.core.view.AView#retrieveGUIContainer()
 	 * @see org.caleydo.core.view.IView#initView()
 	 */
 	public void initView() {

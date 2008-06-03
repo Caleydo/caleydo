@@ -6,7 +6,7 @@ import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.data.CmdDataCreateSelectionSetMakro;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
 import org.eclipse.swt.SWT;
@@ -28,7 +28,7 @@ import org.eclipse.swt.widgets.ToolItem;
  * @author Marc Streit
  */
 public class HTMLBrowserViewRep 
-extends AViewRep 
+extends AView 
 implements IView {
 
 	public EBrowserType browserType;

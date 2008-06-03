@@ -16,11 +16,11 @@ import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
-import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.AView;
 import org.caleydo.core.view.ViewType;
 
 public abstract class APathwayGraphViewRep 
-extends AViewRep
+extends AView
 implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 
 	protected Frame embeddedFrame;

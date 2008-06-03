@@ -3,11 +3,11 @@ package org.caleydo.core.view.swt.data.meta;
 import org.eclipse.swt.widgets.Composite;
 
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.AView;
 import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.swt.data.IDataTableView;
 
-public class MetaTableViewRep extends AViewRep implements IDataTableView
+public class MetaTableViewRep extends AView implements IDataTableView
 {	
 	public MetaTableViewRep(IGeneralManager generalManager, 
 			int iViewId, int iParentContainerId, String sLabel)

@@ -16,7 +16,7 @@ import org.caleydo.core.manager.IEventPublisher.MediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.util.system.StringConversionTool;
-import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.AView;
 import org.caleydo.core.view.ViewType;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
@@ -31,7 +31,7 @@ import org.caleydo.util.graph.IGraphItem;
  *
  */
 public class DataEntitySearcherViewRep 
-extends AViewRep 
+extends AView 
 implements IMediatorSender{;
 	
 	private int iSearchSelectionSetId;

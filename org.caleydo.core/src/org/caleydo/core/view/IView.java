@@ -2,6 +2,8 @@ package org.caleydo.core.view;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.SetType;
+import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
+import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -11,16 +13,16 @@ import org.eclipse.swt.widgets.Composite;
  * @author Michael Kalkusch
  */
 public interface IView 
-extends IUniqueObject {
+extends IUniqueObject, IMediatorSender, IMediatorReceiver {
 	
 	/**
 	 * Same as initView() but creation of SWT Container via GeneralManager is replaced
 	 * by external creation of SWT Container.
 	 * 
 	 * @see IView#initView()
-	 * @see org.caleydo.core.view.AViewRep#initView()
-	 * @see org.caleydo.core.view.AViewRep#initViewRCP(Composite)
-	 * @see org.caleydo.core.view.AViewRep#initViewSwtComposit(Composite)
+	 * @see org.caleydo.core.view.AView#initView()
+	 * @see org.caleydo.core.view.AView#initViewRCP(Composite)
+	 * @see org.caleydo.core.view.AView#initViewSwtComposit(Composite)
 	 * 
 	 * @param swtContainer container to bind View to
 	 */
@@ -31,9 +33,9 @@ extends IUniqueObject {
 	 * All initialization sets must be accomplished in this method.
 	 * 
 	 * @see IView#initViewRCP(Composite)
-	 * @see org.caleydo.core.view.AViewRep#initView()
-	 * @see org.caleydo.core.view.AViewRep#initViewRCP(Composite)
-	 * @see org.caleydo.core.view.AViewRep#initViewSwtComposit(Composite)
+	 * @see org.caleydo.core.view.AView#initView()
+	 * @see org.caleydo.core.view.AView#initViewRCP(Composite)
+	 * @see org.caleydo.core.view.AView#initViewSwtComposit(Composite)
 	 */
 	public void initView();
 
@@ -78,10 +80,10 @@ extends IUniqueObject {
 	public int[] getAllSetId();
 	
 	/**
-	 * Ask if a cairtain Set is used by this view.
+	 * Ask if a certain Set is used by this view.
 	 * 
-	 * @param iSetId define a Set vai its Id
-	 * @return TRUE if the cset is used by the view
+	 * @param iSetId define a Set via its Id
+	 * @return TRUE if the set is used by the view
 	 */
 	public boolean hasSetId( int iSetId);
 	
@@ -98,5 +100,11 @@ extends IUniqueObject {
 	 * @return 
 	 */
 	public ViewType getViewType();
-
+	
+	/**
+	 * Set the ViewType of this ViewRep.
+	 * 
+	 * @return 
+	 */
+	public void setViewType(ViewType viewType);
 }

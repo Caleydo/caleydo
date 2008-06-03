@@ -17,7 +17,7 @@ import org.caleydo.core.data.collection.SetType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.util.system.StringConversionTool;
-import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
 import org.eclipse.swt.SWT;
@@ -51,7 +51,7 @@ import org.eclipse.swt.widgets.TableItem;
  * @author Marc Streit
  */
 public class NewSetEditorViewRep 
-extends AViewRep 
+extends AView 
 implements IView {
     
     protected String sArSetDataComboItems[];

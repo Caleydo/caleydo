@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.Slider;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
-import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.AView;
 import org.caleydo.core.view.ViewType;
 
 /**
@@ -22,7 +22,7 @@ import org.caleydo.core.view.ViewType;
  * @author Marc Streit
  */
 public abstract class ASliderViewRep 
-extends AViewRep 
+extends AView 
 implements IMediatorSender, IMediatorReceiver {
 	
 	protected Slider slider;
@@ -41,7 +41,7 @@ implements IMediatorSender, IMediatorReceiver {
 	
 	/**
 	 * 
-	 * @see org.caleydo.core.view.AViewRep#retrieveGUIContainer()
+	 * @see org.caleydo.core.view.AView#retrieveGUIContainer()
 	 * @see org.caleydo.core.view.IView#initView()
 	 */
 	protected void initViewSwtComposit(Composite swtContainer) {

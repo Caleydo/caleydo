@@ -8,7 +8,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ProgressBar;
 
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.view.AViewRep;
+import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
 
@@ -19,7 +19,7 @@ import org.caleydo.core.view.ViewType;
  * @author Marc Streit
  */
 public class ProgressBarViewRep 
-extends AViewRep 
+extends AView 
 implements IView {
 	
 	protected int iProgressBarMinValue = 0;
