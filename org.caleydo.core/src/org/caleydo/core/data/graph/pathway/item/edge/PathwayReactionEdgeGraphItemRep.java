@@ -1,4 +1,4 @@
-package org.caleydo.core.data.graph.item.edge;
+package org.caleydo.core.data.graph.pathway.item.edge;
 
 import java.io.Serializable;
 
@@ -6,14 +6,14 @@ import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.item.GraphItem;
 
 /**
- * Pathway relation edge representation belonging to the overall pathway graph.
+ * Pathway reaction edge representation belonging to the overall pathway graph.
  * Used for KEGG pathways.
  * 
  * @author Marc Streit
  *
  */
-public class PathwayRelationEdgeGraphItemRep 
-extends GraphItem   
+public class PathwayReactionEdgeGraphItemRep 
+extends GraphItem 
 implements Serializable 
 {	
 	private static final long serialVersionUID = 1L;
@@ -23,7 +23,7 @@ implements Serializable
 	 * 
 	 * @param iId
 	 */
-	public PathwayRelationEdgeGraphItemRep(
+	public PathwayReactionEdgeGraphItemRep(
 			final int iId) {
 		
 		super(iId, EGraphItemKind.EDGE);

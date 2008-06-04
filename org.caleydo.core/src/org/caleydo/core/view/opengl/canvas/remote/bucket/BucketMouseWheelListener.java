@@ -56,50 +56,54 @@ extends MouseAdapter {
 	 */
 	public void mouseWheelMoved(MouseWheelEvent event) 
 	{
+		// CTRL = Change horizontal zoom factor
+		// ALT  = Change vertical zoom factor 
+		
 		// Change bucket tilt angle
 		if (event.isControlDown() || event.isAltDown())
 		{
 			float fTmpAngle = 0;
-			float fStepSize = 5;
+			float fStepSize = 0.1f;
 		    int notches = event.getWheelRotation();
 			
 			// Change bucket tilt angle of left and right wall if CTRL is down
 			if (event.isControlDown())
 			{
-				fTmpAngle = bucketLayoutRenderStyle.getHorizontalTiltAngleDegree();
+				fTmpAngle = bucketLayoutRenderStyle.getZoomFactor();
 				
 			    if (notches < 0)
 			    	fTmpAngle += fStepSize;
 			    else
 			    	fTmpAngle -= fStepSize;	
 			    
-				if (fTmpAngle >= 90)
-					bucketLayoutRenderStyle.setHorizontalTiltAngleDegree(90);
-				else if (fTmpAngle <= 1)
-					bucketLayoutRenderStyle.setHorizontalTiltAngleDegree(1);
+				if (fTmpAngle >= 1)
+					bucketLayoutRenderStyle.setZoomFactor(1);
+				else if (fTmpAngle <= 0)
+					bucketLayoutRenderStyle.setZoomFactor(0);
 				else
-					bucketLayoutRenderStyle.setHorizontalTiltAngleDegree(fTmpAngle);
+					bucketLayoutRenderStyle.setZoomFactor(fTmpAngle);
 			}
 			
 			// Change bucket tilt angle of top and bottom wall if CTRL is down
 			if (event.isAltDown())
 			{
-				fTmpAngle = bucketLayoutRenderStyle.getVerticalTiltAngleDegree();
+				fTmpAngle = bucketLayoutRenderStyle.getZoomFactor();
 				
 			    if (notches < 0)
 			    	fTmpAngle += fStepSize;
 			    else
 			    	fTmpAngle -= fStepSize;	
 			    
-				if (fTmpAngle >= 90)
-					bucketLayoutRenderStyle.setVerticalTiltAngleDegree(90);
-				else if (fTmpAngle <= 1)
-					bucketLayoutRenderStyle.setVerticalTiltAngleDegree(1);
+				if (fTmpAngle >= 1)
+					bucketLayoutRenderStyle.setZoomFactor(1);
+				else if (fTmpAngle <= 0)
+					bucketLayoutRenderStyle.setZoomFactor(0);
 				else
-					bucketLayoutRenderStyle.setVerticalTiltAngleDegree(fTmpAngle);
+					bucketLayoutRenderStyle.setZoomFactor(fTmpAngle);
 			}
 			
 			bucketLayoutRenderStyle.initStackLayer();
+			bucketLayoutRenderStyle.initUnderInteractionLayer();
 		}
 		else // zoom to bottom of the bucket
 		{

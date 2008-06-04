@@ -28,6 +28,7 @@ import org.caleydo.core.manager.view.Pick;
 import org.caleydo.core.manager.view.PickingManager;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
@@ -69,6 +70,12 @@ implements GLEventListener {
 	protected GLToolboxRenderer glToolboxRenderer;
 			
 	protected IGLCanvasRemoteRendering3D remoteRenderingGLCanvas;
+	
+	/**
+	 * The views current aspect ratio.
+	 * Value gets updated when reshape is called by the JOGL animator.
+	 */
+	protected float fAspectRatio = 1f;
 	
 	/**
 	 * Constructor.
@@ -198,27 +205,25 @@ implements GLEventListener {
 //				"\nGL_VERSION: " + gl.glGetString(GL.GL_VERSION),
 //				LoggerType.STATUS);
 	    
-	    double fAspectRatio = (double) height / (double) width;
+	    fAspectRatio = (float)height / (float)width;
 
 	    gl.glViewport(x, y, width, height);
 	    gl.glMatrixMode(GL.GL_PROJECTION);
 	    gl.glLoadIdentity();
 	    
 	    if (fAspectRatio < 1.0)
-	    {
-	    	fAspectRatio = 1.0 / fAspectRatio;
-	    	
+	    {	
 	    	if (viewFrustum.getProjectionMode().equals(ProjectionMode.ORTHOGRAPHIC))
 	    	{
-	    		gl.glOrtho(viewFrustum.getLeft() * fAspectRatio, 
-	    			viewFrustum.getRight() * fAspectRatio, 
+	    		gl.glOrtho(viewFrustum.getLeft() * 1.0f / fAspectRatio, 
+	    			viewFrustum.getRight() * 1.0f / fAspectRatio, 
 	    			viewFrustum.getBottom(), viewFrustum.getTop(), 
 	    			viewFrustum.getNear(), viewFrustum.getFar());
 	    	}
 	    	else
 	    	{
-	    		gl.glFrustum(viewFrustum.getLeft() * fAspectRatio, 
-		    		viewFrustum.getRight() * fAspectRatio, 
+	    		gl.glFrustum(viewFrustum.getLeft() * 1.0f / fAspectRatio, 
+		    		viewFrustum.getRight() * 1.0f / fAspectRatio, 
 	    			viewFrustum.getBottom(), viewFrustum.getTop(),
 		    		viewFrustum.getNear(), viewFrustum.getFar());	    		
 	    	}
@@ -242,6 +247,15 @@ implements GLEventListener {
 	    }
 	    
 	    gl.glMatrixMode(GL.GL_MODELVIEW);
+
+//		// Just for testing
+//	    float[] test = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(
+//	    		gl, width, height);
+//	    System.out.println("Object space coordinates: " +test[0] + "," + test[1] + "," + test[2]);
+//	    viewFrustum.setLeft(-test[0] / 2);
+//	    viewFrustum.setRight(test[0] / 2);
+//	    viewFrustum.setBottom(-test[1] / 2);
+//	    viewFrustum.setTop(test[1] / 2);
 	}
 	
 	public final ManagerObjectType getBaseType()

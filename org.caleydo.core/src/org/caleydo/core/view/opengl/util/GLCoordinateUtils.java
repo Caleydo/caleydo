@@ -3,9 +3,12 @@ package org.caleydo.core.view.opengl.util;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.caleydo.core.data.view.camera.ViewFrustumBase;
-
-
+/**
+ * Helper class for converting coordinates
+ * 
+ * @author Marc Streit
+ *
+ */
 public class GLCoordinateUtils 
 {
 
@@ -27,10 +30,7 @@ public class GLCoordinateUtils
 	
 			/* note viewport[3] is height of window in pixels */
 			realy = viewport[3] - iWindowCoordinatePositionY - 1;
-
-//			System.out.println("Coordinates at cursor are (" + point.x + ", "
-//					+ realy);
-						
+					
 			GLU glu = new GLU();
 			
 			//FIXME: the window z value is the problem why the dragging is inaccurate in the bucket

@@ -18,8 +18,9 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 public class BucketLayoutRenderStyle 
 extends ARemoteViewLayoutRenderStyle {
 	
-	private float fTiltAngleDegree_Horizontal = 90;
-	private float fTiltAngleDegree_Vertical = 90;
+	private float fAspectRatio = 1.0f;
+	private float fZoomFactor = 0.0f;
+	private float fPoolLayerWidth = 1f;
 	
 	/**
 	 * Constructor.
@@ -62,9 +63,9 @@ extends ARemoteViewLayoutRenderStyle {
 	 * @see org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle#initUnderInteractionLayer()
 	 */
 	public RemoteHierarchyLayer initUnderInteractionLayer() {
-
+		
 		Transform transformUnderInteraction = new Transform();
-		transformUnderInteraction.setTranslation(new Vec3f(0, 0, 0f));
+		transformUnderInteraction.setTranslation(new Vec3f(-2, -2, 4 * fZoomFactor));
 		transformUnderInteraction.setScale(new Vec3f(fScalingFactorUnderInteractionLayer,
 				fScalingFactorUnderInteractionLayer, fScalingFactorUnderInteractionLayer));
 		underInteractionLayer.setTransformByPositionIndex(0,
@@ -79,36 +80,97 @@ extends ARemoteViewLayoutRenderStyle {
 	 */
 	public RemoteHierarchyLayer initStackLayer() {
 		
-		float fTiltAngleRad_Horizontal = Vec3f.convertGrad2Radiant(fTiltAngleDegree_Horizontal);
-		float fTiltAngleRad_Vertical = Vec3f.convertGrad2Radiant(fTiltAngleDegree_Vertical);
+		Transform transform;
 		
+		float fTiltAngleRad_Horizontal;
+		float fTiltAngleRad_Vertical;
+
+		fTiltAngleRad_Horizontal = (float)Math.acos((4*1/fAspectRatio -4) / 2 / ((float)Math.sqrt(Math.pow(4*(1-fZoomFactor), 2) + 
+		Math.pow((double)((4*1/fAspectRatio - 4) / 2),2))));
+		fTiltAngleRad_Vertical = Vec3f.convertGrad2Radiant(90); // 90 degrees is the maximum possible angle
+		
+		float fScalingCorrection = ((float)Math.sqrt(Math.pow(4*(1-fZoomFactor), 2) + 
+				Math.pow((double)((4*1/fAspectRatio - 4) / 2), 2))) / 4f;
+		
+//		System.out.println(Vec3f.convertRadiant2Grad(fTiltAngleRad_Horizontal));
+//		System.out.println("Aspect ratio: " +fAspectRatio);
+		
+	    if (fAspectRatio < 1.0)
+	    {
+//	    	1.0f / fAspectRatio;
+	    	
+	    	
+	    }
+	    else
+	    {
+	    	
+	    }
+	    
 		// TOP BUCKET WALL
-		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f(0, 8 * fScalingFactorStackLayer, 0));
-		transform.setScale(new Vec3f(fScalingFactorStackLayer, fScalingFactorStackLayer, fScalingFactorStackLayer));
+		transform = new Transform();
+		transform.setTranslation(new Vec3f(-2, 2-4f * (float)Math.cos(fTiltAngleRad_Vertical) * fScalingCorrection, 
+				4 - 4 * (float)Math.sin(fTiltAngleRad_Vertical) * (1-fZoomFactor)));
+		transform.setScale(new Vec3f(fScalingFactorStackLayer, 
+				fScalingFactorStackLayer * (1-fZoomFactor), 
+				fScalingFactorStackLayer * (1-fZoomFactor)));
 		transform.setRotation(new Rotf(new Vec3f(1, 0, 0), fTiltAngleRad_Vertical));
 		stackLayer.setTransformByPositionIndex(0, transform);
 
 		// BOTTOM BUCKET WALL
 		transform = new Transform();
-		transform.setTranslation(new Vec3f(0, -4f * (float)Math.cos(fTiltAngleRad_Vertical), (float)Math.sin(fTiltAngleRad_Vertical) * 4f));
-		transform.setScale(new Vec3f(fScalingFactorStackLayer, fScalingFactorStackLayer, fScalingFactorStackLayer));
+		transform.setTranslation(new Vec3f(-2, -2, 4));
+		transform.setScale(new Vec3f(fScalingFactorStackLayer, 
+				fScalingFactorStackLayer * (1-fZoomFactor), 
+				fScalingFactorStackLayer * (1-fZoomFactor)));
 		transform.setRotation(new Rotf(new Vec3f(-1, 0, 0), fTiltAngleRad_Vertical));
 		stackLayer.setTransformByPositionIndex(2, transform);
 
 		// LEFT BUCKET WALL
 		transform = new Transform();
-		transform.setTranslation(new Vec3f(-4f * (float)Math.cos(fTiltAngleRad_Horizontal), 0, (float)Math.sin(fTiltAngleRad_Horizontal) * 4f));
-		transform.setScale(new Vec3f(fScalingFactorStackLayer, fScalingFactorStackLayer, fScalingFactorStackLayer));
+		transform.setTranslation(new Vec3f(-2*1/fAspectRatio, -2, 4));
+		transform.setScale(new Vec3f(fScalingFactorStackLayer * fScalingCorrection, 
+				fScalingFactorStackLayer, fScalingFactorStackLayer * fScalingCorrection));
 		transform.setRotation(new Rotf(new Vec3f(0, 1, 0), fTiltAngleRad_Horizontal));
 		stackLayer.setTransformByPositionIndex(1, transform);
 
 		// RIGHT BUCKET WALL
 		transform = new Transform();
-		transform.setTranslation(new Vec3f(8 * fScalingFactorStackLayer, 0, 0));
-		transform.setScale(new Vec3f(fScalingFactorStackLayer, fScalingFactorStackLayer, fScalingFactorStackLayer));
+		transform.setTranslation(new Vec3f(2*1/fAspectRatio-4f * (float)Math.cos(fTiltAngleRad_Horizontal) * fScalingCorrection, -2, 
+				4-4 * (float)Math.sin(fTiltAngleRad_Horizontal) * fScalingCorrection));
+		transform.setScale(new Vec3f(fScalingFactorStackLayer * fScalingCorrection, 
+				fScalingFactorStackLayer, fScalingFactorStackLayer * fScalingCorrection));
 		transform.setRotation(new Rotf(new Vec3f(0, -1f, 0), fTiltAngleRad_Horizontal));
 		stackLayer.setTransformByPositionIndex(3, transform);
+		
+//		// OLD static bucket implementation
+//
+//		// TOP BUCKET WALL
+//		transform = new Transform();
+//		transform.setTranslation(new Vec3f(-2, 8 * fScalingFactorStackLayer, 0));
+//		transform.setScale(new Vec3f(fScalingFactorStackLayer, fScalingFactorStackLayer, fScalingFactorStackLayer));
+//		transform.setRotation(new Rotf(new Vec3f(1, 0, 0), fTiltAngleRad_Vertical));
+//		stackLayer.setTransformByPositionIndex(0, transform);
+//
+//		// BOTTOM BUCKET WALL
+//		transform = new Transform();
+//		transform.setTranslation(new Vec3f(-2, -2-2f * (float)Math.cos(fTiltAngleRad_Vertical), (float)Math.sin(fTiltAngleRad_Vertical) * 4f));
+//		transform.setScale(new Vec3f(fScalingFactorStackLayer, fScalingFactorStackLayer, fScalingFactorStackLayer));
+//		transform.setRotation(new Rotf(new Vec3f(-1, 0, 0), fTiltAngleRad_Vertical));
+//		stackLayer.setTransformByPositionIndex(2, transform);
+
+//		// LEFT BUCKET WALL
+//		transform = new Transform();
+//		transform.setTranslation(new Vec3f(-4f * (float)Math.cos(fTiltAngleRad_Horizontal), 0, (float)Math.sin(fTiltAngleRad_Horizontal) * 4f));
+//		transform.setScale(new Vec3f(fScalingFactorStackLayer, fScalingFactorStackLayer, fScalingFactorStackLayer));
+//		transform.setRotation(new Rotf(new Vec3f(0, 1, 0), fTiltAngleRad_Horizontal));
+//		stackLayer.setTransformByPositionIndex(1, transform);
+
+//		// RIGHT BUCKET WALL
+//		transform = new Transform();
+//		transform.setTranslation(new Vec3f(8 * fScalingFactorStackLayer, 0, 0));
+//		transform.setScale(new Vec3f(fScalingFactorStackLayer, fScalingFactorStackLayer, fScalingFactorStackLayer));
+//		transform.setRotation(new Rotf(new Vec3f(0, -1f, 0), fTiltAngleRad_Horizontal));
+//		stackLayer.setTransformByPositionIndex(3, transform);
 		
 		return stackLayer;
 	}
@@ -136,7 +198,7 @@ extends ARemoteViewLayoutRenderStyle {
 			}
 			Transform transform = new Transform();
 
-			transform.setTranslation(new Vec3f(-1.25f, fYAdd, 4.1f));
+			transform.setTranslation(new Vec3f(-2f * 4*(1-fAspectRatio), fYAdd, 4.1f));
 
 			fYAdd += 0.2f * fSelectedScaling;
 
@@ -201,24 +263,39 @@ extends ARemoteViewLayoutRenderStyle {
 		
 		return spawnLayer;
 	}
+//	
+//	public void setHorizontalTiltAngleDegree(final float fTiltAngleDegree_Horizontal)
+//	{
+//		this.fTiltAngleDegree_Horizontal = fTiltAngleDegree_Horizontal;
+//	}
+//	
+//	public void setVerticalTiltAngleDegree(final float fTiltAngleDegree_Vertical)
+//	{
+//		this.fTiltAngleDegree_Vertical = fTiltAngleDegree_Vertical;
+//	}
+//	
+//	public float getHorizontalTiltAngleDegree() 
+//	{
+//		return fTiltAngleDegree_Horizontal;
+//	}
+//	
+//	public float getVerticalTiltAngleDegree() 
+//	{
+//		return fTiltAngleDegree_Vertical;
+//	}	
 	
-	public void setHorizontalTiltAngleDegree(final float fTiltAngleDegree_Horizontal)
+	public void setAspectRatio(final float fAspectRatio) 
 	{
-		this.fTiltAngleDegree_Horizontal = fTiltAngleDegree_Horizontal;
+		this.fAspectRatio = fAspectRatio;
 	}
 	
-	public void setVerticalTiltAngleDegree(final float fTiltAngleDegree_Vertical)
+	public void setZoomFactor(final float fZoomFactor)
 	{
-		this.fTiltAngleDegree_Vertical = fTiltAngleDegree_Vertical;
+		this.fZoomFactor = fZoomFactor;
 	}
 	
-	public float getHorizontalTiltAngleDegree() 
+	public float getZoomFactor()
 	{
-		return fTiltAngleDegree_Horizontal;
+		return fZoomFactor;
 	}
-	
-	public float getVerticalTiltAngleDegree() 
-	{
-		return fTiltAngleDegree_Vertical;
-	}	
 }

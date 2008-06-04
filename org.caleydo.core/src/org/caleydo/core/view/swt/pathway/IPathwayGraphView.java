@@ -2,8 +2,8 @@ package org.caleydo.core.view.swt.pathway;
 
 import java.awt.Dimension;
 
-import org.caleydo.core.data.graph.core.PathwayGraph;
-import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
+import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.view.IView;
 
 public interface IPathwayGraphView 

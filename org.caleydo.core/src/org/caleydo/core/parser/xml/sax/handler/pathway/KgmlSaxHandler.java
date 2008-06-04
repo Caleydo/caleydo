@@ -13,9 +13,9 @@ import org.caleydo.util.graph.IGraphItem;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
-import org.caleydo.core.data.graph.item.edge.PathwayReactionEdgeGraphItem;
-import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
-import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.core.data.graph.pathway.item.edge.PathwayReactionEdgeGraphItem;
+import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;

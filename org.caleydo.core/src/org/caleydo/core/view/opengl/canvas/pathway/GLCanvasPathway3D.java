@@ -13,9 +13,9 @@ import javax.swing.ImageIcon;
 import org.caleydo.core.data.GeneralRenderStyle;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.selection.ISetSelection;
-import org.caleydo.core.data.graph.core.PathwayGraph;
-import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
-import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
+import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
@@ -411,6 +411,7 @@ implements IMediatorReceiver, IMediatorSender {
 		img = null;
 	
 		float fPathwayScalingFactor = 0;
+		float fPadding = 0.98f;
 		
 		if (((PathwayGraph)generalManager.getPathwayManager()
 				.getItem(iPathwayId)).getType().equals(EPathwayDatabaseType.BIOCARTA))
@@ -428,7 +429,7 @@ implements IMediatorReceiver, IMediatorSender {
 		if (fTmpPathwayWidth > (viewFrustum.getRight() - viewFrustum.getLeft())
 				&& fTmpPathwayWidth > fTmpPathwayHeight)
 		{			
-			vecScaling.setX((viewFrustum.getRight() - viewFrustum.getLeft()) / (iImageWidth * GLPathwayManager.SCALING_FACTOR_X) * 0.9f);
+			vecScaling.setX((viewFrustum.getRight() - viewFrustum.getLeft()) / (iImageWidth * GLPathwayManager.SCALING_FACTOR_X) * fPadding);
 			vecScaling.setY(vecScaling.x());	
 
 			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft() - 
@@ -438,7 +439,7 @@ implements IMediatorReceiver, IMediatorSender {
 		}
 		else if (fTmpPathwayHeight > (viewFrustum.getTop() - viewFrustum.getBottom()))
 		{
-			vecScaling.setY((viewFrustum.getTop() - viewFrustum.getBottom()) / (iImageHeight * GLPathwayManager.SCALING_FACTOR_Y) * 0.9f);
+			vecScaling.setY((viewFrustum.getTop() - viewFrustum.getBottom()) / (iImageHeight * GLPathwayManager.SCALING_FACTOR_Y) * fPadding);
 			vecScaling.setX(vecScaling.y());
 
 			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft() - 

@@ -14,13 +14,13 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.AUniqueManagedObject;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.graph.core.PathwayGraph;
-import org.caleydo.core.data.graph.item.edge.PathwayReactionEdgeGraphItemRep;
-import org.caleydo.core.data.graph.item.edge.PathwayRelationEdgeGraphItemRep;
-import org.caleydo.core.data.graph.item.vertex.EPathwayVertexShape;
-import org.caleydo.core.data.graph.item.vertex.EPathwayVertexType;
-import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
-import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
+import org.caleydo.core.data.graph.pathway.item.edge.PathwayReactionEdgeGraphItemRep;
+import org.caleydo.core.data.graph.pathway.item.edge.PathwayRelationEdgeGraphItemRep;
+import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexShape;
+import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
+import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
@@ -64,7 +64,6 @@ public class GLPathwayManager {
 	private boolean bEnableAnnotation = true;
 	
 	private HashMap<Integer, Integer> hashPathwayId2VerticesDisplayListId;
-	
 	private HashMap<Integer, Integer> hashPathwayId2EdgesDisplayListId;	
 	
 	private GenomeMapper genomeMapper;
@@ -272,7 +271,7 @@ public class GLPathwayManager {
 			{
 				// Check if selected item is a vertex
 				if (lGraphItems.get(iItemIndex).getClass().equals
-						(org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItemRep.class))
+						(org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep.class))
 				{			
 					hashSelectedVertexRepId2Depth.put(
 							lGraphItems.get(iItemIndex).getId(), (iDepthIndex+1) / 2); // consider only vertices for depth

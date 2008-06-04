@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.logging.Level;
 
 import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
 import org.caleydo.core.command.CommandQueueSaxType;
@@ -20,8 +21,8 @@ import org.caleydo.core.command.event.CmdEventCreateMediator;
 import org.caleydo.core.command.view.opengl.CmdGlObjectPathway3D;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.selection.ISetSelection;
-import org.caleydo.core.data.graph.core.PathwayGraph;
-import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
+import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle;
@@ -53,6 +54,7 @@ import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLConnectionLineRender
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLIconTextureManager;
+import org.caleydo.core.view.opengl.util.GLSharedObjects;
 import org.caleydo.core.view.opengl.util.drag.GLDragAndDrop;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 import org.caleydo.core.view.opengl.util.trashcan.TrashCan;
@@ -287,6 +289,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 		time.update();
 
 		layoutRenderStyle.initPoolLayer(iMouseOverViewID);
+		
 		doSlerpActions(gl);
 		
 		renderLayer(gl, underInteractionLayer);
@@ -618,6 +621,8 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 					0.1f);  // scale factor
 			textRenderer.end3DRendering();
 		}
+		
+//		GLSharedObjects.drawAxis(gl);
 
 		tmpCanvasUser.displayRemote(gl);			
 
@@ -1840,5 +1845,23 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 				"GL Event Listener " +iGLEvnetListenerId +" is not contained in any layer!");
 
 		return null;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int)
+	 */
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+		
+		super.reshape(drawable, x, y, width, height);
+			
+		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
+		{
+			// Update aspect ratio and reinitialize stack and focus layer
+			((BucketLayoutRenderStyle)layoutRenderStyle).setAspectRatio(fAspectRatio);
+			
+			layoutRenderStyle.initUnderInteractionLayer();
+			layoutRenderStyle.initStackLayer();
+		}
 	}
 }

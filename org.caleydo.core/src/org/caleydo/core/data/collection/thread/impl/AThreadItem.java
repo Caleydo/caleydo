@@ -3,7 +3,7 @@
  */
 package org.caleydo.core.data.collection.thread.impl;
 
-import org.caleydo.core.data.AUniqueItem;
+import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.thread.ICollectionThreadItem;
 import org.caleydo.core.data.collection.thread.lock.ICollectionLock;
 import org.caleydo.core.data.collection.thread.lock.ICollectionReadWriteLock;
@@ -15,7 +15,7 @@ import org.caleydo.core.data.collection.thread.lock.ICollectionReadWriteLock;
  *
  */
 public abstract class AThreadItem
-  extends AUniqueItem
+  extends AUniqueObject
   implements ICollectionThreadItem {
 
 	
@@ -30,10 +30,10 @@ public abstract class AThreadItem
 	 * 
 	 * @param iSetCollectionId new unique Id of this object.
 	 * 
-	 * @see org.caleydo.core.data.AUniqueItem#UniqueItem(int)
+	 * @see org.caleydo.core.data.AUniqueObject#UniqueItem(int)
 	 */
 	protected AThreadItem( int iSetCollectionId ) {
-		super( iSetCollectionId );
+		super( iSetCollectionId, null);
 		
 		collectionLock = new ICollectionReadWriteLock();
 	}
@@ -43,11 +43,11 @@ public abstract class AThreadItem
 	 * 
 	 * @param iSetCollectionId new unique Id of this object.
 	 * 
-	 * @see org.caleydo.core.data.AUniqueItem#UniqueItem(int)
+	 * @see org.caleydo.core.data.AUniqueObject#UniqueItem(int)
 	 */
 	protected AThreadItem( int iSetCollectionId,
 			final ICollectionLock setCollectionLock ) {
-		super( iSetCollectionId );
+		super( iSetCollectionId, null);
 		
 		if ( setCollectionLock == null ) {
 			collectionLock = new ICollectionReadWriteLock();

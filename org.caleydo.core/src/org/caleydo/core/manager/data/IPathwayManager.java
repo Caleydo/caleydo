@@ -1,6 +1,6 @@
 package org.caleydo.core.manager.data;
 
-import org.caleydo.core.data.graph.core.PathwayGraph;
+import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.view.rep.jgraph.PathwayImageMap;
 import org.caleydo.core.manager.IManager;
 import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;

@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import org.caleydo.core.data.graph.core.PathwayGraph;
+import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.view.rep.jgraph.PathwayImageMap;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;

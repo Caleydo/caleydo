@@ -7,9 +7,9 @@ import java.util.LinkedList;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 
-import org.caleydo.core.data.graph.item.vertex.EPathwayVertexType;
-import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
-import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
+import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.mapping.GeneAnnotationMapper;

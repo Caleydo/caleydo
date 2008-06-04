@@ -83,7 +83,6 @@ extends GeneralRenderStyle {
 	public abstract RemoteHierarchyLayer initMemoLayer();
 	public abstract RemoteHierarchyLayer initTransitionLayer();
 	public abstract RemoteHierarchyLayer initSpawnLayer();
-
 	
 	public RemoteHierarchyLayer getUnderInteractionLayer() {
 	

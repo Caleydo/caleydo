@@ -1,4 +1,4 @@
-package org.caleydo.core.data.graph.item.vertex;
+package org.caleydo.core.data.graph.pathway.item.vertex;
 
 import java.io.Serializable;
 import java.util.StringTokenizer;

@@ -4,7 +4,7 @@ import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
-import org.caleydo.core.data.AUniqueItem;
+import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.view.camera.IViewCamera;
 import org.caleydo.core.math.MathUtil;
 
@@ -14,7 +14,7 @@ import org.caleydo.core.math.MathUtil;
  *
  */
 public class ViewCameraBase 
-extends AUniqueItem
+extends AUniqueObject
 implements IViewCamera {
 	
 	/**
@@ -58,7 +58,7 @@ implements IViewCamera {
 	 */
 	public ViewCameraBase( int iId) {
 		
-		super( iId );		
+		super(iId, null);		
 		
 		rotfCameraRotation = new Rotf();
 		

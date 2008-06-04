@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.caleydo.core.data.collection.set.selection.SetSelection;
-import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.system.StringConversionTool;

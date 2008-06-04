@@ -11,7 +11,7 @@ import org.caleydo.core.manager.IGeneralManager;
  *
  */
 public abstract class AUniqueManagedObject 
-extends AUniqueItem
+extends AUniqueObject
 implements IUniqueManagedObject {
 
 	/**
@@ -25,7 +25,7 @@ implements IUniqueManagedObject {
 	protected AUniqueManagedObject( final int iUniqueId, 
 			final IGeneralManager generalManager ) {
 
-		super( iUniqueId );
+		super(iUniqueId, generalManager);
 		
 		assert generalManager != null: "General Manager is NULL";
 		

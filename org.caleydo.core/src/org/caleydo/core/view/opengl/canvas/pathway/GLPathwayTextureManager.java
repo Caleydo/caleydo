@@ -7,7 +7,7 @@ import java.util.LinkedList;
 import javax.media.opengl.GL;
 import javax.swing.ImageIcon;
 
-import org.caleydo.core.data.graph.core.PathwayGraph;
+import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;

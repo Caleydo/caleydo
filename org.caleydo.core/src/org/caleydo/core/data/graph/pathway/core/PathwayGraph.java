@@ -1,4 +1,4 @@
-package org.caleydo.core.data.graph.core;
+package org.caleydo.core.data.graph.pathway.core;
 
 import java.io.Serializable;
 

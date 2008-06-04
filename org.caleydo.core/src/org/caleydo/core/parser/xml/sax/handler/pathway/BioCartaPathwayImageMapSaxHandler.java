@@ -2,7 +2,7 @@ package org.caleydo.core.parser.xml.sax.handler.pathway;
 
 import java.util.logging.Level;
 
-import org.caleydo.core.data.graph.core.PathwayGraph;
+import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;

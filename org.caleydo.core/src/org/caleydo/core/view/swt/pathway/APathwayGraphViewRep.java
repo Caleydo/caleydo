@@ -9,8 +9,8 @@ import org.caleydo.util.graph.IGraphItem;
 
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
-import org.caleydo.core.data.graph.core.PathwayGraph;
-import org.caleydo.core.data.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
+import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.view.rep.jgraph.PathwayImageMap;
 import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;

@@ -18,6 +18,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 
 import com.sun.opengl.util.BufferUtil;
 
@@ -136,7 +137,7 @@ extends AManager
 //			pickingTriggerMouseAdapter.wasMouseReleased();
 
 		EPickingMode ePickingMode = EPickingMode.CLICKED;		
-		
+				
 		if (pickingTriggerMouseAdapter.wasLeftMouseButtonPressed())
 				//|| bMouseReleased)
 		{			
@@ -171,6 +172,11 @@ extends AManager
 		{
 			return;
 		}
+		
+//		// Just for testing
+//	    float[] test = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(
+//	    		gl, pickPoint.x, pickPoint.y);
+//	    System.out.println("Object space coordinates: " +test[0] + "," + test[1] + "," + test[2]);
 		
 		hashViewIDToIsMouseOverPickingEvent.put(iViewID, false);
 		
