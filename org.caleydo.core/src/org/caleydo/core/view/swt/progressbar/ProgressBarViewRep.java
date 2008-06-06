@@ -45,7 +45,7 @@ implements IView {
 	}
 
 	/**
-	 * Define style of progressbar. 
+	 * Define style of progress bar. 
 	 * Must be called before retrieveNewGUIContainer()
 	 * 
 	 * Default is SWT.HORIZONTAL

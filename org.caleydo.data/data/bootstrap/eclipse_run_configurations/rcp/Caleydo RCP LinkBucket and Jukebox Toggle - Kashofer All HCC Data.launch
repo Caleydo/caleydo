@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<launchConfiguration type="org.eclipse.pde.ui.RuntimeWorkbench">
+<booleanAttribute key="append.args" value="true"/>
+<booleanAttribute key="askclear" value="true"/>
+<booleanAttribute key="automaticAdd" value="false"/>
+<booleanAttribute key="automaticValidate" value="false"/>
+<stringAttribute key="bootstrap" value=""/>
+<booleanAttribute key="clearConfig" value="false"/>
+<booleanAttribute key="clearws" value="true"/>
+<booleanAttribute key="clearwslog" value="false"/>
+<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Caleydo RCP LinkBucket and Jukebox Toggle - Kashofer HCC Data"/>
+<booleanAttribute key="default" value="false"/>
+<booleanAttribute key="includeOptional" value="true"/>
+<stringAttribute key="location" value="${workspace_loc}/../runtime-org.caleydo.rcp.product"/>
+<booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
+<listAttribute key="org.eclipse.debug.ui.favoriteGroups">
+<listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
+</listAttribute>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl}&#10;data/bootstrap/shared/kashofer/hcc/all_hcc/rcp/bootstrap.xml"/>
+<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms512m -Xmx1024m -Dsun.java2d.opengl=true -Djava.util.logging.config.file=data/logging/logging.properties&#10;-Xss16384k"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:org.caleydo.data}"/>
+<stringAttribute key="pde.version" value="3.3"/>
+<stringAttribute key="product" value="org.caleydo.rcp.product"/>
+<stringAttribute key="productFile" value="/org.caleydo.rcp/org.caleydo.rcp.product"/>
+<stringAttribute key="selected_target_plugins" value="org.eclipse.equinox.p2.metadata*0.1.0.v20080310-2148,org.eclipse.core.runtime.compatibility.registry*3.2.200.v20070717,javax.servlet*2.4.0.v200803061910,org.eclipse.core.expressions*3.4.0.v20080327-1300,org.eclipse.core.jobs*3.4.0.v20080310,org.eclipse.ant.core*3.2.0.v20080319,org.eclipse.ecf.filetransfer*2.0.0.v20080331-0800,org.eclipse.core.variables*3.2.100.v20080324-1600,org.eclipse.ui.workbench*3.4.0.I20080328-1206,org.eclipse.core.databinding*1.1.0.I20080325-0100,org.eclipse.update.ui*3.2.100.v20080318,org.eclipse.jface*3.4.0.I20080328-1206,org.eclipse.ecf*2.0.0.v20080331-0800,org.eclipse.equinox.preferences*3.2.200.v20080201,org.eclipse.help*3.3.100.v20080320,org.eclipse.equinox.p2.core*0.1.0.v20080327-2205,org.eclipse.jface.databinding*1.2.0.I20080325-0100,org.eclipse.swt.gtk.linux.x86*3.4.0.v3436,org.eclipse.equinox.registry*3.4.0.v20080316,org.eclipse.equinox.p2.jarprocessor*0.1.0.v20080226-2139,org.eclipse.equinox.frameworkadmin*0.1.0.v20080317-1820,org.eclipse.core.contenttype*3.3.0.v20080201,org.eclipse.ui*3.4.0.I20080328-1206,org.eclipse.osgi*3.4.0.v20080326,org.eclipse.ui.forms*3.3.100.v20080303,org.eclipse.equinox.common*3.4.0.v20080320,org.eclipse.equinox.p2.metadata.generator*0.1.0.v20080329-1213,org.eclipse.equinox.p2.metadata.repository*0.1.0.v20080328-1404,org.eclipse.core.runtime.compatibility.auth*3.2.100.v20070502,com.ibm.icu*3.8.1.v20080304,org.eclipse.equinox.frameworkadmin.equinox*0.1.0.v20080319-2038,org.eclipse.osgi.services*3.1.200.v20071203,org.eclipse.equinox.app*1.0.100.v20080316,org.eclipse.ecf.identity*2.0.0.v20080331-0800,org.eclipse.update.core.linux*3.2.0.v20070615,org.eclipse.equinox.p2.artifact.repository*0.1.0.v20080328-1404,org.eclipse.update.configurator*3.2.200.v20080107,org.eclipse.update.core*3.2.200.v20080318,org.eclipse.core.commands*3.4.0.I20080324-1800,org.eclipse.swt*3.4.0.v3436a,org.eclipse.core.net*1.0.100.I20080322,org.eclipse.core.runtime*3.4.0.v20080324-1725"/>
+<stringAttribute key="selected_workspace_plugins" value="org.caleydo.rcp*1.0.0"/>
+<booleanAttribute key="show_selected_only" value="false"/>
+<booleanAttribute key="tracing" value="false"/>
+<booleanAttribute key="useDefaultConfig" value="true"/>
+<booleanAttribute key="useDefaultConfigArea" value="true"/>
+<booleanAttribute key="useProduct" value="true"/>
+<booleanAttribute key="usefeatures" value="false"/>
+</launchConfiguration>

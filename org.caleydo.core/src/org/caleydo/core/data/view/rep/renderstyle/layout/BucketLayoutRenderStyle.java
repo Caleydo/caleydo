@@ -18,10 +18,6 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 public class BucketLayoutRenderStyle 
 extends ARemoteViewLayoutRenderStyle {
 	
-	private float fAspectRatio = 1.0f;
-	private float fZoomFactor = 0.0f;
-	private float fPoolLayerWidth = 1f;
-	
 	/**
 	 * Constructor.
 	 */
@@ -51,11 +47,6 @@ extends ARemoteViewLayoutRenderStyle {
 		fScalingFactorMemoLayer = 0.08f;
 		fScalingFactorTransitionLayer = 0.05f;
 		fScalingFactorSpawnLayer = 0.01f;
-		
-		fTrashCanXPos = 4.07f;
-		fTrashCanYPos = 0.05f;
-		fTrashCanWidth = 0.35f;
-		fTrashCanHeight = 0.35f;
 	}
 	
 	/*
@@ -85,26 +76,27 @@ extends ARemoteViewLayoutRenderStyle {
 		float fTiltAngleRad_Horizontal;
 		float fTiltAngleRad_Vertical;
 
-		fTiltAngleRad_Horizontal = (float)Math.acos((4*1/fAspectRatio -4) / 2 / ((float)Math.sqrt(Math.pow(4*(1-fZoomFactor), 2) + 
-		Math.pow((double)((4*1/fAspectRatio - 4) / 2),2))));
+		fTiltAngleRad_Horizontal = (float)Math.acos(((4*1/fAspectRatio - 4 - 2*fPoolLayerWidth) / 2) / ((float)Math.sqrt(Math.pow(4*(1-fZoomFactor), 2) + 
+		Math.pow((double)((4*1/fAspectRatio - 4 - 2*fPoolLayerWidth) / 2),2))));
 		fTiltAngleRad_Vertical = Vec3f.convertGrad2Radiant(90); // 90 degrees is the maximum possible angle
 		
 		float fScalingCorrection = ((float)Math.sqrt(Math.pow(4*(1-fZoomFactor), 2) + 
-				Math.pow((double)((4*1/fAspectRatio - 4) / 2), 2))) / 4f;
+				Math.pow((double)((4*1/fAspectRatio - 4 - 2*fPoolLayerWidth) / 2), 2))) / 4f;
 		
 //		System.out.println(Vec3f.convertRadiant2Grad(fTiltAngleRad_Horizontal));
 //		System.out.println("Aspect ratio: " +fAspectRatio);
 		
-	    if (fAspectRatio < 1.0)
-	    {
-//	    	1.0f / fAspectRatio;
-	    	
-	    	
-	    }
-	    else
-	    {
-	    	
-	    }
+		// FIXME: handle case when height > width
+//	    if (fAspectRatio < 1.0)
+//	    {
+////	    	1.0f / fAspectRatio;
+//	    	
+//	    	
+//	    }
+//	    else
+//	    {
+//	    	
+//	    }
 	    
 		// TOP BUCKET WALL
 		transform = new Transform();
@@ -127,7 +119,7 @@ extends ARemoteViewLayoutRenderStyle {
 
 		// LEFT BUCKET WALL
 		transform = new Transform();
-		transform.setTranslation(new Vec3f(-2*1/fAspectRatio, -2, 4));
+		transform.setTranslation(new Vec3f(fPoolLayerWidth-2*1/fAspectRatio, -2, 4));
 		transform.setScale(new Vec3f(fScalingFactorStackLayer * fScalingCorrection, 
 				fScalingFactorStackLayer, fScalingFactorStackLayer * fScalingCorrection));
 		transform.setRotation(new Rotf(new Vec3f(0, 1, 0), fTiltAngleRad_Horizontal));
@@ -135,7 +127,7 @@ extends ARemoteViewLayoutRenderStyle {
 
 		// RIGHT BUCKET WALL
 		transform = new Transform();
-		transform.setTranslation(new Vec3f(2*1/fAspectRatio-4f * (float)Math.cos(fTiltAngleRad_Horizontal) * fScalingCorrection, -2, 
+		transform.setTranslation(new Vec3f(-fPoolLayerWidth+2*1/fAspectRatio-4f * (float)Math.cos(fTiltAngleRad_Horizontal) * fScalingCorrection, -2, 
 				4-4 * (float)Math.sin(fTiltAngleRad_Horizontal) * fScalingCorrection));
 		transform.setScale(new Vec3f(fScalingFactorStackLayer * fScalingCorrection, 
 				fScalingFactorStackLayer, fScalingFactorStackLayer * fScalingCorrection));
@@ -182,7 +174,7 @@ extends ARemoteViewLayoutRenderStyle {
 	public RemoteHierarchyLayer initPoolLayer(final int iMouseOverViewID) {
 		
 		float fSelectedScaling = 1;
-		float fYAdd = 0.1f;
+		float fYAdd = -1.8f;
 
 		int iSelectedViewIndex = poolLayer
 				.getPositionIndexByElementId(iMouseOverViewID);
@@ -192,13 +184,14 @@ extends ARemoteViewLayoutRenderStyle {
 			if (iViewIndex == iSelectedViewIndex)
 			{
 				fSelectedScaling = 3f;
-			} else
+			} 
+			else
 			{
 				fSelectedScaling = 1;
 			}
+			
 			Transform transform = new Transform();
-
-			transform.setTranslation(new Vec3f(-2f * 4*(1-fAspectRatio), fYAdd, 4.1f));
+			transform.setTranslation(new Vec3f(-1.93f*1/fAspectRatio, fYAdd, 4.1f));
 
 			fYAdd += 0.2f * fSelectedScaling;
 
@@ -219,17 +212,23 @@ extends ARemoteViewLayoutRenderStyle {
 
 		// Create free memo spots
 		Transform transform;
-		float fMemoPos = 0.46f;
+		float fMemoPos = -1.83f;
 		for (int iMemoIndex = 0; iMemoIndex < memoLayer.getCapacity(); iMemoIndex++)
 		{
 			// Store current model-view matrix
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(4.0f, fMemoPos, 4.1f));
+			transform.setTranslation(new Vec3f(2f/fAspectRatio - fPoolLayerWidth + 0.07f, fMemoPos, 4.01f));
 			transform.setScale(new Vec3f(fScalingFactorMemoLayer, fScalingFactorMemoLayer, fScalingFactorMemoLayer));
 			memoLayer.setTransformByPositionIndex(iMemoIndex, transform);
 
 			fMemoPos += 0.7f;
 		}
+		
+		// Init trash can position
+		fTrashCanXPos = 2f/fAspectRatio - fPoolLayerWidth + 0.2f;
+		fTrashCanYPos = 1.65f;
+		fTrashCanWidth = 0.35f;
+		fTrashCanHeight = 0.3f;
 		
 		return memoLayer;
 	}
@@ -241,7 +240,7 @@ extends ARemoteViewLayoutRenderStyle {
 	public RemoteHierarchyLayer initTransitionLayer() {
 
 		Transform transformTransition = new Transform();
-		transformTransition.setTranslation(new Vec3f(1.9f, 0, 0.1f));
+		transformTransition.setTranslation(new Vec3f(0, -2f, 0.1f));
 		transformTransition.setScale(new Vec3f(fScalingFactorTransitionLayer,
 				fScalingFactorTransitionLayer, fScalingFactorTransitionLayer));
 		transitionLayer.setTransformByPositionIndex(0, transformTransition);
@@ -283,19 +282,4 @@ extends ARemoteViewLayoutRenderStyle {
 //	{
 //		return fTiltAngleDegree_Vertical;
 //	}	
-	
-	public void setAspectRatio(final float fAspectRatio) 
-	{
-		this.fAspectRatio = fAspectRatio;
-	}
-	
-	public void setZoomFactor(final float fZoomFactor)
-	{
-		this.fZoomFactor = fZoomFactor;
-	}
-	
-	public float getZoomFactor()
-	{
-		return fZoomFactor;
-	}
 }

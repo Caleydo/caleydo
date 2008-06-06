@@ -57,16 +57,16 @@ public class TrashCan {
 	
 		gl.glBegin(GL.GL_QUADS);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(layoutStyle.getTrashCanXPos(), layoutStyle.getTrashCanYPos(), 4.1f);
+		gl.glVertex3f(layoutStyle.getTrashCanXPos(), layoutStyle.getTrashCanYPos(), 4.01f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 		gl.glVertex3f(layoutStyle.getTrashCanXPos() + layoutStyle.getTrashCanWidth(), 
-				layoutStyle.getTrashCanYPos(), 4.1f);
+				layoutStyle.getTrashCanYPos(), 4.01f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
 		gl.glVertex3f(layoutStyle.getTrashCanXPos() + layoutStyle.getTrashCanWidth(), 
-				layoutStyle.getTrashCanYPos() + layoutStyle.getTrashCanHeight(), 4.1f);
+				layoutStyle.getTrashCanYPos() + layoutStyle.getTrashCanHeight(), 4.01f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
 		gl.glVertex3f(layoutStyle.getTrashCanXPos(), layoutStyle.getTrashCanYPos() + 
-				layoutStyle.getTrashCanHeight(), 4.1f);
+				layoutStyle.getTrashCanHeight(), 4.01f);
 		gl.glEnd();
 	
 		trashCanTexture.disable();

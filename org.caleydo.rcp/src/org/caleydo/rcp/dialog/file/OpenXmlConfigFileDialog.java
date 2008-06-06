@@ -121,9 +121,9 @@ extends Dialog {
 			return;
 		}
 		
-		ISWTGUIManager refISWTGUIManager = 
+		ISWTGUIManager iSWTGUIManager = 
 			Application.caleydo_core.getGeneralManager().getSWTGUIManager();
-		refISWTGUIManager.setProgressbarVisible(true);
+		iSWTGUIManager.setProgressbarVisible(true);
 				
 		try 
 		{		
@@ -139,7 +139,7 @@ extends Dialog {
 		}
 		finally 
 		{
-			refISWTGUIManager.setProgressbarVisible(false);
+			iSWTGUIManager.setProgressbarVisible(false);
 		}
 	}
 	

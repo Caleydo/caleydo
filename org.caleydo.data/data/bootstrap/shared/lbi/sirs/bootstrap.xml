@@ -19,12 +19,12 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" uniqueId="14331" label="Caleydo Browser" 		attrib1="ROW HORIZONTAL" />   
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_BROWSER"			cmdId="64991" uniqueId="85401" label="Browser"				parent="14331"  />
 		<!--			
-		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="88401" parent="99081" label="Pathway" 
-						gl_origin="0 0 0" 
-						gl_rotation="0 0 0 0"					
-						attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
-						attrib4="403600"							
-						detail="90101 91101" />																																		
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PATHWAY_3D"		cmdId="69994"	uniqueId="88401" parent="99081" label="Pathway" 
+							gl_origin="0 0 0" 
+							gl_rotation="0 0 0 0"					
+							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
+							attrib4="403600"							
+							detail="90101 91101" />																																		
 		-->
 		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PARALLEL_COORDINATES_3D"		cmdId="69994"	uniqueId="82401" parent="99076" label="Parallel Coordinates" 
 						gl_origin="0 0 0" 
@@ -39,12 +39,13 @@
 						attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
 						attrib4="transparency 0.6" 
 						detail="35101 94101 95101" /> 		
-				
+		<!--	
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_GLYPH"		cmdId="69994"	uniqueId="87401" parent="99076" label="Glyph" 
-						gl_origin="0 0 0" 
-						gl_rotation="0 0 0 0"					
-						attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
-						detail="351010 651010 901010" /> 
+							gl_origin="0 0 0" 
+							gl_rotation="0 0 0 0"					
+							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
+							detail="351010 651010 901010" /> 
+		-->
 
 		<!-- Window	10331 -->	
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="10331" 
@@ -54,7 +55,7 @@
 			  	gl_canvas="99075" parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_BUCKET_3D"		cmdId="69994"	uniqueId="83401" parent="99075" label="Bucket" 
-							gl_origin="-2 -2 -8" 
+							gl_origin="0 0 -8" 
 							gl_rotation="0 0 0 0"					
 							attrib3="PERSPECTIVE -1.5 1.5 -1.5 1.5 2.9 100"
 							attrib4="transparency 1" 								

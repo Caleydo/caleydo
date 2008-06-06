@@ -30,6 +30,19 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator Pathway Reverse" attrib1="82401" attrib2="83401 85401 86401" detail="SELECTION_MEDIATOR" />
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator Pathway Reverse" attrib1="86401" attrib2="83401 82401 85401" detail="SELECTION_MEDIATOR" />     
      
+		<!-- Setting paths -->	
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set KEGG Pathway Path" 
+			detail="KEGG"
+			attrib1="data/genome/pathway/xml/hsa/" 
+			attrib2="data/genome/pathway/images/hsa/" 
+			attrib3="data/genome/pathway/imagemap/" /> 
+			
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set Biocarta Pathway Paths" 
+			detail="BIOCARTA"
+			attrib1="data/genome/pathway/biocarta/imagemap/" 
+			attrib2="data/genome/pathway/biocarta/image/" 
+			attrib3="data/genome/pathway/biocarta/imagemap/" />      
+     
    </CommandBuffer>
     
   </Application>

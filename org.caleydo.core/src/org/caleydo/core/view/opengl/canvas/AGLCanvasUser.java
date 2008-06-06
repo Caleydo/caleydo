@@ -335,10 +335,11 @@ implements GLEventListener {
 				switch (currentSet.getSetType()) {
 				case SET_PATHWAY_DATA:
 				case SET_GENE_EXPRESSION_DATA:
+					alSetData.add(currentSet);
+					break;					
 				case SET_RAW_DATA:
 					alSetData.add(currentSet);
 					break;
-					
 				case SET_SELECTION:
 					alSetSelection.add((SetSelection)currentSet);
 					break;

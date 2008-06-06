@@ -62,7 +62,7 @@
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="551010" label="Set for glyph dictionary" attrib1="552010" attrib2="553010 553020 553030 553040 553050 55360" attrib3="SET_GENE_EXPRESSION_DATA" />
 
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/clinical/dictionary.csv"	
-			attrib1="INT;STRING;STRING;INT;FLOAT;INT;ABORT" 						attrib2="553010 553020 553030 553040 553050 55360" attrib3="1 -1" />			
+			attrib1="INT;STRING;STRING;INT;FLOAT;INT;ABORT" 						attrib2="553010 553020 553030 553040 553050 553060" attrib3="1 -1" />			
 
 
 </details>

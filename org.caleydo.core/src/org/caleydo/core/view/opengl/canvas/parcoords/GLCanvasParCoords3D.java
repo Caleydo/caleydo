@@ -573,25 +573,25 @@ extends AGLCanvasStorageBasedView
 			float fCurrentYValue = 0;
 
 			// this loop executes once per axis
-			for (int iVertricesCount = 0; iVertricesCount < iNumberOfAxis; iVertricesCount++)
+			for (int iVertexCount = 0; iVertexCount < iNumberOfAxis; iVertexCount++)
 			{
 				int iStorageIndex = 0;
 				
 				// get the index if array as polyline
 				if (bRenderStorageHorizontally)
 				{
-					iStorageIndex = alContentSelection.get(iVertricesCount);
+					iStorageIndex = alContentSelection.get(iVertexCount);
 				}
 				// get the storage and the storage index for the different cases				
 				else
 				{				
-					currentStorage = alDataStorages.get(alStorageSelection.get(iVertricesCount));					
+					currentStorage = alDataStorages.get(alStorageSelection.get(iVertexCount));					
 					iStorageIndex = iPolyLineID;					
 				}			
 								
-				fCurrentXValue = iVertricesCount * fAxisSpacing;
+				fCurrentXValue = iVertexCount * fAxisSpacing;
 				fCurrentYValue = currentStorage.getArrayFloat()[iStorageIndex];
-				if(iVertricesCount != 0)
+				if(iVertexCount != 0)
 				{
 					gl.glBegin(GL.GL_LINES);
 					gl.glVertex3f(fPreviousXValue, 
@@ -1433,11 +1433,20 @@ extends AGLCanvasStorageBasedView
 			int iCount = 0;
 			for(Integer iCurrent : alStorageSelection)
 			{
+				// MARC: just add last point for line connections
+				// therefore the polyline is only connected with a line at the right of the view
+				// instead of the triangle fan
+				if (iCurrent < alStorageSelection.size()-1)
+				{				
+					iCount++;
+					continue;
+				}
+				
 				fYValue = alDataStorages.get(iCurrent).getArrayFloat()[iStorageIndex];
 				fYValue = fYValue * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
 				fXValue = iCount * fAxisSpacing + renderStyle.getXSpacing() + fXTranslation;
 				alPoints.add(new Vec3f(fXValue, fYValue, 0));
-				iCount++;
+
 			}		
 		
 			elementRep = new SelectedElementRep(iUniqueId, alPoints);

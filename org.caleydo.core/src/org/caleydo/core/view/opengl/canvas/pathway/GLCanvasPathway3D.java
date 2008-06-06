@@ -39,6 +39,7 @@ import org.caleydo.core.view.opengl.util.hierarchy.EHierarchyLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
 import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
+import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
@@ -496,7 +497,10 @@ implements IMediatorReceiver, IMediatorSender {
 		gLPathwayManager.enableAnnotation(bEnableAnnotation);
 	}
 	
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.caleydo.core.manager.view.EPickingType, org.caleydo.core.manager.view.EPickingMode, int, org.caleydo.core.manager.view.Pick)
+	 */
 	protected void handleEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) 
 	{
@@ -516,6 +520,8 @@ implements IMediatorReceiver, IMediatorSender {
 			PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) generalManager
 				.getPathwayItemManager().getItem(iExternalID);
 			
+			// FIXME: it is not correct to just grab the first node parent
+			// we must iterature over all parents in the case of multiple gene mapping
 			PathwayVertexGraphItem tmpVertexGraphItem = (PathwayVertexGraphItem) tmpVertexGraphItemRep
 				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0);
 			
@@ -545,7 +551,7 @@ implements IMediatorReceiver, IMediatorSender {
 			selectedVertex = tmpVertexGraphItemRep;
 			
 			int iDavidId = generalManager.getPathwayItemManager()
-			.getDavidIdByPathwayVertexGraphItemId(tmpVertexGraphItem.getId());
+				.getDavidIdByPathwayVertexGraphItemId(tmpVertexGraphItem.getId());
 				
 			if (iDavidId == -1 || iDavidId == 0)
 			{	
@@ -632,53 +638,36 @@ implements IMediatorReceiver, IMediatorSender {
 		// Store all genes in that pathway with selection group 0
 		Iterator<IGraphItem> iterPathwayVertexGraphItem = ((PathwayGraph)generalManager
 				.getPathwayManager().getItem(iPathwayID)).getAllItemsByKind(EGraphItemKind.NODE).iterator();
-		
+		Iterator<IGraphItem> iterPathwayVertexGraphItemRep;
 		ArrayList<Integer> iAlSelectedGenes = new ArrayList<Integer>();
 		ArrayList<Integer> iAlTmpGroupId = new ArrayList<Integer>();
-		PathwayVertexGraphItemRep tmpPathwayVertexGraphItem = null;
-		int iGeneID = -1;
+		PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep = null;
+		PathwayVertexGraphItem tmpPathwayVertexGraphItem = null;
 		while(iterPathwayVertexGraphItem.hasNext()) 
 		{
-			tmpPathwayVertexGraphItem = ((PathwayVertexGraphItemRep)iterPathwayVertexGraphItem.next());
+			tmpPathwayVertexGraphItemRep = ((PathwayVertexGraphItemRep)iterPathwayVertexGraphItem.next());
 			
-//			if (tmpPathwayVertexGraphItem..getType().equals(EPathwayVertexType.gene))
-//			{
-			pathwayVertexSelectionManager.initialAdd(tmpPathwayVertexGraphItem.getId());
+			pathwayVertexSelectionManager.initialAdd(tmpPathwayVertexGraphItemRep.getId());
 			
-				String sGeneID = tmpPathwayVertexGraphItem.getName();
+			iterPathwayVertexGraphItemRep = tmpPathwayVertexGraphItemRep
+				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).iterator();
 			
-				// Remove prefix ("hsa:")
-				if (sGeneID.length() < 5)
+			while(iterPathwayVertexGraphItemRep.hasNext())
+			{
+				tmpPathwayVertexGraphItem = (PathwayVertexGraphItem) iterPathwayVertexGraphItemRep.next();
+				
+				int iDavidId = generalManager.getPathwayItemManager()
+					.getDavidIdByPathwayVertexGraphItemId(tmpPathwayVertexGraphItem.getId());
+					
+				if (iDavidId == -1 || iDavidId == 0)
+				{	
+					generalManager.getLogger().log(Level.WARNING, "Invalid David Gene ID.");
 					continue;
+				}
 				
-				sGeneID = sGeneID.substring(4);
-				
-				iGeneID = StringConversionTool.convertStringToInt(sGeneID, -1);
-				
-				if (iGeneID == -1)
-					continue;
-				
-				int iTmpAccessionID = generalManager.getGenomeIdManager().getIdIntFromIntByMapping(
-						iGeneID, EGenomeMappingType.ENTREZ_GENE_ID_2_DAVID);
-				
-//				iGeneID = generalManager.getGenomeIdManager()
-//					.getIdIntFromStringByMapping(sGeneID, 
-//						EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
-//						
-//				if (iGeneID == -1)
-//					continue;
-//				
-//				int iTmpAccessionID = generalManager.getGenomeIdManager()
-//					.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
-//			
-//				if (iTmpAccessionID == -1)
-//					continue;
-				
-//				pathwayVertexSelectionManager.initialAdd(iTmpAccessionID);
-				
-				iAlSelectedGenes.add(iTmpAccessionID);
-				iAlTmpGroupId.add(0);
-//			}
+				iAlSelectedGenes.add(iDavidId);
+				iAlTmpGroupId.add(0);	
+			}
 		}
 		
 		alSetSelection.get(0).getWriteToken();

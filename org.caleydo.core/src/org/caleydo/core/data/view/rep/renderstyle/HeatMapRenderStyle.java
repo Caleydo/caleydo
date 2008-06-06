@@ -23,10 +23,10 @@ extends GeneralRenderStyle
 	public static final float FIELD_Z = 0.0f;
 	public static final float SELECTION_Z = 0.001f;
 	
-	private float fSelectedFieldWidth = 0.3f;
-	private float fNormalFieldWidth = 0.05f;
+	private float fSelectedFieldWidth = 0.6f;
+	private float fNormalFieldWidth = 0f;
 	
-	private int iLevels = 3;
+	private int iLevels = 0;
 	private int iNotSelectedLevel = 1000;
 	
 	private ArrayList<Float> fAlFieldWidths;
@@ -41,14 +41,14 @@ extends GeneralRenderStyle
 	{
 		super(viewFrustum);
 		
-		if(bRenderVertical)
-		{
-			fSelectedFieldWidth = (viewFrustum.getRight() - viewFrustum.getLeft()) /  iNumElements / 3;
-		}
-		else
-		{
-			fSelectedFieldWidth = (viewFrustum.getTop() - viewFrustum.getBottom()) / iNumElements / 3;
-		}
+//		if(bRenderVertical)
+//		{
+//			fSelectedFieldWidth = (viewFrustum.getRight() - viewFrustum.getLeft()) /  iNumElements / 3;
+//		}
+//		else
+//		{
+//			fSelectedFieldWidth = (viewFrustum.getTop() - viewFrustum.getBottom()) / iNumElements / 3;
+//		}
 		fNormalFieldWidth = fSelectedFieldWidth / 4;
 		
 		this.verticalSelectionManager = verticalSelectionManager;
@@ -119,7 +119,7 @@ extends GeneralRenderStyle
 	
 	private float calcHeightFromWidth(float fWidth)
 	{
-		return 2.2f*fWidth;
+		return 0.7f*fWidth;
 	}
 	
 	public void clearFieldWidths()
@@ -154,7 +154,8 @@ extends GeneralRenderStyle
 	public Vec2f getFieldWidthAndHeight(int iIndex)
 	{
 		Vec2f vecWidthAndHeight = new Vec2f();
-		vecWidthAndHeight.set(fAlFieldWidths.get(iIndex), calcHeightFromWidth(fAlFieldWidths.get(iIndex)));
+		vecWidthAndHeight.set(fAlFieldWidths.get(iIndex), 
+				calcHeightFromWidth(fAlFieldWidths.get(iIndex)));
 		
 		return vecWidthAndHeight;
 	}

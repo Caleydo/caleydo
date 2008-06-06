@@ -289,6 +289,10 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 		time.update();
 
 		layoutRenderStyle.initPoolLayer(iMouseOverViewID);
+//		layoutRenderStyle.initMemoLayer();
+//		layoutRenderStyle.initStackLayer();
+//		layoutRenderStyle.initTransitionLayer();
+//		layoutRenderStyle.initUnderInteractionLayer();
 		
 		doSlerpActions(gl);
 		
@@ -301,27 +305,24 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 		{
 			glConnectionLineRenderer.render(gl);
 		
+			if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
+			{
+				renderPoolAndMemoLayerBackground(gl);
+				
+				// MARC: temporarily turn off memo pad for jukebox layout
+				renderLayer(gl, memoLayer);
+				
+				gl.glPushName(generalManager
+						.getViewGLCanvasManager().getPickingManager().getPickingID(
+								iUniqueId, EPickingType.MEMO_PAD_SELECTION,
+								MEMO_PAD_PICKING_ID));
+				gl.glPopName();
+			}
+			
+			renderLayer(gl, poolLayer);
 			renderLayer(gl, transitionLayer);
 			renderLayer(gl, stackLayer);
 			renderLayer(gl, spawnLayer);
-//			renderPoolLayerBackground(gl);
-			renderLayer(gl, poolLayer);
-
-//			renderMemoPad(gl);
-
-			gl.glPushName(generalManager
-					.getViewGLCanvasManager().getPickingManager().getPickingID(
-							iUniqueId, EPickingType.MEMO_PAD_SELECTION,
-							MEMO_PAD_PICKING_ID));
-			renderLayer(gl, memoLayer);
-			gl.glPopName();
-		
-			gl.glPushName(generalManager.getViewGLCanvasManager()
-					.getPickingManager().getPickingID(iUniqueId,
-							EPickingType.MEMO_PAD_SELECTION,
-							TRASH_CAN_PICKING_ID));
-			trashCan.render(gl, layoutRenderStyle);
-			gl.glPopName();
 		}
 		
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
@@ -457,11 +458,16 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 			{
 				ArrayList<Integer> iArSetIDs = new ArrayList<Integer>();
 
-				// FIXME: think of other way instead of hard coded set IDs
-				iArSetIDs.add(85101);
-				iArSetIDs.add(87101);
-				iArSetIDs.add(86101);
-				iArSetIDs.add(88101);
+//				// FIXME: think of other way instead of hard coded set IDs
+//				iArSetIDs.add(85101);
+//				iArSetIDs.add(87101);
+//				iArSetIDs.add(86101);
+//				iArSetIDs.add(88101);
+				
+				for(ISet tmpSet : alSetData)
+				{
+					iArSetIDs.add(tmpSet.getId());
+				}
 
 				// Create new selection set
 				int iSelectionSetID = generalManager
@@ -611,8 +617,8 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 			String sRenderText = tmpCanvasUser.getInfo().get(1);
 			
 			// Limit pathway name in length
-			if(sRenderText.length()> 35)
-				sRenderText = sRenderText.subSequence(0, 30) + "...";
+			if(sRenderText.length()> 16)
+				sRenderText = sRenderText.subSequence(0, 13) + "...";
 
 			textRenderer.begin3DRendering();	
 			textRenderer.setColor(0,0,0,1);
@@ -1764,19 +1770,15 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 	public void clearAll() 
 	{
 		// Remove all pathway views
-		Iterator<GLEventListener> iterGLEventListener = 
-			generalManager.getViewGLCanvasManager().getAllGLEventListeners().iterator();
-		
-		AGLCanvasUser tmpGLEventListener = null;
 		int iGLEventListenerId = -1;
-		ArrayList<GLEventListener> tmpGLEventListenerToRemove = new ArrayList<GLEventListener>();
+
+		ArrayList<GLEventListener> alGLEventListenerToRemove = new ArrayList<GLEventListener>();
 		
-		while(iterGLEventListener.hasNext())
+		for (GLEventListener tmpGLEventListenerToRemove : generalManager.getViewGLCanvasManager().getAllGLEventListeners())
 		{
-			tmpGLEventListener = (AGLCanvasUser) iterGLEventListener.next();
-			iGLEventListenerId = tmpGLEventListener.getId();
+			iGLEventListenerId = ((AGLCanvasUser)tmpGLEventListenerToRemove).getId();
 		
-			if (tmpGLEventListener.getClass().equals(GLCanvasPathway3D.class))
+			if (tmpGLEventListenerToRemove.getClass().equals(GLCanvasPathway3D.class))
 			{
 				if (poolLayer.containsElement(iGLEventListenerId))
 					poolLayer.removeElement(iGLEventListenerId);
@@ -1791,21 +1793,21 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 				else if (spawnLayer.containsElement(iGLEventListenerId))
 					spawnLayer.removeElement(iGLEventListenerId);
 				
-				tmpGLEventListenerToRemove.add(tmpGLEventListener);
+				alGLEventListenerToRemove.add(tmpGLEventListenerToRemove);
 			}
-			else if (tmpGLEventListener.getClass().equals(GLCanvasHeatMap.class) ||
-					tmpGLEventListener.getClass().equals(GLCanvasParCoords3D.class))
+			else if (tmpGLEventListenerToRemove.getClass().equals(GLCanvasHeatMap.class) ||
+					tmpGLEventListenerToRemove.getClass().equals(GLCanvasParCoords3D.class))
 			{
 				// Remove all elements from heatmap and parallel coordinates
-				((AGLCanvasStorageBasedView)tmpGLEventListener).clearAllSelections();
+				((AGLCanvasStorageBasedView)tmpGLEventListenerToRemove).clearAllSelections();
 			}
 		}
 		
 		int iGLEventListenerIdToRemove = -1;
-		for (int iGLEventListenerIndex = 0; iGLEventListenerIndex < tmpGLEventListenerToRemove.size(); 
+		for (int iGLEventListenerIndex = 0; iGLEventListenerIndex < alGLEventListenerToRemove.size(); 
 			iGLEventListenerIndex++)
 		{
-			iGLEventListenerIdToRemove = ((AGLCanvasUser)tmpGLEventListenerToRemove.get(iGLEventListenerIndex)).getId();
+			iGLEventListenerIdToRemove = ((AGLCanvasUser)alGLEventListenerToRemove.get(iGLEventListenerIndex)).getId();
 			
 			// Unregister removed pathways from event mediator
 			ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
@@ -1819,6 +1821,8 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 			
 			generalManager.getViewGLCanvasManager().unregisterGLEventListener(iGLEventListenerIdToRemove);
 		}
+		
+		generalManager.getViewGLCanvasManager().getSelectionManager().clear();
 	}
 
 	/*
@@ -1854,14 +1858,80 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		
 		super.reshape(drawable, x, y, width, height);
-			
+		
+		// Update aspect ratio and reinitialize stack and focus layer
+		layoutRenderStyle.setAspectRatio(fAspectRatio);
+		
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
-		{
-			// Update aspect ratio and reinitialize stack and focus layer
-			((BucketLayoutRenderStyle)layoutRenderStyle).setAspectRatio(fAspectRatio);
-			
+		{	
 			layoutRenderStyle.initUnderInteractionLayer();
 			layoutRenderStyle.initStackLayer();
+			layoutRenderStyle.initPoolLayer(iMouseOverViewID);
+			layoutRenderStyle.initMemoLayer();
 		}
+	}
+	
+	protected void renderPoolAndMemoLayerBackground(final GL gl) {
+		
+		//Pool layer background
+
+		float fWidth = 0.8f;
+		
+		gl.glColor4f(0.9f, 0.9f, 0.3f, 0.5f);
+		gl.glLineWidth(4);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(-2/fAspectRatio, -2, 4);
+		gl.glVertex3f(-2/fAspectRatio, 2, 4);
+		gl.glVertex3f(-2/fAspectRatio + fWidth, 2, 4);
+		gl.glVertex3f(-2/fAspectRatio + fWidth, -2, 4);
+		gl.glEnd();
+	
+		gl.glColor4f(0.4f, 0.4f, 0.4f, 0.8f);
+		gl.glLineWidth(4);
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(-2/fAspectRatio, -2, 4);
+		gl.glVertex3f(-2/fAspectRatio, 2, 4);
+		gl.glVertex3f(-2/fAspectRatio + fWidth, 2, 4);
+		gl.glVertex3f(-2/fAspectRatio + fWidth, -2, 4);
+		gl.glEnd();
+		
+		// Render memo pad background
+		gl.glColor4f(0.9f, 0.9f, 0.3f, 0.5f);
+		gl.glLineWidth(4);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(2/fAspectRatio, -2, 4);
+		gl.glVertex3f(2/fAspectRatio, 2, 4);
+		gl.glVertex3f(2/fAspectRatio - fWidth, 2, 4);
+		gl.glVertex3f(2/fAspectRatio - fWidth, -2, 4);
+		gl.glEnd();
+
+		gl.glColor4f(0.4f, 0.4f, 0.4f, 0.8f);
+		gl.glLineWidth(4);
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(2/fAspectRatio, -2, 4);
+		gl.glVertex3f(2/fAspectRatio, 2, 4);
+		gl.glVertex3f(2/fAspectRatio - fWidth, 2, 4);
+		gl.glVertex3f(2/fAspectRatio - fWidth, -2, 4);
+		gl.glEnd();
+
+		// Render trash can
+		gl.glPushName(generalManager.getViewGLCanvasManager()
+				.getPickingManager().getPickingID(iUniqueId,
+						EPickingType.MEMO_PAD_SELECTION,
+						TRASH_CAN_PICKING_ID));
+		trashCan.render(gl, layoutRenderStyle);
+		gl.glPopName();
+		
+		// Render caption
+		if (textRenderer == null)
+			return;
+
+		String sTmp = "POOL AREA";
+		textRenderer.begin3DRendering();
+		textRenderer.setColor(0.7f, 0.7f, 0.7f, 1.0f);
+		textRenderer.draw3D(sTmp, -1.95f/fAspectRatio, -1.95f, 4.001f, 0.004f); // scale factor
+		sTmp = "MEMO AREA";
+		textRenderer.draw3D(sTmp, 2.05f/fAspectRatio - fWidth, -1.95f, 4.001f, 0.004f); // scale factor
+		textRenderer.end3DRendering();
 	}
 }

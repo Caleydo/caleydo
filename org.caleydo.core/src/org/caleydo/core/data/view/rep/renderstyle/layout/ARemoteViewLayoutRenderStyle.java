@@ -15,6 +15,10 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 public abstract class ARemoteViewLayoutRenderStyle
 extends GeneralRenderStyle {
 	
+	protected float fAspectRatio = 1.0f;
+	protected float fZoomFactor = 0.0f;
+	protected float fPoolLayerWidth = 0.8f;
+	
 	public enum LayoutMode
 	{
 		BUCKET,
@@ -137,5 +141,20 @@ extends GeneralRenderStyle {
 	public float getTrashCanHeight() {
 	
 		return fTrashCanHeight;
+	}
+	
+	public void setAspectRatio(final float fAspectRatio) 
+	{
+		this.fAspectRatio = fAspectRatio;
+	}
+	
+	public void setZoomFactor(final float fZoomFactor)
+	{
+		this.fZoomFactor = fZoomFactor;
+	}
+	
+	public float getZoomFactor()
+	{
+		return fZoomFactor;
 	}
 }

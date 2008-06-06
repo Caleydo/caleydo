@@ -4,7 +4,6 @@
 <product name="Caleydo Product" id="org.caleydo.rcp.product" application="org.caleydo.rcp.application" useFeatures="true">
 
    <aboutInfo>
-      <image path="/org.caleydo.rcp/resources/geneview_logo_small.png"/>
       <text>
          Caleydo visualization framework
 Caleydo is a general purpose visualization framework.
@@ -34,13 +33,15 @@ All Rights Reserved.
       </win>
    </launcher>
 
+
    <vm>
-      <linux type="ee">JavaSE-1.6</linux>
-      <windows type="ee">JavaSE-1.6</windows>
+      <linux>JavaSE-1.6</linux>
+      <windows>JavaSE-1.6</windows>
    </vm>
 
    <plugins>
       <plugin id="com.ibm.icu"/>
+      <plugin id="org.caleydo.rcp"/>
       <plugin id="org.eclipse.core.commands"/>
       <plugin id="org.eclipse.core.contenttype"/>
       <plugin id="org.eclipse.core.databinding"/>
@@ -59,25 +60,24 @@ All Rights Reserved.
       <plugin id="org.eclipse.jface.databinding"/>
       <plugin id="org.eclipse.osgi"/>
       <plugin id="org.eclipse.swt"/>
-      <plugin id="org.eclipse.swt.carbon.macosx" fragment="true"/>
-      <plugin id="org.eclipse.swt.gtk.linux.ppc" fragment="true"/>
+      <plugin id="org.eclipse.swt.carbon.macosx"/>
+      <plugin id="org.eclipse.swt.gtk.linux.ppc"/>
       <plugin id="org.eclipse.swt.gtk.linux.x86" fragment="true"/>
-      <plugin id="org.eclipse.swt.gtk.linux.x86_64" fragment="true"/>
-      <plugin id="org.eclipse.swt.gtk.solaris.sparc" fragment="true"/>
-      <plugin id="org.eclipse.swt.motif.aix.ppc" fragment="true"/>
-      <plugin id="org.eclipse.swt.win32.win32.x86" fragment="true"/>
-      <plugin id="org.eclipse.swt.wpf.win32.x86" fragment="true"/>
+      <plugin id="org.eclipse.swt.gtk.linux.x86_64"/>
+      <plugin id="org.eclipse.swt.gtk.solaris.sparc"/>
+      <plugin id="org.eclipse.swt.motif.aix.ppc"/>
+      <plugin id="org.eclipse.swt.win32.win32.x86"/>
+      <plugin id="org.eclipse.swt.wpf.win32.x86"/>
       <plugin id="org.eclipse.ui"/>
-      <plugin id="org.eclipse.ui.carbon" fragment="true"/>
+      <plugin id="org.eclipse.ui.carbon"/>
       <plugin id="org.eclipse.ui.forms"/>
       <plugin id="org.eclipse.ui.net"/>
       <plugin id="org.eclipse.ui.workbench"/>
       <plugin id="org.eclipse.update.configurator"/>
       <plugin id="org.eclipse.update.core"/>
       <plugin id="org.eclipse.update.core.linux" fragment="true"/>
-      <plugin id="org.eclipse.update.core.win32" fragment="true"/>
+      <plugin id="org.eclipse.update.core.win32"/>
       <plugin id="org.eclipse.update.ui"/>
-      <plugin id="org.caleydo.rcp"/>
    </plugins>
 
    <features>

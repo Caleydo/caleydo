@@ -61,17 +61,27 @@ implements ILookupTableLoader {
 			{
 				
 				boolean bMaintainLoop = true;
-				StringTokenizer strTokenText = new StringTokenizer(sLine, sOuterTokenSeperator );
-				
-				// Read all tokens
-				while (( strTokenText.hasMoreTokens() )&& bMaintainLoop) 
+				StringTokenizer strTokenText = new StringTokenizer(sLine, sOuterTokenSeperator);
+			
+				// Expect two Integer values in one row!
+				try 
 				{
-					// Expect two Integer values in one row!
-					try {
-						String buffer = strTokenText.nextToken();
-						
-						if  (strTokenText.hasMoreTokens()) 
+					// Check if line consists of just one entity
+					if (!sLine.isEmpty() && strTokenText.countTokens() == 1)
+					{
+						// Special case for creating indexing of storages
+						if (currentGenomeIdType.equals(EGenomeMappingType.DAVID_2_EXPRESSION_STORAGE_ID))
+							genomeIdMap.put(sLine, Integer.toString(iLineInFile-iStartParsingAtLine));
+						else
+							genomeIdMap.put(sLine, strTokenText.nextToken());
+					}
+					else
+					{
+						// Read all tokens
+						while (strTokenText.hasMoreTokens() && bMaintainLoop) 
 						{
+							String buffer = strTokenText.nextToken();
+							
 							// Special case for creating indexing of storages
 							if (currentGenomeIdType.equals(EGenomeMappingType.DAVID_2_EXPRESSION_STORAGE_ID))
 								genomeIdMap.put(buffer, Integer.toString(iLineInFile-iStartParsingAtLine));
@@ -79,36 +89,26 @@ implements ILookupTableLoader {
 								genomeIdMap.put(buffer, strTokenText.nextToken());
 							
 							break;
-						}
-						else
-						{
-//							generalManager.logMsg(
-//									"(Key,Value) [" +
-//									buffer + ", ?? ] value is missing (ignore key-value pair) in line " +
-//									iLineInFile,
-//									LoggerType.FULL);
-						}
-					} catch ( NoSuchElementException  nsee) {
-						/* no ABORT was set. 
-						 * since no more tokens are in ParserTokenHandler skip rest of line..*/
-						bMaintainLoop = false;
-						
-						//reset return value to indicate error
-						iStopParsingAtLine = -1;
-						
-					} catch ( NullPointerException npe ) {
-						bMaintainLoop = false;
-						
-						//reset return value to indicate error
-						iStopParsingAtLine = 1;
-						
-						System.out.println( "LookupTableHashMapLoader NullPointerException! " + npe.toString() );
-						npe.printStackTrace();
-						
+						} // end of: while (( strToken.hasMoreTokens() )&&(bMaintainLoop)) {
 					}
-				
-				} // end of: while (( strToken.hasMoreTokens() )&&(bMaintainLoop)) {
-				
+				} catch ( NoSuchElementException  nsee) {
+					/* no ABORT was set. 
+					 * since no more tokens are in ParserTokenHandler skip rest of line..*/
+					bMaintainLoop = false;
+					
+					//reset return value to indicate error
+					iStopParsingAtLine = -1;
+					
+				} catch ( NullPointerException npe ) {
+					bMaintainLoop = false;
+					
+					//reset return value to indicate error
+					iStopParsingAtLine = 1;
+					
+					System.out.println( "LookupTableHashMapLoader NullPointerException! " + npe.toString() );
+					npe.printStackTrace();
+					
+				}	
 				
 				lookupTableLoaderProxy.progressBarStoredIncrement();
 				

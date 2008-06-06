@@ -47,11 +47,6 @@ extends ARemoteViewLayoutRenderStyle {
 		fScalingFactorMemoLayer = 0.05f;
 		fScalingFactorTransitionLayer = 0.025f;
 		fScalingFactorSpawnLayer = 0.005f;
-		
-		fTrashCanXPos = 3.8f;
-		fTrashCanYPos = 0.62f;
-		fTrashCanWidth = 0.35f;
-		fTrashCanHeight = 0.35f;
 	}
 	
 	/*
@@ -61,7 +56,7 @@ extends ARemoteViewLayoutRenderStyle {
 	public RemoteHierarchyLayer initUnderInteractionLayer() {
 
 		Transform transformUnderInteraction = new Transform();
-		transformUnderInteraction.setTranslation(new Vec3f(1.7f, 1.05f, 0f));
+		transformUnderInteraction.setTranslation(new Vec3f(0.32f/fAspectRatio, -1.05f, 0f));
 		transformUnderInteraction.setScale(new Vec3f(fScalingFactorUnderInteractionLayer, 
 				fScalingFactorUnderInteractionLayer, fScalingFactorUnderInteractionLayer));
 		underInteractionLayer.setTransformByPositionIndex(0, transformUnderInteraction);
@@ -77,7 +72,7 @@ extends ARemoteViewLayoutRenderStyle {
 
 		float fTiltAngleDegree = 57; // degree
 		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
-		float fLayerYPos = 2.6f;
+		float fLayerYPos = 0.95f;
 		int iMaxLayers = 4;
 	
 		// Create free pathway layer spots
@@ -86,7 +81,7 @@ extends ARemoteViewLayoutRenderStyle {
 		{
 			// Store current model-view matrix
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(0.5f, fLayerYPos, 0f));
+			transform.setTranslation(new Vec3f(-0.5f/fAspectRatio, fLayerYPos, 0f));
 			
 			// DKT horizontal stack
 			// transform.setTranslation(new Vec3f(-2.7f + fLayerYPos, 1.1f, 0));
@@ -109,7 +104,7 @@ extends ARemoteViewLayoutRenderStyle {
 	public RemoteHierarchyLayer initPoolLayer(final int iMouseOverViewID) {
 
 		float fSelectedScaling = 1;
-		float fYAdd = 0.8f;
+		float fYAdd = -1f;
 
 		int iSelectedViewIndex = poolLayer.getPositionIndexByElementId(iMouseOverViewID);
 
@@ -124,7 +119,7 @@ extends ARemoteViewLayoutRenderStyle {
 			}
 			
 			Transform transform = new Transform();
-			transform.setTranslation(new Vec3f(-0.6f, fYAdd, 4.1f));
+			transform.setTranslation(new Vec3f(-1.1f/fAspectRatio, fYAdd, 4.1f));
 
 			fYAdd += 0.15f * fSelectedScaling;
 
@@ -157,6 +152,11 @@ extends ARemoteViewLayoutRenderStyle {
 			fMemoPos += 0.42f;
 		}
 
+		fTrashCanXPos = 3.8f;
+		fTrashCanYPos = 0.62f;
+		fTrashCanWidth = 0.35f;
+		fTrashCanHeight = 0.35f;
+		
 		return memoLayer;
 	}
 
@@ -167,7 +167,7 @@ extends ARemoteViewLayoutRenderStyle {
 	public RemoteHierarchyLayer initTransitionLayer() {
 
 		Transform transformTransition = new Transform();
-		transformTransition.setTranslation(new Vec3f(1.7f, 2f, 0.1f));
+		transformTransition.setTranslation(new Vec3f(0.6f, 0f, 4.1f));
 		transformTransition.setScale(new Vec3f(fScalingFactorTransitionLayer,
 				fScalingFactorTransitionLayer, fScalingFactorTransitionLayer));
 		transitionLayer.setTransformByPositionIndex(0, transformTransition);

@@ -14,8 +14,6 @@ import org.caleydo.core.data.view.camera.IViewFrustum;
 public class ParCoordsRenderStyle 
 extends GeneralRenderStyle 
 {
-	
-	 
 	public static final float[] POLYLINE_NO_OCCLUSION_PREV_COLOR = {0.0f, 0.0f, 0.0f, 1.0f};
 	
 	public static final float[] POLYLINE_SELECTED_COLOR = {0f, 1.0f, 0.0f, 1.0f};
@@ -25,8 +23,6 @@ extends GeneralRenderStyle
 	public static final float MOUSE_OVER_POLYLINE_LINE_WIDTH = 4.0f;
 
 	public static final float DESELECTED_POLYLINE_LINE_WIDTH = 1.0f;
-	
-	
 
 	public static final float[] Y_AXIS_COLOR = {0.0f, 0.0f, 0.0f, 1.0f};
 	public static final float Y_AXIS_LINE_WIDTH = 1.0f;
@@ -47,7 +43,6 @@ extends GeneralRenderStyle
 	public static final float[] ANGULAR_COLOR = {0, 0, 1, 1};
 	public static final float ANGLUAR_LINE_WIDTH = 2;
 
-
 	// Line widths
 	public static final float POLYLINE_LINE_WIDTH = 1.0f;
 	
@@ -59,10 +54,7 @@ extends GeneralRenderStyle
 	// how much room between the axis?
 	private float fAxisSpacing = 0.5f;
 
-	
-	
 	// --- constants to scale --- 
-
 	
 	// coordinate system
 	private static final float COORDINATE_TOP_SPACING = 0.07f;
@@ -78,11 +70,14 @@ extends GeneralRenderStyle
 		
 	// buttons below axis
 	private static final float AXIS_BUTTONS_Y_OFFSET = 0.04f;
-
 	
-	private static final float fAxisSpacingLowerLimit = 0.1f;
+	private static final float fAxisSpacingLowerLimit = 0.06f;
 	
-
+	/**
+	 * Constructor.
+	 * 
+	 * @param viewFrustum
+	 */
 	public ParCoordsRenderStyle(IViewFrustum viewFrustum)
 	{
 		super(viewFrustum);

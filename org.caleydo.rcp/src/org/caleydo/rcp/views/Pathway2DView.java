@@ -24,7 +24,7 @@ extends ViewPart {
 	 */
 	public void createPartControl(Composite parent) {
 
-//		IViewManager viewManager = ((IViewManager) Application.refGeneralManager
+//		IViewManager viewManager = ((IViewManager) Application.generalManager
 //				.getManagerByObjectType(ManagerObjectType.VIEW));
 //		
 //		int iUniqueId = 80401;
@@ -61,12 +61,12 @@ extends ViewPart {
 //		iAlReceiver.add(83401);
 		
 //		// Connect 2D pathway with 3D pathway
-//		CmdEventCreateMediator cmd = (CmdEventCreateMediator)Application.refGeneralManager.getSingelton().getCommandManager()
+//		CmdEventCreateMediator cmd = (CmdEventCreateMediator)Application.generalManager.getSingelton().getCommandManager()
 //		 	.createCommandByType(CommandQueueSaxType.CREATE_EVENT_MEDIATOR);
 //		cmd.setAttributes(-1, iAlSender, iAlReceiver, MediatorType.SELECTION_MEDIATOR);
 //		cmd.doCommand();
 //
-//		CmdEventCreateMediator cmdReverse = (CmdEventCreateMediator)Application.refGeneralManager.getSingelton().getCommandManager()
+//		CmdEventCreateMediator cmdReverse = (CmdEventCreateMediator)Application.generalManager.getSingelton().getCommandManager()
 //	 		.createCommandByType(CommandQueueSaxType.CREATE_EVENT_MEDIATOR);
 //		cmdReverse.setAttributes(-1, iAlReceiver, iAlSender, MediatorType.SELECTION_MEDIATOR);
 //		cmdReverse.doCommand();

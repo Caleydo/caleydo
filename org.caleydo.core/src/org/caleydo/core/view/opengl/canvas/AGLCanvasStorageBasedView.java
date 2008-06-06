@@ -433,14 +433,14 @@ implements IMediatorReceiver, IMediatorSender
 		if (alSetSelection == null)
 			return;				
 				
-		Iterator<SetSelection> iterSetSelection = alSetSelection.iterator();
-		while (iterSetSelection.hasNext())
-		{
-			SetSelection tmpSet = iterSetSelection.next();
-			tmpSet.getWriteToken();
-			tmpSet.updateSelectionSet(iUniqueId, null, null, null);
-			tmpSet.returnWriteToken();
-		}	
+//		Iterator<SetSelection> iterSetSelection = alSetSelection.iterator();
+//		while (iterSetSelection.hasNext())
+//		{
+//			SetSelection tmpSet = iterSetSelection.next();
+//			tmpSet.getWriteToken();
+//			tmpSet.updateSelectionSet(iUniqueId, null, null, null);
+//			tmpSet.returnWriteToken();
+//		}	
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
 		

@@ -87,11 +87,12 @@ public class GenomeMapper {
 			}
 			else
 			{
-				int iDavidId = pathwayVertexRep.getPathwayVertexGraphItem().getId();
+				int iDavidId = generalManager.getPathwayItemManager().getDavidIdByPathwayVertexGraphItemId(
+						pathwayVertexRep.getPathwayVertexGraphItem().getId());
 				
 				int iExpressionStorageIndex = genomeIdManager.getIdIntFromIntByMapping(iDavidId,
 						EGenomeMappingType.DAVID_2_EXPRESSION_STORAGE_ID);
-
+				
 				if (iExpressionStorageIndex == -1)
 				{	
 					arMappingColor.add(new Vec3f(-1, -1, -1)); // invalid color

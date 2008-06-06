@@ -72,7 +72,10 @@ extends AMicroArrayLoader {
 		
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#loadDataParseFile(java.io.BufferedReader, int)
+	 */
 	protected int loadDataParseFile(BufferedReader brFile, final int iNumberOfLinesInFile )
 		throws IOException 
 	{

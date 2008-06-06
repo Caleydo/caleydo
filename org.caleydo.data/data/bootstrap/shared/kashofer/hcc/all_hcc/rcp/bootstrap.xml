@@ -1,0 +1,62 @@
+<cerberus version="0.1">
+
+  <workspace title="primary" server="localhost">
+  
+    <Application remote="no" IP="127.0.0.1" port="4000" >
+  
+    <CommandBuffer>  			   				
+
+      	<!-- Creating GenomeId mapping -->
+		  	<read-xml-file target="data/bootstrap/shared/kashofer/hcc/load_genome_id_mapping.xml" />	   				
+						
+		<!-- Creating Data -->
+			<read-xml-file target="data/bootstrap/shared/kashofer/hcc/all_hcc/load_data.xml" />						   														
+							
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEAT_MAP_3D"		cmdId="69994"	uniqueId="84401" parent="-1" label="Parallel Coordinates" 
+						gl_origin="0 0 0" 
+						gl_rotation="0 0 0 0"					
+						attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
+						attrib4="transparency 0.6" 
+						detail="85101 86101 87101 88101 89101 90101 91101 92101 93101 94101 95101 96101 97101 98101 62101 63101" /> 					
+			
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PARALLEL_COORDINATES_3D"		cmdId="69994"	uniqueId="82401" parent="-1" label="Parallel Coordinates" 
+						gl_origin="0 0 0" 
+						gl_rotation="0 0 0 0"					
+						attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
+						attrib4="transparency 0.6" 
+						detail="85101 86101 87101 88101 89101 90101 91101 92101 93101 94101 95101 96101 97101 98101 64101 65101" /> 						
+			
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_RCP_GLCANVAS"	cmdId="69991"	uniqueId="24" 
+		  	gl_canvas="24"
+			parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
+			
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_BUCKET_3D"		cmdId="69994"	uniqueId="83401" parent="24" label="LinkBucket" 
+						gl_origin="0 0 -8" 
+						gl_rotation="0 0 0 0"					
+						attrib3="PERSPECTIVE -1.5 1.5 -1.5 1.5 2.9 100"
+						attrib4="transparency 1" 								
+						detail="85101 86101 87101 88101 89101 90101 91101 92101 93101 94101 95101 96101 97101 98101 66101" /> 				
+			
+	    <!-- Search View -->
+	      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_ENTITY_SEARCHER" 	cmdId="69991" uniqueId="12345" label="Data Entity Search" 	detail="83401" /> 				
+		
+		<!-- Setting paths -->	
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set KEGG Pathway Path" 
+			detail="KEGG"
+			attrib1="data/genome/pathway/xml/hsa/" 
+			attrib2="data/genome/pathway/images/hsa/" 
+			attrib3="data/genome/pathway/imagemap/" /> 
+			
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set Biocarta Pathway Paths" 
+			detail="BIOCARTA"
+			attrib1="data/genome/pathway/biocarta/imagemap/" 
+			attrib2="data/genome/pathway/biocarta/image/" 
+			attrib3="data/genome/pathway/biocarta/imagemap/" /> 
+											
+   </CommandBuffer>
+    
+  </Application>
+  
+  </workspace>
+
+</cerberus>

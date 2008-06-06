@@ -18,7 +18,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
-import org.caleydo.core.data.graph.core.PathwayGraph;
+import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.rcp.Application;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.IGraph;
