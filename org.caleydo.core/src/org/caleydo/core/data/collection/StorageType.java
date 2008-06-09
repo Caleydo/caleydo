@@ -1,10 +1,10 @@
 package org.caleydo.core.data.collection;
 
-
 /**
  * Collection of different data types used in storage.
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public enum StorageType 
@@ -71,9 +71,9 @@ implements ICollectionType <StorageType> {
 	private final int iIndexInArray;
 	
 	/**
-	 * Private constructopr.
+	 * Private constructor.
 	 * 
-	 * @param bSetValueType treu for values containing data, false for parsing parametes.
+	 * @param bSetValueType true for values containing data, false for parsing parameters.
 	 */
 	private StorageType( final boolean bSetValueType,
 			final int iIndexInArray ) {

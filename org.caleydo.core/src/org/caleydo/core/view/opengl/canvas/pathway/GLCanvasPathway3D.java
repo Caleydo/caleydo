@@ -351,22 +351,14 @@ implements IMediatorReceiver, IMediatorSender {
 			if(tmpPathwayVertexGraphItem == null)
 			{
 				generalManager.getLogger().log(Level.WARNING, "Something is wrong with pathway vertex! Check!");
-//				generalManager.logMsg(
-//						this.getClass().getSimpleName()
-//								+ " ("+iUniqueId+"): Irgendwas mit graph vertex item das eigentlich net passiern sullt "
-//								+ eventTrigger.getClass().getSimpleName()+" ("+((AGLCanvasUser)eventTrigger).getId(),
-//						LoggerType.VERBOSE);
 				return;
 			}
 			
-			Iterator<IGraphItem> iterPathwayVertexGraphItemRep = 
-				tmpPathwayVertexGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
-			
 			PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep = null;
-			while (iterPathwayVertexGraphItemRep.hasNext())
+			for (IGraphItem tmpGraphItemRep : 
+				tmpPathwayVertexGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD))
 			{
-				tmpPathwayVertexGraphItemRep = 
-					((PathwayVertexGraphItemRep)iterPathwayVertexGraphItemRep.next());
+				tmpPathwayVertexGraphItemRep = (PathwayVertexGraphItemRep)tmpGraphItemRep;
 				
 				// Check if vertex is contained in this pathway viewFrustum
 				if (!((PathwayGraph)generalManager.getPathwayManager()
@@ -515,30 +507,15 @@ implements IMediatorReceiver, IMediatorSender {
 		{	
 		case PATHWAY_ELEMENT_SELECTION:
 			
-			pathwayVertexSelectionManager.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
+			ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>();
+			ArrayList<Integer> iAlTmpGroupId = new ArrayList<Integer>();
+					
+			bIsDisplayListDirtyLocal = true;
+			bIsDisplayListDirtyRemote = true;
 			
 			PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) generalManager
 				.getPathwayItemManager().getItem(iExternalID);
-			
-			// FIXME: it is not correct to just grab the first node parent
-			// we must iterature over all parents in the case of multiple gene mapping
-			PathwayVertexGraphItem tmpVertexGraphItem = (PathwayVertexGraphItem) tmpVertexGraphItemRep
-				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0);
-			
-			// Actively deselect previously selected gene
-//			int iGeneID = generalManager.getGenomeIdManager()
-//				.getIdIntFromStringByMapping(tmpVertexGraphItem.getName().substring(4), 
-//					EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
-			
-//			int iUnselectAccessionID = generalManager.getGenomeIdManager()
-//				.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
-			
-			// Add new vertex to internal selection manager
-			pathwayVertexSelectionManager.addToType(
-					EViewInternalSelectionType.MOUSE_OVER, tmpVertexGraphItemRep.getId());
-												
-			bIsDisplayListDirtyLocal = true;
-			bIsDisplayListDirtyRemote = true;
+
 			
 			// Do nothing if new selection is the same as previous selection
 			if (tmpVertexGraphItemRep == selectedVertex && !pickingMode.equals(EPickingMode.CLICKED))
@@ -548,84 +525,106 @@ implements IMediatorReceiver, IMediatorSender {
 				return;
 			}
 			
+			pathwayVertexSelectionManager.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
+			
 			selectedVertex = tmpVertexGraphItemRep;
 			
-			int iDavidId = generalManager.getPathwayItemManager()
-				.getDavidIdByPathwayVertexGraphItemId(tmpVertexGraphItem.getId());
+			PathwayVertexGraphItem tmpVertexGraphItem = null;
+			for (IGraphItem tmpGraphItem : 
+				tmpVertexGraphItemRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT))
+			{
+				tmpVertexGraphItem = (PathwayVertexGraphItem)tmpGraphItem;
+			
+				// Actively deselect previously selected gene
+	//			int iGeneID = generalManager.getGenomeIdManager()
+	//				.getIdIntFromStringByMapping(tmpVertexGraphItem.getName().substring(4), 
+	//					EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
 				
-			if (iDavidId == -1 || iDavidId == 0)
-			{	
-				generalManager.getLogger().log(Level.WARNING, "Invalid David Gene ID.");
-				pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
-				pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_TEXTURE_SELECTION);
+	//			int iUnselectAccessionID = generalManager.getGenomeIdManager()
+	//				.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
+				
+				int iDavidId = generalManager.getPathwayItemManager()
+					.getDavidIdByPathwayVertexGraphItemId(tmpVertexGraphItem.getId());
+					
+				if (iDavidId == -1 || iDavidId == 0)
+				{	
+					generalManager.getLogger().log(Level.WARNING, "Invalid David Gene ID.");
+					pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
+					pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_TEXTURE_SELECTION);
+//					selectionManager.clear();
+					
+					continue;
+				}			
+				
+				// Add new vertex to internal selection manager
+				pathwayVertexSelectionManager.addToType(
+						EViewInternalSelectionType.MOUSE_OVER, tmpVertexGraphItemRep.getId());
+				
 				selectionManager.clear();
 				
+				// TODO: do this just for first or think about better solution!
+				generalManager.getViewGLCanvasManager().getInfoAreaManager()
+					.setData(iUniqueId, iDavidId, EInputDataType.GENE, getInfo());
+				
+				loadURLInBrowser(((PathwayVertexGraphItem)selectedVertex.getAllItemsByProp(
+					EGraphItemProperty.ALIAS_PARENT).get(0)).getExternalLink());	
+							
+				Iterator<IGraphItem> iterPathwayVertexGraphItemRep = 
+					tmpVertexGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
+				
+				PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep = null;
+				while (iterPathwayVertexGraphItemRep.hasNext())
+				{
+					tmpPathwayVertexGraphItemRep = 
+						((PathwayVertexGraphItemRep)iterPathwayVertexGraphItemRep.next());
+					
+					// Check if vertex is contained in this pathway viewFrustum
+					if (!((PathwayGraph)generalManager.getPathwayManager()
+							.getItem(iPathwayID)).containsItem(tmpPathwayVertexGraphItemRep))
+						continue;
+					
+					int iPathwayHeight = ((PathwayGraph)generalManager.getPathwayManager().getItem(iPathwayID)).getHeight();
+					
+					selectionManager.modifySelection(iDavidId, new SelectedElementRep(this.getId(), 
+							(tmpPathwayVertexGraphItemRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X) * vecScaling.x()  + vecTranslation.x(),
+							((iPathwayHeight - tmpPathwayVertexGraphItemRep.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y) * vecScaling.y() + vecTranslation.y(), 0), 
+							ESelectionMode.AddPick);
+				}
+				
+	//			// Active unselection
+	//			iAlTmpSelectionId.add(iUnselectAccessionID);
+	//			iAlTmpGroupId.add(0);
+				
+				switch (pickingMode)
+				{
+				case CLICKED:
+					
+					iAlTmpSelectionId.add(iDavidId);
+					iAlTmpGroupId.add(2); 
+					
+					break;
+					
+				case MOUSE_OVER:
+	
+					iAlTmpSelectionId.add(iDavidId);
+					iAlTmpGroupId.add(1); 
+					
+					break;
+				}	
+				
+				//TODO: Exit loop after first run and publish only first selected gene
+				//This can be removed when other views can handle multiple selections
 				break;
 			}
 			
-			generalManager.getViewGLCanvasManager().getInfoAreaManager()
-				.setData(iUniqueId, iDavidId, EInputDataType.GENE, getInfo());
-				
-			loadURLInBrowser(((PathwayVertexGraphItem)selectedVertex.getAllItemsByProp(
-					EGraphItemProperty.ALIAS_PARENT).get(0)).getExternalLink());
+			// Do nothing if no element was selected
+			if (iAlTmpSelectionId.isEmpty())
+				return;
 			
-			selectionManager.clear();
+			alSetSelection.get(0).getWriteToken();
+			alSetSelection.get(0).updateSelectionSet(iUniqueId, iAlTmpSelectionId, iAlTmpGroupId, null);
+			alSetSelection.get(0).returnWriteToken();
 			
-			Iterator<IGraphItem> iterPathwayVertexGraphItemRep = 
-				tmpVertexGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
-			
-			PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep = null;
-			while (iterPathwayVertexGraphItemRep.hasNext())
-			{
-				tmpPathwayVertexGraphItemRep = 
-					((PathwayVertexGraphItemRep)iterPathwayVertexGraphItemRep.next());
-				
-				// Check if vertex is contained in this pathway viewFrustum
-				if (!((PathwayGraph)generalManager.getPathwayManager()
-						.getItem(iPathwayID)).containsItem(tmpPathwayVertexGraphItemRep))
-					continue;
-				
-				int iPathwayHeight = ((PathwayGraph)generalManager.getPathwayManager().getItem(iPathwayID)).getHeight();
-				
-				selectionManager.modifySelection(iDavidId, new SelectedElementRep(this.getId(), 
-						(tmpPathwayVertexGraphItemRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X) * vecScaling.x()  + vecTranslation.x(),
-						((iPathwayHeight - tmpPathwayVertexGraphItemRep.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y) * vecScaling.y() + vecTranslation.y(), 0), 
-						ESelectionMode.AddPick);
-			}
-			
-			// Write currently selected vertex to selection set and trigger update
-			ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>(2);
-			ArrayList<Integer> iAlTmpGroupId = new ArrayList<Integer>(2);
-			
-//			// Active unselection
-//			iAlTmpSelectionId.add(iUnselectAccessionID);
-//			iAlTmpGroupId.add(0);
-			
-			switch (pickingMode)
-			{
-			case CLICKED:
-				
-				iAlTmpSelectionId.add(iDavidId);
-				iAlTmpGroupId.add(2); 
-				
-				alSetSelection.get(0).getWriteToken();
-				alSetSelection.get(0).updateSelectionSet(iUniqueId, iAlTmpSelectionId, iAlTmpGroupId, null);
-				alSetSelection.get(0).returnWriteToken();
-				
-				break;
-				
-			case MOUSE_OVER:
-
-				iAlTmpSelectionId.add(iDavidId);
-				iAlTmpGroupId.add(1); 
-				
-				alSetSelection.get(0).getWriteToken();
-				alSetSelection.get(0).updateSelectionSet(iUniqueId, iAlTmpSelectionId, iAlTmpGroupId, null);
-				alSetSelection.get(0).returnWriteToken();
-				
-				break;
-			}	
-
 			pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
 			pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_TEXTURE_SELECTION);
 			break;					

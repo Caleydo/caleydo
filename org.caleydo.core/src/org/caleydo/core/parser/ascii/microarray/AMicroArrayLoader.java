@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
+import java.util.logging.Level;
 
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.StorageType;
 import org.caleydo.core.data.collection.parser.ParserTokenHandler;
@@ -117,12 +117,12 @@ implements IMementoXML, IParserObject {
 		// wipe former binding...
 		alTokenTargetToParserTokenType.clear();
 		
-		while (tokenizer.hasMoreTokens()) {
-			String sBuffer =
-				tokenizer.nextToken(sTokenPatternParserSeperator);
+		while (tokenizer.hasMoreTokens()) 
+		{
+			String sBuffer = tokenizer.nextToken(sTokenPatternParserSeperator);
 
-			
-			if ( sBuffer.equalsIgnoreCase("abort")) {
+			if ( sBuffer.equalsIgnoreCase("abort")) 
+			{
 				//MultiDataEnumType addType = MultiDataEnumType.ABORT;				
 				
 				alTokenTargetToParserTokenType.add( 
@@ -130,14 +130,16 @@ implements IMementoXML, IParserObject {
 				
 				return bAllTokensProper;				
 			} 
-			else if (sBuffer.equalsIgnoreCase("skip")) {								
+			else if (sBuffer.equalsIgnoreCase("skip")) 
+			{								
 				/// insert "mdnone" token to indicate skipping...
 				//MultiDataEnumType addType = MultiDataEnumType.SKIP;
 				
 				alTokenTargetToParserTokenType.add( 
 						new ParserTokenHandler( StorageType.SKIP ));							
 			} 
-			else if (sBuffer.equalsIgnoreCase("int")) {
+			else if (sBuffer.equalsIgnoreCase("int")) 
+			{
 				
 				int iIndexFromType = StorageType.INT.ordinal();
 				
@@ -151,7 +153,8 @@ implements IMementoXML, IParserObject {
 				iIndexPerArray[iIndexFromType]++;
 								          
 			} 
-			else if (sBuffer.equalsIgnoreCase("float")) {
+			else if (sBuffer.equalsIgnoreCase("float")) 
+			{
 				
 				int iIndexFromType = StorageType.FLOAT.ordinal();
 				
@@ -165,7 +168,8 @@ implements IMementoXML, IParserObject {
 				iIndexPerArray[iIndexFromType]++;
 								          
 			}
-			else if (sBuffer.equalsIgnoreCase("double")) {
+			else if (sBuffer.equalsIgnoreCase("double")) 
+			{
 				
 				int iIndexFromType = StorageType.DOUBLE.ordinal();
 				
@@ -179,7 +183,8 @@ implements IMementoXML, IParserObject {
 				iIndexPerArray[iIndexFromType]++;
 								          
 			}
-			else if (sBuffer.equalsIgnoreCase("string")) {				
+			else if (sBuffer.equalsIgnoreCase("string")) 
+			{				
 				
 				int iIndexFromType = StorageType.STRING.ordinal();
 				
@@ -197,9 +202,7 @@ implements IMementoXML, IParserObject {
 				// now common token!
 				bAllTokensProper = false;
 				
-				System.err.println("MicroArrayLoader::setTokenPattern() WARNING: Unknown token [" +
-						sBuffer + 
-						"]");
+				generalManager.getLogger().log(Level.WARNING, "Unknown token pattern: "+tokenPattern);
 			}
 			
 		} // end of while

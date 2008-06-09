@@ -258,7 +258,6 @@ extends AMicroArrayLoader {
 							bufferFloatArray[lineInFile_CurrentDataIndex] = new Float(sTokenObject);
 
 							iDataArrayIndexPerLine++;
-							// LLFloat.add( new Float(sTokenObject) );
 							break;
 						case STRING:
 
@@ -273,30 +272,12 @@ extends AMicroArrayLoader {
 							
 							bufferStringArray[lineInFile_CurrentDataIndex] = sTokenObject;							
 	
-							if ( bufferStringArray.length > iDataArrayIndexPerLine )
-							{
-								iDataArrayIndexPerLine++;
-							}
-							else
-							{
-								System.err.println("index out of bounce; skip index [" + 
-										lineInFile_CurrentDataIndex +
-										" index2=" +
-										iDataArrayIndexPerLine +
-										" text=" +
-										bufferStringArray[lineInFile_CurrentDataIndex] + 
-										"] empty array[] ");;
-							}
-//						
 							iDataArrayIndexPerLine++;
-							// LLString.add(
-							// vecBufferText.get(iStringIndex) );
-							// iStringIndex++;
 							break;
 						case SKIP:
 							break;
 						default:
-							System.err.println("Unknown label");
+							generalManager.getLogger().log(Level.WARNING, "Unknown token during parsing.");
 
 						} // end switch
 

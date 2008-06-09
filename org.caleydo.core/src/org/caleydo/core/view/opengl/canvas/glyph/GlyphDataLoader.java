@@ -94,36 +94,27 @@ public class GlyphDataLoader {
 	
 	
 
-	public void setupGlyphDictionary(ISet glyphDictionary) {
+	public void setupGlyphDictionary(ISet glyphDictionary) 
+	{
 		if(glyphDictionary == null) {
 			this.generalManager.getLogger().log(Level.WARNING, "No Glyph dictionary datastructure found");
 			return;
 		}
 		
-		
-		
 		HashMap<String, GlyphAttributeType> dataTypes = new HashMap<String, GlyphAttributeType>();
 
-		IStorage storageIDs     = glyphDictionary.getStorageByDimAndIndex(0, 0);
-		IStorage storageDomains = glyphDictionary.getStorageByDimAndIndex(0, 1);
+        //IStorage storageIDs     = glyphDictionary.getStorageByDimAndIndex(0, 0);
+        IStorage storageDomains = glyphDictionary.getStorageByDimAndIndex(0, 1);
+        IStorage storageNominal = glyphDictionary.getStorageByDimAndIndex(0, 2);
+        IStorage storageGroup   = glyphDictionary.getStorageByDimAndIndex(0, 3);
+        IStorage storageOrdinal = glyphDictionary.getStorageByDimAndIndex(0, 4); 
+        
 		int size = storageDomains.getSize(StorageType.STRING);
 		
 		System.out.println( storageDomains.getLabel() );
 		
-		
-		
 		for(int i=0;i<size;++i) {
 			System.out.println( storageDomains.getArrayString()[i] );
 		}
-		
-		
-		// TODO Auto-generated method stub
-		
 	}
-	
-
-	
-	
-	
-
 }

@@ -50,7 +50,7 @@
 
 <!-- dictionary  -->
 
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"		cmdId="22991"	uniqueId="552010" label="Select file" attrib1="0 -99 0 1"	/>
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"		cmdId="22991"	uniqueId="552010" label="Select file" attrib1="0 -1 0 1"	/>
 
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="553010" label="Storage file for dictionary 01"	attrib1="INT" 		attrib2="dictionary data from file" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="553020" label="Storage file for dictionary 02"	attrib1="STRING" 	attrib2="dictionary data from file" />
