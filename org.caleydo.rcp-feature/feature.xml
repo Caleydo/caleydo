@@ -10,17 +10,17 @@
       nl="en_US"
       arch="x86,x86_64">
 
-   <description url="http://www.geneview.org">
+   <description url="http://www.caleydo.org">
       Caleydo is a visualization framework for biomedical data.
    </description>
 
-   <copyright url="http://www.geneview.org">
+   <copyright url="http://www.caleydo.org">
       (c) Copyright Institute for Computer Graphics and Vision (ICG)
 Graz University of Technology - 2007.
 All Rights Reserved.
    </copyright>
 
-   <license url="http://www.geneview.org">
+   <license url="http://www.caleydo.org">
       (c) Copyright Institute for Computer Graphics and Vision (ICG)
 Graz University of Technology - 2007.
 All Rights Reserved.
@@ -28,7 +28,7 @@ All Rights Reserved.
 
    <url>
       <update label="Caleydo Update Site" url="http://galactica.icg.tugraz.at/caleydo/"/>
-      <discovery label="Caleydo website" url="http://www.geneview.org"/>
+      <discovery label="Caleydo website" url="http://www.caleydo.org"/>
       <discovery label="Graz University of Technology - Institute for Computer Graphics and Visison (ICG)" url="http://www.icg.tugraz.at"/>
    </url>
 
@@ -48,6 +48,7 @@ All Rights Reserved.
       <import plugin="org.eclipse.ui" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.ui.forms" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.help.base" version="3.1.0" match="compatible"/>
+      <import plugin="org.apache.jasper" version="5.5.17" match="greaterOrEqual"/>
       <import plugin="org.eclipse.equinox.jsp.jasper.registry" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.equinox.http.registry" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.jface" version="3.2.0" match="compatible"/>
@@ -58,14 +59,9 @@ All Rights Reserved.
       <import plugin="org.eclipse.update.core" version="3.1.0" match="compatible"/>
       <import plugin="org.eclipse.update.ui" version="3.1.0" match="compatible"/>
       <import plugin="org.eclipse.update.configurator" version="3.1.100" match="compatible"/>
-      <import feature="org.eclipse.rcp" version="3.3.2.R33x_r20071022-8y8eE9CEV3FspP8HJrY1M2dS"/>
-      <import plugin="org.apache.jasper" version="5.5.17" match="greaterOrEqual"/>
-      <import plugin="javax.servlet.jsp"/>
-      <import plugin="org.apache.commons.el"/>
-      <import plugin="org.apache.ant"/>
       <import plugin="org.eclipse.equinox.registry"/>
       <import plugin="org.eclipse.equinox.common"/>
-      <import plugin="org.eclipse.equinox.jsp.jasper"/>
+      <import feature="org.eclipse.rcp" version="3.3.2.R33x_r20071022-8y8eE9CEV3FspP8HJrY1M2dS"/>
    </requires>
 
    <plugin
@@ -237,6 +233,13 @@ All Rights Reserved.
 
    <plugin
          id="org.eclipse.equinox.jsp.jasper"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.equinox.launcher"
          download-size="0"
          install-size="0"
          version="0.0.0"
