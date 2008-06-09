@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.data;
+package org.caleydo.core.manager.specialized.genome;
 
 
 import java.util.Collection;
@@ -7,7 +7,6 @@ import java.util.HashMap;
 import org.caleydo.core.data.mapping.EGenomeMappingDataType;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IManager;
-import org.caleydo.core.manager.data.genome.IGenomeIdMap;
 
 /**
  * Generic interface for genome ID managers.
@@ -150,7 +149,7 @@ extends IManager
 	 * @param codingLutType define EGenomeMappingType used for identifying
 	 * @param map to be added, must be IGenomeIdMap
 	 * 
-	 * @see org.caleydo.core.manager.data.genome.IGenomeIdMap
+	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdMap
 	 * @see org.caleydo.core.data.map.MultiHashArrayStringMap
 	 * @see org.caleydo.core.data.map.MultiHashArrayIntegerMap
 	 */
@@ -164,7 +163,7 @@ extends IManager
 	 * 
 	 * @param codingLutType define EGenomeMappingType used for identifying
 	 * 
-	 * @see org.caleydo.core.manager.data.genome.IGenomeIdMap
+	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdMap
 	 * @see org.caleydo.core.data.map.MultiHashArrayStringMap
 	 * @see org.caleydo.core.data.map.MultiHashArrayIntegerMap
 	 */

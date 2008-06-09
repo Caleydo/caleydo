@@ -2,12 +2,12 @@ package org.caleydo.core.manager;
 
 import java.util.logging.Logger;
 
-import org.caleydo.core.manager.data.IGenomeIdManager;
-import org.caleydo.core.manager.data.IPathwayItemManager;
-import org.caleydo.core.manager.data.IPathwayManager;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.data.IVirtualArrayManager;
+import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
+import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
+import org.caleydo.core.manager.specialized.genome.IPathwayManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 

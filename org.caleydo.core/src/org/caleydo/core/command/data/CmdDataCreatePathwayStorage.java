@@ -11,7 +11,7 @@ import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.IStorageManager;
-import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;

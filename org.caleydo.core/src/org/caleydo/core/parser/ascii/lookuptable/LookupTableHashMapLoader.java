@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.data.genome.IGenomeIdMap;
+import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
 
 
 /**
@@ -139,7 +139,7 @@ implements ILookupTableLoader {
 	/**
 	 * Write back data to IGenomeIdManager
 	 * @see org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
-	 * @see org.caleydo.core.manager.data.IGenomeIdManager
+	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdManager
 	 */
 	public void wirteBackMapToGenomeIdManager() {
 		

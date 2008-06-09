@@ -13,9 +13,7 @@ import java.util.Set;
 
 //import org.caleydo.core.data.mapping.EGenomeMappingDataType;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
-import org.caleydo.core.manager.data.IGenomeIdManager;
-//import org.caleydo.core.manager.data.genome.GenomeIdMapInt2Int;
-//import org.caleydo.core.manager.data.genome.IGenomeIdMap;
+import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 
 
 
@@ -23,7 +21,7 @@ import org.caleydo.core.manager.data.IGenomeIdManager;
  * @author Michael Kalkusch
  *
  * @see org.caleydo.core.data.map.MultiHashArrayIntegerMap
- * @see org.caleydo.core.manager.data.genome.IGenomeIdMap
+ * @see org.caleydo.core.manager.specialized.genome.IGenomeIdMap
  */
 public class MultiHashArrayStringMap 
 extends HashMap <String,ArrayList<String>> 

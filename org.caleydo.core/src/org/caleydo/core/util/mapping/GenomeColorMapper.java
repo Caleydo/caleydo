@@ -10,23 +10,21 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.SetType;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
-import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.data.IGenomeIdManager;
+import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.util.mapping.color.ColorMapping;
-import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.util.graph.EGraphItemProperty;
 
 /**
- * Class is responsible for mapping gene expression data
+ * Class is responsible for mapping gene expression data to color
  * from one entity to another. 
  * 
  * @author Marc Streit
  *
  */
-public class GenomeMapper {
+public class GenomeColorMapper {
 
 	protected IGeneralManager generalManager;
 	
@@ -34,20 +32,20 @@ public class GenomeMapper {
 	
 	protected ArrayList<IStorage> alMappingStorage;
 	
-	protected ColorMapping expressionColorMapping;
+	protected ColorMapping expressionColorMapper;
 	
 	/**
 	 * Constructor. 
 	 * 
 	 * @param generalManager
 	 */
-	public GenomeMapper(final IGeneralManager generalManager) {
+	public GenomeColorMapper(final IGeneralManager generalManager) {
 	
 		this.generalManager = generalManager;
 		alMappingStorage = new ArrayList<IStorage>();
 		genomeIdManager = generalManager.getGenomeIdManager();
 		
-		expressionColorMapping = new ColorMapping(0, 1);
+		expressionColorMapper = new ColorMapping(0, 1);
 	}
 	
 	public void setMappingData(final ArrayList<ISet> alSetData) {
@@ -116,7 +114,7 @@ public class GenomeMapper {
 					}
 								
 					float fExpressionValue = bufferFloatArray[iExpressionStorageIndex];	
-					arMappingColor.add(expressionColorMapping.colorMappingLookup(fExpressionValue));
+					arMappingColor.add(expressionColorMapper.colorMappingLookup(fExpressionValue));
 				}
 			}
 			
@@ -130,5 +128,10 @@ public class GenomeMapper {
 		}
 		
 		return new ArrayList<Vec3f>();
+	}
+	
+	public ColorMapping getColorMapper() {
+		
+		return expressionColorMapper;
 	}
 }

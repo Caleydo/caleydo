@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.data.genome;
+package org.caleydo.core.manager.specialized.genome.id;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,7 +10,8 @@ import java.util.logging.Level;
 import org.caleydo.core.data.mapping.EGenomeMappingDataType;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.data.IGenomeIdManager;
+import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
+import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
 
 
 /**
@@ -62,7 +63,7 @@ implements IGenomeIdMap {
 	
 	
 	/**
-	 * @see org.caleydo.core.manager.data.genome.IGenomeIdMap#size()
+	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdMap#size()
 	 * @see java.util.Map#size()
 	 */
 	public final int size() {
@@ -70,7 +71,7 @@ implements IGenomeIdMap {
 	}
 	
 	/**
-	 * @see org.caleydo.core.manager.data.genome.IGenomeIdMap#getReversedMap()
+	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdMap#getReversedMap()
 	 */
 	public final IGenomeIdMap getReversedMap() {
 		IGenomeIdMap reversedMap = null;

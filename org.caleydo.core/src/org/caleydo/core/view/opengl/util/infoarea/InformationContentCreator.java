@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.data.IGenomeIdManager;
+import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.util.mapping.GeneAnnotationMapper;
 import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
 

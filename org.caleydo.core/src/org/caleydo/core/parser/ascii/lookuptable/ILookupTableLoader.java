@@ -7,7 +7,7 @@ import java.io.IOException;
 import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
 import org.caleydo.core.data.map.MultiHashArrayStringMap;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
-import org.caleydo.core.manager.data.genome.IGenomeIdMap;
+import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
 
 /**
  * Interface for ASCII file loader.
@@ -50,7 +50,7 @@ public interface ILookupTableLoader {
 	 * @see org.caleydo.core.parser.ascii.lookuptable.LookupTableLoaderProxy
 	 * @see org.caleydo.core.parser.ascii.lookuptable.LookupTableLoaderProxy#copyDataToInternalDataStructures()
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#copyDataToInternalDataStructures()
-	 * @see org.caleydo.core.manager.data.IGenomeIdManager
+	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdManager
 	 * 
 	 * @return TRUE on success.
 	 */

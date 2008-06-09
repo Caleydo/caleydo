@@ -39,6 +39,7 @@ import org.caleydo.core.manager.view.EPickingMode;
 import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.Pick;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.mapping.GenomeColorMapper;
 import org.caleydo.core.util.slerp.SlerpAction;
 import org.caleydo.core.util.slerp.SlerpMod;
 import org.caleydo.core.util.system.SystemTime;
@@ -51,10 +52,10 @@ import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListener;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.GLConnectionLineRendererBucket;
 import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLConnectionLineRendererJukebox;
+import org.caleydo.core.view.opengl.miniview.GLColorMappingBarMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLIconTextureManager;
-import org.caleydo.core.view.opengl.util.GLSharedObjects;
 import org.caleydo.core.view.opengl.util.drag.GLDragAndDrop;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 import org.caleydo.core.view.opengl.util.trashcan.TrashCan;
@@ -130,6 +131,8 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 	private BucketMouseWheelListener bucketMouseWheelListener;
 	
 	private TrashCan trashCan;
+	
+	private GLColorMappingBarMiniView colorMappingBarMiniView;
 
 	/**
 	 * Constructor.
@@ -196,6 +199,9 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 				Font.BOLD, 24), false);
 		
 		trashCan = new TrashCan();
+		
+		// TODO: the genome mapper should be stored centralized instead of newly created
+		colorMappingBarMiniView = new GLColorMappingBarMiniView(new GenomeColorMapper(generalManager));
 	}
 	
 	/*
@@ -236,6 +242,9 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 		retrieveContainedViews(gl);
 		
 		trashCan.init(gl);
+		
+		colorMappingBarMiniView.setWidth(0.25f * 1/fAspectRatio);
+		colorMappingBarMiniView.setHeight(1f);
 	}
 
 	/*
@@ -329,6 +338,8 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 		{
 			bucketMouseWheelListener.render();	
 		}
+		
+		colorMappingBarMiniView.render(gl, 0, 0, 0);
 	}
 
 	private void retrieveContainedViews(final GL gl) {

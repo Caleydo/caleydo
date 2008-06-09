@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.data;
+package org.caleydo.core.manager.specialized.genome;
 
 import java.util.ArrayList;
 import java.util.HashMap;

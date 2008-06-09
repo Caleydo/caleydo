@@ -100,4 +100,16 @@ extends AColorMapping {
 					fArColorLookupTable_RIGHT[iIndex][1],
 					fArColorLookupTable_RIGHT[iIndex][2]);		
 	}
+	
+	public Vec3f getColor_1() {
+		return color_1;
+	}
+	
+	public Vec3f getColor_2() {
+		return color_2;
+	}
+
+	public Vec3f getColor_3() {
+		return color_3;
+	}
 }

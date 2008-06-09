@@ -1,10 +1,10 @@
-package org.caleydo.core.manager.data;
+package org.caleydo.core.manager.specialized.genome;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.view.rep.jgraph.PathwayImageMap;
 import org.caleydo.core.manager.IManager;
-import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
-import org.caleydo.core.manager.data.pathway.PathwayDatabase;
+import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.specialized.genome.pathway.PathwayDatabase;
 import org.caleydo.util.graph.core.Graph;
 
 /**

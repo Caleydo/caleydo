@@ -4,8 +4,8 @@ import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
 import org.caleydo.core.data.map.MultiHashArrayStringMap;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.data.IGenomeIdManager;
-import org.caleydo.core.manager.data.genome.IGenomeIdMap;
+import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
+import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
 
 
 /**

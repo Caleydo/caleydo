@@ -123,7 +123,7 @@ public class LookupTableMultiMapIntLoader extends ALookupTableLoader
 	/**
 	 * Write back data to IGenomeIdManager
 	 * @see org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
-	 * @see org.caleydo.core.manager.data.IGenomeIdManager
+	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdManager
 	 */
 	public void wirteBackMapToGenomeIdManager() {
 

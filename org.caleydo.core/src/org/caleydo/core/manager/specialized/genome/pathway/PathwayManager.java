@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.data.pathway;
+package org.caleydo.core.manager.specialized.genome.pathway;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -10,7 +10,7 @@ import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.view.rep.jgraph.PathwayImageMap;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.data.IPathwayManager;
+import org.caleydo.core.manager.specialized.genome.IPathwayManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 import org.caleydo.util.graph.EGraphItemHierarchy;

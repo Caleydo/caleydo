@@ -8,7 +8,7 @@ import org.caleydo.core.data.mapping.EGenomeMappingDataType;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.data.IGenomeIdManager;
+import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.parser.ascii.lookuptable.LookupTableLoaderProxy;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;

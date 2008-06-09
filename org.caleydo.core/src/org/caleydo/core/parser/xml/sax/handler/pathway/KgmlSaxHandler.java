@@ -19,7 +19,7 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
-import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 import org.caleydo.core.util.system.StringConversionTool;

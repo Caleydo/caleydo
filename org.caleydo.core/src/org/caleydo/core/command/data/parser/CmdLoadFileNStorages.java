@@ -150,8 +150,6 @@ extends ACommand {
 				loader = null;
 			}
 		} // finally
-		
-		
 	}
 
 	/* (non-Javadoc)

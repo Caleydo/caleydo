@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.data.genome;
+package org.caleydo.core.manager.specialized.genome.id;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,7 +14,8 @@ import org.caleydo.core.data.mapping.EGenomeMappingDataType;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.data.IGenomeIdManager;
+import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
+import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
@@ -28,7 +29,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  * @author Marc Streit
  *
  */
-public class DynamicGenomeIdManager
+public class GenomeIdManager
 extends AManager
 implements IGenomeIdManager {
 
@@ -57,7 +58,7 @@ implements IGenomeIdManager {
 	 * 
 	 * @param setGeneralManager
 	 */
-	public DynamicGenomeIdManager(final IGeneralManager generalManager) {
+	public GenomeIdManager(final IGeneralManager generalManager) {
 
 		super(generalManager, 66, ManagerType.DATA_GENOME_ID );
 		
@@ -74,7 +75,7 @@ implements IGenomeIdManager {
 		
 		return createMapByType(codingLutType, 
 				dataType, 
-				DynamicGenomeIdManager.iInitialSizeHashMap );
+				GenomeIdManager.iInitialSizeHashMap );
 	}
 	
 	public boolean createMapByType( final EGenomeMappingType codingLutType, 
@@ -173,7 +174,7 @@ implements IGenomeIdManager {
 	}
 	
 	/**
-	 * @see org.caleydo.core.manager.data.IGenomeIdManager#hasAnyMapByType(org.caleydo.core.data.mapping.EGenomeMappingType)
+	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdManager#hasAnyMapByType(org.caleydo.core.data.mapping.EGenomeMappingType)
 	 */
 	public final boolean hasAnyMapByType( final EGenomeMappingType codingLutType ) {
 		
@@ -378,9 +379,9 @@ implements IGenomeIdManager {
 
 
 	/**
-	 * @see org.caleydo.core.manager.data.IGenomeIdManager#setMapByType(org.caleydo.core.data.mapping.EGenomeMappingType, java.lang.Object)
+	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdManager#setMapByType(org.caleydo.core.data.mapping.EGenomeMappingType, java.lang.Object)
 	 * 
-	 * @see org.caleydo.core.manager.data.genome.IGenomeIdMap
+	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdMap
 	 * @see org.caleydo.core.data.map.MultiHashArrayStringMap
 	 * @see org.caleydo.core.data.map.MultiHashArrayIntegerMap
 	 */

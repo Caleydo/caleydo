@@ -8,7 +8,7 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.GeneralRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.util.mapping.GenomeMapper;
+import org.caleydo.core.util.mapping.GenomeColorMapper;
 
 /**
  * Color Mapping for Expression data
@@ -23,7 +23,7 @@ import org.caleydo.core.util.mapping.GenomeMapper;
 public class GLColorMappingMiniView 
 extends AGLMiniView 
 {
-	private GenomeMapper genomeMapper;
+	private GenomeColorMapper genomeMapper;
 	private int iMappingRowCount = 1;
 	
 	/**
@@ -34,12 +34,15 @@ extends AGLMiniView
 	public GLColorMappingMiniView(final IGeneralManager generalManager) 
 	{
 
-		genomeMapper = new GenomeMapper(generalManager);
+		genomeMapper = new GenomeColorMapper(generalManager);
 	//	genomeMapper.setMappingData(alSetData);
 	}
 	
-	
-	public void render(GL gl, float origin, float origin2) {
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.opengl.miniview.AGLMiniView#render(javax.media.opengl.GL, float, float, float)
+	 */
+	public void render(GL gl, float fXOrigin, float fYOrigin, float fZOrigin) {
 
 		// TODO Auto-generated method stub
 

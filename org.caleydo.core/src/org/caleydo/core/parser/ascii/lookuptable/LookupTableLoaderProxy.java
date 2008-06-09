@@ -11,8 +11,8 @@ import org.caleydo.core.data.map.MultiHashArrayStringMap;
 import org.caleydo.core.data.mapping.EGenomeMappingDataType;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.data.genome.DynamicGenomeIdManager;
-import org.caleydo.core.manager.data.genome.IGenomeIdMap;
+import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
+import org.caleydo.core.manager.specialized.genome.id.GenomeIdManager;
 import org.caleydo.core.parser.ascii.AbstractLoader;
 import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
@@ -41,8 +41,8 @@ extends AbstractLoader
 
 		bRequiredSizeOfReadableLines = true;
 		
-		DynamicGenomeIdManager dgi_mng = 
-			(DynamicGenomeIdManager) generalManager.getGenomeIdManager();
+		GenomeIdManager dgi_mng = 
+			(GenomeIdManager) generalManager.getGenomeIdManager();
 		
 		switch ( type ) {
 		
@@ -170,7 +170,7 @@ extends AbstractLoader
 	 * 
 	 * @see org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#copyDataToInternalDataStructures()
-	 * @see org.caleydo.core.manager.data.IGenomeIdManager
+	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdManager
 	 */
 	@Override
 	protected boolean copyDataToInternalDataStructures() {
@@ -225,8 +225,8 @@ extends AbstractLoader
 			return null;
 		}
 		
-		DynamicGenomeIdManager dgi_mng = 
-			(DynamicGenomeIdManager) generalManager.getGenomeIdManager();
+		GenomeIdManager dgi_mng = 
+			(GenomeIdManager) generalManager.getGenomeIdManager();
 		
 		IGenomeIdMap origionMap = dgi_mng.getMapByType(originMultiMapType);
 		
@@ -260,8 +260,8 @@ extends AbstractLoader
 			return null;
 		}
 		
-		DynamicGenomeIdManager dgi_mng = 
-			(DynamicGenomeIdManager) generalManager.getGenomeIdManager();
+		GenomeIdManager dgi_mng = 
+			(GenomeIdManager) generalManager.getGenomeIdManager();
 		
 		MultiHashArrayIntegerMap intMultiMapOrigin = 
 			dgi_mng.getMultiMapIntegerByType(originMultiMapType);
@@ -319,8 +319,8 @@ extends AbstractLoader
 			return null;
 		}
 		
-		DynamicGenomeIdManager dgi_mng = 
-			(DynamicGenomeIdManager) generalManager.getGenomeIdManager();
+		GenomeIdManager dgi_mng = 
+			(GenomeIdManager) generalManager.getGenomeIdManager();
 		
 		MultiHashArrayStringMap stringMultiMapOrigin = 
 			dgi_mng.getMultiMapStringByType(originMultiMapType);
@@ -361,8 +361,8 @@ extends AbstractLoader
 			EGenomeMappingType genomeMappingLUT_2,
 			EGenomeMappingDataType sourceMapMappingType) {
 	
-		DynamicGenomeIdManager dgi_mng = 
-			(DynamicGenomeIdManager) generalManager.getGenomeIdManager();
+		GenomeIdManager dgi_mng = 
+			(GenomeIdManager) generalManager.getGenomeIdManager();
 		
 		IGenomeIdMap mapToConvert = dgi_mng.getMapByType(originMapMappingType);
 		
@@ -387,8 +387,8 @@ extends AbstractLoader
 			EGenomeMappingType genomeMappingLUT_1,
 			EGenomeMappingType genomeMappingLUT_2) {
 	
-		DynamicGenomeIdManager dgi_mng = 
-			(DynamicGenomeIdManager) generalManager.getGenomeIdManager();
+		GenomeIdManager dgi_mng = 
+			(GenomeIdManager) generalManager.getGenomeIdManager();
 		
 		MultiHashArrayStringMap mapToConvert = dgi_mng.getMultiMapStringByType(originMapMappingType);
 		

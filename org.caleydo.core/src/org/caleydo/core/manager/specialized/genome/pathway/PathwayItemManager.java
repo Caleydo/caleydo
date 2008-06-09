@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.data.pathway;
+package org.caleydo.core.manager.specialized.genome.pathway;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -9,16 +9,13 @@ import org.caleydo.core.data.graph.pathway.item.edge.PathwayReactionEdgeGraphIte
 import org.caleydo.core.data.graph.pathway.item.edge.PathwayReactionEdgeGraphItemRep;
 import org.caleydo.core.data.graph.pathway.item.edge.PathwayRelationEdgeGraphItem;
 import org.caleydo.core.data.graph.pathway.item.edge.PathwayRelationEdgeGraphItemRep;
-import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.data.IPathwayItemManager;
+import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
-import org.caleydo.core.util.ConversionStringInteger;
-import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraph;

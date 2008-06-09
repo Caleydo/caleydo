@@ -23,9 +23,9 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.view.EPickingType;
-import org.caleydo.core.util.mapping.GenomeMapper;
+import org.caleydo.core.util.mapping.GenomeColorMapper;
 import org.caleydo.core.view.opengl.util.GLTextUtils;
 import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
 import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
@@ -66,7 +66,7 @@ public class GLPathwayManager {
 	private HashMap<Integer, Integer> hashPathwayId2VerticesDisplayListId;
 	private HashMap<Integer, Integer> hashPathwayId2EdgesDisplayListId;	
 	
-	private GenomeMapper genomeMapper;
+	private GenomeColorMapper genomeMapper;
 	
 	private GenericSelectionManager internalSelectionManager;
 	
@@ -107,7 +107,7 @@ public class GLPathwayManager {
 		// Initialize genome mapper
 		// TODO: move to a manager because more classes use the genome mapper
 		// maybe GenomeIdManager is the right place
-		genomeMapper = new GenomeMapper(generalManager);
+		genomeMapper = new GenomeColorMapper(generalManager);
 		genomeMapper.setMappingData(alSetData);
 	}
 	

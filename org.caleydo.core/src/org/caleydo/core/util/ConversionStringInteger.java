@@ -11,7 +11,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 /**
  * Convert SET <K> to SET <V> and Collection <K> to Collection <V> were K,V are elementOf(Integer, String) 
  * 
- * @see org.caleydo.core.manager.data.genome.GenomeIdMapInt2Int#getValuesInteger()
+ * @see org.caleydo.core.manager.specialized.genome.id.GenomeIdMapInt2Int#getValuesInteger()
  * 
  * @author Michael Kalkusch
  *

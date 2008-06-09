@@ -15,8 +15,12 @@ extends AGLMiniView
 		fHeight = 0.2f;
 	}
 	
-	public void render(GL gl, float fXOrigin, float fYOrigin)
-	{		
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.opengl.miniview.AGLMiniView#render(javax.media.opengl.GL, float, float, float)
+	 */
+	public void render(GL gl, float fXOrigin, float fYOrigin, float fZOrigin) {
+	
 		gl.glPushAttrib(GL.GL_CURRENT_BIT);
 		gl.glColor3f(1, 0, 0);
 		gl.glBegin(GL.GL_POLYGON);
@@ -27,5 +31,4 @@ extends AGLMiniView
 		gl.glEnd();
 		gl.glPopAttrib();
 	}
-	
 }

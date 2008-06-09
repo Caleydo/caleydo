@@ -159,7 +159,7 @@ public class GLTextInfoAreaRenderer
 		textRenderer.end3DRendering();	
 		
 		if(miniView != null)
-			miniView.render(gl, fXLowerLeft + fTextWidth + fSpacing, fYLowerLeft + fSpacing);
+			miniView.render(gl, fXLowerLeft + fTextWidth + fSpacing, fYLowerLeft + fSpacing, 0);
 	
 		
 		

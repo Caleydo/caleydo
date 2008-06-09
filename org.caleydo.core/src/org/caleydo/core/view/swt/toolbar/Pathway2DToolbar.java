@@ -4,7 +4,7 @@ import java.awt.Dimension;
 import java.io.IOException;
 
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.view.swt.pathway.APathwayGraphViewRep;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;

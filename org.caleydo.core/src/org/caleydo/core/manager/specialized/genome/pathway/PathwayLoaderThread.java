@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.data.pathway;
+package org.caleydo.core.manager.specialized.genome.pathway;
 
 import java.io.File;
 import java.util.Collection;

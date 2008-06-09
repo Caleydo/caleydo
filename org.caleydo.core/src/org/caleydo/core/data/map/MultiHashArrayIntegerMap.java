@@ -16,7 +16,7 @@ import java.util.Set;
  * @author Michael Kalkusch
  *
  * @see org.caleydo.core.data.map.MultiHashArrayStringMap
- * @see org.caleydo.core.manager.data.genome.IGenomeIdMap
+ * @see org.caleydo.core.manager.specialized.genome.IGenomeIdMap
  */
 public class MultiHashArrayIntegerMap 
 extends HashMap <Integer,ArrayList<Integer>> 

@@ -1,7 +1,7 @@
 package org.caleydo.core.util.mapping;
 
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.data.IGenomeIdManager;
+import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 
 /**
  * @TODO Revise this class

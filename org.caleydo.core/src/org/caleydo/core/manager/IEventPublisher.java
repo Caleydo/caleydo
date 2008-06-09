@@ -9,7 +9,7 @@ import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
 import org.caleydo.core.util.ICaleydoDefaultType;
 
 /**
- * Handle events using Publish subsrib design pattern.
+ * Handle events using Publish subscriber design pattern.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit

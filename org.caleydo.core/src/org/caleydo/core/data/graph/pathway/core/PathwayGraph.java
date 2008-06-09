@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import javax.swing.ImageIcon;
 
-import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.util.graph.core.Graph;
 
 /**

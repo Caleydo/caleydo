@@ -9,7 +9,7 @@ import javax.swing.ImageIcon;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 
 import com.sun.opengl.util.texture.Texture;

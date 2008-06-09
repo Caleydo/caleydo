@@ -26,9 +26,9 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.data.IPathwayItemManager;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
 import org.caleydo.core.manager.view.EPickingMode;
 import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.Pick;

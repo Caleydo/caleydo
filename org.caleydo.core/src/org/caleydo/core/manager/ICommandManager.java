@@ -11,10 +11,11 @@ import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
 /**
  * One Manager handle all ICommandListener.
  * 
- * This is a singelton for all Commands and ICommandListener objects. 
+ * This is a singleton for all Commands and ICommandListener objects. 
  * "ISingelton" Design Pattern.
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public interface ICommandManager 
@@ -28,7 +29,7 @@ extends ICommandActionListener, IManager {
 	 * @param iCmdId unique CmdId
 	 * @param iCmdQueueId unique commandQueueId, must not be global unique!
 	 * @param sQueueThread define a thread pool, default = -1 means no thread pool
-	 * @param sQueueThreadWait define depandent thread pool, default = -1 means no dependency on other thread to finish
+	 * @param sQueueThreadWait define dependent thread pool, default = -1 means no dependency on other thread to finish
 	 * 
 	 * @return new commandQueue
 	 */
@@ -63,14 +64,14 @@ extends ICommandActionListener, IManager {
 	/**
 	 * Add reference to one ICommandListener object.
 	 * 
-	 * @param addCommandListener adds referenc to ICommandListener obejct.
+	 * @param addCommandListener adds referencc to ICommandListener object.
 	 */
 	public void addCommandListener( ICommandListener addCommandListener );
 	
 	/**
 	 * Remove reference to one ICommandListener object.
 	 * 
-	 * @param removeCommandListener removes referens to ICommandListener obejct.
+	 * @param removeCommandListener removes references to ICommandListener object.
 	 * @return TRUE if the reference was removed, false if the reference was not found.
 	 */
 	public boolean removeCommandListener( ICommandListener removeCommandListener );
@@ -78,7 +79,7 @@ extends ICommandActionListener, IManager {
 	/**
 	 * Tests if the reference to one ICommandListener object exists.
 	 * 
-	 * @param hasCommandListener referenc to be tested
+	 * @param hasCommandListener reference to be tested
 	 * @return true if the reference is bound to this ICommandManager
 	 */
 	public boolean hasCommandListener( ICommandListener hasCommandListener );	
@@ -93,7 +94,7 @@ extends ICommandActionListener, IManager {
 	public ICommandQueue getCommandQueueByCmdQueueId( final int iCmdQueueId );
 	
 	/**
-	 * Tests if a iCmdQueueId is registered with a CommandQueue obejct.
+	 * Tests if a iCmdQueueId is registered with a CommandQueue object.
 	 * 
 	 * @param iCmdQueueId test this id
 	 * @return TRUE if an CommandQueue is bound that iCmdQueueId

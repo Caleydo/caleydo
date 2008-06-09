@@ -36,7 +36,7 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep
 import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
-import org.caleydo.core.manager.data.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.swt.pathway.APathwayGraphViewRep;
