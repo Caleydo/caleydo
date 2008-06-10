@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?pde version="3.1"?>
+<?pde version="3.4"?>
 
 <product name="Caleydo Product" id="org.caleydo.rcp.product" application="org.caleydo.rcp.application" useFeatures="true">
 
@@ -7,15 +7,16 @@
       <text>
          Caleydo visualization framework
 Caleydo is a general purpose visualization framework.
-See: www.geneview.org
+See: www.caleydo.org
 
 (c) Copyright by www.geneview.org and Institute for Computer Graphics and Vision (ICG)
-Graz University of Technology - 2007.
+Graz University of Technology - 2008.
 All Rights Reserved.
       </text>
    </aboutInfo>
 
-   <configIni use="default"/>
+   <configIni use="default">
+   </configIni>
 
    <launcherArgs>
       <vmArgs>-Xms256m -Xmx512m</vmArgs>
@@ -26,7 +27,7 @@ All Rights Reserved.
 
    <splash
       location="org.caleydo.rcp" />
-   <launcher name="geneview">
+   <launcher name="caleydo">
       <solaris/>
       <win useIco="false">
          <bmp/>

@@ -111,12 +111,8 @@
                value="Caleydo Product">
          </property>
          <property
-               name="aboutImage"
-               value="resources/geneview_logo_small.png">
-         </property>
-         <property
                name="aboutText"
-               value="Caleydo visualization framework&#x0A;Caleydo is a general purpose visualization framework.&#x0A;See: www.geneview.org&#x0A;&#x0A;(c) Copyright by www.geneview.org and Institute for Computer Graphics and Vision (ICG)&#x0A;Graz University of Technology - 2007.&#x0A;All Rights Reserved.">
+               value="Caleydo visualization framework&#x0A;Caleydo is a general purpose visualization framework.&#x0A;See: www.caleydo.org&#x0A;&#x0A;(c) Copyright by www.geneview.org and Institute for Computer Graphics and Vision (ICG)&#x0A;Graz University of Technology - 2007.&#x0A;All Rights Reserved.">
          </property>
       </product>
    </extension>
