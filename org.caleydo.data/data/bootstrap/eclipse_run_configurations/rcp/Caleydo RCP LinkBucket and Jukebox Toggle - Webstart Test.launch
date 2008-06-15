@@ -8,7 +8,7 @@
 <booleanAttribute key="clearConfig" value="false"/>
 <booleanAttribute key="clearws" value="true"/>
 <booleanAttribute key="clearwslog" value="false"/>
-<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Caleydo RCP LinkBucket and Jukebox Toggle - Kashofer All HCC Data"/>
+<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Caleydo RCP LinkBucket and Jukebox Toggle - Webstart Test"/>
 <booleanAttribute key="default" value="false"/>
 <booleanAttribute key="includeOptional" value="true"/>
 <stringAttribute key="location" value="${workspace_loc}/../runtime-org.caleydo.rcp.product"/>
@@ -16,14 +16,14 @@
 <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
 <listEntry value="org.eclipse.debug.ui.launchGroup.run"/>
 </listAttribute>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl}&#10;data/bootstrap/shared/kashofer/hcc/all_hcc/rcp/bootstrap.xml"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl}&#10;data/bootstrap/shared/bootstrap_webstart_test.xml"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms512m -Xmx1024m -Dsun.java2d.opengl=true -Djava.util.logging.config.file=data/logging/logging.properties&#10;-Xss16384k"/>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:org.caleydo.data}"/>
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="org.caleydo.rcp.product"/>
 <stringAttribute key="productFile" value="/org.caleydo.rcp/org.caleydo.rcp.product"/>
-<stringAttribute key="selected_target_plugins" value="org.eclipse.equinox.frameworkadmin,org.eclipse.equinox.preferences,org.eclipse.equinox.security,org.eclipse.core.net,org.eclipse.equinox.p2.metadata.repository,org.eclipse.equinox.p2.metadata,org.eclipse.osgi.services,org.eclipse.core.contenttype,org.eclipse.equinox.registry,org.eclipse.core.runtime.compatibility.registry,org.eclipse.core.runtime,org.eclipse.ui.forms,org.eclipse.update.ui,org.eclipse.update.core.linux,org.eclipse.ui,org.eclipse.jface.databinding,org.eclipse.equinox.app,org.eclipse.ecf.identity,org.eclipse.help,org.eclipse.update.core,org.eclipse.core.variables,org.eclipse.swt.gtk.linux.x86,org.eclipse.core.runtime.compatibility.auth,org.eclipse.equinox.common,org.eclipse.ecf,org.eclipse.swt,org.eclipse.core.databinding,org.eclipse.jface,org.eclipse.equinox.frameworkadmin.equinox,org.eclipse.equinox.p2.jarprocessor,org.eclipse.ecf.filetransfer,com.ibm.icu,javax.servlet,org.eclipse.ui.workbench,org.eclipse.update.configurator,org.eclipse.equinox.p2.core,org.eclipse.core.commands,org.eclipse.core.expressions,org.eclipse.core.net.linux.x86,org.eclipse.ecf.ssl,org.eclipse.ant.core,org.eclipse.equinox.p2.metadata.generator,org.eclipse.core.jobs,org.eclipse.osgi,org.eclipse.equinox.p2.artifact.repository"/>
+<stringAttribute key="selected_target_plugins" value="org.eclipse.equinox.security,org.eclipse.equinox.p2.metadata.repository,org.eclipse.equinox.preferences,javax.servlet,org.eclipse.core.variables,org.eclipse.equinox.frameworkadmin.equinox,org.eclipse.core.expressions,org.eclipse.equinox.p2.artifact.repository,org.eclipse.equinox.p2.metadata.generator,org.eclipse.update.core,org.eclipse.core.runtime,org.eclipse.equinox.registry,org.eclipse.equinox.p2.jarprocessor,org.eclipse.ui,org.eclipse.osgi,org.eclipse.core.runtime.compatibility.auth,org.eclipse.core.runtime.compatibility.registry,org.eclipse.core.net,org.eclipse.ui.workbench,org.eclipse.ant.core,org.eclipse.equinox.common,org.eclipse.ecf.filetransfer,org.eclipse.jface,org.eclipse.help,org.eclipse.core.commands,org.eclipse.core.net.linux.x86,org.eclipse.core.contenttype,org.eclipse.jface.databinding,org.eclipse.swt,org.eclipse.ecf,org.eclipse.update.core.linux,org.eclipse.core.jobs,org.eclipse.ecf.identity,org.eclipse.update.configurator,org.eclipse.osgi.services,com.ibm.icu,org.eclipse.ecf.ssl,org.eclipse.equinox.p2.core,org.eclipse.equinox.app,org.eclipse.equinox.frameworkadmin,org.eclipse.core.databinding,org.eclipse.update.ui,org.eclipse.swt.gtk.linux.x86,org.eclipse.equinox.p2.metadata,org.eclipse.ui.forms"/>
 <stringAttribute key="selected_workspace_plugins" value="org.caleydo.rcp"/>
 <booleanAttribute key="show_selected_only" value="false"/>
 <booleanAttribute key="tracing" value="false"/>

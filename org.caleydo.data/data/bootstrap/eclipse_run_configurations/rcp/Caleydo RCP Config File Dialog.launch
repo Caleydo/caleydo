@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <launchConfiguration type="org.eclipse.pde.ui.RuntimeWorkbench">
 <booleanAttribute key="append.args" value="true"/>
-<booleanAttribute key="askclear" value="true"/>
+<booleanAttribute key="askclear" value="false"/>
 <booleanAttribute key="automaticAdd" value="false"/>
 <booleanAttribute key="automaticValidate" value="false"/>
 <stringAttribute key="bootstrap" value=""/>
 <booleanAttribute key="clearConfig" value="false"/>
-<booleanAttribute key="clearws" value="false"/>
+<booleanAttribute key="clearws" value="true"/>
 <booleanAttribute key="clearwslog" value="false"/>
 <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Caleydo RCP Config File Dialog"/>
 <booleanAttribute key="default" value="false"/>
@@ -20,7 +20,7 @@
 <stringAttribute key="pde.version" value="3.3"/>
 <stringAttribute key="product" value="org.caleydo.rcp.product"/>
 <stringAttribute key="productFile" value="/org.caleydo.rcp/org.caleydo.rcp.product"/>
-<stringAttribute key="selected_target_plugins" value="com.ibm.icu,javax.servlet,org.eclipse.core.commands,org.eclipse.core.contenttype,org.eclipse.core.databinding,org.eclipse.core.expressions,org.eclipse.core.jobs,org.eclipse.core.net,org.eclipse.core.runtime,org.eclipse.core.runtime.compatibility.auth,org.eclipse.core.runtime.compatibility.registry,org.eclipse.equinox.app,org.eclipse.equinox.common,org.eclipse.equinox.preferences,org.eclipse.equinox.registry,org.eclipse.help,org.eclipse.jface,org.eclipse.jface.databinding,org.eclipse.osgi,org.eclipse.osgi.services,org.eclipse.swt,org.eclipse.swt.gtk.linux.x86,org.eclipse.ui,org.eclipse.ui.forms,org.eclipse.ui.workbench,org.eclipse.update.configurator,org.eclipse.update.core,org.eclipse.update.core.linux,org.eclipse.update.ui"/>
+<stringAttribute key="selected_target_plugins" value="org.eclipse.core.contenttype,com.ibm.icu,org.eclipse.update.configurator,org.eclipse.core.runtime.compatibility.registry,org.eclipse.update.ui,org.eclipse.ui.forms,org.eclipse.equinox.common,org.eclipse.core.runtime,org.eclipse.core.expressions,org.eclipse.ui,org.eclipse.jface,org.eclipse.core.runtime.compatibility.auth,org.eclipse.help,org.eclipse.swt,org.eclipse.core.databinding,org.eclipse.equinox.registry,org.eclipse.ui.workbench,org.eclipse.core.commands,org.eclipse.core.net,org.eclipse.core.jobs,org.eclipse.osgi.services,org.eclipse.equinox.app,org.eclipse.core.net.linux.x86,org.eclipse.swt.gtk.linux.x86,org.eclipse.update.core.linux,org.eclipse.jface.databinding,javax.servlet,org.eclipse.equinox.security,org.eclipse.osgi,org.eclipse.equinox.preferences,org.eclipse.update.core"/>
 <stringAttribute key="selected_workspace_plugins" value="org.caleydo.rcp"/>
 <booleanAttribute key="show_selected_only" value="false"/>
 <booleanAttribute key="tracing" value="false"/>

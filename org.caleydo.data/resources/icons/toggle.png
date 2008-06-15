@@ -1,0 +1,127 @@
+<!DOCTYPE html
+    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+ <title>/trunk/org.caleydo.rcp/resources/icons/toggle.png - org.caleydo - Trac</title><link rel="start" href="/projects/org.caleydo/wiki" /><link rel="search" href="/projects/org.caleydo/search" /><link rel="help" href="/projects/org.caleydo/wiki/TracGuide" /><link rel="stylesheet" href="/projects/org.caleydo/chrome/common/css/trac.css" type="text/css" /><link rel="stylesheet" href="/projects/org.caleydo/chrome/common/css/code.css" type="text/css" /><link rel="stylesheet" href="/projects/org.caleydo/chrome/common/css/browser.css" type="text/css" /><link rel="up" href="/projects/org.caleydo/browser/trunk/org.caleydo.rcp/resources/icons?rev=1269" title="Parent directory" /><link rel="alternate" href="/projects/org.caleydo/browser/trunk/org.caleydo.rcp/resources/icons/toggle.png?rev=1269&amp;format=raw" title="Original Format" type="image/png; charset=iso-8859-15" /><style type="text/css">
+</style>
+ <script type="text/javascript" src="/projects/org.caleydo/chrome/common/js/trac.js"></script>
+</head>
+<body>
+
+
+<div id="banner">
+
+<div id="header"><a id="logo" href="http://www.icg.tugraz.at/"><img src="/images/ICGL_Transparent_Logo-klein.JPG" alt="" /></a><hr /></div>
+
+<form id="search" action="/projects/org.caleydo/search" method="get">
+ <div>
+  <label for="proj-search">Search:</label>
+  <input type="text" id="proj-search" name="q" size="10" accesskey="f" value="" />
+  <input type="submit" value="Search" />
+  <input type="hidden" name="wiki" value="on" />
+  <input type="hidden" name="changeset" value="on" />
+  <input type="hidden" name="ticket" value="on" />
+ </div>
+</form>
+
+
+
+<div id="metanav" class="nav"><ul><li class="first">logged in as mstreit</li><li><a href="/projects/org.caleydo/logout">Logout</a></li><li><a href="/projects/org.caleydo/settings">Settings</a></li><li><a accesskey="6" href="/projects/org.caleydo/wiki/TracGuide">Help/Guide</a></li><li class="last"><a href="/projects/org.caleydo/about">About Trac</a></li></ul></div>
+</div>
+
+<div id="mainnav" class="nav"><ul><li class="first"><a accesskey="1" href="/projects/org.caleydo/wiki">Wiki</a></li><li><a accesskey="2" href="/projects/org.caleydo/timeline">Timeline</a></li><li><a accesskey="3" href="/projects/org.caleydo/roadmap">Roadmap</a></li><li class="active"><a href="/projects/org.caleydo/browser">Browse Source</a></li><li><a href="/projects/org.caleydo/report">View Tickets</a></li><li><a accesskey="7" href="/projects/org.caleydo/newticket">New Ticket</a></li><li><a accesskey="4" href="/projects/org.caleydo/search">Search</a></li><li><a href="/projects/org.caleydo/doxygen">Doxygen</a></li><li><a href="/projects/org.caleydo/Billing">Management</a></li><li><a href="/projects/org.caleydo/admin">Admin</a></li><li class="last"><a href="/projects/org.caleydo/gantt">Gantt Charts</a></li></ul></div>
+<div id="main">
+
+
+
+
+<div id="ctxtnav" class="nav">
+ <ul>
+  <li class="first"><a href="/projects/org.caleydo/changeset/1268/trunk/org.caleydo.rcp/resources/icons/toggle.png">
+   Last Change</a></li>
+  <li class="last"><a href="/projects/org.caleydo/log/trunk/org.caleydo.rcp/resources/icons/toggle.png?rev=1269">
+   Revision Log</a></li>
+ </ul>
+</div>
+
+
+<div id="searchable">
+<div id="content" class="browser">
+ <h1><a class="first" title="Go to root directory" href="/projects/org.caleydo/browser?rev=1269">root</a><span class="sep">/</span><a title="View trunk" href="/projects/org.caleydo/browser/trunk?rev=1269">trunk</a><span class="sep">/</span><a title="View org.caleydo.rcp" href="/projects/org.caleydo/browser/trunk/org.caleydo.rcp?rev=1269">org.caleydo.rcp</a><span class="sep">/</span><a title="View resources" href="/projects/org.caleydo/browser/trunk/org.caleydo.rcp/resources?rev=1269">resources</a><span class="sep">/</span><a title="View icons" href="/projects/org.caleydo/browser/trunk/org.caleydo.rcp/resources/icons?rev=1269">icons</a><span class="sep">/</span><a title="View toggle.png" href="/projects/org.caleydo/browser/trunk/org.caleydo.rcp/resources/icons/toggle.png?rev=1269">toggle.png</a></h1>
+
+ <div id="jumprev">
+  <form action="" method="get">
+   <div>
+    <label for="rev">View revision:</label>
+    <input type="text" id="rev" name="rev" value="1269" size="4" />
+   </div>
+  </form>
+ </div>
+
+ 
+
+ 
+  <table id="info" summary="Revision info"><tr>
+    <th scope="col">
+     Revision <a href="/projects/org.caleydo/changeset/1268">1268</a>, 1.2 kB
+     (checked in by mstreit, 2 months ago)
+    </th></tr><tr>
+    <td class="message"><p>
+Added clear action for RCP to erase bucket/jukebox. <br />
+Added RCP icon for jukebox/bucket toggle action. <br />
+Removed unused menu manager, which makes no sense with RCP. <br />
+Renamed "Singelton" to "Singleton". <br />
+Removed old unused Swing window commands. <br />
+</p>
+</td>
+   </tr><tr>
+    <td colspan="2"><ul class="props">
+      <li>Property <strong>svn:mime-type</strong> set to <em><code>application/octet-stream</code></em></li>
+      <li>Property <strong>svn:executable</strong> set to <em><code>*</code></em></li>
+    </ul></td></tr>
+  </table>
+  <div id="preview"><div class="image-file"><img src="/projects/org.caleydo/browser/trunk/org.caleydo.rcp/resources/icons/toggle.png?rev=1269&amp;format=raw" alt="trunk/org.caleydo.rcp/resources/icons/toggle.png" /></div>
+  </div>
+
+ <div id="help">
+  <strong>Note:</strong> See <a href="/projects/org.caleydo/wiki/TracBrowser">TracBrowser</a> for help on using the browser.
+ </div>
+
+  <div id="anydiff">
+   <form action="/projects/org.caleydo/anydiff" method="get">
+    <div class="buttons">
+     <input type="hidden" name="new_path" value="/trunk/org.caleydo.rcp/resources/icons/toggle.png" />
+     <input type="hidden" name="old_path" value="/trunk/org.caleydo.rcp/resources/icons/toggle.png" />
+     <input type="hidden" name="new_rev" value="1269" />
+     <input type="hidden" name="old_rev" value="1269" />
+     <input type="submit" value="View changes..." title="Prepare an Arbitrary Diff" />
+    </div>
+   </form>
+  </div>
+
+</div>
+</div>
+<script type="text/javascript">searchHighlight()</script>
+<div id="altlinks"><h3>Download in other formats:</h3><ul><li class="first last"><a href="/projects/org.caleydo/browser/trunk/org.caleydo.rcp/resources/icons/toggle.png?rev=1269&amp;format=raw">Original Format</a></li></ul></div>
+
+</div>
+
+<div id="footer">
+ <hr />
+ <a id="tracpowered" href="http://trac.edgewall.org/"><img src="/projects/org.caleydo/chrome/common/trac_logo_mini.png" height="30" width="107"
+   alt="Trac Powered"/></a>
+ <p class="left">
+  Powered by <a href="/projects/org.caleydo/about"><strong>Trac 0.10.3</strong></a><br />
+  By <a href="http://www.edgewall.org/">Edgewall Software</a>.
+ </p>
+ <p class="right">
+  Visit the Geneview website at <a href="http://www.geneview.org/">http://www.geneview.org/</a>
+ </p>
+</div>
+
+
+
+ </body>
+</html>
+

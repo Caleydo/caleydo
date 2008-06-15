@@ -1,4 +1,4 @@
-<cerberus version="0.1">
+<caleydo version="0.1">
 
   <workspace title="primary" server="localhost">
   
@@ -57,4 +57,4 @@
   
   </workspace>
 
-</cerberus>
+</caleydo>

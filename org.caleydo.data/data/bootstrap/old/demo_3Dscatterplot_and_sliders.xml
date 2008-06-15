@@ -1,4 +1,4 @@
-<cerberus version="0.1">
+<caleydo version="0.1">
 
   <workspace title="primary" server="localhost">
   
@@ -34,7 +34,7 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="01010"	uniqueId="-1"	detail="data/genome/microarray/gpr_format/slide30_100sets_edited.gpr"	attrib1="INT;ABORT" attrib2="55101" />
 			   	
 		<!-- Window 10331 -->
-     		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" uniqueId="10331" label="Cerberus Window 1"
+     		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" uniqueId="10331" label="Caleydo Window 1"
      		 attrib1="ROW HORIZONTAL" />   
          
 		<!-- Container 10341 -->
@@ -92,7 +92,7 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_BROWSER"			cmdId="64991" uniqueId="85401" label="Browser"			parent="11331" attrib2="500 -1" />
  
  		<!-- Window 12331 -->
-     		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" uniqueId="12331" label="Cerberus Window 1" attrib1="ROW VERTICAL" />   
+     		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" uniqueId="12331" label="Caleydo Window 1" attrib1="ROW VERTICAL" />   
  
  			<!--
   			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_IMAGE" 			cmdId="69991" uniqueId="86401" label="MicroArray Image" parent="12331" attrib2="500 500" detail="data/images/GenView_original_microarray_DNA_chip.jpg" />
@@ -141,4 +141,4 @@
   
   </workspace>
 
-</cerberus>
+</caleydo>

@@ -1,4 +1,4 @@
-<cerberus version="0.1">
+<caleydo version="0.1">
 
   <workspace title="primary" server="localhost">
   
@@ -14,7 +14,9 @@
 					
 		<!-- Window 14331 -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" uniqueId="14331" label="Caleydo Browser" 		attrib1="ROW HORIZONTAL" />   
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_BROWSER"			cmdId="64991" uniqueId="85401" label="Browser"				parent="14331"  />
+			<!--
+			  <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_BROWSER"			cmdId="64991" uniqueId="85401" label="Browser"				parent="14331"  />
+			-->
 			
 		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PARALLEL_COORDINATES_3D"		cmdId="69994"	uniqueId="82401" parent="99076" label="Parallel Coordinates" 
 						gl_origin="0 0 0" 
@@ -63,4 +65,4 @@
   
   </workspace>
 
-</cerberus>
+</caleydo>

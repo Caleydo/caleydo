@@ -1,4 +1,4 @@
-<cerberus	version="0.1">
+<caleydo	version="0.1">
 
 	<workspace title="primary" server="localhost">
 
@@ -72,7 +72,7 @@
 			<!-- Window	10331	-->
 			
 			<!--
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"					cmdId="40991"	uniqueId="10331" label="Cerberus Window	1" attrib1="ROW	HORIZONTAL"	/>	 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"					cmdId="40991"	uniqueId="10331" label="Caleydo Window	1" attrib1="ROW	HORIZONTAL"	/>	 
 			-->
 			
 			<!-- Container 10341 -->
@@ -151,7 +151,7 @@
 	    
 	    <!-- Window	10331	%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% -->
 	    <!--  
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"					cmdId="40991"	uniqueId="10331" label="Cerberus Window	1" attrib1="ROW	HORIZONTAL"	/>	 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"					cmdId="40991"	uniqueId="10331" label="Caleydo Window	1" attrib1="ROW	HORIZONTAL"	/>	 
 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="12401" parent="10331" label="Canvas"						attrib2="300	300" detail="1077991"	/>
 			
@@ -223,7 +223,7 @@
 
 		
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"					cmdId="40991"	uniqueId="11331" 
-			  label="Cerberus Window	1" attrib1="ROW	HORIZONTAL"	/>	 
+			  label="Caleydo Window	1" attrib1="ROW	HORIZONTAL"	/>	 
 			
 		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER"			cmdId="51991"	uniqueId="14331" 
 		 	  parent="11331" label="swt	container	2"	attrib2="ROW	VERTICAL"	/>			
@@ -281,7 +281,7 @@
 			
 			<!-- Window	11331	-->
 			<!--
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"							cmdId="41991"	uniqueId="11331" label="Cerberus Window	2" attrib1="ROW	VERTICAL"	/>	 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"							cmdId="41991"	uniqueId="11331" label="Caleydo Window	2" attrib1="ROW	VERTICAL"	/>	 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_STORAGE_SLIDER"		cmdId="66991"	uniqueId="19401" label="Storage	Slider"		parent="11331" attrib2="400	100" detail="35101"	/>	 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SELECTION_SLIDER" 	cmdId="66991" uniqueId="20401"	label="Selection Slider" parent="11331"	attrib2="400 100"	detail="35201" attrib3="offset"	/>
 		   -->
@@ -341,4 +341,4 @@
 	
 	</workspace>
 
-</cerberus>
+</caleydo>

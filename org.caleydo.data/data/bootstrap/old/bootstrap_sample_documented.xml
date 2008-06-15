@@ -1,4 +1,4 @@
-<cerberus version="0.1">
+<caleydo version="0.1">
 
   <workspace title="primary" server="localhost">
   
@@ -78,7 +78,7 @@
                  Sample value: "ROW HORIZONTAL"
 
       Sample:
-        <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" cmdId="40991" uniqueId="10331" label="Cerberus Window 2" attrib1="ROW HORIZONTAL" />   
+        <Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" cmdId="40991" uniqueId="10331" label="Caleydo Window 2" attrib1="ROW HORIZONTAL" />   
     
     CONTAINER Creation Command:
 
@@ -123,7 +123,7 @@
      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA" 					cmdId="32991" uniqueId="35101" label="target Set for file new" attrib1="35201" attrib2="45301" /> 
 
       <!-- Window 10331 -->
-     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" uniqueId="10331" label="Cerberus Window 1" attrib1="ROW HORIZONTAL" />   
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="40991" uniqueId="10331" label="Caleydo Window 1" attrib1="ROW HORIZONTAL" />   
          
       <!-- Container 10341 -->
 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER" 		cmdId="50991" uniqueId="10341" label="swt container 1" 	parent="10331" attrib2="ROW VERTICAL" />
@@ -146,7 +146,7 @@
      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_TEST_TRIANGLE" 	cmdId="69995" uniqueId="32401" label="Heatmap" 			parent="11341" attrib2="300 300" />		  
 
       <!-- Window 11331 -->
-     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" uniqueId="11331" label="Cerberus Window 2" attrib1="ROW VERTICAL" />   
+     	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" uniqueId="11331" label="Caleydo Window 2" attrib1="ROW VERTICAL" />   
 	 	
 	 	<!-- Storage detail argument: "setId" -->
 	 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_STORAGE_SLIDER"  cmdId="66991" uniqueId="19401" label="Storage Slider"  	parent="11331" attrib2="400 100" detail="35101" />	 
@@ -186,4 +186,4 @@
   
   </workspace>
 
-</cerberus>
+</caleydo>

@@ -1,4 +1,4 @@
-<cerberus	version="0.1">
+<caleydo	version="0.1">
 
 	<workspace title="primary" server="localhost">
 	
@@ -25,7 +25,7 @@
 			<!-- Window	11331	-->
 		
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"					cmdId="40991"	uniqueId="11331" 
-			  label="Cerberus Window	1" attrib1="ROW	HORIZONTAL"	/>	 
+			  label="Caleydo Window	1" attrib1="ROW	HORIZONTAL"	/>	 
 			
 		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_CONTAINER"			cmdId="51991"	uniqueId="14331" 
 		 	  parent="11331" label="swt	container	2"	attrib2="ROW	VERTICAL"	/>			
@@ -47,4 +47,4 @@
 	
 	</workspace>
 
-</cerberus>
+</caleydo>
