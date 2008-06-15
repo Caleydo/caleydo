@@ -18,6 +18,16 @@
             name="Caleydo"
             id="org.caleydo.rcp.jogl.view.jframe">
       </category>
+      
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.jogl.view.jframe"
+            class="org.caleydo.rcp.views.GLGears3DTestView"
+            icon="resources/icons/pathway3D.png"
+            id="org.caleydo.rcp.views.GLGears3DTestView"
+            name="GLGears3DTestView">
+      </view>
+      
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.jogl.view.jframe"
@@ -112,7 +122,7 @@
          </property>
          <property
                name="aboutText"
-               value="Caleydo visualization framework&#x0A;Caleydo is a general purpose visualization framework.&#x0A;See: www.caleydo.org&#x0A;&#x0A;(c) Copyright by www.geneview.org and Institute for Computer Graphics and Vision (ICG)&#x0A;Graz University of Technology - 2007.&#x0A;All Rights Reserved.">
+               value="Caleydo visualization framework&#x0A;Caleydo is a general purpose visualization framework.&#x0A;See: www.caleydo.org&#x0A;&#x0A;(c) Copyright by www.geneview.org and Institute for Computer Graphics and Vision (ICG)&#x0A;Graz University of Technology - 2008.&#x0A;All Rights Reserved.">
          </property>
       </product>
    </extension>

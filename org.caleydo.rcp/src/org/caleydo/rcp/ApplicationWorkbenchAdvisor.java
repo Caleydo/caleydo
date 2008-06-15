@@ -7,7 +7,6 @@ import javax.media.opengl.GLEventListener;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.rcp.views.AGLViewPart;
-import org.caleydo.rcp.views.GLHeatmap2DView;
 import org.caleydo.rcp.views.GLJukeboxPathwayView;
 import org.caleydo.rcp.views.GLParCoordsView;
 import org.caleydo.rcp.views.GLPathway3DView;
@@ -38,7 +37,10 @@ extends WorkbenchAdvisor {
 		return PERSPECTIVE_ID;
 	}
 	
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.ui.application.WorkbenchAdvisor#initialize(org.eclipse.ui.application.IWorkbenchConfigurer)
+	 */
 	public void initialize(IWorkbenchConfigurer configurer) {
 
 		super.initialize(configurer);
@@ -46,12 +48,27 @@ extends WorkbenchAdvisor {
 		configurer.setSaveAndRestore(true);
 	}
 	
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.ui.application.WorkbenchAdvisor#postStartup()
+	 */
 	public void postStartup() {
 
 		super.postStartup();
 		
 		openLoadedViews();
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.ui.application.WorkbenchAdvisor#preShutdown()
+	 */
+	public boolean preShutdown() {
+		
+		if (gLAnimator.isAnimating())
+			gLAnimator.stop();
+		
+		return true;
 	}
 	
 	protected void openLoadedViews() {
@@ -121,6 +138,10 @@ extends WorkbenchAdvisor {
 				e.printStackTrace();
 			} 
 		}
+		
+//		MessageBox alert = new MessageBox(new Shell(), SWT.OK);
+//		alert.setMessage("Start animator!");
+//		alert.open();
 		
 		gLAnimator.start();
 	}

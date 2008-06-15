@@ -2,15 +2,15 @@ package org.caleydo.rcp;
 
 import java.util.Map;
 
+import org.caleydo.core.application.core.CaleydoBootloader;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.rcp.dialog.file.OpenXmlConfigFileDialog;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
-import org.caleydo.core.application.core.CaleydoBootloader;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.rcp.dialog.file.OpenXmlConfigFileDialog;
 
 /**
  * This class controls all aspects of the application's execution
@@ -91,7 +91,7 @@ implements IApplication {
 		});
 	}
 
-	protected void startCaleydoCore( final String xmlFileName ) {
+	protected void startCaleydoCore(final String xmlFileName) {
 		
 		caleydo_core = new CaleydoBootloader();
 		
