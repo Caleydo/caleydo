@@ -524,12 +524,27 @@ implements IMediatorReceiver, IMediatorSender {
 			PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) generalManager
 				.getPathwayItemManager().getItem(iExternalID);
 
-			
 			// Do nothing if new selection is the same as previous selection
 			if (tmpVertexGraphItemRep == selectedVertex && !pickingMode.equals(EPickingMode.CLICKED))
 			{
 				pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
 				pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_TEXTURE_SELECTION);
+				
+				// Write info area content
+				// TODO: now only the first parent graph item is read
+				// actually the whole array (all genes) must me displayed in the info area
+				PathwayVertexGraphItem tmp = (PathwayVertexGraphItem) tmpVertexGraphItemRep.
+					getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0);
+				
+				int iDavidId = generalManager.getPathwayItemManager()
+				.getDavidIdByPathwayVertexGraphItemId(tmp.getId());
+				
+				if (iDavidId == -1 || iDavidId == 0)
+					return;
+				
+				generalManager.getViewGLCanvasManager().getInfoAreaManager()
+					.setData(iUniqueId, iDavidId, EInputDataType.GENE, getInfo());				
+				
 				return;
 			}
 			

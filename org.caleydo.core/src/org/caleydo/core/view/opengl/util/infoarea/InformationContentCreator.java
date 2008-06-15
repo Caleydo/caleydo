@@ -58,25 +58,29 @@ public class InformationContentCreator
 		{
 		case GENE:
 			
-			String sRefSeq;
-			String sGeneName;
+			String sRefSeq = "unknown";
+			String sGeneName = "unknown";
+			String sGeneSymbol = "unknown";
 			
-			if (iUniqueID == -1)
-			{
-				sRefSeq = "unknown";
-				sGeneName = "unknown";
-			}
-			else
+			if (iUniqueID != -1)
 			{
 				sRefSeq = generalManager.getGenomeIdManager().getIdStringFromIntByMapping(
 						iUniqueID, EGenomeMappingType.DAVID_2_REFSEQ_MRNA);							
-				sGeneName = "TODO";//mapper.getGeneShortNameByAccession(iUniqueID);
+				sGeneName = generalManager.getGenomeIdManager().getIdStringFromIntByMapping(
+						iUniqueID, EGenomeMappingType.DAVID_2_GENE_NAME);
+				sGeneSymbol = generalManager.getGenomeIdManager().getIdStringFromIntByMapping(
+						iUniqueID, EGenomeMappingType.DAVID_2_GENE_SYMBOL);				
 			}
 			
+			// Cut too long gene names 
+			if (sGeneName.length() >= 50)
+				sGeneName = sGeneName.substring(0, 50) + "...";
+			
 			sContent.add("Type: Gene");
-			sContent.add("Name: " + sGeneName);			
 			sContent.add("RefSeq: " + sRefSeq);
-		
+			sContent.add("Symbol:" +sGeneSymbol);
+			sContent.add("Name: " + sGeneName);			
+			
 			break;
 			
 		case PATHWAY:

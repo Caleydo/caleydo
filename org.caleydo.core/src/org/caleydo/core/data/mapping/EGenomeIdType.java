@@ -19,10 +19,11 @@ implements ICaleydoDefaultType <EGenomeIdType> {
 			
 	GENE_NAME(StorageType.STRING,
 			EGenomeMappingType.NON_MAPPING,
-			"gene-name","gene pseudo name"),	
-	GENE_SHORT_NAME(StorageType.STRING,
+			"gene-name","gene pseudo name"),
+			
+	GENE_SYMBOL(StorageType.STRING,
 			EGenomeMappingType.NON_MAPPING,
-			"gene-short-name","gene pseudo short name"),
+			"gene-symbol","gene pseudo symbol"),
 			
 	BIOCARTA_GENE_ID(StorageType.STRING,
 			EGenomeMappingType.NON_MAPPING,

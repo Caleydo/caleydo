@@ -47,8 +47,15 @@ implements ICaleydoDefaultType <EGenomeMappingType> {
 			
 	BIOCARTA_GENE_ID_2_DAVID(EGenomeIdType.BIOCARTA_GENE_ID,
 			EGenomeIdType.DAVID,
-			EGenomeMappingDataType.STRING2INT);
+			EGenomeMappingDataType.STRING2INT),
 	
+	DAVID_2_GENE_SYMBOL(EGenomeIdType.DAVID,
+			EGenomeIdType.GENE_SYMBOL,
+			EGenomeMappingDataType.INT2STRING),
+	
+	DAVID_2_GENE_NAME(EGenomeIdType.DAVID,
+			EGenomeIdType.GENE_NAME,
+			EGenomeMappingDataType.INT2STRING);
 	
 	private final EGenomeIdType originType;
 	
