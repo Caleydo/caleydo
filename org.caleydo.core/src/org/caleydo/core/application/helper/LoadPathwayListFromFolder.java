@@ -18,8 +18,8 @@ import javax.swing.ImageIcon;
  */
 public class LoadPathwayListFromFolder {
 
-	private final static String INPUT_FOLDER_PATH_KEGG = "data/genome/pathway/xml/hsa/";
-	private final static String INPUT_IMAGE_PATH_KEGG = "data/genome/pathway/images/hsa/";
+	private final static String INPUT_FOLDER_PATH_KEGG = "data/genome/pathway/kegg/xml/hsa/";
+	private final static String INPUT_IMAGE_PATH_KEGG = "data/genome/pathway/kegg/images/hsa/";
 	private final static String OUTPUT_FILE_NAME_KEGG = "data/genome/pathway/pathway_list_KEGG.txt";
 
 	private final static String INPUT_FOLDER_PATH_BIOCARTA = "data/genome/pathway/biocarta/imagemap/";
@@ -41,6 +41,10 @@ public class LoadPathwayListFromFolder {
 	    {
 	    	if (tmpFile.toString().endsWith(".svn"))
 	    		continue;
+
+			// Ignore mice pathways
+			if (tmpFile.toString().contains("m_"))
+				continue;
 	    	
 	    	outputWriter.append(tmpFile.toString() + " ");
 
@@ -62,10 +66,10 @@ public class LoadPathwayListFromFolder {
 					while ((sLine = brFile.readLine()) != null)
 					{
 						if (sLine.contains("http://cgap.nci.nih.gov/BIOCARTA/Pathways/"))
-						{
+						{	
 							sImagePath = sLine.substring(sLine.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/") + 42,
 									sLine.indexOf(".gif", sLine.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/")) + 4);
-
+							
 							sImagePath = sInputImagePath + sImagePath;
 							
 							break;
