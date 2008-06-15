@@ -3,9 +3,9 @@ package org.caleydo.core.view.opengl.canvas.pathway;
 import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.logging.Level;
 
 import javax.media.opengl.GL;
-import javax.swing.ImageIcon;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IGeneralManager;
@@ -56,12 +56,14 @@ public class GLPathwayTextureManager {
 		sPathwayTexturePath = generalManager.getPathwayManager()
 				.getPathwayDatabaseByType(type).getImagePath() + sPathwayTexturePath;	
 		
+		generalManager.getLogger().log(Level.INFO, "Load pathway texture with ID: " +iPathwayId);
+		
 		try
 		{			
 			if (this.getClass().getClassLoader().getResource(sPathwayTexturePath) != null)
 			{
 				pathwayTexture = TextureIO.newTexture(TextureIO.newTextureData(
-						this.getClass().getClassLoader().getResourceAsStream(sPathwayTexturePath), false, "GIF"));
+						this.getClass().getClassLoader().getResourceAsStream(sPathwayTexturePath), true, "GIF"));
 			}
 			else
 			{
@@ -74,16 +76,11 @@ public class GLPathwayTextureManager {
 			
 			hashPathwayIdToTexture.put(iPathwayId, pathwayTexture);
 			
-//			generalManager.logMsg(
-//					this.getClass().getSimpleName() + 
-//					": loadPathwayTexture(): Loaded Texture for Pathway with ID: " +iPathwayId,
-//					LoggerType.VERBOSE );
-			
 			return pathwayTexture;
 			
 		} catch (Exception e)
 		{
-			System.out.println("Error loading texture " + sPathwayTexturePath);
+			generalManager.getLogger().log(Level.SEVERE, "Error loading pathway texture: " +sPathwayTexturePath);
 			e.printStackTrace();
 		}
 		

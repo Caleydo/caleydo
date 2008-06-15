@@ -1,16 +1,10 @@
 package org.caleydo.core.application.gui.swt;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Frame;
-import java.awt.GradientPaint;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
 import javax.media.opengl.GLCanvas;
-import javax.swing.JPanel;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
@@ -76,21 +70,5 @@ public class SWTEmbeddedAWTGears
 				display.sleep();
 		}
 		display.dispose();
-
-
-	}
-
-	// Helper routine for various demos
-	@SuppressWarnings("serial")
-	public static JPanel createGradientPanel() {
-	  JPanel gradientPanel = new JPanel() {
-	      public void paintComponent(Graphics g) {
-	        ((Graphics2D) g).setPaint(new GradientPaint(0, 0, Color.WHITE,
-	                                                    getWidth(), getHeight(), Color.DARK_GRAY));
-	        g.fillRect(0, 0, getWidth(), getHeight());
-	      }
-	    };
-	  gradientPanel.setLayout(new BorderLayout());
-	  return gradientPanel;
 	}
 }

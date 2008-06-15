@@ -2,6 +2,8 @@ package org.caleydo.core.view.opengl.util;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.EnumMap;
 
 import javax.media.opengl.GL;
@@ -34,9 +36,22 @@ public class GLIconTextureManager
 		{
 			try
 			{
-				Texture tempTexture = TextureIO.newTexture(TextureIO.newTextureData(
-						new File(eIconTextures.getFileName()), true, "PNG"));
-				mapIconTextures.put(eIconTextures, tempTexture);
+				Texture tmpTexture;
+				String sFileName = eIconTextures.getFileName();			
+				
+			    if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null)
+			    {
+			    	tmpTexture = TextureIO.newTexture(TextureIO.newTextureData(
+			    			this.getClass().getClassLoader().getResourceAsStream(sFileName), true, "PNG"));
+			    }
+			    else
+			    {
+			    	tmpTexture = TextureIO.newTexture(TextureIO.newTextureData(
+							new File(eIconTextures.getFileName()), true, "PNG"));
+			    }
+				
+				mapIconTextures.put(eIconTextures, tmpTexture);
+				
 			} catch (GLException e)
 			{
 				e.printStackTrace();
@@ -48,7 +63,6 @@ public class GLIconTextureManager
 				e.printStackTrace();
 			}	
 		}
-	
 	}
 	
 	public Texture getIconTexture(final EIconTextures eIconTextures)

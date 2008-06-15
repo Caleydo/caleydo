@@ -9,7 +9,6 @@ import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
-import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.util.graph.IGraphItem;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -123,8 +122,6 @@ extends AXmlParserHandler {
 		
 		String sName = "";
     	String sImageLink = "";
-//    	int iWidth = -1;
-//    	int iHeight = -1;
 
 		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
 		{
@@ -142,17 +139,7 @@ extends AXmlParserHandler {
    			else if (sAttributeName.equals("name"))
    			{
    				sName = attributes.getValue(iAttributeIndex); 
-   			}
-//   			else if (sAttributeName.equals("width"))
-//   			{
-//   				iWidth = StringConversionTool.convertStringToInt(
-//   						attributes.getValue(iAttributeIndex), -1); 
-//   			}
-//   			else if (sAttributeName.equals("height"))
-//   			{
-//   				iHeight = StringConversionTool.convertStringToInt(
-//   						attributes.getValue(iAttributeIndex), -1); 
-//   			}			
+   			}			
 		} 	
 		
 		if (sImageLink.isEmpty() || sName.isEmpty())
@@ -224,8 +211,7 @@ extends AXmlParserHandler {
 			.createVertexGene(sName, "gene", 
 					BIOCARTA_EXTERNAL_URL_VERTEX +  sExternalLink, "", iDavidId);
 		
-		generalManager
-			.getPathwayItemManager().createVertexRep(
+		generalManager.getPathwayItemManager().createVertexRep(
 			currentPathway, 
 			vertex, 
 			sName, 

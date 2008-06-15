@@ -285,7 +285,8 @@ public class CaleydoBootloader
 	 */
 	public synchronized boolean run_parseXmlConfigFile( final String fileName) {
 		
-		if (generalManager == null ) {
+		if (generalManager == null ) 
+		{
 			System.err.println( "FATAL ERROR!  " + 
 					getClass().getSimpleName() + 
 					".run_parseXmlConfigFile() can not be executed, because no GeneralManager has bee created!");

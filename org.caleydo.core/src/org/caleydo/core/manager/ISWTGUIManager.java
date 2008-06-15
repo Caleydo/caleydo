@@ -21,7 +21,7 @@ extends IManager
 			int iHeight);
 	
 	/**
-	 * Method cretes an unique window ID and calls createWindow(iUniqueId)
+	 * Method creates an unique window ID and calls createWindow(iUniqueId)
 	 * with the default layout (ROW VERTICAL).
 	 * 
 	 * @return Newly created shell.

@@ -47,6 +47,11 @@ extends ARemoteViewLayoutRenderStyle {
 		fScalingFactorMemoLayer = 0.05f;
 		fScalingFactorTransitionLayer = 0.025f;
 		fScalingFactorSpawnLayer = 0.005f;
+		
+		fColorBarXPos = 2.01f/fAspectRatio;
+		fColorBarYPos = -1;
+		fColorBarWidth = 0.1f;
+		fColorBarHeight = 2f;
 	}
 	
 	/*

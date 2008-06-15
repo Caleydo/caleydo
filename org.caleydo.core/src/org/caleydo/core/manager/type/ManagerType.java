@@ -59,7 +59,7 @@ public enum ManagerType {
 		 */
 		private final String sRemark;
 		
-		private final ManagerType parentType;
+//		private final ManagerType parentType;
 		
 		private final int iIdOffsetType;
 		
@@ -71,7 +71,7 @@ public enum ManagerType {
 		private ManagerType(String setRemark,
 				final int iSetIdOffsetType) {
 			this.sRemark = setRemark;
-			this.parentType = ManagerType.NONE;
+//			this.parentType = ManagerType.NONE;
 			this.iIdOffsetType = iSetIdOffsetType;
 		}
 		
@@ -84,7 +84,7 @@ public enum ManagerType {
 				ManagerType parentType,
 				final int iSetIdOffsetType) {
 			this.sRemark = setRemark;
-			this.parentType = parentType;
+//			this.parentType = parentType;
 			this.iIdOffsetType = iSetIdOffsetType;
 		}
 		
@@ -97,23 +97,23 @@ public enum ManagerType {
 			return this.sRemark;
 		}
 		
-		/**
-		 * Return parent type or NONE if it is parent type.
-		 * 
-		 * @return paretn type or none
-		 */
-		public ManagerType getParentType() {
-			return this.parentType;	
-		}
+//		/**
+//		 * Return parent type or NONE if it is parent type.
+//		 * 
+//		 * @return paretn type or none
+//		 */
+//		public ManagerType getParentType() {
+//			return this.parentType;	
+//		}
 		
-		/**
-		 * Return TRUE if type is a parent type.
-		 * 
-		 * @return true if this type is a parent type
-		 */
-		public boolean isParentType() {
-			return (parentType == ManagerType.NONE) ? true : false;	
-		}
+//		/**
+//		 * Return TRUE if type is a parent type.
+//		 * 
+//		 * @return true if this type is a parent type
+//		 */
+//		public boolean isParentType() {
+//			return (parentType == ManagerType.NONE) ? true : false;	
+//		}
 		
 		/**
 		 * Get the postfix code of that Manager

@@ -1,5 +1,7 @@
 package org.caleydo.core.command.system.path;
 
+import java.util.logging.Level;
+
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import org.caleydo.core.manager.ICommandManager;
@@ -49,6 +51,9 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 			generalManager.getPathwayManager();
 		
 		pathwayManager.createPathwayDatabase(type, sXMLPath, sImagePath, sImageMapPath);
+		
+		generalManager.getLogger().log(Level.INFO, "Setting pathway loading path: database-type:["+type+"] " +
+				"xml-path:["+sXMLPath+"] image-path:["+sImagePath+"] image-map-path:["+sImageMapPath+"]");
 
 		commandManager.runDoCommand(this);
 	}

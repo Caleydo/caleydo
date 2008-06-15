@@ -34,6 +34,8 @@ extends IManager
 	
 	public void createPathwayImageMap(final String sImageLink);
 	
+	public PathwayGraph getCurrenPathwayGraph();
+	
 	public PathwayImageMap getCurrentPathwayImageMap();
 	
 	public int searchPathwayIdByName(final String sPathwayName);

@@ -230,6 +230,12 @@ extends ARemoteViewLayoutRenderStyle {
 		fTrashCanWidth = 0.35f;
 		fTrashCanHeight = 0.3f;
 		
+		// Init color bar position
+		fColorBarXPos = 2.01f/fAspectRatio;
+		fColorBarYPos = -1;
+		fColorBarWidth = 0.1f;
+		fColorBarHeight = 2f;
+		
 		return memoLayer;
 	}
 

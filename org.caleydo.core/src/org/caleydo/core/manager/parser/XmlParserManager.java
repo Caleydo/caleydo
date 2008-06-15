@@ -364,8 +364,9 @@ extends AXmlParserManager {
 			URL resourceUrl =  this.getClass().getClassLoader().getResource(filename);
 			InputSource inSource = null;
 			
-			if (resourceUrl != null) {
-				inSource = CaleydoInputStream.openInputStreamFromUrl(resourceUrl,	generalManager );			
+			if (resourceUrl != null) 
+			{
+				inSource = CaleydoInputStream.openInputStreamFromUrl(resourceUrl, generalManager);			
 			}
 			else
 			{

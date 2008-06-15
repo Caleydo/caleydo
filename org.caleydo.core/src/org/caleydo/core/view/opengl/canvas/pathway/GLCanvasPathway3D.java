@@ -392,17 +392,17 @@ implements IMediatorReceiver, IMediatorSender {
 		if (hashGLcontext2TextureManager.get(gl) == null)
 			return;
 		
-		// Missing power of two texture GL extension workaround
-		PathwayGraph tmpPathwayGraph = (PathwayGraph)generalManager.getPathwayManager().getItem(iPathwayId);
-		ImageIcon img = new ImageIcon(generalManager.getPathwayManager()
-				.getPathwayDatabaseByType(tmpPathwayGraph.getType()).getImagePath() 
-				+ tmpPathwayGraph.getImageLink());
-		int iImageWidth = img.getIconWidth();
-		int iImageHeight = img.getIconHeight();
-		tmpPathwayGraph.setWidth(iImageWidth);
-		tmpPathwayGraph.setHeight(iImageHeight);
-		img = null;
-	
+//		// Missing power of two texture GL extension workaround
+//		PathwayGraph tmpPathwayGraph = (PathwayGraph)generalManager.getPathwayManager().getItem(iPathwayId);
+//		ImageIcon img = new ImageIcon(generalManager.getPathwayManager()
+//				.getPathwayDatabaseByType(tmpPathwayGraph.getType()).getImagePath() 
+//				+ tmpPathwayGraph.getImageLink());
+//		int iImageWidth = img.getIconWidth();
+//		int iImageHeight = img.getIconHeight();
+//		tmpPathwayGraph.setWidth(iImageWidth);
+//		tmpPathwayGraph.setHeight(iImageHeight);
+//		img = null;
+			
 		float fPathwayScalingFactor = 0;
 		float fPadding = 0.98f;
 		
@@ -415,6 +415,14 @@ implements IMediatorReceiver, IMediatorSender {
 		{
 			fPathwayScalingFactor = 3.2f;
 		}
+		
+		PathwayGraph tmpPathwayGraph = (PathwayGraph)generalManager.getPathwayManager().getItem(iPathwayId);
+
+		int iImageWidth = tmpPathwayGraph.getWidth();
+		int iImageHeight = tmpPathwayGraph.getHeight();
+
+		generalManager.getLogger().log(Level.INFO, "Pathway texture width="+iImageWidth +" / height=" +iImageHeight);
+
 		
 		float fTmpPathwayWidth = iImageWidth * GLPathwayManager.SCALING_FACTOR_X * fPathwayScalingFactor;
 		float fTmpPathwayHeight = iImageHeight * GLPathwayManager.SCALING_FACTOR_Y * fPathwayScalingFactor;

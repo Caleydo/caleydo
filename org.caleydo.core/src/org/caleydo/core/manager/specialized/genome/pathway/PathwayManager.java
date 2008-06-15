@@ -52,6 +52,8 @@ implements IPathwayManager, Serializable {
 	 */
 	private PathwayImageMap currentPathwayImageMap;
 	
+	private PathwayGraph currentPathwayGraph;
+	
 	/**
 	 * Constructor.
 	 */
@@ -118,60 +120,11 @@ implements IPathwayManager, Serializable {
 		
 		rootPathwayGraph.addGraph(pathway, EGraphItemHierarchy.GRAPH_CHILDREN);
 	
+		currentPathwayGraph = pathway;
+		
 		return pathway;
 	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.data.IPathwayManager#loadPathwayById(int)
-	 */
-//	public boolean loadPathwayById(final int iPathwayID) {
-//		
-//		// Check if pathway was previously loaded
-//		if (hashPathwayIdToPathwayGraphLUT.containsKey(iPathwayID))
-//		{
-//			generalManager.getLogger().log(
-//					Level.INFO, "Pathway " +iPathwayID +" is already loaded. SKIP.");
-//			
-//			return true;
-//		}
-//
-//		String sPathwayFilePath = "";
-//		boolean bLoadingOK = false;
-//		
-//		if (iPathwayID < 10)
-//		{
-//			sPathwayFilePath = "hsa0000" + Integer.toString(iPathwayID);
-//		}
-//		else if (iPathwayID < 100 && iPathwayID >= 10)
-//		{
-//			sPathwayFilePath = "hsa000" + Integer.toString(iPathwayID);
-//		}
-//		else if (iPathwayID < 1000 && iPathwayID >= 100)
-//		{
-//			sPathwayFilePath = "hsa00" + Integer.toString(iPathwayID);
-//		}
-//		else if (iPathwayID < 10000 && iPathwayID >= 1000)
-//		{
-//			sPathwayFilePath = "hsa0" + Integer.toString(iPathwayID);
-//		}
-//		
-//		sPathwayFilePath = hashPathwayDatabase.get(EPathwayDatabaseType.KEGG).getXMLPath() + sPathwayFilePath +".xml";		
-//		
-//		bLoadingOK = generalManager.getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
-//
-//		if (bLoadingOK)
-//			return true;
-//
-//		generalManager.getLogger().log(
-//				Level.WARNING, "No HSA pathway available. Try loading reference pathway instead.");
-//		
-//		// Replace HSA with MAP and therefore try to load reference pathway
-//		sPathwayFilePath = sPathwayFilePath.replace("hsa", "map");
-//		
-//		return generalManager.getXmlParserManager().parseXmlFileByName(sPathwayFilePath);
-//	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.data.IPathwayManager#searchPathwayByName(java.lang.String)
@@ -233,10 +186,23 @@ implements IPathwayManager, Serializable {
 		
 		currentPathwayImageMap = new PathwayImageMap(sImageLink);
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.specialized.genome.IPathwayManager#getPathwayDatabaseByType(org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType)
+	 */
 	public PathwayDatabase getPathwayDatabaseByType(EPathwayDatabaseType type) {
 		
 		return hashPathwayDatabase.get(type);
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.specialized.genome.IPathwayManager#getCurrenPathwayGraph()
+	 */
+	public PathwayGraph getCurrenPathwayGraph() {
+		
+		return currentPathwayGraph;
 	}
 	
 	/*

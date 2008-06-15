@@ -243,8 +243,8 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 		
 		trashCan.init(gl);
 		
-		colorMappingBarMiniView.setWidth(0.25f * 1/fAspectRatio);
-		colorMappingBarMiniView.setHeight(1f);
+		colorMappingBarMiniView.setWidth(layoutRenderStyle.getColorBarWidth());
+		colorMappingBarMiniView.setHeight(layoutRenderStyle.getColorBarHeight());
 	}
 
 	/*
@@ -339,7 +339,8 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 			bucketMouseWheelListener.render();	
 		}
 		
-		colorMappingBarMiniView.render(gl, 0, 0, 0);
+		colorMappingBarMiniView.render(gl, layoutRenderStyle.getColorBarXPos(), 
+				layoutRenderStyle.getColorBarYPos(), 4);
 	}
 
 	private void retrieveContainedViews(final GL gl) {
