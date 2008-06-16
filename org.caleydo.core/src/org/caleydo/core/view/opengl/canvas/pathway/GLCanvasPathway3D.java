@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.logging.Level;
 
 import javax.media.opengl.GL;
-import javax.swing.ImageIcon;
 
 import org.caleydo.core.data.GeneralRenderStyle;
 import org.caleydo.core.data.collection.ISet;
@@ -16,7 +15,6 @@ import org.caleydo.core.data.collection.set.selection.ISetSelection;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.IGeneralManager;
@@ -29,17 +27,16 @@ import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.ESelectionMode;
 import org.caleydo.core.manager.view.Pick;
 import org.caleydo.core.manager.view.SelectionManager;
-import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListener;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
 import org.caleydo.core.view.opengl.util.hierarchy.EHierarchyLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
 import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
-import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
@@ -262,10 +259,25 @@ implements IMediatorReceiver, IMediatorSender {
 		// Pathway texture height is subtracted from Y to align pathways to
 		// front level
 		gl.glTranslatef(0, tmp, 0);
-		if (remoteRenderingGLCanvas.getHierarchyLayerByGLCanvasListenerId(iUniqueId).getLevel().equals(EHierarchyLevel.UNDER_INTERACTION))
-			gLPathwayManager.renderPathway(gl, iPathwayId, true);
+		
+		if (remoteRenderingGLCanvas.getBucketMouseWheelListener() != null)
+		{							
+			if (remoteRenderingGLCanvas.getHierarchyLayerByGLCanvasListenerId(iUniqueId)
+					.getLevel().equals(EHierarchyLevel.UNDER_INTERACTION) 
+					&& remoteRenderingGLCanvas.getBucketMouseWheelListener().isBucketBottomReached())
+			{
+				gLPathwayManager.renderPathway(gl, iPathwayId, true);
+			}
+			else
+			{
+				gLPathwayManager.renderPathway(gl, iPathwayId, false);
+			}
+		}
 		else
+		{
 			gLPathwayManager.renderPathway(gl, iPathwayId, false);
+		}
+			
 		gl.glTranslatef(0, -tmp, 0);
 		
 		gl.glScalef(1/vecScaling.x(), 1/vecScaling.y(),1/ vecScaling.z());
@@ -566,6 +578,13 @@ implements IMediatorReceiver, IMediatorSender {
 	//			int iUnselectAccessionID = generalManager.getGenomeIdManager()
 	//				.getIdIntFromIntByMapping(iGeneID, EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
 				
+				// Add new vertex to internal selection manager
+				pathwayVertexSelectionManager.addToType(
+						EViewInternalSelectionType.MOUSE_OVER, tmpVertexGraphItemRep.getId());
+				
+				loadURLInBrowser(((PathwayVertexGraphItem)selectedVertex.getAllItemsByProp(
+						EGraphItemProperty.ALIAS_PARENT).get(0)).getExternalLink());
+				
 				int iDavidId = generalManager.getPathwayItemManager()
 					.getDavidIdByPathwayVertexGraphItemId(tmpVertexGraphItem.getId());
 					
@@ -579,18 +598,11 @@ implements IMediatorReceiver, IMediatorSender {
 					continue;
 				}			
 				
-				// Add new vertex to internal selection manager
-				pathwayVertexSelectionManager.addToType(
-						EViewInternalSelectionType.MOUSE_OVER, tmpVertexGraphItemRep.getId());
-				
 				selectionManager.clear();
 				
 				// TODO: do this just for first or think about better solution!
 				generalManager.getViewGLCanvasManager().getInfoAreaManager()
-					.setData(iUniqueId, iDavidId, EInputDataType.GENE, getInfo());
-				
-				loadURLInBrowser(((PathwayVertexGraphItem)selectedVertex.getAllItemsByProp(
-					EGraphItemProperty.ALIAS_PARENT).get(0)).getExternalLink());	
+					.setData(iUniqueId, iDavidId, EInputDataType.GENE, getInfo());	
 							
 				Iterator<IGraphItem> iterPathwayVertexGraphItemRep = 
 					tmpVertexGraphItem.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();

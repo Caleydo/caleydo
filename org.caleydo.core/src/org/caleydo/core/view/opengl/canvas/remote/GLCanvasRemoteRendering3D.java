@@ -6,6 +6,7 @@ import gleem.linalg.Vec4f;
 import gleem.linalg.open.Transform;
 
 import java.awt.Font;
+import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -1861,6 +1862,15 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 				"GL Event Listener " +iGLEvnetListenerId +" is not contained in any layer!");
 
 		return null;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D#getBucketMouseWheelListener()
+	 */
+	public BucketMouseWheelListener getBucketMouseWheelListener() {
+		
+		return bucketMouseWheelListener;
 	}
 	
 	/*

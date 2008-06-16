@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry exported="true" kind="lib" path="lib/jogl/"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry excluding="**/.svn/|*.html" kind="src" path="src"/>
@@ -8,7 +9,6 @@
 	<classpathentry kind="lib" path="lib/org.caleydo.core_bin.jar" sourcepath="/org.caleydo.core/src"/>
 	<classpathentry exported="true" kind="lib" path="lib/jgraph/jgraph.jar" sourcepath="org.caleydo.rcpsrc.zip"/>
 	<classpathentry exported="true" kind="lib" path="lib/gleem/gleem_mod_class.jar" sourcepath="org.caleydo.rcpsrc.zip"/>
-	<classpathentry exported="true" kind="lib" path="lib/muddleware/muddleware.jar" sourcepath="org.caleydo.rcpsrc.zip"/>
 	<classpathentry exported="true" kind="lib" path="lib/tagsoup/tagsoup-1.1.3.jar" sourcepath="org.caleydo.rcpsrc.zip"/>
 	<classpathentry exported="true" kind="lib" path="lib/jface" sourcepath="lib/jface"/>
 	<classpathentry exported="true" kind="lib" path="lib/axis" sourcepath="lib/axis"/>
