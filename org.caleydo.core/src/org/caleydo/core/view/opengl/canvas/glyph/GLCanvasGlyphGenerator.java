@@ -313,7 +313,7 @@ public class GLCanvasGlyphGenerator {
 		gl.glEndList();
 		return dltemp;
 	}
-
+	
 
 
 }

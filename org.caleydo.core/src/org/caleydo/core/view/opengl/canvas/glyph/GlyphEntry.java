@@ -2,6 +2,7 @@ package org.caleydo.core.view.opengl.canvas.glyph;
 
 import gleem.linalg.open.Vec2i;
 
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.media.opengl.GL;
@@ -10,24 +11,25 @@ import javax.media.opengl.GL;
 public class GlyphEntry {
 	private int id_;
 	
-	private Vec2i pos_; 
+	private Vec2i pos_ = new Vec2i(); 
 	private Vec2i posGoTo_; 
 	
 	private boolean selected_ = true;
 	
-	Vector<Integer> parameter_ = null;
+	private Vector<Integer> parameter_ = null;
+	private HashMap<String, String> vsParameterString = new HashMap<String, String>();
 	
 	private GLCanvasGlyphGenerator generator_ = null;
 	
-	int glList_ = 0;
-	int glListSelected_ = 0;
+	private int glList_ = 0;
+	private int glListSelected_ = 0;
 	
 	
 	public GlyphEntry(int id, GLCanvasGlyphGenerator generator) {
 		id_ = id;
 		generator_ = generator;
 		parameter_ = new Vector<Integer>();
-
+		
 		posGoTo_ = new Vec2i();
 		posGoTo_.setXY(0, 0);
 		pos_ = new Vec2i();
@@ -65,6 +67,12 @@ public class GlyphEntry {
 	
 	public void addParameter(int value) {
 		parameter_.add(value);
+	}
+	
+	public void addStringParameter(String column, String value) {
+		if(vsParameterString.containsKey(column))
+			vsParameterString.remove(column);
+		vsParameterString.put(column, value);
 	}
 	
 	public int getParameter(int index) {

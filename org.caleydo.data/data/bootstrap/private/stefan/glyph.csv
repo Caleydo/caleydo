@@ -1,8 +1,10 @@
 GLYPH	DATAINDEX
-0	2
-0	5
-0	6
-1	5
-2	2
-3	6
-4	1
+sort	t
+sort	death
+sort	diseaseFreeSurvival
+topColor	death
+boxColor	t
+boxHeight	diseaseFreeSurvival
+updateSendParameter	pid
+scatterPlotAxisX	t
+scatterPlotAxisY	diseaseFreeSurvival

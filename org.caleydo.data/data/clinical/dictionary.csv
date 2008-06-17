@@ -154,9 +154,9 @@ ID	domain	value_text	value_index	value_real	no_idea
 172	age	118	118	118.0	8
 173	age	119	119	119.0	8
 174	age	120	120	120.0	8
-206	sex	F	0	0.0	10
-207	sex	M	1	1.0	10
-241	sex	W	0	0.0	10
+206	sex	f	0	0.0	10
+207	sex	m	1	1.0	10
+241	sex	X	2	2.0	10
 208	diseaseFreeSurvival	0	0	0.0	11
 209	diseaseFreeSurvival	1	1	1.0	11
 210	diseaseFreeSurvival	2	2	2.0	11
@@ -188,5 +188,5 @@ ID	domain	value_text	value_index	value_real	no_idea
 236	diseaseFreeSurvival	28	28	28.0	11
 237	diseaseFreeSurvival	29	29	29.0	11
 238	diseaseFreeSurvival	30	30	30.0	11
-239	lifeOrDeath	F	0	0.0	12
-240	lifeOrDeath	T	1	1.0	12
+239	death	F	0	0.0	12
+240	death	T	1	1.0	12

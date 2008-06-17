@@ -84,7 +84,7 @@ implements MouseListener, MouseMotionListener, MouseWheelListener {
 		
 		Vec3f camS = viewCanvas.getViewCamera().getCameraScale();
 		
-		float camZScale = camS.z() -1.0f;
+		float camZScale = camS.z() - 1.0f;
 		
 		if( camZScale < 0)
 			camZScale += 2 * -camZScale;
@@ -101,6 +101,13 @@ implements MouseListener, MouseMotionListener, MouseWheelListener {
 		
 		
 		if( iRubberBandStartX != 0 && iRubberBandStartY != 0) {
+			//float txs = ((fAspectRatio / 2.9f) * 12.9f) / viewport[2]; 
+			//float txc = ((fAspectRatio / 2.9f) * 12.9f) / viewport[2]; 
+			
+			//txs *= (iRubberBandStartX-offsetX);
+			//txc *= (iRubberBandCurrentX-offsetX);
+			
+			
 			float xs = (iRubberBandStartX-offsetX) * (fAspectRatio/10.0f) * (camZScale + 1.0f);
 			float ys = (iRubberBandStartY-offsetY) * (fAspectRatio/10.0f) * (camZScale + 1.0f);
 			

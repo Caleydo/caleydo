@@ -14,20 +14,20 @@
 				 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="16401" 
 			  	gl_canvas="99075" parent="10331" label="Canvas"	attrib2="600 600" detail="1077991"	/>	
-				
+			
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_GLYPH"		cmdId="69994"	uniqueId="82401" parent="99075" label="Glyph" 
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
 							attrib3="PERSPECTIVE -1.5 1.5 -1.5 1.5 2.9 1000"
 							detail="351010 551010 651010 901010" /> 
-<!--							attrib3="ORTHOGRAPHIC -8 8 -8 8 -20 20" -->
+<!--							attrib3="ORTHOGRAPHIC -8 8 -8 8 -20 20"-->
 
 
 
 
 <!-- 2nd window -->
-
 <!--
+
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="10332" label="Glyph 2" attrib1="ROW	HORIZONTAL"	/>	 
 				 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="16402" 
@@ -40,11 +40,10 @@
 							detail="351010 551010 651010 901010" /> 
 
 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Mediator A" 			attrib1="82401" attrib2="82402" detail="SELECTION_MEDIATOR" /> 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator B (Reverse)" attrib1="82402" attrib2="82401" detail="SELECTION_MEDIATOR" /> 
-
-
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="93501" label="Glyph Mediator" 			attrib1="82401" attrib2="82402" detail="SELECTION_MEDIATOR" /> 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Glyph Mediator Reverse"	attrib1="82402" attrib2="82401" detail="SELECTION_MEDIATOR" /> 
 -->
+
 
 
 <!--

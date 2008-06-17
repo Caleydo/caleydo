@@ -86,6 +86,10 @@ extends GLToolboxRenderer
 				EIconIDs.DISPLAY_RANDOM.ordinal(), 
 				EIconTextures.GLYPH_SORT_RANDOM);
 
+		addIcon(gl, iContainingViewID, EPickingType.PC_ICON_SELECTION, 
+				EIconIDs.DISPLAY_SCATTERPLOT.ordinal(), 
+				EIconTextures.GLYPH_SORT_RANDOM);
+
 		
 		fOverallRenderLength = fRenderLenght;
 		fRenderLenght = 0;
