@@ -6,7 +6,6 @@ import gleem.linalg.Vec4f;
 import gleem.linalg.open.Transform;
 
 import java.awt.Font;
-import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -63,6 +62,7 @@ import org.caleydo.core.view.opengl.util.trashcan.TrashCan;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
+import org.eclipse.swt.custom.BusyIndicator;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
@@ -134,6 +134,13 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 	private TrashCan trashCan;
 	
 	private GLColorMappingBarMiniView colorMappingBarMiniView;
+	
+	/**
+	 * When the system is in the busy mode the background color will turn yellow 
+	 * and the system interaction will be turned off.
+	 */
+	private boolean bBusyMode = true;
+	private boolean bBusyModeChanged = true;
 
 	/**
 	 * Constructor.
@@ -304,6 +311,9 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 //		layoutRenderStyle.initTransitionLayer();
 //		layoutRenderStyle.initUnderInteractionLayer();
 		
+		if (bBusyModeChanged)
+			updateBusyMode(gl);
+			
 		doSlerpActions(gl);
 		
 		renderLayer(gl, underInteractionLayer);
@@ -569,16 +579,10 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 
 			iAlUninitializedPathwayIDs.remove(0);
 
-			// Enable picking after last pathway was loaded
 			if (iAlUninitializedPathwayIDs.isEmpty())
-			{
-				generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(true);
-				gl.glClearColor(1, 1, 1, 1); // white background
-			}
-			else	
-			{
-				gl.glClearColor(1, 1, 0.6f, 1f); // yellowish background (busy mode)
-			}
+				enableBusyMode(false);
+			else
+				enableBusyMode(true);
 			
 			generalManager.getViewGLCanvasManager().getSelectionManager().clear();
 			
@@ -1133,61 +1137,13 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 	}
 
 	private void loadViewToUnderInteractionLayer(final int iViewID) {
-
-//		generalManager.logMsg(
-//						this.getClass().getSimpleName()
-//								+ ": loadPathwayToUnderInteractionPosition(): View with ID "
-//								+ iViewID + " is under interaction.",
-//						LoggerType.VERBOSE);
-
-		// // Check if pathway is already under interaction
-		// if (underInteractionLayer.containsElement(iViewID))
-		// return;
-
+		
 		// Check if other slerp action is currently running
 		if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE)
 			return;
 
 		arSlerpActions.clear();
 
-		// // Check if under interaction layer is free
-		// if (underInteractionLayer.getElementList().isEmpty())
-		// {
-		// // Slerp directly from pool to under interaction layer
-		// SlerpAction slerpAction = new SlerpAction(iViewId, stackLayer,
-		// false);
-		// arSlerpActions.add(slerpAction);
-		// }
-		// else
-		// {
-
-		// // Check if stack layer has a free spot to switch out view under
-		// interaction
-		// if (stackLayer.containsElement(-1))
-		// {
-		// // Slerp current view back to layered view
-		// if (!underInteractionLayer.getElementList().isEmpty())
-		// {
-		// // Slerp selected view to under interaction transition position
-		// SlerpAction slerpActionTransition = new SlerpAction(
-		// iViewID, poolLayer, transitionLayer);
-		// arSlerpActions.add(slerpActionTransition);
-		//				
-		// // Slerp under interaction view to free spot in stack
-		// SlerpAction reverseSlerpAction = new SlerpAction(
-		// underInteractionLayer.getElementIdByPositionIndex(0),
-		// underInteractionLayer, stackLayer);
-		// arSlerpActions.add(reverseSlerpAction);
-		//				
-		// // Slerp selected view from transition position to under interaction
-		// position
-		// SlerpAction slerpAction = new SlerpAction(
-		// iViewID, transitionLayer, underInteractionLayer);
-		// arSlerpActions.add(slerpAction);
-		// }
-		// }
-		// else
-		// {
 		// Check if view is already loaded in the stack layer
 		if (stackLayer.containsElement(iViewID))
 		{
@@ -1196,12 +1152,15 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 					stackLayer, transitionLayer);
 			arSlerpActions.add(slerpActionTransition);
 
-			// Slerp under interaction view to free spot in stack
-			SlerpAction reverseSlerpAction = new SlerpAction(
-					underInteractionLayer.getElementIdByPositionIndex(0),
-					underInteractionLayer, stackLayer);
-			arSlerpActions.add(reverseSlerpAction);
-
+			if (underInteractionLayer.getElementIdByPositionIndex(0) != -1)
+			{
+				// Slerp under interaction view to free spot in stack
+				SlerpAction reverseSlerpAction = new SlerpAction(
+						underInteractionLayer.getElementIdByPositionIndex(0),
+						underInteractionLayer, stackLayer);
+				arSlerpActions.add(reverseSlerpAction);
+			}
+			
 			// Slerp selected view from transition position to under interaction
 			// position
 			SlerpAction slerpAction = new SlerpAction(iViewID, transitionLayer,
@@ -1235,39 +1194,8 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 					underInteractionLayer);
 			arSlerpActions.add(slerpAction);
 		}
-		// }
-		//		
+		
 		iSlerpFactor = 0;
-
-		// // Slerp current pathway back to layered view
-		// if (!underInteractionLayer.getElementList().isEmpty())
-		// {
-		// SlerpAction reverseSlerpAction = new SlerpAction(
-		// underInteractionLayer.getElementIdByPositionIndex(0),
-		// underInteractionLayer, true);
-		//
-		// arSlerpActions.add(reverseSlerpAction);
-		// }
-		//
-		// SlerpAction slerpAction;
-		//
-		// // Prevent slerp action if pathway is already in layered view
-		// if (!stackLayer.containsElement(iViewId))
-		// {
-		// // Slerp to layered pathway view
-		// slerpAction = new SlerpAction(iViewId, poolLayer, false);
-		//
-		// arSlerpActions.add(slerpAction);
-		// }
-		//
-		// // Slerp from layered to under interaction position
-		// slerpAction = new SlerpAction(iViewId, stackLayer, false);
-		//
-		// arSlerpActions.add(slerpAction);
-		// iSlerpFactor = 0;
-		//
-		// // bRebuildVisiblePathwayDisplayLists = true;
-		// //selectedVertex = null;
 	}
 
 	@Override
@@ -1340,8 +1268,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 			int iPathwayIDToLoad = setSelection.getOptionalDataArray().get(0);
 			iAlUninitializedPathwayIDs.add(iPathwayIDToLoad);
 			
-			// Disable picking until pathways are loaded
-			generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(false);
+			enableBusyMode(true);
 		}
 
 		setSelection.returnReadToken();
@@ -1955,5 +1882,27 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 		sTmp = "MEMO AREA";
 		textRenderer.draw3D(sTmp, 2.05f/fAspectRatio - fWidth, -1.95f, 4.001f, 0.004f); // scale factor
 		textRenderer.end3DRendering();
+	}
+	
+	public void enableBusyMode(final boolean bBusyMode) {
+		
+		this.bBusyMode = bBusyMode;
+		bBusyModeChanged = true;
+	}
+	
+	private void updateBusyMode(final GL gl) 
+	{
+		if (bBusyMode)
+		{
+			generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(false);
+			gl.glClearColor(1, 1, 0.6f, 1f); // yellowish background (busy mode)
+		}
+		else	
+		{
+			generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(true);
+			gl.glClearColor(1, 1, 1, 1); // white background
+		}
+		
+		bBusyModeChanged = false;
 	}
 }

@@ -10,9 +10,12 @@ import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 
+import javax.media.opengl.GLEventListener;
+
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 
 /**
  * Loads all pathways of a certain type by providing the XML path.
@@ -113,6 +116,17 @@ extends Thread
 			generalManager.getLogger().log(Level.SEVERE, "Pathway list file: " + sFileName + " not found.");
 		} catch(IOException e) {
 			generalManager.getLogger().log(Level.SEVERE, "Error reading data from pathway list file: " + sFileName);
+		}
+		
+		for (GLEventListener tmpGLEventListener : 		
+			generalManager.getViewGLCanvasManager().getAllGLEventListeners()) 
+		{
+			if (tmpGLEventListener.getClass().equals(GLCanvasRemoteRendering3D.class))
+			{
+				((GLCanvasRemoteRendering3D)tmpGLEventListener).enableBusyMode(false);
+				break;
+			}
+				
 		}
 	}
 }
