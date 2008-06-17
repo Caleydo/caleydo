@@ -33,4 +33,10 @@ Bundle-NativeCode:
  lib/jogl/win32/jogl.dll;
  osname=win32;
  processor=x86
+ lib/jogl/mac/gluegen-rt.jnlib;
+ lib/jogl/mac/jogl_cg.jnlib;
+ lib/jogl/mac/jogl_awt.jnlib;
+ lib/jogl/mac/jogl.jnlib;
+ osname=mac;
+ processor=x86
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
