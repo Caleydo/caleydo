@@ -606,7 +606,7 @@ implements GLEventListener {
 	
 	public void loadURLInBrowser(final String sUrl) {
 
-		if (sUrl.isEmpty())
+		if (sUrl.length() == 0)
 			return;
 
 		CmdViewLoadURLInHTMLBrowser createdCmd = (CmdViewLoadURLInHTMLBrowser) generalManager

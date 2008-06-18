@@ -39,13 +39,17 @@
 
 package gleem;
 
-import java.awt.Dimension;
-import java.awt.event.*;
-import java.util.*;
+import gleem.linalg.Mat4f;
+import gleem.linalg.Rotf;
+import gleem.linalg.Vec3f;
 
-import gleem.linalg.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 
-import javax.media.opengl.*;
+import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLEventListener;
 
 /** <P> This is an application-level class, not part of the
     manipulator hierarchy. It is an example of how you might integrate

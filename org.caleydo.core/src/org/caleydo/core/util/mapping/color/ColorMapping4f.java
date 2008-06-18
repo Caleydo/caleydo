@@ -40,7 +40,6 @@ public class ColorMapping4f extends AColorMappingVecf <Vec4f> {
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.util.mapping.IColorMapping#addColorPoint(java.awt.Color, float)
 	 */
-	@Override
 	public final void addSamplingPoint_Color(final Color color, final float value) {
 
 		supportingPoints_Color.add( 

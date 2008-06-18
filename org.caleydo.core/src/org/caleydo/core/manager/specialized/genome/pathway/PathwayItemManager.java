@@ -321,7 +321,10 @@ implements IPathwayItemManager, Serializable
 		return false;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IManager#registerItem(java.lang.Object, int, org.caleydo.core.manager.type.ManagerObjectType)
+	 */
 	public boolean registerItem(Object registerItem, int itemId,
 			ManagerObjectType type) {
 
@@ -329,14 +332,20 @@ implements IPathwayItemManager, Serializable
 		return false;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IManager#size()
+	 */
 	public int size() {
 
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IManager#unregisterItem(int, org.caleydo.core.manager.type.ManagerObjectType)
+	 */
 	public boolean unregisterItem(int itemId, ManagerObjectType type) {
 
 		// TODO Auto-generated method stub

@@ -368,8 +368,8 @@ public class GLInfoAreaRenderer {
 			gl.glScalef(6.0f, 6.0f, 6.0f);
 			if (tmpVertexGraphItem.getType().equals(EPathwayVertexType.gene))
 			{					
-				float fNodeWidth = renderStyle.getEnzymeNodeWidth(true);
-				float fNodeHeight = renderStyle.getEnzymeNodeHeight(true);
+//				float fNodeWidth = renderStyle.getEnzymeNodeWidth(true);
+//				float fNodeHeight = renderStyle.getEnzymeNodeHeight(true);
 				
 				//FIXME: revise this section - due to changes in ID management
 //				gLPathwayManager.mapExpressionByGeneId(

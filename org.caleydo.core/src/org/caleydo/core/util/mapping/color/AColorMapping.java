@@ -2,8 +2,6 @@ package org.caleydo.core.util.mapping.color;
 
 import gleem.linalg.Vec3f;
 
-import java.awt.Color;
-
 /**
  * Abstract class for color mapping.
  * 

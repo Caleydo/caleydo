@@ -35,10 +35,7 @@ All Rights Reserved.
       </win>
    </launcher>
 
-
    <vm>
-      <linux>JavaSE-1.6</linux>
-      <windows>JavaSE-1.6</windows>
    </vm>
 
    <plugins>

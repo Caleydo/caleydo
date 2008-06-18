@@ -1,19 +1,7 @@
 package org.caleydo.rcp.views;
 
-import java.awt.Frame;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowEvent;
-
-import javax.media.opengl.GLCanvas;
-
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-
-import com.sun.opengl.util.Animator;
-
-import demos.gears.Gears;
 
 /**
  * Test OpenGL view that renders GL gears.

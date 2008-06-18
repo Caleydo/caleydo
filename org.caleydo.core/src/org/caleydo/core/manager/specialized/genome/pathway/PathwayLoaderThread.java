@@ -70,6 +70,19 @@ extends Thread
 //	    File folder = new File(sXMLPath);
 //	    File[] arFiles = folder.listFiles();
 		
+		GLCanvasRemoteRendering3D tmpGLRemoteRendering3D = null;
+		for (GLEventListener tmpGLEventListener : 		
+			generalManager.getViewGLCanvasManager().getAllGLEventListeners()) 
+		{
+			if (tmpGLEventListener.getClass().equals(GLCanvasRemoteRendering3D.class))
+			{
+				tmpGLRemoteRendering3D = ((GLCanvasRemoteRendering3D)tmpGLEventListener);
+				tmpGLRemoteRendering3D.enableBusyMode(true);
+				break;
+			}
+				
+		}
+		
 		BufferedReader file = null;
 		String sLine = null;
 		String sFileName = "";
@@ -118,15 +131,7 @@ extends Thread
 			generalManager.getLogger().log(Level.SEVERE, "Error reading data from pathway list file: " + sFileName);
 		}
 		
-		for (GLEventListener tmpGLEventListener : 		
-			generalManager.getViewGLCanvasManager().getAllGLEventListeners()) 
-		{
-			if (tmpGLEventListener.getClass().equals(GLCanvasRemoteRendering3D.class))
-			{
-				((GLCanvasRemoteRendering3D)tmpGLEventListener).enableBusyMode(false);
-				break;
-			}
-				
-		}
-	}
+		if (tmpGLRemoteRendering3D != null)
+			tmpGLRemoteRendering3D.enableBusyMode(false);
+	}	
 }

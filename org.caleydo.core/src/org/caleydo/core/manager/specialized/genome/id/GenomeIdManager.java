@@ -600,7 +600,10 @@ implements IGenomeIdManager {
 	}
 
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdManager#getAllValuesByGenomeIdTypeHashMap(org.caleydo.core.data.mapping.EGenomeMappingType)
+	 */
 	public HashMap<Integer, Integer> getAllValuesByGenomeIdTypeHashMap(
 			EGenomeMappingType type) {
 

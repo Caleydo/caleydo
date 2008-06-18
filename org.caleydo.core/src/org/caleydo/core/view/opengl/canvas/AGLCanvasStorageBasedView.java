@@ -3,7 +3,6 @@ package org.caleydo.core.view.opengl.canvas;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.Iterator;
 import java.util.Set;
 import java.util.logging.Level;
 
@@ -11,7 +10,6 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.SetType;
 import org.caleydo.core.data.collection.set.selection.ISetSelection;
-import org.caleydo.core.data.collection.set.selection.SetSelection;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.data.view.camera.IViewFrustum;

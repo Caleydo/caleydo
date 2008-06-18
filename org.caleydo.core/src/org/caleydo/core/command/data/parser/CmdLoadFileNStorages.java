@@ -30,14 +30,7 @@ extends ACommand {
 	
 	protected String sTokenPattern;
 	
-	/**
-	 * Default is 32, because gpr files have a header of that size!
-	 * 
-	 * @see org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#iStartParsingAtLine
-	 * @see org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#getStartParsingAtLine()
-	 * @see org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#setStartParsingStopParsingAtLine(int, int)
-	 */
-	protected int iStartPareseFileAtLine = 32;
+	protected int iStartPareseFileAtLine = 0;
 	
 	/**
 	 * Default is -1 indicating read till end of file.
@@ -100,13 +93,11 @@ extends ACommand {
 			{
 				
 				if (( iArrayStartStop[0] > iArrayStartStop[1] )&&
-						(iArrayStartStop[1] != -1 )) {
-//					generalManager.logMsg(
-//							"CmdSystemLoadFileNStorages ignore stop index=(" + 
-//							iArrayStartStop[1]  + 
-//							"), because it is smaller than start index (" + 
-//							iArrayStartStop[0] + ") !",
-//							LoggerType.STATUS );
+						(iArrayStartStop[1] != -1 )) 
+				{
+					generalManager.getLogger().log(Level.SEVERE, 
+							"Ignore stop inde="+iArrayStartStop[1]+" because it is maller that start index="+iArrayStartStop[0]);
+
 					return;
 				}
 				iStopPareseFileAtLine = iArrayStartStop[1];

@@ -386,7 +386,8 @@ implements IMementoXML, IParserObject {
 		    
 		    this.loadDataParseFile( brFile, iNumberOfLinesInFile );
 		    
-		    if ( brFile != null ) {
+		    if ( brFile != null ) 
+		    {
 		    	brFile.close();
 		    }
 		    

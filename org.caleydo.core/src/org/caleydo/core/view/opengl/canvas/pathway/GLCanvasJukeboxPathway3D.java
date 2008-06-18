@@ -1306,7 +1306,7 @@ implements IMediatorReceiver, IMediatorSender {
 
 	public void loadNodeInformationInBrowser(String sUrl) {
 
-		if (sUrl.isEmpty())
+		if (sUrl.length() == 0)
 			return;
 
 		CmdViewLoadURLInHTMLBrowser createdCmd = (CmdViewLoadURLInHTMLBrowser) generalManager

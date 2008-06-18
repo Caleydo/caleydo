@@ -81,7 +81,6 @@ public class ColorMapping3f extends AColorMappingVecf <Vec3f> {
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.util.mapping.IColorMapping#addColorPoint(java.awt.Color, float)
 	 */
-	@Override
 	public final void addSamplingPoint_Color(final Color color, final float value) {
 
 		addSamplingPoint_Vecf(

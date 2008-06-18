@@ -110,7 +110,7 @@ extends AXmlParserHandler {
 	 */
 	protected void handleTitleTag() {
 		
-		if (sTitle.isEmpty())
+		if (sTitle.length() == 0)
 			bReadTitle = true;
 	}
 	
@@ -142,7 +142,7 @@ extends AXmlParserHandler {
    			}			
 		} 	
 		
-		if (sImageLink.isEmpty() || sName.isEmpty())
+		if (sImageLink.length() == 0 || sName.length() == 0)
 			return;
 		
 		sImageLink = sImageLink.substring(

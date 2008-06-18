@@ -6,8 +6,11 @@ import org.caleydo.core.data.collection.thread.ICollectionThreadObject;
 import org.caleydo.core.data.xml.IMementoNetEventXML;
 
 /**
+ * Interface for data storage container.
+ * 
  * @author Michael Kalkusch
  * @author Alexander Lex
+ * @author Marc Streit
  */
 public interface IStorage 
 extends ICollection, IMementoNetEventXML, ICollectionThreadObject {
@@ -117,6 +120,10 @@ extends ICollection, IMementoNetEventXML, ICollectionThreadObject {
 	 * @return size of largest array
 	 */
 	public int getMaximumLengthOfAllArrays();
+
+	public void setLabel(final String sLabel);
+	
+	public String getLabel();
 	
 	//-----------------------------------
 	

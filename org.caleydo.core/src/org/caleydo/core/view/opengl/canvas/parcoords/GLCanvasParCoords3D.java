@@ -687,7 +687,7 @@ extends AGLCanvasStorageBasedView
 			switch (eAxisDataType) 
 			{
 			case EXPERIMENT:
-				sAxisLabel = "Exp." + alAxisSelection.get(iCount);
+				sAxisLabel = alDataStorages.get(iCount).getLabel();
 				//sAxisLabel = alSetData.get(alStorageSelection.get(iCount)).getLabel();
 				break;
 			case GENE:				

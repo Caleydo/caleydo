@@ -109,7 +109,7 @@ extends ACmdCreate_IdTargetLabel {
 			String sCurrentDataType = iter_DataTypes.next();
 			
 			/**
-			 * Prepare variabels...
+			 * Prepare variables...
 			 */
 			String strToParse = iter_DataRaw.next();
 			

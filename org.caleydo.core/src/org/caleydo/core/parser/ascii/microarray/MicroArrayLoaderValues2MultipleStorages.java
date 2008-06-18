@@ -324,11 +324,7 @@ extends AMicroArrayLoader {
 						}
 						
 						info +=  "} " + aie.toString();
-						
-//						generalManager.logMsg(
-//								info,
-//								LoggerType.ERROR );	
-						
+												
 						System.out.println("index out of bounds; skip index [" + 
 								iDataArrayIndexPerLine + 
 								"] empty array[]= " + aie.toString()  );
@@ -359,18 +355,16 @@ extends AMicroArrayLoader {
 		return lineInFile - this.iStartParsingAtLine;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#copyDataToInternalDataStructures()
+	 */
 	protected boolean copyDataToInternalDataStructures() {
 
-	   /**
-		 * Copy valued to storage...
-		 */   		   
-	    currentDataStorage.setLabel( "microarray loader storage " + this.getFileName() );
-	    
 	    /*
 	     * notify storage cacheId of changed data...
 	     */
-	    currentDataStorage.setCacheId( currentDataStorage.getCacheId() + 1);
+	    currentDataStorage.setCacheId(currentDataStorage.getCacheId() + 1);
 	    
 	    currentDataStorage.setSize(StorageType.INT,1);
 	    currentDataStorage.setSize(StorageType.FLOAT,1);

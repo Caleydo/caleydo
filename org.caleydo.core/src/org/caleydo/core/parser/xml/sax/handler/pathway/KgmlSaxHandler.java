@@ -175,7 +175,7 @@ implements IXmlParserHandler {
     		}			
    		}
 		
-		if (sTitle.isEmpty())
+		if (sTitle.length() == 0)
 			sTitle =  "unknown title";
 		
 		// Find out pathway texture width and height

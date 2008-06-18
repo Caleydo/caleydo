@@ -3,9 +3,6 @@
  */
 package org.caleydo.core.util.mapping.color;
 
-import org.caleydo.core.math.MathUtil;
-
-import gleem.linalg.Vecf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 
@@ -14,6 +11,8 @@ import java.util.Collection;
 import java.util.Iterator;
 
 import javax.media.opengl.GL;
+
+import org.caleydo.core.math.MathUtil;
 
 /**
  * @author Michael Kalkusch
@@ -59,7 +58,6 @@ implements IColorMapping <T> {
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.util.mapping.IColorMapping#getColors()
 	 */
-	@Override
 	public final Collection<T> getColors() {
 
 		return supportingPoints_Color;
@@ -68,7 +66,6 @@ implements IColorMapping <T> {
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.util.mapping.IColorMapping#getValues()
 	 */
-	@Override
 	public final Collection<Float> getValues() {
 
 		return supportingPoints_Float;

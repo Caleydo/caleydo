@@ -47,21 +47,21 @@ implements Serializable
 	
 	public final String getXMLPath() {
 		
-		assert !sXMLPath.isEmpty() : "Pathway XML path is not set!";
+		assert sXMLPath.length() != 0 : "Pathway XML path is not set!";
 		
 		return sXMLPath;
 	}
 	
 	public final String getImagePath() {
 		
-		assert !sImagePath.isEmpty() : "Pathway image path is not set!";
+		assert sImagePath.length() != 0 : "Pathway image path is not set!";
 		
 		return sImagePath;
 	}
 	
 	public final String getImageMapPath() {
 		
-		assert !sImageMapPath.isEmpty() : "Pathway imagemap path is not set!";
+		assert sImageMapPath.length() != 0 : "Pathway imagemap path is not set!";
 		
 		return sImageMapPath;
 	}

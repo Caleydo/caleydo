@@ -199,14 +199,20 @@ implements IMediatorSender{;
 		tmpSelectionSet.returnWriteToken();
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.AView#initViewSwtComposit(org.eclipse.swt.widgets.Composite)
+	 */
 	protected void initViewSwtComposit(Composite swtContainer) {
 
 		// TODO Auto-generated method stub
 		
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.IView#drawView()
+	 */
 	public void drawView() {
 
 		// TODO Auto-generated method stub

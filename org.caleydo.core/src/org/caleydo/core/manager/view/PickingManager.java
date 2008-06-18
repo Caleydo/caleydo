@@ -551,21 +551,30 @@ extends AManager
 		this.bEnablePicking = bEnablePicking;
 	}
 
-	@Override
+	/*Ü
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IManager#getItem(int)
+	 */
 	public Object getItem(int itemId) {
 
 		// TODO Auto-generated method stub
 		return null;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IManager#hasItem(int)
+	 */
 	public boolean hasItem(int itemId) {
 
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IManager#registerItem(java.lang.Object, int, org.caleydo.core.manager.type.ManagerObjectType)
+	 */
 	public boolean registerItem(Object registerItem, int itemId,
 			ManagerObjectType type) {
 
@@ -573,14 +582,20 @@ extends AManager
 		return false;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IManager#size()
+	 */
 	public int size() {
 
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IManager#unregisterItem(int, org.caleydo.core.manager.type.ManagerObjectType)
+	 */
 	public boolean unregisterItem(int itemId, ManagerObjectType type) {
 
 		// TODO Auto-generated method stub

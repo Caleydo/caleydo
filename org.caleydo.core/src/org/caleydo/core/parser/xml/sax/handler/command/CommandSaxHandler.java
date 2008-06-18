@@ -217,11 +217,11 @@ extends AXmlParserHandler
 		}
 		catch ( CaleydoRuntimeException gve) 
 		{
-			String sDetails = "";
-			if ( lastCommand != null ) 
-			{
-				sDetails = lastCommand.getClass().getSimpleName();
-			}			
+//			String sDetails = "";
+//			if ( lastCommand != null ) 
+//			{
+//				sDetails = lastCommand.getClass().getSimpleName();
+//			}			
 //			generalManager.logMsg(
 //					"CommandSaxHandler.readCommandData(" +
 //					attrs.toString() + 
@@ -234,11 +234,11 @@ extends AXmlParserHandler
 		}
 		catch ( Exception e) 
 		{
-			String sDetails = "";
-			if ( lastCommand != null ) 
-			{
-				sDetails = lastCommand.getClass().getSimpleName();
-			}
+//			String sDetails = "";
+//			if ( lastCommand != null ) 
+//			{
+//				sDetails = lastCommand.getClass().getSimpleName();
+//			}
 //			generalManager.logMsg(
 //					"CommandSaxHandler.readCommandData(" +
 //					attrs.toString() + 

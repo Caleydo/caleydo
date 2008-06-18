@@ -42,9 +42,7 @@ public abstract class ACollectionThreadItem
 			collectionLock = setCollectionLock;
 		}
 	}
-	
 
-	
 	/* (non-Javadoc)
 	 * @see prometheus.data.collection.CollectionThread#getReadToken()
 	 */
@@ -141,15 +139,17 @@ public abstract class ACollectionThreadItem
 		return (iCompareCacheId < this.iCacheId);
 	}
 	
-	/**
-	 * @see prometheus.data.collection.ICollection#setLabel(Stringt)
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.ICollection#setLabel(java.lang.String)
 	 */
 	public final void setLabel( final String setLabel) {
 		this.sLabel = setLabel;
 	}
 	
-	/**
-	 * @see prometheus.data.collection.ICollection#getLabel()
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.ICollection#getLabel()
 	 */
 	public final String getLabel() {
 		return this.sLabel;

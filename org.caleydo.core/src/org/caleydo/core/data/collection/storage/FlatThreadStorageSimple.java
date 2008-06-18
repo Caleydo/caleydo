@@ -15,14 +15,16 @@ import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
 /**
+ * Implementation of storage data container.
+ * 
  * @author Michael Kalkusch
  * @author Alexander Lex
+ * @author Marc Streit
  */
 public class FlatThreadStorageSimple 
 extends ACollectionThreadItem 
 implements IStorage, IMementoNetEventXML, ICollectionLock
-{
-
+{	
 	private static final int iNumerOfUsedArrays = 6;
 	
 	/**
@@ -68,7 +70,7 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 	private int [] setSizeForAllocation = null;
 	
 	/**
-	 * TODO: Doku
+	 * Constructor.
 	 * 
 	 * @param iSetCollectionId
 	 * @param setGeneralManager
@@ -864,11 +866,4 @@ implements IStorage, IMementoNetEventXML, ICollectionLock
 		
 		return infoString;
 	}
-
-
-
-
-
-
-
 }

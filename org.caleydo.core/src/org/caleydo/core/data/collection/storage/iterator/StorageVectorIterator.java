@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.core.data.collection.storage.iterator;
 
 
@@ -9,10 +6,6 @@ import java.util.Iterator;
 import java.util.Vector;
 
 import org.caleydo.core.data.collection.IStorage;
-//import org.caleydo.core.util.exception.PrometheusVirtualArrayException;
-//import org.caleydo.core.data.collection.selection.iterator.IVirtualArrayIterator;
-//import org.caleydo.core.data.collection.selection.iterator.VirtualArrayNullIterator;
-//import org.caleydo.core.data.collection.iterator.ICollectionIterator;
 
 /**
  * Iterator for a several IVirtualArray.

@@ -6,6 +6,7 @@ import gleem.linalg.Vec4f;
 import gleem.linalg.open.Transform;
 
 import java.awt.Font;
+import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -167,7 +168,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 			// Unregister standard mouse wheel listener
 			parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
 			// Register specialized bucket mouse wheel listener
-			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
+			parentGLCanvas.addMouseWheelListener((MouseWheelListener) bucketMouseWheelListener);
 
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX))
@@ -1198,14 +1199,20 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 		iSlerpFactor = 0;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object)
+	 */
 	public void updateReceiver(Object eventTrigger) {
 
 		// TODO Auto-generated method stub
 
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, org.caleydo.core.data.collection.ISet)
+	 */
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) 
 	{
 		generalManager.getLogger().log(Level.INFO, "Update called by "
@@ -1670,14 +1677,14 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 			// Unregister standard mouse wheel listener
 			parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
 			// Register specialized bucket mouse wheel listener
-			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
+			parentGLCanvas.addMouseWheelListener((MouseWheelListener) bucketMouseWheelListener);
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX))
 		{
 			layoutRenderStyle = new JukeboxLayoutRenderStyle(generalManager, layoutRenderStyle);
 			
 			// Unregister bucket wheel listener
-			parentGLCanvas.removeMouseWheelListener(bucketMouseWheelListener);
+			parentGLCanvas.removeMouseWheelListener((MouseWheelListener) bucketMouseWheelListener);
 			// Register standard mouse wheel listener
 			parentGLCanvas.addMouseWheelListener(pickingTriggerMouseAdapter);
 		}

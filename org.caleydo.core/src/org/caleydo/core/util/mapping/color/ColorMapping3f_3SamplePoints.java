@@ -7,7 +7,6 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 
 import java.awt.Color;
-import java.util.Iterator;
 
 
 /**
@@ -94,7 +93,6 @@ public class ColorMapping3f_3SamplePoints extends AColorMappingVecf <Vec3f> {
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.util.mapping.IColorMapping#addColorPoint(java.awt.Color, float)
 	 */
-	@Override
 	public final void addSamplingPoint_Color(final Color color, final float value) {
 
 		addSamplingPoint_Vecf(

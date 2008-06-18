@@ -149,7 +149,8 @@ public class RemoteHierarchyLayer {
 			
 			llElementId.set(iReplacePosition, -1);
 			llElementIdVisibleState.set(iReplacePosition, false);
-			llElementIdImportanceQueue.removeLastOccurrence(iElementId);
+			//llElementIdImportanceQueue.removeLastOccurrence(iElementId);
+			llElementIdImportanceQueue.remove((Object)iElementId);
 		}
 	}
 	

@@ -67,7 +67,7 @@ implements ILookupTableLoader {
 				try 
 				{
 					// Check if line consists of just one entity
-					if (!sLine.isEmpty() && strTokenText.countTokens() == 1)
+					if (sLine.length() != 0 && strTokenText.countTokens() == 1)
 					{
 						// Special case for creating indexing of storages
 						if (currentGenomeIdType.equals(EGenomeMappingType.DAVID_2_EXPRESSION_STORAGE_ID))

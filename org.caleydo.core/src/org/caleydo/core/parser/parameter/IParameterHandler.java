@@ -26,7 +26,10 @@ public interface IParameterHandler {
 			
 		}
 
-		@Override
+		/*
+		 * (non-Javadoc)
+		 * @see org.caleydo.core.util.ICaleydoDefaultType#getTypeDefault()
+		 */
 		public ParameterHandlerType getTypeDefault() {
 
 			return ParameterHandlerType.STRING;
