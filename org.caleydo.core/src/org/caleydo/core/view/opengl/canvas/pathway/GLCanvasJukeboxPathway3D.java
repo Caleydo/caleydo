@@ -378,22 +378,6 @@ implements IMediatorReceiver, IMediatorSender {
 					SCALING_FACTOR_POOL_LAYER));
 			pathwayPoolLayer.setTransformByPositionIndex(iLineIndex, transform);
 		}
-		
-//		// Load KEGG pathways
-//		generalManager.getSingelton().getPathwayManager()
-//			.loadAllPathwaysByType(EPathwayDatabaseType.KEGG);
-//
-//		// Load BioCarta pathways
-//		generalManager.getSingelton().getPathwayManager()
-//			.loadAllPathwaysByType(EPathwayDatabaseType.BIOCARTA);
-//		
-//		Iterator<IGraph> iterPathwayGraphs = generalManager.getSingelton()
-//			.getPathwayManager().getRootPathway().getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN).iterator();
-//
-//		while(iterPathwayGraphs.hasNext())
-//		{
-//			pathwayPoolLayer.addElement((iterPathwayGraphs.next()).getId());
-//		}
 	}
 
 	private void renderPathwayUnderInteraction(final GL gl) {

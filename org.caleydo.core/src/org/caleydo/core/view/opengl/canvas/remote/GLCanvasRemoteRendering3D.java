@@ -63,7 +63,6 @@ import org.caleydo.core.view.opengl.util.trashcan.TrashCan;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
-import org.eclipse.swt.custom.BusyIndicator;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
@@ -140,8 +139,8 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 	 * When the system is in the busy mode the background color will turn yellow 
 	 * and the system interaction will be turned off.
 	 */
-	private boolean bBusyMode = true;
-	private boolean bBusyModeChanged = true;
+	private boolean bBusyMode = false;
+	private boolean bBusyModeChanged = false;
 
 	/**
 	 * Constructor.

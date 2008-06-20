@@ -21,23 +21,36 @@ Bundle-ClassPath: .,
  lib/axis,
  lib/org.caleydo.util.graph_bin.jar
 Bundle-NativeCode: 
- lib/jogl/linux/libgluegen-rt.so;
- lib/jogl/linux/libjogl_cg.so;
- lib/jogl/linux/libjogl_awt.so;
- lib/jogl/linux/libjogl.so;
+ /lib/jogl/macosx/libgluegen-rt.jnilib;
+ /lib/jogl/macosx/libjogl_cg.jnilib;
+ /lib/jogl/macosx/libjogl_awt.jnilib;
+ /lib/jogl/macosx/libjogl.jnilib;
+ osname=mac os x;
+ processor=x86;
+ processor=ppc,
+ /lib/jogl/linux/x86/libgluegen-rt.so;
+ /lib/jogl/linux/x86/libjogl_cg.so;
+ /lib/jogl/linux/x86/libjogl_awt.so;
+ /lib/jogl/linux/x86/libjogl.so;
  osname=linux;
  processor=x86,
- lib/jogl/win32/gluegen-rt.dll;
- lib/jogl/win32/jogl_cg.dll;
- lib/jogl/win32/jogl_awt.dll;
- lib/jogl/win32/jogl.dll;
+ /lib/jogl/linux/x86-64/libgluegen-rt.so;
+ /lib/jogl/linux/x86-64/libjogl_cg.so;
+ /lib/jogl/linux/x86-64/libjogl_awt.so;
+ /lib/jogl/linux/x86-64/libjogl.so;
+ osname=linux;
+ processor=x86-64,
+ /lib/jogl/windows/x86/gluegen-rt.dll;
+ /lib/jogl/windows/x86/jogl_cg.dll;
+ /lib/jogl/windows/x86/jogl_awt.dll;
+ /lib/jogl/windows/x86/jogl.dll;
  osname=win32;
  processor=x86,
- lib/jogl/mac/gluegen-rt.jnlib;
- lib/jogl/mac/jogl_cg.jnlib;
- lib/jogl/mac/jogl_awt.jnlib;
- lib/jogl/mac/jogl.jnlib;
- osname=macosx; 
- processor=x86
+ /lib/jogl/windows/x86-64/gluegen-rt.dll;
+ /lib/jogl/windows/x86-64/jogl_cg.dll;
+ /lib/jogl/windows/x86-64/jogl_awt.dll;
+ /lib/jogl/windows/x86-64/jogl.dll;
+ osname=win32;
+ processor=x86-64
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6,
  J2SE-1.5

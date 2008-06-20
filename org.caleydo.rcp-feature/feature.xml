@@ -6,7 +6,7 @@
       provider-name="caleydo.org"
       plugin="org.caleydo.rcp"
       os="linux,macosx,win32"
-      ws="gtk,win32"
+      ws="carbon,gtk,win32"
       nl="en_US"
       arch="x86,x86_64">
 
@@ -66,6 +66,8 @@ All Rights Reserved.
       <import plugin="org.eclipse.core.jobs"/>
       <import plugin="org.eclipse.swt" version="3.0.0" match="compatible"/>
       <import feature="org.eclipse.rcp" version="3.3.2.R33x_r20071022-8y8eE9CEV3FspP8HJrY1M2dS"/>
+      <import plugin="org.eclipse.equinox.registry" version="3.4.0" match="compatible"/>
+      <import plugin="org.eclipse.equinox.common" version="3.2.0" match="compatible"/>
    </requires>
 
    <plugin
@@ -297,6 +299,17 @@ All Rights Reserved.
          download-size="0"
          install-size="0"
          version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.eclipse.swt.carbon.macosx"
+         os="macosx"
+         ws="carbon"
+         arch="x86"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         fragment="true"
          unpack="false"/>
 
 </feature>

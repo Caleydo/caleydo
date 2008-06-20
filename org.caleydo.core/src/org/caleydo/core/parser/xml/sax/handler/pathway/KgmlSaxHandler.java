@@ -98,8 +98,8 @@ implements IXmlParserHandler {
 				handleGraphicsTag();
 //			else if (sElementName.equals("relation"))
 //				handleRelationTag();
-//			else if (sElementName.equals("subtype"))
-//				handleSubtypeTag();
+////			else if (sElementName.equals("subtype"))
+////				handleSubtypeTag();
 //			else if (sElementName.equals("reaction"))
 //				handleReactionTag();
 //			else if (sElementName.equals("product"))
