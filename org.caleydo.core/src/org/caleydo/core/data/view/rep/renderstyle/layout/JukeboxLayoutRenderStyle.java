@@ -47,11 +47,6 @@ extends ARemoteViewLayoutRenderStyle {
 		fScalingFactorMemoLayer = 0.05f;
 		fScalingFactorTransitionLayer = 0.025f;
 		fScalingFactorSpawnLayer = 0.005f;
-		
-		fColorBarXPos = 0.0f;
-		fColorBarYPos = -1;
-		fColorBarWidth = 0.1f;
-		fColorBarHeight = 2f;
 	}
 	
 	/*
@@ -60,7 +55,7 @@ extends ARemoteViewLayoutRenderStyle {
 	 */
 	public RemoteHierarchyLayer initUnderInteractionLayer() {
 
-		fScalingFactorUnderInteractionLayer = 4/fAspectRatio * 0.045f;
+		fScalingFactorUnderInteractionLayer = (4 * 0.045f)/fAspectRatio;
 		
 		Transform transformUnderInteraction = new Transform();
 		transformUnderInteraction.setTranslation(new Vec3f(0f/fAspectRatio, -0.9f, 0f));
@@ -163,6 +158,11 @@ extends ARemoteViewLayoutRenderStyle {
 		fTrashCanYPos = -1.4f;
 		fTrashCanWidth = 0.3f;
 		fTrashCanHeight = 0.35f;
+		
+		fColorBarXPos = -0.1f/fAspectRatio;
+		fColorBarYPos = -0.9f;
+		fColorBarWidth = 0.1f;
+		fColorBarHeight = 2f;
 		
 		return memoLayer;
 	}

@@ -2,14 +2,13 @@ package org.caleydo.core.view.opengl.canvas.remote.bucket;
 
 import gleem.linalg.Vec3f;
 
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 import org.caleydo.core.data.view.rep.renderstyle.layout.BucketLayoutRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**
  * Specialized mouse wheel listener for "diving" into the bucket.
@@ -18,7 +17,7 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
  *
  */
 public class BucketMouseWheelListener 
-extends MouseAdapter {
+implements MouseWheelListener {
 
 	private IGeneralManager generalManager;
 	

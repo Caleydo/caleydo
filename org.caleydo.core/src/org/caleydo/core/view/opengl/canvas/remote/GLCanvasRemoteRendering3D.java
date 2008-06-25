@@ -6,6 +6,7 @@ import gleem.linalg.Vec4f;
 import gleem.linalg.open.Transform;
 
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -1674,14 +1675,14 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 			// Unregister standard mouse wheel listener
 			parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
 			// Register specialized bucket mouse wheel listener
-			parentGLCanvas.addMouseWheelListener((MouseWheelListener) bucketMouseWheelListener);
+			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX))
 		{
 			layoutRenderStyle = new JukeboxLayoutRenderStyle(generalManager, layoutRenderStyle);
 			
 			// Unregister bucket wheel listener
-			parentGLCanvas.removeMouseWheelListener((MouseWheelListener) bucketMouseWheelListener);
+			parentGLCanvas.removeMouseWheelListener(bucketMouseWheelListener);
 			// Register standard mouse wheel listener
 			parentGLCanvas.addMouseWheelListener(pickingTriggerMouseAdapter);
 		}
@@ -1815,13 +1816,10 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 		// Update aspect ratio and reinitialize stack and focus layer
 		layoutRenderStyle.setAspectRatio(fAspectRatio);
 		
-		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
-		{	
-			layoutRenderStyle.initUnderInteractionLayer();
-			layoutRenderStyle.initStackLayer();
-			layoutRenderStyle.initPoolLayer(iMouseOverViewID);
-			layoutRenderStyle.initMemoLayer();
-		}
+		layoutRenderStyle.initUnderInteractionLayer();
+		layoutRenderStyle.initStackLayer();
+		layoutRenderStyle.initPoolLayer(iMouseOverViewID);
+		layoutRenderStyle.initMemoLayer();
 	}
 	
 	protected void renderPoolAndMemoLayerBackground(final GL gl) {
@@ -1830,43 +1828,46 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 
 		float fWidth = 0.8f;
 		
-		gl.glColor4f(0.9f, 0.9f, 0.3f, 0.5f);
-		gl.glLineWidth(4);
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(-2/fAspectRatio, -2, 4);
-		gl.glVertex3f(-2/fAspectRatio, 2, 4);
-		gl.glVertex3f(-2/fAspectRatio + fWidth, 2, 4);
-		gl.glVertex3f(-2/fAspectRatio + fWidth, -2, 4);
-		gl.glEnd();
-	
-		gl.glColor4f(0.4f, 0.4f, 0.4f, 0.8f);
-		gl.glLineWidth(4);
-		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(-2/fAspectRatio, -2, 4);
-		gl.glVertex3f(-2/fAspectRatio, 2, 4);
-		gl.glVertex3f(-2/fAspectRatio + fWidth, 2, 4);
-		gl.glVertex3f(-2/fAspectRatio + fWidth, -2, 4);
-		gl.glEnd();
+		if (layoutMode.equals(LayoutMode.BUCKET))
+		{
+			gl.glColor4f(0.9f, 0.9f, 0.3f, 0.5f);
+			gl.glLineWidth(4);
+			gl.glBegin(GL.GL_POLYGON);
+			gl.glVertex3f(-2/fAspectRatio, -2, 4);
+			gl.glVertex3f(-2/fAspectRatio, 2, 4);
+			gl.glVertex3f(-2/fAspectRatio + fWidth, 2, 4);
+			gl.glVertex3f(-2/fAspectRatio + fWidth, -2, 4);
+			gl.glEnd();
 		
-		// Render memo pad background
-		gl.glColor4f(0.9f, 0.9f, 0.3f, 0.5f);
-		gl.glLineWidth(4);
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(2/fAspectRatio, -2, 4);
-		gl.glVertex3f(2/fAspectRatio, 2, 4);
-		gl.glVertex3f(2/fAspectRatio - fWidth, 2, 4);
-		gl.glVertex3f(2/fAspectRatio - fWidth, -2, 4);
-		gl.glEnd();
+			gl.glColor4f(0.4f, 0.4f, 0.4f, 0.8f);
+			gl.glLineWidth(4);
+			gl.glBegin(GL.GL_LINE_LOOP);
+			gl.glVertex3f(-2/fAspectRatio, -2, 4);
+			gl.glVertex3f(-2/fAspectRatio, 2, 4);
+			gl.glVertex3f(-2/fAspectRatio + fWidth, 2, 4);
+			gl.glVertex3f(-2/fAspectRatio + fWidth, -2, 4);
+			gl.glEnd();
+			
+			// Render memo pad background
+			gl.glColor4f(0.9f, 0.9f, 0.3f, 0.5f);
+			gl.glLineWidth(4);
+			gl.glBegin(GL.GL_POLYGON);
+			gl.glVertex3f(2/fAspectRatio, -2, 4);
+			gl.glVertex3f(2/fAspectRatio, 2, 4);
+			gl.glVertex3f(2/fAspectRatio - fWidth, 2, 4);
+			gl.glVertex3f(2/fAspectRatio - fWidth, -2, 4);
+			gl.glEnd();
 
-		gl.glColor4f(0.4f, 0.4f, 0.4f, 0.8f);
-		gl.glLineWidth(4);
-		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(2/fAspectRatio, -2, 4);
-		gl.glVertex3f(2/fAspectRatio, 2, 4);
-		gl.glVertex3f(2/fAspectRatio - fWidth, 2, 4);
-		gl.glVertex3f(2/fAspectRatio - fWidth, -2, 4);
-		gl.glEnd();
-
+			gl.glColor4f(0.4f, 0.4f, 0.4f, 0.8f);
+			gl.glLineWidth(4);
+			gl.glBegin(GL.GL_LINE_LOOP);
+			gl.glVertex3f(2/fAspectRatio, -2, 4);
+			gl.glVertex3f(2/fAspectRatio, 2, 4);
+			gl.glVertex3f(2/fAspectRatio - fWidth, 2, 4);
+			gl.glVertex3f(2/fAspectRatio - fWidth, -2, 4);
+			gl.glEnd();	
+		}
+		
 		// Render trash can
 		gl.glPushName(generalManager.getViewGLCanvasManager()
 				.getPickingManager().getPickingID(iUniqueId,
