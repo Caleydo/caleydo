@@ -39,6 +39,8 @@ extends ViewPart {
 	protected GLCaleydoCanvas canvasForwarder;
 	protected GLCanvas glCanvas;
 	
+	protected int iViewID;
+	
 	public static final String ACTION_WRITE_SCREENSHOT_TEXT = "Save screenshot";
 	public static final String ACTION_WRITE_SCREENSHOT_ICON = "resources/icons/PathwayEditor/back.png";
 	
@@ -46,7 +48,7 @@ extends ViewPart {
 	private boolean bEnableWriteScreenshot = false;
 	
 	/**
-	 * 
+	 * Constructor.
 	 */
 	public AGLViewPart() {
 		super();
@@ -54,6 +56,10 @@ extends ViewPart {
 	
 	public void setCanvasForwader(final GLCaleydoCanvas canvasForwarder) {
 		this.canvasForwarder = canvasForwarder;
+	}
+	
+	public void setViewId(final int iViewID) {
+		this.iViewID = iViewID;
 	}
 	
 	protected final void showMessage(String title,String message) {

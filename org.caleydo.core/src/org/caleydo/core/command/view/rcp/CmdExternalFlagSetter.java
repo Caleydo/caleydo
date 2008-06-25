@@ -6,7 +6,7 @@ import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
-import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
+import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 
 
 /**
@@ -45,24 +45,18 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		Object viewObject = generalManager.getViewGLCanvasManager()
 			.getItem(iViewId);
 		
-		if (viewObject.getClass().equals(GLCanvasJukeboxPathway3D.class))
+		if (viewObject.getClass().equals(GLCanvasRemoteRendering3D.class))
 		{
 			switch ( externalFlagSetterType ) 
 			{
 			case PATHWAY_ENABLE_GENE_MAPPING: 
-				((GLCanvasJukeboxPathway3D)viewObject).enableGeneMapping(bFlag);
-				break;
-			case PATHWAY_ENABLE_ANNOTATION:
-				((GLCanvasJukeboxPathway3D)viewObject).enableAnnotation(bFlag);
-				break;
-			case PATHWAY_ENABLE_IDENTICAL_NODE_HIGHLIGHTING:
-				((GLCanvasJukeboxPathway3D)viewObject).enableIdenticalNodeHighlighting(bFlag);			
+				((GLCanvasRemoteRendering3D)viewObject).enableGeneMapping(bFlag);
 				break;
 			case PATHWAY_ENABLE_NEIGHBORHOOD:			
-				((GLCanvasJukeboxPathway3D)viewObject).enableNeighborhood(bFlag);
+				((GLCanvasRemoteRendering3D)viewObject).enableNeighborhood(bFlag);
 				break;
 			case PATHWAY_ENABLE_TEXTURES:			
-				((GLCanvasJukeboxPathway3D)viewObject).enablePathwayTextures(bFlag);
+				((GLCanvasRemoteRendering3D)viewObject).enablePathwayTextures(bFlag);
 				break;
 				
 				default:

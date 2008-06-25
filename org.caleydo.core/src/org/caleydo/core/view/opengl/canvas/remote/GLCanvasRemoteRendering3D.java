@@ -325,24 +325,22 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 		{
 			glConnectionLineRenderer.render(gl);
 		
-			if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
-			{
+//			if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
+//			{
 				renderPoolAndMemoLayerBackground(gl);
-				
-				// MARC: temporarily turn off memo pad for jukebox layout
-				renderLayer(gl, memoLayer);
 				
 				gl.glPushName(generalManager
 						.getViewGLCanvasManager().getPickingManager().getPickingID(
 								iUniqueId, EPickingType.MEMO_PAD_SELECTION,
 								MEMO_PAD_PICKING_ID));
 				gl.glPopName();
-			}
+//			}
 			
 			renderLayer(gl, poolLayer);
 			renderLayer(gl, transitionLayer);
 			renderLayer(gl, stackLayer);
 			renderLayer(gl, spawnLayer);
+			renderLayer(gl, memoLayer);
 		}
 		
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
@@ -1888,6 +1886,39 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 		sTmp = "MEMO AREA";
 		textRenderer.draw3D(sTmp, 2.05f/fAspectRatio - fWidth, -1.95f, 4.001f, 0.004f); // scale factor
 		textRenderer.end3DRendering();
+	}
+	
+	public void enableGeneMapping(final boolean bEnableMapping) {
+	
+		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager().getAllGLEventListeners())
+		{	
+			if (tmpGLEventListener.getClass().equals(GLCanvasPathway3D.class))
+			{
+				((GLCanvasPathway3D)tmpGLEventListener).enableGeneMapping(bEnableMapping);
+			}		
+		}
+	}
+	
+	public void enablePathwayTextures(final boolean bEnablePathwayTexture) {
+		
+		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager().getAllGLEventListeners())
+		{	
+			if (tmpGLEventListener.getClass().equals(GLCanvasPathway3D.class))
+			{
+				((GLCanvasPathway3D)tmpGLEventListener).enablePathwayTextures(bEnablePathwayTexture);
+			}		
+		}
+	}
+	
+	public void enableNeighborhood(final boolean bEnableNeighborhood) {
+		
+		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager().getAllGLEventListeners())
+		{	
+			if (tmpGLEventListener.getClass().equals(GLCanvasPathway3D.class))
+			{
+				((GLCanvasPathway3D)tmpGLEventListener).enableNeighborhood(bEnableNeighborhood);
+			}		
+		}
 	}
 	
 	public void enableBusyMode(final boolean bBusyMode) {

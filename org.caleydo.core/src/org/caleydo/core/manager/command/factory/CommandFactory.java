@@ -23,7 +23,6 @@ import org.caleydo.core.command.view.opengl.CmdGlObjectHeatMap3D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectJukebox3D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectParCoords3D;
 import org.caleydo.core.command.view.opengl.CmdGlObjectPathway3D;
-import org.caleydo.core.command.view.opengl.CmdGlObjectPathway3DJukebox;
 import org.caleydo.core.command.view.opengl.CmdGlObjectRemoteGlyph;
 import org.caleydo.core.command.view.opengl.CmdGlObjectWiiTest;
 import org.caleydo.core.command.view.rcp.CmdExternalActionTrigger;
@@ -350,15 +349,6 @@ implements ICommandFactory {
 		{
 			createdCommand =
 				new CmdGlObjectHeatMap3D(
-						generalManager,
-						commandManager,
-						cmdType);	
-			break;
-		}
-		case CREATE_GL_JUKEBOX_PATHWAY_3D:
-		{
- 			createdCommand =
-				new CmdGlObjectPathway3DJukebox(
 						generalManager,
 						commandManager,
 						cmdType);	

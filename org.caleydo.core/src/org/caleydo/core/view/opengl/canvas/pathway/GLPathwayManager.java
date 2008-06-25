@@ -114,11 +114,8 @@ public class GLPathwayManager {
 	public void buildPathwayDisplayList(final GL gl, 			
 			final AUniqueManagedObject containingView,
 			final int iPathwayId) {
-		
-//		generalManager.getSingelton().logMsg(
-//				this.getClass().getSimpleName()
-//				+ ": buildPathwayDisplayList(): Build display list for pathway: "+iPathwayId,
-//				LoggerType.VERBOSE);
+	
+		generalManager.getLogger().log(Level.INFO, "Build display list for pathway " +iPathwayId);
 		
 		if (iPathwayId == -1)
 			return;		

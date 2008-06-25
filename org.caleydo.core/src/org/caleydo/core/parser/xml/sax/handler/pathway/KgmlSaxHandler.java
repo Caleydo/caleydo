@@ -96,16 +96,16 @@ implements IXmlParserHandler {
 				handleEntryTag();
 			else if (sElementName.equals("graphics"))
 				handleGraphicsTag();
-//			else if (sElementName.equals("relation"))
-//				handleRelationTag();
-////			else if (sElementName.equals("subtype"))
-////				handleSubtypeTag();
-//			else if (sElementName.equals("reaction"))
-//				handleReactionTag();
-//			else if (sElementName.equals("product"))
-//				handleReactionProductTag();
-//			else if (sElementName.equals("substrate"))
-//				handleReactionSubstrateTag();
+			else if (sElementName.equals("relation"))
+				handleRelationTag();
+//			else if (sElementName.equals("subtype"))
+//				handleSubtypeTag();
+			else if (sElementName.equals("reaction"))
+				handleReactionTag();
+			else if (sElementName.equals("product"))
+				handleReactionProductTag();
+			else if (sElementName.equals("substrate"))
+				handleReactionSubstrateTag();
 		}
     }
 
@@ -338,9 +338,9 @@ implements IXmlParserHandler {
 				shWidth, 
 				shHeight);
 		
-//    	hashKgmlEntryIdToVertexRepId.put(iCurrentEntryId, vertexRep);
-//    	hashKgmlNameToVertexRepId.put(((PathwayVertexGraphItem)currentVertex).getName(), vertexRep);
-//    	hashKgmlReactionIdToVertexRepId.put(((PathwayVertexGraphItem)currentVertex).getReactionId(), vertexRep);
+    	hashKgmlEntryIdToVertexRepId.put(iCurrentEntryId, vertexRep);
+    	hashKgmlNameToVertexRepId.put(((PathwayVertexGraphItem)currentVertex).getName(), vertexRep);
+    	hashKgmlReactionIdToVertexRepId.put(((PathwayVertexGraphItem)currentVertex).getReactionId(), vertexRep);
     }
     
 	/**

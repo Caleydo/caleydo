@@ -25,7 +25,6 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyph;
 import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
 import org.caleydo.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
-import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
 import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.canvas.remote.glyph.GLCanvasRemoteGlyph;
@@ -388,15 +387,6 @@ implements IViewGLCanvasManager {
 //						iUniqueId, 
 //						iGlForwarderId, 
 //						sLabel);
-
-//	
-			case CREATE_GL_JUKEBOX_PATHWAY_3D:
-				return new GLCanvasJukeboxPathway3D(
-						generalManager, 
-						iUniqueId,
-						iGLCanvasID, 
-						sLabel,
-						viewFrustum);
 				
 			case CREATE_GL_HEAT_MAP_3D:
 				return new GLCanvasHeatMap(

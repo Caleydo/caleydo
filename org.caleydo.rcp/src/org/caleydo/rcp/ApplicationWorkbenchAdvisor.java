@@ -7,7 +7,6 @@ import javax.media.opengl.GLEventListener;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.rcp.views.AGLViewPart;
-import org.caleydo.rcp.views.GLJukeboxPathwayView;
 import org.caleydo.rcp.views.GLParCoordsView;
 import org.caleydo.rcp.views.GLPathway3DView;
 import org.caleydo.rcp.views.GLRemoteRendering3DView;
@@ -96,13 +95,6 @@ extends WorkbenchAdvisor {
 			try 
 			{	
 				if (tmpGLEventListener.getClass().equals(
-						org.caleydo.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D.class))
-				{	
-					viewPart = (GLJukeboxPathwayView) PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow().getActivePage().showView(GLJukeboxPathwayView.ID,
-								Integer.toString(iInstanceNum), IWorkbenchPage.VIEW_ACTIVATE);
-				}
-				else if (tmpGLEventListener.getClass().equals(
 						org.caleydo.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D.class))
 				{
 					viewPart = (GLParCoordsView) PlatformUI.getWorkbench()
@@ -128,6 +120,7 @@ extends WorkbenchAdvisor {
 					continue;
 				
 				viewPart.setCanvasForwader(tmpCanvasForwarder);
+				viewPart.setViewId(((AGLCanvasUser)tmpGLEventListener).getId());
 				viewPart.createPartControlGL();
 				
 				gLAnimator.add(tmpCanvasForwarder);

@@ -6,7 +6,6 @@ import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
-import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasJukeboxPathway3D;
 import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 
 
@@ -54,14 +53,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 			Object viewObject = generalManager.getViewGLCanvasManager()
 				.getItem(iViewId);
 		
-			if (viewObject.getClass().equals(GLCanvasJukeboxPathway3D.class))
-			{
-				if (externalActionType.equals(EExternalActionType.CLEAR_ALL))
-				{
-					((GLCanvasJukeboxPathway3D)viewObject).clearAllPathways();
-				}
-			}
-			else if (viewObject.getClass().equals(GLCanvasRemoteRendering3D.class))
+			if (viewObject.getClass().equals(GLCanvasRemoteRendering3D.class))
 			{
 				if (externalActionType.equals(EExternalActionType.CLEAR_ALL))
 				{

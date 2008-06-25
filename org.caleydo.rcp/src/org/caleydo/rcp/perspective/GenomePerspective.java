@@ -1,13 +1,12 @@
 package org.caleydo.rcp.perspective;
 
+import org.caleydo.rcp.Application;
+import org.caleydo.rcp.views.GLRemoteRendering3DView;
+import org.caleydo.rcp.views.HTMLBrowserView;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 import org.eclipse.ui.IViewLayout;
-import org.caleydo.rcp.Application;
-import org.caleydo.rcp.views.GLJukeboxPathwayView;
-import org.caleydo.rcp.views.HTMLBrowserView;
-import org.caleydo.rcp.views.Pathway2DView;
 
 public class GenomePerspective 
 implements IPerspectiveFactory {
@@ -38,7 +37,7 @@ implements IPerspectiveFactory {
 		folder.addView(HTMLBrowserView.ID + ":1");
 //		folder.addView(IBrowserConstants.BROWSER_VIEW_ID);
 //		folder.addView(GLJukeboxPathwayView.ID + ":2");
-		IViewLayout viewLayout = layout.getViewLayout(GLJukeboxPathwayView.ID);
+		IViewLayout viewLayout = layout.getViewLayout(GLRemoteRendering3DView.ID);
 		viewLayout.setCloseable(false);
 	}
 }

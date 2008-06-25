@@ -42,7 +42,6 @@ implements ICaleydoDefaultType <CommandQueueSaxType> {
 	CREATE_GL_HEAT_MAP_3D(ManagerType.VIEW,"cmd","type","-1", "Create Heat Map"),
 	CREATE_GL_HISTOGRAM2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_GLYPH(ManagerType.VIEW,"cmd","type","-1", "Create Glyph"),	
-	CREATE_GL_JUKEBOX_PATHWAY_3D(ManagerType.VIEW,"cmd","type","-1", "Create Jukebox Pathway 3D"),		
 	CREATE_GL_PATHWAY_3D(ManagerType.VIEW,"cmd","type","-1", "Create Pathway 3D"),		
 	CREATE_GL_PARALLEL_COORDINATES_3D(ManagerType.VIEW,"cmd","type","-1", "Create Parallel Coordinates 3D"),		
 	CREATE_GL_BUCKET_3D(ManagerType.VIEW,"cmd","type","-1", "Create Bucket 3D"),
