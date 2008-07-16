@@ -5,7 +5,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
- * Automatical creates the suitable iterator for several IVirtualArray's.
+ * Automatically creates the suitable iterator for several IVirtualArray's.
  * 
  * Design Pattern "Factory"
  * 

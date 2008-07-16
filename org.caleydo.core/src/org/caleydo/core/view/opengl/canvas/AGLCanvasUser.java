@@ -4,6 +4,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -311,26 +312,25 @@ implements GLEventListener {
 	public abstract void displayRemote(final GL gl);
 	
 	/**
-	 * @see org.caleydo.core.view.IView#addSetId(int[])
+	 * Set external data
 	 */
-	public final void addSetId( int [] iSet) {
+	public final void addSetId(int [] iArSetId) {
 		
-		assert iSet != null : "Can not handle null-pointer!";
+		assert iArSetId != null : "Can not handle null-pointer!";
 		
-		for ( int i=0; i < iSet.length; i++)
+		for (int iSetIndex=0; iSetIndex < iArSetId.length; iSetIndex++)
 		{
-			ISet currentSet = setManager.getItemSet(iSet[i]);
+			ISet currentSet = setManager.getItemSet(iArSetId[iSetIndex]);
 			
 			if ( currentSet == null ) 
 			{
-//				generalManager.logMsg(
-//						"addSetId(" + iSet[i] + ") is not registered at SetManager!",
-//						LoggerType.MINOR_ERROR);
+				generalManager.getLogger().log(Level.WARNING, 
+						"Set with ID " +iArSetId +" does not exist!");
 				
 				continue;
 			}
 			
-			if ( ! hasSetId_ByReference(currentSet) )
+			if (!hasSetId_ByReference(currentSet) )
 			{
 				switch (currentSet.getSetType()) {
 				case SET_PATHWAY_DATA:
@@ -345,20 +345,17 @@ implements GLEventListener {
 					break;
 					
 				default:
-//					generalManager.logMsg(
-//							"addSetId() unsupported SetType!",
-//							LoggerType.ERROR);
-				} // switch (currentSet.getSetType()) {
+					generalManager.getLogger().log(Level.WARNING, 
+							"Unsupported type "+ currentSet.getSetType());
+				}// switch (currentSet.getSetType()) {
 					
-			} //if ( ! hasSetId_ByReference(currentSet) )
+			}
 			else 
 			{ 
-//				generalManager.logMsg(
-//						"addSetId(" + iSet[i] + ") ISet is already registered!",
-//						LoggerType.MINOR_ERROR);
-			} //if ( ! hasSetId_ByReference(currentSet) ) {...} else {...}
-			
-		} //for ( int i=0; i < iSet.length; i++)
+				generalManager.getLogger().log(Level.WARNING, 
+						"Set with ID " +currentSet.getId() + " is already registered!");
+			}
+		}
 	}
 	
 	/**
@@ -376,9 +373,8 @@ implements GLEventListener {
 			break;
 			
 		default:
-//			generalManager.logMsg(
-//					"addSetId() unsupported SetType!",
-//					LoggerType.ERROR);
+			generalManager.getLogger().log(Level.WARNING, 
+					"Unsupported Set type: " +setType);
 		} // switch (setType) {
 	}
 	
@@ -395,9 +391,8 @@ implements GLEventListener {
 			
 			if ( currentSet == null ) 
 			{
-//				generalManager.logMsg(
-//						"removeSetId(" + iSet[i] + ") is not registered at SetManager!",
-//						LoggerType.MINOR_ERROR);
+				generalManager.getLogger().log(Level.WARNING, 
+						"Set with ID " +iSet[i] +" does not exist!");
 				
 				continue;
 			}
@@ -414,21 +409,17 @@ implements GLEventListener {
 					break;
 					
 				default:
-//					generalManager.logMsg(
-//							"removeSetId() unsupported SetType!",
-//							LoggerType.ERROR);
+					generalManager.getLogger().log(Level.WARNING, 
+							"Unsupported type "+ currentSet.getSetType());
 				} // switch (currentSet.getSetType()) {
 					
-			} //if ( ! hasSetId_ByReference(currentSet) )
+			}
 			else 
 			{ 
-//				generalManager.logMsg(
-//						"removeSetId(" + iSet[i] + ") ISet was not registered!",
-//						LoggerType.MINOR_ERROR);
-			} //if ( ! hasSetId_ByReference(currentSet) ) {...} else {...}
-			
-		} //for ( int i=0; i < iSet.length; i++)
-		
+				generalManager.getLogger().log(Level.WARNING, 
+						"Set with ID " +iSet[i] + " was not registered!");
+			}
+		}
 	}
 	
 

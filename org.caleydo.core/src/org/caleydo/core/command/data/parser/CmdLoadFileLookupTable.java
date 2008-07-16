@@ -58,7 +58,7 @@ extends ACommand {
 	protected int iStartPareseFileAtLine = 0;
 	
 	/**
-	 * Default is -1 indicateing read till end of file.
+	 * Default is -1 indicating read till end of file.
 	 * 
 	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#iStopParsingAtLine
 	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#getStopParsingAtLine()

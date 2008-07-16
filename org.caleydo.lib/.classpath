@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="lib/jogl/demos/jogl-demos-util_mod.jar"/>
-	<classpathentry kind="lib" path="lib/jogl/demos/jogl-demos.jar" sourcepath="lib_src/jogl/demos/jogl-demos-src.zip"/>
-	<classpathentry kind="lib" path="lib/jogl/demos/jogl-demos-util.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jogl/gluegen-rt.jar"/>
 	<classpathentry exported="true" kind="lib" path="lib/jogl/jogl.jar"/>
 	<classpathentry kind="lib" path="lib/swt/swt.jar"/>

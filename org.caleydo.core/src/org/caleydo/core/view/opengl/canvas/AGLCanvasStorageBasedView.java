@@ -107,11 +107,10 @@ implements IMediatorReceiver, IMediatorSender
 		
 	}
 	
-	protected void initData()
+	public void initData()
 	{
 		// TODO: check if I only get in here once
 		alDataStorages.clear();
-		
 		
 		if (alSetData == null)
 			return;
@@ -141,13 +140,15 @@ implements IMediatorReceiver, IMediatorSender
 		}
 		mapSelections.put(ESelectionType.EXTERNAL_SELECTION, alTempList);
 
-
-		int iStorageLength = alDataStorages.get(0).getArrayFloat().length;
-		//int iStorageLength = 125;
-
-		alTempList = new ArrayList<Integer>(iStorageLength);
-		// initialize full list
+		int iStorageLength = 0;
+		if (alDataStorages.size() > 0)
+		{
+			iStorageLength = alDataStorages.get(0).getArrayFloat().length;
+		}
 		
+		alTempList = new ArrayList<Integer>(iStorageLength);
+		
+		// initialize full list
 		for(int iCount = 0; iCount < iStorageLength; iCount++)
 		{
 			if (bRenderOnlyContext)
@@ -156,7 +157,12 @@ implements IMediatorReceiver, IMediatorSender
 				int iDavidId = getDavidIDFromStorageIndex(iCount);
 				
 				if(iDavidId == -1)
+				{
+					generalManager.getLogger().log(Level.WARNING,
+							"Cannot resolve gene to DAVID ID!");
+					
 					continue;
+				}
 				else
 				{								
 					PathwayVertexGraphItem tmpPathwayVertexGraphItem = 
@@ -165,10 +171,8 @@ implements IMediatorReceiver, IMediatorSender
 		
 					if(tmpPathwayVertexGraphItem == null)
 					{
-	//					generalManager.getSingelton().logMsg(
-	//							this.getClass().getSimpleName()
-	//									+ " ("+iUniqueId+"): Irgendwas mit graph vertex item das eigentlich net passiern sullt ",
-	//							LoggerType.VERBOSE);
+						generalManager.getLogger().log(Level.WARNING,
+								"Something strange happens here! --> Investigate");
 						continue;					
 					}
 				}

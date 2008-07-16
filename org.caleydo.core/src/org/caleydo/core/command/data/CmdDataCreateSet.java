@@ -1,5 +1,6 @@
 package org.caleydo.core.command.data;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
@@ -27,7 +28,8 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
- *
+ * 
+ * @TODO: get rid of dirty linked lists
  */
 public class CmdDataCreateSet 
 extends ACmdCreate_IdTargetLabelAttrDetail {
@@ -580,8 +582,6 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		
 		iUniqueId = iSetId;
 		this.setType = setType;
-		
-		
 		
 		/**
 		 * Wipe all lists

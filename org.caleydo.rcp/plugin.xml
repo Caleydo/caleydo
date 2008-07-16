@@ -76,7 +76,7 @@
       <view
             id="org.caleydo.rcp.views.browser.browserView"
             name="Caleydo browser"
-            icon="icons/sample.gif"
+            icon="resources/icons/browser.png"
             class="org.caleydo.rcp.views.browser.BrowserView"
             category="org.caleydo.rcp.jogl.view.jframe"
             allowMultiple="true">
@@ -122,7 +122,11 @@
          </property>
          <property
                name="aboutText"
-               value="Caleydo visualization framework&#x0A;Caleydo is a general purpose visualization framework.&#x0A;See: www.caleydo.org&#x0A;&#x0A;(c) Copyright by www.geneview.org and Institute for Computer Graphics and Vision (ICG)&#x0A;Graz University of Technology - 2008.&#x0A;All Rights Reserved.">
+               value="Caleydo visualization framework&#x0A;Caleydo is a general purpose visualization framework.&#x0A;Check out www.caleydo.org&#x0A;&#x0A;(c) Copyright by www.geneview.org and Institute for Computer Graphics and Vision (ICG)&#x0A;Graz University of Technology - 2008.&#x0A;All Rights Reserved.">
+         </property>
+         <property
+               name="windowImages"
+               value="/org.caleydo.data/resources/icons/caleydo/caleydo16.png,/org.caleydo.data/resources/icons/caleydo/caleydo32.png,/org.caleydo.data/resources/icons/caleydo/caleydo48.png,/org.caleydo.data/resources/icons/caleydo/caleydo64.png,/org.caleydo.data/resources/icons/caleydo/caleydo128.png">
          </property>
       </product>
    </extension>

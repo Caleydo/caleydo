@@ -16,7 +16,7 @@ import org.caleydo.core.util.system.StringConversionTool;
 
 
 /**
- * Command, load data from file using a token pattern and a target ISet.
+ * Command loads data from file using a token pattern and a target ISet.
  * Use AMicroArrayLoader to load data set.
  * 
  * @author Michael Kalkusch
@@ -30,7 +30,7 @@ extends ACommand {
 	
 	protected String sTokenPattern;
 	
-	protected int iStartPareseFileAtLine = 0;
+	protected int iStartParseFileAtLine = 0;
 	
 	/**
 	 * Default is -1 indicating read till end of file.
@@ -39,7 +39,7 @@ extends ACommand {
 	 * @see org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#getStopParsingAtLine()
 	 * @see org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#setStartParsingStopParsingAtLine(int, int)
 	 */
-	protected int iStopPareseFileAtLine = -1;
+	protected int iStopParseFileAtLine = -1;
 	
 	protected ArrayList<Integer> iAlTargetStorageId;
 	
@@ -57,11 +57,12 @@ extends ACommand {
 		super(-1, generalManager, commandManager, commandQueueSaxType);
 		
 		setCommandQueueSaxType(CommandQueueSaxType.LOAD_DATA_FILE);	
-		
-		iAlTargetStorageId = new ArrayList<Integer>();
 	}
 	
-	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.base.ACommand#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
+	 */
 	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 		super.setParameterHandler(parameterHandler);
 		
@@ -77,6 +78,8 @@ extends ACommand {
 				parameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey()), 
 				GeneralManager.sDelimiter_Parser_DataItems);
 
+		iAlTargetStorageId = new ArrayList<Integer>();
+		
 		while (tokenizer.hasMoreTokens())
 		{
 			iAlTargetStorageId.add(StringConversionTool.convertStringToInt(tokenizer.nextToken(), -1));
@@ -87,7 +90,7 @@ extends ACommand {
 		
 		if ( iArrayStartStop.length > 0 ) 
 		{
-			iStartPareseFileAtLine = iArrayStartStop[0];
+			iStartParseFileAtLine = iArrayStartStop[0];
 			
 			if ( iArrayStartStop.length > 1 ) 
 			{
@@ -100,9 +103,22 @@ extends ACommand {
 
 					return;
 				}
-				iStopPareseFileAtLine = iArrayStartStop[1];
+				iStopParseFileAtLine = iArrayStartStop[1];
 			} // if ( iArrayStartStop.length > 0 ) 
 		} // if ( iArrayStartStop.length > 0 ) 
+	}
+	
+	public void setAttributes(final ArrayList<Integer> iAlStorageId,
+			final String sFileName,
+			final String sTokenPattern,
+			final int iStartParseFileAtLine,
+			final int iStopParseFileAtLine) {
+		
+		iAlTargetStorageId = iAlStorageId;
+		this.sFileName = sFileName;
+		this.sTokenPattern = sTokenPattern;
+		this.iStartParseFileAtLine = iStartParseFileAtLine;
+		this.iStopParseFileAtLine = iStopParseFileAtLine;
 	}
 	
 	/*
@@ -119,13 +135,13 @@ extends ACommand {
 		
 		try 
 		{
-			loader = new MicroArrayLoaderValues2MultipleStorages( generalManager,
+			loader = new MicroArrayLoaderValues2MultipleStorages(generalManager,
 					sFileName, 
 					IGeneralManager.bEnableMultipelThreads );
 			
 			loader.setTokenPattern(sTokenPattern);
 			loader.setTargetStorages(iAlTargetStorageId);
-			loader.setStartParsingStopParsingAtLine(iStartPareseFileAtLine, iStopPareseFileAtLine );
+			loader.setStartParsingStopParsingAtLine(iStartParseFileAtLine, iStopParseFileAtLine );
 			
 			loader.loadData();	
 		} //try

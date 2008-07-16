@@ -7,7 +7,7 @@
       <text>
          Caleydo visualization framework
 Caleydo is a general purpose visualization framework.
-See: www.caleydo.org
+Check out www.caleydo.org
 
 (c) Copyright by www.geneview.org and Institute for Computer Graphics and Vision (ICG)
 Graz University of Technology - 2008.
@@ -24,7 +24,7 @@ All Rights Reserved.
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
-   <windowImages/>
+   <windowImages i16="/org.caleydo.data/resources/icons/caleydo/caleydo16.gif" i32="/org.caleydo.data/resources/icons/caleydo/caleydo32.gif" i48="/org.caleydo.data/resources/icons/caleydo/caleydo48.gif" i64="/org.caleydo.data/resources/icons/caleydo/caleydo64.gif" i128="/org.caleydo.data/resources/icons/caleydo/caleydo128.gif"/>
 
    <splash
       location="org.caleydo.rcp" />
