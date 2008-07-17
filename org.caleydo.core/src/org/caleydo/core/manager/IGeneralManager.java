@@ -8,6 +8,7 @@ import org.caleydo.core.manager.data.IVirtualArrayManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
+import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 
@@ -184,6 +185,8 @@ public interface IGeneralManager {
 
 	public abstract IGenomeIdManager getGenomeIdManager();
 	
+	public abstract IGlyphManager getGlyphManager();
+
 	/**
 	 * Identifies each application in the network with a unique Id form [1..99]
 	 * issued by the network server.

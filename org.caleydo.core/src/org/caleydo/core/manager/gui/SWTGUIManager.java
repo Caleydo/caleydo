@@ -109,7 +109,7 @@ implements ISWTGUIManager {
 		Shell newShell = new Shell(display);
 		newShell.setLayout(new GridLayout());
 		newShell.setMaximized(true);
-		newShell.setImage(new Image(display, "resources/icons/caleydo.ico"));
+		newShell.setImage(new Image(display, "resources/icons/caleydo/caleydo16.ico"));
 		newShell.setText(sLabel);
 
 		windowMap.put(iUniqueId, newShell);

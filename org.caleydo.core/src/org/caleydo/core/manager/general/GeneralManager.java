@@ -36,6 +36,8 @@ import org.caleydo.core.manager.specialized.genome.IPathwayManager;
 import org.caleydo.core.manager.specialized.genome.id.GenomeIdManager;
 import org.caleydo.core.manager.specialized.genome.pathway.PathwayItemManager;
 import org.caleydo.core.manager.specialized.genome.pathway.PathwayManager;
+import org.caleydo.core.manager.specialized.glyph.GlyphManager;
+import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 import org.caleydo.core.manager.view.ViewGLCanvasManager;
@@ -80,6 +82,8 @@ implements IGeneralManager
 	
 	protected IGenomeIdManager genomeIdManager;
 	
+	protected IGlyphManager glyphManager;
+
 	private Logger logger;
 	
 	/**
@@ -136,6 +140,7 @@ implements IGeneralManager
 //		serializationInputTest();
 		pathwayItemManager = new PathwayItemManager(this);
 		xmlParserManager = new XmlParserManager(this);
+		glyphManager = new GlyphManager(this);
 		
 		/**
 		 * Insert all Manager objects handling registered objects to 
@@ -152,6 +157,8 @@ implements IGeneralManager
 		llAllManagerObjects.add(sWTGUIManager);
 		llAllManagerObjects.add(commandManager);
 		llAllManagerObjects.add(mementoManager);
+		llAllManagerObjects.add(glyphManager);
+		
 	}
 
 	/**
@@ -261,6 +268,8 @@ implements IGeneralManager
 			return eventPublisher;
 		case DATA_GENOME_ID:
 			return genomeIdManager;
+		case DATA_GLYPH:
+			return glyphManager;
 			
 		default:
 			throw new CaleydoRuntimeException(
@@ -415,6 +424,16 @@ implements IGeneralManager
 	public ICommandManager getCommandManager() {
 		return commandManager;
 	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IGeneralManager#getCommandManager()
+	 */
+	public IGlyphManager getGlyphManager() {
+		return glyphManager;
+	}
+	
+	
 	
 //	public void serializationOutputTest() {
 //		

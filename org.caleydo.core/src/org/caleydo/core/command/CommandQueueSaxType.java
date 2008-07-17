@@ -97,10 +97,16 @@ implements ICaleydoDefaultType <CommandQueueSaxType> {
 	 */
 	SET_SYSTEM_PATH_PATHWAYS("cmd", "type", "-1", "Set path to pathway files"),	
 
+	/**
+	 * Load data definition for glyph view
+	 */
+	LOAD_GLYPH_DEFINITIONS("cmd", "type", "-1", "load definition for the glyphs"),
+	
 	RUN_CMD_NOW("cmd", "process","RUN_CMD_NOW", "No description available!"),	
 	MEMENTO("cmd", "process", null, "No description available!"),	
 	
 	NO_OPERATION("cmd","type","NO_OPERATION", "No description available!"),
+	
 	
 	
 	/*

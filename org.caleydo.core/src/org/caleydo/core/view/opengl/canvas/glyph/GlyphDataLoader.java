@@ -10,6 +10,9 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.StorageType;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
+import org.caleydo.core.manager.specialized.glyph.GlyphManager;
+import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 
 
 public class GlyphDataLoader {
@@ -75,6 +78,7 @@ public class GlyphDataLoader {
 
 
 	public void setupGlyphGenerator(ISet glyphMapping) {
+		IGlyphManager gm = generalManager.getGlyphManager();
 
 		IStorage storageGlyph = glyphMapping.getStorageByDimAndIndex(0, 0);
 		IStorage storageData = glyphMapping.getStorageByDimAndIndex(0, 1);
@@ -106,6 +110,7 @@ public class GlyphDataLoader {
 		}
 
 		aSortOrder = sort.toArray(new Integer[sort.size()]);
+		
 	}
 
 

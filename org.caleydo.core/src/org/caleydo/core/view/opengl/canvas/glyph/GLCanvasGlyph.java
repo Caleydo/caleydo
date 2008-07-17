@@ -5,6 +5,7 @@ import gleem.linalg.open.Vec2i;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
 
@@ -12,6 +13,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLCanvas;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.set.selection.ISetSelection;
 import org.caleydo.core.data.collection.set.selection.SetSelection;
 import org.caleydo.core.data.view.camera.IViewFrustum;
@@ -102,6 +104,7 @@ implements IMediatorSender, IMediatorReceiver
 				glyphDictionary = tmpSet;
 
 		}
+		
 
 		grid_ = new GLCanvasGlyphGrid(generalManager);
 		grid_.loadData(gl, glyphMapping, glyphData, glyphDictionary);

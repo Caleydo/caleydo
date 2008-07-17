@@ -15,6 +15,7 @@ import org.caleydo.core.command.event.CmdEventCreateMediator;
 import org.caleydo.core.command.event.CmdEventMediatorAddObject;
 import org.caleydo.core.command.queue.CmdSystemRunCmdQueue;
 import org.caleydo.core.command.queue.CommandQueueVector;
+import org.caleydo.core.command.system.CmdLoadGlyphDefinition;
 import org.caleydo.core.command.system.CmdSystemExit;
 import org.caleydo.core.command.system.path.CmdSetPathwayDatabasePath;
 import org.caleydo.core.command.view.opengl.CmdGlObjectBucket3D;
@@ -478,7 +479,16 @@ implements ICommandFactory {
 						commandManager,
 						cmdType);
 			break;
-		}	
+		}
+		case LOAD_GLYPH_DEFINITIONS:
+		{
+			createdCommand =
+				new CmdLoadGlyphDefinition(
+						generalManager,
+						commandManager,
+						cmdType);
+			break;
+		}
 		
 		/*
 		 * ----------------------

@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 import org.caleydo.core.parser.xml.sax.handler.command.CommandSaxHandler;
+import org.caleydo.core.parser.xml.sax.handler.glyph.GlyphDefinitionSaxHandler;
 import org.caleydo.core.parser.xml.sax.handler.pathway.BioCartaPathwayImageMapSaxHandler;
 import org.caleydo.core.parser.xml.sax.handler.pathway.KgmlSaxHandler;
 import org.caleydo.core.parser.xml.sax.handler.pathway.PathwayImageMapSaxHandler;
@@ -69,11 +70,15 @@ extends AXmlParserManager {
 		CommandSaxHandler cmdHandler = 
 			new CommandSaxHandler( generalManager, this );
 		
+		GlyphDefinitionSaxHandler glyphHandler =
+			new GlyphDefinitionSaxHandler(generalManager, this);
+		
 		registerAndInitSaxHandler( externalFileHandler );		
 		registerAndInitSaxHandler( kgmlParser );
 		registerAndInitSaxHandler( pathwayImageMapParser );
 		registerAndInitSaxHandler( biocartaPathwayParser );
 		registerAndInitSaxHandler( cmdHandler );
+		registerAndInitSaxHandler( glyphHandler );
 		
 		//openCurrentTag( cmdHandler );
 	}

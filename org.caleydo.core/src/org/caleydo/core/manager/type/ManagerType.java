@@ -20,6 +20,8 @@ public enum ManagerType {
 		
 		DATA_PATHWAY_ELEMENT("pathway element manager", ManagerType.DATA_PATHWAY, 61),
 		
+		DATA_GLYPH("glyph data manager", ManagerType.DATA, 40 ),
+		
 		DATA_SET("set manager", ManagerType.DATA, 51 ),		
 		
 		DATA_STORAGE("storage manager", ManagerType.DATA, 53 ),
