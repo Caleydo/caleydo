@@ -126,7 +126,7 @@
          </property>
          <property
                name="windowImages"
-               value="/org.caleydo.data/resources/icons/caleydo/caleydo16.png,/org.caleydo.data/resources/icons/caleydo/caleydo32.png,/org.caleydo.data/resources/icons/caleydo/caleydo48.png,/org.caleydo.data/resources/icons/caleydo/caleydo64.png,/org.caleydo.data/resources/icons/caleydo/caleydo128.png">
+               value="/org.caleydo.data/resources/icons/caleydo/caleydo16.gif,/org.caleydo.data/resources/icons/caleydo/caleydo32.gif,/org.caleydo.data/resources/icons/caleydo/caleydo48.gif,/org.caleydo.data/resources/icons/caleydo/caleydo64.gif,/org.caleydo.data/resources/icons/caleydo/caleydo128.gif">
          </property>
       </product>
    </extension>

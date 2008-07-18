@@ -16,7 +16,8 @@ import org.caleydo.core.util.system.StringConversionTool;
 
 
 /**
- * Command, load lookup table from file using one delimiter and a target Collection.
+ * Command loads lookup table from file using 
+ * one delimiter and a target Collection.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -30,6 +31,8 @@ extends ACommand {
 	public static final String sCommaSeperatedFileExtension = ".csv";
 	
 	protected String sFileName;
+	
+	private String sLookupTableInfo;
 	
 	protected String sLookupTableType;
 	
@@ -46,15 +49,8 @@ extends ACommand {
 	 * 
 	 * @see org.caleydo.core.data.mapping.EGenomeIdType
 	 */
-	protected String sLUT_Target;
+	protected String sLookupTableDelimiter;
 	
-	/**
-	 * Default is 32, because gpr files have a header of that size!
-	 * 
-	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#iStartParsingAtLine
-	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#getStartParsingAtLine()
-	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int, int)
-	 */
 	protected int iStartPareseFileAtLine = 0;
 	
 	/**
@@ -64,9 +60,7 @@ extends ACommand {
 	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#getStopParsingAtLine()
 	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#setStartParsingStopParsingAtLine(int, int)
 	 */
-	protected int iStopPareseFileAtLine = -1;
-	
-	protected int iTargetSetId;
+	protected int iStopParseFileAtLine = -1;
 	
 	protected boolean bCreateReverseMap = false;
 	
@@ -115,20 +109,58 @@ extends ACommand {
 		setCommandQueueSaxType(CommandQueueSaxType.LOAD_LOOKUP_TABLE_FILE);
 	}
 	
-	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.base.ACommand#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
+	 */
 	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 		super.setParameterHandler(parameterHandler);
 		
 		this.setId( parameterHandler.getValueInt( 
 				CommandQueueSaxType.TAG_CMD_ID.getXmlKey()) );
 	
-		this.sFileName = parameterHandler.getValueString( 
+		sFileName = parameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_DETAIL.getXmlKey() );
 		
-		String sLUT_info =  parameterHandler.getValueString( 
+		sLookupTableInfo =  parameterHandler.getValueString( 
 				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() );
 
-		StringTokenizer tokenizer = new StringTokenizer( sLUT_info,
+		sLookupTableDelimiter = parameterHandler.getValueString( 
+				CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey());
+		
+		int[] iArrayStartStop = StringConversionTool.convertStringToIntArrayVariableLength(
+				parameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey() ),
+				" " );
+		
+		iStartPareseFileAtLine = iArrayStartStop[0];
+		iStopParseFileAtLine = iArrayStartStop[1];
+		
+		sCodeResolvingLUTTypes = parameterHandler.getValueString( 
+				CommandQueueSaxType.TAG_ATTRIBUTE4.getXmlKey());
+		
+		extractParameters();
+	}
+	
+	public void setAttributes(final String sFileName,
+			final int iStartParseFileAtLine,
+			final int iStopParseFileAtLine,
+			final String sLookupTableInfo,
+			final String sLookupTableDelimiter,
+			final String sCodeResolvingLUTTypes)
+	{
+		this.sFileName = sFileName;
+		this.iStartPareseFileAtLine = iStartParseFileAtLine;
+		this.iStopParseFileAtLine = iStopParseFileAtLine;
+		this.sLookupTableInfo = sLookupTableInfo;
+		this.sLookupTableDelimiter = sLookupTableDelimiter;
+		this.sCodeResolvingLUTTypes = sCodeResolvingLUTTypes;
+		
+		extractParameters();
+	}
+	
+	private void extractParameters() {
+		
+		StringTokenizer tokenizer = new StringTokenizer(sLookupTableInfo,
 				IGeneralManager.sDelimiter_Parser_DataItems);
 		
 		sLookupTableType = tokenizer.nextToken();
@@ -141,78 +173,33 @@ extends ACommand {
 			{
 				bCreateReverseMap = true;
 			}
-			else if (sLookupTableOptions.equals("LUT_1"))
+			else if (sLookupTableOptions.equals("LUT_1") || sLookupTableOptions.equals("LUT_2")
+					|| sLookupTableOptions.equals("LUT_BOTH"))
 			{
-				sCodeResolvingLUTTypes = parameterHandler.getValueString( 
-						CommandQueueSaxType.TAG_ATTRIBUTE4.getXmlKey());
-				
 				tokenizer = new StringTokenizer(sCodeResolvingLUTTypes,
 						IGeneralManager.sDelimiter_Parser_DataItems);
 				
-				sCodeResolvingLUTMappingType_1 = tokenizer.nextToken();
-				
-				bResolveCodeMappingUsingCodeToId_LUT_1 = true;
-			}
-			else if (sLookupTableOptions.equals("LUT_2"))
-			{
-				sCodeResolvingLUTTypes = parameterHandler.getValueString( 
-						CommandQueueSaxType.TAG_ATTRIBUTE4.getXmlKey());
-				
-				tokenizer = new StringTokenizer(sCodeResolvingLUTTypes,
-						IGeneralManager.sDelimiter_Parser_DataItems);
-				
-				sCodeResolvingLUTMappingType_2 = tokenizer.nextToken();
-				
-				bResolveCodeMappingUsingCodeToId_LUT_2 = true;
-			}
-			else if (sLookupTableOptions.equals("LUT_BOTH"))
-			{
-				sCodeResolvingLUTTypes = parameterHandler.getValueString( 
-						CommandQueueSaxType.TAG_ATTRIBUTE4.getXmlKey());
-				
-				tokenizer = new StringTokenizer(sCodeResolvingLUTTypes,
-						IGeneralManager.sDelimiter_Parser_DataItems);
-				
-				sCodeResolvingLUTMappingType_1 = tokenizer.nextToken();
-				sCodeResolvingLUTMappingType_2 = tokenizer.nextToken();
-				
-				bResolveCodeMappingUsingCodeToId_LUT_BOTH = true;
+				if (sLookupTableOptions.equals("LUT_1"))
+				{
+					sCodeResolvingLUTMappingType_1 = tokenizer.nextToken();
+					bResolveCodeMappingUsingCodeToId_LUT_1 = true;					
+				}
+				else if (sLookupTableOptions.equals("LUT_2"))
+				{
+					sCodeResolvingLUTMappingType_2 = tokenizer.nextToken();
+					bResolveCodeMappingUsingCodeToId_LUT_2 = true;
+				}
+				else if (sLookupTableOptions.equals("LUT_BOTH"))
+				{
+					sCodeResolvingLUTMappingType_1 = tokenizer.nextToken();
+					sCodeResolvingLUTMappingType_2 = tokenizer.nextToken();
+					
+					bResolveCodeMappingUsingCodeToId_LUT_BOTH = true;
+				}
 			}
 		}
-		
-		this.sLUT_Target =	parameterHandler.getValueString( 
-				CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey());
-		
-		this.iTargetSetId =	StringConversionTool.convertStringToInt(
-				parameterHandler.getValueString(CommandQueueSaxType.TAG_UNIQUE_ID.getXmlKey()),
-				-1 );
-		
-		int[] iArrayStartStop = StringConversionTool.convertStringToIntArrayVariableLength(
-				parameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey() ),
-				" " );
-		
-		if ( iArrayStartStop.length > 0 ) 
-		{
-			iStartPareseFileAtLine = iArrayStartStop[0];
-			
-			if ( iArrayStartStop.length > 1 ) 
-			{
-				if (( iArrayStartStop[0] > iArrayStartStop[1] )&&
-						( iArrayStartStop[1] != -1 )) {
-//					generalManager.logMsg(
-//							"CmdSystemLoadFileLookupTable ignore stop index=(" + 
-//							iArrayStartStop[1]  + 
-//							"), because it is smaller than start index (" + 
-//							iArrayStartStop[0] + ") !",
-//							LoggerType.STATUS );
-					return;
-				}
-				iStopPareseFileAtLine = iArrayStartStop[1];
-			} // if ( iArrayStartStop.length > 0 ) 
-		} // if ( iArrayStartStop.length > 0 ) 
 	}
 	
-
 	/**
 	 * Load data from file using a token pattern.
 	 * 
@@ -289,13 +276,13 @@ extends ACommand {
 					genomeDataType,
 					IGeneralManager.bEnableMultipelThreads );	
 			
-			loader.setTokenSeperator(sLUT_Target);
+			loader.setTokenSeperator(sLookupTableDelimiter);
 			
 //			if ( sFileName.endsWith( sCommaSeperatedFileExtension )) {
 //				loader.setTokenSeperator( IGeneralManager.sDelimiter_Parser_DataType );
 //			}
 			
-			loader.setStartParsingStopParsingAtLine( iStartPareseFileAtLine, iStopPareseFileAtLine );
+			loader.setStartParsingStopParsingAtLine( iStartPareseFileAtLine, iStopParseFileAtLine );
 			
 			genomeIdManager.buildLUT_startEditing( lut_genome_type );
 			loader.loadData();
@@ -406,16 +393,8 @@ extends ACommand {
 		} //try
 		catch ( Exception e ) 
 		{
-			String errorMsg = "Could not load data via LookupTableLoaderProxy, error during loading! file=["+
-				sFileName + "] LUT-type:[" +
-				sLookupTableType + "]  targetSet(s)=[" +
-				iTargetSetId + "]) CmdSystemLoadFileLookupTable \n   error-message=" + e.getMessage();
-			
 			e.printStackTrace();
-			
-//			generalManager.logMsg(
-//					errorMsg,
-//					LoggerType.ERROR );
+		
 		} // catch
 		finally 
 		{

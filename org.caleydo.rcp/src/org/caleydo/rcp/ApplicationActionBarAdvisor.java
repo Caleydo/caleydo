@@ -32,16 +32,16 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	
 	protected IWorkbenchAction saveAsAction;
 	
-	protected IWorkbenchAction editCopyAction;
+//	protected IWorkbenchAction editCopyAction;
 	
 	protected IWorkbenchAction printAction;
 	
-	protected IWorkbenchAction editPasteAction;
+//	protected IWorkbenchAction editPasteAction;
+
+//	protected IWorkbenchAction editCutAction;
 	
-	protected IWorkbenchAction editCutAction;
-	
-	protected IWorkbenchAction editDeleteAction;
-	
+//	protected IWorkbenchAction editDeleteAction;
+
 	protected OpenSearchDataEntityAction editOpenSearchDataEntityAction;
 	
 	protected IWorkbenchAction fileLoadXmlConfigAction;
@@ -93,17 +93,17 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		/**
 		 * EDIT menu
 		 */
-		editCopyAction = ActionFactory.COPY.create(window);		
-		register(editCopyAction);
-		
-		editPasteAction = ActionFactory.PASTE.create(window);			
-		register(editPasteAction);
-		
-		editCutAction = ActionFactory.CUT.create(window);
-		register(editCutAction);
-		
-		editDeleteAction = ActionFactory.DELETE.create(window);
-		register(editDeleteAction);
+//		editCopyAction = ActionFactory.COPY.create(window);		
+//		register(editCopyAction);
+//		
+//		editPasteAction = ActionFactory.PASTE.create(window);			
+//		register(editPasteAction);
+//		
+//		editCutAction = ActionFactory.CUT.create(window);
+//		register(editCutAction);
+//		
+//		editDeleteAction = ActionFactory.DELETE.create(window);
+//		register(editDeleteAction);
 		
 		editOpenSearchDataEntityAction = new OpenSearchDataEntityAction(window);
 		register(editOpenSearchDataEntityAction);
@@ -159,11 +159,11 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		 * EDIT
 		 */
 		MenuManager editMenu = new MenuManager("&Edit", "edit");
-		editMenu.add(editCutAction);
-		editMenu.add(editCopyAction);
-		editMenu.add(editPasteAction);		
-		editMenu.add( new Separator());
-		editMenu.add(editDeleteAction);
+//		editMenu.add(editCutAction);
+//		editMenu.add(editCopyAction);
+//		editMenu.add(editPasteAction);		
+//		editMenu.add( new Separator());
+//		editMenu.add(editDeleteAction);
 		editMenu.add(editOpenSearchDataEntityAction);
 		
 		/**
@@ -173,16 +173,16 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		MenuManager viewOpenGLMenu = new MenuManager("Show Open&GL views ..", "create new OpenGL views");
 		MenuManager viewTextMenu = new MenuManager("Show text views ..", "create new text views");
 		
-			/**
-			 * VIEW ==> OpenGL
-			 */			
-			viewOpenGLMenu.add(exitAction);
-	
-			/**
-			 * VIEW ==> Text
-			 */
-			viewTextMenu.add(exitAction);
-			viewTextMenu.add(exitAction);
+		/**
+		 * VIEW ==> OpenGL
+		 */			
+		viewOpenGLMenu.add(exitAction);
+
+		/**
+		 * VIEW ==> Text
+		 */
+		viewTextMenu.add(exitAction);
+		viewTextMenu.add(exitAction);
 		
 		viewMenu.add(viewDynamicLoaded);
 		viewMenu.add(viewOpenGLMenu);

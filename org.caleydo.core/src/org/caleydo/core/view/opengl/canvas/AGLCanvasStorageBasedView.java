@@ -158,7 +158,7 @@ implements IMediatorReceiver, IMediatorSender
 				
 				if(iDavidId == -1)
 				{
-					generalManager.getLogger().log(Level.WARNING,
+					generalManager.getLogger().log(Level.FINE,
 							"Cannot resolve gene to DAVID ID!");
 					
 					continue;
@@ -171,7 +171,7 @@ implements IMediatorReceiver, IMediatorSender
 		
 					if(tmpPathwayVertexGraphItem == null)
 					{
-						generalManager.getLogger().log(Level.WARNING,
+						generalManager.getLogger().log(Level.FINE,
 								"Something strange happens here! --> Investigate");
 						continue;					
 					}

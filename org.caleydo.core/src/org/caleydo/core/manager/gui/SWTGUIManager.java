@@ -304,8 +304,7 @@ implements ISWTGUIManager {
 		loadingProgressBarWindow.setMaximized(false);
 		loadingProgressBarWindow.setText("Loading org.caleydo.core...");
 		
-		loadingProgressBar = 
-			new ProgressBar(loadingProgressBarWindow, SWT.SMOOTH );
+		loadingProgressBar = new ProgressBar(loadingProgressBarWindow, SWT.SMOOTH );
 		loadingProgressBar.setBounds(10, 10, 430, 40);
 		loadingProgressBar.setSelection(10);
 		
@@ -344,19 +343,6 @@ implements ISWTGUIManager {
 		
 		loadingProgressBarWindow.setText( sText );
 		loadingProgressBarWindow.update();
-		
-//		/* Multi Threaded version */
-//		loadingProgressBarWindow.getDisplay().asyncExec(new Runnable() {
-//			public void run() {
-//			loadingProgressBar.setSelection( iPosition );
-//			
-//			String sCurrentText = loadingProgressBarWindow.getText();
-//			
-//			loadingProgressBarWindow.setText( sText );
-//			loadingProgressBarWindow.update();
-//					
-//			}
-//		});
 			
 		return sCurrentText;
 	}

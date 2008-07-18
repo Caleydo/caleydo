@@ -12,7 +12,7 @@ import org.caleydo.core.manager.gui.SWTGUIManager;
 
 
 /**
- * Loader for MircoArray data sets in *.gpr format.
+ * Loader for raw data data sets in text format.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -23,7 +23,7 @@ implements IMementoXML, IParserObject {
 	
 	protected final IGeneralManager generalManager;
 	
-	protected final SWTGUIManager sWTGUIManager;	
+	protected final SWTGUIManager swtGuiManager;	
 	
 	/**
 	 * Work around, disable progress bar, 
@@ -144,7 +144,7 @@ implements IMementoXML, IParserObject {
 
 		this.generalManager = generalManager;
 		
-		sWTGUIManager = (SWTGUIManager) generalManager.getSWTGUIManager();
+		swtGuiManager = (SWTGUIManager) generalManager.getSWTGUIManager();
 		
 		assert generalManager!= null :"null-pointer in constructor";		
 		
@@ -346,7 +346,7 @@ implements IMementoXML, IParserObject {
 	}
 	
 	/**
-	 * Get the nubmer of lines to be read from the current file.
+	 * Get the number of lines to be read from the current file.
 	 * 
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#iLinesInFileToBeRead
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(BufferedReader)
@@ -409,10 +409,10 @@ implements IMementoXML, IParserObject {
 
 	/**
 	 * Sets the progress bar to iPosition [0..199] and 
-	 * define the number of incremetns iStepsTill100_Percent [>0] needed to 
+	 * define the number of increments iStepsTill100_Percent [>0] needed to 
 	 * the the progressbar to iMaxProgressBarPosition
 	 * 
-	 * Call progressBarIncrement() to incremetn the progressabr using the settings.
+	 * Call progressBarIncrement() to increments the progressbar using the settings.
 	 * 
 	 * Use progressBarResetTitle() to reset the progressbar to the previous position.
 	 * 
@@ -434,17 +434,17 @@ implements IMementoXML, IParserObject {
 		
 		int iMaxPosition = iMaxProgressBarPosition;
 		
-		if ( iMaxProgressBarPosition > sWTGUIManager.PROGRESSBAR_MAXIMUM  ) 
+		if ( iMaxProgressBarPosition > swtGuiManager.PROGRESSBAR_MAXIMUM  ) 
 		{
-			iMaxPosition = sWTGUIManager.PROGRESSBAR_MAXIMUM;
+			iMaxPosition = swtGuiManager.PROGRESSBAR_MAXIMUM;
 		}
 		
 		assert sText != null : "can not init text with 'null'";
 		assert iMaxPosition > iCurrentProgressBarPosition : "iMaxPosition is smaller than iCurrentProgressBarPosition !";
 		
-		iProgressBarLastPosition = sWTGUIManager.getLoadingProgressBarPercentage();
-		sLastProgressBarText = sWTGUIManager.setLoadingProgressBarTitle(
-				"load " + this.getFileName(), 
+		iProgressBarLastPosition = swtGuiManager.getLoadingProgressBarPercentage();
+		sLastProgressBarText = swtGuiManager.setLoadingProgressBarTitle(
+				"Load " + this.getFileName(), 
 				iCurrentProgressBarPosition);	
 		
 		iProgressBarCurrentPosition = iCurrentProgressBarPosition;		
@@ -469,7 +469,7 @@ implements IMementoXML, IParserObject {
 		{
 			progressBarSetStoreInitTitle(sText,
 					iCurrentProgressBarPosition,
-					sWTGUIManager.PROGRESSBAR_MAXIMUM ,
+					swtGuiManager.PROGRESSBAR_MAXIMUM ,
 					iStepsTill100_Percent);
 		}
 	}
@@ -482,7 +482,7 @@ implements IMementoXML, IParserObject {
 			
 			if ( (int)fProgressBarIndex != iProgressBarCurrentPosition ) {
 				iProgressBarCurrentPosition = (int)fProgressBarIndex;			
-				sWTGUIManager.setLoadingProgressBarPercentage( iProgressBarCurrentPosition );
+				swtGuiManager.setLoadingProgressBarPercentage( iProgressBarCurrentPosition );
 			}
 		}
 	}
@@ -495,7 +495,7 @@ implements IMementoXML, IParserObject {
 		/* Multi Threaded Version: remove next lines or make call thread safe */		
 		if ( !bUseMultipleThreads )
 		{
-			sWTGUIManager.setLoadingProgressBarTitle(sLastProgressBarText,iProgressBarLastPosition);
+			swtGuiManager.setLoadingProgressBarTitle(sLastProgressBarText, iProgressBarLastPosition);
 			
 			assert fProgressBarInc != 0.0f : "call progressBarResetTitle() without calling progressBarSetStoreInitTitle() first!";
 			
@@ -514,7 +514,7 @@ implements IMementoXML, IParserObject {
 		if ( !bUseMultipleThreads )
 		{
 			iProgressBarCurrentPosition += iTicks;
-			sWTGUIManager.setLoadingProgressBarPercentage( iProgressBarCurrentPosition );
+			swtGuiManager.setLoadingProgressBarPercentage( iProgressBarCurrentPosition );
 		}
 	}
 	

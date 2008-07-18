@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * Copy of RCP tutorial "org.eclipsercp.hyperbola.AddContactDialog.java"
+ * Dialog for opening Caleydo project files.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -47,7 +47,7 @@ extends Dialog {
 	 */
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText("Open XML config File");
+		newShell.setText("Open Project File");
 	}
 
 	/*

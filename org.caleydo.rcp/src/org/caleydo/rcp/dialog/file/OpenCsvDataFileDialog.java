@@ -15,11 +15,13 @@ import org.caleydo.core.command.data.CmdDataCreateStorage;
 import org.caleydo.core.command.data.CmdDataCreateVirtualArray;
 import org.caleydo.core.command.data.filter.CmdDataFilterMath;
 import org.caleydo.core.command.data.filter.CmdDataFilterMath.EDataFilterMathType;
+import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
 import org.caleydo.core.data.collection.SetType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
 import org.caleydo.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
@@ -27,7 +29,6 @@ import org.caleydo.rcp.Application;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -39,6 +40,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
@@ -46,6 +48,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -54,6 +57,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IStartup;
 
 /**
  * File dialog for opening raw text data files.
@@ -70,6 +74,7 @@ extends Dialog {
 	private Composite composite;
 	
 	private Text txtFileName;
+	private Text txtStartParseAtLine;
 
 	private Table previewTable;
 	
@@ -82,8 +87,12 @@ extends Dialog {
 	protected String sFilePath = "";
 	
 	private String sInputPattern = "SKIP;ABORT";
+	
+	private String sDelimiter = "";
 
 	private int iTargetSetId = -1;
+	
+	private int iStartParseFileAtLine = 0;
 	
 	/**
 	 * Constructor.
@@ -115,15 +124,36 @@ extends Dialog {
 		GridLayout layout = new GridLayout(2, false);
 		composite.setLayout(layout);
 
-		Label userIdLabel = new Label(composite, SWT.NONE);
-		userIdLabel.setText("CSV &File name:");
-		userIdLabel.setLayoutData(new GridData(GridData.END, GridData.BEGINNING,
+		Label lblFileName = new Label(composite, SWT.NONE);
+		lblFileName.setText("CSV &File name:");
+		lblFileName.setLayoutData(new GridData(GridData.END, GridData.BEGINNING,
 				false, false));
 
 		txtFileName = new Text(composite, SWT.BORDER);
 		txtFileName.setLayoutData(new GridData(GridData.FILL, GridData.FILL,
 				true, false));
+		
+		Label lblStartParseAtLine = new Label(composite, SWT.NONE);
+		lblStartParseAtLine.setText("Ignore lines in header:");
+		lblStartParseAtLine.setLayoutData(new GridData(GridData.END, GridData.BEGINNING,
+				false, false));
 
+		txtStartParseAtLine = new Text(composite, SWT.BORDER);
+		txtStartParseAtLine.setLayoutData(new GridData(GridData.FILL, GridData.FILL,
+				true, false));
+		txtStartParseAtLine.setText("0");
+		txtStartParseAtLine.setTextLimit(2);
+		txtStartParseAtLine.addModifyListener(new ModifyListener() {
+
+			public void modifyText(ModifyEvent e) {
+				iStartParseFileAtLine = StringConversionTool.convertStringToInt(
+						txtStartParseAtLine.getText(), 0);
+				
+				createDataPreviewTable("\t");
+				composite.pack();
+			}
+		});
+			
 		Label lblDelimiter = new Label(composite, SWT.NONE);
 		lblDelimiter.setText("Separated by:");
 		lblDelimiter.setLayoutData(new GridData(GridData.END, GridData.BEGINNING,
@@ -325,6 +355,8 @@ extends Dialog {
 	
 	private void createDataPreviewTable(final String sDelimiter) {
 		
+		this.sDelimiter = sDelimiter;
+		
 		// Clear table if not empty
 		previewTable.removeAll();
 
@@ -345,15 +377,41 @@ extends Dialog {
 
 	    	String sLine = "";
 	    	
+			// Ignore unwanted header files of file
+	    	for (int iIgnoreLineIndex = 0; iIgnoreLineIndex < iStartParseFileAtLine; iIgnoreLineIndex++)
+	    	{
+	    		brFile.readLine();
+	    	}
+	    	
+	    	boolean bCellFilled = false;
+			String sTmpNextToken = "";
+	    	StringTokenizer tokenizer;
+	    	
 	    	// Read labels
 	    	if ((sLine = brFile.readLine()) != null)
-	    	{
-    			StringTokenizer tokenizer = new StringTokenizer(sLine, sDelimiter);		
-    			while(tokenizer.hasMoreTokens())
+	    	{	    		
+    			tokenizer = new StringTokenizer(sLine, sDelimiter, true);	
+      			
+      			while(tokenizer.hasMoreTokens())
     			{
+      				sTmpNextToken = tokenizer.nextToken();
         			tmpColumn = new TableColumn (previewTable, SWT.NONE);
-    				tmpColumn.setText(tokenizer.nextToken());
     				tmpColumn.setWidth(80);
+        			
+      				// Check for empty cells
+      				if (sTmpNextToken.equals(sDelimiter) && !bCellFilled)
+      				{
+      					tmpColumn.setText("");
+      				}
+      				else if (sTmpNextToken.equals(sDelimiter) && bCellFilled)
+      				{
+      					bCellFilled = false; //reset
+      				}
+      				else
+      				{
+      					bCellFilled = true;
+      					tmpColumn.setText(sTmpNextToken);
+      				}
     			}
 	    	}
 	    
@@ -361,17 +419,36 @@ extends Dialog {
 			while ((sLine = brFile.readLine()) != null 
 					&& iRowCount < MAX_PREVIEW_TABLE_ROWS)
 			{	
-    			StringTokenizer tokenizer = new StringTokenizer(sLine, sDelimiter);		
-  
+				// last flag triggers return of delimiter itself
+    			tokenizer = new StringTokenizer(sLine, sDelimiter, true); 
+  	
 				TableItem item = new TableItem (previewTable, SWT.NONE);
       			int iColumnCount = 0;
-    			
+      			
       			while(tokenizer.hasMoreTokens())
     			{
-    				item.setText(iColumnCount+1, tokenizer.nextToken());
-    				iColumnCount++;
+      				sTmpNextToken = tokenizer.nextToken();
+      				
+      				// Check for empty cells
+      				if (sTmpNextToken.equals(sDelimiter) && !bCellFilled)
+      				{
+      					item.setText(iColumnCount+1, "");
+	    				iColumnCount++;
+      				}
+      				else if (sTmpNextToken.equals(sDelimiter) && bCellFilled)
+      				{
+      					bCellFilled = false; //reset
+      				}
+      				else
+      				{
+      					bCellFilled = true;
+	    				item.setText(iColumnCount+1, sTmpNextToken);
+	    				iColumnCount++;
+      				}
     			}
-
+      			
+      			bCellFilled = false; // reset
+      			
     			iRowCount++;
  			}
 		} catch (FileNotFoundException e) {
@@ -393,22 +470,19 @@ extends Dialog {
         createNormalizeBar();
 
     	TableItem[] arTmpLabelColumnItem = previewTable.getItems();
-        
+      
 		arTmpLabelColumnItem[0].setText(0, "Data class");
 		arTmpLabelColumnItem[0].setBackground(0, previewTable.getDisplay().getSystemColor(SWT.COLOR_GREEN));
-        
 		arTmpLabelColumnItem[1].setText(0, "Data type");
 		arTmpLabelColumnItem[1].setBackground(0, previewTable.getDisplay().getSystemColor(SWT.COLOR_GREEN));
-
 		arTmpLabelColumnItem[2].setText(0, "Normalize");
 		arTmpLabelColumnItem[2].setBackground(0, previewTable.getDisplay().getSystemColor(SWT.COLOR_GREEN));
 		
     	for (int iItemIndex = 3; iItemIndex < arTmpLabelColumnItem.length; iItemIndex++)
     	{
     		arTmpLabelColumnItem[iItemIndex].setText(0, "Row " +(iItemIndex-3));
-    		arTmpLabelColumnItem[iItemIndex].setBackground(0, previewTable.getDisplay().getSystemColor(SWT.COLOR_GREEN));
+    		arTmpLabelColumnItem[iItemIndex].setBackground(0, Display.getCurrent().getSystemColor(SWT.COLOR_GREEN));
     	}
-
 	}
 	
 	private void createDataClassBar() {
@@ -440,14 +514,15 @@ extends Dialog {
 			comboTmpDataClass.addMouseTrackListener(new MouseTrackAdapter() {
 
 				public Color originalColor = txtFileName.getBackground();	
-				public Color highlightColor = comboTmpDataClass.getDisplay().getSystemColor(SWT.COLOR_YELLOW);
-				public Color selectionColor = comboTmpDataClass.getDisplay().getSystemColor(SWT.COLOR_BLUE);
+				public Color highlightColor = Display.getCurrent().getSystemColor(SWT.COLOR_YELLOW);
+				public Color selectionColor = Display.getCurrent().getSystemColor(SWT.COLOR_RED);
 				
 				public void mouseEnter(MouseEvent e) {
 					// Set corresponding column background color to yellow				
 					for (TableItem tmpItem : previewTable.getItems())
 					{
-						tmpItem.setBackground(arComboDataClass.indexOf(comboTmpDataClass)+1, highlightColor);
+						if (comboTmpDataClass.getSelectionIndex() == 0)
+							tmpItem.setBackground(arComboDataClass.indexOf(comboTmpDataClass)+1, highlightColor);
 					}
 				}
 	
@@ -457,7 +532,7 @@ extends Dialog {
 					{
 						if (comboTmpDataClass.getSelectionIndex() > 0)
 							tmpItem.setBackground(arComboDataClass.indexOf(comboTmpDataClass)+1, selectionColor);
-						else	
+						else
 							tmpItem.setBackground(arComboDataClass.indexOf(comboTmpDataClass)+1, originalColor);
 					}
 				}
@@ -468,15 +543,25 @@ extends Dialog {
 				public void widgetSelected(SelectionEvent e) {
 	
 					int iColIndex = arComboDataClass.indexOf(comboTmpDataClass);
-					arComboDataType.get(iColIndex).setEnabled(true);
+					
+					if (comboTmpDataClass.getSelectionIndex() == 0
+							|| comboTmpDataClass.getSelectionIndex() == 1)
+					{
+						arComboDataType.get(iColIndex).setEnabled(false);
+						arButtonNormalize.get(iColIndex).setEnabled(false);
+//						arButtonNormalize.get(iColIndex).setSelection(false);
+					}
+					else 
+					{
+						arComboDataType.get(iColIndex).setEnabled(true);
+						arButtonNormalize.get(iColIndex).setEnabled(true);
+//						arButtonNormalize.get(iColIndex).setSelection(true);
+					}
 
 					if (comboTmpDataClass.getText().equals("RefSeq ID"))
 						arComboDataType.get(iColIndex).select(1);
 					else if (comboTmpDataClass.getText().equals("Experiment"))
 						arComboDataType.get(iColIndex).select(2);
-					
-					arButtonNormalize.get(iColIndex).setEnabled(true);
-					arButtonNormalize.get(iColIndex).setSelection(true);
 				}
 			});
 		}
@@ -509,31 +594,32 @@ extends Dialog {
 			editor.grabHorizontal = true;
 			editor.setEditor(comboTmpDataType, tmpItem, iColIndex);
 			
-			comboTmpDataType.addMouseTrackListener(new MouseTrackAdapter() {
-
-				public Color originalColor = txtFileName.getBackground();	
-				public Color highlightColor = comboTmpDataType.getDisplay().getSystemColor(SWT.COLOR_YELLOW);
-				public Color selectionColor = comboTmpDataType.getDisplay().getSystemColor(SWT.COLOR_BLUE);
-					
-				public void mouseEnter(MouseEvent e) {
-					// Set corresponding column background color to yellow				
-					for (TableItem tmpItem : previewTable.getItems())
-					{
-						tmpItem.setBackground(arComboDataType.indexOf(comboTmpDataType)+1, highlightColor);
-					}
-				}
-	
-				public void mouseExit(MouseEvent e) {
-					// Set back to original color
-					for (TableItem tmpItem : previewTable.getItems())
-					{
-						if (comboTmpDataType.getSelectionIndex() > 0)
-							tmpItem.setBackground(arComboDataClass.indexOf(comboTmpDataType)+1, selectionColor);
-						else	
-							tmpItem.setBackground(arComboDataClass.indexOf(comboTmpDataType)+1, originalColor);
-					}
-				}
-			});
+//			comboTmpDataType.addMouseTrackListener(new MouseTrackAdapter() {
+//
+//				public Color originalColor = txtFileName.getBackground();	
+//				public Color highlightColor = comboTmpDataType.getDisplay().getSystemColor(SWT.COLOR_YELLOW);
+//				public Color selectionColor = comboTmpDataType.getDisplay().getSystemColor(SWT.COLOR_BLUE);
+//					
+//				public void mouseEnter(MouseEvent e) {
+//					// Set corresponding column background color to yellow				
+//					for (TableItem tmpItem : previewTable.getItems())
+//					{
+//						if (arComcomboTmpDataType.getSelectionIndex() == 0)
+//							tmpItem.setBackground(arComboDataType.indexOf(comboTmpDataType)+1, highlightColor);
+//					}
+//				}
+//	
+//				public void mouseExit(MouseEvent e) {
+//					// Set back to original color
+//					for (TableItem tmpItem : previewTable.getItems())
+//					{
+//						if (comboTmpDataType.getSelectionIndex() > 0)
+//							tmpItem.setBackground(arComboDataClass.indexOf(comboTmpDataType)+1, selectionColor);
+//						else	
+//							tmpItem.setBackground(arComboDataClass.indexOf(comboTmpDataType)+1, originalColor);
+//					}
+//				}
+//			});
 		}
 	}
 
@@ -588,9 +674,13 @@ extends Dialog {
 		
 		for (Combo tmpComboDataType : arComboDataType)
 		{
-			sInputPattern = sInputPattern + tmpComboDataType.getText() + ";";
+			if (tmpComboDataType.getText().equals("FLOAT") 
+					|| tmpComboDataType.getText().equals("SKIP"))
+			{			
+				sInputPattern = sInputPattern + tmpComboDataType.getText() + ";";
+			}
 			
-			if (!tmpComboDataType.getText().equals("SKIP"))
+			if (tmpComboDataType.getText().equals("FLOAT")) // currently we only allow parsing float data
 			{
 				// Create data storage
 				CmdDataCreateStorage cmdCreateStorage = (CmdDataCreateStorage) 
@@ -608,7 +698,7 @@ extends Dialog {
 					 sStorageIDs += IGeneralManager.sDelimiter_Parser_DataItems;
 				
 				sStorageIDs = sStorageIDs + iTmpStorageId;
-
+	
 				// Add storage to array passed on to normalization
 				if (arButtonNormalize.get(arComboDataType.indexOf(tmpComboDataType)).getSelection())
 				{
@@ -616,6 +706,7 @@ extends Dialog {
 				}
 			}
 		}
+		
 		sInputPattern += "ABORT;";
 		
 		sFileName = txtFileName.getText();
@@ -674,6 +765,15 @@ extends Dialog {
 		
 		cmdDataNormalize.setAttributes(EDataFilterMathType.NORMALIZE, iAlTmpStorageIdNormalize);
 		cmdDataNormalize.doCommand();
+		
+		CmdLoadFileLookupTable cmdLoadLookupTableFile = (CmdLoadFileLookupTable) 
+			Application.caleydo_core.getGeneralManager().getCommandManager()
+			.createCommandByType(CommandQueueSaxType.LOAD_LOOKUP_TABLE_FILE);
+		
+		cmdLoadLookupTableFile.setAttributes(sFileName, 
+				iStartParseFileAtLine, -1, "DAVID_2_EXPRESSION_STORAGE_ID REVERSE LUT_1", 
+				sDelimiter, "REFSEQ_MRNA_2_DAVID");
+		cmdLoadLookupTableFile.doCommand();
 	}
 	
 	private void setDataInViews() {

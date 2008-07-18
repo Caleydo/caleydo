@@ -33,7 +33,7 @@ public class FileOpenXmlConfigFileAction extends Action implements
 
 	  
 	public FileOpenXmlConfigFileAction(IWorkbenchWindow window) {
-		super("load &Xml config ..");
+		super("Load Project");
 		this.window = window;
 	    setId(ID);
 	    setToolTipText("open a Xml config file to load your workspace settings");
