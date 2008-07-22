@@ -1,0 +1,51 @@
+<caleydo version="0.1">
+
+  <workspace title="primary" server="localhost">
+  
+    <Application remote="no" IP="127.0.0.1" port="4000" >
+  
+    <CommandBuffer>  			
+	   			
+		<!-- Window	10331	-->
+		
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="10331" label="Glyph view" attrib1="ROW	HORIZONTAL"	/>	 
+				 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="16401" 
+			  	gl_canvas="99075" parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
+				
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_REMOTE_GLYPH"		cmdId="69994"	uniqueId="81401" parent="99075" label="GL Glyph Remote" 
+							gl_origin="0 0 0" 
+							gl_rotation="0 0 0 0"					
+							attrib3="PERSPECTIVE -1.5 1.5 -1.5 1.5 2.9 1000"
+							attrib1="2"								
+							detail="" /> 	
+
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_GLYPH"		cmdId="69994"	uniqueId="82401" parent="99076" label="GL Glyph Map 1" 
+							gl_origin="0 0 0" 
+							gl_rotation="0 0 0 0"					
+							attrib3="PERSPECTIVE -1.5 1.5 -1.5 1.5 2.9 1000"
+							detail="" /> 
+<!--							attrib3="PERSPECTIVE -1.5 1.5 -1.5 1.5 2.9 1000"-->
+							
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_GLYPH"		cmdId="69994"	uniqueId="83401" parent="-1" label="GL Glyph Map 2" 
+							gl_origin="0 0 0" 
+							gl_rotation="0 0 0 0"					
+							attrib3="PERSPECTIVE -1.5 1.5 -1.5 1.5 2.9 1000"
+							detail="" /> 
+
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_GLYPH"		cmdId="69994"	uniqueId="84401" parent="-1" label="GL Glyph Map 3" 
+							gl_origin="0 0 0" 
+							gl_rotation="0 0 0 0"					
+							attrib3="PERSPECTIVE -1.5 1.5 -1.5 1.5 2.9 1000"
+							detail="" /> 			
+
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991" uniqueId="10332" label="Slider view" attrib1="ROW	HORIZONTAL"	/>	 					
+		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_MIXER"			cmdId="61993" uniqueId="11401" label="Mixer" parent="10332" attrib1="10" attrib2="400 200" />														
+
+   </CommandBuffer>
+    
+  </Application>
+  
+  </workspace>
+
+</caleydo>

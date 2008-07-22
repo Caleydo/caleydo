@@ -11,7 +11,6 @@ import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
-
 import javax.media.opengl.GL;
 
 import org.caleydo.core.manager.IGeneralManager;

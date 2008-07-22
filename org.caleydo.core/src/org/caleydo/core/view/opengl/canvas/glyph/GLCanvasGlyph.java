@@ -5,7 +5,6 @@ import gleem.linalg.open.Vec2i;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
 
@@ -13,7 +12,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLCanvas;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.set.selection.ISetSelection;
 import org.caleydo.core.data.collection.set.selection.SetSelection;
 import org.caleydo.core.data.view.camera.IViewFrustum;
@@ -21,6 +19,8 @@ import org.caleydo.core.data.view.rep.renderstyle.GlyphRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
+import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 import org.caleydo.core.manager.view.EPickingMode;
 import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.Pick;
@@ -35,7 +35,6 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
  * @author Stefan Sauer
  *
  */
-
 public class GLCanvasGlyph 
 extends AGLCanvasUser
 implements IMediatorSender, IMediatorReceiver
@@ -86,28 +85,23 @@ implements IMediatorSender, IMediatorReceiver
 		
 		glToolboxRenderer = new GLGlyphToolboxRenderer(gl, generalManager, iUniqueId, new Vec3f (0, 0, 0), true, renderStyle );
 		
-		ISet glyphMapping = null;
 		ISet glyphData = null;
-		ISet glyphDictionary = null;
 		
 		for (ISet tmpSet : alSetData)
 		{
-			System.out.println(tmpSet.getLabel());
-			
-			if(tmpSet.getLabel().equals("Set for glyph mapping"))
-				glyphMapping = tmpSet;
-			
 			if(tmpSet.getLabel().equals("Set for clinical data"))
 				glyphData = tmpSet;
-
-			if(tmpSet.getLabel().equals("Set for glyph dictionary"))
-				glyphDictionary = tmpSet;
-
 		}
 		
+		if(glyphData == null)
+		{
+			generalManager.getLogger().log(Level.SEVERE, "no glyph data found - shutting down" );
+			return;
+		}
 
 		grid_ = new GLCanvasGlyphGrid(generalManager);
-		grid_.loadData(gl, glyphMapping, glyphData, glyphDictionary);
+		grid_.loadData(glyphData);
+		
 		grid_.buildGrid(gl);
 		
 		grid_.buildScatterplotGrid(gl);
@@ -221,7 +215,17 @@ implements IMediatorSender, IMediatorReceiver
 	{
 		if(grid_ == null)
 			return;
+
+		if(bRedrawDisplayList_) { //redraw glyphs
+			gl.glPushMatrix();
+			Iterator<GlyphEntry> git = grid_.getGlyphList().values().iterator();
 		
+			while(git.hasNext()) {
+				GlyphEntry e = git.next();
+				e.generateGLLists(gl);
+			}
+			gl.glPopMatrix();
+		}
 		
 	    gl.glPushMatrix();
 
@@ -256,6 +260,7 @@ implements IMediatorSender, IMediatorReceiver
 			
 			while(git.hasNext()) {
 				GlyphEntry e = git.next();
+				
 				Vec2i pos = grid_.getGridPosition(e.getX(), e.getY());
 				if(pos == null) continue;
 				
@@ -313,6 +318,8 @@ implements IMediatorSender, IMediatorReceiver
 	protected void handleEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) 
 	{
+		IGlyphManager gm = generalManager.getGlyphManager();
+
 		if(pickingType == EPickingType.GLYPH_FIELD_SELECTION) {
 			switch(pickingMode) {
 				case CLICKED:
@@ -325,17 +332,9 @@ implements IMediatorSender, IMediatorReceiver
 						return;
 					}
 					
-					int sendParameter = this.grid_.getDataLoader().getSendParameter();
+					//int sendParameter = this.grid_.getDataLoader().getSendParameter();
+					int sendParameter = Integer.parseInt(generalManager.getGlyphManager().getSetting(EGlyphSettingIDs.UPDATESENDPARAMETER));
 					int sendID = g.getParameter(sendParameter);
-					
-					int paramt   = this.grid_.getDataLoader().getParameterIndex("t");
-					int paramg   = this.grid_.getDataLoader().getParameterIndex("g");
-					int paramdfs = this.grid_.getDataLoader().getParameterIndex("diseaseFreeSurvival");
-					
-					int stagingT = g.getParameter(paramt);
-					int stagingG = g.getParameter(paramg);
-					int dfs = g.getParameter(paramdfs);
-					
 					
 					//create selection lists for other screens
 					ArrayList<Integer> ids = new ArrayList<Integer>();
@@ -350,14 +349,23 @@ implements IMediatorSender, IMediatorReceiver
 					}
 					
 					
+					
+					
+					//test output only....
+					int paramt   = gm.getGlyphAttributeTypeWithExternalColumnNumber(2).getInternalColumnNumber();
+					int paramdfs = gm.getGlyphAttributeTypeWithExternalColumnNumber(9).getInternalColumnNumber();
+					
+					int stagingT = g.getParameter(paramt);
+					int dfs = g.getParameter(paramdfs);
+
 					if(!g.isSelected()) {
-						System.out.println("  select object index: " + Integer.toString(iExternalID) + " on Point " +  g.getX() + " " + g.getY() + " with Patient ID " + sendID + " and T staging " + stagingT + " and grading " + stagingG + " and dfs " + dfs );
+						System.out.println("  select object index: " + Integer.toString(iExternalID) + " on Point " +  g.getX() + " " + g.getY() + " with Patient ID " + sendID + " and T staging " + stagingT + " and dfs " + dfs );
 						g.select();
 						
 						ids.add(sendID);
 						selections.add(1);
 					} else {
-						System.out.println("DEselect object index: " + Integer.toString(iExternalID) + " on Point " +  g.getX() + " " + g.getY() + " with Patient ID " + sendID + " and T staging " + stagingT + " and grading " + stagingG + " and dfs " + dfs );
+						System.out.println("DEselect object index: " + Integer.toString(iExternalID) + " on Point " +  g.getX() + " " + g.getY() + " with Patient ID " + sendID + " and T staging " + stagingT + " and dfs " + dfs );
 						g.deSelect();
 						
 						
@@ -373,6 +381,7 @@ implements IMediatorSender, IMediatorReceiver
 							selections.add(1);
 					}
 					
+					generalManager.getGlyphManager().getGlyphAttributeTypeWithExternalColumnNumber(2).printDistribution();
 					bRedrawDisplayList_ = true;
 					
 					//push patient id to other screens
@@ -392,6 +401,7 @@ implements IMediatorSender, IMediatorReceiver
 		if(pickingType == EPickingType.PC_ICON_SELECTION) {
 			switch(pickingMode) {
 				case CLICKED:
+					
 					this.grid_.setGlyphPositions(iExternalID);
 					//System.out.println("ICON id = " + iExternalID);
 					bRedrawDisplayList_ = true;
@@ -428,7 +438,8 @@ implements IMediatorSender, IMediatorReceiver
 		ArrayList<Integer> iAlSelection = refSetSelection.getSelectionIdArray();
 		ArrayList<Integer> iAlSelectionMode = refSetSelection.getGroupArray();
 		
-		int sendParameter = this.grid_.getDataLoader().getSendParameter();
+		//int sendParameter = this.grid_.getDataLoader().getSendParameter();
+		int sendParameter = Integer.parseInt(generalManager.getGlyphManager().getSetting(EGlyphSettingIDs.UPDATESENDPARAMETER));
 		
 		if (iAlSelection.size() != 0) {
 			for(int i=0;i<iAlSelection.size();++i) {

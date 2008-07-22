@@ -7,8 +7,11 @@ import java.util.Vector;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.manager.IGeneralManager;
+
 
 public class GlyphEntry {
+	private IGeneralManager generalManager;
 	private int id_;
 	
 	private Vec2i pos_ = new Vec2i(); 
@@ -25,7 +28,8 @@ public class GlyphEntry {
 	private int glListSelected_ = 0;
 	
 	
-	public GlyphEntry(int id, GLCanvasGlyphGenerator generator) {
+	public GlyphEntry(final IGeneralManager generalManager, int id, GLCanvasGlyphGenerator generator) {
+		this.generalManager = generalManager;
 		id_ = id;
 		generator_ = generator;
 		parameter_ = new Vector<Integer>();
@@ -47,9 +51,13 @@ public class GlyphEntry {
 	
 	public void select() {
 		selected_ = true;
+		for (int i = 0; i < parameter_.size(); ++i)
+			generalManager.getGlyphManager().getGlyphAttributeTypeWithInternalColumnNumber(i).incSelectedDistribution( parameter_.get(i) );
 	}
 	public void deSelect() {
 		selected_ = false;
+		for (int i = 0; i < parameter_.size(); ++i)
+			generalManager.getGlyphManager().getGlyphAttributeTypeWithInternalColumnNumber(i).decSelectedDistribution( parameter_.get(i) );
 	}
 	
 	public boolean isSelected() {

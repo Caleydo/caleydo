@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<glyphview version="1.0">
+<!-- nominal ordinal numeric -->
+
+ <profile name="default">
+  <settings>
+   <item type="sort"                value="2" />
+   <item type="sort"                value="7" />
+   <item type="sort"                value="9" />
+   <item type="topColor"            value="7" />
+   <item type="boxColor"            value="2" />
+   <item type="boxHeight"           value="9" />
+   <item type="updateSendParameter" value="0" />
+
+   <item type="scatterPlotAxisX"    value="2" />
+   <item type="scatterPlotAxisY"    value="5" />
+  </settings>
+
+
+  <data>
+   <column type="ordinal" colnum="0"  label="ID" />
+   <column type="nominal" colnum="2"  label="Staging T">
+     <nominal string="X"  group="0" numeric="0.0" />
+     <nominal string="1"  group="1" numeric="1.5" />
+     <nominal string="1A" group="1" numeric="1.2" />
+     <nominal string="1B" group="1" numeric="1.5" />
+     <nominal string="1C" group="1" numeric="1.8" />
+     <nominal string="2"  group="2" numeric="2.5" />
+     <nominal string="2A" group="2" numeric="2.2" />
+     <nominal string="2B" group="2" numeric="2.8" />
+     <nominal string="3"  group="3" numeric="3.5" />
+     <nominal string="3A" group="3" numeric="3.2" />
+     <nominal string="3B" group="3" numeric="3.8" />
+     <nominal string="4"  group="4" numeric="4.5" />
+     <nominal string="4A" group="4" numeric="4.3" />
+     <nominal string="4B" group="4" numeric="4.4" />
+     <nominal string="4C" group="4" numeric="4.6" />
+     <nominal string="4D" group="4" numeric="4.8" />
+   </column>
+
+   <column type="nominal" colnum="3"  label="Staging N">
+     <nominal string="X"      group="0" numeric="0.0" />
+     <nominal string="0"      group="1" numeric="1.0" />
+     <nominal string="1"      group="2" numeric="2.0" />
+     <nominal string="1A"     group="2" numeric="2.0" />
+     <nominal string="1BI"    group="2" numeric="2.0" />
+     <nominal string="1BII"   group="2" numeric="2.0" />
+     <nominal string="1BIII"  group="2" numeric="2.0" />
+     <nominal string="1BIV"   group="2" numeric="2.0" />
+     <nominal string="2"      group="3" numeric="3.0" />
+   </column>
+
+   <column type="nominal" colnum="4"  label="Staging M">
+     <nominal string="X"      group="0" numeric="0.0" />
+     <nominal string="0"      group="1" numeric="1.0" />
+     <nominal string="1"      group="2" numeric="2.0" />
+   </column>
+
+   <column type="nominal" colnum="5"  label="Grading">
+     <nominal string="0"      group="0" numeric="0.0" />
+     <nominal string="1"      group="1" numeric="1.0" />
+     <nominal string="2"      group="2" numeric="2.0" />
+     <nominal string="3"      group="3" numeric="3.0" />
+   </column>
+
+
+   <column type="nominal" colnum="6"  label="Sex">
+     <nominal string="f"  group="0" />
+     <nominal string="m"  group="1" />
+     <nominal string="x " group="2" />
+   </column>
+
+   <column type="nominal" colnum="7"  label="is dead">
+     <nominal string="t" group="0" />
+     <nominal string="f" group="1" />
+     <nominal string="x" group="2" />
+   </column>
+
+   <column type="ordinal" colnum="8"  label="Year of Diagnosis">
+     <int min="1900" max="2008" interval="1" />
+   </column>
+   <column type="ordinal" colnum="9"  label="Disease Free Survival (Months)">
+     <int min="0" max="200" interval="1" />
+   </column>
+   <column type="ordinal" colnum="10"  label="Overal Survival (Months)">
+     <int min="0" max="300" interval="1" />
+   </column>
+
+  </data>
+
+
+
+
+
+
+
+ </profile>
+</glyphview>

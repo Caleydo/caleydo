@@ -17,11 +17,20 @@ import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
+import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 
 import com.sun.opengl.util.j2d.TextRenderer;
 
 
 
+/**
+ * Glyph View Grid
+ * saves & organizes the positions in the grid
+ * 
+ * @author Stefan Sauer
+ *
+ */
 public class GLCanvasGlyphGrid {
 	private IGeneralManager generalManager;
 
@@ -86,19 +95,11 @@ public class GLCanvasGlyphGrid {
 //		return 0;
 		return worldLimit_.y();
 	}
-	/*
-	public void setSelectReturnParameter(int num) {
-		iSelectReturnParameter = num;		
-	}
-	*/
-	
-	public GlyphDataLoader getDataLoader() {
-		return glyphDataLoader;
-	}
 	
 	
 	public ArrayList<Integer> deSelectAll() {
-		int ssi = glyphDataLoader.getSendParameter();
+		int ssi = Integer.parseInt(generalManager.getGlyphManager().getSetting(EGlyphSettingIDs.UPDATESENDPARAMETER));
+		//int ssi = glyphDataLoader.getSendParameter();
 		ArrayList<Integer> temp = new ArrayList<Integer>();
 		for(GlyphEntry g : glyphs_.values()) {
 			if(g.isSelected()) {
@@ -110,7 +111,8 @@ public class GLCanvasGlyphGrid {
 	}
 	
 	public ArrayList<Integer> selectAll() {
-		int ssi = glyphDataLoader.getSendParameter();
+		int ssi = Integer.parseInt(generalManager.getGlyphManager().getSetting(EGlyphSettingIDs.UPDATESENDPARAMETER));
+		//int ssi = glyphDataLoader.getSendParameter();
 		ArrayList<Integer> temp = new ArrayList<Integer>();
 		for(GlyphEntry g : glyphs_.values()) {
 			if(!g.isSelected()) {
@@ -193,14 +195,12 @@ public class GLCanvasGlyphGrid {
 
 	
 	
-	public void loadData(GL gl,ISet glyphMapping, ISet glyphData, ISet glyphDictionary) {
+	public void loadData(ISet glyphData) {
 		glyphDataLoader = new GlyphDataLoader(generalManager);
-
-		glyphDataLoader.setupGlyphDictionary(glyphDictionary);
 
 		glyphs_ = glyphDataLoader.loadGlyphs(glyphData);
 		
-		glyphDataLoader.setupGlyphGenerator(glyphMapping);
+		generalManager.getGlyphManager().initGlyphGenerator();
 		
 		setGlyphPositions(iPositionType);
 		//setGlyphPositionsRectangle();
@@ -250,16 +250,24 @@ public class GLCanvasGlyphGrid {
 	public void buildScatterplotGrid(GL gl) {
 		textRenderer.setColor(0, 0, 0, 1);
 		
+		IGlyphManager gm = generalManager.getGlyphManager();
+		
 		//int maxx = 40;
 		//int maxy = 40;
 		int maxx = this.worldLimit_.x() - (this.worldLimit_.x()/5);
 		int maxy = maxx;
 		//get axix information
-		int scatterParamX = this.glyphDataLoader.getScatterPlotAxis().x();
-		int scatterParamY = this.glyphDataLoader.getScatterPlotAxis().y();
-		GlyphAttributeType xdata = this.glyphDataLoader.getGlphAttributeType(scatterParamX);
-		GlyphAttributeType ydata = this.glyphDataLoader.getGlphAttributeType(scatterParamY);
+		//int scatterParamX = this.glyphDataLoader.getScatterPlotAxis().x();
+		//int scatterParamY = this.glyphDataLoader.getScatterPlotAxis().y();
+		//GlyphAttributeType xdata = this.glyphDataLoader.getGlphAttributeType(scatterParamX);
+		//GlyphAttributeType ydata = this.glyphDataLoader.getGlphAttributeType(scatterParamY);
 
+		
+		int scatterParamX = Integer.parseInt( gm.getSetting(EGlyphSettingIDs.SCATTERPLOTX) );
+		int scatterParamY = Integer.parseInt( gm.getSetting(EGlyphSettingIDs.SCATTERPLOTY) );
+		GlyphAttributeType xdata = generalManager.getGlyphManager().getGlyphAttributeTypeWithExternalColumnNumber(scatterParamX);
+		GlyphAttributeType ydata = generalManager.getGlyphManager().getGlyphAttributeTypeWithExternalColumnNumber(scatterParamY);
+		
 		
 		if(xdata == null || ydata == null)
 		{
@@ -602,14 +610,23 @@ public class GLCanvasGlyphGrid {
 		clearGlyphMap();
 		ArrayList<GlyphEntry> gg = sortGlyphs(glyphs_.values());
 		
-		int scatterParamX = this.glyphDataLoader.getScatterPlotAxis().x();
-		int scatterParamY = this.glyphDataLoader.getScatterPlotAxis().y();
-		GlyphAttributeType tx = this.glyphDataLoader.getGlphAttributeType(scatterParamX);
-		GlyphAttributeType ty = this.glyphDataLoader.getGlphAttributeType(scatterParamY);
+		IGlyphManager gm = generalManager.getGlyphManager();
+
+		//int scatterParamX = this.glyphDataLoader.getScatterPlotAxis().x();
+		//int scatterParamY = this.glyphDataLoader.getScatterPlotAxis().y();
+		//GlyphAttributeType tx = this.glyphDataLoader.getGlphAttributeType(scatterParamX);
+		//GlyphAttributeType ty = this.glyphDataLoader.getGlphAttributeType(scatterParamY);
+		
+		int scatterParamXe = Integer.parseInt( gm.getSetting(EGlyphSettingIDs.SCATTERPLOTX) );
+		int scatterParamYe = Integer.parseInt( gm.getSetting(EGlyphSettingIDs.SCATTERPLOTY) );
+		GlyphAttributeType tx = generalManager.getGlyphManager().getGlyphAttributeTypeWithExternalColumnNumber(scatterParamXe);
+		GlyphAttributeType ty = generalManager.getGlyphManager().getGlyphAttributeTypeWithExternalColumnNumber(scatterParamYe);
+		int scatterParamX = tx.getInternalColumnNumber();
+		int scatterParamY = ty.getInternalColumnNumber();
 		
 		if(tx == null || ty == null)
 		{
-			generalManager.getLogger().log(Level.WARNING, "Scatterplot axix definition corrupt!");
+			generalManager.getLogger().log(Level.WARNING, "setGlyphPositionsScatterplot(); Scatterplot axix definition corrupt!");
 			return;
 		}
 
@@ -646,27 +663,17 @@ public class GLCanvasGlyphGrid {
 	
 	
 	
-	private ArrayList<GlyphEntry> sortGlyphsRecursive( Collection<GlyphEntry> unsorted, int parameterindex) {
+	private ArrayList<GlyphEntry> sortGlyphsRecursive( Collection<GlyphEntry> unsorted, int depth) {
 		HashMap<Integer, ArrayList<GlyphEntry>> temp = new HashMap<Integer, ArrayList<GlyphEntry>>(); 
 		int maxp = 0;
 		
-		Integer[] sortOrder = glyphDataLoader.getSortOrder();
+		int sortIndex = generalManager.getGlyphManager().getSortOrder(depth);
 		
-		if(sortOrder == null) {
-			generalManager.getLogger().log(Level.WARNING, "No Glyph Sort index set!");
-
+		if(sortIndex < 0) { // max of sort depth reached
 			ArrayList<GlyphEntry> t = new ArrayList<GlyphEntry>();
 			t.addAll(unsorted);
 			return t;
 		}
-		
-		if(sortOrder.length <= parameterindex) {
-			ArrayList<GlyphEntry> t = new ArrayList<GlyphEntry>();
-			t.addAll(unsorted);
-			return t;
-		}
-		
-		int sortIndex = sortOrder[parameterindex];
 		
 
 		for(GlyphEntry g : unsorted) {
@@ -686,7 +693,7 @@ public class GLCanvasGlyphGrid {
 			if(!temp.containsKey(i))
 				continue;
 			
-			ArrayList<GlyphEntry> gs = sortGlyphsRecursive(temp.get(i), parameterindex+1);
+			ArrayList<GlyphEntry> gs = sortGlyphsRecursive(temp.get(i), depth+1);
 			temp2.addAll(gs);
 		}
 		

@@ -7,6 +7,12 @@ import java.util.logging.Level;
 import org.caleydo.core.manager.IGeneralManager;
 
 
+/**
+ * 
+ * 
+ * @author Stefan Sauer
+ *
+ */
 public class GlyphAttributeGroup {
 	private IGeneralManager generalManager;
 
