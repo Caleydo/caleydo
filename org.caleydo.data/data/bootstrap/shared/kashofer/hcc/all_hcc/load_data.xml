@@ -37,7 +37,7 @@
 	
 	<!-- Data file loading -->      
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/kashofer/all_hcc_clip_greater_10.csv"	
-			attrib1="FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;ABORT"	attrib2="45301 46301 47301 48301 49301 50301 51301 52301 53301 54301 55301 56301 57301 58301" attrib3="1 -1" />			
+			attrib1="FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;ABORT"	attrib2="45301 46301 47301 48301 49301 50301 51301 52301 53301 54301 55301 56301 57301 58301" attrib3="1 -1" />			
 	
 	<!-- Data filtering (preprocessing) -->																
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="DATA_FILTER_MATH"			cmdId="99010"	uniqueId="-1"	attrib1="NORMALIZE"	attrib2="45301 46301 47301 48301 49301 50301 51301 52301 53301 54301 55301 56301 57301 58301" />									

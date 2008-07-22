@@ -41,7 +41,7 @@ implements IMediatorReceiver, IMediatorSender
 	protected ArrayList<IStorage> alDataStorages;
 	
 	// Specify which type of selection is currently active
-	protected ESelectionType eWhichContentSelection = ESelectionType.EXTERNAL_SELECTION;
+	protected ESelectionType eWhichContentSelection = ESelectionType.COMPLETE_SELECTION;
 	protected ESelectionType eWhichStorageSelection = ESelectionType.STORAGE_SELECTION;
 	
 	// the list of all selection arrays
@@ -79,7 +79,7 @@ implements IMediatorReceiver, IMediatorSender
 	
 	protected TextRenderer textRenderer;
 	
-	protected boolean bRenderOnlyContext = true;
+	protected boolean bRenderOnlyContext = false;
 	
 	public void renderOnlyContext(boolean bRenderOnlyContext)
 	{
@@ -143,7 +143,8 @@ implements IMediatorReceiver, IMediatorSender
 		int iStorageLength = 0;
 		if (alDataStorages.size() > 0)
 		{
-			iStorageLength = alDataStorages.get(0).getArrayFloat().length;
+			iStorageLength = 2000;
+//			iStorageLength = alDataStorages.get(0).getArrayFloat().length;
 		}
 		
 		alTempList = new ArrayList<Integer>(iStorageLength);

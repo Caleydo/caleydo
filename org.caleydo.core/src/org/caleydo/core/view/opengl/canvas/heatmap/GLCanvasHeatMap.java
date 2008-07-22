@@ -322,11 +322,14 @@ extends AGLCanvasStorageBasedView
 	protected void handleEvents(EPickingType pickingType,
 			EPickingMode pickingMode, int iExternalID, Pick pick) 
 	{
-		// Check if selection occurs in the pool or memo layer of the remote rendered view (i.e. bucket, jukebox)
-		if (remoteRenderingGLCanvas.getHierarchyLayerByGLCanvasListenerId(
-				iUniqueId).getCapacity() > 5)
+		if (remoteRenderingGLCanvas != null)
 		{
-			return;
+			// Check if selection occurs in the pool or memo layer of the remote rendered view (i.e. bucket, jukebox)
+			if (remoteRenderingGLCanvas.getHierarchyLayerByGLCanvasListenerId(
+					iUniqueId).getCapacity() > 5)
+			{
+				return;
+			}
 		}
 		
 		ArrayList<Integer> iAlOldSelection;

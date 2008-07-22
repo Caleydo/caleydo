@@ -687,8 +687,9 @@ extends AGLCanvasStorageBasedView
 			switch (eAxisDataType) 
 			{
 			case EXPERIMENT:
-				sAxisLabel = alDataStorages.get(iCount).getLabel();
-				//sAxisLabel = alSetData.get(alStorageSelection.get(iCount)).getLabel();
+				// Labels
+				//sAxisLabel = alDataStorages.get(iCount).getLabel();
+				sAxisLabel = alDataStorages.get(alStorageSelection.get(iCount)).getLabel();
 				break;
 			case GENE:				
 				sAxisLabel = getRefSeqFromStorageIndex(alContentSelection.get(iCount));
@@ -1111,11 +1112,14 @@ extends AGLCanvasStorageBasedView
 			final int iExternalID,
 			final Pick pick)
 	{
-		// Check if selection occurs in the pool or memo layer of the remote rendered view (i.e. bucket, jukebox)
-		if (remoteRenderingGLCanvas.getHierarchyLayerByGLCanvasListenerId(
-				iUniqueId).getCapacity() > 5)
+		if (remoteRenderingGLCanvas != null)
 		{
-			return;
+			// Check if selection occurs in the pool or memo layer of the remote rendered view (i.e. bucket, jukebox)
+			if (remoteRenderingGLCanvas.getHierarchyLayerByGLCanvasListenerId(
+					iUniqueId).getCapacity() > 5)
+			{
+				return;
+			}
 		}
 		
 		ArrayList<Integer> iAlOldSelection;
