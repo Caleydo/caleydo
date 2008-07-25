@@ -4,10 +4,11 @@ import java.util.Map;
 
 import org.caleydo.core.application.core.CaleydoBootloader;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.rcp.dialog.file.OpenXmlConfigFileDialog;
+import org.caleydo.rcp.action.file.FileOpenProjectAction;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -18,12 +19,18 @@ import org.eclipse.ui.PlatformUI;
 public class Application 
 implements IApplication {
 
-	public static final String debugMsgPrefix = "RCP: ";
+	public static final String sDebugMsgPrefix = "RCP: ";
 	
-	// FIXME: should not be static!
+	private CaleydoBootloader caleydoCore;
+	
+	/**
+	 * Getter method for the Caleydo general manager.
+	 * Use this reference to get access to all specialized managers.
+	 */
 	public static IGeneralManager generalManager;	
 	
-	public static CaleydoBootloader caleydo_core;
+	public static ApplicationWorkbenchAdvisor applicationWorkbenchAdvisor;
+	
 	
 	/* (non-Javadoc)
 	 * @see org.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.IApplicationContext)
@@ -45,10 +52,10 @@ implements IApplication {
 				if ( info.length > 0) 
 				{					
 					sCaleydoXMLfile = info[0];
-					System.out.println(debugMsgPrefix +"XML config file:" +sCaleydoXMLfile );
+					System.out.println(sDebugMsgPrefix +"XML config file:" +sCaleydoXMLfile );
 					
 					if ( info.length > 1 ) {
-						System.err.println(debugMsgPrefix + "can not handle more than on argument! ignor other argumets.");
+						System.err.println(sDebugMsgPrefix + "can not handle more than on argument! ignor other argumets.");
 					}
 				}
 			}
@@ -59,7 +66,9 @@ implements IApplication {
 		Display display = PlatformUI.createDisplay();
 		
 		try {
-			int returnCode = PlatformUI.createAndRunWorkbench(display, new ApplicationWorkbenchAdvisor());
+			applicationWorkbenchAdvisor = new ApplicationWorkbenchAdvisor();
+			
+			int returnCode = PlatformUI.createAndRunWorkbench(display, applicationWorkbenchAdvisor);
 			if (returnCode == PlatformUI.RETURN_RESTART)
 				return IApplication.EXIT_RESTART;
 			else
@@ -67,7 +76,7 @@ implements IApplication {
 		} finally {
 			disposeCaleydoCore();
 			display.dispose();
-			System.out.println(debugMsgPrefix + getClass().getSimpleName() + ".start() ==> display.dispose() ... [done]");
+			System.out.println(sDebugMsgPrefix + getClass().getSimpleName() + ".start() ==> display.dispose() ... [done]");
 		}
 				
 	}
@@ -76,7 +85,7 @@ implements IApplication {
 	 * @see org.eclipse.equinox.app.IApplication#stop()
 	 */
 	public void stop() {
-		System.out.println(debugMsgPrefix + getClass().getSimpleName() + ".stop() ...");
+		System.out.println(sDebugMsgPrefix + getClass().getSimpleName() + ".stop() ...");
 	
 		final IWorkbench workbench = PlatformUI.getWorkbench();
 		
@@ -91,55 +100,46 @@ implements IApplication {
 		});
 	}
 
-	protected void startCaleydoCore(final String xmlFileName) {
+	protected void startCaleydoCore(final String sXmlFileName) {
 		
-		caleydo_core = new CaleydoBootloader();
+		caleydoCore = new CaleydoBootloader();
+		generalManager = caleydoCore.getGeneralManager();
 		
 		// If no file is provided as command line argument a XML file open dialog is opened
-		if  (xmlFileName=="") 
+		if (sXmlFileName == "") 
 		{
 			Display display = PlatformUI.createDisplay();
 		    Shell shell = new Shell(display);
 		    shell.setText("Open project file");
 
-			OpenXmlConfigFileDialog openDialog = new OpenXmlConfigFileDialog(shell);
-			openDialog.open();
-			
-			if (caleydo_core.getXmlFileName().isEmpty())
-				return;
-			
+		    FileOpenProjectAction openProjectAction = new FileOpenProjectAction(shell);
+		    openProjectAction.run();
+		    
 			shell.dispose();
-			
-			Application.generalManager = caleydo_core.getGeneralManager();
-			caleydo_core.run_SWT();
-			
-			return;
 		}
 		// Load as command line argument provided XML config file name.
 		else
 		{
-			caleydo_core.setXmlFileName(xmlFileName); 
-			Application.generalManager = caleydo_core.getGeneralManager();
-			caleydo_core.run_SWT();			
-		}
+			caleydoCore.setXmlFileName(sXmlFileName); 
+			caleydoCore.run_SWT();			
+		}		
 	}
 	
 	protected void disposeCaleydoCore() {
 		
-		System.out.println(debugMsgPrefix + getClass().getSimpleName() + ".disposeCaleydoCore() shutdown ...");
+		System.out.println(sDebugMsgPrefix + getClass().getSimpleName() + ".disposeCaleydoCore() shutdown ...");
 		
-		if ( caleydo_core != null ) 
+		if ( caleydoCore != null ) 
 		{
-			if ( caleydo_core.isRunning() ) 
+			if ( caleydoCore.isRunning() ) 
 			{
-				caleydo_core.stop();
-				caleydo_core = null;
+				caleydoCore.stop();
+				caleydoCore = null;
 			}
 			else 
 			{
-				System.err.println(debugMsgPrefix + getClass().getSimpleName() + ".disposeCaleydoCore() core was already stopped!");
+				System.err.println(sDebugMsgPrefix + getClass().getSimpleName() + ".disposeCaleydoCore() core was already stopped!");
 			}
 		}
 	}
-		
 }

@@ -381,7 +381,7 @@ implements ISet {
 			generalManager.getSetManager().unregisterItem( getId(), 
 					ManagerObjectType.SET_LINEAR );
 			
-			getManager().getSetManager().registerItem(this, 
+			getGeneralManager().getSetManager().registerItem(this, 
 					parser.getXML_DataComponent_Id(), 
 					ManagerObjectType.SET_LINEAR );
 			

@@ -69,8 +69,7 @@ extends ControlContribution {
 		searchBox.addFocusListener(new FocusAdapter() {
 	        public void focusGained(FocusEvent e) {
 				
-				List<IGraph> lLoadedGraphs = Application.caleydo_core
-				.getGeneralManager().getPathwayManager().getRootPathway()
+				List<IGraph> lLoadedGraphs = Application.generalManager.getPathwayManager().getRootPathway()
 						.getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN);
 	
 				String[] sArSearchItems = new String[lLoadedGraphs.size()];
@@ -94,9 +93,8 @@ extends ControlContribution {
 		    	 String sSearchEntity = searchBox.getItem(searchBox.getSelectionIndex());
 		    	 sSearchEntity = sSearchEntity.substring(0, sSearchEntity.indexOf(" ("));
 		    	 
-		    	 Application.caleydo_core.getGeneralManager()
-					.getViewGLCanvasManager()
-						.getDataEntitySearcher().searchForEntity(sSearchEntity);
+		    	 Application.generalManager.getViewGLCanvasManager()
+					.getDataEntitySearcher().searchForEntity(sSearchEntity);
 		     }
 		});
 		
@@ -118,8 +116,7 @@ extends ControlContribution {
 				switch (event.keyCode) {
 				case SWT.CR: 
 				{
-					boolean bFound = Application.caleydo_core
-							.getGeneralManager().getViewGLCanvasManager().getDataEntitySearcher()
+					boolean bFound = Application.generalManager.getViewGLCanvasManager().getDataEntitySearcher()
 							.searchForEntity(geneSearchText.getText());
 
 					if (!bFound) {

@@ -1,4 +1,4 @@
-package org.caleydo.rcp.dialog.file;
+package org.caleydo.rcp.action.file;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -24,9 +24,10 @@ import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
-import org.caleydo.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
 import org.caleydo.rcp.Application;
-import org.eclipse.jface.dialogs.Dialog;
+import org.caleydo.rcp.dialog.file.FileLoadDataDialog;
+import org.caleydo.rcp.image.IImageKeys;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
@@ -40,14 +41,12 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Color;
-import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
@@ -57,18 +56,26 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.IStartup;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.actions.ActionFactory;
+import org.eclipse.ui.plugin.AbstractUIPlugin;
 
 /**
- * File dialog for opening raw text data files.
+ * Action responsible for importing data to current Caleydo project.
  * 
- * @author Michael Kalkusch
  * @author Marc Streit
  *
  */
-public class OpenCsvDataFileDialog 
-extends Dialog {
+public class FileLoadDataAction 
+extends Action 
+implements ActionFactory.IWorkbenchAction {
 
+	public final static String ID = "org.caleydo.rcp.FileLoadDataAction";
+
+	private Composite parentComposite;
+	
+	private IWorkbenchWindow window;
+	
 	private static int MAX_PREVIEW_TABLE_ROWS = 50;
 	
 	private Composite composite;
@@ -97,41 +104,91 @@ extends Dialog {
 	/**
 	 * Constructor.
 	 */
-	public OpenCsvDataFileDialog(Shell parentShell) {
-		super(parentShell);
-
+	public FileLoadDataAction(final Composite parentComposite) {
+		
+		super("Load Data");
+	    setId(ID);
+	    setToolTipText("Import data from text file");
+	    setImageDescriptor(
+	        AbstractUIPlugin.imageDescriptorFromPlugin(
+	        "org.caleydo.rcp", IImageKeys.FILE_OPEN_XML_CONFIG_FILE));
+	    
+	    this.parentComposite = parentComposite;
+	    
 		arComboDataClass = new ArrayList<Combo>();
 		arComboDataType = new ArrayList<Combo>();
 		arButtonNormalize = new ArrayList<Button>();
 	}
+	
+	/**
+	 * Constructor.
+	 */
+	public FileLoadDataAction(final IWorkbenchWindow window) {
+
+		this((Composite)null);
+		
+		parentComposite = null;
+		this.window = window;
+	}
+	
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets.Shell)
+	 * @see org.eclipse.jface.action.Action#run()
 	 */
-	protected void configureShell(Shell newShell) {
-		super.configureShell(newShell);
-		newShell.setText("Open CSV Data File");
+	public void run() {
+		
+		// Check if load data GUI is embedded in a wizard or if a own dialog must be created.
+		if (parentComposite == null && window != null)
+		{
+			FileLoadDataDialog loadDataFileDialog = new FileLoadDataDialog(window.getShell());
+			loadDataFileDialog.open();
+		}
+		else
+		{
+			createGUI();
+		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets.Composite)
-	 */
-	protected Control createDialogArea(Composite parent) {
+	private void createGUI() {
 		
-		composite = new Composite(parent, SWT.NONE);
+		composite = new Composite(parentComposite, SWT.NONE);
 		GridLayout layout = new GridLayout(2, false);
 		composite.setLayout(layout);
 
-		Label lblFileName = new Label(composite, SWT.NONE);
-		lblFileName.setText("CSV &File name:");
-		lblFileName.setLayoutData(new GridData(GridData.END, GridData.BEGINNING,
-				false, false));
-
+//		Label lblFileName = new Label(composite, SWT.NONE);
+//		lblFileName.setText("Text &File name:");
+//		lblFileName.setLayoutData(new GridData(GridData.END, GridData.BEGINNING,
+//				false, false));
+		
+	    Button buttonFileChooser = new Button(composite, SWT.PUSH);
+//	    buttonFileChooser.setBounds(40, 50, 50, 20);
+	    buttonFileChooser.setText("Choose data file..");
+	    
 		txtFileName = new Text(composite, SWT.BORDER);
 		txtFileName.setLayoutData(new GridData(GridData.FILL, GridData.FILL,
 				true, false));
+	    
+	    buttonFileChooser.addSelectionListener(new SelectionListener() {
+
+	      public void widgetSelected(SelectionEvent event) {
+	    	  
+	  		FileDialog fileDialog = new FileDialog(parentComposite.getShell());
+	        fileDialog.setText("Open");
+	        fileDialog.setFilterPath( sFilePath );
+	        String[] filterExt = {"*.csv", "*.txt", "*.*"};
+	        fileDialog.setFilterExtensions(filterExt);
+	        sFileName = fileDialog.open();
+	        
+	        txtFileName.setText(sFileName);
+	       
+			createDataPreviewTable("\t");
+	      }
+
+	      public void widgetDefaultSelected(SelectionEvent event) {
+	     
+	      }
+	    });
 		
 		Label lblStartParseAtLine = new Label(composite, SWT.NONE);
 		lblStartParseAtLine.setText("Ignore lines in header:");
@@ -320,20 +377,6 @@ extends Dialog {
 			}
 	    	
 	    });
-	    
-		FileDialog fileDialog = new FileDialog(parent.getShell());
-        fileDialog.setText("Open");
-        fileDialog.setFilterPath( sFilePath );
-        String[] filterExt = {"*.csv","*.txt","*.*"};
-        fileDialog.setFilterExtensions(filterExt);
-        sFileName = fileDialog.open();
-        String sBufferPath = fileDialog.getFilterPath();
-        
-        if  (sBufferPath != "") {
-        	sFilePath = sBufferPath;
-        }
-        
-        txtFileName.setText(sFileName);
             
 		Label lblPreview = new Label(composite, SWT.NONE);
 		lblPreview.setText("Data preview:");
@@ -347,10 +390,6 @@ extends Dialog {
 		data.heightHint = 500;
 		data.widthHint = 1000;
 		previewTable.setLayoutData(data);
-
-		createDataPreviewTable("\t");
-        
-		return composite;
 	}
 	
 	private void createDataPreviewTable(final String sDelimiter) {
@@ -383,39 +422,25 @@ extends Dialog {
 	    		brFile.readLine();
 	    	}
 	    	
-	    	boolean bCellFilled = false;
 			String sTmpNextToken = "";
 	    	StringTokenizer tokenizer;
 	    	
 	    	// Read labels
 	    	if ((sLine = brFile.readLine()) != null)
 	    	{	    		
-    			tokenizer = new StringTokenizer(sLine, sDelimiter, true);	
+    			tokenizer = new StringTokenizer(sLine, sDelimiter, false);	
       			
       			while(tokenizer.hasMoreTokens())
     			{
       				sTmpNextToken = tokenizer.nextToken();
         			tmpColumn = new TableColumn (previewTable, SWT.NONE);
     				tmpColumn.setWidth(80);
-        			
-      				// Check for empty cells
-      				if (sTmpNextToken.equals(sDelimiter) && !bCellFilled)
-      				{
-      					tmpColumn.setText("");
-      				}
-      				else if (sTmpNextToken.equals(sDelimiter) && bCellFilled)
-      				{
-      					bCellFilled = false; //reset
-      				}
-      				else
-      				{
-      					bCellFilled = true;
-      					tmpColumn.setText(sTmpNextToken);
-      				}
+        			tmpColumn.setText(sTmpNextToken);
     			}
 	    	}
 	    
 	    	int iRowCount = 0;
+	    	boolean bCellFilled = false;
 			while ((sLine = brFile.readLine()) != null 
 					&& iRowCount < MAX_PREVIEW_TABLE_ROWS)
 			{	
@@ -650,18 +675,6 @@ extends Dialog {
 		}
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.dialogs.Dialog#okPressed()
-	 */
-	protected void okPressed() {
-		
-		createData();
-		setDataInViews();
-		
-		super.okPressed();
-	}
-	
 	private void createData() {
 		
 		ArrayList<Integer> iAlStorageId = new ArrayList<Integer>();
@@ -684,11 +697,11 @@ extends Dialog {
 			{
 				// Create data storage
 				CmdDataCreateStorage cmdCreateStorage = (CmdDataCreateStorage) 
-					Application.caleydo_core.getGeneralManager().getCommandManager().createCommandByType(
+					Application.generalManager.getCommandManager().createCommandByType(
 						CommandQueueSaxType.CREATE_STORAGE);
 				
-				int iTmpStorageId = Application.caleydo_core.getGeneralManager()
-					.getStorageManager().createId(ManagerObjectType.STORAGE_FLAT);
+				int iTmpStorageId = Application.generalManager.getStorageManager()
+					.createId(ManagerObjectType.STORAGE_FLAT);
 				cmdCreateStorage.setAttributes(iTmpStorageId, "", "");
 				cmdCreateStorage.doCommand();
 				
@@ -713,17 +726,17 @@ extends Dialog {
 		
 		if (sFileName.equals(""))
 		{
-			MessageDialog.openError(getShell(), "Invalid filename",
+			MessageDialog.openError(parentComposite.getShell(), "Invalid filename",
 					"Invalid filename");
 			return;
 		}
 		
 		// Trigger file loading command
 		CmdLoadFileNStorages cmdLoadCsv = (CmdLoadFileNStorages) 
-			Application.caleydo_core.getGeneralManager().getCommandManager().createCommandByType(
+			Application.generalManager.getCommandManager().createCommandByType(
 					CommandQueueSaxType.LOAD_DATA_FILE);
 		
-		ISWTGUIManager iSWTGUIManager= Application.caleydo_core.getGeneralManager().getSWTGUIManager();
+		ISWTGUIManager iSWTGUIManager= Application.generalManager.getSWTGUIManager();
 		iSWTGUIManager.setProgressbarVisible(true);
 		
 		cmdLoadCsv.setAttributes(iAlStorageId,
@@ -736,20 +749,20 @@ extends Dialog {
 		
 		// Create Virtual Array
 		CmdDataCreateVirtualArray cmdCreateVirtualArray = (CmdDataCreateVirtualArray) 
-			Application.caleydo_core.getGeneralManager().getCommandManager().createCommandByType(
+			Application.generalManager.getCommandManager().createCommandByType(
 				CommandQueueSaxType.CREATE_VIRTUAL_ARRAY);
 		
-		int iTmpVirtualArrayId = Application.caleydo_core.getGeneralManager()
+		int iTmpVirtualArrayId = Application.generalManager
 			.getStorageManager().createId(ManagerObjectType.STORAGE_FLAT);
 		cmdCreateVirtualArray.setAttributes(iTmpVirtualArrayId, -1, 0, 0, 0);
 		cmdCreateVirtualArray.doCommand();
 		
 		// Create SET
 		CmdDataCreateSet cmdCreateSet = (CmdDataCreateSet) 
-		Application.caleydo_core.getGeneralManager().getCommandManager().createCommandByType(
+		Application.generalManager.getCommandManager().createCommandByType(
 			CommandQueueSaxType.CREATE_SET_DATA);
 	
-		iTargetSetId = Application.caleydo_core.getGeneralManager()
+		iTargetSetId = Application.generalManager
 			.getStorageManager().createId(ManagerObjectType.STORAGE_FLAT);
 		
 		cmdCreateSet.setAttributes(iTargetSetId, Integer.toString(iTmpVirtualArrayId), 
@@ -760,14 +773,14 @@ extends Dialog {
 		
 		// Normalize storages as requested by user	
 		CmdDataFilterMath cmdDataNormalize = (CmdDataFilterMath)
-			Application.caleydo_core.getGeneralManager().getCommandManager().createCommandByType(
+			Application.generalManager.getCommandManager().createCommandByType(
 					CommandQueueSaxType.DATA_FILTER_MATH);
 		
 		cmdDataNormalize.setAttributes(EDataFilterMathType.NORMALIZE, iAlTmpStorageIdNormalize);
 		cmdDataNormalize.doCommand();
 		
 		CmdLoadFileLookupTable cmdLoadLookupTableFile = (CmdLoadFileLookupTable) 
-			Application.caleydo_core.getGeneralManager().getCommandManager()
+			Application.generalManager.getCommandManager()
 			.createCommandByType(CommandQueueSaxType.LOAD_LOOKUP_TABLE_FILE);
 		
 		cmdLoadLookupTableFile.setAttributes(sFileName, 
@@ -778,11 +791,11 @@ extends Dialog {
 	
 	private void setDataInViews() {
 
-		for (GLEventListener tmpGLEventListener :Application.caleydo_core.getGeneralManager()
+		for (GLEventListener tmpGLEventListener :Application.generalManager
 				.getViewGLCanvasManager().getAllGLEventListeners()) 
 		{
-			if (tmpGLEventListener.getClass().equals(GLCanvasHeatMap.class) ||
-					tmpGLEventListener.getClass().equals(GLCanvasParCoords3D.class))
+			if (tmpGLEventListener instanceof GLCanvasHeatMap ||
+					tmpGLEventListener.getClass().getSuperclass().equals(AGLCanvasStorageBasedView.class))
 			{
 				int[] iArTmpSetId = new int[1];
 				iArTmpSetId[0] = iTargetSetId;
@@ -799,7 +812,15 @@ extends Dialog {
 	 */
 	public static void main(String[] args) {
 		  
-		OpenCsvDataFileDialog dialog = new OpenCsvDataFileDialog(new Shell());
+		FileLoadDataDialog dialog = new FileLoadDataDialog(new Shell());
 		dialog.open();
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.ui.actions.ActionFactory.IWorkbenchAction#dispose()
+	 */
+	public void dispose() {
+
 	}
 }

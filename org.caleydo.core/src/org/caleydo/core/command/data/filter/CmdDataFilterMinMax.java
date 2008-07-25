@@ -3,16 +3,14 @@ package org.caleydo.core.command.data.filter;
 //import java.util.ArrayList;
 //import java.util.Iterator;
 
-import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.StorageType;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
-//import org.caleydo.core.data.collection.storage.FlatThreadStorageSimple;
-
 
 /**
  * @author Alexander Lex
@@ -27,8 +25,6 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 public class CmdDataFilterMinMax 
 extends ACmdCreate_IdTargetLabelAttrDetail 
 {
-
-	
 	private ISet mySet = null;
 	private IStorage myStorage = null;
 	private StorageType myStorageType = null;
@@ -80,7 +76,9 @@ extends ACmdCreate_IdTargetLabelAttrDetail
 		else
 		{
 		//	throw CaleydoRuntimeException("You have to initialize the filter before using it");
-		}		
+		}
+		
+		commandManager.runDoCommand(this);
 	}
 
 	/*

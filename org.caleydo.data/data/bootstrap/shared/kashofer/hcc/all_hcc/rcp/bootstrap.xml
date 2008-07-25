@@ -53,6 +53,8 @@
 				attrib2="data/genome/pathway/biocarta/image/" 
 				attrib3="data/genome/pathway/biocarta/imagemap/" /> 
 	
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_PATHWAY_DATA" 	cmdId="" uniqueId="11331" label="Load pathway data" /> 					
+	
    </CommandBuffer>
     
   </Application>

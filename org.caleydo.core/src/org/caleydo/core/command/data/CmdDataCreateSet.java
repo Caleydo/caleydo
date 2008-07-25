@@ -354,10 +354,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 //						"SET: error while parsing!",
 //						LoggerType.MINOR_ERROR );
 				return false;
-			}
-			
-	
-			
+			}		
 		} 
 		catch (NumberFormatException nfe) 
 		{

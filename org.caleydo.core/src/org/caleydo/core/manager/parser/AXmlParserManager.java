@@ -48,7 +48,7 @@ implements IXmlParserManager, IManagedObject
 	/**
 	 * Reference to manager, who created this object.
 	 */
-	protected final IGeneralManager generalManager;	
+	protected IGeneralManager generalManager;	
 	
 	
 	/**
@@ -196,9 +196,9 @@ implements IXmlParserManager, IManagedObject
 //	}
 	
 	/**
-	 * @see org.caleydo.core.data.collection.UniqueManagedInterface#getManager()
+	 * @see org.caleydo.core.data.collection.UniqueManagedInterface#getGeneralManager()
 	 */
-	public final IGeneralManager getManager() {
+	public IGeneralManager getGeneralManager() {
 		return this.generalManager;
 	}
 

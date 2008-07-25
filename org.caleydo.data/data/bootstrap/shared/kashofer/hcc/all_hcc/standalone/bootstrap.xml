@@ -10,7 +10,7 @@
 		  	<read-xml-file target="data/bootstrap/shared/kashofer/hcc/load_genome_id_mapping.xml" />	   				
 						
 		<!-- Creating Data -->
-			<read-xml-file target="data/bootstrap/shared/kashofer/hcc/all_hcc/load_data.xml" />						   														
+			<read-xml-file target="data/bootstrap/shared/kashofer/hcc/all_hcc/load_data.xml" />						   																		
 					
 		<!-- Window 14331 -->
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW" 			cmdId="41991" uniqueId="14331" label="Caleydo Browser" 		attrib1="ROW HORIZONTAL" />   
@@ -42,20 +42,22 @@
 							gl_rotation="0 0 0 0"					
 							attrib3="PERSPECTIVE -1.5 1.5 -1.5 1.5 2.9 100"
 							attrib4="transparency 1" 								
-							detail="85101 86101 87101 88101 89101 90101 91101 92101 93101 94101 95101 96101 97101 98101 66101" /> 		
-							
-	<!-- Setting paths -->	
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set KEGG Pathway Path" 
-		detail="KEGG"
-		attrib1="data/genome/pathway/kegg/xml/hsa/" 
-		attrib2="data/genome/pathway/kegg/images/hsa/" 
-		attrib3="data/genome/pathway/kegg/imagemap/" /> 
-		
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set Biocarta Pathway Paths" 
-		detail="BIOCARTA"
-		attrib1="data/genome/pathway/biocarta/imagemap/" 
-		attrib2="data/genome/pathway/biocarta/image/" 
-		attrib3="data/genome/pathway/biocarta/imagemap/" /> 									    
+							detail="85101 86101 87101 88101 89101 90101 91101 92101 93101 94101 95101 96101 97101 98101 66101" /> 				    
+				
+		<!-- Setting paths and trigger pathway loading -->	
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set Biocarta Pathway Paths" 
+			detail="BIOCARTA"
+			attrib1="data/genome/pathway/biocarta/imagemap/" 
+			attrib2="data/genome/pathway/biocarta/image/" 
+			attrib3="data/genome/pathway/biocarta/imagemap/" /> 
+			
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set KEGG Pathway Path" 
+			detail="KEGG"
+			attrib1="data/genome/pathway/kegg/xml/hsa/" 
+			attrib2="data/genome/pathway/kegg/images/hsa/" 
+			attrib3="data/genome/pathway/kegg/imagemap/" /> 
+			
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_PATHWAY_DATA" 	cmdId="" uniqueId="11331" label="Load pathway data" /> 				
 							    
    </CommandBuffer>
     

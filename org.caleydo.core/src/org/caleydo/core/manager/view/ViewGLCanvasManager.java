@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.logging.Level;
 
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
@@ -348,46 +349,13 @@ implements IViewGLCanvasManager {
 			final String sLabel,
 			final IViewFrustum viewFrustum) {
 
+		generalManager.getLogger().log(Level.INFO, "Creating view from type: ["
+				+useViewType + "] with ID: [" +iUniqueId + "] and label: [" +sLabel +"]");
+		
 		try
 		{
 			switch (useViewType)
-			{	
-//			case CREATE_GL_SCATTERPLOT2D:
-//				return new GLCanvasScatterPlot2D(generalManager, iUniqueId,
-//						iGlForwarderId, sLabel);
-//	
-//			case CREATE_GL_MINMAX_SCATTERPLOT2D:
-//				singelton.logMsg("CREATE_GL_MINMAX_SCATTERPLOT2D ==> create GLMinMaxScatterplot2Dinteractive instead",LoggerType.MINOR_ERROR_XML);
-//				
-//				return new GLMinMaxScatterplot2Dinteractive(generalManager, iUniqueId,
-//						iGlForwarderId, sLabel);
-//	
-//			case CREATE_GL_MINMAX_SCATTERPLOT3D:
-//				return new GLCanvasMinMaxScatterPlot3D(generalManager, iUniqueId,
-//						iGlForwarderId, sLabel);
-//				
-//			case CREATE_GL_WIDGET:
-//				return new GLCanvasWidget(generalManager, iUniqueId,
-//						iGlForwarderId, sLabel);
-//	
-//			case CREATE_GL_HISTOGRAM2D:
-//				return new GLCanvasHistogram2D(generalManager, iUniqueId,
-//						iGlForwarderId, sLabel);
-//	
-//			case CREATE_GL_ISOSURFACE3D:
-//				return new GLCanvasIsoSurface3D(
-//						generalManager, 
-//						iUniqueId, 
-//						iGlForwarderId, 
-//						sLabel);
-//				
-//			case CREATE_GL_TEXTURE2D:
-//				return new GLCanvasTexture2D(
-//						generalManager, 
-//						iUniqueId, 
-//						iGlForwarderId, 
-//						sLabel);
-				
+			{		
 			case CREATE_GL_HEAT_MAP_3D:
 				return new GLCanvasHeatMap(
 						generalManager, 
@@ -463,11 +431,8 @@ implements IViewGLCanvasManager {
 		} 
 		catch (NullPointerException e)
 		{
-//			generalManager.logMsg("Error while creating view; createView(" +
-//					useViewType.toString() +
-//					", " + iUniqueId + 
-//					", " + iGLCanvasID + 
-//					", " + sLabel + " )", LoggerType.ERROR);
+			generalManager.getLogger().log(Level.SEVERE, "Error while creating view from type: ["
+					+useViewType + "] with ID: [" +iUniqueId + "] and label: [" +sLabel +"]");
 			
 			return null;
 		}
@@ -477,11 +442,11 @@ implements IViewGLCanvasManager {
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IViewGLCanvasManager#registerGLCanvas(javax.media.opengl.GLCanvas, int)
 	 */
-	public boolean registerGLCanvas(final GLCanvas glCanvas, final int iCanvasId) {
+	public boolean registerGLCanvas(final GLCanvas glCanvas, final int iGLCanvasId) {
 
-		assert iCanvasId != 0 : "registerItem(Object,int) must not use iItemId==0";
+		assert iGLCanvasId != 0 : "registerItem(Object,int) must not use iItemId==0";
 		
-		if (hashGLCanvasID2GLCanvas.containsKey(iCanvasId))
+		if (hashGLCanvasID2GLCanvas.containsKey(iGLCanvasId))
 		{
 //			generalManager.logMsg(
 //					"registerGLCanvas() id " + iCanvasId
@@ -498,7 +463,7 @@ implements IViewGLCanvasManager {
 			return false;
 		}
 
-		hashGLCanvasID2GLCanvas.put(iCanvasId, glCanvas);
+		hashGLCanvasID2GLCanvas.put(iGLCanvasId, glCanvas);
 
 		return true;
 	}
@@ -507,14 +472,14 @@ implements IViewGLCanvasManager {
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IViewGLCanvasManager#unregisterGLCanvas(javax.media.opengl.GLCanvas)
 	 */
-	public boolean unregisterGLCanvas(final GLCanvas canvas) {
+	public boolean unregisterGLCanvas(final int iGLCanvasId) {
 
-		// TODO: IMPLEMENT!
+		if (hashGLCanvasID2GLCanvas.containsKey(iGLCanvasId))
+		{
+			hashGLCanvasID2GLCanvas.remove(iGLCanvasId);
+			hashGLCanvasID2GLEventListeners.remove(iGLCanvasId);
+		}
 		
-//		generalManager.logMsg(
-//						"unregisterGLCanvas() canvas object was not found inside ViewJogleManager!",
-//						LoggerType.FULL );
-
 		return false;
 	}
 	
@@ -537,6 +502,19 @@ implements IViewGLCanvasManager {
 		hashGLCanvasID2GLEventListeners.get(iGLCanvasID).add(gLEventListener);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IViewGLCanvasManager#cleanup()
+	 */
+	public void cleanup() {
+		
+		hashGLCanvasID2GLCanvas.clear();
+		hashGLCanvasID2GLEventListeners.clear();
+		hashGLEventListenerID2GLEventListener.clear();
+		hashViewId2View.clear();
+		arDataExplorerViewRep.clear();
+		arHTMLBrowserViewRep.clear();
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -602,7 +580,10 @@ implements IViewGLCanvasManager {
 		} //try .. catch ( NullPointerException npe)
 	}
 	
-	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IViewManager#removeViewRep(org.caleydo.core.view.IView)
+	 */
 	public void removeViewRep(final IView view) {
 
 		try 
@@ -629,11 +610,6 @@ implements IViewGLCanvasManager {
 			assert false : "Error,  getViewType() returned unexpected (class)";
 		} //try .. catch ( NullPointerException npe)
 	}
-	
-	public void removeAllGLCanvasByType() 
-	{
-		
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -652,12 +628,14 @@ implements IViewGLCanvasManager {
 		
 		return hashGLCanvasID2GLCanvas.values();
 	}
-	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IViewGLCanvasManager#getAllGLEventListeners()
+	 */
 	public Collection<GLEventListener> getAllGLEventListeners() {
 		
 		return hashGLEventListenerID2GLEventListener.values();
 	}
-
 
 	public JFrame createWorkspace(
 			ManagerObjectType useViewCanvasType, String sAditionalParameter) {

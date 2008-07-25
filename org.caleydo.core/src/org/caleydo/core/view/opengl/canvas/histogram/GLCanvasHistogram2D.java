@@ -78,7 +78,7 @@ extends AGLCanvasUser {
 			final String sLabel,
 			final IViewFrustum viewFrustum) {
 
-		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
+		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum, true);
 		
 		listHistogramData = new  LinkedList < HistogramData > ();
 	}

@@ -93,7 +93,8 @@ implements IMediatorReceiver, IMediatorSender {
 			final String sLabel,
 			final IViewFrustum viewFrustum) {
 
-		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
+		super(generalManager, iViewId, iGLCanvasID, 
+				sLabel, viewFrustum, false); // false -> do not register to parent canvas
 		
 		pathwayManager = generalManager.getPathwayManager();
 		
@@ -127,6 +128,11 @@ implements IMediatorReceiver, IMediatorSender {
 		this.iPathwayID = iPathwayID;
 	}
 	
+	public int getPathwayID() {
+		
+		return iPathwayID;
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media.opengl.GL)
@@ -155,10 +161,6 @@ implements IMediatorReceiver, IMediatorSender {
 				iUniqueId, iRemoteViewID, new Vec3f (0, 0, 0), layer, true, renderStyle);
 		
 		init(gl);
-
-//		// Only send out contained genes for pathways inside the bucket (not in pool)
-//		if (containedHierarchyLayer != null && containedHierarchyLayer.getCapacity() <= 4)
-			initialContainedGenePropagation(); 
 	}
 	
 	/*
@@ -167,7 +169,15 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void init(final GL gl) {
 
+		// Check if pathway exists or if it's already loaded
+		if (!generalManager.getPathwayManager().hasItem(iPathwayID))
+			return;
+		
 		initPathwayData(gl);
+		
+//		// Only send out contained genes for pathways inside the bucket (not in pool)
+//		if (containedHierarchyLayer != null && containedHierarchyLayer.getCapacity() <= 4)
+			initialContainedGenePropagation(); 
 	}
 	
 	/*
@@ -175,6 +185,11 @@ implements IMediatorReceiver, IMediatorSender {
 	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#displayLocal(javax.media.opengl.GL)
 	 */
 	public void displayLocal(final GL gl) {
+		
+		// Check if pathway exists or if it's already loaded
+		// FIXME: not good because check in every rendered frame
+		if (!generalManager.getPathwayManager().hasItem(iPathwayID))
+			return;
 		
 		pickingManager.handlePicking(iUniqueId, gl, false);
 		if(bIsDisplayListDirtyLocal)
@@ -192,11 +207,17 @@ implements IMediatorReceiver, IMediatorSender {
 	 */
 	public void displayRemote(final GL gl) {
 		
+		// Check if pathway exists or if it's already loaded
+		// FIXME: not good because check in every rendered frame
+		if (!generalManager.getPathwayManager().hasItem(iPathwayID))
+			return;
+		
 		if(bIsDisplayListDirtyRemote)
 		{
 			rebuildPathwayDisplayList(gl);
 			bIsDisplayListDirtyRemote = false;
 		}	
+		
 		display(gl);
 	}
 	
@@ -312,8 +333,7 @@ implements IMediatorReceiver, IMediatorSender {
 //			alSetSelection.get(1).getWriteToken();
 //			alSetSelection.get(1).mergeSelection(iAlTmpSelectionId, iAlTmpGroup, null);
 //			alSetSelection.get(1).returnWriteToken();
-//			
-		
+//				
 		}
 		
 		gLPathwayManager.performIdenticalNodeHighlighting();
@@ -431,9 +451,13 @@ implements IMediatorReceiver, IMediatorSender {
 
 		int iImageWidth = tmpPathwayGraph.getWidth();
 		int iImageHeight = tmpPathwayGraph.getHeight();
-
+	
 		generalManager.getLogger().log(Level.INFO, "Pathway texture width="+iImageWidth +" / height=" +iImageHeight);
 
+		if (iImageWidth == -1 || iImageHeight == -1)
+		{
+			generalManager.getLogger().log(Level.SEVERE, "Problem because pathway texture width or height is invalid!");
+		}
 		
 		float fTmpPathwayWidth = iImageWidth * GLPathwayManager.SCALING_FACTOR_X * fPathwayScalingFactor;
 		float fTmpPathwayHeight = iImageHeight * GLPathwayManager.SCALING_FACTOR_Y * fPathwayScalingFactor;

@@ -101,8 +101,7 @@ extends ACommand {
 			final ICommandManager commandManager,
 			final CommandQueueSaxType commandQueueSaxType) {
 		
-		super(-1,
-				generalManager,
+		super(-1, generalManager,
 				commandManager,
 				commandQueueSaxType);
 		

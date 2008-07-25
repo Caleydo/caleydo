@@ -12,6 +12,7 @@ import gleem.linalg.Vec3f;
  * @see org.caleydo.core.data.view.camera.IViewCamera
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public class ViewCameraPitchRollYaw 
@@ -32,7 +33,7 @@ extends ViewCameraBase {
 	protected Rotf quatYawX = new Rotf();
 	
 	/**
-	 * Defines upate behaviour. If TURE the ViewMatrix is updated via setViewRotate(Rotf) .
+	 * Defines update behavior. If TURE the ViewMatrix is updated via setViewRotate(Rotf) .
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraBase#setCameraRotation(Rotf)
 	 * @see prometheus.data.collection.view.camera.ViewCameraBase#getCameraMatrix()
@@ -40,7 +41,7 @@ extends ViewCameraBase {
 	protected boolean bEnableImmediateCameraUpdate = true;
 	
 	/**
-	 * 
+	 * Constructor.
 	 */
 	public ViewCameraPitchRollYaw(int iId) {
 		super(iId);

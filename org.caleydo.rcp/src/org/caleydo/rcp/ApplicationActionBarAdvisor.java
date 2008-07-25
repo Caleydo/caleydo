@@ -13,12 +13,14 @@ import org.eclipse.ui.actions.ContributionItemFactory;
 import org.eclipse.ui.actions.ActionFactory.IWorkbenchAction;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
-import org.caleydo.rcp.action.file.FileOpenCsvDataFileAction;
-import org.caleydo.rcp.action.file.FileOpenXmlConfigFileAction;
+import org.caleydo.rcp.action.file.FileLoadDataAction;
+import org.caleydo.rcp.action.file.FileOpenProjectAction;
+import org.caleydo.rcp.action.file.FileSaveProjectAction;
 import org.caleydo.rcp.action.search.OpenSearchDataEntityAction;
 import org.caleydo.rcp.action.update.UpdateAction;
 
-public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
+public class ApplicationActionBarAdvisor 
+extends ActionBarAdvisor {
 
 	protected IWorkbenchAction exitAction;
 	
@@ -28,9 +30,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	
 	protected IWorkbenchAction preferencesAction;
 	
-	protected IWorkbenchAction saveAction;
+//	protected IWorkbenchAction saveAction;
 	
-	protected IWorkbenchAction saveAsAction;
+//	protected IWorkbenchAction saveAsAction;
 	
 //	protected IWorkbenchAction editCopyAction;
 	
@@ -50,16 +52,17 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 	
 	protected UpdateAction updateAction;
 	
-	protected FileOpenCsvDataFileAction fileOpenCsvDataAction;
+	protected FileLoadDataAction fileLoadDataAction;
 
-	/**
-	 * FileOpenXmlConfigFileAction extends IWorkbenchAction
-	 */
-	protected FileOpenXmlConfigFileAction fileOpenXmlConfigAction;
+	protected FileOpenProjectAction fileOpenProjectAction;
+
+	protected FileSaveProjectAction fileSaveXmlConfigAction;
 	
 	protected IContributionItem viewDynamicLoaded;
 	
-	
+	/**
+	 * Constructor.
+	 */
 	public ApplicationActionBarAdvisor(IActionBarConfigurer configurer) {
 		super(configurer);
 	}
@@ -72,17 +75,14 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		/**
 		 * FILE menu
 		 */
-		fileOpenXmlConfigAction = new FileOpenXmlConfigFileAction(window);
-		register(fileOpenXmlConfigAction);
+		fileOpenProjectAction = new FileOpenProjectAction(window.getShell());
+		register(fileOpenProjectAction);
 		
-		fileOpenCsvDataAction = new FileOpenCsvDataFileAction(window);
-		register(fileOpenCsvDataAction);
+		fileLoadDataAction = new FileLoadDataAction(window);
+		register(fileLoadDataAction);
 		
-		saveAction = ActionFactory.SAVE.create(window);		
-		register(saveAction);
-		
-		saveAsAction = ActionFactory.SAVE_AS.create(window);		
-		register(saveAsAction);
+		fileSaveXmlConfigAction = new FileSaveProjectAction(window.getShell());
+		register(fileSaveXmlConfigAction);
 		
 		preferencesAction = ActionFactory.PREFERENCES.create(window);		
 		register(preferencesAction);
@@ -143,11 +143,9 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 		 * FILE
 		 */
 		MenuManager fileMenu = new MenuManager("&File", "file");
-		fileMenu.add(fileOpenCsvDataAction);
-		fileMenu.add(fileOpenXmlConfigAction);
-		fileMenu.add( new Separator());
-		fileMenu.add(saveAction);
-		fileMenu.add(saveAsAction);	
+		fileMenu.add(fileLoadDataAction);
+		fileMenu.add(fileOpenProjectAction);
+		fileMenu.add(fileSaveXmlConfigAction);
 		fileMenu.add( new Separator());
 		fileMenu.add(printAction);
 		fileMenu.add( new Separator());

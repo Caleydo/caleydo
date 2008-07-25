@@ -1,5 +1,7 @@
 package org.caleydo.core.command.base;
 
+import java.io.Serializable;
+
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.data.AUniqueManagedObject;
@@ -10,6 +12,7 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
  * Abstract base class for all commands.
+ * Supports serialization for exporting commands.
  * 
  * @author Michael Kalkusch
  * @author Marc  Streit
@@ -17,12 +20,12 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
  */
 public abstract class ACommand 
 extends AUniqueManagedObject
-implements ICommand {
+implements ICommand, Serializable {
 
 	/**
 	 * Reference to ICommandManager
 	 */
-	protected final ICommandManager commandManager;
+	protected transient ICommandManager commandManager;
 	
 	private CommandQueueSaxType commandQueueSaxType;
 	
@@ -83,5 +86,14 @@ implements ICommand {
 	
 	protected final void setCommandQueueSaxType(final CommandQueueSaxType commandQueueSaxType) {
 		this.commandQueueSaxType  =commandQueueSaxType;
+	}
+	
+	/**
+	 * Overrides setGeneralManager and sets command manager after serialization.
+	 */
+	public void setGeneralManager(final IGeneralManager generalManager) {
+		
+		this.generalManager = generalManager;
+		this.commandManager = generalManager.getCommandManager();
 	}
 }

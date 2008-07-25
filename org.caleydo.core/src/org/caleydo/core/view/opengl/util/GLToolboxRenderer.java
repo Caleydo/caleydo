@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.util;
 
-import gleem.linalg.Mat4f;
 import gleem.linalg.Vec3f;
 
 import java.util.EnumMap;
@@ -17,14 +16,14 @@ import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
 /**
+ * General OpenGL toolbox class
  * 
  * @author Alexander Lex
  * @author Marc Streit
  *
  */
-
-public class GLToolboxRenderer 
-{
+public class GLToolboxRenderer
+{	
 	protected final static float ELEMENT_LENGTH = 0.2f;
 	protected final static float ELEMENT_SPACING = 0.02f;
 	
@@ -33,7 +32,7 @@ public class GLToolboxRenderer
 	protected boolean bIsCalledLocally;
 	protected boolean bRenderLeftToRight;
 	
-	protected IGeneralManager generalManager;
+	protected transient IGeneralManager generalManager;
 	protected PickingManager pickingManager; 
 	protected int iRemoteViewID;
 	protected int iContainingViewID;

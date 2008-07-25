@@ -15,7 +15,7 @@ import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
 import com.sun.opengl.util.Animator;
 
 /**
- * Make Jogl GLCanvas addressable by id and provide ground for XML bootstrapping of 
+ * Make Jogl GLCanvas addressable by iD and provide ground for XML bootstrapping of 
  * GLCanvas.
  * 
  * @author Michael Kalkusch
@@ -35,9 +35,9 @@ extends IViewManager, IManager
 	
 	public Collection<GLEventListener> getAllGLEventListeners();
 	
-	public boolean registerGLCanvas( final GLCanvas canvas, final int iCanvasId );
+	public boolean registerGLCanvas(final GLCanvas canvas, final int iGLCanvasId );
 	
-	public boolean unregisterGLCanvas( final GLCanvas canvas );
+	public boolean unregisterGLCanvas(final int iGLCanvasId );
 	
 	public void registerGLEventListenerByGLCanvasID(final int iGLCanvasID,
 			final GLEventListener gLEventListener);
@@ -58,4 +58,9 @@ extends IViewManager, IManager
 
 	public void createAnimator();
 	public Animator getAnimator();
+	
+	/**
+	 * Removes all views, canvas and GL event listeners
+	 */
+	public void cleanup();
 }

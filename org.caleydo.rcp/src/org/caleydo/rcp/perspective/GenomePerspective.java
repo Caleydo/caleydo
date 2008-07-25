@@ -13,7 +13,7 @@ implements IPerspectiveFactory {
 
 	public void createInitialLayout(IPageLayout layout) {
 
-		System.out.println(Application.debugMsgPrefix + getClass().getSimpleName() + ".createInitialLayout(..)"); 
+		System.out.println(Application.sDebugMsgPrefix + getClass().getSimpleName() + ".createInitialLayout(..)"); 
 		
 		layout.setEditorAreaVisible(false);
 

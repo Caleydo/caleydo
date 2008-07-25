@@ -15,7 +15,7 @@ import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.swt.pathway.Pathway2DViewRep;
 
 /**
- * Class implementes the command for creating a pathway view.
+ * Class implements the command for creating a pathway view.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit

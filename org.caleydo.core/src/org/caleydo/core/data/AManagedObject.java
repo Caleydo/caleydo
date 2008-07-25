@@ -33,7 +33,7 @@ implements IManagedObject {
 	/* (non-Javadoc)
 	 * @see prometheus.data.collection.UniqueManagedInterface#getManager()
 	 */
-	public final IGeneralManager getManager() {
+	public final IGeneralManager getGeneralManager() {
 		return this.generalManager;
 	}
 }

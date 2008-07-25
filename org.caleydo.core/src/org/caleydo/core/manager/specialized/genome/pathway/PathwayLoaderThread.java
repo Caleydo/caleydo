@@ -15,6 +15,7 @@ import javax.media.opengl.GLEventListener;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
 import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 
 /**
@@ -53,15 +54,18 @@ extends Thread
 	 * (non-Javadoc)
 	 * @see java.lang.Thread#run()
 	 */
-	public void run() 
-	{
+	public void run() {
+	
+		super.run();
+
 		Iterator<PathwayDatabase> iterPathwayDatabase = pathwayDatabases.iterator();
 		
 		while (iterPathwayDatabase.hasNext())
 		{
 			loadAllPathwaysByType(iterPathwayDatabase.next());
 		}
-		return;
+		
+		notifyViews();
 	}
 	
 	private void loadAllPathwaysByType(final PathwayDatabase pathwayDatabase) 
@@ -74,13 +78,12 @@ extends Thread
 		for (GLEventListener tmpGLEventListener : 		
 			generalManager.getViewGLCanvasManager().getAllGLEventListeners()) 
 		{
-			if (tmpGLEventListener.getClass().equals(GLCanvasRemoteRendering3D.class))
+			if (tmpGLEventListener instanceof GLCanvasRemoteRendering3D)
 			{
 				tmpGLRemoteRendering3D = ((GLCanvasRemoteRendering3D)tmpGLEventListener);
 				tmpGLRemoteRendering3D.enableBusyMode(true);
 				break;
 			}
-				
 		}
 		
 		BufferedReader file = null;
@@ -123,6 +126,13 @@ extends Thread
 				tmpPathwayGraph = generalManager.getPathwayManager().getCurrenPathwayGraph();
 				tmpPathwayGraph.setWidth(StringConversionTool.convertStringToInt(tokenizer.nextToken(), -1));
 				tmpPathwayGraph.setHeight(StringConversionTool.convertStringToInt(tokenizer.nextToken(), -1));	
+
+				int iImageWidth = tmpPathwayGraph.getWidth();
+				int iImageHeight = tmpPathwayGraph.getHeight();
+
+				if (iImageWidth == -1 || iImageHeight == -1)
+					generalManager.getLogger().log(Level.INFO, "Pathway texture width="+iImageWidth +" / height=" +iImageHeight);
+
 			}
 			
 		} catch (FileNotFoundException e) {
@@ -134,4 +144,40 @@ extends Thread
 		if (tmpGLRemoteRendering3D != null)
 			tmpGLRemoteRendering3D.enableBusyMode(false);
 	}	
+	
+	/**
+	 * Method notifies all dependent views that the loading is ready.
+	 */
+	private void notifyViews() {
+		
+		int iTmpPathwayId;
+		
+		for (GLEventListener tmpGLEventListener : 
+			generalManager.getViewGLCanvasManager().getAllGLEventListeners()) 
+		{
+			if (tmpGLEventListener instanceof GLCanvasRemoteRendering3D)
+			{
+				for (GLEventListener tmpGLEventListenerInner : 
+					generalManager.getViewGLCanvasManager().getAllGLEventListeners()) 
+				{
+					if (tmpGLEventListenerInner instanceof GLCanvasPathway3D)
+					{
+						iTmpPathwayId = ((GLCanvasPathway3D)tmpGLEventListenerInner).getPathwayID();
+						
+						((GLCanvasRemoteRendering3D)tmpGLEventListener).addPathwayView(iTmpPathwayId);
+					}
+				}
+			}
+			
+//			if (tmpGLEventListener.getClass().equals(GLCanvasPathway3D.class))
+//			{
+//				GLCaleydoCanvas tmpGLCanvas = ((GLCanvasPathway3D)tmpGLEventListener).getParentGLCanvas();
+//				
+//				// Force GLCanvas to call init(gl) of the GLEventListener again 
+//				// by removing and adding it from the GL canvas
+//				tmpGLCanvas.removeGLEventListener(tmpGLEventListener);
+//				tmpGLCanvas.addGLEventListener(tmpGLEventListener);		
+//			}
+		}
+	}
 }

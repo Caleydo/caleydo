@@ -10,16 +10,29 @@ import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
 public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
 
+	/**
+	 * Constructor.
+	 */
     public ApplicationWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
         super(configurer);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.ui.application.WorkbenchWindowAdvisor#createActionBarAdvisor(org.eclipse.ui.application.IActionBarConfigurer)
+     */
     public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer) {
-        return new ApplicationActionBarAdvisor(configurer);
+        
+    	return new ApplicationActionBarAdvisor(configurer);
     }
     
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.ui.application.WorkbenchWindowAdvisor#preWindowOpen()
+     */
     public void preWindowOpen() {
-        IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
+       
+    	IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
         configurer.setInitialSize(new Point(400, 300));
         configurer.setShowCoolBar(false);
         configurer.setShowStatusLine(false);  
@@ -31,10 +44,12 @@ public class ApplicationWorkbenchWindowAdvisor extends WorkbenchWindowAdvisor {
         configurer.setShowMenuBar(true);
     }
     
+    /*
+     * 
+     */
 	protected void fillMenuBar(IMenuManager menuBar) {
 		MenuManager geneviewMenu = new MenuManager(
 		    "&Caleydo", "caleydo");
-		///hyperbolaMenu.add(exitAction);
 		MenuManager helpMenu = new MenuManager("&Help", "help");
 		//helpMenu.add(aboutAction);
 		menuBar.add(geneviewMenu);

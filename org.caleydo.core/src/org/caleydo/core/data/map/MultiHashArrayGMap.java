@@ -10,8 +10,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-
-
 /**
  * @author Michael Kalkusch
  *
@@ -19,7 +17,6 @@ import java.util.Set;
 public class MultiHashArrayGMap <Type, Value extends ArrayList<Type> >
 extends HashMap <Type,Value>
 implements Map <Type,Value > {
-//implements IGMultiMap <Type>  {
 
 	static final long serialVersionUID = 80806677;
 	

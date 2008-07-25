@@ -64,7 +64,7 @@ extends ICommandActionListener, IManager {
 	/**
 	 * Add reference to one ICommandListener object.
 	 * 
-	 * @param addCommandListener adds referencc to ICommandListener object.
+	 * @param addCommandListener adds reference to ICommandListener object.
 	 */
 	public void addCommandListener( ICommandListener addCommandListener );
 	
@@ -120,6 +120,16 @@ extends ICommandActionListener, IManager {
 	 * @param runCmd
 	 */
 	public void runUndoCommand( ICommand runCmd );
+	
+	/**
+	 * Trigger serialization to file
+	 */
+	public void writeSerializedObjects(final String sFileName);
+	
+	/**
+	 * Read serialized commands from file
+	 */
+	public void readSerializedObjects(final String sFileName);
 	
 	public void addUndoRedoViewRep ( UndoRedoViewRep undoRedoViewRep);
 }

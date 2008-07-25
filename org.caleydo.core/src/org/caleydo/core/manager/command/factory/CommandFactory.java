@@ -2,7 +2,6 @@ package org.caleydo.core.manager.command.factory;
 
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.ICommand;
-import org.caleydo.core.command.data.CmdDataCreatePathwayStorage;
 import org.caleydo.core.command.data.CmdDataCreateSelectionSetMakro;
 import org.caleydo.core.command.data.CmdDataCreateSet;
 import org.caleydo.core.command.data.CmdDataCreateStorage;
@@ -16,6 +15,7 @@ import org.caleydo.core.command.event.CmdEventMediatorAddObject;
 import org.caleydo.core.command.queue.CmdSystemRunCmdQueue;
 import org.caleydo.core.command.queue.CommandQueueVector;
 import org.caleydo.core.command.system.CmdLoadGlyphDefinition;
+import org.caleydo.core.command.system.CmdLoadPathwayData;
 import org.caleydo.core.command.system.CmdSystemExit;
 import org.caleydo.core.command.system.path.CmdSetPathwayDatabasePath;
 import org.caleydo.core.command.view.opengl.CmdGlObjectBucket3D;
@@ -84,7 +84,10 @@ implements ICommandFactory {
 		this.commandManager = commandManager;
 	}
 
-	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.command.factory.ICommandFactory#createCommandByType(org.caleydo.core.command.CommandQueueSaxType)
+	 */
 	public ICommand createCommandByType(final CommandQueueSaxType cmdType) {
 		
 		ICommand createdCommand = null;
@@ -135,15 +138,6 @@ implements ICommandFactory {
 						commandManager,
 						cmdType,
 						true);
-			break;
-		}
-		case CREATE_PATHWAY_STORAGE:
-		{					
-			createdCommand =
-				new CmdDataCreatePathwayStorage(
-						generalManager,
-						commandManager,
-						cmdType);
 			break;
 		}
 		case CREATE_VIRTUAL_ARRAY:
@@ -489,6 +483,15 @@ implements ICommandFactory {
 						cmdType);
 			break;
 		}
+		case LOAD_PATHWAY_DATA:
+		{
+			createdCommand =
+				new CmdLoadPathwayData(
+						generalManager,
+						commandManager,
+						cmdType);
+			break;
+		}
 		
 		/*
 		 * ----------------------
@@ -522,7 +525,10 @@ implements ICommandFactory {
 		return createdCommand;
 	}
 	
-	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.command.factory.ICommandFactory#createCommandQueue(java.lang.String, java.lang.String, int, int, int, int)
+	 */
 	public ICommand createCommandQueue( final String sCmdType,
 			final String sProcessType,
 			final int iCmdId,

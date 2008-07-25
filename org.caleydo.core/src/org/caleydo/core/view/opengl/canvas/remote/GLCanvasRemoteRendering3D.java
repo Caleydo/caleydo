@@ -6,7 +6,6 @@ import gleem.linalg.Vec4f;
 import gleem.linalg.open.Transform;
 
 import java.awt.Font;
-import java.awt.event.MouseAdapter;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -154,7 +153,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 			final IViewFrustum viewFrustum,
 			final ARemoteViewLayoutRenderStyle.LayoutMode layoutMode) {
 
-		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
+		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum, true);
 
 		this.layoutMode = layoutMode;
 		
@@ -360,11 +359,14 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 
 		while (iterGLEventListener.hasNext())
 		{
-			AGLCanvasUser tmpGLEventListener = (AGLCanvasUser) iterGLEventListener
-					.next();
+			AGLCanvasUser tmpGLEventListener = (AGLCanvasUser) iterGLEventListener.next();
 
-			if (tmpGLEventListener == this)
+			// Ignore pathway views upon startup 
+			// because they will be activated when pathway loader thread has finished
+			if (tmpGLEventListener == this || tmpGLEventListener instanceof GLCanvasPathway3D)
+			{
 				continue;
+			}
 
 			int iViewID = ((AGLCanvasUser) tmpGLEventListener).getId();
 
@@ -479,12 +481,6 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 			if (!generalManager.getPathwayManager().isPathwayVisible(iTmpPathwayID))
 			{
 				ArrayList<Integer> iArSetIDs = new ArrayList<Integer>();
-
-//				// FIXME: think of other way instead of hard coded set IDs
-//				iArSetIDs.add(85101);
-//				iArSetIDs.add(87101);
-//				iArSetIDs.add(86101);
-//				iArSetIDs.add(88101);
 				
 				for(ISet tmpSet : alSetData)
 				{
@@ -517,14 +513,6 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 
 				cmdPathway.doCommand();
 
-				// FIXME: Do this in initRemote of the view
-				// Register new view to mediator
-				// generalManager.getEventPublisher()
-				// .registerSenderToMediator(iBucketEventMediatorID,
-				// iGeneratedViewID);
-				// generalManager.getEventPublisher()
-				// .registerSenderToMediator(iBucketEventMediatorID,
-				// iGeneratedViewID);
 				ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
 				arMediatorIDs.add(iGeneratedViewID);
 				generalManager.getEventPublisher()
@@ -1270,8 +1258,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 		// Check if update set contains a pathway that was searched by the user
 		else if (setSelection.getOptionalDataArray() != null)
 		{	
-			int iPathwayIDToLoad = setSelection.getOptionalDataArray().get(0);
-			iAlUninitializedPathwayIDs.add(iPathwayIDToLoad);
+			addPathwayView(setSelection.getOptionalDataArray().get(0));
 			
 			enableBusyMode(true);
 		}
@@ -1279,6 +1266,17 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 		setSelection.returnReadToken();
 	}
 
+	/**
+	 * Add pathway view.
+	 * Also used when serialized pathways are loaded.
+	 * 
+	 * @param iPathwayIDToLoad
+	 */
+	public void addPathwayView(final int iPathwayIDToLoad) {
+		
+		iAlUninitializedPathwayIDs.add(iPathwayIDToLoad);
+	}
+	
 	public void loadDependentPathways(final List<IGraphItem> alVertex) {
 
 		// Remove pathways from stacked layer view
@@ -1723,7 +1721,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 		{
 			iGLEventListenerId = ((AGLCanvasUser)tmpGLEventListenerToRemove).getId();
 		
-			if (tmpGLEventListenerToRemove.getClass().equals(GLCanvasPathway3D.class))
+			if (tmpGLEventListenerToRemove instanceof GLCanvasPathway3D)
 			{
 				if (poolLayer.containsElement(iGLEventListenerId))
 					poolLayer.removeElement(iGLEventListenerId);
@@ -1740,8 +1738,8 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 				
 				alGLEventListenerToRemove.add(tmpGLEventListenerToRemove);
 			}
-			else if (tmpGLEventListenerToRemove.getClass().equals(GLCanvasHeatMap.class) ||
-					tmpGLEventListenerToRemove.getClass().equals(GLCanvasParCoords3D.class))
+			else if (tmpGLEventListenerToRemove instanceof GLCanvasHeatMap ||
+					tmpGLEventListenerToRemove instanceof GLCanvasParCoords3D)
 			{
 				// Remove all elements from heatmap and parallel coordinates
 				((AGLCanvasStorageBasedView)tmpGLEventListenerToRemove).clearAllSelections();
@@ -1893,7 +1891,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 	
 		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager().getAllGLEventListeners())
 		{	
-			if (tmpGLEventListener.getClass().equals(GLCanvasPathway3D.class))
+			if (tmpGLEventListener instanceof GLCanvasPathway3D)
 			{
 				((GLCanvasPathway3D)tmpGLEventListener).enableGeneMapping(bEnableMapping);
 			}		
@@ -1904,7 +1902,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 		
 		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager().getAllGLEventListeners())
 		{	
-			if (tmpGLEventListener.getClass().equals(GLCanvasPathway3D.class))
+			if (tmpGLEventListener instanceof GLCanvasPathway3D)
 			{
 				((GLCanvasPathway3D)tmpGLEventListener).enablePathwayTextures(bEnablePathwayTexture);
 			}		
@@ -1915,7 +1913,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 		
 		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager().getAllGLEventListeners())
 		{	
-			if (tmpGLEventListener.getClass().equals(GLCanvasPathway3D.class))
+			if (tmpGLEventListener instanceof GLCanvasPathway3D)
 			{
 				((GLCanvasPathway3D)tmpGLEventListener).enableNeighborhood(bEnableNeighborhood);
 			}		

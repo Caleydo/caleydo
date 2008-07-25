@@ -105,9 +105,9 @@ extends AGLCanvasStorageBasedView
 	
 	// holds the textures for the icons
 	private GLIconTextureManager iconTextureManager;
+	
 	/**
 	 * Constructor.
-	 * 
 	 */
 	public GLCanvasParCoords3D(final IGeneralManager generalManager,
 			final int iViewId,

@@ -18,7 +18,7 @@ public enum MementoType {
 	/**
 	 * This memento can restore a state of an object at once.
 	 */
-	ABSOLUTE("absolute memento; contains hole state at once"),
+	ABSOLUTE("absolute memento; contains whole state at once"),
 	
 	/**
 	 * This is one memento, that stores only the changes since the last update.
@@ -28,7 +28,7 @@ public enum MementoType {
 	
 	/**
 	 * This idicates, that this memento was created by a view and not by an GUI object.
-	 * View mementos in general store more data and ar larger than GUI-mementos.
+	 * View mementos in general store more data and or larger than GUI-mementos.
 	 */
 	VIEW("memento of a hole view; may contain several sub-mementos"),
 	

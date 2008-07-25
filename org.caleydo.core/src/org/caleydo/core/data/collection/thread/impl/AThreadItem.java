@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.core.data.collection.thread.impl;
 
 import org.caleydo.core.data.AUniqueObject;
@@ -33,7 +30,7 @@ public abstract class AThreadItem
 	 * @see org.caleydo.core.data.AUniqueObject#UniqueItem(int)
 	 */
 	protected AThreadItem( int iSetCollectionId ) {
-		super( iSetCollectionId, null);
+		super( iSetCollectionId);
 		
 		collectionLock = new ICollectionReadWriteLock();
 	}
@@ -47,7 +44,7 @@ public abstract class AThreadItem
 	 */
 	protected AThreadItem( int iSetCollectionId,
 			final ICollectionLock setCollectionLock ) {
-		super( iSetCollectionId, null);
+		super(iSetCollectionId);
 		
 		if ( setCollectionLock == null ) {
 			collectionLock = new ICollectionReadWriteLock();

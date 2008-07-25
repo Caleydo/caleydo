@@ -144,6 +144,9 @@ extends ACommand {
 			loader.setStartParsingStopParsingAtLine(iStartParseFileAtLine, iStopParseFileAtLine );
 			
 			loader.loadData();	
+			
+			commandManager.runDoCommand(this);
+			
 		} //try
 		catch ( Exception e ) 
 		{

@@ -1,5 +1,6 @@
 package org.caleydo.core.command.data;
 
+import java.io.Serializable;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.StringTokenizer;
@@ -47,16 +48,6 @@ extends ACmdCreate_IdTargetLabel {
 	 */
 	protected LinkedList<String> llDataRaw;
 	
-	
-		
-	/**
-	 * Define if data from llDataRaw and llDataTypes shall be removed after
-	 * executing this command.
-	 * 
-	 * Default TRUE
-	 */
-	private final boolean bDisposeDataAfterDoCommand;
-	
 	/**
 	 * Constructor.
 	 */
@@ -69,8 +60,6 @@ extends ACmdCreate_IdTargetLabel {
 		super(generalManager, 
 				commandManager,
 				commandQueueSaxType);
-			
-		this.bDisposeDataAfterDoCommand = bDisposeDataAfterDoCommand;
 		
 		llDataTypes = new LinkedList<String> ();
 		llDataRaw = new LinkedList<String> ();
@@ -308,11 +297,6 @@ extends ACmdCreate_IdTargetLabel {
 //				"DO new STO: " + 
 //				newObject.toString(),
 //				LoggerType.VERBOSE );
-		
-		if ( bDisposeDataAfterDoCommand ) {
-			llDataTypes = null;
-			llDataRaw = null;
-		}
 		
 		commandManager.runDoCommand(this);
 	}

@@ -88,6 +88,9 @@ public class GLPathwayManager {
 		hashPathwayId2VerticesDisplayListId = new HashMap<Integer, Integer>();
 		hashPathwayId2EdgesDisplayListId = new HashMap<Integer, Integer>();		
 		hashElementId2MappingColorArray = new HashMap<Integer, ArrayList<Vec3f>>();
+		
+		hashSelectedVertexRepId2Depth = new HashMap<Integer, Integer>();
+		iArSelectedEdgeRepId = new ArrayList<Integer>();
 	}
 	
 	public void init(final GL gl, 
@@ -100,9 +103,6 @@ public class GLPathwayManager {
 		buildHighlightedCompoundNodeDisplayList(gl);
 		
 		this.internalSelectionManager = internalSelectionManager;
-		
-		hashSelectedVertexRepId2Depth = new HashMap<Integer, Integer>();
-		iArSelectedEdgeRepId = new ArrayList<Integer>();
 		
 		// Initialize genome mapper
 		// TODO: move to a manager because more classes use the genome mapper
@@ -162,6 +162,9 @@ public class GLPathwayManager {
 	}
 
 	public void performIdenticalNodeHighlighting() {
+		
+		if (internalSelectionManager == null)
+			return;
 		
 		hashSelectedVertexRepId2Depth.clear();
 		iArSelectedEdgeRepId.clear();
@@ -267,8 +270,7 @@ public class GLPathwayManager {
 			for(int iItemIndex = 0; iItemIndex < lGraphItems.size(); iItemIndex++) 
 			{
 				// Check if selected item is a vertex
-				if (lGraphItems.get(iItemIndex).getClass().equals
-						(org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep.class))
+				if (lGraphItems.get(iItemIndex) instanceof PathwayVertexGraphItemRep)
 				{			
 					hashSelectedVertexRepId2Depth.put(
 							lGraphItems.get(iItemIndex).getId(), (iDepthIndex+1) / 2); // consider only vertices for depth
@@ -666,15 +668,13 @@ public class GLPathwayManager {
 		float fReactionLineOffset = 0;
 		
 		// Check if edge is a reaction
-		if (edgeRep.getClass().equals(
-				PathwayReactionEdgeGraphItemRep.class))
+		if (edgeRep instanceof PathwayReactionEdgeGraphItemRep)
 		{
 			tmpColor = renderStyle.getReactionEdgeColor();
 			fReactionLineOffset = 0.01f;
 		}
 		// Check if edge is a relation
-		else if (edgeRep.getClass().equals(
-				PathwayRelationEdgeGraphItemRep.class))
+		else if (edgeRep instanceof PathwayRelationEdgeGraphItemRep)
 		{
 			tmpColor = renderStyle.getRelationEdgeColor();
 		}

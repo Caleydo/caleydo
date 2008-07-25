@@ -58,7 +58,7 @@ implements IViewCamera {
 	 */
 	public ViewCameraBase( int iId) {
 		
-		super(iId, null);		
+		super(iId);		
 		
 		rotfCameraRotation = new Rotf();
 		

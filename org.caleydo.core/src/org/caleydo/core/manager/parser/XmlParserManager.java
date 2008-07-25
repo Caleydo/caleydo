@@ -185,8 +185,7 @@ extends AXmlParserManager {
 				 * Register handler only if it is not 
 				 * the OpenExternalXmlFileSaxHandler ...
 				 */
-				if ( handler.getClass().equals( 
-						OpenExternalXmlFileSaxHandler.class) ) 
+				if (handler instanceof OpenExternalXmlFileSaxHandler) 
 				{
 					/**
 					 * Special case: 
@@ -206,7 +205,7 @@ extends AXmlParserManager {
 						/* early exit from try-catch block and if */
 						return;
 						
-				} // if ( handler.getClass().equals(OpenExternalXmlFileSaxHandler.class) ) 						
+				}					
 				
 				
 				/**
@@ -570,5 +569,23 @@ extends AXmlParserManager {
 //		generalManager.logMsg( "XML file was read sucessfully.",
 //				LoggerType.STATUS );
 		
+	}
+	
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.IManagedObject#getManager()
+	 */
+	public final IGeneralManager getGeneralManager() {
+		return this.generalManager;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.IManagedObject#setGeneralManager(org.caleydo.core.manager.IGeneralManager)
+	 */
+	public void setGeneralManager(final IGeneralManager generalManager)
+	{
+		this.generalManager = generalManager;
 	}
 }

@@ -2,8 +2,6 @@ package org.caleydo.core.view.opengl.util;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.EnumMap;
 
 import javax.media.opengl.GL;
@@ -13,15 +11,16 @@ import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureIO;
 
 /**
+ * Manager handles OpenGL icons as textures.
+ * 
  * TODO move this to manager to use it as a singleton
  * 
  * @author Alexander Lex
+ * @author Marc Streit
  *
  */
-
 public class GLIconTextureManager 
 {
-	
 	EnumMap<EIconTextures, Texture> mapIconTextures;
 	
 	/**

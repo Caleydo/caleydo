@@ -1,12 +1,17 @@
 package org.caleydo.core.data.collection.thread.lock;
 
+import java.io.Serializable;
+
 /**
  * Interface for locks used to make access to collections threadsafe.
+ * 
+ * FIXME: think about serialization of locking objects!
  * 
  * @author Michael Kalkusch
  *
  */
-public interface ICollectionLock {
+public interface ICollectionLock
+extends Serializable {
 
 	/**
 	 * Before reading this method has to be called.

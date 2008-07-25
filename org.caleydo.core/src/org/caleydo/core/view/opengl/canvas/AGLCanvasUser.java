@@ -29,7 +29,6 @@ import org.caleydo.core.manager.view.Pick;
 import org.caleydo.core.manager.view.PickingManager;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
-import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
@@ -59,7 +58,7 @@ implements GLEventListener {
 	 */
 	protected ArrayList <SetSelection> alSetSelection;
 	
-	protected ISetManager setManager;
+	protected transient ISetManager setManager;
 	
 	protected PickingManager pickingManager;
 	protected PickingJoglMouseListener pickingTriggerMouseAdapter;
@@ -68,7 +67,7 @@ implements GLEventListener {
 	
 	protected IViewCamera viewCamera;
 	
-	protected GLToolboxRenderer glToolboxRenderer;
+	protected transient GLToolboxRenderer glToolboxRenderer;
 			
 	protected IGLCanvasRemoteRendering3D remoteRenderingGLCanvas;
 	
@@ -90,7 +89,8 @@ implements GLEventListener {
 			final int iViewID, 
 			final int iGLCanvasID,
 			final String sLabel,
-			final IViewFrustum viewFrustum) {
+			final IViewFrustum viewFrustum,
+			final boolean bRegisterToParentCanvasNow) {
 		
 		super(iViewID, generalManager);
 		
@@ -102,7 +102,7 @@ implements GLEventListener {
 		parentGLCanvas = ((GLCaleydoCanvas)generalManager.getViewGLCanvasManager()
 				.getItem(iGLCanvasID));
 		
-		if (parentGLCanvas != null)
+		if (bRegisterToParentCanvasNow && parentGLCanvas != null)
 		{
 			// Register GL event listener view to GL canvas
 			parentGLCanvas.addGLEventListener(this);
@@ -334,9 +334,7 @@ implements GLEventListener {
 			{
 				switch (currentSet.getSetType()) {
 				case SET_PATHWAY_DATA:
-				case SET_GENE_EXPRESSION_DATA:
-					alSetData.add(currentSet);
-					break;					
+				case SET_GENE_EXPRESSION_DATA:				
 				case SET_RAW_DATA:
 					alSetData.add(currentSet);
 					break;
@@ -364,6 +362,8 @@ implements GLEventListener {
 	public final void removeAllSetIdByType( SetType setType ) {
 		
 		switch (setType) {
+		case SET_PATHWAY_DATA:
+		case SET_GENE_EXPRESSION_DATA:				
 		case SET_RAW_DATA:
 			alSetData.clear();
 			break;
@@ -377,7 +377,7 @@ implements GLEventListener {
 					"Unsupported Set type: " +setType);
 		} // switch (setType) {
 	}
-	
+		
 	/**
 	 * @see org.caleydo.core.view.IView#removeSetId(int[])
 	 */

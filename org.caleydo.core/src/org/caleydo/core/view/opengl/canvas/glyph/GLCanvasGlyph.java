@@ -68,7 +68,7 @@ implements IMediatorSender, IMediatorReceiver
 			final String sLabel,
 			final IViewFrustum viewFrustum)
 	{
-		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
+		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum, true);
 		
 		mouseListener_ = new GlyphMouseListener(this, generalManager);
 		keyListener_ = new GlyphKeyListener();
@@ -183,7 +183,7 @@ implements IMediatorSender, IMediatorReceiver
 		gl.glTranslatef(0f, 0f, -10f);
 		gl.glRotatef( 45f, 1,0,0 );
 		//gl.glRotatef( 45f, -1,0,0 ); 
-		gl.glRotatef( 80f, -1,0,0 ); //35°
+		gl.glRotatef( 80f, -1,0,0 ); //35ï¿½
 		
 		pickingManager.handlePicking(iUniqueId, gl, true);
 

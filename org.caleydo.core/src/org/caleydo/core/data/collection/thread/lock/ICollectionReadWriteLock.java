@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.core.data.collection.thread.lock;
 
 import java.util.concurrent.locks.Lock;
@@ -44,8 +41,9 @@ public class ICollectionReadWriteLock implements ICollectionLock {
 	private long timeoutWaitForReader = 100;
 	
 	private TimeUnit timeSlice = TimeUnit.MICROSECONDS;
+
 	/**
-	 * 
+	 * Constructor.
 	 */
 	public ICollectionReadWriteLock() {
 		

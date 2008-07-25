@@ -14,6 +14,10 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
+ * Command triggers filtering of storage data
+ * Example: LIN -> LOG etc.
+ *       
+ * 
  * @author Marc Streit
  * @author Alexander Lex
  *
@@ -169,12 +173,11 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 						targetStorage.getWriteToken();					
 						targetStorage.setArrayFloat(normalize(tmpStorage));
 						targetStorage.returnWriteToken();
-				}
-				
+				}	
 			}
-		
 		}
 		
+		commandManager.runDoCommand(this);
 	}
 
 	/*

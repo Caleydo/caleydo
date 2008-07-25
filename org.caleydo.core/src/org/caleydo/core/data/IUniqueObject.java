@@ -1,12 +1,15 @@
 package org.caleydo.core.data;
 
+import java.io.Serializable;
+
 /**
- * Interface to access prometheus.data.manager.CollectionManager
+ * Interface to all unique objects in Caleydo
  * 
  * @author Michael Kalkusch
- *
+ * @author Marc Streit
  */
-public interface IUniqueObject {
+public interface IUniqueObject
+extends Serializable {
 	
 	/**
 	 * Resets the selectionId.

@@ -1,5 +1,7 @@
 package org.caleydo.core.data;
 
+import java.io.Serializable;
+
 import org.caleydo.core.manager.IGeneralManager;
 
 
@@ -10,23 +12,19 @@ import org.caleydo.core.manager.IGeneralManager;
  * @author Marc Streit
  */
 public abstract class AUniqueObject 
-implements IUniqueObject {
+implements IUniqueObject, Serializable {
 
 	/**
 	 * Unique Id
 	 */
 	protected int iUniqueId;
-	
-	protected IGeneralManager generalManager;
 
 	/**
 	 * Constructor.
 	 */
-	protected AUniqueObject(final int iUniqueId,
-			final IGeneralManager generalManager) {
+	protected AUniqueObject(final int iUniqueId) {
 
 		this.iUniqueId = iUniqueId;
-		this.generalManager = generalManager;
 	}
 
 	/*

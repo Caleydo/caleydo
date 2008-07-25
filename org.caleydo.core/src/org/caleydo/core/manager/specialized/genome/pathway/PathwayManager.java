@@ -109,7 +109,7 @@ implements IPathwayManager, Serializable {
 //		if (hashPathwayIdToPathwayGraphLUT.containsKey(iKEGGId))
 //			return hashPathwayIdToPathwayGraphLUT.get(iKEGGId);
 
-		int iPathwayId = this.createId(null);
+		int iPathwayId = sName.hashCode();//this.createId(null);
 		
 		PathwayGraph pathway = new PathwayGraph(
 				type, iPathwayId, sName, sTitle, sImageLink, sExternalLink);

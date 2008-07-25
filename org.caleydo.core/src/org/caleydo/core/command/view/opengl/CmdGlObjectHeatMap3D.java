@@ -5,6 +5,7 @@ import java.util.StringTokenizer;
 
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACmdCreate_GlCanvasUser;
+import org.caleydo.core.data.collection.SetType;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
@@ -64,6 +65,9 @@ extends ACmdCreate_GlCanvasUser {
 	public final void doCommand() {
 		
 		super.doCommand();
+		
+		((GLCanvasHeatMap)gLEventListener).removeAllSetIdByType(SetType.SET_RAW_DATA);
+		((GLCanvasHeatMap)gLEventListener).removeAllSetIdByType(SetType.SET_SELECTION);	
 		
 		int[] iArTmp = new int[iArSetIDs.size()];
 		for(int index = 0; index < iArSetIDs.size(); index++)

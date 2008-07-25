@@ -296,8 +296,7 @@ public class CaleydoBootloader
 		try {
 			parseXmlConfigFileLocalOrRemote(fileName);
 			
-			// FIXME: just for testing. make own trigger pathway loading command
-			generalManager.getPathwayManager().triggerParsingPathwayDatabases();
+//			generalManager.getCommandManager().readSerializedObjects("data/serialize_test.out");
 			
 			bIsRunning = true;
 			return true;
@@ -317,7 +316,7 @@ public class CaleydoBootloader
 	
 	protected void parseXmlConfigFileLocalOrRemote( final String fileName) {
 
-		/* use muddleware? */
+		// Use Muddleware?
 		if ( bEnableBootstrapViaMuddleware )
 		{
 			/**
@@ -334,7 +333,6 @@ public class CaleydoBootloader
 			generalManager.getLogger().log(Level.CONFIG, "load config via local XML file ... ");			
 			xmlParserManager.parseXmlFileByName( getXmlFileName() );		
 		}
-		
 	}
 	
 	/**
@@ -344,7 +342,9 @@ public class CaleydoBootloader
 	 * @see CaleydoBootloader#isRunning()
 	 */
 	public synchronized void stop() 
-	{
+	{		
+//		generalManager.getCommandManager().writeSerializedObjects("data/serialize_test.out");
+
 		if ( bIsRunning ) 
 		{		
 			if ( generalManager!= null ) 

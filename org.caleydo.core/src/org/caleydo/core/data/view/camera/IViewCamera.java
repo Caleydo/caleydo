@@ -4,6 +4,8 @@ import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
+import java.io.Serializable;
+
 import org.caleydo.core.data.IUniqueObject;
 
 /**
@@ -13,10 +15,11 @@ import org.caleydo.core.data.IUniqueObject;
  * @see org.caleydo.core.data.collection.set.viewdata.ISetViewData
  *  
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public interface IViewCamera 
-extends IUniqueObject {
+extends IUniqueObject, Serializable {
 
 	/**
 	 * Returns true if any data of the camera has changed.

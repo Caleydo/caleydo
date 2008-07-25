@@ -388,12 +388,12 @@ implements IGenomeIdManager {
 	public void setMapByType(final EGenomeMappingType codingLutType, 
 			Object map) {
 		
-		if (map.getClass().equals(MultiHashArrayIntegerMap.class)) {
+		if (map instanceof MultiHashArrayIntegerMap) {
 			hashType2MultiMapInt.put(codingLutType, (MultiHashArrayIntegerMap)map);
 			return;
 		}
 		
-		if (map.getClass().equals(MultiHashArrayStringMap.class)) {
+		if (map instanceof MultiHashArrayStringMap) {
 			hashType2MultiMapString.put(codingLutType, (MultiHashArrayStringMap)map);
 			return;
 		}

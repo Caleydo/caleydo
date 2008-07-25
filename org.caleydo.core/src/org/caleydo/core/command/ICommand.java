@@ -1,5 +1,7 @@
 package org.caleydo.core.command;
 
+import java.io.Serializable;
+
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
@@ -12,10 +14,11 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  * Base interface.
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public interface ICommand 
-extends IUniqueObject {
+extends IUniqueObject, Serializable {
 
 	/**
 	 * execute a command.

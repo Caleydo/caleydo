@@ -6,12 +6,16 @@ import javax.media.opengl.GLEventListener;
 
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
+import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
+import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 import org.caleydo.rcp.views.AGLViewPart;
 import org.caleydo.rcp.views.GLParCoordsView;
 import org.caleydo.rcp.views.GLPathway3DView;
 import org.caleydo.rcp.views.GLRemoteRendering3DView;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPreferenceConstants;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
@@ -28,10 +32,18 @@ extends WorkbenchAdvisor {
 	
 	protected Animator gLAnimator;
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.ui.application.WorkbenchAdvisor#createWorkbenchWindowAdvisor(org.eclipse.ui.application.IWorkbenchWindowConfigurer)
+	 */
     public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
         return new ApplicationWorkbenchWindowAdvisor(configurer);
     }
 
+    /*
+     * (non-Javadoc)
+     * @see org.eclipse.ui.application.WorkbenchAdvisor#getInitialWindowPerspectiveId()
+     */
 	public String getInitialWindowPerspectiveId() {
 		return PERSPECTIVE_ID;
 	}
@@ -45,6 +57,9 @@ extends WorkbenchAdvisor {
 		super.initialize(configurer);
 
 		configurer.setSaveAndRestore(true);
+		
+		PlatformUI.getPreferenceStore().setValue(
+			    IWorkbenchPreferenceConstants.SHOW_PROGRESS_ON_STARTUP, true);
 	}
 	
 	/*
@@ -70,7 +85,7 @@ extends WorkbenchAdvisor {
 		return true;
 	}
 	
-	protected void openLoadedViews() {
+	public void openLoadedViews() {
 		
 		// Initialize all GL views in RCP
 		Iterator<GLEventListener> iterGLEventListener = Application.generalManager
@@ -94,22 +109,19 @@ extends WorkbenchAdvisor {
 			
 			try 
 			{	
-				if (tmpGLEventListener.getClass().equals(
-						org.caleydo.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D.class))
+				if (tmpGLEventListener instanceof GLCanvasParCoords3D)
 				{
 					viewPart = (GLParCoordsView) PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getActivePage().showView(GLParCoordsView.ID,
 								Integer.toString(iInstanceNum), IWorkbenchPage.VIEW_ACTIVATE);
 				}			
-				else if (tmpGLEventListener.getClass().equals(
-						org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D.class))
+				else if (tmpGLEventListener instanceof GLCanvasPathway3D)
 				{
 					viewPart = (GLPathway3DView) PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getActivePage().showView(GLPathway3DView.ID,
 								Integer.toString(iInstanceNum), IWorkbenchPage.VIEW_ACTIVATE);
 				}	
-				else if (tmpGLEventListener.getClass().equals(
-						org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D.class))
+				else if (tmpGLEventListener instanceof GLCanvasRemoteRendering3D)
 				{
 					viewPart = (GLRemoteRendering3DView) PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow().getActivePage().showView(GLRemoteRendering3DView.ID,

@@ -45,7 +45,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		Object viewObject = generalManager.getViewGLCanvasManager()
 			.getItem(iViewId);
 		
-		if (viewObject.getClass().equals(GLCanvasRemoteRendering3D.class))
+		if (viewObject instanceof GLCanvasRemoteRendering3D)
 		{
 			switch ( externalFlagSetterType ) 
 			{

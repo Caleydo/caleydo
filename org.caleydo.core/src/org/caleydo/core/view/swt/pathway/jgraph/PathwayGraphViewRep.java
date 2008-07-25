@@ -338,8 +338,7 @@ extends APathwayGraphViewRep {
 		}
 
 		// Check if clicked object is a cell
-		if (!lastClickedGraphCell.getUserObject().getClass().equals(
-				PathwayVertexGraphItemRep.class))
+		if (!(lastClickedGraphCell.getUserObject() instanceof PathwayVertexGraphItemRep))
 		{
 			return;
 		}
@@ -996,8 +995,7 @@ extends APathwayGraphViewRep {
 		if (lastClickedGraphCell != null)
 		{
 			// Check if selected cell is a vertex and if it is valid
-			if (lastClickedGraphCell.getUserObject().getClass()
-				.equals(PathwayVertexGraphItemRep.class))
+			if (lastClickedGraphCell.getUserObject() instanceof PathwayVertexGraphItemRep)
 			{
 				// Map previously selected cell to new pathway JGraph.
 				lastClickedGraphCell = hashVertexRep2GraphCell

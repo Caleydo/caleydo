@@ -42,6 +42,10 @@ extends ACmdCreate_GlCanvasUser {
 		localManagerObjectType = CommandQueueSaxType.CREATE_GL_PATHWAY_3D;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.base.ACmdCreate_GlCanvasUser#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
+	 */
 	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 	
 		super.setParameterHandler(parameterHandler);

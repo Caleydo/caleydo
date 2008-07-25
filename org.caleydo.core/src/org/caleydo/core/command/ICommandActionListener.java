@@ -3,7 +3,7 @@ package org.caleydo.core.command;
 /**
  * Handles commands and forwards them.
  * 
- * Controler/manager in the "Observer" Desing Pattern.
+ * Controller/manager in the "Observer" design pattern.
  * 
  * @author Michael Kalkusch
  *

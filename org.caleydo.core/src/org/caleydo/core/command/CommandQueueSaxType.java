@@ -59,7 +59,6 @@ implements ICaleydoDefaultType <CommandQueueSaxType> {
 	EXTERNAL_FLAG_SETTER(ManagerType.VIEW, "cmd", "type", "-1", "External flag setter"),
 	EXTERNAL_ACTION_TRIGGER(ManagerType.VIEW, "cmd", "type", "-1", "External action trigger"),
 	
-	CREATE_PATHWAY_STORAGE(ManagerType.DATA_STORAGE,"cmd","type","-1", "Create Storage Pathway"),
 	CREATE_SET_DATA(ManagerType.DATA,"cmd","type","-1", "Create SET"),	
 	CREATE_SET_SELECTION(ManagerType.DATA_SET,"cmd","type","-1", "Create Selection SET!"),
 	CREATE_SET_SELECTION_MAKRO(ManagerType.DATA_SET,"cmd", "type","-1", "Create Selection SET incl. Storage and Virtual Array!"),
@@ -102,11 +101,12 @@ implements ICaleydoDefaultType <CommandQueueSaxType> {
 	 */
 	LOAD_GLYPH_DEFINITIONS("cmd", "type", "-1", "load definition for the glyphs"),
 	
+	LOAD_PATHWAY_DATA("cmd", "type", "-1", "load pathway data"),
+	
 	RUN_CMD_NOW("cmd", "process","RUN_CMD_NOW", "No description available!"),	
 	MEMENTO("cmd", "process", null, "No description available!"),	
 	
 	NO_OPERATION("cmd","type","NO_OPERATION", "No description available!"),
-	
 	
 	
 	/*

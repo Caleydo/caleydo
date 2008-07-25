@@ -86,15 +86,17 @@ implements IMediatorReceiver, IMediatorSender
 		this.bRenderOnlyContext = bRenderOnlyContext;
 	}
 	
+	/**
+	 * Constructor.
+	 */
 	public AGLCanvasStorageBasedView(final IGeneralManager generalManager,
 			final int iViewId,
 			final int iGLCanvasID,
 			final String sLabel,
 			final IViewFrustum viewFrustum)
 	{
-		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
+		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum, true);
 		
-				
 		alDataStorages = new ArrayList<IStorage>();
 		mapSelections = new EnumMap<ESelectionType, ArrayList<Integer>>(ESelectionType.class);	
 		
@@ -109,15 +111,21 @@ implements IMediatorReceiver, IMediatorSender
 	
 	public void initData()
 	{
-		// TODO: check if I only get in here once
-		alDataStorages.clear();
-		
 		if (alSetData == null)
 			return;
 		
 		if (alSetSelection == null)
 			return;				
-			
+
+		if (alDataStorages == null)
+			return;
+		
+		alDataStorages.clear();
+		
+//		mapSelections.clear();
+//		alContentSelection.clear();
+//		alStorageSelection.clear();
+		
 		// Extract data
 		for (ISet tmpSet : alSetData)
 		{

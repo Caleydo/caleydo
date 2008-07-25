@@ -1,13 +1,21 @@
 package org.caleydo.core.manager.command;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
+import java.util.logging.Level;
 
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.command.ICommandListener;
+import org.caleydo.core.command.base.ACommand;
 import org.caleydo.core.command.queue.ICommandQueue;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.ICommandManager;
@@ -20,28 +28,31 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
 
 /**
+ * Manager for creating and exporting commands.
+ * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public class CommandManager 
 extends AManager 
 implements ICommandManager {
-
+	
 	private ICommandFactory commandFactory;
 	
 	/**
-	 * List of all Commands to be excecuted as soon as possible
+	 * List of all Commands to be executed as soon as possible
 	 */
-	private Vector<ICommand> vecCmd_handle;
+	private Vector<ICommand> vecCmdHandle;
 	
 	/**
 	 * List of All Commands to be executed when sooner or later.
 	 */
-	private Vector<ICommand> vecCmd_schedule;
+	private Vector<ICommand> vecCmdSchedule;
 	
-	protected Hashtable<Integer,ICommandQueue> hash_CommandQueueId;
+	protected Hashtable<Integer,ICommandQueue> hashCommandQueueId;
 	
-	protected Hashtable<Integer,ICommand> hash_CommandId;
+	protected Hashtable<Integer,ICommand> hashCommandId;
 	
 	protected Vector <ICommand> vecUndo;
 		
@@ -50,7 +61,6 @@ implements ICommandManager {
 	protected ArrayList<UndoRedoViewRep> arUndoRedoViews;
 	
 	private int iCountRedoCommand = 0;
-	
 	
 	/**
 	 * Constructor.
@@ -63,13 +73,13 @@ implements ICommandManager {
 		commandFactory = new CommandFactory( setGeneralManager, 
 				this);
 		
-		vecCmd_handle = new Vector<ICommand> ();
+		vecCmdHandle = new Vector<ICommand> ();
 		
-		vecCmd_schedule = new Vector<ICommand> ();
+		vecCmdSchedule = new Vector<ICommand> ();
 		
-		hash_CommandQueueId = new Hashtable<Integer,ICommandQueue> ();
+		hashCommandQueueId = new Hashtable<Integer,ICommandQueue> ();
 		
-		hash_CommandId = new Hashtable<Integer,ICommand> ();
+		hashCommandId = new Hashtable<Integer,ICommand> ();
 				
 		vecUndo = new Vector <ICommand> (100);
 		
@@ -108,7 +118,7 @@ implements ICommandManager {
 	public void handleCommand(ICommand addCommand) {
 		
 		addCommand.doCommand();
-		vecCmd_handle.addElement( addCommand );
+		vecCmdHandle.addElement(addCommand);
 	}
 
 	/* (non-Javadoc)
@@ -116,7 +126,7 @@ implements ICommandManager {
 	 */
 	public void scheduleCommand(ICommand addCommand) {
 		
-		vecCmd_schedule.addElement( addCommand );
+		vecCmdSchedule.addElement(addCommand);
 		addCommand.doCommand();
 		
 	}
@@ -125,21 +135,21 @@ implements ICommandManager {
 	 * @see org.caleydo.core.data.manager.GeneralManager#hasItem(int)
 	 */
 	public boolean hasItem(int iItemId) {
-		return hash_CommandId.containsKey( iItemId );
+		return hashCommandId.containsKey( iItemId );
 	}
 
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.data.manager.GeneralManager#getItem(int)
 	 */
 	public Object getItem(int iItemId) {
-		return hash_CommandId.get( iItemId );
+		return hashCommandId.get( iItemId );
 	}
 
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.data.manager.GeneralManager#size()
 	 */
 	public int size() {
-		return hash_CommandId.size();
+		return hashCommandId.size();
 	}
 
 
@@ -153,13 +163,13 @@ implements ICommandManager {
 		
 		if ( registerCommand.getClass().equals( 
 				ICommandQueue.class )) {
-			hash_CommandQueueId.put( iItemId, (ICommandQueue) registerItem );
+			hashCommandQueueId.put( iItemId, (ICommandQueue) registerItem );
 		} else {
 			
 		}
 		
-		vecCmd_handle.addElement( registerCommand );		
-		hash_CommandId.put( iItemId, registerCommand );
+		vecCmdHandle.addElement( registerCommand );		
+		hashCommandId.put( iItemId, registerCommand );
 		
 		return true;
 	}
@@ -171,20 +181,24 @@ implements ICommandManager {
 		
 		//TODO: ensure thread safety! 
 		if ( type == ManagerObjectType.CMD_QUEUE ) {
-			hash_CommandQueueId.remove( iItemId );
+			hashCommandQueueId.remove( iItemId );
 		}
 		
-		if ( hash_CommandId.containsKey( iItemId ) ) {
+		if ( hashCommandId.containsKey( iItemId ) ) {
 		
 			ICommand unregisterCommand = 
-				hash_CommandId.remove( iItemId );
+				hashCommandId.remove( iItemId );
 			
-			return vecCmd_handle.remove( unregisterCommand );
+			return vecCmdHandle.remove( unregisterCommand );
 		}
 		
 		return false;
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.ICommandManager#createCommandByType(org.caleydo.core.command.CommandQueueSaxType)
+	 */
 	public ICommand createCommandByType(final CommandQueueSaxType cmdType) {
 
 		ICommand createdCommand = commandFactory.createCommandByType(cmdType);
@@ -199,7 +213,10 @@ implements ICommandManager {
 		return createdCommand;
 	}
 
-	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.ICommandManager#createCommand(org.caleydo.core.parser.parameter.IParameterHandler)
+	 */
 	public ICommand createCommand(final IParameterHandler phAttributes)
 	{
 		CommandQueueSaxType cmdType = 
@@ -224,12 +241,12 @@ implements ICommandManager {
 		return createdCommand;
 	}
 	
-
 	/*
-	 * 
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.ICommandManager#hasCommandQueueId(int)
 	 */
 	public boolean hasCommandQueueId( final int iCmdQueueId ) {
-		return hash_CommandQueueId.containsKey( iCmdQueueId );
+		return hashCommandQueueId.containsKey( iCmdQueueId );
 	}
 	
 	/*
@@ -237,9 +254,13 @@ implements ICommandManager {
 	 * @see org.caleydo.core.manager.ICommandManager#getCommandQueueByCmdQueueId(int)
 	 */
 	public ICommandQueue getCommandQueueByCmdQueueId( final int iCmdQueueId ) {
-		return hash_CommandQueueId.get( iCmdQueueId );
+		return hashCommandQueueId.get( iCmdQueueId );
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.ICommandManager#createCommandQueue(java.lang.String, java.lang.String, int, int, int, int)
+	 */
 	public ICommand createCommandQueue( final String sCmdType,
 			final String sProcessType,
 			final int iCmdId,
@@ -263,10 +284,11 @@ implements ICommandManager {
 		return newCmd;
 	}
 
-	/**
+	/*
+	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.ICommandManager#runDoCommand(org.caleydo.core.command.ICommand)
 	 */
-	public synchronized void  runDoCommand(ICommand runCmd) {
+	public synchronized void runDoCommand(ICommand runCmd) {
 
 		vecUndo.addElement( runCmd );
 		
@@ -276,7 +298,7 @@ implements ICommandManager {
 			iCountRedoCommand--;
 		}		
 		
-		//FIXME: think of multipel tread support! current Version is not thread safe!
+		//FIXME: think of multiple tread support! current Version is not thread safe!
 		Iterator <UndoRedoViewRep> iter = arUndoRedoViews.iterator();
 		
 		assert iter != null : "arUndoRedoViews was not inizalized! Iterator ist null-pointer";		
@@ -285,10 +307,10 @@ implements ICommandManager {
 		{
 			iter.next().addCommand(runCmd);
 		}
-		
 	}
 
-	/**
+	/*
+	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.ICommandManager#runUndoCommand(org.caleydo.core.command.ICommand)
 	 */
 	public synchronized void runUndoCommand(ICommand runCmd) {
@@ -299,11 +321,86 @@ implements ICommandManager {
 		vecRedo.addElement( runCmd );
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.ICommandManager#addUndoRedoViewRep(org.caleydo.core.view.swt.undoredo.UndoRedoViewRep)
+	 */
 	public void addUndoRedoViewRep(UndoRedoViewRep undoRedoViewRep) {
 		
 		arUndoRedoViews.add(undoRedoViewRep);		
 		arUndoRedoViews.get(0).updateCommandList(vecUndo);
-
 	}	
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.ICommandManager#writeSerializedObjects(java.lang.String)
+	 */
+	public void writeSerializedObjects(final String sFileName) {
+		
+		try
+		{
+			ObjectOutputStream out = new ObjectOutputStream(
+					new FileOutputStream(sFileName));
+			
+			// First write number of command objects
+			out.writeInt(vecUndo.size());
+			
+			// Iterate over commands
+			for (ICommand tmpCmd : vecUndo)
+			{
+				out.writeObject(tmpCmd);
+				
+				generalManager.getLogger().log(Level.INFO, 
+						"Serialize command: [" +tmpCmd.getInfoText() +"]");
+			}
+
+			out.close();
+			
+		} catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.ICommandManager#readSerializedObjects(java.lang.String)
+	 */
+	public void readSerializedObjects(final String sFileName) {
+		
+		try
+		{
+			ObjectInputStream in = new ObjectInputStream(
+					new FileInputStream(sFileName));
+			
+			int iCmdCount = in.readInt();
+			for (int iCmdIndex = 0; iCmdIndex < iCmdCount; iCmdIndex++)
+			{
+//				vecCmdHandle.add((ICommand)in.readObject());	
+				ACommand tmpCmd = ((ACommand)in.readObject());
+				tmpCmd.setGeneralManager(generalManager);
+				tmpCmd.doCommand();
+			}
+			
+			in.close();
+			
+		} catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 }

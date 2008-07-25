@@ -8,7 +8,6 @@ import javax.media.opengl.GLEventListener;
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.camera.ViewFrustumBase;
-import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
@@ -29,7 +28,7 @@ extends ACmdCreate_IdTargetParentGLObject {
 	
 	protected CommandQueueSaxType localManagerObjectType;
 	
-	protected GLEventListener gLEventListener;
+	protected transient GLEventListener gLEventListener;
 	
 	protected IViewFrustum viewFrustum;
 	
@@ -48,10 +47,6 @@ extends ACmdCreate_IdTargetParentGLObject {
 		super(generalManager,
 				commandManager,
 				commandQueueSaxType);
-		
-		// Create default view frustum
-		viewFrustum = new ViewFrustumBase(ProjectionMode.ORTHOGRAPHIC,
-				-4f, 4f, -4f, 4f, -20f, 20f);
 	}
 
 	/*

@@ -19,6 +19,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  * Simple IMemento Manager, that stores all IMemento's in a Vector.
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  *
  */
 public class MementoManager 
