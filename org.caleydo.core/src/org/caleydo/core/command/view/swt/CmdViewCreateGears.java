@@ -51,10 +51,8 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL  {
 						iParentContainerId,
 						sLabel);
 		
-		viewManager.registerItem(
-				gearsView, 
-				iUniqueId, 
-				ManagerObjectType.VIEW);
+		viewManager.registerItem(gearsView, 
+				iUniqueId);
 		
 		gearsView.setAttributes(iWidthX, iHeightY);
 		gearsView.initView();

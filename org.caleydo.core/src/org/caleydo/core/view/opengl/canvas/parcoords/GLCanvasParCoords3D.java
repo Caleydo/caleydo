@@ -16,6 +16,7 @@ import java.util.Set;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.ccontainer.EDataKind;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
@@ -590,7 +591,7 @@ extends AGLCanvasStorageBasedView
 				}			
 								
 				fCurrentXValue = iVertexCount * fAxisSpacing;
-				fCurrentYValue = currentStorage.getArrayFloat()[iStorageIndex];
+				fCurrentYValue = currentStorage.getFloat(EDataKind.NORMALIZED, iStorageIndex);
 				if(iVertexCount != 0)
 				{
 					gl.glBegin(GL.GL_LINES);
@@ -1009,7 +1010,7 @@ extends AGLCanvasStorageBasedView
 				currentStorage = alDataStorages.get(alStorageSelection.get(iAxisNumber));						
 			}							
 			
-			float fCurrentValue = currentStorage.getArrayFloat()[iStorageIndex] * renderStyle.getAxisHeight();
+			float fCurrentValue = currentStorage.getFloat(EDataKind.NORMALIZED, iStorageIndex) * renderStyle.getAxisHeight();
 			if(fCurrentValue <= fArGateTipHeight[iAxisNumber] 
 			                                     && fCurrentValue >= fArGateBottomHeight[iAxisNumber])
 			{	
@@ -1446,7 +1447,7 @@ extends AGLCanvasStorageBasedView
 					continue;
 				}
 				
-				fYValue = alDataStorages.get(iCurrent).getArrayFloat()[iStorageIndex];
+				fYValue = alDataStorages.get(iCurrent).getFloat(EDataKind.NORMALIZED, iStorageIndex);
 				fYValue = fYValue * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
 				fXValue = iCount * fAxisSpacing + renderStyle.getXSpacing() + fXTranslation;
 				alPoints.add(new Vec3f(fXValue, fYValue, 0));
@@ -1606,9 +1607,9 @@ extends AGLCanvasStorageBasedView
 		else
 		{
 			vecLeftPoint.setY(alDataStorages.get(iAxisLeftIndex).
-					getArrayFloat()[iSelectedLineID] * renderStyle.getAxisHeight());
+					getFloat(EDataKind.NORMALIZED, iSelectedLineID) * renderStyle.getAxisHeight());
 			vecRightPoint.setY(alDataStorages.get(iAxisRightIndex).
-					getArrayFloat()[iSelectedLineID] * renderStyle.getAxisHeight());
+					getFloat(EDataKind.NORMALIZED, iSelectedLineID) * renderStyle.getAxisHeight());
 		}
 		
 		vecLeftPoint.setX(iPosition * fAxisSpacing);
@@ -1701,16 +1702,16 @@ extends AGLCanvasStorageBasedView
 			if(bRenderStorageHorizontally)
 			{
 				vecLeftPoint.setY(alDataStorages.get(iCurrent).
-						getArrayFloat()[iAxisLeftIndex] * renderStyle.getAxisHeight());
+						getFloat(EDataKind.NORMALIZED, iAxisLeftIndex) * renderStyle.getAxisHeight());
 				vecRightPoint.setY(alDataStorages.get(iCurrent).
-						getArrayFloat()[iAxisRightIndex] * renderStyle.getAxisHeight());
+						getFloat(EDataKind.NORMALIZED, iAxisRightIndex) * renderStyle.getAxisHeight());
 			}
 			else
 			{
 				vecLeftPoint.setY(alDataStorages.get(iAxisLeftIndex).
-						getArrayFloat()[iCurrent] * renderStyle.getAxisHeight());
+						getFloat(EDataKind.NORMALIZED, iCurrent) * renderStyle.getAxisHeight());
 				vecRightPoint.setY(alDataStorages.get(iAxisRightIndex).
-						getArrayFloat()[iCurrent] * renderStyle.getAxisHeight());
+						getFloat(EDataKind.NORMALIZED, iCurrent) * renderStyle.getAxisHeight());
 			}
 			
 			vecLeftPoint.setX(iPosition * fAxisSpacing);

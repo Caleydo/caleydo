@@ -206,7 +206,7 @@ extends AGLCanvasUser {
 		
 		targetSet = 
 			generalManager.getSetManager(
-					).getItemSet( iTargetCollectionSetId );
+					).getSet( iTargetCollectionSetId );
 		
 		if ( targetSet == null ) {
 //			generalManager.logMsg(

@@ -13,7 +13,7 @@
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="47301" label="Storage	file for expression mapping 3"	attrib1="STRING" attrib2="test data	from file" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="48301" label="Storage	file for expression mapping 4" 	attrib1="STRING" attrib2="test data	from file" />
 
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="35101" label="Set for expression mapping 1" attrib1="35201" attrib2="45301 46301 47301 48301" attrib3="SET_GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="35101" label="Set for expression mapping 1" attrib1="35201" attrib2="45301 46301 47301 48301" attrib3="GENE_EXPRESSION_DATA" />
 
 	<!-- Data file loading -->      
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/lbi/SIRS_Ratio_all-situations_NaN_removed.csv"	

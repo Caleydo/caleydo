@@ -32,18 +32,12 @@ import org.caleydo.core.view.opengl.canvas.remote.glyph.GLCanvasRemoteGlyph;
 import org.caleydo.core.view.opengl.canvas.wii.GLCanvasWiiTest;
 import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
-import org.caleydo.core.view.swt.data.exchanger.DataExchangerViewRep;
-import org.caleydo.core.view.swt.data.exchanger.NewSetEditorViewRep;
-import org.caleydo.core.view.swt.data.explorer.DataExplorerViewRep;
 import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
 import org.caleydo.core.view.swt.image.ImageViewRep;
 import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
 import org.caleydo.core.view.swt.jogl.gears.GearsViewRep;
 import org.caleydo.core.view.swt.mixer.MixerViewRep;
-import org.caleydo.core.view.swt.pathway.Pathway2DViewRep;
 import org.caleydo.core.view.swt.progressbar.ProgressBarViewRep;
-import org.caleydo.core.view.swt.slider.SelectionSliderViewRep;
-import org.caleydo.core.view.swt.slider.StorageSliderViewRep;
 import org.caleydo.core.view.swt.test.TestTableViewRep;
 import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
 
@@ -160,8 +154,7 @@ implements IViewGLCanvasManager {
 		return 0;
 	}
 
-	public synchronized boolean registerItem(Object registerItem, int iItemId,
-			ManagerObjectType type) {
+	public synchronized boolean registerItem(Object registerItem, int iItemId) {
 
 		assert iItemId != 0 : "registerItem(Object,int) must not use iItemId==0";
 		
@@ -185,7 +178,7 @@ implements IViewGLCanvasManager {
 		return true;
 	}
 
-	public boolean unregisterItem(int iItemId, ManagerObjectType type) {
+	public boolean unregisterItem(int iItemId) {
 
 		assert false : "not done yet";
 		return false;
@@ -210,24 +203,27 @@ implements IViewGLCanvasManager {
 
 		//final int iNewId = this.createNewId(useViewType);
 
-		try
-		{
+		
 			switch (useViewType)
 			{
 			case VIEW:
-
+				break;
 			case VIEW_SWT_PATHWAY:
-				return new Pathway2DViewRep(generalManager, iViewID,
-						iParentContainerID, sLabel);
+//				return new Pathway2DViewRep(generalManager, iViewID,
+//						iParentContainerID, sLabel);
+				break;
 			case VIEW_SWT_DATA_EXPLORER:
-				return new DataExplorerViewRep(generalManager, iViewID,
-						iParentContainerID, sLabel);
+//				return new DataExplorerViewRep(generalManager, iViewID,
+//						iParentContainerID, sLabel);
+				break;
 			case VIEW_SWT_DATA_EXCHANGER:
-				return new DataExchangerViewRep(generalManager, iViewID,
-						iParentContainerID, sLabel);	
+//				return new DataExchangerViewRep(generalManager, iViewID,
+//						iParentContainerID, sLabel);	
+				break;
 			case VIEW_SWT_DATA_SET_EDITOR:
-				return new NewSetEditorViewRep(generalManager, iViewID,
-						iParentContainerID, sLabel);
+//				return new NewSetEditorViewRep(generalManager, iViewID,
+//						iParentContainerID, sLabel);
+				break;
 			case VIEW_SWT_PROGRESS_BAR:
 				return new ProgressBarViewRep(generalManager, iViewID,
 						iParentContainerID, sLabel);
@@ -235,11 +231,13 @@ implements IViewGLCanvasManager {
 				return new TestTableViewRep(generalManager, iViewID,
 						iParentContainerID, sLabel);
 			case VIEW_SWT_SELECTION_SLIDER:
-				return new SelectionSliderViewRep(generalManager, iViewID,
-						iParentContainerID, sLabel);
+//				return new SelectionSliderViewRep(generalManager, iViewID,
+//						iParentContainerID, sLabel);
+				break;
 			case VIEW_SWT_STORAGE_SLIDER:
-				return new StorageSliderViewRep(generalManager, iViewID,
-						iParentContainerID, sLabel);
+//				return new StorageSliderViewRep(generalManager, iViewID,
+//						iParentContainerID, sLabel);
+				break;
 			case VIEW_SWT_MIXER:
 				return new MixerViewRep(generalManager, iViewID,
 						iParentContainerID, sLabel);			
@@ -262,17 +260,9 @@ implements IViewGLCanvasManager {
 								+ useViewType.toString() + "]");
 			}
 			
-		} 
-		catch (NullPointerException e)
-		{
-//			generalManager.logMsg("Error while creating view; createView(" +
-//					useViewType.toString() +
-//					", " + iViewID + 
-//					", " + iParentContainerID + 
-//					", " + sLabel + " )", LoggerType.ERROR);
+	
 			
-			return null;
-		}
+		return null;
 	}
 	
 	/*
@@ -560,7 +550,7 @@ implements IViewGLCanvasManager {
 				return;
 				
 			case SWT_DATA_EXPLORER:
-				arDataExplorerViewRep.add( (DataExplorerViewRep) view);
+//				arDataExplorerViewRep.add( (DataExplorerViewRep) view);
 				return;
 			case SWT_HTML_BROWSER:
 				arHTMLBrowserViewRep.add( (HTMLBrowserViewRep) view);
@@ -592,10 +582,10 @@ implements IViewGLCanvasManager {
 			{
 			
 			case SWT_DATA_EXPLORER:
-				arDataExplorerViewRep.remove( (DataExplorerViewRep) view);
+//				arDataExplorerViewRep.remove( (DataExplorerViewRep) view);
 				return;
 			case SWT_HTML_BROWSER:
-				arDataExplorerViewRep.remove( (DataExplorerViewRep) view);
+//				arDataExplorerViewRep.remove( (DataExplorerViewRep) view);
 				return;
 				
 			default:

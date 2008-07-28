@@ -35,8 +35,10 @@ public class GlyphDataLoader {
 		GLCanvasGlyphGenerator generator = generalManager.getGlyphManager().getGlyphGenerator();
 		
 		glyphs = new HashMap<Integer, GlyphEntry>();
+		 
 		IStorage[] stores = glyphData.getStorageByDim(0);
-
+		
+		
 		ArrayList<int[]> aliStoreMapped = new ArrayList<int[]>();
 		ArrayList<String[]> alsStoreString = new ArrayList<String[]>();
 		ArrayList<String> alsStoreStringColTitel = new ArrayList<String>();

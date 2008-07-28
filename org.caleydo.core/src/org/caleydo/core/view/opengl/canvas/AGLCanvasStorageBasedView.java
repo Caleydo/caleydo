@@ -8,10 +8,10 @@ import java.util.logging.Level;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.SetType;
-import org.caleydo.core.data.collection.set.selection.ISetSelection;
+import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.IGeneralManager;
@@ -127,13 +127,15 @@ implements IMediatorReceiver, IMediatorSender
 //		alStorageSelection.clear();
 		
 		// Extract data
+		// TODO better iterator
 		for (ISet tmpSet : alSetData)
 		{
-			if (tmpSet.getSetType().equals(SetType.SET_GENE_EXPRESSION_DATA))
+			for(int iStorageCount = 0; iStorageCount < tmpSet.getSize(); iStorageCount++)
 			{
-				for (IStorage tmpStorage : tmpSet.getStorageByDim(0))
-					alDataStorages.add(tmpStorage);
+				alDataStorages.add(tmpSet.getStorage(iStorageCount));
 			}
+//			for (IStorage tmpStorage : tmpSet.getStorageByDim(0))
+//					alDataStorages.add(tmpStorage);
 		}			
 		
 		ArrayList<Integer> alTempList = alSetSelection.get(0).getSelectionIdArray();
@@ -276,14 +278,13 @@ implements IMediatorReceiver, IMediatorSender
 			return sRefSeq;		
 	}
 	
-	public void updateReceiver(Object eventTrigger, ISet updatedSet) 
+	public void updateReceiver(Object eventTrigger, ISelection updatedSelection) 
 	{		
 		generalManager.getLogger().log(Level.INFO, "Update called by "
 				+eventTrigger.getClass().getSimpleName());
 		
-		ISetSelection setSelection = (ISetSelection) updatedSet;
+		ISelection setSelection = (ISelection) updatedSelection;
 
-		setSelection.getReadToken();
 		// contains all genes in center pathway (not yet)
 		ArrayList<Integer> iAlSelection = setSelection.getSelectionIdArray();
 		// contains type - 0 for not selected 1 for selected
@@ -383,10 +384,8 @@ implements IMediatorReceiver, IMediatorSender
 			}
 		}
 
-		alSetSelection.get(1).getWriteToken();
 		alSetSelection.get(1).updateSelectionSet(iUniqueId, 
 				iAlTmpSelectionId, iAlTmpGroup, null);
-		alSetSelection.get(1).returnWriteToken();
 		
 		//propagateGeneSet(iAlTmpSelectionId, iAlTmpGroup);
 	}
@@ -412,10 +411,8 @@ implements IMediatorReceiver, IMediatorSender
 			iAlGeneSelection.add(getDavidIDFromStorageIndex(iCurrent));
 		}
 		
-		alSetSelection.get(1).getWriteToken();
 		alSetSelection.get(1).updateSelectionSet(iUniqueId, 
 				iAlGeneSelection, iAlGroup, null);
-		alSetSelection.get(1).returnWriteToken();
 	}
 	
 	protected ArrayList<Integer> prepareSelection(GenericSelectionManager selectionManager, 

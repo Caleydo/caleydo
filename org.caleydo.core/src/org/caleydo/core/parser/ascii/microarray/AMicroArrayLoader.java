@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.StorageType;
+import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.parser.ParserTokenHandler;
 import org.caleydo.core.data.xml.IMementoXML;
 import org.caleydo.core.manager.IGeneralManager;
@@ -126,7 +126,7 @@ implements IMementoXML, IParserObject {
 				//MultiDataEnumType addType = MultiDataEnumType.ABORT;				
 				
 				alTokenTargetToParserTokenType.add( 
-						new ParserTokenHandler( StorageType.ABORT) );
+						new ParserTokenHandler( EStorageType.ABORT) );
 				
 				return bAllTokensProper;				
 			} 
@@ -136,15 +136,15 @@ implements IMementoXML, IParserObject {
 				//MultiDataEnumType addType = MultiDataEnumType.SKIP;
 				
 				alTokenTargetToParserTokenType.add( 
-						new ParserTokenHandler( StorageType.SKIP ));							
+						new ParserTokenHandler(EStorageType.SKIP));							
 			} 
 			else if (sBuffer.equalsIgnoreCase("int")) 
 			{
 				
-				int iIndexFromType = StorageType.INT.ordinal();
+				int iIndexFromType = EStorageType.INT.ordinal();
 				
 				ParserTokenHandler addType = 
-					new ParserTokenHandler(StorageType.INT,
+					new ParserTokenHandler(EStorageType.INT,
 							iIndexPerArray[iIndexFromType] );
 				
 				alTokenTargetToParserTokenType.add( addType );
@@ -156,10 +156,10 @@ implements IMementoXML, IParserObject {
 			else if (sBuffer.equalsIgnoreCase("float")) 
 			{
 				
-				int iIndexFromType = StorageType.FLOAT.ordinal();
+				int iIndexFromType = EStorageType.FLOAT.ordinal();
 				
 				ParserTokenHandler addType = 
-					new ParserTokenHandler(StorageType.FLOAT,
+					new ParserTokenHandler(EStorageType.FLOAT,
 							iIndexPerArray[iIndexFromType] );	
 				
 				alTokenTargetToParserTokenType.add( addType );
@@ -171,25 +171,25 @@ implements IMementoXML, IParserObject {
 			else if (sBuffer.equalsIgnoreCase("double")) 
 			{
 				
-				int iIndexFromType = StorageType.DOUBLE.ordinal();
-				
-				ParserTokenHandler addType = 
-					new ParserTokenHandler(StorageType.DOUBLE,
-							iIndexPerArray[iIndexFromType] );	
-				
-				alTokenTargetToParserTokenType.add( addType );
-			
-				/// increment index...
-				iIndexPerArray[iIndexFromType]++;
+//				int iIndexFromType = EStorageType.ordinal();
+//				
+//				ParserTokenHandler addType = 
+//					new ParserTokenHandler(StorageType.EStorageType,
+//							iIndexPerArray[iIndexFromType] );	
+//				
+//				alTokenTargetToParserTokenType.add( addType );
+//			
+//				/// increment index...
+//				iIndexPerArray[iIndexFromType]++;
 								          
 			}
 			else if (sBuffer.equalsIgnoreCase("string")) 
 			{				
 				
-				int iIndexFromType = StorageType.STRING.ordinal();
+				int iIndexFromType = EStorageType.STRING.ordinal();
 				
 				ParserTokenHandler addType = 
-					new ParserTokenHandler(StorageType.STRING,								
+					new ParserTokenHandler(EStorageType.STRING,								
 							iIndexPerArray[iIndexFromType] );	
 				
 				alTokenTargetToParserTokenType.add( addType );

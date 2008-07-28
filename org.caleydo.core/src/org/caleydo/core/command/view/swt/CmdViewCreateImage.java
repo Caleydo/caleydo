@@ -54,8 +54,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 		
 		viewManager.registerItem(
 				imageView, 
-				iUniqueId, 
-				ManagerObjectType.VIEW);
+				iUniqueId);
 
 		imageView.setAttributes(iWidthX, iHeightY, sImagePath);
 		imageView.initView();

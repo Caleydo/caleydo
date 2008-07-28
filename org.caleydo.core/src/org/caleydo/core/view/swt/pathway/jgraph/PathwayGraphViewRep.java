@@ -24,15 +24,14 @@ import javax.swing.JFrame;
 import javax.swing.JScrollPane;
 import javax.swing.SwingUtilities;
 
+import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.StorageType;
-import org.caleydo.core.data.collection.set.SetFlatThreadSimple;
-import org.caleydo.core.data.collection.set.selection.ISetSelection;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexShape;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
@@ -1170,7 +1169,7 @@ extends APathwayGraphViewRep {
 //						+ eventTrigger.getClass().getSimpleName(),
 //				LoggerType.VERBOSE);
 
-		ISetSelection setSelection = (ISetSelection) updatedSet;
+		ISelection setSelection = (ISelection) updatedSet;
 
 		setSelection.getReadToken();
 		ArrayList<Integer> iAlOptional = setSelection.getOptionalDataArray();
@@ -1195,7 +1194,7 @@ extends APathwayGraphViewRep {
 			//iLLNeighborDistance.clear();
 	
 			for (int iSelectedVertexIndex = 0; iSelectedVertexIndex < ((IStorage) setSelection
-					.getStorageByDimAndIndex(0, 0)).getSize(StorageType.INT); iSelectedVertexIndex++)
+					.getStorageByDimAndIndex(0, 0)).getSize(EStorageType.INT); iSelectedVertexIndex++)
 			{
 	
 				PathwayVertexGraphItemRep selectedVertex = 

@@ -325,10 +325,10 @@ implements IHistogramStatistic {
 
 	}
 	
-	public void addData( final ISet useSet ) {
-		useSet.getVirtualArrayByDimAndIndex(0,0);
-		useSet.getStorageByDimAndIndex(0,0);
-	}
+//	public void addData( final ISet useSet ) {
+//		useSet.getVirtualArrayByDimAndIndex(0,0);
+//		useSet.getStorageByDimAndIndex(0,0);
+//	}
 
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.math.statistics.HistogramStatisticBase#addDataValues(T[])

@@ -1,7 +1,7 @@
 
 package org.caleydo.core.manager.event.mediator;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.selection.ISelection;
 
 /**
  * Object that shall receive an event.
@@ -27,6 +27,6 @@ public interface IMediatorReceiver {
 	 * @param updatedSet Set containing update information
 	 */
 	public void updateReceiver(Object eventTrigger, 
-			ISet updatedSet);
+			ISelection updatedSet);
 	
 }

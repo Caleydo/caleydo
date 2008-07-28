@@ -4,11 +4,8 @@ import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.view.swt.data.explorer.DataExplorerViewRep;
 
 /**
  * Class implementes the command for creating a data explorer view.
@@ -48,27 +45,26 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	 */
 	public void doCommand() throws CaleydoRuntimeException {
 		
-		IViewManager viewManager = ((IViewManager) generalManager
-				.getManagerByObjectType(ManagerObjectType.VIEW));
-		
-		DataExplorerViewRep dataExplorerView = (DataExplorerViewRep)viewManager
-				.createView(ManagerObjectType.VIEW_SWT_DATA_EXPLORER,
-							iUniqueId, 
-							iParentContainerId, 
-							sLabel);
-		
-		viewManager.registerItem(
-				dataExplorerView, 
-				iUniqueId, 
-				ManagerObjectType.VIEW);
-		
-		viewManager.addViewRep(dataExplorerView);
-		
-		dataExplorerView.setAttributes(iWidthX, iHeightY);
-		dataExplorerView.initView();
-		dataExplorerView.drawView();
-		
-		commandManager.runDoCommand(this);
+//		IViewManager viewManager = ((IViewManager) generalManager
+//				.getManagerByObjectType(ManagerObjectType.VIEW));
+//		
+//		DataExplorerViewRep dataExplorerView = (DataExplorerViewRep)viewManager
+//				.createView(ManagerObjectType.VIEW_SWT_DATA_EXPLORER,
+//							iUniqueId, 
+//							iParentContainerId, 
+//							sLabel);
+//		
+//		viewManager.registerItem(
+//				dataExplorerView, 
+//				iUniqueId);
+//		
+//		viewManager.addViewRep(dataExplorerView);
+//		
+//		dataExplorerView.setAttributes(iWidthX, iHeightY);
+//		dataExplorerView.initView();
+//		dataExplorerView.drawView();
+//		
+//		commandManager.runDoCommand(this);
 	}
 
 	public void setParameterHandler( final IParameterHandler parameterHandler ) {

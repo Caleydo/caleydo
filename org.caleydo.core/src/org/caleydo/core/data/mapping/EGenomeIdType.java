@@ -1,78 +1,68 @@
 package org.caleydo.core.data.mapping;
 
-import org.caleydo.core.data.collection.StorageType;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
-import org.caleydo.core.util.ICaleydoDefaultType;
+import org.caleydo.core.data.collection.EStorageType;
 
 /**
  * Enum that defines all genome data types that could possibly be loaded
  * to the system.
- * 
- * Note: *_CODE indicates, that it is a String that is mapped to an integer internally.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
  *
  */
 public enum EGenomeIdType
-implements ICaleydoDefaultType <EGenomeIdType> {
+{
 			
-	GENE_NAME(StorageType.STRING,
-			EGenomeMappingType.NON_MAPPING,
+	GENE_NAME(EStorageType.STRING,
 			"gene-name","gene pseudo name"),
 			
-	GENE_SYMBOL(StorageType.STRING,
-			EGenomeMappingType.NON_MAPPING,
+	GENE_SYMBOL(EStorageType.STRING,
 			"gene-symbol","gene pseudo symbol"),
 			
-	BIOCARTA_GENE_ID(StorageType.STRING,
-			EGenomeMappingType.NON_MAPPING,
+	BIOCARTA_GENE_ID(EStorageType.STRING,
 			"biocarta geneid","biocarta geneid"),
 		
-	DAVID(StorageType.INT,
-			EGenomeMappingType.NON_MAPPING,
+	DAVID(EStorageType.INT,
 			"david","david-id"),
 			
-	REFSEQ_MRNA(StorageType.INT,
-			EGenomeMappingType.NON_MAPPING,
+	REFSEQ_MRNA(EStorageType.INT,
 			"refseq-mrna","refseq-mrna-id"),
 			
-	ENTREZ_GENE_ID(StorageType.INT,
-			EGenomeMappingType.NON_MAPPING,
+	ENTREZ_GENE_ID(EStorageType.INT,
 			"entrez-gene-id","entrez-gene-id"),
 				
-	EXPRESSION_STORAGE_ID(StorageType.INT,
-			EGenomeMappingType.NON_MAPPING,
-			"expression-storage-id", "expression-storage-id"),			
-			
-	NONE(StorageType.NONE,
-			EGenomeMappingType.NON_MAPPING,
-			"none","none");
+	EXPRESSION_STORAGE_ID(EStorageType.INT,
+			"expression-storage-id", "expression-storage-id");
+				
 	
-	private final StorageType storageType;
+	private final EStorageType storageType;
 	
 	private final String sName;
 	
-	private final String sDesciption;
+	private final String sDescription;
 	
-	private final EGenomeMappingType basicConversion;
-	
-	private EGenomeIdType( final StorageType setStorageType, 
-			final EGenomeMappingType setBasicConversion,
-			final String name, 
-			final String desciption ) {
-		sName = name;
-		sDesciption = desciption;
-		storageType = setStorageType;
-		basicConversion = setBasicConversion;
+	/**
+	 * Constructor
+	 * 
+	 * @param storageType the type of the storage
+	 * @param sName 
+	 * @param sDesciption
+	 */
+	private EGenomeIdType( final EStorageType storageType, 
+			final String sName, 
+			final String sDesciption) 
+	{
+		this.sName = sName;
+		this.sDescription = sDesciption;
+		this.storageType = storageType;
 	}
 	
 	/**
-	 * @return the entitis description.
+	 * @return the entities description.
 	 */
-	public String getDesciption() {
+	public String getDescription() {
 	
-		return sDesciption;
+		return sDescription;
 	}
 
 	/**
@@ -80,13 +70,9 @@ implements ICaleydoDefaultType <EGenomeIdType> {
 	 * 
 	 * @return type of storage needed
 	 */
-	public StorageType getStorageType() {
+	public EStorageType getStorageType() {
 	
 		return storageType;
-	}
-	
-	public EGenomeMappingType getBasicConversion() {
-		return basicConversion;
 	}
 	
 	/**
@@ -95,14 +81,5 @@ implements ICaleydoDefaultType <EGenomeIdType> {
 	public String getName() {
 	
 		return sName;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.util.ICaleydoDefaultType#getTypeDefault()
-	 */
-	public EGenomeIdType getTypeDefault() {
-
-		return EGenomeIdType.NONE;
 	}
 }

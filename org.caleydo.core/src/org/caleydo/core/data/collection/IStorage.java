@@ -1,189 +1,128 @@
 package org.caleydo.core.data.collection;
 
-import java.util.Hashtable;
+import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.data.collection.ccontainer.EDataKind;
+import org.caleydo.core.data.collection.ccontainer.PrimitiveFloatCContainerIterator;
+import org.caleydo.core.data.collection.ccontainer.PrimitiveIntCContainerIterator;
+import org.caleydo.core.data.collection.storage.ERawDataType;
 
-import org.caleydo.core.data.collection.thread.ICollectionThreadObject;
-import org.caleydo.core.data.xml.IMementoNetEventXML;
 
 /**
- * Interface for data storage container.
+ * Interface for Storages
  * 
- * @author Michael Kalkusch
+ * A Storage is a container that holds various representations of a particular data entity,
+ * for example a microarray experiment, or a column on illnesses in a clinical 
+ * data file.
+ *
+ * It contains all information considering one such entity, for example, the raw,
+ * normalized and logarithmized data as well as metadata, such as the label of the experiment.
+ * 
+ * Only the raw data and some metadata can be specified manually, the rest is computed on
+ * on demand.
+ * 
+ * One distinguishes between two basic storage types: numerical and nominal. This is reflected 
+ * in the two sub-interfaces INumericalSet and INominalSet.
+ * 
+ * After construction one of the setRawData methods has to be called. Notice, that only one
+ * setRawData may be called exactly once, since a set is designed to contain only one raw
+ * data set at a time.
+ * 
  * @author Alexander Lex
- * @author Marc Streit
+ *
  */
+
 public interface IStorage 
-extends ICollection, IMementoNetEventXML, ICollectionThreadObject {
+extends IUniqueObject
+{
+		
+	/**
+	 * Set the raw data with data type float
+	 * 
+	 * @param fArRawData a float array containing the raw data
+	 */
+	public void setRawData(float[] fArRawData);
+	
+	/**
+	 * Set the raw data with data type int
+	 * 
+	 * @param fArRawData a int array containing the raw data
+	 */
+	public void setRawData(int[] iArRawData);
 
 	/**
-	 * Adds a new container with the storage type defined in setStorageType.
-	 * Returns the index of the new container.
+	 * Returns the data type of the raw data
 	 * 
-	 * Note: allocate() must be called to make the change permanent.
-	 * 
-	 * @param setStorageType define the new storage type
-	 * @return new index of the storage
+	 * @return a value of ERawDataType
 	 */
-	public int addStorageTypePerContainer( StorageType setStorageType );
+	public ERawDataType getRawDataType();
 	
 	/**
-	 * Sets the storage type for a container.
-	 * Note: allocate() must be called to make the change permanent.
+	 * Set the label of a set.
+	 * A label is for example the name of the column, or the identifier for the dataset
 	 * 
-	 * Some implementations use only one contaier, while others use several
-	 * container.
+	 * It is used for printing identifications 
 	 * 
-	 * @param setStorageType new storage type for the container.
-	 */	
-	public void setStorageTypePerContainer( StorageType setStorageType,
-			final int iAtContainerPosition );
-
-	
-//	/**
-//	 * Get the storage type of one container 
-//	 * 
-//	 * @param iAtContainerPosition address the container
-//	 * @return storage type of the container.
-//	 */
-//	public StorageType getStorageTypePerContainer( 
-//			final int iAtContainerPosition );
-	
-	/**
-	 * Removes a container immediately.
-	 * 
-	 * @param iAtContainerPosition 
+	 * @param sLabel the name of the label
 	 */
-	public void removeStorage( final StorageType byStorageType );
+	public void setLabel(String sLabel);
 	
 	/**
-	 * Allocates all arrays.
-	 *  If the size of the array was change the content of the array is lost.
+	 * Returns the label. If nothing was specified with setLabel it returns an empty string.
 	 * 
 	 * @return
 	 */
-	public boolean allocate();
-	
-//	/**
-//	 * ISet size of all containers.
-//	 * Note: allocate() must be called to make the change permanent.
-//	 * 
-//	 * @param size
-//	 */
-//	public void setAllSize( final int [] size );
-	
-	/**
-	 * ISet size of all containers.
-	 * Note: allocate() must be called to make the change permanent.
-	 * 
-	 * @see org.caleydo.core.data.collection.IStorage#getMaximumLengthOfAllArrays()
-	 * 
-	 * @param size
-	 */
-	public Hashtable <StorageType,Integer> getAllSize();
-	
-	/**
-	 * Sets size for one container.
-	 * Note: allocate() must be called to make the change permanent.
-	 * 
-	 * @param iAtContainerPosition address a container. range [0.. getNumberArrays()-1 ]
-	 * @param iSetSize new size of the container (array)
-	 * @return TRUE if all was fine
-	 */
-	public void setSize( final StorageType byStorageType, final int iSetSize);
-	
-	/**
-	 * Get size for one container.
-	 * 
-	 * @param iAtContainerPosition address a container. range [0.. getNumberArrays()-1 ]
-	 * @return number of allocated elements in container at position iAtContainerPosition
-	 */
-	public int getSize( final StorageType type );
-	
-//	/**
-//	 * Get each size of each container (array)
-//	 * @return
-//	 */
-//	public int[] getAllSize();
-	
-	/**
-	 * Return the number of hosted containers (arrays).
-	 *  
-	 * @return number of container (arrays) hosted
-	 */
-	public int getNumberArrays();
-	
-	/**
-	 * Get the size of the largest array in the storage.
-	 * 
-	 * @see org.caleydo.core.data.collection.IStorage#getAllSize()
-	 * 
-	 * @return size of largest array
-	 */
-	public int getMaximumLengthOfAllArrays();
-
-	public void setLabel(final String sLabel);
-	
 	public String getLabel();
 	
-	//-----------------------------------
 	
-	// FIXME: No setters for [][], Object and Boolean
+	/**
+	 * Returns a float value from a storage of which the kind has to be specified
+	 * Use iterator when you want to iterate over the whole field, it has better
+	 * performance
+	 * 
+	 * @param storageKind Specify which kind of storage (eg: raw, normalized, log)
+	 * @param iIndex The index of the requested Element
+	 * @return The associated value
+	 */
+	public float getFloat(EDataKind storageKind, int iIndex);
 	
-	// Int
+	/**
+	 * Returns a iterator to the storage of which the kind has to be specified
+	 * Good performance
+	 * 
+	 * @param storageKind
+	 * @return
+	 */
+	public PrimitiveFloatCContainerIterator floatIterator(EDataKind storageKind);
 	
-	public void setArrayInt( int[] set );
+	/**
+	 * Returns a float value from a storage of which the kind has to be specified
+	 * Use iterator when you want to iterate over the whole field, it has better
+	 * performance
+	 * 
+	 * @param storageKind Specify which kind of storage (eg: raw, normalized, log)
+	 * @param iIndex The index of the requested Element
+	 * @return The associated value
+	 */
+	public float getInt(EDataKind storageKind, int iIndex);
 	
-	public int[] getArrayInt();
+	/**
+	 * Returns a iterator to the storage of which the kind has to be specified
+	 * Good performance
+	 * 
+	 * @param storageKind
+	 * @return
+	 */
+	public PrimitiveIntCContainerIterator intIterator(EDataKind storageKind);
 	
-	public int getMinInt();
 	
-	public int getMaxInt();
+	/**
+	 * Brings any dataset into a format between 0 and 1. This is used for drawing. Works for nominal
+	 * and numerical data.
+	 * 
+	 * For nominal data the first value is 0, the last value is 1
+	 */
+	public void normalize();
 	
-	public int[][] getArray2DInt();	
 	
-	
-    // Float
-	
-	public void setArrayFloat( float[] set );
-	
-	public float[] getArrayFloat();
-
-	public float getMinFloat();
-	
-	public float getMaxFloat();
-	
-	public float[][] getArray2DFloat();
-	
-	// Double
-	
-	public void setArrayDouble( double[] set );
-	
-	public double[] getArrayDouble();
-	
-	public double getMinDouble();
-	
-	public double getMaxDouble();
-	
-	public double[][] getArray2DDouble();
-	
-	// String
-	
-	public void setArrayString( String[] set );
-		
-	public String[] getArrayString();
-	
-	public String[][] getArray2DString();
-	
-	// Object
-	
-	public Object[] getArrayObject();
-	
-	public Object[][] getArray2DObject();
-	
-	// Boolean
-	
-	public boolean[] getArrayBoolean();
-
-	public boolean[][] getArray2DBoolean();
 	
 }

@@ -7,13 +7,10 @@ import java.util.Vector;
 
 import org.xml.sax.Attributes;
 
-import org.caleydo.core.math.statistics.histogram.StatisticHistogramType;
-import org.caleydo.core.util.ICaleydoDefaultType;
-
 public interface IParameterHandler {
 
 	public enum ParameterHandlerType 
-	implements ICaleydoDefaultType <ParameterHandlerType> {
+	{
 		
 		BOOL(),
 		INT(),
@@ -22,18 +19,6 @@ public interface IParameterHandler {
 		VEC3F(),
 		VEC4F();
 		
-		private ParameterHandlerType() {
-			
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * @see org.caleydo.core.util.ICaleydoDefaultType#getTypeDefault()
-		 */
-		public ParameterHandlerType getTypeDefault() {
-
-			return ParameterHandlerType.STRING;
-		}
 	}
 
 	public abstract Object getValue(final String key);

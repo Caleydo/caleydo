@@ -186,7 +186,7 @@ implements IView {
 		int iSetIndex = arSetIdList.get(iIndex).intValue();
 		
 		ISet detailsOnSet = generalManager.
-			getSetManager().getItemSet(iSetIndex);
+			getSetManager().getSet(iSetIndex);
 		
 		labelDimension.setText( 
 				Integer.toString(detailsOnSet.getDimensions()) );
@@ -212,7 +212,7 @@ implements IView {
 	protected void fillCombos() {
 		
 		Collection<ISet> arSets = generalManager.
-			getSetManager().getAllSetItems();
+			getSetManager().getAllSets();
 		
 		Iterator<ISet> iterSets = arSets.iterator();
 		ISet tmpSet = null;
@@ -248,7 +248,7 @@ implements IView {
 	protected void fillDataSets(Combo viewCombo) {
 		
 		Collection<ISet> allSets = 
-			generalManager.getSetManager().getAllSetItems();
+			generalManager.getSetManager().getAllSets();
 		
 		Iterator<ISet> iterSets = allSets.iterator();
 		int iTmpSetId = 0;

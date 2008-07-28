@@ -4,11 +4,8 @@ import java.util.StringTokenizer;
 
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabel;
-import org.caleydo.core.data.collection.IVirtualArray;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.data.IVirtualArrayManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.system.StringConversionTool;
@@ -56,29 +53,29 @@ extends ACmdCreate_IdTargetLabel {
 	 */
 	public void doCommand() throws CaleydoRuntimeException {
 		
-		IVirtualArrayManager virtualArrayManager = 
-			generalManager.getVirtualArrayManager();
-		
-		IVirtualArray newObject = (IVirtualArray) virtualArrayManager.createVirtualArray(
-				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
-		
-		newObject.setId( iUniqueId );
-		newObject.setLabel( sLabel );
-		newObject.setOffset( iOffset );
-		newObject.setLength( iLength );
-		newObject.setMultiOffset( iMultiOffset );
-		newObject.setMultiRepeat( iMultiRepeat );
-		
-		virtualArrayManager.registerItem( newObject, 
-				iUniqueId, 
-				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
-
-//		generalManager.logMsg( 
-//				"DO new SEL: " + 
-//				newObject.toString(),
-//				LoggerType.VERBOSE );
-		
-		commandManager.runDoCommand(this);
+//		IVirtualArrayManager virtualArrayManager = 
+//			generalManager.getVirtualArrayManager();
+//		
+//		IVirtualArray newObject = (IVirtualArray) virtualArrayManager.createVirtualArray(
+//				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
+//		
+//		newObject.setId( iUniqueId );
+//		newObject.setLabel( sLabel );
+//		newObject.setOffset( iOffset );
+//		newObject.setLength( iLength );
+//		newObject.setMultiOffset( iMultiOffset );
+//		newObject.setMultiRepeat( iMultiRepeat );
+//		
+//		virtualArrayManager.registerItem( newObject, 
+//				iUniqueId, 
+//				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
+//
+////		generalManager.logMsg( 
+////				"DO new SEL: " + 
+////				newObject.toString(),
+////				LoggerType.VERBOSE );
+//		
+//		commandManager.runDoCommand(this);
 	}
 
 	/* (non-Javadoc)
@@ -86,14 +83,14 @@ extends ACmdCreate_IdTargetLabel {
 	 */
 	public void undoCommand() throws CaleydoRuntimeException {
 		
-		generalManager.getVirtualArrayManager().unregisterItem( 
-				iUniqueId,
-				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
-		
-//		generalManager.logMsg( 
-//				"UNDO new SEL: " + 
+//		generalManager.getVirtualArrayManager().unregisterItem( 
 //				iUniqueId,
-//				LoggerType.VERBOSE );
+//				ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
+//		
+////		generalManager.logMsg( 
+////				"UNDO new SEL: " + 
+////				iUniqueId,
+////				LoggerType.VERBOSE );
 		
 		commandManager.runUndoCommand(this);
 	}

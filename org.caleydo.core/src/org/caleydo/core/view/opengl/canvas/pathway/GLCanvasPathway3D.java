@@ -10,11 +10,10 @@ import java.util.logging.Level;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.GeneralRenderStyle;
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.selection.ISetSelection;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.IGeneralManager;
@@ -346,7 +345,7 @@ implements IMediatorReceiver, IMediatorSender {
 	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object,
 	 *      org.caleydo.core.data.collection.ISet)
 	 */
-	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
+	public void updateReceiver(Object eventTrigger, ISelection updatedSelection) {
 		
 		generalManager.getLogger().log(Level.INFO, "Update called by "
 				+eventTrigger.getClass().getSimpleName());
@@ -360,9 +359,8 @@ implements IMediatorReceiver, IMediatorSender {
 		
 		selectedVertex = null;
 		
-		ISetSelection setSelection = (ISetSelection) updatedSet;
+		ISelection setSelection = (ISelection) updatedSelection;
 
-		setSelection.getReadToken();
 		ArrayList<Integer> iAlSelection = setSelection.getSelectionIdArray();
 		ArrayList<Integer> iAlSelectionMode = setSelection.getGroupArray();
 		if (iAlSelection.size() != 0)
@@ -679,9 +677,7 @@ implements IMediatorReceiver, IMediatorSender {
 			if (iAlTmpSelectionId.isEmpty())
 				return;
 			
-			alSetSelection.get(0).getWriteToken();
 			alSetSelection.get(0).updateSelectionSet(iUniqueId, iAlTmpSelectionId, iAlTmpGroupId, null);
-			alSetSelection.get(0).returnWriteToken();
 			
 			pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
 			pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_TEXTURE_SELECTION);
@@ -727,9 +723,7 @@ implements IMediatorReceiver, IMediatorSender {
 			}
 		}
 		
-		alSetSelection.get(0).getWriteToken();
 		alSetSelection.get(0).updateSelectionSet(iUniqueId, iAlSelectedGenes, iAlTmpGroupId, null);
-		alSetSelection.get(0).returnWriteToken();
 	}
 	
 	/*

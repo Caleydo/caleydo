@@ -6,6 +6,7 @@ package org.caleydo.core.manager.event.mediator;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.selection.ISelection;
 
 /**
  * Threadsafe Mediator receiver.
@@ -42,10 +43,10 @@ implements ILockableMediatorReceiver {
 	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, org.caleydo.core.data.collection.ISet)
 	 */
 	public final void updateReceiver(Object eventTrigger, 
-			ISet updatedSet) {
+			ISelection updatedSelection) {
 		
 		if ( ! bUpdateIsStalled.get() ) {
-			updateReceiverSpecialMediator(eventTrigger, updatedSet);
+			updateReceiverSpecialMediator(eventTrigger, updatedSelection);
 		}
 	}
 	
@@ -107,6 +108,6 @@ implements ILockableMediatorReceiver {
 	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, org.caleydo.core.data.collection.ISet)
 	 */
 	public abstract void updateReceiverSpecialMediator(Object eventTrigger,
-			ISet updateSet);
+			ISelection updatedSelection);
 
 }

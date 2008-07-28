@@ -2,7 +2,7 @@ package org.caleydo.testing.command.data.filter;
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.data.filter.CmdDataFilterMinMax;
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.StorageType;
+import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.testing.testing_util.CoreStarter;
 
@@ -42,11 +42,11 @@ public class CmdDataFiterMinMaxTest extends TestCase {
 	public void testForFloat() 
 	{		
 		
-		IStorage myStorage = myGeneralManager.getStorageManager().getItemStorage(46301);
+		IStorage myStorage = myGeneralManager.getStorageManager().getStorage(46301);
 		
 		CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) myGeneralManager.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
 		
-		createdCmd.setAttributes(myStorage, StorageType.FLOAT);
+		createdCmd.setAttributes(myStorage, EStorageType.FLOAT);
 		
 		createdCmd.doCommand();		
 		
@@ -56,11 +56,11 @@ public class CmdDataFiterMinMaxTest extends TestCase {
 	
 	public void testForInt()
 	{
-		IStorage myStorage = myGeneralManager.getStorageManager().getItemStorage(45301);
+		IStorage myStorage = myGeneralManager.getStorageManager().getStorage(45301);
 		
 		CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) myGeneralManager.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
 		
-		createdCmd.setAttributes(myStorage, StorageType.INT);
+		createdCmd.setAttributes(myStorage, EStorageType.INT);
 		
 		createdCmd.doCommand();		
 		
@@ -71,11 +71,11 @@ public class CmdDataFiterMinMaxTest extends TestCase {
 	
 	public void testForDouble()
 	{
-		IStorage myStorage = myGeneralManager.getStorageManager().getItemStorage(47301);
+		IStorage myStorage = myGeneralManager.getStorageManager().getStorage(47301);
 		
 		CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) myGeneralManager.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
 		
-		createdCmd.setAttributes(myStorage, StorageType.DOUBLE);
+		createdCmd.setAttributes(myStorage, StorageType.EStorageType);
 		
 		createdCmd.doCommand();		
 		

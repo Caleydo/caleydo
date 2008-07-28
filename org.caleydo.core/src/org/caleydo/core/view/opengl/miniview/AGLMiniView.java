@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.set.selection.SetSelection;
+import org.caleydo.core.data.selection.Selection;
 
 /**
  * Abstract class for all kinds of mini views.
@@ -22,7 +22,7 @@ implements IGLMiniView
 	protected ArrayList<IStorage> alStorage;
 	protected ArrayList<IStorage> alSetSelection;
 	
-	public void setData(ArrayList<IStorage> alStorages, ArrayList<SetSelection> alSetSelection)
+	public void setData(ArrayList<IStorage> alStorages, ArrayList<Selection> alSetSelection)
 	{
 		
 	}

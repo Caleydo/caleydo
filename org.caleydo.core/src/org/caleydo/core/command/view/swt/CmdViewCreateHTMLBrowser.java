@@ -63,8 +63,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 		
 		viewManager.registerItem(
 				browserView, 
-				iUniqueId, 
-				ManagerObjectType.VIEW);
+				iUniqueId);
 
 		browserView.setAttributes(iWidthX, iHeightY, browserType);
 		browserView.initView();

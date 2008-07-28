@@ -8,7 +8,8 @@ import java.util.logging.Level;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.SetType;
+import org.caleydo.core.data.collection.ESetType;
+import org.caleydo.core.data.collection.ccontainer.EDataKind;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
@@ -53,17 +54,16 @@ public class GenomeColorMapper {
 		if (alSetData == null)
 			return;
 		
-		Iterator<ISet> iterSetData = alSetData.iterator();
+		//Iterator<ISet> iterSetData = alSetData.iterator();
 		
-		while (iterSetData.hasNext())
+		// TODO better iterator
+		for (ISet tmpSet : alSetData)
 		{
-			ISet tmpSet = iterSetData.next();
-			
-			if (tmpSet.getSetType().equals(SetType.SET_GENE_EXPRESSION_DATA))
+			for(int iStorageCount = 0; iStorageCount < tmpSet.getSize(); iStorageCount++)
 			{
-				alMappingStorage.add(tmpSet.getStorageByDimAndIndex(0, 0));
+				alMappingStorage.add(tmpSet.getStorage(iStorageCount));
 			}
-		}	
+		}
 	}
 	
 	public final ArrayList<Vec3f> getMappingColorArrayByVertexRep(
@@ -105,15 +105,10 @@ public class GenomeColorMapper {
 					//Get expression value by MicroArrayID
 					expressionStorage = iterMappingStorage.next();
 					
-					float[] bufferFloatArray = expressionStorage.getArrayFloat();
-					
-					if ( bufferFloatArray == null ) 
-					{
-						generalManager.getLogger().log(Level.SEVERE, 
-							"Color mapping failed!.");
-					}
 								
-					float fExpressionValue = bufferFloatArray[iExpressionStorageIndex];	
+					float fExpressionValue = expressionStorage.getFloat(EDataKind.NORMALIZED,
+							iExpressionStorageIndex);	
+					
 					arMappingColor.add(expressionColorMapper.colorMappingLookup(fExpressionValue));
 				}
 			}

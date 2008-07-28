@@ -7,8 +7,6 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.view.swt.data.exchanger.DataExchangerViewRep;
 
 /**
  * Class implements the command for 
@@ -52,27 +50,26 @@ extends ACmdCreate_IdTargetLabelParentXY  {
 	 */
 	public void doCommand() {
 		
-		IViewManager viewManager = ((IViewManager) generalManager
-				.getManagerByObjectType(ManagerObjectType.VIEW));
-		
-		DataExchangerViewRep dataExchangerView = (DataExchangerViewRep)viewManager
-				.createView(ManagerObjectType.VIEW_SWT_DATA_EXCHANGER,
-							iUniqueId, 
-							iParentContainerId,
-							sLabel);
-		
-		viewManager.registerItem(
-				dataExchangerView, 
-				iUniqueId, 
-				ManagerObjectType.VIEW);
-
-		viewManager.addViewRep(dataExchangerView);
-
-		dataExchangerView.setAttributes(iWidthX, iHeightY);
-		dataExchangerView.initView();
-		dataExchangerView.drawView();
-		
-		commandManager.runDoCommand(this);
+//		IViewManager viewManager = ((IViewManager) generalManager
+//				.getManagerByObjectType(ManagerObjectType.VIEW));
+//		
+//		DataExchangerViewRep dataExchangerView = (DataExchangerViewRep)viewManager
+//				.createView(ManagerObjectType.VIEW_SWT_DATA_EXCHANGER,
+//							iUniqueId, 
+//							iParentContainerId,
+//							sLabel);
+//		
+//		viewManager.registerItem(
+//				dataExchangerView, 
+//				iUniqueId);
+//
+//		viewManager.addViewRep(dataExchangerView);
+//
+//		dataExchangerView.setAttributes(iWidthX, iHeightY);
+//		dataExchangerView.initView();
+//		dataExchangerView.drawView();
+//		
+//		commandManager.runDoCommand(this);
 	}
 	
 	/*

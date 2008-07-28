@@ -1,7 +1,6 @@
 package org.caleydo.core.command;
 
 import org.caleydo.core.manager.type.ManagerType;
-import org.caleydo.core.util.ICaleydoDefaultType;
 
 /**
  * Type of Command Queue "tag's" and "key's"
@@ -19,7 +18,7 @@ import org.caleydo.core.util.ICaleydoDefaultType;
  *
  */
 public enum CommandQueueSaxType
-implements ICaleydoDefaultType <CommandQueueSaxType> {
+{
 
 	/*
 	 * -------  COMMAND  --------
@@ -130,23 +129,10 @@ implements ICaleydoDefaultType <CommandQueueSaxType> {
 	 *    Import from former Type "CommandType"
 	 * =================================================
 	 */
-	
-//	WINDOW_SET_ACTIVE_FRAME("cmd","type","-1", "No description available!"),
-//	WINDOW_IFRAME_NEW_INTERNAL_FRAME("cmd","type","-1", "No description available!"),
-	
+
 	SYSTEM_SHUT_DOWN(ManagerType.SYSTEM,"cmd","type","-1", "Caleydo system shut down"),
 	
-//	WINDOW_IFRAME_OPEN_HEATMAP2D(),
-//	WINDOW_IFRAME_OPEN_HISTOGRAM2D(),
-//	WINDOW_IFRAME_OPEN_SELECTION(),
-//	WINDOW_IFRAME_OPEN_STORAGE(),
-//	WINDOW_IFRAME_OPEN_JOGL_HISTOGRAM(),
-//	WINDOW_IFRAME_OPEN_JOGL_HEATMAP(),
-//	WINDOW_IFRAME_OPEN_JOGL_SCATTERPLOT(),
-//	WINDOW_POPUP_CREDITS(),
-//	WINDOW_POPUP_INFO(),
-//	SYSTEM_NEW_FRAME(),
-//	SYSTEM_NOP(),
+
 	
 	/*
 	 * ==================================================
@@ -309,15 +295,5 @@ implements ICaleydoDefaultType <CommandQueueSaxType> {
 	public String getInfoText() {
 		
 		return this.sInfoText;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.util.ICaleydoDefaultType#getTypeDefault()
-	 */
-	public CommandQueueSaxType getTypeDefault() {
-
-		return CommandQueueSaxType.NO_OPERATION;
-	}
-	
+	}	
 }

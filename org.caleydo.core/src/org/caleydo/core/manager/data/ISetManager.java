@@ -3,7 +3,7 @@ package org.caleydo.core.manager.data;
 import java.util.Collection;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.SetType;
+import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.manager.IManager;
 
 
@@ -16,15 +16,15 @@ import org.caleydo.core.manager.IManager;
 public interface ISetManager
 extends IManager
 {
-	public ISet createSet( final SetType setType );
+	public ISet createSet( final ESetType setType );
 	
 	public boolean deleteSet( ISet deleteSet );
 	
 	public boolean deleteSet( final int iItemId );
 	
-	public ISet getItemSet( final int iItemId );
+	public ISet getSet( final int iItemId );
 	
-	public Collection<ISet> getAllSetItems();
+	public Collection<ISet> getAllSets();
 	
 	/**
 	 * Initialize data structures prior using this manager.

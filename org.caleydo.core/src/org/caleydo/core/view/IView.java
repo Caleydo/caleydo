@@ -1,7 +1,7 @@
 package org.caleydo.core.view;
 
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.collection.SetType;
+import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.eclipse.swt.widgets.Composite;
@@ -13,7 +13,8 @@ import org.eclipse.swt.widgets.Composite;
  * @author Michael Kalkusch
  */
 public interface IView 
-extends IUniqueObject, IMediatorSender, IMediatorReceiver {
+extends IUniqueObject
+{
 	
 	/**
 	 * Same as initView() but creation of SWT Container via GeneralManager is replaced
@@ -70,7 +71,7 @@ extends IUniqueObject, IMediatorSender, IMediatorReceiver {
 	 *  
 	 * @param setType define which type of Set shall be removed
 	 */
-	public void removeAllSetIdByType( SetType setType );
+	public void removeAllSetIdByType( ESetType setType );
 	
 	/**
 	 * Get all the SetId's assigned to this View.

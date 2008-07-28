@@ -1,6 +1,5 @@
 package org.caleydo.core.util.exception;
 
-import org.caleydo.core.util.ICaleydoDefaultType;
 
 /**
  * Enumeration of Exceptions.
@@ -9,7 +8,7 @@ import org.caleydo.core.util.ICaleydoDefaultType;
  *
  */
 public enum CaleydoRuntimeExceptionType 
-implements ICaleydoDefaultType <CaleydoRuntimeExceptionType> {
+{
 	
 	ANY_ERROR("Caleydo-error"),
 	COMMAND("Command"),
@@ -34,14 +33,5 @@ implements ICaleydoDefaultType <CaleydoRuntimeExceptionType> {
 	
 	public String getExceptionDetail() {
 		return sExceptionDetail;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.util.ICaleydoDefaultType#getTypeDefault()
-	 */
-	public CaleydoRuntimeExceptionType getTypeDefault() {
-
-		return CaleydoRuntimeExceptionType.ANY_ERROR;
 	}
 }

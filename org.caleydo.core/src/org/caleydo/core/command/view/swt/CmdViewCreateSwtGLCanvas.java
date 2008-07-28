@@ -59,8 +59,7 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 			 */
 			viewManager.registerItem(
 					swtGLCanvasView, 
-					iUniqueId, 
-					ManagerObjectType.VIEW);
+					iUniqueId);
 			
 			
 			swtGLCanvasView.setAttributes(iWidthX, iHeightY, iGLCanvasID);

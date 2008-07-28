@@ -1,6 +1,5 @@
 package org.caleydo.core.data.mapping;
 
-import org.caleydo.core.util.ICaleydoDefaultType;
 
 /**
  * Enum that defines data mapping types for genome ID mapping.
@@ -10,7 +9,7 @@ import org.caleydo.core.util.ICaleydoDefaultType;
  *
  */
 public enum EGenomeMappingDataType
-implements ICaleydoDefaultType <EGenomeMappingDataType> {
+{
 
 	INT2INT ( false, false ),
 	INT2STRING ( false, false ),
@@ -50,14 +49,5 @@ implements ICaleydoDefaultType <EGenomeMappingDataType> {
 	 */
 	public boolean isLookupTable() {
 		return bIsLokupTable;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.util.ICaleydoDefaultType#getTypeDefault()
-	 */
-	public EGenomeMappingDataType getTypeDefault() {
-
-		return EGenomeMappingDataType.NONE;
 	}
 }

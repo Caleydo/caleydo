@@ -10,6 +10,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.collection.ccontainer.EDataKind;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.HeatMapRenderStyle;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
@@ -461,7 +462,7 @@ extends AGLCanvasStorageBasedView
 			final float fYPosition,
 			final Vec2f vecFieldWidthAndHeight)
 	{
-		float fLookupValue = alDataStorages.get(iStorageIndex).getArrayFloat()[iContentIndex];
+		float fLookupValue = alDataStorages.get(iStorageIndex).getFloat(EDataKind.NORMALIZED, iContentIndex);
 		Vec3f vecMappingColor = colorMapper.colorMappingLookup(fLookupValue);
 		gl.glColor3f(vecMappingColor.x(), vecMappingColor.y(), vecMappingColor.z());
 		

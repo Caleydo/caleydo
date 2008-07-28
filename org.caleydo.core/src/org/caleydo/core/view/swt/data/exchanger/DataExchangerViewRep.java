@@ -202,7 +202,7 @@ implements IView {
 	protected void fillDataSets(Combo viewCombo, Combo dataCombo) {
 		
 		Collection<ISet> allSets = 
-			generalManager.getSetManager().getAllSetItems();
+			generalManager.getSetManager().getAllSets();
 		
 		Iterator<ISet> iterSets = allSets.iterator();
 		int iTmpSetId = 0;

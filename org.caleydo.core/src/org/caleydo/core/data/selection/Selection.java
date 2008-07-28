@@ -1,11 +1,15 @@
-package org.caleydo.core.data.collection.set.selection;
+package org.caleydo.core.data.selection;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.SetType;
-import org.caleydo.core.data.collection.set.SetPlanarSimple;
+import org.caleydo.core.data.AUniqueManagedObject;
+import org.caleydo.core.data.AUniqueObject;
+import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.EventPublisher;
+import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
+import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.type.ManagerObjectType;
 
 /**
  * Selection SET that gives access to
@@ -19,9 +23,9 @@ import org.caleydo.core.manager.event.EventPublisher;
  * 
  * FIXME: DO NOT ASSIGN REFERENCES TO INTERNAL DATA
  */
-public class SetSelection 
-extends SetPlanarSimple 
-implements ISetSelection 
+public class Selection 
+extends AUniqueManagedObject 
+implements ISelection
 {
 	// TODO: replace this with a storage that takes ArrayLists
 	
@@ -35,13 +39,12 @@ implements ISetSelection
 	 * @param iSetCollectionId
 	 * @param setGeneralManager
 	 */
-	public SetSelection(int iSetCollectionId, 
+	public Selection(int iSetCollectionId, 
 			IGeneralManager generalManager) 
 	{
 
-		super(iSetCollectionId, 
-				generalManager, 
-				SetType.SET_SELECTION);
+	super(iSetCollectionId, 
+				generalManager);
 		
 //		/** add missing objects for optional data */
 //		vecRefSelection_Array.add(2, new Vector<IVirtualArray> (2));		
@@ -149,9 +152,9 @@ implements ISetSelection
 	 */
 	public ArrayList<Integer> getSelectionIdArray() {
 		
-//		this.getReadToken();
+
 //		int[] tmp = this.getStorageByDimAndIndex(0, 0).getArrayInt();
-//		this.returnReadToken();
+
 //		
 //		return tmp;
 		if (iAlSelectionID ==  null)
@@ -172,9 +175,9 @@ implements ISetSelection
 	 */
 	public ArrayList<Integer> getGroupArray() {	
 
-//		this.getReadToken();
+
 //		int[] tmp = this.getStorageByDimAndIndex(0, 1).getArrayInt();
-//		this.returnReadToken();
+
 //		
 //		return tmp;
 		if (iAlSelectionGroup ==  null)
@@ -253,13 +256,7 @@ implements ISetSelection
 		}
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.set.SetPlanarSimple#toString()
-	 */
-	public String toString() {
-		return sLabel;
-	}
+
 	
 	public void mergeSelection(ArrayList<Integer> iAlNewSelectionID,
 			ArrayList<Integer> iAlNewSelectionGroup,
@@ -328,5 +325,12 @@ implements ISetSelection
 		iAlSelectionID = null;
 		iAlSelectionGroup = null;
 		iAlSelectionOptionalData = null;
+	}
+
+	@Override
+	public ManagerObjectType getBaseType() {
+
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

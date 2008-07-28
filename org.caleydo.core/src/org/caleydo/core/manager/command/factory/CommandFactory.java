@@ -2,7 +2,7 @@ package org.caleydo.core.manager.command.factory;
 
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.ICommand;
-import org.caleydo.core.command.data.CmdDataCreateSelectionSetMakro;
+import org.caleydo.core.command.data.CmdDataCreateSelection;
 import org.caleydo.core.command.data.CmdDataCreateSet;
 import org.caleydo.core.command.data.CmdDataCreateStorage;
 import org.caleydo.core.command.data.CmdDataCreateVirtualArray;
@@ -136,8 +136,7 @@ implements ICommandFactory {
 				new CmdDataCreateStorage(
 						generalManager,
 						commandManager,
-						cmdType,
-						true);
+						cmdType);
 			break;
 		}
 		case CREATE_VIRTUAL_ARRAY:
@@ -155,14 +154,13 @@ implements ICommandFactory {
 				new CmdDataCreateSet(
 						generalManager,
 						commandManager,
-						cmdType,
-						true);
+						cmdType);
 			break;
 		}
 		case CREATE_SET_SELECTION_MAKRO:
 		{
 			createdCommand =
-				new CmdDataCreateSelectionSetMakro(
+				new CmdDataCreateSelection(
 						generalManager,
 						commandManager,
 						cmdType);		

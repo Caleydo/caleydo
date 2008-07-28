@@ -2,7 +2,7 @@ package org.caleydo.core.data.collection.parser;
 
 import java.util.StringTokenizer;
 
-import org.caleydo.core.data.collection.StorageType;
+import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.parser.xml.sax.ASaxParserHandler;
@@ -170,9 +170,9 @@ implements ISaxParserHandler
 				if ( qName.equals( sTag_XML_DataCollection_details ) ) {
 					
 					final String bufferType = attributes.getValue(sTag_XML_DataCollection_details_attr_type);					
-					final StorageType currentStorageType = StorageType.valueOf( bufferType );
+					final EStorageType currentStorageType = EStorageType.valueOf( bufferType );
 					
-					if ( currentStorageType.isDataType() ) {
+					if (!currentStorageType.isControlSequence() ) {
 						// reset buffer...
 						sStringBuffer.setLength( 0 );
 						
@@ -356,53 +356,53 @@ implements ISaxParserHandler
 		if ( tokenizer.hasMoreElements() ) {
 			
 			final int iInitSize = tokenizer.countTokens();			
-			final StorageType currentStorageType = StorageType.valueOf( details );
+			final EStorageType currentStorageType = EStorageType.valueOf( details );
 			
-			if ( ! currentStorageType.isDataType()) {
+			if (currentStorageType.isControlSequence()) {
 				return;
 			}
 			
 			switch ( currentStorageType ) {
 			
-			/**
-			 * BOOLEAN
-			 */
-			case BOOLEAN: {
-				dataBoolean = new boolean[iInitSize];
-				
-				for ( int iCounter =0 ; tokenizer.hasMoreElements(); iCounter++ ) {
-					try {				
-						dataBoolean[iCounter] =  Boolean.valueOf( tokenizer.nextToken() );
-					}
-					catch ( NumberFormatException nfe) {
-						appandErrorMsg("need STRING, " + nfe.toString() );
-						dataBoolean[iCounter] = false;
-					}	
-					
-				} // end for...
-				
-				return;
-			} // end case
+//			/**
+//			 * BOOLEAN
+//			 */
+//			case BOOLEAN: {
+//				dataBoolean = new boolean[iInitSize];
+//				
+//				for ( int iCounter =0 ; tokenizer.hasMoreElements(); iCounter++ ) {
+//					try {				
+//						dataBoolean[iCounter] =  Boolean.valueOf( tokenizer.nextToken() );
+//					}
+//					catch ( NumberFormatException nfe) {
+//						appandErrorMsg("need STRING, " + nfe.toString() );
+//						dataBoolean[iCounter] = false;
+//					}	
+//					
+//				} // end for...
+//				
+//				return;
+//			} // end case
 			
-			/**
-			 * SHORT
-			 */
-			case SHORT: {
-				dataShort = new short[iInitSize];
-				
-				for ( int iCounter =0 ; tokenizer.hasMoreElements(); iCounter++ ) {
-					try {				
-						dataShort[iCounter] =  Short.valueOf( tokenizer.nextToken() );
-					}
-					catch ( NumberFormatException nfe) {
-						appandErrorMsg("need Integer, " + nfe.toString() );
-						dataShort[iCounter] = 0;
-					}	
-					
-				} // end for...
-				
-				return;
-			} // end case
+//			/**
+//			 * SHORT
+//			 */
+//			case SHORT: {
+//				dataShort = new short[iInitSize];
+//				
+//				for ( int iCounter =0 ; tokenizer.hasMoreElements(); iCounter++ ) {
+//					try {				
+//						dataShort[iCounter] =  Short.valueOf( tokenizer.nextToken() );
+//					}
+//					catch ( NumberFormatException nfe) {
+//						appandErrorMsg("need Integer, " + nfe.toString() );
+//						dataShort[iCounter] = 0;
+//					}	
+//					
+//				} // end for...
+//				
+//				return;
+//			} // end case
 			
 			
 			/**
@@ -426,25 +426,25 @@ implements ISaxParserHandler
 			} // end case
 			
 			
-			/**
-			 * LONG
-			 */
-			case LONG: {
-				dataLong = new long[iInitSize];
-				
-				for ( int iCounter =0 ; tokenizer.hasMoreElements(); iCounter++ ) {
-					try {				
-						dataLong[iCounter] =  Long.valueOf( tokenizer.nextToken() );
-					}
-					catch ( NumberFormatException nfe) {
-						appandErrorMsg("need Integer, " + nfe.toString() );
-						dataLong[iCounter] = 0;
-					}	
-					
-				} // end for...
-				
-				return;
-			} // end case
+//			/**
+//			 * LONG
+//			 */
+//			case LONG: {
+//				dataLong = new long[iInitSize];
+//				
+//				for ( int iCounter =0 ; tokenizer.hasMoreElements(); iCounter++ ) {
+//					try {				
+//						dataLong[iCounter] =  Long.valueOf( tokenizer.nextToken() );
+//					}
+//					catch ( NumberFormatException nfe) {
+//						appandErrorMsg("need Integer, " + nfe.toString() );
+//						dataLong[iCounter] = 0;
+//					}	
+//					
+//				} // end for...
+//				
+//				return;
+//			} // end case
 			
 			/**
 			 * FLOAT
@@ -466,25 +466,25 @@ implements ISaxParserHandler
 				return;
 			} // end case
 			
-			/**
-			 * DOUBLE
-			 */
-			case DOUBLE: {
-				dataDouble = new double[iInitSize];
-				
-				for ( int iCounter =0 ; tokenizer.hasMoreElements(); iCounter++ ) {
-					try {				
-						dataDouble[iCounter] =  Double.valueOf( tokenizer.nextToken() );
-					}
-					catch ( NumberFormatException nfe) {
-						appandErrorMsg("need Double, " + nfe.toString() );
-						dataDouble[iCounter] = 0;
-					}	
-					
-				} // end for...
-				
-				return;
-			} // end case
+//			/**
+//			 * DOUBLE
+//			 */
+//			case DOUBLE: {
+//				dataDouble = new double[iInitSize];
+//				
+//				for ( int iCounter =0 ; tokenizer.hasMoreElements(); iCounter++ ) {
+//					try {				
+//						dataDouble[iCounter] =  Double.valueOf( tokenizer.nextToken() );
+//					}
+//					catch ( NumberFormatException nfe) {
+//						appandErrorMsg("need Double, " + nfe.toString() );
+//						dataDouble[iCounter] = 0;
+//					}	
+//					
+//				} // end for...
+//				
+//				return;
+//			} // end case
 			
 			/**
 			 * STRING
@@ -506,19 +506,12 @@ implements ISaxParserHandler
 				return;
 			} // end case
 			
-			
-			
-			
+					
 			default:
 				throw new CaleydoRuntimeException("Can not handle unkonw type [" + details + "]",
 						CaleydoRuntimeExceptionType.SAXPARSER );
 			
-			} // end switch
-		
-	
-	
-			
-			
+			} // end switch		
 		
 		} // end if ( tokenizer.hasMoreElements() ) {
 				

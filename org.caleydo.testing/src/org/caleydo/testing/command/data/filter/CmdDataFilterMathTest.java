@@ -48,7 +48,7 @@ public class CmdDataFilterMathTest extends TestCase {
 		
 		createdCmd.doCommand();	
 		
-		IStorage myStorage = myGeneralManager.getStorageManager().getItemStorage(46301);
+		IStorage myStorage = myGeneralManager.getStorageManager().getStorage(46301);
 		assertEquals(0.453824601f, myStorage.getArrayFloat()[0], 0.000001f);
 		assertEquals(0.541304228f, myStorage.getArrayFloat()[1], 0.000001f);
 		assertEquals(0.937810171f, myStorage.getArrayFloat()[2], 0.000001f);
@@ -102,7 +102,7 @@ public class CmdDataFilterMathTest extends TestCase {
 		
 		createdCmd.doCommand();	
 		
-		IStorage myStorage = myGeneralManager.getStorageManager().getItemStorage(46301);
+		IStorage myStorage = myGeneralManager.getStorageManager().getStorage(46301);
 		assertEquals(4.42005482f, myStorage.getArrayFloat()[0], 0.001f);
 		assertEquals(4.49252293f, myStorage.getArrayFloat()[1], 0.001f);
 		assertEquals(4.72209895f, myStorage.getArrayFloat()[2], 0.001f);
@@ -156,7 +156,7 @@ public class CmdDataFilterMathTest extends TestCase {
 		IStorage myOriginalStorage = myGeneralManager
 		.getStorageManager().createStorage(ManagerObjectType.STORAGE_FLAT);
 
-		myOriginalStorage.setArrayFloat(myGeneralManager.getStorageManager().getItemStorage(46301).getArrayFloat());
+		myOriginalStorage.setArrayFloat(myGeneralManager.getStorageManager().getStorage(46301).getArrayFloat());
 		
 		createdCmd.setAttributes(CmdDataFilterMath.EDataFilterMathType.LIN_2_LOG,
 								floatStorageIDs);
@@ -169,7 +169,7 @@ public class CmdDataFilterMathTest extends TestCase {
 		createdCmd.doCommand();	
 		
 		
-		IStorage myStorage = myGeneralManager.getStorageManager().getItemStorage(46301);
+		IStorage myStorage = myGeneralManager.getStorageManager().getStorage(46301);
 	
 		assertEquals(myOriginalStorage.getArrayFloat()[0], myStorage.getArrayFloat()[0], 2.0f);
 		assertEquals(myOriginalStorage.getArrayFloat()[1], myStorage.getArrayFloat()[1], 2.0f);
@@ -194,7 +194,7 @@ public class CmdDataFilterMathTest extends TestCase {
 		IStorage myOriginalStorage = myGeneralManager
 		.getStorageManager().createStorage(ManagerObjectType.STORAGE_FLAT);
 
-		myOriginalStorage.setArrayFloat(myGeneralManager.getStorageManager().getItemStorage(46301).getArrayFloat());
+		myOriginalStorage.setArrayFloat(myGeneralManager.getStorageManager().getStorage(46301).getArrayFloat());
 		
 		IStorage myTargetStorage = myGeneralManager
 		.getStorageManager().createStorage(ManagerObjectType.STORAGE_FLAT);

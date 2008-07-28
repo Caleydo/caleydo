@@ -51,8 +51,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 		
 		viewManager.registerItem(
 				undoRedoView, 
-				iUniqueId, 
-				ManagerObjectType.VIEW);
+				iUniqueId);
 
 		undoRedoView.setAttributes(iWidthX, iHeightY);
 		undoRedoView.initView();

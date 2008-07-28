@@ -12,8 +12,8 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLCanvas;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.selection.ISetSelection;
-import org.caleydo.core.data.collection.set.selection.SetSelection;
+import org.caleydo.core.data.selection.ISelection;
+import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.GlyphRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
@@ -385,10 +385,8 @@ implements IMediatorSender, IMediatorReceiver
 					bRedrawDisplayList_ = true;
 					
 					//push patient id to other screens
-					for(SetSelection sel : alSetSelection) {
-						sel.getWriteToken();
+					for(Selection sel : alSetSelection) {
 						sel.updateSelectionSet(iUniqueId, ids, selections, null);
-						sel.returnWriteToken();
 					}
 					
 					break;
@@ -432,9 +430,9 @@ implements IMediatorSender, IMediatorReceiver
 		generalManager.getLogger().log(Level.INFO, "Update called by "
 				+eventTrigger.getClass().getSimpleName());
 		
-		ISetSelection refSetSelection = (ISetSelection) updatedSet;
+		ISelection refSetSelection = (ISelection) updatedSet;
 
-		refSetSelection.getReadToken();
+
 		ArrayList<Integer> iAlSelection = refSetSelection.getSelectionIdArray();
 		ArrayList<Integer> iAlSelectionMode = refSetSelection.getGroupArray();
 		
@@ -459,7 +457,7 @@ implements IMediatorSender, IMediatorReceiver
 				bRedrawDisplayList_ = true;
 			}
 		}
-		updatedSet.returnReadToken();
+
 		
 	}
 }

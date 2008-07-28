@@ -1,9 +1,5 @@
-/**
- * 
- */
 package org.caleydo.core.math.statistics.histogram;
 
-import org.caleydo.core.util.ICaleydoDefaultType;
 
 /**
  * Define type of statistic histogram.
@@ -12,7 +8,7 @@ import org.caleydo.core.util.ICaleydoDefaultType;
  *
  */
 public enum StatisticHistogramType
-implements ICaleydoDefaultType <StatisticHistogramType> {
+{
 
 	REGULAR_LINEAR("Regular spacing, linear distribution"),
 	
@@ -94,14 +90,5 @@ implements ICaleydoDefaultType <StatisticHistogramType> {
 		}
 		
 		return getTypeByIndex( iOrdinal + 1 );
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.util.ICaleydoDefaultType#getTypeDefault()
-	 */
-	public StatisticHistogramType getTypeDefault() {
-
-		return StatisticHistogramType.REGULAR_LINEAR;
 	}
 }

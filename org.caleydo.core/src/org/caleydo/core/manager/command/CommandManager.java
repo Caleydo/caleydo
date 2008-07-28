@@ -156,8 +156,7 @@ implements ICommandManager {
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.data.manager.GeneralManager#registerItem(java.lang.Object, int, org.caleydo.core.data.manager.BaseManagerType)
 	 */
-	public boolean registerItem(Object registerItem, int iItemId,
-			ManagerObjectType type) {
+	public boolean registerItem(Object registerItem, int iItemId) {
 		
 		ICommand registerCommand = (ICommand) registerItem;
 		
@@ -177,13 +176,11 @@ implements ICommandManager {
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.data.manager.GeneralManager#unregisterItem(int, org.caleydo.core.data.manager.BaseManagerType)
 	 */
-	public boolean unregisterItem(int iItemId, ManagerObjectType type) {	
-		
-		//TODO: ensure thread safety! 
-		if ( type == ManagerObjectType.CMD_QUEUE ) {
-			hashCommandQueueId.remove( iItemId );
-		}
-		
+	public boolean unregisterItem(int iItemId) 
+	{			
+//		if ( type == ManagerObjectType.CMD_QUEUE ) {
+//			hashCommandQueueId.remove( iItemId );
+//		}		
 		if ( hashCommandId.containsKey( iItemId ) ) {
 		
 			ICommand unregisterCommand = 
@@ -279,7 +276,7 @@ implements ICommandManager {
 		int iNewCmdId = createId( ManagerObjectType.COMMAND );
 		newCmd.setId( iNewCmdId );
 		
-		registerItem( newCmd, iNewCmdId, ManagerObjectType.COMMAND );
+		registerItem(newCmd, iNewCmdId);
 		
 		return newCmd;
 	}

@@ -4,6 +4,7 @@
 package org.caleydo.core.manager.event.mediator;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.manager.IGeneralManager;
 
 /**
@@ -49,12 +50,12 @@ extends LockableMediator {
 	 * @see org.caleydo.core.manager.event.mediator.LockableMediator#updateReceiverSpecialMediator(java.lang.Object, org.caleydo.core.data.collection.ISet)
 	 */
 	public final void updateReceiverSpecialMediator(Object eventTrigger,
-			ISet updatedSet) {
+			ISelection updatedSelection) {
 		
-		assert updatedSet != null : "can not handle selectionSet null-pointer";
+		assert updatedSelection != null : "can not handle selectionSet null-pointer";
 		
-		if (ignoreSet != updatedSet) {
-			super.updateReceiver(eventTrigger, updatedSet);
+		if (ignoreSet != updatedSelection) {
+			super.updateReceiver(eventTrigger, updatedSelection);
 		}		
 	}
 

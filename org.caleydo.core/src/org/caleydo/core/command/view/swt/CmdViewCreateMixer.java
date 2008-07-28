@@ -53,8 +53,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 		
 		viewManager.registerItem(
 				mixerView, 
-				iUniqueId, 
-				ManagerObjectType.VIEW);
+				iUniqueId);
 
 		mixerView.setAttributes(iWidthX, iHeightY, iNumberOfSliders);
 		mixerView.initView();

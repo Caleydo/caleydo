@@ -10,12 +10,10 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 import java.util.logging.Level;
 
+import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.IVirtualArray;
-import org.caleydo.core.data.collection.StorageType;
 import org.caleydo.core.data.collection.parser.CollectionSelectionSaxParserHandler;
 import org.caleydo.core.data.collection.parser.ParserTokenHandler;
-import org.caleydo.core.data.collection.virtualarray.VirtualArrayThreadSingleBlock;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
@@ -90,7 +88,7 @@ extends AMicroArrayLoader {
 		
 		ParserTokenHandler bufferAllocationTokenInit;
 		
-		Vector <StorageType> vecBuffersTorage = new Vector <StorageType>();
+		Vector <EStorageType> vecBufferStorage = new Vector <EStorageType>();
 		
 		// Init progress bar
 		progressBarSetStoreInitTitle("Load data file " + this.getFileName(),
@@ -110,18 +108,18 @@ extends AMicroArrayLoader {
 				switch ( bufferAllocationTokenInit.getType() ) {
 				// case SKIP: do nothing, only consume current token.
 				case INT:
-					tmpStorage.setSize(StorageType.INT,iNumberOfLinesInFile);
-					vecBuffersTorage.addElement( StorageType.INT );
+					//tmpStorage.setSize(StorageType.INT,iNumberOfLinesInFile);
+					vecBufferStorage.addElement( EStorageType.INT );
 					bStayInLoop = false;
 					break;
 				case FLOAT:
-					tmpStorage.setSize(StorageType.FLOAT,iNumberOfLinesInFile);
-					vecBuffersTorage.addElement( StorageType.FLOAT );
+					//tmpStorage.setSize(StorageType.FLOAT,iNumberOfLinesInFile);
+					vecBufferStorage.addElement( EStorageType.FLOAT );
 					bStayInLoop = false;
 					break;
 				case STRING:	
-					tmpStorage.setSize(StorageType.STRING,iNumberOfLinesInFile);
-					vecBuffersTorage.addElement( StorageType.STRING );
+					//tmpStorage.setSize(StorageType.STRING,iNumberOfLinesInFile);
+					vecBufferStorage.addElement( EStorageType.STRING );
 					bStayInLoop = false;
 					break;
 					
@@ -222,7 +220,7 @@ extends AMicroArrayLoader {
 				while ((strToken.hasMoreTokens()) && (bMaintainLoop))
 				{
 					String sTokenObject = strToken.nextToken();
-					String[] bufferStringArray = null;
+					ArrayList<String> sAlBuffer = new ArrayList<String>(iNumberOfLinesInFile);
 
 					try
 					{
@@ -238,8 +236,7 @@ extends AMicroArrayLoader {
 							break;
 						case INT:
 
-							int[] bufferIntArray = alTargetStorages.get(iDataArrayIndexPerLine)
-								.getArrayInt();
+							int[] bufferIntArray =  new int[iNumberOfLinesInFile];//alTargetStorages.get(iDataArrayIndexPerLine).getArrayInt();
 							
 							if ( bufferIntArray == null ) 
 							{
@@ -252,25 +249,22 @@ extends AMicroArrayLoader {
 							iDataArrayIndexPerLine++;
 							break;
 						case FLOAT:
-
-							float[] bufferFloatArray = alTargetStorages.get(iDataArrayIndexPerLine)
-									.getArrayFloat();							
+							// TODO with new set copy the whole stuff into
+							float[] bufferFloatArray = new float[iNumberOfLinesInFile];//alTargetStorages.get(iDataArrayIndexPerLine)
+								//	.getArrayFloat();							
 							bufferFloatArray[lineInFile_CurrentDataIndex] = new Float(sTokenObject);
 
 							iDataArrayIndexPerLine++;
 							break;
 						case STRING:
 
-							bufferStringArray = alTargetStorages.get(iDataArrayIndexPerLine)
-								.getArrayString();
-						
-							if ( bufferStringArray == null ) 
-							{
-								generalManager.getLogger().log(Level.SEVERE, "Index out of bounds!");
-								break;
-							}
 							
-							bufferStringArray[lineInFile_CurrentDataIndex] = sTokenObject;							
+							//bufferStringArray = //alTargetStorages.get(iDataArrayIndexPerLine)
+								//.getArrayString();
+						
+							
+							
+							sAlBuffer.add(sTokenObject);							
 	
 							iDataArrayIndexPerLine++;
 							break;
@@ -314,14 +308,14 @@ extends AMicroArrayLoader {
 						lineInFile_CurrentDataIndex + 
 						"] empty array[]= {";
 						
-						if ( bufferStringArray != null )
-						{
-							info += bufferStringArray.toString();
-						}						
-						else
-						{
-							info += "null";
-						}
+//						if ( bufferStringArray != null )
+//						{
+//							info += bufferStringArray.toString();
+//						}						
+//						else
+//						{
+//							info += "null";
+//						}
 						
 						info +=  "} " + aie.toString();
 												
@@ -359,16 +353,18 @@ extends AMicroArrayLoader {
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#copyDataToInternalDataStructures()
 	 */
+	
+	// TODO: review
 	protected boolean copyDataToInternalDataStructures() {
 
 	    /*
 	     * notify storage cacheId of changed data...
 	     */
-	    currentDataStorage.setCacheId(currentDataStorage.getCacheId() + 1);
+	    //currentDataStorage.setCacheId(currentDataStorage.getCacheId() + 1);
 	    
-	    currentDataStorage.setSize(StorageType.INT,1);
-	    currentDataStorage.setSize(StorageType.FLOAT,1);
-	    currentDataStorage.setSize(StorageType.STRING,1);
+//	    currentDataStorage.setSize(StorageType.INT,1);
+//	    currentDataStorage.setSize(StorageType.FLOAT,1);
+//	    currentDataStorage.setSize(StorageType.STRING,1);
 	    
 	    if ( LLInteger.size() > 1) {
 		    Iterator<Integer> iter_I = LLInteger.iterator();		    
@@ -376,7 +372,7 @@ extends AMicroArrayLoader {
 		    for ( int i=0; iter_I.hasNext() ;i++ ) {
 		    	intBuffer[i]=iter_I.next().intValue();
 		    }
-		    currentDataStorage.setArrayInt( intBuffer );
+		    currentDataStorage.setRawData(intBuffer);
 	    }
 	    
 	    if ( LLFloat.size() > 1) {
@@ -385,27 +381,27 @@ extends AMicroArrayLoader {
 		    for ( int i=0; iter_F.hasNext() ;i++ ) {
 		    	floatBuffer[i]=iter_F.next().floatValue();
 		    }
-		    currentDataStorage.setArrayFloat( floatBuffer );
+		    currentDataStorage.setRawData( floatBuffer );
 		    
-		    IVirtualArray selFloat = 
-		    	new VirtualArrayThreadSingleBlock(1,null,null);
-		    selFloat.setLabel("import FLOAT");
-		    selFloat.setLength( LLFloat.size() );
+//		    IVirtualArray selFloat = 
+//		    	new VirtualArrayThreadSingleBlock(1,null,null);
+//		    selFloat.setLabel("import FLOAT");
+//		    selFloat.setLength( LLFloat.size() );
 	    }
 	    
-	    if ( LLString.size() > 1) {
-		    Iterator<String> iter_S = LLString.iterator();		    
-		    String[] stringBuffer = new String[LLString.size()];		    
-		    for ( int i=0; iter_S.hasNext() ;i++ ) {
-		    	stringBuffer[i]=iter_S.next();
-		    }
-		    currentDataStorage.setArrayString( stringBuffer );
-		    
-		    IVirtualArray selFloat = 
-		    	new VirtualArrayThreadSingleBlock(1, generalManager, null);
-		    selFloat.setLabel("import STRING");
-		    selFloat.setLength( LLString.size() );
-	    }
+//	    if ( LLString.size() > 1) {
+//		    Iterator<String> iter_S = LLString.iterator();		    
+//		    String[] stringBuffer = new String[LLString.size()];		    
+//		    for ( int i=0; iter_S.hasNext() ;i++ ) {
+//		    	stringBuffer[i]=iter_S.next();
+//		    }
+//		    currentDataStorage.setArrayString( stringBuffer );
+//		    
+//		    IVirtualArray selFloat = 
+//		    	new VirtualArrayThreadSingleBlock(1, generalManager, null);
+//		    selFloat.setLabel("import STRING");
+//		    selFloat.setLength( LLString.size() );
+//	    }
 	    
 		return true;
 	}

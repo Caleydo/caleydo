@@ -13,7 +13,7 @@ import org.caleydo.core.command.data.CmdDataCreateSet;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.IVirtualArray;
-import org.caleydo.core.data.collection.SetType;
+import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.util.system.StringConversionTool;
@@ -286,7 +286,7 @@ implements IView {
 		hashVirtualArray2VirtualArraySetIndex.clear();
 		
 		ISet selectedSet = 
-			generalManager.getSetManager().getItemSet(iSelectedSetDataId);
+			generalManager.getSetManager().getSet(iSelectedSetDataId);
 		
 		// Fill storage data
 		TableItem tableItem = null;
@@ -447,7 +447,7 @@ implements IView {
 
 								// Get the selected storage object
 								IStorage tmpStorage = 
-									generalManager.getStorageManager().getItemStorage(new Integer(combo.getText()));
+									generalManager.getStorageManager().getStorage(new Integer(combo.getText()));
 								
 								if (item.getText(1).equals("ID?"))
 								{
@@ -464,13 +464,13 @@ implements IView {
 						    				0);
 						    		
 						        	// Save previously selected storage for updating in SET
-						        	IStorage oldStorage = generalManager.getStorageManager().getItemStorage(
+						        	IStorage oldStorage = generalManager.getStorageManager().getStorage(
 						        			new Integer(item.getText(1)));
 						    		
 						    		if (hashStorage2StorageSetIndex.isEmpty())
 						    			return;
 						    		
-						    		ISet tmpSet = generalManager.getSetManager().getItemSet(iSelectedSetDataId);
+						    		ISet tmpSet = generalManager.getSetManager().getSet(iSelectedSetDataId);
 						    		int iStorageIndexInSet = hashStorage2StorageSetIndex.get(oldStorage);
 						    		
 						    		tmpSet.getWriteToken();
@@ -607,7 +607,7 @@ implements IView {
 						    		if (hashVirtualArray2VirtualArraySetIndex.isEmpty())
 						    			return;
 						    		
-						    		ISet tmpSet = generalManager.getSetManager().getItemSet(iSelectedSetId);
+						    		ISet tmpSet = generalManager.getSetManager().getSet(iSelectedSetId);
 						    		int iVirtualArrayIndexInSet = hashVirtualArray2VirtualArraySetIndex.get(oldVirtualArray);
 						    		
 						    		tmpSet.getWriteToken();
@@ -636,7 +636,7 @@ implements IView {
 	protected void fillSetData(Combo setDataCombo) {
 		
 		Collection<ISet> allSets = 
-			generalManager.getSetManager().getAllSetItems();
+			generalManager.getSetManager().getAllSets();
 		
 		Iterator<ISet> iterSets = allSets.iterator();
 		int iTmpSetId = 0;
@@ -686,7 +686,7 @@ implements IView {
 		createdCommand.setAttributes(iNewSetId, 
 				sVirtualArrayIDs, 
 				sStorageIDs,
-				SetType.SET_RAW_DATA);
+				ESetType.SET_RAW_DATA);
 
 		createdCommand.doCommand();
 		

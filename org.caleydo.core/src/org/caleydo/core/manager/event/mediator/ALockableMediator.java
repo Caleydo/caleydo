@@ -1,7 +1,6 @@
 package org.caleydo.core.manager.event.mediator;
 
 import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 

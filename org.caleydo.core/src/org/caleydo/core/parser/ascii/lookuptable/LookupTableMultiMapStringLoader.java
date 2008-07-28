@@ -5,7 +5,6 @@ package org.caleydo.core.parser.ascii.lookuptable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-//import java.util.HashMap;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
@@ -19,8 +18,6 @@ import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
-import org.caleydo.core.parser.ascii.lookuptable.ALookupTableLoader;
-import org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader;
 
 
 /**
@@ -222,59 +219,61 @@ implements ILookupTableLoader {
 	
 	public final void destroyLUT() {
 		
-		if ( multiHashMapInteger != null ) {
-			/**
-			 * Convert MultiMap<String> to Multimap<Integer>
-			 */
-			
-			IGenomeIdManager gidmng = generalManager.getGenomeIdManager();
-			
-			EGenomeIdType originType = this.currentGenomeIdType.getTypeOrigin();
-			EGenomeIdType targetType = this.currentGenomeIdType.getTypeTarget();			
-			
-			IGenomeIdMap originMap = gidmng.getMapByType( originType.getBasicConversion() );
-			IGenomeIdMap targetMap = gidmng.getMapByType( targetType.getBasicConversion() );
-			
-			
-			Set <String> keySet = 
-				multiHashMapString.keySet();
-			
-			if ( keySet == null ) {
-				assert false : "WARNING: empty key-set!";
-				return;
-			}
-			
-			Iterator <String> iter = keySet.iterator();
-			
-			while ( iter.hasNext() ) 
-			{
-				String sKey = iter.next();
-				
-				ArrayList <String> alStringValue = 
-					multiHashMapString.get( sKey );							
-				Iterator <String> iterValue = 
-					alStringValue.iterator();
-				
-				ArrayList <Integer> alIntValue = 
-					new ArrayList <Integer> ();
-				
-				while ( iterValue.hasNext() ) 
-				{
-					alIntValue.add(	
-							targetMap.getIntByString(iterValue.next()) );
-					
-				} // while ( iterValue.hasNext() )
-				
-				multiHashMapInteger.put( 
-						originMap.getIntByString(sKey),
-						alIntValue );
-				
-			} // while ( iter.hasNext() ) 
-			
-			/* clean up MultiMap */
-			multiHashMapString.clear();
-			
-		} // if ( multiHashMapInteger != null ) {
+		//TODO implement
+		
+//		if ( multiHashMapInteger != null ) {
+//			/**
+//			 * Convert MultiMap<String> to Multimap<Integer>
+//			 */
+//			
+//			IGenomeIdManager gidmng = generalManager.getGenomeIdManager();
+//			
+//			EGenomeIdType originType = this.currentGenomeIdType.getTypeOrigin();
+//			EGenomeIdType targetType = this.currentGenomeIdType.getTypeTarget();			
+//			
+//			IGenomeIdMap originMap = gidmng.getMapByType( originType.getBasicConversion() );
+//			IGenomeIdMap targetMap = gidmng.getMapByType( targetType.getBasicConversion() );
+//			
+//			
+//			Set <String> keySet = 
+//				multiHashMapString.keySet();
+//			
+//			if ( keySet == null ) {
+//				assert false : "WARNING: empty key-set!";
+//				return;
+//			}
+//			
+//			Iterator <String> iter = keySet.iterator();
+//			
+//			while ( iter.hasNext() ) 
+//			{
+//				String sKey = iter.next();
+//				
+//				ArrayList <String> alStringValue = 
+//					multiHashMapString.get( sKey );							
+//				Iterator <String> iterValue = 
+//					alStringValue.iterator();
+//				
+//				ArrayList <Integer> alIntValue = 
+//					new ArrayList <Integer> ();
+//				
+//				while ( iterValue.hasNext() ) 
+//				{
+//					alIntValue.add(	
+//							targetMap.getIntByString(iterValue.next()) );
+//					
+//				} // while ( iterValue.hasNext() )
+//				
+//				multiHashMapInteger.put( 
+//						originMap.getIntByString(sKey),
+//						alIntValue );
+//				
+//			} // while ( iter.hasNext() ) 
+//			
+//			/* clean up MultiMap */
+//			multiHashMapString.clear();
+//			
+//		} // if ( multiHashMapInteger != null ) {
 	}
 	
 	/**

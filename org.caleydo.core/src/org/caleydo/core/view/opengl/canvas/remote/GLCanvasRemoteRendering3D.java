@@ -17,13 +17,13 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 
 import org.caleydo.core.command.CommandQueueSaxType;
-import org.caleydo.core.command.data.CmdDataCreateSelectionSetMakro;
+import org.caleydo.core.command.data.CmdDataCreateSelection;
 import org.caleydo.core.command.event.CmdEventCreateMediator;
 import org.caleydo.core.command.view.opengl.CmdGlObjectPathway3D;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.set.selection.ISetSelection;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle;
@@ -490,7 +490,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 				// Create new selection set
 				int iSelectionSetID = generalManager
 						.getSetManager().createId(ManagerObjectType.SET);
-				CmdDataCreateSelectionSetMakro selectedSetCmd = (CmdDataCreateSelectionSetMakro) generalManager
+				CmdDataCreateSelection selectedSetCmd = (CmdDataCreateSelection) generalManager
 						.getCommandManager().createCommandByType(
 								CommandQueueSaxType.CREATE_SET_SELECTION_MAKRO);
 				selectedSetCmd.setAttributes(iSelectionSetID);
@@ -1199,14 +1199,12 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, org.caleydo.core.data.collection.ISet)
 	 */
-	public void updateReceiver(Object eventTrigger, ISet updatedSet) 
+	public void updateReceiver(Object eventTrigger, ISelection updatedSelection) 
 	{
 		generalManager.getLogger().log(Level.INFO, "Update called by "
 				+eventTrigger.getClass().getSimpleName());
 		
-		ISetSelection setSelection = (ISetSelection) updatedSet;
-
-		setSelection.getReadToken();	
+		ISelection setSelection = (ISelection) updatedSelection;
 								
 		ArrayList<Integer> iAlSelection = setSelection.getSelectionIdArray();
 		ArrayList<Integer> iAlSelectionGroup = setSelection.getGroupArray();	
@@ -1250,10 +1248,8 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 			{
 				loadDependentPathways(alPathwayVertexGraphItem);
 			}
-			
-			alSetSelection.get(0).getWriteToken();
+
 			alSetSelection.get(0).mergeSelection(iAlTmpSelectionId, iAlTmpGroupId, null);
-			alSetSelection.get(0).returnWriteToken();
 		}
 		// Check if update set contains a pathway that was searched by the user
 		else if (setSelection.getOptionalDataArray() != null)
@@ -1263,7 +1259,6 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 			enableBusyMode(true);
 		}
 
-		setSelection.returnReadToken();
 	}
 
 	/**

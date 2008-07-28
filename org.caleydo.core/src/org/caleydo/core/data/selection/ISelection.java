@@ -1,11 +1,11 @@
 /**
  * 
  */
-package org.caleydo.core.data.collection.set.selection;
+package org.caleydo.core.data.selection;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.view.AView;
 
 /**
  * Special ISet for selection. 
@@ -20,8 +20,8 @@ import org.caleydo.core.data.collection.ISet;
  * @author Marc Streit
  *
  */
-public interface ISetSelection 
-extends ISet {
+public interface ISelection
+{
 
 	public void setSelectionIdArray(ArrayList<Integer> iAlSelectionId);
 	

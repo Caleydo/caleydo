@@ -3,13 +3,9 @@ package org.caleydo.core.manager.data.set;
 import java.util.Collection;
 import java.util.Hashtable;
 
+import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.SetType;
-import org.caleydo.core.data.collection.set.SetFlatThreadSimple;
-import org.caleydo.core.data.collection.set.SetMultiDim;
-import org.caleydo.core.data.collection.set.SetPlanarSimple;
-import org.caleydo.core.data.collection.set.selection.SetSelection;
-import org.caleydo.core.data.collection.set.viewdata.SetViewData;
+import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.ACollectionManager;
 import org.caleydo.core.manager.data.ISetManager;
@@ -52,9 +48,11 @@ implements ISetManager {
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.data.manager.SetManager#createSet()
 	 */
-	public ISet createSet( final SetType setType ) {
-			
+	public ISet createSet( final ESetType setType ) 
+	{
+		return new Set(4, generalManager);
 		// Check if requested set is a selection set
+		/*
 		if (setType.equals(SetType.SET_SELECTION))
 		{
 			return new SetSelection(4, generalManager);
@@ -85,7 +83,7 @@ implements ISetManager {
 						null,
 						setType);
 				
-				/* Sets not implemented yet.. */
+				// Sets not implemented yet.. 
 			case SET_MULTI_DIM_VARIABLE:  
 			case SET_CUBIC:
 				
@@ -95,7 +93,9 @@ implements ISetManager {
 						setType.toString() + "]");
 		
 			}
+	
 		}
+		*/
 	}
 
 	/* (non-Javadoc)
@@ -126,7 +126,7 @@ implements ISetManager {
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.data.manager.SetManager#getItemSet(int)
 	 */
-	public ISet getItemSet( final int iItemId) {
+	public ISet getSet( final int iItemId) {
 		return hashId2Set.get( iItemId );
 	}
 	
@@ -135,13 +135,13 @@ implements ISetManager {
 	 * @see org.caleydo.core.data.manager.GeneralManager#getItem(int)
 	 */
 	public final Object getItem( final int iItemId) {
-		return getItemSet(iItemId);
+		return getSet(iItemId);
 	}
 
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.data.manager.SetManager#getAllSetItems()
 	 */
-	public Collection<ISet> getAllSetItems() {
+	public Collection<ISet> getAllSets() {
 		
 		return hashId2Set.values();
 	}
@@ -160,8 +160,8 @@ implements ISetManager {
 		return hashId2Set.size();
 	}
 	
-	public boolean unregisterItem( final int iItemId,
-			final ManagerObjectType type  ) {
+	public boolean unregisterItem(final int iItemId) 
+	{
 		
 		ISet buffer = hashId2Set.remove(iItemId);
 		
@@ -175,12 +175,10 @@ implements ISetManager {
 		return true;
 	}
 
-	public boolean registerItem( final Object registerItem, 
-			final int iItemId , 
-			final ManagerObjectType type ) {
-		
-
-		try {
+	public boolean registerItem(final Object registerItem, final int iItemId) 
+	{
+		try 
+		{
 			ISet addItem = (ISet) registerItem;
 			
 			if ( this.hashId2Set.containsKey( iItemId ) ) {

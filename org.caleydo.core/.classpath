@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="**/.svn/|*.html" kind="src" path="src"/>
+	<classpathentry excluding="**/.svn/|*.html|org/caleydo/core/data/collection/virtualarray/|org/caleydo/core/data/collection/IVirtualArray.java|org/caleydo/core/manager/data/IVirtualArrayManager.java|org/caleydo/core/manager/data/virtualarray/|org/caleydo/core/view/swt/data/explorer/|org/caleydo/core/view/swt/pathway/|org/caleydo/core/view/swt/slider/|org/caleydo/core/view/swt/toolbar/|org/caleydo/core/view/swt/data/exchanger/|org/caleydo/core/view/swt/data/DataTableViewRep.java|org/caleydo/core/view/opengl/canvas/histogram/" kind="src" path="src"/>
 	<classpathentry excluding="**/.svn/|*.html|gleem/|org/" kind="src" path="src_ext"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>

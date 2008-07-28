@@ -10,8 +10,9 @@ public class AllTests {
 		TestSuite suite = new TestSuite(
 				"Test for org.caleydo.testing.command.data.filter");
 		//$JUnit-BEGIN$
-		suite.addTestSuite(CmdDataFiterMinMaxTest.class);
-		suite.addTestSuite(CmdDataFilterMathTest.class);
+		//suite.addTestSuite(CmdDataFiterMinMaxTest.class);
+		//suite.addTestSuite(CmdDataFilterMathTest.class);
+		suite.addTestSuite(NominalStringCCollectionTest.class);
 		//$JUnit-END$
 		return suite;
 	}

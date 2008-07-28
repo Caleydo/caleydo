@@ -3,7 +3,7 @@ package org.caleydo.core.view.swt.browser;
 import java.util.logging.Level;
 
 import org.caleydo.core.command.CommandQueueSaxType;
-import org.caleydo.core.command.data.CmdDataCreateSelectionSetMakro;
+import org.caleydo.core.command.data.CmdDataCreateSelection;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.view.AView;
@@ -63,7 +63,7 @@ implements IView {
 		iSelectionSetId = generalManager.getSetManager()
 			.createId(ManagerObjectType.SET_LINEAR);
 		
-		CmdDataCreateSelectionSetMakro selectedSetCmd = (CmdDataCreateSelectionSetMakro) generalManager.getCommandManager()
+		CmdDataCreateSelection selectedSetCmd = (CmdDataCreateSelection) generalManager.getCommandManager()
 			.createCommandByType(CommandQueueSaxType.CREATE_SET_SELECTION_MAKRO);
 		
 		selectedSetCmd.setAttributes(iSelectionSetId);

@@ -102,7 +102,7 @@ extends ICommandActionListener, IManager {
 	public boolean hasCommandQueueId( final int iCmdQueueId );
 	
 	/**
-	 * Register a org.caleydo.core.command.ICommand after it's doCommand() method was called.
+	 * Register a org.caleydo.core.command.ICommand after its doCommand() method was called.
 	 * Used for redo-undo.
 	 * 
 	 * @see org.caleydo.core.command.ICommand#doCommand()
@@ -112,7 +112,7 @@ extends ICommandActionListener, IManager {
 	public void runDoCommand( ICommand runCmd );
 	
 	/**
-	 * Register a org.caleydo.core.command.ICommand after it's undoCommand() method was called.
+	 * Register a org.caleydo.core.command.ICommand after its undoCommand() method was called.
 	 * Used for redo-undo.
 	 * 
 	 * @see org.caleydo.core.command.ICommand#undoCommand()

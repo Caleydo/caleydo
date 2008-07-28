@@ -3,7 +3,7 @@ package org.caleydo.core.manager.event.mediator;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
 
@@ -159,13 +159,12 @@ implements IMediator {
 	 * @see org.caleydo.core.manager.event.mediator.LockableExclusivFilterMediator
 	 * @see org.caleydo.core.manager.event.mediator.LockableIgnoreFilterMediator
 	 * @see org.caleydo.core.manager.event.mediator.ALockableMediatorReceiver#updateReceiverSelection(java.lang.Object, org.caleydo.core.data.collection.ISet)
-	 */
-	@Override
+	 */	
 	public void updateReceiverSpecialMediator(Object eventTrigger,
-			ISet updatedSet) {
+			ISelection updatedSelection) {
 		
 		assert eventTrigger != null : "can not handle eventTrigger null-pointer";
-		assert updatedSet != null : "can not handle selectionSet null-pointer";
+		assert updatedSelection != null : "can not handle selectionSet null-pointer";
 		
 		Iterator<IMediatorReceiver> iter = arReceiver.iterator();
 
@@ -176,7 +175,7 @@ implements IMediator {
 			/*  Prevent circular updates */
 			if (!currentReceiver.equals(eventTrigger))
 			{
-				currentReceiver.updateReceiver(eventTrigger, updatedSet);
+				currentReceiver.updateReceiver(eventTrigger, updatedSelection);
 			} 
 			else 
 			{

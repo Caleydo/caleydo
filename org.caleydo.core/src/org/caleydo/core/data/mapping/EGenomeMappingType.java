@@ -1,8 +1,5 @@
 package org.caleydo.core.data.mapping;
 
-import org.caleydo.core.data.mapping.EGenomeMappingDataType;
-import org.caleydo.core.data.mapping.EGenomeIdType;
-import org.caleydo.core.util.ICaleydoDefaultType;
 
 /**
  * Enum defines possible combinations of 
@@ -13,14 +10,7 @@ import org.caleydo.core.util.ICaleydoDefaultType;
  *
  */
 public enum EGenomeMappingType
-implements ICaleydoDefaultType <EGenomeMappingType> {
-	
-	/* --------------------- */
-	NON_MAPPING(EGenomeIdType.NONE,
-			EGenomeIdType.NONE,
-			EGenomeMappingDataType.NONE),	
-	
-	/* --------------------- */
+{
 	DAVID_2_REFSEQ_MRNA(EGenomeIdType.DAVID,
 			EGenomeIdType.REFSEQ_MRNA,
 			EGenomeMappingDataType.INT2STRING),
@@ -103,14 +93,5 @@ implements ICaleydoDefaultType <EGenomeMappingType> {
 	public EGenomeIdType getTypeTarget() {
 		
 		return targetType;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.util.ICaleydoDefaultType#getTypeDefault()
-	 */
-	public EGenomeMappingType getTypeDefault() {
-		
-		return EGenomeMappingType.NON_MAPPING;
 	}
 }

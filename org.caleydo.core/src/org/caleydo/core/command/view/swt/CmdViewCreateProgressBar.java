@@ -53,8 +53,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 		
 		viewManager.registerItem(
 				progressBarView, 
-				iUniqueId, 
-				ManagerObjectType.VIEW);
+				iUniqueId);
 
 		progressBarView.setAttributes(iProgressBarCurrentValue);
 		progressBarView.initView();

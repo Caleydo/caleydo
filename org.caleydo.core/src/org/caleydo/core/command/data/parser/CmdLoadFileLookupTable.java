@@ -339,15 +339,15 @@ extends ACommand {
 					+ "_2_"
 					+ lut_genome_type.getTypeOrigin().toString());
 				
-				if (lut_genome_reverse_type.equals(EGenomeMappingType.NON_MAPPING))
-				{
-					assert false : "Reverse mapping: type=" + 
-					lut_genome_reverse_type.toString() + " has no valid reverse type.";
-					
-					throw new RuntimeException("Reverse mapping: type=" +
-							lut_genome_type.toString() +
-							" has no valid reverse type.");
-				} //if (lut_genome_reverse_type.equals(EGenomeMappingType.NON_MAPPING))
+//				if (lut_genome_reverse_type.equals(EGenomeMappingType.NON_MAPPING))
+//				{
+//					assert false : "Reverse mapping: type=" + 
+//					lut_genome_reverse_type.toString() + " has no valid reverse type.";
+//					
+//					throw new RuntimeException("Reverse mapping: type=" +
+//							lut_genome_type.toString() +
+//							" has no valid reverse type.");
+//				} //if (lut_genome_reverse_type.equals(EGenomeMappingType.NON_MAPPING))
 				
 				if ( lut_genome_reverse_type.isMultiMap() ) 
 				{

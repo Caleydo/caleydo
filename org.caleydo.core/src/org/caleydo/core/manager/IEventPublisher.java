@@ -6,7 +6,6 @@ import org.caleydo.core.manager.event.mediator.IMediator;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
-import org.caleydo.core.util.ICaleydoDefaultType;
 
 /**
  * Handle events using Publish subscriber design pattern.
@@ -19,23 +18,11 @@ public interface IEventPublisher
 extends IManager, IMediatorReceiver {
 
 	public enum MediatorType 
-	implements ICaleydoDefaultType <MediatorType> {
+	{
 		DATA_MEDIATOR,
 		SELECTION_MEDIATOR,
 		VIEW_MEDIATOR; //for future usage
 		
-		private MediatorType() {
-			
-		}
-
-		/*
-		 * (non-Javadoc)
-		 * @see org.caleydo.core.util.ICaleydoDefaultType#getTypeDefault()
-		 */
-		public MediatorType getTypeDefault() {
-
-			return MediatorType.DATA_MEDIATOR;
-		}
 	}
 	
 	/**

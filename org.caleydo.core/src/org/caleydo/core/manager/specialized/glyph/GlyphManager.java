@@ -158,18 +158,7 @@ implements IGlyphManager{
 	public HashMap<Integer, GlyphEntry> getGlyphs() {
 		return hmGlyphList;
 	}
-
 	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-
 	//std interface
 	public Object getItem(int iItemId) {
 		return getGlyph(iItemId);
@@ -181,7 +170,7 @@ implements IGlyphManager{
 		return false;
 	}
 
-	public boolean registerItem(Object registerItem, int iItemId, ManagerObjectType type) {
+	public boolean registerItem(Object registerItem, int iItemId) {
 
 		// TODO Auto-generated method stub
 		return false;
@@ -191,7 +180,7 @@ implements IGlyphManager{
 		return hmGlyphList.size();
 	}
 
-	public boolean unregisterItem(int iItemId, ManagerObjectType type) {
+	public boolean unregisterItem(int iItemId) {
 
 		// TODO Auto-generated method stub
 		return false;

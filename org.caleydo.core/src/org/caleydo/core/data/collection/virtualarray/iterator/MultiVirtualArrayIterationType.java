@@ -1,6 +1,5 @@
 package org.caleydo.core.data.collection.virtualarray.iterator;
 
-import org.caleydo.core.util.ICaleydoDefaultType;
 
 /**
  * Types of selections.
@@ -10,7 +9,7 @@ import org.caleydo.core.util.ICaleydoDefaultType;
  * @see prometheus.data.set.SelectionInterface
  */
 public enum MultiVirtualArrayIterationType 
-implements ICaleydoDefaultType <MultiVirtualArrayIterationType> {
+{
 
 	FIRST_TO_LAST_SUCCESSIVE("Abstract IVirtualArray, that has not been instaniated"),
 	FIRST_COLUMN_EACH_ROW("Abstract Virtual Array, that has not been defined"),
@@ -33,14 +32,5 @@ implements ICaleydoDefaultType <MultiVirtualArrayIterationType> {
 	
 	public String getDescription() {
 		return sDescription;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.util.ICaleydoDefaultType#getTypeDefault()
-	 */
-	public MultiVirtualArrayIterationType getTypeDefault() {
-
-		return MultiVirtualArrayIterationType.FIRST_COLUMN_EACH_ROW;
 	}
 }

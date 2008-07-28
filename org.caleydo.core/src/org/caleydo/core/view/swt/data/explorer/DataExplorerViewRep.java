@@ -6,8 +6,8 @@ import java.util.Iterator;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.IVirtualArray;
-import org.caleydo.core.data.collection.SetType;
-import org.caleydo.core.data.collection.set.selection.ISetSelection;
+import org.caleydo.core.data.collection.ESetType;
+import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.view.AView;
@@ -149,7 +149,7 @@ implements IView, IMediatorReceiver {
 		rootViewModel = new DataCollectionModel(0, "VIEW");
 		rootModel.add(rootViewModel);
 
-		allSetItems = generalManager.getSetManager().getAllSetItems();
+		allSetItems = generalManager.getSetManager().getAllSets();
 		
 		try
 		{
@@ -349,12 +349,12 @@ implements IView, IMediatorReceiver {
 	 */
 	public void updateReceiver(Object eventTrigger, final ISet updatedSet) {
 
-		if ( updatedSet.getSetType() != SetType.SET_SELECTION ) 
+		if ( updatedSet.getSetType() != ESetType.SET_SELECTION ) 
 		{
 			return;
 		}
 		
-		final ISetSelection setSelection = (ISetSelection)updatedSet;
+		final ISelection setSelection = (ISelection)updatedSet;
 		
 //		generalManager.logMsg(
 //				"Data Explorer selection update called by " 

@@ -1,11 +1,5 @@
 package org.caleydo.core.manager.general;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -22,10 +16,8 @@ import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.command.CommandManager;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.data.IStorageManager;
-import org.caleydo.core.manager.data.IVirtualArrayManager;
 import org.caleydo.core.manager.data.set.SetManager;
 import org.caleydo.core.manager.data.storage.StorageManager;
-import org.caleydo.core.manager.data.virtualarray.VirtualArrayManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.gui.SWTGUIManager;
 import org.caleydo.core.manager.memento.MementoManager;
@@ -62,7 +54,7 @@ implements IGeneralManager
 	
 	protected IMementoManager mementoManager;
 	
-	protected IVirtualArrayManager virtualArrayManager;
+	//protected IVirtualArrayManager virtualArrayManager;
 	
 	protected ISetManager setManager;
 	
@@ -127,8 +119,8 @@ implements IGeneralManager
 		
 		bAllManagersInitialized = true;
 
-		storageManager = new StorageManager(this, 4);
-		virtualArrayManager = new VirtualArrayManager(this, 4);
+		storageManager = new StorageManager(this);
+		//virtualArrayManager = new VirtualArrayManager(this, 4);
 		setManager = new SetManager(this, 4);
 		mementoManager = new MementoManager(this);
 		commandManager = new CommandManager(this);
@@ -147,7 +139,7 @@ implements IGeneralManager
 		 * the LinkedList
 		 */
 		llAllManagerObjects.add(setManager);
-		llAllManagerObjects.add(virtualArrayManager);
+		//llAllManagerObjects.add(virtualArrayManager);
 		llAllManagerObjects.add(storageManager);
 		llAllManagerObjects.add(pathwayManager);
 		llAllManagerObjects.add(pathwayItemManager);
@@ -252,8 +244,8 @@ implements IGeneralManager
 		{
 		case MEMENTO:
 			return mementoManager;
-		case DATA_VIRTUAL_ARRAY:
-			return virtualArrayManager;
+//		case DATA_VIRTUAL_ARRAY:
+//			return virtualArrayManager;
 		case DATA_SET:
 			return setManager;
 		case DATA_STORAGE:
@@ -347,9 +339,9 @@ implements IGeneralManager
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IGeneralManager#getVirtualArrayManager()
 	 */
-	public IVirtualArrayManager getVirtualArrayManager() {
-		return virtualArrayManager;
-	}
+//	public IVirtualArrayManager getVirtualArrayManager() {
+//		return virtualArrayManager;
+//	}
 	
 	/*
 	 * (non-Javadoc)

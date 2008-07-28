@@ -66,8 +66,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail{
 		
 		viewManager.registerItem(
 				dataEntitySearcherView, 
-				iUniqueId, 
-				ManagerObjectType.VIEW);
+				iUniqueId);
 
 		viewManager.addViewRep(dataEntitySearcherView);
 

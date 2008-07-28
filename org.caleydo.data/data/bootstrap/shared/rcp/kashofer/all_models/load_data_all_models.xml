@@ -29,9 +29,9 @@
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="46301" label="Storage	file for expression mapping 2" 	attrib1="STRING" attrib2="test data	from file" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="47301" label="Storage	file for expression mapping 3" 	attrib1="STRING" attrib2="test data	from file" />
 
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="85101" label="HCC"  attrib1="35201" attrib2="45301" attrib3="SET_GENE_EXPRESSION_DATA" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="86101" label="NLL"  attrib1="35201" attrib2="46301" attrib3="SET_GENE_EXPRESSION_DATA" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="87101" label="Cirr" attrib1="35201" attrib2="47301" attrib3="SET_GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="85101" label="HCC"  attrib1="35201" attrib2="45301" attrib3="GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="86101" label="NLL"  attrib1="35201" attrib2="46301" attrib3="GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="87101" label="Cirr" attrib1="35201" attrib2="47301" attrib3="GENE_EXPRESSION_DATA" />
 
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/kashofer/expression_all_human_samples.csv"	
 			attrib1="FLOAT;ABORT"								attrib2="85101" attrib3="1 -1" />								

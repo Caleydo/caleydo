@@ -374,14 +374,14 @@ implements ISWTGUIManager {
 		return 0;
 	}
 
-	public boolean registerItem(Object registerItem, int iItemId,
-			ManagerObjectType type) {
+	public boolean registerItem(Object registerItem, int iItemId) 
+	{
 
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public boolean unregisterItem(int iItemId, ManagerObjectType type) {
+	public boolean unregisterItem(int iItemId) {
 
 		// TODO Auto-generated method stub
 		return false;

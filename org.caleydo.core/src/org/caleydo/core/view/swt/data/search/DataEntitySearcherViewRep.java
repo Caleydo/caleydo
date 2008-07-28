@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.eclipse.swt.widgets.Composite;
 import org.caleydo.core.command.CommandQueueSaxType;
-import org.caleydo.core.command.data.CmdDataCreateSelectionSetMakro;
+import org.caleydo.core.command.data.CmdDataCreateSelection;
 import org.caleydo.core.command.event.CmdEventCreateMediator;
-import org.caleydo.core.data.collection.set.selection.SetSelection;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IEventPublisher.MediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
@@ -22,6 +21,7 @@ import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraph;
 import org.caleydo.util.graph.IGraphItem;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * 
@@ -61,7 +61,7 @@ implements IMediatorSender{;
 		iSearchSelectionSetId = generalManager.getSetManager()
 			.createId(ManagerObjectType.SET_LINEAR);
 
-		CmdDataCreateSelectionSetMakro selectedSetCmd = (CmdDataCreateSelectionSetMakro) generalManager.getCommandManager()
+		CmdDataCreateSelection selectedSetCmd = (CmdDataCreateSelection) generalManager.getCommandManager()
 			.createCommandByType(CommandQueueSaxType.CREATE_SET_SELECTION_MAKRO);
 	
 		selectedSetCmd.setAttributes(iSearchSelectionSetId);
@@ -188,15 +188,13 @@ implements IMediatorSender{;
 			ArrayList<Integer> iAlSelectionDepth,
 			ArrayList<Integer> iAlOptional) {
 		
-		SetSelection tmpSelectionSet = 
-			(SetSelection) generalManager.getSetManager().getItemSet(iSearchSelectionSetId);
+		Selection tmpSelectionSet = 
+			(Selection) generalManager.getSetManager().getSet(iSearchSelectionSetId);
 		
-		tmpSelectionSet.getWriteToken();
 		tmpSelectionSet.updateSelectionSet(iUniqueId, 
 				iAlSelectionId,
 				iAlSelectionDepth, 
 				iAlOptional);
-		tmpSelectionSet.returnWriteToken();
 	}
 
 	/*

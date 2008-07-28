@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
@@ -15,7 +15,6 @@ import org.caleydo.core.manager.event.mediator.LockableExclusivFilterMediator;
 import org.caleydo.core.manager.event.mediator.LockableIngoreFilterMediator;
 import org.caleydo.core.manager.event.mediator.LockableMediator;
 import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
-import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
@@ -574,7 +573,7 @@ implements IEventPublisher {
 	 *  (non-Javadoc)
 	 * @see org.caleydo.core.manager.IEventPublisher#updateReceiver(java.lang.Object, org.caleydo.core.data.collection.ISet)
 	 */
-	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
+	public void updateReceiver(Object eventTrigger, ISelection updatedSet) {
 		
 		// Prevent update during initialization of data.
 		if (hashSender2SelectionMediators.isEmpty())
@@ -645,14 +644,13 @@ implements IEventPublisher {
 		return hashMediatorId2Mediator.size();
 	}
 
-	public boolean registerItem(Object registerItem, int iItemId,
-			ManagerObjectType type) {
+	public boolean registerItem(Object registerItem, int iItemId) {
 
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	public boolean unregisterItem(int iItemId, ManagerObjectType type) {
+	public boolean unregisterItem(int iItemId) {
 
 		IMediator buffer = hashMediatorId2Mediator.get(iItemId);
 		

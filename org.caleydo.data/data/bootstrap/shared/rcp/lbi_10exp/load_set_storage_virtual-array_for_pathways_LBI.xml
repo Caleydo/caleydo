@@ -50,29 +50,29 @@
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="44301" label="Storage	file for expression mapping 3" 	attrib1="STRING" attrib2="test data	from file" />
 
 
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="85101" label="G+ Lung" 					attrib1="35201" attrib2="45301" attrib3="SET_GENE_EXPRESSION_DATA" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="86101" label="G+ Liver" 					attrib1="35201" attrib2="46301" attrib3="SET_GENE_EXPRESSION_DATA" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="87101" label="G+ Heart" 					attrib1="35201" attrib2="47301" attrib3="SET_GENE_EXPRESSION_DATA" />								
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="88101" label="G+ Pancreas" 				attrib1="35201" attrib2="48301" attrib3="SET_GENE_EXPRESSION_DATA" />								
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="89101" label="G+ Colon" 					attrib1="35201" attrib2="49301" attrib3="SET_GENE_EXPRESSION_DATA" />								
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="90101" label="G+ Small Intestine" 		attrib1="35201" attrib2="50301" attrib3="SET_GENE_EXPRESSION_DATA" />								
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="91101" label="G+ Kidney Cortex" 			attrib1="35201" attrib2="51301" attrib3="SET_GENE_EXPRESSION_DATA" />								
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="92101" label="G+ Kidney Medulla" 			attrib1="35201" attrib2="52301" attrib3="SET_GENE_EXPRESSION_DATA" />								
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="93101" label="G+ Brain Cerebrellum" 		attrib1="35201" attrib2="53301" attrib3="SET_GENE_EXPRESSION_DATA" />								
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="94101" label="G+ Brain Cerebrum Cortex"	attrib1="35201" attrib2="54301" attrib3="SET_GENE_EXPRESSION_DATA" />								
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="95101" label="G+ Spleen" 					attrib1="35201" attrib2="55301" attrib3="SET_GENE_EXPRESSION_DATA" />								
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="85101" label="G+ Lung" 					attrib1="35201" attrib2="45301" attrib3="GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="86101" label="G+ Liver" 					attrib1="35201" attrib2="46301" attrib3="GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="87101" label="G+ Heart" 					attrib1="35201" attrib2="47301" attrib3="GENE_EXPRESSION_DATA" />								
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="88101" label="G+ Pancreas" 				attrib1="35201" attrib2="48301" attrib3="GENE_EXPRESSION_DATA" />								
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="89101" label="G+ Colon" 					attrib1="35201" attrib2="49301" attrib3="GENE_EXPRESSION_DATA" />								
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="90101" label="G+ Small Intestine" 		attrib1="35201" attrib2="50301" attrib3="GENE_EXPRESSION_DATA" />								
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="91101" label="G+ Kidney Cortex" 			attrib1="35201" attrib2="51301" attrib3="GENE_EXPRESSION_DATA" />								
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="92101" label="G+ Kidney Medulla" 			attrib1="35201" attrib2="52301" attrib3="GENE_EXPRESSION_DATA" />								
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="93101" label="G+ Brain Cerebrellum" 		attrib1="35201" attrib2="53301" attrib3="GENE_EXPRESSION_DATA" />								
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="94101" label="G+ Brain Cerebrum Cortex"	attrib1="35201" attrib2="54301" attrib3="GENE_EXPRESSION_DATA" />								
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="95101" label="G+ Spleen" 					attrib1="35201" attrib2="55301" attrib3="GENE_EXPRESSION_DATA" />								
 							
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="74101" label="G- Lung" 					attrib1="35201" attrib2="34301" attrib3="SET_GENE_EXPRESSION_DATA" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="75101" label="G- Liver" 					attrib1="35201" attrib2="35301" attrib3="SET_GENE_EXPRESSION_DATA" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="76101" label="G- Heart" 					attrib1="35201" attrib2="36301" attrib3="SET_GENE_EXPRESSION_DATA" />								
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="77101" label="G- Pancreas" 				attrib1="35201" attrib2="37301" attrib3="SET_GENE_EXPRESSION_DATA" />								
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="78101" label="G- Colon" 					attrib1="35201" attrib2="38301" attrib3="SET_GENE_EXPRESSION_DATA" />								
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="79101" label="G- Small Intestine" 		attrib1="35201" attrib2="39301" attrib3="SET_GENE_EXPRESSION_DATA" />								
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="80101" label="G- Kidney Cortex" 			attrib1="35201" attrib2="40301" attrib3="SET_GENE_EXPRESSION_DATA" />								
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="81101" label="G- Kidney Medulla" 			attrib1="35201" attrib2="41301" attrib3="SET_GENE_EXPRESSION_DATA" />								
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="82101" label="G- Brain Cerebrellum" 		attrib1="35201" attrib2="42301" attrib3="SET_GENE_EXPRESSION_DATA" />								
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="83101" label="G- Brain Cerebrum Cortex"	attrib1="35201" attrib2="43301" attrib3="SET_GENE_EXPRESSION_DATA" />								
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="84101" label="G- Spleen" 					attrib1="35201" attrib2="44301" attrib3="SET_GENE_EXPRESSION_DATA" />								
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="74101" label="G- Lung" 					attrib1="35201" attrib2="34301" attrib3="GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="75101" label="G- Liver" 					attrib1="35201" attrib2="35301" attrib3="GENE_EXPRESSION_DATA" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="76101" label="G- Heart" 					attrib1="35201" attrib2="36301" attrib3="GENE_EXPRESSION_DATA" />								
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="77101" label="G- Pancreas" 				attrib1="35201" attrib2="37301" attrib3="GENE_EXPRESSION_DATA" />								
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="78101" label="G- Colon" 					attrib1="35201" attrib2="38301" attrib3="GENE_EXPRESSION_DATA" />								
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="79101" label="G- Small Intestine" 		attrib1="35201" attrib2="39301" attrib3="GENE_EXPRESSION_DATA" />								
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="80101" label="G- Kidney Cortex" 			attrib1="35201" attrib2="40301" attrib3="GENE_EXPRESSION_DATA" />								
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="81101" label="G- Kidney Medulla" 			attrib1="35201" attrib2="41301" attrib3="GENE_EXPRESSION_DATA" />								
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="82101" label="G- Brain Cerebrellum" 		attrib1="35201" attrib2="42301" attrib3="GENE_EXPRESSION_DATA" />								
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="83101" label="G- Brain Cerebrum Cortex"	attrib1="35201" attrib2="43301" attrib3="GENE_EXPRESSION_DATA" />								
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="84101" label="G- Spleen" 					attrib1="35201" attrib2="44301" attrib3="GENE_EXPRESSION_DATA" />								
 
 
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/csv_format/lbi/Results_6h_LBIChip_080303.csv"	

@@ -2,7 +2,7 @@ package org.caleydo.core.view.swt.data;
 
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.IVirtualArray;
-import org.caleydo.core.data.collection.StorageType;
+import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.data.IVirtualArrayManager;
@@ -132,7 +132,7 @@ implements IDataTableView {
 	public void createStorageTable(int iRequestedStorageId) {
 		
 		currentStorage = storageManager
-			.getItemStorage(iRequestedStorageId);
+			.getStorage(iRequestedStorageId);
 		
 		// Reset paging
 		iCurrentTablePage = 0;
@@ -167,7 +167,7 @@ implements IDataTableView {
 			new TableItem(table, SWT.NONE);
 		}
 
-		if (currentStorage.getSize(StorageType.INT) > 1)
+		if (currentStorage.getSize(EStorageType.INT) > 1)
 		{
 			int[] intData = currentStorage.getArrayInt();
 
@@ -200,7 +200,7 @@ implements IDataTableView {
 			iTableColumnIndex++;
 		}
 
-		if (currentStorage.getSize(StorageType.FLOAT) > 1)
+		if (currentStorage.getSize(EStorageType.FLOAT) > 1)
 		{
 			float[] floatData = currentStorage.getArrayFloat();
 			
@@ -233,7 +233,7 @@ implements IDataTableView {
 			iTableColumnIndex++;
 		}
 
-		if (currentStorage.getSize(StorageType.STRING) > 1)
+		if (currentStorage.getSize(EStorageType.STRING) > 1)
 		{
 			String[] stringData = currentStorage.getArrayString();
 
@@ -265,7 +265,7 @@ implements IDataTableView {
 			iTableColumnIndex++;
 		}
 
-		if (currentStorage.getSize(StorageType.BOOLEAN) >= 1)
+		if (currentStorage.getSize(StorageType.EStorageType) >= 1)
 		{
 			boolean[] booleanData = currentStorage.getArrayBoolean();
 

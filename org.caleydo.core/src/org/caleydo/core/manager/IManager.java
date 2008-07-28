@@ -42,13 +42,11 @@ public interface IManager {
 	 * 
 	 * @param registerItem Object to be registered
 	 * @param iItemId unique Id
-	 * @param type defines type, can also be null if type is not known
 	 * 
 	 * @return TRUE if item was unregistered by this manager
 	 */
 	public boolean registerItem( final Object registerItem, 
-			final int iItemId , 
-			final ManagerObjectType type );
+			final int iItemId);
 	
 	
 	/**
@@ -59,8 +57,7 @@ public interface IManager {
 	 * 
 	 * @return TRUE if item was unregistered by this manager
 	 */
-	public boolean unregisterItem( final int iItemId, 
-			final ManagerObjectType type  );
+	public boolean unregisterItem(final int iItemId);
 	
 	/**
 	 * Create a new unique Id.

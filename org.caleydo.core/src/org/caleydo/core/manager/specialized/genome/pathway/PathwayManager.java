@@ -239,8 +239,7 @@ implements IPathwayManager, Serializable {
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IGeneralManager#registerItem(java.lang.Object, int, org.caleydo.core.manager.type.ManagerObjectType)
 	 */
-	public boolean registerItem(Object registerItem, int itemId,
-			ManagerObjectType type) {
+	public boolean registerItem(Object registerItem, int itemId) {
 
 		// TODO Auto-generated method stub
 		return false;
@@ -260,7 +259,7 @@ implements IPathwayManager, Serializable {
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IGeneralManager#unregisterItem(int, org.caleydo.core.manager.type.ManagerObjectType)
 	 */
-	public boolean unregisterItem(int itemId, ManagerObjectType type) {
+	public boolean unregisterItem(int itemId) {
 
 		// TODO Auto-generated method stub
 		return false;

@@ -255,11 +255,10 @@ implements IGenomeIdManager {
 		/* consistency check */
 		
 		if ( type.isMultiMap() )
-		{
-			//TODO: register multi hash map to!
-			//assert false :  "TODO: register multi hash map to!";
-			
-			currentEditingType = EGenomeMappingType.NON_MAPPING;
+		{			
+			// FIXME
+//			currentEditingType = EGenomeMappingType.NON_MAPPING;
+			currentEditingType = null;
 			
 			return true;
 		} // if ( type.isMultiMap() ) ... else 
@@ -271,7 +270,9 @@ implements IGenomeIdManager {
 					currentEditingType + "]");
 		}
 
-		currentEditingType = EGenomeMappingType.NON_MAPPING;
+		// FIXME
+//		currentEditingType = EGenomeMappingType.NON_MAPPING;
+		currentEditingType = null;
 		
 		return true;
 	}
@@ -283,7 +284,7 @@ implements IGenomeIdManager {
 
 		IGenomeIdMap buffer = hashType2Map.get( type );
 		
-		assert buffer == null : "getIdFromStringByMapping(" + type +") type is not allocated";
+		assert buffer != null : "getIdFromStringByMapping(" + type +") type is not allocated";
 		
 		return buffer.getIntByStringChecked( sCaleydoId );
 	}
@@ -295,7 +296,7 @@ implements IGenomeIdManager {
 
 		IGenomeIdMap buffer = hashType2Map.get( type );
 		
-		assert buffer == null : "getIdFromIntByMapping(" + type +") type is not allocated";
+		assert buffer != null : "getIdFromIntByMapping(" + type +") type is not allocated";
 
 		return buffer.getIntByIntChecked( iUniqueId );
 	}
@@ -306,7 +307,7 @@ implements IGenomeIdManager {
 
 		IGenomeIdMap buffer = hashType2Map.get( type );
 		
-		assert buffer == null : "getStringIdFromStringByMapping(" + type +") type is not allocated";
+		assert buffer != null : "getStringIdFromStringByMapping(" + type +") type is not allocated";
 		
 		return buffer.getStringByStringChecked( sCaleydoId );
 	}
@@ -318,7 +319,7 @@ implements IGenomeIdManager {
 
 		IGenomeIdMap buffer = hashType2Map.get( type );
 		
-		assert buffer == null : "getStringIdFromIntByMapping(" + type +") type is not allocated";
+		assert buffer != null : "getStringIdFromIntByMapping(" + type +") type is not allocated";
 		
 		return buffer.getStringByIntChecked( iUniqueId );
 	}
@@ -364,14 +365,14 @@ implements IGenomeIdManager {
 	}
 
 
-	public boolean registerItem(Object registerItem, int iItemId, ManagerObjectType type) {
+	public boolean registerItem(Object registerItem, int iItemId) {
 
 		assert false : "method not implemented";
 		return false;
 	}
 
 
-	public boolean unregisterItem(int iItemId, ManagerObjectType type) {
+	public boolean unregisterItem(int iItemId) {
 
 		assert false : "method not implemented";
 		return false;
@@ -433,7 +434,7 @@ implements IGenomeIdManager {
 
 	public Collection<Integer> getIdIntListFromIdListByType(Collection<Integer> iIdList, EGenomeMappingType type) {
 
-		assert iIdList == null : "can not handle null pointer";
+		assert iIdList != null : "can not handle null pointer";
 		
 		HashMap <Integer,Integer> sortBuffer = new HashMap <Integer,Integer>(iSortBufferInitialsize);
 		
@@ -464,7 +465,7 @@ implements IGenomeIdManager {
 
 	public Collection<String> getIdStringListFromIdListByType(Collection<String> sIdList, EGenomeMappingType type) {
 
-		assert sIdList == null : "can not handle null pointer";
+		assert sIdList != null : "can not handle null pointer";
 		
 		HashMap <String,String> sortBuffer = new HashMap <String,String>(iSortBufferInitialsize);
 		

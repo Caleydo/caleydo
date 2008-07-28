@@ -1,6 +1,6 @@
 package org.caleydo.core.data.collection.parser;
 
-import org.caleydo.core.data.collection.StorageType;
+import org.caleydo.core.data.collection.EStorageType;
 
 /**
  * Define the type's of data stored in MultiData storage.
@@ -16,7 +16,7 @@ public final class ParserTokenHandler {
 	 */
 	private final int iIndex;
 	
-	private StorageType enumStorageType;
+	private EStorageType enumStorageType;
 	
 	/**
 	 * Defines, if this should be a ArrayList or an Vector.
@@ -26,16 +26,16 @@ public final class ParserTokenHandler {
 	/**
 	 * Constructor.
 	 */
-	public ParserTokenHandler() {
-		this.bArrayListNotVector = true;
-		this.iIndex = 0;
-		this.enumStorageType = StorageType.SKIP;
-	}
+//	public ParserTokenHandler() {
+//		this.bArrayListNotVector = true;
+//		this.iIndex = 0;
+//		this.enumStorageType = StorageType.EStorageType;
+//	}
 	
 	/**
 	 * Constructor.
 	 */
-	public ParserTokenHandler( final StorageType setType) {
+	public ParserTokenHandler( final EStorageType setType) {
 		this.bArrayListNotVector = true;
 		this.iIndex = 0;
 		this.enumStorageType = setType;
@@ -44,7 +44,7 @@ public final class ParserTokenHandler {
 	/**
 	 * Constructor.
 	 */
-	public ParserTokenHandler( final StorageType setType,
+	public ParserTokenHandler( final EStorageType setType,
 			final int iSetIndex) {
 		this.bArrayListNotVector = true;
 		this.iIndex = iSetIndex;
@@ -64,11 +64,11 @@ public final class ParserTokenHandler {
 	 * 
 	 * Returns TRUE if eCurrentType equals eMultiDataType.mdnone
 	 */
-	public boolean isEmpty() {
-		
-		return enumStorageType.isDataType();
-		
-	}
+//	public boolean isEmpty() {
+//		
+//		return enumStorageType.isDataType();
+//		
+//	}
 	
 	/**
 	 * Return the current list-type.
@@ -93,7 +93,7 @@ public final class ParserTokenHandler {
 	/**
 	 * Get the type for this MultiData object.
 	 */
-	public StorageType getType( ) {
+	public EStorageType getType( ) {
 		return this.enumStorageType;
 	}
 	
@@ -101,7 +101,7 @@ public final class ParserTokenHandler {
 	/*
 	 * Test if other type is equal to this type.
 	 */
-	public boolean isEqualType( final StorageType testType ) {
+	public boolean isEqualType( final EStorageType testType ) {
 		if ( testType == this.enumStorageType ) {
 			return true;
 		}

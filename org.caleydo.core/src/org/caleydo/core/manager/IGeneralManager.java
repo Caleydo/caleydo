@@ -4,7 +4,6 @@ import java.util.logging.Logger;
 
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.data.IStorageManager;
-import org.caleydo.core.manager.data.IVirtualArrayManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
@@ -165,7 +164,7 @@ public interface IGeneralManager {
 
 	public abstract IStorageManager getStorageManager();
 
-	public abstract IVirtualArrayManager getVirtualArrayManager();
+	//public abstract IVirtualArrayManager getVirtualArrayManager();
 
 	public abstract ISetManager getSetManager();
 

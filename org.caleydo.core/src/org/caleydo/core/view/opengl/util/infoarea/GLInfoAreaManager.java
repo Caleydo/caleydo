@@ -11,7 +11,7 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.set.selection.SetSelection;
+import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.InfoAreaRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
@@ -185,7 +185,7 @@ public class GLInfoAreaManager
 //		fWidth = 0;
 	}
 	
-	public void setMiniViewData(ArrayList<IStorage> alStorages, ArrayList<SetSelection> alSetSelection)
+	public void setMiniViewData(ArrayList<IStorage> alStorages, ArrayList<Selection> alSetSelection)
 	{
 		infoArea.setMiniViewData(alStorages, alSetSelection);
 	}

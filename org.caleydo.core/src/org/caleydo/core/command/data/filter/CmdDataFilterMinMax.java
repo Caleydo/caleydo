@@ -5,9 +5,10 @@ package org.caleydo.core.command.data.filter;
 
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
+import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.StorageType;
+import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
@@ -27,7 +28,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail
 {
 	private ISet mySet = null;
 	private IStorage myStorage = null;
-	private StorageType myStorageType = null;
+	private EStorageType myStorageType = null;
 	
 	private int iMinValue = Integer.MAX_VALUE;
 	private int iMaxValue = Integer.MIN_VALUE;	
@@ -71,7 +72,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail
 		}
 		else if(myStorage != null && mySet == null)
 		{
-			calculateMinMaxOnStorage();
+			//calculateMinMaxOnStorage();
 		}
 		else
 		{
@@ -98,7 +99,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail
 	 * @param myStorage The storage 
 	 * @param myStorageType The type of the storage (int, float, or double is supported)
 	 */
-	public void setAttributes(IStorage myStorage, final StorageType myStorageType)
+	public void setAttributes(INumericalStorage myStorage, final EStorageType myStorageType)
 	{
 		this.myStorage = myStorage;
 		this.myStorageType = myStorageType;
@@ -114,73 +115,73 @@ extends ACmdCreate_IdTargetLabelAttrDetail
 	 * @param myStorageType The type of storage (int, float or double is supported)
 	 */
 	
-	public void setAttributes(ISet mySet, final StorageType myStorageType)
+	public void setAttributes(ISet mySet, final EStorageType myStorageType)
 	{
 		this.mySet = mySet;
 		this.myStorageType = myStorageType;
 	}
 	
-	private void calculateMinMaxOnStorage()
-	{		
-		
-		//TODO: change to case if clear that a storage can be of only one type a
-		// and throw an exception if other type is encountered
-		if (myStorageType == StorageType.INT)
-		{		
-			for(int iCount = 0; iCount < myStorage.getArrayInt().length; iCount++)
-			{
-				int iCurrentValue = (myStorage.getArrayInt())[iCount];
-				
-				// TODO handle NaN values
-				
-				if(iCurrentValue < iMinValue)
-					iMinValue = iCurrentValue;
-				if(iCurrentValue > iMaxValue)
-					iMaxValue = iCurrentValue;				
-			}
-		}
-		
-		if (myStorageType == StorageType.FLOAT)
-		{
-			for(int iCount = 0; iCount < myStorage.getArrayFloat().length; iCount++)
-			{
-				float fCurrentValue = (myStorage.getArrayFloat())[iCount];
-
-				if (Float.isNaN(fCurrentValue))
-					continue;
-				
-				if(fCurrentValue < fMinValue)
-				{
-					fMinValue = fCurrentValue;
-					continue;
-				}
-				if(fCurrentValue > fMaxValue)
-					fMaxValue = fCurrentValue;				
-			}			
-		}
-		
-		if (myStorageType == StorageType.DOUBLE)
-		{
-			for(int iCount = 0; iCount < myStorage.getArrayDouble().length; iCount++)
-			{
-				double dCurrentValue = (myStorage.getArrayDouble())[iCount];
-				if (iCount == 0)
-				{
-					dMinValue = dCurrentValue;
-					dMaxValue = dCurrentValue;	
-					continue;
-				}
-				if(dCurrentValue < dMinValue)
-				{
-					dMinValue = dCurrentValue;
-					continue;
-				}
-				if(dCurrentValue > dMaxValue)
-					dMaxValue = dCurrentValue;				
-			}			
-		}
-	}
-	
+//	private void calculateMinMaxOnStorage()
+//	{		
+//		
+//		//TODO: change to case if clear that a storage can be of only one type a
+//		// and throw an exception if other type is encountered
+//		if (myStorageType == StorageType.INT)
+//		{		
+//			for(int iCount = 0; iCount < myStorage.getArrayInt().length; iCount++)
+//			{
+//				int iCurrentValue = (myStorage.getArrayInt())[iCount];
+//				
+//				// TODO handle NaN values
+//				
+//				if(iCurrentValue < iMinValue)
+//					iMinValue = iCurrentValue;
+//				if(iCurrentValue > iMaxValue)
+//					iMaxValue = iCurrentValue;				
+//			}
+//		}
+//		
+//		if (myStorageType == StorageType.FLOAT)
+//		{
+//			for(int iCount = 0; iCount < myStorage.getArrayFloat().length; iCount++)
+//			{
+//				float fCurrentValue = (myStorage.getArrayFloat())[iCount];
+//
+//				if (Float.isNaN(fCurrentValue))
+//					continue;
+//				
+//				if(fCurrentValue < fMinValue)
+//				{
+//					fMinValue = fCurrentValue;
+//					continue;
+//				}
+//				if(fCurrentValue > fMaxValue)
+//					fMaxValue = fCurrentValue;				
+//			}			
+//		}
+//		
+//		if (myStorageType == StorageType.DOUBLE)
+//		{
+//			for(int iCount = 0; iCount < myStorage.getArrayDouble().length; iCount++)
+//			{
+//				double dCurrentValue = (myStorage.getArrayDouble())[iCount];
+//				if (iCount == 0)
+//				{
+//					dMinValue = dCurrentValue;
+//					dMaxValue = dCurrentValue;	
+//					continue;
+//				}
+//				if(dCurrentValue < dMinValue)
+//				{
+//					dMinValue = dCurrentValue;
+//					continue;
+//				}
+//				if(dCurrentValue > dMaxValue)
+//					dMaxValue = dCurrentValue;				
+//			}			
+//		}
+//	}
+//	
 	private void calculateMinMaxOnSet()
 	{
 		// TODO: Implement Sets here

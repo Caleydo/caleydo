@@ -3,9 +3,9 @@ package org.caleydo.core.view.swt.browser;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.caleydo.core.data.collection.set.selection.SetSelection;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.util.graph.EGraphItemProperty;
@@ -131,8 +131,8 @@ extends LocationAdapter
 			return;
 		}
 		
-		SetSelection tmpSelectionSet = 
-			(SetSelection) generalManager.getSetManager().getItemSet(iSelectionSetId);
+		Selection tmpSelectionSet = 
+			(Selection) generalManager.getSetManager().getSet(iSelectionSetId);
 		tmpSelectionSet.updateSelectionSet(iBrowserId, 
 				iAlSelectionId,
 				iAlSelectionDepth, 

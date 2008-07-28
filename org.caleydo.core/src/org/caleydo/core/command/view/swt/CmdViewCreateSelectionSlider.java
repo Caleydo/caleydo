@@ -4,11 +4,8 @@ import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.view.swt.slider.SelectionSliderViewRep;
 
 /**
  * Class implementes the command for creating a slider view 
@@ -45,25 +42,24 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	 */
 	public void doCommand() throws CaleydoRuntimeException {
 		
-		IViewManager viewManager = ((IViewManager) generalManager
-				.getManagerByObjectType(ManagerObjectType.VIEW));
-		
-		SelectionSliderViewRep sliderView = (SelectionSliderViewRep)viewManager
-				.createView(ManagerObjectType.VIEW_SWT_SELECTION_SLIDER,
-							iUniqueId, 
-							iParentContainerId, 
-							sLabel);
-		
-		viewManager.registerItem(
-				sliderView, 
-				iUniqueId, 
-				ManagerObjectType.VIEW);
-
-		sliderView.setAttributes(iWidthX, iHeightY, iSelectionId, sSelectionFieldName);
-		sliderView.initView();
-		sliderView.drawView();
-		
-		commandManager.runDoCommand(this);
+//		IViewManager viewManager = ((IViewManager) generalManager
+//				.getManagerByObjectType(ManagerObjectType.VIEW));
+//		
+//		SelectionSliderViewRep sliderView = (SelectionSliderViewRep)viewManager
+//				.createView(ManagerObjectType.VIEW_SWT_SELECTION_SLIDER,
+//							iUniqueId, 
+//							iParentContainerId, 
+//							sLabel);
+//		
+//		viewManager.registerItem(
+//				sliderView, 
+//				iUniqueId);
+//
+//		sliderView.setAttributes(iWidthX, iHeightY, iSelectionId, sSelectionFieldName);
+//		sliderView.initView();
+//		sliderView.drawView();
+//		
+//		commandManager.runDoCommand(this);
 	}
 
 	public void setParameterHandler( final IParameterHandler parameterHandler ) {

@@ -5,8 +5,8 @@ import java.util.Iterator;
 
 import org.caleydo.core.data.AUniqueManagedObject;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.SetType;
-import org.caleydo.core.data.collection.set.selection.SetSelection;
+import org.caleydo.core.data.collection.ESetType;
+import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
@@ -39,7 +39,7 @@ implements IView {
 	/**
 	 * List for all ISet objects providing data related to interactive selection for this ViewRep.	
 	 */
-	protected ArrayList <SetSelection> alSetSelection;
+	protected ArrayList <Selection> alSetSelection;
 	
 	protected final ViewType viewType;
 	
@@ -84,7 +84,7 @@ implements IView {
 		this.viewType = viewType;
 		
 		alSetData = new ArrayList <ISet> ();
-		alSetSelection = new ArrayList <SetSelection> ();
+		alSetSelection = new ArrayList <Selection> ();
 		
 		setManager = generalManager.getSetManager();
 	}
@@ -222,7 +222,7 @@ implements IView {
 		
 		for ( int i=0; i < iSet.length; i++)
 		{
-			ISet currentSet = setManager.getItemSet(iSet[i]);
+			ISet currentSet = setManager.getSet(iSet[i]);
 			
 			if ( currentSet == null ) 
 			{
@@ -235,20 +235,20 @@ implements IView {
 			
 			if ( ! hasSetId_ByReference(currentSet) )
 			{
-				switch (currentSet.getSetType()) {
-				case SET_RAW_DATA:
+//				switch (currentSet.getSetType()) {
+//				case SET_RAW_DATA:
 					alSetData.add(currentSet);
-					break;
+//					break;
 					
-				case SET_SELECTION:
-					alSetSelection.add((SetSelection)currentSet);
-					break;
+//				case SET_SELECTION:
+//					alSetSelection.add((Selection)currentSet);
+//					break;
 					
-				default:
+//				default:
 //					generalManager.logMsg(
 //							"addSetId() unsupported SetType!",
 //							LoggerType.ERROR);
-				} // switch (currentSet.getSetType()) {
+				//} // switch (currentSet.getSetType()) {
 					
 			} //if ( ! hasSetId_ByReference(currentSet) )
 			else 
@@ -262,24 +262,24 @@ implements IView {
 	}
 	
 	/**
-	 * @see org.caleydo.core.view.IView#removeAllSetIdByType(org.caleydo.core.data.collection.SetType)
+	 * @see org.caleydo.core.view.IView#removeAllSetIdByType(org.caleydo.core.data.collection.ESetType)
 	 */
-	public final void removeAllSetIdByType( SetType setType ) {
+	public final void removeAllSetIdByType( ESetType setType ) {
 		
-		switch (setType) {
-		case SET_RAW_DATA:
+//		switch (setType) {
+//		case SET_RAW_DATA:
 			alSetData.clear();
-			break;
-			
-		case SET_SELECTION:
-			alSetSelection.clear();
-			break;
-			
-		default:
-//			generalManager.logMsg(
-//					"addSetId() unsupported SetType!",
-//					LoggerType.ERROR);
-		} // switch (setType) {
+//			break;
+//			
+//		case SET_SELECTION:
+//			alSetSelection.clear();
+//			break;
+//			
+//		default:
+////			generalManager.logMsg(
+////					"addSetId() unsupported SetType!",
+////					LoggerType.ERROR);
+//		} // switch (setType) {
 	}
 	
 	/**
@@ -291,7 +291,7 @@ implements IView {
 		
 		for ( int i=0; i < iSet.length; i++)
 		{
-			ISet currentSet = setManager.getItemSet(iSet[i]);
+			ISet currentSet = setManager.getSet(iSet[i]);
 			
 			if ( currentSet == null ) 
 			{
@@ -304,20 +304,20 @@ implements IView {
 			
 			if ( hasSetId_ByReference(currentSet) )
 			{
-				switch (currentSet.getSetType()) {
-				case SET_RAW_DATA:
+//				switch (currentSet.getSetType()) {
+//				case SET_RAW_DATA:
 					alSetData.remove(currentSet);
-					break;
-					
-				case SET_SELECTION:
-					alSetSelection.remove(currentSet);
-					break;
-					
-				default:
-//					generalManager.logMsg(
-//							"removeSetId() unsupported SetType!",
-//							LoggerType.ERROR);
-				} // switch (currentSet.getSetType()) {
+//					break;
+//					
+//				case SET_SELECTION:
+//					alSetSelection.remove(currentSet);
+//					break;
+//					
+//				default:
+////					generalManager.logMsg(
+////							"removeSetId() unsupported SetType!",
+////							LoggerType.ERROR);
+//				} // switch (currentSet.getSetType()) {
 					
 			} //if ( ! hasSetId_ByReference(currentSet) )
 			else 
@@ -356,7 +356,7 @@ implements IView {
 			resultArray[i] = iter.next().getId();
 		}
 		
-		Iterator <SetSelection> iterSelectionSet = alSetSelection.iterator();		
+		Iterator <Selection> iterSelectionSet = alSetSelection.iterator();		
 		for (;iterSelectionSet.hasNext();i++)
 		{
 			resultArray[i] = iterSelectionSet.next().getId();
@@ -370,7 +370,7 @@ implements IView {
 	 * @see org.caleydo.core.view.IView#hasSetId(int)
 	 */
 	public final boolean hasSetId( int iSetId) {
-		ISet currentSet = setManager.getItemSet(iSetId);
+		ISet currentSet = setManager.getSet(iSetId);
 		
 		if ( currentSet == null )
 		{
