@@ -1,6 +1,8 @@
 package org.caleydo.core.data.collection.set;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 
 import org.caleydo.core.data.AUniqueManagedObject;
 import org.caleydo.core.data.collection.ESetType;
@@ -163,5 +165,11 @@ implements ISet
 		return sLabel;
 	}
 
+	@Override
+	public Iterator<IStorage> iterator() 
+	{
+		return alStorages.iterator();
+	}
 
+	
 }

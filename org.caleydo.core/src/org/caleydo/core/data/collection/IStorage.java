@@ -34,6 +34,7 @@ import org.caleydo.core.data.collection.storage.ERawDataType;
 public interface IStorage 
 extends IUniqueObject
 {
+	
 		
 	/**
 	 * Set the raw data with data type float
@@ -122,6 +123,8 @@ extends IUniqueObject
 	 * For nominal data the first value is 0, the last value is 1
 	 */
 	public void normalize();
+	
+	public int size();
 	
 	
 	

@@ -4,8 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 
+import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.ccontainer.EDataKind;
+import org.caleydo.core.data.collection.storage.ERawDataType;
+import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.manager.IGeneralManager;
 
 
@@ -36,8 +40,11 @@ public class GlyphDataLoader {
 		
 		glyphs = new HashMap<Integer, GlyphEntry>();
 		 
-		IStorage[] stores = glyphData.getStorageByDim(0);
-		
+		ArrayList<IStorage> alStorages = new ArrayList<IStorage>();
+		for(IStorage tmpStorage : glyphData)
+		{	
+			alStorages.add(tmpStorage);
+		}
 		
 		ArrayList<int[]> aliStoreMapped = new ArrayList<int[]>();
 		ArrayList<String[]> alsStoreString = new ArrayList<String[]>();
@@ -47,59 +54,70 @@ public class GlyphDataLoader {
 		{	//convert values to dictionary indices
 			int counter=0;
 			int pcounter=0;
-			for(IStorage s : stores)
+			for(IStorage tmpStorage : alStorages)
 			{
-				GlyphAttributeType t = generalManager.getGlyphManager().getGlyphAttributeTypeWithExternalColumnNumber(counter);
+				GlyphAttributeType glyphAttributeType = generalManager.getGlyphManager().getGlyphAttributeTypeWithExternalColumnNumber(counter);
 				
-				if(t!=null) { //input column is defined
+				if(glyphAttributeType!=null) { //input column is defined
 					
-					if(null != s.getArrayString() ) {
-						String[] temp1 = s.getArrayString();
-						int[]    temp2 = new int[temp1.length];
+					if(tmpStorage instanceof NominalStorage && 
+							tmpStorage.getRawDataType() == ERawDataType.STRING)
+					{
+						INominalStorage<String> nominalStorage = (INominalStorage<String>)tmpStorage;
+						//String[] temp1 = tmpStorage.getArrayString();
+						int[]    temp2 = new int[nominalStorage.size()];
 						
-						for(int i=0;i<temp1.length;++i) {
-							int t2 = t.getIndex(temp1[i]);
+						for(int i=0;i<nominalStorage.size();++i) 
+						{
+							int t2 = glyphAttributeType.getIndex(nominalStorage.get(EDataKind.RAW,i));
 							
-							if(temp1[i] == null) {
+							if(nominalStorage.get(EDataKind.RAW, i) == null) {
 								this.generalManager.getLogger().log(Level.WARNING, "GlyphDataLoader: no String data found - empty line in csv file?????");
 								temp2[i] = -1;
 							}
 							
-							if(t.doesAutomaticAttribute() && t2 == -1)
+							if(glyphAttributeType.doesAutomaticAttribute() && t2 == -1)
 							{
 								try {
-									t2 = Integer.parseInt(temp1[i]);
+									t2 = Integer.parseInt(nominalStorage.get(EDataKind.RAW, i));
 								} catch (NumberFormatException ex) { }
-								t.addAttribute(t2, temp1[i], (float)t2);
+								glyphAttributeType.addAttribute(t2, nominalStorage.get(EDataKind.RAW, i), (float)t2);
 							}
 							
-							if(t2 == -1	&& !(temp1[i]).equals("-1"))								
-								this.generalManager.getLogger().log(Level.WARNING, "GlyphDataLoader: No data mapping found for " + s.getLabel() + " value " + temp1[i]);
+							if(t2 == -1	&& !(nominalStorage.get(EDataKind.RAW, i)).equals("-1"))								
+								this.generalManager.getLogger().log(Level.WARNING, "GlyphDataLoader: No data mapping found for " + tmpStorage.getLabel() + " value " + nominalStorage.get(EDataKind.RAW, i));
 							
 							temp2[i] = t2;
 							
-							t.incDistribution(t2);
+							glyphAttributeType.incDistribution(t2);
 						}
 						aliStoreMapped.add(temp2);
 					}
 					else
 					{
-						this.generalManager.getLogger().log(Level.WARNING, "GlyphDataLoader: ERROR. There should be only STRING values in the storag " + s.getLabel() );
+						this.generalManager.getLogger().log(Level.WARNING, "GlyphDataLoader: ERROR. There should be only STRING values in the storag " + tmpStorage.getLabel() );
 					}
 					
-					t.setInternalColumnNumber(pcounter);
+					glyphAttributeType.setInternalColumnNumber(pcounter);
 					++pcounter;
 				}
 				else 
 				{
-					//try if string
-					if(null != s.getArrayString())
+					if(tmpStorage instanceof NominalStorage && 
+							tmpStorage.getRawDataType() == ERawDataType.STRING)
 					{
-						alsStoreStringColTitel.add( s.getLabel() );
-						alsStoreString.add( s.getArrayString() );
+						alsStoreStringColTitel.add( tmpStorage.getLabel() );
+						
+						// FIXME hack
+						String[] sArTmp = new String[tmpStorage.size()];
+						for (int iCount = 0; iCount < tmpStorage.size(); iCount++)
+						{
+							sArTmp[iCount] = ((INominalStorage<String>)tmpStorage).get(EDataKind.RAW, iCount);
+						}
+						alsStoreString.add(sArTmp);
 					}
 					else
-						System.out.println("ERROR" + s.getLabel());
+						System.out.println("ERROR" + tmpStorage.getLabel());
 				}
 
 			

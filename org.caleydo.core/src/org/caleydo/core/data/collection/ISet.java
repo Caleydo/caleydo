@@ -9,7 +9,7 @@ import org.caleydo.core.data.IUniqueManagedObject;
  *
  */
 public interface ISet 
-extends IUniqueManagedObject
+extends IUniqueManagedObject, Iterable<IStorage>
 {
 	/**
 	 * Set the set type. Possible set types in ESetType.

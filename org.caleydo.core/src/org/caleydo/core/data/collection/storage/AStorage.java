@@ -177,4 +177,10 @@ implements IStorage
 		hashCContainers.put(EDataKind.NORMALIZED, 
 				hashCContainers.get(EDataKind.RAW).normalize());
 	}
+	
+	public int size()
+	{
+		return hashCContainers.get(EDataKind.RAW).size();
+	}
+	
 }

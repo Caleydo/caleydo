@@ -426,11 +426,11 @@ implements IMediatorSender, IMediatorReceiver
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object, org.caleydo.core.data.collection.ISet)
 	 */
-	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
+	public void updateReceiver(Object eventTrigger, ISelection updatedSelection) {
 		generalManager.getLogger().log(Level.INFO, "Update called by "
 				+eventTrigger.getClass().getSimpleName());
 		
-		ISelection refSetSelection = (ISelection) updatedSet;
+		ISelection refSetSelection = (ISelection) updatedSelection;
 
 
 		ArrayList<Integer> iAlSelection = refSetSelection.getSelectionIdArray();

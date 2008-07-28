@@ -127,15 +127,12 @@ implements IMediatorReceiver, IMediatorSender
 //		alStorageSelection.clear();
 		
 		// Extract data
-		// TODO better iterator
 		for (ISet tmpSet : alSetData)
 		{
-			for(int iStorageCount = 0; iStorageCount < tmpSet.getSize(); iStorageCount++)
+			for(IStorage tmpStorage : tmpSet)
 			{
-				alDataStorages.add(tmpSet.getStorage(iStorageCount));
+				alDataStorages.add(tmpStorage);
 			}
-//			for (IStorage tmpStorage : tmpSet.getStorageByDim(0))
-//					alDataStorages.add(tmpStorage);
 		}			
 		
 		ArrayList<Integer> alTempList = alSetSelection.get(0).getSelectionIdArray();
