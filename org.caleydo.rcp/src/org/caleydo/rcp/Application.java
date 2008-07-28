@@ -5,8 +5,10 @@ import java.util.Map;
 import org.caleydo.core.application.core.CaleydoBootloader;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.rcp.action.file.FileOpenProjectAction;
+import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
@@ -112,8 +114,11 @@ implements IApplication {
 		    Shell shell = new Shell(display);
 		    shell.setText("Open project file");
 
-		    FileOpenProjectAction openProjectAction = new FileOpenProjectAction(shell);
-		    openProjectAction.run();
+		    WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard());
+		    projectWizardDialog.open();
+		    
+//		    FileOpenProjectAction openProjectAction = new FileOpenProjectAction(shell);
+//		    openProjectAction.run();
 		    
 			shell.dispose();
 		}

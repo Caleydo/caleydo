@@ -3,10 +3,12 @@ package org.caleydo.rcp.wizard.project;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 
 /**
  * 1st wizard page: The user have to choose if she
@@ -19,8 +21,8 @@ public class NewOrExistingProjectPage
 extends WizardPage {
 	
 	public static final String PAGE_NAME = "New or existing project?";
-
-	private Label textLabel;
+	
+	private boolean bNewProject = true;
 
 	/**
 	 * Constructor.
@@ -30,17 +32,52 @@ extends WizardPage {
 		super(PAGE_NAME, PAGE_NAME, null);
 		
 		this.setImageDescriptor(ImageDescriptor.createFromImageData(
-				new ImageData("splash.png")));
+				new ImageData("resources/splash/splash.png")));
 	}
 
 	public void createControl(Composite parent) {
-		Composite topLevel = new Composite(parent, SWT.NONE);
-		topLevel.setLayout(new FillLayout());
-		
-//		textLabel = new Label(topLevel, SWT.CENTER);
-//		textLabel.setText("HUHU");
+	
+		Composite composite = new Composite(parent, SWT.NONE);
+		composite.setLayout(new RowLayout(SWT.VERTICAL));
 
-		setControl(topLevel);
+		Button buttonNewProject = new Button(composite, SWT.RADIO);
+		buttonNewProject.setText("Create new project");
+		
+		Button buttonExistingProject = new Button(composite, SWT.RADIO);
+		buttonExistingProject.setText("Open existing project");		
+
+		buttonNewProject.addSelectionListener(new SelectionListener() {
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+				
+				bNewProject = true;
+			}
+
+			public void widgetSelected(SelectionEvent e) {
+
+				bNewProject = true;
+			}
+		});
+		
+		buttonExistingProject.addSelectionListener(new SelectionListener() {
+
+			public void widgetDefaultSelected(SelectionEvent e) {
+				
+				bNewProject = false;
+			}
+
+			public void widgetSelected(SelectionEvent e) {
+
+				bNewProject = false;
+			}
+		});
+		
+		setControl(composite);
 		setPageComplete(true);
+	}
+	
+	public boolean newOrExisting() {
+		
+		return bNewProject;
 	}
 }

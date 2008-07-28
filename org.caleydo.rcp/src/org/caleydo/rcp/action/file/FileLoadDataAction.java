@@ -155,14 +155,8 @@ implements ActionFactory.IWorkbenchAction {
 		composite = new Composite(parentComposite, SWT.NONE);
 		GridLayout layout = new GridLayout(2, false);
 		composite.setLayout(layout);
-
-//		Label lblFileName = new Label(composite, SWT.NONE);
-//		lblFileName.setText("Text &File name:");
-//		lblFileName.setLayoutData(new GridData(GridData.END, GridData.BEGINNING,
-//				false, false));
 		
 	    Button buttonFileChooser = new Button(composite, SWT.PUSH);
-//	    buttonFileChooser.setBounds(40, 50, 50, 20);
 	    buttonFileChooser.setText("Choose data file..");
 	    
 		txtFileName = new Text(composite, SWT.BORDER);
@@ -387,8 +381,8 @@ implements ActionFactory.IWorkbenchAction {
 		previewTable.setLinesVisible (true);
 		previewTable.setHeaderVisible (true);
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.heightHint = 500;
-		data.widthHint = 1000;
+		data.heightHint = 300;
+		data.widthHint = 700;
 		previewTable.setLayoutData(data);
 	}
 	

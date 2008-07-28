@@ -1,5 +1,6 @@
 package org.caleydo.rcp.wizard.project;
 
+import org.caleydo.rcp.action.file.FileOpenProjectAction;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;
@@ -24,24 +25,36 @@ public class CaleydoProjectWizard extends Wizard {
 		
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.jface.wizard.Wizard#addPages()
+	 */
 	public void addPages() {
 		
 		addPage(new NewOrExistingProjectPage());
 		addPage(new NewProjectImportDataPage());		
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
+	 */
 	public boolean performFinish() {
 		
-////		DirectoryPage dirPage = getDirectoryPage();
+////		DirectoryPage dirPage = getDirectorymPage();
 //		if (dirPage.useDefaultDirectory()) {
 //			System.out.println("Using default directory");
 //		} else {
 //			ChooseDirectoryPage choosePage = getChoosePage();
 //			System.out.println("Using directory: " + choosePage.getDirectory());
 //		}
-		return false;
+		return true;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.jface.wizard.Wizard#performCancel()
+	 */
 	public boolean performCancel() {
 		
 		//TODO: shutdown caleydo core
@@ -67,10 +80,20 @@ public class CaleydoProjectWizard extends Wizard {
 		
 		if (page instanceof NewOrExistingProjectPage)
 		{
-			NewProjectImportDataPage nextPage = (NewProjectImportDataPage) 
-				getPage(NewProjectImportDataPage.PAGE_NAME);
-			
-			return nextPage;
+			if (((NewOrExistingProjectPage)getPage(NewOrExistingProjectPage.PAGE_NAME)).newOrExisting())
+			{
+				NewProjectImportDataPage nextPage = (NewProjectImportDataPage) 
+					getPage(NewProjectImportDataPage.PAGE_NAME);	
+				
+				return nextPage;
+			}
+			else
+			{
+				this.performFinish();
+				
+				FileOpenProjectAction fileOpenProjectAction = new FileOpenProjectAction(this.getShell());
+				fileOpenProjectAction.run();
+			}
 		}
 		
 		return page;
@@ -78,8 +101,6 @@ public class CaleydoProjectWizard extends Wizard {
 	
 	/**
 	 * For testing purposes
-	 * 
-	 * @param args
 	 */
 	public static void main(String[] args) {
 		  
@@ -96,8 +117,3 @@ public class CaleydoProjectWizard extends Wizard {
 	    display.dispose();
 	}
 }
-
-
-
-
-

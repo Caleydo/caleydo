@@ -27,7 +27,7 @@ extends WizardPage {
 		super(PAGE_NAME, PAGE_NAME, null);
 		
 		this.setImageDescriptor(ImageDescriptor.createFromImageData(
-				new ImageData("splash.png")));
+				new ImageData("resources/splash/splash.png")));
 	}
 
 	/*
