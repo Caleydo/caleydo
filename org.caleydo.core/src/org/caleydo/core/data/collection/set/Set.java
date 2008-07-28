@@ -165,11 +165,12 @@ implements ISet
 		return sLabel;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Iterable#iterator()
+	 */
 	public Iterator<IStorage> iterator() 
 	{
 		return alStorages.iterator();
 	}
-
-	
 }

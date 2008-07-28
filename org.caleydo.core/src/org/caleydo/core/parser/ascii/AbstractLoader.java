@@ -1,6 +1,7 @@
 package org.caleydo.core.parser.ascii;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -19,17 +20,11 @@ import org.caleydo.core.manager.gui.SWTGUIManager;
  *
  */
 public abstract class AbstractLoader 
-implements IMementoXML, IParserObject {
+implements IParserObject {
 	
 	protected final IGeneralManager generalManager;
 	
 	protected final SWTGUIManager swtGuiManager;	
-	
-	/**
-	 * Work around, disable progress bar, 
-	 * because it is not thread safe yet.
-	 */
-	private final boolean bUseMultipleThreads;
 	
 	/**
 	 *  File name
@@ -41,7 +36,7 @@ implements IMementoXML, IParserObject {
 	 * Defines the number of lines to be read from a file.
 	 * only useful, if loadData_TestLinesToBeRead() was called before reading the file.
 	 * 
-	 * @see org.caleydo.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(BufferedReader)
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#computeNumberOfLinesInFile(BufferedReader)
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(String)
 	 */
 	private int iLinesInFileToBeRead = -1;
@@ -111,36 +106,17 @@ implements IMementoXML, IParserObject {
 	 * TAB is the default token.
 	 */
 	protected String sTokenSeperator = IGeneralManager.sDelimiter_Parser_DataItems_Tab;
-	
-	/**
-	 * Define the separator
-	 * TAB is the default token.
-	 */
-	protected String sTokenInnerLoopSeperator = IGeneralManager.sDelimiter_Parser_DataItems;
-	
-	/**
-	 * Define, if exact file size need to be computed prior to loading the file.
-	 * Default is false.
-	 * 
-	 * @see AbstractLoader#loadData_TestLinesToBeRead(BufferedReader)
-	 */
-	protected boolean bRequiredSizeOfReadableLines = false;
 
-	protected int iLineInFile = 1;
-	
-	protected int iLineInFile_CurrentDataIndex = 0;
-
+	protected int iLineInFile = 0;
 
 	/**
 	 * Constructor.
 	 * 
 	 * @param generalManager
 	 * @param setFileName
-	 * @param enableMultipeThreads
 	 */
 	public AbstractLoader(final IGeneralManager generalManager, 
-			final String setFileName,
-			final boolean enableMultipeThreads) {
+			final String setFileName) {
 
 		this.generalManager = generalManager;
 		
@@ -149,8 +125,6 @@ implements IMementoXML, IParserObject {
 		assert generalManager!= null :"null-pointer in constructor";		
 		
 		this.sFileName = setFileName;
-		
-		bUseMultipleThreads = enableMultipeThreads;
 		
 		init();
 	}
@@ -175,26 +149,7 @@ implements IMementoXML, IParserObject {
 	 */
 	public final String getTokenSeperator() {			
 		return sTokenSeperator;
-	}
-	
-	/**
-	 * Set the current token separator.
-	 * 
-	 * @param token current token separator
-	 */
-	public final void setTokenSeperatorInnerLoop(final String token) {			
-		sTokenInnerLoopSeperator = token;
-	}
-	
-	/**
-	 * Get the current token separator.
-	 * 
-	 * @return current token separator
-	 */
-	public final String getTokenSeperatorInnerLoop() {			
-		return sTokenInnerLoopSeperator;
-	}
-	
+	}	
 	
 	/**
 	 * Set the current file name.
@@ -257,117 +212,16 @@ implements IMementoXML, IParserObject {
 		return this.iStopParsingAtLine;
 	}
 	
-	/**
-	 * Reads the file and counts the numbers of lines to be read.
-	 * 
-	 * @param sFileName file name
-	 * @return number of lines in file to be read or -1 if an error occurred.
-	 * @throws IOException
-	 */
-	protected final int loadData_TestLinesToBeRead(final String sFileName) 
-	{
-		int iNumberOfLinesInFile = -1;
-		
-		try {
-		    BufferedReader brFile = null;
-		    
-		    if (this.getClass().getClassLoader().getResource(sFileName) != null)
-		    {
-		    	brFile = new BufferedReader(
-		    		new InputStreamReader(this.getClass().getClassLoader().
-		    				getResource(sFileName).openStream()));
-		    }
-		    else
-		    {
-		    	brFile = new BufferedReader(new FileReader(sFileName));
-		    }			   
-		    iNumberOfLinesInFile = 
-		    	loadData_TestLinesToBeRead( brFile );
-		    
-		    brFile.close();
-		}
-		catch (IOException ioe) {
-//			generalManager.logMsg(
-//					"AbstractLoader: IO-error line=[" + iLineInFile +
-//					"] while testing file: " + ioe.toString(),
-//					LoggerType.MINOR_ERROR );
-		    
-			 iLinesInFileToBeRead = -1;
-		    return -1;
-		    //System.exit(1);
-		}
-		catch (Exception ex) {
-//			generalManager.logMsg(
-//					"AbstractLoader: ERROR line=[" + iLineInFile +
-//					"] while testing file: " + ex.toString(),
-//					LoggerType.ERROR );
-			
-			ex.printStackTrace();
-			iLinesInFileToBeRead = -1;
-			
-		    return -1;
-		}	
-		
-		iLinesInFileToBeRead = iNumberOfLinesInFile;
-		
-		return iNumberOfLinesInFile;
-	}
-	
 	
 	/**
 	 * Reads the file and counts the numbers of lines to be read.
-	 * 
-	 * @param brFile file handler
-	 * @return number of liens in file to be read.
-	 * @throws IOException
 	 */
-	protected final int loadData_TestLinesToBeRead(BufferedReader brFile) 
-		throws IOException  
-	{
-		
+	protected final int computeNumberOfLinesInFile(String sFileName)
+			throws IOException {
+
 		int iCountLinesToBeRead = 0;
-		int iCountLines = 1;
-		
-		 while ( (( brFile.readLine()) != null)&&
-		    		( iCountLines <= iStopParsingAtLine) )  
-		    {
-				if( iCountLines > this.iStartParsingAtLine ){
-					iCountLinesToBeRead++;
-					
-					
-				} // end of: if( iLineInFile > this.iHeaderLinesSize) {			
-				
-				iCountLines++;
-		    }
-		 
-		 iLinesInFileToBeRead = iCountLinesToBeRead;
-		 
-		 return iCountLinesToBeRead;
-	}
-	
-	/**
-	 * Get the number of lines to be read from the current file.
-	 * 
-	 * @see org.caleydo.core.parser.ascii.AbstractLoader#iLinesInFileToBeRead
-	 * @see org.caleydo.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(BufferedReader)
-	 * @see org.caleydo.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(String)
-	 * 
-	 * @return -1 if invalid or number of liens to be read
-	 */
-	protected final int getLinesInCurrentFileToBeRead() {
-		return iLinesInFileToBeRead;
-	}
-	
-	public boolean loadData() {					
-		
-		int iNumberOfLinesInFile = -1;
-		
-		if ( bRequiredSizeOfReadableLines ) 
-		{
-			iNumberOfLinesInFile =
-				this.loadData_TestLinesToBeRead( sFileName );			   			  
-		}		
-		
+		int iCountLines = 0;
+
 		try {
 		    BufferedReader brFile = null;
 		    
@@ -382,27 +236,78 @@ implements IMementoXML, IParserObject {
 		    	brFile = new BufferedReader(new FileReader(sFileName));
 		    }		   
 		    
-		    generalManager.getLogger().log(Level.INFO, "Start loading file " +sFileName +"...");
-		    
-		    this.loadDataParseFile( brFile, iNumberOfLinesInFile );
-		    
-		    if ( brFile != null ) 
-		    {
-		    	brFile.close();
-		    }
-		    
-		    generalManager.getLogger().log(Level.INFO, "File " +sFileName +" successfully loaded.");
-
-		    copyDataToInternalDataStructures();
+			
+			while (((brFile.readLine()) != null)
+					&& (iCountLines <= iStopParsingAtLine))
+			{
+				if (iCountLines > this.iStartParsingAtLine)
+					iCountLinesToBeRead++;
+		
+				iCountLines++;
+			}
+			
+			brFile.close();
 		}
 		catch (IOException ioe) {
-
-		    return false;
+			//TODO
 		}
 		catch (Exception ex) {
+			//TODO
+		}
 
-		    return false;
-		}		
+		iLinesInFileToBeRead = iCountLinesToBeRead;
+
+		if (iStopParsingAtLine == Integer.MAX_VALUE)
+			iStopParsingAtLine = iLinesInFileToBeRead;
+		
+		return iCountLinesToBeRead;
+	}
+	
+	public boolean loadData() 
+	{							
+	    BufferedReader brFile = null;
+	    
+	    if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null)
+	    {
+	    	brFile = new BufferedReader(
+	    		new InputStreamReader(
+	    				this.getClass().getClassLoader().getResourceAsStream(sFileName)));
+	    }
+	    else
+	    {
+	    	try
+			{
+				brFile = new BufferedReader(new FileReader(sFileName));
+			} catch (FileNotFoundException e)
+			{
+				e.printStackTrace();
+			}
+	    }		   
+	    
+	    generalManager.getLogger().log(Level.INFO, "Start loading file " +sFileName +"...");
+	    
+	    try
+		{
+			this.loadDataParseFile(brFile, computeNumberOfLinesInFile(sFileName));
+		} catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+	    
+	    if ( brFile != null ) 
+	    {
+	    	try
+			{
+				brFile.close();
+			} catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+	    }
+	    
+	    generalManager.getLogger().log(Level.INFO, "File " +sFileName +" successfully loaded.");
+
+	    setArraysToStorages();
 		
 		return true;
 	}
@@ -464,26 +369,20 @@ implements IMementoXML, IParserObject {
 	protected final void progressBarSetStoreInitTitle(final String sText, 
 			final int iCurrentProgressBarPosition,
 			final int iStepsTill100_Percent ) {
-		/* Multi Threaded Version: remove next lines or make call thread safe */
-		if ( !bUseMultipleThreads )
-		{
-			progressBarSetStoreInitTitle(sText,
-					iCurrentProgressBarPosition,
-					swtGuiManager.PROGRESSBAR_MAXIMUM ,
-					iStepsTill100_Percent);
-		}
+
+		progressBarSetStoreInitTitle(sText,
+				iCurrentProgressBarPosition,
+				swtGuiManager.PROGRESSBAR_MAXIMUM ,
+				iStepsTill100_Percent);
 	}
 	
 	public final void progressBarStoredIncrement() {
-		/* Multi Threaded Version: remove next lines or make call thread safe */
-		if ( !bUseMultipleThreads )
-		{
-			fProgressBarIndex += fProgressBarInc;
-			
-			if ( (int)fProgressBarIndex != iProgressBarCurrentPosition ) {
-				iProgressBarCurrentPosition = (int)fProgressBarIndex;			
-				swtGuiManager.setLoadingProgressBarPercentage( iProgressBarCurrentPosition );
-			}
+
+		fProgressBarIndex += fProgressBarInc;
+		
+		if ( (int)fProgressBarIndex != iProgressBarCurrentPosition ) {
+			iProgressBarCurrentPosition = (int)fProgressBarIndex;			
+			swtGuiManager.setLoadingProgressBarPercentage( iProgressBarCurrentPosition );
 		}
 	}
 	
@@ -492,17 +391,14 @@ implements IMementoXML, IParserObject {
 	 *
 	 */
 	protected final void progressBarResetTitle() {
-		/* Multi Threaded Version: remove next lines or make call thread safe */		
-		if ( !bUseMultipleThreads )
-		{
-			swtGuiManager.setLoadingProgressBarTitle(sLastProgressBarText, iProgressBarLastPosition);
-			
-			assert fProgressBarInc != 0.0f : "call progressBarResetTitle() without calling progressBarSetStoreInitTitle() first!";
-			
-			fProgressBarInc = 0.0f;
-			fProgressBarIndex = iProgressBarCurrentPosition;		
-			iProgressBarCurrentPosition = iProgressBarLastPosition;
-		}
+
+		swtGuiManager.setLoadingProgressBarTitle(sLastProgressBarText, iProgressBarLastPosition);
+		
+		assert fProgressBarInc != 0.0f : "call progressBarResetTitle() without calling progressBarSetStoreInitTitle() first!";
+		
+		fProgressBarInc = 0.0f;
+		fProgressBarIndex = iProgressBarCurrentPosition;		
+		iProgressBarCurrentPosition = iProgressBarLastPosition;
 	}
 	
 	/**
@@ -510,30 +406,20 @@ implements IMementoXML, IParserObject {
 	 * @param iTicks must be in the range of: currentPercentage - [0..200]
 	 */
 	protected final void progressBarIncrement( int iTicks ) {
-		/* Multi Threaded Version: remove next lines or make call thread safe */
-		if ( !bUseMultipleThreads )
-		{
-			iProgressBarCurrentPosition += iTicks;
-			swtGuiManager.setLoadingProgressBarPercentage( iProgressBarCurrentPosition );
-		}
+
+		iProgressBarCurrentPosition += iTicks;
+		swtGuiManager.setLoadingProgressBarPercentage( iProgressBarCurrentPosition );
 	}
 	
 	protected final int progressBarCurrentPosition() {
 		return this.iProgressBarCurrentPosition;
 	}
-	
-
-
-	
-	/**
-	 * @param brFile input stream
-	 * @param iNumberOfLinesInFile optional, number of lines in file, only valid if bRequiredSizeOfReadableLines==true
-	 */
-	protected abstract int loadDataParseFile( BufferedReader brFile,
+		
+	protected abstract void loadDataParseFile(BufferedReader brFile,
 			final int iNumberOfLinesInFile )
 		throws IOException; 
 	
-	protected abstract boolean copyDataToInternalDataStructures();
+	protected abstract void setArraysToStorages();
 	
 
 }

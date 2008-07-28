@@ -9,7 +9,7 @@ import org.caleydo.core.command.base.ACommand;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.parser.ascii.microarray.MicroArrayLoaderValues2MultipleStorages;
+import org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.system.StringConversionTool;
@@ -35,9 +35,9 @@ extends ACommand {
 	/**
 	 * Default is -1 indicating read till end of file.
 	 * 
-	 * @see org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#iStopParsingAtLine
-	 * @see org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#getStopParsingAtLine()
-	 * @see org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#setStartParsingStopParsingAtLine(int, int)
+	 * @see org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader#iStopParsingAtLine
+	 * @see org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader#getStopParsingAtLine()
+	 * @see org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader#setStartParsingStopParsingAtLine(int, int)
 	 */
 	protected int iStopParseFileAtLine = -1;
 	
@@ -131,13 +131,11 @@ extends ACommand {
 				"Load data file " +sFileName +" using token pattern " 
 				+sTokenPattern +". Data is stored in Storage with ID " +iAlTargetStorageId.toString());
 		
-		MicroArrayLoaderValues2MultipleStorages loader = null;
+		TabularAsciiDataReader loader = null;
 		
 		try 
 		{
-			loader = new MicroArrayLoaderValues2MultipleStorages(generalManager,
-					sFileName, 
-					IGeneralManager.bEnableMultipelThreads );
+			loader = new TabularAsciiDataReader(generalManager, sFileName);
 			
 			loader.setTokenPattern(sTokenPattern);
 			loader.setTargetStorages(iAlTargetStorageId);
@@ -151,6 +149,7 @@ extends ACommand {
 		catch ( Exception e ) 
 		{
 			generalManager.getLogger().log(Level.SEVERE, "Error during parsing data file " +sFileName);
+			e.printStackTrace();	
 		} // catch
 		finally 
 		{

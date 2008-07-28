@@ -48,8 +48,8 @@ public interface ILookupTableLoader {
 	 * is derived from AbstractLoader#copyDataToInternalDataStructures().
 	 * 
 	 * @see org.caleydo.core.parser.ascii.lookuptable.LookupTableLoaderProxy
-	 * @see org.caleydo.core.parser.ascii.lookuptable.LookupTableLoaderProxy#copyDataToInternalDataStructures()
-	 * @see org.caleydo.core.parser.ascii.AbstractLoader#copyDataToInternalDataStructures()
+	 * @see org.caleydo.core.parser.ascii.lookuptable.LookupTableLoaderProxy#setArraysToStorages()
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#setArraysToStorages()
 	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdManager
 	 * 
 	 * @return TRUE on success.

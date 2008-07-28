@@ -272,8 +272,7 @@ extends ACommand {
 					generalManager, 
 					sFileName,
 					lut_genome_type,
-					genomeDataType,
-					IGeneralManager.bEnableMultipelThreads );	
+					genomeDataType);	
 			
 			loader.setTokenSeperator(sLookupTableDelimiter);
 			

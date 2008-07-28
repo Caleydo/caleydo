@@ -28,18 +28,15 @@ extends AbstractLoader
 	private ILookupTableLoader proxyLookupTableLoader;
 		
 	/**
-	 * @param setGeneralManager
-	 * @param setFileName
+	 * Constructor.
+	 * 
 	 */
 	public LookupTableLoaderProxy(final IGeneralManager generalManager,
 			final String sFileName,
 			final EGenomeMappingType genomeIdType,
-			final EGenomeMappingDataType type,
-			final boolean enableMultipeThreads) {
+			final EGenomeMappingDataType type) {
 		
-		super(generalManager, sFileName, enableMultipeThreads);
-
-		bRequiredSizeOfReadableLines = true;
+		super(generalManager, sFileName);
 		
 		GenomeIdManager dgi_mng = 
 			(GenomeIdManager) generalManager.getGenomeIdManager();
@@ -133,8 +130,7 @@ extends AbstractLoader
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.parser.handler.importer.ascii.AbstractLoader#loadDataParseFile(java.io.BufferedReader, int)
 	 */
-	@Override
-	protected int loadDataParseFile(BufferedReader brFile,
+	protected void loadDataParseFile(BufferedReader brFile,
 			final int iNumberOfLinesInFile) throws IOException {
 
 		/**
@@ -161,33 +157,18 @@ extends AbstractLoader
 		 */
 		progressBarResetTitle();		
 		progressBarIncrement(5);
-				
-		return iTotalNumerOfLinesRed;
 	}
 
 	/**
 	 * Writes back Map to IGenomeIdManager by calling org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
 	 * 
 	 * @see org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
-	 * @see org.caleydo.core.parser.ascii.AbstractLoader#copyDataToInternalDataStructures()
+	 * @see org.caleydo.core.parser.ascii.AbstractLoader#setArraysToStorages()
 	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdManager
 	 */
-	@Override
-	protected boolean copyDataToInternalDataStructures() {
+	protected void setArraysToStorages() {
 
-		try {
-			proxyLookupTableLoader.wirteBackMapToGenomeIdManager();
-			return true;
-		}
-		catch (Exception e) {
-
-//			generalManager.logMsg("copyDataToInternalDataStructures() calling wirteBackMapToGenomeIdManager() failed!\n  error=" + 
-//					e.toString(), 
-//					LoggerType.ERROR);
-			
-			e.printStackTrace();
-			return false;
-		}
+		proxyLookupTableLoader.wirteBackMapToGenomeIdManager();
 	}
 
 	/* (non-Javadoc)

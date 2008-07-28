@@ -133,7 +133,7 @@ implements ILookupTableLoader {
 			final int iStopParsingAtLine ) throws IOException {
 		
 		final String sTokenDelimiterOuterLoop = lookupTableLoaderProxy.getTokenSeperator();
-		final String sTokenDelimiterInnerLoop = lookupTableLoaderProxy.getTokenSeperatorInnerLoop();
+		final String sTokenDelimiterInnerLoop = lookupTableLoaderProxy.getTokenSeperator();//getTokenSeperatorInnerLoop();
 		String sLine;
 			
 		int iLineInFile = 1;
@@ -158,7 +158,7 @@ implements ILookupTableLoader {
 				while (( strTokenText.hasMoreTokens() )&&(bMaintainLoop)) {
 					
 					/**
-					 * Excpect two Integer values in one row!
+					 * Expect two Integer values in one row!
 					 */
 					
 					try {

@@ -19,8 +19,6 @@ import org.caleydo.core.manager.type.ManagerType;
  *
  */
 public interface IGeneralManager {
-
-	public static final boolean bEnableMultipelThreads = false;
 	
 	/**
 	 * Used to create a unique networkwide identification numbers.

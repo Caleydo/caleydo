@@ -99,7 +99,10 @@ implements INominalStorage <T>
 		}
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.INominalStorage#get(org.caleydo.core.data.collection.ccontainer.EDataKind, int)
+	 */
 	public T get(EDataKind dataKind, int index) 
 	{
 		//(hashStorages.get(storageKind));
@@ -107,6 +110,4 @@ implements INominalStorage <T>
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
 }

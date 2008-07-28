@@ -327,7 +327,10 @@ implements ISelection
 		iAlSelectionOptionalData = null;
 	}
 
-	@Override
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.IUniqueManagedObject#getBaseType()
+	 */
 	public ManagerObjectType getBaseType() {
 
 		// TODO Auto-generated method stub
