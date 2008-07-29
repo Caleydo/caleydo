@@ -202,8 +202,8 @@ implements IParserObject {
 //							"\" \""), "\"");
 //				}
 			
-			System.out.println("Line: " +iLineInFile);
-			System.out.println(" I:" + sLine );
+//			System.out.println("Line: " +iLineInFile);
+//			System.out.println(" I:" + sLine );
 			
 			StringTokenizer strTokenLine = new StringTokenizer(sLine, sTokenSeperator);
 			

@@ -385,7 +385,7 @@ implements IMediatorSender, IMediatorReceiver
 					bRedrawDisplayList_ = true;
 					
 					//push patient id to other screens
-					for(Selection sel : alSetSelection) {
+					for(Selection sel : alSelection) {
 						sel.updateSelectionSet(iUniqueId, ids, selections, null);
 					}
 					

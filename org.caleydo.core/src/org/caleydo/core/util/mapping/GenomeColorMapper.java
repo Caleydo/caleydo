@@ -4,11 +4,9 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.logging.Level;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ccontainer.EDataKind;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
@@ -53,9 +51,7 @@ public class GenomeColorMapper {
 		
 		if (alSetData == null)
 			return;
-		
-		//Iterator<ISet> iterSetData = alSetData.iterator();
-		
+
 		// TODO better iterator
 		for (ISet tmpSet : alSetData)
 		{

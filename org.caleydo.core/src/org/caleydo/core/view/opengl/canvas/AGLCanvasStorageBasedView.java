@@ -114,7 +114,7 @@ implements IMediatorReceiver, IMediatorSender
 		if (alSetData == null)
 			return;
 		
-		if (alSetSelection == null)
+		if (alSelection == null)
 			return;				
 
 		if (alDataStorages == null)
@@ -135,7 +135,7 @@ implements IMediatorReceiver, IMediatorSender
 			}
 		}			
 		
-		ArrayList<Integer> alTempList = alSetSelection.get(0).getSelectionIdArray();
+		ArrayList<Integer> alTempList = alSelection.get(0).getSelectionIdArray();
 //		A iArTemp = ;
 //		for(int iCount = 0; iCount < iArTemp.length; iCount++)
 //		{
@@ -247,7 +247,7 @@ implements IMediatorReceiver, IMediatorSender
 			ArrayList<Integer> iAlGroup,
 			ArrayList<Integer> iAlOptional)
 	{	
-		alSetSelection.get(0).mergeSelection(iAlSelection, iAlGroup, iAlOptional);
+		alSelection.get(0).mergeSelection(iAlSelection, iAlGroup, iAlOptional);
 		
 		initData();
 	}
@@ -381,7 +381,7 @@ implements IMediatorReceiver, IMediatorSender
 			}
 		}
 
-		alSetSelection.get(1).updateSelectionSet(iUniqueId, 
+		alSelection.get(1).updateSelectionSet(iUniqueId, 
 				iAlTmpSelectionId, iAlTmpGroup, null);
 		
 		//propagateGeneSet(iAlTmpSelectionId, iAlTmpGroup);
@@ -390,8 +390,8 @@ implements IMediatorReceiver, IMediatorSender
 	protected void propagateGeneSet()//ArrayList<Integer> iAlSelection, ArrayList<Integer> iAlGroup)
 	{
 		
-		ArrayList<Integer> iAlGroup = alSetSelection.get(0).getGroupArray();
-		ArrayList<Integer> iAlSelection = alSetSelection.get(0).getSelectionIdArray();	
+		ArrayList<Integer> iAlGroup = alSelection.get(0).getGroupArray();
+		ArrayList<Integer> iAlSelection = alSelection.get(0).getSelectionIdArray();	
 		
 		propagateGenes(iAlSelection, iAlGroup);
 		
@@ -408,7 +408,7 @@ implements IMediatorReceiver, IMediatorSender
 			iAlGeneSelection.add(getDavidIDFromStorageIndex(iCurrent));
 		}
 		
-		alSetSelection.get(1).updateSelectionSet(iUniqueId, 
+		alSelection.get(1).updateSelectionSet(iUniqueId, 
 				iAlGeneSelection, iAlGroup, null);
 	}
 	
@@ -435,7 +435,7 @@ implements IMediatorReceiver, IMediatorSender
 //		horizontalSelectionManager.clearSelections();
 //		verticalSelectionManager.clearSelections();
 
-		if (alSetSelection == null)
+		if (alSelection == null)
 			return;				
 				
 //		Iterator<SetSelection> iterSetSelection = alSetSelection.iterator();

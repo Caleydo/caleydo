@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.command.CommandQueueSaxType;
-import org.caleydo.core.command.base.ACmdCreate_GlCanvasUser;
 import org.caleydo.core.data.view.camera.ViewFrustumBase;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
@@ -21,10 +20,8 @@ import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
  *
  */
 public class CmdGlObjectPathway3D 
-extends ACmdCreate_GlCanvasUser {
+extends CmdCreateOpenGLCanvasListener {
 
-	private ArrayList<Integer> iArSetIDs;
-	
 	private int iPathwayID = -1;
 	
 	
@@ -37,10 +34,6 @@ extends ACmdCreate_GlCanvasUser {
 			final CommandQueueSaxType commandQueueSaxType)
 	{
 		super(generalManager, commandManager, commandQueueSaxType);
-				
-		iArSetIDs = new ArrayList<Integer>();
-
-		localManagerObjectType = CommandQueueSaxType.CREATE_GL_PATHWAY_3D;
 	}
 
 	/*
@@ -50,30 +43,6 @@ extends ACmdCreate_GlCanvasUser {
 	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 	
 		super.setParameterHandler(parameterHandler);
-
-		// Read SET IDs (Data and Selection) 
-		String sPathwaySets = "";
-		parameterHandler.setValueAndTypeAndDefault("sPathwaySets",
-				parameterHandler.getValueString( 
-						CommandQueueSaxType.TAG_DETAIL.getXmlKey() ),
-				IParameterHandler.ParameterHandlerType.STRING,
-				"-1");
-		
-		sPathwaySets = parameterHandler.getValueString("sPathwaySets");
-		
-		StringTokenizer setToken = new StringTokenizer(
-				sPathwaySets,
-				IGeneralManager.sDelimiter_Parser_DataItems);
-
-		while (setToken.hasMoreTokens())
-		{
-			iArSetIDs.add(StringConversionTool.convertStringToInt(
-					setToken.nextToken(), -1));
-		}
-		
-		parameterHandler.setValueAndTypeAndDefault("mapping_row_count", 
-				parameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey()), 
-				ParameterHandlerType.INT, "1");		
 		
 		iPathwayID = StringConversionTool.convertStringToInt(sAttribute4, -1);
 	}
@@ -81,6 +50,7 @@ extends ACmdCreate_GlCanvasUser {
 	public void setAttributes(final int iUniqueID,
 			final int iPathwayID,
 			final ArrayList<Integer> iArSetIDs,
+			final ArrayList<Integer> iArSelectionIDs,
 			final ViewFrustumBase.ProjectionMode projectionMode,
 			final float fLeft,
 			final float fRight,
@@ -89,7 +59,8 @@ extends ACmdCreate_GlCanvasUser {
 			final float fNear,
 			final float fFar)
 	{
-		super.setAttributes(projectionMode, fLeft, fRight, fTop, fBottom, fNear, fFar);
+		super.setAttributes(projectionMode, fLeft, fRight, fTop, fBottom, fNear, fFar,
+				iArSetIDs, iArSelectionIDs);
 		
 		this.iArSetIDs = iArSetIDs;
 		this.iPathwayID = iPathwayID;
@@ -104,22 +75,7 @@ extends ACmdCreate_GlCanvasUser {
 	public final void doCommand() {
 		
 		super.doCommand();
-		
-		AGLCanvasUser glCanvas = ((AGLCanvasUser)gLEventListener);
-		for (Integer iSetID : iArSetIDs)
-		{
-			glCanvas.addSet(iSetID);
-		}
-		
-		((GLCanvasPathway3D)gLEventListener).setPathwayID(iPathwayID);
-	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.base.ACmdCreate_GlCanvasUser#undoCommand()
-	 */
-	public final void undoCommand() {
-		
-		super.undoCommand();
+		((GLCanvasPathway3D)glEventListener).setPathwayID(iPathwayID);
 	}
 }

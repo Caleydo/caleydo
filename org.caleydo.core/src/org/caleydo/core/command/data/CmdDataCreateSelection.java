@@ -22,13 +22,6 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 public class CmdDataCreateSelection 
 extends ACmdCreate_IdTargetLabelAttrDetail {
 	
-//	ISet selectionSet;
-	
-	protected int iSelectionVirtualArrayId = -1;
-	protected int iSelectionIdStorageId = -1;
-	protected int iSelectionGroupStorageId = -1;
-	protected int iSelectionOptionalStorageId = -1;
-	
 	/**
 	 * Constructor. 
 	 * 
@@ -48,8 +41,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 
 	public void doCommand() throws CaleydoRuntimeException {
 		
-		generalManager.getSelectionManager().createSelection(
-				generalManager.getSelectionManager().createId(ManagerObjectType.SELECTION));
+		generalManager.getSelectionManager().createSelection(iUniqueId);
 		
 		commandManager.runDoCommand(this);
 	}

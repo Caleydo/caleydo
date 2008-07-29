@@ -677,7 +677,7 @@ implements IMediatorReceiver, IMediatorSender {
 			if (iAlTmpSelectionId.isEmpty())
 				return;
 			
-			alSetSelection.get(0).updateSelectionSet(iUniqueId, iAlTmpSelectionId, iAlTmpGroupId, null);
+			alSelection.get(0).updateSelectionSet(iUniqueId, iAlTmpSelectionId, iAlTmpGroupId, null);
 			
 			pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
 			pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_TEXTURE_SELECTION);
@@ -723,7 +723,7 @@ implements IMediatorReceiver, IMediatorSender {
 			}
 		}
 		
-		alSetSelection.get(0).updateSelectionSet(iUniqueId, iAlSelectedGenes, iAlTmpGroupId, null);
+		alSelection.get(0).updateSelectionSet(iUniqueId, iAlSelectedGenes, iAlTmpGroupId, null);
 	}
 	
 	/*

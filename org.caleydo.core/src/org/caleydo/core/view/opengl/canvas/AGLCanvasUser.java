@@ -13,6 +13,7 @@ import org.caleydo.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import org.caleydo.core.data.AUniqueManagedObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.data.view.camera.IViewCamera;
 import org.caleydo.core.data.view.camera.IViewFrustum;
@@ -54,7 +55,8 @@ implements GLEventListener {
 	/**
 	 * List for all ISet objects providing data related to interactive selection for this ViewRep.	
 	 */
-	protected ArrayList <Selection> alSetSelection;
+	// TODO: Change to ISelection and add methods to interface
+	protected ArrayList <Selection> alSelection;
 	
 	protected transient ISetManager setManager;
 	
@@ -92,8 +94,8 @@ implements GLEventListener {
 		
 		super(iViewID, generalManager);
 		
-		alSetData = new ArrayList <ISet> ();
-		alSetSelection = new ArrayList <Selection> ();
+		alSetData = new ArrayList <ISet>();
+		alSelection = new ArrayList <Selection>();
 
 		setManager = generalManager.getSetManager();
 		
@@ -319,7 +321,17 @@ implements GLEventListener {
 	{
 		alSetData.add((ISet) generalManager.getSetManager().getItem(iSetID));
 	} 
+	
+	public final void addSelection(Selection selection)
+	{
+		alSelection.add(selection);
+	}
 
+	public final void addSelection(int iSelectionID) 
+	{
+		alSelection.add((Selection) generalManager.getSelectionManager().getItem(iSelectionID));
+	} 
+	
 	public final void removeAllSetIdByType( ESetType setType ) 
 	{
 		

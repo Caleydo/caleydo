@@ -6,7 +6,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
- * Abstract command class stores and handles commandId, tragertId and label of object.
+ * Abstract command class stores and handles commandId, targettId and label of object.
  * 
  *  @author Michael Kalkusch
  *  @author Marc Streit

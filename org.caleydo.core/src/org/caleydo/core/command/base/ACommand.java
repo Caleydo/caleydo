@@ -83,7 +83,7 @@ implements ICommand, Serializable {
 		
 		return commandQueueSaxType.getInfoText() + " [" + this.getId() + "]";
 	}
-	
+
 	protected final void setCommandQueueSaxType(final CommandQueueSaxType commandQueueSaxType) {
 		this.commandQueueSaxType  =commandQueueSaxType;
 	}

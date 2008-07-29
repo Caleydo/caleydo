@@ -18,14 +18,8 @@ import org.caleydo.core.command.system.CmdLoadGlyphDefinition;
 import org.caleydo.core.command.system.CmdLoadPathwayData;
 import org.caleydo.core.command.system.CmdSystemExit;
 import org.caleydo.core.command.system.path.CmdSetPathwayDatabasePath;
-import org.caleydo.core.command.view.opengl.CmdGlObjectBucket3D;
-import org.caleydo.core.command.view.opengl.CmdGlObjectGlyph;
-import org.caleydo.core.command.view.opengl.CmdGlObjectHeatMap3D;
-import org.caleydo.core.command.view.opengl.CmdGlObjectJukebox3D;
-import org.caleydo.core.command.view.opengl.CmdGlObjectParCoords3D;
+import org.caleydo.core.command.view.opengl.CmdCreateOpenGLCanvasListener;
 import org.caleydo.core.command.view.opengl.CmdGlObjectPathway3D;
-import org.caleydo.core.command.view.opengl.CmdGlObjectRemoteGlyph;
-import org.caleydo.core.command.view.opengl.CmdGlObjectWiiTest;
 import org.caleydo.core.command.view.rcp.CmdExternalActionTrigger;
 import org.caleydo.core.command.view.rcp.CmdExternalFlagSetter;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
@@ -157,7 +151,7 @@ implements ICommandFactory {
 						cmdType);
 			break;
 		}
-		case CREATE_SET_SELECTION_MAKRO:
+		case CREATE_SELECTION:
 		{
 			createdCommand =
 				new CmdDataCreateSelection(
@@ -338,15 +332,6 @@ implements ICommandFactory {
 		 *        OPEN GL
 		 * ----------------------
 		 */	
-		case CREATE_GL_HEAT_MAP_3D:
-		{
-			createdCommand =
-				new CmdGlObjectHeatMap3D(
-						generalManager,
-						commandManager,
-						cmdType);	
-			break;
-		}		
 		case CREATE_GL_PATHWAY_3D:
 		{
  			createdCommand =
@@ -356,55 +341,16 @@ implements ICommandFactory {
 						cmdType);	
 			break;
 		}
+		case CREATE_GL_HEAT_MAP_3D:
 		case CREATE_GL_GLYPH:
-		{
- 			createdCommand =
-				new CmdGlObjectGlyph(
-						generalManager,
-						commandManager,
-						cmdType);	
-			break;
-		}
 		case CREATE_GL_PARALLEL_COORDINATES_3D:
-		{
- 			createdCommand =
-				new CmdGlObjectParCoords3D(
-						generalManager,
-						commandManager,
-						cmdType);	
-			break;
-		}
 		case CREATE_GL_BUCKET_3D:
-		{
- 			createdCommand =
-				new CmdGlObjectBucket3D(
-						generalManager,
-						commandManager,
-						cmdType);	
-			break;
-		}
 		case CREATE_GL_JUKEBOX_3D:
-		{
- 			createdCommand =
-				new CmdGlObjectJukebox3D(
-						generalManager,
-						commandManager,
-						cmdType);	
-			break;
-		}
 		case CREATE_GL_WII_TEST:
-		{
- 			createdCommand =
-				new CmdGlObjectWiiTest(
-						generalManager,
-						commandManager,
-						cmdType);	
-			break;
-		}
 		case CREATE_GL_REMOTE_GLYPH:
 		{
  			createdCommand =
-				new CmdGlObjectRemoteGlyph(
+				new CmdCreateOpenGLCanvasListener(
 						generalManager,
 						commandManager,
 						cmdType);	

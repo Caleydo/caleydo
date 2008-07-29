@@ -62,7 +62,7 @@ implements IMediatorSender{;
 			.createId(ManagerObjectType.SET);
 
 		CmdDataCreateSelection selectedSetCmd = (CmdDataCreateSelection) generalManager.getCommandManager()
-			.createCommandByType(CommandQueueSaxType.CREATE_SET_SELECTION_MAKRO);
+			.createCommandByType(CommandQueueSaxType.CREATE_SELECTION);
 	
 		selectedSetCmd.setAttributes(iSearchSelectionSetId);
 		selectedSetCmd.doCommand();

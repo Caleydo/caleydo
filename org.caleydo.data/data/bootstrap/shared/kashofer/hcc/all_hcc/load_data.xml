@@ -43,10 +43,10 @@
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="DATA_FILTER_MATH"			cmdId="99010"	uniqueId="-1"	attrib1="NORMALIZE"	attrib2="45301 46301 47301 48301 49301 50301 51301 52301 53301 54301 55301 56301 57301 58301" />									
 	
  	<!-- Create Selection Set -->
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_SELECTION_MAKRO" 	cmdId="69991"   uniqueId="62101" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_SELECTION_MAKRO" 	cmdId="69991"   uniqueId="63101" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_SELECTION_MAKRO" 	cmdId="69991"   uniqueId="64101" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_SELECTION_MAKRO" 	cmdId="69991"   uniqueId="65101" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_SELECTION_MAKRO" 	cmdId="69991"   uniqueId="66101" />  
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" 	cmdId="69991"   uniqueId="62101" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" 	cmdId="69991"   uniqueId="63101" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" 	cmdId="69991"   uniqueId="64101" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" 	cmdId="69991"   uniqueId="65101" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" 	cmdId="69991"   uniqueId="66101" />  
 
 </details>

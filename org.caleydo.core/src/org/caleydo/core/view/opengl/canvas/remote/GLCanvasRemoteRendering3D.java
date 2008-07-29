@@ -24,6 +24,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.selection.ISelection;
+import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle;
@@ -480,23 +481,25 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 			// Check if pathway is already loaded in bucket
 			if (!generalManager.getPathwayManager().isPathwayVisible(iTmpPathwayID))
 			{
-				ArrayList<Integer> iArSetIDs = new ArrayList<Integer>();
+				ArrayList<Integer> iAlSetIDs = new ArrayList<Integer>();
 				
 				for(ISet tmpSet : alSetData)
 				{
-					iArSetIDs.add(tmpSet.getId());
+					iAlSetIDs.add(tmpSet.getId());
 				}
+				
+				ArrayList<Integer> iAlSelectionIDs = new ArrayList<Integer>();		
 
 				// Create new selection set
 				int iSelectionSetID = generalManager
 						.getSetManager().createId(ManagerObjectType.SET);
 				CmdDataCreateSelection selectedSetCmd = (CmdDataCreateSelection) generalManager
 						.getCommandManager().createCommandByType(
-								CommandQueueSaxType.CREATE_SET_SELECTION_MAKRO);
+								CommandQueueSaxType.CREATE_SELECTION);
 				selectedSetCmd.setAttributes(iSelectionSetID);
 				selectedSetCmd.doCommand();
 
-				iArSetIDs.add(iSelectionSetID);
+				iAlSelectionIDs.add(iSelectionSetID);
 
 				int iGeneratedViewID = generalManager
 						.getViewGLCanvasManager().createId(
@@ -508,7 +511,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 								CommandQueueSaxType.CREATE_GL_PATHWAY_3D);
 
 				cmdPathway.setAttributes(iGeneratedViewID, iTmpPathwayID,
-						iArSetIDs, ProjectionMode.ORTHOGRAPHIC, -4, 4, 4, -4,
+						iAlSetIDs, iAlSelectionIDs, ProjectionMode.ORTHOGRAPHIC, -4, 4, 4, -4,
 						-20, 20);
 
 				cmdPathway.doCommand();
@@ -574,7 +577,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 			generalManager.getViewGLCanvasManager().getSelectionManager().clear();
 			
 			// Trigger mouse over update if an entity is currently selected
-			alSetSelection.get(0).updateSelectionSet(iUniqueId);
+			alSelection.get(0).updateSelectionSet(iUniqueId);
 		}
 
 		// Check if view is visible
@@ -1232,7 +1235,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 				else if (iAlSelectionGroup.get(iSelectionIndex) != 2)
 					continue;
 				
-				alSetSelection.get(0).clearAllSelectionArrays();
+				alSelection.get(0).clearAllSelectionArrays();
 				
 				PathwayVertexGraphItem tmpPathwayVertexGraphItem = 
 					((PathwayVertexGraphItem)generalManager.getPathwayItemManager().getItem(
@@ -1249,7 +1252,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 				loadDependentPathways(alPathwayVertexGraphItem);
 			}
 
-			alSetSelection.get(0).mergeSelection(iAlTmpSelectionId, iAlTmpGroupId, null);
+			alSelection.get(0).mergeSelection(iAlTmpSelectionId, iAlTmpGroupId, null);
 		}
 		// Check if update set contains a pathway that was searched by the user
 		else if (setSelection.getOptionalDataArray() != null)
