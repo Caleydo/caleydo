@@ -135,7 +135,7 @@ implements IMediatorReceiver, IMediatorSender
 			}
 		}			
 		
-		ArrayList<Integer> alTempList = alSetSelection.get(0).getSelectionIdArray();
+		ArrayList<Integer> alTempList = null;//alSetSelection.get(0).getSelectionIdArray();
 //		A iArTemp = ;
 //		for(int iCount = 0; iCount < iArTemp.length; iCount++)
 //		{

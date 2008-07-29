@@ -56,8 +56,8 @@ extends ACmdCreate_IdTargetLabelAttrDetail
 	private void fillSets(ISet newSet)
 	{
 		
-		if (( iAlStorageIDs.isEmpty() )||
-				( iAlVirtualArrayIDs.isEmpty()))
+		if (iAlStorageIDs.isEmpty())//||
+				//( iAlVirtualArrayIDs.isEmpty()))
 		{
 			throw new CaleydoRuntimeException("No data available for creating storage.",
 							CaleydoRuntimeExceptionType.DATAHANDLING);			
@@ -89,6 +89,8 @@ extends ACmdCreate_IdTargetLabelAttrDetail
 		setManager.registerItem( 
 				set, 
 				iUniqueId);
+		
+		fillSets(set);
 		
 		generalManager.getLogger().log(Level.INFO, "New Set with ID " +iUniqueId +" created.");
 
