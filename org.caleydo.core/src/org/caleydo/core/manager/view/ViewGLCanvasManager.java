@@ -16,8 +16,8 @@ import org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRender
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.type.EManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
@@ -94,7 +94,7 @@ implements IViewGLCanvasManager {
 
 		super(generalManager, 
 				IGeneralManager.iUniqueId_TypeOffset_GUI_AWT,
-				ManagerType.VIEW);
+				EManagerType.VIEW);
 
 		assert generalManager != null : "Constructor with null-pointer to singelton";
 
@@ -189,12 +189,12 @@ implements IViewGLCanvasManager {
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IViewManager#createView(org.caleydo.core.manager.type.ManagerObjectType, int, int, java.lang.String)
 	 */
-	public IView createView(final ManagerObjectType useViewType, 
+	public IView createView(final EManagerObjectType useViewType, 
 			final int iViewID,
 			final int iParentContainerID,
 			final String sLabel ) {
 
-		if (useViewType.getGroupType() != ManagerType.VIEW)
+		if (useViewType.getGroupType() != EManagerType.VIEW)
 		{
 			throw new CaleydoRuntimeException(
 					"try to create object with wrong type "
@@ -269,13 +269,13 @@ implements IViewGLCanvasManager {
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IViewManager#createGLView(org.caleydo.core.manager.type.ManagerObjectType, int, int, int, java.lang.String)
 	 */
-	public IView createGLView(final ManagerObjectType useViewType, 
+	public IView createGLView(final EManagerObjectType useViewType, 
 			final int iViewID,
 			final int iParentContainerID,
 			final int iGLCanvasID,
 			final String sLabel ) {
 
-		if (useViewType.getGroupType() != ManagerType.VIEW)
+		if (useViewType.getGroupType() != EManagerType.VIEW)
 		{
 			throw new CaleydoRuntimeException(
 					"try to create object with wrong type "
@@ -619,7 +619,7 @@ implements IViewGLCanvasManager {
 	}
 
 	public JFrame createWorkspace(
-			ManagerObjectType useViewCanvasType, String sAditionalParameter) {
+			EManagerObjectType useViewCanvasType, String sAditionalParameter) {
 
 		switch (useViewCanvasType)
 		{

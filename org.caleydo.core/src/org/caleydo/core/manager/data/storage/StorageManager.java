@@ -8,8 +8,8 @@ import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.IStorageManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.type.EManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
@@ -32,7 +32,7 @@ implements IStorageManager {
 	public StorageManager(IGeneralManager setGeneralManager) {
 
 		super(setGeneralManager, IGeneralManager.iUniqueId_TypeOffset_Storage,
-				ManagerType.DATA_STORAGE);
+				EManagerType.DATA_STORAGE);
 
 		hashStorageIDToStorage = new HashMap<Integer, IStorage>();
 		hashStorageToStorageID = new HashMap<IStorage, Integer>();
@@ -43,9 +43,9 @@ implements IStorageManager {
 	 * 
 	 * @see org.caleydo.core.data.manager.StorageManager#createStorage()
 	 */
-	public IStorage createStorage(final ManagerObjectType useStorageType) {
+	public IStorage createStorage(final EManagerObjectType useStorageType) {
 
-		if (useStorageType.getGroupType() != ManagerType.DATA_STORAGE)
+		if (useStorageType.getGroupType() != EManagerType.DATA_STORAGE)
 		{
 			throw new CaleydoRuntimeException(
 					"try to create object with wrong type "

@@ -5,7 +5,7 @@ import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.swt.jogl.gears.GearsViewRep;
@@ -45,7 +45,7 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL  {
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 		
 		GearsViewRep gearsView = (GearsViewRep)viewManager
-				.createView(ManagerObjectType.VIEW_SWT_GEARS,
+				.createView(EManagerObjectType.VIEW_SWT_GEARS,
 						iUniqueId, 
 						iParentContainerId,
 						sLabel);

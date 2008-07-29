@@ -1,7 +1,7 @@
 package org.caleydo.core.manager;
 
-import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.type.EManagerType;
 
 /**
  * Interface for all managers that allow classes to 
@@ -67,5 +67,5 @@ public interface IManager {
 	 * @see org.caleydo.core.manager.IGeneralManager#iUniqueId_TypeOffsetMultiplyer
 	 * @see org.caleydo.core.manager.IGeneralManager#iUniqueId_WorkspaceOffset
 	 */
-	public int createId( final ManagerObjectType setNewBaseType );
+	public int createId( final EManagerObjectType setNewBaseType );
 }

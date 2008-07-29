@@ -8,7 +8,7 @@ import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.system.StringConversionTool;
@@ -58,7 +58,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail{
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 		
 		DataEntitySearcherViewRep dataEntitySearcherView = (DataEntitySearcherViewRep)viewManager
-			.createView(ManagerObjectType.VIEW_SWT_DATA_ENTITY_SEARCHER,
+			.createView(EManagerObjectType.VIEW_SWT_DATA_ENTITY_SEARCHER,
 					iUniqueId, 
 					-1,
 					sLabel);

@@ -46,7 +46,7 @@ import com.sun.opengl.util.*;
     repaint() notifications to windows containing Manips. When a Manip
     is moved, the ManipManager sends update notifications to all
     GLAutoDrawables in which that Manip is shown. */
-
+@SuppressWarnings("all")
 public interface WindowUpdateListener {
   public void update(GLAutoDrawable window);
 }

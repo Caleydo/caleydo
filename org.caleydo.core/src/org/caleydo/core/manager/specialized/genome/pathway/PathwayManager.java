@@ -11,8 +11,8 @@ import org.caleydo.core.data.view.rep.jgraph.PathwayImageMap;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.type.EManagerType;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.core.Graph;
 
@@ -61,7 +61,7 @@ implements IPathwayManager, Serializable {
 
 		super(generalManager, 
 			IGeneralManager.iUniqueId_TypeOffset_Pathways_Pathway,
-			ManagerType.DATA_PATHWAY_ELEMENT );
+			EManagerType.DATA_PATHWAY_ELEMENT );
 		
 		hashPathwayIdToPathwayGraphLUT = new HashMap<Integer, PathwayGraph>();
 		hashPathwayTitleToPathwayIdLUT = new HashMap<String, Integer>();

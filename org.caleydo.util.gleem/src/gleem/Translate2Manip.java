@@ -46,7 +46,7 @@ import javax.media.opengl.*;
 
 /** A Translate2Manip is a Manip which translates in two dimensions and
     whose default representation is two arrows. */
-
+@SuppressWarnings("all")
 public class Translate2Manip extends Manip {
   private ManipPart parts;
   private Vec3f translation;

@@ -15,7 +15,7 @@ import org.caleydo.core.manager.event.mediator.LockableExclusivFilterMediator;
 import org.caleydo.core.manager.event.mediator.LockableIngoreFilterMediator;
 import org.caleydo.core.manager.event.mediator.LockableMediator;
 import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
-import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.manager.type.EManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
@@ -55,7 +55,7 @@ implements IEventPublisher {
 
 		super( generalManager,  
 				IGeneralManager.iUniqueId_TypeOffset_EventPublisher,
-				ManagerType.EVENT_PUBLISHER );
+				EManagerType.EVENT_PUBLISHER );
 		
 		/* Data */
 		hashSender2DataMediators = 

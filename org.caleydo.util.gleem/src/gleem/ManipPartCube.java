@@ -45,7 +45,7 @@ import gleem.linalg.*;
 
 /** A cube of width, height, and depth 2, centered about the origin
     and aligned with the X, Y, and Z axes. */
-
+@SuppressWarnings("all")
 public class ManipPartCube extends ManipPartTriBased {
   private static final Vec3f[] vertices = {
     // Front side

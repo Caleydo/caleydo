@@ -46,7 +46,7 @@ import javax.media.opengl.glu.*;
 import gleem.linalg.*;
 
 /** Tests the Translate2 Manip. */
-
+@SuppressWarnings("all")
 public class TestTranslate2 {
   private static final int X_SIZE = 400;
   private static final int Y_SIZE = 400;

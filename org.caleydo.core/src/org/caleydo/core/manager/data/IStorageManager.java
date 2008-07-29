@@ -4,7 +4,7 @@ import java.util.Set;
 
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.manager.IManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.EManagerObjectType;
 
 /**
  * Manages all IStorages.
@@ -15,7 +15,7 @@ import org.caleydo.core.manager.type.ManagerObjectType;
 public interface IStorageManager
 extends IManager
 {
-	public IStorage createStorage(final ManagerObjectType useStorageType);
+	public IStorage createStorage(final EManagerObjectType useStorageType);
 	
 	public void removeStorage(IStorage deleteStorage);
 	

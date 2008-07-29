@@ -5,6 +5,8 @@ import org.caleydo.core.data.collection.INumericalCContainer;
 import org.caleydo.core.data.collection.ccontainer.EDataKind;
 import org.caleydo.core.manager.IGeneralManager;
 
+import com.sun.org.apache.bcel.internal.generic.DMUL;
+
 
 public class NumericalStorage 
 extends AStorage 
@@ -44,12 +46,30 @@ implements INumericalStorage
 	
 	public double getMin()
 	{
-		return ((INumericalCContainer)(hashCContainers.get(EDataKind.RAW))).getMin();
+		EDataKind dataKind = EDataKind.RAW;
+		if(hashCContainers.containsKey(EDataKind.LOG10))
+			dataKind = EDataKind.LOG10;
+		return ((INumericalCContainer)(hashCContainers.get(dataKind))).getMin();
 	}
 	
 	public double getMax()
 	{
-		return ((INumericalCContainer)(hashCContainers.get(EDataKind.RAW))).getMax();
+		EDataKind dataKind = EDataKind.RAW;
+		if(hashCContainers.containsKey(EDataKind.LOG10))
+			dataKind = EDataKind.LOG10;
+		return ((INumericalCContainer)(hashCContainers.get(dataKind))).getMax();
 	}	
+	
+	public void log10()
+	{			
+		hashCContainers.put(EDataKind.LOG10, 
+				((INumericalCContainer)(hashCContainers.get(EDataKind.RAW))).log10());		
+	}
+	
+	public void reset()
+	{
+		hashCContainers.remove(EDataKind.LOG10);
+		hashCContainers.remove(EDataKind.NORMALIZED);		
+	}
 
 }

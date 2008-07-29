@@ -6,7 +6,7 @@ import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 

@@ -9,7 +9,7 @@ import org.caleydo.core.data.collection.set.Set;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.ISetManager;
-import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.manager.type.EManagerType;
 
 
 /**
@@ -28,7 +28,7 @@ implements ISetManager {
 	public SetManager( IGeneralManager setSingelton) {
 		super( setSingelton , 
 				IGeneralManager.iUniqueId_TypeOffset_Set,
-				ManagerType.DATA_SET );
+				EManagerType.DATA_SET );
 
 		assert setSingelton != null : "Constructor with null-pointer to singelton";
 		

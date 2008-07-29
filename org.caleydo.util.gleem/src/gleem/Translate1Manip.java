@@ -46,7 +46,7 @@ import javax.media.opengl.*;
 
 /** A Translate1Manip is a Manip which translates in only one
     dimension and whose default representation is a two-way arrow. */
-
+@SuppressWarnings("all")
 public class Translate1Manip extends Manip {
   private ManipPart parts;
   private Vec3f translation;

@@ -14,8 +14,8 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.type.EManagerType;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraph;
@@ -52,7 +52,7 @@ implements IPathwayItemManager, Serializable
 		
 		super( generalManager, 
 				IGeneralManager.iUniqueId_TypeOffset_Pathways_Vertex,
-				ManagerType.DATA_PATHWAY_ELEMENT );
+				EManagerType.DATA_PATHWAY_ELEMENT );
 	
 		hashVertexIdToGraphItem = new HashMap<Integer, IGraphItem>();
 		hashVertexNameToGraphItem = new HashMap<String, IGraphItem>();
@@ -73,7 +73,7 @@ implements IPathwayItemManager, Serializable
 			return hashVertexNameToGraphItem.get(sName);
 		}
 
-		int iGeneratedId = createId(ManagerObjectType.PATHWAY_VERTEX);
+		int iGeneratedId = createId(EManagerObjectType.PATHWAY_VERTEX);
 		
     	IGraphItem pathwayVertex = new PathwayVertexGraphItem(
     			iGeneratedId, sName, sType, sExternalLink, sReactionId);
@@ -114,7 +114,7 @@ implements IPathwayItemManager, Serializable
 			final short shXPosition, 
 			final short shYPosition) {
 		
-		int iGeneratedId = createId(ManagerObjectType.PATHWAY_VERTEX_REP);
+		int iGeneratedId = createId(EManagerObjectType.PATHWAY_VERTEX_REP);
 		IGraphItem pathwayVertexRep = new PathwayVertexGraphItemRep(
 				iGeneratedId, sName, sShapeType, shHeight, shWidth,
 				shXPosition, shYPosition);
@@ -148,7 +148,7 @@ implements IPathwayItemManager, Serializable
 			final String sShapeType, 
 			final String sCoords) {
 	
-		int iGeneratedId = createId(ManagerObjectType.PATHWAY_VERTEX_REP);
+		int iGeneratedId = createId(EManagerObjectType.PATHWAY_VERTEX_REP);
 		IGraphItem pathwayVertexRep = new PathwayVertexGraphItemRep(
 				iGeneratedId, sName, sShapeType, sCoords);
 		
@@ -173,7 +173,7 @@ implements IPathwayItemManager, Serializable
 			final IGraphItem graphItemOut,
 			final String sType) {
 		
-		int iGeneratedId = createId(ManagerObjectType.PATHWAY_EDGE);
+		int iGeneratedId = createId(EManagerObjectType.PATHWAY_EDGE);
 		IGraphItem pathwayRelationEdge = new PathwayRelationEdgeGraphItem(
 				iGeneratedId, sType);
 		
@@ -202,7 +202,7 @@ implements IPathwayItemManager, Serializable
 			final IGraphItem graphItemIn, 
 			final IGraphItem graphItemOut) {
 		
-		int iGeneratedId = createId(ManagerObjectType.PATHWAY_EDGE_REP);
+		int iGeneratedId = createId(EManagerObjectType.PATHWAY_EDGE_REP);
 		IGraphItem pathwayRelationEdgeRep = 
 			new PathwayRelationEdgeGraphItemRep(iGeneratedId);
 
@@ -234,13 +234,13 @@ implements IPathwayItemManager, Serializable
 			final String sReactionType) {
 		
 		// Create edge (data)
-		int iGeneratedId = createId(ManagerObjectType.PATHWAY_EDGE_REP);
+		int iGeneratedId = createId(EManagerObjectType.PATHWAY_EDGE_REP);
 		IGraphItem pathwayReactionEdge =
 			new PathwayReactionEdgeGraphItem(iGeneratedId, 
 					sReactionName, sReactionType);
 		
 		// Create edge representation
-		iGeneratedId = createId(ManagerObjectType.PATHWAY_EDGE_REP);
+		iGeneratedId = createId(EManagerObjectType.PATHWAY_EDGE_REP);
 		IGraphItem pathwayReactionEdgeRep =
 			new PathwayReactionEdgeGraphItemRep(iGeneratedId);
 	

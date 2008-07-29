@@ -42,7 +42,7 @@ package gleem;
 import gleem.linalg.*;
 
 /** Implements ray casting against a 3D triangle. */
-
+@SuppressWarnings("all")
 public class RayTriangleIntersection {
   public static final int ERROR           = 0;
   public static final int NO_INTERSECTION = 1;

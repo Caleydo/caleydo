@@ -1,6 +1,6 @@
 package org.caleydo.core.data.xml;
 
-import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
 /**
@@ -23,7 +23,7 @@ public interface IMementoCallbackXML {
 	 * @param details additional information
 	 * @param saxHandler SaxHandler with state for object from XML file
 	 */
-	public void callbackForParser( final ManagerObjectType type,
+	public void callbackForParser( final EManagerObjectType type,
 			final String tag_causes_callback,
 			final String details,
 			final ISaxParserHandler saxHandler);	

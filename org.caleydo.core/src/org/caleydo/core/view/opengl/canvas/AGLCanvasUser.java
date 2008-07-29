@@ -21,7 +21,7 @@ import org.caleydo.core.data.view.camera.ViewCameraBase;
 import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.ISetManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.manager.view.EPickingMode;
 import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.Pick;
@@ -259,7 +259,7 @@ implements GLEventListener {
 //	    viewFrustum.setTop(test[1] / 2);
 	}
 	
-	public final ManagerObjectType getBaseType()
+	public final EManagerObjectType getBaseType()
 	{
 		return null;
 	}

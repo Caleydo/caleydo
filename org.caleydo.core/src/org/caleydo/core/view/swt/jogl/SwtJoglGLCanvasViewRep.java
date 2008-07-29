@@ -5,7 +5,7 @@ import javax.media.opengl.GLCanvas;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.swt.widget.SWTEmbeddedJoglWidget;
@@ -57,7 +57,7 @@ extends AView {
 		
 		SWTEmbeddedJoglWidget sWTEmbeddedJoglWidget = 
 			(SWTEmbeddedJoglWidget) iSWTGUIManager.createWidget(
-						ManagerObjectType.GUI_SWT_EMBEDDED_JOGL_WIDGET, 
+						EManagerObjectType.GUI_SWT_EMBEDDED_JOGL_WIDGET, 
 						iParentContainerId, -1, -1);
 				
 		swtContainer = sWTEmbeddedJoglWidget.getParentComposite();

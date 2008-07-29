@@ -48,7 +48,7 @@ import javax.media.opengl.*;
 
 /** The ManipManager handles making manipulators visible in a
     window. */
-
+@SuppressWarnings("all")
 public class ManipManager {
   // Screen-to-ray mapping
   private ScreenToRayMapping mapping;

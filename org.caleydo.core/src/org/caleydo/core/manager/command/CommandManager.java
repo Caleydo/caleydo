@@ -22,8 +22,8 @@ import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.command.factory.CommandFactory;
 import org.caleydo.core.manager.command.factory.ICommandFactory;
-import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.type.EManagerType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
 
@@ -68,7 +68,7 @@ implements ICommandManager {
 	public CommandManager( IGeneralManager setGeneralManager ) {
 		super( setGeneralManager, 
 				IGeneralManager.iUniqueId_TypeOffset_Command, 
-				ManagerType.COMMAND );
+				EManagerType.COMMAND );
 		
 		commandFactory = new CommandFactory( setGeneralManager, 
 				this);
@@ -273,7 +273,7 @@ implements ICommandManager {
 			sQueueThread,
 			sQueueThreadWait );
 		
-		int iNewCmdId = createId( ManagerObjectType.COMMAND );
+		int iNewCmdId = createId( EManagerObjectType.COMMAND );
 		newCmd.setId( iNewCmdId );
 		
 		registerItem(newCmd, iNewCmdId);

@@ -8,8 +8,8 @@ import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.ISelectionManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.type.EManagerType;
 
 /**
  * Manages selections for views.
@@ -31,7 +31,7 @@ implements ISelectionManager
 	public SelectionManager(final IGeneralManager generalManager)
 	{
 		super(generalManager, 
-				IGeneralManager.iUniqueID_TypeOffset_Selection, ManagerType.DATA_SELECTION);
+				IGeneralManager.iUniqueID_TypeOffset_Selection, EManagerType.DATA_SELECTION);
 		
 		hashSelectionIdToSelection = new HashMap<Integer, ISelection>();
 	}

@@ -45,7 +45,7 @@ import gleem.linalg.*;
 
 /** Piece of geometry defining a two-way arrow, used in Translate1 and
     Translate2 manips. */
-
+@SuppressWarnings("all")
 public class ManipPartTwoWayArrow extends ManipPartTriBased {
   private static final Vec3f[] vertices = {
     // Left tetrahedron

@@ -9,7 +9,7 @@ import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IEventPublisher.MediatorType;
 import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
-import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.system.StringConversionTool;
@@ -40,7 +40,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 				commandQueueSaxType);
 		
 		super.setId( generalManager.getEventPublisher().createId( 
-				ManagerObjectType.EVENT_MEDIATOR_CREATE));
+				EManagerObjectType.EVENT_MEDIATOR_CREATE));
 		
 		iArSenderIDs = new ArrayList<Integer>();
 		iArReceiverIDs = new ArrayList<Integer>();

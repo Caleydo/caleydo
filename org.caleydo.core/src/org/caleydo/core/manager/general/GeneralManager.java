@@ -31,8 +31,8 @@ import org.caleydo.core.manager.specialized.genome.pathway.PathwayItemManager;
 import org.caleydo.core.manager.specialized.genome.pathway.PathwayManager;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.type.EManagerType;
 import org.caleydo.core.manager.view.ViewGLCanvasManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 

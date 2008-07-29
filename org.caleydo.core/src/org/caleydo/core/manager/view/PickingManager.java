@@ -12,8 +12,8 @@ import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.type.EManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
@@ -63,7 +63,7 @@ extends AManager
 
 		super(generalManager, 
 				IGeneralManager.iUniqueID_TypeOffset_PickingID, 
-				ManagerType.PICKING_MANAGER);
+				EManagerType.PICKING_MANAGER);
 		
 		hashSignatureToHitList = new HashMap<Integer, ArrayList<Pick>>();
 		hashSignatureToPickingIDHashMap = new HashMap<Integer, HashMap<Integer, Integer>>();

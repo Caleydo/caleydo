@@ -9,7 +9,7 @@ import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.ISetManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.view.swt.widget.SWTNativeWidget;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Composite;
@@ -98,7 +98,7 @@ implements IView {
 		this.iHeight = iHeight;
 	}
 	
-	public final ManagerObjectType getBaseType() {
+	public final EManagerObjectType getBaseType() {
 		return null;
 	}
 	
@@ -136,7 +136,7 @@ implements IView {
 		
 		SWTNativeWidget sWTNativeWidget = (SWTNativeWidget) generalManager
 			.getSWTGUIManager().createWidget(
-				ManagerObjectType.GUI_SWT_NATIVE_WIDGET,
+				EManagerObjectType.GUI_SWT_NATIVE_WIDGET,
 				iParentContainerId, iWidth, iHeight);
 
 		swtContainer = sWTNativeWidget.getSWTWidget();

@@ -5,7 +5,7 @@ import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.swt.progressbar.ProgressBarViewRep;
@@ -45,7 +45,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 		
 		ProgressBarViewRep progressBarView = (ProgressBarViewRep)viewManager
-				.createView(ManagerObjectType.VIEW_SWT_PROGRESS_BAR,
+				.createView(EManagerObjectType.VIEW_SWT_PROGRESS_BAR,
 							iUniqueId, 
 							iParentContainerId, 
 							sLabel);

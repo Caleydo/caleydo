@@ -44,7 +44,7 @@ import java.util.*;
 import gleem.linalg.*;
 
 /** Calculates normals for a set of polygons. */
-
+@SuppressWarnings("all")
 public class NormalCalc {
 
   /** Set of normals computed using {@link gleem.NormalCalc}. */

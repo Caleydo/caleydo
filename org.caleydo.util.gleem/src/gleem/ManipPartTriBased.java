@@ -48,7 +48,7 @@ import javax.media.opengl.*;
     of the ManipParts that GLEEM uses internally. You can feel free to
     subclass this if you want to replace geometry in the manipulators,
     or re-derive from ManipPart. See ManipPartLineSeg for an example. */
-
+@SuppressWarnings("all")
 public class ManipPartTriBased extends ManipPart {
   private Vec3f   color;
   private Vec3f   highlightColor;

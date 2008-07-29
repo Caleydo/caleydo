@@ -7,8 +7,8 @@ import java.util.logging.Level;
 
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.type.EManagerType;
 import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyphGenerator;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphAttributeType;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphEntry;
@@ -39,7 +39,7 @@ implements IGlyphManager{
 	public GlyphManager(final IGeneralManager generalManager) {
 		super(generalManager, 
 			IGeneralManager.iUniqueId_TypeOffset_Pathways_Pathway,
-			ManagerType.DATA_PATHWAY_ELEMENT );
+			EManagerType.DATA_PATHWAY_ELEMENT );
 		
 		settings = new HashMap<EGlyphSettingIDs, String>();
 		sortOrderExt = new Vector<Integer>();

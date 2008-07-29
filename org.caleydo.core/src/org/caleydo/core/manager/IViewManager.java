@@ -5,7 +5,7 @@ import java.util.Collection;
 
 import javax.swing.JFrame;
 
-import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
 
@@ -18,12 +18,12 @@ import org.caleydo.core.view.ViewType;
 public interface IViewManager 
 extends IManager
 {		
-	public IView createView(final ManagerObjectType useViewType, 
+	public IView createView(final EManagerObjectType useViewType, 
 			final int iUniqueId,
 			final int iParentContainerId,
 			final String sLabel);
 	
-	public IView createGLView(final ManagerObjectType useViewType, 
+	public IView createGLView(final EManagerObjectType useViewType, 
 			final int iViewID,
 			final int iParentContainerID,
 			final int iCanvasID,
@@ -45,6 +45,6 @@ extends IManager
 	 * @return
 	 */
 	public JFrame createWorkspace( 
-			final ManagerObjectType useViewCanvasType,
+			final EManagerObjectType useViewCanvasType,
 			final String sAditionalParameter );
 }

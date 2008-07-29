@@ -107,6 +107,9 @@ implements IStorage
 	 */
 	public float getFloat(EDataKind storageKind, int iIndex)
 	{
+		if(!hashCContainers.containsKey(storageKind))
+			throw new CaleydoRuntimeException("Requested storage kind not produced", 
+					CaleydoRuntimeExceptionType.DATAHANDLING);
 		if(!(hashCContainers.get(storageKind) instanceof PrimitiveFloatCContainer))
 			throw new CaleydoRuntimeException("Requested storage kind is not of type float", 
 					CaleydoRuntimeExceptionType.DATAHANDLING);
@@ -133,7 +136,7 @@ implements IStorage
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.collection.NISet#getInt(org.caleydo.core.data.collection.nstorage.EStorageKind, int)
 	 */
-	public float getInt(EDataKind storageKind, int iIndex)
+	public int getInt(EDataKind storageKind, int iIndex)
 	{
 		if(!(hashCContainers.get(storageKind) instanceof PrimitiveIntCContainer))
 			throw new CaleydoRuntimeException("Requested storage kind is not of type int", 
@@ -174,8 +177,12 @@ implements IStorage
 	 */
 	public void normalize()
 	{
+		EDataKind srcDataKind = EDataKind.RAW;
+		if(hashCContainers.containsKey(EDataKind.LOG10))
+			srcDataKind = EDataKind.LOG10;
+		
 		hashCContainers.put(EDataKind.NORMALIZED, 
-				hashCContainers.get(EDataKind.RAW).normalize());
+				hashCContainers.get(srcDataKind).normalize());
 	}
 	
 	public int size()

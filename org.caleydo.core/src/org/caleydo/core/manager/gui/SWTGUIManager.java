@@ -8,8 +8,8 @@ import java.util.Vector;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.type.EManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.swt.ISWTWidget;
 import org.caleydo.core.view.swt.widget.ASWTWidget;
@@ -70,7 +70,7 @@ implements ISWTGUIManager {
 
 		super(generalManager, 
 				IGeneralManager.iUniqueId_TypeOffset_GUI_SWT,
-				ManagerType.VIEW_GUI_SWT );
+				EManagerType.VIEW_GUI_SWT );
 
 		widgetMap = new Vector<ISWTWidget>();
 
@@ -90,7 +90,7 @@ implements ISWTGUIManager {
 	public Shell createWindow() {
 
 		// Register shell in the window map
-		final int iUniqueId = this.createId(ManagerObjectType.GUI_SWT_WINDOW);
+		final int iUniqueId = this.createId(EManagerObjectType.GUI_SWT_WINDOW);
 
 		// use default layout
 		return createWindow(iUniqueId, "Caleydo", "ROW VERTICAL");
@@ -143,7 +143,7 @@ implements ISWTGUIManager {
 	 *  (non-Javadoc)
 	 * @see org.caleydo.core.manager.ISWTGUIManager#createWidget(org.caleydo.core.manager.type.ManagerObjectType, int, int, int)
 	 */
-	public ISWTWidget createWidget(final ManagerObjectType useWidgetType,
+	public ISWTWidget createWidget(final EManagerObjectType useWidgetType,
 			int iUniqueParentContainerId, int iWidth, int iHeight) {
 
 		// TODO Check if window id is valid and print error message
@@ -174,7 +174,7 @@ implements ISWTGUIManager {
 	 *  (non-Javadoc)
 	 * @see org.caleydo.core.manager.ISWTGUIManager#createWidget(org.caleydo.core.manager.type.ManagerObjectType, org.eclipse.swt.widgets.Composite, int, int)
 	 */
-	public synchronized ISWTWidget createWidget(final ManagerObjectType useWidgetType,
+	public synchronized ISWTWidget createWidget(final EManagerObjectType useWidgetType,
 			final Composite externalParentComposite, int iWidth, int iHeight) {
 
 		assert externalParentComposite != null : "can not handel null-pointer";

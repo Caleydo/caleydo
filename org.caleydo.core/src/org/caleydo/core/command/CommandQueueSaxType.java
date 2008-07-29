@@ -1,6 +1,6 @@
 package org.caleydo.core.command;
 
-import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.manager.type.EManagerType;
 
 /**
  * Type of Command Queue "tag's" and "key's"
@@ -27,26 +27,26 @@ public enum CommandQueueSaxType
 	/**
 	 * XML-value  ( XML-Tag , XML-key ) 
 	 */
-	LOAD_DATA_FILE(ManagerType.SYSTEM,"cmd","type","", "No description available!"),
-	LOAD_LOOKUP_TABLE_FILE(ManagerType.SYSTEM,"cmd","type","", "Load a lookup table"),
-	LOAD_ON_DEMAND(ManagerType.SYSTEM,"cmd", "process","LOAD_ON_DEMAND", "No description available!"),
-	LOAD_URL_IN_BROWSER(ManagerType.EVENT_PUBLISHER,"cmd", "type", "-1", "Load URL in browser"),
+	LOAD_DATA_FILE(EManagerType.SYSTEM,"cmd","type","", "No description available!"),
+	LOAD_LOOKUP_TABLE_FILE(EManagerType.SYSTEM,"cmd","type","", "Load a lookup table"),
+	LOAD_ON_DEMAND(EManagerType.SYSTEM,"cmd", "process","LOAD_ON_DEMAND", "No description available!"),
+	LOAD_URL_IN_BROWSER(EManagerType.EVENT_PUBLISHER,"cmd", "type", "-1", "Load URL in browser"),
 
-	DATA_FILTER_MATH(ManagerType.DATA_STORAGE, "cmd", "type", "-1", "Filter data by using math operations"),
-	DATA_FILTER_MIN_MAX(ManagerType.DATA_STORAGE, "cmd", "type", "-1", "Evaluate min and max of an entity"),
+	DATA_FILTER_MATH(EManagerType.DATA_STORAGE, "cmd", "type", "-1", "Filter data by using math operations"),
+	DATA_FILTER_MIN_MAX(EManagerType.DATA_STORAGE, "cmd", "type", "-1", "Evaluate min and max of an entity"),
 	
-	CREATE_EVENT_MEDIATOR(ManagerType.EVENT_PUBLISHER,"cmd", "type", null, "Create Event Mediator"),
+	CREATE_EVENT_MEDIATOR(EManagerType.EVENT_PUBLISHER,"cmd", "type", null, "Create Event Mediator"),
 	EVENT_MEDIATOR_ADD_OBJECT("cmd", "type", null, "Add Objects ad sender or receiver to Event Mediator"),
 	
-	CREATE_GL_HEAT_MAP_3D(ManagerType.VIEW,"cmd","type","-1", "Create Heat Map"),
-	CREATE_GL_HISTOGRAM2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
-	CREATE_GL_GLYPH(ManagerType.VIEW,"cmd","type","-1", "Create Glyph"),	
-	CREATE_GL_PATHWAY_3D(ManagerType.VIEW,"cmd","type","-1", "Create Pathway 3D"),		
-	CREATE_GL_PARALLEL_COORDINATES_3D(ManagerType.VIEW,"cmd","type","-1", "Create Parallel Coordinates 3D"),		
-	CREATE_GL_BUCKET_3D(ManagerType.VIEW,"cmd","type","-1", "Create Bucket 3D"),
-	CREATE_GL_JUKEBOX_3D(ManagerType.VIEW,"cmd","type","-1", "Create Jukebox 3D"),
-	CREATE_GL_WII_TEST(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
-	CREATE_GL_REMOTE_GLYPH(ManagerType.VIEW,"cmd","type","-1", "Create Remote Glyph"),
+	CREATE_GL_HEAT_MAP_3D(EManagerType.VIEW,"cmd","type","-1", "Create Heat Map"),
+	CREATE_GL_HISTOGRAM2D(EManagerType.VIEW,"cmd","type","-1", "No description available!"),
+	CREATE_GL_GLYPH(EManagerType.VIEW,"cmd","type","-1", "Create Glyph"),	
+	CREATE_GL_PATHWAY_3D(EManagerType.VIEW,"cmd","type","-1", "Create Pathway 3D"),		
+	CREATE_GL_PARALLEL_COORDINATES_3D(EManagerType.VIEW,"cmd","type","-1", "Create Parallel Coordinates 3D"),		
+	CREATE_GL_BUCKET_3D(EManagerType.VIEW,"cmd","type","-1", "Create Bucket 3D"),
+	CREATE_GL_JUKEBOX_3D(EManagerType.VIEW,"cmd","type","-1", "Create Jukebox 3D"),
+	CREATE_GL_WII_TEST(EManagerType.VIEW,"cmd","type","-1", "No description available!"),
+	CREATE_GL_REMOTE_GLYPH(EManagerType.VIEW,"cmd","type","-1", "Create Remote Glyph"),
 //	CREATE_GL_TRIANGLE_TEST(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 //	CREATE_GL_TEXTURE2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),	
 //	CREATE_GL_SCATTERPLOT2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),	
@@ -55,33 +55,35 @@ public enum CommandQueueSaxType
 //	CREATE_GL_ISOSURFACE3D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 //	CREATE_GL_WIDGET(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	
-	EXTERNAL_FLAG_SETTER(ManagerType.VIEW, "cmd", "type", "-1", "External flag setter"),
-	EXTERNAL_ACTION_TRIGGER(ManagerType.VIEW, "cmd", "type", "-1", "External action trigger"),
+	EXTERNAL_FLAG_SETTER(EManagerType.VIEW, "cmd", "type", "-1", "External flag setter"),
+	EXTERNAL_ACTION_TRIGGER(EManagerType.VIEW, "cmd", "type", "-1", "External action trigger"),
 	
-	CREATE_SET_DATA(ManagerType.DATA,"cmd","type","-1", "Create SET"),	
-	CREATE_SET_SELECTION(ManagerType.DATA_SET,"cmd","type","-1", "Create Selection SET!"),
-	CREATE_SELECTION(ManagerType.DATA_SET,"cmd", "type","-1", "Create Selection SET incl. Storage and Virtual Array!"),
-	CREATE_STORAGE(ManagerType.DATA_STORAGE,"cmd","type","-1", "Create Storage"),		
-	CREATE_VIRTUAL_ARRAY(ManagerType.DATA_VIRTUAL_ARRAY,"cmd","type","-1", "Create VirtualArray"),
 
-	CREATE_SWT_WINDOW(ManagerType.VIEW,"cmd", "type","-1", "Create SWT window"),
-	CREATE_SWT_CONTAINER(ManagerType.VIEW,"cmd", "type","-1", "Create SWTContainer"),
-	CREATE_VIEW_PATHWAY(ManagerType.VIEW,"cmd", "type","-1", "Create Pathway 2D"),
-	CREATE_VIEW_GEARS(ManagerType.VIEW,"cmd", "type","-1", "Create Gears Demo"),
-	CREATE_VIEW_DATA_EXPLORER(ManagerType.VIEW,"cmd", "type","-1", "Create Data Explorer"),
-	CREATE_VIEW_DATA_EXCHANGER(ManagerType.VIEW,"cmd", "type","-1", "Create Data Exchanger"),	
-	CREATE_VIEW_PROGRESSBAR(ManagerType.VIEW,"cmd", "type","-1", "Create Progress Bar"),
-	CREATE_VIEW_STORAGE_SLIDER(ManagerType.VIEW,"cmd", "type","-1", "Create Slider"),
-	CREATE_VIEW_SELECTION_SLIDER(ManagerType.VIEW,"cmd", "type","-1", "Create Slider"),	
-	CREATE_VIEW_MIXER(ManagerType.VIEW,"cmd", "type","-1", "Create Mixer"),
-	CREATE_VIEW_BROWSER(ManagerType.VIEW,"cmd", "type", "-1", "Create Browser"),	
-	CREATE_VIEW_IMAGE(ManagerType.VIEW,"cmd", "type", "-1", "Create Image"),	
-	CREATE_VIEW_SET_EDITOR(ManagerType.VIEW,"cmd", "type","-1", "No description available!"),
-	CREATE_VIEW_UNDO_REDO(ManagerType.VIEW,"cmd", "type","-1", "Create UNDO/REDO"),
+	CREATE_SET_DATA(EManagerType.DATA,"cmd","type","-1", "Create SET"),	
+	CREATE_SET_SELECTION(EManagerType.DATA_SET,"cmd","type","-1", "Create Selection SET!"),
+	CREATE_SELECTION(EManagerType.DATA_SET,"cmd", "type","-1", "Create Selection SET incl. Storage and Virtual Array!"),
+	CREATE_STORAGE(EManagerType.DATA_STORAGE,"cmd","type","-1", "Create Storage"),		
+	CREATE_VIRTUAL_ARRAY(EManagerType.DATA_VIRTUAL_ARRAY,"cmd","type","-1", "Create VirtualArray"),
+
+
+	CREATE_SWT_WINDOW(EManagerType.VIEW,"cmd", "type","-1", "Create SWT window"),
+	CREATE_SWT_CONTAINER(EManagerType.VIEW,"cmd", "type","-1", "Create SWTContainer"),
+	CREATE_VIEW_PATHWAY(EManagerType.VIEW,"cmd", "type","-1", "Create Pathway 2D"),
+	CREATE_VIEW_GEARS(EManagerType.VIEW,"cmd", "type","-1", "Create Gears Demo"),
+	CREATE_VIEW_DATA_EXPLORER(EManagerType.VIEW,"cmd", "type","-1", "Create Data Explorer"),
+	CREATE_VIEW_DATA_EXCHANGER(EManagerType.VIEW,"cmd", "type","-1", "Create Data Exchanger"),	
+	CREATE_VIEW_PROGRESSBAR(EManagerType.VIEW,"cmd", "type","-1", "Create Progress Bar"),
+	CREATE_VIEW_STORAGE_SLIDER(EManagerType.VIEW,"cmd", "type","-1", "Create Slider"),
+	CREATE_VIEW_SELECTION_SLIDER(EManagerType.VIEW,"cmd", "type","-1", "Create Slider"),	
+	CREATE_VIEW_MIXER(EManagerType.VIEW,"cmd", "type","-1", "Create Mixer"),
+	CREATE_VIEW_BROWSER(EManagerType.VIEW,"cmd", "type", "-1", "Create Browser"),	
+	CREATE_VIEW_IMAGE(EManagerType.VIEW,"cmd", "type", "-1", "Create Image"),	
+	CREATE_VIEW_SET_EDITOR(EManagerType.VIEW,"cmd", "type","-1", "No description available!"),
+	CREATE_VIEW_UNDO_REDO(EManagerType.VIEW,"cmd", "type","-1", "Create UNDO/REDO"),
 	CREATE_VIEW_DATA_ENTITY_SEARCHER("cmd", "type", null, "Create Data Entity Searcher"),
 
-	CREATE_VIEW_SWT_GLCANVAS(ManagerType.VIEW,"cmd", "type","-1", "Create SWT GL Canvas"),
-	CREATE_VIEW_RCP_GLCANVAS(ManagerType.VIEW,"cmd", "type", "-1", "Create RCP GL Canvas"),
+	CREATE_VIEW_SWT_GLCANVAS(EManagerType.VIEW,"cmd", "type","-1", "Create SWT GL Canvas"),
+	CREATE_VIEW_RCP_GLCANVAS(EManagerType.VIEW,"cmd", "type", "-1", "Create RCP GL Canvas"),
 	
 	/* switches to create different Set's */
 	SET_DATA_LINEAR("cmd","type","-1", "Create planar SET"),
@@ -111,8 +113,8 @@ public enum CommandQueueSaxType
 	/*
 	 * -------  COMMAND QUEUE  --------
 	 */ 
-	COMMAND_QUEUE_OPEN(ManagerType.SYSTEM,"cmdqueue","type",null, "Open a command queue"),
-	COMMAND_QUEUE_RUN(ManagerType.SYSTEM,"cmdqueue","type",null, "execute a command queue"),
+	COMMAND_QUEUE_OPEN(EManagerType.SYSTEM,"cmdqueue","type",null, "Open a command queue"),
+	COMMAND_QUEUE_RUN(EManagerType.SYSTEM,"cmdqueue","type",null, "execute a command queue"),
 	
 	CMD_ID("cmdqueue","cmdId","-1", "No description available!"),
 	CMDQUEUE_ID("cmdqueue","cmdQueueId","-1", "No description available!"),
@@ -130,7 +132,7 @@ public enum CommandQueueSaxType
 	 * =================================================
 	 */
 
-	SYSTEM_SHUT_DOWN(ManagerType.SYSTEM,"cmd","type","-1", "Caleydo system shut down"),
+	SYSTEM_SHUT_DOWN(EManagerType.SYSTEM,"cmd","type","-1", "Caleydo system shut down"),
 	
 
 	
@@ -192,7 +194,7 @@ public enum CommandQueueSaxType
 	/**
 	 * Define type of manager group
 	 */
-	private final ManagerType eGroupType;
+	private final EManagerType eGroupType;
 	
 	/**
 	 * Constructor.
@@ -203,7 +205,7 @@ public enum CommandQueueSaxType
 	 * @param sDefaultValue
 	 * @param sInfoText
 	 */
-	private CommandQueueSaxType( ManagerType type,
+	private CommandQueueSaxType( EManagerType type,
 			String sXmlTag, 
 			String sXmlKey,
 			String sDefaultValue,
@@ -229,7 +231,7 @@ public enum CommandQueueSaxType
 			String sDefaultValue,
 			String sInfoText) {
 		
-		this( ManagerType.NONE,
+		this( EManagerType.NONE,
 				sXmlTag, 
 				sXmlKey,
 				sDefaultValue,
@@ -241,7 +243,7 @@ public enum CommandQueueSaxType
 			String sXmlKey,
 			String sDefaultValue) {
 		
-		this( ManagerType.NONE,
+		this( EManagerType.NONE,
 				sXmlTag, 
 				sXmlKey,
 				sDefaultValue,
@@ -253,7 +255,7 @@ public enum CommandQueueSaxType
 	 * 
 	 * @return group type
 	 */
-	public final ManagerType getGroupType() {
+	public final EManagerType getGroupType() {
 		return this.eGroupType;
 	}
 	

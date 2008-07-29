@@ -1,7 +1,7 @@
 package org.caleydo.core.data;
 
 import org.caleydo.core.data.IManagedObject;
-import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.EManagerObjectType;
 
 /**
  * Interface to access prometheus.data.manager.CollectionManager
@@ -18,6 +18,6 @@ extends IUniqueObject, IManagedObject {
 	 * 
 	 * @return type of this object
 	 */
-	public ManagerObjectType getBaseType();
+	public EManagerObjectType getBaseType();
 	
 }

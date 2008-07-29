@@ -46,7 +46,7 @@ import javax.media.opengl.*;
 
 /** This class groups a set of ManipParts. Makes a set of ManipParts
     look like one. */
-
+@SuppressWarnings("all")
 public class ManipPartGroup extends ManipPart {
   private boolean pickable = true;
   private boolean visible = true;

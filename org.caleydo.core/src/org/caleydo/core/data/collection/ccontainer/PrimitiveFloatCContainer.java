@@ -115,6 +115,26 @@ implements INumericalCContainer
 		return normalize((float)dMin, (float)dMax);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.INumericalCContainer#log10()
+	 */
+	public PrimitiveFloatCContainer log10()
+	{
+		float[] fArTarget = new float[fArContainer.length];			
+
+		float fTmp;
+		for(int index = 0; index < fArContainer.length; index++)
+		{
+			fTmp = fArContainer[index];
+			fArTarget[index] = (float) Math.log10(fTmp);
+			if(fArTarget[index] == Float.NEGATIVE_INFINITY)
+				fArTarget[index] = Float.NaN;
+		}	
+
+		return new PrimitiveFloatCContainer(fArTarget);
+	}
+	
 	/**
 	 * Does the actual normalization between 0 and 1
 	 * 
@@ -159,6 +179,8 @@ implements INumericalCContainer
 
 			if (Float.isNaN(fCurrent))
 				continue;
+			if(fCurrent < -200)
+				continue;
 			
 			if(fCurrent < fMin)
 			{
@@ -167,7 +189,7 @@ implements INumericalCContainer
 			}
 			if(fCurrent > fMax)
 				fMax = fCurrent;				
-		}			
-	}
-	
+		}
+		return;
+	}	
 }

@@ -57,6 +57,7 @@ import javax.media.opengl.*;
     axes of the adjacent face to the handle whose normal most directly
     faces the viewing direction. */
 
+@SuppressWarnings("all")
 public class HandleBoxManip extends Manip {
   private ManipPart parts;
   private Vec3f translation;
@@ -150,7 +151,8 @@ public class HandleBoxManip extends Manip {
 
   /** Default HandleBoxManip has translation (0, 0, 0) and the
       identity orientation */
-  public HandleBoxManip() {
+  
+public HandleBoxManip() {
     parts = new ManipPartTwoWayArrow();
     translation = new Vec3f(0, 0, 0);
     scale = new Vec3f(1, 1, 1);

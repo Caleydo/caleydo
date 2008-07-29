@@ -7,7 +7,7 @@ import java.util.Set;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.manager.type.EManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
@@ -39,7 +39,7 @@ extends AManager  {
 
 		super(generalManager,				
 				IGeneralManager.iUniqueID_TypeOffset_Selection, 
-				ManagerType.SELECTION_MANAGER);
+				EManagerType.SELECTION_MANAGER);
 		
 		hashSelectedElementID2SelectedElementReps = 
 			new HashMap<Integer, ArrayList<SelectedElementRep>>();

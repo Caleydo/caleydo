@@ -45,7 +45,7 @@ import gleem.linalg.*;
 
 /** A Group which contains an offset transformation which is performed
     before the one handed down in setTransform. */
-
+@SuppressWarnings("all")
 public class ManipPartTransform extends ManipPartGroup {
   private Mat4f offsetTransform;
 

@@ -3,15 +3,16 @@ package org.caleydo.core.command.data.filter;
 //import java.util.ArrayList;
 //import java.util.Iterator;
 
+import javax.naming.OperationNotSupportedException;
+
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * @author Alexander Lex
@@ -27,22 +28,11 @@ public class CmdDataFilterMinMax
 extends ACmdCreate_IdTargetLabelAttrDetail 
 {
 	private ISet mySet = null;
-	private IStorage myStorage = null;
-	private EStorageType myStorageType = null;
+	private INumericalStorage myStorage = null;
 	
-	private int iMinValue = Integer.MAX_VALUE;
-	private int iMaxValue = Integer.MIN_VALUE;	
-	private float fMinValue = Float.MAX_VALUE;
-	private float fMaxValue = Float.MIN_VALUE;
 	private double dMinValue = Double.MAX_VALUE;
 	private double dMaxValue = Double.MIN_VALUE;
 	
-//	private int iSetMinValue;
-//	private int iSetMaxValue;	
-//	private float fSetMinValue;
-//	private float fSetMaxValue;
-//	private double dSetMinValue;
-//	private double dSetMaxValue;
 	
 	/**
 	 * Constructor.
@@ -53,11 +43,9 @@ extends ACmdCreate_IdTargetLabelAttrDetail
 	 */
 	public CmdDataFilterMinMax(IGeneralManager generalManager,
 			ICommandManager commandManager,
-			CommandQueueSaxType commandQueueSaxType) {
-
-		super(generalManager, commandManager, commandQueueSaxType);
-		
-	//	iAlStorageId = new ArrayList<Integer>();
+			CommandQueueSaxType commandQueueSaxType) 
+	{
+		super(generalManager, commandManager, commandQueueSaxType);		
 	}
 	
 	/**	
@@ -66,20 +54,30 @@ extends ACmdCreate_IdTargetLabelAttrDetail
 	 */
 	public void doCommand() throws CaleydoRuntimeException 
 	{
-		if(myStorage == null && mySet != null)
+		try
 		{
-			calculateMinMaxOnSet();
+			if(myStorage == null && mySet != null)
+			{
+				dMinValue = mySet.getMin();
+				dMaxValue = mySet.getMax();
+			}
+			else if(myStorage != null && mySet == null)
+			{
+				dMinValue = myStorage.getMin();
+				dMaxValue = myStorage.getMax();
+			}
+			else
+			{
+				throw new CaleydoRuntimeException("You have to initialize the filter before using it",
+						CaleydoRuntimeExceptionType.COMMAND);
+			}
+			
+			commandManager.runDoCommand(this);
 		}
-		else if(myStorage != null && mySet == null)
+		catch(OperationNotSupportedException e)
 		{
-			//calculateMinMaxOnStorage();
+			throw new CaleydoRuntimeException(e.getExplanation(), CaleydoRuntimeExceptionType.COMMAND);
 		}
-		else
-		{
-		//	throw CaleydoRuntimeException("You have to initialize the filter before using it");
-		}
-		
-		commandManager.runDoCommand(this);
 	}
 
 	/*
@@ -93,136 +91,33 @@ extends ACmdCreate_IdTargetLabelAttrDetail
 	
 	/**
 	 * You have to set the attributes of the command before executing doCommand()
-	 * This can be done with this method, if you want to calculate the min and max
-	 * of a storage (in contrast to a set). 
+	 * This is done here if you want to calculate the min and max on a storage
 	 * 
 	 * @param myStorage The storage 
-	 * @param myStorageType The type of the storage (int, float, or double is supported)
 	 */
-	public void setAttributes(INumericalStorage myStorage, final EStorageType myStorageType)
+	public void setAttributes(INumericalStorage myStorage)
 	{
 		this.myStorage = myStorage;
-		this.myStorageType = myStorageType;
 	}
 	
 	/**
 	 * You have to set the attributes of the command before executing doCommand()
-	 * This can be done with this method, if you want to calculate the min and max
-	 * of a set (in contrast to a storage). The calculated min and max are the 
-	 * absolute min and max of all contained storages. 
+	 * This is done here if you want to calculate the min and max on a storage
 	 * 
 	 * @param mySet The set
-	 * @param myStorageType The type of storage (int, float or double is supported)
-	 */
-	
-	public void setAttributes(ISet mySet, final EStorageType myStorageType)
+	 */	
+	public void setAttributes(ISet mySet)
 	{
 		this.mySet = mySet;
-		this.myStorageType = myStorageType;
 	}
 	
-//	private void calculateMinMaxOnStorage()
-//	{		
-//		
-//		//TODO: change to case if clear that a storage can be of only one type a
-//		// and throw an exception if other type is encountered
-//		if (myStorageType == StorageType.INT)
-//		{		
-//			for(int iCount = 0; iCount < myStorage.getArrayInt().length; iCount++)
-//			{
-//				int iCurrentValue = (myStorage.getArrayInt())[iCount];
-//				
-//				// TODO handle NaN values
-//				
-//				if(iCurrentValue < iMinValue)
-//					iMinValue = iCurrentValue;
-//				if(iCurrentValue > iMaxValue)
-//					iMaxValue = iCurrentValue;				
-//			}
-//		}
-//		
-//		if (myStorageType == StorageType.FLOAT)
-//		{
-//			for(int iCount = 0; iCount < myStorage.getArrayFloat().length; iCount++)
-//			{
-//				float fCurrentValue = (myStorage.getArrayFloat())[iCount];
-//
-//				if (Float.isNaN(fCurrentValue))
-//					continue;
-//				
-//				if(fCurrentValue < fMinValue)
-//				{
-//					fMinValue = fCurrentValue;
-//					continue;
-//				}
-//				if(fCurrentValue > fMaxValue)
-//					fMaxValue = fCurrentValue;				
-//			}			
-//		}
-//		
-//		if (myStorageType == StorageType.DOUBLE)
-//		{
-//			for(int iCount = 0; iCount < myStorage.getArrayDouble().length; iCount++)
-//			{
-//				double dCurrentValue = (myStorage.getArrayDouble())[iCount];
-//				if (iCount == 0)
-//				{
-//					dMinValue = dCurrentValue;
-//					dMaxValue = dCurrentValue;	
-//					continue;
-//				}
-//				if(dCurrentValue < dMinValue)
-//				{
-//					dMinValue = dCurrentValue;
-//					continue;
-//				}
-//				if(dCurrentValue > dMaxValue)
-//					dMaxValue = dCurrentValue;				
-//			}			
-//		}
-//	}
-//	
-	private void calculateMinMaxOnSet()
-	{
-		// TODO: Implement Sets here
-		
-		
-	}
-
-	// TODO Handle if they are not set!
-	
-	public int getIMinValue() {
-	
-		return iMinValue;
-	}
-
-	
-	public int getIMaxValue() {
-	
-		return iMaxValue;
-	}
-
-	
-	public float getFMinValue() {
-	
-		return fMinValue;
-	}
-
-	
-	public float getFMaxValue() {
-	
-		return fMaxValue;
-	}
-
-	
-	public double getDMinValue() {
-	
+	public double getMin() 
+	{	
 		return dMinValue;
 	}
-
 	
-	public double getDMaxValue() {
-	
+	public double getMax() 
+	{	
 		return dMaxValue;
 	}
 	

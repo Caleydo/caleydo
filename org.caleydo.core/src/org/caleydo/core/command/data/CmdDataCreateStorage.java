@@ -10,7 +10,7 @@ import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.IStorageManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
@@ -56,7 +56,7 @@ extends ACmdCreate_IdTargetLabel {
 			generalManager.getStorageManager();
 		
 		IStorage storage = (IStorage) storageManager.createStorage(
-				ManagerObjectType.STORAGE);
+				EManagerObjectType.STORAGE);
 		
 		storage.setId( iUniqueId );
 		storage.setLabel( sLabel );			

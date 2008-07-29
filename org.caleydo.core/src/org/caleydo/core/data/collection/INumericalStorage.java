@@ -27,8 +27,31 @@ extends IStorage
 	 */
 	public void normalizeWithExternalExtrema(double dMin, double dMax);
 	
+	/**
+	 * Get the maximum of the raw data 
+	 * @return
+	 */
 	public double getMin();
 	
+	/**
+	 * Get the maximum of the raw data
+	 * @return
+	 */
 	public double getMax();
+	
+	/**
+	 * Calculates the log10 of the raw data. Log data can be retrieved by using the get
+	 * methods with EDataKind.LOG10 
+	 * 
+	 * Call normalize after this operation if you want to display the result
+	 */
+	public void log10();
+	
+	/**
+	 * Remove log and normalized data. Useful when raw data is of interest again
+	 * 
+	 * Normalize has to be called again.
+	 */
+	public void reset();
 
 }

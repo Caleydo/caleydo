@@ -10,8 +10,8 @@ import org.caleydo.core.command.memento.IMemento;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IMementoManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.type.EManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
@@ -43,7 +43,7 @@ implements IMementoManager {
 		
 		super(generalManager,
 				IGeneralManager.iUniqueId_TypeOffset_Memento,
-				ManagerType.MEMENTO );
+				EManagerType.MEMENTO );
 		
 		vecMemento = new Vector<IMemento>(iInitSizeMementoVector);
 		hashMementoId2Index = new Hashtable<Integer,Integer>(iInitSizeMementoVector*2);
@@ -55,7 +55,7 @@ implements IMementoManager {
 	 * @see prometheus.command.memento.manager.MementoManager#setMemento(prometheus.command.memento.Memento)
 	 */
 	public final int pushMemento( final IMemento addMemento) {
-		final int iUniqueId = createId( ManagerObjectType.MEMENTO );
+		final int iUniqueId = createId( EManagerObjectType.MEMENTO );
 		
 		try {
 			vecMemento.add(addMemento);

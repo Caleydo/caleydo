@@ -46,7 +46,7 @@ import javax.media.opengl.glu.*;
 import gleem.linalg.*;
 
 /** Tests viewing manipulators in multiple winodws. */
-
+@SuppressWarnings("all")
 public class TestMultiWin {
   private static final int X_SIZE = 400;
   private static final int Y_SIZE = 400;

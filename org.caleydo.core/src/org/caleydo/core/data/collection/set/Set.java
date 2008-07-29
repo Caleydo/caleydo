@@ -1,8 +1,9 @@
 package org.caleydo.core.data.collection.set;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
+
+import javax.naming.OperationNotSupportedException;
 
 import org.caleydo.core.data.AUniqueManagedObject;
 import org.caleydo.core.data.collection.ESetType;
@@ -10,9 +11,8 @@ import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
@@ -32,6 +32,10 @@ implements ISet
 	private ArrayList<IStorage> alStorages;
 	
 	private String sLabel;
+	
+	private double dMin = Double.MAX_VALUE;
+	private double dMax = Double.MIN_VALUE;
+	
 	
 	/**
 	 * Constructor
@@ -67,9 +71,9 @@ implements ISet
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.IUniqueManagedObject#getBaseType()
 	 */
-	public ManagerObjectType getBaseType() 
+	public EManagerObjectType getBaseType() 
 	{
-		return ManagerObjectType.SET;
+		return EManagerObjectType.SET;
 	}
 	
 	/*
@@ -126,33 +130,30 @@ implements ISet
 	 * @see org.caleydo.core.data.collection.ISet#normalizeGlobally()
 	 */
 	public void normalizeGlobally()
-	{
-		double dMin = Double.MAX_VALUE;
-		double dMax = Double.MIN_VALUE;
-		double dTemp = 0.0;
-		if(alStorages.get(0) instanceof INumericalStorage)
+	{						
+		for(IStorage storage : alStorages)
 		{
-			for(IStorage storage : alStorages)
+			if(storage instanceof INumericalStorage)
 			{
 				INumericalStorage nStorage = (INumericalStorage)storage;
-				dTemp = nStorage.getMin();
-				if(dTemp < dMin)
-					dMin = dTemp;
-				dTemp = nStorage.getMax();
-				if(dTemp > dMax)
-					dMax = dTemp;
+				try
+				{
+					nStorage.normalizeWithExternalExtrema(getMin(), getMax());
+				}
+				catch(OperationNotSupportedException e)
+				{
+					throw new CaleydoRuntimeException("Tried to normalize globally on a set wich has" +
+							"different storage types",
+							CaleydoRuntimeExceptionType.DATAHANDLING);
+				}
 			}
-			
-			for(IStorage storage : alStorages)
+			else
 			{
-				INumericalStorage nStorage = (INumericalStorage)storage;
-				nStorage.normalizeWithExternalExtrema(dMin, dMax);
+				throw new CaleydoRuntimeException("Tried to normalize globally on a set wich has" +
+						"different storage types",
+						CaleydoRuntimeExceptionType.DATAHANDLING);
 			}
-		}
-		else if (alStorages.get(0) instanceof INominalStorage)
-		{
-			// TODO what makes sense here? probably OperationNotSupportedException?
-		}
+		}		
 	}
 	
 	public void setLabel(String sLabel)
@@ -173,4 +174,68 @@ implements ISet
 	{
 		return alStorages.iterator();
 	}
+	
+	public double getMin()
+		throws OperationNotSupportedException
+	{
+		if (dMin == Double.MAX_VALUE)
+			calculateGlobalExtrema();
+		return dMin;
+	}
+	
+	public double getMax()
+		throws OperationNotSupportedException
+	{
+		if (dMax == Double.MIN_VALUE)
+			calculateGlobalExtrema();
+		return dMax;
+	}
+	
+	private void calculateGlobalExtrema() 
+		throws OperationNotSupportedException
+	{	
+		double dTemp = 0.0;
+		if(alStorages.get(0) instanceof INumericalStorage)
+		{
+			for(IStorage storage : alStorages)
+			{
+				INumericalStorage nStorage = (INumericalStorage)storage;
+				dTemp = nStorage.getMin();
+				if(dTemp < dMin)
+					dMin = dTemp;
+				dTemp = nStorage.getMax();
+				if(dTemp > dMax)
+					dMax = dTemp;
+			}
+		}
+		else if (alStorages.get(0) instanceof INominalStorage)
+		{
+			throw new OperationNotSupportedException("No minimum or maximum can be calculated " +
+					"on nominal data");
+			
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.ISet#log10()
+	 */
+	public void log10()
+	{
+		for(IStorage storage : alStorages)
+		{
+			if(storage instanceof INumericalStorage)
+			{
+				INumericalStorage nStorage = (INumericalStorage)storage;				
+				nStorage.log10();				
+			}
+			else
+			{
+				throw new CaleydoRuntimeException("Tried to normalize globally on a set wich has" +
+						"different storage types",
+						CaleydoRuntimeExceptionType.DATAHANDLING);
+			}
+		}	
+	}
+	
 }

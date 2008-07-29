@@ -49,6 +49,7 @@ import javax.media.opengl.*;
     understand what to do when that ray cast actually made the
     manipulator active. */
 
+@SuppressWarnings("all")
 public abstract class Manip {
   private List motionListeners;
 

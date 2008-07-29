@@ -46,7 +46,7 @@ import javax.media.opengl.*;
 
 /** A ManipPart is a visible or invisible sub-part of a manipulator.
     ManipParts are organized into trees. */
-
+@SuppressWarnings("all")
 public abstract class ManipPart {
   private ManipPartGroup parent;
 

@@ -104,7 +104,7 @@ extends IUniqueObject
 	 * @param iIndex The index of the requested Element
 	 * @return The associated value
 	 */
-	public float getInt(EDataKind storageKind, int iIndex);
+	public int getInt(EDataKind storageKind, int iIndex);
 	
 	/**
 	 * Returns a iterator to the storage of which the kind has to be specified
@@ -118,7 +118,8 @@ extends IUniqueObject
 	
 	/**
 	 * Brings any dataset into a format between 0 and 1. This is used for drawing. Works for nominal
-	 * and numerical data.
+	 * and numerical data. Operates with the raw data as basis by default, however when a logarithmized
+	 * representation is in the storage this is used.
 	 * 
 	 * For nominal data the first value is 0, the last value is 1
 	 */

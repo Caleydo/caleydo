@@ -5,7 +5,7 @@ import java.util.logging.Level;
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.data.CmdDataCreateSelection;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
@@ -61,7 +61,7 @@ implements IView {
 		this.browserType = EBrowserType.GENERAL;
 		
 		iSelectionSetId = generalManager.getSetManager()
-			.createId(ManagerObjectType.SET);
+			.createId(EManagerObjectType.SET);
 		
 		CmdDataCreateSelection selectedSetCmd = (CmdDataCreateSelection) generalManager.getCommandManager()
 			.createCommandByType(CommandQueueSaxType.CREATE_SELECTION);

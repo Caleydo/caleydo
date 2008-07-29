@@ -9,7 +9,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
-import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.EManagerObjectType;
 
 /**
  * Selection SET that gives access to
@@ -330,7 +330,7 @@ implements ISelection
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.IUniqueManagedObject#getBaseType()
 	 */
-	public ManagerObjectType getBaseType() {
+	public EManagerObjectType getBaseType() {
 
 		// TODO Auto-generated method stub
 		return null;

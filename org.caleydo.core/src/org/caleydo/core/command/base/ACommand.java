@@ -7,7 +7,7 @@ import org.caleydo.core.command.ICommand;
 import org.caleydo.core.data.AUniqueManagedObject;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
@@ -55,8 +55,8 @@ implements ICommand, Serializable {
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.IUniqueManagedObject#getBaseType()
 	 */
-	public final ManagerObjectType getBaseType() {
-		return ManagerObjectType.COMMAND;
+	public final EManagerObjectType getBaseType() {
+		return EManagerObjectType.COMMAND;
 	}
 	
 	/*

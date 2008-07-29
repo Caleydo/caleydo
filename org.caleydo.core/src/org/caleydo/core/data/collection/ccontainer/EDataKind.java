@@ -15,5 +15,6 @@ package org.caleydo.core.data.collection.ccontainer;
 public enum EDataKind
 {
 	RAW,
-	NORMALIZED;
+	NORMALIZED,
+	LOG10;
 }

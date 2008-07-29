@@ -152,4 +152,19 @@ public class PrimitiveIntCContainer implements INumericalCContainer
 				iMax = iCurrentValue;				
 		}
 	}
+	
+	public PrimitiveFloatCContainer log10()
+	{
+		float[] fArTarget = new float[iArContainer.length];			
+
+		float fTmp;
+		for(int index = 0; index < iArContainer.length; index++)
+		{
+			fTmp = iArContainer[index];
+			fArTarget[index] = (float) Math.log10(fTmp);					
+		}	
+
+		return new PrimitiveFloatCContainer(fArTarget);
+	}
+	
 }

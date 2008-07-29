@@ -5,10 +5,12 @@ import java.util.StringTokenizer;
 
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.EStorageType;
+import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
@@ -28,26 +30,19 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 
 	public enum EDataFilterMathType {
 		LIN_2_LOG,
-		LOG_2_LIN,
 		NORMALIZE
 	}
 	
-//	public enum EStorageHandlingType 
-//	{
-//		OVERWRITE,
-//		COPY
-//	}
-//		
-	private ArrayList<Integer> iAlSrcStorageId;
+	private ArrayList<Integer> iAlIDs;
 	
 	private EDataFilterMathType dataFilterMathType;
+	
+	private EManagerObjectType objectType;
 	
 	
 	/**
 	 * Constructor.
-	 * 
-	 * TODO: implemented only for float
-	 * 
+	 *  
 	 * @param generalManager
 	 * @param commandManager
 	 * @param commandQueueSaxType
@@ -58,7 +53,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 
 		super(generalManager, commandManager, commandQueueSaxType);
 		
-		iAlSrcStorageId = new ArrayList<Integer>();
+		iAlIDs = new ArrayList<Integer>();
 	}
 
 	public void setParameterHandler( final IParameterHandler parameterHandler ) {
@@ -77,8 +72,15 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 					IGeneralManager.sDelimiter_Parser_DataItems); 
 
 		while ( strToken_DataTypes.hasMoreTokens() ) {
-			iAlSrcStorageId.add(new Integer(strToken_DataTypes.nextToken()));
+			iAlIDs.add(new Integer(strToken_DataTypes.nextToken()));
 		}
+		
+		if(sAttribute3.isEmpty())
+			objectType = EManagerObjectType.STORAGE;
+		else		
+			objectType = EManagerObjectType.valueOf(sAttribute3);
+		
+		
 	}
 	
 	
@@ -87,47 +89,64 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	 * Overwrites the specified storage with the results of the operation 
 	 * 
 	 * @param dataFilterMathType The type of operation
-	 * @param iAlSrcStorageID The source storage ids. This storage is overwritten with the result.
+	 * @param iAlStorageID The source storage ids. This storage is overwritten with the result.
 	 */
-	public void setAttributes(EDataFilterMathType dataFilterMathType, ArrayList<Integer> iAlSrcStorageID)
+	public void setAttributes(EDataFilterMathType dataFilterMathType, 
+			ArrayList<Integer> iAlStorageID, 
+			EManagerObjectType objectType)
 	{
 		this.dataFilterMathType = dataFilterMathType;
-		this.iAlSrcStorageId = iAlSrcStorageID;
+		this.iAlIDs = iAlStorageID;
+		if(objectType != EManagerObjectType.STORAGE || objectType != EManagerObjectType.SET)
+			throw new CaleydoRuntimeException("Math operations are not supportet on this type of object", 
+					CaleydoRuntimeExceptionType.COMMAND);
+		
+		this.objectType = objectType;
 	}
 	
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws CaleydoRuntimeException {
-
-		//Iterator<Integer> iterStorageId = iAlSrcStorageId.iterator();
-		IStorage tmpStorage = null;
+	public void doCommand()
+	{	
 		
-		
-		for(int iCount = 0; iCount < iAlSrcStorageId.size(); iCount++)
-		//while (iterStorageId.hasNext())
+		if(objectType == EManagerObjectType.STORAGE)
 		{
-			tmpStorage = generalManager.getStorageManager()
-					.getStorage(iAlSrcStorageId.get(iCount));
-		
-			if (tmpStorage == null)
-				continue;	
-			
-			if (dataFilterMathType.equals(EDataFilterMathType.LIN_2_LOG))
-			{		
-				calculateLinToLog(tmpStorage);			
-			}
-			else if (dataFilterMathType.equals(EDataFilterMathType.LOG_2_LIN))
+			IStorage tmpStorage = null;
+			for(int currentID : iAlIDs)
 			{
-				calculateLogToLin(tmpStorage);			
-			}
-			else if (dataFilterMathType.equals(EDataFilterMathType.NORMALIZE))
-			{
-				normalize(tmpStorage);
+				tmpStorage = generalManager.getStorageManager()
+				.getStorage(currentID);	
+				
+				if (dataFilterMathType.equals(EDataFilterMathType.LIN_2_LOG))
+				{		
+					((NumericalStorage)tmpStorage).log10();			
+				}
+				else if (dataFilterMathType.equals(EDataFilterMathType.NORMALIZE))
+				{
+					tmpStorage.normalize();
+				}
 			}
 		}
-		
+		else
+		{
+			ISet tmpSet = null;
+			for(int currentID : iAlIDs)
+			{
+				tmpSet = generalManager.getSetManager()
+				.getSet(currentID);	
+				
+				if (dataFilterMathType.equals(EDataFilterMathType.LIN_2_LOG))
+				{		
+					tmpSet.log10();			
+				}
+				else if (dataFilterMathType.equals(EDataFilterMathType.NORMALIZE))
+				{
+					tmpSet.normalize();
+				}
+			}
+		}		
 		commandManager.runDoCommand(this);
 	}
 
@@ -141,115 +160,6 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 		// TODO Auto-generated method stub
 		
 	}
-	/**
-	 * TODO: Different data types need to be implemented. Clear way of handling the stuff is neccesary
-	 * 
-	 * @param tmpStorage
-	 * @return
-	 */
-	private void calculateLinToLog(IStorage tmpStorage)
-	{
-		
-		// TODO: implement this in the storage
-		// tmpStorage.calculateLinToLog();
-		
-//		float[] fArTmpTarget = new float[tmpStorage.getSize(StorageType.FLOAT)];
-//
-//		//float[] test = tmpStorage.getArrayInt().toArray(new float[]);
-//		
-//		if (tmpStorage.getSize(StorageType.FLOAT) > 1)
-//		{
-//			float[] fArTmpSrc = tmpStorage.getArrayFloat();
-//			
-//				
-//			float fTmp;
-//			for(int index = 0; index < fArTmpSrc.length; index++)
-//			{
-//				fTmp = fArTmpSrc[index];
-//				
-//				//TODO: what about negative values
-//				//TODO: what about values between 0 and 1
-//				// Shifting space so that all values are >= 1
-//				fTmp += 1;
-//				
-//				// Clip data
-//				if (fTmp <= 1)
-//				{
-//					fTmp = 1f;
-//				}
-//				else if(fTmp >= 1000)
-//				{
-//					fTmp = 1000f;
-//				}
-//				
-//				fArTmpTarget[index] = (float) Math.log10(fTmp);					
-//			}			
-//		}
-//		return fArTmpTarget;
-	}
-	
-	private void calculateLogToLin(IStorage tmpStorage)
-	{
-		// TODO: implement this in the storage
-		// tmpStorage.calculateLogToLIn();
-		
-		
-		
-//		float[] fArTmpTarget = new float[tmpStorage.getSize(StorageType.FLOAT)];
-//		
-//		if (tmpStorage.getSize(StorageType.FLOAT) > 1)
-//		{
-//			float[] fArTmpSrc = tmpStorage.getArrayFloat();
-//
-//		
-//			for(int iCount = 0; iCount < fArTmpSrc.length; iCount++)
-//			{	
-//				fArTmpTarget[iCount] = (float) Math.pow(10, fArTmpSrc[iCount]);
-//			}	
-//		
-//		}
-//		
-//		return fArTmpTarget;
-	}
-	
-	//TODO: Normalize to values other than 0-1
-	private void normalize(IStorage tmpStorage)
-	{
-		tmpStorage.normalize();
-//		float[] fArTmpTarget = new float[0];
-//		
-//		if (tmpStorage.getSize(StorageType.FLOAT) > 1)
-//		{
-//			fArTmpTarget = new float[tmpStorage.getSize(StorageType.FLOAT)];
-//			
-//			float[] fArTmpSrc = tmpStorage.getArrayFloat();
-//			
-//			for (int iCount = 0; iCount < fArTmpSrc.length; iCount++)
-//			{	
-//				// MARC: Just for testing
-//				// TODO: find clean solution
-//				if (Float.isNaN(fArTmpSrc[iCount]))
-//					fArTmpTarget[iCount] = Float.NaN;
-//				else
-//				{		
-//					fArTmpTarget[iCount] = (fArTmpSrc[iCount] - tmpStorage.getMinFloat()) / 
-//										(tmpStorage.getMaxFloat() - tmpStorage.getMinFloat());
-//				}
-//			}			
-//		}	
-//		else if (tmpStorage.getSize(StorageType.INT) > 1)
-//		{
-//			fArTmpTarget = new float[tmpStorage.getSize(StorageType.INT)];
-//			
-//			int[] iArTmpSrc = tmpStorage.getArrayInt();
-//			
-//			for (int iCount = 0; iCount < iArTmpSrc.length; iCount++)
-//			{
-//				fArTmpTarget[iCount] = ((float)iArTmpSrc[iCount] - tmpStorage.getMinInt()) / 
-//									(tmpStorage.getMaxInt() - tmpStorage.getMinInt());
-//			}			
-//		}	
-		//return fArTmpTarget;		
-	}
+
 
 }

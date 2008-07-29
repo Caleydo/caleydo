@@ -45,7 +45,7 @@ import gleem.linalg.*;
 import javax.media.opengl.*;
 
 /** A line segment from (-1, 0, 0) to (1, 0, 0). */
-
+@SuppressWarnings("all")
 public class ManipPartLineSeg extends ManipPart {
   private Vec3f color;
   private Vec3f highlightColor;

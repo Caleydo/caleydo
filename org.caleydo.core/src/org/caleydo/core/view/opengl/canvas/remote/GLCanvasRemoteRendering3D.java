@@ -36,7 +36,7 @@ import org.caleydo.core.manager.IEventPublisher.MediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
-import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.manager.view.EPickingMode;
 import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.Pick;
@@ -492,7 +492,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 
 				// Create new selection set
 				int iSelectionSetID = generalManager
-						.getSetManager().createId(ManagerObjectType.SET);
+						.getSetManager().createId(EManagerObjectType.SET);
 				CmdDataCreateSelection selectedSetCmd = (CmdDataCreateSelection) generalManager
 						.getCommandManager().createCommandByType(
 								CommandQueueSaxType.CREATE_SELECTION);
@@ -503,7 +503,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 
 				int iGeneratedViewID = generalManager
 						.getViewGLCanvasManager().createId(
-								ManagerObjectType.VIEW);
+								EManagerObjectType.VIEW);
 
 				// Create Pathway3D view
 				CmdGlObjectPathway3D cmdPathway = (CmdGlObjectPathway3D) generalManager
@@ -1639,7 +1639,7 @@ implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 
 		// Create event mediator that connects all views in the bucket
 		iBucketEventMediatorID = generalManager.getEventPublisher()
-				.createId(ManagerObjectType.EVENT_MEDIATOR_CREATE);
+				.createId(EManagerObjectType.EVENT_MEDIATOR_CREATE);
 
 		CmdEventCreateMediator tmpMediatorCmd = (CmdEventCreateMediator) generalManager
 				.getCommandManager().createCommandByType(

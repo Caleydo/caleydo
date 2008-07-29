@@ -3,34 +3,34 @@ package org.caleydo.core.manager.type;
 /**
  * Group of Managers.
  * 
- * @see org.caleydo.core.manager.type.ManagerObjectType
+ * @see org.caleydo.core.manager.type.EManagerObjectType
  * 
  * @author Michael Kalkusch
  *
  */
-public enum ManagerType {
+public enum EManagerType {
 		
 		COMMAND("command manager", 99),
 		
-		DATA("abstract data manager", ManagerType.DATA, 50),
+		DATA("abstract data manager", EManagerType.DATA, 50),
 		
-		DATA_GENOME_ID("genome id manager", ManagerType.DATA, 70 ),
+		DATA_GENOME_ID("genome id manager", EManagerType.DATA, 70 ),
 				
-		DATA_PATHWAY("pathway manager", ManagerType.DATA, 60),
+		DATA_PATHWAY("pathway manager", EManagerType.DATA, 60),
 		
-		DATA_PATHWAY_ELEMENT("pathway element manager", ManagerType.DATA_PATHWAY, 61),
+		DATA_PATHWAY_ELEMENT("pathway element manager", EManagerType.DATA_PATHWAY, 61),
 		
-		DATA_GLYPH("glyph data manager", ManagerType.DATA, 40 ),
+		DATA_GLYPH("glyph data manager", EManagerType.DATA, 40 ),
 		
-		DATA_SET("set manager", ManagerType.DATA, 51 ),		
+		DATA_SET("set manager", EManagerType.DATA, 51 ),		
 		
-		DATA_STORAGE("storage manager", ManagerType.DATA, 53 ),
+		DATA_STORAGE("storage manager", EManagerType.DATA, 53 ),
 		
-		DATA_VIEWDATA("viewdata manager", ManagerType.DATA, 54 ),		
+		DATA_VIEWDATA("viewdata manager", EManagerType.DATA, 54 ),		
 		
-		DATA_VIRTUAL_ARRAY("virtual array manager", ManagerType.DATA, 55 ),
+		DATA_VIRTUAL_ARRAY("virtual array manager", EManagerType.DATA, 55 ),
 		
-		DATA_SELECTION("selection manager", ManagerType.DATA, 56 ),		
+		DATA_SELECTION("selection manager", EManagerType.DATA, 56 ),		
 		
 		EVENT_PUBLISHER("event publisher", 80 ),
 		
@@ -45,14 +45,14 @@ public enum ManagerType {
 		VIEW("view manager", 30),
 		
 		// @deprecated
-		VIEW_GUI_AWT("Sing GUI manager",ManagerType.VIEW, 31),
+		VIEW_GUI_AWT("Sing GUI manager",EManagerType.VIEW, 31),
 		
 		// @deprecated
-		VIEW_GUI_SWT("SWT GUI manager",ManagerType.VIEW, 32 ),	
+		VIEW_GUI_SWT("SWT GUI manager",EManagerType.VIEW, 32 ),	
 		
-		PICKING_MANAGER("Manage Picking for all Views", ManagerType.VIEW, 43),
+		PICKING_MANAGER("Manage Picking for all Views", EManagerType.VIEW, 43),
 		
-		SELECTION_MANAGER("Manage selections for all views", ManagerType.VIEW, 44),
+		SELECTION_MANAGER("Manage selections for all views", EManagerType.VIEW, 44),
 		
 		VIEW_DISTRIBUTE_GUI("distributed GUI", 29);
 
@@ -72,7 +72,7 @@ public enum ManagerType {
 		 * 
 		 * @param setRemark details on toolkit and version of toolkit.
 		 */
-		private ManagerType(String setRemark,
+		private EManagerType(String setRemark,
 				final int iSetIdOffsetType) {
 			this.sRemark = setRemark;
 //			this.parentType = ManagerType.NONE;
@@ -84,8 +84,8 @@ public enum ManagerType {
 		 * 
 		 * @param setRemark details on toolkit and version of toolkit.
 		 */
-		private ManagerType(String setRemark, 
-				ManagerType parentType,
+		private EManagerType(String setRemark, 
+				EManagerType parentType,
 				final int iSetIdOffsetType) {
 			this.sRemark = setRemark;
 //			this.parentType = parentType;

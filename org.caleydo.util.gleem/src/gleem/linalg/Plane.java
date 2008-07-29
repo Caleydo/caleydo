@@ -40,7 +40,7 @@
 package gleem.linalg;
 
 /** Represents a plane in 3D space. */
-
+@SuppressWarnings("all")
 public class Plane {
   /** Normalized */
   private Vec3f normal;

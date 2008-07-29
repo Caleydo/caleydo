@@ -13,7 +13,7 @@ import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IEventPublisher.MediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
-import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.ViewType;
@@ -59,7 +59,7 @@ implements IMediatorSender{;
 	public void setAttributes(final ArrayList<Integer> iAlViewReceiverIDs) {
 
 		iSearchSelectionSetId = generalManager.getSetManager()
-			.createId(ManagerObjectType.SET);
+			.createId(EManagerObjectType.SET);
 
 		CmdDataCreateSelection selectedSetCmd = (CmdDataCreateSelection) generalManager.getCommandManager()
 			.createCommandByType(CommandQueueSaxType.CREATE_SELECTION);
@@ -72,7 +72,7 @@ implements IMediatorSender{;
 		
 		ArrayList<Integer> iAlSenderIDs = new ArrayList<Integer>();
 		iAlSenderIDs.add(iUniqueId);
-		tmpMediatorCmd.setAttributes(generalManager.getEventPublisher().createId(ManagerObjectType.EVENT_MEDIATOR_CREATE), 
+		tmpMediatorCmd.setAttributes(generalManager.getEventPublisher().createId(EManagerObjectType.EVENT_MEDIATOR_CREATE), 
 				iAlSenderIDs, iAlViewReceiverIDs, MediatorType.SELECTION_MEDIATOR);
 		tmpMediatorCmd.doCommand();
 	}

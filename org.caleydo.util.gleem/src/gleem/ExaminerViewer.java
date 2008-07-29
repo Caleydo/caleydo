@@ -75,6 +75,7 @@ import javax.media.opengl.GLEventListener;
     adjusted to use e.g., the Control key as the "right" mouse
     button. </P> */
 
+@SuppressWarnings("all")
 public class ExaminerViewer {
   private GLAutoDrawable window;
   /** Simple state machine for figuring out whether we are grabbing

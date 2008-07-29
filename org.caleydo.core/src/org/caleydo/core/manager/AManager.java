@@ -2,8 +2,8 @@ package org.caleydo.core.manager;
 
 import java.io.Serializable;
 
-import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.manager.type.ManagerType;
+import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.type.EManagerType;
 
 /**
  * Base class for manager classes, that connect to the IGeneralManager.
@@ -19,7 +19,7 @@ implements IManager, Serializable
 
 	protected final transient IGeneralManager generalManager;
 	
-	protected final ManagerType managerType;
+	protected final EManagerType managerType;
 	
 	protected int iUniqueId_current;
 	
@@ -28,7 +28,7 @@ implements IManager, Serializable
 	 */
 	protected AManager(final IGeneralManager generalManager,
 			final int iUniqueId_type_offset,
-			final ManagerType managerType ) {
+			final EManagerType managerType ) {
 		
 		assert generalManager != null : "Can not handle null refernence to IGeneralManager!";
 
@@ -47,7 +47,7 @@ implements IManager, Serializable
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.data.manager.GeneralManager#createNewId(org.caleydo.core.data.manager.BaseManagerType)
 	 */
-	public int createId(ManagerObjectType setNewBaseType) {
+	public int createId(EManagerObjectType setNewBaseType) {
 		
 		iUniqueId_current += IGeneralManager.iUniqueId_Increment;
 		
@@ -60,7 +60,7 @@ implements IManager, Serializable
 	 * @param iCurrentId
 	 * @return
 	 */
-	public boolean setCreateNewId(ManagerType setNewBaseType, final int iCurrentId ) {
+	public boolean setCreateNewId(EManagerType setNewBaseType, final int iCurrentId ) {
 
 		if ( iCurrentId < iUniqueId_current )
 		{

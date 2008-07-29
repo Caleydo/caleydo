@@ -45,7 +45,7 @@ import gleem.linalg.*;
 
 /** A 2x2 square in the X-Y plane, centered about the origin, with the
     normal pointing in the +Z direction. */
-
+@SuppressWarnings("all")
 public class ManipPartSquare extends ManipPartTriBased {
   private static final Vec3f[] vertices = {
     // Counter-clockwise, starting from upper left

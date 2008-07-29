@@ -44,7 +44,7 @@ import java.security.*;
 /** Helper class for figuring out how many mouse buttons are
     available. (Does not seem to be a way of figuring this out with
     the AWT.) */
-
+@SuppressWarnings("all")
 public class MouseButtonHelper {
   /** Returns the number of buttons on the mouse device. This is only
       a guess and the implementation may need to be extended to

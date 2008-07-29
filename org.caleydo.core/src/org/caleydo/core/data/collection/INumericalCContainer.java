@@ -26,6 +26,6 @@ extends ICContainer
 	
 	public double getMax();
 	
-	
+	public ICContainer log10();
 
 }
