@@ -20,6 +20,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
+import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 import org.caleydo.core.manager.view.EPickingMode;
 import org.caleydo.core.manager.view.EPickingType;
@@ -40,6 +41,10 @@ extends AGLCanvasUser
 implements IMediatorSender, IMediatorReceiver
 {	
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -7899479912218913482L;
 	GLCanvasGlyphGrid grid_;
 	int displayList_ = -1;
 	int displayListButtons_ = -1;
@@ -51,6 +56,8 @@ implements IMediatorSender, IMediatorReceiver
 	private GlyphMouseListener mouseListener_ = null;
 	private GlyphKeyListener keyListener_ = null;
 	private GlyphRenderStyle renderStyle = null;
+	
+	private GlyphManager gman = null;
 	
 	/**
 	 * 
@@ -74,6 +81,8 @@ implements IMediatorSender, IMediatorReceiver
 		keyListener_ = new GlyphKeyListener();
 		renderStyle = new GlyphRenderStyle(viewFrustum);
 		
+		gman = (GlyphManager)generalManager.getGlyphManager();
+		gman.registerGlyphView(this);
 	}
 	
 	/*
@@ -89,8 +98,11 @@ implements IMediatorSender, IMediatorReceiver
 		
 		for (ISet tmpSet : alSetData)
 		{
-			if(tmpSet.getLabel().equals("Set for clinical data"))
-				glyphData = tmpSet;
+			if(tmpSet != null)
+			{
+				if(tmpSet.getLabel().equals("Set for clinical data"))
+					glyphData = tmpSet;
+			}
 		}
 		
 		if(glyphData == null)
@@ -99,24 +111,22 @@ implements IMediatorSender, IMediatorReceiver
 			return;
 		}
 
-		grid_ = new GLCanvasGlyphGrid(generalManager);
+		grid_ = new GLCanvasGlyphGrid(generalManager, renderStyle);
 		grid_.loadData(glyphData);
 		
 		grid_.buildGrid(gl);
 		
 		grid_.buildScatterplotGrid(gl);
 		
+		ArrayList<String> temp = new ArrayList<String>(10);
+		temp.set(5, "dafs");
+		
 		
 		//grid_.setGridSize(30, 60);
 		//grid_.setGlyphPositions(EIconIDs.DISPLAY_SCATTERPLOT.ordinal());
 
-		//init glyph gl lists
-		Iterator<GlyphEntry> git = grid_.getGlyphList().values().iterator();
-		
-		while(git.hasNext()) {
-			GlyphEntry e = git.next();
-			e.generateGLLists(gl);
-		}
+		//init glyph gl
+		bRedrawDisplayList_ = true;
 	}
 
 	/*
@@ -183,7 +193,7 @@ implements IMediatorSender, IMediatorReceiver
 		gl.glTranslatef(0f, 0f, -10f);
 		gl.glRotatef( 45f, 1,0,0 );
 		//gl.glRotatef( 45f, -1,0,0 ); 
-		gl.glRotatef( 80f, -1,0,0 ); //35�
+		gl.glRotatef( 80f, -1,0,0 ); //35
 		
 		pickingManager.handlePicking(iUniqueId, gl, true);
 
@@ -216,7 +226,8 @@ implements IMediatorSender, IMediatorReceiver
 		if(grid_ == null)
 			return;
 
-		if(bRedrawDisplayList_) { //redraw glyphs
+		
+		if(bRedrawDisplayList_ ) { //redraw glyphs
 			gl.glPushMatrix();
 			Iterator<GlyphEntry> git = grid_.getGlyphList().values().iterator();
 		
@@ -224,6 +235,11 @@ implements IMediatorSender, IMediatorReceiver
 				GlyphEntry e = git.next();
 				e.generateGLLists(gl);
 			}
+			gl.glPopMatrix();
+			
+			gl.glPushMatrix();
+			grid_.buildScatterplotGrid(gl);
+			grid_.setGlyphPositions();
 			gl.glPopMatrix();
 		}
 		
@@ -460,4 +476,10 @@ implements IMediatorSender, IMediatorReceiver
 
 		
 	}
+	
+	public void forceRebuild() {
+		bRedrawDisplayList_ = true;
+	}
+	
+	
 }

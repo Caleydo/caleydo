@@ -4,7 +4,6 @@ package org.caleydo.core.view.opengl.canvas.glyph;
 import gleem.linalg.Vec4f;
 import gleem.linalg.open.Vec2i;
 
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -16,6 +15,7 @@ import java.util.logging.Level;
 import javax.media.opengl.GL;
 
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.view.rep.renderstyle.GlyphRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
 import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
@@ -32,7 +32,8 @@ import com.sun.opengl.util.j2d.TextRenderer;
  *
  */
 public class GLCanvasGlyphGrid {
-	private IGeneralManager generalManager;
+	private IGeneralManager generalManager = null;
+	private IGlyphManager gman = null; 
 
 	private Vector<Vector<GlyphGridPosition>> glyphMap_;
 	private HashMap<Integer, HashMap<Integer, Vec2i>> scatterpointmap;
@@ -46,12 +47,13 @@ public class GLCanvasGlyphGrid {
 	private Vec4f gridColor_ = new Vec4f( 0.2f, 0.2f, 0.2f, 1f );
 	private Vec2i worldLimit_ = new Vec2i(); 
 	
-	protected TextRenderer textRenderer;
+	private GlyphRenderStyle renderStyle = null;
 
 	
-	public GLCanvasGlyphGrid(final IGeneralManager generalManager) {
+	public GLCanvasGlyphGrid(final IGeneralManager generalManager, GlyphRenderStyle renderStyle) {
 		this.generalManager = generalManager;
-		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 16), false);
+		this.renderStyle = renderStyle;
+		gman = generalManager.getGlyphManager();
 
 		glyphMap_ = new Vector<Vector<GlyphGridPosition>>();
 		
@@ -248,46 +250,42 @@ public class GLCanvasGlyphGrid {
 	
 	
 	public void buildScatterplotGrid(GL gl) {
-		textRenderer.setColor(0, 0, 0, 1);
-		
-		IGlyphManager gm = generalManager.getGlyphManager();
+		TextRenderer textRenderer = renderStyle.getScatterplotTextRenderer();
 		
 		//int maxx = 40;
 		//int maxy = 40;
 		int maxx = this.worldLimit_.x() - (this.worldLimit_.x()/5);
 		int maxy = maxx;
-		//get axix information
-		//int scatterParamX = this.glyphDataLoader.getScatterPlotAxis().x();
-		//int scatterParamY = this.glyphDataLoader.getScatterPlotAxis().y();
-		//GlyphAttributeType xdata = this.glyphDataLoader.getGlphAttributeType(scatterParamX);
-		//GlyphAttributeType ydata = this.glyphDataLoader.getGlphAttributeType(scatterParamY);
-
 		
-		int scatterParamX = Integer.parseInt( gm.getSetting(EGlyphSettingIDs.SCATTERPLOTX) );
-		int scatterParamY = Integer.parseInt( gm.getSetting(EGlyphSettingIDs.SCATTERPLOTY) );
-		GlyphAttributeType xdata = generalManager.getGlyphManager().getGlyphAttributeTypeWithExternalColumnNumber(scatterParamX);
-		GlyphAttributeType ydata = generalManager.getGlyphManager().getGlyphAttributeTypeWithExternalColumnNumber(scatterParamY);
+		int scatterParamX = Integer.parseInt( gman.getSetting(EGlyphSettingIDs.SCATTERPLOTX) );
+		int scatterParamY = Integer.parseInt( gman.getSetting(EGlyphSettingIDs.SCATTERPLOTY) );
+		GlyphAttributeType xdata = gman.getGlyphAttributeTypeWithExternalColumnNumber(scatterParamX);
+		GlyphAttributeType ydata = gman.getGlyphAttributeTypeWithExternalColumnNumber(scatterParamY);
 		
 		
 		if(xdata == null || ydata == null)
 		{
-			generalManager.getLogger().log(Level.WARNING, "Scatterplot axix definition corrupt!");
+			generalManager.getLogger().log(Level.WARNING, "Scatterplot axix definition corrupt! (" + scatterParamX + ", " + scatterParamY + ")");
 			return;
 		}
 		
 		String[] xaxisdescription = xdata.getAttributeNames();
 		String[] yaxisdescription = ydata.getAttributeNames();
 		
-		float incx = maxx / xaxisdescription.length;
-		float incy = maxy / yaxisdescription.length;
+		float incx = (float)maxx / (float)(xaxisdescription.length);
+		float incy = (float)maxy / (float)(yaxisdescription.length);
 		float linex = yaxisdescription.length * incy;
 		float liney = xaxisdescription.length * incx;
 		
+		//if(incx<1.0f) incx = 1.0f;
+		//if(incy<1.0f) incy = 1.0f;
 		
 		int drawLabelEveryLineX = 1;
 		int drawLabelEveryLineY = 1;
 		
 		if(incy<2) drawLabelEveryLineY = 3;
+		if(incy<1) drawLabelEveryLineY = 5;
+		if(incy<0.1f) drawLabelEveryLineY = 50;
 		
 		
 		ArrayList<Float> pointsX = new ArrayList<Float>();
@@ -462,10 +460,13 @@ public class GLCanvasGlyphGrid {
 		}*/
 		
 		gl.glEndList();
-		//iScatterPlotGrid = -1;
+
 	}
 	
 	
+	public void setGlyphPositions() {
+		setGlyphPositions(iPositionType);
+	}
 	
 	
 	public void setGlyphPositions(int iTyp) {
@@ -610,17 +611,10 @@ public class GLCanvasGlyphGrid {
 		clearGlyphMap();
 		ArrayList<GlyphEntry> gg = sortGlyphs(glyphs_.values());
 		
-		IGlyphManager gm = generalManager.getGlyphManager();
-
-		//int scatterParamX = this.glyphDataLoader.getScatterPlotAxis().x();
-		//int scatterParamY = this.glyphDataLoader.getScatterPlotAxis().y();
-		//GlyphAttributeType tx = this.glyphDataLoader.getGlphAttributeType(scatterParamX);
-		//GlyphAttributeType ty = this.glyphDataLoader.getGlphAttributeType(scatterParamY);
-		
-		int scatterParamXe = Integer.parseInt( gm.getSetting(EGlyphSettingIDs.SCATTERPLOTX) );
-		int scatterParamYe = Integer.parseInt( gm.getSetting(EGlyphSettingIDs.SCATTERPLOTY) );
-		GlyphAttributeType tx = generalManager.getGlyphManager().getGlyphAttributeTypeWithExternalColumnNumber(scatterParamXe);
-		GlyphAttributeType ty = generalManager.getGlyphManager().getGlyphAttributeTypeWithExternalColumnNumber(scatterParamYe);
+		int scatterParamXe = Integer.parseInt( gman.getSetting(EGlyphSettingIDs.SCATTERPLOTX) );
+		int scatterParamYe = Integer.parseInt( gman.getSetting(EGlyphSettingIDs.SCATTERPLOTY) );
+		GlyphAttributeType tx = gman.getGlyphAttributeTypeWithExternalColumnNumber(scatterParamXe);
+		GlyphAttributeType ty = gman.getGlyphAttributeTypeWithExternalColumnNumber(scatterParamYe);
 		int scatterParamX = tx.getInternalColumnNumber();
 		int scatterParamY = ty.getInternalColumnNumber();
 		
@@ -667,7 +661,7 @@ public class GLCanvasGlyphGrid {
 		HashMap<Integer, ArrayList<GlyphEntry>> temp = new HashMap<Integer, ArrayList<GlyphEntry>>(); 
 		int maxp = 0;
 		
-		int sortIndex = generalManager.getGlyphManager().getSortOrder(depth);
+		int sortIndex = gman.getSortOrder(depth);
 		
 		if(sortIndex < 0) { // max of sort depth reached
 			ArrayList<GlyphEntry> t = new ArrayList<GlyphEntry>();

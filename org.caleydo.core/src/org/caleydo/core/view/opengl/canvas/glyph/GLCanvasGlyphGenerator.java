@@ -1,5 +1,9 @@
 package org.caleydo.core.view.opengl.canvas.glyph;
 
+import gleem.linalg.Vec4f;
+
+import java.util.Vector;
+
 import javax.media.opengl.GL;
 
 public class GLCanvasGlyphGenerator {
@@ -9,15 +13,21 @@ public class GLCanvasGlyphGenerator {
 	int iMaxHeight = 1;
 	
 	int iTowerBox = -1;
-	int iTowerBoxBlackTop = -1;
+	int iTowerTop = -1;
 	int iBaseBox = -1;
 	int iBaseBoxSelected = -1;
 	
 	float sockel_h = 0.15f;
 	
+	Vector<Vec4f> colorBox;
+	Vector<Vec4f> colorTop;
+	
+	
+	
 	
 	public GLCanvasGlyphGenerator() {
-		
+		colorBox = new Vector<Vec4f>();
+		colorTop = new Vector<Vec4f>();
 	}
 	
 	public void setIndexTopColor(int index) {
@@ -39,13 +49,21 @@ public class GLCanvasGlyphGenerator {
 		iMaxHeight = height;
 	}
 	
+	public void setColorsTop(Vector<Vec4f> colors) {
+		colorTop = colors;
+	}
+	
+	public void setColorsBox(Vector<Vec4f> colors) {
+		colorBox = colors;
+	}
+	
 	
 	public int generateGlyph(GL gl, GlyphEntry glyph, boolean selected) {
 	    if(iBaseBox < 0) {
 	    	iBaseBox = generateBase (gl, false);
 	    	iBaseBoxSelected = generateBase (gl, true);
-	    	iTowerBox = generateBox(gl, false);
-	    	iTowerBoxBlackTop = generateBox(gl, true);
+	    	iTowerBox = generateBox(gl);
+	    	iTowerTop = generateTop(gl);
 		}
 	    
 		return generateSingleObject(gl, glyph, selected);
@@ -133,44 +151,34 @@ public class GLCanvasGlyphGenerator {
 		// boxcolor
 		int n = glyph.getParameter(indexBoxColor_) % 5;
 
-		// TODO: add "standartverteilung" eg. double value of a glyph (lookup
-		// dictionary)
-		float nv = 0.5f;
+		
+		float nv = 0.0f; 
+		if (!selected)// if the box isnt selected color will be darker
+			nv = 0.5f;
 
-		if (!selected)
-			nv = 0.0f;
+		if(colorBox.size() > n && n >= 0) {
+			Vec4f color = colorBox.get(n);
+			gl.glColor4f(color.get(0) - nv, color.get(1) - nv, color.get(2) - nv, color.get(3));
+		} else
+			gl.glColor4f(0.7f, 0.7f , 0.7f, 1.0f); // gray
 
-		switch (n)
-		{
-		case 0:
-			gl.glColor4f(1.0f, 1.0f, 1.0f, 1.0f); // white
-			break;
-		case 1:
-			gl.glColor4f(0.0f, 0.4f + nv, 0.0f, 1.0f); // green
-			break;
-		case 2:
-			gl.glColor4f(0.3f, 0.4f + nv, 0.4f + nv, 1.0f); // gray -->
-															// blue/green
-			break;
-		case 3:
-			gl.glColor4f(0.4f + nv, 0.4f + nv, 0.0f, 1.0f); // gray --> gold
-			break;
-		case 4:
-			gl.glColor4f(0.4f + nv, 0.0f, 0.0f, 1.0f); // red
-			break;
-		default:
-			gl.glColor4f(0.1f + nv, 0.1f + nv, 0.1f + nv, 1.0f); // gray
-			break;
-		}
-
+		
 		gl.glScalef(1.0f, 1.0f, box_h);
 
+		gl.glCallList(iTowerBox);
+		
+		
 		int tc = glyph.getParameter(indexTopColor_);
-		if (tc % 2 == 0)
-			gl.glCallList(iTowerBoxBlackTop);
-		else
-			gl.glCallList(iTowerBox);
+		if(colorTop.size() > tc && tc >= 0) {
+			Vec4f color = colorTop.get(tc);
+			if(color.get(0) != -1.0f && color.get(1) != -1.0f && color.get(2) != -1.0f)
+				gl.glColor4f(color.get(0) - nv, color.get(1) - nv, color.get(2) - nv, color.get(3));
+		} else
+			gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f); // anoying gray
 
+		gl.glCallList(iTowerTop);
+
+		
 		gl.glDisable(GL.GL_LIGHTING);
 		gl.glDisable(GL.GL_LIGHT0);
 		gl.glDisable(GL.GL_LIGHT1);
@@ -242,7 +250,7 @@ public class GLCanvasGlyphGenerator {
 	}
 	
 	
-	private int generateBox(GL gl, boolean topcolorblack) {
+	private int generateBox(GL gl) {
 		float xmin = 0f;
 		float ymin = 0f;
 		float zmin = 0.0f;
@@ -299,8 +307,22 @@ public class GLCanvasGlyphGenerator {
 		gl.glEnd( );
 
 //top
-		if (topcolorblack)
-			gl.glColor4d     ( 0.0, 0.0, 0.0, 1.0);
+		
+		
+		gl.glEndList();
+		return dltemp;
+	}
+	
+	private int generateTop(GL gl) {
+		float xmin = 0f;
+		float ymin = 0f;
+		float zmin = 0.0f;
+		float xmax = 0.75f;
+		float ymax = 0.75f;
+		float zmax = 1.0f;
+
+		int dltemp = gl.glGenLists(1);
+		gl.glNewList(dltemp, GL.GL_COMPILE);
 		
 		gl.glBegin(GL.GL_QUADS);
 		gl.glNormal3i (0, 0, 1);
@@ -309,11 +331,10 @@ public class GLCanvasGlyphGenerator {
 		gl.glVertex3f(xmax, ymax, zmax);
 		gl.glVertex3f(xmin, ymax, zmax);
 		gl.glEnd( );
-		
+
 		gl.glEndList();
 		return dltemp;
 	}
-	
 
 
 }

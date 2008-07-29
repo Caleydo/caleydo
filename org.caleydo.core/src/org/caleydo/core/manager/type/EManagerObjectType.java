@@ -82,6 +82,8 @@ public enum EManagerObjectType {
 	
 	VIEW_SWT_MIXER(EManagerType.VIEW),
 	
+	VIEW_SWT_GLYPH_MAPPINGCONFIGURATION(EManagerType.VIEW),
+	
 	VIEW_SWT_BROWSER(EManagerType.VIEW),
 	
 	VIEW_SWT_IMAGE(EManagerType.VIEW),

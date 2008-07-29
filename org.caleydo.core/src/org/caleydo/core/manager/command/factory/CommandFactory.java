@@ -27,6 +27,7 @@ import org.caleydo.core.command.view.swt.CmdViewCreateDataEntitySearcher;
 import org.caleydo.core.command.view.swt.CmdViewCreateDataExchanger;
 import org.caleydo.core.command.view.swt.CmdViewCreateDataExplorer;
 import org.caleydo.core.command.view.swt.CmdViewCreateGears;
+import org.caleydo.core.command.view.swt.CmdViewCreateGlyphConfiguration;
 import org.caleydo.core.command.view.swt.CmdViewCreateHTMLBrowser;
 import org.caleydo.core.command.view.swt.CmdViewCreateImage;
 import org.caleydo.core.command.view.swt.CmdViewCreateMixer;
@@ -290,6 +291,15 @@ implements ICommandFactory {
 						cmdType);
 			break;
 		}
+		case CREATE_VIEW_GLYPHCONFIG:
+		{
+			createdCommand =
+				new CmdViewCreateGlyphConfiguration(
+						generalManager,
+						commandManager,
+						cmdType);
+			break;
+		}		
 		case CREATE_VIEW_BROWSER:
 		{
 			createdCommand =

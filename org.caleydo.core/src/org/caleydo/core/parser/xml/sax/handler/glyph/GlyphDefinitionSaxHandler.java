@@ -1,5 +1,7 @@
 package org.caleydo.core.parser.xml.sax.handler.glyph;
 
+import gleem.linalg.Vec4f;
+
 import java.util.Vector;
 import java.util.logging.Level;
 
@@ -28,6 +30,9 @@ extends AXmlParserHandler {
 	
 	private GlyphAttributeType gatActualColumn = null;
 
+	private Vector<Vec4f> colors = null;
+	private boolean bLoadingColorTop = false;
+	private boolean bLoadingColorBox = false;
 	
 	
 	public GlyphDefinitionSaxHandler(IGeneralManager generalManager, 
@@ -82,6 +87,9 @@ extends AXmlParserHandler {
 			} else if (sElementName.equals("int")) {
 //				generalManager.getLogger().log(Level.INFO, "GlyphDefinitionHandler:: el= "+tagHierarchie.lastElement()+"->column");
 				handleIntTag();
+			} else if (sElementName.equals("color")) {
+//				generalManager.getLogger().log(Level.INFO, "GlyphDefinitionHandler:: el= "+tagHierarchie.lastElement()+"->column");
+				handleColorTag();
 			}
 			
 			tagHierarchie.add(sElementName);
@@ -102,6 +110,9 @@ extends AXmlParserHandler {
 		if (null != eName) {
 		  if (eName.equals("column")) {
 			handleColumnEndTag();
+		  }
+		  if (eName.equals("item")) {
+			handleItemEndTag();
 		  }
 			
 		  if (eName.equals(sOpeningTag)) {
@@ -125,6 +136,20 @@ extends AXmlParserHandler {
 		
 	}
 	
+	private void handleItemEndTag() {
+		if(colors != null) {
+			if(bLoadingColorTop)
+				generalManager.getGlyphManager().getGlyphGenerator().setColorsTop(colors);
+			if(bLoadingColorBox)
+				generalManager.getGlyphManager().getGlyphGenerator().setColorsBox(colors);
+
+			colors = null;
+			bLoadingColorTop = false;
+			bLoadingColorBox = false;
+		}
+			
+	}
+	
 	
 	private void handleSettings() {
 		String key = "";
@@ -141,10 +166,6 @@ extends AXmlParserHandler {
 		
 		if(key.equals("sort"))
 			generalManager.getGlyphManager().addSortColumn(value);
-		if(key.equals("topColor"))
-			generalManager.getGlyphManager().setSetting(EGlyphSettingIDs.TOPCOLOR , value);
-		if (key.equals("boxColor"))
-			generalManager.getGlyphManager().setSetting(EGlyphSettingIDs.BOXCOLOR , value);
 		if (key.equals("boxHeight"))
 			generalManager.getGlyphManager().setSetting(EGlyphSettingIDs.BOXHEIGHT , value);
 		if (key.equals("updateSendParameter"))
@@ -154,6 +175,17 @@ extends AXmlParserHandler {
 		if (key.equals("scatterPlotAxisY"))
 			generalManager.getGlyphManager().setSetting(EGlyphSettingIDs.SCATTERPLOTY , value);
 		
+		if(key.equals("topColor")) {
+			generalManager.getGlyphManager().setSetting(EGlyphSettingIDs.TOPCOLOR , value);
+			colors = new Vector<Vec4f>();
+			bLoadingColorTop = true;
+		}
+		if (key.equals("boxColor")) {
+			generalManager.getGlyphManager().setSetting(EGlyphSettingIDs.BOXCOLOR , value);
+			colors = new Vector<Vec4f>();
+			bLoadingColorBox = true;
+		}
+
 	}
 	
 	
@@ -189,11 +221,6 @@ extends AXmlParserHandler {
     	
 		gatActualColumn = new GlyphAttributeType(generalManager, label, colnum);
 
-		/*
-    	if(type.equals("ordinal")) {
-//    		gatActualColumn.setDoesAutomaticAttribute(true);
-    	}*/
-    	
     	
     	
     	
@@ -295,6 +322,67 @@ extends AXmlParserHandler {
     	}
 
     	
+	}
+	
+
+
+	private void handleColorTag() {
+		String pTag = tagHierarchie.lastElement(); //parent tag
+		
+		if(!pTag.equals("item")) {
+			generalManager.getLogger().log(Level.WARNING, "GlyphSaxDefinitionHandler::handleColorTag() - color tag not in item tag embeded");
+			return;
+		}
+		
+		Vec4f color = new Vec4f();
+		
+    	for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
+        	String sAttributeName = attributes.getLocalName(iAttributeIndex);
+        	
+        	String svalue = attributes.getValue(iAttributeIndex);
+        	
+        	if(sAttributeName.equals("rgb")) { //html style
+        		if(svalue.charAt(0) == '#' )
+        			svalue = svalue.substring(1,svalue.length());
+        		
+        		if(svalue.length() != 6) {
+    				generalManager.getLogger().log(Level.SEVERE, "GlyphSaxDefinitionHandler::handleColorTag() color definition error (string too short (6))");
+        			continue;
+        		}
+        		
+        		String red   = svalue.substring(0,2);
+        		String green = svalue.substring(2,4);
+        		String blue  = svalue.substring(4,6);
+        		
+        		try {
+        			color.set(0, Integer.parseInt(red,   16) / 255.0f);
+        			color.set(1, Integer.parseInt(green, 16) / 255.0f);
+        			color.set(2, Integer.parseInt(blue,  16) / 255.0f);
+        		} catch(NumberFormatException ex) {
+    				generalManager.getLogger().log(Level.SEVERE, "GlyphSaxDefinitionHandler::handleColorTag() given data is not an float!");
+        		}
+        		
+        	} else { //color component style
+        	
+        		float fvalue = 0.5f;
+        		try {
+        			fvalue = Float.parseFloat(svalue);
+        		} catch(NumberFormatException ex) {
+    				generalManager.getLogger().log(Level.SEVERE, "GlyphSaxDefinitionHandler::handleColorTag() given data is not an float!");
+        		}
+    		
+    			if(sAttributeName.equals("rn"))	color.set(0, fvalue); 
+    			if(sAttributeName.equals("gn"))	color.set(1, fvalue); 
+    			if(sAttributeName.equals("bn"))	color.set(2, fvalue);
+    		
+    			if(sAttributeName.equals("r"))	color.set(0, fvalue/255.0f); 
+    			if(sAttributeName.equals("g"))	color.set(1, fvalue/255.0f); 
+    			if(sAttributeName.equals("b"))	color.set(2, fvalue/255.0f); 
+    		
+    			if(sAttributeName.equals("a"))	color.set(3, fvalue);
+        	}
+		}
+    	colors.add(color);
 	}
 	
 	

@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 import org.caleydo.core.manager.IManager;
+import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyphGenerator;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphAttributeType;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphEntry;
@@ -17,7 +18,10 @@ import org.caleydo.core.view.opengl.canvas.glyph.GlyphEntry;
  */
 public interface IGlyphManager
 extends IManager {
-	
+
+	public void registerGlyphView(GLCanvasGlyph view);
+	public void unregisterGlyphView(GLCanvasGlyph view);
+
 	public void loadGlyphDefinitaion(String xmlPath);
 	
 	public String getSetting(EGlyphSettingIDs type);

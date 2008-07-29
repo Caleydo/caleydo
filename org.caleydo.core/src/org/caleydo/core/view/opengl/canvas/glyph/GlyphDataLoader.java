@@ -96,6 +96,7 @@ public class GlyphDataLoader {
 					else
 					{
 						this.generalManager.getLogger().log(Level.WARNING, "GlyphDataLoader: ERROR. There should be only STRING values in the storag " + tmpStorage.getLabel() );
+						
 					}
 					
 					glyphAttributeType.setInternalColumnNumber(pcounter);
@@ -127,7 +128,7 @@ public class GlyphDataLoader {
 		
 		if(aliStoreMapped.size() <= 0) {
 			this.generalManager.getLogger().log(Level.SEVERE, "GlyphDataLoader: No data in file found");
-			return null;
+			return glyphs;
 		}
 		
 

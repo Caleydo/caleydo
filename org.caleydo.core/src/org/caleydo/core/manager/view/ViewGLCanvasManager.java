@@ -33,6 +33,7 @@ import org.caleydo.core.view.opengl.canvas.wii.GLCanvasWiiTest;
 import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
 import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
+import org.caleydo.core.view.swt.glyph.GlyphMappingConfigurationViewRep;
 import org.caleydo.core.view.swt.image.ImageViewRep;
 import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
 import org.caleydo.core.view.swt.jogl.gears.GearsViewRep;
@@ -53,6 +54,11 @@ import com.sun.opengl.util.FPSAnimator;
 public class ViewGLCanvasManager 
 extends AManager
 implements IViewGLCanvasManager {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 4853292170420894586L;
 
 	protected HashMap<Integer, IView> hashViewId2View;
 
@@ -252,8 +258,10 @@ implements IViewGLCanvasManager {
 						iParentContainerID, sLabel);	
 			case VIEW_SWT_DATA_ENTITY_SEARCHER:
 				return new DataEntitySearcherViewRep(generalManager, iViewID,
-						iParentContainerID, sLabel);	
-
+						iParentContainerID, sLabel);
+			case VIEW_SWT_GLYPH_MAPPINGCONFIGURATION:
+				return new GlyphMappingConfigurationViewRep(generalManager, iViewID,
+						iParentContainerID, sLabel);
 			default:
 				throw new CaleydoRuntimeException(
 						"StorageManagerSimple.createView() failed due to unhandled type ["

@@ -38,6 +38,10 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_EVENT_MEDIATOR"   	cmdId="69991" uniqueId="94501" label="Mediator B (Reverse)" attrib1="82402" attrib2="82401" detail="SELECTION_MEDIATOR" />
 -->
 
+			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991" uniqueId="10332" label="Configuration view" attrib1="ROW	HORIZONTAL"	/>
+		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_GLYPHCONFIG"		cmdId="61993" uniqueId="11401" label="Glyph Mapping" parent="10332" attrib1="3" attrib2="400 200" />
+
+
    </CommandBuffer>
 
   </Application>

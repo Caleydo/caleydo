@@ -65,7 +65,7 @@ public enum CommandQueueSaxType
 	CREATE_STORAGE(EManagerType.DATA_STORAGE,"cmd","type","-1", "Create Storage"),		
 	CREATE_VIRTUAL_ARRAY(EManagerType.DATA_VIRTUAL_ARRAY,"cmd","type","-1", "Create VirtualArray"),
 
-
+	
 	CREATE_SWT_WINDOW(EManagerType.VIEW,"cmd", "type","-1", "Create SWT window"),
 	CREATE_SWT_CONTAINER(EManagerType.VIEW,"cmd", "type","-1", "Create SWTContainer"),
 	CREATE_VIEW_PATHWAY(EManagerType.VIEW,"cmd", "type","-1", "Create Pathway 2D"),
@@ -76,6 +76,7 @@ public enum CommandQueueSaxType
 	CREATE_VIEW_STORAGE_SLIDER(EManagerType.VIEW,"cmd", "type","-1", "Create Slider"),
 	CREATE_VIEW_SELECTION_SLIDER(EManagerType.VIEW,"cmd", "type","-1", "Create Slider"),	
 	CREATE_VIEW_MIXER(EManagerType.VIEW,"cmd", "type","-1", "Create Mixer"),
+	CREATE_VIEW_GLYPHCONFIG(EManagerType.VIEW,"cmd", "type","-1", "Create Mixer"),
 	CREATE_VIEW_BROWSER(EManagerType.VIEW,"cmd", "type", "-1", "Create Browser"),	
 	CREATE_VIEW_IMAGE(EManagerType.VIEW,"cmd", "type", "-1", "Create Image"),	
 	CREATE_VIEW_SET_EDITOR(EManagerType.VIEW,"cmd", "type","-1", "No description available!"),
@@ -84,6 +85,8 @@ public enum CommandQueueSaxType
 
 	CREATE_VIEW_SWT_GLCANVAS(EManagerType.VIEW,"cmd", "type","-1", "Create SWT GL Canvas"),
 	CREATE_VIEW_RCP_GLCANVAS(EManagerType.VIEW,"cmd", "type", "-1", "Create RCP GL Canvas"),
+	
+	
 	
 	/* switches to create different Set's */
 	SET_DATA_LINEAR("cmd","type","-1", "Create planar SET"),
