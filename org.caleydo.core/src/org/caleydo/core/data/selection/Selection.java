@@ -36,15 +36,14 @@ implements ISelection
 	/**
 	 * Constructor.
 	 * 
-	 * @param iSetCollectionId
+	 * @param iUniqueID
 	 * @param setGeneralManager
 	 */
-	public Selection(int iSetCollectionId, 
+	public Selection(int iUniqueID, 
 			IGeneralManager generalManager) 
 	{
 
-	super(iSetCollectionId, 
-				generalManager);
+	super(iUniqueID, generalManager);
 		
 //		/** add missing objects for optional data */
 //		vecRefSelection_Array.add(2, new Vector<IVirtualArray> (2));		

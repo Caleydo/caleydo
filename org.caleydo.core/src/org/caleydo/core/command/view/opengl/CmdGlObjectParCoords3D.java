@@ -10,7 +10,9 @@ import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
+import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 
 /**
  * Create parallel coordinates view.
@@ -72,14 +74,14 @@ extends ACmdCreate_GlCanvasUser {
 		
 		super.doCommand();
 		
-		((GLCanvasParCoords3D)gLEventListener).removeAllSetIdByType(ESetType.GENE_EXPRESSION_DATA);
-		((GLCanvasParCoords3D)gLEventListener).removeAllSetIdByType(ESetType.CLINICAL_DATA);
+//		((GLCanvasParCoords3D)gLEventListener).removeAllSetIdByType(ESetType.GENE_EXPRESSION_DATA);
+//		((GLCanvasParCoords3D)gLEventListener).removeAllSetIdByType(ESetType.CLINICAL_DATA);
 		
-		int[] iArTmp = new int[iArSetIDs.size()];
-		for(int index = 0; index < iArSetIDs.size(); index++)
-			iArTmp[index] = iArSetIDs.get(index);
-		
-		((GLCanvasParCoords3D)gLEventListener).addSetId(iArTmp);
+		AGLCanvasUser glCanvas = ((AGLCanvasUser)gLEventListener);
+		for (Integer iSetID : iArSetIDs)
+		{
+			glCanvas.addSet(iSetID);
+		}
 	}
 
 	/*

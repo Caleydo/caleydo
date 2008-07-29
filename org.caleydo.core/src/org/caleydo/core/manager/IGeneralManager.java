@@ -2,14 +2,13 @@ package org.caleydo.core.manager;
 
 import java.util.logging.Logger;
 
+import org.caleydo.core.manager.data.ISelectionManager;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
 import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.manager.type.ManagerType;
 
 /**
  * Interface for general manager.
@@ -154,10 +153,6 @@ public interface IGeneralManager {
 	 */
 	public void initManager();
 	
-	public abstract IManager getManagerByObjectType(final ManagerObjectType managerType);
-	
-	public abstract IManager getManagerByType(final ManagerType managerType);
-	
 	public abstract IMementoManager getMementoManager();
 
 	public abstract IStorageManager getStorageManager();
@@ -165,6 +160,8 @@ public interface IGeneralManager {
 	//public abstract IVirtualArrayManager getVirtualArrayManager();
 
 	public abstract ISetManager getSetManager();
+	
+	public abstract ISelectionManager getSelectionManager();
 
 	public abstract ICommandManager getCommandManager();
 
@@ -183,22 +180,10 @@ public interface IGeneralManager {
 	public abstract IGenomeIdManager getGenomeIdManager();
 	
 	public abstract IGlyphManager getGlyphManager();
-
-	/**
-	 * Identifies each application in the network with a unique Id form [1..99]
-	 * issued by the network server.
-	 * 
-	 * @see org.caleydo.core.manager.IGeneralManager#iUniqueId_WorkspaceOffset
-	 * 
-	 * @return unique networkHostId of this host.
-	 */
-	public abstract int getNetworkPostfix();
 	
 	/**
 	 * Returns the logger.
 	 * @return logger
 	 */
 	public abstract Logger getLogger();
-
-	public void destroyOnExit();
 }

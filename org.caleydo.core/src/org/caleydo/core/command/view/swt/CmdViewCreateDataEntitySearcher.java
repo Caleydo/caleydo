@@ -55,8 +55,7 @@ extends ACmdCreate_IdTargetLabelAttrDetail{
 	 */
 	public void doCommand() throws CaleydoRuntimeException {
 
-		IViewManager viewManager = ((IViewManager) generalManager
-				.getManagerByObjectType(ManagerObjectType.VIEW));
+		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 		
 		DataEntitySearcherViewRep dataEntitySearcherView = (DataEntitySearcherViewRep)viewManager
 			.createView(ManagerObjectType.VIEW_SWT_DATA_ENTITY_SEARCHER,

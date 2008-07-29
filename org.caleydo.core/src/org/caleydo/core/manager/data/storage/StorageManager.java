@@ -5,8 +5,8 @@ import java.util.Set;
 
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
+import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.data.ACollectionManager;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
@@ -18,8 +18,9 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  * 
  *         TODO: review
  */
-public class StorageManager extends ACollectionManager
-		implements IStorageManager {
+public class StorageManager 
+extends AManager
+implements IStorageManager {
 
 	private HashMap<Integer, IStorage> hashStorageIDToStorage;
 
@@ -56,7 +57,6 @@ public class StorageManager extends ACollectionManager
 		switch (useStorageType)
 		{
 		case STORAGE:
-		case STORAGE_FLAT:
 			return new NumericalStorage(iNewId, generalManager);
 
 		default:

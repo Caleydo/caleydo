@@ -40,8 +40,7 @@ extends ACmdCreate_IdTargetLabelParentXY {
 	 */
 	public void doCommand() throws CaleydoRuntimeException {
 		
-		IViewManager viewManager = ((IViewManager) generalManager
-				.getManagerByObjectType(ManagerObjectType.VIEW));
+		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 		
 		UndoRedoViewRep undoRedoView = (UndoRedoViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_UNDO_REDO,

@@ -5,6 +5,7 @@ import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
+import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
@@ -42,8 +43,7 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL {
 		
 		try
 		{
-			IViewGLCanvasManager viewManager = ((IViewGLCanvasManager) generalManager
-					.getManagerByObjectType(ManagerObjectType.VIEW));
+			IViewManager viewManager = generalManager.getViewGLCanvasManager();
 			
 			SwtJoglGLCanvasViewRep swtGLCanvasView = (SwtJoglGLCanvasViewRep)viewManager			
 					.createGLView(ManagerObjectType.VIEW_SWT_JOGL_MULTI_GLCANVAS,

@@ -59,7 +59,7 @@ implements IMediatorSender{;
 	public void setAttributes(final ArrayList<Integer> iAlViewReceiverIDs) {
 
 		iSearchSelectionSetId = generalManager.getSetManager()
-			.createId(ManagerObjectType.SET_LINEAR);
+			.createId(ManagerObjectType.SET);
 
 		CmdDataCreateSelection selectedSetCmd = (CmdDataCreateSelection) generalManager.getCommandManager()
 			.createCommandByType(CommandQueueSaxType.CREATE_SET_SELECTION_MAKRO);

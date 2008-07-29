@@ -25,7 +25,7 @@ public interface IManager {
 	 * Return the item bound to the iItemId or null if the id is not 
 	 * bound to an item.
 	 * 
-	 * @param iItemId uniqu id used for lookup
+	 * @param iItemId unique id used for lookup
 	 * @return object bound to iItemId
 	 */
 	public Object getItem( final int iItemId);
@@ -46,8 +46,7 @@ public interface IManager {
 	 * @return TRUE if item was unregistered by this manager
 	 */
 	public boolean registerItem( final Object registerItem, 
-			final int iItemId);
-	
+			final int iItemId);	
 	
 	/**
 	 * Unregisters an item using it's Id.
@@ -69,21 +68,4 @@ public interface IManager {
 	 * @see org.caleydo.core.manager.IGeneralManager#iUniqueId_WorkspaceOffset
 	 */
 	public int createId( final ManagerObjectType setNewBaseType );
-
-//	/**
-//	 * Set the current Id, what is incremented once the next time createNewId() is called.
-//	 * 
-//	 * Attention: this method must be called from a synchronized block on the actual manager!
-//	 * 
-//	 * @param setNewBaseType test if manager may create such an id
-//	 * @param iCurrentId set the new current Id
-//	 * @return true if the new current Id was valid, which is the case if it is larger than the current NewId!
-//	 */
-//	public boolean setCreateNewId(ManagerType setNewBaseType, final int iCurrentId );
-		
-	/**
-	 * Remove all data and stop all threads.
-	 *
-	 */
-	public void destroyOnExit();
 }

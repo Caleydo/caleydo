@@ -5,6 +5,7 @@ package org.caleydo.core.data.selection;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.view.AView;
 
 /**
@@ -21,8 +22,8 @@ import org.caleydo.core.view.AView;
  *
  */
 public interface ISelection
+extends IUniqueObject
 {
-
 	public void setSelectionIdArray(ArrayList<Integer> iAlSelectionId);
 	
 	public void setGroupArray(ArrayList<Integer> iAlSelectionGroup);

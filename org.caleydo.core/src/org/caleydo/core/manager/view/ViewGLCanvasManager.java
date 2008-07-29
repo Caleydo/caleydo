@@ -526,15 +526,6 @@ implements IViewGLCanvasManager {
 		hashGLEventListenerID2GLEventListener.remove(iGLEventListenerID);
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.base.AAbstractManager#destroyOnExit()
-	 */
-	public void destroyOnExit() 
-	{
-
-	}
-	
 	public void addViewRep(final IView view) {
 
 		try 

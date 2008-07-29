@@ -10,7 +10,9 @@ import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
+import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 
 /**
  * Create heat map view.
@@ -69,11 +71,11 @@ extends ACmdCreate_GlCanvasUser {
 		((GLCanvasHeatMap)gLEventListener).removeAllSetIdByType(ESetType.GENE_EXPRESSION_DATA);
 		((GLCanvasHeatMap)gLEventListener).removeAllSetIdByType(ESetType.CLINICAL_DATA);	
 		
-		int[] iArTmp = new int[iArSetIDs.size()];
-		for(int index = 0; index < iArSetIDs.size(); index++)
-			iArTmp[index] = iArSetIDs.get(index);
-		
-		((GLCanvasHeatMap)gLEventListener).addSetId(iArTmp);
+		AGLCanvasUser glCanvas = ((AGLCanvasUser)gLEventListener);
+		for (Integer iSetID : iArSetIDs)
+		{
+			glCanvas.addSet(iSetID);
+		}
 	}
 
 	/*

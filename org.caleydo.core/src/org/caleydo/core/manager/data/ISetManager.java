@@ -8,7 +8,7 @@ import org.caleydo.core.manager.IManager;
 
 
 /**
- * Manages all ISet's.
+ * Manages all ISets.
  * 
  * @author Michael Kalkusch
  *
@@ -16,19 +16,13 @@ import org.caleydo.core.manager.IManager;
 public interface ISetManager
 extends IManager
 {
-	public ISet createSet( final ESetType setType );
+	public ISet createSet(final ESetType setType);
 	
-	public boolean deleteSet( ISet deleteSet );
+	public boolean removeSet(ISet deleteSet);
 	
-	public boolean deleteSet( final int iItemId );
+	public boolean removeSet(final int iItemId);
 	
-	public ISet getSet( final int iItemId );
+	public ISet getSet(final int iItemId);
 	
 	public Collection<ISet> getAllSets();
-	
-	/**
-	 * Initialize data structures prior using this manager.
-	 *
-	 */
-	public void initManager();	
 }

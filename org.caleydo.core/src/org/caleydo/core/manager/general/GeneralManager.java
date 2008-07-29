@@ -2,7 +2,6 @@ package org.caleydo.core.manager.general;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.caleydo.core.manager.ICommandManager;
@@ -14,8 +13,10 @@ import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.command.CommandManager;
+import org.caleydo.core.manager.data.ISelectionManager;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.data.IStorageManager;
+import org.caleydo.core.manager.data.selection.SelectionManager;
 import org.caleydo.core.manager.data.set.SetManager;
 import org.caleydo.core.manager.data.storage.StorageManager;
 import org.caleydo.core.manager.event.EventPublisher;
@@ -48,7 +49,7 @@ implements IGeneralManager
 {
 	private boolean bAllManagersInitialized = false;
 
-	private ArrayList<IManager> llAllManagerObjects;
+	private ArrayList<IManager> alManagers;
 
 	protected IStorageManager storageManager;
 	
@@ -57,6 +58,8 @@ implements IGeneralManager
 	//protected IVirtualArrayManager virtualArrayManager;
 	
 	protected ISetManager setManager;
+	
+	protected ISelectionManager selectionManager;
 	
 	protected ICommandManager commandManager;
 
@@ -77,28 +80,13 @@ implements IGeneralManager
 	protected IGlyphManager glyphManager;
 
 	private Logger logger;
-	
-	/**
-	 * Unique Id per each application over the network.
-	 * Used to identify and create Id's unique for distributed applications. 
-	 * 
-	 * @see org.caleydo.core.manager.IGeneralManager#iUniqueId_WorkspaceOffset
-	 */
-	private int iNetworkApplicationIdPostfix = 0;
 
 	/**
 	 * Constructor.
 	 */
 	public GeneralManager()
-	{
-		/**
-		 * The Network postfix must be unique inside the network for 
-		 * distributed Caleydo applications. 
-		 * For stand alone Caleydo applications this id must match the XML file.
-		 */
-		setNetworkPostfix(0);
-		
-		llAllManagerObjects = new ArrayList<IManager>();
+	{		
+		alManagers = new ArrayList<IManager>();
 		
 		initLogger();
 		initManager();
@@ -121,7 +109,8 @@ implements IGeneralManager
 
 		storageManager = new StorageManager(this);
 		//virtualArrayManager = new VirtualArrayManager(this, 4);
-		setManager = new SetManager(this, 4);
+		setManager = new SetManager(this);
+		selectionManager = new SelectionManager(this);
 		mementoManager = new MementoManager(this);
 		commandManager = new CommandManager(this);
 		viewGLCanvasManager = new ViewGLCanvasManager(this);
@@ -138,18 +127,19 @@ implements IGeneralManager
 		 * Insert all Manager objects handling registered objects to 
 		 * the LinkedList
 		 */
-		llAllManagerObjects.add(setManager);
+		alManagers.add(setManager);
 		//llAllManagerObjects.add(virtualArrayManager);
-		llAllManagerObjects.add(storageManager);
-		llAllManagerObjects.add(pathwayManager);
-		llAllManagerObjects.add(pathwayItemManager);
-		llAllManagerObjects.add(genomeIdManager);
-		llAllManagerObjects.add(eventPublisher);
-		llAllManagerObjects.add(viewGLCanvasManager);
-		llAllManagerObjects.add(sWTGUIManager);
-		llAllManagerObjects.add(commandManager);
-		llAllManagerObjects.add(mementoManager);
-		llAllManagerObjects.add(glyphManager);
+		alManagers.add(storageManager);
+		alManagers.add(selectionManager);
+		alManagers.add(pathwayManager);
+		alManagers.add(pathwayItemManager);
+		alManagers.add(genomeIdManager);
+		alManagers.add(eventPublisher);
+		alManagers.add(viewGLCanvasManager);
+		alManagers.add(sWTGUIManager);
+		alManagers.add(commandManager);
+		alManagers.add(mementoManager);
+		alManagers.add(glyphManager);
 		
 	}
 
@@ -175,7 +165,7 @@ implements IGeneralManager
 	 */
 	public boolean hasItem(final int iItemId)
 	{
-		Iterator <IManager> iter = llAllManagerObjects.iterator();
+		Iterator <IManager> iter = alManagers.iterator();
 		
 		while ( iter.hasNext() ) 
 		{
@@ -194,7 +184,7 @@ implements IGeneralManager
 	 */
 	public Object getItem(final int iItemId)
 	{
-		Iterator <IManager> iter = llAllManagerObjects.iterator();
+		Iterator <IManager> iter = alManagers.iterator();
 		
 		while ( iter.hasNext() ) 
 		{
@@ -209,117 +199,7 @@ implements IGeneralManager
 
 		return null;
 	}
-
-	/* (non-Javadoc)
-	 * @see org.caleydo.core.data.manager.singelton.SingeltonManager#createNewId(org.caleydo.core.data.manager.BaseManagerType)
-	 */
-	public final int createId(final ManagerObjectType type)
-	{
-		assert type != null : "registerItem called with type == null!";
-		
-		IManager buffer = this.getManagerByObjectType( type );		
-		assert buffer != null : "createNewId type does not address manager!";
-		
-		return buffer.createId(type);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#getManagerByObjectType(org.caleydo.core.manager.type.ManagerObjectType)
-	 */
-	public IManager getManagerByObjectType(final ManagerObjectType managerType) 
-	{
-		return getManagerByType(managerType.getGroupType());
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#getManagerByType(org.caleydo.core.manager.type.ManagerType)
-	 */
-	public IManager getManagerByType(final ManagerType managerType)
-	{
-		assert managerType != null : "type is null!";
-
-		switch (managerType)
-		{
-		case MEMENTO:
-			return mementoManager;
-//		case DATA_VIRTUAL_ARRAY:
-//			return virtualArrayManager;
-		case DATA_SET:
-			return setManager;
-		case DATA_STORAGE:
-			return storageManager;
-		case VIEW:
-			return viewGLCanvasManager;
-		case COMMAND:
-			return commandManager;
-		case VIEW_GUI_SWT:
-			return sWTGUIManager;
-		case EVENT_PUBLISHER:
-			return eventPublisher;
-		case DATA_GENOME_ID:
-			return genomeIdManager;
-		case DATA_GLYPH:
-			return glyphManager;
-			
-		default:
-			throw new CaleydoRuntimeException(
-					"Error in OneForAllManager.getManagerByObjectType() unsupported type "
-							+ managerType.name());
-		} // end switch ( type.getGroupType() )
-	}
-	
-	public void destroyOnExit() {
-		
-//		generalManager.logMsg("OneForAllManager.destroyOnExit()", LoggerType.STATUS );
-		
-		this.viewGLCanvasManager.destroyOnExit();
-		
-		Iterator <IManager> iter = llAllManagerObjects.iterator();
-		
-		while ( iter.hasNext() ) 
-		{
-			IManager buffer = iter.next();
-			
-			if ( buffer != null ) {
-				buffer.destroyOnExit();
-			}
-			
-		} // while ( iter.hasNext() ) 
-		
-		logger.log(Level.INFO, "OneForAllManager.destroyOnExit()  ...[DONE]");
-		
-//		serializationOutputTest();
-	}
-
-//	public boolean setCreateNewId(ManagerType setNewBaseType, int iCurrentId) {
-//
-//		IManager secialManager = getManagerByType( setNewBaseType );
-//		
-//		if ( ! secialManager.setCreateNewId(setNewBaseType, iCurrentId) ) {
-//			generalManager.logMsg("setCreateNewId failed!", LoggerType.MINOR_ERROR );
-//			return false;
-//		}
-//		
-//		return true;
-//	}
-
-	public int getNetworkPostfix() {
-		return iNetworkApplicationIdPostfix;
-	}
-	
-	public void setNetworkPostfix( int iSetNetworkPrefix ) {
-		if (( iSetNetworkPrefix < IGeneralManager.iUniqueId_WorkspaceOffset) && 
-				( iSetNetworkPrefix >= 0)) { 
-			iNetworkApplicationIdPostfix = iSetNetworkPrefix;
-			return;
-		}
-		throw new RuntimeException("SIngeltonManager.setNetworkPostfix() exceeded range [0.." +
-				IGeneralManager.iUniqueId_WorkspaceOffset + "] ");
-	}
-	
-	/*
+		/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IGeneralManager#getMementoManager()
 	 */
@@ -342,6 +222,10 @@ implements IGeneralManager
 //	public IVirtualArrayManager getVirtualArrayManager() {
 //		return virtualArrayManager;
 //	}
+	
+	public ISelectionManager getSelectionManager() {
+		return selectionManager;
+	}
 	
 	/*
 	 * (non-Javadoc)

@@ -349,11 +349,6 @@ public class CaleydoBootloader
 		{		
 			if ( generalManager!= null ) 
 			{
-				generalManager.getLogger().log(Level.INFO, "Caleydo core clean up...");	
-				
-				generalManager.destroyOnExit();
-				
-				generalManager.getLogger().log(Level.INFO, "[done]\n");		
 				generalManager.getLogger().log(Level.INFO, "Bye bye!");
 				
 				bIsRunning = false;

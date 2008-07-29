@@ -6,10 +6,9 @@ import java.util.Hashtable;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;
+import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.data.ACollectionManager;
 import org.caleydo.core.manager.data.ISetManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.manager.type.ManagerType;
 
 
@@ -18,7 +17,7 @@ import org.caleydo.core.manager.type.ManagerType;
  *
  */
 public class SetManager 
-extends ACollectionManager
+extends AManager
 implements ISetManager {
 	
 	protected Hashtable <Integer, ISet > hashId2Set;
@@ -26,23 +25,14 @@ implements ISetManager {
 	/**
 	 * Constructor.
 	 */
-	public SetManager( IGeneralManager setSingelton,
-			final int iInitSizeContainer ) {
+	public SetManager( IGeneralManager setSingelton) {
 		super( setSingelton , 
 				IGeneralManager.iUniqueId_TypeOffset_Set,
 				ManagerType.DATA_SET );
 
 		assert setSingelton != null : "Constructor with null-pointer to singelton";
-		assert iInitSizeContainer > 0 : "Constructor with iInitSizeContainer < 1";
 		
 		hashId2Set = new Hashtable <Integer, ISet > ();		
-	}
-	
-	/**
-	 * Create a test ISet.
-	 */
-	public void initManager() {
-
 	}
 
 	/* (non-Javadoc)
@@ -101,7 +91,7 @@ implements ISetManager {
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.data.manager.SetManager#deleteSet(org.caleydo.core.data.collection.ISet)
 	 */
-	public boolean deleteSet(ISet deleteSet ) {
+	public boolean removeSet(ISet deleteSet ) {
 		
 		throw new RuntimeException("not impelemtned!");
 	}
@@ -109,7 +99,7 @@ implements ISetManager {
 	/* (non-Javadoc)
 	 * @see org.caleydo.core.data.manager.SetManager#deleteSet(org.caleydo.core.data.collection.ISet)
 	 */
-	public boolean deleteSet( final int iItemId ) {
+	public boolean removeSet( final int iItemId ) {
 		
 		ISet removedObj = hashId2Set.remove( iItemId );
 		

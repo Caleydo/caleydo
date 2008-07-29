@@ -403,10 +403,4 @@ implements ISWTGUIManager {
 		loadingProgressBarWindow.setVisible(state);
 		loadingProgressBar.setVisible(state);
 	}
-	
-	public void destroyOnExit() {
-//		loadingProgressBarWindow.close();	
-//		composite.dispose();
-//		display.dispose();
-	}
 }

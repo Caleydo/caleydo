@@ -56,7 +56,7 @@ extends ACmdCreate_IdTargetLabel {
 			generalManager.getStorageManager();
 		
 		IStorage storage = (IStorage) storageManager.createStorage(
-				ManagerObjectType.STORAGE_FLAT );
+				ManagerObjectType.STORAGE);
 		
 		storage.setId( iUniqueId );
 		storage.setLabel( sLabel );			

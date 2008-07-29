@@ -7,7 +7,6 @@ import javax.swing.JFrame;
 
 import org.caleydo.core.manager.type.ManagerObjectType;
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
 
 /**
@@ -29,8 +28,6 @@ extends IManager
 			final int iParentContainerID,
 			final int iCanvasID,
 			final String sLabel);
-	
-	public void destroyOnExit();
 
 	public void addViewRep(IView view);
 	

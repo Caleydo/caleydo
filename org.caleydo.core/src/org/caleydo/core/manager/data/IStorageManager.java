@@ -11,7 +11,6 @@ import org.caleydo.core.manager.type.ManagerObjectType;
  * 
  * @author Michael Kalkusch
  * 
- * TODO: Comments
  */
 public interface IStorageManager
 extends IManager

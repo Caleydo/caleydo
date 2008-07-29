@@ -42,8 +42,7 @@ extends ACmdCreate_IdTargetLabelParentAttrOpenGL  {
 	 */
 	public void doCommand() throws CaleydoRuntimeException {
 		
-		IViewManager viewManager = ((IViewManager) generalManager
-				.getManagerByObjectType(ManagerObjectType.VIEW));
+		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 		
 		GearsViewRep gearsView = (GearsViewRep)viewManager
 				.createView(ManagerObjectType.VIEW_SWT_GEARS,

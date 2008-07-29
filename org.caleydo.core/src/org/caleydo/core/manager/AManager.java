@@ -41,8 +41,7 @@ implements IManager, Serializable
 	public int calculateInitialUniqueId( final int iUniqueId_type_offset ) {
 		
 		return iUniqueId_type_offset * 
-			IGeneralManager.iUniqueId_TypeOffsetMultiplyer +
-			generalManager.getNetworkPostfix();
+			IGeneralManager.iUniqueId_TypeOffsetMultiplyer;
 	}
 		
 	/* (non-Javadoc)
@@ -71,13 +70,5 @@ implements IManager, Serializable
 		iUniqueId_current = iCurrentId;
 		
 		return true;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IManager#destroyOnExit()
-	 */
-	public void destroyOnExit() {
-		
 	}
 }

@@ -3,8 +3,6 @@ package org.caleydo.core.view.opengl.canvas;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -13,8 +11,8 @@ import javax.media.opengl.GLEventListener;
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import org.caleydo.core.data.AUniqueManagedObject;
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.ESetType;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.data.view.camera.IViewCamera;
 import org.caleydo.core.data.view.camera.IViewFrustum;
@@ -311,187 +309,30 @@ implements GLEventListener {
 	 */
 	public abstract void displayRemote(final GL gl);
 	
-	/**
-	 * Set external data
-	 */
-	public final void addSetId(int [] iArSetId) {
-		
-		assert iArSetId != null : "Can not handle null-pointer!";
-		
-		for (int iSetIndex=0; iSetIndex < iArSetId.length; iSetIndex++)
-		{
-			ISet currentSet = setManager.getSet(iArSetId[iSetIndex]);
-			
-			if ( currentSet == null ) 
-			{
-				generalManager.getLogger().log(Level.WARNING, 
-						"Set with ID " +iArSetId +" does not exist!");
-				
-				continue;
-			}
-			
-			if (!hasSetId_ByReference(currentSet) )
-			{
-//				switch (currentSet.getSetType()) {
-//				case SET_PATHWAY_DATA:
-//				case SET_GENE_EXPRESSION_DATA:				
-//				case SET_RAW_DATA:
-					alSetData.add(currentSet);
-//					break;
-//				case SET_SELECTION:
-//					alSetSelection.add((Selection)currentSet);
-//					break;
-//					
-//				default:
-//					generalManager.getLogger().log(Level.WARNING, 
-//							"Unsupported type "+ currentSet.getSetType());
-//				}// switch (currentSet.getSetType()) {
-//					
-			}
-			else 
-			{ 
-				generalManager.getLogger().log(Level.WARNING, 
-						"Set with ID " +currentSet.getId() + " is already registered!");
-			}
-		}
-	}
-	
-	/**
-	 * @see org.caleydo.core.view.IView#removeAllSetIdByType(org.caleydo.core.data.collection.ESetType)
-	 */
-	public final void removeAllSetIdByType( ESetType setType ) {
-		
-//		switch (setType) {
-//		case SET_PATHWAY_DATA:
-//		case SET_GENE_EXPRESSION_DATA:				
-//		case SET_RAW_DATA:
-			alSetData.clear();
-//			break;
-//			
-//		case SET_SELECTION:
-//			alSetSelection.clear();
-//			break;
-//			
-//		default:
-//			generalManager.getLogger().log(Level.WARNING, 
-//					"Unsupported Set type: " +setType);
-//		} // switch (setType) {
-	}
-		
-	/**
-	 * @see org.caleydo.core.view.IView#removeSetId(int[])
-	 */
-	public final void removeSetId( int [] iSet) {
-		
-		assert iSet != null : "Can not handle null-pointer!";
-		
-		for ( int i=0; i < iSet.length; i++)
-		{
-			ISet currentSet = setManager.getSet(iSet[i]);
-			
-			if ( currentSet == null ) 
-			{
-				generalManager.getLogger().log(Level.WARNING, 
-						"Set with ID " +iSet[i] +" does not exist!");
-				
-				continue;
-			}
-			
-			if ( hasSetId_ByReference(currentSet) )
-			{
-//				switch (currentSet.getSetType()) {
-//				case SET_RAW_DATA:
-					alSetData.remove(currentSet);
-//					break;
-//					
-//				case SET_SELECTION:
-//					alSetSelection.remove(currentSet);
-//					break;
-//					
-//				default:
-//					generalManager.getLogger().log(Level.WARNING, 
-//							"Unsupported type "+ currentSet.getSetType());
-//				} // switch (currentSet.getSetType()) {
-					
-			}
-			else 
-			{ 
-				generalManager.getLogger().log(Level.WARNING, 
-						"Set with ID " +iSet[i] + " was not registered!");
-			}
-		}
-	}
-	
 
-	/**
-	 * @see org.caleydo.core.view.IView#getAllSetId()
-	 */
-	public final synchronized int[] getAllSetId() {
-		
-		//FIXME: thread safe access to ArrayLists!
-		int iTotalSizeResultArray = alSetData.size() + alSetSelection.size();
-		
-		/* allocate int[] and copy from Arraylist*/
-		int [] resultArray = new int [iTotalSizeResultArray];
-		
-		/* early exit */
-		if ( iTotalSizeResultArray == 0) 
-		{
-			return resultArray;
-		}
-		
-		int i=0;		
-		Iterator <ISet> iter = alSetData.iterator();		
-		for (;iter.hasNext();i++)
-		{
-			resultArray[i] = iter.next().getId();
-		}
-		
-		Iterator <Selection> iterSelectionSet = alSetSelection.iterator();		
-		for (;iterSelectionSet.hasNext();i++)
-		{
-			resultArray[i] = iterSelectionSet.next().getId();
-		}
-		
-		return resultArray;
+	public final void addSet(ISet set) 
+	{
+		alSetData.add(set);
 	}
 	
+	public final void addSet(int iSetID) 
+	{
+		alSetData.add((ISet) generalManager.getSetManager().getItem(iSetID));
+	} 
 
-	/**
-	 * @see org.caleydo.core.view.IView#hasSetId(int)
-	 */
-	public final boolean hasSetId( int iSetId) {
-		ISet currentSet = setManager.getSet(iSetId);
+	public final void removeAllSetIdByType( ESetType setType ) 
+	{
 		
-		if ( currentSet == null )
-		{
-			return false;
-		}
+	}
+
+	public final void removeSetId( int [] iSet) 
+	{
 		
-		return hasSetId_ByReference(currentSet);
 	}
 	
-	
-	/**
-	 * Test both ArrayList's alSetData and alSetSelection for set.
-	 * 
-	 * @param set test if this ISet is referred to
-	 * @return TRUE if exists in any of the two ArrayList's
-	 */
-	public final boolean hasSetId_ByReference(final ISet set) {
-		
-		assert set != null : "Can not handle null-pointer";
-			
-		if ( alSetData.contains(set) ) 
-		{
-			return true;
-		}
-		if ( alSetSelection.contains(set) ) 
-		{
-			return true;
-		}
-		
-		return false;			
+	public final boolean hasSetId(int iSetId) 
+	{
+		return false;
 	}
 	
 	public final GLCaleydoCanvas getParentGLCanvas() {

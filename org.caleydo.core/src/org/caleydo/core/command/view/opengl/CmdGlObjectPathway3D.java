@@ -11,6 +11,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
 import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
 
 /**
@@ -104,11 +105,12 @@ extends ACmdCreate_GlCanvasUser {
 		
 		super.doCommand();
 		
-		int[] iArTmp = new int[iArSetIDs.size()];
-		for(int index = 0; index < iArSetIDs.size(); index++)
-			iArTmp[index] = iArSetIDs.get(index);
+		AGLCanvasUser glCanvas = ((AGLCanvasUser)gLEventListener);
+		for (Integer iSetID : iArSetIDs)
+		{
+			glCanvas.addSet(iSetID);
+		}
 		
-		((GLCanvasPathway3D)gLEventListener).addSetId(iArTmp);
 		((GLCanvasPathway3D)gLEventListener).setPathwayID(iPathwayID);
 	}
 

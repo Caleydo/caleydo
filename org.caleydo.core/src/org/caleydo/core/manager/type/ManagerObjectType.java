@@ -26,41 +26,22 @@ public enum ManagerObjectType {
 	 */
 	STORAGE(ManagerType.DATA_STORAGE),
 	
-	/**
-	 * sub of IStorage
-	 */
-	STORAGE_FLAT(ManagerType.DATA_STORAGE),
-	
 	/*
 	 * SELECTION
 	 */
 	VIRTUAL_ARRAY(ManagerType.DATA_VIRTUAL_ARRAY),
-	
-	VIRTUAL_ARRAY_SINGLE_BLOCK(ManagerType.DATA_VIRTUAL_ARRAY),
-	
-	VIRTUAL_ARRAY_MULTI_BLOCK(ManagerType.DATA_VIRTUAL_ARRAY),
-	
-	VIRTUAL_ARRAY_MULTI_BLOCK_RLE(ManagerType.DATA_VIRTUAL_ARRAY),
-	
-	VIRTUAL_ARRAY_RANDOM_BLOCK(ManagerType.DATA_VIRTUAL_ARRAY),
 	
 	/*
 	 * SET
 	 */
 	SET(ManagerType.DATA_SET),
 	
-	SET_LINEAR(ManagerType.DATA_SET),
-	
-	SET_PLANAR(ManagerType.DATA_SET),
-	
-	SET_CUBIC(ManagerType.DATA_SET),
-	
-	SET_MULTI_DIM(ManagerType.DATA_SET),
-	
-	SET_MULTI_DIM_VARIABLE(ManagerType.DATA_SET),
-	
 	SET_VIEWDATA(ManagerType.DATA_VIEWDATA),
 	
+	/*
+	 * SELECTION
+	 */
+	SELECTION(ManagerType.DATA_SELECTION),
 	
 	/*
 	 * VIEW
