@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
@@ -43,7 +44,8 @@ implements IStorageManager {
 	 * 
 	 * @see org.caleydo.core.data.manager.StorageManager#createStorage()
 	 */
-	public IStorage createStorage(final EManagerObjectType useStorageType) {
+	public IStorage createStorage(final EManagerObjectType useStorageType) 
+	{
 
 		if (useStorageType.getGroupType() != EManagerType.DATA_STORAGE)
 		{
@@ -56,8 +58,10 @@ implements IStorageManager {
 
 		switch (useStorageType)
 		{
-		case STORAGE:
+		case STORAGE_NUMERICAL:
 			return new NumericalStorage(iNewId, generalManager);
+		case STORAGE_NOMINAL:
+			return new NominalStorage<String>(iNewId, generalManager);
 
 		default:
 			throw new CaleydoRuntimeException(

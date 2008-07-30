@@ -28,6 +28,7 @@ extends ACmdCreate_IdTargetLabel {
 
 	
 	ArrayList<String> sAlParserControlTypes;
+	EManagerObjectType storageType;
 	
 	/**
 	 * Constructor.
@@ -50,13 +51,14 @@ extends ACmdCreate_IdTargetLabel {
 	 * 
 	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws CaleydoRuntimeException {
+	public void doCommand() throws CaleydoRuntimeException 
+	{
 		
 		IStorageManager storageManager = 
 			generalManager.getStorageManager();
 		
 		IStorage storage = (IStorage) storageManager.createStorage(
-				EManagerObjectType.STORAGE);
+				storageType);
 		
 		storage.setId( iUniqueId );
 		storage.setLabel( sLabel );			
@@ -80,10 +82,24 @@ extends ACmdCreate_IdTargetLabel {
 	public void setParameterHandler( final IParameterHandler parameterHandler ) 
 	{		
 		super.setParameterHandler(parameterHandler);
+		
+
+		String sAttrib1 = parameterHandler.getValueString( 
+				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey() );
+		
+		if ( sAttrib1.length() > 0 ) 
+		{
+			if(sAttrib1.equalsIgnoreCase("String"))
+				storageType = EManagerObjectType.STORAGE_NOMINAL;
+			else if(sAttrib1.equalsIgnoreCase("int") || sAttrib1.equalsIgnoreCase("float"))
+				storageType = EManagerObjectType.STORAGE_NUMERICAL;
+		}
+		
 	}
 
-	public void setAttributes(int iStorageID) 
+	public void setAttributes(int iStorageID, EManagerObjectType stroageType) 
 	{
 		iUniqueId = iStorageID;
+		this.storageType = stroageType;
 	}
 }

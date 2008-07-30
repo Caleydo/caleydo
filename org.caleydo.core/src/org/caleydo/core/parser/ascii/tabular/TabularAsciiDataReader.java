@@ -226,7 +226,8 @@ implements IParserObject {
 						iColumnIndex++;
 						break;
 					case STRING:
-						alStringBuffers.get(iColumnIndex).set(iParsedLineIndex, strTokenLine.nextToken());
+						alStringBuffers.get(iColumnIndex).add(strTokenLine.nextToken());
+//						/alStringBuffers.get(iColumnIndex).set(iParsedLineIndex, strTokenLine.nextToken());
 						iColumnIndex++;
 						break;
 					case SKIP: // do nothing

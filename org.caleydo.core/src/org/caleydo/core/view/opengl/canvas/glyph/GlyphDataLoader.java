@@ -11,6 +11,8 @@ import org.caleydo.core.data.collection.ccontainer.EDataKind;
 import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 
 /**
@@ -71,7 +73,8 @@ public class GlyphDataLoader {
 						{
 							int t2 = glyphAttributeType.getIndex(nominalStorage.get(EDataKind.RAW,i));
 							
-							if(nominalStorage.get(EDataKind.RAW, i) == null) {
+							if(nominalStorage.get(EDataKind.RAW, i) == null) 
+							{
 								this.generalManager.getLogger().log(Level.WARNING, "GlyphDataLoader: no String data found - empty line in csv file?????");
 								temp2[i] = -1;
 							}
@@ -95,7 +98,8 @@ public class GlyphDataLoader {
 					}
 					else
 					{
-						this.generalManager.getLogger().log(Level.WARNING, "GlyphDataLoader: ERROR. There should be only STRING values in the storag " + tmpStorage.getLabel() );
+						throw new CaleydoRuntimeException("GlyphDataLoader: ERROR. There should be only STRING values in the storage", 
+								CaleydoRuntimeExceptionType.VIEW);
 						
 					}
 					

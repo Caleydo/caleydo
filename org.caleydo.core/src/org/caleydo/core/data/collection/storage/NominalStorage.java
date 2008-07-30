@@ -47,7 +47,8 @@ implements INominalStorage <T>
 		else
 		{
 			if (alData.get(0) instanceof String)
-			{			
+			{	
+				rawDataType = ERawDataType.STRING;
 				ArrayList<String> sAlData = (ArrayList<String>)alData;
 				NominalStringCContainer sStorage = new NominalStringCContainer(sAlData);
 				hashCContainers.put(EDataKind.RAW, sStorage);
@@ -105,9 +106,8 @@ implements INominalStorage <T>
 	 */
 	public T get(EDataKind dataKind, int index) 
 	{
-		//(hashStorages.get(storageKind));
-		
-		// TODO Auto-generated method stub
-		return null;
+		// TODO
+		return (T)((NominalStringCContainer)(hashCContainers.get(dataKind))).get(index);
+	
 	}
 }

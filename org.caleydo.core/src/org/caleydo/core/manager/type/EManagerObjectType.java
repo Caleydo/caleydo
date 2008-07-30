@@ -21,15 +21,15 @@ public enum EManagerObjectType {
 	/*
 	 * STORAGE
 	 */
-	/**
-	 * This class is the fabrik itself before assigning a type.
-	 */
 	STORAGE(EManagerType.DATA_STORAGE),
+	STORAGE_NUMERICAL(EManagerType.DATA_STORAGE),
+	STORAGE_NOMINAL(EManagerType.DATA_STORAGE),
 	
 	/*
 	 * SELECTION
 	 */
 	VIRTUAL_ARRAY(EManagerType.DATA_VIRTUAL_ARRAY),
+	SELECTION(EManagerType.DATA_SELECTION),
 	
 	/*
 	 * SET
@@ -37,12 +37,7 @@ public enum EManagerObjectType {
 	SET(EManagerType.DATA_SET),
 	
 	SET_VIEWDATA(EManagerType.DATA_VIEWDATA),
-	
-	/*
-	 * SELECTION
-	 */
-	SELECTION(EManagerType.DATA_SELECTION),
-	
+		
 	/*
 	 * VIEW
 	 */
