@@ -15,50 +15,49 @@ import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
 import com.sun.opengl.util.Animator;
 
 /**
- * Make Jogl GLCanvas addressable by iD and provide ground for XML bootstrapping of 
- * GLCanvas.
+ * Make Jogl GLCanvas addressable by iD and provide ground for XML bootstrapping
+ * of GLCanvas.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
- *
  */
-public interface IViewGLCanvasManager 
-extends IViewManager, IManager
+public interface IViewGLCanvasManager
+	extends IViewManager, IManager
 {
+
 	public GLEventListener createGLCanvas(CommandQueueSaxType useViewType,
-			final int iUniqueId, 
-			final int iGLCanvasID,
-			String sLabel,
-			IViewFrustum viewFrustum);
+			final int iUniqueId, final int iGLCanvasID, String sLabel, IViewFrustum viewFrustum);
 
 	public Collection<GLCanvas> getAllGLCanvasUsers();
-	
+
 	public Collection<GLEventListener> getAllGLEventListeners();
-	
-	public boolean registerGLCanvas(final GLCanvas canvas, final int iGLCanvasId );
-	
-	public boolean unregisterGLCanvas(final int iGLCanvasId );
-	
+
+	public boolean registerGLCanvas(final GLCanvas canvas, final int iGLCanvasId);
+
+	public boolean unregisterGLCanvas(final int iGLCanvasId);
+
 	public void registerGLEventListenerByGLCanvasID(final int iGLCanvasID,
 			final GLEventListener gLEventListener);
-	
+
 	public void unregisterGLEventListener(final int iGLEventListenerID);
-	
+
 	public DataEntitySearcherViewRep getDataEntitySearcher();
-	
+
 	/**
 	 * Get the PickingManager which is responsible for system wide picking
+	 * 
 	 * @return the PickingManager
 	 */
 	public PickingManager getPickingManager();
-	
+
 	public SelectionManager getSelectionManager();
-	
+
 	public GLInfoAreaManager getInfoAreaManager();
 
 	public void createAnimator();
+
 	public Animator getAnimator();
-	
+
 	/**
 	 * Removes all views, canvas and GL event listeners
 	 */

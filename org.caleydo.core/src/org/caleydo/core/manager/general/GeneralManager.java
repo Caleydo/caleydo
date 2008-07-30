@@ -36,47 +36,46 @@ import org.caleydo.core.manager.type.EManagerType;
 import org.caleydo.core.manager.view.ViewGLCanvasManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
-
 /**
  * General manager that contains all module managers.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
- *
  */
-public class GeneralManager 
-implements IGeneralManager
+public class GeneralManager
+	implements IGeneralManager
 {
+
 	private boolean bAllManagersInitialized = false;
 
 	private ArrayList<IManager> alManagers;
 
 	protected IStorageManager storageManager;
-	
+
 	protected IMementoManager mementoManager;
-	
-	//protected IVirtualArrayManager virtualArrayManager;
-	
+
+	// protected IVirtualArrayManager virtualArrayManager;
+
 	protected ISetManager setManager;
-	
+
 	protected ISelectionManager selectionManager;
-	
+
 	protected ICommandManager commandManager;
 
 	protected ISWTGUIManager sWTGUIManager;
-	
+
 	protected IViewGLCanvasManager viewGLCanvasManager;
-	
+
 	protected IPathwayManager pathwayManager;
-	
+
 	protected IPathwayItemManager pathwayItemManager;
-	
+
 	protected IEventPublisher eventPublisher;
-	
+
 	protected IXmlParserManager xmlParserManager;
-	
+
 	protected IGenomeIdManager genomeIdManager;
-	
+
 	protected IGlyphManager glyphManager;
 
 	private Logger logger;
@@ -85,9 +84,10 @@ implements IGeneralManager
 	 * Constructor.
 	 */
 	public GeneralManager()
-	{		
+	{
+
 		alManagers = new ArrayList<IManager>();
-		
+
 		initLogger();
 		initManager();
 	}
@@ -95,20 +95,19 @@ implements IGeneralManager
 	/**
 	 * Must be called right after the constructor before using this class.
 	 * Initializes all manager objects.
-	 *
 	 */
 	public void initManager()
 	{
+
 		if (bAllManagersInitialized)
 		{
-			throw new CaleydoRuntimeException(
-					"initAll() was called at least twice!");
+			throw new CaleydoRuntimeException("initAll() was called at least twice!");
 		}
-		
+
 		bAllManagersInitialized = true;
 
 		storageManager = new StorageManager(this);
-		//virtualArrayManager = new VirtualArrayManager(this, 4);
+		// virtualArrayManager = new VirtualArrayManager(this, 4);
 		setManager = new SetManager(this);
 		selectionManager = new SelectionManager(this);
 		mementoManager = new MementoManager(this);
@@ -118,17 +117,17 @@ implements IGeneralManager
 		eventPublisher = new EventPublisher(this);
 		genomeIdManager = new GenomeIdManager(this);
 		pathwayManager = new PathwayManager(this);
-//		serializationInputTest();
+		// serializationInputTest();
 		pathwayItemManager = new PathwayItemManager(this);
 		xmlParserManager = new XmlParserManager(this);
 		glyphManager = new GlyphManager(this);
-		
+
 		/**
-		 * Insert all Manager objects handling registered objects to 
-		 * the LinkedList
+		 * Insert all Manager objects handling registered objects to the
+		 * LinkedList
 		 */
 		alManagers.add(setManager);
-		//llAllManagerObjects.add(virtualArrayManager);
+		// llAllManagerObjects.add(virtualArrayManager);
 		alManagers.add(storageManager);
 		alManagers.add(selectionManager);
 		alManagers.add(pathwayManager);
@@ -140,78 +139,87 @@ implements IGeneralManager
 		alManagers.add(commandManager);
 		alManagers.add(mementoManager);
 		alManagers.add(glyphManager);
-		
+
 	}
 
 	/**
 	 * Initialize the Java internal logger
 	 */
-	private void initLogger() {
-		
+	private void initLogger()
+	{
+
 		logger = Logger.getLogger("Caleydo Log");
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IGeneralManager#getLogger()
 	 */
-	public final Logger getLogger() {
+	public final Logger getLogger()
+	{
+
 		return logger;
 	}
 
-	
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.manager.GeneralManager#hasItem(int)
 	 */
 	public boolean hasItem(final int iItemId)
 	{
-		Iterator <IManager> iter = alManagers.iterator();
-		
-		while ( iter.hasNext() ) 
+
+		Iterator<IManager> iter = alManagers.iterator();
+
+		while (iter.hasNext())
 		{
-			if ( iter.next().hasItem(iItemId) ) 
+			if (iter.next().hasItem(iItemId))
 				return true;
-		} // while ( iter.hasNext() ) 
+		}
 
 		return false;
 	}
 
 	/**
 	 * @see org.caleydo.core.manager.IGeneralManager#hasItem(int)
-	 * 
-	 * @param iItemId unique Id used for lookup
+	 * @param iItemId
+	 *            unique Id used for lookup
 	 * @return Object bound to Id or null, if id was not found.
 	 */
 	public Object getItem(final int iItemId)
 	{
-		Iterator <IManager> iter = alManagers.iterator();
-		
-		while ( iter.hasNext() ) 
+
+		Iterator<IManager> iter = alManagers.iterator();
+
+		while (iter.hasNext())
 		{
 			IManager buffer = iter.next();
-			
-			if ( buffer.hasItem(iItemId) ) 
+
+			if (buffer.hasItem(iItemId))
 			{
 				return buffer.getItem(iItemId);
 			}
-			
-		} // while ( iter.hasNext() ) 
+		}
 
 		return null;
 	}
-		/*
+
+	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IGeneralManager#getMementoManager()
 	 */
-	public IMementoManager getMementoManager() {
+	public IMementoManager getMementoManager()
+	{
+
 		return mementoManager;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IGeneralManager#getStorageManager()
 	 */
-	public IStorageManager getStorageManager() {
+	public IStorageManager getStorageManager()
+	{
+
 		return storageManager;
 	}
 
@@ -219,27 +227,32 @@ implements IGeneralManager
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IGeneralManager#getVirtualArrayManager()
 	 */
-//	public IVirtualArrayManager getVirtualArrayManager() {
-//		return virtualArrayManager;
-//	}
-	
-	public ISelectionManager getSelectionManager() {
+	// public IVirtualArrayManager getVirtualArrayManager() {
+	// return virtualArrayManager;
+	// }
+	public ISelectionManager getSelectionManager()
+	{
+
 		return selectionManager;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IGeneralManager#getSetManager()
 	 */
-	public ISetManager getSetManager() {
+	public ISetManager getSetManager()
+	{
+
 		return setManager;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IGeneralManager#getViewGLCanvasManager()
 	 */
-	public IViewGLCanvasManager getViewGLCanvasManager() {
+	public IViewGLCanvasManager getViewGLCanvasManager()
+	{
+
 		return viewGLCanvasManager;
 	}
 
@@ -247,8 +260,9 @@ implements IGeneralManager
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IGeneralManager#getPathwayManager()
 	 */
-	public IPathwayManager getPathwayManager() {
-		
+	public IPathwayManager getPathwayManager()
+	{
+
 		return pathwayManager;
 	}
 
@@ -256,8 +270,9 @@ implements IGeneralManager
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IGeneralManager#getPathwayItemManager()
 	 */
-	public IPathwayItemManager getPathwayItemManager() {
-		
+	public IPathwayItemManager getPathwayItemManager()
+	{
+
 		return pathwayItemManager;
 	}
 
@@ -265,7 +280,9 @@ implements IGeneralManager
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IGeneralManager#getSWTGUIManager()
 	 */
-	public ISWTGUIManager getSWTGUIManager() {
+	public ISWTGUIManager getSWTGUIManager()
+	{
+
 		return sWTGUIManager;
 	}
 
@@ -273,7 +290,9 @@ implements IGeneralManager
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IGeneralManager#getEventPublisher()
 	 */
-	public IEventPublisher getEventPublisher() {
+	public IEventPublisher getEventPublisher()
+	{
+
 		return eventPublisher;
 	}
 
@@ -281,23 +300,29 @@ implements IGeneralManager
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IGeneralManager#getXmlParserManager()
 	 */
-	public IXmlParserManager getXmlParserManager() {
+	public IXmlParserManager getXmlParserManager()
+	{
+
 		return this.xmlParserManager;
 	}
-		
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IGeneralManager#getGenomeIdManager()
 	 */
-	public IGenomeIdManager getGenomeIdManager() {
+	public IGenomeIdManager getGenomeIdManager()
+	{
+
 		return this.genomeIdManager;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IGeneralManager#getCommandManager()
 	 */
-	public ICommandManager getCommandManager() {
+	public ICommandManager getCommandManager()
+	{
+
 		return commandManager;
 	}
 
@@ -305,56 +330,55 @@ implements IGeneralManager
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IGeneralManager#getCommandManager()
 	 */
-	public IGlyphManager getGlyphManager() {
+	public IGlyphManager getGlyphManager()
+	{
+
 		return glyphManager;
 	}
-	
-	
-	
-//	public void serializationOutputTest() {
-//		
-//		try
-//		{
-//			ObjectOutputStream out = new ObjectOutputStream(
-//					new FileOutputStream("data/serialize_test.out"));
-//			
-//			out.writeObject(pathwayManager);
-//			out.close();
-//			
-//		} catch (FileNotFoundException e)
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e)
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
-//	
-//	public void serializationInputTest() {
-//		
-//		try
-//		{
-//			ObjectInputStream in = new ObjectInputStream(
-//					new FileInputStream("data/serialize_test.out"));
-//			
-//			pathwayManager = (PathwayManager) in.readObject();
-//			in.close();
-//			
-//		} catch (FileNotFoundException e)
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (IOException e)
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		} catch (ClassNotFoundException e)
-//		{
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//	}
-}
 
+	// public void serializationOutputTest() {
+	//		
+	// try
+	// {
+	// ObjectOutputStream out = new ObjectOutputStream(
+	// new FileOutputStream("data/serialize_test.out"));
+	//			
+	// out.writeObject(pathwayManager);
+	// out.close();
+	//			
+	// } catch (FileNotFoundException e)
+	// {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// } catch (IOException e)
+	// {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	// }
+	//	
+	// public void serializationInputTest() {
+	//		
+	// try
+	// {
+	// ObjectInputStream in = new ObjectInputStream(
+	// new FileInputStream("data/serialize_test.out"));
+	//			
+	// pathwayManager = (PathwayManager) in.readObject();
+	// in.close();
+	//			
+	// } catch (FileNotFoundException e)
+	// {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// } catch (IOException e)
+	// {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// } catch (ClassNotFoundException e)
+	// {
+	// // TODO Auto-generated catch block
+	// e.printStackTrace();
+	// }
+	// }
+}

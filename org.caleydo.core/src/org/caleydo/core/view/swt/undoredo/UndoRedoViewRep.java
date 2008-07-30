@@ -20,82 +20,85 @@ import org.eclipse.swt.widgets.Label;
  * @author Michael Kalkusch
  * @author Marc Streit
  */
-public class UndoRedoViewRep 
-extends AView 
-implements IView {
+public class UndoRedoViewRep
+	extends AView
+	implements IView
+{
 
 	protected Combo undoRedoCombo;
-	
+
 	/**
-	 * Constructor. 
+	 * Constructor.
 	 * 
 	 * @param generalManager
 	 * @param iViewId
 	 * @param iParentContainerId
 	 * @param sLabel
 	 */
-	public UndoRedoViewRep(
-			IGeneralManager generalManager, 
-			int iViewId, 
-			int iParentContainerId, 
-			String sLabel) {
-		
-		super(generalManager, 
-				iViewId, 
-				iParentContainerId, 
-				sLabel,
-				ViewType.SWT_IMAGE_VIEWER);	
+	public UndoRedoViewRep(IGeneralManager generalManager, int iViewId,
+			int iParentContainerId, String sLabel)
+	{
+
+		super(generalManager, iViewId, iParentContainerId, sLabel, ViewType.SWT_IMAGE_VIEWER);
 	}
 
 	/**
-	 * 
 	 * @see org.caleydo.core.view.IView#initView()
 	 */
-	protected void initViewSwtComposit(Composite swtContainer) {
-		
+	protected void initViewSwtComposit(Composite swtContainer)
+	{
+
 		swtContainer.setLayout(new RowLayout(SWT.HORIZONTAL));
-		
+
 		Label viewComboLabel = new Label(swtContainer, SWT.LEFT);
 		viewComboLabel.setText("Undo/Redo:");
 		viewComboLabel.setSize(300, 30);
-				
+
 		undoRedoCombo = new Combo(swtContainer, SWT.READ_ONLY);
 	}
 
-	public void drawView() {
-		
-//		generalManager.getSingelton().logMsg(
-//				this.getClass().getSimpleName() + 
-//				": drawView(): Load "+sUrl, 
-//				LoggerType.VERBOSE );		
+	public void drawView()
+	{
+
+		// generalManager.getSingelton().logMsg(
+		// this.getClass().getSimpleName() +
+		// ": drawView(): Load "+sUrl,
+		// LoggerType.VERBOSE );
 	}
-	
-	public void setAttributes(int iWidth, int iHeight, String sImagePath) {
-		
+
+	public void setAttributes(int iWidth, int iHeight, String sImagePath)
+	{
+
 		super.setAttributes(iWidth, iHeight);
 	}
-	
-	public void updateCommandList(Vector<ICommand> vecCommands) {
-		
+
+	public void updateCommandList(Vector<ICommand> vecCommands)
+	{
+
 		undoRedoCombo.removeAll();
-		
+
 		Iterator<ICommand> iterCommands = vecCommands.iterator();
-		
-		while(iterCommands.hasNext())
+
+		while (iterCommands.hasNext())
 		{
-			//ICommand bufferCmd = iterCommands.next();
-			undoRedoCombo.add( iterCommands.next().getInfoText() );
-		}		
+			// ICommand bufferCmd = iterCommands.next();
+			undoRedoCombo.add(iterCommands.next().getInfoText());
+		}
 	}
-	
-	public void addCommand(final ICommand command) {
-	
-		swtContainer.getDisplay().asyncExec(new Runnable() {
-			public void run() {
-				undoRedoCombo.add(command.getInfoText());				
-//				generalManager.logMsg(
-//						"DEBUG: " + command.getInfoText() + " " + command.toString(),
-//						LoggerType.VERBOSE);
+
+	public void addCommand(final ICommand command)
+	{
+
+		swtContainer.getDisplay().asyncExec(new Runnable()
+		{
+
+			public void run()
+			{
+
+				undoRedoCombo.add(command.getInfoText());
+				// generalManager.logMsg(
+				// "DEBUG: " + command.getInfoText() + " " + command.toString(),
+				// LoggerType.VERBOSE);
 			}
 		});
 	}

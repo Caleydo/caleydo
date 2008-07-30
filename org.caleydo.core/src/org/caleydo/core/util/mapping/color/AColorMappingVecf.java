@@ -118,7 +118,7 @@ implements IColorMapping <T> {
 		while ( iterValue.hasNext() )
 		{
 			iterColor.next();
-			if ( Math.abs(iterValue.next().floatValue() - value) < MathUtil.EPSILON ) {
+			if ( Math.abs(iterValue.next().floatValue() - value) < Math..EPSILON ) {
 				iterValue.remove();
 				iterColor.remove();				
 				return true;

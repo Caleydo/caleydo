@@ -20,572 +20,563 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
- * Administer several XML-SaxHandelers.
- * Switches between several XML-SaxHandeler automatically, based by a registered tag.
- * Acts as proxy for other derived objects from IXmlParserManager
+ * Administer several XML-SaxHandelers. Switches between several XML-SaxHandeler
+ * automatically, based by a registered tag. Acts as proxy for other derived
+ * objects from IXmlParserManager
  * 
  * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler
  * @see org.caleydo.core.manager.IXmlParserManager
- * 
  * @author Michael Kalkusch
  * @author Marc Streit
- *
  */
-public class XmlParserManager 
-extends AXmlParserManager {
-  
-	/**
-	 * Define maximum number of recursions
-	 */
-	public final int iCountMaximumOpenedFile = 513;
+public class XmlParserManager
+	extends AXmlParserManager
+{
 
 	/**
 	 * count number of recursions in order to detect misbehavior.
 	 */
-	private int iCountOpenedFiles = 0;		
-	
+	private int iCountOpenedFiles = 0;
+
 	protected boolean bUnloadSaxHandlerAfterBootstraping = false;
-	
+
 	/**
 	 * Constructor.
 	 * 
-	 * @param generalManager reference to IGeneralManager
+	 * @param generalManager
+	 *            reference to IGeneralManager
 	 */
-	public XmlParserManager(final IGeneralManager generalManager) {
-		
-		super(generalManager);
-		
-		OpenExternalXmlFileSaxHandler externalFileHandler =
-			new OpenExternalXmlFileSaxHandler( generalManager, this );
-						
-		KgmlSaxHandler kgmlParser = 
-			new KgmlSaxHandler( generalManager, this );	
-		
-		PathwayImageMapSaxHandler pathwayImageMapParser =
-			new PathwayImageMapSaxHandler ( generalManager, this );
-		
-		BioCartaPathwayImageMapSaxHandler biocartaPathwayParser =
-			new BioCartaPathwayImageMapSaxHandler ( generalManager, this);
-		
-		CommandSaxHandler cmdHandler = 
-			new CommandSaxHandler( generalManager, this );
-		
-		GlyphDefinitionSaxHandler glyphHandler =
-			new GlyphDefinitionSaxHandler(generalManager, this);
-		
-		registerAndInitSaxHandler( externalFileHandler );		
-		registerAndInitSaxHandler( kgmlParser );
-		registerAndInitSaxHandler( pathwayImageMapParser );
-		registerAndInitSaxHandler( biocartaPathwayParser );
-		registerAndInitSaxHandler( cmdHandler );
-		registerAndInitSaxHandler( glyphHandler );
-		
-		//openCurrentTag( cmdHandler );
-	}
+	public XmlParserManager(final IGeneralManager generalManager)
+	{
 
+		super(generalManager);
+
+		OpenExternalXmlFileSaxHandler externalFileHandler = new OpenExternalXmlFileSaxHandler(
+				generalManager, this);
+
+		KgmlSaxHandler kgmlParser = new KgmlSaxHandler(generalManager, this);
+
+		PathwayImageMapSaxHandler pathwayImageMapParser = new PathwayImageMapSaxHandler(
+				generalManager, this);
+
+		BioCartaPathwayImageMapSaxHandler biocartaPathwayParser = new BioCartaPathwayImageMapSaxHandler(
+				generalManager, this);
+
+		CommandSaxHandler cmdHandler = new CommandSaxHandler(generalManager, this);
+
+		GlyphDefinitionSaxHandler glyphHandler = new GlyphDefinitionSaxHandler(generalManager,
+				this);
+
+		registerAndInitSaxHandler(externalFileHandler);
+		registerAndInitSaxHandler(kgmlParser);
+		registerAndInitSaxHandler(pathwayImageMapParser);
+		registerAndInitSaxHandler(biocartaPathwayParser);
+		registerAndInitSaxHandler(cmdHandler);
+		registerAndInitSaxHandler(glyphHandler);
+
+		// openCurrentTag( cmdHandler );
+	}
 
 	/**
 	 * @see org.xml.sax.ContentHandler#startDocument()
 	 */
-	public final void startDocument() throws SAXException {
-		
-		setXmlFileProcessedNow( true );
+	public final void startDocument() throws SAXException
+	{
+
+		setXmlFileProcessedNow(true);
 	}
 
 	/**
 	 * @see org.xml.sax.ContentHandler#endDocument()
 	 */
-	public final void endDocument() throws SAXException {
-		
-		setXmlFileProcessedNow( false );	
-		
-		if ( currentHandler != null ) 
+	public final void endDocument() throws SAXException
+	{
+
+		setXmlFileProcessedNow(false);
+
+		if (currentHandler != null)
 		{
-//			generalManager.logMsg( "XmlParserManager.endDocument()  key=[" +
-//					currentHandler.getXmlActivationTag() + "]  call " +
-//					currentHandler.getClass().getSimpleName() + 
-//					".endDocument() ...",
-//					LoggerType.FULL );
-			
+			// generalManager.logMsg( "XmlParserManager.endDocument()  key=[" +
+			// currentHandler.getXmlActivationTag() + "]  call " +
+			// currentHandler.getClass().getSimpleName() +
+			// ".endDocument() ...",
+			// LoggerType.FULL );
+
 			currentHandler.endDocument();
-		} // if ( currentHandler != null ) 
-		else 
+		} // if ( currentHandler != null )
+		else
 		{
-			if ( bUnloadSaxHandlerAfterBootstraping ) {				
+			if (bUnloadSaxHandlerAfterBootstraping)
+			{
 				this.destroyHandler();
 			}
-			
-		} // else .. if ( currentHandler != null ) 
+
+		} // else .. if ( currentHandler != null )
 	}
 
-
-	/* (non-Javadoc)
-	 * @see org.xml.sax.ContentHandler#startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
+	/*
+	 * (non-Javadoc)
+	 * @see org.xml.sax.ContentHandler#startElement(Stringt, Stringt, Stringt,
+	 * org.xml.sax.Attributes)
 	 */
-	public void startElement(String uri, 
-			String localName, 
-			String qName,
-			Attributes attrib) throws SAXException {
-		
-		if ( currentHandler == null ) 
+	public void startElement(String uri, String localName, String qName, Attributes attrib)
+			throws SAXException
+	{
+
+		if (currentHandler == null)
 		{
-//			generalManager.logMsg( " < TAG= " + qName,
-//					LoggerType.FULL );
-			
-			startElement_search4Tag(uri,
-					localName, 
-					qName,
-					attrib);
-			
-			if ( currentHandler != null )
+			// generalManager.logMsg( " < TAG= " + qName,
+			// LoggerType.FULL );
+
+			startElementSearch4Tag(uri, localName, qName, attrib);
+
+			if (currentHandler != null)
 			{
-				/* forwared event if currentHandler was set inside startElement_search4Tag(..) */
-				currentHandler.startElement( uri, 
-						localName, 
-						qName,
-						attrib );
-			} //if ( currentHandler != null )
-			
-			/* early return from if ()*/
+				/*
+				 * forwared event if currentHandler was set inside
+				 * startElement_search4Tag(..)
+				 */
+				currentHandler.startElement(uri, localName, qName, attrib);
+			} // if ( currentHandler != null )
+
+			/* early return from if () */
 			return;
-			
-		} // if ( currentHandler == null ) 
-		
-		/* else; regular case with valid current Handler */ 			
+
+		} // if ( currentHandler == null )
+
+		/* else; regular case with valid current Handler */
 		/* test, if new Handler has to be activated. */
-		startElement_search4Tag(uri,
-				localName, 
-				qName,
-				attrib);	
-		
-		currentHandler.startElement( uri, 
-				localName, 
-				qName,
-				attrib );		
+		startElementSearch4Tag(uri, localName, qName, attrib);
+
+		currentHandler.startElement(uri, localName, qName, attrib);
 	}
 
 	/**
-	 * @see org.caleydo.core.manager.IXmlParserManager#startElement_search4Tag(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
+	 * @see org.caleydo.core.manager.IXmlParserManager#startElementSearch4Tag(Stringt,
+	 *      Stringt, Stringt, org.xml.sax.Attributes)
 	 */
-	public void startElement_search4Tag(String uri, 
-			String localName, 
-			String qName,
-			Attributes attrib) {
-		
-		if ( hashTag2XmlParser.containsKey( qName ) ) 
+	public void startElementSearch4Tag(String uri, String localName, String qName,
+			Attributes attrib)
+	{
+
+		if (hashTag2XmlParser.containsKey(qName))
 		{
 			/**
 			 * Get handler registered to this "qName" ..
 			 */
-			IXmlParserHandler handler = hashTag2XmlParser.get( qName );
-			
-			try // catch (SAXException se) 
+			IXmlParserHandler handler = hashTag2XmlParser.get(qName);
+
+			try
+			// catch (SAXException se)
 			{
 				/**
-				 * Register handler only if it is not 
-				 * the OpenExternalXmlFileSaxHandler ...
+				 * Register handler only if it is not the
+				 * OpenExternalXmlFileSaxHandler ...
 				 */
-				if (handler instanceof OpenExternalXmlFileSaxHandler) 
+				if (handler instanceof OpenExternalXmlFileSaxHandler)
 				{
 					/**
-					 * Special case: 
-					 * 
-					 * Open new file, but do not register new handler...
-					 * Attention: do not call  sectionFinishedByHandler() from FileLoaderSaxHandler !
+					 * Special case: Open new file, but do not register new
+					 * handler... Attention: do not call
+					 * sectionFinishedByHandler() from FileLoaderSaxHandler !
 					 */
-						/**
-						 * 
-						 * pass event to current handler
-						 */
-						handler.startElement( uri,
-								localName,
-								qName,
-								attrib );
-						
-						/* early exit from try-catch block and if */
-						return;
-						
-				}					
-				
-				
+					/**
+					 * pass event to current handler
+					 */
+					handler.startElement(uri, localName, qName, attrib);
+
+					/* early exit from try-catch block and if */
+					return;
+
+				}
+
 				/**
 				 * Regular case: register new handler ...
 				 */
-				
-//				generalManager.logMsg(
-//						"AXmlParserManager.openCurrentTag( key=[" + 
-//						handler.getXmlActivationTag() + "] " +
-//						handler.getClass().getSimpleName() +	" )",
-//						LoggerType.VERBOSE_EXTRA );
-				
+
+				// generalManager.logMsg(
+				// "AXmlParserManager.openCurrentTag( key=[" +
+				// handler.getXmlActivationTag() + "] " +
+				// handler.getClass().getSimpleName() + " )",
+				// LoggerType.VERBOSE_EXTRA );
 				/**
 				 * register new handler ...
 				 */
-				llXmlParserStack.add( handler );				
-				currentHandler = handler;	
-				
+				llXmlParserStack.add(handler);
+				currentHandler = handler;
+
 			} // try
-			catch (SAXException se) 
+			catch (SAXException se)
 			{
-//				generalManager.logMsg( "XmlParserManager.startElement_search4Tag() SAX error: " +
-//						se.toString(),
-//						LoggerType.ERROR );
-				
-			} // try .. catch (SAXException se) 		
-			
-		} // if ( hashTag2XmlParser.containsKey( qName ) ) 
-		
+				// generalManager.logMsg(
+				// "XmlParserManager.startElement_search4Tag() SAX error: " +
+				// se.toString(),
+				// LoggerType.ERROR );
+
+			} // try .. catch (SAXException se)
+
+		} // if ( hashTag2XmlParser.containsKey( qName ) )
+
 	}
-	
-	/* (non-Javadoc)
+
+	/*
+	 * (non-Javadoc)
 	 * @see org.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
 	 */
-	public void endElement(String uri, String localName, String qName)
-			throws SAXException {
-		
-//		generalManager.logMsg( "        " + qName + " TAG -->",
-//				LoggerType.FULL );
-		
-		if ( currentHandler != null ) {
-//			if ( sCurrentClosingTag.equals( qName ) ) {
-//				this.closeCurrentTag();
-//				return;
-//			}
-			
-			currentHandler.endElement( uri, 
-					localName,
-					qName);
+	public void endElement(String uri, String localName, String qName) throws SAXException
+	{
+
+		// generalManager.logMsg( "        " + qName + " TAG -->",
+		// LoggerType.FULL );
+
+		if (currentHandler != null)
+		{
+			// if ( sCurrentClosingTag.equals( qName ) ) {
+			// this.closeCurrentTag();
+			// return;
+			// }
+
+			currentHandler.endElement(uri, localName, qName);
 		}
 
 	}
-	
-	
+
 	/**
-	 * @see org.caleydo.core.manager.IXmlParserManager#endElement_search4Tag(Stringt, Stringt, Stringt)
+	 * @see org.caleydo.core.manager.IXmlParserManager#endElementSearch4Tag(Stringt,
+	 *      Stringt, Stringt)
 	 */
-	public void endElement_search4Tag(String uri, 
-			String localName, 
-			String qName) {
-		
+	public void endElementSearch4Tag(String uri, String localName, String qName)
+	{
+
 		assert false : "should not be called but overloaded by derived class.";
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see org.xml.sax.ContentHandler#characters(char[], int, int)
 	 */
-	public void characters(char[] ch, int start, int length) 
-		throws SAXException {
-		
-		if ( currentHandler != null ) {				
+	public void characters(char[] ch, int start, int length) throws SAXException
+	{
+
+		if (currentHandler != null)
+		{
 			currentHandler.characters(ch, start, length);
 		}
 	}
 
-	
-	public final void sectionFinishedByHandler( IXmlParserHandler handler ) {
-		
+	public final void sectionFinishedByHandler(IXmlParserHandler handler)
+	{
+
 		assert handler != null : "Can not handel null pointer!";
-		
+
 		/**
 		 * allow unregistering of handler
 		 */
-		setXmlFileProcessedNow( false );
-		
+		setXmlFileProcessedNow(false);
+
 		/**
 		 * 
 		 */
-		if ( currentHandler != handler ) {
-			throw new CaleydoRuntimeException("sectionFinishedByHandler() called by wrong handler!",
+		if (currentHandler != handler)
+		{
+			throw new CaleydoRuntimeException(
+					"sectionFinishedByHandler() called by wrong handler!",
 					CaleydoRuntimeExceptionType.SAXPARSER);
 		}
-				
-		closeCurrentTag();				
-		
+
+		closeCurrentTag();
+
 		/**
-		 * enable processing flag again. Return "token".		 
+		 * enable processing flag again. Return "token".
 		 */
-		setXmlFileProcessedNow( true );
+		setXmlFileProcessedNow(true);
 	}
 
-	
 	/**
 	 * @see org.caleydo.core.manager.IXmlParserManager#parseXmlFileByName(java.lang.String)
 	 */
-	public boolean parseXmlString( final String sMuddlewareXPath, final String xmlString ) {
-		
+	public boolean parseXmlString(final String sMuddlewareXPath, final String xmlString)
+	{
+
 		iCountOpenedFiles++;
-		try 
-		{
-//			generalManager.logMsg("XmlParserManager.parseXmlString( " + sMuddlewareXPath + ") parse...",
-//					LoggerType.VERBOSE );
-			
-			InputSource inStream = new InputSource( xmlString );	
-			
-//			generalManager.logMsg("XmlParserManager.parseXmlString( XPath=[" + sMuddlewareXPath + "] , ..) done.",
-//					LoggerType.VERBOSE_EXTRA );
-			
-			boolean status = CaleydoInputStream.parseOnce( inStream ,
-					sMuddlewareXPath,
-					this,
-					generalManager );
-			
-//			generalManager.logMsg("XmlParserManager.parseXmlFileByName( XPath=[" + sMuddlewareXPath + "], ..) done.",
-//					LoggerType.STATUS );
-			
-			return 	status;
-		
-		} 
-		catch (CaleydoRuntimeException gve)
-		{
-//			generalManager.logMsg("XmlParserManager.parseXmlString( " + sMuddlewareXPath + 
-//					"," + xmlString + ") failed; caleydo_error: " +
-//					gve.toString(),
-//					LoggerType.MINOR_ERROR_XML );
-			
-			return false;
-		}	
-		catch (RuntimeException e)
-		{
-//			generalManager.logMsg("XmlParserManager.parseXmlString( " + sMuddlewareXPath + 
-//					"," + xmlString + ") failed; system_error: " +
-//					e.toString(),
-//					LoggerType.MINOR_ERROR_XML );			
-			
-			return false;
-		}	
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IXmlParserManager#parseXmlFileByName(java.lang.String)
-	 */
-	public boolean parseXmlFileByName( final String filename ) {
-		
-		iCountOpenedFiles++;
-		
 		try
 		{
-			URL resourceUrl =  this.getClass().getClassLoader().getResource(filename);
+			// generalManager.logMsg("XmlParserManager.parseXmlString( " +
+			// sMuddlewareXPath + ") parse...",
+			// LoggerType.VERBOSE );
+
+			InputSource inStream = new InputSource(xmlString);
+
+			// generalManager.logMsg("XmlParserManager.parseXmlString( XPath=["
+			// + sMuddlewareXPath + "] , ..) done.",
+			// LoggerType.VERBOSE_EXTRA );
+
+			boolean status = CaleydoInputStream.parseOnce(inStream, sMuddlewareXPath, this,
+					generalManager);
+
+			// generalManager.logMsg(
+			// "XmlParserManager.parseXmlFileByName( XPath=[" + sMuddlewareXPath
+			// + "], ..) done.",
+			// LoggerType.STATUS );
+
+			return status;
+
+		}
+		catch (CaleydoRuntimeException gve)
+		{
+			// generalManager.logMsg("XmlParserManager.parseXmlString( " +
+			// sMuddlewareXPath +
+			// "," + xmlString + ") failed; caleydo_error: " +
+			// gve.toString(),
+			// LoggerType.MINOR_ERROR_XML );
+
+			return false;
+		}
+		catch (RuntimeException e)
+		{
+			// generalManager.logMsg("XmlParserManager.parseXmlString( " +
+			// sMuddlewareXPath +
+			// "," + xmlString + ") failed; system_error: " +
+			// e.toString(),
+			// LoggerType.MINOR_ERROR_XML );
+
+			return false;
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * org.caleydo.core.manager.IXmlParserManager#parseXmlFileByName(java.lang
+	 * .String)
+	 */
+	public boolean parseXmlFileByName(final String filename)
+	{
+
+		iCountOpenedFiles++;
+
+		try
+		{
+			URL resourceUrl = this.getClass().getClassLoader().getResource(filename);
 			InputSource inSource = null;
-			
-			if (resourceUrl != null) 
+
+			if (resourceUrl != null)
 			{
-				inSource = CaleydoInputStream.openInputStreamFromUrl(resourceUrl, generalManager);			
+				inSource = CaleydoInputStream.openInputStreamFromUrl(resourceUrl,
+						generalManager);
 			}
 			else
 			{
-				inSource = CaleydoInputStream.openInputStreamFromFile(filename, generalManager);
+				inSource = CaleydoInputStream
+						.openInputStreamFromFile(filename, generalManager);
 			}
-			
-			generalManager.getLogger().log(Level.INFO, "Start parsing file " +filename);
-		
-			boolean status = CaleydoInputStream.parseOnce( inSource ,
-					filename,
-					this,
-					generalManager );
-			
-			generalManager.getLogger().log(Level.INFO, "Finished parsing file " +filename);
-			
-			return 	status;
-			
-		} 
+
+			generalManager.getLogger().log(Level.INFO, "Start parsing file " + filename);
+
+			boolean status = CaleydoInputStream.parseOnce(inSource, filename, this,
+					generalManager);
+
+			generalManager.getLogger().log(Level.INFO, "Finished parsing file " + filename);
+
+			return status;
+
+		}
 		catch (CaleydoRuntimeException gve)
 		{
-//			generalManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") failed; caleydo_error: " +
-//					gve.toString(),
-//					LoggerType.MINOR_ERROR_XML );
-			
+			// generalManager.logMsg("XmlParserManager.parseXmlFileByName( " +
+			// filename + ") failed; caleydo_error: " +
+			// gve.toString(),
+			// LoggerType.MINOR_ERROR_XML );
+
 			return false;
-		}	
+		}
 		catch (RuntimeException e)
 		{
-//			generalManager.logMsg("XmlParserManager.parseXmlFileByName( " + filename + ") failed; system_error: " +
-//					e.toString(),
-//					LoggerType.MINOR_ERROR_XML );			
-			
+			// generalManager.logMsg("XmlParserManager.parseXmlFileByName( " +
+			// filename + ") failed; system_error: " +
+			// e.toString(),
+			// LoggerType.MINOR_ERROR_XML );
+
 			return false;
-		}			
+		}
 	}
-	
+
 	/**
 	 * @see org.caleydo.core.manager.IXmlParserManager#parseXmlFileByName(Stringt)
 	 */
-	public boolean parseXmlFileByNameAndHandler( final String filename, 
-			final OpenExternalXmlFileSaxHandler openFileHandler ) {
-		
+	public boolean parseXmlFileByNameAndHandler(final String filename,
+			final OpenExternalXmlFileSaxHandler openFileHandler)
+	{
+
 		// this.swapXmlParserHandler( currentHandler, openFileHandler );
-		
+
 		iCountOpenedFiles++;
-		
-		try {
-			URL resourceUrl =  this.getClass().getClassLoader().getResource(filename);
+
+		try
+		{
+			URL resourceUrl = this.getClass().getClassLoader().getResource(filename);
 			InputSource inSource = null;
-			
-			if (resourceUrl != null) {
-				inSource = CaleydoInputStream.openInputStreamFromUrl(resourceUrl,	generalManager );			
+
+			if (resourceUrl != null)
+			{
+				inSource = CaleydoInputStream.openInputStreamFromUrl(resourceUrl,
+						generalManager);
 			}
 			else
 			{
-				inSource = CaleydoInputStream.openInputStreamFromFile(filename, generalManager);
+				inSource = CaleydoInputStream
+						.openInputStreamFromFile(filename, generalManager);
 			}
-			
-			return CaleydoInputStream.parseOnce( inSource , 
-					filename,
-					this,
-					generalManager );		
-			
-		} 
+
+			return CaleydoInputStream.parseOnce(inSource, filename, this, generalManager);
+
+		}
 		catch (CaleydoRuntimeException gve)
 		{
-//			generalManager.logMsg("XmlParserManager.parseXmlFileByNameAndHandler( " + filename + ") failed; caleydo_error: " +
-//					gve.toString(),
-//					LoggerType.MINOR_ERROR_XML );
-			
+			// generalManager.logMsg(
+			// "XmlParserManager.parseXmlFileByNameAndHandler( " + filename +
+			// ") failed; caleydo_error: " +
+			// gve.toString(),
+			// LoggerType.MINOR_ERROR_XML );
+
 			return false;
-		}	
+		}
 		catch (RuntimeException e)
 		{
-//			generalManager.logMsg("XmlParserManager.parseXmlFileByNameAndHandler( " + filename + ") failed; system_error: " +
-//					e.toString(),
-//					LoggerType.MINOR_ERROR_XML );			
-			
+			// generalManager.logMsg(
+			// "XmlParserManager.parseXmlFileByNameAndHandler( " + filename +
+			// ") failed; system_error: " +
+			// e.toString(),
+			// LoggerType.MINOR_ERROR_XML );
+
 			return false;
-		}		
+		}
 	}
-	
-	
+
 	/**
 	 * @see org.caleydo.core.manager.IXmlParserManager#parseXmlFileByInputStream(org.xml.sax.InputSource)
 	 */
-	public boolean parseXmlFileByInputStream( InputSource inputStream,
-			final String inputStreamText ) {
-		
+	public boolean parseXmlFileByInputStream(InputSource inputStream,
+			final String inputStreamText)
+	{
+
 		iCountOpenedFiles++;
-		try {
-			
-			return CaleydoInputStream.parseOnce( inputStream ,
-					inputStreamText,
-					this,
-					generalManager );	
-		} 
+		try
+		{
+
+			return CaleydoInputStream.parseOnce(inputStream, inputStreamText, this,
+					generalManager);
+		}
 		catch (CaleydoRuntimeException gve)
 		{
-//			generalManager.logMsg("XmlParserManager.parseXmlFileByInputStream( ) failed; caleydo_error: " +
-//					gve.toString(),
-//					LoggerType.MINOR_ERROR_XML );
-			
+			// generalManager.logMsg(
+			// "XmlParserManager.parseXmlFileByInputStream( ) failed; caleydo_error: "
+			// +
+			// gve.toString(),
+			// LoggerType.MINOR_ERROR_XML );
+
 			return false;
-		}	
+		}
 		catch (RuntimeException e)
 		{
-//			generalManager.logMsg("XmlParserManager.parseXmlFileByInputStream( ) failed; system_error: " +
-//					e.toString(),
-//					LoggerType.MINOR_ERROR_XML );			
-			
+			// generalManager.logMsg(
+			// "XmlParserManager.parseXmlFileByInputStream( ) failed; system_error: "
+			// +
+			// e.toString(),
+			// LoggerType.MINOR_ERROR_XML );
+
 			return false;
-		}	
+		}
 	}
 
+	public void destroyHandler()
+	{
 
-	public void destroyHandler() {
-		
-//		generalManager.logMsg( "XmlParserManager.destoryHandler() ... ",
-//				LoggerType.VERBOSE );
-		
+		// generalManager.logMsg( "XmlParserManager.destoryHandler() ... ",
+		// LoggerType.VERBOSE );
+
 		/**
 		 * Linked list...
 		 */
-		
-		if ( llXmlParserStack == null )
+
+		if (llXmlParserStack == null)
 		{
-//			generalManager.logMsg( "XmlParserManager.destoryHandler() llXmlParserStack is null",
-//					LoggerType.FULL );
+			// generalManager.logMsg(
+			// "XmlParserManager.destoryHandler() llXmlParserStack is null",
+			// LoggerType.FULL );
 		} // if ( llXmlParserStack == null )
-		else 
+		else
 		{
-//			generalManager.logMsg( "XmlParserManager.destoryHandler() llXmlParserStack remove objects..",
-//					LoggerType.FULL );
-			
-			if ( ! llXmlParserStack.isEmpty() ) 
+			// generalManager.logMsg(
+			// "XmlParserManager.destoryHandler() llXmlParserStack remove objects.."
+			// ,
+			// LoggerType.FULL );
+
+			if (!llXmlParserStack.isEmpty())
 			{
-				Iterator <IXmlParserHandler> iterParserHandler = 
-					llXmlParserStack.iterator();
-				
-				while ( iterParserHandler.hasNext() ) 
+				Iterator<IXmlParserHandler> iterParserHandler = llXmlParserStack.iterator();
+
+				while (iterParserHandler.hasNext())
 				{
 					IXmlParserHandler handler = iterParserHandler.next();
-					
-					unregisterSaxHandler( handler.getXmlActivationTag() );
+
+					unregisterSaxHandler(handler.getXmlActivationTag());
 					handler.destroyHandler();
-				} // while ( iterParserHandler.hasNext() ) 
-				
-				llXmlParserStack.clear();	
-				
-			} // if ( ! llXmlParserStack.isEmpty() ) 
-			
+				} // while ( iterParserHandler.hasNext() )
+
+				llXmlParserStack.clear();
+
+			} // if ( ! llXmlParserStack.isEmpty() )
+
 			llXmlParserStack = null;
 		} // else .. if ( llXmlParserStack == null )
-		
-		
+
 		/**
 		 * Hashtable ...
 		 */
-		
-		if ( hashTag2XmlParser == null )
+
+		if (hashTag2XmlParser == null)
 		{
-//			generalManager.logMsg( "XmlParserManager.destoryHandler() hashTag2XmlParser is null",
-//					LoggerType.FULL );
+			// generalManager.logMsg(
+			// "XmlParserManager.destoryHandler() hashTag2XmlParser is null",
+			// LoggerType.FULL );
 		} // if ( hashTag2XmlParser == null )
 		else
 		{
-//			generalManager.logMsg( "XmlParserManager.destoryHandler() hashTag2XmlParser remove objects..",
-//					LoggerType.FULL );
-			
-			if ( ! hashTag2XmlParser.isEmpty() ) {
-				Iterator <IXmlParserHandler> iterHandler =  hashTag2XmlParser.values().iterator();
-										
-				while ( iterHandler.hasNext() ) 
+			// generalManager.logMsg(
+			// "XmlParserManager.destoryHandler() hashTag2XmlParser remove objects.."
+			// ,
+			// LoggerType.FULL );
+
+			if (!hashTag2XmlParser.isEmpty())
+			{
+				Iterator<IXmlParserHandler> iterHandler = hashTag2XmlParser.values()
+						.iterator();
+
+				while (iterHandler.hasNext())
 				{
-					IXmlParserHandler handler = iterHandler.next(); 
-					
-					if ( handler != null )
+					IXmlParserHandler handler = iterHandler.next();
+
+					if (handler != null)
 					{
 						handler.destroyHandler();
 						handler = null;
 					}
-					
-				} // while ( iterHandler.hasNext() ) 
-			
-				hashTag2XmlParser.clear();	
-				
+
+				} // while ( iterHandler.hasNext() )
+
+				hashTag2XmlParser.clear();
+
 			} // if ( ! hashTag2XmlParser.isEmpty() ) {
 			hashTag2XmlParser = null;
-			
-		} // else .. if ( hashTag2XmlParser == null )
-		
-//		generalManager.logMsg( "XmlParserManager.destoryHandler() ... done!",
-//				LoggerType.FULL );
-		
-//		generalManager.logMsg( "XML file was read sucessfully.",
-//				LoggerType.STATUS );
-		
-	}
-	
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.IManagedObject#getManager()
-	 */
-	public final IGeneralManager getGeneralManager() {
-		return this.generalManager;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.IManagedObject#setGeneralManager(org.caleydo.core.manager.IGeneralManager)
-	 */
-	public void setGeneralManager(final IGeneralManager generalManager)
-	{
-		this.generalManager = generalManager;
+		} // else .. if ( hashTag2XmlParser == null )
+
+		// generalManager.logMsg( "XmlParserManager.destoryHandler() ... done!",
+		// LoggerType.FULL );
+
+		// generalManager.logMsg( "XML file was read sucessfully.",
+		// LoggerType.STATUS );
+
 	}
 }

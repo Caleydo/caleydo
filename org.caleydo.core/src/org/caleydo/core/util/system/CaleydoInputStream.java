@@ -25,36 +25,39 @@ import org.xml.sax.helpers.XMLReaderFactory;
  */
 public class CaleydoInputStream
 {
+
 	/**
 	 * Opens a file and returns an input stream to that file.
 	 * 
-	 * @param sXMLFileName name and path of the file
+	 * @param sXMLFileName
+	 *            name and path of the file
 	 * @return input stream of the file, or null
 	 */
-	public static InputSource openInputStreamFromFile( final String sXMLFileName,
-			final IGeneralManager generalManager ) {
-		
-		try {
-			File inputFile = new File( sXMLFileName );		
-			FileReader inReader = new FileReader( inputFile );
-			
-			InputSource inStream = new InputSource( inReader );
-			
-			generalManager.getLogger().logp(Level.FINE, "CaleydoInputStream", 
-					"openInputStreamFromFile", 
-					"open input stream  [" + sXMLFileName + "]");
-			
+	public static InputSource openInputStreamFromFile(final String sXMLFileName,
+			final IGeneralManager generalManager)
+	{
+
+		try
+		{
+			File inputFile = new File(sXMLFileName);
+			FileReader inReader = new FileReader(inputFile);
+
+			InputSource inStream = new InputSource(inReader);
+
+			generalManager.getLogger().logp(Level.FINE, "CaleydoInputStream",
+					"openInputStreamFromFile", "open input stream  [" + sXMLFileName + "]");
+
 			return inStream;
 		}
-		catch ( FileNotFoundException fnfe) {
-			
-			generalManager.getLogger().logp(Level.SEVERE, "CaleydoInputStream", 
-					"openInputStreamFromFile", 
-					"File not found " + fnfe.toString());
+		catch (FileNotFoundException fnfe)
+		{
+
+			generalManager.getLogger().logp(Level.SEVERE, "CaleydoInputStream",
+					"openInputStreamFromFile", "File not found " + fnfe.toString());
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Opens a resource and returns an input stream to that resource.
 	 * 
@@ -62,96 +65,102 @@ public class CaleydoInputStream
 	 * @param generalManager
 	 * @return
 	 */
-	public static InputSource openInputStreamFromUrl( final URL resourceUrl,
-			final IGeneralManager generalManager ) {
-		
-		try {	
+	public static InputSource openInputStreamFromUrl(final URL resourceUrl,
+			final IGeneralManager generalManager)
+	{
+
+		try
+		{
 			InputSource inStream = new InputSource(resourceUrl.openStream());
 
-			generalManager.getLogger().log(Level.INFO, "Open input stream " +resourceUrl.toString());
-			
+			generalManager.getLogger().log(Level.INFO,
+					"Open input stream " + resourceUrl.toString());
+
 			return inStream;
-		} catch (IOException e)
+		}
+		catch (IOException e)
 		{
 			generalManager.getLogger().log(Level.SEVERE, "Error loading resource.", e);
 		}
 		return null;
 	}
-	
+
 	/**
-	 * 
-	 * 
 	 * @param inStream
 	 * @param sInputStreamLabel
 	 * @param handler
 	 * @param generalManager
 	 * @return
 	 */
-	public static boolean parseOnce( InputSource inStream,
-			final String sInputStreamLabel,
-			IXmlBaseHandler handler,
-			final IGeneralManager generalManager ) {
-		
-		if ( handler == null ) 
+	public static boolean parseOnce(InputSource inStream, final String sInputStreamLabel,
+			IXmlBaseHandler handler, final IGeneralManager generalManager)
+	{
+
+		if (handler == null)
 		{
-			generalManager.getLogger().log(Level.SEVERE, "Error during parsing. Handler is null.");				
+			generalManager.getLogger().log(Level.SEVERE,
+					"Error during parsing. Handler is null.");
 			return false;
-		} //if
-		
-		if ( inStream==null ) 
+		} // if
+
+		if (inStream == null)
 		{
-			generalManager.getLogger().log(Level.SEVERE, "Error during parsing. No input stream; skip file");	
+			generalManager.getLogger().log(Level.SEVERE,
+					"Error during parsing. No input stream; skip file");
 			return false;
 		}
-		
-		try 
-		{			
+
+		try
+		{
 			XMLReader reader = null;
-			
+
 			if (sInputStreamLabel.contains("."))
 			{
 				reader = XMLReaderFactory.createXMLReader();
 
-				// Entity resolver avoids the XML Reader 
-				// to check external DTDs. 
-				reader.setFeature("http://apache.org/xml/features/nonvalidating/load-external-dtd", 
-					false);
-				
+				// Entity resolver avoids the XML Reader
+				// to check external DTDs.
+				reader.setFeature(
+						"http://apache.org/xml/features/nonvalidating/load-external-dtd",
+						false);
+
 				reader.setEntityResolver(handler);
 				reader.setContentHandler(handler);
 			}
 			else
 			{
-				reader =
-					XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
-				//reader.setFeature(org.ccil.cowan.tagsoup.Parser.defaultAttributesFeature, false);
-			
+				reader = XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
+				// reader.setFeature(org.ccil.cowan.tagsoup.Parser.
+				// defaultAttributesFeature, false);
+
 				reader.setEntityResolver(handler);
 				reader.setContentHandler(handler);
-				
+
 				HTMLSchema htmlSchema = new HTMLSchema();
 				reader.setProperty(Parser.schemaProperty, htmlSchema);
 			}
-			
-			try 
-			{						
-				reader.parse( inStream );
-			} 
+
+			try
+			{
+				reader.parse(inStream);
+			}
 			catch (SAXParseException saxe)
 			{
-				generalManager.getLogger().log(Level.SEVERE, 
-						"SAXParser-error during parsing line=" +saxe.getLineNumber() 
-						+" at column="  + saxe.getColumnNumber()+".\n SAX error: "+saxe.toString(), saxe);
+				generalManager.getLogger().log(
+						Level.SEVERE,
+						"SAXParser-error during parsing line=" + saxe.getLineNumber()
+								+ " at column=" + saxe.getColumnNumber() + ".\n SAX error: "
+								+ saxe.toString(), saxe);
 			}
-			catch ( IOException e) 
+			catch (IOException e)
 			{
 				generalManager.getLogger().log(Level.SEVERE, "IO-error during parsing", e);
 			} // try
-			catch ( Exception e) 
+			catch (Exception e)
 			{
 				generalManager.getLogger().log(Level.SEVERE, "Error during parsing", e);
 			} // try
-			
+
 			/**
 			 * close file...
 			 */
@@ -159,28 +168,29 @@ public class CaleydoInputStream
 			{
 				inStream.getByteStream().close();
 			}
-			else if(inStream.getCharacterStream() != null)
+			else if (inStream.getCharacterStream() != null)
 			{
 				inStream.getCharacterStream().close();
 			}
-			
-			generalManager.getLogger().log(Level.INFO, "Close input stream: "+sInputStreamLabel);
-			
+
+			generalManager.getLogger().log(Level.INFO,
+					"Close input stream: " + sInputStreamLabel);
+
 		} // try
-		catch (SAXException saxe) 
+		catch (SAXException saxe)
 		{
-			generalManager.getLogger().log(Level.SEVERE, 
-					"SAXParser-error during parsing.\n SAX error: "+saxe.toString(), saxe);
+			generalManager.getLogger().log(Level.SEVERE,
+					"SAXParser-error during parsing.\n SAX error: " + saxe.toString(), saxe);
 		}
-		catch (IOException ioe) 
+		catch (IOException ioe)
 		{
 			generalManager.getLogger().log(Level.SEVERE, "IO-error during parsing", ioe);
 		}
-		catch (Exception e) 
+		catch (Exception e)
 		{
 			generalManager.getLogger().log(Level.SEVERE, "Error during parsing", e);
 		}
-		
+
 		return true;
 	}
 }

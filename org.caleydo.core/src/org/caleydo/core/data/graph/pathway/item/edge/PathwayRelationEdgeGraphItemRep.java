@@ -10,22 +10,22 @@ import org.caleydo.util.graph.item.GraphItem;
  * Used for KEGG pathways.
  * 
  * @author Marc Streit
- *
  */
-public class PathwayRelationEdgeGraphItemRep 
-extends GraphItem   
-implements Serializable 
-{	
+public class PathwayRelationEdgeGraphItemRep
+	extends GraphItem
+	implements Serializable
+{
+
 	private static final long serialVersionUID = 1L;
-	
+
 	/**
 	 * Constructor.
 	 * 
 	 * @param iId
 	 */
-	public PathwayRelationEdgeGraphItemRep(
-			final int iId) {
-		
+	public PathwayRelationEdgeGraphItemRep(final int iId)
+	{
+
 		super(iId, EGraphItemKind.EDGE);
 	}
 }

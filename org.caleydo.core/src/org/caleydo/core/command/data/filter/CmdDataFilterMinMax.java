@@ -1,7 +1,7 @@
 package org.caleydo.core.command.data.filter;
 
-//import java.util.ArrayList;
-//import java.util.Iterator;
+// import java.util.ArrayList;
+// import java.util.Iterator;
 
 import javax.naming.OperationNotSupportedException;
 
@@ -15,25 +15,23 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
- * @author Alexander Lex
- * 
- *  This class calculates the min and the max value of a storage or a set
- *  It is implemented as a command and as a filter.
- *
- *	TODO: Min max for set not implemented yet
- *
+ * @author Alexander Lex This class calculates the min and the max value of a
+ *         storage or a set It is implemented as a command and as a filter.
+ *         TODO: Min max for set not implemented yet
  */
 
-public class CmdDataFilterMinMax 
-extends ACmdCreate_IdTargetLabelAttrDetail 
+public class CmdDataFilterMinMax
+	extends ACmdCreate_IdTargetLabelAttrDetail
 {
+
 	private ISet mySet = null;
+
 	private INumericalStorage myStorage = null;
-	
+
 	private double dMinValue = Double.MAX_VALUE;
+
 	private double dMaxValue = Double.MIN_VALUE;
-	
-	
+
 	/**
 	 * Constructor.
 	 * 
@@ -41,42 +39,45 @@ extends ACmdCreate_IdTargetLabelAttrDetail
 	 * @param commandManager
 	 * @param commandQueueSaxType
 	 */
-	public CmdDataFilterMinMax(IGeneralManager generalManager,
-			ICommandManager commandManager,
-			CommandQueueSaxType commandQueueSaxType) 
+	public CmdDataFilterMinMax(IGeneralManager generalManager, ICommandManager commandManager,
+			CommandQueueSaxType commandQueueSaxType)
 	{
-		super(generalManager, commandManager, commandQueueSaxType);		
+
+		super(generalManager, commandManager, commandQueueSaxType);
 	}
-	
-	/**	
+
+	/**
 	 * Calculates the minimum and the maximum of either a set or a storage
-	 * depending on what has been set using the setAttributes methods	
+	 * depending on what has been set using the setAttributes methods
 	 */
-	public void doCommand() throws CaleydoRuntimeException 
+	public void doCommand() throws CaleydoRuntimeException
 	{
+
 		try
 		{
-			if(myStorage == null && mySet != null)
+			if (myStorage == null && mySet != null)
 			{
 				dMinValue = mySet.getMin();
 				dMaxValue = mySet.getMax();
 			}
-			else if(myStorage != null && mySet == null)
+			else if (myStorage != null && mySet == null)
 			{
 				dMinValue = myStorage.getMin();
 				dMaxValue = myStorage.getMax();
 			}
 			else
 			{
-				throw new CaleydoRuntimeException("You have to initialize the filter before using it",
+				throw new CaleydoRuntimeException(
+						"You have to initialize the filter before using it",
 						CaleydoRuntimeExceptionType.COMMAND);
 			}
-			
+
 			commandManager.runDoCommand(this);
 		}
-		catch(OperationNotSupportedException e)
+		catch (OperationNotSupportedException e)
 		{
-			throw new CaleydoRuntimeException(e.getExplanation(), CaleydoRuntimeExceptionType.COMMAND);
+			throw new CaleydoRuntimeException(e.getExplanation(),
+					CaleydoRuntimeExceptionType.COMMAND);
 		}
 	}
 
@@ -84,41 +85,50 @@ extends ACmdCreate_IdTargetLabelAttrDetail
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws CaleydoRuntimeException 
+	public void undoCommand() throws CaleydoRuntimeException
 	{
+
 		// TODO Auto-generated method stub
 	}
-	
+
 	/**
-	 * You have to set the attributes of the command before executing doCommand()
-	 * This is done here if you want to calculate the min and max on a storage
+	 * You have to set the attributes of the command before executing
+	 * doCommand() This is done here if you want to calculate the min and max on
+	 * a storage
 	 * 
-	 * @param myStorage The storage 
+	 * @param myStorage
+	 *            The storage
 	 */
 	public void setAttributes(INumericalStorage myStorage)
 	{
+
 		this.myStorage = myStorage;
 	}
-	
+
 	/**
-	 * You have to set the attributes of the command before executing doCommand()
-	 * This is done here if you want to calculate the min and max on a storage
+	 * You have to set the attributes of the command before executing
+	 * doCommand() This is done here if you want to calculate the min and max on
+	 * a storage
 	 * 
-	 * @param mySet The set
-	 */	
+	 * @param mySet
+	 *            The set
+	 */
 	public void setAttributes(ISet mySet)
 	{
+
 		this.mySet = mySet;
 	}
-	
-	public double getMin() 
-	{	
+
+	public double getMin()
+	{
+
 		return dMinValue;
 	}
-	
-	public double getMax() 
-	{	
+
+	public double getMax()
+	{
+
 		return dMaxValue;
 	}
-	
+
 }

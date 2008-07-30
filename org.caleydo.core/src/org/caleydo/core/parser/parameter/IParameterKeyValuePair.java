@@ -10,9 +10,8 @@ public interface IParameterKeyValuePair<T>
 	public abstract T getValueOrDefault(final String key);
 
 	public abstract void setValue(final String key, final T value);
-	
-	public abstract void setValueAndDefaultValue(final String key, 
-			final T value,
+
+	public abstract void setValueAndDefaultValue(final String key, final T value,
 			final T defaultValue);
 
 	public abstract void setDefaultValue(final String key, final T value);
@@ -26,6 +25,6 @@ public interface IParameterKeyValuePair<T>
 	public abstract boolean containsValueAndDefaultValue(final String key);
 
 	public int size();
-	
+
 	public boolean isEmpty();
 }

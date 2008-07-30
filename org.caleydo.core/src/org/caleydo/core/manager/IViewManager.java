@@ -15,36 +15,21 @@ import org.caleydo.core.view.ViewType;
  * @author Michael Kalkusch
  * @author Marc Streit
  */
-public interface IViewManager 
-extends IManager
-{		
-	public IView createView(final EManagerObjectType useViewType, 
-			final int iUniqueId,
-			final int iParentContainerId,
-			final String sLabel);
-	
-	public IView createGLView(final EManagerObjectType useViewType, 
-			final int iViewID,
-			final int iParentContainerID,
-			final int iCanvasID,
-			final String sLabel);
+public interface IViewManager
+	extends IManager
+{
+
+	public IView createView(final EManagerObjectType useViewType, final int iUniqueId,
+			final int iParentContainerId, final String sLabel);
+
+	public IView createGLView(final EManagerObjectType useViewType, final int iViewID,
+			final int iParentContainerID, final int iCanvasID, final String sLabel);
 
 	public void addViewRep(IView view);
-	
-	public void removeViewRep(IView view) ;
-	
+
+	public void removeViewRep(IView view);
+
 	public Collection<IView> getAllViews();
-	
+
 	public ArrayList<IView> getViewRepByType(ViewType viewType);
-	
-	/**
-	 * Create a new JFrame.
-	 * 
-	 * @param useViewCanvasType
-	 * @param sAditionalParameter
-	 * @return
-	 */
-	public JFrame createWorkspace( 
-			final EManagerObjectType useViewCanvasType,
-			final String sAditionalParameter );
 }

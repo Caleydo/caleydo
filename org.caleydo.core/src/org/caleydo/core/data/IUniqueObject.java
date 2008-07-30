@@ -9,14 +9,17 @@ import java.io.Serializable;
  * @author Marc Streit
  */
 public interface IUniqueObject
-extends Serializable {
-	
+	extends Serializable
+{
+
 	/**
 	 * Resets the selectionId.
-	 * @param iSetCollectionId new unique collection Id
+	 * 
+	 * @param iSetCollectionId
+	 *            new unique collection Id
 	 */
-	public void setId( int iSetCollectionId );
-	
+	public void setId(int iSetCollectionId);
+
 	/**
 	 * Get a unique Id
 	 * 

@@ -32,116 +32,120 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * 
  * @author Alexander Lex
  * @author Marc Streit
- *
  */
-public abstract class AGLCanvasStorageBasedView 
-extends AGLCanvasUser 
-implements IMediatorReceiver, IMediatorSender 
+public abstract class AGLCanvasStorageBasedView
+	extends AGLCanvasUser
+	implements IMediatorReceiver, IMediatorSender
 {
+
 	protected ArrayList<IStorage> alDataStorages;
-	
+
 	// Specify which type of selection is currently active
 	protected ESelectionType eWhichContentSelection = ESelectionType.COMPLETE_SELECTION;
+
 	protected ESelectionType eWhichStorageSelection = ESelectionType.STORAGE_SELECTION;
-	
+
 	// the list of all selection arrays
 	protected EnumMap<ESelectionType, ArrayList<Integer>> mapSelections;
-	
-	// the currently active selection arrays for content and storage 
+
+	// the currently active selection arrays for content and storage
 	// (references to mapSelection entries)
 	protected ArrayList<Integer> alContentSelection;
+
 	protected ArrayList<Integer> alStorageSelection;
-	
+
 	protected boolean bIsDisplayListDirtyLocal = true;
+
 	protected boolean bIsDisplayListDirtyRemote = true;
-	
+
 	protected int iGLDisplayListIndexLocal;
+
 	protected int iGLDisplayListIndexRemote;
+
 	protected int iGLDisplayListToCall = 0;
-	
-	protected IGenomeIdManager IDManager;	
-	
+
+	protected IGenomeIdManager IDManager;
+
 	protected SelectionManager extSelectionManager;
-	
-	// internal management of polyline selections, use 
-	// EPolylineSelectionType for types 
-	protected GenericSelectionManager horizontalSelectionManager;	
+
+	// internal management of polyline selections, use
+	// EPolylineSelectionType for types
+	protected GenericSelectionManager horizontalSelectionManager;
 
 	// internal management of axis selections, use
 	// EAxisSelectionTypes for types
 	protected GenericSelectionManager verticalSelectionManager;
-	
+
 	// flag whether one array should be a polyline or an axis
 	protected boolean bRenderStorageHorizontally = false;
-	
+
 	// flag whether the whole data or the selection should be rendered
 	protected boolean bRenderSelection = true;
-	
+
 	protected TextRenderer textRenderer;
-	
+
 	protected boolean bRenderOnlyContext = false;
-	
+
 	public void renderOnlyContext(boolean bRenderOnlyContext)
 	{
+
 		this.bRenderOnlyContext = bRenderOnlyContext;
 	}
-	
+
 	/**
 	 * Constructor.
 	 */
-	public AGLCanvasStorageBasedView(final IGeneralManager generalManager,
-			final int iViewId,
-			final int iGLCanvasID,
-			final String sLabel,
-			final IViewFrustum viewFrustum)
+	public AGLCanvasStorageBasedView(final IGeneralManager generalManager, final int iViewId,
+			final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
 	{
+
 		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum, true);
-		
+
 		alDataStorages = new ArrayList<IStorage>();
-		mapSelections = new EnumMap<ESelectionType, ArrayList<Integer>>(ESelectionType.class);	
-		
+		mapSelections = new EnumMap<ESelectionType, ArrayList<Integer>>(ESelectionType.class);
+
 		IDManager = generalManager.getGenomeIdManager();
-		
+
 		extSelectionManager = generalManager.getViewGLCanvasManager().getSelectionManager();
-		
-		textRenderer = new TextRenderer(new Font("Arial",
-				Font.BOLD, 16), false);
-		
+
+		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 16), false);
+
 	}
-	
+
 	public void initData()
 	{
+
 		if (alSetData == null)
 			return;
-		
+
 		if (alSelection == null)
-			return;				
+			return;
 
 		if (alDataStorages == null)
 			return;
-		
+
 		alDataStorages.clear();
-		
-//		mapSelections.clear();
-//		alContentSelection.clear();
-//		alStorageSelection.clear();
-		
+
+		// mapSelections.clear();
+		// alContentSelection.clear();
+		// alStorageSelection.clear();
+
 		// Extract data
 		for (ISet tmpSet : alSetData)
 		{
-			for(IStorage tmpStorage : tmpSet)
+			for (IStorage tmpStorage : tmpSet)
 			{
 				alDataStorages.add(tmpStorage);
 			}
-		}			
-		
+		}
+
 		ArrayList<Integer> alTempList = alSelection.get(0).getSelectionIdArray();
-//		A iArTemp = ;
-//		for(int iCount = 0; iCount < iArTemp.length; iCount++)
-//		{
-//			alTempList.add(iArTemp[iCount]);
-//		}
-		if(alTempList == null)
+		// A iArTemp = ;
+		// for(int iCount = 0; iCount < iArTemp.length; iCount++)
+		// {
+		// alTempList.add(iArTemp[iCount]);
+		// }
+		if (alTempList == null)
 		{
 			alTempList = new ArrayList<Integer>();
 		}
@@ -151,135 +155,140 @@ implements IMediatorReceiver, IMediatorSender
 		if (alDataStorages.size() > 0)
 		{
 			iStorageLength = 2000;
-//			iStorageLength = alDataStorages.get(0).getArrayFloat().length;
+			// iStorageLength = alDataStorages.get(0).getArrayFloat().length;
 		}
-		
+
 		alTempList = new ArrayList<Integer>(iStorageLength);
-		
+
 		// initialize full list
-		for(int iCount = 0; iCount < iStorageLength; iCount++)
+		for (int iCount = 0; iCount < iStorageLength; iCount++)
 		{
 			if (bRenderOnlyContext)
 			{
 				// FIXME: not general, only for genes
 				int iDavidId = getDavidIDFromStorageIndex(iCount);
-				
-				if(iDavidId == -1)
+
+				if (iDavidId == -1)
 				{
 					generalManager.getLogger().log(Level.FINE,
 							"Cannot resolve gene to DAVID ID!");
-					
+
 					continue;
 				}
 				else
-				{								
-					PathwayVertexGraphItem tmpPathwayVertexGraphItem = 
-						((PathwayVertexGraphItem)generalManager.getPathwayItemManager().getItem(
-							generalManager.getPathwayItemManager().getPathwayVertexGraphItemIdByDavidId(iDavidId)));
-		
-					if(tmpPathwayVertexGraphItem == null)
+				{
+					PathwayVertexGraphItem tmpPathwayVertexGraphItem = ((PathwayVertexGraphItem) generalManager
+							.getPathwayItemManager().getItem(
+									generalManager.getPathwayItemManager()
+											.getPathwayVertexGraphItemIdByDavidId(iDavidId)));
+
+					if (tmpPathwayVertexGraphItem == null)
 					{
 						generalManager.getLogger().log(Level.FINE,
 								"Something strange happens here! --> Investigate");
-						continue;					
+						continue;
 					}
 				}
 			}
 			alTempList.add(iCount);
 		}
-		
+
 		mapSelections.put(ESelectionType.COMPLETE_SELECTION, alTempList);
-		
+
 		alTempList = new ArrayList<Integer>();
-		
-		for(int iCount = 0; iCount < alDataStorages.size(); iCount++)
+
+		for (int iCount = 0; iCount < alDataStorages.size(); iCount++)
 		{
 			alTempList.add(iCount);
 		}
-		
+
 		mapSelections.put(ESelectionType.STORAGE_SELECTION, alTempList);
 		initLists();
 	}
-	
-	
-	
-	protected ArrayList<Integer> convertDavidIdToExpressionIndices(ArrayList<Integer> iAlSelection)
+
+	protected ArrayList<Integer> convertDavidIdToExpressionIndices(
+			ArrayList<Integer> iAlSelection)
 	{
+
 		ArrayList<Integer> iAlSelectionStorageIndices = new ArrayList<Integer>();
-		for(int iCount = 0; iCount < iAlSelection.size(); iCount++)
+		for (int iCount = 0; iCount < iAlSelection.size(); iCount++)
 		{
-			int iTmp = generalManager.getGenomeIdManager().getIdIntFromIntByMapping(
-					iAlSelection.get(iCount), EGenomeMappingType.DAVID_2_EXPRESSION_STORAGE_ID);
-			
-//			if (iTmp == -1)
-//				continue;
-			
+			int iTmp = generalManager.getGenomeIdManager()
+					.getIdIntFromIntByMapping(iAlSelection.get(iCount),
+							EGenomeMappingType.DAVID_2_EXPRESSION_STORAGE_ID);
+
+			// if (iTmp == -1)
+			// continue;
+
 			iAlSelectionStorageIndices.add(iTmp);
 		}
-		
+
 		return iAlSelectionStorageIndices;
 	}
-	
-	
+
 	protected void cleanSelection(ArrayList<Integer> iAlSelection, ArrayList<Integer> iAlGroup)
 	{
+
 		ArrayList<Integer> alDelete = new ArrayList<Integer>(1);
 		for (int iCount = 0; iCount < iAlSelection.size(); iCount++)
 		{
 			// TODO remove elements if -1
-			if(iAlSelection.get(iCount) == -1)
+			if (iAlSelection.get(iCount) == -1)
 			{
 				alDelete.add(iCount);
-				continue;		
+				continue;
 			}
-//			iAlSelection.set(iCount, iAlSelection.get(iCount) / 1000);	
-//			System.out.println("Storageindexalex: " + iAlSelection[iCount]);
-		}		
-		
-		for(int iCount = alDelete.size()-1; iCount >= 0; iCount--)
-		{			
+			// iAlSelection.set(iCount, iAlSelection.get(iCount) / 1000);
+			// System.out.println("Storageindexalex: " + iAlSelection[iCount]);
+		}
+
+		for (int iCount = alDelete.size() - 1; iCount >= 0; iCount--)
+		{
 			iAlSelection.remove(alDelete.get(iCount).intValue());
 			iAlGroup.remove(alDelete.get(iCount).intValue());
 		}
 	}
-	
-	protected void mergeSelection(ArrayList<Integer> iAlSelection, 
-			ArrayList<Integer> iAlGroup,
-			ArrayList<Integer> iAlOptional)
-	{	
+
+	protected void mergeSelection(ArrayList<Integer> iAlSelection,
+			ArrayList<Integer> iAlGroup, ArrayList<Integer> iAlOptional)
+	{
+
 		alSelection.get(0).mergeSelection(iAlSelection, iAlGroup, iAlOptional);
-		
+
 		initData();
 	}
-	
+
 	protected abstract SelectedElementRep createElementRep(int iStorageIndex);
-	
+
 	protected abstract void initLists();
-	
+
 	protected int getDavidIDFromStorageIndex(int index)
 	{
-		int iDavidId = IDManager.getIdIntFromIntByMapping(index, 
+
+		int iDavidId = IDManager.getIdIntFromIntByMapping(index,
 				EGenomeMappingType.EXPRESSION_STORAGE_ID_2_DAVID);
 		return iDavidId;
 	}
-	
+
 	protected String getRefSeqFromStorageIndex(int index)
 	{
+
 		// Convert expression storage ID to RefSeq
 		int iDavidId = getDavidIDFromStorageIndex(index);
-		String sRefSeq = IDManager.getIdStringFromIntByMapping(iDavidId, 
+		String sRefSeq = IDManager.getIdStringFromIntByMapping(iDavidId,
 				EGenomeMappingType.DAVID_2_REFSEQ_MRNA);
-		if(sRefSeq == "")
+		if (sRefSeq == "")
 			return "Unkonwn Gene";
 		else
-			return sRefSeq;		
+			return sRefSeq;
 	}
-	
-	public void updateReceiver(Object eventTrigger, ISelection updatedSelection) 
-	{		
-		generalManager.getLogger().log(Level.INFO, "Update called by "
-				+eventTrigger.getClass().getSimpleName());
-		
+
+	public void updateReceiver(Object eventTrigger, ISelection updatedSelection)
+	{
+
+		generalManager.getLogger().log(Level.INFO,
+				"Update called by " + eventTrigger.getClass().getSimpleName());
+
 		ISelection setSelection = (ISelection) updatedSelection;
 
 		// contains all genes in center pathway (not yet)
@@ -287,168 +296,178 @@ implements IMediatorReceiver, IMediatorSender
 		// contains type - 0 for not selected 1 for selected
 		ArrayList<Integer> iAlGroup = setSelection.getGroupArray();
 		ArrayList<Integer> iAlOptional = setSelection.getOptionalDataArray();
-		// iterate here		
+		// iterate here
 		ArrayList<Integer> iAlSelectionStorageIndices = convertDavidIdToExpressionIndices(iAlSelection);
 		cleanSelection(iAlSelectionStorageIndices, iAlGroup);
 		mergeSelection(iAlSelectionStorageIndices, iAlGroup, iAlOptional);
-		
+
 		int iSelectedDavidId = 0;
 		int iSelectedStorageIndex = 0;
-		
-		for(int iSelectionCount = 0; iSelectionCount < iAlSelectionStorageIndices.size();  iSelectionCount++)
+
+		for (int iSelectionCount = 0; iSelectionCount < iAlSelectionStorageIndices.size(); iSelectionCount++)
 		{
 			// TODO: same for click and mouse over atm
-			if(iAlGroup.get(iSelectionCount) == 1 || iAlGroup.get(iSelectionCount) == 2)
+			if (iAlGroup.get(iSelectionCount) == 1 || iAlGroup.get(iSelectionCount) == 2)
 			{
 				iSelectedDavidId = iAlSelection.get(iSelectionCount);
 				iSelectedStorageIndex = iAlSelectionStorageIndices.get(iSelectionCount);
-			
-//				System.out.println("Accession ID: " + iSelectedAccessionID);
-//				System.out.println("Accession Code: " +sAccessionCode);			
-//				System.out.println("Expression storage index: " +iSelectedStorageIndex);
-				
+
+				// System.out.println("Accession ID: " + iSelectedAccessionID);
+				// System.out.println("Accession Code: " +sAccessionCode);
+				// System.out.println("Expression storage index: "
+				// +iSelectedStorageIndex);
+
 				if (iSelectedStorageIndex >= 0)
-				{						
-					if(!bRenderStorageHorizontally)
-					{				
+				{
+					if (!bRenderStorageHorizontally)
+					{
 						// handle local selection
-						horizontalSelectionManager.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
-						horizontalSelectionManager.addToType(EViewInternalSelectionType.MOUSE_OVER, iSelectedStorageIndex);
-						
+						horizontalSelectionManager
+								.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
+						horizontalSelectionManager.addToType(
+								EViewInternalSelectionType.MOUSE_OVER, iSelectedStorageIndex);
+
 						// handle external selection
-						extSelectionManager.modifySelection(iSelectedDavidId, 
-								createElementRep(iSelectedStorageIndex), ESelectionMode.AddPick);
+						extSelectionManager.modifySelection(iSelectedDavidId,
+								createElementRep(iSelectedStorageIndex),
+								ESelectionMode.AddPick);
 					}
 					else
 					{
-						verticalSelectionManager.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
-						verticalSelectionManager.addToType(EViewInternalSelectionType.MOUSE_OVER, iSelectedStorageIndex);
+						verticalSelectionManager
+								.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
+						verticalSelectionManager.addToType(
+								EViewInternalSelectionType.MOUSE_OVER, iSelectedStorageIndex);
 						rePosition(iSelectedStorageIndex);
-						extSelectionManager.modifySelection(iSelectedDavidId, 
-								createElementRep(iSelectedStorageIndex), ESelectionMode.AddPick);
+						extSelectionManager.modifySelection(iSelectedDavidId,
+								createElementRep(iSelectedStorageIndex),
+								ESelectionMode.AddPick);
 					}
 				}
 			}
 		}
-		
+
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#updateReceiver(java.lang.Object)
+	 * @see
+	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#updateReceiver(java
+	 * .lang.Object)
 	 */
-	public void updateReceiver(Object eventTrigger) {
-
-//		generalManager.logMsg(
-//				this.getClass().getSimpleName()
-//						+ ": updateReceiver(Object eventTrigger): Update called by "
-//						+ eventTrigger.getClass().getSimpleName(),
-//				LoggerType.VERBOSE);
-	}
-	
-	
-	protected void propagateGeneSelection(int iExternalID, int iNewGroupID, ArrayList<Integer> iAlOldSelection)
+	public void updateReceiver(Object eventTrigger)
 	{
-		int iDavidId = getDavidIDFromStorageIndex(iExternalID);	
-		
-		generalManager.getViewGLCanvasManager().getInfoAreaManager()
-			.setData(iUniqueId, iDavidId, EInputDataType.GENE, getInfo());					
-		
+
+		// generalManager.logMsg(
+		// this.getClass().getSimpleName()
+		// + ": updateReceiver(Object eventTrigger): Update called by "
+		// + eventTrigger.getClass().getSimpleName(),
+		// LoggerType.VERBOSE);
+	}
+
+	protected void propagateGeneSelection(int iExternalID, int iNewGroupID,
+			ArrayList<Integer> iAlOldSelection)
+	{
+
+		int iDavidId = getDavidIDFromStorageIndex(iExternalID);
+
+		generalManager.getViewGLCanvasManager().getInfoAreaManager().setData(iUniqueId,
+				iDavidId, EInputDataType.GENE, getInfo());
+
 		// Write currently selected vertex to selection set
 		// and trigger update event
 		ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>(2);
-		//iAlTmpSelectionId.add(1);
+		// iAlTmpSelectionId.add(1);
 		ArrayList<Integer> iAlTmpGroup = new ArrayList<Integer>(2);
-		
+
 		if (iDavidId != -1)
-		{			
+		{
 			iAlTmpSelectionId.add(iDavidId);
 			iAlTmpGroup.add(iNewGroupID);
-			extSelectionManager.modifySelection(iDavidId, 
-					createElementRep(iExternalID), ESelectionMode.ReplacePick);
-		}							
-			
-		for(Integer iCurrent : iAlOldSelection)
+			extSelectionManager.modifySelection(iDavidId, createElementRep(iExternalID),
+					ESelectionMode.ReplacePick);
+		}
+
+		for (Integer iCurrent : iAlOldSelection)
 		{
 			iDavidId = getDavidIDFromStorageIndex(iCurrent);
-			
-			if(iDavidId != -1)
-			{			
+
+			if (iDavidId != -1)
+			{
 				iAlTmpSelectionId.add(iDavidId);
 				iAlTmpGroup.add(0);
 			}
 		}
 
-		alSelection.get(1).updateSelectionSet(iUniqueId, 
-				iAlTmpSelectionId, iAlTmpGroup, null);
-		
-		//propagateGeneSet(iAlTmpSelectionId, iAlTmpGroup);
+		alSelection.get(1).updateSelectionSet(iUniqueId, iAlTmpSelectionId, iAlTmpGroup, null);
+
+		// propagateGeneSet(iAlTmpSelectionId, iAlTmpGroup);
 	}
-	
-	protected void propagateGeneSet()//ArrayList<Integer> iAlSelection, ArrayList<Integer> iAlGroup)
+
+	protected void propagateGeneSet()// ArrayList<Integer> iAlSelection,
+	// ArrayList<Integer> iAlGroup)
 	{
-		
+
 		ArrayList<Integer> iAlGroup = alSelection.get(0).getGroupArray();
-		ArrayList<Integer> iAlSelection = alSelection.get(0).getSelectionIdArray();	
-		
+		ArrayList<Integer> iAlSelection = alSelection.get(0).getSelectionIdArray();
+
 		propagateGenes(iAlSelection, iAlGroup);
-		
+
 	}
-	
-	protected void propagateGenes(ArrayList<Integer> iAlSelection, 
-			ArrayList<Integer> iAlGroup)
+
+	protected void propagateGenes(ArrayList<Integer> iAlSelection, ArrayList<Integer> iAlGroup)
 	{
-		
+
 		ArrayList<Integer> iAlGeneSelection = new ArrayList<Integer>(iAlSelection.size());
-		
-		for(Integer iCurrent : iAlSelection)
+
+		for (Integer iCurrent : iAlSelection)
 		{
 			iAlGeneSelection.add(getDavidIDFromStorageIndex(iCurrent));
 		}
-		
-		alSelection.get(1).updateSelectionSet(iUniqueId, 
-				iAlGeneSelection, iAlGroup, null);
+
+		alSelection.get(1).updateSelectionSet(iUniqueId, iAlGeneSelection, iAlGroup, null);
 	}
-	
-	protected ArrayList<Integer> prepareSelection(GenericSelectionManager selectionManager, 
+
+	protected ArrayList<Integer> prepareSelection(GenericSelectionManager selectionManager,
 			EViewInternalSelectionType selectionType)
 	{
+
 		Set<Integer> selectedSet;
 		ArrayList<Integer> iAlOldSelection;
 		selectedSet = selectionManager.getElements(selectionType);
 		iAlOldSelection = new ArrayList<Integer>();
-		for(Integer iCurrent : selectedSet)
+		for (Integer iCurrent : selectedSet)
 		{
 			iAlOldSelection.add(iCurrent);
 		}
 		return iAlOldSelection;
 	}
-	
+
 	protected abstract void rePosition(int iElementID);
 
-	
-	public void clearAllSelections() 
+	public void clearAllSelections()
 	{
-//		extSelectionManager.clear();
-//		horizontalSelectionManager.clearSelections();
-//		verticalSelectionManager.clearSelections();
+
+		// extSelectionManager.clear();
+		// horizontalSelectionManager.clearSelections();
+		// verticalSelectionManager.clearSelections();
 
 		if (alSelection == null)
-			return;				
-				
-//		Iterator<SetSelection> iterSetSelection = alSetSelection.iterator();
-//		while (iterSetSelection.hasNext())
-//		{
-//			SetSelection tmpSet = iterSetSelection.next();
-//			tmpSet.getWriteToken();
-//			tmpSet.updateSelectionSet(iUniqueId, null, null, null);
-//			tmpSet.returnWriteToken();
-//		}	
+			return;
+
+		// Iterator<SetSelection> iterSetSelection = alSetSelection.iterator();
+		// while (iterSetSelection.hasNext())
+		// {
+		// SetSelection tmpSet = iterSetSelection.next();
+		// tmpSet.getWriteToken();
+		// tmpSet.updateSelectionSet(iUniqueId, null, null, null);
+		// tmpSet.returnWriteToken();
+		// }
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
-		
+
 		initData();
 	}
 }

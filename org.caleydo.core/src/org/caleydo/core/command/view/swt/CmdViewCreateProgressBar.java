@@ -15,70 +15,62 @@ import org.caleydo.core.view.swt.progressbar.ProgressBarViewRep;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
- *
  */
-public class CmdViewCreateProgressBar 
-extends ACmdCreate_IdTargetLabelParentXY {
-	
+public class CmdViewCreateProgressBar
+	extends ACmdCreate_IdTargetLabelParentXY
+{
+
 	int iProgressBarCurrentValue = 0;
-	
+
 	/**
 	 * Constructor
-	 * 
 	 */
-	public CmdViewCreateProgressBar(
-			final IGeneralManager generalManager,
-			final ICommandManager commandManager,
-			final CommandQueueSaxType commandQueueSaxType) {
-		
-		super(generalManager, 
-				commandManager,
-				commandQueueSaxType);
+	public CmdViewCreateProgressBar(final IGeneralManager generalManager,
+			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	{
+
+		super(generalManager, commandManager, commandQueueSaxType);
 	}
 
 	/**
-	 * Method creates a progress bar view, sets the attributes 
-	 * and calls the init and draw method.
+	 * Method creates a progress bar view, sets the attributes and calls the
+	 * init and draw method.
 	 */
-	public void doCommand() throws CaleydoRuntimeException {
-		
+	public void doCommand() throws CaleydoRuntimeException
+	{
+
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
-		
-		ProgressBarViewRep progressBarView = (ProgressBarViewRep)viewManager
-				.createView(EManagerObjectType.VIEW_SWT_PROGRESS_BAR,
-							iUniqueId, 
-							iParentContainerId, 
-							sLabel);
-		
-		viewManager.registerItem(
-				progressBarView, 
-				iUniqueId);
+
+		ProgressBarViewRep progressBarView = (ProgressBarViewRep) viewManager.createView(
+				EManagerObjectType.VIEW_SWT_PROGRESS_BAR, iUniqueId, iParentContainerId,
+				sLabel);
+
+		viewManager.registerItem(progressBarView, iUniqueId);
 
 		progressBarView.setAttributes(iProgressBarCurrentValue);
 		progressBarView.initView();
 		progressBarView.drawView();
-		
+
 		commandManager.runDoCommand(this);
 	}
-	
-	public void setParameterHandler( final IParameterHandler parameterHandler ) {
-		
-		assert parameterHandler != null: "ParameterHandler object is null!";	
-		
-		super.setParameterHandler(parameterHandler);	
-	
-		parameterHandler.setValueAndTypeAndDefault( "iProgressBarCurrentValue",
-				parameterHandler.getValueString( 
-						CommandQueueSaxType.TAG_DETAIL.getXmlKey() ),
-				IParameterHandler.ParameterHandlerType.INT,
-				"0");
-		
-		iProgressBarCurrentValue = 
-			parameterHandler.getValueInt("iProgressBarCurrentValue");
+
+	public void setParameterHandler(final IParameterHandler parameterHandler)
+	{
+
+		assert parameterHandler != null : "ParameterHandler object is null!";
+
+		super.setParameterHandler(parameterHandler);
+
+		parameterHandler.setValueAndTypeAndDefault("iProgressBarCurrentValue",
+				parameterHandler.getValueString(CommandQueueSaxType.TAG_DETAIL.getXmlKey()),
+				IParameterHandler.ParameterHandlerType.INT, "0");
+
+		iProgressBarCurrentValue = parameterHandler.getValueInt("iProgressBarCurrentValue");
 	}
 
-	public void undoCommand() throws CaleydoRuntimeException {
-		
+	public void undoCommand() throws CaleydoRuntimeException
+	{
+
 		commandManager.runUndoCommand(this);
 	}
 }

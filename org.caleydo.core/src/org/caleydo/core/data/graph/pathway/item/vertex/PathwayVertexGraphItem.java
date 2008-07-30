@@ -9,22 +9,22 @@ import org.caleydo.util.graph.item.GraphItem;
  * Pathway vertex that belongs to the overall pathway graph.
  * 
  * @author Marc Streit
- *
  */
-public class PathwayVertexGraphItem 
-extends GraphItem 
-implements Serializable 
-{	
+public class PathwayVertexGraphItem
+	extends GraphItem
+	implements Serializable
+{
+
 	private static final long serialVersionUID = 1L;
-	
+
 	final String sName;
-	
+
 	final EPathwayVertexType type;
-	
+
 	final String sExternalLink;
-	
+
 	final String sReactionId;
-	
+
 	/**
 	 * Constructor.
 	 * 
@@ -34,48 +34,50 @@ implements Serializable
 	 * @param sExternalLink
 	 * @param sReactionId
 	 */
-	public PathwayVertexGraphItem(
-			final int iId,
-			final String sName,
-			final String sType,
-			final String sExternalLink,
-			final String sReactionId) {
-		
+	public PathwayVertexGraphItem(final int iId, final String sName, final String sType,
+			final String sExternalLink, final String sReactionId)
+	{
+
 		super(iId, EGraphItemKind.NODE);
 
 		type = EPathwayVertexType.valueOf(sType);
-		
+
 		this.sName = sName;
 		this.sExternalLink = sExternalLink;
 		this.sReactionId = sReactionId;
 	}
-	
-	public String getName() {
-		
+
+	public String getName()
+	{
+
 		return sName;
 	}
-	
-	public EPathwayVertexType getType() {
-		
+
+	public EPathwayVertexType getType()
+	{
+
 		return type;
 	}
-	
-	public String getExternalLink() {
-		
+
+	public String getExternalLink()
+	{
+
 		return sExternalLink;
 	}
-	
-	public String getReactionId() {
-		
+
+	public String getReactionId()
+	{
+
 		return sReactionId;
 	}
-	
+
 	/*
-	 *  (non-Javadoc)
+	 * (non-Javadoc)
 	 * @see java.lang.Object#toString()
 	 */
-	public String toString() {
-		
+	public String toString()
+	{
+
 		return sName;
 	}
 }

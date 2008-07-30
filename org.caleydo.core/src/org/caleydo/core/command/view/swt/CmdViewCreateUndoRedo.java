@@ -11,66 +11,59 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
 
 /**
- * Class implementes the command for creating
- * the UNDO/REDO GUI view representation.
+ * Class implementes the command for creating the UNDO/REDO GUI view
+ * representation.
  * 
  * @author Marc Streit
- *
  */
-public class CmdViewCreateUndoRedo 
-extends ACmdCreate_IdTargetLabelParentXY {
-	
+public class CmdViewCreateUndoRedo
+	extends ACmdCreate_IdTargetLabelParentXY
+{
+
 	/**
 	 * Constructor
-	 * 
 	 */
-	public CmdViewCreateUndoRedo(
-			final IGeneralManager generalManager,
-			final ICommandManager commandManager,
-			final CommandQueueSaxType commandQueueSaxType) {
-		
-		super(generalManager, 
-				commandManager,
-				commandQueueSaxType);
+	public CmdViewCreateUndoRedo(final IGeneralManager generalManager,
+			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	{
+
+		super(generalManager, commandManager, commandQueueSaxType);
 	}
 
 	/**
-	 * Method creates a undo/redo view, sets the attributes 
-	 * and calls the init and draw method.
+	 * Method creates a undo/redo view, sets the attributes and calls the init
+	 * and draw method.
 	 */
-	public void doCommand() throws CaleydoRuntimeException {
-		
+	public void doCommand() throws CaleydoRuntimeException
+	{
+
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
-		
-		UndoRedoViewRep undoRedoView = (UndoRedoViewRep)viewManager
-				.createView(EManagerObjectType.VIEW_SWT_UNDO_REDO,
-							iUniqueId, 
-							iParentContainerId, 							
-							sLabel);
-		
-		viewManager.registerItem(
-				undoRedoView, 
-				iUniqueId);
+
+		UndoRedoViewRep undoRedoView = (UndoRedoViewRep) viewManager.createView(
+				EManagerObjectType.VIEW_SWT_UNDO_REDO, iUniqueId, iParentContainerId, sLabel);
+
+		viewManager.registerItem(undoRedoView, iUniqueId);
 
 		undoRedoView.setAttributes(iWidthX, iHeightY);
 		undoRedoView.initView();
 		undoRedoView.drawView();
-		
+
 		// Register UNDO/REDO view to command manager.
-		generalManager.getCommandManager().
-			addUndoRedoViewRep(undoRedoView);
-		
+		generalManager.getCommandManager().addUndoRedoViewRep(undoRedoView);
+
 		commandManager.runDoCommand(this);
 	}
 
-	public void setParameterHandler( final IParameterHandler parameterHandler ) {
-		
-		assert parameterHandler != null: "ParameterHandler object is null!";	
-		
-		super.setParameterHandler(parameterHandler);	
+	public void setParameterHandler(final IParameterHandler parameterHandler)
+	{
+
+		assert parameterHandler != null : "ParameterHandler object is null!";
+
+		super.setParameterHandler(parameterHandler);
 	}
-	
-	public void undoCommand() throws CaleydoRuntimeException {
+
+	public void undoCommand() throws CaleydoRuntimeException
+	{
 
 		commandManager.runUndoCommand(this);
 	}

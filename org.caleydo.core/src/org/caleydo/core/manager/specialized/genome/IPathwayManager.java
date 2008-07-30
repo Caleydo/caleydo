@@ -11,39 +11,33 @@ import org.caleydo.util.graph.core.Graph;
  * Interface for creating and accessing pathways.
  * 
  * @author Marc Streit
- *
  */
 public interface IPathwayManager
-extends IManager
+	extends IManager
 {
-	public PathwayGraph createPathway(
-			final EPathwayDatabaseType type,
-			final String sName, 
-			final String sTitle, 
-			final String sImageLink,
-			final String sExternalLink);
-	
-	public void createPathwayDatabase(final EPathwayDatabaseType type,
-			final String sXMLPath,
-			final String sImagePath,
-			final String sImageMapPath);
-	
+
+	public PathwayGraph createPathway(final EPathwayDatabaseType type, final String sName,
+			final String sTitle, final String sImageLink, final String sExternalLink);
+
+	public void createPathwayDatabase(final EPathwayDatabaseType type, final String sXMLPath,
+			final String sImagePath, final String sImageMapPath);
+
 	public void triggerParsingPathwayDatabases();
-	
+
 	public Graph getRootPathway();
-	
+
 	public void createPathwayImageMap(final String sImageLink);
-	
+
 	public PathwayGraph getCurrenPathwayGraph();
-	
+
 	public PathwayImageMap getCurrentPathwayImageMap();
-	
+
 	public int searchPathwayIdByName(final String sPathwayName);
-	
+
 	public PathwayDatabase getPathwayDatabaseByType(EPathwayDatabaseType type);
-	
+
 	public void setPathwayVisibilityStateByID(final int iPathwayID,
 			final boolean bVisibilityState);
-	
+
 	public boolean isPathwayVisible(final int iPathwayID);
 }

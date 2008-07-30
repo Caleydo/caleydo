@@ -1,11 +1,9 @@
 package org.caleydo.core.manager.view;
 
 /**
- * 
  * Enum to specify the picking mode
  * 
  * @author Alexander Lex
- *
  */
 
 public enum ESelectionMode

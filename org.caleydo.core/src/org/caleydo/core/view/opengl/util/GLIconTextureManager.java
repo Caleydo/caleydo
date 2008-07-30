@@ -11,18 +11,17 @@ import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureIO;
 
 /**
- * Manager handles OpenGL icons as textures.
- * 
- * TODO move this to manager to use it as a singleton
+ * Manager handles OpenGL icons as textures. TODO move this to manager to use it
+ * as a singleton
  * 
  * @author Alexander Lex
  * @author Marc Streit
- *
  */
-public class GLIconTextureManager 
+public class GLIconTextureManager
 {
+
 	EnumMap<EIconTextures, Texture> mapIconTextures;
-	
+
 	/**
 	 * Constructor.
 	 * 
@@ -30,42 +29,47 @@ public class GLIconTextureManager
 	 */
 	public GLIconTextureManager(final GL gl)
 	{
+
 		mapIconTextures = new EnumMap<EIconTextures, Texture>(EIconTextures.class);
-		for(EIconTextures eIconTextures : EIconTextures.values())
+		for (EIconTextures eIconTextures : EIconTextures.values())
 		{
 			try
 			{
 				Texture tmpTexture;
-				String sFileName = eIconTextures.getFileName();			
-				
-			    if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null)
-			    {
-			    	tmpTexture = TextureIO.newTexture(TextureIO.newTextureData(
-			    			this.getClass().getClassLoader().getResourceAsStream(sFileName), true, "PNG"));
-			    }
-			    else
-			    {
-			    	tmpTexture = TextureIO.newTexture(TextureIO.newTextureData(
-							new File(eIconTextures.getFileName()), true, "PNG"));
-			    }
-				
+				String sFileName = eIconTextures.getFileName();
+
+				if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null)
+				{
+					tmpTexture = TextureIO.newTexture(TextureIO.newTextureData(this.getClass()
+							.getClassLoader().getResourceAsStream(sFileName), true, "PNG"));
+				}
+				else
+				{
+					tmpTexture = TextureIO.newTexture(TextureIO.newTextureData(new File(
+							eIconTextures.getFileName()), true, "PNG"));
+				}
+
 				mapIconTextures.put(eIconTextures, tmpTexture);
-				
-			} catch (GLException e)
+
+			}
+			catch (GLException e)
 			{
 				e.printStackTrace();
-			} catch (IllegalArgumentException e)
+			}
+			catch (IllegalArgumentException e)
 			{
 				e.printStackTrace();
-			} catch (IOException e)
+			}
+			catch (IOException e)
 			{
 				e.printStackTrace();
-			}	
+			}
 		}
 	}
-	
+
 	public Texture getIconTexture(final EIconTextures eIconTextures)
 	{
+
 		return mapIconTextures.get(eIconTextures);
 	}
 }

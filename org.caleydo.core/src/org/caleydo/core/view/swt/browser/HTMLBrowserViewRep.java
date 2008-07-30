@@ -27,90 +27,87 @@ import org.eclipse.swt.widgets.ToolItem;
  * @author Michael Kalkusch
  * @author Marc Streit
  */
-public class HTMLBrowserViewRep 
-extends AView 
-implements IView {
+public class HTMLBrowserViewRep
+	extends AView
+	implements IView
+{
 
 	public EBrowserType browserType;
-	
+
 	public final static String CALEYDO_HOME = "http://www.caleydo.org";
-	
-    protected Browser browser;
-    
-    protected String sUrl = CALEYDO_HOME;
-    
-    protected Text textField;
-    
-    protected int iSelectionSetId;
-    
-    private IDExtractionLocationListener idExtractionLocationListener;
-	
-	public HTMLBrowserViewRep(
-			final IGeneralManager generalManager, 
-			final int iViewId, 
-			final int iParentContainerId, 
-			final String sLabel) {
-		
-		super(generalManager,
-				iViewId, 
-				iParentContainerId, 
-				sLabel,
-				ViewType.SWT_HTML_BROWSER);	
-		
+
+	protected Browser browser;
+
+	protected String sUrl = CALEYDO_HOME;
+
+	protected Text textField;
+
+	protected int iSelectionSetId;
+
+	private IDExtractionLocationListener idExtractionLocationListener;
+
+	public HTMLBrowserViewRep(final IGeneralManager generalManager, final int iViewId,
+			final int iParentContainerId, final String sLabel)
+	{
+
+		super(generalManager, iViewId, iParentContainerId, sLabel, ViewType.SWT_HTML_BROWSER);
+
 		// Default browser type
 		this.browserType = EBrowserType.GENERAL;
-		
-		iSelectionSetId = generalManager.getSetManager()
-			.createId(EManagerObjectType.SET);
-		
-		CmdDataCreateSelection selectedSetCmd = (CmdDataCreateSelection) generalManager.getCommandManager()
-			.createCommandByType(CommandQueueSaxType.CREATE_SELECTION);
-		
+
+		iSelectionSetId = generalManager.getSetManager().createId(EManagerObjectType.SET);
+
+		CmdDataCreateSelection selectedSetCmd = (CmdDataCreateSelection) generalManager
+				.getCommandManager().createCommandByType(CommandQueueSaxType.CREATE_SELECTION);
+
 		selectedSetCmd.setAttributes(iSelectionSetId);
 		selectedSetCmd.doCommand();
 	}
 
-	
-	public void setAttributes(int iWidth, int iHeight, EBrowserType browserType) {
-		
+	public void setAttributes(int iWidth, int iHeight, EBrowserType browserType)
+	{
+
 		super.setAttributes(iWidth, iHeight);
-		
+
 		this.browserType = browserType;
 	}
-	
+
 	/**
-	 * 
 	 * @see org.caleydo.core.view.IView#initView()
 	 */
-	protected void initViewSwtComposit(Composite swtContainer) {
-		
+	protected void initViewSwtComposit(Composite swtContainer)
+	{
+
 		swtContainer = swtContainer;
 		swtContainer.setLayout(new GridLayout(1, false));
-		
-	    ToolBar toolbar = new ToolBar(swtContainer, SWT.NONE);
-	    toolbar.setBounds(0, 0, 300, 30);
 
-	    ToolItem goButton = new ToolItem(toolbar, SWT.PUSH);
-	    goButton.setText("Go");
+		ToolBar toolbar = new ToolBar(swtContainer, SWT.NONE);
+		toolbar.setBounds(0, 0, 300, 30);
 
-	    ToolItem backButton = new ToolItem(toolbar, SWT.PUSH);
-	    backButton.setText("Back");
+		ToolItem goButton = new ToolItem(toolbar, SWT.PUSH);
+		goButton.setText("Go");
 
-	    ToolItem stopButton = new ToolItem(toolbar, SWT.PUSH);
-	    stopButton.setText("Stop");
+		ToolItem backButton = new ToolItem(toolbar, SWT.PUSH);
+		backButton.setText("Back");
 
-	    textField = new Text(swtContainer, SWT.BORDER);
-	    //textField.setBounds(0, 30, 300, 25);
-	    textField.setText(sUrl);
-	    
+		ToolItem stopButton = new ToolItem(toolbar, SWT.PUSH);
+		stopButton.setText("Stop");
+
+		textField = new Text(swtContainer, SWT.BORDER);
+		// textField.setBounds(0, 30, 300, 25);
+		textField.setText(sUrl);
+
 		GridData data = new GridData();
 		data.horizontalAlignment = GridData.FILL;
 		data.grabExcessHorizontalSpace = true;
 		textField.setLayoutData(data);
-	    
-		Listener listener = new Listener() {
+
+		Listener listener = new Listener()
+		{
+
 			public void handleEvent(Event event)
 			{
+
 				ToolItem item = (ToolItem) event.widget;
 				String string = item.getText();
 				if (string.equals("Back"))
@@ -131,28 +128,32 @@ implements IView {
 
 		textField.addListener(SWT.DefaultSelection, new Listener()
 		{
+
 			public void handleEvent(Event e)
 			{
+
 				sUrl = textField.getText();
 				drawView();
 			}
 		});
-		
-		swtContainer.getDisplay().addFilter(SWT.FocusIn, new Listener() {
-		    public void handleEvent(Event event) {
-		    	
-		        if(!(event.widget.getClass().equals(this.getClass()))) 
-		        	return;
-		    }
+
+		swtContainer.getDisplay().addFilter(SWT.FocusIn, new Listener()
+		{
+
+			public void handleEvent(Event event)
+			{
+
+				if (!(event.widget.getClass().equals(this.getClass())))
+					return;
+			}
 		});
-		
-		
-		browser = new Browser (swtContainer, SWT.NONE);
-				
+
+		browser = new Browser(swtContainer, SWT.NONE);
+
 		idExtractionLocationListener = new IDExtractionLocationListener(generalManager,
 				browser, iUniqueId, iSelectionSetId);
 		browser.addLocationListener(idExtractionLocationListener);
-		
+
 		data = new GridData();
 		data.horizontalAlignment = GridData.FILL;
 		data.verticalAlignment = GridData.FILL;
@@ -161,59 +162,66 @@ implements IView {
 		browser.setLayoutData(data);
 	}
 
-	public void drawView() {
-		
-		generalManager.getLogger().log(Level.INFO, "Load " +sUrl);
+	public void drawView()
+	{
 
-//		// Check internet connection
-//		try
-//		{
-//			InetAddress.getByName("www.google.at");
-//			
-//		} catch (UnknownHostException e)
-//		{
-//			generalManager.getSingelton().logMsg(
-//					this.getClass().getSimpleName() + 
-//					": No internet connection found!", 
-//					LoggerType.VERBOSE );
-//			
-//			textField.setText("No internet connection found!");
-//			return;
-//		}
-		
-		try {
-			swtContainer.getDisplay().asyncExec(new Runnable() {
-				public void run() {
-					textField.setText(sUrl);				
+		generalManager.getLogger().log(Level.INFO, "Load " + sUrl);
+
+		// // Check internet connection
+		// try
+		// {
+		// InetAddress.getByName("www.google.at");
+		//			
+		// } catch (UnknownHostException e)
+		// {
+		// generalManager.getSingelton().logMsg(
+		// this.getClass().getSimpleName() +
+		// ": No internet connection found!",
+		// LoggerType.VERBOSE );
+		//			
+		// textField.setText("No internet connection found!");
+		// return;
+		// }
+
+		try
+		{
+			swtContainer.getDisplay().asyncExec(new Runnable()
+			{
+
+				public void run()
+				{
+
+					textField.setText(sUrl);
 					browser.setUrl(sUrl);
-					//browser.refresh();
+					// browser.refresh();
 				}
 			});
 		}
-			catch (SWTException swte) 
-		{		
-				generalManager.getLogger().log(Level.SEVERE, "Error while loading " +sUrl);
+		catch (SWTException swte)
+		{
+			generalManager.getLogger().log(Level.SEVERE, "Error while loading " + sUrl);
 		}
 	}
-	
-	public void setUrl(String sUrl) {
-		
+
+	public void setUrl(String sUrl)
+	{
+
 		if (browserType.equals(EBrowserType.GENERAL))
 		{
 			this.sUrl = sUrl;
 		}
-		else if(browserType.equals(EBrowserType.PUBMED))
+		else if (browserType.equals(EBrowserType.PUBMED))
 		{
-			this.sUrl = browserType.getBrowserQueryStringPrefix() +sUrl;
+			this.sUrl = browserType.getBrowserQueryStringPrefix() + sUrl;
 		}
-		
+
 		idExtractionLocationListener.updateSkipNextChangeEvent(true);
 		drawView();
 	}
-	
-//	public void setUrlByBrowserQueryType(String sUrl,
-//			final EBrowserQueryType browserQueryType) {
-//		
-//		this.sUrl = browserQueryType.getBrowserQueryStringPrefix() + sUrl;
-//	}
+
+	// public void setUrlByBrowserQueryType(String sUrl,
+	// final EBrowserQueryType browserQueryType) {
+	//		
+	// this.sUrl = browserQueryType.getBrowserQueryStringPrefix() + sUrl;
+	// }
 }

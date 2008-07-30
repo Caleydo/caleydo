@@ -11,51 +11,51 @@ import org.caleydo.core.command.base.ACmdCreate_IdTargetLabel;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
- *
  */
-public abstract class ACmdCreate_IdTargetLabelAttrDetail 
-extends ACmdCreate_IdTargetLabel {
+public abstract class ACmdCreate_IdTargetLabelAttrDetail
+	extends ACmdCreate_IdTargetLabel
+{
 
 	protected String sAttribute1;
+
 	protected String sAttribute2;
+
 	protected String sAttribute3;
+
 	protected String sAttribute4;
-	
+
 	protected String sDetail;
-	
+
 	/**
 	 * Constructor
 	 * 
 	 * @param generalManager
 	 */
-	protected ACmdCreate_IdTargetLabelAttrDetail(
-			final IGeneralManager generalManager,
-			final ICommandManager commandManager,
-			final CommandQueueSaxType commandQueueSaxType)
+	protected ACmdCreate_IdTargetLabelAttrDetail(final IGeneralManager generalManager,
+			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
 	{
-		super(generalManager,
-				commandManager,
-				commandQueueSaxType);
+
+		super(generalManager, commandManager, commandQueueSaxType);
 	}
-	
-	public void setParameterHandler( final IParameterHandler parameterHandler ) {
-		
+
+	public void setParameterHandler(final IParameterHandler parameterHandler)
+	{
+
 		super.setParameterHandler(parameterHandler);
-		
-		sAttribute1 = parameterHandler.getValueString( 
-				CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey());
-		
-		sAttribute2 = parameterHandler.getValueString( 
-				CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey());
 
-		sAttribute3 = parameterHandler.getValueString( 
-				CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey());	
+		sAttribute1 = parameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE1
+				.getXmlKey());
 
-		sAttribute4 = parameterHandler.getValueString( 
-				CommandQueueSaxType.TAG_ATTRIBUTE4.getXmlKey());
-		
-		sDetail = parameterHandler.getValueString( 
-				CommandQueueSaxType.TAG_DETAIL.getXmlKey());
+		sAttribute2 = parameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE2
+				.getXmlKey());
+
+		sAttribute3 = parameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE3
+				.getXmlKey());
+
+		sAttribute4 = parameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE4
+				.getXmlKey());
+
+		sDetail = parameterHandler.getValueString(CommandQueueSaxType.TAG_DETAIL.getXmlKey());
 	}
-	
+
 }

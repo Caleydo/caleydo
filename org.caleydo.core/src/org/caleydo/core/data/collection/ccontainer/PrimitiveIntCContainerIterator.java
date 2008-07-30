@@ -5,23 +5,20 @@ import java.util.NoSuchElementException;
 import org.caleydo.core.data.collection.ICContainerIterator;
 
 /**
- * 
- * @author Alexander Lex
- * 
- * Iterator for PrimitiveIntCContainer
- * 
- * Initialized by passing the container. Then provides the common iterator accessors.
- *
+ * @author Alexander Lex Iterator for PrimitiveIntCContainer Initialized by
+ *         passing the container. Then provides the common iterator accessors.
  */
 public class PrimitiveIntCContainerIterator
-implements ICContainerIterator
+	implements ICContainerIterator
 {
-	int	iIndex = 0;
+
+	int iIndex = 0;
 
 	PrimitiveIntCContainer primitiveIntCContainer = null;
 
 	public PrimitiveIntCContainerIterator(PrimitiveIntCContainer primitiveIntCContainer)
 	{
+
 		this.primitiveIntCContainer = primitiveIntCContainer;
 	}
 
@@ -31,7 +28,8 @@ implements ICContainerIterator
 	 */
 	public boolean hasNext()
 	{
-		if(iIndex < primitiveIntCContainer.size() -1)
+
+		if (iIndex < primitiveIntCContainer.size() - 1)
 			return true;
 		else
 			return false;
@@ -39,14 +37,14 @@ implements ICContainerIterator
 	}
 
 	/**
-	 * Returns the next element in the container
-	 * 
-	 * Throws a NoSuchElementException if no more elements exist
+	 * Returns the next element in the container Throws a NoSuchElementException
+	 * if no more elements exist
 	 * 
 	 * @return the next element
 	 */
 	public int next()
 	{
+
 		try
 		{
 			return primitiveIntCContainer.get(++iIndex);

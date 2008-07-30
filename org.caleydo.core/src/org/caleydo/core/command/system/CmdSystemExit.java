@@ -13,61 +13,65 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
- *
  */
-public class CmdSystemExit 
-extends AManagedObject
-implements ICommand {
+public class CmdSystemExit
+	extends AManagedObject
+	implements ICommand
+{
 
 	/**
 	 * Constructor.
-	 * 
 	 */
-	public CmdSystemExit(final IGeneralManager generalManager) {
-	
-		super (-1, generalManager);
+	public CmdSystemExit(final IGeneralManager generalManager)
+	{
+
+		super(-1, generalManager);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws CaleydoRuntimeException {
-		
-//		generalManager.logMsg("CmdSystemExit.doCommand(): shut down application.", LoggerType.FULL);	
-		System.exit( 0 );
+	public void doCommand() throws CaleydoRuntimeException
+	{
+
+		// generalManager.logMsg(
+		// "CmdSystemExit.doCommand(): shut down application.",
+		// LoggerType.FULL);
+		System.exit(0);
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws CaleydoRuntimeException {
+	public void undoCommand() throws CaleydoRuntimeException
+	{
+
 		// no undo of system shutdown!
 	}
 
-	public void setParameterHandler(IParameterHandler parameterHandler) {
+	public void setParameterHandler(IParameterHandler parameterHandler)
+	{
+
 		assert false : "Must not be called for this classs.";
 	}
 
-	public CommandQueueSaxType getCommandType() {
+	public CommandQueueSaxType getCommandType()
+	{
+
 		return CommandQueueSaxType.SYSTEM_SHUT_DOWN;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.command.ICommand#getInfoText()
 	 */
-	public String getInfoText() {
+	public String getInfoText()
+	{
+
 		assert false : "Must not be called for this calss.";
-	
+
 		return null;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.IUniqueManagedObject#getBaseType()
-	 */
-	public final EManagerObjectType getBaseType() {
-		return EManagerObjectType.COMMAND;
-	}
-
 }

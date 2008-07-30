@@ -15,104 +15,102 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.system.StringConversionTool;
 
 /**
- * Class creates a mediator, extracts the sender and receiver IDs
- * and calls the methods that handle the registration.
+ * Class creates a mediator, extracts the sender and receiver IDs and calls the
+ * methods that handle the registration.
  * 
  * @author Marc Streit
  * @author Michael Kalkusch
  */
-public class CmdEventCreateMediator 
-extends ACmdCreate_IdTargetLabelAttrDetail {
-	
+public class CmdEventCreateMediator
+	extends ACmdCreate_IdTargetLabelAttrDetail
+{
+
 	protected ArrayList<Integer> iArSenderIDs;
 
 	protected ArrayList<Integer> iArReceiverIDs;
-	
-	protected MediatorType mediatorType;
-	
-	public CmdEventCreateMediator(
-			final IGeneralManager generalManager,
-			final ICommandManager commandManager,
-			final CommandQueueSaxType commandQueueSaxType) {
 
-		super(generalManager,
-				commandManager,
-				commandQueueSaxType);
-		
-		super.setId( generalManager.getEventPublisher().createId( 
+	protected MediatorType mediatorType;
+
+	public CmdEventCreateMediator(final IGeneralManager generalManager,
+			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	{
+
+		super(generalManager, commandManager, commandQueueSaxType);
+
+		super.setId(generalManager.getEventPublisher().createId(
 				EManagerObjectType.EVENT_MEDIATOR_CREATE));
-		
+
 		iArSenderIDs = new ArrayList<Integer>();
 		iArReceiverIDs = new ArrayList<Integer>();
 	}
 
-	public void doCommand() throws CaleydoRuntimeException {
-			
-		generalManager.getEventPublisher().createMediator(iUniqueId,
-							iArSenderIDs, 
-							iArReceiverIDs, 
-							mediatorType,
-							MediatorUpdateType.MEDIATOR_DEFAULT);
-		
+	public void doCommand() throws CaleydoRuntimeException
+	{
+
+		generalManager.getEventPublisher().createMediator(iUniqueId, iArSenderIDs,
+				iArReceiverIDs, mediatorType, MediatorUpdateType.MEDIATOR_DEFAULT);
+
 		commandManager.runDoCommand(this);
 	}
-	
-	public void setParameterHandler( final IParameterHandler parameterHandler ) {
-		
-		assert parameterHandler != null: "ParameterHandler object is null!";	
-		
-		super.setParameterHandler(parameterHandler);	
 
-		StringTokenizer senderToken = new StringTokenizer(
-				sAttribute1,
+	public void setParameterHandler(final IParameterHandler parameterHandler)
+	{
+
+		assert parameterHandler != null : "ParameterHandler object is null!";
+
+		super.setParameterHandler(parameterHandler);
+
+		StringTokenizer senderToken = new StringTokenizer(sAttribute1,
 				IGeneralManager.sDelimiter_Parser_DataItems);
 
-		StringTokenizer receiverToken = new StringTokenizer(
-				sAttribute2,
+		StringTokenizer receiverToken = new StringTokenizer(sAttribute2,
 				IGeneralManager.sDelimiter_Parser_DataItems);
 
 		while (senderToken.hasMoreTokens())
 		{
-			iArSenderIDs.add(StringConversionTool.convertStringToInt(
-					senderToken.nextToken(), -1));
+			iArSenderIDs.add(StringConversionTool.convertStringToInt(senderToken.nextToken(),
+					-1));
 		}
-		
+
 		while (receiverToken.hasMoreTokens())
 		{
-			iArReceiverIDs.add(StringConversionTool.convertStringToInt(
-					receiverToken.nextToken(), -1));
+			iArReceiverIDs.add(StringConversionTool.convertStringToInt(receiverToken
+					.nextToken(), -1));
 		}
-		
-		String sMediatorType = parameterHandler.getValueString( 
-				CommandQueueSaxType.TAG_DETAIL.getXmlKey());
-				
-		if ( sMediatorType.length() > 0 ) 
+
+		String sMediatorType = parameterHandler.getValueString(CommandQueueSaxType.TAG_DETAIL
+				.getXmlKey());
+
+		if (sMediatorType.length() > 0)
 		{
-			mediatorType = MediatorType.valueOf( sMediatorType );
+			mediatorType = MediatorType.valueOf(sMediatorType);
 		}
-		else {
+		else
+		{
 			/* assume DATA_MEDIATOR as default */
 			mediatorType = MediatorType.DATA_MEDIATOR;
 		}
 	}
 
-	public void setAttributes(int iEventMediatorId,
-			ArrayList<Integer> iArSenderIDs,
-			ArrayList<Integer> iArReceiverIDs, 
-			MediatorType mediatorType) {
-		
+	public void setAttributes(int iEventMediatorId, ArrayList<Integer> iArSenderIDs,
+			ArrayList<Integer> iArReceiverIDs, MediatorType mediatorType)
+	{
+
 		this.iUniqueId = iEventMediatorId;
 		this.iArSenderIDs = iArSenderIDs;
 		this.iArReceiverIDs = iArReceiverIDs;
 		this.mediatorType = mediatorType;
 	}
-	
-	public void undoCommand() throws CaleydoRuntimeException {
-		
-		commandManager.runUndoCommand(this);		
+
+	public void undoCommand() throws CaleydoRuntimeException
+	{
+
+		commandManager.runUndoCommand(this);
 	}
-	
-	public String getInfoText() {
+
+	public String getInfoText()
+	{
+
 		return super.getInfoText() + " -> " + this.iUniqueId + ": " + this.sLabel;
 	}
 }

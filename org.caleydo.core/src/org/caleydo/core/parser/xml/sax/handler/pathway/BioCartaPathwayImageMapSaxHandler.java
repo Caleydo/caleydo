@@ -14,54 +14,51 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- *	Class is able to parse BioCarta pathway files. 
- *  The creation of the pathway objects is triggered.
+ * Class is able to parse BioCarta pathway files. The creation of the pathway
+ * objects is triggered.
  * 
  * @author Marc Streit
- * 
  */
-public class BioCartaPathwayImageMapSaxHandler 
-extends AXmlParserHandler {
+public class BioCartaPathwayImageMapSaxHandler
+	extends AXmlParserHandler
+{
 
-	private final static String BIOCARTA_EXTERNAL_URL_PATHWAY =
-		"http://cgap.nci.nih.gov/Pathways/BioCarta/";
-	
-	private final static String BIOCARTA_EXTERNAL_URL_VERTEX =
-		"http://cgap.nci.nih.gov";
-	
+	private final static String BIOCARTA_EXTERNAL_URL_PATHWAY = "http://cgap.nci.nih.gov/Pathways/BioCarta/";
+
+	private final static String BIOCARTA_EXTERNAL_URL_VERTEX = "http://cgap.nci.nih.gov";
+
 	private Attributes attributes;
-	
+
 	private String sAttributeName = "";
-	
+
 	private boolean bReadTitle = false;
-	
+
 	private PathwayGraph currentPathway;
-	
+
 	private String sTitle = "";
-	
-	public BioCartaPathwayImageMapSaxHandler(IGeneralManager generalManager, 
-			IXmlParserManager xmlParserManager) {
+
+	public BioCartaPathwayImageMapSaxHandler(IGeneralManager generalManager,
+			IXmlParserManager xmlParserManager)
+	{
 
 		super(generalManager, xmlParserManager);
 
 		setXmlActivationTag("span");
-	}	
+	}
 
-    public void startElement(String namespaceURI,
-            String sSimpleName,
-            String sQualifiedName,
-            Attributes attributes)
-    throws SAXException	{
-    	
-    	String sElementName = sSimpleName;
-    	this.attributes = attributes;
-    	
-    	if ("".equals(sElementName)) 
-    	{
-    		sElementName = sQualifiedName; // namespaceAware = false
-    	}
-    	    	
-		if (attributes != null) 
+	public void startElement(String namespaceURI, String sSimpleName, String sQualifiedName,
+			Attributes attributes) throws SAXException
+	{
+
+		String sElementName = sSimpleName;
+		this.attributes = attributes;
+
+		if ("".equals(sElementName))
+		{
+			sElementName = sQualifiedName; // namespaceAware = false
+		}
+
+		if (attributes != null)
 		{
 			if (sElementName.equals("b"))
 				handleTitleTag();
@@ -71,161 +68,154 @@ extends AXmlParserHandler {
 				handleAreaTag();
 		}
 	}
-	
-	public void endElement(String namespaceURI,
-	          String sSimpleName,
-	          String sQualifiedName)
-		throws SAXException {
-			
-			String sName = ("".equals(sSimpleName)) ? sQualifiedName : sSimpleName;
-			
-			if (sName.equals("map")) 
-			{
-				// Early abort parsing current file
-				xmlParserManager.sectionFinishedByHandler( this );
-			}
+
+	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName)
+			throws SAXException
+	{
+
+		String sName = ("".equals(sSimpleName)) ? sQualifiedName : sSimpleName;
+
+		if (sName.equals("map"))
+		{
+			// Early abort parsing current file
+			xmlParserManager.sectionFinishedByHandler(this);
 		}
-    
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
 	 */
-	public void characters(char[] ch, int start, int length)
-			throws SAXException {
-		
+	public void characters(char[] ch, int start, int length) throws SAXException
+	{
+
 		if (!bReadTitle)
 			return;
-	
+
 		for (int iCharIndex = start; iCharIndex < length; iCharIndex++)
 		{
 			sTitle += ch[iCharIndex];
 		}
-		
+
 		bReadTitle = false;
 	}
-	
+
 	/**
 	 * Reacts on the elements of the <b> tag.
-	 * 
 	 */
-	protected void handleTitleTag() {
-		
+	protected void handleTitleTag()
+	{
+
 		if (sTitle.length() == 0)
 			bReadTitle = true;
 	}
-	
+
 	/**
 	 * Reacts on the elements of the <b> tag.
-	 * 
 	 */
-	protected void handleImageLinkTag() {
-		
-		String sName = "";
-    	String sImageLink = "";
+	protected void handleImageLinkTag()
+	{
 
-		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
+		String sName = "";
+		String sImageLink = "";
+
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
 		{
-			 sAttributeName = attributes.getLocalName(iAttributeIndex);
-		
+			sAttributeName = attributes.getLocalName(iAttributeIndex);
+
 			if ("".equals(sAttributeName))
 			{
 				sAttributeName = attributes.getQName(iAttributeIndex);
 			}
-				
+
 			if (sAttributeName.equals("src"))
 			{
-				sImageLink = attributes.getValue(iAttributeIndex); 
+				sImageLink = attributes.getValue(iAttributeIndex);
 			}
-   			else if (sAttributeName.equals("name"))
-   			{
-   				sName = attributes.getValue(iAttributeIndex); 
-   			}			
-		} 	
-		
+			else if (sAttributeName.equals("name"))
+			{
+				sName = attributes.getValue(iAttributeIndex);
+			}
+		}
+
 		if (sImageLink.length() == 0 || sName.length() == 0)
 			return;
-		
-		sImageLink = sImageLink.substring(
-				sImageLink.lastIndexOf('/') + 1, 
-				sImageLink.length());
-		
-		currentPathway = generalManager.getPathwayManager().
-			createPathway(EPathwayDatabaseType.BIOCARTA, "<name>", sTitle, 
-					sImageLink, BIOCARTA_EXTERNAL_URL_PATHWAY + sName);
-		
+
+		sImageLink = sImageLink
+				.substring(sImageLink.lastIndexOf('/') + 1, sImageLink.length());
+
+		currentPathway = generalManager.getPathwayManager().createPathway(
+				EPathwayDatabaseType.BIOCARTA, "<name>", sTitle, sImageLink,
+				BIOCARTA_EXTERNAL_URL_PATHWAY + sName);
+
 		sTitle = "";
 	}
 
-	private void handleAreaTag() {
-		
-		String sName = "<unknown>";
-    	String sCoords = "";
-    	String sShape = "";
-    	String sExternalLink = "";
+	private void handleAreaTag()
+	{
 
-		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) 
+		String sName = "<unknown>";
+		String sCoords = "";
+		String sShape = "";
+		String sExternalLink = "";
+
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
 		{
-			 sAttributeName = attributes.getLocalName(iAttributeIndex);
-		
+			sAttributeName = attributes.getLocalName(iAttributeIndex);
+
 			if ("".equals(sAttributeName))
 			{
 				sAttributeName = attributes.getQName(iAttributeIndex);
 			}
-				
+
 			if (sAttributeName.equals("shape"))
 			{
-				sShape = attributes.getValue(iAttributeIndex); 
+				sShape = attributes.getValue(iAttributeIndex);
 			}
-   			else if (sAttributeName.equals("coords"))
-   			{
-   				sCoords = attributes.getValue(iAttributeIndex); 
-   			}
-   			else if (sAttributeName.equals("href"))
-   			{
-   				sExternalLink = attributes.getValue(iAttributeIndex); 
-   			
-   				if (sExternalLink.contains("BCID="))
-   				{
-	   				// Create name from link
-	   				sName = sExternalLink.substring(
-	   						sExternalLink.lastIndexOf("BCID=") + 5, 
-	   						sExternalLink.length());
-   				}
-   			}
-		} 	
+			else if (sAttributeName.equals("coords"))
+			{
+				sCoords = attributes.getValue(iAttributeIndex);
+			}
+			else if (sAttributeName.equals("href"))
+			{
+				sExternalLink = attributes.getValue(iAttributeIndex);
+
+				if (sExternalLink.contains("BCID="))
+				{
+					// Create name from link
+					sName = sExternalLink.substring(sExternalLink.lastIndexOf("BCID=") + 5,
+							sExternalLink.length());
+				}
+			}
+		}
 
 		// Convert BioCarta ID to DAVID ID
 		IGenomeIdManager genomeIdManager = generalManager.getGenomeIdManager();
-		
-		int iDavidId = genomeIdManager.getIdIntFromStringByMapping(
-				sName, EGenomeMappingType.BIOCARTA_GENE_ID_2_DAVID);
-		
-		if(iDavidId == -1 || iDavidId == 0)
+
+		int iDavidId = genomeIdManager.getIdIntFromStringByMapping(sName,
+				EGenomeMappingType.BIOCARTA_GENE_ID_2_DAVID);
+
+		if (iDavidId == -1 || iDavidId == 0)
 		{
-			generalManager.getLogger().log(Level.WARNING, 
-					"Cannot map BioCarta ID " +sName +" to David ID");
+			generalManager.getLogger().log(Level.WARNING,
+					"Cannot map BioCarta ID " + sName + " to David ID");
 			return;
 		}
-	
-		IGraphItem vertex = generalManager.getPathwayItemManager()
-			.createVertexGene(sName, "gene", 
-					BIOCARTA_EXTERNAL_URL_VERTEX +  sExternalLink, "", iDavidId);
-		
-		generalManager.getPathwayItemManager().createVertexRep(
-			currentPathway, 
-			vertex, 
-			sName, 
-			sShape, 
-			sCoords);
+
+		IGraphItem vertex = generalManager.getPathwayItemManager().createVertexGene(sName,
+				"gene", BIOCARTA_EXTERNAL_URL_VERTEX + sExternalLink, "", iDavidId);
+
+		generalManager.getPathwayItemManager().createVertexRep(currentPathway, vertex, sName,
+				sShape, sCoords);
 	}
-	
+
 	/**
 	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler#destroyHandler()
 	 * @see org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler#destroyHandler()
-	 * 
 	 */
-	public void destroyHandler() {
-		
+	public void destroyHandler()
+	{
+
 		super.destroyHandler();
 	}
 }

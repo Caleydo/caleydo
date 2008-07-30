@@ -10,10 +10,10 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
- *
  */
-public abstract class ACmdCreate_IdTargetLabelParent 
-extends ACmdCreate_IdTargetLabelAttrDetail {
+public abstract class ACmdCreate_IdTargetLabelParent
+	extends ACmdCreate_IdTargetLabelAttrDetail
+{
 
 	protected int iParentContainerId;
 
@@ -21,21 +21,19 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 	 * @param generalManager
 	 * @param parameterHandler
 	 */
-	protected ACmdCreate_IdTargetLabelParent(
-			final IGeneralManager generalManager,
-			final ICommandManager commandManager,
-			final CommandQueueSaxType commandQueueSaxType)
+	protected ACmdCreate_IdTargetLabelParent(final IGeneralManager generalManager,
+			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
 	{
-		super(generalManager,
-				commandManager,
-				commandQueueSaxType);
+
+		super(generalManager, commandManager, commandQueueSaxType);
 	}
 
-	public void setParameterHandler( final IParameterHandler parameterHandler ) {
-		
+	public void setParameterHandler(final IParameterHandler parameterHandler)
+	{
+
 		super.setParameterHandler(parameterHandler);
-		
-		iParentContainerId = parameterHandler.getValueInt(
-				CommandQueueSaxType.TAG_PARENT.getXmlKey() );
+
+		iParentContainerId = parameterHandler.getValueInt(CommandQueueSaxType.TAG_PARENT
+				.getXmlKey());
 	}
 }

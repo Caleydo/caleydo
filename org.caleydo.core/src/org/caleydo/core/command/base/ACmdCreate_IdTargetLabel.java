@@ -6,56 +6,53 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
- * Abstract command class stores and handles commandId, targettId and label of object.
+ * Abstract command class stores and handles commandId, targettId and label of
+ * object.
  * 
- *  @author Michael Kalkusch
- *  @author Marc Streit
- *
+ * @author Michael Kalkusch
+ * @author Marc Streit
  */
-public abstract class ACmdCreate_IdTargetLabel 
-extends ACommand {
-	
+public abstract class ACmdCreate_IdTargetLabel
+	extends ACommand
+{
+
 	/**
 	 * Unique Id of the object, that will be created.
 	 */
 	protected int iUniqueId;
-	
+
 	/**
 	 * Label of the new object, that will be created.
 	 */
 	protected String sLabel = "";
 
-	
 	/**
 	 * Constructor.
 	 * 
 	 * @param generalManager
 	 */
-	protected ACmdCreate_IdTargetLabel(
-			final IGeneralManager generalManager,
-			final ICommandManager commandManager,
-			final CommandQueueSaxType commandQueueSaxType) {
-		
+	protected ACmdCreate_IdTargetLabel(final IGeneralManager generalManager,
+			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	{
+
 		// set unique ID to -1 because it is unknown at this moment
-		super(-1, 
-				generalManager,
-				commandManager,
-				commandQueueSaxType);
+		super(-1, generalManager, commandManager, commandQueueSaxType);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.base.ACommand#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
+	 * @see
+	 * org.caleydo.core.command.base.ACommand#setParameterHandler(org.caleydo
+	 * .core.parser.parameter.IParameterHandler)
 	 */
-	public void setParameterHandler( final IParameterHandler parameterHandler ) {
-		
-		this.setId(parameterHandler.getValueInt( 
-					CommandQueueSaxType.TAG_CMD_ID.getXmlKey() ) );
-	
-		iUniqueId = parameterHandler.getValueInt( 
-					CommandQueueSaxType.TAG_UNIQUE_ID.getXmlKey() );
-		
-		sLabel = parameterHandler.getValueString( 
-					CommandQueueSaxType.TAG_LABEL.getXmlKey() );
+	public void setParameterHandler(final IParameterHandler parameterHandler)
+	{
+
+		this.setId(parameterHandler.getValueInt(CommandQueueSaxType.TAG_CMD_ID.getXmlKey()));
+
+		iUniqueId = parameterHandler
+				.getValueInt(CommandQueueSaxType.TAG_UNIQUE_ID.getXmlKey());
+
+		sLabel = parameterHandler.getValueString(CommandQueueSaxType.TAG_LABEL.getXmlKey());
 	}
 }

@@ -14,62 +14,55 @@ import org.caleydo.core.view.swt.jogl.gears.GearsViewRep;
  * Class implements the command for creating a gears view.
  * 
  * @see org.caleydo.core.command.ICommand
- * 
  * @author Michael Kalkusch
  * @author Marc Streit
- *
  */
-public class CmdViewCreateGears 
-extends ACmdCreate_IdTargetLabelParentAttrOpenGL  {
-	
+public class CmdViewCreateGears
+	extends ACmdCreate_IdTargetLabelParentAttrOpenGL
+{
+
 	/**
 	 * Constructor
-	 * 
 	 */
-	public CmdViewCreateGears(
-			final IGeneralManager generalManager,
-			final ICommandManager commandManager,
-			final CommandQueueSaxType commandQueueSaxType) {
-		
-		super(generalManager, 
-				commandManager,
-				commandQueueSaxType);
+	public CmdViewCreateGears(final IGeneralManager generalManager,
+			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	{
+
+		super(generalManager, commandManager, commandQueueSaxType);
 	}
 
 	/**
-	 * Method creates a gears view, sets the attributes 
-	 * and calls the init and draw method.
+	 * Method creates a gears view, sets the attributes and calls the init and
+	 * draw method.
 	 */
-	public void doCommand() throws CaleydoRuntimeException {
-		
+	public void doCommand() throws CaleydoRuntimeException
+	{
+
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
-		
-		GearsViewRep gearsView = (GearsViewRep)viewManager
-				.createView(EManagerObjectType.VIEW_SWT_GEARS,
-						iUniqueId, 
-						iParentContainerId,
-						sLabel);
-		
-		viewManager.registerItem(gearsView, 
-				iUniqueId);
-		
+
+		GearsViewRep gearsView = (GearsViewRep) viewManager.createView(
+				EManagerObjectType.VIEW_SWT_GEARS, iUniqueId, iParentContainerId, sLabel);
+
+		viewManager.registerItem(gearsView, iUniqueId);
+
 		gearsView.setAttributes(iWidthX, iHeightY);
 		gearsView.initView();
 		gearsView.drawView();
-		
+
 		commandManager.runDoCommand(this);
 	}
 
-	
-	public void setParameterHandler( final IParameterHandler parameterHandler ) {
+	public void setParameterHandler(final IParameterHandler parameterHandler)
+	{
 
-		assert parameterHandler != null: "ParameterHandler object is null!";	
-		
+		assert parameterHandler != null : "ParameterHandler object is null!";
+
 		super.setParameterHandler(parameterHandler);
 	}
-	
-	public void undoCommand() throws CaleydoRuntimeException {
-		
+
+	public void undoCommand() throws CaleydoRuntimeException
+	{
+
 		commandManager.runUndoCommand(this);
 	}
 }

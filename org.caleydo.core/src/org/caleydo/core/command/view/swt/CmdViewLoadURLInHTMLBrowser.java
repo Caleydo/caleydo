@@ -13,80 +13,79 @@ import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
 
 /**
- * Class implementes the command for loading an URL 
- * in a simple browser.
- * As arguments the view ID of the target browser and
- * the target URL are handed over to the command.
+ * Class implementes the command for loading an URL in a simple browser. As
+ * arguments the view ID of the target browser and the target URL are handed
+ * over to the command.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
- *
  */
-public class CmdViewLoadURLInHTMLBrowser 
-extends ACmdCreate_IdTargetLabelParentXY {
-	
+public class CmdViewLoadURLInHTMLBrowser
+	extends ACmdCreate_IdTargetLabelParentXY
+{
+
 	protected int iTargetHTMLBrowserViewId = -1;
-	
+
 	protected String sTargetURL = "";
-	
+
 	/**
 	 * Constructor
-	 * 
 	 */
-	public CmdViewLoadURLInHTMLBrowser(
-			final IGeneralManager generalManager,
-			final ICommandManager commandManager,
-			final CommandQueueSaxType commandQueueSaxType) {
-		
-		super(generalManager, 
-				commandManager,
-				commandQueueSaxType);
+	public CmdViewLoadURLInHTMLBrowser(final IGeneralManager generalManager,
+			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	{
+
+		super(generalManager, commandManager, commandQueueSaxType);
 	}
 
 	/**
-	 * Method retrieves the the browser ViewReps
-	 * and sets the new URL.
-	 * The URL is then automatically reloaded.
+	 * Method retrieves the the browser ViewReps and sets the new URL. The URL
+	 * is then automatically reloaded.
 	 */
-	public void doCommand() throws CaleydoRuntimeException {
-		
-		try {
-			
-			Iterator<IView> iterHTMLBrowser =
-				generalManager.getViewGLCanvasManager().
-				getViewRepByType(ViewType.SWT_HTML_BROWSER).iterator();
+	public void doCommand() throws CaleydoRuntimeException
+	{
+
+		try
+		{
+
+			Iterator<IView> iterHTMLBrowser = generalManager.getViewGLCanvasManager()
+					.getViewRepByType(ViewType.SWT_HTML_BROWSER).iterator();
 
 			while (iterHTMLBrowser.hasNext())
 			{
-				((HTMLBrowserViewRep)iterHTMLBrowser.next()).setUrl(sTargetURL);
+				((HTMLBrowserViewRep) iterHTMLBrowser.next()).setUrl(sTargetURL);
 			}
 
-		} catch (Exception e)
+		}
+		catch (Exception e)
 		{
-//			generalManager.logMsg(
-//					this.getClass().getSimpleName() + 
-//					": doCommand(): Invalid view ID. Requested view is not a browser!",
-//					LoggerType.MINOR_ERROR );
-			
+			// generalManager.logMsg(
+			// this.getClass().getSimpleName() +
+			//": doCommand(): Invalid view ID. Requested view is not a browser!",
+			// LoggerType.MINOR_ERROR );
+
 			e.printStackTrace();
-		} 
-				
+		}
+
 		commandManager.runDoCommand(this);
 	}
 
-	public void setParameterHandler( final IParameterHandler parameterHandler ) {
-		
-		assert parameterHandler != null: "ParameterHandler object is null!";	
-		
-		super.setParameterHandler(parameterHandler);	
+	public void setParameterHandler(final IParameterHandler parameterHandler)
+	{
+
+		assert parameterHandler != null : "ParameterHandler object is null!";
+
+		super.setParameterHandler(parameterHandler);
 	}
-	
-	public void setAttributes(String sTargetURL) {
+
+	public void setAttributes(String sTargetURL)
+	{
 
 		this.sTargetURL = sTargetURL;
 	}
-	
-	public void undoCommand() throws CaleydoRuntimeException {
+
+	public void undoCommand() throws CaleydoRuntimeException
+	{
 
 		commandManager.runUndoCommand(this);
 	}

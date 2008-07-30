@@ -7,49 +7,52 @@ import org.eclipse.swt.widgets.Composite;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 
-
 /**
- * Class takes a composite in the constructor,
- * embedds an AWT Frame in it and finally creates a GLCanvas.
- * The GLCanvas can be retrieved by the getGLCanvas() method.
+ * Class takes a composite in the constructor, embedds an AWT Frame in it and
+ * finally creates a GLCanvas. The GLCanvas can be retrieved by the
+ * getGLCanvas() method.
  * 
  * @author Marc Streit
  * @author Michael Kalkusch
  */
-public class SWTEmbeddedJoglWidget 
-extends ASWTEmbeddedWidget {
-	
+public class SWTEmbeddedJoglWidget
+	extends ASWTEmbeddedWidget
+{
+
 	protected GLCanvas gLCanvas = null;
-	
+
 	/**
-	 * Constructor that takes the composite in which it should 
-	 * embed the GLCanvas.
+	 * Constructor that takes the composite in which it should embed the
+	 * GLCanvas.
 	 * 
-	 * @param Composite Reference to the composite 
-	 * that is supposed to be filled.
+	 * @param Composite
+	 *            Reference to the composite that is supposed to be filled.
 	 */
-	public SWTEmbeddedJoglWidget(Composite parentComposite) {
-	
+	public SWTEmbeddedJoglWidget(Composite parentComposite)
+	{
+
 		super(parentComposite);
 	}
-	
+
 	public void createEmbeddedComposite(final IGeneralManager generalManager,
-			final int iGLCanvasID) {
-		
+			final int iGLCanvasID)
+	{
+
 		super.createEmbeddedComposite();
-		
+
 		assert gLCanvas == null : "GLCanvas was already created!";
-			
-        GLCapabilities glCapabilities = new GLCapabilities();
-        glCapabilities.setStencilBits(1);
-		
+
+		GLCapabilities glCapabilities = new GLCapabilities();
+		glCapabilities.setStencilBits(1);
+
 		gLCanvas = new GLCaleydoCanvas(generalManager, iGLCanvasID, glCapabilities);
-		
+
 		embeddedFrame.add(gLCanvas);
 	}
 
-	public GLCanvas getGLCanvas() {
-		
+	public GLCanvas getGLCanvas()
+	{
+
 		return gLCanvas;
 	}
 }

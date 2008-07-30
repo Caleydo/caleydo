@@ -7,21 +7,21 @@ import org.caleydo.core.manager.IGeneralManager;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
- *
  */
 public interface IManagedObject
-extends IUniqueObject {
+	extends IUniqueObject
+{
 
 	/**
 	 * Get the manager that created the item.
 	 * 
 	 * @return reference to the general manager
 	 */
-	public IGeneralManager getGeneralManager();	
-	
+	public IGeneralManager getGeneralManager();
+
 	/**
-	 * Set the general manager from external.
-	 * This is needed after serialization to update the general manager which was not exported.
+	 * Set the general manager from external. This is needed after serialization
+	 * to update the general manager which was not exported.
 	 * 
 	 * @param generalManager
 	 */

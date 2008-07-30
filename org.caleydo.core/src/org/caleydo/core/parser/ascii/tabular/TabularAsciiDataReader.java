@@ -21,31 +21,26 @@ import org.caleydo.core.util.system.StringConversionTool;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
- *
  */
-public class TabularAsciiDataReader 
-extends AbstractLoader
-implements IParserObject {
-	
+public class TabularAsciiDataReader
+	extends AbstractLoader
+	implements IParserObject
+{
+
 	/**
-	 * Imports data from file to this set.
-	 * uses first storage and overwrites first selection.
+	 * Imports data from file to this set. uses first storage and overwrites
+	 * first selection.
 	 */
 	protected ArrayList<IStorage> alTargetStorages;
-	
+
 	protected ArrayList<EStorageType> alColumnDataTypes;
-	
-	/**
-	 * Reference to the current DataStorage.
-	 */
-	protected IStorage currentDataStorage;
-	
+
 	private ArrayList<int[]> alIntBuffers;
-	
+
 	private ArrayList<float[]> alFloatBuffers;
-	
+
 	private ArrayList<ArrayList<String>> alStringBuffers;
-	
+
 	/**
 	 * Constructor.
 	 * 
@@ -53,138 +48,153 @@ implements IParserObject {
 	 * @param setFileName
 	 * @param enableMultipeThreads
 	 */
-	public TabularAsciiDataReader(final IGeneralManager setGeneralManager, 
-			final String setFileName) {
+	public TabularAsciiDataReader(final IGeneralManager setGeneralManager,
+			final String setFileName)
+	{
 
-		super(setGeneralManager,
-				setFileName);
-		
+		super(setGeneralManager, setFileName);
+
 		alTargetStorages = new ArrayList<IStorage>();
 		alColumnDataTypes = new ArrayList<EStorageType>();
-		
+
 		alIntBuffers = new ArrayList<int[]>();
 		alFloatBuffers = new ArrayList<float[]>();
 		alStringBuffers = new ArrayList<ArrayList<String>>();
-		
+
 		init();
 	}
 
-	/** 
-	 * Defines a pattern for parsing 
+	/**
+	 * Defines a pattern for parsing
 	 */
-	public final boolean setTokenPattern(final String tokenPattern ) {
-		
+	public final boolean setTokenPattern(final String tokenPattern)
+	{
+
 		boolean bAllTokensProper = true;
-		
+
 		StringTokenizer tokenizer = new StringTokenizer(tokenPattern);
 
-		final String sTokenPatternParserSeperator = 
-			IGeneralManager.sDelimiter_Parser_DataType;
-		
-		while (tokenizer.hasMoreTokens()) 
+		final String sTokenPatternParserSeperator = IGeneralManager.sDelimiter_Parser_DataType;
+
+		while (tokenizer.hasMoreTokens())
 		{
 			String sBuffer = tokenizer.nextToken(sTokenPatternParserSeperator);
 
-			if ( sBuffer.equalsIgnoreCase("abort")) 
+			if (sBuffer.equalsIgnoreCase("abort"))
 			{
 				alColumnDataTypes.add(EStorageType.ABORT);
-				
-				return bAllTokensProper;				
-			} 
-			else if (sBuffer.equalsIgnoreCase("skip")) 
-			{								
-				alColumnDataTypes.add(EStorageType.SKIP);							
-			} 
-			else if (sBuffer.equalsIgnoreCase("int")) 
+
+				return bAllTokensProper;
+			}
+			else if (sBuffer.equalsIgnoreCase("skip"))
+			{
+				alColumnDataTypes.add(EStorageType.SKIP);
+			}
+			else if (sBuffer.equalsIgnoreCase("int"))
 			{
 				alColumnDataTypes.add(EStorageType.INT);
-								          
-			} 
-			else if (sBuffer.equalsIgnoreCase("float")) 
-			{	
+
+			}
+			else if (sBuffer.equalsIgnoreCase("float"))
+			{
 				alColumnDataTypes.add(EStorageType.FLOAT);
-								          
+
 			}
-			else if (sBuffer.equalsIgnoreCase("string")) 
-			{				
-				alColumnDataTypes.add(EStorageType.STRING);					          
-			} 
-			else {
+			else if (sBuffer.equalsIgnoreCase("string"))
+			{
+				alColumnDataTypes.add(EStorageType.STRING);
+			}
+			else
+			{
 				bAllTokensProper = false;
-				
-				generalManager.getLogger().log(Level.WARNING, "Unknown column data type: "+tokenPattern);
+
+				generalManager.getLogger().log(Level.WARNING,
+						"Unknown column data type: " + tokenPattern);
 			}
-			
+
 		} // end of while
-		
+
 		return bAllTokensProper;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#setTargetSotrage(java.util.ArrayList)
+	 * @see
+	 * org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#setTargetSotrage
+	 * (java.util.ArrayList)
 	 */
 	public void setTargetStorages(final ArrayList<Integer> iAlTargetStorageId)
 	{
+
 		for (int iStorageId : iAlTargetStorageId)
-			alTargetStorages.add((IStorage) generalManager.getStorageManager().getItem(iStorageId));
+			alTargetStorages.add((IStorage) generalManager.getStorageManager().getItem(
+					iStorageId));
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.parser.ascii.IParserObject#destroy()
 	 */
-	public final void destroy() {
-		
+	public final void destroy()
+	{
+
 	}
 
-	protected void allocateStorageBufferForTokenPattern() {
-		
-		for (EStorageType storageType : alColumnDataTypes) 
-		{ 			
-			switch(storageType) 
+	protected void allocateStorageBufferForTokenPattern()
+	{
+
+		for (EStorageType storageType : alColumnDataTypes)
+		{
+			switch (storageType)
 			{
-			case INT:
-				alIntBuffers.add(new int[iStopParsingAtLine - iStartParsingAtLine + 1]);
-				break;
-			case FLOAT:
-				alFloatBuffers.add(new float[iStopParsingAtLine - iStartParsingAtLine + 1]);
-				break;
-			case STRING:
-				alStringBuffers.add(new ArrayList<String>(iStopParsingAtLine - iStartParsingAtLine + 1));
-				break;
-			case SKIP:
-				break;
-			case ABORT:
-				return;
-			default:
-				throw new CaleydoRuntimeException("Unknown token pattern detected: "
-						+storageType.toString(), CaleydoRuntimeExceptionType.DATAHANDLING);
+				case INT:
+					alIntBuffers.add(new int[iStopParsingAtLine - iStartParsingAtLine + 1]);
+					break;
+				case FLOAT:
+					alFloatBuffers
+							.add(new float[iStopParsingAtLine - iStartParsingAtLine + 1]);
+					break;
+				case STRING:
+					alStringBuffers.add(new ArrayList<String>(iStopParsingAtLine
+							- iStartParsingAtLine + 1));
+					break;
+				case SKIP:
+					break;
+				case ABORT:
+					return;
+				default:
+					throw new CaleydoRuntimeException("Unknown token pattern detected: "
+							+ storageType.toString(), CaleydoRuntimeExceptionType.DATAHANDLING);
 			}
-		}	
+		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#loadDataParseFile(java.io.BufferedReader, int)
+	 * @see
+	 * org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#loadDataParseFile
+	 * (java.io.BufferedReader, int)
 	 */
-	protected void loadDataParseFile(BufferedReader brFile, final int iNumberOfLinesInFile )
-		throws IOException 
+	protected void loadDataParseFile(BufferedReader brFile, final int iNumberOfLinesInFile)
+			throws IOException
 	{
+
 		allocateStorageBufferForTokenPattern();
 
 		// Init progress bar
-		progressBarSetStoreInitTitle("Load data file " + this.getFileName(),
-				0,  // reset progress bar to 0
+		progressBarSetStoreInitTitle("Load data file " + this.getFileName(), 0, // reset
+				// progress
+				// bar
+				// to
+				// 0
 				alTargetStorages.size());
 
 		String sLine;
 
 		int iColumnIndex = 0;
 		int iParsedLineIndex = 0;
-		
-		while (((sLine = brFile.readLine()) != null)
-				&& (iLineInFile < iStopParsingAtLine))
+
+		while (((sLine = brFile.readLine()) != null) && (iLineInFile < iStopParsingAtLine))
 		{
 			// Check if line should be ignored
 			if (iLineInFile < this.iStartParsingAtLine)
@@ -192,54 +202,58 @@ implements IParserObject {
 				iLineInFile++;
 				continue;
 			}
-				
-//				StringTokenizer strTokenText = new StringTokenizer(sLine, "\"");
-//				strLineBuffer.setLength(0);
-//				int iCountTokens = strTokenText.countTokens();
-//				if ((iCountTokens % 2) == 0)
-//				{
-//					strTokenText = new StringTokenizer(sLine.replace("\"\"",
-//							"\" \""), "\"");
-//				}
-			
-//			System.out.println("Line: " +iLineInFile);
-//			System.out.println(" I:" + sLine );
-			
+
+			// StringTokenizer strTokenText = new StringTokenizer(sLine, "\"");
+			// strLineBuffer.setLength(0);
+			// int iCountTokens = strTokenText.countTokens();
+			// if ((iCountTokens % 2) == 0)
+			// {
+			// strTokenText = new StringTokenizer(sLine.replace("\"\"",
+			// "\" \""), "\"");
+			// }
+
+			// System.out.println("Line: " +iLineInFile);
+			// System.out.println(" I:" + sLine );
+
 			StringTokenizer strTokenLine = new StringTokenizer(sLine, sTokenSeperator);
-			
+
 			iColumnIndex = 0;
-			
-			while(strTokenLine.hasMoreTokens())
-			{					
-				for(EStorageType columnDataType : alColumnDataTypes)
+
+			while (strTokenLine.hasMoreTokens())
+			{
+				for (EStorageType columnDataType : alColumnDataTypes)
 				{
-					switch(columnDataType) 
+					switch (columnDataType)
 					{
-					case INT:
-						alIntBuffers.get(iColumnIndex)[iParsedLineIndex] = 
-							StringConversionTool.convertStringToInt(strTokenLine.nextToken(), -1);
-						iColumnIndex++;
-						break;
-					case FLOAT:
-						alFloatBuffers.get(iColumnIndex)[iParsedLineIndex] = 
-							StringConversionTool.convertStringToFloat(strTokenLine.nextToken(), -1);
-						iColumnIndex++;
-						break;
-					case STRING:
-						alStringBuffers.get(iColumnIndex).add(strTokenLine.nextToken());
-//						/alStringBuffers.get(iColumnIndex).set(iParsedLineIndex, strTokenLine.nextToken());
-						iColumnIndex++;
-						break;
-					case SKIP: // do nothing
-						break;
-					case ABORT:
-						iColumnIndex = alColumnDataTypes.size();
-						break;
-					default:
-						throw new CaleydoRuntimeException("Unknown token pattern detected: "
-								+columnDataType.toString(), CaleydoRuntimeExceptionType.DATAHANDLING);
+						case INT:
+							alIntBuffers.get(iColumnIndex)[iParsedLineIndex] = StringConversionTool
+									.convertStringToInt(strTokenLine.nextToken(), -1);
+							iColumnIndex++;
+							break;
+						case FLOAT:
+							alFloatBuffers.get(iColumnIndex)[iParsedLineIndex] = StringConversionTool
+									.convertStringToFloat(strTokenLine.nextToken(), -1);
+							iColumnIndex++;
+							break;
+						case STRING:
+							alStringBuffers.get(iColumnIndex).add(strTokenLine.nextToken());
+							// /alStringBuffers.get(iColumnIndex).set(
+							// iParsedLineIndex
+							// , strTokenLine.nextToken());
+							iColumnIndex++;
+							break;
+						case SKIP: // do nothing
+							break;
+						case ABORT:
+							iColumnIndex = alColumnDataTypes.size();
+							break;
+						default:
+							throw new CaleydoRuntimeException(
+									"Unknown token pattern detected: "
+											+ columnDataType.toString(),
+									CaleydoRuntimeExceptionType.DATAHANDLING);
 					}
-				
+
 					// Check if the line is finished or early aborted
 					if (iColumnIndex == alColumnDataTypes.size())
 						continue;
@@ -248,57 +262,59 @@ implements IParserObject {
 
 			iLineInFile++;
 			iParsedLineIndex++;
-	
-			super.progressBarStoredIncrement();		
+
+			super.progressBarStoredIncrement();
 		}
 
 		super.progressBarResetTitle();
-		super.progressBarIncrement( 10 );
+		super.progressBarIncrement(10);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#setArraysToStorages()
 	 */
-	protected void setArraysToStorages() {
+	protected void setArraysToStorages()
+	{
 
 		int iIntArrayIndex = 0;
 		int iFloatArrayIndex = 0;
 		int iStringArrayIndex = 0;
 		int iStorageIndex = 0;
-		
-		for (EStorageType storageType : alColumnDataTypes) 
-		{ 			
-			switch(storageType) 
+
+		for (EStorageType storageType : alColumnDataTypes)
+		{
+			switch (storageType)
 			{
-			case INT:
-				alTargetStorages.get(iStorageIndex).setRawData(
-						alIntBuffers.get(iIntArrayIndex));	
-				iIntArrayIndex++;
-				iStorageIndex++;
-				break;
-			case FLOAT:
-				alTargetStorages.get(iStorageIndex).setRawData(
-						alFloatBuffers.get(iFloatArrayIndex));
-				iFloatArrayIndex++;
-				iStorageIndex++;
-				break;
-			case STRING:
-				((INominalStorage<String>)alTargetStorages.get(iStorageIndex)).setRawData(
-						alStringBuffers.get(iStringArrayIndex));
-				alStringBuffers.add(new ArrayList<String>(iStopParsingAtLine - iStartParsingAtLine + 1));
-				iStringArrayIndex++;
-				iStorageIndex++;
-				break;
-			case SKIP:  // do nothing
-				break;
-			case ABORT:
-				return;
-			default:
-				throw new CaleydoRuntimeException("Unknown token pattern detected: "
-						+storageType.toString(), CaleydoRuntimeExceptionType.DATAHANDLING);
-			}	
-		}	
+				case INT:
+					alTargetStorages.get(iStorageIndex).setRawData(
+							alIntBuffers.get(iIntArrayIndex));
+					iIntArrayIndex++;
+					iStorageIndex++;
+					break;
+				case FLOAT:
+					alTargetStorages.get(iStorageIndex).setRawData(
+							alFloatBuffers.get(iFloatArrayIndex));
+					iFloatArrayIndex++;
+					iStorageIndex++;
+					break;
+				case STRING:
+					((INominalStorage<String>) alTargetStorages.get(iStorageIndex))
+							.setRawData(alStringBuffers.get(iStringArrayIndex));
+					alStringBuffers.add(new ArrayList<String>(iStopParsingAtLine
+							- iStartParsingAtLine + 1));
+					iStringArrayIndex++;
+					iStorageIndex++;
+					break;
+				case SKIP: // do nothing
+					break;
+				case ABORT:
+					return;
+				default:
+					throw new CaleydoRuntimeException("Unknown token pattern detected: "
+							+ storageType.toString(), CaleydoRuntimeExceptionType.DATAHANDLING);
+			}
+		}
 	}
 
 	/**
@@ -306,8 +322,9 @@ implements IParserObject {
 	 * 
 	 * @see org.caleydo.core.parser.ascii.IParserObject#init()
 	 */
-	public void init() 
+	public void init()
 	{
+
 		iLineInFile = 0;
 	}
 }

@@ -8,39 +8,31 @@ import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
 import demos.gears.Gears;
 
 /**
- * Sample for running Gears demo. Alter it to fit any 
+ * Sample for running Gears demo. Alter it to fit any
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
- *
  */
-public class GearsViewRep 
-extends SwtJoglGLCanvasViewRep 
-implements IView
-{	
+public class GearsViewRep
+	extends SwtJoglGLCanvasViewRep
+	implements IView
+{
+
 	/**
 	 * Constructor
-	 * 
 	 */
-	public GearsViewRep(IGeneralManager generalManager, 
-			int iViewID, 
-			int iParentContainerID, 
-			int iGLCanvasID,
-			String sLabel)
+	public GearsViewRep(IGeneralManager generalManager, int iViewID, int iParentContainerID,
+			int iGLCanvasID, String sLabel)
 	{
-		super(generalManager, 
-				iViewID, 
-				iParentContainerID,
-				iGLCanvasID,
-				sLabel);		
+
+		super(generalManager, iViewID, iParentContainerID, iGLCanvasID, sLabel);
 	}
-	
-	public void initViewSwtComposit(Composite swtContainer) {
-		
+
+	public void initViewSwtComposit(Composite swtContainer)
+	{
+
 		Gears gears = new Gears();
-		
-		gLCanvas.addGLEventListener(gears);	
+
+		gLCanvas.addGLEventListener(gears);
 	}
 }
-	
-	

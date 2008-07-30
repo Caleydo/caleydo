@@ -8,16 +8,15 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
- * Command class triggers the creation of
- * a GUI container inside a window.
+ * Command class triggers the creation of a GUI container inside a window.
  * 
  * @author Marc Streit
  * @author Michael Kalkusch
- *
  */
 public class CmdContainerCreate
-extends ACmdCreate_IdTargetLabelParent {
-	
+	extends ACmdCreate_IdTargetLabelParent
+{
+
 	/**
 	 * Constructor.
 	 * 
@@ -25,14 +24,11 @@ extends ACmdCreate_IdTargetLabelParent {
 	 * @param commandManager
 	 * @param commandQueueSaxType
 	 */
-	public CmdContainerCreate(
-			final IGeneralManager generalManager,
-			final ICommandManager commandManager,
-			final CommandQueueSaxType commandQueueSaxType) {
-		
-		super(generalManager, 
-				commandManager,
-				commandQueueSaxType);
+	public CmdContainerCreate(final IGeneralManager generalManager,
+			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	{
+
+		super(generalManager, commandManager, commandQueueSaxType);
 	}
 
 	/*
@@ -41,27 +37,28 @@ extends ACmdCreate_IdTargetLabelParent {
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
-		generalManager.getSWTGUIManager().createComposite(
-					iUniqueId, 
-					iParentContainerId, 
-					sAttribute2);	
-		
+
+		generalManager.getSWTGUIManager().createComposite(iUniqueId, iParentContainerId,
+				sAttribute2);
+
 		commandManager.runDoCommand(this);
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws CaleydoRuntimeException {
-		
-		commandManager.runUndoCommand(this);		
+	public void undoCommand() throws CaleydoRuntimeException
+	{
+
+		commandManager.runUndoCommand(this);
 	}
-	
-	public void setParameterHandler( final IParameterHandler parameterHandler ) {
-		
-		assert parameterHandler != null: "ParameterHandler object is null!";	
-		
-		super.setParameterHandler(parameterHandler);	
+
+	public void setParameterHandler(final IParameterHandler parameterHandler)
+	{
+
+		assert parameterHandler != null : "ParameterHandler object is null!";
+
+		super.setParameterHandler(parameterHandler);
 	}
 }

@@ -8,79 +8,85 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  * Abstract class for the mediator that belongs to the event mechanism.
  * 
  * @see org.caleydo.core.manager.event.mediator.IMediator
- * 
  * @author Micheal Kalkusch
  * @author Marc Streit
  */
-public abstract class ALockableMediator 
-extends ALockableMediatorReceiver {
-	
+public abstract class ALockableMediator
+	extends ALockableMediatorReceiver
+{
+
 	protected final IEventPublisher eventPublisher;
-	
+
 	private final MediatorUpdateType mediatorUpdateType;
-		
+
 	public final int iMediatorId;
-	
+
 	/**
 	 * Constructor.
 	 * 
 	 * @param iMediatorId
-	 * @param mediatorUpdateType if ==NULL, MediatorUpdateType.MEDIATOR_DEFAULT is used as default 
+	 * @param mediatorUpdateType
+	 *            if ==NULL, MediatorUpdateType.MEDIATOR_DEFAULT is used as
+	 *            default
 	 */
-	protected ALockableMediator(final IEventPublisher eventPublisher,
-			int iMediatorId,
-			final MediatorUpdateType mediatorUpdateType) {
-		
+	protected ALockableMediator(final IEventPublisher eventPublisher, int iMediatorId,
+			final MediatorUpdateType mediatorUpdateType)
+	{
+
 		super();
-		
+
 		this.eventPublisher = eventPublisher;
 		this.iMediatorId = iMediatorId;
-		
-		if ( mediatorUpdateType == null ) 
+
+		if (mediatorUpdateType == null)
 		{
 			this.mediatorUpdateType = MediatorUpdateType.MEDIATOR_DEFAULT;
 		}
-		else 
+		else
 		{
 			this.mediatorUpdateType = mediatorUpdateType;
 		}
 	}
 
-	public final MediatorUpdateType getMediatorUpdateTypeType() {
+	public final MediatorUpdateType getMediatorUpdateTypeType()
+	{
+
 		return mediatorUpdateType;
 	}
-	
+
 	/**
 	 * Implement cleanup inside this function.
 	 * 
 	 * @see org.caleydo.core.manager.event.mediator.ALockableMediator#destroyMediator(IEventPublisher)
-	 * 
-	 * @param sender callling object 
+	 * @param sender
+	 *            callling object
 	 */
-	protected abstract void destroyMediatorDerivedObject( 
-			final IEventPublisher sender );
+	protected abstract void destroyMediatorDerivedObject(final IEventPublisher sender);
 
-	
 	/**
-	 * Test if caller is creator and calls destroyMediatorObject(IMediatorSender).
+	 * Test if caller is creator and calls
+	 * destroyMediatorObject(IMediatorSender).
 	 * 
 	 * @see org.caleydo.core.manager.event.mediator.IMediator#destroyMediator()
 	 * @see org.caleydo.core.manager.event.mediator.ALockableMediator#destroyMediatorDerivedObject(IMediatorSender)
 	 */
-	public final void destroyMediator( final IEventPublisher sender )
+	public final void destroyMediator(final IEventPublisher sender)
 	{
-		if ( ! eventPublisher.equals(sender)) {
-			throw new CaleydoRuntimeException("IMediator.destroyMediator() may only be callled by its creator!");
+
+		if (!eventPublisher.equals(sender))
+		{
+			throw new CaleydoRuntimeException(
+					"IMediator.destroyMediator() may only be callled by its creator!");
 		}
 
-		destroyMediatorDerivedObject( sender );
+		destroyMediatorDerivedObject(sender);
 	}
-	
 
 	/**
 	 * @see org.caleydo.core.data.IUniqueObject#getId()
 	 */
-	public final int getId() {
+	public final int getId()
+	{
 
 		return iMediatorId;
 	}
@@ -90,11 +96,12 @@ extends ALockableMediatorReceiver {
 	 * 
 	 * @see org.caleydo.core.data.IUniqueObject#setId(int)
 	 */
-	public final void setId(int isetId) {
-		
+	public final void setId(int isetId)
+	{
+
 		throw new CaleydoRuntimeException("setId() must not be called.",
 				CaleydoRuntimeExceptionType.OBSERVER);
-		
-		//this.iMediatorId = isetId;
+
+		// this.iMediatorId = isetId;
 	}
 }

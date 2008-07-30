@@ -6,71 +6,96 @@ import java.util.Vector;
 
 import javax.media.opengl.GL;
 
-public class GLCanvasGlyphGenerator {
+public class GLCanvasGlyphGenerator
+{
+
 	int indexTopColor_ = -1;
+
 	int indexBoxColor_ = -1;
+
 	int indexHeight_ = -1;
+
 	int iMaxHeight = 1;
-	
+
 	int iTowerBox = -1;
+
 	int iTowerTop = -1;
+
 	int iBaseBox = -1;
+
 	int iBaseBoxSelected = -1;
-	
+
 	float sockel_h = 0.15f;
-	
+
 	Vector<Vec4f> colorBox;
+
 	Vector<Vec4f> colorTop;
-	
-	
-	
-	
-	public GLCanvasGlyphGenerator() {
+
+	public GLCanvasGlyphGenerator()
+	{
+
 		colorBox = new Vector<Vec4f>();
 		colorTop = new Vector<Vec4f>();
 	}
-	
-	public void setIndexTopColor(int index) {
+
+	public void setIndexTopColor(int index)
+	{
+
 		indexTopColor_ = index;
 	}
-	
-	public void setIndexBoxColor(int index) {
+
+	public void setIndexBoxColor(int index)
+	{
+
 		indexBoxColor_ = index;
 	}
-	
-	public void setIndexHeight(int index) {
+
+	public void setIndexHeight(int index)
+	{
+
 		indexHeight_ = index;
 	}
-	public int getIndexHeight() {
+
+	public int getIndexHeight()
+	{
+
 		return indexHeight_;
 	}
-	
-	public void setMaxHeight(int height) {
+
+	public void setMaxHeight(int height)
+	{
+
 		iMaxHeight = height;
 	}
-	
-	public void setColorsTop(Vector<Vec4f> colors) {
+
+	public void setColorsTop(Vector<Vec4f> colors)
+	{
+
 		colorTop = colors;
 	}
-	
-	public void setColorsBox(Vector<Vec4f> colors) {
+
+	public void setColorsBox(Vector<Vec4f> colors)
+	{
+
 		colorBox = colors;
 	}
-	
-	
-	public int generateGlyph(GL gl, GlyphEntry glyph, boolean selected) {
-	    if(iBaseBox < 0) {
-	    	iBaseBox = generateBase (gl, false);
-	    	iBaseBoxSelected = generateBase (gl, true);
-	    	iTowerBox = generateBox(gl);
-	    	iTowerTop = generateTop(gl);
+
+	public int generateGlyph(GL gl, GlyphEntry glyph, boolean selected)
+	{
+
+		if (iBaseBox < 0)
+		{
+			iBaseBox = generateBase(gl, false);
+			iBaseBoxSelected = generateBase(gl, true);
+			iTowerBox = generateBox(gl);
+			iTowerTop = generateTop(gl);
 		}
-	    
+
 		return generateSingleObject(gl, glyph, selected);
 	}
 
-	
-	private int generateSingleObject(GL gl, GlyphEntry glyph, boolean selected) {
+	private int generateSingleObject(GL gl, GlyphEntry glyph, boolean selected)
+	{
 
 		float box_h = glyph.getParameter(indexHeight_);
 		// float sockel_h = 0.15f;
@@ -114,33 +139,25 @@ public class GLCanvasGlyphGenerator {
 
 		float lc = 0.1f;
 
-		float[] diffuse_light0 =
-		{ 5 * lc, 5 * lc, 5 * lc, 1.0f };
-		float[] position_light0 =
-		{ 0.0f, 4.0f, 0.0f, 1.0f };
+		float[] diffuse_light0 = { 5 * lc, 5 * lc, 5 * lc, 1.0f };
+		float[] position_light0 = { 0.0f, 4.0f, 0.0f, 1.0f };
 		gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, diffuse_light0, 0);
 		gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION, position_light0, 0);
 
-		float[] diffuse_light1 =
-		{ 3 * lc, 3 * lc, 3 * lc, 1.0f };
-		float[] position_light1 =
-		{ -3.0f, 0.0f, 2.0f, 1.0f };
+		float[] diffuse_light1 = { 3 * lc, 3 * lc, 3 * lc, 1.0f };
+		float[] position_light1 = { -3.0f, 0.0f, 2.0f, 1.0f };
 		gl.glLightfv(GL.GL_LIGHT1, GL.GL_DIFFUSE, diffuse_light1, 0);
 		gl.glLightfv(GL.GL_LIGHT1, GL.GL_POSITION, position_light1, 0);
 
-		float[] diffuse_light2 =
-		{ 2 * lc, 2 * lc, 2 * lc, 1.0f };
-		float[] position_light2 =
-		{ 5.5f, 0.0f, 2.0f, 1.0f };
+		float[] diffuse_light2 = { 2 * lc, 2 * lc, 2 * lc, 1.0f };
+		float[] position_light2 = { 5.5f, 0.0f, 2.0f, 1.0f };
 		gl.glLightfv(GL.GL_LIGHT2, GL.GL_DIFFUSE, diffuse_light2, 0);
 		gl.glLightfv(GL.GL_LIGHT2, GL.GL_POSITION, position_light2, 0);
 
-		float[] ambient_lightModel =
-		{ 5 * lc, 5 * lc, 5 * lc, 1.0f };
+		float[] ambient_lightModel = { 5 * lc, 5 * lc, 5 * lc, 1.0f };
 		gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, ambient_lightModel, 0);
 
-		
-		//draw base
+		// draw base
 		if (selected)
 			gl.glCallList(iBaseBoxSelected);
 		else
@@ -151,34 +168,37 @@ public class GLCanvasGlyphGenerator {
 		// boxcolor
 		int n = glyph.getParameter(indexBoxColor_) % 5;
 
-		
-		float nv = 0.0f; 
+		float nv = 0.0f;
 		if (!selected)// if the box isnt selected color will be darker
 			nv = 0.5f;
 
-		if(colorBox.size() > n && n >= 0) {
+		if (colorBox.size() > n && n >= 0)
+		{
 			Vec4f color = colorBox.get(n);
-			gl.glColor4f(color.get(0) - nv, color.get(1) - nv, color.get(2) - nv, color.get(3));
-		} else
-			gl.glColor4f(0.7f, 0.7f , 0.7f, 1.0f); // gray
+			gl
+					.glColor4f(color.get(0) - nv, color.get(1) - nv, color.get(2) - nv, color
+							.get(3));
+		}
+		else
+			gl.glColor4f(0.7f, 0.7f, 0.7f, 1.0f); // gray
 
-		
 		gl.glScalef(1.0f, 1.0f, box_h);
 
 		gl.glCallList(iTowerBox);
-		
-		
+
 		int tc = glyph.getParameter(indexTopColor_);
-		if(colorTop.size() > tc && tc >= 0) {
+		if (colorTop.size() > tc && tc >= 0)
+		{
 			Vec4f color = colorTop.get(tc);
-			if(color.get(0) != -1.0f && color.get(1) != -1.0f && color.get(2) != -1.0f)
-				gl.glColor4f(color.get(0) - nv, color.get(1) - nv, color.get(2) - nv, color.get(3));
-		} else
+			if (color.get(0) != -1.0f && color.get(1) != -1.0f && color.get(2) != -1.0f)
+				gl.glColor4f(color.get(0) - nv, color.get(1) - nv, color.get(2) - nv, color
+						.get(3));
+		}
+		else
 			gl.glColor4f(0.5f, 0.5f, 0.5f, 1.0f); // anoying gray
 
 		gl.glCallList(iTowerTop);
 
-		
 		gl.glDisable(GL.GL_LIGHTING);
 		gl.glDisable(GL.GL_LIGHT0);
 		gl.glDisable(GL.GL_LIGHT1);
@@ -190,9 +210,9 @@ public class GLCanvasGlyphGenerator {
 
 		return dltemp;
 	}
-	
-	
-	private int generateBase(GL gl, boolean borderHighlight) {
+
+	private int generateBase(GL gl, boolean borderHighlight)
+	{
 
 		int dltemp = gl.glGenLists(1);
 		gl.glNewList(dltemp, GL.GL_COMPILE);
@@ -248,72 +268,70 @@ public class GLCanvasGlyphGenerator {
 
 		return dltemp;
 	}
-	
-	
-	private int generateBox(GL gl) {
+
+	private int generateBox(GL gl)
+	{
+
 		float xmin = 0f;
 		float ymin = 0f;
 		float zmin = 0.0f;
 		float xmax = 0.75f;
 		float ymax = 0.75f;
 		float zmax = 1.0f;
-		
+
 		int dltemp = gl.glGenLists(1);
 		gl.glNewList(dltemp, GL.GL_COMPILE);
 
 		// der Boden
 		/*
-		gl.glBegin(GL.GL_QUADS); 
-		gl.glNormal3i (0, 0, -1);
-		gl.glVertex3f(xmin, ymax, zmin);    
-		gl.glVertex3f(xmax, ymax, zmin);
-		gl.glVertex3f(xmax, ymin, zmin);    
-		gl.glVertex3f(xmin, ymin, zmin);
-		gl.glEnd( );
-*/
+		 * gl.glBegin(GL.GL_QUADS); gl.glNormal3i (0, 0, -1);
+		 * gl.glVertex3f(xmin, ymax, zmin); gl.glVertex3f(xmax, ymax, zmin);
+		 * gl.glVertex3f(xmax, ymin, zmin); gl.glVertex3f(xmin, ymin, zmin);
+		 * gl.glEnd( );
+		 */
 		gl.glBegin(GL.GL_QUADS);
-		gl.glNormal3i (0, 1, 0);
+		gl.glNormal3i(0, 1, 0);
 		gl.glVertex3f(xmin, ymax, zmin);
 		gl.glVertex3f(xmin, ymax, zmax);
 		gl.glVertex3f(xmax, ymax, zmax);
 		gl.glVertex3f(xmax, ymax, zmin);
-		gl.glEnd( );
+		gl.glEnd();
 
 		gl.glBegin(GL.GL_QUADS);
-		gl.glNormal3i (1, 0, 0);    
+		gl.glNormal3i(1, 0, 0);
 		gl.glVertex3f(xmax, ymin, zmax);
 		gl.glVertex3f(xmax, ymin, zmin);
-		gl.glVertex3f(xmax, ymax, zmin);    
+		gl.glVertex3f(xmax, ymax, zmin);
 		gl.glVertex3f(xmax, ymax, zmax);
-		gl.glEnd( );
+		gl.glEnd();
 
-
-//front right
+		// front right
 		gl.glBegin(GL.GL_QUADS);
-		gl.glNormal3i (0, -1, 0);
+		gl.glNormal3i(0, -1, 0);
 		gl.glVertex3f(xmin, ymin, zmin);
 		gl.glVertex3f(xmax, ymin, zmin);
-		gl.glVertex3f(xmax, ymin, zmax);    
+		gl.glVertex3f(xmax, ymin, zmax);
 		gl.glVertex3f(xmin, ymin, zmax);
-		gl.glEnd( );
+		gl.glEnd();
 
-//front left
+		// front left
 		gl.glBegin(GL.GL_QUADS);
-		gl.glNormal3i (-1, 0, 0);
+		gl.glNormal3i(-1, 0, 0);
 		gl.glVertex3f(xmin, ymax, zmax);
 		gl.glVertex3f(xmin, ymax, zmin);
 		gl.glVertex3f(xmin, ymin, zmin);
 		gl.glVertex3f(xmin, ymin, zmax);
-		gl.glEnd( );
+		gl.glEnd();
 
-//top
-		
-		
+		// top
+
 		gl.glEndList();
 		return dltemp;
 	}
-	
-	private int generateTop(GL gl) {
+
+	private int generateTop(GL gl)
+	{
+
 		float xmin = 0f;
 		float ymin = 0f;
 		float zmin = 0.0f;
@@ -323,18 +341,17 @@ public class GLCanvasGlyphGenerator {
 
 		int dltemp = gl.glGenLists(1);
 		gl.glNewList(dltemp, GL.GL_COMPILE);
-		
+
 		gl.glBegin(GL.GL_QUADS);
-		gl.glNormal3i (0, 0, 1);
+		gl.glNormal3i(0, 0, 1);
 		gl.glVertex3f(xmin, ymin, zmax);
 		gl.glVertex3f(xmax, ymin, zmax);
 		gl.glVertex3f(xmax, ymax, zmax);
 		gl.glVertex3f(xmin, ymax, zmax);
-		gl.glEnd( );
+		gl.glEnd();
 
 		gl.glEndList();
 		return dltemp;
 	}
-
 
 }

@@ -15,67 +15,61 @@ import org.caleydo.core.view.swt.mixer.MixerViewRep;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
- *
  */
-public class CmdViewCreateMixer 
-extends ACmdCreate_IdTargetLabelParentXY {
-	
+public class CmdViewCreateMixer
+	extends ACmdCreate_IdTargetLabelParentXY
+{
+
 	int iNumberOfSliders = 1;
-	
+
 	/**
 	 * Constructor.
-	 * 
 	 */
-	public CmdViewCreateMixer(
-			final IGeneralManager generalManager,
-			final ICommandManager commandManager,
-			final CommandQueueSaxType commandQueueSaxType) {
-		
-		super(generalManager, 
-				commandManager,
-				commandQueueSaxType);
+	public CmdViewCreateMixer(final IGeneralManager generalManager,
+			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	{
+
+		super(generalManager, commandManager, commandQueueSaxType);
 	}
 
 	/**
-	 * Method creates a slider view, sets the attributes 
-	 * and calls the init and draw method.
+	 * Method creates a slider view, sets the attributes and calls the init and
+	 * draw method.
 	 */
-	public void doCommand() throws CaleydoRuntimeException {
-		
+	public void doCommand() throws CaleydoRuntimeException
+	{
+
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
-		
-		MixerViewRep mixerView = (MixerViewRep)viewManager
-				.createView(EManagerObjectType.VIEW_SWT_MIXER,
-						iUniqueId, 
-						iParentContainerId, 
-						sLabel);
-		
-		viewManager.registerItem(
-				mixerView, 
-				iUniqueId);
+
+		MixerViewRep mixerView = (MixerViewRep) viewManager.createView(
+				EManagerObjectType.VIEW_SWT_MIXER, iUniqueId, iParentContainerId, sLabel);
+
+		viewManager.registerItem(mixerView, iUniqueId);
 
 		mixerView.setAttributes(iWidthX, iHeightY, iNumberOfSliders);
 		mixerView.initView();
 		mixerView.drawView();
-		
+
 		commandManager.runDoCommand(this);
 	}
 
-	public void setParameterHandler( final IParameterHandler parameterHandler ) {
-		
-		assert parameterHandler != null: "ParameterHandler object is null!";	
-		
-		super.setParameterHandler(parameterHandler);	
+	public void setParameterHandler(final IParameterHandler parameterHandler)
+	{
 
-		parameterHandler.setValueAndTypeAndDefault("iNumberOfSliders",
-				parameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey()),
+		assert parameterHandler != null : "ParameterHandler object is null!";
+
+		super.setParameterHandler(parameterHandler);
+
+		parameterHandler.setValueAndTypeAndDefault("iNumberOfSliders", parameterHandler
+				.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey()),
 				IParameterHandler.ParameterHandlerType.INT, "-1");
-		
+
 		iNumberOfSliders = parameterHandler.getValueInt("iNumberOfSliders");
 	}
-	
-	public void undoCommand() throws CaleydoRuntimeException {
-		
+
+	public void undoCommand() throws CaleydoRuntimeException
+	{
+
 		commandManager.runUndoCommand(this);
 	}
 }

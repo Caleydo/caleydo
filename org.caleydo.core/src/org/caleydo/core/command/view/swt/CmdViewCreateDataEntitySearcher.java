@@ -14,58 +14,57 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
 
-public class CmdViewCreateDataEntitySearcher 
-extends ACmdCreate_IdTargetLabelAttrDetail{
+public class CmdViewCreateDataEntitySearcher
+	extends ACmdCreate_IdTargetLabelAttrDetail
+{
 
 	private ArrayList<Integer> iAlViewReceiverID;
-	
+
 	public CmdViewCreateDataEntitySearcher(final IGeneralManager generalManager,
-			final ICommandManager commandManager,
-			final CommandQueueSaxType commandQueueSaxType) {
+			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	{
 
 		super(generalManager, commandManager, commandQueueSaxType);
-		
+
 		iAlViewReceiverID = new ArrayList<Integer>();
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
+	 * @seeorg.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail#
+	 * setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
 	 */
-	public void setParameterHandler( final IParameterHandler parameterHandler ) {
-		
-		assert parameterHandler != null: "ParameterHandler object is null!";	
-		
-		super.setParameterHandler(parameterHandler);	
+	public void setParameterHandler(final IParameterHandler parameterHandler)
+	{
 
-		StringTokenizer receiverToken = new StringTokenizer(
-				sDetail,
+		assert parameterHandler != null : "ParameterHandler object is null!";
+
+		super.setParameterHandler(parameterHandler);
+
+		StringTokenizer receiverToken = new StringTokenizer(sDetail,
 				IGeneralManager.sDelimiter_Parser_DataItems);
 
 		while (receiverToken.hasMoreTokens())
 		{
-			iAlViewReceiverID.add(StringConversionTool.convertStringToInt(
-					receiverToken.nextToken(), -1));
+			iAlViewReceiverID.add(StringConversionTool.convertStringToInt(receiverToken
+					.nextToken(), -1));
 		}
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws CaleydoRuntimeException {
+	public void doCommand() throws CaleydoRuntimeException
+	{
 
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
-		
-		DataEntitySearcherViewRep dataEntitySearcherView = (DataEntitySearcherViewRep)viewManager
-			.createView(EManagerObjectType.VIEW_SWT_DATA_ENTITY_SEARCHER,
-					iUniqueId, 
-					-1,
-					sLabel);
-		
-		viewManager.registerItem(
-				dataEntitySearcherView, 
-				iUniqueId);
+
+		DataEntitySearcherViewRep dataEntitySearcherView = (DataEntitySearcherViewRep) viewManager
+				.createView(EManagerObjectType.VIEW_SWT_DATA_ENTITY_SEARCHER, iUniqueId, -1,
+						sLabel);
+
+		viewManager.registerItem(dataEntitySearcherView, iUniqueId);
 
 		viewManager.addViewRep(dataEntitySearcherView);
 
@@ -76,10 +75,11 @@ extends ACmdCreate_IdTargetLabelAttrDetail{
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
-	public void undoCommand() throws CaleydoRuntimeException {
+	public void undoCommand() throws CaleydoRuntimeException
+	{
 
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

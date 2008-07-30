@@ -7,49 +7,47 @@ import java.io.PrintWriter;
 import java.util.StringTokenizer;
 
 /**
- * Helper class converts enzyme codes that are given space 
- * separated.
- * EXAMPLE: 
- * Input   2;1.2.3 2.4.5
- * Output: 2;1.2.3
- *         2;2.4.5
+ * Helper class converts enzyme codes that are given space separated. EXAMPLE:
+ * Input 2;1.2.3 2.4.5 Output: 2;1.2.3 2;2.4.5
  * 
  * @author Marc Streit
- *
  */
-public class EnzymeCodeConverter {
-	
-	protected static char cEzymeBeginDelimiter = ';';
-	
-	protected static String sEnzymeSeparator = " ";
-	
-	protected PrintWriter writer_GENE_ID_2_ENZYME_CODE;
-			
-	public EnzymeCodeConverter() throws IOException {
-		
-		writer_GENE_ID_2_ENZYME_CODE = 
-			new PrintWriter("data/MicroarrayData/mapping/gene_id_2_enzyme_code.map");
-	}
-	
-	protected void convertData() 
-	throws IOException {
-		
-	    // Reading input by lines
-	    BufferedReader in = new BufferedReader(
-	      new FileReader("data/MicroarrayData/mapping/gene_id_2_enzyme_code_ORIG.map"));
+public class EnzymeCodeConverter
+{
 
-	    String sInputLine = "";
-	    String sConvertedInputLine = "";
-	    int iStartIndex = 0;
-	    
-	    while((sInputLine = in.readLine())!= null)
-	    {
-	    	iStartIndex = sInputLine.lastIndexOf(cEzymeBeginDelimiter);
-	    	sConvertedInputLine = sInputLine.substring(iStartIndex+1);
-	    	
-			StringTokenizer strTokenText = 
-				new StringTokenizer(sConvertedInputLine, sEnzymeSeparator);
-			
+	protected static char cEzymeBeginDelimiter = ';';
+
+	protected static String sEnzymeSeparator = " ";
+
+	protected PrintWriter writer_GENE_ID_2_ENZYME_CODE;
+
+	public EnzymeCodeConverter()
+		throws IOException
+	{
+
+		writer_GENE_ID_2_ENZYME_CODE = new PrintWriter(
+				"data/MicroarrayData/mapping/gene_id_2_enzyme_code.map");
+	}
+
+	protected void convertData() throws IOException
+	{
+
+		// Reading input by lines
+		BufferedReader in = new BufferedReader(new FileReader(
+				"data/MicroarrayData/mapping/gene_id_2_enzyme_code_ORIG.map"));
+
+		String sInputLine = "";
+		String sConvertedInputLine = "";
+		int iStartIndex = 0;
+
+		while ((sInputLine = in.readLine()) != null)
+		{
+			iStartIndex = sInputLine.lastIndexOf(cEzymeBeginDelimiter);
+			sConvertedInputLine = sInputLine.substring(iStartIndex + 1);
+
+			StringTokenizer strTokenText = new StringTokenizer(sConvertedInputLine,
+					sEnzymeSeparator);
+
 			// Nothing todo because there is only one or none enzyme
 			if (strTokenText.countTokens() <= 1)
 			{
@@ -58,33 +56,35 @@ public class EnzymeCodeConverter {
 			}
 			else
 			{
-				sConvertedInputLine = sInputLine.substring(0, iStartIndex+1);
-				
-				while (strTokenText.hasMoreTokens()) 
+				sConvertedInputLine = sInputLine.substring(0, iStartIndex + 1);
+
+				while (strTokenText.hasMoreTokens())
 				{
-					writer_GENE_ID_2_ENZYME_CODE.println(
-						sConvertedInputLine + strTokenText.nextToken());
-				}	
+					writer_GENE_ID_2_ENZYME_CODE.println(sConvertedInputLine
+							+ strTokenText.nextToken());
+				}
 			}
-	    }
-			
-	    in.close();
-	    
-	    writer_GENE_ID_2_ENZYME_CODE.flush();
+		}
+
+		in.close();
+
+		writer_GENE_ID_2_ENZYME_CODE.flush();
 
 	}
-	
-    public static void main(String[] args) {
-    	
-    	try {	
-    		EnzymeCodeConverter enzymeCodeConverter = 
-        		new EnzymeCodeConverter();
-        	
-    		enzymeCodeConverter.convertData();
-    		
-		} catch (Exception e)
+
+	public static void main(String[] args)
+	{
+
+		try
+		{
+			EnzymeCodeConverter enzymeCodeConverter = new EnzymeCodeConverter();
+
+			enzymeCodeConverter.convertData();
+
+		}
+		catch (Exception e)
 		{
 			e.printStackTrace();
-		}    	
-    }
+		}
+	}
 }

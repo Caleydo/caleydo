@@ -1,22 +1,16 @@
 /*******************************************************************************
- * Copyright (c) 2000, 2004 IBM Corporation and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- *
- * Contributors:
- *     IBM Corporation - initial API and implementation
+ * Copyright (c) 2000, 2004 IBM Corporation and others. All rights reserved.
+ * This program and the accompanying materials are made available under the
+ * terms of the Eclipse Public License v1.0 which accompanies this distribution,
+ * and is available at http://www.eclipse.org/legal/epl-v10.html Contributors:
+ * IBM Corporation - initial API and implementation
  *******************************************************************************/
 
 package org.caleydo.core.application.gui.swt;
- 
+
 /*
- * example snippet: embed Swing/AWT in SWT
- *
- * For a list of all SWT example snippets see
- * http://www.eclipse.org/swt/snippets/
- * 
+ * example snippet: embed Swing/AWT in SWT For a list of all SWT example
+ * snippets see http://www.eclipse.org/swt/snippets/
  * @since 3.0
  */
 import java.awt.EventQueue;
@@ -31,56 +25,96 @@ import org.eclipse.swt.graphics.*;
 import org.eclipse.swt.layout.*;
 import org.eclipse.swt.awt.SWT_AWT;
 
-public class SWTEmbeddedSwing {
+public class SWTEmbeddedSwing
+{
 
 	@SuppressWarnings("serial")
-	static class FileTableModel extends AbstractTableModel {		
-		File[] files;        
-		String[] columnsName = {"Name", "Size", "Date Modified"};
-		
-		public FileTableModel (File[] files) {
+	static class FileTableModel
+		extends AbstractTableModel
+	{
+
+		File[] files;
+
+		String[] columnsName = { "Name", "Size", "Date Modified" };
+
+		public FileTableModel(File[] files)
+		{
+
 			this.files = files;
 		}
-		public int getColumnCount () {
+
+		public int getColumnCount()
+		{
+
 			return columnsName.length;
 		}
+
 		@SuppressWarnings("unchecked")
-		public Class getColumnClass (int col) {
-			if (col == 1) return Long.class;
-			if (col == 2) return Date.class;
+		public Class getColumnClass(int col)
+		{
+
+			if (col == 1)
+				return Long.class;
+			if (col == 2)
+				return Date.class;
 			return String.class;
 		}
-		public int getRowCount () {
+
+		public int getRowCount()
+		{
+
 			return files == null ? 0 : files.length;
 		}
-		public Object getValueAt (int row, int col) {
-			if (col == 0) return files[row].getName();
-			if (col == 1) return new Long(files[row].length());
-			if (col == 2) return new Date(files[row].lastModified());
+
+		public Object getValueAt(int row, int col)
+		{
+
+			if (col == 0)
+				return files[row].getName();
+			if (col == 1)
+				return new Long(files[row].length());
+			if (col == 2)
+				return new Date(files[row].lastModified());
 			return "";
 		}
-		public String getColumnName (int col) {
+
+		public String getColumnName(int col)
+		{
+
 			return columnsName[col];
 		}
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args)
+	{
+
 		final Display display = new Display();
 		final Shell shell = new Shell(display);
 		shell.setText("SWT and Swing/AWT Example");
 
-		Listener exitListener = new Listener() {
-			public void handleEvent(Event e) {
-				MessageBox dialog = new MessageBox(shell, SWT.OK | SWT.CANCEL | SWT.ICON_QUESTION);
+		Listener exitListener = new Listener()
+		{
+
+			public void handleEvent(Event e)
+			{
+
+				MessageBox dialog = new MessageBox(shell, SWT.OK | SWT.CANCEL
+						| SWT.ICON_QUESTION);
 				dialog.setText("Question");
 				dialog.setMessage("Exit?");
-				if (e.type == SWT.Close) e.doit = false;
-				if (dialog.open() != SWT.OK) return;
+				if (e.type == SWT.Close)
+					e.doit = false;
+				if (dialog.open() != SWT.OK)
+					return;
 				shell.dispose();
 			}
-		};	
-		Listener aboutListener = new Listener() {
-			public void handleEvent(Event e) {
+		};
+		Listener aboutListener = new Listener()
+		{
+
+			public void handleEvent(Event e)
+			{
+
 				final Shell s = new Shell(shell, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
 				s.setText("About");
 				GridLayout layout = new GridLayout(1, false);
@@ -94,8 +128,12 @@ public class SWTEmbeddedSwing {
 				GridData data = new GridData();
 				data.horizontalAlignment = GridData.CENTER;
 				button.setLayoutData(data);
-				button.addListener(SWT.Selection, new Listener() {
-					public void handleEvent(Event event) {
+				button.addListener(SWT.Selection, new Listener()
+				{
+
+					public void handleEvent(Event event)
+					{
+
 						s.dispose();
 					}
 				});
@@ -106,8 +144,10 @@ public class SWTEmbeddedSwing {
 				int y = parentBounds.y + (parentBounds.height - bounds.height) / 2;
 				s.setLocation(x, y);
 				s.open();
-				while (!s.isDisposed()) {
-					if (!display.readAndDispatch()) display.sleep();
+				while (!s.isDisposed())
+				{
+					if (!display.readAndDispatch())
+						display.sleep();
 				}
 			}
 		};
@@ -168,10 +208,15 @@ public class SWTEmbeddedSwing {
 		statusFrame.add(statusLabel);
 		statusLabel.setText("Select a file");
 
-		sash.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event e) {
-				if (e.detail == SWT.DRAG) return;
-				GridData data = (GridData)fileTree.getLayoutData();
+		sash.addListener(SWT.Selection, new Listener()
+		{
+
+			public void handleEvent(Event e)
+			{
+
+				if (e.detail == SWT.DRAG)
+					return;
+				GridData data = (GridData) fileTree.getLayoutData();
 				Rectangle trim = fileTree.computeTrim(0, 0, 0, 0);
 				data.widthHint = e.x - trim.width;
 				comp.layout();
@@ -179,30 +224,43 @@ public class SWTEmbeddedSwing {
 		});
 
 		File[] roots = File.listRoots();
-		for (int i = 0; i < roots.length; i++) {
+		for (int i = 0; i < roots.length; i++)
+		{
 			File file = roots[i];
 			TreeItem treeItem = new TreeItem(fileTree, SWT.NONE);
 			treeItem.setText(file.getAbsolutePath());
 			treeItem.setData(file);
 			new TreeItem(treeItem, SWT.NONE);
 		}
-		fileTree.addListener(SWT.Expand, new Listener() {
-			public void handleEvent(Event e) {
-				TreeItem item = (TreeItem)e.item;
-				if (item == null) return;
-				if (item.getItemCount() == 1) {
+		fileTree.addListener(SWT.Expand, new Listener()
+		{
+
+			public void handleEvent(Event e)
+			{
+
+				TreeItem item = (TreeItem) e.item;
+				if (item == null)
+					return;
+				if (item.getItemCount() == 1)
+				{
 					TreeItem firstItem = item.getItems()[0];
-					if (firstItem.getData() != null) return;
+					if (firstItem.getData() != null)
+						return;
 					firstItem.dispose();
-				} else {
+				}
+				else
+				{
 					return;
 				}
-				File root = (File)item.getData();
+				File root = (File) item.getData();
 				File[] files = root.listFiles();
-				if (files == null) return;
-				for (int i = 0; i < files.length; i++) {
+				if (files == null)
+					return;
+				for (int i = 0; i < files.length; i++)
+				{
 					File file = files[i];
-					if (file.isDirectory()) {
+					if (file.isDirectory())
+					{
 						TreeItem treeItem = new TreeItem(item, SWT.NONE);
 						treeItem.setText(file.getName());
 						treeItem.setData(file);
@@ -211,13 +269,22 @@ public class SWTEmbeddedSwing {
 				}
 			}
 		});
-		fileTree.addListener(SWT.Selection, new Listener() {
-			public void handleEvent(Event e) {
-				TreeItem item = (TreeItem)e.item;
-				if (item == null) return;
-				final File root = (File)item.getData();
-				EventQueue.invokeLater(new Runnable() {
-					public void run() {
+		fileTree.addListener(SWT.Selection, new Listener()
+		{
+
+			public void handleEvent(Event e)
+			{
+
+				TreeItem item = (TreeItem) e.item;
+				if (item == null)
+					return;
+				final File root = (File) item.getData();
+				EventQueue.invokeLater(new Runnable()
+				{
+
+					public void run()
+					{
+
 						statusLabel.setText(root.getAbsolutePath());
 						locationText.setText(root.getAbsolutePath());
 						fileTable.setModel(new FileTableModel(root.listFiles()));
@@ -225,12 +292,12 @@ public class SWTEmbeddedSwing {
 				});
 			}
 		});
-		
+
 		GridLayout layout = new GridLayout(4, false);
 		layout.marginWidth = layout.marginHeight = 0;
 		layout.horizontalSpacing = layout.verticalSpacing = 1;
 		shell.setLayout(layout);
-		GridData data;		
+		GridData data;
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.horizontalSpan = 4;
 		separator1.setLayoutData(data);
@@ -258,22 +325,24 @@ public class SWTEmbeddedSwing {
 		data.horizontalSpan = 4;
 		data.heightHint = statusLabel.getPreferredSize().height;
 		statusComp.setLayoutData(data);
-		
+
 		layout = new GridLayout(3, false);
 		layout.marginWidth = layout.marginHeight = 0;
 		layout.horizontalSpacing = layout.verticalSpacing = 1;
-		comp.setLayout(layout);			
+		comp.setLayout(layout);
 		data = new GridData(GridData.FILL_VERTICAL);
 		data.widthHint = 200;
-		fileTree.setLayoutData(data);		
+		fileTree.setLayoutData(data);
 		data = new GridData(GridData.FILL_VERTICAL);
-		sash.setLayoutData(data);		
+		sash.setLayoutData(data);
 		data = new GridData(GridData.FILL_BOTH);
 		tableComp.setLayoutData(data);
 
 		shell.open();
-		while(!shell.isDisposed()) {
-			if (!display.readAndDispatch()) display.sleep();
+		while (!shell.isDisposed())
+		{
+			if (!display.readAndDispatch())
+				display.sleep();
 		}
 		display.dispose();
 	}

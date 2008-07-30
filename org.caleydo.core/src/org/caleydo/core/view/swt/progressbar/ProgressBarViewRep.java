@@ -18,10 +18,11 @@ import org.caleydo.core.view.ViewType;
  * @author Michael Kalkusch
  * @author Marc Streit
  */
-public class ProgressBarViewRep 
-extends AView 
-implements IView {
-	
+public class ProgressBarViewRep
+	extends AView
+	implements IView
+{
+
 	protected int iProgressBarMinValue = 0;
 
 	protected int iProgressBarMaxValue = 200;
@@ -31,33 +32,27 @@ implements IView {
 	protected ProgressBar progressBar;
 
 	protected int iProgressBarStyle = SWT.HORIZONTAL;
-	
-	public ProgressBarViewRep(
-			IGeneralManager generalManager, 
-			int iViewId, 
-			int iParentContainerId, 
-			String sLabel) {
-		super(generalManager, 
-				iViewId, 
-				iParentContainerId, 
-				sLabel,
-				ViewType.SWT_PROGRESSBAR);	
+
+	public ProgressBarViewRep(IGeneralManager generalManager, int iViewId,
+			int iParentContainerId, String sLabel)
+	{
+
+		super(generalManager, iViewId, iParentContainerId, sLabel, ViewType.SWT_PROGRESSBAR);
 	}
 
 	/**
-	 * Define style of progress bar. 
-	 * Must be called before retrieveNewGUIContainer()
-	 * 
-	 * Default is SWT.HORIZONTAL
-	 * Valid values are SWT.HORIZONTAL or SWT.VERTICAL
+	 * Define style of progress bar. Must be called before
+	 * retrieveNewGUIContainer() Default is SWT.HORIZONTAL Valid values are
+	 * SWT.HORIZONTAL or SWT.VERTICAL
 	 * 
 	 * @see org.eclipse.swt.SWT
 	 * @see org.eclipse.swt.widgets.ProgressBar
 	 * @see org.caleydo.core.view.swt.progressbar.ProgressBarViewRep#retrieveNewGUIContainer()
-	 * 
 	 * @param setStyle
 	 */
-	public final void setProgressBarStyle(int setStyle) {
+	public final void setProgressBarStyle(int setStyle)
+	{
+
 		if (this.progressBar != null)
 		{
 			System.out
@@ -68,7 +63,8 @@ implements IView {
 		{
 			iProgressBarStyle = SWT.HORIZONTAL;
 			return;
-		} else if (setStyle == SWT.VERTICAL)
+		}
+		else if (setStyle == SWT.VERTICAL)
 		{
 			iProgressBarStyle = SWT.VERTICAL;
 			return;
@@ -87,31 +83,32 @@ implements IView {
 	 * Get current ProgressBar style.
 	 * 
 	 * @see org.eclipse.swt.SWT
-	 * @see org.eclipse.swt.widgets.ProgressBar	 
-	 * 
+	 * @see org.eclipse.swt.widgets.ProgressBar
 	 * @return SWT.HORIZONTAL or SWT.VERTICAL
 	 */
-	public final int getProgressBarStyle() {
-		
+	public final int getProgressBarStyle()
+	{
+
 		if (iProgressBarStyle == SWT.HORIZONTAL)
 		{
 			return SWT.HORIZONTAL;
-		} else if (iProgressBarStyle == SWT.VERTICAL)
+		}
+		else if (iProgressBarStyle == SWT.VERTICAL)
 		{
 			return SWT.VERTICAL;
 		}
 
-		//TODO: optimize! just return value!
+		// TODO: optimize! just return value!
 
 		return iProgressBarStyle;
 	}
 
 	/**
-	 * 
 	 * @see org.caleydo.core.view.IView#initView()
 	 */
-	protected void initViewSwtComposit(Composite swtContainer) {
-		
+	protected void initViewSwtComposit(Composite swtContainer)
+	{
+
 		if (this.progressBar != null)
 		{
 			System.err.println("call initView() more than once!");
@@ -126,18 +123,21 @@ implements IView {
 		progressBar.setSize(iWidth, iHeight);
 	}
 
-	public void drawView() {
-		
+	public void drawView()
+	{
+
 		progressBar.setSelection(this.iProgressBarCurrentValue);
 	}
 
-	public void setProgressBarPercentage(int iProgressBarCurrentValue) {
-		
+	public void setProgressBarPercentage(int iProgressBarCurrentValue)
+	{
+
 		this.iProgressBarCurrentValue = iProgressBarCurrentValue;
 	}
-	
-	public void setAttributes(int iProgressBarCurrentValue) {
-		
-		this.iProgressBarCurrentValue = iProgressBarCurrentValue;		
+
+	public void setAttributes(int iProgressBarCurrentValue)
+	{
+
+		this.iProgressBarCurrentValue = iProgressBarCurrentValue;
 	}
 }

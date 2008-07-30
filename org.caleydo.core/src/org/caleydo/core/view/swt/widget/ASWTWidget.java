@@ -9,37 +9,40 @@ import org.caleydo.core.view.swt.ISWTWidget;
  * Base class for SWT views.
  * 
  * @author Marc Streit
- *
  */
-public abstract class ASWTWidget 
-implements IUniqueObject, ISWTWidget {
-	
+public abstract class ASWTWidget
+	implements IUniqueObject, ISWTWidget
+{
+
 	/**
 	 * Composite in which the content of the View should be placed.
 	 */
 	protected final Composite parentComposite;
-	
+
 	protected int iUniqueId;
-	
+
 	/**
-	 * Constructor that takes the composite in which it should 
-	 * place the content.
+	 * Constructor that takes the composite in which it should place the
+	 * content.
 	 * 
-	 * @param composite Reference to the composite 
-	 * that is supposed to be filled.
+	 * @param composite
+	 *            Reference to the composite that is supposed to be filled.
 	 */
-	protected ASWTWidget(Composite parentComposite) {
-		
+	protected ASWTWidget(Composite parentComposite)
+	{
+
 		this.parentComposite = parentComposite;
 	}
-	
-	public final void setId(int iUniqueId) {
-		
+
+	public final void setId(int iUniqueId)
+	{
+
 		this.iUniqueId = iUniqueId;
 	}
 
-	public final int getId() {
-		
+	public final int getId()
+	{
+
 		return iUniqueId;
 	}
 }

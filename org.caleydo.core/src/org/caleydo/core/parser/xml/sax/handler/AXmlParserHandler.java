@@ -8,70 +8,80 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * @author Michael Kalkusch
- *
  */
-public abstract class AXmlParserHandler 
-extends DefaultHandler 
-implements IXmlParserHandler
+public abstract class AXmlParserHandler
+	extends DefaultHandler
+	implements IXmlParserHandler
 {
+
 	private boolean bDestroyHandlerAfterClosingTag = false;
-		
+
 	protected final IGeneralManager generalManager;
-	
+
 	protected final IXmlParserManager xmlParserManager;
-	
+
 	protected String sOpeningTag = "";
 
 	/**
 	 * 
 	 */
-	protected AXmlParserHandler( final IGeneralManager generalManager,
-			final IXmlParserManager xmlParserManager )
+	protected AXmlParserHandler(final IGeneralManager generalManager,
+			final IXmlParserManager xmlParserManager)
 	{
+
 		this.generalManager = generalManager;
 		this.xmlParserManager = xmlParserManager;
 	}
 
-
-	public final void setXmlActivationTag( final String tag)
+	public final void setXmlActivationTag(final String tag)
 	{
+
 		assert tag != null : "can not assing null as tag";
-		
-		if ( tag.length() < 2 ) {
-			throw new CaleydoRuntimeException("setXmlActivationTag() tag must be at least one char!",
+
+		if (tag.length() < 2)
+		{
+			throw new CaleydoRuntimeException(
+					"setXmlActivationTag() tag must be at least one char!",
 					CaleydoRuntimeExceptionType.SAXPARSER);
 		}
-		
+
 		this.sOpeningTag = tag;
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.caleydo.core.parser.handler.IXmlParserHandler#getXmlActivationTag()
+
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * org.caleydo.core.parser.handler.IXmlParserHandler#getXmlActivationTag()
 	 */
 	public final String getXmlActivationTag()
 	{
+
 		return sOpeningTag;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.caleydo.core.parser.handler.IXmlParserHandler#hasOpeningTagOnlyOnce()
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * org.caleydo.core.parser.handler.IXmlParserHandler#hasOpeningTagOnlyOnce()
 	 */
 	public final boolean isHandlerDestoryedAfterClosingTag()
 	{
-		if ( bDestroyHandlerAfterClosingTag ) 
+
+		if (bDestroyHandlerAfterClosingTag)
 		{
 			return true;
 		}
-		
+
 		return false;
 	}
-	
-	public final void setHandlerDestoryedAfterClosingTag( 
-			final boolean setHandlerDestoryedAfterClosingTag )
+
+	public final void setHandlerDestoryedAfterClosingTag(
+			final boolean setHandlerDestoryedAfterClosingTag)
 	{
+
 		this.bDestroyHandlerAfterClosingTag = setHandlerDestoryedAfterClosingTag;
 	}
-	
+
 	/**
 	 * Sends init message to logger.
 	 * 
@@ -79,11 +89,12 @@ implements IXmlParserHandler
 	 */
 	public void initHandler()
 	{
-//		generalManager.logMsg(
-//				this.getClass().getSimpleName() + 
-//				": initHandler", LoggerType.VERBOSE_EXTRA );
+
+		// generalManager.logMsg(
+		// this.getClass().getSimpleName() +
+		// ": initHandler", LoggerType.VERBOSE_EXTRA );
 	}
-	
+
 	/**
 	 * Sends init message to logger.
 	 * 
@@ -91,9 +102,10 @@ implements IXmlParserHandler
 	 */
 	public void destroyHandler()
 	{
-//		generalManager.logMsg(
-//				this.getClass().getSimpleName() + 
-//				": destroyHandler", 
-//				LoggerType.VERBOSE );
+
+		// generalManager.logMsg(
+		// this.getClass().getSimpleName() +
+		// ": destroyHandler",
+		// LoggerType.VERBOSE );
 	}
 }

@@ -9,42 +9,45 @@ import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyphGenerator;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphAttributeType;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphEntry;
 
-
-
 /**
- * 
  * @author Sauer Stefan
- *
  */
 public interface IGlyphManager
-extends IManager {
+	extends IManager
+{
 
 	public void registerGlyphView(GLCanvasGlyph view);
+
 	public void unregisterGlyphView(GLCanvasGlyph view);
 
 	public void loadGlyphDefinitaion(String xmlPath);
-	
+
 	public String getSetting(EGlyphSettingIDs type);
+
 	public void setSetting(EGlyphSettingIDs type, String value);
-	
+
 	public int getSortOrder(int depth);
+
 	public void addSortColumn(String value);
-	
+
 	public void addColumnAttributeType(GlyphAttributeType type);
+
 	public Collection<GlyphAttributeType> getGlyphAttributes();
+
 	public GlyphAttributeType getGlyphAttributeTypeWithExternalColumnNumber(int colnum);
+
 	public GlyphAttributeType getGlyphAttributeTypeWithInternalColumnNumber(int colnum);
-	
+
 	public GLCanvasGlyphGenerator getGlyphGenerator();
+
 	public void initGlyphGenerator();
-	
-	
+
 	public void addGlyphs(HashMap<Integer, GlyphEntry> glyphlist);
+
 	public HashMap<Integer, GlyphEntry> getGlyphs();
-	
+
 	public void addGlyph(int id, GlyphEntry glyph);
+
 	public GlyphEntry getGlyph(int id);
-	
-	
-	
+
 }
