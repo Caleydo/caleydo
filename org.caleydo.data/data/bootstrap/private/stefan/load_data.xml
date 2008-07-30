@@ -6,20 +6,20 @@
 <!-- clinical data -->
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"	cmdId="22991"	uniqueId="352010" label="Select file" attrib1="0 -99 0 1"	/>
 
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453010" label="id"					attrib1="STRING"	attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453020" label="sid"					attrib1="STRING" 	attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453010" label="id"					attrib1="NOMINAL"	attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453020" label="sid"					attrib1="NOMINAL" 	attrib2="test data	from file" />
 
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453030" label="t"						attrib1="STRING" 	attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453040" label="n"						attrib1="STRING" 	attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453050" label="m"						attrib1="STRING" 	attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453060" label="g"						attrib1="STRING" 	attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453030" label="t"						attrib1="NOMINAL" 	attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453040" label="n"						attrib1="NOMINAL" 	attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453050" label="m"						attrib1="NOMINAL" 	attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453060" label="g"						attrib1="NOMINAL" 	attrib2="test data	from file" />
 
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453070" label="sex"					attrib1="STRING" 	attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453080" label="death"					attrib1="STRING" 	attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453070" label="sex"					attrib1="NOMINAL" 	attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453080" label="death"					attrib1="NOMINAL" 	attrib2="test data	from file" />
 
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453090" label="yod"					attrib1="STRING" 	attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453100" label="diseaseFreeSurvival"	attrib1="STRING" 		attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453110" label="overalFreeSurvival"	attrib1="STRING" 		attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453090" label="yod"					attrib1="NOMINAL" 	attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453100" label="diseaseFreeSurvival"	attrib1="NOMINAL"	attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453110" label="overalFreeSurvival"	attrib1="NOMINAL"	attrib2="test data	from file" />
 
 
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="351010" label="Set for clinical data" attrib1="352010" attrib2="453010 453020 453030 453040 453050 453060 453070 453080 453090 453100 453110" attrib3="CLINICAL_DATA" />

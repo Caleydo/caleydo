@@ -412,7 +412,7 @@ public class GlyphDefinitionSaxHandler
 
 		for (int i = imin; i < imax; i += iint)
 		{
-			gatActualColumn.addAttribute(i, Integer.toString(i), (float) i);
+			gatActualColumn.addAttribute(i-imin, Integer.toString(i), (float) i);
 		}
 
 	}

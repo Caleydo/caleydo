@@ -88,7 +88,7 @@
    </column>
 
    <column type="ordinal" colnum="8"  label="Year of Diagnosis">
-     <int min="1900" max="2008" interval="1" />
+     <int min="1950" max="2008" interval="1" />
    </column>
    <column type="ordinal" colnum="9"  label="Disease Free Survival (Months)">
      <int min="0" max="80" interval="1" />
