@@ -1,4 +1,4 @@
-package org.caleydo.testing.command.data.filter;
+package org.caleydo.testing.unit.command.data.filter;
 
 import java.util.ArrayList;
 
@@ -7,7 +7,7 @@ import org.caleydo.core.command.data.filter.CmdDataFilterMath;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.testing.testing_util.CoreStarter;
+import org.caleydo.testing.unit.testing_util.CoreStarter;
 
 import junit.framework.TestCase;
 

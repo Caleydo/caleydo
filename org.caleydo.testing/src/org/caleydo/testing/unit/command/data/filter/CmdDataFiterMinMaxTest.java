@@ -1,10 +1,10 @@
-package org.caleydo.testing.command.data.filter;
+package org.caleydo.testing.unit.command.data.filter;
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.data.filter.CmdDataFilterMinMax;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.testing.testing_util.CoreStarter;
+import org.caleydo.testing.unit.testing_util.CoreStarter;
 
 
 import junit.framework.TestCase;

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="org/caleydo/testing/command/data/filter/CmdDataFilterMathTest.java|org/caleydo/testing/command/data/filter/CmdDataFiterMinMaxTest.java" kind="src" path="src"/>
+	<classpathentry excluding="org/caleydo/testing/command/data/filter/CmdDataFilterMathTest.java|org/caleydo/testing/command/data/filter/CmdDataFiterMinMaxTest.java|org/caleydo/testing/unit/command/data/filter/CmdDataFilterMathTest.java|org/caleydo/testing/unit/command/data/filter/CmdDataFiterMinMaxTest.java" kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.core"/>

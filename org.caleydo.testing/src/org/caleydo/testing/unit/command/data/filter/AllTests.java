@@ -1,4 +1,4 @@
-package org.caleydo.testing.command.data.filter;
+package org.caleydo.testing.unit.command.data.filter;
 
 
 import junit.framework.Test;
