@@ -14,6 +14,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL;
 
+import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.ccontainer.EDataKind;
 import org.caleydo.core.data.view.camera.IViewFrustum;
@@ -748,10 +749,19 @@ public class GLCanvasParCoords3D
 					-(renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing()), 0);
 
 			textRenderer.begin3DRendering();
-			// TODO: set this to real values once we have more than normalized
-			// values
-			textRenderer.draw3D(String.valueOf(1), iCount * fAxisSpacing + 2
+			
+			// render values on top and bottom of axis
+			// top
+			textRenderer.draw3D(String.valueOf(
+					((INumericalStorage)(alDataStorages.get(alStorageSelection.get(iCount)))).getMax()),
+					iCount * fAxisSpacing + 2
 					* ParCoordsRenderStyle.AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(), 0,
+					renderStyle.getSmallFontScalingFactor());
+			// bottom
+			textRenderer.draw3D(String.valueOf(
+					((INumericalStorage)(alDataStorages.get(alStorageSelection.get(iCount)))).getMin()),
+					iCount * fAxisSpacing + 2
+					* ParCoordsRenderStyle.AXIS_MARKER_WIDTH, 0, 0,
 					renderStyle.getSmallFontScalingFactor());
 			textRenderer.end3DRendering();
 			gl.glPopAttrib();

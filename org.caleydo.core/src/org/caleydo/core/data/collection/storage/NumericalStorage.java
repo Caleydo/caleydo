@@ -44,12 +44,10 @@ public class NumericalStorage
 		hashCContainers.put(EDataKind.NORMALIZED, normalizedStorage);
 	}
 
-	@Override
+
 	public ERawDataType getRawDataType()
 	{
-
-		// TODO Auto-generated method stub
-		return null;
+		return rawDataType;
 	}
 
 	public double getMin()
@@ -82,6 +80,14 @@ public class NumericalStorage
 
 		hashCContainers.remove(EDataKind.LOG10);
 		hashCContainers.remove(EDataKind.NORMALIZED);
+	}
+
+	@Override
+	public float getRawForNormalized(float normalized)
+	{
+		
+		// TODO Auto-generated method stub
+		return 0;
 	}
 
 }

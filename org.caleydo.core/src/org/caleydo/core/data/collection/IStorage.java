@@ -122,4 +122,5 @@ public interface IStorage
 
 	public int size();
 
+
 }

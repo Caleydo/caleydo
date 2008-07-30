@@ -53,5 +53,8 @@ public interface INumericalStorage
 	 * Normalize has to be called again.
 	 */
 	public void reset();
+	
+	public float getRawForNormalized(float fNormalized);
+	
 
 }

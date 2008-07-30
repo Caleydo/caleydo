@@ -206,7 +206,6 @@ public abstract class AStorage
 
 	public int size()
 	{
-
 		return hashCContainers.get(EDataKind.RAW).size();
 	}
 

@@ -31,7 +31,7 @@ public interface INominalStorage<T>
 	/**
 	 * @return
 	 */
-	public T get(EDataKind dataKind, int iIndex);
+	public T getRaw(int iIndex);
 
 	/**
 	 * Provide a list of possible values, which must include all values
@@ -43,5 +43,7 @@ public interface INominalStorage<T>
 
 	// TODO
 	// public int getNumberOfDistinctValues();
+	
+	public T getRawForNormalized();
 
 }

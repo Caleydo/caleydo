@@ -24,7 +24,6 @@ public class NominalStorage<T>
 	 */
 	public NominalStorage(int iUniqueID, IGeneralManager generalManager)
 	{
-
 		super(iUniqueID, generalManager);
 	}
 
@@ -112,11 +111,18 @@ public class NominalStorage<T>
 	 * org.caleydo.core.data.collection.INominalStorage#get(org.caleydo.core
 	 * .data.collection.ccontainer.EDataKind, int)
 	 */
-	public T get(EDataKind dataKind, int index)
+	@SuppressWarnings("unchecked")
+	public T getRaw(int index)
 	{
-
-		// TODO
-		return (T) ((NominalCContainer) (hashCContainers.get(dataKind))).get(index);
-
+		return  ((NominalCContainer<T>)(hashCContainers.get(EDataKind.RAW))).get(index);
 	}
+
+
+	public T getRawForNormalized()
+	{
+		throw new CaleydoRuntimeException("Implement");
+	}
+
+
+
 }

@@ -78,10 +78,9 @@ public class GlyphDataLoader
 
 						for (int i = 0; i < nominalStorage.size(); ++i)
 						{
-							int t2 = glyphAttributeType.getIndex(nominalStorage.get(
-									EDataKind.RAW, i));
+							int t2 = glyphAttributeType.getIndex(nominalStorage.getRaw(i));
 
-							if (nominalStorage.get(EDataKind.RAW, i) == null)
+							if (nominalStorage.getRaw(i) == null)
 							{
 								this.generalManager
 										.getLogger()
@@ -95,22 +94,21 @@ public class GlyphDataLoader
 								try
 								{
 									t2 = Integer
-											.parseInt(nominalStorage.get(EDataKind.RAW, i));
+											.parseInt(nominalStorage.getRaw(i));
 								}
 								catch (NumberFormatException ex)
 								{
 								}
-								glyphAttributeType.addAttribute(t2, nominalStorage.get(
-										EDataKind.RAW, i), (float) t2);
+								glyphAttributeType.addAttribute(t2, nominalStorage.getRaw(i), (float) t2);
 							}
 
 							if (t2 == -1
-									&& !(nominalStorage.get(EDataKind.RAW, i)).equals("-1"))
+									&& !(nominalStorage.getRaw(i)).equals("-1"))
 								this.generalManager.getLogger().log(
 										Level.WARNING,
 										"GlyphDataLoader: No data mapping found for "
 												+ tmpStorage.getLabel() + " value "
-												+ nominalStorage.get(EDataKind.RAW, i));
+												+ nominalStorage.getRaw(i));
 
 							temp2[i] = t2;
 
@@ -140,8 +138,7 @@ public class GlyphDataLoader
 						String[] sArTmp = new String[tmpStorage.size()];
 						for (int iCount = 0; iCount < tmpStorage.size(); iCount++)
 						{
-							sArTmp[iCount] = ((INominalStorage<String>) tmpStorage).get(
-									EDataKind.RAW, iCount);
+							sArTmp[iCount] = ((INominalStorage<String>)tmpStorage).getRaw(iCount);
 						}
 						alsStoreString.add(sArTmp);
 					}

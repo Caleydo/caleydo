@@ -12,7 +12,6 @@ import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
@@ -161,13 +160,11 @@ public class Set
 
 	public void setLabel(String sLabel)
 	{
-
 		this.sLabel = sLabel;
 	}
 
 	public String getLabel()
 	{
-
 		return sLabel;
 	}
 
@@ -177,13 +174,11 @@ public class Set
 	 */
 	public Iterator<IStorage> iterator()
 	{
-
 		return alStorages.iterator();
 	}
 
 	public double getMin() throws OperationNotSupportedException
 	{
-
 		if (dMin == Double.MAX_VALUE)
 			calculateGlobalExtrema();
 		return dMin;
@@ -199,7 +194,6 @@ public class Set
 
 	private void calculateGlobalExtrema() throws OperationNotSupportedException
 	{
-
 		double dTemp = 0.0;
 		if (alStorages.get(0) instanceof INumericalStorage)
 		{

@@ -13,6 +13,7 @@ import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Command, creates a new storage.
@@ -83,10 +84,13 @@ public class CmdDataCreateStorage
 
 		if (sAttrib1.length() > 0)
 		{
-			if (sAttrib1.equalsIgnoreCase("String"))
+			if (sAttrib1.equalsIgnoreCase("NOMINAL"))
 				storageType = EManagerObjectType.STORAGE_NOMINAL;
-			else if (sAttrib1.equalsIgnoreCase("int") || sAttrib1.equalsIgnoreCase("float"))
+			else if (sAttrib1.equalsIgnoreCase("NUMERICAL"))
 				storageType = EManagerObjectType.STORAGE_NUMERICAL;
+			else
+				throw new CaleydoRuntimeException("attrib1 of CREATE_STORAGE must be either NUMERICAL or NOMINAL, but was neither", 
+						CaleydoRuntimeExceptionType.COMMAND);
 		}
 
 	}

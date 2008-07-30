@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.ascii.AbstractLoader;
 import org.caleydo.core.parser.ascii.IParserObject;
@@ -292,9 +293,13 @@ public class TabularAsciiDataReader
 					iIntArrayIndex++;
 					iStorageIndex++;
 					break;
-				case FLOAT:
+				case FLOAT:					
 					alTargetStorages.get(iStorageIndex).setRawData(
 							alFloatBuffers.get(iFloatArrayIndex));
+//					ArrayList<Float> fAlRaw = new ArrayList<Float>();
+//					for(float fCurrent : alFloatBuffers.get(iFloatArrayIndex))
+//						fAlRaw.add(fCurrent);
+//					((NominalStorage<Float>)(alTargetStorages.get(iStorageIndex))).setRawData(fAlRaw);
 					iFloatArrayIndex++;
 					iStorageIndex++;
 					break;
