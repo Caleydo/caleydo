@@ -39,12 +39,17 @@
 
 package gleem.linalg;
 
-/** 3-element single-precision vector
+import java.io.Serializable;
+
+/** 
+  * 3-element single-precision vector
   *
   * @author Michael Kalkusch
+  * @author Marc Streit
   */
 
-public class Vec3f {
+public class Vec3f
+implements Serializable {
   
   /**
    * PI stored in a float.

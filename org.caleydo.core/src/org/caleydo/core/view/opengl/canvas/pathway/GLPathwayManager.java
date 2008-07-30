@@ -12,7 +12,7 @@ import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.AUniqueManagedObject;
+import org.caleydo.core.data.AManagedObject;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.edge.PathwayReactionEdgeGraphItemRep;
@@ -112,7 +112,7 @@ public class GLPathwayManager {
 	}
 	
 	public void buildPathwayDisplayList(final GL gl, 			
-			final AUniqueManagedObject containingView,
+			final AManagedObject containingView,
 			final int iPathwayId) {
 	
 		generalManager.getLogger().log(Level.INFO, "Build display list for pathway " +iPathwayId);
@@ -423,7 +423,7 @@ public class GLPathwayManager {
 	}
 	
 	private void extractVertices(final GL gl,
-			final AUniqueManagedObject containingView,
+			final AManagedObject containingView,
 			PathwayGraph pathwayToExtract) {
 		
 	    Iterator<IGraphItem> vertexIterator =
@@ -471,7 +471,7 @@ public class GLPathwayManager {
 	}
 	
 	private void createVertex(final GL gl, 
-			final AUniqueManagedObject containingView,
+			final AManagedObject containingView,
 			PathwayVertexGraphItemRep vertexRep, 
 			PathwayGraph containingPathway) {
 		

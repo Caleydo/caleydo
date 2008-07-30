@@ -20,5 +20,5 @@ public interface ICollection {
 	 * 
 	 * @param setLabel label text
 	 */
-	public void setLabel( final String setLabel);
+	public void setLabel(final String setLabel);
 }

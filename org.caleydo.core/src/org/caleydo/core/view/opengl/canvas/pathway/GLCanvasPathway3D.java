@@ -9,12 +9,12 @@ import java.util.logging.Level;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.GeneralRenderStyle;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;

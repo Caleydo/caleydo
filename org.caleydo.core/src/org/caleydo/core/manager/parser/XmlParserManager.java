@@ -40,7 +40,7 @@ extends AXmlParserManager {
 	public final int iCountMaximumOpenedFile = 513;
 
 	/**
-	 * count number of recusrions in order to detect misbehaviour.
+	 * count number of recursions in order to detect misbehavior.
 	 */
 	private int iCountOpenedFiles = 0;		
 	

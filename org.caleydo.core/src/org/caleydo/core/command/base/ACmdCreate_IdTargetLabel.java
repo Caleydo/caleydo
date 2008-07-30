@@ -14,12 +14,6 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
  */
 public abstract class ACmdCreate_IdTargetLabel 
 extends ACommand {
-	/**
-	 * Command Id to identify this command.
-	 * 
-	 * identify this command by its id
-	 */
-	protected int iCommandId;
 	
 	/**
 	 * Unique Id of the object, that will be created.
@@ -49,6 +43,10 @@ extends ACommand {
 				commandQueueSaxType);
 	}
 	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.base.ACommand#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
+	 */
 	public void setParameterHandler( final IParameterHandler parameterHandler ) {
 		
 		this.setId(parameterHandler.getValueInt( 

@@ -3,7 +3,7 @@ package org.caleydo.core.view;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import org.caleydo.core.data.AUniqueManagedObject;
+import org.caleydo.core.data.AManagedObject;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.selection.Selection;
@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Marc Streit
  */
 public abstract class AView 
-extends AUniqueManagedObject
+extends AManagedObject
 implements IView {
 	
 	private final ISetManager setManager;

@@ -16,9 +16,8 @@ import org.xml.sax.helpers.DefaultHandler;
  */
 public abstract class AXmlParserManager 
 extends DefaultHandler
-implements IXmlParserManager, IManagedObject
+implements IXmlParserManager
 {
-
 	/**
 	 * Token to avoid registering and unregistering handlers during processing XMl data.
 	 */
@@ -142,59 +141,6 @@ implements IXmlParserManager, IManagedObject
 		return true;
 	}
 	
-//	/**
-//	 * Special case for recursive opening of files.
-//	 * 
-//	 * @param filename filename for recursive XML file
-//	 * @param openFileHandler reference to SaxHandler opening the file
-//	 * @return TRUE if  startElement(String,String,String,Attributes) should be called twice, else FALSE
-//	 *
-//	 */
-//	public final boolean openCurrentTagForRecursiveReader( 
-//			OpenExternalXmlFileSaxHandler newHandler,
-//			final IXmlParserManager iXmlParserManager ) {
-//		
-//		if ( ! iXmlParserManager.equals( this) ) 
-//		{
-//			throw new CaleydoRuntimeException("AXmlParserManager.openCurrentTagForRecursiveReader() must be called by IXmlParserManager!");			
-//		}
-//		
-//		if ( newHandler == null ) 
-//		{
-//			throw new CaleydoRuntimeException("AXmlParserManager.openCurrentTagForRecursiveReader() new handler is null!");
-//		}
-//		
-//		if ( currentHandler != null ) 
-//		{
-//			/**
-//			 * insert OpenExternalXmlFileSaxHandler in front of currentHandler...
-//			 */
-//			llXmlParserStack.remove( currentHandler );		
-//			llXmlParserStack.add( newHandler );		
-//			llXmlParserStack.add( currentHandler );
-//			
-//			/**
-//			 * trigger calling startElement(String,String,String,Attributes) twice!
-//			 */
-//			return true;
-//		}
-//		else 
-//		{
-//			/**
-//			 * Empty queue, no swapping necessary!
-//			 */
-//			llXmlParserStack.add( newHandler );	
-//			
-//			currentHandler = newHandler;
-//			
-//			/**
-//			 * avoid calling startElement(String,String,String,Attributes) twice!
-//			 */
-//			return false;
-//		}
-//				
-//	}
-	
 	/**
 	 * @see org.caleydo.core.data.collection.UniqueManagedInterface#getGeneralManager()
 	 */
@@ -289,54 +235,6 @@ implements IXmlParserManager, IManagedObject
 		}
 		return false;
 	}
-
-//	/**
-//	 * Swap two IXmlParserHandler.
-//	 * 
-//	 * @deprecated not used any more. use openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager) instead.
-//	 * 
-//	 * @see org.caleydo.core.manager.IXmlParserManager#openCurrentTagForRecursiveReader(OpenExternalXmlFileSaxHandler, IXmlParserManager) 
-//	 */
-//	protected final void swapXmlParserHandler( IXmlParserHandler from, 
-//			IXmlParserHandler to ) {
-//		int iIndexFrom = llXmlParserStack.indexOf( from );
-//		
-//		if ( iIndexFrom == -1 ) {
-//			generalManager.getSingelton().logMsg( 
-//					"Error: can not find IXmlParserHandler 'from' in AXmlParserManager! " +
-//					from.getXmlActivationTag(),
-//					LoggerType.ERROR );
-//			return;
-//		} // if
-//		
-//		int iIndexTo = llXmlParserStack.indexOf( to );
-//		
-//		if ( iIndexTo == -1 ) {
-//			generalManager.getSingelton().logMsg( 
-//					"Error: can not find IXmlParserHandler 'to' in AXmlParserManager! " +
-//					from.getXmlActivationTag(),
-//					LoggerType.ERROR );
-//			return;
-//		} // if
-//		
-//		if ( iIndexFrom < iIndexTo ) 
-//		{
-//			llXmlParserStack.remove( iIndexFrom );
-//			llXmlParserStack.add( iIndexFrom, to );
-//			
-//			llXmlParserStack.remove( iIndexTo );
-//			llXmlParserStack.add( iIndexTo, from );
-//		}
-//		else 
-//		{
-//			llXmlParserStack.remove( iIndexTo );
-//			llXmlParserStack.add( iIndexTo, from );
-//			
-//			llXmlParserStack.remove( iIndexFrom );
-//			llXmlParserStack.add( iIndexFrom, to );
-//		} // else
-//	}
-	
 
 	/*
 	 * @see org.caleydo.core.xml.parser.manager.IXmlParserManager#getCurrentXmlParserHandler()

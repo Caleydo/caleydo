@@ -39,9 +39,13 @@
 
 package gleem.linalg;
 
+import java.io.Serializable;
+
 /** Represents a rotation with single-precision components */
 
-public class Rotf {
+public class Rotf 
+implements Serializable {
+	
   private static float EPSILON = 1.0e-7f;
 
   // Representation is a quaternion. Element 0 is the scalar part (=

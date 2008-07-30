@@ -39,11 +39,15 @@
 
 package gleem.linalg;
 
+import java.io.Serializable;
+
 /** 3x3 matrix class useful for simple linear algebra. Representation
     is (as Mat4f) in row major order and assumes multiplication by
     column vectors on the right. */
 
-public class Mat3f {
+public class Mat3f 
+implements Serializable {
+	
   private float[] data;
 
   /** Creates new matrix initialized to the zero matrix */

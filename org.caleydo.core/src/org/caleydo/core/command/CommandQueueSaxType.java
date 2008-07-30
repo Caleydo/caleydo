@@ -47,25 +47,15 @@ public enum CommandQueueSaxType
 	CREATE_GL_JUKEBOX_3D(EManagerType.VIEW,"cmd","type","-1", "Create Jukebox 3D"),
 	CREATE_GL_WII_TEST(EManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	CREATE_GL_REMOTE_GLYPH(EManagerType.VIEW,"cmd","type","-1", "Create Remote Glyph"),
-//	CREATE_GL_TRIANGLE_TEST(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
-//	CREATE_GL_TEXTURE2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),	
-//	CREATE_GL_SCATTERPLOT2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),	
-//	CREATE_GL_MINMAX_SCATTERPLOT2D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
-//	CREATE_GL_MINMAX_SCATTERPLOT3D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
-//	CREATE_GL_ISOSURFACE3D(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
-//	CREATE_GL_WIDGET(ManagerType.VIEW,"cmd","type","-1", "No description available!"),
 	
 	EXTERNAL_FLAG_SETTER(EManagerType.VIEW, "cmd", "type", "-1", "External flag setter"),
 	EXTERNAL_ACTION_TRIGGER(EManagerType.VIEW, "cmd", "type", "-1", "External action trigger"),
-	
 
 	CREATE_SET_DATA(EManagerType.DATA,"cmd","type","-1", "Create SET"),	
-	CREATE_SET_SELECTION(EManagerType.DATA_SET,"cmd","type","-1", "Create Selection SET!"),
 	CREATE_SELECTION(EManagerType.DATA_SET,"cmd", "type","-1", "Create Selection SET incl. Storage and Virtual Array!"),
 	CREATE_STORAGE(EManagerType.DATA_STORAGE,"cmd","type","-1", "Create Storage"),		
 	CREATE_VIRTUAL_ARRAY(EManagerType.DATA_VIRTUAL_ARRAY,"cmd","type","-1", "Create VirtualArray"),
 
-	
 	CREATE_SWT_WINDOW(EManagerType.VIEW,"cmd", "type","-1", "Create SWT window"),
 	CREATE_SWT_CONTAINER(EManagerType.VIEW,"cmd", "type","-1", "Create SWTContainer"),
 	CREATE_VIEW_PATHWAY(EManagerType.VIEW,"cmd", "type","-1", "Create Pathway 2D"),

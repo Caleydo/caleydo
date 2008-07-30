@@ -2,7 +2,7 @@ package org.caleydo.core.data.selection;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.AUniqueManagedObject;
+import org.caleydo.core.data.AManagedObject;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.manager.IGeneralManager;
@@ -24,7 +24,7 @@ import org.caleydo.core.manager.type.EManagerObjectType;
  * FIXME: DO NOT ASSIGN REFERENCES TO INTERNAL DATA
  */
 public class Selection 
-extends AUniqueManagedObject 
+extends AManagedObject 
 implements ISelection
 {
 	// TODO: replace this with a storage that takes ArrayLists

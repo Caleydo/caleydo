@@ -37,14 +37,6 @@ extends ACmdCreate_IdTargetLabelParentXY {
 				commandManager,
 				commandQueueSaxType);
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY#checkOpenGLSetting()
-	 */
-	protected final void checkOpenGLSetting() {
-		/** not openGL settings are required */	
-	}
 	
 	/**
 	 * Method creates a slider view, sets the attributes 

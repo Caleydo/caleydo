@@ -2,7 +2,6 @@ package org.caleydo.core.data.view.rep.renderstyle;
 
 import gleem.linalg.Vec3f;
 
-import org.caleydo.core.data.GeneralRenderStyle;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 

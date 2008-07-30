@@ -39,10 +39,14 @@
 
 package gleem.linalg;
 
+import java.io.Serializable;
+
 /** Arbitrary-length single-precision vector class. Currently very
     simple and only supports a few needed operations. */
 
-public class Vecf {
+public class Vecf 
+implements Serializable {
+	
   private float[] data;
 
   public Vecf(int n) {

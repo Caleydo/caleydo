@@ -39,10 +39,14 @@
 
 package gleem.linalg;
 
+import java.io.Serializable;
+
 /** Arbitrary-length integer vector class. Currently very simple and
     only supports a few needed operations. */
 
-public class Veci {
+public class Veci 
+implements Serializable {
+	
   private int[] data;
 
   public Veci(int n) {

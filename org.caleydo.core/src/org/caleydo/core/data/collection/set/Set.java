@@ -5,7 +5,7 @@ import java.util.Iterator;
 
 import javax.naming.OperationNotSupportedException;
 
-import org.caleydo.core.data.AUniqueManagedObject;
+import org.caleydo.core.data.AManagedObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.INumericalStorage;
@@ -23,7 +23,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  *
  */
 public class Set
-extends AUniqueManagedObject
+extends AManagedObject
 implements ISet
 {
 

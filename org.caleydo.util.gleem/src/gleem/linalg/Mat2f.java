@@ -39,11 +39,15 @@
 
 package gleem.linalg;
 
+import java.io.Serializable;
+
 /** 2x2 matrix class useful for simple linear algebra. Representation
     is (as Mat4f) in row major order and assumes multiplication by
     column vectors on the right. */
 
-public class Mat2f {
+public class Mat2f 
+implements Serializable {
+	
   private float[] data;
 
   /** Creates new matrix initialized to the zero matrix */

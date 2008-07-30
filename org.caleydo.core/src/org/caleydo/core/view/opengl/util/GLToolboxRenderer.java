@@ -6,7 +6,7 @@ import java.util.EnumMap;
 
 import javax.media.opengl.GL;
 
-import org.caleydo.core.data.GeneralRenderStyle;
+import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.PickingManager;

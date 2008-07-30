@@ -39,10 +39,14 @@
 
 package gleem.linalg;
 
+import java.io.Serializable;
+
 /** Arbitrary-size single-precision matrix class. Currently very
     simple and only supports a few needed operations. */
 
-public class Matf {
+public class Matf 
+implements Serializable {
+	
   private float[] data;
   private int nCol; // number of columns
   private int nRow; // number of columns

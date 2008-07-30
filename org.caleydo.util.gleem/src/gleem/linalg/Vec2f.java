@@ -39,9 +39,13 @@
 
 package gleem.linalg;
 
+import java.io.Serializable;
+
 /** 2-element single-precision vector */
 
-public class Vec2f {
+public class Vec2f 
+implements Serializable {
+	
   private float x;
   private float y;
 

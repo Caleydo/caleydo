@@ -75,12 +75,10 @@ extends ACmdCreate_IdTargetLabelAttrDetail {
 			iAlIDs.add(new Integer(strToken_DataTypes.nextToken()));
 		}
 		
-		if(sAttribute3.isEmpty())
+		if(sAttribute3.equals(""))
 			objectType = EManagerObjectType.STORAGE;
 		else		
 			objectType = EManagerObjectType.valueOf(sAttribute3);
-		
-		
 	}
 	
 	

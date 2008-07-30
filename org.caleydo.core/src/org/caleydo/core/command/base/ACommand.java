@@ -4,7 +4,7 @@ import java.io.Serializable;
 
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.ICommand;
-import org.caleydo.core.data.AUniqueManagedObject;
+import org.caleydo.core.data.AManagedObject;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.type.EManagerObjectType;
@@ -19,7 +19,7 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
  *
  */
 public abstract class ACommand 
-extends AUniqueManagedObject
+extends AManagedObject
 implements ICommand, Serializable {
 
 	/**
@@ -42,13 +42,6 @@ implements ICommand, Serializable {
 		
 		this.commandManager = commandManager;
 		this.commandQueueSaxType = commandQueueSaxType;
-	}
-
-	public final boolean isEqualType(ICommand compareToObject) {
-		if ( compareToObject.getCommandType() == this.getCommandType() ) { 
-			return true;
-		}
-		return false;
 	}
 	
 	/*

@@ -7,12 +7,6 @@ import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.studierstube.net.protocol.muddleware.ClientByteStreamHandler;
-import org.studierstube.net.protocol.muddleware.IMessage;
-import org.studierstube.net.protocol.muddleware.IOperation;
-import org.studierstube.net.protocol.muddleware.Message;
-import org.studierstube.net.protocol.muddleware.Operation;
-import org.studierstube.net.protocol.muddleware.OperationEnum;
 
 /**
  * Basic Caleydo Bootloader, starts application either 
@@ -26,25 +20,13 @@ import org.studierstube.net.protocol.muddleware.OperationEnum;
  */
 public class CaleydoBootloader
 {
-	
 	private boolean bIsRunning = false;
-	
-	/**
-	 * Switch for loading XML file from Muddelware server.
-	 * Default is FALSE and indicate, that the local XML file is used for bootstrapping.
-	 * TRUE will get the XML file from the Muddleware server.
-	 * 
-	 * TODO: soft code Muddleware server and Muddleware server XPath.
-	 */
-	private boolean bEnableBootstrapViaMuddleware = false;
 	
 	/**
 	 * File name of the local XML file
 	 */
 	private String sFileName;
 	
-	private ClientByteStreamHandler connection;
-
 	/**
 	 * Reference to general manager which is a singleton.
 	 * 
@@ -105,72 +87,6 @@ public class CaleydoBootloader
 	}
 	
 	/**
-	 * Connect to Muddelware server and get XML-configuration 
-	 * from the Muddleware-Server.
-	 * 
-	 * Not tested yet!
-	 * 
-	 */
-	protected final boolean runUsingMuddleWare( final String sXPath ) {
-		
-		generalManager.getLogger().log(Level.CONFIG, "bootloader read data from muddleware server.. ");
-		
-		/**
-		 * initialize connection...
-		 * connection is null if runUsingMuddleWare() called for the first time.
-		 */
-		if ( connection == null ) {
-			connection = new ClientByteStreamHandler( null );
-		}
-		
-		connection.setServerNameAndPort( "localhost", 20000 );
-		
-		if ( connection.connect() ) {
-			generalManager.getLogger().log(Level.WARNING, 
-					"CaleydoBootloader can not connect to Muddleware server.");
-			return false;
-		}
-		
-		Operation operationSend = new Operation( OperationEnum.OP_ELEMENT_EXISTS );
-		operationSend.setXPath( sXPath );
-		
-		IMessage sendMsg = new Message();
-		sendMsg.addOperation( operationSend );
-		
-		IMessage receiveMsg = connection.sendReceiveMessage( sendMsg );
-		
-		if (( receiveMsg == null )||( receiveMsg.getNumOperations() < 1 )) {
-			generalManager.getLogger().log(Level.WARNING, 
-					"CaleydoBootloader XPath does not exist, Muddleware server has no data on canvas settings.");
-			connection.disconnect();
-			return false;
-		}
-		
-		if ( receiveMsg.getOperation( 0 ).getNodeString().equalsIgnoreCase( "true" ) ) {
-			
-			operationSend.setOperation( OperationEnum.OP_GET_ELEMENT );
-			
-			/* get configuration .. */
-			sendMsg.setOperation( operationSend );
-			receiveMsg = connection.sendReceiveMessage( sendMsg );
-			connection.disconnect();
-						
-			IOperation op = receiveMsg.getOperation( 0 );					
-			
-			xmlParserManager.parseXmlString( op.getXPath(), op.getNodeString() );
-			
-			generalManager.getLogger().log(Level.CONFIG, "CaleydoBootloader PARSE using Muddleware done.");
-			
-		} else {
-			generalManager.getLogger().log(Level.CONFIG, "CaleydoBootloader Muddleware server has no data on canvas settings.");
-			connection.disconnect();
-			return false;
-		}
-		
-		return true;
-	}
-	
-	/**
 	 * Set local XML file name.
 	 * Is case the XML file is received from the Muddleware server
 	 * This is the XPath used to query the Muddleware server.
@@ -201,20 +117,9 @@ public class CaleydoBootloader
 	}
 	
 	/**
-	 * 
-	 * @see org.caleydo.core.application.core.CaleydoBootloader#setXmlFileName(String)
-	 * @see org.caleydo.core.application.core.CaleydoBootloader#getXmlFileName()
-	 * 
-	 * @param bEnableBootstrapViaMuddleware TRUE for loading config via Muddleware or FALSE for loading config from local file.
-	 */
-	public final void setBootstrapViaMuddleware( boolean bEnableBootstrapViaMuddleware ) {
-		this.bEnableBootstrapViaMuddleware = bEnableBootstrapViaMuddleware;
-	}	
-	
-	/**
 	 * Test if Caleydo core is running.
 	 * 
-	 * @see CaleydoBootloader#run_SWT()
+	 * @see CaleydoBootloader#runGUI()
 	 * @see CaleydoBootloader#stop()
 	 * 
 	 * @return TRUE if Caleydo core is running
@@ -222,19 +127,6 @@ public class CaleydoBootloader
 	public final synchronized boolean isRunning() {
 		return bIsRunning;
 	}
-	
-	/**
-	 * 
-	 * @see org.caleydo.core.application.core.CaleydoBootloader#setXmlFileName(String)
-	 * @see org.caleydo.core.application.core.CaleydoBootloader#getXmlFileName()
-	 * 
-	 * @return TRUE shows that config will be loaded via Muddleware or FALSE indicates that config is loaded from local file.
-	 */
-	public final boolean isBootstrapViaMuddlewareEnabled() {
-	
-		return bEnableBootstrapViaMuddleware;
-	}
-
 	
 	/**
 	 * Start Caleydo core.
@@ -245,7 +137,7 @@ public class CaleydoBootloader
 	 * @see CaleydoBootloader#isRunning()
 	 * @see CaleydoBootloader#stop()
 	 */
-	public synchronized void run_SWT() {
+	public synchronized void runGUI() {
 		
 		try 
 		{
@@ -278,7 +170,7 @@ public class CaleydoBootloader
 	/**
 	 * does not Start SWT; intended for RCP and for parsing XML files after calling run_SWT() and starting the SWT canvas.
 	 * 
-	 * @see CaleydoBootloader#run_SWT()
+	 * @see CaleydoBootloader#runGUI()
 	 * 
 	 * @param fileName
 	 * @return
@@ -316,29 +208,17 @@ public class CaleydoBootloader
 	
 	protected void parseXmlConfigFileLocalOrRemote( final String fileName) {
 
-		// Use Muddleware?
-		if ( bEnableBootstrapViaMuddleware )
-		{
-			/**
-			 * Load configuration from Muddleware server.
-			 */
-			generalManager.getLogger().log(Level.CONFIG, "load config via Muddleware server ...");			
-			runUsingMuddleWare( "/caleydo/workspace" );
-		}
-		else
-		{
-			/**
-			 * Load configuration from local XML file.
-			 */
-			generalManager.getLogger().log(Level.CONFIG, "load config via local XML file ... ");			
-			xmlParserManager.parseXmlFileByName( getXmlFileName() );		
-		}
+		/**
+		 * Load configuration from local XML file.
+		 */
+		generalManager.getLogger().log(Level.CONFIG, "load config via local XML file ... ");			
+		xmlParserManager.parseXmlFileByName( getXmlFileName() );		
 	}
 	
 	/**
 	 * Stop the Caleydo core and clean up all managers.
 	 * 
-	 * @see CaleydoBootloader#run_SWT()
+	 * @see CaleydoBootloader#runGUI()
 	 * @see CaleydoBootloader#isRunning()
 	 */
 	public synchronized void stop() 
@@ -380,7 +260,7 @@ public class CaleydoBootloader
 			caleydo.setXmlFileName( args[0] ); 	
 		}
 		
-		caleydo.run_SWT();
+		caleydo.runGUI();
 		caleydo.stop();
 		
 		System.exit(0);

@@ -9,5 +9,8 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.rcp"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.util.gleem"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.util.graph"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/kegg/keggapi.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/jaxrpc.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/entrez/entrez_SOAP_2006_12_18.jar" sourcepath="/org.caleydo.lib/lib_src/entrez/entrez_SOAP_2006_12_18_src.zip"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

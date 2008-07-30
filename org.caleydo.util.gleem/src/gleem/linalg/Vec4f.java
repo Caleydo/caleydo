@@ -39,9 +39,14 @@
 
 package gleem.linalg;
 
-/** 4-element single-precision vector */
+import java.io.Serializable;
 
-public class Vec4f {
+/** 
+ * 4-element single-precision vector 
+ */
+public class Vec4f 
+implements Serializable {
+	
   private float x;
   private float y;
   private float z;

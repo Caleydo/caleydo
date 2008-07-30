@@ -32,7 +32,7 @@ import org.caleydo.core.data.collection.storage.ERawDataType;
  */
 
 public interface IStorage 
-extends IUniqueObject
+extends IUniqueObject, ICollection
 {
 	
 		

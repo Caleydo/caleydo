@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry excluding="**/.svn/|*.html|org/caleydo/core/data/collection/virtualarray/|org/caleydo/core/data/collection/IVirtualArray.java|org/caleydo/core/manager/data/IVirtualArrayManager.java|org/caleydo/core/manager/data/virtualarray/|org/caleydo/core/view/swt/data/explorer/|org/caleydo/core/view/swt/pathway/|org/caleydo/core/view/swt/slider/|org/caleydo/core/view/swt/toolbar/|org/caleydo/core/view/swt/data/exchanger/|org/caleydo/core/view/swt/data/DataTableViewRep.java|org/caleydo/core/view/opengl/canvas/histogram/|org/caleydo/core/manager/data/ACollectionManager.java|org/caleydo/core/data/collection/parser/" kind="src" path="src"/>
-	<classpathentry excluding="**/.svn/|*.html|gleem/|org/" kind="src" path="src_ext"/>
+	<classpathentry excluding="**/.svn/|*.html|org/caleydo/core/data/collection/virtualarray/|org/caleydo/core/data/collection/IVirtualArray.java|org/caleydo/core/manager/data/IVirtualArrayManager.java|org/caleydo/core/manager/data/virtualarray/|org/caleydo/core/view/swt/data/explorer/|org/caleydo/core/view/swt/pathway/|org/caleydo/core/view/swt/slider/|org/caleydo/core/view/swt/toolbar/|org/caleydo/core/view/swt/data/exchanger/|org/caleydo/core/view/swt/data/DataTableViewRep.java|org/caleydo/core/view/opengl/canvas/histogram/|org/caleydo/core/manager/data/ACollectionManager.java|org/caleydo/core/data/collection/parser/|org/caleydo/core/util/midi/device/|org/caleydo/core/view/opengl/canvas/isosurface/|org/caleydo/core/view/opengl/canvas/scatterplot/" kind="src" path="src"/>
 	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
 		<attributes>
 			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Compiler/java/jre1.6/jre/lib"/>
@@ -31,7 +30,6 @@
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/log4j-1.2.8.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/saaj.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/wsdl4j-1.5.1.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/entrez/entrez_SOAP_2006_12_18.jar" sourcepath="/org.caleydo.lib/lib_src/entrez/entrez_SOAP_2006_12_18_src.zip"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/gleem/gleem_mod_class.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.core.resources_3.1.2.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.core.runtime_3.1.2.jar"/>
@@ -39,8 +37,6 @@
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.jface.text_3.1.2.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.osgi_3.1.2.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.ui.workbench_3.1.2.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/kegg/keggapi.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/muddleware/muddleware.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/weka/weka.jar" sourcepath="/org.caleydo.lib/lib_src/weka/weka-src.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/org.caleydo.lib/doc/weka_javadoc.zip!/doc"/>

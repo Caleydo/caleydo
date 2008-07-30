@@ -1,7 +1,7 @@
 package org.caleydo.core.data.view.rep.renderstyle.layout;
 
-import org.caleydo.core.data.GeneralRenderStyle;
 import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
+import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.EHierarchyLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 

@@ -1,6 +1,5 @@
 package org.caleydo.core.data.view.rep.renderstyle;
 
-import org.caleydo.core.data.GeneralRenderStyle;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 
 /**

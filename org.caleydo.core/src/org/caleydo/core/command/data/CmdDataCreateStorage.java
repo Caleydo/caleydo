@@ -21,13 +21,9 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  * @author Marc Streit
  * @author Alexander Lex
  *
- * @see org.caleydo.core.data.collection.IStorage
  */
 public class CmdDataCreateStorage 
 extends ACmdCreate_IdTargetLabel {
-
-	
-	ArrayList<String> sAlParserControlTypes;
 	EManagerObjectType storageType;
 	
 	/**
@@ -42,13 +38,8 @@ extends ACmdCreate_IdTargetLabel {
 				commandQueueSaxType);
 	}
 
-	
-
-	/**
-	 * Load data from file using a token pattern.
-	 * 
-	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Storage#loadData()
-	 * 
+	/*
+	 * (non-Javadoc)
 	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws CaleydoRuntimeException 
@@ -63,7 +54,6 @@ extends ACmdCreate_IdTargetLabel {
 		storage.setId( iUniqueId );
 		storage.setLabel( sLabel );			
 		
-				
 		storageManager.registerItem(storage, 
 				storage.getId());
 
@@ -79,6 +69,10 @@ extends ACmdCreate_IdTargetLabel {
 		commandManager.runUndoCommand(this);
 	}	
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabel#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
+	 */
 	public void setParameterHandler( final IParameterHandler parameterHandler ) 
 	{		
 		super.setParameterHandler(parameterHandler);

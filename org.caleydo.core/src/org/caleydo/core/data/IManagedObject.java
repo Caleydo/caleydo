@@ -9,7 +9,8 @@ import org.caleydo.core.manager.IGeneralManager;
  * @author Marc Streit
  *
  */
-public interface IManagedObject {
+public interface IManagedObject
+extends IUniqueObject {
 
 	/**
 	 * Get the manager that created the item.

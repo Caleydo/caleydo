@@ -27,8 +27,6 @@ import org.caleydo.core.util.system.StringConversionTool;
  */
 public class CmdLoadFileLookupTable 
 extends ACommand {
-
-	public static final String sCommaSeperatedFileExtension = ".csv";
 	
 	protected String sFileName;
 	

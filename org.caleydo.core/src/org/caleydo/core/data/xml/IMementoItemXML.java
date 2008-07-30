@@ -11,7 +11,6 @@ import org.caleydo.core.data.IUniqueObject;
 public interface IMementoItemXML 
 extends IMementoXML, IUniqueObject {
 
-	
 	/**
 	 * Creates a memento containing all information for this component.
 	 * 

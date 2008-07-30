@@ -11,7 +11,7 @@ import org.caleydo.core.data.IUniqueManagedObject;
  *
  */
 public interface ISet 
-extends IUniqueManagedObject, Iterable<IStorage>
+extends IUniqueManagedObject, Iterable<IStorage>, ICollection
 {
 	/**
 	 * Set the set type. Possible set types in ESetType.

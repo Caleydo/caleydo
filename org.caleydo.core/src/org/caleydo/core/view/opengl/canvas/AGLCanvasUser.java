@@ -10,7 +10,7 @@ import javax.media.opengl.GLEventListener;
 
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
-import org.caleydo.core.data.AUniqueManagedObject;
+import org.caleydo.core.data.AManagedObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ISelection;
@@ -41,7 +41,7 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
  * 
  */
 public abstract class AGLCanvasUser 
-extends AUniqueManagedObject
+extends AManagedObject
 implements GLEventListener {
 	
 	// TODO: should be a list of parent canvas object to be generic

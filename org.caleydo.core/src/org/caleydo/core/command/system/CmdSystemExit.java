@@ -2,7 +2,7 @@ package org.caleydo.core.command.system;
 
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.ICommand;
-import org.caleydo.core.data.AUniqueManagedObject;
+import org.caleydo.core.data.AManagedObject;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
@@ -16,7 +16,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  *
  */
 public class CmdSystemExit 
-extends AUniqueManagedObject
+extends AManagedObject
 implements ICommand {
 
 	/**
