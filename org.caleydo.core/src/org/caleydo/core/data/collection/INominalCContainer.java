@@ -8,7 +8,8 @@ import java.util.ArrayList;
  * 
  * Extension of the ICContainer interface for handling nominal data.
  */
-public interface INominalCContainer extends ICContainer 
+public interface INominalCContainer <T> 
+extends ICContainer 
 {
 
 	/**
@@ -20,6 +21,6 @@ public interface INominalCContainer extends ICContainer
 	 *  
 	 * @param sAlPossibleValues the List
 	 */
-	public void setPossibleValues(ArrayList<String> sAlPossibleValues);
+	public void setPossibleValues(ArrayList<T> tAlPossibleValues);
 	
 }

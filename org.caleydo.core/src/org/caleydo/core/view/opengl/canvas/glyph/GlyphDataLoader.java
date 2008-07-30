@@ -35,7 +35,7 @@ public class GlyphDataLoader {
 	}
 
 
-
+	@SuppressWarnings("unchecked")
 	public HashMap<Integer, GlyphEntry> loadGlyphs(ISet glyphData)
 	{
 		GLCanvasGlyphGenerator generator = generalManager.getGlyphManager().getGlyphGenerator();
@@ -65,6 +65,7 @@ public class GlyphDataLoader {
 					if(tmpStorage instanceof NominalStorage && 
 							tmpStorage.getRawDataType() == ERawDataType.STRING)
 					{
+						
 						INominalStorage<String> nominalStorage = (INominalStorage<String>)tmpStorage;
 						//String[] temp1 = tmpStorage.getArrayString();
 						int[]    temp2 = new int[nominalStorage.size()];
@@ -107,7 +108,7 @@ public class GlyphDataLoader {
 					++pcounter;
 				}
 				else 
-				{
+				{					
 					if(tmpStorage instanceof NominalStorage && 
 							tmpStorage.getRawDataType() == ERawDataType.STRING)
 					{
@@ -116,7 +117,7 @@ public class GlyphDataLoader {
 						// FIXME hack
 						String[] sArTmp = new String[tmpStorage.size()];
 						for (int iCount = 0; iCount < tmpStorage.size(); iCount++)
-						{
+						{								
 							sArTmp[iCount] = ((INominalStorage<String>)tmpStorage).get(EDataKind.RAW, iCount);
 						}
 						alsStoreString.add(sArTmp);

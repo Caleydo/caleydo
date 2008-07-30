@@ -119,7 +119,7 @@ implements IMediatorSender, IMediatorReceiver
 		grid_.buildScatterplotGrid(gl);
 		
 		ArrayList<String> temp = new ArrayList<String>(10);
-		temp.set(5, "dafs");
+		temp.add("dafs");
 		
 		
 		//grid_.setGridSize(30, 60);

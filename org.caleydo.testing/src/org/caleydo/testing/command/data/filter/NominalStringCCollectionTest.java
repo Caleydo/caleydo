@@ -5,12 +5,12 @@ import java.util.ArrayList;
 import junit.framework.TestCase;
 
 import org.caleydo.core.data.collection.ICContainer;
-import org.caleydo.core.data.collection.ccontainer.NominalStringCContainer;
+import org.caleydo.core.data.collection.ccontainer.NominalCContainer;
 import org.caleydo.core.data.collection.ccontainer.PrimitiveFloatCContainer;
 
 public class NominalStringCCollectionTest extends TestCase 
 {
-	NominalStringCContainer sCollection;
+	NominalCContainer sCollection;
 	ArrayList<String> sAlTestWords;
 
 	protected void setUp() 
@@ -23,7 +23,7 @@ public class NominalStringCCollectionTest extends TestCase
 		sAlTestWords.add("Flu");
 		sAlTestWords.add("Gastritis");
 		
-		sCollection = new NominalStringCContainer(sAlTestWords);
+		sCollection = new NominalCContainer(sAlTestWords);
 	}
 	
 	public void testGet() {

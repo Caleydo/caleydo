@@ -22,25 +22,25 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  * constructed when you call normalize, or request a mapping for the first time.
  *
  */
-public class NominalStringCContainer 
-implements INominalCContainer 
+public class NominalCContainer <T>
+implements INominalCContainer <T>
 {
 
-	private ArrayList<String> sAlContainer;
-	private HashMap<String, Float> hashNominalToDiscrete = new HashMap<String,	Float>();
-	private HashMap<Float, String> hashDiscreteToNominal = new HashMap<Float, String>();
+	private ArrayList<T> tAlContainer;
+	private HashMap<T, Float> hashNominalToDiscrete = new HashMap<T, Float>();
+	private HashMap<Float, T> hashDiscreteToNominal = new HashMap<Float, T>();
 	private boolean bHashMapsInitialized = false;
 	
 	/**
 	 * Constructor
 	 * @param sAlContainer The complete list of all Strings in the dataset
 	 */
-	public NominalStringCContainer(ArrayList<String> sAlContainer) 
+	public NominalCContainer(ArrayList<T> tAlContainer) 
 	{
-		this.sAlContainer = sAlContainer;
+		this.tAlContainer = tAlContainer;
 	//	this.sAlContainer = (ArrayList<String>)Collections.unmodifiableList(this.sAlContainer);
-		hashNominalToDiscrete = new HashMap<String,	Float>();
-		hashDiscreteToNominal = new HashMap<Float, String>();
+		hashNominalToDiscrete = new HashMap<T,	Float>();
+		hashDiscreteToNominal = new HashMap<Float, T>();
 	}
 	
 	/**
@@ -48,9 +48,9 @@ implements INominalCContainer
 	 * @param iIndex the index
 	 * @return the String
 	 */
-	public String get(int iIndex)
+	public T get(int iIndex)
 	{
-		return sAlContainer.get(iIndex);
+		return tAlContainer.get(iIndex);
 	}
 	
 	
@@ -63,10 +63,11 @@ implements INominalCContainer
 	 *  
 	 * @param sAlPossibleValues the List
 	 */
-	public void setPossibleValues(ArrayList<String> sAlPossibleValues)
-	{
-		//TODO: check if all values in the raw list are also in the other list
-		setUpMapping(sAlPossibleValues);
+
+	public void setPossibleValues(ArrayList<T> alPossibleValues) 
+	{	
+			//TODO: check if all values in the raw list are also in the other list
+			setUpMapping(alPossibleValues);
 	}
 	
 	/**
@@ -78,14 +79,14 @@ implements INominalCContainer
 	public ICContainer normalize() 
 	{
 		if(!bHashMapsInitialized)
-			setUpMapping(sAlContainer);
+			setUpMapping(tAlContainer);
 		
-		float[] fArNormalized = new float[sAlContainer.size()];
+		float[] fArNormalized = new float[tAlContainer.size()];
 		
 		int iCount = 0;
-		for(String sContent : sAlContainer)
+		for(T tContent : tAlContainer)
 		{
-			Float fTemp = hashNominalToDiscrete.get(sContent);
+			Float fTemp = hashNominalToDiscrete.get(tContent);
 			if (fTemp == null)
 				throw new CaleydoRuntimeException(
 						"Requested string is not in the possible list of strings. " +
@@ -106,7 +107,7 @@ implements INominalCContainer
 	 */
 	public int size() 
 	{	
-		return sAlContainer.size();
+		return tAlContainer.size();
 	}
 	
 	/**
@@ -116,9 +117,9 @@ implements INominalCContainer
 	 * UnsupportedOperationException.
 	 * @return the Iterator
 	 */
-	public Iterator<String> iterator()
+	public Iterator<T> iterator()
 	{
-		return sAlContainer.iterator();
+		return tAlContainer.iterator();
 	}
 	
 	/**
@@ -128,10 +129,10 @@ implements INominalCContainer
 	 * @param fDiscrete
 	 * @return the string associated with the discrete value, or null if no such value exists
 	 */
-	public String getNominalForDiscreteValue(Float fDiscrete)
+	public T getNominalForDiscreteValue(Float fDiscrete)
 	{
 		if(!bHashMapsInitialized)
-			setUpMapping(sAlContainer);
+			setUpMapping(tAlContainer);
 		return hashDiscreteToNominal.get(fDiscrete);
 	}
 	
@@ -141,11 +142,11 @@ implements INominalCContainer
 	 * @param sNominal
 	 * @return
 	 */
-	public Float getDiscreteForNominalValue(String sNominal)
+	public Float getDiscreteForNominalValue(T tNominal)
 	{
 		if(!bHashMapsInitialized)
-			setUpMapping(sAlContainer);
-		return hashNominalToDiscrete.get(sNominal);
+			setUpMapping(tAlContainer);
+		return hashNominalToDiscrete.get(tNominal);
 	}
 	
 	/**
@@ -155,11 +156,11 @@ implements INominalCContainer
 	 * 
 	 * @param sAlStorage
 	 */
-	private void setUpMapping(ArrayList<String> sAlStorage)
+	private void setUpMapping(ArrayList<T> tAlStorage)
 	{		
-		for(String sContent : sAlStorage)
+		for(T tContent : tAlStorage)
 		{
-			hashNominalToDiscrete.put(sContent, new Float(0));
+			hashNominalToDiscrete.put(tContent, new Float(0));
 		}
 		
 		float fDivisor = 1.0f/(hashNominalToDiscrete.size() - 1);
@@ -167,16 +168,19 @@ implements INominalCContainer
 		//float[] fArNormalized = new float[sAlStorage.size()];
 		
 		int iCount = 0;
-		for(String sContent : hashNominalToDiscrete.keySet())
+		for(T tContent : hashNominalToDiscrete.keySet())
 		{
-			Float fDiscrete = hashNominalToDiscrete.get(sContent);
+			Float fDiscrete = hashNominalToDiscrete.get(tContent);
 			fDiscrete = fDivisor * iCount;
-			hashNominalToDiscrete.put(sContent, fDiscrete);
-			hashDiscreteToNominal.put(fDiscrete, sContent);
+			hashNominalToDiscrete.put(tContent, fDiscrete);
+			hashDiscreteToNominal.put(fDiscrete, tContent);
 			
 			iCount++;
 		}
 		bHashMapsInitialized = true;		
 	}
+
+	
+
 
 }

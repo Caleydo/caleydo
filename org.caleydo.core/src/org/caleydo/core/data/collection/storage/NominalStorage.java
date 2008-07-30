@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.ccontainer.EDataKind;
-import org.caleydo.core.data.collection.ccontainer.NominalStringCContainer;
+import org.caleydo.core.data.collection.ccontainer.NominalCContainer;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
@@ -50,7 +50,7 @@ implements INominalStorage <T>
 			{	
 				rawDataType = ERawDataType.STRING;
 				ArrayList<String> sAlData = (ArrayList<String>)alData;
-				NominalStringCContainer sStorage = new NominalStringCContainer(sAlData);
+				NominalCContainer sStorage = new NominalCContainer(sAlData);
 				hashCContainers.put(EDataKind.RAW, sStorage);
 			}
 			else
@@ -78,7 +78,7 @@ implements INominalStorage <T>
 		{
 			if (alPossibleValues.get(0) instanceof String)
 			{
-				if (hashCContainers.get(EDataKind.RAW) instanceof NominalStringCContainer)
+				if (hashCContainers.get(EDataKind.RAW) instanceof NominalCContainer)
 				{
 					throw new CaleydoRuntimeException("Raw data format does not correspond to" +
 							"specified value list." , 
@@ -87,7 +87,7 @@ implements INominalStorage <T>
 				else
 				{
 					ArrayList<String> sAlPossibleValues = (ArrayList<String>)alPossibleValues;
-					((NominalStringCContainer)hashCContainers.get(EDataKind.RAW)).
+					((NominalCContainer)hashCContainers.get(EDataKind.RAW)).
 					setPossibleValues(sAlPossibleValues);
 				}
 			}
@@ -107,7 +107,7 @@ implements INominalStorage <T>
 	public T get(EDataKind dataKind, int index) 
 	{
 		// TODO
-		return (T)((NominalStringCContainer)(hashCContainers.get(dataKind))).get(index);
+		return (T)((NominalCContainer)(hashCContainers.get(dataKind))).get(index);
 	
 	}
 }
