@@ -14,8 +14,7 @@ public interface ILockableMediatorReceiver
 	 * 
 	 * @see org.caleydo.core.manager.event.mediator.ILockableMediatorReceiver#updateReceiver(Object)
 	 * @see org.caleydo.core.manager.event.mediator.ILockableMediatorReceiver#updateContinue(Object)
-	 * @param eventTrigger
-	 *            calling object, that created the update
+	 * @param eventTrigger calling object, that created the update
 	 */
 	public void updateStall();
 
@@ -34,8 +33,7 @@ public interface ILockableMediatorReceiver
 	 * 
 	 * @see org.caleydo.core.manager.event.mediator.ILockableMediatorReceiver#updateReceiver(Object)
 	 * @see org.caleydo.core.manager.event.mediator.ILockableMediatorReceiver#updateStall()
-	 * @param eventTrigger
-	 *            calling object, that created the update
+	 * @param eventTrigger calling object, that created the update
 	 */
 	public void updateContinue(Object eventTrigger);
 

@@ -1,11 +1,8 @@
 package org.caleydo.core.view.opengl.miniview;
 
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
-
 import javax.media.opengl.GL;
-
 import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.mapping.GenomeColorMapper;

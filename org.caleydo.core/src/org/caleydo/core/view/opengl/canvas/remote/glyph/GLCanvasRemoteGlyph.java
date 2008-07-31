@@ -1,13 +1,10 @@
 package org.caleydo.core.view.opengl.canvas.remote.glyph;
 
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GLEventListener;
-
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.view.EPickingMode;

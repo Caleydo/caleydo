@@ -2,7 +2,6 @@ package org.caleydo.core.parser.xml.sax.handler.pathway;
 
 import java.awt.Rectangle;
 import java.util.StringTokenizer;
-
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.specialized.genome.pathway.PathwayManager;

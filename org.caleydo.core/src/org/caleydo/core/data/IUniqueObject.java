@@ -15,8 +15,7 @@ public interface IUniqueObject
 	/**
 	 * Resets the selectionId.
 	 * 
-	 * @param iSetCollectionId
-	 *            new unique collection Id
+	 * @param iSetCollectionId new unique collection Id
 	 */
 	public void setId(int iSetCollectionId);
 

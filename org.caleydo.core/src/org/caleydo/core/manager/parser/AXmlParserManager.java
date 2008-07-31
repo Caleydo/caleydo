@@ -2,7 +2,6 @@ package org.caleydo.core.manager.parser;
 
 import java.util.Hashtable;
 import java.util.LinkedList;
-
 import org.caleydo.core.data.IManagedObject;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;

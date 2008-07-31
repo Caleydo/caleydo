@@ -1,7 +1,6 @@
 package org.caleydo.core.command.base;
 
 import java.util.logging.Level;
-
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;

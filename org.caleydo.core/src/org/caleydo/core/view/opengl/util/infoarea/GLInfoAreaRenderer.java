@@ -3,10 +3,8 @@ package org.caleydo.core.view.opengl.util.infoarea;
 import java.awt.Font;
 import java.util.Iterator;
 import java.util.LinkedList;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
-
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
@@ -17,7 +15,6 @@ import org.caleydo.core.view.opengl.canvas.pathway.GLPathwayManager;
 import org.caleydo.core.view.opengl.util.GLStarEffectRenderer;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
-
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
@@ -312,23 +309,23 @@ public class GLInfoAreaRenderer
 		gl.glColor3f(1, 1, 1);
 
 		textRenderer.draw3D("Type:", fXOffset, fYOffset - fLineHeight, 0.001f, 0.005f); // scale
-																						// factor
+		// factor
 
 		textRenderer.draw3D(sType, fXOffset + 0.3f, fYOffset - fLineHeight, 0.001f, 0.005f); // scale
-																								// factor
+		// factor
 
 		textRenderer.draw3D("ID:", fXOffset, fYOffset - 2 * fLineHeight, 0.001f, 0.005f); // scale
-																							// factor
+		// factor
 
 		textRenderer.draw3D(sElementId, fXOffset + 0.3f, fYOffset - 2 * fLineHeight, 0.001f,
 				0.005f); // scale factor
 
 		textRenderer.draw3D("Name: ", fXOffset, fYOffset - 3 * fLineHeight, 0.001f, 0.005f); // scale
-																								// factor
+		// factor
 
 		textRenderer
 				.draw3D(sName, fXOffset + 0.3f, fYOffset - 3 * fLineHeight, 0.001f, 0.005f); // scale
-																								// factor
+		// factor
 
 		if (tmpVertexGraphItem.getType().equals(EPathwayVertexType.gene))
 		{
@@ -337,7 +334,7 @@ public class GLInfoAreaRenderer
 
 			textRenderer
 					.draw3D("Acc.: ", fXOffset, fYOffset - 4 * fLineHeight, 0.001f, 0.005f); // scale
-																								// factor
+			// factor
 
 			textRenderer.draw3D(sAccessionCode, fXOffset + 0.3f, fYOffset - 4 * fLineHeight,
 					0.001f, 0.005f); // scale factor

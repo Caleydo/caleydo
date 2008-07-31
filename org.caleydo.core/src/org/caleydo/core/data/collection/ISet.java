@@ -1,7 +1,6 @@
 package org.caleydo.core.data.collection;
 
 import javax.naming.OperationNotSupportedException;
-
 import org.caleydo.core.data.IManagedObject;
 
 /**
@@ -17,8 +16,7 @@ public interface ISet
 	 * Set the set type. Possible set types in ESetType.
 	 * 
 	 * @see ESetType
-	 * @param setType
-	 *            the type
+	 * @param setType the type
 	 */
 	public void setSetType(ESetType setType);
 
@@ -40,8 +38,7 @@ public interface ISet
 	/**
 	 * Add a storage by reference
 	 * 
-	 * @param storage
-	 *            the storage
+	 * @param storage the storage
 	 */
 	public void addStorage(IStorage storage);
 
@@ -77,15 +74,10 @@ public interface ISet
 	 */
 	public void normalizeGlobally();
 
-	public void setLabel(String sLabel);
-
-	public String getLabel();
-
 	/**
 	 * Get the minimum value in the set.
 	 * 
-	 * @throws OperationNotSupportedException
-	 *             when executed on nominal data
+	 * @throws OperationNotSupportedException when executed on nominal data
 	 * @return the absolute minimum value in the set
 	 */
 	public double getMin() throws OperationNotSupportedException;
@@ -93,8 +85,7 @@ public interface ISet
 	/**
 	 * Get the maximum value in the set.
 	 * 
-	 * @throws OperationNotSupportedException
-	 *             when executed on nominal data
+	 * @throws OperationNotSupportedException when executed on nominal data
 	 * @return the absolute minimum value in the set
 	 */
 	public double getMax() throws OperationNotSupportedException;

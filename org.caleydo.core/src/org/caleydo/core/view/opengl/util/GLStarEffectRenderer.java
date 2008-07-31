@@ -1,7 +1,6 @@
 package org.caleydo.core.view.opengl.util;
 
 import java.util.ArrayList;
-
 import javax.media.opengl.GL;
 
 /**

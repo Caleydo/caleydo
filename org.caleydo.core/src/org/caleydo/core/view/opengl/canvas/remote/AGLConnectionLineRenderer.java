@@ -3,14 +3,11 @@ package org.caleydo.core.view.opengl.canvas.remote;
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
-
 import javax.media.opengl.GL;
-
 import org.caleydo.core.data.view.rep.renderstyle.ConnectionLineRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.view.SelectionManager;

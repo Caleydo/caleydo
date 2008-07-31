@@ -1,7 +1,6 @@
 package org.caleydo.core.manager.data;
 
 import java.util.Set;
-
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.manager.IManager;
 import org.caleydo.core.manager.type.EManagerObjectType;

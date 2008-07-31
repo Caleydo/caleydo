@@ -2,7 +2,6 @@ package org.caleydo.core.view.opengl.canvas.parcoords;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
-
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.text.DecimalFormat;
@@ -11,12 +10,10 @@ import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
-
 import javax.media.opengl.GL;
-
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.ccontainer.EDataKind;
+import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
@@ -33,7 +30,6 @@ import org.caleydo.core.view.opengl.util.GLIconTextureManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
 import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
-
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -375,9 +371,8 @@ public class GLCanvasParCoords3D
 	/**
 	 * Choose whether to render just the selection or all data
 	 * 
-	 * @param bRenderSelection
-	 *            if true renders only the selection, else renders everything in
-	 *            the data
+	 * @param bRenderSelection if true renders only the selection, else renders
+	 *            everything in the data
 	 */
 	public void renderSelection(boolean bRenderSelection)
 	{
@@ -633,7 +628,8 @@ public class GLCanvasParCoords3D
 				}
 
 				fCurrentXValue = iVertexCount * fAxisSpacing;
-				fCurrentYValue = currentStorage.getFloat(EDataKind.NORMALIZED, iStorageIndex);
+				fCurrentYValue = currentStorage.getFloat(EDataRepresentation.NORMALIZED,
+						iStorageIndex);
 				if (iVertexCount != 0)
 				{
 					gl.glBegin(GL.GL_LINES);
@@ -749,20 +745,18 @@ public class GLCanvasParCoords3D
 					-(renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing()), 0);
 
 			textRenderer.begin3DRendering();
-			
+
 			// render values on top and bottom of axis
 			// top
-			textRenderer.draw3D(String.valueOf(
-					((INumericalStorage)(alDataStorages.get(alStorageSelection.get(iCount)))).getMax()),
-					iCount * fAxisSpacing + 2
-					* ParCoordsRenderStyle.AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(), 0,
-					renderStyle.getSmallFontScalingFactor());
+			textRenderer.draw3D(String.valueOf(((INumericalStorage) (alDataStorages
+					.get(alStorageSelection.get(iCount)))).getMax()), iCount * fAxisSpacing
+					+ 2 * ParCoordsRenderStyle.AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(),
+					0, renderStyle.getSmallFontScalingFactor());
 			// bottom
-			textRenderer.draw3D(String.valueOf(
-					((INumericalStorage)(alDataStorages.get(alStorageSelection.get(iCount)))).getMin()),
-					iCount * fAxisSpacing + 2
-					* ParCoordsRenderStyle.AXIS_MARKER_WIDTH, 0, 0,
-					renderStyle.getSmallFontScalingFactor());
+			textRenderer.draw3D(String.valueOf(((INumericalStorage) (alDataStorages
+					.get(alStorageSelection.get(iCount)))).getMin()), iCount * fAxisSpacing
+					+ 2 * ParCoordsRenderStyle.AXIS_MARKER_WIDTH, 0, 0, renderStyle
+					.getSmallFontScalingFactor());
 			textRenderer.end3DRendering();
 			gl.glPopAttrib();
 			gl.glPopName();
@@ -1061,7 +1055,8 @@ public class GLCanvasParCoords3D
 				currentStorage = alDataStorages.get(alStorageSelection.get(iAxisNumber));
 			}
 
-			float fCurrentValue = currentStorage.getFloat(EDataKind.NORMALIZED, iStorageIndex)
+			float fCurrentValue = currentStorage.getFloat(EDataRepresentation.NORMALIZED,
+					iStorageIndex)
 					* renderStyle.getAxisHeight();
 			if (fCurrentValue <= fArGateTipHeight[iAxisNumber]
 					&& fCurrentValue >= fArGateBottomHeight[iAxisNumber])
@@ -1527,8 +1522,8 @@ public class GLCanvasParCoords3D
 					continue;
 				}
 
-				fYValue = alDataStorages.get(iCurrent).getFloat(EDataKind.NORMALIZED,
-						iStorageIndex);
+				fYValue = alDataStorages.get(iCurrent).getFloat(
+						EDataRepresentation.NORMALIZED, iStorageIndex);
 				fYValue = fYValue * renderStyle.getAxisHeight()
 						+ renderStyle.getBottomSpacing();
 				fXValue = iCount * fAxisSpacing + renderStyle.getXSpacing() + fXTranslation;
@@ -1698,10 +1693,10 @@ public class GLCanvasParCoords3D
 		else
 		{
 			vecLeftPoint.setY(alDataStorages.get(iAxisLeftIndex).getFloat(
-					EDataKind.NORMALIZED, iSelectedLineID)
+					EDataRepresentation.NORMALIZED, iSelectedLineID)
 					* renderStyle.getAxisHeight());
 			vecRightPoint.setY(alDataStorages.get(iAxisRightIndex).getFloat(
-					EDataKind.NORMALIZED, iSelectedLineID)
+					EDataRepresentation.NORMALIZED, iSelectedLineID)
 					* renderStyle.getAxisHeight());
 		}
 
@@ -1781,20 +1776,20 @@ public class GLCanvasParCoords3D
 		{
 			if (bRenderStorageHorizontally)
 			{
-				vecLeftPoint.setY(alDataStorages.get(iCurrent).getFloat(EDataKind.NORMALIZED,
-						iAxisLeftIndex)
+				vecLeftPoint.setY(alDataStorages.get(iCurrent).getFloat(
+						EDataRepresentation.NORMALIZED, iAxisLeftIndex)
 						* renderStyle.getAxisHeight());
-				vecRightPoint.setY(alDataStorages.get(iCurrent).getFloat(EDataKind.NORMALIZED,
-						iAxisRightIndex)
+				vecRightPoint.setY(alDataStorages.get(iCurrent).getFloat(
+						EDataRepresentation.NORMALIZED, iAxisRightIndex)
 						* renderStyle.getAxisHeight());
 			}
 			else
 			{
 				vecLeftPoint.setY(alDataStorages.get(iAxisLeftIndex).getFloat(
-						EDataKind.NORMALIZED, iCurrent)
+						EDataRepresentation.NORMALIZED, iCurrent)
 						* renderStyle.getAxisHeight());
 				vecRightPoint.setY(alDataStorages.get(iAxisRightIndex).getFloat(
-						EDataKind.NORMALIZED, iCurrent)
+						EDataRepresentation.NORMALIZED, iCurrent)
 						* renderStyle.getAxisHeight());
 			}
 

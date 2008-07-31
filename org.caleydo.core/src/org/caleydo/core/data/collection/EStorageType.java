@@ -10,9 +10,12 @@ package org.caleydo.core.data.collection;
 public enum EStorageType
 {
 	// Needed by the parser
-	ABORT(false), SKIP(false),
+	ABORT(false),
+	SKIP(false),
 
-	INT(true), FLOAT(true), STRING(true);
+	INT(true),
+	FLOAT(true),
+	STRING(true);
 
 	private boolean bIsControlSequence;
 

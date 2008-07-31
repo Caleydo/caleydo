@@ -1,10 +1,8 @@
 package org.caleydo.core.data.view.rep.renderstyle;
 
 import gleem.linalg.Vec2f;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
 import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
@@ -83,8 +81,7 @@ public class HeatMapRenderStyle
 	}
 
 	/**
-	 * @param iStorageIndex
-	 *            The index of the entry in alContentSelection
+	 * @param iStorageIndex The index of the entry in alContentSelection
 	 * @return
 	 */
 	public Vec2f getAndInitFieldWidthAndHeight(final int iContentSelectionIndex)

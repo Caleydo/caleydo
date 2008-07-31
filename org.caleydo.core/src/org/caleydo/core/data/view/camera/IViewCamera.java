@@ -3,9 +3,7 @@ package org.caleydo.core.data.view.camera;
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
-
 import java.io.Serializable;
-
 import org.caleydo.core.data.IUniqueObject;
 
 /**
@@ -34,16 +32,14 @@ public interface IViewCamera
 	 * Apply a new pan. Updates the ViewMatrix using the existing Rotation &
 	 * Zoom.
 	 * 
-	 * @param setPan
-	 *            new pan settings
+	 * @param setPan new pan settings
 	 */
 	public void setCameraPosition(final Vec3f setPos);
 
 	/**
 	 * same as setCameraPosition() but adds current setPos vector.
 	 * 
-	 * @param setPos
-	 *            increment position.
+	 * @param setPos increment position.
 	 */
 	public void addCameraPosition(final Vec3f setPos);
 
@@ -51,32 +47,28 @@ public interface IViewCamera
 	 * Apply a new rotation. Updates the ViewMatrix using the existing Pan &
 	 * Zoom.
 	 * 
-	 * @param setRot
-	 *            new rotation
+	 * @param setRot new rotation
 	 */
 	public void setCameraRotation(final Rotf setRot);
 
 	/**
 	 * add setRot to current rotation.
 	 * 
-	 * @param setRot
-	 *            incremental rotation of current rotation
+	 * @param setRot incremental rotation of current rotation
 	 */
 	public void addCameraRotation(final Rotf setRot);
 
 	/**
 	 * Set rotation in euler angles.
 	 * 
-	 * @param setRotEuler
-	 *            with euler angles x,y,z
+	 * @param setRotEuler with euler angles x,y,z
 	 */
 	public void setCameraRotationEuler(final Vec3f setRotEuler);
 
 	/**
 	 * Add rotation in euler angles.
 	 * 
-	 * @param addRotEuler
-	 *            with euler angles x,y,z
+	 * @param addRotEuler with euler angles x,y,z
 	 */
 	public void addCameraRotationEuler(Vec3f addRotEuler);
 
@@ -104,8 +96,7 @@ public interface IViewCamera
 	 * Apply a new rotation using Vec3f. Updates the ViewMatrix using the
 	 * existing Pan & Zoom.
 	 * 
-	 * @param setRot
-	 *            new rotation
+	 * @param setRot new rotation
 	 */
 	public void setCameraRotationVec3f(final Vec3f setRotVec3f);
 
@@ -113,8 +104,7 @@ public interface IViewCamera
 	 * Apply new zooming, wchich is a scaling operation. Updates the ViewMatrix
 	 * using the existing Rotation & Zoom.
 	 * 
-	 * @param setZoom
-	 *            new zoom values
+	 * @param setZoom new zoom values
 	 */
 	public void setCameraScale(final Vec3f setScale);
 
@@ -132,12 +122,9 @@ public interface IViewCamera
 	 * prometheus.data.collection.view.camera.ViewCamera#setViewRotate(Rotf) and
 	 * prometheus.data.collection.view.camera.ViewCamera#setViewZoom(Vec3f) .
 	 * 
-	 * @param setPan
-	 *            new pan values
-	 * @param setZoom
-	 *            new zoom/scale values
-	 * @param setRot
-	 *            new rotation values
+	 * @param setPan new pan values
+	 * @param setZoom new zoom/scale values
+	 * @param setRot new rotation values
 	 * @see prometheus.data.collection.view.camera.IViewCamera#setCameraPosition(Vec3f)
 	 * @see prometheus.data.collection.view.camera.IViewCamera#setCameraRotation(Rotf)
 	 * @see prometheus.data.collection.view.camera.IViewCamera#setCameraScale(Vec3f)
@@ -145,8 +132,8 @@ public interface IViewCamera
 	public void setCameraAll(final Vec3f setPos, final Vec3f setScale, final Rotf setRot);
 
 	/**
-	 * @param bSetHasChanged
-	 *            status of viewCamera, TURE means status has changed.
+	 * @param bSetHasChanged status of viewCamera, TURE means status has
+	 *            changed.
 	 * @see prometheus.data.collection.view.camera.IViewCamera#hasViewCameraChanged()
 	 */
 	public void setHasChanged(final boolean bSetHasChanged);

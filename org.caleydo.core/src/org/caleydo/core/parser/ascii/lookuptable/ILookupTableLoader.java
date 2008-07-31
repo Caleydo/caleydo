@@ -19,13 +19,10 @@ public interface ILookupTableLoader
 	/**
 	 * load and parse a file.
 	 * 
-	 * @param brFile
-	 *            handle to the file
-	 * @param iNumberOfLinesInFile
-	 *            total number of lines in file or Integer.MAX
+	 * @param brFile handle to the file
+	 * @param iNumberOfLinesInFile total number of lines in file or Integer.MAX
 	 * @return real line red or -1 in case of an error
-	 * @throws IOException
-	 *             if something went wrong during file access
+	 * @throws IOException if something went wrong during file access
 	 */
 	public int loadDataParseFileLUT(BufferedReader brFile, final int iNumberOfLinesInFile)
 			throws IOException;
@@ -61,8 +58,7 @@ public interface ILookupTableLoader
 	 * set the reference to the hashmap
 	 * 
 	 * @param setHashMap
-	 * @param type
-	 *            specify the type of mapping
+	 * @param type specify the type of mapping
 	 */
 	public void setHashMap(final IGenomeIdMap setHashMap, final EGenomeMappingType type);
 
@@ -70,8 +66,7 @@ public interface ILookupTableLoader
 	 * set the reference to the hashmap
 	 * 
 	 * @param setHashMap
-	 * @param type
-	 *            specify the type of mapping
+	 * @param type specify the type of mapping
 	 */
 	public void setMultiMapInteger(final MultiHashArrayIntegerMap setHashMap,
 			final EGenomeMappingType type);

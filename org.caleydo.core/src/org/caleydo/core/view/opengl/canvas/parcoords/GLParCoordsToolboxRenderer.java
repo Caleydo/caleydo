@@ -2,9 +2,7 @@ package org.caleydo.core.view.opengl.canvas.parcoords;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
-
 import javax.media.opengl.GL;
-
 import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.view.EPickingType;

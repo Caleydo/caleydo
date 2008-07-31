@@ -3,10 +3,8 @@ package org.caleydo.core.view.opengl.util;
 import java.io.File;
 import java.io.IOException;
 import java.util.EnumMap;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GLException;
-
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureIO;
 

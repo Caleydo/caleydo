@@ -4,7 +4,6 @@
 package org.caleydo.core.data.selection;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.view.AView;
 

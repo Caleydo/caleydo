@@ -2,7 +2,6 @@ package org.caleydo.core.command.view.rcp;
 
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLCapabilities;
-
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL;
 import org.caleydo.core.manager.ICommandManager;

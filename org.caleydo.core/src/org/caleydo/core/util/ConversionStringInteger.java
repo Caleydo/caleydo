@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
-
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
@@ -21,8 +20,7 @@ public final class ConversionStringInteger
 	/**
 	 * Convert a Collection <String> into a Collection <Integer>.
 	 * 
-	 * @param input
-	 *            Collection <String> to be converted
+	 * @param input Collection <String> to be converted
 	 * @return same collection as input as Integer
 	 */
 	public static final Set<Integer> convertSet_String2Integer(Set<String> input)
@@ -56,8 +54,7 @@ public final class ConversionStringInteger
 	/**
 	 * Convert a Collection <Integer> into a Collection <String>.
 	 * 
-	 * @param input
-	 *            Collection <Integer> to be converted
+	 * @param input Collection <Integer> to be converted
 	 * @return collection as input as String
 	 */
 	public static final Set<String> convertSet_Integer2String(Set<Integer> input)
@@ -82,8 +79,7 @@ public final class ConversionStringInteger
 	/**
 	 * Convert a Collection <String> into a Collection <Integer>.
 	 * 
-	 * @param input
-	 *            Collection <String> to be converted
+	 * @param input Collection <String> to be converted
 	 * @return same collection as input as Integer
 	 */
 	public static final Collection<Integer> convertCollection_String2Integer(
@@ -117,8 +113,7 @@ public final class ConversionStringInteger
 	/**
 	 * Convert a Collection <Integer> into a Collection <String>.
 	 * 
-	 * @param input
-	 *            Collection <Integer> to be converted
+	 * @param input Collection <Integer> to be converted
 	 * @return collection as input as String
 	 */
 	public static final Collection<String> convertCollection_Integer2String(

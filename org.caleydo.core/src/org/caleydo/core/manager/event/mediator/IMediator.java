@@ -16,8 +16,7 @@ public interface IMediator
 	/**
 	 * Register a new event sender to the mediator.
 	 * 
-	 * @param sender
-	 *            new event sender
+	 * @param sender new event sender
 	 * @return TRUE on success
 	 */
 	public boolean register(IMediatorSender sender);
@@ -25,8 +24,7 @@ public interface IMediator
 	/**
 	 * Register a new event receiver to the mediator.
 	 * 
-	 * @param receiver
-	 *            new event receiver
+	 * @param receiver new event receiver
 	 * @return TRUE on success
 	 */
 	public boolean register(IMediatorReceiver receiver);

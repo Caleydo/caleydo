@@ -22,7 +22,8 @@ public abstract class ARemoteViewLayoutRenderStyle
 
 	public enum LayoutMode
 	{
-		BUCKET, JUKEBOX
+		BUCKET,
+		JUKEBOX
 	}
 
 	protected RemoteHierarchyLayer underInteractionLayer;

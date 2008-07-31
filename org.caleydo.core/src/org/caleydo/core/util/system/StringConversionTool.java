@@ -2,7 +2,6 @@ package org.caleydo.core.util.system;
 
 import java.util.StringTokenizer;
 import java.util.logging.Level;
-
 import org.caleydo.core.manager.IGeneralManager;
 
 /**
@@ -17,10 +16,8 @@ public final class StringConversionTool
 	/**
 	 * Convert String to int.
 	 * 
-	 * @param sInput
-	 *            String to convert
-	 * @param iDefault
-	 *            default value
+	 * @param sInput String to convert
+	 * @param iDefault default value
 	 * @return converted int or default value, if (String) could not be
 	 *         converted to (int).
 	 */
@@ -40,12 +37,9 @@ public final class StringConversionTool
 	/**
 	 * Convert String to int, debug version.
 	 * 
-	 * @param sInput
-	 *            String to convert
-	 * @param iDefault
-	 *            default value
-	 * @param generalManager
-	 *            reference to Logger
+	 * @param sInput String to convert
+	 * @param iDefault default value
+	 * @param generalManager reference to Logger
 	 * @return converted int or default value, if (String) could not be
 	 *         converted to (int).
 	 */
@@ -72,10 +66,8 @@ public final class StringConversionTool
 	/**
 	 * Convert String to Float.
 	 * 
-	 * @param sInput
-	 *            String to convert
-	 * @param fDefault
-	 *            default value
+	 * @param sInput String to convert
+	 * @param fDefault default value
 	 * @return converted int or default value, if (String) could not be
 	 *         converted to (float).
 	 */
@@ -95,10 +87,8 @@ public final class StringConversionTool
 	/**
 	 * Convert String to Double.
 	 * 
-	 * @param sInput
-	 *            String to convert
-	 * @param dDefault
-	 *            default value
+	 * @param sInput String to convert
+	 * @param dDefault default value
 	 * @return converted int or default value, if (String) could not be
 	 *         converted to (doulbe).
 	 */
@@ -118,10 +108,8 @@ public final class StringConversionTool
 	/**
 	 * Convert String to Long.
 	 * 
-	 * @param sInput
-	 *            String to convert
-	 * @param lDefault
-	 *            default value
+	 * @param sInput String to convert
+	 * @param lDefault default value
 	 * @return converted int or default value, if (String) could not be
 	 *         converted to (long).
 	 */
@@ -142,10 +130,8 @@ public final class StringConversionTool
 	 * Convert String to String checking is (String) is larger than "" and is
 	 * not null. Otherwide the sDefault is returned.
 	 * 
-	 * @param sInput
-	 *            String to convert
-	 * @param sDefault
-	 *            default value
+	 * @param sInput String to convert
+	 * @param sDefault default value
 	 * @return sInput if it is not "" and nut null, else sDefault is returned
 	 */
 	public static final String convertStringToString(final String sInput, final String sDefault)
@@ -162,10 +148,8 @@ public final class StringConversionTool
 	/**
 	 * Convert String to boolean.
 	 * 
-	 * @param sInput
-	 *            String to convert
-	 * @param bDefault
-	 *            default value
+	 * @param sInput String to convert
+	 * @param bDefault default value
 	 * @return converted boolean or default value, if (String) could not be
 	 *         converted to (boolean).
 	 */
@@ -189,10 +173,8 @@ public final class StringConversionTool
 	 * smaller than iDimension the remaining values are "0". Also if a
 	 * non-integer value is found it is replaced by "0".
 	 * 
-	 * @param sInput
-	 *            input to be converted into an array of int[]
-	 * @param iDimension
-	 *            size of the array of int[]
+	 * @param sInput input to be converted into an array of int[]
+	 * @param iDimension size of the array of int[]
 	 * @return a new array of int[]
 	 */
 	public static final int[] convertStringToIntArray(final String sInput, final int iDimension)
@@ -224,10 +206,8 @@ public final class StringConversionTool
 	 * sInput is smaller than iDimension the remaining values are "0". Also if a
 	 * non-integer value is found it is replaced by "0".
 	 * 
-	 * @param sInput
-	 *            input to be converted into an array of int[]
-	 * @param iDimension
-	 *            size of the array of int[]
+	 * @param sInput input to be converted into an array of int[]
+	 * @param iDimension size of the array of int[]
 	 * @return a new array of int[]
 	 */
 	public static final int[] convertStringToIntArray(final IGeneralManager generalManager,
@@ -280,13 +260,10 @@ public final class StringConversionTool
 	 * smaller than iDimension the remaining values are "0". Also if a
 	 * non-integer value is found it is replaced by "0".
 	 * 
-	 * @param sInput
-	 *            input to be converted into an array of int[]
-	 * @param iDimension
-	 *            size of the array of int[]
-	 * @param iDefaultArray
-	 *            use this array as default array in case sInput conrains no or
-	 *            wrong values.
+	 * @param sInput input to be converted into an array of int[]
+	 * @param iDimension size of the array of int[]
+	 * @param iDefaultArray use this array as default array in case sInput
+	 *            conrains no or wrong values.
 	 * @return a new array of int[]
 	 */
 	public static final int[] convertStringToIntArray(final String sInput,
@@ -319,15 +296,11 @@ public final class StringConversionTool
 	 * sInput is smaller than iDimension the remaining values are "0". Also if a
 	 * non-integer value is found it is replaced by "0".
 	 * 
-	 * @param generalManager
-	 *            reference to Logger
-	 * @param sInput
-	 *            input to be converted into an array of int[]
-	 * @param iDimension
-	 *            size of the array of int[]
-	 * @param iDefaultArray
-	 *            use this array as default array in case sInput conrains no or
-	 *            wrong values.
+	 * @param generalManager reference to Logger
+	 * @param sInput input to be converted into an array of int[]
+	 * @param iDimension size of the array of int[]
+	 * @param iDefaultArray use this array as default array in case sInput
+	 *            conrains no or wrong values.
 	 * @return a new array of int[]
 	 */
 	public static final int[] convertStringToIntArray(final IGeneralManager generalManager,
@@ -369,12 +342,9 @@ public final class StringConversionTool
 	 * sInput is smaller than iDimension the remaining values are "0". Also if a
 	 * non-integer value is found it is replaced by "0".
 	 * 
-	 * @param generalManager
-	 *            reference to Logger
-	 * @param sInput
-	 *            input to be converted into an array of int[]
-	 * @param sDelimiter
-	 *            delimiter used while parsing String
+	 * @param generalManager reference to Logger
+	 * @param sInput input to be converted into an array of int[]
+	 * @param sDelimiter delimiter used while parsing String
 	 * @return a new array of int[]
 	 */
 	public static final int[] convertStringToIntArrayVariableLength(
@@ -407,10 +377,8 @@ public final class StringConversionTool
 	 * smaller than iDimension the remaining values are "0". Also if a
 	 * non-integer value is found it is replaced by "0".
 	 * 
-	 * @param sInput
-	 *            input to be converted into an array of int[]
-	 * @param sDelimiter
-	 *            delimiter used while parsing String
+	 * @param sInput input to be converted into an array of int[]
+	 * @param sDelimiter delimiter used while parsing String
 	 * @return a new array of int[]
 	 */
 	public static final int[] convertStringToIntArrayVariableLength(final String sInput,
@@ -441,10 +409,8 @@ public final class StringConversionTool
 	 * is found it is replaced by "0".
 	 * 
 	 * @see org.caleydo.core.util.system.StringConversionTool#convertStringToFloatArrayVariableLength(String)
-	 * @param sInput
-	 *            input to be converted into an array of int[]
-	 * @param iDimension
-	 *            size of flaot array
+	 * @param sInput input to be converted into an array of int[]
+	 * @param iDimension size of flaot array
 	 * @return a new array of int[]
 	 */
 	public static final float[] convertStringToFloatArray(final String sInput,
@@ -480,10 +446,8 @@ public final class StringConversionTool
 	 * 
 	 * @see org.caleydo.core.util.system.StringConversionTool#convertStringToFloatArray(String,
 	 *      int)
-	 * @param sInput
-	 *            input to be converted into an array of int[]
-	 * @param iDimension
-	 *            size of flaot array
+	 * @param sInput input to be converted into an array of int[]
+	 * @param iDimension size of flaot array
 	 * @return a new array of int[]
 	 */
 	public static final float[] convertStringToFloatArrayVariableLength(final String sInput)

@@ -1,7 +1,6 @@
 package org.caleydo.core.application.core;
 
 import java.util.logging.Level;
-
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.IXmlParserManager;
@@ -92,8 +91,7 @@ public class CaleydoBootloader
 	 * @see org.caleydo.core.application.core.CaleydoBootloader#setBootstrapViaMuddleware(boolean)
 	 * @see org.caleydo.core.application.core.CaleydoBootloader#getBootstrapViaMuddleware()
 	 * @see org.caleydo.core.application.core.CaleydoBootloader#getXmlFileName()
-	 * @param fileName
-	 *            the sFileName to set
+	 * @param fileName the sFileName to set
 	 */
 	public final void setXmlFileName(String sFileName)
 	{

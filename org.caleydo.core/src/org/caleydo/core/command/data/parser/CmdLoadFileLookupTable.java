@@ -1,7 +1,6 @@
 package org.caleydo.core.command.data.parser;
 
 import java.util.StringTokenizer;
-
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACommand;
 import org.caleydo.core.data.mapping.EGenomeMappingDataType;

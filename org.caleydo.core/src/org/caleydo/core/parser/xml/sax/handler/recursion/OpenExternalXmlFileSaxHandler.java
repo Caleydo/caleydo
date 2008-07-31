@@ -4,7 +4,6 @@
 package org.caleydo.core.parser.xml.sax.handler.recursion;
 
 import org.xml.sax.Attributes;
-
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
@@ -47,14 +46,10 @@ public class OpenExternalXmlFileSaxHandler
 	 *      Stringt, org.xml.sax.Attributes)
 	 * @see prometheus.net.dwt.swing.parser.ASaxParserHandler#startElement(String,
 	 *      String, String, Attributes)
-	 * @param uri
-	 *            URI @see org.xml.sax.helpers.DefaultHandler
-	 * @param localName
-	 *            lacalName @see org.xml.sax.helpers.DefaultHandler
-	 * @param qName
-	 *            tag to parse for @see org.xml.sax.helpers.DefaultHandler
-	 * @param attributes
-	 *            attributes bound to qName
+	 * @param uri URI @see org.xml.sax.helpers.DefaultHandler
+	 * @param localName lacalName @see org.xml.sax.helpers.DefaultHandler
+	 * @param qName tag to parse for @see org.xml.sax.helpers.DefaultHandler
+	 * @param attributes attributes bound to qName
 	 */
 	public void startElement(String uri, String localName, String qName, Attributes attributes)
 	{
@@ -101,12 +96,9 @@ public class OpenExternalXmlFileSaxHandler
 	 *      Stringt)
 	 * @see prometheus.net.dwt.swing.parser.ASaxParserHandler#endElement(String,
 	 *      String, String)
-	 * @param uri
-	 *            URI @see org.xml.sax.helpers.DefaultHandler
-	 * @param localName
-	 *            lacalName @see org.xml.sax.helpers.DefaultHandler
-	 * @param qName
-	 *            tag to parse for @see org.xml.sax.helpers.DefaultHandler
+	 * @param uri URI @see org.xml.sax.helpers.DefaultHandler
+	 * @param localName lacalName @see org.xml.sax.helpers.DefaultHandler
+	 * @param qName tag to parse for @see org.xml.sax.helpers.DefaultHandler
 	 */
 	public void endElement(String uri, String localName, String qName)
 	{

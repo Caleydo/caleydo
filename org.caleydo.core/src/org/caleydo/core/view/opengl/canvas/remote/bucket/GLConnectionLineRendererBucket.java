@@ -3,12 +3,9 @@ package org.caleydo.core.view.opengl.canvas.remote.bucket;
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import javax.media.opengl.GL;
-
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;

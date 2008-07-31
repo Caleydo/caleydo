@@ -1,7 +1,6 @@
 package org.caleydo.core.manager;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.manager.event.mediator.IMediator;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
@@ -19,7 +18,9 @@ public interface IEventPublisher
 
 	public enum MediatorType
 	{
-		DATA_MEDIATOR, SELECTION_MEDIATOR, VIEW_MEDIATOR; // for future usage
+		DATA_MEDIATOR,
+		SELECTION_MEDIATOR,
+		VIEW_MEDIATOR; // for future usage
 
 	}
 
@@ -104,8 +105,7 @@ public interface IEventPublisher
 	/**
 	 * Get the IMediator assigned to the id iItemId
 	 * 
-	 * @param iItemId
-	 *            id to identify the Mediator
+	 * @param iItemId id to identify the Mediator
 	 * @return mediator
 	 */
 	public IMediator getItemMediator(int iItemId);

@@ -3,11 +3,10 @@ package org.caleydo.core.view.opengl.canvas.glyph;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
-
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.ccontainer.EDataKind;
+import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.manager.IGeneralManager;
@@ -93,17 +92,16 @@ public class GlyphDataLoader
 							{
 								try
 								{
-									t2 = Integer
-											.parseInt(nominalStorage.getRaw(i));
+									t2 = Integer.parseInt(nominalStorage.getRaw(i));
 								}
 								catch (NumberFormatException ex)
 								{
 								}
-								glyphAttributeType.addAttribute(t2, nominalStorage.getRaw(i), (float) t2);
+								glyphAttributeType.addAttribute(t2, nominalStorage.getRaw(i),
+										(float) t2);
 							}
 
-							if (t2 == -1
-									&& !(nominalStorage.getRaw(i)).equals("-1"))
+							if (t2 == -1 && !(nominalStorage.getRaw(i)).equals("-1"))
 								this.generalManager.getLogger().log(
 										Level.WARNING,
 										"GlyphDataLoader: No data mapping found for "
@@ -138,7 +136,8 @@ public class GlyphDataLoader
 						String[] sArTmp = new String[tmpStorage.size()];
 						for (int iCount = 0; iCount < tmpStorage.size(); iCount++)
 						{
-							sArTmp[iCount] = ((INominalStorage<String>)tmpStorage).getRaw(iCount);
+							sArTmp[iCount] = ((INominalStorage<String>) tmpStorage)
+									.getRaw(iCount);
 						}
 						alsStoreString.add(sArTmp);
 					}

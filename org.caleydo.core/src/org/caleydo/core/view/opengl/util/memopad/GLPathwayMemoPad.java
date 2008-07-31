@@ -2,13 +2,10 @@ package org.caleydo.core.view.opengl.util.memopad;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
-
 import java.awt.Font;
 import java.io.File;
 import java.util.Iterator;
-
 import javax.media.opengl.GL;
-
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
@@ -16,7 +13,6 @@ import org.caleydo.core.view.opengl.canvas.pathway.GLPathwayManager;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathwayTextureManager;
 import org.caleydo.core.view.opengl.util.hierarchy.EHierarchyLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
-
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;

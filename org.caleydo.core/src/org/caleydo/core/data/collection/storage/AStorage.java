@@ -1,11 +1,12 @@
 package org.caleydo.core.data.collection.storage;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.Iterator;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ICContainer;
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.ccontainer.EDataKind;
+import org.caleydo.core.data.collection.ccontainer.NumericalCContainer;
 import org.caleydo.core.data.collection.ccontainer.PrimitiveFloatCContainer;
 import org.caleydo.core.data.collection.ccontainer.PrimitiveFloatCContainerIterator;
 import org.caleydo.core.data.collection.ccontainer.PrimitiveIntCContainer;
@@ -15,15 +16,16 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
- * @author Alexander lex Abstact Storage class. Implements all of the methods
- *         the different IStorages share
+ * Abstact Storage class. Implements all of the methods the different IStorages
+ * share
+ * 
+ * @author Alexander lex
  */
 public abstract class AStorage
 	extends AUniqueObject
 	implements IStorage
 {
-
-	protected HashMap<EDataKind, ICContainer> hashCContainers;
+	protected HashMap<EDataRepresentation, ICContainer> hashCContainers;
 
 	protected String sLabel;
 
@@ -38,10 +40,15 @@ public abstract class AStorage
 	{
 
 		super(iUniqueID);
-		hashCContainers = new HashMap<EDataKind, ICContainer>();
+		hashCContainers = new HashMap<EDataRepresentation, ICContainer>();
 		sLabel = new String("Not specified");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.IStorage#getRawDataType()
+	 */
+	@Override
 	public ERawDataType getRawDataType()
 	{
 
@@ -52,6 +59,7 @@ public abstract class AStorage
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.collection.NISet#setLabel(java.lang.String)
 	 */
+	@Override
 	public void setLabel(String sLabel)
 	{
 
@@ -62,6 +70,7 @@ public abstract class AStorage
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.collection.NISet#getLabel()
 	 */
+	@Override
 	public String getLabel()
 	{
 
@@ -72,6 +81,7 @@ public abstract class AStorage
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.collection.NISet#setRawData(float[])
 	 */
+	@Override
 	public void setRawData(float[] fArRawData)
 	{
 
@@ -83,13 +93,14 @@ public abstract class AStorage
 		bRawDataSet = true;
 
 		PrimitiveFloatCContainer rawStorage = new PrimitiveFloatCContainer(fArRawData);
-		hashCContainers.put(EDataKind.RAW, rawStorage);
+		hashCContainers.put(EDataRepresentation.RAW, rawStorage);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.collection.NISet#setRawData(int[])
 	 */
+	@Override
 	public void setRawData(int[] iArRawData)
 	{
 
@@ -101,7 +112,7 @@ public abstract class AStorage
 		bRawDataSet = true;
 
 		PrimitiveIntCContainer rawStorage = new PrimitiveIntCContainer(iArRawData);
-		hashCContainers.put(EDataKind.RAW, rawStorage);
+		hashCContainers.put(EDataRepresentation.RAW, rawStorage);
 	}
 
 	/*
@@ -110,7 +121,8 @@ public abstract class AStorage
 	 * org.caleydo.core.data.collection.NISet#getFloat(org.caleydo.core.data
 	 * .collection.nstorage.EStorageKind, int)
 	 */
-	public float getFloat(EDataKind storageKind, int iIndex)
+	@Override
+	public float getFloat(EDataRepresentation storageKind, int iIndex)
 	{
 
 		if (!hashCContainers.containsKey(storageKind))
@@ -131,7 +143,8 @@ public abstract class AStorage
 	 * org.caleydo.core.data.collection.NISet#floatIterator(org.caleydo.core
 	 * .data.collection.nstorage.EStorageKind)
 	 */
-	public PrimitiveFloatCContainerIterator floatIterator(EDataKind storageKind)
+	@Override
+	public PrimitiveFloatCContainerIterator floatIterator(EDataRepresentation storageKind)
 	{
 
 		if (!(hashCContainers.get(storageKind) instanceof PrimitiveFloatCContainer))
@@ -148,9 +161,9 @@ public abstract class AStorage
 	 * @seeorg.caleydo.core.data.collection.NISet#getInt(org.caleydo.core.data.
 	 * collection.nstorage.EStorageKind, int)
 	 */
-	public int getInt(EDataKind storageKind, int iIndex)
+	@Override
+	public int getInt(EDataRepresentation storageKind, int iIndex)
 	{
-
 		if (!(hashCContainers.get(storageKind) instanceof PrimitiveIntCContainer))
 			throw new CaleydoRuntimeException("Requested storage kind is not of type int",
 					CaleydoRuntimeExceptionType.DATAHANDLING);
@@ -166,9 +179,9 @@ public abstract class AStorage
 	 * org.caleydo.core.data.collection.NISet#intIterator(org.caleydo.core.data
 	 * .collection.nstorage.EStorageKind)
 	 */
-	public PrimitiveIntCContainerIterator intIterator(EDataKind storageKind)
+	@Override
+	public PrimitiveIntCContainerIterator intIterator(EDataRepresentation storageKind)
 	{
-
 		if (!(hashCContainers.get(storageKind) instanceof PrimitiveIntCContainer))
 			throw new CaleydoRuntimeException("Requested storage kind is not of type int",
 					CaleydoRuntimeExceptionType.DATAHANDLING);
@@ -178,35 +191,79 @@ public abstract class AStorage
 		return iStorage.iterator();
 	}
 
-	// // TODO
-	//
-	// public void getMinFloat()
-	// {
-	// //hashCContainers.get(EDataKind.RAW).getMinFloat();
-	// }
-	//	
-	// public void getMaxFloat()
-	// {
-	//		
-	// }
+	/*
+	 * (non-Javadoc)
+	 * @seeorg.caleydo.core.data.collection.IStorage#get(org.caleydo.core.data.
+	 * collection.ccontainer.EDataKind, int)
+	 */
+	@Override
+	public Number get(EDataRepresentation storageKind, int iIndex)
+	{
+		if (!(hashCContainers.get(storageKind) instanceof NumericalCContainer))
+			throw new CaleydoRuntimeException(
+					"Requested storage kind is not a subtype of Number",
+					CaleydoRuntimeExceptionType.DATAHANDLING);
+
+		NumericalCContainer<?> iStorage = (NumericalCContainer<?>) hashCContainers
+				.get(storageKind);
+		return iStorage.get(iIndex);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * org.caleydo.core.data.collection.IStorage#iterator(org.caleydo.core.data
+	 * .collection.ccontainer.EDataKind)
+	 */
+	@Override
+	public Iterator<? extends Number> iterator(EDataRepresentation storageKind)
+	{
+		if (!(hashCContainers.get(storageKind) instanceof NumericalCContainer))
+			throw new CaleydoRuntimeException(
+					"Requested storage kind is not a subtype of Number",
+					CaleydoRuntimeExceptionType.DATAHANDLING);
+
+		NumericalCContainer<?> iStorage = (NumericalCContainer<?>) hashCContainers
+				.get(storageKind);
+		return iStorage.iterator();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * org.caleydo.core.data.collection.IStorage#setRawData(java.util.ArrayList)
+	 */
+	@Override
+	public void setRawData(ArrayList<? super Number> alNumber)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.collection.NISet#normalize()
 	 */
+	@Override
 	public void normalize()
 	{
 
-		EDataKind srcDataKind = EDataKind.RAW;
-		if (hashCContainers.containsKey(EDataKind.LOG10))
-			srcDataKind = EDataKind.LOG10;
+		EDataRepresentation srcDataKind = EDataRepresentation.RAW;
+		if (hashCContainers.containsKey(EDataRepresentation.LOG10))
+			srcDataKind = EDataRepresentation.LOG10;
 
-		hashCContainers
-				.put(EDataKind.NORMALIZED, hashCContainers.get(srcDataKind).normalize());
+		hashCContainers.put(EDataRepresentation.NORMALIZED, hashCContainers.get(srcDataKind)
+				.normalize());
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.IStorage#size()
+	 */
+	@Override
 	public int size()
 	{
-		return hashCContainers.get(EDataKind.RAW).size();
+		return hashCContainers.get(EDataRepresentation.RAW).size();
 	}
 
 }

@@ -1,7 +1,6 @@
 package org.caleydo.core.view.opengl.util;
 
 import javax.media.opengl.GL;
-
 import com.sun.opengl.util.GLUT;
 
 /**

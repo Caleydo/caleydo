@@ -31,7 +31,6 @@ package org.caleydo.core.view.opengl.util;
 import java.awt.Font;
 import java.awt.geom.*;
 import java.text.*;
-
 import javax.media.opengl.*;
 import com.sun.opengl.util.j2d.*;
 
@@ -78,13 +77,10 @@ public class FPSCounter
 	 * Creates a new FPSCounter with the given font size. An OpenGL context must
 	 * be current at the time the constructor is called.
 	 * 
-	 * @param drawable
-	 *            the drawable to render the text to
-	 * @param textSize
-	 *            the point size of the font to use
-	 * @throws GLException
-	 *             if an OpenGL context is not current when the constructor is
-	 *             called
+	 * @param drawable the drawable to render the text to
+	 * @param textSize the point size of the font to use
+	 * @throws GLException if an OpenGL context is not current when the
+	 *             constructor is called
 	 */
 	public FPSCounter(GLDrawable drawable, int textSize)
 		throws GLException
@@ -97,13 +93,10 @@ public class FPSCounter
 	 * Creates a new FPSCounter with the given font. An OpenGL context must be
 	 * current at the time the constructor is called.
 	 * 
-	 * @param drawable
-	 *            the drawable to render the text to
-	 * @param font
-	 *            the font to use
-	 * @throws GLException
-	 *             if an OpenGL context is not current when the constructor is
-	 *             called
+	 * @param drawable the drawable to render the text to
+	 * @param font the font to use
+	 * @throws GLException if an OpenGL context is not current when the
+	 *             constructor is called
 	 */
 	public FPSCounter(GLDrawable drawable, Font font)
 		throws GLException
@@ -116,17 +109,12 @@ public class FPSCounter
 	 * Creates a new FPSCounter with the given font and rendering attributes. An
 	 * OpenGL context must be current at the time the constructor is called.
 	 * 
-	 * @param drawable
-	 *            the drawable to render the text to
-	 * @param font
-	 *            the font to use
-	 * @param antialiased
-	 *            whether to use antialiased fonts
-	 * @param useFractionalMetrics
-	 *            whether to use fractional font
-	 * @throws GLException
-	 *             if an OpenGL context is not current when the constructor is
-	 *             called
+	 * @param drawable the drawable to render the text to
+	 * @param font the font to use
+	 * @param antialiased whether to use antialiased fonts
+	 * @param useFractionalMetrics whether to use fractional font
+	 * @throws GLException if an OpenGL context is not current when the
+	 *             constructor is called
 	 */
 	public FPSCounter(GLDrawable drawable, Font font, boolean antialiased,
 			boolean useFractionalMetrics)
@@ -170,18 +158,13 @@ public class FPSCounter
 	 * the documentation for {@link Texture Texture}, although premultiplied
 	 * colors are used internally. The default color is opaque white.
 	 * 
-	 * @param r
-	 *            the red component of the new color
-	 * @param g
-	 *            the green component of the new color
-	 * @param b
-	 *            the blue component of the new color
-	 * @param alpha
-	 *            the alpha component of the new color, 0.0f = completely
+	 * @param r the red component of the new color
+	 * @param g the green component of the new color
+	 * @param b the blue component of the new color
+	 * @param alpha the alpha component of the new color, 0.0f = completely
 	 *            transparent, 1.0f = completely opaque
-	 * @throws GLException
-	 *             If an OpenGL context is not current when this method is
-	 *             called
+	 * @throws GLException If an OpenGL context is not current when this method
+	 *             is called
 	 */
 	public void setColor(float r, float g, float b, float a) throws GLException
 	{

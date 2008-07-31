@@ -1,7 +1,6 @@
 package org.caleydo.core.manager;
 
 import java.io.Serializable;
-
 import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.manager.type.EManagerType;
 

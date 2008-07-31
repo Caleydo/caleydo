@@ -25,9 +25,8 @@ public abstract class ALockableMediator
 	 * Constructor.
 	 * 
 	 * @param iMediatorId
-	 * @param mediatorUpdateType
-	 *            if ==NULL, MediatorUpdateType.MEDIATOR_DEFAULT is used as
-	 *            default
+	 * @param mediatorUpdateType if ==NULL, MediatorUpdateType.MEDIATOR_DEFAULT
+	 *            is used as default
 	 */
 	protected ALockableMediator(final IEventPublisher eventPublisher, int iMediatorId,
 			final MediatorUpdateType mediatorUpdateType)
@@ -58,8 +57,7 @@ public abstract class ALockableMediator
 	 * Implement cleanup inside this function.
 	 * 
 	 * @see org.caleydo.core.manager.event.mediator.ALockableMediator#destroyMediator(IEventPublisher)
-	 * @param sender
-	 *            callling object
+	 * @param sender callling object
 	 */
 	protected abstract void destroyMediatorDerivedObject(final IEventPublisher sender);
 

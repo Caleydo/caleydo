@@ -1,12 +1,9 @@
 package org.caleydo.core.view.opengl.canvas.glyph;
 
 import gleem.linalg.open.Vec2i;
-
 import java.util.HashMap;
 import java.util.Vector;
-
 import javax.media.opengl.GL;
-
 import org.caleydo.core.manager.IGeneralManager;
 
 public class GlyphEntry

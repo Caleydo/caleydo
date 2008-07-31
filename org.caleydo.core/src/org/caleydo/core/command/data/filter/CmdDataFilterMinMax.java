@@ -4,7 +4,6 @@ package org.caleydo.core.command.data.filter;
 // import java.util.Iterator;
 
 import javax.naming.OperationNotSupportedException;
-
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import org.caleydo.core.data.collection.INumericalStorage;
@@ -96,8 +95,7 @@ public class CmdDataFilterMinMax
 	 * doCommand() This is done here if you want to calculate the min and max on
 	 * a storage
 	 * 
-	 * @param myStorage
-	 *            The storage
+	 * @param myStorage The storage
 	 */
 	public void setAttributes(INumericalStorage myStorage)
 	{
@@ -110,8 +108,7 @@ public class CmdDataFilterMinMax
 	 * doCommand() This is done here if you want to calculate the min and max on
 	 * a storage
 	 * 
-	 * @param mySet
-	 *            The set
+	 * @param mySet The set
 	 */
 	public void setAttributes(ISet mySet)
 	{

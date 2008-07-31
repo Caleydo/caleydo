@@ -22,8 +22,7 @@ public interface IView
 	 * @see org.caleydo.core.view.AView#initView()
 	 * @see org.caleydo.core.view.AView#initViewRCP(Composite)
 	 * @see org.caleydo.core.view.AView#initViewSwtComposit(Composite)
-	 * @param swtContainer
-	 *            container to bind View to
+	 * @param swtContainer container to bind View to
 	 */
 	public void initViewRCP(Composite swtContainer);
 
@@ -53,24 +52,21 @@ public interface IView
 	/**
 	 * Add a new Set to the view via its SetId
 	 * 
-	 * @param iDataSetId
-	 *            array of SetId's to be added
+	 * @param iDataSetId array of SetId's to be added
 	 */
 	public void addSetId(int[] iSet);
 
 	/**
 	 * Remove a Set from the view via its SetId
 	 * 
-	 * @param iDataSetId
-	 *            array of SetId's to be added
+	 * @param iDataSetId array of SetId's to be added
 	 */
 	public void removeSetId(int[] iSet);
 
 	/**
 	 * Removes all Set of a given type from the View.
 	 * 
-	 * @param setType
-	 *            define which type of Set shall be removed
+	 * @param setType define which type of Set shall be removed
 	 */
 	public void removeAllSetIdByType(ESetType setType);
 
@@ -84,8 +80,7 @@ public interface IView
 	/**
 	 * Ask if a certain Set is used by this view.
 	 * 
-	 * @param iSetId
-	 *            define a Set via its Id
+	 * @param iSetId define a Set via its Id
 	 * @return TRUE if the set is used by the view
 	 */
 	public boolean hasSetId(int iSetId);

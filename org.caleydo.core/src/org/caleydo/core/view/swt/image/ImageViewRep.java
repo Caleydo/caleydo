@@ -7,7 +7,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;

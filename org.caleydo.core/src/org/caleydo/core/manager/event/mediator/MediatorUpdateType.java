@@ -5,5 +5,7 @@ package org.caleydo.core.manager.event.mediator;
  */
 public enum MediatorUpdateType
 {
-	MEDIATOR_DEFAULT, MEDIATOR_FILTER_ONLY_SET, MEDIATOR_FILTER_ALL_EXPECT_SET,
+	MEDIATOR_DEFAULT,
+	MEDIATOR_FILTER_ONLY_SET,
+	MEDIATOR_FILTER_ALL_EXPECT_SET,
 }

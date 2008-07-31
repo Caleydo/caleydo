@@ -1,7 +1,6 @@
 package org.caleydo.core.data.graph.pathway.item.edge;
 
 import java.io.Serializable;
-
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.item.GraphItem;
 

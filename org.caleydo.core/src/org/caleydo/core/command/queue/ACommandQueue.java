@@ -20,10 +20,8 @@ public abstract class ACommandQueue
 	/**
 	 * ISet CollectionId using this constructor.
 	 * 
-	 * @param iUniqueId
-	 *            unique system-wide Id
-	 * @param iCmdQueueId
-	 *            define cmd queue by this id
+	 * @param iUniqueId unique system-wide Id
+	 * @param iCmdQueueId define cmd queue by this id
 	 */
 	protected ACommandQueue(final int iUniqueId, final IGeneralManager generalManager,
 			final ICommandManager commandManager,
@@ -49,8 +47,7 @@ public abstract class ACommandQueue
 	/**
 	 * ISet a new QueueID. CommandQueueId = -1 indicates no queueId
 	 * 
-	 * @param setCmdQueueId
-	 *            new QueueId
+	 * @param setCmdQueueId new QueueId
 	 */
 	public final void setCmdQueueId(final int setCmdQueueId)
 	{

@@ -20,41 +20,41 @@ public interface INumericalStorage
 	 * if other sets need to be comparable, but contain larger or smaller
 	 * elements.
 	 * 
-	 * @param dMin
-	 *            the minimum
-	 * @param dMax
-	 *            the maximum
+	 * Normalize operates on the raw data, except if you previously called log,
+	 * then the logarithmized data is used.
+	 * 
+	 * @param dMin the minimum
+	 * @param dMax the maximum
 	 */
 	public void normalizeWithExternalExtrema(double dMin, double dMax);
 
 	/**
-	 * Get the maximum of the raw data
+	 * Get the minimum of the raw data, respectively the logarithmized data if
+	 * log was applied
 	 * 
-	 * @return
+	 * @return the minimum - a double since it can contain all values
 	 */
 	public double getMin();
 
 	/**
-	 * Get the maximum of the raw data
+	 * Get the maximum of the raw data, respectively the logarithmized data if
+	 * log was applied
 	 * 
-	 * @return
+	 * @return the maximum - a double since it can contain all values
 	 */
 	public double getMax();
 
 	/**
 	 * Calculates the log10 of the raw data. Log data can be retrieved by using
-	 * the get methods with EDataKind.LOG10 Call normalize after this operation
-	 * if you want to display the result
+	 * the get methods with EDataRepresentation.LOG10. Call normalize after this
+	 * operation if you want to display the result Normalize then uses the log
+	 * data instead of the raw data
 	 */
 	public void log10();
 
 	/**
-	 * Remove log and normalized data. Useful when raw data is of interest again
-	 * Normalize has to be called again.
+	 * Remove log and normalized data. Normalize has to be called again.
 	 */
 	public void reset();
-	
-	public float getRawForNormalized(float fNormalized);
-	
 
 }

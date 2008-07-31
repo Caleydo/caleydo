@@ -5,10 +5,8 @@ package org.caleydo.core.parser.parameter;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
-
 import java.util.Hashtable;
 import java.util.StringTokenizer;
-
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.data.ParameterKeyValueDataAndDefault;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;

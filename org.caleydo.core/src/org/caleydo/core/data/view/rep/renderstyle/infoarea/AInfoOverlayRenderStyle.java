@@ -24,6 +24,8 @@ public class AInfoOverlayRenderStyle
 
 	public enum VerticalPosition
 	{
-		TOP, CENTER, BOTTOM
+		TOP,
+		CENTER,
+		BOTTOM
 	}
 }

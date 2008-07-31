@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
-
 import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
 import org.caleydo.core.data.map.MultiHashArrayStringMap;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
@@ -132,9 +131,9 @@ public class LookupTableMultiMapStringLoader
 
 		final String sTokenDelimiterOuterLoop = lookupTableLoaderProxy.getTokenSeperator();
 		final String sTokenDelimiterInnerLoop = lookupTableLoaderProxy.getTokenSeperator();// getTokenSeperatorInnerLoop
-																							// (
-																							// )
-																							// ;
+		// (
+		// )
+		// ;
 		String sLine;
 
 		int iLineInFile = 1;
@@ -310,8 +309,7 @@ public class LookupTableMultiMapStringLoader
 	 * [key1, value_n] <br>
 	 * 
 	 * @see org.caleydo.core.parser.ascii.lookuptable.LookupTableMultiMapStringLoader#hasOneLineMultipleStrings()
-	 * @param bset
-	 *            TRUE for parsing multiple Strings per line
+	 * @param bset TRUE for parsing multiple Strings per line
 	 */
 	public final void setOneLineHasMultipleStrings(final boolean bset)
 	{

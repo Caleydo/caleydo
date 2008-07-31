@@ -19,14 +19,10 @@ public interface IMementoCallbackXML
 	 * callback is triggered via the reference passed to the parser in the
 	 * constructor.
 	 * 
-	 * @param type
-	 *            type of object
-	 * @param tag_causes_callback
-	 *            Tag that cased the callback
-	 * @param details
-	 *            additional information
-	 * @param saxHandler
-	 *            SaxHandler with state for object from XML file
+	 * @param type type of object
+	 * @param tag_causes_callback Tag that cased the callback
+	 * @param details additional information
+	 * @param saxHandler SaxHandler with state for object from XML file
 	 */
 	public void callbackForParser(final EManagerObjectType type,
 			final String tag_causes_callback, final String details,

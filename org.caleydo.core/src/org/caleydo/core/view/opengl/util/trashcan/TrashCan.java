@@ -1,11 +1,8 @@
 package org.caleydo.core.view.opengl.util.trashcan;
 
 import java.io.File;
-
 import javax.media.opengl.GL;
-
 import org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle;
-
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 import com.sun.opengl.util.texture.TextureIO;

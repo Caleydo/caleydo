@@ -2,7 +2,6 @@ package org.caleydo.core.view;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import org.caleydo.core.data.AManagedObject;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.ESetType;
@@ -398,8 +397,7 @@ public abstract class AView
 	/**
 	 * Test both ArrayList's alSetData and alSetSelection for set.
 	 * 
-	 * @param set
-	 *            test if this ISet is refered to
+	 * @param set test if this ISet is refered to
 	 * @return TRUE if exists in any of the two ArrayList's
 	 */
 	public final boolean hasSetId_ByReference(final ISet set)

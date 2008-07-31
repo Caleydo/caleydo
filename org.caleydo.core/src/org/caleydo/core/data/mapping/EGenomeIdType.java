@@ -35,8 +35,7 @@ public enum EGenomeIdType
 	/**
 	 * Constructor
 	 * 
-	 * @param storageType
-	 *            the type of the storage
+	 * @param storageType the type of the storage
 	 * @param sName
 	 * @param sDesciption
 	 */

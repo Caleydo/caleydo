@@ -1,7 +1,6 @@
 package org.caleydo.core.view.swt.widget;
 
 import java.awt.Frame;
-
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -18,8 +17,8 @@ public class SWTEmbeddedGraphWidget
 	 * Constructor that takes the composite in which it should place the content
 	 * and creates an embedded AWT frame.
 	 * 
-	 * @param Composite
-	 *            Reference to the composite that is supposed to be filled.
+	 * @param Composite Reference to the composite that is supposed to be
+	 *            filled.
 	 */
 	public SWTEmbeddedGraphWidget(Composite parentComposite)
 	{

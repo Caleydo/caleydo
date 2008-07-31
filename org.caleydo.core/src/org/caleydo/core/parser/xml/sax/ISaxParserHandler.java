@@ -26,14 +26,10 @@ public interface ISaxParserHandler
 	 *      Stringt, org.xml.sax.Attributes)
 	 * @see prometheus.net.dwt.swing.parser.ASaxParserHandler#startElement(String,
 	 *      String, String, Attributes)
-	 * @param uri
-	 *            URI @see org.xml.sax.helpers.DefaultHandler
-	 * @param localName
-	 *            lacalName @see org.xml.sax.helpers.DefaultHandler
-	 * @param qName
-	 *            tag to parse for @see org.xml.sax.helpers.DefaultHandler
-	 * @param attributes
-	 *            attributes bound to qName
+	 * @param uri URI @see org.xml.sax.helpers.DefaultHandler
+	 * @param localName lacalName @see org.xml.sax.helpers.DefaultHandler
+	 * @param qName tag to parse for @see org.xml.sax.helpers.DefaultHandler
+	 * @param attributes attributes bound to qName
 	 */
 	public abstract void startElement(String uri, String localName, String qName,
 			Attributes attributes);
@@ -45,12 +41,9 @@ public interface ISaxParserHandler
 	 *      Stringt)
 	 * @see prometheus.net.dwt.swing.parser.ASaxParserHandler#endElement(String,
 	 *      String, String)
-	 * @param uri
-	 *            URI @see org.xml.sax.helpers.DefaultHandler
-	 * @param localName
-	 *            lacalName @see org.xml.sax.helpers.DefaultHandler
-	 * @param qName
-	 *            tag to parse for @see org.xml.sax.helpers.DefaultHandler
+	 * @param uri URI @see org.xml.sax.helpers.DefaultHandler
+	 * @param localName lacalName @see org.xml.sax.helpers.DefaultHandler
+	 * @param qName tag to parse for @see org.xml.sax.helpers.DefaultHandler
 	 */
 	public abstract void endElement(String uri, String localName, String qName);
 

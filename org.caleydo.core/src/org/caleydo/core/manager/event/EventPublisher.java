@@ -3,7 +3,6 @@ package org.caleydo.core.manager.event;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-
 import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IEventPublisher;

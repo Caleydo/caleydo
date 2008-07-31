@@ -5,7 +5,6 @@ import java.io.ObjectOutputStream;
 import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
-
 import org.caleydo.core.command.memento.IMemento;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;

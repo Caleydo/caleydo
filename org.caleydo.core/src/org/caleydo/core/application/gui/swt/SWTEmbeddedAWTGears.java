@@ -3,9 +3,7 @@ package org.caleydo.core.application.gui.swt;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import javax.media.opengl.GLCanvas;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -13,9 +11,7 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-
 import com.sun.opengl.util.Animator;
-
 import demos.gears.Gears;
 
 public class SWTEmbeddedAWTGears

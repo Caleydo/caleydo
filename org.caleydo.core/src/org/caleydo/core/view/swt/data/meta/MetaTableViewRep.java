@@ -1,7 +1,6 @@
 package org.caleydo.core.view.swt.data.meta;
 
 import org.eclipse.swt.widgets.Composite;
-
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.ViewType;

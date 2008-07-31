@@ -2,7 +2,6 @@ package org.caleydo.core.view.swt.browser;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.data.selection.Selection;

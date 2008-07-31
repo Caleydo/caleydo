@@ -2,7 +2,6 @@ package org.caleydo.core.view.opengl.mouse;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
-
 import java.awt.Dimension;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
@@ -12,7 +11,6 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 
 /**

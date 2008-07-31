@@ -4,18 +4,15 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import gleem.linalg.open.Transform;
-
 import java.awt.Font;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
-
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.data.CmdDataCreateSelection;
 import org.caleydo.core.command.event.CmdEventCreateMediator;
@@ -64,7 +61,6 @@ import org.caleydo.core.view.opengl.util.trashcan.TrashCan;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
-
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -1928,7 +1924,7 @@ public class GLCanvasRemoteRendering3D
 		// factor
 		sTmp = "MEMO AREA";
 		textRenderer.draw3D(sTmp, 2.05f / fAspectRatio - fWidth, -1.95f, 4.001f, 0.004f); // scale
-																							// factor
+		// factor
 		textRenderer.end3DRendering();
 	}
 

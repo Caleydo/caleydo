@@ -1,7 +1,6 @@
 package org.caleydo.core.manager;
 
 import java.util.logging.Logger;
-
 import org.caleydo.core.manager.data.ISelectionManager;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.data.IStorageManager;

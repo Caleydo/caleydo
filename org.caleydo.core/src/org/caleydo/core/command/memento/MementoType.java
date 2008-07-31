@@ -23,8 +23,7 @@ public enum MementoType
 	 * This is one memento, that stores only the changes since the last update.
 	 * It either links to other relative mementos or to an absolute memento.
 	 */
-	RELATIVE(
-			"relative memento; contains incremental states, which are proccessed to obtain state"),
+	RELATIVE("relative memento; contains incremental states, which are proccessed to obtain state"),
 
 	/**
 	 * This idicates, that this memento was created by a view and not by an GUI
@@ -48,8 +47,7 @@ public enum MementoType
 	/**
 	 * Constructor
 	 * 
-	 * @param tooltip
-	 *            describing, that kind of memento this is.
+	 * @param tooltip describing, that kind of memento this is.
 	 */
 	private MementoType(String tooltip)
 	{

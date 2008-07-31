@@ -2,9 +2,7 @@ package org.caleydo.core.data.collection.set;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import javax.naming.OperationNotSupportedException;
-
 import org.caleydo.core.data.AManagedObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.INominalStorage;

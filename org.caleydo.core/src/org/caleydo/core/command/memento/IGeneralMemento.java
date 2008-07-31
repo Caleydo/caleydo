@@ -37,8 +37,7 @@ public class IGeneralMemento
 	/**
 	 * Constructor.
 	 * 
-	 * @param setMementoCreator
-	 *            creator of memento
+	 * @param setMementoCreator creator of memento
 	 */
 	public IGeneralMemento(final Object setMementoCreator)
 	{
@@ -51,10 +50,8 @@ public class IGeneralMemento
 	/**
 	 * Constructor.
 	 * 
-	 * @param setMementoCreator
-	 *            creator of memento
-	 * @param setMementoData
-	 *            data from the creator object
+	 * @param setMementoCreator creator of memento
+	 * @param setMementoData data from the creator object
 	 */
 	public IGeneralMemento(final Object setMementoCreator, final IMementoState setMementoData)
 	{
@@ -68,12 +65,9 @@ public class IGeneralMemento
 	/**
 	 * Constructor.
 	 * 
-	 * @param setMementoCreator
-	 *            creator of memento
-	 * @param setMementoData
-	 *            data from the creator object
-	 * @param setMementoType
-	 *            type of memento; used for memento manger
+	 * @param setMementoCreator creator of memento
+	 * @param setMementoData data from the creator object
+	 * @param setMementoType type of memento; used for memento manger
 	 */
 	public IGeneralMemento(final Object setMementoCreator, final IMementoState setMementoData,
 			final MementoType setMementoType)

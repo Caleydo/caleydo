@@ -7,7 +7,6 @@ package org.caleydo.core.data.collection;
  */
 public interface ICollection
 {
-
 	/**
 	 * Return a Label of the item.
 	 * 
@@ -18,8 +17,7 @@ public interface ICollection
 	/**
 	 * Sets the label for this item.
 	 * 
-	 * @param setLabel
-	 *            label text
+	 * @param setLabel label text
 	 */
 	public void setLabel(final String setLabel);
 }

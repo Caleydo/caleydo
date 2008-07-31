@@ -3,7 +3,6 @@ package org.caleydo.core.view.opengl.canvas.glyph;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
-
 import org.caleydo.core.manager.IGeneralManager;
 
 /**

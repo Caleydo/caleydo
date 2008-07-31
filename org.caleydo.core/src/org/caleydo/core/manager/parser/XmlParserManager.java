@@ -3,7 +3,6 @@ package org.caleydo.core.manager.parser;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.logging.Level;
-
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 import org.caleydo.core.parser.xml.sax.handler.command.CommandSaxHandler;
@@ -43,8 +42,7 @@ public class XmlParserManager
 	/**
 	 * Constructor.
 	 * 
-	 * @param generalManager
-	 *            reference to IGeneralManager
+	 * @param generalManager reference to IGeneralManager
 	 */
 	public XmlParserManager(final IGeneralManager generalManager)
 	{

@@ -7,7 +7,12 @@ package org.caleydo.core.view.opengl.util.hierarchy;
  */
 public enum EHierarchyLevel
 {
-	UNDER_INTERACTION(1), STACK(4), POOL(100), MEMO(5), TRANSITION(1), SPAWN(1);
+	UNDER_INTERACTION(1),
+	STACK(4),
+	POOL(100),
+	MEMO(5),
+	TRANSITION(1),
+	SPAWN(1);
 
 	private int iCapacity;
 

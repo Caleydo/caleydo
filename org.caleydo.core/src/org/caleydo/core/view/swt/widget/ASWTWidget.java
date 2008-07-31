@@ -1,7 +1,6 @@
 package org.caleydo.core.view.swt.widget;
 
 import org.eclipse.swt.widgets.Composite;
-
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.view.swt.ISWTWidget;
 
@@ -25,8 +24,8 @@ public abstract class ASWTWidget
 	 * Constructor that takes the composite in which it should place the
 	 * content.
 	 * 
-	 * @param composite
-	 *            Reference to the composite that is supposed to be filled.
+	 * @param composite Reference to the composite that is supposed to be
+	 *            filled.
 	 */
 	protected ASWTWidget(Composite parentComposite)
 	{

@@ -1,7 +1,6 @@
 package org.caleydo.core.command.view.swt;
 
 import java.util.Iterator;
-
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY;
 import org.caleydo.core.manager.ICommandManager;

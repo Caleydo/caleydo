@@ -8,5 +8,7 @@ package org.caleydo.core.data.collection;
  */
 public enum ESetType
 {
-	GENE_EXPRESSION_DATA, CLINICAL_DATA, UNSPECIFIED
+	GENE_EXPRESSION_DATA,
+	CLINICAL_DATA,
+	UNSPECIFIED
 }

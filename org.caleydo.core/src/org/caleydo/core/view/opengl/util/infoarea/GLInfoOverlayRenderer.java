@@ -6,13 +6,10 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
-
 import org.caleydo.core.data.view.rep.renderstyle.infoarea.AInfoOverlayRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
-
 import com.sun.opengl.util.j2d.Overlay;
 
 /**

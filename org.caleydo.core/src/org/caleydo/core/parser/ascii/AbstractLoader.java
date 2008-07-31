@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.logging.Level;
-
 import org.caleydo.core.data.xml.IMementoXML;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.gui.SWTGUIManager;
@@ -129,8 +128,7 @@ public abstract class AbstractLoader
 	/**
 	 * Set the current token separator.
 	 * 
-	 * @param token
-	 *            current token separator
+	 * @param token current token separator
 	 */
 	public final void setTokenSeperator(final String token)
 	{
@@ -155,8 +153,7 @@ public abstract class AbstractLoader
 	/**
 	 * Set the current file name.
 	 * 
-	 * @param setFileName
-	 *            set current file name
+	 * @param setFileName set current file name
 	 */
 	public final void setFileName(String setFileName)
 	{
@@ -332,10 +329,8 @@ public abstract class AbstractLoader
 	 * progressbar to the previous position. set fProgressBarIndex = iPosition
 	 * set fProgressBarInc = (200 - iPosition) / iStepsTill100_Percent
 	 * 
-	 * @param sText
-	 *            new text for progress bar
-	 * @param iPosition
-	 *            range [0..200]
+	 * @param sText new text for progress bar
+	 * @param iPosition range [0..200]
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#fProgressBarInc
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#fProgressBarIndex
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarStoredIncrement()
@@ -367,12 +362,9 @@ public abstract class AbstractLoader
 	}
 
 	/**
-	 * @param sText
-	 *            new text
-	 * @param iCurrentProgressBarPosition
-	 *            new progress bar position
-	 * @param iStepsTill100_Percent
-	 *            number of incremtens to reach 100 %
+	 * @param sText new text
+	 * @param iCurrentProgressBarPosition new progress bar position
+	 * @param iStepsTill100_Percent number of incremtens to reach 100 %
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarSetStoreInitTitle(String,
 	 *      int, int, int)
 	 */
@@ -413,8 +405,7 @@ public abstract class AbstractLoader
 	}
 
 	/**
-	 * @param iTicks
-	 *            must be in the range of: currentPercentage - [0..200]
+	 * @param iTicks must be in the range of: currentPercentage - [0..200]
 	 */
 	protected final void progressBarIncrement(int iTicks)
 	{

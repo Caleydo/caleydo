@@ -1,13 +1,10 @@
 package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
-
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import org.caleydo.core.data.AManagedObject;
@@ -383,17 +380,13 @@ public abstract class AGLCanvasUser
 	}
 
 	/**
-	 * @param gl
-	 *            the gl of the context, remote gl when called remote
-	 * @param leftPoint
-	 *            is the bottom left point if bRenderLeftToRight is true, else
-	 *            the top left point
+	 * @param gl the gl of the context, remote gl when called remote
+	 * @param leftPoint is the bottom left point if bRenderLeftToRight is true,
+	 *            else the top left point
 	 * @param layer
-	 * @param bIsCalledLocally
-	 *            true if called locally
-	 * @param bRenderLeftToRight
-	 *            true if it should be rendered left to right, false if top to
-	 *            bottom
+	 * @param bIsCalledLocally true if called locally
+	 * @param bRenderLeftToRight true if it should be rendered left to right,
+	 *            false if top to bottom
 	 */
 	public void renderToolbox(final GL gl, final Vec3f leftPoint,
 			final RemoteHierarchyLayer layer, final boolean bIsCalledLocally,
@@ -445,14 +438,10 @@ public abstract class AGLCanvasUser
 	 * This method is called every time a method occurs. It should take care of
 	 * reacting appropriately to the events.
 	 * 
-	 * @param ePickingType
-	 *            the Picking type, held in EPickingType
-	 * @param ePickingMode
-	 *            the Picking mode (clicked, dragged etc.)
-	 * @param iExternalID
-	 *            the name specified for an element with glPushName
-	 * @param pick
-	 *            the pick object which can be useful to retrieve for example
+	 * @param ePickingType the Picking type, held in EPickingType
+	 * @param ePickingMode the Picking mode (clicked, dragged etc.)
+	 * @param iExternalID the name specified for an element with glPushName
+	 * @param pick the pick object which can be useful to retrieve for example
 	 *            the mouse position when the pick occurred
 	 */
 	abstract protected void handleEvents(final EPickingType ePickingType,

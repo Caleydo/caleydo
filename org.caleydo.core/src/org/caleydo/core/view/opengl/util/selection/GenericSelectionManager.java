@@ -3,7 +3,6 @@ package org.caleydo.core.view.opengl.util.selection;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
-
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
@@ -88,8 +87,7 @@ public class GenericSelectionManager
 	 * Clear one specific selection type The elements are added to the "normal"
 	 * type
 	 * 
-	 * @param sSelectionType
-	 *            the selection type to be cleared
+	 * @param sSelectionType the selection type to be cleared
 	 */
 	public void clearSelection(EViewInternalSelectionType eSelectionType)
 	{

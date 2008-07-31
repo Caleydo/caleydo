@@ -1,9 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.glyph;
 
 import gleem.linalg.Vec4f;
-
 import java.util.Vector;
-
 import javax.media.opengl.GL;
 
 public class GLCanvasGlyphGenerator

@@ -1,7 +1,6 @@
 package org.caleydo.core.view.opengl.util.infoarea;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IGeneralManager;

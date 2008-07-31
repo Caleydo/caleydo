@@ -1,9 +1,7 @@
 package org.caleydo.core.data.view.rep.renderstyle;
 
 import java.awt.Font;
-
 import org.caleydo.core.data.view.camera.IViewFrustum;
-
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**

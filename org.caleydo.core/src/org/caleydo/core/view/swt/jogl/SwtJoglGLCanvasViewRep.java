@@ -1,7 +1,6 @@
 package org.caleydo.core.view.swt.jogl;
 
 import javax.media.opengl.GLCanvas;
-
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;

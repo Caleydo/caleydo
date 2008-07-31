@@ -2,7 +2,6 @@ package org.caleydo.core.command.data.filter;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import org.caleydo.core.data.collection.ISet;
@@ -27,7 +26,8 @@ public class CmdDataFilterMath
 
 	public enum EDataFilterMathType
 	{
-		LIN_2_LOG, NORMALIZE
+		LIN_2_LOG,
+		NORMALIZE
 	}
 
 	private ArrayList<Integer> iAlIDs;
@@ -81,11 +81,9 @@ public class CmdDataFilterMath
 	/**
 	 * Overwrites the specified storage with the results of the operation
 	 * 
-	 * @param dataFilterMathType
-	 *            The type of operation
-	 * @param iAlStorageID
-	 *            The source storage ids. This storage is overwritten with the
-	 *            result.
+	 * @param dataFilterMathType The type of operation
+	 * @param iAlStorageID The source storage ids. This storage is overwritten
+	 *            with the result.
 	 */
 	public void setAttributes(EDataFilterMathType dataFilterMathType,
 			ArrayList<Integer> iAlStorageID, EManagerObjectType objectType)

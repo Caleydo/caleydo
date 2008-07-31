@@ -2,8 +2,10 @@ package org.caleydo.core.view.opengl.util.selection;
 
 public enum EViewInternalSelectionType
 {
-	NORMAL("NORMAL"), SELECTION("SELECTION"), MOUSE_OVER("MOUSE_OVER"), DESELECTED(
-			"DESELECTED");
+	NORMAL("NORMAL"),
+	SELECTION("SELECTION"),
+	MOUSE_OVER("MOUSE_OVER"),
+	DESELECTED("DESELECTED");
 
 	private String sType;
 

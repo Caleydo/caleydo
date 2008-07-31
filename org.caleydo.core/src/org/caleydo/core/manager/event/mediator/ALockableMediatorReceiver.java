@@ -4,7 +4,6 @@
 package org.caleydo.core.manager.event.mediator;
 
 import java.util.concurrent.atomic.AtomicBoolean;
-
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ISelection;
 

@@ -2,9 +2,7 @@ package org.caleydo.core.manager;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 import javax.swing.JFrame;
-
 import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;

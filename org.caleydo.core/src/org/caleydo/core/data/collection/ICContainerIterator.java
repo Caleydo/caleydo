@@ -1,7 +1,9 @@
 package org.caleydo.core.data.collection;
 
 /**
- * @author Alexander Lex Interface for iterators on CContainers
+ * Interface for iterators on CContainers
+ * 
+ * @author Alexander Lex
  */
 public interface ICContainerIterator
 {

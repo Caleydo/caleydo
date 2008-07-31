@@ -4,14 +4,11 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Level;
-
 import javax.media.opengl.GL;
-
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
-
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 import com.sun.opengl.util.texture.TextureIO;
@@ -148,11 +145,13 @@ public class GLPathwayTextureManager
 		}
 
 		gl.glBegin(GL.GL_LINE_STRIP);
-		gl.glVertex3f(0.0f, 0.0f, 0.0f);;
+		gl.glVertex3f(0.0f, 0.0f, 0.0f);
+		;
 		gl.glVertex3f(fTextureWidth, 0.0f, 0.0f);
 		gl.glVertex3f(fTextureWidth, fTextureHeight, 0.0f);
 		gl.glVertex3f(0.0f, fTextureHeight, 0.0f);
-		gl.glVertex3f(0.0f, 0.0f, 0.0f);;
+		gl.glVertex3f(0.0f, 0.0f, 0.0f);
+		;
 		gl.glEnd();
 
 		// gl.glPopName();

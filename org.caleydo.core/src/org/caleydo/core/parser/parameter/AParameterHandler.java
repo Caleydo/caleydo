@@ -6,9 +6,7 @@ package org.caleydo.core.parser.parameter;
 // import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
-
 import org.xml.sax.Attributes;
-
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 

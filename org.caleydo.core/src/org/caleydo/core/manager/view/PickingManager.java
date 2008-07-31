@@ -4,10 +4,8 @@ import java.awt.Point;
 import java.nio.IntBuffer;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
-
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.caleydo.core.manager.AManager;
@@ -19,7 +17,6 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-
 import com.sun.opengl.util.BufferUtil;
 
 /**
@@ -70,10 +67,8 @@ public class PickingManager
 	 * stores it in a hash map with the external id DO NOT store picking id's
 	 * locally
 	 * 
-	 * @param iViewID
-	 *            the ID of the calling view, has to have 5 digits max
-	 * @param iType
-	 *            a type which is part of the picking ID, has to be between 0
+	 * @param iViewID the ID of the calling view, has to have 5 digits max
+	 * @param iType a type which is part of the picking ID, has to be between 0
 	 *            and 99
 	 * @return
 	 */
@@ -295,8 +290,7 @@ public class PickingManager
 	 * getPickingID()) when you provide the picking ID
 	 * 
 	 * @param uniqueManagedObject
-	 * @param iPickingID
-	 *            the picking ID
+	 * @param iPickingID the picking ID
 	 * @return the ID, null if no entry for that pickingID
 	 */
 	public int getExternalIDFromPickingID(int iViewID, int iPickingID)
@@ -317,8 +311,7 @@ public class PickingManager
 	 * in the hit list.
 	 * 
 	 * @param uniqueManagedObject
-	 * @param iType
-	 *            the type, >= 0, <100
+	 * @param iType the type, >= 0, <100
 	 * @param iHitCount
 	 * @return the ID, null if no entry for that hit count
 	 */

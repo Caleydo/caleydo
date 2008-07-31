@@ -2,7 +2,6 @@ package org.caleydo.core.view.swt.widget;
 
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLCapabilities;
-
 import org.eclipse.swt.widgets.Composite;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
@@ -25,8 +24,8 @@ public class SWTEmbeddedJoglWidget
 	 * Constructor that takes the composite in which it should embed the
 	 * GLCanvas.
 	 * 
-	 * @param Composite
-	 *            Reference to the composite that is supposed to be filled.
+	 * @param Composite Reference to the composite that is supposed to be
+	 *            filled.
 	 */
 	public SWTEmbeddedJoglWidget(Composite parentComposite)
 	{

@@ -28,14 +28,12 @@ public interface IMemento
 	 * MementoStateInterface-object is passed a parameter. Derived class has to
 	 * check, if MementoStateInterface-object fits.
 	 * 
-	 * @param setMementoCreator
-	 *            reference to the object, that created the memento
-	 * @param setMemetoState
-	 *            details for restoring the state of the creator object
-	 *            setMementoCreator
-	 * @throws CaleydoRuntimeException
-	 *             are thrown in case of full storage or maximum number of
-	 *             mementos
+	 * @param setMementoCreator reference to the object, that created the
+	 *            memento
+	 * @param setMemetoState details for restoring the state of the creator
+	 *            object setMementoCreator
+	 * @throws CaleydoRuntimeException are thrown in case of full storage or
+	 *             maximum number of mementos
 	 */
 	public void setMementoState(final Object setMementoCreator,
 			final IMementoState setMemetoState) throws CaleydoRuntimeException;

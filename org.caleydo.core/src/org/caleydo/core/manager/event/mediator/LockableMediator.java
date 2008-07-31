@@ -2,7 +2,6 @@ package org.caleydo.core.manager.event.mediator;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;

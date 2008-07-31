@@ -5,7 +5,6 @@ package org.caleydo.core.parser.parameter.data;
 
 import java.util.Enumeration;
 import java.util.Hashtable;
-
 import org.caleydo.core.parser.parameter.IParameterKeyValuePair;
 
 /**

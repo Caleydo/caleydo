@@ -66,10 +66,9 @@ public class CommandFactory
 	/**
 	 * Constructor
 	 * 
-	 * @param setRefGeneralManager
-	 *            reference to IGeneralManager
-	 * @param setCommandType
-	 *            may be null if no command shall be created by the constructor
+	 * @param setRefGeneralManager reference to IGeneralManager
+	 * @param setCommandType may be null if no command shall be created by the
+	 *            constructor
 	 */
 	public CommandFactory(final IGeneralManager setRefGeneralManager,
 			final ICommandManager commandManager)

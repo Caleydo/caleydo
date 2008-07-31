@@ -1,13 +1,11 @@
 package org.caleydo.core.view.opengl.canvas;
 
 import java.util.logging.Level;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
-
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.FPSCounter;

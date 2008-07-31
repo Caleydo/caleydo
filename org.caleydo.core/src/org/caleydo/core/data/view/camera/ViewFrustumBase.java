@@ -13,7 +13,8 @@ public class ViewFrustumBase
 	public enum ProjectionMode
 	{
 
-		ORTHOGRAPHIC, PERSPECTIVE
+		ORTHOGRAPHIC,
+		PERSPECTIVE
 	};
 
 	private ProjectionMode projectionMode;

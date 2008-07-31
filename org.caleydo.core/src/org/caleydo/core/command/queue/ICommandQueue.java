@@ -17,8 +17,7 @@ public interface ICommandQueue
 	/**
 	 * ISet a new QueueID. CommandQueueId = -1 indicates no queueId
 	 * 
-	 * @param setCmdQueueId
-	 *            new QueueId
+	 * @param setCmdQueueId new QueueId
 	 */
 	public void setCmdQueueId(final int setCmdQueueId);
 
@@ -32,24 +31,21 @@ public interface ICommandQueue
 	/**
 	 * Add a new command.
 	 * 
-	 * @param cmdItem
-	 *            add command
+	 * @param cmdItem add command
 	 */
 	public boolean addCmdToQueue(final ICommand cmdItem);
 
 	/**
 	 * Remove a new command.
 	 * 
-	 * @param cmdItem
-	 *            remove command
+	 * @param cmdItem remove command
 	 */
 	public boolean removeCmdFromQueue(final ICommand cmdItem);
 
 	/**
 	 * Contains a command.
 	 * 
-	 * @param cmdItem
-	 *            test if command is contained in command queue
+	 * @param cmdItem test if command is contained in command queue
 	 */
 	public boolean containsCmdInQueue(final ICommand cmdItem);
 

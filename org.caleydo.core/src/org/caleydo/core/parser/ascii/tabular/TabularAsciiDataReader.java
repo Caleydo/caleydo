@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
-
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.IStorage;
@@ -18,10 +17,11 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.system.StringConversionTool;
 
 /**
- * Loader for micro array data sets.
+ * Loader for tabular data.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public class TabularAsciiDataReader
 	extends AbstractLoader
@@ -118,12 +118,6 @@ public class TabularAsciiDataReader
 		return bAllTokensProper;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#setTargetSotrage
-	 * (java.util.ArrayList)
-	 */
 	public void setTargetStorages(final ArrayList<Integer> iAlTargetStorageId)
 	{
 
@@ -176,6 +170,7 @@ public class TabularAsciiDataReader
 	 * org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#loadDataParseFile
 	 * (java.io.BufferedReader, int)
 	 */
+	@Override
 	protected void loadDataParseFile(BufferedReader brFile, final int iNumberOfLinesInFile)
 			throws IOException
 	{
@@ -275,6 +270,7 @@ public class TabularAsciiDataReader
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#setArraysToStorages()
 	 */
+	@Override
 	protected void setArraysToStorages()
 	{
 
@@ -293,19 +289,23 @@ public class TabularAsciiDataReader
 					iIntArrayIndex++;
 					iStorageIndex++;
 					break;
-				case FLOAT:					
+				case FLOAT:
 					alTargetStorages.get(iStorageIndex).setRawData(
 							alFloatBuffers.get(iFloatArrayIndex));
-//					ArrayList<Float> fAlRaw = new ArrayList<Float>();
-//					for(float fCurrent : alFloatBuffers.get(iFloatArrayIndex))
-//						fAlRaw.add(fCurrent);
-//					((NominalStorage<Float>)(alTargetStorages.get(iStorageIndex))).setRawData(fAlRaw);
+					// ArrayList<Float> fAlRaw = new ArrayList<Float>();
+					// for(float fCurrent :
+					// alFloatBuffers.get(iFloatArrayIndex))
+					// {
+					// fAlRaw.add(fCurrent);
+					// }
+					//((NominalStorage<Float>)(alTargetStorages.get(iStorageIndex
+					// ))).setRawNominalData(fAlRaw);
 					iFloatArrayIndex++;
 					iStorageIndex++;
 					break;
 				case STRING:
 					((INominalStorage<String>) alTargetStorages.get(iStorageIndex))
-							.setRawData(alStringBuffers.get(iStringArrayIndex));
+							.setRawNominalData(alStringBuffers.get(iStringArrayIndex));
 					alStringBuffers.add(new ArrayList<String>(iStopParsingAtLine
 							- iStartParsingAtLine + 1));
 					iStringArrayIndex++;

@@ -2,7 +2,6 @@ package org.caleydo.core.manager.specialized.genome;
 
 import java.util.Collection;
 import java.util.HashMap;
-
 import org.caleydo.core.data.mapping.EGenomeMappingDataType;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IManager;
@@ -25,8 +24,7 @@ public interface IGenomeIdManager
 	 * required for EGenomeIdType.NCBI_GENEID in specific.
 	 * 
 	 * @see IGenomeIdManager#getAllValuesByGenomeIdTypeHashMap(EGenomeMappingType)
-	 * @param type
-	 *            specify one EGenomeIdType
+	 * @param type specify one EGenomeIdType
 	 * @return HashMap<Integer,Integer> containing all <EGenomeIdType id's,
 	 *         incremented index [0.. max] >
 	 */
@@ -37,8 +35,7 @@ public interface IGenomeIdManager
 	 * required for EGenomeIdType.NCBI_GENEID in specific.
 	 * 
 	 * @see IGenomeIdManager#getAllKeysByGenomeIdTypeHashMap(EGenomeMappingType)
-	 * @param type
-	 *            specify one EGenomeIdType
+	 * @param type specify one EGenomeIdType
 	 * @return HashMap<Integer,Integer> containing all <EGenomeIdType id's,
 	 *         incremented index [0.. max] >
 	 */
@@ -48,8 +45,7 @@ public interface IGenomeIdManager
 	 * expose all keys for one EGenomeIdType. Note is was required for
 	 * EGenomeIdType.NCBI_GENEID in specific.
 	 * 
-	 * @param type
-	 *            specify one EGenomeIdType
+	 * @param type specify one EGenomeIdType
 	 * @return int[] containing all EGenomeIdType id's
 	 */
 	public int[] getAllKeysByGenomeIdType(final EGenomeMappingType type);
@@ -58,10 +54,8 @@ public interface IGenomeIdManager
 	 * Get one "target" id mapped to one "origin" id defiend by iUniqueId using
 	 * type.
 	 * 
-	 * @param iUniqueId
-	 *            define "origin" id
-	 * @param type
-	 *            defines, which id is mapped to the other id
+	 * @param iUniqueId define "origin" id
+	 * @param type defines, which id is mapped to the other id
 	 * @return "target" id using type
 	 */
 	public int getIdIntFromIntByMapping(final int iUniqueId, final EGenomeMappingType type);
@@ -70,10 +64,8 @@ public interface IGenomeIdManager
 	 * Get one "target" id as String mapped to one String as "origin" id defiend
 	 * by sCaleydoId using type.
 	 * 
-	 * @param sCaleydoId
-	 *            define "origin" id
-	 * @param type
-	 *            defines, which id is mapped to the other id
+	 * @param sCaleydoId define "origin" id
+	 * @param type defines, which id is mapped to the other id
 	 * @return "target" id using type
 	 */
 	public String getIdStringFromStringByMapping(final String sCaleydoId,
@@ -83,10 +75,8 @@ public interface IGenomeIdManager
 	 * Get one "target" id as String mapped to one "origin" id defiend by
 	 * iUniqueId using type.
 	 * 
-	 * @param iUniqueId
-	 *            define "origin" id
-	 * @param type
-	 *            defines, which id is mapped to the other id
+	 * @param iUniqueId define "origin" id
+	 * @param type defines, which id is mapped to the other id
 	 * @return "target" id using type
 	 */
 	public String getIdStringFromIntByMapping(final int iUniqueId,
@@ -105,8 +95,7 @@ public interface IGenomeIdManager
 	 * Get lock to start adding key, value pairs to a specific HashMap defined
 	 * by type.
 	 * 
-	 * @param type
-	 *            addess one HashMap
+	 * @param type addess one HashMap
 	 * @return ture if lock was granted and data can be inserted, false
 	 *         indicates, that another map is being inserted.
 	 */
@@ -132,8 +121,7 @@ public interface IGenomeIdManager
 	/**
 	 * Get the IGenomeIdMap that is assigned to one EGenomeMappingType type.
 	 * 
-	 * @param type
-	 *            specify the IGenomeIdMap assinged to this type
+	 * @param type specify the IGenomeIdMap assinged to this type
 	 * @return IGenomeIdMap assigned to the type
 	 */
 	public IGenomeIdMap getMapByType(EGenomeMappingType type);
@@ -142,8 +130,7 @@ public interface IGenomeIdManager
 	 * Test if any map is registered to the type, no matter if it is a MultiMap
 	 * or a regular Map.
 	 * 
-	 * @param type
-	 *            type to be testet
+	 * @param type type to be testet
 	 * @return TRUE if any Map or MultiMap is registered to that type
 	 */
 	public boolean hasAnyMapByType(EGenomeMappingType type);
@@ -156,10 +143,8 @@ public interface IGenomeIdManager
 	 * must be an object of type: IGenomeIdMap, MultiHashArrayStringMap or
 	 * MultiHashArrayIntegerMap
 	 * 
-	 * @param codingLutType
-	 *            define EGenomeMappingType used for identifying
-	 * @param map
-	 *            to be added, must be IGenomeIdMap
+	 * @param codingLutType define EGenomeMappingType used for identifying
+	 * @param map to be added, must be IGenomeIdMap
 	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdMap
 	 * @see org.caleydo.core.data.map.MultiHashArrayStringMap
 	 * @see org.caleydo.core.data.map.MultiHashArrayIntegerMap
@@ -171,8 +156,7 @@ public interface IGenomeIdManager
 	 * object of type: IGenomeIdMap, MultiHashArrayStringMap or
 	 * MultiHashArrayIntegerMap
 	 * 
-	 * @param codingLutType
-	 *            define EGenomeMappingType used for identifying
+	 * @param codingLutType define EGenomeMappingType used for identifying
 	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdMap
 	 * @see org.caleydo.core.data.map.MultiHashArrayStringMap
 	 * @see org.caleydo.core.data.map.MultiHashArrayIntegerMap

@@ -9,32 +9,23 @@ package org.caleydo.core.data.mapping;
  */
 public enum EGenomeMappingType
 {
-	DAVID_2_REFSEQ_MRNA(EGenomeIdType.DAVID, EGenomeIdType.REFSEQ_MRNA,
-			EGenomeMappingDataType.INT2STRING),
+	DAVID_2_REFSEQ_MRNA(EGenomeIdType.DAVID, EGenomeIdType.REFSEQ_MRNA, EGenomeMappingDataType.INT2STRING),
 
-	REFSEQ_MRNA_2_DAVID(EGenomeIdType.REFSEQ_MRNA, EGenomeIdType.DAVID,
-			EGenomeMappingDataType.STRING2INT),
+	REFSEQ_MRNA_2_DAVID(EGenomeIdType.REFSEQ_MRNA, EGenomeIdType.DAVID, EGenomeMappingDataType.STRING2INT),
 
-	DAVID_2_ENTREZ_GENE_ID(EGenomeIdType.DAVID, EGenomeIdType.ENTREZ_GENE_ID,
-			EGenomeMappingDataType.INT2INT),
+	DAVID_2_ENTREZ_GENE_ID(EGenomeIdType.DAVID, EGenomeIdType.ENTREZ_GENE_ID, EGenomeMappingDataType.INT2INT),
 
-	ENTREZ_GENE_ID_2_DAVID(EGenomeIdType.ENTREZ_GENE_ID, EGenomeIdType.DAVID,
-			EGenomeMappingDataType.INT2INT),
+	ENTREZ_GENE_ID_2_DAVID(EGenomeIdType.ENTREZ_GENE_ID, EGenomeIdType.DAVID, EGenomeMappingDataType.INT2INT),
 
-	DAVID_2_EXPRESSION_STORAGE_ID(EGenomeIdType.DAVID, EGenomeIdType.EXPRESSION_STORAGE_ID,
-			EGenomeMappingDataType.INT2INT),
+	DAVID_2_EXPRESSION_STORAGE_ID(EGenomeIdType.DAVID, EGenomeIdType.EXPRESSION_STORAGE_ID, EGenomeMappingDataType.INT2INT),
 
-	EXPRESSION_STORAGE_ID_2_DAVID(EGenomeIdType.EXPRESSION_STORAGE_ID, EGenomeIdType.DAVID,
-			EGenomeMappingDataType.INT2INT),
+	EXPRESSION_STORAGE_ID_2_DAVID(EGenomeIdType.EXPRESSION_STORAGE_ID, EGenomeIdType.DAVID, EGenomeMappingDataType.INT2INT),
 
-	BIOCARTA_GENE_ID_2_DAVID(EGenomeIdType.BIOCARTA_GENE_ID, EGenomeIdType.DAVID,
-			EGenomeMappingDataType.STRING2INT),
+	BIOCARTA_GENE_ID_2_DAVID(EGenomeIdType.BIOCARTA_GENE_ID, EGenomeIdType.DAVID, EGenomeMappingDataType.STRING2INT),
 
-	DAVID_2_GENE_SYMBOL(EGenomeIdType.DAVID, EGenomeIdType.GENE_SYMBOL,
-			EGenomeMappingDataType.INT2STRING),
+	DAVID_2_GENE_SYMBOL(EGenomeIdType.DAVID, EGenomeIdType.GENE_SYMBOL, EGenomeMappingDataType.INT2STRING),
 
-	DAVID_2_GENE_NAME(EGenomeIdType.DAVID, EGenomeIdType.GENE_NAME,
-			EGenomeMappingDataType.INT2STRING);
+	DAVID_2_GENE_NAME(EGenomeIdType.DAVID, EGenomeIdType.GENE_NAME, EGenomeMappingDataType.INT2STRING);
 
 	private final EGenomeIdType originType;
 

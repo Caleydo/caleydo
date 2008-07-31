@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Level;
-
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.xml.sax.handler.IXmlBaseHandler;
 import org.ccil.cowan.tagsoup.HTMLSchema;
@@ -29,8 +28,7 @@ public class CaleydoInputStream
 	/**
 	 * Opens a file and returns an input stream to that file.
 	 * 
-	 * @param sXMLFileName
-	 *            name and path of the file
+	 * @param sXMLFileName name and path of the file
 	 * @return input stream of the file, or null
 	 */
 	public static InputSource openInputStreamFromFile(final String sXMLFileName,

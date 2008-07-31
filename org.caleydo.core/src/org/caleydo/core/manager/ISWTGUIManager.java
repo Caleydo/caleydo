@@ -62,8 +62,7 @@ public interface ISWTGUIManager
 	/**
 	 * Show or hide the "global" progress bar.
 	 * 
-	 * @param state
-	 *            TRUE enables the progress bar and shows it; FALSE hides the
+	 * @param state TRUE enables the progress bar and shows it; FALSE hides the
 	 *            progressbar.
 	 */
 	public void setProgressbarVisible(final boolean state);

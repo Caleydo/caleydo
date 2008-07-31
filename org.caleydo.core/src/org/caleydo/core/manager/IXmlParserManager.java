@@ -2,7 +2,6 @@ package org.caleydo.core.manager;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource; // import org.xml.sax.SAXException;
-
 import org.caleydo.core.parser.xml.sax.handler.IXmlBaseHandler;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 
@@ -26,11 +25,9 @@ public interface IXmlParserManager
 	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler#initHandler()
 	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler#isHandlerDestoryedAfterClosingTag()
 	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler#getXmlActivationTag()
-	 * @param handler
-	 *            register handler to an opening tag.
-	 * @param sOpeningAndClosingTag
-	 *            defines opening and closing tag tiggering the handler to
-	 *            become active.
+	 * @param handler register handler to an opening tag.
+	 * @param sOpeningAndClosingTag defines opening and closing tag tiggering
+	 *            the handler to become active.
 	 * @return TRUE if Handler could be register and FALSE if either handler or
 	 *         its associated opening Tag was already registered.
 	 */
@@ -39,8 +36,7 @@ public interface IXmlParserManager
 	/**
 	 * Unregister a Handler by its String
 	 * 
-	 * @param sOpeningAndClosingTag
-	 *            tag to identify handler.
+	 * @param sOpeningAndClosingTag tag to identify handler.
 	 * @return TRUE if handle was unregistered.
 	 */
 	public boolean unregisterSaxHandler(final String sActivationXmlTag);
@@ -51,16 +47,14 @@ public interface IXmlParserManager
 	 * 
 	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler
 	 * @see orl.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
-	 * @param handler
-	 *            calling handler, that just read its closing tag
+	 * @param handler calling handler, that just read its closing tag
 	 */
 	public void sectionFinishedByHandler(IXmlParserHandler handler);
 
 	/**
 	 * Open a new XML file and spart parsing it.
 	 * 
-	 * @param filename
-	 *            XML file name.
+	 * @param filename XML file name.
 	 * @return true if file existed and was parsed successfully
 	 */
 	public boolean parseXmlFileByName(String filename);
@@ -68,10 +62,8 @@ public interface IXmlParserManager
 	/**
 	 * Open a new XML file and start parsing it
 	 * 
-	 * @param inputStream
-	 *            stream containing an XML file.
-	 * @param inputStreamText
-	 *            label only
+	 * @param inputStream stream containing an XML file.
+	 * @param inputStreamText label only
 	 * @return true if file existed and was parsed successfully
 	 */
 	public boolean parseXmlFileByInputStream(InputSource inputStream,

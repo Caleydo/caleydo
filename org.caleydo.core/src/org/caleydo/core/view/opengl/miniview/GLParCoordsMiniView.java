@@ -1,7 +1,6 @@
 package org.caleydo.core.view.opengl.miniview;
 
 import javax.media.opengl.GL;
-
 import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
 
 public class GLParCoordsMiniView

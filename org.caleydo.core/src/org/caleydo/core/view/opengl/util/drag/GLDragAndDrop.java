@@ -1,7 +1,6 @@
 package org.caleydo.core.view.opengl.util.drag;
 
 import java.awt.Point;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 

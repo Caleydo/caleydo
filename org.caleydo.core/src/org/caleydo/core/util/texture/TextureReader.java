@@ -1,7 +1,6 @@
 package org.caleydo.core.util.texture;
 
 import com.sun.opengl.util.BufferUtil;
-
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.PixelGrabber;

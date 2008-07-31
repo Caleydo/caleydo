@@ -2,14 +2,11 @@ package org.caleydo.core.view.opengl.util.infoarea;
 
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
-
 import java.awt.Font;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import javax.media.opengl.GL;
-
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.data.view.camera.IViewFrustum;
@@ -19,7 +16,6 @@ import org.caleydo.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
 import org.caleydo.core.view.opengl.miniview.AGLMiniView;
-
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
@@ -103,9 +99,8 @@ public class GLTextInfoAreaRenderer
 	 * Render the data previously set
 	 * 
 	 * @param gl
-	 * @param bFirstTime
-	 *            this has to be true only the first time you render it and can
-	 *            never be true after that
+	 * @param bFirstTime this has to be true only the first time you render it
+	 *            and can never be true after that
 	 */
 	public void renderInfoArea(GL gl, Vec3f vecLowerLeft, boolean bFirstTime)
 	{

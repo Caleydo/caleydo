@@ -3,7 +3,6 @@ package org.caleydo.core.manager.general;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Logger;
-
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
@@ -181,8 +180,7 @@ public class GeneralManager
 
 	/**
 	 * @see org.caleydo.core.manager.IGeneralManager#hasItem(int)
-	 * @param iItemId
-	 *            unique Id used for lookup
+	 * @param iItemId unique Id used for lookup
 	 * @return Object bound to Id or null, if id was not found.
 	 */
 	public Object getItem(final int iItemId)

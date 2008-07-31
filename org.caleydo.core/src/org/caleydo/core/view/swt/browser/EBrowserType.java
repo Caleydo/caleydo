@@ -2,7 +2,8 @@ package org.caleydo.core.view.swt.browser;
 
 public enum EBrowserType
 {
-	GENERAL(""), PUBMED("http://www.ncbi.nlm.nih.gov/sites/entrez?term=");
+	GENERAL(""),
+	PUBMED("http://www.ncbi.nlm.nih.gov/sites/entrez?term=");
 
 	private String sQueryStringPrefix;
 

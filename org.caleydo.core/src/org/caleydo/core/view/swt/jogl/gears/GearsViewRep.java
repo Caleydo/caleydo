@@ -4,7 +4,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
-
 import demos.gears.Gears;
 
 /**

@@ -1,22 +1,19 @@
 package org.caleydo.core.data.collection.ccontainer;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
-
-import org.caleydo.core.data.collection.ICContainer;
 import org.caleydo.core.data.collection.INominalCContainer;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
- * @author Alexander Lex Container for nominal string values. Provides access to
- *         the values, can create discrete values for the nominal values You can
- *         provide a list of all possible values, otherwise such a list will be
- *         constructed when you call normalize, or request a mapping for the
- *         first time.
+ * Container for nominal string values. Provides access to the values, can
+ * create discrete values for the nominal values You can provide a list of all
+ * possible values, otherwise such a list will be constructed when you call
+ * normalize, or request a mapping for the first time.
+ * 
+ * @author Alexander Lex
  */
 public class NominalCContainer<T>
 	implements INominalCContainer<T>
@@ -33,15 +30,12 @@ public class NominalCContainer<T>
 	/**
 	 * Constructor
 	 * 
-	 * @param sAlContainer
-	 *            The complete list of all Strings in the dataset
+	 * @param sAlContainer The complete list of all Strings in the dataset
 	 */
 	public NominalCContainer(ArrayList<T> tAlContainer)
 	{
 
 		this.tAlContainer = tAlContainer;
-		// this.sAlContainer =
-		// (ArrayList<String>)Collections.unmodifiableList(this.sAlContainer);
 		hashNominalToDiscrete = new HashMap<T, Float>();
 		hashDiscreteToNominal = new HashMap<Float, T>();
 	}
@@ -49,13 +43,11 @@ public class NominalCContainer<T>
 	/**
 	 * Get String at index
 	 * 
-	 * @param iIndex
-	 *            the index
+	 * @param iIndex the index
 	 * @return the String
 	 */
 	public T get(int iIndex)
 	{
-
 		return tAlContainer.get(iIndex);
 	}
 
@@ -65,23 +57,21 @@ public class NominalCContainer<T>
 	 * value in the data set is also in this list, otherwise an exception will
 	 * occur
 	 * 
-	 * @param sAlPossibleValues
-	 *            the List
+	 * @param sAlPossibleValues the List
 	 */
-
 	public void setPossibleValues(ArrayList<T> alPossibleValues)
 	{
-
 		// TODO: check if all values in the raw list are also in the other list
 		setUpMapping(alPossibleValues);
 	}
 
 	/**
-	 * Creates a float array of discrete data values for every nominal string
-	 * value. The same string always has the same value. If no list of possible
-	 * values has been specified beforehand, a list is created.
+	 * Creates a float array of discrete data values for every nominal value.
+	 * The same string always has the same value. If no list of possible values
+	 * has been specified beforehand, a list is created.
 	 */
-	public ICContainer normalize()
+	@Override
+	public PrimitiveFloatCContainer normalize()
 	{
 
 		if (!bHashMapsInitialized)
@@ -110,9 +100,9 @@ public class NominalCContainer<T>
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.collection.ICContainer#size()
 	 */
+	@Override
 	public int size()
 	{
-
 		return tAlContainer.size();
 	}
 
@@ -138,7 +128,6 @@ public class NominalCContainer<T>
 	 */
 	public T getNominalForDiscreteValue(Float fDiscrete)
 	{
-
 		if (!bHashMapsInitialized)
 			setUpMapping(tAlContainer);
 		return hashDiscreteToNominal.get(fDiscrete);
@@ -153,7 +142,6 @@ public class NominalCContainer<T>
 	 */
 	public Float getDiscreteForNominalValue(T tNominal)
 	{
-
 		if (!bHashMapsInitialized)
 			setUpMapping(tAlContainer);
 		return hashNominalToDiscrete.get(tNominal);
@@ -167,7 +155,6 @@ public class NominalCContainer<T>
 	 */
 	private void setUpMapping(ArrayList<T> tAlStorage)
 	{
-
 		for (T tContent : tAlStorage)
 		{
 			hashNominalToDiscrete.put(tContent, new Float(0));

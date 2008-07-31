@@ -1,7 +1,6 @@
 package org.caleydo.core.view.opengl.util.hierarchy;
 
 import gleem.linalg.open.Transform;
-
 import java.util.HashMap;
 import java.util.LinkedList;
 

@@ -2,7 +2,6 @@ package org.caleydo.core.manager.specialized.genome;
 
 import java.util.Collection;
 import java.util.Set;
-
 import org.caleydo.core.data.mapping.EGenomeMappingDataType;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 

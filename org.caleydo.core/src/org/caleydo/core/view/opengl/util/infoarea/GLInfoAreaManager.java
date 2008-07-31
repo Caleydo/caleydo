@@ -1,15 +1,12 @@
 package org.caleydo.core.view.opengl.util.infoarea;
 
 import gleem.linalg.Vec3f;
-
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
-
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.data.view.camera.IViewFrustum;
@@ -96,9 +93,8 @@ public class GLInfoAreaManager
 	 * Render the data previously set
 	 * 
 	 * @param gl
-	 * @param bFirstTime
-	 *            this has to be true only the first time you render it and can
-	 *            never be true after that
+	 * @param bFirstTime this has to be true only the first time you render it
+	 *            and can never be true after that
 	 */
 	public void renderInPlaceInfo(GL gl, boolean bFirstTime)
 	{

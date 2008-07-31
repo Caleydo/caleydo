@@ -2,7 +2,6 @@ package org.caleydo.core.data.graph.pathway.item.vertex;
 
 import java.io.Serializable;
 import java.util.StringTokenizer;
-
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;

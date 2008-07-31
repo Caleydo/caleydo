@@ -42,10 +42,8 @@ public abstract class AColorMapping
 	}
 
 	/**
-	 * @param max
-	 *            the largest value to be mapped
-	 * @param min
-	 *            the smallest value to be mapped
+	 * @param max the largest value to be mapped
+	 * @param min the smallest value to be mapped
 	 */
 	public void setValueMinMax(final float fMin, final float fMax)
 	{
@@ -64,8 +62,7 @@ public abstract class AColorMapping
 	}
 
 	/**
-	 * @param color_outOfRange
-	 *            the color_outOfRange to set
+	 * @param color_outOfRange the color_outOfRange to set
 	 */
 	public final void setColor_outOfRange(Vec3f color_outOfRange)
 	{

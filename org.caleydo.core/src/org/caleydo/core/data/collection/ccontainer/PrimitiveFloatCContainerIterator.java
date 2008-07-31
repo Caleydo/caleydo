@@ -1,12 +1,13 @@
 package org.caleydo.core.data.collection.ccontainer;
 
 import java.util.NoSuchElementException;
-
 import org.caleydo.core.data.collection.ICContainerIterator;
 
 /**
- * @author Alexander Lex Iterator for PrimitiveFloatCContainer Initialized by
- *         passing the container. Then provides the common iterator accessors.
+ * Iterator for PrimitiveFloatCContainer Initialized by passing the container.
+ * Then provides the common iterator accessors.
+ * 
+ * @author Alexander Lex
  */
 public class PrimitiveFloatCContainerIterator
 	implements ICContainerIterator
@@ -21,10 +22,8 @@ public class PrimitiveFloatCContainerIterator
 	 * 
 	 * @param primitiveFloatStorage
 	 */
-
 	public PrimitiveFloatCContainerIterator(PrimitiveFloatCContainer primitiveFloatStorage)
 	{
-
 		this.primitiveFloatCContainer = primitiveFloatStorage;
 	}
 
@@ -33,6 +32,7 @@ public class PrimitiveFloatCContainerIterator
 	 * @see
 	 * org.caleydo.core.data.collection.IPrimitiveCContainerIterator#hasNext()
 	 */
+	@Override
 	public boolean hasNext()
 	{
 
@@ -51,7 +51,6 @@ public class PrimitiveFloatCContainerIterator
 	 */
 	public float next()
 	{
-
 		try
 		{
 			return primitiveFloatCContainer.get(++iIndex);

@@ -1,5 +1,7 @@
 package org.caleydo.core.data.collection;
 
+import org.caleydo.core.data.collection.ccontainer.PrimitiveFloatCContainer;
+
 /**
  * Extension of the ICContainer interface for numerical values
  * 
@@ -16,18 +18,32 @@ public interface INumericalCContainer
 	 * care that dMin and dMax are smaller resp. bigger than the smallest resp.
 	 * biggest value in the data.
 	 * 
-	 * @param dMin
-	 *            the minimum
-	 * @param dMax
-	 *            the maximum
+	 * @param dMin the minimum
+	 * @param dMax the maximum
 	 * @return
 	 */
-	public ICContainer normalizeWithExternalExtrema(double dMin, double dMax);
+	public PrimitiveFloatCContainer normalizeWithExternalExtrema(double dMin, double dMax);
 
+	/**
+	 * Returns the minimum of the container, double to fit all datatypes
+	 * 
+	 * @return the minimum
+	 */
 	public double getMin();
 
+	/**
+	 * Returns the maximum of the container, double to fit all datatypes
+	 * 
+	 * @return the maximum
+	 */
 	public double getMax();
 
-	public ICContainer log10();
+	/**
+	 * Calculates a logarithmic representation (logarithm to the base of 10) for
+	 * the data, which it returns as a new ICContainer
+	 * 
+	 * @return
+	 */
+	public PrimitiveFloatCContainer log10();
 
 }

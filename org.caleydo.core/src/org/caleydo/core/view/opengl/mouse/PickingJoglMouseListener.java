@@ -2,7 +2,6 @@ package org.caleydo.core.view.opengl.mouse;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
-
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 
 /**

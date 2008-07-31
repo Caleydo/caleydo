@@ -1,10 +1,8 @@
 package org.caleydo.core.parser.xml.sax.handler.glyph;
 
 import gleem.linalg.Vec4f;
-
 import java.util.Vector;
 import java.util.logging.Level;
-
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
@@ -412,7 +410,7 @@ public class GlyphDefinitionSaxHandler
 
 		for (int i = imin; i < imax; i += iint)
 		{
-			gatActualColumn.addAttribute(i-imin, Integer.toString(i), (float) i);
+			gatActualColumn.addAttribute(i - imin, Integer.toString(i), (float) i);
 		}
 
 	}

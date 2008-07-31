@@ -3,7 +3,6 @@ package org.caleydo.core.data.view.rep.renderstyle.layout;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
-
 import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;

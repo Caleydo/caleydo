@@ -3,8 +3,9 @@ package org.caleydo.core.data.collection;
 import java.util.ArrayList;
 
 /**
- * @author Alexander Lex Extension of the ICContainer interface for handling
- *         nominal data.
+ * Extension of the ICContainer interface for handling nominal data.
+ * 
+ * @author Alexander Lex
  */
 public interface INominalCContainer<T>
 	extends ICContainer
@@ -16,8 +17,7 @@ public interface INominalCContainer<T>
 	 * value in the data set is also in this list, otherwise an exception will
 	 * occur
 	 * 
-	 * @param sAlPossibleValues
-	 *            the List
+	 * @param sAlPossibleValues the List
 	 */
 	public void setPossibleValues(ArrayList<T> tAlPossibleValues);
 

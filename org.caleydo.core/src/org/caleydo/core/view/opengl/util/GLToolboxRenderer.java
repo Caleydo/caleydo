@@ -1,17 +1,13 @@
 package org.caleydo.core.view.opengl.util;
 
 import gleem.linalg.Vec3f;
-
 import java.util.EnumMap;
-
 import javax.media.opengl.GL;
-
 import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.view.EPickingType;
 import org.caleydo.core.manager.view.PickingManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
-
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -57,13 +53,11 @@ public class GLToolboxRenderer
 	/**
 	 * Constructor
 	 * 
-	 * @param vecLeftPoint
-	 *            is the bottom left point if bRenderLeftToRight is true, else
-	 *            the top left point
+	 * @param vecLeftPoint is the bottom left point if bRenderLeftToRight is
+	 *            true, else the top left point
 	 * @param layer
-	 * @param bRenderLeftToRight
-	 *            true if it should be rendered left to right, false if top to
-	 *            bottom
+	 * @param bRenderLeftToRight true if it should be rendered left to right,
+	 *            false if top to bottom
 	 */
 	public GLToolboxRenderer(final GL gl, final IGeneralManager generalManager,
 			final int iContainingViewID, final Vec3f vecLeftPoint,
@@ -97,8 +91,7 @@ public class GLToolboxRenderer
 	}
 
 	/**
-	 * @param gl
-	 *            the gl of the context, remote gl when called remote
+	 * @param gl the gl of the context, remote gl when called remote
 	 */
 	public void render(final GL gl)
 	{

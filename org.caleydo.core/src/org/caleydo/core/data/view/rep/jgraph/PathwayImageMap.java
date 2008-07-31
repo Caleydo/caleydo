@@ -65,8 +65,7 @@ public class PathwayImageMap
 	 * Method takes a point and looks if the point is contained in one of the
 	 * areas. If a containing area is found the corresponding link is returned.
 	 * 
-	 * @param point
-	 *            Point to check for intersection.
+	 * @param point Point to check for intersection.
 	 * @return Link that should be followed.
 	 */
 	public String processPoint(Point point)

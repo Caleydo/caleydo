@@ -9,7 +9,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
-
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;

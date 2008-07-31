@@ -13,19 +13,21 @@ public enum EManagerObjectType
 	/**
 	 * see org.caleydo.core.command.CommandQueueSaxType.CREATE_EVENT_MEDIATOR
 	 */
-	EVENT_MEDIATOR_CREATE(EManagerType.EVENT_PUBLISHER), EVENT_MEDIATOR_ADD_OBJECT(
-			EManagerType.EVENT_PUBLISHER),
+	EVENT_MEDIATOR_CREATE(EManagerType.EVENT_PUBLISHER),
+	EVENT_MEDIATOR_ADD_OBJECT(EManagerType.EVENT_PUBLISHER),
 
 	/*
 	 * STORAGE
 	 */
-	STORAGE(EManagerType.DATA_STORAGE), STORAGE_NUMERICAL(EManagerType.DATA_STORAGE), STORAGE_NOMINAL(
-			EManagerType.DATA_STORAGE),
+	STORAGE(EManagerType.DATA_STORAGE),
+	STORAGE_NUMERICAL(EManagerType.DATA_STORAGE),
+	STORAGE_NOMINAL(EManagerType.DATA_STORAGE),
 
 	/*
 	 * SELECTION
 	 */
-	VIRTUAL_ARRAY(EManagerType.DATA_VIRTUAL_ARRAY), SELECTION(EManagerType.DATA_SELECTION),
+	VIRTUAL_ARRAY(EManagerType.DATA_VIRTUAL_ARRAY),
+	SELECTION(EManagerType.DATA_SELECTION),
 
 	/*
 	 * SET
@@ -153,8 +155,7 @@ public enum EManagerObjectType
 	/**
 	 * Constructor.
 	 * 
-	 * @param setGroupType
-	 *            type of manager group
+	 * @param setGroupType type of manager group
 	 */
 	private EManagerObjectType(final EManagerType setGroupType)
 	{
@@ -166,8 +167,7 @@ public enum EManagerObjectType
 	/**
 	 * Constructor.
 	 * 
-	 * @param setGroupType
-	 *            type of manager group
+	 * @param setGroupType type of manager group
 	 */
 	private EManagerObjectType(final EManagerType setGroupType,
 			final int iSetUniqueId_TypeOffset)
@@ -197,8 +197,7 @@ public enum EManagerObjectType
 	/**
 	 * Create a list with all valid Id_TypeOffset values.
 	 * 
-	 * @param delimiter
-	 *            String between Id and String
+	 * @param delimiter String between Id and String
 	 * @return
 	 */
 	public String toString_Id_TypeOffset(final String delimiter)

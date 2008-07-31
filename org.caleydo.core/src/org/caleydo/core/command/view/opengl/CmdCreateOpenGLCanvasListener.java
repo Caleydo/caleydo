@@ -3,13 +3,10 @@ package org.caleydo.core.command.view.opengl;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
-
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
-
 import javax.media.opengl.GLEventListener;
-
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParent;
 import org.caleydo.core.data.view.camera.IViewFrustum;

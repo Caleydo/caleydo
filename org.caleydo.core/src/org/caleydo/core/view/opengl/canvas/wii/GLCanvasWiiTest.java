@@ -4,14 +4,12 @@ import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
-
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.view.EPickingMode;
@@ -21,7 +19,6 @@ import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
-
 import wiiremotej.IRLight;
 import wiiremotej.WiiRemote;
 import wiiremotej.WiiRemoteJ;

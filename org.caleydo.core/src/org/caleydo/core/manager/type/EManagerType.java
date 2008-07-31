@@ -65,8 +65,7 @@ public enum EManagerType
 	/**
 	 * Constructor.
 	 * 
-	 * @param setRemark
-	 *            details on toolkit and version of toolkit.
+	 * @param setRemark details on toolkit and version of toolkit.
 	 */
 	private EManagerType(String setRemark, final int iSetIdOffsetType)
 	{
@@ -79,8 +78,7 @@ public enum EManagerType
 	/**
 	 * Constructor.
 	 * 
-	 * @param setRemark
-	 *            details on toolkit and version of toolkit.
+	 * @param setRemark details on toolkit and version of toolkit.
 	 */
 	private EManagerType(String setRemark, EManagerType parentType, final int iSetIdOffsetType)
 	{

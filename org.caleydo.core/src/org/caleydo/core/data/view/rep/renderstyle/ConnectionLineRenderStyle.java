@@ -14,15 +14,15 @@ public class ConnectionLineRenderStyle
 	// 0.068f, 0.2f};
 	// red
 	public static final float[] CONNECTION_AREA_COLOR = { 0.812f, 0.812f, 0.116f, 0.65f };// {
-																							// 0.812f
-																							// ,
-																							// 0.212f
-																							// ,
-																							// 0.116f
-																							// ,
-																							// 0.4f
-																							// }
-																							// ;
+	// 0.812f
+	// ,
+	// 0.212f
+	// ,
+	// 0.116f
+	// ,
+	// 0.4f
+	// }
+	// ;
 
 	// yellow
 	// public static final float[] CONNECTION_AREA_COLOR = {1f, 1f, 0.0f, 0.3f};

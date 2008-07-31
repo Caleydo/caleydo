@@ -1,7 +1,6 @@
 package org.caleydo.core.data.graph.pathway.core;
 
 import java.io.Serializable;
-
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.util.graph.core.Graph;
 

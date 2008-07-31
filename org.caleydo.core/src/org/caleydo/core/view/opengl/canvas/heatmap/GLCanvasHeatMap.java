@@ -4,13 +4,10 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
-
 import java.util.ArrayList;
 import java.util.Set;
-
 import javax.media.opengl.GL;
-
-import org.caleydo.core.data.collection.ccontainer.EDataKind;
+import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.HeatMapRenderStyle;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
@@ -486,8 +483,8 @@ public class GLCanvasHeatMap
 			final float fXPosition, final float fYPosition, final Vec2f vecFieldWidthAndHeight)
 	{
 
-		float fLookupValue = alDataStorages.get(iStorageIndex).getFloat(EDataKind.NORMALIZED,
-				iContentIndex);
+		float fLookupValue = alDataStorages.get(iStorageIndex).getFloat(
+				EDataRepresentation.NORMALIZED, iContentIndex);
 		Vec3f vecMappingColor = colorMapper.colorMappingLookup(fLookupValue);
 		gl.glColor3f(vecMappingColor.x(), vecMappingColor.y(), vecMappingColor.z());
 
@@ -622,9 +619,9 @@ public class GLCanvasHeatMap
 
 		float fFrustumLength = viewFrustum.getRight() - viewFrustum.getLeft();
 		float fLength = (alSelection.size() - 1) * renderStyle.getNormalFieldWidth() + 1.5f; // MARC
-																								// :
-																								// 1.5
-																								// =
+		// :
+		// 1.5
+		// =
 		// correction of
 		// lens effect in
 		// heatmap

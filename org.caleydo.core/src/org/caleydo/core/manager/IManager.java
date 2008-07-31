@@ -15,8 +15,7 @@ public interface IManager
 	/**
 	 * Tests, if a certain iItemId is handled by the manager.
 	 * 
-	 * @param iItemId
-	 *            to identify an item that is tested
+	 * @param iItemId to identify an item that is tested
 	 * @return TRUE if iItemId exists
 	 */
 	public boolean hasItem(final int iItemId);
@@ -25,8 +24,7 @@ public interface IManager
 	 * Return the item bound to the iItemId or null if the id is not bound to an
 	 * item.
 	 * 
-	 * @param iItemId
-	 *            unique id used for lookup
+	 * @param iItemId unique id used for lookup
 	 * @return object bound to iItemId
 	 */
 	public Object getItem(final int iItemId);
@@ -41,10 +39,8 @@ public interface IManager
 	/**
 	 * Registers one Id and links it to the reference.
 	 * 
-	 * @param registerItem
-	 *            Object to be registered
-	 * @param iItemId
-	 *            unique Id
+	 * @param registerItem Object to be registered
+	 * @param iItemId unique Id
 	 * @return TRUE if item was unregistered by this manager
 	 */
 	public boolean registerItem(final Object registerItem, final int iItemId);
@@ -52,10 +48,8 @@ public interface IManager
 	/**
 	 * Unregisters an item using it's Id.
 	 * 
-	 * @param iItemId
-	 *            unique Id
-	 * @param type
-	 *            defines type, can also be null if type is not known
+	 * @param iItemId unique Id
+	 * @param type defines type, can also be null if type is not known
 	 * @return TRUE if item was unregistered by this manager
 	 */
 	public boolean unregisterItem(final int iItemId);
@@ -64,8 +58,7 @@ public interface IManager
 	 * Create a new unique Id.
 	 * 
 	 * @return new unique Id
-	 * @param setNewBaseType
-	 *            type of object the id shall be created for
+	 * @param setNewBaseType type of object the id shall be created for
 	 * @see org.caleydo.core.manager.IGeneralManager#iUniqueId_TypeOffsetMultiplyer
 	 * @see org.caleydo.core.manager.IGeneralManager#iUniqueId_WorkspaceOffset
 	 */

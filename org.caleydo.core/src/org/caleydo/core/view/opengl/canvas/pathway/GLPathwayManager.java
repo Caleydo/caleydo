@@ -1,7 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.pathway;
 
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -9,9 +8,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.Map.Entry;
 import java.util.logging.Level;
-
 import javax.media.opengl.GL;
-
 import org.caleydo.core.data.AManagedObject;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
@@ -200,9 +197,9 @@ public class GLPathwayManager
 			// continue;
 
 			hashSelectedVertexRepId2Depth.put(iAlTmpSelectedGraphItemIds.get(iItemIndex), 0);// iAlTmpSelectedGraphItemDepth
-																								// .
-																								// get
-																								// (
+			// .
+			// get
+			// (
 			// iItemIndex));
 
 			if (!bEnableIdenticalNodeHighlighting)
@@ -456,7 +453,8 @@ public class GLPathwayManager
 	{
 
 		Iterator<IGraphItem> vertexIterator = pathwayToExtract.getAllItemsByKind(
-				EGraphItemKind.NODE).iterator();;
+				EGraphItemKind.NODE).iterator();
+		;
 		IGraphItem vertexRep;
 
 		while (vertexIterator.hasNext())

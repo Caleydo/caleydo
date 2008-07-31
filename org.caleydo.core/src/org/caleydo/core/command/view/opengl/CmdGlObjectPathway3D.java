@@ -2,7 +2,6 @@ package org.caleydo.core.command.view.opengl;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.data.view.camera.ViewFrustumBase;
 import org.caleydo.core.manager.ICommandManager;

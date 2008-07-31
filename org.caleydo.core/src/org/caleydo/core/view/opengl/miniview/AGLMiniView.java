@@ -1,9 +1,7 @@
 package org.caleydo.core.view.opengl.miniview;
 
 import java.util.ArrayList;
-
 import javax.media.opengl.GL;
-
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.selection.Selection;
 

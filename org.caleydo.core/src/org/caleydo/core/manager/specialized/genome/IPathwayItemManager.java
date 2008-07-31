@@ -2,7 +2,6 @@ package org.caleydo.core.manager.specialized.genome;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.caleydo.core.manager.IManager;
 import org.caleydo.util.graph.IGraph;
 import org.caleydo.util.graph.IGraphItem;

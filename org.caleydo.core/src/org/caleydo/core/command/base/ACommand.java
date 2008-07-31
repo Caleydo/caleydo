@@ -1,7 +1,6 @@
 package org.caleydo.core.command.base;
 
 import java.io.Serializable;
-
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.data.AManagedObject;

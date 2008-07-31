@@ -9,9 +9,7 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
-
 import javax.media.opengl.GLEventListener;
-
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.system.StringConversionTool;

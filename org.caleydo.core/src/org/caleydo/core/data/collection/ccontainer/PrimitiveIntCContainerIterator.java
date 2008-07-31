@@ -1,12 +1,13 @@
 package org.caleydo.core.data.collection.ccontainer;
 
 import java.util.NoSuchElementException;
-
 import org.caleydo.core.data.collection.ICContainerIterator;
 
 /**
- * @author Alexander Lex Iterator for PrimitiveIntCContainer Initialized by
- *         passing the container. Then provides the common iterator accessors.
+ * Iterator for PrimitiveIntCContainer. Initialized by passing the container.
+ * Provides the common iterator accessors.
+ * 
+ * @author Alexander Lex
  */
 public class PrimitiveIntCContainerIterator
 	implements ICContainerIterator
@@ -16,6 +17,11 @@ public class PrimitiveIntCContainerIterator
 
 	PrimitiveIntCContainer primitiveIntCContainer = null;
 
+	/**
+	 * Constructor
+	 * 
+	 * @param primitiveIntCContainer the container over which to iterate
+	 */
 	public PrimitiveIntCContainerIterator(PrimitiveIntCContainer primitiveIntCContainer)
 	{
 
@@ -26,6 +32,7 @@ public class PrimitiveIntCContainerIterator
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.collection.ICContainerIterator#hasNext()
 	 */
+	@Override
 	public boolean hasNext()
 	{
 

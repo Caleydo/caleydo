@@ -2,7 +2,6 @@ package org.caleydo.core.view.swt.undoredo;
 
 import java.util.Iterator;
 import java.util.Vector;
-
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.AView;

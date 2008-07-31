@@ -1,7 +1,6 @@
 package org.caleydo.core.command.memento.sample;
 
 import java.io.Serializable;
-
 import org.caleydo.core.command.memento.IMementoState;
 
 /**

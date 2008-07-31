@@ -1,7 +1,6 @@
 package org.caleydo.core.data.view.camera;
 
 import java.io.Serializable;
-
 import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 
 /**

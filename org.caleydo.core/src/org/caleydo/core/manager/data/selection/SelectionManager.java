@@ -2,7 +2,6 @@ package org.caleydo.core.manager.data.selection;
 
 import java.util.Collection;
 import java.util.HashMap;
-
 import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.manager.AManager;

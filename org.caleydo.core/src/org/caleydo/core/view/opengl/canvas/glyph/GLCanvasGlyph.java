@@ -2,15 +2,12 @@ package org.caleydo.core.view.opengl.canvas.glyph;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Vec2i;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.logging.Level;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GLCanvas;
-
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.data.selection.Selection;

@@ -1,7 +1,6 @@
 package org.caleydo.core.manager.data;
 
 import java.util.Collection;
-
 import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.manager.IManager;
 

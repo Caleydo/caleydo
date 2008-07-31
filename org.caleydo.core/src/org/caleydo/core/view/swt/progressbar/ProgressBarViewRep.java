@@ -6,7 +6,6 @@ package org.caleydo.core.view.swt.progressbar;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.ProgressBar;
-
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;

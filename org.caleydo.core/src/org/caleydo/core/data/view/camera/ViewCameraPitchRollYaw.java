@@ -100,8 +100,7 @@ public class ViewCameraPitchRollYaw
 	 * Sets yaw angle in radians and updates the quaternion.
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#addYawX(float)
-	 * @param fSetRadiant
-	 *            yaw angle in radians
+	 * @param fSetRadiant yaw angle in radians
 	 */
 	public void setYawX(final float fSetRadiant)
 	{
@@ -115,8 +114,7 @@ public class ViewCameraPitchRollYaw
 	 * Sets pitch angle in radians and updates the quaternion.
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#addPitchY(float)
-	 * @param fSetRadiant
-	 *            pitch angle in radians
+	 * @param fSetRadiant pitch angle in radians
 	 */
 	public void setPitchY(final float fSetRadiant)
 	{
@@ -130,8 +128,7 @@ public class ViewCameraPitchRollYaw
 	 * Sets roll angle in radians and updates the quaternion.
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#addRollZ(float)
-	 * @param fSetRadiant
-	 *            roll angle in radians
+	 * @param fSetRadiant roll angle in radians
 	 */
 	public void setRollZ(final float fSetRadiant)
 	{
@@ -145,8 +142,7 @@ public class ViewCameraPitchRollYaw
 	 * Adds a roll increment in radians and updates the quaternion.
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#setYawX(float)
-	 * @param fSetRadiant
-	 *            roll increment in radians
+	 * @param fSetRadiant roll increment in radians
 	 */
 	public void addYawX(final float fSetRadiant)
 	{
@@ -160,8 +156,7 @@ public class ViewCameraPitchRollYaw
 	 * Adds a roll increment in radians and updates the quaternion.
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#setPitchY(float)
-	 * @param fSetRadiant
-	 *            roll increment in radians
+	 * @param fSetRadiant roll increment in radians
 	 */
 	public void addPitchY(final float fSetRadiant)
 	{
@@ -175,8 +170,7 @@ public class ViewCameraPitchRollYaw
 	 * Adds a roll increment in radians and updates the quaternion.
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#setRollZ(float)
-	 * @param fSetRadiant
-	 *            roll increment in radians
+	 * @param fSetRadiant roll increment in radians
 	 */
 	public void addRollZ(final float fSetRadiant)
 	{
@@ -192,10 +186,8 @@ public class ViewCameraPitchRollYaw
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#addPitchY(float)
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#setRollZ(float)
 	 * @see prometheus.data.collection.view.camera.ViewCameraPitchRollYaw#addYawX(float)
-	 * @param iIndex
-	 *            index from [0..2] were 0..yawX, 1..pitchY and 2..rollZ
-	 * @param fSetRadiant
-	 *            rotation angel in radians
+	 * @param iIndex index from [0..2] were 0..yawX, 1..pitchY and 2..rollZ
+	 * @param fSetRadiant rotation angel in radians
 	 */
 	public void setByIndex(final int iIndex, final float fSetRadiant)
 	{
@@ -266,9 +258,8 @@ public class ViewCameraPitchRollYaw
 	 * Set state for update behaviour.
 	 * 
 	 * @see prometheus.data.collection.view.camera.ViewCameraBase#getCameraMatrix()
-	 * @param bImmediateUpdate
-	 *            TRUE force an immediate update once a setter is called, which
-	 *            recalulates the ViewMatrix
+	 * @param bImmediateUpdate TRUE force an immediate update once a setter is
+	 *            called, which recalulates the ViewMatrix
 	 */
 	public synchronized void setImmediateCameraUpdate(final boolean bImmediateUpdate)
 	{

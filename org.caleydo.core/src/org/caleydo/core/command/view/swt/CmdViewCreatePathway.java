@@ -2,7 +2,6 @@ package org.caleydo.core.command.view.swt;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY;
 import org.caleydo.core.manager.ICommandManager;

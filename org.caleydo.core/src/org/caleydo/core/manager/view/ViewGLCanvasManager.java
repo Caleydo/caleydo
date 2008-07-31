@@ -5,11 +5,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
-
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.swing.JFrame;
-
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle;
@@ -41,7 +39,6 @@ import org.caleydo.core.view.swt.mixer.MixerViewRep;
 import org.caleydo.core.view.swt.progressbar.ProgressBarViewRep;
 import org.caleydo.core.view.swt.test.TestTableViewRep;
 import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
-
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
 

@@ -6,7 +6,6 @@ package org.caleydo.core.command.queue;
 import java.util.Vector;
 import java.util.Iterator;
 import java.util.ListIterator;
-
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.command.queue.ACommandQueue;
@@ -207,8 +206,7 @@ public class CommandQueueVector
 	 * Check is QueueID is set. Attention: This method is expensive, because
 	 * getId() is called on all elements inside the Vector.
 	 * 
-	 * @param testCmdQueueId
-	 *            uniwue command id to seek for
+	 * @param testCmdQueueId uniwue command id to seek for
 	 * @return TRUE if testCmdQueueId is inside vector
 	 */
 	public boolean containsCmdQueueId(final int testCmdQueueId)
@@ -230,8 +228,7 @@ public class CommandQueueVector
 	/**
 	 * Add a new command.
 	 * 
-	 * @param cmdItem
-	 *            add command
+	 * @param cmdItem add command
 	 * @return FALSE if command is already inside queue, TRUE else
 	 */
 	public boolean addCmdToQueue(final ICommand cmdItem)
@@ -249,8 +246,7 @@ public class CommandQueueVector
 	/**
 	 * Remove a new command.
 	 * 
-	 * @param cmdItem
-	 *            remove command
+	 * @param cmdItem remove command
 	 */
 	public boolean removeCmdFromQueue(final ICommand cmdItem)
 	{
@@ -261,8 +257,7 @@ public class CommandQueueVector
 	/**
 	 * Contains a command.
 	 * 
-	 * @param cmdItem
-	 *            test if command is contained in command queue
+	 * @param cmdItem test if command is contained in command queue
 	 */
 	public boolean containsCmdInQueue(final ICommand cmdItem)
 	{

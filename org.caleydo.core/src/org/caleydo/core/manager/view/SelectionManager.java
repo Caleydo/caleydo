@@ -3,7 +3,6 @@ package org.caleydo.core.manager.view;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
-
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;

@@ -11,8 +11,8 @@ package org.caleydo.core.view.swt.browser;
  */
 public enum EBrowserQueryType
 {
-	PROCESS_STRING_WITHOUT_CHANGE(""), PUBMED_PREFIX(
-			"http://www.ncbi.nlm.nih.gov/sites/entrez?term=");
+	PROCESS_STRING_WITHOUT_CHANGE(""),
+	PUBMED_PREFIX("http://www.ncbi.nlm.nih.gov/sites/entrez?term=");
 
 	private String sQueryStringPrefix;
 

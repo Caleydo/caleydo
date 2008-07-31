@@ -14,8 +14,7 @@ public interface ICommandFactory
 	/**
 	 * Create a new Command assigned to a cmdType.
 	 * 
-	 * @param cmdType
-	 *            specify the ICommand to be created.
+	 * @param cmdType specify the ICommand to be created.
 	 * @return new ICommand
 	 */
 	public ICommand createCommandByType(final CommandQueueSaxType cmdType);

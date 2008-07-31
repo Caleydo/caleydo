@@ -2,7 +2,6 @@ package org.caleydo.core.view.opengl.canvas.glyph;
 
 import gleem.linalg.Vec4f;
 import gleem.linalg.open.Vec2i;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -10,15 +9,12 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Vector;
 import java.util.logging.Level;
-
 import javax.media.opengl.GL;
-
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.view.rep.renderstyle.GlyphRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
 import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
-
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**

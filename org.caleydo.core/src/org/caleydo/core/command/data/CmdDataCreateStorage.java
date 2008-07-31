@@ -3,7 +3,6 @@ package org.caleydo.core.command.data;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
-
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabel;
 import org.caleydo.core.data.collection.IStorage;
@@ -89,7 +88,8 @@ public class CmdDataCreateStorage
 			else if (sAttrib1.equalsIgnoreCase("NUMERICAL"))
 				storageType = EManagerObjectType.STORAGE_NUMERICAL;
 			else
-				throw new CaleydoRuntimeException("attrib1 of CREATE_STORAGE must be either NUMERICAL or NOMINAL, but was neither", 
+				throw new CaleydoRuntimeException(
+						"attrib1 of CREATE_STORAGE must be either NUMERICAL or NOMINAL, but was neither",
 						CaleydoRuntimeExceptionType.COMMAND);
 		}
 

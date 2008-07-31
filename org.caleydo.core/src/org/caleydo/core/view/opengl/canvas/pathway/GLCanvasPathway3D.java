@@ -1,14 +1,11 @@
 package org.caleydo.core.view.opengl.canvas.pathway;
 
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
-
 import javax.media.opengl.GL;
-
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;

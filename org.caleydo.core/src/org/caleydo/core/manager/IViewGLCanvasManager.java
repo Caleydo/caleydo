@@ -1,17 +1,14 @@
 package org.caleydo.core.manager;
 
 import java.util.Collection;
-
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
-
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.manager.view.PickingManager;
 import org.caleydo.core.manager.view.SelectionManager;
 import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
-
 import com.sun.opengl.util.Animator;
 
 /**

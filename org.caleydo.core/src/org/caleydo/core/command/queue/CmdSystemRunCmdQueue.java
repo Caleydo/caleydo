@@ -8,8 +8,8 @@ import org.caleydo.core.command.base.ACommand;
 import org.caleydo.core.command.queue.ICommandQueue;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager; // import
-													// org.caleydo.core.manager
-													// .type.ManagerObjectType;
+// org.caleydo.core.manager
+// .type.ManagerObjectType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**

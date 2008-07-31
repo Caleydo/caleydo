@@ -1,14 +1,14 @@
 package org.caleydo.core.data.collection.ccontainer;
 
 import org.caleydo.core.data.collection.INumericalCContainer;
-import org.caleydo.core.data.collection.ICContainer;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
- * @author Alexander Lex A container for floats. Initialized with a float array.
- *         The length can not be modified after initialization. Optimized to
- *         hold a large amount of data.
+ * A container for floats. Initialized with a float array. The length can not be
+ * modified after initialization. Optimized to hold a large amount of data.
+ * 
+ * @author Alexander Lex
  */
 public class PrimitiveFloatCContainer
 	implements INumericalCContainer
@@ -24,8 +24,7 @@ public class PrimitiveFloatCContainer
 	 * Constructor Pass a float array. The length of the array can not be
 	 * modified after initialization
 	 * 
-	 * @param fArContainer
-	 *            the float array
+	 * @param fArContainer the float array
 	 */
 	public PrimitiveFloatCContainer(final float[] fArContainer)
 	{
@@ -37,19 +36,17 @@ public class PrimitiveFloatCContainer
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.collection.ICContainer#size()
 	 */
+	@Override
 	public int size()
 	{
-
 		return fArContainer.length;
 	}
 
 	/**
 	 * Returns the value associated with the index
 	 * 
-	 * @throws IndexOutOfBoundsException
-	 *             if index out of range
-	 * @param iIndex
-	 *            index of element to return
+	 * @throws IndexOutOfBoundsException if index out of range
+	 * @param iIndex index of element to return
 	 * @return the element at the specified position in this list
 	 */
 	public float get(final int iIndex)
@@ -69,27 +66,25 @@ public class PrimitiveFloatCContainer
 		return new PrimitiveFloatCContainerIterator(this);
 	}
 
-	/**
-	 * Returns the smallest value in the container
-	 * 
-	 * @return the smallest value in the container
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.INumericalCContainer#getMin()
 	 */
+	@Override
 	public double getMin()
 	{
-
 		if (Float.isNaN(fMin))
 			calculateMinMax();
 		return fMin;
 	}
 
-	/**
-	 * Returns the biggest value in the container
-	 * 
-	 * @return the biggest value in the container
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.INumericalCContainer#getMax()
 	 */
+	@Override
 	public double getMax()
 	{
-
 		if (Float.isNaN(fMax))
 			calculateMinMax();
 		return fMax;
@@ -99,9 +94,9 @@ public class PrimitiveFloatCContainer
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.collection.ICContainer#normalize()
 	 */
-	public ICContainer normalize()
+	@Override
+	public PrimitiveFloatCContainer normalize()
 	{
-
 		return normalize((float) getMin(), (float) getMax());
 	}
 
@@ -110,7 +105,9 @@ public class PrimitiveFloatCContainer
 	 * @seeorg.caleydo.core.data.collection.INumericalStorage#
 	 * normalizeWithExternalExtrema(double, double)
 	 */
-	public ICContainer normalizeWithExternalExtrema(final double dMin, final double dMax)
+	@Override
+	public PrimitiveFloatCContainer normalizeWithExternalExtrema(final double dMin,
+			final double dMax)
 	{
 
 		if (dMin > getMin() || dMax < getMax())
@@ -126,9 +123,9 @@ public class PrimitiveFloatCContainer
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.collection.INumericalCContainer#log10()
 	 */
+	@Override
 	public PrimitiveFloatCContainer log10()
 	{
-
 		float[] fArTarget = new float[fArContainer.length];
 
 		float fTmp;
@@ -147,16 +144,13 @@ public class PrimitiveFloatCContainer
 	 * Does the actual normalization between 0 and 1 values that are NaN in the
 	 * input are kept to be NaN
 	 * 
-	 * @param fMin
-	 *            the minimum considered in the normalization
-	 * @param fMax
-	 *            the maximum considered in the normalization
+	 * @param fMin the minimum considered in the normalization
+	 * @param fMax the maximum considered in the normalization
 	 * @return
 	 */
-	private ICContainer normalize(final float fMin, final float fMax)
+	private PrimitiveFloatCContainer normalize(final float fMin, final float fMax)
 	{
-
-		float[] fArTmpTarget = new float[fArContainer.length];;
+		float[] fArTmpTarget = new float[fArContainer.length];
 		if (fArContainer.length > 1)
 		{
 
@@ -179,7 +173,6 @@ public class PrimitiveFloatCContainer
 	 */
 	private void calculateMinMax()
 	{
-
 		fMin = Float.MAX_VALUE;
 		fMax = Float.MIN_VALUE;
 		for (int iCount = 0; iCount < fArContainer.length; iCount++)
@@ -187,8 +180,6 @@ public class PrimitiveFloatCContainer
 			float fCurrent = fArContainer[iCount];
 
 			if (Float.isNaN(fCurrent))
-				continue;
-			if (fCurrent < -200)
 				continue;
 
 			if (fCurrent < fMin)

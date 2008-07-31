@@ -6,7 +6,6 @@ package org.caleydo.core.manager.specialized.genome.id;
 import java.util.Collection;
 import java.util.Set;
 import java.util.logging.Level;
-
 import org.caleydo.core.data.mapping.EGenomeMappingDataType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;

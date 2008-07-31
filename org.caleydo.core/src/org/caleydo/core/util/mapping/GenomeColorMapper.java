@@ -1,13 +1,11 @@
 package org.caleydo.core.util.mapping;
 
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.ccontainer.EDataKind;
+import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
@@ -106,8 +104,8 @@ public class GenomeColorMapper
 					// Get expression value by MicroArrayID
 					expressionStorage = iterMappingStorage.next();
 
-					float fExpressionValue = expressionStorage.getFloat(EDataKind.NORMALIZED,
-							iExpressionStorageIndex);
+					float fExpressionValue = expressionStorage.getFloat(
+							EDataRepresentation.NORMALIZED, iExpressionStorageIndex);
 
 					arMappingColor.add(expressionColorMapper
 							.colorMappingLookup(fExpressionValue));

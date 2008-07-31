@@ -22,19 +22,14 @@ public interface ICommandManager
 	/**
 	 * Create a new CommandQueue object.
 	 * 
-	 * @param sCmdType
-	 *            type of command
-	 * @param sProcessType
-	 *            define how to process queue
-	 * @param iCmdId
-	 *            unique CmdId
-	 * @param iCmdQueueId
-	 *            unique commandQueueId, must not be global unique!
-	 * @param sQueueThread
-	 *            define a thread pool, default = -1 means no thread pool
-	 * @param sQueueThreadWait
-	 *            define dependent thread pool, default = -1 means no dependency
-	 *            on other thread to finish
+	 * @param sCmdType type of command
+	 * @param sProcessType define how to process queue
+	 * @param iCmdId unique CmdId
+	 * @param iCmdQueueId unique commandQueueId, must not be global unique!
+	 * @param sQueueThread define a thread pool, default = -1 means no thread
+	 *            pool
+	 * @param sQueueThreadWait define dependent thread pool, default = -1 means
+	 *            no dependency on other thread to finish
 	 * @return new commandQueue
 	 */
 	public ICommand createCommandQueue(final String sCmdType, final String sProcessType,
@@ -46,8 +41,8 @@ public interface ICommandManager
 	 * internal.
 	 * 
 	 * @see org.caleydo.core.manager.ICommandManager#createCommandByType(CommandQueueSaxType)
-	 * @param phAttributes
-	 *            Define several attributes and assign them in new Command
+	 * @param phAttributes Define several attributes and assign them in new
+	 *            Command
 	 * @return new Command with attributes defined in phAttributes
 	 */
 	public ICommand createCommand(final IParameterHandler phAttributes);
@@ -63,16 +58,15 @@ public interface ICommandManager
 	/**
 	 * Add reference to one ICommandListener object.
 	 * 
-	 * @param addCommandListener
-	 *            adds reference to ICommandListener object.
+	 * @param addCommandListener adds reference to ICommandListener object.
 	 */
 	public void addCommandListener(ICommandListener addCommandListener);
 
 	/**
 	 * Remove reference to one ICommandListener object.
 	 * 
-	 * @param removeCommandListener
-	 *            removes references to ICommandListener object.
+	 * @param removeCommandListener removes references to ICommandListener
+	 *            object.
 	 * @return TRUE if the reference was removed, false if the reference was not
 	 *         found.
 	 */
@@ -81,8 +75,7 @@ public interface ICommandManager
 	/**
 	 * Tests if the reference to one ICommandListener object exists.
 	 * 
-	 * @param hasCommandListener
-	 *            reference to be tested
+	 * @param hasCommandListener reference to be tested
 	 * @return true if the reference is bound to this ICommandManager
 	 */
 	public boolean hasCommandListener(ICommandListener hasCommandListener);
@@ -91,8 +84,7 @@ public interface ICommandManager
 	 * Get a command queue by it's commandQueueId, which is only a key for the
 	 * commandQueue and is nopt a uniqueSystem wide Id.
 	 * 
-	 * @param iCmdQueueId
-	 *            commandQueueId
+	 * @param iCmdQueueId commandQueueId
 	 * @return command queue
 	 */
 	public ICommandQueue getCommandQueueByCmdQueueId(final int iCmdQueueId);
@@ -100,8 +92,7 @@ public interface ICommandManager
 	/**
 	 * Tests if a iCmdQueueId is registered with a CommandQueue object.
 	 * 
-	 * @param iCmdQueueId
-	 *            test this id
+	 * @param iCmdQueueId test this id
 	 * @return TRUE if an CommandQueue is bound that iCmdQueueId
 	 */
 	public boolean hasCommandQueueId(final int iCmdQueueId);

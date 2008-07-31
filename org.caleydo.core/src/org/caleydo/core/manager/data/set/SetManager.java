@@ -2,7 +2,6 @@ package org.caleydo.core.manager.data.set;
 
 import java.util.Collection;
 import java.util.Hashtable;
-
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.set.Set;

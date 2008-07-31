@@ -2,7 +2,6 @@ package org.caleydo.core.manager.data.storage;
 
 import java.util.HashMap;
 import java.util.Set;
-
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;

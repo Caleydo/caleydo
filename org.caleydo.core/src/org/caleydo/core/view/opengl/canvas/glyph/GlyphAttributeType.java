@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
-
 import org.caleydo.core.manager.IGeneralManager;
 
 /**

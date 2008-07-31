@@ -1,7 +1,6 @@
 package org.caleydo.core.util.slerp;
 
 import org.caleydo.core.util.sound.SoundPlayer;
-
 import gleem.linalg.open.Slerp;
 
 /**
