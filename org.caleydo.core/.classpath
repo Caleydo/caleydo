@@ -25,9 +25,7 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/axis-ant.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/commons-discovery-0.2.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/commons-logging-1.0.4.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/jaxrpc.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/log4j-1.2.8.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/saaj.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/wsdl4j-1.5.1.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/gleem/gleem_mod_class.jar"/>
@@ -47,5 +45,13 @@
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/wii/WiiRemoteJ.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/wii/avetanaBT.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/swt/swt.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/ftp/edtftpj.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/webspider/itsucks-base-0.3.0-pre7.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/webspider/itsucks-core-0.3.0-pre7.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/webspider/spring-beans-2.5.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/webspider/spring-core-2.5.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/webspider/log4j-1.2.14.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/webspider/commons-logging-1.1.1.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/webspider/spring-context-2.5.jar"/>
 	<classpathentry kind="output" path="bin/class"/>
 </classpath>
