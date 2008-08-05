@@ -1,6 +1,5 @@
 package org.caleydo.rcp.views;
 
-
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.view.rcp.CmdExternalActionTrigger;
 import org.caleydo.core.command.view.rcp.CmdExternalFlagSetter;
@@ -18,14 +17,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
-public class GLRemoteRendering3DView 
-extends AGLViewPart {
+public class GLRemoteRendering3DView
+	extends AGLViewPart
+{
 
 	public static final String ID = "org.caleydo.rcp.views.GLRemoteRendering3DView";
 
 	public static final String ACTION_TOGGLE_LAYOUT_MODE_TEXT = "Toggle Jukebox/Bucket";
 	public static final String ACTION_TOGGLE_LAYOUT_MODE_ICON = "resources/icons/toggle.png";
-	
+
 	public static final String ACTION_CLEAR_ALL_TEXT = "Clear all";
 	public static final String ACTION_CLEAR_ALL_ICON = "resources/icons/eraser.png";
 
@@ -36,9 +36,8 @@ extends AGLViewPart {
 	public static final String ACTION_ENABLE_NEIGHBORHOOD_TEXT = "Turn on/off neighborhood highlighting";
 	public static final String ACTION_ENABLE_NEIGHBORHOOD_ICON = "resources/icons/PathwayEditor/three_neighborhood.gif";
 
-	
 	protected int iGLCanvasDirectorId;
-	
+
 	private Action actToggleLayoutMode;
 	private Action actClearAll;
 
@@ -51,44 +50,48 @@ extends AGLViewPart {
 	private Action actEnableNeighborhood;
 	private boolean bEnableNeighborhood = false;
 
-	
 	/**
 	 * Constructor.
 	 */
-	public GLRemoteRendering3DView() {
-		
+	public GLRemoteRendering3DView()
+	{
+
 		super();
 	}
 
 	/**
-	 * This is a callback that will allow us
-	 * to create the viewer and initialize it.
+	 * This is a callback that will allow us to create the viewer and initialize
+	 * it.
 	 */
-	public void createPartControl(Composite parent) {
+	public void createPartControl(Composite parent)
+	{
 
 		super.createPartControlSWT(parent);
-		
+
 		createToggleLayoutStyleAction();
 		createClearAllAction();
 		createGeneMappingToggleAction();
 		createPathwayTexturesToggleAction();
 		createNeighborhoodToggleAction();
-		
+
 		contributeToActionBars();
 	}
-	
-	protected void contributeToActionBars() {
+
+	protected void contributeToActionBars()
+	{
 		IActionBars bars = getViewSite().getActionBars();
 		fillLocalPullDown(bars.getMenuManager());
 		fillLocalToolBar(bars.getToolBarManager());
 	}
 
-	protected void fillLocalPullDown(IMenuManager manager) {}
-	
-	protected void fillLocalToolBar(IToolBarManager manager) {
+	protected void fillLocalPullDown(IMenuManager manager)
+	{
+	}
 
-		IContributionItem searchBar = 
-			new SearchBar("Quick search");
+	protected void fillLocalToolBar(IToolBarManager manager)
+	{
+
+		IContributionItem searchBar = new SearchBar("Quick search");
 
 		manager.add(new Separator());
 		manager.add(searchBar);
@@ -100,12 +103,14 @@ extends AGLViewPart {
 	}
 
 	/**
-	 * We can use this method to dispose of any system
-	 * resources we previously allocated.
+	 * We can use this method to dispose of any system resources we previously
+	 * allocated.
+	 * 
 	 * @see IWorkbenchWindowActionDelegate#dispose
 	 */
-	public void dispose() {
-		
+	public void dispose()
+	{
+
 		super.dispose();
 	}
 
@@ -113,14 +118,18 @@ extends AGLViewPart {
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
 	 */
-	public void setFocus() {
-		
+	public void setFocus()
+	{
+
 	}
 
-	private void createToggleLayoutStyleAction() {
+	private void createToggleLayoutStyleAction()
+	{
 
-		actToggleLayoutMode = new Action() {
-			public void run() {
+		actToggleLayoutMode = new Action()
+		{
+			public void run()
+			{
 
 				triggerCmdExternalAction(EExternalActionType.REMOTE_RENDERING_TOGGLE_LAYOUT_MODE);
 			}
@@ -128,15 +137,17 @@ extends AGLViewPart {
 
 		actToggleLayoutMode.setText(ACTION_TOGGLE_LAYOUT_MODE_TEXT);
 		actToggleLayoutMode.setToolTipText(ACTION_TOGGLE_LAYOUT_MODE_TEXT);
-		actToggleLayoutMode.setImageDescriptor(ImageDescriptor
-				.createFromURL(this.getClass().getClassLoader().getResource(
-						ACTION_TOGGLE_LAYOUT_MODE_ICON)));
+		actToggleLayoutMode.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass()
+				.getClassLoader().getResource(ACTION_TOGGLE_LAYOUT_MODE_ICON)));
 	}
-	
-	private void createClearAllAction() {
 
-		actClearAll = new Action() {
-			public void run() {
+	private void createClearAllAction()
+	{
+
+		actClearAll = new Action()
+		{
+			public void run()
+			{
 
 				triggerCmdExternalAction(EExternalActionType.CLEAR_ALL);
 			}
@@ -144,14 +155,17 @@ extends AGLViewPart {
 
 		actClearAll.setText(ACTION_CLEAR_ALL_TEXT);
 		actClearAll.setToolTipText(ACTION_CLEAR_ALL_TEXT);
-		actClearAll.setImageDescriptor(ImageDescriptor.createFromURL(
-				this.getClass().getClassLoader().getResource(ACTION_CLEAR_ALL_ICON)));
+		actClearAll.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass()
+				.getClassLoader().getResource(ACTION_CLEAR_ALL_ICON)));
 	}
-	
-	private void createGeneMappingToggleAction() {
 
-		actEnableGeneMapping = new Action() {
-			public void run() {
+	private void createGeneMappingToggleAction()
+	{
+
+		actEnableGeneMapping = new Action()
+		{
+			public void run()
+			{
 
 				bEnableGeneMapping = !bEnableGeneMapping;
 				triggerCmdSExternalFlagSetter(bEnableGeneMapping,
@@ -161,15 +175,17 @@ extends AGLViewPart {
 
 		actEnableGeneMapping.setText(ACTION_ENABLE_GENE_MAPPING_TEXT);
 		actEnableGeneMapping.setToolTipText(ACTION_ENABLE_GENE_MAPPING_TEXT);
-		actEnableGeneMapping.setImageDescriptor(ImageDescriptor
-				.createFromURL(this.getClass().getClassLoader().getResource(
-						ACTION_ENABLE_GENE_MAPPING_ICON)));
+		actEnableGeneMapping.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass()
+				.getClassLoader().getResource(ACTION_ENABLE_GENE_MAPPING_ICON)));
 	}
 
-	private void createPathwayTexturesToggleAction() {
+	private void createPathwayTexturesToggleAction()
+	{
 
-		actEnablePathwayTextures = new Action() {
-			public void run() {
+		actEnablePathwayTextures = new Action()
+		{
+			public void run()
+			{
 
 				bEnablePathwayTextures = !bEnablePathwayTextures;
 				triggerCmdSExternalFlagSetter(bEnablePathwayTextures,
@@ -178,17 +194,19 @@ extends AGLViewPart {
 		};
 
 		actEnablePathwayTextures.setText(ACTION_ENABLE_PATHWAY_TEXTURES_TEXT);
+		actEnablePathwayTextures.setToolTipText(ACTION_ENABLE_PATHWAY_TEXTURES_TEXT);
 		actEnablePathwayTextures
-				.setToolTipText(ACTION_ENABLE_PATHWAY_TEXTURES_TEXT);
-		actEnablePathwayTextures.setImageDescriptor(ImageDescriptor
-				.createFromURL(this.getClass().getClassLoader().getResource(
-						ACTION_ENABLE_PATHWAY_TEXTURES_ICON)));
+				.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass()
+						.getClassLoader().getResource(ACTION_ENABLE_PATHWAY_TEXTURES_ICON)));
 	}
 
-	private void createNeighborhoodToggleAction() {
+	private void createNeighborhoodToggleAction()
+	{
 
-		actEnableNeighborhood = new Action() {
-			public void run() {
+		actEnableNeighborhood = new Action()
+		{
+			public void run()
+			{
 
 				bEnableNeighborhood = !bEnableNeighborhood;
 				triggerCmdSExternalFlagSetter(bEnableNeighborhood,
@@ -198,12 +216,12 @@ extends AGLViewPart {
 
 		actEnableNeighborhood.setText(ACTION_ENABLE_NEIGHBORHOOD_TEXT);
 		actEnableNeighborhood.setToolTipText(ACTION_ENABLE_NEIGHBORHOOD_TEXT);
-		actEnableNeighborhood.setImageDescriptor(ImageDescriptor
-				.createFromURL(this.getClass().getClassLoader().getResource(
-						ACTION_ENABLE_NEIGHBORHOOD_ICON)));
+		actEnableNeighborhood.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass()
+				.getClassLoader().getResource(ACTION_ENABLE_NEIGHBORHOOD_ICON)));
 	}
-	
-	public void triggerCmdExternalAction(EExternalActionType type) {
+
+	public void triggerCmdExternalAction(EExternalActionType type)
+	{
 
 		CmdExternalActionTrigger tmpCmd = (CmdExternalActionTrigger) Application.generalManager
 				.getCommandManager().createCommandByType(
@@ -212,9 +230,9 @@ extends AGLViewPart {
 		tmpCmd.setAttributes(iViewID, type);
 		tmpCmd.doCommand();
 	}
-	
-	public void triggerCmdSExternalFlagSetter(final boolean bFlag,
-			EExternalFlagSetterType type) {
+
+	public void triggerCmdSExternalFlagSetter(final boolean bFlag, EExternalFlagSetterType type)
+	{
 
 		CmdExternalFlagSetter tmpCmd = (CmdExternalFlagSetter) Application.generalManager
 				.getCommandManager().createCommandByType(

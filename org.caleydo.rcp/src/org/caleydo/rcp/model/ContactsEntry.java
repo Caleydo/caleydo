@@ -1,21 +1,18 @@
 /*******************************************************************************
- * Copyright (c) 2004, 2005 Jean-Michel Lemieux, Jeff McAffer and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Hyperbola is an RCP application developed for the book 
- *     Eclipse Rich Client Platform - 
- *         Designing, Coding, and Packaging Java Applications 
- * See http://eclipsercp.org
- *
- * Contributors:
- *     Jean-Michel Lemieux and Jeff McAffer - initial implementation
+ * Copyright (c) 2004, 2005 Jean-Michel Lemieux, Jeff McAffer and others. All
+ * rights reserved. This program and the accompanying materials are made
+ * available under the terms of the Eclipse Public License v1.0 which
+ * accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html Hyperbola is an RCP application
+ * developed for the book Eclipse Rich Client Platform - Designing, Coding, and
+ * Packaging Java Applications See http://eclipsercp.org Contributors:
+ * Jean-Michel Lemieux and Jeff McAffer - initial implementation
  *******************************************************************************/
 package org.caleydo.rcp.model;
 
-public class ContactsEntry extends Contact {
+public class ContactsEntry
+	extends Contact
+{
 
 	private final String name;
 
@@ -27,8 +24,8 @@ public class ContactsEntry extends Contact {
 
 	private final ContactsGroup group;
 
-	public ContactsEntry(ContactsGroup group, String name, String nickname,
-			String server) {
+	public ContactsEntry(ContactsGroup group, String name, String nickname, String server)
+	{
 		this.group = group;
 		this.name = name;
 		this.nickname = nickname;
@@ -36,28 +33,34 @@ public class ContactsEntry extends Contact {
 		this.presence = Presence.INVISIBLE;
 	}
 
-	public Presence getPresence() {
+	public Presence getPresence()
+	{
 		return presence;
 	}
 
-	public void setPresence(Presence presence) {
+	public void setPresence(Presence presence)
+	{
 		this.presence = presence;
 		group.fireContactsChanged(this);
 	}
 
-	public String getName() {
+	public String getName()
+	{
 		return name;
 	}
 
-	public String getNickname() {
+	public String getNickname()
+	{
 		return nickname;
 	}
 
-	public String getServer() {
+	public String getServer()
+	{
 		return server;
 	}
 
-	public ContactsGroup getParent() {
+	public ContactsGroup getParent()
+	{
 		return group;
 	}
 }

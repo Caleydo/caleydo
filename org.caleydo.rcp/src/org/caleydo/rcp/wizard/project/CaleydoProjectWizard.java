@@ -11,43 +11,46 @@ import org.eclipse.swt.widgets.Shell;
  * Wizard that appears after Caleydo startup.
  * 
  * @author Marc Streit
- * 
  */
-public class CaleydoProjectWizard extends Wizard {
+public class CaleydoProjectWizard
+	extends Wizard
+{
 
 	/**
 	 * Constructor.
 	 */
-	public CaleydoProjectWizard() {
-		
+	public CaleydoProjectWizard()
+	{
+
 		super();
-		
-		
+
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.wizard.Wizard#addPages()
 	 */
-	public void addPages() {
-		
+	public void addPages()
+	{
+
 		addPage(new NewOrExistingProjectPage());
-		addPage(new NewProjectImportDataPage());		
+		addPage(new NewProjectImportDataPage());
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
 	 */
-	public boolean performFinish() {
-		
-////		DirectoryPage dirPage = getDirectorymPage();
-//		if (dirPage.useDefaultDirectory()) {
-//			System.out.println("Using default directory");
-//		} else {
-//			ChooseDirectoryPage choosePage = getChoosePage();
-//			System.out.println("Using directory: " + choosePage.getDirectory());
-//		}
+	public boolean performFinish()
+	{
+
+		// // DirectoryPage dirPage = getDirectorymPage();
+		// if (dirPage.useDefaultDirectory()) {
+		// System.out.println("Using default directory");
+		// } else {
+		// ChooseDirectoryPage choosePage = getChoosePage();
+		// System.out.println("Using directory: " + choosePage.getDirectory());
+		// }
 		return true;
 	}
 
@@ -55,18 +58,20 @@ public class CaleydoProjectWizard extends Wizard {
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.wizard.Wizard#performCancel()
 	 */
-	public boolean performCancel() {
-		
-		//TODO: shutdown caleydo core
+	public boolean performCancel()
+	{
+
+		// TODO: shutdown caleydo core
 		System.out.println("Perform Cancel called");
 		return true;
 	}
-	
+
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.wizard.Wizard#canFinish()
 	 */
-	public boolean canFinish() {
+	public boolean canFinish()
+	{
 
 		// Disable finish button
 		return false;
@@ -74,46 +79,51 @@ public class CaleydoProjectWizard extends Wizard {
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.Wizard#getNextPage(org.eclipse.jface.wizard.IWizardPage)
+	 * @see
+	 * org.eclipse.jface.wizard.Wizard#getNextPage(org.eclipse.jface.wizard.
+	 * IWizardPage)
 	 */
-	public IWizardPage getNextPage(IWizardPage page) {
-		
+	public IWizardPage getNextPage(IWizardPage page)
+	{
+
 		if (page instanceof NewOrExistingProjectPage)
 		{
-			if (((NewOrExistingProjectPage)getPage(NewOrExistingProjectPage.PAGE_NAME)).newOrExisting())
+			if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
+					.newOrExisting())
 			{
-				NewProjectImportDataPage nextPage = (NewProjectImportDataPage) 
-					getPage(NewProjectImportDataPage.PAGE_NAME);	
-				
+				NewProjectImportDataPage nextPage = (NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME);
+
 				return nextPage;
 			}
 			else
 			{
 				this.performFinish();
-				
-				FileOpenProjectAction fileOpenProjectAction = new FileOpenProjectAction(this.getShell());
+
+				FileOpenProjectAction fileOpenProjectAction = new FileOpenProjectAction(this
+						.getShell());
 				fileOpenProjectAction.run();
 			}
 		}
-		
+
 		return page;
 	}
-	
+
 	/**
 	 * For testing purposes
 	 */
-	public static void main(String[] args) {
-		  
-	    Display display = new Display();
+	public static void main(String[] args)
+	{
 
-	    // Create the parent shell for the dialog, but don't show it
-	    Shell shell = new Shell(display);
+		Display display = new Display();
 
-	    // Create the dialog
-	    WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard());
-	    projectWizardDialog.open();
+		// Create the parent shell for the dialog, but don't show it
+		Shell shell = new Shell(display);
 
-	    // Dispose the display
-	    display.dispose();
+		// Create the dialog
+		WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard());
+		projectWizardDialog.open();
+
+		// Dispose the display
+		display.dispose();
 	}
 }

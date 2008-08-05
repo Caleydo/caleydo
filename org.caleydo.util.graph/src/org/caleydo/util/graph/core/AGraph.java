@@ -2,69 +2,79 @@ package org.caleydo.util.graph.core;
 
 import java.io.Serializable;
 import java.util.HashMap;
-
 import org.caleydo.util.graph.EGraphProperty;
 import org.caleydo.util.graph.IGraph;
 
 /**
- * Base Class for all IGraph implementations handling EGraphProperty and GraphTypeId
+ * Base Class for all IGraph implementations handling EGraphProperty and
+ * GraphTypeId
  * 
  * @author Michael Kalkusch
- *
  */
-public abstract class AGraph 
-implements IGraph, Serializable {
+public abstract class AGraph
+	implements IGraph, Serializable
+{
 
 	private static final long serialVersionUID = 1L;
 
 	/**
-	 * initial size of org.caleydo.util.graph.core.AGraph#hashGraphProperties 
+	 * initial size of org.caleydo.util.graph.core.AGraph#hashGraphProperties
 	 * 
 	 * @see org.caleydo.util.graph.core.AGraph#hashGraphProperties
 	 */
 	private static final int iInitialSizeProperties = 3;
-	
+
 	/**
 	 * @see org.caleydo.util.graph.core.AGraph#getId()
 	 * @see org.caleydo.util.graph.core.AGraph#setId(int)
 	 */
 	private int iGraphId = 0;
-	
+
 	/**
 	 * HashMap for EGraphProperty.
 	 * 
 	 * @see org.caleydo.util.graph.core.AGraph#hasGraphProperty(EGraphProperty)
-	 * @see org.caleydo.util.graph.core.AGraph#setGraphProperty(EGraphProperty, boolean)
-	 * @see org.caleydo.util.graph.IGraph#setGraphProperty(EGraphProperty, boolean)
+	 * @see org.caleydo.util.graph.core.AGraph#setGraphProperty(EGraphProperty,
+	 *      boolean)
+	 * @see org.caleydo.util.graph.IGraph#setGraphProperty(EGraphProperty,
+	 *      boolean)
 	 * @see org.caleydo.util.graph.IGraph#hasGraphProperty(EGraphProperty)
 	 */
-	private HashMap <EGraphProperty,Boolean> hashGraphProperties;
-	
+	private HashMap<EGraphProperty, Boolean> hashGraphProperties;
+
 	/**
 	 * 
 	 */
-	protected AGraph(final int id) {
-		hashGraphProperties = new HashMap <EGraphProperty,Boolean> (iInitialSizeProperties);
-		
+	protected AGraph(final int id)
+	{
+		hashGraphProperties = new HashMap<EGraphProperty, Boolean>(iInitialSizeProperties);
+
 		this.iGraphId = id;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see org.caleydo.util.graph.IGraph#getTypeId()
 	 */
-	public final int getId() {
+	public final int getId()
+	{
 		return iGraphId;
 	}
 
-	/* (non-Javadoc)
-	 * @see org.caleydo.util.graph.IGraph#hasGraphProperty(org.caleydo.util.graph.EGraphProperty)
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * org.caleydo.util.graph.IGraph#hasGraphProperty(org.caleydo.util.graph
+	 * .EGraphProperty)
 	 */
-	public final boolean hasGraphProperty(EGraphProperty test) {
+	public final boolean hasGraphProperty(EGraphProperty test)
+	{
 		return hashGraphProperties.containsKey(test);
 	}
-	
-	public final void setGraphProperty(final EGraphProperty prop, final boolean value) {
-		if ( value ) 
+
+	public final void setGraphProperty(final EGraphProperty prop, final boolean value)
+	{
+		if (value)
 		{
 			hashGraphProperties.put(prop, new Boolean(value));
 			return;
@@ -72,29 +82,33 @@ implements IGraph, Serializable {
 		hashGraphProperties.remove(prop);
 	}
 
-
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
 	 * @see org.caleydo.util.graph.IGraph#setTypeId(int)
 	 */
-	public final void setId(int type) {
-		if (type >= 0) 
+	public final void setId(int type)
+	{
+		if (type >= 0)
 		{
 			iGraphId = type;
 			return;
 		}
-		
+
 		assert false : "setTypeId( " + type + " ) is invalid; value >= 0";
 	}
 
-
 	/**
-	 * Empty method by definition.
-	 * For details see org.caleydo.util.graph.IGraphComponent#disposeItem().
+	 * Empty method by definition. For details see
+	 * org.caleydo.util.graph.IGraphComponent#disposeItem().
 	 * 
 	 * @see org.caleydo.util.graph.IGraphComponent#disposeItem()
 	 */
-	public final void disposeItem() {
-		/** Graph does not dispose other objects; only IGraphItem need to dispose objects */
+	public final void disposeItem()
+	{
+		/**
+		 * Graph does not dispose other objects; only IGraphItem need to dispose
+		 * objects
+		 */
 	}
 
 }

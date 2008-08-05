@@ -7,11 +7,11 @@ package org.caleydo.util.graph;
  * RuntimeException for graphs.
  * 
  * @see org.caleydo.util.graph.IGraph
- * 
  * @author Michael Kalkusch
- *
  */
-public final class GraphRuntimeException extends RuntimeException {
+public final class GraphRuntimeException
+	extends RuntimeException
+{
 
 	/**
 	 * id for serialization.
@@ -21,14 +21,16 @@ public final class GraphRuntimeException extends RuntimeException {
 	/**
 	 * @param message
 	 */
-	public GraphRuntimeException(String message) {
+	public GraphRuntimeException(String message)
+	{
 		super(message);
 	}
 
 	/**
 	 * @param cause
 	 */
-	public GraphRuntimeException(Throwable cause) {
+	public GraphRuntimeException(Throwable cause)
+	{
 		super(cause);
 	}
 
@@ -36,7 +38,8 @@ public final class GraphRuntimeException extends RuntimeException {
 	 * @param message
 	 * @param cause
 	 */
-	public GraphRuntimeException(String message, Throwable cause) {
+	public GraphRuntimeException(String message, Throwable cause)
+	{
 		super(message, cause);
 	}
 

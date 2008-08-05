@@ -8,36 +8,35 @@ import org.caleydo.rcp.dialog.search.OpenSearchDataEntityDialog;
 import org.caleydo.rcp.image.IImageKeys;
 
 /**
- * 
  * @author Marc Streit
- *
  */
-public class OpenSearchDataEntityAction 
-extends Action 
-implements ActionFactory.IWorkbenchAction {
+public class OpenSearchDataEntityAction
+	extends Action
+	implements ActionFactory.IWorkbenchAction
+{
 
 	private final IWorkbenchWindow window;
-	
+
 	public final static String ID = "org.caleydo.rcp.openSearchDialog";
 
 	/**
-	 * Constructor 
+	 * Constructor
 	 * 
 	 * @param window
-	 */  
-	public OpenSearchDataEntityAction(IWorkbenchWindow window) {
+	 */
+	public OpenSearchDataEntityAction(IWorkbenchWindow window)
+	{
 		super("Search...");
 		this.window = window;
-	    setId(ID);
-	    setToolTipText("Open data search entity dialog");
-	    setImageDescriptor(
-	        AbstractUIPlugin.imageDescriptorFromPlugin(
-	        "org.caleydo.rcp", IImageKeys.FILE_OPEN_XML_CONFIG_FILE)); // TODO: change image
+		setId(ID);
+		setToolTipText("Open data search entity dialog");
+		setImageDescriptor(AbstractUIPlugin.imageDescriptorFromPlugin("org.caleydo.rcp",
+				IImageKeys.FILE_OPEN_XML_CONFIG_FILE)); // TODO: change image
 
 	}
 
-
-	public void dispose() {
+	public void dispose()
+	{
 
 	}
 
@@ -45,11 +44,12 @@ implements ActionFactory.IWorkbenchAction {
 	 * (non-Javadoc)
 	 * @see org.eclipse.jface.action.Action#run()
 	 */
-	public void run() {
-		
-		OpenSearchDataEntityDialog searchDialog = 
-			new OpenSearchDataEntityDialog(window.getShell());
-		
+	public void run()
+	{
+
+		OpenSearchDataEntityDialog searchDialog = new OpenSearchDataEntityDialog(window
+				.getShell());
+
 		searchDialog.open();
 	}
 }
