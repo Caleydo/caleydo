@@ -1,12 +1,4 @@
-/**
- * 
- */
 package org.caleydo.core.parser.xml.sax.handler;
-
-// import org.xml.sax.Attributes;
-
-// import org.caleydo.core.xml.parser.manager.IXmlParserManager;
-
 /**
  * Interface for all XML Handler's registered to the
  * org.caleydo.core.manager.IXmlParserManager
@@ -17,9 +9,8 @@ package org.caleydo.core.parser.xml.sax.handler;
 public interface IXmlParserHandler
 	extends IXmlBaseHandler
 {
-
 	/**
-	 * Initilisation of handler. Called once by Manager before using the
+	 * Initilization of handler. Called once by Manager before using the
 	 * handler.
 	 * 
 	 * @see org.caleydo.core.manager.IXmlParserManager#registerAndInitSaxHandler(IXmlParserHandler)
@@ -27,7 +18,7 @@ public interface IXmlParserHandler
 	public void initHandler();
 
 	/**
-	 * Cleanup called by Mananger after Handler is not used any more.
+	 * Cleanup called by Manager after Handler is not used any more.
 	 */
 	public void destroyHandler();
 
@@ -61,4 +52,5 @@ public interface IXmlParserHandler
 	 */
 	public void setHandlerDestoryedAfterClosingTag(
 			final boolean setHandlerDestoryedAfterClosingTag);
+
 }

@@ -14,6 +14,7 @@ import org.caleydo.core.command.event.CmdEventCreateMediator;
 import org.caleydo.core.command.event.CmdEventMediatorAddObject;
 import org.caleydo.core.command.queue.CmdSystemRunCmdQueue;
 import org.caleydo.core.command.queue.CommandQueueVector;
+import org.caleydo.core.command.system.CmdFetchPathwayData;
 import org.caleydo.core.command.system.CmdLoadGlyphDefinition;
 import org.caleydo.core.command.system.CmdLoadPathwayData;
 import org.caleydo.core.command.system.CmdSystemExit;
@@ -335,7 +336,12 @@ public class CommandFactory
 						cmdType);
 				break;
 			}
-
+			case FETCH_PATHWAY_DATA:
+			{
+				createdCommand = new CmdFetchPathwayData(generalManager, commandManager,
+						cmdType);
+				break;
+			}
 				/*
 				 * ---------------------- DATA FILTER ----------------------
 				 */

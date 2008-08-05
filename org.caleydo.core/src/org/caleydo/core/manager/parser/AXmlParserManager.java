@@ -2,7 +2,6 @@ package org.caleydo.core.manager.parser;
 
 import java.util.Hashtable;
 import java.util.LinkedList;
-import org.caleydo.core.data.IManagedObject;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
@@ -10,6 +9,8 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
+ * Abstract parser manager.
+ * 
  * @author Michael Kalkusch
  */
 public abstract class AXmlParserManager
@@ -54,9 +55,6 @@ public abstract class AXmlParserManager
 	 */
 	protected AXmlParserManager(final IGeneralManager generalManager)
 	{
-
-		assert generalManager != null : "SetFlatSimple() with null pointer";
-
 		this.generalManager = generalManager;
 
 		hashTag2XmlParser = new Hashtable<String, IXmlParserHandler>();
@@ -66,7 +64,6 @@ public abstract class AXmlParserManager
 
 	protected final void setXmlFileProcessedNow(boolean bStatus)
 	{
-
 		this.bProcessingXmlDataNow = bStatus;
 	}
 
@@ -126,7 +123,8 @@ public abstract class AXmlParserManager
 			currentHandler = null;
 		} // else ... if ( ! llXmlParserStack.isEmpty() ) {
 
-		/**
+
+			/**
 		 * Clean up XmlParserHandler..
 		 */
 		if (buffer.isHandlerDestoryedAfterClosingTag())

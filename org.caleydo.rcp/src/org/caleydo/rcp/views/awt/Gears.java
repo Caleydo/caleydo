@@ -2,6 +2,7 @@ package org.caleydo.rcp.views.awt;
 
 import java.awt.Dimension;
 import java.awt.event.*;
+
 import javax.media.opengl.GL; // import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLAutoDrawable;

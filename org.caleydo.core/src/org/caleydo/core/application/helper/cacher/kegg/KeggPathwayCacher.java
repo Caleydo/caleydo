@@ -1,15 +1,19 @@
 package org.caleydo.core.application.helper.cacher.kegg;
 
 import java.io.File;
+import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.Collection;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.ProgressBar;
+import org.eclipse.swt.widgets.Shell;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import de.phleisch.app.itsucks.constants.ApplicationConstants;
 import de.phleisch.app.itsucks.core.Dispatcher;
+import de.phleisch.app.itsucks.event.Event;
+import de.phleisch.app.itsucks.event.EventObserver;
 import de.phleisch.app.itsucks.filter.download.impl.DownloadJobFilter;
 import de.phleisch.app.itsucks.filter.download.impl.RegExpJobFilter;
 import de.phleisch.app.itsucks.filter.download.impl.RegExpJobFilter.RegExpFilterAction;
@@ -17,72 +21,149 @@ import de.phleisch.app.itsucks.filter.download.impl.RegExpJobFilter.RegExpFilter
 import de.phleisch.app.itsucks.job.Job;
 import de.phleisch.app.itsucks.job.download.impl.DownloadJobFactory;
 import de.phleisch.app.itsucks.job.download.impl.UrlDownloadJob;
+import de.phleisch.app.itsucks.job.event.JobChangedEvent;
 
-public class KeggPathwayCacher {
+/**
+ * Fetch tool for KEGG XML files.
+ * 
+ * @author Marc Streit
+ */
+public class KeggPathwayCacher
+	extends Thread
+{
+	private static final int EXPECTED_DOWNLOADS = 213;
+	
+	/**
+	 * Needed for async access to set progress bar state
+	 */
+	private Display display;
 
-	private static Log mLog = LogFactory.getLog(KeggPathwayCacher.class);
+	private ProgressBar progressBar;
 
+	int iDownloadCount = 0;
 
-	public static void main(String[] pArgs) throws Exception {
+	/**
+	 * Constructor.
+	 */
+	public KeggPathwayCacher(final Display display, final ProgressBar progressBar)
+	{
+		this.display = display;
+		this.progressBar = progressBar;
+	}
 
-		//load spring application context 
-		ClassPathXmlApplicationContext context = 
-			new ClassPathXmlApplicationContext(
-					ApplicationConstants.CORE_SPRING_CONFIG_FILE);
-		
-		//load dispatcher from spring
-		Dispatcher dispatcher = (Dispatcher) context.getBean("Dispatcher");
+	/*
+	 * (non-Javadoc)
+	 * @see java.lang.Thread#run()
+	 */
+	public void run()
+	{
+		super.run();
 
-		//configure an download job filter 
+		// load spring application context
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+				ApplicationConstants.CORE_SPRING_CONFIG_FILE);
+
+		// load dispatcher from spring
+		final Dispatcher dispatcher = (Dispatcher) context.getBean("Dispatcher");
+
+		// configure an download job filter
 		DownloadJobFilter downloadFilter = new DownloadJobFilter();
-		downloadFilter.setAllowedHostNames(new String[] {"www.genome.jp.*"});
+		downloadFilter.setAllowedHostNames(new String[] { "www.genome.jp.*" });
 		downloadFilter.setMaxRecursionDepth(2);
-		downloadFilter.setSaveToDisk(new String[] {".*xml"});
+		downloadFilter.setSaveToDisk(new String[] { ".*xml" });
 
-		//add the filter to the dispatcher
-		dispatcher.addJobFilter(downloadFilter);	
-		
+		// add the filter to the dispatcher
+		dispatcher.addJobFilter(downloadFilter);
+
 		RegExpJobFilter regExpFilter = new RegExpJobFilter();
 		RegExpFilterRule regExpFilterRule = new RegExpJobFilter.RegExpFilterRule(
-				".*KGMLViewer.*|.*PathwayViewer.*|.*xmlview.*|.*dbget.*|.*html");
-		
+				".*KGMLViewer.*|.*PathwayViewer.*|.*xmlview.*|.*dbget.*|.*html"
+						+ "|.*atlas|.*css|.*menu.*|.*feedback.*|.*docs.|.*menu.*");
+
 		RegExpFilterAction regExpFilterAction = new RegExpJobFilter.RegExpFilterAction();
 		regExpFilterAction.setAccept(false);
-		
+
 		regExpFilterRule.setMatchAction(regExpFilterAction);
-		
+
 		regExpFilter.addFilterRule(regExpFilterRule);
-		
+
 		dispatcher.addJobFilter(regExpFilter);
-		
-		//create an job factory
-		DownloadJobFactory jobFactory = (DownloadJobFactory) 
-			context.getBean("JobFactory");
-		
-		String sOutputFileName = System.getProperty("user.home") + 
-			System.getProperty("file.separator") + "/.caleydo";
-		
-		//create an initial job
+
+		// create an job factory
+		DownloadJobFactory jobFactory = (DownloadJobFactory) context.getBean("JobFactory");
+
+		String sOutputFileName = System.getProperty("user.home")
+				+ System.getProperty("file.separator") + "/.caleydo";
+
+		// create an initial job
 		UrlDownloadJob job = jobFactory.createDownloadJob();
-		job.setUrl(new URL("http://www.genome.jp/kegg/xml/hsa/index.html"));
-//		                   "http://www.genome.jp/kegg/pathway/hsa/hsa00380.gif
+
+		try
+		{
+			job.setUrl(new URL("http://www.genome.jp/kegg/xml/hsa/index.html"));
+		}
+		catch (MalformedURLException e)
+		{
+			e.printStackTrace();
+		}
+		// "http://www.genome.jp/kegg/pathway/hsa/hsa00380.gif
 		job.setSavePath(new File(sOutputFileName));
 		job.setIgnoreFilter(true);
 		dispatcher.addJob(job);
 		
-		mLog.info("Start demo dispatcher");
-		
-		//start the dispatcher
+		dispatcher.getEventManager().registerObserver(new EventObserver()
+		{
+			/*
+			 * (non-Javadoc)
+			 * @see de.phleisch.app.itsucks.event.EventObserver#processEvent(de.phleisch.app.itsucks.event.Event)
+			 */
+			@Override
+			public void processEvent(Event arg0)
+			{
+				if (arg0 instanceof JobChangedEvent
+						&& ((JobChangedEvent) arg0).getJob().getState() == Job.STATE_FINISHED)
+				{
+					iDownloadCount++;
+
+					display.asyncExec(new Runnable()
+					{
+						public void run()
+						{
+							if (progressBar.isDisposed())
+								return;
+							progressBar.setSelection((int)(iDownloadCount * 100 / EXPECTED_DOWNLOADS));
+							
+//							System.out.println("Download count: " +iDownloadCount);
+//							System.out.println("Percentage: " +(int)(iDownloadCount * 100 / EXPECTED_DOWNLOADS));
+						}
+					});
+				}
+			}
+		});
+
+		// start the dispatcher
 		dispatcher.processJobs();
+	}
+
+	/**
+	 * Main method for testing.
+	 */
+	public static void main(String[] pArgs) throws Exception
+	{
+		Display display = new Display();
+		Shell shell = new Shell(display);
+		final ProgressBar progressBar = new ProgressBar(shell, SWT.SMOOTH);
+		progressBar.setBounds(10, 10, 200, 32);
+		shell.open();
 		
-		mLog.info("Demo dispatcher finished");
+		KeggPathwayCacher keggPathwayCacher = new KeggPathwayCacher(display, progressBar);
+		keggPathwayCacher.start();
 		
-		//dump all found urls
-		Collection<Job> content = 
-			dispatcher.getJobManager().getJobList().getContent();
-		
-		for (Job finishedJob : content) {
-			mLog.info(finishedJob);
+		while (!shell.isDisposed())
+		{
+			if (!display.readAndDispatch())
+				display.sleep();
 		}
+		display.dispose();
 	}
 }

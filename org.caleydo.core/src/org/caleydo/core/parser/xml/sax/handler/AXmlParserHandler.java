@@ -8,6 +8,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 /**
  * @author Michael Kalkusch
+ * @author Marc Streit
  */
 public abstract class AXmlParserHandler
 	extends DefaultHandler
@@ -23,21 +24,17 @@ public abstract class AXmlParserHandler
 	protected String sOpeningTag = "";
 
 	/**
-	 * 
+	 * Constructor.
 	 */
 	protected AXmlParserHandler(final IGeneralManager generalManager,
 			final IXmlParserManager xmlParserManager)
 	{
-
 		this.generalManager = generalManager;
 		this.xmlParserManager = xmlParserManager;
 	}
 
 	public final void setXmlActivationTag(final String tag)
 	{
-
-		assert tag != null : "can not assing null as tag";
-
 		if (tag.length() < 2)
 		{
 			throw new CaleydoRuntimeException(
@@ -66,7 +63,6 @@ public abstract class AXmlParserHandler
 	 */
 	public final boolean isHandlerDestoryedAfterClosingTag()
 	{
-
 		if (bDestroyHandlerAfterClosingTag)
 		{
 			return true;
@@ -81,6 +77,7 @@ public abstract class AXmlParserHandler
 
 		this.bDestroyHandlerAfterClosingTag = setHandlerDestoryedAfterClosingTag;
 	}
+
 
 	/**
 	 * Sends init message to logger.

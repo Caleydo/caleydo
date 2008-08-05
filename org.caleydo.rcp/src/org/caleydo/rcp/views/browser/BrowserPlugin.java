@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IWorkbenchPage;
@@ -39,7 +40,8 @@ public class BrowserPlugin
 	/**
 	 * Logs the given throwable.
 	 * 
-	 * @param t the throwable to log
+	 * @param t
+	 *            the throwable to log
 	 */
 	public void log(Throwable t)
 	{
@@ -56,7 +58,8 @@ public class BrowserPlugin
 	 * 
 	 * @see org.eclipse.ui.IEditorReference
 	 * @see org.eclipse.ui.IViewReference;
-	 * @param page the workbench page
+	 * @param page
+	 *            the workbench page
 	 * @return a list of all non-secondary parts in the page
 	 */
 	public static List<IWorkbenchPartReference> getNonSecondaryParts(IWorkbenchPage page)

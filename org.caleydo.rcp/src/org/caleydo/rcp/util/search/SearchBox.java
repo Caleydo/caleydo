@@ -81,10 +81,20 @@ public final class SearchBox
 	 * applicable to the class. Style bits are also inherited from superclasses.
 	 * </p>
 	 * 
+<<<<<<< .mine
+	 * @param parent
+	 *            a widget which will be the parent of the new instance (cannot
+	 *            be null)
+	 * @param style
+	 *            the style of widget to construct
+	 * @exception IllegalArgumentException
+	 *                <ul>
+=======
 	 * @param parent a widget which will be the parent of the new instance
 	 *            (cannot be null)
 	 * @param style the style of widget to construct
 	 * @exception IllegalArgumentException <ul>
+>>>>>>> .r1366
 	 *                <li>ERROR_NULL_ARGUMENT - if the parent is null</li>
 	 *                </ul>
 	 * @exception SWTException <ul>
@@ -181,8 +191,15 @@ public final class SearchBox
 	/**
 	 * Adds the argument to the end of the receiver's list.
 	 * 
+<<<<<<< .mine
+	 * @param string
+	 *            the new item
+	 * @exception IllegalArgumentException
+	 *                <ul>
+=======
 	 * @param string the new item
 	 * @exception IllegalArgumentException <ul>
+>>>>>>> .r1366
 	 *                <li>ERROR_NULL_ARGUMENT - if the string is null</li>
 	 *                </ul>
 	 * @exception SWTException <ul>
@@ -208,8 +225,15 @@ public final class SearchBox
 	 * when the receiver's text is modified, by sending it one of the messages
 	 * defined in the <code>ModifyListener</code> interface.
 	 * 
+<<<<<<< .mine
+	 * @param listener
+	 *            the listener which should be notified
+	 * @exception IllegalArgumentException
+	 *                <ul>
+=======
 	 * @param listener the listener which should be notified
 	 * @exception IllegalArgumentException <ul>
+>>>>>>> .r1366
 	 *                <li>ERROR_NULL_ARGUMENT - if the listener is null</li>
 	 *                </ul>
 	 * @exception SWTException <ul>
@@ -240,8 +264,15 @@ public final class SearchBox
 	 * ENTER is pressed the combo's text area.
 	 * </p>
 	 * 
+<<<<<<< .mine
+	 * @param listener
+	 *            the listener which should be notified
+	 * @exception IllegalArgumentException
+	 *                <ul>
+=======
 	 * @param listener the listener which should be notified
 	 * @exception IllegalArgumentException <ul>
+>>>>>>> .r1366
 	 *                <li>ERROR_NULL_ARGUMENT - if the listener is null</li>
 	 *                </ul>
 	 * @exception SWTException <ul>

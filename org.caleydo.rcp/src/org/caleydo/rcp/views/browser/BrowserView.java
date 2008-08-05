@@ -124,7 +124,8 @@ public class BrowserView
 	/**
 	 * Finds the first browser view in the given window.
 	 * 
-	 * @param window the window
+	 * @param window
+	 *            the window
 	 * @return the first found browser view, or <code>null</code> if none found
 	 */
 	private static BrowserView findBrowser(IWorkbenchWindow window)
@@ -152,9 +153,9 @@ public class BrowserView
 	public BrowserView()
 	{
 		initialUrl = "http://www.google.at";// BrowserPlugin.getDefault().
-		// getPluginPreferences
-		// ().getString(IBrowserConstants
-		// .PREF_HOME_PAGE);
+											// getPluginPreferences
+											// ().getString(IBrowserConstants
+											// .PREF_HOME_PAGE);
 	}
 
 	public void init(IViewSite site, IMemento memento) throws PartInitException
@@ -325,7 +326,8 @@ public class BrowserView
 	/**
 	 * Opens a new browser window.
 	 * 
-	 * @param event the open window event
+	 * @param event
+	 *            the open window event
 	 */
 	private void openWindow(WindowEvent event)
 	{

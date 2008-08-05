@@ -1,15 +1,15 @@
 package org.caleydo.rcp;
 
 import java.util.Map;
+
 import org.caleydo.core.application.core.CaleydoBootloader;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.rcp.action.file.FileOpenProjectAction;
+import org.caleydo.rcp.wizard.firststart.FirstStartWizard;
 import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -20,9 +20,6 @@ import org.eclipse.ui.PlatformUI;
 public class Application
 	implements IApplication
 {
-
-	public static final String sDebugMsgPrefix = "RCP: ";
-
 	private CaleydoBootloader caleydoCore;
 
 	/**
@@ -41,8 +38,7 @@ public class Application
 	@SuppressWarnings("unchecked")
 	public Object start(IApplicationContext context) throws Exception
 	{
-
-		System.out.println("Caleydo_RCP: bootstrapping ...");
+		System.out.println("Caleydo RCP: bootstrapping ...");
 
 		String sCaleydoXMLfile = "";
 		Map<String, Object> map = (Map<String, Object>) context.getArguments();
@@ -56,22 +52,33 @@ public class Application
 				if (info.length > 0)
 				{
 					sCaleydoXMLfile = info[0];
-					System.out.println(sDebugMsgPrefix + "XML config file:" + sCaleydoXMLfile);
+					System.out.println("XML config file:" + sCaleydoXMLfile);
 
 					if (info.length > 1)
 					{
 						System.err
-								.println(sDebugMsgPrefix
-										+ "can not handle more than on argument! ignor other argumets.");
+								.println("Caleydo cannot handle more than on argument! ignor other argumets.");
 					}
 				}
 			}
 		}
-
-		startCaleydoCore(sCaleydoXMLfile);
+		
+		// Create Caleydo core
+		caleydoCore = new CaleydoBootloader();
+		generalManager = caleydoCore.getGeneralManager();
 
 		Display display = PlatformUI.createDisplay();
-
+		
+		// Check if Caleydo will be started the first time
+		if (caleydoCore.getGeneralManager().getPreferenceStore().getBoolean("firstStart"))
+		{
+			WizardDialog firstStartWizard = new WizardDialog(display.getActiveShell(), 
+					new FirstStartWizard());
+			firstStartWizard.open();
+		}
+		
+		startCaleydoCore(sCaleydoXMLfile);
+		
 		try
 		{
 			applicationWorkbenchAdvisor = new ApplicationWorkbenchAdvisor();
@@ -87,8 +94,6 @@ public class Application
 		{
 			disposeCaleydoCore();
 			display.dispose();
-			System.out.println(sDebugMsgPrefix + getClass().getSimpleName()
-					+ ".start() ==> display.dispose() ... [done]");
 		}
 
 	}
@@ -99,7 +104,6 @@ public class Application
 	 */
 	public void stop()
 	{
-		System.out.println(sDebugMsgPrefix + getClass().getSimpleName() + ".stop() ...");
 
 		final IWorkbench workbench = PlatformUI.getWorkbench();
 
@@ -118,10 +122,6 @@ public class Application
 
 	protected void startCaleydoCore(final String sXmlFileName)
 	{
-
-		caleydoCore = new CaleydoBootloader();
-		generalManager = caleydoCore.getGeneralManager();
-
 		// If no file is provided as command line argument a XML file open
 		// dialog is opened
 		if (sXmlFileName == "")
@@ -144,15 +144,12 @@ public class Application
 		else
 		{
 			caleydoCore.setXmlFileName(sXmlFileName);
-			caleydoCore.run_SWT();
+			caleydoCore.start();
 		}
 	}
 
 	protected void disposeCaleydoCore()
 	{
-
-		System.out.println(sDebugMsgPrefix + getClass().getSimpleName()
-				+ ".disposeCaleydoCore() shutdown ...");
 
 		if (caleydoCore != null)
 		{
@@ -160,11 +157,6 @@ public class Application
 			{
 				caleydoCore.stop();
 				caleydoCore = null;
-			}
-			else
-			{
-				System.err.println(sDebugMsgPrefix + getClass().getSimpleName()
-						+ ".disposeCaleydoCore() core was already stopped!");
 			}
 		}
 	}

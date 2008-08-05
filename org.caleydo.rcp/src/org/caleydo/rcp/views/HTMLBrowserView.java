@@ -1,15 +1,12 @@
 package org.caleydo.rcp.views;
 
-// import java.awt.FlowLayout;
-// import org.eclipse.swt.SWT;
-// import org.eclipse.swt.layout.FillLayout;
-// import org.eclipse.swt.layout.RowLayout;
 import java.util.ArrayList;
+
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.event.CmdEventCreateMediator;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.IEventPublisher.MediatorType;
-import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
 import org.caleydo.rcp.Application;
 import org.eclipse.swt.SWT;
@@ -40,9 +37,9 @@ public class HTMLBrowserView
 		int iUniqueId = 85401;
 
 		HTMLBrowserViewRep browserView = (HTMLBrowserViewRep) viewManager.createView(
-				ManagerObjectType.VIEW_SWT_BROWSER, iUniqueId, -1, "Browser");
+				EManagerObjectType.VIEW_SWT_BROWSER, iUniqueId, -1, "Browser");
 
-		viewManager.registerItem(browserView, iUniqueId, ManagerObjectType.VIEW);
+		viewManager.registerItem(browserView, iUniqueId);
 
 		browserView.setAttributes(1000, 800);
 		browserView.initViewRCP(parent);

@@ -1,7 +1,9 @@
 package org.caleydo.core.manager.general;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
@@ -30,10 +32,10 @@ import org.caleydo.core.manager.specialized.genome.pathway.PathwayItemManager;
 import org.caleydo.core.manager.specialized.genome.pathway.PathwayManager;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
-import org.caleydo.core.manager.type.EManagerType;
 import org.caleydo.core.manager.view.ViewGLCanvasManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.eclipse.jface.preference.PreferenceStore;
 
 /**
  * General manager that contains all module managers.
@@ -43,39 +45,50 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  */
 public class GeneralManager
 	implements IGeneralManager
-{
-
+{	
+	public static final String PREFERENCE_FILE_NAME = "caleydo.prefs";
+	
+	/**
+	 * Location where Caleydo stores preferences and caching data.
+	 */
+	private String sCaleydoDataPath;
+	
+	/**
+	 * Preferences store enables storing and restoring of application specific preference data.
+	 */
+	private PreferenceStore preferenceStore;
+	
 	private boolean bAllManagersInitialized = false;
 
 	private ArrayList<IManager> alManagers;
 
-	protected IStorageManager storageManager;
+	private IStorageManager storageManager;
 
-	protected IMementoManager mementoManager;
+	private IMementoManager mementoManager;
 
 	// protected IVirtualArrayManager virtualArrayManager;
 
-	protected ISetManager setManager;
+	private ISetManager setManager;
 
-	protected ISelectionManager selectionManager;
+	private ISelectionManager selectionManager;
 
-	protected ICommandManager commandManager;
+	private ICommandManager commandManager;
 
-	protected ISWTGUIManager sWTGUIManager;
+	private ISWTGUIManager sWTGUIManager;
 
-	protected IViewGLCanvasManager viewGLCanvasManager;
+	private IViewGLCanvasManager viewGLCanvasManager;
 
-	protected IPathwayManager pathwayManager;
+	private IPathwayManager pathwayManager;
 
-	protected IPathwayItemManager pathwayItemManager;
+	private IPathwayItemManager pathwayItemManager;
 
-	protected IEventPublisher eventPublisher;
+	private IEventPublisher eventPublisher;
 
-	protected IXmlParserManager xmlParserManager;
+	private IXmlParserManager xmlParserManager;
 
-	protected IGenomeIdManager genomeIdManager;
+	private IGenomeIdManager genomeIdManager;
 
-	protected IGlyphManager glyphManager;
+	private IGlyphManager glyphManager;
 
 	private Logger logger;
 
@@ -84,23 +97,52 @@ public class GeneralManager
 	 */
 	public GeneralManager()
 	{
-
 		alManagers = new ArrayList<IManager>();
 
+		// Retrieve platform independent home directory
+		sCaleydoDataPath = System.getProperty("user.home");
+		sCaleydoDataPath +=  "/.caleydo/";
+		
 		initLogger();
+		initPreferences();
 		initManager();
 	}
 
+	private void initPreferences() 
+	{
+		preferenceStore = new PreferenceStore(sCaleydoDataPath + PREFERENCE_FILE_NAME);
+		
+		try
+		{
+			preferenceStore.load();
+		}
+		catch (IOException e)
+		{
+			logger.log(Level.INFO, "Create new preference store at "
+					+sCaleydoDataPath + PREFERENCE_FILE_NAME);
+			
+			try
+			{
+				preferenceStore.setValue("firstStart", true);	
+				preferenceStore.save();
+			}
+			catch (IOException e1)
+			{
+				throw new CaleydoRuntimeException("Unable to save preference file.", 
+						CaleydoRuntimeExceptionType.DATAHANDLING);
+			}
+		}
+	}
+	
 	/**
 	 * Must be called right after the constructor before using this class.
 	 * Initializes all manager objects.
 	 */
 	public void initManager()
 	{
-
 		if (bAllManagersInitialized)
 		{
-			throw new CaleydoRuntimeException("initAll() was called at least twice!");
+			throw new CaleydoRuntimeException("Tried to initialize managers multiple times. Abort.");
 		}
 
 		bAllManagersInitialized = true;
@@ -121,12 +163,8 @@ public class GeneralManager
 		xmlParserManager = new XmlParserManager(this);
 		glyphManager = new GlyphManager(this);
 
-		/**
-		 * Insert all Manager objects handling registered objects to the
-		 * LinkedList
-		 */
 		alManagers.add(setManager);
-		// llAllManagerObjects.add(virtualArrayManager);
+		// alManagers.add(virtualArrayManager);
 		alManagers.add(storageManager);
 		alManagers.add(selectionManager);
 		alManagers.add(pathwayManager);
@@ -138,7 +176,6 @@ public class GeneralManager
 		alManagers.add(commandManager);
 		alManagers.add(mementoManager);
 		alManagers.add(glyphManager);
-
 	}
 
 	/**
@@ -146,7 +183,6 @@ public class GeneralManager
 	 */
 	private void initLogger()
 	{
-
 		logger = Logger.getLogger("Caleydo Log");
 	}
 
@@ -156,7 +192,6 @@ public class GeneralManager
 	 */
 	public final Logger getLogger()
 	{
-
 		return logger;
 	}
 
@@ -166,7 +201,6 @@ public class GeneralManager
 	 */
 	public boolean hasItem(final int iItemId)
 	{
-
 		Iterator<IManager> iter = alManagers.iterator();
 
 		while (iter.hasNext())
@@ -185,7 +219,6 @@ public class GeneralManager
 	 */
 	public Object getItem(final int iItemId)
 	{
-
 		Iterator<IManager> iter = alManagers.iterator();
 
 		while (iter.hasNext())
@@ -207,7 +240,6 @@ public class GeneralManager
 	 */
 	public IMementoManager getMementoManager()
 	{
-
 		return mementoManager;
 	}
 
@@ -217,7 +249,6 @@ public class GeneralManager
 	 */
 	public IStorageManager getStorageManager()
 	{
-
 		return storageManager;
 	}
 
@@ -230,7 +261,6 @@ public class GeneralManager
 	// }
 	public ISelectionManager getSelectionManager()
 	{
-
 		return selectionManager;
 	}
 
@@ -240,7 +270,6 @@ public class GeneralManager
 	 */
 	public ISetManager getSetManager()
 	{
-
 		return setManager;
 	}
 
@@ -250,7 +279,6 @@ public class GeneralManager
 	 */
 	public IViewGLCanvasManager getViewGLCanvasManager()
 	{
-
 		return viewGLCanvasManager;
 	}
 
@@ -260,7 +288,6 @@ public class GeneralManager
 	 */
 	public IPathwayManager getPathwayManager()
 	{
-
 		return pathwayManager;
 	}
 
@@ -270,7 +297,6 @@ public class GeneralManager
 	 */
 	public IPathwayItemManager getPathwayItemManager()
 	{
-
 		return pathwayItemManager;
 	}
 
@@ -280,7 +306,6 @@ public class GeneralManager
 	 */
 	public ISWTGUIManager getSWTGUIManager()
 	{
-
 		return sWTGUIManager;
 	}
 
@@ -290,7 +315,6 @@ public class GeneralManager
 	 */
 	public IEventPublisher getEventPublisher()
 	{
-
 		return eventPublisher;
 	}
 
@@ -300,7 +324,6 @@ public class GeneralManager
 	 */
 	public IXmlParserManager getXmlParserManager()
 	{
-
 		return this.xmlParserManager;
 	}
 
@@ -310,7 +333,6 @@ public class GeneralManager
 	 */
 	public IGenomeIdManager getGenomeIdManager()
 	{
-
 		return this.genomeIdManager;
 	}
 
@@ -320,7 +342,6 @@ public class GeneralManager
 	 */
 	public ICommandManager getCommandManager()
 	{
-
 		return commandManager;
 	}
 
@@ -330,10 +351,18 @@ public class GeneralManager
 	 */
 	public IGlyphManager getGlyphManager()
 	{
-
 		return glyphManager;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IGeneralManager#getPreferenceStore()
+	 */
+	public PreferenceStore getPreferenceStore() 
+	{
+		return preferenceStore;
+	}
+	
 	// public void serializationOutputTest() {
 	//		
 	// try

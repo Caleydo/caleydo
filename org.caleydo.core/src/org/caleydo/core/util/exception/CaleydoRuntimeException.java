@@ -1,6 +1,3 @@
-/*
- * Created on Jul 19, 2003
- */
 package org.caleydo.core.util.exception;
 
 import java.lang.RuntimeException;
@@ -45,7 +42,6 @@ public class CaleydoRuntimeException
 	 */
 	public CaleydoRuntimeException(String s, final CaleydoRuntimeExceptionType type)
 	{
-
 		super(s);
 		this.type = type;
 	}
@@ -56,7 +52,6 @@ public class CaleydoRuntimeException
 	 */
 	public CaleydoRuntimeException(String s, Throwable ex)
 	{
-
 		super(s, ex);
 
 		type = CaleydoRuntimeExceptionType.RUNTIME;
@@ -69,7 +64,6 @@ public class CaleydoRuntimeException
 	public CaleydoRuntimeException(String s, Throwable ex,
 			final CaleydoRuntimeExceptionType type)
 	{
-
 		super(s, ex);
 
 		this.type = type;
@@ -82,8 +76,6 @@ public class CaleydoRuntimeException
 	 */
 	public final CaleydoRuntimeExceptionType getType()
 	{
-
 		return type;
 	}
-
 }

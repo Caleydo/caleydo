@@ -3,8 +3,8 @@ package org.caleydo.rcp.wizard.project;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
@@ -48,15 +48,8 @@ public class NewOrExistingProjectPage
 		Button buttonExistingProject = new Button(composite, SWT.RADIO);
 		buttonExistingProject.setText("Open existing project");
 
-		buttonNewProject.addSelectionListener(new SelectionListener()
+		buttonNewProject.addSelectionListener(new SelectionAdapter()
 		{
-
-			public void widgetDefaultSelected(SelectionEvent e)
-			{
-
-				bNewProject = true;
-			}
-
 			public void widgetSelected(SelectionEvent e)
 			{
 
@@ -64,15 +57,8 @@ public class NewOrExistingProjectPage
 			}
 		});
 
-		buttonExistingProject.addSelectionListener(new SelectionListener()
+		buttonExistingProject.addSelectionListener(new SelectionAdapter()
 		{
-
-			public void widgetDefaultSelected(SelectionEvent e)
-			{
-
-				bNewProject = false;
-			}
-
 			public void widgetSelected(SelectionEvent e)
 			{
 

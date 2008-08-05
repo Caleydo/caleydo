@@ -4,7 +4,6 @@ import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
@@ -23,7 +22,6 @@ public class CmdLoadPathwayData
 	public CmdLoadPathwayData(final IGeneralManager generalManager,
 			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
 	{
-
 		super(generalManager, commandManager, commandQueueSaxType);
 
 		setCommandQueueSaxType(CommandQueueSaxType.LOAD_DATA_FILE);
@@ -35,7 +33,6 @@ public class CmdLoadPathwayData
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
-
 		generalManager.getPathwayManager().triggerParsingPathwayDatabases();
 		commandManager.runDoCommand(this);
 	}
@@ -46,7 +43,6 @@ public class CmdLoadPathwayData
 	 */
 	public void undoCommand() throws CaleydoRuntimeException
 	{
-
 		commandManager.runUndoCommand(this);
 	}
 
@@ -57,9 +53,6 @@ public class CmdLoadPathwayData
 	 */
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
-
-		assert parameterHandler != null : "can not handle null object!";
-
 		super.setParameterHandler(parameterHandler);
 	}
 }

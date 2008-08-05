@@ -1,6 +1,5 @@
 package org.caleydo.core.command.system.path;
 
-import java.util.logging.Level;
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import org.caleydo.core.manager.ICommandManager;
@@ -50,12 +49,6 @@ public class CmdSetPathwayDatabasePath
 
 		pathwayManager.createPathwayDatabase(type, sXMLPath, sImagePath, sImageMapPath);
 
-		generalManager.getLogger().log(
-				Level.INFO,
-				"Setting pathway loading path: database-type:[" + type + "] " + "xml-path:["
-						+ sXMLPath + "] image-path:[" + sImagePath + "] image-map-path:["
-						+ sImageMapPath + "]");
-
 		commandManager.runDoCommand(this);
 	}
 
@@ -71,12 +64,10 @@ public class CmdSetPathwayDatabasePath
 
 	/*
 	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttr#
-	 * setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
+	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
 	 */
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
-
 		assert parameterHandler != null : "can not handle null object!";
 
 		super.setParameterHandler(parameterHandler);

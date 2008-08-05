@@ -18,7 +18,7 @@ public class PathwayVertexGraphItem
 
 	final String sName;
 
-	final EPathwayVertexType type;
+	EPathwayVertexType type;
 
 	final String sExternalLink;
 
@@ -39,7 +39,15 @@ public class PathwayVertexGraphItem
 
 		super(iId, EGraphItemKind.NODE);
 
-		type = EPathwayVertexType.valueOf(sType);
+		// Check if type exists - otherwise assign "other"
+		try
+		{
+			type = EPathwayVertexType.valueOf(sType);
+		}
+		catch (IllegalArgumentException e)
+		{
+			type = EPathwayVertexType.other;
+		}
 
 		this.sName = sName;
 		this.sExternalLink = sExternalLink;

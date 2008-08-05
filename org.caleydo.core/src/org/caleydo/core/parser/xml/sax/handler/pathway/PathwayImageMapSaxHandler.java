@@ -10,7 +10,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
 /**
- * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler
+ * SAX handler for loading KEGG imagemaps.
+ * 
  * @author Marc Streit
  * @author Michael Kalkusch
  */

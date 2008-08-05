@@ -4,12 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
-import javax.swing.ImageIcon;
-import org.caleydo.util.graph.EGraphItemProperty;
-import org.caleydo.util.graph.IGraph;
-import org.caleydo.util.graph.IGraphItem;
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
 import org.caleydo.core.data.graph.pathway.item.edge.PathwayReactionEdgeGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
@@ -20,6 +14,11 @@ import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.util.graph.EGraphItemProperty;
+import org.caleydo.util.graph.IGraph;
+import org.caleydo.util.graph.IGraphItem;
+import org.xml.sax.Attributes;
+import org.xml.sax.SAXException;
 
 /**
  * XML Parser that is able to load KEGG pathway files. The KEGG XML files follow
@@ -32,7 +31,6 @@ public class KgmlSaxHandler
 	extends AXmlParserHandler
 	implements IXmlParserHandler
 {
-
 	private Attributes attributes;
 
 	private String sAttributeName = "";
@@ -55,6 +53,9 @@ public class KgmlSaxHandler
 
 	private int iCurrentEntryId;
 
+	/**
+	 * Constructor.
+	 */
 	public KgmlSaxHandler(final IGeneralManager generalManager,
 			final IXmlParserManager xmlParserManager)
 	{
@@ -70,6 +71,10 @@ public class KgmlSaxHandler
 		setXmlActivationTag("pathway");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	 */
 	public void startElement(String namespaceURI, String sSimpleName, String sQualifiedName,
 			Attributes attributes) throws SAXException
 	{
@@ -103,6 +108,10 @@ public class KgmlSaxHandler
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+	 */
 	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName)
 			throws SAXException
 	{

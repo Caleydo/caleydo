@@ -15,9 +15,6 @@ public class GenomePerspective
 	public void createInitialLayout(IPageLayout layout)
 	{
 
-		System.out.println(Application.sDebugMsgPrefix + getClass().getSimpleName()
-				+ ".createInitialLayout(..)");
-
 		layout.setEditorAreaVisible(false);
 
 		// layout.addView(GLJukeboxPathwayView.ID +":1", IPageLayout.LEFT,

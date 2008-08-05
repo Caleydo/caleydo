@@ -21,7 +21,6 @@ import org.xml.sax.SAXException;
 public class BioCartaPathwayImageMapSaxHandler
 	extends AXmlParserHandler
 {
-
 	private final static String BIOCARTA_EXTERNAL_URL_PATHWAY = "http://cgap.nci.nih.gov/Pathways/BioCarta/";
 
 	private final static String BIOCARTA_EXTERNAL_URL_VERTEX = "http://cgap.nci.nih.gov";
@@ -36,15 +35,21 @@ public class BioCartaPathwayImageMapSaxHandler
 
 	private String sTitle = "";
 
+	/**
+	 * Constructor.
+	 */
 	public BioCartaPathwayImageMapSaxHandler(IGeneralManager generalManager,
 			IXmlParserManager xmlParserManager)
 	{
-
 		super(generalManager, xmlParserManager);
 
 		setXmlActivationTag("span");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
+	 */
 	public void startElement(String namespaceURI, String sSimpleName, String sQualifiedName,
 			Attributes attributes) throws SAXException
 	{
@@ -68,6 +73,10 @@ public class BioCartaPathwayImageMapSaxHandler
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
+	 */
 	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName)
 			throws SAXException
 	{
@@ -196,8 +205,10 @@ public class BioCartaPathwayImageMapSaxHandler
 
 		if (iDavidId == -1 || iDavidId == 0)
 		{
-			generalManager.getLogger().log(Level.WARNING,
+			// TODO: How to handle this case?
+			generalManager.getLogger().log(Level.FINE,
 					"Cannot map BioCarta ID " + sName + " to David ID");
+			
 			return;
 		}
 
@@ -208,13 +219,12 @@ public class BioCartaPathwayImageMapSaxHandler
 				sShape, sCoords);
 	}
 
-	/**
-	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler#destroyHandler()
+	/*
+	 * (non-Javadoc)
 	 * @see org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler#destroyHandler()
 	 */
 	public void destroyHandler()
 	{
-
 		super.destroyHandler();
 	}
 }

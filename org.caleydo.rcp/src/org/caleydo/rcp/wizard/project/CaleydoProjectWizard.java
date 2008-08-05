@@ -21,9 +21,7 @@ public class CaleydoProjectWizard
 	 */
 	public CaleydoProjectWizard()
 	{
-
 		super();
-
 	}
 
 	/*

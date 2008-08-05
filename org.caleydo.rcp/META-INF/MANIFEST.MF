@@ -15,11 +15,19 @@ Bundle-ClassPath: .,
  lib/org.caleydo.core_bin.jar,
  lib/jgraph/jgraph.jar,
  lib/gleem/gleem_mod_class.jar,
- lib/muddleware/muddleware.jar,
  lib/tagsoup/tagsoup-1.1.3.jar,
- lib/jface/,
- lib/axis,
- lib/org.caleydo.util.graph_bin.jar
+ lib/org.caleydo.util.graph_bin.jar,
+ lib/webspider/itsucks-core-0.3.0-pre7.jar,
+ lib/webspider/itsucks-base-0.3.0-pre7.jar,
+ lib/webspider/spring-beans-2.5.jar,
+ lib/webspider/spring-context-2.5.jar,
+ lib/webspider/spring-core-2.5.jar,
+ lib/webspider/commons-logging-1.1.1.jar,
+ lib/webspider/commons-httpclient-3.1.jar,
+ lib/webspider/commons-codec-1.2.jar,
+ lib/webspider/log4j-1.2.14.jar,
+ lib/ftp/edtftpj.jar,
+ lib/
 Bundle-NativeCode: 
  /lib/jogl/macosx/libgluegen-rt.jnilib;
  /lib/jogl/macosx/libjogl_cg.jnilib;

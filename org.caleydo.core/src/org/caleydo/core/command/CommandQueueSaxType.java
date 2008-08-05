@@ -25,6 +25,8 @@ public enum CommandQueueSaxType
 	LOAD_ON_DEMAND(EManagerType.SYSTEM, "cmd", "process", "LOAD_ON_DEMAND", "No description available!"),
 	LOAD_URL_IN_BROWSER(EManagerType.EVENT_PUBLISHER, "cmd", "type", "-1", "Load URL in browser"),
 
+	FETCH_PATHWAY_DATA(EManagerType.SYSTEM, "cmd", "type", "", "No description available!"),
+	
 	DATA_FILTER_MATH(EManagerType.DATA_STORAGE, "cmd", "type", "-1", "Filter data by using math operations"),
 	DATA_FILTER_MIN_MAX(EManagerType.DATA_STORAGE, "cmd", "type", "-1", "Evaluate min and max of an entity"),
 

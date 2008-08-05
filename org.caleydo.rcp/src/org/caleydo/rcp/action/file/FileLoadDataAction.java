@@ -6,7 +6,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
+
 import javax.media.opengl.GLEventListener;
+
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.command.data.CmdDataCreateSet;
 import org.caleydo.core.command.data.CmdDataCreateStorage;
@@ -15,10 +17,10 @@ import org.caleydo.core.command.data.filter.CmdDataFilterMath;
 import org.caleydo.core.command.data.filter.CmdDataFilterMath.EDataFilterMathType;
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
-import org.caleydo.core.data.collection.SetType;
+import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
-import org.caleydo.core.manager.type.ManagerObjectType;
+import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
@@ -567,7 +569,7 @@ public class FileLoadDataAction
 			comboTmpDataClass.setItems(new String[] { "SKIP", "RefSeq ID", "Experiment",
 					"Patient" });
 			comboTmpDataClass.select(0); // by default values in that column
-			// should be ignored
+											// should be ignored
 			arComboDataClass.add(comboTmpDataClass);
 
 			TableEditor editor = new TableEditor(previewTable);
@@ -665,7 +667,7 @@ public class FileLoadDataAction
 			comboTmpDataType.setEnabled(false);
 			comboTmpDataType.setItems(new String[] { "SKIP", "INT", "FLOAT", "STRING" });
 			comboTmpDataType.select(0); // by default values in that column
-			// should be ignored
+										// should be ignored
 			arComboDataType.add(comboTmpDataType);
 
 			TableEditor editor = new TableEditor(previewTable);
@@ -754,8 +756,8 @@ public class FileLoadDataAction
 			}
 
 			if (tmpComboDataType.getText().equals("FLOAT")) // currently we only
-			// allow parsing
-			// float data
+															// allow parsing
+															// float data
 			{
 				// Create data storage
 				CmdDataCreateStorage cmdCreateStorage = (CmdDataCreateStorage) Application.generalManager
@@ -763,8 +765,9 @@ public class FileLoadDataAction
 								CommandQueueSaxType.CREATE_STORAGE);
 
 				int iTmpStorageId = Application.generalManager.getStorageManager().createId(
-						ManagerObjectType.STORAGE_FLAT);
-				cmdCreateStorage.setAttributes(iTmpStorageId, "", "");
+						EManagerObjectType.STORAGE_NUMERICAL);
+				cmdCreateStorage.setAttributes(iTmpStorageId,
+						EManagerObjectType.STORAGE_NUMERICAL);
 				cmdCreateStorage.doCommand();
 
 				iAlStorageId.add(iTmpStorageId);
@@ -811,7 +814,7 @@ public class FileLoadDataAction
 						CommandQueueSaxType.CREATE_VIRTUAL_ARRAY);
 
 		int iTmpVirtualArrayId = Application.generalManager.getStorageManager().createId(
-				ManagerObjectType.STORAGE_FLAT);
+				EManagerObjectType.STORAGE_NUMERICAL);
 		cmdCreateVirtualArray.setAttributes(iTmpVirtualArrayId, -1, 0, 0, 0);
 		cmdCreateVirtualArray.doCommand();
 
@@ -820,10 +823,10 @@ public class FileLoadDataAction
 				.getCommandManager().createCommandByType(CommandQueueSaxType.CREATE_SET_DATA);
 
 		iTargetSetId = Application.generalManager.getStorageManager().createId(
-				ManagerObjectType.STORAGE_FLAT);
+				EManagerObjectType.STORAGE_NUMERICAL);
 
-		cmdCreateSet.setAttributes(iTargetSetId, Integer.toString(iTmpVirtualArrayId),
-				sStorageIDs, SetType.SET_GENE_EXPRESSION_DATA);
+		cmdCreateSet.setAttributes(iTargetSetId, null, iAlStorageId,
+				ESetType.GENE_EXPRESSION_DATA);
 		cmdCreateSet.doCommand();
 
 		iSWTGUIManager.setProgressbarVisible(false);
@@ -832,8 +835,8 @@ public class FileLoadDataAction
 		CmdDataFilterMath cmdDataNormalize = (CmdDataFilterMath) Application.generalManager
 				.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MATH);
 
-		cmdDataNormalize
-				.setAttributes(EDataFilterMathType.NORMALIZE, iAlTmpStorageIdNormalize);
+		cmdDataNormalize.setAttributes(EDataFilterMathType.NORMALIZE,
+				iAlTmpStorageIdNormalize, EManagerObjectType.STORAGE_NUMERICAL);
 		cmdDataNormalize.doCommand();
 
 		CmdLoadFileLookupTable cmdLoadLookupTableFile = (CmdLoadFileLookupTable) Application.generalManager
@@ -856,9 +859,7 @@ public class FileLoadDataAction
 					|| tmpGLEventListener.getClass().getSuperclass().equals(
 							AGLCanvasStorageBasedView.class))
 			{
-				int[] iArTmpSetId = new int[1];
-				iArTmpSetId[0] = iTargetSetId;
-				((AGLCanvasStorageBasedView) tmpGLEventListener).addSetId(iArTmpSetId);
+				((AGLCanvasStorageBasedView) tmpGLEventListener).addSet(iTargetSetId);
 				((AGLCanvasStorageBasedView) tmpGLEventListener).initData();
 			}
 		}

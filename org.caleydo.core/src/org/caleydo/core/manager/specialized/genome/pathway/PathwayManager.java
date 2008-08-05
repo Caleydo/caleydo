@@ -3,6 +3,7 @@ package org.caleydo.core.manager.specialized.genome.pathway;
 import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.logging.Level;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
@@ -10,7 +11,6 @@ import org.caleydo.core.data.view.rep.jgraph.PathwayImageMap;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.manager.type.EManagerType;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.core.Graph;
@@ -25,7 +25,6 @@ public class PathwayManager
 	extends AManager
 	implements IPathwayManager, Serializable
 {
-
 	private static final long serialVersionUID = 1L;
 
 	private HashMap<Integer, PathwayGraph> hashPathwayIdToPathwayGraphLUT;
@@ -56,7 +55,6 @@ public class PathwayManager
 	 */
 	public PathwayManager(final IGeneralManager generalManager)
 	{
-
 		super(generalManager, IGeneralManager.iUniqueId_TypeOffset_Pathways_Pathway,
 				EManagerType.DATA_PATHWAY_ELEMENT);
 
@@ -71,7 +69,6 @@ public class PathwayManager
 	public void createPathwayDatabase(final EPathwayDatabaseType type, final String sXMLPath,
 			final String sImagePath, final String sImageMapPath)
 	{
-
 		// Check if requested pathway database is already loaded (e.g. using
 		// caching)
 		if (hashPathwayDatabase.containsKey(type))
@@ -81,6 +78,13 @@ public class PathwayManager
 				sImagePath);
 
 		hashPathwayDatabase.put(type, tmpPathwayDatabase);
+		
+		generalManager.getLogger().log(
+				Level.INFO,
+				"Setting pathway loading path: database-type:[" + type + "] " + "xml-path:["
+						+ tmpPathwayDatabase.getXMLPath() + "] image-path:[" 
+						+ tmpPathwayDatabase.getImagePath() + "] image-map-path:["
+						+ tmpPathwayDatabase.getImageMapPath() + "]");
 	}
 
 	/*
@@ -91,7 +95,6 @@ public class PathwayManager
 	 */
 	public void triggerParsingPathwayDatabases()
 	{
-
 		new PathwayLoaderThread(generalManager, hashPathwayDatabase.values());
 	}
 
@@ -104,7 +107,6 @@ public class PathwayManager
 	public PathwayGraph createPathway(final EPathwayDatabaseType type, final String sName,
 			final String sTitle, final String sImageLink, final String sExternalLink)
 	{
-
 		// if (hashPathwayIdToPathwayGraphLUT.containsKey(iKEGGId))
 		// return hashPathwayIdToPathwayGraphLUT.get(iKEGGId);
 
@@ -126,13 +128,10 @@ public class PathwayManager
 
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.data.IPathwayManager#searchPathwayByName(java
-	 * .lang.String)
+	 * @see org.caleydo.core.manager.specialized.genome.IPathwayManager#searchPathwayIdByName(java.lang.String)
 	 */
 	public int searchPathwayIdByName(final String sPathwayName)
 	{
-
 		Iterator<String> iterPathwayName = hashPathwayTitleToPathwayIdLUT.keySet().iterator();
 		Pattern pattern = Pattern.compile(sPathwayName, Pattern.CASE_INSENSITIVE);
 		Matcher regexMatcher;
@@ -158,7 +157,6 @@ public class PathwayManager
 	 */
 	public Graph getRootPathway()
 	{
-
 		return rootPathwayGraph;
 	}
 
@@ -171,7 +169,6 @@ public class PathwayManager
 	public void setPathwayVisibilityStateByID(final int iPathwayID,
 			final boolean bVisibilityState)
 	{
-
 		hashPathwayIdToVisibilityState.put(iPathwayID, bVisibilityState);
 	}
 
@@ -181,7 +178,6 @@ public class PathwayManager
 	 */
 	public boolean isPathwayVisible(final int iPathwayID)
 	{
-
 		return hashPathwayIdToVisibilityState.get(iPathwayID);
 	}
 
@@ -193,7 +189,6 @@ public class PathwayManager
 	 */
 	public void createPathwayImageMap(final String sImageLink)
 	{
-
 		currentPathwayImageMap = new PathwayImageMap(sImageLink);
 	}
 
@@ -206,7 +201,6 @@ public class PathwayManager
 	 */
 	public PathwayDatabase getPathwayDatabaseByType(EPathwayDatabaseType type)
 	{
-
 		return hashPathwayDatabase.get(type);
 	}
 
@@ -217,7 +211,6 @@ public class PathwayManager
 	 */
 	public PathwayGraph getCurrenPathwayGraph()
 	{
-
 		return currentPathwayGraph;
 	}
 
@@ -228,7 +221,6 @@ public class PathwayManager
 	 */
 	public PathwayImageMap getCurrentPathwayImageMap()
 	{
-
 		return currentPathwayImageMap;
 	}
 
@@ -238,7 +230,6 @@ public class PathwayManager
 	 */
 	public Object getItem(int iItemId)
 	{
-
 		return (hashPathwayIdToPathwayGraphLUT.get(iItemId));
 	}
 
@@ -248,7 +239,6 @@ public class PathwayManager
 	 */
 	public boolean hasItem(int iItemId)
 	{
-
 		if (hashPathwayIdToPathwayGraphLUT.containsKey(iItemId))
 			return true;
 
@@ -263,7 +253,6 @@ public class PathwayManager
 	 */
 	public boolean registerItem(Object registerItem, int itemId)
 	{
-
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -274,7 +263,6 @@ public class PathwayManager
 	 */
 	public int size()
 	{
-
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -286,7 +274,6 @@ public class PathwayManager
 	 */
 	public boolean unregisterItem(int itemId)
 	{
-
 		// TODO Auto-generated method stub
 		return false;
 	}

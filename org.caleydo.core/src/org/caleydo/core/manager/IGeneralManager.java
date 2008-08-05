@@ -8,6 +8,7 @@ import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
 import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
+import org.eclipse.jface.preference.PreferenceStore;
 
 /**
  * Interface for general manager.
@@ -154,4 +155,10 @@ public interface IGeneralManager
 	 * @return logger
 	 */
 	public abstract Logger getLogger();
+	
+	/**
+	 * Returns the preference store where Caleydo stores its preferences.
+	 * The object can store and restore preferences to/from a predefined file.
+	 */
+	public PreferenceStore getPreferenceStore();
 }

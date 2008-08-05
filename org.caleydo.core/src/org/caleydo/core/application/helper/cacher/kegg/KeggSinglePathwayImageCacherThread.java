@@ -1,7 +1,7 @@
 package org.caleydo.core.application.helper.cacher.kegg;
 
 import java.io.IOException;
-import java.util.ArrayList;
+
 import com.enterprisedt.net.ftp.FTPConnectMode;
 import com.enterprisedt.net.ftp.FTPException;
 import com.enterprisedt.net.ftp.FileTransferClient;
@@ -15,7 +15,6 @@ public class KeggSinglePathwayImageCacherThread
 	extends Thread
 {	
 	private String sFileName;
-	private String sDirName;
 
 	private KeggPathwayImageCacher keggCacher;
 	
@@ -30,7 +29,6 @@ public class KeggSinglePathwayImageCacherThread
 			String sDirName)
 	{
 		this.sFileName = sFileName;
-		this.sDirName = sDirName;
 		this.keggCacher = keggCacher;
 		
 		start();
@@ -57,11 +55,12 @@ public class KeggSinglePathwayImageCacherThread
             ftp.setPassword("");
             ftp.connect();
 			
-            System.out.println("Start downloading file " +sFileName);
+//          System.out.println("Start downloading file " +sFileName);
             
-			ftp.downloadFile("/home/mstreit/.caleydo/kegg/" + sFileName, sDirName + sFileName);
+			ftp.downloadFile(System.getProperty("user.home") 
+					+ "/.caleydo/kegg/" + sFileName, sDirName + sFileName);
 		
-			System.out.println("Finished downloading file " +sFileName);
+//			System.out.println("Finished downloading file " +sFileName);
 			
             ftp.disconnect();
             

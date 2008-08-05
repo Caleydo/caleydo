@@ -12,6 +12,8 @@ import java.util.logging.Level;
 import javax.media.opengl.GLEventListener;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
 import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
@@ -24,7 +26,9 @@ import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 public class PathwayLoaderThread
 	extends Thread
 {
-
+	private static final String PATHWAY_LIST_KEGG = "data/genome/pathway/pathway_list_KEGG.txt";
+	private static final String PATHWAY_LIST_BIOCARTA = "data/genome/pathway/pathway_list_BIOCARTA.txt";
+	
 	private IGeneralManager generalManager;
 
 	private Collection<PathwayDatabase> pathwayDatabases;
@@ -38,7 +42,6 @@ public class PathwayLoaderThread
 	public PathwayLoaderThread(final IGeneralManager generalManager,
 			final Collection<PathwayDatabase> pathwayDatabases)
 	{
-
 		super("Pathway Loader Thread");
 
 		this.generalManager = generalManager;
@@ -55,7 +58,6 @@ public class PathwayLoaderThread
 	 */
 	public void run()
 	{
-
 		super.run();
 
 		Iterator<PathwayDatabase> iterPathwayDatabase = pathwayDatabases.iterator();
@@ -70,7 +72,6 @@ public class PathwayLoaderThread
 
 	private void loadAllPathwaysByType(final PathwayDatabase pathwayDatabase)
 	{
-
 		// // Try reading list of files directly from local hard dist
 		// File folder = new File(sXMLPath);
 		// File[] arFiles = folder.listFiles();
@@ -90,12 +91,17 @@ public class PathwayLoaderThread
 		BufferedReader file = null;
 		String sLine = null;
 		String sFileName = "";
+		String sPathwayPath = pathwayDatabase.getXMLPath();
 
 		if (pathwayDatabase.getName().equals("KEGG"))
-			sFileName = "data/genome/pathway/pathway_list_KEGG.txt";
+		{
+			sFileName = PATHWAY_LIST_KEGG;
+		}
 		else if (pathwayDatabase.getName().equals("BioCarta"))
-			sFileName = "data/genome/pathway/pathway_list_BIOCARTA.txt";
-
+		{
+			sFileName = PATHWAY_LIST_BIOCARTA;
+		}
+		
 		try
 		{
 			if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null)
@@ -109,19 +115,20 @@ public class PathwayLoaderThread
 			}
 
 			StringTokenizer tokenizer;
-			String sPathwayPath;
+			String sPathwayName;
 			PathwayGraph tmpPathwayGraph;
 			while ((sLine = file.readLine()) != null)
 			{
 				tokenizer = new StringTokenizer(sLine, " ");
 
-				sPathwayPath = tokenizer.nextToken();
-
+				sPathwayName = tokenizer.nextToken();
+				
 				// Skip non pathway files
-				if (!sPathwayPath.endsWith(".xml") && !sLine.contains("h_"))
+				if (!sPathwayName.endsWith(".xml") && !sLine.contains("h_"))
 					continue;
-
-				generalManager.getXmlParserManager().parseXmlFileByName(sPathwayPath);
+				
+				generalManager.getXmlParserManager().parseXmlFileByName(
+						sPathwayPath + sPathwayName);
 
 				tmpPathwayGraph = generalManager.getPathwayManager().getCurrenPathwayGraph();
 				tmpPathwayGraph.setWidth(StringConversionTool.convertStringToInt(tokenizer
@@ -137,19 +144,20 @@ public class PathwayLoaderThread
 							Level.INFO,
 							"Pathway texture width=" + iImageWidth + " / height="
 									+ iImageHeight);
-
 			}
 
 		}
 		catch (FileNotFoundException e)
 		{
-			generalManager.getLogger().log(Level.SEVERE,
-					"Pathway list file: " + sFileName + " not found.");
+			throw new CaleydoRuntimeException(
+					"Pathway list file: " + sFileName + " not found.",
+					CaleydoRuntimeExceptionType.DATAHANDLING);
 		}
 		catch (IOException e)
 		{
-			generalManager.getLogger().log(Level.SEVERE,
-					"Error reading data from pathway list file: " + sFileName);
+			throw new CaleydoRuntimeException(
+					"Error reading data from pathway list file: " + sFileName,
+					CaleydoRuntimeExceptionType.DATAHANDLING);			
 		}
 
 		if (tmpGLRemoteRendering3D != null)
@@ -161,7 +169,6 @@ public class PathwayLoaderThread
 	 */
 	private void notifyViews()
 	{
-
 		int iTmpPathwayId;
 
 		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()

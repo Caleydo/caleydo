@@ -1,7 +1,9 @@
 package org.caleydo.rcp;
 
 import java.util.Iterator;
+
 import javax.media.opengl.GLEventListener;
+
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
@@ -19,6 +21,7 @@ import org.eclipse.ui.application.IWorkbenchConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
+
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
 
@@ -68,6 +71,8 @@ public class ApplicationWorkbenchAdvisor
 
 		PlatformUI.getPreferenceStore().setValue(
 				IWorkbenchPreferenceConstants.SHOW_PROGRESS_ON_STARTUP, true);
+
+		System.out.println(PlatformUI.getPreferenceStore().getBoolean("hui"));
 	}
 
 	/*

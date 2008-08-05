@@ -25,6 +25,7 @@ import org.xml.sax.SAXException;
  * 
  * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler
  * @see org.caleydo.core.manager.IXmlParserManager
+ * 
  * @author Michael Kalkusch
  * @author Marc Streit
  */

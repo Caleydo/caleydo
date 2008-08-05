@@ -18,23 +18,7 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/org.caleydo.lib/lib_src/jgraph/jgraph-latest-stable-src_5_9.jar!/doc/api"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/axis.jar" sourcepath="/org.caleydo.lib/lib_src/axis/axis-src-1_4.zip">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/org.caleydo.lib/lib_src/axis/axis-src-1_4.zip!/axis-1_4/docs"/>
-		</attributes>
-	</classpathentry>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/axis-ant.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/commons-discovery-0.2.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/jaxrpc.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/saaj.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/axis/wsdl4j-1.5.1.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/gleem/gleem_mod_class.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.core.resources_3.1.2.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.core.runtime_3.1.2.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.jface_3.1.1.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.jface.text_3.1.2.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.osgi_3.1.2.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.ui.workbench_3.1.2.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/weka/weka.jar" sourcepath="/org.caleydo.lib/lib_src/weka/weka-src.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/org.caleydo.lib/doc/weka_javadoc.zip!/doc"/>
@@ -45,13 +29,21 @@
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/wii/WiiRemoteJ.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/wii/avetanaBT.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/swt/swt.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/ftp/edtftpj.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/webspider/itsucks-base-0.3.0-pre7.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/webspider/itsucks-core-0.3.0-pre7.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/webspider/spring-beans-2.5.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/webspider/spring-core-2.5.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/webspider/log4j-1.2.14.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/webspider/commons-logging-1.1.1.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/webspider/spring-context-2.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="/org.caleydo.lib/lib/ftp/edtftpj.jar"/>
+	<classpathentry exported="true" kind="lib" path="/org.caleydo.lib/lib/webspider/itsucks-base-0.3.0-pre7.jar"/>
+	<classpathentry exported="true" kind="lib" path="/org.caleydo.lib/lib/webspider/itsucks-core-0.3.0-pre7.jar"/>
+	<classpathentry exported="true" kind="lib" path="/org.caleydo.lib/lib/webspider/spring-beans-2.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="/org.caleydo.lib/lib/webspider/spring-core-2.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="/org.caleydo.lib/lib/webspider/log4j-1.2.14.jar"/>
+	<classpathentry exported="true" kind="lib" path="/org.caleydo.lib/lib/webspider/commons-logging-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="/org.caleydo.lib/lib/webspider/spring-context-2.5.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.core.resources_3.1.2.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.core.runtime_3.1.2.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.jface_3.1.1.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.jface_3.4.0.I20080606-1300.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.jface.text_3.1.2.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.osgi_3.1.2.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.ui.workbench_3.1.2.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/webspider/itsucks-console-0.3.0-pre7.jar"/>
 	<classpathentry kind="output" path="bin/class"/>
 </classpath>

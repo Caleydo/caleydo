@@ -112,7 +112,7 @@ public class CaleydoInputStream
 		{
 			XMLReader reader = null;
 
-			if (sInputStreamLabel.contains("."))
+			if (sInputStreamLabel.contains(".xml"))
 			{
 				reader = XMLReaderFactory.createXMLReader();
 

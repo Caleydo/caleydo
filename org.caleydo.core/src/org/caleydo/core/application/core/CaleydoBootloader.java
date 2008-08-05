@@ -1,16 +1,16 @@
 package org.caleydo.core.application.core;
 
+import java.io.IOException;
 import java.util.logging.Level;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
- * Basic Caleydo Bootloader, starts application either from local XML-file or
- * fram Muddleware-Server. Requires package:
- * org.studierstube.net.protocol.muddleware.*
+ * Basic Caleydo Bootloader.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -48,10 +48,6 @@ public class CaleydoBootloader
 	 */
 	public CaleydoBootloader()
 	{
-
-		/**
-		 * In order to use SWT call setStateSWT( true ) to enabel SWT support!
-		 */
 		generalManager = new GeneralManager();
 
 		generalManager.getLogger().log(Level.CONFIG, "===========================");
@@ -60,70 +56,45 @@ public class CaleydoBootloader
 
 		swtGUIManager = generalManager.getSWTGUIManager();
 		xmlParserManager = generalManager.getXmlParserManager();
-
-		/**
-		 * Register additional SaxParserHandler here: <br>
-		 * sample code:<br>
-		 * <br>
-		 * AnySaxHandler myNewHandler = <br>
-		 * new CommandSaxHandler( generalManager, xmlParserManager );<br>
-		 * <br>
-		 * xmlParserManager.registerAndInitSaxHandler( myNewHandler ); <br>
-		 * <br>
-		 */
-
-		/**
-		 * Default file name
-		 */
-		setXmlFileName("data/bootstrap/bootstrap_sample_demo.xml");
 	}
 
+	/**
+	 * Used by RCP to get access to the general manager.
+	 */
 	public IGeneralManager getGeneralManager()
 	{
-
 		return generalManager;
 	}
 
 	/**
-	 * Set local XML file name. Is case the XML file is received from the
-	 * Muddleware server This is the XPath used to query the Muddleware server.
+	 * Set local XML file name.
 	 * 
-	 * @see org.caleydo.core.application.core.CaleydoBootloader#setBootstrapViaMuddleware(boolean)
-	 * @see org.caleydo.core.application.core.CaleydoBootloader#getBootstrapViaMuddleware()
-	 * @see org.caleydo.core.application.core.CaleydoBootloader#getXmlFileName()
 	 * @param fileName the sFileName to set
 	 */
 	public final void setXmlFileName(String sFileName)
 	{
-
 		this.sFileName = sFileName;
 	}
 
 	/**
-	 * Get local XML file name if config is read from local file or XPath if
-	 * config is read from Muddleware server.
+	 * Get local XML file name.
 	 * 
-	 * @see org.caleydo.core.application.core.CaleydoBootloader#setBootstrapViaMuddleware(boolean)
-	 * @see org.caleydo.core.application.core.CaleydoBootloader#getBootstrapViaMuddleware()
-	 * @see org.caleydo.core.application.core.CaleydoBootloader#setXmlFileName(String)
 	 * @return XML file name or XPath
 	 */
 	public final String getXmlFileName()
 	{
-
 		return this.sFileName;
 	}
 
 	/**
 	 * Test if Caleydo core is running.
 	 * 
-	 * @see CaleydoBootloader#runGUI()
+	 * @see CaleydoBootloader#start()
 	 * @see CaleydoBootloader#stop()
 	 * @return TRUE if Caleydo core is running
 	 */
 	public final synchronized boolean isRunning()
 	{
-
 		return bIsRunning;
 	}
 
@@ -132,16 +103,15 @@ public class CaleydoBootloader
 	 * getXmlFileName() and starts SWT.
 	 * 
 	 * @see CaleydoBootloader#getXmlFileName()
-	 * @see CaleydoBootloader#run_parseXmlConfigFile(String)
+	 * @see CaleydoBootloader#parseXmlConfigFile(String)
 	 * @see CaleydoBootloader#isRunning()
 	 * @see CaleydoBootloader#stop()
 	 */
-	public synchronized void runGUI()
+	public synchronized void start()
 	{
-
 		try
 		{
-			run_parseXmlConfigFile(getXmlFileName());
+			parseXmlConfigFile(getXmlFileName());
 			generalManager.getLogger().log(Level.INFO, "  config loaded, start GUI ... ");
 		}
 		catch (CaleydoRuntimeException gre)
@@ -171,29 +141,11 @@ public class CaleydoBootloader
 		}
 	}
 
-	/**
-	 * does not Start SWT; intended for RCP and for parsing XML files after
-	 * calling run_SWT() and starting the SWT canvas.
-	 * 
-	 * @see CaleydoBootloader#runGUI()
-	 * @param fileName
-	 * @return
-	 */
-	public synchronized boolean run_parseXmlConfigFile(final String fileName)
+	public synchronized boolean parseXmlConfigFile(final String sFileName)
 	{
-
-		if (generalManager == null)
-		{
-			System.err
-					.println("FATAL ERROR!  "
-							+ getClass().getSimpleName()
-							+ ".run_parseXmlConfigFile() can not be executed, because no GeneralManager has bee created!");
-			return false;
-		}
-
 		try
 		{
-			parseXmlConfigFileLocalOrRemote(fileName);
+			xmlParserManager.parseXmlFileByName(sFileName);
 
 			// generalManager.getCommandManager().readSerializedObjects(
 			// "data/serialize_test.out");
@@ -204,38 +156,40 @@ public class CaleydoBootloader
 		catch (CaleydoRuntimeException gre)
 		{
 			generalManager.getLogger().log(Level.SEVERE,
-					"run_parseXmlConfigFile(" + fileName + ") failed. " + gre.toString());
+					"run_parseXmlConfigFile(" + sFileName + ") failed. " + gre.toString());
 			return false;
 		}
 		catch (Exception e)
 		{
 			generalManager.getLogger().log(
 					Level.SEVERE,
-					"run_parseXmlConfigFile(" + fileName + ") caused system error. "
+					"run_parseXmlConfigFile(" + sFileName + ") caused system error. "
 							+ e.toString());
 			return false;
 		}
 	}
 
-	protected void parseXmlConfigFileLocalOrRemote(final String fileName)
-	{
-
-		/**
-		 * Load configuration from local XML file.
-		 */
-		generalManager.getLogger().log(Level.CONFIG, "load config via local XML file ... ");
-		xmlParserManager.parseXmlFileByName(getXmlFileName());
-	}
-
 	/**
 	 * Stop the Caleydo core and clean up all managers.
 	 * 
-	 * @see CaleydoBootloader#runGUI()
+	 * @see CaleydoBootloader#start()
 	 * @see CaleydoBootloader#isRunning()
 	 */
 	public synchronized void stop()
 	{
-
+		// Save preferences before shutdown
+		try
+		{
+			generalManager.getLogger().log(Level.INFO, "Save Caleydo preferences...");
+			generalManager.getPreferenceStore().setValue("firstStart", false);
+			generalManager.getPreferenceStore().save();
+		}
+		catch (IOException e)
+		{
+			throw new CaleydoRuntimeException("Unable to save preference file.", 
+					CaleydoRuntimeExceptionType.DATAHANDLING);
+		}
+		
 		// generalManager.getCommandManager().writeSerializedObjects(
 		// "data/serialize_test.out");
 
@@ -248,22 +202,10 @@ public class CaleydoBootloader
 				bIsRunning = false;
 			}
 		}
-		else
-		{
-			if (generalManager != null)
-			{
-				generalManager.getLogger().log(Level.SEVERE,
-						"Caleydo core was not running and can not be stopped!");
-			}
-			else
-			{
-				System.err.println("Caleydo core was not running and can not be stopped!");
-			}
-		}
 	}
 
 	/**
-	 * Run the Caleydo core application ..
+	 * Run the stand alone Caleydo core application ..
 	 */
 	public static void main(String[] args)
 	{
@@ -275,12 +217,11 @@ public class CaleydoBootloader
 			caleydo.setXmlFileName(args[0]);
 		}
 
-		caleydo.runGUI();
+		caleydo.start();
 		caleydo.stop();
 
 		System.exit(0);
 
 		return;
 	}
-
 }

@@ -4,7 +4,9 @@ import java.awt.Frame;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
 import javax.media.opengl.GLCanvas;
+
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IToolBarManager;

@@ -1,15 +1,7 @@
 package org.caleydo.rcp.views;
 
-import java.util.ArrayList;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
-import org.caleydo.rcp.Application;
-import org.caleydo.core.command.CommandQueueSaxType;
-import org.caleydo.core.command.event.CmdEventCreateMediator;
-import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.IEventPublisher.MediatorType;
-import org.caleydo.core.manager.type.ManagerObjectType;
-import org.caleydo.core.view.swt.pathway.Pathway2DViewRep;
 
 public class Pathway2DView
 	extends ViewPart
