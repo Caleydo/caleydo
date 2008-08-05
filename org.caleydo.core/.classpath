@@ -40,7 +40,6 @@
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.core.resources_3.1.2.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.core.runtime_3.1.2.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.jface_3.1.1.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.jface_3.4.0.I20080606-1300.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.jface.text_3.1.2.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.osgi_3.1.2.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.ui.workbench_3.1.2.jar"/>
