@@ -139,7 +139,7 @@ public class GLCanvasHeatMap
 		eWhichContentSelection = ESelectionType.EXTERNAL_SELECTION;
 		bRenderHorizontally = true;
 
-		glToolboxRenderer = new GLToolboxRenderer(gl, generalManager, iUniqueId,
+		glToolboxRenderer = new GLToolboxRenderer(gl, generalManager, iUniqueID,
 				iRemoteViewID, new Vec3f(0, 0, 0), layer, true, renderStyle);
 
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
@@ -163,7 +163,7 @@ public class GLCanvasHeatMap
 			doTranslation();
 		}
 
-		pickingManager.handlePicking(iUniqueId, gl, true);
+		pickingManager.handlePicking(iUniqueID, gl, true);
 
 		if (bIsDisplayListDirtyLocal)
 		{
@@ -341,7 +341,7 @@ public class GLCanvasHeatMap
 		{
 			// Check if selection occurs in the pool or memo layer of the remote
 			// rendered view (i.e. bucket, jukebox)
-			if (remoteRenderingGLCanvas.getHierarchyLayerByGLCanvasListenerId(iUniqueId)
+			if (remoteRenderingGLCanvas.getHierarchyLayerByGLCanvasListenerId(iUniqueID)
 					.getCapacity() > 5)
 			{
 				return;
@@ -388,7 +388,7 @@ public class GLCanvasHeatMap
 							// generalManager.getSingelton().
 							// getViewGLCanvasManager().
 							// getInfoAreaManager()
-							// .setData(iUniqueId,
+							// .setData(iUniqueID,
 							// getAccesionIDFromStorageIndex(iExternalID),
 							// EInputDataType.GENE, getInfo());
 						}
@@ -398,7 +398,7 @@ public class GLCanvasHeatMap
 				bIsDisplayListDirtyLocal = true;
 				bIsDisplayListDirtyRemote = true;
 
-				pickingManager.flushHits(iUniqueId, pickingType);
+				pickingManager.flushHits(iUniqueID, pickingType);
 				break;
 		}
 	}
@@ -483,12 +483,12 @@ public class GLCanvasHeatMap
 			final float fXPosition, final float fYPosition, final Vec2f vecFieldWidthAndHeight)
 	{
 
-		float fLookupValue = alDataStorages.get(iStorageIndex).getFloat(
+		float fLookupValue = set.get(iStorageIndex).getFloat(
 				EDataRepresentation.NORMALIZED, iContentIndex);
 		Vec3f vecMappingColor = colorMapper.colorMappingLookup(fLookupValue);
 		gl.glColor3f(vecMappingColor.x(), vecMappingColor.y(), vecMappingColor.z());
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueId,
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.HEAT_MAP_FIELD_SELECTION, iContentIndex));
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(fXPosition, fYPosition, HeatMapRenderStyle.FIELD_Z);
@@ -575,7 +575,7 @@ public class GLCanvasHeatMap
 
 		if (bRenderHorizontally)
 		{
-			elementRep = new SelectedElementRep(iUniqueId, fXValue + fAnimationTranslation,
+			elementRep = new SelectedElementRep(iUniqueID, fXValue + fAnimationTranslation,
 					fYValue, 0);
 
 		}
@@ -584,7 +584,7 @@ public class GLCanvasHeatMap
 			Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
 			Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
 			vecPoint.setY(vecPoint.y() + vecTranslation.y());
-			elementRep = new SelectedElementRep(iUniqueId, vecPoint.x(), vecPoint.y()
+			elementRep = new SelectedElementRep(iUniqueID, vecPoint.x(), vecPoint.y()
 					- fAnimationTranslation, 0);
 
 		}

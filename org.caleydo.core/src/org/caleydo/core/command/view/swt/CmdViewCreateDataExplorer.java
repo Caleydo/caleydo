@@ -40,13 +40,13 @@ public class CmdViewCreateDataExplorer
 		// DataExplorerViewRep dataExplorerView =
 		// (DataExplorerViewRep)viewManager
 		// .createView(ManagerObjectType.VIEW_SWT_DATA_EXPLORER,
-		// iUniqueId,
+		// iUniqueID,
 		// iParentContainerId,
 		// sLabel);
 		//		
 		// viewManager.registerItem(
 		// dataExplorerView,
-		// iUniqueId);
+		// iUniqueID);
 		//		
 		// viewManager.addViewRep(dataExplorerView);
 		//		

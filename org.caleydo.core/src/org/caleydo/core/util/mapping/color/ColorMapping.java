@@ -91,17 +91,43 @@ public class ColorMapping
 			return color_outOfRange;
 		}
 
-		if (fLookupValue < fMid)
+		int iIndex = 0;
+
+		if (fLookupValue == fMin)
 		{
-			int iIndex = (int) ((float) (fLookupValue - fMin) * fMappingWidth_div_Mid);
+			iIndex = 0;
+			return new Vec3f(fArColorLookupTable_LEFT[iIndex][0],
+					fArColorLookupTable_LEFT[iIndex][1], fArColorLookupTable_LEFT[iIndex][2]);
+		}
+		else if (fLookupValue == fMax)
+		{
+			iIndex = fArColorLookupTable_RIGHT.length - 1;
+			iIndex = (int) ((float) (fLookupValue - fMin - fMid) * fMappingWidth_div_Mid - 1);
+			return new Vec3f(fArColorLookupTable_RIGHT[iIndex][0],
+					fArColorLookupTable_RIGHT[iIndex][1], fArColorLookupTable_RIGHT[iIndex][2]);
+		}
+		// handle the case when fLookupValue is excactly in the middle of the
+		// range
+		else if ((fLookupValue - fMin - fMid) == 0.0f)
+		{
+			iIndex = fArColorLookupTable_LEFT.length - 1;
+			return new Vec3f(fArColorLookupTable_LEFT[iIndex][0],
+					fArColorLookupTable_LEFT[iIndex][1], fArColorLookupTable_LEFT[iIndex][2]);
+		}
+		else if (fLookupValue < fMid)
+		{
+			iIndex = (int) ((float) (fLookupValue - fMin) * fMappingWidth_div_Mid);
 
 			return new Vec3f(fArColorLookupTable_LEFT[iIndex][0],
 					fArColorLookupTable_LEFT[iIndex][1], fArColorLookupTable_LEFT[iIndex][2]);
 		}
+		else
+		{
 
-		int iIndex = (int) ((float) (fLookupValue - fMin - fMid) * fMappingWidth_div_Mid - 1);
-		return new Vec3f(fArColorLookupTable_RIGHT[iIndex][0],
-				fArColorLookupTable_RIGHT[iIndex][1], fArColorLookupTable_RIGHT[iIndex][2]);
+			iIndex = (int) ((float) (fLookupValue - fMin - fMid) * fMappingWidth_div_Mid - 1);
+			return new Vec3f(fArColorLookupTable_RIGHT[iIndex][0],
+					fArColorLookupTable_RIGHT[iIndex][1], fArColorLookupTable_RIGHT[iIndex][2]);
+		}
 	}
 
 	public Vec3f getColor_1()

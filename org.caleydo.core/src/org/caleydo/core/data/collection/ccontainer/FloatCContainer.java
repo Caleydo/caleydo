@@ -1,6 +1,7 @@
 package org.caleydo.core.data.collection.ccontainer;
 
 import org.caleydo.core.data.collection.INumericalCContainer;
+import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
@@ -10,7 +11,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  * 
  * @author Alexander Lex
  */
-public class PrimitiveFloatCContainer
+public class FloatCContainer
 	implements INumericalCContainer
 {
 
@@ -26,7 +27,7 @@ public class PrimitiveFloatCContainer
 	 * 
 	 * @param fArContainer the float array
 	 */
-	public PrimitiveFloatCContainer(final float[] fArContainer)
+	public FloatCContainer(final float[] fArContainer)
 	{
 
 		this.fArContainer = fArContainer;
@@ -60,10 +61,19 @@ public class PrimitiveFloatCContainer
 	 * 
 	 * @return the iterator for the container
 	 */
-	public PrimitiveFloatCContainerIterator iterator()
+	public FloatCContainerIterator iterator()
 	{
-
-		return new PrimitiveFloatCContainerIterator(this);
+		return new FloatCContainerIterator(this);
+	}
+	
+	/**
+	 * Returns an iterator on the container
+	 * 
+	 * @return the iterator for the container
+	 */
+	public FloatCContainerIterator iterator(IVirtualArray virtualArray)
+	{
+		return new FloatCContainerIterator(this, virtualArray);
 	}
 
 	/*
@@ -95,7 +105,7 @@ public class PrimitiveFloatCContainer
 	 * @see org.caleydo.core.data.collection.ICContainer#normalize()
 	 */
 	@Override
-	public PrimitiveFloatCContainer normalize()
+	public FloatCContainer normalize()
 	{
 		return normalize((float) getMin(), (float) getMax());
 	}
@@ -106,7 +116,7 @@ public class PrimitiveFloatCContainer
 	 * normalizeWithExternalExtrema(double, double)
 	 */
 	@Override
-	public PrimitiveFloatCContainer normalizeWithExternalExtrema(final double dMin,
+	public FloatCContainer normalizeWithExternalExtrema(final double dMin,
 			final double dMax)
 	{
 
@@ -124,7 +134,7 @@ public class PrimitiveFloatCContainer
 	 * @see org.caleydo.core.data.collection.INumericalCContainer#log10()
 	 */
 	@Override
-	public PrimitiveFloatCContainer log10()
+	public FloatCContainer log10()
 	{
 		float[] fArTarget = new float[fArContainer.length];
 
@@ -137,7 +147,7 @@ public class PrimitiveFloatCContainer
 				fArTarget[index] = Float.NaN;
 		}
 
-		return new PrimitiveFloatCContainer(fArTarget);
+		return new FloatCContainer(fArTarget);
 	}
 
 	/**
@@ -148,7 +158,7 @@ public class PrimitiveFloatCContainer
 	 * @param fMax the maximum considered in the normalization
 	 * @return
 	 */
-	private PrimitiveFloatCContainer normalize(final float fMin, final float fMax)
+	private FloatCContainer normalize(final float fMin, final float fMax)
 	{
 		float[] fArTmpTarget = new float[fArContainer.length];
 		if (fArContainer.length > 1)
@@ -164,7 +174,7 @@ public class PrimitiveFloatCContainer
 				}
 			}
 		}
-		return new PrimitiveFloatCContainer(fArTmpTarget);
+		return new FloatCContainer(fArTmpTarget);
 	}
 
 	/**

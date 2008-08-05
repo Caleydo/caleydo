@@ -34,9 +34,10 @@ import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
 /**
+ * This class is responsible for rendering the parallel coordinates
+ * 
  * @author Alexander Lex (responsible for PC)
- * @author Marc Streit This class is responsible for rendering the parallel
- *         coordinates
+ * @author Marc Streit
  */
 public class GLCanvasParCoords3D
 	extends AGLCanvasStorageBasedView
@@ -128,7 +129,7 @@ public class GLCanvasParCoords3D
 
 		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
 
-		alDataStorages = new ArrayList<IStorage>();
+		// alDataStorages = new ArrayList<IStorage>();
 		renderStyle = new ParCoordsRenderStyle(viewFrustum);
 
 		// initialize polyline selection manager
@@ -170,7 +171,7 @@ public class GLCanvasParCoords3D
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
 
-		glToolboxRenderer = new GLParCoordsToolboxRenderer(gl, generalManager, iUniqueId,
+		glToolboxRenderer = new GLParCoordsToolboxRenderer(gl, generalManager, iUniqueID,
 				new Vec3f(0, 0, 0), true, renderStyle);
 	}
 
@@ -190,7 +191,7 @@ public class GLCanvasParCoords3D
 
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 
-		glToolboxRenderer = new GLParCoordsToolboxRenderer(gl, generalManager, iUniqueId,
+		glToolboxRenderer = new GLParCoordsToolboxRenderer(gl, generalManager, iUniqueID,
 				iRemoteViewID, new Vec3f(0, 0, 0), layer, true, renderStyle);
 
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
@@ -232,7 +233,7 @@ public class GLCanvasParCoords3D
 			doTranslation();
 		}
 
-		pickingManager.handlePicking(iUniqueId, gl, true);
+		pickingManager.handlePicking(iUniqueID, gl, true);
 
 		if (bIsDisplayListDirtyLocal)
 		{
@@ -591,7 +592,7 @@ public class GLCanvasParCoords3D
 		{
 			int iPolyLineID = dataIterator.next();
 			if (renderMode != EViewInternalSelectionType.DESELECTED)
-				gl.glPushName(pickingManager.getPickingID(iUniqueId,
+				gl.glPushName(pickingManager.getPickingID(iUniqueID,
 						EPickingType.POLYLINE_SELECTION, iPolyLineID));
 
 			IStorage currentStorage = null;
@@ -602,7 +603,7 @@ public class GLCanvasParCoords3D
 				int iWhichStorage = iPolyLineID;
 				// currentStorage =
 				// alDataStorages.get(alStorageSelection.get(iWhichStorage));
-				currentStorage = alDataStorages.get(iWhichStorage);
+				currentStorage = set.get(iWhichStorage);
 			}
 
 			float fPreviousXValue = 0;
@@ -623,7 +624,7 @@ public class GLCanvasParCoords3D
 				// get the storage and the storage index for the different cases
 				else
 				{
-					currentStorage = alDataStorages.get(alStorageSelection.get(iVertexCount));
+					currentStorage = set.get(alStorageSelection.get(iVertexCount));
 					iStorageIndex = iPolyLineID;
 				}
 
@@ -666,7 +667,7 @@ public class GLCanvasParCoords3D
 		gl.glLineWidth(ParCoordsRenderStyle.X_AXIS_LINE_WIDTH);
 
 		gl
-				.glPushName(pickingManager.getPickingID(iUniqueId,
+				.glPushName(pickingManager.getPickingID(iUniqueID,
 						EPickingType.X_AXIS_SELECTION, 1));
 		gl.glBegin(GL.GL_LINES);
 
@@ -706,7 +707,7 @@ public class GLCanvasParCoords3D
 				gl.glColor4fv(ParCoordsRenderStyle.Y_AXIS_COLOR, 0);
 				gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH);
 			}
-			gl.glPushName(pickingManager.getPickingID(iUniqueId,
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.Y_AXIS_SELECTION, alAxisSelection.get(iCount)));
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(iCount * fAxisSpacing, ParCoordsRenderStyle.Y_AXIS_LOW,
@@ -725,7 +726,7 @@ public class GLCanvasParCoords3D
 				case EXPERIMENT:
 					// Labels
 					// sAxisLabel = alDataStorages.get(iCount).getLabel();
-					sAxisLabel = alDataStorages.get(alStorageSelection.get(iCount)).getLabel();
+					sAxisLabel = set.get(alStorageSelection.get(iCount)).getLabel();
 					break;
 				case GENE:
 					sAxisLabel = getRefSeqFromStorageIndex(alContentSelection.get(iCount));
@@ -748,12 +749,12 @@ public class GLCanvasParCoords3D
 
 			// render values on top and bottom of axis
 			// top
-			textRenderer.draw3D(String.valueOf(((INumericalStorage) (alDataStorages
+			textRenderer.draw3D(String.valueOf(((INumericalStorage) (set
 					.get(alStorageSelection.get(iCount)))).getMax()), iCount * fAxisSpacing
 					+ 2 * ParCoordsRenderStyle.AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(),
 					0, renderStyle.getSmallFontScalingFactor());
 			// bottom
-			textRenderer.draw3D(String.valueOf(((INumericalStorage) (alDataStorages
+			textRenderer.draw3D(String.valueOf(((INumericalStorage) (set
 					.get(alStorageSelection.get(iCount)))).getMin()), iCount * fAxisSpacing
 					+ 2 * ParCoordsRenderStyle.AXIS_MARKER_WIDTH, 0, 0, renderStyle
 					.getSmallFontScalingFactor());
@@ -780,7 +781,7 @@ public class GLCanvasParCoords3D
 
 			if (iCount != 0)
 			{
-				iPickingID = pickingManager.getPickingID(iUniqueId,
+				iPickingID = pickingManager.getPickingID(iUniqueID,
 						EPickingType.MOVE_AXIS_LEFT, iCount);
 				renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID,
 						EIconTextures.ARROW_LEFT);
@@ -790,14 +791,14 @@ public class GLCanvasParCoords3D
 			fXButtonOrigin = fXButtonOrigin + renderStyle.getButtonWidht()
 					+ renderStyle.getButtonSpacing();
 
-			iPickingID = pickingManager.getPickingID(iUniqueId, EPickingType.REMOVE_AXIS,
+			iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.REMOVE_AXIS,
 					iCount);
 			renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID, EIconTextures.REMOVE);
 
 			// duplicate axis button
 			fXButtonOrigin = fXButtonOrigin + renderStyle.getButtonWidht()
 					+ renderStyle.getButtonSpacing();
-			iPickingID = pickingManager.getPickingID(iUniqueId, EPickingType.DUPLICATE_AXIS,
+			iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.DUPLICATE_AXIS,
 					iCount);
 			renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID,
 					EIconTextures.DUPLICATE);
@@ -807,7 +808,7 @@ public class GLCanvasParCoords3D
 				// right, move right button
 				fXButtonOrigin = fXButtonOrigin + renderStyle.getButtonWidht()
 						+ renderStyle.getButtonSpacing();
-				iPickingID = pickingManager.getPickingID(iUniqueId,
+				iPickingID = pickingManager.getPickingID(iUniqueID,
 						EPickingType.MOVE_AXIS_RIGHT, iCount);
 				renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID,
 						EIconTextures.ARROW_RIGHT);
@@ -861,7 +862,7 @@ public class GLCanvasParCoords3D
 			float fCurrentPosition = iCount * fAxisSpacing;
 
 			// The tip of the gate (which is pickable)
-			gl.glPushName(pickingManager.getPickingID(iUniqueId,
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.LOWER_GATE_TIP_SELECTION, iCount));
 			gl.glBegin(GL.GL_POLYGON);
 			// variable
@@ -879,7 +880,7 @@ public class GLCanvasParCoords3D
 					EViewInternalSelectionType.NORMAL);
 
 			// The body of the gate
-			gl.glPushName(pickingManager.getPickingID(iUniqueId,
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.LOWER_GATE_BODY_SELECTION, iCount));
 			gl.glBegin(GL.GL_POLYGON);
 			// bottom
@@ -897,7 +898,7 @@ public class GLCanvasParCoords3D
 			gl.glEnd();
 			gl.glPopName();
 
-			gl.glPushName(pickingManager.getPickingID(iUniqueId,
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.LOWER_GATE_BOTTOM_SELECTION, iCount));
 			// The bottom of the gate
 			gl.glBegin(GL.GL_POLYGON);
@@ -1044,7 +1045,7 @@ public class GLCanvasParCoords3D
 			// get the index if array as polyline
 			if (bRenderStorageHorizontally)
 			{
-				currentStorage = alDataStorages.get(alStorageSelection.get(iPolylineCount));
+				currentStorage = set.get(alStorageSelection.get(iPolylineCount));
 
 				iStorageIndex = alContentSelection.get(iAxisNumber);
 			}
@@ -1052,7 +1053,7 @@ public class GLCanvasParCoords3D
 			else
 			{
 				iStorageIndex = alContentSelection.get(iPolylineCount);
-				currentStorage = alDataStorages.get(alStorageSelection.get(iAxisNumber));
+				currentStorage = set.get(alStorageSelection.get(iAxisNumber));
 			}
 
 			float fCurrentValue = currentStorage.getFloat(EDataRepresentation.NORMALIZED,
@@ -1179,7 +1180,7 @@ public class GLCanvasParCoords3D
 		{
 			// Check if selection occurs in the pool or memo layer of the remote
 			// rendered view (i.e. bucket, jukebox)
-			if (remoteRenderingGLCanvas.getHierarchyLayerByGLCanvasListenerId(iUniqueId)
+			if (remoteRenderingGLCanvas.getHierarchyLayerByGLCanvasListenerId(iUniqueID)
 					.getCapacity() > 5)
 			{
 				return;
@@ -1238,11 +1239,11 @@ public class GLCanvasParCoords3D
 						bIsDisplayListDirtyRemote = true;
 						break;
 				}
-				pickingManager.flushHits(iUniqueId, ePickingType);
+				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 
 			case X_AXIS_SELECTION:
-				pickingManager.flushHits(iUniqueId, ePickingType);
+				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 			case Y_AXIS_SELECTION:
 				switch (ePickingMode)
@@ -1280,7 +1281,7 @@ public class GLCanvasParCoords3D
 							// generalManager.getSingelton().
 							// getViewGLCanvasManager().
 							// getInfoAreaManager()
-							// .setData(iUniqueId,
+							// .setData(iUniqueID,
 							// getAccesionIDFromStorageIndex(iExternalID),
 							// EInputDataType.GENE, getInfo());
 						}
@@ -1289,7 +1290,7 @@ public class GLCanvasParCoords3D
 						bIsDisplayListDirtyRemote = true;
 						break;
 				}
-				pickingManager.flushHits(iUniqueId, ePickingType);
+				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 			case LOWER_GATE_TIP_SELECTION:
 				switch (ePickingMode)
@@ -1306,7 +1307,7 @@ public class GLCanvasParCoords3D
 						// bIsDisplayListDirtyRemote = true;
 						break;
 				}
-				pickingManager.flushHits(iUniqueId, ePickingType);
+				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 			case LOWER_GATE_BOTTOM_SELECTION:
 				switch (ePickingMode)
@@ -1323,7 +1324,7 @@ public class GLCanvasParCoords3D
 						iDraggedGateNumber = iExternalID;
 						break;
 				}
-				pickingManager.flushHits(iUniqueId, ePickingType);
+				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 			case PC_ICON_SELECTION:
 				switch (ePickingMode)
@@ -1397,7 +1398,7 @@ public class GLCanvasParCoords3D
 						break;
 				}
 
-				pickingManager.flushHits(iUniqueId, EPickingType.PC_ICON_SELECTION);
+				pickingManager.flushHits(iUniqueID, EPickingType.PC_ICON_SELECTION);
 				break;
 			case REMOVE_AXIS:
 				switch (ePickingMode)
@@ -1415,7 +1416,7 @@ public class GLCanvasParCoords3D
 						refresh();
 						break;
 				}
-				pickingManager.flushHits(iUniqueId, EPickingType.REMOVE_AXIS);
+				pickingManager.flushHits(iUniqueID, EPickingType.REMOVE_AXIS);
 				break;
 			case MOVE_AXIS_LEFT:
 				switch (ePickingMode)
@@ -1438,7 +1439,7 @@ public class GLCanvasParCoords3D
 
 						break;
 				}
-				pickingManager.flushHits(iUniqueId, EPickingType.MOVE_AXIS_LEFT);
+				pickingManager.flushHits(iUniqueID, EPickingType.MOVE_AXIS_LEFT);
 				break;
 			case MOVE_AXIS_RIGHT:
 
@@ -1460,7 +1461,7 @@ public class GLCanvasParCoords3D
 						}
 						break;
 				}
-				pickingManager.flushHits(iUniqueId, EPickingType.MOVE_AXIS_RIGHT);
+				pickingManager.flushHits(iUniqueID, EPickingType.MOVE_AXIS_RIGHT);
 				break;
 			case DUPLICATE_AXIS:
 				switch (ePickingMode)
@@ -1480,7 +1481,7 @@ public class GLCanvasParCoords3D
 						// }
 						break;
 				}
-				pickingManager.flushHits(iUniqueId, EPickingType.DUPLICATE_AXIS);
+				pickingManager.flushHits(iUniqueID, EPickingType.DUPLICATE_AXIS);
 				break;
 			case ANGULAR_UPPER:
 				switch (ePickingMode)
@@ -1488,7 +1489,7 @@ public class GLCanvasParCoords3D
 					case DRAGGED:
 						bIsAngularDraggingActive = true;
 				}
-				pickingManager.flushHits(iUniqueId, EPickingType.ANGULAR_UPPER);
+				pickingManager.flushHits(iUniqueID, EPickingType.ANGULAR_UPPER);
 				break;
 
 			case ANGULAR_LOWER:
@@ -1522,7 +1523,7 @@ public class GLCanvasParCoords3D
 					continue;
 				}
 
-				fYValue = alDataStorages.get(iCurrent).getFloat(
+				fYValue = set.get(iCurrent).getFloat(
 						EDataRepresentation.NORMALIZED, iStorageIndex);
 				fYValue = fYValue * renderStyle.getAxisHeight()
 						+ renderStyle.getBottomSpacing();
@@ -1531,7 +1532,7 @@ public class GLCanvasParCoords3D
 
 			}
 
-			elementRep = new SelectedElementRep(iUniqueId, alPoints);
+			elementRep = new SelectedElementRep(iUniqueID, alPoints);
 
 		}
 		else
@@ -1544,7 +1545,7 @@ public class GLCanvasParCoords3D
 			alPoints.add(new Vec3f(fXValue, renderStyle.getBottomSpacing()
 					+ renderStyle.getAxisHeight(), 0));
 
-			elementRep = new SelectedElementRep(iUniqueId, alPoints);
+			elementRep = new SelectedElementRep(iUniqueID, alPoints);
 		}
 		return elementRep;
 
@@ -1692,10 +1693,10 @@ public class GLCanvasParCoords3D
 		}
 		else
 		{
-			vecLeftPoint.setY(alDataStorages.get(iAxisLeftIndex).getFloat(
+			vecLeftPoint.setY(set.get(iAxisLeftIndex).getFloat(
 					EDataRepresentation.NORMALIZED, iSelectedLineID)
 					* renderStyle.getAxisHeight());
-			vecRightPoint.setY(alDataStorages.get(iAxisRightIndex).getFloat(
+			vecRightPoint.setY(set.get(iAxisRightIndex).getFloat(
 					EDataRepresentation.NORMALIZED, iSelectedLineID)
 					* renderStyle.getAxisHeight());
 		}
@@ -1745,7 +1746,7 @@ public class GLCanvasParCoords3D
 		gl.glColor4fv(ParCoordsRenderStyle.ANGULAR_COLOR, 0);
 		gl.glLineWidth(ParCoordsRenderStyle.ANGLUAR_LINE_WIDTH);
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.ANGULAR_UPPER,
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.ANGULAR_UPPER,
 				iPosition));
 		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(vecTriangleOrigin.x(), vecTriangleOrigin.y(),
@@ -1754,7 +1755,7 @@ public class GLCanvasParCoords3D
 		gl.glEnd();
 		gl.glPopName();
 
-		gl.glPushName(pickingManager.getPickingID(iUniqueId, EPickingType.ANGULAR_UPPER,
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.ANGULAR_UPPER,
 				iPosition));
 		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(vecTriangleOrigin.x(), vecTriangleOrigin.y(),
@@ -1776,19 +1777,19 @@ public class GLCanvasParCoords3D
 		{
 			if (bRenderStorageHorizontally)
 			{
-				vecLeftPoint.setY(alDataStorages.get(iCurrent).getFloat(
+				vecLeftPoint.setY(set.get(iCurrent).getFloat(
 						EDataRepresentation.NORMALIZED, iAxisLeftIndex)
 						* renderStyle.getAxisHeight());
-				vecRightPoint.setY(alDataStorages.get(iCurrent).getFloat(
+				vecRightPoint.setY(set.get(iCurrent).getFloat(
 						EDataRepresentation.NORMALIZED, iAxisRightIndex)
 						* renderStyle.getAxisHeight());
 			}
 			else
 			{
-				vecLeftPoint.setY(alDataStorages.get(iAxisLeftIndex).getFloat(
+				vecLeftPoint.setY(set.get(iAxisLeftIndex).getFloat(
 						EDataRepresentation.NORMALIZED, iCurrent)
 						* renderStyle.getAxisHeight());
-				vecRightPoint.setY(alDataStorages.get(iAxisRightIndex).getFloat(
+				vecRightPoint.setY(set.get(iAxisRightIndex).getFloat(
 						EDataRepresentation.NORMALIZED, iCurrent)
 						* renderStyle.getAxisHeight());
 			}

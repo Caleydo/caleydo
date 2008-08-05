@@ -1,0 +1,49 @@
+package org.caleydo.core.data.collection.ccontainer;
+
+import javax.naming.OperationNotSupportedException;
+import org.caleydo.core.data.collection.ICContainerIterator;
+import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.VAIterator;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+
+public class AContainerIterator
+	implements ICContainerIterator
+{
+	protected IVirtualArray virtualArray = null;
+	protected VAIterator vaIterator = null;
+	protected int iIndex = 0;
+	protected int iSize = 0;
+
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * org.caleydo.core.data.collection.IPrimitiveCContainerIterator#hasNext()
+	 */
+	@Override
+	public boolean hasNext()
+	{
+		if (virtualArray == null)
+		{
+			if (iIndex < iSize - 1)
+				return true;
+			else
+				return false;
+		}
+		else
+			return vaIterator.hasNext();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.ICContainerIterator#remove()
+	 */
+	@Override
+	public void remove()
+	{
+		if (virtualArray == null)
+			throw new CaleydoRuntimeException(
+					"Remove is only defined if a virtual array is enabled, which is currently not the case",
+					CaleydoRuntimeExceptionType.DATAHANDLING);
+	}
+}

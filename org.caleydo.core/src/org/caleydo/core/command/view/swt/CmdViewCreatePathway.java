@@ -46,13 +46,13 @@ public class CmdViewCreatePathway
 		//		
 		// Pathway2DViewRep pathwayView = (Pathway2DViewRep)viewManager
 		// .createView(ManagerObjectType.VIEW_SWT_PATHWAY,
-		// iUniqueId,
+		// iUniqueID,
 		// iParentContainerId,
 		// sLabel);
 		//		
 		// viewManager.registerItem(
 		// pathwayView,
-		// iUniqueId);
+		// iUniqueID);
 		//
 		// int[] iArTmp = new int[iArSetIDs.size()];
 		// for(int index = 0; index < iArSetIDs.size(); index++)

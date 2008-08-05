@@ -1,6 +1,6 @@
 package org.caleydo.core.data.collection;
 
-import org.caleydo.core.data.collection.ccontainer.PrimitiveFloatCContainer;
+import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
 
 /**
  * Interface for the low level containers which hold the data for the storages
@@ -21,6 +21,6 @@ public interface ICContainer
 	 * Brings any dataset into a format between 0 and 1. This is used for
 	 * drawing. For nominal data the first value is 0, the last value is 1
 	 */
-	public PrimitiveFloatCContainer normalize();
+	public FloatCContainer normalize();
 
 }

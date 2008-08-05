@@ -1,6 +1,7 @@
 package org.caleydo.core.data.collection.set;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 import javax.naming.OperationNotSupportedException;
 import org.caleydo.core.data.AManagedObject;
@@ -9,6 +10,9 @@ import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.storage.ERawDataType;
+import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
@@ -33,6 +37,17 @@ public class Set
 
 	private double dMax = Double.MIN_VALUE;
 
+
+
+	private ERawDataType rawDataType;
+
+	private boolean bIsNumerical;
+
+	HashMap<Integer, IVirtualArray> hashStorageVAs;
+	HashMap<Integer, IVirtualArray> hashSetVAs;
+
+	HashMap<Integer, Boolean> hashIsVAEnabled;
+
 	/**
 	 * Constructor
 	 * 
@@ -44,6 +59,9 @@ public class Set
 
 		super(iUniqueID, generalManager);
 		alStorages = new ArrayList<IStorage>();
+		hashStorageVAs = new HashMap<Integer, IVirtualArray>();
+		hashSetVAs = new HashMap<Integer, IVirtualArray>();
+		hashIsVAEnabled = new HashMap<Integer, Boolean>();
 	}
 
 	/*
@@ -52,9 +70,9 @@ public class Set
 	 * org.caleydo.core.data.collection.ISet#setSetType(org.caleydo.core.data
 	 * .collection.ESetType)
 	 */
+	@Override
 	public void setSetType(ESetType setType)
 	{
-
 		this.setType = setType;
 	}
 
@@ -62,9 +80,9 @@ public class Set
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.collection.ISet#getSetType()
 	 */
+	@Override
 	public ESetType getSetType()
 	{
-
 		return setType;
 	}
 
@@ -72,13 +90,13 @@ public class Set
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.collection.ISet#addStorage(int)
 	 */
+	@Override
 	public void addStorage(int iStorageID)
 	{
-
 		if (!generalManager.getStorageManager().hasItem(iStorageID))
 			throw new CaleydoRuntimeException("Requested Storage with ID " + iStorageID
 					+ " does not exist.", CaleydoRuntimeExceptionType.DATAHANDLING);
-		alStorages.add(generalManager.getStorageManager().getStorage(iStorageID));
+		addStorage(generalManager.getStorageManager().getStorage(iStorageID));
 	}
 
 	/*
@@ -87,9 +105,32 @@ public class Set
 	 * org.caleydo.core.data.collection.ISet#addStorage(org.caleydo.core.data
 	 * .collection.IStorage)
 	 */
+	@Override
 	public void addStorage(IStorage storage)
 	{
-
+		if (alStorages.isEmpty())
+		{
+//			iColumnLength = storage.size();
+//			rawDataType = storage.getRawDataType();
+			if (storage instanceof INumericalStorage)
+				bIsNumerical = true;
+			else
+				bIsNumerical = false;
+		}
+		else
+		{
+//			if (storage.size() != iColumnLength)
+//				throw new CaleydoRuntimeException("Storages must be of the same length",
+//						CaleydoRuntimeExceptionType.DATAHANDLING);
+//			if (rawDataType != storage.getRawDataType())
+//				throw new CaleydoRuntimeException(
+//						"Storages in a set must have the same raw data type",
+//						CaleydoRuntimeExceptionType.DATAHANDLING);
+			if (!bIsNumerical && storage instanceof INumericalStorage)
+				throw new CaleydoRuntimeException(
+						"All storages in a set must be of the same basic type (nunmerical or nominal)",
+						CaleydoRuntimeExceptionType.DATAHANDLING);
+		}
 		alStorages.add(storage);
 	}
 
@@ -97,22 +138,46 @@ public class Set
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.collection.ISet#getStorage(int)
 	 */
-	public IStorage getStorage(int iIndex)
+	@Override
+	public IStorage get(int iIndex)
 	{
 
 		return alStorages.get(iIndex);
 	}
 
-	public int getSize()
+	@Override
+	public SetIterator VAIterator(int uniqueID)
 	{
+		return new SetIterator(alStorages, hashSetVAs.get(iUniqueID));
+	}
 
+	@Override
+	public IStorage getStorageFromVA(int index, int uniqueID)
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.ISet#getSize()
+	 */
+	@Override
+	public int size()
+	{
 		return alStorages.size();
+	}
+	
+	public int depth()
+	{
+		return alStorages.get(0).size();
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.collection.ISet#normalize()
 	 */
+	@Override
 	public void normalize()
 	{
 
@@ -126,6 +191,7 @@ public class Set
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.collection.ISet#normalizeGlobally()
 	 */
+	@Override
 	public void normalizeGlobally()
 	{
 
@@ -156,11 +222,22 @@ public class Set
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * org.caleydo.core.data.collection.ICollection#setLabel(java.lang.String)
+	 */
+	@Override
 	public void setLabel(String sLabel)
 	{
 		this.sLabel = sLabel;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.ICollection#getLabel()
+	 */
+	@Override
 	public String getLabel()
 	{
 		return sLabel;
@@ -170,11 +247,17 @@ public class Set
 	 * (non-Javadoc)
 	 * @see java.lang.Iterable#iterator()
 	 */
+	@Override
 	public Iterator<IStorage> iterator()
 	{
 		return alStorages.iterator();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.ISet#getMin()
+	 */
+	@Override
 	public double getMin() throws OperationNotSupportedException
 	{
 		if (dMin == Double.MAX_VALUE)
@@ -182,12 +265,103 @@ public class Set
 		return dMin;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.ISet#getMax()
+	 */
+	@Override
 	public double getMax() throws OperationNotSupportedException
 	{
 
 		if (dMax == Double.MIN_VALUE)
 			calculateGlobalExtrema();
 		return dMax;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.ISet#log10()
+	 */
+	@Override
+	public void log10()
+	{
+
+		for (IStorage storage : alStorages)
+		{
+			if (storage instanceof INumericalStorage)
+			{
+				INumericalStorage nStorage = (INumericalStorage) storage;
+				nStorage.log10();
+			}
+			else
+			{
+				throw new CaleydoRuntimeException(
+						"Tried to normalize globally on a set wich has"
+								+ "different storage types",
+						CaleydoRuntimeExceptionType.DATAHANDLING);
+			}
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.ISet#enableVirtualArray(int)
+	 * Creates one virtual array for the set and one for the storages
+	 */
+	@Override
+	public void enableVirtualArray(int iUniqueID)
+	{
+		if (hashIsVAEnabled.get(iUniqueID) == null)
+		{
+			hashStorageVAs.put(iUniqueID, new VirtualArray(depth()));
+			hashSetVAs.put(iUniqueID, new VirtualArray(alStorages.size()));
+
+			for (IStorage storage : alStorages)
+			{
+				storage.setVirtualArray(iUniqueID, hashStorageVAs.get(iUniqueID));
+				storage.enableVirtualArray(iUniqueID);
+			}
+		}
+		else
+			hashIsVAEnabled.put(iUniqueID, true);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * org.caleydo.core.data.collection.ICollection#disableVirtualArray(int)
+	 */
+	public void disableVirtualArray(int iUniqueID)
+	{
+		if (hashStorageVAs.get(iUniqueID) != null && hashSetVAs.get(iUniqueID) != null)
+			hashIsVAEnabled.put(iUniqueID, false);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.ISet#resetVirtualArray()
+	 */
+	@Override
+	public void resetVirtualArray(int iUniqueID)
+	{
+		hashSetVAs.get(iUniqueID).reset();
+		hashStorageVAs.get(iUniqueID).reset();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.ISet#removeVirtualArray(int)
+	 */
+	@Override
+	public void removeVirtualArray(int iUniqueID)
+	{
+		hashSetVAs.remove(iUniqueID);
+		for (IStorage storage : alStorages)
+		{
+			storage.removeVirtualArray(iUniqueID);
+		}
+		hashStorageVAs.remove(iUniqueID);
+
 	}
 
 	private void calculateGlobalExtrema() throws OperationNotSupportedException
@@ -211,30 +385,6 @@ public class Set
 			throw new OperationNotSupportedException(
 					"No minimum or maximum can be calculated " + "on nominal data");
 
-		}
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.ISet#log10()
-	 */
-	public void log10()
-	{
-
-		for (IStorage storage : alStorages)
-		{
-			if (storage instanceof INumericalStorage)
-			{
-				INumericalStorage nStorage = (INumericalStorage) storage;
-				nStorage.log10();
-			}
-			else
-			{
-				throw new CaleydoRuntimeException(
-						"Tried to normalize globally on a set wich has"
-								+ "different storage types",
-						CaleydoRuntimeExceptionType.DATAHANDLING);
-			}
 		}
 	}
 

@@ -54,13 +54,13 @@ public class CmdViewCreateDataExchanger
 		// DataExchangerViewRep dataExchangerView =
 		// (DataExchangerViewRep)viewManager
 		// .createView(ManagerObjectType.VIEW_SWT_DATA_EXCHANGER,
-		// iUniqueId,
+		// iUniqueID,
 		// iParentContainerId,
 		// sLabel);
 		//		
 		// viewManager.registerItem(
 		// dataExchangerView,
-		// iUniqueId);
+		// iUniqueID);
 		//
 		// viewManager.addViewRep(dataExchangerView);
 		//

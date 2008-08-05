@@ -55,7 +55,7 @@ public class CmdDataCreateVirtualArray
 		// virtualArrayManager.createVirtualArray(
 		// ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		//		
-		// newObject.setId( iUniqueId );
+		// newObject.setId( iUniqueID );
 		// newObject.setLabel( sLabel );
 		// newObject.setOffset( iOffset );
 		// newObject.setLength( iLength );
@@ -63,7 +63,7 @@ public class CmdDataCreateVirtualArray
 		// newObject.setMultiRepeat( iMultiRepeat );
 		//		
 		// virtualArrayManager.registerItem( newObject,
-		// iUniqueId,
+		// iUniqueID,
 		// ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		//
 		// // generalManager.logMsg(
@@ -82,12 +82,12 @@ public class CmdDataCreateVirtualArray
 	{
 
 		// generalManager.getVirtualArrayManager().unregisterItem(
-		// iUniqueId,
+		// iUniqueID,
 		// ManagerObjectType.VIRTUAL_ARRAY_MULTI_BLOCK );
 		//		
 		// // generalManager.logMsg(
 		// // "UNDO new SEL: " +
-		// // iUniqueId,
+		// // iUniqueID,
 		// // LoggerType.VERBOSE );
 
 		commandManager.runUndoCommand(this);

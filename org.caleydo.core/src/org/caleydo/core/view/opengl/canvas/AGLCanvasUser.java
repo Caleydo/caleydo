@@ -117,7 +117,7 @@ public abstract class AGLCanvasUser
 
 		this.viewFrustum = viewFrustum;
 
-		viewCamera = new ViewCameraBase(iUniqueId); // FIXME: generate own ID
+		viewCamera = new ViewCameraBase(iUniqueID); // FIXME: generate own ID
 		// for camera
 
 		pickingManager = generalManager.getViewGLCanvasManager().getPickingManager();
@@ -133,7 +133,7 @@ public abstract class AGLCanvasUser
 	{
 
 		generalManager.getViewGLCanvasManager().getInfoAreaManager().initInfoOverlay(
-				iUniqueId, drawable);
+				iUniqueID, drawable);
 
 		generalManager.getViewGLCanvasManager().getInfoAreaManager().initInfoInPlace(
 				viewFrustum);
@@ -174,7 +174,7 @@ public abstract class AGLCanvasUser
 		displayLocal(gl);
 
 		generalManager.getViewGLCanvasManager().getInfoAreaManager().renderInfoOverlay(
-				iUniqueId, drawable);
+				iUniqueID, drawable);
 	}
 
 	/*
@@ -204,7 +204,7 @@ public abstract class AGLCanvasUser
 
 		// generalManager.logMsg(
 		// "\n---------------------------------------------------"+
-		// "\nGLEventListener with ID " +iUniqueId+ " RESHAPE GL" +
+		// "\nGLEventListener with ID " +iUniqueID+ " RESHAPE GL" +
 		// "\nGL_VENDOR: " + gl.glGetString(GL.GL_VENDOR)+
 		// "\nGL_RENDERER: " + gl.glGetString(GL.GL_RENDERER) +
 		// "\nGL_VERSION: " + gl.glGetString(GL.GL_VERSION),
@@ -410,7 +410,7 @@ public abstract class AGLCanvasUser
 		{
 			ArrayList<Pick> alHits = null;
 
-			alHits = pickingManager.getHits(iUniqueId, ePickingType);
+			alHits = pickingManager.getHits(iUniqueID, ePickingType);
 			if (alHits != null)
 			{
 				if (alHits.size() != 0)
@@ -419,7 +419,7 @@ public abstract class AGLCanvasUser
 					{
 						Pick tempPick = alHits.get(iCount);
 						int iPickingID = tempPick.getPickingID();
-						int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueId,
+						int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueID,
 								iPickingID);
 
 						// FIXME: Is this ok?

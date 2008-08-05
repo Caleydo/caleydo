@@ -287,7 +287,7 @@ public class GLCanvasRemoteRendering3D
 			glConnectionLineRenderer.enableRendering(!bEnableNavigationOverlay);
 		}
 
-		pickingManager.handlePicking(iUniqueId, gl, true);
+		pickingManager.handlePicking(iUniqueID, gl, true);
 
 		display(gl);
 
@@ -353,7 +353,7 @@ public class GLCanvasRemoteRendering3D
 			renderPoolAndMemoLayerBackground(gl);
 
 			gl.glPushName(generalManager.getViewGLCanvasManager().getPickingManager()
-					.getPickingID(iUniqueId, EPickingType.MEMO_PAD_SELECTION,
+					.getPickingID(iUniqueID, EPickingType.MEMO_PAD_SELECTION,
 							MEMO_PAD_PICKING_ID));
 			gl.glPopName();
 			// }
@@ -399,7 +399,7 @@ public class GLCanvasRemoteRendering3D
 				underInteractionLayer.addElement(iViewID);
 				underInteractionLayer.setElementVisibilityById(true, iViewID);
 
-				tmpGLEventListener.initRemote(gl, iUniqueId, underInteractionLayer,
+				tmpGLEventListener.initRemote(gl, iUniqueID, underInteractionLayer,
 						pickingTriggerMouseAdapter, this);
 
 			}
@@ -408,7 +408,7 @@ public class GLCanvasRemoteRendering3D
 				stackLayer.addElement(iViewID);
 				stackLayer.setElementVisibilityById(true, iViewID);
 
-				tmpGLEventListener.initRemote(gl, iUniqueId, stackLayer,
+				tmpGLEventListener.initRemote(gl, iUniqueID, stackLayer,
 						pickingTriggerMouseAdapter, this);
 			}
 			else if (poolLayer.containsElement(-1))
@@ -416,12 +416,12 @@ public class GLCanvasRemoteRendering3D
 				poolLayer.addElement(iViewID);
 				poolLayer.setElementVisibilityById(true, iViewID);
 
-				tmpGLEventListener.initRemote(gl, iUniqueId, poolLayer,
+				tmpGLEventListener.initRemote(gl, iUniqueID, poolLayer,
 						pickingTriggerMouseAdapter, this);
 			}
 
 			// pickingTriggerMouseAdapter.addGLCanvas(tmpGLEventListener);
-			pickingManager.getPickingID(iUniqueId, EPickingType.VIEW_SELECTION, iViewID);
+			pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION, iViewID);
 
 			// Register new view to mediator
 			// generalManager.getEventPublisher()
@@ -479,7 +479,7 @@ public class GLCanvasRemoteRendering3D
 			// Check if spot in layer is currently empty
 			if (iViewId != -1)
 			{
-				gl.glPushName(pickingManager.getPickingID(iUniqueId,
+				gl.glPushName(pickingManager.getPickingID(iUniqueID,
 						EPickingType.VIEW_SELECTION, iViewId));
 				renderViewByID(gl, iViewId, layer);
 				gl.glPopName();
@@ -555,7 +555,7 @@ public class GLCanvasRemoteRendering3D
 					arSlerpActions.add(slerpActionTransition);
 
 					((AGLCanvasUser) generalManager.getViewGLCanvasManager().getItem(
-							iGeneratedViewID)).initRemote(gl, iUniqueId,
+							iGeneratedViewID)).initRemote(gl, iUniqueID,
 							underInteractionLayer, pickingTriggerMouseAdapter, this);
 				}
 				else if (stackLayer.containsElement(-1))
@@ -565,7 +565,7 @@ public class GLCanvasRemoteRendering3D
 					arSlerpActions.add(slerpActionTransition);
 
 					((AGLCanvasUser) generalManager.getViewGLCanvasManager().getItem(
-							iGeneratedViewID)).initRemote(gl, iUniqueId, stackLayer,
+							iGeneratedViewID)).initRemote(gl, iUniqueID, stackLayer,
 							pickingTriggerMouseAdapter, this);
 				}
 				else if (poolLayer.containsElement(-1))
@@ -575,7 +575,7 @@ public class GLCanvasRemoteRendering3D
 					arSlerpActions.add(slerpActionTransition);
 
 					((AGLCanvasUser) generalManager.getViewGLCanvasManager().getItem(
-							iGeneratedViewID)).initRemote(gl, iUniqueId, poolLayer,
+							iGeneratedViewID)).initRemote(gl, iUniqueID, poolLayer,
 							pickingTriggerMouseAdapter, this);
 				}
 				else
@@ -599,7 +599,7 @@ public class GLCanvasRemoteRendering3D
 			generalManager.getViewGLCanvasManager().getSelectionManager().clear();
 
 			// Trigger mouse over update if an entity is currently selected
-			alSelection.get(0).updateSelectionSet(iUniqueId);
+			alSelection.get(0).updateSelectionSet(iUniqueID);
 		}
 
 		// Check if view is visible
@@ -850,7 +850,7 @@ public class GLCanvasRemoteRendering3D
 		gl.glLineWidth(4);
 
 		// CENTER - NAVIGATION: LOCK
-		gl.glPushName(pickingManager.getPickingID(iUniqueId,
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.BUCKET_LOCK_ICON_SELECTION, iViewID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
@@ -882,7 +882,7 @@ public class GLCanvasRemoteRendering3D
 		gl.glPopName();
 
 		// BOTTOM - NAVIGATION: MOVE IN
-		gl.glPushName(pickingManager.getPickingID(iUniqueId, bottomWallPickingType, iViewID));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, bottomWallPickingType, iViewID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL.GL_LINE_LOOP);
@@ -921,7 +921,7 @@ public class GLCanvasRemoteRendering3D
 		gl.glPopName();
 
 		// RIGHT - NAVIGATION: MOVE RIGHT
-		gl.glPushName(pickingManager.getPickingID(iUniqueId, rightWallPickingType, iViewID));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, rightWallPickingType, iViewID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL.GL_LINE_LOOP);
@@ -961,7 +961,7 @@ public class GLCanvasRemoteRendering3D
 		gl.glPopName();
 
 		// LEFT - NAVIGATION: MOVE LEFT
-		gl.glPushName(pickingManager.getPickingID(iUniqueId, leftWallPickingType, iViewID));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, leftWallPickingType, iViewID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL.GL_LINE_LOOP);
@@ -1001,7 +1001,7 @@ public class GLCanvasRemoteRendering3D
 		gl.glPopName();
 
 		// TOP - NAVIGATION: MOVE OUT
-		gl.glPushName(pickingManager.getPickingID(iUniqueId, topWallPickingType, iViewID));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, topWallPickingType, iViewID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL.GL_LINE_LOOP);
@@ -1314,7 +1314,7 @@ public class GLCanvasRemoteRendering3D
 			if (pathwayGraphItem == null)
 			{
 				// generalManager.logMsg(
-				// this.getClass().getSimpleName() + " (" + iUniqueId
+				// this.getClass().getSimpleName() + " (" + iUniqueID
 				// + "): pathway graph item is null.  ",
 				// LoggerType.VERBOSE);
 				continue;
@@ -1386,7 +1386,7 @@ public class GLCanvasRemoteRendering3D
 						break;
 				}
 
-				pickingManager.flushHits(iUniqueId, EPickingType.VIEW_SELECTION);
+				pickingManager.flushHits(iUniqueID, EPickingType.VIEW_SELECTION);
 
 				break;
 
@@ -1408,7 +1408,7 @@ public class GLCanvasRemoteRendering3D
 						break;
 				}
 
-				pickingManager.flushHits(iUniqueId, EPickingType.BUCKET_LOCK_ICON_SELECTION);
+				pickingManager.flushHits(iUniqueID, EPickingType.BUCKET_LOCK_ICON_SELECTION);
 
 				break;
 
@@ -1432,7 +1432,7 @@ public class GLCanvasRemoteRendering3D
 				}
 
 				pickingManager
-						.flushHits(iUniqueId, EPickingType.BUCKET_MOVE_IN_ICON_SELECTION);
+						.flushHits(iUniqueID, EPickingType.BUCKET_MOVE_IN_ICON_SELECTION);
 
 				break;
 
@@ -1466,7 +1466,7 @@ public class GLCanvasRemoteRendering3D
 						break;
 				}
 
-				pickingManager.flushHits(iUniqueId,
+				pickingManager.flushHits(iUniqueID,
 						EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION);
 
 				break;
@@ -1528,7 +1528,7 @@ public class GLCanvasRemoteRendering3D
 						break;
 				}
 
-				pickingManager.flushHits(iUniqueId,
+				pickingManager.flushHits(iUniqueID,
 						EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION);
 
 				break;
@@ -1591,7 +1591,7 @@ public class GLCanvasRemoteRendering3D
 						break;
 				}
 
-				pickingManager.flushHits(iUniqueId,
+				pickingManager.flushHits(iUniqueID,
 						EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION);
 
 				break;
@@ -1641,7 +1641,7 @@ public class GLCanvasRemoteRendering3D
 						break;
 				}
 
-				pickingManager.flushHits(iUniqueId, EPickingType.MEMO_PAD_SELECTION);
+				pickingManager.flushHits(iUniqueID, EPickingType.MEMO_PAD_SELECTION);
 
 				break;
 
@@ -1673,8 +1673,8 @@ public class GLCanvasRemoteRendering3D
 
 		ArrayList<Integer> iAlSenderIDs = new ArrayList<Integer>();
 		ArrayList<Integer> iAlReceiverIDs = new ArrayList<Integer>();
-		iAlSenderIDs.add(iUniqueId);
-		iAlReceiverIDs.add(iUniqueId);
+		iAlSenderIDs.add(iUniqueID);
+		iAlReceiverIDs.add(iUniqueID);
 		tmpMediatorCmd.setAttributes(iBucketEventMediatorID, iAlSenderIDs, iAlReceiverIDs,
 				MediatorType.SELECTION_MEDIATOR);
 		tmpMediatorCmd.doCommand();
@@ -1908,7 +1908,7 @@ public class GLCanvasRemoteRendering3D
 		// Render trash can
 		gl
 				.glPushName(generalManager.getViewGLCanvasManager().getPickingManager()
-						.getPickingID(iUniqueId, EPickingType.MEMO_PAD_SELECTION,
+						.getPickingID(iUniqueID, EPickingType.MEMO_PAD_SELECTION,
 								TRASH_CAN_PICKING_ID));
 		trashCan.render(gl, layoutRenderStyle);
 		gl.glPopName();

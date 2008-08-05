@@ -55,9 +55,9 @@ public class GenomeColorMapper
 		// TODO better iterator
 		for (ISet tmpSet : alSetData)
 		{
-			for (int iStorageCount = 0; iStorageCount < tmpSet.getSize(); iStorageCount++)
+			for (int iStorageCount = 0; iStorageCount < tmpSet.size(); iStorageCount++)
 			{
-				alMappingStorage.add(tmpSet.getStorage(iStorageCount));
+				alMappingStorage.add(tmpSet.get(iStorageCount));
 			}
 		}
 	}

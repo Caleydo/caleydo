@@ -3,10 +3,11 @@ package org.caleydo.core.data.collection;
 import java.util.ArrayList;
 import java.util.Iterator;
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.collection.ccontainer.PrimitiveFloatCContainerIterator;
-import org.caleydo.core.data.collection.ccontainer.PrimitiveIntCContainerIterator;
+import org.caleydo.core.data.collection.ccontainer.FloatCContainerIterator;
+import org.caleydo.core.data.collection.ccontainer.IntCContainerIterator;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.ERawDataType;
+import org.caleydo.core.data.selection.IVirtualArray;
 
 /**
  * Interface for Storages A Storage is a container that holds various
@@ -64,8 +65,7 @@ public interface IStorage
 	 * specified Use iterator when you want to iterate over the whole field, it
 	 * has better performance
 	 * 
-	 * @param storageKind Specify which kind of storage (eg: raw, normalized,
-	 *            log)
+	 * @param storageKind Specify which kind of storage (eg: raw, normalized)
 	 * @param iIndex The index of the requested Element
 	 * @return The associated value
 	 */
@@ -78,7 +78,32 @@ public interface IStorage
 	 * @param storageKind
 	 * @return
 	 */
-	public PrimitiveFloatCContainerIterator floatIterator(EDataRepresentation storageKind);
+	public FloatCContainerIterator floatIterator(EDataRepresentation storageKind);
+
+	/**
+	 * Returns the float associated with the value in the container through the
+	 * virtual array. The index specifies a position in the virtual array, where
+	 * the actual indices on the container are stored.
+	 * 
+	 * @param storageKind specifies which kind of storage (eg: raw, normalized)
+	 * @param iIndex the index in the Virtual Array
+	 * @param iUniqeID the unique id associated with the virtual array
+	 * @return the value
+	 */
+	public float getFloatVA(EDataRepresentation storageKind, int iIndex, int iUniqeID);
+
+	/**
+	 * Returns an iterator which iterates over the indices stored in a virtual
+	 * array and returns values from the storage based on the ordering in the
+	 * virtual array.
+	 * 
+	 * @param storageKind specifies which kind of storage (eg: raw, normalized)
+	 * @param iUniqeID the unique id associated with the virtual array
+	 * @return the iterator which iterates over the data based on the rules or
+	 *         order in the virtual array
+	 */
+	public FloatCContainerIterator floatVAIterator(EDataRepresentation storageKind,
+			int iUniqueID);
 
 	/**
 	 * Returns a float value from a storage of which the kind has to be
@@ -99,7 +124,31 @@ public interface IStorage
 	 * @param storageKind
 	 * @return
 	 */
-	public PrimitiveIntCContainerIterator intIterator(EDataRepresentation storageKind);
+	public IntCContainerIterator intIterator(EDataRepresentation storageKind);
+
+	/**
+	 * Returns the int associated with the value in the container through the
+	 * virtual array. The index specifies a position in the virtual array, where
+	 * the actual indices on the container are stored.
+	 * 
+	 * @param storageKind specifies which kind of storage (eg: raw, normalized)
+	 * @param iIndex the index in the Virtual Array
+	 * @param iUniqeID the unique id associated with the virtual array
+	 * @return the value
+	 */
+	public int getIntVA(EDataRepresentation storageKind, int iIndex, int iUniqueID);
+
+	/**
+	 * Returns an iterator which iterates over the indices stored in a virtual
+	 * array and returns values from the storage based on the ordering in the
+	 * virtual array.
+	 * 
+	 * @param storageKind specifies which kind of storage (eg: raw, normalized)
+	 * @param iUniqeID the unique id associated with the virtual array
+	 * @return the iterator which iterates over the data based on the rules or
+	 *         order in the virtual array
+	 */
+	public IntCContainerIterator intVAIterator(EDataRepresentation storageKind, int iUniqueID);
 
 	/**
 	 * Returns a value of the type Number, from the representation chosen in
@@ -135,5 +184,13 @@ public interface IStorage
 	 * @return the number of raw data elements
 	 */
 	public int size();
+
+	/**
+	 * Set the specified virtual array for the specified instance
+	 * 
+	 * @param iUniqueID
+	 * @param virtualArray
+	 */
+	public void setVirtualArray(int iUniqueID, IVirtualArray virtualArray);
 
 }

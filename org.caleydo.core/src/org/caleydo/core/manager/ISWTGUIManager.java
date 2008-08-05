@@ -16,7 +16,7 @@ public interface ISWTGUIManager
 			final Composite externalParentComposite, int iWidth, int iHeight);
 
 	/**
-	 * Method creates an unique window ID and calls createWindow(iUniqueId) with
+	 * Method creates an unique window ID and calls createWindow(iUniqueID) with
 	 * the default layout (ROW VERTICAL).
 	 * 
 	 * @return Newly created shell.

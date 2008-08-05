@@ -71,7 +71,7 @@ implements IMediatorSender{;
 			.createCommandByType(CommandQueueSaxType.CREATE_EVENT_MEDIATOR);
 		
 		ArrayList<Integer> iAlSenderIDs = new ArrayList<Integer>();
-		iAlSenderIDs.add(iUniqueId);
+		iAlSenderIDs.add(iUniqueID);
 		tmpMediatorCmd.setAttributes(generalManager.getEventPublisher().createId(EManagerObjectType.EVENT_MEDIATOR_CREATE), 
 				iAlSenderIDs, iAlViewReceiverIDs, MediatorType.SELECTION_MEDIATOR);
 		tmpMediatorCmd.doCommand();
@@ -191,7 +191,7 @@ implements IMediatorSender{;
 		Selection tmpSelectionSet = 
 			(Selection) generalManager.getSetManager().getSet(iSearchSelectionSetId);
 		
-		tmpSelectionSet.updateSelectionSet(iUniqueId, 
+		tmpSelectionSet.updateSelectionSet(iUniqueID, 
 				iAlSelectionId,
 				iAlSelectionDepth, 
 				iAlOptional);

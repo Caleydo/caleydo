@@ -92,7 +92,7 @@ public class GLCanvasGlyph
 	public void init(GL gl)
 	{
 
-		glToolboxRenderer = new GLGlyphToolboxRenderer(gl, generalManager, iUniqueId,
+		glToolboxRenderer = new GLGlyphToolboxRenderer(gl, generalManager, iUniqueID,
 				new Vec3f(0, 0, 0), true, renderStyle);
 
 		ISet glyphData = null;
@@ -208,7 +208,7 @@ public class GLCanvasGlyph
 		// gl.glRotatef( 45f, -1,0,0 );
 		gl.glRotatef(80f, -1, 0, 0); // 35
 
-		pickingManager.handlePicking(iUniqueId, gl, true);
+		pickingManager.handlePicking(iUniqueID, gl, true);
 
 		display(gl);
 		checkForHits(gl);
@@ -298,7 +298,7 @@ public class GLCanvasGlyph
 					continue;
 
 				gl.glTranslatef((float) pos.x(), -(float) pos.y(), 0f);
-				gl.glPushName(pickingManager.getPickingID(iUniqueId,
+				gl.glPushName(pickingManager.getPickingID(iUniqueID,
 						EPickingType.GLYPH_FIELD_SELECTION, e.getID()));
 				gl.glCallList(e.getGlList(gl));
 				gl.glPopName();
@@ -368,7 +368,7 @@ public class GLCanvasGlyph
 					{
 						generalManager.getLogger().log(Level.WARNING,
 								"Glyph with external ID " + iExternalID + " not found!");
-						pickingManager.flushHits(iUniqueId, pickingType);
+						pickingManager.flushHits(iUniqueID, pickingType);
 						return;
 					}
 
@@ -438,7 +438,7 @@ public class GLCanvasGlyph
 					// push patient id to other screens
 					for (Selection sel : alSelection)
 					{
-						sel.updateSelectionSet(iUniqueId, ids, selections, null);
+						sel.updateSelectionSet(iUniqueID, ids, selections, null);
 					}
 
 					break;
@@ -464,7 +464,7 @@ public class GLCanvasGlyph
 
 		}
 
-		pickingManager.flushHits(iUniqueId, pickingType);
+		pickingManager.flushHits(iUniqueID, pickingType);
 	}
 
 	/*

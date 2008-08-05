@@ -71,7 +71,7 @@ public class NominalCContainer<T>
 	 * has been specified beforehand, a list is created.
 	 */
 	@Override
-	public PrimitiveFloatCContainer normalize()
+	public FloatCContainer normalize()
 	{
 
 		if (!bHashMapsInitialized)
@@ -93,7 +93,7 @@ public class NominalCContainer<T>
 			iCount++;
 		}
 
-		return new PrimitiveFloatCContainer(fArNormalized);
+		return new FloatCContainer(fArNormalized);
 	}
 
 	/*

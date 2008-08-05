@@ -11,7 +11,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  * 
  * @author Alexander Lex
  */
-public class PrimitiveIntCContainer
+public class IntCContainer
 	implements INumericalCContainer
 {
 
@@ -27,7 +27,7 @@ public class PrimitiveIntCContainer
 	 * 
 	 * @param iArContainer the int array
 	 */
-	public PrimitiveIntCContainer(int[] iArContainer)
+	public IntCContainer(int[] iArContainer)
 	{
 		this.iArContainer = iArContainer;
 	}
@@ -85,10 +85,10 @@ public class PrimitiveIntCContainer
 	 * 
 	 * @return the iterator for the container
 	 */
-	public PrimitiveIntCContainerIterator iterator()
+	public IntCContainerIterator iterator()
 	{
 
-		return new PrimitiveIntCContainerIterator(this);
+		return new IntCContainerIterator(this);
 	}
 
 	/*
@@ -97,7 +97,7 @@ public class PrimitiveIntCContainer
 	 * normalizeWithExternalExtrema(double, double)
 	 */
 	@Override
-	public PrimitiveFloatCContainer normalizeWithExternalExtrema(double dMin, double dMax)
+	public FloatCContainer normalizeWithExternalExtrema(double dMin, double dMax)
 	{
 		if (dMin > getMin() || dMax < getMax())
 		{
@@ -113,7 +113,7 @@ public class PrimitiveIntCContainer
 	 * @see org.caleydo.core.data.collection.ICContainer#normalize()
 	 */
 	@Override
-	public PrimitiveFloatCContainer normalize()
+	public FloatCContainer normalize()
 	{
 		return normalize(iMin, iMax);
 	}
@@ -125,7 +125,7 @@ public class PrimitiveIntCContainer
 	 * @param iMax
 	 * @return
 	 */
-	private PrimitiveFloatCContainer normalize(int iMin, int iMax)
+	private FloatCContainer normalize(int iMin, int iMax)
 	{
 
 		float[] fArTmpTarget = new float[iArContainer.length];
@@ -134,7 +134,7 @@ public class PrimitiveIntCContainer
 		{
 			fArTmpTarget[iCount] = ((float) iArContainer[iCount] - iMin) / (iMax - iMin);
 		}
-		return new PrimitiveFloatCContainer(fArTmpTarget);
+		return new FloatCContainer(fArTmpTarget);
 	}
 
 	/**
@@ -163,7 +163,7 @@ public class PrimitiveIntCContainer
 	 * @see org.caleydo.core.data.collection.INumericalCContainer#log10()
 	 */
 	@Override
-	public PrimitiveFloatCContainer log10()
+	public FloatCContainer log10()
 	{
 
 		float[] fArTarget = new float[iArContainer.length];
@@ -175,7 +175,7 @@ public class PrimitiveIntCContainer
 			fArTarget[index] = (float) Math.log10(fTmp);
 		}
 
-		return new PrimitiveFloatCContainer(fArTarget);
+		return new FloatCContainer(fArTarget);
 	}
 
 }

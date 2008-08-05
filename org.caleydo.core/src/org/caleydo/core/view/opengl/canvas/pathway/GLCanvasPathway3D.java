@@ -173,7 +173,7 @@ public class GLCanvasPathway3D
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
-		glToolboxRenderer = new GLToolboxRenderer(gl, generalManager, iUniqueId,
+		glToolboxRenderer = new GLToolboxRenderer(gl, generalManager, iUniqueID,
 				iRemoteViewID, new Vec3f(0, 0, 0), layer, true, renderStyle);
 
 		init(gl);
@@ -215,7 +215,7 @@ public class GLCanvasPathway3D
 		if (!generalManager.getPathwayManager().hasItem(iPathwayID))
 			return;
 
-		pickingManager.handlePicking(iUniqueId, gl, false);
+		pickingManager.handlePicking(iUniqueID, gl, false);
 		if (bIsDisplayListDirtyLocal)
 		{
 			rebuildPathwayDisplayList(gl);
@@ -313,7 +313,7 @@ public class GLCanvasPathway3D
 
 		if (remoteRenderingGLCanvas.getBucketMouseWheelListener() != null)
 		{
-			if (remoteRenderingGLCanvas.getHierarchyLayerByGLCanvasListenerId(iUniqueId)
+			if (remoteRenderingGLCanvas.getHierarchyLayerByGLCanvasListenerId(iUniqueID)
 					.getLevel().equals(EHierarchyLevel.UNDER_INTERACTION)
 					&& remoteRenderingGLCanvas.getBucketMouseWheelListener()
 							.isBucketBottomReached())
@@ -612,7 +612,7 @@ public class GLCanvasPathway3D
 
 		// Check if selection occurs in the pool or memo layer of the remote
 		// rendered view (i.e. bucket, jukebox)
-		if (remoteRenderingGLCanvas.getHierarchyLayerByGLCanvasListenerId(iUniqueId)
+		if (remoteRenderingGLCanvas.getHierarchyLayerByGLCanvasListenerId(iUniqueID)
 				.getCapacity() > 5)
 		{
 			return;
@@ -636,9 +636,9 @@ public class GLCanvasPathway3D
 						&& !pickingMode.equals(EPickingMode.CLICKED))
 				{
 					pickingManager
-							.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
+							.flushHits(iUniqueID, EPickingType.PATHWAY_ELEMENT_SELECTION);
 					pickingManager
-							.flushHits(iUniqueId, EPickingType.PATHWAY_TEXTURE_SELECTION);
+							.flushHits(iUniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION);
 
 					// Write info area content
 					// TODO: now only the first parent graph item is read
@@ -655,7 +655,7 @@ public class GLCanvasPathway3D
 						return;
 
 					generalManager.getViewGLCanvasManager().getInfoAreaManager().setData(
-							iUniqueId, iDavidId, EInputDataType.GENE, getInfo());
+							iUniqueID, iDavidId, EInputDataType.GENE, getInfo());
 
 					return;
 				}
@@ -698,9 +698,9 @@ public class GLCanvasPathway3D
 					{
 						generalManager.getLogger()
 								.log(Level.WARNING, "Invalid David Gene ID.");
-						pickingManager.flushHits(iUniqueId,
+						pickingManager.flushHits(iUniqueID,
 								EPickingType.PATHWAY_ELEMENT_SELECTION);
-						pickingManager.flushHits(iUniqueId,
+						pickingManager.flushHits(iUniqueID,
 								EPickingType.PATHWAY_TEXTURE_SELECTION);
 						// selectionManager.clear();
 
@@ -712,7 +712,7 @@ public class GLCanvasPathway3D
 					// TODO: do this just for first or think about better
 					// solution!
 					generalManager.getViewGLCanvasManager().getInfoAreaManager().setData(
-							iUniqueId, iDavidId, EInputDataType.GENE, getInfo());
+							iUniqueID, iDavidId, EInputDataType.GENE, getInfo());
 
 					Iterator<IGraphItem> iterPathwayVertexGraphItemRep = tmpVertexGraphItem
 							.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
@@ -777,11 +777,11 @@ public class GLCanvasPathway3D
 				if (iAlTmpSelectionId.isEmpty())
 					return;
 
-				alSelection.get(0).updateSelectionSet(iUniqueId, iAlTmpSelectionId,
+				alSelection.get(0).updateSelectionSet(iUniqueID, iAlTmpSelectionId,
 						iAlTmpGroupId, null);
 
-				pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_ELEMENT_SELECTION);
-				pickingManager.flushHits(iUniqueId, EPickingType.PATHWAY_TEXTURE_SELECTION);
+				pickingManager.flushHits(iUniqueID, EPickingType.PATHWAY_ELEMENT_SELECTION);
+				pickingManager.flushHits(iUniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION);
 				break;
 		}
 	}
@@ -830,7 +830,7 @@ public class GLCanvasPathway3D
 		}
 
 		alSelection.get(0)
-				.updateSelectionSet(iUniqueId, iAlSelectedGenes, iAlTmpGroupId, null);
+				.updateSelectionSet(iUniqueID, iAlSelectedGenes, iAlTmpGroupId, null);
 	}
 
 	/*

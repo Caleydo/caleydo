@@ -35,8 +35,10 @@ public abstract class AGLCanvasStorageBasedView
 	extends AGLCanvasUser
 	implements IMediatorReceiver, IMediatorSender
 {
+	
+	protected ISet set;
 
-	protected ArrayList<IStorage> alDataStorages;
+	//protected ArrayList<IStorage> alDataStorages;
 
 	// Specify which type of selection is currently active
 	protected ESelectionType eWhichContentSelection = ESelectionType.COMPLETE_SELECTION;
@@ -84,11 +86,7 @@ public abstract class AGLCanvasStorageBasedView
 
 	protected boolean bRenderOnlyContext = false;
 
-	public void renderOnlyContext(boolean bRenderOnlyContext)
-	{
 
-		this.bRenderOnlyContext = bRenderOnlyContext;
-	}
 
 	/**
 	 * Constructor.
@@ -99,7 +97,7 @@ public abstract class AGLCanvasStorageBasedView
 
 		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum, true);
 
-		alDataStorages = new ArrayList<IStorage>();
+		//alDataStorages = new ArrayList<IStorage>();
 		mapSelections = new EnumMap<ESelectionType, ArrayList<Integer>>(ESelectionType.class);
 
 		IDManager = generalManager.getGenomeIdManager();
@@ -107,7 +105,14 @@ public abstract class AGLCanvasStorageBasedView
 		extSelectionManager = generalManager.getViewGLCanvasManager().getSelectionManager();
 
 		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 16), false);
+		alContentSelection = new ArrayList<Integer>();
+		alStorageSelection = new ArrayList<Integer>();
+	}
+	
+	public void renderOnlyContext(boolean bRenderOnlyContext)
+	{
 
+		this.bRenderOnlyContext = bRenderOnlyContext;
 	}
 
 	public void initData()
@@ -119,46 +124,39 @@ public abstract class AGLCanvasStorageBasedView
 		if (alSelection == null)
 			return;
 
-		if (alDataStorages == null)
-			return;
+		set = alSetData.get(0);
+//		if (alDataStorages == null)
+//			return;
 
-		alDataStorages.clear();
+		// TODO check what this does after new datastructure
+//		alDataStorages.clear();
 
-		// mapSelections.clear();
-		// alContentSelection.clear();
-		// alStorageSelection.clear();
+		 mapSelections.clear();
+		 alContentSelection.clear();
+		 alStorageSelection.clear();
 
 		// Extract data
-		for (ISet tmpSet : alSetData)
-		{
-			for (IStorage tmpStorage : tmpSet)
-			{
-				alDataStorages.add(tmpStorage);
-			}
-		}
+//		for (ISet tmpSet : alSetData)
+//		{
+//			for (IStorage tmpStorage : tmpSet)
+//			{
+//				alDataStorages.add(tmpStorage);
+//			}
+//		}
 
+		 // Initialize external selection
 		ArrayList<Integer> alTempList = alSelection.get(0).getSelectionIdArray();
-		// A iArTemp = ;
-		// for(int iCount = 0; iCount < iArTemp.length; iCount++)
-		// {
-		// alTempList.add(iArTemp[iCount]);
-		// }
 		if (alTempList == null)
 		{
 			alTempList = new ArrayList<Integer>();
 		}
 		mapSelections.put(ESelectionType.EXTERNAL_SELECTION, alTempList);
 
-		int iStorageLength = 0;
-		if (alDataStorages.size() > 0)
-		{
-			iStorageLength = 2000;
-			// iStorageLength = alDataStorages.get(0).getArrayFloat().length;
-		}
-
-		alTempList = new ArrayList<Integer>(iStorageLength);
+		//int iStorageLength = set.depth();
+		int iStorageLength = 2000;
 
 		// initialize full list
+		alTempList = new ArrayList<Integer>(set.depth());
 		for (int iCount = 0; iCount < iStorageLength; iCount++)
 		{
 			if (bRenderOnlyContext)
@@ -170,7 +168,6 @@ public abstract class AGLCanvasStorageBasedView
 				{
 					generalManager.getLogger().log(Level.FINE,
 							"Cannot resolve gene to DAVID ID!");
-
 					continue;
 				}
 				else
@@ -195,7 +192,7 @@ public abstract class AGLCanvasStorageBasedView
 
 		alTempList = new ArrayList<Integer>();
 
-		for (int iCount = 0; iCount < alDataStorages.size(); iCount++)
+		for (int iCount = 0; iCount < set.size(); iCount++)
 		{
 			alTempList.add(iCount);
 		}
@@ -371,7 +368,7 @@ public abstract class AGLCanvasStorageBasedView
 
 		int iDavidId = getDavidIDFromStorageIndex(iExternalID);
 
-		generalManager.getViewGLCanvasManager().getInfoAreaManager().setData(iUniqueId,
+		generalManager.getViewGLCanvasManager().getInfoAreaManager().setData(iUniqueID,
 				iDavidId, EInputDataType.GENE, getInfo());
 
 		// Write currently selected vertex to selection set
@@ -399,7 +396,7 @@ public abstract class AGLCanvasStorageBasedView
 			}
 		}
 
-		alSelection.get(1).updateSelectionSet(iUniqueId, iAlTmpSelectionId, iAlTmpGroup, null);
+		alSelection.get(1).updateSelectionSet(iUniqueID, iAlTmpSelectionId, iAlTmpGroup, null);
 
 		// propagateGeneSet(iAlTmpSelectionId, iAlTmpGroup);
 	}
@@ -425,7 +422,7 @@ public abstract class AGLCanvasStorageBasedView
 			iAlGeneSelection.add(getDavidIDFromStorageIndex(iCurrent));
 		}
 
-		alSelection.get(1).updateSelectionSet(iUniqueId, iAlGeneSelection, iAlGroup, null);
+		alSelection.get(1).updateSelectionSet(iUniqueID, iAlGeneSelection, iAlGroup, null);
 	}
 
 	protected ArrayList<Integer> prepareSelection(GenericSelectionManager selectionManager,
@@ -460,7 +457,7 @@ public abstract class AGLCanvasStorageBasedView
 		// {
 		// SetSelection tmpSet = iterSetSelection.next();
 		// tmpSet.getWriteToken();
-		// tmpSet.updateSelectionSet(iUniqueId, null, null, null);
+		// tmpSet.updateSelectionSet(iUniqueID, null, null, null);
 		// tmpSet.returnWriteToken();
 		// }
 		bIsDisplayListDirtyLocal = true;

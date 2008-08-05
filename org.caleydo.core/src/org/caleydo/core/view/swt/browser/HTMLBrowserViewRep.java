@@ -150,7 +150,7 @@ public class HTMLBrowserViewRep
 		browser = new Browser(swtContainer, SWT.NONE);
 
 		idExtractionLocationListener = new IDExtractionLocationListener(generalManager,
-				browser, iUniqueId, iSelectionSetId);
+				browser, iUniqueID, iSelectionSetId);
 		browser.addLocationListener(idExtractionLocationListener);
 
 		data = new GridData();

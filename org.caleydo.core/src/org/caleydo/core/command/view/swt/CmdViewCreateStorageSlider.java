@@ -42,13 +42,13 @@ public class CmdViewCreateStorageSlider
 		//		
 		// StorageSliderViewRep sliderView = (StorageSliderViewRep)viewManager
 		// .createView(ManagerObjectType.VIEW_SWT_STORAGE_SLIDER,
-		// iUniqueId,
+		// iUniqueID,
 		// iParentContainerId,
 		// sLabel);
 		//		
 		// viewManager.registerItem(
 		// sliderView,
-		// iUniqueId);
+		// iUniqueID);
 		//
 		// sliderView.setAttributes(iWidthX, iHeightY, iSetId);
 		// sliderView.initView();

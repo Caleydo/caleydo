@@ -79,7 +79,7 @@ public class SwtJoglGLCanvasViewRep
 
 		//		
 		// generalManager.logMsg("SwtJoglCanvasViewRep.destroyDirector()  id=" +
-		// iUniqueId,
+		// iUniqueID,
 		// LoggerType.STATUS );
 	}
 

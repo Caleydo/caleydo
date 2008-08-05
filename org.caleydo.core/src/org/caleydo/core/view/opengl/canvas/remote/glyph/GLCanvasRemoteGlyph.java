@@ -122,7 +122,7 @@ public class GLCanvasRemoteGlyph
 	public void displayLocal(GL gl)
 	{
 
-		pickingManager.handlePicking(iUniqueId, gl, true);
+		pickingManager.handlePicking(iUniqueID, gl, true);
 
 		display(gl);
 		checkForHits(gl);

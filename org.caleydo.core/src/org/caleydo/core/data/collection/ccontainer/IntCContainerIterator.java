@@ -1,31 +1,30 @@
 package org.caleydo.core.data.collection.ccontainer;
 
 import java.util.NoSuchElementException;
-import org.caleydo.core.data.collection.ICContainerIterator;
 
 /**
- * Iterator for PrimitiveIntCContainer. Initialized by passing the container.
- * Provides the common iterator accessors.
+ * Iterator for IntCContainer. Initialized by passing the container. Provides
+ * the common iterator accessors.
  * 
  * @author Alexander Lex
  */
-public class PrimitiveIntCContainerIterator
-	implements ICContainerIterator
+public class IntCContainerIterator
+	extends AContainerIterator
 {
 
 	int iIndex = 0;
 
-	PrimitiveIntCContainer primitiveIntCContainer = null;
+	IntCContainer intCContainer = null;
 
 	/**
 	 * Constructor
 	 * 
-	 * @param primitiveIntCContainer the container over which to iterate
+	 * @param intCContainer the container over which to iterate
 	 */
-	public PrimitiveIntCContainerIterator(PrimitiveIntCContainer primitiveIntCContainer)
+	public IntCContainerIterator(IntCContainer intCContainer)
 	{
 
-		this.primitiveIntCContainer = primitiveIntCContainer;
+		this.intCContainer = intCContainer;
 	}
 
 	/*
@@ -36,7 +35,7 @@ public class PrimitiveIntCContainerIterator
 	public boolean hasNext()
 	{
 
-		if (iIndex < primitiveIntCContainer.size() - 1)
+		if (iIndex < intCContainer.size() - 1)
 			return true;
 		else
 			return false;
@@ -54,7 +53,7 @@ public class PrimitiveIntCContainerIterator
 
 		try
 		{
-			return primitiveIntCContainer.get(++iIndex);
+			return intCContainer.get(++iIndex);
 		}
 		catch (IndexOutOfBoundsException e)
 		{

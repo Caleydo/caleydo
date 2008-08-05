@@ -39,13 +39,13 @@ public class CmdViewCreateSetEditor
 		//		
 		// NewSetEditorViewRep setEditorView = (NewSetEditorViewRep)viewManager
 		// .createView(ManagerObjectType.VIEW_SWT_DATA_SET_EDITOR,
-		// iUniqueId,
+		// iUniqueID,
 		// iParentContainerId,
 		// sLabel);
 		//		
 		// viewManager.registerItem(
 		// setEditorView,
-		// iUniqueId);
+		// iUniqueID);
 		//
 		// viewManager.addViewRep(setEditorView);
 		//

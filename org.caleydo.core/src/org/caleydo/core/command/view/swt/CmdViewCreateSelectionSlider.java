@@ -45,13 +45,13 @@ public class CmdViewCreateSelectionSlider
 		// SelectionSliderViewRep sliderView =
 		// (SelectionSliderViewRep)viewManager
 		// .createView(ManagerObjectType.VIEW_SWT_SELECTION_SLIDER,
-		// iUniqueId,
+		// iUniqueID,
 		// iParentContainerId,
 		// sLabel);
 		//		
 		// viewManager.registerItem(
 		// sliderView,
-		// iUniqueId);
+		// iUniqueID);
 		//
 		// sliderView.setAttributes(iWidthX, iHeightY, iSelectionId,
 		// sSelectionFieldName);

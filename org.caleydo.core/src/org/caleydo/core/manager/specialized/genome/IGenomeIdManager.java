@@ -51,10 +51,10 @@ public interface IGenomeIdManager
 	public int[] getAllKeysByGenomeIdType(final EGenomeMappingType type);
 
 	/**
-	 * Get one "target" id mapped to one "origin" id defiend by iUniqueId using
+	 * Get one "target" id mapped to one "origin" id defiend by iUniqueID using
 	 * type.
 	 * 
-	 * @param iUniqueId define "origin" id
+	 * @param iUniqueID define "origin" id
 	 * @param type defines, which id is mapped to the other id
 	 * @return "target" id using type
 	 */
@@ -73,22 +73,22 @@ public interface IGenomeIdManager
 
 	/**
 	 * Get one "target" id as String mapped to one "origin" id defiend by
-	 * iUniqueId using type.
+	 * iUniqueID using type.
 	 * 
-	 * @param iUniqueId define "origin" id
+	 * @param iUniqueID define "origin" id
 	 * @param type defines, which id is mapped to the other id
 	 * @return "target" id using type
 	 */
 	public String getIdStringFromIntByMapping(final int iUniqueId,
 			final EGenomeMappingType type);
 
-	// public ArrayList<Integer> getIdListByType( final int iUniqueId,
+	// public ArrayList<Integer> getIdListByType( final int iUniqueID,
 	// final EGenomeIdType type );
 
-	// public String getIdListByTypeToString( final int iUniqueId,
+	// public String getIdListByTypeToString( final int iUniqueID,
 	// final EGenomeIdType type );
 	//	
-	// public void setIdLUTByType( final int iUniqueId, final EGenomeIdType type
+	// public void setIdLUTByType( final int iUniqueID, final EGenomeIdType type
 	// );
 
 	/**

@@ -100,7 +100,7 @@ public class SWTGUIManager
 	public Shell createWindow(int iUniqueId, String sLabel, String sLayoutAttributes)
 	{
 
-		assert iUniqueId != 0 : "createWindow() iUniqueId must not be 0!";
+		assert iUniqueId != 0 : "createWindow() iUniqueID must not be 0!";
 
 		Shell newShell = new Shell(display);
 		newShell.setLayout(new GridLayout());

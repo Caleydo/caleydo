@@ -80,7 +80,7 @@ public class NumericalCContainer<T extends Number>
 	 * @see org.caleydo.core.data.collection.ICContainer#normalize()
 	 */
 	@Override
-	public PrimitiveFloatCContainer normalize()
+	public FloatCContainer normalize()
 	{
 		return normalize(getMin(), getMax());
 	}
@@ -100,7 +100,7 @@ public class NumericalCContainer<T extends Number>
 	 * @see org.caleydo.core.data.collection.INumericalCContainer#log10()
 	 */
 	@Override
-	public PrimitiveFloatCContainer log10()
+	public FloatCContainer log10()
 	{
 		float[] fArTarget = new float[nAlContainer.size()];
 
@@ -113,7 +113,7 @@ public class NumericalCContainer<T extends Number>
 				fArTarget[index] = Float.NaN;
 		}
 
-		return new PrimitiveFloatCContainer(fArTarget);
+		return new FloatCContainer(fArTarget);
 	}
 
 	/*
@@ -122,7 +122,7 @@ public class NumericalCContainer<T extends Number>
 	 * normalizeWithExternalExtrema(double, double)
 	 */
 	@Override
-	public PrimitiveFloatCContainer normalizeWithExternalExtrema(double min, double max)
+	public FloatCContainer normalizeWithExternalExtrema(double min, double max)
 	{
 		return normalize(getMin(), getMax());
 	}
@@ -134,7 +134,7 @@ public class NumericalCContainer<T extends Number>
 	 * @param dMax
 	 * @return
 	 */
-	private PrimitiveFloatCContainer normalize(double dMin, double dMax)
+	private FloatCContainer normalize(double dMin, double dMax)
 	{
 		float[] fArTmpTarget = new float[nAlContainer.size()];
 
@@ -149,7 +149,7 @@ public class NumericalCContainer<T extends Number>
 						/ ((float) dMax - (float) dMin);
 			}
 		}
-		return new PrimitiveFloatCContainer(fArTmpTarget);
+		return new FloatCContainer(fArTmpTarget);
 	}
 
 	/**

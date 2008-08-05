@@ -2,6 +2,7 @@ package org.caleydo.core.data.collection;
 
 import javax.naming.OperationNotSupportedException;
 import org.caleydo.core.data.IManagedObject;
+import org.caleydo.core.data.collection.set.SetIterator;
 
 /**
  * Interface for Sets
@@ -48,14 +49,36 @@ public interface ISet
 	 * @param iIndex
 	 * @return
 	 */
-	public IStorage getStorage(int iIndex);
+	public IStorage get(int iIndex);
+
+	/**
+	 * Get the storage via the index in the virtual array
+	 * 
+	 * @param iIndex the index in the virtual array
+	 * @param iUniqueID the unique id associated with the virtual array
+	 * @return the storage
+	 */
+	public IStorage getStorageFromVA(int iIndex, int iUniqueID);
+	
+	/**
+	 * Get an iterator that iterates over the storages
+	 * @return
+	 */
+	public SetIterator VAIterator(int iUniqueID);
 
 	/**
 	 * Get the number of storages in a set
 	 * 
 	 * @return
 	 */
-	public int getSize();
+	public int size();
+	
+	/**
+	 * Get the depth of the set, which is the length of the storages
+	 * 
+	 * @return the number of elements in the storages contained in the list
+	 */
+	public int depth();
 
 	/**
 	 * Normalize all storages in the set, based solely on the values within each
@@ -91,7 +114,7 @@ public interface ISet
 	public double getMax() throws OperationNotSupportedException;
 
 	/**
-	 * Claculates log10 on all storages in the set. Take care that the set
+	 * Calculates log10 on all storages in the set. Take care that the set
 	 * contains only numerical storages, since nominal storages will cause a
 	 * runtime exception. If you have mixed data you have to call log10 on all
 	 * the storages that support it manually Call normalize() after this to have

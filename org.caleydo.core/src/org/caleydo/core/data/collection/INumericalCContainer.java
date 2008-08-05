@@ -1,6 +1,6 @@
 package org.caleydo.core.data.collection;
 
-import org.caleydo.core.data.collection.ccontainer.PrimitiveFloatCContainer;
+import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
 
 /**
  * Extension of the ICContainer interface for numerical values
@@ -22,7 +22,7 @@ public interface INumericalCContainer
 	 * @param dMax the maximum
 	 * @return
 	 */
-	public PrimitiveFloatCContainer normalizeWithExternalExtrema(double dMin, double dMax);
+	public FloatCContainer normalizeWithExternalExtrema(double dMin, double dMax);
 
 	/**
 	 * Returns the minimum of the container, double to fit all datatypes
@@ -44,6 +44,6 @@ public interface INumericalCContainer
 	 * 
 	 * @return
 	 */
-	public PrimitiveFloatCContainer log10();
+	public FloatCContainer log10();
 
 }
