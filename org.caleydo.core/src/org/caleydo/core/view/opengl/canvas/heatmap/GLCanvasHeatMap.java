@@ -408,7 +408,7 @@ public class GLCanvasHeatMap
 
 		float fXPosition = 0;
 		float fYPosition = 0;
-		renderStyle.clearFieldWidths();
+		//renderStyle.clearFieldWidths();
 
 		// TODO: NullPointer if storage is empty
 		Vec2f vecFieldWidthAndHeight = null;

@@ -26,8 +26,8 @@ import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 public class PathwayLoaderThread
 	extends Thread
 {
-	private static final String PATHWAY_LIST_KEGG = "user.home/.caleydo/pathway_list_KEGG.txt";
-	private static final String PATHWAY_LIST_BIOCARTA = "user.home/.caleydo/pathway_list_BIOCARTA.txt";
+	private static final String PATHWAY_LIST_KEGG = "pathway_list_KEGG.txt";
+	private static final String PATHWAY_LIST_BIOCARTA = "pathway_list_BIOCARTA.txt";
 	
 	private IGeneralManager generalManager;
 
@@ -95,11 +95,11 @@ public class PathwayLoaderThread
 
 		if (pathwayDatabase.getName().equals("KEGG"))
 		{
-			sFileName = PATHWAY_LIST_KEGG;
+			sFileName = generalManager.getCaleydoHomePath() + PATHWAY_LIST_KEGG;
 		}
 		else if (pathwayDatabase.getName().equals("BioCarta"))
 		{
-			sFileName = PATHWAY_LIST_BIOCARTA;
+			sFileName = generalManager.getCaleydoHomePath() + PATHWAY_LIST_BIOCARTA;
 		}
 		
 		try

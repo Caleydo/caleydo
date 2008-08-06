@@ -37,6 +37,7 @@ import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 import org.caleydo.core.manager.view.ViewGLCanvasManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.eclipse.core.internal.resources.Folder;
 import org.eclipse.jface.preference.PreferenceStore;
 
 /**
@@ -125,11 +126,12 @@ public class GeneralManager
 			logger.log(Level.INFO, "Create new preference store at "
 					+sCaleydoHomePath + PREFERENCE_FILE_NAME);
 			
+			// Create .caleydo folder
+			if(!(new File(sCaleydoHomePath).mkdir()))
+				throw new CaleydoRuntimeException("Unable to create home folder .caleydo.", 
+						CaleydoRuntimeExceptionType.DATAHANDLING);
 			try
-			{
-				// Create .caleydo folder
-				new File(sCaleydoHomePath).mkdir();
-				
+			{				
 				preferenceStore.setValue("firstStart", true);	
 				preferenceStore.save();
 			}

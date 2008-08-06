@@ -126,7 +126,6 @@ public class HeatMapRenderStyle
 
 	public void clearFieldWidths()
 	{
-
 		fAlFieldWidths.clear();
 	}
 
