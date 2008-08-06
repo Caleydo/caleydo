@@ -114,7 +114,7 @@ public class GeneralManager
 	}
 
 	private void initPreferences() 
-	{		
+	{				
 		preferenceStore = new PreferenceStore(sCaleydoHomePath + PREFERENCE_FILE_NAME);
 		
 		try
@@ -127,9 +127,13 @@ public class GeneralManager
 					+sCaleydoHomePath + PREFERENCE_FILE_NAME);
 			
 			// Create .caleydo folder
-			if(!(new File(sCaleydoHomePath).mkdir()))
-				throw new CaleydoRuntimeException("Unable to create home folder .caleydo.", 
-						CaleydoRuntimeExceptionType.DATAHANDLING);
+			if (!(new File(sCaleydoHomePath).exists()))
+			{
+				if(!(new File(sCaleydoHomePath).mkdir()))
+					throw new CaleydoRuntimeException("Unable to create home folder .caleydo. Check user permissions!", 
+							CaleydoRuntimeExceptionType.DATAHANDLING);
+			}
+				
 			try
 			{				
 				preferenceStore.setValue("firstStart", true);	
@@ -141,6 +145,9 @@ public class GeneralManager
 						CaleydoRuntimeExceptionType.DATAHANDLING);
 			}
 		}
+		
+		// Create log folder in .caleydo
+		new File(sCaleydoHomePath + "logs").mkdirs();
 	}
 	
 	/**
