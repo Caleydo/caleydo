@@ -161,4 +161,9 @@ public interface IGeneralManager
 	 * The object can store and restore preferences to/from a predefined file.
 	 */
 	public PreferenceStore getPreferenceStore();
+	
+	/**
+	 * Returns the home path to store data: $USER_HOME/.caleydo/
+	 */
+	public String getCaleydoHomePath();
 }

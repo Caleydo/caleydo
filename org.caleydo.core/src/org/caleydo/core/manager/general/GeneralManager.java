@@ -1,10 +1,12 @@
 package org.caleydo.core.manager.general;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
@@ -47,11 +49,13 @@ public class GeneralManager
 	implements IGeneralManager
 {	
 	public static final String PREFERENCE_FILE_NAME = "caleydo.prefs";
+	public static final String USER_HOME = "user.home";
+	public static final String CALEYDO_HOME = "/.caleydo/";
 	
 	/**
 	 * Location where Caleydo stores preferences and caching data.
 	 */
-	private String sCaleydoDataPath;
+	private String sCaleydoHomePath;
 	
 	/**
 	 * Preferences store enables storing and restoring of application specific preference data.
@@ -100,8 +104,8 @@ public class GeneralManager
 		alManagers = new ArrayList<IManager>();
 
 		// Retrieve platform independent home directory
-		sCaleydoDataPath = System.getProperty("user.home");
-		sCaleydoDataPath +=  "/.caleydo/";
+		sCaleydoHomePath = System.getProperty(USER_HOME);
+		sCaleydoHomePath +=  CALEYDO_HOME;
 		
 		initLogger();
 		initPreferences();
@@ -109,8 +113,8 @@ public class GeneralManager
 	}
 
 	private void initPreferences() 
-	{
-		preferenceStore = new PreferenceStore(sCaleydoDataPath + PREFERENCE_FILE_NAME);
+	{		
+		preferenceStore = new PreferenceStore(sCaleydoHomePath + PREFERENCE_FILE_NAME);
 		
 		try
 		{
@@ -119,10 +123,13 @@ public class GeneralManager
 		catch (IOException e)
 		{
 			logger.log(Level.INFO, "Create new preference store at "
-					+sCaleydoDataPath + PREFERENCE_FILE_NAME);
+					+sCaleydoHomePath + PREFERENCE_FILE_NAME);
 			
 			try
 			{
+				// Create .caleydo folder
+				new File(sCaleydoHomePath).mkdir();
+				
 				preferenceStore.setValue("firstStart", true);	
 				preferenceStore.save();
 			}
@@ -361,6 +368,15 @@ public class GeneralManager
 	public PreferenceStore getPreferenceStore() 
 	{
 		return preferenceStore;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IGeneralManager#getCaleydoHomePath()
+	 */
+	public String getCaleydoHomePath() 
+	{
+		return sCaleydoHomePath;
 	}
 	
 	// public void serializationOutputTest() {

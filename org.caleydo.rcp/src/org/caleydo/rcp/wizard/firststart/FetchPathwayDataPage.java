@@ -27,10 +27,12 @@ import org.eclipse.swt.widgets.ProgressBar;
  * 
  * @author Marc Streit
  */
-public class FetchPathwayDataPage
+public final class FetchPathwayDataPage
 	extends WizardPage
 {
 	public static final String PAGE_NAME = "Fetch Pathway Data";
+	
+	public final WizardPage thisPage;
 
 	/**
 	 * Constructor.
@@ -41,6 +43,8 @@ public class FetchPathwayDataPage
 
 		this.setImageDescriptor(ImageDescriptor.createFromImageData(new ImageData(
 				"resources/splash/splash.png")));
+		
+		thisPage = this;
 		
 		setPageComplete(false);
 	}
@@ -91,29 +95,10 @@ public class FetchPathwayDataPage
 				cmdPathwayFetch.setAttributes(composite.getDisplay(),
 						progressBarKeggPathwayCacher,
 						progressBarKeggImagePathwayCacher,
-						progressBarBioCartaPathwayCacher);
+						progressBarBioCartaPathwayCacher,
+						thisPage);
 				
 				cmdPathwayFetch.doCommand();
-			
-				// Trigger pathway list generation
-				PathwayListGenerator pathwayListLoader = new PathwayListGenerator();
-
-				try
-				{
-					pathwayListLoader.run(PathwayListGenerator.INPUT_FOLDER_PATH_KEGG, 
-							PathwayListGenerator.INPUT_IMAGE_PATH_KEGG,
-							PathwayListGenerator.OUTPUT_FILE_NAME_KEGG);
-					pathwayListLoader.run(PathwayListGenerator.INPUT_FOLDER_PATH_BIOCARTA, 
-							PathwayListGenerator.INPUT_IMAGE_PATH_BIOCARTA,
-							PathwayListGenerator.OUTPUT_FILE_NAME_BIOCARTA);
-				}
-				catch (FileNotFoundException fnfe)
-				{
-					throw new CaleydoRuntimeException("Cannot generate pathway list.", 
-							CaleydoRuntimeExceptionType.DATAHANDLING);
-				}
-				
-				setPageComplete(true);
 			}
 		});
 		

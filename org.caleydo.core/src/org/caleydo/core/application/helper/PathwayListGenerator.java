@@ -6,7 +6,10 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
+
 import javax.swing.ImageIcon;
+
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
@@ -19,34 +22,22 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  */
 public class PathwayListGenerator
 {
-	public final static String INPUT_FOLDER_PATH_KEGG = "user.home/.caleydo/www.genome.jp/kegg/KGML/KGML_v0.6.1/hsa/";
-
-	public final static String INPUT_IMAGE_PATH_KEGG = "user.home/.caleydo/kegg/";
-
-	public final static String OUTPUT_FILE_NAME_KEGG = "data/genome/pathway/pathway_list_KEGG.txt";
-
-	public final static String INPUT_FOLDER_PATH_BIOCARTA = "user.home/.caleydo/cgap.nci.nih.gov/Pathways/BioCarta/";
-
-	public final static String INPUT_IMAGE_PATH_BIOCARTA = "user.home/.caleydo/cgap.nci.nih.gov/BIOCARTA/Pathways/";
-
-	public final static String OUTPUT_FILE_NAME_BIOCARTA = "data/genome/pathway/pathway_list_BIOCARTA.txt";
-
-	private static final String USER_HOME = "user.home";
+	public final static String INPUT_FOLDER_PATH_KEGG = "www.genome.jp/kegg/KGML/KGML_v0.6.1/hsa/";
+	public final static String INPUT_IMAGE_PATH_KEGG = "kegg/";
+	public final static String OUTPUT_FILE_NAME_KEGG = "pathway_list_KEGG.txt";
+	public final static String INPUT_FOLDER_PATH_BIOCARTA = "cgap.nci.nih.gov/Pathways/BioCarta/";
+	public final static String INPUT_IMAGE_PATH_BIOCARTA = "cgap.nci.nih.gov/BIOCARTA/Pathways/";
+	public final static String OUTPUT_FILE_NAME_BIOCARTA = "pathway_list_BIOCARTA.txt";
 	
 	private PrintWriter outputWriter;
 
-	/**
-	 * Constructor.
-	 * 
-	 */
-	public void run(String sInputFolderPath, String sInputImagePath,
-			final String sOutputFileName) throws FileNotFoundException
+	public void run(final IGeneralManager generalManager,
+			String sInputFolderPath, String sInputImagePath,
+			String sOutputFileName) throws FileNotFoundException
 	{
-		if (sInputFolderPath.startsWith(USER_HOME))
-			sInputFolderPath = sInputFolderPath.replace(USER_HOME, System.getProperty(USER_HOME));
-		
-		if (sInputImagePath.startsWith(USER_HOME))
-			sInputImagePath = sInputImagePath.replace(USER_HOME, System.getProperty(USER_HOME));		
+		sInputFolderPath = generalManager.getCaleydoHomePath() + sInputFolderPath;
+		sInputImagePath = generalManager.getCaleydoHomePath() + sInputImagePath;
+		sOutputFileName = generalManager.getCaleydoHomePath() + sOutputFileName;
 		
 		outputWriter = new PrintWriter(sOutputFileName);
 
@@ -119,21 +110,21 @@ public class PathwayListGenerator
 		outputWriter.close();
 	}
 
-	public static void main(String[] args)
-	{
-		PathwayListGenerator pathwayListLoader = new PathwayListGenerator();
-
-		try
-		{
-			pathwayListLoader.run(INPUT_FOLDER_PATH_KEGG, INPUT_IMAGE_PATH_KEGG,
-					OUTPUT_FILE_NAME_KEGG);
-			pathwayListLoader.run(INPUT_FOLDER_PATH_BIOCARTA, INPUT_IMAGE_PATH_BIOCARTA,
-					OUTPUT_FILE_NAME_BIOCARTA);
-		}
-		catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-	}
+//	public static void main(String[] args)
+//	{
+//		PathwayListGenerator pathwayListLoader = new PathwayListGenerator();
+//
+//		try
+//		{
+//			pathwayListLoader.run(INPUT_FOLDER_PATH_KEGG, INPUT_IMAGE_PATH_KEGG,
+//					OUTPUT_FILE_NAME_KEGG);
+//			pathwayListLoader.run(INPUT_FOLDER_PATH_BIOCARTA, INPUT_IMAGE_PATH_BIOCARTA,
+//					OUTPUT_FILE_NAME_BIOCARTA);
+//		}
+//		catch (FileNotFoundException e)
+//		{
+//			e.printStackTrace();
+//		}
+//	}
 
 }

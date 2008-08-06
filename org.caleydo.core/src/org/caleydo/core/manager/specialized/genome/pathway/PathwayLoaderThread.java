@@ -26,8 +26,8 @@ import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 public class PathwayLoaderThread
 	extends Thread
 {
-	private static final String PATHWAY_LIST_KEGG = "data/genome/pathway/pathway_list_KEGG.txt";
-	private static final String PATHWAY_LIST_BIOCARTA = "data/genome/pathway/pathway_list_BIOCARTA.txt";
+	private static final String PATHWAY_LIST_KEGG = "user.home/.caleydo/pathway_list_KEGG.txt";
+	private static final String PATHWAY_LIST_BIOCARTA = "user.home/.caleydo/pathway_list_BIOCARTA.txt";
 	
 	private IGeneralManager generalManager;
 

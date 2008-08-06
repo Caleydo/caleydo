@@ -9,6 +9,7 @@ import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
 
@@ -20,10 +21,15 @@ import org.eclipse.swt.widgets.ProgressBar;
 public class CmdFetchPathwayData
 	extends ACmdCreate_IdTargetLabelAttrDetail
 {
-	Display display = null;
-	ProgressBar progressBarKeggPathwayCacher = null;
-	ProgressBar progressBarKeggPathwayImageCacher = null;
-	ProgressBar progressBarBioCartaPathwayCacher = null;
+	private Display display = null;
+	private ProgressBar progressBarKeggPathwayCacher = null;
+	private ProgressBar progressBarKeggPathwayImageCacher = null;
+	private ProgressBar progressBarBioCartaPathwayCacher = null;
+	private WizardPage parentWizardPage = null;
+	
+	private boolean isKeggCacherFinished = false;
+	private boolean isKeggImageCacherFinished = false;
+	private boolean isBioCartaCacherFinished = false;
 	
 	/**
 	 * Constructor.
@@ -42,16 +48,19 @@ public class CmdFetchPathwayData
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
-		BioCartaPathwayCacher bioCartaPathwayCacher = new BioCartaPathwayCacher(display,
-				progressBarBioCartaPathwayCacher);
+		BioCartaPathwayCacher bioCartaPathwayCacher = new BioCartaPathwayCacher(
+				generalManager, display,
+				progressBarBioCartaPathwayCacher, this);
 		bioCartaPathwayCacher.start();
 
-		KeggPathwayCacher keggPathwayCacher = new KeggPathwayCacher(display,
-				progressBarKeggPathwayCacher);
+		KeggPathwayCacher keggPathwayCacher = new KeggPathwayCacher(
+				generalManager, display,
+				progressBarKeggPathwayCacher, this);
 		keggPathwayCacher.start();
 
-		KeggPathwayImageCacher keggPathwayImageCacher = new KeggPathwayImageCacher(display,
-				progressBarKeggPathwayImageCacher);
+		KeggPathwayImageCacher keggPathwayImageCacher = new KeggPathwayImageCacher(
+				generalManager, display,
+				progressBarKeggPathwayImageCacher, this);
 		keggPathwayImageCacher.start();
 
 		commandManager.runDoCommand(this);
@@ -79,11 +88,48 @@ public class CmdFetchPathwayData
 	public void setAttributes(final Display display, 
 			final ProgressBar progressBarKeggPathwayCacher,
 			final ProgressBar progressBarKeggPathwayImageCacher,
-			final ProgressBar progressBarBioCartaPathwayCacher)
+			final ProgressBar progressBarBioCartaPathwayCacher,
+			final WizardPage parentWizardPage)
 	{
 		this.display = display;
 		this.progressBarKeggPathwayCacher = progressBarKeggPathwayCacher;
 		this.progressBarKeggPathwayImageCacher = progressBarKeggPathwayImageCacher;
 		this.progressBarBioCartaPathwayCacher = progressBarBioCartaPathwayCacher;
+		this.parentWizardPage = parentWizardPage;
+	}
+	
+	public void setFinishedKeggCacher() 
+	{
+		isKeggCacherFinished = true;
+		notifyWizard();
+	}
+	
+	public void setFinishedKeggImageCacher() 
+	{
+		isKeggImageCacherFinished = true;
+		notifyWizard();
+	}
+	
+	public void setFinishedBioCartaCacher() 
+	{
+		isBioCartaCacherFinished = true;
+		notifyWizard();
+	}
+	
+	public void notifyWizard() 
+	{
+		if (parentWizardPage == null)
+			return;
+		
+		if (isKeggCacherFinished && isKeggImageCacherFinished && isBioCartaCacherFinished)
+		{
+			display.asyncExec(new Runnable()
+			{
+				public void run()
+				{
+					parentWizardPage.setPageComplete(true);		
+				}
+			});
+		}
 	}
 }

@@ -1,9 +1,15 @@
 package org.caleydo.core.application.helper.cacher.kegg;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import org.caleydo.core.application.helper.PathwayListGenerator;
+import org.caleydo.core.command.system.CmdFetchPathwayData;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
@@ -33,6 +39,8 @@ public class KeggPathwayCacher
 {
 	private static final int EXPECTED_DOWNLOADS = 213;
 	
+	private IGeneralManager generalManager;
+	
 	/**
 	 * Needed for async access to set progress bar state
 	 */
@@ -40,15 +48,22 @@ public class KeggPathwayCacher
 
 	private ProgressBar progressBar;
 
+	private CmdFetchPathwayData triggeringCommand;
+	
 	int iDownloadCount = 0;
 
 	/**
 	 * Constructor.
 	 */
-	public KeggPathwayCacher(final Display display, final ProgressBar progressBar)
+	public KeggPathwayCacher(final IGeneralManager generalManager,
+			final Display display, 
+			final ProgressBar progressBar,
+			final CmdFetchPathwayData triggeringCommand)
 	{
+		this.generalManager = generalManager;
 		this.display = display;
 		this.progressBar = progressBar;
+		this.triggeringCommand = triggeringCommand;
 	}
 
 	/*
@@ -143,27 +158,29 @@ public class KeggPathwayCacher
 
 		// start the dispatcher
 		dispatcher.processJobs();
+		
+		triggerPathwayListGeneration();
+		
+		if (triggeringCommand != null)
+			triggeringCommand.setFinishedKeggCacher();
 	}
 
-	/**
-	 * Main method for testing.
-	 */
-	public static void main(String[] pArgs) throws Exception
+	private void triggerPathwayListGeneration() 
 	{
-		Display display = new Display();
-		Shell shell = new Shell(display);
-		final ProgressBar progressBar = new ProgressBar(shell, SWT.SMOOTH);
-		progressBar.setBounds(10, 10, 200, 32);
-		shell.open();
-		
-		KeggPathwayCacher keggPathwayCacher = new KeggPathwayCacher(display, progressBar);
-		keggPathwayCacher.start();
-		
-		while (!shell.isDisposed())
+		// Trigger pathway list generation
+		PathwayListGenerator pathwayListLoader = new PathwayListGenerator();
+
+		try
 		{
-			if (!display.readAndDispatch())
-				display.sleep();
+			pathwayListLoader.run(generalManager,
+					PathwayListGenerator.INPUT_FOLDER_PATH_KEGG, 
+					PathwayListGenerator.INPUT_IMAGE_PATH_KEGG,
+					PathwayListGenerator.OUTPUT_FILE_NAME_KEGG);
 		}
-		display.dispose();
+		catch (FileNotFoundException fnfe)
+		{
+			throw new CaleydoRuntimeException("Cannot generate pathway list.", 
+					CaleydoRuntimeExceptionType.DATAHANDLING);
+		}
 	}
 }

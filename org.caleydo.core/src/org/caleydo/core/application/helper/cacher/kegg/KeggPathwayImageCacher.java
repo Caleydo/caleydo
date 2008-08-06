@@ -3,10 +3,10 @@ package org.caleydo.core.application.helper.cacher.kegg;
 import java.io.File;
 import java.util.ArrayList;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.caleydo.core.command.system.CmdFetchPathwayData;
+import org.caleydo.core.manager.IGeneralManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
@@ -27,6 +27,8 @@ public class KeggPathwayImageCacher
 {
 	private static final int EXPECTED_DOWNLOADS = 214;
 	
+	private IGeneralManager generalManager;
+	
 	/**
 	 * Needed for async access to set progress bar state
 	 */
@@ -34,17 +36,23 @@ public class KeggPathwayImageCacher
 	
 	private ProgressBar progressBar;
 	
+	private CmdFetchPathwayData triggeringCommand;
+	
     private int iConcurrentFtpConnections = 0;	
 	
-	int iDownloadCount = 0;
+	private int iDownloadCount = 0;
 	
 	/**
 	 * Constructor.
 	 */
-	public KeggPathwayImageCacher(final Display display, final ProgressBar progressBar)
+	public KeggPathwayImageCacher(final IGeneralManager generalManager,
+			final Display display, final ProgressBar progressBar,
+			final CmdFetchPathwayData triggeringCommand)
 	{
+		this.generalManager = generalManager;
 		this.display = display;
 		this.progressBar = progressBar;
+		this.triggeringCommand = triggeringCommand;
 	}
 	
 	/*
@@ -131,32 +139,13 @@ public class KeggPathwayImageCacher
         } catch (Exception e) {
             e.printStackTrace();
         }
+        
+        if (triggeringCommand != null)
+        	triggeringCommand.setFinishedKeggImageCacher();
 	}
 	
 	public void threadFinishNotification() 
 	{
 		iConcurrentFtpConnections--;
-	}
-	
-	/**
-	 * Main method for testing.
-	 */
-	public static void main(String[] pArgs) throws Exception
-	{
-		Display display = new Display();
-		Shell shell = new Shell(display);
-		final ProgressBar progressBar = new ProgressBar(shell, SWT.SMOOTH);
-		progressBar.setBounds(10, 10, 200, 32);
-		shell.open();
-		
-		KeggPathwayImageCacher keggPathwayImageCacher = new KeggPathwayImageCacher(display, progressBar);
-		keggPathwayImageCacher.start();
-		
-		while (!shell.isDisposed())
-		{
-			if (!display.readAndDispatch())
-				display.sleep();
-		}
-		display.dispose();
 	}
 }
