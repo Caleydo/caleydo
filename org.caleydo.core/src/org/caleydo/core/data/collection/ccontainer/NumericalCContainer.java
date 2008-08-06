@@ -2,7 +2,7 @@ package org.caleydo.core.data.collection.ccontainer;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import org.caleydo.core.data.collection.INumericalCContainer;
+import org.caleydo.core.data.selection.IVirtualArray;
 
 /**
  * A container for numerical values. Type can be anything that implements
@@ -13,9 +13,11 @@ import org.caleydo.core.data.collection.INumericalCContainer;
  */
 
 public class NumericalCContainer<T extends Number>
+	extends ATypedCContainer<T>
 	implements INumericalCContainer
+	
 {
-	ArrayList<T> nAlContainer;
+
 
 	Double dMin = Double.MAX_VALUE;
 	Double dMax = Double.MIN_VALUE;
@@ -23,32 +25,11 @@ public class NumericalCContainer<T extends Number>
 	/**
 	 * Constructor Pass an arrayList of a type that extends java.Number
 	 * 
-	 * @param nAlContainer
+	 * @param alContainer
 	 */
-	public NumericalCContainer(ArrayList<T> nAlContainer)
+	public NumericalCContainer(ArrayList<T> alContainer)
 	{
-		this.nAlContainer = nAlContainer;
-	}
-
-	/**
-	 * Returns the element of type T at the index iIndex
-	 * 
-	 * @param iIndex the index
-	 * @return the value at iIndex of type T
-	 */
-	public T get(int iIndex)
-	{
-		return nAlContainer.get(iIndex);
-	}
-
-	/**
-	 * Returns an iterator on the container
-	 * 
-	 * @return
-	 */
-	public Iterator<T> iterator()
-	{
-		return nAlContainer.iterator();
+		this.alContainer = alContainer;
 	}
 
 	/*
@@ -85,15 +66,6 @@ public class NumericalCContainer<T extends Number>
 		return normalize(getMin(), getMax());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.ICContainer#size()
-	 */
-	@Override
-	public int size()
-	{
-		return nAlContainer.size();
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -102,12 +74,12 @@ public class NumericalCContainer<T extends Number>
 	@Override
 	public FloatCContainer log10()
 	{
-		float[] fArTarget = new float[nAlContainer.size()];
+		float[] fArTarget = new float[alContainer.size()];
 
 		float fTmp;
-		for (int index = 0; index < nAlContainer.size(); index++)
+		for (int index = 0; index < alContainer.size(); index++)
 		{
-			fTmp = nAlContainer.get(index).floatValue();
+			fTmp = alContainer.get(index).floatValue();
 			fArTarget[index] = (float) Math.log10(fTmp);
 			if (fArTarget[index] == Float.NEGATIVE_INFINITY)
 				fArTarget[index] = Float.NaN;
@@ -136,16 +108,16 @@ public class NumericalCContainer<T extends Number>
 	 */
 	private FloatCContainer normalize(double dMin, double dMax)
 	{
-		float[] fArTmpTarget = new float[nAlContainer.size()];
+		float[] fArTmpTarget = new float[alContainer.size()];
 
-		for (int iCount = 0; iCount < nAlContainer.size(); iCount++)
+		for (int iCount = 0; iCount < alContainer.size(); iCount++)
 		{
-			if (Float.isNaN(nAlContainer.get(iCount).floatValue())
-					|| Double.isNaN(nAlContainer.get(iCount).doubleValue()))
+			if (Float.isNaN(alContainer.get(iCount).floatValue())
+					|| Double.isNaN(alContainer.get(iCount).doubleValue()))
 				fArTmpTarget[iCount] = Float.NaN;
 			else
 			{
-				fArTmpTarget[iCount] = (nAlContainer.get(iCount).floatValue() - (float) dMin)
+				fArTmpTarget[iCount] = (alContainer.get(iCount).floatValue() - (float) dMin)
 						/ ((float) dMax - (float) dMin);
 			}
 		}
@@ -158,7 +130,7 @@ public class NumericalCContainer<T extends Number>
 	 */
 	private void calculateMinMax()
 	{
-		for (Number current : nAlContainer)
+		for (Number current : alContainer)
 		{
 			if (Float.isNaN(current.floatValue()) || Double.isNaN(current.doubleValue()))
 				continue;

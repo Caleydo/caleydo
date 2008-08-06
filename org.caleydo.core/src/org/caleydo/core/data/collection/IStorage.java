@@ -152,6 +152,8 @@ public interface IStorage
 	 * Returns a value of the type Number, from the representation chosen in
 	 * storageKind, at the index specified in iIndex
 	 * 
+	 * @storageKind specifies which kind of storage (eg: raw, normalized)
+	 * @iIndex the index of the element
 	 * @return the Number
 	 */
 	public Number get(EDataRepresentation storageKind, int iIndex);
@@ -159,10 +161,29 @@ public interface IStorage
 	/**
 	 * Returns an iterator on the representation chosen in storageKind
 	 * 
-	 * @param storageKind
-	 * @return
+	 * @param storageKind specifies which kind of storage (eg: raw, normalized)
+	 * @return the iterator
 	 */
 	public Iterator<? extends Number> iterator(EDataRepresentation storageKind);
+
+	/**
+	 * Returns a value of the type Number, from the representation chosen in
+	 * storageKind, via a virtual array
+	 * 
+	 * @iIndex the index in the virtual array
+	 * @param iUniqueID the unique id associated with the virtual array
+	 * @return the Number
+	 */
+	public Number getNumberVA(EDataRepresentation storageKind, int iIndex, int iUniqueID);
+	
+	/**
+	 * Returns an iterator on the representation chosen in storageKind via a virtual array
+	 * 
+	 * @param storageKind specifies which kind of storage (eg: raw, normalized)
+	 * @param iUniqueID the unique id associated with the virtual array
+	 * @return the iterator
+	 */
+	public Iterator<? extends Number> iteratorVA(EDataRepresentation storageKind, int iUniqueID);
 
 	/**
 	 * Brings any dataset into a format between 0 and 1. This is used for

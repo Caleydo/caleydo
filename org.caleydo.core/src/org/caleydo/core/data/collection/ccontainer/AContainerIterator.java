@@ -1,12 +1,16 @@
 package org.caleydo.core.data.collection.ccontainer;
 
-import javax.naming.OperationNotSupportedException;
-import org.caleydo.core.data.collection.ICContainerIterator;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.VAIterator;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
+/**
+ * Abstract container iterator for all ICContainers. Supports virtual arrays.
+ * 
+ * @author Alexander Lex
+ * 
+ */
 public class AContainerIterator
 	implements ICContainerIterator
 {
@@ -45,5 +49,7 @@ public class AContainerIterator
 			throw new CaleydoRuntimeException(
 					"Remove is only defined if a virtual array is enabled, which is currently not the case",
 					CaleydoRuntimeExceptionType.DATAHANDLING);
+		else
+			vaIterator.remove();
 	}
 }

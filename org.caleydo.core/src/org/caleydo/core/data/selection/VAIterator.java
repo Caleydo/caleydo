@@ -8,7 +8,7 @@ public class VAIterator
 {
 	
 
-	int iCount = 0;
+	int iCount = -1;
 	VirtualArray virtualArray;
 	boolean bLastMoveOperationWasPrevious = false;
 
@@ -98,7 +98,10 @@ public class VAIterator
 	@Override
 	public int previousIndex()
 	{
-		return iCount - 1;
+		if (iCount < 0)
+			return -1;
+		
+		return iCount;
 	}
 
 	/*

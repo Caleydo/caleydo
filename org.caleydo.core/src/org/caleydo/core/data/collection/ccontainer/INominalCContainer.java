@@ -1,4 +1,4 @@
-package org.caleydo.core.data.collection;
+package org.caleydo.core.data.collection.ccontainer;
 
 import java.util.ArrayList;
 

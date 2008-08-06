@@ -1,6 +1,5 @@
-package org.caleydo.core.data.collection;
+package org.caleydo.core.data.collection.ccontainer;
 
-import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
 
 /**
  * Interface for the low level containers which hold the data for the storages

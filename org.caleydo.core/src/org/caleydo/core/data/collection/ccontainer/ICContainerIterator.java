@@ -1,4 +1,4 @@
-package org.caleydo.core.data.collection;
+package org.caleydo.core.data.collection.ccontainer;
 
 /**
  * Interface for iterators on CContainers

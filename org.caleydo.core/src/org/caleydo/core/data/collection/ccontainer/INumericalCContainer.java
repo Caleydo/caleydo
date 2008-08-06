@@ -1,6 +1,5 @@
-package org.caleydo.core.data.collection;
+package org.caleydo.core.data.collection.ccontainer;
 
-import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
 
 /**
  * Extension of the ICContainer interface for numerical values

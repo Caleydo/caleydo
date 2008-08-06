@@ -1,6 +1,7 @@
 package org.caleydo.core.data.collection.ccontainer;
 
 import java.util.NoSuchElementException;
+import org.caleydo.core.data.selection.IVirtualArray;
 
 /**
  * Iterator for IntCContainer. Initialized by passing the container. Provides
@@ -12,9 +13,9 @@ public class IntCContainerIterator
 	extends AContainerIterator
 {
 
-	int iIndex = 0;
+	private int iIndex = 0;
 
-	IntCContainer intCContainer = null;
+	private IntCContainer intCContainer = null;
 
 	/**
 	 * Constructor
@@ -23,23 +24,20 @@ public class IntCContainerIterator
 	 */
 	public IntCContainerIterator(IntCContainer intCContainer)
 	{
-
 		this.intCContainer = intCContainer;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.ICContainerIterator#hasNext()
+	/**
+	 * Constructor
+	 * 
+	 * @param intCContainer
+	 * @param iUniqueID
 	 */
-	@Override
-	public boolean hasNext()
+	public IntCContainerIterator(IntCContainer intCContainer, IVirtualArray virtualArray)
 	{
-
-		if (iIndex < intCContainer.size() - 1)
-			return true;
-		else
-			return false;
-
+		this(intCContainer);
+		this.virtualArray = virtualArray;
+		this.vaIterator = virtualArray.iterator();
 	}
 
 	/**
@@ -50,14 +48,20 @@ public class IntCContainerIterator
 	 */
 	public int next()
 	{
-
-		try
+		if (virtualArray != null)
 		{
-			return intCContainer.get(++iIndex);
+			return intCContainer.get(vaIterator.next());
 		}
-		catch (IndexOutOfBoundsException e)
+		else
 		{
-			throw new NoSuchElementException();
+			try
+			{
+				return intCContainer.get(++iIndex);
+			}
+			catch (IndexOutOfBoundsException e)
+			{
+				throw new NoSuchElementException();
+			}
 		}
 	}
 }

@@ -1,7 +1,7 @@
 package org.caleydo.core.data.collection.storage;
 
-import org.caleydo.core.data.collection.INumericalCContainer;
 import org.caleydo.core.data.collection.INumericalStorage;
+import org.caleydo.core.data.collection.ccontainer.INumericalCContainer;
 import org.caleydo.core.manager.IGeneralManager;
 
 /**

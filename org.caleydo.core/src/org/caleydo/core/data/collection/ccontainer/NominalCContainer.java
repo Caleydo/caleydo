@@ -3,7 +3,6 @@ package org.caleydo.core.data.collection.ccontainer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import org.caleydo.core.data.collection.INominalCContainer;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
@@ -16,10 +15,10 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  * @author Alexander Lex
  */
 public class NominalCContainer<T>
+	extends ATypedCContainer<T>
 	implements INominalCContainer<T>
 {
 
-	private ArrayList<T> tAlContainer;
 
 	private HashMap<T, Float> hashNominalToDiscrete = new HashMap<T, Float>();
 
@@ -35,21 +34,11 @@ public class NominalCContainer<T>
 	public NominalCContainer(ArrayList<T> tAlContainer)
 	{
 
-		this.tAlContainer = tAlContainer;
+		this.alContainer = tAlContainer;
 		hashNominalToDiscrete = new HashMap<T, Float>();
 		hashDiscreteToNominal = new HashMap<Float, T>();
 	}
-
-	/**
-	 * Get String at index
-	 * 
-	 * @param iIndex the index
-	 * @return the String
-	 */
-	public T get(int iIndex)
-	{
-		return tAlContainer.get(iIndex);
-	}
+	
 
 	/**
 	 * Provide a list with all possible values on the nominal scale. Useful when
@@ -75,12 +64,12 @@ public class NominalCContainer<T>
 	{
 
 		if (!bHashMapsInitialized)
-			setUpMapping(tAlContainer);
+			setUpMapping(alContainer);
 
-		float[] fArNormalized = new float[tAlContainer.size()];
+		float[] fArNormalized = new float[alContainer.size()];
 
 		int iCount = 0;
-		for (T tContent : tAlContainer)
+		for (T tContent : alContainer)
 		{
 			Float fTemp = hashNominalToDiscrete.get(tContent);
 			if (fTemp == null)
@@ -96,28 +85,6 @@ public class NominalCContainer<T>
 		return new FloatCContainer(fArNormalized);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.ICContainer#size()
-	 */
-	@Override
-	public int size()
-	{
-		return tAlContainer.size();
-	}
-
-	/**
-	 * Returns an iterator on the data Do not use the iterators remove, add or
-	 * set function, since it will cause an UnsupportedOperationException.
-	 * 
-	 * @return the Iterator
-	 */
-	public Iterator<T> iterator()
-	{
-
-		return tAlContainer.iterator();
-	}
-
 	/**
 	 * When providing a float value following the rules of the normalization (0
 	 * >= x <= 1) the associated raw nominal value is returned
@@ -129,7 +96,7 @@ public class NominalCContainer<T>
 	public T getNominalForDiscreteValue(Float fDiscrete)
 	{
 		if (!bHashMapsInitialized)
-			setUpMapping(tAlContainer);
+			setUpMapping(alContainer);
 		return hashDiscreteToNominal.get(fDiscrete);
 	}
 
@@ -143,7 +110,7 @@ public class NominalCContainer<T>
 	public Float getDiscreteForNominalValue(T tNominal)
 	{
 		if (!bHashMapsInitialized)
-			setUpMapping(tAlContainer);
+			setUpMapping(alContainer);
 		return hashNominalToDiscrete.get(tNominal);
 	}
 

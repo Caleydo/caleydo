@@ -1,6 +1,5 @@
 package org.caleydo.core.data.collection.ccontainer;
 
-import org.caleydo.core.data.collection.INumericalCContainer;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
@@ -65,7 +64,7 @@ public class FloatCContainer
 	{
 		return new FloatCContainerIterator(this);
 	}
-	
+
 	/**
 	 * Returns an iterator on the container
 	 * 
@@ -116,8 +115,7 @@ public class FloatCContainer
 	 * normalizeWithExternalExtrema(double, double)
 	 */
 	@Override
-	public FloatCContainer normalizeWithExternalExtrema(final double dMin,
-			final double dMax)
+	public FloatCContainer normalizeWithExternalExtrema(final double dMin, final double dMax)
 	{
 
 		if (dMin > getMin() || dMax < getMax())

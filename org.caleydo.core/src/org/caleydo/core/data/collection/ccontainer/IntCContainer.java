@@ -1,6 +1,6 @@
 package org.caleydo.core.data.collection.ccontainer;
 
-import org.caleydo.core.data.collection.INumericalCContainer;
+import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
@@ -91,9 +91,20 @@ public class IntCContainer
 		return new IntCContainerIterator(this);
 	}
 
+	/**
+	 * Iterator which takes a virtual array into account
+	 * 
+	 * @param virtualArray the virtual array
+	 * @return the iterator
+	 */
+	public IntCContainerIterator iterator(IVirtualArray virtualArray)
+	{
+		return new IntCContainerIterator(this, virtualArray);
+	}
+
 	/*
 	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.data.collection.INumericalStorage#
+	 * @see org.caleydo.core.data.collection.INumericalStorage#
 	 * normalizeWithExternalExtrema(double, double)
 	 */
 	@Override
@@ -110,7 +121,7 @@ public class IntCContainer
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.ICContainer#normalize()
+	 * @see org.caleydo.core.data.collection.ccontainer.ICContainer#normalize()
 	 */
 	@Override
 	public FloatCContainer normalize()
