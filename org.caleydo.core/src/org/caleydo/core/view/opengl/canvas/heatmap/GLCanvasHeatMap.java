@@ -97,8 +97,8 @@ public class GLCanvasHeatMap
 		bRenderStorageHorizontally = true;
 		initData();
 		initLists();
-		renderStyle = new HeatMapRenderStyle(viewFrustum, verticalSelectionManager,
-				alContentSelection, alStorageSelection.size(), true);
+		renderStyle = new HeatMapRenderStyle(viewFrustum, verticalSelectionManager, set,
+				iContentSelection, set.getVA(iStorageSelection).size(), true);
 
 		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
 	}
@@ -285,29 +285,29 @@ public class GLCanvasHeatMap
 		horizontalSelectionManager.resetSelectionManager();
 		verticalSelectionManager.resetSelectionManager();
 
-		alContentSelection = mapSelections.get(eWhichContentSelection);
-		alStorageSelection = mapSelections.get(eWhichStorageSelection);
+		iContentSelection = mapSelections.get(eWhichContentSelection);
+		iStorageSelection = mapSelections.get(eWhichStorageSelection);
 		if (renderStyle != null)
 		{
-			renderStyle.setContentSelection(alContentSelection);
+			renderStyle.setContentSelection(iContentSelection);
 		}
 
-		int iNumberOfRowsToRender = alStorageSelection.size();
-		int iNumberOfColumns = alContentSelection.size();
+		int iNumberOfRowsToRender = set.getVA(iStorageSelection).size();
+		int iNumberOfColumns = set.getVA(iContentSelection).size();
 
 		for (int iRowCount = 0; iRowCount < iNumberOfRowsToRender; iRowCount++)
 		{
-			horizontalSelectionManager.initialAdd(alStorageSelection.get(iRowCount));
+			horizontalSelectionManager.initialAdd(set.getVA(iStorageSelection).get(iRowCount));
 		}
 
 		// this for loop executes one per axis
 		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++)
 		{
-			verticalSelectionManager.initialAdd(alContentSelection.get(iColumnCount));
-			if (setMouseOver.contains(alContentSelection.get(iColumnCount)))
+			verticalSelectionManager.initialAdd(set.getVA(iContentSelection).get(iColumnCount));
+			if (setMouseOver.contains(set.getVA(iContentSelection).get(iColumnCount)))
 			{
 				verticalSelectionManager.addToType(EViewInternalSelectionType.MOUSE_OVER,
-						alContentSelection.get(iColumnCount));
+						set.getVA(iContentSelection).get(iColumnCount));
 			}
 		}
 	}
@@ -321,7 +321,7 @@ public class GLCanvasHeatMap
 
 		ArrayList<String> alInfo = new ArrayList<String>();
 		alInfo.add("Type: Heat Map");
-		alInfo.add(alContentSelection.size() + " gene expression values");
+		alInfo.add(set.getVA(iContentSelection).size() + " gene expression values");
 		return alInfo;
 	}
 
@@ -433,13 +433,13 @@ public class GLCanvasHeatMap
 		// }
 
 		int iCount = 0;
-		for (Integer iContentIndex : alContentSelection)
+		for (Integer iContentIndex : set.getVA(iContentSelection))
 		{
 			vecFieldWidthAndHeight = renderStyle.getAndInitFieldWidthAndHeight(iCount);
 			fYPosition = renderStyle.getYCenter() - vecFieldWidthAndHeight.y()
-					* alStorageSelection.size() / 2;
+					* set.getVA(iStorageSelection).size() / 2;
 
-			for (Integer iStorageIndex : alStorageSelection)
+			for (Integer iStorageIndex : set.getVA(iStorageSelection))
 			{
 				renderElement(gl, iStorageIndex, iContentIndex, fXPosition, fYPosition,
 						vecFieldWidthAndHeight);
@@ -525,15 +525,15 @@ public class GLCanvasHeatMap
 
 		for (Integer iCurrentColumn : selectedSet)
 		{
-			int iColumnIndex = alContentSelection.indexOf(iCurrentColumn);
+			int iColumnIndex = set.getVA(iContentSelection).indexOf(iCurrentColumn);
 			if (iColumnIndex == -1)
 				continue;
 			Vec2f vecFieldWidthAndHeight = renderStyle.getFieldWidthAndHeight(iColumnIndex);
 
-			fHeight = alStorageSelection.size() * vecFieldWidthAndHeight.y();
+			fHeight = set.getVA(iStorageSelection).size() * vecFieldWidthAndHeight.y();
 			fXPosition = renderStyle.getXDistanceAt(iColumnIndex);
 			fYPosition = renderStyle.getYCenter() - vecFieldWidthAndHeight.y()
-					* alStorageSelection.size() / 2;
+					* set.getVA(iStorageSelection).size() / 2;
 
 			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(fXPosition, fYPosition, HeatMapRenderStyle.SELECTION_Z);
@@ -557,7 +557,7 @@ public class GLCanvasHeatMap
 	protected SelectedElementRep createElementRep(int iStorageIndex)
 	{
 
-		int iContentIndex = alContentSelection.indexOf(iStorageIndex);
+		int iContentIndex = set.getVA(iContentSelection).indexOf(iStorageIndex);
 		renderStyle.clearFieldWidths();
 		Vec2f vecFieldWithAndHeight = null;
 
@@ -571,7 +571,7 @@ public class GLCanvasHeatMap
 				/ 2;// + renderStyle.getXSpacing();
 
 		float fYValue = renderStyle.getYCenter() + vecFieldWithAndHeight.y()
-				* alStorageSelection.size() / 2;
+				* set.getVA(iContentSelection).size() / 2;
 
 		if (bRenderHorizontally)
 		{
@@ -600,25 +600,21 @@ public class GLCanvasHeatMap
 	protected void rePosition(int iElementID)
 	{
 
-		ArrayList<Integer> alSelection;
-		if (bRenderStorageHorizontally)
-		{
-			alSelection = alContentSelection;
-
-		}
+		int  iSelection;
+		if (bRenderStorageHorizontally)		
+			iSelection = iContentSelection;
 		else
-		{
-			alSelection = alStorageSelection;
+			iSelection = iStorageSelection;
 			// TODO test this
-		}
+	
 
-		float fCurrentPosition = alSelection.indexOf(iElementID)
+		float fCurrentPosition = set.getVA(iSelection).indexOf(iElementID)
 				* renderStyle.getNormalFieldWidth();// +
 		// renderStyle.getXSpacing(
 		// );
 
 		float fFrustumLength = viewFrustum.getRight() - viewFrustum.getLeft();
-		float fLength = (alSelection.size() - 1) * renderStyle.getNormalFieldWidth() + 1.5f; // MARC
+		float fLength = (set.getVA(iSelection).size() - 1) * renderStyle.getNormalFieldWidth() + 1.5f; // MARC
 		// :
 		// 1.5
 		// =

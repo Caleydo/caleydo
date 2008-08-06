@@ -45,6 +45,7 @@ public abstract class AStorage
 		super(iUniqueID);
 		hashCContainers = new HashMap<EDataRepresentation, ICContainer>();
 		hashVirtualArrays = new HashMap<Integer, IVirtualArray>();
+		hashIsVirtualArrayEnabled = new HashMap<Integer, Boolean>();
 		sLabel = new String("Not specified");
 	}
 
@@ -65,7 +66,6 @@ public abstract class AStorage
 	@Override
 	public void setLabel(String sLabel)
 	{
-
 		this.sLabel = sLabel;
 	}
 
@@ -76,7 +76,6 @@ public abstract class AStorage
 	@Override
 	public String getLabel()
 	{
-
 		return sLabel;
 	}
 
@@ -358,6 +357,7 @@ public abstract class AStorage
 	public void setVirtualArray(int iUniqueID, IVirtualArray virtualArray)
 	{
 		hashVirtualArrays.put(iUniqueID, virtualArray);
+		hashIsVirtualArrayEnabled.put(iUniqueID, false);
 	}
 	
 	/*

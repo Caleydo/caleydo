@@ -3,6 +3,7 @@ package org.caleydo.core.view.opengl.canvas;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.EnumMap;
+import java.util.Random;
 import java.util.Set;
 import java.util.logging.Level;
 import org.caleydo.core.data.collection.ISet;
@@ -35,24 +36,27 @@ public abstract class AGLCanvasStorageBasedView
 	extends AGLCanvasUser
 	implements IMediatorReceiver, IMediatorSender
 {
-	
+
 	protected ISet set;
 
-	//protected ArrayList<IStorage> alDataStorages;
+	// protected ArrayList<IStorage> alDataStorages;
 
 	// Specify which type of selection is currently active
 	protected ESelectionType eWhichContentSelection = ESelectionType.COMPLETE_SELECTION;
 
 	protected ESelectionType eWhichStorageSelection = ESelectionType.STORAGE_SELECTION;
 
-	// the list of all selection arrays
-	protected EnumMap<ESelectionType, ArrayList<Integer>> mapSelections;
+	// map selection type to unique id for virtual array
+	protected EnumMap<ESelectionType, Integer> mapSelections;
 
 	// the currently active selection arrays for content and storage
 	// (references to mapSelection entries)
-	protected ArrayList<Integer> alContentSelection;
+	// protected ArrayList<Integer> alContentSelection;
+	//
+	// protected ArrayList<Integer> alStorageSelection;
 
-	protected ArrayList<Integer> alStorageSelection;
+	protected int iContentSelection = 0;
+	protected int iStorageSelection = 0;
 
 	protected boolean bIsDisplayListDirtyLocal = true;
 
@@ -86,8 +90,6 @@ public abstract class AGLCanvasStorageBasedView
 
 	protected boolean bRenderOnlyContext = false;
 
-
-
 	/**
 	 * Constructor.
 	 */
@@ -97,18 +99,18 @@ public abstract class AGLCanvasStorageBasedView
 
 		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum, true);
 
-		//alDataStorages = new ArrayList<IStorage>();
-		mapSelections = new EnumMap<ESelectionType, ArrayList<Integer>>(ESelectionType.class);
+		// alDataStorages = new ArrayList<IStorage>();
+		mapSelections = new EnumMap<ESelectionType, Integer>(ESelectionType.class);
 
 		IDManager = generalManager.getGenomeIdManager();
 
 		extSelectionManager = generalManager.getViewGLCanvasManager().getSelectionManager();
 
 		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 16), false);
-		alContentSelection = new ArrayList<Integer>();
-		alStorageSelection = new ArrayList<Integer>();
+		// alContentSelection = new ArrayList<Integer>();
+		// alStorageSelection = new ArrayList<Integer>();
 	}
-	
+
 	public void renderOnlyContext(boolean bRenderOnlyContext)
 	{
 
@@ -117,42 +119,62 @@ public abstract class AGLCanvasStorageBasedView
 
 	public void initData()
 	{
-
 		if (alSetData == null)
 			return;
 
 		if (alSelection == null)
 			return;
 
+		if (!mapSelections.isEmpty())
+		{
+			for (ESelectionType eSelectionType : ESelectionType.values())
+			{
+				set.removeVirtualArray(mapSelections.get(eSelectionType));
+			}
+			mapSelections.clear();
+		}
+
 		set = alSetData.get(0);
-//		if (alDataStorages == null)
-//			return;
+		// if (alDataStorages == null)
+		// return;
 
 		// TODO check what this does after new datastructure
-//		alDataStorages.clear();
+		// alDataStorages.clear();
 
-		 mapSelections.clear();
-		 alContentSelection.clear();
-		 alStorageSelection.clear();
+		// alContentSelection.clear();
+		// alStorageSelection.clear();
 
 		// Extract data
-//		for (ISet tmpSet : alSetData)
-//		{
-//			for (IStorage tmpStorage : tmpSet)
-//			{
-//				alDataStorages.add(tmpStorage);
-//			}
-//		}
+		// for (ISet tmpSet : alSetData)
+		// {
+		// for (IStorage tmpStorage : tmpSet)
+		// {
+		// alDataStorages.add(tmpStorage);
+		// }
+		// }
+		
+		
 
-		 // Initialize external selection
+		// Initialize external selection
 		ArrayList<Integer> alTempList = alSelection.get(0).getSelectionIdArray();
 		if (alTempList == null)
 		{
 			alTempList = new ArrayList<Integer>();
 		}
-		mapSelections.put(ESelectionType.EXTERNAL_SELECTION, alTempList);
+		
+		
+		// TODO replace this with an id from an id manager, wont work with more
+		// than one instance
+		Random rand = new Random();
+		// TODO
+		// set.removeVirtualArray(rand);
+		int iTmp = rand.nextInt();
+		
+		// set.removeVirtualArray(1);
+		set.createStorageVA(iTmp, alTempList);
+		mapSelections.put(ESelectionType.EXTERNAL_SELECTION, iTmp);
 
-		//int iStorageLength = set.depth();
+		// int iStorageLength = set.depth();
 		int iStorageLength = 2000;
 
 		// initialize full list
@@ -188,7 +210,9 @@ public abstract class AGLCanvasStorageBasedView
 			alTempList.add(iCount);
 		}
 
-		mapSelections.put(ESelectionType.COMPLETE_SELECTION, alTempList);
+		iTmp = rand.nextInt();
+		set.createStorageVA(iTmp, alTempList);
+		mapSelections.put(ESelectionType.COMPLETE_SELECTION, iTmp);
 
 		alTempList = new ArrayList<Integer>();
 
@@ -197,7 +221,12 @@ public abstract class AGLCanvasStorageBasedView
 			alTempList.add(iCount);
 		}
 
-		mapSelections.put(ESelectionType.STORAGE_SELECTION, alTempList);
+		// TODO
+		// set.removeVirtualArray(3);
+		
+		iTmp = rand.nextInt();
+		set.createSetVA(iTmp, alTempList);
+		mapSelections.put(ESelectionType.STORAGE_SELECTION, iTmp);
 		initLists();
 	}
 

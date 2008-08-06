@@ -37,8 +37,6 @@ public class Set
 
 	private double dMax = Double.MIN_VALUE;
 
-
-
 	private ERawDataType rawDataType;
 
 	private boolean bIsNumerical;
@@ -110,8 +108,8 @@ public class Set
 	{
 		if (alStorages.isEmpty())
 		{
-//			iColumnLength = storage.size();
-//			rawDataType = storage.getRawDataType();
+			// iColumnLength = storage.size();
+			// rawDataType = storage.getRawDataType();
 			if (storage instanceof INumericalStorage)
 				bIsNumerical = true;
 			else
@@ -119,13 +117,14 @@ public class Set
 		}
 		else
 		{
-//			if (storage.size() != iColumnLength)
-//				throw new CaleydoRuntimeException("Storages must be of the same length",
-//						CaleydoRuntimeExceptionType.DATAHANDLING);
-//			if (rawDataType != storage.getRawDataType())
-//				throw new CaleydoRuntimeException(
-//						"Storages in a set must have the same raw data type",
-//						CaleydoRuntimeExceptionType.DATAHANDLING);
+			// if (storage.size() != iColumnLength)
+			// throw new
+			// CaleydoRuntimeException("Storages must be of the same length",
+			// CaleydoRuntimeExceptionType.DATAHANDLING);
+			// if (rawDataType != storage.getRawDataType())
+			// throw new CaleydoRuntimeException(
+			// "Storages in a set must have the same raw data type",
+			// CaleydoRuntimeExceptionType.DATAHANDLING);
 			if (!bIsNumerical && storage instanceof INumericalStorage)
 				throw new CaleydoRuntimeException(
 						"All storages in a set must be of the same basic type (nunmerical or nominal)",
@@ -152,10 +151,10 @@ public class Set
 	}
 
 	@Override
-	public IStorage getStorageFromVA(int index, int uniqueID)
+	public IStorage getStorageFromVA(int iUniqueID, int iIndex)
 	{
-		// TODO Auto-generated method stub
-		return null;
+		int iTmp = hashSetVAs.get(iUniqueID).get(iIndex);
+		return alStorages.get(iTmp);
 	}
 
 	/*
@@ -167,10 +166,35 @@ public class Set
 	{
 		return alStorages.size();
 	}
-	
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.ISet#sizeVA(int)
+	 */
+	@Override
+	public int sizeVA(int iUniqueID)
+	{
+		return hashSetVAs.get(iUniqueID).size();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.ISet#depth()
+	 */
+	@Override
 	public int depth()
 	{
 		return alStorages.get(0).size();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.ISet#depthVA(int)
+	 */
+	@Override
+	public int depthVA(int iUniqueID)
+	{
+		return hashStorageVAs.get(iUniqueID).size();
 	}
 
 	/*
@@ -277,6 +301,17 @@ public class Set
 			calculateGlobalExtrema();
 		return dMax;
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.ISet#getRawForNormalized(double)
+	 */
+	@Override
+	public double getRawForNormalized(double dNormalized)
+			throws OperationNotSupportedException
+	{
+		return dNormalized * (getMax() - getMin());
+	}
 
 	/*
 	 * (non-Javadoc)
@@ -305,16 +340,14 @@ public class Set
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.ISet#enableVirtualArray(int)
-	 * Creates one virtual array for the set and one for the storages
+	 * @see org.caleydo.core.data.collection.ISet#createStorageVA(int)
 	 */
 	@Override
-	public void enableVirtualArray(int iUniqueID)
+	public void createStorageVA(int iUniqueID)
 	{
 		if (hashIsVAEnabled.get(iUniqueID) == null)
 		{
 			hashStorageVAs.put(iUniqueID, new VirtualArray(depth()));
-			hashSetVAs.put(iUniqueID, new VirtualArray(alStorages.size()));
 
 			for (IStorage storage : alStorages)
 			{
@@ -323,7 +356,87 @@ public class Set
 			}
 		}
 		else
+			throw new CaleydoRuntimeException(
+					"Virtual array already exists, not creating a new one",
+					CaleydoRuntimeExceptionType.DATAHANDLING);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.ISet#createStorageVA(int,
+	 * java.util.ArrayList)
+	 */
+	@Override
+	public void createStorageVA(int iUniqueID, ArrayList<Integer> iAlSelections)
+	{
+		if (hashIsVAEnabled.get(iUniqueID) == null)
+		{
+			hashStorageVAs.put(iUniqueID, new VirtualArray(depth(), iAlSelections));
+			hashIsVAEnabled.put(iUniqueID, false);
+			for (IStorage storage : alStorages)
+			{
+				storage.setVirtualArray(iUniqueID, hashStorageVAs.get(iUniqueID));
+				// storage.enableVirtualArray(iUniqueID);
+			}
+			// enableVirtualArray(iUniqueID);
+		}
+		else
+			throw new CaleydoRuntimeException(
+					"Virtual array already exists, not creating a new one",
+					CaleydoRuntimeExceptionType.DATAHANDLING);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.ISet#createSetVA(int)
+	 */
+	@Override
+	public void createSetVA(int iUniqueID)
+	{
+		if (hashIsVAEnabled.get(iUniqueID) == null)
+		{
+			hashSetVAs.put(iUniqueID, new VirtualArray(depth()));
+			hashIsVAEnabled.put(iUniqueID, false);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.ISet#createSetVA(int,
+	 * java.util.ArrayList)
+	 */
+	@Override
+	public void createSetVA(int iUniqueID, ArrayList<Integer> iAlSelections)
+	{
+		if (hashIsVAEnabled.get(iUniqueID) == null)
+		{
+			hashSetVAs.put(iUniqueID, new VirtualArray(depth(), iAlSelections));
+			hashIsVAEnabled.put(iUniqueID, false);
+		}
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.ISet#enableVirtualArray(int)
+	 * Creates one virtual array for the set and one for the storages
+	 */
+	@Override
+	public void enableVirtualArray(int iUniqueID)
+	{
+		if (hashIsVAEnabled.get(iUniqueID) == null)
+		{
+			throw new CaleydoRuntimeException("No such virtual array exists, create it first",
+					CaleydoRuntimeExceptionType.DATAHANDLING);
+		}
+		else
+		{
 			hashIsVAEnabled.put(iUniqueID, true);
+			if (hashStorageVAs.containsKey(iUniqueID))
+			{
+				for (IStorage storage : alStorages)
+					storage.enableVirtualArray(iUniqueID);
+			}
+		}
 	}
 
 	/*
@@ -334,7 +447,14 @@ public class Set
 	public void disableVirtualArray(int iUniqueID)
 	{
 		if (hashStorageVAs.get(iUniqueID) != null && hashSetVAs.get(iUniqueID) != null)
+		{
 			hashIsVAEnabled.put(iUniqueID, false);
+			if (hashStorageVAs.containsKey(iUniqueID))
+			{
+				for (IStorage storage : alStorages)
+					storage.disableVirtualArray(iUniqueID);
+			}
+		}
 	}
 
 	/*
@@ -363,6 +483,23 @@ public class Set
 		hashStorageVAs.remove(iUniqueID);
 
 	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.ISet#getVA(int)
+	 */
+	@Override
+	public IVirtualArray getVA(int iUniqueID)
+	{
+		if (hashSetVAs.get(iUniqueID) != null)
+			return hashSetVAs.get(iUniqueID);
+		else if (hashStorageVAs.get(iUniqueID) != null)
+			return hashStorageVAs.get(iUniqueID);
+		else
+			throw new CaleydoRuntimeException("No Virtual Array for that unique id",
+					CaleydoRuntimeExceptionType.DATAHANDLING);
+	}
+	
 
 	private void calculateGlobalExtrema() throws OperationNotSupportedException
 	{
@@ -387,5 +524,7 @@ public class Set
 
 		}
 	}
+
+
 
 }

@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 import javax.media.opengl.GL;
+import javax.naming.OperationNotSupportedException;
+
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
@@ -27,11 +29,13 @@ import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.GLIconTextureManager;
+import org.caleydo.core.view.opengl.util.hierarchy.EHierarchyLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
 import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
+import com.sun.org.apache.bcel.internal.generic.IALOAD;
 
 /**
  * This class is responsible for rendering the parallel coordinates
@@ -109,9 +113,9 @@ public class GLCanvasParCoords3D
 
 	private Pick linePick;
 
-	private ArrayList<Integer> alPolylineSelection;
-
-	private ArrayList<Integer> alAxisSelection;
+	// private ArrayList<Integer> alPolylineSelection;
+	//
+	// private ArrayList<Integer> alAxisSelection;
 
 	private DecimalFormat decimalFormat;
 
@@ -119,6 +123,9 @@ public class GLCanvasParCoords3D
 
 	// holds the textures for the icons
 	private GLIconTextureManager iconTextureManager;
+
+	private int iPolylineSelection = 0;
+	private int iAxisSelection = 0;
 
 	/**
 	 * Constructor.
@@ -152,7 +159,8 @@ public class GLCanvasParCoords3D
 
 		decimalFormat = new DecimalFormat("#####.##");
 
-		mapSelections = new EnumMap<ESelectionType, ArrayList<Integer>>(ESelectionType.class);
+		// mapSelections = new EnumMap<ESelectionType,
+		// Integer>(ESelectionType.class);
 
 		alIsAngleBlocking = new ArrayList<ArrayList<Integer>>();
 		alIsAngleBlocking.add(new ArrayList<Integer>());
@@ -357,13 +365,13 @@ public class GLCanvasParCoords3D
 		extSelectionManager.clear();
 		if (bRenderStorageHorizontally)
 		{
-			alAxisSelection = alContentSelection;
-			alPolylineSelection = alStorageSelection;
+			iAxisSelection = iContentSelection;
+			iPolylineSelection = iStorageSelection;
 		}
 		else
 		{
-			alAxisSelection = alStorageSelection;
-			alPolylineSelection = alContentSelection;
+			iAxisSelection = iStorageSelection;
+			iPolylineSelection = iContentSelection;
 		}
 		initLists();
 
@@ -372,8 +380,9 @@ public class GLCanvasParCoords3D
 	/**
 	 * Choose whether to render just the selection or all data
 	 * 
-	 * @param bRenderSelection if true renders only the selection, else renders
-	 *            everything in the data
+	 * @param bRenderSelection
+	 *            if true renders only the selection, else renders everything in
+	 *            the data
 	 */
 	public void renderSelection(boolean bRenderSelection)
 	{
@@ -452,23 +461,26 @@ public class GLCanvasParCoords3D
 
 		horizontalSelectionManager.resetSelectionManager();
 
-		int iNumberOfEntriesToRender = 0;
+		// int iNumberOfEntriesToRender = 0;
+		//		
+		iContentSelection = mapSelections.get(eWhichContentSelection);
+		iStorageSelection = mapSelections.get(eWhichStorageSelection);
 
-		alContentSelection = mapSelections.get(eWhichContentSelection);
-		alStorageSelection = mapSelections.get(eWhichStorageSelection);
+		// alContentSelection = mapSelections.get(eWhichContentSelection);
+		// alStorageSelection = mapSelections.get(eWhichStorageSelection);
 
 		if (bRenderStorageHorizontally)
 		{
-			alPolylineSelection = alStorageSelection;
-			alAxisSelection = alContentSelection;
+			iPolylineSelection = iStorageSelection;
+			iAxisSelection = iContentSelection;
 		}
 		else
 		{
-			alPolylineSelection = alContentSelection;
-			alAxisSelection = alStorageSelection;
+			iPolylineSelection = iContentSelection;
+			iAxisSelection = iStorageSelection;
 		}
 
-		iNumberOfEntriesToRender = alContentSelection.size();
+		// iNumberOfEntriesToRender = alContentSelection.size();
 
 		int iNumberOfPolyLinesToRender = 0;
 
@@ -476,34 +488,37 @@ public class GLCanvasParCoords3D
 		// number of polylines
 		if (bRenderStorageHorizontally)
 		{
-
-			iNumberOfPolyLinesToRender = alStorageSelection.size();
-			iNumberOfAxis = iNumberOfEntriesToRender;
+			iNumberOfPolyLinesToRender = set.sizeVA(iStorageSelection);
+			iNumberOfAxis = set.depthVA(iContentSelection);
 		}
 		// render polylines across storages - first element of storage 1 to n
 		// makes up polyline
 		else
 		{
-			iNumberOfPolyLinesToRender = iNumberOfEntriesToRender;
-			iNumberOfAxis = alStorageSelection.size();
+			iNumberOfPolyLinesToRender = set.depthVA(iContentSelection);
+			iNumberOfAxis = set.sizeVA(iStorageSelection);
 		}
 
 		// this for loop executes once per polyline
 		for (int iPolyLineCount = 0; iPolyLineCount < iNumberOfPolyLinesToRender; iPolyLineCount++)
 		{
 			if (bRenderStorageHorizontally)
-				horizontalSelectionManager.initialAdd(alStorageSelection.get(iPolyLineCount));
+				horizontalSelectionManager.initialAdd(set.getVA(iStorageSelection).get(
+						iPolyLineCount));
 			else
-				horizontalSelectionManager.initialAdd(alContentSelection.get(iPolyLineCount));
+				horizontalSelectionManager.initialAdd(set.getVA(iContentSelection).get(
+						iPolyLineCount));
 		}
 
 		// this for loop executes one per axis
 		for (int iAxisCount = 0; iAxisCount < iNumberOfAxis; iAxisCount++)
 		{
 			if (bRenderStorageHorizontally)
-				verticalSelectionManager.initialAdd(alContentSelection.get(iAxisCount));
+				verticalSelectionManager.initialAdd(set.getVA(iContentSelection).get(
+						iAxisCount));
 			else
-				verticalSelectionManager.initialAdd(alStorageSelection.get(iAxisCount));
+				verticalSelectionManager.initialAdd(set.getVA(iStorageSelection).get(
+						iAxisCount));
 		}
 		fAxisSpacing = renderStyle.getAxisSpacing(iNumberOfAxis);
 
@@ -603,7 +618,7 @@ public class GLCanvasParCoords3D
 				int iWhichStorage = iPolyLineID;
 				// currentStorage =
 				// alDataStorages.get(alStorageSelection.get(iWhichStorage));
-				currentStorage = set.get(iWhichStorage);
+				currentStorage = set.getStorageFromVA(iStorageSelection, iWhichStorage);
 			}
 
 			float fPreviousXValue = 0;
@@ -619,12 +634,12 @@ public class GLCanvasParCoords3D
 				// get the index if array as polyline
 				if (bRenderStorageHorizontally)
 				{
-					iStorageIndex = alContentSelection.get(iVertexCount);
+					iStorageIndex = set.getVA(iContentSelection).get(iVertexCount);
 				}
 				// get the storage and the storage index for the different cases
 				else
 				{
-					currentStorage = set.get(alStorageSelection.get(iVertexCount));
+					currentStorage = set.getStorageFromVA(iStorageSelection, iVertexCount);
 					iStorageIndex = iPolyLineID;
 				}
 
@@ -644,8 +659,10 @@ public class GLCanvasParCoords3D
 				if (renderMode == EViewInternalSelectionType.SELECTION
 						|| renderMode == EViewInternalSelectionType.MOUSE_OVER)
 				{
+					float fYRawValue = currentStorage.getFloat(EDataRepresentation.RAW,
+							iStorageIndex);
 					renderYValues(gl, fCurrentXValue, fCurrentYValue
-							* renderStyle.getAxisHeight(), renderMode);
+							* renderStyle.getAxisHeight(), fYRawValue, renderMode);
 				}
 
 				fPreviousXValue = fCurrentXValue;
@@ -659,7 +676,6 @@ public class GLCanvasParCoords3D
 
 	private void renderCoordinateSystem(GL gl, final int iNumberAxis)
 	{
-
 		textRenderer.setColor(0, 0, 0, 1);
 
 		// draw X-Axis
@@ -682,22 +698,24 @@ public class GLCanvasParCoords3D
 				.getElements(EViewInternalSelectionType.SELECTION);
 		Set<Integer> mouseOverSet = verticalSelectionManager
 				.getElements(EViewInternalSelectionType.MOUSE_OVER);
-		ArrayList<Integer> alAxisSelection;
+		// ArrayList<Integer> alAxisSelection;
+
+		int iAxisSelection = 0;
 
 		if (bRenderStorageHorizontally)
-			alAxisSelection = alContentSelection;
+			iAxisSelection = iContentSelection;
 		else
-			alAxisSelection = alStorageSelection;
+			iAxisSelection = iStorageSelection;
 
 		int iCount = 0;
 		while (iCount < iNumberAxis)
 		{
-			if (selectedSet.contains(alAxisSelection.get(iCount)))
+			if (selectedSet.contains(set.getVA(iAxisSelection).get(iCount)))
 			{
 				gl.glColor4fv(ParCoordsRenderStyle.Y_AXIS_SELECTED_COLOR, 0);
 				gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_SELECTED_LINE_WIDTH);
 			}
-			else if (mouseOverSet.contains(alAxisSelection.get(iCount)))
+			else if (mouseOverSet.contains(set.getVA(iAxisSelection).get(iCount)))
 			{
 				gl.glColor4fv(ParCoordsRenderStyle.Y_AXIS_MOUSE_OVER_COLOR, 0);
 				gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_MOUSE_OVER_LINE_WIDTH);
@@ -708,7 +726,7 @@ public class GLCanvasParCoords3D
 				gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH);
 			}
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.Y_AXIS_SELECTION, alAxisSelection.get(iCount)));
+					EPickingType.Y_AXIS_SELECTION, set.getVA(iAxisSelection).get(iCount)));
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(iCount * fAxisSpacing, ParCoordsRenderStyle.Y_AXIS_LOW,
 					ParCoordsRenderStyle.AXIS_Z);
@@ -726,10 +744,11 @@ public class GLCanvasParCoords3D
 				case EXPERIMENT:
 					// Labels
 					// sAxisLabel = alDataStorages.get(iCount).getLabel();
-					sAxisLabel = set.get(alStorageSelection.get(iCount)).getLabel();
+					sAxisLabel = set.getStorageFromVA(iStorageSelection, iCount).getLabel();
 					break;
 				case GENE:
-					sAxisLabel = getRefSeqFromStorageIndex(alContentSelection.get(iCount));
+					sAxisLabel = getRefSeqFromStorageIndex(set.getVA(iContentSelection).get(
+							iCount));
 					break;
 				default:
 					sAxisLabel = "No Label";
@@ -748,17 +767,24 @@ public class GLCanvasParCoords3D
 			textRenderer.begin3DRendering();
 
 			// render values on top and bottom of axis
-			// top
-			textRenderer.draw3D(String.valueOf(((INumericalStorage) (set
-					.get(alStorageSelection.get(iCount)))).getMax()), iCount * fAxisSpacing
-					+ 2 * ParCoordsRenderStyle.AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(),
-					0, renderStyle.getSmallFontScalingFactor());
-			// bottom
-			textRenderer.draw3D(String.valueOf(((INumericalStorage) (set
-					.get(alStorageSelection.get(iCount)))).getMin()), iCount * fAxisSpacing
-					+ 2 * ParCoordsRenderStyle.AXIS_MARKER_WIDTH, 0, 0, renderStyle
-					.getSmallFontScalingFactor());
-			textRenderer.end3DRendering();
+			try
+			{
+				// top
+				textRenderer.draw3D(String.valueOf(set.getMax()), iCount * fAxisSpacing + 2
+						* ParCoordsRenderStyle.AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(),
+						0, renderStyle.getSmallFontScalingFactor());
+
+				// bottom
+				textRenderer.draw3D(String.valueOf(set.getMin()), iCount * fAxisSpacing + 2
+						* ParCoordsRenderStyle.AXIS_MARKER_WIDTH, 0, 0, renderStyle
+						.getSmallFontScalingFactor());
+				textRenderer.end3DRendering();
+			}
+			catch (OperationNotSupportedException e)
+			{
+				e.printStackTrace();
+			}
+
 			gl.glPopAttrib();
 			gl.glPopName();
 			// render Buttons
@@ -876,8 +902,18 @@ public class GLCanvasParCoords3D
 			gl.glEnd();
 			gl.glPopName();
 
-			renderYValues(gl, fCurrentPosition, fArGateTipHeight[iCount],
-					EViewInternalSelectionType.NORMAL);
+			
+			try
+			{
+				renderYValues(gl, fCurrentPosition, fArGateTipHeight[iCount],
+						(float)set.getRawForNormalized(fArGateTipHeight[iCount] / renderStyle.getAxisHeight()),
+						EViewInternalSelectionType.NORMAL);
+			}
+			catch (OperationNotSupportedException e)
+			{
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
 			// The body of the gate
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
@@ -913,14 +949,30 @@ public class GLCanvasParCoords3D
 			gl.glEnd();
 			gl.glPopName();
 
-			renderYValues(gl, fCurrentPosition, fArGateBottomHeight[iCount],
-					EViewInternalSelectionType.NORMAL);
+			try
+			{
+				renderYValues(gl, fCurrentPosition, fArGateBottomHeight[iCount],
+						(float)set.getRawForNormalized(fArGateBottomHeight[iCount] / renderStyle.getAxisHeight()),
+						EViewInternalSelectionType.NORMAL);
+			}
+			catch (OperationNotSupportedException e)
+			{
+				e.printStackTrace();
+			}
 
 			iCount++;
 		}
 	}
 
-	private void renderYValues(GL gl, float fXOrigin, float fYOrigin,
+	/**
+	 * Render the captions on the axis
+	 * 
+	 * @param gl
+	 * @param fXOrigin
+	 * @param fYOrigin
+	 * @param renderMode
+	 */
+	private void renderYValues(GL gl, float fXOrigin, float fYOrigin, float fRawValue,
 			EViewInternalSelectionType renderMode)
 	{
 
@@ -951,8 +1003,8 @@ public class GLCanvasParCoords3D
 		textRenderer.begin3DRendering();
 		// TODO: set this to real values once we have more than normalized
 		// values
-		textRenderer.draw3D(decimalFormat.format(fYOrigin / renderStyle.getAxisHeight()),
-				fXTextOrigin, fYTextOrigin, 0.0021f, renderStyle.getSmallFontScalingFactor());
+		textRenderer.draw3D(decimalFormat.format(fRawValue), fXTextOrigin, fYTextOrigin,
+				0.0021f, renderStyle.getSmallFontScalingFactor());
 		textRenderer.end3DRendering();
 		gl.glPopAttrib();
 	}
@@ -1045,15 +1097,14 @@ public class GLCanvasParCoords3D
 			// get the index if array as polyline
 			if (bRenderStorageHorizontally)
 			{
-				currentStorage = set.get(alStorageSelection.get(iPolylineCount));
-
-				iStorageIndex = alContentSelection.get(iAxisNumber);
+				currentStorage = set.getStorageFromVA(iStorageSelection, iPolylineCount);
+				iStorageIndex = set.getVA(iContentSelection).get(iAxisNumber);
 			}
 			// get the storage and the storage index for the different cases
 			else
 			{
-				iStorageIndex = alContentSelection.get(iPolylineCount);
-				currentStorage = set.get(alStorageSelection.get(iAxisNumber));
+				iStorageIndex = set.getVA(iContentSelection).get(iPolylineCount);
+				currentStorage = set.getStorageFromVA(iStorageSelection, iAxisNumber);
 			}
 
 			float fCurrentValue = currentStorage.getFloat(EDataRepresentation.NORMALIZED,
@@ -1069,62 +1120,9 @@ public class GLCanvasParCoords3D
 				//horizontalSelectionManager.addToType(EViewInternalSelectionType
 				// .DESELECTED,
 				// alPolylineSelection.get(iPolylineCount));
-				alCurrentGateBlocks.add(alPolylineSelection.get(iPolylineCount));
+				alCurrentGateBlocks.add(set.getVA(iPolylineSelection).get(iPolylineCount));
 
 			}
-			// else
-			// {
-			// boolean bIsBlocked = false;
-			//				
-			// // every axis
-			// for (int iLocalAxisCount = 0; iLocalAxisCount < iNumberOfAxis;
-			// iLocalAxisCount++)
-			// {
-			// int iLocalStorageIndex = 0;
-			// if(bRenderStorageHorizontally)
-			// {
-			// if(!bRenderSelection)
-			// iLocalStorageIndex = iLocalAxisCount;
-			// else
-			// iLocalStorageIndex = alContentSelection.get(iLocalAxisCount);
-			//						
-			// fCurrentValue =
-			// currentStorage.getArrayFloat()[iLocalStorageIndex] *
-			// renderStyle.getAxisHeight();
-			// if(fCurrentValue < fArGateTipHeight[iLocalAxisCount]
-			// && fCurrentValue > fArGateBottomHeight[iLocalAxisCount])
-			// {
-			// bIsBlocked = true;
-			// break;
-			// }
-			// }
-			// else
-			// {
-			// iLocalStorageIndex = alContentSelection.get(iPolylineCount);
-			// fCurrentValue =
-			// alDataStorages.get(alStorageSelection.get(iLocalAxisCount
-			// )).getArrayFloat()[iLocalStorageIndex] *
-			// renderStyle.getAxisHeight();
-			// if(fCurrentValue < fArGateTipHeight[iLocalAxisCount]
-			// && fCurrentValue > fArGateBottomHeight[iLocalAxisCount])
-			// {
-			// bIsBlocked = true;
-			// break;
-			// }
-			// }
-			// }
-			// if (!bIsBlocked)
-			// {
-			// if(bRenderStorageHorizontally)
-			// horizontalSelectionManager.removeFromType(
-			// EViewInternalSelectionType.DESELECTED,
-			// alStorageSelection.get(iPolylineCount));
-			// else
-			// horizontalSelectionManager.removeFromType(
-			// EViewInternalSelectionType.DESELECTED,
-			// alContentSelection.get(iPolylineCount));
-			// }
-			// }
 		}
 	}
 
@@ -1149,7 +1147,7 @@ public class GLCanvasParCoords3D
 			}
 		}
 
-		for (Integer iCurrent : alPolylineSelection)
+		for (Integer iCurrent : set.getVA(iPolylineSelection))
 		{
 			if (hashDeselectedPolylines.get(iCurrent) != null)
 			{
@@ -1407,11 +1405,11 @@ public class GLCanvasParCoords3D
 						// int iSelection = 0;
 						if (bRenderStorageHorizontally)
 						{
-							alContentSelection.remove(iExternalID);
+							set.getVA(iContentSelection).remove(iExternalID);
 						}
 						else
 						{
-							alStorageSelection.remove(iExternalID);
+							set.getVA(iStorageSelection).remove(iExternalID);
 						}
 						refresh();
 						break;
@@ -1422,21 +1420,11 @@ public class GLCanvasParCoords3D
 				switch (ePickingMode)
 				{
 					case CLICKED:
-
-						ArrayList<Integer> alSelection;
-						if (bRenderStorageHorizontally)
-							alSelection = alContentSelection;
-						else
-							alSelection = alStorageSelection;
-
-						if (iExternalID > 0 && iExternalID < alSelection.size())
+						if (iExternalID > 0)
 						{
-							int iTemp = alSelection.get(iExternalID - 1);
-							alSelection.set(iExternalID - 1, alSelection.get(iExternalID));
-							alSelection.set(iExternalID, iTemp);
+							set.getVA(iAxisSelection).moveLeft(iExternalID);
 							refresh();
 						}
-
 						break;
 				}
 				pickingManager.flushHits(iUniqueID, EPickingType.MOVE_AXIS_LEFT);
@@ -1446,17 +1434,9 @@ public class GLCanvasParCoords3D
 				switch (ePickingMode)
 				{
 					case CLICKED:
-						ArrayList<Integer> alSelection;
-						if (bRenderStorageHorizontally)
-							alSelection = alContentSelection;
-						else
-							alSelection = alStorageSelection;
-
-						if (iExternalID >= 0 && iExternalID < alSelection.size() - 1)
+						if (iExternalID > 0)
 						{
-							int iTemp = alSelection.get(iExternalID + 1);
-							alSelection.set(iExternalID + 1, alSelection.get(iExternalID));
-							alSelection.set(iExternalID, iTemp);
+							set.getVA(iAxisSelection).moveRight(iExternalID);
 							refresh();
 						}
 						break;
@@ -1467,19 +1447,12 @@ public class GLCanvasParCoords3D
 				switch (ePickingMode)
 				{
 					case CLICKED:
-						ArrayList<Integer> alSelection;
-						if (bRenderStorageHorizontally)
-							alSelection = alContentSelection;
-						else
-							alSelection = alStorageSelection;
-
-						// if (iExternalID >= 0 && iExternalID <
-						// alSelection.size()-1)
-						// {
-						alSelection.add(iExternalID + 1, alSelection.get(iExternalID));
-						refresh();
-						// }
-						break;
+						if (iExternalID > 0)
+						{
+							set.getVA(iAxisSelection).copy(iExternalID);
+							refresh();
+							break;
+						}
 				}
 				pickingManager.flushHits(iUniqueID, EPickingType.DUPLICATE_AXIS);
 				break;
@@ -1511,20 +1484,20 @@ public class GLCanvasParCoords3D
 			float fYValue;
 			float fXValue;
 			int iCount = 0;
-			for (Integer iCurrent : alStorageSelection)
+			for (Integer iCurrent : set.getVA(iStorageSelection))
 			{
 				// MARC: just add last point for line connections
 				// therefore the polyline is only connected with a line at the
 				// right of the view
 				// instead of the triangle fan
-				if (iCurrent < alStorageSelection.size() - 1)
+				if (iCurrent < set.getVA(iStorageSelection).size() - 1)
 				{
 					iCount++;
 					continue;
 				}
 
-				fYValue = set.get(iCurrent).getFloat(
-						EDataRepresentation.NORMALIZED, iStorageIndex);
+				fYValue = set.get(iCurrent).getFloat(EDataRepresentation.NORMALIZED,
+						iStorageIndex);
 				fYValue = fYValue * renderStyle.getAxisHeight()
 						+ renderStyle.getBottomSpacing();
 				fXValue = iCount * fAxisSpacing + renderStyle.getXSpacing() + fXTranslation;
@@ -1537,7 +1510,7 @@ public class GLCanvasParCoords3D
 		}
 		else
 		{
-			float fXValue = alContentSelection.indexOf(iStorageIndex) * fAxisSpacing
+			float fXValue = set.getVA(iContentSelection).indexOf(iStorageIndex) * fAxisSpacing
 					+ renderStyle.getXSpacing() + fXTranslation;
 
 			ArrayList<Vec3f> alPoints = new ArrayList<Vec3f>();
@@ -1562,12 +1535,12 @@ public class GLCanvasParCoords3D
 		sAlInfo.add("Type: Parallel Coordinates");
 		if (!bRenderStorageHorizontally)
 		{
-			sAlInfo.add(alContentSelection.size() + " genes as polylines and " + iNumberOfAxis
-					+ " experiments as axis.");
+			sAlInfo.add(set.getVA(iContentSelection).size() + " genes as polylines and "
+					+ iNumberOfAxis + " experiments as axis.");
 		}
 		else
 		{
-			sAlInfo.add(alStorageSelection.size() + "experiments as polylines and "
+			sAlInfo.add(set.getVA(iStorageSelection).size() + "experiments as polylines and "
 					+ iNumberOfAxis + " genes as axis.");
 		}
 		return sAlInfo;
@@ -1576,17 +1549,17 @@ public class GLCanvasParCoords3D
 	protected void rePosition(int iElementID)
 	{
 
-		ArrayList<Integer> alSelection;
-		if (bRenderStorageHorizontally)
-		{
-			alSelection = alContentSelection;
-
-		}
-		else
-		{
-			alSelection = alStorageSelection;
-			// TODO test this
-		}
+		// ArrayList<Integer> alSelection;
+		// if (bRenderStorageHorizontally)
+		// {
+		// alSelection = alContentSelection;
+		//
+		// }
+		// else
+		// {
+		// alSelection = alStorageSelection;
+		// // TODO test this
+		// }
 
 		float fCurrentPosition = alSelection.indexOf(iElementID) * fAxisSpacing
 				+ renderStyle.getXSpacing();
@@ -1676,8 +1649,8 @@ public class GLCanvasParCoords3D
 		int iAxisLeftIndex;
 		int iAxisRightIndex;
 
-		iAxisLeftIndex = alAxisSelection.get(iPosition);
-		iAxisRightIndex = alAxisSelection.get(iPosition + 1);
+		iAxisLeftIndex = set.getVA(iAxisSelection).get(iPosition);
+		iAxisRightIndex = set.getVA(iAxisSelection).get(iPosition + 1);
 
 		// int iPolylineIndex = alPolylineSelection.indexOf(iSelectedLineID);
 
@@ -1693,8 +1666,8 @@ public class GLCanvasParCoords3D
 		}
 		else
 		{
-			vecLeftPoint.setY(set.get(iAxisLeftIndex).getFloat(
-					EDataRepresentation.NORMALIZED, iSelectedLineID)
+			vecLeftPoint.setY(set.get(iAxisLeftIndex).getFloat(EDataRepresentation.NORMALIZED,
+					iSelectedLineID)
 					* renderStyle.getAxisHeight());
 			vecRightPoint.setY(set.get(iAxisRightIndex).getFloat(
 					EDataRepresentation.NORMALIZED, iSelectedLineID)
@@ -1773,15 +1746,15 @@ public class GLCanvasParCoords3D
 
 		// check selection
 
-		for (Integer iCurrent : alPolylineSelection)
+		for (Integer iCurrent : set.getVA(iPolylineSelection))
 		{
 			if (bRenderStorageHorizontally)
 			{
-				vecLeftPoint.setY(set.get(iCurrent).getFloat(
-						EDataRepresentation.NORMALIZED, iAxisLeftIndex)
+				vecLeftPoint.setY(set.get(iCurrent).getFloat(EDataRepresentation.NORMALIZED,
+						iAxisLeftIndex)
 						* renderStyle.getAxisHeight());
-				vecRightPoint.setY(set.get(iCurrent).getFloat(
-						EDataRepresentation.NORMALIZED, iAxisRightIndex)
+				vecRightPoint.setY(set.get(iCurrent).getFloat(EDataRepresentation.NORMALIZED,
+						iAxisRightIndex)
 						* renderStyle.getAxisHeight());
 			}
 			else

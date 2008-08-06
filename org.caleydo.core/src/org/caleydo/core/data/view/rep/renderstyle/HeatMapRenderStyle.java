@@ -3,6 +3,7 @@ package org.caleydo.core.data.view.rep.renderstyle;
 import gleem.linalg.Vec2f;
 import java.util.ArrayList;
 import java.util.HashMap;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
 import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
@@ -35,30 +36,23 @@ public class HeatMapRenderStyle
 
 	private GenericSelectionManager verticalSelectionManager;
 
-	private ArrayList<Integer> alContentSelection;
+	private int iContentSelection;
+	
+	private ISet set;
 
 	public HeatMapRenderStyle(final IViewFrustum viewFrustum,
 			final GenericSelectionManager verticalSelectionManager,
-			final ArrayList<Integer> alContentSelection, int iNumElements,
+			ISet set, int iContentSelection, int iNumElements,
 			boolean bRenderVertical)
 	{
 
 		super(viewFrustum);
 
-		// if(bRenderVertical)
-		// {
-		// fSelectedFieldWidth = (viewFrustum.getRight() -
-		// viewFrustum.getLeft()) / iNumElements / 3;
-		// }
-		// else
-		// {
-		// fSelectedFieldWidth = (viewFrustum.getTop() -
-		// viewFrustum.getBottom()) / iNumElements / 3;
-		// }
 		fNormalFieldWidth = fSelectedFieldWidth / 4;
 
 		this.verticalSelectionManager = verticalSelectionManager;
-		this.alContentSelection = alContentSelection;
+		this.iContentSelection = iContentSelection;
+		this.set = set;
 		fAlFieldWidths = new ArrayList<Float>();
 
 		// init fish eye
@@ -92,14 +86,14 @@ public class HeatMapRenderStyle
 		for (int iCount = -iLevels; iCount <= iLevels; iCount++)
 		{
 			if (iContentSelectionIndex + iCount < 0
-					|| iContentSelectionIndex + iCount >= alContentSelection.size())
+					|| iContentSelectionIndex + iCount >= set.getVA(iContentSelection).size())
 				continue;
 			else
 			{
 				if (verticalSelectionManager.checkStatus(EViewInternalSelectionType.SELECTION,
-						alContentSelection.get(iContentSelectionIndex + iCount))
+						set.getVA(iContentSelection).get(iContentSelectionIndex + iCount))
 						|| verticalSelectionManager.checkStatus(
-								EViewInternalSelectionType.MOUSE_OVER, alContentSelection
+								EViewInternalSelectionType.MOUSE_OVER, set.getVA(iContentSelection)
 										.get(iContentSelectionIndex + iCount)))
 				{
 					// TODO: this needs reviewing
@@ -119,10 +113,9 @@ public class HeatMapRenderStyle
 		return vecWidthAndHeight;
 	}
 
-	public void setContentSelection(ArrayList<Integer> alContentSelection)
+	public void setContentSelection(int iContentSelection)
 	{
-
-		this.alContentSelection = alContentSelection;
+		this.iContentSelection = iContentSelection;
 	}
 
 	private float calcHeightFromWidth(float fWidth)

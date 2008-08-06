@@ -12,7 +12,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  */
 
 public class VirtualArray
-//	extends AManagedObject
+	// extends AManagedObject
 	implements IVirtualArray
 
 {
@@ -130,6 +130,30 @@ public class VirtualArray
 
 	/*
 	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.selection.IVirtualArray#moveLeft(int)
+	 */
+	@Override
+	public void moveLeft(int iIndex)
+	{
+		int iTemp = iAlVirtualArray.get(iIndex - 1);
+		iAlVirtualArray.set(iIndex - 1, iAlVirtualArray.get(iIndex));
+		iAlVirtualArray.set(iIndex, iTemp);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.selection.IVirtualArray#moveRight(int)
+	 */
+	@Override
+	public void moveRight(int iIndex)
+	{
+		int iTemp = iAlVirtualArray.get(iIndex + 1);
+		iAlVirtualArray.set(iIndex + 1, iAlVirtualArray.get(iIndex));
+		iAlVirtualArray.set(iIndex, iTemp);
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.selection.IVirtualArray#remove(int)
 	 */
 	@Override
@@ -169,6 +193,11 @@ public class VirtualArray
 		{
 			iAlVirtualArray.add(iCount);
 		}
+	}
+	
+	public int indexOf(int iElement)
+	{
+		return iAlVirtualArray.indexOf(iElement);
 	}
 
 }

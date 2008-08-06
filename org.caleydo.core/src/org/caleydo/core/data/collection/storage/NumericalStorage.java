@@ -84,6 +84,16 @@ public class NumericalStorage
 
 	/*
 	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.collection.INumericalStorage#getRawForNormalized(double)
+	 */
+	@Override
+	public double getRawForNormalized(double dNormalized)
+	{
+		return dNormalized * (getMax() - getMin());
+	}
+
+	/*
+	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.collection.INumericalStorage#log10()
 	 */
 	@Override

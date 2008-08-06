@@ -1,5 +1,7 @@
 package org.caleydo.core.data.collection;
 
+import javax.naming.OperationNotSupportedException;
+
 /**
  * INumericalStorage is a specialization of IStorage. It is meant for numerical
  * data of a continuous range, equivalent to the set of real numbers. In terms
@@ -18,10 +20,8 @@ public interface INumericalStorage
 	 * If you want to consider extremas for normalization which do not occur in
 	 * the dataset, use this method instead of normalize(). This is e.g. useful
 	 * if other sets need to be comparable, but contain larger or smaller
-	 * elements.
-	 * 
-	 * Normalize operates on the raw data, except if you previously called log,
-	 * then the logarithmized data is used.
+	 * elements. Normalize operates on the raw data, except if you previously
+	 * called log, then the logarithmized data is used.
 	 * 
 	 * @param dMin the minimum
 	 * @param dMax the maximum
@@ -43,6 +43,14 @@ public interface INumericalStorage
 	 * @return the maximum - a double since it can contain all values
 	 */
 	public double getMax();
+
+	/**
+	 * Calculates a raw value based on min and max from a normalized value.
+	 * 
+	 * @param dNormalized a value between 0 and 1
+	 * @return a value between min and max
+	 */
+	public double getRawForNormalized(double dNormalized);
 
 	/**
 	 * Calculates the log10 of the raw data. Log data can be retrieved by using

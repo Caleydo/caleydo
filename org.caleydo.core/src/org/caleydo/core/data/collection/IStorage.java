@@ -16,14 +16,12 @@ import org.caleydo.core.data.selection.IVirtualArray;
  * information considering one such entity, for example, the raw, normalized and
  * logarithmized data as well as metadata, such as the label of the experiment.
  * Only the raw data and some metadata can be specified manually, the rest is
- * computed on on demand.
- * 
- * One distinguishes between two basic storage types: numerical and nominal.
- * This is reflected in the two sub-interfaces INumericalSet and INominalSet.
- * After construction one of the setRawData methods has to be called.
- * 
- * Notice, that only one setRawData may be called exactly once, since a set is
- * designed to contain only one raw data set at a time.
+ * computed on on demand. One distinguishes between two basic storage types:
+ * numerical and nominal. This is reflected in the two sub-interfaces
+ * INumericalSet and INominalSet. After construction one of the setRawData
+ * methods has to be called. Notice, that only one setRawData may be called
+ * exactly once, since a set is designed to contain only one raw data set at a
+ * time.
  * 
  * @author Alexander Lex
  */
@@ -168,13 +166,10 @@ public interface IStorage
 
 	/**
 	 * Brings any dataset into a format between 0 and 1. This is used for
-	 * drawing. Works for nominal and numerical data.
-	 * 
-	 * Operates with the raw data as basis by default, however when a
-	 * logarithmized representation is in the storage this is used (only applies
-	 * to numerical data).
-	 * 
-	 * For nominal data the first value is 0, the last value is 1
+	 * drawing. Works for nominal and numerical data. Operates with the raw data
+	 * as basis by default, however when a logarithmized representation is in
+	 * the storage this is used (only applies to numerical data). For nominal
+	 * data the first value is 0, the last value is 1
 	 */
 	public void normalize();
 
@@ -186,7 +181,8 @@ public interface IStorage
 	public int size();
 
 	/**
-	 * Set the specified virtual array for the specified instance
+	 * Set the specified virtual array for the specified instance, does not
+	 * enable the virtual array
 	 * 
 	 * @param iUniqueID
 	 * @param virtualArray

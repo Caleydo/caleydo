@@ -9,9 +9,14 @@ import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.type.EManagerType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
+ * Manage the sets
+ * 
  * @author Michael Kalkusch
+ * @author Alexander Lex
  */
 public class SetManager
 	extends AManager
@@ -22,63 +27,47 @@ public class SetManager
 
 	/**
 	 * Constructor.
+	 * 
+	 * @param the general manager
 	 */
 	public SetManager(IGeneralManager setSingelton)
 	{
-
 		super(setSingelton, IGeneralManager.iUniqueId_TypeOffset_Set, EManagerType.DATA_SET);
-
-		assert setSingelton != null : "Constructor with null-pointer to singelton";
 
 		hashId2Set = new Hashtable<Integer, ISet>();
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.manager.SetManager#createSet()
+	 * @see
+	 * org.caleydo.core.manager.data.ISetManager#createSet(org.caleydo.core.
+	 * data.collection.ESetType)
 	 */
+	@Override
 	public ISet createSet(final ESetType setType)
 	{
-
 		return new Set(4, generalManager);
-		// Check if requested set is a selection set
-		/*
-		 * if (setType.equals(SetType.SET_SELECTION)) { return new
-		 * SetSelection(4, generalManager); } else { switch (
-		 * setType.getDataType() ) { case SET_LINEAR: return new
-		 * SetFlatThreadSimple(4, generalManager, null, setType); case
-		 * SET_PLANAR: return new SetPlanarSimple(4, generalManager); case
-		 * SET_MULTI_DIM: return new SetMultiDim(4, generalManager, null, 3,
-		 * setType); case SET_VIEWCAMERA: return new SetViewData(4,
-		 * generalManager, null, setType); // Sets not implemented yet.. case
-		 * SET_MULTI_DIM_VARIABLE: case SET_CUBIC: default: throw new
-		 * RuntimeException
-		 * ("SetManagerSimple.createSet() failed due to unhandled type [" +
-		 * setType.toString() + "]"); } }
-		 */
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see
-	 * org.caleydo.core.data.manager.SetManager#deleteSet(org.caleydo.core.data
-	 * .collection.ISet)
+	 * org.caleydo.core.manager.data.ISetManager#removeSet(org.caleydo.core.
+	 * data.collection.ISet)
 	 */
+	@Override
 	public boolean removeSet(ISet deleteSet)
 	{
-
 		throw new RuntimeException("not impelemtned!");
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.manager.SetManager#deleteSet(org.caleydo.core.data
-	 * .collection.ISet)
+	 * @see org.caleydo.core.manager.data.ISetManager#removeSet(int)
 	 */
+	@Override
 	public boolean removeSet(final int iItemId)
 	{
-
 		ISet removedObj = hashId2Set.remove(iItemId);
 
 		if (removedObj == null)
@@ -94,57 +83,61 @@ public class SetManager
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.manager.SetManager#getItemSet(int)
+	 * @see org.caleydo.core.manager.data.ISetManager#getSet(int)
 	 */
+	@Override
 	public ISet getSet(final int iItemId)
 	{
-
 		return hashId2Set.get(iItemId);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.manager.GeneralManager#getItem(int)
+	 * @see org.caleydo.core.manager.IManager#getItem(int)
 	 */
+	@Override
 	public final Object getItem(final int iItemId)
 	{
-
 		return getSet(iItemId);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.manager.SetManager#getAllSetItems()
+	 * @see org.caleydo.core.manager.data.ISetManager#getAllSets()
 	 */
+	@Override
 	public Collection<ISet> getAllSets()
 	{
-
 		return hashId2Set.values();
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.manager.GeneralManagerInterface#hasItem(int)
+	 * @see org.caleydo.core.manager.IManager#hasItem(int)
 	 */
+	@Override
 	public final boolean hasItem(int iItemId)
 	{
-
 		return hashId2Set.containsKey(iItemId);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.manager.GeneralManagerInterface#size()
+	 * @see org.caleydo.core.manager.IManager#size()
 	 */
+	@Override
 	public final int size()
 	{
-
 		return hashId2Set.size();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IManager#unregisterItem(int)
+	 */
+	@Override
 	public boolean unregisterItem(final int iItemId)
 	{
-
 		ISet buffer = hashId2Set.remove(iItemId);
 
 		if (buffer == null)
@@ -158,28 +151,23 @@ public class SetManager
 		return true;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IManager#registerItem(java.lang.Object,
+	 * int)
+	 */
+	@Override
 	public boolean registerItem(final Object registerItem, final int iItemId)
 	{
+		ISet addItem = (ISet) registerItem;
 
-		try
+		if (this.hashId2Set.containsKey(iItemId))
 		{
-			ISet addItem = (ISet) registerItem;
-
-			if (this.hashId2Set.containsKey(iItemId))
-			{
-
-				return false;
-			}
-
-			hashId2Set.put(iItemId, addItem);
-
-			return true;
-		}
-		catch (NullPointerException npe)
-		{
-			assert false : "cast of object ot storage falied";
 			return false;
 		}
 
+		hashId2Set.put(iItemId, addItem);
+
+		return true;
 	}
 }

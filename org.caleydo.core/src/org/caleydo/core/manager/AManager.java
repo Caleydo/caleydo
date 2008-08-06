@@ -3,12 +3,15 @@ package org.caleydo.core.manager;
 import java.io.Serializable;
 import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.manager.type.EManagerType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Base class for manager classes, that connect to the IGeneralManager.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public abstract class AManager
 	implements IManager, Serializable
@@ -28,8 +31,10 @@ public abstract class AManager
 	protected AManager(final IGeneralManager generalManager, final int iUniqueId_type_offset,
 			final EManagerType managerType)
 	{
-
-		assert generalManager != null : "Can not handle null refernence to IGeneralManager!";
+		if (generalManager == null)
+			throw new CaleydoRuntimeException(
+					"Constructor with null-pointer to general manager",
+					CaleydoRuntimeExceptionType.MANAGER);
 
 		this.generalManager = generalManager;
 		this.managerType = managerType;

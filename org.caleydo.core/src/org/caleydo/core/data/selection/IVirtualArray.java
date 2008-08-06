@@ -12,7 +12,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  * 
  */
 public interface IVirtualArray
-	extends Iterable<Integer>//, IManagedObject
+	extends Iterable<Integer>// , IManagedObject
 {
 
 	/**
@@ -76,6 +76,20 @@ public interface IVirtualArray
 	public void copy(int iIndex);
 
 	/**
+	 * Moves the element at iIndex to the left
+	 * 
+	 * @param iIndex the index of the element to be moved
+	 */
+	public void moveLeft(int iIndex);
+
+	/**
+	 * Moves the element at iIndex to the right
+	 * 
+	 * @param iIndex the index of the element to be moved
+	 */
+	public void moveRight(int iIndex);
+
+	/**
 	 * Removes the element at the specified index
 	 * 
 	 * @param iIndex the index of the element to be removed
@@ -94,5 +108,7 @@ public interface IVirtualArray
 	 * Reset the virtual array to the indices in the storage
 	 */
 	public void reset();
+	
+	public int indexOf(int iElement);
 
 }
