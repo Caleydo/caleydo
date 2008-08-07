@@ -6,6 +6,7 @@ import java.util.Set;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.picking.ESelectionMode;
 import org.caleydo.core.manager.type.EManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;

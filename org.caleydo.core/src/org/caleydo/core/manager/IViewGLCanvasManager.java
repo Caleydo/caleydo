@@ -5,7 +5,7 @@ import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
-import org.caleydo.core.manager.view.PickingManager;
+import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.view.SelectionManager;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;

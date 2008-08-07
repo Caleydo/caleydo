@@ -5,7 +5,7 @@ import gleem.linalg.Vec4f;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.view.EPickingType;
+import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;

@@ -14,9 +14,9 @@ import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.IVirtualArray;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.view.EPickingMode;
-import org.caleydo.core.manager.view.EPickingType;
-import org.caleydo.core.manager.view.Pick;
+import org.caleydo.core.manager.picking.EPickingMode;
+import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.math.statistics.histogram.HistogramData;
 import org.caleydo.core.math.statistics.histogram.HistogramStatisticsSet;
 import org.caleydo.core.math.statistics.histogram.StatisticHistogramType;
@@ -483,7 +483,7 @@ extends AGLCanvasUser {
   }
   /*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.caleydo.core.manager.view.EPickingType, org.caleydo.core.manager.view.EPickingMode, int, org.caleydo.core.manager.view.Pick)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.caleydo.core.manager.picking.EPickingType, org.caleydo.core.manager.picking.EPickingMode, int, org.caleydo.core.manager.picking.Pick)
 	 */
 	protected void handleEvents(final EPickingType ePickingType, 
 			final EPickingMode ePickingMode, 

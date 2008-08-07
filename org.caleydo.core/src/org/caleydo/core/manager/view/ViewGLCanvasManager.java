@@ -14,6 +14,7 @@ import org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRender
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
+import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.manager.type.EManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;

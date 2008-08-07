@@ -7,7 +7,7 @@ import java.io.File;
 import java.util.Iterator;
 import javax.media.opengl.GL;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.view.EPickingType;
+import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathwayManager;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathwayTextureManager;

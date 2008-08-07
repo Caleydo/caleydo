@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.view;
+package org.caleydo.core.manager.picking;
 
 public enum EPickingType
 {

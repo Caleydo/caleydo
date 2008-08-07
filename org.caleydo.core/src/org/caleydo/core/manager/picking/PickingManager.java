@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.view;
+package org.caleydo.core.manager.picking;
 
 import java.awt.Point;
 import java.nio.IntBuffer;
@@ -27,7 +27,6 @@ import com.sun.opengl.util.BufferUtil;
  * @author Alexander Lex
  */
 public class PickingManager
-	extends AManager
 {
 
 	private HashMap<Integer, HashMap<Integer, Integer>> hashSignatureToPickingIDHashMap;
@@ -52,8 +51,8 @@ public class PickingManager
 	public PickingManager(IGeneralManager generalManager)
 	{
 
-		super(generalManager, IGeneralManager.iUniqueID_TypeOffset_PickingID,
-				EManagerType.PICKING_MANAGER);
+//		super(generalManager, IGeneralManager.iUniqueID_TypeOffset_PickingID,
+//				EManagerType.PICKING_MANAGER);
 
 		hashSignatureToHitList = new HashMap<Integer, ArrayList<Pick>>();
 		hashSignatureToPickingIDHashMap = new HashMap<Integer, HashMap<Integer, Integer>>();
