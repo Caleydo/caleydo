@@ -13,7 +13,6 @@ import org.caleydo.core.manager.IManager;
  * @author Marc Streit
  */
 public interface IGenomeIdManager
-	extends IManager
 {
 
 	public int getIdIntFromStringByMapping(final String sCaleydoId,

@@ -12,7 +12,7 @@ import org.caleydo.core.view.opengl.canvas.glyph.GlyphEntry;
  * @author Sauer Stefan
  */
 public interface IGlyphManager
-	extends IManager
+	extends IManager<GlyphEntry>
 {
 
 	public void registerGlyphView(GLCanvasGlyph view);
@@ -46,7 +46,5 @@ public interface IGlyphManager
 	public HashMap<Integer, GlyphEntry> getGlyphs();
 
 	public void addGlyph(int id, GlyphEntry glyph);
-
-	public GlyphEntry getGlyph(int id);
 
 }

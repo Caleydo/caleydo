@@ -28,13 +28,11 @@ import org.caleydo.util.graph.IGraphItem;
  * @author Michael Kalkusch
  */
 public class PathwayItemManager
-	extends AManager
+	extends AManager<IGraphItem>
 	implements IPathwayItemManager, Serializable
 {
 
 	private static final long serialVersionUID = 1L;
-
-	private HashMap<Integer, IGraphItem> hashVertexIdToGraphItem;
 
 	private HashMap<String, IGraphItem> hashVertexNameToGraphItem;
 
@@ -53,7 +51,6 @@ public class PathwayItemManager
 		super(generalManager, IGeneralManager.iUniqueId_TypeOffset_Pathways_Vertex,
 				EManagerType.DATA_PATHWAY_ELEMENT);
 
-		hashVertexIdToGraphItem = new HashMap<Integer, IGraphItem>();
 		hashVertexNameToGraphItem = new HashMap<String, IGraphItem>();
 		hashDavidIdToPathwayVertexGraphItemId = new HashMap<Integer, Integer>();
 		hashPathwayVertexGraphItemIdToDavidId = new HashMap<Integer, Integer>();
@@ -75,7 +72,7 @@ public class PathwayItemManager
 		IGraphItem pathwayVertex = new PathwayVertexGraphItem(iGeneratedId, sName, sType,
 				sExternalLink, sReactionId);
 
-		hashVertexIdToGraphItem.put(iGeneratedId, pathwayVertex);
+		hashItems.put(iGeneratedId, pathwayVertex);
 
 		generalManager.getPathwayManager().getRootPathway().addItem(pathwayVertex);
 
@@ -107,7 +104,7 @@ public class PathwayItemManager
 		IGraphItem pathwayVertexRep = new PathwayVertexGraphItemRep(iGeneratedId, sName,
 				sShapeType, shHeight, shWidth, shXPosition, shYPosition);
 
-		hashVertexIdToGraphItem.put(iGeneratedId, pathwayVertexRep);
+		hashItems.put(iGeneratedId, pathwayVertexRep);
 
 		parentPathway.addItem(pathwayVertexRep);
 
@@ -135,7 +132,7 @@ public class PathwayItemManager
 		IGraphItem pathwayVertexRep = new PathwayVertexGraphItemRep(iGeneratedId, sName,
 				sShapeType, sCoords);
 
-		hashVertexIdToGraphItem.put(iGeneratedId, pathwayVertexRep);
+		hashItems.put(iGeneratedId, pathwayVertexRep);
 
 		parentPathway.addItem(pathwayVertexRep);
 
@@ -231,18 +228,6 @@ public class PathwayItemManager
 		return pathwayReactionEdgeRep;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#getItem(int)
-	 */
-	public Object getItem(int iItemId)
-	{
-
-		if (!hashVertexIdToGraphItem.containsKey(iItemId))
-			return null;
-
-		return hashVertexIdToGraphItem.get(iItemId);
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -271,53 +256,5 @@ public class PathwayItemManager
 			return hashPathwayVertexGraphItemIdToDavidId.get(iPathwayVertexGraphItemId);
 
 		return -1;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#hasItem(int)
-	 */
-	public boolean hasItem(int iItemId)
-	{
-
-		if (hashVertexIdToGraphItem.containsKey(iItemId))
-			return true;
-
-		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IManager#registerItem(java.lang.Object,
-	 * int, org.caleydo.core.manager.type.ManagerObjectType)
-	 */
-	public boolean registerItem(Object registerItem, int itemId)
-	{
-
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IManager#size()
-	 */
-	public int size()
-	{
-
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IManager#unregisterItem(int,
-	 * org.caleydo.core.manager.type.ManagerObjectType)
-	 */
-	public boolean unregisterItem(int itemId)
-	{
-
-		// TODO Auto-generated method stub
-		return false;
 	}
 }

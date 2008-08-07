@@ -365,39 +365,6 @@ public class GenomeIdManager
 		return bHasMapActiveWriter.get();
 	}
 
-	public boolean hasItem(int iItemId)
-	{
-
-		// assert false : "method not implemented";
-		return false;
-	}
-
-	public Object getItem(int iItemId)
-	{
-
-		assert false : "method not implemented";
-		return null;
-	}
-
-	public int size()
-	{
-
-		return 0;
-	}
-
-	public boolean registerItem(Object registerItem, int iItemId)
-	{
-
-		assert false : "method not implemented";
-		return false;
-	}
-
-	public boolean unregisterItem(int iItemId)
-	{
-
-		assert false : "method not implemented";
-		return false;
-	}
 
 	/**
 	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdManager#setMapByType(org.caleydo.core.data.mapping.EGenomeMappingType,

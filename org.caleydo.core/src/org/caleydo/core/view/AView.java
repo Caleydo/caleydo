@@ -232,7 +232,7 @@ public abstract class AView
 
 		for (int i = 0; i < iSet.length; i++)
 		{
-			ISet currentSet = setManager.getSet(iSet[i]);
+			ISet currentSet = setManager.getItem(iSet[i]);
 
 			if (currentSet == null)
 			{
@@ -303,7 +303,7 @@ public abstract class AView
 
 		for (int i = 0; i < iSet.length; i++)
 		{
-			ISet currentSet = setManager.getSet(iSet[i]);
+			ISet currentSet = setManager.getItem(iSet[i]);
 
 			if (currentSet == null)
 			{
@@ -384,7 +384,7 @@ public abstract class AView
 	public final boolean hasSetId(int iSetId)
 	{
 
-		ISet currentSet = setManager.getSet(iSetId);
+		ISet currentSet = setManager.getItem(iSetId);
 
 		if (currentSet == null)
 		{

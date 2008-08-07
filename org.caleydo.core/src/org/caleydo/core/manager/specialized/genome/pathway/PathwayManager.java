@@ -22,16 +22,14 @@ import org.caleydo.util.graph.core.Graph;
  * @author Marc Streit
  */
 public class PathwayManager
-	extends AManager
+	extends AManager<PathwayGraph>
 	implements IPathwayManager, Serializable
 {
 	private static final long serialVersionUID = 1L;
 
-	private HashMap<Integer, PathwayGraph> hashPathwayIdToPathwayGraphLUT;
-
 	private HashMap<Integer, Boolean> hashPathwayIdToVisibilityState;
 
-	private HashMap<String, Integer> hashPathwayTitleToPathwayIdLUT;
+	private HashMap<String, Integer> hashPathwayTitleToPathwayId;
 
 	private HashMap<EPathwayDatabaseType, PathwayDatabase> hashPathwayDatabase;
 
@@ -58,8 +56,7 @@ public class PathwayManager
 		super(generalManager, IGeneralManager.iUniqueId_TypeOffset_Pathways_Pathway,
 				EManagerType.DATA_PATHWAY_ELEMENT);
 
-		hashPathwayIdToPathwayGraphLUT = new HashMap<Integer, PathwayGraph>();
-		hashPathwayTitleToPathwayIdLUT = new HashMap<String, Integer>();
+		hashPathwayTitleToPathwayId = new HashMap<String, Integer>();
 		hashPathwayDatabase = new HashMap<EPathwayDatabaseType, PathwayDatabase>();
 		hashPathwayIdToVisibilityState = new HashMap<Integer, Boolean>();
 
@@ -115,8 +112,8 @@ public class PathwayManager
 		PathwayGraph pathway = new PathwayGraph(type, iPathwayId, sName, sTitle, sImageLink,
 				sExternalLink);
 
-		hashPathwayIdToPathwayGraphLUT.put(iPathwayId, pathway);
-		hashPathwayTitleToPathwayIdLUT.put(sTitle, iPathwayId);
+		hashItems.put(iPathwayId, pathway);
+		hashPathwayTitleToPathwayId.put(sTitle, iPathwayId);
 		hashPathwayIdToVisibilityState.put(iPathwayId, false);
 
 		rootPathwayGraph.addGraph(pathway, EGraphItemHierarchy.GRAPH_CHILDREN);
@@ -132,7 +129,7 @@ public class PathwayManager
 	 */
 	public int searchPathwayIdByName(final String sPathwayName)
 	{
-		Iterator<String> iterPathwayName = hashPathwayTitleToPathwayIdLUT.keySet().iterator();
+		Iterator<String> iterPathwayName = hashPathwayTitleToPathwayId.keySet().iterator();
 		Pattern pattern = Pattern.compile(sPathwayName, Pattern.CASE_INSENSITIVE);
 		Matcher regexMatcher;
 		String sTmpPathwayName;
@@ -144,7 +141,7 @@ public class PathwayManager
 
 			if (regexMatcher.find())
 			{
-				return hashPathwayTitleToPathwayIdLUT.get(sTmpPathwayName);
+				return hashPathwayTitleToPathwayId.get(sTmpPathwayName);
 			}
 		}
 
@@ -224,57 +221,4 @@ public class PathwayManager
 		return currentPathwayImageMap;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#getItem(int)
-	 */
-	public Object getItem(int iItemId)
-	{
-		return (hashPathwayIdToPathwayGraphLUT.get(iItemId));
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#hasItem(int)
-	 */
-	public boolean hasItem(int iItemId)
-	{
-		if (hashPathwayIdToPathwayGraphLUT.containsKey(iItemId))
-			return true;
-
-		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.IGeneralManager#registerItem(java.lang.Object,
-	 * int, org.caleydo.core.manager.type.ManagerObjectType)
-	 */
-	public boolean registerItem(Object registerItem, int itemId)
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#size()
-	 */
-	public int size()
-	{
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#unregisterItem(int,
-	 * org.caleydo.core.manager.type.ManagerObjectType)
-	 */
-	public boolean unregisterItem(int itemId)
-	{
-		// TODO Auto-generated method stub
-		return false;
-	}
 }

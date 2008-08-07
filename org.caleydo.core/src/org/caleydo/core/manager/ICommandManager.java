@@ -16,7 +16,7 @@ import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
  * @author Marc Streit
  */
 public interface ICommandManager
-	extends ICommandActionListener, IManager
+	extends ICommandActionListener, IManager<ICommand>
 {
 
 	/**

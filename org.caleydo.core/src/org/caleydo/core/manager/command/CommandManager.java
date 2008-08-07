@@ -33,7 +33,7 @@ import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
  * @author Marc Streit
  */
 public class CommandManager
-	extends AManager
+	extends AManager<ICommand>
 	implements ICommandManager
 {
 
@@ -51,7 +51,7 @@ public class CommandManager
 
 	protected Hashtable<Integer, ICommandQueue> hashCommandQueueId;
 
-	protected Hashtable<Integer, ICommand> hashCommandId;
+	// protected Hashtable<Integer, ICommand> hashCommandId;
 
 	protected Vector<ICommand> vecUndo;
 
@@ -78,7 +78,7 @@ public class CommandManager
 
 		hashCommandQueueId = new Hashtable<Integer, ICommandQueue>();
 
-		hashCommandId = new Hashtable<Integer, ICommand>();
+		// hashCommandId = new Hashtable<Integer, ICommand>();
 
 		vecUndo = new Vector<ICommand>(100);
 
@@ -134,7 +134,6 @@ public class CommandManager
 	 */
 	public void handleCommand(ICommand addCommand)
 	{
-
 		addCommand.doCommand();
 		vecCmdHandle.addElement(addCommand);
 	}
@@ -147,40 +146,8 @@ public class CommandManager
 	 */
 	public void scheduleCommand(ICommand addCommand)
 	{
-
 		vecCmdSchedule.addElement(addCommand);
 		addCommand.doCommand();
-
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.manager.GeneralManager#hasItem(int)
-	 */
-	public boolean hasItem(int iItemId)
-	{
-
-		return hashCommandId.containsKey(iItemId);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.manager.GeneralManager#getItem(int)
-	 */
-	public Object getItem(int iItemId)
-	{
-
-		return hashCommandId.get(iItemId);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.manager.GeneralManager#size()
-	 */
-	public int size()
-	{
-
-		return hashCommandId.size();
 	}
 
 	/*
@@ -189,24 +156,21 @@ public class CommandManager
 	 * org.caleydo.core.data.manager.GeneralManager#registerItem(java.lang.Object
 	 * , int, org.caleydo.core.data.manager.BaseManagerType)
 	 */
-	public boolean registerItem(Object registerItem, int iItemId)
+	public void registerItem(ICommand command, int iItemId)
 	{
 
-		ICommand registerCommand = (ICommand) registerItem;
-
-		if (registerCommand.getClass().equals(ICommandQueue.class))
+		if (command instanceof ICommandQueue)
 		{
-			hashCommandQueueId.put(iItemId, (ICommandQueue) registerItem);
+			hashCommandQueueId.put(iItemId, (ICommandQueue) command);
 		}
 		else
 		{
 
 		}
 
-		vecCmdHandle.addElement(registerCommand);
-		hashCommandId.put(iItemId, registerCommand);
+		vecCmdHandle.addElement(command);
+		hashItems.put(iItemId, command);
 
-		return true;
 	}
 
 	/*
@@ -214,21 +178,15 @@ public class CommandManager
 	 * @see org.caleydo.core.data.manager.GeneralManager#unregisterItem(int,
 	 * org.caleydo.core.data.manager.BaseManagerType)
 	 */
-	public boolean unregisterItem(int iItemId)
+	public void unregisterItem(int iItemId)
 	{
-
-		// if ( type == ManagerObjectType.CMD_QUEUE ) {
-		// hashCommandQueueId.remove( iItemId );
-		// }
-		if (hashCommandId.containsKey(iItemId))
+		if (hashItems.containsKey(iItemId))
 		{
 
-			ICommand unregisterCommand = hashCommandId.remove(iItemId);
+			ICommand unregisterCommand = hashItems.remove(iItemId);
 
-			return vecCmdHandle.remove(unregisterCommand);
+			vecCmdHandle.remove(unregisterCommand);
 		}
-
-		return false;
 	}
 
 	/*

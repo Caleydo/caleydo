@@ -236,17 +236,4 @@ public class MementoManager
 		return true;
 	}
 
-	public boolean unregisterItem(final int iItemId)
-	{
-
-		assert false : "not done yet";
-		return false;
-	}
-
-	public boolean registerItem(final Object registerItem, final int iItemId)
-	{
-
-		assert false : "not done yet";
-		return false;
-	}
 }

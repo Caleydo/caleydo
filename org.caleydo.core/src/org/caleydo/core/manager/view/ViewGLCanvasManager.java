@@ -47,9 +47,10 @@ import com.sun.opengl.util.FPSAnimator;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public class ViewGLCanvasManager
-	extends AManager
+	extends AManager<IView>
 	implements IViewGLCanvasManager
 {
 
@@ -57,8 +58,6 @@ public class ViewGLCanvasManager
 	 * 
 	 */
 	private static final long serialVersionUID = 4853292170420894586L;
-
-	protected HashMap<Integer, IView> hashViewId2View;
 
 	protected HashMap<Integer, GLCanvas> hashGLCanvasID2GLCanvas;
 
@@ -105,7 +104,6 @@ public class ViewGLCanvasManager
 		selectionManager = new SelectionManager(generalManager);
 		infoAreaManager = new GLInfoAreaManager(generalManager);
 
-		hashViewId2View = new HashMap<Integer, IView>();
 		hashGLCanvasID2GLCanvas = new HashMap<Integer, GLCanvas>();
 		hashGLCanvasID2GLEventListeners = new HashMap<Integer, ArrayList<GLEventListener>>();
 		hashGLEventListenerID2GLEventListener = new HashMap<Integer, GLEventListener>();
@@ -118,7 +116,7 @@ public class ViewGLCanvasManager
 	public boolean hasItem(int iItemId)
 	{
 
-		if (hashViewId2View.containsKey(iItemId))
+		if (hashItems.containsKey(iItemId))
 			return true;
 
 		if (hashGLCanvasID2GLCanvas.containsKey(iItemId))
@@ -129,50 +127,26 @@ public class ViewGLCanvasManager
 
 		return false;
 	}
-
-	public Object getItem(int iItemId)
+	
+	public GLCanvas getCanvas(int iItemID)
 	{
-
-		IView bufferIView = hashViewId2View.get(iItemId);
-
-		if (bufferIView != null)
-			return bufferIView;
-
-		GLCanvas bufferCanvas = hashGLCanvasID2GLCanvas.get(iItemId);
-
-		if (bufferCanvas != null)
-			return bufferCanvas;
-
-		GLEventListener bufferEventListener = hashGLEventListenerID2GLEventListener
-				.get(iItemId);
-
-		if (bufferEventListener != null)
-			return bufferEventListener;
-
-		return null;
+		 return hashGLCanvasID2GLCanvas.get(iItemID);
 	}
-
-	public int size()
+	
+	public GLEventListener getEventListener(int iItemID)
 	{
+		return hashGLEventListenerID2GLEventListener.get(iItemID);
+	}	
 
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public synchronized boolean registerItem(Object registerItem, int iItemId)
+	public void registerItem(IView view, int iItemId)
 	{
-
-		assert iItemId != 0 : "registerItem(Object,int) must not use iItemId==0";
-
-		IView registerView = (IView) registerItem;
-
-		hashViewId2View.put(iItemId, registerView);
-
-		switch (registerView.getViewType())
+		hashItems.put(iItemId, view);
+	
+		switch (view.getViewType())
 		{
 			case SWT_DATA_EXPLORER:
 			case SWT_HTML_BROWSER:
-				this.addViewRep(registerView);
+				this.addViewRep(view);
 				break;
 
 			// default: // do nothing
@@ -181,16 +155,8 @@ public class ViewGLCanvasManager
 		// generalManager.logMsg(
 		// "registerItem( " + iItemId + " ) as View",
 		// LoggerType.VERBOSE);
-
-		return true;
 	}
 
-	public boolean unregisterItem(int iItemId)
-	{
-
-		assert false : "not done yet";
-		return false;
-	}
 
 	/*
 	 * (non-Javadoc)
@@ -488,7 +454,7 @@ public class ViewGLCanvasManager
 		hashGLCanvasID2GLCanvas.clear();
 		hashGLCanvasID2GLEventListeners.clear();
 		hashGLEventListenerID2GLEventListener.clear();
-		hashViewId2View.clear();
+		hashItems.clear();
 		arDataExplorerViewRep.clear();
 		arHTMLBrowserViewRep.clear();
 	}
@@ -587,16 +553,6 @@ public class ViewGLCanvasManager
 
 			assert false : "Error,  getViewType() returned unexpected (class)";
 		} // try .. catch ( NullPointerException npe)
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IViewManager#getAllViews()
-	 */
-	public Collection<IView> getAllViews()
-	{
-
-		return hashViewId2View.values();
 	}
 
 	/*

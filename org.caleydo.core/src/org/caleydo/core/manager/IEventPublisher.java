@@ -13,7 +13,7 @@ import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
  * @author Marc Streit
  */
 public interface IEventPublisher
-	extends IManager, IMediatorReceiver
+	extends IManager<IMediator>, IMediatorReceiver
 {
 
 	public enum MediatorType
@@ -102,11 +102,4 @@ public interface IEventPublisher
 	 */
 	public boolean hasRelation(IMediatorSender sender, IMediatorReceiver receiver);
 
-	/**
-	 * Get the IMediator assigned to the id iItemId
-	 * 
-	 * @param iItemId id to identify the Mediator
-	 * @return mediator
-	 */
-	public IMediator getItemMediator(int iItemId);
 }

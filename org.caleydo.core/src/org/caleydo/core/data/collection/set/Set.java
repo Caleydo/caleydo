@@ -94,7 +94,7 @@ public class Set
 		if (!generalManager.getStorageManager().hasItem(iStorageID))
 			throw new CaleydoRuntimeException("Requested Storage with ID " + iStorageID
 					+ " does not exist.", CaleydoRuntimeExceptionType.DATAHANDLING);
-		addStorage(generalManager.getStorageManager().getStorage(iStorageID));
+		addStorage(generalManager.getStorageManager().getItem(iStorageID));
 	}
 
 	/*

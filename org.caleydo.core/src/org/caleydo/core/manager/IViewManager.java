@@ -12,9 +12,10 @@ import org.caleydo.core.view.ViewType;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public interface IViewManager
-	extends IManager
+	extends IManager<IView>
 {
 
 	public IView createView(final EManagerObjectType useViewType, final int iUniqueId,
@@ -26,8 +27,6 @@ public interface IViewManager
 	public void addViewRep(IView view);
 
 	public void removeViewRep(IView view);
-
-	public Collection<IView> getAllViews();
 
 	public ArrayList<IView> getViewRepByType(ViewType viewType);
 }

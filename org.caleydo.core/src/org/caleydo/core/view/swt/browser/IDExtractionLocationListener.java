@@ -131,7 +131,7 @@ public class IDExtractionLocationListener
 			return;
 		}
 
-		Selection tmpSelectionSet = (Selection) generalManager.getSetManager().getSet(
+		Selection tmpSelectionSet = (Selection) generalManager.getSetManager().getItem(
 				iSelectionSetId);
 		tmpSelectionSet.updateSelectionSet(iBrowserId, iAlSelectionId, iAlSelectionDepth,
 				iAlOptional);

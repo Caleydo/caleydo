@@ -13,7 +13,7 @@ import org.caleydo.util.graph.core.Graph;
  * @author Marc Streit
  */
 public interface IPathwayManager
-	extends IManager
+	extends IManager<PathwayGraph>
 {
 	public PathwayGraph createPathway(final EPathwayDatabaseType type, final String sName,
 			final String sTitle, final String sImageLink, final String sExternalLink);

@@ -65,7 +65,7 @@ public class GeneralManager
 	
 	private boolean bAllManagersInitialized = false;
 
-	private ArrayList<IManager> alManagers;
+//	private ArrayList<IManager> alManagers;
 
 	private IStorageManager storageManager;
 
@@ -102,7 +102,7 @@ public class GeneralManager
 	 */
 	public GeneralManager()
 	{
-		alManagers = new ArrayList<IManager>();
+//		alManagers = new ArrayList<IManager>();
 
 		// Retrieve platform independent home directory
 		sCaleydoHomePath = System.getProperty(USER_HOME);
@@ -179,19 +179,19 @@ public class GeneralManager
 		xmlParserManager = new XmlParserManager(this);
 		glyphManager = new GlyphManager(this);
 
-		alManagers.add(setManager);
-		// alManagers.add(virtualArrayManager);
-		alManagers.add(storageManager);
-		alManagers.add(selectionManager);
-		alManagers.add(pathwayManager);
-		alManagers.add(pathwayItemManager);
-		alManagers.add(genomeIdManager);
-		alManagers.add(eventPublisher);
-		alManagers.add(viewGLCanvasManager);
-		alManagers.add(sWTGUIManager);
-		alManagers.add(commandManager);
-		alManagers.add(mementoManager);
-		alManagers.add(glyphManager);
+//		alManagers.add(setManager);
+//		// alManagers.add(virtualArrayManager);
+//		alManagers.add(storageManager);
+//		alManagers.add(selectionManager);
+//		alManagers.add(pathwayManager);
+//		alManagers.add(pathwayItemManager);
+//		alManagers.add(genomeIdManager);
+//		alManagers.add(eventPublisher);
+//		alManagers.add(viewGLCanvasManager);
+//		alManagers.add(sWTGUIManager);
+//		alManagers.add(commandManager);
+//		alManagers.add(mementoManager);
+//		alManagers.add(glyphManager);
 	}
 
 	/**
@@ -215,40 +215,40 @@ public class GeneralManager
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.manager.GeneralManager#hasItem(int)
 	 */
-	public boolean hasItem(final int iItemId)
-	{
-		Iterator<IManager> iter = alManagers.iterator();
-
-		while (iter.hasNext())
-		{
-			if (iter.next().hasItem(iItemId))
-				return true;
-		}
-
-		return false;
-	}
+//	public boolean hasItem(final int iItemId)
+//	{
+//		Iterator<IManager> iter = alManagers.iterator();
+//
+//		while (iter.hasNext())
+//		{
+//			if (iter.next().hasItem(iItemId))
+//				return true;
+//		}
+//
+//		return false;
+//	}
 
 	/**
 	 * @see org.caleydo.core.manager.IGeneralManager#hasItem(int)
 	 * @param iItemId unique Id used for lookup
 	 * @return Object bound to Id or null, if id was not found.
 	 */
-	public Object getItem(final int iItemId)
-	{
-		Iterator<IManager> iter = alManagers.iterator();
-
-		while (iter.hasNext())
-		{
-			IManager buffer = iter.next();
-
-			if (buffer.hasItem(iItemId))
-			{
-				return buffer.getItem(iItemId);
-			}
-		}
-
-		return null;
-	}
+//	public Object getItem(final int iItemId)
+//	{
+//		Iterator<IManager> iter = alManagers.iterator();
+//
+//		while (iter.hasNext())
+//		{
+//			IManager buffer = iter.next();
+//
+//			if (buffer.hasItem(iItemId))
+//			{
+//				return buffer.getItem(iItemId);
+//			}
+//		}
+//
+//		return null;
+//	}
 
 	/*
 	 * (non-Javadoc)

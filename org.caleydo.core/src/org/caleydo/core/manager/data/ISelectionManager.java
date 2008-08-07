@@ -11,12 +11,11 @@ import org.caleydo.core.manager.IManager;
  * @author Alexander Lex
  */
 public interface ISelectionManager
-	extends IManager
+	extends IManager<ISelection>
 {
 
 	public ISelection createSelection(int iItemId);
 
-	public void unregisterItem(ISelection selection);
 
 	public Collection<ISelection> getAllSelections();
 }

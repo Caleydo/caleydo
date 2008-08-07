@@ -433,7 +433,7 @@ public class GLCanvasRemoteRendering3D
 			arMediatorIDs.add(iViewID);
 			generalManager.getEventPublisher()
 					.addSendersAndReceiversToMediator(
-							generalManager.getEventPublisher().getItemMediator(
+							generalManager.getEventPublisher().getItem(
 									iBucketEventMediatorID), arMediatorIDs, arMediatorIDs,
 							MediatorType.SELECTION_MEDIATOR,
 							MediatorUpdateType.MEDIATOR_DEFAULT);
@@ -544,7 +544,7 @@ public class GLCanvasRemoteRendering3D
 				ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
 				arMediatorIDs.add(iGeneratedViewID);
 				generalManager.getEventPublisher().addSendersAndReceiversToMediator(
-						generalManager.getEventPublisher().getItemMediator(
+						generalManager.getEventPublisher().getItem(
 								iBucketEventMediatorID), arMediatorIDs, arMediatorIDs,
 						MediatorType.SELECTION_MEDIATOR, MediatorUpdateType.MEDIATOR_DEFAULT);
 
@@ -1785,7 +1785,7 @@ public class GLCanvasRemoteRendering3D
 			arMediatorIDs.add(iGLEventListenerIdToRemove);
 			generalManager.getEventPublisher()
 					.addSendersAndReceiversToMediator(
-							generalManager.getEventPublisher().getItemMediator(
+							generalManager.getEventPublisher().getItem(
 									iBucketEventMediatorID), arMediatorIDs, arMediatorIDs,
 							MediatorType.SELECTION_MEDIATOR,
 							MediatorUpdateType.MEDIATOR_DEFAULT);

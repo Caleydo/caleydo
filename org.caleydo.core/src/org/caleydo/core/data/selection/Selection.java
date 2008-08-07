@@ -249,7 +249,7 @@ public class Selection
 
 			// Calls update with the ID of the view
 			((EventPublisher) generalManager.getEventPublisher()).updateReceiver(
-					generalManager.getViewGLCanvasManager().getItem(iUniqueTriggerID), this);
+					generalManager.getViewGLCanvasManager().getEventListener(iUniqueTriggerID), this);
 
 		}
 		catch (Exception e)

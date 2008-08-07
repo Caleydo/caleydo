@@ -12,7 +12,7 @@ import org.caleydo.util.graph.IGraphItem;
  * @author Marc Streit
  */
 public interface IPathwayItemManager
-	extends IManager
+	extends IManager<IGraphItem>
 {
 
 	public IGraphItem createVertex(final String sName, final String sType,

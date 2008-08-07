@@ -49,7 +49,7 @@ public class CmdEventMediatorAddObject
 	{
 
 		IEventPublisher eventPublisher = generalManager.getEventPublisher();
-		IMediator mediator = eventPublisher.getItemMediator(iUniqueId);
+		IMediator mediator = eventPublisher.getItem(iUniqueId);
 
 		if (mediator == null)
 		{

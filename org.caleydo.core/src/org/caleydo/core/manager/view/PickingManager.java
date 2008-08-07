@@ -114,8 +114,7 @@ public class PickingManager
 		if (bEnablePicking == false)
 			return;
 
-		AGLCanvasUser canvasUser = (AGLCanvasUser) (generalManager.getViewGLCanvasManager()
-				.getItem(iViewID));
+		AGLCanvasUser canvasUser = (AGLCanvasUser) (generalManager.getViewGLCanvasManager().getEventListener(iViewID));
 		PickingJoglMouseListener pickingTriggerMouseAdapter = canvasUser.getParentGLCanvas()
 				.getJoglMouseListener();
 
@@ -569,41 +568,6 @@ public class PickingManager
 	 * @see org.caleydo.core.manager.IManager#hasItem(int)
 	 */
 	public boolean hasItem(int itemId)
-	{
-
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IManager#registerItem(java.lang.Object,
-	 * int, org.caleydo.core.manager.type.ManagerObjectType)
-	 */
-	public boolean registerItem(Object registerItem, int itemId)
-	{
-
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IManager#size()
-	 */
-	public int size()
-	{
-
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IManager#unregisterItem(int,
-	 * org.caleydo.core.manager.type.ManagerObjectType)
-	 */
-	public boolean unregisterItem(int itemId)
 	{
 
 		// TODO Auto-generated method stub

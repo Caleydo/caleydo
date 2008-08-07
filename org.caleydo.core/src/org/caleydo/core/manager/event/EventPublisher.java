@@ -25,13 +25,9 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  * @author Michael Kalkusch
  */
 public class EventPublisher
-	extends AManager
+	extends AManager<IMediator>
 	implements IEventPublisher
 {
-
-	protected HashMap<Integer, IMediator> hashMediatorId2Mediator;
-
-	protected HashMap<IMediator, Integer> hashMediatorId2Mediator_reverse;
 
 	protected HashMap<IMediatorSender, ArrayList<IMediator>> hashSender2DataMediators;
 
@@ -67,9 +63,6 @@ public class EventPublisher
 		/* View */
 		hashReceiver2ViewMediators = new HashMap<IMediatorReceiver, ArrayList<IMediator>>();
 		hashSender2ViewMediators = new HashMap<IMediatorSender, ArrayList<IMediator>>();
-
-		hashMediatorId2Mediator = new HashMap<Integer, IMediator>();
-		hashMediatorId2Mediator_reverse = new HashMap<IMediator, Integer>();
 	}
 
 	private synchronized void insertReceiver(
@@ -124,9 +117,9 @@ public class EventPublisher
 
 		IMediator newMediator = null;
 
-		if (hashMediatorId2Mediator.containsKey(iMediatorId))
+		if (hashItems.containsKey(iMediatorId))
 		{
-			newMediator = hashMediatorId2Mediator.get(iMediatorId);
+			newMediator = hashItems.get(iMediatorId);
 
 			// generalManager.logMsg("createMediator(" + iMediatorId +
 			// ") mediator already exists. add Senders and Receivers now.",
@@ -156,8 +149,7 @@ public class EventPublisher
 					return;
 			} // switch (mediatorUpdateType) {
 
-			hashMediatorId2Mediator.put(iMediatorId, newMediator);
-			hashMediatorId2Mediator_reverse.put(newMediator, iMediatorId);
+			hashItems.put(iMediatorId, newMediator);
 
 		} // if ( hashMediatorId2Mediator.containsKey(iMediatorId) ) {..} else
 		// {..}
@@ -650,48 +642,6 @@ public class EventPublisher
 	{
 
 		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean hasItem(int iItemId)
-	{
-
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public Object getItem(int iItemId)
-	{
-
-		return this.hashMediatorId2Mediator.get(iItemId);
-	}
-
-	public IMediator getItemMediator(int iItemId)
-	{
-
-		return this.hashMediatorId2Mediator.get(iItemId);
-	}
-
-	public int size()
-	{
-
-		return hashMediatorId2Mediator.size();
-	}
-
-	public boolean registerItem(Object registerItem, int iItemId)
-	{
-
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean unregisterItem(int iItemId)
-	{
-
-		IMediator buffer = hashMediatorId2Mediator.get(iItemId);
-
-		buffer.destroyMediator(this);
-
 		return false;
 	}
 

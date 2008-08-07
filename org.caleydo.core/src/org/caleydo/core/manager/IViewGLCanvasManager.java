@@ -7,6 +7,7 @@ import org.caleydo.core.command.CommandQueueSaxType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.manager.view.PickingManager;
 import org.caleydo.core.manager.view.SelectionManager;
+import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
 import com.sun.opengl.util.Animator;
@@ -19,7 +20,7 @@ import com.sun.opengl.util.Animator;
  * @author Marc Streit
  */
 public interface IViewGLCanvasManager
-	extends IViewManager, IManager
+	extends IViewManager, IManager<IView>
 {
 
 	public GLEventListener createGLCanvas(CommandQueueSaxType useViewType,
@@ -59,4 +60,8 @@ public interface IViewGLCanvasManager
 	 * Removes all views, canvas and GL event listeners
 	 */
 	public void cleanup();
+		
+	public GLCanvas getCanvas(int iItemID);
+
+	public GLEventListener getEventListener(int iItemID);
 }

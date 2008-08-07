@@ -349,40 +349,6 @@ public class SWTGUIManager
 		return loadingProgressBar.getSelection();
 	}
 
-	public boolean hasItem(int iItemId)
-	{
-
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public Object getItem(int iItemId)
-	{
-
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	public int size()
-	{
-
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	public boolean registerItem(Object registerItem, int iItemId)
-	{
-
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public boolean unregisterItem(int iItemId)
-	{
-
-		// TODO Auto-generated method stub
-		return false;
-	}
 
 	public synchronized void setProgressbarVisible(final boolean state)
 	{

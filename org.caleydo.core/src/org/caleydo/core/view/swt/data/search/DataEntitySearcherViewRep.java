@@ -189,7 +189,7 @@ implements IMediatorSender{;
 			ArrayList<Integer> iAlOptional) {
 		
 		Selection tmpSelectionSet = 
-			(Selection) generalManager.getSetManager().getSet(iSearchSelectionSetId);
+			(Selection) generalManager.getSetManager().getItem(iSearchSelectionSetId);
 		
 		tmpSelectionSet.updateSelectionSet(iUniqueID, 
 				iAlSelectionId,

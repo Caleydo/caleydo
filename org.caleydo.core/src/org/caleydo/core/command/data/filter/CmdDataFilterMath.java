@@ -111,7 +111,7 @@ public class CmdDataFilterMath
 			IStorage tmpStorage = null;
 			for (int currentID : iAlIDs)
 			{
-				tmpStorage = generalManager.getStorageManager().getStorage(currentID);
+				tmpStorage = generalManager.getStorageManager().getItem(currentID);
 
 				if (dataFilterMathType.equals(EDataFilterMathType.LIN_2_LOG))
 				{
@@ -128,7 +128,7 @@ public class CmdDataFilterMath
 			ISet tmpSet = null;
 			for (int currentID : iAlIDs)
 			{
-				tmpSet = generalManager.getSetManager().getSet(currentID);
+				tmpSet = generalManager.getSetManager().getItem(currentID);
 
 				if (dataFilterMathType.equals(EDataFilterMathType.LIN_2_LOG))
 				{

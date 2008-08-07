@@ -9,7 +9,7 @@ import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
 public class NominalStringCCollectionTest
 	extends TestCase
 {
-	NominalCContainer sCollection;
+	NominalCContainer<String> sCollection;
 	ArrayList<String> sAlTestWords;
 
 	protected void setUp() throws Exception
@@ -21,7 +21,7 @@ public class NominalStringCCollectionTest
 		sAlTestWords.add("Flu");
 		sAlTestWords.add("Gastritis");
 
-		sCollection = new NominalCContainer(sAlTestWords);
+		sCollection = new NominalCContainer<String>(sAlTestWords);
 	}
 
 	public void testGet()

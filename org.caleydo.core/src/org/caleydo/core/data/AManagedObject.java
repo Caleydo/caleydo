@@ -22,6 +22,7 @@ public abstract class AManagedObject
 	/**
 	 * Constructor.
 	 */
+	// TODO remove unique id and do this 
 	protected AManagedObject(final int iUniqueID, final IGeneralManager generalManager)
 	{
 

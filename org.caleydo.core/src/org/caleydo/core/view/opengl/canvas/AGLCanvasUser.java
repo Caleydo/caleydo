@@ -95,8 +95,7 @@ public abstract class AGLCanvasUser
 
 		setManager = generalManager.getSetManager();
 
-		parentGLCanvas = ((GLCaleydoCanvas) generalManager.getViewGLCanvasManager().getItem(
-				iGLCanvasID));
+		parentGLCanvas = ((GLCaleydoCanvas) generalManager.getViewGLCanvasManager().getCanvas(iGLCanvasID));
 
 		if (bRegisterToParentCanvasNow && parentGLCanvas != null)
 		{

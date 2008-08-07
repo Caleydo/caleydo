@@ -17,12 +17,11 @@ import org.caleydo.core.view.opengl.canvas.glyph.GlyphEntry;
  * @author Sauer Stefan
  */
 public class GlyphManager
-	extends AManager
+	extends AManager<GlyphEntry>
 	implements IGlyphManager
 {
 
-	private static final long serialVersionUID = 1L;
-
+	
 	private HashMap<EGlyphSettingIDs, String> settings;
 
 	private Vector<Integer> sortOrderExt;
@@ -31,7 +30,7 @@ public class GlyphManager
 
 	private HashMap<Integer, GlyphAttributeType> dataTypesExt = null;
 
-	private HashMap<Integer, GlyphEntry> hmGlyphList = null;
+//	private HashMap<Integer, GlyphEntry> hmGlyphList = null;
 
 	private HashSet<GLCanvasGlyph> registeredViews = null;
 
@@ -49,7 +48,6 @@ public class GlyphManager
 
 		generator = new GLCanvasGlyphGenerator();
 		dataTypesExt = new HashMap<Integer, GlyphAttributeType>();
-		hmGlyphList = new HashMap<Integer, GlyphEntry>();
 		registeredViews = new HashSet<GLCanvasGlyph>();
 	}
 
@@ -205,63 +203,19 @@ public class GlyphManager
 
 	public void addGlyph(int id, GlyphEntry glyph)
 	{
-
-		hmGlyphList.put(id, glyph);
+		hashItems.put(id, glyph);
 	}
 
 	public void addGlyphs(HashMap<Integer, GlyphEntry> glyphlist)
 	{
-
-		hmGlyphList.putAll(glyphlist);
+		hashItems.putAll(glyphlist);
 	}
 
-	public GlyphEntry getGlyph(int id)
-	{
 
-		if (hmGlyphList.containsKey(id))
-			return hmGlyphList.get(id);
-		return null;
-	}
 
 	public HashMap<Integer, GlyphEntry> getGlyphs()
 	{
-
-		return hmGlyphList;
-	}
-
-	// std interface
-	public Object getItem(int iItemId)
-	{
-
-		return getGlyph(iItemId);
-	}
-
-	public boolean hasItem(int iItemId)
-	{
-
-		if (hmGlyphList.containsKey(iItemId))
-			return true;
-		return false;
-	}
-
-	public boolean registerItem(Object registerItem, int iItemId)
-	{
-
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	public int size()
-	{
-
-		return hmGlyphList.size();
-	}
-
-	public boolean unregisterItem(int iItemId)
-	{
-
-		// TODO Auto-generated method stub
-		return false;
+		return hashItems;
 	}
 
 }
