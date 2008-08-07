@@ -12,6 +12,7 @@ import java.util.logging.Level;
 import javax.media.opengl.GLEventListener;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.system.StringConversionTool;
@@ -36,15 +37,14 @@ public class PathwayLoaderThread
 	/**
 	 * Constructor.
 	 * 
-	 * @param generalManager
 	 * @param sXMLPath
 	 */
-	public PathwayLoaderThread(final IGeneralManager generalManager,
+	public PathwayLoaderThread(
 			final Collection<PathwayDatabase> pathwayDatabases)
 	{
 		super("Pathway Loader Thread");
 
-		this.generalManager = generalManager;
+		this.generalManager = GeneralManager.get();
 		this.pathwayDatabases = pathwayDatabases;
 
 		generalManager.getLogger().log(Level.INFO, "Start pathway databases loader thread");

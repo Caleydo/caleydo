@@ -1,14 +1,12 @@
 package org.caleydo.core.command.view.swt;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
- * Class implementes the command for creating a data explorer view.
+ * Class implements the command for creating a data explorer view.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -18,13 +16,11 @@ public class CmdViewCreateDataExplorer
 {
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 */
-	public CmdViewCreateDataExplorer(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	public CmdViewCreateDataExplorer(final CommandType cmdType)
 	{
-
-		super(generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 	}
 
 	/**
@@ -57,17 +53,12 @@ public class CmdViewCreateDataExplorer
 		// commandManager.runDoCommand(this);
 	}
 
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
-
-		assert parameterHandler != null : "ParameterHandler object is null!";
-
-		super.setParameterHandler(parameterHandler);
-	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
+	 */
 	public void undoCommand() throws CaleydoRuntimeException
 	{
-
 		commandManager.runUndoCommand(this);
 	}
 }

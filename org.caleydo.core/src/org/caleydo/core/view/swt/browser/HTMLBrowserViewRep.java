@@ -1,10 +1,9 @@
 package org.caleydo.core.view.swt.browser;
 
 import java.util.logging.Level;
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.data.CmdDataCreateSelection;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
@@ -30,7 +29,6 @@ public class HTMLBrowserViewRep
 	extends AView
 	implements IView
 {
-
 	public EBrowserType browserType;
 
 	public final static String CALEYDO_HOME = "http://www.caleydo.org";
@@ -45,19 +43,22 @@ public class HTMLBrowserViewRep
 
 	private IDExtractionLocationListener idExtractionLocationListener;
 
-	public HTMLBrowserViewRep(final IGeneralManager generalManager, final int iViewId,
+	/**
+	 * Constructor.
+	 */
+	public HTMLBrowserViewRep(final int iViewID,
 			final int iParentContainerId, final String sLabel)
 	{
-
-		super(generalManager, iViewId, iParentContainerId, sLabel, ViewType.SWT_HTML_BROWSER);
+		super(iViewID, iParentContainerId, sLabel, ViewType.SWT_HTML_BROWSER);
 
 		// Default browser type
 		this.browserType = EBrowserType.GENERAL;
 
-		iSelectionSetId = generalManager.getSetManager().createId(EManagerObjectType.SET);
+		//TODO: review when implemented ID management
+		iSelectionSetId = -1;//generalManager.getSetManager().createId(EManagerObjectType.SET);
 
 		CmdDataCreateSelection selectedSetCmd = (CmdDataCreateSelection) generalManager
-				.getCommandManager().createCommandByType(CommandQueueSaxType.CREATE_SELECTION);
+				.getCommandManager().createCommandByType(CommandType.CREATE_SELECTION);
 
 		selectedSetCmd.setAttributes(iSelectionSetId);
 		selectedSetCmd.doCommand();
@@ -149,7 +150,7 @@ public class HTMLBrowserViewRep
 
 		browser = new Browser(swtContainer, SWT.NONE);
 
-		idExtractionLocationListener = new IDExtractionLocationListener(generalManager,
+		idExtractionLocationListener = new IDExtractionLocationListener(
 				browser, iUniqueID, iSelectionSetId);
 		browser.addLocationListener(idExtractionLocationListener);
 
@@ -163,7 +164,6 @@ public class HTMLBrowserViewRep
 
 	public void drawView()
 	{
-
 		generalManager.getLogger().log(Level.INFO, "Load " + sUrl);
 
 		// // Check internet connection

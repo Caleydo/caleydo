@@ -1,9 +1,8 @@
 package org.caleydo.core.view.swt.jogl.gears;
 
-import org.eclipse.swt.widgets.Composite;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
+import org.eclipse.swt.widgets.Composite;
 import demos.gears.Gears;
 
 /**
@@ -20,16 +19,14 @@ public class GearsViewRep
 	/**
 	 * Constructor
 	 */
-	public GearsViewRep(IGeneralManager generalManager, int iViewID, int iParentContainerID,
+	public GearsViewRep(int iViewID, int iParentContainerID,
 			int iGLCanvasID, String sLabel)
 	{
-
-		super(generalManager, iViewID, iParentContainerID, iGLCanvasID, sLabel);
+		super(iViewID, iParentContainerID, iGLCanvasID, sLabel);
 	}
 
 	public void initViewSwtComposit(Composite swtContainer)
 	{
-
 		Gears gears = new Gears();
 
 		gLCanvas.addGLEventListener(gears);

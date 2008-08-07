@@ -3,7 +3,7 @@ package org.caleydo.core.command.data.parser;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACommand;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
@@ -45,17 +45,11 @@ public class CmdLoadFileNStorages
 	/**
 	 * Constructor.
 	 * 
-	 * @param generalManager
-	 * @param commandManager
-	 * @param commandQueueSaxType
+	 * @param cmdType
 	 */
-	public CmdLoadFileNStorages(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	public CmdLoadFileNStorages(final CommandType cmdType)
 	{
-
-		super(-1, generalManager, commandManager, commandQueueSaxType);
-
-		setCommandQueueSaxType(CommandQueueSaxType.LOAD_DATA_FILE);
+		super(cmdType);
 	}
 
 	/*
@@ -69,15 +63,13 @@ public class CmdLoadFileNStorages
 
 		super.setParameterHandler(parameterHandler);
 
-		this.setId(parameterHandler.getValueInt(CommandQueueSaxType.TAG_CMD_ID.getXmlKey()));
-
-		this.sFileName = parameterHandler.getValueString(CommandQueueSaxType.TAG_DETAIL
+		this.sFileName = parameterHandler.getValueString(CommandType.TAG_DETAIL
 				.getXmlKey());
 		this.sTokenPattern = parameterHandler
-				.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey());
+				.getValueString(CommandType.TAG_ATTRIBUTE1.getXmlKey());
 
 		StringTokenizer tokenizer = new StringTokenizer(parameterHandler
-				.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey()),
+				.getValueString(CommandType.TAG_ATTRIBUTE2.getXmlKey()),
 				GeneralManager.sDelimiter_Parser_DataItems);
 
 		iAlTargetStorageId = new ArrayList<Integer>();
@@ -90,7 +82,7 @@ public class CmdLoadFileNStorages
 
 		int[] iArrayStartStop = StringConversionTool.convertStringToIntArrayVariableLength(
 				parameterHandler
-						.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey()), " ");
+						.getValueString(CommandType.TAG_ATTRIBUTE3.getXmlKey()), " ");
 
 		if (iArrayStartStop.length > 0)
 		{

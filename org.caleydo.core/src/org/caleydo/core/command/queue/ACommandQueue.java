@@ -1,9 +1,7 @@
 package org.caleydo.core.command.queue;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACommand;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
 
 /**
  * @author Michael Kalkusch
@@ -13,22 +11,18 @@ public abstract class ACommandQueue
 {
 
 	/**
-	 * Commadn QueueId
+	 * Command QueueId
 	 */
 	protected int iCmdQueueId;
 
 	/**
 	 * ISet CollectionId using this constructor.
 	 * 
-	 * @param iUniqueID unique system-wide Id
 	 * @param iCmdQueueId define cmd queue by this id
 	 */
-	protected ACommandQueue(final int iUniqueId, final IGeneralManager generalManager,
-			final ICommandManager commandManager,
-			final CommandQueueSaxType commandQueueSaxType, final int iCmdQueueId)
+	protected ACommandQueue(final CommandType cmdType, final int iCmdQueueId)
 	{
-
-		super(iUniqueId, generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 
 		this.iCmdQueueId = iCmdQueueId;
 	}

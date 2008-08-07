@@ -1,17 +1,15 @@
 package org.caleydo.core.command.view.swt;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
 
 /**
- * Class implementes the command for creating the UNDO/REDO GUI view
+ * Class implements the command for creating the UNDO/REDO GUI view
  * representation.
  * 
  * @author Marc Streit
@@ -23,11 +21,9 @@ public class CmdViewCreateUndoRedo
 	/**
 	 * Constructor
 	 */
-	public CmdViewCreateUndoRedo(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	public CmdViewCreateUndoRedo(final CommandType cmdType)
 	{
-
-		super(generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 	}
 
 	/**
@@ -40,9 +36,9 @@ public class CmdViewCreateUndoRedo
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
 		UndoRedoViewRep undoRedoView = (UndoRedoViewRep) viewManager.createView(
-				EManagerObjectType.VIEW_SWT_UNDO_REDO, iUniqueId, iParentContainerId, sLabel);
+				EManagedObjectType.VIEW_SWT_UNDO_REDO, iExternalID, iParentContainerId, sLabel);
 
-		viewManager.registerItem(undoRedoView, iUniqueId);
+		viewManager.registerItem(undoRedoView, iExternalID);
 
 		undoRedoView.setAttributes(iWidthX, iHeightY);
 		undoRedoView.initView();
@@ -54,17 +50,12 @@ public class CmdViewCreateUndoRedo
 		commandManager.runDoCommand(this);
 	}
 
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
-
-		assert parameterHandler != null : "ParameterHandler object is null!";
-
-		super.setParameterHandler(parameterHandler);
-	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
+	 */
 	public void undoCommand() throws CaleydoRuntimeException
 	{
-
 		commandManager.runUndoCommand(this);
 	}
 }

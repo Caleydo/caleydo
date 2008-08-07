@@ -1,9 +1,7 @@
 package org.caleydo.core.command.window.swt;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
@@ -16,21 +14,16 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 public class CmdWindowCreate
 	extends ACmdCreate_IdTargetLabelAttrDetail
 {
-
 	protected String sLayoutAttributes;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param generalManager
-	 * @param commandManager
-	 * @param commandQueueSaxType
+	 * @param cmdType
 	 */
-	public CmdWindowCreate(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	public CmdWindowCreate(final CommandType cmdType)
 	{
-
-		super(generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 	}
 
 	/*
@@ -40,7 +33,7 @@ public class CmdWindowCreate
 	public void doCommand() throws CaleydoRuntimeException
 	{
 
-		generalManager.getSWTGUIManager().createWindow(iUniqueId, sLabel, sLayoutAttributes);
+		generalManager.getSWTGUIManager().createWindow(iExternalID, sLabel, sLayoutAttributes);
 
 		commandManager.runDoCommand(this);
 	}
@@ -55,11 +48,12 @@ public class CmdWindowCreate
 		commandManager.runUndoCommand(this);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
+	 */
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
-
-		assert parameterHandler != null : "ParameterHandler object is null!";
-
 		super.setParameterHandler(parameterHandler);
 
 		sLayoutAttributes = sAttribute1;

@@ -12,6 +12,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * Abstract parser manager.
  * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  */
 public abstract class AXmlParserManager
 	extends DefaultHandler
@@ -51,12 +52,10 @@ public abstract class AXmlParserManager
 	protected IGeneralManager generalManager;
 
 	/**
-	 * 
+	 * Constructor.
 	 */
-	protected AXmlParserManager(final IGeneralManager generalManager)
+	protected AXmlParserManager()
 	{
-		this.generalManager = generalManager;
-
 		hashTag2XmlParser = new Hashtable<String, IXmlParserHandler>();
 
 		llXmlParserStack = new LinkedList<IXmlParserHandler>();

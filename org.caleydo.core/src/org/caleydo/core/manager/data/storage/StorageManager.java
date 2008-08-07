@@ -4,10 +4,9 @@ import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.manager.AManager;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.IStorageManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
-import org.caleydo.core.manager.type.EManagerType;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
@@ -17,48 +16,25 @@ public class StorageManager
 	extends AManager<IStorage>
 	implements IStorageManager
 {
-
-	//private HashMap<IStorage, Integer> hashStorageToStorageID;
-
-	/**
-	 * Constructor.
-	 */
-	public StorageManager(IGeneralManager setGeneralManager)
-	{
-
-		super(setGeneralManager, IGeneralManager.iUniqueId_TypeOffset_Storage,
-				EManagerType.DATA_STORAGE);
-
-//		hashStorageIDToStorage = new HashMap<Integer, IStorage>();
-//		hashStorageToStorageID = new HashMap<IStorage, Integer>();
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.manager.StorageManager#createStorage()
 	 */
-	public IStorage createStorage(final EManagerObjectType useStorageType)
+	public IStorage createStorage(final EManagedObjectType type)
 	{
-
-		if (useStorageType.getGroupType() != EManagerType.DATA_STORAGE)
-		{
-			throw new CaleydoRuntimeException("try to create object with wrong type "
-					+ useStorageType.name());
-		}
-
-		final int iNewId = this.createId(useStorageType);
-
-		switch (useStorageType)
+		switch (type)
 		{
 			case STORAGE_NUMERICAL:
-				return new NumericalStorage(iNewId, generalManager);
+				return new NumericalStorage();
 			case STORAGE_NOMINAL:
-				return new NominalStorage<String>(iNewId, generalManager);
+				return new NominalStorage<String>();
 
 			default:
 				throw new CaleydoRuntimeException(
-						"StorageManagerSimple.createStorage() failed due to unhandled type ["
-								+ useStorageType.toString() + "]");
+						"Ffailed due to unhandled type ["
+								+ type.toString() + "]");
 		}
 	}
+	
+	
 }

@@ -1,15 +1,10 @@
 package org.caleydo.core.command.view.opengl;
 
 import java.util.ArrayList;
-import java.util.StringTokenizer;
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.data.view.camera.ViewFrustumBase;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
-import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
 import org.caleydo.core.util.system.StringConversionTool;
-import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
 
 /**
@@ -26,22 +21,18 @@ public class CmdGlObjectPathway3D
 	/**
 	 * Constructor.
 	 */
-	public CmdGlObjectPathway3D(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	public CmdGlObjectPathway3D(final CommandType cmdType)
 	{
 
-		super(generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.command.base.ACmdCreate_GlCanvasUser#setParameterHandler
-	 * (org.caleydo.core.parser.parameter.IParameterHandler)
+	 * @see org.caleydo.core.command.view.opengl.CmdCreateOpenGLCanvasListener#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
 	 */
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
-
 		super.setParameterHandler(parameterHandler);
 
 		iPathwayID = StringConversionTool.convertStringToInt(sAttribute4, -1);
@@ -59,7 +50,7 @@ public class CmdGlObjectPathway3D
 
 		this.iArSetIDs = iArSetIDs;
 		this.iPathwayID = iPathwayID;
-		this.iUniqueId = iUniqueID;
+		this.iExternalID = iUniqueID;
 		iParentContainerId = -1;
 	}
 
@@ -69,7 +60,6 @@ public class CmdGlObjectPathway3D
 	 */
 	public final void doCommand()
 	{
-
 		super.doCommand();
 
 		((GLCanvasPathway3D) glEventListener).setPathwayID(iPathwayID);

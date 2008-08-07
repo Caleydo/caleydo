@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import javax.naming.OperationNotSupportedException;
-import org.caleydo.core.data.AManagedObject;
+import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.INumericalStorage;
@@ -13,7 +13,9 @@ import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.VirtualArray;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.data.IStorageManager;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
@@ -23,7 +25,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  * @author Alexander Lex
  */
 public class Set
-	extends AManagedObject
+	extends AUniqueObject
 	implements ISet
 {
 
@@ -47,15 +49,15 @@ public class Set
 	HashMap<Integer, Boolean> hashIsVAEnabled;
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 * 
 	 * @param iUniqueID
-	 * @param generalManager
 	 */
-	public Set(int iUniqueID, IGeneralManager generalManager)
+	public Set()
 	{
-
-		super(iUniqueID, generalManager);
+		super(GeneralManager.get().getIDManager()
+				.createID(EManagedObjectType.SET));
+		
 		alStorages = new ArrayList<IStorage>();
 		hashStorageVAs = new HashMap<Integer, IVirtualArray>();
 		hashSetVAs = new HashMap<Integer, IVirtualArray>();
@@ -91,10 +93,13 @@ public class Set
 	@Override
 	public void addStorage(int iStorageID)
 	{
-		if (!generalManager.getStorageManager().hasItem(iStorageID))
+		IStorageManager storageManager = GeneralManager.get().getStorageManager();
+		
+		if (!storageManager.hasItem(iStorageID))
 			throw new CaleydoRuntimeException("Requested Storage with ID " + iStorageID
 					+ " does not exist.", CaleydoRuntimeExceptionType.DATAHANDLING);
-		addStorage(generalManager.getStorageManager().getItem(iStorageID));
+
+		addStorage(storageManager.getItem(iStorageID));
 	}
 
 	/*

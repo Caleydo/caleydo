@@ -12,8 +12,6 @@ import org.caleydo.core.data.collection.ccontainer.IntCContainer;
 import org.caleydo.core.data.collection.ccontainer.IntCContainerIterator;
 import org.caleydo.core.data.collection.ccontainer.NumericalCContainer;
 import org.caleydo.core.data.selection.IVirtualArray;
-import org.caleydo.core.data.selection.VirtualArray;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
@@ -40,7 +38,7 @@ public abstract class AStorage
 	/**
 	 * Constructor Initializes objects
 	 */
-	public AStorage(int iUniqueID, IGeneralManager generalManager)
+	public AStorage(int iUniqueID)
 	{
 		super(iUniqueID);
 		hashCContainers = new HashMap<EDataRepresentation, ICContainer>();

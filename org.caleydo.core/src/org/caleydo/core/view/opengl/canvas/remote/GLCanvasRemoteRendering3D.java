@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.data.CmdDataCreateSelection;
 import org.caleydo.core.command.event.CmdEventCreateMediator;
 import org.caleydo.core.command.view.opengl.CmdGlObjectPathway3D;
@@ -33,10 +33,10 @@ import org.caleydo.core.manager.IEventPublisher.MediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.mapping.GenomeColorMapper;
 import org.caleydo.core.util.slerp.SlerpAction;
@@ -154,12 +154,11 @@ public class GLCanvasRemoteRendering3D
 	/**
 	 * Constructor.
 	 */
-	public GLCanvasRemoteRendering3D(final IGeneralManager generalManager, final int iViewId,
+	public GLCanvasRemoteRendering3D(final int iViewID,
 			final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum,
 			final ARemoteViewLayoutRenderStyle.LayoutMode layoutMode)
 	{
-
-		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum, true);
+		super(iViewID, iGLCanvasID, sLabel, viewFrustum, true);
 
 		this.layoutMode = layoutMode;
 
@@ -392,7 +391,7 @@ public class GLCanvasRemoteRendering3D
 				continue;
 			}
 
-			int iViewID = ((AGLCanvasUser) tmpGLEventListener).getId();
+			int iViewID = ((AGLCanvasUser) tmpGLEventListener).getID();
 
 			if (underInteractionLayer.containsElement(-1))
 			{
@@ -512,29 +511,31 @@ public class GLCanvasRemoteRendering3D
 
 				for (ISet tmpSet : alSetData)
 				{
-					iAlSetIDs.add(tmpSet.getId());
+					iAlSetIDs.add(tmpSet.getID());
 				}
 
 				ArrayList<Integer> iAlSelectionIDs = new ArrayList<Integer>();
 
 				// Create new selection set
-				int iSelectionSetID = generalManager.getSetManager().createId(
-						EManagerObjectType.SET);
+				//TODO: review when implemented ID management
+				int iSelectionSetID = -1;//generalManager.getSetManager().createId(
+						//EManagerObjectType.SET);
 				CmdDataCreateSelection selectedSetCmd = (CmdDataCreateSelection) generalManager
 						.getCommandManager().createCommandByType(
-								CommandQueueSaxType.CREATE_SELECTION);
+								CommandType.CREATE_SELECTION);
 				selectedSetCmd.setAttributes(iSelectionSetID);
 				selectedSetCmd.doCommand();
 
 				iAlSelectionIDs.add(iSelectionSetID);
 
-				int iGeneratedViewID = generalManager.getViewGLCanvasManager().createId(
-						EManagerObjectType.VIEW);
+				//TODO: review when implemented ID management
+				int iGeneratedViewID = -1;//generalManager.getViewGLCanvasManager().createId(
+						//EManagerObjectType.VIEW);
 
 				// Create Pathway3D view
 				CmdGlObjectPathway3D cmdPathway = (CmdGlObjectPathway3D) generalManager
 						.getCommandManager().createCommandByType(
-								CommandQueueSaxType.CREATE_GL_PATHWAY_3D);
+								CommandType.CREATE_GL_PATHWAY_3D);
 
 				cmdPathway.setAttributes(iGeneratedViewID, iTmpPathwayID, iAlSetIDs,
 						iAlSelectionIDs, ProjectionMode.ORTHOGRAPHIC, -4, 4, 4, -4, -20, 20);
@@ -1664,12 +1665,12 @@ public class GLCanvasRemoteRendering3D
 	{
 
 		// Create event mediator that connects all views in the bucket
-		iBucketEventMediatorID = generalManager.getEventPublisher().createId(
-				EManagerObjectType.EVENT_MEDIATOR_CREATE);
+		iBucketEventMediatorID = -1;//generalManager.getEventPublisher().createId(
+				//EManagerObjectType.EVENT_MEDIATOR_CREATE);
 
 		CmdEventCreateMediator tmpMediatorCmd = (CmdEventCreateMediator) generalManager
 				.getCommandManager().createCommandByType(
-						CommandQueueSaxType.CREATE_EVENT_MEDIATOR);
+						CommandType.CREATE_EVENT_MEDIATOR);
 
 		ArrayList<Integer> iAlSenderIDs = new ArrayList<Integer>();
 		ArrayList<Integer> iAlReceiverIDs = new ArrayList<Integer>();
@@ -1746,7 +1747,7 @@ public class GLCanvasRemoteRendering3D
 		for (GLEventListener tmpGLEventListenerToRemove : generalManager
 				.getViewGLCanvasManager().getAllGLEventListeners())
 		{
-			iGLEventListenerId = ((AGLCanvasUser) tmpGLEventListenerToRemove).getId();
+			iGLEventListenerId = ((AGLCanvasUser) tmpGLEventListenerToRemove).getID();
 
 			if (tmpGLEventListenerToRemove instanceof GLCanvasPathway3D)
 			{
@@ -1778,7 +1779,7 @@ public class GLCanvasRemoteRendering3D
 				.size(); iGLEventListenerIndex++)
 		{
 			iGLEventListenerIdToRemove = ((AGLCanvasUser) alGLEventListenerToRemove
-					.get(iGLEventListenerIndex)).getId();
+					.get(iGLEventListenerIndex)).getID();
 
 			// Unregister removed pathways from event mediator
 			ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();

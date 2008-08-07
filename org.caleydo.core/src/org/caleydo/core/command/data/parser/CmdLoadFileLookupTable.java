@@ -1,11 +1,10 @@
 package org.caleydo.core.command.data.parser;
 
 import java.util.StringTokenizer;
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACommand;
 import org.caleydo.core.data.mapping.EGenomeMappingDataType;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
-import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.parser.ascii.lookuptable.LookupTableLoaderProxy;
@@ -86,50 +85,37 @@ public class CmdLoadFileLookupTable
 	/**
 	 * Constructor.
 	 * 
-	 * @param generalManager
-	 * @param commandManager
-	 * @param commandQueueSaxType
+	 * @param cmdType
 	 */
-	public CmdLoadFileLookupTable(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	public CmdLoadFileLookupTable(final CommandType cmdType)
 	{
-
-		super(-1, generalManager, commandManager, commandQueueSaxType);
-
-		setCommandQueueSaxType(CommandQueueSaxType.LOAD_LOOKUP_TABLE_FILE);
+		super(cmdType);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.command.base.ACommand#setParameterHandler(org.caleydo
-	 * .core.parser.parameter.IParameterHandler)
+	 * @see org.caleydo.core.command.base.ACommand#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
 	 */
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
-
-		super.setParameterHandler(parameterHandler);
-
-		this.setId(parameterHandler.getValueInt(CommandQueueSaxType.TAG_CMD_ID.getXmlKey()));
-
 		sFileName = parameterHandler
-				.getValueString(CommandQueueSaxType.TAG_DETAIL.getXmlKey());
+				.getValueString(CommandType.TAG_DETAIL.getXmlKey());
 
-		sLookupTableInfo = parameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE1
+		sLookupTableInfo = parameterHandler.getValueString(CommandType.TAG_ATTRIBUTE1
 				.getXmlKey());
 
 		sLookupTableDelimiter = parameterHandler
-				.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE2.getXmlKey());
+				.getValueString(CommandType.TAG_ATTRIBUTE2.getXmlKey());
 
 		int[] iArrayStartStop = StringConversionTool.convertStringToIntArrayVariableLength(
 				parameterHandler
-						.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE3.getXmlKey()), " ");
+						.getValueString(CommandType.TAG_ATTRIBUTE3.getXmlKey()), " ");
 
 		iStartPareseFileAtLine = iArrayStartStop[0];
 		iStopParseFileAtLine = iArrayStartStop[1];
 
 		sCodeResolvingLUTTypes = parameterHandler
-				.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE4.getXmlKey());
+				.getValueString(CommandType.TAG_ATTRIBUTE4.getXmlKey());
 
 		extractParameters();
 	}

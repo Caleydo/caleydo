@@ -1,22 +1,19 @@
 package org.caleydo.core.command.data.filter;
 
-// import java.util.ArrayList;
-// import java.util.Iterator;
-
 import javax.naming.OperationNotSupportedException;
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
- * @author Alexander Lex This class calculates the min and the max value of a
- *         storage or a set It is implemented as a command and as a filter.
- *         TODO: Min max for set not implemented yet
+ * This class calculates the min and the max value of a
+ * storage or a set It is implemented as a command and as a filter.
+ * 
+ * TODO: Min max for set not implemented yet
+ * @author Alexander Lex 
  */
 
 public class CmdDataFilterMinMax
@@ -34,15 +31,11 @@ public class CmdDataFilterMinMax
 	/**
 	 * Constructor.
 	 * 
-	 * @param generalManager
-	 * @param commandManager
-	 * @param commandQueueSaxType
+	 * @param cmdType
 	 */
-	public CmdDataFilterMinMax(IGeneralManager generalManager, ICommandManager commandManager,
-			CommandQueueSaxType commandQueueSaxType)
+	public CmdDataFilterMinMax(CommandType cmdType)
 	{
-
-		super(generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 	}
 
 	/**
@@ -51,7 +44,6 @@ public class CmdDataFilterMinMax
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
-
 		try
 		{
 			if (myStorage == null && mySet != null)
@@ -86,8 +78,7 @@ public class CmdDataFilterMinMax
 	 */
 	public void undoCommand() throws CaleydoRuntimeException
 	{
-
-		// TODO Auto-generated method stub
+		commandManager.runUndoCommand(this);
 	}
 
 	/**

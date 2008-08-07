@@ -9,9 +9,8 @@ import java.util.regex.Pattern;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.view.rep.jgraph.PathwayImageMap;
 import org.caleydo.core.manager.AManager;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
-import org.caleydo.core.manager.type.EManagerType;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.core.Graph;
 
@@ -51,11 +50,8 @@ public class PathwayManager
 	/**
 	 * Constructor.
 	 */
-	public PathwayManager(final IGeneralManager generalManager)
+	public PathwayManager()
 	{
-		super(generalManager, IGeneralManager.iUniqueId_TypeOffset_Pathways_Pathway,
-				EManagerType.DATA_PATHWAY_ELEMENT);
-
 		hashPathwayTitleToPathwayId = new HashMap<String, Integer>();
 		hashPathwayDatabase = new HashMap<EPathwayDatabaseType, PathwayDatabase>();
 		hashPathwayIdToVisibilityState = new HashMap<Integer, Boolean>();
@@ -76,7 +72,7 @@ public class PathwayManager
 
 		hashPathwayDatabase.put(type, tmpPathwayDatabase);
 		
-		generalManager.getLogger().log(
+		GeneralManager.get().getLogger().log(
 				Level.INFO,
 				"Setting pathway loading path: database-type:[" + type + "] " + "xml-path:["
 						+ tmpPathwayDatabase.getXMLPath() + "] image-path:[" 
@@ -92,7 +88,7 @@ public class PathwayManager
 	 */
 	public void triggerParsingPathwayDatabases()
 	{
-		new PathwayLoaderThread(generalManager, hashPathwayDatabase.values());
+		new PathwayLoaderThread(hashPathwayDatabase.values());
 	}
 
 	/*

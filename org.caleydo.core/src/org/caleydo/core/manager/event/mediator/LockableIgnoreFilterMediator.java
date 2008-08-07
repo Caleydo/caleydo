@@ -1,11 +1,7 @@
-/**
- * 
- */
 package org.caleydo.core.manager.event.mediator;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ISelection;
-import org.caleydo.core.manager.IGeneralManager;
 
 /**
  * Ignore one special SelectionSet and let all other SelectionSet's pass when
@@ -13,8 +9,6 @@ import org.caleydo.core.manager.IGeneralManager;
  * org.caleydo.core.manager.event.mediator.IMediator#updateReceiverSelection
  * (Object, ISet)
  * 
- * @see org.caleydo.core.manager.event.mediator.IMediator#updateReceiverSelection(Object,
- *      ISet)
  * @author Michael Kalkusch
  */
 public class LockableIgnoreFilterMediator
@@ -24,14 +18,13 @@ public class LockableIgnoreFilterMediator
 	protected ISet ignoreSet;
 
 	/**
-	 * @param eventPublisher
-	 * @param iMediatorId
+	 * Constructor.
 	 */
-	public LockableIgnoreFilterMediator(final IGeneralManager generalManager, int iMediatorId,
+	public LockableIgnoreFilterMediator(int iMediatorId,
 			final ISet setExclusiveSet)
 	{
 
-		super(generalManager, iMediatorId, MediatorUpdateType.MEDIATOR_FILTER_ALL_EXPECT_SET);
+		super(iMediatorId, MediatorUpdateType.MEDIATOR_FILTER_ALL_EXPECT_SET);
 
 		this.ignoreSet = setExclusiveSet;
 	}

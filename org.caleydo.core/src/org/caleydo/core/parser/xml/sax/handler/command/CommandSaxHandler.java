@@ -1,6 +1,6 @@
 package org.caleydo.core.parser.xml.sax.handler.command;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.command.queue.ICommandQueue;
 import org.caleydo.core.manager.IGeneralManager;
@@ -25,9 +25,9 @@ public class CommandSaxHandler
 {
 
 	/* XML Tags */
-	private final String sTag_Command = CommandQueueSaxType.TAG_CMD.getXmlKey();
+	private final String sTag_Command = CommandType.TAG_CMD.getXmlKey();
 
-	private final String sTag_CommandQueue = CommandQueueSaxType.TAG_CMD_QUEUE.getXmlKey();
+	private final String sTag_CommandQueue = CommandType.TAG_CMD_QUEUE.getXmlKey();
 
 	/* END: XML Tags */
 
@@ -70,65 +70,65 @@ public class CommandSaxHandler
 		try
 		{
 			/* create new Frame */
-			phAttributes.setValueBySaxAttributes(attrs, CommandQueueSaxType.TAG_PROCESS
-					.getXmlKey(), CommandQueueSaxType.TAG_PROCESS.getDefault(),
+			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_PROCESS
+					.getXmlKey(), CommandType.TAG_PROCESS.getDefault(),
 					ParameterHandlerType.STRING);
 
-			phAttributes.setValueBySaxAttributes(attrs, CommandQueueSaxType.TAG_LABEL
-					.getXmlKey(), CommandQueueSaxType.TAG_LABEL.getDefault(),
+			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_LABEL
+					.getXmlKey(), CommandType.TAG_LABEL.getDefault(),
 					ParameterHandlerType.STRING);
 
-			phAttributes.setValueBySaxAttributes(attrs, CommandQueueSaxType.TAG_CMD_ID
-					.getXmlKey(), CommandQueueSaxType.TAG_CMD_ID.getDefault(),
+			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_CMD_ID
+					.getXmlKey(), CommandType.TAG_CMD_ID.getDefault(),
 					ParameterHandlerType.INT);
 
-			phAttributes.setValueBySaxAttributes(attrs, CommandQueueSaxType.TAG_UNIQUE_ID
-					.getXmlKey(), CommandQueueSaxType.TAG_UNIQUE_ID.getDefault(),
+			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_UNIQUE_ID
+					.getXmlKey(), CommandType.TAG_UNIQUE_ID.getDefault(),
 					ParameterHandlerType.INT);
 
-			phAttributes.setValueBySaxAttributes(attrs, CommandQueueSaxType.TAG_MEMENTO_ID
-					.getXmlKey(), CommandQueueSaxType.TAG_MEMENTO_ID.getDefault(),
+			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_MEMENTO_ID
+					.getXmlKey(), CommandType.TAG_MEMENTO_ID.getDefault(),
 					ParameterHandlerType.INT);
 
-			phAttributes.setValueBySaxAttributes(attrs, CommandQueueSaxType.TAG_TYPE
-					.getXmlKey(), CommandQueueSaxType.TAG_TYPE.getDefault(),
+			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_TYPE
+					.getXmlKey(), CommandType.TAG_TYPE.getDefault(),
 					ParameterHandlerType.STRING);
 
-			phAttributes.setValueBySaxAttributes(attrs, CommandQueueSaxType.TAG_PARENT
-					.getXmlKey(), CommandQueueSaxType.TAG_PARENT.getDefault(),
+			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_PARENT
+					.getXmlKey(), CommandType.TAG_PARENT.getDefault(),
 					ParameterHandlerType.INT);
 
-			phAttributes.setValueBySaxAttributes(attrs, CommandQueueSaxType.TAG_GLCANVAS
-					.getXmlKey(), CommandQueueSaxType.TAG_GLCANVAS.getDefault(),
+			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_GLCANVAS
+					.getXmlKey(), CommandType.TAG_GLCANVAS.getDefault(),
 					ParameterHandlerType.INT);
 
-			phAttributes.setValueBySaxAttributes(attrs, CommandQueueSaxType.TAG_ATTRIBUTE1
-					.getXmlKey(), CommandQueueSaxType.TAG_ATTRIBUTE1.getDefault(),
+			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_ATTRIBUTE1
+					.getXmlKey(), CommandType.TAG_ATTRIBUTE1.getDefault(),
 					ParameterHandlerType.STRING);
 
-			phAttributes.setValueBySaxAttributes(attrs, CommandQueueSaxType.TAG_ATTRIBUTE2
-					.getXmlKey(), CommandQueueSaxType.TAG_ATTRIBUTE2.getDefault(),
+			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_ATTRIBUTE2
+					.getXmlKey(), CommandType.TAG_ATTRIBUTE2.getDefault(),
 					ParameterHandlerType.STRING);
 
-			phAttributes.setValueBySaxAttributes(attrs, CommandQueueSaxType.TAG_ATTRIBUTE3
-					.getXmlKey(), CommandQueueSaxType.TAG_ATTRIBUTE3.getDefault(),
+			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_ATTRIBUTE3
+					.getXmlKey(), CommandType.TAG_ATTRIBUTE3.getDefault(),
 					ParameterHandlerType.STRING);
 
-			phAttributes.setValueBySaxAttributes(attrs, CommandQueueSaxType.TAG_ATTRIBUTE4
-					.getXmlKey(), CommandQueueSaxType.TAG_ATTRIBUTE4.getDefault(),
+			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_ATTRIBUTE4
+					.getXmlKey(), CommandType.TAG_ATTRIBUTE4.getDefault(),
 					ParameterHandlerType.STRING);
 
-			phAttributes.setValueBySaxAttributes(attrs, CommandQueueSaxType.TAG_POS_GL_ORIGIN
-					.getXmlKey(), CommandQueueSaxType.TAG_POS_GL_ORIGIN.getDefault(),
+			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_POS_GL_ORIGIN
+					.getXmlKey(), CommandType.TAG_POS_GL_ORIGIN.getDefault(),
 					ParameterHandlerType.VEC3F);
 
 			phAttributes.setValueBySaxAttributes(attrs,
-					CommandQueueSaxType.TAG_POS_GL_ROTATION.getXmlKey(),
-					CommandQueueSaxType.TAG_POS_GL_ROTATION.getDefault(),
+					CommandType.TAG_POS_GL_ROTATION.getXmlKey(),
+					CommandType.TAG_POS_GL_ROTATION.getDefault(),
 					ParameterHandlerType.VEC4F);
 
-			phAttributes.setValueBySaxAttributes(attrs, CommandQueueSaxType.TAG_DETAIL
-					.getXmlKey(), CommandQueueSaxType.TAG_DETAIL.getDefault(),
+			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_DETAIL
+					.getXmlKey(), CommandType.TAG_DETAIL.getDefault(),
 					ParameterHandlerType.STRING);
 
 			// generalManager.logMsg(
@@ -173,9 +173,9 @@ public class CommandSaxHandler
 			if (lastCommand != null)
 			{
 				String sData_Cmd_process = phAttributes
-						.getValueString(CommandQueueSaxType.TAG_PROCESS.getXmlKey());
+						.getValueString(CommandType.TAG_PROCESS.getXmlKey());
 
-				if (sData_Cmd_process.equals(CommandQueueSaxType.RUN_CMD_NOW.toString()))
+				if (sData_Cmd_process.equals(CommandType.RUN_CMD_NOW.toString()))
 				{
 					// generalManager.logMsg("do command: " +
 					// lastCommand.toString(),
@@ -241,8 +241,8 @@ public class CommandSaxHandler
 
 		ICommand lastCommand = null;
 
-		String sData_Queue_process = CommandQueueSaxType.RUN_QUEUE_ON_DEMAND.toString();
-		String sData_Queue_type = CommandQueueSaxType.COMMAND_QUEUE_RUN.toString();
+		String sData_Queue_process = CommandType.RUN_QUEUE_ON_DEMAND.toString();
+		String sData_Queue_type = CommandType.COMMAND_QUEUE_RUN.toString();
 
 		int iData_Queue_CmdId;
 		int iData_Queue_CmdQueueId;
@@ -253,24 +253,24 @@ public class CommandSaxHandler
 		{
 			/* create new Frame */
 			sData_Queue_process = SXmlParserHandler.assignStringValue(attrs,
-					CommandQueueSaxType.RUN_QUEUE_ON_DEMAND.getXmlKey(),
-					CommandQueueSaxType.RUN_QUEUE_ON_DEMAND.toString());
+					CommandType.RUN_QUEUE_ON_DEMAND.getXmlKey(),
+					CommandType.RUN_QUEUE_ON_DEMAND.toString());
 
 			iData_Queue_CmdId = SXmlParserHandler.assignIntValueIfValid(attrs,
-					CommandQueueSaxType.CMD_ID.getXmlKey(), -1);
+					CommandType.CMD_ID.getXmlKey(), -1);
 
 			iData_Queue_CmdQueueId = SXmlParserHandler.assignIntValueIfValid(attrs,
-					CommandQueueSaxType.CMDQUEUE_ID.getXmlKey(), -1);
+					CommandType.CMDQUEUE_ID.getXmlKey(), -1);
 
 			sData_Queue_type = SXmlParserHandler.assignStringValue(attrs,
-					CommandQueueSaxType.COMMAND_QUEUE_RUN.getXmlKey(),
-					CommandQueueSaxType.COMMAND_QUEUE_RUN.toString());
+					CommandType.COMMAND_QUEUE_RUN.getXmlKey(),
+					CommandType.COMMAND_QUEUE_RUN.toString());
 
 			iData_Queue_ThreadPool_Id = SXmlParserHandler.assignIntValueIfValid(attrs,
-					CommandQueueSaxType.CMD_THREAD_POOL_ID.getXmlKey(), -1);
+					CommandType.CMD_THREAD_POOL_ID.getXmlKey(), -1);
 
 			iData_Queue_ThreadPool_Wait_Id = SXmlParserHandler.assignIntValueIfValid(attrs,
-					CommandQueueSaxType.CMD_THREAD_POOL_WAIT_ID.getXmlKey(), -1);
+					CommandType.CMD_THREAD_POOL_WAIT_ID.getXmlKey(), -1);
 
 			lastCommand = generalManager.getCommandManager().createCommandQueue(
 					sData_Queue_type, sData_Queue_process, iData_Queue_CmdId,
@@ -285,14 +285,14 @@ public class CommandSaxHandler
 							+ e.toString());
 		}
 
-		CommandQueueSaxType currentType = CommandQueueSaxType.valueOf(sData_Queue_type);
+		CommandType currentType = CommandType.valueOf(sData_Queue_type);
 
 		switch (currentType)
 		// CommandQueueSaxType
 		{
 
 			case COMMAND_QUEUE_RUN:
-				if (CommandQueueSaxType.valueOf(sData_Queue_process) == CommandQueueSaxType.RUN_QUEUE)
+				if (CommandType.valueOf(sData_Queue_process) == CommandType.RUN_QUEUE)
 				{
 					lastCommand.doCommand();
 					commandQueueIter = null;
@@ -501,13 +501,6 @@ public class CommandSaxHandler
 	 */
 	public void destroyHandler()
 	{
-
-		if (commandQueueIter != null)
-		{
-			commandQueueIter.destroy();
-			commandQueueIter = null;
-		}
-
 		super.destroyHandler();
 	}
 }

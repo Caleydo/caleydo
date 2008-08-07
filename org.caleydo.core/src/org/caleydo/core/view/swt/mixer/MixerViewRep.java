@@ -1,15 +1,14 @@
 package org.caleydo.core.view.swt.mixer;
 
 import java.util.ArrayList;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Slider;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Slider;
 
 /**
  * Class implements a slider mixer representation. The slider stack can contain
@@ -23,16 +22,17 @@ public class MixerViewRep
 	extends AView
 	implements IView
 {
-
 	protected ArrayList<Slider> sliderList;
 
 	protected int iNumberOfSliders = 0;
 
-	public MixerViewRep(IGeneralManager generalManager, int iViewId, int iParentContainerId,
+	/**
+	 * Constructor.
+	 */
+	public MixerViewRep(int iViewID, int iParentContainerId,
 			String sLabel)
 	{
-
-		super(generalManager, iViewId, iParentContainerId, sLabel, ViewType.SWT_MIXER);
+		super(iViewID, iParentContainerId, sLabel, ViewType.SWT_MIXER);
 	}
 
 	/**

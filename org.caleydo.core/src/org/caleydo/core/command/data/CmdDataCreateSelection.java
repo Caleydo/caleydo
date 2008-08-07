@@ -1,18 +1,12 @@
 package org.caleydo.core.command.data;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
-import org.caleydo.core.data.collection.ESetType;
-import org.caleydo.core.data.selection.Selection;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
- * Class creates a selection set including the three storages and the virtual
- * array. This commands act as a MAKRO.
+ * Class creates a selection.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -20,40 +14,40 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 public class CmdDataCreateSelection
 	extends ACmdCreate_IdTargetLabelAttrDetail
 {
-
 	/**
 	 * Constructor.
-	 * 
-	 * @param generalManager
-	 * @param commandManager
-	 * @param commandQueueSaxType
 	 */
-	public CmdDataCreateSelection(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	public CmdDataCreateSelection(final CommandType cmdType)
 	{
-
-		super(generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.ICommand#doCommand()
+	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
-
-		generalManager.getSelectionManager().createSelection(iUniqueId);
+		generalManager.getSelectionManager().createSelection(iExternalID);
 
 		commandManager.runDoCommand(this);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
+	 */
 	public void undoCommand() throws CaleydoRuntimeException
 	{
-
 		commandManager.runUndoCommand(this);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
+	 */
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
-
-		assert parameterHandler != null : "ParameterHandler object is null!";
-
 		super.setParameterHandler(parameterHandler);
 
 		// Nothing else to do here because the command only
@@ -63,13 +57,15 @@ public class CmdDataCreateSelection
 
 	public void setAttributes(int iSelectionSetId)
 	{
-
-		this.iUniqueId = iSelectionSetId;
+		this.iExternalID = iSelectionSetId;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.base.ACommand#getInfoText()
+	 */
 	public String getInfoText()
 	{
-
-		return super.getInfoText() + " -> " + this.iUniqueId + ": " + this.sLabel;
+		return super.getInfoText() + " -> " + this.iExternalID + ": " + this.sLabel;
 	}
 }

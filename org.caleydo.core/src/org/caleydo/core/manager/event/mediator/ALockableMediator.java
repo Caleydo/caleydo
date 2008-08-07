@@ -1,6 +1,7 @@
 package org.caleydo.core.manager.event.mediator;
 
 import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
@@ -14,27 +15,18 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 public abstract class ALockableMediator
 	extends ALockableMediatorReceiver
 {
-
-	protected final IEventPublisher eventPublisher;
-
 	private final MediatorUpdateType mediatorUpdateType;
 
 	public final int iMediatorId;
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param iMediatorId
-	 * @param mediatorUpdateType if ==NULL, MediatorUpdateType.MEDIATOR_DEFAULT
-	 *            is used as default
 	 */
-	protected ALockableMediator(final IEventPublisher eventPublisher, int iMediatorId,
+	protected ALockableMediator(int iMediatorId,
 			final MediatorUpdateType mediatorUpdateType)
 	{
-
 		super();
 
-		this.eventPublisher = eventPublisher;
 		this.iMediatorId = iMediatorId;
 
 		if (mediatorUpdateType == null)
@@ -70,8 +62,7 @@ public abstract class ALockableMediator
 	 */
 	public final void destroyMediator(final IEventPublisher sender)
 	{
-
-		if (!eventPublisher.equals(sender))
+		if (!GeneralManager.get().equals(sender))
 		{
 			throw new CaleydoRuntimeException(
 					"IMediator.destroyMediator() may only be callled by its creator!");
@@ -81,9 +72,9 @@ public abstract class ALockableMediator
 	}
 
 	/**
-	 * @see org.caleydo.core.data.IUniqueObject#getId()
+	 * @see org.caleydo.core.data.IUniqueObject#getID()
 	 */
-	public final int getId()
+	public final int getID()
 	{
 
 		return iMediatorId;

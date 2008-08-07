@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.data.CmdDataCreateSelection;
 import org.caleydo.core.command.event.CmdEventCreateMediator;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
@@ -13,7 +13,7 @@ import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IEventPublisher.MediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
-import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.ViewType;
@@ -25,7 +25,7 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * 
- * DataEntitySearcherViewRep
+ * Data entity searcher.
  * 
  * @author Marc Streit
  *
@@ -39,18 +39,15 @@ implements IMediatorSender{;
 	/**
 	 * Constructor.
 	 * 
-	 * @param generalManager
-	 * @param iViewId
+	 * @param iViewID
 	 * @param iParentContainerId
 	 * @param sLabel
 	 */
-	public DataEntitySearcherViewRep(final IGeneralManager generalManager, 
-			final int iViewId, 
+	public DataEntitySearcherViewRep(final int iViewID, 
 			final int iParentContainerId, 
 			final String sLabel) {
 
-		super(generalManager, 
-				iViewId, 
+		super(iViewID, 
 				iParentContainerId, 
 				sLabel,
 				ViewType.SWT_DATA_ENTITY_SEARCHER);
@@ -58,22 +55,25 @@ implements IMediatorSender{;
 	
 	public void setAttributes(final ArrayList<Integer> iAlViewReceiverIDs) {
 
-		iSearchSelectionSetId = generalManager.getSetManager()
-			.createId(EManagerObjectType.SET);
+		//TODO: review when implemented ID management
+		iSearchSelectionSetId = -1;//generalManager.getSetManager()
+//			.createId(EManagerObjectType.SET);
 
 		CmdDataCreateSelection selectedSetCmd = (CmdDataCreateSelection) generalManager.getCommandManager()
-			.createCommandByType(CommandQueueSaxType.CREATE_SELECTION);
+			.createCommandByType(CommandType.CREATE_SELECTION);
 	
 		selectedSetCmd.setAttributes(iSearchSelectionSetId);
 		selectedSetCmd.doCommand();
 	
 		CmdEventCreateMediator tmpMediatorCmd = (CmdEventCreateMediator) generalManager.getCommandManager()
-			.createCommandByType(CommandQueueSaxType.CREATE_EVENT_MEDIATOR);
+			.createCommandByType(CommandType.CREATE_EVENT_MEDIATOR);
 		
 		ArrayList<Integer> iAlSenderIDs = new ArrayList<Integer>();
 		iAlSenderIDs.add(iUniqueID);
-		tmpMediatorCmd.setAttributes(generalManager.getEventPublisher().createId(EManagerObjectType.EVENT_MEDIATOR_CREATE), 
-				iAlSenderIDs, iAlViewReceiverIDs, MediatorType.SELECTION_MEDIATOR);
+		
+		//TODO: review when implemented ID management
+//		tmpMediatorCmd.setAttributes(generalManager.getEventPublisher().createId(EManagerObjectType.EVENT_MEDIATOR_CREATE), 
+//				iAlSenderIDs, iAlViewReceiverIDs, MediatorType.SELECTION_MEDIATOR);
 		tmpMediatorCmd.doCommand();
 	}
 	

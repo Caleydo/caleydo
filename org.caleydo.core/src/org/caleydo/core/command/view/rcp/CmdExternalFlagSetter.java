@@ -1,9 +1,7 @@
 package org.caleydo.core.command.view.rcp;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
@@ -24,11 +22,12 @@ public class CmdExternalFlagSetter
 
 	private int iViewId;
 
-	public CmdExternalFlagSetter(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	/**
+	 * Constructor.
+	 */
+	public CmdExternalFlagSetter(final CommandType cmdType)
 	{
-
-		super(generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 	}
 
 	/*
@@ -69,14 +68,12 @@ public class CmdExternalFlagSetter
 	 */
 	public void undoCommand() throws CaleydoRuntimeException
 	{
-
 		commandManager.runUndoCommand(this);
 	}
 
 	public void setAttributes(final int iViewId, final boolean bFlag,
 			final EExternalFlagSetterType externalFlagSetterType)
 	{
-
 		this.bFlag = bFlag;
 		this.externalFlagSetterType = externalFlagSetterType;
 		this.iViewId = iViewId;

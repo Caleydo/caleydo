@@ -13,7 +13,6 @@ import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.GlyphRenderStyle;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -37,9 +36,6 @@ public class GLCanvasGlyph
 	implements IMediatorSender, IMediatorReceiver
 {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -7899479912218913482L;
 
 	GLCanvasGlyphGrid grid_;
@@ -63,17 +59,15 @@ public class GLCanvasGlyph
 	/**
 	 * Constructor.
 	 * 
-	 * @param generalManager
-	 * @param iViewId
+	 * @param iViewID
 	 * @param iGLCanvasID
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLCanvasGlyph(final IGeneralManager generalManager, final int iViewId,
+	public GLCanvasGlyph(final int iViewID,
 			final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
 	{
-
-		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum, true);
+		super(iViewID, iGLCanvasID, sLabel, viewFrustum, true);
 
 		mouseListener_ = new GlyphMouseListener(this, generalManager);
 		keyListener_ = new GlyphKeyListener();

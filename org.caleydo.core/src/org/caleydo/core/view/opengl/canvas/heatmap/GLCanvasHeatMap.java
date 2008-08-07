@@ -11,7 +11,6 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.HeatMapRenderStyle;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -61,17 +60,16 @@ public class GLCanvasHeatMap
 	/**
 	 * Constructor.
 	 * 
-	 * @param generalManager
-	 * @param iViewId
+	 * @param iViewID
 	 * @param iGLCanvasID
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLCanvasHeatMap(final IGeneralManager generalManager, final int iViewId,
+	public GLCanvasHeatMap(final int iViewID,
 			final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
 	{
 
-		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
+		super(iViewID, iGLCanvasID, sLabel, viewFrustum);
 
 		ArrayList<EViewInternalSelectionType> alSelectionTypes = new ArrayList<EViewInternalSelectionType>();
 		alSelectionTypes.add(EViewInternalSelectionType.NORMAL);

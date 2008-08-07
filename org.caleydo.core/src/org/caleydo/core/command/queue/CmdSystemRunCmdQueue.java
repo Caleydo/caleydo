@@ -1,15 +1,8 @@
-/**
- * 
- */
 package org.caleydo.core.command.queue;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACommand;
-import org.caleydo.core.command.queue.ICommandQueue;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager; // import
-// org.caleydo.core.manager
-// .type.ManagerObjectType;
+import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
@@ -20,22 +13,17 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 public class CmdSystemRunCmdQueue
 	extends ACommand
 {
-
 	protected int iCommandQueueId;
 
 	/**
 	 * Constructor.
 	 */
-	public CmdSystemRunCmdQueue(int iSetCmdId, final IGeneralManager setGeneralManager,
-			final ICommandManager setCommandManager,
-			final CommandQueueSaxType commandQueueSaxType, final int iCommandQueueId)
+	public CmdSystemRunCmdQueue(final CommandType cmdType, final int iCommandQueueId)
 	{
 
-		super(iSetCmdId, setGeneralManager, setCommandManager, commandQueueSaxType);
+		super(cmdType);
 
 		this.iCommandQueueId = iCommandQueueId;
-
-		setCommandQueueSaxType(CommandQueueSaxType.COMMAND_QUEUE_RUN);
 	}
 
 	/*
@@ -76,4 +64,12 @@ public class CmdSystemRunCmdQueue
 		cmdQueue.doCommand();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.base.ACommand#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
+	 */
+	public void setParameterHandler(IParameterHandler phHandler)
+	{
+		// not yet implemented
+	}
 }

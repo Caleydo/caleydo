@@ -2,12 +2,11 @@ package org.caleydo.core.command.view.swt;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
-import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.system.StringConversionTool;
@@ -19,25 +18,23 @@ public class CmdViewCreateDataEntitySearcher
 
 	private ArrayList<Integer> iAlViewReceiverID;
 
-	public CmdViewCreateDataEntitySearcher(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	/**
+	 * Constructor.
+	 */
+	public CmdViewCreateDataEntitySearcher(final CommandType cmdType)
 	{
 
-		super(generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 
 		iAlViewReceiverID = new ArrayList<Integer>();
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail#
-	 * setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
+	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
 	 */
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
-
-		assert parameterHandler != null : "ParameterHandler object is null!";
-
 		super.setParameterHandler(parameterHandler);
 
 		StringTokenizer receiverToken = new StringTokenizer(sDetail,
@@ -56,18 +53,19 @@ public class CmdViewCreateDataEntitySearcher
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
-
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
 		DataEntitySearcherViewRep dataEntitySearcherView = (DataEntitySearcherViewRep) viewManager
-				.createView(EManagerObjectType.VIEW_SWT_DATA_ENTITY_SEARCHER, iUniqueId, -1,
+				.createView(EManagedObjectType.VIEW_SWT_DATA_ENTITY_SEARCHER, iExternalID, -1,
 						sLabel);
 
-		viewManager.registerItem(dataEntitySearcherView, iUniqueId);
+		viewManager.registerItem(dataEntitySearcherView, iExternalID);
 
 		viewManager.addViewRep(dataEntitySearcherView);
 
 		dataEntitySearcherView.setAttributes(iAlViewReceiverID);
+		
+		commandManager.runDoCommand(this);
 	}
 
 	/*
@@ -76,9 +74,6 @@ public class CmdViewCreateDataEntitySearcher
 	 */
 	public void undoCommand() throws CaleydoRuntimeException
 	{
-
-		// TODO Auto-generated method stub
-
+		commandManager.runUndoCommand(this);
 	}
-
 }

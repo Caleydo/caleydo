@@ -1,17 +1,15 @@
 package org.caleydo.core.command.view.swt;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.swt.progressbar.ProgressBarViewRep;
 
 /**
- * Class implementes the command for creating a progress bar view.
+ * Class implements the command for creating a progress bar view.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -23,29 +21,26 @@ public class CmdViewCreateProgressBar
 	int iProgressBarCurrentValue = 0;
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 */
-	public CmdViewCreateProgressBar(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	public CmdViewCreateProgressBar(final CommandType cmdType)
 	{
-
-		super(generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 	}
 
-	/**
-	 * Method creates a progress bar view, sets the attributes and calls the
-	 * init and draw method.
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
-
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
 		ProgressBarViewRep progressBarView = (ProgressBarViewRep) viewManager.createView(
-				EManagerObjectType.VIEW_SWT_PROGRESS_BAR, iUniqueId, iParentContainerId,
+				EManagedObjectType.VIEW_SWT_PROGRESS_BAR, iExternalID, iParentContainerId,
 				sLabel);
 
-		viewManager.registerItem(progressBarView, iUniqueId);
+		viewManager.registerItem(progressBarView, iExternalID);
 
 		progressBarView.setAttributes(iProgressBarCurrentValue);
 		progressBarView.initView();
@@ -54,23 +49,27 @@ public class CmdViewCreateProgressBar
 		commandManager.runDoCommand(this);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
+	 */
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
-
-		assert parameterHandler != null : "ParameterHandler object is null!";
-
 		super.setParameterHandler(parameterHandler);
 
 		parameterHandler.setValueAndTypeAndDefault("iProgressBarCurrentValue",
-				parameterHandler.getValueString(CommandQueueSaxType.TAG_DETAIL.getXmlKey()),
+				parameterHandler.getValueString(CommandType.TAG_DETAIL.getXmlKey()),
 				IParameterHandler.ParameterHandlerType.INT, "0");
 
 		iProgressBarCurrentValue = parameterHandler.getValueInt("iProgressBarCurrentValue");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
+	 */
 	public void undoCommand() throws CaleydoRuntimeException
 	{
-
 		commandManager.runUndoCommand(this);
 	}
 }

@@ -2,10 +2,8 @@ package org.caleydo.core.command.view.rcp;
 
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLCapabilities;
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
@@ -22,22 +20,19 @@ public class CmdViewCreateRcpGLCanvas
 {
 
 	/**
-	 * Constructor
+	 * Constructor.
 	 */
-	public CmdViewCreateRcpGLCanvas(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	public CmdViewCreateRcpGLCanvas(final CommandType cmdType)
 	{
-
-		super(generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 	}
-
-	/**
-	 * Method creates a test triangle view, sets the attributes and calls the
-	 * init and draw method.
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
-
 		GLCapabilities glCapabilities = new GLCapabilities();
 		glCapabilities.setStencilBits(1);
 
@@ -53,17 +48,12 @@ public class CmdViewCreateRcpGLCanvas
 		commandManager.runDoCommand(this);
 	}
 
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
-
-		assert parameterHandler != null : "ParameterHandler object is null!";
-
-		super.setParameterHandler(parameterHandler);
-	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
+	 */
 	public void undoCommand() throws CaleydoRuntimeException
 	{
-
 		commandManager.runUndoCommand(this);
 	}
 }

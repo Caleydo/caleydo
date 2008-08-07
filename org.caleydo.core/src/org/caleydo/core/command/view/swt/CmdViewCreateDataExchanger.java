@@ -1,12 +1,7 @@
 package org.caleydo.core.command.view.swt;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
-import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
  * Class implements the command for the data exchanger view.
@@ -21,24 +16,9 @@ public class CmdViewCreateDataExchanger
 	/**
 	 * Constructor.
 	 */
-	public CmdViewCreateDataExchanger(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	public CmdViewCreateDataExchanger(final CommandType cmdType)
 	{
-
-		super(generalManager, commandManager, commandQueueSaxType);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY#
-	 * setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
-	 */
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
-
-		assert parameterHandler != null : "ParameterHandler object is null!";
-
-		super.setParameterHandler(parameterHandler);
+		super(cmdType);
 	}
 
 	/*
@@ -77,7 +57,6 @@ public class CmdViewCreateDataExchanger
 	 */
 	public void undoCommand()
 	{
-
 		commandManager.runUndoCommand(this);
 	}
 }

@@ -130,11 +130,10 @@ public class GLCanvasParCoords3D
 	/**
 	 * Constructor.
 	 */
-	public GLCanvasParCoords3D(final IGeneralManager generalManager, final int iViewId,
+	public GLCanvasParCoords3D(final int iViewID,
 			final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
 	{
-
-		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum);
+		super(iViewID, iGLCanvasID, sLabel, viewFrustum);
 
 		// alDataStorages = new ArrayList<IStorage>();
 		renderStyle = new ParCoordsRenderStyle(viewFrustum);

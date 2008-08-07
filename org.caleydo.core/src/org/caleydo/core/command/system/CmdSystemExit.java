@@ -1,10 +1,7 @@
 package org.caleydo.core.command.system;
 
-import org.caleydo.core.command.CommandQueueSaxType;
-import org.caleydo.core.command.ICommand;
-import org.caleydo.core.data.AManagedObject;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.base.ACommand;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
@@ -15,17 +12,14 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  * @author Marc Streit
  */
 public class CmdSystemExit
-	extends AManagedObject
-	implements ICommand
+	extends ACommand
 {
-
 	/**
 	 * Constructor.
 	 */
-	public CmdSystemExit(final IGeneralManager generalManager)
+	public CmdSystemExit(final CommandType cmdType)
 	{
-
-		super(-1, generalManager);
+		super(cmdType);
 	}
 
 	/*
@@ -34,10 +28,6 @@ public class CmdSystemExit
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
-
-		// generalManager.logMsg(
-		// "CmdSystemExit.doCommand(): shut down application.",
-		// LoggerType.FULL);
 		System.exit(0);
 	}
 
@@ -47,31 +37,24 @@ public class CmdSystemExit
 	 */
 	public void undoCommand() throws CaleydoRuntimeException
 	{
-
 		// no undo of system shutdown!
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.ICommand#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
+	 */
 	public void setParameterHandler(IParameterHandler parameterHandler)
 	{
-
-		assert false : "Must not be called for this classs.";
+		
 	}
-
-	public CommandQueueSaxType getCommandType()
-	{
-
-		return CommandQueueSaxType.SYSTEM_SHUT_DOWN;
-	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.command.ICommand#getInfoText()
 	 */
 	public String getInfoText()
 	{
-
-		assert false : "Must not be called for this calss.";
-
-		return null;
+		return "System exit!";
 	}
 }

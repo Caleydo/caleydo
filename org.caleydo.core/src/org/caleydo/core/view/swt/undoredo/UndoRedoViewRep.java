@@ -28,21 +28,17 @@ public class UndoRedoViewRep
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param generalManager
-	 * @param iViewId
-	 * @param iParentContainerId
-	 * @param sLabel
+
 	 */
-	public UndoRedoViewRep(IGeneralManager generalManager, int iViewId,
+	public UndoRedoViewRep( int iViewID,
 			int iParentContainerId, String sLabel)
 	{
-
-		super(generalManager, iViewId, iParentContainerId, sLabel, ViewType.SWT_IMAGE_VIEWER);
+		super(iViewID, iParentContainerId, sLabel, ViewType.SWT_IMAGE_VIEWER);
 	}
 
-	/**
-	 * @see org.caleydo.core.view.IView#initView()
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.AView#initViewSwtComposit(org.eclipse.swt.widgets.Composite)
 	 */
 	protected void initViewSwtComposit(Composite swtContainer)
 	{
@@ -56,13 +52,12 @@ public class UndoRedoViewRep
 		undoRedoCombo = new Combo(swtContainer, SWT.READ_ONLY);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.IView#drawView()
+	 */
 	public void drawView()
 	{
-
-		// generalManager.getSingelton().logMsg(
-		// this.getClass().getSimpleName() +
-		// ": drawView(): Load "+sUrl,
-		// LoggerType.VERBOSE );
 	}
 
 	public void setAttributes(int iWidth, int iHeight, String sImagePath)

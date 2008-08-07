@@ -1,6 +1,6 @@
 package org.caleydo.core.manager.command.factory;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.command.data.CmdDataCreateSelection;
 import org.caleydo.core.command.data.CmdDataCreateSet;
@@ -34,9 +34,7 @@ import org.caleydo.core.command.view.swt.CmdViewCreateImage;
 import org.caleydo.core.command.view.swt.CmdViewCreateMixer;
 import org.caleydo.core.command.view.swt.CmdViewCreatePathway;
 import org.caleydo.core.command.view.swt.CmdViewCreateProgressBar;
-import org.caleydo.core.command.view.swt.CmdViewCreateSelectionSlider;
 import org.caleydo.core.command.view.swt.CmdViewCreateSetEditor;
-import org.caleydo.core.command.view.swt.CmdViewCreateStorageSlider;
 import org.caleydo.core.command.view.swt.CmdViewCreateSwtGLCanvas;
 import org.caleydo.core.command.view.swt.CmdViewCreateUndoRedo;
 import org.caleydo.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
@@ -44,6 +42,7 @@ import org.caleydo.core.command.window.swt.CmdContainerCreate;
 import org.caleydo.core.command.window.swt.CmdWindowCreate;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
@@ -57,7 +56,6 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 public class CommandFactory
 	implements ICommandFactory
 {
-
 	private ICommand lastCommand;
 
 	protected final IGeneralManager generalManager;
@@ -65,208 +63,163 @@ public class CommandFactory
 	protected final ICommandManager commandManager;
 
 	/**
-	 * Constructor
-	 * 
-	 * @param setRefGeneralManager reference to IGeneralManager
-	 * @param setCommandType may be null if no command shall be created by the
-	 *            constructor
+	 * Constructor.
 	 */
-	public CommandFactory(final IGeneralManager setRefGeneralManager,
-			final ICommandManager commandManager)
+	public CommandFactory()
 	{
-
-		assert setRefGeneralManager != null : "Can not create CommandFactory from null-pointer to IGeneralManager";
-
-		this.generalManager = setRefGeneralManager;
-		this.commandManager = commandManager;
+		this.generalManager = GeneralManager.get();
+		this.commandManager = generalManager.getCommandManager();
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.command.factory.ICommandFactory#createCommandByType
-	 * (org.caleydo.core.command.CommandQueueSaxType)
+	 * @see org.caleydo.core.manager.command.factory.ICommandFactory#createCommandByType(org.caleydo.core.command.CommandQueueSaxType)
 	 */
-	public ICommand createCommandByType(final CommandQueueSaxType cmdType)
+	public ICommand createCommandByType(final CommandType cmdType)
 	{
-
 		ICommand createdCommand = null;
 
 		switch (cmdType)
 		{
 
-			/*
-			 * ---------------------- LAODING... ----------------------
+			/**
+			 * ---------------------- DATA LOADING ----------------------
 			 */
 			case LOAD_LOOKUP_TABLE_FILE:
 			{
-				createdCommand = new CmdLoadFileLookupTable(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdLoadFileLookupTable(cmdType);
 				break;
 			}
 			case LOAD_DATA_FILE:
 			{
-				createdCommand = new CmdLoadFileNStorages(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdLoadFileNStorages(cmdType);
 				break;
 			}
 			case LOAD_URL_IN_BROWSER:
 			{
-				createdCommand = new CmdViewLoadURLInHTMLBrowser(generalManager,
-						commandManager, cmdType);
+				createdCommand = new CmdViewLoadURLInHTMLBrowser(cmdType);
 				break;
 			}
 
-				/*
-				 * ---------------------- DATA CONTAINERS ----------------------
-				 */
+			/**
+			 * ---------------------- DATA CONTAINERS ----------------------
+			 */
 			case CREATE_STORAGE:
 			{
-				createdCommand = new CmdDataCreateStorage(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdDataCreateStorage(cmdType);
 				break;
 			}
 			case CREATE_VIRTUAL_ARRAY:
 			{
-				createdCommand = new CmdDataCreateVirtualArray(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdDataCreateVirtualArray(cmdType);
 				break;
 			}
 			case CREATE_SET_DATA:
 			{
-				createdCommand = new CmdDataCreateSet(generalManager, commandManager, cmdType);
+				createdCommand = new CmdDataCreateSet(cmdType);
 				break;
 			}
 			case CREATE_SELECTION:
 			{
-				createdCommand = new CmdDataCreateSelection(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdDataCreateSelection(cmdType);
 				break;
 			}
 
-				/*
-				 * ---------------------- SWT ----------------------
-				 */
+			/**
+			 * ---------------------- SWT ----------------------
+			 */
 			case CREATE_SWT_WINDOW:
 			{
-				createdCommand = new CmdWindowCreate(generalManager, commandManager, cmdType);
+				createdCommand = new CmdWindowCreate(cmdType);
 				break;
 			}
 			case CREATE_SWT_CONTAINER:
 			{
-				createdCommand = new CmdContainerCreate(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdContainerCreate(cmdType);
 				break;
 			}
 
-				/*
-				 * ---------------------- VIEW ----------------------
-				 */
+			/**
+			 * ---------------------- VIEW ----------------------
+			 */
 			case CREATE_VIEW_GEARS:
 			{
-				createdCommand = new CmdViewCreateGears(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdViewCreateGears(cmdType);
 				break;
 			}
 			case CREATE_VIEW_SWT_GLCANVAS:
 			{
-				createdCommand = new CmdViewCreateSwtGLCanvas(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdViewCreateSwtGLCanvas(cmdType);
 				break;
 			}
 			case CREATE_VIEW_RCP_GLCANVAS:
 			{
-				createdCommand = new CmdViewCreateRcpGLCanvas(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdViewCreateRcpGLCanvas(cmdType);
 				break;
 			}
 			case CREATE_VIEW_DATA_EXPLORER:
 			{
-				createdCommand = new CmdViewCreateDataExplorer(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdViewCreateDataExplorer(cmdType);
 				break;
 			}
 			case CREATE_VIEW_DATA_EXCHANGER:
 			{
-				createdCommand = new CmdViewCreateDataExchanger(generalManager,
-						commandManager, cmdType);
+				createdCommand = new CmdViewCreateDataExchanger(cmdType);
 				break;
 			}
 
 			case CREATE_VIEW_SET_EDITOR:
 			{
-				createdCommand = new CmdViewCreateSetEditor(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdViewCreateSetEditor(cmdType);
 				break;
 			}
 			case CREATE_VIEW_PROGRESSBAR:
 			{
-				createdCommand = new CmdViewCreateProgressBar(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdViewCreateProgressBar(cmdType);
 				break;
 			}
 			case CREATE_VIEW_PATHWAY:
 			{
-				createdCommand = new CmdViewCreatePathway(generalManager, commandManager,
-						cmdType);
-				break;
-			}
-			case CREATE_VIEW_STORAGE_SLIDER:
-			{
-				createdCommand = new CmdViewCreateStorageSlider(generalManager,
-						commandManager, cmdType);
-				break;
-			}
-			case CREATE_VIEW_SELECTION_SLIDER:
-			{
-				createdCommand = new CmdViewCreateSelectionSlider(generalManager,
-						commandManager, cmdType);
+				createdCommand = new CmdViewCreatePathway(cmdType);
 				break;
 			}
 			case CREATE_VIEW_MIXER:
 			{
-				createdCommand = new CmdViewCreateMixer(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdViewCreateMixer(cmdType);
 				break;
 			}
 			case CREATE_VIEW_GLYPHCONFIG:
 			{
-				createdCommand = new CmdViewCreateGlyphConfiguration(generalManager,
-						commandManager, cmdType);
+				createdCommand = new CmdViewCreateGlyphConfiguration(cmdType);
 				break;
 			}
 			case CREATE_VIEW_BROWSER:
 			{
-				createdCommand = new CmdViewCreateHTMLBrowser(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdViewCreateHTMLBrowser(cmdType);
 				break;
 			}
 			case CREATE_VIEW_IMAGE:
 			{
-				createdCommand = new CmdViewCreateImage(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdViewCreateImage(cmdType);
 				break;
 			}
 			case CREATE_VIEW_UNDO_REDO:
 			{
-				createdCommand = new CmdViewCreateUndoRedo(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdViewCreateUndoRedo(cmdType);
 				break;
 			}
 			case CREATE_VIEW_DATA_ENTITY_SEARCHER:
 			{
-				createdCommand = new CmdViewCreateDataEntitySearcher(generalManager,
-						commandManager, cmdType);
+				createdCommand = new CmdViewCreateDataEntitySearcher(cmdType);
 				break;
 			}
 
-				/*
-				 * ---------------------- OPEN GL ----------------------
-				 */
+			/**
+			 * ---------------------- OPEN GL ----------------------
+			 */
 			case CREATE_GL_PATHWAY_3D:
 			{
-				createdCommand = new CmdGlObjectPathway3D(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdGlObjectPathway3D(cmdType);
 				break;
 			}
 			case CREATE_GL_HEAT_MAP_3D:
@@ -277,89 +230,76 @@ public class CommandFactory
 			case CREATE_GL_WII_TEST:
 			case CREATE_GL_REMOTE_GLYPH:
 			{
-				createdCommand = new CmdCreateOpenGLCanvasListener(generalManager,
-						commandManager, cmdType);
+				createdCommand = new CmdCreateOpenGLCanvasListener(cmdType);
 				break;
 			}
 			case EXTERNAL_FLAG_SETTER:
 			{
-				createdCommand = new CmdExternalFlagSetter(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdExternalFlagSetter(cmdType);
 				break;
 			}
 			case EXTERNAL_ACTION_TRIGGER:
 			{
-				createdCommand = new CmdExternalActionTrigger(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdExternalActionTrigger(cmdType);
 				break;
 			}
-
-				/*
-				 * ---------------------- SYSTEM ----------------------
-				 */
-
-				/*
-				 * ---------------------- EVENT - SYSTEM ----------------------
-				 */
+			
+			/**
+			 * ---------------------- EVENT - SYSTEM ----------------------
+			 */
 			case CREATE_EVENT_MEDIATOR:
 			{
-				createdCommand = new CmdEventCreateMediator(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdEventCreateMediator(cmdType);
 				break;
 			}
 			case EVENT_MEDIATOR_ADD_OBJECT:
 			{
-				createdCommand = new CmdEventMediatorAddObject(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdEventMediatorAddObject(cmdType);
 				break;
 			}
 			case SYSTEM_SHUT_DOWN:
 			{
-				createdCommand = new CmdSystemExit(generalManager);
+				createdCommand = new CmdSystemExit(cmdType);
 				break;
 			}
 			case SET_SYSTEM_PATH_PATHWAYS:
 			{
-				createdCommand = new CmdSetPathwayDatabasePath(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdSetPathwayDatabasePath(cmdType);
 				break;
 			}
 			case LOAD_GLYPH_DEFINITIONS:
 			{
-				createdCommand = new CmdLoadGlyphDefinition(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdLoadGlyphDefinition(cmdType);
 				break;
 			}
 			case LOAD_PATHWAY_DATA:
 			{
-				createdCommand = new CmdLoadPathwayData(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdLoadPathwayData(cmdType);
 				break;
 			}
 			case FETCH_PATHWAY_DATA:
 			{
-				createdCommand = new CmdFetchPathwayData(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdFetchPathwayData(cmdType);
 				break;
 			}
-				/*
-				 * ---------------------- DATA FILTER ----------------------
-				 */
+			
+			/**
+			 * ---------------------- DATA FILTER ----------------------
+			 */
 			case DATA_FILTER_MATH:
 			{
-				createdCommand = new CmdDataFilterMath(generalManager, commandManager, cmdType);
+				createdCommand = new CmdDataFilterMath(cmdType);
 				break;
 			}
 			case DATA_FILTER_MIN_MAX:
 			{
-				createdCommand = new CmdDataFilterMinMax(generalManager, commandManager,
-						cmdType);
+				createdCommand = new CmdDataFilterMinMax(cmdType);
 				break;
 			}
 			default:
 				throw new CaleydoRuntimeException(
-						"CommandFactory::createCommand() Unsupported CommandQueue key= ["
-								+ cmdType + "]", CaleydoRuntimeExceptionType.SAXPARSER);
+						"Unsupported CommandQueue key= ["
+								+ cmdType + "]", CaleydoRuntimeExceptionType.COMMAND);
 		} // end switch
 
 		return createdCommand;
@@ -376,7 +316,7 @@ public class CommandFactory
 			final int sQueueThreadWait)
 	{
 
-		CommandQueueSaxType queueType;
+		CommandType queueType;
 
 		/**
 		 * Create a new uniqueId if necessary
@@ -384,7 +324,8 @@ public class CommandFactory
 		int iNewUniqueId = iCmdId;
 		if (iCmdId < 0)
 		{
-			iNewUniqueId = commandManager.createId(null);
+			//TODO: review when implementing ID management
+			iNewUniqueId = -1; //commandManager.createId(null);
 		}
 		/**
 		 * End: Create a new uniqueId if necessary
@@ -392,7 +333,7 @@ public class CommandFactory
 
 		try
 		{
-			queueType = CommandQueueSaxType.valueOf(sCmdType);
+			queueType = CommandType.valueOf(sCmdType);
 		}
 		catch (IllegalArgumentException iae)
 		{
@@ -405,32 +346,29 @@ public class CommandFactory
 		{
 			case COMMAND_QUEUE_OPEN:
 			{
-				ICommand cmdQueue = new CommandQueueVector(iNewUniqueId, generalManager,
-						commandManager, queueType, iCmdQueueId);
+				ICommand cmdQueue = new CommandQueueVector(queueType, iCmdQueueId);
 				return cmdQueue;
 			}
 
 			case COMMAND_QUEUE_RUN:
-				return new CmdSystemRunCmdQueue(iNewUniqueId, generalManager, commandManager,
-						queueType, iCmdQueueId);
+				return new CmdSystemRunCmdQueue(queueType, iCmdQueueId);
 
 			default:
 				throw new CaleydoRuntimeException("Unsupported CommandQueue key= [" + sCmdType
-						+ "]", CaleydoRuntimeExceptionType.SAXPARSER);
+						+ "]", CaleydoRuntimeExceptionType.COMMAND);
 		}
 
 	}
 
 	/**
 	 * Since the last created command is stored its reference is returned. Note:
-	 * be carefull with this method, becaus maybe the commadn was already
-	 * executed or distryed, or a new command was created meanwhile
+	 * be carefully with this method, because maybe the command was already
+	 * executed or destroyed, or a new command was created meanwhile
 	 * 
 	 * @return reference to last created command
 	 */
 	protected ICommand getLastCreatedCommand()
 	{
-
 		return lastCommand;
 	}
 }

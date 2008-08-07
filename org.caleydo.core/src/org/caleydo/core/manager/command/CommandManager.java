@@ -11,18 +11,16 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 import java.util.logging.Level;
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.command.ICommandListener;
 import org.caleydo.core.command.base.ACommand;
 import org.caleydo.core.command.queue.ICommandQueue;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.command.factory.CommandFactory;
 import org.caleydo.core.manager.command.factory.ICommandFactory;
-import org.caleydo.core.manager.type.EManagerObjectType;
-import org.caleydo.core.manager.type.EManagerType;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
 
@@ -36,7 +34,6 @@ public class CommandManager
 	extends AManager<ICommand>
 	implements ICommandManager
 {
-
 	private ICommandFactory commandFactory;
 
 	/**
@@ -50,11 +47,9 @@ public class CommandManager
 	private Vector<ICommand> vecCmdSchedule;
 
 	protected Hashtable<Integer, ICommandQueue> hashCommandQueueId;
-
 	// protected Hashtable<Integer, ICommand> hashCommandId;
 
 	protected Vector<ICommand> vecUndo;
-
 	protected Vector<ICommand> vecRedo;
 
 	protected ArrayList<UndoRedoViewRep> arUndoRedoViews;
@@ -64,24 +59,17 @@ public class CommandManager
 	/**
 	 * Constructor.
 	 */
-	public CommandManager(IGeneralManager setGeneralManager)
+	public CommandManager()
 	{
-
-		super(setGeneralManager, IGeneralManager.iUniqueId_TypeOffset_Command,
-				EManagerType.COMMAND);
-
-		commandFactory = new CommandFactory(setGeneralManager, this);
+		commandFactory = new CommandFactory();
 
 		vecCmdHandle = new Vector<ICommand>();
-
 		vecCmdSchedule = new Vector<ICommand>();
 
 		hashCommandQueueId = new Hashtable<Integer, ICommandQueue>();
-
 		// hashCommandId = new Hashtable<Integer, ICommand>();
 
 		vecUndo = new Vector<ICommand>(100);
-
 		vecRedo = new Vector<ICommand>(100);
 
 		arUndoRedoViews = new ArrayList<UndoRedoViewRep>();
@@ -195,7 +183,7 @@ public class CommandManager
 	 * org.caleydo.core.manager.ICommandManager#createCommandByType(org.caleydo
 	 * .core.command.CommandQueueSaxType)
 	 */
-	public ICommand createCommandByType(final CommandQueueSaxType cmdType)
+	public ICommand createCommandByType(final CommandType cmdType)
 	{
 
 		ICommand createdCommand = commandFactory.createCommandByType(cmdType);
@@ -219,8 +207,8 @@ public class CommandManager
 	public ICommand createCommand(final IParameterHandler phAttributes)
 	{
 
-		CommandQueueSaxType cmdType = CommandQueueSaxType.valueOf(phAttributes
-				.getValueString(CommandQueueSaxType.TAG_TYPE.getXmlKey()));
+		CommandType cmdType = CommandType.valueOf(phAttributes
+				.getValueString(CommandType.TAG_TYPE.getXmlKey()));
 
 		ICommand createdCommand = createCommandByType(cmdType);
 
@@ -270,14 +258,13 @@ public class CommandManager
 			final int iCmdId, final int iCmdQueueId, final int sQueueThread,
 			final int sQueueThreadWait)
 	{
-
 		ICommand newCmd = commandFactory.createCommandQueue(sCmdType, sProcessType, iCmdId,
 				iCmdQueueId, sQueueThread, sQueueThreadWait);
 
-		int iNewCmdId = createId(EManagerObjectType.COMMAND);
-		newCmd.setId(iNewCmdId);
-
-		registerItem(newCmd, iNewCmdId);
+//		int iNewCmdId = createId(EManagerObjectType.COMMAND);
+//		newCmd.setId(iNewCmdId);
+//
+//		registerItem(newCmd, iNewCmdId);
 
 		return newCmd;
 	}
@@ -347,7 +334,6 @@ public class CommandManager
 	 */
 	public void writeSerializedObjects(final String sFileName)
 	{
-
 		try
 		{
 			ObjectOutputStream out = new ObjectOutputStream(new FileOutputStream(sFileName));
@@ -360,7 +346,7 @@ public class CommandManager
 			{
 				out.writeObject(tmpCmd);
 
-				generalManager.getLogger().log(Level.INFO,
+				GeneralManager.get().getLogger().log(Level.INFO,
 						"Serialize command: [" + tmpCmd.getInfoText() + "]");
 			}
 
@@ -397,7 +383,6 @@ public class CommandManager
 			{
 				// vecCmdHandle.add((ICommand)in.readObject());
 				ACommand tmpCmd = ((ACommand) in.readObject());
-				tmpCmd.setGeneralManager(generalManager);
 				tmpCmd.doCommand();
 			}
 

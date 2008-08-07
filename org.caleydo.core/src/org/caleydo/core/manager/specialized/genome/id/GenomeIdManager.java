@@ -12,11 +12,8 @@ import org.caleydo.core.data.map.MultiHashArrayStringMap;
 import org.caleydo.core.data.mapping.EGenomeMappingDataType;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.AManager;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
-import org.caleydo.core.manager.type.EManagerObjectType;
-import org.caleydo.core.manager.type.EManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
@@ -30,7 +27,6 @@ public class GenomeIdManager
 	extends AManager
 	implements IGenomeIdManager
 {
-
 	private static final int iSortBufferInitialsize = 200;
 
 	private AtomicBoolean bHasMapActiveWriter = new AtomicBoolean(false);
@@ -54,13 +50,9 @@ public class GenomeIdManager
 	/**
 	 * Constructor.
 	 * 
-	 * @param setGeneralManager
 	 */
-	public GenomeIdManager(final IGeneralManager generalManager)
+	public GenomeIdManager()
 	{
-
-		super(generalManager, 66, EManagerType.DATA_GENOME_ID);
-
 		hashType2Map = new HashMap<EGenomeMappingType, IGenomeIdMap>(
 				iInitialCountAllLookupTables);
 

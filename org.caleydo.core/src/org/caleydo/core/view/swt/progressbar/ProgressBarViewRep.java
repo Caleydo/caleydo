@@ -32,11 +32,13 @@ public class ProgressBarViewRep
 
 	protected int iProgressBarStyle = SWT.HORIZONTAL;
 
-	public ProgressBarViewRep(IGeneralManager generalManager, int iViewId,
+	/**
+	 * Constructor.
+	 */
+	public ProgressBarViewRep(int iViewID,
 			int iParentContainerId, String sLabel)
 	{
-
-		super(generalManager, iViewId, iParentContainerId, sLabel, ViewType.SWT_PROGRESSBAR);
+		super(iViewID, iParentContainerId, sLabel, ViewType.SWT_PROGRESSBAR);
 	}
 
 	/**

@@ -93,11 +93,11 @@ public abstract class AGLCanvasStorageBasedView
 	/**
 	 * Constructor.
 	 */
-	public AGLCanvasStorageBasedView(final IGeneralManager generalManager, final int iViewId,
+	public AGLCanvasStorageBasedView(final int iViewId,
 			final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
 	{
 
-		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum, true);
+		super(iViewId, iGLCanvasID, sLabel, viewFrustum, true);
 
 		// alDataStorages = new ArrayList<IStorage>();
 		mapSelections = new EnumMap<ESelectionType, Integer>(ESelectionType.class);

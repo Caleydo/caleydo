@@ -6,7 +6,6 @@ import java.util.Iterator;
 import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.mediator.IMediator;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
@@ -14,7 +13,7 @@ import org.caleydo.core.manager.event.mediator.LockableExclusivFilterMediator;
 import org.caleydo.core.manager.event.mediator.LockableIgnoreFilterMediator;
 import org.caleydo.core.manager.event.mediator.LockableMediator;
 import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
-import org.caleydo.core.manager.type.EManagerType;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
@@ -44,14 +43,9 @@ public class EventPublisher
 	/**
 	 * Constructor.
 	 * 
-	 * @param generalManager
 	 */
-	public EventPublisher(final IGeneralManager generalManager)
+	public EventPublisher()
 	{
-
-		super(generalManager, IGeneralManager.iUniqueId_TypeOffset_EventPublisher,
-				EManagerType.EVENT_PUBLISHER);
-
 		/* Data */
 		hashSender2DataMediators = new HashMap<IMediatorSender, ArrayList<IMediator>>();
 		hashReceiver2DataMediators = new HashMap<IMediatorReceiver, ArrayList<IMediator>>();
@@ -131,18 +125,16 @@ public class EventPublisher
 			switch (mediatorUpdateType)
 			{
 				case MEDIATOR_DEFAULT:
-					newMediator = new LockableMediator(generalManager, iMediatorId,
+					newMediator = new LockableMediator(iMediatorId,
 							MediatorUpdateType.MEDIATOR_DEFAULT);
 					break;
 
 				case MEDIATOR_FILTER_ONLY_SET:
-					newMediator = new LockableExclusivFilterMediator(generalManager,
-							iMediatorId, null);
+					newMediator = new LockableExclusivFilterMediator(iMediatorId, null);
 					break;
 
 				case MEDIATOR_FILTER_ALL_EXPECT_SET:
-					newMediator = new LockableIgnoreFilterMediator(generalManager,
-							iMediatorId, null);
+					newMediator = new LockableIgnoreFilterMediator(iMediatorId, null);
 					break;
 				default:
 					assert false : "unknown type";
@@ -274,7 +266,7 @@ public class EventPublisher
 
 			try
 			{
-				sender = (IMediatorSender) generalManager.getViewGLCanvasManager().getItem(
+				sender = (IMediatorSender) GeneralManager.get().getViewGLCanvasManager().getItem(
 						iCurrentSenderId); // TODO
 				// :
 				// change
@@ -386,7 +378,7 @@ public class EventPublisher
 			IMediatorReceiver receiver = null;
 			try
 			{
-				receiver = (IMediatorReceiver) generalManager.getViewGLCanvasManager()
+				receiver = (IMediatorReceiver) GeneralManager.get().getViewGLCanvasManager()
 						.getItem(iCurrentReceiverId); // TODO
 				// :
 				// change

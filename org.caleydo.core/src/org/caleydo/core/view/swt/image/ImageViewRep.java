@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.core.view.swt.image;
 
 import org.eclipse.swt.SWT;
@@ -22,18 +19,20 @@ public class ImageViewRep
 	extends AView
 	implements IView
 {
-
 	protected String sImagePath;
 
-	public ImageViewRep(IGeneralManager generalManager, int iViewId, int iParentContainerId,
-			String sLabel)
+	/**
+	 * Constructor.
+	 * 
+	 */
+	public ImageViewRep(int iViewID, int iParentContainerId, String sLabel)
 	{
-
-		super(generalManager, iViewId, iParentContainerId, sLabel, ViewType.SWT_IMAGE_VIEWER);
+		super(iViewID, iParentContainerId, sLabel, ViewType.SWT_IMAGE_VIEWER);
 	}
 
-	/**
-	 * @see org.caleydo.core.view.IView#initView()
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.AView#initViewSwtComposit(org.eclipse.swt.widgets.Composite)
 	 */
 	protected void initViewSwtComposit(Composite swtContainer)
 	{
@@ -45,18 +44,17 @@ public class ImageViewRep
 		label.setImage(image);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.IView#drawView()
+	 */
 	public void drawView()
 	{
 
-		// generalManager.getSingelton().logMsg(
-		// this.getClass().getSimpleName() +
-		// ": drawView(): Load "+sUrl,
-		// LoggerType.VERBOSE );
 	}
 
 	public void setAttributes(int iWidth, int iHeight, String sImagePath)
 	{
-
 		super.setAttributes(iWidth, iHeight);
 
 		this.sImagePath = sImagePath;

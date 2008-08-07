@@ -1,21 +1,17 @@
 package org.caleydo.core.command.data;
 
-import java.util.ArrayList;
-import java.util.StringTokenizer;
 import java.util.logging.Level;
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabel;
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.IStorageManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
- * Command, creates a new storage.
+ * Command creates a new storage.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -25,16 +21,14 @@ public class CmdDataCreateStorage
 	extends ACmdCreate_IdTargetLabel
 {
 
-	EManagerObjectType storageType;
+	EManagedObjectType storageType;
 
 	/**
 	 * Constructor.
 	 */
-	public CmdDataCreateStorage(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	public CmdDataCreateStorage(final CommandType cmdType)
 	{
-
-		super(generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 	}
 
 	/*
@@ -43,17 +37,14 @@ public class CmdDataCreateStorage
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
-
 		IStorageManager storageManager = generalManager.getStorageManager();
-
 		IStorage storage = (IStorage) storageManager.createStorage(storageType);
-
-		storage.setId(iUniqueId);
 		storage.setLabel(sLabel);
+		storageManager.registerItem(storage, storage.getID());
 
-		storageManager.registerItem(storage, storage.getId());
-
-		generalManager.getLogger().log(Level.INFO, "Created Storage with ID: " + iUniqueId);
+		generalManager.getIDManager().mapInternalToExternalID(storage.getID(), iExternalID);
+		
+		generalManager.getLogger().log(Level.INFO, "Created Storage with ID: " + storage.getID());
 		commandManager.runDoCommand(this);
 	}
 
@@ -63,30 +54,26 @@ public class CmdDataCreateStorage
 	 */
 	public void undoCommand() throws CaleydoRuntimeException
 	{
-
 		commandManager.runUndoCommand(this);
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.command.base.ACmdCreate_IdTargetLabel#setParameterHandler
-	 * (org.caleydo.core.parser.parameter.IParameterHandler)
+	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabel#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
 	 */
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
-
 		super.setParameterHandler(parameterHandler);
 
-		String sAttrib1 = parameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE1
+		String sAttrib1 = parameterHandler.getValueString(CommandType.TAG_ATTRIBUTE1
 				.getXmlKey());
 
 		if (sAttrib1.length() > 0)
 		{
 			if (sAttrib1.equalsIgnoreCase("NOMINAL"))
-				storageType = EManagerObjectType.STORAGE_NOMINAL;
+				storageType = EManagedObjectType.STORAGE_NOMINAL;
 			else if (sAttrib1.equalsIgnoreCase("NUMERICAL"))
-				storageType = EManagerObjectType.STORAGE_NUMERICAL;
+				storageType = EManagedObjectType.STORAGE_NUMERICAL;
 			else
 				throw new CaleydoRuntimeException(
 						"attrib1 of CREATE_STORAGE must be either NUMERICAL or NOMINAL, but was neither",
@@ -95,10 +82,9 @@ public class CmdDataCreateStorage
 
 	}
 
-	public void setAttributes(int iStorageID, EManagerObjectType stroageType)
+	public void setAttributes(int iStorageID, EManagedObjectType stroageType)
 	{
-
-		iUniqueId = iStorageID;
+		iExternalID = iStorageID;
 		this.storageType = stroageType;
 	}
 }

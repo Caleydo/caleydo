@@ -6,22 +6,20 @@ import java.util.HashSet;
 import java.util.Vector;
 import java.util.logging.Level;
 import org.caleydo.core.manager.AManager;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.type.EManagerType;
 import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyphGenerator;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphAttributeType;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphEntry;
 
 /**
+ * Glyph manager
+ * 
  * @author Sauer Stefan
  */
 public class GlyphManager
 	extends AManager<GlyphEntry>
 	implements IGlyphManager
 {
-
-	
 	private HashMap<EGlyphSettingIDs, String> settings;
 
 	private Vector<Integer> sortOrderExt;
@@ -37,12 +35,8 @@ public class GlyphManager
 	/**
 	 * Constructor.
 	 */
-	public GlyphManager(final IGeneralManager generalManager)
+	public GlyphManager()
 	{
-
-		super(generalManager, IGeneralManager.iUniqueId_TypeOffset_Pathways_Pathway,
-				EManagerType.DATA_PATHWAY_ELEMENT);
-
 		settings = new HashMap<EGlyphSettingIDs, String>();
 		sortOrderExt = new Vector<Integer>();
 
@@ -67,7 +61,6 @@ public class GlyphManager
 
 	public void loadGlyphDefinitaion(String xmlPath)
 	{
-
 		generalManager.getLogger().log(Level.INFO, "loadGlyphDefinitaion");
 		generalManager.getXmlParserManager().parseXmlFileByName(xmlPath);
 

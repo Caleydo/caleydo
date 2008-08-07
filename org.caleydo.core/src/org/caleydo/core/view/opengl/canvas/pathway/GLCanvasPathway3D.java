@@ -13,7 +13,6 @@ import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -87,23 +86,14 @@ public class GLCanvasPathway3D
 	/**
 	 * Constructor.
 	 */
-	public GLCanvasPathway3D(final IGeneralManager generalManager, final int iViewId,
+	public GLCanvasPathway3D(final int iViewID,
 			final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
 	{
-
-		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum, false); // false
-		// -
-		// >
-		// do
-		// not
-		// register
-		// to
-		// parent
-		// canvas
+		super(iViewID, iGLCanvasID, sLabel, viewFrustum, false);
 
 		pathwayManager = generalManager.getPathwayManager();
 
-		gLPathwayManager = new GLPathwayManager(generalManager);
+		gLPathwayManager = new GLPathwayManager();
 		hashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
 		// hashPathwayContainingSelectedVertex2VertexCount = new
 		// HashMap<Integer, Integer>();
@@ -437,7 +427,7 @@ public class GLCanvasPathway3D
 						.modifySelection(
 								iDavidId,
 								new SelectedElementRep(
-										this.getId(),
+										this.getID(),
 										(tmpPathwayVertexGraphItemRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X)
 												* vecScaling.x() + vecTranslation.x(),
 										((iPathwayHeight - tmpPathwayVertexGraphItemRep
@@ -736,7 +726,7 @@ public class GLCanvasPathway3D
 								.modifySelection(
 										iDavidId,
 										new SelectedElementRep(
-												this.getId(),
+												this.getID(),
 												(tmpPathwayVertexGraphItemRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X)
 														* vecScaling.x() + vecTranslation.x(),
 												((iPathwayHeight - tmpPathwayVertexGraphItemRep

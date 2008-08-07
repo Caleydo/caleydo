@@ -11,18 +11,10 @@ import java.io.Serializable;
 public interface IUniqueObject
 	extends Serializable
 {
-
 	/**
-	 * Resets the selectionId.
+	 * Get the unique ID
 	 * 
-	 * @param iSetCollectionId new unique collection Id
+	 * @return unique ID
 	 */
-	public void setId(int iSetCollectionId);
-
-	/**
-	 * Get a unique Id
-	 * 
-	 * @return unique Id
-	 */
-	public int getId();
+	public int getID();
 }

@@ -4,7 +4,7 @@ import javax.media.opengl.GLCanvas;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.swt.widget.SWTEmbeddedJoglWidget;
@@ -25,18 +25,11 @@ public class SwtJoglGLCanvasViewRep
 	/**
 	 * Constructor.
 	 * 
-	 * @param generalManager
-	 * @param iViewId
-	 * @param iParentContainerId
-	 * @param iGLCanvasID
-	 * @param sLabel
-	 * @param type
 	 */
-	public SwtJoglGLCanvasViewRep(final IGeneralManager generalManager, int iViewId,
+	public SwtJoglGLCanvasViewRep(int iViewID,
 			int iParentContainerId, int iGLCanvasID, String sLabel)
 	{
-
-		super(generalManager, iViewId, iParentContainerId, sLabel, ViewType.SWT_JOGL);
+		super(iViewID, iParentContainerId, sLabel, ViewType.SWT_JOGL);
 
 		this.iGLCanvasID = iGLCanvasID;
 	}
@@ -47,7 +40,7 @@ public class SwtJoglGLCanvasViewRep
 		ISWTGUIManager iSWTGUIManager = generalManager.getSWTGUIManager();
 
 		SWTEmbeddedJoglWidget sWTEmbeddedJoglWidget = (SWTEmbeddedJoglWidget) iSWTGUIManager
-				.createWidget(EManagerObjectType.GUI_SWT_EMBEDDED_JOGL_WIDGET,
+				.createWidget(EManagedObjectType.GUI_SWT_EMBEDDED_JOGL_WIDGET,
 						iParentContainerId, -1, -1);
 
 		swtContainer = sWTEmbeddedJoglWidget.getParentComposite();

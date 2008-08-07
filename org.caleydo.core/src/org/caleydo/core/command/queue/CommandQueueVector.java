@@ -3,17 +3,13 @@
  */
 package org.caleydo.core.command.queue;
 
-import java.util.Vector;
 import java.util.Iterator;
 import java.util.ListIterator;
-import org.caleydo.core.command.CommandQueueSaxType;
+import java.util.Vector;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.ICommand;
-import org.caleydo.core.command.queue.ACommandQueue;
-import org.caleydo.core.command.queue.ICommandQueue;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Create a queue of command's, that can be executed in a row.
@@ -25,7 +21,6 @@ public class CommandQueueVector
 	extends ACommandQueue
 	implements ICommandQueue
 {
-
 	/**
 	 * Initial size of vector for command's.
 	 */
@@ -65,16 +60,11 @@ public class CommandQueueVector
 	/**
 	 * Constructor.
 	 */
-	public CommandQueueVector(final int iUniqueCmdId, final IGeneralManager generalManager,
-			final ICommandManager commandManager,
-			final CommandQueueSaxType commandQueueSaxType, final int iCmdQueuId)
+	public CommandQueueVector(final CommandType cmdType, final int iCmdQueuId)
 	{
-
-		super(iUniqueCmdId, generalManager, commandManager, commandQueueSaxType, iCmdQueuId);
+		super(cmdType, iCmdQueuId);
 
 		vecCommandsInQueue = new Vector<ICommand>(iCmdQueueVector_initialLength);
-
-		setCommandQueueSaxType(CommandQueueSaxType.COMMAND_QUEUE_OPEN);
 	}
 
 	/*
@@ -216,7 +206,7 @@ public class CommandQueueVector
 
 		while (iter.hasNext())
 		{
-			if (iter.next().getId() == testCmdQueueId)
+			if (iter.next().getID() == testCmdQueueId)
 			{
 				return true;
 			}
@@ -269,12 +259,5 @@ public class CommandQueueVector
 	{
 
 		// nothing to do, all done in constructor
-	}
-
-	public void destroy()
-	{
-
-		vecCommandsInQueue.clear();
-		vecCommandsInQueue = null;
 	}
 }

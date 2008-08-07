@@ -1,6 +1,5 @@
 package org.caleydo.core.command;
 
-import java.io.Serializable;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
@@ -13,11 +12,10 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  * @author Marc Streit
  */
 public interface ICommand
-	extends IUniqueObject, Serializable
+	extends IUniqueObject
 {
-
 	/**
-	 * execute a command.
+	 * Execute a command.
 	 * 
 	 * @throws PrometheusCommandException if an error occurs.
 	 */
@@ -25,8 +23,6 @@ public interface ICommand
 
 	/**
 	 * Undo the command.
-	 * 
-	 * @throws PrometheusCommandException if an error occurs.
 	 */
 	public abstract void undoCommand() throws CaleydoRuntimeException;
 
@@ -39,7 +35,7 @@ public interface ICommand
 	 * @throws PrometheusCommandException
 	 * @see org.caleydo.core.command.factory.CommandFactory.getCommandType()
 	 */
-	public abstract CommandQueueSaxType getCommandType();
+	public abstract CommandType getCommandType();
 
 	/**
 	 * Method returns a description of the command. This is mainly used for the

@@ -100,11 +100,11 @@ public class GLCanvasWiiTest
 	/**
 	 * Constructor.
 	 */
-	public GLCanvasWiiTest(final IGeneralManager generalManager, final int iViewId,
+	public GLCanvasWiiTest(final int iViewID,
 			final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
 	{
 
-		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum, true);
+		super(iViewID, iGLCanvasID, sLabel, viewFrustum, true);
 
 		// new Thread(this).start();
 

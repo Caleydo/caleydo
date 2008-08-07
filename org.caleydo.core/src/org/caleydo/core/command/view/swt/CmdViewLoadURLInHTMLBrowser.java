@@ -1,10 +1,8 @@
 package org.caleydo.core.command.view.swt;
 
 import java.util.Iterator;
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.IView;
@@ -12,7 +10,7 @@ import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
 
 /**
- * Class implementes the command for loading an URL in a simple browser. As
+ * Class implements the command for loading an URL in a simple browser. As
  * arguments the view ID of the target browser and the target URL are handed
  * over to the command.
  * 
@@ -30,11 +28,9 @@ public class CmdViewLoadURLInHTMLBrowser
 	/**
 	 * Constructor
 	 */
-	public CmdViewLoadURLInHTMLBrowser(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	public CmdViewLoadURLInHTMLBrowser(final CommandType cmdType)
 	{
-
-		super(generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 	}
 
 	/**

@@ -2,9 +2,8 @@ package org.caleydo.core.command.view.swt;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY;
-import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
@@ -19,24 +18,21 @@ import org.caleydo.core.util.system.StringConversionTool;
 public class CmdViewCreatePathway
 	extends ACmdCreate_IdTargetLabelParentXY
 {
-
-	protected ArrayList<Integer> iArSetIDs;
+	private ArrayList<Integer> iArSetIDs;
 
 	/**
 	 * Constructor
 	 */
-	public CmdViewCreatePathway(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	public CmdViewCreatePathway(final CommandType cmdType)
 	{
-
-		super(generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 
 		iArSetIDs = new ArrayList<Integer>();
 	}
 
-	/**
-	 * Method creates a pathway view, sets the attributes and calls the init and
-	 * draw method.
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
@@ -66,11 +62,12 @@ public class CmdViewCreatePathway
 		// commandManager.runDoCommand(this);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
+	 */
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
-
-		assert parameterHandler != null : "ParameterHandler object is null!";
-
 		super.setParameterHandler(parameterHandler);
 
 		// TODO: load browser ID dynamically
@@ -85,7 +82,7 @@ public class CmdViewCreatePathway
 		// Read SET IDs (Data and Selection)
 		String sPathwaySets = "";
 		parameterHandler.setValueAndTypeAndDefault("sPathwaySets", parameterHandler
-				.getValueString(CommandQueueSaxType.TAG_DETAIL.getXmlKey()),
+				.getValueString(CommandType.TAG_DETAIL.getXmlKey()),
 				IParameterHandler.ParameterHandlerType.STRING, "-1");
 
 		sPathwaySets = parameterHandler.getValueString("sPathwaySets");
@@ -99,9 +96,12 @@ public class CmdViewCreatePathway
 		}
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
+	 */
 	public void undoCommand() throws CaleydoRuntimeException
 	{
-
 		commandManager.runUndoCommand(this);
 	}
 }

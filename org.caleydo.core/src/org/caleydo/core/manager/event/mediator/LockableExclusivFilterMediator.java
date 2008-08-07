@@ -24,14 +24,12 @@ public class LockableExclusivFilterMediator
 	protected ISet exclusiveSet;
 
 	/**
-	 * @param eventPublisher
-	 * @param iMediatorId
+	 * Constructor.
 	 */
-	public LockableExclusivFilterMediator(final IGeneralManager generalManager,
-			int iMediatorId, final ISet setExclusiveSelectionSet)
+	public LockableExclusivFilterMediator(int iMediatorId,
+			final ISet setExclusiveSelectionSet)
 	{
-
-		super(generalManager, iMediatorId, MediatorUpdateType.MEDIATOR_FILTER_ONLY_SET);
+		super(iMediatorId, MediatorUpdateType.MEDIATOR_FILTER_ONLY_SET);
 
 		this.exclusiveSet = setExclusiveSelectionSet;
 	}

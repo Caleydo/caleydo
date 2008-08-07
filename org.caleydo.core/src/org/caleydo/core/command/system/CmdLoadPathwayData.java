@@ -1,6 +1,6 @@
 package org.caleydo.core.command.system;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
@@ -19,12 +19,9 @@ public class CmdLoadPathwayData
 	/**
 	 * Constructor.
 	 */
-	public CmdLoadPathwayData(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	public CmdLoadPathwayData(final CommandType cmdType)
 	{
-		super(generalManager, commandManager, commandQueueSaxType);
-
-		setCommandQueueSaxType(CommandQueueSaxType.LOAD_DATA_FILE);
+		super(cmdType);
 	}
 
 	/*
@@ -48,8 +45,7 @@ public class CmdLoadPathwayData
 
 	/*
 	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttr#
-	 * setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
+	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
 	 */
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{

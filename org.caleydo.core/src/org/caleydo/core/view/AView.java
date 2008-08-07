@@ -2,13 +2,14 @@ package org.caleydo.core.view;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import org.caleydo.core.data.AManagedObject;
-import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.ISetManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.swt.widget.SWTNativeWidget;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.widgets.Composite;
@@ -17,16 +18,15 @@ import org.eclipse.swt.widgets.Composite;
  * Abstract class that is the base of all view representations. It holds the the
  * own view ID, the parent ID and the attributes that needs to be processed.
  * 
- * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver
- * @see org.caleydo.core.manager.event.mediator.IMediatorSender
  * @author Michael Kalkusch
  * @author Marc Streit
  */
 public abstract class AView
-	extends AManagedObject
+	extends AUniqueObject
 	implements IView
 {
-
+	protected IGeneralManager generalManager;
+	
 	private final ISetManager setManager;
 
 	/**
@@ -66,12 +66,13 @@ public abstract class AView
 	 * @param iParentContainerId
 	 * @param sLabel
 	 */
-	public AView(final IGeneralManager generalManager, final int iUniqueId,
+	public AView(final int iUniqueId,
 			final int iParentContainerId, final String sLabel, final ViewType viewType)
 	{
+		super(iUniqueId);
 
-		super(iUniqueId, generalManager);
-
+		generalManager = GeneralManager.get();
+		
 		assert iParentContainerId != 0 : "Constructor iParentContainerId must not be 0!";
 
 		this.iParentContainerId = iParentContainerId;
@@ -94,7 +95,7 @@ public abstract class AView
 		this.iHeight = iHeight;
 	}
 
-	public final EManagerObjectType getBaseType()
+	public final EManagedObjectType getBaseType()
 	{
 
 		return null;
@@ -126,7 +127,6 @@ public abstract class AView
 	 */
 	public void initView()
 	{
-
 		/**
 		 * Method uses the parent container ID to retrieve the GUI widget by
 		 * calling the createWidget method from the SWT GUI Manager. formally
@@ -134,7 +134,7 @@ public abstract class AView
 		 */
 
 		SWTNativeWidget sWTNativeWidget = (SWTNativeWidget) generalManager.getSWTGUIManager()
-				.createWidget(EManagerObjectType.GUI_SWT_NATIVE_WIDGET, iParentContainerId,
+				.createWidget(EManagedObjectType.GUI_SWT_NATIVE_WIDGET, iParentContainerId,
 						iWidth, iHeight);
 
 		swtContainer = sWTNativeWidget.getSWTWidget();
@@ -366,13 +366,13 @@ public abstract class AView
 		Iterator<ISet> iter = alSetData.iterator();
 		for (; iter.hasNext(); i++)
 		{
-			resultArray[i] = iter.next().getId();
+			resultArray[i] = iter.next().getID();
 		}
 
 		Iterator<Selection> iterSelectionSet = alSetSelection.iterator();
 		for (; iterSelectionSet.hasNext(); i++)
 		{
-			resultArray[i] = iterSelectionSet.next().getId();
+			resultArray[i] = iterSelectionSet.next().getID();
 		}
 
 		return resultArray;

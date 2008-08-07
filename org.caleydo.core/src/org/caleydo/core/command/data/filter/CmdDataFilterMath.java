@@ -2,14 +2,13 @@ package org.caleydo.core.command.data.filter;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
-import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
@@ -23,7 +22,6 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 public class CmdDataFilterMath
 	extends ACmdCreate_IdTargetLabelAttrDetail
 {
-
 	public enum EDataFilterMathType
 	{
 		LIN_2_LOG,
@@ -34,29 +32,26 @@ public class CmdDataFilterMath
 
 	private EDataFilterMathType dataFilterMathType;
 
-	private EManagerObjectType objectType;
+	private EManagedObjectType objectType;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param generalManager
-	 * @param commandManager
-	 * @param commandQueueSaxType
+	 * @param cmdType
 	 */
-	public CmdDataFilterMath(IGeneralManager generalManager, ICommandManager commandManager,
-			CommandQueueSaxType commandQueueSaxType)
+	public CmdDataFilterMath(CommandType cmdType)
 	{
-
-		super(generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 
 		iAlIDs = new ArrayList<Integer>();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
+	 */
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
-
-		assert parameterHandler != null : "ParameterHandler object is null!";
-
 		super.setParameterHandler(parameterHandler);
 
 		dataFilterMathType = EDataFilterMathType.valueOf(sAttribute1);
@@ -73,9 +68,9 @@ public class CmdDataFilterMath
 		}
 
 		if (sAttribute3.equals(""))
-			objectType = EManagerObjectType.STORAGE;
+			objectType = EManagedObjectType.STORAGE;
 		else
-			objectType = EManagerObjectType.valueOf(sAttribute3);
+			objectType = EManagedObjectType.valueOf(sAttribute3);
 	}
 
 	/**
@@ -86,12 +81,12 @@ public class CmdDataFilterMath
 	 *            with the result.
 	 */
 	public void setAttributes(EDataFilterMathType dataFilterMathType,
-			ArrayList<Integer> iAlStorageID, EManagerObjectType objectType)
+			ArrayList<Integer> iAlStorageID, EManagedObjectType objectType)
 	{
 
 		this.dataFilterMathType = dataFilterMathType;
 		this.iAlIDs = iAlStorageID;
-		if (objectType != EManagerObjectType.STORAGE || objectType != EManagerObjectType.SET)
+		if (objectType != EManagedObjectType.STORAGE || objectType != EManagedObjectType.SET)
 			throw new CaleydoRuntimeException(
 					"Math operations are not supportet on this type of object",
 					CaleydoRuntimeExceptionType.COMMAND);
@@ -106,7 +101,7 @@ public class CmdDataFilterMath
 	public void doCommand()
 	{
 
-		if (objectType == EManagerObjectType.STORAGE)
+		if (objectType == EManagedObjectType.STORAGE)
 		{
 			IStorage tmpStorage = null;
 			for (int currentID : iAlIDs)
@@ -149,9 +144,6 @@ public class CmdDataFilterMath
 	 */
 	public void undoCommand() throws CaleydoRuntimeException
 	{
-
-		// TODO Auto-generated method stub
-
+		commandManager.runUndoCommand(this);
 	}
-
 }

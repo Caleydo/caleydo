@@ -1,6 +1,6 @@
 package org.caleydo.core.command.base;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
@@ -31,31 +31,28 @@ public abstract class ACmdCreate_IdTargetLabelAttrDetail
 	 * 
 	 * @param generalManager
 	 */
-	protected ACmdCreate_IdTargetLabelAttrDetail(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	protected ACmdCreate_IdTargetLabelAttrDetail(final CommandType cmdType)
 	{
-
-		super(generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 	}
 
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
-
 		super.setParameterHandler(parameterHandler);
 
-		sAttribute1 = parameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE1
+		sAttribute1 = parameterHandler.getValueString(CommandType.TAG_ATTRIBUTE1
 				.getXmlKey());
 
-		sAttribute2 = parameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE2
+		sAttribute2 = parameterHandler.getValueString(CommandType.TAG_ATTRIBUTE2
 				.getXmlKey());
 
-		sAttribute3 = parameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE3
+		sAttribute3 = parameterHandler.getValueString(CommandType.TAG_ATTRIBUTE3
 				.getXmlKey());
 
-		sAttribute4 = parameterHandler.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE4
+		sAttribute4 = parameterHandler.getValueString(CommandType.TAG_ATTRIBUTE4
 				.getXmlKey());
 
-		sDetail = parameterHandler.getValueString(CommandQueueSaxType.TAG_DETAIL.getXmlKey());
+		sDetail = parameterHandler.getValueString(CommandType.TAG_DETAIL.getXmlKey());
 	}
 
 }

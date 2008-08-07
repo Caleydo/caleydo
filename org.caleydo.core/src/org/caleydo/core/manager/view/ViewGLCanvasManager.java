@@ -8,15 +8,14 @@ import java.util.logging.Level;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.swing.JFrame;
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.manager.AManager;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
-import org.caleydo.core.manager.type.EManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
@@ -38,7 +37,6 @@ import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
 import org.caleydo.core.view.swt.jogl.gears.GearsViewRep;
 import org.caleydo.core.view.swt.mixer.MixerViewRep;
 import org.caleydo.core.view.swt.progressbar.ProgressBarViewRep;
-import org.caleydo.core.view.swt.test.TestTableViewRep;
 import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
@@ -54,12 +52,6 @@ public class ViewGLCanvasManager
 	extends AManager<IView>
 	implements IViewGLCanvasManager
 {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 4853292170420894586L;
-
 	protected HashMap<Integer, GLCanvas> hashGLCanvasID2GLCanvas;
 
 	protected HashMap<Integer, ArrayList<GLEventListener>> hashGLCanvasID2GLEventListeners;
@@ -92,18 +84,12 @@ public class ViewGLCanvasManager
 	/**
 	 * Constructor.
 	 * 
-	 * @param setGeneralManager
 	 */
-	public ViewGLCanvasManager(final IGeneralManager generalManager)
+	public ViewGLCanvasManager()
 	{
-
-		super(generalManager, IGeneralManager.iUniqueId_TypeOffset_GUI_AWT, EManagerType.VIEW);
-
-		assert generalManager != null : "Constructor with null-pointer to singelton";
-
-		pickingManager = new PickingManager(generalManager);
-		selectionManager = new SelectionManager(generalManager);
-		infoAreaManager = new GLInfoAreaManager(generalManager);
+		pickingManager = new PickingManager();
+		selectionManager = new SelectionManager();
+		infoAreaManager = new GLInfoAreaManager();
 
 		hashGLCanvasID2GLCanvas = new HashMap<Integer, GLCanvas>();
 		hashGLCanvasID2GLEventListeners = new HashMap<Integer, ArrayList<GLEventListener>>();
@@ -161,22 +147,11 @@ public class ViewGLCanvasManager
 
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.IViewManager#createView(org.caleydo.core.manager
-	 * .type.ManagerObjectType, int, int, java.lang.String)
+	 * @see org.caleydo.core.manager.IViewManager#createView(org.caleydo.core.manager.id.EManagedObjectTypes, int, int, java.lang.String)
 	 */
-	public IView createView(final EManagerObjectType useViewType, final int iViewID,
+	public IView createView(final EManagedObjectType useViewType, final int iViewID,
 			final int iParentContainerID, final String sLabel)
 	{
-
-		if (useViewType.getGroupType() != EManagerType.VIEW)
-		{
-			throw new CaleydoRuntimeException("try to create object with wrong type "
-					+ useViewType.name());
-		}
-
-		// final int iNewId = this.createNewId(useViewType);
-
 		switch (useViewType)
 		{
 			case VIEW:
@@ -198,33 +173,22 @@ public class ViewGLCanvasManager
 				// iParentContainerID, sLabel);
 				break;
 			case VIEW_SWT_PROGRESS_BAR:
-				return new ProgressBarViewRep(generalManager, iViewID, iParentContainerID,
+				return new ProgressBarViewRep(iViewID, iParentContainerID,
 						sLabel);
-			case VIEW_SWT_TEST_TABLE:
-				return new TestTableViewRep(generalManager, iViewID, iParentContainerID,
-						sLabel);
-			case VIEW_SWT_SELECTION_SLIDER:
-				// return new SelectionSliderViewRep(generalManager, iViewID,
-				// iParentContainerID, sLabel);
-				break;
-			case VIEW_SWT_STORAGE_SLIDER:
-				// return new StorageSliderViewRep(generalManager, iViewID,
-				// iParentContainerID, sLabel);
-				break;
 			case VIEW_SWT_MIXER:
-				return new MixerViewRep(generalManager, iViewID, iParentContainerID, sLabel);
+				return new MixerViewRep(iViewID, iParentContainerID, sLabel);
 			case VIEW_SWT_BROWSER:
-				return new HTMLBrowserViewRep(generalManager, iViewID, iParentContainerID,
+				return new HTMLBrowserViewRep(iViewID, iParentContainerID,
 						sLabel);
 			case VIEW_SWT_IMAGE:
-				return new ImageViewRep(generalManager, iViewID, iParentContainerID, sLabel);
+				return new ImageViewRep(iViewID, iParentContainerID, sLabel);
 			case VIEW_SWT_UNDO_REDO:
-				return new UndoRedoViewRep(generalManager, iViewID, iParentContainerID, sLabel);
+				return new UndoRedoViewRep(iViewID, iParentContainerID, sLabel);
 			case VIEW_SWT_DATA_ENTITY_SEARCHER:
-				return new DataEntitySearcherViewRep(generalManager, iViewID,
+				return new DataEntitySearcherViewRep(iViewID,
 						iParentContainerID, sLabel);
 			case VIEW_SWT_GLYPH_MAPPINGCONFIGURATION:
-				return new GlyphMappingConfigurationViewRep(generalManager, iViewID,
+				return new GlyphMappingConfigurationViewRep( iViewID,
 						iParentContainerID, sLabel);
 			default:
 				throw new CaleydoRuntimeException(
@@ -241,25 +205,18 @@ public class ViewGLCanvasManager
 	 * org.caleydo.core.manager.IViewManager#createGLView(org.caleydo.core.manager
 	 * .type.ManagerObjectType, int, int, int, java.lang.String)
 	 */
-	public IView createGLView(final EManagerObjectType useViewType, final int iViewID,
+	public IView createGLView(final EManagedObjectType useViewType, final int iViewID,
 			final int iParentContainerID, final int iGLCanvasID, final String sLabel)
 	{
-
-		if (useViewType.getGroupType() != EManagerType.VIEW)
-		{
-			throw new CaleydoRuntimeException("try to create object with wrong type "
-					+ useViewType.name());
-		}
-
 		try
 		{
 			switch (useViewType)
 			{
 				case VIEW_SWT_GEARS:
-					return new GearsViewRep(generalManager, iViewID, iParentContainerID,
+					return new GearsViewRep(iViewID, iParentContainerID,
 							iGLCanvasID, sLabel);
 				case VIEW_SWT_JOGL_MULTI_GLCANVAS:
-					return new SwtJoglGLCanvasViewRep(generalManager, iViewID,
+					return new SwtJoglGLCanvasViewRep(iViewID,
 							iParentContainerID, iGLCanvasID, sLabel);
 
 				default:
@@ -301,17 +258,14 @@ public class ViewGLCanvasManager
 
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.IViewGLCanvasManager#createGLCanvas(org.caleydo
-	 * .core.command.CommandQueueSaxType, int, int, java.lang.String,
-	 * org.caleydo.core.data.view.camera.IViewFrustum)
+	 * @see org.caleydo.core.manager.IViewGLCanvasManager#createGLCanvas(org.caleydo.core.command.CommandQueueSaxType, int, int, java.lang.String, org.caleydo.core.data.view.camera.IViewFrustum)
 	 */
-	public GLEventListener createGLCanvas(CommandQueueSaxType useViewType,
+	public GLEventListener createGLCanvas(CommandType useViewType,
 			final int iUniqueId, final int iGLCanvasID, final String sLabel,
 			final IViewFrustum viewFrustum)
 	{
 
-		generalManager.getLogger().log(
+		GeneralManager.get().getLogger().log(
 				Level.INFO,
 				"Creating view from type: [" + useViewType + "] with ID: [" + iUniqueId
 						+ "] and label: [" + sLabel + "]");
@@ -321,37 +275,37 @@ public class ViewGLCanvasManager
 			switch (useViewType)
 			{
 				case CREATE_GL_HEAT_MAP_3D:
-					return new GLCanvasHeatMap(generalManager, iUniqueId, iGLCanvasID, sLabel,
+					return new GLCanvasHeatMap(iUniqueId, iGLCanvasID, sLabel,
 							viewFrustum);
 
 				case CREATE_GL_PATHWAY_3D:
-					return new GLCanvasPathway3D(generalManager, iUniqueId, iGLCanvasID,
+					return new GLCanvasPathway3D(iUniqueId, iGLCanvasID,
 							sLabel, viewFrustum);
 
 				case CREATE_GL_PARALLEL_COORDINATES_3D:
-					return new GLCanvasParCoords3D(generalManager, iUniqueId, iGLCanvasID,
+					return new GLCanvasParCoords3D(iUniqueId, iGLCanvasID,
 							sLabel, viewFrustum);
 
 				case CREATE_GL_GLYPH:
-					return new GLCanvasGlyph(generalManager, iUniqueId, iGLCanvasID, sLabel,
+					return new GLCanvasGlyph(iUniqueId, iGLCanvasID, sLabel,
 							viewFrustum);
 
 				case CREATE_GL_BUCKET_3D:
-					return new GLCanvasRemoteRendering3D(generalManager, iUniqueId,
+					return new GLCanvasRemoteRendering3D(iUniqueId,
 							iGLCanvasID, sLabel, viewFrustum,
 							ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET);
 
 				case CREATE_GL_JUKEBOX_3D:
-					return new GLCanvasRemoteRendering3D(generalManager, iUniqueId,
+					return new GLCanvasRemoteRendering3D(iUniqueId,
 							iGLCanvasID, sLabel, viewFrustum,
 							ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX);
 
 				case CREATE_GL_WII_TEST:
-					return new GLCanvasWiiTest(generalManager, iUniqueId, iGLCanvasID, sLabel,
+					return new GLCanvasWiiTest(iUniqueId, iGLCanvasID, sLabel,
 							viewFrustum);
 
 				case CREATE_GL_REMOTE_GLYPH:
-					return new GLCanvasRemoteGlyph(generalManager, iUniqueId, iGLCanvasID,
+					return new GLCanvasRemoteGlyph(iUniqueId, iGLCanvasID,
 							sLabel, viewFrustum);
 
 				default:
@@ -363,7 +317,7 @@ public class ViewGLCanvasManager
 		}
 		catch (NullPointerException e)
 		{
-			generalManager.getLogger().log(
+			GeneralManager.get().getLogger().log(
 					Level.SEVERE,
 					"Error while creating view from type: [" + useViewType + "] with ID: ["
 							+ iUniqueId + "] and label: [" + sLabel + "]");
@@ -433,7 +387,7 @@ public class ViewGLCanvasManager
 			final GLEventListener gLEventListener)
 	{
 
-		hashGLEventListenerID2GLEventListener.put(((AGLCanvasUser) gLEventListener).getId(),
+		hashGLEventListenerID2GLEventListener.put(((AGLCanvasUser) gLEventListener).getID(),
 				gLEventListener);
 
 		if (iGLCanvasID == -1)
@@ -575,26 +529,6 @@ public class ViewGLCanvasManager
 	{
 
 		return hashGLEventListenerID2GLEventListener.values();
-	}
-
-	public JFrame createWorkspace(EManagerObjectType useViewCanvasType,
-			String sAditionalParameter)
-	{
-
-		switch (useViewCanvasType)
-		{
-			case VIEW_NEW_FRAME:
-				JFrame newJFrame = new JFrame();
-				arWorkspaceJFrame.add(newJFrame);
-
-				return newJFrame;
-
-			default:
-				assert false : "unsupported type!";
-				return null;
-
-		} // switch (useViewCanvasType)
-
 	}
 
 	public DataEntitySearcherViewRep getDataEntitySearcher()

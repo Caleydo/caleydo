@@ -37,17 +37,11 @@ public class GLCanvasRemoteGlyph
 	/**
 	 * Constructor.
 	 * 
-	 * @param generalManager
-	 * @param iViewId
-	 * @param iGLCanvasID
-	 * @param sLabel
-	 * @param viewFrustum
 	 */
-	public GLCanvasRemoteGlyph(final IGeneralManager generalManager, final int iViewId,
+	public GLCanvasRemoteGlyph(final int iViewID,
 			final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
 	{
-
-		super(generalManager, iViewId, iGLCanvasID, sLabel, viewFrustum, true);
+		super(iViewID, iGLCanvasID, sLabel, viewFrustum, true);
 
 		viewIDs_ = new ArrayList<Integer>();
 		mouseWheelListener_ = new GlyphMouseListener(this, generalManager);
@@ -215,7 +209,7 @@ public class GLCanvasRemoteGlyph
 					|| tmpGLEventListener.getClass() != GLCanvasGlyph.class)
 				continue;
 
-			int iViewID = ((AGLCanvasUser) tmpGLEventListener).getId();
+			int iViewID = ((AGLCanvasUser) tmpGLEventListener).getID();
 
 			viewIDs_.add(iViewID);
 		}

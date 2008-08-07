@@ -124,7 +124,7 @@ public class GLPathwayMemoPad
 	{
 
 		gl.glPushName(generalManager.getViewGLCanvasManager().getPickingManager()
-				.getPickingID(containingView.getId(), EPickingType.MEMO_PAD_SELECTION,
+				.getPickingID(containingView.getID(), EPickingType.MEMO_PAD_SELECTION,
 						MEMO_PAD_PICKING_ID));
 
 		gl.glColor3f(0.7f, 0.7f, 0.7f);
@@ -198,7 +198,7 @@ public class GLPathwayMemoPad
 		TextureCoords texCoords = trashCanTexture.getImageTexCoords();
 
 		gl.glPushName(generalManager.getViewGLCanvasManager().getPickingManager()
-				.getPickingID(containingView.getId(), EPickingType.MEMO_PAD_SELECTION,
+				.getPickingID(containingView.getID(), EPickingType.MEMO_PAD_SELECTION,
 						MEMO_PAD_TRASH_CAN_PICKING_ID));
 
 		trashCanTexture.enable();

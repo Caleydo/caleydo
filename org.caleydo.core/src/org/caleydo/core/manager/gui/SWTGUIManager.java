@@ -7,8 +7,8 @@ import java.util.Vector;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
-import org.caleydo.core.manager.type.EManagerType;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.swt.ISWTWidget;
 import org.caleydo.core.view.swt.widget.ASWTWidget;
@@ -21,8 +21,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 
@@ -61,18 +59,11 @@ public class SWTGUIManager
 	/**
 	 * Constructor.
 	 */
-	public SWTGUIManager(final IGeneralManager generalManager)
+	public SWTGUIManager()
 	{
-
-		super(generalManager, IGeneralManager.iUniqueId_TypeOffset_GUI_SWT,
-				EManagerType.VIEW_GUI_SWT);
-
 		widgetMap = new Vector<ISWTWidget>();
-
 		display = new Display();
-
 		windowMap = new HashMap<Integer, Shell>();
-
 		compositeMap = new HashMap<Integer, Composite>();
 
 		createLoadingProgressBar();
@@ -86,7 +77,8 @@ public class SWTGUIManager
 	{
 
 		// Register shell in the window map
-		final int iUniqueId = this.createId(EManagerObjectType.GUI_SWT_WINDOW);
+		// TODO: review when implementing ID management
+		final int iUniqueId = -1;//this.createId(EManagerObjectType.GUI_SWT_WINDOW);
 
 		// use default layout
 		return createWindow(iUniqueId, "Caleydo", "ROW VERTICAL");
@@ -143,7 +135,7 @@ public class SWTGUIManager
 	 * org.caleydo.core.manager.ISWTGUIManager#createWidget(org.caleydo.core
 	 * .manager.type.ManagerObjectType, int, int, int)
 	 */
-	public ISWTWidget createWidget(final EManagerObjectType useWidgetType,
+	public ISWTWidget createWidget(final EManagedObjectType useWidgetType,
 			int iUniqueParentContainerId, int iWidth, int iHeight)
 	{
 
@@ -179,13 +171,14 @@ public class SWTGUIManager
 	 * .manager.type.ManagerObjectType, org.eclipse.swt.widgets.Composite, int,
 	 * int)
 	 */
-	public synchronized ISWTWidget createWidget(final EManagerObjectType useWidgetType,
+	public synchronized ISWTWidget createWidget(final EManagedObjectType useWidgetType,
 			final Composite externalParentComposite, int iWidth, int iHeight)
 	{
 
 		assert externalParentComposite != null : "can not handel null-pointer";
 
-		final int iUniqueId = this.createId(useWidgetType);
+		//TODO: review when implementing ID management
+		final int iUniqueId = -1;//this.createId(useWidgetType);
 		ASWTWidget newSWTWidget;
 
 		switch (useWidgetType)
@@ -264,7 +257,7 @@ public class SWTGUIManager
 			currentShell.setVisible(true);// open();
 		}
 
-		generalManager.getViewGLCanvasManager().createAnimator();
+		GeneralManager.get().getViewGLCanvasManager().createAnimator();
 
 		shellIterator = windowMap.values().iterator();
 

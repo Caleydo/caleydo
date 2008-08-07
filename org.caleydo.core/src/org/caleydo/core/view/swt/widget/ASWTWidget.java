@@ -39,7 +39,7 @@ public abstract class ASWTWidget
 		this.iUniqueId = iUniqueId;
 	}
 
-	public final int getId()
+	public final int getID()
 	{
 
 		return iUniqueId;

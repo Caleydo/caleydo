@@ -1,12 +1,9 @@
 package org.caleydo.core.command.view.swt;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
-import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.swt.jogl.gears.GearsViewRep;
 
@@ -20,20 +17,17 @@ import org.caleydo.core.view.swt.jogl.gears.GearsViewRep;
 public class CmdViewCreateGears
 	extends ACmdCreate_IdTargetLabelParentAttrOpenGL
 {
-
 	/**
-	 * Constructor
+	 * Constructor.
 	 */
-	public CmdViewCreateGears(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	public CmdViewCreateGears(final CommandType cmdType)
 	{
-
-		super(generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 	}
 
-	/**
-	 * Method creates a gears view, sets the attributes and calls the init and
-	 * draw method.
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
@@ -41,9 +35,9 @@ public class CmdViewCreateGears
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
 		GearsViewRep gearsView = (GearsViewRep) viewManager.createView(
-				EManagerObjectType.VIEW_SWT_GEARS, iUniqueId, iParentContainerId, sLabel);
+				EManagedObjectType.VIEW_SWT_GEARS, iExternalID, iParentContainerId, sLabel);
 
-		viewManager.registerItem(gearsView, iUniqueId);
+		viewManager.registerItem(gearsView, iExternalID);
 
 		gearsView.setAttributes(iWidthX, iHeightY);
 		gearsView.initView();
@@ -52,17 +46,12 @@ public class CmdViewCreateGears
 		commandManager.runDoCommand(this);
 	}
 
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
-
-		assert parameterHandler != null : "ParameterHandler object is null!";
-
-		super.setParameterHandler(parameterHandler);
-	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
+	 */
 	public void undoCommand() throws CaleydoRuntimeException
 	{
-
 		commandManager.runUndoCommand(this);
 	}
 }

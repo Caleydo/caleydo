@@ -1,7 +1,6 @@
 package org.caleydo.core.data;
 
 import java.io.Serializable;
-import org.caleydo.core.manager.IGeneralManager;
 
 /**
  * Abstract class providing methods defined in IUniqueManagedObject.
@@ -12,11 +11,10 @@ import org.caleydo.core.manager.IGeneralManager;
 public abstract class AUniqueObject
 	implements IUniqueObject, Serializable
 {
-
 	/**
 	 * Unique Id
 	 */
-	protected int iUniqueID;
+	final protected int iUniqueID;
 
 	/**
 	 * Constructor.
@@ -26,7 +24,6 @@ public abstract class AUniqueObject
 	 */
 	protected AUniqueObject(final int iUniqueID)
 	{
-
 		this.iUniqueID = iUniqueID;
 	}
 
@@ -34,19 +31,8 @@ public abstract class AUniqueObject
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.IUniqueObject#getId()
 	 */
-	public final int getId()
+	public final int getID()
 	{
-
 		return this.iUniqueID;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.IUniqueObject#setId(int)
-	 */
-	public final void setId(final int iSetDNetEventId)
-	{
-
-		this.iUniqueID = iSetDNetEventId;
 	}
 }

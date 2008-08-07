@@ -1,6 +1,6 @@
 package org.caleydo.core.command.base;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
@@ -18,14 +18,11 @@ public abstract class ACmdCreate_IdTargetLabelParent
 	protected int iParentContainerId;
 
 	/**
-	 * @param generalManager
-	 * @param parameterHandler
+	 * Constructor.
 	 */
-	protected ACmdCreate_IdTargetLabelParent(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	protected ACmdCreate_IdTargetLabelParent(final CommandType cmdType)
 	{
-
-		super(generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 	}
 
 	public void setParameterHandler(final IParameterHandler parameterHandler)
@@ -33,7 +30,7 @@ public abstract class ACmdCreate_IdTargetLabelParent
 
 		super.setParameterHandler(parameterHandler);
 
-		iParentContainerId = parameterHandler.getValueInt(CommandQueueSaxType.TAG_PARENT
+		iParentContainerId = parameterHandler.getValueInt(CommandType.TAG_PARENT
 				.getXmlKey());
 	}
 }

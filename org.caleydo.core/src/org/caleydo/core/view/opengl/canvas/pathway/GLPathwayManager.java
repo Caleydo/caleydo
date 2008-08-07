@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.Map.Entry;
 import java.util.logging.Level;
 import javax.media.opengl.GL;
-import org.caleydo.core.data.AManagedObject;
+import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.edge.PathwayReactionEdgeGraphItemRep;
@@ -20,6 +20,7 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.util.mapping.GenomeColorMapper;
@@ -87,10 +88,9 @@ public class GLPathwayManager
 	/**
 	 * Constructor.
 	 */
-	public GLPathwayManager(final IGeneralManager generalManager)
+	public GLPathwayManager()
 	{
-
-		this.generalManager = generalManager;
+		this.generalManager = GeneralManager.get();
 
 		renderStyle = new PathwayRenderStyle();
 		hashPathwayId2VerticesDisplayListId = new HashMap<Integer, Integer>();
@@ -119,7 +119,7 @@ public class GLPathwayManager
 		genomeMapper.setMappingData(alSetData);
 	}
 
-	public void buildPathwayDisplayList(final GL gl, final AManagedObject containingView,
+	public void buildPathwayDisplayList(final GL gl, final IUniqueObject containingView,
 			final int iPathwayId)
 	{
 
@@ -448,7 +448,7 @@ public class GLPathwayManager
 		gl.glEnd();
 	}
 
-	private void extractVertices(final GL gl, final AManagedObject containingView,
+	private void extractVertices(final GL gl, final IUniqueObject containingView,
 			PathwayGraph pathwayToExtract)
 	{
 
@@ -497,14 +497,14 @@ public class GLPathwayManager
 		}
 	}
 
-	private void createVertex(final GL gl, final AManagedObject containingView,
+	private void createVertex(final GL gl, final IUniqueObject containingView,
 			PathwayVertexGraphItemRep vertexRep, PathwayGraph containingPathway)
 	{
 
 		Vec3f tmpNodeColor = null;
 
 		gl.glPushName(generalManager.getViewGLCanvasManager().getPickingManager()
-				.getPickingID(containingView.getId(), EPickingType.PATHWAY_ELEMENT_SELECTION,
+				.getPickingID(containingView.getID(), EPickingType.PATHWAY_ELEMENT_SELECTION,
 						vertexRep.getId()));
 
 		EPathwayVertexShape shape = vertexRep.getShapeType();

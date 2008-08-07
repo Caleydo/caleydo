@@ -1,18 +1,16 @@
 package org.caleydo.core.command.view.swt;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.swt.browser.EBrowserType;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
 
 /**
- * Class implementes the command for creating a simple browser.
+ * Class implements the command for creating a simple browser.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -26,11 +24,9 @@ public class CmdViewCreateHTMLBrowser
 	/**
 	 * Constructor.
 	 */
-	public CmdViewCreateHTMLBrowser(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	public CmdViewCreateHTMLBrowser(final CommandType cmdType)
 	{
-
-		super(generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 	}
 
 	/**
@@ -43,9 +39,9 @@ public class CmdViewCreateHTMLBrowser
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
 		HTMLBrowserViewRep browserView = (HTMLBrowserViewRep) viewManager.createView(
-				EManagerObjectType.VIEW_SWT_BROWSER, iUniqueId, iParentContainerId, sLabel);
+				EManagedObjectType.VIEW_SWT_BROWSER, iExternalID, iParentContainerId, sLabel);
 
-		viewManager.registerItem(browserView, iUniqueId);
+		viewManager.registerItem(browserView, iExternalID);
 
 		browserView.setAttributes(iWidthX, iHeightY, browserType);
 		browserView.initView();
@@ -61,7 +57,7 @@ public class CmdViewCreateHTMLBrowser
 
 		super.setParameterHandler(parameterHandler);
 
-		String sBrowserType = parameterHandler.getValueString(CommandQueueSaxType.TAG_DETAIL
+		String sBrowserType = parameterHandler.getValueString(CommandType.TAG_DETAIL
 				.getXmlKey());
 
 		if (!sBrowserType.equals(""))

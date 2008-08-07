@@ -1,8 +1,8 @@
 package org.caleydo.core.command.base;
 
-import org.caleydo.core.command.CommandQueueSaxType;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.command.CommandType;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
@@ -15,11 +15,10 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
 public abstract class ACmdCreate_IdTargetLabel
 	extends ACommand
 {
-
 	/**
 	 * Unique Id of the object, that will be created.
 	 */
-	protected int iUniqueId;
+	protected int iExternalID;
 
 	/**
 	 * Label of the new object, that will be created.
@@ -29,14 +28,10 @@ public abstract class ACmdCreate_IdTargetLabel
 	/**
 	 * Constructor.
 	 * 
-	 * @param generalManager
 	 */
-	protected ACmdCreate_IdTargetLabel(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	protected ACmdCreate_IdTargetLabel(final CommandType cmdType)
 	{
-
-		// set unique ID to -1 because it is unknown at this moment
-		super(-1, generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 	}
 
 	/*
@@ -47,12 +42,7 @@ public abstract class ACmdCreate_IdTargetLabel
 	 */
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
-
-		this.setId(parameterHandler.getValueInt(CommandQueueSaxType.TAG_CMD_ID.getXmlKey()));
-
-		iUniqueId = parameterHandler
-				.getValueInt(CommandQueueSaxType.TAG_UNIQUE_ID.getXmlKey());
-
-		sLabel = parameterHandler.getValueString(CommandQueueSaxType.TAG_LABEL.getXmlKey());
+		iExternalID = parameterHandler.getValueInt(CommandType.TAG_UNIQUE_ID.getXmlKey());
+		sLabel = parameterHandler.getValueString(CommandType.TAG_LABEL.getXmlKey());
 	}
 }

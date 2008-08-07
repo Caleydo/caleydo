@@ -3,7 +3,7 @@ package org.caleydo.core.manager;
 import java.util.ArrayList;
 import java.util.Collection;
 import javax.swing.JFrame;
-import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
 
@@ -18,10 +18,10 @@ public interface IViewManager
 	extends IManager<IView>
 {
 
-	public IView createView(final EManagerObjectType useViewType, final int iUniqueId,
+	public IView createView(final EManagedObjectType useViewType, final int iUniqueId,
 			final int iParentContainerId, final String sLabel);
 
-	public IView createGLView(final EManagerObjectType useViewType, final int iViewID,
+	public IView createGLView(final EManagedObjectType useViewType, final int iViewID,
 			final int iParentContainerID, final int iCanvasID, final String sLabel);
 
 	public void addViewRep(IView view);

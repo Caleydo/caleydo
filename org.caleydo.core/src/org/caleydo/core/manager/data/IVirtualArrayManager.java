@@ -2,7 +2,7 @@ package org.caleydo.core.manager.data;
 
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.IManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.id.EManagedObjectType;
 
 /**
  * Manage all IVirtualArray's.
@@ -13,6 +13,6 @@ import org.caleydo.core.manager.type.EManagerObjectType;
 public interface IVirtualArrayManager
 extends IManager<IVirtualArray>
 {
-	public IVirtualArray createVirtualArray( final EManagerObjectType useSelectionType );
+	public IVirtualArray createVirtualArray( final EManagedObjectType useSelectionType );
 	
 }

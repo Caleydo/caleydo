@@ -6,6 +6,7 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
@@ -16,23 +17,24 @@ import org.eclipse.swt.browser.LocationEvent;
 public class IDExtractionLocationListener
 	extends LocationAdapter
 {
-
 	private IGeneralManager generalManager;
-
+	
 	private int iBrowserId;
 
 	private int iSelectionSetId;
 
 	private boolean bSkipNextChangeEvent = false;
 
-	public IDExtractionLocationListener(final IGeneralManager generalManager,
-			final Browser browser, final int iBrowserId, final int iSelectionSetId)
+	/**
+	 * Constructor.
+	 */
+	public IDExtractionLocationListener(final Browser browser, 
+			final int iBrowserId, final int iSelectionSetId)
 	{
-
-		this.generalManager = generalManager;
+		generalManager = GeneralManager.get();
+		
 		this.iBrowserId = iBrowserId;
 		this.iSelectionSetId = iSelectionSetId;
-
 	}
 
 	@Override

@@ -1,6 +1,6 @@
 package org.caleydo.core.command.window.swt;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParent;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
@@ -20,15 +20,11 @@ public class CmdContainerCreate
 	/**
 	 * Constructor.
 	 * 
-	 * @param generalManager
-	 * @param commandManager
-	 * @param commandQueueSaxType
+	 * @param cmdType
 	 */
-	public CmdContainerCreate(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	public CmdContainerCreate(final CommandType cmdType)
 	{
-
-		super(generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 	}
 
 	/*
@@ -37,8 +33,7 @@ public class CmdContainerCreate
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
-
-		generalManager.getSWTGUIManager().createComposite(iUniqueId, iParentContainerId,
+		generalManager.getSWTGUIManager().createComposite(iExternalID, iParentContainerId,
 				sAttribute2);
 
 		commandManager.runDoCommand(this);
@@ -54,6 +49,10 @@ public class CmdContainerCreate
 		commandManager.runUndoCommand(this);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParent#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
+	 */
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
 

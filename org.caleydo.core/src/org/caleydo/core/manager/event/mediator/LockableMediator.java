@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.IGeneralManager;
 
 /**
  * Attention: Since Mediator is also a IMediatorReceiver care has to be taken
@@ -17,9 +16,6 @@ public class LockableMediator
 	extends ALockableMediator
 	implements IMediator
 {
-
-	protected IGeneralManager generalManager;
-
 	protected ArrayList<IMediatorReceiver> arReceiver;
 
 	protected ArrayList<IMediatorSender> arSender;
@@ -27,13 +23,10 @@ public class LockableMediator
 	/**
 	 * Constructor.
 	 */
-	public LockableMediator(final IGeneralManager generalManager, int iMediatorId,
+	public LockableMediator(int iMediatorId,
 			final MediatorUpdateType mediatorType)
 	{
-
-		super(generalManager.getEventPublisher(), iMediatorId, mediatorType);
-
-		this.generalManager = generalManager;
+		super(iMediatorId, mediatorType);
 
 		arReceiver = new ArrayList<IMediatorReceiver>();
 		arSender = new ArrayList<IMediatorSender>();

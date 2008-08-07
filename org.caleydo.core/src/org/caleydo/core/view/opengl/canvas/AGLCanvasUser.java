@@ -5,12 +5,11 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
-import org.caleydo.core.data.AManagedObject;
+import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.data.view.camera.IViewCamera;
 import org.caleydo.core.data.view.camera.IViewFrustum;
@@ -18,11 +17,12 @@ import org.caleydo.core.data.view.camera.ViewCameraBase;
 import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.ISetManager;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
@@ -36,10 +36,11 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
  * @author Alexander Lex
  */
 public abstract class AGLCanvasUser
-	extends AManagedObject
+	extends AUniqueObject
 	implements GLEventListener
 {
-
+	protected IGeneralManager generalManager;
+	
 	// TODO: should be a list of parent canvas object to be generic
 	protected GLCaleydoCanvas parentGLCanvas;
 
@@ -77,19 +78,15 @@ public abstract class AGLCanvasUser
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param generalManager
-	 * @param iViewId
-	 * @param iGLCanvasID
-	 * @param sLabel
 	 */
-	protected AGLCanvasUser(final IGeneralManager generalManager, final int iViewID,
+	protected AGLCanvasUser(final int iViewID,
 			final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum,
 			final boolean bRegisterToParentCanvasNow)
 	{
+		super(iViewID);
 
-		super(iViewID, generalManager);
-
+		generalManager = GeneralManager.get();
+		
 		alSetData = new ArrayList<ISet>();
 		alSelection = new ArrayList<Selection>();
 
@@ -263,7 +260,7 @@ public abstract class AGLCanvasUser
 		// viewFrustum.setTop(test[1] / 2);
 	}
 
-	public final EManagerObjectType getBaseType()
+	public final EManagedObjectType getBaseType()
 	{
 
 		return null;
@@ -474,7 +471,7 @@ public abstract class AGLCanvasUser
 
 		CmdViewLoadURLInHTMLBrowser createdCmd = (CmdViewLoadURLInHTMLBrowser) generalManager
 				.getCommandManager().createCommandByType(
-						CommandQueueSaxType.LOAD_URL_IN_BROWSER);
+						CommandType.LOAD_URL_IN_BROWSER);
 
 		createdCmd.setAttributes(sUrl);
 		createdCmd.doCommand();

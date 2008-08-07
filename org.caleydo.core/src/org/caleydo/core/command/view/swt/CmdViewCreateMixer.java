@@ -1,17 +1,17 @@
 package org.caleydo.core.command.view.swt;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.swt.mixer.MixerViewRep;
 
 /**
- * Class implementes the command for creating a mixer view.
+ * Class implements the command for creating a mixer view.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -25,26 +25,23 @@ public class CmdViewCreateMixer
 	/**
 	 * Constructor.
 	 */
-	public CmdViewCreateMixer(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	public CmdViewCreateMixer(final CommandType cmdType)
 	{
-
-		super(generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 	}
 
-	/**
-	 * Method creates a slider view, sets the attributes and calls the init and
-	 * draw method.
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
-
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
 		MixerViewRep mixerView = (MixerViewRep) viewManager.createView(
-				EManagerObjectType.VIEW_SWT_MIXER, iUniqueId, iParentContainerId, sLabel);
+				EManagedObjectType.VIEW_SWT_MIXER, iExternalID, iParentContainerId, sLabel);
 
-		viewManager.registerItem(mixerView, iUniqueId);
+		viewManager.registerItem(mixerView, iExternalID);
 
 		mixerView.setAttributes(iWidthX, iHeightY, iNumberOfSliders);
 		mixerView.initView();
@@ -53,23 +50,27 @@ public class CmdViewCreateMixer
 		commandManager.runDoCommand(this);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
+	 */
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
-
-		assert parameterHandler != null : "ParameterHandler object is null!";
-
 		super.setParameterHandler(parameterHandler);
 
 		parameterHandler.setValueAndTypeAndDefault("iNumberOfSliders", parameterHandler
-				.getValueString(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey()),
+				.getValueString(CommandType.TAG_ATTRIBUTE1.getXmlKey()),
 				IParameterHandler.ParameterHandlerType.INT, "-1");
 
 		iNumberOfSliders = parameterHandler.getValueInt("iNumberOfSliders");
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
+	 */
 	public void undoCommand() throws CaleydoRuntimeException
 	{
-
 		commandManager.runUndoCommand(this);
 	}
 }

@@ -2,15 +2,11 @@ package org.caleydo.core.manager.general;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IManager;
 import org.caleydo.core.manager.IMementoManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
@@ -24,6 +20,7 @@ import org.caleydo.core.manager.data.set.SetManager;
 import org.caleydo.core.manager.data.storage.StorageManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.gui.SWTGUIManager;
+import org.caleydo.core.manager.id.IDManager;
 import org.caleydo.core.manager.memento.MementoManager;
 import org.caleydo.core.manager.parser.XmlParserManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
@@ -37,7 +34,6 @@ import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 import org.caleydo.core.manager.view.ViewGLCanvasManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
-import org.eclipse.core.internal.resources.Folder;
 import org.eclipse.jface.preference.PreferenceStore;
 
 /**
@@ -49,9 +45,10 @@ import org.eclipse.jface.preference.PreferenceStore;
 public class GeneralManager
 	implements IGeneralManager
 {	
-	public static final String PREFERENCE_FILE_NAME = "caleydo.prefs";
-	public static final String USER_HOME = "user.home";
-	public static final String CALEYDO_HOME = "/.caleydo/";
+	/**
+	 * General manager as a singleton
+	 */
+	public static IGeneralManager generalManager;
 	
 	/**
 	 * Location where Caleydo stores preferences and caching data.
@@ -94,24 +91,68 @@ public class GeneralManager
 	private IGenomeIdManager genomeIdManager;
 
 	private IGlyphManager glyphManager;
+	
+	private IDManager IDManager;
 
 	private Logger logger;
 
 	/**
 	 * Constructor.
 	 */
-	public GeneralManager()
+	private GeneralManager()
 	{
-//		alManagers = new ArrayList<IManager>();
-
 		// Retrieve platform independent home directory
 		sCaleydoHomePath = System.getProperty(USER_HOME);
 		sCaleydoHomePath +=  CALEYDO_HOME;
+	}
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.IGeneralManager#initManager()
+	 */
+	public void initManager()
+	{
+		if (bAllManagersInitialized)
+		{
+			throw new CaleydoRuntimeException("Tried to initialize managers multiple times. Abort.");
+		}
+
+		bAllManagersInitialized = true;
+
+		storageManager = new StorageManager();
+		// virtualArrayManager = new VirtualArrayManager(this, 4);
+		setManager = new SetManager();
+		selectionManager = new SelectionManager();
+		mementoManager = new MementoManager();
+		commandManager = new CommandManager();
+		viewGLCanvasManager = new ViewGLCanvasManager();
+		sWTGUIManager = new SWTGUIManager();
+		eventPublisher = new EventPublisher();
+		genomeIdManager = new GenomeIdManager();
+		pathwayManager = new PathwayManager();
+		// serializationInputTest();
+		pathwayItemManager = new PathwayItemManager();
+		xmlParserManager = new XmlParserManager();
+		glyphManager = new GlyphManager();
+		IDManager = new IDManager();
 		
 		initLogger();
 		initPreferences();
-		initManager();
 	}
+	
+	/**
+	 * Returns the general method as a singleton object.
+	 * When first called the general manager is created (lazy).
+	 */
+	public static IGeneralManager get()
+	{
+		if (generalManager == null)
+		{
+			generalManager = new GeneralManager();
+		}
+		return generalManager;
+	}
+
 
 	private void initPreferences() 
 	{				
@@ -151,50 +192,6 @@ public class GeneralManager
 	}
 	
 	/**
-	 * Must be called right after the constructor before using this class.
-	 * Initializes all manager objects.
-	 */
-	public void initManager()
-	{
-		if (bAllManagersInitialized)
-		{
-			throw new CaleydoRuntimeException("Tried to initialize managers multiple times. Abort.");
-		}
-
-		bAllManagersInitialized = true;
-
-		storageManager = new StorageManager(this);
-		// virtualArrayManager = new VirtualArrayManager(this, 4);
-		setManager = new SetManager(this);
-		selectionManager = new SelectionManager(this);
-		mementoManager = new MementoManager(this);
-		commandManager = new CommandManager(this);
-		viewGLCanvasManager = new ViewGLCanvasManager(this);
-		sWTGUIManager = new SWTGUIManager(this);
-		eventPublisher = new EventPublisher(this);
-		genomeIdManager = new GenomeIdManager(this);
-		pathwayManager = new PathwayManager(this);
-		// serializationInputTest();
-		pathwayItemManager = new PathwayItemManager(this);
-		xmlParserManager = new XmlParserManager(this);
-		glyphManager = new GlyphManager(this);
-
-//		alManagers.add(setManager);
-//		// alManagers.add(virtualArrayManager);
-//		alManagers.add(storageManager);
-//		alManagers.add(selectionManager);
-//		alManagers.add(pathwayManager);
-//		alManagers.add(pathwayItemManager);
-//		alManagers.add(genomeIdManager);
-//		alManagers.add(eventPublisher);
-//		alManagers.add(viewGLCanvasManager);
-//		alManagers.add(sWTGUIManager);
-//		alManagers.add(commandManager);
-//		alManagers.add(mementoManager);
-//		alManagers.add(glyphManager);
-	}
-
-	/**
 	 * Initialize the Java internal logger
 	 */
 	private void initLogger()
@@ -210,45 +207,6 @@ public class GeneralManager
 	{
 		return logger;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.manager.GeneralManager#hasItem(int)
-	 */
-//	public boolean hasItem(final int iItemId)
-//	{
-//		Iterator<IManager> iter = alManagers.iterator();
-//
-//		while (iter.hasNext())
-//		{
-//			if (iter.next().hasItem(iItemId))
-//				return true;
-//		}
-//
-//		return false;
-//	}
-
-	/**
-	 * @see org.caleydo.core.manager.IGeneralManager#hasItem(int)
-	 * @param iItemId unique Id used for lookup
-	 * @return Object bound to Id or null, if id was not found.
-	 */
-//	public Object getItem(final int iItemId)
-//	{
-//		Iterator<IManager> iter = alManagers.iterator();
-//
-//		while (iter.hasNext())
-//		{
-//			IManager buffer = iter.next();
-//
-//			if (buffer.hasItem(iItemId))
-//			{
-//				return buffer.getItem(iItemId);
-//			}
-//		}
-//
-//		return null;
-//	}
 
 	/*
 	 * (non-Javadoc)
@@ -386,6 +344,12 @@ public class GeneralManager
 	public String getCaleydoHomePath() 
 	{
 		return sCaleydoHomePath;
+	}
+
+	@Override
+	public IDManager getIDManager()
+	{
+		return IDManager;
 	}
 	
 	// public void serializationOutputTest() {

@@ -1,39 +1,29 @@
 package org.caleydo.core.command.view.swt;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.swt.glyph.GlyphMappingConfigurationViewRep;
 
 /**
- * Class implementes the command for creating a view.
+ * Class implements the command for creating a view.
  * 
  * @author Sauer Stefan
  */
 public class CmdViewCreateGlyphConfiguration
 	extends ACmdCreate_IdTargetLabelParentXY
 {
-
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -5818853536669040162L;
-
 	int iNumberOfSliders = 1;
 
 	/**
 	 * Constructor.
 	 */
-	public CmdViewCreateGlyphConfiguration(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	public CmdViewCreateGlyphConfiguration(final CommandType cmdType)
 	{
-
-		super(generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 	}
 
 	/**
@@ -46,10 +36,10 @@ public class CmdViewCreateGlyphConfiguration
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
 		GlyphMappingConfigurationViewRep view = (GlyphMappingConfigurationViewRep) viewManager
-				.createView(EManagerObjectType.VIEW_SWT_GLYPH_MAPPINGCONFIGURATION, iUniqueId,
+				.createView(EManagedObjectType.VIEW_SWT_GLYPH_MAPPINGCONFIGURATION, iExternalID,
 						iParentContainerId, sLabel);
 
-		viewManager.registerItem(view, iUniqueId);
+		viewManager.registerItem(view, iExternalID);
 
 		// view.setAttributes(iWidthX, iHeightY, iNumberOfSliders);
 		view.initView();
@@ -58,24 +48,12 @@ public class CmdViewCreateGlyphConfiguration
 		commandManager.runDoCommand(this);
 	}
 
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
-
-		assert parameterHandler != null : "ParameterHandler object is null!";
-
-		super.setParameterHandler(parameterHandler);
-		/*
-		 * parameterHandler.setValueAndTypeAndDefault("iNumberOfSliders",
-		 * parameterHandler
-		 * .getValueString(CommandQueueSaxType.TAG_ATTRIBUTE1.getXmlKey()),
-		 * IParameterHandler.ParameterHandlerType.INT, "-1"); iNumberOfSliders =
-		 * parameterHandler.getValueInt("iNumberOfSliders");
-		 */
-	}
-
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
+	 */
 	public void undoCommand() throws CaleydoRuntimeException
 	{
-
 		commandManager.runUndoCommand(this);
 	}
 }

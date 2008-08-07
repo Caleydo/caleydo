@@ -21,6 +21,7 @@ public enum CaleydoRuntimeExceptionType
 	SAXPARSER("Sax parser"),
 	VIRTUALARRAY("Virtual array"),
 	VIEW("View"),
+	ID("ID Management"),
 	SET("Set");
 
 	private String sExceptionDetail;

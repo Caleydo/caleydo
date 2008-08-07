@@ -1,25 +1,23 @@
 package org.caleydo.core.data.selection;
 
 import java.util.ArrayList;
-import org.caleydo.core.data.AManagedObject;
 import org.caleydo.core.data.AUniqueObject;
-import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
-import org.caleydo.core.manager.event.mediator.IMediatorSender;
-import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.general.GeneralManager;
 
 /**
  * Selection SET that gives access to the selection storage arrays. The access
  * methods are thread safe.
  * 
+ * FIXME: DO NOT ASSIGN REFERENCES TO INTERNAL DATA
+ * 
  * @author Michael Kalkusch
  * @author Marc Streit
- * @author Alexander Lex FIXME: DO NOT ASSIGN REFERENCES TO INTERNAL DATA
+ * @author Alexander Lex 
  */
 public class Selection
-	extends AManagedObject
+	extends AUniqueObject
 	implements ISelection
 {
 
@@ -35,12 +33,10 @@ public class Selection
 	 * Constructor.
 	 * 
 	 * @param iUniqueID
-	 * @param setGeneralManager
 	 */
-	public Selection(int iUniqueID, IGeneralManager generalManager)
+	public Selection(int iUniqueID)
 	{
-
-		super(iUniqueID, generalManager);
+		super(iUniqueID);
 
 		// /** add missing objects for optional data */
 		// vecRefSelection_Array.add(2, new Vector<IVirtualArray> (2));
@@ -248,6 +244,8 @@ public class Selection
 			// LoggerType.VERBOSE );
 
 			// Calls update with the ID of the view
+
+			IGeneralManager generalManager = GeneralManager.get();
 			((EventPublisher) generalManager.getEventPublisher()).updateReceiver(
 					generalManager.getViewGLCanvasManager().getEventListener(iUniqueTriggerID), this);
 

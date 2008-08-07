@@ -43,12 +43,10 @@ public class XmlParserManager
 	/**
 	 * Constructor.
 	 * 
-	 * @param generalManager reference to IGeneralManager
 	 */
-	public XmlParserManager(final IGeneralManager generalManager)
+	public XmlParserManager()
 	{
-
-		super(generalManager);
+		super();
 
 		OpenExternalXmlFileSaxHandler externalFileHandler = new OpenExternalXmlFileSaxHandler(
 				generalManager, this);

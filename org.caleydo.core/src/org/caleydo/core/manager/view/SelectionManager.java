@@ -5,9 +5,7 @@ import java.util.HashMap;
 import java.util.Set;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.AManager;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.picking.ESelectionMode;
-import org.caleydo.core.manager.type.EManagerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
@@ -29,15 +27,10 @@ public class SelectionManager
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param generalManager
+	 *
 	 */
-	protected SelectionManager(IGeneralManager generalManager)
+	protected SelectionManager()
 	{
-
-		super(generalManager, IGeneralManager.iUniqueID_TypeOffset_Selection,
-				EManagerType.SELECTION_MANAGER);
-
 		hashSelectedElementID2SelectedElementReps = new HashMap<Integer, ArrayList<SelectedElementRep>>();
 	}
 

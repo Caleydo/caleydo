@@ -1,9 +1,7 @@
 package org.caleydo.core.command.view.rcp;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
@@ -18,23 +16,16 @@ import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 public class CmdExternalActionTrigger
 	extends ACmdCreate_IdTargetLabelAttrDetail
 {
-
 	private EExternalActionType externalActionType;
 
 	private int iViewId;
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param generalManager
-	 * @param commandManager
-	 * @param commandQueueSaxType
 	 */
-	public CmdExternalActionTrigger(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	public CmdExternalActionTrigger(final CommandType cmdType)
 	{
-
-		super(generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 	}
 
 	/*
@@ -43,9 +34,6 @@ public class CmdExternalActionTrigger
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
-
-		commandManager.runDoCommand(this);
-
 		try
 		{
 			Object viewObject = generalManager.getViewGLCanvasManager().getItem(iViewId);
@@ -70,6 +58,8 @@ public class CmdExternalActionTrigger
 			throw new CaleydoRuntimeException("ERROR in CMD: " + e.toString(),
 					CaleydoRuntimeExceptionType.DATAHANDLING);
 		}
+		
+		commandManager.runDoCommand(this);
 	}
 
 	/*
@@ -78,13 +68,11 @@ public class CmdExternalActionTrigger
 	 */
 	public void undoCommand() throws CaleydoRuntimeException
 	{
-
 		commandManager.runUndoCommand(this);
 	}
 
 	public void setAttributes(final int iViewId, final EExternalActionType externalActionType)
 	{
-
 		this.externalActionType = externalActionType;
 		this.iViewId = iViewId;
 	}

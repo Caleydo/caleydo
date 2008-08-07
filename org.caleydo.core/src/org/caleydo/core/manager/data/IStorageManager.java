@@ -2,7 +2,7 @@ package org.caleydo.core.manager.data;
 
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.manager.IManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.id.EManagedObjectType;
 
 /**
  * Manages all IStorages.
@@ -12,5 +12,5 @@ import org.caleydo.core.manager.type.EManagerObjectType;
 public interface IStorageManager
 	extends IManager<IStorage>
 {
-	public IStorage createStorage(final EManagerObjectType useStorageType);
+	public IStorage createStorage(final EManagedObjectType useStorageType);
 }

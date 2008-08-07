@@ -8,15 +8,11 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
-import org.caleydo.core.manager.AManager;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
-import org.caleydo.core.manager.type.EManagerType;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
-import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import com.sun.opengl.util.BufferUtil;
 
 /**
@@ -46,11 +42,9 @@ public class PickingManager
 	/**
 	 * Constructor
 	 * 
-	 * @param setGeneralManager
 	 */
-	public PickingManager(IGeneralManager generalManager)
+	public PickingManager()
 	{
-
 //		super(generalManager, IGeneralManager.iUniqueID_TypeOffset_PickingID,
 //				EManagerType.PICKING_MANAGER);
 
@@ -113,7 +107,7 @@ public class PickingManager
 		if (bEnablePicking == false)
 			return;
 
-		AGLCanvasUser canvasUser = (AGLCanvasUser) (generalManager.getViewGLCanvasManager().getEventListener(iViewID));
+		AGLCanvasUser canvasUser = (AGLCanvasUser) (GeneralManager.get().getViewGLCanvasManager().getEventListener(iViewID));
 		PickingJoglMouseListener pickingTriggerMouseAdapter = canvasUser.getParentGLCanvas()
 				.getJoglMouseListener();
 

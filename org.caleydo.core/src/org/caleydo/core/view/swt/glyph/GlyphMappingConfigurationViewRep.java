@@ -3,7 +3,6 @@ package org.caleydo.core.view.swt.glyph;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
 import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 import org.caleydo.core.view.AView;
@@ -31,9 +30,6 @@ public class GlyphMappingConfigurationViewRep
 	implements IView
 {
 
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 6402651939169536561L;
 
 	private ArrayList<String> columnNames = null;
@@ -56,11 +52,14 @@ public class GlyphMappingConfigurationViewRep
 
 	Color headerColor = new Color(null, 153, 153, 153);
 
-	public GlyphMappingConfigurationViewRep(IGeneralManager generalManager, int iViewId,
+	/**
+	 * Constructor.
+	 */
+	public GlyphMappingConfigurationViewRep(int iViewID,
 			int iParentContainerId, String sLabel)
 	{
 
-		super(generalManager, iViewId, iParentContainerId, sLabel,
+		super(iViewID, iParentContainerId, sLabel,
 				ViewType.SWT_GLYPH_MAPPINGCONFIGURATION);
 
 		columnNames = new ArrayList<String>();

@@ -1,7 +1,7 @@
 package org.caleydo.core.manager;
 
 import java.util.Collection;
-import org.caleydo.core.manager.type.EManagerObjectType;
+import org.caleydo.core.manager.id.EManagedObjectType;
 
 /**
  * Interface for all managers that allow classes to access managed objects.
@@ -56,14 +56,4 @@ public interface IManager<T>
 	 * @return TRUE if item was unregistered by this manager
 	 */
 	public void unregisterItem(final int iItemID);
-
-	/**
-	 * Create a new unique Id.
-	 * 
-	 * @return new unique Id
-	 * @param setNewBaseType type of object the id shall be created for
-	 * @see org.caleydo.core.manager.IGeneralManager#iUniqueId_TypeOffsetMultiplyer
-	 * @see org.caleydo.core.manager.IGeneralManager#iUniqueId_WorkspaceOffset
-	 */
-	public int createId(final EManagerObjectType setNewBaseType);
 }

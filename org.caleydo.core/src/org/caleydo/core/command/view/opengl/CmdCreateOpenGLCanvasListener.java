@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import javax.media.opengl.GLEventListener;
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParent;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.camera.ViewFrustumBase;
@@ -30,7 +30,7 @@ public class CmdCreateOpenGLCanvasListener
 	extends ACmdCreate_IdTargetLabelParent
 {
 
-	protected CommandQueueSaxType viewType;
+	protected CommandType viewType;
 
 	protected transient GLEventListener glEventListener;
 
@@ -47,16 +47,14 @@ public class CmdCreateOpenGLCanvasListener
 	/**
 	 * Constructor.
 	 */
-	public CmdCreateOpenGLCanvasListener(final IGeneralManager generalManager,
-			final ICommandManager commandManager, final CommandQueueSaxType commandQueueSaxType)
+	public CmdCreateOpenGLCanvasListener(final CommandType cmdType)
 	{
-
-		super(generalManager, commandManager, commandQueueSaxType);
+		super(cmdType);
 
 		cameraRotation = new Rotf();
 		cameraOrigin = new Vec3f(0, 0, 0);
 
-		viewType = commandQueueSaxType;
+		viewType = cmdType;
 
 		iArSetIDs = new ArrayList<Integer>();
 		iArSelectionIDs = new ArrayList<Integer>();
@@ -64,43 +62,41 @@ public class CmdCreateOpenGLCanvasListener
 
 	/*
 	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.command.base.ACmdCreate_IdTargetLabelParent#
-	 * setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
+	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParent#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
 	 */
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
-
 		super.setParameterHandler(parameterHandler);
 
 		extractDataIDs();
 
 		String sPositionGLOrigin = parameterHandler
-				.getValueString(CommandQueueSaxType.TAG_POS_GL_ORIGIN.getXmlKey());
+				.getValueString(CommandType.TAG_POS_GL_ORIGIN.getXmlKey());
 
 		String sPositionGLRotation = parameterHandler
-				.getValueString(CommandQueueSaxType.TAG_POS_GL_ROTATION.getXmlKey());
+				.getValueString(CommandType.TAG_POS_GL_ROTATION.getXmlKey());
 
 		/* convert values.. */
 		if (sPositionGLOrigin != null)
 		{
-			parameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_POS_GL_ORIGIN
+			parameterHandler.setValueAndTypeAndDefault(CommandType.TAG_POS_GL_ORIGIN
 					.getXmlKey(), sPositionGLOrigin, ParameterHandlerType.VEC3F,
-					CommandQueueSaxType.TAG_POS_GL_ORIGIN.getDefault());
+					CommandType.TAG_POS_GL_ORIGIN.getDefault());
 		}
 
 		if (sPositionGLRotation != null)
 		{
-			parameterHandler.setValueAndTypeAndDefault(CommandQueueSaxType.TAG_POS_GL_ROTATION
+			parameterHandler.setValueAndTypeAndDefault(CommandType.TAG_POS_GL_ROTATION
 					.getXmlKey(), sPositionGLRotation, ParameterHandlerType.VEC4F,
-					CommandQueueSaxType.TAG_POS_GL_ROTATION.getDefault());
+					CommandType.TAG_POS_GL_ROTATION.getDefault());
 		}
 
-		cameraOrigin = parameterHandler.getValueVec3f(CommandQueueSaxType.TAG_POS_GL_ORIGIN
+		cameraOrigin = parameterHandler.getValueVec3f(CommandType.TAG_POS_GL_ORIGIN
 				.getXmlKey());
 
 		/* convert Vec4f to roation Rotf */
 		Vec4f vec4fRotation = parameterHandler
-				.getValueVec4f(CommandQueueSaxType.TAG_POS_GL_ROTATION.getXmlKey());
+				.getValueVec4f(CommandType.TAG_POS_GL_ROTATION.getXmlKey());
 
 		cameraRotation.set(new Vec3f(vec4fRotation.x(), vec4fRotation.y(), vec4fRotation.z()),
 				(float) Math.toRadians(vec4fRotation.w()));
@@ -214,7 +210,7 @@ public class CmdCreateOpenGLCanvasListener
 
 		IViewGLCanvasManager glCanvasManager = generalManager.getViewGLCanvasManager();
 
-		glEventListener = glCanvasManager.createGLCanvas(viewType, iUniqueId,
+		glEventListener = glCanvasManager.createGLCanvas(viewType, iExternalID,
 				iParentContainerId, sLabel, viewFrustum);
 
 		((AGLCanvasUser) glEventListener).getViewCamera().setCameraPosition(cameraOrigin);
@@ -242,7 +238,6 @@ public class CmdCreateOpenGLCanvasListener
 	 */
 	public void undoCommand() throws CaleydoRuntimeException
 	{
-
 		commandManager.runUndoCommand(this);
 	}
 }

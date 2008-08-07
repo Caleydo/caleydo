@@ -11,10 +11,7 @@ import org.caleydo.core.data.graph.pathway.item.edge.PathwayRelationEdgeGraphIte
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.manager.AManager;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
-import org.caleydo.core.manager.type.EManagerObjectType;
-import org.caleydo.core.manager.type.EManagerType;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraph;
@@ -25,7 +22,6 @@ import org.caleydo.util.graph.IGraphItem;
  * and edges. The class is implemented as a Singleton.
  * 
  * @author Marc Streit
- * @author Michael Kalkusch
  */
 public class PathwayItemManager
 	extends AManager<IGraphItem>
@@ -45,17 +41,17 @@ public class PathwayItemManager
 	/**
 	 * Constructor.
 	 */
-	public PathwayItemManager(final IGeneralManager generalManager)
+	public PathwayItemManager()
 	{
-
-		super(generalManager, IGeneralManager.iUniqueId_TypeOffset_Pathways_Vertex,
-				EManagerType.DATA_PATHWAY_ELEMENT);
-
 		hashVertexNameToGraphItem = new HashMap<String, IGraphItem>();
 		hashDavidIdToPathwayVertexGraphItemId = new HashMap<Integer, Integer>();
 		hashPathwayVertexGraphItemIdToDavidId = new HashMap<Integer, Integer>();
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.specialized.genome.IPathwayItemManager#createVertex(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
+	 */
 	public IGraphItem createVertex(final String sName, final String sType,
 			final String sExternalLink, final String sReactionId)
 	{
@@ -67,7 +63,8 @@ public class PathwayItemManager
 			return hashVertexNameToGraphItem.get(sName);
 		}
 
-		int iGeneratedId = createId(EManagerObjectType.PATHWAY_VERTEX);
+		//TODO: review when implementing ID management
+		int iGeneratedId = -1;//createId(EManagerObjectType.PATHWAY_VERTEX);
 
 		IGraphItem pathwayVertex = new PathwayVertexGraphItem(iGeneratedId, sName, sType,
 				sExternalLink, sReactionId);
@@ -100,7 +97,8 @@ public class PathwayItemManager
 			final short shXPosition, final short shYPosition)
 	{
 
-		int iGeneratedId = createId(EManagerObjectType.PATHWAY_VERTEX_REP);
+		//TODO: review when implementing ID management
+		int iGeneratedId = -1;//createId(EManagerObjectType.PATHWAY_VERTEX_REP);
 		IGraphItem pathwayVertexRep = new PathwayVertexGraphItemRep(iGeneratedId, sName,
 				sShapeType, shHeight, shWidth, shXPosition, shYPosition);
 
@@ -128,7 +126,8 @@ public class PathwayItemManager
 			final String sCoords)
 	{
 
-		int iGeneratedId = createId(EManagerObjectType.PATHWAY_VERTEX_REP);
+		//TODO: review when implementing ID management
+		int iGeneratedId = -1;//createId(EManagerObjectType.PATHWAY_VERTEX_REP);
 		IGraphItem pathwayVertexRep = new PathwayVertexGraphItemRep(iGeneratedId, sName,
 				sShapeType, sCoords);
 
@@ -149,7 +148,8 @@ public class PathwayItemManager
 			final IGraphItem graphItemOut, final String sType)
 	{
 
-		int iGeneratedId = createId(EManagerObjectType.PATHWAY_EDGE);
+		//TODO: review when implementing ID management
+		int iGeneratedId = -1;//createId(EManagerObjectType.PATHWAY_EDGE);
 		IGraphItem pathwayRelationEdge = new PathwayRelationEdgeGraphItem(iGeneratedId, sType);
 
 		IGraph rootPathway = generalManager.getPathwayManager().getRootPathway();
@@ -171,8 +171,8 @@ public class PathwayItemManager
 			final IGraphItem pathwayRelationEdge, final IGraphItem graphItemIn,
 			final IGraphItem graphItemOut)
 	{
-
-		int iGeneratedId = createId(EManagerObjectType.PATHWAY_EDGE_REP);
+		//TODO: review when implementing ID management
+		int iGeneratedId = -1;//createId(EManagerObjectType.PATHWAY_EDGE_REP);
 		IGraphItem pathwayRelationEdgeRep = new PathwayRelationEdgeGraphItemRep(iGeneratedId);
 
 		// Add edge to pathway representation
@@ -197,12 +197,14 @@ public class PathwayItemManager
 	{
 
 		// Create edge (data)
-		int iGeneratedId = createId(EManagerObjectType.PATHWAY_EDGE_REP);
+		//TODO: review when implementing ID management
+		int iGeneratedId = -1;//createId(EManagerObjectType.PATHWAY_EDGE_REP);
 		IGraphItem pathwayReactionEdge = new PathwayReactionEdgeGraphItem(iGeneratedId,
 				sReactionName, sReactionType);
 
 		// Create edge representation
-		iGeneratedId = createId(EManagerObjectType.PATHWAY_EDGE_REP);
+		//TODO: review when implementing ID management
+		iGeneratedId = -1;//createId(EManagerObjectType.PATHWAY_EDGE_REP);
 		IGraphItem pathwayReactionEdgeRep = new PathwayReactionEdgeGraphItemRep(iGeneratedId);
 
 		IGraph rootPathway = generalManager.getPathwayManager().getRootPathway();

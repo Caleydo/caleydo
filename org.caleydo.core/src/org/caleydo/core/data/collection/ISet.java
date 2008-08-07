@@ -2,7 +2,7 @@ package org.caleydo.core.data.collection;
 
 import java.util.ArrayList;
 import javax.naming.OperationNotSupportedException;
-import org.caleydo.core.data.IManagedObject;
+import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.set.SetIterator;
 import org.caleydo.core.data.selection.IVirtualArray;
 
@@ -12,7 +12,7 @@ import org.caleydo.core.data.selection.IVirtualArray;
  * @author Alexander Lex
  */
 public interface ISet
-	extends IManagedObject, Iterable<IStorage>, ICollection
+	extends IUniqueObject, Iterable<IStorage>, ICollection
 {
 
 	/**

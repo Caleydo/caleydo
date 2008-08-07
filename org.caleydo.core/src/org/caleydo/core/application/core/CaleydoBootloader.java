@@ -48,7 +48,8 @@ public class CaleydoBootloader
 	 */
 	public CaleydoBootloader()
 	{
-		generalManager = new GeneralManager();
+		generalManager = GeneralManager.get();
+		generalManager.initManager();
 
 		generalManager.getLogger().log(Level.CONFIG, "===========================");
 		generalManager.getLogger().log(Level.CONFIG, "... Start Caleydo Core ...");
