@@ -45,8 +45,8 @@ public class PickingManager
 	 */
 	public PickingManager()
 	{
-//		super(generalManager, IGeneralManager.iUniqueID_TypeOffset_PickingID,
-//				EManagerType.PICKING_MANAGER);
+		// super(generalManager, IGeneralManager.iUniqueID_TypeOffset_PickingID,
+		// EManagerType.PICKING_MANAGER);
 
 		hashSignatureToHitList = new HashMap<Integer, ArrayList<Pick>>();
 		hashSignatureToPickingIDHashMap = new HashMap<Integer, HashMap<Integer, Integer>>();
@@ -60,7 +60,7 @@ public class PickingManager
 	 * stores it in a hash map with the external id DO NOT store picking id's
 	 * locally
 	 * 
-	 * @param iViewID the ID of the calling view, has to have 5 digits max
+	 * @param iViewID the ID of the calling view
 	 * @param iType a type which is part of the picking ID, has to be between 0
 	 *            and 99
 	 * @return
@@ -107,7 +107,8 @@ public class PickingManager
 		if (bEnablePicking == false)
 			return;
 
-		AGLCanvasUser canvasUser = (AGLCanvasUser) (GeneralManager.get().getViewGLCanvasManager().getEventListener(iViewID));
+		AGLCanvasUser canvasUser = (AGLCanvasUser) (GeneralManager.get()
+				.getViewGLCanvasManager().getEventListener(iViewID));
 		PickingJoglMouseListener pickingTriggerMouseAdapter = canvasUser.getParentGLCanvas()
 				.getJoglMouseListener();
 
@@ -515,10 +516,11 @@ public class PickingManager
 	private void checkViewID(int iViewID)
 	{
 
-		if (iViewID > 999999 || iViewID < 1000)
+		if (iViewID > 9999999 || iViewID < 100)
 		{
 			throw new CaleydoRuntimeException(
-					"PickingManager: The view id has to have exactly 5 digits",
+					"PickingManager: The view id has to be in a range between "
+							+ "9,999,999 and 100, but was: " + iViewID,
 					CaleydoRuntimeExceptionType.MANAGER);
 		}
 	}
@@ -545,25 +547,4 @@ public class PickingManager
 		this.bEnablePicking = bEnablePicking;
 	}
 
-	/*
-	 * Ü (non-Javadoc)
-	 * @see org.caleydo.core.manager.IManager#getItem(int)
-	 */
-	public Object getItem(int itemId)
-	{
-
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IManager#hasItem(int)
-	 */
-	public boolean hasItem(int itemId)
-	{
-
-		// TODO Auto-generated method stub
-		return false;
-	}
 }
