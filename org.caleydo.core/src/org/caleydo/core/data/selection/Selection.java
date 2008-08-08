@@ -6,24 +6,20 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
- * Selection SET that gives access to the selection storage arrays. The access
- * methods are thread safe.
- * 
- * FIXME: DO NOT ASSIGN REFERENCES TO INTERNAL DATA
+ * Selection SET that gives access to the selection storage arrays.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
- * @author Alexander Lex 
+ * @author Alexander Lex
  */
 public class Selection
 	extends AUniqueObject
 	implements ISelection
 {
-
-	// TODO: replace this with a storage that takes ArrayLists
-
 	private ArrayList<Integer> iAlSelectionID = null;
 
 	private ArrayList<Integer> iAlSelectionGroup = null;
@@ -36,129 +32,46 @@ public class Selection
 	 */
 	public Selection()
 	{
+
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.SELECTION));
 
-		// /** add missing objects for optional data */
-		// vecRefSelection_Array.add(2, new Vector<IVirtualArray> (2));
-		// vecRefStorage_Array.add(2, new Vector<IStorage> (2));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.selection.ISetSelection#setSelectionIdArray
-	 * (int[])
-	 */
+	@Override
 	public void setSelectionIdArray(ArrayList<Integer> iAlSelectionId)
 	{
-
 		this.iAlSelectionID = iAlSelectionId;
-		// this.getWriteToken();
-		// this.getStorageByDimAndIndex(0, 0).setArrayInt(iArSelectionId);
-		//		
-		// //TODO: fix this after CHI!
-		// // IVirtualArray bufferVA= this.getVirtualArrayByDimAndIndex(0, 0);
-		// // bufferVA.setOffset(0);
-		// // bufferVA.setLength(iArSelectionId.length-1);
-		//		
-		// this.returnWriteToken();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.selection.ISetSelection#setGroupArray
-	 * (int[])
-	 */
+	@Override
 	public void setGroupArray(ArrayList<Integer> iAlSelectionGroup)
 	{
-
 		this.iAlSelectionGroup = iAlSelectionGroup;
-		// this.getWriteToken();
-		// this.getStorageByDimAndIndex(0, 1).setArrayInt(iArSelectionGroup);
-
-		// TODO: fix this after CHI!
-		// IVirtualArray bufferVA = this.getVirtualArrayByDimAndIndex(0, 1);
-		// bufferVA.setOffset(0);
-		// bufferVA.setLength(iArSelectionGroup.length-1);
-
-		// this.returnWriteToken();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.selection.ISetSelection#setOptionalDataArray
-	 * (int[])
-	 */
+	@Override
 	public void setOptionalDataArray(ArrayList<Integer> iAlSelectionOptionalData)
 	{
-
 		this.iAlSelectionOptionalData = iAlSelectionOptionalData;
-
-		// this.getWriteToken();
-		// this.getStorageByDimAndIndex(0,
-		// 2).setArrayInt(iArSelectionOptionalData);
-
-		// TODO: fix this after CHI!
-		// IVirtualArray bufferVA = this.getVirtualArrayByDimAndIndex(0, 2);
-		// bufferVA.setOffset(0);
-		// bufferVA.setLength(iArSelectionOptionalData.length-1);
-
-		// this.returnWriteToken();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.data.collection.selection.ISetSelection#
-	 * setAllSelectionDataArrays(int[], int[], int[])
-	 */
+	@Override
 	public void setAllSelectionDataArrays(ArrayList<Integer> iAlSelectionId,
 			ArrayList<Integer> iAlSelectionGroup, ArrayList<Integer> iAlSelectionOptionalData)
 	{
-
 		this.iAlSelectionID = iAlSelectionId;
 		this.iAlSelectionGroup = iAlSelectionGroup;
 		this.iAlSelectionOptionalData = iAlSelectionOptionalData;
-		// if (( iArSelectionId.length != iArSelectionGroup.length )&&
-		// (iArSelectionGroup.length != iArSelectionOptionalData.length))
-		// {
-		// throw new CaleydoRuntimeException(
-		// "Try to set a SetSelection wiht array of different length!");
-		// }
-		//		
-		// this.getWriteToken();
-		// this.getStorageByDimAndIndex(0, 0).setArrayInt(iArSelectionId);
-		// this.getStorageByDimAndIndex(0, 1).setArrayInt(iArSelectionGroup);
-		// this.getStorageByDimAndIndex(0,
-		// 2).setArrayInt(iArSelectionOptionalData);
-		//		
-		// //TODO: fix this after CHI!
-		// // for ( int i=0; i<3; i++)
-		// // {
-		// // IVirtualArray bufferVA = this.getVirtualArrayByDimAndIndex(0, i);
-		// // bufferVA.setOffset(0);
-		// // bufferVA.setLength(iArSelectionId.length);
-		// // }
-		//		
-		// this.returnWriteToken();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.selection.ISetSelection#getSelectionIdArray
-	 * ()
-	 */
+	@Override
 	public ArrayList<Integer> getSelectionIdArray()
 	{
-
-		// int[] tmp = this.getStorageByDimAndIndex(0, 0).getArrayInt();
-
-		//		
-		// return tmp;
 		if (iAlSelectionID == null)
 			return null;
+//			throw new CaleydoRuntimeException(
+//					"Tried to access group array, but group array was not set",
+//					CaleydoRuntimeExceptionType.SELECTION);
 
 		ArrayList<Integer> alTmp = new ArrayList<Integer>();
 		for (Integer iCurrent : iAlSelectionID)
@@ -169,21 +82,14 @@ public class Selection
 		return alTmp;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.selection.ISetSelection#getGroupArray()
-	 */
+	@Override
 	public ArrayList<Integer> getGroupArray()
 	{
-
-		// int[] tmp = this.getStorageByDimAndIndex(0, 1).getArrayInt();
-
-		//		
-		// return tmp;
 		if (iAlSelectionGroup == null)
 			return null;
-
+//			throw new CaleydoRuntimeException(
+//					"Tried to access group array, but group array was not set",
+//					CaleydoRuntimeExceptionType.SELECTION);
 		ArrayList<Integer> alTmp = new ArrayList<Integer>();
 		for (Integer iCurrent : iAlSelectionGroup)
 		{
@@ -192,22 +98,9 @@ public class Selection
 		return alTmp;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.selection.ISetSelection#getOptionalDataArray
-	 * ()
-	 */
+	@Override
 	public ArrayList<Integer> getOptionalDataArray()
 	{
-
-		// this.getReadToken();
-		// int[] tmp = this.getStorageByDimAndIndex(0, 2).getArrayInt();
-		// this.returnReadToken();
-		//		
-		// return tmp;
-		// FIXME: copy this
-
 		return iAlSelectionOptionalData;
 	}
 
@@ -235,31 +128,10 @@ public class Selection
 
 	public void updateSelectionSet(int iUniqueTriggerID)
 	{
+		IGeneralManager generalManager = GeneralManager.get();
+		((EventPublisher) generalManager.getEventPublisher()).updateReceiver(generalManager
+				.getViewGLCanvasManager().getEventListener(iUniqueTriggerID), this);
 
-		try
-		{
-			// generalManager.logMsg(
-			// this.getClass().getSimpleName() +
-			// ": updateSelectionSet(): Set selection data and trigger update.",
-			// LoggerType.VERBOSE );
-
-			// Calls update with the ID of the view
-
-			IGeneralManager generalManager = GeneralManager.get();
-			((EventPublisher) generalManager.getEventPublisher()).updateReceiver(
-					generalManager.getViewGLCanvasManager().getEventListener(iUniqueTriggerID), this);
-
-		}
-		catch (Exception e)
-		{
-			// generalManager.logMsg(
-			// this.getClass().getSimpleName() +
-			// ": updateSelectionSet(): Problem during selection update triggering."
-			// ,
-			// LoggerType.MINOR_ERROR );
-
-			e.printStackTrace();
-		}
 	}
 
 	public void mergeSelection(ArrayList<Integer> iAlNewSelectionID,
@@ -326,7 +198,6 @@ public class Selection
 
 	public void clearAllSelectionArrays()
 	{
-
 		iAlSelectionID = null;
 		iAlSelectionGroup = null;
 		iAlSelectionOptionalData = null;

@@ -19,11 +19,10 @@ public class NominalCContainer<T>
 	implements INominalCContainer<T>
 {
 
+	private HashMap<T, Float> hashNominalToDiscrete;
 
-	private HashMap<T, Float> hashNominalToDiscrete = new HashMap<T, Float>();
-
-	private HashMap<Float, T> hashDiscreteToNominal = new HashMap<Float, T>();
-
+	private HashMap<Float, T> hashDiscreteToNominal;
+	
 	private boolean bHashMapsInitialized = false;
 
 	/**
@@ -33,7 +32,6 @@ public class NominalCContainer<T>
 	 */
 	public NominalCContainer(ArrayList<T> tAlContainer)
 	{
-
 		this.alContainer = tAlContainer;
 		hashNominalToDiscrete = new HashMap<T, Float>();
 		hashDiscreteToNominal = new HashMap<Float, T>();
@@ -142,6 +140,33 @@ public class NominalCContainer<T>
 			iCount++;
 		}
 		bHashMapsInitialized = true;
+	}
+	
+	@Override
+	public HashMap<T, Float> getHistogram()
+	{
+		HashMap<T, Float> hashTypeToCounter = new HashMap<T, Float>();
+		Float fTemp;
+		
+		float fMax = Float.MIN_VALUE;
+		
+		for(T tContent : alContainer)
+		{
+			fTemp = hashTypeToCounter.get(tContent);
+			if(fTemp == null)
+				fTemp = new Float(0);
+			++fTemp;
+			if(fTemp > fMax)
+				fMax = fTemp;
+			hashTypeToCounter.put(tContent, fTemp);			
+		}
+		
+		for(T tContent : hashTypeToCounter.keySet())
+		{
+			fTemp = hashTypeToCounter.get(tContent);
+			fTemp = fTemp / (fMax - 1);
+		}
+		return hashTypeToCounter;		
 	}
 
 }

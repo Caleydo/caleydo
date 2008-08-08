@@ -22,6 +22,7 @@ public class SelectionManager
 	 */
 	public ISelection createSelection()
 	{
+
 		ISelection newSelection = new Selection();
 		registerItem(newSelection);
 

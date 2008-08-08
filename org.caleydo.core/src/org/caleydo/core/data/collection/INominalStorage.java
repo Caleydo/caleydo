@@ -1,6 +1,7 @@
 package org.caleydo.core.data.collection;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 
 /**
@@ -43,5 +44,14 @@ public interface INominalStorage<T>
 	 * @param sAlPossibleValues
 	 */
 	public void setPossibleValues(ArrayList<T> sAlPossibleValues);
+
+	/**
+	 * Create a histogram off all elements that actually occur in the storage
+	 * The values in the histogram are normalized between 0 and 1, where 0 means
+	 * one occurrence and 1 corresponds to the maximum number of occurrences
+	 * 
+	 * @return a hash map mapping the nominal value to it's histogram value
+	 */
+	public HashMap<T, Float> getHistogram();
 
 }

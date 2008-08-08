@@ -23,6 +23,7 @@ public enum CaleydoRuntimeExceptionType
 	VIEW("View"),
 	ID("ID Management"),
 	SET("Set"),
+	SELECTION("Selection"),
 	EVENT("Event handling");
 
 	private String sExceptionDetail;

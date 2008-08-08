@@ -1,6 +1,7 @@
 package org.caleydo.core.data.collection.ccontainer;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Extension of the ICContainer interface for handling nominal data.
@@ -20,5 +21,11 @@ public interface INominalCContainer<T>
 	 * @param sAlPossibleValues the List
 	 */
 	public void setPossibleValues(ArrayList<T> tAlPossibleValues);
+	
+	/**
+	 * Create a histogram for the values in the container
+	 * @return the 
+	 */
+	public HashMap<T, Float> getHistogram();
 
 }

@@ -1,6 +1,7 @@
 package org.caleydo.core.data.collection.storage;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.ccontainer.NominalCContainer;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -107,4 +108,11 @@ public class NominalStorage<T>
 				.get(index);
 	}
 
+	@SuppressWarnings("unchecked")
+	@Override
+	public HashMap<T, Float> getHistogram()
+	{
+		return ((NominalCContainer<T>)hashCContainers.get(EDataRepresentation.RAW)).getHistogram();
+	}
+	
 }

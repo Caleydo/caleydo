@@ -22,6 +22,7 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.view.SelectionManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
@@ -86,8 +87,8 @@ public class GLCanvasPathway3D
 	/**
 	 * Constructor.
 	 */
-	public GLCanvasPathway3D(final int iGLCanvasID, 
-			final String sLabel, final IViewFrustum viewFrustum)
+	public GLCanvasPathway3D(final int iGLCanvasID, final String sLabel,
+			final IViewFrustum viewFrustum)
 	{
 		super(iGLCanvasID, sLabel, viewFrustum, false);
 
@@ -400,15 +401,19 @@ public class GLCanvasPathway3D
 			if (iAlSelectionMode.get(0) == 0)
 				return;
 
-			PathwayVertexGraphItem tmpPathwayVertexGraphItem = ((PathwayVertexGraphItem) generalManager
-					.getPathwayItemManager().getItem(
-							generalManager.getPathwayItemManager()
-									.getPathwayVertexGraphItemIdByDavidId(iDavidId)));
-
-			if (tmpPathwayVertexGraphItem == null)
+			PathwayVertexGraphItem tmpPathwayVertexGraphItem = null;
+			try
 			{
-				generalManager.getLogger().log(Level.WARNING,
-						"Something is wrong with pathway vertex! Check!");
+				tmpPathwayVertexGraphItem = ((PathwayVertexGraphItem) generalManager
+						.getPathwayItemManager().getItem(
+								generalManager.getPathwayItemManager()
+										.getPathwayVertexGraphItemIdByDavidId(iDavidId)));
+			}
+			catch (CaleydoRuntimeException e)
+			{
+				// TODO this happens when -1 is sent to getItem, find solution,
+				// temporarily we'll catch it here
+				e.printStackTrace();
 				return;
 			}
 
