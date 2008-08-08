@@ -2,6 +2,7 @@ package org.caleydo.core.manager.specialized.genome;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import org.caleydo.core.data.graph.ICaleydoGraphItem;
 import org.caleydo.core.manager.IManager;
 import org.caleydo.util.graph.IGraph;
 import org.caleydo.util.graph.IGraphItem;
@@ -12,7 +13,7 @@ import org.caleydo.util.graph.IGraphItem;
  * @author Marc Streit
  */
 public interface IPathwayItemManager
-	extends IManager<IGraphItem>
+	extends IManager<ICaleydoGraphItem>
 {
 
 	public IGraphItem createVertex(final String sName, final String sType,

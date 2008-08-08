@@ -2,10 +2,10 @@ package org.caleydo.core.data.graph.pathway.item.vertex;
 
 import java.io.Serializable;
 import java.util.StringTokenizer;
+import org.caleydo.core.data.graph.ACaleydoGraphItem;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
-import org.caleydo.util.graph.item.GraphItem;
 
 /**
  * Pathway vertex representation stored in the overall pathway graph.
@@ -13,7 +13,7 @@ import org.caleydo.util.graph.item.GraphItem;
  * @author Marc Streit
  */
 public class PathwayVertexGraphItemRep
-	extends GraphItem
+	extends ACaleydoGraphItem
 	implements Serializable
 {
 
@@ -32,16 +32,14 @@ public class PathwayVertexGraphItemRep
 	/**
 	 * Constructor.
 	 * 
-	 * @param iId
 	 * @param sName
 	 * @param sShapeType
 	 * @param sCoords
 	 */
-	public PathwayVertexGraphItemRep(final int iId, final String sName,
+	public PathwayVertexGraphItemRep(final String sName,
 			final String sShapeType, final String sCoords)
 	{
-
-		super(iId, EGraphItemKind.NODE);
+		super(EGraphItemKind.NODE);
 
 		shape = EPathwayVertexShape.valueOf(sShapeType);
 		this.sName = sName;
@@ -52,7 +50,6 @@ public class PathwayVertexGraphItemRep
 	/**
 	 * Constructor.
 	 * 
-	 * @param iId
 	 * @param sName
 	 * @param sShapeType
 	 * @param shX
@@ -60,12 +57,11 @@ public class PathwayVertexGraphItemRep
 	 * @param shWidth
 	 * @param shHeight
 	 */
-	public PathwayVertexGraphItemRep(final int iId, final String sName,
+	public PathwayVertexGraphItemRep(final String sName,
 			final String sShapeType, final short shX, final short shY, final short shWidth,
 			final short shHeight)
 	{
-
-		super(iId, EGraphItemKind.NODE);
+		super(EGraphItemKind.NODE);
 
 		shape = EPathwayVertexShape.valueOf(sShapeType);
 		this.sName = sName;

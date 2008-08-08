@@ -6,7 +6,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 
 public interface ISWTGUIManager
-	extends IManager
 {
 
 	public ISWTWidget createWidget(final EManagedObjectType useWidgetType,
@@ -16,20 +15,11 @@ public interface ISWTGUIManager
 			final Composite externalParentComposite, int iWidth, int iHeight);
 
 	/**
-	 * Method creates an unique window ID and calls createWindow(iUniqueID) with
-	 * the default layout (ROW VERTICAL).
+	 * Method creates a shell with a given label and layout.
 	 * 
-	 * @return Newly created shell.
+	 * @return Unique shell ID
 	 */
-	public Shell createWindow();
-
-	/**
-	 * Method takes a window ID and creates a shell using this ID. Also the
-	 * layout is set here.
-	 * 
-	 * @return Newly created shell.
-	 */
-	public Shell createWindow(int iUniqueId, String sLabel, String sLayoutAttributes);
+	public int createWindow(String sLabel, String sLayoutAttributes);
 
 	/**
 	 * Searches for the parent window and creates a new composite in that

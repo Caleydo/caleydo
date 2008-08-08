@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.core.data.selection;
 
 import java.util.ArrayList;

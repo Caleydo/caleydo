@@ -3,7 +3,6 @@ package org.caleydo.core.manager.event.mediator;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Abstract class for the mediator that belongs to the event mechanism.
@@ -17,17 +16,12 @@ public abstract class ALockableMediator
 {
 	private final MediatorUpdateType mediatorUpdateType;
 
-	public final int iMediatorId;
-
 	/**
 	 * Constructor.
 	 */
-	protected ALockableMediator(int iMediatorId,
-			final MediatorUpdateType mediatorUpdateType)
+	protected ALockableMediator(final MediatorUpdateType mediatorUpdateType)
 	{
 		super();
-
-		this.iMediatorId = iMediatorId;
 
 		if (mediatorUpdateType == null)
 		{
@@ -69,28 +63,5 @@ public abstract class ALockableMediator
 		}
 
 		destroyMediatorDerivedObject(sender);
-	}
-
-	/**
-	 * @see org.caleydo.core.data.IUniqueObject#getID()
-	 */
-	public final int getID()
-	{
-
-		return iMediatorId;
-	}
-
-	/**
-	 * Since the MediatorId is final this method must not be called.
-	 * 
-	 * @see org.caleydo.core.data.IUniqueObject#setId(int)
-	 */
-	public final void setId(int isetId)
-	{
-
-		throw new CaleydoRuntimeException("setId() must not be called.",
-				CaleydoRuntimeExceptionType.OBSERVER);
-
-		// this.iMediatorId = isetId;
 	}
 }

@@ -115,10 +115,10 @@
          point="org.eclipse.core.runtime.products">
       <product
             application="org.caleydo.rcp.application"
-            name="Caleydo Product">
+            name="Caleydo">
          <property
                name="appName"
-               value="Caleydo Product">
+               value="Caleydo">
          </property>
          <property
                name="aboutText"
@@ -126,7 +126,23 @@
          </property>
          <property
                name="windowImages"
-               value="/org.caleydo.data/resources/icons/caleydo/caleydo16.gif,/org.caleydo.data/resources/icons/caleydo/caleydo32.gif,/org.caleydo.data/resources/icons/caleydo/caleydo48.gif,/org.caleydo.data/resources/icons/caleydo/caleydo64.gif,/org.caleydo.data/resources/icons/caleydo/caleydo128.gif">
+               value="resources/icons/caleydo/caleydo16.gif,resources/icons/caleydo/caleydo32.gif,resources/icons/caleydo/caleydo48.gif,resources/icons/caleydo/caleydo64.gif,resources/icons/caleydo/caleydo128.gif">
+         </property>
+         <property
+               name="startupForegroundColor"
+               value="000000">
+         </property>
+         <property
+               name="startupMessageRect"
+               value="7,252,445,20">
+         </property>
+         <property
+               name="startupProgressRect"
+               value="5,275,445,15">
+         </property>
+         <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini">
          </property>
       </product>
    </extension>

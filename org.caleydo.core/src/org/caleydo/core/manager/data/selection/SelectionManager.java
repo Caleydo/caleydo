@@ -20,11 +20,10 @@ public class SelectionManager
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.data.ISelectionManager#createSelection()
 	 */
-	public ISelection createSelection(int iItemId)
+	public ISelection createSelection()
 	{
-		ISelection newSelection = new Selection(iItemId);
-
-		registerItem(newSelection, iItemId);
+		ISelection newSelection = new Selection();
+		registerItem(newSelection);
 
 		return newSelection;
 	}

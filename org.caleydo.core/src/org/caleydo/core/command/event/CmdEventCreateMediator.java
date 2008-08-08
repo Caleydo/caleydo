@@ -4,11 +4,10 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
-import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IEventPublisher.MediatorType;
+import org.caleydo.core.manager.event.mediator.IMediator;
 import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.system.StringConversionTool;
@@ -23,7 +22,8 @@ import org.caleydo.core.util.system.StringConversionTool;
 public class CmdEventCreateMediator
 	extends ACmdCreate_IdTargetLabelAttrDetail
 {
-
+	private IMediator mediator;
+	
 	protected ArrayList<Integer> iArSenderIDs;
 
 	protected ArrayList<Integer> iArReceiverIDs;
@@ -47,9 +47,14 @@ public class CmdEventCreateMediator
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
-		generalManager.getEventPublisher().createMediator(iExternalID, iArSenderIDs,
+		mediator = generalManager.getEventPublisher().createMediator(iArSenderIDs,
 				iArReceiverIDs, mediatorType, MediatorUpdateType.MEDIATOR_DEFAULT);
 
+		if (iExternalID != -1)
+		{
+			generalManager.getIDManager().mapInternalToExternalID(mediator.getID(), iExternalID);
+		}
+		
 		commandManager.runDoCommand(this);
 	}
 
@@ -91,13 +96,15 @@ public class CmdEventCreateMediator
 			/* assume DATA_MEDIATOR as default */
 			mediatorType = MediatorType.DATA_MEDIATOR;
 		}
+		
+		// Convert external to internal IDs
+		iArSenderIDs = generalManager.getIDManager().convertExternalToInternalIDs(iArSenderIDs);
+		iArReceiverIDs = generalManager.getIDManager().convertExternalToInternalIDs(iArReceiverIDs);
 	}
 
-	public void setAttributes(int iEventMediatorId, ArrayList<Integer> iArSenderIDs,
+	public void setAttributes(ArrayList<Integer> iArSenderIDs,
 			ArrayList<Integer> iArReceiverIDs, MediatorType mediatorType)
 	{
-
-		this.iExternalID = iEventMediatorId;
 		this.iArSenderIDs = iArSenderIDs;
 		this.iArReceiverIDs = iArReceiverIDs;
 		this.mediatorType = mediatorType;
@@ -120,5 +127,10 @@ public class CmdEventCreateMediator
 	public String getInfoText()
 	{
 		return super.getInfoText() + " -> " + this.iExternalID + ": " + this.sLabel;
+	}
+	
+	public int getMediatorID()
+	{
+		return mediator.getID();
 	}
 }

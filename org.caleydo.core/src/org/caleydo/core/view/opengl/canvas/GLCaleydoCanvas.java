@@ -6,7 +6,10 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
+import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.FPSCounter;
 
@@ -19,7 +22,7 @@ import org.caleydo.core.view.opengl.util.FPSCounter;
  */
 public class GLCaleydoCanvas
 	extends GLCanvas
-	implements GLEventListener
+	implements GLEventListener, IUniqueObject
 {
 
 	private static final long serialVersionUID = 1L;
@@ -32,17 +35,16 @@ public class GLCaleydoCanvas
 
 	private PickingJoglMouseListener joglMouseListener;
 
-	public GLCaleydoCanvas(final IGeneralManager generalManager, final int iGLCanvasID,
-			final GLCapabilities glCapabilities)
+	public GLCaleydoCanvas(final GLCapabilities glCapabilities)
 	{
-
 		super(glCapabilities);
 
-		this.generalManager = generalManager;
+		this.generalManager = GeneralManager.get();
 
 		joglMouseListener = new PickingJoglMouseListener();
 
-		this.iGLCanvasID = iGLCanvasID;
+		this.iGLCanvasID = generalManager.getIDManager().createID(
+				EManagedObjectType.VIEW_GL_CANVAS);
 
 		// Register mouse listener to GL canvas
 		this.addMouseListener(joglMouseListener);
@@ -145,9 +147,12 @@ public class GLCaleydoCanvas
 		this.joglMouseListener = joglMouseListener;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.data.IUniqueObject#getID()
+	 */
 	public int getID()
 	{
-
 		return iGLCanvasID;
 	}
 }

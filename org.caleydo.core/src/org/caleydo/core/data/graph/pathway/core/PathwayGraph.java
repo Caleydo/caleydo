@@ -1,6 +1,9 @@
 package org.caleydo.core.data.graph.pathway.core;
 
 import java.io.Serializable;
+import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.util.graph.core.Graph;
 
@@ -11,14 +14,11 @@ import org.caleydo.util.graph.core.Graph;
  */
 public class PathwayGraph
 	extends Graph
-	implements Serializable
+	implements IUniqueObject, Serializable
 {
-
 	private static final long serialVersionUID = 1L;
 
 	private EPathwayDatabaseType type;
-
-	private int iKeggId;
 
 	private String sName;
 
@@ -32,25 +32,17 @@ public class PathwayGraph
 
 	private int iHeight = -1;
 
-	public PathwayGraph(final EPathwayDatabaseType type, final int iKeggId,
+	public PathwayGraph(final EPathwayDatabaseType type, 
 			final String sName, final String sTitle, final String sImageLink,
 			final String sLink)
 	{
-
-		super(iKeggId);
+		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.PATHWAY));
 
 		this.type = type;
-		this.iKeggId = iKeggId;
 		this.sName = sName;
 		this.sTitle = sTitle;
 		this.sImageLink = sImageLink;
 		this.sExternalLink = sLink;
-	}
-
-	public int getKeggId()
-	{
-
-		return iKeggId;
 	}
 
 	public final String getName()
@@ -110,7 +102,12 @@ public class PathwayGraph
 	@Override
 	public String toString()
 	{
-
 		return getTitle();
+	}
+
+	@Override
+	public int getID()
+	{
+		return super.getId() ;
 	}
 }

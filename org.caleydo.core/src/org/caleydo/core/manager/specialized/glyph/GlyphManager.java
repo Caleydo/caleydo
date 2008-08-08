@@ -5,7 +5,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Vector;
 import java.util.logging.Level;
-import org.caleydo.core.manager.AManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyphGenerator;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphAttributeType;
@@ -17,9 +18,10 @@ import org.caleydo.core.view.opengl.canvas.glyph.GlyphEntry;
  * @author Sauer Stefan
  */
 public class GlyphManager
-	extends AManager<GlyphEntry>
 	implements IGlyphManager
 {
+	private IGeneralManager generalManager;
+	
 	private HashMap<EGlyphSettingIDs, String> settings;
 
 	private Vector<Integer> sortOrderExt;
@@ -28,7 +30,7 @@ public class GlyphManager
 
 	private HashMap<Integer, GlyphAttributeType> dataTypesExt = null;
 
-//	private HashMap<Integer, GlyphEntry> hmGlyphList = null;
+	private HashMap<Integer, GlyphEntry> hmGlyphList = null;
 
 	private HashSet<GLCanvasGlyph> registeredViews = null;
 
@@ -37,7 +39,10 @@ public class GlyphManager
 	 */
 	public GlyphManager()
 	{
+		generalManager = GeneralManager.get();
+		
 		settings = new HashMap<EGlyphSettingIDs, String>();
+		hmGlyphList = new HashMap<Integer, GlyphEntry>();
 		sortOrderExt = new Vector<Integer>();
 
 		generator = new GLCanvasGlyphGenerator();
@@ -196,19 +201,17 @@ public class GlyphManager
 
 	public void addGlyph(int id, GlyphEntry glyph)
 	{
-		hashItems.put(id, glyph);
+		hmGlyphList.put(id, glyph);
 	}
 
 	public void addGlyphs(HashMap<Integer, GlyphEntry> glyphlist)
 	{
-		hashItems.putAll(glyphlist);
+		hmGlyphList.putAll(glyphlist);
 	}
-
-
 
 	public HashMap<Integer, GlyphEntry> getGlyphs()
 	{
-		return hashItems;
+		return hmGlyphList;
 	}
 
 }

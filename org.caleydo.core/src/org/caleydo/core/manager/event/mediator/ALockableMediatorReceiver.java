@@ -4,8 +4,12 @@
 package org.caleydo.core.manager.event.mediator;
 
 import java.util.concurrent.atomic.AtomicBoolean;
+import org.caleydo.core.data.AUniqueObject;
+import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ISelection;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
 
 /**
  * Threadsafe Mediator receiver. Exchange update(Object) with
@@ -15,7 +19,8 @@ import org.caleydo.core.data.selection.ISelection;
  * @author Michael Kalkusch
  */
 public abstract class ALockableMediatorReceiver
-	implements ILockableMediatorReceiver
+	extends AUniqueObject
+	implements ILockableMediatorReceiver, IUniqueObject
 {
 
 	/**
@@ -29,7 +34,8 @@ public abstract class ALockableMediatorReceiver
 	 */
 	protected ALockableMediatorReceiver()
 	{
-
+		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.EVENT_MEDIATOR));
+		
 		bUpdateIsStalled = new AtomicBoolean(false);
 	}
 

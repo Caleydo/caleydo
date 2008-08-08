@@ -2,7 +2,7 @@ package org.caleydo.core.command.data;
 
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
-import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
@@ -14,6 +14,8 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 public class CmdDataCreateSelection
 	extends ACmdCreate_IdTargetLabelAttrDetail
 {
+	ISelection selection = null;
+	
 	/**
 	 * Constructor.
 	 */
@@ -28,8 +30,13 @@ public class CmdDataCreateSelection
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
-		generalManager.getSelectionManager().createSelection(iExternalID);
+		selection = generalManager.getSelectionManager().createSelection();
 
+		if (iExternalID != -1)
+		{
+			generalManager.getIDManager().mapInternalToExternalID(selection.getID(), iExternalID);
+		}
+		
 		commandManager.runDoCommand(this);
 	}
 
@@ -44,28 +51,15 @@ public class CmdDataCreateSelection
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
-	 */
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
-		super.setParameterHandler(parameterHandler);
-
-		// Nothing else to do here because the command only
-		// needs an target Set ID, which is already
-		// read by the super class.
-	}
-
-	public void setAttributes(int iSelectionSetId)
-	{
-		this.iExternalID = iSelectionSetId;
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see org.caleydo.core.command.base.ACommand#getInfoText()
 	 */
 	public String getInfoText()
 	{
 		return super.getInfoText() + " -> " + this.iExternalID + ": " + this.sLabel;
+	}
+	
+	public int getSelectionID() 
+	{
+		return selection.getID();
 	}
 }

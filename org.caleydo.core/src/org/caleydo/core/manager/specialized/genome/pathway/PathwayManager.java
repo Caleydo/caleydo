@@ -100,17 +100,12 @@ public class PathwayManager
 	public PathwayGraph createPathway(final EPathwayDatabaseType type, final String sName,
 			final String sTitle, final String sImageLink, final String sExternalLink)
 	{
-		// if (hashPathwayIdToPathwayGraphLUT.containsKey(iKEGGId))
-		// return hashPathwayIdToPathwayGraphLUT.get(iKEGGId);
-
-		int iPathwayId = sName.hashCode();// this.createId(null);
-
-		PathwayGraph pathway = new PathwayGraph(type, iPathwayId, sName, sTitle, sImageLink,
+		PathwayGraph pathway = new PathwayGraph(type, sName, sTitle, sImageLink,
 				sExternalLink);
 
-		hashItems.put(iPathwayId, pathway);
-		hashPathwayTitleToPathwayId.put(sTitle, iPathwayId);
-		hashPathwayIdToVisibilityState.put(iPathwayId, false);
+		registerItem(pathway);
+		hashPathwayTitleToPathwayId.put(sTitle, pathway.getID());
+		hashPathwayIdToVisibilityState.put(pathway.getID(), false);
 
 		rootPathwayGraph.addGraph(pathway, EGraphItemHierarchy.GRAPH_CHILDREN);
 

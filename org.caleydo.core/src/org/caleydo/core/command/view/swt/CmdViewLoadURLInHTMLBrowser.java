@@ -40,37 +40,15 @@ public class CmdViewLoadURLInHTMLBrowser
 	public void doCommand() throws CaleydoRuntimeException
 	{
 
-		try
+		Iterator<IView> iterHTMLBrowser = generalManager.getViewGLCanvasManager()
+				.getViewRepByType(ViewType.SWT_HTML_BROWSER).iterator();
+	
+		while (iterHTMLBrowser.hasNext())
 		{
-
-			Iterator<IView> iterHTMLBrowser = generalManager.getViewGLCanvasManager()
-					.getViewRepByType(ViewType.SWT_HTML_BROWSER).iterator();
-
-			while (iterHTMLBrowser.hasNext())
-			{
-				((HTMLBrowserViewRep) iterHTMLBrowser.next()).setUrl(sTargetURL);
-			}
-
-		}
-		catch (Exception e)
-		{
-			// generalManager.logMsg(
-			// this.getClass().getSimpleName() +
-			//": doCommand(): Invalid view ID. Requested view is not a browser!",
-			// LoggerType.MINOR_ERROR );
-
-			e.printStackTrace();
+			((HTMLBrowserViewRep) iterHTMLBrowser.next()).setUrl(sTargetURL);
 		}
 
 		commandManager.runDoCommand(this);
-	}
-
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
-
-		assert parameterHandler != null : "ParameterHandler object is null!";
-
-		super.setParameterHandler(parameterHandler);
 	}
 
 	public void setAttributes(String sTargetURL)
@@ -79,9 +57,12 @@ public class CmdViewLoadURLInHTMLBrowser
 		this.sTargetURL = sTargetURL;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
+	 */
 	public void undoCommand() throws CaleydoRuntimeException
 	{
-
 		commandManager.runUndoCommand(this);
 	}
 }

@@ -5,8 +5,6 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACommand;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader;
 import org.caleydo.core.parser.parameter.IParameterHandler;
@@ -32,15 +30,10 @@ public class CmdLoadFileNStorages
 
 	/**
 	 * Default is -1 indicating read till end of file.
-	 * 
-	 * @see org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader#iStopParsingAtLine
-	 * @see org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader#getStopParsingAtLine()
-	 * @see org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader#setStartParsingStopParsingAtLine(int,
-	 *      int)
 	 */
 	protected int iStopParseFileAtLine = -1;
 
-	protected ArrayList<Integer> iAlTargetStorageId;
+	protected ArrayList<Integer> iAlStorageIDs;
 
 	/**
 	 * Constructor.
@@ -54,13 +47,10 @@ public class CmdLoadFileNStorages
 
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.command.base.ACommand#setParameterHandler(org.caleydo
-	 * .core.parser.parameter.IParameterHandler)
+	 * @see org.caleydo.core.command.base.ACommand#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
 	 */
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
-
 		super.setParameterHandler(parameterHandler);
 
 		this.sFileName = parameterHandler.getValueString(CommandType.TAG_DETAIL
@@ -72,14 +62,18 @@ public class CmdLoadFileNStorages
 				.getValueString(CommandType.TAG_ATTRIBUTE2.getXmlKey()),
 				GeneralManager.sDelimiter_Parser_DataItems);
 
-		iAlTargetStorageId = new ArrayList<Integer>();
+		iAlStorageIDs = new ArrayList<Integer>();
 
 		while (tokenizer.hasMoreTokens())
 		{
-			iAlTargetStorageId.add(StringConversionTool.convertStringToInt(tokenizer
+			iAlStorageIDs.add(StringConversionTool.convertStringToInt(tokenizer
 					.nextToken(), -1));
 		}
 
+		// Convert external IDs from XML file to internal IDs
+		iAlStorageIDs = GeneralManager.get().getIDManager()
+			.convertExternalToInternalIDs(iAlStorageIDs);
+		
 		int[] iArrayStartStop = StringConversionTool.convertStringToIntArrayVariableLength(
 				parameterHandler
 						.getValueString(CommandType.TAG_ATTRIBUTE3.getXmlKey()), " ");
@@ -111,7 +105,7 @@ public class CmdLoadFileNStorages
 			final int iStopParseFileAtLine)
 	{
 
-		iAlTargetStorageId = iAlStorageId;
+		iAlStorageIDs = iAlStorageId;
 		this.sFileName = sFileName;
 		this.sTokenPattern = sTokenPattern;
 		this.iStartParseFileAtLine = iStartParseFileAtLine;
@@ -124,12 +118,11 @@ public class CmdLoadFileNStorages
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
-
 		generalManager.getLogger().log(
 				Level.INFO,
 				"Load data file " + sFileName + " using token pattern " + sTokenPattern
 						+ ". Data is stored in Storage with ID "
-						+ iAlTargetStorageId.toString());
+						+ iAlStorageIDs.toString());
 
 		TabularAsciiDataReader loader = null;
 
@@ -138,7 +131,7 @@ public class CmdLoadFileNStorages
 			loader = new TabularAsciiDataReader(generalManager, sFileName);
 
 			loader.setTokenPattern(sTokenPattern);
-			loader.setTargetStorages(iAlTargetStorageId);
+			loader.setTargetStorages(iAlStorageIDs);
 			loader.setStartParsingStopParsingAtLine(iStartParseFileAtLine,
 					iStopParseFileAtLine);
 

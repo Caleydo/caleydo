@@ -104,271 +104,102 @@ public class EventPublisher
 		// insertIntoHashMap.get(sender).add(newMediator);
 	}
 
-	public synchronized void createMediator(int iMediatorId, ArrayList<Integer> arSenderIDs,
+	public synchronized IMediator createMediator(ArrayList<Integer> arSenderIDs,
 			ArrayList<Integer> arReceiverIDs, MediatorType mediatorType,
 			MediatorUpdateType mediatorUpdateType)
 	{
-
 		IMediator newMediator = null;
 
-		if (hashItems.containsKey(iMediatorId))
+		switch (mediatorUpdateType)
 		{
-			newMediator = hashItems.get(iMediatorId);
+			case MEDIATOR_DEFAULT:
+				newMediator = new LockableMediator(MediatorUpdateType.MEDIATOR_DEFAULT);
+				break;
 
-			// generalManager.logMsg("createMediator(" + iMediatorId +
-			// ") mediator already exists. add Senders and Receivers now.",
-			// LoggerType.VERBOSE);
+			case MEDIATOR_FILTER_ONLY_SET:
+				newMediator = new LockableExclusivFilterMediator(null);
+				break;
+
+			case MEDIATOR_FILTER_ALL_EXPECT_SET:
+				newMediator = new LockableIgnoreFilterMediator(null);
+				break;
+			default:
+				throw new CaleydoRuntimeException("Unknown mediator type " + mediatorType,
+						CaleydoRuntimeExceptionType.EVENT);
 		}
-		else
-		{ // if ( hashMediatorId2Mediator.containsKey(iMediatorId) ) {..} else
 
-			switch (mediatorUpdateType)
-			{
-				case MEDIATOR_DEFAULT:
-					newMediator = new LockableMediator(iMediatorId,
-							MediatorUpdateType.MEDIATOR_DEFAULT);
-					break;
-
-				case MEDIATOR_FILTER_ONLY_SET:
-					newMediator = new LockableExclusivFilterMediator(iMediatorId, null);
-					break;
-
-				case MEDIATOR_FILTER_ALL_EXPECT_SET:
-					newMediator = new LockableIgnoreFilterMediator(iMediatorId, null);
-					break;
-				default:
-					assert false : "unknown type";
-					return;
-			} // switch (mediatorUpdateType) {
-
-			hashItems.put(iMediatorId, newMediator);
-
-		} // if ( hashMediatorId2Mediator.containsKey(iMediatorId) ) {..} else
-		// {..}
-
-		// Iterator<Integer> iterSenderIDs = arSenderIDs.iterator();
-		//
-		// boolean bHasValidSender = false;
-		//		
-		// // Register sender
-		// while (iterSenderIDs.hasNext())
-		// {
-		// int iCurrentSenderId = iterSenderIDs.next();
-		// IMediatorSender sender = null;
-		//			
-		// try
-		// {
-		// sender = (IMediatorSender) generalManager
-		// .getItem(iCurrentSenderId);
-		// }
-		// catch ( ClassCastException cce)
-		// {
-		// singelton.logMsg(
-		// "EventPublisher.createMediator() failed because referenced sender object id=["
-		// +
-		// iCurrentSenderId +
-		// "] does not implement interface IMediatorSender " +
-		// generalManager.getItem(iCurrentSenderId).getClass(),
-		// LoggerType.ERROR);
-		//				
-		// assert false :
-		// "receiver object does not implement interface IMediatorSender";
-		// break;
-		// }
-		//
-		// if ( sender == null ) {
-		// singelton.logMsg("EventPublisher: invalid SenderId=[" +
-		// iCurrentSenderId + "] => receiverId=" +
-		// arReceiverIDs.toString() +
-		// " ignore sender!",
-		// LoggerType.MINOR_ERROR);
-		// }
-		// else
-		// {
-		// bHasValidSender = true;
-		//				
-		// newMediator.register(sender);
-		//				
-		// switch ( mediatorType ) {
-		//				
-		// case DATA_MEDIATOR:
-		//					
-		// //assert false : "test this code!";
-		//					
-		// // if (!hashSender2DataMediators.containsKey(sender))
-		// // {
-		// // hashSender2DataMediators.put(sender,
-		// // new ArrayList<IMediator>());
-		// // }
-		// // hashSender2DataMediators.get(sender).add(newMediator);
-		//					
-		// insertSender(hashSender2DataMediators,sender,newMediator);
-		// break;
-		//					
-		// case SELECTION_MEDIATOR:
-		// insertSender(hashSender2SelectionMediators,sender,newMediator);
-		//					
-		// // if (!hashSender2SelectionMediators.containsKey(sender))
-		// // {
-		// // hashSender2SelectionMediators.put(sender, new
-		// ArrayList<IMediator>());
-		// // }
-		// // hashSender2SelectionMediators.get(sender).add(newMediator);
-		// break;
-		//					
-		// case VIEW_MEDIATOR:
-		// insertSender(hashSender2ViewMediators,sender,newMediator);
-		// // if (!hashSender2ViewMediators.containsKey(sender))
-		// // {
-		// // hashSender2ViewMediators.put(sender, new ArrayList<IMediator>());
-		// // }
-		// // hashSender2ViewMediators.get(sender).add(newMediator);
-		// break;
-		//					
-		// default:
-		// throw new CaleydoRuntimeException(
-		// "createMediator() unknown type sender: " +
-		// mediatorType.toString(),
-		// CaleydoRuntimeExceptionType.OBSERVER);
-		//				
-		// } //switch ( mediatorType ) {
-		//			
-		// } //if ( sender == null ) {...} else {..
-		//			
-		// } //while (iterSenderIDs.hasNext())
+		registerItem(newMediator);
 
 		addSendersAndReceiversToMediator(newMediator, arSenderIDs, arReceiverIDs,
 				mediatorType, mediatorUpdateType);
 
-		// generalManager.logMsg(
-		// "EventPublisher: success registering senderId(s)=[" +
-		// arSenderIDs.toString() + "] and receiverId(s)=[" +
-		// arReceiverIDs.toString() + "]",
-		// LoggerType.VERBOSE);
+		return newMediator;
 	}
 
 	public void addSendersAndReceiversToMediator(IMediator newMediator,
 			ArrayList<Integer> arSenderIDs, ArrayList<Integer> arReceiverIDs,
 			MediatorType mediatorType, MediatorUpdateType mediatorUpdateType)
 	{
-
-		assert mediatorType != null : "can not handel no MediatorType (==null)";
-
 		Iterator<Integer> iterSenderIDs = arSenderIDs.iterator();
-
-		boolean bHasValidSender = false;
 
 		// Register sender
 		while (iterSenderIDs.hasNext())
 		{
 			int iCurrentSenderId = iterSenderIDs.next();
-			IMediatorSender sender = null;
+			IMediatorSender sender = (IMediatorSender) GeneralManager.get()
+					.getViewGLCanvasManager().getEventListener(iCurrentSenderId);
 
-			try
+			newMediator.register(sender);
+
+			switch (mediatorType)
 			{
-				sender = (IMediatorSender) GeneralManager.get().getViewGLCanvasManager().getItem(
-						iCurrentSenderId); // TODO
-				// :
-				// change
-				// to
-				// getItem
-				// from
-				// generalManager
+
+				case DATA_MEDIATOR:
+
+					// assert false : "test this code!";
+
+					// if (!hashSender2DataMediators.containsKey(sender))
+					// {
+					// hashSender2DataMediators.put(sender,
+					// new ArrayList<IMediator>());
+					// }
+					// hashSender2DataMediators.get(sender).add(newMediator);
+
+					insertSender(hashSender2DataMediators, sender, newMediator);
+					break;
+
+				case SELECTION_MEDIATOR:
+					insertSender(hashSender2SelectionMediators, sender, newMediator);
+
+					// if
+					// (!hashSender2SelectionMediators.containsKey(sender))
+					// {
+					// hashSender2SelectionMediators.put(sender, new
+					// ArrayList<IMediator>());
+					// }
+					// hashSender2SelectionMediators.get(sender).add(
+					// newMediator)
+					// ;
+					break;
+
+				case VIEW_MEDIATOR:
+					insertSender(hashSender2ViewMediators, sender, newMediator);
+					// if (!hashSender2ViewMediators.containsKey(sender))
+					// {
+					// hashSender2ViewMediators.put(sender, new
+					// ArrayList<IMediator>());
+					// }
+					// hashSender2ViewMediators.get(sender).add(newMediator);
+					break;
+
+				default:
+					throw new CaleydoRuntimeException("createMediator() unknown type sender: "
+							+ mediatorType.toString(), CaleydoRuntimeExceptionType.OBSERVER);
+
 			}
-			catch (ClassCastException cce)
-			{
-				// generalManager.logMsg(
-				// "EventPublisher.createMediator() failed because referenced sender object id=["
-				// +
-				// iCurrentSenderId +
-				// "] does not implement interface IMediatorSender " +
-				// generalManager.getViewGLCanvasManager().getItem(
-				// iCurrentSenderId).getClass(),
-				// LoggerType.ERROR);
-
-				assert false : "receiver object does not implement interface IMediatorSender";
-				break;
-			}
-
-			if (sender == null)
-			{
-				// generalManager.logMsg("EventPublisher: invalid SenderId=[" +
-				// iCurrentSenderId + "] => receiverId=" +
-				// arReceiverIDs.toString() +
-				// " ignore sender!",
-				// LoggerType.MINOR_ERROR);
-			}
-			else
-			{
-				bHasValidSender = true;
-
-				newMediator.register(sender);
-
-				switch (mediatorType)
-				{
-
-					case DATA_MEDIATOR:
-
-						// assert false : "test this code!";
-
-						// if (!hashSender2DataMediators.containsKey(sender))
-						// {
-						// hashSender2DataMediators.put(sender,
-						// new ArrayList<IMediator>());
-						// }
-						//hashSender2DataMediators.get(sender).add(newMediator);
-
-						insertSender(hashSender2DataMediators, sender, newMediator);
-						break;
-
-					case SELECTION_MEDIATOR:
-						insertSender(hashSender2SelectionMediators, sender, newMediator);
-
-						// if
-						// (!hashSender2SelectionMediators.containsKey(sender))
-						// {
-						// hashSender2SelectionMediators.put(sender, new
-						// ArrayList<IMediator>());
-						// }
-						// hashSender2SelectionMediators.get(sender).add(
-						// newMediator)
-						// ;
-						break;
-
-					case VIEW_MEDIATOR:
-						insertSender(hashSender2ViewMediators, sender, newMediator);
-						// if (!hashSender2ViewMediators.containsKey(sender))
-						// {
-						// hashSender2ViewMediators.put(sender, new
-						// ArrayList<IMediator>());
-						// }
-						//hashSender2ViewMediators.get(sender).add(newMediator);
-						break;
-
-					default:
-						throw new CaleydoRuntimeException(
-								"createMediator() unknown type sender: "
-										+ mediatorType.toString(),
-								CaleydoRuntimeExceptionType.OBSERVER);
-
-				} // switch ( mediatorType ) {
-
-			} // if ( sender == null ) {...} else {..
-
-		} // while (iterSenderIDs.hasNext())
-
-		// are there any valid senders?
-		if (!bHasValidSender)
-		{
-			// generalManager.logMsg("EventPublisher: all SenderId(s)=" +
-			// arSenderIDs.toString() + " are invalid; ignore all receivers=" +
-			// arReceiverIDs.toString() + " also!",
-			// LoggerType.MINOR_ERROR);
-			return;
 		}
 
 		Iterator<Integer> iterReceiverIDs = arReceiverIDs.iterator();
-		boolean bHasValidReceiver = false;
 
 		// Register receiver
 		while (iterReceiverIDs.hasNext())
@@ -376,105 +207,45 @@ public class EventPublisher
 			int iCurrentReceiverId = iterReceiverIDs.next();
 
 			IMediatorReceiver receiver = null;
-			try
+
+			receiver = (IMediatorReceiver) GeneralManager.get().getViewGLCanvasManager()
+					.getEventListener(iCurrentReceiverId);
+
+			newMediator.register(receiver);
+
+			switch (mediatorType)
 			{
-				receiver = (IMediatorReceiver) GeneralManager.get().getViewGLCanvasManager()
-						.getItem(iCurrentReceiverId); // TODO
-				// :
-				// change
-				// to
-				// getItem
-				// from
-				// generalManager
+
+				case DATA_MEDIATOR:
+					// if
+					// (!hashReceiver2DataMediators.containsKey(receiver))
+					// {
+					// hashReceiver2DataMediators.put(receiver, new
+					// ArrayList<IMediator>());
+					// }
+					// hashReceiver2DataMediators.get(receiver).add(
+					// newMediator);
+
+					// assert false : "test this code!";
+
+					insertReceiver(hashReceiver2DataMediators, receiver, newMediator);
+					break;
+
+				case SELECTION_MEDIATOR:
+					insertReceiver(hashReceiver2SelectionMediators, receiver, newMediator);
+					break;
+
+				case VIEW_MEDIATOR:
+					insertReceiver(hashReceiver2SelectionMediators, receiver, newMediator);
+					break;
+
+				default:
+					throw new CaleydoRuntimeException(
+							"createMediator() unknown type receiver: "
+									+ mediatorType.toString(),
+							CaleydoRuntimeExceptionType.OBSERVER);
 			}
-			catch (ClassCastException cce)
-			{
-				// generalManager.logMsg(
-				// "EventPublisher.createMediator() failed because referenced receiver object id=["
-				// +
-				// iCurrentReceiverId +
-				// "] does not implement interface IMediatorReceiver " +
-				// generalManager.getViewGLCanvasManager().getItem(
-				// iCurrentReceiverId).getClass(),
-				// LoggerType.ERROR);
-
-				assert false : "receiver object does not implement interface IMediatorReceiver";
-				break;
-			}
-
-			if (receiver == null)
-			{
-				// generalManager.logMsg("EventPublisher: sender(s) " +
-				// arSenderIDs.toString() + " ==> invalid ReceiverId=[" +
-				// iCurrentReceiverId + "] ignore receiver!",
-				// LoggerType.MINOR_ERROR);
-			}
-			else
-			{
-				bHasValidReceiver = true;
-
-				newMediator.register(receiver);
-
-				switch (mediatorType)
-				{
-
-					case DATA_MEDIATOR:
-						// if
-						// (!hashReceiver2DataMediators.containsKey(receiver))
-						// {
-						// hashReceiver2DataMediators.put(receiver, new
-						// ArrayList<IMediator>());
-						// }
-						// hashReceiver2DataMediators.get(receiver).add(
-						// newMediator);
-
-						// assert false : "test this code!";
-
-						insertReceiver(hashReceiver2DataMediators, receiver, newMediator);
-						break;
-
-					case SELECTION_MEDIATOR:
-						insertReceiver(hashReceiver2SelectionMediators, receiver, newMediator);
-						break;
-
-					case VIEW_MEDIATOR:
-						insertReceiver(hashReceiver2SelectionMediators, receiver, newMediator);
-						break;
-
-					default:
-						throw new CaleydoRuntimeException(
-								"createMediator() unknown type receiver: "
-										+ mediatorType.toString(),
-								CaleydoRuntimeExceptionType.OBSERVER);
-				} // switch ( mediatorType ) {
-
-				// generalManager.logMsg(
-				// "EventPublisher: successful added senderId(s)" +
-				// arSenderIDs.toString() + " => [" +
-				// iCurrentReceiverId + "]",
-				// LoggerType.VERBOSE);
-
-			} // if ( receiver == null ) {...} else {..
-
-		} // while (iterReceiverIDs.hasNext())
-
-		if (!bHasValidReceiver)
-		{
-			// generalManager.logMsg(
-			// "EventPublisher: ignore command with senderId(s)=[" +
-			// arSenderIDs.toString() + "] and receiverId(s)=[" +
-			// arReceiverIDs.toString() +
-			// "] because no valid receiver was found!",
-			// LoggerType.MINOR_ERROR);
-			return;
 		}
-
-		// generalManager.logMsg("EventPublisher: Mediator " +
-		// newMediator.toString() +
-		// " success registering senderId(s)=[" +
-		// arSenderIDs.toString() + "] and receiverId(s)=[" +
-		// arReceiverIDs.toString() + "]",
-		// LoggerType.VERBOSE);
 	}
 
 	public void registerSenderToMediator(int iMediatorId, IMediatorSender sender)

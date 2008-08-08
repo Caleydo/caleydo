@@ -35,10 +35,9 @@ public class ProgressBarViewRep
 	/**
 	 * Constructor.
 	 */
-	public ProgressBarViewRep(int iViewID,
-			int iParentContainerId, String sLabel)
+	public ProgressBarViewRep(int iParentContainerId, String sLabel)
 	{
-		super(iViewID, iParentContainerId, sLabel, ViewType.SWT_PROGRESSBAR);
+		super(iParentContainerId, sLabel, ViewType.SWT_PROGRESSBAR);
 	}
 
 	/**
@@ -107,7 +106,7 @@ public class ProgressBarViewRep
 	/**
 	 * @see org.caleydo.core.view.IView#initView()
 	 */
-	protected void initViewSwtComposit(Composite swtContainer)
+	protected void initViewSwtComposite(Composite swtContainer)
 	{
 
 		if (this.progressBar != null)

@@ -46,21 +46,15 @@ public class HTMLBrowserViewRep
 	/**
 	 * Constructor.
 	 */
-	public HTMLBrowserViewRep(final int iViewID,
-			final int iParentContainerId, final String sLabel)
+	public HTMLBrowserViewRep(final int iParentContainerId, final String sLabel)
 	{
-		super(iViewID, iParentContainerId, sLabel, ViewType.SWT_HTML_BROWSER);
+		super(iParentContainerId, sLabel, ViewType.SWT_HTML_BROWSER);
 
 		// Default browser type
 		this.browserType = EBrowserType.GENERAL;
-
-		//TODO: review when implemented ID management
-		iSelectionSetId = -1;//generalManager.getSetManager().createId(EManagerObjectType.SET);
-
 		CmdDataCreateSelection selectedSetCmd = (CmdDataCreateSelection) generalManager
 				.getCommandManager().createCommandByType(CommandType.CREATE_SELECTION);
 
-		selectedSetCmd.setAttributes(iSelectionSetId);
 		selectedSetCmd.doCommand();
 	}
 
@@ -75,7 +69,7 @@ public class HTMLBrowserViewRep
 	/**
 	 * @see org.caleydo.core.view.IView#initView()
 	 */
-	protected void initViewSwtComposit(Composite swtContainer)
+	protected void initViewSwtComposite(Composite swtContainer)
 	{
 
 		swtContainer = swtContainer;

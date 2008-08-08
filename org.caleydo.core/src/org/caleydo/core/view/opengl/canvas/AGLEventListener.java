@@ -35,7 +35,7 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public abstract class AGLCanvasUser
+public abstract class AGLEventListener
 	extends AUniqueObject
 	implements GLEventListener
 {
@@ -79,11 +79,11 @@ public abstract class AGLCanvasUser
 	/**
 	 * Constructor.
 	 */
-	protected AGLCanvasUser(final int iViewID,
-			final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum,
+	protected AGLEventListener(final int iGLCanvasID, 
+			final String sLabel, final IViewFrustum viewFrustum,
 			final boolean bRegisterToParentCanvasNow)
 	{
-		super(iViewID);
+		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.GL_EVENT_LISTENER));
 
 		generalManager = GeneralManager.get();
 		

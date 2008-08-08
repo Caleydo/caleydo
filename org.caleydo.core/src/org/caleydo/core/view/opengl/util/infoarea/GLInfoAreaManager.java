@@ -13,7 +13,7 @@ import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.InfoAreaRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 
@@ -165,7 +165,7 @@ public class GLInfoAreaManager
 		while (iterInfoOverlay.hasNext())
 		{
 			iterInfoOverlay.next().setData(
-					((AGLCanvasUser) generalManager.getViewGLCanvasManager().getItem(iViewID))
+					((AGLEventListener) generalManager.getViewGLCanvasManager().getEventListener(iViewID))
 							.getInfo());
 		}
 	}

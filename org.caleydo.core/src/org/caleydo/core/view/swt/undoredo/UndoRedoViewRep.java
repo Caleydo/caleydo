@@ -30,17 +30,16 @@ public class UndoRedoViewRep
 	 * Constructor.
 
 	 */
-	public UndoRedoViewRep( int iViewID,
-			int iParentContainerId, String sLabel)
+	public UndoRedoViewRep(int iParentContainerId, String sLabel)
 	{
-		super(iViewID, iParentContainerId, sLabel, ViewType.SWT_IMAGE_VIEWER);
+		super(iParentContainerId, sLabel, ViewType.SWT_IMAGE_VIEWER);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.view.AView#initViewSwtComposit(org.eclipse.swt.widgets.Composite)
 	 */
-	protected void initViewSwtComposit(Composite swtContainer)
+	protected void initViewSwtComposite(Composite swtContainer)
 	{
 
 		swtContainer.setLayout(new RowLayout(SWT.HORIZONTAL));

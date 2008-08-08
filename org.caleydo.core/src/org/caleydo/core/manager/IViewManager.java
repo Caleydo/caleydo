@@ -18,11 +18,8 @@ public interface IViewManager
 	extends IManager<IView>
 {
 
-	public IView createView(final EManagedObjectType useViewType, final int iUniqueId,
+	public IView createView(final EManagedObjectType useViewType,
 			final int iParentContainerId, final String sLabel);
-
-	public IView createGLView(final EManagedObjectType useViewType, final int iViewID,
-			final int iParentContainerID, final int iCanvasID, final String sLabel);
 
 	public void addViewRep(IView view);
 

@@ -8,7 +8,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
-import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 import com.sun.opengl.util.texture.TextureIO;
@@ -92,7 +92,7 @@ public class GLPathwayTextureManager
 		return null;
 	}
 
-	public void renderPathway(final GL gl, final AGLCanvasUser containingView,
+	public void renderPathway(final GL gl, final AGLEventListener containingView,
 			final int iPathwayId, final float fTextureTransparency, final boolean bHighlight)
 	{
 

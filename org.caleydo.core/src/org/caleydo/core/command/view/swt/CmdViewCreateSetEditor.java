@@ -56,15 +56,6 @@ public class CmdViewCreateSetEditor
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
-	 */
-	public void setParameterHandler(final IParameterHandler parameterHandler)
-	{
-		super.setParameterHandler(parameterHandler);
-	}
-
-	/*
-	 * (non-Javadoc)
 	 * @see org.caleydo.core.command.ICommand#undoCommand()
 	 */
 	public void undoCommand() throws CaleydoRuntimeException

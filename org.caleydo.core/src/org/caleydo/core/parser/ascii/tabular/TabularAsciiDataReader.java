@@ -292,14 +292,6 @@ public class TabularAsciiDataReader
 				case FLOAT:
 					alTargetStorages.get(iStorageIndex).setRawData(
 							alFloatBuffers.get(iFloatArrayIndex));
-					// ArrayList<Float> fAlRaw = new ArrayList<Float>();
-					// for(float fCurrent :
-					// alFloatBuffers.get(iFloatArrayIndex))
-					// {
-					// fAlRaw.add(fCurrent);
-					// }
-					//((NominalStorage<Float>)(alTargetStorages.get(iStorageIndex
-					// ))).setRawNominalData(fAlRaw);
 					iFloatArrayIndex++;
 					iStorageIndex++;
 					break;

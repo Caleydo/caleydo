@@ -7,7 +7,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.logging.Level;
 import javax.media.opengl.GL;
-import javax.media.opengl.GLCanvas;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.data.selection.Selection;
@@ -21,7 +20,8 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
-import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
@@ -32,7 +32,7 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
  * @author Stefan Sauer
  */
 public class GLCanvasGlyph
-	extends AGLCanvasUser
+	extends AGLEventListener
 	implements IMediatorSender, IMediatorReceiver
 {
 
@@ -64,10 +64,10 @@ public class GLCanvasGlyph
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLCanvasGlyph(final int iViewID,
-			final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
+	public GLCanvasGlyph(final int iGLCanvasID, 
+			final String sLabel, final IViewFrustum viewFrustum)
 	{
-		super(iViewID, iGLCanvasID, sLabel, viewFrustum, true);
+		super(iGLCanvasID, sLabel, viewFrustum, true);
 
 		mouseListener_ = new GlyphMouseListener(this, generalManager);
 		keyListener_ = new GlyphKeyListener();
@@ -170,10 +170,10 @@ public class GLCanvasGlyph
 		bIsLocal = false;
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 
-		Collection<GLCanvas> cc = generalManager.getViewGLCanvasManager()
+		Collection<GLCaleydoCanvas> cc = generalManager.getViewGLCanvasManager()
 				.getAllGLCanvasUsers();
 
-		for (GLCanvas c : cc)
+		for (GLCaleydoCanvas c : cc)
 		{
 			// System.out.println("canvas name:" + c.getName() );
 			c.addKeyListener(keyListener_);

@@ -9,6 +9,7 @@ import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.ISetManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
@@ -23,6 +24,8 @@ import org.caleydo.core.util.system.StringConversionTool;
 public class CmdDataCreateSet
 	extends ACmdCreate_IdTargetLabelAttrDetail
 {
+	private ISet set;
+	
 	private ESetType setType;
 
 	private ArrayList<Integer> iAlStorageIDs;
@@ -50,7 +53,7 @@ public class CmdDataCreateSet
 			throw new CaleydoRuntimeException("No data available for creating storage.",
 					CaleydoRuntimeExceptionType.DATAHANDLING);
 		}
-
+		
 		for (int iStorageID : iAlStorageIDs)
 		{
 			newSet.addStorage(iStorageID);
@@ -64,10 +67,11 @@ public class CmdDataCreateSet
 	{
 		ISetManager setManager = generalManager.getSetManager();
 
-		ISet set = setManager.createSet(setType);
+		set = setManager.createSet(setType);
 		set.setLabel(sLabel);
-
-		setManager.registerItem(set, iExternalID);
+		
+		if (iExternalID != -1)
+			generalManager.getIDManager().mapInternalToExternalID(set.getID(), iExternalID);
 
 		fillSets(set);
 
@@ -119,6 +123,10 @@ public class CmdDataCreateSet
 						.nextToken(), -1));
 			}
 		}
+		
+		// Convert external IDs from XML file to internal IDs
+		iAlStorageIDs = GeneralManager.get().getIDManager()
+			.convertExternalToInternalIDs(iAlStorageIDs);
 
 		/**
 		 * read "attrib3" key ...
@@ -145,4 +153,8 @@ public class CmdDataCreateSet
 		this.iExternalID = iSetId;
 	}
 
+	public int getSetID() 
+	{
+		return set.getID();
+	}
 }

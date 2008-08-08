@@ -21,19 +21,16 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.selection.ISelection;
-import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.data.view.rep.renderstyle.layout.BucketLayoutRenderStyle;
 import org.caleydo.core.data.view.rep.renderstyle.layout.JukeboxLayoutRenderStyle;
 import org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle.LayoutMode;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IEventPublisher.MediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -43,8 +40,8 @@ import org.caleydo.core.util.slerp.SlerpAction;
 import org.caleydo.core.util.slerp.SlerpMod;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
-import org.caleydo.core.view.opengl.canvas.AGLCanvasStorageBasedView;
-import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.AGLEventListenerStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
 import org.caleydo.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
@@ -72,7 +69,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  * @author Marc Streit
  */
 public class GLCanvasRemoteRendering3D
-	extends AGLCanvasUser
+	extends AGLEventListener
 	implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 {
 
@@ -154,11 +151,11 @@ public class GLCanvasRemoteRendering3D
 	/**
 	 * Constructor.
 	 */
-	public GLCanvasRemoteRendering3D(final int iViewID,
-			final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum,
+	public GLCanvasRemoteRendering3D(final int iGLCanvasID, 
+			final String sLabel, final IViewFrustum viewFrustum,
 			final ARemoteViewLayoutRenderStyle.LayoutMode layoutMode)
 	{
-		super(iViewID, iGLCanvasID, sLabel, viewFrustum, true);
+		super(iGLCanvasID, sLabel, viewFrustum, true);
 
 		this.layoutMode = layoutMode;
 
@@ -376,13 +373,9 @@ public class GLCanvasRemoteRendering3D
 	private void retrieveContainedViews(final GL gl)
 	{
 
-		Iterator<GLEventListener> iterGLEventListener = generalManager
-				.getViewGLCanvasManager().getAllGLEventListeners().iterator();
-
-		while (iterGLEventListener.hasNext())
+		for (AGLEventListener tmpGLEventListener : generalManager
+				.getViewGLCanvasManager().getAllGLEventListeners())
 		{
-			AGLCanvasUser tmpGLEventListener = (AGLCanvasUser) iterGLEventListener.next();
-
 			// Ignore pathway views upon startup
 			// because they will be activated when pathway loader thread has
 			// finished
@@ -391,7 +384,7 @@ public class GLCanvasRemoteRendering3D
 				continue;
 			}
 
-			int iViewID = ((AGLCanvasUser) tmpGLEventListener).getID();
+			int iViewID = ((AGLEventListener) tmpGLEventListener).getID();
 
 			if (underInteractionLayer.containsElement(-1))
 			{
@@ -496,12 +489,6 @@ public class GLCanvasRemoteRendering3D
 		// FIXME: this specialization to pathways in the bucket is not good!
 		if (!iAlUninitializedPathwayIDs.isEmpty() && arSlerpActions.isEmpty())
 		{
-			// Iterator<Integer> iterUninitializedViewIDs =
-			// iAlUninitializedPathwayIDs.iterator();
-			// while (iterUninitializedViewIDs.hasNext())
-			// {
-			// int iTmpPathwayID = iterUninitializedViewIDs.next();
-
 			int iTmpPathwayID = iAlUninitializedPathwayIDs.get(0);
 
 			// Check if pathway is already loaded in bucket
@@ -517,33 +504,28 @@ public class GLCanvasRemoteRendering3D
 				ArrayList<Integer> iAlSelectionIDs = new ArrayList<Integer>();
 
 				// Create new selection set
-				//TODO: review when implemented ID management
-				int iSelectionSetID = -1;//generalManager.getSetManager().createId(
-						//EManagerObjectType.SET);
 				CmdDataCreateSelection selectedSetCmd = (CmdDataCreateSelection) generalManager
 						.getCommandManager().createCommandByType(
 								CommandType.CREATE_SELECTION);
-				selectedSetCmd.setAttributes(iSelectionSetID);
 				selectedSetCmd.doCommand();
 
-				iAlSelectionIDs.add(iSelectionSetID);
-
-				//TODO: review when implemented ID management
-				int iGeneratedViewID = -1;//generalManager.getViewGLCanvasManager().createId(
-						//EManagerObjectType.VIEW);
+				iAlSelectionIDs.add(selectedSetCmd.getSelectionID());
 
 				// Create Pathway3D view
 				CmdGlObjectPathway3D cmdPathway = (CmdGlObjectPathway3D) generalManager
 						.getCommandManager().createCommandByType(
 								CommandType.CREATE_GL_PATHWAY_3D);
 
-				cmdPathway.setAttributes(iGeneratedViewID, iTmpPathwayID, iAlSetIDs,
+				cmdPathway.setAttributes(iTmpPathwayID, iAlSetIDs,
 						iAlSelectionIDs, ProjectionMode.ORTHOGRAPHIC, -4, 4, 4, -4, -20, 20);
 
 				cmdPathway.doCommand();
+				
+				int iGeneratedViewID = cmdPathway.getEventListenerID();
 
 				ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
 				arMediatorIDs.add(iGeneratedViewID);
+				
 				generalManager.getEventPublisher().addSendersAndReceiversToMediator(
 						generalManager.getEventPublisher().getItem(
 								iBucketEventMediatorID), arMediatorIDs, arMediatorIDs,
@@ -555,7 +537,7 @@ public class GLCanvasRemoteRendering3D
 							spawnLayer, underInteractionLayer);
 					arSlerpActions.add(slerpActionTransition);
 
-					((AGLCanvasUser) generalManager.getViewGLCanvasManager().getItem(
+					((AGLEventListener) generalManager.getViewGLCanvasManager().getEventListener(
 							iGeneratedViewID)).initRemote(gl, iUniqueID,
 							underInteractionLayer, pickingTriggerMouseAdapter, this);
 				}
@@ -565,7 +547,7 @@ public class GLCanvasRemoteRendering3D
 							spawnLayer, stackLayer);
 					arSlerpActions.add(slerpActionTransition);
 
-					((AGLCanvasUser) generalManager.getViewGLCanvasManager().getItem(
+					((AGLEventListener) generalManager.getViewGLCanvasManager().getEventListener(
 							iGeneratedViewID)).initRemote(gl, iUniqueID, stackLayer,
 							pickingTriggerMouseAdapter, this);
 				}
@@ -575,7 +557,7 @@ public class GLCanvasRemoteRendering3D
 							spawnLayer, poolLayer);
 					arSlerpActions.add(slerpActionTransition);
 
-					((AGLCanvasUser) generalManager.getViewGLCanvasManager().getItem(
+					((AGLEventListener) generalManager.getViewGLCanvasManager().getEventListener(
 							iGeneratedViewID)).initRemote(gl, iUniqueID, poolLayer,
 							pickingTriggerMouseAdapter, this);
 				}
@@ -607,8 +589,8 @@ public class GLCanvasRemoteRendering3D
 		if (!layer.getElementVisibilityById(iViewID))
 			return;
 
-		AGLCanvasUser tmpCanvasUser = ((AGLCanvasUser) generalManager.getViewGLCanvasManager()
-				.getItem(iViewID));
+		AGLEventListener tmpCanvasUser = ((AGLEventListener) generalManager.getViewGLCanvasManager()
+				.getEventListener(iViewID));
 
 		if (tmpCanvasUser == null)
 			throw new CaleydoRuntimeException("Cannot render canvas object which is null!");
@@ -1107,7 +1089,7 @@ public class GLCanvasRemoteRendering3D
 
 		slerpMod.applySlerp(gl, transform);
 
-		((AGLCanvasUser) generalManager.getViewGLCanvasManager().getItem(iViewId))
+		((AGLEventListener) generalManager.getViewGLCanvasManager().getEventListener(iViewId))
 				.displayRemote(gl);
 
 		gl.glPopMatrix();
@@ -1663,22 +1645,19 @@ public class GLCanvasRemoteRendering3D
 
 	private void createEventMediator()
 	{
-
-		// Create event mediator that connects all views in the bucket
-		iBucketEventMediatorID = -1;//generalManager.getEventPublisher().createId(
-				//EManagerObjectType.EVENT_MEDIATOR_CREATE);
-
 		CmdEventCreateMediator tmpMediatorCmd = (CmdEventCreateMediator) generalManager
 				.getCommandManager().createCommandByType(
 						CommandType.CREATE_EVENT_MEDIATOR);
-
+		
 		ArrayList<Integer> iAlSenderIDs = new ArrayList<Integer>();
 		ArrayList<Integer> iAlReceiverIDs = new ArrayList<Integer>();
 		iAlSenderIDs.add(iUniqueID);
 		iAlReceiverIDs.add(iUniqueID);
-		tmpMediatorCmd.setAttributes(iBucketEventMediatorID, iAlSenderIDs, iAlReceiverIDs,
+		tmpMediatorCmd.setAttributes(iAlSenderIDs, iAlReceiverIDs,
 				MediatorType.SELECTION_MEDIATOR);
 		tmpMediatorCmd.doCommand();
+
+		iBucketEventMediatorID = tmpMediatorCmd.getMediatorID();
 	}
 
 	public void toggleLayoutMode()
@@ -1747,7 +1726,7 @@ public class GLCanvasRemoteRendering3D
 		for (GLEventListener tmpGLEventListenerToRemove : generalManager
 				.getViewGLCanvasManager().getAllGLEventListeners())
 		{
-			iGLEventListenerId = ((AGLCanvasUser) tmpGLEventListenerToRemove).getID();
+			iGLEventListenerId = ((AGLEventListener) tmpGLEventListenerToRemove).getID();
 
 			if (tmpGLEventListenerToRemove instanceof GLCanvasPathway3D)
 			{
@@ -1770,7 +1749,7 @@ public class GLCanvasRemoteRendering3D
 					|| tmpGLEventListenerToRemove instanceof GLCanvasParCoords3D)
 			{
 				// Remove all elements from heatmap and parallel coordinates
-				((AGLCanvasStorageBasedView) tmpGLEventListenerToRemove).clearAllSelections();
+				((AGLEventListenerStorageBasedView) tmpGLEventListenerToRemove).clearAllSelections();
 			}
 		}
 
@@ -1778,7 +1757,7 @@ public class GLCanvasRemoteRendering3D
 		for (int iGLEventListenerIndex = 0; iGLEventListenerIndex < alGLEventListenerToRemove
 				.size(); iGLEventListenerIndex++)
 		{
-			iGLEventListenerIdToRemove = ((AGLCanvasUser) alGLEventListenerToRemove
+			iGLEventListenerIdToRemove = ((AGLEventListener) alGLEventListenerToRemove
 					.get(iGLEventListenerIndex)).getID();
 
 			// Unregister removed pathways from event mediator

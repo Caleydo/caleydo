@@ -4,7 +4,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.Vector;
-import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -29,16 +28,18 @@ import org.eclipse.swt.widgets.Shell;
  * the windows and composites. Also the overall layout is defined here and the
  * menus are added to the windows.
  * 
+ * This class is not derived from AManager since it does not manages IUniqueObjects.
+ * 
  * @author Marc Streit
  * @author Michael Kalkusch
  */
 public class SWTGUIManager
-	extends AManager
-	implements ISWTGUIManager
+implements ISWTGUIManager
 {
-
 	public static final int PROGRESSBAR_MAXIMUM = 200;
 
+	protected IGeneralManager generalManager;
+	
 	/**
 	 * SWT Display represents a thread.
 	 */
@@ -61,6 +62,8 @@ public class SWTGUIManager
 	 */
 	public SWTGUIManager()
 	{
+		generalManager = GeneralManager.get();
+		
 		widgetMap = new Vector<ISWTWidget>();
 		display = new Display();
 		windowMap = new HashMap<Integer, Shell>();
@@ -71,40 +74,24 @@ public class SWTGUIManager
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.ISWTGUIManager#createWindow()
+	 * @see org.caleydo.core.manager.ISWTGUIManager#createWindow(java.lang.String, java.lang.String)
 	 */
-	public Shell createWindow()
+	public int createWindow(String sLabel, String sLayoutAttributes)
 	{
-
-		// Register shell in the window map
-		// TODO: review when implementing ID management
-		final int iUniqueId = -1;//this.createId(EManagerObjectType.GUI_SWT_WINDOW);
-
-		// use default layout
-		return createWindow(iUniqueId, "Caleydo", "ROW VERTICAL");
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.ISWTGUIManager#createWindow(int, Stringt,
-	 * Stringt)
-	 */
-	public Shell createWindow(int iUniqueId, String sLabel, String sLayoutAttributes)
-	{
-
-		assert iUniqueId != 0 : "createWindow() iUniqueID must not be 0!";
-
 		Shell newShell = new Shell(display);
 		newShell.setLayout(new GridLayout());
 		newShell.setMaximized(true);
 		newShell.setImage(new Image(display, "resources/icons/caleydo/caleydo16.ico"));
 		newShell.setText(sLabel);
 
-		windowMap.put(iUniqueId, newShell);
+		int iShellID = generalManager.getIDManager()
+			.createID(EManagedObjectType.GUI_SWT_WINDOW);
+		
+		windowMap.put(iShellID, newShell);
 
 		setUpLayout(newShell, sLayoutAttributes);
 
-		return newShell;
+		return iShellID;
 	}
 
 	/*

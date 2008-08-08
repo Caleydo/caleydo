@@ -55,11 +55,9 @@ public class GlyphMappingConfigurationViewRep
 	/**
 	 * Constructor.
 	 */
-	public GlyphMappingConfigurationViewRep(int iViewID,
-			int iParentContainerId, String sLabel)
+	public GlyphMappingConfigurationViewRep(int iParentContainerId, String sLabel)
 	{
-
-		super(iViewID, iParentContainerId, sLabel,
+		super(iParentContainerId, sLabel,
 				ViewType.SWT_GLYPH_MAPPINGCONFIGURATION);
 
 		columnNames = new ArrayList<String>();
@@ -73,7 +71,7 @@ public class GlyphMappingConfigurationViewRep
 	 * @see org.caleydo.core.view.AView#retrieveGUIContainer()
 	 * @see org.caleydo.core.view.IView#initView()
 	 */
-	protected void initViewSwtComposit(Composite swtContainer)
+	protected void initViewSwtComposite(Composite swtContainer)
 	{
 
 		IGlyphManager man = generalManager.getGlyphManager();

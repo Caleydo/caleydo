@@ -22,7 +22,7 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.view.SelectionManager;
-import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
@@ -41,7 +41,7 @@ import org.caleydo.util.graph.IGraphItem;
  * @author Marc Streit
  */
 public class GLCanvasPathway3D
-	extends AGLCanvasUser
+	extends AGLEventListener
 	implements IMediatorReceiver, IMediatorSender
 {
 
@@ -86,10 +86,10 @@ public class GLCanvasPathway3D
 	/**
 	 * Constructor.
 	 */
-	public GLCanvasPathway3D(final int iViewID,
-			final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
+	public GLCanvasPathway3D(final int iGLCanvasID, 
+			final String sLabel, final IViewFrustum viewFrustum)
 	{
-		super(iViewID, iGLCanvasID, sLabel, viewFrustum, false);
+		super(iGLCanvasID, sLabel, viewFrustum, false);
 
 		pathwayManager = generalManager.getPathwayManager();
 

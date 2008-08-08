@@ -18,7 +18,7 @@ public abstract class ACmdCreate_IdTargetLabel
 	/**
 	 * Unique Id of the object, that will be created.
 	 */
-	protected int iExternalID;
+	protected int iExternalID = -1;
 
 	/**
 	 * Label of the new object, that will be created.

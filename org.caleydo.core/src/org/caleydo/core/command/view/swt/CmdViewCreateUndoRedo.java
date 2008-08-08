@@ -32,13 +32,18 @@ public class CmdViewCreateUndoRedo
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
-
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
+		if (iExternalID != -1)
+		{
+			iParentContainerId = 
+				generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
+		}
+		
 		UndoRedoViewRep undoRedoView = (UndoRedoViewRep) viewManager.createView(
-				EManagedObjectType.VIEW_SWT_UNDO_REDO, iExternalID, iParentContainerId, sLabel);
+				EManagedObjectType.VIEW_SWT_UNDO_REDO, iParentContainerId, sLabel);
 
-		viewManager.registerItem(undoRedoView, iExternalID);
+		viewManager.registerItem(undoRedoView);
 
 		undoRedoView.setAttributes(iWidthX, iHeightY);
 		undoRedoView.initView();
@@ -46,7 +51,12 @@ public class CmdViewCreateUndoRedo
 
 		// Register UNDO/REDO view to command manager.
 		generalManager.getCommandManager().addUndoRedoViewRep(undoRedoView);
-
+		
+		if (iExternalID != -1)
+		{
+			generalManager.getIDManager().mapInternalToExternalID(undoRedoView.getID(), iExternalID);
+		}
+		
 		commandManager.runDoCommand(this);
 	}
 

@@ -1,8 +1,6 @@
 package org.caleydo.core.command.base;
 
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**

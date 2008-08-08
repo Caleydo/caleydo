@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import org.caleydo.core.data.graph.ICaleydoGraphItem;
 import org.caleydo.core.data.graph.pathway.item.edge.PathwayReactionEdgeGraphItem;
 import org.caleydo.core.data.graph.pathway.item.edge.PathwayReactionEdgeGraphItemRep;
 import org.caleydo.core.data.graph.pathway.item.edge.PathwayRelationEdgeGraphItem;
@@ -24,13 +25,13 @@ import org.caleydo.util.graph.IGraphItem;
  * @author Marc Streit
  */
 public class PathwayItemManager
-	extends AManager<IGraphItem>
+	extends AManager<ICaleydoGraphItem>
 	implements IPathwayItemManager, Serializable
 {
 
 	private static final long serialVersionUID = 1L;
 
-	private HashMap<String, IGraphItem> hashVertexNameToGraphItem;
+	private HashMap<String, ICaleydoGraphItem> hashVertexNameToGraphItem;
 
 	private HashMap<Integer, Integer> hashDavidIdToPathwayVertexGraphItemId;
 
@@ -43,7 +44,7 @@ public class PathwayItemManager
 	 */
 	public PathwayItemManager()
 	{
-		hashVertexNameToGraphItem = new HashMap<String, IGraphItem>();
+		hashVertexNameToGraphItem = new HashMap<String, ICaleydoGraphItem>();
 		hashDavidIdToPathwayVertexGraphItemId = new HashMap<Integer, Integer>();
 		hashPathwayVertexGraphItemIdToDavidId = new HashMap<Integer, Integer>();
 	}
@@ -63,13 +64,10 @@ public class PathwayItemManager
 			return hashVertexNameToGraphItem.get(sName);
 		}
 
-		//TODO: review when implementing ID management
-		int iGeneratedId = -1;//createId(EManagerObjectType.PATHWAY_VERTEX);
-
-		IGraphItem pathwayVertex = new PathwayVertexGraphItem(iGeneratedId, sName, sType,
+		ICaleydoGraphItem pathwayVertex = new PathwayVertexGraphItem(sName, sType,
 				sExternalLink, sReactionId);
 
-		hashItems.put(iGeneratedId, pathwayVertex);
+		hashItems.put(pathwayVertex.getID(), pathwayVertex);
 
 		generalManager.getPathwayManager().getRootPathway().addItem(pathwayVertex);
 
@@ -96,13 +94,10 @@ public class PathwayItemManager
 			final String sShapeType, final short shHeight, final short shWidth,
 			final short shXPosition, final short shYPosition)
 	{
-
-		//TODO: review when implementing ID management
-		int iGeneratedId = -1;//createId(EManagerObjectType.PATHWAY_VERTEX_REP);
-		IGraphItem pathwayVertexRep = new PathwayVertexGraphItemRep(iGeneratedId, sName,
+		ICaleydoGraphItem pathwayVertexRep = new PathwayVertexGraphItemRep(sName,
 				sShapeType, shHeight, shWidth, shXPosition, shYPosition);
 
-		hashItems.put(iGeneratedId, pathwayVertexRep);
+		registerItem(pathwayVertexRep);
 
 		parentPathway.addItem(pathwayVertexRep);
 
@@ -125,13 +120,10 @@ public class PathwayItemManager
 			final IGraphItem parentVertex, final String sName, final String sShapeType,
 			final String sCoords)
 	{
-
-		//TODO: review when implementing ID management
-		int iGeneratedId = -1;//createId(EManagerObjectType.PATHWAY_VERTEX_REP);
-		IGraphItem pathwayVertexRep = new PathwayVertexGraphItemRep(iGeneratedId, sName,
+		ICaleydoGraphItem pathwayVertexRep = new PathwayVertexGraphItemRep(sName,
 				sShapeType, sCoords);
 
-		hashItems.put(iGeneratedId, pathwayVertexRep);
+		registerItem(pathwayVertexRep);
 
 		parentPathway.addItem(pathwayVertexRep);
 

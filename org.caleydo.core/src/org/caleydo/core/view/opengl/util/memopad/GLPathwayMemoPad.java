@@ -8,7 +8,7 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.picking.EPickingType;
-import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathwayManager;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathwayTextureManager;
 import org.caleydo.core.view.opengl.util.hierarchy.EHierarchyLevel;
@@ -120,7 +120,7 @@ public class GLPathwayMemoPad
 		memoPad.removeElement(iPathwayId);
 	}
 
-	public void renderMemoPad(final GL gl, final AGLCanvasUser containingView)
+	public void renderMemoPad(final GL gl, final AGLEventListener containingView)
 	{
 
 		gl.glPushName(generalManager.getViewGLCanvasManager().getPickingManager()
@@ -189,7 +189,7 @@ public class GLPathwayMemoPad
 		renderTrashCan(gl, containingView);
 	}
 
-	public void renderTrashCan(final GL gl, final AGLCanvasUser containingView)
+	public void renderTrashCan(final GL gl, final AGLEventListener containingView)
 	{
 
 		if (trashCanTexture == null)

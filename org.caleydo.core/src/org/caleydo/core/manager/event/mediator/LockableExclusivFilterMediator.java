@@ -26,10 +26,9 @@ public class LockableExclusivFilterMediator
 	/**
 	 * Constructor.
 	 */
-	public LockableExclusivFilterMediator(int iMediatorId,
-			final ISet setExclusiveSelectionSet)
+	public LockableExclusivFilterMediator(final ISet setExclusiveSelectionSet)
 	{
-		super(iMediatorId, MediatorUpdateType.MEDIATOR_FILTER_ONLY_SET);
+		super(MediatorUpdateType.MEDIATOR_FILTER_ONLY_SET);
 
 		this.exclusiveSet = setExclusiveSelectionSet;
 	}

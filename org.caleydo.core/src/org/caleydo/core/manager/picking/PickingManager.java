@@ -11,7 +11,7 @@ import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
-import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import com.sun.opengl.util.BufferUtil;
 
@@ -107,7 +107,7 @@ public class PickingManager
 		if (bEnablePicking == false)
 			return;
 
-		AGLCanvasUser canvasUser = (AGLCanvasUser) (GeneralManager.get()
+		AGLEventListener canvasUser = (AGLEventListener) (GeneralManager.get()
 				.getViewGLCanvasManager().getEventListener(iViewID));
 		PickingJoglMouseListener pickingTriggerMouseAdapter = canvasUser.getParentGLCanvas()
 				.getJoglMouseListener();

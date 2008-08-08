@@ -5,9 +5,12 @@ import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.view.SelectionManager;
 import org.caleydo.core.view.IView;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
 import com.sun.opengl.util.Animator;
@@ -22,20 +25,22 @@ import com.sun.opengl.util.Animator;
 public interface IViewGLCanvasManager
 	extends IViewManager, IManager<IView>
 {
+	public AGLEventListener createGLEventListener(CommandType type,
+			final int iGLCanvasID, String sLabel, IViewFrustum viewFrustum);
 
-	public GLEventListener createGLCanvas(CommandType useViewType,
-			final int iUniqueId, final int iGLCanvasID, String sLabel, IViewFrustum viewFrustum);
+	public IView createGLView(final EManagedObjectType type,
+			final int iParentContainerID, final String sLabel);
+	
+	public Collection<GLCaleydoCanvas> getAllGLCanvasUsers();
 
-	public Collection<GLCanvas> getAllGLCanvasUsers();
+	public Collection<AGLEventListener> getAllGLEventListeners();
 
-	public Collection<GLEventListener> getAllGLEventListeners();
-
-	public boolean registerGLCanvas(final GLCanvas canvas, final int iGLCanvasId);
-
+	public boolean registerGLCanvas(final GLCaleydoCanvas glCanvas);
+	
 	public boolean unregisterGLCanvas(final int iGLCanvasId);
 
 	public void registerGLEventListenerByGLCanvasID(final int iGLCanvasID,
-			final GLEventListener gLEventListener);
+			final AGLEventListener gLEventListener);
 
 	public void unregisterGLEventListener(final int iGLEventListenerID);
 
@@ -61,7 +66,7 @@ public interface IViewGLCanvasManager
 	 */
 	public void cleanup();
 		
-	public GLCanvas getCanvas(int iItemID);
+	public GLCaleydoCanvas getCanvas(int iItemID);
 
-	public GLEventListener getEventListener(int iItemID);
+	public AGLEventListener getEventListener(int iItemID);
 }

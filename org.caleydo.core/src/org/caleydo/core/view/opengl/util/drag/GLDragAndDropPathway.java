@@ -4,7 +4,7 @@ package org.caleydo.core.view.opengl.util.drag;
 import java.awt.Point;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
-import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathwayTextureManager;
 import com.sun.opengl.util.texture.Texture;
 
@@ -88,7 +88,7 @@ public class GLDragAndDropPathway
 		fArCurrentMousePos[1] = (float) wcoord[1];
 	}
 
-	public void renderDragThumbnailTexture(final GL gl, final AGLCanvasUser containingView)
+	public void renderDragThumbnailTexture(final GL gl, final AGLEventListener containingView)
 	{
 
 		float fOffset = 0.02f;

@@ -1,5 +1,6 @@
 package org.caleydo.core.data.selection;
 
+import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
@@ -12,7 +13,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  * 
  */
 public interface IVirtualArray
-	extends Iterable<Integer>// , IManagedObject
+	extends Iterable<Integer>, IUniqueObject
 {
 
 	/**

@@ -25,16 +25,16 @@ public class ImageViewRep
 	 * Constructor.
 	 * 
 	 */
-	public ImageViewRep(int iViewID, int iParentContainerId, String sLabel)
+	public ImageViewRep(int iParentContainerId, String sLabel)
 	{
-		super(iViewID, iParentContainerId, sLabel, ViewType.SWT_IMAGE_VIEWER);
+		super(iParentContainerId, sLabel, ViewType.SWT_IMAGE_VIEWER);
 	}
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.view.AView#initViewSwtComposit(org.eclipse.swt.widgets.Composite)
 	 */
-	protected void initViewSwtComposit(Composite swtContainer)
+	protected void initViewSwtComposite(Composite swtContainer)
 	{
 
 		Image image = new Image(swtContainer.getDisplay(), sImagePath);

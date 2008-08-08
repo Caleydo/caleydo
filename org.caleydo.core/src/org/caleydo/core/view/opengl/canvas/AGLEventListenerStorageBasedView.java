@@ -32,8 +32,8 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public abstract class AGLCanvasStorageBasedView
-	extends AGLCanvasUser
+public abstract class AGLEventListenerStorageBasedView
+	extends AGLEventListener
 	implements IMediatorReceiver, IMediatorSender
 {
 
@@ -93,11 +93,10 @@ public abstract class AGLCanvasStorageBasedView
 	/**
 	 * Constructor.
 	 */
-	public AGLCanvasStorageBasedView(final int iViewId,
-			final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
+	public AGLEventListenerStorageBasedView(final int iGLCanvasID, 
+			final String sLabel, final IViewFrustum viewFrustum)
 	{
-
-		super(iViewId, iGLCanvasID, sLabel, viewFrustum, true);
+		super(iGLCanvasID, sLabel, viewFrustum, true);
 
 		// alDataStorages = new ArrayList<IStorage>();
 		mapSelections = new EnumMap<ESelectionType, Integer>(ESelectionType.class);

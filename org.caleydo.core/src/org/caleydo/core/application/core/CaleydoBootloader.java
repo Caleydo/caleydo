@@ -103,10 +103,6 @@ public class CaleydoBootloader
 	 * Start Caleydo core. Calls run_parseXmlConfigFile(String) with
 	 * getXmlFileName() and starts SWT.
 	 * 
-	 * @see CaleydoBootloader#getXmlFileName()
-	 * @see CaleydoBootloader#parseXmlConfigFile(String)
-	 * @see CaleydoBootloader#isRunning()
-	 * @see CaleydoBootloader#stop()
 	 */
 	public synchronized void start()
 	{

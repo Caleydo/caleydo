@@ -67,167 +67,91 @@ public class CommandSaxHandler
 
 		IParameterHandler phAttributes = new ParameterHandler();
 
-		try
+		/* create new Frame */
+		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_PROCESS
+				.getXmlKey(), CommandType.TAG_PROCESS.getDefault(),
+				ParameterHandlerType.STRING);
+
+		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_LABEL
+				.getXmlKey(), CommandType.TAG_LABEL.getDefault(),
+				ParameterHandlerType.STRING);
+
+		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_CMD_ID
+				.getXmlKey(), CommandType.TAG_CMD_ID.getDefault(),
+				ParameterHandlerType.INT);
+
+		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_UNIQUE_ID
+				.getXmlKey(), CommandType.TAG_UNIQUE_ID.getDefault(),
+				ParameterHandlerType.INT);
+
+		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_MEMENTO_ID
+				.getXmlKey(), CommandType.TAG_MEMENTO_ID.getDefault(),
+				ParameterHandlerType.INT);
+
+		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_TYPE
+				.getXmlKey(), CommandType.TAG_TYPE.getDefault(),
+				ParameterHandlerType.STRING);
+
+		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_PARENT
+				.getXmlKey(), CommandType.TAG_PARENT.getDefault(),
+				ParameterHandlerType.INT);
+
+		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_ATTRIBUTE1
+				.getXmlKey(), CommandType.TAG_ATTRIBUTE1.getDefault(),
+				ParameterHandlerType.STRING);
+
+		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_ATTRIBUTE2
+				.getXmlKey(), CommandType.TAG_ATTRIBUTE2.getDefault(),
+				ParameterHandlerType.STRING);
+
+		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_ATTRIBUTE3
+				.getXmlKey(), CommandType.TAG_ATTRIBUTE3.getDefault(),
+				ParameterHandlerType.STRING);
+
+		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_ATTRIBUTE4
+				.getXmlKey(), CommandType.TAG_ATTRIBUTE4.getDefault(),
+				ParameterHandlerType.STRING);
+
+		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_POS_GL_ORIGIN
+				.getXmlKey(), CommandType.TAG_POS_GL_ORIGIN.getDefault(),
+				ParameterHandlerType.VEC3F);
+
+		phAttributes.setValueBySaxAttributes(attrs,
+				CommandType.TAG_POS_GL_ROTATION.getXmlKey(),
+				CommandType.TAG_POS_GL_ROTATION.getDefault(),
+				ParameterHandlerType.VEC4F);
+
+		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_DETAIL
+				.getXmlKey(), CommandType.TAG_DETAIL.getDefault(),
+				ParameterHandlerType.STRING);
+
+		// generalManager.logMsg(
+		// "XML-TAG= " + phAttributes.getValueString(
+		// CommandQueueSaxType.TAG_LABEL.getXmlKey() ),
+		// LoggerType.FULL );
+
+		lastCommand = generalManager.getCommandManager().createCommand(phAttributes);
+
+		if (lastCommand != null)
 		{
-			/* create new Frame */
-			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_PROCESS
-					.getXmlKey(), CommandType.TAG_PROCESS.getDefault(),
-					ParameterHandlerType.STRING);
+			String sData_Cmd_process = phAttributes
+					.getValueString(CommandType.TAG_PROCESS.getXmlKey());
 
-			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_LABEL
-					.getXmlKey(), CommandType.TAG_LABEL.getDefault(),
-					ParameterHandlerType.STRING);
-
-			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_CMD_ID
-					.getXmlKey(), CommandType.TAG_CMD_ID.getDefault(),
-					ParameterHandlerType.INT);
-
-			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_UNIQUE_ID
-					.getXmlKey(), CommandType.TAG_UNIQUE_ID.getDefault(),
-					ParameterHandlerType.INT);
-
-			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_MEMENTO_ID
-					.getXmlKey(), CommandType.TAG_MEMENTO_ID.getDefault(),
-					ParameterHandlerType.INT);
-
-			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_TYPE
-					.getXmlKey(), CommandType.TAG_TYPE.getDefault(),
-					ParameterHandlerType.STRING);
-
-			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_PARENT
-					.getXmlKey(), CommandType.TAG_PARENT.getDefault(),
-					ParameterHandlerType.INT);
-
-			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_GLCANVAS
-					.getXmlKey(), CommandType.TAG_GLCANVAS.getDefault(),
-					ParameterHandlerType.INT);
-
-			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_ATTRIBUTE1
-					.getXmlKey(), CommandType.TAG_ATTRIBUTE1.getDefault(),
-					ParameterHandlerType.STRING);
-
-			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_ATTRIBUTE2
-					.getXmlKey(), CommandType.TAG_ATTRIBUTE2.getDefault(),
-					ParameterHandlerType.STRING);
-
-			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_ATTRIBUTE3
-					.getXmlKey(), CommandType.TAG_ATTRIBUTE3.getDefault(),
-					ParameterHandlerType.STRING);
-
-			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_ATTRIBUTE4
-					.getXmlKey(), CommandType.TAG_ATTRIBUTE4.getDefault(),
-					ParameterHandlerType.STRING);
-
-			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_POS_GL_ORIGIN
-					.getXmlKey(), CommandType.TAG_POS_GL_ORIGIN.getDefault(),
-					ParameterHandlerType.VEC3F);
-
-			phAttributes.setValueBySaxAttributes(attrs,
-					CommandType.TAG_POS_GL_ROTATION.getXmlKey(),
-					CommandType.TAG_POS_GL_ROTATION.getDefault(),
-					ParameterHandlerType.VEC4F);
-
-			phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_DETAIL
-					.getXmlKey(), CommandType.TAG_DETAIL.getDefault(),
-					ParameterHandlerType.STRING);
-
-			// generalManager.logMsg(
-			// "XML-TAG= " + phAttributes.getValueString(
-			// CommandQueueSaxType.TAG_LABEL.getXmlKey() ),
-			// LoggerType.FULL );
-
-			lastCommand = generalManager.getCommandManager().createCommand(phAttributes);
-
-		}
-		catch (Exception e)
-		{
-			if (lastCommand != null)
+			if (sData_Cmd_process.equals(CommandType.RUN_CMD_NOW.toString()))
 			{
-				// generalManager.logMsg(
-				// "CommandSaxHandler.readCommandData(" +
-				// attrs.toString() +
-				// ") ERROR while parsing " +
-				// lastCommand.toString() +
-				// " error=" +
-				// e.toString(),
-				// LoggerType.TRANSITION );
+				// generalManager.logMsg("do command: " +
+				// lastCommand.toString(),
+				// LoggerType.FULL );
+				lastCommand.doCommand();
 			}
-			else
-			{
-				// generalManager.logMsg(
-				// "CommandSaxHandler.readCommandData(" +
-				// attrs.toString() +
-				// ") ERROR while parsing --no command--" +
-				// " error=" +
-				// e.toString(),
-				// LoggerType.TRANSITION );
-			}
-
-			e.printStackTrace();
-
-			return null;
 		}
-
-		try
+		else
 		{
-			if (lastCommand != null)
-			{
-				String sData_Cmd_process = phAttributes
-						.getValueString(CommandType.TAG_PROCESS.getXmlKey());
-
-				if (sData_Cmd_process.equals(CommandType.RUN_CMD_NOW.toString()))
-				{
-					// generalManager.logMsg("do command: " +
-					// lastCommand.toString(),
-					// LoggerType.FULL );
-					lastCommand.doCommand();
-				}
-			}
-			else
-			{
-				// generalManager.logMsg("do command: command=null!",
-				// LoggerType.VERBOSE );
-			}
-
-			return lastCommand;
-
+			// generalManager.logMsg("do command: command=null!",
+			// LoggerType.VERBOSE );
 		}
-		catch (CaleydoRuntimeException gve)
-		{
-			// String sDetails = "";
-			// if ( lastCommand != null )
-			// {
-			// sDetails = lastCommand.getClass().getSimpleName();
-			// }
-			// generalManager.logMsg(
-			// "CommandSaxHandler.readCommandData(" +
-			// attrs.toString() +
-			// ")\n  ERROR while executing command " +
-			// sDetails + "  ==> "
-			// + gve.toString() + "\n",
-			// LoggerType.MINOR_ERROR_XML );
 
-			return null;
-		}
-		catch (Exception e)
-		{
-			// String sDetails = "";
-			// if ( lastCommand != null )
-			// {
-			// sDetails = lastCommand.getClass().getSimpleName();
-			// }
-			// generalManager.logMsg(
-			// "CommandSaxHandler.readCommandData(" +
-			// attrs.toString() +
-			// ")\n  ERROR while executing command " +
-			// sDetails + "  ==> "
-			// + e.toString() + "\n",
-			// LoggerType.TRANSITION );
-
-			e.printStackTrace();
-
-			return null;
-		}
+		return lastCommand;
 	}
 
 	/**

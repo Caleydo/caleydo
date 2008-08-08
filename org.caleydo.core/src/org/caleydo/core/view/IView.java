@@ -21,7 +21,7 @@ public interface IView
 	 * @see IView#initView()
 	 * @see org.caleydo.core.view.AView#initView()
 	 * @see org.caleydo.core.view.AView#initViewRCP(Composite)
-	 * @see org.caleydo.core.view.AView#initViewSwtComposit(Composite)
+	 * @see org.caleydo.core.view.AView#initViewSwtComposite(Composite)
 	 * @param swtContainer container to bind View to
 	 */
 	public void initViewRCP(Composite swtContainer);
@@ -33,7 +33,7 @@ public interface IView
 	 * @see IView#initViewRCP(Composite)
 	 * @see org.caleydo.core.view.AView#initView()
 	 * @see org.caleydo.core.view.AView#initViewRCP(Composite)
-	 * @see org.caleydo.core.view.AView#initViewSwtComposit(Composite)
+	 * @see org.caleydo.core.view.AView#initViewSwtComposite(Composite)
 	 */
 	public void initView();
 

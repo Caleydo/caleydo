@@ -186,23 +186,6 @@ public class MementoManager
 	}
 
 	/**
-	 * Mementos are internal structures and can not be search for.
-	 * 
-	 * @see org.caleydo.core.manager.IGeneralManager#hasItem(int)
-	 */
-	public final boolean hasItem(final int iItemId)
-	{
-
-		return false;
-	}
-
-	public final Object getItem(final int iItemId)
-	{
-
-		return null;
-	}
-
-	/**
 	 * Writes all current stored mementos to the ObjectOutputStream.
 	 * 
 	 * @return true on success

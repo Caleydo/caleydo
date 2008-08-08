@@ -1,7 +1,7 @@
 package org.caleydo.core.manager;
 
 import java.util.Collection;
-import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.data.IUniqueObject;
 
 /**
  * Interface for all managers that allow classes to access managed objects.
@@ -10,7 +10,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public interface IManager<T>
+public interface IManager<T extends IUniqueObject>
 {
 
 	/**
@@ -22,11 +22,11 @@ public interface IManager<T>
 	public boolean hasItem(final int iItemID);
 
 	/**
-	 * Return the item bound to the iItemId or null if the id is not bound to an
-	 * item.
+	 * Return the item bound to the iItemId.
 	 * 
 	 * @param iItemID unique id used for lookup
 	 * @return object bound to iItemID
+	 * @throws CaleydoRuntimeException if item does not exist
 	 */
 	public T getItem(final int iItemID);
 	
@@ -41,12 +41,11 @@ public interface IManager<T>
 
 	/**
 	 * Registers one Id and links it to the reference.
-	 * 
 	 * @param registerItem Object to be registered
-	 * @param iItemID unique Id
+	 * 
 	 * @return TRUE if item was unregistered by this manager
 	 */
-	public void registerItem(final T item, final int iItemID);
+	public void registerItem(final T item);
 
 	/**
 	 * Unregisters an item using it's Id.

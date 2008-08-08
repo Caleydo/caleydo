@@ -38,14 +38,25 @@ public class CmdViewCreateMixer
 	{
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
+		if (iExternalID != -1)
+		{
+			iParentContainerId = 
+				generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
+		}
+		
 		MixerViewRep mixerView = (MixerViewRep) viewManager.createView(
-				EManagedObjectType.VIEW_SWT_MIXER, iExternalID, iParentContainerId, sLabel);
+				EManagedObjectType.VIEW_SWT_MIXER, iParentContainerId, sLabel);
 
-		viewManager.registerItem(mixerView, iExternalID);
+		viewManager.registerItem(mixerView);
 
 		mixerView.setAttributes(iWidthX, iHeightY, iNumberOfSliders);
 		mixerView.initView();
 		mixerView.drawView();
+		
+		if (iExternalID != -1)
+		{
+			generalManager.getIDManager().mapInternalToExternalID(mixerView.getID(), iExternalID);
+		}
 
 		commandManager.runDoCommand(this);
 	}

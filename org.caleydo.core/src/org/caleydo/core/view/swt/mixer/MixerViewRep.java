@@ -29,10 +29,9 @@ public class MixerViewRep
 	/**
 	 * Constructor.
 	 */
-	public MixerViewRep(int iViewID, int iParentContainerId,
-			String sLabel)
+	public MixerViewRep(int iParentContainerId, String sLabel)
 	{
-		super(iViewID, iParentContainerId, sLabel, ViewType.SWT_MIXER);
+		super(iParentContainerId, sLabel, ViewType.SWT_MIXER);
 	}
 
 	/**
@@ -42,7 +41,7 @@ public class MixerViewRep
 	 * 
 	 * @see org.caleydo.core.view.IView#initView()
 	 */
-	protected void initViewSwtComposit(Composite swtContainer)
+	protected void initViewSwtComposite(Composite swtContainer)
 	{
 
 		sliderList = new ArrayList<Slider>();

@@ -140,25 +140,18 @@ public class CommandManager
 
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.manager.GeneralManager#registerItem(java.lang.Object
-	 * , int, org.caleydo.core.data.manager.BaseManagerType)
+	 * @see org.caleydo.core.manager.AManager#registerItem(org.caleydo.core.data.IUniqueObject)
 	 */
-	public void registerItem(ICommand command, int iItemId)
+	public void registerItem(ICommand command)
 	{
-
 		if (command instanceof ICommandQueue)
 		{
-			hashCommandQueueId.put(iItemId, (ICommandQueue) command);
-		}
-		else
-		{
-
+			hashCommandQueueId.put(command.getID(), (ICommandQueue) command);
+			return;
 		}
 
 		vecCmdHandle.addElement(command);
-		hashItems.put(iItemId, command);
-
+		hashItems.put(command.getID(), command);
 	}
 
 	/*

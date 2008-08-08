@@ -32,9 +32,13 @@ public class CmdWindowCreate
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
+		int iShellID = generalManager.getSWTGUIManager().createWindow(sLabel, sLayoutAttributes);
 
-		generalManager.getSWTGUIManager().createWindow(iExternalID, sLabel, sLayoutAttributes);
-
+		if (iExternalID != -1)
+		{
+			generalManager.getIDManager().mapInternalToExternalID(iShellID, iExternalID);
+		}
+		
 		commandManager.runDoCommand(this);
 	}
 

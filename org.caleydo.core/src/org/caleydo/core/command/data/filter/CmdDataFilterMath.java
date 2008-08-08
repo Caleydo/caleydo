@@ -8,6 +8,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
@@ -67,6 +68,10 @@ public class CmdDataFilterMath
 			iAlIDs.add(new Integer(strToken_DataTypes.nextToken()));
 		}
 
+		// Convert external IDs from XML file to internal IDs
+		iAlIDs = GeneralManager.get().getIDManager()
+			.convertExternalToInternalIDs(iAlIDs);
+		
 		if (sAttribute3.equals(""))
 			objectType = EManagedObjectType.STORAGE;
 		else

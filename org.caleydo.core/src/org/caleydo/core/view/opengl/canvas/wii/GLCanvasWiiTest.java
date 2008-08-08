@@ -15,7 +15,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
@@ -54,7 +54,7 @@ import wiiremotej.event.WiiRemoteDiscoveryListener;
  * @author Andre-John Mas
  */
 public class GLCanvasWiiTest
-	extends AGLCanvasUser
+	extends AGLEventListener
 	implements Runnable, KeyListener
 {
 
@@ -100,11 +100,11 @@ public class GLCanvasWiiTest
 	/**
 	 * Constructor.
 	 */
-	public GLCanvasWiiTest(final int iViewID,
-			final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
+	public GLCanvasWiiTest(final int iGLCanvasID, 
+			final String sLabel, final IViewFrustum viewFrustum)
 	{
 
-		super(iViewID, iGLCanvasID, sLabel, viewFrustum, true);
+		super(iGLCanvasID, sLabel, viewFrustum, true);
 
 		// new Thread(this).start();
 

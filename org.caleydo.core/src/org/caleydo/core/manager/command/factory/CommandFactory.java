@@ -19,7 +19,7 @@ import org.caleydo.core.command.system.CmdLoadGlyphDefinition;
 import org.caleydo.core.command.system.CmdLoadPathwayData;
 import org.caleydo.core.command.system.CmdSystemExit;
 import org.caleydo.core.command.system.path.CmdSetPathwayDatabasePath;
-import org.caleydo.core.command.view.opengl.CmdCreateOpenGLCanvasListener;
+import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.command.view.opengl.CmdGlObjectPathway3D;
 import org.caleydo.core.command.view.rcp.CmdExternalActionTrigger;
 import org.caleydo.core.command.view.rcp.CmdExternalFlagSetter;
@@ -27,7 +27,6 @@ import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.command.view.swt.CmdViewCreateDataEntitySearcher;
 import org.caleydo.core.command.view.swt.CmdViewCreateDataExchanger;
 import org.caleydo.core.command.view.swt.CmdViewCreateDataExplorer;
-import org.caleydo.core.command.view.swt.CmdViewCreateGears;
 import org.caleydo.core.command.view.swt.CmdViewCreateGlyphConfiguration;
 import org.caleydo.core.command.view.swt.CmdViewCreateHTMLBrowser;
 import org.caleydo.core.command.view.swt.CmdViewCreateImage;
@@ -142,11 +141,6 @@ public class CommandFactory
 			/**
 			 * ---------------------- VIEW ----------------------
 			 */
-			case CREATE_VIEW_GEARS:
-			{
-				createdCommand = new CmdViewCreateGears(cmdType);
-				break;
-			}
 			case CREATE_VIEW_SWT_GLCANVAS:
 			{
 				createdCommand = new CmdViewCreateSwtGLCanvas(cmdType);
@@ -230,7 +224,7 @@ public class CommandFactory
 			case CREATE_GL_WII_TEST:
 			case CREATE_GL_REMOTE_GLYPH:
 			{
-				createdCommand = new CmdCreateOpenGLCanvasListener(cmdType);
+				createdCommand = new CmdCreateGLEventListener(cmdType);
 				break;
 			}
 			case EXTERNAL_FLAG_SETTER:

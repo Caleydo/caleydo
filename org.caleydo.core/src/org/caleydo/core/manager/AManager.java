@@ -2,7 +2,10 @@ package org.caleydo.core.manager;
 
 import java.util.Collection;
 import java.util.HashMap;
+import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Base class for manager classes.
@@ -11,7 +14,7 @@ import org.caleydo.core.manager.general.GeneralManager;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public abstract class AManager<T>
+public abstract class AManager<T extends IUniqueObject>
 	implements IManager<T>
 {
 	protected IGeneralManager generalManager;
@@ -31,6 +34,12 @@ public abstract class AManager<T>
 	@Override
 	public T getItem(int iItemID)
 	{
+		if (!hasItem(iItemID))
+		{
+			throw new CaleydoRuntimeException("Requested item with ID " +iItemID + " does not exist!", 
+					CaleydoRuntimeExceptionType.MANAGER);
+		}
+		
 		return hashItems.get(iItemID);
 	}
 
@@ -40,9 +49,10 @@ public abstract class AManager<T>
 		return hashItems.containsKey(iItemID);
 	}
 
-	public void registerItem(final T item, final int iItemID)
+	@Override
+	public void registerItem(final T item)
 	{
-		hashItems.put(iItemID, item);
+		hashItems.put(item.getID(), item);
 	}
 
 	@Override

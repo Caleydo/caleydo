@@ -6,19 +6,18 @@ import gleem.linalg.Vec4f;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
-import javax.media.opengl.GLEventListener;
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParent;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.camera.ViewFrustumBase;
-import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.system.StringConversionTool;
-import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 
 /**
  * Command creates OpenGL views.
@@ -26,13 +25,13 @@ import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
  * @author Michael Kalkusch
  * @author Marc Streit
  */
-public class CmdCreateOpenGLCanvasListener
+public class CmdCreateGLEventListener
 	extends ACmdCreate_IdTargetLabelParent
 {
 
 	protected CommandType viewType;
 
-	protected transient GLEventListener glEventListener;
+	protected transient AGLEventListener glEventListener;
 
 	protected IViewFrustum viewFrustum;
 
@@ -40,14 +39,14 @@ public class CmdCreateOpenGLCanvasListener
 
 	protected Rotf cameraRotation;
 
-	protected ArrayList<Integer> iArSetIDs;
+	protected ArrayList<Integer> iAlSetIDs;
 
-	protected ArrayList<Integer> iArSelectionIDs;
+	protected ArrayList<Integer> iAlSelectionIDs;
 
 	/**
 	 * Constructor.
 	 */
-	public CmdCreateOpenGLCanvasListener(final CommandType cmdType)
+	public CmdCreateGLEventListener(final CommandType cmdType)
 	{
 		super(cmdType);
 
@@ -56,8 +55,8 @@ public class CmdCreateOpenGLCanvasListener
 
 		viewType = cmdType;
 
-		iArSetIDs = new ArrayList<Integer>();
-		iArSelectionIDs = new ArrayList<Integer>();
+		iAlSetIDs = new ArrayList<Integer>();
+		iAlSelectionIDs = new ArrayList<Integer>();
 	}
 
 	/*
@@ -169,7 +168,7 @@ public class CmdCreateOpenGLCanvasListener
 
 			while (divideIDs.hasMoreTokens())
 			{
-				iArSetIDs.add(StringConversionTool.convertStringToInt(divideIDs.nextToken(),
+				iAlSetIDs.add(StringConversionTool.convertStringToInt(divideIDs.nextToken(),
 						-1));
 			}
 		}
@@ -182,10 +181,17 @@ public class CmdCreateOpenGLCanvasListener
 
 			while (divideIDs.hasMoreTokens())
 			{
-				iArSelectionIDs.add(StringConversionTool.convertStringToInt(divideIDs
+				iAlSelectionIDs.add(StringConversionTool.convertStringToInt(divideIDs
 						.nextToken(), -1));
 			}
 		}
+		
+		// Convert external IDs from XML file to internal IDs
+		iAlSetIDs = GeneralManager.get().getIDManager()
+			.convertExternalToInternalIDs(iAlSetIDs);
+		
+		iAlSelectionIDs = GeneralManager.get().getIDManager()
+			.convertExternalToInternalIDs(iAlSelectionIDs);
 	}
 
 	public void setAttributes(final ViewFrustumBase.ProjectionMode projectionMode,
@@ -197,8 +203,8 @@ public class CmdCreateOpenGLCanvasListener
 		viewFrustum = new ViewFrustumBase(projectionMode, fLeft, fRight, fBottom, fTop, fNear,
 				fFar);
 
-		this.iArSetIDs = iArSetIDs;
-		this.iArSelectionIDs = iArSelectionIDs;
+		this.iAlSetIDs = iArSetIDs;
+		this.iAlSelectionIDs = iArSelectionIDs;
 	}
 
 	/*
@@ -210,21 +216,32 @@ public class CmdCreateOpenGLCanvasListener
 
 		IViewGLCanvasManager glCanvasManager = generalManager.getViewGLCanvasManager();
 
-		glEventListener = glCanvasManager.createGLCanvas(viewType, iExternalID,
-				iParentContainerId, sLabel, viewFrustum);
-
-		((AGLCanvasUser) glEventListener).getViewCamera().setCameraPosition(cameraOrigin);
-		((AGLCanvasUser) glEventListener).getViewCamera().setCameraRotation(cameraRotation);
+		if (iExternalID != -1 && iParentContainerId != -1)
+		{	
+			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
+		}
+		
+		glEventListener = glCanvasManager.createGLEventListener(viewType,
+				iParentContainerId,	sLabel, viewFrustum);
+		
+		if (iExternalID != -1)
+		{
+			generalManager.getIDManager().mapInternalToExternalID(glEventListener.getID(), 
+					iExternalID);
+		}
+		
+		((AGLEventListener) glEventListener).getViewCamera().setCameraPosition(cameraOrigin);
+		((AGLEventListener) glEventListener).getViewCamera().setCameraRotation(cameraRotation);
 
 		// Set sets in views
-		AGLCanvasUser glCanvas = ((AGLCanvasUser) glEventListener);
-		for (Integer iSetID : iArSetIDs)
+		AGLEventListener glCanvas = ((AGLEventListener) glEventListener);
+		for (Integer iSetID : iAlSetIDs)
 		{
 			glCanvas.addSet(iSetID);
 		}
 
 		// Set selections in views
-		for (Integer iSelectionID : iArSelectionIDs)
+		for (Integer iSelectionID : iAlSelectionIDs)
 		{
 			glCanvas.addSelection(iSelectionID);
 		}
@@ -239,5 +256,10 @@ public class CmdCreateOpenGLCanvasListener
 	public void undoCommand() throws CaleydoRuntimeException
 	{
 		commandManager.runUndoCommand(this);
+	}
+	
+	public int getEventListenerID() 
+	{
+		return glEventListener.getID();
 	}
 }

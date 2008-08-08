@@ -1,6 +1,7 @@
 package org.caleydo.core.data.graph.pathway.item.vertex;
 
 import java.io.Serializable;
+import org.caleydo.core.data.graph.ACaleydoGraphItem;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.item.GraphItem;
 
@@ -10,7 +11,7 @@ import org.caleydo.util.graph.item.GraphItem;
  * @author Marc Streit
  */
 public class PathwayVertexGraphItem
-	extends GraphItem
+	extends ACaleydoGraphItem
 	implements Serializable
 {
 
@@ -27,17 +28,16 @@ public class PathwayVertexGraphItem
 	/**
 	 * Constructor.
 	 * 
-	 * @param iId
 	 * @param sName
 	 * @param sType
 	 * @param sExternalLink
 	 * @param sReactionId
 	 */
-	public PathwayVertexGraphItem(final int iId, final String sName, final String sType,
+	public PathwayVertexGraphItem(final String sName, final String sType,
 			final String sExternalLink, final String sReactionId)
 	{
 
-		super(iId, EGraphItemKind.NODE);
+		super(EGraphItemKind.NODE);
 
 		// Check if type exists - otherwise assign "other"
 		try

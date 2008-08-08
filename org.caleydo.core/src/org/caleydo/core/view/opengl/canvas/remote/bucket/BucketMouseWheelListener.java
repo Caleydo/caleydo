@@ -5,7 +5,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import org.caleydo.core.data.view.rep.renderstyle.layout.BucketLayoutRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 
 /**
@@ -19,7 +19,7 @@ public class BucketMouseWheelListener
 
 	private IGeneralManager generalManager;
 
-	private AGLCanvasUser bucketCanvas;
+	private AGLEventListener bucketCanvas;
 
 	private static int BUCKET_ZOOM_MAX = 400;
 

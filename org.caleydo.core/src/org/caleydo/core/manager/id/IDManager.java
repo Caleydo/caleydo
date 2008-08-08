@@ -1,5 +1,6 @@
 package org.caleydo.core.manager.id;
 
+import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
@@ -15,6 +16,8 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 public class IDManager
 {
 	private HashMap<Integer, Integer> hashExternalToInternalID;
+	private HashMap<Integer, Integer> hashInternalToExternalID;
+	
 	private EnumMap<EManagedObjectType, Integer> hashObjectTypeToCounter;
 
 	/**
@@ -23,6 +26,8 @@ public class IDManager
 	public IDManager()
 	{
 		hashExternalToInternalID = new HashMap<Integer, Integer>();
+		hashInternalToExternalID = new HashMap<Integer, Integer>();
+
 		hashObjectTypeToCounter = new EnumMap<EManagedObjectType, Integer>(
 				EManagedObjectType.class);
 	}
@@ -37,20 +42,14 @@ public class IDManager
 	public int createID(EManagedObjectType type)
 	{
 		Integer iCount = hashObjectTypeToCounter.get(type);
-		hashObjectTypeToCounter.put(type, iCount++);
+		
+		if (iCount == null)
+			iCount = new Integer(0);
+		
+		hashObjectTypeToCounter.put(type, ++iCount);
 		return calculateID(type, iCount);
-
 	}
-
-	// public int createIDFromExternalID(EManagedObjectType type, int
-	// iExternalID)
-	// {
-	// int iInternalID = createID(type);
-	// hashExternalToInternalID.put(iExternalID, iInternalID);
-	//		
-	// return iInternalID;
-	// }
-
+	
 	/**
 	 * When dealing with external IDs for example specified in an xml file, this
 	 * method creates a mapping between those two, which can be retrieved by
@@ -59,8 +58,21 @@ public class IDManager
 	public void mapInternalToExternalID(int iInternalID, int iExternalID)
 	{
 		hashExternalToInternalID.put(iExternalID, iInternalID);
+		hashInternalToExternalID.put(iInternalID, iExternalID);
 	}
-
+	
+	public ArrayList<Integer> convertExternalToInternalIDs(ArrayList<Integer> iAlExternalIDs) 
+	{
+		ArrayList<Integer> iAlInternalIDs = new ArrayList<Integer>(iAlExternalIDs.size());
+		
+		for(Integer iExternalID : iAlExternalIDs)
+		{
+			iAlInternalIDs.add(getInternalFromExternalID(iExternalID));
+		}
+		
+		return iAlInternalIDs;
+	}
+	
 	/**
 	 * Returns an internal id which is mapped to an external id, when such a mapping exists.
 	 * 
@@ -69,16 +81,31 @@ public class IDManager
 	 * @throws CaleydoRuntimeException if now mapping exists
 	 */
 	public int getInternalFromExternalID(int iExternalID)
+
 	{
 		if (!hashExternalToInternalID.containsKey(iExternalID))
 		{
 			throw new CaleydoRuntimeException(
-					"Given external ID does not map to any internal ID.",
+					"Given external ID " +iExternalID + " does not map to any internal ID.",
 					CaleydoRuntimeExceptionType.ID);
 		}
 
 		return hashExternalToInternalID.get(iExternalID);
 	}
+
+	
+	public int getExternalFromInternalID(int iInternalID) 
+	{
+		if (!hashInternalToExternalID.containsKey(iInternalID))
+		{
+			throw new CaleydoRuntimeException(
+					"Given internal ID " +iInternalID + " does not map to an external ID.", 
+					CaleydoRuntimeExceptionType.ID);
+		}
+	
+		return hashInternalToExternalID.get(iInternalID);
+	}
+
 
 	/**
 	 * Calculates the ID, based on type and a counter

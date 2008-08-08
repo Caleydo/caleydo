@@ -3,14 +3,12 @@ package org.caleydo.core.view.swt.data.search;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.data.CmdDataCreateSelection;
 import org.caleydo.core.command.event.CmdEventCreateMediator;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.data.selection.Selection;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IEventPublisher.MediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -43,26 +41,19 @@ implements IMediatorSender{;
 	 * @param iParentContainerId
 	 * @param sLabel
 	 */
-	public DataEntitySearcherViewRep(final int iViewID, 
-			final int iParentContainerId, 
+	public DataEntitySearcherViewRep(final int iParentContainerId, 
 			final String sLabel) {
 
-		super(iViewID, 
-				iParentContainerId, 
+		super(iParentContainerId, 
 				sLabel,
 				ViewType.SWT_DATA_ENTITY_SEARCHER);
 	}
 	
 	public void setAttributes(final ArrayList<Integer> iAlViewReceiverIDs) {
 
-		//TODO: review when implemented ID management
-		iSearchSelectionSetId = -1;//generalManager.getSetManager()
-//			.createId(EManagerObjectType.SET);
-
 		CmdDataCreateSelection selectedSetCmd = (CmdDataCreateSelection) generalManager.getCommandManager()
 			.createCommandByType(CommandType.CREATE_SELECTION);
 	
-		selectedSetCmd.setAttributes(iSearchSelectionSetId);
 		selectedSetCmd.doCommand();
 	
 		CmdEventCreateMediator tmpMediatorCmd = (CmdEventCreateMediator) generalManager.getCommandManager()
@@ -71,9 +62,7 @@ implements IMediatorSender{;
 		ArrayList<Integer> iAlSenderIDs = new ArrayList<Integer>();
 		iAlSenderIDs.add(iUniqueID);
 		
-		//TODO: review when implemented ID management
-//		tmpMediatorCmd.setAttributes(generalManager.getEventPublisher().createId(EManagerObjectType.EVENT_MEDIATOR_CREATE), 
-//				iAlSenderIDs, iAlViewReceiverIDs, MediatorType.SELECTION_MEDIATOR);
+		tmpMediatorCmd.setAttributes(iAlSenderIDs, iAlViewReceiverIDs, MediatorType.SELECTION_MEDIATOR);
 		tmpMediatorCmd.doCommand();
 	}
 	
@@ -154,7 +143,7 @@ implements IMediatorSender{;
 			// get pathway id from graph
 			List<IGraph> list = bufferItem.getAllGraphByType(EGraphItemHierarchy.GRAPH_PARENT);
 			PathwayGraph buffer = (PathwayGraph) list.get(0);
-			iAlPathwayId.add( buffer.getKeggId() );
+			iAlPathwayId.add(buffer.getID());
 		}							
 	
 		
@@ -201,7 +190,7 @@ implements IMediatorSender{;
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.view.AView#initViewSwtComposit(org.eclipse.swt.widgets.Composite)
 	 */
-	protected void initViewSwtComposit(Composite swtContainer) {
+	protected void initViewSwtComposite(Composite swtContainer) {
 
 		// TODO Auto-generated method stub
 		

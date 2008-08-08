@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
-import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.swing.JFrame;
 import org.caleydo.core.command.CommandType;
@@ -19,7 +18,7 @@ import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
-import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyph;
 import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
@@ -34,7 +33,6 @@ import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
 import org.caleydo.core.view.swt.glyph.GlyphMappingConfigurationViewRep;
 import org.caleydo.core.view.swt.image.ImageViewRep;
 import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
-import org.caleydo.core.view.swt.jogl.gears.GearsViewRep;
 import org.caleydo.core.view.swt.mixer.MixerViewRep;
 import org.caleydo.core.view.swt.progressbar.ProgressBarViewRep;
 import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
@@ -52,11 +50,11 @@ public class ViewGLCanvasManager
 	extends AManager<IView>
 	implements IViewGLCanvasManager
 {
-	protected HashMap<Integer, GLCanvas> hashGLCanvasID2GLCanvas;
+	protected HashMap<Integer, GLCaleydoCanvas> hashGLCanvasID2GLCanvas;
 
-	protected HashMap<Integer, ArrayList<GLEventListener>> hashGLCanvasID2GLEventListeners;
+	protected HashMap<Integer, ArrayList<AGLEventListener>> hashGLCanvasID2GLEventListeners;
 
-	protected HashMap<Integer, GLEventListener> hashGLEventListenerID2GLEventListener;
+	protected HashMap<Integer, AGLEventListener> hashGLEventListenerID2GLEventListener;
 
 	/**
 	 * List of data explorer view reps (needed for mediator registration when
@@ -91,9 +89,9 @@ public class ViewGLCanvasManager
 		selectionManager = new SelectionManager();
 		infoAreaManager = new GLInfoAreaManager();
 
-		hashGLCanvasID2GLCanvas = new HashMap<Integer, GLCanvas>();
-		hashGLCanvasID2GLEventListeners = new HashMap<Integer, ArrayList<GLEventListener>>();
-		hashGLEventListenerID2GLEventListener = new HashMap<Integer, GLEventListener>();
+		hashGLCanvasID2GLCanvas = new HashMap<Integer, GLCaleydoCanvas>();
+		hashGLCanvasID2GLEventListeners = new HashMap<Integer, ArrayList<AGLEventListener>>();
+		hashGLEventListenerID2GLEventListener = new HashMap<Integer, AGLEventListener>();
 
 		arDataExplorerViewRep = new ArrayList<IView>();
 		arHTMLBrowserViewRep = new ArrayList<IView>();
@@ -115,19 +113,19 @@ public class ViewGLCanvasManager
 		return false;
 	}
 	
-	public GLCanvas getCanvas(int iItemID)
+	public GLCaleydoCanvas getCanvas(int iItemID)
 	{
-		 return hashGLCanvasID2GLCanvas.get(iItemID);
+		return hashGLCanvasID2GLCanvas.get(iItemID);
 	}
 	
-	public GLEventListener getEventListener(int iItemID)
+	public AGLEventListener getEventListener(int iItemID)
 	{
 		return hashGLEventListenerID2GLEventListener.get(iItemID);
 	}	
 
-	public void registerItem(IView view, int iItemId)
+	public void registerItem(IView view)
 	{
-		hashItems.put(iItemId, view);
+		super.registerItem(view);
 	
 		switch (view.getViewType())
 		{
@@ -137,22 +135,19 @@ public class ViewGLCanvasManager
 				break;
 
 			// default: // do nothing
-		} // switch ( registerView.getViewType() ) {
-
-		// generalManager.logMsg(
-		// "registerItem( " + iItemId + " ) as View",
-		// LoggerType.VERBOSE);
+		} 
 	}
-
 
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IViewManager#createView(org.caleydo.core.manager.id.EManagedObjectTypes, int, int, java.lang.String)
 	 */
-	public IView createView(final EManagedObjectType useViewType, final int iViewID,
+	public IView createView(final EManagedObjectType type, 
 			final int iParentContainerID, final String sLabel)
 	{
-		switch (useViewType)
+		IView view = null;
+		
+		switch (type)
 		{
 			case VIEW:
 				break;
@@ -173,69 +168,62 @@ public class ViewGLCanvasManager
 				// iParentContainerID, sLabel);
 				break;
 			case VIEW_SWT_PROGRESS_BAR:
-				return new ProgressBarViewRep(iViewID, iParentContainerID,
+				view = new ProgressBarViewRep(iParentContainerID,
 						sLabel);
+				break;
 			case VIEW_SWT_MIXER:
-				return new MixerViewRep(iViewID, iParentContainerID, sLabel);
+				view = new MixerViewRep(iParentContainerID, sLabel);
+				break;
 			case VIEW_SWT_BROWSER:
-				return new HTMLBrowserViewRep(iViewID, iParentContainerID,
-						sLabel);
+				view = new HTMLBrowserViewRep(iParentContainerID, sLabel);
+				break;
 			case VIEW_SWT_IMAGE:
-				return new ImageViewRep(iViewID, iParentContainerID, sLabel);
+				view = new ImageViewRep(iParentContainerID, sLabel);
+				break;
 			case VIEW_SWT_UNDO_REDO:
-				return new UndoRedoViewRep(iViewID, iParentContainerID, sLabel);
+				view = new UndoRedoViewRep(iParentContainerID, sLabel);
+				break;
 			case VIEW_SWT_DATA_ENTITY_SEARCHER:
-				return new DataEntitySearcherViewRep(iViewID,
-						iParentContainerID, sLabel);
+				view = new DataEntitySearcherViewRep(iParentContainerID, sLabel);
+				break;
 			case VIEW_SWT_GLYPH_MAPPINGCONFIGURATION:
-				return new GlyphMappingConfigurationViewRep( iViewID,
-						iParentContainerID, sLabel);
+				view = new GlyphMappingConfigurationViewRep(iParentContainerID, sLabel);
+				break;
 			default:
 				throw new CaleydoRuntimeException(
 						"StorageManagerSimple.createView() failed due to unhandled type ["
-								+ useViewType.toString() + "]");
+								+ type.toString() + "]");
 		}
 
-		return null;
+		registerItem(view);
+		
+		return view;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.IViewManager#createGLView(org.caleydo.core.manager
-	 * .type.ManagerObjectType, int, int, int, java.lang.String)
+	 * @see org.caleydo.core.manager.IViewManager#createGLView(org.caleydo.core.manager.id.EManagedObjectType, int, int, int, java.lang.String)
 	 */
-	public IView createGLView(final EManagedObjectType useViewType, final int iViewID,
-			final int iParentContainerID, final int iGLCanvasID, final String sLabel)
+	public IView createGLView(final EManagedObjectType useViewType,
+			final int iParentContainerID, final String sLabel)
 	{
-		try
+		IView view = null;
+		
+		switch (useViewType)
 		{
-			switch (useViewType)
-			{
-				case VIEW_SWT_GEARS:
-					return new GearsViewRep(iViewID, iParentContainerID,
-							iGLCanvasID, sLabel);
-				case VIEW_SWT_JOGL_MULTI_GLCANVAS:
-					return new SwtJoglGLCanvasViewRep(iViewID,
-							iParentContainerID, iGLCanvasID, sLabel);
+			case VIEW_GL_CANVAS:
+				view = new SwtJoglGLCanvasViewRep(iParentContainerID, sLabel);
+				break;
 
-				default:
-					throw new CaleydoRuntimeException(
-							"StorageManagerSimple.createView() failed due to unhandled type ["
-									+ useViewType.toString() + "]");
-			}
+			default:
+				throw new CaleydoRuntimeException(
+						"Unhandled view type ["
+								+ useViewType.toString() + "]");
 		}
-		catch (NullPointerException e)
-		{
-			// generalManager.logMsg("Error while creating view; createView(" +
-			// useViewType.toString() +
-			// ", " + iViewID +
-			// ", " + iParentContainerID +
-			// ", " + sLabel + " )", LoggerType.ERROR);
-
-			return null;
-		}
-
+		
+		registerItem(view);
+		
+		return view;
 	}
 
 	public ArrayList<IView> getViewRepByType(ViewType viewType)
@@ -260,101 +248,89 @@ public class ViewGLCanvasManager
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IViewGLCanvasManager#createGLCanvas(org.caleydo.core.command.CommandQueueSaxType, int, int, java.lang.String, org.caleydo.core.data.view.camera.IViewFrustum)
 	 */
-	public GLEventListener createGLCanvas(CommandType useViewType,
-			final int iUniqueId, final int iGLCanvasID, final String sLabel,
+	public AGLEventListener createGLEventListener(CommandType type,
+			final int iGLCanvasID, final String sLabel,
 			final IViewFrustum viewFrustum)
 	{
-
 		GeneralManager.get().getLogger().log(
 				Level.INFO,
-				"Creating view from type: [" + useViewType + "] with ID: [" + iUniqueId
-						+ "] and label: [" + sLabel + "]");
+				"Creating GL canvas view from type: [" + type + "] and label: [" + sLabel + "]");
 
-		try
+		AGLEventListener glEventListener = null;
+		
+		switch (type)
 		{
-			switch (useViewType)
-			{
-				case CREATE_GL_HEAT_MAP_3D:
-					return new GLCanvasHeatMap(iUniqueId, iGLCanvasID, sLabel,
-							viewFrustum);
+			case CREATE_GL_HEAT_MAP_3D:
+				glEventListener = new GLCanvasHeatMap(iGLCanvasID, sLabel,
+						viewFrustum);
+				break;
 
-				case CREATE_GL_PATHWAY_3D:
-					return new GLCanvasPathway3D(iUniqueId, iGLCanvasID,
-							sLabel, viewFrustum);
-
-				case CREATE_GL_PARALLEL_COORDINATES_3D:
-					return new GLCanvasParCoords3D(iUniqueId, iGLCanvasID,
-							sLabel, viewFrustum);
-
-				case CREATE_GL_GLYPH:
-					return new GLCanvasGlyph(iUniqueId, iGLCanvasID, sLabel,
-							viewFrustum);
-
-				case CREATE_GL_BUCKET_3D:
-					return new GLCanvasRemoteRendering3D(iUniqueId,
-							iGLCanvasID, sLabel, viewFrustum,
-							ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET);
-
-				case CREATE_GL_JUKEBOX_3D:
-					return new GLCanvasRemoteRendering3D(iUniqueId,
-							iGLCanvasID, sLabel, viewFrustum,
-							ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX);
-
-				case CREATE_GL_WII_TEST:
-					return new GLCanvasWiiTest(iUniqueId, iGLCanvasID, sLabel,
-							viewFrustum);
-
-				case CREATE_GL_REMOTE_GLYPH:
-					return new GLCanvasRemoteGlyph(iUniqueId, iGLCanvasID,
-							sLabel, viewFrustum);
-
-				default:
-					throw new CaleydoRuntimeException(
-							"ViewJoglManager.createGLCanvasUser() failed due to unhandled type ["
-									+ useViewType.toString() + "]");
-			}
-
+			case CREATE_GL_PATHWAY_3D:
+				glEventListener = new GLCanvasPathway3D(iGLCanvasID,
+						sLabel, viewFrustum);
+				break;
+				
+			case CREATE_GL_PARALLEL_COORDINATES_3D:
+				glEventListener = new GLCanvasParCoords3D(iGLCanvasID,
+						sLabel, viewFrustum);
+				break;
+				
+			case CREATE_GL_GLYPH:
+				glEventListener = new GLCanvasGlyph(iGLCanvasID, sLabel,
+						viewFrustum);
+				break;
+				
+			case CREATE_GL_BUCKET_3D:
+				glEventListener = new GLCanvasRemoteRendering3D(iGLCanvasID, 
+						sLabel, viewFrustum,
+						ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET);
+				break;
+				
+			case CREATE_GL_JUKEBOX_3D:
+				glEventListener = new GLCanvasRemoteRendering3D(iGLCanvasID,
+						sLabel, viewFrustum,
+						ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX);
+				break;
+				
+			case CREATE_GL_WII_TEST:
+				glEventListener = new GLCanvasWiiTest(iGLCanvasID, sLabel,
+						viewFrustum);
+				break;
+				
+			case CREATE_GL_REMOTE_GLYPH:
+				glEventListener = new GLCanvasRemoteGlyph(iGLCanvasID,
+						sLabel, viewFrustum);
+				break;
+				
+			default:
+				throw new CaleydoRuntimeException(
+						"ViewJoglManager.createGLCanvasUser() failed due to unhandled type ["
+								+ type.toString() + "]");
 		}
-		catch (NullPointerException e)
-		{
-			GeneralManager.get().getLogger().log(
-					Level.SEVERE,
-					"Error while creating view from type: [" + useViewType + "] with ID: ["
-							+ iUniqueId + "] and label: [" + sLabel + "]");
-
-			return null;
-		}
+		
+		registerGLEventListenerByGLCanvasID(iGLCanvasID, glEventListener);
+		
+		return glEventListener;
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.IViewGLCanvasManager#registerGLCanvas(javax.
-	 * media.opengl.GLCanvas, int)
+	 * @see org.caleydo.core.manager.IViewGLCanvasManager#registerGLCanvas(org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas)
 	 */
-	public boolean registerGLCanvas(final GLCanvas glCanvas, final int iGLCanvasId)
+	@Override
+	public boolean registerGLCanvas(final GLCaleydoCanvas glCanvas)
 	{
-
-		assert iGLCanvasId != 0 : "registerItem(Object,int) must not use iItemId==0";
-
-		if (hashGLCanvasID2GLCanvas.containsKey(iGLCanvasId))
+		int iGLCanvasID = glCanvas.getID();
+		
+		if (hashGLCanvasID2GLCanvas.containsKey(iGLCanvasID))
 		{
-			// generalManager.logMsg(
-			// "registerGLCanvas() id " + iCanvasId
-			// + " is already registered!",
-			// LoggerType.FULL );
-			return false;
-		}
-		if (hashGLCanvasID2GLCanvas.containsValue(glCanvas))
-		{
-			// generalManager.logMsg(
-			// "registerGLCanvas() canvas bound to id " + iCanvasId
-			// + " is already registered!",
-			// LoggerType.FULL );
+			generalManager.getLogger().log(Level.WARNING, "GL Canvas with ID " 
+					+iGLCanvasID + " is already registered! Do nothing.");
+			
 			return false;
 		}
 
-		hashGLCanvasID2GLCanvas.put(iGLCanvasId, glCanvas);
+		hashGLCanvasID2GLCanvas.put(iGLCanvasID, glCanvas);
 
 		return true;
 	}
@@ -379,22 +355,19 @@ public class ViewGLCanvasManager
 
 	/*
 	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.manager.IViewGLCanvasManager#
-	 * registerGLEventListenerByGLCanvasID(int,
-	 * javax.media.opengl.GLEventListener)
+	 * @see org.caleydo.core.manager.IViewGLCanvasManager#registerGLEventListenerByGLCanvasID(int, javax.media.opengl.GLEventListener)
 	 */
 	public void registerGLEventListenerByGLCanvasID(final int iGLCanvasID,
-			final GLEventListener gLEventListener)
+			final AGLEventListener gLEventListener)
 	{
-
-		hashGLEventListenerID2GLEventListener.put(((AGLCanvasUser) gLEventListener).getID(),
+		hashGLEventListenerID2GLEventListener.put(((AGLEventListener) gLEventListener).getID(),
 				gLEventListener);
 
 		if (iGLCanvasID == -1)
 			return;
 
 		if (!hashGLCanvasID2GLEventListeners.containsKey(iGLCanvasID))
-			hashGLCanvasID2GLEventListeners.put(iGLCanvasID, new ArrayList<GLEventListener>());
+			hashGLCanvasID2GLEventListeners.put(iGLCanvasID, new ArrayList<AGLEventListener>());
 
 		hashGLCanvasID2GLEventListeners.get(iGLCanvasID).add(gLEventListener);
 	}
@@ -425,7 +398,7 @@ public class ViewGLCanvasManager
 		GLEventListener gLEventListenerToRemove = hashGLEventListenerID2GLEventListener
 				.get(iGLEventListenerID);
 
-		GLCaleydoCanvas parentGLCanvas = ((AGLCanvasUser) gLEventListenerToRemove)
+		GLCaleydoCanvas parentGLCanvas = ((AGLEventListener) gLEventListenerToRemove)
 				.getParentGLCanvas();
 
 		if (parentGLCanvas != null)
@@ -481,7 +454,6 @@ public class ViewGLCanvasManager
 	 */
 	public void removeViewRep(final IView view)
 	{
-
 		try
 		{
 			switch (view.getViewType())
@@ -514,9 +486,8 @@ public class ViewGLCanvasManager
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IViewManager#getAllGLCanvasUsers()
 	 */
-	public Collection<GLCanvas> getAllGLCanvasUsers()
+	public Collection<GLCaleydoCanvas> getAllGLCanvasUsers()
 	{
-
 		return hashGLCanvasID2GLCanvas.values();
 	}
 
@@ -525,9 +496,8 @@ public class ViewGLCanvasManager
 	 * @see
 	 * org.caleydo.core.manager.IViewGLCanvasManager#getAllGLEventListeners()
 	 */
-	public Collection<GLEventListener> getAllGLEventListeners()
+	public Collection<AGLEventListener> getAllGLEventListeners()
 	{
-
 		return hashGLEventListenerID2GLEventListener.values();
 	}
 
@@ -560,7 +530,7 @@ public class ViewGLCanvasManager
 
 		fpsAnimator = new FPSAnimator(null, 60);
 
-		Iterator<GLCanvas> iterGLCanvas = hashGLCanvasID2GLCanvas.values().iterator();
+		Iterator<GLCaleydoCanvas> iterGLCanvas = hashGLCanvasID2GLCanvas.values().iterator();
 		while (iterGLCanvas.hasNext())
 		{
 			fpsAnimator.add(iterGLCanvas.next());

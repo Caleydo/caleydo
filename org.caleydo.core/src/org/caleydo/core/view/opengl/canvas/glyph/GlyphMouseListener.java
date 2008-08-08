@@ -10,7 +10,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import javax.media.opengl.GL;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.util.GLSharedObjects;
 
 /**
@@ -24,7 +24,7 @@ public class GlyphMouseListener
 
 	private IGeneralManager generalManager;
 
-	private AGLCanvasUser viewCanvas;
+	private AGLEventListener viewCanvas;
 
 	private int notches_ = 0;
 
@@ -41,7 +41,7 @@ public class GlyphMouseListener
 	/**
 	 * Constructor.
 	 */
-	public GlyphMouseListener(final AGLCanvasUser remoteRendering3D,
+	public GlyphMouseListener(final AGLEventListener remoteRendering3D,
 			final IGeneralManager generalManager)
 	{
 

@@ -12,5 +12,5 @@ import org.caleydo.core.manager.IManager;
 public interface ISelectionManager
 	extends IManager<ISelection>
 {
-	public ISelection createSelection(int iItemId);
+	public ISelection createSelection();
 }

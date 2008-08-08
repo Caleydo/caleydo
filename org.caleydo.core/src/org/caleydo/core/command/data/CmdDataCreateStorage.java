@@ -20,8 +20,9 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 public class CmdDataCreateStorage
 	extends ACmdCreate_IdTargetLabel
 {
-
-	EManagedObjectType storageType;
+	private IStorage storage;
+	
+	private EManagedObjectType storageType;
 
 	/**
 	 * Constructor.
@@ -38,9 +39,8 @@ public class CmdDataCreateStorage
 	public void doCommand() throws CaleydoRuntimeException
 	{
 		IStorageManager storageManager = generalManager.getStorageManager();
-		IStorage storage = (IStorage) storageManager.createStorage(storageType);
+		storage = (IStorage) storageManager.createStorage(storageType);
 		storage.setLabel(sLabel);
-		storageManager.registerItem(storage, storage.getID());
 
 		generalManager.getIDManager().mapInternalToExternalID(storage.getID(), iExternalID);
 		
@@ -86,5 +86,10 @@ public class CmdDataCreateStorage
 	{
 		iExternalID = iStorageID;
 		this.storageType = stroageType;
+	}
+	
+	public int getStorageID() 
+	{
+		return storage.getID();
 	}
 }

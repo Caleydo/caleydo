@@ -37,14 +37,25 @@ public class CmdViewCreateImage
 
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
+		if (iExternalID != -1)
+		{
+			iParentContainerId = 
+				generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
+		}
+		
 		ImageViewRep imageView = (ImageViewRep) viewManager.createView(
-				EManagedObjectType.VIEW_SWT_IMAGE, iExternalID, iParentContainerId, sLabel);
+				EManagedObjectType.VIEW_SWT_IMAGE, iParentContainerId, sLabel);
 
-		viewManager.registerItem(imageView, iExternalID);
+		viewManager.registerItem(imageView);
 
 		imageView.setAttributes(iWidthX, iHeightY, sImagePath);
 		imageView.initView();
 		imageView.drawView();
+		
+		if (iExternalID != -1)
+		{
+			generalManager.getIDManager().mapInternalToExternalID(imageView.getID(), iExternalID);
+		}
 
 		commandManager.runDoCommand(this);
 	}

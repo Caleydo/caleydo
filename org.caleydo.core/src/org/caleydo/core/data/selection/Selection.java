@@ -5,6 +5,7 @@ import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
 
 /**
  * Selection SET that gives access to the selection storage arrays. The access
@@ -32,11 +33,10 @@ public class Selection
 	/**
 	 * Constructor.
 	 * 
-	 * @param iUniqueID
 	 */
-	public Selection(int iUniqueID)
+	public Selection()
 	{
-		super(iUniqueID);
+		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.SELECTION));
 
 		// /** add missing objects for optional data */
 		// vecRefSelection_Array.add(2, new Vector<IVirtualArray> (2));

@@ -23,7 +23,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.view.opengl.canvas.AGLCanvasStorageBasedView;
+import org.caleydo.core.view.opengl.canvas.AGLEventListenerStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.EIconTextures;
@@ -44,7 +44,7 @@ import com.sun.org.apache.bcel.internal.generic.IALOAD;
  * @author Marc Streit
  */
 public class GLCanvasParCoords3D
-	extends AGLCanvasStorageBasedView
+	extends AGLEventListenerStorageBasedView
 {
 
 	private float fAxisSpacing = 0;
@@ -130,10 +130,10 @@ public class GLCanvasParCoords3D
 	/**
 	 * Constructor.
 	 */
-	public GLCanvasParCoords3D(final int iViewID,
-			final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
+	public GLCanvasParCoords3D(final int iGLCanvasID, 
+			final String sLabel, final IViewFrustum viewFrustum)
 	{
-		super(iViewID, iGLCanvasID, sLabel, viewFrustum);
+		super(iGLCanvasID, sLabel, viewFrustum);
 
 		// alDataStorages = new ArrayList<IStorage>();
 		renderStyle = new ParCoordsRenderStyle(viewFrustum);

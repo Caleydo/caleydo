@@ -11,7 +11,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.Iterator;
-import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 
 /**
  * Jogl mouse event listener
@@ -24,7 +24,7 @@ public class JoglMouseListener
 	implements MouseListener, MouseMotionListener, MouseWheelListener
 {
 
-	protected ArrayList<AGLCanvasUser> alGlCanvas;
+	protected ArrayList<AGLEventListener> alGlCanvas;
 
 	protected float fZoomScale = 0.072f;
 
@@ -54,7 +54,7 @@ public class JoglMouseListener
 	{
 
 		pressedMousePosition = new Point();
-		alGlCanvas = new ArrayList<AGLCanvasUser>();
+		alGlCanvas = new ArrayList<AGLEventListener>();
 	}
 
 	public final void setMouseSensitivityRotation(float fSetMouseSensitivityRotation)
@@ -300,7 +300,7 @@ public class JoglMouseListener
 				prevMouseY = y;
 
 				/* set new paramters to ViewCamera */
-				Iterator<AGLCanvasUser> iterGLCanvas = alGlCanvas.iterator();
+				Iterator<AGLEventListener> iterGLCanvas = alGlCanvas.iterator();
 
 				while (iterGLCanvas.hasNext())
 				{
@@ -322,7 +322,7 @@ public class JoglMouseListener
 			prevMouseY = y;
 
 			/* set new paramters to ViewCamera */
-			Iterator<AGLCanvasUser> iterGLCanvas = alGlCanvas.iterator();
+			Iterator<AGLEventListener> iterGLCanvas = alGlCanvas.iterator();
 
 			while (iterGLCanvas.hasNext())
 			{
@@ -331,7 +331,7 @@ public class JoglMouseListener
 		}
 	}
 
-	public void addGLCanvas(final AGLCanvasUser gLCanvas)
+	public void addGLCanvas(final AGLEventListener gLCanvas)
 	{
 
 		alGlCanvas.add(gLCanvas);
@@ -350,7 +350,7 @@ public class JoglMouseListener
 		 */
 		float fZoom = fZoomScale * e.getWheelRotation();
 
-		Iterator<AGLCanvasUser> iterGLCanvas = alGlCanvas.iterator();
+		Iterator<AGLEventListener> iterGLCanvas = alGlCanvas.iterator();
 
 		while (iterGLCanvas.hasNext())
 		{

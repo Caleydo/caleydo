@@ -4,14 +4,12 @@ import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.media.opengl.GL;
-import javax.media.opengl.GLEventListener;
 import org.caleydo.core.data.view.camera.IViewFrustum;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphMouseListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
@@ -27,7 +25,7 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
  */
 
 public class GLCanvasRemoteGlyph
-	extends AGLCanvasUser
+	extends AGLEventListener
 {
 
 	private ArrayList<Integer> viewIDs_;
@@ -38,10 +36,10 @@ public class GLCanvasRemoteGlyph
 	 * Constructor.
 	 * 
 	 */
-	public GLCanvasRemoteGlyph(final int iViewID,
-			final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
+	public GLCanvasRemoteGlyph(final int iGLCanvasID, 
+			final String sLabel, final IViewFrustum viewFrustum)
 	{
-		super(iViewID, iGLCanvasID, sLabel, viewFrustum, true);
+		super(iGLCanvasID, sLabel, viewFrustum, true);
 
 		viewIDs_ = new ArrayList<Integer>();
 		mouseWheelListener_ = new GlyphMouseListener(this, generalManager);
@@ -69,7 +67,7 @@ public class GLCanvasRemoteGlyph
 		while (it.hasNext())
 		{
 			iViewId = it.next();
-			AGLCanvasUser tmpCanvasUser = ((AGLCanvasUser) generalManager
+			AGLEventListener tmpCanvasUser = ((AGLEventListener) generalManager
 					.getViewGLCanvasManager().getItem(iViewId));
 
 			if (tmpCanvasUser == null)
@@ -196,20 +194,20 @@ public class GLCanvasRemoteGlyph
 	private void retrieveContainedViews(final GL gl)
 	{
 
-		Iterator<GLEventListener> iterGLEventListener = generalManager
+		Iterator<AGLEventListener> iterGLEventListener = generalManager
 				.getViewGLCanvasManager().getAllGLEventListeners().iterator();
 
 		viewIDs_ = new ArrayList<Integer>();
 
 		while (iterGLEventListener.hasNext())
 		{
-			AGLCanvasUser tmpGLEventListener = (AGLCanvasUser) iterGLEventListener.next();
+			AGLEventListener tmpGLEventListener = iterGLEventListener.next();
 
 			if (tmpGLEventListener == this
 					|| tmpGLEventListener.getClass() != GLCanvasGlyph.class)
 				continue;
 
-			int iViewID = ((AGLCanvasUser) tmpGLEventListener).getID();
+			int iViewID = ((AGLEventListener) tmpGLEventListener).getID();
 
 			viewIDs_.add(iViewID);
 		}
@@ -219,7 +217,7 @@ public class GLCanvasRemoteGlyph
 	private void renderViewByID(final GL gl, final int iViewID)
 	{
 
-		AGLCanvasUser tmpCanvasUser = ((AGLCanvasUser) generalManager.getViewGLCanvasManager()
+		AGLEventListener tmpCanvasUser = ((AGLEventListener) generalManager.getViewGLCanvasManager()
 				.getItem(iViewID));
 
 		if (tmpCanvasUser == null)

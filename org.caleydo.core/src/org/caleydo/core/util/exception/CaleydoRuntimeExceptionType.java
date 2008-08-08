@@ -22,7 +22,8 @@ public enum CaleydoRuntimeExceptionType
 	VIRTUALARRAY("Virtual array"),
 	VIEW("View"),
 	ID("ID Management"),
-	SET("Set");
+	SET("Set"),
+	EVENT("Event handling");
 
 	private String sExceptionDetail;
 

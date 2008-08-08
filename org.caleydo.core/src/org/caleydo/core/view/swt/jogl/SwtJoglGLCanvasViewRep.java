@@ -1,12 +1,11 @@
 package org.caleydo.core.view.swt.jogl;
 
-import javax.media.opengl.GLCanvas;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.ViewType;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.swt.widget.SWTEmbeddedJoglWidget;
 import org.eclipse.swt.widgets.Composite;
 
@@ -17,24 +16,20 @@ import org.eclipse.swt.widgets.Composite;
 public class SwtJoglGLCanvasViewRep
 	extends AView
 {
-
 	protected int iGLCanvasID;
 
-	protected GLCanvas gLCanvas;
+	protected GLCaleydoCanvas gLCanvas;
 
 	/**
 	 * Constructor.
 	 * 
 	 */
-	public SwtJoglGLCanvasViewRep(int iViewID,
-			int iParentContainerId, int iGLCanvasID, String sLabel)
+	public SwtJoglGLCanvasViewRep(int iParentContainerId, String sLabel)
 	{
-		super(iViewID, iParentContainerId, sLabel, ViewType.SWT_JOGL);
-
-		this.iGLCanvasID = iGLCanvasID;
+		super(iParentContainerId, sLabel, ViewType.SWT_JOGL);
 	}
 
-	public void initViewSwtComposit(Composite swtContainer)
+	public void initViewSwtComposite(Composite swtContainer)
 	{
 
 		ISWTGUIManager iSWTGUIManager = generalManager.getSWTGUIManager();
@@ -45,20 +40,15 @@ public class SwtJoglGLCanvasViewRep
 
 		swtContainer = sWTEmbeddedJoglWidget.getParentComposite();
 
-		sWTEmbeddedJoglWidget.createEmbeddedComposite(generalManager, iGLCanvasID);
+		sWTEmbeddedJoglWidget.createEmbeddedComposite();
 
 		gLCanvas = sWTEmbeddedJoglWidget.getGLCanvas();
-
-		assert gLCanvas != null : "GLCanvas was not be created";
-
-		// Add canvas as listener to itself so that init(), display() etc are
-		// called.
-		// gLCanvas.addGLEventListener((GLEventListener)gLCanvas);
-
+		iGLCanvasID = gLCanvas.getID();
+		
 		IViewGLCanvasManager canvasManager = generalManager.getViewGLCanvasManager();
 
 		// Register GL canvas to view manager
-		canvasManager.registerGLCanvas(gLCanvas, iGLCanvasID);
+		canvasManager.registerGLCanvas(gLCanvas);
 	}
 
 	public final void initView()
@@ -76,23 +66,17 @@ public class SwtJoglGLCanvasViewRep
 		// LoggerType.STATUS );
 	}
 
-	public void setAttributes(int iWidth, int iHeight, int iGLCanvasID)
+	public void setAttributes(int iWidth, int iHeight)
 	{
-
 		super.setAttributes(iWidth, iHeight);
-
-		if (iGLCanvasID != -1)
-		{
-			this.iGLCanvasID = iGLCanvasID;
-		}
 	}
 
 	public void drawView()
 	{
-
-		// generalManager.logMsg(
-		// "SwtJoglGLCanvasViewRep.drawView() [" +
-		// this.iUniqueId + "]"
-		// ,LoggerType.VERBOSE );
+	}
+	
+	public int getGLCanvasID()
+	{
+		return iGLCanvasID;
 	}
 }

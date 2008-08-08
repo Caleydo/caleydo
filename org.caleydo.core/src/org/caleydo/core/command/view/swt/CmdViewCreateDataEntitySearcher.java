@@ -56,10 +56,10 @@ public class CmdViewCreateDataEntitySearcher
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
 		DataEntitySearcherViewRep dataEntitySearcherView = (DataEntitySearcherViewRep) viewManager
-				.createView(EManagedObjectType.VIEW_SWT_DATA_ENTITY_SEARCHER, iExternalID, -1,
+				.createView(EManagedObjectType.VIEW_SWT_DATA_ENTITY_SEARCHER, -1,
 						sLabel);
 
-		viewManager.registerItem(dataEntitySearcherView, iExternalID);
+		viewManager.registerItem(dataEntitySearcherView);
 
 		viewManager.addViewRep(dataEntitySearcherView);
 

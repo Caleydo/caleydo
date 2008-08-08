@@ -26,15 +26,15 @@ public interface IEventPublisher
 
 	/**
 	 * Creates a mediator and registers the senders and receivers to this
-	 * mediator. mediatorUpdateType defines wether selection filtering is
+	 * mediator. mediatorUpdateType defines whether selection filtering is
 	 * supported or not.
 	 */
-	public void createMediator(int iMediatorId, ArrayList<Integer> arSenderIDs,
+	public IMediator createMediator(ArrayList<Integer> arSenderIDs,
 			ArrayList<Integer> arReceiverIDs, MediatorType mediatorType,
 			MediatorUpdateType mediatorUpdateType);
 
 	/**
-	 * Addes a list of senders and or receivers to a Mediator.
+	 * Adds a list of senders and or receivers to a Mediator.
 	 * 
 	 * @param newMediator
 	 * @param arSenderIDs

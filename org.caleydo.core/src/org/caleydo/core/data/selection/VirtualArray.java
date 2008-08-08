@@ -1,6 +1,9 @@
 package org.caleydo.core.data.selection;
 
 import java.util.ArrayList;
+import org.caleydo.core.data.AUniqueObject;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
@@ -12,7 +15,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  */
 
 public class VirtualArray
-	// extends AManagedObject
+	extends AUniqueObject
 	implements IVirtualArray
 
 {
@@ -27,6 +30,8 @@ public class VirtualArray
 	 */
 	public VirtualArray(int iLength)
 	{
+		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
+		
 		this.iLength = iLength;
 		init();
 	}
@@ -41,6 +46,7 @@ public class VirtualArray
 	 */
 	public VirtualArray(int iLength, ArrayList<Integer> iAlVirtualArray)
 	{
+		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
 		this.iLength = iLength;
 		this.iAlVirtualArray = iAlVirtualArray;
 	}

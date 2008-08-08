@@ -15,7 +15,7 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.mapping.color.ColorMapping;
-import org.caleydo.core.view.opengl.canvas.AGLCanvasStorageBasedView;
+import org.caleydo.core.view.opengl.canvas.AGLEventListenerStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
 import org.caleydo.core.view.opengl.canvas.parcoords.ESelectionType;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
@@ -32,7 +32,7 @@ import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
  * @author Marc Streit
  */
 public class GLCanvasHeatMap
-	extends AGLCanvasStorageBasedView
+	extends AGLEventListenerStorageBasedView
 {
 
 	private HeatMapRenderStyle renderStyle;
@@ -65,11 +65,11 @@ public class GLCanvasHeatMap
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLCanvasHeatMap(final int iViewID,
-			final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
+	public GLCanvasHeatMap(final int iGLCanvasID, 
+			final String sLabel, final IViewFrustum viewFrustum)
 	{
 
-		super(iViewID, iGLCanvasID, sLabel, viewFrustum);
+		super(iGLCanvasID, sLabel, viewFrustum);
 
 		ArrayList<EViewInternalSelectionType> alSelectionTypes = new ArrayList<EViewInternalSelectionType>();
 		alSelectionTypes.add(EViewInternalSelectionType.NORMAL);

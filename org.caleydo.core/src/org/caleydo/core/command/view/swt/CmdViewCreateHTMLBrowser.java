@@ -38,23 +38,35 @@ public class CmdViewCreateHTMLBrowser
 
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
+		if (iExternalID != -1)
+		{
+			iParentContainerId = 
+				generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
+		}
+		
 		HTMLBrowserViewRep browserView = (HTMLBrowserViewRep) viewManager.createView(
-				EManagedObjectType.VIEW_SWT_BROWSER, iExternalID, iParentContainerId, sLabel);
+				EManagedObjectType.VIEW_SWT_BROWSER, iParentContainerId, sLabel);
 
-		viewManager.registerItem(browserView, iExternalID);
+		viewManager.registerItem(browserView);
 
 		browserView.setAttributes(iWidthX, iHeightY, browserType);
 		browserView.initView();
 		browserView.drawView();
+		
+		if (iExternalID != -1)
+		{
+			generalManager.getIDManager().mapInternalToExternalID(browserView.getID(), iExternalID);
+		}
 
 		commandManager.runDoCommand(this);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
+	 */
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
-
-		assert parameterHandler != null : "ParameterHandler object is null!";
-
 		super.setParameterHandler(parameterHandler);
 
 		String sBrowserType = parameterHandler.getValueString(CommandType.TAG_DETAIL
@@ -66,9 +78,12 @@ public class CmdViewCreateHTMLBrowser
 			browserType = EBrowserType.GENERAL;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.ICommand#undoCommand()
+	 */
 	public void undoCommand() throws CaleydoRuntimeException
 	{
-
 		commandManager.runUndoCommand(this);
 	}
 }

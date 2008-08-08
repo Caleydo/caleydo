@@ -12,7 +12,6 @@ import org.caleydo.core.view.opengl.canvas.glyph.GlyphEntry;
  * @author Sauer Stefan
  */
 public interface IGlyphManager
-	extends IManager<GlyphEntry>
 {
 
 	public void registerGlyphView(GLCanvasGlyph view);

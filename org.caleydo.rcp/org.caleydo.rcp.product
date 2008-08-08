@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?pde version="3.4"?>
 
-<product name="Caleydo Product" id="org.caleydo.rcp.product" application="org.caleydo.rcp.application" useFeatures="true">
+<product name="Caleydo" id="org.caleydo.rcp.product" application="org.caleydo.rcp.application" useFeatures="true">
 
    <aboutInfo>
       <text>
@@ -24,10 +24,13 @@ All Rights Reserved.
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
-   <windowImages i16="/org.caleydo.data/resources/icons/caleydo/caleydo16.gif" i32="/org.caleydo.data/resources/icons/caleydo/caleydo32.gif" i48="/org.caleydo.data/resources/icons/caleydo/caleydo48.gif" i64="/org.caleydo.data/resources/icons/caleydo/caleydo64.gif" i128="/org.caleydo.data/resources/icons/caleydo/caleydo128.gif"/>
+   <windowImages i16="/org.caleydo.rcp/resources/icons/caleydo/caleydo16.gif" i32="/org.caleydo.rcp/resources/icons/caleydo/caleydo32.gif" i48="/org.caleydo.rcp/resources/icons/caleydo/caleydo48.gif" i64="/org.caleydo.rcp/resources/icons/caleydo/caleydo64.gif" i128="/org.caleydo.rcp/resources/icons/caleydo/caleydo128.gif"/>
 
    <splash
-      location="org.caleydo.rcp" />
+      location="org.caleydo.rcp"
+      startupProgressRect="5,275,445,15"
+      startupMessageRect="7,252,445,20"
+      startupForegroundColor="000000" />
    <launcher name="caleydo">
       <solaris/>
       <win useIco="false">

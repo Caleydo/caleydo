@@ -13,7 +13,7 @@ import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
  * @author Marc Streit
  */
 public class CmdGlObjectPathway3D
-	extends CmdCreateOpenGLCanvasListener
+	extends CmdCreateGLEventListener
 {
 
 	private int iPathwayID = -1;
@@ -23,7 +23,6 @@ public class CmdGlObjectPathway3D
 	 */
 	public CmdGlObjectPathway3D(final CommandType cmdType)
 	{
-
 		super(cmdType);
 	}
 
@@ -38,7 +37,7 @@ public class CmdGlObjectPathway3D
 		iPathwayID = StringConversionTool.convertStringToInt(sAttribute4, -1);
 	}
 
-	public void setAttributes(final int iUniqueID, final int iPathwayID,
+	public void setAttributes(final int iPathwayID,
 			final ArrayList<Integer> iArSetIDs, final ArrayList<Integer> iArSelectionIDs,
 			final ViewFrustumBase.ProjectionMode projectionMode, final float fLeft,
 			final float fRight, final float fTop, final float fBottom, final float fNear,
@@ -48,7 +47,7 @@ public class CmdGlObjectPathway3D
 		super.setAttributes(projectionMode, fLeft, fRight, fTop, fBottom, fNear, fFar,
 				iArSetIDs, iArSelectionIDs);
 
-		this.iArSetIDs = iArSetIDs;
+		this.iAlSetIDs = iArSetIDs;
 		this.iPathwayID = iPathwayID;
 		this.iExternalID = iUniqueID;
 		iParentContainerId = -1;

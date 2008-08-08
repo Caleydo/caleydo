@@ -36,15 +36,26 @@ public class CmdViewCreateProgressBar
 	{
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
+		if (iExternalID != -1)
+		{
+			iParentContainerId = 
+				generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
+		}
+		
 		ProgressBarViewRep progressBarView = (ProgressBarViewRep) viewManager.createView(
-				EManagedObjectType.VIEW_SWT_PROGRESS_BAR, iExternalID, iParentContainerId,
+				EManagedObjectType.VIEW_SWT_PROGRESS_BAR, iParentContainerId,
 				sLabel);
 
-		viewManager.registerItem(progressBarView, iExternalID);
+		viewManager.registerItem(progressBarView);
 
 		progressBarView.setAttributes(iProgressBarCurrentValue);
 		progressBarView.initView();
 		progressBarView.drawView();
+		
+		if (iExternalID != -1)
+		{
+			generalManager.getIDManager().mapInternalToExternalID(progressBarView.getID(), iExternalID);
+		}
 
 		commandManager.runDoCommand(this);
 	}

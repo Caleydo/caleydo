@@ -66,10 +66,10 @@ public abstract class AView
 	 * @param iParentContainerId
 	 * @param sLabel
 	 */
-	public AView(final int iUniqueId,
-			final int iParentContainerId, final String sLabel, final ViewType viewType)
+	public AView(final int iParentContainerId, final String sLabel, final ViewType viewType)
 	{
-		super(iUniqueId);
+		// TODO: IDs should be created in derived view classes with their type
+		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIEW));
 
 		generalManager = GeneralManager.get();
 		
@@ -86,7 +86,7 @@ public abstract class AView
 		setManager = generalManager.getSetManager();
 	}
 
-	protected abstract void initViewSwtComposit(Composite swtContainer);
+	protected abstract void initViewSwtComposite(Composite swtContainer);
 
 	public void setAttributes(int iWidth, int iHeight)
 	{
@@ -118,7 +118,7 @@ public abstract class AView
 	{
 
 		this.swtContainer = swtContainer;
-		initViewSwtComposit(swtContainer);
+		initViewSwtComposite(swtContainer);
 	}
 
 	/*
@@ -141,7 +141,7 @@ public abstract class AView
 
 		assert swtContainer != null : "empty SWT container";
 
-		initViewSwtComposit(swtContainer);
+		initViewSwtComposite(swtContainer);
 	}
 
 	/*

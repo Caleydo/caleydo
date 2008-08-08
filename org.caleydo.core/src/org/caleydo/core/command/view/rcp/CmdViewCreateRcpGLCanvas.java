@@ -1,11 +1,9 @@
 package org.caleydo.core.command.view.rcp;
 
-import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLCapabilities;
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentAttrOpenGL;
+import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParent;
 import org.caleydo.core.manager.IViewGLCanvasManager;
-import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 
@@ -16,7 +14,7 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
  * @author Marc Streit
  */
 public class CmdViewCreateRcpGLCanvas
-	extends ACmdCreate_IdTargetLabelParentAttrOpenGL
+	extends ACmdCreate_IdTargetLabelParent
 {
 
 	/**
@@ -36,14 +34,12 @@ public class CmdViewCreateRcpGLCanvas
 		GLCapabilities glCapabilities = new GLCapabilities();
 		glCapabilities.setStencilBits(1);
 
-		GLCanvas gLCanvas = new GLCaleydoCanvas(generalManager, iGLCanvasID, glCapabilities);
-
-		assert gLCanvas != null : "GLCanvas was not be created";
+		GLCaleydoCanvas gLCanvas = new GLCaleydoCanvas(glCapabilities);
 
 		IViewGLCanvasManager canvasManager = generalManager.getViewGLCanvasManager();
 
 		// Register GL canvas to view manager
-		canvasManager.registerGLCanvas(gLCanvas, iGLCanvasID);
+		canvasManager.registerGLCanvas(gLCanvas);
 
 		commandManager.runDoCommand(this);
 	}

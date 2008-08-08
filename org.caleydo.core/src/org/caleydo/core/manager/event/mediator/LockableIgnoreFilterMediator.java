@@ -20,11 +20,10 @@ public class LockableIgnoreFilterMediator
 	/**
 	 * Constructor.
 	 */
-	public LockableIgnoreFilterMediator(int iMediatorId,
-			final ISet setExclusiveSet)
+	public LockableIgnoreFilterMediator(final ISet setExclusiveSet)
 	{
 
-		super(iMediatorId, MediatorUpdateType.MEDIATOR_FILTER_ALL_EXPECT_SET);
+		super(MediatorUpdateType.MEDIATOR_FILTER_ALL_EXPECT_SET);
 
 		this.ignoreSet = setExclusiveSet;
 	}

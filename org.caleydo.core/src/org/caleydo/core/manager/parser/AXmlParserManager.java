@@ -4,6 +4,7 @@ import java.util.Hashtable;
 import java.util.LinkedList;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -18,7 +19,8 @@ public abstract class AXmlParserManager
 	extends DefaultHandler
 	implements IXmlParserManager
 {
-
+	protected IGeneralManager generalManager;
+	
 	/**
 	 * Token to avoid registering and unregistering handlers during processing
 	 * XMl data.
@@ -47,17 +49,13 @@ public abstract class AXmlParserManager
 	protected Hashtable<String, IXmlParserHandler> hashTag2XmlParser;
 
 	/**
-	 * Reference to manager, who created this object.
-	 */
-	protected IGeneralManager generalManager;
-
-	/**
 	 * Constructor.
 	 */
 	protected AXmlParserManager()
 	{
+		generalManager = GeneralManager.generalManager;
+		
 		hashTag2XmlParser = new Hashtable<String, IXmlParserHandler>();
-
 		llXmlParserStack = new LinkedList<IXmlParserHandler>();
 	}
 

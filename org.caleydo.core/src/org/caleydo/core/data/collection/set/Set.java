@@ -51,12 +51,13 @@ public class Set
 	/**
 	 * Constructor.
 	 * 
-	 * @param iUniqueID
 	 */
 	public Set()
 	{
 		super(GeneralManager.get().getIDManager()
 				.createID(EManagedObjectType.SET));
+		
+		GeneralManager.get().getSetManager().registerItem(this);
 		
 		alStorages = new ArrayList<IStorage>();
 		hashStorageVAs = new HashMap<Integer, IVirtualArray>();
