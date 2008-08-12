@@ -1,7 +1,7 @@
 package org.caleydo.core.command.data;
 
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
+import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
@@ -12,7 +12,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  * @author Marc Streit
  */
 public class CmdDataCreateSelection
-	extends ACmdCreate_IdTargetLabelAttrDetail
+	extends ACmdExternalAttributes
 {
 	ISelection selection = null;
 	
@@ -47,15 +47,6 @@ public class CmdDataCreateSelection
 	public void undoCommand() throws CaleydoRuntimeException
 	{
 		commandManager.runUndoCommand(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.base.ACommand#getInfoText()
-	 */
-	public String getInfoText()
-	{
-		return super.getInfoText() + " -> " + this.iExternalID + ": " + this.sLabel;
 	}
 	
 	public int getSelectionID() 

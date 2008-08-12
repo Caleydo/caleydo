@@ -1,10 +1,9 @@
 package org.caleydo.core.command.view.swt;
 
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY;
+import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.swt.glyph.GlyphMappingConfigurationViewRep;
 
@@ -14,7 +13,7 @@ import org.caleydo.core.view.swt.glyph.GlyphMappingConfigurationViewRep;
  * @author Sauer Stefan
  */
 public class CmdViewCreateGlyphConfiguration
-	extends ACmdCreate_IdTargetLabelParentXY
+	extends ACmdExternalAttributes
 {
 	int iNumberOfSliders = 1;
 
@@ -26,9 +25,9 @@ public class CmdViewCreateGlyphConfiguration
 		super(cmdType);
 	}
 
-	/**
-	 * Method creates a slider view, sets the attributes and calls the init and
-	 * draw method.
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{

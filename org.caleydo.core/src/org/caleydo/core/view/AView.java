@@ -46,16 +46,6 @@ public abstract class AView
 
 	protected String sLabel;
 
-	/**
-	 * Width of the widget.
-	 */
-	protected int iWidth;
-
-	/**
-	 * Height of the widget;
-	 */
-	protected int iHeight;
-
 	protected Composite swtContainer;
 
 	/**
@@ -87,13 +77,6 @@ public abstract class AView
 	}
 
 	protected abstract void initViewSwtComposite(Composite swtContainer);
-
-	public void setAttributes(int iWidth, int iHeight)
-	{
-
-		this.iWidth = iWidth;
-		this.iHeight = iHeight;
-	}
 
 	public final EManagedObjectType getBaseType()
 	{
@@ -134,8 +117,7 @@ public abstract class AView
 		 */
 
 		SWTNativeWidget sWTNativeWidget = (SWTNativeWidget) generalManager.getSWTGUIManager()
-				.createWidget(EManagedObjectType.GUI_SWT_NATIVE_WIDGET, iParentContainerId,
-						iWidth, iHeight);
+				.createWidget(EManagedObjectType.GUI_SWT_NATIVE_WIDGET, iParentContainerId);
 
 		swtContainer = sWTNativeWidget.getSWTWidget();
 

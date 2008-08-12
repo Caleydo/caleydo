@@ -15,7 +15,7 @@ import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.core.Graph;
 
 /**
- * The pathway manager is in charge for creating and handling the pathways. The
+ * The pathway manager is in charge of creating and handling the pathways. The
  * class is implemented as a singleton.
  * 
  * @author Marc Streit

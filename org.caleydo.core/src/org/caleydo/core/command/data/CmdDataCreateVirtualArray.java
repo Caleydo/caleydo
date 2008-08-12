@@ -1,7 +1,7 @@
 package org.caleydo.core.command.data;
 
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabel;
+import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
@@ -12,7 +12,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  * @author Marc Streit
  */
 public class CmdDataCreateVirtualArray
-	extends ACmdCreate_IdTargetLabel
+	extends ACmdExternalAttributes
 {
 	/**
 	 * Constructor.

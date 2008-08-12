@@ -3,7 +3,7 @@ package org.caleydo.core.command.event;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
+import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IEventPublisher.MediatorType;
 import org.caleydo.core.manager.event.mediator.IMediator;
@@ -20,7 +20,7 @@ import org.caleydo.core.util.system.StringConversionTool;
  * @author Michael Kalkusch
  */
 public class CmdEventCreateMediator
-	extends ACmdCreate_IdTargetLabelAttrDetail
+	extends ACmdExternalAttributes
 {
 	private IMediator mediator;
 	
@@ -118,15 +118,6 @@ public class CmdEventCreateMediator
 	{
 
 		commandManager.runUndoCommand(this);
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.base.ACommand#getInfoText()
-	 */
-	public String getInfoText()
-	{
-		return super.getInfoText() + " -> " + this.iExternalID + ": " + this.sLabel;
 	}
 	
 	public int getMediatorID()

@@ -59,10 +59,8 @@ public class UndoRedoViewRep
 	{
 	}
 
-	public void setAttributes(int iWidth, int iHeight, String sImagePath)
+	public void setAttributes(String sImagePath)
 	{
-
-		super.setAttributes(iWidth, iHeight);
 	}
 
 	public void updateCommandList(Vector<ICommand> vecCommands)

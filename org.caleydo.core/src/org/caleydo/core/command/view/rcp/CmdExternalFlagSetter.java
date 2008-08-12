@@ -1,7 +1,7 @@
 package org.caleydo.core.command.view.rcp;
 
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
+import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
@@ -13,7 +13,7 @@ import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
  * @author Marc Streit
  */
 public class CmdExternalFlagSetter
-	extends ACmdCreate_IdTargetLabelAttrDetail
+	extends ACmdExternalAttributes
 {
 
 	private boolean bFlag = false;

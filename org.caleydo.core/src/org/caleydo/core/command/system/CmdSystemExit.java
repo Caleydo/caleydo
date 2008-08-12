@@ -39,22 +39,4 @@ public class CmdSystemExit
 	{
 		// no undo of system shutdown!
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
-	 */
-	public void setParameterHandler(IParameterHandler parameterHandler)
-	{
-		
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#getInfoText()
-	 */
-	public String getInfoText()
-	{
-		return "System exit!";
-	}
 }

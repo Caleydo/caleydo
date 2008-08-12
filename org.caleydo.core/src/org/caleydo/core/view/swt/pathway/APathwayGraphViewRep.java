@@ -7,7 +7,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.IGraphItem;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
@@ -222,7 +222,7 @@ implements IPathwayGraphView, IMediatorSender, IMediatorReceiver {
 			public void run() {
 				CmdViewLoadURLInHTMLBrowser createdCmd = 
 					(CmdViewLoadURLInHTMLBrowser)generalManager.getCommandManager().
-						createCommandByType(CommandQueueSaxType.LOAD_URL_IN_BROWSER);
+						createCommandByType(CommandType.LOAD_URL_IN_BROWSER);
 
 				createdCmd.setAttributes(sUrl);
 				createdCmd.doCommand();

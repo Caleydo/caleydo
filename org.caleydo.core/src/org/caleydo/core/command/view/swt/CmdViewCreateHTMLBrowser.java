@@ -1,7 +1,7 @@
 package org.caleydo.core.command.view.swt;
 
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY;
+import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
@@ -16,7 +16,7 @@ import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
  * @author Marc Streit
  */
 public class CmdViewCreateHTMLBrowser
-	extends ACmdCreate_IdTargetLabelParentXY
+	extends ACmdCreational<HTMLBrowserViewRep>
 {
 
 	private EBrowserType browserType;
@@ -29,9 +29,9 @@ public class CmdViewCreateHTMLBrowser
 		super(cmdType);
 	}
 
-	/**
-	 * Method creates a slider view, sets the attributes and calls the init and
-	 * draw method.
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
@@ -49,7 +49,7 @@ public class CmdViewCreateHTMLBrowser
 
 		viewManager.registerItem(browserView);
 
-		browserView.setAttributes(iWidthX, iHeightY, browserType);
+		browserView.setAttributes(browserType);
 		browserView.initView();
 		browserView.drawView();
 		
@@ -69,8 +69,7 @@ public class CmdViewCreateHTMLBrowser
 	{
 		super.setParameterHandler(parameterHandler);
 
-		String sBrowserType = parameterHandler.getValueString(CommandType.TAG_DETAIL
-				.getXmlKey());
+		String sBrowserType = sDetail;
 
 		if (!sBrowserType.equals(""))
 			browserType = EBrowserType.valueOf(sBrowserType);

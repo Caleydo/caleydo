@@ -55,9 +55,6 @@ public class LockableMediator
 	 */
 	public final boolean register(IMediatorSender sender)
 	{
-
-		assert sender != null : "can not register null-pointer";
-
 		if (arSender.contains(sender))
 		{
 			// throw new CaleydoRuntimeException(

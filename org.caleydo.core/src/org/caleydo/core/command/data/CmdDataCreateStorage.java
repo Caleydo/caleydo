@@ -2,7 +2,8 @@ package org.caleydo.core.command.data;
 
 import java.util.logging.Level;
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabel;
+import org.caleydo.core.command.base.ACmdCreational;
+import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -18,10 +19,8 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  * @author Alexander Lex
  */
 public class CmdDataCreateStorage
-	extends ACmdCreate_IdTargetLabel
+	extends ACmdCreational<IStorage>
 {
-	private IStorage storage;
-	
 	private EManagedObjectType storageType;
 
 	/**
@@ -39,12 +38,12 @@ public class CmdDataCreateStorage
 	public void doCommand() throws CaleydoRuntimeException
 	{
 		IStorageManager storageManager = generalManager.getStorageManager();
-		storage = (IStorage) storageManager.createStorage(storageType);
-		storage.setLabel(sLabel);
+		createdObject = (IStorage) storageManager.createStorage(storageType);
+		createdObject.setLabel(sLabel);
 
-		generalManager.getIDManager().mapInternalToExternalID(storage.getID(), iExternalID);
+		generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), iExternalID);
 		
-		generalManager.getLogger().log(Level.INFO, "Created Storage with ID: " + storage.getID());
+		generalManager.getLogger().log(Level.INFO, "Created Storage with ID: " + createdObject.getID());
 		commandManager.runDoCommand(this);
 	}
 
@@ -65,14 +64,11 @@ public class CmdDataCreateStorage
 	{
 		super.setParameterHandler(parameterHandler);
 
-		String sAttrib1 = parameterHandler.getValueString(CommandType.TAG_ATTRIBUTE1
-				.getXmlKey());
-
-		if (sAttrib1.length() > 0)
+		if (sAttribute1.length() > 0)
 		{
-			if (sAttrib1.equalsIgnoreCase("NOMINAL"))
+			if (sAttribute1.equalsIgnoreCase("NOMINAL"))
 				storageType = EManagedObjectType.STORAGE_NOMINAL;
-			else if (sAttrib1.equalsIgnoreCase("NUMERICAL"))
+			else if (sAttribute1.equalsIgnoreCase("NUMERICAL"))
 				storageType = EManagedObjectType.STORAGE_NUMERICAL;
 			else
 				throw new CaleydoRuntimeException(
@@ -82,14 +78,8 @@ public class CmdDataCreateStorage
 
 	}
 
-	public void setAttributes(int iStorageID, EManagedObjectType stroageType)
+	public void setAttributes(EManagedObjectType stroageType)
 	{
-		iExternalID = iStorageID;
 		this.storageType = stroageType;
-	}
-	
-	public int getStorageID() 
-	{
-		return storage.getID();
 	}
 }

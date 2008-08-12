@@ -3,7 +3,7 @@ package org.caleydo.core.command.data.filter;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
+import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
@@ -21,7 +21,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  * @author Alexander Lex
  */
 public class CmdDataFilterMath
-	extends ACmdCreate_IdTargetLabelAttrDetail
+	extends ACmdExternalAttributes
 {
 	public enum EDataFilterMathType
 	{

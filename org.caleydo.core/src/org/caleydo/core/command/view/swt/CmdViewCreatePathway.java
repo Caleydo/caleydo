@@ -3,7 +3,7 @@ package org.caleydo.core.command.view.swt;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY;
+import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
@@ -16,7 +16,7 @@ import org.caleydo.core.util.system.StringConversionTool;
  * @author Marc Streit
  */
 public class CmdViewCreatePathway
-	extends ACmdCreate_IdTargetLabelParentXY
+	extends ACmdExternalAttributes
 {
 	private ArrayList<Integer> iArSetIDs;
 
@@ -73,7 +73,7 @@ public class CmdViewCreatePathway
 		// TODO: load browser ID dynamically
 		// parameterHandler.setValueAndTypeAndDefault("iHTMLBrowserId",
 		// parameterHandler.getValueString(
-		// CommandQueueSaxType.TAG_DETAIL.getXmlKey() ),
+		// CommandType.TAG_DETAIL.getXmlKey() ),
 		// IParameterHandler.ParameterHandlerType.INT,
 		// "-1");
 		//		

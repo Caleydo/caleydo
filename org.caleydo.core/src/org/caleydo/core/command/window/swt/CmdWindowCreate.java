@@ -1,7 +1,7 @@
 package org.caleydo.core.command.window.swt;
 
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
+import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
@@ -12,7 +12,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  * @author Michael Kalkusch
  */
 public class CmdWindowCreate
-	extends ACmdCreate_IdTargetLabelAttrDetail
+	extends ACmdExternalAttributes
 {
 	protected String sLayoutAttributes;
 

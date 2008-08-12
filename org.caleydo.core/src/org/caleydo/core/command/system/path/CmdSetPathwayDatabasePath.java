@@ -1,7 +1,7 @@
 package org.caleydo.core.command.system.path;
 
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
+import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
@@ -13,7 +13,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  * @author Marc Streit
  */
 public class CmdSetPathwayDatabasePath
-	extends ACmdCreate_IdTargetLabelAttrDetail
+	extends ACmdExternalAttributes
 {
 
 	private EPathwayDatabaseType type;

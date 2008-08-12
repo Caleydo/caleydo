@@ -3,7 +3,7 @@ package org.caleydo.core.command.view.swt;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
+import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -13,7 +13,7 @@ import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
 
 public class CmdViewCreateDataEntitySearcher
-	extends ACmdCreate_IdTargetLabelAttrDetail
+	extends ACmdExternalAttributes
 {
 
 	private ArrayList<Integer> iAlViewReceiverID;

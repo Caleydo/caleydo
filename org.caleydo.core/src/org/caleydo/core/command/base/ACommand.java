@@ -40,16 +40,7 @@ public abstract class ACommand
 		this.commandManager = generalManager.getCommandManager();
 		this.cmdType = cmdType;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.IUniqueManagedObject#getBaseType()
-	 */
-	public final EManagedObjectType getBaseType()
-	{
-		return EManagedObjectType.COMMAND;
-	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.command.ICommand#getCommandType()
@@ -74,7 +65,6 @@ public abstract class ACommand
 	 */
 	public String getInfoText()
 	{
-
 		return cmdType.getInfoText() + " [" + this.getID() + "]";
 	}
 }

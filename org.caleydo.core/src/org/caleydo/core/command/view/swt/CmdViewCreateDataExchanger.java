@@ -1,7 +1,7 @@
 package org.caleydo.core.command.view.swt;
 
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY;
+import org.caleydo.core.command.base.ACmdExternalAttributes;
 
 /**
  * Class implements the command for the data exchanger view.
@@ -10,7 +10,7 @@ import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY;
  * @author Marc Streit
  */
 public class CmdViewCreateDataExchanger
-	extends ACmdCreate_IdTargetLabelParentXY
+	extends ACmdExternalAttributes
 {
 
 	/**

@@ -60,6 +60,11 @@ public class GeneralManager
 	 */
 	private PreferenceStore preferenceStore;
 	
+	/**
+	 * Determines whether Caleydo runs as standalone test GUI or in RCP mode.
+	 */
+	private boolean bIsStandalone = true;
+	
 	private boolean bAllManagersInitialized = false;
 
 //	private ArrayList<IManager> alManagers;
@@ -110,8 +115,10 @@ public class GeneralManager
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IGeneralManager#initManager()
 	 */
-	public void initManager()
+	public void init(boolean bIsStandalone)
 	{
+		this.bIsStandalone = bIsStandalone;
+		
 		if (bAllManagersInitialized)
 		{
 			throw new CaleydoRuntimeException("Tried to initialize managers multiple times. Abort.");
@@ -350,6 +357,12 @@ public class GeneralManager
 	public IDManager getIDManager()
 	{
 		return IDManager;
+	}
+
+	@Override
+	public boolean isStandalone()
+	{
+		return bIsStandalone;
 	}
 	
 	// public void serializationOutputTest() {

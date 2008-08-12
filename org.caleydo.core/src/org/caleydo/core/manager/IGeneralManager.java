@@ -29,7 +29,7 @@ public interface IGeneralManager
 	public static final String sDelimiter_Parser_DataType = ";";
 	public static final String sDelimiter_Parser_DataItems_Tab = "\t";
 
-	public void initManager();
+	public void init(boolean bIsStandalone);
 
 	public abstract IMementoManager getMementoManager();
 	public abstract IStorageManager getStorageManager();
@@ -64,4 +64,9 @@ public interface IGeneralManager
 	 * Returns the home path to store data: $USER_HOME/.caleydo/
 	 */
 	public String getCaleydoHomePath();
+	
+	/**
+	 * Returns whether the application runs as standalone test GUI or embedded in RCP
+	 */
+	public boolean isStandalone() ;
 }

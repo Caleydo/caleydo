@@ -3,7 +3,6 @@ package org.caleydo.core.manager.parser;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.logging.Level;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 import org.caleydo.core.parser.xml.sax.handler.command.CommandSaxHandler;
 import org.caleydo.core.parser.xml.sax.handler.glyph.GlyphDefinitionSaxHandler;

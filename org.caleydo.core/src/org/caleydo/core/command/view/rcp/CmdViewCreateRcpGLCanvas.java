@@ -2,7 +2,7 @@ package org.caleydo.core.command.view.rcp;
 
 import javax.media.opengl.GLCapabilities;
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParent;
+import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IViewGLCanvasManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
@@ -14,7 +14,7 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
  * @author Marc Streit
  */
 public class CmdViewCreateRcpGLCanvas
-	extends ACmdCreate_IdTargetLabelParent
+	extends ACmdExternalAttributes
 {
 
 	/**
@@ -41,6 +41,12 @@ public class CmdViewCreateRcpGLCanvas
 		// Register GL canvas to view manager
 		canvasManager.registerGLCanvas(gLCanvas);
 
+		if (iExternalID != -1)
+		{
+			generalManager.getIDManager().mapInternalToExternalID(
+					gLCanvas.getID(), iExternalID);
+		}
+		
 		commandManager.runDoCommand(this);
 	}
 

@@ -174,7 +174,7 @@ public class CommandManager
 	 * (non-Javadoc)
 	 * @see
 	 * org.caleydo.core.manager.ICommandManager#createCommandByType(org.caleydo
-	 * .core.command.CommandQueueSaxType)
+	 * .core.command.CommandType)
 	 */
 	public ICommand createCommandByType(final CommandType cmdType)
 	{
@@ -279,8 +279,6 @@ public class CommandManager
 			iCountRedoCommand--;
 		}
 
-		// FIXME: think of multiple tread support! current Version is not thread
-		// safe!
 		Iterator<UndoRedoViewRep> iter = arUndoRedoViews.iterator();
 
 		assert iter != null : "arUndoRedoViews was not inizalized! Iterator ist null-pointer";

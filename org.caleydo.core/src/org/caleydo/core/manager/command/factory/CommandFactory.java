@@ -32,7 +32,6 @@ import org.caleydo.core.command.view.swt.CmdViewCreateHTMLBrowser;
 import org.caleydo.core.command.view.swt.CmdViewCreateImage;
 import org.caleydo.core.command.view.swt.CmdViewCreateMixer;
 import org.caleydo.core.command.view.swt.CmdViewCreatePathway;
-import org.caleydo.core.command.view.swt.CmdViewCreateProgressBar;
 import org.caleydo.core.command.view.swt.CmdViewCreateSetEditor;
 import org.caleydo.core.command.view.swt.CmdViewCreateSwtGLCanvas;
 import org.caleydo.core.command.view.swt.CmdViewCreateUndoRedo;
@@ -72,7 +71,7 @@ public class CommandFactory
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.command.factory.ICommandFactory#createCommandByType(org.caleydo.core.command.CommandQueueSaxType)
+	 * @see org.caleydo.core.manager.command.factory.ICommandFactory#createCommandByType(org.caleydo.core.command.CommandType)
 	 */
 	public ICommand createCommandByType(final CommandType cmdType)
 	{
@@ -165,11 +164,6 @@ public class CommandFactory
 			case CREATE_VIEW_SET_EDITOR:
 			{
 				createdCommand = new CmdViewCreateSetEditor(cmdType);
-				break;
-			}
-			case CREATE_VIEW_PROGRESSBAR:
-			{
-				createdCommand = new CmdViewCreateProgressBar(cmdType);
 				break;
 			}
 			case CREATE_VIEW_PATHWAY:

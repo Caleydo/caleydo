@@ -8,7 +8,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.data.CmdDataCreateSet;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
@@ -666,7 +666,7 @@ implements IView {
 
 		CmdDataCreateSet createdCommand = 
 			(CmdDataCreateSet) generalManager.getCommandManager()
-				.createCommandByType(CommandQueueSaxType.CREATE_SET_DATA);
+				.createCommandByType(CommandType.CREATE_SET_DATA);
 
 		String sStorageIDs = "";
 		String sVirtualArrayIDs = "";

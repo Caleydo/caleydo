@@ -4,7 +4,7 @@ import org.caleydo.core.application.helper.cacher.biocarta.BioCartaPathwayCacher
 import org.caleydo.core.application.helper.cacher.kegg.KeggPathwayCacher;
 import org.caleydo.core.application.helper.cacher.kegg.KeggPathwayImageCacher;
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
+import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.eclipse.jface.wizard.WizardPage;
@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.ProgressBar;
  * @author Marc Streit
  */
 public class CmdFetchPathwayData
-	extends ACmdCreate_IdTargetLabelAttrDetail
+	extends ACmdExternalAttributes
 {
 	private Display display = null;
 	private ProgressBar progressBarKeggPathwayCacher = null;

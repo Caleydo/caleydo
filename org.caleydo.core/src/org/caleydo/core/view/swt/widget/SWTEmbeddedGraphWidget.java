@@ -4,7 +4,7 @@ import java.awt.Frame;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Class takes a composite in the constructor and embedds an AWT Frame in it.
+ * Class takes a composite in the constructor and embeds an AWT Frame in it.
  * The Frame can be retrieved over the getEmbeddedFrame() method.
  * 
  * @author Marc Streit

@@ -3,7 +3,6 @@ package org.caleydo.core.view.swt.browser;
 import java.util.logging.Level;
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.data.CmdDataCreateSelection;
-import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
@@ -58,21 +57,17 @@ public class HTMLBrowserViewRep
 		selectedSetCmd.doCommand();
 	}
 
-	public void setAttributes(int iWidth, int iHeight, EBrowserType browserType)
+	public void setAttributes(EBrowserType browserType)
 	{
-
-		super.setAttributes(iWidth, iHeight);
-
 		this.browserType = browserType;
 	}
 
-	/**
-	 * @see org.caleydo.core.view.IView#initView()
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.view.AView#initViewSwtComposite(org.eclipse.swt.widgets.Composite)
 	 */
 	protected void initViewSwtComposite(Composite swtContainer)
 	{
-
-		swtContainer = swtContainer;
 		swtContainer.setLayout(new GridLayout(1, false));
 
 		ToolBar toolbar = new ToolBar(swtContainer, SWT.NONE);

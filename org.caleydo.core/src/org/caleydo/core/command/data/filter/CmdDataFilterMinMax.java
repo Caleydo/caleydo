@@ -2,7 +2,7 @@ package org.caleydo.core.command.data.filter;
 
 import javax.naming.OperationNotSupportedException;
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
+import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
@@ -17,7 +17,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  */
 
 public class CmdDataFilterMinMax
-	extends ACmdCreate_IdTargetLabelAttrDetail
+	extends ACmdExternalAttributes
 {
 
 	private ISet mySet = null;

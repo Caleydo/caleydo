@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.logging.Level;
-import org.caleydo.core.data.xml.IMementoXML;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.gui.SWTGUIManager;
 
@@ -37,26 +36,6 @@ public abstract class AbstractLoader
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(String)
 	 */
 	private int iLinesInFileToBeRead = -1;
-
-	/**
-	 * Position of progress bar stored in method progressBarSetStoreInitTitle()
-	 * 
-	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarSetStoreInitTitle(String,
-	 *      int, int)
-	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarResetTitle()
-	 * @see org.caleydo.core.parser.ascii.AbstractLoader#sLastProgressBarText
-	 */
-	private int iProgressBarLastPosition;
-
-	/**
-	 * Text progress bar stored in method progressBarSetStoreInitTitle()
-	 * 
-	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarSetStoreInitTitle(String,
-	 *      int, int)
-	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarResetTitle()
-	 * @see org.caleydo.core.parser.ascii.AbstractLoader#iProgressBarLastPosition
-	 */
-	private String sLastProgressBarText;
 
 	/**
 	 * Stores the current position of the progress bar.
@@ -340,24 +319,13 @@ public abstract class AbstractLoader
 			final int iCurrentProgressBarPosition, final int iMaxProgressBarPosition,
 			final int iStepsTill100_Percent)
 	{
-
-		int iMaxPosition = iMaxProgressBarPosition;
-
-		if (iMaxProgressBarPosition > swtGuiManager.PROGRESSBAR_MAXIMUM)
-		{
-			iMaxPosition = swtGuiManager.PROGRESSBAR_MAXIMUM;
-		}
-
-		assert sText != null : "can not init text with 'null'";
-		assert iMaxPosition > iCurrentProgressBarPosition : "iMaxPosition is smaller than iCurrentProgressBarPosition !";
-
-		iProgressBarLastPosition = swtGuiManager.getLoadingProgressBarPercentage();
-		sLastProgressBarText = swtGuiManager.setLoadingProgressBarTitle("Load "
+		swtGuiManager.getLoadingProgressBarPercentage();
+		swtGuiManager.setLoadingProgressBarTitle("Load "
 				+ this.getFileName(), iCurrentProgressBarPosition);
 
 		iProgressBarCurrentPosition = iCurrentProgressBarPosition;
 		fProgressBarIndex = iCurrentProgressBarPosition;
-		fProgressBarInc = (float) (iMaxPosition - iCurrentProgressBarPosition)
+		fProgressBarInc = (float) (100 - iCurrentProgressBarPosition)
 				/ (float) iStepsTill100_Percent;
 	}
 
@@ -373,7 +341,7 @@ public abstract class AbstractLoader
 	{
 
 		progressBarSetStoreInitTitle(sText, iCurrentProgressBarPosition,
-				swtGuiManager.PROGRESSBAR_MAXIMUM, iStepsTill100_Percent);
+				100, iStepsTill100_Percent);
 	}
 
 	public final void progressBarStoredIncrement()
@@ -386,22 +354,6 @@ public abstract class AbstractLoader
 			iProgressBarCurrentPosition = (int) fProgressBarIndex;
 			swtGuiManager.setLoadingProgressBarPercentage(iProgressBarCurrentPosition);
 		}
-	}
-
-	/**
-	 * Reset to the previous
-	 */
-	protected final void progressBarResetTitle()
-	{
-
-		swtGuiManager.setLoadingProgressBarTitle(sLastProgressBarText,
-				iProgressBarLastPosition);
-
-		assert fProgressBarInc != 0.0f : "call progressBarResetTitle() without calling progressBarSetStoreInitTitle() first!";
-
-		fProgressBarInc = 0.0f;
-		fProgressBarIndex = iProgressBarCurrentPosition;
-		iProgressBarCurrentPosition = iProgressBarLastPosition;
 	}
 
 	/**

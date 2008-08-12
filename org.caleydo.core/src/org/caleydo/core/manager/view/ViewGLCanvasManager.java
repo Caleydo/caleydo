@@ -34,7 +34,6 @@ import org.caleydo.core.view.swt.glyph.GlyphMappingConfigurationViewRep;
 import org.caleydo.core.view.swt.image.ImageViewRep;
 import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
 import org.caleydo.core.view.swt.mixer.MixerViewRep;
-import org.caleydo.core.view.swt.progressbar.ProgressBarViewRep;
 import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
@@ -167,10 +166,6 @@ public class ViewGLCanvasManager
 				// return new NewSetEditorViewRep(generalManager, iViewID,
 				// iParentContainerID, sLabel);
 				break;
-			case VIEW_SWT_PROGRESS_BAR:
-				view = new ProgressBarViewRep(iParentContainerID,
-						sLabel);
-				break;
 			case VIEW_SWT_MIXER:
 				view = new MixerViewRep(iParentContainerID, sLabel);
 				break;
@@ -246,7 +241,7 @@ public class ViewGLCanvasManager
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IViewGLCanvasManager#createGLCanvas(org.caleydo.core.command.CommandQueueSaxType, int, int, java.lang.String, org.caleydo.core.data.view.camera.IViewFrustum)
+	 * @see org.caleydo.core.manager.IViewGLCanvasManager#createGLCanvas(org.caleydo.core.command.CommandType, int, int, java.lang.String, org.caleydo.core.data.view.camera.IViewFrustum)
 	 */
 	public AGLEventListener createGLEventListener(CommandType type,
 			final int iGLCanvasID, final String sLabel,

@@ -36,14 +36,12 @@ import org.eclipse.swt.widgets.Shell;
 public class SWTGUIManager
 implements ISWTGUIManager
 {
-	public static final int PROGRESSBAR_MAXIMUM = 200;
-
 	protected IGeneralManager generalManager;
 	
 	/**
 	 * SWT Display represents a thread.
 	 */
-	protected final Display display;
+	protected Display display = null;
 
 	protected Composite composite;
 
@@ -56,6 +54,8 @@ implements ISWTGUIManager
 	protected Shell loadingProgressBarWindow;
 
 	protected ProgressBar loadingProgressBar;
+	
+	protected String loadingProgressBarText = "";
 
 	/**
 	 * Constructor.
@@ -65,11 +65,15 @@ implements ISWTGUIManager
 		generalManager = GeneralManager.get();
 		
 		widgetMap = new Vector<ISWTWidget>();
-		display = new Display();
 		windowMap = new HashMap<Integer, Shell>();
 		compositeMap = new HashMap<Integer, Composite>();
 
-		createLoadingProgressBar();
+		// Only create popup window with progress bar when not in RCP mode
+		if (generalManager.isStandalone())
+		{
+			display = new Display();
+			createLoadingProgressBar();
+		}
 	}
 
 	/*
@@ -120,10 +124,10 @@ implements ISWTGUIManager
 	 * (non-Javadoc)
 	 * @see
 	 * org.caleydo.core.manager.ISWTGUIManager#createWidget(org.caleydo.core
-	 * .manager.type.ManagerObjectType, int, int, int)
+	 * .manager.type.ManagerObjectType, int)
 	 */
 	public ISWTWidget createWidget(final EManagedObjectType useWidgetType,
-			int iUniqueParentContainerId, int iWidth, int iHeight)
+			int iUniqueParentContainerId)
 	{
 
 		// TODO Check if window id is valid and print error message
@@ -148,31 +152,22 @@ implements ISWTGUIManager
 			}
 		}
 
-		return (createWidget(useWidgetType, composite, iWidth, iHeight));
+		return (createWidget(useWidgetType, composite));
 	}
 
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.ISWTGUIManager#createWidget(org.caleydo.core
-	 * .manager.type.ManagerObjectType, org.eclipse.swt.widgets.Composite, int,
-	 * int)
+	 * @see org.caleydo.core.manager.ISWTGUIManager#createWidget(org.caleydo.core.manager.id.EManagedObjectType, org.eclipse.swt.widgets.Composite)
 	 */
 	public synchronized ISWTWidget createWidget(final EManagedObjectType useWidgetType,
-			final Composite externalParentComposite, int iWidth, int iHeight)
+			final Composite externalParentComposite)
 	{
-
-		assert externalParentComposite != null : "can not handel null-pointer";
-
-		//TODO: review when implementing ID management
-		final int iUniqueId = -1;//this.createId(useWidgetType);
 		ASWTWidget newSWTWidget;
 
 		switch (useWidgetType)
 		{
 			case GUI_SWT_NATIVE_WIDGET:
 				newSWTWidget = new SWTNativeWidget(externalParentComposite);
-				newSWTWidget.setId(iUniqueId);
 				widgetMap.add(newSWTWidget);
 				return newSWTWidget;
 			case GUI_SWT_EMBEDDED_JOGL_WIDGET:
@@ -263,9 +258,8 @@ implements ISWTGUIManager
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.ISWTGUIManager#createLoadingProgressBar()
 	 */
-	public void createLoadingProgressBar()
+	private void createLoadingProgressBar()
 	{
-
 		loadingProgressBarWindow = new Shell(display, SWT.TITLE | SWT.BORDER);
 		loadingProgressBarWindow.setMaximized(false);
 		loadingProgressBarWindow.setText("Loading org.caleydo.core...");
@@ -286,36 +280,24 @@ implements ISWTGUIManager
 	 */
 	public boolean setLoadingProgressBarPercentage(int iPercentage)
 	{
-
-		if (loadingProgressBar == null)
-			return false;
-
-		if (iPercentage < 0 || iPercentage > PROGRESSBAR_MAXIMUM)
-			return false;
-
 		loadingProgressBar.setSelection(iPercentage);
 		loadingProgressBar.update();
 
 		return true;
 	}
 
-	public synchronized String setLoadingProgressBarTitle(final String sText,
+	public void setLoadingProgressBarTitle(final String sText,
 			final int iPosition)
 	{
-
-		assert sText != null : "can not set 'null' text";
-
-		if (loadingProgressBarWindow == null)
-			return "--";
-
 		loadingProgressBar.setSelection(iPosition);
-
-		String sCurrentText = loadingProgressBarWindow.getText();
-
-		loadingProgressBarWindow.setText(sText);
-		loadingProgressBarWindow.update();
-
-		return sCurrentText;
+		
+		if (generalManager.isStandalone())
+		{
+			loadingProgressBarWindow.setText(sText);
+			loadingProgressBarWindow.update();
+		}
+		else
+			loadingProgressBarText = sText;
 	}
 
 	/*
@@ -346,5 +328,11 @@ implements ISWTGUIManager
 		}
 		loadingProgressBarWindow.setVisible(state);
 		loadingProgressBar.setVisible(state);
+	}
+	
+	public void setExternalProgressBarAndLabel(ProgressBar progressBar, String progressLabel)
+	{
+		this.loadingProgressBar = progressBar;
+		this.loadingProgressBarText = progressLabel;
 	}
 }

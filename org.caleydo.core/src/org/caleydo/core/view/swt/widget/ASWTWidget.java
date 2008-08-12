@@ -1,8 +1,8 @@
 package org.caleydo.core.view.swt.widget;
 
-import org.eclipse.swt.widgets.Composite;
-import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.view.swt.ISWTWidget;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * Base class for SWT views.
@@ -10,7 +10,7 @@ import org.caleydo.core.view.swt.ISWTWidget;
  * @author Marc Streit
  */
 public abstract class ASWTWidget
-	implements IUniqueObject, ISWTWidget
+	implements ISWTWidget
 {
 
 	/**
@@ -29,19 +29,6 @@ public abstract class ASWTWidget
 	 */
 	protected ASWTWidget(Composite parentComposite)
 	{
-
 		this.parentComposite = parentComposite;
-	}
-
-	public final void setId(int iUniqueId)
-	{
-
-		this.iUniqueId = iUniqueId;
-	}
-
-	public final int getID()
-	{
-
-		return iUniqueId;
 	}
 }

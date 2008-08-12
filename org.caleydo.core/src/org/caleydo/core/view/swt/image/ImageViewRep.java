@@ -40,7 +40,6 @@ public class ImageViewRep
 		Image image = new Image(swtContainer.getDisplay(), sImagePath);
 
 		Label label = new Label(swtContainer, SWT.BORDER);
-		label.setSize(iWidth, iHeight);
 		label.setImage(image);
 	}
 
@@ -53,10 +52,8 @@ public class ImageViewRep
 
 	}
 
-	public void setAttributes(int iWidth, int iHeight, String sImagePath)
+	public void setAttributes(String sImagePath)
 	{
-		super.setAttributes(iWidth, iHeight);
-
 		this.sImagePath = sImagePath;
 	}
 }

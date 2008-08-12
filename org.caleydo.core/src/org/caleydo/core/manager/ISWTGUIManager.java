@@ -3,16 +3,16 @@ package org.caleydo.core.manager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.swt.ISWTWidget;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.ProgressBar;
 
 public interface ISWTGUIManager
 {
 
 	public ISWTWidget createWidget(final EManagedObjectType useWidgetType,
-			int iUniqueParentWindowId, int iWidth, int iHeight);
+			int iUniqueParentWindowId);
 
 	public ISWTWidget createWidget(final EManagedObjectType useWidgetType,
-			final Composite externalParentComposite, int iWidth, int iHeight);
+			final Composite externalParentComposite);
 
 	/**
 	 * Method creates a shell with a given label and layout.
@@ -29,8 +29,6 @@ public interface ISWTGUIManager
 			String sLayoutAttributes);
 
 	public void runApplication();
-
-	public void createLoadingProgressBar();
 
 	/**
 	 * Sets the percentage of the progress bar during the loading progress of
@@ -56,5 +54,7 @@ public interface ISWTGUIManager
 	 *            progressbar.
 	 */
 	public void setProgressbarVisible(final boolean state);
+	
+	public void setExternalProgressBarAndLabel(ProgressBar progressBar, String progressLabel);
 
 }

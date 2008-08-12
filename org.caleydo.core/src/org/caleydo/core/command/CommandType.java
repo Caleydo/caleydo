@@ -50,7 +50,6 @@ public enum CommandType
 	CREATE_VIEW_GEARS("cmd", "type", "-1", "Create Gears Demo"),
 	CREATE_VIEW_DATA_EXPLORER("cmd", "type", "-1", "Create Data Explorer"),
 	CREATE_VIEW_DATA_EXCHANGER("cmd", "type", "-1", "Create Data Exchanger"),
-	CREATE_VIEW_PROGRESSBAR("cmd", "type", "-1", "Create Progress Bar"),
 	CREATE_VIEW_MIXER("cmd", "type", "-1", "Create Mixer"),
 	CREATE_VIEW_GLYPHCONFIG("cmd", "type", "-1", "Create Mixer"),
 	CREATE_VIEW_BROWSER("cmd", "type", "-1", "Create Browser"),

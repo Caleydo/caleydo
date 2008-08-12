@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParent;
+import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.camera.ViewFrustumBase;
 import org.caleydo.core.manager.IGeneralManager;
@@ -26,7 +26,7 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
  * @author Marc Streit
  */
 public class CmdCreateGLEventListener
-	extends ACmdCreate_IdTargetLabelParent
+	extends ACmdExternalAttributes
 {
 
 	protected CommandType viewType;

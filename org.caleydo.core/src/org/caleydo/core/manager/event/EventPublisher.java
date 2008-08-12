@@ -79,11 +79,6 @@ public class EventPublisher
 			HashMap<IMediatorSender, ArrayList<IMediator>> insertIntoHashMap,
 			IMediatorSender sender, IMediator newMediator)
 	{
-
-		assert insertIntoHashMap != null : "can not handle insertIntoHashMap null-pointer";
-		assert sender != null : "can not handle sender null-pointer";
-		assert newMediator != null : "can not handle newMediator null-pointer";
-
 		if (!insertIntoHashMap.containsKey(sender))
 		{
 			insertIntoHashMap.put(sender, new ArrayList<IMediator>());
@@ -148,6 +143,12 @@ public class EventPublisher
 			int iCurrentSenderId = iterSenderIDs.next();
 			IMediatorSender sender = (IMediatorSender) GeneralManager.get()
 					.getViewGLCanvasManager().getEventListener(iCurrentSenderId);
+			
+			if (sender == null)
+			{
+				sender = (IMediatorSender) GeneralManager.get()
+					.getViewGLCanvasManager().getItem(iCurrentSenderId);
+			}
 
 			newMediator.register(sender);
 
@@ -155,8 +156,6 @@ public class EventPublisher
 			{
 
 				case DATA_MEDIATOR:
-
-					// assert false : "test this code!";
 
 					// if (!hashSender2DataMediators.containsKey(sender))
 					// {

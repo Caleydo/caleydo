@@ -46,10 +46,10 @@ public class CaleydoBootloader
 	/**
 	 * Constructor.
 	 */
-	public CaleydoBootloader()
+	public CaleydoBootloader(boolean bIsStandalone)
 	{
 		generalManager = GeneralManager.get();
-		generalManager.initManager();
+		generalManager.init(bIsStandalone);
 
 		generalManager.getLogger().log(Level.CONFIG, "===========================");
 		generalManager.getLogger().log(Level.CONFIG, "... Start Caleydo Core ...");
@@ -100,8 +100,7 @@ public class CaleydoBootloader
 	}
 
 	/**
-	 * Start Caleydo core. Calls run_parseXmlConfigFile(String) with
-	 * getXmlFileName() and starts SWT.
+	 * Start Caleydo core. 
 	 * 
 	 */
 	public synchronized void start()
@@ -207,7 +206,7 @@ public class CaleydoBootloader
 	public static void main(String[] args)
 	{
 
-		CaleydoBootloader caleydo = new CaleydoBootloader();
+		CaleydoBootloader caleydo = new CaleydoBootloader(true);
 
 		if (args.length > 0)
 		{

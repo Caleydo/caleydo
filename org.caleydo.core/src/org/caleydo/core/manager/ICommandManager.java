@@ -37,7 +37,7 @@ public interface ICommandManager
 			final int sQueueThreadWait);
 
 	/**
-	 * create a new command. Calls createCommandByType(CommandQueueSaxType)
+	 * create a new command. Calls createCommandByType(CommandType)
 	 * internal.
 	 * 
 	 * @see org.caleydo.core.manager.ICommandManager#createCommandByType(CommandType)
@@ -48,7 +48,7 @@ public interface ICommandManager
 	public ICommand createCommand(final IParameterHandler phAttributes);
 
 	/**
-	 * Create a new command using the CommandQueueSaxType.
+	 * Create a new command using the CommandType.
 	 * 
 	 * @param cmdType
 	 * @return

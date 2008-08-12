@@ -36,7 +36,7 @@ public class SwtJoglGLCanvasViewRep
 
 		SWTEmbeddedJoglWidget sWTEmbeddedJoglWidget = (SWTEmbeddedJoglWidget) iSWTGUIManager
 				.createWidget(EManagedObjectType.GUI_SWT_EMBEDDED_JOGL_WIDGET,
-						iParentContainerId, -1, -1);
+						iParentContainerId);
 
 		swtContainer = sWTEmbeddedJoglWidget.getParentComposite();
 
@@ -53,24 +53,8 @@ public class SwtJoglGLCanvasViewRep
 
 	public final void initView()
 	{
-
-		assert false : "Do not call this method! Call SwtJoglGLCanvasViewRep.initViewSwtComposite()";
 	}
-
-	public void destroyDirector()
-	{
-
-		//		
-		// generalManager.logMsg("SwtJoglCanvasViewRep.destroyDirector()  id=" +
-		// iUniqueID,
-		// LoggerType.STATUS );
-	}
-
-	public void setAttributes(int iWidth, int iHeight)
-	{
-		super.setAttributes(iWidth, iHeight);
-	}
-
+	
 	public void drawView()
 	{
 	}

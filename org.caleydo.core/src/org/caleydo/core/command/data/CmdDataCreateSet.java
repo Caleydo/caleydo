@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail;
+import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IGeneralManager;
@@ -22,10 +22,8 @@ import org.caleydo.core.util.system.StringConversionTool;
  * @author Marc Streit
  */
 public class CmdDataCreateSet
-	extends ACmdCreate_IdTargetLabelAttrDetail
+	extends ACmdCreational<ISet>
 {
-	private ISet set;
-	
 	private ESetType setType;
 
 	private ArrayList<Integer> iAlStorageIDs;
@@ -67,13 +65,14 @@ public class CmdDataCreateSet
 	{
 		ISetManager setManager = generalManager.getSetManager();
 
-		set = setManager.createSet(setType);
-		set.setLabel(sLabel);
+		createdObject = setManager.createSet(setType);
+		createdObject.setLabel(sLabel);
 		
 		if (iExternalID != -1)
-			generalManager.getIDManager().mapInternalToExternalID(set.getID(), iExternalID);
+			generalManager.getIDManager().mapInternalToExternalID(
+					createdObject.getID(), iExternalID);
 
-		fillSets(set);
+		fillSets(createdObject);
 
 		generalManager.getLogger().log(Level.INFO,
 				"New Set with ID " + iExternalID + " created.");
@@ -144,17 +143,11 @@ public class CmdDataCreateSet
 		}
 	}
 
-	public void setAttributes(int iSetId, ArrayList<Integer> iAlVirtualArrayIDs,
+	public void setAttributes(ArrayList<Integer> iAlVirtualArrayIDs,
 			ArrayList<Integer> iAlStorageIDs, ESetType setType)
 	{
 		this.setType = setType;
 		this.iAlStorageIDs = iAlStorageIDs;
 		this.iAlVirtualArrayIDs = iAlVirtualArrayIDs;
-		this.iExternalID = iSetId;
-	}
-
-	public int getSetID() 
-	{
-		return set.getID();
 	}
 }

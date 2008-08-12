@@ -262,8 +262,7 @@ public class TabularAsciiDataReader
 			super.progressBarStoredIncrement();
 		}
 
-		super.progressBarResetTitle();
-		super.progressBarIncrement(10);
+		super.progressBarIncrement(5);
 	}
 
 	/*

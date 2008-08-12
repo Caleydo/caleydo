@@ -122,11 +122,8 @@ public class MixerViewRep
 		return iNumberOfSliders;
 	}
 
-	public void setAttributes(int iWidth, int iHeight, int iNumberOfSliders)
+	public void setAttributes(int iNumberOfSliders)
 	{
-
-		super.setAttributes(iWidth, iHeight);
-
 		this.iNumberOfSliders = iNumberOfSliders;
 	}
 }

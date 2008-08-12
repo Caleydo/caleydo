@@ -147,11 +147,7 @@ public final class LookupTableLoaderProxy
 		// iTotalNumerOfLinesRed,
 		// LoggerType.VERBOSE );
 
-		/**
-		 * reset progressbar...
-		 */
-		progressBarResetTitle();
-		progressBarIncrement(5);
+		progressBarIncrement(2);
 	}
 
 	/**

@@ -127,7 +127,7 @@ public class CommandSaxHandler
 
 		// generalManager.logMsg(
 		// "XML-TAG= " + phAttributes.getValueString(
-		// CommandQueueSaxType.TAG_LABEL.getXmlKey() ),
+		// CommandType.TAG_LABEL.getXmlKey() ),
 		// LoggerType.FULL );
 
 		lastCommand = generalManager.getCommandManager().createCommand(phAttributes);
@@ -212,7 +212,7 @@ public class CommandSaxHandler
 		CommandType currentType = CommandType.valueOf(sData_Queue_type);
 
 		switch (currentType)
-		// CommandQueueSaxType
+		// CommandType
 		{
 
 			case COMMAND_QUEUE_RUN:

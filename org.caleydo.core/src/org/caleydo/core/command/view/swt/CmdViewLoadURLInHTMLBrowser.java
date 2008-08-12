@@ -2,8 +2,7 @@ package org.caleydo.core.command.view.swt;
 
 import java.util.Iterator;
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParentXY;
-import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
@@ -18,7 +17,7 @@ import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
  * @author Marc Streit
  */
 public class CmdViewLoadURLInHTMLBrowser
-	extends ACmdCreate_IdTargetLabelParentXY
+	extends ACmdExternalAttributes
 {
 
 	protected int iTargetHTMLBrowserViewId = -1;
