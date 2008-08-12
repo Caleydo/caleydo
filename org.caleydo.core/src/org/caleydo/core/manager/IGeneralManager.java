@@ -1,16 +1,14 @@
 package org.caleydo.core.manager;
 
 import java.util.logging.Logger;
-import org.caleydo.core.manager.data.ISelectionManager;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.data.IStorageManager;
+import org.caleydo.core.manager.id.IDManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
 import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 import org.eclipse.jface.preference.PreferenceStore;
-
-import org.caleydo.core.manager.id.IDManager;
 
 /**
  * Interface for general manager.
@@ -34,7 +32,7 @@ public interface IGeneralManager
 	public abstract IMementoManager getMementoManager();
 	public abstract IStorageManager getStorageManager();
 	public abstract ISetManager getSetManager();
-	public abstract ISelectionManager getSelectionManager();
+//	public abstract ISelectionManager getSelectionManager();
 	public abstract ICommandManager getCommandManager();
 	public abstract ISWTGUIManager getSWTGUIManager();
 	public abstract IViewGLCanvasManager getViewGLCanvasManager();

@@ -5,7 +5,6 @@ import java.util.Iterator;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -33,12 +32,6 @@ public abstract class AView
 	 * List for all ISet objects providing data for this ViewRep.
 	 */
 	protected ArrayList<ISet> alSetData;
-
-	/**
-	 * List for all ISet objects providing data related to interactive selection
-	 * for this ViewRep.
-	 */
-	protected ArrayList<Selection> alSetSelection;
 
 	protected final ViewType viewType;
 
@@ -71,8 +64,6 @@ public abstract class AView
 		this.viewType = viewType;
 
 		alSetData = new ArrayList<ISet>();
-		alSetSelection = new ArrayList<Selection>();
-
 		setManager = generalManager.getSetManager();
 	}
 
@@ -225,7 +216,7 @@ public abstract class AView
 				continue;
 			}
 
-			if (!hasSetId_ByReference(currentSet))
+			if (!hasSetId(currentSet))
 			{
 				// switch (currentSet.getSetType()) {
 				// case SET_RAW_DATA:
@@ -297,7 +288,7 @@ public abstract class AView
 				continue;
 			}
 
-			if (hasSetId_ByReference(currentSet))
+			if (hasSetId(currentSet))
 			{
 				// switch (currentSet.getSetType()) {
 				// case SET_RAW_DATA:
@@ -326,14 +317,12 @@ public abstract class AView
 
 	}
 
-	/**
-	 * @see org.caleydo.core.view.IView#getAllSetId()
-	 */
+	@Override
 	public final synchronized int[] getAllSetId()
 	{
 
 		// FIXME: thread safe access to ArrayLists!
-		int iTotalSizeResultArray = alSetData.size() + alSetSelection.size();
+		int iTotalSizeResultArray = alSetData.size();
 
 		/* allocate int[] and copy from Arraylist */
 		int[] resultArray = new int[iTotalSizeResultArray];
@@ -349,12 +338,6 @@ public abstract class AView
 		for (; iter.hasNext(); i++)
 		{
 			resultArray[i] = iter.next().getID();
-		}
-
-		Iterator<Selection> iterSelectionSet = alSetSelection.iterator();
-		for (; iterSelectionSet.hasNext(); i++)
-		{
-			resultArray[i] = iterSelectionSet.next().getID();
 		}
 
 		return resultArray;
@@ -373,7 +356,7 @@ public abstract class AView
 			return false;
 		}
 
-		return hasSetId_ByReference(currentSet);
+		return hasSetId(currentSet);
 	}
 
 	/**
@@ -382,16 +365,12 @@ public abstract class AView
 	 * @param set test if this ISet is refered to
 	 * @return TRUE if exists in any of the two ArrayList's
 	 */
-	public final boolean hasSetId_ByReference(final ISet set)
+	public final boolean hasSetId(final ISet set)
 	{
 
 		assert set != null : "Can not handle null-pointer";
 
 		if (alSetData.contains(set))
-		{
-			return true;
-		}
-		if (alSetSelection.contains(set))
 		{
 			return true;
 		}

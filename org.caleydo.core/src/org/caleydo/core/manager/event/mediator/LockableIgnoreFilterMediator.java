@@ -2,6 +2,7 @@ package org.caleydo.core.manager.event.mediator;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ISelection;
+import org.caleydo.core.data.selection.ISelectionDelta;
 
 /**
  * Ignore one special SelectionSet and let all other SelectionSet's pass when
@@ -15,7 +16,7 @@ public class LockableIgnoreFilterMediator
 	extends LockableMediator
 {
 
-	protected ISet ignoreSet;
+	protected ISelection ignoreSelection;
 
 	/**
 	 * Constructor.
@@ -25,19 +26,19 @@ public class LockableIgnoreFilterMediator
 
 		super(MediatorUpdateType.MEDIATOR_FILTER_ALL_EXPECT_SET);
 
-		this.ignoreSet = setExclusiveSet;
+		this.ignoreSelection = setExclusiveSet;
 	}
 
-	public ISet getIgnoreSet()
+	public ISelection getIgnoreSet()
 	{
 
-		return this.ignoreSet;
+		return this.ignoreSelection;
 	}
 
 	public void setIgnoreSet(ISet setIgnoreSet)
 	{
 
-		this.ignoreSet = setIgnoreSet;
+		this.ignoreSelection = setIgnoreSet;
 	}
 
 	/**
@@ -48,15 +49,9 @@ public class LockableIgnoreFilterMediator
 	 *      org.caleydo.core.data.collection.ISet)
 	 */
 	public final void updateReceiverSpecialMediator(Object eventTrigger,
-			ISelection updatedSelection)
+			ISelectionDelta selectionDelta)
 	{
-
-		assert updatedSelection != null : "can not handle selectionSet null-pointer";
-
-		if (ignoreSet != updatedSelection)
-		{
-			super.updateReceiver(eventTrigger, updatedSelection);
-		}
+			super.updateReceiver(eventTrigger, selectionDelta);
 	}
 
 }

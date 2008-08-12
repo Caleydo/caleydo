@@ -12,10 +12,8 @@ import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.command.CommandManager;
-import org.caleydo.core.manager.data.ISelectionManager;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.data.IStorageManager;
-import org.caleydo.core.manager.data.selection.SelectionManager;
 import org.caleydo.core.manager.data.set.SetManager;
 import org.caleydo.core.manager.data.storage.StorageManager;
 import org.caleydo.core.manager.event.EventPublisher;
@@ -48,7 +46,7 @@ public class GeneralManager
 	/**
 	 * General manager as a singleton
 	 */
-	public static IGeneralManager generalManager;
+	private static IGeneralManager generalManager;
 	
 	/**
 	 * Location where Caleydo stores preferences and caching data.
@@ -76,8 +74,6 @@ public class GeneralManager
 	// protected IVirtualArrayManager virtualArrayManager;
 
 	private ISetManager setManager;
-
-	private ISelectionManager selectionManager;
 
 	private ICommandManager commandManager;
 
@@ -129,7 +125,7 @@ public class GeneralManager
 		storageManager = new StorageManager();
 		// virtualArrayManager = new VirtualArrayManager(this, 4);
 		setManager = new SetManager();
-		selectionManager = new SelectionManager();
+//		selectionManager = new SelectionManager();
 		mementoManager = new MementoManager();
 		commandManager = new CommandManager();
 		viewGLCanvasManager = new ViewGLCanvasManager();
@@ -240,10 +236,10 @@ public class GeneralManager
 	// public IVirtualArrayManager getVirtualArrayManager() {
 	// return virtualArrayManager;
 	// }
-	public ISelectionManager getSelectionManager()
-	{
-		return selectionManager;
-	}
+//		public ISelectionManager getSelectionManager()
+//		{
+//			return selectionManager;
+//		}
 
 	/*
 	 * (non-Javadoc)

@@ -4,17 +4,15 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Random;
-import java.util.Set;
 import java.util.logging.Level;
+import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
-import org.caleydo.core.data.selection.ISelection;
+import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.picking.ESelectionMode;
@@ -22,8 +20,6 @@ import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.view.SelectionManager;
 import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
 import org.caleydo.core.view.opengl.canvas.parcoords.ESelectionType;
-import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
-import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
@@ -120,9 +116,9 @@ public abstract class AGLEventListenerStorageBasedView
 	{
 		if (alSetData == null)
 			return;
-
-		if (alSelection == null)
-			return;
+//
+//		if (alSelection == null)
+//			return;
 
 		if (!mapSelections.isEmpty())
 		{
@@ -155,11 +151,11 @@ public abstract class AGLEventListenerStorageBasedView
 		
 
 		// Initialize external selection
-		ArrayList<Integer> alTempList = alSelection.get(0).getSelectionIdArray();
-		if (alTempList == null)
-		{
-			alTempList = new ArrayList<Integer>();
-		}
+//		ArrayList<Integer> alTempList = alSelection.get(0).getSelectionIdArray();
+//		if (alTempList == null)
+//		{
+		ArrayList<Integer> alTempList = new ArrayList<Integer>();
+//		}
 		
 		
 		// TODO replace this with an id from an id manager, wont work with more
@@ -249,37 +245,37 @@ public abstract class AGLEventListenerStorageBasedView
 		return iAlSelectionStorageIndices;
 	}
 
-	protected void cleanSelection(ArrayList<Integer> iAlSelection, ArrayList<Integer> iAlGroup)
-	{
+//	protected void cleanSelection(ArrayList<Integer> iAlSelection, ArrayList<Integer> iAlGroup)
+//	{
+//
+//		ArrayList<Integer> alDelete = new ArrayList<Integer>(1);
+//		for (int iCount = 0; iCount < iAlSelection.size(); iCount++)
+//		{
+//			// TODO remove elements if -1
+//			if (iAlSelection.get(iCount) == -1)
+//			{
+//				alDelete.add(iCount);
+//				continue;
+//			}
+//			// iAlSelection.set(iCount, iAlSelection.get(iCount) / 1000);
+//			// System.out.println("Storageindexalex: " + iAlSelection[iCount]);
+//		}
+//
+//		for (int iCount = alDelete.size() - 1; iCount >= 0; iCount--)
+//		{
+//			iAlSelection.remove(alDelete.get(iCount).intValue());
+//			iAlGroup.remove(alDelete.get(iCount).intValue());
+//		}
+//	}
 
-		ArrayList<Integer> alDelete = new ArrayList<Integer>(1);
-		for (int iCount = 0; iCount < iAlSelection.size(); iCount++)
-		{
-			// TODO remove elements if -1
-			if (iAlSelection.get(iCount) == -1)
-			{
-				alDelete.add(iCount);
-				continue;
-			}
-			// iAlSelection.set(iCount, iAlSelection.get(iCount) / 1000);
-			// System.out.println("Storageindexalex: " + iAlSelection[iCount]);
-		}
-
-		for (int iCount = alDelete.size() - 1; iCount >= 0; iCount--)
-		{
-			iAlSelection.remove(alDelete.get(iCount).intValue());
-			iAlGroup.remove(alDelete.get(iCount).intValue());
-		}
-	}
-
-	protected void mergeSelection(ArrayList<Integer> iAlSelection,
-			ArrayList<Integer> iAlGroup, ArrayList<Integer> iAlOptional)
-	{
-
-		alSelection.get(0).mergeSelection(iAlSelection, iAlGroup, iAlOptional);
-
-		initData();
-	}
+//	protected void mergeSelection(ArrayList<Integer> iAlSelection,
+//			ArrayList<Integer> iAlGroup, ArrayList<Integer> iAlOptional)
+//	{
+//
+//		alSelection.get(0).mergeSelection(iAlSelection, iAlGroup, iAlOptional);
+//
+//		initData();
+//	}
 
 	protected abstract SelectedElementRep createElementRep(int iStorageIndex);
 
@@ -306,69 +302,72 @@ public abstract class AGLEventListenerStorageBasedView
 			return sRefSeq;
 	}
 
-	public void updateReceiver(Object eventTrigger, ISelection updatedSelection)
+	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
 	{
 
 		generalManager.getLogger().log(Level.INFO,
 				"Update called by " + eventTrigger.getClass().getSimpleName());
 
-		ISelection setSelection = (ISelection) updatedSelection;
+		// TODO horizontal, vertical??
+		horizontalSelectionManager.setDelta(selectionDelta);
+		
+		
+//		// contains all genes in center pathway (not yet)
+//		ArrayList<Integer> iAlSelection = setSelection.getSelectionIdArray();
+//		// contains type - 0 for not selected 1 for selected
+//		ArrayList<Integer> iAlGroup = setSelection.getGroupArray();
+//		ArrayList<Integer> iAlOptional = setSelection.getOptionalDataArray();
+//		// iterate here
+	//	ArrayList<Integer> iAlSelectionStorageIndices = convertDavidIdToExpressionIndices(iAlSelection);
 
-		// contains all genes in center pathway (not yet)
-		ArrayList<Integer> iAlSelection = setSelection.getSelectionIdArray();
-		// contains type - 0 for not selected 1 for selected
-		ArrayList<Integer> iAlGroup = setSelection.getGroupArray();
-		ArrayList<Integer> iAlOptional = setSelection.getOptionalDataArray();
-		// iterate here
-		ArrayList<Integer> iAlSelectionStorageIndices = convertDavidIdToExpressionIndices(iAlSelection);
-		cleanSelection(iAlSelectionStorageIndices, iAlGroup);
-		mergeSelection(iAlSelectionStorageIndices, iAlGroup, iAlOptional);
+		//cleanSelection(iAlSelectionStorageIndices, iAlGroup);
+//		mergeSelection(iAlSelectionStorageIndices, iAlGroup, iAlOptional);
 
-		int iSelectedDavidId = 0;
-		int iSelectedStorageIndex = 0;
-
-		for (int iSelectionCount = 0; iSelectionCount < iAlSelectionStorageIndices.size(); iSelectionCount++)
-		{
-			// TODO: same for click and mouse over atm
-			if (iAlGroup.get(iSelectionCount) == 1 || iAlGroup.get(iSelectionCount) == 2)
-			{
-				iSelectedDavidId = iAlSelection.get(iSelectionCount);
-				iSelectedStorageIndex = iAlSelectionStorageIndices.get(iSelectionCount);
-
-				// System.out.println("Accession ID: " + iSelectedAccessionID);
-				// System.out.println("Accession Code: " +sAccessionCode);
-				// System.out.println("Expression storage index: "
-				// +iSelectedStorageIndex);
-
-				if (iSelectedStorageIndex >= 0)
-				{
-					if (!bRenderStorageHorizontally)
-					{
-						// handle local selection
-						horizontalSelectionManager
-								.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
-						horizontalSelectionManager.addToType(
-								EViewInternalSelectionType.MOUSE_OVER, iSelectedStorageIndex);
-
-						// handle external selection
-						extSelectionManager.modifySelection(iSelectedDavidId,
-								createElementRep(iSelectedStorageIndex),
-								ESelectionMode.AddPick);
-					}
-					else
-					{
-						verticalSelectionManager
-								.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
-						verticalSelectionManager.addToType(
-								EViewInternalSelectionType.MOUSE_OVER, iSelectedStorageIndex);
-						rePosition(iSelectedStorageIndex);
-						extSelectionManager.modifySelection(iSelectedDavidId,
-								createElementRep(iSelectedStorageIndex),
-								ESelectionMode.AddPick);
-					}
-				}
-			}
-		}
+//		int iSelectedDavidId = 0;
+//		int iSelectedStorageIndex = 0;
+//
+//		for (int iSelectionCount = 0; iSelectionCount < iAlSelectionStorageIndices.size(); iSelectionCount++)
+//		{
+//			// TODO: same for click and mouse over atm
+//			if (iAlGroup.get(iSelectionCount) == 1 || iAlGroup.get(iSelectionCount) == 2)
+//			{
+//				iSelectedDavidId = iAlSelection.get(iSelectionCount);
+//				iSelectedStorageIndex = iAlSelectionStorageIndices.get(iSelectionCount);
+//
+//				// System.out.println("Accession ID: " + iSelectedAccessionID);
+//				// System.out.println("Accession Code: " +sAccessionCode);
+//				// System.out.println("Expression storage index: "
+//				// +iSelectedStorageIndex);
+//
+//				if (iSelectedStorageIndex >= 0)
+//				{
+//					if (!bRenderStorageHorizontally)
+//					{
+//						// handle local selection
+//						horizontalSelectionManager
+//								.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
+//						horizontalSelectionManager.addToType(
+//								EViewInternalSelectionType.MOUSE_OVER, iSelectedStorageIndex);
+//
+//						// handle external selection
+//						extSelectionManager.modifySelection(iSelectedDavidId,
+//								createElementRep(iSelectedStorageIndex),
+//								ESelectionMode.AddPick);
+//					}
+//					else
+//					{
+//						verticalSelectionManager
+//								.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
+//						verticalSelectionManager.addToType(
+//								EViewInternalSelectionType.MOUSE_OVER, iSelectedStorageIndex);
+//						rePosition(iSelectedStorageIndex);
+//						extSelectionManager.modifySelection(iSelectedDavidId,
+//								createElementRep(iSelectedStorageIndex),
+//								ESelectionMode.AddPick);
+//					}
+//				}
+//			}
+//		}
 
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
@@ -380,7 +379,7 @@ public abstract class AGLEventListenerStorageBasedView
 	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#updateReceiver(java
 	 * .lang.Object)
 	 */
-	public void updateReceiver(Object eventTrigger)
+	public void handleUpdate(IUniqueObject eventTrigger)
 	{
 
 		// generalManager.logMsg(
@@ -424,49 +423,51 @@ public abstract class AGLEventListenerStorageBasedView
 			}
 		}
 
-		alSelection.get(1).updateSelectionSet(iUniqueID, iAlTmpSelectionId, iAlTmpGroup, null);
+		
+		
+//		alSelection.get(1).updateSelectionSet(iUniqueID, iAlTmpSelectionId, iAlTmpGroup, null);
 
 		// propagateGeneSet(iAlTmpSelectionId, iAlTmpGroup);
 	}
 
-	protected void propagateGeneSet()// ArrayList<Integer> iAlSelection,
-	// ArrayList<Integer> iAlGroup)
-	{
+//	protected void propagateGeneSet()// ArrayList<Integer> iAlSelection,
+//	// ArrayList<Integer> iAlGroup)
+//	{
+//
+//		ArrayList<Integer> iAlGroup = alSelection.get(0).getGroupArray();
+//		ArrayList<Integer> iAlSelection = alSelection.get(0).getSelectionIdArray();
+//
+//		propagateGenes(iAlSelection, iAlGroup);
+//
+//	}
 
-		ArrayList<Integer> iAlGroup = alSelection.get(0).getGroupArray();
-		ArrayList<Integer> iAlSelection = alSelection.get(0).getSelectionIdArray();
+//	protected void propagateGenes(ArrayList<Integer> iAlSelection, ArrayList<Integer> iAlGroup)
+//	{
+//
+//		ArrayList<Integer> iAlGeneSelection = new ArrayList<Integer>(iAlSelection.size());
+//
+//		for (Integer iCurrent : iAlSelection)
+//		{
+//			iAlGeneSelection.add(getDavidIDFromStorageIndex(iCurrent));
+//		}
+//
+//		alSelection.get(1).updateSelectionSet(iUniqueID, iAlGeneSelection, iAlGroup, null);
+//	}
 
-		propagateGenes(iAlSelection, iAlGroup);
-
-	}
-
-	protected void propagateGenes(ArrayList<Integer> iAlSelection, ArrayList<Integer> iAlGroup)
-	{
-
-		ArrayList<Integer> iAlGeneSelection = new ArrayList<Integer>(iAlSelection.size());
-
-		for (Integer iCurrent : iAlSelection)
-		{
-			iAlGeneSelection.add(getDavidIDFromStorageIndex(iCurrent));
-		}
-
-		alSelection.get(1).updateSelectionSet(iUniqueID, iAlGeneSelection, iAlGroup, null);
-	}
-
-	protected ArrayList<Integer> prepareSelection(GenericSelectionManager selectionManager,
-			EViewInternalSelectionType selectionType)
-	{
-
-		Set<Integer> selectedSet;
-		ArrayList<Integer> iAlOldSelection;
-		selectedSet = selectionManager.getElements(selectionType);
-		iAlOldSelection = new ArrayList<Integer>();
-		for (Integer iCurrent : selectedSet)
-		{
-			iAlOldSelection.add(iCurrent);
-		}
-		return iAlOldSelection;
-	}
+//	protected ArrayList<Integer> prepareSelection(GenericSelectionManager selectionManager,
+//			EViewInternalSelectionType selectionType)
+//	{
+//
+//		Set<Integer> selectedSet;
+//		ArrayList<Integer> iAlOldSelection;
+//		selectedSet = selectionManager.getElements(selectionType);
+//		iAlOldSelection = new ArrayList<Integer>();
+//		for (Integer iCurrent : selectedSet)
+//		{
+//			iAlOldSelection.add(iCurrent);
+//		}
+//		return iAlOldSelection;
+//	}
 
 	protected abstract void rePosition(int iElementID);
 
@@ -477,8 +478,7 @@ public abstract class AGLEventListenerStorageBasedView
 		// horizontalSelectionManager.clearSelections();
 		// verticalSelectionManager.clearSelections();
 
-		if (alSelection == null)
-			return;
+
 
 		// Iterator<SetSelection> iterSetSelection = alSetSelection.iterator();
 		// while (iterSetSelection.hasNext())
@@ -493,4 +493,17 @@ public abstract class AGLEventListenerStorageBasedView
 
 		initData();
 	}
+	
+	@Override
+	public void triggerUpdate()
+	{
+		generalManager.getEventPublisher().handleUpdate(this);		
+	}
+
+	@Override
+	public void triggerUpdate(ISelectionDelta selectionDelta)
+	{		
+		generalManager.getEventPublisher().handleUpdate(this, selectionDelta);
+	}
+	
 }

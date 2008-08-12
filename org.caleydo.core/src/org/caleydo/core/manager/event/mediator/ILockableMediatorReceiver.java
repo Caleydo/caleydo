@@ -1,5 +1,7 @@
 package org.caleydo.core.manager.event.mediator;
 
+import org.caleydo.core.data.IUniqueObject;
+
 /**
  * Object that shall receive an event.
  * 
@@ -12,7 +14,7 @@ public interface ILockableMediatorReceiver
 	/**
 	 * Blocks update() until method updateRunPipe() is called.
 	 * 
-	 * @see org.caleydo.core.manager.event.mediator.ILockableMediatorReceiver#updateReceiver(Object)
+	 * @see org.caleydo.core.manager.event.mediator.ILockableMediatorReceiver#handleUpdate(IUniqueObject)
 	 * @see org.caleydo.core.manager.event.mediator.ILockableMediatorReceiver#updateContinue(Object)
 	 * @param eventTrigger calling object, that created the update
 	 */
@@ -31,7 +33,7 @@ public interface ILockableMediatorReceiver
 	/**
 	 * calls update() and frees lock from updateStall().
 	 * 
-	 * @see org.caleydo.core.manager.event.mediator.ILockableMediatorReceiver#updateReceiver(Object)
+	 * @see org.caleydo.core.manager.event.mediator.ILockableMediatorReceiver#handleUpdate(IUniqueObject)
 	 * @see org.caleydo.core.manager.event.mediator.ILockableMediatorReceiver#updateStall()
 	 * @param eventTrigger calling object, that created the update
 	 */

@@ -6,8 +6,7 @@ package org.caleydo.core.manager.event.mediator;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.selection.ISelection;
+import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 
@@ -15,7 +14,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
  * Threadsafe Mediator receiver. Exchange update(Object) with
  * updateReceiver(Object) in derived classes.
  * 
- * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver(Object)
+ * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#handleUpdate(IUniqueObject)
  * @author Michael Kalkusch
  */
 public abstract class ALockableMediatorReceiver
@@ -40,15 +39,15 @@ public abstract class ALockableMediatorReceiver
 	}
 
 	/**
-	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object,
+	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#hanleUpdate(IUniqueObject,
 	 *      org.caleydo.core.data.collection.ISet)
 	 */
-	public final void updateReceiver(Object eventTrigger, ISelection updatedSelection)
+	public final void hanleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
 	{
 
 		if (!bUpdateIsStalled.get())
 		{
-			updateReceiverSpecialMediator(eventTrigger, updatedSelection);
+			updateReceiverSpecialMediator(eventTrigger, selectionDelta);
 		}
 	}
 
@@ -77,12 +76,12 @@ public abstract class ALockableMediatorReceiver
 	 * 
 	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateContinue(Object)
 	 */
-	public final void updateContinue(Object eventTrigger)
+	public final void updateContinue(IUniqueObject eventTrigger)
 	{
 
 		bUpdateIsStalled.set(false);
 
-		updateReceiver(eventTrigger);
+		handleUpdate(eventTrigger);
 	}
 
 	/**
@@ -97,10 +96,10 @@ public abstract class ALockableMediatorReceiver
 	/**
 	 * Derived classes must implement this method instead of update(Object).
 	 * 
-	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver(Object)
+	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#handleUpdate(IUniqueObject)
 	 * @param eventTrigger
 	 */
-	public abstract void updateReceiver(Object eventTrigger);
+	public abstract void handleUpdate(IUniqueObject eventTrigger);
 
 	/**
 	 * Called by org.caleydo.core.manager.event.mediator.IMediatorReceiver#
@@ -109,10 +108,10 @@ public abstract class ALockableMediatorReceiver
 	 * 
 	 * @param eventTrigger
 	 * @param updateSet
-	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object,
+	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#hanleUpdate(IUniqueObject,
 	 *      org.caleydo.core.data.collection.ISet)
 	 */
-	public abstract void updateReceiverSpecialMediator(Object eventTrigger,
-			ISelection updatedSelection);
+	public abstract void updateReceiverSpecialMediator(IUniqueObject eventTrigger,
+			ISelectionDelta selectionDelta);
 
 }

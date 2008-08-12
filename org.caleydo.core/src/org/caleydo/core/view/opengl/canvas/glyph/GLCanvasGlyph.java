@@ -7,9 +7,9 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.logging.Level;
 import javax.media.opengl.GL;
+import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.selection.ISelection;
-import org.caleydo.core.data.selection.Selection;
+import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.GlyphRenderStyle;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
@@ -430,10 +430,11 @@ public class GLCanvasGlyph
 					bRedrawDisplayList_ = true;
 
 					// push patient id to other screens
-					for (Selection sel : alSelection)
-					{
-						sel.updateSelectionSet(iUniqueID, ids, selections, null);
-					}
+					// TODO rewrite this with new selection
+//					for (Selection sel : alSelection)
+//					{
+//						sel.updateSelectionSet(iUniqueID, ids, selections, null);
+//					}
 
 					break;
 				default:
@@ -461,61 +462,51 @@ public class GLCanvasGlyph
 		pickingManager.flushHits(iUniqueID, pickingType);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver
-	 * (java.lang.Object)
-	 */
-	public void updateReceiver(Object eventTrigger)
+	@Override
+	public void handleUpdate(IUniqueObject eventTrigger)
 	{
 
 		generalManager.getLogger().log(Level.INFO,
 				"Update called by " + eventTrigger.getClass().getSimpleName());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver
-	 * (java.lang.Object, org.caleydo.core.data.collection.ISet)
-	 */
-	public void updateReceiver(Object eventTrigger, ISelection updatedSelection)
+	@Override
+	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
 	{
-
+		// TODO rewrite this with new mechanisms
 		generalManager.getLogger().log(Level.INFO,
 				"Update called by " + eventTrigger.getClass().getSimpleName());
 
-		ISelection refSetSelection = (ISelection) updatedSelection;
-
-		ArrayList<Integer> iAlSelection = refSetSelection.getSelectionIdArray();
-		ArrayList<Integer> iAlSelectionMode = refSetSelection.getGroupArray();
+//		ISelection refSetSelection = (ISelection) selectionDelta;
+//
+//		ArrayList<Integer> iAlSelection = refSetSelection.getSelectionIdArray();
+//		ArrayList<Integer> iAlSelectionMode = refSetSelection.getGroupArray();
 
 		// int sendParameter = this.grid_.getDataLoader().getSendParameter();
-		int sendParameter = Integer.parseInt(generalManager.getGlyphManager().getSetting(
-				EGlyphSettingIDs.UPDATESENDPARAMETER));
-
-		if (iAlSelection.size() != 0)
-		{
-			for (int i = 0; i < iAlSelection.size(); ++i)
-			{
-				int sid = iAlSelection.get(i);
-				int gid = iAlSelectionMode.get(i);
-
-				Iterator<GlyphEntry> git = grid_.getGlyphList().values().iterator();
-
-				while (git.hasNext())
-				{
-					GlyphEntry g = git.next();
-					if (g.getParameter(sendParameter) == sid)
-						if (gid == 1)
-							g.select();
-						else
-							g.deSelect();
-				}
-				bRedrawDisplayList_ = true;
-			}
-		}
+//		int sendParameter = Integer.parseInt(generalManager.getGlyphManager().getSetting(
+//				EGlyphSettingIDs.UPDATESENDPARAMETER));
+//
+//		if (iAlSelection.size() != 0)
+//		{
+//			for (int i = 0; i < iAlSelection.size(); ++i)
+//			{
+//				int sid = iAlSelection.get(i);
+//				int gid = iAlSelectionMode.get(i);
+//
+//				Iterator<GlyphEntry> git = grid_.getGlyphList().values().iterator();
+//
+//				while (git.hasNext())
+//				{
+//					GlyphEntry g = git.next();
+//					if (g.getParameter(sendParameter) == sid)
+//						if (gid == 1)
+//							g.select();
+//						else
+//							g.deSelect();
+//				}
+//				bRedrawDisplayList_ = true;
+//			}
+//		}
 
 	}
 
@@ -523,6 +514,18 @@ public class GLCanvasGlyph
 	{
 
 		bRedrawDisplayList_ = true;
+	}
+
+	@Override
+	public void triggerUpdate()
+	{
+		generalManager.getEventPublisher().handleUpdate(this);		
+	}
+
+	@Override
+	public void triggerUpdate(ISelectionDelta selectionDelta)
+	{		
+		generalManager.getEventPublisher().handleUpdate(this, selectionDelta);
 	}
 
 }

@@ -1,9 +1,11 @@
 package org.caleydo.core.command.data;
 
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.base.ACmdExternalAttributes;
-import org.caleydo.core.data.selection.ISelection;
+import org.caleydo.core.command.base.ACmdCreational;
+import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.eclipse.jface.viewers.ISelection;
 
 /**
  * Class creates a selection.
@@ -12,10 +14,9 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  * @author Marc Streit
  */
 public class CmdDataCreateSelection
-	extends ACmdExternalAttributes
+	extends ACmdCreational<ISelectionDelta>
 {
-	ISelection selection = null;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -30,12 +31,7 @@ public class CmdDataCreateSelection
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
-		selection = generalManager.getSelectionManager().createSelection();
-
-		if (iExternalID != -1)
-		{
-			generalManager.getIDManager().mapInternalToExternalID(selection.getID(), iExternalID);
-		}
+		createdObject = new SelectionDelta();
 		
 		commandManager.runDoCommand(this);
 	}
@@ -49,8 +45,4 @@ public class CmdDataCreateSelection
 		commandManager.runUndoCommand(this);
 	}
 	
-	public int getSelectionID() 
-	{
-		return selection.getID();
-	}
 }

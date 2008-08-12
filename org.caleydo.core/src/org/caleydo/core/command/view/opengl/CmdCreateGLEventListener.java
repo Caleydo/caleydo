@@ -41,7 +41,6 @@ public class CmdCreateGLEventListener
 
 	protected ArrayList<Integer> iAlSetIDs;
 
-	protected ArrayList<Integer> iAlSelectionIDs;
 
 	/**
 	 * Constructor.
@@ -56,7 +55,6 @@ public class CmdCreateGLEventListener
 		viewType = cmdType;
 
 		iAlSetIDs = new ArrayList<Integer>();
-		iAlSelectionIDs = new ArrayList<Integer>();
 	}
 
 	/*
@@ -174,37 +172,33 @@ public class CmdCreateGLEventListener
 		}
 
 		// Fill selection IDs
-		if (divideSetAndSelectionIDs.hasMoreTokens())
-		{
-			StringTokenizer divideIDs = new StringTokenizer(divideSetAndSelectionIDs
-					.nextToken(), IGeneralManager.sDelimiter_Parser_DataItems);
-
-			while (divideIDs.hasMoreTokens())
-			{
-				iAlSelectionIDs.add(StringConversionTool.convertStringToInt(divideIDs
-						.nextToken(), -1));
-			}
-		}
+//		if (divideSetAndSelectionIDs.hasMoreTokens())
+//		{
+//			StringTokenizer divideIDs = new StringTokenizer(divideSetAndSelectionIDs
+//					.nextToken(), IGeneralManager.sDelimiter_Parser_DataItems);
+//
+//			while (divideIDs.hasMoreTokens())
+//			{
+//				iAlSelectionIDs.add(StringConversionTool.convertStringToInt(divideIDs
+//						.nextToken(), -1));
+//			}
+//		}
 		
 		// Convert external IDs from XML file to internal IDs
 		iAlSetIDs = GeneralManager.get().getIDManager()
 			.convertExternalToInternalIDs(iAlSetIDs);
 		
-		iAlSelectionIDs = GeneralManager.get().getIDManager()
-			.convertExternalToInternalIDs(iAlSelectionIDs);
 	}
 
 	public void setAttributes(final ViewFrustumBase.ProjectionMode projectionMode,
 			final float fLeft, final float fRight, final float fTop, final float fBottom,
-			final float fNear, final float fFar, final ArrayList<Integer> iArSetIDs,
-			final ArrayList<Integer> iArSelectionIDs)
+			final float fNear, final float fFar, final ArrayList<Integer> iArSetIDs)
 	{
 
 		viewFrustum = new ViewFrustumBase(projectionMode, fLeft, fRight, fBottom, fTop, fNear,
 				fFar);
 
 		this.iAlSetIDs = iArSetIDs;
-		this.iAlSelectionIDs = iArSelectionIDs;
 	}
 
 	/*
@@ -240,12 +234,7 @@ public class CmdCreateGLEventListener
 			glCanvas.addSet(iSetID);
 		}
 
-		// Set selections in views
-		for (Integer iSelectionID : iAlSelectionIDs)
-		{
-			glCanvas.addSelection(iSelectionID);
-		}
-
+		
 		commandManager.runDoCommand(this);
 	}
 

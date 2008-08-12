@@ -3,14 +3,13 @@ package org.caleydo.core.manager.event;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import org.caleydo.core.data.selection.ISelection;
+import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.mediator.IMediator;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
-import org.caleydo.core.manager.event.mediator.LockableExclusivFilterMediator;
-import org.caleydo.core.manager.event.mediator.LockableIgnoreFilterMediator;
 import org.caleydo.core.manager.event.mediator.LockableMediator;
 import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -111,13 +110,13 @@ public class EventPublisher
 				newMediator = new LockableMediator(MediatorUpdateType.MEDIATOR_DEFAULT);
 				break;
 
-			case MEDIATOR_FILTER_ONLY_SET:
-				newMediator = new LockableExclusivFilterMediator(null);
-				break;
-
-			case MEDIATOR_FILTER_ALL_EXPECT_SET:
-				newMediator = new LockableIgnoreFilterMediator(null);
-				break;
+//			case MEDIATOR_FILTER_ONLY_SET:
+//				newMediator = new LockableExclusivFilterMediator(null);
+//				break;
+//
+//			case MEDIATOR_FILTER_ALL_EXPECT_SET:
+//				newMediator = new LockableIgnoreFilterMediator(null);
+//				break;
 			default:
 				throw new CaleydoRuntimeException("Unknown mediator type " + mediatorType,
 						CaleydoRuntimeExceptionType.EVENT);
@@ -307,7 +306,7 @@ public class EventPublisher
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.IEventPublisher#update(java.lang.Object)
 	 */
-	public void updateReceiver(Object eventTrigger)
+	public void handleUpdate(IUniqueObject eventTrigger)
 	{
 
 		// Prevent update during initialization of data.
@@ -339,7 +338,7 @@ public class EventPublisher
 
 			if (tmpMediator != null)
 			{
-				tmpMediator.updateReceiver(eventTrigger);
+				tmpMediator.handleUpdate(eventTrigger);
 			}
 			else
 			{
@@ -356,7 +355,7 @@ public class EventPublisher
 	 * org.caleydo.core.manager.IEventPublisher#updateReceiver(java.lang.Object,
 	 * org.caleydo.core.data.collection.ISet)
 	 */
-	public void updateReceiver(Object eventTrigger, ISelection updatedSet)
+	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
 	{
 
 		// Prevent update during initialization of data.
@@ -384,7 +383,7 @@ public class EventPublisher
 
 			if (tmpMediator != null)
 			{
-				tmpMediator.updateReceiver(eventTrigger, updatedSet);
+				tmpMediator.handleUpdate(eventTrigger, selectionDelta);
 			}
 			else
 			{

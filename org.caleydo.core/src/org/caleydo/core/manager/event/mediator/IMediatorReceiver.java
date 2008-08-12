@@ -1,12 +1,14 @@
 package org.caleydo.core.manager.event.mediator;
 
-import org.caleydo.core.data.selection.ISelection;
+import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.data.selection.ISelectionDelta;
 
 /**
  * Object that shall receive an event.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public interface IMediatorReceiver
 {
@@ -16,14 +18,14 @@ public interface IMediatorReceiver
 	 * 
 	 * @param eventTrigger Calling object, that created the update
 	 */
-	public void updateReceiver(Object eventTrigger);
+	public void handleUpdate(IUniqueObject eventTrigger);
 
 	/**
 	 * Update called by Mediator triggered by IMediatorSender.
 	 * 
 	 * @param eventTrigger Calling object, that created the update
-	 * @param updatedSet Set containing update information
+	 * @param selectionDelta the differences in the selections
 	 */
-	public void updateReceiver(Object eventTrigger, ISelection updatedSet);
+	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta);
 
 }

@@ -8,11 +8,8 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.data.view.camera.IViewFrustum;
-import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.data.view.rep.renderstyle.InfoAreaRenderStyle;
-import org.caleydo.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
 import org.caleydo.core.view.opengl.miniview.AGLMiniView;
@@ -88,11 +85,10 @@ public class GLTextInfoAreaRenderer
 		calculateWidthAndHeight();
 	}
 
-	public void setMiniViewData(ArrayList<IStorage> alStorages,
-			ArrayList<Selection> alSetSelection)
+	public void setMiniViewData(ArrayList<IStorage> alStorages)
 	{
 
-		miniView.setData(alStorages, alSetSelection);
+		miniView.setData(alStorages);
 	}
 
 	/**

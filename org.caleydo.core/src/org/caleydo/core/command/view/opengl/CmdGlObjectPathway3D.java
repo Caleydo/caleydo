@@ -28,7 +28,8 @@ public class CmdGlObjectPathway3D
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.view.opengl.CmdCreateOpenGLCanvasListener#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
+	 * @seeorg.caleydo.core.command.view.opengl.CmdCreateOpenGLCanvasListener#
+	 * setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
 	 */
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
@@ -37,15 +38,14 @@ public class CmdGlObjectPathway3D
 		iPathwayID = StringConversionTool.convertStringToInt(sAttribute4, -1);
 	}
 
-	public void setAttributes(final int iPathwayID,
-			final ArrayList<Integer> iArSetIDs, final ArrayList<Integer> iArSelectionIDs,
+	public void setAttributes(final int iPathwayID, final ArrayList<Integer> iArSetIDs,
 			final ViewFrustumBase.ProjectionMode projectionMode, final float fLeft,
 			final float fRight, final float fTop, final float fBottom, final float fNear,
 			final float fFar)
 	{
 
 		super.setAttributes(projectionMode, fLeft, fRight, fTop, fBottom, fNear, fFar,
-				iArSetIDs, iArSelectionIDs);
+				iArSetIDs);
 
 		this.iAlSetIDs = iArSetIDs;
 		this.iPathwayID = iPathwayID;

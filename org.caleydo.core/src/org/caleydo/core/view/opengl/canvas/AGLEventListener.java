@@ -10,7 +10,6 @@ import org.caleydo.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.data.view.camera.IViewCamera;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.camera.ViewCameraBase;
@@ -49,13 +48,6 @@ public abstract class AGLEventListener
 	 */
 	protected ArrayList<ISet> alSetData;
 
-	/**
-	 * List for all ISet objects providing data related to interactive selection
-	 * for this ViewRep.
-	 */
-	// TODO: Change to ISelection and add methods to interface
-	protected ArrayList<Selection> alSelection;
-
 	protected transient ISetManager setManager;
 
 	protected PickingManager pickingManager;
@@ -88,7 +80,7 @@ public abstract class AGLEventListener
 		generalManager = GeneralManager.get();
 		
 		alSetData = new ArrayList<ISet>();
-		alSelection = new ArrayList<Selection>();
+//		alSelection = new ArrayList<Selection>();
 
 		setManager = generalManager.getSetManager();
 
@@ -328,18 +320,6 @@ public abstract class AGLEventListener
 		alSetData.add((ISet) generalManager.getSetManager().getItem(iSetID));
 	}
 
-	public final void addSelection(Selection selection)
-	{
-
-		alSelection.add(selection);
-	}
-
-	public final void addSelection(int iSelectionID)
-	{
-
-		alSelection
-				.add((Selection) generalManager.getSelectionManager().getItem(iSelectionID));
-	}
 
 	public final void removeAllSetIdByType(ESetType setType)
 	{
@@ -476,4 +456,5 @@ public abstract class AGLEventListener
 		createdCmd.setAttributes(sUrl);
 		createdCmd.doCommand();
 	}
+	
 }

@@ -4,30 +4,36 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
-import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.picking.ESelectionMode;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
- * Selection manager that manages selections of views. The selection data itself
- * is still stored in each view. The manager is able to identify identical
- * selections in different views. Selections have selection representations.
- * Selection representations store their containing view and the x/y position in
- * the view area.
+ * <p>
+ * Selection manager that manages selections and their
+ * {@link SelectedElementRep}.
+ * </p>
+ * <p>
+ * The manager is able to identify identical selections in different views.
+ * Selections have selection representations. Selection representations store
+ * their containing view and the x/y position in the view area.
+ * </p>
+ * <p>
+ * The purpose of this manager is to make selections availabel to an external
+ * instance that connects them, for example the
+ * {@link AGLConnectionLineRenderer}
  * 
  * @author Marc Streit
  * @author Alexander Lex
  */
 public class SelectionManager
-	extends AManager
 {
 
 	HashMap<Integer, ArrayList<SelectedElementRep>> hashSelectedElementID2SelectedElementReps;
 
 	/**
 	 * Constructor.
-	 *
+	 * 
 	 */
 	protected SelectionManager()
 	{
@@ -150,14 +156,5 @@ public class SelectionManager
 
 		hashSelectedElementID2SelectedElementReps.clear();
 	}
-
-
-
-
-
-
-
-
-
 
 }

@@ -129,6 +129,7 @@ public class PathwayLoaderThread
 			{
 				file = new BufferedReader(new FileReader(sFileName));
 			}
+
 			
 			StringTokenizer tokenizer;
 			String sPathwayName;

@@ -3,7 +3,7 @@ package org.caleydo.core.manager.event.mediator;
 import java.util.ArrayList;
 import java.util.Iterator;
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.selection.ISelection;
+import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.manager.IEventPublisher;
 
 /**
@@ -145,11 +145,11 @@ public class LockableMediator
 	 * Notification of update events. Calles updateReceiver(IMediatorSender)
 	 * internal if updates are not stalled.
 	 * 
-	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver(Object)
-	 * @see org.caleydo.core.observer.mediator.AThreadedMediatorReceiver#updateReceiver(org.caleydo.core.observer.mediator.IMediatorSender)
+	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#handleUpdate(IUniqueObject)
+	 * @see org.caleydo.core.observer.mediator.AThreadedMediatorReceiver#handleUpdate(IUniqueObject)
 	 */
 	@Override
-	public void updateReceiver(Object eventTrigger)
+	public void handleUpdate(IUniqueObject eventTrigger)
 	{
 
 		assert eventTrigger != null : "can not handle null-pointer";
@@ -166,7 +166,7 @@ public class LockableMediator
 				// Prevent circular updates
 				if (!currentReceiver.getClass().equals(eventTrigger.getClass()))
 				{
-					currentReceiver.updateReceiver(eventTrigger);
+					currentReceiver.handleUpdate(eventTrigger);
 				}
 			} // while (iter.hasNext())
 
@@ -181,12 +181,9 @@ public class LockableMediator
 	 * @see org.caleydo.core.manager.event.mediator.ALockableMediatorReceiver#updateReceiverSelection(java.lang.Object,
 	 *      org.caleydo.core.data.collection.ISet)
 	 */
-	public void updateReceiverSpecialMediator(Object eventTrigger, ISelection updatedSelection)
+	@Override
+	public void updateReceiverSpecialMediator(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
 	{
-
-		assert eventTrigger != null : "can not handle eventTrigger null-pointer";
-		assert updatedSelection != null : "can not handle selectionSet null-pointer";
-
 		Iterator<IMediatorReceiver> iter = arReceiver.iterator();
 
 		while (iter.hasNext())
@@ -196,7 +193,7 @@ public class LockableMediator
 			/* Prevent circular updates */
 			if (!currentReceiver.equals(eventTrigger))
 			{
-				currentReceiver.updateReceiver(eventTrigger, updatedSelection);
+				currentReceiver.handleUpdate(eventTrigger, selectionDelta);
 			}
 			else
 			{
@@ -209,5 +206,22 @@ public class LockableMediator
 			}
 		}
 	}
+
+
+	@Override
+	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateContinue(Object eventTrigger)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+
 
 }

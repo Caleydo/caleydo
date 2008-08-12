@@ -10,8 +10,6 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  * org.caleydo.command.memento.MementoState . Part of DesignPattern "IMemento"
  * 
  * @author Michael Kalkusch
- * @see prometheus.command.memento.IMemento
- * @see prometheus.command.memento.IMementoState
  */
 public interface IMementoCreator
 {

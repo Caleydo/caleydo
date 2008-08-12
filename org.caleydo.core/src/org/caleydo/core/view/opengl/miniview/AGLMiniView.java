@@ -3,7 +3,6 @@ package org.caleydo.core.view.opengl.miniview;
 import java.util.ArrayList;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.selection.Selection;
 
 /**
  * Abstract class for all kinds of mini views.
@@ -20,9 +19,7 @@ public abstract class AGLMiniView
 
 	protected ArrayList<IStorage> alStorage;
 
-	protected ArrayList<IStorage> alSetSelection;
-
-	public void setData(ArrayList<IStorage> alStorages, ArrayList<Selection> alSetSelection)
+	public void setData(ArrayList<IStorage> alStorages)
 	{
 
 	}

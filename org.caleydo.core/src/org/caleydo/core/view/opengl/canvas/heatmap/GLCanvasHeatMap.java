@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.Set;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.selection.EViewInternalSelectionType;
+import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.HeatMapRenderStyle;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
@@ -22,8 +25,6 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
-import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
-import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
 
 /**
  * Rendering the HeatMap
@@ -75,10 +76,10 @@ public class GLCanvasHeatMap
 		alSelectionTypes.add(EViewInternalSelectionType.NORMAL);
 		alSelectionTypes.add(EViewInternalSelectionType.MOUSE_OVER);
 		alSelectionTypes.add(EViewInternalSelectionType.SELECTION);
-		horizontalSelectionManager = new GenericSelectionManager(alSelectionTypes,
-				EViewInternalSelectionType.NORMAL);
-		verticalSelectionManager = new GenericSelectionManager(alSelectionTypes,
-				EViewInternalSelectionType.NORMAL);
+		horizontalSelectionManager =  new GenericSelectionManager.Builder().build();
+		verticalSelectionManager = new GenericSelectionManager.Builder().mappingType(
+				EGenomeMappingType.EXPRESSION_STORAGE_ID_2_DAVID,
+				EGenomeMappingType.DAVID_2_EXPRESSION_STORAGE_ID).build();
 
 		colorMapper = new ColorMapping(0, 1);
 	}
@@ -323,14 +324,7 @@ public class GLCanvasHeatMap
 		return alInfo;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.caleydo
-	 * .core.manager.view.EPickingType,
-	 * org.caleydo.core.manager.view.EPickingMode, int,
-	 * org.caleydo.core.manager.view.Pick)
-	 */
+	@Override
 	protected void handleEvents(EPickingType pickingType, EPickingMode pickingMode,
 			int iExternalID, Pick pick)
 	{
@@ -354,8 +348,8 @@ public class GLCanvasHeatMap
 				{
 					case CLICKED:
 						extSelectionManager.clear();
-						iAlOldSelection = prepareSelection(verticalSelectionManager,
-								EViewInternalSelectionType.SELECTION);
+//						iAlOldSelection = prepareSelection(verticalSelectionManager,
+//								EViewInternalSelectionType.SELECTION);
 
 						verticalSelectionManager
 								.clearSelection(EViewInternalSelectionType.SELECTION);
@@ -364,7 +358,8 @@ public class GLCanvasHeatMap
 
 						if (eFieldDataType == EInputDataType.GENE)
 						{
-							propagateGeneSelection(iExternalID, 2, iAlOldSelection);
+							triggerUpdate(verticalSelectionManager.getDelta());
+//							propagateGeneSelection(iExternalID, 2, iAlOldSelection);
 
 						}
 
@@ -372,8 +367,8 @@ public class GLCanvasHeatMap
 
 					case MOUSE_OVER:
 						extSelectionManager.clear();
-						iAlOldSelection = prepareSelection(verticalSelectionManager,
-								EViewInternalSelectionType.SELECTION);
+//						iAlOldSelection = prepareSelection(verticalSelectionManager,
+//								EViewInternalSelectionType.SELECTION);
 
 						verticalSelectionManager
 								.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
@@ -382,7 +377,8 @@ public class GLCanvasHeatMap
 
 						if (eFieldDataType == EInputDataType.GENE)
 						{
-							propagateGeneSelection(iExternalID, 1, iAlOldSelection);
+							triggerUpdate(verticalSelectionManager.getDelta());
+							//propagateGeneSelection(iExternalID, 1, iAlOldSelection);
 							// generalManager.getSingelton().
 							// getViewGLCanvasManager().
 							// getInfoAreaManager()

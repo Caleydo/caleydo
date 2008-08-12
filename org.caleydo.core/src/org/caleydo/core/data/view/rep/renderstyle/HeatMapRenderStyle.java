@@ -4,9 +4,9 @@ import gleem.linalg.Vec2f;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.selection.EViewInternalSelectionType;
+import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.view.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
-import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
 
 /**
  * Heat Map render styles

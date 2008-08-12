@@ -5,7 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
-import org.caleydo.core.data.selection.Selection;
+import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.AView;
@@ -170,15 +170,16 @@ implements IMediatorSender{;
 	
 	private void triggerUpdate(ArrayList<Integer> iAlSelectionId,
 			ArrayList<Integer> iAlSelectionDepth,
-			ArrayList<Integer> iAlOptional) {
-		
-		Selection tmpSelectionSet = 
-			(Selection) generalManager.getSetManager().getItem(iSearchSelectionSetId);
-		
-		tmpSelectionSet.updateSelectionSet(iUniqueID, 
-				iAlSelectionId,
-				iAlSelectionDepth, 
-				iAlOptional);
+			ArrayList<Integer> iAlOptional) 
+	{
+		// TODO reimplement
+//		Selection tmpSelectionSet = 
+//			(Selection) generalManager.getSetManager().getItem(iSearchSelectionSetId);
+//		
+//		tmpSelectionSet.updateSelectionSet(iUniqueID, 
+//				iAlSelectionId,
+//				iAlSelectionDepth, 
+//				iAlOptional);
 	}
 
 	/*
@@ -197,6 +198,20 @@ implements IMediatorSender{;
 	 */
 	public void drawView() {
 
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void triggerUpdate()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void triggerUpdate(ISelectionDelta selectionDelta)
+	{
 		// TODO Auto-generated method stub
 		
 	}

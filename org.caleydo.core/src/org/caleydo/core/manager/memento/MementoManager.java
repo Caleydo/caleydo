@@ -18,7 +18,6 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  * @author Marc Streit
  */
 public class MementoManager
-	extends AManager
 	implements IMementoManager
 {
 

@@ -23,7 +23,7 @@
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
 							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
-							detail="85101@62101 63101 64101 65101 66101"/> 
+							detail="85101"/> 
 							
 	 
    </CommandBuffer>

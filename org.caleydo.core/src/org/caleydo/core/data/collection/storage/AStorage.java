@@ -128,7 +128,6 @@ public abstract class AStorage
 	@Override
 	public float getFloat(EDataRepresentation storageKind, int iIndex)
 	{
-
 		if (!hashCContainers.containsKey(storageKind))
 			throw new CaleydoRuntimeException("Requested storage kind not produced",
 					CaleydoRuntimeExceptionType.DATAHANDLING);

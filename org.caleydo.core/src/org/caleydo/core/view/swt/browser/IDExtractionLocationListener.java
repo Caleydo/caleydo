@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
-import org.caleydo.core.data.selection.Selection;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.system.StringConversionTool;
@@ -133,10 +132,11 @@ public class IDExtractionLocationListener
 			return;
 		}
 
-		Selection tmpSelectionSet = (Selection) generalManager.getSetManager().getItem(
-				iSelectionSetId);
-		tmpSelectionSet.updateSelectionSet(iBrowserId, iAlSelectionId, iAlSelectionDepth,
-				iAlOptional);
+		// TODO reimplement
+//		Selection tmpSelectionSet = (Selection) generalManager.getSetManager().getItem(
+//				iSelectionSetId);
+//		tmpSelectionSet.updateSelectionSet(iBrowserId, iAlSelectionId, iAlSelectionDepth,
+//				iAlOptional);
 	}
 
 	public void updateSkipNextChangeEvent(boolean bSkipNextChangeEvent)

@@ -53,7 +53,7 @@ public abstract class AXmlParserManager
 	 */
 	protected AXmlParserManager()
 	{
-		generalManager = GeneralManager.generalManager;
+		generalManager = GeneralManager.get();
 		
 		hashTag2XmlParser = new Hashtable<String, IXmlParserHandler>();
 		llXmlParserStack = new LinkedList<IXmlParserHandler>();

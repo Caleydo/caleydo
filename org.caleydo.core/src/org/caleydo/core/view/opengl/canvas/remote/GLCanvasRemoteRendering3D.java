@@ -17,10 +17,10 @@ import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.data.CmdDataCreateSelection;
 import org.caleydo.core.command.event.CmdEventCreateMediator;
 import org.caleydo.core.command.view.opengl.CmdGlObjectPathway3D;
+import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
-import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
-import org.caleydo.core.data.selection.ISelection;
+import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle;
@@ -501,7 +501,7 @@ public class GLCanvasRemoteRendering3D
 					iAlSetIDs.add(tmpSet.getID());
 				}
 
-				ArrayList<Integer> iAlSelectionIDs = new ArrayList<Integer>();
+//				ArrayList<Integer> iAlSelectionIDs = new ArrayList<Integer>();
 
 				// Create new selection set
 				CmdDataCreateSelection selectedSetCmd = (CmdDataCreateSelection) generalManager
@@ -509,15 +509,14 @@ public class GLCanvasRemoteRendering3D
 								CommandType.CREATE_SELECTION);
 				selectedSetCmd.doCommand();
 
-				iAlSelectionIDs.add(selectedSetCmd.getSelectionID());
+//				iAlSelectionIDs.add(selectedSetCmd.getSelectionID());
 
 				// Create Pathway3D view
 				CmdGlObjectPathway3D cmdPathway = (CmdGlObjectPathway3D) generalManager
 						.getCommandManager().createCommandByType(
 								CommandType.CREATE_GL_PATHWAY_3D);
 
-				cmdPathway.setAttributes(iTmpPathwayID, iAlSetIDs,
-						iAlSelectionIDs, ProjectionMode.ORTHOGRAPHIC, -4, 4, 4, -4, -20, 20);
+				cmdPathway.setAttributes(iTmpPathwayID, iAlSetIDs, ProjectionMode.ORTHOGRAPHIC, -4, 4, 4, -4, -20, 20);
 
 				cmdPathway.doCommand();
 				
@@ -1184,86 +1183,78 @@ public class GLCanvasRemoteRendering3D
 		iSlerpFactor = 0;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver
-	 * (java.lang.Object)
-	 */
-	public void updateReceiver(Object eventTrigger)
+
+	@Override
+	public void handleUpdate(IUniqueObject eventTrigger)
 	{
 
 		// TODO Auto-generated method stub
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver
-	 * (java.lang.Object, org.caleydo.core.data.collection.ISet)
-	 */
-	public void updateReceiver(Object eventTrigger, ISelection updatedSelection)
+	@Override
+	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta updatedSelection)
 	{
 
 		generalManager.getLogger().log(Level.INFO,
 				"Update called by " + eventTrigger.getClass().getSimpleName());
 
-		ISelection setSelection = (ISelection) updatedSelection;
-
-		ArrayList<Integer> iAlSelection = setSelection.getSelectionIdArray();
-		ArrayList<Integer> iAlSelectionGroup = setSelection.getGroupArray();
-
-		ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>(2);
-		ArrayList<Integer> iAlTmpGroupId = new ArrayList<Integer>(2);
-
-		if (iAlSelection != null && iAlSelectionGroup != null)
-		{
-			// // MARC: Donno if ok here and needed
-			// if (iAlSelection.size() != 0)
-			// alSetSelection.get(0).clearAllSelectionArrays();
-
-			ArrayList<IGraphItem> alPathwayVertexGraphItem = new ArrayList<IGraphItem>();
-
-			for (int iSelectionIndex = 0; iSelectionIndex < iAlSelection.size(); iSelectionIndex++)
-			{
-				int iDavidId = iAlSelection.get(iSelectionIndex);
-
-				if (iAlSelectionGroup.get(iSelectionIndex) == -1)
-				{
-					generalManager.getViewGLCanvasManager().getSelectionManager().clear();
-					continue;
-				}
-				else if (iAlSelectionGroup.get(iSelectionIndex) != 2)
-					continue;
-
-				alSelection.get(0).clearAllSelectionArrays();
-
-				PathwayVertexGraphItem tmpPathwayVertexGraphItem = ((PathwayVertexGraphItem) generalManager
-						.getPathwayItemManager().getItem(
-								generalManager.getPathwayItemManager()
-										.getPathwayVertexGraphItemIdByDavidId(iDavidId)));
-
-				alPathwayVertexGraphItem.add(tmpPathwayVertexGraphItem);
-
-				iAlTmpSelectionId.add(iDavidId);
-				iAlTmpGroupId.add(1); // mouse over
-			}
-
-			if (!alPathwayVertexGraphItem.isEmpty())
-			{
-				loadDependentPathways(alPathwayVertexGraphItem);
-			}
-
-			alSelection.get(0).mergeSelection(iAlTmpSelectionId, iAlTmpGroupId, null);
-		}
-		// Check if update set contains a pathway that was searched by the user
-		else if (setSelection.getOptionalDataArray() != null)
-		{
-			addPathwayView(setSelection.getOptionalDataArray().get(0));
-
-			enableBusyMode(true);
-		}
+		// TODO re-implement
+//		ISelection setSelection = (ISelection) updatedSelection;
+//
+//		ArrayList<Integer> iAlSelection = setSelection.getSelectionIdArray();
+//		ArrayList<Integer> iAlSelectionGroup = setSelection.getGroupArray();
+//
+//		ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>(2);
+//		ArrayList<Integer> iAlTmpGroupId = new ArrayList<Integer>(2);
+//
+//		if (iAlSelection != null && iAlSelectionGroup != null)
+//		{
+//			// // MARC: Donno if ok here and needed
+//			// if (iAlSelection.size() != 0)
+//			// alSetSelection.get(0).clearAllSelectionArrays();
+//
+//			ArrayList<IGraphItem> alPathwayVertexGraphItem = new ArrayList<IGraphItem>();
+//
+//			for (int iSelectionIndex = 0; iSelectionIndex < iAlSelection.size(); iSelectionIndex++)
+//			{
+//				int iDavidId = iAlSelection.get(iSelectionIndex);
+//
+//				if (iAlSelectionGroup.get(iSelectionIndex) == -1)
+//				{
+//					generalManager.getViewGLCanvasManager().getSelectionManager().clear();
+//					continue;
+//				}
+//				else if (iAlSelectionGroup.get(iSelectionIndex) != 2)
+//					continue;
+//
+//				alSelection.get(0).clearAllSelectionArrays();
+//
+//				PathwayVertexGraphItem tmpPathwayVertexGraphItem = ((PathwayVertexGraphItem) generalManager
+//						.getPathwayItemManager().getItem(
+//								generalManager.getPathwayItemManager()
+//										.getPathwayVertexGraphItemIdByDavidId(iDavidId)));
+//
+//				alPathwayVertexGraphItem.add(tmpPathwayVertexGraphItem);
+//
+//				iAlTmpSelectionId.add(iDavidId);
+//				iAlTmpGroupId.add(1); // mouse over
+//			}
+//
+//			if (!alPathwayVertexGraphItem.isEmpty())
+//			{
+//				loadDependentPathways(alPathwayVertexGraphItem);
+//			}
+//
+//			alSelection.get(0).mergeSelection(iAlTmpSelectionId, iAlTmpGroupId, null);
+//		}
+//		// Check if update set contains a pathway that was searched by the user
+//		else if (setSelection.getOptionalDataArray() != null)
+//		{
+//			addPathwayView(setSelection.getOptionalDataArray().get(0));
+//
+//			enableBusyMode(true);
+//		}
 
 	}
 
@@ -1971,5 +1962,19 @@ public class GLCanvasRemoteRendering3D
 		}
 
 		bBusyModeChanged = false;
+	}
+
+	@Override
+	public void triggerUpdate()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void triggerUpdate(ISelectionDelta selectionDelta)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

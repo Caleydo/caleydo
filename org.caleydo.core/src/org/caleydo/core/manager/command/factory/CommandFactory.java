@@ -117,11 +117,11 @@ public class CommandFactory
 				createdCommand = new CmdDataCreateSet(cmdType);
 				break;
 			}
-			case CREATE_SELECTION:
-			{
-				createdCommand = new CmdDataCreateSelection(cmdType);
-				break;
-			}
+//			case CREATE_SELECTION:
+//			{
+//				createdCommand = new CmdDataCreateSelection(cmdType);
+//				break;
+//			}
 
 			/**
 			 * ---------------------- SWT ----------------------

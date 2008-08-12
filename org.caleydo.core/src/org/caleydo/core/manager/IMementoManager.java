@@ -11,7 +11,6 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  * @author Michael Kalkusch
  */
 public interface IMementoManager
-	extends IManager
 {
 
 	/**

@@ -11,7 +11,8 @@ import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
 import org.caleydo.core.data.map.MultiHashArrayStringMap;
 import org.caleydo.core.data.mapping.EGenomeMappingDataType;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
-import org.caleydo.core.manager.AManager;
+import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
@@ -24,7 +25,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  * @author Marc Streit
  */
 public class GenomeIdManager
-	extends AManager
+	// extends AManager
 	implements IGenomeIdManager
 {
 	private static final int iSortBufferInitialsize = 200;
@@ -46,6 +47,8 @@ public class GenomeIdManager
 	public static final int iInitialCountAllLookupTables = 10;
 
 	public static final int iInitialCountMultiMapLookupTables = 4;
+
+	private IGeneralManager generalManager = GeneralManager.get();
 
 	/**
 	 * Constructor.
@@ -356,7 +359,6 @@ public class GenomeIdManager
 
 		return bHasMapActiveWriter.get();
 	}
-
 
 	/**
 	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdManager#setMapByType(org.caleydo.core.data.mapping.EGenomeMappingType,

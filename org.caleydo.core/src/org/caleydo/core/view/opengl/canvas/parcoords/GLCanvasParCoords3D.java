@@ -6,20 +6,20 @@ import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
 import javax.media.opengl.GL;
 import javax.naming.OperationNotSupportedException;
-
-import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.selection.EViewInternalSelectionType;
+import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -29,13 +29,9 @@ import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.GLIconTextureManager;
-import org.caleydo.core.view.opengl.util.hierarchy.EHierarchyLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
-import org.caleydo.core.view.opengl.util.selection.EViewInternalSelectionType;
-import org.caleydo.core.view.opengl.util.selection.GenericSelectionManager;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
-import com.sun.org.apache.bcel.internal.generic.IALOAD;
 
 /**
  * This class is responsible for rendering the parallel coordinates
@@ -130,8 +126,8 @@ public class GLCanvasParCoords3D
 	/**
 	 * Constructor.
 	 */
-	public GLCanvasParCoords3D(final int iGLCanvasID, 
-			final String sLabel, final IViewFrustum viewFrustum)
+	public GLCanvasParCoords3D(final int iGLCanvasID, final String sLabel,
+			final IViewFrustum viewFrustum)
 	{
 		super(iGLCanvasID, sLabel, viewFrustum);
 
@@ -139,22 +135,26 @@ public class GLCanvasParCoords3D
 		renderStyle = new ParCoordsRenderStyle(viewFrustum);
 
 		// initialize polyline selection manager
-		ArrayList<EViewInternalSelectionType> alSelectionType = new ArrayList<EViewInternalSelectionType>();
-		for (EViewInternalSelectionType selectionType : EViewInternalSelectionType.values())
-		{
-			alSelectionType.add(selectionType);
-		}
-		horizontalSelectionManager = new GenericSelectionManager(alSelectionType,
-				EViewInternalSelectionType.NORMAL);
+		// ArrayList<EViewInternalSelectionType> alSelectionType = new
+		// ArrayList<EViewInternalSelectionType>();
+		// for (EViewInternalSelectionType selectionType :
+		// EViewInternalSelectionType.values())
+		// {
+		// alSelectionType.add(selectionType);
+		// }
+		horizontalSelectionManager = new GenericSelectionManager.Builder().mappingType(
+				EGenomeMappingType.EXPRESSION_STORAGE_ID_2_DAVID,
+				EGenomeMappingType.DAVID_2_EXPRESSION_STORAGE_ID).build();
 
 		// initialize axis selection manager
-		alSelectionType = new ArrayList<EViewInternalSelectionType>();
-		for (EViewInternalSelectionType selectionType : EViewInternalSelectionType.values())
-		{
-			alSelectionType.add(selectionType);
-		}
-		verticalSelectionManager = new GenericSelectionManager(alSelectionType,
-				EViewInternalSelectionType.NORMAL);
+		// alSelectionType = new ArrayList<EViewInternalSelectionType>();
+		// for (EViewInternalSelectionType selectionType :
+		// EViewInternalSelectionType.values())
+		// {
+		// alSelectionType.add(selectionType);
+		// }
+		// TODO no mapping
+		verticalSelectionManager = new GenericSelectionManager.Builder().build();
 
 		decimalFormat = new DecimalFormat("#####.##");
 
@@ -379,9 +379,8 @@ public class GLCanvasParCoords3D
 	/**
 	 * Choose whether to render just the selection or all data
 	 * 
-	 * @param bRenderSelection
-	 *            if true renders only the selection, else renders everything in
-	 *            the data
+	 * @param bRenderSelection if true renders only the selection, else renders
+	 *            everything in the data
 	 */
 	public void renderSelection(boolean bRenderSelection)
 	{
@@ -901,11 +900,11 @@ public class GLCanvasParCoords3D
 			gl.glEnd();
 			gl.glPopName();
 
-			
 			try
 			{
-				renderYValues(gl, fCurrentPosition, fArGateTipHeight[iCount],
-						(float)set.getRawForNormalized(fArGateTipHeight[iCount] / renderStyle.getAxisHeight()),
+				renderYValues(gl, fCurrentPosition, fArGateTipHeight[iCount], (float) set
+						.getRawForNormalized(fArGateTipHeight[iCount]
+								/ renderStyle.getAxisHeight()),
 						EViewInternalSelectionType.NORMAL);
 			}
 			catch (OperationNotSupportedException e)
@@ -950,8 +949,9 @@ public class GLCanvasParCoords3D
 
 			try
 			{
-				renderYValues(gl, fCurrentPosition, fArGateBottomHeight[iCount],
-						(float)set.getRawForNormalized(fArGateBottomHeight[iCount] / renderStyle.getAxisHeight()),
+				renderYValues(gl, fCurrentPosition, fArGateBottomHeight[iCount], (float) set
+						.getRawForNormalized(fArGateBottomHeight[iCount]
+								/ renderStyle.getAxisHeight()),
 						EViewInternalSelectionType.NORMAL);
 			}
 			catch (OperationNotSupportedException e)
@@ -1184,8 +1184,6 @@ public class GLCanvasParCoords3D
 			}
 		}
 
-		ArrayList<Integer> iAlOldSelection;
-
 		switch (ePickingType)
 		{
 			case POLYLINE_SELECTION:
@@ -1195,8 +1193,9 @@ public class GLCanvasParCoords3D
 
 					case CLICKED:
 						extSelectionManager.clear();
-						iAlOldSelection = prepareSelection(horizontalSelectionManager,
-								EViewInternalSelectionType.SELECTION);
+						// iAlOldSelection =
+						// prepareSelection(horizontalSelectionManager,
+						// EViewInternalSelectionType.SELECTION);
 
 						horizontalSelectionManager
 								.clearSelection(EViewInternalSelectionType.SELECTION);
@@ -1206,7 +1205,9 @@ public class GLCanvasParCoords3D
 						if (ePolylineDataType == EInputDataType.GENE
 								&& !bAngularBrushingSelectPolyline)
 						{
-							propagateGeneSelection(iExternalID, 2, iAlOldSelection);
+							triggerUpdate(horizontalSelectionManager.getDelta());
+							// propagateGeneSelection(iExternalID, 2,
+							// iAlOldSelection);
 						}
 
 						if (bAngularBrushingSelectPolyline)
@@ -1222,16 +1223,23 @@ public class GLCanvasParCoords3D
 						break;
 					case MOUSE_OVER:
 						extSelectionManager.clear();
-						iAlOldSelection = prepareSelection(horizontalSelectionManager,
-								EViewInternalSelectionType.SELECTION);
-
-						if (ePolylineDataType == EInputDataType.GENE)
-							propagateGeneSelection(iExternalID, 1, iAlOldSelection);
+						// iAlOldSelection =
+						// prepareSelection(horizontalSelectionManager,
+						// EViewInternalSelectionType.SELECTION);
+						//
+						// if (ePolylineDataType == EInputDataType.GENE)
+						// propagateGeneSelection(iExternalID, 1,
+						// iAlOldSelection);
 
 						horizontalSelectionManager
 								.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
 						horizontalSelectionManager.addToType(
 								EViewInternalSelectionType.MOUSE_OVER, iExternalID);
+						if (ePolylineDataType == EInputDataType.GENE)
+						{
+							triggerUpdate(horizontalSelectionManager.getDelta());
+						}
+
 						bIsDisplayListDirtyLocal = true;
 						bIsDisplayListDirtyRemote = true;
 						break;
@@ -1246,8 +1254,9 @@ public class GLCanvasParCoords3D
 				switch (ePickingMode)
 				{
 					case CLICKED:
-						iAlOldSelection = prepareSelection(verticalSelectionManager,
-								EViewInternalSelectionType.SELECTION);
+						// iAlOldSelection =
+						// prepareSelection(verticalSelectionManager,
+						// EViewInternalSelectionType.SELECTION);
 
 						verticalSelectionManager
 								.clearSelection(EViewInternalSelectionType.SELECTION);
@@ -1256,7 +1265,9 @@ public class GLCanvasParCoords3D
 
 						if (eAxisDataType == EInputDataType.GENE)
 						{
-							propagateGeneSelection(iExternalID, 2, iAlOldSelection);
+							// propagateGeneSelection(iExternalID, 2,
+							// iAlOldSelection);
+							triggerUpdate(verticalSelectionManager.getDelta());
 						}
 
 						rePosition(iExternalID);
@@ -1264,8 +1275,9 @@ public class GLCanvasParCoords3D
 						bIsDisplayListDirtyRemote = true;
 						break;
 					case MOUSE_OVER:
-						iAlOldSelection = prepareSelection(verticalSelectionManager,
-								EViewInternalSelectionType.MOUSE_OVER);
+						// iAlOldSelection =
+						// prepareSelection(verticalSelectionManager,
+						// EViewInternalSelectionType.MOUSE_OVER);
 
 						verticalSelectionManager
 								.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
@@ -1274,8 +1286,10 @@ public class GLCanvasParCoords3D
 
 						if (eAxisDataType == EInputDataType.GENE)
 						{
-							propagateGeneSelection(iExternalID, 1, iAlOldSelection);
-							// generalManager.getSingelton().
+							triggerUpdate(verticalSelectionManager.getDelta());
+							// propagateGeneSelection(iExternalID, 1,
+							// iAlOldSelection);
+							// // generalManager.getSingelton().
 							// getViewGLCanvasManager().
 							// getInfoAreaManager()
 							// .setData(iUniqueID,
@@ -1354,36 +1368,48 @@ public class GLCanvasParCoords3D
 						}
 						else if (iExternalID == EIconIDs.SAVE_SELECTIONS.ordinal())
 						{
-							ArrayList<Integer> iAlSelection = new ArrayList<Integer>();
-							ArrayList<Integer> iAlGroup = new ArrayList<Integer>();
 
-							if (bRenderSelection)
-							{
-								Set<Integer> deselectedSet = horizontalSelectionManager
-										.getElements(EViewInternalSelectionType.DESELECTED);
-
-								addSetToSelection(deselectedSet, iAlSelection, iAlGroup, -1);
-								propagateGenes(iAlSelection, iAlGroup);
-							}
-							else
-							{
-								Set<Integer> set = horizontalSelectionManager
-										.getElements(EViewInternalSelectionType.NORMAL);
-								addSetToSelection(set, iAlSelection, iAlGroup, 0);
-
-								set = horizontalSelectionManager
-										.getElements(EViewInternalSelectionType.MOUSE_OVER);
-								addSetToSelection(set, iAlSelection, iAlGroup, 1);
-
-								set = horizontalSelectionManager
-										.getElements(EViewInternalSelectionType.SELECTION);
-								addSetToSelection(set, iAlSelection, iAlGroup, 2);
-							}
-							mergeSelection(iAlSelection, iAlGroup, null);
-							propagateGeneSet();// iAlSelection, iAlGroup);
-							renderSelection(true);
-
-							extSelectionManager.clear();
+							// TODO revise
+							// ArrayList<Integer> iAlSelection = new
+							// ArrayList<Integer>();
+							// ArrayList<Integer> iAlGroup = new
+							// ArrayList<Integer>();
+							//
+							// if (bRenderSelection)
+							// {
+							// Set<Integer> deselectedSet =
+							// horizontalSelectionManager
+							//.getElements(EViewInternalSelectionType.DESELECTED
+							// );
+							//
+							// addSetToSelection(deselectedSet, iAlSelection,
+							// iAlGroup, -1);
+							// propagateGenes(iAlSelection, iAlGroup);
+							// }
+							// else
+							// {
+							// Set<Integer> set = horizontalSelectionManager
+							// .getElements(EViewInternalSelectionType.NORMAL);
+							// addSetToSelection(set, iAlSelection, iAlGroup,
+							// 0);
+							//
+							// set = horizontalSelectionManager
+							//.getElements(EViewInternalSelectionType.MOUSE_OVER
+							// );
+							// addSetToSelection(set, iAlSelection, iAlGroup,
+							// 1);
+							//
+							// set = horizontalSelectionManager
+							//.getElements(EViewInternalSelectionType.SELECTION)
+							// ;
+							// addSetToSelection(set, iAlSelection, iAlGroup,
+							// 2);
+							// }
+							// mergeSelection(iAlSelection, iAlGroup, null);
+							// propagateGeneSet();// iAlSelection, iAlGroup);
+							// renderSelection(true);
+							//
+							// extSelectionManager.clear();
 						}
 						else if (iExternalID == EIconIDs.ANGULAR_BRUSHING.ordinal())
 						{
@@ -1548,23 +1574,17 @@ public class GLCanvasParCoords3D
 	protected void rePosition(int iElementID)
 	{
 
-		// ArrayList<Integer> alSelection;
-		// if (bRenderStorageHorizontally)
-		// {
-		// alSelection = alContentSelection;
-		//
-		// }
-		// else
-		// {
-		// alSelection = alStorageSelection;
-		// // TODO test this
-		// }
+		IVirtualArray virtualArray;
+		if (bRenderStorageHorizontally)
+			virtualArray = set.getVA(iContentSelection);
+		else
+			virtualArray = set.getVA(iStorageSelection);
 
-		float fCurrentPosition = alSelection.indexOf(iElementID) * fAxisSpacing
+		float fCurrentPosition = virtualArray.indexOf(iElementID) * fAxisSpacing
 				+ renderStyle.getXSpacing();
 
 		float fFrustumLength = viewFrustum.getRight() - viewFrustum.getLeft();
-		float fLength = (alSelection.size() - 1) * fAxisSpacing;
+		float fLength = (virtualArray.size() - 1) * fAxisSpacing;
 
 		fXTargetTranslation = -(fCurrentPosition - fFrustumLength / 2);
 
@@ -1826,4 +1846,5 @@ public class GLCanvasParCoords3D
 		float fTmp = vecNewOne.dot(vecNewTwo);
 		return (float) Math.acos(fTmp);
 	}
+
 }
