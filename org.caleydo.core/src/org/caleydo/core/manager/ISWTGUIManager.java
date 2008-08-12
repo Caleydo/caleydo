@@ -3,6 +3,7 @@ package org.caleydo.core.manager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.swt.ISWTWidget;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 
 public interface ISWTGUIManager
@@ -32,7 +33,11 @@ public interface ISWTGUIManager
 
 	public void setLoadingProgressBarPercentage(int iPercentage);
 	
+	public void setLoadingProgressBarPercentageFromExternalThread(int iPercentage);
+	
 	public void setLoadingProgressBarText(String sText);
+	
+	public void setLoadingProgressBarTextFromExternalThread(final String sText);
 
 	/**
 	 * Show or hide the "global" progress bar.
@@ -42,6 +47,6 @@ public interface ISWTGUIManager
 	 */
 	public void setProgressbarVisible(final boolean state);
 	
-	public void setExternalProgressBarAndLabel(ProgressBar progressBar, String progressLabel);
+	public void setExternalProgressBarAndLabel(ProgressBar progressBar, Label progressLabel);
 
 }

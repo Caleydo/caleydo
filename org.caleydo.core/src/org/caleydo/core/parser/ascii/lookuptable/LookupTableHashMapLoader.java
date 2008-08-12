@@ -51,6 +51,8 @@ public class LookupTableHashMapLoader
 		int iStopParsingAtLine = lookupTableLoaderProxy.getStopParsingAtLine();
 		String sOuterTokenSeperator = lookupTableLoaderProxy.getTokenSeperator();
 
+		fProgressBarFactor = 100f / iStopParsingAtLine;
+		
 		while (((sLine = brFile.readLine()) != null) && (iLineInFile <= iStopParsingAtLine))
 		{
 			/**
@@ -121,16 +123,18 @@ public class LookupTableHashMapLoader
 					npe.printStackTrace();
 
 				}
-
-//				generalManager.getSWTGUIManager().setLoadingProgressBarPercentage(
-//						100 - iStopParsingAtLine / iLineInFile);
-
-			} // end of: if( iLineInFile > this.iHeaderLinesSize) {
-
+			}
+			
 			iLineInFile++;
 
-		} // end: while ((sLine = brFile.readLine()) != null) {
-
+			// Update progress bar only on each 100th line
+			if (iLineInFile % 1000 == 0)
+			{
+				generalManager.getSWTGUIManager().setLoadingProgressBarPercentage(
+						(int)(fProgressBarFactor * iLineInFile));
+			}
+		}
+		
 		return iLineInFile - iStartParsingAtLine;
 	}
 

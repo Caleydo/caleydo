@@ -8,7 +8,6 @@ import java.util.logging.Level;
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.ascii.AbstractLoader;
 import org.caleydo.core.parser.ascii.IParserObject;
@@ -183,6 +182,7 @@ public class TabularAsciiDataReader
 		String sLine;
 
 		int iColumnIndex = 0;
+		float fProgressBarFactor = 100f / iStopParsingAtLine;
 
 		while (((sLine = brFile.readLine()) != null) && (iLineInFile < iStopParsingAtLine))
 		{
@@ -248,11 +248,14 @@ public class TabularAsciiDataReader
 			}
 
 			iLineInFile++;
-
-//			swtGuiManager.setLoadingProgressBarPercentage(100 - iStopParsingAtLine / iLineInFile);
+			
+			// Update progress bar only on each 100th line
+			if (iLineInFile % 1000 == 0)
+			{
+				generalManager.getSWTGUIManager().setLoadingProgressBarPercentage(
+						(int)(fProgressBarFactor * iLineInFile));
+			}
 		}
-
-//		swtGuiManager.setLoadingProgressBarPercentage(100 - iStopParsingAtLine / iLineInFile);
 	}
 
 	/*

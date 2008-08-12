@@ -16,7 +16,6 @@ import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
 public abstract class ALookupTableLoader
 	implements ILookupTableLoader
 {
-
 	protected String sFileName;
 
 	protected EGenomeMappingType currentGenomeIdType;
@@ -28,7 +27,13 @@ public abstract class ALookupTableLoader
 	protected LookupTableLoaderProxy lookupTableLoaderProxy;
 
 	protected int iInitialSizeMultiHashMap = 1000;
-
+	
+	/**
+	 * Factor with that the line index must be multiplied to get a normalized (0-100) 
+	 * progress percentage value.
+	 */
+	protected float fProgressBarFactor = 0;
+	
 	/**
 	 * @param setGeneralManager
 	 * @param setFileName

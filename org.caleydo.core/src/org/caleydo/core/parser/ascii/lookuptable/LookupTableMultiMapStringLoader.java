@@ -54,6 +54,8 @@ public class LookupTableMultiMapStringLoader
 		String sLine;
 		int iLineInFile = 1;
 
+		fProgressBarFactor = 100f / iStopParsingAtLine;
+		
 		while (((sLine = brFile.readLine()) != null) && (iLineInFile <= iStopParsingAtLine))
 		{
 
@@ -107,23 +109,23 @@ public class LookupTableMultiMapStringLoader
 						npe.printStackTrace();
 					}
 
-				} // end of: while (( strToken.hasMoreTokens()
-				// )&&(bMaintainLoop)) {
-
-//				generalManager.getSWTGUIManager().setLoadingProgressBarPercentage(
-//						100 - iStopParsingAtLine / iLineInFile);
-
+				}
 				if (!bMaintainLoop)
 				{
 					return -1;
 				}
 
-			} // end of: if( iLineInFile > this.iHeaderLinesSize) {
-
+			}
+			
 			iLineInFile++;
-
-		} // end: while ((sLine = brFile.readLine()) != null) {
-
+			
+			// Update progress bar only on each 100th line
+			if (iLineInFile % 1000 == 0)
+			{
+				generalManager.getSWTGUIManager().setLoadingProgressBarPercentage(
+						(int)(fProgressBarFactor * iLineInFile));
+			}
+		}
 		return iLineInFile;
 	}
 
@@ -140,6 +142,8 @@ public class LookupTableMultiMapStringLoader
 		String sLine;
 
 		int iLineInFile = 1;
+		
+		fProgressBarFactor = 100f / iStopParsingAtLine;
 
 		while (((sLine = brFile.readLine()) != null) && (iLineInFile <= iStopParsingAtLine))
 		{
@@ -200,22 +204,23 @@ public class LookupTableMultiMapStringLoader
 						npe.printStackTrace();
 					}
 
-				} // end of: while (( strToken.hasMoreTokens()
-				// )&&(bMaintainLoop)) {
-
-//				generalManager.getSWTGUIManager().setLoadingProgressBarPercentage(
-//						100 - iStopParsingAtLine / iLineInFile);
-
+				}
+				
 				if (!bMaintainLoop)
 				{
 					return -1;
 				}
-
-			} // end of: if( iLineInFile > this.iHeaderLinesSize) {
-
+			}
+			
 			iLineInFile++;
-
-		} // end: while ((sLine = brFile.readLine()) != null) {
+			
+			// Update progress bar only on each 100th line
+			if (iLineInFile % 1000 == 0)
+			{
+				generalManager.getSWTGUIManager().setLoadingProgressBarPercentage(
+						(int)(fProgressBarFactor * iLineInFile));
+			}
+		}
 
 		return iLineInFile;
 	}

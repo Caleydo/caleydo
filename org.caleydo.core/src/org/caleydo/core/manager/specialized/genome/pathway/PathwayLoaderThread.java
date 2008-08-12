@@ -30,6 +30,12 @@ public class PathwayLoaderThread
 	private static final String PATHWAY_LIST_KEGG = "pathway_list_KEGG.txt";
 	private static final String PATHWAY_LIST_BIOCARTA = "pathway_list_BIOCARTA.txt";
 	
+	/**
+	 * Needed for updating progress bar
+	 */
+	private static final int APPROX_PATHWAY_COUNT_KEGG = 214;
+	private static final int APPROX_PATHWAY_COUNT_BIOCARTA = 314;
+	
 	private IGeneralManager generalManager;
 
 	private Collection<PathwayDatabase> pathwayDatabases;
@@ -92,16 +98,26 @@ public class PathwayLoaderThread
 		String sLine = null;
 		String sFileName = "";
 		String sPathwayPath = pathwayDatabase.getXMLPath();
-
+		float fProgressFactor = 0;
+		
 		if (pathwayDatabase.getName().equals("KEGG"))
 		{
 			sFileName = generalManager.getCaleydoHomePath() + PATHWAY_LIST_KEGG;
+			fProgressFactor = 100f / APPROX_PATHWAY_COUNT_KEGG ;
+			
+			generalManager.getSWTGUIManager().setLoadingProgressBarTextFromExternalThread(
+					"Loading KEGG Pathways...");
 		}
 		else if (pathwayDatabase.getName().equals("BioCarta"))
 		{
 			sFileName = generalManager.getCaleydoHomePath() + PATHWAY_LIST_BIOCARTA;
+			fProgressFactor = 100f / APPROX_PATHWAY_COUNT_BIOCARTA;
+			
+			generalManager.getSWTGUIManager().setLoadingProgressBarTextFromExternalThread(
+				"Loading BioCarta Pathways...");
 		}
 		
+		int iPathwayIndex = 0;
 		try
 		{
 			if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null)
@@ -113,8 +129,6 @@ public class PathwayLoaderThread
 			{
 				file = new BufferedReader(new FileReader(sFileName));
 			}
-
-//			generalManager.getSWTGUIManager().setLoadingProgressBarPercentage(iPercentage)
 			
 			StringTokenizer tokenizer;
 			String sPathwayName;
@@ -146,6 +160,15 @@ public class PathwayLoaderThread
 							Level.INFO,
 							"Pathway texture width=" + iImageWidth + " / height="
 									+ iImageHeight);
+				
+				iPathwayIndex++;
+				
+				// Update progress bar only on each 10th pathway
+				if (iPathwayIndex % 10 == 0)
+				{
+					generalManager.getSWTGUIManager().setLoadingProgressBarPercentageFromExternalThread(
+							(int)(fProgressFactor * iPathwayIndex));
+				}
 			}
 
 		}

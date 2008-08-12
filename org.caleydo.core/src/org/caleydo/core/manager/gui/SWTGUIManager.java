@@ -20,6 +20,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
 
@@ -55,7 +56,7 @@ implements ISWTGUIManager
 
 	protected ProgressBar loadingProgressBar;
 	
-	protected String loadingProgressBarText = "";
+	protected Label loadingProgressBarLabel;
 
 	/**
 	 * Constructor.
@@ -268,20 +269,31 @@ implements ISWTGUIManager
 		loadingProgressBarWindow.open();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.ISWTGUIManager#setLoadingProgressBarPercentage(int)
-	 */
+	@Override
 	public void setLoadingProgressBarPercentage(int iPercentage)
 	{
 		loadingProgressBar.setSelection(iPercentage);
-		loadingProgressBar.update();
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.ISWTGUIManager#setLoadingProgressBarText(java.lang.String)
-	 */
+	
+	@Override
+	public void setLoadingProgressBarPercentageFromExternalThread(final int iPercentage)
+	{
+		if (loadingProgressBar.isDisposed())
+			return;
+		
+		loadingProgressBar.getDisplay().asyncExec(new Runnable()
+		{
+			public void run()
+			{
+				if (loadingProgressBar.isDisposed())
+					return;
+				loadingProgressBar.setSelection(iPercentage);
+			}
+		});
+	}
+	
+	@Override
 	public void setLoadingProgressBarText(String sText)
 	{
 		if (generalManager.isStandalone())
@@ -290,18 +302,36 @@ implements ISWTGUIManager
 			loadingProgressBarWindow.update();
 		}
 		else
-			loadingProgressBarText = sText;
+		{
+			loadingProgressBarLabel.setText(sText);
+			loadingProgressBarLabel.update();
+		}
 	}
 
-	public void setProgressbarVisible(final boolean state)
+	@Override
+	public void setLoadingProgressBarTextFromExternalThread(final String sText)
 	{
-		loadingProgressBarWindow.setVisible(state);
-		loadingProgressBar.setVisible(state);
+		if (loadingProgressBar.isDisposed())
+			return;
+		
+		loadingProgressBar.getDisplay().asyncExec(new Runnable()
+		{
+			public void run()
+			{
+				setLoadingProgressBarText(sText);
+			}
+		});
 	}
 	
-	public void setExternalProgressBarAndLabel(ProgressBar progressBar, String progressLabel)
+	public void setProgressbarVisible(final boolean state)
+	{
+//		loadingProgressBarWindow.setVisible(state);
+//		loadingProgressBar.setVisible(state);
+	}
+	
+	public void setExternalProgressBarAndLabel(ProgressBar progressBar, Label progressLabel)
 	{
 		this.loadingProgressBar = progressBar;
-		this.loadingProgressBarText = progressLabel;
+		this.loadingProgressBarLabel = progressLabel;
 	}
 }
