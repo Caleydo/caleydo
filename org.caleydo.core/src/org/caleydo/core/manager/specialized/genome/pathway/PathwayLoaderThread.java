@@ -114,7 +114,7 @@ public class PathwayLoaderThread
 				file = new BufferedReader(new FileReader(sFileName));
 			}
 
-			generalManager.getSWTGUIManager().setLoadingProgressBarPercentage(iPercentage)
+//			generalManager.getSWTGUIManager().setLoadingProgressBarPercentage(iPercentage)
 			
 			StringTokenizer tokenizer;
 			String sPathwayName;

@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.core.parser.ascii.lookuptable;
 
 import java.io.BufferedReader;
@@ -14,7 +11,10 @@ import org.caleydo.core.parser.ascii.lookuptable.ALookupTableLoader;
 import org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader;
 
 /**
+ * Multi hash map lookup table loader.
+ * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  */
 public class LookupTableMultiMapIntLoader
 	extends ALookupTableLoader
@@ -105,14 +105,13 @@ public class LookupTableMultiMapIntLoader
 				} // end of: while (( strToken.hasMoreTokens()
 				// )&&(bMaintainLoop)) {
 
+//				generalManager.getSWTGUIManager().setLoadingProgressBarPercentage(
+//						100 - iStopParsingAtLine / iLineInFile);
+				
 				if (!bMaintainLoop)
-				{
-					lookupTableLoaderProxy.progressBarStoredIncrement();
+				{	
 					return -1;
 				}
-
-				lookupTableLoaderProxy.progressBarStoredIncrement();
-
 			} // end of: if( iLineInFile > this.iHeaderLinesSize) {
 
 			iLineInFile++;

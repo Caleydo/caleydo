@@ -10,7 +10,10 @@ import org.caleydo.core.data.mapping.EGenomeMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 
 /**
+ * Multi hash map lookup table loader.
+ * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  */
 public class LookupTableMultiMapStringLoader
 	extends ALookupTableLoader
@@ -33,8 +36,7 @@ public class LookupTableMultiMapStringLoader
 	protected MultiHashArrayIntegerMap multiHashMapInteger;
 
 	/**
-	 * @param setGeneralManager
-	 * @param setFileName
+	 * Constructor.
 	 */
 	public LookupTableMultiMapStringLoader(final IGeneralManager setGeneralManager,
 			final String setFileName, final EGenomeMappingType genomeIdType,
@@ -73,7 +75,7 @@ public class LookupTableMultiMapStringLoader
 				{
 
 					/**
-					 * Excpect two Integer values in one row!
+					 * Expect two Integer values in one row!
 					 */
 
 					try
@@ -108,7 +110,8 @@ public class LookupTableMultiMapStringLoader
 				} // end of: while (( strToken.hasMoreTokens()
 				// )&&(bMaintainLoop)) {
 
-				lookupTableLoaderProxy.progressBarStoredIncrement();
+//				generalManager.getSWTGUIManager().setLoadingProgressBarPercentage(
+//						100 - iStopParsingAtLine / iLineInFile);
 
 				if (!bMaintainLoop)
 				{
@@ -200,7 +203,8 @@ public class LookupTableMultiMapStringLoader
 				} // end of: while (( strToken.hasMoreTokens()
 				// )&&(bMaintainLoop)) {
 
-				lookupTableLoaderProxy.progressBarStoredIncrement();
+//				generalManager.getSWTGUIManager().setLoadingProgressBarPercentage(
+//						100 - iStopParsingAtLine / iLineInFile);
 
 				if (!bMaintainLoop)
 				{

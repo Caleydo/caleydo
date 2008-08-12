@@ -254,10 +254,6 @@ implements ISWTGUIManager
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.ISWTGUIManager#createLoadingProgressBar()
-	 */
 	private void createLoadingProgressBar()
 	{
 		loadingProgressBarWindow = new Shell(display, SWT.TITLE | SWT.BORDER);
@@ -274,23 +270,20 @@ implements ISWTGUIManager
 
 	/*
 	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.ISWTGUIManager#setLoadingProgressBarPercentage
-	 * (int)
+	 * @see org.caleydo.core.manager.ISWTGUIManager#setLoadingProgressBarPercentage(int)
 	 */
-	public boolean setLoadingProgressBarPercentage(int iPercentage)
+	public void setLoadingProgressBarPercentage(int iPercentage)
 	{
 		loadingProgressBar.setSelection(iPercentage);
 		loadingProgressBar.update();
-
-		return true;
 	}
-
-	public void setLoadingProgressBarTitle(final String sText,
-			final int iPosition)
+	
+	/*
+	 * (non-Javadoc)
+	 * @see org.caleydo.core.manager.ISWTGUIManager#setLoadingProgressBarText(java.lang.String)
+	 */
+	public void setLoadingProgressBarText(String sText)
 	{
-		loadingProgressBar.setSelection(iPosition);
-		
 		if (generalManager.isStandalone())
 		{
 			loadingProgressBarWindow.setText(sText);
@@ -300,32 +293,8 @@ implements ISWTGUIManager
 			loadingProgressBarText = sText;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.ISWTGUIManager#getLoadingProgressBarPercentage()
-	 */
-	public synchronized int getLoadingProgressBarPercentage()
+	public void setProgressbarVisible(final boolean state)
 	{
-
-		return loadingProgressBar.getSelection();
-	}
-
-
-	public synchronized void setProgressbarVisible(final boolean state)
-	{
-
-		if (this.loadingProgressBarWindow.isVisible() == state)
-		{
-			/* state is already set */
-			return;
-		}
-
-		/* toggle current state.. */
-		if (!loadingProgressBarWindow.isVisible())
-		{
-			this.display.wake();
-		}
 		loadingProgressBarWindow.setVisible(state);
 		loadingProgressBar.setVisible(state);
 	}

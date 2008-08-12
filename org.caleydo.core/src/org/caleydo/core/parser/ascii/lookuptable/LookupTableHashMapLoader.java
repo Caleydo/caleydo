@@ -122,7 +122,8 @@ public class LookupTableHashMapLoader
 
 				}
 
-				lookupTableLoaderProxy.progressBarStoredIncrement();
+//				generalManager.getSWTGUIManager().setLoadingProgressBarPercentage(
+//						100 - iStopParsingAtLine / iLineInFile);
 
 			} // end of: if( iLineInFile > this.iHeaderLinesSize) {
 

@@ -18,7 +18,6 @@ import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 /**
  * @author Michael Kalkusch
  * @author Marc Streit
- * @see org.caleydo.core.parser.ascii.IParserObject
  */
 public final class LookupTableLoaderProxy
 	extends AbstractLoader
@@ -127,41 +126,20 @@ public final class LookupTableLoaderProxy
 	protected void loadDataParseFile(BufferedReader brFile, final int iNumberOfLinesInFile)
 			throws IOException
 	{
+		swtGuiManager.setLoadingProgressBarPercentage(0);
+		swtGuiManager.setLoadingProgressBarText(
+				"Load Lookuptable from file " + getFileName());
 
-		/**
-		 * progress bar init
-		 */
-		progressBarSetStoreInitTitle("load LUT " + getFileName(), 0, // reset
-				// progress
-				// bar
-				// to 0
+		proxyLookupTableLoader.loadDataParseFileLUT(brFile,
 				iNumberOfLinesInFile);
-
-		int iTotalNumerOfLinesRed = proxyLookupTableLoader.loadDataParseFileLUT(brFile,
-				iNumberOfLinesInFile);
-
-		// generalManager.logMsg("  parsed #" +
-		// this.iLineInFile_CurrentDataIndex + "  [" +
-		// this.iStartParsingAtLine + " -> " +
-		// this.iStopParsingAtLine + "] stoped at line #" +
-		// iTotalNumerOfLinesRed,
-		// LoggerType.VERBOSE );
-
-		progressBarIncrement(2);
 	}
 
-	/**
-	 * Writes back Map to IGenomeIdManager by calling
-	 * org.caleydo.core.parser.ascii
-	 * .lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
-	 * 
-	 * @see org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader#wirteBackMapToGenomeManager()
+	/*
+	 * (non-Javadoc)
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#setArraysToStorages()
-	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdManager
 	 */
 	protected void setArraysToStorages()
 	{
-
 		proxyLookupTableLoader.wirteBackMapToGenomeIdManager();
 	}
 

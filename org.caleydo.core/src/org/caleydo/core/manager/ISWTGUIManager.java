@@ -30,22 +30,9 @@ public interface ISWTGUIManager
 
 	public void runApplication();
 
-	/**
-	 * Sets the percentage of the progress bar during the loading progress of
-	 * the application.
-	 * 
-	 * @param iPercentage
-	 * @return True when the assignment was successful.
-	 */
-	public boolean setLoadingProgressBarPercentage(int iPercentage);
-
-	/**
-	 * Returns the current percentage of the loading progress bar of the
-	 * application.
-	 * 
-	 * @return Progress bar percentage.
-	 */
-	public int getLoadingProgressBarPercentage();
+	public void setLoadingProgressBarPercentage(int iPercentage);
+	
+	public void setLoadingProgressBarText(String sText);
 
 	/**
 	 * Show or hide the "global" progress bar.

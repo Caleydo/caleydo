@@ -178,17 +178,11 @@ public class TabularAsciiDataReader
 		allocateStorageBufferForTokenPattern();
 
 		// Init progress bar
-		progressBarSetStoreInitTitle("Load data file " + this.getFileName(), 0, // reset
-				// progress
-				// bar
-				// to
-				// 0
-				alTargetStorages.size());
-
+		swtGuiManager.setLoadingProgressBarText("Load data file " + this.getFileName());
+		
 		String sLine;
 
 		int iColumnIndex = 0;
-		int iParsedLineIndex = 0;
 
 		while (((sLine = brFile.readLine()) != null) && (iLineInFile < iStopParsingAtLine))
 		{
@@ -222,20 +216,17 @@ public class TabularAsciiDataReader
 					switch (columnDataType)
 					{
 						case INT:
-							alIntBuffers.get(iColumnIndex)[iParsedLineIndex] = StringConversionTool
+							alIntBuffers.get(iColumnIndex)[iLineInFile] = StringConversionTool
 									.convertStringToInt(strTokenLine.nextToken(), -1);
 							iColumnIndex++;
 							break;
 						case FLOAT:
-							alFloatBuffers.get(iColumnIndex)[iParsedLineIndex] = StringConversionTool
+							alFloatBuffers.get(iColumnIndex)[iLineInFile] = StringConversionTool
 									.convertStringToFloat(strTokenLine.nextToken(), -1);
 							iColumnIndex++;
 							break;
 						case STRING:
 							alStringBuffers.get(iColumnIndex).add(strTokenLine.nextToken());
-							// /alStringBuffers.get(iColumnIndex).set(
-							// iParsedLineIndex
-							// , strTokenLine.nextToken());
 							iColumnIndex++;
 							break;
 						case SKIP: // do nothing
@@ -257,12 +248,11 @@ public class TabularAsciiDataReader
 			}
 
 			iLineInFile++;
-			iParsedLineIndex++;
 
-			super.progressBarStoredIncrement();
+//			swtGuiManager.setLoadingProgressBarPercentage(100 - iStopParsingAtLine / iLineInFile);
 		}
 
-		super.progressBarIncrement(5);
+//		swtGuiManager.setLoadingProgressBarPercentage(100 - iStopParsingAtLine / iLineInFile);
 	}
 
 	/*

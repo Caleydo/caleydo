@@ -8,7 +8,10 @@ import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
 
 /**
+ * Abstract lookup table loader.
+ * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  */
 public abstract class ALookupTableLoader
 	implements ILookupTableLoader
