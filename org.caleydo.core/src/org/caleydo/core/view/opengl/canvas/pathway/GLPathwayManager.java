@@ -18,7 +18,7 @@ import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexShape;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
-import org.caleydo.core.data.selection.EViewInternalSelectionType;
+import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
@@ -172,16 +172,12 @@ public class GLPathwayManager
 
 	public void performIdenticalNodeHighlighting()
 	{
-
-		if (internalSelectionManager == null)
-			return;
-
 		hashSelectedVertexRepId2Depth.clear();
 		iArSelectedEdgeRepId.clear();
 
 		ArrayList<Integer> iAlTmpSelectedGraphItemIds = new ArrayList<Integer>();
 		iAlTmpSelectedGraphItemIds.addAll(internalSelectionManager
-				.getElements(EViewInternalSelectionType.MOUSE_OVER));
+				.getElements(ESelectionType.MOUSE_OVER));
 
 		// ArrayList<Integer> iAlTmpSelectedGraphItemDepth =
 		// alSetSelection.get(1).getGroupArray();

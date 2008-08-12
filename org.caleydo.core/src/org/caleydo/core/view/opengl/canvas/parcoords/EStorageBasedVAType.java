@@ -6,7 +6,7 @@ package org.caleydo.core.view.opengl.canvas.parcoords;
  * @author Alexander Lex
  */
 
-public enum ESelectionType
+public enum EStorageBasedVAType
 {
 	/**
 	 * The selection type corresponding to an external selection using

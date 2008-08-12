@@ -4,7 +4,7 @@ import gleem.linalg.Vec2f;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.selection.EViewInternalSelectionType;
+import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 
@@ -90,10 +90,10 @@ public class HeatMapRenderStyle
 				continue;
 			else
 			{
-				if (verticalSelectionManager.checkStatus(EViewInternalSelectionType.SELECTION,
+				if (verticalSelectionManager.checkStatus(ESelectionType.SELECTION,
 						set.getVA(iContentSelection).get(iContentSelectionIndex + iCount))
 						|| verticalSelectionManager.checkStatus(
-								EViewInternalSelectionType.MOUSE_OVER, set.getVA(iContentSelection)
+								ESelectionType.MOUSE_OVER, set.getVA(iContentSelection)
 										.get(iContentSelectionIndex + iCount)))
 				{
 					// TODO: this needs reviewing

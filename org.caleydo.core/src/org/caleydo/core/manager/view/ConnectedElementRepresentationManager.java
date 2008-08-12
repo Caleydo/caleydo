@@ -19,14 +19,14 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  * their containing view and the x/y position in the view area.
  * </p>
  * <p>
- * The purpose of this manager is to make selections availabel to an external
+ * The purpose of this manager is to make selections available to an external
  * instance that connects them, for example the
  * {@link AGLConnectionLineRenderer}
  * 
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class SelectionManager
+public class ConnectedElementRepresentationManager
 {
 
 	HashMap<Integer, ArrayList<SelectedElementRep>> hashSelectedElementID2SelectedElementReps;
@@ -35,7 +35,7 @@ public class SelectionManager
 	 * Constructor.
 	 * 
 	 */
-	protected SelectionManager()
+	protected ConnectedElementRepresentationManager()
 	{
 		hashSelectedElementID2SelectedElementReps = new HashMap<Integer, ArrayList<SelectedElementRep>>();
 	}

@@ -3,6 +3,7 @@ package org.caleydo.core.manager.specialized.genome;
 import java.util.ArrayList;
 import java.util.HashMap;
 import org.caleydo.core.data.graph.ICaleydoGraphItem;
+import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.manager.IManager;
 import org.caleydo.util.graph.IGraph;
 import org.caleydo.util.graph.IGraphItem;
@@ -44,4 +45,6 @@ public interface IPathwayItemManager
 	public int getPathwayVertexGraphItemIdByDavidId(final int iDavidId);
 
 	public int getDavidIdByPathwayVertexGraphItemId(final int iPathwayVertexGraphItemId);
+	
+	public PathwayVertexGraphItemRep getPathwayVertexRep(int iID);
 }

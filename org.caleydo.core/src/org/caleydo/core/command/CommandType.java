@@ -40,7 +40,6 @@ public enum CommandType
 	EXTERNAL_ACTION_TRIGGER("cmd", "type", "-1", "External action trigger"),
 
 	CREATE_SET_DATA("cmd", "type", "-1", "Create SET"),
-	CREATE_SELECTION("cmd", "type", "-1", "Create Selection SET incl. Storage and Virtual Array!"),
 	CREATE_STORAGE("cmd", "type", "-1", "Create Storage"),
 	CREATE_VIRTUAL_ARRAY("cmd", "type", "-1", "Create VirtualArray"),
 

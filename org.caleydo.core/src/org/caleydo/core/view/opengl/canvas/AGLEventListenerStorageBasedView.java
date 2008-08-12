@@ -17,9 +17,9 @@ import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.picking.ESelectionMode;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
-import org.caleydo.core.manager.view.SelectionManager;
+import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
-import org.caleydo.core.view.opengl.canvas.parcoords.ESelectionType;
+import org.caleydo.core.view.opengl.canvas.parcoords.EStorageBasedVAType;
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
@@ -38,12 +38,12 @@ public abstract class AGLEventListenerStorageBasedView
 	// protected ArrayList<IStorage> alDataStorages;
 
 	// Specify which type of selection is currently active
-	protected ESelectionType eWhichContentSelection = ESelectionType.COMPLETE_SELECTION;
+	protected EStorageBasedVAType eWhichContentSelection = EStorageBasedVAType.COMPLETE_SELECTION;
 
-	protected ESelectionType eWhichStorageSelection = ESelectionType.STORAGE_SELECTION;
+	protected EStorageBasedVAType eWhichStorageSelection = EStorageBasedVAType.STORAGE_SELECTION;
 
 	// map selection type to unique id for virtual array
-	protected EnumMap<ESelectionType, Integer> mapSelections;
+	protected EnumMap<EStorageBasedVAType, Integer> mapSelections;
 
 	// the currently active selection arrays for content and storage
 	// (references to mapSelection entries)
@@ -66,7 +66,7 @@ public abstract class AGLEventListenerStorageBasedView
 
 	protected IGenomeIdManager IDManager;
 
-	protected SelectionManager extSelectionManager;
+	protected ConnectedElementRepresentationManager extSelectionManager;
 
 	// internal management of polyline selections, use
 	// EPolylineSelectionType for types
@@ -84,7 +84,7 @@ public abstract class AGLEventListenerStorageBasedView
 
 	protected TextRenderer textRenderer;
 
-	protected boolean bRenderOnlyContext = false;
+	protected boolean bRenderOnlyContext = true;
 
 	/**
 	 * Constructor.
@@ -95,11 +95,11 @@ public abstract class AGLEventListenerStorageBasedView
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 
 		// alDataStorages = new ArrayList<IStorage>();
-		mapSelections = new EnumMap<ESelectionType, Integer>(ESelectionType.class);
+		mapSelections = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
 
 		IDManager = generalManager.getGenomeIdManager();
 
-		extSelectionManager = generalManager.getViewGLCanvasManager().getSelectionManager();
+		extSelectionManager = generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
 
 		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 16), false);
 		// alContentSelection = new ArrayList<Integer>();
@@ -122,7 +122,7 @@ public abstract class AGLEventListenerStorageBasedView
 
 		if (!mapSelections.isEmpty())
 		{
-			for (ESelectionType eSelectionType : ESelectionType.values())
+			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values())
 			{
 				set.removeVirtualArray(mapSelections.get(eSelectionType));
 			}
@@ -167,10 +167,10 @@ public abstract class AGLEventListenerStorageBasedView
 		
 		// set.removeVirtualArray(1);
 		set.createStorageVA(iTmp, alTempList);
-		mapSelections.put(ESelectionType.EXTERNAL_SELECTION, iTmp);
+		mapSelections.put(EStorageBasedVAType.EXTERNAL_SELECTION, iTmp);
 
-		// int iStorageLength = set.depth();
-		int iStorageLength = 2000;
+		int iStorageLength = set.depth();
+		//int iStorageLength = 2000;
 
 		// initialize full list
 		alTempList = new ArrayList<Integer>(set.depth());
@@ -179,9 +179,9 @@ public abstract class AGLEventListenerStorageBasedView
 			if (bRenderOnlyContext)
 			{
 				// FIXME: not general, only for genes
-				int iDavidId = getDavidIDFromStorageIndex(iCount);
+				int iDavidID = getDavidIDFromStorageIndex(iCount);
 
-				if (iDavidId == -1)
+				if (iDavidID == -1)
 				{
 					generalManager.getLogger().log(Level.FINE,
 							"Cannot resolve gene to DAVID ID!");
@@ -189,17 +189,17 @@ public abstract class AGLEventListenerStorageBasedView
 				}
 				else
 				{
-					PathwayVertexGraphItem tmpPathwayVertexGraphItem = ((PathwayVertexGraphItem) generalManager
-							.getPathwayItemManager().getItem(
-									generalManager.getPathwayItemManager()
-											.getPathwayVertexGraphItemIdByDavidId(iDavidId)));
+					int iGraphItemID = generalManager.getPathwayItemManager()
+					.getPathwayVertexGraphItemIdByDavidId(iDavidID);
+				
+				if (iGraphItemID == -1)
+					continue;
+				
+				PathwayVertexGraphItem tmpPathwayVertexGraphItem = ((PathwayVertexGraphItem) generalManager
+						.getPathwayItemManager().getItem(iGraphItemID));
 
-					if (tmpPathwayVertexGraphItem == null)
-					{
-						generalManager.getLogger().log(Level.FINE,
-								"Something strange happens here! --> Investigate");
-						continue;
-					}
+				if (tmpPathwayVertexGraphItem == null)
+					continue;
 				}
 			}
 			alTempList.add(iCount);
@@ -207,7 +207,7 @@ public abstract class AGLEventListenerStorageBasedView
 
 		iTmp = rand.nextInt();
 		set.createStorageVA(iTmp, alTempList);
-		mapSelections.put(ESelectionType.COMPLETE_SELECTION, iTmp);
+		mapSelections.put(EStorageBasedVAType.COMPLETE_SELECTION, iTmp);
 
 		alTempList = new ArrayList<Integer>();
 
@@ -221,8 +221,8 @@ public abstract class AGLEventListenerStorageBasedView
 		
 		iTmp = rand.nextInt();
 		set.createSetVA(iTmp, alTempList);
-		mapSelections.put(ESelectionType.STORAGE_SELECTION, iTmp);
-		initLists();
+		mapSelections.put(EStorageBasedVAType.STORAGE_SELECTION, iTmp);
+//		initLists();
 	}
 
 	protected ArrayList<Integer> convertDavidIdToExpressionIndices(
@@ -308,9 +308,9 @@ public abstract class AGLEventListenerStorageBasedView
 		generalManager.getLogger().log(Level.INFO,
 				"Update called by " + eventTrigger.getClass().getSimpleName());
 
-		// TODO horizontal, vertical??
+		horizontalSelectionManager.clearSelections();
+
 		horizontalSelectionManager.setDelta(selectionDelta);
-		
 		
 //		// contains all genes in center pathway (not yet)
 //		ArrayList<Integer> iAlSelection = setSelection.getSelectionIdArray();

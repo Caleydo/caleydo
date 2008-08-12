@@ -8,7 +8,7 @@ import java.util.HashMap;
  * @author Alexander Lex
  * 
  */
-public enum EViewInternalSelectionType
+public enum ESelectionType
 {
 	NORMAL(0),
 	SELECTION(1),
@@ -17,7 +17,7 @@ public enum EViewInternalSelectionType
 	REMOVE(-1);
 
 	private int iType;
-	private static HashMap<Integer, EViewInternalSelectionType> hashValuesToEnum;
+	private static HashMap<Integer, ESelectionType> hashValuesToEnum;
 	private static boolean bIsFirstTime = true;
 
 	// private static ArrayList<String> alSelectionType;
@@ -25,7 +25,7 @@ public enum EViewInternalSelectionType
 	/**
 	 * Constructor
 	 */
-	EViewInternalSelectionType(int iType)
+	ESelectionType(int iType)
 	{
 		this.iType = iType;
 		// hashValuesToEnum =
@@ -43,7 +43,7 @@ public enum EViewInternalSelectionType
 	}
 
 
-	public static EViewInternalSelectionType valueOf(int iRep)
+	public static ESelectionType valueOf(int iRep)
 	{
 		if(bIsFirstTime)
 		{
@@ -55,8 +55,8 @@ public enum EViewInternalSelectionType
 	
 	private static void init()
 	{
-		hashValuesToEnum = new HashMap<Integer, EViewInternalSelectionType>();
-		for (EViewInternalSelectionType selectionType : EViewInternalSelectionType.values())
+		hashValuesToEnum = new HashMap<Integer, ESelectionType>();
+		for (ESelectionType selectionType : ESelectionType.values())
 		{
 			hashValuesToEnum.put(selectionType.intRep(), selectionType);
 		}

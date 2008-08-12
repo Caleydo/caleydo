@@ -14,7 +14,7 @@ import javax.naming.OperationNotSupportedException;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
-import org.caleydo.core.data.selection.EViewInternalSelectionType;
+import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.view.camera.IViewFrustum;
@@ -221,6 +221,7 @@ public class GLCanvasParCoords3D
 
 		// initialize selection to an empty array with
 		initData();
+		initLists();
 
 		fXDefaultTranslation = renderStyle.getXSpacing();
 		fYTranslation = renderStyle.getBottomSpacing();
@@ -389,10 +390,10 @@ public class GLCanvasParCoords3D
 		resetSelections();
 		if (bRenderSelection)
 		{
-			eWhichContentSelection = ESelectionType.EXTERNAL_SELECTION;
+			eWhichContentSelection = EStorageBasedVAType.EXTERNAL_SELECTION;
 		}
 		else
-			eWhichContentSelection = ESelectionType.COMPLETE_SELECTION;
+			eWhichContentSelection = EStorageBasedVAType.COMPLETE_SELECTION;
 
 		refresh();
 		// initPolyLineLists();
@@ -550,17 +551,17 @@ public class GLCanvasParCoords3D
 
 		renderCoordinateSystem(gl, iNumberOfAxis);
 
-		renderPolylines(gl, EViewInternalSelectionType.DESELECTED);
-		renderPolylines(gl, EViewInternalSelectionType.NORMAL);
-		renderPolylines(gl, EViewInternalSelectionType.MOUSE_OVER);
-		renderPolylines(gl, EViewInternalSelectionType.SELECTION);
+		renderPolylines(gl, ESelectionType.DESELECTED);
+		renderPolylines(gl, ESelectionType.NORMAL);
+		renderPolylines(gl, ESelectionType.MOUSE_OVER);
+		renderPolylines(gl, ESelectionType.SELECTION);
 
 		renderGates(gl, iNumberOfAxis);
 
 		gl.glEndList();
 	}
 
-	private void renderPolylines(GL gl, EViewInternalSelectionType renderMode)
+	private void renderPolylines(GL gl, ESelectionType renderMode)
 	{
 
 		Set<Integer> setDataToRender = null;
@@ -596,7 +597,7 @@ public class GLCanvasParCoords3D
 				break;
 			default:
 				setDataToRender = horizontalSelectionManager
-						.getElements(EViewInternalSelectionType.NORMAL);
+						.getElements(ESelectionType.NORMAL);
 		}
 
 		Iterator<Integer> dataIterator = setDataToRender.iterator();
@@ -604,7 +605,7 @@ public class GLCanvasParCoords3D
 		while (dataIterator.hasNext())
 		{
 			int iPolyLineID = dataIterator.next();
-			if (renderMode != EViewInternalSelectionType.DESELECTED)
+			if (renderMode != ESelectionType.DESELECTED)
 				gl.glPushName(pickingManager.getPickingID(iUniqueID,
 						EPickingType.POLYLINE_SELECTION, iPolyLineID));
 
@@ -654,8 +655,8 @@ public class GLCanvasParCoords3D
 					gl.glEnd();
 				}
 
-				if (renderMode == EViewInternalSelectionType.SELECTION
-						|| renderMode == EViewInternalSelectionType.MOUSE_OVER)
+				if (renderMode == ESelectionType.SELECTION
+						|| renderMode == ESelectionType.MOUSE_OVER)
 				{
 					float fYRawValue = currentStorage.getFloat(EDataRepresentation.RAW,
 							iStorageIndex);
@@ -667,7 +668,7 @@ public class GLCanvasParCoords3D
 				fPreviousYValue = fCurrentYValue;
 			}
 
-			if (renderMode != EViewInternalSelectionType.DESELECTED)
+			if (renderMode != ESelectionType.DESELECTED)
 				gl.glPopName();
 		}
 	}
@@ -693,9 +694,9 @@ public class GLCanvasParCoords3D
 
 		// draw all Y-Axis
 		Set<Integer> selectedSet = verticalSelectionManager
-				.getElements(EViewInternalSelectionType.SELECTION);
+				.getElements(ESelectionType.SELECTION);
 		Set<Integer> mouseOverSet = verticalSelectionManager
-				.getElements(EViewInternalSelectionType.MOUSE_OVER);
+				.getElements(ESelectionType.MOUSE_OVER);
 		// ArrayList<Integer> alAxisSelection;
 
 		int iAxisSelection = 0;
@@ -905,7 +906,7 @@ public class GLCanvasParCoords3D
 				renderYValues(gl, fCurrentPosition, fArGateTipHeight[iCount], (float) set
 						.getRawForNormalized(fArGateTipHeight[iCount]
 								/ renderStyle.getAxisHeight()),
-						EViewInternalSelectionType.NORMAL);
+						ESelectionType.NORMAL);
 			}
 			catch (OperationNotSupportedException e)
 			{
@@ -952,7 +953,7 @@ public class GLCanvasParCoords3D
 				renderYValues(gl, fCurrentPosition, fArGateBottomHeight[iCount], (float) set
 						.getRawForNormalized(fArGateBottomHeight[iCount]
 								/ renderStyle.getAxisHeight()),
-						EViewInternalSelectionType.NORMAL);
+						ESelectionType.NORMAL);
 			}
 			catch (OperationNotSupportedException e)
 			{
@@ -972,7 +973,7 @@ public class GLCanvasParCoords3D
 	 * @param renderMode
 	 */
 	private void renderYValues(GL gl, float fXOrigin, float fYOrigin, float fRawValue,
-			EViewInternalSelectionType renderMode)
+			ESelectionType renderMode)
 	{
 
 		// don't render values that are below the y axis
@@ -1150,13 +1151,13 @@ public class GLCanvasParCoords3D
 		{
 			if (hashDeselectedPolylines.get(iCurrent) != null)
 			{
-				horizontalSelectionManager.addToType(EViewInternalSelectionType.DESELECTED,
+				horizontalSelectionManager.addToType(ESelectionType.DESELECTED,
 						iCurrent);
 			}
 			else
 			{
 				horizontalSelectionManager.removeFromType(
-						EViewInternalSelectionType.DESELECTED, iCurrent);
+						ESelectionType.DESELECTED, iCurrent);
 			}
 		}
 	}
@@ -1198,9 +1199,9 @@ public class GLCanvasParCoords3D
 						// EViewInternalSelectionType.SELECTION);
 
 						horizontalSelectionManager
-								.clearSelection(EViewInternalSelectionType.SELECTION);
+								.clearSelection(ESelectionType.SELECTION);
 						horizontalSelectionManager.addToType(
-								EViewInternalSelectionType.SELECTION, iExternalID);
+								ESelectionType.SELECTION, iExternalID);
 
 						if (ePolylineDataType == EInputDataType.GENE
 								&& !bAngularBrushingSelectPolyline)
@@ -1232,9 +1233,9 @@ public class GLCanvasParCoords3D
 						// iAlOldSelection);
 
 						horizontalSelectionManager
-								.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
+								.clearSelection(ESelectionType.MOUSE_OVER);
 						horizontalSelectionManager.addToType(
-								EViewInternalSelectionType.MOUSE_OVER, iExternalID);
+								ESelectionType.MOUSE_OVER, iExternalID);
 						if (ePolylineDataType == EInputDataType.GENE)
 						{
 							triggerUpdate(horizontalSelectionManager.getDelta());
@@ -1259,9 +1260,9 @@ public class GLCanvasParCoords3D
 						// EViewInternalSelectionType.SELECTION);
 
 						verticalSelectionManager
-								.clearSelection(EViewInternalSelectionType.SELECTION);
+								.clearSelection(ESelectionType.SELECTION);
 						verticalSelectionManager.addToType(
-								EViewInternalSelectionType.SELECTION, iExternalID);
+								ESelectionType.SELECTION, iExternalID);
 
 						if (eAxisDataType == EInputDataType.GENE)
 						{
@@ -1280,9 +1281,9 @@ public class GLCanvasParCoords3D
 						// EViewInternalSelectionType.MOUSE_OVER);
 
 						verticalSelectionManager
-								.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
+								.clearSelection(ESelectionType.MOUSE_OVER);
 						verticalSelectionManager.addToType(
-								EViewInternalSelectionType.MOUSE_OVER, iExternalID);
+								ESelectionType.MOUSE_OVER, iExternalID);
 
 						if (eAxisDataType == EInputDataType.GENE)
 						{

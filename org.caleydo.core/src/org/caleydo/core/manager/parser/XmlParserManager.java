@@ -367,12 +367,12 @@ public class XmlParserManager
 						.openInputStreamFromFile(filename, generalManager);
 			}
 
-			generalManager.getLogger().log(Level.INFO, "Start parsing file " + filename);
+			generalManager.getLogger().log(Level.FINE, "Start parsing file " + filename);
 
 			boolean status = CaleydoInputStream.parseOnce(inSource, filename, this,
 					generalManager);
 
-			generalManager.getLogger().log(Level.INFO, "Finished parsing file " + filename);
+			generalManager.getLogger().log(Level.FINE, "Finished parsing file " + filename);
 
 			return status;
 

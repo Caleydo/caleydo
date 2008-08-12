@@ -209,19 +209,9 @@ public class LockableMediator
 
 
 	@Override
-	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void updateContinue(Object eventTrigger)
 	{
 		// TODO Auto-generated method stub
 		
 	}
-
-
-
 }

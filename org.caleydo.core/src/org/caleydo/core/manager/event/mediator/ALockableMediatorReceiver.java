@@ -38,19 +38,6 @@ public abstract class ALockableMediatorReceiver
 		bUpdateIsStalled = new AtomicBoolean(false);
 	}
 
-	/**
-	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#hanleUpdate(IUniqueObject,
-	 *      org.caleydo.core.data.collection.ISet)
-	 */
-	public final void hanleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
-	{
-
-		if (!bUpdateIsStalled.get())
-		{
-			updateReceiverSpecialMediator(eventTrigger, selectionDelta);
-		}
-	}
-
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.observer.mediator.IMediatorReceiver#updateStall()
@@ -101,6 +88,19 @@ public abstract class ALockableMediatorReceiver
 	 */
 	public abstract void handleUpdate(IUniqueObject eventTrigger);
 
+	/**
+	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#hanleUpdate(IUniqueObject,
+	 *      org.caleydo.core.data.collection.ISet)
+	 */
+	@Override
+	public final void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
+	{
+		if (!bUpdateIsStalled.get())
+		{
+			updateReceiverSpecialMediator(eventTrigger, selectionDelta);
+		}
+	}
+	
 	/**
 	 * Called by org.caleydo.core.manager.event.mediator.IMediatorReceiver#
 	 * updateReceiver(java.lang.Object, org.caleydo.core.data.collection.ISet)

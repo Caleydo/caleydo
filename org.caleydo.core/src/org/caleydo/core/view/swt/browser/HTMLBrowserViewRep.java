@@ -38,7 +38,7 @@ public class HTMLBrowserViewRep
 
 	protected Text textField;
 
-	protected int iSelectionSetId;
+//	protected int iSelectionSetId;
 
 	private IDExtractionLocationListener idExtractionLocationListener;
 
@@ -51,10 +51,11 @@ public class HTMLBrowserViewRep
 
 		// Default browser type
 		this.browserType = EBrowserType.GENERAL;
-		CmdDataCreateSelection selectedSetCmd = (CmdDataCreateSelection) generalManager
-				.getCommandManager().createCommandByType(CommandType.CREATE_SELECTION);
-
-		selectedSetCmd.doCommand();
+		
+//		CmdDataCreateSelection selectedSetCmd = (CmdDataCreateSelection) generalManager
+//				.getCommandManager().createCommandByType(CommandType.CREATE_SELECTION);
+//
+//		selectedSetCmd.doCommand();
 	}
 
 	public void setAttributes(EBrowserType browserType)
@@ -140,7 +141,7 @@ public class HTMLBrowserViewRep
 		browser = new Browser(swtContainer, SWT.NONE);
 
 		idExtractionLocationListener = new IDExtractionLocationListener(
-				browser, iUniqueID, iSelectionSetId);
+				browser, iUniqueID, -1);
 		browser.addLocationListener(idExtractionLocationListener);
 
 		data = new GridData();

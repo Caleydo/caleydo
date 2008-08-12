@@ -10,7 +10,7 @@ import java.util.Set;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.view.rep.renderstyle.ConnectionLineRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.view.SelectionManager;
+import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**
@@ -27,7 +27,7 @@ public abstract class AGLConnectionLineRenderer
 
 	protected RemoteHierarchyLayer stackLayer;
 
-	protected SelectionManager selectionManager;
+	protected ConnectedElementRepresentationManager selectionManager;
 
 	protected boolean bEnableRendering = true;
 
@@ -44,7 +44,7 @@ public abstract class AGLConnectionLineRenderer
 		this.underInteractionLayer = underInteractionLayer;
 		this.stackLayer = stackLayer;
 
-		selectionManager = generalManager.getViewGLCanvasManager().getSelectionManager();
+		selectionManager = generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
 
 		hashViewToPointLists = new HashMap<Integer, ArrayList<ArrayList<Vec3f>>>();
 	}

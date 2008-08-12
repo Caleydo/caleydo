@@ -171,7 +171,7 @@ public class CaleydoInputStream
 				inStream.getCharacterStream().close();
 			}
 
-			generalManager.getLogger().log(Level.INFO,
+			generalManager.getLogger().log(Level.FINE,
 					"Close input stream: " + sInputStreamLabel);
 
 		} // try

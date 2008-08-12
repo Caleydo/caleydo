@@ -13,6 +13,7 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraph;
@@ -32,10 +33,12 @@ public class PathwayItemManager
 	private static final long serialVersionUID = 1L;
 
 	private HashMap<String, ICaleydoGraphItem> hashVertexNameToGraphItem;
-
+	
+	// TODO: replace these hash maps by GenomeIDManager
 	private HashMap<Integer, Integer> hashDavidIdToPathwayVertexGraphItemId;
-
 	private HashMap<Integer, Integer> hashPathwayVertexGraphItemIdToDavidId;
+	
+	private HashMap<Integer, PathwayVertexGraphItemRep> hashIDToPathwayVertexGraphItemRep;
 
 	private boolean bHashDavidIdToPathwayVertexGraphItemIdInvalid = true;
 
@@ -47,6 +50,7 @@ public class PathwayItemManager
 		hashVertexNameToGraphItem = new HashMap<String, ICaleydoGraphItem>();
 		hashDavidIdToPathwayVertexGraphItemId = new HashMap<Integer, Integer>();
 		hashPathwayVertexGraphItemIdToDavidId = new HashMap<Integer, Integer>();
+		hashIDToPathwayVertexGraphItemRep = new HashMap<Integer, PathwayVertexGraphItemRep>();
 	}
 
 	/*
@@ -250,5 +254,16 @@ public class PathwayItemManager
 			return hashPathwayVertexGraphItemIdToDavidId.get(iPathwayVertexGraphItemId);
 
 		return -1;
+	}
+	
+	public PathwayVertexGraphItemRep getPathwayVertexRep(int iID)
+	{
+		if (!hashIDToPathwayVertexGraphItemRep.containsKey(iID))
+		{
+			throw new CaleydoRuntimeException("Requested pathway vertex representation ID " 
+					+iID + " does not exist!");
+		}
+		
+		return hashIDToPathwayVertexGraphItemRep.get(iID);
 	}
 }

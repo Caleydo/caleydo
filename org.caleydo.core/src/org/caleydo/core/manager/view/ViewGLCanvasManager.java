@@ -74,7 +74,7 @@ public class ViewGLCanvasManager
 
 	private PickingManager pickingManager;
 
-	private SelectionManager selectionManager;
+	private ConnectedElementRepresentationManager selectionManager;
 
 	private GLInfoAreaManager infoAreaManager;
 
@@ -85,7 +85,7 @@ public class ViewGLCanvasManager
 	public ViewGLCanvasManager()
 	{
 		pickingManager = new PickingManager();
-		selectionManager = new SelectionManager();
+		selectionManager = new ConnectedElementRepresentationManager();
 		infoAreaManager = new GLInfoAreaManager();
 
 		hashGLCanvasID2GLCanvas = new HashMap<Integer, GLCaleydoCanvas>();
@@ -508,7 +508,7 @@ public class ViewGLCanvasManager
 		return pickingManager;
 	}
 
-	public SelectionManager getSelectionManager()
+	public ConnectedElementRepresentationManager getConnectedElementRepresentationManager()
 	{
 
 		return selectionManager;

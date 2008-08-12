@@ -9,7 +9,7 @@ import java.util.Set;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EGenomeMappingType;
-import org.caleydo.core.data.selection.EViewInternalSelectionType;
+import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.HeatMapRenderStyle;
@@ -20,7 +20,7 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.view.opengl.canvas.AGLEventListenerStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
-import org.caleydo.core.view.opengl.canvas.parcoords.ESelectionType;
+import org.caleydo.core.view.opengl.canvas.parcoords.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
@@ -72,15 +72,16 @@ public class GLCanvasHeatMap
 
 		super(iGLCanvasID, sLabel, viewFrustum);
 
-		ArrayList<EViewInternalSelectionType> alSelectionTypes = new ArrayList<EViewInternalSelectionType>();
-		alSelectionTypes.add(EViewInternalSelectionType.NORMAL);
-		alSelectionTypes.add(EViewInternalSelectionType.MOUSE_OVER);
-		alSelectionTypes.add(EViewInternalSelectionType.SELECTION);
-		horizontalSelectionManager =  new GenericSelectionManager.Builder().build();
-		verticalSelectionManager = new GenericSelectionManager.Builder().mappingType(
+		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
+		alSelectionTypes.add(ESelectionType.NORMAL);
+		alSelectionTypes.add(ESelectionType.MOUSE_OVER);
+		alSelectionTypes.add(ESelectionType.SELECTION);
+
+		horizontalSelectionManager =  new GenericSelectionManager.Builder().mappingType(
 				EGenomeMappingType.EXPRESSION_STORAGE_ID_2_DAVID,
 				EGenomeMappingType.DAVID_2_EXPRESSION_STORAGE_ID).build();
-
+		verticalSelectionManager = new GenericSelectionManager.Builder().build();
+		
 		colorMapper = new ColorMapping(0, 1);
 	}
 
@@ -96,6 +97,7 @@ public class GLCanvasHeatMap
 		bRenderStorageHorizontally = true;
 		initData();
 		initLists();
+		
 		renderStyle = new HeatMapRenderStyle(viewFrustum, verticalSelectionManager, set,
 				iContentSelection, set.getVA(iStorageSelection).size(), true);
 
@@ -111,7 +113,7 @@ public class GLCanvasHeatMap
 	public void initLocal(GL gl)
 	{
 
-		eWhichContentSelection = ESelectionType.COMPLETE_SELECTION;
+		eWhichContentSelection = EStorageBasedVAType.COMPLETE_SELECTION;
 		bRenderHorizontally = true;
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
@@ -135,7 +137,7 @@ public class GLCanvasHeatMap
 
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 
-		eWhichContentSelection = ESelectionType.EXTERNAL_SELECTION;
+		eWhichContentSelection = EStorageBasedVAType.EXTERNAL_SELECTION;
 		bRenderHorizontally = true;
 
 		glToolboxRenderer = new GLToolboxRenderer(gl, generalManager, iUniqueID,
@@ -254,8 +256,8 @@ public class GLCanvasHeatMap
 		gl.glTranslatef(fAnimationTranslation, 0.0f, 0.0f);
 
 		renderHeatMap(gl);
-		renderSelection(gl, EViewInternalSelectionType.MOUSE_OVER);
-		renderSelection(gl, EViewInternalSelectionType.SELECTION);
+		renderSelection(gl, ESelectionType.MOUSE_OVER);
+		renderSelection(gl, ESelectionType.SELECTION);
 
 		gl.glTranslatef(-fAnimationTranslation, 0.0f, 0.0f);
 
@@ -280,12 +282,16 @@ public class GLCanvasHeatMap
 	{
 
 		Set<Integer> setMouseOver = verticalSelectionManager
-				.getElements(EViewInternalSelectionType.MOUSE_OVER);
-		horizontalSelectionManager.resetSelectionManager();
-		verticalSelectionManager.resetSelectionManager();
+				.getElements(ESelectionType.MOUSE_OVER);
 
 		iContentSelection = mapSelections.get(eWhichContentSelection);
 		iStorageSelection = mapSelections.get(eWhichStorageSelection);
+		
+		horizontalSelectionManager.resetSelectionManager();
+		verticalSelectionManager.resetSelectionManager();
+		
+		horizontalSelectionManager.setVA(set.getVA(iContentSelection));
+		
 		if (renderStyle != null)
 		{
 			renderStyle.setContentSelection(iContentSelection);
@@ -305,7 +311,7 @@ public class GLCanvasHeatMap
 			verticalSelectionManager.initialAdd(set.getVA(iContentSelection).get(iColumnCount));
 			if (setMouseOver.contains(set.getVA(iContentSelection).get(iColumnCount)))
 			{
-				verticalSelectionManager.addToType(EViewInternalSelectionType.MOUSE_OVER,
+				verticalSelectionManager.addToType(ESelectionType.MOUSE_OVER,
 						set.getVA(iContentSelection).get(iColumnCount));
 			}
 		}
@@ -352,9 +358,9 @@ public class GLCanvasHeatMap
 //								EViewInternalSelectionType.SELECTION);
 
 						verticalSelectionManager
-								.clearSelection(EViewInternalSelectionType.SELECTION);
+								.clearSelection(ESelectionType.SELECTION);
 						verticalSelectionManager.addToType(
-								EViewInternalSelectionType.SELECTION, iExternalID);
+								ESelectionType.SELECTION, iExternalID);
 
 						if (eFieldDataType == EInputDataType.GENE)
 						{
@@ -371,9 +377,9 @@ public class GLCanvasHeatMap
 //								EViewInternalSelectionType.SELECTION);
 
 						verticalSelectionManager
-								.clearSelection(EViewInternalSelectionType.MOUSE_OVER);
+								.clearSelection(ESelectionType.MOUSE_OVER);
 						verticalSelectionManager.addToType(
-								EViewInternalSelectionType.MOUSE_OVER, iExternalID);
+								ESelectionType.MOUSE_OVER, iExternalID);
 
 						if (eFieldDataType == EInputDataType.GENE)
 						{
@@ -497,7 +503,7 @@ public class GLCanvasHeatMap
 		gl.glPopName();
 	}
 
-	private void renderSelection(final GL gl, EViewInternalSelectionType eSelectionType)
+	private void renderSelection(final GL gl, ESelectionType eSelectionType)
 	{
 
 		Set<Integer> selectedSet = verticalSelectionManager.getElements(eSelectionType);
