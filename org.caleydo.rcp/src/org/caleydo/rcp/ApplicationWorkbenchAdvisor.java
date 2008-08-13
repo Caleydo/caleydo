@@ -1,10 +1,6 @@
 package org.caleydo.rcp;
 
-import java.util.Iterator;
-
-import javax.media.opengl.GLEventListener;
-
-import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
@@ -28,7 +24,6 @@ import com.sun.opengl.util.FPSAnimator;
 public class ApplicationWorkbenchAdvisor
 	extends WorkbenchAdvisor
 {
-
 	private static final String PERSPECTIVE_ID = "org.caleydo.rcp.perspective";
 
 	protected Animator gLAnimator;
@@ -42,6 +37,10 @@ public class ApplicationWorkbenchAdvisor
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(
 			IWorkbenchWindowConfigurer configurer)
 	{
+		
+		PlatformUI.getPreferenceStore().setValue(
+				IWorkbenchPreferenceConstants.SHOW_PROGRESS_ON_STARTUP, true);
+		
 		return new ApplicationWorkbenchWindowAdvisor(configurer);
 	}
 
@@ -55,7 +54,7 @@ public class ApplicationWorkbenchAdvisor
 	{
 		return PERSPECTIVE_ID;
 	}
-
+	
 	/*
 	 * (non-Javadoc)
 	 * @see
@@ -64,15 +63,9 @@ public class ApplicationWorkbenchAdvisor
 	 */
 	public void initialize(IWorkbenchConfigurer configurer)
 	{
-
 		super.initialize(configurer);
-
+		
 		configurer.setSaveAndRestore(true);
-
-		PlatformUI.getPreferenceStore().setValue(
-				IWorkbenchPreferenceConstants.SHOW_PROGRESS_ON_STARTUP, true);
-
-		System.out.println(PlatformUI.getPreferenceStore().getBoolean("hui"));
 	}
 
 	/*
@@ -83,7 +76,7 @@ public class ApplicationWorkbenchAdvisor
 	{
 
 		super.postStartup();
-
+		
 		openLoadedViews();
 	}
 
@@ -97,6 +90,15 @@ public class ApplicationWorkbenchAdvisor
 		if (gLAnimator.isAnimating())
 			gLAnimator.stop();
 
+//		if (caleydoCore != null)
+//		{
+//			if (caleydoCore.isRunning())
+//			{
+//				caleydoCore.stop();
+//				caleydoCore = null;
+//			}
+//		}
+		
 		return true;
 	}
 
@@ -104,23 +106,19 @@ public class ApplicationWorkbenchAdvisor
 	{
 
 		// Initialize all GL views in RCP
-		Iterator<GLEventListener> iterGLEventListener = Application.generalManager
-				.getViewGLCanvasManager().getAllGLEventListeners().iterator();
-
-		GLCaleydoCanvas tmpCanvasForwarder;
-		GLEventListener tmpGLEventListener;
+		GLCaleydoCanvas canvas;
 		int iInstanceNum = 0;
 		AGLViewPart viewPart = null;
 
 		gLAnimator = new FPSAnimator(null, 60);
 
-		while (iterGLEventListener.hasNext())
+		for(AGLEventListener tmpGLEventListener : Application.generalManager
+				.getViewGLCanvasManager().getAllGLEventListeners())
 		{
-			tmpGLEventListener = iterGLEventListener.next();
-			tmpCanvasForwarder = ((AGLCanvasUser) tmpGLEventListener).getParentGLCanvas();
+			canvas = ((AGLEventListener) tmpGLEventListener).getParentGLCanvas();
 
 			// Ignore this event listener if there is no containing canvas view.
-			if (tmpCanvasForwarder == null)
+			if (canvas == null)
 				continue;
 
 			try
@@ -151,11 +149,11 @@ public class ApplicationWorkbenchAdvisor
 				if (viewPart == null)
 					continue;
 
-				viewPart.setCanvasForwader(tmpCanvasForwarder);
-				viewPart.setViewId(((AGLCanvasUser) tmpGLEventListener).getId());
+				viewPart.setGLCanvas(canvas);
+				viewPart.setViewId(((AGLEventListener) tmpGLEventListener).getID());
 				viewPart.createPartControlGL();
 
-				gLAnimator.add(tmpCanvasForwarder);
+				gLAnimator.add(canvas);
 
 				iInstanceNum++;
 

@@ -22,6 +22,7 @@ import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.gui.SWTGUIManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.ESelectionMode;
@@ -840,7 +841,6 @@ public class GLCanvasPathway3D
 	 */
 	public ArrayList<String> getInfo()
 	{
-
 		ArrayList<String> sAlInfo = new ArrayList<String>();
 
 		PathwayGraph pathway = ((PathwayGraph) generalManager.getPathwayManager().getItem(
@@ -851,6 +851,9 @@ public class GLCanvasPathway3D
 		sAlInfo.add("Type: " + pathway.getType().getName() + " Pathway");
 		sAlInfo.add(sPathwayTitle);
 
+		generalManager.getSWTGUIManager().setExternalRCPStatusLineMessage(
+				pathway.getType().getName() + " Pathway: " +sPathwayTitle);
+		
 		return sAlInfo;
 	}
 

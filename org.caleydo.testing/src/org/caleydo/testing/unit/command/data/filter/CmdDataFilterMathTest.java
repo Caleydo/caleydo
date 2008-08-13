@@ -2,7 +2,7 @@ package org.caleydo.testing.unit.command.data.filter;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.data.filter.CmdDataFilterMath;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.manager.IGeneralManager;
@@ -39,7 +39,7 @@ public class CmdDataFilterMathTest extends TestCase {
 	public void testNormalizeOverwiteFloat()
 	{	
 		CmdDataFilterMath createdCmd = (CmdDataFilterMath) myGeneralManager
-			.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MATH);
+			.getCommandManager().createCommandByType(CommandType.DATA_FILTER_MATH);
 		
 		ArrayList<Integer> floatStorageIDs = new ArrayList<Integer>();
 		floatStorageIDs.add(46301);
@@ -62,7 +62,7 @@ public class CmdDataFilterMathTest extends TestCase {
 	public void testNormalizeCopyFloat()
 	{	
 		CmdDataFilterMath createdCmd = (CmdDataFilterMath) myGeneralManager
-			.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MATH);
+			.getCommandManager().createCommandByType(CommandType.DATA_FILTER_MATH);
 		
 		ArrayList<Integer> floatStorageIDs = new ArrayList<Integer>();
 		floatStorageIDs.add(46301);		
@@ -93,7 +93,7 @@ public class CmdDataFilterMathTest extends TestCase {
 	public void testLinToLogOverwriteFloat()
 	{	
 		CmdDataFilterMath createdCmd = (CmdDataFilterMath) myGeneralManager
-			.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MATH);
+			.getCommandManager().createCommandByType(CommandType.DATA_FILTER_MATH);
 		
 		ArrayList<Integer> floatStorageIDs = new ArrayList<Integer>();
 		floatStorageIDs.add(46301);
@@ -116,7 +116,7 @@ public class CmdDataFilterMathTest extends TestCase {
 	public void testLinToLogCopyFloat()
 	{
 		CmdDataFilterMath createdCmd = (CmdDataFilterMath) myGeneralManager
-			.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MATH);
+			.getCommandManager().createCommandByType(CommandType.DATA_FILTER_MATH);
 		
 		ArrayList<Integer> floatStorageIDs = new ArrayList<Integer>();
 		floatStorageIDs.add(46301);		
@@ -147,7 +147,7 @@ public class CmdDataFilterMathTest extends TestCase {
 	public void testLogToLinOverwriteFloat()
 	{
 		CmdDataFilterMath createdCmd = (CmdDataFilterMath) myGeneralManager
-			.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MATH);
+			.getCommandManager().createCommandByType(CommandType.DATA_FILTER_MATH);
 		
 		ArrayList<Integer> floatStorageIDs = new ArrayList<Integer>();
 		floatStorageIDs.add(46301);
@@ -185,7 +185,7 @@ public class CmdDataFilterMathTest extends TestCase {
 	{
 			
 		CmdDataFilterMath createdCmd = (CmdDataFilterMath) myGeneralManager
-			.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MATH);
+			.getCommandManager().createCommandByType(CommandType.DATA_FILTER_MATH);
 		
 		ArrayList<Integer> floatStorageIDs = new ArrayList<Integer>();
 		floatStorageIDs.add(46301);

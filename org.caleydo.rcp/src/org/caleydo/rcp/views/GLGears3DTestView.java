@@ -84,13 +84,4 @@ public class GLGears3DTestView
 
 		super.dispose();
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
-	 */
-	public void setFocus()
-	{
-
-	}
 }

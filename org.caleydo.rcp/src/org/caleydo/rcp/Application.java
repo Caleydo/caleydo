@@ -20,7 +20,7 @@ import org.eclipse.ui.PlatformUI;
 public class Application
 	implements IApplication
 {
-	private CaleydoBootloader caleydoCore;
+	public static CaleydoBootloader caleydoCore;
 
 	/**
 	 * Getter method for the Caleydo general manager. Use this reference to get
@@ -64,9 +64,9 @@ public class Application
 		}
 		
 		// Create Caleydo core
-		caleydoCore = new CaleydoBootloader();
+		caleydoCore = new CaleydoBootloader(false);
 		generalManager = caleydoCore.getGeneralManager();
-
+		
 		Display display = PlatformUI.createDisplay();
 		
 		// Check if Caleydo will be started the first time
@@ -77,7 +77,7 @@ public class Application
 			firstStartWizard.open();
 		}
 		
-		startCaleydoCore(sCaleydoXMLfile);
+//		startCaleydoCore(sCaleydoXMLfile);
 		
 		try
 		{
@@ -120,7 +120,7 @@ public class Application
 		});
 	}
 
-	protected void startCaleydoCore(final String sXmlFileName)
+	public void startCaleydoCore(final String sXmlFileName)
 	{
 		// If no file is provided as command line argument a XML file open
 		// dialog is opened

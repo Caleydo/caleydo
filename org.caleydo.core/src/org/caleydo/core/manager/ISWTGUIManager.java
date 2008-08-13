@@ -2,7 +2,9 @@ package org.caleydo.core.manager;
 
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.swt.ISWTWidget;
+import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 
@@ -31,22 +33,13 @@ public interface ISWTGUIManager
 
 	public void runApplication();
 
-	public void setLoadingProgressBarPercentage(int iPercentage);
-	
-	public void setLoadingProgressBarPercentageFromExternalThread(int iPercentage);
-	
-	public void setLoadingProgressBarText(String sText);
-	
-	public void setLoadingProgressBarTextFromExternalThread(final String sText);
-
-	/**
-	 * Show or hide the "global" progress bar.
-	 * 
-	 * @param state TRUE enables the progress bar and shows it; FALSE hides the
-	 *            progressbar.
-	 */
-	public void setProgressbarVisible(final boolean state);
-	
+	public void setProgressBarPercentage(int iPercentage);
+	public void setProgressBarPercentageFromExternalThread(int iPercentage);
+	public void setProgressBarText(String sText);
+	public void setProgressBarTextFromExternalThread(final String sText);
+	public void setProgressBarVisible(final boolean state);
 	public void setExternalProgressBarAndLabel(ProgressBar progressBar, Label progressLabel);
 
+	public void setExternalRCPStatusLineMessage(final String sMessage);
+	public void setExternalRCPStatusLine(IStatusLineManager statusLine, Display display);
 }

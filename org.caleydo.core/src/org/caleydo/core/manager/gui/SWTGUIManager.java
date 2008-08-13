@@ -14,6 +14,7 @@ import org.caleydo.core.view.swt.widget.ASWTWidget;
 import org.caleydo.core.view.swt.widget.SWTEmbeddedGraphWidget;
 import org.caleydo.core.view.swt.widget.SWTEmbeddedJoglWidget;
 import org.caleydo.core.view.swt.widget.SWTNativeWidget;
+import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -57,6 +58,8 @@ implements ISWTGUIManager
 	protected ProgressBar loadingProgressBar;
 	
 	protected Label loadingProgressBarLabel;
+	
+	protected IStatusLineManager externalRCPStatusLine;
 
 	/**
 	 * Constructor.
@@ -231,7 +234,7 @@ implements ISWTGUIManager
 		Shell currentShell;
 
 		// Close loading progress bar after bootstrapping is completed.
-		setProgressbarVisible(false);
+		setProgressBarVisible(false);
 
 		shellIterator = windowMap.values().iterator();
 		while (shellIterator.hasNext())
@@ -270,14 +273,14 @@ implements ISWTGUIManager
 	}
 
 	@Override
-	public void setLoadingProgressBarPercentage(int iPercentage)
+	public void setProgressBarPercentage(int iPercentage)
 	{
 		loadingProgressBar.setSelection(iPercentage);
 	}
 	
 	
 	@Override
-	public void setLoadingProgressBarPercentageFromExternalThread(final int iPercentage)
+	public void setProgressBarPercentageFromExternalThread(final int iPercentage)
 	{
 		if (loadingProgressBar.isDisposed())
 			return;
@@ -294,7 +297,7 @@ implements ISWTGUIManager
 	}
 	
 	@Override
-	public void setLoadingProgressBarText(String sText)
+	public void setProgressBarText(String sText)
 	{
 		if (generalManager.isStandalone())
 		{
@@ -309,7 +312,7 @@ implements ISWTGUIManager
 	}
 
 	@Override
-	public void setLoadingProgressBarTextFromExternalThread(final String sText)
+	public void setProgressBarTextFromExternalThread(final String sText)
 	{
 		if (loadingProgressBar.isDisposed())
 			return;
@@ -318,20 +321,43 @@ implements ISWTGUIManager
 		{
 			public void run()
 			{
-				setLoadingProgressBarText(sText);
+				setProgressBarText(sText);
 			}
 		});
 	}
 	
-	public void setProgressbarVisible(final boolean state)
+	public void setProgressBarVisible(final boolean state)
 	{
 //		loadingProgressBarWindow.setVisible(state);
 //		loadingProgressBar.setVisible(state);
 	}
 	
+	@Override
 	public void setExternalProgressBarAndLabel(ProgressBar progressBar, Label progressLabel)
 	{
 		this.loadingProgressBar = progressBar;
 		this.loadingProgressBarLabel = progressLabel;
+	}
+	
+	@Override
+	public void setExternalRCPStatusLine(IStatusLineManager statusLine, Display display)
+	{
+		this.display = display;
+		this.externalRCPStatusLine = statusLine;
+	}
+	
+	@Override
+	public void setExternalRCPStatusLineMessage(final String sMessage)
+	{
+		if (externalRCPStatusLine == null)
+			return;
+		
+		display.asyncExec(new Runnable()
+		{
+			public void run()
+			{
+				externalRCPStatusLine.setMessage(sMessage);
+			}
+		});
 	}
 }

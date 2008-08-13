@@ -130,7 +130,7 @@ public class LookupTableHashMapLoader
 			// Update progress bar only on each 100th line
 			if (iLineInFile % 1000 == 0)
 			{
-				generalManager.getSWTGUIManager().setLoadingProgressBarPercentage(
+				generalManager.getSWTGUIManager().setProgressBarPercentage(
 						(int)(fProgressBarFactor * iLineInFile));
 			}
 		}

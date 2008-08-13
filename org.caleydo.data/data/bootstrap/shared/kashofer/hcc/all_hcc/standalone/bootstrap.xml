@@ -21,14 +21,14 @@
 							gl_rotation="0 0 0 0"					
 							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
 							attrib4="transparency 0.6" 
-							detail="85101@62101 63101" /> 
+							detail="85101" /> 
 							
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEAT_MAP_3D"		cmdId="69994"	uniqueId="84401" parent="-1" label="Parallel Coordinates" 
 							gl_origin="0 0 0" 
 							gl_rotation="0 0 0 0"					
 							attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
 							attrib4="transparency 0.6" 
-							detail="85101@64101 65101" /> 				
+							detail="85101" /> 				
 					
 		<!-- Window	10331 -->	
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="10331" 
@@ -42,7 +42,7 @@
 							gl_rotation="0 0 0 0"					
 							attrib3="PERSPECTIVE -1.5 1.5 -1.5 1.5 2.9 100"
 							attrib4="transparency 1" 								
-							detail="85101@66101" /> 				    
+							detail="85101" /> 				    
 				
 		<!-- Setting paths and trigger pathway loading -->	
 		<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set Biocarta Pathway Paths" 

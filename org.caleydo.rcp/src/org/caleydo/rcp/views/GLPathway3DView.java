@@ -5,7 +5,6 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 public class GLPathway3DView
 	extends AGLViewPart
@@ -50,27 +49,6 @@ public class GLPathway3DView
 	}
 
 	protected void fillLocalToolBar(IToolBarManager manager)
-	{
-
-	}
-
-	/**
-	 * We can use this method to dispose of any system resources we previously
-	 * allocated.
-	 * 
-	 * @see IWorkbenchWindowActionDelegate#dispose
-	 */
-	public void dispose()
-	{
-
-		super.dispose();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
-	 */
-	public void setFocus()
 	{
 
 	}

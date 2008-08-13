@@ -120,7 +120,7 @@ public class CmdLoadFileNStorages
 	{
 		generalManager.getLogger().log(
 				Level.INFO,
-				"Load data file " + sFileName + " using token pattern " + sTokenPattern
+				"Loading data from file " + sFileName + " using token pattern " + sTokenPattern
 						+ ". Data is stored in Storage with ID "
 						+ iAlStorageIDs.toString());
 

@@ -36,8 +36,7 @@ public abstract class AGLViewPart
 	protected Frame frameGL;
 	protected Shell swtShell;
 	protected Composite swtComposite;
-	protected GLCaleydoCanvas canvasForwarder;
-	protected GLCanvas glCanvas;
+	protected GLCaleydoCanvas glCanvas;
 
 	protected int iViewID;
 
@@ -55,9 +54,9 @@ public abstract class AGLViewPart
 		super();
 	}
 
-	public void setCanvasForwader(final GLCaleydoCanvas canvasForwarder)
+	public void setGLCanvas(final GLCaleydoCanvas glCanvas)
 	{
-		this.canvasForwarder = canvasForwarder;
+		this.glCanvas = glCanvas;
 	}
 
 	public void setViewId(final int iViewID)
@@ -99,7 +98,7 @@ public abstract class AGLViewPart
 			frameGL = SWT_AWT.new_Frame(swtComposite);
 		}
 
-		frameGL.add(canvasForwarder);
+		frameGL.add(glCanvas);
 		// frameGL.addWindowListener(new WindowAdapter() {
 		// public void windowClosing(WindowEvent e) {
 		//		        	
@@ -120,43 +119,14 @@ public abstract class AGLViewPart
 		// animatorGL.start();
 		// }
 	}
-
-	// protected final void setGLCanvasVisible( boolean visible) {
-	// if (( frameGL == null)||( animatorGL== null )) {
-	// return;
-	// }
-	//		
-	// if ( visible != frameGL.isVisible() ) {
-	// /* state change for GL canvas */
-	// frameGL.setVisible(visible);
-	//			
-	// /* animatorGL */
-	// if ( visible ) {
-	// // is visible
-	// //showMessage("Info - Action 1", "enable AWT frame, restart animator");
-	// if ( !animatorGL.isAnimating() ) {
-	// animatorGL.start();
-	// }
-	// } else {
-	// // not visible
-	// //showMessage("Info - Action 1", "disable AWT frame, stop animator");
-	// if ( animatorGL.isAnimating() ) {
-	// animatorGL.stop();
-	// }
-	// }
-	//			
-	// }
-	// }
-
 	/*
 	 * (non-Javadoc)
 	 * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
 	 */
 	@Override
-	public void setFocus()
+	public final void setFocus()
 	{
-		// TODO Auto-generated method stub
-
+		// nothing to do at the moment
 	}
 
 	/*
@@ -223,9 +193,6 @@ public abstract class AGLViewPart
 
 	private void createWriteScreenshotAction()
 	{
-
-		// showMessage("Action 1", "make new action [toggle JOGL frame]");
-
 		actWriteScreenshot = new Action()
 		{
 			public void run()
@@ -239,7 +206,5 @@ public abstract class AGLViewPart
 		actWriteScreenshot.setToolTipText(ACTION_WRITE_SCREENSHOT_TEXT);
 		actWriteScreenshot.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass()
 				.getClassLoader().getResource(ACTION_WRITE_SCREENSHOT_ICON)));
-
-		// showMessage("Action 1","executed toggle JOGL frame");
 	}
 }

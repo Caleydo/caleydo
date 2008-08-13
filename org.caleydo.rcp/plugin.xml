@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.2"?>
 <plugin>
+   <extension-point id="splashExtension" name="Splash Extensions" schema="schema/splashExtension.exsd"/>
 
    <extension
          id="application"
@@ -74,24 +75,6 @@
       </view> 
       
       <view
-            id="org.caleydo.rcp.views.browser.browserView"
-            name="Caleydo browser"
-            icon="resources/icons/browser.png"
-            class="org.caleydo.rcp.views.browser.BrowserView"
-            category="org.caleydo.rcp.jogl.view.jframe"
-            allowMultiple="true">
-      </view>
-      
-      <view
-            id="org.caleydo.rcp.views.Pathway2DView"
-            name="Pathway 2D"
-            icon="resources/icons/pathway2D.png"
-            class="org.caleydo.rcp.views.Pathway2DView"
-            category="org.caleydo.rcp.jogl.view.jframe"
-            allowMultiple="true">
-      </view>      
-      
-      <view
             id="org.caleydo.rcp.views.HTMLBrowserView"
             name="Browser"
             icon="resources/icons/browser.png"
@@ -128,23 +111,111 @@
                name="windowImages"
                value="resources/icons/caleydo/caleydo16.gif,resources/icons/caleydo/caleydo32.gif,resources/icons/caleydo/caleydo48.gif,resources/icons/caleydo/caleydo64.gif,resources/icons/caleydo/caleydo128.gif">
          </property>
+         
+                  <property
+                                    name="preferenceCustomization"
+                                    value="plugin_customization.ini"/>
+                <property name="startupForegroundColor" value="FFFF80"/>
+         <property name="startupMessageRect" value="250,44,250,20"/>
+         <property name="startupProgressRect" value="0,64,501,15"/>
          <property
                name="startupForegroundColor"
-               value="000000">
+               value="FFFFFF">
          </property>
          <property
                name="startupMessageRect"
-               value="7,252,445,20">
+               value="7,175,445,20">
          </property>
          <property
                name="startupProgressRect"
-               value="5,275,445,15">
+               value="5,190,445,15">
          </property>
          <property
                name="preferenceCustomization"
                value="plugin_customization.ini">
          </property>
       </product>
+   </extension>
+   <extension
+         point="org.eclipse.ui.splashHandlers">
+      <splashHandler
+            class="org.caleydo.rcp.splashHandlers.ExtensibleSplashHandler"
+            id="org.caleydo.rcp.splashHandlers.extensible">
+      </splashHandler>
+      <splashHandlerProductBinding
+            productId="org.caleydo.rcp.product"
+            splashId="org.caleydo.rcp.splashHandlers.extensible">
+      </splashHandlerProductBinding>
+   </extension>
+   <extension
+         point="org.caleydo.rcp.splashExtension">
+   </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.ExitHandler"
+            id="org.caleydo.rcp.command.exit"
+            name="Exit">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.FullScreenHandler"
+            id="org.caleydo.rcp.command.fullscreen"
+            name="Full Screen">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="fileMenu"
+               label="File">
+            <command
+                  commandId="org.caleydo.rcp.command.exit"
+                  label="Exit"
+                  mnemonic="E"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               id="windowMenu"
+               label="Window">
+            <command
+                  commandId="org.caleydo.rcp.command.fullscreen"
+                  label="Full Screen"
+                  mnemonic="F"
+                  style="push">
+            </command>
+         </menu>
+         <menu
+               id="adminMenu"
+               label="Admin">
+            <command
+                  commandId="org.eclipse.ui.views.showView"
+                  label="Show error log"
+                  style="push">
+               <parameter
+                     name="org.eclipse.ui.views.showView.viewId"
+                     value="org.eclipse.pde.runtime.LogView">
+               </parameter>
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="org.caleydo.rcp.actionSet"
+            label="actionSet"
+            visible="true">
+         <action
+               class="org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction"
+               id="org.caleydo.rcp.action.progressindicator"
+               label="Progress Indicator"
+               state="true"
+               style="push">
+         </action>
+      </actionSet>
    </extension>
 
 </plugin>

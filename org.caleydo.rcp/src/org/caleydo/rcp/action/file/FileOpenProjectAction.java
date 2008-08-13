@@ -2,6 +2,7 @@ package org.caleydo.rcp.action.file;
 
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.image.IImageKeys;
+import org.caleydo.rcp.splashHandlers.ExtensibleSplashHandler;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;

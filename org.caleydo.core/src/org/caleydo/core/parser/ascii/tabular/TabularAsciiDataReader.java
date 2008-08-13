@@ -177,7 +177,7 @@ public class TabularAsciiDataReader
 		allocateStorageBufferForTokenPattern();
 
 		// Init progress bar
-		swtGuiManager.setLoadingProgressBarText("Load data file " + this.getFileName());
+		swtGuiManager.setProgressBarText("Load data file " + this.getFileName());
 		
 		String sLine;
 
@@ -252,7 +252,7 @@ public class TabularAsciiDataReader
 			// Update progress bar only on each 100th line
 			if (iLineInFile % 1000 == 0)
 			{
-				generalManager.getSWTGUIManager().setLoadingProgressBarPercentage(
+				generalManager.getSWTGUIManager().setProgressBarPercentage(
 						(int)(fProgressBarFactor * iLineInFile));
 			}
 		}

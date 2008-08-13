@@ -28,16 +28,15 @@ All Rights Reserved.
 
    <splash
       location="org.caleydo.rcp"
-      startupProgressRect="5,275,445,15"
-      startupMessageRect="7,252,445,20"
-      startupForegroundColor="000000" />
+      startupProgressRect="0,0,100,15"
+      startupMessageRect="0,15,100,20"
+      startupForegroundColor="FFA500" />
    <launcher name="caleydo">
       <solaris/>
       <win useIco="false">
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
    </vm>

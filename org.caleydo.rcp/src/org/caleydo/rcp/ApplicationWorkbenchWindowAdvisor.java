@@ -1,7 +1,6 @@
 package org.caleydo.rcp;
 
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
@@ -20,46 +19,35 @@ public class ApplicationWorkbenchWindowAdvisor
 		super(configurer);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.ui.application.WorkbenchWindowAdvisor#createActionBarAdvisor
-	 * (org.eclipse.ui.application.IActionBarConfigurer)
-	 */
+	@Override
 	public ActionBarAdvisor createActionBarAdvisor(IActionBarConfigurer configurer)
 	{
 
 		return new ApplicationActionBarAdvisor(configurer);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.application.WorkbenchWindowAdvisor#preWindowOpen()
-	 */
+	@Override
 	public void preWindowOpen()
 	{
-
+		super.preWindowOpen();
+		
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
 		configurer.setInitialSize(new Point(400, 300));
 		configurer.setShowCoolBar(false);
-		configurer.setShowStatusLine(false);
-		configurer.setShowProgressIndicator(false);
-
-		/**
-		 * Top Level Menu
-		 */
-		configurer.setShowMenuBar(true);
+		configurer.setShowStatusLine(true);
+		configurer.setShowProgressIndicator(true);
 	}
-
-	/*
-     * 
-     */
-	protected void fillMenuBar(IMenuManager menuBar)
+	
+	@Override
+	public void postWindowCreate()
 	{
-		MenuManager geneviewMenu = new MenuManager("&Caleydo", "caleydo");
-		MenuManager helpMenu = new MenuManager("&Help", "help");
-		// helpMenu.add(aboutAction);
-		menuBar.add(geneviewMenu);
-		menuBar.add(helpMenu);
+		super.postWindowCreate();
+		
+		getWindowConfigurer().getWindow().getShell().setMaximized(true);
+		
+		// Set status line in caleydo core
+		Application.generalManager.getSWTGUIManager().setExternalRCPStatusLine(
+				getWindowConfigurer().getActionBarConfigurer().getStatusLineManager(), 
+				getWindowConfigurer().getWindow().getShell().getDisplay());
 	}
 }

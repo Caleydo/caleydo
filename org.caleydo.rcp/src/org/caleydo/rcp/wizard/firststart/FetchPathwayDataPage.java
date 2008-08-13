@@ -1,12 +1,7 @@
 package org.caleydo.rcp.wizard.firststart;
 
-import java.io.FileNotFoundException;
-
-import org.caleydo.core.application.helper.PathwayListGenerator;
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.rcp.Application;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
@@ -54,7 +49,7 @@ public final class FetchPathwayDataPage
 		final Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new RowLayout(SWT.VERTICAL));
 
-		Button buttonStartFetch = new Button(composite, SWT.NONE);
+		final Button buttonStartFetch = new Button(composite, SWT.NONE);
 		buttonStartFetch.setText("Start pathway fetching");
 		
 		Group progressBarGroup = new Group(composite, SWT.NONE);
@@ -90,7 +85,7 @@ public final class FetchPathwayDataPage
 			public void widgetSelected(SelectionEvent e)
 			{
 				CmdFetchPathwayData cmdPathwayFetch = (CmdFetchPathwayData) Application.generalManager.getCommandManager().createCommandByType(
-						CommandQueueSaxType.FETCH_PATHWAY_DATA);
+						CommandType.FETCH_PATHWAY_DATA);
 			
 				cmdPathwayFetch.setAttributes(composite.getDisplay(),
 						progressBarKeggPathwayCacher,
@@ -99,6 +94,8 @@ public final class FetchPathwayDataPage
 						thisPage);
 				
 				cmdPathwayFetch.doCommand();
+				
+				buttonStartFetch.setEnabled(false);
 			}
 		});
 		

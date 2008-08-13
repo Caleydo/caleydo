@@ -70,13 +70,14 @@ public class PathwayLoaderThread
 
 		while (iterPathwayDatabase.hasNext())
 		{
-			loadAllPathwaysByType(iterPathwayDatabase.next());
+			loadAllPathwaysByType(generalManager, iterPathwayDatabase.next());
 		}
 
 		notifyViews();
 	}
 
-	private void loadAllPathwaysByType(final PathwayDatabase pathwayDatabase)
+	public static void loadAllPathwaysByType(final IGeneralManager generalManager,
+			final PathwayDatabase pathwayDatabase)
 	{
 		// // Try reading list of files directly from local hard dist
 		// File folder = new File(sXMLPath);
@@ -105,7 +106,7 @@ public class PathwayLoaderThread
 			sFileName = generalManager.getCaleydoHomePath() + PATHWAY_LIST_KEGG;
 			fProgressFactor = 100f / APPROX_PATHWAY_COUNT_KEGG ;
 			
-			generalManager.getSWTGUIManager().setLoadingProgressBarTextFromExternalThread(
+			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread(
 					"Loading KEGG Pathways...");
 		}
 		else if (pathwayDatabase.getName().equals("BioCarta"))
@@ -113,16 +114,16 @@ public class PathwayLoaderThread
 			sFileName = generalManager.getCaleydoHomePath() + PATHWAY_LIST_BIOCARTA;
 			fProgressFactor = 100f / APPROX_PATHWAY_COUNT_BIOCARTA;
 			
-			generalManager.getSWTGUIManager().setLoadingProgressBarTextFromExternalThread(
+			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread(
 				"Loading BioCarta Pathways...");
 		}
 		
 		int iPathwayIndex = 0;
 		try
 		{
-			if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null)
+			if (generalManager.getClass().getClassLoader().getResourceAsStream(sFileName) != null)
 			{
-				file = new BufferedReader(new InputStreamReader(this.getClass()
+				file = new BufferedReader(new InputStreamReader(generalManager.getClass()
 						.getClassLoader().getResourceAsStream(sFileName)));
 			}
 			else
@@ -167,7 +168,7 @@ public class PathwayLoaderThread
 				// Update progress bar only on each 10th pathway
 				if (iPathwayIndex % 10 == 0)
 				{
-					generalManager.getSWTGUIManager().setLoadingProgressBarPercentageFromExternalThread(
+					generalManager.getSWTGUIManager().setProgressBarPercentageFromExternalThread(
 							(int)(fProgressFactor * iPathwayIndex));
 				}
 			}

@@ -53,25 +53,4 @@ public class GLParCoordsView
 	{
 
 	}
-
-	/**
-	 * We can use this method to dispose of any system resources we previously
-	 * allocated.
-	 * 
-	 * @see IWorkbenchWindowActionDelegate#dispose
-	 */
-	public void dispose()
-	{
-
-		super.dispose();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
-	 */
-	public void setFocus()
-	{
-
-	}
 }

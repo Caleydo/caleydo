@@ -1,5 +1,5 @@
 package org.caleydo.testing.unit.command.data.filter;
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.data.filter.CmdDataFilterMinMax;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.EStorageType;
@@ -44,7 +44,7 @@ public class CmdDataFiterMinMaxTest extends TestCase {
 		
 		IStorage myStorage = myGeneralManager.getStorageManager().getStorage(46301);
 		
-		CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) myGeneralManager.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+		CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) myGeneralManager.getCommandManager().createCommandByType(CommandType.DATA_FILTER_MIN_MAX);
 		
 		createdCmd.setAttributes(myStorage, EStorageType.FLOAT);
 		
@@ -58,7 +58,7 @@ public class CmdDataFiterMinMaxTest extends TestCase {
 	{
 		IStorage myStorage = myGeneralManager.getStorageManager().getStorage(45301);
 		
-		CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) myGeneralManager.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+		CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) myGeneralManager.getCommandManager().createCommandByType(CommandType.DATA_FILTER_MIN_MAX);
 		
 		createdCmd.setAttributes(myStorage, EStorageType.INT);
 		
@@ -73,7 +73,7 @@ public class CmdDataFiterMinMaxTest extends TestCase {
 	{
 		IStorage myStorage = myGeneralManager.getStorageManager().getStorage(47301);
 		
-		CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) myGeneralManager.getCommandManager().createCommandByType(CommandQueueSaxType.DATA_FILTER_MIN_MAX);
+		CmdDataFilterMinMax createdCmd = (CmdDataFilterMinMax) myGeneralManager.getCommandManager().createCommandByType(CommandType.DATA_FILTER_MIN_MAX);
 		
 		createdCmd.setAttributes(myStorage, StorageType.EStorageType);
 		

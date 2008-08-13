@@ -126,9 +126,9 @@ public final class LookupTableLoaderProxy
 	protected void loadDataParseFile(BufferedReader brFile, final int iNumberOfLinesInFile)
 			throws IOException
 	{
-		swtGuiManager.setLoadingProgressBarPercentage(0);
-		swtGuiManager.setLoadingProgressBarText(
-				"Load Lookuptable from file " + getFileName());
+		swtGuiManager.setProgressBarPercentage(0);
+		swtGuiManager.setProgressBarText(
+				"Loading mapping from file " + getFileName());
 
 		proxyLookupTableLoader.loadDataParseFileLUT(brFile,
 				iNumberOfLinesInFile);

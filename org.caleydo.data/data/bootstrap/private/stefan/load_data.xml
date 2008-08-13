@@ -22,18 +22,11 @@
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="453110" label="overalFreeSurvival"	attrib1="NOMINAL" 	attrib2="test data	from file" />
 
 
-
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="351010" label="Set for clinical data" attrib1="352010" attrib2="453010 453020 453030 453040 453050 453060 453070 453080 453090 453100 453110" attrib3="CLINICAL_DATA" />
 
 	<!-- Data file loading -->
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/clinical/asslaber/clinical_data_min.csv"
 			attrib1="STRING;STRING;STRING;STRING;STRING;STRING;STRING;STRING;STRING;STRING;STRING;ABORT"	attrib2="453010 453020 453030 453040 453050 453060 453070 453080 453090 453100 453110" attrib3="1 -1" />
-
-
-	<!-- Create Selection Set -->
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" 	cmdId="69991"   uniqueId="901010" />
-
-
 
 
 </details>

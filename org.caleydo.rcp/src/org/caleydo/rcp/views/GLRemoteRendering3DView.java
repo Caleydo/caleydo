@@ -1,6 +1,6 @@
 package org.caleydo.rcp.views;
 
-import org.caleydo.core.command.CommandQueueSaxType;
+import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.view.rcp.CmdExternalActionTrigger;
 import org.caleydo.core.command.view.rcp.CmdExternalFlagSetter;
 import org.caleydo.core.command.view.rcp.EExternalActionType;
@@ -15,7 +15,6 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 public class GLRemoteRendering3DView
 	extends AGLViewPart
@@ -100,27 +99,6 @@ public class GLRemoteRendering3DView
 		manager.add(actEnableGeneMapping);
 		manager.add(actEnablePathwayTextures);
 		manager.add(actEnableNeighborhood);
-	}
-
-	/**
-	 * We can use this method to dispose of any system resources we previously
-	 * allocated.
-	 * 
-	 * @see IWorkbenchWindowActionDelegate#dispose
-	 */
-	public void dispose()
-	{
-
-		super.dispose();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
-	 */
-	public void setFocus()
-	{
-
 	}
 
 	private void createToggleLayoutStyleAction()
@@ -225,7 +203,7 @@ public class GLRemoteRendering3DView
 
 		CmdExternalActionTrigger tmpCmd = (CmdExternalActionTrigger) Application.generalManager
 				.getCommandManager().createCommandByType(
-						CommandQueueSaxType.EXTERNAL_ACTION_TRIGGER);
+						CommandType.EXTERNAL_ACTION_TRIGGER);
 
 		tmpCmd.setAttributes(iViewID, type);
 		tmpCmd.doCommand();
@@ -236,7 +214,7 @@ public class GLRemoteRendering3DView
 
 		CmdExternalFlagSetter tmpCmd = (CmdExternalFlagSetter) Application.generalManager
 				.getCommandManager().createCommandByType(
-						CommandQueueSaxType.EXTERNAL_FLAG_SETTER);
+						CommandType.EXTERNAL_FLAG_SETTER);
 
 		tmpCmd.setAttributes(iViewID, bFlag, type);
 		tmpCmd.doCommand();
