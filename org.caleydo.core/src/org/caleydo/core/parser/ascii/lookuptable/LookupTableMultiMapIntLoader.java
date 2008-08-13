@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.ascii.lookuptable.ALookupTableLoader;
 import org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader;
@@ -28,7 +28,7 @@ public class LookupTableMultiMapIntLoader
 	 * @param setFileName
 	 */
 	public LookupTableMultiMapIntLoader(final IGeneralManager setGeneralManager,
-			final String setFileName, final EGenomeMappingType genomeIdType,
+			final String setFileName, final EMappingType genomeIdType,
 			final LookupTableLoaderProxy setLookupTableLoaderProxy)
 	{
 
@@ -125,7 +125,7 @@ public class LookupTableMultiMapIntLoader
 	}
 
 	public void setMultiMapInteger(MultiHashArrayIntegerMap setMultiHashMap,
-			EGenomeMappingType type)
+			EMappingType type)
 	{
 
 		// genomeIdManager.

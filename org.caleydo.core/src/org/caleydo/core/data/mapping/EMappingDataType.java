@@ -6,7 +6,7 @@ package org.caleydo.core.data.mapping;
  * @author Michael Kalkusch
  * @author Marc Streit
  */
-public enum EGenomeMappingDataType
+public enum EMappingDataType
 {
 
 	INT2INT(false, false),
@@ -23,7 +23,7 @@ public enum EGenomeMappingDataType
 
 	private final boolean bIsLokupTable;
 
-	private EGenomeMappingDataType(boolean bEnableUseMultiMap, boolean bEnableIsLokupTable)
+	private EMappingDataType(boolean bEnableUseMultiMap, boolean bEnableIsLokupTable)
 	{
 
 		this.bUseMultiMap = bEnableUseMultiMap;

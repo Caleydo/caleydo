@@ -7,7 +7,7 @@ import java.util.logging.Level;
 import org.caleydo.core.data.graph.pathway.item.edge.PathwayReactionEdgeGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
@@ -250,7 +250,7 @@ public class KgmlSaxHandler
 
 				iDavidId = generalManager.getGenomeIdManager().getIdIntFromIntByMapping(
 						StringConversionTool.convertStringToInt(sTmpVertexName.substring(4),
-								-1), EGenomeMappingType.ENTREZ_GENE_ID_2_DAVID);
+								-1), EMappingType.ENTREZ_GENE_ID_2_DAVID);
 
 				if (iDavidId == -1)
 				{

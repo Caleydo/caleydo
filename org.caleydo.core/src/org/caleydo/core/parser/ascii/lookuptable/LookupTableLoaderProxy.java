@@ -7,8 +7,8 @@ import java.util.Iterator;
 import java.util.Set;
 import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
 import org.caleydo.core.data.map.MultiHashArrayStringMap;
-import org.caleydo.core.data.mapping.EGenomeMappingDataType;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.mapping.EMappingDataType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
 import org.caleydo.core.manager.specialized.genome.id.GenomeIdManager;
@@ -29,8 +29,8 @@ public final class LookupTableLoaderProxy
 	 * Constructor.
 	 */
 	public LookupTableLoaderProxy(final IGeneralManager generalManager,
-			final String sFileName, final EGenomeMappingType genomeIdType,
-			final EGenomeMappingDataType type)
+			final String sFileName, final EMappingType genomeIdType,
+			final EMappingDataType type)
 	{
 
 		super(generalManager, sFileName);
@@ -112,7 +112,7 @@ public final class LookupTableLoaderProxy
 		proxyLookupTableLoader.initLUT();
 	}
 
-	public void setHashMap(final IGenomeIdMap setHashMap, final EGenomeMappingType type)
+	public void setHashMap(final IGenomeIdMap setHashMap, final EMappingType type)
 	{
 
 		proxyLookupTableLoader.setHashMap(setHashMap, type);
@@ -175,8 +175,8 @@ public final class LookupTableLoaderProxy
 	}
 
 	public final IGenomeIdMap createReverseMapFromMap(final IGeneralManager generalManager,
-			final EGenomeMappingType originMultiMapType,
-			final EGenomeMappingType targetMultiMapType)
+			final EMappingType originMultiMapType,
+			final EMappingType targetMultiMapType)
 	{
 
 		/* consistency check */
@@ -208,14 +208,14 @@ public final class LookupTableLoaderProxy
 	 * @return new MultiHashArrayIntegerMap
 	 */
 	public final MultiHashArrayIntegerMap createReverseMultiMapFromMultiMapInt(
-			final IGeneralManager generalManager, final EGenomeMappingType originMultiMapType,
-			final EGenomeMappingType targetMultiMapType)
+			final IGeneralManager generalManager, final EMappingType originMultiMapType,
+			final EMappingType targetMultiMapType)
 	{
 
 		/* consistency check */
 		if ((originMultiMapType.getTypeOrigin() != targetMultiMapType.getTypeTarget())
 				|| (originMultiMapType.getTypeTarget() != targetMultiMapType.getTypeOrigin())
-				|| (originMultiMapType.getDataMapppingType() != EGenomeMappingDataType.MULTI_INT2INT))
+				|| (originMultiMapType.getDataMapppingType() != EMappingDataType.MULTI_INT2INT))
 		{
 			assert false : "Can not create reverse multimap, because originMultMapType and targetMultMapType do not match!";
 			return null;
@@ -264,14 +264,14 @@ public final class LookupTableLoaderProxy
 	 * @return new MultiHashArrayStringMap
 	 */
 	public final MultiHashArrayStringMap createReverseMultiMapFromMultiMapString(
-			final IGeneralManager generalManager, final EGenomeMappingType originMultiMapType,
-			final EGenomeMappingType targetMultiMapType)
+			final IGeneralManager generalManager, final EMappingType originMultiMapType,
+			final EMappingType targetMultiMapType)
 	{
 
 		/* consistency check */
 		if ((originMultiMapType.getTypeOrigin() != targetMultiMapType.getTypeTarget())
 				|| (originMultiMapType.getTypeTarget() != targetMultiMapType.getTypeOrigin())
-				|| (originMultiMapType.getDataMapppingType() != EGenomeMappingDataType.MULTI_INT2INT))
+				|| (originMultiMapType.getDataMapppingType() != EMappingDataType.MULTI_INT2INT))
 		{
 			assert false : "Can not create reverse multimap, because originMultMapType and targetMultMapType do not match!";
 			return null;
@@ -311,9 +311,9 @@ public final class LookupTableLoaderProxy
 	}
 
 	public final IGenomeIdMap createCodeResolvedMapFromMap(
-			final IGeneralManager generalManager, EGenomeMappingType originMapMappingType,
-			EGenomeMappingType genomeMappingLUT_1, EGenomeMappingType genomeMappingLUT_2,
-			EGenomeMappingDataType sourceMapMappingType)
+			final IGeneralManager generalManager, EMappingType originMapMappingType,
+			EMappingType genomeMappingLUT_1, EMappingType genomeMappingLUT_2,
+			EMappingDataType sourceMapMappingType)
 	{
 
 		GenomeIdManager dgi_mng = (GenomeIdManager) generalManager.getGenomeIdManager();
@@ -333,8 +333,8 @@ public final class LookupTableLoaderProxy
 	}
 
 	public final MultiHashArrayIntegerMap createCodeResolvedMultiMapFromMultiMapString(
-			final IGeneralManager generalManager, EGenomeMappingType originMapMappingType,
-			EGenomeMappingType genomeMappingLUT_1, EGenomeMappingType genomeMappingLUT_2)
+			final IGeneralManager generalManager, EMappingType originMapMappingType,
+			EMappingType genomeMappingLUT_1, EMappingType genomeMappingLUT_2)
 	{
 
 		GenomeIdManager dgi_mng = (GenomeIdManager) generalManager.getGenomeIdManager();

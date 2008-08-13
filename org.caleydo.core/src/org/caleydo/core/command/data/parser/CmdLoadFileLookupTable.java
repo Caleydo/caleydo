@@ -3,8 +3,8 @@ package org.caleydo.core.command.data.parser;
 import java.util.StringTokenizer;
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACommand;
-import org.caleydo.core.data.mapping.EGenomeMappingDataType;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.mapping.EMappingDataType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.parser.ascii.lookuptable.LookupTableLoaderProxy;
@@ -40,7 +40,7 @@ public class CmdLoadFileLookupTable
 	/**
 	 * Define type of lookup table to be created.
 	 * 
-	 * @see org.caleydo.core.data.mapping.EGenomeIdType
+	 * @see org.caleydo.core.data.mapping.EIDType
 	 */
 	protected String sLookupTableDelimiter;
 
@@ -205,44 +205,44 @@ public class CmdLoadFileLookupTable
 
 		try
 		{
-			EGenomeMappingType lut_genome_type = EGenomeMappingType.valueOf(sLookupTableType);
+			EMappingType lut_genome_type = EMappingType.valueOf(sLookupTableType);
 
-			EGenomeMappingDataType genomeDataType;
+			EMappingDataType genomeDataType;
 
 			genomeDataType = lut_genome_type.getDataMapppingType();
 
 			// FIXME: find solution for lut resolve process
 			if (bResolveCodeMappingUsingCodeToId_LUT_BOTH)
 			{
-				if (genomeDataType == EGenomeMappingDataType.INT2INT)
+				if (genomeDataType == EMappingDataType.INT2INT)
 				{
-					genomeDataType = EGenomeMappingDataType.STRING2STRING;
+					genomeDataType = EMappingDataType.STRING2STRING;
 				}
-				else if (genomeDataType == EGenomeMappingDataType.MULTI_INT2INT)
+				else if (genomeDataType == EMappingDataType.MULTI_INT2INT)
 				{
-					genomeDataType = EGenomeMappingDataType.MULTI_STRING2STRING;
+					genomeDataType = EMappingDataType.MULTI_STRING2STRING;
 				}
 			}
 			else if (bResolveCodeMappingUsingCodeToId_LUT_1)
 			{
-				if (genomeDataType == EGenomeMappingDataType.INT2STRING)
+				if (genomeDataType == EMappingDataType.INT2STRING)
 				{
-					genomeDataType = EGenomeMappingDataType.STRING2STRING;
+					genomeDataType = EMappingDataType.STRING2STRING;
 				}
-				else if (genomeDataType == EGenomeMappingDataType.INT2INT)
+				else if (genomeDataType == EMappingDataType.INT2INT)
 				{
-					genomeDataType = EGenomeMappingDataType.STRING2INT;
+					genomeDataType = EMappingDataType.STRING2INT;
 				}
 			}
 			else if (bResolveCodeMappingUsingCodeToId_LUT_2)
 			{
-				if (genomeDataType == EGenomeMappingDataType.STRING2INT)
+				if (genomeDataType == EMappingDataType.STRING2INT)
 				{
-					genomeDataType = EGenomeMappingDataType.STRING2STRING;
+					genomeDataType = EMappingDataType.STRING2STRING;
 				}
-				else if (genomeDataType == EGenomeMappingDataType.INT2INT)
+				else if (genomeDataType == EMappingDataType.INT2INT)
 				{
-					genomeDataType = EGenomeMappingDataType.INT2STRING;
+					genomeDataType = EMappingDataType.INT2STRING;
 				}
 			}
 			loader = new LookupTableLoaderProxy(generalManager, sFileName, lut_genome_type,
@@ -267,29 +267,29 @@ public class CmdLoadFileLookupTable
 					|| bResolveCodeMappingUsingCodeToId_LUT_2
 					|| bResolveCodeMappingUsingCodeToId_LUT_BOTH)
 			{
-				EGenomeMappingType genomeMappingLUT_1 = null;
-				EGenomeMappingType genomeMappingLUT_2 = null;
+				EMappingType genomeMappingLUT_1 = null;
+				EMappingType genomeMappingLUT_2 = null;
 
 				if (bResolveCodeMappingUsingCodeToId_LUT_1
 						|| bResolveCodeMappingUsingCodeToId_LUT_BOTH)
 				{
-					genomeMappingLUT_1 = EGenomeMappingType
+					genomeMappingLUT_1 = EMappingType
 							.valueOf(sCodeResolvingLUTMappingType_1);
 				}
 
 				if (bResolveCodeMappingUsingCodeToId_LUT_2
 						|| bResolveCodeMappingUsingCodeToId_LUT_BOTH)
 				{
-					genomeMappingLUT_2 = EGenomeMappingType
+					genomeMappingLUT_2 = EMappingType
 							.valueOf(sCodeResolvingLUTMappingType_2);
 				}
 
-				EGenomeMappingDataType targetMappingDataType = genomeDataType;
+				EMappingDataType targetMappingDataType = genomeDataType;
 
 				// Reset genomeDataType to real type
 				genomeDataType = lut_genome_type.getDataMapppingType();
 
-				if (genomeDataType == EGenomeMappingDataType.MULTI_INT2INT)
+				if (genomeDataType == EMappingDataType.MULTI_INT2INT)
 				{
 					loader.createCodeResolvedMultiMapFromMultiMapString(generalManager,
 							lut_genome_type, genomeMappingLUT_1, genomeMappingLUT_2);
@@ -306,12 +306,12 @@ public class CmdLoadFileLookupTable
 			{
 				// Concatenate genome id type target and origin type in swapped
 				// order to determine reverse genome mapping type.
-				EGenomeMappingType lut_genome_reverse_type = EGenomeMappingType
+				EMappingType lut_genome_reverse_type = EMappingType
 						.valueOf(lut_genome_type.getTypeTarget().toString() + "_2_"
 								+ lut_genome_type.getTypeOrigin().toString());
 
 				// if
-				//(lut_genome_reverse_type.equals(EGenomeMappingType.NON_MAPPING
+				//(lut_genome_reverse_type.equals(EMappingType.NON_MAPPING
 				// ))
 				// {
 				// assert false : "Reverse mapping: type=" +
@@ -322,7 +322,7 @@ public class CmdLoadFileLookupTable
 				// lut_genome_type.toString() +
 				// " has no valid reverse type.");
 				// } //if
-				//(lut_genome_reverse_type.equals(EGenomeMappingType.NON_MAPPING
+				//(lut_genome_reverse_type.equals(EMappingType.NON_MAPPING
 				// ))
 
 				if (lut_genome_reverse_type.isMultiMap())

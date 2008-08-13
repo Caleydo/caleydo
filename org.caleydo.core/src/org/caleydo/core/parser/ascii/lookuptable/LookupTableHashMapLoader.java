@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
 
@@ -28,7 +28,7 @@ public class LookupTableHashMapLoader
 	 * @param setFileName
 	 */
 	public LookupTableHashMapLoader(final IGeneralManager generalManager,
-			final String sFileName, final EGenomeMappingType genomeIdType,
+			final String sFileName, final EMappingType genomeIdType,
 			final LookupTableLoaderProxy lookupTableLoaderProxy)
 	{
 
@@ -73,7 +73,7 @@ public class LookupTableHashMapLoader
 					{
 						// Special case for creating indexing of storages
 						if (currentGenomeIdType
-								.equals(EGenomeMappingType.DAVID_2_EXPRESSION_STORAGE_ID))
+								.equals(EMappingType.DAVID_2_EXPRESSION_STORAGE_ID))
 							genomeIdMap.put(sLine, Integer.toString(iLineInFile
 									- iStartParsingAtLine));
 						else
@@ -88,7 +88,7 @@ public class LookupTableHashMapLoader
 
 							// Special case for creating indexing of storages
 							if (currentGenomeIdType
-									.equals(EGenomeMappingType.DAVID_2_EXPRESSION_STORAGE_ID))
+									.equals(EMappingType.DAVID_2_EXPRESSION_STORAGE_ID))
 								genomeIdMap.put(buffer, Integer.toString(iLineInFile
 										- iStartParsingAtLine));
 							else
@@ -138,7 +138,7 @@ public class LookupTableHashMapLoader
 		return iLineInFile - iStartParsingAtLine;
 	}
 
-	public final void setHashMap(final IGenomeIdMap setHashMap, final EGenomeMappingType type)
+	public final void setHashMap(final IGenomeIdMap setHashMap, final EMappingType type)
 	{
 
 		assert type == currentGenomeIdType : "must use same type as in constructor!";

@@ -6,8 +6,8 @@ import java.util.Iterator;
 import java.util.Set;
 import java.util.Map.Entry;
 import java.util.logging.Level;
-import org.caleydo.core.data.mapping.EGenomeMappingDataType;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.mapping.EMappingDataType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
@@ -26,13 +26,13 @@ public abstract class AGenomeIdMap<K, V>
 
 	protected HashMap<K, V> hashGeneric;
 
-	protected final EGenomeMappingDataType dataType;
+	protected final EMappingDataType dataType;
 
 	/**
 	 * Constructor.
 	 */
 	public AGenomeIdMap(final IGeneralManager generalManager,
-			final EGenomeMappingDataType dataType)
+			final EMappingDataType dataType)
 	{
 
 		hashGeneric = new HashMap<K, V>();
@@ -44,7 +44,7 @@ public abstract class AGenomeIdMap<K, V>
 	 * Constructor.
 	 */
 	protected AGenomeIdMap(final IGeneralManager generalManager,
-			final EGenomeMappingDataType dataType, final int iSizeHashMap)
+			final EMappingDataType dataType, final int iSizeHashMap)
 	{
 
 		hashGeneric = new HashMap<K, V>(iSizeHashMap);
@@ -97,13 +97,13 @@ public abstract class AGenomeIdMap<K, V>
 			case INT2STRING:
 				/* ==> use STRING2INT */
 				reversedMap = new GenomeIdMapString2Int(generalManager,
-						EGenomeMappingDataType.STRING2INT, this.size());
+						EMappingDataType.STRING2INT, this.size());
 				break;
 
 			case STRING2INT:
 				/* ==> use INT2STRING */
 				reversedMap = new GenomeIdMapInt2String(generalManager,
-						EGenomeMappingDataType.INT2STRING, this.size());
+						EMappingDataType.INT2STRING, this.size());
 				break;
 
 			default:
@@ -132,13 +132,13 @@ public abstract class AGenomeIdMap<K, V>
 	 * @see
 	 * org.caleydo.core.manager.data.genome.IGenomeIdMap#getCodeResolvedMap(
 	 * org.caleydo.core.manager.data.IGenomeIdManager,
-	 * org.caleydo.core.data.mapping.EGenomeMappingType,
-	 * org.caleydo.core.data.mapping.EGenomeMappingType)
+	 * org.caleydo.core.data.mapping.EMappingType,
+	 * org.caleydo.core.data.mapping.EMappingType)
 	 */
 	public final IGenomeIdMap getCodeResolvedMap(IGenomeIdManager genomeIdManager,
-			EGenomeMappingType genomeMappingLUT_1, EGenomeMappingType genomeMappingLUT_2,
-			EGenomeMappingDataType targetMappingDataType,
-			EGenomeMappingDataType sourceMappingDataType)
+			EMappingType genomeMappingLUT_1, EMappingType genomeMappingLUT_2,
+			EMappingDataType targetMappingDataType,
+			EMappingDataType sourceMappingDataType)
 	{
 
 		IGenomeIdMap codeResolvedMap = null;
@@ -167,12 +167,12 @@ public abstract class AGenomeIdMap<K, V>
 					iResolvedID_1 = genomeIdManager.getIdIntFromStringByMapping(entryBuffer
 							.getKey().toString(), genomeMappingLUT_1);
 
-					if (sourceMappingDataType == EGenomeMappingDataType.STRING2INT)
+					if (sourceMappingDataType == EMappingDataType.STRING2INT)
 					{
 						codeResolvedMap.put(Integer.toString(iResolvedID_1), entryBuffer
 								.getValue().toString());
 					}
-					else if (sourceMappingDataType == EGenomeMappingDataType.STRING2STRING)
+					else if (sourceMappingDataType == EMappingDataType.STRING2STRING)
 					{
 						iResolvedID_2 = genomeIdManager.getIdIntFromStringByMapping(
 								entryBuffer.getValue().toString(), genomeMappingLUT_2);

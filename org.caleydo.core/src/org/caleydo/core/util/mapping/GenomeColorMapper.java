@@ -8,7 +8,7 @@ import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.util.mapping.color.ColorMapping;
@@ -88,7 +88,7 @@ public class GenomeColorMapper
 								pathwayVertexRep.getPathwayVertexGraphItem().getId());
 
 				int iExpressionStorageIndex = genomeIdManager.getIdIntFromIntByMapping(
-						iDavidId, EGenomeMappingType.DAVID_2_EXPRESSION_STORAGE_ID);
+						iDavidId, EMappingType.DAVID_2_EXPRESSION_STORAGE_ID);
 
 				if (iExpressionStorageIndex == -1)
 				{

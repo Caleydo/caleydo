@@ -15,7 +15,6 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 public interface IVirtualArray
 	extends Iterable<Integer>, IUniqueObject
 {
-
 	/**
 	 * Returns an Iterator<Integer> of type VAIterator, which allows to iterate
 	 * over the virtual array
@@ -91,12 +90,25 @@ public interface IVirtualArray
 	public void moveRight(int iIndex);
 
 	/**
-	 * Removes the element at the specified index
+	 * Removes the element at the specified index. Shifts any subsequent
+	 * elements to the left (subtracts one from their indices).
 	 * 
 	 * @param iIndex the index of the element to be removed
 	 * @return the Element that was removed from the list
 	 */
 	public Integer remove(int iIndex);
+
+	/**
+	 * <p>
+	 * Remove all occurrences of an element from the list. Shifts any subsequent
+	 * elements to the left (subtracts one from their indices).
+	 * </p>
+	 * <p>
+	 * Notice that this has a complexity of O(n)
+	 * </p> 
+	 * @param iElement the element to be removed
+	 */
+	public void removeByElement(int iElement);
 
 	/**
 	 * Returns the size of the virtual array
@@ -106,10 +118,20 @@ public interface IVirtualArray
 	public Integer size();
 
 	/**
-	 * Reset the virtual array to the indices in the storage
+	 * Reset the virtual array to the indices in the managed data entity
 	 */
 	public void reset();
-	
+
+	/**
+	 * Returns the index of the first occurrence of the specified element in
+	 * this list, or -1 if this list does not contain the element. More
+	 * formally, returns the lowest index i such that (o==null ? get(i)==null :
+	 * o.equals(get(i))), or -1 if there is no such index.
+	 * 
+	 * @param iElement element to search for
+	 * @return the index of the first occurrence of the specified element in
+	 *         this list, or -1 if this list does not contain the element
+	 */
 	public int indexOf(int iElement);
 
 }

@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
 import org.caleydo.core.data.map.MultiHashArrayStringMap;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 
 /**
@@ -39,7 +39,7 @@ public class LookupTableMultiMapStringLoader
 	 * Constructor.
 	 */
 	public LookupTableMultiMapStringLoader(final IGeneralManager setGeneralManager,
-			final String setFileName, final EGenomeMappingType genomeIdType,
+			final String setFileName, final EMappingType genomeIdType,
 			final LookupTableLoaderProxy setLookupTableLoaderProxy)
 	{
 
@@ -246,8 +246,8 @@ public class LookupTableMultiMapStringLoader
 		//			
 		// IGenomeIdManager gidmng = generalManager.getGenomeIdManager();
 		//			
-		// EGenomeIdType originType = this.currentGenomeIdType.getTypeOrigin();
-		// EGenomeIdType targetType = this.currentGenomeIdType.getTypeTarget();
+		// EIDType originType = this.currentGenomeIdType.getTypeOrigin();
+		// EIDType targetType = this.currentGenomeIdType.getTypeTarget();
 		//			
 		// IGenomeIdMap originMap = gidmng.getMapByType(
 		// originType.getBasicConversion() );
@@ -351,7 +351,7 @@ public class LookupTableMultiMapStringLoader
 	// MARC: Changed method from Integer to String because we are
 	// in the MultiMapString class.
 	public void setMultiMapString(final MultiHashArrayStringMap setHashMap,
-			final EGenomeMappingType type)
+			final EMappingType type)
 	{
 
 		multiHashMapString = setHashMap;

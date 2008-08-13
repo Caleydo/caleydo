@@ -2,7 +2,7 @@ package org.caleydo.core.parser.ascii.lookuptable;
 
 import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
 import org.caleydo.core.data.map.MultiHashArrayStringMap;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
@@ -18,7 +18,7 @@ public abstract class ALookupTableLoader
 {
 	protected String sFileName;
 
-	protected EGenomeMappingType currentGenomeIdType;
+	protected EMappingType currentGenomeIdType;
 
 	protected final IGeneralManager generalManager;
 
@@ -39,7 +39,7 @@ public abstract class ALookupTableLoader
 	 * @param setFileName
 	 */
 	public ALookupTableLoader(final IGeneralManager generalManager, final String setFileName,
-			final EGenomeMappingType genomeIdType,
+			final EMappingType genomeIdType,
 			final LookupTableLoaderProxy setLookupTableLoaderProxy)
 	{
 
@@ -59,9 +59,9 @@ public abstract class ALookupTableLoader
 	 * sub-class.
 	 * 
 	 * @see org.caleydo.core.parser.ascii.lookuptable.LookupTableMultiMapStringLoader#setMultiMapInteger(MultiHashArrayIntegerMap,
-	 *      EGenomeMappingType)
+	 *      EMappingType)
 	 */
-	public void setMultiMapInteger(MultiHashArrayIntegerMap setHashMap, EGenomeMappingType type)
+	public void setMultiMapInteger(MultiHashArrayIntegerMap setHashMap, EMappingType type)
 	{
 
 		assert false : "place holder! must be overwritten by sub-class!";
@@ -72,9 +72,9 @@ public abstract class ALookupTableLoader
 	 * sub-class.
 	 * 
 	 * @see org.caleydo.core.parser.ascii.lookuptable.LookupTableMultiMapIntLoader#setMultiMapInteger(MultiHashArrayIntegerMap,
-	 *      EGenomeMappingType)
+	 *      EMappingType)
 	 */
-	public void setMultiMapString(MultiHashArrayStringMap setHashMap, EGenomeMappingType type)
+	public void setMultiMapString(MultiHashArrayStringMap setHashMap, EMappingType type)
 	{
 
 		assert false : "place holder! must be overwritten by sub-class!";
@@ -85,9 +85,9 @@ public abstract class ALookupTableLoader
 	 * sub-class.
 	 * 
 	 * @see org.caleydo.core.parser.ascii.lookuptable.LookupTableHashMapLoader#setHashMap(IGenomeIdMap,
-	 *      EGenomeMappingType)
+	 *      EMappingType)
 	 */
-	public void setHashMap(final IGenomeIdMap setHashMap, final EGenomeMappingType type)
+	public void setHashMap(final IGenomeIdMap setHashMap, final EMappingType type)
 	{
 
 		assert false : "place holder! must be overwritten by sub-class!";

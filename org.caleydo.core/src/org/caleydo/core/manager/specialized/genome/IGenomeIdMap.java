@@ -2,8 +2,8 @@ package org.caleydo.core.manager.specialized.genome;
 
 import java.util.Collection;
 import java.util.Set;
-import org.caleydo.core.data.mapping.EGenomeMappingDataType;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.mapping.EMappingDataType;
+import org.caleydo.core.data.mapping.EMappingType;
 
 /**
  * Interface for Map
@@ -117,8 +117,8 @@ public interface IGenomeIdMap
 	 * @return
 	 */
 	public IGenomeIdMap getCodeResolvedMap(IGenomeIdManager genomeIdManager,
-			EGenomeMappingType genomeMappingLUT_1, EGenomeMappingType genomeMappingLUT_2,
-			EGenomeMappingDataType targetMappingDataType,
-			EGenomeMappingDataType sourceMappingDataType);
+			EMappingType genomeMappingLUT_1, EMappingType genomeMappingLUT_2,
+			EMappingDataType targetMappingDataType,
+			EMappingDataType sourceMappingDataType);
 
 }

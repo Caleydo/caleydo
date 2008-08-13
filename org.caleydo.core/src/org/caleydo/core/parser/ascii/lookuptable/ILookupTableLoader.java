@@ -5,7 +5,7 @@ import java.io.IOException; // import java.util.HashMap;
 // import org.caleydo.core.base.map.MultiHashArrayMap;
 import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
 import org.caleydo.core.data.map.MultiHashArrayStringMap;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
 
 /**
@@ -60,7 +60,7 @@ public interface ILookupTableLoader
 	 * @param setHashMap
 	 * @param type specify the type of mapping
 	 */
-	public void setHashMap(final IGenomeIdMap setHashMap, final EGenomeMappingType type);
+	public void setHashMap(final IGenomeIdMap setHashMap, final EMappingType type);
 
 	/**
 	 * set the reference to the hashmap
@@ -69,8 +69,8 @@ public interface ILookupTableLoader
 	 * @param type specify the type of mapping
 	 */
 	public void setMultiMapInteger(final MultiHashArrayIntegerMap setHashMap,
-			final EGenomeMappingType type);
+			final EMappingType type);
 
 	public void setMultiMapString(final MultiHashArrayStringMap setHashMap,
-			final EGenomeMappingType type);
+			final EMappingType type);
 }

@@ -9,8 +9,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.logging.Level;
 import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
 import org.caleydo.core.data.map.MultiHashArrayStringMap;
-import org.caleydo.core.data.mapping.EGenomeMappingDataType;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.mapping.EMappingDataType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
@@ -32,15 +32,15 @@ public class GenomeIdManager
 
 	private AtomicBoolean bHasMapActiveWriter = new AtomicBoolean(false);
 
-	private EGenomeMappingType currentEditingType;
+	private EMappingType currentEditingType;
 
 	private IGenomeIdMap currentGenomeIdMap;
 
-	protected HashMap<EGenomeMappingType, IGenomeIdMap> hashType2Map;
+	protected HashMap<EMappingType, IGenomeIdMap> hashType2Map;
 
-	protected HashMap<EGenomeMappingType, MultiHashArrayIntegerMap> hashType2MultiMapInt;
+	protected HashMap<EMappingType, MultiHashArrayIntegerMap> hashType2MultiMapInt;
 
-	protected HashMap<EGenomeMappingType, MultiHashArrayStringMap> hashType2MultiMapString;
+	protected HashMap<EMappingType, MultiHashArrayStringMap> hashType2MultiMapString;
 
 	public static final int iInitialSizeHashMap = 1000;
 
@@ -56,25 +56,25 @@ public class GenomeIdManager
 	 */
 	public GenomeIdManager()
 	{
-		hashType2Map = new HashMap<EGenomeMappingType, IGenomeIdMap>(
+		hashType2Map = new HashMap<EMappingType, IGenomeIdMap>(
 				iInitialCountAllLookupTables);
 
-		hashType2MultiMapInt = new HashMap<EGenomeMappingType, MultiHashArrayIntegerMap>(
+		hashType2MultiMapInt = new HashMap<EMappingType, MultiHashArrayIntegerMap>(
 				iInitialCountMultiMapLookupTables);
 
-		hashType2MultiMapString = new HashMap<EGenomeMappingType, MultiHashArrayStringMap>(
+		hashType2MultiMapString = new HashMap<EMappingType, MultiHashArrayStringMap>(
 				iInitialCountMultiMapLookupTables);
 	}
 
-	public final boolean createMapByType(final EGenomeMappingType codingLutType,
-			final EGenomeMappingDataType dataType)
+	public final boolean createMapByType(final EMappingType codingLutType,
+			final EMappingDataType dataType)
 	{
 
 		return createMapByType(codingLutType, dataType, GenomeIdManager.iInitialSizeHashMap);
 	}
 
-	public boolean createMapByType(final EGenomeMappingType codingLutType,
-			final EGenomeMappingDataType dataType, final int iSetInitialSizeHashMap)
+	public boolean createMapByType(final EMappingType codingLutType,
+			final EMappingDataType dataType, final int iSetInitialSizeHashMap)
 	{
 
 		/* consistency check */
@@ -159,29 +159,29 @@ public class GenomeIdManager
 		return true;
 	}
 
-	public final IGenomeIdMap getMapByType(final EGenomeMappingType type)
+	public final IGenomeIdMap getMapByType(final EMappingType type)
 	{
 
 		return hashType2Map.get(type);
 	}
 
 	public final MultiHashArrayIntegerMap getMultiMapIntegerByType(
-			final EGenomeMappingType type)
+			final EMappingType type)
 	{
 
 		return hashType2MultiMapInt.get(type);
 	}
 
-	public final MultiHashArrayStringMap getMultiMapStringByType(final EGenomeMappingType type)
+	public final MultiHashArrayStringMap getMultiMapStringByType(final EMappingType type)
 	{
 
 		return hashType2MultiMapString.get(type);
 	}
 
 	/**
-	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdManager#hasAnyMapByType(org.caleydo.core.data.mapping.EGenomeMappingType)
+	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdManager#hasAnyMapByType(org.caleydo.core.data.mapping.EMappingType)
 	 */
-	public final boolean hasAnyMapByType(final EGenomeMappingType codingLutType)
+	public final boolean hasAnyMapByType(final EMappingType codingLutType)
 	{
 
 		if (hasMapByType(codingLutType))
@@ -192,13 +192,13 @@ public class GenomeIdManager
 		return hasMultiMapByType(codingLutType);
 	}
 
-	public final boolean hasMapByType(final EGenomeMappingType codingLutType)
+	public final boolean hasMapByType(final EMappingType codingLutType)
 	{
 
 		return hashType2Map.containsKey(codingLutType);
 	}
 
-	public final boolean hasMultiMapByType(final EGenomeMappingType codingLutType)
+	public final boolean hasMultiMapByType(final EMappingType codingLutType)
 	{
 
 		if (hashType2MultiMapInt.containsKey(codingLutType))
@@ -218,10 +218,10 @@ public class GenomeIdManager
 	 * (non-Javadoc)
 	 * @see
 	 * org.caleydo.core.manager.data.IGenomeIdManager#buildLUT_startEditingSetTypes
-	 * (org.caleydo.core.data.mapping.EGenomeIdType,
-	 * org.caleydo.core.data.mapping.EGenomeIdType)
+	 * (org.caleydo.core.data.mapping.EIDType,
+	 * org.caleydo.core.data.mapping.EIDType)
 	 */
-	public boolean buildLUT_startEditing(final EGenomeMappingType type)
+	public boolean buildLUT_startEditing(final EMappingType type)
 	{
 
 		if (!bHasMapActiveWriter.compareAndSet(false, true))
@@ -258,7 +258,7 @@ public class GenomeIdManager
 	 * @see
 	 * org.caleydo.core.manager.data.IGenomeIdManager#buildLUT_stopEditing()
 	 */
-	public boolean buildLUT_stopEditing(final EGenomeMappingType type)
+	public boolean buildLUT_stopEditing(final EMappingType type)
 	{
 
 		if (!bHasMapActiveWriter.compareAndSet(true, false))
@@ -271,7 +271,7 @@ public class GenomeIdManager
 		if (type.isMultiMap())
 		{
 			// FIXME
-			// currentEditingType = EGenomeMappingType.NON_MAPPING;
+			// currentEditingType = EMappingType.NON_MAPPING;
 			currentEditingType = null;
 
 			return true;
@@ -284,14 +284,14 @@ public class GenomeIdManager
 		}
 
 		// FIXME
-		// currentEditingType = EGenomeMappingType.NON_MAPPING;
+		// currentEditingType = EMappingType.NON_MAPPING;
 		currentEditingType = null;
 
 		return true;
 	}
 
 	public int getIdIntFromStringByMapping(final String sCaleydoId,
-			final EGenomeMappingType type)
+			final EMappingType type)
 	{
 
 		IGenomeIdMap buffer = hashType2Map.get(type);
@@ -301,7 +301,7 @@ public class GenomeIdManager
 		return buffer.getIntByStringChecked(sCaleydoId);
 	}
 
-	public int getIdIntFromIntByMapping(final int iUniqueId, final EGenomeMappingType type)
+	public int getIdIntFromIntByMapping(final int iUniqueId, final EMappingType type)
 	{
 
 		IGenomeIdMap buffer = hashType2Map.get(type);
@@ -312,7 +312,7 @@ public class GenomeIdManager
 	}
 
 	public String getIdStringFromStringByMapping(final String sCaleydoId,
-			final EGenomeMappingType type)
+			final EMappingType type)
 	{
 
 		IGenomeIdMap buffer = hashType2Map.get(type);
@@ -324,7 +324,7 @@ public class GenomeIdManager
 	}
 
 	public String getIdStringFromIntByMapping(final int iUniqueId,
-			final EGenomeMappingType type)
+			final EMappingType type)
 	{
 
 		IGenomeIdMap buffer = hashType2Map.get(type);
@@ -335,20 +335,20 @@ public class GenomeIdManager
 		return buffer.getStringByIntChecked(iUniqueId);
 	}
 
-	// MARC: changed parameter from EGenomeIdType to EGenomeMappingType.
+	// MARC: changed parameter from EIDType to EMappingType.
 	// Because in the hashType2MultiMapInt the maps are stored with the
-	// EGenomeMappingType as key.
-	public ArrayList<Integer> getIdIntListByType(int iId, EGenomeMappingType genomeMappingType)
+	// EMappingType as key.
+	public ArrayList<Integer> getIdIntListByType(int iId, EMappingType genomeMappingType)
 	{
 
 		return hashType2MultiMapInt.get(genomeMappingType).get(iId);
 	}
 
-	// MARC: changed parameter from EGenomeIdType to EGenomeMappingType.
+	// MARC: changed parameter from EIDType to EMappingType.
 	// Because in the hashType2MultiMapString the maps are stored with the
-	// EGenomeMappingType as key.
+	// EMappingType as key.
 	public ArrayList<String> getIdStringListByType(String sId,
-			EGenomeMappingType genomeMappingType)
+			EMappingType genomeMappingType)
 	{
 
 		return hashType2MultiMapString.get(genomeMappingType).get(sId);
@@ -361,13 +361,13 @@ public class GenomeIdManager
 	}
 
 	/**
-	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdManager#setMapByType(org.caleydo.core.data.mapping.EGenomeMappingType,
+	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdManager#setMapByType(org.caleydo.core.data.mapping.EMappingType,
 	 *      java.lang.Object)
 	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdMap
 	 * @see org.caleydo.core.data.map.MultiHashArrayStringMap
 	 * @see org.caleydo.core.data.map.MultiHashArrayIntegerMap
 	 */
-	public void setMapByType(final EGenomeMappingType codingLutType, Object map)
+	public void setMapByType(final EMappingType codingLutType, Object map)
 	{
 
 		if (map instanceof MultiHashArrayIntegerMap)
@@ -389,7 +389,7 @@ public class GenomeIdManager
 		catch (NullPointerException npe)
 		{
 			throw new CaleydoRuntimeException(
-					"setMapByType(final EGenomeMappingType codingLutType, Object map) unsupported object="
+					"setMapByType(final EMappingType codingLutType, Object map) unsupported object="
 							+ map.getClass().toString(),
 					CaleydoRuntimeExceptionType.DATAHANDLING);
 		}
@@ -401,7 +401,7 @@ public class GenomeIdManager
 	 * org.caleydo.core.manager.data.IGenomeIdManager#removeMapByType(org.caleydo
 	 * .core.data.mapping.EGenomeMappingType)
 	 */
-	public void removeMapByType(final EGenomeMappingType codingLutType)
+	public void removeMapByType(final EMappingType codingLutType)
 	{
 
 		if (hashType2MultiMapInt.containsKey(codingLutType))
@@ -422,7 +422,7 @@ public class GenomeIdManager
 	}
 
 	public Collection<Integer> getIdIntListFromIdListByType(Collection<Integer> iIdList,
-			EGenomeMappingType type)
+			EMappingType type)
 	{
 
 		assert iIdList != null : "can not handle null pointer";
@@ -454,7 +454,7 @@ public class GenomeIdManager
 	}
 
 	public Collection<String> getIdStringListFromIdListByType(Collection<String> sIdList,
-			EGenomeMappingType type)
+			EMappingType type)
 	{
 
 		assert sIdList != null : "can not handle null pointer";
@@ -484,7 +484,7 @@ public class GenomeIdManager
 		return sortBuffer.keySet();
 	}
 
-	private Set<Integer> getKeysFromExposedDataStructues(final EGenomeMappingType type)
+	private Set<Integer> getKeysFromExposedDataStructues(final EMappingType type)
 	{
 
 		IGenomeIdMap bufferMap = this.hashType2Map.get(type);
@@ -495,13 +495,13 @@ public class GenomeIdManager
 		}
 		Set<Integer> keyset = bufferMap.getKeysInteger();
 
-		// assert keyset == null : "EGenomeMappingType=[" + type +
+		// assert keyset == null : "EMappingType=[" + type +
 		// "] was not mapped to keys of type Integer";
 
 		return keyset;
 	}
 
-	private Collection<Integer> getValuesFromExposedDataStructues(final EGenomeMappingType type)
+	private Collection<Integer> getValuesFromExposedDataStructues(final EMappingType type)
 	{
 
 		IGenomeIdMap bufferMap = this.hashType2Map.get(type);
@@ -515,7 +515,7 @@ public class GenomeIdManager
 		{
 			Collection<Integer> keyset = bufferMap.getValuesInteger();
 
-			assert keyset == null : "EGenomeMappingType=[" + type
+			assert keyset == null : "EMappingType=[" + type
 					+ "] was not mapped to keys of type Integer";
 
 			return keyset;
@@ -532,17 +532,17 @@ public class GenomeIdManager
 
 	/**
 	 * Creates a HashMap from the the MultiMap requested using
-	 * (EGenomeMappingType) type; < EGenomeMappingType - Id , index from [0..
+	 * (EMappingType) type; < EMappingType - Id , index from [0..
 	 * multiMap.keySet().size()-1) >
 	 * 
 	 * @param type
-	 * @return HashMap with < EGenomeMappingType - Id , index from [0..
+	 * @return HashMap with < EMappingType - Id , index from [0..
 	 *         multiMap.keySet().size()-1) >
-	 * @see EGenomeMappingType.NCBI_GENEID_2_GENE_SHORT_NAME
-	 * @see EGenomeMappingType."NCBI_GENEID_2_NCBI_GENEID_CODE REVERSE
+	 * @see EMappingType.NCBI_GENEID_2_GENE_SHORT_NAME
+	 * @see EMappingType."NCBI_GENEID_2_NCBI_GENEID_CODE REVERSE
 	 */
 	public HashMap<Integer, Integer> getAllKeysByGenomeIdTypeHashMap(
-			final EGenomeMappingType type)
+			final EMappingType type)
 	{
 
 		try
@@ -577,10 +577,10 @@ public class GenomeIdManager
 	}
 
 	/**
-	 * @see EGenomeMappingType.NCBI_GENEID_2_GENE_SHORT_NAME
-	 * @see EGenomeMappingType."NCBI_GENEID_2_NCBI_GENEID_CODE REVERSE
+	 * @see EMappingType.NCBI_GENEID_2_GENE_SHORT_NAME
+	 * @see EMappingType."NCBI_GENEID_2_NCBI_GENEID_CODE REVERSE
 	 */
-	public int[] getAllKeysByGenomeIdType(EGenomeMappingType type)
+	public int[] getAllKeysByGenomeIdType(EMappingType type)
 	{
 
 		try
@@ -616,9 +616,9 @@ public class GenomeIdManager
 	 * (non-Javadoc)
 	 * @seeorg.caleydo.core.manager.specialized.genome.IGenomeIdManager#
 	 * getAllValuesByGenomeIdTypeHashMap
-	 * (org.caleydo.core.data.mapping.EGenomeMappingType)
+	 * (org.caleydo.core.data.mapping.EMappingType)
 	 */
-	public HashMap<Integer, Integer> getAllValuesByGenomeIdTypeHashMap(EGenomeMappingType type)
+	public HashMap<Integer, Integer> getAllValuesByGenomeIdTypeHashMap(EMappingType type)
 	{
 
 		try

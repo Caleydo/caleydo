@@ -2,7 +2,7 @@ package org.caleydo.core.view.opengl.util.infoarea;
 
 import java.util.ArrayList;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.util.mapping.GeneAnnotationMapper;
@@ -66,13 +66,13 @@ public class InformationContentCreator
 				if (iUniqueID != -1)
 				{
 					sRefSeq = generalManager.getGenomeIdManager().getIdStringFromIntByMapping(
-							iUniqueID, EGenomeMappingType.DAVID_2_REFSEQ_MRNA);
+							iUniqueID, EMappingType.DAVID_2_REFSEQ_MRNA);
 					sGeneName = generalManager.getGenomeIdManager()
 							.getIdStringFromIntByMapping(iUniqueID,
-									EGenomeMappingType.DAVID_2_GENE_NAME);
+									EMappingType.DAVID_2_GENE_NAME);
 					sGeneSymbol = generalManager.getGenomeIdManager()
 							.getIdStringFromIntByMapping(iUniqueID,
-									EGenomeMappingType.DAVID_2_GENE_SYMBOL);
+									EMappingType.DAVID_2_GENE_SYMBOL);
 				}
 
 				// Cut too long gene names

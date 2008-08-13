@@ -180,7 +180,11 @@ public class Set
 	@Override
 	public int sizeVA(int iUniqueID)
 	{
-		return hashSetVAs.get(iUniqueID).size();
+		if(hashSetVAs.containsKey(iUniqueID))
+			return hashSetVAs.get(iUniqueID).size();
+		else			
+			return hashStorageVAs.get(iUniqueID).size();
+		
 	}
 
 	/*
@@ -191,16 +195,6 @@ public class Set
 	public int depth()
 	{
 		return alStorages.get(0).size();
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.ISet#depthVA(int)
-	 */
-	@Override
-	public int depthVA(int iUniqueID)
-	{
-		return hashStorageVAs.get(iUniqueID).size();
 	}
 
 	/*

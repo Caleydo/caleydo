@@ -11,6 +11,7 @@ import org.caleydo.core.data.graph.ICaleydoGraphItem;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
@@ -117,7 +118,7 @@ public class GLCanvasPathway3D
 			alSelectionType.add(selectionType);
 		}
 
-		selectionManager =  new GenericSelectionManager.Builder().build();
+		selectionManager =  new GenericSelectionManager.Builder(EIDType.PATHWAY_VERTEX).build();
 	}
 
 	public void setPathwayID(final int iPathwayID)
@@ -441,7 +442,7 @@ public class GLCanvasPathway3D
 
 	private ISelectionDelta createExternalSelectionDelta(ISelectionDelta selectionDelta)
 	{
-		ISelectionDelta newSelectionDelta = new SelectionDelta();		
+		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.DAVID);		
 
 		IPathwayItemManager pathwayItemManager = generalManager.getPathwayItemManager();
 		int iDavidID = 0;
@@ -467,7 +468,7 @@ public class GLCanvasPathway3D
 	
 	private ISelectionDelta resolveExternalSelectionDelta(ISelectionDelta selectionDelta) 
 	{
-		ISelectionDelta newSelectionDelta = new SelectionDelta();		
+		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.PATHWAY_VERTEX);		
 
 		int iDavidID = 0;
 		int iPathwayVertexGraphItemID = 0;
@@ -791,7 +792,7 @@ public class GLCanvasPathway3D
 
 	private void initialContainedGenePropagation()
 	{
-		ISelectionDelta selectionDelta = new SelectionDelta();
+		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.DAVID);
 		
 		// TODO: Move to own method (outside this class)
 		// Store all genes in that pathway with selection group 0
@@ -799,8 +800,6 @@ public class GLCanvasPathway3D
 				.getPathwayManager().getItem(iPathwayID)).getAllItemsByKind(
 				EGraphItemKind.NODE).iterator();
 		Iterator<IGraphItem> iterPathwayVertexGraphItemRep;
-		ArrayList<Integer> iAlSelectedGenes = new ArrayList<Integer>();
-		ArrayList<Integer> iAlTmpGroupId = new ArrayList<Integer>();
 		PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep = null;
 		PathwayVertexGraphItem tmpPathwayVertexGraphItem = null;
 		while (iterPathwayVertexGraphItem.hasNext())
@@ -828,7 +827,7 @@ public class GLCanvasPathway3D
 					continue;
 				}
 
-				selectionDelta.addSelection(iDavidId, ESelectionType.NORMAL.intRep());
+				selectionDelta.addSelection(iDavidId, ESelectionType.NORMAL);
 			}
 		}
 

@@ -2,8 +2,8 @@ package org.caleydo.core.manager.specialized.genome;
 
 import java.util.Collection;
 import java.util.HashMap;
-import org.caleydo.core.data.mapping.EGenomeMappingDataType;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.mapping.EMappingDataType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IManager;
 
 /**
@@ -16,38 +16,38 @@ public interface IGenomeIdManager
 {
 
 	public int getIdIntFromStringByMapping(final String sCaleydoId,
-			final EGenomeMappingType type);
+			final EMappingType type);
 
 	/**
-	 * expose all keys for one EGenomeIdType from <key,value>. Note is was
-	 * required for EGenomeIdType.NCBI_GENEID in specific.
+	 * expose all keys for one EIDType from <key,value>. Note is was
+	 * required for EIDType.NCBI_GENEID in specific.
 	 * 
-	 * @see IGenomeIdManager#getAllValuesByGenomeIdTypeHashMap(EGenomeMappingType)
-	 * @param type specify one EGenomeIdType
-	 * @return HashMap<Integer,Integer> containing all <EGenomeIdType id's,
+	 * @see IGenomeIdManager#getAllValuesByGenomeIdTypeHashMap(EMappingType)
+	 * @param type specify one EIDType
+	 * @return HashMap<Integer,Integer> containing all <EIDType id's,
 	 *         incremented index [0.. max] >
 	 */
-	public HashMap<Integer, Integer> getAllKeysByGenomeIdTypeHashMap(EGenomeMappingType type);
+	public HashMap<Integer, Integer> getAllKeysByGenomeIdTypeHashMap(EMappingType type);
 
 	/**
-	 * expose all values for one EGenomeIdType from <key,value>. Note is was
-	 * required for EGenomeIdType.NCBI_GENEID in specific.
+	 * expose all values for one EIDType from <key,value>. Note is was
+	 * required for EIDType.NCBI_GENEID in specific.
 	 * 
-	 * @see IGenomeIdManager#getAllKeysByGenomeIdTypeHashMap(EGenomeMappingType)
-	 * @param type specify one EGenomeIdType
-	 * @return HashMap<Integer,Integer> containing all <EGenomeIdType id's,
+	 * @see IGenomeIdManager#getAllKeysByGenomeIdTypeHashMap(EMappingType)
+	 * @param type specify one EIDType
+	 * @return HashMap<Integer,Integer> containing all <EIDType id's,
 	 *         incremented index [0.. max] >
 	 */
-	public HashMap<Integer, Integer> getAllValuesByGenomeIdTypeHashMap(EGenomeMappingType type);
+	public HashMap<Integer, Integer> getAllValuesByGenomeIdTypeHashMap(EMappingType type);
 
 	/**
-	 * expose all keys for one EGenomeIdType. Note is was required for
-	 * EGenomeIdType.NCBI_GENEID in specific.
+	 * expose all keys for one EIDType. Note is was required for
+	 * EIDType.NCBI_GENEID in specific.
 	 * 
-	 * @param type specify one EGenomeIdType
-	 * @return int[] containing all EGenomeIdType id's
+	 * @param type specify one EIDType
+	 * @return int[] containing all EIDType id's
 	 */
-	public int[] getAllKeysByGenomeIdType(final EGenomeMappingType type);
+	public int[] getAllKeysByGenomeIdType(final EMappingType type);
 
 	/**
 	 * Get one "target" id mapped to one "origin" id defiend by iUniqueID using
@@ -57,7 +57,7 @@ public interface IGenomeIdManager
 	 * @param type defines, which id is mapped to the other id
 	 * @return "target" id using type
 	 */
-	public int getIdIntFromIntByMapping(final int iUniqueId, final EGenomeMappingType type);
+	public int getIdIntFromIntByMapping(final int iUniqueId, final EMappingType type);
 
 	/**
 	 * Get one "target" id as String mapped to one String as "origin" id defiend
@@ -68,7 +68,7 @@ public interface IGenomeIdManager
 	 * @return "target" id using type
 	 */
 	public String getIdStringFromStringByMapping(final String sCaleydoId,
-			final EGenomeMappingType type);
+			final EMappingType type);
 
 	/**
 	 * Get one "target" id as String mapped to one "origin" id defiend by
@@ -79,15 +79,15 @@ public interface IGenomeIdManager
 	 * @return "target" id using type
 	 */
 	public String getIdStringFromIntByMapping(final int iUniqueId,
-			final EGenomeMappingType type);
+			final EMappingType type);
 
 	// public ArrayList<Integer> getIdListByType( final int iUniqueID,
-	// final EGenomeIdType type );
+	// final EIDType type );
 
 	// public String getIdListByTypeToString( final int iUniqueID,
-	// final EGenomeIdType type );
+	// final EIDType type );
 	//	
-	// public void setIdLUTByType( final int iUniqueID, final EGenomeIdType type
+	// public void setIdLUTByType( final int iUniqueID, final EIDType type
 	// );
 
 	/**
@@ -98,17 +98,17 @@ public interface IGenomeIdManager
 	 * @return ture if lock was granted and data can be inserted, false
 	 *         indicates, that another map is being inserted.
 	 */
-	public boolean buildLUT_startEditing(final EGenomeMappingType type);
+	public boolean buildLUT_startEditing(final EMappingType type);
 
 	// public void buildLUT( Object first, Object second );
 
 	/**
-	 * After calling buildLUT_startEditing(EGenomeMappingType) this closes the
+	 * After calling buildLUT_startEditing(EMappingType) this closes the
 	 * map and frees the lock. Now another map can be filled with data.
 	 * 
 	 * @return true if stop editing was successful.
 	 */
-	public boolean buildLUT_stopEditing(final EGenomeMappingType type);
+	public boolean buildLUT_stopEditing(final EMappingType type);
 
 	/**
 	 * Tests, if data is writen to the IGenimeIdManager.
@@ -118,12 +118,12 @@ public interface IGenomeIdManager
 	public boolean isBuildLUTinProgress();
 
 	/**
-	 * Get the IGenomeIdMap that is assigned to one EGenomeMappingType type.
+	 * Get the IGenomeIdMap that is assigned to one EMappingType type.
 	 * 
 	 * @param type specify the IGenomeIdMap assinged to this type
 	 * @return IGenomeIdMap assigned to the type
 	 */
-	public IGenomeIdMap getMapByType(EGenomeMappingType type);
+	public IGenomeIdMap getMapByType(EMappingType type);
 
 	/**
 	 * Test if any map is registered to the type, no matter if it is a MultiMap
@@ -132,55 +132,55 @@ public interface IGenomeIdManager
 	 * @param type type to be testet
 	 * @return TRUE if any Map or MultiMap is registered to that type
 	 */
-	public boolean hasAnyMapByType(EGenomeMappingType type);
+	public boolean hasAnyMapByType(EMappingType type);
 
-	public boolean createMapByType(final EGenomeMappingType codingLutType,
-			final EGenomeMappingDataType dataType, final int iInitialSizeHashMap);
+	public boolean createMapByType(final EMappingType codingLutType,
+			final EMappingDataType dataType, final int iInitialSizeHashMap);
 
 	/**
-	 * Set a Map and register it to a EGenomeMappingType. Note: (Object) map
+	 * Set a Map and register it to a EMappingType. Note: (Object) map
 	 * must be an object of type: IGenomeIdMap, MultiHashArrayStringMap or
 	 * MultiHashArrayIntegerMap
 	 * 
-	 * @param codingLutType define EGenomeMappingType used for identifying
+	 * @param codingLutType define EMappingType used for identifying
 	 * @param map to be added, must be IGenomeIdMap
 	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdMap
 	 * @see org.caleydo.core.data.map.MultiHashArrayStringMap
 	 * @see org.caleydo.core.data.map.MultiHashArrayIntegerMap
 	 */
-	public void setMapByType(final EGenomeMappingType codingLutType, Object map);
+	public void setMapByType(final EMappingType codingLutType, Object map);
 
 	/**
-	 * Remove a Map using the EGenomeMappingType. Note: (Object) map must be an
+	 * Remove a Map using the EMappingType. Note: (Object) map must be an
 	 * object of type: IGenomeIdMap, MultiHashArrayStringMap or
 	 * MultiHashArrayIntegerMap
 	 * 
-	 * @param codingLutType define EGenomeMappingType used for identifying
+	 * @param codingLutType define EMappingType used for identifying
 	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdMap
 	 * @see org.caleydo.core.data.map.MultiHashArrayStringMap
 	 * @see org.caleydo.core.data.map.MultiHashArrayIntegerMap
 	 */
-	public void removeMapByType(final EGenomeMappingType codingLutType);
+	public void removeMapByType(final EMappingType codingLutType);
 
-	// MARC: changed parameter from EGenomeIdType to EGenomeMappingType.
+	// MARC: changed parameter from EIDType to EMappingType.
 	// Because in the hashType2MultiMapInt the maps are stored with the
-	// EGenomeMappingType as key.
-	public Collection<Integer> getIdIntListByType(int iId, EGenomeMappingType type);
+	// EMappingType as key.
+	public Collection<Integer> getIdIntListByType(int iId, EMappingType type);
 
-	// MARC: changed parameter from EGenomeIdType to EGenomeMappingType.
+	// MARC: changed parameter from EIDType to EMappingType.
 	// Because in the hashType2MultiMapInt the maps are stored with the
-	// EGenomeMappingType as key.
-	public Collection<String> getIdStringListByType(String sId, EGenomeMappingType type);
+	// EMappingType as key.
+	public Collection<String> getIdStringListByType(String sId, EMappingType type);
 
-	// MARC: changed parameter from EGenomeIdType to EGenomeMappingType.
+	// MARC: changed parameter from EIDType to EMappingType.
 	// Because in the hashType2MultiMapInt the maps are stored with the
-	// EGenomeMappingType as key.
+	// EMappingType as key.
 	public Collection<Integer> getIdIntListFromIdListByType(Collection<Integer> iIdList,
-			EGenomeMappingType type);
+			EMappingType type);
 
-	// MARC: changed parameter from EGenomeIdType to EGenomeMappingType.
+	// MARC: changed parameter from EIDType to EMappingType.
 	// Because in the hashType2MultiMapInt the maps are stored with the
-	// EGenomeMappingType as key.
+	// EMappingType as key.
 	public Collection<String> getIdStringListFromIdListByType(Collection<String> sIdList,
-			EGenomeMappingType type);
+			EMappingType type);
 }

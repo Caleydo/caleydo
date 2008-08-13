@@ -78,7 +78,7 @@ public interface ISet
 	public int size();
 
 	/**
-	 * Return the size of the virtual array that manages the storages
+	 * Return the size of the virtual array
 	 * 
 	 * @param iUniqueID the unique id associated with the virtual array
 	 * @return the number of sets in the virtual array
@@ -92,14 +92,6 @@ public interface ISet
 	 */
 	public int depth();
 
-	/**
-	 * Return the size of the virtual array that manages the elements in the
-	 * storages
-	 * 
-	 * @param iUniqueID the unique id associated with the virtual array
-	 * @return the number of sets in the virtual array
-	 */
-	public int depthVA(int iUniqueID);
 
 	/**
 	 * Normalize all storages in the set, based solely on the values within each

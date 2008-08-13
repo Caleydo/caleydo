@@ -51,20 +51,12 @@ public class VirtualArray
 		this.iAlVirtualArray = iAlVirtualArray;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Iterable#iterator()
-	 */
 	@Override
 	public VAIterator iterator()
 	{
 		return new VAIterator(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.selection.IVirtualArray#get(int)
-	 */
 	@Override
 	public Integer get(int iIndex)
 	{
@@ -168,6 +160,18 @@ public class VirtualArray
 		return iAlVirtualArray.remove(iIndex);
 	}
 
+	@Override
+	public void removeByElement(int iElement)
+	{
+		int iIndex = 0;
+		for(int iCurrent : iAlVirtualArray)
+		{
+			if(iCurrent == iElement)
+				remove(iIndex);
+			iIndex++;
+		}
+	}
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.data.selection.IVirtualArray#size()

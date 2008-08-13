@@ -32,7 +32,7 @@ public class GeneAnnotationMapper
 		// sGeneId = sGeneId.substring(4);
 		//				
 		// int iGeneId = genomeIDManager.getIdIntFromStringByMapping(sGeneId,
-		// EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
+		// EMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
 		//				
 		// if (iGeneId == -1)
 		// {
@@ -40,7 +40,7 @@ public class GeneAnnotationMapper
 		// }
 		//		
 		// return genomeIDManager.getIdStringFromIntByMapping(
-		// iGeneId, EGenomeMappingType.NCBI_GENEID_2_GENE_SHORT_NAME);
+		// iGeneId, EMappingType.NCBI_GENEID_2_GENE_SHORT_NAME);
 
 		return "";
 	}
@@ -49,9 +49,9 @@ public class GeneAnnotationMapper
 	{
 
 		// int sNcbiID = genomeIDManager.getIdIntFromIntByMapping(iAccession,
-		// EGenomeMappingType.ACCESSION_2_NCBI_GENEID);
+		// EMappingType.ACCESSION_2_NCBI_GENEID);
 		// return genomeIDManager.getIdStringFromIntByMapping(sNcbiID,
-		// EGenomeMappingType.NCBI_GENEID_2_GENE_SHORT_NAME);
+		// EMappingType.NCBI_GENEID_2_GENE_SHORT_NAME);
 		//	
 		return "";
 	}
@@ -64,7 +64,7 @@ public class GeneAnnotationMapper
 		//		
 		// int iGeneID =
 		// genomeIDManager.getIdIntFromStringByMapping(sNCBIGeneIdCode,
-		// EGenomeMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
+		// EMappingType.NCBI_GENEID_CODE_2_NCBI_GENEID);
 		//				
 		// if (iGeneID == -1)
 		// {
@@ -72,7 +72,7 @@ public class GeneAnnotationMapper
 		// }
 		//		
 		// int iAccessionID = genomeIDManager.getIdIntFromIntByMapping(iGeneID,
-		// EGenomeMappingType.NCBI_GENEID_2_ACCESSION);
+		// EMappingType.NCBI_GENEID_2_ACCESSION);
 		//	
 		// if (iAccessionID == -1)
 		// {
@@ -80,7 +80,7 @@ public class GeneAnnotationMapper
 		// }
 		//		
 		// return genomeIDManager.getIdStringFromIntByMapping(
-		// iAccessionID, EGenomeMappingType.ACCESSION_2_ACCESSION_CODE);
+		// iAccessionID, EMappingType.ACCESSION_2_ACCESSION_CODE);
 
 		return null;
 

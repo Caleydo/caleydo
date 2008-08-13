@@ -3,7 +3,7 @@ package org.caleydo.core.view.swt.browser;
 import java.util.ArrayList;
 import java.util.Iterator;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.system.StringConversionTool;
@@ -71,7 +71,7 @@ public class IDExtractionLocationListener
 
 			int iDavidId = generalManager.getGenomeIdManager().getIdIntFromIntByMapping(
 					StringConversionTool.convertStringToInt(sExtractedID, -1),
-					EGenomeMappingType.ENTREZ_GENE_ID_2_DAVID);
+					EMappingType.ENTREZ_GENE_ID_2_DAVID);
 
 			if (iDavidId == -1)
 				return;

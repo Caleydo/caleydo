@@ -15,7 +15,8 @@ public enum EStorageType
 
 	INT(true),
 	FLOAT(true),
-	STRING(true);
+	STRING(true),
+	NONE(false);
 
 	private boolean bIsControlSequence;
 

@@ -6,7 +6,7 @@ package org.caleydo.core.manager.specialized.genome.id;
 import java.util.Collection;
 import java.util.Set;
 import java.util.logging.Level;
-import org.caleydo.core.data.mapping.EGenomeMappingDataType;
+import org.caleydo.core.data.mapping.EMappingDataType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
 import org.caleydo.core.util.ConversionStringInteger;
@@ -26,7 +26,7 @@ public class GenomeIdMapInt2Int
 	 * Constructor.
 	 */
 	public GenomeIdMapInt2Int(final IGeneralManager generalManager,
-			final EGenomeMappingDataType dataType)
+			final EMappingDataType dataType)
 	{
 
 		super(generalManager, dataType);
@@ -36,7 +36,7 @@ public class GenomeIdMapInt2Int
 	 * Constructor.
 	 */
 	public GenomeIdMapInt2Int(final IGeneralManager generalManager,
-			final EGenomeMappingDataType dataType, int iSizeHashMap)
+			final EMappingDataType dataType, int iSizeHashMap)
 	{
 
 		super(generalManager, dataType, iSizeHashMap);

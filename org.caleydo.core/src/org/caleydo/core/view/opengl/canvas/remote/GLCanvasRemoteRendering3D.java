@@ -1200,7 +1200,7 @@ public class GLCanvasRemoteRendering3D
 		for (SelectionItem item : selectionDelta)
 		{
 			// Only consider items that are selected
-			if (item.getSelectionType() != ESelectionType.SELECTION.intRep())
+			if (item.getSelectionType() != ESelectionType.SELECTION)
 				continue;
 				
 			iDavidID = item.getSelectionID();

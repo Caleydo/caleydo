@@ -9,8 +9,8 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set; // import java.util.Map.Entry;
-// import org.caleydo.core.data.mapping.EGenomeMappingDataType;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
+// import org.caleydo.core.data.mapping.EMappingDataType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 
 /**
@@ -219,7 +219,7 @@ public class MultiHashArrayStringMap
 	 * Maybe this method should moved to outside of this class.
 	 */
 	public MultiHashArrayIntegerMap getCodeResolvedMap(IGenomeIdManager genomeIdManager,
-			EGenomeMappingType genomeMappingLUT_1, EGenomeMappingType genomeMappingLUT_2)
+			EMappingType genomeMappingLUT_1, EMappingType genomeMappingLUT_2)
 	{
 
 		MultiHashArrayIntegerMap codeResolvedMultMapInt = new MultiHashArrayIntegerMap();

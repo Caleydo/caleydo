@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.util.system.StringConversionTool;
@@ -91,7 +91,7 @@ implements IMediatorSender{;
 	private boolean searchForRefSeq(final String sEntity) {
 		
 		int iDavidId = generalManager.getGenomeIdManager().getIdIntFromStringByMapping(sEntity, 
-			EGenomeMappingType.REFSEQ_MRNA_2_DAVID);
+			EMappingType.REFSEQ_MRNA_2_DAVID);
 		
 		if (iDavidId == -1)
 			return false;
@@ -116,7 +116,7 @@ implements IMediatorSender{;
 			return false;
 		
 		int iDavidId = generalManager.getGenomeIdManager().getIdIntFromIntByMapping(
-				iNCBIGeneId, EGenomeMappingType.ENTREZ_GENE_ID_2_DAVID);
+				iNCBIGeneId, EMappingType.ENTREZ_GENE_ID_2_DAVID);
 		
 		int iPathwayGraphItemId = generalManager.getPathwayItemManager()
 			.getPathwayVertexGraphItemIdByDavidId(iDavidId);
@@ -157,13 +157,13 @@ implements IMediatorSender{;
 	private boolean searchForGeneShortName(final String sEntity) {
 		
 //		int iNCBIGeneId = generalManager.getGenomeIdManager().getIdIntFromStringByMapping(sEntity, 
-//				EGenomeMappingType.DA);
+//				EMappingType.DA);
 //		
 //		if (iNCBIGeneId == -1)
 //			return false;
 //		
 //		return searchForNCBIGeneId(generalManager.getGenomeIdManager()
-//				.getIdStringFromIntByMapping(iNCBIGeneId, EGenomeMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE));
+//				.getIdStringFromIntByMapping(iNCBIGeneId, EMappingType.NCBI_GENEID_2_NCBI_GENEID_CODE));
 		
 		return false;
 	}

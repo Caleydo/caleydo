@@ -8,8 +8,9 @@ import org.caleydo.core.data.collection.EStorageType;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
+ * @author Alexander Lex
  */
-public enum EGenomeIdType
+public enum EIDType
 {
 
 	GENE_NAME(EStorageType.STRING, "gene-name", "gene pseudo name"),
@@ -24,7 +25,13 @@ public enum EGenomeIdType
 
 	ENTREZ_GENE_ID(EStorageType.INT, "entrez-gene-id", "entrez-gene-id"),
 
-	EXPRESSION_STORAGE_ID(EStorageType.INT, "expression-storage-id", "expression-storage-id");
+	EXPRESSION_INDEX(EStorageType.INT, "expression-index", "The index of a gene expression value"),
+
+	EXPRESSION_EXPERIMENT(EStorageType.INT, "expression-experiment", "A expression experiment containing gene expression values"),
+
+	PATHWAY_VERTEX(EStorageType.INT, "pathway vertex id", "The id of the pathway vertex"),
+	
+	PATHWAY(EStorageType.INT, "pathway id", "The ID of a pathway");
 
 	private final EStorageType storageType;
 
@@ -39,7 +46,7 @@ public enum EGenomeIdType
 	 * @param sName
 	 * @param sDesciption
 	 */
-	private EGenomeIdType(final EStorageType storageType, final String sName,
+	private EIDType(final EStorageType storageType, final String sName,
 			final String sDesciption)
 	{
 

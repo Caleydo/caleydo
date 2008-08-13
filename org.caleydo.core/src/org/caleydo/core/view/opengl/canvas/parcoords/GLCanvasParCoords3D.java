@@ -13,7 +13,8 @@ import javax.media.opengl.GL;
 import javax.naming.OperationNotSupportedException;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.IVirtualArray;
@@ -120,8 +121,11 @@ public class GLCanvasParCoords3D
 	// holds the textures for the icons
 	private GLIconTextureManager iconTextureManager;
 
-	private int iPolylineSelection = 0;
-	private int iAxisSelection = 0;
+	private int iPolylineVAID = 0;
+	private int iAxisVAID = 0;
+	
+	private GenericSelectionManager polylineSelectionManager;
+	private GenericSelectionManager axisSelectionManager;
 
 	/**
 	 * Constructor.
@@ -142,9 +146,13 @@ public class GLCanvasParCoords3D
 		// {
 		// alSelectionType.add(selectionType);
 		// }
-		horizontalSelectionManager = new GenericSelectionManager.Builder().mappingType(
-				EGenomeMappingType.EXPRESSION_STORAGE_ID_2_DAVID,
-				EGenomeMappingType.DAVID_2_EXPRESSION_STORAGE_ID).build();
+		
+		// TODO this is the content selection manager no matter what now
+		contentSelectionManager = new GenericSelectionManager.Builder(
+				EIDType.EXPRESSION_INDEX).mappingType(
+				EMappingType.EXPRESSION_INDEX_2_DAVID,
+				EMappingType.DAVID_2_EXPRESSION_STORAGE_ID).externalIDType(EIDType.DAVID)
+				.build();
 
 		// initialize axis selection manager
 		// alSelectionType = new ArrayList<EViewInternalSelectionType>();
@@ -154,7 +162,10 @@ public class GLCanvasParCoords3D
 		// alSelectionType.add(selectionType);
 		// }
 		// TODO no mapping
-		verticalSelectionManager = new GenericSelectionManager.Builder().build();
+		
+		// TODO this is the storage selection manager
+		storageSelectionManager = new GenericSelectionManager.Builder(
+				EIDType.EXPRESSION_EXPERIMENT).build();
 
 		decimalFormat = new DecimalFormat("#####.##");
 
@@ -165,31 +176,22 @@ public class GLCanvasParCoords3D
 		alIsAngleBlocking.add(new ArrayList<Integer>());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media
-	 * .opengl.GL)
-	 */
+	@Override
 	public void initLocal(final GL gl)
 	{
-
+		renderOnlyContext(false);
+		
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
 
 		glToolboxRenderer = new GLParCoordsToolboxRenderer(gl, generalManager, iUniqueID,
 				new Vec3f(0, 0, 0), true, renderStyle);
+		
+
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media
-	 * .opengl.GL, int, org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer,
-	 * org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener,
-	 * org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D)
-	 */
+	@Override
 	public void initRemote(final GL gl, final int iRemoteViewID,
 			final RemoteHierarchyLayer layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
@@ -208,15 +210,9 @@ public class GLCanvasParCoords3D
 		init(gl);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl
-	 * .GL)
-	 */
+	@Override
 	public void init(final GL gl)
 	{
-
 		iconTextureManager = new GLIconTextureManager(gl);
 
 		// initialize selection to an empty array with
@@ -227,12 +223,7 @@ public class GLCanvasParCoords3D
 		fYTranslation = renderStyle.getBottomSpacing();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#displayLocal(javax.
-	 * media.opengl.GL)
-	 */
+	@Override
 	public void displayLocal(final GL gl)
 	{
 
@@ -256,12 +247,7 @@ public class GLCanvasParCoords3D
 		pickingTriggerMouseAdapter.resetEvents();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#displayRemote(javax
-	 * .media.opengl.GL)
-	 */
+	@Override
 	public void displayRemote(final GL gl)
 	{
 
@@ -284,12 +270,7 @@ public class GLCanvasParCoords3D
 		// pickingTriggerMouseAdapter.resetEvents();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#display(javax.media
-	 * .opengl.GL)
-	 */
+	@Override
 	public void display(final GL gl)
 	{
 
@@ -353,7 +334,7 @@ public class GLCanvasParCoords3D
 	 * arrays is an axis or whether the array corresponds to an axis and every
 	 * entry across arrays is a polyline
 	 */
-	public void renderStorageAsPolyline()
+	public void toggleAxisPolylineSwap()
 	{
 
 		bRenderStorageHorizontally = !bRenderStorageHorizontally;
@@ -362,17 +343,22 @@ public class GLCanvasParCoords3D
 		eAxisDataType = ePolylineDataType;
 		ePolylineDataType = eTempType;
 		fXTranslation = 0;
-		extSelectionManager.clear();
+		connectedElementRepresentationManager.clear();
 		if (bRenderStorageHorizontally)
 		{
-			iAxisSelection = iContentSelection;
-			iPolylineSelection = iStorageSelection;
+			iAxisVAID = iContentVAID;
+			axisSelectionManager = contentSelectionManager;
+			iPolylineVAID = iStorageVAID;
+			polylineSelectionManager = storageSelectionManager;
 		}
 		else
 		{
-			iAxisSelection = iStorageSelection;
-			iPolylineSelection = iContentSelection;
+			iAxisVAID = iStorageVAID;
+			axisSelectionManager = storageSelectionManager;
+			iPolylineVAID = iContentVAID;
+			polylineSelectionManager = contentSelectionManager;
 		}
+		// TODO we might not need that here!
 		initLists();
 
 	}
@@ -422,8 +408,8 @@ public class GLCanvasParCoords3D
 			fArGateBottomHeight[iCount] = renderStyle.getGateYOffset()
 					- renderStyle.getGateTipHeight();
 		}
-		horizontalSelectionManager.clearSelections();
-		verticalSelectionManager.clearSelections();
+		contentSelectionManager.clearSelections();
+		storageSelectionManager.clearSelections();
 
 		// bRenderInfoArea = false;
 		bIsAngularBrushingActive = false;
@@ -458,66 +444,51 @@ public class GLCanvasParCoords3D
 	protected void initLists()
 	{
 
-		horizontalSelectionManager.resetSelectionManager();
-
+		// TODO this needs only to be done if initLists has to be called during runtime, not while initing
+		contentSelectionManager.resetSelectionManager();
+		storageSelectionManager.resetSelectionManager();
+		
 		// int iNumberOfEntriesToRender = 0;
 		//		
-		iContentSelection = mapSelections.get(eWhichContentSelection);
-		iStorageSelection = mapSelections.get(eWhichStorageSelection);
+		iContentVAID = mapSelections.get(eWhichContentSelection);
+		iStorageVAID = mapSelections.get(eWhichStorageSelection);
 
 		// alContentSelection = mapSelections.get(eWhichContentSelection);
 		// alStorageSelection = mapSelections.get(eWhichStorageSelection);
 
 		if (bRenderStorageHorizontally)
 		{
-			iPolylineSelection = iStorageSelection;
-			iAxisSelection = iContentSelection;
+			iPolylineVAID = iStorageVAID;
+			iAxisVAID = iContentVAID;
+			polylineSelectionManager = storageSelectionManager;
+			axisSelectionManager = contentSelectionManager;
 		}
 		else
 		{
-			iPolylineSelection = iContentSelection;
-			iAxisSelection = iStorageSelection;
+			iPolylineVAID = iContentVAID;
+			iAxisVAID = iStorageVAID;
+			polylineSelectionManager = contentSelectionManager;
+			axisSelectionManager = storageSelectionManager;
+			
 		}
 
 		// iNumberOfEntriesToRender = alContentSelection.size();
 
-		int iNumberOfPolyLinesToRender = 0;
+		int iNumberOfPolyLinesToRender = set.sizeVA(iPolylineVAID);
+		iNumberOfAxis = set.sizeVA(iAxisVAID);
 
-		// if true one array corresponds to one polyline, number of arrays is
-		// number of polylines
-		if (bRenderStorageHorizontally)
-		{
-			iNumberOfPolyLinesToRender = set.sizeVA(iStorageSelection);
-			iNumberOfAxis = set.depthVA(iContentSelection);
-		}
-		// render polylines across storages - first element of storage 1 to n
-		// makes up polyline
-		else
-		{
-			iNumberOfPolyLinesToRender = set.depthVA(iContentSelection);
-			iNumberOfAxis = set.sizeVA(iStorageSelection);
-		}
 
 		// this for loop executes once per polyline
 		for (int iPolyLineCount = 0; iPolyLineCount < iNumberOfPolyLinesToRender; iPolyLineCount++)
 		{
-			if (bRenderStorageHorizontally)
-				horizontalSelectionManager.initialAdd(set.getVA(iStorageSelection).get(
-						iPolyLineCount));
-			else
-				horizontalSelectionManager.initialAdd(set.getVA(iContentSelection).get(
+			polylineSelectionManager.initialAdd(set.getVA(iPolylineVAID).get(
 						iPolyLineCount));
 		}
 
 		// this for loop executes one per axis
 		for (int iAxisCount = 0; iAxisCount < iNumberOfAxis; iAxisCount++)
 		{
-			if (bRenderStorageHorizontally)
-				verticalSelectionManager.initialAdd(set.getVA(iContentSelection).get(
-						iAxisCount));
-			else
-				verticalSelectionManager.initialAdd(set.getVA(iStorageSelection).get(
-						iAxisCount));
+			axisSelectionManager.initialAdd(set.getVA(iAxisVAID).get(iAxisCount));
 		}
 		fAxisSpacing = renderStyle.getAxisSpacing(iNumberOfAxis);
 
@@ -570,7 +541,7 @@ public class GLCanvasParCoords3D
 		switch (renderMode)
 		{
 			case NORMAL:
-				setDataToRender = horizontalSelectionManager.getElements(renderMode);
+				setDataToRender = polylineSelectionManager.getElements(renderMode);
 				if (bPreventOcclusion)
 					gl.glColor4fv(renderStyle.getPolylineOcclusionPrevColor(setDataToRender
 							.size()), 0);
@@ -580,23 +551,23 @@ public class GLCanvasParCoords3D
 				gl.glLineWidth(ParCoordsRenderStyle.POLYLINE_LINE_WIDTH);
 				break;
 			case SELECTION:
-				setDataToRender = horizontalSelectionManager.getElements(renderMode);
+				setDataToRender = polylineSelectionManager.getElements(renderMode);
 				gl.glColor4fv(ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR, 0);
 				gl.glLineWidth(ParCoordsRenderStyle.SELECTED_POLYLINE_LINE_WIDTH);
 				break;
 			case MOUSE_OVER:
-				setDataToRender = horizontalSelectionManager.getElements(renderMode);
+				setDataToRender = polylineSelectionManager.getElements(renderMode);
 				gl.glColor4fv(ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR, 0);
 				gl.glLineWidth(ParCoordsRenderStyle.MOUSE_OVER_POLYLINE_LINE_WIDTH);
 				break;
 			case DESELECTED:
-				setDataToRender = horizontalSelectionManager.getElements(renderMode);
+				setDataToRender = polylineSelectionManager.getElements(renderMode);
 				gl.glColor4fv(renderStyle
 						.getPolylineDeselectedOcclusionPrevColor(setDataToRender.size()), 0);
 				gl.glLineWidth(ParCoordsRenderStyle.DESELECTED_POLYLINE_LINE_WIDTH);
 				break;
 			default:
-				setDataToRender = horizontalSelectionManager
+				setDataToRender = polylineSelectionManager
 						.getElements(ESelectionType.NORMAL);
 		}
 
@@ -617,7 +588,7 @@ public class GLCanvasParCoords3D
 				int iWhichStorage = iPolyLineID;
 				// currentStorage =
 				// alDataStorages.get(alStorageSelection.get(iWhichStorage));
-				currentStorage = set.getStorageFromVA(iStorageSelection, iWhichStorage);
+				currentStorage = set.getStorageFromVA(iStorageVAID, iWhichStorage);
 			}
 
 			float fPreviousXValue = 0;
@@ -633,12 +604,12 @@ public class GLCanvasParCoords3D
 				// get the index if array as polyline
 				if (bRenderStorageHorizontally)
 				{
-					iStorageIndex = set.getVA(iContentSelection).get(iVertexCount);
+					iStorageIndex = set.getVA(iContentVAID).get(iVertexCount);
 				}
 				// get the storage and the storage index for the different cases
 				else
 				{
-					currentStorage = set.getStorageFromVA(iStorageSelection, iVertexCount);
+					currentStorage = set.getStorageFromVA(iStorageVAID, iVertexCount);
 					iStorageIndex = iPolyLineID;
 				}
 
@@ -693,28 +664,28 @@ public class GLCanvasParCoords3D
 		gl.glPopName();
 
 		// draw all Y-Axis
-		Set<Integer> selectedSet = verticalSelectionManager
+		Set<Integer> selectedSet = axisSelectionManager
 				.getElements(ESelectionType.SELECTION);
-		Set<Integer> mouseOverSet = verticalSelectionManager
+		Set<Integer> mouseOverSet = axisSelectionManager
 				.getElements(ESelectionType.MOUSE_OVER);
 		// ArrayList<Integer> alAxisSelection;
 
-		int iAxisSelection = 0;
+//		int iAxisSelection = 0;
 
-		if (bRenderStorageHorizontally)
-			iAxisSelection = iContentSelection;
-		else
-			iAxisSelection = iStorageSelection;
+//		if (bRenderStorageHorizontally)
+//			iAxisSelection = iContentVAID;
+//		else
+//			iAxisSelection = iStorageVAID;
 
 		int iCount = 0;
 		while (iCount < iNumberAxis)
 		{
-			if (selectedSet.contains(set.getVA(iAxisSelection).get(iCount)))
+			if (selectedSet.contains(set.getVA(iAxisVAID).get(iCount)))
 			{
 				gl.glColor4fv(ParCoordsRenderStyle.Y_AXIS_SELECTED_COLOR, 0);
 				gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_SELECTED_LINE_WIDTH);
 			}
-			else if (mouseOverSet.contains(set.getVA(iAxisSelection).get(iCount)))
+			else if (mouseOverSet.contains(set.getVA(iAxisVAID).get(iCount)))
 			{
 				gl.glColor4fv(ParCoordsRenderStyle.Y_AXIS_MOUSE_OVER_COLOR, 0);
 				gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_MOUSE_OVER_LINE_WIDTH);
@@ -725,7 +696,7 @@ public class GLCanvasParCoords3D
 				gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH);
 			}
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.Y_AXIS_SELECTION, set.getVA(iAxisSelection).get(iCount)));
+					EPickingType.Y_AXIS_SELECTION, set.getVA(iAxisVAID).get(iCount)));
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(iCount * fAxisSpacing, ParCoordsRenderStyle.Y_AXIS_LOW,
 					ParCoordsRenderStyle.AXIS_Z);
@@ -740,14 +711,14 @@ public class GLCanvasParCoords3D
 			String sAxisLabel = null;
 			switch (eAxisDataType)
 			{
+				// TODO not very generic here
 				case EXPERIMENT:
 					// Labels
 					// sAxisLabel = alDataStorages.get(iCount).getLabel();
-					sAxisLabel = set.getStorageFromVA(iStorageSelection, iCount).getLabel();
+					sAxisLabel = set.getStorageFromVA(iStorageVAID, iCount).getLabel();
 					break;
 				case GENE:
-					sAxisLabel = getRefSeqFromStorageIndex(set.getVA(iContentSelection).get(
-							iCount));
+					sAxisLabel = getRefSeqFromStorageIndex(set.getVA(iContentVAID).get(iCount));
 					break;
 				default:
 					sAxisLabel = "No Label";
@@ -905,8 +876,7 @@ public class GLCanvasParCoords3D
 			{
 				renderYValues(gl, fCurrentPosition, fArGateTipHeight[iCount], (float) set
 						.getRawForNormalized(fArGateTipHeight[iCount]
-								/ renderStyle.getAxisHeight()),
-						ESelectionType.NORMAL);
+								/ renderStyle.getAxisHeight()), ESelectionType.NORMAL);
 			}
 			catch (OperationNotSupportedException e)
 			{
@@ -952,8 +922,7 @@ public class GLCanvasParCoords3D
 			{
 				renderYValues(gl, fCurrentPosition, fArGateBottomHeight[iCount], (float) set
 						.getRawForNormalized(fArGateBottomHeight[iCount]
-								/ renderStyle.getAxisHeight()),
-						ESelectionType.NORMAL);
+								/ renderStyle.getAxisHeight()), ESelectionType.NORMAL);
 			}
 			catch (OperationNotSupportedException e)
 			{
@@ -1081,6 +1050,7 @@ public class GLCanvasParCoords3D
 	 * 
 	 * @param iAxisNumber
 	 */
+	// TODO revise
 	private void handleUnselection(int iAxisNumber)
 	{
 
@@ -1089,7 +1059,7 @@ public class GLCanvasParCoords3D
 		IStorage currentStorage = null;
 
 		// for every polyline
-		for (int iPolylineCount = 0; iPolylineCount < horizontalSelectionManager
+		for (int iPolylineCount = 0; iPolylineCount < polylineSelectionManager
 				.getNumberOfElements(); iPolylineCount++)
 		{
 			int iStorageIndex = 0;
@@ -1097,14 +1067,14 @@ public class GLCanvasParCoords3D
 			// get the index if array as polyline
 			if (bRenderStorageHorizontally)
 			{
-				currentStorage = set.getStorageFromVA(iStorageSelection, iPolylineCount);
-				iStorageIndex = set.getVA(iContentSelection).get(iAxisNumber);
+				currentStorage = set.getStorageFromVA(iStorageVAID, iPolylineCount);
+				iStorageIndex = set.getVA(iContentVAID).get(iAxisNumber);
 			}
 			// get the storage and the storage index for the different cases
 			else
 			{
-				iStorageIndex = set.getVA(iContentSelection).get(iPolylineCount);
-				currentStorage = set.getStorageFromVA(iStorageSelection, iAxisNumber);
+				iStorageIndex = set.getVA(iContentVAID).get(iPolylineCount);
+				currentStorage = set.getStorageFromVA(iStorageVAID, iAxisNumber);
 			}
 
 			float fCurrentValue = currentStorage.getFloat(EDataRepresentation.NORMALIZED,
@@ -1113,14 +1083,14 @@ public class GLCanvasParCoords3D
 			if (fCurrentValue <= fArGateTipHeight[iAxisNumber]
 					&& fCurrentValue >= fArGateBottomHeight[iAxisNumber])
 			{
-				// if(horizontalSelectionManager.checkStatus(
+				// if(contentSelectionManager.checkStatus(
 				// EViewInternalSelectionType.SELECTION, iPolylineCount))
 				// bRenderInfoArea = false;
 
-				//horizontalSelectionManager.addToType(EViewInternalSelectionType
+				//contentSelectionManager.addToType(EViewInternalSelectionType
 				// .DESELECTED,
 				// alPolylineSelection.get(iPolylineCount));
-				alCurrentGateBlocks.add(set.getVA(iPolylineSelection).get(iPolylineCount));
+				alCurrentGateBlocks.add(set.getVA(iPolylineVAID).get(iPolylineCount));
 
 			}
 		}
@@ -1147,29 +1117,20 @@ public class GLCanvasParCoords3D
 			}
 		}
 
-		for (Integer iCurrent : set.getVA(iPolylineSelection))
+		for (Integer iCurrent : set.getVA(iPolylineVAID))
 		{
 			if (hashDeselectedPolylines.get(iCurrent) != null)
 			{
-				horizontalSelectionManager.addToType(ESelectionType.DESELECTED,
-						iCurrent);
+				polylineSelectionManager.addToType(ESelectionType.DESELECTED, iCurrent);
 			}
 			else
 			{
-				horizontalSelectionManager.removeFromType(
-						ESelectionType.DESELECTED, iCurrent);
+				polylineSelectionManager.removeFromType(ESelectionType.DESELECTED, iCurrent);
 			}
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.caleydo
-	 * .core.manager.view.EPickingType,
-	 * org.caleydo.core.manager.view.EPickingMode, int,
-	 * org.caleydo.core.manager.view.Pick)
-	 */
+	@Override
 	protected void handleEvents(final EPickingType ePickingType,
 			final EPickingMode ePickingMode, final int iExternalID, final Pick pick)
 	{
@@ -1193,20 +1154,19 @@ public class GLCanvasParCoords3D
 				{
 
 					case CLICKED:
-						extSelectionManager.clear();
+						connectedElementRepresentationManager.clear();
 						// iAlOldSelection =
-						// prepareSelection(horizontalSelectionManager,
+						// prepareSelection(contentSelectionManager,
 						// EViewInternalSelectionType.SELECTION);
 
-						horizontalSelectionManager
-								.clearSelection(ESelectionType.SELECTION);
-						horizontalSelectionManager.addToType(
-								ESelectionType.SELECTION, iExternalID);
+						polylineSelectionManager.clearSelection(ESelectionType.SELECTION);
+						polylineSelectionManager.addToType(ESelectionType.SELECTION,
+								iExternalID);
 
 						if (ePolylineDataType == EInputDataType.GENE
 								&& !bAngularBrushingSelectPolyline)
 						{
-							triggerUpdate(horizontalSelectionManager.getDelta());
+							triggerUpdate(polylineSelectionManager.getDelta());
 							// propagateGeneSelection(iExternalID, 2,
 							// iAlOldSelection);
 						}
@@ -1223,22 +1183,21 @@ public class GLCanvasParCoords3D
 						bIsDisplayListDirtyRemote = true;
 						break;
 					case MOUSE_OVER:
-						extSelectionManager.clear();
+						connectedElementRepresentationManager.clear();
 						// iAlOldSelection =
-						// prepareSelection(horizontalSelectionManager,
+						// prepareSelection(contentSelectionManager,
 						// EViewInternalSelectionType.SELECTION);
 						//
 						// if (ePolylineDataType == EInputDataType.GENE)
 						// propagateGeneSelection(iExternalID, 1,
 						// iAlOldSelection);
 
-						horizontalSelectionManager
-								.clearSelection(ESelectionType.MOUSE_OVER);
-						horizontalSelectionManager.addToType(
-								ESelectionType.MOUSE_OVER, iExternalID);
+						polylineSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
+						polylineSelectionManager.addToType(ESelectionType.MOUSE_OVER,
+								iExternalID);
 						if (ePolylineDataType == EInputDataType.GENE)
 						{
-							triggerUpdate(horizontalSelectionManager.getDelta());
+							triggerUpdate(polylineSelectionManager.getDelta());
 						}
 
 						bIsDisplayListDirtyLocal = true;
@@ -1256,19 +1215,18 @@ public class GLCanvasParCoords3D
 				{
 					case CLICKED:
 						// iAlOldSelection =
-						// prepareSelection(verticalSelectionManager,
+						// prepareSelection(storageSelectionManager,
 						// EViewInternalSelectionType.SELECTION);
 
-						verticalSelectionManager
-								.clearSelection(ESelectionType.SELECTION);
-						verticalSelectionManager.addToType(
-								ESelectionType.SELECTION, iExternalID);
+						axisSelectionManager.clearSelection(ESelectionType.SELECTION);
+						axisSelectionManager.addToType(ESelectionType.SELECTION,
+								iExternalID);
 
 						if (eAxisDataType == EInputDataType.GENE)
 						{
 							// propagateGeneSelection(iExternalID, 2,
 							// iAlOldSelection);
-							triggerUpdate(verticalSelectionManager.getDelta());
+							triggerUpdate(axisSelectionManager.getDelta());
 						}
 
 						rePosition(iExternalID);
@@ -1277,17 +1235,16 @@ public class GLCanvasParCoords3D
 						break;
 					case MOUSE_OVER:
 						// iAlOldSelection =
-						// prepareSelection(verticalSelectionManager,
+						// prepareSelection(storageSelectionManager,
 						// EViewInternalSelectionType.MOUSE_OVER);
 
-						verticalSelectionManager
-								.clearSelection(ESelectionType.MOUSE_OVER);
-						verticalSelectionManager.addToType(
-								ESelectionType.MOUSE_OVER, iExternalID);
+						axisSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
+						axisSelectionManager.addToType(ESelectionType.MOUSE_OVER,
+								iExternalID);
 
 						if (eAxisDataType == EInputDataType.GENE)
 						{
-							triggerUpdate(verticalSelectionManager.getDelta());
+							triggerUpdate(axisSelectionManager.getDelta());
 							// propagateGeneSelection(iExternalID, 1,
 							// iAlOldSelection);
 							// // generalManager.getSingelton().
@@ -1345,9 +1302,9 @@ public class GLCanvasParCoords3D
 						if (iExternalID == EIconIDs.TOGGLE_RENDER_ARRAY_AS_POLYLINE.ordinal())
 						{
 							if (bRenderStorageHorizontally == true)
-								renderStorageAsPolyline();
+								toggleAxisPolylineSwap();
 							else
-								renderStorageAsPolyline();
+								toggleAxisPolylineSwap();
 						}
 						else if (iExternalID == EIconIDs.TOGGLE_PREVENT_OCCLUSION.ordinal())
 						{
@@ -1379,7 +1336,7 @@ public class GLCanvasParCoords3D
 							// if (bRenderSelection)
 							// {
 							// Set<Integer> deselectedSet =
-							// horizontalSelectionManager
+							// contentSelectionManager
 							//.getElements(EViewInternalSelectionType.DESELECTED
 							// );
 							//
@@ -1389,18 +1346,18 @@ public class GLCanvasParCoords3D
 							// }
 							// else
 							// {
-							// Set<Integer> set = horizontalSelectionManager
+							// Set<Integer> set = contentSelectionManager
 							// .getElements(EViewInternalSelectionType.NORMAL);
 							// addSetToSelection(set, iAlSelection, iAlGroup,
 							// 0);
 							//
-							// set = horizontalSelectionManager
+							// set = contentSelectionManager
 							//.getElements(EViewInternalSelectionType.MOUSE_OVER
 							// );
 							// addSetToSelection(set, iAlSelection, iAlGroup,
 							// 1);
 							//
-							// set = horizontalSelectionManager
+							// set = contentSelectionManager
 							//.getElements(EViewInternalSelectionType.SELECTION)
 							// ;
 							// addSetToSelection(set, iAlSelection, iAlGroup,
@@ -1410,7 +1367,7 @@ public class GLCanvasParCoords3D
 							// propagateGeneSet();// iAlSelection, iAlGroup);
 							// renderSelection(true);
 							//
-							// extSelectionManager.clear();
+							// connectedElementRepresentationManager.clear();
 						}
 						else if (iExternalID == EIconIDs.ANGULAR_BRUSHING.ordinal())
 						{
@@ -1431,11 +1388,11 @@ public class GLCanvasParCoords3D
 						// int iSelection = 0;
 						if (bRenderStorageHorizontally)
 						{
-							set.getVA(iContentSelection).remove(iExternalID);
+							set.getVA(iContentVAID).remove(iExternalID);
 						}
 						else
 						{
-							set.getVA(iStorageSelection).remove(iExternalID);
+							set.getVA(iStorageVAID).remove(iExternalID);
 						}
 						refresh();
 						break;
@@ -1448,7 +1405,7 @@ public class GLCanvasParCoords3D
 					case CLICKED:
 						if (iExternalID > 0)
 						{
-							set.getVA(iAxisSelection).moveLeft(iExternalID);
+							set.getVA(iAxisVAID).moveLeft(iExternalID);
 							refresh();
 						}
 						break;
@@ -1462,7 +1419,7 @@ public class GLCanvasParCoords3D
 					case CLICKED:
 						if (iExternalID > 0)
 						{
-							set.getVA(iAxisSelection).moveRight(iExternalID);
+							set.getVA(iAxisVAID).moveRight(iExternalID);
 							refresh();
 						}
 						break;
@@ -1475,7 +1432,7 @@ public class GLCanvasParCoords3D
 					case CLICKED:
 						if (iExternalID > 0)
 						{
-							set.getVA(iAxisSelection).copy(iExternalID);
+							set.getVA(iAxisVAID).copy(iExternalID);
 							refresh();
 							break;
 						}
@@ -1503,20 +1460,19 @@ public class GLCanvasParCoords3D
 
 	protected SelectedElementRep createElementRep(int iStorageIndex)
 	{
-
 		if (!bRenderStorageHorizontally)
 		{
 			ArrayList<Vec3f> alPoints = new ArrayList<Vec3f>();
 			float fYValue;
 			float fXValue;
 			int iCount = 0;
-			for (Integer iCurrent : set.getVA(iStorageSelection))
+			for (Integer iCurrent : set.getVA(iStorageVAID))
 			{
 				// MARC: just add last point for line connections
 				// therefore the polyline is only connected with a line at the
 				// right of the view
 				// instead of the triangle fan
-				if (iCurrent < set.getVA(iStorageSelection).size() - 1)
+				if (iCurrent < set.getVA(iStorageVAID).size() - 1)
 				{
 					iCount++;
 					continue;
@@ -1536,7 +1492,7 @@ public class GLCanvasParCoords3D
 		}
 		else
 		{
-			float fXValue = set.getVA(iContentSelection).indexOf(iStorageIndex) * fAxisSpacing
+			float fXValue = set.getVA(iContentVAID).indexOf(iStorageIndex) * fAxisSpacing
 					+ renderStyle.getXSpacing() + fXTranslation;
 
 			ArrayList<Vec3f> alPoints = new ArrayList<Vec3f>();
@@ -1550,10 +1506,7 @@ public class GLCanvasParCoords3D
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#getInfo()
-	 */
+	@Override
 	public ArrayList<String> getInfo()
 	{
 
@@ -1561,25 +1514,26 @@ public class GLCanvasParCoords3D
 		sAlInfo.add("Type: Parallel Coordinates");
 		if (!bRenderStorageHorizontally)
 		{
-			sAlInfo.add(set.getVA(iContentSelection).size() + " genes as polylines and "
+			sAlInfo.add(set.getVA(iContentVAID).size() + " genes as polylines and "
 					+ iNumberOfAxis + " experiments as axis.");
 		}
 		else
 		{
-			sAlInfo.add(set.getVA(iStorageSelection).size() + "experiments as polylines and "
+			sAlInfo.add(set.getVA(iStorageVAID).size() + "experiments as polylines and "
 					+ iNumberOfAxis + " genes as axis.");
 		}
 		return sAlInfo;
 	}
 
+	@Override
 	protected void rePosition(int iElementID)
 	{
 
 		IVirtualArray virtualArray;
 		if (bRenderStorageHorizontally)
-			virtualArray = set.getVA(iContentSelection);
+			virtualArray = set.getVA(iContentVAID);
 		else
-			virtualArray = set.getVA(iStorageSelection);
+			virtualArray = set.getVA(iStorageVAID);
 
 		float fCurrentPosition = virtualArray.indexOf(iElementID) * fAxisSpacing
 				+ renderStyle.getXSpacing();
@@ -1637,18 +1591,6 @@ public class GLCanvasParCoords3D
 		fXTranslation += fDelta;
 	}
 
-	private void addSetToSelection(Set<Integer> sourceSet,
-			ArrayList<Integer> iAlTargetSelection, ArrayList<Integer> iAlGroupSelection,
-			int iGroupID)
-	{
-
-		for (Integer iCurrent : sourceSet)
-		{
-			iAlTargetSelection.add(iCurrent);
-			iAlGroupSelection.add(iGroupID);
-		}
-	}
-
 	private void handleAngularBrushing(final GL gl)
 	{
 
@@ -1669,8 +1611,8 @@ public class GLCanvasParCoords3D
 		int iAxisLeftIndex;
 		int iAxisRightIndex;
 
-		iAxisLeftIndex = set.getVA(iAxisSelection).get(iPosition);
-		iAxisRightIndex = set.getVA(iAxisSelection).get(iPosition + 1);
+		iAxisLeftIndex = set.getVA(iAxisVAID).get(iPosition);
+		iAxisRightIndex = set.getVA(iAxisVAID).get(iPosition + 1);
 
 		// int iPolylineIndex = alPolylineSelection.indexOf(iSelectedLineID);
 
@@ -1766,7 +1708,7 @@ public class GLCanvasParCoords3D
 
 		// check selection
 
-		for (Integer iCurrent : set.getVA(iPolylineSelection))
+		for (Integer iCurrent : set.getVA(iPolylineVAID))
 		{
 			if (bRenderStorageHorizontally)
 			{
@@ -1797,14 +1739,14 @@ public class GLCanvasParCoords3D
 			if (fCompareAngle > fCurrentAngle || fCompareAngle < -fCurrentAngle)
 			// !(fCompareAngle < fAngle && fCompareAngle < -fAngle))
 			{
-				//horizontalSelectionManager.addToType(EViewInternalSelectionType
+				//contentSelectionManager.addToType(EViewInternalSelectionType
 				// .DESELECTED, iCurrent);
 				alIsAngleBlocking.get(0).add(iCurrent);
 			}
 			// else
 			// {
 			// // TODO combinations
-			////horizontalSelectionManager.addToType(EViewInternalSelectionType.
+			////contentSelectionManager.addToType(EViewInternalSelectionType.
 			// NORMAL, iCurrent);
 			// }
 

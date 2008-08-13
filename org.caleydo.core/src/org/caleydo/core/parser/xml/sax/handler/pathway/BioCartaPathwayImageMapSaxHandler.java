@@ -2,7 +2,7 @@ package org.caleydo.core.parser.xml.sax.handler.pathway;
 
 import java.util.logging.Level;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
@@ -201,7 +201,7 @@ public class BioCartaPathwayImageMapSaxHandler
 		IGenomeIdManager genomeIdManager = generalManager.getGenomeIdManager();
 
 		int iDavidId = genomeIdManager.getIdIntFromStringByMapping(sName,
-				EGenomeMappingType.BIOCARTA_GENE_ID_2_DAVID);
+				EMappingType.BIOCARTA_GENE_ID_2_DAVID);
 
 		if (iDavidId == -1 || iDavidId == 0)
 		{

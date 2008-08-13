@@ -4,7 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.logging.Level;
-import org.caleydo.core.data.mapping.EGenomeMappingType;
+import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
@@ -13,9 +14,9 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  * <p>
  * Manages selections generically by storing them in hash maps. The manager can
  * handle an arbitrary number of selection types, which have to be defined in
- * {@link ESelectionType} A normal type, by default NORMAL in the
- * aforementioned enum is considered to be the base type, where all elements are
- * initially added to.
+ * {@link ESelectionType} A normal type, by default NORMAL in the aforementioned
+ * enum is considered to be the base type, where all elements are initially
+ * added to.
  * </p>
  * <p>
  * Use the Builder to create an instance and specify optional parameters.
@@ -31,14 +32,24 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  * <p>
  * The manager can also produce a {@link SelectionDelta} object which contains
  * different ID types, by mapping them. You therefore have to specify two
- * {@link EGenomeMappingType}, one for internal to external and vice versa.
+ * {@link EMappingType}, one for internal to external and vice versa.
  * </p>
  * <p>
  * The manager can operate on a subset of the possible types in
- * {@link ESelectionType}, by specifying a list of allowed types in
- * the {@link Builder}. When a selection delta is merged into the manager that
+ * {@link ESelectionType}, by specifying a list of allowed types in the
+ * {@link Builder}. When a selection delta is merged into the manager that
  * contains values that are not specified in the list of allowed values, the
  * selections are ignored
+ * </p>
+ * <p>
+ * When using the manager on data that is also managed by a
+ * {@link IVirtualArray} set the currently active virtual array so that it can
+ * be updated according to external as well as internal selection modifications.
+ * The operations where a virtual array is updated are external and internal
+ * remove operations and external add operations.
+ * </p>
+ * <p>
+ * Do not forget to update the virtual array once another instance is active
  * </p>
  * 
  * @author Alexander Lex
@@ -53,6 +64,9 @@ public class GenericSelectionManager
 
 	private ESelectionType eNormalType;
 
+	private EIDType internalIDType;
+	private EIDType externalIDType;
+
 	private int iNumberOfElements = 0;
 
 	private ArrayList<ESelectionType> alSelectionTypes;
@@ -61,25 +75,32 @@ public class GenericSelectionManager
 
 	private boolean bIsDeltaWritingEnabled = true;
 
-	private EGenomeMappingType internalToExternalMapping;
-	private EGenomeMappingType externalToInternalMapping;
-	
+	private EMappingType internalToExternalMapping;
+	private EMappingType externalToInternalMapping;
+
 	private IVirtualArray virtualArray;
 
 	/**
 	 * Static Builder for GenericSelectionManager. Allows to handle various
-	 * parameter configurations. Call
-	 * new GenericSelectionManager.Builder().setOneVariabe ().setOther().build()
+	 * parameter configurations. Call new
+	 * GenericSelectionManager.Builder().setOneVariabe ().setOther().build()
 	 * 
 	 * @author Alexander Lex
 	 * 
 	 */
 	public static class Builder
 	{
-		private EGenomeMappingType internalToExternalMapping = null;
-		private EGenomeMappingType externalToInternalMapping = null;
+		private EMappingType internalToExternalMapping = null;
+		private EMappingType externalToInternalMapping = null;
 		private ArrayList<ESelectionType> alSelectionTypes = null;
 		private ESelectionType normalType = ESelectionType.NORMAL;
+		private EIDType internalIDType = null;
+		private EIDType externalIDType = null;
+
+		public Builder(EIDType internalIDType)
+		{
+			this.internalIDType = internalIDType;
+		}
 
 		/**
 		 * Set the mapping type for the selection manager When (view) internal
@@ -91,8 +112,8 @@ public class GenericSelectionManager
 		 * @param eToIMapping external to internal mapping
 		 * @return the Builder, call another setter or build() when you're done
 		 */
-		public Builder mappingType(EGenomeMappingType iToEMapping,
-				EGenomeMappingType eToIMapping)
+		public Builder mappingType(EMappingType iToEMapping,
+				EMappingType eToIMapping)
 		{
 			internalToExternalMapping = iToEMapping;
 			externalToInternalMapping = eToIMapping;
@@ -112,6 +133,12 @@ public class GenericSelectionManager
 			return this;
 		}
 
+		public Builder externalIDType(EIDType externalIDType)
+		{
+			this.externalIDType = externalIDType;
+			return this;
+		}
+
 		/**
 		 * Set a list of selection types if you don't want to (or can) handle
 		 * all selection types in your view
@@ -124,7 +151,7 @@ public class GenericSelectionManager
 			this.alSelectionTypes = alSelectionTypes;
 			return this;
 		}
-		
+
 		/**
 		 * Call this method when you're done initializing, it will return the
 		 * actual selection manager
@@ -147,18 +174,19 @@ public class GenericSelectionManager
 		this.eNormalType = builder.normalType;
 		this.externalToInternalMapping = builder.externalToInternalMapping;
 		this.internalToExternalMapping = builder.internalToExternalMapping;
+		this.internalIDType = builder.internalIDType;
+		this.externalIDType = builder.externalIDType;
 		if (builder.alSelectionTypes == null)
 		{
 			alSelectionTypes = new ArrayList<ESelectionType>();
-			for (ESelectionType selectionType : ESelectionType
-					.values())
+			for (ESelectionType selectionType : ESelectionType.values())
 			{
 				alSelectionTypes.add(selectionType);
 			}
 		}
 
 		hashSelectionTypes = new HashMap<ESelectionType, HashMap<Integer, Boolean>>();
-		selectionDelta = new SelectionDelta();
+		selectionDelta = new SelectionDelta(internalIDType);
 
 		for (ESelectionType eType : alSelectionTypes)
 		{
@@ -194,6 +222,17 @@ public class GenericSelectionManager
 	}
 
 	/**
+	 * Set a virtual array if the data you are managing with this selection
+	 * manager is also managed by a virtual array.
+	 * 
+	 * @param virtualArray the currently active virtual array
+	 */
+	public void setVA(IVirtualArray virtualArray)
+	{
+		this.virtualArray = virtualArray;
+	}
+
+	/**
 	 * Clears all elements and sets the element counter to 0, clear selection
 	 * delta
 	 */
@@ -205,7 +244,7 @@ public class GenericSelectionManager
 			hashSelectionTypes.put(eType, new HashMap<Integer, Boolean>());
 		}
 		iNumberOfElements = 0;
-		selectionDelta = new SelectionDelta();
+		selectionDelta = new SelectionDelta(internalIDType);
 	}
 
 	/**
@@ -236,7 +275,7 @@ public class GenericSelectionManager
 
 		for (int iSelectionID : hashSelectionTypes.get(eSelectionType).keySet())
 		{
-			selectionDelta.addSelection(iSelectionID, eNormalType.intRep());
+			selectionDelta.addSelection(iSelectionID, eNormalType);
 		}
 
 		hashSelectionTypes.get(eNormalType).putAll(hashSelectionTypes.get(eSelectionType));
@@ -281,15 +320,15 @@ public class GenericSelectionManager
 				hashSelectionTypes.get(currentType).remove(iElementID);
 				hashSelectionTypes.get(targetType).put(iElementID, null);
 				if (bIsDeltaWritingEnabled)
-					selectionDelta.addSelection(iElementID, targetType.intRep());
+					selectionDelta.addSelection(iElementID, targetType);
 				return;
 			}
 		}
 
 		// TODO: investigate
-//		throw new CaleydoRuntimeException(
-//				"SelectionManager: element to be removed does not exist",
-//				CaleydoRuntimeExceptionType.VIEW);
+		// throw new CaleydoRuntimeException(
+		// "SelectionManager: element to be removed does not exist",
+		// CaleydoRuntimeExceptionType.VIEW);
 	}
 
 	/**
@@ -312,7 +351,7 @@ public class GenericSelectionManager
 		{
 			hashSelectionTypes.get(eSelectionType).remove(iElementID);
 			hashSelectionTypes.get(eNormalType).put(iElementID, null);
-			selectionDelta.addSelection(iElementID, eNormalType.intRep());
+			selectionDelta.addSelection(iElementID, eNormalType);
 		}
 	}
 
@@ -340,15 +379,15 @@ public class GenericSelectionManager
 
 		return false;
 	}
-	
+
 	public boolean checkStatus(int iElementID)
 	{
 		for (ESelectionType type : alSelectionTypes)
 		{
 			if (checkStatus(type, iElementID))
-				return true;		
+				return true;
 		}
-		
+
 		return false;
 	}
 
@@ -361,12 +400,12 @@ public class GenericSelectionManager
 	// TODO Virtual Arrays
 	public ISelectionDelta getDelta()
 	{
-		SelectionDelta returnDelta;
+		ISelectionDelta returnDelta;
 		if (internalToExternalMapping == null)
-			returnDelta = selectionDelta;
+			returnDelta = selectionDelta.clone();
 		else
 		{
-			returnDelta = new SelectionDelta();
+			returnDelta = new SelectionDelta(externalIDType, internalIDType);
 			for (SelectionItem item : selectionDelta)
 			{
 				int iExternalID = getExternalFromInternalID(item.getSelectionID());
@@ -377,19 +416,32 @@ public class GenericSelectionManager
 
 					continue;
 				}
-				
-				returnDelta.addSelection(iExternalID,
-						item.getSelectionType());
+
+				returnDelta.addSelection(iExternalID, item.getSelectionType(), item.getSelectionID());
 			}
 		}
 
-		selectionDelta = new SelectionDelta();
+		selectionDelta = new SelectionDelta(internalIDType);
 
 		return returnDelta;
 	}
 
 	/**
+	 * <p>
 	 * Merge an external selection delta into the local selection
+	 * </p>
+	 * <p>
+	 * This method takes into account data mapping, when mapping types are set
+	 * </p>
+	 * <p>
+	 * When an element in the selectionDelta is not contained in the selection
+	 * manager it is added and then moved to the appropriate type
+	 * </p>
+	 * <p>
+	 * If a virtual array is set, the virtual array is also modified if
+	 * necessary. This is the case when new element which are not contained in
+	 * the virtual array are added or when elements are removed.
+	 * </p>
 	 * 
 	 * @param selectionDelta the selection delta
 	 */
@@ -399,39 +451,44 @@ public class GenericSelectionManager
 		if (externalToInternalMapping != null)
 		{
 			ISelectionDelta externalSelectionDelta = selectionDelta;
-			selectionDelta = new SelectionDelta();
+			selectionDelta = new SelectionDelta(internalIDType);
 			for (SelectionItem item : externalSelectionDelta)
 			{
 				int iInternalID = getInternalFromExternalID(item.getSelectionID());
-				if(iInternalID == -1)
+				if (iInternalID == -1)
 				{
 					GeneralManager.get().getLogger().log(Level.WARNING,
 							"No internal id for " + item.getSelectionID());
-					
+
 					continue;
 				}
-					
+
 				if (!checkStatus(iInternalID))
 				{
-					initialAdd(iInternalID);
-
-					if (item.getSelectionType() != ESelectionType.REMOVE.intRep() 
-							&& virtualArray != null)
+					if (item.getSelectionType() != ESelectionType.REMOVE)
 					{
-						virtualArray.add(iInternalID);
+						initialAdd(iInternalID);
+
+						if (virtualArray != null)
+							virtualArray.add(iInternalID);
+
 					}
 				}
-				
-				selectionDelta.addSelection(iInternalID,
-						item.getSelectionType());
+				else
+				{
+					if (item.getSelectionType() == ESelectionType.REMOVE
+							&& virtualArray != null)
+						virtualArray.removeByElement(iInternalID);
+				}
+
+				selectionDelta.addSelection(iInternalID, item.getSelectionType());
 			}
 		}
 
 		bIsDeltaWritingEnabled = false;
 		for (SelectionItem selection : selectionDelta)
 		{
-			ESelectionType type = ESelectionType.valueOf(selection
-					.getSelectionType());
+			ESelectionType type = selection.getSelectionType();
 			// TODO: what to do if types are not contained in the current list?
 			// atm ignore them
 			if (!alSelectionTypes.contains(type))
@@ -442,11 +499,6 @@ public class GenericSelectionManager
 		bIsDeltaWritingEnabled = true;
 	}
 
-	public void setVA(IVirtualArray virtualArray)
-	{
-		this.virtualArray = virtualArray;
-	}
-	
 	private int getExternalFromInternalID(int index)
 	{
 		int iID = GeneralManager.get().getGenomeIdManager().getIdIntFromIntByMapping(index,
