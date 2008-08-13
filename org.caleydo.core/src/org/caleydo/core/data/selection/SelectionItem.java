@@ -37,6 +37,7 @@ public class SelectionItem
 	public SelectionItem(int iSelectionID, ESelectionType selectionType, int iInternalID)
 	{
 		this(iSelectionID, selectionType);
+		this.iInternalID = iInternalID;
 	}
 
 	/**

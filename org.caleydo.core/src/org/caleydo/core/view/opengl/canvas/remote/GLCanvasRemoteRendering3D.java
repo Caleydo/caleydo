@@ -44,9 +44,9 @@ import org.caleydo.core.util.slerp.SlerpMod;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.AGLEventListenerStorageBasedView;
-import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
-import org.caleydo.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
+import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
+import org.caleydo.core.view.opengl.canvas.heatmap.HeatMap;
+import org.caleydo.core.view.opengl.canvas.parcoords.ParallelCoordinates;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListener;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.GLConnectionLineRendererBucket;
@@ -1751,11 +1751,11 @@ public class GLCanvasRemoteRendering3D
 
 				alGLEventListenerToRemove.add(tmpGLEventListenerToRemove);
 			}
-			else if (tmpGLEventListenerToRemove instanceof GLCanvasHeatMap
-					|| tmpGLEventListenerToRemove instanceof GLCanvasParCoords3D)
+			else if (tmpGLEventListenerToRemove instanceof HeatMap
+					|| tmpGLEventListenerToRemove instanceof ParallelCoordinates)
 			{
 				// Remove all elements from heatmap and parallel coordinates
-				((AGLEventListenerStorageBasedView) tmpGLEventListenerToRemove).clearAllSelections();
+				((AStorageBasedView) tmpGLEventListenerToRemove).clearAllSelections();
 			}
 		}
 

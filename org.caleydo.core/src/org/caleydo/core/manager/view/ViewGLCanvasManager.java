@@ -21,8 +21,8 @@ import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyph;
-import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
-import org.caleydo.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
+import org.caleydo.core.view.opengl.canvas.heatmap.HeatMap;
+import org.caleydo.core.view.opengl.canvas.parcoords.ParallelCoordinates;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
 import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.canvas.remote.glyph.GLCanvasRemoteGlyph;
@@ -256,7 +256,7 @@ public class ViewGLCanvasManager
 		switch (type)
 		{
 			case CREATE_GL_HEAT_MAP_3D:
-				glEventListener = new GLCanvasHeatMap(iGLCanvasID, sLabel,
+				glEventListener = new HeatMap(iGLCanvasID, sLabel,
 						viewFrustum);
 				break;
 
@@ -266,7 +266,7 @@ public class ViewGLCanvasManager
 				break;
 				
 			case CREATE_GL_PARALLEL_COORDINATES_3D:
-				glEventListener = new GLCanvasParCoords3D(iGLCanvasID,
+				glEventListener = new ParallelCoordinates(iGLCanvasID,
 						sLabel, viewFrustum);
 				break;
 				

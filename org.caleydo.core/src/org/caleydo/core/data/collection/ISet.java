@@ -92,7 +92,6 @@ public interface ISet
 	 */
 	public int depth();
 
-
 	/**
 	 * Normalize all storages in the set, based solely on the values within each
 	 * storage. Operates with the raw data as basis by default, however when a
@@ -148,33 +147,33 @@ public interface ISet
 	/**
 	 * Creates a default virtual array for the storages in the set
 	 * 
-	 * @param iUniqueID the unique id associated with the virtual array
+	 * @return the unique id associated with the virtual array
 	 */
-	public void createStorageVA(int iUniqueID);
+	public int createStorageVA();
 
 	/**
 	 * Creates a virtual array based on the list of indices supplied for the
 	 * storages in the set
 	 * 
-	 * @param iUniqueID the unique id associated with the virtual array
 	 * @param iAlSelections a list of indices
+	 * @return the id of the newly created VA
 	 */
-	public void createStorageVA(int iUniqueID, ArrayList<Integer> iAlSelections);
+	public int createStorageVA(ArrayList<Integer> iAlSelections);
 
 	/**
 	 * Creates a default virtual array for the set
 	 * 
-	 * @param iUniqueID the unique id associated with the virtual array
+	 * @return the unique id associated with the virtual array
 	 */
-	public void createSetVA(int iUniqueID);
+	public int createSetVA();
 
 	/**
 	 * Creates a virtual array based on the list of indices supplied for the set
 	 * 
-	 * @param iUniqueID the unique id associated with the virtual array
 	 * @param iAlSelections a list of indices
+	 * @return the unique id associated with the virtual array
 	 */
-	public void createSetVA(int iUniqueID, ArrayList<Integer> iAlSelections);
+	public int createSetVA(ArrayList<Integer> iAlSelections);
 
 	/**
 	 * Returns the virtual array associated with the unique ID

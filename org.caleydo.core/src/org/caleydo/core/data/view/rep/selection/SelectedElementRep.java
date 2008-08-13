@@ -20,7 +20,7 @@ public class SelectedElementRep
 	private ArrayList<Vec3f> alPoints;
 
 	/**
-	 * Constructor.
+	 * Constructor. Use this constructor for a one point element rep
 	 * 
 	 * @param iContainingViewID
 	 * @param fXCoord
@@ -35,6 +35,12 @@ public class SelectedElementRep
 		alPoints.add(new Vec3f(fXCoord, fYCoord, fZCoord));
 	}
 
+	/**
+	 * Constructor. Use this constructor for a list of points
+	 * 
+	 * @param iContainingViewID
+	 * @param alPoints
+	 */
 	public SelectedElementRep(final int iContainingViewID, final ArrayList<Vec3f> alPoints)
 	{
 
@@ -42,15 +48,22 @@ public class SelectedElementRep
 		this.alPoints = alPoints;
 	}
 
+	/**
+	 * Get the ID of the view that created the element rep
+	 * @return the id
+	 */
 	public int getContainingViewID()
 	{
 
 		return iContainingViewID;
 	}
 
+	/** 
+	 * Get the point list
+	 * @return
+	 */
 	public ArrayList<Vec3f> getPoints()
 	{
-
 		return alPoints;
 	}
 	// public float getXCoord() {

@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.Random;
 import java.util.logging.Level;
+import javax.management.InvalidAttributeValueException;
+import org.apache.log4j.lf5.LogLevel;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
@@ -28,7 +30,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public abstract class AGLEventListenerStorageBasedView
+public abstract class AStorageBasedView
 	extends AGLEventListener
 	implements IMediatorReceiver, IMediatorSender
 {
@@ -101,7 +103,7 @@ public abstract class AGLEventListenerStorageBasedView
 	/**
 	 * Constructor.
 	 */
-	public AGLEventListenerStorageBasedView(final int iGLCanvasID, final String sLabel,
+	public AStorageBasedView(final int iGLCanvasID, final String sLabel,
 			final IViewFrustum viewFrustum)
 	{
 		super(iGLCanvasID, sLabel, viewFrustum, true);
@@ -173,11 +175,8 @@ public abstract class AGLEventListenerStorageBasedView
 		Random rand = new Random();
 		// TODO
 		// set.removeVirtualArray(rand);
-		int iTmp = rand.nextInt();
-
-		// set.removeVirtualArray(1);
-		set.createStorageVA(iTmp, alTempList);
-		mapSelections.put(EStorageBasedVAType.EXTERNAL_SELECTION, iTmp);
+		int iVAID = set.createStorageVA(alTempList);
+		mapSelections.put(EStorageBasedVAType.EXTERNAL_SELECTION, iVAID);
 
 		int iStorageLength = set.depth();
 		// FIXME hack
@@ -217,9 +216,8 @@ public abstract class AGLEventListenerStorageBasedView
 			alTempList.add(iCount);
 		}
 
-		iTmp = rand.nextInt();
-		set.createStorageVA(iTmp, alTempList);
-		mapSelections.put(EStorageBasedVAType.COMPLETE_SELECTION, iTmp);
+		iVAID = set.createStorageVA(alTempList);
+		mapSelections.put(EStorageBasedVAType.COMPLETE_SELECTION, iVAID);
 
 		alTempList = new ArrayList<Integer>();
 
@@ -231,9 +229,8 @@ public abstract class AGLEventListenerStorageBasedView
 		// TODO
 		// set.removeVirtualArray(3);
 
-		iTmp = rand.nextInt();
-		set.createSetVA(iTmp, alTempList);
-		mapSelections.put(EStorageBasedVAType.STORAGE_SELECTION, iTmp);
+		iVAID = set.createSetVA(alTempList);
+		mapSelections.put(EStorageBasedVAType.STORAGE_SELECTION, iVAID);
 		// initLists();
 	}
 
@@ -289,7 +286,15 @@ public abstract class AGLEventListenerStorageBasedView
 	// initData();
 	// }
 
-	protected abstract SelectedElementRep createElementRep(int iStorageIndex);
+	/**
+	 * Create 0:n {@link SelectedElementRep} for the selectionDelta
+	 * 
+	 * @param selectionDelta the selection delta which should be represented
+	 * @throws InvalidAttributeValueException when the selectionDelta does not
+	 *             contain a valid type for this view
+	 */
+	protected abstract SelectedElementRep createElementRep(ISelectionDelta selectionDelta)
+			throws InvalidAttributeValueException;
 
 	protected abstract void initLists();
 
@@ -321,8 +326,8 @@ public abstract class AGLEventListenerStorageBasedView
 				"Update called by " + eventTrigger.getClass().getSimpleName());
 
 		contentSelectionManager.clearSelections();
-
-		contentSelectionManager.setDelta(selectionDelta);
+		ISelectionDelta internalDelta = contentSelectionManager.setDelta(selectionDelta);
+		handleConnectedElementRep(internalDelta);
 
 		// // contains all genes in center pathway (not yet)
 		// ArrayList<Integer> iAlSelection = setSelection.getSelectionIdArray();
@@ -409,45 +414,46 @@ public abstract class AGLEventListenerStorageBasedView
 		// LoggerType.VERBOSE);
 	}
 
-//	protected void propagateGeneSelection(int iExternalID, int iNewGroupID,
-//			ArrayList<Integer> iAlOldSelection)
-//	{
-//
-//		int iDavidId = getDavidIDFromStorageIndex(iExternalID);
-//
-//		generalManager.getViewGLCanvasManager().getInfoAreaManager().setData(iUniqueID,
-//				iDavidId, EInputDataType.GENE, getInfo());
-//
-//		// Write currently selected vertex to selection set
-//		// and trigger update event
-//		ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>(2);
-//		// iAlTmpSelectionId.add(1);
-//		ArrayList<Integer> iAlTmpGroup = new ArrayList<Integer>(2);
-//
-//		if (iDavidId != -1)
-//		{
-//			iAlTmpSelectionId.add(iDavidId);
-//			iAlTmpGroup.add(iNewGroupID);
-//			connectedElementRepresentationManager.modifySelection(iDavidId,
-//					createElementRep(iExternalID), ESelectionMode.ReplacePick);
-//		}
-//
-//		for (Integer iCurrent : iAlOldSelection)
-//		{
-//			iDavidId = getDavidIDFromStorageIndex(iCurrent);
-//
-//			if (iDavidId != -1)
-//			{
-//				iAlTmpSelectionId.add(iDavidId);
-//				iAlTmpGroup.add(0);
-//			}
-//		}
-//
-//		// alSelection.get(1).updateSelectionSet(iUniqueID, iAlTmpSelectionId,
-//		// iAlTmpGroup, null);
-//
-//		// propagateGeneSet(iAlTmpSelectionId, iAlTmpGroup);
-//	}
+	// protected void propagateGeneSelection(int iExternalID, int iNewGroupID,
+	// ArrayList<Integer> iAlOldSelection)
+	// {
+	//
+	// int iDavidId = getDavidIDFromStorageIndex(iExternalID);
+	//
+	// generalManager.getViewGLCanvasManager().getInfoAreaManager().setData(
+	// iUniqueID,
+	// iDavidId, EInputDataType.GENE, getInfo());
+	//
+	// // Write currently selected vertex to selection set
+	// // and trigger update event
+	// ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>(2);
+	// // iAlTmpSelectionId.add(1);
+	// ArrayList<Integer> iAlTmpGroup = new ArrayList<Integer>(2);
+	//
+	// if (iDavidId != -1)
+	// {
+	// iAlTmpSelectionId.add(iDavidId);
+	// iAlTmpGroup.add(iNewGroupID);
+	// connectedElementRepresentationManager.modifySelection(iDavidId,
+	// createElementRep(iExternalID), ESelectionMode.ReplacePick);
+	// }
+	//
+	// for (Integer iCurrent : iAlOldSelection)
+	// {
+	// iDavidId = getDavidIDFromStorageIndex(iCurrent);
+	//
+	// if (iDavidId != -1)
+	// {
+	// iAlTmpSelectionId.add(iDavidId);
+	// iAlTmpGroup.add(0);
+	// }
+	// }
+	//
+	// // alSelection.get(1).updateSelectionSet(iUniqueID, iAlTmpSelectionId,
+	// // iAlTmpGroup, null);
+	//
+	// // propagateGeneSet(iAlTmpSelectionId, iAlTmpGroup);
+	// }
 
 	// protected void propagateGeneSet()// ArrayList<Integer> iAlSelection,
 	// // ArrayList<Integer> iAlGroup)
@@ -497,23 +503,15 @@ public abstract class AGLEventListenerStorageBasedView
 
 	public void clearAllSelections()
 	{
+		connectedElementRepresentationManager.clear();
+		contentSelectionManager.clearSelections();
+		storageSelectionManager.clearSelections();
 
-		// connectedElementRepresentationManager.clear();
-		// contentSelectionManager.clearSelections();
-		// storageSelectionManager.clearSelections();
-
-		// Iterator<SetSelection> iterSetSelection = alSetSelection.iterator();
-		// while (iterSetSelection.hasNext())
-		// {
-		// SetSelection tmpSet = iterSetSelection.next();
-		// tmpSet.getWriteToken();
-		// tmpSet.updateSelectionSet(iUniqueID, null, null, null);
-		// tmpSet.returnWriteToken();
-		// }
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
 
-		initData();
+		// initData();
+
 	}
 
 	@Override
@@ -527,10 +525,28 @@ public abstract class AGLEventListenerStorageBasedView
 	public void triggerUpdate(ISelectionDelta selectionDelta)
 	{
 		// TODO connects to one element only here
-		if(selectionDelta.size() > 0)
+
+		handleConnectedElementRep(selectionDelta);
+		generalManager.getEventPublisher().handleUpdate(this, selectionDelta);
+
+	}
+
+	protected void handleConnectedElementRep(ISelectionDelta selectionDelta)
+	{
+		try
 		{
-//			createElementRep(selectionDelta.getSelectionData().get(0).getInternalID());
-			generalManager.getEventPublisher().handleUpdate(this, selectionDelta);
+			if (selectionDelta.size() > 0)
+			{
+				SelectedElementRep rep = createElementRep(selectionDelta);
+				connectedElementRepresentationManager.modifySelection(selectionDelta
+						.getSelectionData().get(0).getSelectionID(), rep,
+						ESelectionMode.ReplacePick);
+			}
+		}
+		catch (InvalidAttributeValueException e)
+		{
+			generalManager.getLogger().log(Level.WARNING,
+					"Can not handle data type of update in selectionDelta");
 		}
 	}
 

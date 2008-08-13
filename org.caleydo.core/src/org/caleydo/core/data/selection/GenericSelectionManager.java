@@ -112,8 +112,7 @@ public class GenericSelectionManager
 		 * @param eToIMapping external to internal mapping
 		 * @return the Builder, call another setter or build() when you're done
 		 */
-		public Builder mappingType(EMappingType iToEMapping,
-				EMappingType eToIMapping)
+		public Builder mappingType(EMappingType iToEMapping, EMappingType eToIMapping)
 		{
 			internalToExternalMapping = iToEMapping;
 			externalToInternalMapping = eToIMapping;
@@ -417,7 +416,8 @@ public class GenericSelectionManager
 					continue;
 				}
 
-				returnDelta.addSelection(iExternalID, item.getSelectionType(), item.getSelectionID());
+				returnDelta.addSelection(iExternalID, item.getSelectionType(), item
+						.getSelectionID());
 			}
 		}
 
@@ -428,7 +428,8 @@ public class GenericSelectionManager
 
 	/**
 	 * <p>
-	 * Merge an external selection delta into the local selection
+	 * Merge an external selection delta into the local selection, and return a
+	 * possibly converted selection
 	 * </p>
 	 * <p>
 	 * This method takes into account data mapping, when mapping types are set
@@ -444,9 +445,11 @@ public class GenericSelectionManager
 	 * </p>
 	 * 
 	 * @param selectionDelta the selection delta
+	 * @return a ISelectionDelta that contains the internal ID of the manager as
+	 *         its primary ID
 	 */
 	// TODO Virtual Arrays
-	public void setDelta(ISelectionDelta selectionDelta)
+	public ISelectionDelta setDelta(ISelectionDelta selectionDelta)
 	{
 		if (externalToInternalMapping != null)
 		{
@@ -497,6 +500,8 @@ public class GenericSelectionManager
 
 		}
 		bIsDeltaWritingEnabled = true;
+
+		return selectionDelta;
 	}
 
 	private int getExternalFromInternalID(int index)

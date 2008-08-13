@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
+import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import javax.naming.OperationNotSupportedException;
 import org.caleydo.core.data.collection.IStorage;
@@ -17,6 +18,7 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
@@ -24,7 +26,9 @@ import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.view.opengl.canvas.AGLEventListenerStorageBasedView;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.EIconTextures;
@@ -40,8 +44,8 @@ import com.sun.opengl.util.texture.TextureCoords;
  * @author Alexander Lex (responsible for PC)
  * @author Marc Streit
  */
-public class GLCanvasParCoords3D
-	extends AGLEventListenerStorageBasedView
+public class ParallelCoordinates
+	extends AStorageBasedView
 {
 
 	private float fAxisSpacing = 0;
@@ -123,14 +127,14 @@ public class GLCanvasParCoords3D
 
 	private int iPolylineVAID = 0;
 	private int iAxisVAID = 0;
-	
+
 	private GenericSelectionManager polylineSelectionManager;
 	private GenericSelectionManager axisSelectionManager;
 
 	/**
 	 * Constructor.
 	 */
-	public GLCanvasParCoords3D(final int iGLCanvasID, final String sLabel,
+	public ParallelCoordinates(final int iGLCanvasID, final String sLabel,
 			final IViewFrustum viewFrustum)
 	{
 		super(iGLCanvasID, sLabel, viewFrustum);
@@ -146,13 +150,12 @@ public class GLCanvasParCoords3D
 		// {
 		// alSelectionType.add(selectionType);
 		// }
-		
+
 		// TODO this is the content selection manager no matter what now
-		contentSelectionManager = new GenericSelectionManager.Builder(
-				EIDType.EXPRESSION_INDEX).mappingType(
-				EMappingType.EXPRESSION_INDEX_2_DAVID,
-				EMappingType.DAVID_2_EXPRESSION_STORAGE_ID).externalIDType(EIDType.DAVID)
-				.build();
+		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX)
+				.mappingType(EMappingType.EXPRESSION_INDEX_2_DAVID,
+						EMappingType.DAVID_2_EXPRESSION_STORAGE_ID).externalIDType(
+						EIDType.DAVID).build();
 
 		// initialize axis selection manager
 		// alSelectionType = new ArrayList<EViewInternalSelectionType>();
@@ -162,7 +165,7 @@ public class GLCanvasParCoords3D
 		// alSelectionType.add(selectionType);
 		// }
 		// TODO no mapping
-		
+
 		// TODO this is the storage selection manager
 		storageSelectionManager = new GenericSelectionManager.Builder(
 				EIDType.EXPRESSION_EXPERIMENT).build();
@@ -180,14 +183,13 @@ public class GLCanvasParCoords3D
 	public void initLocal(final GL gl)
 	{
 		renderOnlyContext(false);
-		
+
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
 
 		glToolboxRenderer = new GLParCoordsToolboxRenderer(gl, generalManager, iUniqueID,
 				new Vec3f(0, 0, 0), true, renderStyle);
-		
 
 	}
 
@@ -444,10 +446,11 @@ public class GLCanvasParCoords3D
 	protected void initLists()
 	{
 
-		// TODO this needs only to be done if initLists has to be called during runtime, not while initing
+		// TODO this needs only to be done if initLists has to be called during
+		// runtime, not while initing
 		contentSelectionManager.resetSelectionManager();
 		storageSelectionManager.resetSelectionManager();
-		
+
 		// int iNumberOfEntriesToRender = 0;
 		//		
 		iContentVAID = mapSelections.get(eWhichContentSelection);
@@ -469,7 +472,7 @@ public class GLCanvasParCoords3D
 			iAxisVAID = iStorageVAID;
 			polylineSelectionManager = contentSelectionManager;
 			axisSelectionManager = storageSelectionManager;
-			
+
 		}
 
 		// iNumberOfEntriesToRender = alContentSelection.size();
@@ -477,12 +480,10 @@ public class GLCanvasParCoords3D
 		int iNumberOfPolyLinesToRender = set.sizeVA(iPolylineVAID);
 		iNumberOfAxis = set.sizeVA(iAxisVAID);
 
-
 		// this for loop executes once per polyline
 		for (int iPolyLineCount = 0; iPolyLineCount < iNumberOfPolyLinesToRender; iPolyLineCount++)
 		{
-			polylineSelectionManager.initialAdd(set.getVA(iPolylineVAID).get(
-						iPolyLineCount));
+			polylineSelectionManager.initialAdd(set.getVA(iPolylineVAID).get(iPolyLineCount));
 		}
 
 		// this for loop executes one per axis
@@ -567,8 +568,7 @@ public class GLCanvasParCoords3D
 				gl.glLineWidth(ParCoordsRenderStyle.DESELECTED_POLYLINE_LINE_WIDTH);
 				break;
 			default:
-				setDataToRender = polylineSelectionManager
-						.getElements(ESelectionType.NORMAL);
+				setDataToRender = polylineSelectionManager.getElements(ESelectionType.NORMAL);
 		}
 
 		Iterator<Integer> dataIterator = setDataToRender.iterator();
@@ -664,18 +664,17 @@ public class GLCanvasParCoords3D
 		gl.glPopName();
 
 		// draw all Y-Axis
-		Set<Integer> selectedSet = axisSelectionManager
-				.getElements(ESelectionType.SELECTION);
+		Set<Integer> selectedSet = axisSelectionManager.getElements(ESelectionType.SELECTION);
 		Set<Integer> mouseOverSet = axisSelectionManager
 				.getElements(ESelectionType.MOUSE_OVER);
 		// ArrayList<Integer> alAxisSelection;
 
-//		int iAxisSelection = 0;
+		// int iAxisSelection = 0;
 
-//		if (bRenderStorageHorizontally)
-//			iAxisSelection = iContentVAID;
-//		else
-//			iAxisSelection = iStorageVAID;
+		// if (bRenderStorageHorizontally)
+		// iAxisSelection = iContentVAID;
+		// else
+		// iAxisSelection = iStorageVAID;
 
 		int iCount = 0;
 		while (iCount < iNumberAxis)
@@ -1087,7 +1086,7 @@ public class GLCanvasParCoords3D
 				// EViewInternalSelectionType.SELECTION, iPolylineCount))
 				// bRenderInfoArea = false;
 
-				//contentSelectionManager.addToType(EViewInternalSelectionType
+				// contentSelectionManager.addToType(EViewInternalSelectionType
 				// .DESELECTED,
 				// alPolylineSelection.get(iPolylineCount));
 				alCurrentGateBlocks.add(set.getVA(iPolylineVAID).get(iPolylineCount));
@@ -1219,8 +1218,7 @@ public class GLCanvasParCoords3D
 						// EViewInternalSelectionType.SELECTION);
 
 						axisSelectionManager.clearSelection(ESelectionType.SELECTION);
-						axisSelectionManager.addToType(ESelectionType.SELECTION,
-								iExternalID);
+						axisSelectionManager.addToType(ESelectionType.SELECTION, iExternalID);
 
 						if (eAxisDataType == EInputDataType.GENE)
 						{
@@ -1239,8 +1237,7 @@ public class GLCanvasParCoords3D
 						// EViewInternalSelectionType.MOUSE_OVER);
 
 						axisSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
-						axisSelectionManager.addToType(ESelectionType.MOUSE_OVER,
-								iExternalID);
+						axisSelectionManager.addToType(ESelectionType.MOUSE_OVER, iExternalID);
 
 						if (eAxisDataType == EInputDataType.GENE)
 						{
@@ -1458,51 +1455,92 @@ public class GLCanvasParCoords3D
 		}
 	}
 
-	protected SelectedElementRep createElementRep(int iStorageIndex)
+	@Override
+	protected SelectedElementRep createElementRep(ISelectionDelta selectionDelta)
+			throws InvalidAttributeValueException
 	{
-		if (!bRenderStorageHorizontally)
+		// TODO only for one element atm
+
+		int iStorageIndex;
+		if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX)
+			iStorageIndex = selectionDelta.getSelectionData().get(0).getSelectionID();
+		else if (selectionDelta.getInternalIDType() == EIDType.EXPRESSION_INDEX)
+			iStorageIndex = selectionDelta.getSelectionData().get(0).getInternalID();
+		else
 		{
-			ArrayList<Vec3f> alPoints = new ArrayList<Vec3f>();
-			float fYValue;
-			float fXValue;
-			int iCount = 0;
-			for (Integer iCurrent : set.getVA(iStorageVAID))
-			{
-				// MARC: just add last point for line connections
-				// therefore the polyline is only connected with a line at the
-				// right of the view
-				// instead of the triangle fan
-				if (iCurrent < set.getVA(iStorageVAID).size() - 1)
-				{
-					iCount++;
-					continue;
-				}
+			throw new InvalidAttributeValueException("Can not handle data type");
+		}
 
-				fYValue = set.get(iCurrent).getFloat(EDataRepresentation.NORMALIZED,
-						iStorageIndex);
-				fYValue = fYValue * renderStyle.getAxisHeight()
-						+ renderStyle.getBottomSpacing();
-				fXValue = iCount * fAxisSpacing + renderStyle.getXSpacing() + fXTranslation;
-				alPoints.add(new Vec3f(fXValue, fYValue, 0));
+		float fXValue;
+		float fYValue;
 
-			}
-
-			elementRep = new SelectedElementRep(iUniqueID, alPoints);
-
+		if (bRenderStorageHorizontally)
+		{
+			fXValue = set.getVA(iAxisVAID).indexOf(iStorageIndex);
+			fXValue = fXValue + renderStyle.getXSpacing() + fXTranslation;
+			fYValue = renderStyle.getBottomSpacing();
 		}
 		else
 		{
-			float fXValue = set.getVA(iContentVAID).indexOf(iStorageIndex) * fAxisSpacing
-					+ renderStyle.getXSpacing() + fXTranslation;
 
-			ArrayList<Vec3f> alPoints = new ArrayList<Vec3f>();
-			alPoints.add(new Vec3f(fXValue, renderStyle.getBottomSpacing(), 0));
-			alPoints.add(new Vec3f(fXValue, renderStyle.getBottomSpacing()
-					+ renderStyle.getAxisHeight(), 0));
+			fXValue = renderStyle.getXSpacing() + fXTranslation;
+			// get the value on the leftmost axis
+			fYValue = set.getStorageFromVA(iStorageVAID, 0).getFloat(
+					EDataRepresentation.NORMALIZED, iStorageIndex);
 
-			elementRep = new SelectedElementRep(iUniqueID, alPoints);
+			fYValue = fYValue * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
 		}
+
+		SelectedElementRep elementRep = new SelectedElementRep(iUniqueID, fXValue, fYValue,
+				0.0f);
 		return elementRep;
+		// if (!bRenderStorageHorizontally)
+		// {
+		// ArrayList<Vec3f> alPoints = new ArrayList<Vec3f>();
+		// float fYValue;
+		// float fXValue;
+		// int iCount = 0;
+		// for (Integer iCurrent : set.getVA(iStorageVAID))
+		// {
+		// // MARC: just add last point for line connections
+		// // therefore the polyline is only connected with a line at the
+		// // right of the view
+		// // instead of the triangle fan
+		// if (iCurrent < set.getVA(iStorageVAID).size() - 1)
+		// {
+		// iCount++;
+		// continue;
+		// }
+		//
+		// fYValue = set.get(iCurrent).getFloat(EDataRepresentation.NORMALIZED,
+		// iStorageIndex);
+		// fYValue = fYValue * renderStyle.getAxisHeight()
+		// + renderStyle.getBottomSpacing();
+		// fXValue = iCount * fAxisSpacing + renderStyle.getXSpacing() +
+		// fXTranslation;
+		// alPoints.add(new Vec3f(fXValue, fYValue, 0));
+		//
+		// }
+		//
+		// elementRep = new SelectedElementRep(iUniqueID, alPoints);
+		//			
+		//			
+		//
+		// }
+		// else
+		// {
+		// float fXValue = set.getVA(iContentVAID).indexOf(iStorageIndex) *
+		// fAxisSpacing
+		// + renderStyle.getXSpacing() + fXTranslation;
+		//
+		// ArrayList<Vec3f> alPoints = new ArrayList<Vec3f>();
+		// alPoints.add(new Vec3f(fXValue, renderStyle.getBottomSpacing(), 0));
+		// alPoints.add(new Vec3f(fXValue, renderStyle.getBottomSpacing()
+		// + renderStyle.getAxisHeight(), 0));
+		//
+		// elementRep = new SelectedElementRep(iUniqueID, alPoints);
+		// }
+		// return elementRep;
 
 	}
 
@@ -1739,14 +1777,14 @@ public class GLCanvasParCoords3D
 			if (fCompareAngle > fCurrentAngle || fCompareAngle < -fCurrentAngle)
 			// !(fCompareAngle < fAngle && fCompareAngle < -fAngle))
 			{
-				//contentSelectionManager.addToType(EViewInternalSelectionType
+				// contentSelectionManager.addToType(EViewInternalSelectionType
 				// .DESELECTED, iCurrent);
 				alIsAngleBlocking.get(0).add(iCurrent);
 			}
 			// else
 			// {
 			// // TODO combinations
-			////contentSelectionManager.addToType(EViewInternalSelectionType.
+			// //contentSelectionManager.addToType(EViewInternalSelectionType.
 			// NORMAL, iCurrent);
 			// }
 
