@@ -137,12 +137,7 @@ public class GLCanvasPathway3D
 		return iPathwayID;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media
-	 * .opengl.GL)
-	 */
+	@Override
 	public void initLocal(final GL gl)
 	{
 
@@ -151,14 +146,7 @@ public class GLCanvasPathway3D
 		// TODO: individual toolboxrenderer
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media
-	 * .opengl.GL, int, org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer,
-	 * org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener,
-	 * org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D)
-	 */
+	@Override
 	public void initRemote(final GL gl, final int iRemoteViewID,
 			final RemoteHierarchyLayer layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
@@ -174,12 +162,7 @@ public class GLCanvasPathway3D
 		init(gl);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl
-	 * .GL)
-	 */
+	@Override
 	public void init(final GL gl)
 	{
 
@@ -196,12 +179,7 @@ public class GLCanvasPathway3D
 		initialContainedGenePropagation();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#displayLocal(javax.
-	 * media.opengl.GL)
-	 */
+	@Override
 	public void displayLocal(final GL gl)
 	{
 
@@ -220,12 +198,7 @@ public class GLCanvasPathway3D
 		pickingTriggerMouseAdapter.resetEvents();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#displayRemote(javax
-	 * .media.opengl.GL)
-	 */
+	@Override
 	public void displayRemote(final GL gl)
 	{
 
@@ -243,12 +216,7 @@ public class GLCanvasPathway3D
 		display(gl);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#display(javax.media
-	 * .opengl.GL)
-	 */
+	@Override
 	public void display(final GL gl)
 	{
 
@@ -370,12 +338,7 @@ public class GLCanvasPathway3D
 		gLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#updateReceiver(java
-	 * .lang.Object)
-	 */
+	@Override
 	public void handleUpdate(IUniqueObject eventTrigger)
 	{
 
@@ -668,14 +631,7 @@ public class GLCanvasPathway3D
 		gLPathwayManager.enableAnnotation(bEnableAnnotation);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.caleydo
-	 * .core.manager.view.EPickingType,
-	 * org.caleydo.core.manager.view.EPickingMode, int,
-	 * org.caleydo.core.manager.view.Pick)
-	 */
+	@Override
 	protected void handleEvents(EPickingType pickingType, EPickingMode pickingMode,
 			int iExternalID, Pick pick)
 	{
@@ -858,10 +814,7 @@ public class GLCanvasPathway3D
 		triggerUpdate(selectionDelta);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#getInfo()
-	 */
+	@Override
 	public ArrayList<String> getInfo()
 	{
 		ArrayList<String> sAlInfo = new ArrayList<String>();

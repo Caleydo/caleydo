@@ -54,10 +54,7 @@ public class PathwayItemManager
 		hashIDToPathwayVertexGraphItemRep = new HashMap<Integer, PathwayVertexGraphItemRep>();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.specialized.genome.IPathwayItemManager#createVertex(java.lang.String, java.lang.String, java.lang.String, java.lang.String)
-	 */
+	@Override
 	public IGraphItem createVertex(final String sName, final String sType,
 			final String sExternalLink, final String sReactionId)
 	{
@@ -225,11 +222,7 @@ public class PathwayItemManager
 	}
 
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.manager.data.IPathwayItemManager#
-	 * getPathwayVertexGraphItemIdByDavidId(int)
-	 */
+	@Override
 	// TODO: throw exception
 	public final int getPathwayVertexGraphItemIdByDavidId(final int iDavidId)
 	{
@@ -240,11 +233,7 @@ public class PathwayItemManager
 		return -1;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.manager.data.IPathwayItemManager#
-	 * getDavidIdByPathwayVertexGraphItemId(int)
-	 */
+	@Override
 	public int getDavidIdByPathwayVertexGraphItemId(final int iPathwayVertexGraphItemId)
 	{
 

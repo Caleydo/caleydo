@@ -25,10 +25,7 @@ public class CmdViewCreateRcpGLCanvas
 		super(cmdType);
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#doCommand()
-	 */
+	@Override
 	public void doCommand() throws CaleydoRuntimeException
 	{
 		GLCapabilities glCapabilities = new GLCapabilities();
@@ -50,10 +47,7 @@ public class CmdViewCreateRcpGLCanvas
 		commandManager.runDoCommand(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#undoCommand()
-	 */
+	@Override
 	public void undoCommand() throws CaleydoRuntimeException
 	{
 		commandManager.runUndoCommand(this);

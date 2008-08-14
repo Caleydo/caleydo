@@ -129,10 +129,7 @@ public class FileLoadDataAction
 		this.window = window;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.action.Action#run()
-	 */
+	@Override
 	public void run()
 	{
 
@@ -861,10 +858,7 @@ public class FileLoadDataAction
 		dialog.open();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.actions.ActionFactory.IWorkbenchAction#dispose()
-	 */
+	@Override
 	public void dispose()
 	{
 

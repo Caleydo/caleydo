@@ -137,10 +137,7 @@ public class ViewGLCanvasManager
 		} 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IViewManager#createView(org.caleydo.core.manager.id.EManagedObjectTypes, int, int, java.lang.String)
-	 */
+	@Override
 	public IView createView(final EManagedObjectType type, 
 			final int iParentContainerID, final String sLabel)
 	{
@@ -195,10 +192,7 @@ public class ViewGLCanvasManager
 		return view;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IViewManager#createGLView(org.caleydo.core.manager.id.EManagedObjectType, int, int, int, java.lang.String)
-	 */
+	@Override
 	public IView createGLView(final EManagedObjectType useViewType,
 			final int iParentContainerID, final String sLabel)
 	{
@@ -239,10 +233,7 @@ public class ViewGLCanvasManager
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IViewGLCanvasManager#createGLCanvas(org.caleydo.core.command.CommandType, int, int, java.lang.String, org.caleydo.core.data.view.camera.IViewFrustum)
-	 */
+	@Override
 	public AGLEventListener createGLEventListener(CommandType type,
 			final int iGLCanvasID, final String sLabel,
 			final IViewFrustum viewFrustum)
@@ -308,10 +299,6 @@ public class ViewGLCanvasManager
 		return glEventListener;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IViewGLCanvasManager#registerGLCanvas(org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas)
-	 */
 	@Override
 	public boolean registerGLCanvas(final GLCaleydoCanvas glCanvas)
 	{
@@ -330,12 +317,7 @@ public class ViewGLCanvasManager
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.IViewGLCanvasManager#unregisterGLCanvas(javax
-	 * .media.opengl.GLCanvas)
-	 */
+	@Override
 	public boolean unregisterGLCanvas(final int iGLCanvasId)
 	{
 
@@ -348,10 +330,7 @@ public class ViewGLCanvasManager
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IViewGLCanvasManager#registerGLEventListenerByGLCanvasID(int, javax.media.opengl.GLEventListener)
-	 */
+	@Override
 	public void registerGLEventListenerByGLCanvasID(final int iGLCanvasID,
 			final AGLEventListener gLEventListener)
 	{
@@ -367,10 +346,7 @@ public class ViewGLCanvasManager
 		hashGLCanvasID2GLEventListeners.get(iGLCanvasID).add(gLEventListener);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IViewGLCanvasManager#cleanup()
-	 */
+	@Override
 	public void cleanup()
 	{
 
@@ -382,11 +358,7 @@ public class ViewGLCanvasManager
 		arHTMLBrowserViewRep.clear();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.IViewGLCanvasManager#unregisterGLEventListener()
-	 */
+	@Override
 	public void unregisterGLEventListener(final int iGLEventListenerID)
 	{
 
@@ -441,12 +413,7 @@ public class ViewGLCanvasManager
 		} // try .. catch ( NullPointerException npe)
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.IViewManager#removeViewRep(org.caleydo.core.
-	 * view.IView)
-	 */
+	@Override
 	public void removeViewRep(final IView view)
 	{
 		try
@@ -477,20 +444,13 @@ public class ViewGLCanvasManager
 		} // try .. catch ( NullPointerException npe)
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IViewManager#getAllGLCanvasUsers()
-	 */
+	@Override
 	public Collection<GLCaleydoCanvas> getAllGLCanvasUsers()
 	{
 		return hashGLCanvasID2GLCanvas.values();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.IViewGLCanvasManager#getAllGLEventListeners()
-	 */
+	@Override
 	public Collection<AGLEventListener> getAllGLEventListeners()
 	{
 		return hashGLEventListenerID2GLEventListener.values();

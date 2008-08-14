@@ -302,10 +302,7 @@ public class EventPublisher
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IEventPublisher#update(java.lang.Object)
-	 */
+	@Override
 	public void handleUpdate(IUniqueObject eventTrigger)
 	{
 
@@ -349,12 +346,7 @@ public class EventPublisher
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.IEventPublisher#updateReceiver(java.lang.Object,
-	 * org.caleydo.core.data.collection.ISet)
-	 */
+	@Override
 	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
 	{
 

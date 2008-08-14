@@ -80,10 +80,7 @@ implements ISWTGUIManager
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.ISWTGUIManager#createWindow(java.lang.String, java.lang.String)
-	 */
+	@Override
 	public int createWindow(String sLabel, String sLayoutAttributes)
 	{
 		Shell newShell = new Shell(display);
@@ -102,11 +99,7 @@ implements ISWTGUIManager
 		return iShellID;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.ISWTGUIManager#createComposite(int, int,
-	 * Stringt)
-	 */
+	@Override
 	public void createComposite(int iUniqueId, int iUniqueParentContainerId,
 			String layoutAttributes)
 	{
@@ -124,12 +117,7 @@ implements ISWTGUIManager
 		newComposite.setLayoutData(gridData);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.ISWTGUIManager#createWidget(org.caleydo.core
-	 * .manager.type.ManagerObjectType, int)
-	 */
+	@Override
 	public ISWTWidget createWidget(final EManagedObjectType useWidgetType,
 			int iUniqueParentContainerId)
 	{
@@ -159,10 +147,7 @@ implements ISWTGUIManager
 		return (createWidget(useWidgetType, composite));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.ISWTGUIManager#createWidget(org.caleydo.core.manager.id.EManagedObjectType, org.eclipse.swt.widgets.Composite)
-	 */
+	@Override
 	public synchronized ISWTWidget createWidget(final EManagedObjectType useWidgetType,
 			final Composite externalParentComposite)
 	{
@@ -223,10 +208,7 @@ implements ISWTGUIManager
 		newComposite.setLayout(gridLayout);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.ISWTGUIManager#runApplication()
-	 */
+	@Override
 	public void runApplication()
 	{
 

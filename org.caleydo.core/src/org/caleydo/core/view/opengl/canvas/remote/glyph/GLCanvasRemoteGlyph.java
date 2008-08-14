@@ -50,12 +50,7 @@ public class GLCanvasRemoteGlyph
 		// parentGLCanvas.addMouseWheelListener(mouseWheelListener_);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl
-	 * .GL)
-	 */
+	@Override
 	public void init(GL gl)
 	{
 
@@ -76,26 +71,14 @@ public class GLCanvasRemoteGlyph
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media
-	 * .opengl.GL)
-	 */
+	@Override
 	public void initLocal(GL gl)
 	{
 
 		init(gl);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media
-	 * .opengl.GL, int, org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer,
-	 * org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener,
-	 * org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D)
-	 */
+	@Override
 	public void initRemote(final GL gl, final int iRemoteViewID,
 			final RemoteHierarchyLayer layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
@@ -105,12 +88,7 @@ public class GLCanvasRemoteGlyph
 		// not implemented for a remote view
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#displayLocal(javax.
-	 * media.opengl.GL)
-	 */
+	@Override
 	public void displayLocal(GL gl)
 	{
 
@@ -121,12 +99,7 @@ public class GLCanvasRemoteGlyph
 		pickingTriggerMouseAdapter.resetEvents();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#displayRemote(javax
-	 * .media.opengl.GL)
-	 */
+	@Override
 	public void displayRemote(GL gl)
 	{
 
@@ -135,12 +108,7 @@ public class GLCanvasRemoteGlyph
 		// pickingTriggerMouseAdapter.resetEvents();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#display(javax.media
-	 * .opengl.GL)
-	 */
+	@Override
 	public void display(GL gl)
 	{
 
@@ -228,10 +196,7 @@ public class GLCanvasRemoteGlyph
 		// System.out.println(iViewID);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#getInfo()
-	 */
+	@Override
 	public ArrayList<String> getInfo()
 	{
 
@@ -241,14 +206,7 @@ public class GLCanvasRemoteGlyph
 		return alInfo;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.caleydo
-	 * .core.manager.view.EPickingType,
-	 * org.caleydo.core.manager.view.EPickingMode, int,
-	 * org.caleydo.core.manager.view.Pick)
-	 */
+	@Override
 	protected void handleEvents(EPickingType pickingType, EPickingMode pickingMode,
 			int iExternalID, Pick pick)
 	{

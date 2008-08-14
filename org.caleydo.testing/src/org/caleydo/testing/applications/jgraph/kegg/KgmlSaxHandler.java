@@ -29,20 +29,13 @@ public class KgmlSaxHandler
 		System.out.println("Start parsing the document.");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.xml.sax.helpers.DefaultHandler#endDocument()
-	 */
+	@Override
 	public void endDocument() throws SAXException
 	{
 		System.out.println("End parsing the document.");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String,
-	 * java.lang.String, java.lang.String, org.xml.sax.Attributes)
-	 */
+	@Override
 	public void startElement(String namespaceURI, String sSimpleName, String sQualifiedName,
 			Attributes attributes) throws SAXException
 	{
@@ -95,11 +88,7 @@ public class KgmlSaxHandler
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String,
-	 * java.lang.String, java.lang.String)
-	 */
+	@Override
 	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName)
 			throws SAXException
 	{

@@ -21,10 +21,7 @@ public class CmdViewCreateDataExchanger
 		super(cmdType);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#doCommand()
-	 */
+	@Override
 	public void doCommand()
 	{
 
@@ -51,10 +48,7 @@ public class CmdViewCreateDataExchanger
 		// commandManager.runDoCommand(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#undoCommand()
-	 */
+	@Override
 	public void undoCommand()
 	{
 		commandManager.runUndoCommand(this);

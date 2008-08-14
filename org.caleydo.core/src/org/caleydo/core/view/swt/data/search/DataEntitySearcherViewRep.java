@@ -182,20 +182,14 @@ implements IMediatorSender{;
 //				iAlOptional);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.AView#initViewSwtComposit(org.eclipse.swt.widgets.Composite)
-	 */
+	@Override
 	protected void initViewSwtComposite(Composite swtContainer) {
 
 		// TODO Auto-generated method stub
 		
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.IView#drawView()
-	 */
+	@Override
 	public void drawView() {
 
 		// TODO Auto-generated method stub

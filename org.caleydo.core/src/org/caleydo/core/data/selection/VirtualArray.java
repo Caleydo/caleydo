@@ -63,10 +63,6 @@ public class VirtualArray
 		return iAlVirtualArray.get(iIndex);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.selection.IVirtualArray#add(java.lang.Integer)
-	 */
 	@Override
 	public void add(Integer iNewElement)
 	{
@@ -80,11 +76,6 @@ public class VirtualArray
 					CaleydoRuntimeExceptionType.DATAHANDLING);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.selection.IVirtualArray#add(int,
-	 * java.lang.Integer)
-	 */
 	@Override
 	public void add(int iIndex, Integer iNewElement)
 	{
@@ -98,11 +89,6 @@ public class VirtualArray
 					CaleydoRuntimeExceptionType.DATAHANDLING);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.selection.IVirtualArray#set(int,
-	 * java.lang.Integer)
-	 */
 	@Override
 	public void set(int iIndex, Integer iNewElement)
 	{
@@ -116,20 +102,12 @@ public class VirtualArray
 					CaleydoRuntimeExceptionType.DATAHANDLING);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.selection.IVirtualArray#copy(int)
-	 */
 	@Override
 	public void copy(int iIndex)
 	{
 		iAlVirtualArray.add(iIndex + 1, iAlVirtualArray.get(iIndex));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.selection.IVirtualArray#moveLeft(int)
-	 */
 	@Override
 	public void moveLeft(int iIndex)
 	{
@@ -138,10 +116,6 @@ public class VirtualArray
 		iAlVirtualArray.set(iIndex, iTemp);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.selection.IVirtualArray#moveRight(int)
-	 */
 	@Override
 	public void moveRight(int iIndex)
 	{
@@ -150,10 +124,6 @@ public class VirtualArray
 		iAlVirtualArray.set(iIndex, iTemp);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.selection.IVirtualArray#remove(int)
-	 */
 	@Override
 	public Integer remove(int iIndex)
 	{
@@ -172,20 +142,12 @@ public class VirtualArray
 		}
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.selection.IVirtualArray#size()
-	 */
 	@Override
 	public Integer size()
 	{
 		return iAlVirtualArray.size();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.selection.IVirtualArray#reset()
-	 */
 	@Override
 	public void reset()
 	{

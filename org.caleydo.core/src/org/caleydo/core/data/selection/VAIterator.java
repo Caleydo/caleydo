@@ -22,20 +22,12 @@ public class VAIterator
 		this.virtualArray = virtualArray;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#add(java.lang.Object)
-	 */
 	@Override
 	public void add(Integer iNewElement)
 	{
 		virtualArray.add(++iCount, iNewElement);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#hasNext()
-	 */
 	@Override
 	public boolean hasNext()
 	{
@@ -45,10 +37,6 @@ public class VAIterator
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#hasPrevious()
-	 */
 	@Override
 	public boolean hasPrevious()
 	{
@@ -58,10 +46,6 @@ public class VAIterator
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#next()
-	 */
 	@Override
 	public Integer next()
 	{
@@ -70,20 +54,12 @@ public class VAIterator
 	
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#nextIndex()
-	 */
 	@Override
 	public int nextIndex()
 	{
 		return iCount + 1;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#previous()
-	 */
 	@Override
 	public Integer previous()
 	{
@@ -91,10 +67,6 @@ public class VAIterator
 		return virtualArray.get(iCount--);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#previousIndex()
-	 */
 	@Override
 	public int previousIndex()
 	{
@@ -104,10 +76,6 @@ public class VAIterator
 		return iCount;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#remove()
-	 */
 	@Override
 	public void remove()
 	{
@@ -117,10 +85,6 @@ public class VAIterator
 			virtualArray.remove(--iCount);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#set(java.lang.Object)
-	 */
 	@Override
 	public void set(Integer iNewElement)
 	{

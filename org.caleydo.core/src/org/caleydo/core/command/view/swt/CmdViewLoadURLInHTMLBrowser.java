@@ -56,10 +56,7 @@ public class CmdViewLoadURLInHTMLBrowser
 		this.sTargetURL = sTargetURL;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#undoCommand()
-	 */
+	@Override
 	public void undoCommand() throws CaleydoRuntimeException
 	{
 		commandManager.runUndoCommand(this);

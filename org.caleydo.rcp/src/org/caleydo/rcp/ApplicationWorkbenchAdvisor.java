@@ -28,12 +28,7 @@ public class ApplicationWorkbenchAdvisor
 
 	protected Animator gLAnimator;
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.ui.application.WorkbenchAdvisor#createWorkbenchWindowAdvisor
-	 * (org.eclipse.ui.application.IWorkbenchWindowConfigurer)
-	 */
+	@Override
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(
 			IWorkbenchWindowConfigurer configurer)
 	{
@@ -44,23 +39,13 @@ public class ApplicationWorkbenchAdvisor
 		return new ApplicationWorkbenchWindowAdvisor(configurer);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.ui.application.WorkbenchAdvisor#getInitialWindowPerspectiveId
-	 * ()
-	 */
+	@Override
 	public String getInitialWindowPerspectiveId()
 	{
 		return PERSPECTIVE_ID;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.ui.application.WorkbenchAdvisor#initialize(org.eclipse.ui
-	 * .application.IWorkbenchConfigurer)
-	 */
+	@Override
 	public void initialize(IWorkbenchConfigurer configurer)
 	{
 		super.initialize(configurer);
@@ -68,10 +53,7 @@ public class ApplicationWorkbenchAdvisor
 		configurer.setSaveAndRestore(true);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.application.WorkbenchAdvisor#postStartup()
-	 */
+	@Override
 	public void postStartup()
 	{
 
@@ -80,10 +62,7 @@ public class ApplicationWorkbenchAdvisor
 		openLoadedViews();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.application.WorkbenchAdvisor#preShutdown()
-	 */
+	@Override
 	public boolean preShutdown()
 	{
 

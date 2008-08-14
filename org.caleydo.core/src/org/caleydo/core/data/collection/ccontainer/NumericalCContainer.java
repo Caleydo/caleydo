@@ -32,10 +32,6 @@ public class NumericalCContainer<T extends Number>
 		this.alContainer = alContainer;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.INumericalCContainer#getMin()
-	 */
 	@Override
 	public double getMin()
 	{
@@ -44,10 +40,6 @@ public class NumericalCContainer<T extends Number>
 		return dMin;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.INumericalCContainer#getMax()
-	 */
 	@Override
 	public double getMax()
 	{
@@ -56,10 +48,6 @@ public class NumericalCContainer<T extends Number>
 		return dMax;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.ICContainer#normalize()
-	 */
 	@Override
 	public FloatCContainer normalize()
 	{
@@ -67,10 +55,6 @@ public class NumericalCContainer<T extends Number>
 	}
 
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.INumericalCContainer#log10()
-	 */
 	@Override
 	public FloatCContainer log10()
 	{
@@ -88,11 +72,6 @@ public class NumericalCContainer<T extends Number>
 		return new FloatCContainer(fArTarget);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.data.collection.INumericalCContainer#
-	 * normalizeWithExternalExtrema(double, double)
-	 */
 	@Override
 	public FloatCContainer normalizeWithExternalExtrema(double min, double max)
 	{

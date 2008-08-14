@@ -14,12 +14,7 @@ public class HTMLBrowserView
 
 	public static final String ID = "org.caleydo.rcp.views.HTMLBrowserView";
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets
-	 * .Composite)
-	 */
+	@Override
 	public void createPartControl(Composite parent)
 	{
 		parent.setLayout(new RowLayout(SWT.VERTICAL));
@@ -33,10 +28,7 @@ public class HTMLBrowserView
 		GeneralManager.get().getViewGLCanvasManager().registerItem(browserView);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
-	 */
+	@Override
 	public void setFocus()
 	{
 

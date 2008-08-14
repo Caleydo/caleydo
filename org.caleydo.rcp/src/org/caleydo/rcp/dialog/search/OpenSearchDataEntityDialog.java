@@ -33,12 +33,7 @@ public class OpenSearchDataEntityDialog
 		super(parentShell);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.jface.window.Window#configureShell(org.eclipse.swt.widgets
-	 * .Shell)
-	 */
+	@Override
 	protected void configureShell(Shell newShell)
 	{
 
@@ -46,12 +41,7 @@ public class OpenSearchDataEntityDialog
 		newShell.setText("Search Dialog");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.jface.dialogs.Dialog#createDialogArea(org.eclipse.swt.widgets
-	 * .Composite)
-	 */
+	@Override
 	protected Control createDialogArea(Composite parent)
 	{
 
@@ -80,10 +70,7 @@ public class OpenSearchDataEntityDialog
 		return composite;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.dialogs.Dialog#okPressed()
-	 */
+	@Override
 	protected void okPressed()
 	{
 

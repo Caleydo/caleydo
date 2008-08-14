@@ -90,24 +90,14 @@ public class GLCaleydoCanvas
 		gl.glColorMaterial(GL.GL_FRONT, GL.GL_DIFFUSE);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * javax.media.opengl.GLEventListener#reshape(javax.media.opengl.GLAutoDrawable
-	 * , int, int, int, int)
-	 */
+	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height)
 	{
 
 		// Implemented in registered GLEventListener classes
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * javax.media.opengl.GLEventListener#display(javax.media.opengl.GLAutoDrawable
-	 * )
-	 */
+	@Override
 	public void display(GLAutoDrawable drawable)
 	{
 
@@ -123,12 +113,7 @@ public class GLCaleydoCanvas
 		fpsCounter.draw();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * javax.media.opengl.GLEventListener#displayChanged(javax.media.opengl.
-	 * GLAutoDrawable, boolean, boolean)
-	 */
+	@Override
 	public void displayChanged(GLAutoDrawable drawable, final boolean modeChanged,
 			final boolean deviceChanged)
 	{
@@ -147,10 +132,7 @@ public class GLCaleydoCanvas
 		this.joglMouseListener = joglMouseListener;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.IUniqueObject#getID()
-	 */
+	@Override
 	public int getID()
 	{
 		return iGLCanvasID;

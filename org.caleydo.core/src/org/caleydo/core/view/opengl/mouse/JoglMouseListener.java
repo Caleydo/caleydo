@@ -337,11 +337,7 @@ public class JoglMouseListener
 		alGlCanvas.add(gLCanvas);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seejava.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.
-	 * MouseWheelEvent)
-	 */
+	@Override
 	public void mouseWheelMoved(MouseWheelEvent e)
 	{
 

@@ -27,10 +27,6 @@ implements ICContainer
 		return alContainer.get(iIndex);
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.ICContainer#size()
-	 */
 	@Override
 	public int size()
 	{

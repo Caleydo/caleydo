@@ -50,11 +50,7 @@ public class BucketLayoutRenderStyle
 		fScalingFactorSpawnLayer = 0.01f;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.data.view.rep.renderstyle.layout.
-	 * ARemoteViewLayoutRenderStyle#initUnderInteractionLayer()
-	 */
+	@Override
 	public RemoteHierarchyLayer initUnderInteractionLayer()
 	{
 
@@ -67,11 +63,7 @@ public class BucketLayoutRenderStyle
 		return underInteractionLayer;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.data.view.rep.renderstyle.layout.
-	 * ARemoteViewLayoutRenderStyle#initStackLayer()
-	 */
+	@Override
 	public RemoteHierarchyLayer initStackLayer()
 	{
 
@@ -199,11 +191,7 @@ public class BucketLayoutRenderStyle
 		return stackLayer;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.data.view.rep.renderstyle.layout.
-	 * ARemoteViewLayoutRenderStyle#initPoolLayer()
-	 */
+	@Override
 	public RemoteHierarchyLayer initPoolLayer(final int iMouseOverViewID)
 	{
 
@@ -237,11 +225,7 @@ public class BucketLayoutRenderStyle
 		return poolLayer;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.data.view.rep.renderstyle.layout.
-	 * ARemoteViewLayoutRenderStyle#initMemoLayer()
-	 */
+	@Override
 	public RemoteHierarchyLayer initMemoLayer()
 	{
 
@@ -276,11 +260,7 @@ public class BucketLayoutRenderStyle
 		return memoLayer;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.data.view.rep.renderstyle.layout.
-	 * ARemoteViewLayoutRenderStyle#initTransitionLayer()
-	 */
+	@Override
 	public RemoteHierarchyLayer initTransitionLayer()
 	{
 
@@ -293,11 +273,7 @@ public class BucketLayoutRenderStyle
 		return transitionLayer;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.data.view.rep.renderstyle.layout.
-	 * ARemoteViewLayoutRenderStyle#initSpawnLayer()
-	 */
+	@Override
 	public RemoteHierarchyLayer initSpawnLayer()
 	{
 

@@ -50,11 +50,7 @@ public class JukeboxLayoutRenderStyle
 		fScalingFactorSpawnLayer = 0.005f;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.data.view.rep.renderstyle.layout.
-	 * ARemoteViewLayoutRenderStyle#initUnderInteractionLayer()
-	 */
+	@Override
 	public RemoteHierarchyLayer initUnderInteractionLayer()
 	{
 
@@ -69,11 +65,7 @@ public class JukeboxLayoutRenderStyle
 		return underInteractionLayer;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.data.view.rep.renderstyle.layout.
-	 * ARemoteViewLayoutRenderStyle#initStackLayer()
-	 */
+	@Override
 	public RemoteHierarchyLayer initStackLayer()
 	{
 
@@ -106,11 +98,7 @@ public class JukeboxLayoutRenderStyle
 		return stackLayer;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.data.view.rep.renderstyle.layout.
-	 * ARemoteViewLayoutRenderStyle#initPoolLayer()
-	 */
+	@Override
 	public RemoteHierarchyLayer initPoolLayer(final int iMouseOverViewID)
 	{
 
@@ -144,11 +132,7 @@ public class JukeboxLayoutRenderStyle
 		return poolLayer;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.data.view.rep.renderstyle.layout.
-	 * ARemoteViewLayoutRenderStyle#initMemoLayer()
-	 */
+	@Override
 	public RemoteHierarchyLayer initMemoLayer()
 	{
 
@@ -180,11 +164,7 @@ public class JukeboxLayoutRenderStyle
 		return memoLayer;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.data.view.rep.renderstyle.layout.
-	 * ARemoteViewLayoutRenderStyle#initTransitionLayer()
-	 */
+	@Override
 	public RemoteHierarchyLayer initTransitionLayer()
 	{
 
@@ -197,11 +177,7 @@ public class JukeboxLayoutRenderStyle
 		return transitionLayer;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.data.view.rep.renderstyle.layout.
-	 * ARemoteViewLayoutRenderStyle#initSpawnLayer()
-	 */
+	@Override
 	public RemoteHierarchyLayer initSpawnLayer()
 	{
 

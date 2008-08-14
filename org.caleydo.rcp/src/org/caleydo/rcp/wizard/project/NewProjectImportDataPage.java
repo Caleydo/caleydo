@@ -31,12 +31,7 @@ public class NewProjectImportDataPage
 				"resources/splash/splash.png")));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets
-	 * .Composite)
-	 */
+	@Override
 	public void createControl(Composite parent)
 	{
 		Composite topLevel = new Composite(parent, SWT.NONE);

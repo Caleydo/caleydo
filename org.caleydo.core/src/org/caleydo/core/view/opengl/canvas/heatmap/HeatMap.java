@@ -88,12 +88,7 @@ public class HeatMap
 	}
 
 
-	/*
-	 * (non-Javadoc) asdf <
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl
-	 * .GL)
-	 */
+	@Override
 	public void init(GL gl)
 	{
 
@@ -108,12 +103,7 @@ public class HeatMap
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media
-	 * .opengl.GL)>
-	 */
+	@Override
 	public void initLocal(GL gl)
 	{
 		renderOnlyContext(false);
@@ -125,14 +115,7 @@ public class HeatMap
 		init(gl);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media
-	 * .opengl.GL, int, org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer,
-	 * org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener,
-	 * org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D)
-	 */
+	@Override
 	public void initRemote(final GL gl, final int iRemoteViewID,
 			final RemoteHierarchyLayer layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
@@ -154,12 +137,7 @@ public class HeatMap
 		init(gl);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#displayLocal(javax.
-	 * media.opengl.GL)
-	 */
+	@Override
 	public void displayLocal(GL gl)
 	{
 
@@ -182,12 +160,7 @@ public class HeatMap
 		pickingTriggerMouseAdapter.resetEvents();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#displayRemote(javax
-	 * .media.opengl.GL)
-	 */
+	@Override
 	public void displayRemote(GL gl)
 	{
 
@@ -209,12 +182,7 @@ public class HeatMap
 		// pickingTriggerMouseAdapter.resetEvents();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#display(javax.media
-	 * .opengl.GL)
-	 */
+	@Override
 	public void display(GL gl)
 	{
 
@@ -321,10 +289,7 @@ public class HeatMap
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#getInfo()
-	 */
+	@Override
 	public ArrayList<String> getInfo()
 	{
 
@@ -594,12 +559,7 @@ public class HeatMap
 		return elementRep;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasStorageBasedView#rePosition
-	 * (int)
-	 */
+	@Override
 	protected void rePosition(int iElementID)
 	{
 

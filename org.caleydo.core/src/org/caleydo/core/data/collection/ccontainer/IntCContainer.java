@@ -32,10 +32,6 @@ public class IntCContainer
 		this.iArContainer = iArContainer;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.ICContainer#size()
-	 */
 	@Override
 	public int size()
 	{
@@ -55,10 +51,6 @@ public class IntCContainer
 		return iArContainer[iIndex];
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.INumericalCContainer#getMin()
-	 */
 	@Override
 	public double getMin()
 	{
@@ -67,10 +59,6 @@ public class IntCContainer
 		return iMin;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.INumericalCContainer#getMax()
-	 */
 	@Override
 	public double getMax()
 	{
@@ -102,11 +90,6 @@ public class IntCContainer
 		return new IntCContainerIterator(this, virtualArray);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.INumericalStorage#
-	 * normalizeWithExternalExtrema(double, double)
-	 */
 	@Override
 	public FloatCContainer normalizeWithExternalExtrema(double dMin, double dMax)
 	{
@@ -119,10 +102,6 @@ public class IntCContainer
 		return normalize((int) dMin, (int) dMax);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.ccontainer.ICContainer#normalize()
-	 */
 	@Override
 	public FloatCContainer normalize()
 	{
@@ -169,10 +148,6 @@ public class IntCContainer
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.INumericalCContainer#log10()
-	 */
 	@Override
 	public FloatCContainer log10()
 	{

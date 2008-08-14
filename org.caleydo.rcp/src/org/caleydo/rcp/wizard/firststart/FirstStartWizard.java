@@ -24,10 +24,7 @@ public class FirstStartWizard
 		super();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.Wizard#addPages()
-	 */
+	@Override
 	public void addPages()
 	{
 		addPage(new FetchPathwayDataPage());
@@ -35,31 +32,20 @@ public class FirstStartWizard
 		setWindowTitle("Caleydo First Start Wizard");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
-	 */
+	@Override
 	public boolean performFinish()
 	{
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.Wizard#performCancel()
-	 */
+	@Override
 	public boolean performCancel()
 	{
 		//TODO: Stop application!
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.jface.wizard.Wizard#getNextPage(org.eclipse.jface.wizard.
-	 * IWizardPage)
-	 */
+	@Override
 	public IWizardPage getNextPage(IWizardPage page)
 	{
 		return null;

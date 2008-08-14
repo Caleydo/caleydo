@@ -1156,12 +1156,7 @@ extends APathwayGraphViewRep {
 				null, null, tmp);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver(java.lang.Object,
-	 *      org.caleydo.core.data.collection.ISet)
-	 */
+	@Override
 	public void updateReceiver(Object eventTrigger, ISet updatedSet) {
 
 //		generalManager.logMsg(

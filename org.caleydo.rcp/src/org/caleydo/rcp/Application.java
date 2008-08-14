@@ -30,11 +30,7 @@ public class Application
 
 	public static ApplicationWorkbenchAdvisor applicationWorkbenchAdvisor;
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.eclipse.equinox.app.IApplication#start(org.eclipse.equinox.app.
-	 * IApplicationContext)
-	 */
+	@Override
 	@SuppressWarnings("unchecked")
 	public Object start(IApplicationContext context) throws Exception
 	{
@@ -98,10 +94,7 @@ public class Application
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.equinox.app.IApplication#stop()
-	 */
+	@Override
 	public void stop()
 	{
 

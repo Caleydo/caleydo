@@ -41,10 +41,7 @@ public class CmdEventCreateMediator
 		iArReceiverIDs = new ArrayList<Integer>();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#doCommand()
-	 */
+	@Override
 	public void doCommand() throws CaleydoRuntimeException
 	{
 		mediator = generalManager.getEventPublisher().createMediator(iArSenderIDs,
@@ -58,10 +55,7 @@ public class CmdEventCreateMediator
 		commandManager.runDoCommand(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
-	 */
+	@Override
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
 		super.setParameterHandler(parameterHandler);
@@ -110,10 +104,7 @@ public class CmdEventCreateMediator
 		this.mediatorType = mediatorType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#undoCommand()
-	 */
+	@Override
 	public void undoCommand() throws CaleydoRuntimeException
 	{
 

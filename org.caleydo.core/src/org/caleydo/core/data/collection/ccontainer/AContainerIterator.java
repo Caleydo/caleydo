@@ -19,11 +19,6 @@ public class AContainerIterator
 	protected int iIndex = 0;
 	protected int iSize = 0;
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.IPrimitiveCContainerIterator#hasNext()
-	 */
 	@Override
 	public boolean hasNext()
 	{
@@ -38,10 +33,6 @@ public class AContainerIterator
 			return vaIterator.hasNext();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.ICContainerIterator#remove()
-	 */
 	@Override
 	public void remove()
 	{

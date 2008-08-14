@@ -30,90 +30,54 @@ public class SetIterator
 		this.alStorages = alStorages;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#add(java.lang.Object)
-	 */
 	@Override
 	public void add(IStorage storage)
 	{
 		vaIterator.add(alStorages.indexOf(storage));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#hasNext()
-	 */
 	@Override
 	public boolean hasNext()
 	{
 		return vaIterator.hasNext();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#hasPrevious()
-	 */
 	@Override
 	public boolean hasPrevious()
 	{
 		return vaIterator.hasPrevious();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#next()
-	 */
 	@Override
 	public IStorage next()
 	{
 		return alStorages.get(vaIterator.next());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#nextIndex()
-	 */
 	@Override
 	public int nextIndex()
 	{
 		return vaIterator.nextIndex();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#previous()
-	 */
 	@Override
 	public IStorage previous()
 	{
 		return alStorages.get(vaIterator.previous());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#previousIndex()
-	 */
 	@Override
 	public int previousIndex()
 	{
 		return vaIterator.previousIndex();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#remove()
-	 */
 	@Override
 	public void remove()
 	{
 		vaIterator.remove();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#set(java.lang.Object)
-	 */
 	@Override
 	public void set(IStorage storage)
 	{

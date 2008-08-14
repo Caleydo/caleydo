@@ -29,13 +29,7 @@ public class NominalStorage<T>
 		super(GeneralManager.get().getIDManager()
 				.createID(EManagedObjectType.STORAGE_NOMINAL));
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.INominalSet#setRawData(java.util.ArrayList
-	 * )
-	 */
+	
 	@SuppressWarnings("unchecked")
 	@Override
 	public void setRawNominalData(ArrayList<T> alData)
@@ -64,12 +58,6 @@ public class NominalStorage<T>
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.INominalSet#setPossibleValues(java.util
-	 * .ArrayList)
-	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public void setPossibleValues(ArrayList<T> alPossibleValues)
@@ -94,12 +82,6 @@ public class NominalStorage<T>
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.INominalStorage#get(org.caleydo.core
-	 * .data.collection.ccontainer.EDataKind, int)
-	 */
 	@SuppressWarnings("unchecked")
 	@Override
 	public T getRaw(int index)

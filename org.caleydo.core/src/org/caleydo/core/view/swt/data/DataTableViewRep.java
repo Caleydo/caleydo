@@ -69,10 +69,7 @@ implements IDataTableView {
 		//initView();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.AViewRep#initView(org.eclipse.swt.widgets.Composite)
-	 */
+	@Override
 	public void initViewSwtComposit( Composite swtContainer ) {
 		
 		storageManager = generalManager.getStorageManager();

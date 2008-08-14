@@ -14,12 +14,7 @@ public class GLParCoordsMiniView
 		fHeight = 0.2f;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.miniview.AGLMiniView#render(javax.media.
-	 * opengl.GL, float, float, float)
-	 */
+	@Override
 	public void render(GL gl, float fXOrigin, float fYOrigin, float fZOrigin)
 	{
 

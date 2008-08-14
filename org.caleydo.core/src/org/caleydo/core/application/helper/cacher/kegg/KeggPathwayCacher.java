@@ -66,10 +66,7 @@ public class KeggPathwayCacher
 		this.triggeringCommand = triggeringCommand;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Thread#run()
-	 */
+	@Override
 	public void run()
 	{
 		super.run();

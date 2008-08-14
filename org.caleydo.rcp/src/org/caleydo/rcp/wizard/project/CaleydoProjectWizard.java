@@ -24,10 +24,7 @@ public class CaleydoProjectWizard
 		super();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.Wizard#addPages()
-	 */
+	@Override
 	public void addPages()
 	{
 
@@ -35,10 +32,7 @@ public class CaleydoProjectWizard
 		addPage(new NewProjectImportDataPage());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.Wizard#performFinish()
-	 */
+	@Override
 	public boolean performFinish()
 	{
 
@@ -52,10 +46,7 @@ public class CaleydoProjectWizard
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.Wizard#performCancel()
-	 */
+	@Override
 	public boolean performCancel()
 	{
 
@@ -64,10 +55,7 @@ public class CaleydoProjectWizard
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.wizard.Wizard#canFinish()
-	 */
+	@Override
 	public boolean canFinish()
 	{
 
@@ -75,12 +63,7 @@ public class CaleydoProjectWizard
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.jface.wizard.Wizard#getNextPage(org.eclipse.jface.wizard.
-	 * IWizardPage)
-	 */
+	@Override
 	public IWizardPage getNextPage(IWizardPage page)
 	{
 

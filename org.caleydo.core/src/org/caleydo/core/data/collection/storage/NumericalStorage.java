@@ -27,12 +27,6 @@ public class NumericalStorage
 				.createID(EManagedObjectType.STORAGE_NUMERICAL));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.INumericalSet#normalizeWithExternalExtrema
-	 * (double, double)
-	 */
 	@Override
 	public void normalizeWithExternalExtrema(double dMin, double dMax)
 	{
@@ -46,20 +40,12 @@ public class NumericalStorage
 		hashCContainers.put(EDataRepresentation.NORMALIZED, normalizedStorage);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.storage.AStorage#getRawDataType()
-	 */
 	@Override
 	public ERawDataType getRawDataType()
 	{
 		return rawDataType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.INumericalStorage#getMin()
-	 */
 	@Override
 	public double getMin()
 	{
@@ -69,10 +55,6 @@ public class NumericalStorage
 		return ((INumericalCContainer) (hashCContainers.get(dataKind))).getMin();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.INumericalStorage#getMax()
-	 */
 	@Override
 	public double getMax()
 	{
@@ -82,20 +64,12 @@ public class NumericalStorage
 		return ((INumericalCContainer) (hashCContainers.get(dataKind))).getMax();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.INumericalStorage#getRawForNormalized(double)
-	 */
 	@Override
 	public double getRawForNormalized(double dNormalized)
 	{
 		return dNormalized * (getMax() - getMin());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.INumericalStorage#log10()
-	 */
 	@Override
 	public void log10()
 	{
@@ -104,10 +78,6 @@ public class NumericalStorage
 						.log10());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.INumericalStorage#reset()
-	 */
 	@Override
 	public void reset()
 	{

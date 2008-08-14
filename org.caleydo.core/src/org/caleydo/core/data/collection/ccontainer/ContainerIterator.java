@@ -54,10 +54,6 @@ public class ContainerIterator<T>
 		throw new UnsupportedOperationException("Adding is not supported on storages");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#hasPrevious()
-	 */
 	@Override
 	public boolean hasPrevious()
 	{
@@ -67,10 +63,6 @@ public class ContainerIterator<T>
 			return containerIterator.hasPrevious();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#next()
-	 */
 	@Override
 	public T next()
 	{
@@ -80,10 +72,6 @@ public class ContainerIterator<T>
 			return containerIterator.next();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#nextIndex()
-	 */
 	@Override
 	public int nextIndex()
 	{
@@ -93,10 +81,6 @@ public class ContainerIterator<T>
 			return containerIterator.nextIndex();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#previous()
-	 */
 	@Override
 	public T previous()
 	{
@@ -106,10 +90,6 @@ public class ContainerIterator<T>
 			return containerIterator.previous();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#previousIndex()
-	 */
 	@Override
 	public int previousIndex()
 	{
@@ -119,10 +99,6 @@ public class ContainerIterator<T>
 			return containerIterator.previousIndex();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.util.ListIterator#set(java.lang.Object)
-	 */
 	@Override
 	public void set(T e)
 	{

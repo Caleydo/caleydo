@@ -80,23 +80,13 @@ public class PathwayManager
 						+ tmpPathwayDatabase.getImageMapPath() + "]");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.data.IPathwayManager#triggerParsingPathwayDatabases
-	 * ()
-	 */
+	@Override
 	public void triggerParsingPathwayDatabases()
 	{
 		new PathwayLoaderThread(hashPathwayDatabase.values());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.data.IPathwayManagerNew#createPathway(java.lang
-	 * .String, java.lang.String, java.lang.String, java.lang.String, int)
-	 */
+	@Override
 	public PathwayGraph createPathway(final EPathwayDatabaseType type, final String sName,
 			final String sTitle, final String sImageLink, final String sExternalLink)
 	{
@@ -114,10 +104,7 @@ public class PathwayManager
 		return pathway;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.specialized.genome.IPathwayManager#searchPathwayIdByName(java.lang.String)
-	 */
+	@Override
 	public int searchPathwayIdByName(final String sPathwayName)
 	{
 		Iterator<String> iterPathwayName = hashPathwayTitleToPathwayId.keySet().iterator();
@@ -139,74 +126,44 @@ public class PathwayManager
 		return -1;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.data.IPathwayManager#getRootPathway()
-	 */
+	@Override
 	public Graph getRootPathway()
 	{
 		return rootPathwayGraph;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.data.IPathwayManager#setPathwayVisibilityStateByID
-	 * (int, boolean)
-	 */
+	@Override
 	public void setPathwayVisibilityStateByID(final int iPathwayID,
 			final boolean bVisibilityState)
 	{
 		hashPathwayIdToVisibilityState.put(iPathwayID, bVisibilityState);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.data.IPathwayManager#isPathwayVisible(int)
-	 */
+	@Override
 	public boolean isPathwayVisible(final int iPathwayID)
 	{
 		return hashPathwayIdToVisibilityState.get(iPathwayID);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.data.IPathwayManager#createPathwayImageMap(java
-	 * .lang.String)
-	 */
+	@Override
 	public void createPathwayImageMap(final String sImageLink)
 	{
 		currentPathwayImageMap = new PathwayImageMap(sImageLink);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.manager.specialized.genome.IPathwayManager#
-	 * getPathwayDatabaseByType
-	 * (org.caleydo.core.manager.specialized.genome.pathway
-	 * .EPathwayDatabaseType)
-	 */
+	@Override
 	public PathwayDatabase getPathwayDatabaseByType(EPathwayDatabaseType type)
 	{
 		return hashPathwayDatabase.get(type);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.manager.specialized.genome.IPathwayManager#
-	 * getCurrenPathwayGraph()
-	 */
+	@Override
 	public PathwayGraph getCurrenPathwayGraph()
 	{
 		return currentPathwayGraph;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.data.IPathwayManager#getCurrentPathwayImageMap()
-	 */
+	@Override
 	public PathwayImageMap getCurrentPathwayImageMap()
 	{
 		return currentPathwayImageMap;

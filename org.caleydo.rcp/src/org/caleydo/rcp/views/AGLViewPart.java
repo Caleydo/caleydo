@@ -70,12 +70,6 @@ public abstract class AGLViewPart
 		MessageDialog.openInformation(swtShell, "Info " + title, message);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets
-	 * .Composite)
-	 */
 	protected void createPartControlSWT(Composite parent)
 	{
 		swtShell = parent.getShell();
@@ -84,12 +78,6 @@ public abstract class AGLViewPart
 		createWriteScreenshotAction();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.eclipse.ui.part.WorkbenchPart#createPartControl(org.eclipse.swt.widgets
-	 * .Composite)
-	 */
 	public void createPartControlGL()
 	{
 
@@ -119,20 +107,13 @@ public abstract class AGLViewPart
 		// animatorGL.start();
 		// }
 	}
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.part.WorkbenchPart#setFocus()
-	 */
 	@Override
 	public final void setFocus()
 	{
 		// nothing to do at the moment
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.part.WorkbenchPart#dispose()
-	 */
+	@Override
 	public void dispose()
 	{
 

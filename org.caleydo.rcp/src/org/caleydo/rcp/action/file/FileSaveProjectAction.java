@@ -39,10 +39,7 @@ public class FileSaveProjectAction
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.action.Action#run()
-	 */
+	@Override
 	public void run()
 	{
 
@@ -60,10 +57,7 @@ public class FileSaveProjectAction
 		Application.generalManager.getCommandManager().writeSerializedObjects(sFileName);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.actions.ActionFactory.IWorkbenchAction#dispose()
-	 */
+	@Override
 	public void dispose()
 	{
 

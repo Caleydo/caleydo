@@ -40,10 +40,7 @@ public enum EPathwayDatabaseType
 		return sURL;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Enum#toString()
-	 */
+	@Override
 	public String toString()
 	{
 

@@ -51,40 +51,24 @@ public abstract class AStorage
 		sLabel = new String("Not specified");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.IStorage#getRawDataType()
-	 */
 	@Override
 	public ERawDataType getRawDataType()
 	{
 		return rawDataType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.NISet#setLabel(java.lang.String)
-	 */
 	@Override
 	public void setLabel(String sLabel)
 	{
 		this.sLabel = sLabel;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.NISet#getLabel()
-	 */
 	@Override
 	public String getLabel()
 	{
 		return sLabel;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.NISet#setRawData(float[])
-	 */
 	@Override
 	public void setRawData(float[] fArRawData)
 	{
@@ -100,10 +84,6 @@ public abstract class AStorage
 		hashCContainers.put(EDataRepresentation.RAW, container);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.NISet#setRawData(int[])
-	 */
 	@Override
 	public void setRawData(int[] iArRawData)
 	{
@@ -119,12 +99,6 @@ public abstract class AStorage
 		hashCContainers.put(EDataRepresentation.RAW, container);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.NISet#getFloat(org.caleydo.core.data
-	 * .collection.nstorage.EStorageKind, int)
-	 */
 	@Override
 	public float getFloat(EDataRepresentation storageKind, int iIndex)
 	{
@@ -139,12 +113,6 @@ public abstract class AStorage
 		return container.get(iIndex);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.NISet#floatIterator(org.caleydo.core
-	 * .data.collection.nstorage.EStorageKind)
-	 */
 	@Override
 	public FloatCContainerIterator floatIterator(EDataRepresentation storageKind)
 	{
@@ -157,24 +125,12 @@ public abstract class AStorage
 		return container.iterator();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.IStorage#getFloatVA(org.caleydo.core
-	 * .data.collection.storage.EDataRepresentation, int, int)
-	 */
 	@Override
 	public float getFloatVA(EDataRepresentation storageKind, int iIndex, int iUniqueID)
 	{
 		return getFloat(storageKind, hashVirtualArrays.get(iUniqueID).get(iIndex));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.IStorage#floatVAIterator(org.caleydo
-	 * .core.data.collection.storage.EDataRepresentation, int)
-	 */
 	@Override
 	public FloatCContainerIterator floatVAIterator(EDataRepresentation storageKind,
 			int iUniqueID)
@@ -187,11 +143,6 @@ public abstract class AStorage
 		return container.iterator(hashVirtualArrays.get(iUniqueID));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.data.collection.NISet#getInt(org.caleydo.core.data.
-	 * collection.nstorage.EStorageKind, int)
-	 */
 	@Override
 	public int getInt(EDataRepresentation storageKind, int iIndex)
 	{
@@ -203,12 +154,6 @@ public abstract class AStorage
 		return container.get(iIndex);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.NISet#intIterator(org.caleydo.core.data
-	 * .collection.nstorage.EStorageKind)
-	 */
 	@Override
 	public IntCContainerIterator intIterator(EDataRepresentation storageKind)
 	{
@@ -220,24 +165,12 @@ public abstract class AStorage
 		return container.iterator();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.IStorage#getIntVA(org.caleydo.core.data
-	 * .collection.storage.EDataRepresentation, int, int)
-	 */
 	@Override
 	public int getIntVA(EDataRepresentation storageKind, int iIndex, int iUniqueID)
 	{
 		return getInt(storageKind, hashVirtualArrays.get(iUniqueID).get(iIndex));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.IStorage#intVAIterator(org.caleydo.core
-	 * .data.collection.storage.EDataRepresentation, int)
-	 */
 	@Override
 	public IntCContainerIterator intVAIterator(EDataRepresentation storageKind, int iUniqueID)
 	{
@@ -249,11 +182,6 @@ public abstract class AStorage
 		return container.iterator(hashVirtualArrays.get(iUniqueID));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.data.collection.IStorage#get(org.caleydo.core.data.
-	 * collection.ccontainer.EDataKind, int)
-	 */
 	@Override
 	public Number get(EDataRepresentation storageKind, int iIndex)
 	{
@@ -267,12 +195,6 @@ public abstract class AStorage
 		return container.get(iIndex);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.IStorage#iterator(org.caleydo.core.data
-	 * .collection.ccontainer.EDataKind)
-	 */
 	@Override
 	public Iterator<? extends Number> iterator(EDataRepresentation storageKind)
 	{
@@ -286,12 +208,6 @@ public abstract class AStorage
 		return container.iterator();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.IStorage#getNumberVA(org.caleydo.core
-	 * .data.collection.storage.EDataRepresentation, int, int)
-	 */
 	@Override
 	public Number getNumberVA(EDataRepresentation storageKind, int iIndex, int iUniqueID)
 	{
@@ -299,12 +215,6 @@ public abstract class AStorage
 		return get(storageKind, iContainerIndex);		
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.IStorage#iteratorVA(org.caleydo.core
-	 * .data.collection.storage.EDataRepresentation, int)
-	 */
 	@Override
 	public Iterator<? extends Number> iteratorVA(EDataRepresentation storageKind, int iUniqueID)
 	{
@@ -318,11 +228,6 @@ public abstract class AStorage
 		return container.iterator();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.IStorage#setRawData(java.util.ArrayList)
-	 */
 	@Override
 	public void setRawData(ArrayList<? super Number> alNumber)
 	{
@@ -330,10 +235,6 @@ public abstract class AStorage
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.NISet#normalize()
-	 */
 	@Override
 	public void normalize()
 	{
@@ -346,20 +247,12 @@ public abstract class AStorage
 				.normalize());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.IStorage#size()
-	 */
 	@Override
 	public int size()
 	{
 		return hashCContainers.get(EDataRepresentation.RAW).size();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.ICollection#enableVirtualArray(int)
-	 */
 	@Override
 	public void enableVirtualArray(int iUniqueID)
 	{
@@ -372,11 +265,6 @@ public abstract class AStorage
 			hashIsVirtualArrayEnabled.put(iUniqueID, true);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.ICollection#disableVirtualArray(int)
-	 */
 	@Override
 	public void disableVirtualArray(int iUniqueID)
 	{
@@ -384,11 +272,6 @@ public abstract class AStorage
 			hashIsVirtualArrayEnabled.put(iUniqueID, false);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.IStorage#setVirtualArray(int,
-	 * org.caleydo.core.data.selection.VirtualArray)
-	 */
 	@Override
 	public void setVirtualArray(int iUniqueID, IVirtualArray virtualArray)
 	{
@@ -396,10 +279,6 @@ public abstract class AStorage
 		hashIsVirtualArrayEnabled.put(iUniqueID, false);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.ICollection#removeVirtualArray(int)
-	 */
 	@Override
 	public void removeVirtualArray(int iUniqueID)
 	{
@@ -407,10 +286,6 @@ public abstract class AStorage
 		hashIsVirtualArrayEnabled.remove(iUniqueID);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.ICollection#resetVirtualArray(int)
-	 */
 	@Override
 	public void resetVirtualArray(int uniqueID)
 	{

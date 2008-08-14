@@ -52,11 +52,7 @@ public class BucketMouseWheelListener
 		this.bucketLayoutRenderStyle = bucketLayoutRenderStyle;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seejava.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.
-	 * MouseWheelEvent)
-	 */
+	@Override
 	public void mouseWheelMoved(MouseWheelEvent event)
 	{
 

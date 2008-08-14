@@ -58,10 +58,7 @@ public class PathwayLoaderThread
 		start();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Thread#run()
-	 */
+	@Override
 	public void run()
 	{
 		super.run();

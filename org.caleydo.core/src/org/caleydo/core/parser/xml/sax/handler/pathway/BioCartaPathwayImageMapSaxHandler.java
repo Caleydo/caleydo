@@ -46,10 +46,7 @@ public class BioCartaPathwayImageMapSaxHandler
 		setXmlActivationTag("span");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
-	 */
+	@Override
 	public void startElement(String namespaceURI, String sSimpleName, String sQualifiedName,
 			Attributes attributes) throws SAXException
 	{
@@ -73,10 +70,7 @@ public class BioCartaPathwayImageMapSaxHandler
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.xml.sax.helpers.DefaultHandler#endElement(java.lang.String, java.lang.String, java.lang.String)
-	 */
+	@Override
 	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName)
 			throws SAXException
 	{
@@ -90,10 +84,7 @@ public class BioCartaPathwayImageMapSaxHandler
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.xml.sax.helpers.DefaultHandler#characters(char[], int, int)
-	 */
+	@Override
 	public void characters(char[] ch, int start, int length) throws SAXException
 	{
 
@@ -219,10 +210,7 @@ public class BioCartaPathwayImageMapSaxHandler
 				sShape, sCoords);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler#destroyHandler()
-	 */
+	@Override
 	public void destroyHandler()
 	{
 		super.destroyHandler();

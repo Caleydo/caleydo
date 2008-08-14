@@ -123,11 +123,7 @@ public class GlyphMouseListener
 		notches_ = 0;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seejava.awt.event.MouseWheelListener#mouseWheelMoved(java.awt.event.
-	 * MouseWheelEvent)
-	 */
+	@Override
 	public void mouseWheelMoved(MouseWheelEvent event)
 	{
 
