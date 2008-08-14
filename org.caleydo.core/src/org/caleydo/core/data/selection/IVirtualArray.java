@@ -1,5 +1,6 @@
 package org.caleydo.core.data.selection;
 
+import java.util.ArrayList;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
@@ -105,7 +106,8 @@ public interface IVirtualArray
 	 * </p>
 	 * <p>
 	 * Notice that this has a complexity of O(n)
-	 * </p> 
+	 * </p>
+	 * 
 	 * @param iElement the element to be removed
 	 */
 	public void removeByElement(int iElement);
@@ -133,5 +135,13 @@ public interface IVirtualArray
 	 *         this list, or -1 if this list does not contain the element
 	 */
 	public int indexOf(int iElement);
+
+	/**
+	 * Returns the array list which contains the list of storage indices. DO NOT
+	 * EDIT THIS LIST
+	 * 
+	 * @return the list containing the storage indices
+	 */
+	public ArrayList<Integer> getIndexList();
 
 }

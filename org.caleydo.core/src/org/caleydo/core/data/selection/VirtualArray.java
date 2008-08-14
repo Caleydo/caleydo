@@ -153,7 +153,19 @@ public class VirtualArray
 	{
 		init();
 	}
-
+	
+	@Override
+	public int indexOf(int iElement)
+	{
+		return iAlVirtualArray.indexOf(iElement);
+	}
+	
+	@Override
+	public ArrayList<Integer> getIndexList()
+	{
+		return iAlVirtualArray;
+	}
+	
 	/**
 	 * Initialize Virtual Array
 	 */
@@ -166,10 +178,6 @@ public class VirtualArray
 			iAlVirtualArray.add(iCount);
 		}
 	}
-	
-	public int indexOf(int iElement)
-	{
-		return iAlVirtualArray.indexOf(iElement);
-	}
+
 
 }

@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.parcoords;
+package org.caleydo.core.view.opengl.canvas.storagebased.parcoords;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
@@ -74,7 +74,7 @@ public class GLParCoordsToolboxRenderer
 		addIcon(gl, iContainingViewID, EPickingType.PC_ICON_SELECTION,
 				EIconIDs.TOGGLE_PREVENT_OCCLUSION.ordinal(), EIconTextures.PREVENT_OCCLUSION);
 		addIcon(gl, iContainingViewID, EPickingType.PC_ICON_SELECTION,
-				EIconIDs.TOGGLE_RENDER_SELECTION.ordinal(), EIconTextures.RENDER_SELECTION);
+				EIconIDs.TOGGLE_RENDER_CONTEXT.ordinal(), EIconTextures.RENDER_SELECTION);
 		addIcon(gl, iContainingViewID, EPickingType.PC_ICON_SELECTION,
 				EIconIDs.RESET_SELECTIONS.ordinal(), EIconTextures.RESET_SELECTIONS);
 		addIcon(gl, iContainingViewID, EPickingType.PC_ICON_SELECTION,

@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.parcoords;
+package org.caleydo.core.view.opengl.canvas.storagebased;
 
 /**
  * Enum for VA selection.

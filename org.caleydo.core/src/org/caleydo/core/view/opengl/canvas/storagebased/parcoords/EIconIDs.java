@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.parcoords;
+package org.caleydo.core.view.opengl.canvas.storagebased.parcoords;
 
 /**
  * Icon IDs for the parallel coordinates
@@ -9,7 +9,7 @@ public enum EIconIDs
 {
 	TOGGLE_RENDER_ARRAY_AS_POLYLINE,
 	TOGGLE_PREVENT_OCCLUSION,
-	TOGGLE_RENDER_SELECTION,
+	TOGGLE_RENDER_CONTEXT,
 	RESET_SELECTIONS,
 	SAVE_SELECTIONS,
 	ANGULAR_BRUSHING

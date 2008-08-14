@@ -1,14 +1,17 @@
 package org.caleydo.core.data.selection;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.logging.Level;
+import javax.management.InvalidAttributeValueException;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.eclipse.core.internal.resources.AliasManager.AddToCollectionDoit;
 
 /**
  * <p>
@@ -181,7 +184,8 @@ public class GenericSelectionManager
 			alSelectionTypes = new ArrayList<ESelectionType>();
 			for (ESelectionType selectionType : ESelectionType.values())
 			{
-				alSelectionTypes.add(selectionType);
+				if (selectionType != ESelectionType.REMOVE)
+					alSelectionTypes.add(selectionType);
 			}
 		}
 
@@ -222,13 +226,24 @@ public class GenericSelectionManager
 	}
 
 	/**
+	 * <p>
 	 * Set a virtual array if the data you are managing with this selection
 	 * manager is also managed by a virtual array.
+	 * </p>
+	 * <p>
+	 * If you reset this virtual array at runtime the manager is completely
+	 * reseted and reinitialized with the data of the virtual array
+	 * </p>
 	 * 
 	 * @param virtualArray the currently active virtual array
 	 */
 	public void setVA(IVirtualArray virtualArray)
 	{
+		if (this.virtualArray != null)
+		{
+			resetSelectionManager();
+			initialAdd(virtualArray.getIndexList());
+		}
 		this.virtualArray = virtualArray;
 	}
 
@@ -268,6 +283,9 @@ public class GenericSelectionManager
 	 */
 	public void clearSelection(ESelectionType eSelectionType)
 	{
+		if (eSelectionType == ESelectionType.REMOVE)
+			return;
+
 		if (eSelectionType == eNormalType)
 			throw new CaleydoRuntimeException(
 					"SelectionManager: cannot reset selections of normal selection",
@@ -286,10 +304,15 @@ public class GenericSelectionManager
 	 * Returns all elements that are in a specific selection type
 	 * 
 	 * @param sSelectionType
-	 * @return
+	 * @return the elements in the type
+	 * @throws CaleydoRuntimeException when called with
+	 *             {@link ESelectionType#REMOVE}
 	 */
 	public Set<Integer> getElements(ESelectionType eSelectionType)
+			throws CaleydoRuntimeException
 	{
+		if (eSelectionType == ESelectionType.REMOVE)
+			throw new CaleydoRuntimeException("Can not return removed values");
 		return hashSelectionTypes.get(eSelectionType).keySet();
 	}
 
@@ -307,7 +330,8 @@ public class GenericSelectionManager
 	public void addToType(ESelectionType targetType, int iElementID)
 	{
 
-		if (hashSelectionTypes.get(targetType).containsKey(iElementID))
+		if (targetType != ESelectionType.REMOVE
+				&& hashSelectionTypes.get(targetType).containsKey(iElementID))
 			return;
 
 		for (ESelectionType currentType : alSelectionTypes)
@@ -318,7 +342,10 @@ public class GenericSelectionManager
 			if (hashSelectionTypes.get(currentType).containsKey(iElementID))
 			{
 				hashSelectionTypes.get(currentType).remove(iElementID);
-				hashSelectionTypes.get(targetType).put(iElementID, null);
+				if (targetType == ESelectionType.REMOVE && virtualArray != null)
+					virtualArray.removeByElement(iElementID);
+				else
+					hashSelectionTypes.get(targetType).put(iElementID, null);
 				if (bIsDeltaWritingEnabled)
 					selectionDelta.addSelection(iElementID, targetType);
 				return;
@@ -332,6 +359,22 @@ public class GenericSelectionManager
 	}
 
 	/**
+	 * Same as {@link #addToType(ESelectionType, int)} but for a list
+	 * 
+	 * @param targetType the selection type the element should be added to
+	 * @param idCollection collection of element ids
+	 * @throws CaleydoRuntimeException if the element is not in the selection
+	 *             manager
+	 */
+	public void addToType(ESelectionType targetType, Collection<Integer> idCollection)
+	{
+		for (int value : idCollection)
+		{
+			addToType(targetType, value);
+		}
+	}
+
+	/**
 	 * Removes a element form a particular selection type and puts it into the
 	 * normal type. Can not be called on the normal type. Nothing happens if the
 	 * element is not contained in the type
@@ -342,9 +385,9 @@ public class GenericSelectionManager
 	 */
 	public void removeFromType(ESelectionType eSelectionType, int iElementID)
 	{
-		if (eSelectionType == eNormalType)
+		if (eSelectionType == eNormalType || eSelectionType == ESelectionType.REMOVE)
 			throw new CaleydoRuntimeException(
-					"SelectionManager: cannot remove from normal selection",
+					"SelectionManager: cannot remove from normal or remove selection",
 					CaleydoRuntimeExceptionType.VIEW);
 
 		if (hashSelectionTypes.get(eSelectionType).containsKey(iElementID))
@@ -353,6 +396,31 @@ public class GenericSelectionManager
 			hashSelectionTypes.get(eNormalType).put(iElementID, null);
 			selectionDelta.addSelection(iElementID, eNormalType);
 		}
+	}
+
+	/**
+	 * Move all element from one type to another
+	 * 
+	 * @param srcType the source type
+	 * @param targetType the target type
+	 * @throws InvalidAttributeValueException when called with
+	 *             {@link ESelectionType#REMOVE}
+	 */
+	public void moveType(ESelectionType srcType, ESelectionType targetType)
+			throws CaleydoRuntimeException
+	{
+		if (srcType == ESelectionType.REMOVE)
+			throw new CaleydoRuntimeException("Can not move from REMOVE type");
+
+		HashMap<Integer, Boolean> tempHash = hashSelectionTypes.remove(srcType);
+		for (Integer value : tempHash.keySet())
+		{
+			selectionDelta.addSelection(value, targetType);
+		}
+		if (targetType != ESelectionType.REMOVE)
+			hashSelectionTypes.get(targetType).putAll(tempHash);
+		
+		hashSelectionTypes.put(srcType, new HashMap<Integer, Boolean>());
 	}
 
 	/**
@@ -370,10 +438,14 @@ public class GenericSelectionManager
 	 * 
 	 * @param eSelectionType the suspected selection type
 	 * @param iElementID the id of the element
-	 * @return true if the type contains the element, else false
+	 * @return true if the type contains the element, else false, also false
+	 *         when called with REMOVE
 	 */
 	public boolean checkStatus(ESelectionType eSelectionType, int iElementID)
 	{
+		if (eSelectionType == ESelectionType.REMOVE)
+			return false;
+
 		if (hashSelectionTypes.get(eSelectionType).containsKey(iElementID))
 			return true;
 
@@ -484,7 +556,8 @@ public class GenericSelectionManager
 						virtualArray.removeByElement(iInternalID);
 				}
 
-				selectionDelta.addSelection(iInternalID, item.getSelectionType(), item.getSelectionID());
+				selectionDelta.addSelection(iInternalID, item.getSelectionType(), item
+						.getSelectionID());
 			}
 		}
 

@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.parcoords;
+package org.caleydo.core.view.opengl.canvas.storagebased.parcoords;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
@@ -20,17 +20,16 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArray;
-import org.caleydo.core.data.selection.SelectionItem;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
+import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -69,7 +68,7 @@ public class ParallelCoordinates
 
 	private EPickingType draggedObject;
 
-	private int iNumberOfAxis = 0;
+//	private int iNumberOfAxis = 0;
 
 	private float[] fArGateTipHeight;
 
@@ -183,7 +182,8 @@ public class ParallelCoordinates
 	@Override
 	public void initLocal(final GL gl)
 	{
-		renderOnlyContext(false);
+		dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
+		bRenderOnlyContext = false;
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
@@ -200,6 +200,8 @@ public class ParallelCoordinates
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas)
 	{
+		dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
+		bRenderOnlyContext = true;
 
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 
@@ -365,26 +367,19 @@ public class ParallelCoordinates
 
 	}
 
-	/**
-	 * Choose whether to render just the selection or all data
-	 * 
-	 * @param bRenderSelection if true renders only the selection, else renders
-	 *            everything in the data
-	 */
-	public void renderSelection(boolean bRenderSelection)
+	@Override
+	public void toggleRenderContext()
 	{
+		bRenderOnlyContext = !bRenderOnlyContext;
 
-		this.bRenderSelection = bRenderSelection;
-		resetSelections();
-		if (bRenderSelection)
-		{
-			eWhichContentSelection = EStorageBasedVAType.EXTERNAL_SELECTION;
-		}
+		if (bRenderOnlyContext)
+			iContentVAID = mapSelections.get(EStorageBasedVAType.EXTERNAL_SELECTION);
 		else
-			eWhichContentSelection = EStorageBasedVAType.COMPLETE_SELECTION;
-
+			iContentVAID = mapSelections.get(EStorageBasedVAType.COMPLETE_SELECTION);
+		
+		contentSelectionManager.setVA(set.getVA(iContentVAID));
+		resetSelections();
 		refresh();
-		// initPolyLineLists();
 	}
 
 	/**
@@ -431,8 +426,7 @@ public class ParallelCoordinates
 	 */
 	public void refresh()
 	{
-
-		initLists();
+		//initLists();
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
 		// bRenderInfoArea = false;
@@ -453,11 +447,12 @@ public class ParallelCoordinates
 
 		// int iNumberOfEntriesToRender = 0;
 		//		
-		iContentVAID = mapSelections.get(eWhichContentSelection);
-		iStorageVAID = mapSelections.get(eWhichStorageSelection);
-
-		// alContentSelection = mapSelections.get(eWhichContentSelection);
-		// alStorageSelection = mapSelections.get(eWhichStorageSelection);
+		if (bRenderOnlyContext)
+			iContentVAID = mapSelections.get(EStorageBasedVAType.EXTERNAL_SELECTION);
+		else
+			iContentVAID = mapSelections.get(EStorageBasedVAType.COMPLETE_SELECTION);
+		
+		iStorageVAID = mapSelections.get(EStorageBasedVAType.STORAGE_SELECTION);
 
 		if (bRenderStorageHorizontally)
 		{
@@ -472,13 +467,12 @@ public class ParallelCoordinates
 			iAxisVAID = iStorageVAID;
 			polylineSelectionManager = contentSelectionManager;
 			axisSelectionManager = storageSelectionManager;
-
 		}
 
 		// iNumberOfEntriesToRender = alContentSelection.size();
 
 		int iNumberOfPolyLinesToRender = set.sizeVA(iPolylineVAID);
-		iNumberOfAxis = set.sizeVA(iAxisVAID);
+		int iNumberOfAxis = set.sizeVA(iAxisVAID);
 
 		// this for loop executes once per polyline
 		for (int iPolyLineCount = 0; iPolyLineCount < iNumberOfPolyLinesToRender; iPolyLineCount++)
@@ -499,8 +493,8 @@ public class ParallelCoordinates
 	private void initGates()
 	{
 
-		fArGateTipHeight = new float[iNumberOfAxis];
-		fArGateBottomHeight = new float[iNumberOfAxis];
+		fArGateTipHeight = new float[set.getVA(iAxisVAID).size()];
+		fArGateBottomHeight = new float[set.getVA(iAxisVAID).size()];
 
 		alIsGateBlocking = new ArrayList<ArrayList<Integer>>();
 		for (int iCount = 0; iCount < fArGateTipHeight.length; iCount++)
@@ -521,14 +515,14 @@ public class ParallelCoordinates
 		// if(bIsDraggingActive)
 		// handleDragging(gl);
 
-		renderCoordinateSystem(gl, iNumberOfAxis);
+		renderCoordinateSystem(gl, set.getVA(iAxisVAID).size());
 
 		renderPolylines(gl, ESelectionType.DESELECTED);
 		renderPolylines(gl, ESelectionType.NORMAL);
 		renderPolylines(gl, ESelectionType.MOUSE_OVER);
 		renderPolylines(gl, ESelectionType.SELECTION);
 
-		renderGates(gl, iNumberOfAxis);
+		renderGates(gl, set.getVA(iAxisVAID).size());
 
 		gl.glEndList();
 	}
@@ -597,7 +591,7 @@ public class ParallelCoordinates
 			float fCurrentYValue = 0;
 
 			// this loop executes once per axis
-			for (int iVertexCount = 0; iVertexCount < iNumberOfAxis; iVertexCount++)
+			for (int iVertexCount = 0; iVertexCount < set.getVA(iAxisVAID).size(); iVertexCount++)
 			{
 				int iStorageIndex = 0;
 
@@ -1097,7 +1091,6 @@ public class ParallelCoordinates
 
 	private void checkUnselection()
 	{
-
 		HashMap<Integer, Boolean> hashDeselectedPolylines = new HashMap<Integer, Boolean>();
 
 		for (ArrayList<Integer> alCurrent : alIsGateBlocking)
@@ -1310,12 +1303,9 @@ public class ParallelCoordinates
 							else
 								preventOcclusion(true);
 						}
-						else if (iExternalID == EIconIDs.TOGGLE_RENDER_SELECTION.ordinal())
+						else if (iExternalID == EIconIDs.TOGGLE_RENDER_CONTEXT.ordinal())
 						{
-							if (bRenderSelection == true)
-								renderSelection(false);
-							else
-								renderSelection(true);
+							toggleRenderContext();
 						}
 						else if (iExternalID == EIconIDs.RESET_SELECTIONS.ordinal())
 						{
@@ -1323,12 +1313,10 @@ public class ParallelCoordinates
 						}
 						else if (iExternalID == EIconIDs.SAVE_SELECTIONS.ordinal())
 						{
-
-							// TODO revise
-							// ArrayList<Integer> iAlSelection = new
-							// ArrayList<Integer>();
-							// ArrayList<Integer> iAlGroup = new
-							// ArrayList<Integer>();
+							contentSelectionManager.moveType(ESelectionType.DESELECTED, ESelectionType.REMOVE);
+							ISelectionDelta delta = contentSelectionManager.getDelta();
+							triggerUpdate(delta);
+							
 							//
 							// if (bRenderSelection)
 							// {
@@ -1460,9 +1448,6 @@ public class ParallelCoordinates
 			throws InvalidAttributeValueException
 	{
 		// TODO only for one element atm
-	
-
-	
 
 		float fXValue = 0;
 		float fYValue = 0;
@@ -1546,12 +1531,12 @@ public class ParallelCoordinates
 		if (!bRenderStorageHorizontally)
 		{
 			sAlInfo.add(set.getVA(iContentVAID).size() + " genes as polylines and "
-					+ iNumberOfAxis + " experiments as axis.");
+					+ set.getVA(iAxisVAID).size() + " experiments as axis.");
 		}
 		else
 		{
 			sAlInfo.add(set.getVA(iStorageVAID).size() + "experiments as polylines and "
-					+ iNumberOfAxis + " genes as axis.");
+					+ set.getVA(iAxisVAID).size() + " genes as axis.");
 		}
 		return sAlInfo;
 	}

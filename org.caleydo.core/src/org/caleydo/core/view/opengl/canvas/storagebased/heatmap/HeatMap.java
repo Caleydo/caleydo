@@ -1,6 +1,5 @@
-package org.caleydo.core.view.opengl.canvas.heatmap;
+package org.caleydo.core.view.opengl.canvas.storagebased.heatmap;
 
-import gleem.linalg.Rotf;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
@@ -21,8 +20,9 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
-import org.caleydo.core.view.opengl.canvas.parcoords.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
+import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
@@ -91,8 +91,7 @@ public class HeatMap
 	@Override
 	public void init(GL gl)
 	{
-
-		bRenderStorageHorizontally = true;
+		bRenderStorageHorizontally = false;
 		initData();
 		initLists();
 
@@ -100,19 +99,21 @@ public class HeatMap
 				iContentVAID, set.getVA(iStorageVAID).size(), true);
 
 		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
-
 	}
 
 	@Override
 	public void initLocal(GL gl)
-	{
-		renderOnlyContext(false);
-		eWhichContentSelection = EStorageBasedVAType.COMPLETE_SELECTION;
+	{	
+		dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
+		bRenderOnlyContext = false;
+		
 		bRenderHorizontally = true;
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
+		
+	
 	}
 
 	@Override
@@ -120,11 +121,12 @@ public class HeatMap
 			final RemoteHierarchyLayer layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas)
-	{
-
+	{		
+		dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
+		bRenderOnlyContext = true;
+		
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 
-		eWhichContentSelection = EStorageBasedVAType.EXTERNAL_SELECTION;
 		bRenderHorizontally = true;
 
 		glToolboxRenderer = new GLToolboxRenderer(gl, generalManager, iUniqueID,
@@ -135,6 +137,7 @@ public class HeatMap
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
+		
 	}
 
 	@Override
@@ -186,7 +189,7 @@ public class HeatMap
 	public void display(GL gl)
 	{
 
-		// gl.glCallList(iGLDisplayListToCall);
+		gl.glCallList(iGLDisplayListToCall);
 		buildDisplayList(gl, iGLDisplayListIndexRemote);
 	}
 
@@ -256,8 +259,11 @@ public class HeatMap
 		Set<Integer> setMouseOver = storageSelectionManager
 				.getElements(ESelectionType.MOUSE_OVER);
 
-		iContentVAID = mapSelections.get(eWhichContentSelection);
-		iStorageVAID = mapSelections.get(eWhichStorageSelection);
+		if (bRenderOnlyContext)
+			iContentVAID = mapSelections.get(EStorageBasedVAType.EXTERNAL_SELECTION);
+		else
+			iContentVAID = mapSelections.get(EStorageBasedVAType.COMPLETE_SELECTION);
+		iStorageVAID = mapSelections.get(EStorageBasedVAType.STORAGE_SELECTION);
 
 		contentSelectionManager.resetSelectionManager();
 		storageSelectionManager.resetSelectionManager();
@@ -326,8 +332,8 @@ public class HeatMap
 						// prepareSelection(storageSelectionManager,
 						// EViewInternalSelectionType.SELECTION);
 
-						storageSelectionManager.clearSelection(ESelectionType.SELECTION);
-						storageSelectionManager.addToType(ESelectionType.SELECTION,
+						contentSelectionManager.clearSelection(ESelectionType.SELECTION);
+						contentSelectionManager.addToType(ESelectionType.SELECTION,
 								iExternalID);
 
 						if (eFieldDataType == EIDType.EXPRESSION_INDEX)
@@ -346,8 +352,8 @@ public class HeatMap
 						// prepareSelection(storageSelectionManager,
 						// EViewInternalSelectionType.SELECTION);
 
-						storageSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
-						storageSelectionManager.addToType(ESelectionType.MOUSE_OVER,
+						contentSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
+						contentSelectionManager.addToType(ESelectionType.MOUSE_OVER,
 								iExternalID);
 
 						if (eFieldDataType == EIDType.EXPRESSION_INDEX)
@@ -524,38 +530,38 @@ public class HeatMap
 	throws InvalidAttributeValueException
 	{
 				
-		//SelectedElementRep elementRep = new SelectedElementRep(iUniqueID, 0.0f, 0.0f, 0.0f);
+		SelectedElementRep elementRep = new SelectedElementRep(iUniqueID, 0.0f, 0.0f, 0.0f);
 		
-		int iContentIndex = set.getVA(iContentVAID).indexOf(iStorageIndex);
-		renderStyle.clearFieldWidths();
-		Vec2f vecFieldWithAndHeight = null;
-
-		for (int iCount = 0; iCount <= iContentIndex; iCount++)
-		{
-			vecFieldWithAndHeight = renderStyle.getAndInitFieldWidthAndHeight(iCount);
-		}
-
-		float fXValue = renderStyle.getXDistanceAt(iContentIndex) + vecFieldWithAndHeight.x()
-				/ 2;// + renderStyle.getXSpacing();
-
-		float fYValue = renderStyle.getYCenter() + vecFieldWithAndHeight.y()
-				* set.getVA(iContentVAID).size() / 2;
-
-		if (bRenderHorizontally)
-		{
-			elementRep = new SelectedElementRep(iUniqueID, fXValue + fAnimationTranslation,
-					fYValue, 0);
-
-		}
-		else
-		{
-			Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
-			Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
-			vecPoint.setY(vecPoint.y() + vecTranslation.y());
-			elementRep = new SelectedElementRep(iUniqueID, vecPoint.x(), vecPoint.y()
-					- fAnimationTranslation, 0);
-
-		}
+//		int iContentIndex = set.getVA(iContentVAID).indexOf(iStorageIndex);
+//		renderStyle.clearFieldWidths();
+//		Vec2f vecFieldWithAndHeight = null;
+//
+//		for (int iCount = 0; iCount <= iContentIndex; iCount++)
+//		{
+//			vecFieldWithAndHeight = renderStyle.getAndInitFieldWidthAndHeight(iCount);
+//		}
+//
+//		float fXValue = renderStyle.getXDistanceAt(iContentIndex) + vecFieldWithAndHeight.x()
+//				/ 2;// + renderStyle.getXSpacing();
+//
+//		float fYValue = renderStyle.getYCenter() + vecFieldWithAndHeight.y()
+//				* set.getVA(iContentVAID).size() / 2;
+//
+//		if (bRenderHorizontally)
+//		{
+//			elementRep = new SelectedElementRep(iUniqueID, fXValue + fAnimationTranslation,
+//					fYValue, 0);
+//
+//		}
+//		else
+//		{
+//			Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
+//			Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
+//			vecPoint.setY(vecPoint.y() + vecTranslation.y());
+//			elementRep = new SelectedElementRep(iUniqueID, vecPoint.x(), vecPoint.y()
+//					- fAnimationTranslation, 0);
+//
+//		}
 		return elementRep;
 	}
 
@@ -633,5 +639,14 @@ public class HeatMap
 		}
 
 		fAnimationTranslation += fDelta;
+	}
+
+
+
+	@Override
+	public void toggleRenderContext()
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

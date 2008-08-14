@@ -34,14 +34,14 @@ public class HeatMapRenderStyle
 
 	private HashMap<Integer, Float> hashLevelToWidth;
 
-	private GenericSelectionManager verticalSelectionManager;
+	private GenericSelectionManager contentSelectionManager;
 
 	private int iContentSelection;
 	
 	private ISet set;
 
 	public HeatMapRenderStyle(final IViewFrustum viewFrustum,
-			final GenericSelectionManager verticalSelectionManager,
+			final GenericSelectionManager contentSelectionManager,
 			ISet set, int iContentSelection, int iNumElements,
 			boolean bRenderVertical)
 	{
@@ -50,7 +50,7 @@ public class HeatMapRenderStyle
 
 		fNormalFieldWidth = fSelectedFieldWidth / 4;
 
-		this.verticalSelectionManager = verticalSelectionManager;
+		this.contentSelectionManager = contentSelectionManager;
 		this.iContentSelection = iContentSelection;
 		this.set = set;
 		fAlFieldWidths = new ArrayList<Float>();
@@ -90,9 +90,9 @@ public class HeatMapRenderStyle
 				continue;
 			else
 			{
-				if (verticalSelectionManager.checkStatus(ESelectionType.SELECTION,
+				if (contentSelectionManager.checkStatus(ESelectionType.SELECTION,
 						set.getVA(iContentSelection).get(iContentSelectionIndex + iCount))
-						|| verticalSelectionManager.checkStatus(
+						|| contentSelectionManager.checkStatus(
 								ESelectionType.MOUSE_OVER, set.getVA(iContentSelection)
 										.get(iContentSelectionIndex + iCount)))
 				{
@@ -120,7 +120,6 @@ public class HeatMapRenderStyle
 
 	private float calcHeightFromWidth(float fWidth)
 	{
-
 		return 0.7f * fWidth;
 	}
 

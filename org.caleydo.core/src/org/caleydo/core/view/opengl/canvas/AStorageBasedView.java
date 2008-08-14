@@ -24,7 +24,8 @@ import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
-import org.caleydo.core.view.opengl.canvas.parcoords.EStorageBasedVAType;
+import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
+import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
@@ -40,17 +41,17 @@ public abstract class AStorageBasedView
 
 	protected ISet set;
 
-	/**
-	 * Specify which type of selection is currently active for the content in
-	 * the storages
-	 */
-	protected EStorageBasedVAType eWhichContentSelection = EStorageBasedVAType.COMPLETE_SELECTION;
-
-	/**
-	 * Specify which type of selection is currently active for the storages in
-	 * the set
-	 */
-	protected EStorageBasedVAType eWhichStorageSelection = EStorageBasedVAType.STORAGE_SELECTION;
+//	/**
+//	 * Specify which type of selection is currently active for the content in
+//	 * the storages
+//	 */
+//	protected EStorageBasedVAType eWhichContentSelection = EStorageBasedVAType.COMPLETE_SELECTION;
+//
+//	/**
+//	 * Specify which type of selection is currently active for the storages in
+//	 * the set
+//	 */
+//	protected EStorageBasedVAType eWhichStorageSelection = EStorageBasedVAType.STORAGE_SELECTION;
 
 	/**
 	 * map selection type to unique id for virtual array
@@ -99,15 +100,14 @@ public abstract class AStorageBasedView
 	/**
 	 * flag whether the whole data or the selection should be rendered
 	 */
-	protected boolean bRenderSelection = true;
+	protected boolean bRenderOnlyContext = true;
 
 	protected TextRenderer textRenderer;
 
 	/**
-	 * flag whether to render only the contextual data, in particular expression
-	 * data that maps to a pathway
+	 * Define what level of filtering on the data should be applied
 	 */
-	protected boolean bRenderOnlyContext = true;
+	protected EDataFilterLevel dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
 
 	/**
 	 * Constructor.
@@ -129,15 +129,25 @@ public abstract class AStorageBasedView
 	}
 
 	/**
-	 * Set wheter to render only contextual information (eg only elements that
-	 * are contained in currently loaded pathways) or all available data
+	 * Toggle whether to render the complete dataset (with regards to the
+	 * filters though) or only contextual data
 	 * 
-	 * @param bRenderOnlyContext true if only context, else false
+	 * This effectively means switching between the
+	 * {@link EStorageBasedVAType#COMPLETE_SELECTION} and
+	 * {@link EStorageBasedVAType#EXTERNAL_SELECTION}
+	 * 
 	 */
-	public void renderOnlyContext(boolean bRenderOnlyContext)
-	{
-		this.bRenderOnlyContext = bRenderOnlyContext;
-	}
+	public abstract void toggleRenderContext();
+
+	// /**
+	// * Set which level of data filtering should be applied.
+	// *
+	// * @param bRenderOnlyContext true if only context, else false
+	// */
+	// public void setDataFilterLevel(EDataFilterLevel dataFilterLevel)
+	// {
+	// this.dataFilterLevel = dataFilterLevel;
+	// }
 
 	/**
 	 * Initialize data
@@ -170,15 +180,15 @@ public abstract class AStorageBasedView
 
 		int iStorageLength = set.depth();
 		// FIXME hack
-		if (!bRenderOnlyContext)
 			iStorageLength = 200;
 
 		// initialize full list
 		alTempList = new ArrayList<Integer>(set.depth());
 		for (int iCount = 0; iCount < iStorageLength; iCount++)
 		{
-			if (bRenderOnlyContext)
+			if (dataFilterLevel != EDataFilterLevel.COMPLETE)
 			{
+				// Here we get mapping data for all values
 				// FIXME: not general, only for genes
 				int iDavidID = getDavidIDFromStorageIndex(iCount);
 
@@ -188,8 +198,10 @@ public abstract class AStorageBasedView
 							"Cannot resolve gene to DAVID ID!");
 					continue;
 				}
-				else
+				
+				if(dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT)
 				{
+					// Here all values are contained within pathways as well
 					int iGraphItemID = generalManager.getPathwayItemManager()
 							.getPathwayVertexGraphItemIdByDavidId(iDavidID);
 
@@ -532,7 +544,7 @@ public abstract class AStorageBasedView
 					{
 						iStorageIndex = item.getSelectionID();
 						iDavidID = item.getInternalID();
-						
+
 					}
 					else if (selectionDelta.getInternalIDType() == EIDType.EXPRESSION_INDEX)
 					{
@@ -543,11 +555,12 @@ public abstract class AStorageBasedView
 						throw new InvalidAttributeValueException("Can not handle data type");
 
 					if (iStorageIndex == -1)
-						throw new CaleydoRuntimeException("No internal id in selection delta", CaleydoRuntimeExceptionType.VIEW);
-				
-					
-					System.out.println("StorageBased with ID: " + iUniqueID + " David: " + iDavidID);
-					
+						throw new CaleydoRuntimeException("No internal id in selection delta",
+								CaleydoRuntimeExceptionType.VIEW);
+
+					System.out.println("StorageBased with ID: " + iUniqueID + " David: "
+							+ iDavidID);
+
 					SelectedElementRep rep = createElementRep(iStorageIndex);
 					connectedElementRepresentationManager.modifySelection(iDavidID, rep,
 							ESelectionMode.AddPick);
