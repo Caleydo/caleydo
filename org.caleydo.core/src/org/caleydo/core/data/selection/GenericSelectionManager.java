@@ -83,7 +83,8 @@ public class GenericSelectionManager
 	/**
 	 * Static Builder for GenericSelectionManager. Allows to handle various
 	 * parameter configurations. Call new
-	 * GenericSelectionManager.Builder().setOneVariabe ().setOther().build()
+	 * GenericSelectionManager.Builder(EIDType
+	 * internalIDType).setOneVariabe().setOther().build()
 	 * 
 	 * @author Alexander Lex
 	 * 
@@ -474,7 +475,6 @@ public class GenericSelectionManager
 
 						if (virtualArray != null)
 							virtualArray.add(iInternalID);
-
 					}
 				}
 				else
@@ -484,7 +484,7 @@ public class GenericSelectionManager
 						virtualArray.removeByElement(iInternalID);
 				}
 
-				selectionDelta.addSelection(iInternalID, item.getSelectionType());
+				selectionDelta.addSelection(iInternalID, item.getSelectionType(), item.getSelectionID());
 			}
 		}
 

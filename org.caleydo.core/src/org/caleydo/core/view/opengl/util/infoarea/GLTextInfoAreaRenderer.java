@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.InfoAreaRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
 import org.caleydo.core.view.opengl.miniview.AGLMiniView;
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -73,7 +73,7 @@ public class GLTextInfoAreaRenderer
 	 * @param eInputDataTypes
 	 * @param pickedPoint
 	 */
-	public void setData(int iCaleydoID, EInputDataType eInputDataTypes)
+	public void setData(int iCaleydoID, EIDType eInputDataTypes)
 	{
 
 		this.sContent = contentCreator.getStringContentForID(iCaleydoID, eInputDataTypes);

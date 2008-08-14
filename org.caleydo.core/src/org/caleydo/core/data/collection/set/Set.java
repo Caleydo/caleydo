@@ -38,6 +38,8 @@ public class Set
 	private double dMin = Double.MAX_VALUE;
 
 	private double dMax = Double.MIN_VALUE;
+	
+	private int iDepth = 0;
 
 	private ERawDataType rawDataType;
 
@@ -48,10 +50,6 @@ public class Set
 
 	HashMap<Integer, Boolean> hashIsVAEnabled;
 
-	/**
-	 * Constructor.
-	 * 
-	 */
 	public Set()
 	{
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.SET));
@@ -64,32 +62,18 @@ public class Set
 		hashIsVAEnabled = new HashMap<Integer, Boolean>();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.ISet#setSetType(org.caleydo.core.data
-	 * .collection.ESetType)
-	 */
 	@Override
 	public void setSetType(ESetType setType)
 	{
 		this.setType = setType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.ISet#getSetType()
-	 */
 	@Override
 	public ESetType getSetType()
 	{
 		return setType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.ISet#addStorage(int)
-	 */
 	@Override
 	public void addStorage(int iStorageID)
 	{
@@ -102,12 +86,6 @@ public class Set
 		addStorage(storageManager.getItem(iStorageID));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.ISet#addStorage(org.caleydo.core.data
-	 * .collection.IStorage)
-	 */
 	@Override
 	public void addStorage(IStorage storage)
 	{
@@ -119,6 +97,9 @@ public class Set
 				bIsNumerical = true;
 			else
 				bIsNumerical = false;
+
+			rawDataType = storage.getRawDataType();
+			iDepth = storage.size();
 		}
 		else
 		{
@@ -134,14 +115,18 @@ public class Set
 				throw new CaleydoRuntimeException(
 						"All storages in a set must be of the same basic type (nunmerical or nominal)",
 						CaleydoRuntimeExceptionType.DATAHANDLING);
+			if(rawDataType != storage.getRawDataType())
+				throw new CaleydoRuntimeException(
+						"All storages in a set must have the same raw data type",
+						CaleydoRuntimeExceptionType.DATAHANDLING);
+			if(iDepth != storage.size())
+				throw new CaleydoRuntimeException(
+						"All storages in a set must be of the same length",
+						CaleydoRuntimeExceptionType.DATAHANDLING);
 		}
 		alStorages.add(storage);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.ISet#getStorage(int)
-	 */
 	@Override
 	public IStorage get(int iIndex)
 	{
@@ -162,20 +147,12 @@ public class Set
 		return alStorages.get(iTmp);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.ISet#getSize()
-	 */
 	@Override
 	public int size()
 	{
 		return alStorages.size();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.ISet#sizeVA(int)
-	 */
 	@Override
 	public int sizeVA(int iUniqueID)
 	{
@@ -186,20 +163,12 @@ public class Set
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.ISet#depth()
-	 */
 	@Override
 	public int depth()
 	{
-		return alStorages.get(0).size();
+		return iDepth;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.ISet#normalize()
-	 */
 	@Override
 	public void normalize()
 	{
@@ -210,10 +179,6 @@ public class Set
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.collection.ISet#normalizeGlobally()
-	 */
 	@Override
 	public void normalizeGlobally()
 	{
@@ -245,11 +210,6 @@ public class Set
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.collection.ICollection#setLabel(java.lang.String)
-	 */
 	@Override
 	public void setLabel(String sLabel)
 	{
@@ -317,29 +277,15 @@ public class Set
 	public int createStorageVA()
 	{
 		VirtualArray virtualArray = new VirtualArray(depth());
-		int iUniqueID = virtualArray.getID();
-		hashStorageVAs.put(iUniqueID, virtualArray);
+		return doCreateStorageVA(virtualArray);
 
-		for (IStorage storage : alStorages)
-		{
-			storage.setVirtualArray(iUniqueID, hashStorageVAs.get(iUniqueID));
-			storage.enableVirtualArray(iUniqueID);
-		}
-		return iUniqueID;
 	}
 
 	@Override
 	public int createStorageVA(ArrayList<Integer> iAlSelections)
 	{
 		IVirtualArray virtualArray = new VirtualArray(depth(), iAlSelections);
-		int iUniqueID = virtualArray.getID();
-		hashStorageVAs.put(iUniqueID, virtualArray);
-		hashIsVAEnabled.put(iUniqueID, false);
-		for (IStorage storage : alStorages)
-		{
-			storage.setVirtualArray(iUniqueID, hashStorageVAs.get(iUniqueID));
-		}
-		return iUniqueID;
+		return doCreateStorageVA(virtualArray);
 	}
 
 	@Override
@@ -384,6 +330,7 @@ public class Set
 		}
 	}
 
+	@Override
 	public void disableVirtualArray(int iUniqueID)
 	{
 		if (hashStorageVAs.get(iUniqueID) != null && hashSetVAs.get(iUniqueID) != null)
@@ -450,5 +397,17 @@ public class Set
 					"No minimum or maximum can be calculated " + "on nominal data");
 
 		}
+	}
+
+	private int doCreateStorageVA(IVirtualArray virtualArray)
+	{
+		int iUniqueID = virtualArray.getID();
+		hashStorageVAs.put(iUniqueID, virtualArray);
+		hashIsVAEnabled.put(iUniqueID, false);
+		for (IStorage storage : alStorages)
+		{
+			storage.setVirtualArray(iUniqueID, hashStorageVAs.get(iUniqueID));
+		}
+		return iUniqueID;
 	}
 }

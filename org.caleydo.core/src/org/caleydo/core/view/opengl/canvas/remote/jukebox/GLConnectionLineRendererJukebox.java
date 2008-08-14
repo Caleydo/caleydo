@@ -48,7 +48,7 @@ public class GLConnectionLineRendererJukebox
 		matSrc.makeIdent();
 		matDest.makeIdent();
 
-		Iterator<Integer> iterSelectedElementID = selectionManager.getAllSelectedElements()
+		Iterator<Integer> iterSelectedElementID = connectedElementRepManager.getAllSelectedElements()
 				.iterator();
 
 		ArrayList<ArrayList<Vec3f>> alPointLists = null;// 
@@ -57,7 +57,7 @@ public class GLConnectionLineRendererJukebox
 		{
 			int iSelectedElementID = iterSelectedElementID.next();
 
-			ArrayList<SelectedElementRep> alSelectedElementRep = selectionManager
+			ArrayList<SelectedElementRep> alSelectedElementRep = connectedElementRepManager
 					.getSelectedElementRepsByElementID(iSelectedElementID);
 
 			for (int iStackPositionIndex = 0; iStackPositionIndex < stackLayer.getCapacity(); iStackPositionIndex++)

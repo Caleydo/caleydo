@@ -1,7 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.parcoords;
 
 /**
- * Enum for different selection Types.
+ * Enum for VA selection.
  * 
  * @author Alexander Lex
  */

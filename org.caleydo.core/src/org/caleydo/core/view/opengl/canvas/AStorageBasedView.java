@@ -3,15 +3,18 @@ package org.caleydo.core.view.opengl.canvas;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.EnumMap;
-import java.util.Random;
 import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
 import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.SelectionItem;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
@@ -19,6 +22,8 @@ import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.picking.ESelectionMode;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.view.opengl.canvas.parcoords.EStorageBasedVAType;
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -35,21 +40,22 @@ public abstract class AStorageBasedView
 
 	protected ISet set;
 
-	// protected ArrayList<IStorage> alDataStorages;
-
-	// Specify which type of selection is currently active
+	/**
+	 * Specify which type of selection is currently active for the content in
+	 * the storages
+	 */
 	protected EStorageBasedVAType eWhichContentSelection = EStorageBasedVAType.COMPLETE_SELECTION;
 
+	/**
+	 * Specify which type of selection is currently active for the storages in
+	 * the set
+	 */
 	protected EStorageBasedVAType eWhichStorageSelection = EStorageBasedVAType.STORAGE_SELECTION;
 
-	// map selection type to unique id for virtual array
+	/**
+	 * map selection type to unique id for virtual array
+	 */
 	protected EnumMap<EStorageBasedVAType, Integer> mapSelections;
-
-	// the currently active selection arrays for content and storage
-	// (references to mapSelection entries)
-	// protected ArrayList<Integer> alContentSelection;
-	//
-	// protected ArrayList<Integer> alStorageSelection;
 
 	/**
 	 * The id of the virtual array that manages the contents (the indices) in
@@ -64,11 +70,9 @@ public abstract class AStorageBasedView
 	protected int iStorageVAID = 0;
 
 	protected boolean bIsDisplayListDirtyLocal = true;
-
 	protected boolean bIsDisplayListDirtyRemote = true;
 
 	protected int iGLDisplayListIndexLocal;
-
 	protected int iGLDisplayListIndexRemote;
 
 	protected int iGLDisplayListToCall = 0;
@@ -77,25 +81,32 @@ public abstract class AStorageBasedView
 
 	protected ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
-	// internal management of polyline selections, use
-	// EPolylineSelectionType for types
 	/**
-	 * 
+	 * This manager is responsible for the content in the storages (the indices)
 	 */
 	protected GenericSelectionManager contentSelectionManager;
 
-	// internal management of axis selections, use
-	// EAxisSelectionTypes for types
+	/**
+	 * This manager is responsible for the management of the storages in the set
+	 */
 	protected GenericSelectionManager storageSelectionManager;
 
-	// flag whether one array should be a polyline or an axis
+	/**
+	 * flag whether one array should be a polyline or an axis
+	 */
 	protected boolean bRenderStorageHorizontally = false;
 
-	// flag whether the whole data or the selection should be rendered
+	/**
+	 * flag whether the whole data or the selection should be rendered
+	 */
 	protected boolean bRenderSelection = true;
 
 	protected TextRenderer textRenderer;
 
+	/**
+	 * flag whether to render only the contextual data, in particular expression
+	 * data that maps to a pathway
+	 */
 	protected boolean bRenderOnlyContext = true;
 
 	/**
@@ -106,7 +117,6 @@ public abstract class AStorageBasedView
 	{
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 
-		// alDataStorages = new ArrayList<IStorage>();
 		mapSelections = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
 
 		genomeIDManager = generalManager.getGenomeIdManager();
@@ -115,22 +125,28 @@ public abstract class AStorageBasedView
 				.getConnectedElementRepresentationManager();
 
 		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 16), false);
-		// alContentSelection = new ArrayList<Integer>();
-		// alStorageSelection = new ArrayList<Integer>();
+
 	}
 
+	/**
+	 * Set wheter to render only contextual information (eg only elements that
+	 * are contained in currently loaded pathways) or all available data
+	 * 
+	 * @param bRenderOnlyContext true if only context, else false
+	 */
 	public void renderOnlyContext(boolean bRenderOnlyContext)
 	{
 		this.bRenderOnlyContext = bRenderOnlyContext;
 	}
 
+	/**
+	 * Initialize data
+	 */
 	public void initData()
 	{
 		if (alSetData == null)
-			return;
-		//
-		// if (alSelection == null)
-		// return;
+			throw new CaleydoRuntimeException("Set in View is null",
+					CaleydoRuntimeExceptionType.VIEW);
 
 		if (!mapSelections.isEmpty())
 		{
@@ -141,38 +157,14 @@ public abstract class AStorageBasedView
 			mapSelections.clear();
 		}
 
-		set = alSetData.get(0);
-		// if (alDataStorages == null)
-		// return;
+		for (ISet currentSet : alSetData)
+		{
+			if (currentSet.getSetType() == ESetType.GENE_EXPRESSION_DATA)
+				set = currentSet;
+		}
 
-		// TODO check what this does after new datastructure
-		// alDataStorages.clear();
-
-		// alContentSelection.clear();
-		// alStorageSelection.clear();
-
-		// Extract data
-		// for (ISet tmpSet : alSetData)
-		// {
-		// for (IStorage tmpStorage : tmpSet)
-		// {
-		// alDataStorages.add(tmpStorage);
-		// }
-		// }
-
-		// Initialize external selection
-		// ArrayList<Integer> alTempList =
-		// alSelection.get(0).getSelectionIdArray();
-		// if (alTempList == null)
-		// {
 		ArrayList<Integer> alTempList = new ArrayList<Integer>();
-		// }
 
-		// TODO replace this with an id from an id manager, wont work with more
-		// than one instance
-		Random rand = new Random();
-		// TODO
-		// set.removeVirtualArray(rand);
 		int iVAID = set.createStorageVA(alTempList);
 		mapSelections.put(EStorageBasedVAType.EXTERNAL_SELECTION, iVAID);
 
@@ -224,32 +216,33 @@ public abstract class AStorageBasedView
 			alTempList.add(iCount);
 		}
 
-		// TODO
-		// set.removeVirtualArray(3);
-
 		iVAID = set.createSetVA(alTempList);
 		mapSelections.put(EStorageBasedVAType.STORAGE_SELECTION, iVAID);
-		// initLists();
 	}
 
-	protected ArrayList<Integer> convertDavidIdToExpressionIndices(
-			ArrayList<Integer> iAlSelection)
-	{
+	/**
+	 * View specific data initialization
+	 */
+	protected abstract void initLists();
 
-		ArrayList<Integer> iAlSelectionStorageIndices = new ArrayList<Integer>();
-		for (int iCount = 0; iCount < iAlSelection.size(); iCount++)
-		{
-			int iTmp = generalManager.getGenomeIdManager().getIdIntFromIntByMapping(
-					iAlSelection.get(iCount), EMappingType.DAVID_2_EXPRESSION_STORAGE_ID);
-
-			// if (iTmp == -1)
-			// continue;
-
-			iAlSelectionStorageIndices.add(iTmp);
-		}
-
-		return iAlSelectionStorageIndices;
-	}
+	// protected ArrayList<Integer> convertDavidIdToExpressionIndices(
+	// ArrayList<Integer> iAlSelection)
+	// {
+	//
+	// ArrayList<Integer> iAlSelectionStorageIndices = new ArrayList<Integer>();
+	// for (int iCount = 0; iCount < iAlSelection.size(); iCount++)
+	// {
+	// int iTmp = generalManager.getGenomeIdManager().getIdIntFromIntByMapping(
+	// iAlSelection.get(iCount), EMappingType.DAVID_2_EXPRESSION_STORAGE_ID);
+	//
+	// // if (iTmp == -1)
+	// // continue;
+	//
+	// iAlSelectionStorageIndices.add(iTmp);
+	// }
+	//
+	// return iAlSelectionStorageIndices;
+	// }
 
 	// protected void cleanSelection(ArrayList<Integer> iAlSelection,
 	// ArrayList<Integer> iAlGroup)
@@ -291,10 +284,8 @@ public abstract class AStorageBasedView
 	 * @throws InvalidAttributeValueException when the selectionDelta does not
 	 *             contain a valid type for this view
 	 */
-	protected abstract SelectedElementRep createElementRep(ISelectionDelta selectionDelta)
+	protected abstract SelectedElementRep createElementRep(int iStorageIndex)
 			throws InvalidAttributeValueException;
-
-	protected abstract void initLists();
 
 	protected int getDavidIDFromStorageIndex(int index)
 	{
@@ -396,12 +387,7 @@ public abstract class AStorageBasedView
 		bIsDisplayListDirtyRemote = true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#updateReceiver(java
-	 * .lang.Object)
-	 */
+	@Override
 	public void handleUpdate(IUniqueObject eventTrigger)
 	{
 
@@ -482,13 +468,13 @@ public abstract class AStorageBasedView
 	// }
 
 	// protected ArrayList<Integer> prepareSelection(GenericSelectionManager
-	// selectionManager,
+	// connectedElementRepManager,
 	// EViewInternalSelectionType selectionType)
 	// {
 	//
 	// Set<Integer> selectedSet;
 	// ArrayList<Integer> iAlOldSelection;
-	// selectedSet = selectionManager.getElements(selectionType);
+	// selectedSet = connectedElementRepManager.getElements(selectionType);
 	// iAlOldSelection = new ArrayList<Integer>();
 	// for (Integer iCurrent : selectedSet)
 	// {
@@ -533,12 +519,40 @@ public abstract class AStorageBasedView
 	{
 		try
 		{
+			int iStorageIndex = -1;
+			int iDavidID = -1;
 			if (selectionDelta.size() > 0)
 			{
-				SelectedElementRep rep = createElementRep(selectionDelta);
-				connectedElementRepresentationManager.modifySelection(selectionDelta
-						.getSelectionData().get(0).getSelectionID(), rep,
-						ESelectionMode.ReplacePick);
+				for (SelectionItem item : selectionDelta)
+				{
+					if (item.getSelectionType() != ESelectionType.MOUSE_OVER)
+						continue;
+
+					if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX)
+					{
+						iStorageIndex = item.getSelectionID();
+						iDavidID = item.getInternalID();
+						
+					}
+					else if (selectionDelta.getInternalIDType() == EIDType.EXPRESSION_INDEX)
+					{
+						iStorageIndex = item.getInternalID();
+						iDavidID = item.getSelectionID();
+					}
+					else
+						throw new InvalidAttributeValueException("Can not handle data type");
+
+					if (iStorageIndex == -1)
+						throw new CaleydoRuntimeException("No internal id in selection delta", CaleydoRuntimeExceptionType.VIEW);
+				
+					
+					System.out.println("StorageBased with ID: " + iUniqueID + " David: " + iDavidID);
+					
+					SelectedElementRep rep = createElementRep(iStorageIndex);
+					connectedElementRepresentationManager.modifySelection(iDavidID, rep,
+							ESelectionMode.AddPick);
+				}
+
 			}
 		}
 		catch (InvalidAttributeValueException e)

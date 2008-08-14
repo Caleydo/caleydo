@@ -13,18 +13,14 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
-import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.HeatMapRenderStyle;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
-import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
 import org.caleydo.core.view.opengl.canvas.parcoords.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
@@ -45,9 +41,9 @@ public class HeatMap
 
 	private ColorMapping colorMapper;
 
-	private EInputDataType eFieldDataType = EInputDataType.GENE;
+	private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
 
-	private boolean bRenderHorizontally = true;
+	private boolean bRenderHorizontally = false;
 
 	private Vec4f vecRotation = new Vec4f(-90, 0, 0, 1);
 
@@ -91,8 +87,9 @@ public class HeatMap
 		colorMapper = new ColorMapping(0, 1);
 	}
 
+
 	/*
-	 * (non-Javadoc)
+	 * (non-Javadoc) asdf <
 	 * @see
 	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl
 	 * .GL)
@@ -104,7 +101,7 @@ public class HeatMap
 		initData();
 		initLists();
 
-		renderStyle = new HeatMapRenderStyle(viewFrustum, storageSelectionManager, set,
+		renderStyle = new HeatMapRenderStyle(viewFrustum, contentSelectionManager, set,
 				iContentVAID, set.getVA(iStorageVAID).size(), true);
 
 		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
@@ -115,7 +112,7 @@ public class HeatMap
 	 * (non-Javadoc)
 	 * @see
 	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media
-	 * .opengl.GL)
+	 * .opengl.GL)>
 	 */
 	public void initLocal(GL gl)
 	{
@@ -353,7 +350,6 @@ public class HeatMap
 			}
 		}
 
-		ArrayList<Integer> iAlOldSelection;
 		switch (pickingType)
 		{
 			case HEAT_MAP_FIELD_SELECTION:
@@ -369,7 +365,7 @@ public class HeatMap
 						storageSelectionManager.addToType(ESelectionType.SELECTION,
 								iExternalID);
 
-						if (eFieldDataType == EInputDataType.GENE)
+						if (eFieldDataType == EIDType.EXPRESSION_INDEX)
 						{
 							triggerUpdate(storageSelectionManager.getDelta());
 							// propagateGeneSelection(iExternalID, 2,
@@ -389,7 +385,7 @@ public class HeatMap
 						storageSelectionManager.addToType(ESelectionType.MOUSE_OVER,
 								iExternalID);
 
-						if (eFieldDataType == EInputDataType.GENE)
+						if (eFieldDataType == EIDType.EXPRESSION_INDEX)
 						{
 							triggerUpdate(storageSelectionManager.getDelta());
 							// propagateGeneSelection(iExternalID, 1,
@@ -559,58 +555,42 @@ public class HeatMap
 	}
 
 	@Override
-	protected SelectedElementRep createElementRep(ISelectionDelta selectionDelta)
+	protected SelectedElementRep createElementRep(int iStorageIndex)
 	throws InvalidAttributeValueException
 	{
-		// TODO only for one element atm
-		// TODO copy of PCs...
+				
+		//SelectedElementRep elementRep = new SelectedElementRep(iUniqueID, 0.0f, 0.0f, 0.0f);
+		
+		int iContentIndex = set.getVA(iContentVAID).indexOf(iStorageIndex);
+		renderStyle.clearFieldWidths();
+		Vec2f vecFieldWithAndHeight = null;
 
-		int iStorageIndex;
-		if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX)
-			iStorageIndex = selectionDelta.getSelectionData().get(0).getSelectionID();
-		else if (selectionDelta.getInternalIDType() == EIDType.EXPRESSION_INDEX)
-			iStorageIndex = selectionDelta.getSelectionData().get(0).getInternalID();
+		for (int iCount = 0; iCount <= iContentIndex; iCount++)
+		{
+			vecFieldWithAndHeight = renderStyle.getAndInitFieldWidthAndHeight(iCount);
+		}
+
+		float fXValue = renderStyle.getXDistanceAt(iContentIndex) + vecFieldWithAndHeight.x()
+				/ 2;// + renderStyle.getXSpacing();
+
+		float fYValue = renderStyle.getYCenter() + vecFieldWithAndHeight.y()
+				* set.getVA(iContentVAID).size() / 2;
+
+		if (bRenderHorizontally)
+		{
+			elementRep = new SelectedElementRep(iUniqueID, fXValue + fAnimationTranslation,
+					fYValue, 0);
+
+		}
 		else
 		{
-			throw new InvalidAttributeValueException("Can not handle data type");
+			Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
+			Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
+			vecPoint.setY(vecPoint.y() + vecTranslation.y());
+			elementRep = new SelectedElementRep(iUniqueID, vecPoint.x(), vecPoint.y()
+					- fAnimationTranslation, 0);
+
 		}
-		
-		if (iStorageIndex == -1)
-			throw new CaleydoRuntimeException("No internal id in selection delta", CaleydoRuntimeExceptionType.VIEW);
-		
-		SelectedElementRep elementRep = new SelectedElementRep(iUniqueID, 0.0f, 0.0f, 0.0f);
-		
-//		int iContentIndex = set.getVA(iContentVAID).indexOf(iStorageIndex);
-//		renderStyle.clearFieldWidths();
-//		Vec2f vecFieldWithAndHeight = null;
-//
-//		for (int iCount = 0; iCount <= iContentIndex; iCount++)
-//		{
-//			vecFieldWithAndHeight = renderStyle.getAndInitFieldWidthAndHeight(iCount);
-//		}
-//
-//		// not good if vec is null
-//		float fXValue = renderStyle.getXDistanceAt(iContentIndex) + vecFieldWithAndHeight.x()
-//				/ 2;// + renderStyle.getXSpacing();
-//
-//		float fYValue = renderStyle.getYCenter() + vecFieldWithAndHeight.y()
-//				* set.getVA(iContentVAID).size() / 2;
-//
-//		if (bRenderHorizontally)
-//		{
-//			elementRep = new SelectedElementRep(iUniqueID, fXValue + fAnimationTranslation,
-//					fYValue, 0);
-//
-//		}
-//		else
-//		{
-//			Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
-//			Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
-//			vecPoint.setY(vecPoint.y() + vecTranslation.y());
-//			elementRep = new SelectedElementRep(iUniqueID, vecPoint.x(), vecPoint.y()
-//					- fAnimationTranslation, 0);
-//
-//		}
 		return elementRep;
 	}
 

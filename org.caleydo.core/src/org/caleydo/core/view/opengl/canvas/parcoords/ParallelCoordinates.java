@@ -20,6 +20,7 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.SelectionItem;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
@@ -60,9 +61,9 @@ public class ParallelCoordinates
 
 	// Specify the current input data type for the axis and polylines
 	// Is used for meta information, such as captions
-	private EInputDataType eAxisDataType = EInputDataType.EXPERIMENT;
+	private EIDType eAxisDataType = EIDType.EXPRESSION_EXPERIMENT;
 
-	private EInputDataType ePolylineDataType = EInputDataType.GENE;
+	private EIDType ePolylineDataType = EIDType.EXPRESSION_INDEX;
 
 	private boolean bIsDraggingActive = false;
 
@@ -338,10 +339,9 @@ public class ParallelCoordinates
 	 */
 	public void toggleAxisPolylineSwap()
 	{
-
 		bRenderStorageHorizontally = !bRenderStorageHorizontally;
 		// bRenderInfoArea = false;
-		EInputDataType eTempType = eAxisDataType;
+		EIDType eTempType = eAxisDataType;
 		eAxisDataType = ePolylineDataType;
 		ePolylineDataType = eTempType;
 		fXTranslation = 0;
@@ -711,12 +711,12 @@ public class ParallelCoordinates
 			switch (eAxisDataType)
 			{
 				// TODO not very generic here
-				case EXPERIMENT:
+				case EXPRESSION_EXPERIMENT:
 					// Labels
 					// sAxisLabel = alDataStorages.get(iCount).getLabel();
 					sAxisLabel = set.getStorageFromVA(iStorageVAID, iCount).getLabel();
 					break;
-				case GENE:
+				case EXPRESSION_INDEX:
 					sAxisLabel = getRefSeqFromStorageIndex(set.getVA(iContentVAID).get(iCount));
 					break;
 				default:
@@ -1162,7 +1162,7 @@ public class ParallelCoordinates
 						polylineSelectionManager.addToType(ESelectionType.SELECTION,
 								iExternalID);
 
-						if (ePolylineDataType == EInputDataType.GENE
+						if (ePolylineDataType == EIDType.EXPRESSION_INDEX
 								&& !bAngularBrushingSelectPolyline)
 						{
 							triggerUpdate(polylineSelectionManager.getDelta());
@@ -1194,7 +1194,7 @@ public class ParallelCoordinates
 						polylineSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
 						polylineSelectionManager.addToType(ESelectionType.MOUSE_OVER,
 								iExternalID);
-						if (ePolylineDataType == EInputDataType.GENE)
+						if (ePolylineDataType == EIDType.EXPRESSION_INDEX)
 						{
 							triggerUpdate(polylineSelectionManager.getDelta());
 						}
@@ -1220,7 +1220,7 @@ public class ParallelCoordinates
 						axisSelectionManager.clearSelection(ESelectionType.SELECTION);
 						axisSelectionManager.addToType(ESelectionType.SELECTION, iExternalID);
 
-						if (eAxisDataType == EInputDataType.GENE)
+						if (eAxisDataType == EIDType.EXPRESSION_INDEX)
 						{
 							// propagateGeneSelection(iExternalID, 2,
 							// iAlOldSelection);
@@ -1239,7 +1239,7 @@ public class ParallelCoordinates
 						axisSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
 						axisSelectionManager.addToType(ESelectionType.MOUSE_OVER, iExternalID);
 
-						if (eAxisDataType == EInputDataType.GENE)
+						if (eAxisDataType == EIDType.EXPRESSION_INDEX)
 						{
 							triggerUpdate(axisSelectionManager.getDelta());
 							// propagateGeneSelection(iExternalID, 1,
@@ -1456,23 +1456,16 @@ public class ParallelCoordinates
 	}
 
 	@Override
-	protected SelectedElementRep createElementRep(ISelectionDelta selectionDelta)
+	protected SelectedElementRep createElementRep(int iStorageIndex)
 			throws InvalidAttributeValueException
 	{
 		// TODO only for one element atm
+	
 
-		int iStorageIndex;
-		if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX)
-			iStorageIndex = selectionDelta.getSelectionData().get(0).getSelectionID();
-		else if (selectionDelta.getInternalIDType() == EIDType.EXPRESSION_INDEX)
-			iStorageIndex = selectionDelta.getSelectionData().get(0).getInternalID();
-		else
-		{
-			throw new InvalidAttributeValueException("Can not handle data type");
-		}
+	
 
-		float fXValue;
-		float fYValue;
+		float fXValue = 0;
+		float fYValue = 0;
 
 		if (bRenderStorageHorizontally)
 		{

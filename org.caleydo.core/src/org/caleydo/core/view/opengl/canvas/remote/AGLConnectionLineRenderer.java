@@ -27,7 +27,7 @@ public abstract class AGLConnectionLineRenderer
 
 	protected RemoteHierarchyLayer stackLayer;
 
-	protected ConnectedElementRepresentationManager selectionManager;
+	protected ConnectedElementRepresentationManager connectedElementRepManager;
 
 	protected boolean bEnableRendering = true;
 
@@ -44,7 +44,7 @@ public abstract class AGLConnectionLineRenderer
 		this.underInteractionLayer = underInteractionLayer;
 		this.stackLayer = stackLayer;
 
-		selectionManager = generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
+		connectedElementRepManager = generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
 
 		hashViewToPointLists = new HashMap<Integer, ArrayList<ArrayList<Vec3f>>>();
 	}
@@ -58,7 +58,7 @@ public abstract class AGLConnectionLineRenderer
 	public void render(final GL gl)
 	{
 
-		if ((selectionManager.getAllSelectedElements().size() == 0)
+		if ((connectedElementRepManager.getAllSelectedElements().size() == 0)
 				|| (bEnableRendering == false))
 			return;
 

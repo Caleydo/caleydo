@@ -125,7 +125,7 @@ public class GeneralManager
 		storageManager = new StorageManager();
 		// virtualArrayManager = new VirtualArrayManager(this, 4);
 		setManager = new SetManager();
-//		selectionManager = new SelectionManager();
+//		connectedElementRepManager = new SelectionManager();
 		mementoManager = new MementoManager();
 		commandManager = new CommandManager();
 		viewGLCanvasManager = new ViewGLCanvasManager();
@@ -238,7 +238,7 @@ public class GeneralManager
 	// }
 //		public ISelectionManager getSelectionManager()
 //		{
-//			return selectionManager;
+//			return connectedElementRepManager;
 //		}
 
 	/*

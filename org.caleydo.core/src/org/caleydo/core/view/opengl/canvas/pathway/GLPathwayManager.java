@@ -123,7 +123,7 @@ public class GLPathwayManager
 			final int iPathwayId)
 	{
 
-		generalManager.getLogger().log(Level.INFO,
+		generalManager.getLogger().log(Level.FINE,
 				"Build display list for pathway " + iPathwayId);
 
 		if (iPathwayId == -1)

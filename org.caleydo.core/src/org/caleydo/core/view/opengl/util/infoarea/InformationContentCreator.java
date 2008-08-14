@@ -2,11 +2,11 @@ package org.caleydo.core.view.opengl.util.infoarea;
 
 import java.util.ArrayList;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.util.mapping.GeneAnnotationMapper;
-import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
 
 /**
  * Creates the content for eg the InfoArea Just pass it an ID and an
@@ -51,13 +51,13 @@ public class InformationContentCreator
 	 * @return
 	 */
 	ArrayList<String> getStringContentForID(final int iUniqueID,
-			final EInputDataType eInputDataTypes)
+			final EIDType eInputDataTypes)
 	{
 
 		sContent.clear();
 		switch (eInputDataTypes)
 		{
-			case GENE:
+			case EXPRESSION_INDEX:
 
 				String sRefSeq = "unknown";
 				String sGeneName = "unknown";
@@ -102,7 +102,7 @@ public class InformationContentCreator
 				sContent.add("PW: " + sPathwayTitle);
 				break;
 
-			case EXPERIMENT:
+			case EXPRESSION_EXPERIMENT:
 
 				sContent.add("Type: Experiment");
 				break;

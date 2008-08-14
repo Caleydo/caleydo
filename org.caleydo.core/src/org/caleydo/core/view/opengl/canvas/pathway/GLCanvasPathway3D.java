@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.graph.ICaleydoGraphItem;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
@@ -22,7 +21,6 @@ import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
-import org.caleydo.core.manager.gui.SWTGUIManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.ESelectionMode;
@@ -30,9 +28,9 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.specialized.genome.pathway.PathwayItemManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
@@ -105,8 +103,8 @@ public class GLCanvasPathway3D
 		// hashPathwayContainingSelectedVertex2VertexCount = new
 		// HashMap<Integer, Integer>();
 
-		connectedElementRepresentationManager = 
-			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
+		connectedElementRepresentationManager = generalManager.getViewGLCanvasManager()
+				.getConnectedElementRepresentationManager();
 
 		vecScaling = new Vec3f(1, 1, 1);
 		vecTranslation = new Vec3f(0, 0, 0);
@@ -119,7 +117,7 @@ public class GLCanvasPathway3D
 			alSelectionType.add(selectionType);
 		}
 
-		selectionManager =  new GenericSelectionManager.Builder(EIDType.PATHWAY_VERTEX).build();
+		selectionManager = new GenericSelectionManager.Builder(EIDType.PATHWAY_VERTEX).build();
 	}
 
 	public void setPathwayID(final int iPathwayID)
@@ -372,27 +370,61 @@ public class GLCanvasPathway3D
 		gLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see
+	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#updateReceiver(java
+	 * .lang.Object)
+	 */
+	public void handleUpdate(IUniqueObject eventTrigger)
+	{
+
+	}
 
 	@Override
 	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
 	{
-		generalManager.getLogger().log(Level.INFO,
+		generalManager.getLogger().log(Level.FINE,
 				"Update called by " + eventTrigger.getClass().getSimpleName());
 
-		// TODO: Alex doesn't know if we need this
-		selectionManager.clearSelection(ESelectionType.MOUSE_OVER);
-
-		// Rebuild display list to remove old selection highlighting
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
 
 		selectedVertex = null;
 
-//		int iPathwayHeight = ((PathwayGraph) generalManager.getPathwayManager().getItem(
-//					iPathwayID)).getHeight();
+		int iPathwayHeight = ((PathwayGraph) generalManager.getPathwayManager().getItem(
+					iPathwayID)).getHeight();
 
-		selectionManager.setDelta(resolveExternalSelectionDelta(selectionDelta));
+		
+		ISelectionDelta internalDelta = resolveExternalSelectionDelta(selectionDelta);
+		selectionManager.setDelta(internalDelta);
+		
 
+		for (SelectionItem item : internalDelta)
+		{	
+			if (item.getSelectionType() != ESelectionType.MOUSE_OVER)
+				continue;
+			
+			PathwayVertexGraphItemRep vertexRep = (PathwayVertexGraphItemRep)generalManager.getPathwayItemManager().getItem(item.getSelectionID());
+				
+			System.out.println("Pathway with ID: " + iUniqueID + " David: " + item.getInternalID());
+			
+
+			connectedElementRepresentationManager.modifySelection(item.getInternalID(),
+					new SelectedElementRep(iUniqueID,
+							(vertexRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X)
+									* vecScaling.x() + vecTranslation.x(),
+							((iPathwayHeight - vertexRep.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y)
+									* vecScaling.y() + vecTranslation.y(), 0),
+					ESelectionMode.AddPick);		
+		}
+		
+		
+//		connectedElementRepresentationManager.modifySelection(iUniqueID,
+//				new SelectedElementRep(iUniqueID,
+//						0, 0, 0),
+//				ESelectionMode.AddPick);		
+		
 //		// Ignore initial gene propagation
 ////		if (iAlSelectionMode.get(0) == 0)
 ////			return;
@@ -424,7 +456,7 @@ public class GLCanvasPathway3D
 //						.containsItem(tmpPathwayVertexGraphItemRep))
 //					continue;
 //
-//				selectionManager
+//				connectedElementRepManager
 //						.modifySelection(
 //								iDavidId,
 //								new SelectedElementRep(
@@ -443,72 +475,64 @@ public class GLCanvasPathway3D
 
 	private ISelectionDelta createExternalSelectionDelta(ISelectionDelta selectionDelta)
 	{
-		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.DAVID);		
+		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.DAVID);
 
 		IPathwayItemManager pathwayItemManager = generalManager.getPathwayItemManager();
 		int iDavidID = 0;
-		
+
 		for (SelectionItem item : selectionDelta)
-		{	
-			for (IGraphItem pathwayVertexGraphItem : pathwayItemManager.getItem(item.getSelectionID()).getAllItemsByProp(
-					EGraphItemProperty.ALIAS_PARENT))
+		{
+			for (IGraphItem pathwayVertexGraphItem : pathwayItemManager.getItem(
+					item.getSelectionID()).getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT))
 			{
-				iDavidID = generalManager.getPathwayItemManager().getDavidIdByPathwayVertexGraphItemId(
-						pathwayVertexGraphItem.getId());
-				
+				iDavidID = generalManager.getPathwayItemManager()
+						.getDavidIdByPathwayVertexGraphItemId(pathwayVertexGraphItem.getId());
+
 				if (iDavidID == -1)
 					continue;
-				
+
 				newSelectionDelta.addSelection(iDavidID, item.getSelectionType());
 			}
 		}
-		
+
 		return newSelectionDelta;
 
 	}
-	
-	private ISelectionDelta resolveExternalSelectionDelta(ISelectionDelta selectionDelta) 
-	{
-		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.PATHWAY_VERTEX);		
 
+	private ISelectionDelta resolveExternalSelectionDelta(ISelectionDelta selectionDelta)
+	{
+		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.PATHWAY_VERTEX, EIDType.DAVID);
+
+		
 		int iDavidID = 0;
 		int iPathwayVertexGraphItemID = 0;
-		
+
 		for (SelectionItem item : selectionDelta)
 		{
 			iDavidID = item.getSelectionID();
-			
+
 			iPathwayVertexGraphItemID = generalManager.getPathwayItemManager()
 					.getPathwayVertexGraphItemIdByDavidId(iDavidID);
-			
+
 			// Ignore David IDs that do not exist in any pathway
 			if (iPathwayVertexGraphItemID == -1)
 			{
 				continue;
-			}	
-			
+			}
+
 			// Convert DAVID ID to pathway graph item representation ID
-			for (IGraphItem tmpGraphItemRep : generalManager.getPathwayItemManager()
-					.getItem(iPathwayVertexGraphItemID)
-						.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD))
+			for (IGraphItem tmpGraphItemRep : generalManager.getPathwayItemManager().getItem(
+					iPathwayVertexGraphItemID).getAllItemsByProp(
+					EGraphItemProperty.ALIAS_CHILD))
 			{
-				newSelectionDelta.addSelection(tmpGraphItemRep.getId(), 
-						item.getSelectionType());
+				if(!pathwayManager.getItem(iPathwayID).containsItem(tmpGraphItemRep))
+					continue;
+				newSelectionDelta.addSelection(tmpGraphItemRep.getId(), item
+						.getSelectionType(), iDavidID);
 			}
 		}
-		
+
 		return newSelectionDelta;
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLCanvasUser#updateReceiver(java
-	 * .lang.Object)
-	 */
-	public void handleUpdate(IUniqueObject eventTrigger)
-	{
-
 	}
 
 	private void calculatePathwayScaling(final GL gl, final int iPathwayId)
@@ -548,7 +572,7 @@ public class GLCanvasPathway3D
 		int iImageWidth = tmpPathwayGraph.getWidth();
 		int iImageHeight = tmpPathwayGraph.getHeight();
 
-		generalManager.getLogger().log(Level.INFO,
+		generalManager.getLogger().log(Level.FINE,
 				"Pathway texture width=" + iImageWidth + " / height=" + iImageHeight);
 
 		if (iImageWidth == -1 || iImageHeight == -1)
@@ -698,7 +722,7 @@ public class GLCanvasPathway3D
 						return;
 
 					generalManager.getViewGLCanvasManager().getInfoAreaManager().setData(
-							iUniqueID, iDavidId, EInputDataType.GENE, getInfo());
+							iUniqueID, iDavidId, EIDType.DAVID, getInfo());
 
 					return;
 				}
@@ -714,9 +738,8 @@ public class GLCanvasPathway3D
 					tmpVertexGraphItem = (PathwayVertexGraphItem) tmpGraphItem;
 
 					// Add new vertex to internal selection manager
-					selectionManager.addToType(
-							ESelectionType.MOUSE_OVER, tmpVertexGraphItemRep
-									.getId());
+					selectionManager.addToType(ESelectionType.MOUSE_OVER,
+							tmpVertexGraphItemRep.getId());
 
 					loadURLInBrowser(((PathwayVertexGraphItem) selectedVertex
 							.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0))
@@ -733,7 +756,7 @@ public class GLCanvasPathway3D
 								EPickingType.PATHWAY_ELEMENT_SELECTION);
 						pickingManager.flushHits(iUniqueID,
 								EPickingType.PATHWAY_TEXTURE_SELECTION);
-						// selectionManager.clear();
+						// connectedElementRepManager.clear();
 
 						continue;
 					}
@@ -743,7 +766,7 @@ public class GLCanvasPathway3D
 					// TODO: do this just for first or think about better
 					// solution!
 					generalManager.getViewGLCanvasManager().getInfoAreaManager().setData(
-							iUniqueID, iDavidId, EInputDataType.GENE, getInfo());
+							iUniqueID, iDavidId, EIDType.DAVID, getInfo());
 
 					Iterator<IGraphItem> iterPathwayVertexGraphItemRep = tmpVertexGraphItem
 							.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
@@ -784,7 +807,7 @@ public class GLCanvasPathway3D
 				}
 
 				triggerUpdate(createExternalSelectionDelta(selectionManager.getDelta()));
-				
+
 				pickingManager.flushHits(iUniqueID, EPickingType.PATHWAY_ELEMENT_SELECTION);
 				pickingManager.flushHits(iUniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION);
 				break;
@@ -794,7 +817,7 @@ public class GLCanvasPathway3D
 	private void initialContainedGenePropagation()
 	{
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.DAVID);
-		
+
 		// TODO: Move to own method (outside this class)
 		// Store all genes in that pathway with selection group 0
 		Iterator<IGraphItem> iterPathwayVertexGraphItem = ((PathwayGraph) generalManager
@@ -852,8 +875,8 @@ public class GLCanvasPathway3D
 		sAlInfo.add(sPathwayTitle);
 
 		generalManager.getSWTGUIManager().setExternalRCPStatusLineMessage(
-				pathway.getType().getName() + " Pathway: " +sPathwayTitle);
-		
+				pathway.getType().getName() + " Pathway: " + sPathwayTitle);
+
 		return sAlInfo;
 	}
 
@@ -861,7 +884,7 @@ public class GLCanvasPathway3D
 	public void triggerUpdate()
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

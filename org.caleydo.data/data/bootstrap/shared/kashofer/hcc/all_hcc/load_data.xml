@@ -2,10 +2,8 @@
 
 <details>
 	
-	<!-- Expression data set/storage/virtual array -->
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIRTUAL_ARRAY"		cmdId="22991"	uniqueId="35201" label="Select file" attrib1="30 200 0 1"	/>	
-
-
+	<!-- Expression data set/storage/ -->
+	
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="45301" label="HCC011_K.txt, Type a HCC  normalized"  attrib1="NUMERICAL" attrib2="test data	from file" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="46301" label="HCC013_K.txt, Type a HCC  normalized"  attrib1="NUMERICAL" attrib2="test data	from file" />
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="47301" label="HCC015_WH.txt, Type a HCC  normalized"  attrib1="NUMERICAL" attrib2="test data	from file" />
@@ -22,11 +20,13 @@
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="58301" label="HCC0119.txt, Type a HCC  normalized"  attrib1="NUMERICAL" attrib2="test data	from file" />
 
 
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="85101" label=""  attrib1="35201" attrib2="45301 46301 47301 48301 49301 50301 51301 52301 53301 54301 55301 56301 57301 58301" attrib3="GENE_EXPRESSION_DATA" />
-	
 	<!-- Data file loading -->      
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/kashofer/all_hcc_clip_greater_10.csv"	
 			attrib1="FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;ABORT"	attrib2="45301 46301 47301 48301 49301 50301 51301 52301 53301 54301 55301 56301 57301 58301" attrib3="1 -1" />			
+
+
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="85101" label=""  attrib1="35201" attrib2="45301 46301 47301 48301 49301 50301 51301 52301 53301 54301 55301 56301 57301 58301" attrib3="GENE_EXPRESSION_DATA" />
+	
 			
 	<!-- Data filtering (preprocessing) -->																
 	<!--<Cmd mementoId="0" process="RUN_CMD_NOW" type="DATA_FILTER_MATH"			cmdId="99010"	uniqueId="-1"	attrib1="NORMALIZE"	attrib2="45301 46301 47301 48301 49301 50301 51301 52301 53301 54301 55301 56301 57301 58301" attrib3="STORAGE"/>	-->								

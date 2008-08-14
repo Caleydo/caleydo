@@ -48,7 +48,7 @@ public class GLConnectionLineRendererBucket
 		matSrc.makeIdent();
 		matDest.makeIdent();
 
-		Iterator<Integer> iterSelectedElementID = selectionManager.getAllSelectedElements()
+		Iterator<Integer> iterSelectedElementID = connectedElementRepManager.getAllSelectedElements()
 				.iterator();
 
 		ArrayList<ArrayList<Vec3f>> alPointLists = null;// 
@@ -56,7 +56,7 @@ public class GLConnectionLineRendererBucket
 		while (iterSelectedElementID.hasNext())
 		{
 			int iSelectedElementID = iterSelectedElementID.next();
-			Iterator<SelectedElementRep> iterSelectedElementRep = selectionManager
+			Iterator<SelectedElementRep> iterSelectedElementRep = connectedElementRepManager
 					.getSelectedElementRepsByElementID(iSelectedElementID).iterator();
 
 			while (iterSelectedElementRep.hasNext())

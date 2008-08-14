@@ -32,14 +32,16 @@ public interface ISet
 	public ESetType getSetType();
 
 	/**
-	 * Add a storage based on its id
+	 * Add a storage based on its id. The storage has to be fully initialized
+	 * with data
 	 * 
 	 * @param iStorageID
 	 */
 	public void addStorage(int iStorageID);
 
 	/**
-	 * Add a storage by reference
+	 * Add a storage by reference. The storage has to be fully initialized with
+	 * data
 	 * 
 	 * @param storage the storage
 	 */
