@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import org.caleydo.core.data.graph.ICaleydoGraphItem;
 import org.caleydo.core.data.graph.pathway.item.edge.PathwayReactionEdgeGraphItem;
 import org.caleydo.core.data.graph.pathway.item.edge.PathwayReactionEdgeGraphItemRep;
@@ -140,13 +141,10 @@ public class PathwayItemManager
 		return pathwayVertexRep;
 	}
 
-	public IGraphItem createRelationEdge(final IGraphItem graphItemIn,
-			final IGraphItem graphItemOut, final String sType)
+	public IGraphItem createRelationEdge(final List<IGraphItem> alGraphItemIn,
+			final List<IGraphItem> alGraphItemOut, final String sType)
 	{
-
-		//TODO: review when implementing ID management
-		int iGeneratedId = -1;//createId(EManagerObjectType.PATHWAY_EDGE);
-		IGraphItem pathwayRelationEdge = new PathwayRelationEdgeGraphItem(iGeneratedId, sType);
+		IGraphItem pathwayRelationEdge = new PathwayRelationEdgeGraphItem(sType);
 
 		IGraph rootPathway = generalManager.getPathwayManager().getRootPathway();
 
@@ -157,8 +155,15 @@ public class PathwayItemManager
 		pathwayRelationEdge.addGraph(rootPathway, EGraphItemHierarchy.GRAPH_PARENT);
 
 		// Add connection to incoming and outgoing items
-		pathwayRelationEdge.addItemDoubleLinked(graphItemIn, EGraphItemProperty.INCOMING);
-		pathwayRelationEdge.addItemDoubleLinked(graphItemOut, EGraphItemProperty.OUTGOING);
+		for (IGraphItem graphItemIn : alGraphItemIn)
+		{
+			pathwayRelationEdge.addItemDoubleLinked(graphItemIn, EGraphItemProperty.INCOMING);
+		}
+		
+		for (IGraphItem graphItemOut : alGraphItemOut)
+		{
+			pathwayRelationEdge.addItemDoubleLinked(graphItemOut, EGraphItemProperty.OUTGOING);
+		}
 
 		return pathwayRelationEdge;
 	}
@@ -167,9 +172,7 @@ public class PathwayItemManager
 			final IGraphItem pathwayRelationEdge, final IGraphItem graphItemIn,
 			final IGraphItem graphItemOut)
 	{
-		//TODO: review when implementing ID management
-		int iGeneratedId = -1;//createId(EManagerObjectType.PATHWAY_EDGE_REP);
-		IGraphItem pathwayRelationEdgeRep = new PathwayRelationEdgeGraphItemRep(iGeneratedId);
+		IGraphItem pathwayRelationEdgeRep = new PathwayRelationEdgeGraphItemRep();
 
 		// Add edge to pathway representation
 		parentPathway.addItem(pathwayRelationEdgeRep);
@@ -193,15 +196,10 @@ public class PathwayItemManager
 	{
 
 		// Create edge (data)
-		//TODO: review when implementing ID management
-		int iGeneratedId = -1;//createId(EManagerObjectType.PATHWAY_EDGE_REP);
-		IGraphItem pathwayReactionEdge = new PathwayReactionEdgeGraphItem(iGeneratedId,
-				sReactionName, sReactionType);
+		IGraphItem pathwayReactionEdge = new PathwayReactionEdgeGraphItem(sReactionName, sReactionType);
 
 		// Create edge representation
-		//TODO: review when implementing ID management
-		iGeneratedId = -1;//createId(EManagerObjectType.PATHWAY_EDGE_REP);
-		IGraphItem pathwayReactionEdgeRep = new PathwayReactionEdgeGraphItemRep(iGeneratedId);
+		IGraphItem pathwayReactionEdgeRep = new PathwayReactionEdgeGraphItemRep();
 
 		IGraph rootPathway = generalManager.getPathwayManager().getRootPathway();
 

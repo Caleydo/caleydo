@@ -1,8 +1,8 @@
 package org.caleydo.core.data.graph.pathway.item.edge;
 
 import java.io.Serializable;
+import org.caleydo.core.data.graph.ACaleydoGraphItem;
 import org.caleydo.util.graph.EGraphItemKind;
-import org.caleydo.util.graph.item.GraphItem;
 
 /**
  * Pathway reaction edge representation belonging to the overall pathway graph.
@@ -11,7 +11,7 @@ import org.caleydo.util.graph.item.GraphItem;
  * @author Marc Streit
  */
 public class PathwayReactionEdgeGraphItemRep
-	extends GraphItem
+	extends ACaleydoGraphItem
 	implements Serializable
 {
 
@@ -19,12 +19,9 @@ public class PathwayReactionEdgeGraphItemRep
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param iId
 	 */
-	public PathwayReactionEdgeGraphItemRep(final int iId)
+	public PathwayReactionEdgeGraphItemRep()
 	{
-
-		super(iId, EGraphItemKind.EDGE);
+		super(EGraphItemKind.EDGE);
 	}
 }

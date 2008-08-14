@@ -233,8 +233,9 @@ implements ISWTGUIManager
 		Iterator<Shell> shellIterator;
 		Shell currentShell;
 
-		// Close loading progress bar after bootstrapping is completed.
-		setProgressBarVisible(false);
+		// Close loading progress bar in standalone mode after bootstrapping is completed.
+		if (loadingProgressBarWindow != null)
+			setProgressBarVisible(false);
 
 		shellIterator = windowMap.values().iterator();
 		while (shellIterator.hasNext())
@@ -328,8 +329,8 @@ implements ISWTGUIManager
 	
 	public void setProgressBarVisible(final boolean state)
 	{
-//		loadingProgressBarWindow.setVisible(state);
-//		loadingProgressBar.setVisible(state);
+		loadingProgressBarWindow.setVisible(state);
+		loadingProgressBar.setVisible(state);
 	}
 	
 	@Override

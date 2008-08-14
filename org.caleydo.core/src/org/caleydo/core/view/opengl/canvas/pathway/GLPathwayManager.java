@@ -514,8 +514,7 @@ public class GLPathwayManager
 			return;
 		}
 
-		EPathwayVertexType vertexType = ((PathwayVertexGraphItem) vertexRep
-				.getPathwayVertexGraphItem()).getType();
+		EPathwayVertexType vertexType = vertexRep.getType();
 
 		// Pathway link
 		// if (shape.equals(EPathwayVertexShape.roundrectangle))

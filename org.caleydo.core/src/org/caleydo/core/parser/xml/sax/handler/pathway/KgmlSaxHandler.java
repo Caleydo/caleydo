@@ -14,6 +14,7 @@ import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraph;
 import org.caleydo.util.graph.IGraphItem;
@@ -255,7 +256,7 @@ public class KgmlSaxHandler
 				if (iDavidId == -1)
 				{
 					generalManager.getLogger().log(
-							Level.WARNING,
+							Level.FINE,
 							"NCBI Gene ID " + sTmpVertexName
 									+ " cannot be mapped to David Id.");
 
@@ -375,8 +376,8 @@ public class KgmlSaxHandler
 
 		// Create edge (data)
 		IGraphItem relationEdge = generalManager.getPathwayItemManager().createRelationEdge(
-				((PathwayVertexGraphItemRep) graphItemIn).getPathwayVertexGraphItem(),
-				((PathwayVertexGraphItemRep) graphItemOut).getPathwayVertexGraphItem(), sType);
+				((PathwayVertexGraphItemRep) graphItemIn).getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT),
+				((PathwayVertexGraphItemRep) graphItemOut).getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT), sType);
 
 		// Create edge representation
 		generalManager.getPathwayItemManager().createRelationEdgeRep(currentPathway,

@@ -7,6 +7,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
+import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
@@ -71,9 +72,8 @@ public class GenomeColorMapper
 		{
 			return new ArrayList<Vec3f>();
 		}
-
-		if (pathwayVertexRep.getPathwayVertexGraphItem().getType().equals(
-				EPathwayVertexType.gene))
+		
+		if (pathwayVertexRep.getType().equals(EPathwayVertexType.gene))
 		{
 			ArrayList<Vec3f> arMappingColor = new ArrayList<Vec3f>();
 
@@ -85,7 +85,7 @@ public class GenomeColorMapper
 			{
 				int iDavidId = generalManager.getPathwayItemManager()
 						.getDavidIdByPathwayVertexGraphItemId(
-								pathwayVertexRep.getPathwayVertexGraphItem().getId());
+								pathwayVertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0).getId());
 
 				int iExpressionStorageIndex = genomeIdManager.getIdIntFromIntByMapping(
 						iDavidId, EMappingType.DAVID_2_EXPRESSION_STORAGE_ID);
@@ -114,8 +114,7 @@ public class GenomeColorMapper
 
 			return arMappingColor;
 		}
-		else if (pathwayVertexRep.getPathwayVertexGraphItem().getType().equals(
-				EPathwayVertexType.enzyme))
+		else if (pathwayVertexRep.getType().equals(EPathwayVertexType.enzyme))
 		{
 			ArrayList<Vec3f> arMappingColor = new ArrayList<Vec3f>();
 			arMappingColor.add(new Vec3f(-1, -1, -1)); // invalid color

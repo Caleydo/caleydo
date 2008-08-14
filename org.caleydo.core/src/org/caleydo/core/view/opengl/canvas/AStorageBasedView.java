@@ -6,7 +6,6 @@ import java.util.EnumMap;
 import java.util.Random;
 import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
-import org.apache.log4j.lf5.LogLevel;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
@@ -20,7 +19,6 @@ import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.picking.ESelectionMode;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
-import org.caleydo.core.view.opengl.canvas.parcoords.EInputDataType;
 import org.caleydo.core.view.opengl.canvas.parcoords.EStorageBasedVAType;
 import com.sun.opengl.util.j2d.TextRenderer;
 

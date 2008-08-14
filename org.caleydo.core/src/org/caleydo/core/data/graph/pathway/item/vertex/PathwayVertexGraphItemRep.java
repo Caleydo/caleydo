@@ -133,11 +133,10 @@ public class PathwayVertexGraphItemRep
 		return shape;
 	}
 
-	public PathwayVertexGraphItem getPathwayVertexGraphItem()
+	public EPathwayVertexType getType()
 	{
-
 		return ((PathwayVertexGraphItem) this.getAllItemsByProp(
-				EGraphItemProperty.ALIAS_PARENT).toArray()[0]);
+				EGraphItemProperty.ALIAS_PARENT).get(0)).getType();
 	}
 
 	public short[][] getCoords()

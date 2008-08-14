@@ -10,21 +10,21 @@
 		  	<read-xml-file target="data/bootstrap/shared/kashofer/hcc/load_genome_id_mapping.xml" />	   				
 						
 		<!-- Creating Data -->
-			<read-xml-file target="data/bootstrap/shared/kashofer/hcc/all_hcc/load_data.xml" />						   														
-
-		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEAT_MAP_3D"		cmdId="69994"	uniqueId="84401" parent="-1" label="Heat Map" 
-						gl_origin="0 0 0" 
-						gl_rotation="0 0 0 0"					
-						attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
-						attrib4="transparency 1" 
-						detail="85101" /> 					
+			<read-xml-file target="data/bootstrap/shared/kashofer/hcc/all_hcc/load_data.xml" />						   																		
 									
 		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PARALLEL_COORDINATES_3D"		cmdId="69994"	uniqueId="82401" parent="-1" label="Parallel Coordinates" 
 						gl_origin="0 0 0" 
 						gl_rotation="0 0 0 0"					
 						attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
 						attrib4="transparency 1" 
-						detail="85101" /> 						
+						detail="85101" />
+						
+		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEAT_MAP_3D"		cmdId="69994"	uniqueId="84401" parent="-1" label="Heat Map" 
+						gl_origin="0 0 0" 
+						gl_rotation="0 0 0 0"					
+						attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
+						attrib4="transparency 1" 
+						detail="85101" /> 							 						
 
 		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_RCP_GLCANVAS"	cmdId="69991"	uniqueId="24" 
 			parent="-1" label="Canvas"	attrib2="300 300" detail="1077991"	/>	

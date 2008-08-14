@@ -1,8 +1,8 @@
 package org.caleydo.core.data.graph.pathway.item.edge;
 
 import java.io.Serializable;
+import org.caleydo.core.data.graph.ACaleydoGraphItem;
 import org.caleydo.util.graph.EGraphItemKind;
-import org.caleydo.util.graph.item.GraphItem;
 
 /**
  * Pathway relation edge representation belonging to the overall pathway graph.
@@ -11,7 +11,7 @@ import org.caleydo.util.graph.item.GraphItem;
  * @author Marc Streit
  */
 public class PathwayRelationEdgeGraphItemRep
-	extends GraphItem
+	extends ACaleydoGraphItem
 	implements Serializable
 {
 
@@ -20,11 +20,9 @@ public class PathwayRelationEdgeGraphItemRep
 	/**
 	 * Constructor.
 	 * 
-	 * @param iId
 	 */
-	public PathwayRelationEdgeGraphItemRep(final int iId)
+	public PathwayRelationEdgeGraphItemRep()
 	{
-
-		super(iId, EGraphItemKind.EDGE);
+		super(EGraphItemKind.EDGE);
 	}
 }

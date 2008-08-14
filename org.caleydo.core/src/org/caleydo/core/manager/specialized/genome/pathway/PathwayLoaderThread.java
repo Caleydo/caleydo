@@ -83,6 +83,8 @@ public class PathwayLoaderThread
 		// File folder = new File(sXMLPath);
 		// File[] arFiles = folder.listFiles();
 
+		generalManager.getLogger().log(Level.INFO, "Start parsing " +pathwayDatabase.getName() +" pathways.");
+		
 		GLCanvasRemoteRendering3D tmpGLRemoteRendering3D = null;
 		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
 				.getAllGLEventListeners())
@@ -189,6 +191,8 @@ public class PathwayLoaderThread
 
 		if (tmpGLRemoteRendering3D != null)
 			tmpGLRemoteRendering3D.enableBusyMode(false);
+		
+		generalManager.getLogger().log(Level.INFO, "Finished parsing " +pathwayDatabase.getName() +" pathways.");
 	}
 
 	/**

@@ -5,6 +5,9 @@ import java.util.Iterator;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Attention: Since Mediator is also a IMediatorReceiver care has to be taken
@@ -57,14 +60,14 @@ public class LockableMediator
 	{
 		if (arSender.contains(sender))
 		{
-			// throw new CaleydoRuntimeException(
-			// "LockableMediator.register() receiver that is already registered!"
-			// );
-			return false;
+//			 throw new CaleydoRuntimeException(
+//			 "LockableMediator.register() receiver that is already registered!", 
+//			 CaleydoRuntimeExceptionType.EVENT);
+			
+			 return false;
 		}
 
 		arSender.add(sender);
-		System.out.println("LockableMediator.register( Sender " + sender.toString() + " )");
 		return true;
 	}
 
