@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.manager.IGeneralManager;
@@ -77,7 +76,6 @@ public class GlyphDataLoader
 
 						for (int i = 0; i < nominalStorage.size(); ++i)
 						{
-							int t2 = glyphAttributeType.getIndex(nominalStorage.getRaw(i));
 
 							if (nominalStorage.getRaw(i) == null)
 							{
@@ -87,6 +85,8 @@ public class GlyphDataLoader
 												"GlyphDataLoader: no String data found - empty line in csv file?????");
 								temp2[i] = -1;
 							}
+
+							int t2 = glyphAttributeType.getIndex(nominalStorage.getRaw(i));
 
 							if (glyphAttributeType.doesAutomaticAttribute() && t2 == -1)
 							{

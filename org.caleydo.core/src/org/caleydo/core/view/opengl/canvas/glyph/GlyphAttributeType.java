@@ -51,6 +51,9 @@ public class GlyphAttributeType
 		hmSelectedDistribution = new HashMap<Integer, Integer>();
 
 		iExternalColumnIndex = externalColumnIndex;
+
+		hmDistribution.put(-1, 0); // NAV
+		hmSelectedDistribution.put(-1, 0); // NAV
 	}
 
 	public void setDoesAutomaticAttribute(boolean truefalse)
@@ -109,6 +112,12 @@ public class GlyphAttributeType
 					"double ordinal value (" + sValue + ") found in " + sName + " (" + group
 							+ ")");
 
+		if (!hmDistribution.containsKey(group))
+			hmDistribution.put(group, 0);
+
+		if (!hmSelectedDistribution.containsKey(group))
+			hmSelectedDistribution.put(group, 0);
+
 		if (iMaxIndex < group)
 			iMaxIndex = group;
 
@@ -116,7 +125,6 @@ public class GlyphAttributeType
 
 	public String getName()
 	{
-
 		return sName;
 	}
 
@@ -139,7 +147,7 @@ public class GlyphAttributeType
 		return iMaxIndex;
 	}
 
-	public String[] getAttributeNames()
+	public ArrayList<String> getAttributeNames()
 	{
 
 		ArrayList<String> names = new ArrayList<String>();
@@ -147,10 +155,11 @@ public class GlyphAttributeType
 		ks2.addAll(hmGroupLookup.keySet());
 		java.util.Collections.sort(ks2);
 
+		names.add("NAV");
 		for (Integer i : ks2)
 			names.add(hmGroupLookup.get(i).getGroupName());
 
-		return names.toArray(new String[names.size()]);
+		return names;
 	}
 
 	public void incDistribution(int index)
@@ -195,14 +204,20 @@ public class GlyphAttributeType
 			hmSelectedDistribution.put(index, 0);
 	}
 
-	public float[][] getDistributionNormalized()
+	/*
+	 * delivers the distribution of this type 1st dimension: 0->overall
+	 * 1->selected
+	 */
+	public ArrayList<ArrayList<Float>> getDistributionNormalized()
 	{
 
 		TreeSet<Integer> sks = new TreeSet<Integer>();
 		sks.addAll(hmDistribution.keySet());
 		Integer[] sk = sks.toArray(new Integer[sks.size()]);
 
-		float[][] dist = new float[2][sk.length];
+		ArrayList<ArrayList<Float>> distList = new ArrayList<ArrayList<Float>>();
+		distList.add(new ArrayList<Float>(sk.length));
+		distList.add(new ArrayList<Float>(sk.length));
 
 		int max = 0;
 
@@ -211,27 +226,30 @@ public class GlyphAttributeType
 			int d = hmDistribution.get(sk[i]);
 			if (d > max)
 				max = d;
-			dist[0][i] = d;
-			dist[1][i] = 0;
+			float dist = 0;
 			if (hmSelectedDistribution.containsKey(sk[i]))
-				dist[1][i] = hmSelectedDistribution.get(sk[i]);
+				dist = hmSelectedDistribution.get(sk[i]);
+
+			distList.get(0).add((float) d);
+			distList.get(1).add(dist);
 		}
 
 		for (int i = 0; i < 2; ++i)
-			for (int j = 0; j < dist[i].length; ++j)
-				dist[i][j] /= max;
+			for (int j = 0; j < distList.get(i).size(); ++j)
+				distList.get(i).set(j, distList.get(i).get(j) / max);
 
-		return dist;
+		return distList;
 	}
 
 	public void printDistribution()
 	{
 
-		float[][] dist = getDistributionNormalized();
+		ArrayList<ArrayList<Float>> dist = getDistributionNormalized();
 
-		for (int i = 0; i < dist[0].length; ++i)
+		for (int i = 0; i < dist.get(0).size(); ++i)
 		{
-			System.out.println(" -> " + i + " > " + dist[0][i] + " " + dist[1][i]);
+			System.out.println(" -> " + i + " > " + dist.get(0).get(i) + " "
+					+ dist.get(1).get(i));
 		}
 		/*
 		 * Set<Integer> ks = hmDistribution.keySet(); for(Integer k : ks) { int

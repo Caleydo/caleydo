@@ -31,7 +31,9 @@ public enum EIDType
 
 	PATHWAY_VERTEX(EStorageType.INT, "pathway vertex id", "The id of the pathway vertex"),
 	
-	PATHWAY(EStorageType.INT, "pathway id", "The ID of a pathway");
+	PATHWAY(EStorageType.INT, "pathway id", "The ID of a pathway"),
+	
+	CLINICAL_ID(EStorageType.INT, "clinical id", "The ID in the clinical data file");
 
 	private final EStorageType storageType;
 

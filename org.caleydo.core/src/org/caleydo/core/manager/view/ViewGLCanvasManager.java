@@ -21,6 +21,7 @@ import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyph;
+import org.caleydo.core.view.opengl.canvas.glyph.sliderview.GLCanvasGlyphSliderView;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
 import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.canvas.remote.glyph.GLCanvasRemoteGlyph;
@@ -263,6 +264,10 @@ public class ViewGLCanvasManager
 				
 			case CREATE_GL_GLYPH:
 				glEventListener = new GLCanvasGlyph(iGLCanvasID, sLabel,
+						viewFrustum);
+				break;
+			case CREATE_GL_GLYPH_SLIDER:
+				glEventListener = new GLCanvasGlyphSliderView(iGLCanvasID, sLabel,
 						viewFrustum);
 				break;
 				

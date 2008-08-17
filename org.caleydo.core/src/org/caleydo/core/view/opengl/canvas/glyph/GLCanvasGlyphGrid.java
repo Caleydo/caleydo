@@ -118,8 +118,8 @@ public class GLCanvasGlyphGrid
 			if (g.isSelected())
 			{
 				temp.add(g.getParameter(ssi));
-				g.deSelect();
 			}
+			g.deSelect();
 		}
 		return temp;
 	}
@@ -136,8 +136,8 @@ public class GLCanvasGlyphGrid
 			if (!g.isSelected())
 			{
 				temp.add(g.getParameter(ssi));
-				g.select();
 			}
+			g.select();
 		}
 		return temp;
 	}
@@ -317,13 +317,17 @@ public class GLCanvasGlyphGrid
 			return;
 		}
 
-		String[] xaxisdescription = xdata.getAttributeNames();
-		String[] yaxisdescription = ydata.getAttributeNames();
+		ArrayList<String> xaxisdescription = xdata.getAttributeNames();
+		ArrayList<String> yaxisdescription = ydata.getAttributeNames();
+		xaxisdescription.remove(0); // remove NAV
+		yaxisdescription.remove(0); // remove NAV
 
-		float incx = (float) maxx / (float) (xaxisdescription.length);
-		float incy = (float) maxy / (float) (yaxisdescription.length);
-		float linex = yaxisdescription.length * incy;
-		float liney = xaxisdescription.length * incx;
+		float incx = (float) maxx / (float) (xaxisdescription.size());
+		float incy = (float) maxy / (float) (yaxisdescription.size());
+		float linex = (yaxisdescription.size()) * incy; // we always get NAV
+														// first
+		float liney = (xaxisdescription.size()) * incx; // we always get NAV
+														// first
 
 		// if(incx<1.0f) incx = 1.0f;
 		// if(incy<1.0f) incy = 1.0f;
@@ -354,7 +358,7 @@ public class GLCanvasGlyphGrid
 		gl.glVertex3f(0, linex, 0);
 		gl.glEnd();
 
-		for (int i = 0; i < xaxisdescription.length; ++i)
+		for (int i = 0; i < xaxisdescription.size(); ++i)
 		{
 			pointsX.add(incx * i + incx / 2.0f);
 			gl.glTranslatef(incx, 0f, 0f);
@@ -370,14 +374,14 @@ public class GLCanvasGlyphGrid
 			{
 				gl.glTranslatef(-incx / 2.0f, -2.0f, 0f);
 				textRenderer.begin3DRendering();
-				textRenderer.draw3D(xaxisdescription[i], 0, 0, 0, 0.1f);
+				textRenderer.draw3D(xaxisdescription.get(i), 0, 0, 0, 0.1f);
 				textRenderer.end3DRendering();
 				gl.glTranslatef(incx / 2.0f, +2.0f, 0f);
 			}
 
 		}
 		// spare point for non valid data
-		pointsX.add(incx * (xaxisdescription.length + 2));
+		pointsX.add(incx * (xaxisdescription.size() + 2));
 
 		gl.glTranslatef(+0.0f, -4.0f, 0f);
 		textRenderer.begin3DRendering();
@@ -385,7 +389,7 @@ public class GLCanvasGlyphGrid
 		textRenderer.end3DRendering();
 		gl.glTranslatef(-0.0f, +4.0f, 0f);
 
-		gl.glTranslatef(-xaxisdescription.length * incx, 0f, 0f);
+		gl.glTranslatef(-xaxisdescription.size() * incx, 0f, 0f);
 
 		gl.glRotatef(-90f, 0, 0, 1);
 
@@ -396,7 +400,7 @@ public class GLCanvasGlyphGrid
 		gl.glVertex3f(0, liney, 0);
 		gl.glEnd();
 
-		for (int i = 0; i < yaxisdescription.length; ++i)
+		for (int i = 0; i < yaxisdescription.size(); ++i)
 		{
 			pointsY.add(incy * i + incy / 2.0f);
 			gl.glTranslatef(-incy, 0f, 0f);
@@ -412,7 +416,7 @@ public class GLCanvasGlyphGrid
 			{
 				gl.glTranslatef(+incy / 2.0f, -2.0f, 0f);
 				textRenderer.begin3DRendering();
-				textRenderer.draw3D(yaxisdescription[i], 0, 0, 0, 0.1f);
+				textRenderer.draw3D(yaxisdescription.get(i), 0, 0, 0, 0.1f);
 				textRenderer.end3DRendering();
 				gl.glTranslatef(-incy / 2.0f, +2.0f, 0f);
 			}
@@ -424,9 +428,9 @@ public class GLCanvasGlyphGrid
 		textRenderer.end3DRendering();
 		gl.glTranslatef(+0.0f, +4.0f, 0f);
 
-		gl.glTranslatef(yaxisdescription.length * incy, 0f, 0f);
+		gl.glTranslatef(yaxisdescription.size() * incy, 0f, 0f);
 		// spare point for non valid data
-		pointsY.add(incy * (yaxisdescription.length + 5));
+		pointsY.add(incy * (yaxisdescription.size() + 5));
 
 		gl.glRotatef(135f, 0, 0, 1);
 

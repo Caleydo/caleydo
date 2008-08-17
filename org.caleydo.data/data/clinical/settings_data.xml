@@ -78,20 +78,18 @@
    <column type="nominal" colnum="6"  label="Sex">
      <nominal string="f"  group="0" />
      <nominal string="m"  group="1" />
-     <nominal string="x " group="2" />
    </column>
 
    <column type="nominal" colnum="7"  label="is dead">
      <nominal string="t" group="0" />
      <nominal string="f" group="1" />
-     <nominal string="x" group="2" />
    </column>
 
    <column type="ordinal" colnum="8"  label="Year of Diagnosis">
      <int min="1950" max="2008" interval="1" />
    </column>
    <column type="ordinal" colnum="9"  label="Disease Free Survival (Months)">
-     <int min="0" max="80" interval="1" />
+     <int min="0" max="200" interval="1" />
    </column>
    <column type="ordinal" colnum="10"  label="Overal Survival (Months)">
      <int min="0" max="300" interval="1" />

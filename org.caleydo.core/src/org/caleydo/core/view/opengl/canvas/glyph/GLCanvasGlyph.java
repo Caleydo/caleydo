@@ -4,11 +4,19 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.open.Vec2i;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.storage.ERawDataType;
+import org.caleydo.core.data.collection.storage.NominalStorage;
+import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.GlyphRenderStyle;
@@ -56,6 +64,8 @@ public class GLCanvasGlyph
 
 	private GlyphManager gman = null;
 
+	private GenericSelectionManager selectionManager = null;
+
 	/**
 	 * Constructor.
 	 * 
@@ -64,8 +74,8 @@ public class GLCanvasGlyph
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLCanvasGlyph(final int iGLCanvasID, 
-			final String sLabel, final IViewFrustum viewFrustum)
+	public GLCanvasGlyph(final int iGLCanvasID, final String sLabel,
+			final IViewFrustum viewFrustum)
 	{
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 
@@ -75,6 +85,8 @@ public class GLCanvasGlyph
 
 		gman = (GlyphManager) generalManager.getGlyphManager();
 		gman.registerGlyphView(this);
+
+		selectionManager = new GenericSelectionManager.Builder(EIDType.CLINICAL_ID).build();
 	}
 
 	@Override
@@ -102,6 +114,29 @@ public class GLCanvasGlyph
 			return;
 		}
 
+		// load ids to selectionManager
+		selectionManager.resetSelectionManager();
+		try
+		{
+			IStorage store = glyphData.get(0);
+			if (store instanceof NominalStorage
+					&& store.getRawDataType() == ERawDataType.STRING)
+			{
+				INominalStorage<String> nominalStorage = (INominalStorage<String>) store;
+				for (int i = 0; i < nominalStorage.size(); ++i)
+				{
+					int id = Integer.parseInt(nominalStorage.getRaw(i));
+					selectionManager.initialAdd(id);
+				}
+			}
+		}
+		catch (NumberFormatException e)
+		{
+			generalManager.getLogger().log(Level.SEVERE,
+					"first glyph data row isn't the index - shutting down");
+			return;
+		}
+
 		grid_ = new GLCanvasGlyphGrid(generalManager, renderStyle);
 		grid_.loadData(glyphData);
 
@@ -109,8 +144,7 @@ public class GLCanvasGlyph
 
 		grid_.buildScatterplotGrid(gl);
 
-		ArrayList<String> temp = new ArrayList<String>(10);
-		temp.add("dafs");
+		grid_.selectAll();
 
 		// grid_.setGridSize(30, 60);
 		// grid_.setGlyphPositions(EIconIDs.DISPLAY_SCATTERPLOT.ordinal());
@@ -389,10 +423,10 @@ public class GLCanvasGlyph
 
 					// push patient id to other screens
 					// TODO rewrite this with new selection
-//					for (Selection sel : alSelection)
-//					{
-//						sel.updateSelectionSet(iUniqueID, ids, selections, null);
-//					}
+					// for (Selection sel : alSelection)
+					// {
+					// sel.updateSelectionSet(iUniqueID, ids, selections, null);
+					// }
 
 					break;
 				default:
@@ -431,40 +465,145 @@ public class GLCanvasGlyph
 	@Override
 	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
 	{
-		// TODO rewrite this with new mechanisms
+
 		generalManager.getLogger().log(Level.INFO,
 				"Update called by " + eventTrigger.getClass().getSimpleName());
 
-//		ISelection refSetSelection = (ISelection) selectionDelta;
-//
-//		ArrayList<Integer> iAlSelection = refSetSelection.getSelectionIdArray();
-//		ArrayList<Integer> iAlSelectionMode = refSetSelection.getGroupArray();
+		selectionManager.clearSelections();
+		selectionManager.setDelta(selectionDelta);
 
-		// int sendParameter = this.grid_.getDataLoader().getSendParameter();
-//		int sendParameter = Integer.parseInt(generalManager.getGlyphManager().getSetting(
-//				EGlyphSettingIDs.UPDATESENDPARAMETER));
-//
-//		if (iAlSelection.size() != 0)
-//		{
-//			for (int i = 0; i < iAlSelection.size(); ++i)
-//			{
-//				int sid = iAlSelection.get(i);
-//				int gid = iAlSelectionMode.get(i);
-//
-//				Iterator<GlyphEntry> git = grid_.getGlyphList().values().iterator();
-//
-//				while (git.hasNext())
-//				{
-//					GlyphEntry g = git.next();
-//					if (g.getParameter(sendParameter) == sid)
-//						if (gid == 1)
-//							g.select();
-//						else
-//							g.deSelect();
-//				}
-//				bRedrawDisplayList_ = true;
-//			}
-//		}
+		int sendParameter = Integer.parseInt(gman
+				.getSetting(EGlyphSettingIDs.UPDATESENDPARAMETER));
+
+		HashMap<Integer, GlyphEntry> glyphmap = new HashMap<Integer, GlyphEntry>();
+		for (GlyphEntry g : grid_.getGlyphList().values())
+			glyphmap.put(g.getParameter(sendParameter), g);
+
+		{
+			java.util.Set<Integer> selected = selectionManager
+					.getElements(ESelectionType.SELECTION);
+			java.util.Set<Integer> unselected = selectionManager
+					.getElements(ESelectionType.DESELECTED);
+
+			int counter = 0;
+
+			for (int id : selected)
+			{
+				GlyphEntry g = glyphmap.get(id);
+				if (g != null)
+				{
+					g.select();
+					counter++;
+				}
+			}
+
+			for (int id : unselected)
+			{
+				GlyphEntry g = glyphmap.get(id);
+				if (g != null)
+				{
+					g.deSelect();
+					counter++;
+				}
+			}
+			System.out.println("changed selection of " + counter + " glyphs");
+
+			bRedrawDisplayList_ = true;
+		}
+
+		// TODO rewrite this with new mechanisms
+		// ArrayList<Integer> iAlSelection =
+		// refSetSelection.getSelectionIdArray();
+		// ArrayList<Integer> iAlSelectionMode =
+		// refSetSelection.getGroupArray();
+		// ArrayList<Integer> iAlSelectionOptional =
+		// refSetSelection.getOptionalDataArray();
+		//
+		// if (eventTrigger.getClass() == GLCanvasGlyphSliderView.class)
+		// {
+		// if (iAlSelection.size() <= 0)
+		// return;
+		//
+		// HashMap<Integer, HashMap<Integer, Boolean>> parameterValueSelectedMap
+		// = new HashMap<Integer, HashMap<Integer, Boolean>>();
+		// for (int i = 0; i < iAlSelection.size(); ++i)
+		// {
+		// int internalindex = iAlSelection.get(i);
+		// boolean isselected = (iAlSelectionMode.get(i) == 1) ? true : false;
+		// if (!parameterValueSelectedMap.containsKey(internalindex))
+		// parameterValueSelectedMap.put(internalindex,
+		// new HashMap<Integer, Boolean>());
+		//
+		//parameterValueSelectedMap.get(internalindex).put(iAlSelectionOptional.
+		// get(i),
+		// isselected);
+		// }
+		//
+		// grid_.deSelectAll();
+		//
+		// HashMap<Integer, GlyphEntry> glyphs = grid_.getGlyphList();
+		//
+		// Iterator<GlyphEntry> it = glyphs.values().iterator();
+		// while (it.hasNext())
+		// {
+		// GlyphEntry g = it.next();
+		//
+		// boolean isselected = true;
+		// for (int internalindex : parameterValueSelectedMap.keySet())
+		// {
+		// int param = g.getParameter(internalindex);
+		// HashMap<Integer, Boolean> p =
+		// parameterValueSelectedMap.get(internalindex);
+		//
+		// if (p.containsKey(param))
+		// {
+		// if (!p.get(param))
+		// // g.select();
+		// // else
+		// isselected = false;
+		//
+		// }
+		// else
+		// { // not in the list
+		// isselected = false;
+		// }
+		//
+		// }
+		// if (isselected)
+		// g.select();
+		//
+		// }
+		//
+		// bRedrawDisplayList_ = true;
+		// }
+		// else
+		// {
+		// int sendParameter =
+		// Integer.parseInt(generalManager.getGlyphManager().getSetting(
+		// EGlyphSettingIDs.UPDATESENDPARAMETER));
+		//
+		// if (iAlSelection.size() != 0)
+		// {
+		// for (int i = 0; i < iAlSelection.size(); ++i)
+		// {
+		// int sid = iAlSelection.get(i);
+		// int gid = iAlSelectionMode.get(i);
+		//
+		// Iterator<GlyphEntry> git = grid_.getGlyphList().values().iterator();
+		//
+		// while (git.hasNext())
+		// {
+		// GlyphEntry g = git.next();
+		// if (g.getParameter(sendParameter) == sid)
+		// if (gid == 1)
+		// g.select();
+		// else
+		// g.deSelect();
+		// }
+		// bRedrawDisplayList_ = true;
+		// }
+		// }
+		// }
 
 	}
 
@@ -477,13 +616,14 @@ public class GLCanvasGlyph
 	@Override
 	public void triggerUpdate()
 	{
-		generalManager.getEventPublisher().handleUpdate(this);		
+		generalManager.getEventPublisher().handleUpdate(this);
 	}
 
 	@Override
 	public void triggerUpdate(ISelectionDelta selectionDelta)
-	{		
-		generalManager.getEventPublisher().handleUpdate(this, selectionDelta);
+	{
+		if (selectionDelta.getSelectionData().size() > 0)
+			generalManager.getEventPublisher().handleUpdate(this, selectionDelta);
 	}
 
 }

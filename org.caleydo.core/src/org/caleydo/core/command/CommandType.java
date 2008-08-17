@@ -29,6 +29,7 @@ public enum CommandType
 
 	CREATE_GL_HEAT_MAP_3D("cmd", "type", "-1", "Create Heat Map"),
 	CREATE_GL_GLYPH("cmd", "type", "-1", "Create Glyph"),
+	CREATE_GL_GLYPH_SLIDER("cmd", "type", "-1", "Create Glyph Slider View"),
 	CREATE_GL_PATHWAY_3D("cmd", "type", "-1", "Create Pathway 3D"),
 	CREATE_GL_PARALLEL_COORDINATES_3D("cmd", "type", "-1", "Create Parallel Coordinates 3D"),
 	CREATE_GL_BUCKET_3D("cmd", "type", "-1", "Create Bucket 3D"),

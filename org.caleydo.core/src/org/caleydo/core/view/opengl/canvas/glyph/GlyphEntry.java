@@ -17,7 +17,7 @@ public class GlyphEntry
 
 	private Vec2i posGoTo_;
 
-	private boolean selected_ = true;
+	private boolean selected_ = false;
 
 	private Vector<Integer> parameter_ = null;
 
@@ -76,6 +76,8 @@ public class GlyphEntry
 
 	public void select()
 	{
+		if (selected_)
+			return;
 
 		selected_ = true;
 		for (int i = 0; i < parameter_.size(); ++i)
@@ -85,6 +87,8 @@ public class GlyphEntry
 
 	public void deSelect()
 	{
+		if (!selected_)
+			return;
 
 		selected_ = false;
 		for (int i = 0; i < parameter_.size(); ++i)
