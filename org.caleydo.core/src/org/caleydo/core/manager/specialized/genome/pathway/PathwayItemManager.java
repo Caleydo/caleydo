@@ -71,7 +71,8 @@ public class PathwayItemManager
 
 		hashItems.put(pathwayVertex.getID(), pathwayVertex);
 
-		generalManager.getPathwayManager().getRootPathway().addItem(pathwayVertex);
+		((PathwayManager)generalManager.getPathwayManager())
+			.getRootPathway().addItem(pathwayVertex);
 
 		hashVertexNameToGraphItem.put(sName, pathwayVertex);
 
@@ -143,7 +144,8 @@ public class PathwayItemManager
 	{
 		IGraphItem pathwayRelationEdge = new PathwayRelationEdgeGraphItem(sType);
 
-		IGraph rootPathway = generalManager.getPathwayManager().getRootPathway();
+		IGraph rootPathway = ((PathwayManager)generalManager.getPathwayManager())
+			.getRootPathway();
 
 		// Add edge to root pathway
 		rootPathway.addItem(pathwayRelationEdge);
@@ -198,7 +200,7 @@ public class PathwayItemManager
 		// Create edge representation
 		IGraphItem pathwayReactionEdgeRep = new PathwayReactionEdgeGraphItemRep();
 
-		IGraph rootPathway = generalManager.getPathwayManager().getRootPathway();
+		IGraph rootPathway = ((PathwayManager)generalManager.getPathwayManager()).getRootPathway();
 
 		// Add edge to root pathway
 		rootPathway.addItem(pathwayReactionEdge);
@@ -226,7 +228,8 @@ public class PathwayItemManager
 	// TODO: throw exception
 	public final int getPathwayVertexGraphItemIdByDavidId(final int iDavidId)
 	{
-
+		generalManager.getPathwayManager().waitUntilPathwayLoadingIsFinished();
+		
 		if (hashDavidIdToPathwayVertexGraphItemId.containsKey(iDavidId))
 			return hashDavidIdToPathwayVertexGraphItemId.get(iDavidId);
 
@@ -236,7 +239,8 @@ public class PathwayItemManager
 	@Override
 	public int getDavidIdByPathwayVertexGraphItemId(final int iPathwayVertexGraphItemId)
 	{
-
+		generalManager.getPathwayManager().waitUntilPathwayLoadingIsFinished();
+		
 		if (hashPathwayVertexGraphItemIdToDavidId.containsKey(iPathwayVertexGraphItemId))
 			return hashPathwayVertexGraphItemIdToDavidId.get(iPathwayVertexGraphItemId);
 
@@ -245,6 +249,8 @@ public class PathwayItemManager
 	
 	public PathwayVertexGraphItemRep getPathwayVertexRep(int iID)
 	{
+		generalManager.getPathwayManager().waitUntilPathwayLoadingIsFinished();
+		
 		if (!hashIDToPathwayVertexGraphItemRep.containsKey(iID))
 		{
 			throw new CaleydoRuntimeException("Requested pathway vertex representation ID " 

@@ -11,6 +11,8 @@ import org.caleydo.core.data.view.rep.jgraph.PathwayImageMap;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.core.Graph;
 
@@ -46,6 +48,10 @@ public class PathwayManager
 	private PathwayImageMap currentPathwayImageMap;
 
 	private PathwayGraph currentPathwayGraph;
+	
+	private Thread pathwayLoaderThread;
+	
+	private boolean bIsPathwayLoadingFinished;
 
 	/**
 	 * Constructor.
@@ -83,7 +89,7 @@ public class PathwayManager
 	@Override
 	public void triggerParsingPathwayDatabases()
 	{
-		new PathwayLoaderThread(hashPathwayDatabase.values());
+		pathwayLoaderThread = new PathwayLoaderThread(hashPathwayDatabase.values());
 	}
 
 	@Override
@@ -107,6 +113,8 @@ public class PathwayManager
 	@Override
 	public int searchPathwayIdByName(final String sPathwayName)
 	{
+		waitUntilPathwayLoadingIsFinished();
+		
 		Iterator<String> iterPathwayName = hashPathwayTitleToPathwayId.keySet().iterator();
 		Pattern pattern = Pattern.compile(sPathwayName, Pattern.CASE_INSENSITIVE);
 		Matcher regexMatcher;
@@ -126,7 +134,6 @@ public class PathwayManager
 		return -1;
 	}
 
-	@Override
 	public Graph getRootPathway()
 	{
 		return rootPathwayGraph;
@@ -136,12 +143,16 @@ public class PathwayManager
 	public void setPathwayVisibilityStateByID(final int iPathwayID,
 			final boolean bVisibilityState)
 	{
+		waitUntilPathwayLoadingIsFinished();	
+		
 		hashPathwayIdToVisibilityState.put(iPathwayID, bVisibilityState);
 	}
 
 	@Override
 	public boolean isPathwayVisible(final int iPathwayID)
 	{
+		waitUntilPathwayLoadingIsFinished();
+		
 		return hashPathwayIdToVisibilityState.get(iPathwayID);
 	}
 
@@ -157,9 +168,8 @@ public class PathwayManager
 		return hashPathwayDatabase.get(type);
 	}
 
-	@Override
-	public PathwayGraph getCurrenPathwayGraph()
-	{
+	protected PathwayGraph getCurrenPathwayGraph()
+	{	
 		return currentPathwayGraph;
 	}
 
@@ -169,4 +179,27 @@ public class PathwayManager
 		return currentPathwayImageMap;
 	}
 
+	public void waitUntilPathwayLoadingIsFinished()
+	{
+//	while (pathwayLoaderThread.isAlive())
+//			try
+//			{
+//				Thread.sleep(1000);
+//			}
+//			catch (InterruptedException e)
+//			{
+//				// TODO Auto-generated catch block
+//				e.printStackTrace();
+//			}
+//		
+		try
+		{
+			pathwayLoaderThread.join();
+		}
+		catch (InterruptedException e)
+		{
+			throw new CaleydoRuntimeException("Pathway loader thread has been interrupted!",
+					CaleydoRuntimeExceptionType.DATAHANDLING);
+		}
+	}
 }

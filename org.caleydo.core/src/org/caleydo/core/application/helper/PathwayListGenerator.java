@@ -6,9 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintWriter;
-
 import javax.swing.ImageIcon;
-
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
@@ -35,9 +33,9 @@ public class PathwayListGenerator
 			String sInputFolderPath, String sInputImagePath,
 			String sOutputFileName) throws FileNotFoundException
 	{
-		sInputFolderPath = generalManager.getCaleydoHomePath() + sInputFolderPath;
-		sInputImagePath = generalManager.getCaleydoHomePath() + sInputImagePath;
-		sOutputFileName = generalManager.getCaleydoHomePath() + sOutputFileName;
+		sInputFolderPath = IGeneralManager.CALEYDO_HOME_PATH + sInputFolderPath;
+		sInputImagePath = IGeneralManager.CALEYDO_HOME_PATH + sInputImagePath;
+		sOutputFileName = IGeneralManager.CALEYDO_HOME_PATH + sOutputFileName;
 		
 		outputWriter = new PrintWriter(sOutputFileName);
 

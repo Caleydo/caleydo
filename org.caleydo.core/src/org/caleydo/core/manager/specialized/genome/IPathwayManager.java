@@ -23,12 +23,8 @@ public interface IPathwayManager
 
 	public void triggerParsingPathwayDatabases();
 
-	public Graph getRootPathway();
-
 	public void createPathwayImageMap(final String sImageLink);
-
-	public PathwayGraph getCurrenPathwayGraph();
-
+	
 	public PathwayImageMap getCurrentPathwayImageMap();
 
 	public int searchPathwayIdByName(final String sPathwayName);
@@ -39,4 +35,6 @@ public interface IPathwayManager
 			final boolean bVisibilityState);
 
 	public boolean isPathwayVisible(final int iPathwayID);
+	
+	public void waitUntilPathwayLoadingIsFinished();
 }

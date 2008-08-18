@@ -20,7 +20,7 @@ public interface IGeneralManager
 {
 	public static final String PREFERENCE_FILE_NAME = "caleydo.prefs";
 	public static final String USER_HOME = "user.home";
-	public static final String CALEYDO_HOME = "/.caleydo/";
+	public static final String CALEYDO_HOME_PATH = System.getProperty(USER_HOME) + "/.caleydo/";
 	
 	public static final String sDelimiter_Paser_DataItemBlock = "@";
 	public static final String sDelimiter_Parser_DataItems = " ";
@@ -57,11 +57,6 @@ public interface IGeneralManager
 	 * The object can store and restore preferences to/from a predefined file.
 	 */
 	public PreferenceStore getPreferenceStore();
-	
-	/**
-	 * Returns the home path to store data: $USER_HOME/.caleydo/
-	 */
-	public String getCaleydoHomePath();
 	
 	/**
 	 * Returns whether the application runs as standalone test GUI or embedded in RCP

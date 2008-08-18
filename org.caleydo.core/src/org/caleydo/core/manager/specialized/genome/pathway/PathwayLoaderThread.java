@@ -16,7 +16,6 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.system.StringConversionTool;
-import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
 import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 
 /**
@@ -102,7 +101,7 @@ public class PathwayLoaderThread
 		
 		if (pathwayDatabase.getName().equals("KEGG"))
 		{
-			sFileName = generalManager.getCaleydoHomePath() + PATHWAY_LIST_KEGG;
+			sFileName = IGeneralManager.CALEYDO_HOME_PATH + PATHWAY_LIST_KEGG;
 			fProgressFactor = 100f / APPROX_PATHWAY_COUNT_KEGG ;
 			
 			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread(
@@ -110,7 +109,7 @@ public class PathwayLoaderThread
 		}
 		else if (pathwayDatabase.getName().equals("BioCarta"))
 		{
-			sFileName = generalManager.getCaleydoHomePath() + PATHWAY_LIST_BIOCARTA;
+			sFileName = IGeneralManager.CALEYDO_HOME_PATH + PATHWAY_LIST_BIOCARTA;
 			fProgressFactor = 100f / APPROX_PATHWAY_COUNT_BIOCARTA;
 			
 			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread(
@@ -147,7 +146,8 @@ public class PathwayLoaderThread
 				generalManager.getXmlParserManager().parseXmlFileByName(
 						sPathwayPath + sPathwayName);
 
-				tmpPathwayGraph = generalManager.getPathwayManager().getCurrenPathwayGraph();
+				tmpPathwayGraph = ((PathwayManager)generalManager.getPathwayManager())
+					.getCurrenPathwayGraph();
 				tmpPathwayGraph.setWidth(StringConversionTool.convertStringToInt(tokenizer
 						.nextToken(), -1));
 				tmpPathwayGraph.setHeight(StringConversionTool.convertStringToInt(tokenizer
@@ -157,10 +157,12 @@ public class PathwayLoaderThread
 				int iImageHeight = tmpPathwayGraph.getHeight();
 
 				if (iImageWidth == -1 || iImageHeight == -1)
+				{
 					generalManager.getLogger().log(
 							Level.INFO,
 							"Pathway texture width=" + iImageWidth + " / height="
 									+ iImageHeight);
+				}
 				
 				iPathwayIndex++;
 				
@@ -199,36 +201,24 @@ public class PathwayLoaderThread
 	{
 		int iTmpPathwayId;
 
-		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
-				.getAllGLEventListeners())
-		{
-			if (tmpGLEventListener instanceof GLCanvasRemoteRendering3D)
-			{
-				for (GLEventListener tmpGLEventListenerInner : generalManager
-						.getViewGLCanvasManager().getAllGLEventListeners())
-				{
-					if (tmpGLEventListenerInner instanceof GLCanvasPathway3D)
-					{
-						iTmpPathwayId = ((GLCanvasPathway3D) tmpGLEventListenerInner)
-								.getPathwayID();
-
-						((GLCanvasRemoteRendering3D) tmpGLEventListener)
-								.addPathwayView(iTmpPathwayId);
-					}
-				}
-			}
-
-			// if
-			// (tmpGLEventListener.getClass().equals(GLCanvasPathway3D.class))
-			// {
-			// GLCaleydoCanvas tmpGLCanvas =
-			// ((GLCanvasPathway3D)tmpGLEventListener).getParentGLCanvas();
-			//				
-			// // Force GLCanvas to call init(gl) of the GLEventListener again
-			// // by removing and adding it from the GL canvas
-			// tmpGLCanvas.removeGLEventListener(tmpGLEventListener);
-			// tmpGLCanvas.addGLEventListener(tmpGLEventListener);
-			// }
-		}
+//		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
+//				.getAllGLEventListeners())
+//		{
+//			if (tmpGLEventListener instanceof GLCanvasRemoteRendering3D)
+//			{
+//				for (GLEventListener tmpGLEventListenerInner : generalManager
+//						.getViewGLCanvasManager().getAllGLEventListeners())
+//				{
+//					if (tmpGLEventListenerInner instanceof GLCanvasPathway3D)
+//					{
+//						iTmpPathwayId = ((GLCanvasPathway3D) tmpGLEventListenerInner)
+//								.getPathwayID();
+//
+//						((GLCanvasRemoteRendering3D) tmpGLEventListener)
+//								.addPathwayView(iTmpPathwayId);
+//					}
+//				}
+//			}
+//		}
 	}
 }

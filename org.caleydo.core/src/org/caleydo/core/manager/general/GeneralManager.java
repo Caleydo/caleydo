@@ -49,11 +49,6 @@ public class GeneralManager
 	private static IGeneralManager generalManager;
 	
 	/**
-	 * Location where Caleydo stores preferences and caching data.
-	 */
-	private String sCaleydoHomePath;
-	
-	/**
 	 * Preferences store enables storing and restoring of application specific preference data.
 	 */
 	private PreferenceStore preferenceStore;
@@ -96,16 +91,6 @@ public class GeneralManager
 	private IDManager IDManager;
 
 	private Logger logger;
-
-	/**
-	 * Constructor.
-	 */
-	private GeneralManager()
-	{
-		// Retrieve platform independent home directory
-		sCaleydoHomePath = System.getProperty(USER_HOME);
-		sCaleydoHomePath +=  CALEYDO_HOME;
-	}
 	
 	/*
 	 * (non-Javadoc)
@@ -159,7 +144,7 @@ public class GeneralManager
 
 	private void initPreferences() 
 	{				
-		preferenceStore = new PreferenceStore(sCaleydoHomePath + PREFERENCE_FILE_NAME);
+		preferenceStore = new PreferenceStore(IGeneralManager.CALEYDO_HOME_PATH + PREFERENCE_FILE_NAME);
 		
 		try
 		{
@@ -168,12 +153,12 @@ public class GeneralManager
 		catch (IOException e)
 		{
 			logger.log(Level.INFO, "Create new preference store at "
-					+sCaleydoHomePath + PREFERENCE_FILE_NAME);
+					+ IGeneralManager.CALEYDO_HOME_PATH + PREFERENCE_FILE_NAME);
 			
 			// Create .caleydo folder
-			if (!(new File(sCaleydoHomePath).exists()))
+			if (!(new File(IGeneralManager.CALEYDO_HOME_PATH).exists()))
 			{
-				if(!(new File(sCaleydoHomePath).mkdir()))
+				if(!(new File(IGeneralManager.CALEYDO_HOME_PATH).mkdir()))
 					throw new CaleydoRuntimeException("Unable to create home folder .caleydo. Check user permissions!", 
 							CaleydoRuntimeExceptionType.DATAHANDLING);
 			}
@@ -191,7 +176,7 @@ public class GeneralManager
 		}
 		
 		// Create log folder in .caleydo
-		new File(sCaleydoHomePath + "logs").mkdirs();
+		new File(IGeneralManager.CALEYDO_HOME_PATH + "logs").mkdirs();
 	}
 	
 	/**
@@ -338,15 +323,6 @@ public class GeneralManager
 	public PreferenceStore getPreferenceStore() 
 	{
 		return preferenceStore;
-	}
-	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#getCaleydoHomePath()
-	 */
-	public String getCaleydoHomePath() 
-	{
-		return sCaleydoHomePath;
 	}
 
 	@Override
