@@ -1131,7 +1131,7 @@ public class ParallelCoordinates
 		{
 			// Check if selection occurs in the pool or memo layer of the remote
 			// rendered view (i.e. bucket, jukebox)
-			if (remoteRenderingGLCanvas.getHierarchyLayerByGLCanvasListenerId(iUniqueID)
+			if (remoteRenderingGLCanvas.getHierarchyLayerByGLEventListenerId(iUniqueID)
 					.getCapacity() > 5)
 			{
 				return;

@@ -61,6 +61,6 @@ public class CmdGlObjectPathway3D
 	{
 		super.doCommand();
 
-		((GLCanvasPathway3D) glEventListener).setPathwayID(iPathwayID);
+		((GLCanvasPathway3D) createdObject).setPathwayID(iPathwayID);
 	}
 }

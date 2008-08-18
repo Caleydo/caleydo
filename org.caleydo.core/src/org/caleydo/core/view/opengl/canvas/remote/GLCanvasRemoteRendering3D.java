@@ -172,8 +172,7 @@ public class GLCanvasRemoteRendering3D
 			// Unregister standard mouse wheel listener
 			parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
 			// Register specialized bucket mouse wheel listener
-			parentGLCanvas
-					.addMouseWheelListener((MouseWheelListener) bucketMouseWheelListener);
+			parentGLCanvas.addMouseWheelListener((MouseWheelListener) bucketMouseWheelListener);
 
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX))
@@ -364,6 +363,8 @@ public class GLCanvasRemoteRendering3D
 
 				tmpGLEventListener.initRemote(gl, iUniqueID, underInteractionLayer,
 						pickingTriggerMouseAdapter, this);
+				
+				tmpGLEventListener.broadcastElements(ESelectionType.NORMAL);
 
 			}
 			else if (stackLayer.containsElement(-1))
@@ -373,6 +374,8 @@ public class GLCanvasRemoteRendering3D
 
 				tmpGLEventListener.initRemote(gl, iUniqueID, stackLayer,
 						pickingTriggerMouseAdapter, this);
+				
+				tmpGLEventListener.broadcastElements(ESelectionType.NORMAL);
 			}
 			else if (poolLayer.containsElement(-1))
 			{
@@ -478,11 +481,10 @@ public class GLCanvasRemoteRendering3D
 								CommandType.CREATE_GL_PATHWAY_3D);
 
 				cmdPathway.setAttributes(iTmpPathwayID, iAlSetIDs, ProjectionMode.ORTHOGRAPHIC, -4, 4, 4, -4, -20, 20);
-
 				cmdPathway.doCommand();
 				
-				int iGeneratedViewID = cmdPathway.getEventListenerID();
-
+				int iGeneratedViewID = cmdPathway.getCreatedObject().getID();
+				
 				ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
 				arMediatorIDs.add(iGeneratedViewID);
 				
@@ -500,6 +502,9 @@ public class GLCanvasRemoteRendering3D
 					((AGLEventListener) generalManager.getViewGLCanvasManager().getEventListener(
 							iGeneratedViewID)).initRemote(gl, iUniqueID,
 							underInteractionLayer, pickingTriggerMouseAdapter, this);
+					
+					// Trigger initial gene propagation
+					((GLCanvasPathway3D)cmdPathway.getCreatedObject()).broadcastElements(ESelectionType.NORMAL);
 				}
 				else if (stackLayer.containsElement(-1))
 				{
@@ -510,6 +515,9 @@ public class GLCanvasRemoteRendering3D
 					((AGLEventListener) generalManager.getViewGLCanvasManager().getEventListener(
 							iGeneratedViewID)).initRemote(gl, iUniqueID, stackLayer,
 							pickingTriggerMouseAdapter, this);
+					
+					// Trigger initial gene propagation
+					((GLCanvasPathway3D)cmdPathway.getCreatedObject()).broadcastElements(ESelectionType.NORMAL);
 				}
 				else if (poolLayer.containsElement(-1))
 				{
@@ -1085,12 +1093,14 @@ public class GLCanvasRemoteRendering3D
 
 	private void loadViewToUnderInteractionLayer(final int iViewID)
 	{
-
 		// Check if other slerp action is currently running
 		if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE)
 			return;
 
 		arSlerpActions.clear();
+		
+		generalManager.getViewGLCanvasManager().getEventListener(iViewID)
+			.broadcastElements(ESelectionType.NORMAL);
 
 		// Check if view is already loaded in the stack layer
 		if (stackLayer.containsElement(iViewID))
@@ -1128,6 +1138,11 @@ public class GLCanvasRemoteRendering3D
 						.getElementIdByPositionIndex(stackLayer.getNextPositionIndex()),
 						stackLayer, true);
 				arSlerpActions.add(reverseSlerpAction);
+				
+				// Unregister all elements of the view that is moved out
+				generalManager.getViewGLCanvasManager().getEventListener(
+						stackLayer.getElementIdByPositionIndex(stackLayer.getNextPositionIndex()))
+							.broadcastElements(ESelectionType.REMOVE);
 			}
 
 			// Slerp under interaction view to free spot in stack
@@ -1149,9 +1164,7 @@ public class GLCanvasRemoteRendering3D
 	@Override
 	public void handleUpdate(IUniqueObject eventTrigger)
 	{
-
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -1402,6 +1415,10 @@ public class GLCanvasRemoteRendering3D
 						arSlerpActions.add(slerpActionTransition);
 
 						bEnableNavigationOverlay = false;
+						
+						// Unregister all elements of the view that is moved out
+						generalManager.getViewGLCanvasManager().getEventListener(iExternalID)
+									.broadcastElements(ESelectionType.REMOVE);
 
 						break;
 
@@ -1742,25 +1759,24 @@ public class GLCanvasRemoteRendering3D
 	}
 
 	@Override
-	public RemoteHierarchyLayer getHierarchyLayerByGLCanvasListenerId(
-			final int iGLEvnetListenerId)
+	public RemoteHierarchyLayer getHierarchyLayerByGLEventListenerId(
+			final int iGLEventListenerId)
 	{
-
-		if (underInteractionLayer.containsElement(iGLEvnetListenerId))
+		if (underInteractionLayer.containsElement(iGLEventListenerId))
 			return underInteractionLayer;
-		else if (stackLayer.containsElement(iGLEvnetListenerId))
+		else if (stackLayer.containsElement(iGLEventListenerId))
 			return stackLayer;
-		else if (poolLayer.containsElement(iGLEvnetListenerId))
+		else if (poolLayer.containsElement(iGLEventListenerId))
 			return poolLayer;
-		else if (transitionLayer.containsElement(iGLEvnetListenerId))
+		else if (transitionLayer.containsElement(iGLEventListenerId))
 			return transitionLayer;
-		else if (spawnLayer.containsElement(iGLEvnetListenerId))
+		else if (spawnLayer.containsElement(iGLEventListenerId))
 			return spawnLayer;
-		else if (memoLayer.containsElement(iGLEvnetListenerId))
+		else if (memoLayer.containsElement(iGLEventListenerId))
 			return memoLayer;
 
 		generalManager.getLogger().log(Level.WARNING,
-				"GL Event Listener " + iGLEvnetListenerId + " is not contained in any layer!");
+				"GL Event Listener " + iGLEventListenerId + " is not contained in any layer!");
 
 		return null;
 	}
@@ -1933,6 +1949,12 @@ public class GLCanvasRemoteRendering3D
 	public void triggerUpdate(ISelectionDelta selectionDelta)
 	{
 		// TODO Auto-generated method stub
+		
+	}
+	
+	@Override
+	public void broadcastElements(ESelectionType type)
+	{
 		
 	}
 }

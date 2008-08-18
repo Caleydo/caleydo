@@ -1,17 +1,14 @@
 package org.caleydo.core.view.opengl.canvas.wii;
 
-import java.awt.BorderLayout;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.ArrayList;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
-import javax.media.opengl.GLCapabilities;
-import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
+import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -791,5 +788,11 @@ public class GLCanvasWiiTest
 			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas)
 	{
 
+	}
+	
+	@Override
+	public void broadcastElements(ESelectionType type)
+	{
+		
 	}
 }

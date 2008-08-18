@@ -4,6 +4,7 @@ import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.media.opengl.GL;
+import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -211,5 +212,11 @@ public class GLCanvasRemoteGlyph
 			int iExternalID, Pick pick)
 	{
 
+	}
+	
+	@Override
+	public void broadcastElements(ESelectionType type)
+	{
+		
 	}
 }

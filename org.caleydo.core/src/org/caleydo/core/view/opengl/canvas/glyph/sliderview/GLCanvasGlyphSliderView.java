@@ -404,4 +404,9 @@ public class GLCanvasGlyphSliderView
 		// TODO Auto-generated method stub
 	}
 
+	@Override
+	public void broadcastElements(ESelectionType type)
+	{
+		
+	}
 }

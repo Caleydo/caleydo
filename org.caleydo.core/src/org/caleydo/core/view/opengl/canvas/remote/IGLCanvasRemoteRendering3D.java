@@ -11,8 +11,8 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 public interface IGLCanvasRemoteRendering3D
 {
 
-	public RemoteHierarchyLayer getHierarchyLayerByGLCanvasListenerId(
-			final int iGLCanvasListenerId);
+	public RemoteHierarchyLayer getHierarchyLayerByGLEventListenerId(
+			final int iGLEventListenerId);
 
 	public BucketMouseWheelListener getBucketMouseWheelListener();
 }

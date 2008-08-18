@@ -10,6 +10,7 @@ import org.caleydo.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.view.camera.IViewCamera;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.camera.ViewCameraBase;
@@ -61,7 +62,7 @@ public abstract class AGLEventListener
 	protected transient GLToolboxRenderer glToolboxRenderer;
 
 	protected IGLCanvasRemoteRendering3D remoteRenderingGLCanvas;
-
+	
 	/**
 	 * The views current aspect ratio. Value gets updated when reshape is called
 	 * by the JOGL animator.
@@ -436,16 +437,9 @@ public abstract class AGLEventListener
 
 		return viewCamera;
 	}
-
-	// public void updataContainedHierarchyLayer(final JukeboxHierarchyLayer
-	// layer)
-	// {
-	// containedHierarchyLayer = layer;
-	// }
-
+	
 	public void loadURLInBrowser(final String sUrl)
 	{
-
 		if (sUrl.length() == 0)
 			return;
 
@@ -456,5 +450,7 @@ public abstract class AGLEventListener
 		createdCmd.setAttributes(sUrl);
 		createdCmd.doCommand();
 	}
+	
+	public abstract void broadcastElements(ESelectionType type);
 	
 }

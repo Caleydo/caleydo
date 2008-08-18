@@ -171,12 +171,6 @@ public class GLCanvasPathway3D
 			return;
 
 		initPathwayData(gl);
-
-		// // Only send out contained genes for pathways inside the bucket (not
-		// in pool)
-		// if (containedHierarchyLayer != null &&
-		// containedHierarchyLayer.getCapacity() <= 4)
-		initialContainedGenePropagation();
 	}
 
 	@Override
@@ -276,7 +270,7 @@ public class GLCanvasPathway3D
 
 		if (remoteRenderingGLCanvas.getBucketMouseWheelListener() != null)
 		{
-			if (remoteRenderingGLCanvas.getHierarchyLayerByGLCanvasListenerId(iUniqueID)
+			if (remoteRenderingGLCanvas.getHierarchyLayerByGLEventListenerId(iUniqueID)
 					.getLevel().equals(EHierarchyLevel.UNDER_INTERACTION)
 					&& remoteRenderingGLCanvas.getBucketMouseWheelListener()
 							.isBucketBottomReached())
@@ -638,7 +632,7 @@ public class GLCanvasPathway3D
 
 		// Check if selection occurs in the pool or memo layer of the remote
 		// rendered view (i.e. bucket, jukebox)
-		if (remoteRenderingGLCanvas.getHierarchyLayerByGLCanvasListenerId(iUniqueID)
+		if (remoteRenderingGLCanvas.getHierarchyLayerByGLEventListenerId(iUniqueID)
 				.getCapacity() > 5)
 		{
 			return;
@@ -655,6 +649,7 @@ public class GLCanvasPathway3D
 						.getPathwayItemManager().getItem(iExternalID);
 
 				// Do nothing if new selection is the same as previous selection
+				// TODO: check if selectedVertex is set correctly
 				if (tmpVertexGraphItemRep == selectedVertex
 						&& !pickingMode.equals(EPickingMode.CLICKED))
 				{
@@ -770,7 +765,7 @@ public class GLCanvasPathway3D
 		}
 	}
 
-	private void initialContainedGenePropagation()
+	public void broadcastElements(ESelectionType type)
 	{
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.DAVID);
 
@@ -807,7 +802,7 @@ public class GLCanvasPathway3D
 					continue;
 				}
 
-				selectionDelta.addSelection(iDavidId, ESelectionType.NORMAL);
+				selectionDelta.addSelection(iDavidId, type);
 			}
 		}
 

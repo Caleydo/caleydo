@@ -626,4 +626,9 @@ public class GLCanvasGlyph
 			generalManager.getEventPublisher().handleUpdate(this, selectionDelta);
 	}
 
+	@Override
+	public void broadcastElements(ESelectionType type)
+	{
+		
+	}
 }

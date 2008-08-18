@@ -574,5 +574,10 @@ public abstract class AStorageBasedView
 					"Can not handle data type of update in selectionDelta");
 		}
 	}
-
+	
+	@Override
+	public void broadcastElements(ESelectionType type)
+	{
+		
+	}
 }

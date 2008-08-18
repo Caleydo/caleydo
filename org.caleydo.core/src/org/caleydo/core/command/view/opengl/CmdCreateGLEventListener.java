@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.base.ACmdExternalAttributes;
+import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.camera.ViewFrustumBase;
 import org.caleydo.core.manager.IGeneralManager;
@@ -26,12 +26,9 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
  * @author Marc Streit
  */
 public class CmdCreateGLEventListener
-	extends ACmdExternalAttributes
+	extends ACmdCreational<AGLEventListener>
 {
-
 	protected CommandType viewType;
-
-	protected transient AGLEventListener glEventListener;
 
 	protected IViewFrustum viewFrustum;
 
@@ -215,25 +212,24 @@ public class CmdCreateGLEventListener
 			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
 		}
 		
-		glEventListener = glCanvasManager.createGLEventListener(viewType,
+		createdObject = glCanvasManager.createGLEventListener(viewType,
 				iParentContainerId,	sLabel, viewFrustum);
 		
 		if (iExternalID != -1)
 		{
-			generalManager.getIDManager().mapInternalToExternalID(glEventListener.getID(), 
+			generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), 
 					iExternalID);
 		}
 		
-		((AGLEventListener) glEventListener).getViewCamera().setCameraPosition(cameraOrigin);
-		((AGLEventListener) glEventListener).getViewCamera().setCameraRotation(cameraRotation);
+		((AGLEventListener) createdObject).getViewCamera().setCameraPosition(cameraOrigin);
+		((AGLEventListener) createdObject).getViewCamera().setCameraRotation(cameraRotation);
 
 		// Set sets in views
-		AGLEventListener glCanvas = ((AGLEventListener) glEventListener);
+		AGLEventListener glCanvas = ((AGLEventListener) createdObject);
 		for (Integer iSetID : iAlSetIDs)
 		{
 			glCanvas.addSet(iSetID);
 		}
-
 		
 		commandManager.runDoCommand(this);
 	}
@@ -245,10 +241,5 @@ public class CmdCreateGLEventListener
 	public void undoCommand() throws CaleydoRuntimeException
 	{
 		commandManager.runUndoCommand(this);
-	}
-	
-	public int getEventListenerID() 
-	{
-		return glEventListener.getID();
 	}
 }
