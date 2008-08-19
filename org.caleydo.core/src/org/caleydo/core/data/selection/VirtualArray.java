@@ -1,6 +1,7 @@
 package org.caleydo.core.data.selection;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -133,12 +134,11 @@ public class VirtualArray
 	@Override
 	public void removeByElement(int iElement)
 	{
-		int iIndex = 0;
-		for(int iCurrent : iAlVirtualArray)
+		Iterator<Integer> iter = iAlVirtualArray.iterator();
+		while(iter.hasNext())
 		{
-			if(iCurrent == iElement)
-				remove(iIndex);
-			iIndex++;
+			if(iter.next() == iElement)
+				iter.remove();
 		}
 	}
 	

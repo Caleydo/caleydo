@@ -184,7 +184,7 @@ public class GenericSelectionManager
 			alSelectionTypes = new ArrayList<ESelectionType>();
 			for (ESelectionType selectionType : ESelectionType.values())
 			{
-				if (selectionType != ESelectionType.REMOVE)
+//				if (selectionType != ESelectionType.REMOVE)
 					alSelectionTypes.add(selectionType);
 			}
 		}
@@ -239,11 +239,8 @@ public class GenericSelectionManager
 	 */
 	public void setVA(IVirtualArray virtualArray)
 	{
-		if (this.virtualArray != null)
-		{
-			resetSelectionManager();
-			initialAdd(virtualArray.getIndexList());
-		}
+		resetSelectionManager();
+		initialAdd(virtualArray.getIndexList());
 		this.virtualArray = virtualArray;
 	}
 
@@ -353,9 +350,9 @@ public class GenericSelectionManager
 		}
 
 		// TODO: investigate
-		// throw new CaleydoRuntimeException(
-		// "SelectionManager: element to be removed does not exist",
-		// CaleydoRuntimeExceptionType.VIEW);
+		 throw new CaleydoRuntimeException(
+		 "SelectionManager: element to be removed does not exist",
+		 CaleydoRuntimeExceptionType.VIEW);
 	}
 
 	/**
@@ -419,7 +416,7 @@ public class GenericSelectionManager
 		}
 		if (targetType != ESelectionType.REMOVE)
 			hashSelectionTypes.get(targetType).putAll(tempHash);
-		
+
 		hashSelectionTypes.put(srcType, new HashMap<Integer, Boolean>());
 	}
 
@@ -469,7 +466,6 @@ public class GenericSelectionManager
 	 * 
 	 * @return the SelectionDelta
 	 */
-	// TODO Virtual Arrays
 	public ISelectionDelta getDelta()
 	{
 		ISelectionDelta returnDelta;
@@ -521,7 +517,6 @@ public class GenericSelectionManager
 	 * @return a ISelectionDelta that contains the internal ID of the manager as
 	 *         its primary ID
 	 */
-	// TODO Virtual Arrays
 	public ISelectionDelta setDelta(ISelectionDelta selectionDelta)
 	{
 		if (externalToInternalMapping != null)
@@ -565,8 +560,7 @@ public class GenericSelectionManager
 		for (SelectionItem selection : selectionDelta)
 		{
 			ESelectionType type = selection.getSelectionType();
-			// TODO: what to do if types are not contained in the current list?
-			// atm ignore them
+			// if types are not contained in the current list we ignore them
 			if (!alSelectionTypes.contains(type))
 				continue;
 			addToType(type, selection.getSelectionID());

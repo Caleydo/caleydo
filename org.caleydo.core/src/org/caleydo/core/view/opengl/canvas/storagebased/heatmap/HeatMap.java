@@ -1,10 +1,12 @@
 package org.caleydo.core.view.opengl.canvas.storagebased.heatmap;
 
+import gleem.linalg.Rotf;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
@@ -87,7 +89,6 @@ public class HeatMap
 		colorMapper = new ColorMapping(0, 1);
 	}
 
-
 	@Override
 	public void init(GL gl)
 	{
@@ -97,23 +98,25 @@ public class HeatMap
 
 		renderStyle = new HeatMapRenderStyle(viewFrustum, contentSelectionManager, set,
 				iContentVAID, set.getVA(iStorageVAID).size(), true);
+		// TODO probably remove this here
+		renderStyle.initFieldSizes();
+		
 
 		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
 	}
 
 	@Override
 	public void initLocal(GL gl)
-	{	
+	{
 		dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
 		bRenderOnlyContext = false;
-		
+
 		bRenderHorizontally = true;
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
-		
-	
+
 	}
 
 	@Override
@@ -121,10 +124,10 @@ public class HeatMap
 			final RemoteHierarchyLayer layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas)
-	{		
+	{
 		dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
 		bRenderOnlyContext = true;
-		
+
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 
 		bRenderHorizontally = true;
@@ -137,7 +140,7 @@ public class HeatMap
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
-		
+
 	}
 
 	@Override
@@ -188,13 +191,14 @@ public class HeatMap
 	@Override
 	public void display(GL gl)
 	{
-
+	
 		gl.glCallList(iGLDisplayListToCall);
 		buildDisplayList(gl, iGLDisplayListIndexRemote);
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex)
 	{
+	
 
 		// gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
@@ -262,7 +266,11 @@ public class HeatMap
 		if (bRenderOnlyContext)
 			iContentVAID = mapSelections.get(EStorageBasedVAType.EXTERNAL_SELECTION);
 		else
+		{
+			if (!mapSelections.containsKey(EStorageBasedVAType.COMPLETE_SELECTION))
+				initCompleteList();
 			iContentVAID = mapSelections.get(EStorageBasedVAType.COMPLETE_SELECTION);
+		}
 		iStorageVAID = mapSelections.get(EStorageBasedVAType.STORAGE_SELECTION);
 
 		contentSelectionManager.resetSelectionManager();
@@ -292,7 +300,8 @@ public class HeatMap
 				storageSelectionManager.addToType(ESelectionType.MOUSE_OVER, set.getVA(
 						iContentVAID).get(iColumnCount));
 			}
-		}
+		}		
+	
 	}
 
 	@Override
@@ -328,9 +337,6 @@ public class HeatMap
 				{
 					case CLICKED:
 						connectedElementRepresentationManager.clear();
-						// iAlOldSelection =
-						// prepareSelection(storageSelectionManager,
-						// EViewInternalSelectionType.SELECTION);
 
 						contentSelectionManager.clearSelection(ESelectionType.SELECTION);
 						contentSelectionManager.addToType(ESelectionType.SELECTION,
@@ -339,18 +345,13 @@ public class HeatMap
 						if (eFieldDataType == EIDType.EXPRESSION_INDEX)
 						{
 							triggerUpdate(storageSelectionManager.getDelta());
-							// propagateGeneSelection(iExternalID, 2,
-							// iAlOldSelection);
-
 						}
+						renderStyle.initFieldSizes();
 
 						break;
 
 					case MOUSE_OVER:
 						connectedElementRepresentationManager.clear();
-						// iAlOldSelection =
-						// prepareSelection(storageSelectionManager,
-						// EViewInternalSelectionType.SELECTION);
 
 						contentSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
 						contentSelectionManager.addToType(ESelectionType.MOUSE_OVER,
@@ -359,15 +360,9 @@ public class HeatMap
 						if (eFieldDataType == EIDType.EXPRESSION_INDEX)
 						{
 							triggerUpdate(storageSelectionManager.getDelta());
-							// propagateGeneSelection(iExternalID, 1,
-							// iAlOldSelection);
-							// generalManager.getSingelton().
-							// getViewGLCanvasManager().
-							// getInfoAreaManager()
-							// .setData(iUniqueID,
-							// getAccesionIDFromStorageIndex(iExternalID),
-							// EInputDataType.GENE, getInfo());
 						}
+						renderStyle.initFieldSizes();
+
 						break;
 				}
 
@@ -411,7 +406,7 @@ public class HeatMap
 		int iCount = 0;
 		for (Integer iContentIndex : set.getVA(iContentVAID))
 		{
-			vecFieldWidthAndHeight = renderStyle.getAndInitFieldWidthAndHeight(iCount);
+			vecFieldWidthAndHeight = renderStyle.getFieldWidthAndHeight(iCount);
 			fYPosition = renderStyle.getYCenter() - vecFieldWidthAndHeight.y()
 					* set.getVA(iStorageVAID).size() / 2;
 
@@ -450,7 +445,7 @@ public class HeatMap
 				textRenderer.end3DRendering();
 				gl.glRotatef(-90, 0, 0, 1);
 			}
-			iCount++;
+			// iCount++;
 			fXPosition += vecFieldWidthAndHeight.x();
 		}
 	}
@@ -527,41 +522,50 @@ public class HeatMap
 
 	@Override
 	protected SelectedElementRep createElementRep(int iStorageIndex)
-	throws InvalidAttributeValueException
+			throws InvalidAttributeValueException
 	{
-				
-		SelectedElementRep elementRep = new SelectedElementRep(iUniqueID, 0.0f, 0.0f, 0.0f);
-		
-//		int iContentIndex = set.getVA(iContentVAID).indexOf(iStorageIndex);
-//		renderStyle.clearFieldWidths();
-//		Vec2f vecFieldWithAndHeight = null;
-//
+		// TODO not the best place here...
+		renderStyle.initFieldSizes();
+		SelectedElementRep elementRep;// = new SelectedElementRep(iUniqueID,
+		// 0.0f, 0.0f, 0.0f);
+
+		int iContentIndex = set.getVA(iContentVAID).indexOf(iStorageIndex);
+		if(iContentIndex == -1)
+		{
+			// TODO this shouldn't happen
+			generalManager.getLogger().log(Level.SEVERE, "No element in virtual array for storage index");
+	
+			return null;
+		}
+		//renderStyle.resetFieldWidths();
+		Vec2f vecFieldWithAndHeight = renderStyle.getFieldWidthAndHeight(iContentIndex);
+
 //		for (int iCount = 0; iCount <= iContentIndex; iCount++)
 //		{
-//			vecFieldWithAndHeight = renderStyle.getAndInitFieldWidthAndHeight(iCount);
+//			vecFieldWithAndHeight = renderStyle.getFieldWidthAndHeight(iCount);
 //		}
-//
-//		float fXValue = renderStyle.getXDistanceAt(iContentIndex) + vecFieldWithAndHeight.x()
-//				/ 2;// + renderStyle.getXSpacing();
-//
-//		float fYValue = renderStyle.getYCenter() + vecFieldWithAndHeight.y()
+
+		float fXValue = renderStyle.getXDistanceAt(iContentIndex) + vecFieldWithAndHeight.x()
+				/ 2;// + renderStyle.getXSpacing();
+
+		float fYValue = renderStyle.getYCenter();// + vecFieldWithAndHeight.y()
 //				* set.getVA(iContentVAID).size() / 2;
-//
-//		if (bRenderHorizontally)
-//		{
-//			elementRep = new SelectedElementRep(iUniqueID, fXValue + fAnimationTranslation,
-//					fYValue, 0);
-//
-//		}
-//		else
-//		{
-//			Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
-//			Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
-//			vecPoint.setY(vecPoint.y() + vecTranslation.y());
-//			elementRep = new SelectedElementRep(iUniqueID, vecPoint.x(), vecPoint.y()
-//					- fAnimationTranslation, 0);
-//
-//		}
+
+		if (bRenderHorizontally)
+		{
+			elementRep = new SelectedElementRep(iUniqueID, fXValue + fAnimationTranslation,
+					fYValue, 0);
+
+		}
+		else
+		{
+			Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
+			Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
+			vecPoint.setY(vecPoint.y() + vecTranslation.y());
+			elementRep = new SelectedElementRep(iUniqueID, vecPoint.x(), vecPoint.y()
+					- fAnimationTranslation, 0);
+
+		}
 		return elementRep;
 	}
 
@@ -641,12 +645,17 @@ public class HeatMap
 		fAnimationTranslation += fDelta;
 	}
 
-
-
 	@Override
 	public void toggleRenderContext()
 	{
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	protected void checkUnselection()
+	{
+		// TODO Auto-generated method stub
+
 	}
 }

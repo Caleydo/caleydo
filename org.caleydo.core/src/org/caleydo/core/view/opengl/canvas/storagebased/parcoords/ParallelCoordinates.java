@@ -68,7 +68,7 @@ public class ParallelCoordinates
 
 	private EPickingType draggedObject;
 
-//	private int iNumberOfAxis = 0;
+	// private int iNumberOfAxis = 0;
 
 	private float[] fArGateTipHeight;
 
@@ -142,38 +142,17 @@ public class ParallelCoordinates
 		// alDataStorages = new ArrayList<IStorage>();
 		renderStyle = new ParCoordsRenderStyle(viewFrustum);
 
-		// initialize polyline selection manager
-		// ArrayList<EViewInternalSelectionType> alSelectionType = new
-		// ArrayList<EViewInternalSelectionType>();
-		// for (EViewInternalSelectionType selectionType :
-		// EViewInternalSelectionType.values())
-		// {
-		// alSelectionType.add(selectionType);
-		// }
-
-		// TODO this is the content selection manager no matter what now
+		// TODO this is only valid for genes
 		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX)
 				.mappingType(EMappingType.EXPRESSION_INDEX_2_DAVID,
 						EMappingType.DAVID_2_EXPRESSION_STORAGE_ID).externalIDType(
 						EIDType.DAVID).build();
 
-		// initialize axis selection manager
-		// alSelectionType = new ArrayList<EViewInternalSelectionType>();
-		// for (EViewInternalSelectionType selectionType :
-		// EViewInternalSelectionType.values())
-		// {
-		// alSelectionType.add(selectionType);
-		// }
 		// TODO no mapping
-
-		// TODO this is the storage selection manager
 		storageSelectionManager = new GenericSelectionManager.Builder(
 				EIDType.EXPRESSION_EXPERIMENT).build();
 
 		decimalFormat = new DecimalFormat("#####.##");
-
-		// mapSelections = new EnumMap<ESelectionType,
-		// Integer>(ESelectionType.class);
 
 		alIsAngleBlocking = new ArrayList<ArrayList<Integer>>();
 		alIsAngleBlocking.add(new ArrayList<Integer>());
@@ -220,9 +199,9 @@ public class ParallelCoordinates
 	{
 		iconTextureManager = new GLIconTextureManager(gl);
 
-		// initialize selection to an empty array with
 		initData();
 		initLists();
+		initGates();
 
 		fXDefaultTranslation = renderStyle.getXSpacing();
 		fYTranslation = renderStyle.getBottomSpacing();
@@ -272,7 +251,6 @@ public class ParallelCoordinates
 
 		checkForHits(gl);
 
-		// pickingTriggerMouseAdapter.resetEvents();
 	}
 
 	@Override
@@ -348,22 +326,11 @@ public class ParallelCoordinates
 		ePolylineDataType = eTempType;
 		fXTranslation = 0;
 		connectedElementRepresentationManager.clear();
-		if (bRenderStorageHorizontally)
-		{
-			iAxisVAID = iContentVAID;
-			axisSelectionManager = contentSelectionManager;
-			iPolylineVAID = iStorageVAID;
-			polylineSelectionManager = storageSelectionManager;
-		}
-		else
-		{
-			iAxisVAID = iStorageVAID;
-			axisSelectionManager = storageSelectionManager;
-			iPolylineVAID = iContentVAID;
-			polylineSelectionManager = contentSelectionManager;
-		}
+		initContentVariables();
+
 		// TODO we might not need that here!
-		initLists();
+		// initLists();
+		initGates();
 
 	}
 
@@ -375,11 +342,19 @@ public class ParallelCoordinates
 		if (bRenderOnlyContext)
 			iContentVAID = mapSelections.get(EStorageBasedVAType.EXTERNAL_SELECTION);
 		else
+		{
+			if(!mapSelections.containsKey(EStorageBasedVAType.COMPLETE_SELECTION))
+				initCompleteList();
+			
 			iContentVAID = mapSelections.get(EStorageBasedVAType.COMPLETE_SELECTION);
-		
+		}
+
 		contentSelectionManager.setVA(set.getVA(iContentVAID));
+		initContentVariables();
+		initGates();
 		resetSelections();
-		refresh();
+
+		setDisplayListDirty();
 	}
 
 	/**
@@ -389,7 +364,6 @@ public class ParallelCoordinates
 	 */
 	public void preventOcclusion(boolean bPreventOcclusion)
 	{
-
 		this.bPreventOcclusion = bPreventOcclusion;
 	}
 
@@ -398,7 +372,6 @@ public class ParallelCoordinates
 	 */
 	public void resetSelections()
 	{
-
 		for (int iCount = 0; iCount < fArGateTipHeight.length; iCount++)
 		{
 			fArGateTipHeight[iCount] = 0;
@@ -422,14 +395,12 @@ public class ParallelCoordinates
 	}
 
 	/**
-	 * Build everything new but the data base
+	 * Set the display list to dirty
 	 */
-	public void refresh()
+	public void setDisplayListDirty()
 	{
-		//initLists();
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
-		// bRenderInfoArea = false;
 	}
 
 	/**
@@ -442,8 +413,8 @@ public class ParallelCoordinates
 
 		// TODO this needs only to be done if initLists has to be called during
 		// runtime, not while initing
-		contentSelectionManager.resetSelectionManager();
-		storageSelectionManager.resetSelectionManager();
+		// contentSelectionManager.resetSelectionManager();
+		// storageSelectionManager.resetSelectionManager();
 
 		// int iNumberOfEntriesToRender = 0;
 		//		
@@ -451,9 +422,40 @@ public class ParallelCoordinates
 			iContentVAID = mapSelections.get(EStorageBasedVAType.EXTERNAL_SELECTION);
 		else
 			iContentVAID = mapSelections.get(EStorageBasedVAType.COMPLETE_SELECTION);
-		
+
 		iStorageVAID = mapSelections.get(EStorageBasedVAType.STORAGE_SELECTION);
 
+		initContentVariables();
+
+		contentSelectionManager.setVA(set.getVA(iContentVAID));
+		storageSelectionManager.setVA(set.getVA(iStorageVAID));
+		// iNumberOfEntriesToRender = alContentSelection.size();
+
+		// int iNumberOfAxis = ;
+
+		// // this for loop executes once per polyline
+		// for (int iPolyLineCount = 0; iPolyLineCount <
+		// iNumberOfPolyLinesToRender; iPolyLineCount++)
+		// {
+		// polylineSelectionManager.initialAdd(set.getVA(iPolylineVAID).get(
+		// iPolyLineCount));
+		// }
+		//
+		// // this for loop executes one per axis
+		// for (int iAxisCount = 0; iAxisCount < iNumberOfAxis; iAxisCount++)
+		// {
+		//axisSelectionManager.initialAdd(set.getVA(iAxisVAID).get(iAxisCount));
+		// }
+		fAxisSpacing = renderStyle.getAxisSpacing(set.sizeVA(iAxisVAID));
+
+	}
+
+	/**
+	 * Build mapping between polyline/axis and storage/content for virtual
+	 * arrays and selection managers
+	 */
+	private void initContentVariables()
+	{
 		if (bRenderStorageHorizontally)
 		{
 			iPolylineVAID = iStorageVAID;
@@ -468,28 +470,12 @@ public class ParallelCoordinates
 			polylineSelectionManager = contentSelectionManager;
 			axisSelectionManager = storageSelectionManager;
 		}
-
-		// iNumberOfEntriesToRender = alContentSelection.size();
-
-		int iNumberOfPolyLinesToRender = set.sizeVA(iPolylineVAID);
-		int iNumberOfAxis = set.sizeVA(iAxisVAID);
-
-		// this for loop executes once per polyline
-		for (int iPolyLineCount = 0; iPolyLineCount < iNumberOfPolyLinesToRender; iPolyLineCount++)
-		{
-			polylineSelectionManager.initialAdd(set.getVA(iPolylineVAID).get(iPolyLineCount));
-		}
-
-		// this for loop executes one per axis
-		for (int iAxisCount = 0; iAxisCount < iNumberOfAxis; iAxisCount++)
-		{
-			axisSelectionManager.initialAdd(set.getVA(iAxisVAID).get(iAxisCount));
-		}
-		fAxisSpacing = renderStyle.getAxisSpacing(iNumberOfAxis);
-
-		initGates();
 	}
 
+	/**
+	 * Initialize the gates. The gate heights are saved in two lists, which
+	 * contain the rendering height of the gate
+	 */
 	private void initGates()
 	{
 
@@ -507,6 +493,13 @@ public class ParallelCoordinates
 
 	}
 
+	/**
+	 * Build polyline display list. Renderrs coordinate system, polylines and
+	 * gates, by calling the render methods
+	 * 
+	 * @param gl GL context
+	 * @param iGLDisplayListIndex the index of the display list
+	 */
 	private void buildPolyLineDisplayList(final GL gl, int iGLDisplayListIndex)
 	{
 
@@ -527,6 +520,15 @@ public class ParallelCoordinates
 		gl.glEndList();
 	}
 
+	/**
+	 * Polyline rendering method. All polylines that are contained in the
+	 * polylineSelectionManager and are of the selection type specified in
+	 * renderMode
+	 * 
+	 * @param gl the GL context
+	 * @param renderMode the type of selection in the selection manager to
+	 *            render
+	 */
 	private void renderPolylines(GL gl, ESelectionType renderMode)
 	{
 
@@ -566,7 +568,7 @@ public class ParallelCoordinates
 		}
 
 		Iterator<Integer> dataIterator = setDataToRender.iterator();
-		// this for loop executes once per polyline
+		// this loop executes once per polyline
 		while (dataIterator.hasNext())
 		{
 			int iPolyLineID = dataIterator.next();
@@ -580,8 +582,6 @@ public class ParallelCoordinates
 			if (bRenderStorageHorizontally)
 			{
 				int iWhichStorage = iPolyLineID;
-				// currentStorage =
-				// alDataStorages.get(alStorageSelection.get(iWhichStorage));
 				currentStorage = set.getStorageFromVA(iStorageVAID, iWhichStorage);
 			}
 
@@ -661,14 +661,6 @@ public class ParallelCoordinates
 		Set<Integer> selectedSet = axisSelectionManager.getElements(ESelectionType.SELECTION);
 		Set<Integer> mouseOverSet = axisSelectionManager
 				.getElements(ESelectionType.MOUSE_OVER);
-		// ArrayList<Integer> alAxisSelection;
-
-		// int iAxisSelection = 0;
-
-		// if (bRenderStorageHorizontally)
-		// iAxisSelection = iContentVAID;
-		// else
-		// iAxisSelection = iStorageVAID;
 
 		int iCount = 0;
 		while (iCount < iNumberAxis)
@@ -963,8 +955,7 @@ public class ParallelCoordinates
 		gl.glEnd();
 
 		textRenderer.begin3DRendering();
-		// TODO: set this to real values once we have more than normalized
-		// values
+
 		textRenderer.draw3D(decimalFormat.format(fRawValue), fXTextOrigin, fYTextOrigin,
 				0.0021f, renderStyle.getSmallFontScalingFactor());
 		textRenderer.end3DRendering();
@@ -1049,47 +1040,32 @@ public class ParallelCoordinates
 
 		ArrayList<Integer> alCurrentGateBlocks = alIsGateBlocking.get(iAxisNumber);
 		alCurrentGateBlocks.clear();
-		IStorage currentStorage = null;
 
-		// for every polyline
-		for (int iPolylineCount = 0; iPolylineCount < polylineSelectionManager
-				.getNumberOfElements(); iPolylineCount++)
+		float fCurrentValue = -1;
+		for (int iPolylineIndex : set.getVA(iPolylineVAID))
 		{
-			int iStorageIndex = 0;
-
-			// get the index if array as polyline
 			if (bRenderStorageHorizontally)
 			{
-				currentStorage = set.getStorageFromVA(iStorageVAID, iPolylineCount);
-				iStorageIndex = set.getVA(iContentVAID).get(iAxisNumber);
+				fCurrentValue = set.get(iPolylineIndex).getFloatVA(
+						EDataRepresentation.NORMALIZED, iAxisNumber, iContentVAID);
 			}
-			// get the storage and the storage index for the different cases
 			else
 			{
-				iStorageIndex = set.getVA(iContentVAID).get(iPolylineCount);
-				currentStorage = set.getStorageFromVA(iStorageVAID, iAxisNumber);
+				fCurrentValue = set.getStorageFromVA(iStorageVAID, iAxisNumber).getFloat(
+						EDataRepresentation.NORMALIZED, iPolylineIndex);
 			}
 
-			float fCurrentValue = currentStorage.getFloat(EDataRepresentation.NORMALIZED,
-					iStorageIndex)
-					* renderStyle.getAxisHeight();
-			if (fCurrentValue <= fArGateTipHeight[iAxisNumber]
-					&& fCurrentValue >= fArGateBottomHeight[iAxisNumber])
+			if (fCurrentValue <= fArGateTipHeight[iAxisNumber] / renderStyle.getAxisHeight()
+					&& fCurrentValue >= fArGateBottomHeight[iAxisNumber]
+							/ renderStyle.getAxisHeight())
 			{
-				// if(contentSelectionManager.checkStatus(
-				// EViewInternalSelectionType.SELECTION, iPolylineCount))
-				// bRenderInfoArea = false;
-
-				// contentSelectionManager.addToType(EViewInternalSelectionType
-				// .DESELECTED,
-				// alPolylineSelection.get(iPolylineCount));
-				alCurrentGateBlocks.add(set.getVA(iPolylineVAID).get(iPolylineCount));
-
+				alCurrentGateBlocks.add(iPolylineIndex);
 			}
 		}
+
 	}
 
-	private void checkUnselection()
+	protected void checkUnselection()
 	{
 		HashMap<Integer, Boolean> hashDeselectedPolylines = new HashMap<Integer, Boolean>();
 
@@ -1147,10 +1123,6 @@ public class ParallelCoordinates
 
 					case CLICKED:
 						connectedElementRepresentationManager.clear();
-						// iAlOldSelection =
-						// prepareSelection(contentSelectionManager,
-						// EViewInternalSelectionType.SELECTION);
-
 						polylineSelectionManager.clearSelection(ESelectionType.SELECTION);
 						polylineSelectionManager.addToType(ESelectionType.SELECTION,
 								iExternalID);
@@ -1159,8 +1131,6 @@ public class ParallelCoordinates
 								&& !bAngularBrushingSelectPolyline)
 						{
 							triggerUpdate(polylineSelectionManager.getDelta());
-							// propagateGeneSelection(iExternalID, 2,
-							// iAlOldSelection);
 						}
 
 						if (bAngularBrushingSelectPolyline)
@@ -1171,18 +1141,10 @@ public class ParallelCoordinates
 							linePick = pick;
 							bIsAngularBrushingFirstTime = true;
 						}
-						bIsDisplayListDirtyLocal = true;
-						bIsDisplayListDirtyRemote = true;
+						setDisplayListDirty();
 						break;
 					case MOUSE_OVER:
 						connectedElementRepresentationManager.clear();
-						// iAlOldSelection =
-						// prepareSelection(contentSelectionManager,
-						// EViewInternalSelectionType.SELECTION);
-						//
-						// if (ePolylineDataType == EInputDataType.GENE)
-						// propagateGeneSelection(iExternalID, 1,
-						// iAlOldSelection);
 
 						polylineSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
 						polylineSelectionManager.addToType(ESelectionType.MOUSE_OVER,
@@ -1191,9 +1153,7 @@ public class ParallelCoordinates
 						{
 							triggerUpdate(polylineSelectionManager.getDelta());
 						}
-
-						bIsDisplayListDirtyLocal = true;
-						bIsDisplayListDirtyRemote = true;
+						setDisplayListDirty();
 						break;
 				}
 				pickingManager.flushHits(iUniqueID, ePickingType);
@@ -1206,47 +1166,26 @@ public class ParallelCoordinates
 				switch (ePickingMode)
 				{
 					case CLICKED:
-						// iAlOldSelection =
-						// prepareSelection(storageSelectionManager,
-						// EViewInternalSelectionType.SELECTION);
 
 						axisSelectionManager.clearSelection(ESelectionType.SELECTION);
 						axisSelectionManager.addToType(ESelectionType.SELECTION, iExternalID);
 
 						if (eAxisDataType == EIDType.EXPRESSION_INDEX)
 						{
-							// propagateGeneSelection(iExternalID, 2,
-							// iAlOldSelection);
 							triggerUpdate(axisSelectionManager.getDelta());
 						}
-
 						rePosition(iExternalID);
-						bIsDisplayListDirtyLocal = true;
-						bIsDisplayListDirtyRemote = true;
+						setDisplayListDirty();
 						break;
 					case MOUSE_OVER:
-						// iAlOldSelection =
-						// prepareSelection(storageSelectionManager,
-						// EViewInternalSelectionType.MOUSE_OVER);
-
 						axisSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
 						axisSelectionManager.addToType(ESelectionType.MOUSE_OVER, iExternalID);
 
 						if (eAxisDataType == EIDType.EXPRESSION_INDEX)
 						{
 							triggerUpdate(axisSelectionManager.getDelta());
-							// propagateGeneSelection(iExternalID, 1,
-							// iAlOldSelection);
-							// // generalManager.getSingelton().
-							// getViewGLCanvasManager().
-							// getInfoAreaManager()
-							// .setData(iUniqueID,
-							// getAccesionIDFromStorageIndex(iExternalID),
-							// EInputDataType.GENE, getInfo());
 						}
-
-						bIsDisplayListDirtyLocal = true;
-						bIsDisplayListDirtyRemote = true;
+						setDisplayListDirty();
 						break;
 				}
 				pickingManager.flushHits(iUniqueID, ePickingType);
@@ -1255,15 +1194,11 @@ public class ParallelCoordinates
 				switch (ePickingMode)
 				{
 					case CLICKED:
-						System.out.println("Gate Selected");
-						// bIsDisplayListDirty = true;
 						break;
 					case DRAGGED:
 						bIsDraggingActive = true;
 						draggedObject = EPickingType.LOWER_GATE_TIP_SELECTION;
 						iDraggedGateNumber = iExternalID;
-						// bIsDisplayListDirtyLocal = true;
-						// bIsDisplayListDirtyRemote = true;
 						break;
 				}
 				pickingManager.flushHits(iUniqueID, ePickingType);
@@ -1272,12 +1207,8 @@ public class ParallelCoordinates
 				switch (ePickingMode)
 				{
 					case CLICKED:
-						System.out.println("Gate Selected");
-						// bIsDisplayListDirty = true;
 						break;
 					case DRAGGED:
-						System.out.println("Gate Dragged");
-
 						bIsDraggingActive = true;
 						draggedObject = EPickingType.LOWER_GATE_BOTTOM_SELECTION;
 						iDraggedGateNumber = iExternalID;
@@ -1313,46 +1244,12 @@ public class ParallelCoordinates
 						}
 						else if (iExternalID == EIconIDs.SAVE_SELECTIONS.ordinal())
 						{
-							contentSelectionManager.moveType(ESelectionType.DESELECTED, ESelectionType.REMOVE);
+							contentSelectionManager.moveType(ESelectionType.DESELECTED,
+									ESelectionType.REMOVE);
 							ISelectionDelta delta = contentSelectionManager.getDelta();
+							resetSelections();
 							triggerUpdate(delta);
-							
-							//
-							// if (bRenderSelection)
-							// {
-							// Set<Integer> deselectedSet =
-							// contentSelectionManager
-							//.getElements(EViewInternalSelectionType.DESELECTED
-							// );
-							//
-							// addSetToSelection(deselectedSet, iAlSelection,
-							// iAlGroup, -1);
-							// propagateGenes(iAlSelection, iAlGroup);
-							// }
-							// else
-							// {
-							// Set<Integer> set = contentSelectionManager
-							// .getElements(EViewInternalSelectionType.NORMAL);
-							// addSetToSelection(set, iAlSelection, iAlGroup,
-							// 0);
-							//
-							// set = contentSelectionManager
-							//.getElements(EViewInternalSelectionType.MOUSE_OVER
-							// );
-							// addSetToSelection(set, iAlSelection, iAlGroup,
-							// 1);
-							//
-							// set = contentSelectionManager
-							//.getElements(EViewInternalSelectionType.SELECTION)
-							// ;
-							// addSetToSelection(set, iAlSelection, iAlGroup,
-							// 2);
-							// }
-							// mergeSelection(iAlSelection, iAlGroup, null);
-							// propagateGeneSet();// iAlSelection, iAlGroup);
-							// renderSelection(true);
-							//
-							// connectedElementRepresentationManager.clear();
+
 						}
 						else if (iExternalID == EIconIDs.ANGULAR_BRUSHING.ordinal())
 						{
@@ -1370,7 +1267,6 @@ public class ParallelCoordinates
 				switch (ePickingMode)
 				{
 					case CLICKED:
-						// int iSelection = 0;
 						if (bRenderStorageHorizontally)
 						{
 							set.getVA(iContentVAID).remove(iExternalID);
@@ -1379,7 +1275,7 @@ public class ParallelCoordinates
 						{
 							set.getVA(iStorageVAID).remove(iExternalID);
 						}
-						refresh();
+						setDisplayListDirty();
 						break;
 				}
 				pickingManager.flushHits(iUniqueID, EPickingType.REMOVE_AXIS);
@@ -1391,7 +1287,8 @@ public class ParallelCoordinates
 						if (iExternalID > 0)
 						{
 							set.getVA(iAxisVAID).moveLeft(iExternalID);
-							refresh();
+							setDisplayListDirty();
+							resetSelections();
 						}
 						break;
 				}
@@ -1405,7 +1302,8 @@ public class ParallelCoordinates
 						if (iExternalID > 0)
 						{
 							set.getVA(iAxisVAID).moveRight(iExternalID);
-							refresh();
+							setDisplayListDirty();
+							resetSelections();
 						}
 						break;
 				}
@@ -1418,7 +1316,8 @@ public class ParallelCoordinates
 						if (iExternalID > 0)
 						{
 							set.getVA(iAxisVAID).copy(iExternalID);
-							refresh();
+							setDisplayListDirty();
+							resetSelections();
 							break;
 						}
 				}
@@ -1472,60 +1371,11 @@ public class ParallelCoordinates
 		SelectedElementRep elementRep = new SelectedElementRep(iUniqueID, fXValue, fYValue,
 				0.0f);
 		return elementRep;
-		// if (!bRenderStorageHorizontally)
-		// {
-		// ArrayList<Vec3f> alPoints = new ArrayList<Vec3f>();
-		// float fYValue;
-		// float fXValue;
-		// int iCount = 0;
-		// for (Integer iCurrent : set.getVA(iStorageVAID))
-		// {
-		// // MARC: just add last point for line connections
-		// // therefore the polyline is only connected with a line at the
-		// // right of the view
-		// // instead of the triangle fan
-		// if (iCurrent < set.getVA(iStorageVAID).size() - 1)
-		// {
-		// iCount++;
-		// continue;
-		// }
-		//
-		// fYValue = set.get(iCurrent).getFloat(EDataRepresentation.NORMALIZED,
-		// iStorageIndex);
-		// fYValue = fYValue * renderStyle.getAxisHeight()
-		// + renderStyle.getBottomSpacing();
-		// fXValue = iCount * fAxisSpacing + renderStyle.getXSpacing() +
-		// fXTranslation;
-		// alPoints.add(new Vec3f(fXValue, fYValue, 0));
-		//
-		// }
-		//
-		// elementRep = new SelectedElementRep(iUniqueID, alPoints);
-		//			
-		//			
-		//
-		// }
-		// else
-		// {
-		// float fXValue = set.getVA(iContentVAID).indexOf(iStorageIndex) *
-		// fAxisSpacing
-		// + renderStyle.getXSpacing() + fXTranslation;
-		//
-		// ArrayList<Vec3f> alPoints = new ArrayList<Vec3f>();
-		// alPoints.add(new Vec3f(fXValue, renderStyle.getBottomSpacing(), 0));
-		// alPoints.add(new Vec3f(fXValue, renderStyle.getBottomSpacing()
-		// + renderStyle.getAxisHeight(), 0));
-		//
-		// elementRep = new SelectedElementRep(iUniqueID, alPoints);
-		// }
-		// return elementRep;
-
 	}
 
 	@Override
 	public ArrayList<String> getInfo()
 	{
-
 		ArrayList<String> sAlInfo = new ArrayList<String>();
 		sAlInfo.add("Type: Parallel Coordinates");
 		if (!bRenderStorageHorizontally)

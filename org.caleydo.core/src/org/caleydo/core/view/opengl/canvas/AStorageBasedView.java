@@ -21,6 +21,7 @@ import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.picking.ESelectionMode;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
+import org.caleydo.core.manager.specialized.genome.pathway.PathwayManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
@@ -41,17 +42,19 @@ public abstract class AStorageBasedView
 
 	protected ISet set;
 
-//	/**
-//	 * Specify which type of selection is currently active for the content in
-//	 * the storages
-//	 */
-//	protected EStorageBasedVAType eWhichContentSelection = EStorageBasedVAType.COMPLETE_SELECTION;
-//
-//	/**
-//	 * Specify which type of selection is currently active for the storages in
-//	 * the set
-//	 */
-//	protected EStorageBasedVAType eWhichStorageSelection = EStorageBasedVAType.STORAGE_SELECTION;
+	// /**
+	// * Specify which type of selection is currently active for the content in
+	// * the storages
+	// */
+	// protected EStorageBasedVAType eWhichContentSelection =
+	// EStorageBasedVAType.COMPLETE_SELECTION;
+	//
+	// /**
+	// * Specify which type of selection is currently active for the storages in
+	// * the set
+	// */
+	// protected EStorageBasedVAType eWhichStorageSelection =
+	// EStorageBasedVAType.STORAGE_SELECTION;
 
 	/**
 	 * map selection type to unique id for virtual array
@@ -174,16 +177,30 @@ public abstract class AStorageBasedView
 		}
 
 		ArrayList<Integer> alTempList = new ArrayList<Integer>();
-
+		// create VA with empty list
 		int iVAID = set.createStorageVA(alTempList);
 		mapSelections.put(EStorageBasedVAType.EXTERNAL_SELECTION, iVAID);
 
+		alTempList = new ArrayList<Integer>();
+
+		for (int iCount = 0; iCount < set.size(); iCount++)
+		{
+			alTempList.add(iCount);
+		}
+
+		iVAID = set.createSetVA(alTempList);
+		mapSelections.put(EStorageBasedVAType.STORAGE_SELECTION, iVAID);
+
+	}
+
+	protected void initCompleteList()
+	{
 		int iStorageLength = set.depth();
 		// FIXME hack
-			iStorageLength = 200;
+		iStorageLength = 200;
 
-		// initialize full list
-		alTempList = new ArrayList<Integer>(set.depth());
+		// initialize virtual array that contains all (filtered) information
+		ArrayList<Integer> alTempList = new ArrayList<Integer>(set.depth());
 		for (int iCount = 0; iCount < iStorageLength; iCount++)
 		{
 			if (dataFilterLevel != EDataFilterLevel.COMPLETE)
@@ -198,9 +215,10 @@ public abstract class AStorageBasedView
 							"Cannot resolve gene to DAVID ID!");
 					continue;
 				}
-				
-				if(dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT)
+
+				if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT)
 				{
+
 					// Here all values are contained within pathways as well
 					int iGraphItemID = generalManager.getPathwayItemManager()
 							.getPathwayVertexGraphItemIdByDavidId(iDavidID);
@@ -218,18 +236,8 @@ public abstract class AStorageBasedView
 			alTempList.add(iCount);
 		}
 
-		iVAID = set.createStorageVA(alTempList);
+		int iVAID = set.createStorageVA(alTempList);
 		mapSelections.put(EStorageBasedVAType.COMPLETE_SELECTION, iVAID);
-
-		alTempList = new ArrayList<Integer>();
-
-		for (int iCount = 0; iCount < set.size(); iCount++)
-		{
-			alTempList.add(iCount);
-		}
-
-		iVAID = set.createSetVA(alTempList);
-		mapSelections.put(EStorageBasedVAType.STORAGE_SELECTION, iVAID);
 	}
 
 	/**
@@ -323,12 +331,15 @@ public abstract class AStorageBasedView
 	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
 	{
 
-		generalManager.getLogger().log(Level.INFO,
-				"Update called by " + eventTrigger.getClass().getSimpleName());
+		generalManager.getLogger().log(
+				Level.INFO,
+				"Update called by " + eventTrigger.getClass().getSimpleName()
+						+ ", received in: " + this.getClass().getName());
 
 		contentSelectionManager.clearSelections();
 		ISelectionDelta internalDelta = contentSelectionManager.setDelta(selectionDelta);
 		handleConnectedElementRep(internalDelta);
+		checkUnselection();
 
 		// // contains all genes in center pathway (not yet)
 		// ArrayList<Integer> iAlSelection = setSelection.getSelectionIdArray();
@@ -398,6 +409,8 @@ public abstract class AStorageBasedView
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
 	}
+
+	protected abstract void checkUnselection();
 
 	@Override
 	public void handleUpdate(IUniqueObject eventTrigger)
@@ -562,6 +575,10 @@ public abstract class AStorageBasedView
 							+ iDavidID);
 
 					SelectedElementRep rep = createElementRep(iStorageIndex);
+					if (rep == null)
+					{
+						continue;
+					}
 					connectedElementRepresentationManager.modifySelection(iDavidID, rep,
 							ESelectionMode.AddPick);
 				}
@@ -574,10 +591,10 @@ public abstract class AStorageBasedView
 					"Can not handle data type of update in selectionDelta");
 		}
 	}
-	
+
 	@Override
 	public void broadcastElements(ESelectionType type)
 	{
-		
+
 	}
 }

@@ -18,6 +18,20 @@ public class HeatMapRenderStyle
 	extends GeneralRenderStyle
 {
 
+	private class FieldWidthElement
+	{
+		protected float fWidth = 0;
+		protected float fHeight = 0;
+		protected float fTotalWidth = 0;
+
+		protected FieldWidthElement(float fWidth, float fHeight, float fTotalWidth)
+		{
+			this.fWidth = fWidth;
+			this.fHeight = fHeight;
+			this.fTotalWidth = fTotalWidth;
+		}
+	}
+
 	public static final float FIELD_Z = 0.0f;
 
 	public static final float SELECTION_Z = 0.001f;
@@ -26,24 +40,23 @@ public class HeatMapRenderStyle
 
 	private float fNormalFieldWidth = 0f;
 
-	private int iLevels = 0;
+	private int iLevels = 1;
 
 	private int iNotSelectedLevel = 1000;
 
-	private ArrayList<Float> fAlFieldWidths;
+	private ArrayList<FieldWidthElement> alFieldWidths;
 
 	private HashMap<Integer, Float> hashLevelToWidth;
 
 	private GenericSelectionManager contentSelectionManager;
 
-	private int iContentSelection;
-	
+	private int iContentVAID;
+
 	private ISet set;
 
 	public HeatMapRenderStyle(final IViewFrustum viewFrustum,
-			final GenericSelectionManager contentSelectionManager,
-			ISet set, int iContentSelection, int iNumElements,
-			boolean bRenderVertical)
+			final GenericSelectionManager contentSelectionManager, ISet set,
+			int iContentSelection, int iNumElements, boolean bRenderVertical)
 	{
 
 		super(viewFrustum);
@@ -51,9 +64,9 @@ public class HeatMapRenderStyle
 		fNormalFieldWidth = fSelectedFieldWidth / 4;
 
 		this.contentSelectionManager = contentSelectionManager;
-		this.iContentSelection = iContentSelection;
+		this.iContentVAID = iContentSelection;
 		this.set = set;
-		fAlFieldWidths = new ArrayList<Float>();
+		alFieldWidths = new ArrayList<FieldWidthElement>();
 
 		// init fish eye
 		float fDelta = (fSelectedFieldWidth - fNormalFieldWidth) / (iLevels + 1);
@@ -74,48 +87,57 @@ public class HeatMapRenderStyle
 
 	}
 
+	public void initFieldSizes()
+	{
+		resetFieldWidths();
+//		for (int iContentIndex : set.getVA(iContentVAID))
+//		{
+//			initOneFieldSize(iContentIndex);
+//		}
+	}
+
 	/**
 	 * @param iStorageIndex The index of the entry in alContentSelection
 	 * @return
 	 */
-	public Vec2f getAndInitFieldWidthAndHeight(final int iContentSelectionIndex)
+	private void initOneFieldSize(final int iContentSelectionIndex)
 	{
-
-		int iCurrentLevel = iNotSelectedLevel;
-
-		for (int iCount = -iLevels; iCount <= iLevels; iCount++)
-		{
-			if (iContentSelectionIndex + iCount < 0
-					|| iContentSelectionIndex + iCount >= set.getVA(iContentSelection).size())
-				continue;
-			else
-			{
-				if (contentSelectionManager.checkStatus(ESelectionType.SELECTION,
-						set.getVA(iContentSelection).get(iContentSelectionIndex + iCount))
-						|| contentSelectionManager.checkStatus(
-								ESelectionType.MOUSE_OVER, set.getVA(iContentSelection)
-										.get(iContentSelectionIndex + iCount)))
-				{
-					// TODO: this needs reviewing
-					if (iCurrentLevel == iNotSelectedLevel
-							|| (iCount < 0 && iCount >= iCurrentLevel)
-							|| (iCount >= 0 && iCount <= iCurrentLevel))
-						iCurrentLevel = iCount;
-				}
-			}
-		}
-
-		Vec2f vecWidthAndHeight = new Vec2f();
-		float fWidth = hashLevelToWidth.get(iCurrentLevel);
-		vecWidthAndHeight.set(fWidth, calcHeightFromWidth(fWidth));
-
-		fAlFieldWidths.add(fWidth);
-		return vecWidthAndHeight;
+		//
+		// int iCurrentLevel = iNotSelectedLevel;
+		//
+		// for (int iCount = -iLevels; iCount <= iLevels; iCount++)
+		// {
+		// if (iContentSelectionIndex + iCount < 0
+		// || iContentSelectionIndex + iCount >= set.getVA(iContentVAID).size())
+		// continue;
+		// else
+		// {
+		// if (contentSelectionManager.checkStatus(ESelectionType.SELECTION,
+		// set.getVA(iContentVAID).get(iContentSelectionIndex + iCount))
+		// || contentSelectionManager.checkStatus(
+		// ESelectionType.MOUSE_OVER, set.getVA(iContentVAID)
+		// .get(iContentSelectionIndex + iCount)))
+		// {
+		// // TODO: this needs reviewing
+		// if (iCurrentLevel == iNotSelectedLevel
+		// || (iCount < 0 && iCount >= iCurrentLevel)
+		// || (iCount >= 0 && iCount <= iCurrentLevel))
+		// iCurrentLevel = iCount;
+		// }
+		// }
+		// }
+		//
+		// Vec2f vecWidthAndHeight = new Vec2f();
+		// float fWidth = hashLevelToWidth.get(iCurrentLevel);
+		// vecWidthAndHeight.set(fWidth, calcHeightFromWidth(fWidth));
+		//
+		// alFieldWidths.add(fWidth);
+		// // return vecWidthAndHeight;
 	}
 
 	public void setContentSelection(int iContentSelection)
 	{
-		this.iContentSelection = iContentSelection;
+		this.iContentVAID = iContentSelection;
 	}
 
 	private float calcHeightFromWidth(float fWidth)
@@ -123,34 +145,40 @@ public class HeatMapRenderStyle
 		return 0.7f * fWidth;
 	}
 
-	public void clearFieldWidths()
+	public void resetFieldWidths()
 	{
-		fAlFieldWidths.clear();
+		alFieldWidths.clear();
+		float fTotalFieldWidth = 0;
+		for(int iContentIndex : set.getVA(iContentVAID))
+		{
+			alFieldWidths.add(new FieldWidthElement(fNormalFieldWidth, calcHeightFromWidth(fNormalFieldWidth), fTotalFieldWidth));
+			fTotalFieldWidth += fNormalFieldWidth;
+		}
 	}
 
 	public float getXDistanceAt(int iIndex)
 	{
+//
+//		float fXDistance = 0;
+//		for (int iCount = 0; iCount < iIndex; iCount++)
+//		{
+//			fXDistance += alFieldWidths.get(iCount);
+//		}
 
-		float fXDistance = 0;
-		for (int iCount = 0; iCount < iIndex; iCount++)
-		{
-			fXDistance += fAlFieldWidths.get(iCount);
-		}
-
-		return fXDistance;
+		return alFieldWidths.get(iIndex).fTotalWidth;
 
 	}
 
 	public float getXDistanceAfter(int iIndex)
 	{
 
-		float fXDistance = 0;
-		for (int iCount = 0; iCount <= iIndex; iCount++)
-		{
-			fXDistance += fAlFieldWidths.get(iCount);
-		}
+//		float fXDistance = 0;
+//		for (int iCount = 0; iCount <= iIndex; iCount++)
+//		{
+//			fXDistance += alFieldWidths.get(iCount);
+//		}
 
-		return fXDistance;
+		return alFieldWidths.get(iIndex).fTotalWidth + alFieldWidths.get(iIndex).fWidth;
 
 	}
 
@@ -158,8 +186,8 @@ public class HeatMapRenderStyle
 	{
 
 		Vec2f vecWidthAndHeight = new Vec2f();
-		vecWidthAndHeight.set(fAlFieldWidths.get(iIndex), calcHeightFromWidth(fAlFieldWidths
-				.get(iIndex)));
+		float fWidth = alFieldWidths.get(iIndex).fWidth;
+		vecWidthAndHeight.set(fWidth, calcHeightFromWidth(fWidth));
 
 		return vecWidthAndHeight;
 	}
