@@ -3,9 +3,11 @@ package org.caleydo.core.data.view.rep.renderstyle;
 import gleem.linalg.Vec2f;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Set;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 
 /**
@@ -90,6 +92,23 @@ public class HeatMapRenderStyle
 	public void initFieldSizes()
 	{
 		resetFieldWidths();
+		Set<Integer> selectedSet = contentSelectionManager.getElements(ESelectionType.SELECTION);
+		
+		Set<Integer> mouseOverSet = contentSelectionManager.getElements(ESelectionType.MOUSE_OVER);
+		
+		int iVAIndex;
+		for(int iSelectedIndex : selectedSet)
+		{
+			iVAIndex = set.getVA(iContentVAID).indexOf(iSelectedIndex);
+			alFieldWidths.get(iVAIndex).fWidth = fSelectedFieldWidth;
+		}
+		
+		for(int iSelectedIndex : mouseOverSet)
+		{
+			IVirtualArray va = set.getVA(iContentVAID);
+			iVAIndex = set.getVA(iContentVAID).indexOf(iSelectedIndex);
+			alFieldWidths.get(iVAIndex).fWidth = fSelectedFieldWidth;
+		}
 //		for (int iContentIndex : set.getVA(iContentVAID))
 //		{
 //			initOneFieldSize(iContentIndex);
@@ -147,6 +166,10 @@ public class HeatMapRenderStyle
 
 	public void resetFieldWidths()
 	{
+		int iNumberSelected = contentSelectionManager.getNumberOfElements(ESelectionType.MOUSE_OVER);
+		
+		// TODO implement width dependend on frustum
+		
 		alFieldWidths.clear();
 		float fTotalFieldWidth = 0;
 		for(int iContentIndex : set.getVA(iContentVAID))
@@ -184,7 +207,6 @@ public class HeatMapRenderStyle
 
 	public Vec2f getFieldWidthAndHeight(int iIndex)
 	{
-
 		Vec2f vecWidthAndHeight = new Vec2f();
 		float fWidth = alFieldWidths.get(iIndex).fWidth;
 		vecWidthAndHeight.set(fWidth, calcHeightFromWidth(fWidth));

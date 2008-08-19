@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec3f;
+import java.awt.Canvas;
 import java.util.ArrayList;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
@@ -23,6 +24,7 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
@@ -40,7 +42,7 @@ public abstract class AGLEventListener
 	implements GLEventListener
 {
 	protected IGeneralManager generalManager;
-	
+
 	// TODO: should be a list of parent canvas object to be generic
 	protected GLCaleydoCanvas parentGLCanvas;
 
@@ -62,7 +64,7 @@ public abstract class AGLEventListener
 	protected transient GLToolboxRenderer glToolboxRenderer;
 
 	protected IGLCanvasRemoteRendering3D remoteRenderingGLCanvas;
-	
+
 	/**
 	 * The views current aspect ratio. Value gets updated when reshape is called
 	 * by the JOGL animator.
@@ -72,20 +74,21 @@ public abstract class AGLEventListener
 	/**
 	 * Constructor.
 	 */
-	protected AGLEventListener(final int iGLCanvasID, 
-			final String sLabel, final IViewFrustum viewFrustum,
-			final boolean bRegisterToParentCanvasNow)
+	protected AGLEventListener(final int iGLCanvasID, final String sLabel,
+			final IViewFrustum viewFrustum, final boolean bRegisterToParentCanvasNow)
 	{
-		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.GL_EVENT_LISTENER));
+		super(GeneralManager.get().getIDManager().createID(
+				EManagedObjectType.GL_EVENT_LISTENER));
 
 		generalManager = GeneralManager.get();
-		
+
 		alSetData = new ArrayList<ISet>();
-//		alSelection = new ArrayList<Selection>();
+		// alSelection = new ArrayList<Selection>();
 
 		setManager = generalManager.getSetManager();
 
-		parentGLCanvas = ((GLCaleydoCanvas) generalManager.getViewGLCanvasManager().getCanvas(iGLCanvasID));
+		parentGLCanvas = ((GLCaleydoCanvas) generalManager.getViewGLCanvasManager().getCanvas(
+				iGLCanvasID));
 
 		if (bRegisterToParentCanvasNow && parentGLCanvas != null)
 		{
@@ -205,38 +208,35 @@ public abstract class AGLEventListener
 		gl.glMatrixMode(GL.GL_PROJECTION);
 		gl.glLoadIdentity();
 
-		if (fAspectRatio < 1.0)
-		{
-			if (viewFrustum.getProjectionMode().equals(ProjectionMode.ORTHOGRAPHIC))
+		float fLeft = viewFrustum.getLeft();
+		float fRight = viewFrustum.getRight();
+		float fBottom = viewFrustum.getBottom();
+		float fTop = viewFrustum.getTop();
+
+//		if (remoteRenderingGLCanvas != null || this instanceof GLCanvasRemoteRendering3D)
+//		{
+			
+			if (fAspectRatio < 1.0)
 			{
-				gl.glOrtho(viewFrustum.getLeft() * 1.0f / fAspectRatio, viewFrustum.getRight()
-						* 1.0f / fAspectRatio, viewFrustum.getBottom(), viewFrustum.getTop(),
-						viewFrustum.getNear(), viewFrustum.getFar());
+				fLeft /= fAspectRatio;
+				fRight /= fAspectRatio;
 			}
 			else
 			{
-				gl.glFrustum(viewFrustum.getLeft() * 1.0f / fAspectRatio, viewFrustum
-						.getRight()
-						* 1.0f / fAspectRatio, viewFrustum.getBottom(), viewFrustum.getTop(),
-						viewFrustum.getNear(), viewFrustum.getFar());
+				fBottom *= fAspectRatio;
+				fTop *= fAspectRatio;
 			}
+//		}
+		
+		if (viewFrustum.getProjectionMode().equals(ProjectionMode.ORTHOGRAPHIC))
+		{
+			gl.glOrtho(fLeft, fRight, fBottom, fTop, viewFrustum.getNear(), viewFrustum
+					.getFar());
 		}
 		else
 		{
-			if (viewFrustum.getProjectionMode().equals(ProjectionMode.ORTHOGRAPHIC))
-			{
-				gl.glOrtho(viewFrustum.getLeft(), viewFrustum.getRight(), viewFrustum
-						.getBottom()
-						* fAspectRatio, viewFrustum.getTop() * fAspectRatio, viewFrustum
-						.getNear(), viewFrustum.getFar());
-			}
-			else
-			{
-				gl.glFrustum(viewFrustum.getLeft(), viewFrustum.getRight(), viewFrustum
-						.getBottom()
-						* fAspectRatio, viewFrustum.getTop() * fAspectRatio, viewFrustum
-						.getNear(), viewFrustum.getFar());
-			}
+			gl.glFrustum(fLeft, fRight, fBottom, fTop, viewFrustum.getNear(), viewFrustum
+					.getFar());
 		}
 
 		gl.glMatrixMode(GL.GL_MODELVIEW);
@@ -320,7 +320,6 @@ public abstract class AGLEventListener
 
 		alSetData.add((ISet) generalManager.getSetManager().getItem(iSetID));
 	}
-
 
 	public final void removeAllSetIdByType(ESetType setType)
 	{
@@ -437,20 +436,19 @@ public abstract class AGLEventListener
 
 		return viewCamera;
 	}
-	
+
 	public void loadURLInBrowser(final String sUrl)
 	{
 		if (sUrl.length() == 0)
 			return;
 
 		CmdViewLoadURLInHTMLBrowser createdCmd = (CmdViewLoadURLInHTMLBrowser) generalManager
-				.getCommandManager().createCommandByType(
-						CommandType.LOAD_URL_IN_BROWSER);
+				.getCommandManager().createCommandByType(CommandType.LOAD_URL_IN_BROWSER);
 
 		createdCmd.setAttributes(sUrl);
 		createdCmd.doCommand();
 	}
-	
+
 	public abstract void broadcastElements(ESelectionType type);
-	
+
 }

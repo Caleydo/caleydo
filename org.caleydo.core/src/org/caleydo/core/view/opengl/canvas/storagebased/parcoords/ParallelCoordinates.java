@@ -206,6 +206,16 @@ public class ParallelCoordinates
 		fXDefaultTranslation = renderStyle.getXSpacing();
 		fYTranslation = renderStyle.getBottomSpacing();
 	}
+	
+	/**
+	 * Set the level of data filtering, according to the parameters defined in {@link EDataFilterLevel}
+	 * 
+	 * @param dataFilterLevel the level of filtering
+	 */
+	public void setDataFilterLevel(EDataFilterLevel dataFilterLevel)
+	{
+		this.dataFilterLevel = dataFilterLevel;
+	}
 
 	@Override
 	public void displayLocal(final GL gl)
@@ -257,8 +267,8 @@ public class ParallelCoordinates
 	public void display(final GL gl)
 	{
 
-		// GLSharedObjects.drawAxis(gl);
-		// GLSharedObjects.drawViewFrustum(gl, viewFrustum);
+		// GLHelperFunctions.drawAxis(gl);
+		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
 		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
 		gl.glColorMask(false, false, false, false);
@@ -421,8 +431,12 @@ public class ParallelCoordinates
 		if (bRenderOnlyContext)
 			iContentVAID = mapSelections.get(EStorageBasedVAType.EXTERNAL_SELECTION);
 		else
+		{
+			if(!mapSelections.containsKey(EStorageBasedVAType.COMPLETE_SELECTION))
+				initCompleteList();
 			iContentVAID = mapSelections.get(EStorageBasedVAType.COMPLETE_SELECTION);
 
+		}
 		iStorageVAID = mapSelections.get(EStorageBasedVAType.STORAGE_SELECTION);
 
 		initContentVariables();
@@ -1505,15 +1519,15 @@ public class ParallelCoordinates
 		vecLeftPoint.setX(iPosition * fAxisSpacing);
 		vecRightPoint.setX((iPosition + 1) * fAxisSpacing);
 
-		// GLSharedObjects.drawPointAt(gl, vecLeftPoint);
-		// GLSharedObjects.drawPointAt(gl, vecRightPoint);
+		// GLHelperFunctions.drawPointAt(gl, vecLeftPoint);
+		// GLHelperFunctions.drawPointAt(gl, vecRightPoint);
 
 		Vec3f vecDirectional = vecRightPoint.minus(vecLeftPoint);
 		float fLength = vecDirectional.length();
 		vecDirectional.normalize();
 
 		Vec3f vecTriangleOrigin = vecLeftPoint.addScaled(fLength / 4, vecDirectional);
-		// GLSharedObjects.drawPointAt(gl, vecTriangleOrigin);
+		// GLHelperFunctions.drawPointAt(gl, vecTriangleOrigin);
 
 		Vec3f vecTriangleLimit = vecLeftPoint.addScaled(fLength / 4 * 3, vecDirectional);
 
@@ -1633,8 +1647,8 @@ public class ParallelCoordinates
 		// y = 0.2 * (Math.sin(a)) + vecTriangleLimit.y();
 		// gl.glVertex2d(x, y);
 		// } gl.glEnd();
-		// GLSharedObjects.drawPointAt(gl, vecUpperPoint);
-		// GLSharedObjects.drawPointAt(gl, vecLowerLine)
+		// GLHelperFunctions.drawPointAt(gl, vecUpperPoint);
+		// GLHelperFunctions.drawPointAt(gl, vecLowerLine)
 
 		// GLU glu = new GLU();
 		// GLUnurbs theNurb = glu.gluNewNurbsRenderer();

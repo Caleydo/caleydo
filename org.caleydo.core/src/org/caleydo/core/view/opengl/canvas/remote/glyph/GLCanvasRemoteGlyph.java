@@ -15,7 +15,7 @@ import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphMouseListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
-import org.caleydo.core.view.opengl.util.GLSharedObjects;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**
@@ -115,8 +115,8 @@ public class GLCanvasRemoteGlyph
 
 		gl.glTranslatef(0f, 0f, -5f);
 
-		// GLSharedObjects.drawAxis(gl);
-		// GLSharedObjects.drawViewFrustum(gl, viewFrustum);
+		// GLHelperFunctions.drawAxis(gl);
+		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
 		// Iterate over glyph views and set tranlation / rotation / scaleing
 
@@ -146,7 +146,7 @@ public class GLCanvasRemoteGlyph
 			gl.glScalef(scale.get(counter).get(0), scale.get(counter).get(1), scale.get(
 					counter).get(2));
 
-			GLSharedObjects.drawViewFrustum(gl, viewFrustum);
+			GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 			renderViewByID(gl, iViewId);
 
 			++counter;

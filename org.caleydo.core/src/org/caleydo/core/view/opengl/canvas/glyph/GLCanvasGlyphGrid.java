@@ -456,7 +456,7 @@ public class GLCanvasGlyphGrid
 				float y1t = (float) (java.lang.Math.sin(a2) * c);
 
 				/*
-				 * gl.glTranslatef(x1t, y1t, 0f); GLSharedObjects.drawAxis(gl);
+				 * gl.glTranslatef(x1t, y1t, 0f); GLHelperFunctions.drawAxis(gl);
 				 * gl.glTranslatef(-x1t, -y1t, 0f); System.out.println(x1 +
 				 * "          " + y1 + "          " + a1 + "          " + a2 +
 				 * "          " + c + "          " + x1t + "          " + y1t);
@@ -498,7 +498,7 @@ public class GLCanvasGlyphGrid
 		 * = iv.values().iterator(); while(it2.hasNext()) { Vec2i pos1 =
 		 * it2.next(); Vec2i pos =
 		 * glyphMap_.get(pos1.x()).get(pos1.y()).getGridPosition();
-		 * gl.glTranslatef(pos.x(), pos.y(), 0f); GLSharedObjects.drawAxis(gl);
+		 * gl.glTranslatef(pos.x(), pos.y(), 0f); GLHelperFunctions.drawAxis(gl);
 		 * gl.glTranslatef(-pos.x(), -pos.y(), 0f); } }
 		 */
 

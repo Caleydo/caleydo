@@ -606,7 +606,7 @@ public class GLCanvasRemoteRendering3D
 			textRenderer.end3DRendering();
 		}
 
-		// GLSharedObjects.drawAxis(gl);
+		// GLHelperFunctions.drawAxis(gl);
 
 		tmpCanvasUser.displayRemote(gl);
 

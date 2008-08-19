@@ -207,7 +207,7 @@ public class GLCanvasGlyph
 	public void displayLocal(GL gl)
 	{
 
-		// GLSharedObjects.drawAxis(gl);
+		// GLHelperFunctions.drawAxis(gl);
 
 		gl.glTranslatef(0f, 0f, -10f);
 		gl.glRotatef(45f, 1, 0, 0);
@@ -264,8 +264,8 @@ public class GLCanvasGlyph
 		gl.glScalef(0.15f, 0.15f, 0.15f);
 
 		// draw helplines
-		// GLSharedObjects.drawViewFrustum(gl, viewFrustum);
-		// GLSharedObjects.drawAxis(gl);
+		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		// GLHelperFunctions.drawAxis(gl);
 
 		gl.glTranslatef(8, 0, 0f);
 

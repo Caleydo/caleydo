@@ -149,7 +149,7 @@ public class GLDistributionMiniView
 	{
 		gl.glPushMatrix();
 		// draw helplines
-		// GLSharedObjects.drawAxis(gl);
+		// GLHelperFunctions.drawAxis(gl);
 
 		drawBorder(gl);
 		drawDistribution(gl);

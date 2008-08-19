@@ -184,8 +184,8 @@ public class GenericSelectionManager
 			alSelectionTypes = new ArrayList<ESelectionType>();
 			for (ESelectionType selectionType : ESelectionType.values())
 			{
-//				if (selectionType != ESelectionType.REMOVE)
-					alSelectionTypes.add(selectionType);
+				// if (selectionType != ESelectionType.REMOVE)
+				alSelectionTypes.add(selectionType);
 			}
 		}
 
@@ -349,10 +349,10 @@ public class GenericSelectionManager
 			}
 		}
 
-		// TODO: investigate
-		 throw new CaleydoRuntimeException(
-		 "SelectionManager: element to be removed does not exist",
-		 CaleydoRuntimeExceptionType.VIEW);
+		// // TODO: investigate
+		// throw new CaleydoRuntimeException(
+		// "SelectionManager: element to be removed does not exist",
+		// CaleydoRuntimeExceptionType.VIEW);
 	}
 
 	/**
@@ -428,6 +428,17 @@ public class GenericSelectionManager
 	public int getNumberOfElements()
 	{
 		return iNumberOfElements;
+	}
+
+	/**
+	 * Get the number of elements in a particular selection
+	 * 
+	 * @param eSelectionType the selection type of interest
+	 * @return the number of element in this selection
+	 */
+	public int getNumberOfElements(ESelectionType eSelectionType)
+	{
+		return hashSelectionTypes.get(eSelectionType).size();
 	}
 
 	/**

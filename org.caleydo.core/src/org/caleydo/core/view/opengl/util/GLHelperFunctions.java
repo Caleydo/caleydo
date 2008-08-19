@@ -9,8 +9,9 @@ import org.caleydo.core.data.view.camera.IViewFrustum;
  * axis, etc.)
  * 
  * @author Marc Streit
+ * @author Alexander Lex
  */
-public class GLSharedObjects
+public class GLHelperFunctions
 {
 
 	public static void drawAxis(final GL gl)
@@ -34,12 +35,13 @@ public class GLSharedObjects
 	{
 
 		gl.glColor3f(1, 0, 0);
-		gl.glBegin(GL.GL_LINE_STRIP);
-		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
-		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), 0);
-		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), 0);
-		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(), 0);
-		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
+		gl.glBegin(GL.GL_LINE_LOOP);
+		gl.glVertex3f(0, 0, 0);//viewFrustum.getLeft(), viewFrustum.getBottom(), 0);
+		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), 0, 0);
+		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum.getTop() - viewFrustum.getBottom(), 0);
+		gl.glVertex3f(0, viewFrustum.getTop() - viewFrustum.getBottom(), 0);
+//		gl.glVertex3f(0, 0, 0);
+
 		gl.glEnd();
 	}
 

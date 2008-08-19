@@ -11,7 +11,7 @@ import java.awt.event.MouseWheelListener;
 import javax.media.opengl.GL;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.util.GLSharedObjects;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 
 /**
  * Specialized mouse wheel listener for "diving" into the bucket.
@@ -112,11 +112,11 @@ public class GlyphMouseListener
 
 			gl.glTranslatef(xs - 1, -ys - 1, 0);
 
-			GLSharedObjects.drawAxis(gl);
+			GLHelperFunctions.drawAxis(gl);
 
 			gl.glTranslatef((xc - xs), -(yc - ys), 0);
 
-			GLSharedObjects.drawAxis(gl);
+			GLHelperFunctions.drawAxis(gl);
 
 		}
 

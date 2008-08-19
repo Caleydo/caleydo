@@ -26,6 +26,8 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
@@ -45,7 +47,7 @@ public class HeatMap
 
 	private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
 
-	private boolean bRenderHorizontally = false;
+	// private boolean bRenderHorizontally = false;
 
 	private Vec4f vecRotation = new Vec4f(-90, 0, 0, 1);
 
@@ -71,7 +73,6 @@ public class HeatMap
 	 */
 	public HeatMap(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
 	{
-
 		super(iGLCanvasID, sLabel, viewFrustum);
 
 		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
@@ -92,7 +93,6 @@ public class HeatMap
 	@Override
 	public void init(GL gl)
 	{
-		bRenderStorageHorizontally = false;
 		initData();
 		initLists();
 
@@ -100,7 +100,6 @@ public class HeatMap
 				iContentVAID, set.getVA(iStorageVAID).size(), true);
 		// TODO probably remove this here
 		renderStyle.initFieldSizes();
-		
 
 		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
 	}
@@ -111,7 +110,7 @@ public class HeatMap
 		dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
 		bRenderOnlyContext = false;
 
-		bRenderHorizontally = true;
+		bRenderStorageHorizontally = true;
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
@@ -130,7 +129,7 @@ public class HeatMap
 
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 
-		bRenderHorizontally = true;
+		bRenderStorageHorizontally = true;
 
 		glToolboxRenderer = new GLToolboxRenderer(gl, generalManager, iUniqueID,
 				iRemoteViewID, new Vec3f(0, 0, 0), layer, true, renderStyle);
@@ -191,16 +190,17 @@ public class HeatMap
 	@Override
 	public void display(GL gl)
 	{
-	
+		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		GLHelperFunctions.drawAxis(gl);
 		gl.glCallList(iGLDisplayListToCall);
-		buildDisplayList(gl, iGLDisplayListIndexRemote);
+	//	buildDisplayList(gl, iGLDisplayListIndexRemote);
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex)
 	{
 	
 
-		// gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
 		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
 		gl.glColorMask(false, false, false, false);
@@ -225,8 +225,7 @@ public class HeatMap
 		gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
 		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 
-		bRenderHorizontally = false;
-		if (!bRenderHorizontally)
+		if (!bRenderStorageHorizontally)
 		{
 			gl.glTranslatef(vecTranslation.x(), vecTranslation.y(), vecTranslation.z());
 			gl.glRotatef(vecRotation.x(), vecRotation.y(), vecRotation.z(), vecRotation.w());
@@ -240,7 +239,7 @@ public class HeatMap
 
 		gl.glTranslatef(-fAnimationTranslation, 0.0f, 0.0f);
 
-		if (!bRenderHorizontally)
+		if (!bRenderStorageHorizontally)
 		{
 			gl.glRotatef(-vecRotation.x(), vecRotation.y(), vecRotation.z(), vecRotation.w());
 			gl.glTranslatef(-vecTranslation.x(), -vecTranslation.y(), -vecTranslation.z());
@@ -248,20 +247,20 @@ public class HeatMap
 
 		gl.glDisable(GL.GL_STENCIL_TEST);
 
-		// gl.glEndList();
+		gl.glEndList();
 	}
 
-	public void renderHorizontally(boolean bRenderHorizontally)
+	public void renderHorizontally(boolean bRenderStorageHorizontally)
 	{
 
-		this.bRenderHorizontally = bRenderHorizontally;
+		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
 	}
 
 	protected void initLists()
 	{
 
-		Set<Integer> setMouseOver = storageSelectionManager
-				.getElements(ESelectionType.MOUSE_OVER);
+		// Set<Integer> setMouseOver = storageSelectionManager
+		// .getElements(ESelectionType.MOUSE_OVER);
 
 		if (bRenderOnlyContext)
 			iContentVAID = mapSelections.get(EStorageBasedVAType.EXTERNAL_SELECTION);
@@ -283,25 +282,28 @@ public class HeatMap
 			renderStyle.setContentSelection(iContentVAID);
 		}
 
-		int iNumberOfRowsToRender = set.getVA(iStorageVAID).size();
-		int iNumberOfColumns = set.getVA(iContentVAID).size();
+		int iNumberOfRowsToRender = set.getVA(iContentVAID).size();
+		int iNumberOfColumns = set.getVA(iStorageVAID).size();
 
 		for (int iRowCount = 0; iRowCount < iNumberOfRowsToRender; iRowCount++)
 		{
-			contentSelectionManager.initialAdd(set.getVA(iStorageVAID).get(iRowCount));
+			contentSelectionManager.initialAdd(set.getVA(iContentVAID).get(iRowCount));
 		}
 
 		// this for loop executes one per axis
 		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++)
 		{
-			storageSelectionManager.initialAdd(set.getVA(iContentVAID).get(iColumnCount));
-			if (setMouseOver.contains(set.getVA(iContentVAID).get(iColumnCount)))
-			{
-				storageSelectionManager.addToType(ESelectionType.MOUSE_OVER, set.getVA(
-						iContentVAID).get(iColumnCount));
-			}
-		}		
-	
+			storageSelectionManager.initialAdd(set.getVA(iStorageVAID).get(iColumnCount));
+			// if
+			// (setMouseOver.contains(set.getVA(iContentVAID).get(iColumnCount
+			// )))
+			// {
+			// storageSelectionManager.addToType(ESelectionType.MOUSE_OVER,
+			// set.getVA(
+			// iContentVAID).get(iColumnCount));
+			// }
+		}
+
 	}
 
 	@Override
@@ -346,7 +348,6 @@ public class HeatMap
 						{
 							triggerUpdate(storageSelectionManager.getDelta());
 						}
-						renderStyle.initFieldSizes();
 
 						break;
 
@@ -361,7 +362,6 @@ public class HeatMap
 						{
 							triggerUpdate(storageSelectionManager.getDelta());
 						}
-						renderStyle.initFieldSizes();
 
 						break;
 				}
@@ -377,6 +377,7 @@ public class HeatMap
 	private void renderHeatMap(final GL gl)
 	{
 
+		renderStyle.initFieldSizes();
 		float fXPosition = 0;
 		float fYPosition = 0;
 		// renderStyle.clearFieldWidths();
@@ -406,7 +407,7 @@ public class HeatMap
 		int iCount = 0;
 		for (Integer iContentIndex : set.getVA(iContentVAID))
 		{
-			vecFieldWidthAndHeight = renderStyle.getFieldWidthAndHeight(iCount);
+			vecFieldWidthAndHeight = renderStyle.getFieldWidthAndHeight(iCount++);
 			fYPosition = renderStyle.getYCenter() - vecFieldWidthAndHeight.y()
 					* set.getVA(iStorageVAID).size() / 2;
 
@@ -477,7 +478,7 @@ public class HeatMap
 	private void renderSelection(final GL gl, ESelectionType eSelectionType)
 	{
 
-		Set<Integer> selectedSet = storageSelectionManager.getElements(eSelectionType);
+		Set<Integer> selectedSet = contentSelectionManager.getElements(eSelectionType);
 		float fHeight = 0;
 		float fXPosition = 0;
 		float fYPosition = 0;
@@ -530,28 +531,29 @@ public class HeatMap
 		// 0.0f, 0.0f, 0.0f);
 
 		int iContentIndex = set.getVA(iContentVAID).indexOf(iStorageIndex);
-		if(iContentIndex == -1)
+		if (iContentIndex == -1)
 		{
 			// TODO this shouldn't happen
-			generalManager.getLogger().log(Level.SEVERE, "No element in virtual array for storage index");
-	
+			generalManager.getLogger().log(Level.SEVERE,
+					"No element in virtual array for storage index");
+
 			return null;
 		}
-		//renderStyle.resetFieldWidths();
+		// renderStyle.resetFieldWidths();
 		Vec2f vecFieldWithAndHeight = renderStyle.getFieldWidthAndHeight(iContentIndex);
 
-//		for (int iCount = 0; iCount <= iContentIndex; iCount++)
-//		{
-//			vecFieldWithAndHeight = renderStyle.getFieldWidthAndHeight(iCount);
-//		}
+		// for (int iCount = 0; iCount <= iContentIndex; iCount++)
+		// {
+		// vecFieldWithAndHeight = renderStyle.getFieldWidthAndHeight(iCount);
+		// }
 
 		float fXValue = renderStyle.getXDistanceAt(iContentIndex) + vecFieldWithAndHeight.x()
 				/ 2;// + renderStyle.getXSpacing();
 
 		float fYValue = renderStyle.getYCenter();// + vecFieldWithAndHeight.y()
-//				* set.getVA(iContentVAID).size() / 2;
+		// * set.getVA(iContentVAID).size() / 2;
 
-		if (bRenderHorizontally)
+		if (bRenderStorageHorizontally)
 		{
 			elementRep = new SelectedElementRep(iUniqueID, fXValue + fAnimationTranslation,
 					fYValue, 0);
@@ -655,7 +657,6 @@ public class HeatMap
 	@Override
 	protected void checkUnselection()
 	{
-		// TODO Auto-generated method stub
-
+		// TODO
 	}
 }
