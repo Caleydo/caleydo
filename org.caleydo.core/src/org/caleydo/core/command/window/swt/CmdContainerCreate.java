@@ -1,6 +1,6 @@
 package org.caleydo.core.command.window.swt;
 
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
@@ -20,7 +20,7 @@ public class CmdContainerCreate
 	 * 
 	 * @param cmdType
 	 */
-	public CmdContainerCreate(final CommandType cmdType)
+	public CmdContainerCreate(final ECommandType cmdType)
 	{
 		super(cmdType);
 	}

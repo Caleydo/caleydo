@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.event.CmdEventCreateMediator;
 import org.caleydo.core.command.view.opengl.CmdGlObjectPathway3D;
 import org.caleydo.core.data.IUniqueObject;
@@ -34,6 +34,7 @@ import org.caleydo.core.manager.IEventPublisher.MediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -45,7 +46,8 @@ import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
-import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListener;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.GLConnectionLineRendererBucket;
 import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLConnectionLineRendererJukebox;
@@ -71,7 +73,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  * 
  * @author Marc Streit
  */
-public class GLCanvasRemoteRendering3D
+public class GLRemoteRendering
 	extends AGLEventListener
 	implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 {
@@ -154,7 +156,7 @@ public class GLCanvasRemoteRendering3D
 	/**
 	 * Constructor.
 	 */
-	public GLCanvasRemoteRendering3D(final int iGLCanvasID, 
+	public GLRemoteRendering(final int iGLCanvasID, 
 			final String sLabel, final IViewFrustum viewFrustum,
 			final ARemoteViewLayoutRenderStyle.LayoutMode layoutMode)
 	{
@@ -166,7 +168,7 @@ public class GLCanvasRemoteRendering3D
 		{
 			layoutRenderStyle = new BucketLayoutRenderStyle();
 
-			bucketMouseWheelListener = new BucketMouseWheelListener(this, generalManager,
+			bucketMouseWheelListener = new BucketMouseWheelListener(this,
 					(BucketLayoutRenderStyle) layoutRenderStyle);
 
 			// Unregister standard mouse wheel listener
@@ -308,7 +310,7 @@ public class GLCanvasRemoteRendering3D
 		// If user zooms to the bucket bottom all but the under
 		// interaction layer is _not_ rendered.
 		if (bucketMouseWheelListener == null
-				|| !bucketMouseWheelListener.isBucketBottomReached())
+				|| !bucketMouseWheelListener.isZoomedIn())
 		{
 			glConnectionLineRenderer.render(gl);
 
@@ -349,7 +351,7 @@ public class GLCanvasRemoteRendering3D
 			// Ignore pathway views upon startup
 			// because they will be activated when pathway loader thread has
 			// finished
-			if (tmpGLEventListener == this || tmpGLEventListener instanceof GLCanvasPathway3D)
+			if (tmpGLEventListener == this || tmpGLEventListener instanceof GLPathway)
 			{
 				continue;
 			}
@@ -478,12 +480,13 @@ public class GLCanvasRemoteRendering3D
 				// Create Pathway3D view
 				CmdGlObjectPathway3D cmdPathway = (CmdGlObjectPathway3D) generalManager
 						.getCommandManager().createCommandByType(
-								CommandType.CREATE_GL_PATHWAY_3D);
+								ECommandType.CREATE_GL_PATHWAY_3D);
 
 				cmdPathway.setAttributes(iTmpPathwayID, iAlSetIDs, ProjectionMode.ORTHOGRAPHIC, -4, 4, 4, -4, -20, 20);
 				cmdPathway.doCommand();
 				
-				int iGeneratedViewID = cmdPathway.getCreatedObject().getID();
+				GLPathway pathway = (GLPathway)cmdPathway.getCreatedObject();
+				int iGeneratedViewID = pathway.getID();
 				
 				ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
 				arMediatorIDs.add(iGeneratedViewID);
@@ -499,12 +502,11 @@ public class GLCanvasRemoteRendering3D
 							spawnLayer, underInteractionLayer);
 					arSlerpActions.add(slerpActionTransition);
 
-					((AGLEventListener) generalManager.getViewGLCanvasManager().getEventListener(
-							iGeneratedViewID)).initRemote(gl, iUniqueID,
-							underInteractionLayer, pickingTriggerMouseAdapter, this);
+					pathway.initRemote(gl, iUniqueID, underInteractionLayer, pickingTriggerMouseAdapter, this);
+					pathway.setDetailLevel(EDetailLevel.MEDIUM);
 					
 					// Trigger initial gene propagation
-					((GLCanvasPathway3D)cmdPathway.getCreatedObject()).broadcastElements(ESelectionType.NORMAL);
+					pathway.broadcastElements(ESelectionType.NORMAL);	
 				}
 				else if (stackLayer.containsElement(-1))
 				{
@@ -512,12 +514,11 @@ public class GLCanvasRemoteRendering3D
 							spawnLayer, stackLayer);
 					arSlerpActions.add(slerpActionTransition);
 
-					((AGLEventListener) generalManager.getViewGLCanvasManager().getEventListener(
-							iGeneratedViewID)).initRemote(gl, iUniqueID, stackLayer,
-							pickingTriggerMouseAdapter, this);
+					pathway.initRemote(gl, iUniqueID, stackLayer, pickingTriggerMouseAdapter, this);
+					pathway.setDetailLevel(EDetailLevel.LOW);
 					
 					// Trigger initial gene propagation
-					((GLCanvasPathway3D)cmdPathway.getCreatedObject()).broadcastElements(ESelectionType.NORMAL);
+					pathway.broadcastElements(ESelectionType.NORMAL);
 				}
 				else if (poolLayer.containsElement(-1))
 				{
@@ -525,9 +526,8 @@ public class GLCanvasRemoteRendering3D
 							spawnLayer, poolLayer);
 					arSlerpActions.add(slerpActionTransition);
 
-					((AGLEventListener) generalManager.getViewGLCanvasManager().getEventListener(
-							iGeneratedViewID)).initRemote(gl, iUniqueID, poolLayer,
-							pickingTriggerMouseAdapter, this);
+					pathway.initRemote(gl, iUniqueID, poolLayer, pickingTriggerMouseAdapter, this);
+					pathway.setDetailLevel(EDetailLevel.VERY_LOW);
 				}
 				else
 				{
@@ -1039,8 +1039,7 @@ public class GLCanvasRemoteRendering3D
 
 	private void slerpView(final GL gl, SlerpAction slerpAction)
 	{
-
-		int iViewId = slerpAction.getElementId();
+		int iViewID = slerpAction.getElementId();
 		SlerpMod slerpMod = new SlerpMod();
 
 		if ((iSlerpFactor == 0))
@@ -1058,26 +1057,39 @@ public class GLCanvasRemoteRendering3D
 
 		slerpMod.applySlerp(gl, transform);
 
-		((AGLEventListener) generalManager.getViewGLCanvasManager().getEventListener(iViewId))
+		((AGLEventListener) generalManager.getViewGLCanvasManager().getEventListener(iViewID))
 				.displayRemote(gl);
 
 		gl.glPopMatrix();
 
+		
+		// Check if slerp action is finished
 		if (iSlerpFactor >= SLERP_RANGE)
 		{
 			arSlerpActions.remove(slerpAction);
 
-			// if
-			// (!slerpAction.getOriginHierarchyLayer().equals(slerpAction.
-			// getDestinationHierarchyLayer()))
-			// {
-			// Remove view from origin layer after slerping
-			// slerpAction.getOriginHierarchyLayer().removeElement(iViewId);
-			// }
-
-			slerpAction.getDestinationHierarchyLayer().setElementVisibilityById(true, iViewId);
-
 			iSlerpFactor = 0;
+
+			RemoteHierarchyLayer destinationLayer = slerpAction.getDestinationHierarchyLayer();
+			destinationLayer.setElementVisibilityById(true, iViewID);
+
+			// Update detail level of moved view when slerp action is finished;
+			if (destinationLayer.equals(underInteractionLayer))
+			{
+				GeneralManager.get().getViewGLCanvasManager().getEventListener(
+						iViewID).setDetailLevel(EDetailLevel.MEDIUM);
+			}
+			else if (destinationLayer.equals(stackLayer))
+			{
+				GeneralManager.get().getViewGLCanvasManager().getEventListener(
+						iViewID).setDetailLevel(EDetailLevel.LOW);
+			}
+			else if (destinationLayer.equals(poolLayer) 
+					|| destinationLayer.equals(memoLayer))
+			{
+				GeneralManager.get().getViewGLCanvasManager().getEventListener(
+						iViewID).setDetailLevel(EDetailLevel.VERY_LOW);
+			}
 		}
 
 		// After last slerp action is done the line connections are turned on
@@ -1628,7 +1640,7 @@ public class GLCanvasRemoteRendering3D
 	{
 		CmdEventCreateMediator tmpMediatorCmd = (CmdEventCreateMediator) generalManager
 				.getCommandManager().createCommandByType(
-						CommandType.CREATE_EVENT_MEDIATOR);
+						ECommandType.CREATE_EVENT_MEDIATOR);
 		
 		ArrayList<Integer> iAlSenderIDs = new ArrayList<Integer>();
 		ArrayList<Integer> iAlReceiverIDs = new ArrayList<Integer>();
@@ -1653,7 +1665,7 @@ public class GLCanvasRemoteRendering3D
 		{
 			layoutRenderStyle = new BucketLayoutRenderStyle(generalManager, layoutRenderStyle);
 
-			bucketMouseWheelListener = new BucketMouseWheelListener(this, generalManager,
+			bucketMouseWheelListener = new BucketMouseWheelListener(this,
 					(BucketLayoutRenderStyle) layoutRenderStyle);
 
 			// Unregister standard mouse wheel listener
@@ -1709,7 +1721,7 @@ public class GLCanvasRemoteRendering3D
 		{
 			iGLEventListenerId = ((AGLEventListener) tmpGLEventListenerToRemove).getID();
 
-			if (tmpGLEventListenerToRemove instanceof GLCanvasPathway3D)
+			if (tmpGLEventListenerToRemove instanceof GLPathway)
 			{
 				if (poolLayer.containsElement(iGLEventListenerId))
 					poolLayer.removeElement(iGLEventListenerId);
@@ -1780,18 +1792,21 @@ public class GLCanvasRemoteRendering3D
 
 		return null;
 	}
+	
+	public RemoteHierarchyLayer getUnderInteractionHierarchyLayer()
+	{
+		return underInteractionLayer;
+	}
 
 	@Override
 	public BucketMouseWheelListener getBucketMouseWheelListener()
 	{
-
 		return bucketMouseWheelListener;
 	}
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height)
 	{
-
 		super.reshape(drawable, x, y, width, height);
 
 		// Update aspect ratio and reinitialize stack and focus layer
@@ -1879,9 +1894,9 @@ public class GLCanvasRemoteRendering3D
 		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
 				.getAllGLEventListeners())
 		{
-			if (tmpGLEventListener instanceof GLCanvasPathway3D)
+			if (tmpGLEventListener instanceof GLPathway)
 			{
-				((GLCanvasPathway3D) tmpGLEventListener).enableGeneMapping(bEnableMapping);
+				((GLPathway) tmpGLEventListener).enableGeneMapping(bEnableMapping);
 			}
 		}
 	}
@@ -1892,9 +1907,9 @@ public class GLCanvasRemoteRendering3D
 		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
 				.getAllGLEventListeners())
 		{
-			if (tmpGLEventListener instanceof GLCanvasPathway3D)
+			if (tmpGLEventListener instanceof GLPathway)
 			{
-				((GLCanvasPathway3D) tmpGLEventListener)
+				((GLPathway) tmpGLEventListener)
 						.enablePathwayTextures(bEnablePathwayTexture);
 			}
 		}
@@ -1906,9 +1921,9 @@ public class GLCanvasRemoteRendering3D
 		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
 				.getAllGLEventListeners())
 		{
-			if (tmpGLEventListener instanceof GLCanvasPathway3D)
+			if (tmpGLEventListener instanceof GLPathway)
 			{
-				((GLCanvasPathway3D) tmpGLEventListener)
+				((GLPathway) tmpGLEventListener)
 						.enableNeighborhood(bEnableNeighborhood);
 			}
 		}

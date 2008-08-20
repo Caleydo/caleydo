@@ -1,6 +1,6 @@
 package org.caleydo.core.command.view.swt;
 
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 
 /**
@@ -16,7 +16,7 @@ public class CmdViewCreateDataExchanger
 	/**
 	 * Constructor.
 	 */
-	public CmdViewCreateDataExchanger(final CommandType cmdType)
+	public CmdViewCreateDataExchanger(final ECommandType cmdType)
 	{
 		super(cmdType);
 	}

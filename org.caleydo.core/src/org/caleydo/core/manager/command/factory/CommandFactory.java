@@ -1,6 +1,6 @@
 package org.caleydo.core.manager.command.factory;
 
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.command.data.CmdDataCreateSelection;
 import org.caleydo.core.command.data.CmdDataCreateSet;
@@ -73,7 +73,7 @@ public class CommandFactory
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.manager.command.factory.ICommandFactory#createCommandByType(org.caleydo.core.command.CommandType)
 	 */
-	public ICommand createCommandByType(final CommandType cmdType)
+	public ICommand createCommandByType(final ECommandType cmdType)
 	{
 		ICommand createdCommand = null;
 
@@ -305,7 +305,7 @@ public class CommandFactory
 			final int sQueueThreadWait)
 	{
 
-		CommandType queueType;
+		ECommandType queueType;
 
 		/**
 		 * Create a new uniqueId if necessary
@@ -322,7 +322,7 @@ public class CommandFactory
 
 		try
 		{
-			queueType = CommandType.valueOf(sCmdType);
+			queueType = ECommandType.valueOf(sCmdType);
 		}
 		catch (IllegalArgumentException iae)
 		{

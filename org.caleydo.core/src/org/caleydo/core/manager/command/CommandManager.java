@@ -11,7 +11,7 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 import java.util.logging.Level;
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.command.ICommandListener;
 import org.caleydo.core.command.base.ACommand;
@@ -176,7 +176,7 @@ public class CommandManager
 	 * org.caleydo.core.manager.ICommandManager#createCommandByType(org.caleydo
 	 * .core.command.CommandType)
 	 */
-	public ICommand createCommandByType(final CommandType cmdType)
+	public ICommand createCommandByType(final ECommandType cmdType)
 	{
 
 		ICommand createdCommand = commandFactory.createCommandByType(cmdType);
@@ -200,8 +200,8 @@ public class CommandManager
 	public ICommand createCommand(final IParameterHandler phAttributes)
 	{
 
-		CommandType cmdType = CommandType.valueOf(phAttributes
-				.getValueString(CommandType.TAG_TYPE.getXmlKey()));
+		ECommandType cmdType = ECommandType.valueOf(phAttributes
+				.getValueString(ECommandType.TAG_TYPE.getXmlKey()));
 
 		ICommand createdCommand = createCommandByType(cmdType);
 

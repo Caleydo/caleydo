@@ -1,6 +1,6 @@
 package org.caleydo.core.command.view.swt;
 
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -20,7 +20,7 @@ public class CmdViewCreateUndoRedo
 	/**
 	 * Constructor
 	 */
-	public CmdViewCreateUndoRedo(final CommandType cmdType)
+	public CmdViewCreateUndoRedo(final ECommandType cmdType)
 	{
 		super(cmdType);
 	}

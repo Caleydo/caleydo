@@ -1,6 +1,6 @@
 package org.caleydo.core.command.queue;
 
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACommand;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
@@ -18,7 +18,7 @@ public class CmdSystemRunCmdQueue
 	/**
 	 * Constructor.
 	 */
-	public CmdSystemRunCmdQueue(final CommandType cmdType, final int iCommandQueueId)
+	public CmdSystemRunCmdQueue(final ECommandType cmdType, final int iCommandQueueId)
 	{
 
 		super(cmdType);

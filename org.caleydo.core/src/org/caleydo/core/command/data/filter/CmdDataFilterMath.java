@@ -2,7 +2,7 @@ package org.caleydo.core.command.data.filter;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
@@ -40,7 +40,7 @@ public class CmdDataFilterMath
 	 * 
 	 * @param cmdType
 	 */
-	public CmdDataFilterMath(CommandType cmdType)
+	public CmdDataFilterMath(ECommandType cmdType)
 	{
 		super(cmdType);
 

@@ -1,6 +1,6 @@
 package org.caleydo.rcp.views;
 
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.rcp.CmdExternalActionTrigger;
 import org.caleydo.core.command.view.rcp.CmdExternalFlagSetter;
 import org.caleydo.core.command.view.rcp.EExternalActionType;
@@ -203,7 +203,7 @@ public class GLRemoteRenderingView
 
 		CmdExternalActionTrigger tmpCmd = (CmdExternalActionTrigger) Application.generalManager
 				.getCommandManager().createCommandByType(
-						CommandType.EXTERNAL_ACTION_TRIGGER);
+						ECommandType.EXTERNAL_ACTION_TRIGGER);
 
 		tmpCmd.setAttributes(iViewID, type);
 		tmpCmd.doCommand();
@@ -214,7 +214,7 @@ public class GLRemoteRenderingView
 
 		CmdExternalFlagSetter tmpCmd = (CmdExternalFlagSetter) Application.generalManager
 				.getCommandManager().createCommandByType(
-						CommandType.EXTERNAL_FLAG_SETTER);
+						ECommandType.EXTERNAL_FLAG_SETTER);
 
 		tmpCmd.setAttributes(iViewID, bFlag, type);
 		tmpCmd.doCommand();

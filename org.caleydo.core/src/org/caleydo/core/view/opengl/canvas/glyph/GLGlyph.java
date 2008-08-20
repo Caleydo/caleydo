@@ -39,14 +39,14 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
  * 
  * @author Stefan Sauer
  */
-public class GLCanvasGlyph
+public class GLGlyph
 	extends AGLEventListener
 	implements IMediatorSender, IMediatorReceiver
 {
 
 	private static final long serialVersionUID = -7899479912218913482L;
 
-	GLCanvasGlyphGrid grid_;
+	GLGlyphGrid grid_;
 
 	int displayList_ = -1;
 
@@ -74,7 +74,7 @@ public class GLCanvasGlyph
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLCanvasGlyph(final int iGLCanvasID, final String sLabel,
+	public GLGlyph(final int iGLCanvasID, final String sLabel,
 			final IViewFrustum viewFrustum)
 	{
 		super(iGLCanvasID, sLabel, viewFrustum, true);
@@ -137,7 +137,7 @@ public class GLCanvasGlyph
 			return;
 		}
 
-		grid_ = new GLCanvasGlyphGrid(generalManager, renderStyle);
+		grid_ = new GLGlyphGrid(generalManager, renderStyle);
 		grid_.loadData(glyphData);
 
 		grid_.buildGrid(gl);

@@ -1,6 +1,6 @@
 package org.caleydo.core.command.queue;
 
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACommand;
 
 /**
@@ -20,7 +20,7 @@ public abstract class ACommandQueue
 	 * 
 	 * @param iCmdQueueId define cmd queue by this id
 	 */
-	protected ACommandQueue(final CommandType cmdType, final int iCmdQueueId)
+	protected ACommandQueue(final ECommandType cmdType, final int iCmdQueueId)
 	{
 		super(cmdType);
 

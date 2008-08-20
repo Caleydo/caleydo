@@ -1,7 +1,7 @@
 package org.caleydo.core.view.swt.browser;
 
 import java.util.logging.Level;
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateSelection;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;

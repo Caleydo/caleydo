@@ -2,9 +2,9 @@ package org.caleydo.rcp;
 
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
+import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParallelCoordinates;
-import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
-import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 import org.caleydo.rcp.views.AGLViewPart;
 import org.caleydo.rcp.views.GLParCoordsView;
 import org.caleydo.rcp.views.GLPathwayView;
@@ -116,14 +116,14 @@ public class ApplicationWorkbenchAdvisor
 									GLParCoordsView.ID, Integer.toString(iInstanceNum),
 									IWorkbenchPage.VIEW_ACTIVATE);
 				}
-				else if (tmpGLEventListener instanceof GLCanvasPathway3D)
+				else if (tmpGLEventListener instanceof GLPathway)
 				{
 					viewPart = (GLPathwayView) PlatformUI.getWorkbench()
 							.getActiveWorkbenchWindow().getActivePage().showView(
 									GLPathwayView.ID, Integer.toString(iInstanceNum),
 									IWorkbenchPage.VIEW_ACTIVATE);
 				}
-				else if (tmpGLEventListener instanceof GLCanvasRemoteRendering3D)
+				else if (tmpGLEventListener instanceof GLRemoteRendering)
 				{
 					viewPart = (GLRemoteRenderingView) PlatformUI.getWorkbench()
 							.getActiveWorkbenchWindow().getActivePage().showView(

@@ -9,7 +9,7 @@ package org.caleydo.core.command;
  * @author Michael Kalkusch
  * @author Marc Streit
  */
-public enum CommandType
+public enum ECommandType
 {
 	/**
 	 * XML-value ( XML-Tag , XML-key )
@@ -153,7 +153,7 @@ public enum CommandType
 	 * @param sDefaultValue
 	 * @param sInfoText
 	 */
-	private CommandType(String sXmlTag, String sXmlKey,
+	private ECommandType(String sXmlTag, String sXmlKey,
 			String sDefaultValue, String sInfoText)
 	{
 		this.sXmlTag = sXmlTag;
@@ -162,7 +162,7 @@ public enum CommandType
 		this.sInfoText = sInfoText;
 	}
 	
-	private CommandType(String sXmlTag, String sXmlKey, String sDefaultValue)
+	private ECommandType(String sXmlTag, String sXmlKey, String sDefaultValue)
 	{
 		this(sXmlTag, sXmlKey, sDefaultValue,
 				"Description is not valid! This is a TAG.");

@@ -4,7 +4,7 @@ import gleem.linalg.Vec4f;
 import java.util.Vector;
 import javax.media.opengl.GL;
 
-public class GLCanvasGlyphGenerator
+public class GLGlyphGenerator
 {
 
 	int indexTopColor_ = -1;
@@ -29,7 +29,7 @@ public class GLCanvasGlyphGenerator
 
 	Vector<Vec4f> colorTop;
 
-	public GLCanvasGlyphGenerator()
+	public GLGlyphGenerator()
 	{
 
 		colorBox = new Vector<Vec4f>();

@@ -45,7 +45,7 @@ import org.caleydo.util.graph.IGraphItem;
  * 
  * @author Marc Streit
  */
-public class GLCanvasPathway3D
+public class GLPathway
 	extends AGLEventListener
 	implements IMediatorReceiver, IMediatorSender
 {
@@ -91,7 +91,7 @@ public class GLCanvasPathway3D
 	/**
 	 * Constructor.
 	 */
-	public GLCanvasPathway3D(final int iGLCanvasID, final String sLabel,
+	public GLPathway(final int iGLCanvasID, final String sLabel,
 			final IViewFrustum viewFrustum)
 	{
 		super(iGLCanvasID, sLabel, viewFrustum, false);
@@ -273,7 +273,7 @@ public class GLCanvasPathway3D
 			if (remoteRenderingGLCanvas.getHierarchyLayerByGLEventListenerId(iUniqueID)
 					.getLevel().equals(EHierarchyLevel.UNDER_INTERACTION)
 					&& remoteRenderingGLCanvas.getBucketMouseWheelListener()
-							.isBucketBottomReached())
+							.isZoomedIn())
 			{
 				gLPathwayManager.renderPathway(gl, iPathwayId, true);
 			}
@@ -297,7 +297,6 @@ public class GLCanvasPathway3D
 
 	private void rebuildPathwayDisplayList(final GL gl)
 	{
-
 		if (selectedVertex != null)
 		{
 			// // Write currently selected vertex to selection set

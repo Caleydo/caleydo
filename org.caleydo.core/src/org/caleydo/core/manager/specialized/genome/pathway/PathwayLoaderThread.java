@@ -16,7 +16,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.system.StringConversionTool;
-import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 
 /**
  * Loads all pathways of a certain type by providing the XML path.
@@ -81,13 +81,13 @@ public class PathwayLoaderThread
 
 		generalManager.getLogger().log(Level.INFO, "Start parsing " +pathwayDatabase.getName() +" pathways.");
 		
-		GLCanvasRemoteRendering3D tmpGLRemoteRendering3D = null;
+		GLRemoteRendering tmpGLRemoteRendering3D = null;
 		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
 				.getAllGLEventListeners())
 		{
-			if (tmpGLEventListener instanceof GLCanvasRemoteRendering3D)
+			if (tmpGLEventListener instanceof GLRemoteRendering)
 			{
-				tmpGLRemoteRendering3D = ((GLCanvasRemoteRendering3D) tmpGLEventListener);
+				tmpGLRemoteRendering3D = ((GLRemoteRendering) tmpGLEventListener);
 				tmpGLRemoteRendering3D.enableBusyMode(true);
 				break;
 			}

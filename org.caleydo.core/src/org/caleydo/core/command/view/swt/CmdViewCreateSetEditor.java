@@ -1,6 +1,6 @@
 package org.caleydo.core.command.view.swt;
 
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
@@ -17,7 +17,7 @@ public class CmdViewCreateSetEditor
 	/**
 	 * Constructor.
 	 */
-	public CmdViewCreateSetEditor(final CommandType cmdType)
+	public CmdViewCreateSetEditor(final ECommandType cmdType)
 	{
 		super(cmdType);
 	}

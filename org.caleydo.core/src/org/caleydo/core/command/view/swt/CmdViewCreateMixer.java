@@ -1,6 +1,6 @@
 package org.caleydo.core.command.view.swt;
 
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -23,7 +23,7 @@ public class CmdViewCreateMixer
 	/**
 	 * Constructor.
 	 */
-	public CmdViewCreateMixer(final CommandType cmdType)
+	public CmdViewCreateMixer(final ECommandType cmdType)
 	{
 		super(cmdType);
 	}
@@ -62,7 +62,7 @@ public class CmdViewCreateMixer
 		super.setParameterHandler(parameterHandler);
 
 		parameterHandler.setValueAndTypeAndDefault("iNumberOfSliders", parameterHandler
-				.getValueString(CommandType.TAG_ATTRIBUTE1.getXmlKey()),
+				.getValueString(ECommandType.TAG_ATTRIBUTE1.getXmlKey()),
 				IParameterHandler.ParameterHandlerType.INT, "-1");
 
 		iNumberOfSliders = parameterHandler.getValueInt("iNumberOfSliders");

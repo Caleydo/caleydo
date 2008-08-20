@@ -3,7 +3,7 @@ package org.caleydo.core.command.data;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
@@ -33,7 +33,7 @@ public class CmdDataCreateSet
 	/**
 	 * Constructor.
 	 */
-	public CmdDataCreateSet(final CommandType cmdType)
+	public CmdDataCreateSet(final ECommandType cmdType)
 	{
 		super(cmdType);
 
@@ -105,7 +105,7 @@ public class CmdDataCreateSet
 		 * Separate "text1@text2"
 		 */
 		StringTokenizer strToken_StorageBlock = new StringTokenizer(parameterHandler
-				.getValueString(CommandType.TAG_ATTRIBUTE2.getXmlKey()),
+				.getValueString(ECommandType.TAG_ATTRIBUTE2.getXmlKey()),
 				IGeneralManager.sDelimiter_Paser_DataItemBlock);
 
 		while (strToken_StorageBlock.hasMoreTokens())
@@ -130,7 +130,7 @@ public class CmdDataCreateSet
 		/**
 		 * read "attrib3" key ...
 		 */
-		String sAttrib3 = parameterHandler.getValueString(CommandType.TAG_ATTRIBUTE3
+		String sAttrib3 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE3
 				.getXmlKey());
 
 		if (sAttrib3.length() > 0)

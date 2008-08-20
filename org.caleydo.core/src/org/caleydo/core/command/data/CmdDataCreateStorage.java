@@ -1,7 +1,7 @@
 package org.caleydo.core.command.data;
 
 import java.util.logging.Level;
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.data.collection.IStorage;
@@ -26,7 +26,7 @@ public class CmdDataCreateStorage
 	/**
 	 * Constructor.
 	 */
-	public CmdDataCreateStorage(final CommandType cmdType)
+	public CmdDataCreateStorage(final ECommandType cmdType)
 	{
 		super(cmdType);
 	}

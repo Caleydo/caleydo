@@ -1,7 +1,7 @@
 package org.caleydo.core.command.view.swt;
 
 import java.util.Iterator;
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.IView;
@@ -27,7 +27,7 @@ public class CmdViewLoadURLInHTMLBrowser
 	/**
 	 * Constructor
 	 */
-	public CmdViewLoadURLInHTMLBrowser(final CommandType cmdType)
+	public CmdViewLoadURLInHTMLBrowser(final ECommandType cmdType)
 	{
 		super(cmdType);
 	}

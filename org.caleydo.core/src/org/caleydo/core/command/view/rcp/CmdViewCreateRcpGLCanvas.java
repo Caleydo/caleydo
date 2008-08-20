@@ -1,7 +1,7 @@
 package org.caleydo.core.command.view.rcp;
 
 import javax.media.opengl.GLCapabilities;
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IViewGLCanvasManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
@@ -20,7 +20,7 @@ public class CmdViewCreateRcpGLCanvas
 	/**
 	 * Constructor.
 	 */
-	public CmdViewCreateRcpGLCanvas(final CommandType cmdType)
+	public CmdViewCreateRcpGLCanvas(final ECommandType cmdType)
 	{
 		super(cmdType);
 	}
@@ -31,7 +31,7 @@ public class CmdViewCreateRcpGLCanvas
 		GLCapabilities glCapabilities = new GLCapabilities();
 		glCapabilities.setStencilBits(1);
 
-		GLCaleydoCanvas gLCanvas = new GLCaleydoCanvas(glCapabilities, null);
+		GLCaleydoCanvas gLCanvas = new GLCaleydoCanvas(glCapabilities);
 
 		IViewGLCanvasManager canvasManager = generalManager.getViewGLCanvasManager();
 

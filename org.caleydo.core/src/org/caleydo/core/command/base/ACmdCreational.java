@@ -1,6 +1,6 @@
 package org.caleydo.core.command.base;
 
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 
 /**
  * This abstract command provides functionality to return
@@ -18,7 +18,7 @@ public abstract class ACmdCreational<T>
 	 * Constructor
 	 * 
 	 */
-	protected ACmdCreational(final CommandType cmdType)
+	protected ACmdCreational(final ECommandType cmdType)
 	{
 		super(cmdType);
 	}

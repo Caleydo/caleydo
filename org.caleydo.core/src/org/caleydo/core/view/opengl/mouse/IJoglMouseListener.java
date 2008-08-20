@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.caleydo.core.view.opengl;
+package org.caleydo.core.view.opengl.mouse;
 
 import org.caleydo.core.data.view.camera.IViewCamera;
 

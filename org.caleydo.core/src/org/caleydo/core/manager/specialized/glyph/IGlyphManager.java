@@ -3,8 +3,8 @@ package org.caleydo.core.manager.specialized.glyph;
 import java.util.Collection;
 import java.util.HashMap;
 import org.caleydo.core.manager.IManager;
-import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyph;
-import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyphGenerator;
+import org.caleydo.core.view.opengl.canvas.glyph.GLGlyph;
+import org.caleydo.core.view.opengl.canvas.glyph.GLGlyphGenerator;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphAttributeType;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphEntry;
 
@@ -14,9 +14,9 @@ import org.caleydo.core.view.opengl.canvas.glyph.GlyphEntry;
 public interface IGlyphManager
 {
 
-	public void registerGlyphView(GLCanvasGlyph view);
+	public void registerGlyphView(GLGlyph view);
 
-	public void unregisterGlyphView(GLCanvasGlyph view);
+	public void unregisterGlyphView(GLGlyph view);
 
 	public void loadGlyphDefinitaion(String xmlPath);
 
@@ -36,7 +36,7 @@ public interface IGlyphManager
 
 	public GlyphAttributeType getGlyphAttributeTypeWithInternalColumnNumber(int colnum);
 
-	public GLCanvasGlyphGenerator getGlyphGenerator();
+	public GLGlyphGenerator getGlyphGenerator();
 
 	public void initGlyphGenerator();
 

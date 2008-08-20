@@ -3,7 +3,7 @@ package org.caleydo.core.command.data.parser;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACommand;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader;
@@ -40,7 +40,7 @@ public class CmdLoadFileNStorages
 	 * 
 	 * @param cmdType
 	 */
-	public CmdLoadFileNStorages(final CommandType cmdType)
+	public CmdLoadFileNStorages(final ECommandType cmdType)
 	{
 		super(cmdType);
 	}
@@ -53,13 +53,13 @@ public class CmdLoadFileNStorages
 	{
 		super.setParameterHandler(parameterHandler);
 
-		this.sFileName = parameterHandler.getValueString(CommandType.TAG_DETAIL
+		this.sFileName = parameterHandler.getValueString(ECommandType.TAG_DETAIL
 				.getXmlKey());
 		this.sTokenPattern = parameterHandler
-				.getValueString(CommandType.TAG_ATTRIBUTE1.getXmlKey());
+				.getValueString(ECommandType.TAG_ATTRIBUTE1.getXmlKey());
 
 		StringTokenizer tokenizer = new StringTokenizer(parameterHandler
-				.getValueString(CommandType.TAG_ATTRIBUTE2.getXmlKey()),
+				.getValueString(ECommandType.TAG_ATTRIBUTE2.getXmlKey()),
 				GeneralManager.sDelimiter_Parser_DataItems);
 
 		iAlStorageIDs = new ArrayList<Integer>();
@@ -76,7 +76,7 @@ public class CmdLoadFileNStorages
 		
 		int[] iArrayStartStop = StringConversionTool.convertStringToIntArrayVariableLength(
 				parameterHandler
-						.getValueString(CommandType.TAG_ATTRIBUTE3.getXmlKey()), " ");
+						.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey()), " ");
 
 		if (iArrayStartStop.length > 0)
 		{

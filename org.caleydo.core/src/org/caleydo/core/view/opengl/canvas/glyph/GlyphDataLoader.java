@@ -40,7 +40,7 @@ public class GlyphDataLoader
 	public HashMap<Integer, GlyphEntry> loadGlyphs(ISet glyphData)
 	{
 
-		GLCanvasGlyphGenerator generator = generalManager.getGlyphManager()
+		GLGlyphGenerator generator = generalManager.getGlyphManager()
 				.getGlyphGenerator();
 
 		glyphs = new HashMap<Integer, GlyphEntry>();

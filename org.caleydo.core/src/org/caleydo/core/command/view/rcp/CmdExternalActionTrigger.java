@@ -1,10 +1,10 @@
 package org.caleydo.core.command.view.rcp;
 
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
-import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 
 /**
  * Command for triggering simple actions from the RCP interface that are
@@ -23,7 +23,7 @@ public class CmdExternalActionTrigger
 	/**
 	 * Constructor.
 	 */
-	public CmdExternalActionTrigger(final CommandType cmdType)
+	public CmdExternalActionTrigger(final ECommandType cmdType)
 	{
 		super(cmdType);
 	}
@@ -35,16 +35,16 @@ public class CmdExternalActionTrigger
 		{
 			Object viewObject = generalManager.getViewGLCanvasManager().getItem(iViewId);
 
-			if (viewObject instanceof GLCanvasRemoteRendering3D)
+			if (viewObject instanceof GLRemoteRendering)
 			{
 				if (externalActionType.equals(EExternalActionType.CLEAR_ALL))
 				{
-					((GLCanvasRemoteRendering3D) viewObject).clearAll();
+					((GLRemoteRendering) viewObject).clearAll();
 				}
 				else if (externalActionType
 						.equals(EExternalActionType.REMOTE_RENDERING_TOGGLE_LAYOUT_MODE))
 				{
-					((GLCanvasRemoteRendering3D) viewObject).toggleLayoutMode();
+					((GLRemoteRendering) viewObject).toggleLayoutMode();
 				}
 			}
 		}

@@ -3,7 +3,7 @@ package org.caleydo.core.manager;
 import java.util.Collection;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.PickingManager;
@@ -25,7 +25,7 @@ import com.sun.opengl.util.Animator;
 public interface IViewGLCanvasManager
 	extends IViewManager, IManager<IView>
 {
-	public AGLEventListener createGLEventListener(CommandType type,
+	public AGLEventListener createGLEventListener(ECommandType type,
 			final int iGLCanvasID, String sLabel, IViewFrustum viewFrustum);
 
 	public IView createGLView(final EManagedObjectType type,

@@ -93,9 +93,13 @@ public class SlerpAction
 
 		if (destinationHierarchyLayer.getElementList().size() < destinationHierarchyLayer
 				.getCapacity())
+		{
 			destinationHierarchyLayer.addElement(iElementId);
+		}
 		else
+		{
 			destinationHierarchyLayer.replaceElement(iElementId, iDestinationPosIndex);
+		}
 	}
 
 	public int getElementId()

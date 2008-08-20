@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import javax.media.opengl.GLEventListener;
 import javax.swing.JFrame;
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.manager.AManager;
@@ -20,10 +20,10 @@ import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyph;
+import org.caleydo.core.view.opengl.canvas.glyph.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.sliderview.GLCanvasGlyphSliderView;
-import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
-import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
+import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.glyph.GLCanvasRemoteGlyph;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.HeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParallelCoordinates;
@@ -235,7 +235,7 @@ public class ViewGLCanvasManager
 	}
 
 	@Override
-	public AGLEventListener createGLEventListener(CommandType type,
+	public AGLEventListener createGLEventListener(ECommandType type,
 			final int iGLCanvasID, final String sLabel,
 			final IViewFrustum viewFrustum)
 	{
@@ -253,7 +253,7 @@ public class ViewGLCanvasManager
 				break;
 
 			case CREATE_GL_PATHWAY_3D:
-				glEventListener = new GLCanvasPathway3D(iGLCanvasID,
+				glEventListener = new GLPathway(iGLCanvasID,
 						sLabel, viewFrustum);
 				break;
 				
@@ -263,7 +263,7 @@ public class ViewGLCanvasManager
 				break;
 				
 			case CREATE_GL_GLYPH:
-				glEventListener = new GLCanvasGlyph(iGLCanvasID, sLabel,
+				glEventListener = new GLGlyph(iGLCanvasID, sLabel,
 						viewFrustum);
 				break;
 			case CREATE_GL_GLYPH_SLIDER:
@@ -272,13 +272,13 @@ public class ViewGLCanvasManager
 				break;
 				
 			case CREATE_GL_BUCKET_3D:
-				glEventListener = new GLCanvasRemoteRendering3D(iGLCanvasID, 
+				glEventListener = new GLRemoteRendering(iGLCanvasID, 
 						sLabel, viewFrustum,
 						ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET);
 				break;
 				
 			case CREATE_GL_JUKEBOX_3D:
-				glEventListener = new GLCanvasRemoteRendering3D(iGLCanvasID,
+				glEventListener = new GLRemoteRendering(iGLCanvasID,
 						sLabel, viewFrustum,
 						ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX);
 				break;

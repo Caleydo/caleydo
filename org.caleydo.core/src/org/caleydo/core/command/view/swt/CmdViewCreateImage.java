@@ -1,6 +1,6 @@
 package org.caleydo.core.command.view.swt;
 
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -23,7 +23,7 @@ public class CmdViewCreateImage
 	/**
 	 * Constructor.
 	 */
-	public CmdViewCreateImage(final CommandType cmdType)
+	public CmdViewCreateImage(final ECommandType cmdType)
 	{
 		super(cmdType);
 	}
@@ -63,7 +63,7 @@ public class CmdViewCreateImage
 		super.setParameterHandler(parameterHandler);
 
 		parameterHandler.setValueAndTypeAndDefault("sImagePath", parameterHandler
-				.getValueString(CommandType.TAG_DETAIL.getXmlKey()),
+				.getValueString(ECommandType.TAG_DETAIL.getXmlKey()),
 				IParameterHandler.ParameterHandlerType.STRING, "");
 
 		sImagePath = parameterHandler.getValueString("sImagePath");

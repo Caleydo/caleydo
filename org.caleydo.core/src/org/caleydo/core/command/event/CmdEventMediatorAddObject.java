@@ -2,7 +2,7 @@ package org.caleydo.core.command.event;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
@@ -33,7 +33,7 @@ public class CmdEventMediatorAddObject
 	/**
 	 * Constructor.
 	 */
-	public CmdEventMediatorAddObject(final CommandType cmdType)
+	public CmdEventMediatorAddObject(final ECommandType cmdType)
 	{
 		super(cmdType);
 
@@ -82,7 +82,7 @@ public class CmdEventMediatorAddObject
 					.nextToken(), -1));
 		}
 
-		String sMediatorType = parameterHandler.getValueString(CommandType.TAG_DETAIL
+		String sMediatorType = parameterHandler.getValueString(ECommandType.TAG_DETAIL
 				.getXmlKey());
 
 		if (sMediatorType.length() < 1)

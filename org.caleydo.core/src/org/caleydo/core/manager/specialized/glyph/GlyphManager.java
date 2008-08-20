@@ -7,8 +7,8 @@ import java.util.Vector;
 import java.util.logging.Level;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyph;
-import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyphGenerator;
+import org.caleydo.core.view.opengl.canvas.glyph.GLGlyph;
+import org.caleydo.core.view.opengl.canvas.glyph.GLGlyphGenerator;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphAttributeType;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphEntry;
 
@@ -26,13 +26,13 @@ public class GlyphManager
 
 	private Vector<Integer> sortOrderExt;
 
-	private GLCanvasGlyphGenerator generator = null;
+	private GLGlyphGenerator generator = null;
 
 	private HashMap<Integer, GlyphAttributeType> dataTypesExt = null;
 
 	private HashMap<Integer, GlyphEntry> hmGlyphList = null;
 
-	private HashSet<GLCanvasGlyph> registeredViews = null;
+	private HashSet<GLGlyph> registeredViews = null;
 
 	/**
 	 * Constructor.
@@ -45,19 +45,19 @@ public class GlyphManager
 		hmGlyphList = new HashMap<Integer, GlyphEntry>();
 		sortOrderExt = new Vector<Integer>();
 
-		generator = new GLCanvasGlyphGenerator();
+		generator = new GLGlyphGenerator();
 		dataTypesExt = new HashMap<Integer, GlyphAttributeType>();
-		registeredViews = new HashSet<GLCanvasGlyph>();
+		registeredViews = new HashSet<GLGlyph>();
 	}
 
-	public void registerGlyphView(GLCanvasGlyph view)
+	public void registerGlyphView(GLGlyph view)
 	{
 
 		if (!registeredViews.contains(view))
 			registeredViews.add(view);
 	}
 
-	public void unregisterGlyphView(GLCanvasGlyph view)
+	public void unregisterGlyphView(GLGlyph view)
 	{
 
 		if (!registeredViews.contains(view))
@@ -89,7 +89,7 @@ public class GlyphManager
 
 		initGlyphGenerator();
 
-		for (GLCanvasGlyph v : registeredViews)
+		for (GLGlyph v : registeredViews)
 			v.forceRebuild();
 	}
 
@@ -150,7 +150,7 @@ public class GlyphManager
 		return null;
 	}
 
-	public GLCanvasGlyphGenerator getGlyphGenerator()
+	public GLGlyphGenerator getGlyphGenerator()
 	{
 
 		return generator;

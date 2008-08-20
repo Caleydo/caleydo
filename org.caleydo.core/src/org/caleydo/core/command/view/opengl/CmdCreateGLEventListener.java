@@ -6,7 +6,7 @@ import gleem.linalg.Vec4f;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.camera.ViewFrustumBase;
@@ -28,7 +28,7 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 public class CmdCreateGLEventListener
 	extends ACmdCreational<AGLEventListener>
 {
-	protected CommandType viewType;
+	protected ECommandType viewType;
 
 	protected IViewFrustum viewFrustum;
 
@@ -42,7 +42,7 @@ public class CmdCreateGLEventListener
 	/**
 	 * Constructor.
 	 */
-	public CmdCreateGLEventListener(final CommandType cmdType)
+	public CmdCreateGLEventListener(final ECommandType cmdType)
 	{
 		super(cmdType);
 
@@ -65,32 +65,32 @@ public class CmdCreateGLEventListener
 		extractDataIDs();
 
 		String sPositionGLOrigin = parameterHandler
-				.getValueString(CommandType.TAG_POS_GL_ORIGIN.getXmlKey());
+				.getValueString(ECommandType.TAG_POS_GL_ORIGIN.getXmlKey());
 
 		String sPositionGLRotation = parameterHandler
-				.getValueString(CommandType.TAG_POS_GL_ROTATION.getXmlKey());
+				.getValueString(ECommandType.TAG_POS_GL_ROTATION.getXmlKey());
 
 		/* convert values.. */
 		if (sPositionGLOrigin != null)
 		{
-			parameterHandler.setValueAndTypeAndDefault(CommandType.TAG_POS_GL_ORIGIN
+			parameterHandler.setValueAndTypeAndDefault(ECommandType.TAG_POS_GL_ORIGIN
 					.getXmlKey(), sPositionGLOrigin, ParameterHandlerType.VEC3F,
-					CommandType.TAG_POS_GL_ORIGIN.getDefault());
+					ECommandType.TAG_POS_GL_ORIGIN.getDefault());
 		}
 
 		if (sPositionGLRotation != null)
 		{
-			parameterHandler.setValueAndTypeAndDefault(CommandType.TAG_POS_GL_ROTATION
+			parameterHandler.setValueAndTypeAndDefault(ECommandType.TAG_POS_GL_ROTATION
 					.getXmlKey(), sPositionGLRotation, ParameterHandlerType.VEC4F,
-					CommandType.TAG_POS_GL_ROTATION.getDefault());
+					ECommandType.TAG_POS_GL_ROTATION.getDefault());
 		}
 
-		cameraOrigin = parameterHandler.getValueVec3f(CommandType.TAG_POS_GL_ORIGIN
+		cameraOrigin = parameterHandler.getValueVec3f(ECommandType.TAG_POS_GL_ORIGIN
 				.getXmlKey());
 
 		/* convert Vec4f to roation Rotf */
 		Vec4f vec4fRotation = parameterHandler
-				.getValueVec4f(CommandType.TAG_POS_GL_ROTATION.getXmlKey());
+				.getValueVec4f(ECommandType.TAG_POS_GL_ROTATION.getXmlKey());
 
 		cameraRotation.set(new Vec3f(vec4fRotation.x(), vec4fRotation.y(), vec4fRotation.z()),
 				(float) Math.toRadians(vec4fRotation.w()));

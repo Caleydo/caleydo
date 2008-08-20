@@ -1,11 +1,11 @@
 package org.caleydo.core.command.view.opengl;
 
 import java.util.ArrayList;
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.data.view.camera.ViewFrustumBase;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.system.StringConversionTool;
-import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
+import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 
 /**
  * Create single OpenGL pathway view.
@@ -21,7 +21,7 @@ public class CmdGlObjectPathway3D
 	/**
 	 * Constructor.
 	 */
-	public CmdGlObjectPathway3D(final CommandType cmdType)
+	public CmdGlObjectPathway3D(final ECommandType cmdType)
 	{
 		super(cmdType);
 	}
@@ -61,6 +61,6 @@ public class CmdGlObjectPathway3D
 	{
 		super.doCommand();
 
-		((GLCanvasPathway3D) createdObject).setPathwayID(iPathwayID);
+		((GLPathway) createdObject).setPathwayID(iPathwayID);
 	}
 }

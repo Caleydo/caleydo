@@ -1,12 +1,11 @@
 package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec3f;
-import java.awt.Canvas;
 import java.util.ArrayList;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
@@ -24,7 +23,6 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
@@ -70,6 +68,8 @@ public abstract class AGLEventListener
 	 * by the JOGL animator.
 	 */
 	protected float fAspectRatio = 1f;
+	
+	protected EDetailLevel detailLevel = EDetailLevel.HIGH;
 
 	/**
 	 * Constructor.
@@ -443,7 +443,7 @@ public abstract class AGLEventListener
 			return;
 
 		CmdViewLoadURLInHTMLBrowser createdCmd = (CmdViewLoadURLInHTMLBrowser) generalManager
-				.getCommandManager().createCommandByType(CommandType.LOAD_URL_IN_BROWSER);
+				.getCommandManager().createCommandByType(ECommandType.LOAD_URL_IN_BROWSER);
 
 		createdCmd.setAttributes(sUrl);
 		createdCmd.doCommand();
@@ -451,4 +451,10 @@ public abstract class AGLEventListener
 
 	public abstract void broadcastElements(ESelectionType type);
 
+	public void setDetailLevel(EDetailLevel detailLevel)
+	{
+		System.out.println("Changed detail level to: " +detailLevel);
+		
+		this.detailLevel = detailLevel;
+	}
 }

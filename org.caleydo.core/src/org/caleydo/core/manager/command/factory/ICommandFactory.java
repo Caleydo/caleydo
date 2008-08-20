@@ -1,6 +1,6 @@
 package org.caleydo.core.manager.command.factory;
 
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.ICommand;
 
 /**
@@ -17,7 +17,7 @@ public interface ICommandFactory
 	 * @param cmdType specify the ICommand to be created.
 	 * @return new ICommand
 	 */
-	public ICommand createCommandByType(final CommandType cmdType);
+	public ICommand createCommandByType(final ECommandType cmdType);
 
 	/**
 	 * @see org.caleydo.core.manager.ICommandManager#createCommandQueue(String,

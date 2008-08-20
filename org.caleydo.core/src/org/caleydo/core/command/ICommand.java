@@ -35,7 +35,7 @@ public interface ICommand
 	 * @throws PrometheusCommandException
 	 * @see org.caleydo.core.command.factory.CommandFactory.getCommandType()
 	 */
-	public abstract CommandType getCommandType();
+	public abstract ECommandType getCommandType();
 
 	/**
 	 * Method returns a description of the command. This is mainly used for the

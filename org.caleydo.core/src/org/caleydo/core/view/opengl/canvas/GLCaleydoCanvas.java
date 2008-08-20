@@ -30,26 +30,22 @@ public class GLCaleydoCanvas
 	private IGeneralManager generalManager;
 
 	private int iGLCanvasID;
-	
-	private Composite parentComposite;
 
 	private FPSCounter fpsCounter;
 
 	private PickingJoglMouseListener joglMouseListener;
 
-	public GLCaleydoCanvas(final GLCapabilities glCapabilities,
-			final Composite parentComposite)
+	public GLCaleydoCanvas(final GLCapabilities glCapabilities)
 	{
 		super(glCapabilities);
 
 		this.generalManager = GeneralManager.get();
-		this.parentComposite = parentComposite;
 
 		joglMouseListener = new PickingJoglMouseListener();
 
 		this.iGLCanvasID = generalManager.getIDManager().createID(
 				EManagedObjectType.VIEW_GL_CANVAS);
-
+		
 		// Register mouse listener to GL canvas
 		this.addMouseListener(joglMouseListener);
 		this.addMouseMotionListener(joglMouseListener);
@@ -140,10 +136,5 @@ public class GLCaleydoCanvas
 	public int getID()
 	{
 		return iGLCanvasID;
-	}
-	
-	public Composite getParentComposite()
-	{
-		return parentComposite;
 	}
 }

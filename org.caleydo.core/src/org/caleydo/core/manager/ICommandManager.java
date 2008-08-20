@@ -1,6 +1,6 @@
 package org.caleydo.core.manager;
 
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.command.ICommandActionListener;
 import org.caleydo.core.command.ICommandListener;
@@ -40,7 +40,7 @@ public interface ICommandManager
 	 * create a new command. Calls createCommandByType(CommandType)
 	 * internal.
 	 * 
-	 * @see org.caleydo.core.manager.ICommandManager#createCommandByType(CommandType)
+	 * @see org.caleydo.core.manager.ICommandManager#createCommandByType(ECommandType)
 	 * @param phAttributes Define several attributes and assign them in new
 	 *            Command
 	 * @return new Command with attributes defined in phAttributes
@@ -53,7 +53,7 @@ public interface ICommandManager
 	 * @param cmdType
 	 * @return
 	 */
-	public ICommand createCommandByType(final CommandType cmdType);
+	public ICommand createCommandByType(final ECommandType cmdType);
 
 	/**
 	 * Add reference to one ICommandListener object.

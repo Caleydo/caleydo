@@ -6,7 +6,7 @@ package org.caleydo.core.command.queue;
 import java.util.Iterator;
 import java.util.ListIterator;
 import java.util.Vector;
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
@@ -60,7 +60,7 @@ public class CommandQueueVector
 	/**
 	 * Constructor.
 	 */
-	public CommandQueueVector(final CommandType cmdType, final int iCmdQueuId)
+	public CommandQueueVector(final ECommandType cmdType, final int iCmdQueuId)
 	{
 		super(cmdType, iCmdQueuId);
 

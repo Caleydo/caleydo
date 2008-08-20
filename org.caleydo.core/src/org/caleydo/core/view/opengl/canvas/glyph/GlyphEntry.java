@@ -23,14 +23,14 @@ public class GlyphEntry
 
 	private HashMap<String, String> vsParameterString = new HashMap<String, String>();
 
-	private GLCanvasGlyphGenerator generator_ = null;
+	private GLGlyphGenerator generator_ = null;
 
 	private int glList_ = 0;
 
 	private int glListSelected_ = 0;
 
 	public GlyphEntry(final IGeneralManager generalManager, int id,
-			GLCanvasGlyphGenerator generator)
+			GLGlyphGenerator generator)
 	{
 
 		this.generalManager = generalManager;

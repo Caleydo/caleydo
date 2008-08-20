@@ -22,7 +22,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * 
  * @author Stefan Sauer
  */
-public class GLCanvasGlyphGrid
+public class GLGlyphGrid
 {
 
 	private IGeneralManager generalManager = null;
@@ -49,7 +49,7 @@ public class GLCanvasGlyphGrid
 
 	private GlyphRenderStyle renderStyle = null;
 
-	public GLCanvasGlyphGrid(final IGeneralManager generalManager, GlyphRenderStyle renderStyle)
+	public GLGlyphGrid(final IGeneralManager generalManager, GlyphRenderStyle renderStyle)
 	{
 
 		this.generalManager = generalManager;

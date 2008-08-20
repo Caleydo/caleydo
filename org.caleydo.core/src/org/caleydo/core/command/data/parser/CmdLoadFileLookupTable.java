@@ -1,7 +1,7 @@
 package org.caleydo.core.command.data.parser;
 
 import java.util.StringTokenizer;
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACommand;
 import org.caleydo.core.data.mapping.EMappingDataType;
 import org.caleydo.core.data.mapping.EMappingType;
@@ -87,7 +87,7 @@ public class CmdLoadFileLookupTable
 	 * 
 	 * @param cmdType
 	 */
-	public CmdLoadFileLookupTable(final CommandType cmdType)
+	public CmdLoadFileLookupTable(final ECommandType cmdType)
 	{
 		super(cmdType);
 	}
@@ -99,23 +99,23 @@ public class CmdLoadFileLookupTable
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
 		sFileName = parameterHandler
-				.getValueString(CommandType.TAG_DETAIL.getXmlKey());
+				.getValueString(ECommandType.TAG_DETAIL.getXmlKey());
 
-		sLookupTableInfo = parameterHandler.getValueString(CommandType.TAG_ATTRIBUTE1
+		sLookupTableInfo = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE1
 				.getXmlKey());
 
 		sLookupTableDelimiter = parameterHandler
-				.getValueString(CommandType.TAG_ATTRIBUTE2.getXmlKey());
+				.getValueString(ECommandType.TAG_ATTRIBUTE2.getXmlKey());
 
 		int[] iArrayStartStop = StringConversionTool.convertStringToIntArrayVariableLength(
 				parameterHandler
-						.getValueString(CommandType.TAG_ATTRIBUTE3.getXmlKey()), " ");
+						.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey()), " ");
 
 		iStartPareseFileAtLine = iArrayStartStop[0];
 		iStopParseFileAtLine = iArrayStartStop[1];
 
 		sCodeResolvingLUTTypes = parameterHandler
-				.getValueString(CommandType.TAG_ATTRIBUTE4.getXmlKey());
+				.getValueString(ECommandType.TAG_ATTRIBUTE4.getXmlKey());
 
 		extractParameters();
 	}

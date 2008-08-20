@@ -1,7 +1,7 @@
 package org.caleydo.core.command.data.filter;
 
 import javax.naming.OperationNotSupportedException;
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
@@ -33,7 +33,7 @@ public class CmdDataFilterMinMax
 	 * 
 	 * @param cmdType
 	 */
-	public CmdDataFilterMinMax(CommandType cmdType)
+	public CmdDataFilterMinMax(ECommandType cmdType)
 	{
 		super(cmdType);
 	}

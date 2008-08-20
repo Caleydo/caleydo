@@ -2,7 +2,7 @@ package org.caleydo.core.command.view.swt;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
@@ -23,7 +23,7 @@ public class CmdViewCreatePathway
 	/**
 	 * Constructor
 	 */
-	public CmdViewCreatePathway(final CommandType cmdType)
+	public CmdViewCreatePathway(final ECommandType cmdType)
 	{
 		super(cmdType);
 
@@ -76,7 +76,7 @@ public class CmdViewCreatePathway
 		// Read SET IDs (Data and Selection)
 		String sPathwaySets = "";
 		parameterHandler.setValueAndTypeAndDefault("sPathwaySets", parameterHandler
-				.getValueString(CommandType.TAG_DETAIL.getXmlKey()),
+				.getValueString(ECommandType.TAG_DETAIL.getXmlKey()),
 				IParameterHandler.ParameterHandlerType.STRING, "-1");
 
 		sPathwaySets = parameterHandler.getValueString("sPathwaySets");

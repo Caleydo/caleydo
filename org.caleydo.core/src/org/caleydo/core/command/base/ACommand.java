@@ -1,6 +1,6 @@
 package org.caleydo.core.command.base;
 
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.manager.ICommandManager;
@@ -27,12 +27,12 @@ public abstract class ACommand
 
 	protected transient IGeneralManager generalManager;
 	
-	private CommandType cmdType;
+	private ECommandType cmdType;
 
 	/**
 	 * Constructor.
 	 */
-	public ACommand(final CommandType cmdType)
+	public ACommand(final ECommandType cmdType)
 	{
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.COMMAND));
 
@@ -45,7 +45,7 @@ public abstract class ACommand
 	 * (non-Javadoc)
 	 * @see org.caleydo.core.command.ICommand#getCommandType()
 	 */
-	public final CommandType getCommandType()
+	public final ECommandType getCommandType()
 	{
 		return cmdType;
 	}

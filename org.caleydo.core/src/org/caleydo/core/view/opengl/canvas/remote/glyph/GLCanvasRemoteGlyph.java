@@ -11,7 +11,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.glyph.GLCanvasGlyph;
+import org.caleydo.core.view.opengl.canvas.glyph.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphMouseListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
@@ -173,7 +173,7 @@ public class GLCanvasRemoteGlyph
 			AGLEventListener tmpGLEventListener = iterGLEventListener.next();
 
 			if (tmpGLEventListener == this
-					|| tmpGLEventListener.getClass() != GLCanvasGlyph.class)
+					|| tmpGLEventListener.getClass() != GLGlyph.class)
 				continue;
 
 			int iViewID = ((AGLEventListener) tmpGLEventListener).getID();

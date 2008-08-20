@@ -1,6 +1,6 @@
 package org.caleydo.core.command.data;
 
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ISelectionDelta;
@@ -23,7 +23,7 @@ public class CmdDataCreateSelection
 	/**
 	 * Constructor.
 	 */
-	public CmdDataCreateSelection(final CommandType cmdType)
+	public CmdDataCreateSelection(final ECommandType cmdType)
 	{
 		super(cmdType);
 	}

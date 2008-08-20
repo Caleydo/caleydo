@@ -5,8 +5,10 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import org.caleydo.core.data.view.rep.renderstyle.layout.BucketLayoutRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 
 /**
  * Specialized mouse wheel listener for "diving" into the bucket.
@@ -16,10 +18,7 @@ import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 public class BucketMouseWheelListener
 	implements MouseWheelListener
 {
-
-	private IGeneralManager generalManager;
-
-	private AGLEventListener bucketCanvas;
+	private GLRemoteRendering bucketGLEventListener;
 
 	private static int BUCKET_ZOOM_MAX = 400;
 
@@ -42,13 +41,10 @@ public class BucketMouseWheelListener
 	/**
 	 * Constructor.
 	 */
-	public BucketMouseWheelListener(final GLCanvasRemoteRendering3D remoteRendering3D,
-			final IGeneralManager generalManager,
+	public BucketMouseWheelListener(final GLRemoteRendering remoteRendering3D,
 			final BucketLayoutRenderStyle bucketLayoutRenderStyle)
 	{
-
-		this.bucketCanvas = remoteRendering3D;
-		this.generalManager = generalManager;
+		this.bucketGLEventListener = remoteRendering3D;
 		this.bucketLayoutRenderStyle = bucketLayoutRenderStyle;
 	}
 
@@ -111,7 +107,7 @@ public class BucketMouseWheelListener
 			bZoomActionRunning = true;
 
 			// Turn off picking while zoom action is running
-			generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(false);
+			GeneralManager.get().getViewGLCanvasManager().getPickingManager().enablePicking(false);
 
 			int notches = event.getWheelRotation();
 			if (notches < 0)
@@ -134,7 +130,7 @@ public class BucketMouseWheelListener
 				iCurrentBucketZoom += BUCKET_ZOOM_STEP;
 				iAnimationZoomCounter += BUCKET_ZOOM_STEP;
 
-				bucketCanvas.getViewCamera().addCameraScale(
+				bucketGLEventListener.getViewCamera().addCameraScale(
 						new Vec3f(0, 0, BUCKET_ZOOM_STEP / 100f));
 
 				// fBucketTransparency = fCurrentBucketZoom / BUCKET_ZOOM_MAX;
@@ -144,7 +140,7 @@ public class BucketMouseWheelListener
 				iCurrentBucketZoom -= BUCKET_ZOOM_STEP;
 				iAnimationZoomCounter -= BUCKET_ZOOM_STEP;
 
-				bucketCanvas.getViewCamera().addCameraScale(
+				bucketGLEventListener.getViewCamera().addCameraScale(
 						new Vec3f(0, 0, -BUCKET_ZOOM_STEP / 100f));
 
 				// fBucketTransparency = fCurrentBucketZoom / -BUCKET_ZOOM_MAX;
@@ -153,9 +149,31 @@ public class BucketMouseWheelListener
 			if (iCurrentBucketZoom == BUCKET_ZOOM_MAX)
 			{
 				bBucketBottomReached = true;
+				
+				// Update detail level of view in center bucket position
+				int iGLEventListenerID = bucketGLEventListener.getUnderInteractionHierarchyLayer()
+							.getElementIdByPositionIndex(0);
+						
+				if(iGLEventListenerID != -1)
+				{
+					GeneralManager.get().getViewGLCanvasManager().getEventListener(
+							iGLEventListenerID).setDetailLevel(EDetailLevel.HIGH);
+				}
 			}
 			else if (iCurrentBucketZoom == 0)
+			{
 				bBucketBottomReached = false;
+				
+				// Update detail level of view in center bucket position
+				int iGLEventListenerID = bucketGLEventListener.getUnderInteractionHierarchyLayer()
+							.getElementIdByPositionIndex(0);
+						
+				if(iGLEventListenerID != -1)
+				{
+					GeneralManager.get().getViewGLCanvasManager().getEventListener(
+							iGLEventListenerID).setDetailLevel(EDetailLevel.MEDIUM);
+				}			
+			}
 		}
 		else
 		{
@@ -163,13 +181,12 @@ public class BucketMouseWheelListener
 			bZoomActionRunning = false;
 
 			// Turn on picking after zoom action is done
-			generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(true);
+			GeneralManager.get().getViewGLCanvasManager().getPickingManager().enablePicking(true);
 		}
 	}
 
-	public boolean isBucketBottomReached()
+	public boolean isZoomedIn()
 	{
-
 		return bBucketBottomReached;
 	}
 

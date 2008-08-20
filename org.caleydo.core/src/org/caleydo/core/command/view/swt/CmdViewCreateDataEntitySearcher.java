@@ -2,7 +2,7 @@ package org.caleydo.core.command.view.swt;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import org.caleydo.core.command.CommandType;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewManager;
@@ -21,7 +21,7 @@ public class CmdViewCreateDataEntitySearcher
 	/**
 	 * Constructor.
 	 */
-	public CmdViewCreateDataEntitySearcher(final CommandType cmdType)
+	public CmdViewCreateDataEntitySearcher(final ECommandType cmdType)
 	{
 
 		super(cmdType);
