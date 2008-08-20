@@ -165,7 +165,8 @@ public abstract class AStorageBasedView
 		{
 			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values())
 			{
-				set.removeVirtualArray(mapSelections.get(eSelectionType));
+				if (mapSelections.containsKey(eSelectionType))
+					set.removeVirtualArray(mapSelections.get(eSelectionType));
 			}
 			mapSelections.clear();
 		}

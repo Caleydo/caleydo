@@ -69,7 +69,7 @@ public class PathwayLoaderThread
 			loadAllPathwaysByType(generalManager, iterPathwayDatabase.next());
 		}
 
-		notifyViews();
+//		notifyViews();
 	}
 
 	public static void loadAllPathwaysByType(final IGeneralManager generalManager,
@@ -191,16 +191,17 @@ public class PathwayLoaderThread
 		if (tmpGLRemoteRendering3D != null)
 			tmpGLRemoteRendering3D.enableBusyMode(false);
 		
+		generalManager.getPathwayManager().notifyPathwayLoadingFinished(true);
 		generalManager.getLogger().log(Level.INFO, "Finished parsing " +pathwayDatabase.getName() +" pathways.");
 	}
 
-	/**
-	 * Method notifies all dependent views that the loading is ready.
-	 */
-	private void notifyViews()
-	{
-		int iTmpPathwayId;
-
+//	/**
+//	 * Method notifies all dependent views that the loading is ready.
+//	 */
+//	private void notifyViews()
+//	{
+//		int iTmpPathwayId;
+//
 //		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
 //				.getAllGLEventListeners())
 //		{
@@ -220,5 +221,5 @@ public class PathwayLoaderThread
 //				}
 //			}
 //		}
-	}
+//	}
 }

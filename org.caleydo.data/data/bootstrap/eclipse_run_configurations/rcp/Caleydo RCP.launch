@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<launchConfiguration type="org.eclipse.pde.ui.RuntimeWorkbench">
+<booleanAttribute key="append.args" value="true"/>
+<booleanAttribute key="askclear" value="false"/>
+<booleanAttribute key="automaticAdd" value="false"/>
+<booleanAttribute key="automaticValidate" value="false"/>
+<stringAttribute key="bootstrap" value=""/>
+<booleanAttribute key="clearConfig" value="false"/>
+<booleanAttribute key="clearws" value="true"/>
+<booleanAttribute key="clearwslog" value="true"/>
+<stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Caleydo RCP - Clean"/>
+<booleanAttribute key="default" value="false"/>
+<booleanAttribute key="includeOptional" value="true"/>
+<stringAttribute key="location" value="${workspace_loc}/../runtime-org.caleydo.rcp.product"/>
+<booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl}"/>
+<stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
+<stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms512m -Xmx1024m -Dsun.java2d.opengl=true -Djava.util.logging.config.file=data/logging/logging.properties&#10;-Xss16384k"/>
+<stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:org.caleydo.data}"/>
+<stringAttribute key="pde.version" value="3.3"/>
+<stringAttribute key="product" value="org.caleydo.rcp.product"/>
+<stringAttribute key="productFile" value="/org.caleydo.rcp/org.caleydo.rcp.product"/>
+<stringAttribute key="selected_target_plugins" value="org.eclipse.equinox.frameworkadmin,org.eclipse.osgi.services,org.eclipse.core.runtime.compatibility.registry*3.2.200.v20080610,org.eclipse.core.filesystem*1.2.0.v20080604-1400,org.eclipse.ui*3.4.0.I20080610-1200,org.eclipse.core.runtime.compatibility.registry*3.2.200.v20070717,org.eclipse.osgi*3.4.0.v20080605-1900,org.eclipse.equinox.p2.artifact.repository*1.0.0.v20080530-1237,org.eclipse.ecf.ssl*1.0.0.v20080528-2154,org.eclipse.core.databinding,org.eclipse.ecf.identity*2.0.0.v20080528-2154,org.eclipse.core.runtime.compatibility.auth,org.eclipse.core.runtime,org.eclipse.jface.text*3.4.0.v20080603-2000,org.eclipse.swt.gtk.linux.x86*3.4.0.v3448,org.eclipse.update.core.linux,org.eclipse.ui.views,org.eclipse.text*3.4.0.v20080605-1800,org.eclipse.equinox.frameworkadmin.equinox,javax.servlet*2.4.0.v200803061910,org.eclipse.core.filesystem.linux.x86*1.2.0.v20071207,org.eclipse.equinox.p2.jarprocessor,org.eclipse.help*3.3.100.v20080515,org.eclipse.swt*3.4.0.v3448f,org.eclipse.equinox.p2.metadata.generator*1.0.0.v20080604,org.eclipse.core.variables,org.eclipse.core.net.linux.x86,org.eclipse.ui.views.log,org.eclipse.ui.forms*3.3.100.v20080521,org.eclipse.core.jobs,org.eclipse.core.commands,org.eclipse.ecf*2.0.0.v20080611-1715,javax.servlet*2.4.0.v200806031604,org.eclipse.ecf.filetransfer*2.0.0.v20080611-1715,org.eclipse.equinox.p2.metadata,org.eclipse.ecf.ssl*1.0.0.v20080611-1715,org.eclipse.equinox.p2.metadata.repository*1.0.0.v20080604,org.eclipse.equinox.security,org.eclipse.equinox.p2.core,org.eclipse.equinox.preferences,org.eclipse.update.ui,org.eclipse.ant.core,org.eclipse.ecf.identity*2.0.0.v20080611-1715,org.eclipse.core.net*1.1.0.I20080529,org.eclipse.jface*3.4.0.I20080606-1300,org.eclipse.equinox.registry,org.eclipse.jface*3.4.0.I20080528-2000,org.eclipse.core.contenttype*3.3.0.v20080604-1400,org.eclipse.core.resources*3.4.0.v20080604-1400,org.eclipse.update.configurator,org.eclipse.equinox.p2.artifact.repository*1.0.0.v20080609-0850,org.eclipse.update.core,org.eclipse.jface.databinding,org.eclipse.core.resources.compatibility*3.4.0.v20080604-1400,org.eclipse.core.resources.spysupport,com.ibm.icu*3.8.1.v20080402,org.eclipse.core.contenttype*3.3.0.v20080414,org.eclipse.ui.ide*3.4.0.I20080606-1300,org.eclipse.core.net*1.1.0.I20080604,org.eclipse.osgi*3.4.0.v20080529-1200,org.eclipse.ui.forms*3.3.100.v20080611,org.eclipse.equinox.p2.metadata.generator*1.0.0.v20080530-1237,org.eclipse.swt.gtk.linux.x86*3.4.0.v3448f,org.eclipse.core.expressions*3.4.0.v20080603-2000,org.eclipse.equinox.common,org.eclipse.help*3.3.100.v20080610,com.ibm.icu*3.8.1.v20080530,org.eclipse.equinox.app,org.eclipse.ui.workbench*3.4.0.I20080606-1300"/>
+<stringAttribute key="selected_workspace_plugins" value="org.caleydo.rcp"/>
+<booleanAttribute key="show_selected_only" value="false"/>
+<booleanAttribute key="tracing" value="false"/>
+<booleanAttribute key="useDefaultConfig" value="true"/>
+<booleanAttribute key="useDefaultConfigArea" value="true"/>
+<booleanAttribute key="useProduct" value="true"/>
+<booleanAttribute key="usefeatures" value="false"/>
+</launchConfiguration>

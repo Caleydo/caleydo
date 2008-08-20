@@ -16,7 +16,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IActionBars;
 
-public class GLRemoteRendering3DView
+public class GLRemoteRenderingView
 	extends AGLViewPart
 {
 
@@ -52,7 +52,7 @@ public class GLRemoteRendering3DView
 	/**
 	 * Constructor.
 	 */
-	public GLRemoteRendering3DView()
+	public GLRemoteRenderingView()
 	{
 
 		super();

@@ -179,7 +179,8 @@ public class ParallelCoordinates
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas)
 	{
-		dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
+//		dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
+		dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
 		bRenderOnlyContext = true;
 
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
@@ -1399,7 +1400,7 @@ public class ParallelCoordinates
 		}
 		else
 		{
-			sAlInfo.add(set.getVA(iStorageVAID).size() + "experiments as polylines and "
+			sAlInfo.add(set.getVA(iStorageVAID).size() + " experiments as polylines and "
 					+ set.getVA(iAxisVAID).size() + " genes as axis.");
 		}
 		return sAlInfo;

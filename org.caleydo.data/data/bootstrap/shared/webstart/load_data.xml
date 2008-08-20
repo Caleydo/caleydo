@@ -2,11 +2,4 @@
 
 <details>
 	
- 	<!-- Create Selection Set -->
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" 	cmdId="69991"   uniqueId="62101" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" 	cmdId="69991"   uniqueId="63101" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" 	cmdId="69991"   uniqueId="64101" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" 	cmdId="69991"   uniqueId="65101" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SELECTION" 	cmdId="69991"   uniqueId="66101" />  
-
 </details>

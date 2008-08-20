@@ -23,10 +23,10 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.jogl.view.jframe"
-            class="org.caleydo.rcp.views.GLGears3DTestView"
+            class="org.caleydo.rcp.views.GLGearsTestView"
             icon="resources/icons/pathway3D.png"
             id="org.caleydo.rcp.views.GLGears3DTestView"
-            name="GLGears3DTestView">
+            name="GLGearsTestView">
       </view>
       
       <view
@@ -36,15 +36,15 @@
             icon="resources/icons/pathway3D.png"
             id="org.caleydo.rcp.views.GLJukeboxPathwayView"
             name="GLJukeboxPathwayView">
-      </view>
+      </view>     
       
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.jogl.view.jframe"
-            class="org.caleydo.rcp.views.GLHeatmap2DView"
+            class="org.caleydo.rcp.views.GLHeatMapView"
             icon="resources/icons/heatmap.png"
             id="org.caleydo.rcp.views.GLHeatmap2DView"
-            name="GLHeatmap2DView">
+            name="GLHeatMapView">
       </view>      
 
       <view
@@ -53,25 +53,25 @@
             class="org.caleydo.rcp.views.GLParCoordsView"
             icon="resources/icons/heatmap.png"
             id="org.caleydo.rcp.views.GLParCoordsView"
-            name="GLParCoordsView">
+            name="GLParCoordsVieGLHeatMapView">
       </view>         
       
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.jogl.view.jframe"
-            class="org.caleydo.rcp.views.GLPathway3DView"
+            class="org.caleydo.rcp.views.GLPathwayView"
             icon="resources/icons/pathway3D.png"
             id="org.caleydo.rcp.views.GLPathway3DView"
-            name="GLPathway3DView">
+            name="GLPathGLPathwayView">
       </view> 
       
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.jogl.view.jframe"
-            class="org.caleydo.rcp.views.GLRemoteRendering3DView"
+            class="org.caleydo.rcp.views.GLRemoteRenderingView"
             icon="resources/icons/pathway3D.png"
             id="org.caleydo.rcp.views.GLRemoteRendering3DView"
-            name="GLRemoteRendering3DView">
+            name="GLRemoteRenderingView">
       </view> 
       
       <view
@@ -88,8 +88,7 @@
    <extension
          point="org.eclipse.ui.perspectives">
       <perspective
-            name="RCP Perspective"
-            class="org.caleydo.rcp.perspective.GenomePerspective"
+            name="Genome Perspective"  class="org.caleydo.rcp.perspective.GenomePerspective"
             id="org.caleydo.rcp.perspective">
       </perspective>
    </extension>
@@ -115,21 +114,6 @@
                   <property
                                     name="preferenceCustomization"
                                     value="plugin_customization.ini"/>
-                <property name="startupForegroundColor" value="FFFF80"/>
-         <property name="startupMessageRect" value="250,44,250,20"/>
-         <property name="startupProgressRect" value="0,64,501,15"/>
-         <property
-               name="startupForegroundColor"
-               value="FFFFFF">
-         </property>
-         <property
-               name="startupMessageRect"
-               value="7,175,445,20">
-         </property>
-         <property
-               name="startupProgressRect"
-               value="5,190,445,15">
-         </property>
          <property
                name="preferenceCustomization"
                value="plugin_customization.ini">
@@ -162,6 +146,11 @@
             id="org.caleydo.rcp.command.fullscreen"
             name="Full Screen">
       </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.LoadDataHandler"
+            id="org.caleydo.rcp.command.loaddata"
+            name="Load Data">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -170,6 +159,11 @@
          <menu
                id="fileMenu"
                label="File">
+            <command
+                  commandId="org.caleydo.rcp.command.loaddata"
+                  label="Load Data"
+                  style="push">
+            </command>
             <command
                   commandId="org.caleydo.rcp.command.exit"
                   label="Exit"

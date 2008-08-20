@@ -1,15 +1,22 @@
 package org.caleydo.rcp;
 
+import java.io.IOException;
 import java.util.Map;
+import java.util.logging.Level;
 
 import org.caleydo.core.application.core.CaleydoBootloader;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
 import org.caleydo.rcp.wizard.firststart.FirstStartWizard;
 import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jface.wizard.WizardDialog;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -29,6 +36,12 @@ public class Application
 	public static IGeneralManager generalManager;
 
 	public static ApplicationWorkbenchAdvisor applicationWorkbenchAdvisor;
+	
+	public static boolean bIsWebstart = false;
+	
+	public static String sCaleydoXMLfile = "";
+	
+	public static boolean bDoExit = false;
 
 	@Override
 	@SuppressWarnings("unchecked")
@@ -36,31 +49,26 @@ public class Application
 	{
 		System.out.println("Caleydo RCP: bootstrapping ...");
 
-		String sCaleydoXMLfile = "";
 		Map<String, Object> map = (Map<String, Object>) context.getArguments();
 
 		if (map.size() > 0)
 		{
-			String[] info = (String[]) map.get("application.args");
+			String[] sArParam = (String[]) map.get("application.args");
 
-			if (info != null)
+			if (sArParam != null)
 			{
-				if (info.length > 0)
+				for (int iParamIndex = 0; iParamIndex < sArParam.length; iParamIndex++)
 				{
-					sCaleydoXMLfile = info[0];
-					System.out.println("XML config file:" + sCaleydoXMLfile);
-
-					if (info.length > 1)
-					{
-						System.err
-								.println("Caleydo cannot handle more than on argument! ignor other argumets.");
-					}
-				}
+					if (sArParam[iParamIndex].equals("webstart"))
+						bIsWebstart = true;
+					else 
+						sCaleydoXMLfile = sArParam[iParamIndex];		
+				}				
 			}
 		}
 		
 		// Create Caleydo core
-		caleydoCore = new CaleydoBootloader(false);
+		caleydoCore = new CaleydoBootloader(bIsWebstart);
 		generalManager = caleydoCore.getGeneralManager();
 		
 		Display display = PlatformUI.createDisplay();
@@ -73,7 +81,10 @@ public class Application
 			firstStartWizard.open();
 		}
 		
-//		startCaleydoCore(sCaleydoXMLfile);
+		if (bIsWebstart && !bDoExit)
+		{
+			startCaleydoCore();
+		}
 		
 		try
 		{
@@ -81,69 +92,103 @@ public class Application
 
 			int returnCode = PlatformUI.createAndRunWorkbench(display,
 					applicationWorkbenchAdvisor);
+			
 			if (returnCode == PlatformUI.RETURN_RESTART)
+			{
 				return IApplication.EXIT_RESTART;
+			}
 			else
 				return IApplication.EXIT_OK;
 		}
 		finally
 		{
+			if (!bDoExit)
+			{
+				// Save preferences before shutdown
+				try
+				{
+					generalManager.getLogger().log(Level.INFO, "Save Caleydo preferences...");
+					generalManager.getPreferenceStore().setValue("firstStart", false);
+					generalManager.getPreferenceStore().save();
+				}
+				catch (IOException e)
+				{
+					throw new CaleydoRuntimeException("Unable to save preference file.", 
+							CaleydoRuntimeExceptionType.DATAHANDLING);
+				}
+			}
+			
 			disposeCaleydoCore();
 			display.dispose();
 		}
-
 	}
 
 	@Override
 	public void stop()
 	{
-
 		final IWorkbench workbench = PlatformUI.getWorkbench();
 
 		if (workbench == null)
 			return;
+		
 		final Display display = workbench.getDisplay();
 		display.syncExec(new Runnable()
 		{
 			public void run()
 			{
 				if (!display.isDisposed())
+				{
 					workbench.close();
+				}
 			}
 		});
 	}
 
-	public void startCaleydoCore(final String sXmlFileName)
-	{
+	public static void startCaleydoCore()
+	{		
 		// If no file is provided as command line argument a XML file open
 		// dialog is opened
-		if (sXmlFileName == "")
+		if (sCaleydoXMLfile.equals(""))
 		{
+			sCaleydoXMLfile = "data/bootstrap/shared/webstart/bootstrap_webstart_test.xml";
+			caleydoCore.setXmlFileName(sCaleydoXMLfile);
+			caleydoCore.start();
+			
 			Display display = PlatformUI.createDisplay();
 			Shell shell = new Shell(display);
 			shell.setText("Open project file");
-
+			Monitor primary = display.getPrimaryMonitor ();
+			Rectangle bounds = primary.getBounds ();
+			Rectangle rect = shell.getBounds ();
+			int x = bounds.x + (bounds.width - rect.width) / 2;
+			int y = bounds.y + (bounds.height - rect.height) / 2;
+			shell.setLocation (x, y);
+			
 			WizardDialog projectWizardDialog = new WizardDialog(shell,
 					new CaleydoProjectWizard());
-			projectWizardDialog.open();
-
-			// FileOpenProjectAction openProjectAction = new
-			// FileOpenProjectAction(shell);
-			// openProjectAction.run();
-
+			
+			if(WizardDialog.CANCEL == projectWizardDialog.open())
+			{
+				bDoExit = true;
+			}
+			
 			shell.dispose();
-		}
-		// Load as command line argument provided XML config file name.
+		}	
 		else
 		{
-			caleydoCore.setXmlFileName(sXmlFileName);
+			caleydoCore.setXmlFileName(sCaleydoXMLfile);
 			caleydoCore.start();
+		}
+		
+		if (!bDoExit)
+		{
+			// Trigger pathway loading
+			new PathwayLoadingProgressIndicatorAction().run(null);
 		}
 	}
 
 	protected void disposeCaleydoCore()
 	{
-
 		if (caleydoCore != null)
 		{
 			if (caleydoCore.isRunning())

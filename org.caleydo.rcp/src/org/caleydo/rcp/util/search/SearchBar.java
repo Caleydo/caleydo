@@ -1,11 +1,9 @@
 package org.caleydo.rcp.util.search;
 
-import java.util.List;
+import java.util.Collection;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.rcp.Application;
-import org.caleydo.util.graph.EGraphItemHierarchy;
-import org.caleydo.util.graph.IGraph;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
@@ -70,18 +68,14 @@ public class SearchBar
 		{
 			public void focusGained(FocusEvent e)
 			{
-				List<IGraph> lLoadedGraphs = Application.generalManager.getPathwayManager()
-						.getRootPathway()
-						.getAllGraphByType(EGraphItemHierarchy.GRAPH_CHILDREN);
-
-				String[] sArSearchItems = new String[lLoadedGraphs.size()];
-				PathwayGraph tmpPathwayGraph;
-				for (int iGraphIndex = 0; iGraphIndex < lLoadedGraphs.size(); iGraphIndex++)
+				Collection<PathwayGraph> allPathways = Application.generalManager.getPathwayManager().getAllItems();
+				String[] sArSearchItems = new String[allPathways.size()];
+				int iIndex = 0;
+				for(PathwayGraph pathway : allPathways)
 				{
-					tmpPathwayGraph = ((PathwayGraph) lLoadedGraphs.get(iGraphIndex));
-
-					sArSearchItems[iGraphIndex] = tmpPathwayGraph.toString() + " ("
-							+ tmpPathwayGraph.getType().toString() + ")";
+					sArSearchItems[iIndex] = pathway.getTitle() + " ("
+						+ pathway.getType().toString() + ")";
+					iIndex++;
 				}
 
 				searchBox.setItems(sArSearchItems);

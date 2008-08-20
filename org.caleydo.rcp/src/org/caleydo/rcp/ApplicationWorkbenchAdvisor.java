@@ -2,13 +2,13 @@ package org.caleydo.rcp;
 
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.parcoords.GLCanvasParCoords3D;
+import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParallelCoordinates;
 import org.caleydo.core.view.opengl.canvas.pathway.GLCanvasPathway3D;
 import org.caleydo.core.view.opengl.canvas.remote.GLCanvasRemoteRendering3D;
 import org.caleydo.rcp.views.AGLViewPart;
 import org.caleydo.rcp.views.GLParCoordsView;
-import org.caleydo.rcp.views.GLPathway3DView;
-import org.caleydo.rcp.views.GLRemoteRendering3DView;
+import org.caleydo.rcp.views.GLPathwayView;
+import org.caleydo.rcp.views.GLRemoteRenderingView;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPreferenceConstants;
@@ -59,6 +59,13 @@ public class ApplicationWorkbenchAdvisor
 
 		super.postStartup();
 		
+		// Check if an early exit should be performed
+		if (Application.bDoExit)
+		{
+			this.getWorkbenchConfigurer().getWorkbench().close();
+			return;
+		}
+		
 		openLoadedViews();
 	}
 
@@ -102,7 +109,7 @@ public class ApplicationWorkbenchAdvisor
 
 			try
 			{
-				if (tmpGLEventListener instanceof GLCanvasParCoords3D)
+				if (tmpGLEventListener instanceof ParallelCoordinates)
 				{
 					viewPart = (GLParCoordsView) PlatformUI.getWorkbench()
 							.getActiveWorkbenchWindow().getActivePage().showView(
@@ -111,16 +118,16 @@ public class ApplicationWorkbenchAdvisor
 				}
 				else if (tmpGLEventListener instanceof GLCanvasPathway3D)
 				{
-					viewPart = (GLPathway3DView) PlatformUI.getWorkbench()
+					viewPart = (GLPathwayView) PlatformUI.getWorkbench()
 							.getActiveWorkbenchWindow().getActivePage().showView(
-									GLPathway3DView.ID, Integer.toString(iInstanceNum),
+									GLPathwayView.ID, Integer.toString(iInstanceNum),
 									IWorkbenchPage.VIEW_ACTIVATE);
 				}
 				else if (tmpGLEventListener instanceof GLCanvasRemoteRendering3D)
 				{
-					viewPart = (GLRemoteRendering3DView) PlatformUI.getWorkbench()
+					viewPart = (GLRemoteRenderingView) PlatformUI.getWorkbench()
 							.getActiveWorkbenchWindow().getActivePage().showView(
-									GLRemoteRendering3DView.ID,
+									GLRemoteRenderingView.ID,
 									Integer.toString(iInstanceNum),
 									IWorkbenchPage.VIEW_ACTIVATE);
 				}

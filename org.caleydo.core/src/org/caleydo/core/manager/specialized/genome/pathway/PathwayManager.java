@@ -179,27 +179,34 @@ public class PathwayManager
 		return currentPathwayImageMap;
 	}
 
+	public void notifyPathwayLoadingFinished(boolean bIsPathwayLoadingFinisched)
+	{
+		this.bIsPathwayLoadingFinished = bIsPathwayLoadingFinisched;
+	}
+	
 	public void waitUntilPathwayLoadingIsFinished()
 	{
-//	while (pathwayLoaderThread.isAlive())
-//			try
-//			{
-//				Thread.sleep(1000);
-//			}
-//			catch (InterruptedException e)
-//			{
-//				// TODO Auto-generated catch block
-//				e.printStackTrace();
-//			}
+		while (pathwayLoaderThread == null && bIsPathwayLoadingFinished)
+		{
+			try
+			{
+				Thread.sleep(1000);
+			}
+			catch (InterruptedException e)
+			{
+				throw new CaleydoRuntimeException("Pathway loader thread has been interrupted!",
+						CaleydoRuntimeExceptionType.DATAHANDLING);
+			}
+		}
 //		
-		try
-		{
-			pathwayLoaderThread.join();
-		}
-		catch (InterruptedException e)
-		{
-			throw new CaleydoRuntimeException("Pathway loader thread has been interrupted!",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
-		}
+//		try
+//		{
+//			pathwayLoaderThread.join();
+//		}
+//		catch (InterruptedException e)
+//		{
+//			throw new CaleydoRuntimeException("Pathway loader thread has been interrupted!",
+//					CaleydoRuntimeExceptionType.DATAHANDLING);
+//		}
 	}
 }

@@ -18,7 +18,7 @@ import com.sun.opengl.util.Animator;
  * 
  * @author Marc Streit
  */
-public class GLGears3DTestView
+public class GLGearsTestView
 	extends AGLViewPart
 {
 
@@ -29,7 +29,7 @@ public class GLGears3DTestView
 	/**
 	 * Constructor.
 	 */
-	public GLGears3DTestView()
+	public GLGearsTestView()
 	{
 		super();
 	}

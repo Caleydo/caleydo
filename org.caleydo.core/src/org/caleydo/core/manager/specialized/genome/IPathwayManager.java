@@ -36,5 +36,7 @@ public interface IPathwayManager
 
 	public boolean isPathwayVisible(final int iPathwayID);
 	
+	public void notifyPathwayLoadingFinished(boolean bIsPathwayLoadingFinisched);
+	
 	public void waitUntilPathwayLoadingIsFinished();
 }

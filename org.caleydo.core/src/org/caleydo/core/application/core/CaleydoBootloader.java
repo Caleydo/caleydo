@@ -172,20 +172,7 @@ public class CaleydoBootloader
 	 * @see CaleydoBootloader#isRunning()
 	 */
 	public synchronized void stop()
-	{
-		// Save preferences before shutdown
-		try
-		{
-			generalManager.getLogger().log(Level.INFO, "Save Caleydo preferences...");
-			generalManager.getPreferenceStore().setValue("firstStart", false);
-			generalManager.getPreferenceStore().save();
-		}
-		catch (IOException e)
-		{
-			throw new CaleydoRuntimeException("Unable to save preference file.", 
-					CaleydoRuntimeExceptionType.DATAHANDLING);
-		}
-		
+	{		
 		// generalManager.getCommandManager().writeSerializedObjects(
 		// "data/serialize_test.out");
 

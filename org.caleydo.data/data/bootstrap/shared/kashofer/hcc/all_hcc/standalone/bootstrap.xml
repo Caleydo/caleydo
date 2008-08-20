@@ -44,7 +44,7 @@
 							attrib4="transparency 1" 								
 							detail="85101" /> 				    
 				
-		<!-- Setting paths and trigger pathway loading -->	
+		<!-- Setting paths -->	
 		<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set Biocarta Pathway Paths" 
 			detail="BIOCARTA"
 			attrib1="user.home/.caleydo/cgap.nci.nih.gov/Pathways/BioCarta/" 

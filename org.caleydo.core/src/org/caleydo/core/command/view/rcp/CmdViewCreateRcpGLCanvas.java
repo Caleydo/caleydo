@@ -31,7 +31,7 @@ public class CmdViewCreateRcpGLCanvas
 		GLCapabilities glCapabilities = new GLCapabilities();
 		glCapabilities.setStencilBits(1);
 
-		GLCaleydoCanvas gLCanvas = new GLCaleydoCanvas(glCapabilities);
+		GLCaleydoCanvas gLCanvas = new GLCaleydoCanvas(glCapabilities, null);
 
 		IViewGLCanvasManager canvasManager = generalManager.getViewGLCanvasManager();
 

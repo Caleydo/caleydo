@@ -36,7 +36,7 @@ public class SWTEmbeddedJoglWidget
 		GLCapabilities glCapabilities = new GLCapabilities();
 		glCapabilities.setStencilBits(1);
 
-		gLCanvas = new GLCaleydoCanvas(glCapabilities);
+		gLCanvas = new GLCaleydoCanvas(glCapabilities, parentComposite);
 
 		embeddedFrame.add(gLCanvas);
 	}

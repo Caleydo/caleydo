@@ -3,7 +3,7 @@
 	<classpathentry exported="true" kind="lib" path="lib/jogl/"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry excluding="**/.svn/|*.html" kind="src" path="src"/>
+	<classpathentry excluding="**/.svn/|*.html|org/caleydo/rcp/action/update/" kind="src" path="src"/>
 	<classpathentry exported="true" kind="lib" path="lib/jogl/jogl.jar" sourcepath="org.caleydo.rcpsrc.zip"/>
 	<classpathentry exported="true" kind="lib" path="lib/jogl/gluegen-rt.jar" sourcepath="org.caleydo.rcpsrc.zip"/>
 	<classpathentry exported="true" kind="lib" path="lib/org.caleydo.core_bin.jar" sourcepath="/org.caleydo.core/src"/>
@@ -15,8 +15,9 @@
 	<classpathentry exported="true" kind="lib" path="/org.caleydo.lib/lib/webspider/itsucks-base-0.3.0-pre7.jar"/>
 	<classpathentry exported="true" kind="lib" path="/org.caleydo.lib/lib/webspider/itsucks-core-0.3.0-pre7.jar"/>
 	<classpathentry exported="true" kind="lib" path="/org.caleydo.lib/lib/webspider/log4j-1.2.14.jar"/>
-	<classpathentry exported="true" kind="lib" path="/org.caleydo.lib/lib/webspider/spring-beans-2.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="/org.caleydo.lib/lib/webspider/spring-context-2.5.jar"/>
-	<classpathentry exported="true" kind="lib" path="/org.caleydo.lib/lib/webspider/spring-core-2.5.jar"/>
+	<classpathentry kind="lib" path="/home/mstreit/downloads/spring-framework-2.5.5/dist/spring.jar"/>
+	<classpathentry kind="lib" path="lib/webspider/spring-beans.jar"/>
+	<classpathentry kind="lib" path="lib/webspider/spring-context.jar"/>
+	<classpathentry kind="lib" path="lib/webspider/spring-core.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -88,7 +88,7 @@ public class CmdDataFilterMath
 
 		this.dataFilterMathType = dataFilterMathType;
 		this.iAlIDs = iAlStorageID;
-		if (objectType != EManagedObjectType.STORAGE || objectType != EManagedObjectType.SET)
+		if (objectType != EManagedObjectType.STORAGE && objectType != EManagedObjectType.SET)
 			throw new CaleydoRuntimeException(
 					"Math operations are not supportet on this type of object",
 					CaleydoRuntimeExceptionType.COMMAND);

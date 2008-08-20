@@ -209,19 +209,19 @@ public class TabularAsciiDataReader
 
 			iColumnIndex = 0;
 
-			while (strTokenLine.hasMoreTokens())
+			for (EStorageType columnDataType : alColumnDataTypes)
 			{
-				for (EStorageType columnDataType : alColumnDataTypes)
+				if(strTokenLine.hasMoreTokens())
 				{
 					switch (columnDataType)
 					{
 						case INT:
-							alIntBuffers.get(iColumnIndex)[iLineInFile] = StringConversionTool
+							alIntBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] = StringConversionTool
 									.convertStringToInt(strTokenLine.nextToken(), -1);
 							iColumnIndex++;
 							break;
 						case FLOAT:
-							alFloatBuffers.get(iColumnIndex)[iLineInFile] = StringConversionTool
+							alFloatBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] = StringConversionTool
 									.convertStringToFloat(strTokenLine.nextToken(), -1);
 							iColumnIndex++;
 							break;
@@ -230,6 +230,7 @@ public class TabularAsciiDataReader
 							iColumnIndex++;
 							break;
 						case SKIP: // do nothing
+							strTokenLine.nextToken();
 							break;
 						case ABORT:
 							iColumnIndex = alColumnDataTypes.size();

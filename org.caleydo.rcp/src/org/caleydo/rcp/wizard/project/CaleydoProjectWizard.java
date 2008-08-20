@@ -3,9 +3,6 @@ package org.caleydo.rcp.wizard.project;
 import org.caleydo.rcp.action.file.FileOpenProjectAction;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
-import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Wizard that appears after Caleydo startup.
@@ -34,32 +31,32 @@ public class CaleydoProjectWizard
 
 	@Override
 	public boolean performFinish()
-	{
+	{	
+		if(((NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME)).isPageComplete())
+		{
+			((NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME))
+				.getFileLoadDataAction().execute();
+		
+			return true;
+		}
 
-		// // DirectoryPage dirPage = getDirectorymPage();
-		// if (dirPage.useDefaultDirectory()) {
-		// System.out.println("Using default directory");
-		// } else {
-		// ChooseDirectoryPage choosePage = getChoosePage();
-		// System.out.println("Using directory: " + choosePage.getDirectory());
-		// }
-		return true;
+		return false;
 	}
 
 	@Override
 	public boolean performCancel()
 	{
-
-		// TODO: shutdown caleydo core
-		System.out.println("Perform Cancel called");
 		return true;
 	}
 
 	@Override
 	public boolean canFinish()
 	{
-
-		// Disable finish button
+		if(((NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME)).isPageComplete())
+		{
+			return true;
+		}
+		
 		return false;
 	}
 
@@ -72,8 +69,10 @@ public class CaleydoProjectWizard
 			if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
 					.newOrExisting())
 			{
-				NewProjectImportDataPage nextPage = (NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME);
-
+				NewProjectImportDataPage nextPage = 
+					(NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME);
+				
+				nextPage.setPageComplete(true);
 				return nextPage;
 			}
 			else
@@ -89,22 +88,22 @@ public class CaleydoProjectWizard
 		return page;
 	}
 
-	/**
-	 * For testing purposes
-	 */
-	public static void main(String[] args)
-	{
-
-		Display display = new Display();
-
-		// Create the parent shell for the dialog, but don't show it
-		Shell shell = new Shell(display);
-
-		// Create the dialog
-		WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard());
-		projectWizardDialog.open();
-
-		// Dispose the display
-		display.dispose();
-	}
+//	/**
+//	 * For testing purposes
+//	 */
+//	public static void main(String[] args)
+//	{
+//
+//		Display display = new Display();
+//
+//		// Create the parent shell for the dialog, but don't show it
+//		Shell shell = new Shell(display);
+//
+//		// Create the dialog
+//		WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard());
+//		projectWizardDialog.open();
+//
+//		// Dispose the display
+//		display.dispose();
+//	}
 }

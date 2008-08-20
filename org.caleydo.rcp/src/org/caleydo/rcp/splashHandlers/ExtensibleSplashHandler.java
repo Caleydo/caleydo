@@ -1,7 +1,5 @@
 package org.caleydo.rcp.splashHandlers;
 
-import java.awt.event.FocusAdapter;
-
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
 import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
@@ -34,6 +32,9 @@ public class ExtensibleSplashHandler
 		// Store the shell
 		super.init(splash);
 
+		if (Application.bIsWebstart)
+			return;
+		
 		// Create UI
 		createUI();
 
@@ -86,8 +87,8 @@ public class ExtensibleSplashHandler
 		}
 		
 		// Make sure that splash screen remains the active window
-		splash.addFocusListener(new FocusListener() {
-
+		splash.addFocusListener(new FocusListener() 
+		{
 			public void focusGained(FocusEvent e)
 			{
 				// nothing to do
@@ -103,39 +104,10 @@ public class ExtensibleSplashHandler
 	@Override
 	public void dispose()
 	{		
-		startCaleydoCore("data/bootstrap/shared/kashofer/hcc/all_hcc/rcp/bootstrap.xml");
-		
-		// Trigger pathway loading
-		new PathwayLoadingProgressIndicatorAction().run(null);
-		
+		if (!Application.bIsWebstart && !Application.bDoExit)
+		{
+			Application.startCaleydoCore();
+		}	
 //		super.dispose();
-	}
-	
-	public void startCaleydoCore(final String sXmlFileName)
-	{
-		// If no file is provided as command line argument a XML file open
-		// dialog is opened
-		if (sXmlFileName == "")
-		{
-			Display display = PlatformUI.createDisplay();
-			Shell shell = new Shell(display);
-			shell.setText("Open project file");
-
-			WizardDialog projectWizardDialog = new WizardDialog(shell,
-					new CaleydoProjectWizard());
-			projectWizardDialog.open();
-
-			// FileOpenProjectAction openProjectAction = new
-			// FileOpenProjectAction(shell);
-			// openProjectAction.run();
-
-			shell.dispose();
-		}
-		// Load as command line argument provided XML config file name.
-		else
-		{
-			Application.caleydoCore.setXmlFileName(sXmlFileName);
-			Application.caleydoCore.start();
-		}
 	}
 }

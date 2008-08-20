@@ -29,16 +29,16 @@ public class NewOrExistingProjectPage
 	 */
 	public NewOrExistingProjectPage()
 	{
-
 		super(PAGE_NAME, PAGE_NAME, null);
 
 		this.setImageDescriptor(ImageDescriptor.createFromImageData(new ImageData(
 				"resources/splash/splash.png")));
+		
+		setPageComplete(false);
 	}
 
 	public void createControl(Composite parent)
 	{
-
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new RowLayout(SWT.VERTICAL));
 
@@ -52,8 +52,8 @@ public class NewOrExistingProjectPage
 		{
 			public void widgetSelected(SelectionEvent e)
 			{
-
 				bNewProject = true;
+				setPageComplete(true);
 			}
 		});
 
@@ -61,13 +61,12 @@ public class NewOrExistingProjectPage
 		{
 			public void widgetSelected(SelectionEvent e)
 			{
-
 				bNewProject = false;
+				setPageComplete(true);
 			}
 		});
 
 		setControl(composite);
-		setPageComplete(true);
 	}
 
 	public boolean newOrExisting()

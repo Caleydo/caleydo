@@ -18,17 +18,20 @@ public class NewProjectImportDataPage
 {
 
 	public static final String PAGE_NAME = "Import data to new project";
+	
+	public FileLoadDataAction fileLoadDataAction;
 
 	/**
 	 * Constructor.
 	 */
 	public NewProjectImportDataPage()
 	{
-
 		super(PAGE_NAME, PAGE_NAME, null);
 
 		this.setImageDescriptor(ImageDescriptor.createFromImageData(new ImageData(
 				"resources/splash/splash.png")));
+		
+		setPageComplete(false);
 	}
 
 	@Override
@@ -37,10 +40,15 @@ public class NewProjectImportDataPage
 		Composite topLevel = new Composite(parent, SWT.NONE);
 		topLevel.setLayout(new FillLayout());
 
-		FileLoadDataAction fileLoadDataAction = new FileLoadDataAction(topLevel);
+		fileLoadDataAction = new FileLoadDataAction(topLevel);
 		fileLoadDataAction.run();
 
 		setControl(topLevel);
-		setPageComplete(true);
+//		setPageComplete(true);
+	}
+	
+	public FileLoadDataAction getFileLoadDataAction()
+	{
+		return fileLoadDataAction;
 	}
 }

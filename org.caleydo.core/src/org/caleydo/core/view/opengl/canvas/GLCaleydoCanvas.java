@@ -12,6 +12,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.FPSCounter;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * Class implements a GL canvas. The canvas is registered in the
@@ -24,22 +25,25 @@ public class GLCaleydoCanvas
 	extends GLCanvas
 	implements GLEventListener, IUniqueObject
 {
-
 	private static final long serialVersionUID = 1L;
 
 	private IGeneralManager generalManager;
 
 	private int iGLCanvasID;
+	
+	private Composite parentComposite;
 
 	private FPSCounter fpsCounter;
 
 	private PickingJoglMouseListener joglMouseListener;
 
-	public GLCaleydoCanvas(final GLCapabilities glCapabilities)
+	public GLCaleydoCanvas(final GLCapabilities glCapabilities,
+			final Composite parentComposite)
 	{
 		super(glCapabilities);
 
 		this.generalManager = GeneralManager.get();
+		this.parentComposite = parentComposite;
 
 		joglMouseListener = new PickingJoglMouseListener();
 
@@ -136,5 +140,10 @@ public class GLCaleydoCanvas
 	public int getID()
 	{
 		return iGLCanvasID;
+	}
+	
+	public Composite getParentComposite()
+	{
+		return parentComposite;
 	}
 }

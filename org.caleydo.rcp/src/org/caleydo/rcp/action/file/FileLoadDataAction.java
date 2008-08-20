@@ -12,6 +12,8 @@ import javax.media.opengl.GLEventListener;
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.data.CmdDataCreateSet;
 import org.caleydo.core.command.data.CmdDataCreateStorage;
+import org.caleydo.core.command.data.filter.CmdDataFilterMath;
+import org.caleydo.core.command.data.filter.CmdDataFilterMath.EDataFilterMathType;
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
 import org.caleydo.core.data.collection.ESetType;
@@ -19,8 +21,8 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.system.StringConversionTool;
-import org.caleydo.core.view.opengl.canvas.AGLEventListenerStorageBasedView;
-import org.caleydo.core.view.opengl.canvas.heatmap.GLCanvasHeatMap;
+import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.HeatMap;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.dialog.file.FileLoadDataDialog;
 import org.caleydo.rcp.image.IImageKeys;
@@ -84,7 +86,7 @@ public class FileLoadDataAction
 
 	private ArrayList<Combo> arComboDataClass;
 	private ArrayList<Combo> arComboDataType;
-	private ArrayList<Button> arButtonNormalize;
+	private ArrayList<Button> arButtonLog;
 
 	private String sFileName;
 
@@ -96,7 +98,7 @@ public class FileLoadDataAction
 
 	private int iCreatedSetID = -1;
 
-	private int iStartParseFileAtLine = 0;
+	private int iStartParseFileAtLine = 1;
 
 	/**
 	 * Constructor.
@@ -114,7 +116,7 @@ public class FileLoadDataAction
 
 		arComboDataClass = new ArrayList<Combo>();
 		arComboDataType = new ArrayList<Combo>();
-		arButtonNormalize = new ArrayList<Button>();
+		arButtonLog = new ArrayList<Button>();
 	}
 
 	/**
@@ -122,7 +124,6 @@ public class FileLoadDataAction
 	 */
 	public FileLoadDataAction(final IWorkbenchWindow window)
 	{
-
 		this((Composite) null);
 
 		parentComposite = null;
@@ -191,7 +192,7 @@ public class FileLoadDataAction
 		txtStartParseAtLine = new Text(composite, SWT.BORDER);
 		txtStartParseAtLine.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true,
 				false));
-		txtStartParseAtLine.setText("0");
+		txtStartParseAtLine.setText("1");
 		txtStartParseAtLine.setTextLimit(2);
 		txtStartParseAtLine.addModifyListener(new ModifyListener()
 		{
@@ -442,7 +443,7 @@ public class FileLoadDataAction
 			String sLine = "";
 
 			// Ignore unwanted header files of file
-			for (int iIgnoreLineIndex = 0; iIgnoreLineIndex < iStartParseFileAtLine; iIgnoreLineIndex++)
+			for (int iIgnoreLineIndex = 1; iIgnoreLineIndex < iStartParseFileAtLine; iIgnoreLineIndex++)
 			{
 				brFile.readLine();
 			}
@@ -519,7 +520,7 @@ public class FileLoadDataAction
 
 		createDataClassBar();
 		createDataTypeBar();
-		createNormalizeBar();
+		createLogBar();
 
 		TableItem[] arTmpLabelColumnItem = previewTable.getItems();
 
@@ -529,7 +530,7 @@ public class FileLoadDataAction
 		arTmpLabelColumnItem[1].setText(0, "Data type");
 		arTmpLabelColumnItem[1].setBackground(0, previewTable.getDisplay().getSystemColor(
 				SWT.COLOR_GREEN));
-		arTmpLabelColumnItem[2].setText(0, "Normalize");
+		arTmpLabelColumnItem[2].setText(0, "Log");
 		arTmpLabelColumnItem[2].setBackground(0, previewTable.getDisplay().getSystemColor(
 				SWT.COLOR_GREEN));
 
@@ -620,13 +621,13 @@ public class FileLoadDataAction
 							|| comboTmpDataClass.getSelectionIndex() == 1)
 					{
 						arComboDataType.get(iColIndex).setEnabled(false);
-						arButtonNormalize.get(iColIndex).setEnabled(false);
+						arButtonLog.get(iColIndex).setEnabled(false);
 						// arButtonNormalize.get(iColIndex).setSelection(false);
 					}
 					else
 					{
 						arComboDataType.get(iColIndex).setEnabled(true);
-						arButtonNormalize.get(iColIndex).setEnabled(true);
+						arButtonLog.get(iColIndex).setEnabled(true);
 						// arButtonNormalize.get(iColIndex).setSelection(true);
 					}
 
@@ -702,15 +703,15 @@ public class FileLoadDataAction
 		}
 	}
 
-	private void createNormalizeBar()
+	private void createLogBar()
 	{
 
-		for (Button tmpButtonNormalize : arButtonNormalize)
+		for (Button tmpButtonLog : arButtonLog)
 		{
-			tmpButtonNormalize.dispose();
+			tmpButtonLog.dispose();
 		}
 
-		arButtonNormalize.clear();
+		arButtonLog.clear();
 
 		TableItem tmpItem = new TableItem(previewTable, SWT.NONE, 2);
 		for (int iColIndex = 1; iColIndex < previewTable.getColumnCount(); iColIndex++)
@@ -718,19 +719,25 @@ public class FileLoadDataAction
 			// previewTable.getColumn (iColIndex).pack();
 
 			// Initialize data type selection combo
-			final Button buttonNormalize = new Button(previewTable, SWT.CHECK);
-			buttonNormalize.setSize(previewTable.getColumn(iColIndex).getWidth(), 35);
-			buttonNormalize.setEnabled(false);
-			buttonNormalize.setSelection(false);
-			arButtonNormalize.add(buttonNormalize);
+			final Button buttonLog = new Button(previewTable, SWT.CHECK);
+			buttonLog.setSize(previewTable.getColumn(iColIndex).getWidth(), 35);
+			buttonLog.setEnabled(false);
+			buttonLog.setSelection(false);
+			arButtonLog.add(buttonLog);
 
 			TableEditor editor = new TableEditor(previewTable);
 			editor.grabHorizontal = true;
-			editor.setEditor(buttonNormalize, tmpItem, iColIndex);
+			editor.setEditor(buttonLog, tmpItem, iColIndex);
 		}
 	}
 
-	public void createData()
+	public void execute()
+	{
+		createData();
+		setDataInViews();
+	}
+	
+	private void createData()
 	{
 		ArrayList<Integer> iAlStorageId = new ArrayList<Integer>();
 		String sStorageIDs = "";
@@ -738,10 +745,18 @@ public class FileLoadDataAction
 		// Build input pattern from data type combos
 		sInputPattern = "";
 
-		ArrayList<Integer> iAlTmpStorageIdNormalize = new ArrayList<Integer>();
-
-		for (Combo tmpComboDataType : arComboDataType)
+		ArrayList<Integer> iAlTmpStorageIdLog = new ArrayList<Integer>();
+		Combo tmpComboDataType;
+		for (int iColIndex = 0; iColIndex < arComboDataType.size(); iColIndex++)
 		{
+			tmpComboDataType = arComboDataType.get(iColIndex);
+			
+			if (arComboDataClass.get(iColIndex).getText().equals("RefSeq ID"))
+			{
+				sInputPattern = sInputPattern + "SKIP" + ";";
+				continue;
+			}
+			
 			if (tmpComboDataType.getText().equals("FLOAT")
 					|| tmpComboDataType.getText().equals("SKIP"))
 			{
@@ -768,11 +783,11 @@ public class FileLoadDataAction
 
 				sStorageIDs = sStorageIDs + iTmpStorageId;
 
-				// Add storage to array passed on to normalization
-				if (arButtonNormalize.get(arComboDataType.indexOf(tmpComboDataType))
+				// Add storage to array passed on to log
+				if (arButtonLog.get(arComboDataType.indexOf(tmpComboDataType))
 						.getSelection())
 				{
-					iAlTmpStorageIdNormalize.add(iTmpStorageId);
+					iAlTmpStorageIdLog.add(iTmpStorageId);
 				}
 			}
 		}
@@ -792,22 +807,12 @@ public class FileLoadDataAction
 		CmdLoadFileNStorages cmdLoadCsv = (CmdLoadFileNStorages) Application.generalManager
 				.getCommandManager().createCommandByType(CommandType.LOAD_DATA_FILE);
 
-		ISWTGUIManager iSWTGUIManager = Application.generalManager.getSWTGUIManager();
-		iSWTGUIManager.setProgressBarVisible(true);
+//		ISWTGUIManager iSWTGUIManager = Application.generalManager.getSWTGUIManager();
+//		iSWTGUIManager.setProgressBarVisible(true);
 
-		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sInputPattern, 0, -1);
+		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sInputPattern, iStartParseFileAtLine, -1);
 
 		cmdLoadCsv.doCommand();
-
-		// Create Virtual Array
-//		CmdDataCreateVirtualArray cmdCreateVirtualArray = (CmdDataCreateVirtualArray) Application.generalManager
-//				.getCommandManager().createCommandByType(
-//						CommandType.CREATE_VIRTUAL_ARRAY);
-
-//		int iTmpVirtualArrayId = Application.generalManager.getStorageManager().createId(
-//				EManagerObjectType.STORAGE_NUMERICAL);
-//		cmdCreateVirtualArray.setAttributes(iTmpVirtualArrayId, -1, 0, 0, 0);
-//		cmdCreateVirtualArray.doCommand();
 
 		// Create SET
 		CmdDataCreateSet cmdCreateSet = (CmdDataCreateSet) Application.generalManager
@@ -818,7 +823,7 @@ public class FileLoadDataAction
 		cmdCreateSet.doCommand();
 		iCreatedSetID = cmdCreateSet.getCreatedObject().getID();
 
-		iSWTGUIManager.setProgressBarVisible(false);
+//		iSWTGUIManager.setProgressBarVisible(false);
 
 		CmdLoadFileLookupTable cmdLoadLookupTableFile = (CmdLoadFileLookupTable) Application.generalManager
 				.getCommandManager().createCommandByType(
@@ -828,35 +833,42 @@ public class FileLoadDataAction
 				"DAVID_2_EXPRESSION_STORAGE_ID REVERSE LUT_1", sDelimiter,
 				"REFSEQ_MRNA_2_DAVID");
 		cmdLoadLookupTableFile.doCommand();
+		
+		CmdDataFilterMath cmdDataFilterLog = (CmdDataFilterMath) Application.generalManager
+			.getCommandManager().createCommandByType(CommandType.DATA_FILTER_MATH);
+		cmdDataFilterLog.setAttributes(EDataFilterMathType.LIN_2_LOG, iAlTmpStorageIdLog, EManagedObjectType.STORAGE);
+		cmdDataFilterLog.doCommand();
+		
+		cmdCreateSet.getCreatedObject().normalize();
 	}
 
-	public void setDataInViews()
+	private void setDataInViews()
 	{
 
 		for (GLEventListener tmpGLEventListener : Application.generalManager
 				.getViewGLCanvasManager().getAllGLEventListeners())
 		{
-			if (tmpGLEventListener instanceof GLCanvasHeatMap
+			if (tmpGLEventListener instanceof HeatMap
 					|| tmpGLEventListener.getClass().getSuperclass().equals(
-							AGLEventListenerStorageBasedView.class))
+							AStorageBasedView.class))
 			{
-				((AGLEventListenerStorageBasedView) tmpGLEventListener).addSet(iCreatedSetID);
-				((AGLEventListenerStorageBasedView) tmpGLEventListener).initData();
+				((AStorageBasedView) tmpGLEventListener).addSet(iCreatedSetID);
+//				((AStorageBasedView) tmpGLEventListener).initData();
 			}
 		}
 	}
 
-	/**
-	 * For testing purposes
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args)
-	{
-
-		FileLoadDataDialog dialog = new FileLoadDataDialog(new Shell());
-		dialog.open();
-	}
+//	/**
+//	 * For testing purposes
+//	 * 
+//	 * @param args
+//	 */
+//	public static void main(String[] args)
+//	{
+//
+//		FileLoadDataDialog dialog = new FileLoadDataDialog(new Shell());
+//		dialog.open();
+//	}
 
 	@Override
 	public void dispose()
