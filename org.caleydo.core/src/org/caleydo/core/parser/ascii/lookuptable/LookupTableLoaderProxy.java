@@ -13,7 +13,6 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
 import org.caleydo.core.manager.specialized.genome.id.GenomeIdManager;
 import org.caleydo.core.parser.ascii.AbstractLoader;
-import org.caleydo.core.parser.xml.sax.ISaxParserHandler;
 
 /**
  * @author Michael Kalkusch
@@ -118,11 +117,7 @@ public final class LookupTableLoaderProxy
 		proxyLookupTableLoader.setHashMap(setHashMap, type);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.parser.handler.importer.ascii.AbstractLoader#
-	 * loadDataParseFile(java.io.BufferedReader, int)
-	 */
+	@Override
 	protected void loadDataParseFile(BufferedReader brFile, final int iNumberOfLinesInFile)
 			throws IOException
 	{
@@ -134,40 +129,21 @@ public final class LookupTableLoaderProxy
 				iNumberOfLinesInFile);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.parser.ascii.AbstractLoader#setArraysToStorages()
-	 */
+	@Override
 	protected void setArraysToStorages()
 	{
 		proxyLookupTableLoader.wirteBackMapToGenomeIdManager();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.xml.IMementoXML#setMementoXML_usingHandler(org.
-	 * caleydo.core.xml.parser.ISaxParserHandler)
-	 */
-	public boolean setMementoXML_usingHandler(ISaxParserHandler saxHandler)
-	{
 
-		return true;
-	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.xml.parser.IParserObject#init()
-	 */
+	@Override
 	public void init()
 	{
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.xml.parser.IParserObject#destroy()
-	 */
+
 	public void destroy()
 	{
 

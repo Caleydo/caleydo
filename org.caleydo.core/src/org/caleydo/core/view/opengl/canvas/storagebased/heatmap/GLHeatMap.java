@@ -21,23 +21,22 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.mapping.color.ColorMapping;
-import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
-import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**
- * Rendering the HeatMap
+ * Rendering the GLHeatMap
  * 
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class HeatMap
+public class GLHeatMap
 	extends AStorageBasedView
 {
 
@@ -71,7 +70,7 @@ public class HeatMap
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public HeatMap(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
+	public GLHeatMap(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
 	{
 		super(iGLCanvasID, sLabel, viewFrustum);
 
@@ -94,14 +93,11 @@ public class HeatMap
 	public void init(GL gl)
 	{
 		initData();
-		initLists();
 
-		renderStyle = new HeatMapRenderStyle(viewFrustum, contentSelectionManager, set,
-				iContentVAID, set.getVA(iStorageVAID).size(), true);
-		// TODO probably remove this here
-		renderStyle.initFieldSizes();
+		if (set == null)
+			return;
+		
 
-		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
 	}
 
 	@Override
@@ -193,37 +189,38 @@ public class HeatMap
 		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		GLHelperFunctions.drawAxis(gl);
 		gl.glCallList(iGLDisplayListToCall);
-	//	buildDisplayList(gl, iGLDisplayListIndexRemote);
+		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex)
 	{
-	
 
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
-		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
-		gl.glColorMask(false, false, false, false);
-		gl.glClearStencil(0); // Clear The Stencil Buffer To 0
-		gl.glEnable(GL.GL_DEPTH_TEST); // Enables Depth Testing
-		gl.glDepthFunc(GL.GL_LEQUAL); // The Type Of Depth Testing To Do
-		gl.glEnable(GL.GL_STENCIL_TEST);
-		gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);
-		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
-		gl.glDisable(GL.GL_DEPTH_TEST);
-
-		// Clip region that renders in stencil buffer (in this case the frustum)
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(0, 0, -0.01f);
-		gl.glVertex3f(0, 8, -0.01f);
-		gl.glVertex3f(8, 8, -0.01f);
-		gl.glVertex3f(8, 0, -0.01f);
-		gl.glEnd();
-
-		gl.glEnable(GL.GL_DEPTH_TEST);
-		gl.glColorMask(true, true, true, true);
-		gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
-		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
+		clipToFrustum(gl);
+		// gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+		// gl.glColorMask(false, false, false, false);
+		// gl.glClearStencil(0); // Clear The Stencil Buffer To 0
+		// gl.glEnable(GL.GL_DEPTH_TEST); // Enables Depth Testing
+		// gl.glDepthFunc(GL.GL_LEQUAL); // The Type Of Depth Testing To Do
+		// gl.glEnable(GL.GL_STENCIL_TEST);
+		// gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);
+		// gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
+		// gl.glDisable(GL.GL_DEPTH_TEST);
+		//
+		// // Clip region that renders in stencil buffer (in this case the
+		// frustum)
+		// gl.glBegin(GL.GL_POLYGON);
+		// gl.glVertex3f(0, 0, -0.01f);
+		// gl.glVertex3f(0, 8, -0.01f);
+		// gl.glVertex3f(8, 8, -0.01f);
+		// gl.glVertex3f(8, 0, -0.01f);
+		// gl.glEnd();
+		//
+		// gl.glEnable(GL.GL_DEPTH_TEST);
+		// gl.glColorMask(true, true, true, true);
+		// gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
+		// gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 
 		if (!bRenderStorageHorizontally)
 		{
@@ -263,14 +260,14 @@ public class HeatMap
 		// .getElements(ESelectionType.MOUSE_OVER);
 
 		if (bRenderOnlyContext)
-			iContentVAID = mapSelections.get(EStorageBasedVAType.EXTERNAL_SELECTION);
+			iContentVAID = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
 		else
 		{
-			if (!mapSelections.containsKey(EStorageBasedVAType.COMPLETE_SELECTION))
+			if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION))
 				initCompleteList();
-			iContentVAID = mapSelections.get(EStorageBasedVAType.COMPLETE_SELECTION);
+			iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
 		}
-		iStorageVAID = mapSelections.get(EStorageBasedVAType.STORAGE_SELECTION);
+		iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
 
 		contentSelectionManager.resetSelectionManager();
 		storageSelectionManager.resetSelectionManager();
@@ -282,18 +279,20 @@ public class HeatMap
 			renderStyle.setContentSelection(iContentVAID);
 		}
 
-		int iNumberOfRowsToRender = set.getVA(iContentVAID).size();
-		int iNumberOfColumns = set.getVA(iStorageVAID).size();
+		int iNumberOfColumns = set.getVA(iContentVAID).size();
+		int iNumberOfRows = set.getVA(iStorageVAID).size();
 
-		for (int iRowCount = 0; iRowCount < iNumberOfRowsToRender; iRowCount++)
+		for (int iRowCount = 0; iRowCount < iNumberOfRows; iRowCount++)
 		{
-			contentSelectionManager.initialAdd(set.getVA(iContentVAID).get(iRowCount));
+			storageSelectionManager.initialAdd(set.getVA(iStorageVAID).get(iRowCount));
+
 		}
 
 		// this for loop executes one per axis
 		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++)
 		{
-			storageSelectionManager.initialAdd(set.getVA(iStorageVAID).get(iColumnCount));
+			contentSelectionManager.initialAdd(set.getVA(iContentVAID).get(iColumnCount));
+
 			// if
 			// (setMouseOver.contains(set.getVA(iContentVAID).get(iColumnCount
 			// )))
@@ -303,6 +302,13 @@ public class HeatMap
 			// iContentVAID).get(iColumnCount));
 			// }
 		}
+		
+		renderStyle = new HeatMapRenderStyle(viewFrustum, contentSelectionManager, set,
+				iContentVAID, iStorageVAID, set.getVA(iStorageVAID).size(), true);
+		// TODO probably remove this here
+		renderStyle.initFieldSizes();
+
+		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
 
 	}
 
@@ -346,7 +352,7 @@ public class HeatMap
 
 						if (eFieldDataType == EIDType.EXPRESSION_INDEX)
 						{
-							triggerUpdate(storageSelectionManager.getDelta());
+							triggerUpdate(contentSelectionManager.getDelta());
 						}
 
 						break;
@@ -360,7 +366,7 @@ public class HeatMap
 
 						if (eFieldDataType == EIDType.EXPRESSION_INDEX)
 						{
-							triggerUpdate(storageSelectionManager.getDelta());
+							triggerUpdate(contentSelectionManager.getDelta());
 						}
 
 						break;

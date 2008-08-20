@@ -26,13 +26,15 @@ import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.GLIconTextureManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 import com.sun.opengl.util.texture.Texture;
@@ -44,7 +46,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  * @author Alexander Lex (responsible for PC)
  * @author Marc Streit
  */
-public class ParallelCoordinates
+public class GLParallelCoordinates
 	extends AStorageBasedView
 {
 
@@ -134,7 +136,7 @@ public class ParallelCoordinates
 	/**
 	 * Constructor.
 	 */
-	public ParallelCoordinates(final int iGLCanvasID, final String sLabel,
+	public GLParallelCoordinates(final int iGLCanvasID, final String sLabel,
 			final IViewFrustum viewFrustum)
 	{
 		super(iGLCanvasID, sLabel, viewFrustum);
@@ -179,7 +181,7 @@ public class ParallelCoordinates
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas)
 	{
-//		dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
+		// dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
 		dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
 		bRenderOnlyContext = true;
 
@@ -201,15 +203,14 @@ public class ParallelCoordinates
 		iconTextureManager = new GLIconTextureManager(gl);
 
 		initData();
-		initLists();
-		initGates();
-
+		
 		fXDefaultTranslation = renderStyle.getXSpacing();
 		fYTranslation = renderStyle.getBottomSpacing();
 	}
-	
+
 	/**
-	 * Set the level of data filtering, according to the parameters defined in {@link EDataFilterLevel}
+	 * Set the level of data filtering, according to the parameters defined in
+	 * {@link EDataFilterLevel}
 	 * 
 	 * @param dataFilterLevel the level of filtering
 	 */
@@ -221,7 +222,9 @@ public class ParallelCoordinates
 	@Override
 	public void displayLocal(final GL gl)
 	{
-
+		if(set == null)
+			return;
+		
 		if (bIsTranslationActive)
 		{
 			doTranslation();
@@ -245,7 +248,9 @@ public class ParallelCoordinates
 	@Override
 	public void displayRemote(final GL gl)
 	{
-
+		if(set == null)
+			return;
+		
 		if (bIsTranslationActive)
 		{
 			doTranslation();
@@ -268,34 +273,14 @@ public class ParallelCoordinates
 	public void display(final GL gl)
 	{
 
-		// GLHelperFunctions.drawAxis(gl);
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		GLHelperFunctions.drawAxis(gl);
+		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
-		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
-		gl.glColorMask(false, false, false, false);
-		gl.glClearStencil(0); // Clear The Stencil Buffer To 0
-		gl.glEnable(GL.GL_DEPTH_TEST); // Enables Depth Testing
-		gl.glDepthFunc(GL.GL_LEQUAL); // The Type Of Depth Testing To Do
-		gl.glEnable(GL.GL_STENCIL_TEST);
-		gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);
-		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
-		gl.glDisable(GL.GL_DEPTH_TEST);
-
-		// Clip region that renders in stencil buffer (in this case the frustum)
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(0, 0, -0.01f);
-		gl.glVertex3f(0, 8, -0.01f);
-		gl.glVertex3f(8, 8, -0.01f);
-		gl.glVertex3f(8, 0, -0.01f);
-		gl.glEnd();
-
-		gl.glEnable(GL.GL_DEPTH_TEST);
-		gl.glColorMask(true, true, true, true);
-		gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
-		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
+		clipToFrustum(gl);
 
 		gl.glTranslatef(fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
 
+		
 		if (bIsDraggingActive)
 			handleDragging(gl);
 
@@ -309,17 +294,20 @@ public class ParallelCoordinates
 		}
 
 		checkUnselection();
-
+		GLHelperFunctions.drawAxis(gl);
 		gl.glCallList(iGLDisplayListToCall);
 
 		gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
 
-		gl.glTranslatef(fXDefaultTranslation - renderStyle.getXSpacing(), fYTranslation
-				- renderStyle.getBottomSpacing(), 0.0f);
-		glToolboxRenderer.render(gl);
-		gl.glTranslatef(-fXDefaultTranslation + renderStyle.getXSpacing(), -fYTranslation
-				+ renderStyle.getBottomSpacing(), 0.0f);
+		if (detailLevel == EDetailLevel.HIGH)
+		{
+			gl.glTranslatef(fXDefaultTranslation - renderStyle.getXSpacing(), fYTranslation
+					- renderStyle.getBottomSpacing(), 0.0f);
 
+			glToolboxRenderer.render(gl);
+			gl.glTranslatef(-fXDefaultTranslation + renderStyle.getXSpacing(), -fYTranslation
+					+ renderStyle.getBottomSpacing(), 0.0f);
+		}
 		gl.glDisable(GL.GL_STENCIL_TEST);
 	}
 
@@ -351,13 +339,13 @@ public class ParallelCoordinates
 		bRenderOnlyContext = !bRenderOnlyContext;
 
 		if (bRenderOnlyContext)
-			iContentVAID = mapSelections.get(EStorageBasedVAType.EXTERNAL_SELECTION);
+			iContentVAID = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
 		else
 		{
-			if(!mapSelections.containsKey(EStorageBasedVAType.COMPLETE_SELECTION))
+			if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION))
 				initCompleteList();
-			
-			iContentVAID = mapSelections.get(EStorageBasedVAType.COMPLETE_SELECTION);
+
+			iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
 		}
 
 		contentSelectionManager.setVA(set.getVA(iContentVAID));
@@ -430,15 +418,15 @@ public class ParallelCoordinates
 		// int iNumberOfEntriesToRender = 0;
 		//		
 		if (bRenderOnlyContext)
-			iContentVAID = mapSelections.get(EStorageBasedVAType.EXTERNAL_SELECTION);
+			iContentVAID = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
 		else
 		{
-			if(!mapSelections.containsKey(EStorageBasedVAType.COMPLETE_SELECTION))
+			if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION))
 				initCompleteList();
-			iContentVAID = mapSelections.get(EStorageBasedVAType.COMPLETE_SELECTION);
+			iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
 
 		}
-		iStorageVAID = mapSelections.get(EStorageBasedVAType.STORAGE_SELECTION);
+		iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
 
 		initContentVariables();
 
@@ -462,6 +450,8 @@ public class ParallelCoordinates
 		//axisSelectionManager.initialAdd(set.getVA(iAxisVAID).get(iAxisCount));
 		// }
 		fAxisSpacing = renderStyle.getAxisSpacing(set.sizeVA(iAxisVAID));
+		
+		initGates();
 
 	}
 
@@ -509,7 +499,7 @@ public class ParallelCoordinates
 	}
 
 	/**
-	 * Build polyline display list. Renderrs coordinate system, polylines and
+	 * Build polyline display list. Renders coordinate system, polylines and
 	 * gates, by calling the render methods
 	 * 
 	 * @param gl GL context
@@ -636,7 +626,8 @@ public class ParallelCoordinates
 				}
 
 				if (renderMode == ESelectionType.SELECTION
-						|| renderMode == ESelectionType.MOUSE_OVER)
+						|| renderMode == ESelectionType.MOUSE_OVER
+						&& detailLevel == EDetailLevel.HIGH)
 				{
 					float fYRawValue = currentStorage.getFloat(EDataRepresentation.RAW,
 							iStorageIndex);
@@ -872,18 +863,21 @@ public class ParallelCoordinates
 			gl.glEnd();
 			gl.glPopName();
 
-			try
+			if (detailLevel == EDetailLevel.HIGH)
 			{
-				renderYValues(gl, fCurrentPosition, fArGateTipHeight[iCount], (float) set
-						.getRawForNormalized(fArGateTipHeight[iCount]
-								/ renderStyle.getAxisHeight()), ESelectionType.NORMAL);
-			}
-			catch (OperationNotSupportedException e)
-			{
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+				try
+				{
+					renderYValues(gl, fCurrentPosition, fArGateTipHeight[iCount], (float) set
+							.getRawForNormalized(fArGateTipHeight[iCount]
+									/ renderStyle.getAxisHeight()), ESelectionType.NORMAL);
+				}
+				catch (OperationNotSupportedException e)
+				{
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 
+			}
 			// The body of the gate
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.LOWER_GATE_BODY_SELECTION, iCount));
@@ -918,17 +912,19 @@ public class ParallelCoordinates
 			gl.glEnd();
 			gl.glPopName();
 
-			try
+			if (detailLevel == EDetailLevel.HIGH)
 			{
-				renderYValues(gl, fCurrentPosition, fArGateBottomHeight[iCount], (float) set
-						.getRawForNormalized(fArGateBottomHeight[iCount]
-								/ renderStyle.getAxisHeight()), ESelectionType.NORMAL);
+				try
+				{
+					renderYValues(gl, fCurrentPosition, fArGateBottomHeight[iCount],
+							(float) set.getRawForNormalized(fArGateBottomHeight[iCount]
+									/ renderStyle.getAxisHeight()), ESelectionType.NORMAL);
+				}
+				catch (OperationNotSupportedException e)
+				{
+					e.printStackTrace();
+				}
 			}
-			catch (OperationNotSupportedException e)
-			{
-				e.printStackTrace();
-			}
-
 			iCount++;
 		}
 	}
@@ -1291,6 +1287,7 @@ public class ParallelCoordinates
 							set.getVA(iStorageVAID).remove(iExternalID);
 						}
 						setDisplayListDirty();
+						initGates();
 						break;
 				}
 				pickingManager.flushHits(iUniqueID, EPickingType.REMOVE_AXIS);
@@ -1304,6 +1301,7 @@ public class ParallelCoordinates
 							set.getVA(iAxisVAID).moveLeft(iExternalID);
 							setDisplayListDirty();
 							resetSelections();
+							initGates();
 						}
 						break;
 				}
@@ -1319,6 +1317,7 @@ public class ParallelCoordinates
 							set.getVA(iAxisVAID).moveRight(iExternalID);
 							setDisplayListDirty();
 							resetSelections();
+							initGates();
 						}
 						break;
 				}
@@ -1333,6 +1332,7 @@ public class ParallelCoordinates
 							set.getVA(iAxisVAID).copy(iExternalID);
 							setDisplayListDirty();
 							resetSelections();
+							initGates();
 							break;
 						}
 				}

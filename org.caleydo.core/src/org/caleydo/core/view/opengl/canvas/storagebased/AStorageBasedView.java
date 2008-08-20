@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas;
+package org.caleydo.core.view.opengl.canvas.storagebased;
 
 import java.awt.Font;
 import java.util.ArrayList;
@@ -21,12 +21,10 @@ import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.picking.ESelectionMode;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
-import org.caleydo.core.manager.specialized.genome.pathway.PathwayManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
-import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
-import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
@@ -59,7 +57,7 @@ public abstract class AStorageBasedView
 	/**
 	 * map selection type to unique id for virtual array
 	 */
-	protected EnumMap<EStorageBasedVAType, Integer> mapSelections;
+	protected EnumMap<EStorageBasedVAType, Integer> mapVAIDs;
 
 	/**
 	 * The id of the virtual array that manages the contents (the indices) in
@@ -73,8 +71,7 @@ public abstract class AStorageBasedView
 	 */
 	protected int iStorageVAID = 0;
 
-	protected boolean bIsDisplayListDirtyLocal = true;
-	protected boolean bIsDisplayListDirtyRemote = true;
+
 
 	protected int iGLDisplayListIndexLocal;
 	protected int iGLDisplayListIndexRemote;
@@ -120,7 +117,7 @@ public abstract class AStorageBasedView
 	{
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 
-		mapSelections = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
+		mapVAIDs = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
 
 		genomeIDManager = generalManager.getGenomeIdManager();
 
@@ -152,35 +149,42 @@ public abstract class AStorageBasedView
 	// this.dataFilterLevel = dataFilterLevel;
 	// }
 
-	/**
-	 * Initialize data
-	 */
 	public void initData()
 	{
-		if (alSetData == null)
-			throw new CaleydoRuntimeException("Set in View is null",
-					CaleydoRuntimeExceptionType.VIEW);
-
-		if (!mapSelections.isEmpty())
-		{
-			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values())
-			{
-				if (mapSelections.containsKey(eSelectionType))
-					set.removeVirtualArray(mapSelections.get(eSelectionType));
-			}
-			mapSelections.clear();
-		}
-
-		for (ISet currentSet : alSetData)
+		set = null;
+		
+		for (ISet currentSet : alSets)
 		{
 			if (currentSet.getSetType() == ESetType.GENE_EXPRESSION_DATA)
 				set = currentSet;
 		}
+	
+		if (set == null)
+		{
+			
+			mapVAIDs.clear();
+			contentSelectionManager.resetSelectionManager();
+			storageSelectionManager.resetSelectionManager();
+			connectedElementRepresentationManager.clear();
+			return;
+		}
+		
+		if (!mapVAIDs.isEmpty())
+		{
+			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values())
+			{
+				if (mapVAIDs.containsKey(eSelectionType))
+					set.removeVirtualArray(mapVAIDs.get(eSelectionType));
+			}
+			mapVAIDs.clear();
+		}
+
+		
 
 		ArrayList<Integer> alTempList = new ArrayList<Integer>();
 		// create VA with empty list
 		int iVAID = set.createStorageVA(alTempList);
-		mapSelections.put(EStorageBasedVAType.EXTERNAL_SELECTION, iVAID);
+		mapVAIDs.put(EStorageBasedVAType.EXTERNAL_SELECTION, iVAID);
 
 		alTempList = new ArrayList<Integer>();
 
@@ -190,8 +194,9 @@ public abstract class AStorageBasedView
 		}
 
 		iVAID = set.createSetVA(alTempList);
-		mapSelections.put(EStorageBasedVAType.STORAGE_SELECTION, iVAID);
+		mapVAIDs.put(EStorageBasedVAType.STORAGE_SELECTION, iVAID);
 
+		initLists();
 	}
 
 	protected void initCompleteList()
@@ -238,7 +243,7 @@ public abstract class AStorageBasedView
 		}
 
 		int iVAID = set.createStorageVA(alTempList);
-		mapSelections.put(EStorageBasedVAType.COMPLETE_SELECTION, iVAID);
+		mapVAIDs.put(EStorageBasedVAType.COMPLETE_SELECTION, iVAID);
 	}
 
 	/**

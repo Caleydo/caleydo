@@ -222,7 +222,7 @@ public class GLPathway
 	protected void initPathwayData(final GL gl)
 	{
 
-		gLPathwayManager.init(gl, alSetData, selectionManager);
+		gLPathwayManager.init(gl, alSets, selectionManager);
 
 		// Create new pathway manager for GL context
 		if (!hashGLcontext2TextureManager.containsKey(gl))

@@ -35,67 +35,43 @@ public abstract class AGraphDataHandler
 		key_2_data = new HashMap<Integer, Object>(initialSize);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.util.graph.item.IGraphDataHandler#containsData(int)
-	 */
+	@Override
 	public final boolean containsData(int key)
 	{
 		return key_2_data.containsKey(new Integer(key));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.util.graph.item.IGraphDataHandler#containsDataObject(java
-	 * .lang.Object)
-	 */
+	@Override
 	public final boolean containsDataObject(Object data)
 	{
 		return key_2_data.containsValue(data);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.util.graph.item.IGraphDataHandler#getAllData()
-	 */
+	@Override
 	public final Collection<Object> getAllData()
 	{
 		return key_2_data.values();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.util.graph.item.IGraphDataHandler#getData(int)
-	 */
+	@Override
 	public final Object getData(int key)
 	{
 		return key_2_data.get(new Integer(key));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.util.graph.item.IGraphDataHandler#removeAllData()
-	 */
+	@Override
 	public final void removeAllData()
 	{
 		key_2_data.clear();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.util.graph.item.IGraphDataHandler#removeData(int)
-	 */
+	@Override
 	public final Object removeData(int key)
 	{
 		return key_2_data.remove(new Integer(key));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.util.graph.item.IGraphDataHandler#setData(int,
-	 * java.lang.Object)
-	 */
+	@Override
 	public final boolean setData(int key, Object data)
 	{
 		return (key_2_data.put(new Integer(key), data) == null) ? false : true;

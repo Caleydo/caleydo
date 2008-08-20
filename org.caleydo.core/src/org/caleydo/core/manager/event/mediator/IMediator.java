@@ -2,7 +2,6 @@ package org.caleydo.core.manager.event.mediator;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 
 /**
  * @see

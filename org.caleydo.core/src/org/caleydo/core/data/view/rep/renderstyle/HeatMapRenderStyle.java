@@ -7,7 +7,6 @@ import java.util.Set;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
-import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 
 /**
@@ -38,9 +37,13 @@ public class HeatMapRenderStyle
 
 	public static final float SELECTION_Z = 0.001f;
 
-	private float fSelectedFieldWidth = 0.6f;
+	private float fSelectedFieldWidth = 1.0f;
+
+	private float fMamximumNormalFieldWidth = fSelectedFieldWidth / 3 * 2;
 
 	private float fNormalFieldWidth = 0f;
+
+	private float fFieldHeight = 0f;
 
 	private int iLevels = 1;
 
@@ -53,20 +56,22 @@ public class HeatMapRenderStyle
 	private GenericSelectionManager contentSelectionManager;
 
 	private int iContentVAID;
+	private int iStorageVAID;
 
 	private ISet set;
 
 	public HeatMapRenderStyle(final IViewFrustum viewFrustum,
-			final GenericSelectionManager contentSelectionManager, ISet set,
-			int iContentSelection, int iNumElements, boolean bRenderVertical)
+			final GenericSelectionManager contentSelectionManager, ISet set, int iContentVAID,
+			int iStorageVAID, int iNumElements, boolean bRenderVertical)
 	{
 
 		super(viewFrustum);
 
-		fNormalFieldWidth = fSelectedFieldWidth / 4;
-
 		this.contentSelectionManager = contentSelectionManager;
-		this.iContentVAID = iContentSelection;
+
+		this.iContentVAID = iContentVAID;
+		this.iStorageVAID = iStorageVAID;
+
 		this.set = set;
 		alFieldWidths = new ArrayList<FieldWidthElement>();
 
@@ -91,28 +96,29 @@ public class HeatMapRenderStyle
 
 	public void initFieldSizes()
 	{
-		resetFieldWidths();
-		Set<Integer> selectedSet = contentSelectionManager.getElements(ESelectionType.SELECTION);
-		
-		Set<Integer> mouseOverSet = contentSelectionManager.getElements(ESelectionType.MOUSE_OVER);
-		
+		resetFieldDimensions();
+		Set<Integer> selectedSet = contentSelectionManager
+				.getElements(ESelectionType.SELECTION);
+
+		Set<Integer> mouseOverSet = contentSelectionManager
+				.getElements(ESelectionType.MOUSE_OVER);
+
 		int iVAIndex;
-		for(int iSelectedIndex : selectedSet)
+		for (int iSelectedIndex : selectedSet)
 		{
 			iVAIndex = set.getVA(iContentVAID).indexOf(iSelectedIndex);
 			alFieldWidths.get(iVAIndex).fWidth = fSelectedFieldWidth;
 		}
-		
-		for(int iSelectedIndex : mouseOverSet)
+
+		for (int iSelectedIndex : mouseOverSet)
 		{
-			IVirtualArray va = set.getVA(iContentVAID);
 			iVAIndex = set.getVA(iContentVAID).indexOf(iSelectedIndex);
 			alFieldWidths.get(iVAIndex).fWidth = fSelectedFieldWidth;
 		}
-//		for (int iContentIndex : set.getVA(iContentVAID))
-//		{
-//			initOneFieldSize(iContentIndex);
-//		}
+		// for (int iContentIndex : set.getVA(iContentVAID))
+		// {
+		// initOneFieldSize(iContentIndex);
+		// }
 	}
 
 	/**
@@ -159,34 +165,70 @@ public class HeatMapRenderStyle
 		this.iContentVAID = iContentSelection;
 	}
 
-	private float calcHeightFromWidth(float fWidth)
+	public void resetFieldDimensions()
 	{
-		return 0.7f * fWidth;
-	}
+		int iNumberSelected = contentSelectionManager
+				.getNumberOfElements(ESelectionType.MOUSE_OVER);
+		iNumberSelected += contentSelectionManager
+				.getNumberOfElements(ESelectionType.SELECTION);
+		int iNumberTotal = set.getVA(iContentVAID).size();
 
-	public void resetFieldWidths()
-	{
-		int iNumberSelected = contentSelectionManager.getNumberOfElements(ESelectionType.MOUSE_OVER);
-		
+		fNormalFieldWidth = (viewFrustum.getWidth() - iNumberSelected * fSelectedFieldWidth)
+				/ (iNumberTotal - iNumberSelected);
+
+		fNormalFieldWidth = (fNormalFieldWidth > fMamximumNormalFieldWidth) ? fMamximumNormalFieldWidth
+				: fNormalFieldWidth;
+
+		fFieldHeight = viewFrustum.getHeight() / set.getVA(iStorageVAID).size();
+
 		// TODO implement width dependend on frustum
-		
+
 		alFieldWidths.clear();
+
+	
+
+//		int iVAIndex;
+//		for (int iSelectedIndex : selectedSet)
+//		{
+//			iVAIndex = set.getVA(iContentVAID).indexOf(iSelectedIndex);
+//			alFieldWidths.get(iVAIndex).fWidth = fSelectedFieldWidth;
+//		}
+//
+//		for (int iSelectedIndex : mouseOverSet)
+//		{
+//			iVAIndex = set.getVA(iContentVAID).indexOf(iSelectedIndex);
+//			alFieldWidths.get(iVAIndex).fWidth = fSelectedFieldWidth;
+//		}
+
 		float fTotalFieldWidth = 0;
-		for(int iContentIndex : set.getVA(iContentVAID))
+		float fCurrentFieldWidth = 0;
+		for (int iContentIndex : set.getVA(iContentVAID))
 		{
-			alFieldWidths.add(new FieldWidthElement(fNormalFieldWidth, calcHeightFromWidth(fNormalFieldWidth), fTotalFieldWidth));
-			fTotalFieldWidth += fNormalFieldWidth;
+			fCurrentFieldWidth = isSelected(iContentIndex) ? fSelectedFieldWidth : fNormalFieldWidth; 
+			alFieldWidths.add(new FieldWidthElement(fCurrentFieldWidth, fFieldHeight,
+					fTotalFieldWidth));
+			fTotalFieldWidth += fCurrentFieldWidth;
 		}
+	}
+	
+	private boolean isSelected(int iIndex)
+	{
+		if(contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iIndex))
+			return true;
+		if(contentSelectionManager.checkStatus(ESelectionType.SELECTION, iIndex))
+			return true;
+		
+		return false;
 	}
 
 	public float getXDistanceAt(int iIndex)
 	{
-//
-//		float fXDistance = 0;
-//		for (int iCount = 0; iCount < iIndex; iCount++)
-//		{
-//			fXDistance += alFieldWidths.get(iCount);
-//		}
+		//
+		// float fXDistance = 0;
+		// for (int iCount = 0; iCount < iIndex; iCount++)
+		// {
+		// fXDistance += alFieldWidths.get(iCount);
+		// }
 
 		return alFieldWidths.get(iIndex).fTotalWidth;
 
@@ -195,11 +237,11 @@ public class HeatMapRenderStyle
 	public float getXDistanceAfter(int iIndex)
 	{
 
-//		float fXDistance = 0;
-//		for (int iCount = 0; iCount <= iIndex; iCount++)
-//		{
-//			fXDistance += alFieldWidths.get(iCount);
-//		}
+		// float fXDistance = 0;
+		// for (int iCount = 0; iCount <= iIndex; iCount++)
+		// {
+		// fXDistance += alFieldWidths.get(iCount);
+		// }
 
 		return alFieldWidths.get(iIndex).fTotalWidth + alFieldWidths.get(iIndex).fWidth;
 
@@ -209,7 +251,7 @@ public class HeatMapRenderStyle
 	{
 		Vec2f vecWidthAndHeight = new Vec2f();
 		float fWidth = alFieldWidths.get(iIndex).fWidth;
-		vecWidthAndHeight.set(fWidth, calcHeightFromWidth(fWidth));
+		vecWidthAndHeight.set(fWidth, fFieldHeight);
 
 		return vecWidthAndHeight;
 	}
@@ -218,13 +260,13 @@ public class HeatMapRenderStyle
 	{
 
 		// TODO: this is only correct for 4 rows
-		return (fFrustumHeight / 2);
+		return (viewFrustum.getHeight() / 2);
 	}
 
 	public float getXCenter()
 	{
 
-		return (fFrustumWidth / 2);
+		return (viewFrustum.getWidth() / 2);
 	}
 
 	// public float getXSpacing()

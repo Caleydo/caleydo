@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.mouse;
 
-import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import java.awt.Dimension;
 import java.awt.Point;

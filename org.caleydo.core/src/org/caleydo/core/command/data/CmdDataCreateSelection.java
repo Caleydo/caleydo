@@ -6,7 +6,6 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.eclipse.jface.viewers.ISelection;
 
 /**
  * Class creates a selection.

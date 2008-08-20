@@ -30,15 +30,17 @@ public class GeneralRenderStyle
 
 	public static final float MOUSE_OVER_LINE_WIDTH = 3;
 
-	protected float fFrustumHeight = 0;
+//	protected float fFrustumHeight = 0;
+//
+//	protected float fFrustumWidth = 0;
 
-	protected float fFrustumWidth = 0;
-
-	protected float fScaling = 0;
+	//protected float fScaling = 1;
 
 	protected static final float BUTTONS_SPACING = 0.005f;
 
 	protected static final float BUTTON_WIDTH = 0.018f;
+	
+	protected IViewFrustum viewFrustum;
 
 	/**
 	 * Default constructor.
@@ -53,50 +55,53 @@ public class GeneralRenderStyle
 	 */
 	public GeneralRenderStyle(IViewFrustum viewFrustum)
 	{
-
-		fFrustumWidth = viewFrustum.getRight() - viewFrustum.getLeft();
-		fFrustumHeight = viewFrustum.getTop() - viewFrustum.getBottom();
+		this.viewFrustum = viewFrustum;
+//		fFrustumWidth = viewFrustum.getRight() - viewFrustum.getLeft();
+//		fFrustumHeight = viewFrustum.getTop() - viewFrustum.getBottom();
 		// scaling is set to the smaller of the two
-		if (fFrustumWidth > fFrustumHeight)
-			fScaling = fFrustumHeight;
-		else
-			fScaling = fFrustumWidth;
+
 	}
 
 	public float getSmallFontScalingFactor()
 	{
 
-		return SMALL_FONT_SCALING_FACTOR * fScaling;
+		return SMALL_FONT_SCALING_FACTOR * getScaling();
 	}
 
 	public float getVerySmallFontScalingFactor()
 	{
 
-		return VERY_SMALL_FONT_SCALING_FACTOR * fScaling;
+		return VERY_SMALL_FONT_SCALING_FACTOR * getScaling();
 	}
 
 	public float getHeadingFontScalingFactor()
 	{
 
-		return HEADING_FONT_SCALING_FACTOR * fScaling;
+		return HEADING_FONT_SCALING_FACTOR * getScaling();
 	}
 
 	public float getButtonSpacing()
 	{
 
-		return BUTTONS_SPACING * fScaling;
+		return BUTTONS_SPACING * getScaling();
 	}
 
 	public float getButtonWidht()
 	{
 
-		return BUTTON_WIDTH * fScaling;
+		return BUTTON_WIDTH * getScaling();
 	}
 
 	public float getScaling()
 	{
-
+		float fScaling;
+		if (viewFrustum.getWidth() > viewFrustum.getHeight())
+			fScaling = viewFrustum.getWidth();
+		else
+			fScaling = viewFrustum.getHeight();
 		return fScaling;
 	}
+	
+	
 
 }

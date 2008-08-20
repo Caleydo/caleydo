@@ -5,9 +5,6 @@ import java.util.Iterator;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Attention: Since Mediator is also a IMediatorReceiver care has to be taken
@@ -35,12 +32,7 @@ public class LockableMediator
 		arSender = new ArrayList<IMediatorSender>();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.observer.mediator.IMediator#destroyMediator(org.caleydo
-	 * .core.observer.mediator.IMediatorSender)
-	 */
+	@Override
 	protected final void destroyMediatorDerivedObject(final IEventPublisher sender)
 	{
 
@@ -50,12 +42,7 @@ public class LockableMediator
 		this.arSender.clear();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.observer.mediator.IMediator#register(org.caleydo.core
-	 * .observer.mediator.IMediatorSender)
-	 */
+	@Override
 	public final boolean register(IMediatorSender sender)
 	{
 		if (arSender.contains(sender))
@@ -71,12 +58,7 @@ public class LockableMediator
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.observer.mediator.IMediator#register(org.caleydo.core
-	 * .observer.mediator.IMediatorReceiver)
-	 */
+	@Override
 	public final boolean register(IMediatorReceiver receiver)
 	{
 
@@ -96,12 +78,7 @@ public class LockableMediator
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.observer.mediator.IMediator#unregister(org.caleydo.core
-	 * .observer.mediator.IMediatorSender)
-	 */
+	@Override
 	public final boolean unregister(IMediatorSender sender)
 	{
 
@@ -110,12 +87,7 @@ public class LockableMediator
 		return arSender.remove(sender);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.observer.mediator.IMediator#unregister(org.caleydo.core
-	 * .observer.mediator.IMediatorReceiver)
-	 */
+	@Override
 	public final boolean unregister(IMediatorReceiver receiver)
 	{
 

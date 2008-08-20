@@ -45,10 +45,7 @@ public class CmdLoadFileNStorages
 		super(cmdType);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.base.ACommand#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
-	 */
+	@Override
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
 		super.setParameterHandler(parameterHandler);
@@ -112,10 +109,7 @@ public class CmdLoadFileNStorages
 		this.iStopParseFileAtLine = iStopParseFileAtLine;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#doCommand()
-	 */
+	@Override
 	public void doCommand() throws CaleydoRuntimeException
 	{
 		generalManager.getLogger().log(
@@ -156,10 +150,7 @@ public class CmdLoadFileNStorages
 		} // finally
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#undoCommand()
-	 */
+	@Override
 	public void undoCommand() throws CaleydoRuntimeException
 	{
 

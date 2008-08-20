@@ -27,10 +27,7 @@ public abstract class AUniqueObject
 		this.iUniqueID = iUniqueID;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.IUniqueObject#getId()
-	 */
+	@Override
 	public final int getID()
 	{
 		return this.iUniqueID;

@@ -2,7 +2,6 @@ package org.caleydo.core.data.collection.ccontainer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 

@@ -1,7 +1,6 @@
 package org.caleydo.core.application.helper.cacher.kegg;
 
 import java.io.IOException;
-
 import com.enterprisedt.net.ftp.FTPConnectMode;
 import com.enterprisedt.net.ftp.FTPException;
 import com.enterprisedt.net.ftp.FileTransferClient;

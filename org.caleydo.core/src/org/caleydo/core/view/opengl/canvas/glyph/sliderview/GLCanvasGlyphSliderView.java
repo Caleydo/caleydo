@@ -100,7 +100,7 @@ public class GLCanvasGlyphSliderView
 		// find dataset
 		ISet glyphData = null;
 
-		for (ISet tmpSet : alSetData)
+		for (ISet tmpSet : alSets)
 		{
 			if (tmpSet != null)
 			{

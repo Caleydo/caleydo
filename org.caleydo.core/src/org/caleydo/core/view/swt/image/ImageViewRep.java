@@ -1,13 +1,12 @@
 package org.caleydo.core.view.swt.image;
 
+import org.caleydo.core.view.AView;
+import org.caleydo.core.view.IView;
+import org.caleydo.core.view.ViewType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.view.AView;
-import org.caleydo.core.view.IView;
-import org.caleydo.core.view.ViewType;
 
 /**
  * Image view.
@@ -30,10 +29,7 @@ public class ImageViewRep
 		super(iParentContainerId, sLabel, ViewType.SWT_IMAGE_VIEWER);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.AView#initViewSwtComposit(org.eclipse.swt.widgets.Composite)
-	 */
+	@Override
 	protected void initViewSwtComposite(Composite swtContainer)
 	{
 
@@ -43,10 +39,7 @@ public class ImageViewRep
 		label.setImage(image);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.IView#drawView()
-	 */
+	@Override
 	public void drawView()
 	{
 

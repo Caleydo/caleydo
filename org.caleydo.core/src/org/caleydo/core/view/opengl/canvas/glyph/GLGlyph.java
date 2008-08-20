@@ -98,7 +98,7 @@ public class GLGlyph
 
 		ISet glyphData = null;
 
-		for (ISet tmpSet : alSetData)
+		for (ISet tmpSet : alSets)
 		{
 			if (tmpSet != null)
 			{

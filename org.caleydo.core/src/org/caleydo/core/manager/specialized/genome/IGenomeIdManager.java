@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import org.caleydo.core.data.mapping.EMappingDataType;
 import org.caleydo.core.data.mapping.EMappingType;
-import org.caleydo.core.manager.IManager;
 
 /**
  * Generic interface for genome ID managers.

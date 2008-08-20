@@ -75,12 +75,7 @@ public class CommandManager
 		arUndoRedoViews = new ArrayList<UndoRedoViewRep>();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.manager.CommandManager#addCommandListener(org.caleydo
-	 * .core.command.ICommandListener)
-	 */
+	@Override
 	public void addCommandListener(ICommandListener addCommandListener)
 	{
 
@@ -88,12 +83,7 @@ public class CommandManager
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.manager.CommandManager#removeCommandListener(org
-	 * .caleydo.core.command.ICommandListener)
-	 */
+	@Override
 	public boolean removeCommandListener(ICommandListener removeCommandListener)
 	{
 
@@ -101,12 +91,7 @@ public class CommandManager
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.data.manager.CommandManager#hasCommandListener(org.caleydo
-	 * .core.command.ICommandListener)
-	 */
+	@Override
 	public boolean hasCommandListener(ICommandListener hasCommandListener)
 	{
 
@@ -114,34 +99,21 @@ public class CommandManager
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.command.ICommandActionListener#handleCommand(org.caleydo
-	 * .core.command.ICommand)
-	 */
+	@Override
 	public void handleCommand(ICommand addCommand)
 	{
 		addCommand.doCommand();
 		vecCmdHandle.addElement(addCommand);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.command.ICommandActionListener#scheduleCommand(org.caleydo
-	 * .core.command.ICommand)
-	 */
+	@Override
 	public void scheduleCommand(ICommand addCommand)
 	{
 		vecCmdSchedule.addElement(addCommand);
 		addCommand.doCommand();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.AManager#registerItem(org.caleydo.core.data.IUniqueObject)
-	 */
+	@Override
 	public void registerItem(ICommand command)
 	{
 		if (command instanceof ICommandQueue)
@@ -154,11 +126,7 @@ public class CommandManager
 		hashItems.put(command.getID(), command);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.manager.GeneralManager#unregisterItem(int,
-	 * org.caleydo.core.data.manager.BaseManagerType)
-	 */
+	@Override
 	public void unregisterItem(int iItemId)
 	{
 		if (hashItems.containsKey(iItemId))
@@ -170,12 +138,7 @@ public class CommandManager
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.ICommandManager#createCommandByType(org.caleydo
-	 * .core.command.CommandType)
-	 */
+	@Override
 	public ICommand createCommandByType(final ECommandType cmdType)
 	{
 
@@ -191,12 +154,7 @@ public class CommandManager
 		return createdCommand;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.ICommandManager#createCommand(org.caleydo.core
-	 * .parser.parameter.IParameterHandler)
-	 */
+	@Override
 	public ICommand createCommand(final IParameterHandler phAttributes)
 	{
 
@@ -220,33 +178,21 @@ public class CommandManager
 		return createdCommand;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.ICommandManager#hasCommandQueueId(int)
-	 */
+	@Override
 	public boolean hasCommandQueueId(final int iCmdQueueId)
 	{
 
 		return hashCommandQueueId.containsKey(iCmdQueueId);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.ICommandManager#getCommandQueueByCmdQueueId(int)
-	 */
+	@Override
 	public ICommandQueue getCommandQueueByCmdQueueId(final int iCmdQueueId)
 	{
 
 		return hashCommandQueueId.get(iCmdQueueId);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.ICommandManager#createCommandQueue(java.lang
-	 * .String, java.lang.String, int, int, int, int)
-	 */
+	@Override
 	public ICommand createCommandQueue(final String sCmdType, final String sProcessType,
 			final int iCmdId, final int iCmdQueueId, final int sQueueThread,
 			final int sQueueThreadWait)
@@ -262,12 +208,7 @@ public class CommandManager
 		return newCmd;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.ICommandManager#runDoCommand(org.caleydo.core
-	 * .command.ICommand)
-	 */
+	@Override
 	public synchronized void runDoCommand(ICommand runCmd)
 	{
 
@@ -289,12 +230,7 @@ public class CommandManager
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.ICommandManager#runUndoCommand(org.caleydo.core
-	 * .command.ICommand)
-	 */
+	@Override
 	public synchronized void runUndoCommand(ICommand runCmd)
 	{
 
@@ -304,12 +240,7 @@ public class CommandManager
 		vecRedo.addElement(runCmd);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.ICommandManager#addUndoRedoViewRep(org.caleydo
-	 * .core.view.swt.undoredo.UndoRedoViewRep)
-	 */
+	@Override
 	public void addUndoRedoViewRep(UndoRedoViewRep undoRedoViewRep)
 	{
 
@@ -317,12 +248,7 @@ public class CommandManager
 		arUndoRedoViews.get(0).updateCommandList(vecUndo);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.ICommandManager#writeSerializedObjects(java.
-	 * lang.String)
-	 */
+	@Override
 	public void writeSerializedObjects(final String sFileName)
 	{
 		try
@@ -356,12 +282,7 @@ public class CommandManager
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.ICommandManager#readSerializedObjects(java.lang
-	 * .String)
-	 */
+	@Override
 	public void readSerializedObjects(final String sFileName)
 	{
 

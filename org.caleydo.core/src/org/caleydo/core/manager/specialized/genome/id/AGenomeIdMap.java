@@ -127,14 +127,7 @@ public abstract class AGenomeIdMap<K, V>
 		return reversedMap;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.data.genome.IGenomeIdMap#getCodeResolvedMap(
-	 * org.caleydo.core.manager.data.IGenomeIdManager,
-	 * org.caleydo.core.data.mapping.EMappingType,
-	 * org.caleydo.core.data.mapping.EMappingType)
-	 */
+	@Override
 	public final IGenomeIdMap getCodeResolvedMap(IGenomeIdManager genomeIdManager,
 			EMappingType genomeMappingLUT_1, EMappingType genomeMappingLUT_2,
 			EMappingDataType targetMappingDataType,
@@ -251,10 +244,7 @@ public abstract class AGenomeIdMap<K, V>
 	/* ----------------------------------------------- */
 	/* ----- Methods to overload in subclasses ----- */
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.event.IEventPublisherMap#getIntByInt(int)
-	 */
+	@Override
 	public int getIntByInt(int key)
 	{
 
@@ -262,11 +252,7 @@ public abstract class AGenomeIdMap<K, V>
 		return 0;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.event.IEventPublisherMap#getIntByString(Stringt)
-	 */
+	@Override
 	public int getIntByString(String key)
 	{
 
@@ -274,11 +260,7 @@ public abstract class AGenomeIdMap<K, V>
 		return 0;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.event.IEventPublisherMap#getStringByInt(int)
-	 */
+	@Override
 	public String getStringByInt(int key)
 	{
 
@@ -286,12 +268,7 @@ public abstract class AGenomeIdMap<K, V>
 		return "";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.event.IEventPublisherMap#getStringByString(Stringt
-	 * )
-	 */
+	@Override
 	public String getStringByString(String key)
 	{
 
@@ -299,11 +276,7 @@ public abstract class AGenomeIdMap<K, V>
 		return "";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.event.IEventPublisherMap#getIntByIntChecked(int)
-	 */
+	@Override
 	public int getIntByIntChecked(int key)
 	{
 
@@ -311,12 +284,7 @@ public abstract class AGenomeIdMap<K, V>
 		return 0;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.event.IEventPublisherMap#getIntByStringChecked
-	 * (Stringt)
-	 */
+	@Override
 	public int getIntByStringChecked(String key)
 	{
 
@@ -324,12 +292,7 @@ public abstract class AGenomeIdMap<K, V>
 		return 0;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.event.IEventPublisherMap#getStringByIntChecked
-	 * (int)
-	 */
+	@Override
 	public String getStringByIntChecked(int key)
 	{
 
@@ -337,12 +300,7 @@ public abstract class AGenomeIdMap<K, V>
 		return "";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.event.IEventPublisherMap#getStringByStringChecked
-	 * (Stringt)
-	 */
+	@Override
 	public String getStringByStringChecked(String key)
 	{
 

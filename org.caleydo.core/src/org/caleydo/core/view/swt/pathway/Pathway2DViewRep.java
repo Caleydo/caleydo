@@ -94,10 +94,7 @@ implements IView, IMediatorSender, IMediatorReceiver {
 
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.AViewRep#updateReceiver(java.lang.Object, org.caleydo.core.data.collection.ISet)
-	 */
+	@Override
 	public void updateReceiver(Object eventTrigger, 
 			ISet updatedSet) {
 		

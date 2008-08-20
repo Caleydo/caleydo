@@ -29,34 +29,21 @@ public final class ParameterKeyValueDataAndDefault<T>
 		hashKey2DefaultValue = new Hashtable<String, T>();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.parser.parameter.IParameterKeyValueDefaultvalue#getValue
-	 * (Stringt)
-	 */
+	@Override
 	public T getValue(final String key)
 	{
 
 		return hashKey2Generic.get(key);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.parser.parameter.IParameterKeyValueDefaultvalue#
-	 * getDefaultValue(Stringt)
-	 */
+	@Override
 	public T getDefaultValue(final String key)
 	{
 
 		return hashKey2DefaultValue.get(key);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.parser.parameter.IParameterKeyValueDefaultvalue#
-	 * getValueOrDefault(Stringt)
-	 */
+	@Override
 	public T getValueOrDefault(final String key)
 	{
 
@@ -70,12 +57,7 @@ public final class ParameterKeyValueDataAndDefault<T>
 		return buffer;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.parser.parameter.IParameterKeyValueDefaultvalue#setValue
-	 * (Stringt, T)
-	 */
+	@Override
 	public void setValue(final String key, final T value)
 	{
 
@@ -89,11 +71,7 @@ public final class ParameterKeyValueDataAndDefault<T>
 		hashKey2DefaultValue.put(key, defaultValue);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.parser.parameter.IParameterKeyValueDefaultvalue#
-	 * setDefaultValue(Stringt, T)
-	 */
+	@Override
 	public void setDefaultValue(final String key, final T value)
 	{
 
@@ -101,11 +79,7 @@ public final class ParameterKeyValueDataAndDefault<T>
 		hashKey2Generic.put(key, value);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.parser.parameter.IParameterKeyValueDefaultvalue#clear()
-	 */
+	@Override
 	public void clear()
 	{
 
@@ -116,33 +90,21 @@ public final class ParameterKeyValueDataAndDefault<T>
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.parser.parameter.IParameterKeyValueDefaultvalue#
-	 * containsValue(Stringt)
-	 */
+	@Override
 	public boolean containsValue(final String key)
 	{
 
 		return hashKey2Generic.containsKey(key);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.parser.parameter.IParameterKeyValueDefaultvalue#
-	 * containsDefaultValue(Stringt)
-	 */
+	@Override
 	public boolean containsDefaultValue(final String key)
 	{
 
 		return hashKey2DefaultValue.containsKey(key);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.parser.parameter.IParameterKeyValueDefaultvalue#
-	 * containsValueAndDefaultValue(Stringt)
-	 */
+	@Override
 	public boolean containsValueAndDefaultValue(final String key)
 	{
 
@@ -153,20 +115,14 @@ public final class ParameterKeyValueDataAndDefault<T>
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.parser.parameter.IParameterKeyValuePair#size()
-	 */
+	@Override
 	public int size()
 	{
 
 		return this.hashKey2Generic.size();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.parser.parameter.IParameterKeyValuePair#isEmpty()
-	 */
+	@Override
 	public boolean isEmpty()
 	{
 

@@ -4,7 +4,7 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
-import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParallelCoordinates;
+import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
 import org.caleydo.rcp.views.AGLViewPart;
 import org.caleydo.rcp.views.GLParCoordsView;
 import org.caleydo.rcp.views.GLPathwayView;
@@ -109,7 +109,7 @@ public class ApplicationWorkbenchAdvisor
 
 			try
 			{
-				if (tmpGLEventListener instanceof ParallelCoordinates)
+				if (tmpGLEventListener instanceof GLParallelCoordinates)
 				{
 					viewPart = (GLParCoordsView) PlatformUI.getWorkbench()
 							.getActiveWorkbenchWindow().getActivePage().showView(

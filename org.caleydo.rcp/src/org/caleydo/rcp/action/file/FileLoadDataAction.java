@@ -21,7 +21,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.HeatMap;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.dialog.file.FileLoadDataDialog;
 import org.caleydo.rcp.image.IImageKeys;
@@ -871,7 +871,7 @@ public class FileLoadDataAction
 		for (GLEventListener tmpGLEventListener : Application.generalManager
 				.getViewGLCanvasManager().getAllGLEventListeners())
 		{
-			if (tmpGLEventListener instanceof HeatMap
+			if (tmpGLEventListener instanceof GLHeatMap
 					|| tmpGLEventListener.getClass().getSuperclass().equals(
 							AStorageBasedView.class))
 			{

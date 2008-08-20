@@ -37,10 +37,7 @@ public class CmdFetchPathwayData
 		super(cmdType);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#doCommand()
-	 */
+	@Override
 	public void doCommand() throws CaleydoRuntimeException
 	{
 		BioCartaPathwayCacher bioCartaPathwayCacher = new BioCartaPathwayCacher(
@@ -61,20 +58,13 @@ public class CmdFetchPathwayData
 		commandManager.runDoCommand(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#undoCommand()
-	 */
+	@Override
 	public void undoCommand() throws CaleydoRuntimeException
 	{
 		commandManager.runUndoCommand(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttr#
-	 * setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
-	 */
+	@Override
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
 		super.setParameterHandler(parameterHandler);

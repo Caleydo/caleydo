@@ -35,11 +35,7 @@ public class LookupTableHashMapLoader
 		super(generalManager, sFileName, genomeIdType, lookupTableLoaderProxy);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader#
-	 * loadDataParseFileLUT(java.io.BufferedReader, int)
-	 */
+	@Override
 	public int loadDataParseFileLUT(BufferedReader brFile, int iNumberOfLinesInFile)
 			throws IOException
 	{

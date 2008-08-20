@@ -52,21 +52,13 @@ public abstract class AGraph
 		this.iGraphId = id;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.util.graph.IGraph#getTypeId()
-	 */
+	@Override
 	public final int getId()
 	{
 		return iGraphId;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.util.graph.IGraph#hasGraphProperty(org.caleydo.util.graph
-	 * .EGraphProperty)
-	 */
+	@Override
 	public final boolean hasGraphProperty(EGraphProperty test)
 	{
 		return hashGraphProperties.containsKey(test);
@@ -82,10 +74,7 @@ public abstract class AGraph
 		hashGraphProperties.remove(prop);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.util.graph.IGraph#setTypeId(int)
-	 */
+	@Override
 	public final void setId(int type)
 	{
 		if (type >= 0)

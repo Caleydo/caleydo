@@ -1,7 +1,9 @@
 package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec3f;
+import java.awt.Rectangle;
 import java.util.ArrayList;
+import java.util.Iterator;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
@@ -14,7 +16,6 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.view.camera.IViewCamera;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.camera.ViewCameraBase;
-import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -23,6 +24,7 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
@@ -47,7 +49,7 @@ public abstract class AGLEventListener
 	/**
 	 * List for all ISet objects providing data for this ViewRep.
 	 */
-	protected ArrayList<ISet> alSetData;
+	protected ArrayList<ISet> alSets;
 
 	protected transient ISetManager setManager;
 
@@ -71,6 +73,9 @@ public abstract class AGLEventListener
 	
 	protected EDetailLevel detailLevel = EDetailLevel.HIGH;
 
+	protected boolean bIsDisplayListDirtyLocal = true;
+	protected boolean bIsDisplayListDirtyRemote = true;
+
 	/**
 	 * Constructor.
 	 */
@@ -82,7 +87,7 @@ public abstract class AGLEventListener
 
 		generalManager = GeneralManager.get();
 
-		alSetData = new ArrayList<ISet>();
+		alSets = new ArrayList<ISet>();
 		// alSelection = new ArrayList<Selection>();
 
 		setManager = generalManager.getSetManager();
@@ -115,12 +120,7 @@ public abstract class AGLEventListener
 		pickingManager = generalManager.getViewGLCanvasManager().getPickingManager();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * javax.media.opengl.GLEventListener#init(javax.media.opengl.GLAutoDrawable
-	 * )
-	 */
+	@Override
 	public void init(GLAutoDrawable drawable)
 	{
 
@@ -139,12 +139,7 @@ public abstract class AGLEventListener
 		initLocal(drawable.getGL());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * javax.media.opengl.GLEventListener#display(javax.media.opengl.GLAutoDrawable
-	 * )
-	 */
+	@Override
 	public void display(GLAutoDrawable drawable)
 	{
 
@@ -169,12 +164,7 @@ public abstract class AGLEventListener
 				iUniqueID, drawable);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * javax.media.opengl.GLEventListener#displayChanged(javax.media.opengl.
-	 * GLAutoDrawable, boolean, boolean)
-	 */
+	@Override
 	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
 			boolean deviceChanged)
 	{
@@ -183,24 +173,26 @@ public abstract class AGLEventListener
 				.displayChanged(drawable, modeChanged, deviceChanged);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * javax.media.opengl.GLEventListener#reshape(javax.media.opengl.GLAutoDrawable
-	 * , int, int, int, int)
-	 */
+	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height)
 	{
+		if (remoteRenderingGLCanvas != null || this instanceof GLRemoteRendering)
+			viewFrustum.considerAspectRatio(true);
+		else
+		{
+
+			Rectangle frame = parentGLCanvas.getBounds();
+			viewFrustum.setLeft(0);
+			viewFrustum.setRight(8);// frame.width / 100);
+			viewFrustum.setBottom(0);
+			float value = (float) frame.height / (float) frame.width * 8.0f;
+			viewFrustum.setTop(value);
+
+			bIsDisplayListDirtyLocal = true;
+			bIsDisplayListDirtyRemote = true;
+		}
 
 		GL gl = drawable.getGL();
-
-		// generalManager.logMsg(
-		// "\n---------------------------------------------------"+
-		// "\nGLEventListener with ID " +iUniqueID+ " RESHAPE GL" +
-		// "\nGL_VENDOR: " + gl.glGetString(GL.GL_VENDOR)+
-		// "\nGL_RENDERER: " + gl.glGetString(GL.GL_RENDERER) +
-		// "\nGL_VERSION: " + gl.glGetString(GL.GL_VERSION),
-		// LoggerType.STATUS);
 
 		fAspectRatio = (float) height / (float) width;
 
@@ -208,55 +200,43 @@ public abstract class AGLEventListener
 		gl.glMatrixMode(GL.GL_PROJECTION);
 		gl.glLoadIdentity();
 
-		float fLeft = viewFrustum.getLeft();
-		float fRight = viewFrustum.getRight();
-		float fBottom = viewFrustum.getBottom();
-		float fTop = viewFrustum.getTop();
+		viewFrustum.setProjectionMatrix(gl, fAspectRatio);
 
-//		if (remoteRenderingGLCanvas != null || this instanceof GLCanvasRemoteRendering3D)
-//		{
-			
-			if (fAspectRatio < 1.0)
-			{
-				fLeft /= fAspectRatio;
-				fRight /= fAspectRatio;
-			}
-			else
-			{
-				fBottom *= fAspectRatio;
-				fTop *= fAspectRatio;
-			}
-//		}
-		
-		if (viewFrustum.getProjectionMode().equals(ProjectionMode.ORTHOGRAPHIC))
-		{
-			gl.glOrtho(fLeft, fRight, fBottom, fTop, viewFrustum.getNear(), viewFrustum
-					.getFar());
-		}
-		else
-		{
-			gl.glFrustum(fLeft, fRight, fBottom, fTop, viewFrustum.getNear(), viewFrustum
-					.getFar());
-		}
-
-		gl.glMatrixMode(GL.GL_MODELVIEW);
-
-		// // Just for testing
-		// float[] test =
-		// GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(
-		// gl, width, height);
-		// System.out.println("Object space coordinates: " +test[0] + "," +
-		// test[1] + "," + test[2]);
-		// viewFrustum.setLeft(-test[0] / 2);
-		// viewFrustum.setRight(test[0] / 2);
-		// viewFrustum.setBottom(-test[1] / 2);
-		// viewFrustum.setTop(test[1] / 2);
 	}
 
 	public final EManagedObjectType getBaseType()
 	{
 
 		return null;
+	}
+
+	/**
+	 * This method clips everything outside the frustum
+	 */
+	protected void clipToFrustum(GL gl)
+	{
+		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+		gl.glColorMask(false, false, false, false);
+		gl.glClearStencil(0); // Clear The Stencil Buffer To 0
+		gl.glEnable(GL.GL_DEPTH_TEST); // Enables Depth Testing
+		gl.glDepthFunc(GL.GL_LEQUAL); // The Type Of Depth Testing To Do
+		gl.glEnable(GL.GL_STENCIL_TEST);
+		gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);
+		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
+		gl.glDisable(GL.GL_DEPTH_TEST);
+
+		// Clip region that renders in stencil buffer (in this case the frustum)
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), -0.01f);
+		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(), -0.01f);
+		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), -0.01f);
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), -0.01f);
+		gl.glEnd();
+
+		gl.glEnable(GL.GL_DEPTH_TEST);
+		gl.glColorMask(true, true, true, true);
+		gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
+		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 	}
 
 	/**
@@ -272,7 +252,7 @@ public abstract class AGLEventListener
 	 * 
 	 * @param gl
 	 */
-	public abstract void initLocal(final GL gl);
+	protected abstract void initLocal(final GL gl);
 
 	/**
 	 * Initialization for gl called by a managing view Has to call init
@@ -298,7 +278,7 @@ public abstract class AGLEventListener
 	 * 
 	 * @param gl
 	 */
-	public abstract void displayLocal(final GL gl);
+	protected abstract void displayLocal(final GL gl);
 
 	/**
 	 * Intended for external use when another instance of a view manages the
@@ -311,35 +291,31 @@ public abstract class AGLEventListener
 
 	public final void addSet(ISet set)
 	{
-
-		alSetData.add(set);
+		alSets.add(set);
 	}
 
 	public final void addSet(int iSetID)
 	{
-
-		alSetData.add((ISet) generalManager.getSetManager().getItem(iSetID));
+		alSets.add((ISet) generalManager.getSetManager().getItem(iSetID));
 	}
 
-	public final void removeAllSetIdByType(ESetType setType)
+	public void removeSets(ESetType setType)
 	{
-
+		Iterator<ISet> iter = alSets.iterator();
+		while(iter.hasNext())
+		{
+			if(iter.next().getSetType() == setType)
+				iter.remove();
+		}
 	}
-
-	public final void removeSetId(int[] iSet)
+	
+	public void clearSets()
 	{
-
-	}
-
-	public final boolean hasSetId(int iSetId)
-	{
-
-		return false;
+		alSets.clear();
 	}
 
 	public final GLCaleydoCanvas getParentGLCanvas()
 	{
-
 		return parentGLCanvas;
 	}
 

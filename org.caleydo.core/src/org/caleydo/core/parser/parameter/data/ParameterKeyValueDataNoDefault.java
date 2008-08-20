@@ -37,12 +37,7 @@ public final class ParameterKeyValueDataNoDefault<T>
 		hashKey2Generic = new Hashtable<String, T>();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.parser.parameter.IParameterKeyValueDefaultvalue#getValue
-	 * (Stringt)
-	 */
+	@Override
 	public T getValue(final String key)
 	{
 
@@ -75,12 +70,7 @@ public final class ParameterKeyValueDataNoDefault<T>
 		return hashKey2Generic.get(key);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.parser.parameter.IParameterKeyValueDefaultvalue#setValue
-	 * (Stringt, T)
-	 */
+	@Override
 	public void setValue(final String key, final T value)
 	{
 
@@ -128,11 +118,7 @@ public final class ParameterKeyValueDataNoDefault<T>
 		hashKey2Generic.put(key, value);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.parser.parameter.IParameterKeyValueDefaultvalue#clear()
-	 */
+	@Override
 	public void clear()
 	{
 
@@ -143,11 +129,7 @@ public final class ParameterKeyValueDataNoDefault<T>
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.parser.parameter.IParameterKeyValueDefaultvalue#
-	 * containsValue(Stringt)
-	 */
+	@Override
 	public boolean containsValue(final String key)
 	{
 
@@ -180,20 +162,14 @@ public final class ParameterKeyValueDataNoDefault<T>
 		return hashKey2Generic.containsKey(key);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.parser.parameter.IParameterKeyValuePair#size()
-	 */
+	@Override
 	public int size()
 	{
 
 		return this.hashKey2Generic.size();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.parser.parameter.IParameterKeyValuePair#isEmpty()
-	 */
+	@Override
 	public boolean isEmpty()
 	{
 

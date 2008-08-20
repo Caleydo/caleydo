@@ -1,6 +1,5 @@
 package org.caleydo.core.data.collection;
 
-import org.caleydo.core.data.selection.VirtualArray;
 
 /**
  * Interface for objects with labels and a cache.

@@ -56,39 +56,25 @@ public class GraphVisitorGetLinkedGraphItems
 		return resultBuffer;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.util.graph.algorithm.IGraphVisitorSearch#init()
-	 */
+	@Override
 	public final boolean init()
 	{
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.util.graph.algorithm.IGraphVisitorSearch#search()
-	 */
+	@Override
 	public final void search()
 	{
 		/** algorithm is done inside method getSearchResult() */
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.util.graph.algorithm.IGraphVisitorSearch#
-	 * wipeTemporalDataFromGraph()
-	 */
+	@Override
 	public final void wipeTemporalDataFromGraph()
 	{
 		/** not temporal data was created inside the graphs. */
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.util.graph.algorithm.IGraphVisitorSearch#getSearchResult()
-	 */
+	@Override
 	public List<IGraphItem> getSearchResult()
 	{
 
@@ -102,11 +88,7 @@ public class GraphVisitorGetLinkedGraphItems
 		return null;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.util.graph.algorithm.IGraphVisitorSearch#
-	 * getSearchResultDepthOrdered()
-	 */
+	@Override
 	public List<List<IGraphItem>> getSearchResultDepthOrdered()
 	{
 

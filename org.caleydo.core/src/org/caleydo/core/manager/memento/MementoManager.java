@@ -6,7 +6,6 @@ import java.util.Hashtable;
 import java.util.Iterator;
 import java.util.Vector;
 import org.caleydo.core.command.memento.IMemento;
-import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IMementoManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
@@ -39,10 +38,7 @@ public class MementoManager
 		iVecMementoStorageSize = 0;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IMementoManager#pushMemento(org.caleydo.core.command.memento.IMemento)
-	 */
+	@Override
 	public final int pushMemento(final IMemento addMemento)
 	{
 		//TODO: review when implementing ID management
@@ -63,10 +59,7 @@ public class MementoManager
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see prometheus.command.memento.manager.MementoManager#getMemento(int)
-	 */
+	@Override
 	public IMemento getMemento(int iMementoId)
 	{
 
@@ -107,23 +100,16 @@ public class MementoManager
 		return vecMemento.contains(pullMemento);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see prometheus.command.memento.manager.MementoManager#isMementoId(int)
-	 */
+	@Override
 	public boolean isMementoId(int iMementoId)
 	{
 
 		return this.hashMementoId2Index.contains(iMementoId);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see prometheus.data.manager.GeneralManagerInterface#size()
-	 */
+	@Override
 	public final int size()
 	{
-
 		return vecMemento.size();
 	}
 
@@ -172,10 +158,7 @@ public class MementoManager
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see prometheus.data.manager.MementoManager#clearAllMementos()
-	 */
+	@Override
 	public void clearAllMementos()
 	{
 

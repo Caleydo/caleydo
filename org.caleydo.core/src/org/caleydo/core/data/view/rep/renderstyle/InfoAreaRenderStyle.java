@@ -29,7 +29,7 @@ public class InfoAreaRenderStyle
 	public float getSpacing()
 	{
 
-		return SPACING * fScaling;
+		return SPACING * getScaling();
 	}
 
 }

@@ -3,13 +3,13 @@
  */
 package org.caleydo.core.parser.xml.sax.handler.recursion;
 
-import org.xml.sax.Attributes;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.xml.sax.Attributes;
 
 /**
  * @author Michael Kalkusch

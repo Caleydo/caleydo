@@ -36,19 +36,13 @@ public class FileNewProjectAction
 		this.parentComposite = parentComposite;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.action.Action#run()
-	 */
+	@Override
 	public void run()
 	{
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.actions.ActionFactory.IWorkbenchAction#dispose()
-	 */
+	@Override
 	public void dispose()
 	{
 

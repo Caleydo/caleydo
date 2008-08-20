@@ -105,4 +105,11 @@ public interface IView
 	 * @return
 	 */
 	public void setViewType(ViewType viewType);
+
+	/**
+	 * Set the label of the view
+	 * 
+	 * @param label the label
+	 */
+	void setLabel(String label);
 }

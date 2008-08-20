@@ -2,6 +2,7 @@ package org.caleydo.core.parser.xml.sax.handler;
 
 import org.xml.sax.ContentHandler;
 import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
 
 /**
  * Put ContentHandler and EntityResolver into one interface.

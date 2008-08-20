@@ -3,7 +3,6 @@ package org.caleydo.core.command.memento.sample;
 import org.caleydo.core.command.memento.IGeneralMemento;
 import org.caleydo.core.command.memento.IMemento;
 import org.caleydo.core.command.memento.IMementoCreator;
-import org.caleydo.core.command.memento.sample.SampleMementoState;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
@@ -35,10 +34,7 @@ public class SampleObjectShowUsageOfMemento
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see prometheus.command.memento.MementoCreator#createMemento()
-	 */
+	@Override
 	public IMemento createMemento()
 	{
 
@@ -63,12 +59,7 @@ public class SampleObjectShowUsageOfMemento
 		return myMemento; // cast to super class "IMemento"
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * prometheus.command.memento.MementoCreator#setMemento(prometheus.command
-	 * .memento.Memento)
-	 */
+	@Override
 	public void setMemento(IMemento setMemento) throws CaleydoRuntimeException
 	{
 

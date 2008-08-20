@@ -62,20 +62,14 @@ public class SampleMementoState
 		return fData;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Object#toString()
-	 */
+	@Override
 	public String toString()
 	{
 
 		return new String("{data=" + iData + " postData=" + fData + "}");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see prometheus.command.memento.MementoState#toStringRecursive()
-	 */
+	@Override
 	public String toStringRecursive()
 	{
 

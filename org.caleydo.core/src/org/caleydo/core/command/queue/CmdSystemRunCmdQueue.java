@@ -26,10 +26,7 @@ public class CmdSystemRunCmdQueue
 		this.iCommandQueueId = iCommandQueueId;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#doCommand()
-	 */
+	@Override
 	public void doCommand() throws CaleydoRuntimeException
 	{
 
@@ -45,10 +42,7 @@ public class CmdSystemRunCmdQueue
 		cmdQueue.doCommand();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#undoCommand()
-	 */
+	@Override
 	public void undoCommand() throws CaleydoRuntimeException
 	{
 
@@ -64,10 +58,7 @@ public class CmdSystemRunCmdQueue
 		cmdQueue.doCommand();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.base.ACommand#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
-	 */
+	@Override
 	public void setParameterHandler(IParameterHandler phHandler)
 	{
 		// not yet implemented

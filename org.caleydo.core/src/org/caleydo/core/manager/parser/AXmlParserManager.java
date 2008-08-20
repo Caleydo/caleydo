@@ -143,11 +143,7 @@ public abstract class AXmlParserManager
 		return true;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.xml.parser.manager.IXmlParserManager#
-	 * registerAndInitSaxHandler(IXmlParserHandler)
-	 */
+	@Override
 	public final boolean registerAndInitSaxHandler(IXmlParserHandler handler)
 	{
 

@@ -133,6 +133,8 @@ public interface IGraph
 	 */
 	public void setGraphProperty(final EGraphProperty prop, final boolean value);
 
+	List<IGraph> getAllGraphByType(EGraphItemHierarchy type);
+
 	/* --- define a group of graphs by assigning the same Type Id. --- */
 
 }

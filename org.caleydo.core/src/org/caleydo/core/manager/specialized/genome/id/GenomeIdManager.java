@@ -214,13 +214,7 @@ public class GenomeIdManager
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.data.IGenomeIdManager#buildLUT_startEditingSetTypes
-	 * (org.caleydo.core.data.mapping.EIDType,
-	 * org.caleydo.core.data.mapping.EIDType)
-	 */
+	@Override
 	public boolean buildLUT_startEditing(final EMappingType type)
 	{
 
@@ -253,11 +247,7 @@ public class GenomeIdManager
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.data.IGenomeIdManager#buildLUT_stopEditing()
-	 */
+	@Override
 	public boolean buildLUT_stopEditing(final EMappingType type)
 	{
 
@@ -395,12 +385,7 @@ public class GenomeIdManager
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.data.IGenomeIdManager#removeMapByType(org.caleydo
-	 * .core.data.mapping.EGenomeMappingType)
-	 */
+	@Override
 	public void removeMapByType(final EMappingType codingLutType)
 	{
 
@@ -612,12 +597,7 @@ public class GenomeIdManager
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.manager.specialized.genome.IGenomeIdManager#
-	 * getAllValuesByGenomeIdTypeHashMap
-	 * (org.caleydo.core.data.mapping.EMappingType)
-	 */
+	@Override
 	public HashMap<Integer, Integer> getAllValuesByGenomeIdTypeHashMap(EMappingType type)
 	{
 

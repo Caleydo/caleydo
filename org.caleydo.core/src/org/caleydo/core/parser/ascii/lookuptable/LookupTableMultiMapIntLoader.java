@@ -7,8 +7,6 @@ import java.util.StringTokenizer;
 import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.parser.ascii.lookuptable.ALookupTableLoader;
-import org.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader;
 
 /**
  * Multi hash map lookup table loader.
@@ -35,11 +33,7 @@ public class LookupTableMultiMapIntLoader
 		super(setGeneralManager, setFileName, genomeIdType, setLookupTableLoaderProxy);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader#
-	 * loadDataParseFileLUT(java.io.BufferedReader, int)
-	 */
+	@Override
 	public int loadDataParseFileLUT(BufferedReader brFile, final int iNumberOfLinesInFile)
 			throws IOException
 	{

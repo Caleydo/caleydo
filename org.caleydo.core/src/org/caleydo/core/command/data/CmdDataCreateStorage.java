@@ -3,7 +3,6 @@ package org.caleydo.core.command.data;
 import java.util.logging.Level;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
-import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -31,10 +30,7 @@ public class CmdDataCreateStorage
 		super(cmdType);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#doCommand()
-	 */
+	@Override
 	public void doCommand() throws CaleydoRuntimeException
 	{
 		IStorageManager storageManager = generalManager.getStorageManager();
@@ -47,19 +43,13 @@ public class CmdDataCreateStorage
 		commandManager.runDoCommand(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#undoCommand()
-	 */
+	@Override
 	public void undoCommand() throws CaleydoRuntimeException
 	{
 		commandManager.runUndoCommand(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabel#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
-	 */
+	@Override
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
 		super.setParameterHandler(parameterHandler);

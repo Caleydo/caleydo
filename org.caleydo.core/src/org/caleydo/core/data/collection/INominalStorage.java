@@ -2,7 +2,6 @@ package org.caleydo.core.data.collection;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import org.caleydo.core.data.collection.storage.EDataRepresentation;
 
 /**
  * The INominalStorage interface is an extension of the IStorage interface. It

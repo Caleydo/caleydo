@@ -1,6 +1,6 @@
 package org.caleydo.core.data.view.rep.renderstyle.layout;
 
-import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
+import org.caleydo.core.data.view.camera.EProjectionMode;
 import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.EHierarchyLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
@@ -38,7 +38,7 @@ public abstract class ARemoteViewLayoutRenderStyle
 
 	protected RemoteHierarchyLayer memoLayer;
 
-	protected ProjectionMode projectionMode;
+	protected EProjectionMode eProjectionMode;
 
 	protected float fScalingFactorUnderInteractionLayer;
 
@@ -152,10 +152,10 @@ public abstract class ARemoteViewLayoutRenderStyle
 		return memoLayer;
 	}
 
-	public ProjectionMode getProjectionMode()
+	public EProjectionMode getProjectionMode()
 	{
 
-		return projectionMode;
+		return eProjectionMode;
 	}
 
 	public float getTrashCanXPos()

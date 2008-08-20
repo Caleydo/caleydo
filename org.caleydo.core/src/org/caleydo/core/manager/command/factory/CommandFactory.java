@@ -2,7 +2,6 @@ package org.caleydo.core.manager.command.factory;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.ICommand;
-import org.caleydo.core.command.data.CmdDataCreateSelection;
 import org.caleydo.core.command.data.CmdDataCreateSet;
 import org.caleydo.core.command.data.CmdDataCreateStorage;
 import org.caleydo.core.command.data.CmdDataCreateVirtualArray;
@@ -69,10 +68,7 @@ public class CommandFactory
 		this.commandManager = generalManager.getCommandManager();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.command.factory.ICommandFactory#createCommandByType(org.caleydo.core.command.CommandType)
-	 */
+	@Override
 	public ICommand createCommandByType(final ECommandType cmdType)
 	{
 		ICommand createdCommand = null;
@@ -294,12 +290,7 @@ public class CommandFactory
 		return createdCommand;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.command.factory.ICommandFactory#createCommandQueue
-	 * (java.lang.String, java.lang.String, int, int, int, int)
-	 */
+	@Override
 	public ICommand createCommandQueue(final String sCmdType, final String sProcessType,
 			final int iCmdId, final int iCmdQueueId, final int sQueueThread,
 			final int sQueueThreadWait)

@@ -7,6 +7,7 @@ import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.picking.ESelectionMode;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 
 /**
  * <p>

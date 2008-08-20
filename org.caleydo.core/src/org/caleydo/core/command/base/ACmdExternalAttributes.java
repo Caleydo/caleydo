@@ -44,10 +44,7 @@ public abstract class ACmdExternalAttributes
 		super(cmdType);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.base.ACommand#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
-	 */
+	@Override
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
 		super.setParameterHandler(parameterHandler);

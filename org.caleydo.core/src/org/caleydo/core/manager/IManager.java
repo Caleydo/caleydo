@@ -2,6 +2,7 @@ package org.caleydo.core.manager;
 
 import java.util.Collection;
 import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Interface for all managers that allow classes to access managed objects.

@@ -10,7 +10,6 @@ import org.caleydo.core.parser.parameter.ParameterHandler;
 import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.caleydo.core.parser.xml.sax.handler.SXmlParserHandler;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

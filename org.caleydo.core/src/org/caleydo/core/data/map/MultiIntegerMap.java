@@ -6,7 +6,6 @@ package org.caleydo.core.data.map;
 // import java.util.ArrayList;
 // import java.util.Map;
 
-import org.caleydo.core.data.map.GenericMultiMap;
 
 /**
  * This is simply a Map with slightly different semantics. Instead of returning

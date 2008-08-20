@@ -103,4 +103,11 @@ public interface IMementoManager
 	 */
 	public abstract void clearAllMementos();
 
+	/**
+	 * Returns the number of elements managed
+	 * 
+	 * @return the number of elements
+	 */
+	int size();
+
 }

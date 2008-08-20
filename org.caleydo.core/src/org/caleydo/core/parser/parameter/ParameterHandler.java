@@ -58,11 +58,7 @@ public final class ParameterHandler
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.parser.parameter.IParameterHandler#getValue(Stringt)
-	 */
+	@Override
 	public Object getValue(final String key)
 	{
 
@@ -85,22 +81,14 @@ public final class ParameterHandler
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.parser.parameter.IParameterHandler#getValueType(Stringt)
-	 */
+	@Override
 	public ParameterHandlerType getValueType(final String key)
 	{
 
 		return hashPrimarySwitch.get(key);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.parser.parameter.IParameterHandler#getValueInt(Stringt)
-	 */
+	@Override
 	public int getValueInt(final String key)
 	{
 
@@ -115,11 +103,7 @@ public final class ParameterHandler
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.parser.parameter.IParameterHandler#getValueInt(Stringt)
-	 */
+	@Override
 	public Vec3f getValueVec3f(final String key)
 	{
 
@@ -140,11 +124,7 @@ public final class ParameterHandler
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.parser.parameter.IParameterHandler#getValueInt(Stringt)
-	 */
+	@Override
 	public Vec4f getValueVec4f(final String key)
 	{
 
@@ -166,48 +146,28 @@ public final class ParameterHandler
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.parser.parameter.IParameterHandler#getValueFloat(Stringt
-	 * )
-	 */
+	@Override
 	public float getValueFloat(final String key)
 	{
 
 		return hashKey2Float.getValue(key);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.parser.parameter.IParameterHandler#getValueString(Stringt
-	 * )
-	 */
+	@Override
 	public String getValueString(final String key)
 	{
 
 		return hashKey2String.getValue(key);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.parser.parameter.IParameterHandler#getValueBoolean(Stringt
-	 * )
-	 */
+	@Override
 	public boolean getValueBoolean(final String key)
 	{
 
 		return hashKey2Boolean.getValue(key);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.parser.parameter.IParameterHandler#setValue(Stringt,
-	 * Stringt)
-	 */
+	@Override
 	public void setValue(final String key, final String value)
 	{
 
@@ -251,13 +211,7 @@ public final class ParameterHandler
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.parser.parameter.IParameterHandler#setValueAndType(Stringt
-	 * , Stringt,
-	 * org.caleydo.core.parser.parameter.ParameterHandler.ParameterHandlerType)
-	 */
+	@Override
 	public void setValueAndType(final String key, final String value,
 			final ParameterHandlerType type)
 	{
@@ -296,13 +250,7 @@ public final class ParameterHandler
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.parser.parameter.IParameterHandler#setValueAndType(Stringt
-	 * , Stringt,
-	 * org.caleydo.core.parser.parameter.ParameterHandler.ParameterHandlerType)
-	 */
+	@Override
 	public void setValueAndTypeAndDefault(final String key, final String value,
 			final ParameterHandlerType type, final String defaultValue)
 	{
@@ -421,13 +369,7 @@ public final class ParameterHandler
 		hashPrimarySwitch.put(key, type);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.parser.parameter.IParameterHandler#setDefaultValue(Stringt
-	 * , Stringt,
-	 * org.caleydo.core.parser.parameter.ParameterHandler.ParameterHandlerType)
-	 */
+	@Override
 	public void setDefaultValueAnyType(final String key, final String value,
 			final ParameterHandlerType type)
 	{
@@ -466,13 +408,7 @@ public final class ParameterHandler
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.parser.parameter.IParameterHandler#setDefaultType(Stringt
-	 * ,
-	 * org.caleydo.core.parser.parameter.ParameterHandler.ParameterHandlerType)
-	 */
+	@Override
 	public void setDefaultType(final String key, final ParameterHandlerType type)
 	{
 

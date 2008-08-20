@@ -11,7 +11,6 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
-import org.eclipse.core.internal.resources.AliasManager.AddToCollectionDoit;
 
 /**
  * <p>
@@ -101,6 +100,14 @@ public class GenericSelectionManager
 		private EIDType internalIDType = null;
 		private EIDType externalIDType = null;
 
+		/**
+		 * Constructor for Builder. Pass the internal ID type, of the type
+		 * {@link EIDType}. The internal ID type is the type of ID the view is
+		 * working with internally, which can be of a different to a type that
+		 * is used for external communication
+		 * 
+		 * @param internalIDType the internal ID type
+		 */
 		public Builder(EIDType internalIDType)
 		{
 			this.internalIDType = internalIDType;
@@ -136,6 +143,13 @@ public class GenericSelectionManager
 			return this;
 		}
 
+		/**
+		 * Pass the external ID type, of the type {@link EIDType}. The external
+		 * ID type is the type of ID the view is using for external
+		 * communication
+		 * 
+		 * @param externalIDType the type of the external ID
+		 */
 		public Builder externalIDType(EIDType externalIDType)
 		{
 			this.externalIDType = externalIDType;
@@ -256,6 +270,7 @@ public class GenericSelectionManager
 			hashSelectionTypes.put(eType, new HashMap<Integer, Boolean>());
 		}
 		iNumberOfElements = 0;
+		virtualArray = null;		
 		selectionDelta = new SelectionDelta(internalIDType);
 	}
 

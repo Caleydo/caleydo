@@ -1,11 +1,11 @@
 package org.caleydo.core.util.texture;
 
-import com.sun.opengl.util.BufferUtil;
-import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.PixelGrabber;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import javax.imageio.ImageIO;
+import com.sun.opengl.util.BufferUtil;
 
 /**
  * Image loading class that converts BufferedImages into a data structure that

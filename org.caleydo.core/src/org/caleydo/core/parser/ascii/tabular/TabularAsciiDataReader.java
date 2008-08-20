@@ -125,10 +125,6 @@ public class TabularAsciiDataReader
 					iStorageId));
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.parser.ascii.IParserObject#destroy()
-	 */
 	public final void destroy()
 	{
 
@@ -163,12 +159,6 @@ public class TabularAsciiDataReader
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.parser.ascii.microarray.AMicroArrayLoader#loadDataParseFile
-	 * (java.io.BufferedReader, int)
-	 */
 	@Override
 	protected void loadDataParseFile(BufferedReader brFile, final int iNumberOfLinesInFile)
 			throws IOException
@@ -259,10 +249,6 @@ public class TabularAsciiDataReader
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.parser.ascii.AbstractLoader#setArraysToStorages()
-	 */
 	@Override
 	protected void setArraysToStorages()
 	{

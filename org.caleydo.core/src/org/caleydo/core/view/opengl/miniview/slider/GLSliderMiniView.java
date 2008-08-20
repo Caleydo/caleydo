@@ -336,9 +336,6 @@ public class GLSliderMiniView
 		gl.glPopMatrix();
 	}
 
-	/*
-	 * (non-Javadoc) This are the horizontal lines (splicer)
-	 */
 	private void drawSeperator(GL gl)
 	{
 		for (SliderSeperator Seperator : alSeperator)
@@ -442,9 +439,6 @@ public class GLSliderMiniView
 
 	}
 
-	/*
-	 * (non-Javadoc) This are the spaces between the horizontal lines
-	 */
 	private void drawSeperatorBond(GL gl)
 	{
 		for (SliderSeperatorBond bond : alSeperatorBonds)

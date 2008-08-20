@@ -48,20 +48,14 @@ public class CmdSetPathwayDatabasePath
 		commandManager.runDoCommand(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#undoCommand()
-	 */
+	@Override
 	public void undoCommand() throws CaleydoRuntimeException
 	{
 
 		commandManager.runUndoCommand(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
-	 */
+	@Override
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
 		assert parameterHandler != null : "can not handle null object!";

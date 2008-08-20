@@ -2,7 +2,6 @@ package org.caleydo.core.command.system;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACommand;
-import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
@@ -22,19 +21,13 @@ public class CmdSystemExit
 		super(cmdType);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#doCommand()
-	 */
+	@Override
 	public void doCommand() throws CaleydoRuntimeException
 	{
 		System.exit(0);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#undoCommand()
-	 */
+	@Override
 	public void undoCommand() throws CaleydoRuntimeException
 	{
 		// no undo of system shutdown!

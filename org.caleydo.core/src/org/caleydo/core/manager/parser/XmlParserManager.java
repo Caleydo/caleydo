@@ -110,11 +110,7 @@ public class XmlParserManager
 		} // else .. if ( currentHandler != null )
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.xml.sax.ContentHandler#startElement(Stringt, Stringt, Stringt,
-	 * org.xml.sax.Attributes)
-	 */
+	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attrib)
 			throws SAXException
 	{
@@ -215,10 +211,7 @@ public class XmlParserManager
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
-	 */
+	@Override
 	public void endElement(String uri, String localName, String qName) throws SAXException
 	{
 
@@ -247,10 +240,7 @@ public class XmlParserManager
 		assert false : "should not be called but overloaded by derived class.";
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.xml.sax.ContentHandler#characters(char[], int, int)
-	 */
+	@Override
 	public void characters(char[] ch, int start, int length) throws SAXException
 	{
 
@@ -340,12 +330,7 @@ public class XmlParserManager
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.IXmlParserManager#parseXmlFileByName(java.lang
-	 * .String)
-	 */
+	@Override
 	public boolean parseXmlFileByName(final String filename)
 	{
 

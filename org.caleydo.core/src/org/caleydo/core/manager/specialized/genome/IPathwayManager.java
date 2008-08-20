@@ -5,7 +5,6 @@ import org.caleydo.core.data.view.rep.jgraph.PathwayImageMap;
 import org.caleydo.core.manager.IManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.specialized.genome.pathway.PathwayDatabase;
-import org.caleydo.util.graph.core.Graph;
 
 /**
  * Interface for creating and accessing pathways.

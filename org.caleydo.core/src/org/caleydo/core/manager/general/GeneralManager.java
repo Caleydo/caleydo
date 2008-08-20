@@ -92,10 +92,7 @@ public class GeneralManager
 
 	private Logger logger;
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#initManager()
-	 */
+	@Override
 	public void init(boolean bIsStandalone)
 	{
 		this.bIsStandalone = bIsStandalone;
@@ -187,37 +184,25 @@ public class GeneralManager
 		logger = Logger.getLogger("Caleydo Log");
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#getLogger()
-	 */
+	@Override
 	public final Logger getLogger()
 	{
 		return logger;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#getMementoManager()
-	 */
+	@Override
 	public IMementoManager getMementoManager()
 	{
 		return mementoManager;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#getStorageManager()
-	 */
+	@Override
 	public IStorageManager getStorageManager()
 	{
 		return storageManager;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#getVirtualArrayManager()
-	 */
+	
 	// public IVirtualArrayManager getVirtualArrayManager() {
 	// return virtualArrayManager;
 	// }
@@ -226,100 +211,67 @@ public class GeneralManager
 //			return connectedElementRepManager;
 //		}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#getSetManager()
-	 */
+	@Override
 	public ISetManager getSetManager()
 	{
 		return setManager;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#getViewGLCanvasManager()
-	 */
+	@Override
 	public IViewGLCanvasManager getViewGLCanvasManager()
 	{
 		return viewGLCanvasManager;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#getPathwayManager()
-	 */
+	@Override
 	public IPathwayManager getPathwayManager()
 	{
 		return pathwayManager;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#getPathwayItemManager()
-	 */
+	@Override
 	public IPathwayItemManager getPathwayItemManager()
 	{
 		return pathwayItemManager;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#getSWTGUIManager()
-	 */
+	@Override
 	public ISWTGUIManager getSWTGUIManager()
 	{
 		return sWTGUIManager;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#getEventPublisher()
-	 */
+	@Override
 	public IEventPublisher getEventPublisher()
 	{
 		return eventPublisher;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#getXmlParserManager()
-	 */
+	@Override
 	public IXmlParserManager getXmlParserManager()
 	{
 		return this.xmlParserManager;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#getGenomeIdManager()
-	 */
+	@Override
 	public IGenomeIdManager getGenomeIdManager()
 	{
 		return this.genomeIdManager;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#getCommandManager()
-	 */
+	@Override
 	public ICommandManager getCommandManager()
 	{
 		return commandManager;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#getCommandManager()
-	 */
+	@Override
 	public IGlyphManager getGlyphManager()
 	{
 		return glyphManager;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.IGeneralManager#getPreferenceStore()
-	 */
+	@Override
 	public PreferenceStore getPreferenceStore() 
 	{
 		return preferenceStore;

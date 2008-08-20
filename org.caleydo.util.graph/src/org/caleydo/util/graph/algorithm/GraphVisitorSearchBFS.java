@@ -68,11 +68,7 @@ public class GraphVisitorSearchBFS
 		depthSortedList = createDepthSortedList(iSearchDepth);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.util.graph.algorithm.IGraphVisitorSearch#getSearchResult()
-	 */
+	@Override
 	public List<IGraphItem> getSearchResult()
 	{
 
@@ -201,31 +197,21 @@ public class GraphVisitorSearchBFS
 		this.prop = prop;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.util.graph.algorithm.IGraphVisitorSearch#init()
-	 */
+	@Override
 	public boolean init()
 	{
 		// TODO Auto-generated method stub
 		return false;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.util.graph.algorithm.IGraphVisitorSearch#search()
-	 */
+	@Override
 	public void search()
 	{
 		// TODO Auto-generated method stub
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.util.graph.algorithm.IGraphVisitorSearch#
-	 * wipeTemporalDataFromGraph()
-	 */
+	@Override
 	public void wipeTemporalDataFromGraph()
 	{
 		// TODO Auto-generated method stub

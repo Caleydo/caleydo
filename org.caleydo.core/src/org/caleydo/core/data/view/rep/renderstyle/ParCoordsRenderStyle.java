@@ -131,11 +131,11 @@ public class ParCoordsRenderStyle
 	public float getAxisSpacing(final int iNumberOfAxis)
 	{
 
-		fAxisSpacing = (fFrustumWidth - COORDINATE_SIDE_SPACING * 2 * fScaling)
+		fAxisSpacing = (viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * 2 * getScaling())
 				/ (iNumberOfAxis - 1);
 
-		if (fAxisSpacing < fAxisSpacingLowerLimit * fScaling)
-			return fAxisSpacingLowerLimit * fScaling;
+		if (fAxisSpacing < fAxisSpacingLowerLimit * getScaling())
+			return fAxisSpacingLowerLimit * getScaling();
 
 		return fAxisSpacing;
 	}
@@ -143,50 +143,50 @@ public class ParCoordsRenderStyle
 	public float getAxisHeight()
 	{
 
-		return fFrustumHeight - (COORDINATE_TOP_SPACING + COORDINATE_BOTTOM_SPACING)
-				* fScaling;
+		return viewFrustum.getHeight() - (COORDINATE_TOP_SPACING + COORDINATE_BOTTOM_SPACING)
+				* getScaling();
 	}
 
 	public float getXSpacing()
 	{
 
-		return COORDINATE_SIDE_SPACING * fScaling;
+		return COORDINATE_SIDE_SPACING * getScaling();
 	}
 
 	public float getBottomSpacing()
 	{
 
-		return COORDINATE_BOTTOM_SPACING * fScaling;
+		return COORDINATE_BOTTOM_SPACING * getScaling();
 	}
 
 	public float getAxisButtonYOffset()
 	{
 
-		return AXIS_BUTTONS_Y_OFFSET * fScaling;
+		return AXIS_BUTTONS_Y_OFFSET * getScaling();
 	}
 
 	public float getGateWidth()
 	{
 
-		return GATE_WIDTH * fScaling;
+		return GATE_WIDTH * getScaling();
 	}
 
 	public float getGateYOffset()
 	{
 
-		return GATE_NEGATIVE_Y_OFFSET * fScaling;
+		return GATE_NEGATIVE_Y_OFFSET * getScaling();
 	}
 
 	public float getGateTipHeight()
 	{
 
-		return GATE_TIP_HEIGHT * fScaling;
+		return GATE_TIP_HEIGHT * getScaling();
 	}
 
 	public float getAxisCaptionSpacing()
 	{
 
-		return COORDINATE_TOP_SPACING / 3 * fScaling;
+		return COORDINATE_TOP_SPACING / 3 * getScaling();
 	}
 	// GATE_WIDTH = 0.015f;
 	// private static final float GATE_NEGATIVE_Y_OFFSET = -0.04f;

@@ -1,7 +1,6 @@
 package org.caleydo.core.data.selection;
 
 import java.util.ListIterator;
-import javax.naming.OperationNotSupportedException;
 
 public class VAIterator
 	implements ListIterator<Integer>

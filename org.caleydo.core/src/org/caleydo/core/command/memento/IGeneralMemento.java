@@ -80,21 +80,14 @@ public class IGeneralMemento
 		mementoState = setMementoData;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see prometheus.command.memento.Memento#getMementoType()
-	 */
+	@Override
 	public final MementoType getMementoType()
 	{
 
 		return mementoType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see prometheus.command.memento.Memento#setMementoState(java.lang.Object,
-	 * prometheus.command.memento.MementoState)
-	 */
+	@Override
 	public void setMementoState(final Object setMementoCreator,
 			final IMementoState setMemetoState) throws CaleydoRuntimeException
 	{
@@ -112,14 +105,7 @@ public class IGeneralMemento
 		this.mementoState = setMemetoState;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see prometheus.command.memento.MementoPrivateLayer#getMementoState()
-	 */
-	/*
-	 * (non-Javadoc)
-	 * @see prometheus.command.memento.Memento#getMementoState(java.lang.Object)
-	 */
+	@Override
 	public IMementoState getMementoState(final Object setMementoCreator)
 	{
 
@@ -134,20 +120,14 @@ public class IGeneralMemento
 	 * @return size in 4*Byte
 	 */
 	// public int getSizeMemento();
-	/*
-	 * (non-Javadoc)
-	 * @see prometheus.command.memento.Memento#toString()
-	 */
+	@Override
 	public String toString()
 	{
 
 		return mementoState.toString();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see prometheus.command.memento.Memento#toStringRecursive()
-	 */
+	@Override
 	public String toStringRecursive()
 	{
 

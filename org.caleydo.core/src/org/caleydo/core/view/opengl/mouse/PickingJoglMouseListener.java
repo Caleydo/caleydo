@@ -2,7 +2,6 @@ package org.caleydo.core.view.opengl.mouse;
 
 import java.awt.Point;
 import java.awt.event.MouseEvent;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 
 /**
  * Mouse picking listener for JOGL views
@@ -38,12 +37,7 @@ public class PickingJoglMouseListener
 		pickedPointDragStart = new Point();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.jogl.mouse.JoglMouseListener#mousePressed(java.
-	 * awt.event.MouseEvent)
-	 */
+	@Override
 	public void mousePressed(MouseEvent mouseEvent)
 	{
 
@@ -61,12 +55,7 @@ public class PickingJoglMouseListener
 		pickedPointDragStart.setLocation(mouseEvent.getPoint());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.jogl.mouse.JoglMouseListener#mouseMoved(java.awt
-	 * .event.MouseEvent)
-	 */
+	@Override
 	public void mouseMoved(MouseEvent mouseEvent)
 	{
 
@@ -76,12 +65,7 @@ public class PickingJoglMouseListener
 		pickedPointCurrent = mouseEvent.getPoint();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.jogl.mouse.JoglMouseListener#mouseReleased(java
-	 * .awt.event.MouseEvent)
-	 */
+	@Override
 	public void mouseReleased(MouseEvent mouseEvent)
 	{
 
@@ -94,12 +78,7 @@ public class PickingJoglMouseListener
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.jogl.mouse.JoglMouseListener#mouseDragged(java.
-	 * awt.event.MouseEvent)
-	 */
+	@Override
 	public void mouseDragged(MouseEvent mouseEvent)
 	{
 

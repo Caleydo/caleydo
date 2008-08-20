@@ -38,10 +38,7 @@ public abstract class ALockableMediatorReceiver
 		bUpdateIsStalled = new AtomicBoolean(false);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.observer.mediator.IMediatorReceiver#updateStall()
-	 */
+	@Override
 	public synchronized final void updateStall()
 	{
 

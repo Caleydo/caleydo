@@ -2,16 +2,12 @@ package org.caleydo.core.application.helper.cacher.kegg;
 
 import java.io.File;
 import java.util.ArrayList;
-
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
 import org.caleydo.core.manager.IGeneralManager;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
-import org.eclipse.swt.widgets.Shell;
-
 import com.enterprisedt.net.ftp.FTPConnectMode;
 import com.enterprisedt.net.ftp.FTPFile;
 import com.enterprisedt.net.ftp.FileTransferClient;

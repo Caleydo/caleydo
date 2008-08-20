@@ -45,22 +45,14 @@ public abstract class AXmlParserHandler
 		this.sOpeningTag = tag;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.parser.handler.IXmlParserHandler#getXmlActivationTag()
-	 */
+	@Override
 	public final String getXmlActivationTag()
 	{
 
 		return sOpeningTag;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.parser.handler.IXmlParserHandler#hasOpeningTagOnlyOnce()
-	 */
+	@Override
 	public final boolean isHandlerDestoryedAfterClosingTag()
 	{
 		if (bDestroyHandlerAfterClosingTag)

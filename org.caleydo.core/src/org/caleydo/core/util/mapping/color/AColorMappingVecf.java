@@ -71,19 +71,13 @@ implements IColorMapping <T> {
 		return supportingPoints_Float;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.util.mapping.IColorMapping#colorMapping4i(int)
-	 */
+	@Override
 	public final Vec4f colorMapping4i(int lookupValue) {
 
 		return colorMapping4f( (float) lookupValue);
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.util.mapping.IColorMapping#colorMapping3i(int)
-	 */
+	@Override
 	public final Vec3f colorMapping3i(int lookupValue) {
 
 		return colorMapping3f( (float) lookupValue);

@@ -1,6 +1,5 @@
 package org.caleydo.core.view.swt.widget;
 
-import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.view.swt.ISWTWidget;
 import org.eclipse.swt.widgets.Composite;
 

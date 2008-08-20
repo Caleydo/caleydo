@@ -326,11 +326,7 @@ public class LookupTableMultiMapStringLoader
 		bOneLineConaintsMultipleStrings = bset;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.parser.ascii.lookuptable.ILookupTableLoader#
-	 * loadDataParseFileLUT(java.io.BufferedReader, int)
-	 */
+	@Override
 	public int loadDataParseFileLUT(BufferedReader brFile, final int iNumberOfLinesInFile)
 			throws IOException
 	{

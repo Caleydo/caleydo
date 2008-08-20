@@ -113,20 +113,14 @@ extends AGLCanvasUser {
 	         
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initLocal(javax.media.opengl.GL)
-	 */	
+	@Override	
 	public void initLocal(final GL gl)
 	{
 		//iGLDisplayListIndexLocal = gl.glGenLists(1);	
 		init(gl);
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#initRemote(javax.media.opengl.GL, int, org.caleydo.core.view.opengl.util.JukeboxHierarchyLayer, org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener, org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D)
-	 */
+	@Override
 	public void initRemote(final GL gl, 
 			final int iRemoteViewID,
 			final RemoteHierarchyLayer layer,
@@ -141,19 +135,13 @@ extends AGLCanvasUser {
 		init(gl);
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#init(javax.media.opengl.GL)
-	 */
+	@Override
 	public void init(final GL gl) {
 		
 		createHistogram( iCurrentHistogramLength );
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#displayLocal(javax.media.opengl.GL)
-	 */
+	@Override
 	public void displayLocal(final GL gl) {
 		
 		pickingManager.handlePicking(iUniqueId, gl, true);
@@ -162,19 +150,13 @@ extends AGLCanvasUser {
 		pickingTriggerMouseAdapter.resetEvents();
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#displayRemote(javax.media.opengl.GL)
-	 */
+	@Override
 	public void displayRemote(final GL gl) {
 	
 		display(gl);
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#display(javax.media.opengl.GL)
-	 */
+	@Override
 	public void display(final GL gl) {
 		
 		gl.glTranslatef( 0,0, 0.01f);
@@ -182,10 +164,7 @@ extends AGLCanvasUser {
 		displayHistogram( gl );
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see javax.media.opengl.GLEventListener#displayChanged(javax.media.opengl.GLAutoDrawable, boolean, boolean)
-	 */
+	@Override
 	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
 			boolean deviceChanged) {
 
@@ -193,10 +172,7 @@ extends AGLCanvasUser {
 				drawable, modeChanged, deviceChanged);		
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see javax.media.opengl.GLEventListener#reshape(javax.media.opengl.GLAutoDrawable, int, int, int, int)
-	 */
+	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
 			int height) {
 
@@ -481,10 +457,7 @@ extends AGLCanvasUser {
 	    //gl.glPopMatrix();
 	  }
   }
-  /*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#handleEvents(org.caleydo.core.manager.picking.EPickingType, org.caleydo.core.manager.picking.EPickingMode, int, org.caleydo.core.manager.picking.Pick)
-	 */
+  @Override
 	protected void handleEvents(final EPickingType ePickingType, 
 			final EPickingMode ePickingMode, 
 			final int iExternalID,
@@ -493,10 +466,7 @@ extends AGLCanvasUser {
 		
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.opengl.canvas.AGLCanvasUser#getInfo()
-	 */
+	@Override
 	public ArrayList<String> getInfo() {
 		
 		ArrayList<String> sAlInfo = new ArrayList<String>();

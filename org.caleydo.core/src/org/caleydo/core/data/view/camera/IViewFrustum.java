@@ -1,21 +1,21 @@
 package org.caleydo.core.data.view.camera;
 
 import java.io.Serializable;
-import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
+import javax.media.opengl.GL;
 
 /**
  * Interface for the viewing volume data of an OpenGL view.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public interface IViewFrustum
 	extends Serializable
 {
+	public EProjectionMode getProjectionMode();
 
-	public ProjectionMode getProjectionMode();
-
-	public void setProjectionMode(final ProjectionMode projectionMode);
+	public void setProjectionMode(final EProjectionMode eProjectionMode);
 
 	public float getLeft();
 
@@ -29,6 +29,10 @@ public interface IViewFrustum
 
 	public float getFar();
 
+	public float getWidth();
+
+	public float getHeight();
+
 	public void setLeft(final float fLeft);
 
 	public void setRight(final float fRight);
@@ -41,66 +45,32 @@ public interface IViewFrustum
 
 	public void setFar(final float fFar);
 
-	// /**
-	// * Returns ture if ViewFrustum or camera view point has changed.
-	// *
-	// * @return TRUE if either camera view point or ViewFrustum-settings has
-	// changed.
-	// *
-	// * @see
-	// prometheus.data.collection.view.camera.IViewFrustum#hasFrustumChanged()
-	// * @see
-	// prometheus.data.collection.view.camera.IViewCamera#hasViewCameraChanged()
-	// */
-	// public boolean hasChanged();
-	//	
-	//	
-	// /**
-	// * Returns true if ViewFrustum has changed indepandent of the camera view
-	// point.
-	// *
-	// * @return TURE if the ViewFrustum has changed.
-	// *
-	// * @see
-	// prometheus.data.collection.view.camera.IViewCamera#hasViewCameraChanged()
-	// * @see
-	// prometheus.data.collection.view.camera.IViewFrustum#hasViewCameraChanged
-	// ()
-	// * @see
-	// prometheus.data.collection.view.camera.IViewFrustum#setHasFrustumChanged
-	// (boolean)
-	// */
-	// public boolean hasFrustumChanged();
-	//	
-	// /**
-	// *
-	// * @param bSetHasFrustumChanged
-	// *
-	// * @see
-	// prometheus.data.collection.view.camera.IViewFrustum#hasFrustumChanged()
-	// */
-	// public void setHasFrustumChanged( final boolean bSetHasFrustumChanged );
-	//	
-	// public Plane getNearPlane();
-	//	
-	// public Plane getFarPlane();
-	//	
-	// public void setNearPlane( final Plane setNearPlane );
-	//	
-	// public void setFarPlane( final Plane setFarPlane );
-	//	
-	// public void setFocalLength( final float fFocalLengthNearPlane,
-	// final float fFocalLengthFarPlane );
-	//
-	//	
-	// public float getFocalLengthNearPlane();
-	//	
-	// public float getFocalLengthFarPlane();
-	//	
-	//	
-	// public void setViewCamera( final IViewCamera setViewCamera );
-	//	
-	// public IViewCamera getViewCamera();
-	//	
+	/**
+	 * Define wheter to consider aspect ratios when setting the projection
+	 * matrix. This guarantees rectangular appearance of views
+	 * 
+	 * @param bConsiderAspectRatio
+	 * @deprecated Because fAspectRatio should not be used any more.
+	 */
+	@Deprecated
+	public void considerAspectRatio(boolean bConsiderAspectRatio);
 
+	/**
+	 * Sets the projection matrix, according to the projection mode defined in
+	 * the frustum
+	 * 
+	 * @param gl the GL context
+	 */
+	public void setProjectionMatrix(GL gl);
+
+	/**
+	 * Sets the projection matrix, according to the projection mode defined in
+	 * the frustum
+	 * 
+	 * @param gl the GL context
+	 * @param fAspectRatio the aspect ratio
+	 * @deprecated Because fAspectRatio should not be used any more.
+	 */
+	@Deprecated
+	public void setProjectionMatrix(GL gl, float fAspectRatio);
 }

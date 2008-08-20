@@ -3,7 +3,6 @@ package org.caleydo.core.data.graph.pathway.item.vertex;
 import java.io.Serializable;
 import org.caleydo.core.data.graph.ACaleydoGraphItem;
 import org.caleydo.util.graph.EGraphItemKind;
-import org.caleydo.util.graph.item.GraphItem;
 
 /**
  * Pathway vertex that belongs to the overall pathway graph.

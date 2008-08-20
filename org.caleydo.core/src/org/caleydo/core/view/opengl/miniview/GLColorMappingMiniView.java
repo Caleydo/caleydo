@@ -31,7 +31,7 @@ public class GLColorMappingMiniView
 	{
 
 		genomeMapper = new GenomeColorMapper(generalManager);
-		// genomeMapper.setMappingData(alSetData);
+		// genomeMapper.setMappingData(alSets);
 	}
 
 	@Override

@@ -8,8 +8,9 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
+import org.caleydo.core.data.view.camera.EProjectionMode;
 import org.caleydo.core.data.view.camera.IViewFrustum;
-import org.caleydo.core.data.view.camera.ViewFrustumBase;
+import org.caleydo.core.data.view.camera.ViewFrustum;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -54,10 +55,7 @@ public class CmdCreateGLEventListener
 		iAlSetIDs = new ArrayList<Integer>();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelParent#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
-	 */
+	@Override
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
 		super.setParameterHandler(parameterHandler);
@@ -106,8 +104,8 @@ public class CmdCreateGLEventListener
 			if (frustumToken.hasMoreTokens())
 				sProjectionMode = frustumToken.nextToken();
 
-			if (!sProjectionMode.equals(ViewFrustumBase.ProjectionMode.ORTHOGRAPHIC.name())
-					&& !sProjectionMode.equals(ViewFrustumBase.ProjectionMode.PERSPECTIVE
+			if (!sProjectionMode.equals(EProjectionMode.ORTHOGRAPHIC.name())
+					&& !sProjectionMode.equals(EProjectionMode.PERSPECTIVE
 							.name()))
 			{
 				return;
@@ -132,7 +130,7 @@ public class CmdCreateGLEventListener
 
 			fFar = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
 
-			viewFrustum = new ViewFrustumBase(ViewFrustumBase.ProjectionMode
+			viewFrustum = new ViewFrustum(EProjectionMode
 					.valueOf(sProjectionMode), fLeft, fRight, fBottom, fTop, fNear, fFar);
 
 		}
@@ -187,21 +185,18 @@ public class CmdCreateGLEventListener
 		
 	}
 
-	public void setAttributes(final ViewFrustumBase.ProjectionMode projectionMode,
+	public void setAttributes(final EProjectionMode eProjectionMode,
 			final float fLeft, final float fRight, final float fTop, final float fBottom,
 			final float fNear, final float fFar, final ArrayList<Integer> iArSetIDs)
 	{
 
-		viewFrustum = new ViewFrustumBase(projectionMode, fLeft, fRight, fBottom, fTop, fNear,
+		viewFrustum = new ViewFrustum(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear,
 				fFar);
 
 		this.iAlSetIDs = iArSetIDs;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#doCommand()
-	 */
+	@Override
 	public void doCommand()
 	{
 
@@ -234,10 +229,7 @@ public class CmdCreateGLEventListener
 		commandManager.runDoCommand(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#undoCommand()
-	 */
+	@Override
 	public void undoCommand() throws CaleydoRuntimeException
 	{
 		commandManager.runUndoCommand(this);

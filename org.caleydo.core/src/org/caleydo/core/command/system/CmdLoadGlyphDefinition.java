@@ -25,10 +25,7 @@ public class CmdLoadGlyphDefinition
 		super(cmdType);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#doCommand()
-	 */
+	@Override
 	public void doCommand() throws CaleydoRuntimeException
 	{
 		IGlyphManager gm = generalManager.getGlyphManager();
@@ -38,19 +35,13 @@ public class CmdLoadGlyphDefinition
 		commandManager.runDoCommand(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#undoCommand()
-	 */
+	@Override
 	public void undoCommand() throws CaleydoRuntimeException
 	{
 		commandManager.runUndoCommand(this);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.base.ACmdCreate_IdTargetLabelAttrDetail#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
-	 */
+	@Override
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
 		super.setParameterHandler(parameterHandler);
@@ -58,8 +49,9 @@ public class CmdLoadGlyphDefinition
 		sXMLPath = this.sAttribute1;
 	}
 
-	/*
-	 * (non-Javadoc)
+	/**
+	 * Set attributes for the command
+	 * @param sPathwayXMLPath
 	 */
 	public void setAttributes(final String sPathwayXMLPath)
 	{

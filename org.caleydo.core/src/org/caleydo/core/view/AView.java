@@ -69,12 +69,6 @@ public abstract class AView
 
 	protected abstract void initViewSwtComposite(Composite swtContainer);
 
-	public final EManagedObjectType getBaseType()
-	{
-
-		return null;
-	}
-
 	/**
 	 * Sets the unique ID of the parent container. Normally it is already set in
 	 * the constructor. Use this method only if you want to change the parent
@@ -95,10 +89,7 @@ public abstract class AView
 		initViewSwtComposite(swtContainer);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.IView#initView()
-	 */
+	@Override
 	public void initView()
 	{
 		/**
@@ -117,46 +108,14 @@ public abstract class AView
 		initViewSwtComposite(swtContainer);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.event.mediator.IMediatorReceiver#update(java
-	 * .lang.Object)
-	 */
-	public void updateReceiver(Object eventTrigger)
-	{
-
-		// Implemented in subclasses
-		assert false : "This method must be overloaded in sub-class";
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateReceiver
-	 * (java.lang.Object, org.caleydo.core.data.collection.ISet)
-	 */
-	public void updateReceiver(Object eventTrigger, ISet updatedSet)
-	{
-
-		// Implemented in subclasses
-		assert false : "This method must be overloaded in sub-class";
-	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.IView#getLabel()
-	 */
+	@Override
 	public final String getLabel()
 	{
 
 		return sLabel;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.IView#getLabel()
-	 */
+	@Override
 	public final void setLabel(String label)
 	{
 
@@ -175,11 +134,7 @@ public abstract class AView
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.IView#setViewType(org.caleydo.core.view.ViewType)
-	 */
+	@Override
 	public final void setViewType(ViewType viewType)
 	{
 
@@ -360,7 +315,7 @@ public abstract class AView
 	}
 
 	/**
-	 * Test both ArrayList's alSetData and alSetSelection for set.
+	 * Test both ArrayList's alSets and alSetSelection for set.
 	 * 
 	 * @param set test if this ISet is refered to
 	 * @return TRUE if exists in any of the two ArrayList's

@@ -1,7 +1,7 @@
 package org.caleydo.core.util.slerp;
 
-import org.caleydo.core.util.sound.SoundPlayer;
 import gleem.linalg.open.Slerp;
+import org.caleydo.core.util.sound.SoundPlayer;
 
 /**
  * Slerp implementation that can handle rotation, scaling and transformation.

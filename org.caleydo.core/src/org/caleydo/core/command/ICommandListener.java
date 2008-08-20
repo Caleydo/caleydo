@@ -1,8 +1,7 @@
 package org.caleydo.core.command;
 
-import org.caleydo.core.manager.ICommandManager;
-import org.caleydo.core.command.ICommandActionListener;
 import org.caleydo.core.data.xml.IMementoNetEventXML;
+import org.caleydo.core.manager.ICommandManager;
 
 /**
  * Handles commands. Controller/manager in the "Observer" design pattern.

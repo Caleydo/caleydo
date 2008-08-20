@@ -8,8 +8,21 @@ package org.caleydo.core.view.opengl.canvas;
  */
 public enum EDetailLevel
 {
-	HIGH,	 // bucket zoomed in
-	MEDIUM,  // bucket center (but not zoomed)	
-	LOW,     // bucket walls
-	VERY_LOW // bucket pool/memo
+
+	/**
+	 * bucket pool/memo
+	 */
+	VERY_LOW,
+	/**
+	 *  bucket walls
+	 */
+	LOW, 
+	/**
+	 * bucket center (but not zoomed)	
+	 */
+	MEDIUM, 
+	/**
+	 *  bucket zoomed in or standalone
+	 */
+	HIGH
 }

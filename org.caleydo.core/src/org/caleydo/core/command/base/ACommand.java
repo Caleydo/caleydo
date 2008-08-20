@@ -41,28 +41,19 @@ public abstract class ACommand
 		this.cmdType = cmdType;
 	}
 	
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#getCommandType()
-	 */
+	@Override
 	public final ECommandType getCommandType()
 	{
 		return cmdType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
-	 */
+	@Override
 	public void setParameterHandler(final IParameterHandler phHandler)
 	{
 		
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.ICommand#getInfoText()
-	 */
+	@Override
 	public String getInfoText()
 	{
 		return cmdType.getInfoText() + " [" + this.getID() + "]";

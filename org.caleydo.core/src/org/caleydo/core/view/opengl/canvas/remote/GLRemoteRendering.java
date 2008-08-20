@@ -24,8 +24,8 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.SelectionItem;
+import org.caleydo.core.data.view.camera.EProjectionMode;
 import org.caleydo.core.data.view.camera.IViewFrustum;
-import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.data.view.rep.renderstyle.layout.BucketLayoutRenderStyle;
 import org.caleydo.core.data.view.rep.renderstyle.layout.JukeboxLayoutRenderStyle;
@@ -45,14 +45,14 @@ import org.caleydo.core.util.slerp.SlerpMod;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListener;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.GLConnectionLineRendererBucket;
 import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLConnectionLineRendererJukebox;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.HeatMap;
-import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParallelCoordinates;
+import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
+import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
 import org.caleydo.core.view.opengl.miniview.GLColorMappingBarMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.EIconTextures;
@@ -472,7 +472,7 @@ public class GLRemoteRendering
 			{
 				ArrayList<Integer> iAlSetIDs = new ArrayList<Integer>();
 
-				for (ISet tmpSet : alSetData)
+				for (ISet tmpSet : alSets)
 				{
 					iAlSetIDs.add(tmpSet.getID());
 				}
@@ -482,7 +482,7 @@ public class GLRemoteRendering
 						.getCommandManager().createCommandByType(
 								ECommandType.CREATE_GL_PATHWAY_3D);
 
-				cmdPathway.setAttributes(iTmpPathwayID, iAlSetIDs, ProjectionMode.ORTHOGRAPHIC, -4, 4, 4, -4, -20, 20);
+				cmdPathway.setAttributes(iTmpPathwayID, iAlSetIDs, EProjectionMode.ORTHOGRAPHIC, -4, 4, 4, -4, -20, 20);
 				cmdPathway.doCommand();
 				
 				GLPathway pathway = (GLPathway)cmdPathway.getCreatedObject();
@@ -1738,8 +1738,8 @@ public class GLRemoteRendering
 
 				alGLEventListenerToRemove.add(tmpGLEventListenerToRemove);
 			}
-			else if (tmpGLEventListenerToRemove instanceof HeatMap
-					|| tmpGLEventListenerToRemove instanceof ParallelCoordinates)
+			else if (tmpGLEventListenerToRemove instanceof GLHeatMap
+					|| tmpGLEventListenerToRemove instanceof GLParallelCoordinates)
 			{
 				// Remove all elements from heatmap and parallel coordinates
 				((AStorageBasedView) tmpGLEventListenerToRemove).clearAllSelections();
@@ -1792,7 +1792,7 @@ public class GLRemoteRendering
 
 		return null;
 	}
-	
+	@Override
 	public RemoteHierarchyLayer getUnderInteractionHierarchyLayer()
 	{
 		return underInteractionLayer;

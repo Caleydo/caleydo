@@ -82,30 +82,19 @@ public class GraphItem
 		this.itemKind = kind;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.util.graph.IGraphComponent#getId()
-	 */
+	@Override
 	public final int getId()
 	{
 		return iGraphItemId;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.util.graph.IGraphComponent#setId(int)
-	 */
+	@Override
 	public final void setId(final int id)
 	{
 		iGraphItemId = id;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.util.graph.IGraphItem#addItemDoubleLinked(org.caleydo.util
-	 * .graph.IGraphItem, org.caleydo.util.graph.EGraphItemProperty)
-	 */
+	@Override
 	public final void addItemDoubleLinked(IGraphItem item, EGraphItemProperty prop)
 			throws GraphRuntimeException
 	{
@@ -132,64 +121,37 @@ public class GraphItem
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.util.graph.IGraphItem#addItem(org.caleydo.util.graph.IGraphItem
-	 * , org.caleydo.util.graph.EGraphItemProperty)
-	 */
+	@Override
 	public void addItem(IGraphItem item, EGraphItemProperty prop) throws GraphRuntimeException
 	{
 		items.addGraphComponent(item, prop);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.util.graph.IGraphItem#containsItem(org.caleydo.util.graph
-	 * .IGraphItem, org.caleydo.util.graph.EGraphItemProperty)
-	 */
+	@Override
 	public boolean containsItem(IGraphItem item, EGraphItemProperty prop)
 	{
 		return items.containsGraphComponent(item, prop);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.util.graph.IGraphItem#getAllItemsByProp(org.caleydo.util.
-	 * graph.EGraphItemProperty)
-	 */
+	@Override
 	public List<IGraphItem> getAllItemsByProp(EGraphItemProperty prop)
 	{
 		return items.getAllGraphComponent(prop);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.util.graph.IGraphItem#getGraphKind()
-	 */
+	@Override
 	public EGraphItemKind getGraphKind()
 	{
 		return itemKind;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.util.graph.IGraphItem#removeItem(org.caleydo.util.graph.
-	 * IGraphItem, org.caleydo.util.graph.EGraphItemProperty)
-	 */
+	@Override
 	public boolean removeItem(IGraphItem item, EGraphItemProperty prop)
 	{
 		return items.removeGraphComponent(item, prop);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.util.graph.IGraphItem#setGraphKind(org.caleydo.util.graph
-	 * .EGraphItemType)
-	 */
+	@Override
 	public void setGraphKind(EGraphItemKind type)
 	{
 		if (itemKind == null)
@@ -206,65 +168,37 @@ public class GraphItem
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.util.graph.IGraphItemHierarchy#addGraph(org.caleydo.util.
-	 * graph.IGraph, org.caleydo.util.graph.EGraphItemHierarchy)
-	 */
+	@Override
 	public void addGraph(IGraph graph, EGraphItemHierarchy type)
 	{
 		graphs.addGraphComponent(graph, type);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.util.graph.IGraphItemHierarchy#containsGraph(org.caleydo.
-	 * util.graph.IGraph, org.caleydo.util.graph.EGraphItemHierarchy)
-	 */
+	@Override
 	public boolean containsGraph(IGraph graph, EGraphItemHierarchy type)
 	{
 		return graphs.containsGraphComponent(graph, type);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.util.graph.IGraphItemHierarchy#containsOtherGraph(org.caleydo
-	 * .util.graph.IGraph)
-	 */
+	@Override
 	public boolean containsOtherGraph(IGraph graph)
 	{
 		return graphs.containsGraphComponentAtAll(graph);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.util.graph.IGraphItemHierarchy#getAllGraphByType(org.caleydo
-	 * .util.graph.EGraphItemHierarchy)
-	 */
+	@Override
 	public List<IGraph> getAllGraphByType(EGraphItemHierarchy type)
 	{
 		return graphs.getAllGraphComponent(type);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.util.graph.IGraphItemHierarchy#removeGraph(org.caleydo.util
-	 * .graph.IGraph, org.caleydo.util.graph.EGraphItemHierarchy)
-	 */
+	@Override
 	public boolean removeGraph(IGraph graph, EGraphItemHierarchy type)
 	{
 		return graphs.removeGraphComponent(graph, type);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.util.graph.IGraphComponent#disposeItem()
-	 */
+	@Override
 	public void disposeItem()
 	{
 		Iterator<IGraph> iter = graphs.getAllGraphComponent(null).iterator();

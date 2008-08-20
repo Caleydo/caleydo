@@ -3,7 +3,7 @@ package org.caleydo.core.data.view.rep.renderstyle.layout;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
-import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
+import org.caleydo.core.data.view.camera.EProjectionMode;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
@@ -40,7 +40,7 @@ public class JukeboxLayoutRenderStyle
 	private void initLayout()
 	{
 
-		projectionMode = ProjectionMode.ORTHOGRAPHIC;
+		eProjectionMode = EProjectionMode.ORTHOGRAPHIC;
 
 		fScalingFactorUnderInteractionLayer = 0.28f;
 		fScalingFactorStackLayer = 0.13f;

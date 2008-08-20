@@ -39,10 +39,7 @@ public class FileOpenProjectAction
 		this.parentComposite = parentComposite;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.jface.action.Action#run()
-	 */
+	@Override
 	public void run()
 	{
 
@@ -63,10 +60,7 @@ public class FileOpenProjectAction
 		Application.applicationWorkbenchAdvisor.openLoadedViews();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.eclipse.ui.actions.ActionFactory.IWorkbenchAction#dispose()
-	 */
+	@Override
 	public void dispose()
 	{
 

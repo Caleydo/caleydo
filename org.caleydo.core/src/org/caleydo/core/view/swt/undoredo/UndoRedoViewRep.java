@@ -3,7 +3,6 @@ package org.caleydo.core.view.swt.undoredo;
 import java.util.Iterator;
 import java.util.Vector;
 import org.caleydo.core.command.ICommand;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
@@ -35,10 +34,7 @@ public class UndoRedoViewRep
 		super(iParentContainerId, sLabel, ViewType.SWT_IMAGE_VIEWER);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.AView#initViewSwtComposit(org.eclipse.swt.widgets.Composite)
-	 */
+	@Override
 	protected void initViewSwtComposite(Composite swtContainer)
 	{
 
@@ -51,10 +47,7 @@ public class UndoRedoViewRep
 		undoRedoCombo = new Combo(swtContainer, SWT.READ_ONLY);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.IView#drawView()
-	 */
+	@Override
 	public void drawView()
 	{
 	}

@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 /**
  * @author Michael Kalkusch
@@ -63,11 +64,7 @@ public class MultiHashArrayMap
 		// TODO Auto-generated constructor stub
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.commons.collections.MultiMap#remove(java.lang.Object,
-	 * java.lang.Object)
-	 */
+	@Override
 	public Object remove(Object key, Object item)
 	{
 

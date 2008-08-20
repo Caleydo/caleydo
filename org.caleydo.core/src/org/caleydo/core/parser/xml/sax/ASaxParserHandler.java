@@ -4,7 +4,6 @@ import org.caleydo.core.data.xml.IMementoCallbackXML;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.xml.sax.Attributes;
-import org.xml.sax.Locator;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -203,19 +202,10 @@ public abstract class ASaxParserHandler
 		parentMementoCaller = setRefParent;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.net.dwt.swing.DParseSaxHandler#startElement(Stringt,
-	 * Stringt, Stringt, org.xml.sax.Attributes)
-	 */
+	@Override
 	public abstract void startElement(String uri, String localName, String qName,
 			Attributes attributes);
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.net.dwt.swing.DParseSaxHandler#endElement(Stringt,
-	 * Stringt, Stringt)
-	 */
+	@Override
 	public abstract void endElement(String uri, String localName, String qName);
 }

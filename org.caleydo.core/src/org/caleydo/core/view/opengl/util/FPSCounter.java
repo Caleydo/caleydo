@@ -29,10 +29,11 @@
 package org.caleydo.core.view.opengl.util;
 
 import java.awt.Font;
-import java.awt.geom.*;
-import java.text.*;
-import javax.media.opengl.*;
-import com.sun.opengl.util.j2d.*;
+import java.awt.geom.Rectangle2D;
+import java.text.DecimalFormat;
+import javax.media.opengl.GLDrawable;
+import javax.media.opengl.GLException;
+import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
  * A simple class which uses the TextRenderer to provide an FPS counter overlaid

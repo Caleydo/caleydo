@@ -2,7 +2,6 @@ package org.caleydo.core.manager.specialized.glyph;
 
 import java.util.Collection;
 import java.util.HashMap;
-import org.caleydo.core.manager.IManager;
 import org.caleydo.core.view.opengl.canvas.glyph.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.GLGlyphGenerator;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphAttributeType;

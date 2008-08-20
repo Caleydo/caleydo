@@ -1,8 +1,6 @@
 package org.caleydo.core.manager;
 
 import java.util.Collection;
-import javax.media.opengl.GLCanvas;
-import javax.media.opengl.GLEventListener;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.manager.id.EManagedObjectType;

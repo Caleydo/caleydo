@@ -1,8 +1,6 @@
 package org.caleydo.core.data.collection.ccontainer;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import org.caleydo.core.data.selection.IVirtualArray;
 
 /**
  * A container for numerical values. Type can be anything that implements

@@ -2,7 +2,7 @@ package org.caleydo.core.command.view.opengl;
 
 import java.util.ArrayList;
 import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.data.view.camera.ViewFrustumBase;
+import org.caleydo.core.data.view.camera.EProjectionMode;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
@@ -26,11 +26,7 @@ public class CmdGlObjectPathway3D
 		super(cmdType);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @seeorg.caleydo.core.command.view.opengl.CmdCreateOpenGLCanvasListener#
-	 * setParameterHandler(org.caleydo.core.parser.parameter.IParameterHandler)
-	 */
+	@Override
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
 		super.setParameterHandler(parameterHandler);
@@ -39,12 +35,12 @@ public class CmdGlObjectPathway3D
 	}
 
 	public void setAttributes(final int iPathwayID, final ArrayList<Integer> iArSetIDs,
-			final ViewFrustumBase.ProjectionMode projectionMode, final float fLeft,
+			final EProjectionMode eProjectionMode, final float fLeft,
 			final float fRight, final float fTop, final float fBottom, final float fNear,
 			final float fFar)
 	{
 
-		super.setAttributes(projectionMode, fLeft, fRight, fTop, fBottom, fNear, fFar,
+		super.setAttributes(eProjectionMode, fLeft, fRight, fTop, fBottom, fNear, fFar,
 				iArSetIDs);
 
 		this.iAlSetIDs = iArSetIDs;
@@ -53,10 +49,7 @@ public class CmdGlObjectPathway3D
 		iParentContainerId = -1;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.command.base.ACmdCreate_GlCanvasUser#doCommand()
-	 */
+	@Override
 	public final void doCommand()
 	{
 		super.doCommand();

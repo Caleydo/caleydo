@@ -1,8 +1,7 @@
 package org.caleydo.core.parser.ascii.lookuptable;
 
 import java.io.BufferedReader;
-import java.io.IOException; // import java.util.HashMap;
-// import org.caleydo.core.base.map.MultiHashArrayMap;
+import java.io.IOException;
 import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
 import org.caleydo.core.data.map.MultiHashArrayStringMap;
 import org.caleydo.core.data.mapping.EMappingType;

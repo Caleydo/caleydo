@@ -7,7 +7,6 @@ import java.util.HashMap;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import org.caleydo.core.data.view.camera.IViewFrustum;
-import org.caleydo.core.data.view.camera.ViewFrustumBase.ProjectionMode;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
@@ -194,40 +193,7 @@ public class PickingManager
 
 		IViewFrustum viewFrustum = canvasUser.getViewFrustum();
 
-		if (fAspectRatio < 1.0)
-		{
-			fAspectRatio = 1.0f / fAspectRatio;
-
-			if (viewFrustum.getProjectionMode().equals(ProjectionMode.ORTHOGRAPHIC))
-			{
-				gl.glOrtho(viewFrustum.getLeft() * fAspectRatio, viewFrustum.getRight()
-						* fAspectRatio, viewFrustum.getBottom(), viewFrustum.getTop(),
-						viewFrustum.getNear(), viewFrustum.getFar());
-			}
-			else
-			{
-				gl.glFrustum(viewFrustum.getLeft() * fAspectRatio, viewFrustum.getRight()
-						* fAspectRatio, viewFrustum.getBottom(), viewFrustum.getTop(),
-						viewFrustum.getNear(), viewFrustum.getFar());
-			}
-		}
-		else
-		{
-			if (viewFrustum.getProjectionMode().equals(ProjectionMode.ORTHOGRAPHIC))
-			{
-				gl.glOrtho(viewFrustum.getLeft(), viewFrustum.getRight(), viewFrustum
-						.getBottom()
-						* fAspectRatio, viewFrustum.getTop() * fAspectRatio, viewFrustum
-						.getNear(), viewFrustum.getFar());
-			}
-			else
-			{
-				gl.glFrustum(viewFrustum.getLeft(), viewFrustum.getRight(), viewFrustum
-						.getBottom()
-						* fAspectRatio, viewFrustum.getTop() * fAspectRatio, viewFrustum
-						.getNear(), viewFrustum.getFar());
-			}
-		}
+		viewFrustum.setProjectionMatrix(gl, fAspectRatio);
 
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 

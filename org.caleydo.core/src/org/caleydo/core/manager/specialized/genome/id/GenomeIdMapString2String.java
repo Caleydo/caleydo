@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import org.caleydo.core.data.mapping.EMappingDataType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
-import org.caleydo.core.manager.specialized.genome.id.AGenomeIdMap;
 import org.caleydo.core.util.ConversionStringInteger;
 
 /**
@@ -40,64 +39,42 @@ public class GenomeIdMapString2String
 		super(generalManager, dataType, iSizeHashMap);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.data.genome.IGenomeIdMap#getKeysInteger()
-	 */
+	@Override
 	public final Set<Integer> getKeysInteger()
 	{
 
 		return ConversionStringInteger.convertSet_String2Integer(this.getKeys());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.data.genome.IGenomeIdMap#getKeysString()
-	 */
+	@Override
 	public final Set<String> getKeysString()
 	{
 
 		return this.getKeys();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.data.genome.IGenomeIdMap#getValuesInteger()
-	 */
+	@Override
 	public Collection<Integer> getValuesInteger()
 	{
 
 		return ConversionStringInteger.convertCollection_String2Integer(this.getValues());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.data.genome.IGenomeIdMap#getValuesString()
-	 */
+	@Override
 	public Collection<String> getValuesString()
 	{
 
 		return this.getValues();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.event.IEventPublisherMap#getStringByString(Stringt
-	 * )
-	 */
+	@Override
 	public String getStringByString(String key)
 	{
 
 		return hashGeneric.get(key);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.data.genome.IGenomeIdMap#getStringByStringChecked
-	 * (Stringt)
-	 */
+	@Override
 	public String getStringByStringChecked(String key)
 	{
 
@@ -115,12 +92,7 @@ public class GenomeIdMapString2String
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.data.genome.IGenomeIdMap#put(java.lang.String,
-	 * java.lang.String)
-	 */
+	@Override
 	public void put(final String key, final String value)
 	{
 

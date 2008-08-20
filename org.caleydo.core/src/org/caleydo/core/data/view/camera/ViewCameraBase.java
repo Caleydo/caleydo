@@ -76,12 +76,7 @@ public class ViewCameraBase
 		return bHasChanged;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * prometheus.data.collection.view.camera.ViewCamera#setViewPan(gleem.linalg
-	 * .Vec3f)
-	 */
+	@Override
 	public void setCameraPosition(final Vec3f setPan)
 	{
 
@@ -97,12 +92,7 @@ public class ViewCameraBase
 		mat4fCameraViewMatrix.setTranslation(v3fCameraPosition);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * prometheus.data.collection.view.camera.ViewCamera#setViewRotate(gleem
-	 * .linalg.Rotf)
-	 */
+	@Override
 	public void setCameraRotation(final Rotf setRot)
 	{
 
@@ -111,12 +101,7 @@ public class ViewCameraBase
 		mat4fCameraViewMatrix.setScale(v3fCameraScale);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * prometheus.data.collection.view.camera.ViewCamera#setViewZoom(gleem.linalg
-	 * .Vec3f)
-	 */
+	@Override
 	public void setCameraScale(final Vec3f setZoom)
 	{
 
@@ -125,12 +110,7 @@ public class ViewCameraBase
 		mat4fCameraViewMatrix.setScale(v3fCameraScale);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * prometheus.data.collection.view.camera.ViewCamera#setViewPanZoomRotate
-	 * (gleem.linalg.Vec3f, gleem.linalg.Vec3f, gleem.linalg.Rotf)
-	 */
+	@Override
 	public void setCameraAll(final Vec3f setPan, final Vec3f setZoom, final Rotf setRot)
 	{
 
@@ -146,20 +126,14 @@ public class ViewCameraBase
 		this.bHasChanged = bSetHasChanged;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see prometheus.data.collection.view.camera.ViewCamera#getViewZoom()
-	 */
+	@Override
 	public final Vec3f getCameraScale()
 	{
 
 		return new Vec3f(v3fCameraScale);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see prometheus.data.collection.view.camera.ViewCamera#getViewPan()
-	 */
+	@Override
 	public final Vec3f getCameraPosition()
 	{
 
@@ -171,10 +145,7 @@ public class ViewCameraBase
 		return new Vec3f(v3fCameraPosition);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see prometheus.data.collection.view.camera.ViewCamera#getViewRotate()
-	 */
+	@Override
 	public final Rotf getCameraRotation()
 	{
 
@@ -193,10 +164,7 @@ public class ViewCameraBase
 		return rotfCameraRotation.get(axis);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see prometheus.data.collection.view.camera.ViewCamera#getViewMatrix()
-	 */
+	@Override
 	public final Mat4f getCameraMatrix()
 	{
 

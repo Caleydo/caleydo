@@ -1,13 +1,11 @@
 package org.caleydo.core.application.core;
 
-import java.io.IOException;
 import java.util.logging.Level;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Basic Caleydo Bootloader.

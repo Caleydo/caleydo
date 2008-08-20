@@ -2,9 +2,8 @@ package org.caleydo.core.view.swt.widget;
 
 import java.awt.Frame;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.awt.SWT_AWT; // import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData; // import
-// org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.awt.SWT_AWT;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 
 /**

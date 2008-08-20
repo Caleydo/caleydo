@@ -5,7 +5,6 @@ import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.data.IStorageManager;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
@@ -16,10 +15,7 @@ public class StorageManager
 	extends AManager<IStorage>
 	implements IStorageManager
 {
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.manager.StorageManager#createStorage()
-	 */
+	@Override
 	public IStorage createStorage(final EManagedObjectType type)
 	{
 		switch (type)

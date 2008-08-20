@@ -3,8 +3,8 @@
  */
 package org.caleydo.core.parser.xml.sax.handler;
 
-import org.xml.sax.Attributes;
 import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.xml.sax.Attributes;
 
 /**
  * @author Michael Kalkusch

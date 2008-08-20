@@ -1,8 +1,6 @@
 package org.caleydo.core.view.swt.browser;
 
 import java.util.logging.Level;
-import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.data.CmdDataCreateSelection;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
@@ -63,10 +61,7 @@ public class HTMLBrowserViewRep
 		this.browserType = browserType;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.AView#initViewSwtComposite(org.eclipse.swt.widgets.Composite)
-	 */
+	@Override
 	protected void initViewSwtComposite(Composite swtContainer)
 	{
 		swtContainer.setLayout(new GridLayout(1, false));

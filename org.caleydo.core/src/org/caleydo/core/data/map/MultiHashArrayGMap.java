@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.core.data.map;
 
 import java.util.ArrayList;
@@ -9,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+import java.util.Map.Entry;
 
 /**
  * @author Michael Kalkusch
@@ -62,11 +60,7 @@ public class MultiHashArrayGMap<Type, Value extends ArrayList<Type>>
 	// // TODO Auto-generated constructor stub
 	// }
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.apache.commons.collections.MultiMap#remove(java.lang.Object,
-	 * java.lang.Object)
-	 */
+
 	public Type removeItem(Type key, Type item)
 	{
 

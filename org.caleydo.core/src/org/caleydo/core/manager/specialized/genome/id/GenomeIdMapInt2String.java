@@ -6,7 +6,6 @@ import java.util.logging.Level;
 import org.caleydo.core.data.mapping.EMappingDataType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
-import org.caleydo.core.manager.specialized.genome.id.AGenomeIdMap;
 import org.caleydo.core.util.ConversionStringInteger;
 
 /**
@@ -40,40 +39,28 @@ public class GenomeIdMapInt2String
 		super(generalManager, dataType, iSizeHashMap);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.data.genome.IGenomeIdMap#getKeysInteger()
-	 */
+	@Override
 	public final Set<Integer> getKeysInteger()
 	{
 
 		return this.getKeys();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.data.genome.IGenomeIdMap#getKeysString()
-	 */
+	@Override
 	public final Set<String> getKeysString()
 	{
 
 		return ConversionStringInteger.convertSet_Integer2String(this.getKeys());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.data.genome.IGenomeIdMap#getValuesInteger()
-	 */
+	@Override
 	public Collection<Integer> getValuesInteger()
 	{
 
 		return ConversionStringInteger.convertCollection_String2Integer(this.getValues());
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.manager.data.genome.IGenomeIdMap#getValuesString()
-	 */
+	@Override
 	public Collection<String> getValuesString()
 	{
 
@@ -86,23 +73,14 @@ public class GenomeIdMapInt2String
 		hashGeneric.put(Integer.valueOf(key), value);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.event.IEventPublisherMap#getStringByInt(int)
-	 */
+	@Override
 	public String getStringByInt(int key)
 	{
 
 		return hashGeneric.get(key);
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.manager.data.genome.IGenomeIdMap#getStringByIntChecked
-	 * (int)
-	 */
+	@Override
 	public String getStringByIntChecked(int key)
 	{
 
