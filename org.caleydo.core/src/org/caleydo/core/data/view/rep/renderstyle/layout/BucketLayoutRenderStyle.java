@@ -4,7 +4,6 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 import org.caleydo.core.data.view.camera.EProjectionMode;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**
@@ -15,13 +14,11 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 public class BucketLayoutRenderStyle
 	extends ARemoteViewLayoutRenderStyle
 {
-
 	/**
 	 * Constructor.
 	 */
 	public BucketLayoutRenderStyle()
 	{
-
 		super();
 		initLayout();
 	}
@@ -29,17 +26,14 @@ public class BucketLayoutRenderStyle
 	/**
 	 * Constructor.
 	 */
-	public BucketLayoutRenderStyle(final IGeneralManager generalManager,
-			final ARemoteViewLayoutRenderStyle previousLayoutStyle)
+	public BucketLayoutRenderStyle(final ARemoteViewLayoutRenderStyle previousLayoutStyle)
 	{
-
 		super(previousLayoutStyle);
 		initLayout();
 	}
 
 	private void initLayout()
 	{
-
 		eProjectionMode = EProjectionMode.PERSPECTIVE;
 
 		fScalingFactorUnderInteractionLayer = 0.5f;
@@ -53,7 +47,6 @@ public class BucketLayoutRenderStyle
 	@Override
 	public RemoteHierarchyLayer initUnderInteractionLayer()
 	{
-
 		Transform transformUnderInteraction = new Transform();
 		transformUnderInteraction.setTranslation(new Vec3f(-2, -2, 4 * fZoomFactor));
 		transformUnderInteraction.setScale(new Vec3f(fScalingFactorUnderInteractionLayer,
@@ -66,7 +59,6 @@ public class BucketLayoutRenderStyle
 	@Override
 	public RemoteHierarchyLayer initStackLayer()
 	{
-
 		Transform transform;
 
 		float fTiltAngleRad_Horizontal;
@@ -285,26 +277,4 @@ public class BucketLayoutRenderStyle
 
 		return spawnLayer;
 	}
-	//	
-	// public void setHorizontalTiltAngleDegree(final float
-	// fTiltAngleDegree_Horizontal)
-	// {
-	// this.fTiltAngleDegree_Horizontal = fTiltAngleDegree_Horizontal;
-	// }
-	//	
-	// public void setVerticalTiltAngleDegree(final float
-	// fTiltAngleDegree_Vertical)
-	// {
-	// this.fTiltAngleDegree_Vertical = fTiltAngleDegree_Vertical;
-	// }
-	//	
-	// public float getHorizontalTiltAngleDegree()
-	// {
-	// return fTiltAngleDegree_Horizontal;
-	// }
-	//	
-	// public float getVerticalTiltAngleDegree()
-	// {
-	// return fTiltAngleDegree_Vertical;
-	// }
 }

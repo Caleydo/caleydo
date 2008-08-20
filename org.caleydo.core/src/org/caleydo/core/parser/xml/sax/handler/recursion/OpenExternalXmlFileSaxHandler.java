@@ -1,10 +1,5 @@
-/**
- * 
- */
 package org.caleydo.core.parser.xml.sax.handler.recursion;
 
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
@@ -12,7 +7,10 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.xml.sax.Attributes;
 
 /**
+ * Parser for recursively parsing of external files
+ * 
  * @author Michael Kalkusch
+ * @author Marc Streit
  */
 public class OpenExternalXmlFileSaxHandler
 	extends AXmlParserHandler
@@ -22,14 +20,11 @@ public class OpenExternalXmlFileSaxHandler
 	public static final String sXML_attribute_target = "target";
 
 	/**
-	 * @param generalManager
-	 * @param xmlParserManager
+	 * Constructor.
 	 */
-	public OpenExternalXmlFileSaxHandler(IGeneralManager generalManager,
-			IXmlParserManager xmlParserManager)
+	public OpenExternalXmlFileSaxHandler()
 	{
-
-		super(generalManager, xmlParserManager);
+		super();
 
 		setXmlActivationTag("read-xml-file");
 	}
@@ -108,5 +103,4 @@ public class OpenExternalXmlFileSaxHandler
 			xmlParserManager.sectionFinishedByHandler(this);
 		}
 	}
-
 }

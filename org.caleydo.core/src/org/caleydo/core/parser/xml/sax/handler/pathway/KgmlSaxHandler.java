@@ -8,8 +8,6 @@ import org.caleydo.core.data.graph.pathway.item.edge.PathwayReactionEdgeGraphIte
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EMappingType;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
@@ -56,11 +54,9 @@ public class KgmlSaxHandler
 	/**
 	 * Constructor.
 	 */
-	public KgmlSaxHandler(final IGeneralManager generalManager,
-			final IXmlParserManager xmlParserManager)
+	public KgmlSaxHandler()
 	{
-
-		super(generalManager, xmlParserManager);
+		super();
 
 		hashKgmlEntryIdToVertexRepId = new HashMap<Integer, IGraphItem>();
 		hashKgmlNameToVertexRepId = new HashMap<String, IGraphItem>();

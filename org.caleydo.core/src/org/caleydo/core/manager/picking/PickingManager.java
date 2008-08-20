@@ -154,13 +154,6 @@ public class PickingManager
 			return;
 		}
 
-		// // Just for testing
-		// float[] test =
-		// GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(
-		// gl, pickPoint.x, pickPoint.y);
-		// System.out.println("Object space coordinates: " +test[0] + "," +
-		// test[1] + "," + test[2]);
-
 		hashViewIDToIsMouseOverPickingEvent.put(iViewID, false);
 
 		int PICKING_BUFSIZE = 1024;

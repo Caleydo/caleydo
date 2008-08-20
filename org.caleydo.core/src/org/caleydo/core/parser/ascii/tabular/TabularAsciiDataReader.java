@@ -9,6 +9,7 @@ import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.ascii.AbstractLoader;
 import org.caleydo.core.parser.ascii.IParserObject;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
@@ -44,15 +45,10 @@ public class TabularAsciiDataReader
 	/**
 	 * Constructor.
 	 * 
-	 * @param setGeneralManager
-	 * @param setFileName
-	 * @param enableMultipeThreads
 	 */
-	public TabularAsciiDataReader(final IGeneralManager setGeneralManager,
-			final String setFileName)
+	public TabularAsciiDataReader(final String sFileName)
 	{
-
-		super(setGeneralManager, setFileName);
+		super(sFileName);
 
 		alTargetStorages = new ArrayList<IStorage>();
 		alColumnDataTypes = new ArrayList<EStorageType>();
@@ -108,7 +104,7 @@ public class TabularAsciiDataReader
 			{
 				bAllTokensProper = false;
 
-				generalManager.getLogger().log(Level.WARNING,
+				GeneralManager.get().getLogger().log(Level.WARNING,
 						"Unknown column data type: " + tokenPattern);
 			}
 
@@ -119,17 +115,13 @@ public class TabularAsciiDataReader
 
 	public void setTargetStorages(final ArrayList<Integer> iAlTargetStorageId)
 	{
-
 		for (int iStorageId : iAlTargetStorageId)
-			alTargetStorages.add((IStorage) generalManager.getStorageManager().getItem(
+		{
+			alTargetStorages.add((IStorage) GeneralManager.get().getStorageManager().getItem(
 					iStorageId));
+		}
 	}
-
-	public final void destroy()
-	{
-
-	}
-
+	
 	protected void allocateStorageBufferForTokenPattern()
 	{
 
@@ -243,7 +235,7 @@ public class TabularAsciiDataReader
 			// Update progress bar only on each 100th line
 			if (iLineInFile % 1000 == 0)
 			{
-				generalManager.getSWTGUIManager().setProgressBarPercentage(
+				swtGuiManager.setProgressBarPercentage(
 						(int)(fProgressBarFactor * iLineInFile));
 			}
 		}

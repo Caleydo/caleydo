@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Vector;
 import javax.media.opengl.GL;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 
 public class GlyphEntry
 {
@@ -29,11 +30,9 @@ public class GlyphEntry
 
 	private int glListSelected_ = 0;
 
-	public GlyphEntry(final IGeneralManager generalManager, int id,
-			GLGlyphGenerator generator)
+	public GlyphEntry(int id, GLGlyphGenerator generator)
 	{
-
-		this.generalManager = generalManager;
+		this.generalManager = GeneralManager.get();		
 		id_ = id;
 		generator_ = generator;
 		parameter_ = new Vector<Integer>();

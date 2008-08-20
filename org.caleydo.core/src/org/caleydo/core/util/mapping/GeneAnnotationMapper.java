@@ -1,17 +1,16 @@
 package org.caleydo.core.util.mapping;
 
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 
 /**
+ * 
+ * 
  * @TODO Revise this class
  * @author Marc Streit
  */
 public class GeneAnnotationMapper
 {
-
-	protected IGeneralManager generalManager;
-
 	protected IGenomeIdManager genomeIDManager;
 
 	/**
@@ -19,10 +18,9 @@ public class GeneAnnotationMapper
 	 * 
 	 * @param generalManager
 	 */
-	public GeneAnnotationMapper(final IGeneralManager generalManager)
+	public GeneAnnotationMapper()
 	{
-
-		genomeIDManager = generalManager.getGenomeIdManager();
+		genomeIDManager = GeneralManager.get().getGenomeIdManager();
 	}
 
 	public final String getGeneShortNameByNCBIGeneId(String sGeneId)

@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import org.caleydo.core.data.mapping.EMappingDataType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
 
@@ -21,7 +22,6 @@ import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
 public abstract class AGenomeIdMap<K, V>
 	implements IGenomeIdMap
 {
-
 	protected IGeneralManager generalManager;
 
 	protected HashMap<K, V> hashGeneric;
@@ -31,24 +31,10 @@ public abstract class AGenomeIdMap<K, V>
 	/**
 	 * Constructor.
 	 */
-	public AGenomeIdMap(final IGeneralManager generalManager,
-			final EMappingDataType dataType)
+	public AGenomeIdMap(final EMappingDataType dataType)
 	{
-
 		hashGeneric = new HashMap<K, V>();
-		this.generalManager = generalManager;
-		this.dataType = dataType;
-	}
-
-	/**
-	 * Constructor.
-	 */
-	protected AGenomeIdMap(final IGeneralManager generalManager,
-			final EMappingDataType dataType, final int iSizeHashMap)
-	{
-
-		hashGeneric = new HashMap<K, V>(iSizeHashMap);
-		this.generalManager = generalManager;
+		this.generalManager = GeneralManager.get();
 		this.dataType = dataType;
 	}
 
@@ -85,25 +71,22 @@ public abstract class AGenomeIdMap<K, V>
 		switch (dataType)
 		{
 			case INT2INT:
-				reversedMap = new GenomeIdMapInt2Int(generalManager, dataType, this.size());
+				reversedMap = new GenomeIdMapInt2Int(dataType);
 				break;
 
 			case STRING2STRING:
-				reversedMap = new GenomeIdMapString2String(generalManager, dataType, this
-						.size());
+				reversedMap = new GenomeIdMapString2String(dataType);
 				break;
 
 			/* invert type for reverse map! */
 			case INT2STRING:
 				/* ==> use STRING2INT */
-				reversedMap = new GenomeIdMapString2Int(generalManager,
-						EMappingDataType.STRING2INT, this.size());
+				reversedMap = new GenomeIdMapString2Int(EMappingDataType.STRING2INT);
 				break;
 
 			case STRING2INT:
 				/* ==> use INT2STRING */
-				reversedMap = new GenomeIdMapInt2String(generalManager,
-						EMappingDataType.INT2STRING, this.size());
+				reversedMap = new GenomeIdMapInt2String(EMappingDataType.INT2STRING);
 				break;
 
 			default:
@@ -140,8 +123,7 @@ public abstract class AGenomeIdMap<K, V>
 		{
 			case INT2INT:
 			{
-				codeResolvedMap = new GenomeIdMapInt2Int(generalManager,
-						targetMappingDataType, this.size());
+				codeResolvedMap = new GenomeIdMapInt2Int(targetMappingDataType);
 
 				/**
 				 * Read HashMap and write it to new HashMap
@@ -179,8 +161,7 @@ public abstract class AGenomeIdMap<K, V>
 			}
 			case INT2STRING:
 			{
-				codeResolvedMap = new GenomeIdMapInt2String(generalManager,
-						targetMappingDataType, this.size());
+				codeResolvedMap = new GenomeIdMapInt2String(targetMappingDataType);
 
 				/**
 				 * Read HashMap and write it to new HashMap
@@ -206,8 +187,7 @@ public abstract class AGenomeIdMap<K, V>
 			}
 			case STRING2INT:
 			{
-				codeResolvedMap = new GenomeIdMapString2Int(generalManager,
-						targetMappingDataType, this.size());
+				codeResolvedMap = new GenomeIdMapString2Int(targetMappingDataType);
 
 				/**
 				 * Read HashMap and write it to new HashMap

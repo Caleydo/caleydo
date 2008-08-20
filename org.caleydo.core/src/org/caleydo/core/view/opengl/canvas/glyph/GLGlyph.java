@@ -137,7 +137,7 @@ public class GLGlyph
 			return;
 		}
 
-		grid_ = new GLGlyphGrid(generalManager, renderStyle);
+		grid_ = new GLGlyphGrid(renderStyle);
 		grid_.loadData(glyphData);
 
 		grid_.buildGrid(gl);

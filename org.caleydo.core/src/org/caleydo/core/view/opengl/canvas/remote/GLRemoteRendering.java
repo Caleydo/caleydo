@@ -179,7 +179,7 @@ public class GLRemoteRendering
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX))
 		{
-			layoutRenderStyle = new JukeboxLayoutRenderStyle(generalManager);
+			layoutRenderStyle = new JukeboxLayoutRenderStyle();
 		}
 
 		underInteractionLayer = layoutRenderStyle.initUnderInteractionLayer();
@@ -191,12 +191,12 @@ public class GLRemoteRendering
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
 		{
-			glConnectionLineRenderer = new GLConnectionLineRendererBucket(generalManager,
+			glConnectionLineRenderer = new GLConnectionLineRendererBucket(
 					underInteractionLayer, stackLayer, poolLayer);
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX))
 		{
-			glConnectionLineRenderer = new GLConnectionLineRendererJukebox(generalManager,
+			glConnectionLineRenderer = new GLConnectionLineRendererJukebox(
 					underInteractionLayer, stackLayer, poolLayer);
 		}
 
@@ -216,8 +216,7 @@ public class GLRemoteRendering
 
 		// TODO: the genome mapper should be stored centralized instead of newly
 		// created
-		colorMappingBarMiniView = new GLColorMappingBarMiniView(new GenomeColorMapper(
-				generalManager));
+		colorMappingBarMiniView = new GLColorMappingBarMiniView(new GenomeColorMapper());
 	}
 
 	@Override
@@ -1663,7 +1662,7 @@ public class GLRemoteRendering
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
 		{
-			layoutRenderStyle = new BucketLayoutRenderStyle(generalManager, layoutRenderStyle);
+			layoutRenderStyle = new BucketLayoutRenderStyle(layoutRenderStyle);
 
 			bucketMouseWheelListener = new BucketMouseWheelListener(this,
 					(BucketLayoutRenderStyle) layoutRenderStyle);
@@ -1675,7 +1674,7 @@ public class GLRemoteRendering
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX))
 		{
-			layoutRenderStyle = new JukeboxLayoutRenderStyle(generalManager, layoutRenderStyle);
+			layoutRenderStyle = new JukeboxLayoutRenderStyle(layoutRenderStyle);
 
 			// Unregister bucket wheel listener
 			parentGLCanvas.removeMouseWheelListener(bucketMouseWheelListener);
@@ -1698,12 +1697,12 @@ public class GLRemoteRendering
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
 		{
-			glConnectionLineRenderer = new GLConnectionLineRendererBucket(generalManager,
+			glConnectionLineRenderer = new GLConnectionLineRendererBucket(
 					underInteractionLayer, stackLayer, poolLayer);
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX))
 		{
-			glConnectionLineRenderer = new GLConnectionLineRendererJukebox(generalManager,
+			glConnectionLineRenderer = new GLConnectionLineRendererJukebox(
 					underInteractionLayer, stackLayer, poolLayer);
 		}
 	}

@@ -5,7 +5,7 @@ import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.mapping.GeneAnnotationMapper;
 
 /**
@@ -18,10 +18,7 @@ import org.caleydo.core.util.mapping.GeneAnnotationMapper;
 
 public class InformationContentCreator
 {
-
 	private ArrayList<String> sContent;
-
-	private IGenomeIdManager IDManager;
 
 	private GeneAnnotationMapper mapper;
 
@@ -32,14 +29,12 @@ public class InformationContentCreator
 	 * 
 	 * @param generalManager
 	 */
-	public InformationContentCreator(final IGeneralManager generalManager)
+	public InformationContentCreator()
 	{
-
-		this.generalManager = generalManager;
 		sContent = new ArrayList<String>();
-		IDManager = this.generalManager.getGenomeIdManager();
-		// TODO Auto-generated constructor stub
-		mapper = new GeneAnnotationMapper(generalManager);
+		mapper = new GeneAnnotationMapper();
+
+		this.generalManager = GeneralManager.get();
 	}
 
 	/**

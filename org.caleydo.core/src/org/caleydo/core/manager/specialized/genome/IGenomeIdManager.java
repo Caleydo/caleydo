@@ -2,6 +2,8 @@ package org.caleydo.core.manager.specialized.genome;
 
 import java.util.Collection;
 import java.util.HashMap;
+import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
+import org.caleydo.core.data.map.MultiHashArrayStringMap;
 import org.caleydo.core.data.mapping.EMappingDataType;
 import org.caleydo.core.data.mapping.EMappingType;
 
@@ -80,15 +82,6 @@ public interface IGenomeIdManager
 	public String getIdStringFromIntByMapping(final int iUniqueId,
 			final EMappingType type);
 
-	// public ArrayList<Integer> getIdListByType( final int iUniqueID,
-	// final EIDType type );
-
-	// public String getIdListByTypeToString( final int iUniqueID,
-	// final EIDType type );
-	//	
-	// public void setIdLUTByType( final int iUniqueID, final EIDType type
-	// );
-
 	/**
 	 * Get lock to start adding key, value pairs to a specific HashMap defined
 	 * by type.
@@ -98,8 +91,6 @@ public interface IGenomeIdManager
 	 *         indicates, that another map is being inserted.
 	 */
 	public boolean buildLUT_startEditing(final EMappingType type);
-
-	// public void buildLUT( Object first, Object second );
 
 	/**
 	 * After calling buildLUT_startEditing(EMappingType) this closes the
@@ -128,13 +119,13 @@ public interface IGenomeIdManager
 	 * Test if any map is registered to the type, no matter if it is a MultiMap
 	 * or a regular Map.
 	 * 
-	 * @param type type to be testet
+	 * @param type type to be tested
 	 * @return TRUE if any Map or MultiMap is registered to that type
 	 */
 	public boolean hasAnyMapByType(EMappingType type);
 
 	public boolean createMapByType(final EMappingType codingLutType,
-			final EMappingDataType dataType, final int iInitialSizeHashMap);
+			final EMappingDataType dataType);
 
 	/**
 	 * Set a Map and register it to a EMappingType. Note: (Object) map
@@ -170,4 +161,8 @@ public interface IGenomeIdManager
 
 	public Collection<String> getIdStringListFromIdListByType(Collection<String> sIdList,
 			EMappingType type);
+	
+	public MultiHashArrayIntegerMap getMultiMapIntegerByType(final EMappingType type);
+	
+	public MultiHashArrayStringMap getMultiMapStringByType(final EMappingType type);
 }

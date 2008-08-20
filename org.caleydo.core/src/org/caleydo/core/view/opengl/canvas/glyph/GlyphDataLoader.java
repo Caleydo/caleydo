@@ -9,6 +9,7 @@ import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
@@ -24,10 +25,9 @@ public class GlyphDataLoader
 
 	private HashMap<Integer, GlyphEntry> glyphs = new HashMap<Integer, GlyphEntry>();
 
-	public GlyphDataLoader(final IGeneralManager generalManager)
+	public GlyphDataLoader()
 	{
-
-		this.generalManager = generalManager;
+		this.generalManager = GeneralManager.get();		
 	}
 
 	public HashMap<Integer, GlyphEntry> getGlyphList()
@@ -162,7 +162,7 @@ public class GlyphDataLoader
 		int counter = 1;
 		for (int i = 0; i < size; ++i)
 		{
-			GlyphEntry g = new GlyphEntry(generalManager, counter, generator);
+			GlyphEntry g = new GlyphEntry(counter, generator);
 
 			for (int[] s : aliStoreMapped)
 				g.addParameter(s[i]);

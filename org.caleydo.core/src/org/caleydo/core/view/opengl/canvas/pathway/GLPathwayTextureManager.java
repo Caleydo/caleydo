@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import com.sun.opengl.util.texture.Texture;
@@ -28,18 +29,15 @@ public class GLPathwayTextureManager
 	/**
 	 * Constructor.
 	 */
-	public GLPathwayTextureManager(final IGeneralManager generalManager)
+	public GLPathwayTextureManager()
 	{
-
-		this.generalManager = generalManager;
+		this.generalManager = GeneralManager.get();		
 
 		hashPathwayIdToTexture = new HashMap<Integer, Texture>();
-
 	}
 
 	public Texture loadPathwayTextureById(int iPathwayId)
 	{
-
 		if (hashPathwayIdToTexture.containsKey(iPathwayId))
 			return hashPathwayIdToTexture.get(iPathwayId);
 

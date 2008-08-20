@@ -23,17 +23,14 @@ public class GLConnectionLineRendererJukebox
 	/**
 	 * Constructor.
 	 * 
-	 * @param generalManager
 	 * @param underInteractionLayer
 	 * @param stackLayer
 	 * @param poolLayer
 	 */
-	public GLConnectionLineRendererJukebox(final IGeneralManager generalManager,
-			final RemoteHierarchyLayer underInteractionLayer,
+	public GLConnectionLineRendererJukebox(final RemoteHierarchyLayer underInteractionLayer,
 			final RemoteHierarchyLayer stackLayer, final RemoteHierarchyLayer poolLayer)
 	{
-
-		super(generalManager, underInteractionLayer, stackLayer, poolLayer);
+		super(underInteractionLayer, stackLayer, poolLayer);
 	}
 
 	protected void renderConnectionLines(final GL gl)

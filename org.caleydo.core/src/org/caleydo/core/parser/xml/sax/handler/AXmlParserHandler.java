@@ -2,6 +2,7 @@ package org.caleydo.core.parser.xml.sax.handler;
 
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.xml.sax.helpers.DefaultHandler;
@@ -18,7 +19,6 @@ public abstract class AXmlParserHandler
 	private boolean bDestroyHandlerAfterClosingTag = false;
 
 	protected final IGeneralManager generalManager;
-
 	protected final IXmlParserManager xmlParserManager;
 
 	protected String sOpeningTag = "";
@@ -26,11 +26,10 @@ public abstract class AXmlParserHandler
 	/**
 	 * Constructor.
 	 */
-	protected AXmlParserHandler(final IGeneralManager generalManager,
-			final IXmlParserManager xmlParserManager)
+	protected AXmlParserHandler()
 	{
-		this.generalManager = generalManager;
-		this.xmlParserManager = xmlParserManager;
+		this.generalManager = GeneralManager.get();
+		this.xmlParserManager = generalManager.getXmlParserManager();
 	}
 
 	public final void setXmlActivationTag(final String tag)

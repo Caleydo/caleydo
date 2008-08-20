@@ -22,21 +22,9 @@ public class GenomeIdMapString2Int
 	/**
 	 * Constructor.
 	 */
-	public GenomeIdMapString2Int(final IGeneralManager generalManager,
-			final EMappingDataType dataType)
+	public GenomeIdMapString2Int(final EMappingDataType dataType)
 	{
-
-		super(generalManager, dataType);
-	}
-
-	/**
-	 * Constructor.
-	 */
-	public GenomeIdMapString2Int(final IGeneralManager generalManager,
-			final EMappingDataType dataType, int iSizeHashMap)
-	{
-
-		super(generalManager, dataType, iSizeHashMap);
+		super(dataType);
 	}
 
 	@Override

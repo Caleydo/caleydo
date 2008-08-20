@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Set;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.view.rep.renderstyle.ConnectionLineRenderStyle;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
@@ -36,15 +36,13 @@ public abstract class AGLConnectionLineRenderer
 	/**
 	 * Constructor.
 	 */
-	public AGLConnectionLineRenderer(final IGeneralManager generalManager,
-			final RemoteHierarchyLayer underInteractionLayer,
+	public AGLConnectionLineRenderer(final RemoteHierarchyLayer underInteractionLayer,
 			final RemoteHierarchyLayer stackLayer, final RemoteHierarchyLayer poolLayer)
 	{
-
 		this.underInteractionLayer = underInteractionLayer;
 		this.stackLayer = stackLayer;
 
-		connectedElementRepManager = generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager();
+		connectedElementRepManager = GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
 
 		hashViewToPointLists = new HashMap<Integer, ArrayList<ArrayList<Vec3f>>>();
 	}

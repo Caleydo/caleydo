@@ -3,8 +3,6 @@ package org.caleydo.core.parser.xml.sax.handler.glyph;
 import gleem.linalg.Vec4f;
 import java.util.Vector;
 import java.util.logging.Level;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphAttributeType;
@@ -18,7 +16,6 @@ import org.xml.sax.SAXException;
 public class GlyphDefinitionSaxHandler
 	extends AXmlParserHandler
 {
-
 	protected Attributes attributes;
 
 	protected String sAttributeName = "";
@@ -33,11 +30,9 @@ public class GlyphDefinitionSaxHandler
 
 	private boolean bLoadingColorBox = false;
 
-	public GlyphDefinitionSaxHandler(IGeneralManager generalManager,
-			IXmlParserManager xmlParserManager)
+	public GlyphDefinitionSaxHandler()
 	{
-
-		super(generalManager, xmlParserManager);
+		super();
 
 		setXmlActivationTag("glyphview");
 	}
@@ -276,7 +271,7 @@ public class GlyphDefinitionSaxHandler
 			return;
 		}
 
-		gatActualColumn = new GlyphAttributeType(generalManager, label, colnum);
+		gatActualColumn = new GlyphAttributeType(label, colnum);
 
 	}
 

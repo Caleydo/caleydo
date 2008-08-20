@@ -9,7 +9,7 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EMappingType;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.util.graph.EGraphItemProperty;
@@ -22,9 +22,6 @@ import org.caleydo.util.graph.EGraphItemProperty;
  */
 public class GenomeColorMapper
 {
-
-	protected IGeneralManager generalManager;
-
 	protected IGenomeIdManager genomeIdManager;
 
 	protected ArrayList<IStorage> alMappingStorage;
@@ -36,12 +33,10 @@ public class GenomeColorMapper
 	 * 
 	 * @param generalManager
 	 */
-	public GenomeColorMapper(final IGeneralManager generalManager)
+	public GenomeColorMapper()
 	{
-
-		this.generalManager = generalManager;
 		alMappingStorage = new ArrayList<IStorage>();
-		genomeIdManager = generalManager.getGenomeIdManager();
+		genomeIdManager = GeneralManager.get().getGenomeIdManager();
 
 		expressionColorMapper = new ColorMapping(0, 1);
 	}
@@ -82,7 +77,7 @@ public class GenomeColorMapper
 			}
 			else
 			{
-				int iDavidId = generalManager.getPathwayItemManager()
+				int iDavidId = GeneralManager.get().getPathwayItemManager()
 						.getDavidIdByPathwayVertexGraphItemId(
 								pathwayVertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0).getId());
 

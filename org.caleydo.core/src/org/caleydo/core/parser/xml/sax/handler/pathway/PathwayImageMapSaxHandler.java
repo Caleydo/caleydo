@@ -2,8 +2,6 @@ package org.caleydo.core.parser.xml.sax.handler.pathway;
 
 import java.awt.Rectangle;
 import java.util.StringTokenizer;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.specialized.genome.pathway.PathwayManager;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.xml.sax.Attributes;
@@ -23,11 +21,9 @@ public class PathwayImageMapSaxHandler
 
 	protected String sAttributeName = "";
 
-	public PathwayImageMapSaxHandler(IGeneralManager generalManager,
-			IXmlParserManager xmlParserManager)
+	public PathwayImageMapSaxHandler()
 	{
-
-		super(generalManager, xmlParserManager);
+		super();
 
 		setXmlActivationTag("imagemap");
 	}

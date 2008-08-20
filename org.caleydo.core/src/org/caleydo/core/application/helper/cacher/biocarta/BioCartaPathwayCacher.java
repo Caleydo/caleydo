@@ -7,6 +7,7 @@ import java.net.URL;
 import org.caleydo.core.application.helper.PathwayListGenerator;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.eclipse.swt.widgets.Display;
@@ -52,12 +53,11 @@ public class BioCartaPathwayCacher
 	/**
 	 * Constructor.
 	 */
-	public BioCartaPathwayCacher(final IGeneralManager generalManager,
-			final Display display, 
+	public BioCartaPathwayCacher(final Display display, 
 			final ProgressBar progressBar,
 			final CmdFetchPathwayData triggeringCommand)
 	{
-		this.generalManager = generalManager;
+		this.generalManager = GeneralManager.get();
 		this.display = display;
 		this.progressBar = progressBar;
 		this.triggeringCommand = triggeringCommand;

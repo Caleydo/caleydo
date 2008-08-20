@@ -6,7 +6,7 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
 import org.caleydo.core.data.mapping.EMappingType;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 
 /**
  * Multi hash map lookup table loader.
@@ -22,15 +22,12 @@ public class LookupTableMultiMapIntLoader
 	protected MultiHashArrayIntegerMap multiHashMapInteger;
 
 	/**
-	 * @param setGeneralManager
-	 * @param setFileName
+	 * Constructor.
 	 */
-	public LookupTableMultiMapIntLoader(final IGeneralManager setGeneralManager,
-			final String setFileName, final EMappingType genomeIdType,
-			final LookupTableLoaderProxy setLookupTableLoaderProxy)
+	public LookupTableMultiMapIntLoader(final String sFileName, final EMappingType genomeIdType,
+			final LookupTableLoaderProxy lookupTableLoaderProxy)
 	{
-
-		super(setGeneralManager, setFileName, genomeIdType, setLookupTableLoaderProxy);
+		super(sFileName, genomeIdType, lookupTableLoaderProxy);
 	}
 
 	@Override
@@ -64,11 +61,7 @@ public class LookupTableMultiMapIntLoader
 				 */
 				while ((strTokenText.hasMoreTokens()) && (bMaintainLoop))
 				{
-
-					/**
-					 * Excpect two Integer values in one row!
-					 */
-
+					// Expect two Integer values in one row!
 					try
 					{
 						int iFirst = new Integer(strTokenText.nextToken());
@@ -110,7 +103,7 @@ public class LookupTableMultiMapIntLoader
 			// Update progress bar only on each 100th line
 			if (iLineInFile % 1000 == 0)
 			{
-				generalManager.getSWTGUIManager().setProgressBarPercentage(
+				swtGuiManager.setProgressBarPercentage(
 						(int)(fProgressBarFactor * iLineInFile));
 			}
 		}

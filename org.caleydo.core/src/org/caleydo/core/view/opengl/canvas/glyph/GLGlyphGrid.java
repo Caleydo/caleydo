@@ -13,6 +13,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.view.rep.renderstyle.GlyphRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
 import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -49,10 +50,9 @@ public class GLGlyphGrid
 
 	private GlyphRenderStyle renderStyle = null;
 
-	public GLGlyphGrid(final IGeneralManager generalManager, GlyphRenderStyle renderStyle)
+	public GLGlyphGrid(GlyphRenderStyle renderStyle)
 	{
-
-		this.generalManager = generalManager;
+		this.generalManager = GeneralManager.get();
 		this.renderStyle = renderStyle;
 		gman = generalManager.getGlyphManager();
 
@@ -238,7 +238,7 @@ public class GLGlyphGrid
 	public void loadData(ISet glyphData)
 	{
 
-		glyphDataLoader = new GlyphDataLoader(generalManager);
+		glyphDataLoader = new GlyphDataLoader();
 
 		glyphs_ = glyphDataLoader.loadGlyphs(glyphData);
 

@@ -114,7 +114,7 @@ public class GLPathwayManager
 		// Initialize genome mapper
 		// TODO: move to a manager because more classes use the genome mapper
 		// maybe GenomeIdManager is the right place
-		genomeMapper = new GenomeColorMapper(generalManager);
+		genomeMapper = new GenomeColorMapper();
 		genomeMapper.setMappingData(alSetData);
 	}
 

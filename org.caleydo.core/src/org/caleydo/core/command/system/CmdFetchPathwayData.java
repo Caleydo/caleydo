@@ -40,18 +40,15 @@ public class CmdFetchPathwayData
 	@Override
 	public void doCommand() throws CaleydoRuntimeException
 	{
-		BioCartaPathwayCacher bioCartaPathwayCacher = new BioCartaPathwayCacher(
-				generalManager, display,
+		BioCartaPathwayCacher bioCartaPathwayCacher = new BioCartaPathwayCacher(display,
 				progressBarBioCartaPathwayCacher, this);
 		bioCartaPathwayCacher.start();
 
-		KeggPathwayCacher keggPathwayCacher = new KeggPathwayCacher(
-				generalManager, display,
+		KeggPathwayCacher keggPathwayCacher = new KeggPathwayCacher(display,
 				progressBarKeggPathwayCacher, this);
 		keggPathwayCacher.start();
 
-		KeggPathwayImageCacher keggPathwayImageCacher = new KeggPathwayImageCacher(
-				generalManager, display,
+		KeggPathwayImageCacher keggPathwayImageCacher = new KeggPathwayImageCacher(display,
 				progressBarKeggPathwayImageCacher, this);
 		keggPathwayImageCacher.start();
 

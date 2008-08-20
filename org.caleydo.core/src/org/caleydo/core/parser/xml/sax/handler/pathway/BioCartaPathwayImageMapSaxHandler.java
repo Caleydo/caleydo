@@ -3,8 +3,6 @@ package org.caleydo.core.parser.xml.sax.handler.pathway;
 import java.util.logging.Level;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EMappingType;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
@@ -38,10 +36,9 @@ public class BioCartaPathwayImageMapSaxHandler
 	/**
 	 * Constructor.
 	 */
-	public BioCartaPathwayImageMapSaxHandler(IGeneralManager generalManager,
-			IXmlParserManager xmlParserManager)
+	public BioCartaPathwayImageMapSaxHandler()
 	{
-		super(generalManager, xmlParserManager);
+		super();
 
 		setXmlActivationTag("span");
 	}

@@ -28,7 +28,6 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
-import org.caleydo.core.manager.specialized.genome.pathway.PathwayItemManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
@@ -227,7 +226,7 @@ public class GLPathway
 		// Create new pathway manager for GL context
 		if (!hashGLcontext2TextureManager.containsKey(gl))
 		{
-			hashGLcontext2TextureManager.put(gl, new GLPathwayTextureManager(generalManager));
+			hashGLcontext2TextureManager.put(gl, new GLPathwayTextureManager());
 		}
 
 		calculatePathwayScaling(gl, iPathwayID);

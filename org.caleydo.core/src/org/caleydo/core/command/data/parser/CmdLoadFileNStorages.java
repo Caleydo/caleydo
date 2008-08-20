@@ -122,7 +122,7 @@ public class CmdLoadFileNStorages
 
 		try
 		{
-			loader = new TabularAsciiDataReader(generalManager, sFileName);
+			loader = new TabularAsciiDataReader(sFileName);
 
 			loader.setTokenPattern(sTokenPattern);
 			loader.setTargetStorages(iAlStorageIDs);
@@ -140,14 +140,6 @@ public class CmdLoadFileNStorages
 					"Error during parsing data file " + sFileName);
 			e.printStackTrace();
 		} // catch
-		finally
-		{
-			if (loader != null)
-			{
-				loader.destroy();
-				loader = null;
-			}
-		} // finally
 	}
 
 	@Override

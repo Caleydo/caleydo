@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.logging.Level;
 import org.caleydo.core.data.mapping.EMappingDataType;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
 import org.caleydo.core.util.ConversionStringInteger;
 
@@ -22,21 +21,9 @@ public class GenomeIdMapString2String
 	/**
 	 * Constructor.
 	 */
-	public GenomeIdMapString2String(final IGeneralManager generalManager,
-			final EMappingDataType dataType)
+	public GenomeIdMapString2String(final EMappingDataType dataType)
 	{
-
-		super(generalManager, dataType);
-	}
-
-	/**
-	 * Constructor.
-	 */
-	public GenomeIdMapString2String(final IGeneralManager generalManager,
-			final EMappingDataType dataType, int iSizeHashMap)
-	{
-
-		super(generalManager, dataType, iSizeHashMap);
+		super(dataType);
 	}
 
 	@Override

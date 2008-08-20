@@ -61,9 +61,6 @@ public class LockableMediator
 	@Override
 	public final boolean register(IMediatorReceiver receiver)
 	{
-
-		assert receiver != null : "can not register null-pointer";
-
 		if (arReceiver.contains(receiver))
 		{
 			// throw new CaleydoRuntimeException(
@@ -73,8 +70,6 @@ public class LockableMediator
 		}
 
 		arReceiver.add(receiver);
-		System.out
-				.println("LockableMediator.register( Receiver " + receiver.toString() + " )");
 		return true;
 	}
 

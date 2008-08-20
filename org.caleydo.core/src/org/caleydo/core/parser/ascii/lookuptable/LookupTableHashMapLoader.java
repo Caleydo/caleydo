@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import org.caleydo.core.data.mapping.EMappingType;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
 
 /**
@@ -24,15 +24,11 @@ public class LookupTableHashMapLoader
 	/**
 	 * Constructor.
 	 * 
-	 * @param setGeneralManager
-	 * @param setFileName
 	 */
-	public LookupTableHashMapLoader(final IGeneralManager generalManager,
-			final String sFileName, final EMappingType genomeIdType,
+	public LookupTableHashMapLoader(final String sFileName, final EMappingType genomeIdType,
 			final LookupTableLoaderProxy lookupTableLoaderProxy)
 	{
-
-		super(generalManager, sFileName, genomeIdType, lookupTableLoaderProxy);
+		super(sFileName, genomeIdType, lookupTableLoaderProxy);
 	}
 
 	@Override
@@ -126,7 +122,7 @@ public class LookupTableHashMapLoader
 			// Update progress bar only on each 100th line
 			if (iLineInFile % 1000 == 0)
 			{
-				generalManager.getSWTGUIManager().setProgressBarPercentage(
+				swtGuiManager.setProgressBarPercentage(
 						(int)(fProgressBarFactor * iLineInFile));
 			}
 		}

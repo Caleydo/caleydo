@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.logging.Level;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 
 /**
  * @author Stefan Sauer
@@ -23,10 +24,9 @@ public class GlyphAttributeGroup
 
 	private ArrayList<String> alAttributes;
 
-	public GlyphAttributeGroup(final IGeneralManager generalManager, int group, String key)
+	public GlyphAttributeGroup(int group, String key)
 	{
-
-		this.generalManager = generalManager;
+		this.generalManager = GeneralManager.get();
 		sKey = key;
 		iGroup = group;
 		hmMappingNominalOrdinal = new HashMap<String, Float>();

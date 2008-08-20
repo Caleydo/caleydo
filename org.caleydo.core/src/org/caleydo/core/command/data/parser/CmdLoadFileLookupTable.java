@@ -233,7 +233,7 @@ public class CmdLoadFileLookupTable
 					genomeDataType = EMappingDataType.INT2STRING;
 				}
 			}
-			loader = new LookupTableLoaderProxy(generalManager, sFileName, lut_genome_type,
+			loader = new LookupTableLoaderProxy(sFileName, lut_genome_type,
 					genomeDataType);
 
 			loader.setTokenSeperator(sLookupTableDelimiter);
@@ -328,26 +328,17 @@ public class CmdLoadFileLookupTable
 							break;
 
 						default:
-							assert false : "Reverse mapping not suported yet for this type="
-									+ lut_genome_reverse_type.toString();
-
 							throw new RuntimeException(
 									"Reverse mapping not suported yet for this type="
 											+ lut_genome_reverse_type.toString());
 
-					} // switch
-					// (lut_genome_reverse_type.getTypeOrigin().getStorageType
-					// ())
-
-				} // if ( lut_genome_reverse_type.isMultiMap() )
+					}
+				}
 				else
 				{
-					loader.createReverseMapFromMap(generalManager, lut_genome_type,
-							lut_genome_reverse_type);
-
-				} // if ( lut_genome_reverse_type.isMultiMap() ) {...} else {
-
-			} // if (bCreateReverseMap)
+					loader.createReverseMapFromMap(lut_genome_type,	lut_genome_reverse_type);
+				}
+			}
 
 			commandManager.runDoCommand(this);
 

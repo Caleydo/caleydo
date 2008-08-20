@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import javax.media.opengl.GL;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -33,7 +34,6 @@ public class GLSliderMiniView
 		BOTTOM;
 	}
 
-	protected IGeneralManager generalManager = null;
 	protected PickingManager pickingManager = null;
 	protected PickingJoglMouseListener pickingTriggerMouseAdapter;
 
@@ -64,12 +64,10 @@ public class GLSliderMiniView
 
 	TextRenderer textRenderer = null;
 
-	public GLSliderMiniView(final IGeneralManager generalManager,
-			PickingJoglMouseListener pickingTriggerMouseAdapter, final int iViewID,
+	public GLSliderMiniView(PickingJoglMouseListener pickingTriggerMouseAdapter, final int iViewID,
 			final int iSliderID)
 	{
-		this.generalManager = generalManager;
-		this.pickingManager = generalManager.getViewGLCanvasManager().getPickingManager();
+		this.pickingManager = GeneralManager.get().getViewGLCanvasManager().getPickingManager();
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
 		this.iUniqueId = iViewID;
 		this.iSliderID = iSliderID;
@@ -154,9 +152,6 @@ public class GLSliderMiniView
 	{
 		if (alAxisScaleOrdinal == null)
 		{
-			generalManager.getLogger().log(Level.WARNING,
-					"someone wanted ordinal data from GLSlider, but has not set any");
-
 			throw (new CaleydoRuntimeException(
 					"someone wanted odinal data from GLSlider, but has not set any"));
 		}
@@ -191,9 +186,6 @@ public class GLSliderMiniView
 	{
 		if (alAxisScaleNominal == null)
 		{
-			generalManager.getLogger().log(Level.WARNING,
-					"someone wanted nominal data from GLSlider, but has not set any");
-
 			throw (new CaleydoRuntimeException(
 					"someone wanted nominal data from GLSlider, but has not set any"));
 		}

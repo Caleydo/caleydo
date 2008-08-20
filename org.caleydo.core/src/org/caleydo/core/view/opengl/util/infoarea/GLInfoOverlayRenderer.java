@@ -9,7 +9,6 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import org.caleydo.core.data.view.rep.renderstyle.infoarea.AInfoOverlayRenderStyle;
-import org.caleydo.core.manager.IGeneralManager;
 import com.sun.opengl.util.j2d.Overlay;
 
 /**
@@ -29,9 +28,8 @@ public class GLInfoOverlayRenderer
 	/**
 	 * Constructor.
 	 */
-	public GLInfoOverlayRenderer(final IGeneralManager generalManager)
+	public GLInfoOverlayRenderer()
 	{
-
 		font = new Font("Courier", Font.BOLD, 16);
 		sAlContent = new ArrayList<String>();
 	}

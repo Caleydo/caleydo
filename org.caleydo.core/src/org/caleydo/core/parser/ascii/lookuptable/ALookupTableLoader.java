@@ -4,6 +4,8 @@ import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
 import org.caleydo.core.data.map.MultiHashArrayStringMap;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.ISWTGUIManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
 
@@ -20,13 +22,9 @@ public abstract class ALookupTableLoader
 
 	protected EMappingType currentGenomeIdType;
 
-	protected final IGeneralManager generalManager;
-
 	protected final IGenomeIdManager genomeIdManager;
 
 	protected LookupTableLoaderProxy lookupTableLoaderProxy;
-
-	protected int iInitialSizeMultiHashMap = 1000;
 	
 	/**
 	 * Factor with that the line index must be multiplied to get a normalized (0-100) 
@@ -34,22 +32,21 @@ public abstract class ALookupTableLoader
 	 */
 	protected float fProgressBarFactor = 0;
 	
+	protected ISWTGUIManager swtGuiManager;
+	
 	/**
-	 * @param setGeneralManager
-	 * @param setFileName
+	 * Constructor.
 	 */
-	public ALookupTableLoader(final IGeneralManager generalManager, final String setFileName,
+	public ALookupTableLoader(final String sFileName,
 			final EMappingType genomeIdType,
-			final LookupTableLoaderProxy setLookupTableLoaderProxy)
+			final LookupTableLoaderProxy lookupTableLoaderProxy)
 	{
-
-		this.generalManager = generalManager;
-		lookupTableLoaderProxy = setLookupTableLoaderProxy;
-		sFileName = setFileName;
-
+		this.lookupTableLoaderProxy = lookupTableLoaderProxy;
+		this.sFileName = sFileName;
 		this.currentGenomeIdType = genomeIdType;
 
-		genomeIdManager = generalManager.getGenomeIdManager();
+		swtGuiManager = GeneralManager.get().getSWTGUIManager();
+		genomeIdManager = GeneralManager.get().getGenomeIdManager();
 
 		lookupTableLoaderProxy.setTokenSeperator(IGeneralManager.sDelimiter_Parser_DataType);
 	}

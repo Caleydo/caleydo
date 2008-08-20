@@ -3,8 +3,6 @@ package org.caleydo.core.parser.xml.sax.handler.command;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.command.queue.ICommandQueue;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.parser.parameter.ParameterHandler;
 import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
@@ -16,8 +14,8 @@ import org.xml.sax.SAXException;
 /**
  * Create commands
  * 
- * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler
  * @author Michael Kalkusch
+ * @author Marc Streit
  */
 public class CommandSaxHandler
 	extends AXmlParserHandler
@@ -25,9 +23,7 @@ public class CommandSaxHandler
 
 	/* XML Tags */
 	private final String sTag_Command = ECommandType.TAG_CMD.getXmlKey();
-
 	private final String sTag_CommandQueue = ECommandType.TAG_CMD_QUEUE.getXmlKey();
-
 	/* END: XML Tags */
 
 	/**
@@ -35,7 +31,6 @@ public class CommandSaxHandler
 	 * to true by default.
 	 */
 	private boolean bCommandBuffer_isActive = false;
-
 	private boolean bCommandQueue_isActive = false;
 
 	protected ICommandQueue commandQueueIter = null;
@@ -44,12 +39,9 @@ public class CommandSaxHandler
 	 * <Application > <CommandBuffer> <Cmd /> <Cmd /> </CommandBuffer>
 	 * </Application>
 	 */
-	public CommandSaxHandler(final IGeneralManager generalManager,
-			final IXmlParserManager xmlParserManager)
+	public CommandSaxHandler()
 	{
-
-		super(generalManager, xmlParserManager);
-
+		super();
 		setXmlActivationTag("CommandBuffer");
 	}
 

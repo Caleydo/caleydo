@@ -156,8 +156,7 @@ public class GLCanvasGlyphSliderView
 			alGlyphAttributeTypes.add(typ);
 
 			// slider
-			GLSliderMiniView slider = new GLSliderMiniView(generalManager,
-					pickingTriggerMouseAdapter, iUniqueID, slidercounter);
+			GLSliderMiniView slider = new GLSliderMiniView(pickingTriggerMouseAdapter, iUniqueID, slidercounter);
 			alSlider.add(slider);
 
 			slider.setHeight(fSliderHeight);
@@ -166,8 +165,7 @@ public class GLCanvasGlyphSliderView
 			slider.setAxisScale(typ.getAttributeNames());
 
 			// distribution
-			GLDistributionMiniView dmv = new GLDistributionMiniView(generalManager,
-					pickingTriggerMouseAdapter, iUniqueID, slidercounter);
+			GLDistributionMiniView dmv = new GLDistributionMiniView(pickingTriggerMouseAdapter, iUniqueID, slidercounter);
 			alDistribution.add(dmv);
 			dmv.setHeight(fSliderHeight);
 			dmv.setWidth(fSliderWidth);

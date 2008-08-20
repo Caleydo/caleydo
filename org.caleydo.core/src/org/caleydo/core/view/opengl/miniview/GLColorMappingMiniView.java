@@ -4,7 +4,6 @@ import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.mapping.GenomeColorMapper;
 
 /**
@@ -27,10 +26,9 @@ public class GLColorMappingMiniView
 	 * 
 	 * @param generalManager
 	 */
-	public GLColorMappingMiniView(final IGeneralManager generalManager)
+	public GLColorMappingMiniView()
 	{
-
-		genomeMapper = new GenomeColorMapper(generalManager);
+		genomeMapper = new GenomeColorMapper();
 		// genomeMapper.setMappingData(alSets);
 	}
 

@@ -6,6 +6,7 @@ import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
 import com.enterprisedt.net.ftp.FTPConnectMode;
@@ -41,11 +42,10 @@ public class KeggPathwayImageCacher
 	/**
 	 * Constructor.
 	 */
-	public KeggPathwayImageCacher(final IGeneralManager generalManager,
-			final Display display, final ProgressBar progressBar,
+	public KeggPathwayImageCacher(final Display display, final ProgressBar progressBar,
 			final CmdFetchPathwayData triggeringCommand)
 	{
-		this.generalManager = generalManager;
+		this.generalManager = GeneralManager.get();
 		this.display = display;
 		this.progressBar = progressBar;
 		this.triggeringCommand = triggeringCommand;

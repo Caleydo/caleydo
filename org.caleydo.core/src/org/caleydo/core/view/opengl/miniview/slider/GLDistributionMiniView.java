@@ -34,8 +34,6 @@ public class GLDistributionMiniView
 		CENTER;
 	}
 
-	protected IGeneralManager generalManager = null;
-
 	private boolean bBorderLeft = true;
 	private boolean bBorderTop = true;
 	private boolean bBorderRight = true;
@@ -52,19 +50,15 @@ public class GLDistributionMiniView
 
 	TextRenderer textRenderer = null;
 
-	public GLDistributionMiniView(final IGeneralManager generalManager,
-			PickingJoglMouseListener pickingTriggerMouseAdapter, final int iViewID,
+	public GLDistributionMiniView(PickingJoglMouseListener pickingTriggerMouseAdapter, final int iViewID,
 			final int iDistributionID)
 	{
-		this.generalManager = generalManager;
-
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 16), false);
 		textRenderer.setColor(0, 0, 0, 1);
 		textRenderer.setSmoothing(false);
 
 		fWidth = 1.0f;
 		fHeight = 1.0f;
-
 	}
 
 	public void setHeight(final float fHeight)

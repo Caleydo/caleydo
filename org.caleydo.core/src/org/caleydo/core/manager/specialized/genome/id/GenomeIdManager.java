@@ -98,63 +98,41 @@ public class GenomeIdManager
 		generalManager.getLogger().log(Level.INFO,
 				"Create lookup table for type=" + codingLutType);
 
-		try
-		// catch ( OutOfMemoryError oee )
+		switch (dataType)
 		{
+			case INT2INT:
+				newMap = new GenomeIdMapInt2Int(dataType);
+				break;
+			case INT2STRING:
+				newMap = new GenomeIdMapInt2String(dataType);
+				break;
+			case STRING2INT:
+				newMap = new GenomeIdMapString2Int(dataType);
+				break;
+			case STRING2STRING:
+				newMap = new GenomeIdMapString2String(dataType);
+				break;
 
-			switch (dataType)
-			{
-				case INT2INT:
-					newMap = new GenomeIdMapInt2Int(generalManager, dataType,
-							iCurrentInitialSizeHashMap);
-					break;
+			/* Multi Map's */
+			case MULTI_STRING2STRING:
+				MultiHashArrayStringMap newMultiMapString = new MultiHashArrayStringMap(
+						iCurrentInitialSizeHashMap);
+				hashType2MultiMapString.put(codingLutType, newMultiMapString);
+				return true;
 
-				case INT2STRING:
-					newMap = new GenomeIdMapInt2String(generalManager, dataType,
-							iCurrentInitialSizeHashMap);
-					break;
+			case MULTI_INT2INT:
+				MultiHashArrayIntegerMap newMultiMapInt = new MultiHashArrayIntegerMap(
+						iCurrentInitialSizeHashMap);
+				hashType2MultiMapInt.put(codingLutType, newMultiMapInt);
+				return true;
 
-				case STRING2INT:
-					newMap = new GenomeIdMapString2Int(generalManager, dataType,
-							iCurrentInitialSizeHashMap);
-					break;
+			default:
+				assert false : "createMap() type=" + dataType + " is not supported";
+				return false;
 
-				case STRING2STRING:
-					newMap = new GenomeIdMapString2String(generalManager, dataType,
-							iCurrentInitialSizeHashMap);
-					break;
+		} // switch ( dataType )
 
-				/* Multi Map's */
-				case MULTI_STRING2STRING:
-					MultiHashArrayStringMap newMultiMapString = new MultiHashArrayStringMap(
-							iCurrentInitialSizeHashMap);
-					hashType2MultiMapString.put(codingLutType, newMultiMapString);
-					return true;
-
-				case MULTI_INT2INT:
-					MultiHashArrayIntegerMap newMultiMapInt = new MultiHashArrayIntegerMap(
-							iCurrentInitialSizeHashMap);
-					hashType2MultiMapInt.put(codingLutType, newMultiMapInt);
-					return true;
-
-				default:
-					assert false : "createMap() type=" + dataType + " is not supported";
-					return false;
-
-			} // switch ( dataType )
-
-			hashType2Map.put(codingLutType, newMap);
-
-		}
-		catch (OutOfMemoryError oee)
-		{
-			generalManager.getLogger().log(
-					Level.SEVERE,
-					"Could not allocate memory for lookup table with the type="
-							+ codingLutType, oee);
-			throw oee;
-			// return false;
-		}
+		hashType2Map.put(codingLutType, newMap);
 
 		return true;
 	}
@@ -168,19 +146,14 @@ public class GenomeIdManager
 	public final MultiHashArrayIntegerMap getMultiMapIntegerByType(
 			final EMappingType type)
 	{
-
 		return hashType2MultiMapInt.get(type);
 	}
 
 	public final MultiHashArrayStringMap getMultiMapStringByType(final EMappingType type)
 	{
-
 		return hashType2MultiMapString.get(type);
 	}
 
-	/**
-	 * @see org.caleydo.core.manager.specialized.genome.IGenomeIdManager#hasAnyMapByType(org.caleydo.core.data.mapping.EMappingType)
-	 */
 	public final boolean hasAnyMapByType(final EMappingType codingLutType)
 	{
 

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.TreeSet;
 import java.util.logging.Level;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 
 /**
  * This class defines a data type It uses GlyphAttributeGroup to combines more
@@ -37,11 +38,9 @@ public class GlyphAttributeType
 
 	private HashMap<Integer, Integer> hmSelectedDistribution;
 
-	public GlyphAttributeType(final IGeneralManager generalManager, String name,
-			int externalColumnIndex)
+	public GlyphAttributeType(String name, int externalColumnIndex)
 	{
-
-		this.generalManager = generalManager;
+		this.generalManager = GeneralManager.get();		
 		sName = name;
 		hmNominalLookup = new HashMap<String, GlyphAttributeGroup>();
 		hmOrdinalLookup = new HashMap<Float, GlyphAttributeGroup>();
@@ -90,7 +89,7 @@ public class GlyphAttributeType
 	{
 
 		if (!hmGroupLookup.containsKey(group))
-			hmGroupLookup.put(group, new GlyphAttributeGroup(generalManager, group, sValue));
+			hmGroupLookup.put(group, new GlyphAttributeGroup(group, sValue));
 
 		GlyphAttributeGroup gag = hmGroupLookup.get(group);
 		gag.addAttribute(sValue, fValue);

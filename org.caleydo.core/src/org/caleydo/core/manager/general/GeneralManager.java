@@ -60,34 +60,19 @@ public class GeneralManager
 	
 	private boolean bAllManagersInitialized = false;
 
-//	private ArrayList<IManager> alManagers;
-
 	private IStorageManager storageManager;
-
 	private IMementoManager mementoManager;
-
 	// protected IVirtualArrayManager virtualArrayManager;
-
 	private ISetManager setManager;
-
 	private ICommandManager commandManager;
-
 	private ISWTGUIManager sWTGUIManager;
-
 	private IViewGLCanvasManager viewGLCanvasManager;
-
 	private IPathwayManager pathwayManager;
-
 	private IPathwayItemManager pathwayItemManager;
-
 	private IEventPublisher eventPublisher;
-
 	private IXmlParserManager xmlParserManager;
-
 	private IGenomeIdManager genomeIdManager;
-
 	private IGlyphManager glyphManager;
-	
 	private IDManager IDManager;
 
 	private Logger logger;
@@ -120,6 +105,8 @@ public class GeneralManager
 		xmlParserManager = new XmlParserManager();
 		glyphManager = new GlyphManager();
 		IDManager = new IDManager();
+		
+		xmlParserManager.initHandlers();
 		
 		initLogger();
 		initPreferences();

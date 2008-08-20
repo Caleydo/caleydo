@@ -38,39 +38,23 @@ public class XmlParserManager
 	private int iCountOpenedFiles = 0;
 
 	protected boolean bUnloadSaxHandlerAfterBootstraping = false;
-
-	/**
-	 * Constructor.
-	 * 
-	 */
-	public XmlParserManager()
+	
+	@Override
+	public void initHandlers()
 	{
-		super();
-
-		OpenExternalXmlFileSaxHandler externalFileHandler = new OpenExternalXmlFileSaxHandler(
-				generalManager, this);
-
-		KgmlSaxHandler kgmlParser = new KgmlSaxHandler(generalManager, this);
-
-		PathwayImageMapSaxHandler pathwayImageMapParser = new PathwayImageMapSaxHandler(
-				generalManager, this);
-
-		BioCartaPathwayImageMapSaxHandler biocartaPathwayParser = new BioCartaPathwayImageMapSaxHandler(
-				generalManager, this);
-
-		CommandSaxHandler cmdHandler = new CommandSaxHandler(generalManager, this);
-
-		GlyphDefinitionSaxHandler glyphHandler = new GlyphDefinitionSaxHandler(generalManager,
-				this);
+		OpenExternalXmlFileSaxHandler externalFileHandler = new OpenExternalXmlFileSaxHandler();
+		KgmlSaxHandler kgmlParser = new KgmlSaxHandler();
+		PathwayImageMapSaxHandler pathwayImageMapParser = new PathwayImageMapSaxHandler();
+		BioCartaPathwayImageMapSaxHandler biocartaPathwayParser = new BioCartaPathwayImageMapSaxHandler();
+		CommandSaxHandler cmdHandler = new CommandSaxHandler();
+		GlyphDefinitionSaxHandler glyphHandler = new GlyphDefinitionSaxHandler();
 
 		registerAndInitSaxHandler(externalFileHandler);
 		registerAndInitSaxHandler(kgmlParser);
 		registerAndInitSaxHandler(pathwayImageMapParser);
 		registerAndInitSaxHandler(biocartaPathwayParser);
 		registerAndInitSaxHandler(cmdHandler);
-		registerAndInitSaxHandler(glyphHandler);
-
-		// openCurrentTag( cmdHandler );
+		registerAndInitSaxHandler(glyphHandler);		
 	}
 
 	/**

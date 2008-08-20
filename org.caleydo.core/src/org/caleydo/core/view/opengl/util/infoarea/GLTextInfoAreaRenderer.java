@@ -11,7 +11,6 @@ import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.InfoAreaRenderStyle;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.opengl.miniview.AGLMiniView;
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -51,19 +50,13 @@ public class GLTextInfoAreaRenderer
 	/**
 	 * Constructor
 	 * 
-	 * @param generalManager
 	 */
-	public GLTextInfoAreaRenderer(final IGeneralManager generalManager,
-			IViewFrustum viewFrustum)
+	public GLTextInfoAreaRenderer(IViewFrustum viewFrustum)
 	{
-
 		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 16), false);
-
-		contentCreator = new InformationContentCreator(generalManager);
-
+		contentCreator = new InformationContentCreator();
 		renderStyle = new InfoAreaRenderStyle(viewFrustum);
 		fSpacing = renderStyle.getSpacing();
-
 	}
 
 	/**

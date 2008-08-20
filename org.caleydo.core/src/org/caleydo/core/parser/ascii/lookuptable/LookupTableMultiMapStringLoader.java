@@ -7,7 +7,7 @@ import java.util.StringTokenizer;
 import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
 import org.caleydo.core.data.map.MultiHashArrayStringMap;
 import org.caleydo.core.data.mapping.EMappingType;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 
 /**
  * Multi hash map lookup table loader.
@@ -23,11 +23,6 @@ public class LookupTableMultiMapStringLoader
 	/**
 	 * Switch between loadDataParseFileLUT_multipleStringPerLine() == TRUE and
 	 * loadDataParseFileLUT_oneStringPerLine()and == FALSE
-	 * 
-	 * @see org.caleydo.core.parser.ascii.lookuptable.LookupTableMultiMapStringLoader#loadDataParseFileLUT_oneStringPerLine(BufferedReader,
-	 *      int, int, int)
-	 * @see org.caleydo.core.parser.ascii.lookuptable.LookupTableMultiMapStringLoader#loadDataParseFileLUT_multipleStringPerLine(BufferedReader,
-	 *      int, int, int)
 	 */
 	protected boolean bOneLineConaintsMultipleStrings = true;
 
@@ -38,12 +33,11 @@ public class LookupTableMultiMapStringLoader
 	/**
 	 * Constructor.
 	 */
-	public LookupTableMultiMapStringLoader(final IGeneralManager setGeneralManager,
-			final String setFileName, final EMappingType genomeIdType,
-			final LookupTableLoaderProxy setLookupTableLoaderProxy)
+	public LookupTableMultiMapStringLoader(final String sFileName, final EMappingType genomeIdType,
+			final LookupTableLoaderProxy lookupTableLoaderProxy)
 	{
 
-		super(setGeneralManager, setFileName, genomeIdType, setLookupTableLoaderProxy);
+		super(sFileName, genomeIdType, lookupTableLoaderProxy);
 	}
 
 	protected int loadDataParseFileLUT_oneStringPerLine(BufferedReader brFile,
@@ -122,7 +116,7 @@ public class LookupTableMultiMapStringLoader
 			// Update progress bar only on each 100th line
 			if (iLineInFile % 1000 == 0)
 			{
-				generalManager.getSWTGUIManager().setProgressBarPercentage(
+				swtGuiManager.setProgressBarPercentage(
 						(int)(fProgressBarFactor * iLineInFile));
 			}
 		}
@@ -217,7 +211,7 @@ public class LookupTableMultiMapStringLoader
 			// Update progress bar only on each 100th line
 			if (iLineInFile % 1000 == 0)
 			{
-				generalManager.getSWTGUIManager().setProgressBarPercentage(
+				swtGuiManager.setProgressBarPercentage(
 						(int)(fProgressBarFactor * iLineInFile));
 			}
 		}
@@ -230,7 +224,7 @@ public class LookupTableMultiMapStringLoader
 
 		if (multiHashMapString == null)
 		{
-			multiHashMapString = new MultiHashArrayStringMap(iInitialSizeMultiHashMap);
+			multiHashMapString = new MultiHashArrayStringMap();
 		}
 	}
 

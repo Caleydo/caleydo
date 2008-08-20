@@ -4,7 +4,6 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 import org.caleydo.core.data.view.camera.EProjectionMode;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**
@@ -19,9 +18,8 @@ public class JukeboxLayoutRenderStyle
 	/**
 	 * Constructor.
 	 */
-	public JukeboxLayoutRenderStyle(final IGeneralManager generalManager)
+	public JukeboxLayoutRenderStyle()
 	{
-
 		super();
 		initLayout();
 	}
@@ -29,17 +27,14 @@ public class JukeboxLayoutRenderStyle
 	/**
 	 * Constructor.
 	 */
-	public JukeboxLayoutRenderStyle(final IGeneralManager generalManager,
-			final ARemoteViewLayoutRenderStyle previousLayoutStyle)
+	public JukeboxLayoutRenderStyle(final ARemoteViewLayoutRenderStyle previousLayoutStyle)
 	{
-
 		super(previousLayoutStyle);
 		initLayout();
 	}
 
 	private void initLayout()
 	{
-
 		eProjectionMode = EProjectionMode.ORTHOGRAPHIC;
 
 		fScalingFactorUnderInteractionLayer = 0.28f;

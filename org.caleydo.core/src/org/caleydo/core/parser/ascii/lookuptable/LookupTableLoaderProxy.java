@@ -10,6 +10,8 @@ import org.caleydo.core.data.map.MultiHashArrayStringMap;
 import org.caleydo.core.data.mapping.EMappingDataType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
 import org.caleydo.core.manager.specialized.genome.id.GenomeIdManager;
 import org.caleydo.core.parser.ascii.AbstractLoader;
@@ -27,14 +29,12 @@ public final class LookupTableLoaderProxy
 	/**
 	 * Constructor.
 	 */
-	public LookupTableLoaderProxy(final IGeneralManager generalManager,
-			final String sFileName, final EMappingType genomeIdType,
+	public LookupTableLoaderProxy(final String sFileName, final EMappingType genomeIdType,
 			final EMappingDataType type)
 	{
+		super(sFileName);
 
-		super(generalManager, sFileName);
-
-		GenomeIdManager dgi_mng = (GenomeIdManager) generalManager.getGenomeIdManager();
+		IGenomeIdManager genomeIdManager = GeneralManager.get().getGenomeIdManager();
 
 		switch (type)
 		{
@@ -43,28 +43,24 @@ public final class LookupTableLoaderProxy
 			case INT2STRING:
 			case STRING2INT:
 			case STRING2STRING:
-				proxyLookupTableLoader = new LookupTableHashMapLoader(generalManager,
-						sFileName, genomeIdType, this);
+				proxyLookupTableLoader = new LookupTableHashMapLoader(sFileName, genomeIdType, this);
 
-				// dgi_mng.createMapByType( genomeIdType,
-				// genomeIdType.getDataMapppingType() );
-				dgi_mng.createMapByType(genomeIdType, type);
+				genomeIdManager.createMapByType(genomeIdType, type);
 
-				IGenomeIdMap setCurrentMap = dgi_mng.getMapByType(genomeIdType);
+				IGenomeIdMap setCurrentMap = genomeIdManager.getMapByType(genomeIdType);
 
 				proxyLookupTableLoader.setHashMap(setCurrentMap, genomeIdType);
 
 				break;
 
 			case MULTI_INT2INT:
-				proxyLookupTableLoader = new LookupTableMultiMapIntLoader(generalManager,
-						sFileName, genomeIdType, this);
+				proxyLookupTableLoader = new LookupTableMultiMapIntLoader(sFileName, genomeIdType, this);
 
-				dgi_mng.createMapByType(genomeIdType, type);// genomeIdType.
+				genomeIdManager.createMapByType(genomeIdType, type);// genomeIdType.
 				// getDataMapppingType()
 				// );
 
-				MultiHashArrayIntegerMap setCurrentMultiMap = dgi_mng
+				MultiHashArrayIntegerMap setCurrentMultiMap = genomeIdManager
 						.getMultiMapIntegerByType(genomeIdType);
 
 				proxyLookupTableLoader.setMultiMapInteger(setCurrentMultiMap, genomeIdType);
@@ -90,14 +86,13 @@ public final class LookupTableLoaderProxy
 			// break;
 
 			case MULTI_STRING2STRING:
-				proxyLookupTableLoader = new LookupTableMultiMapStringLoader(generalManager,
-						sFileName, genomeIdType, this);
+				proxyLookupTableLoader = new LookupTableMultiMapStringLoader(sFileName, genomeIdType, this);
 
-				dgi_mng.createMapByType(genomeIdType, type);// genomeIdType.
+				genomeIdManager.createMapByType(genomeIdType, type);// genomeIdType.
 				// getDataMapppingType()
 				// );
 
-				MultiHashArrayStringMap mha_StringMap = dgi_mng
+				MultiHashArrayStringMap mha_StringMap = genomeIdManager
 						.getMultiMapStringByType(genomeIdType);
 
 				proxyLookupTableLoader.setMultiMapString(mha_StringMap, genomeIdType);
@@ -150,7 +145,7 @@ public final class LookupTableLoaderProxy
 		proxyLookupTableLoader.destroyLUT();
 	}
 
-	public final IGenomeIdMap createReverseMapFromMap(final IGeneralManager generalManager,
+	public final IGenomeIdMap createReverseMapFromMap(
 			final EMappingType originMultiMapType,
 			final EMappingType targetMultiMapType)
 	{
@@ -163,13 +158,12 @@ public final class LookupTableLoaderProxy
 			return null;
 		}
 
-		GenomeIdManager dgi_mng = (GenomeIdManager) generalManager.getGenomeIdManager();
-
-		IGenomeIdMap origionMap = dgi_mng.getMapByType(originMultiMapType);
-
+		IGenomeIdManager genomeIDManager = GeneralManager.get().getGenomeIdManager();
+		
+		IGenomeIdMap origionMap = genomeIDManager.getMapByType(originMultiMapType);
 		IGenomeIdMap targetMap = origionMap.getReversedMap();
 
-		dgi_mng.setMapByType(targetMultiMapType, targetMap);
+		genomeIDManager.setMapByType(targetMultiMapType, targetMap);
 
 		return targetMap;
 	}

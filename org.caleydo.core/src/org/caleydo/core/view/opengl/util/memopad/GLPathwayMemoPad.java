@@ -7,6 +7,7 @@ import java.io.File;
 import java.util.Iterator;
 import javax.media.opengl.GL;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathwayManager;
@@ -49,14 +50,12 @@ public class GLPathwayMemoPad
 
 	private Texture trashCanTexture;
 
-	public GLPathwayMemoPad(final IGeneralManager generalManager,
-			final GLPathwayManager gLPathwayManager,
+	public GLPathwayMemoPad(final GLPathwayManager gLPathwayManager,
 			final GLPathwayTextureManager gLPathwayTextureManager)
 	{
-
 		memoPad = new RemoteHierarchyLayer(EHierarchyLevel.MEMO);
 
-		this.generalManager = generalManager;
+		this.generalManager = GeneralManager.get();		
 		this.gLPathwayManager = gLPathwayManager;
 		this.gLPathwayTextureManager = gLPathwayTextureManager;
 	}

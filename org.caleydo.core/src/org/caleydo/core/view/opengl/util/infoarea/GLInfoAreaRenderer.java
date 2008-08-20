@@ -50,17 +50,15 @@ public class GLInfoAreaRenderer
 	/**
 	 * Constructor.
 	 * 
-	 * @param generalManager
 	 */
-	public GLInfoAreaRenderer(final IGeneralManager generalManager)
+	public GLInfoAreaRenderer()
 	{
-
 		fArWorldCoordinatePosition = new float[3];
 		starEffectRenderer = new GLStarEffectRenderer();
 
 		llMultipleMappingGenes = new LinkedList<PathwayVertexGraphItem>();
 
-		geneAnnotationMapper = new GeneAnnotationMapper(generalManager);
+		geneAnnotationMapper = new GeneAnnotationMapper();
 
 		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 16), false);
 

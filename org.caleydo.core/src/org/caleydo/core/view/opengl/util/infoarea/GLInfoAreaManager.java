@@ -66,7 +66,7 @@ public class GLInfoAreaManager
 	public void initInfoInPlace(final IViewFrustum viewFrustum)
 	{
 
-		infoArea = new GLTextInfoAreaRenderer(generalManager, viewFrustum);
+		infoArea = new GLTextInfoAreaRenderer(viewFrustum);
 	}
 
 	public void initInfoOverlay(final int iViewID, final GLAutoDrawable drawable)
@@ -74,12 +74,11 @@ public class GLInfoAreaManager
 
 		// Lazy creation to be sure that all managers are already initialized
 		if (hashViewIDToInfoOverlay.isEmpty())
-			contentCreator = new InformationContentCreator(generalManager);
+			contentCreator = new InformationContentCreator();
 
 		if (!hashViewIDToInfoOverlay.containsKey(iViewID))
 		{
-			GLInfoOverlayRenderer infoOverlayRenderer = new GLInfoOverlayRenderer(
-					generalManager);
+			GLInfoOverlayRenderer infoOverlayRenderer = new GLInfoOverlayRenderer();
 
 			hashViewIDToInfoOverlay.put(iViewID, infoOverlayRenderer);
 

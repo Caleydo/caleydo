@@ -8,10 +8,10 @@ import java.io.InputStreamReader;
 import java.util.logging.Level;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
-import org.caleydo.core.manager.gui.SWTGUIManager;
+import org.caleydo.core.manager.general.GeneralManager;
 
 /**
- * Loader for raw data data sets in text format.
+ * Loader for raw data in text format.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -19,11 +19,6 @@ import org.caleydo.core.manager.gui.SWTGUIManager;
 public abstract class AbstractLoader
 	implements IParserObject
 {
-
-	protected final IGeneralManager generalManager;
-
-	protected final ISWTGUIManager swtGuiManager;
-
 	/**
 	 * File name
 	 */
@@ -37,32 +32,6 @@ public abstract class AbstractLoader
 	 * @see org.caleydo.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(String)
 	 */
 	private int iLinesInFileToBeRead = -1;
-
-	/**
-	 * Stores the current position of the progress bar.
-	 * 
-	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarCurrentPosition()
-	 */
-	private int iProgressBarCurrentPosition;
-
-	/**
-	 * Stores the current position of the progress bar after calling
-	 * 
-	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarSetStoreInitTitle(String,
-	 *      int, int)
-	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarStoredIncrement()
-	 * @see org.caleydo.core.parser.ascii.AbstractLoader#fProgressBarInc
-	 */
-	private float fProgressBarIndex;
-
-	/**
-	 * Increments progress bar index. Call progressBarIncrement() increment the
-	 * progress bar.
-	 * 
-	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarStoredIncrement()
-	 * @see org.caleydo.core.parser.ascii.AbstractLoader#fProgressBarIndex
-	 */
-	private float fProgressBarInc;
 
 	/**
 	 * Define numbers of lines to skip as assumed to be the header of a file.
@@ -85,23 +54,16 @@ public abstract class AbstractLoader
 
 	protected int iLineInFile = 0;
 
+	protected ISWTGUIManager swtGuiManager;
+	
 	/**
 	 * Constructor.
-	 * 
-	 * @param generalManager
-	 * @param setFileName
 	 */
-	public AbstractLoader(final IGeneralManager generalManager, final String setFileName)
+	public AbstractLoader(final String sFileName)
 	{
-
-		this.generalManager = generalManager;
-
-		swtGuiManager = (SWTGUIManager) generalManager.getSWTGUIManager();
-
-		assert generalManager != null : "null-pointer in constructor";
-
-		this.sFileName = setFileName;
-
+		this.sFileName = sFileName;
+		this.swtGuiManager = GeneralManager.get().getSWTGUIManager();
+			
 		init();
 	}
 
@@ -270,7 +232,7 @@ public abstract class AbstractLoader
 			}
 		}
 
-		generalManager.getLogger().log(Level.INFO, "Start loading file " + sFileName + "...");
+		GeneralManager.get().getLogger().log(Level.INFO, "Start loading file " + sFileName + "...");
 
 		try
 		{
@@ -293,7 +255,7 @@ public abstract class AbstractLoader
 			}
 		}
 
-		generalManager.getLogger().log(Level.INFO,
+		GeneralManager.get().getLogger().log(Level.INFO,
 				"File " + sFileName + " successfully loaded.");
 
 		setArraysToStorages();
@@ -301,73 +263,8 @@ public abstract class AbstractLoader
 		return true;
 	}
 
-//	/**
-//	 * Sets the progress bar to iPosition [0..199] and define the number of
-//	 * increments iStepsTill100_Percent [>0] needed to the the progressbar to
-//	 * iMaxProgressBarPosition Call progressBarIncrement() to increments the
-//	 * progressbar using the settings. Use progressBarResetTitle() to reset the
-//	 * progressbar to the previous position. set fProgressBarIndex = iPosition
-//	 * set fProgressBarInc = (200 - iPosition) / iStepsTill100_Percent
-//	 * 
-//	 * @param sText new text for progress bar
-//	 * @param iPosition range [0..200]
-//	 * @see org.caleydo.core.parser.ascii.AbstractLoader#fProgressBarInc
-//	 * @see org.caleydo.core.parser.ascii.AbstractLoader#fProgressBarIndex
-//	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarStoredIncrement()
-//	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarResetTitle()
-//	 */
-//	protected final void progressBarSetStoreInitTitle(final String sText,
-//			final int iCurrentProgressBarPosition, final int iMaxProgressBarPosition,
-//			final int iStepsTill100_Percent)
-//	{
-//		swtGuiManager.setLoadingProgressBarPercentage(iCurrentProgressBarPosition);
-//		swtGuiManager.setLoadingProgressBarText("Load " + this.getFileName());
-//
-//		iProgressBarCurrentPosition = iCurrentProgressBarPosition;
-//		fProgressBarIndex = iCurrentProgressBarPosition;
-//		fProgressBarInc = (float) (100 - iCurrentProgressBarPosition)
-//				/ (float) iStepsTill100_Percent;
-//	}
-//
-//	/**
-//	 * @param sText new text
-//	 * @param iCurrentProgressBarPosition new progress bar position
-//	 * @param iStepsTill100_Percent number of incremtens to reach 100 %
-//	 * @see org.caleydo.core.parser.ascii.AbstractLoader#progressBarSetStoreInitTitle(String,
-//	 *      int, int, int)
-//	 */
-//	protected final void progressBarSetStoreInitTitle(final String sText,
-//			final int iCurrentProgressBarPosition, final int iStepsTill100_Percent)
-//	{
-//
-//		progressBarSetStoreInitTitle(sText, iCurrentProgressBarPosition,
-//				100, iStepsTill100_Percent);
-//	}
-//
-//	public final void progressBarStoredIncrement()
-//	{
-//
-//		fProgressBarIndex += fProgressBarInc;
-//
-//		if ((int) fProgressBarIndex != iProgressBarCurrentPosition)
-//		{
-//			iProgressBarCurrentPosition = (int) fProgressBarIndex;
-//			swtGuiManager.setLoadingProgressBarPercentage(iProgressBarCurrentPosition);
-//		}
-//	}
-//
-//	/**
-//	 * @param iTicks must be in the range of: currentPercentage - [0..200]
-//	 */
-//	protected final void progressBarIncrement(int iTicks)
-//	{
-//		iProgressBarCurrentPosition += iTicks;
-//		swtGuiManager.setLoadingProgressBarPercentage(iProgressBarCurrentPosition);
-//	}
-
 	protected abstract void loadDataParseFile(BufferedReader brFile,
 			final int iNumberOfLinesInFile) throws IOException;
 
 	protected abstract void setArraysToStorages();
-
 }
