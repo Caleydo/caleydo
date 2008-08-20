@@ -1,5 +1,6 @@
 package org.caleydo.rcp;
 
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
@@ -98,7 +99,7 @@ public class ApplicationWorkbenchAdvisor
 
 		gLAnimator = new FPSAnimator(null, 60);
 
-		for(AGLEventListener tmpGLEventListener : Application.generalManager
+		for(AGLEventListener tmpGLEventListener : GeneralManager.get()
 				.getViewGLCanvasManager().getAllGLEventListeners())
 		{
 			canvas = ((AGLEventListener) tmpGLEventListener).getParentGLCanvas();

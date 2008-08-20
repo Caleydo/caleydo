@@ -186,7 +186,7 @@ public class PathwayManager
 	
 	public void waitUntilPathwayLoadingIsFinished()
 	{
-		while (pathwayLoaderThread == null && bIsPathwayLoadingFinished)
+		while (!bIsPathwayLoadingFinished)
 		{
 			try
 			{

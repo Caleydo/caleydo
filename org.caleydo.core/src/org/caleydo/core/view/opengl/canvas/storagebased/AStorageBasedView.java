@@ -244,6 +244,9 @@ public abstract class AStorageBasedView
 
 		int iVAID = set.createStorageVA(alTempList);
 		mapVAIDs.put(EStorageBasedVAType.COMPLETE_SELECTION, iVAID);
+		
+		bIsDisplayListDirtyLocal = true;
+		bIsDisplayListDirtyRemote = true;
 	}
 
 	/**

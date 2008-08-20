@@ -1,6 +1,6 @@
 package org.caleydo.rcp;
 
-import org.eclipse.jface.action.IStatusLineManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
@@ -46,7 +46,7 @@ public class ApplicationWorkbenchWindowAdvisor
 		getWindowConfigurer().getWindow().getShell().setMaximized(true);
 		
 		// Set status line in caleydo core
-		Application.generalManager.getSWTGUIManager().setExternalRCPStatusLine(
+		GeneralManager.get().getSWTGUIManager().setExternalRCPStatusLine(
 				getWindowConfigurer().getActionBarConfigurer().getStatusLineManager(), 
 				getWindowConfigurer().getWindow().getShell().getDisplay());
 	}

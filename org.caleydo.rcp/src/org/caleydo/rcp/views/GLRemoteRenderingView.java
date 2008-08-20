@@ -5,7 +5,7 @@ import org.caleydo.core.command.view.rcp.CmdExternalActionTrigger;
 import org.caleydo.core.command.view.rcp.CmdExternalFlagSetter;
 import org.caleydo.core.command.view.rcp.EExternalActionType;
 import org.caleydo.core.command.view.rcp.EExternalFlagSetterType;
-import org.caleydo.rcp.Application;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.util.search.SearchBar;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IContributionItem;
@@ -201,7 +201,7 @@ public class GLRemoteRenderingView
 	public void triggerCmdExternalAction(EExternalActionType type)
 	{
 
-		CmdExternalActionTrigger tmpCmd = (CmdExternalActionTrigger) Application.generalManager
+		CmdExternalActionTrigger tmpCmd = (CmdExternalActionTrigger) GeneralManager.get()
 				.getCommandManager().createCommandByType(
 						ECommandType.EXTERNAL_ACTION_TRIGGER);
 
@@ -212,7 +212,7 @@ public class GLRemoteRenderingView
 	public void triggerCmdSExternalFlagSetter(final boolean bFlag, EExternalFlagSetterType type)
 	{
 
-		CmdExternalFlagSetter tmpCmd = (CmdExternalFlagSetter) Application.generalManager
+		CmdExternalFlagSetter tmpCmd = (CmdExternalFlagSetter) GeneralManager.get()
 				.getCommandManager().createCommandByType(
 						ECommandType.EXTERNAL_FLAG_SETTER);
 

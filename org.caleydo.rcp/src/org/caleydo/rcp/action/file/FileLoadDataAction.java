@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import javax.media.opengl.GLEventListener;
-
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateSet;
 import org.caleydo.core.command.data.CmdDataCreateStorage;
@@ -17,12 +15,14 @@ import org.caleydo.core.command.data.filter.CmdDataFilterMath.EDataFilterMathTyp
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
 import org.caleydo.core.data.collection.ESetType;
+import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.system.StringConversionTool;
-import org.caleydo.core.view.opengl.canvas.AStorageBasedView;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
-import org.caleydo.rcp.Application;
 import org.caleydo.rcp.dialog.file.FileLoadDataDialog;
 import org.caleydo.rcp.image.IImageKeys;
 import org.eclipse.jface.action.Action;
@@ -46,7 +46,6 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
@@ -399,7 +398,7 @@ public class FileLoadDataAction
 		lblPreview.setLayoutData(new GridData(GridData.END, GridData.BEGINNING, false, false));
 
 		previewTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
-		previewTable.setLinesVisible(true);
+		previewTable.setLinesVisible(false);
 //		previewTable.setHeaderVisible(true);
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		data.heightHint = 300;
@@ -420,11 +419,6 @@ public class FileLoadDataAction
 			tmpColumn.dispose();
 		}
 
-//		// Label column
-//		TableColumn tmpColumn = new TableColumn(previewTable, SWT.NONE);
-//		tmpColumn.setText("Label");
-//		tmpColumn.setWidth(80);
-
 		final TableEditor editor = new TableEditor(previewTable);
 		editor.horizontalAlignment = SWT.LEFT;
 		editor.grabHorizontal = true;
@@ -435,59 +429,62 @@ public class FileLoadDataAction
 			{
 				Rectangle clientArea = previewTable.getClientArea();
 				Point pt = new Point(event.x, event.y);
-				int index = previewTable.getTopIndex();
-				while (index < previewTable.getItemCount())
-				{
-					boolean visible = false;
-					final TableItem item = previewTable.getItem(index);
-					for (int i = 0; i < previewTable.getColumnCount(); i++)
+
+				int index = 0; // only make caption line editable
+				
+				boolean visible = false;
+				final TableItem item = previewTable.getItem(index);
+				for (int iColIndex = 1; iColIndex < previewTable.getColumnCount(); iColIndex++)
+				{	
+					Rectangle rect = item.getBounds(iColIndex);
+					if (rect.contains(pt))
 					{
-						Rectangle rect = item.getBounds(i);
-						if (rect.contains(pt))
+						final int column = iColIndex;
+						final Text text = new Text(previewTable, SWT.NONE);
+						Listener textListener = new Listener()
 						{
-							final int column = i;
-							final Text text = new Text(previewTable, SWT.NONE);
-							Listener textListener = new Listener()
+							public void handleEvent(final Event e)
 							{
-								public void handleEvent(final Event e)
+								switch (e.type)
 								{
-									switch (e.type)
-									{
-										case SWT.FocusOut:
-											item.setText(column, text.getText());
-											text.dispose();
-											break;
-										case SWT.Traverse:
-											switch (e.detail)
-											{
-												case SWT.TRAVERSE_RETURN:
-													item.setText(column, text.getText());
-													// FALL THROUGH
-												case SWT.TRAVERSE_ESCAPE:
-													text.dispose();
-													e.doit = false;
-											}
-											break;
-									}
+									case SWT.FocusOut:
+										item.setText(column, text.getText());
+										text.dispose();
+										break;
+									case SWT.Traverse:
+										switch (e.detail)
+										{
+											case SWT.TRAVERSE_RETURN:
+												item.setText(column, text.getText());
+				
+												// FALL THROUGH
+											case SWT.TRAVERSE_ESCAPE:
+												text.dispose();
+												e.doit = false;
+										}
+										break;
 								}
-							};
-							text.addListener(SWT.FocusOut, textListener);
-							text.addListener(SWT.Traverse, textListener);
-							editor.setEditor(text, item, i);
-							text.setText(item.getText(i));
-							text.selectAll();
-							text.setFocus();
-							return;
-						}
-						if (!visible && rect.intersects(clientArea))
-						{
-							visible = true;
-						}
-					}
-					if (!visible)
+							}
+						};
+						
+						text.addListener(SWT.FocusOut, textListener);
+						text.addListener(SWT.Traverse, textListener);
+						editor.setEditor(text, item, iColIndex);
+						text.setText(item.getText(iColIndex));
+						text.selectAll();
+						text.setFocus();
 						return;
-					index++;
+					}
+					
+					if (!visible && rect.intersects(clientArea))
+					{
+						visible = true;
+					}
 				}
+				
+				if (!visible)
+					return;
+				index++;
 			}
 		});
 		
@@ -509,7 +506,7 @@ public class FileLoadDataAction
 			StringTokenizer tokenizer;
 			TableColumn column;
 			TableItem item;
-			int iColCount = 0;
+			int iColIndex = 0;
 			
 			// Read labels
 			if ((sLine = brFile.readLine()) != null)
@@ -517,16 +514,22 @@ public class FileLoadDataAction
 				tokenizer = new StringTokenizer(sLine, sDelimiter, false);
 				item = new TableItem(previewTable, SWT.NONE);
 				
+				item.setText(0, "Label");
+				column = new TableColumn(previewTable, SWT.NONE);
+				column.setWidth(100);
+				
 				while (tokenizer.hasMoreTokens())
 				{
 					sTmpNextToken = tokenizer.nextToken();
+		
 					column = new TableColumn(previewTable, SWT.NONE);
-//					column.setText(sTmpNextToken);
-					column.setWidth(80);
+					column.setWidth(100);
+	
+					item.setText(iColIndex+1, sTmpNextToken);
+//					item.setBackground(iColCount, Display.getCurrent()
+//							.getSystemColor(SWT.COLOR_TITLE_BACKGROUND));
 					
-					item.setText(iColCount, sTmpNextToken);
-					
-					iColCount++;
+					iColIndex++;
 				}
 			}
 
@@ -539,7 +542,7 @@ public class FileLoadDataAction
 				// last flag triggers return of delimiter itself
 				tokenizer = new StringTokenizer(sLine, sDelimiter, true);
 				item = new TableItem(previewTable, SWT.NONE);
-				int iColumnCount = 0;
+				iColIndex = 0;
 
 				while (tokenizer.hasMoreTokens())
 				{
@@ -548,8 +551,8 @@ public class FileLoadDataAction
 					// Check for empty cells
 					if (sTmpNextToken.equals(sDelimiter) && !bCellFilled)
 					{
-						item.setText(iColumnCount + 1, "");
-						iColumnCount++;
+						item.setText(iColIndex + 1, "");
+						iColIndex++;
 					}
 					else if (sTmpNextToken.equals(sDelimiter) && bCellFilled)
 					{
@@ -558,8 +561,8 @@ public class FileLoadDataAction
 					else
 					{
 						bCellFilled = true;
-						item.setText(iColumnCount + 1, sTmpNextToken);
-						iColumnCount++;
+						item.setText(iColIndex + 1, sTmpNextToken);
+						iColIndex++;
 					}
 				}
 
@@ -584,18 +587,21 @@ public class FileLoadDataAction
 
 		TableItem[] arTmpLabelColumnItem = previewTable.getItems();
 
-		arTmpLabelColumnItem[0].setText(0, "Data class");
+//		arTmpLabelColumnItem[0].setText(0, "Label");
 		arTmpLabelColumnItem[0].setBackground(0, previewTable.getDisplay().getSystemColor(
-				SWT.COLOR_GREEN));
-		arTmpLabelColumnItem[1].setText(0, "Data type");
+				SWT.COLOR_TITLE_BACKGROUND));
+		arTmpLabelColumnItem[1].setText(0, "Data class");
 		arTmpLabelColumnItem[1].setBackground(0, previewTable.getDisplay().getSystemColor(
-				SWT.COLOR_GREEN));
+				SWT.COLOR_TITLE_BACKGROUND));
+		arTmpLabelColumnItem[2].setText(0, "Data type");
+		arTmpLabelColumnItem[2].setBackground(0, previewTable.getDisplay().getSystemColor(
+				SWT.COLOR_TITLE_BACKGROUND));
 
-		for (int iItemIndex = 2; iItemIndex < arTmpLabelColumnItem.length; iItemIndex++)
+		for (int iItemIndex = 3; iItemIndex < arTmpLabelColumnItem.length; iItemIndex++)
 		{
 			arTmpLabelColumnItem[iItemIndex].setText(0, "Row " + (iItemIndex - 2));
 			arTmpLabelColumnItem[iItemIndex].setBackground(0, Display.getCurrent()
-					.getSystemColor(SWT.COLOR_GREEN));
+					.getSystemColor(SWT.COLOR_TITLE_BACKGROUND));
 		}
 	}
 
@@ -609,7 +615,7 @@ public class FileLoadDataAction
 
 		arComboDataClass.clear();
 
-		TableItem tmpItem = new TableItem(previewTable, SWT.NONE, 0);
+		TableItem tmpItem = new TableItem(previewTable, SWT.NONE, 1);
 
 		for (int iColIndex = 1; iColIndex < previewTable.getColumnCount(); iColIndex++)
 		{
@@ -643,9 +649,11 @@ public class FileLoadDataAction
 					for (TableItem tmpItem : previewTable.getItems())
 					{
 						if (comboTmpDataClass.getSelectionIndex() == 0)
+						{	
 							tmpItem.setBackground(
 									arComboDataClass.indexOf(comboTmpDataClass) + 1,
 									highlightColor);
+						}
 					}
 				}
 
@@ -655,13 +663,17 @@ public class FileLoadDataAction
 					for (TableItem tmpItem : previewTable.getItems())
 					{
 						if (comboTmpDataClass.getSelectionIndex() > 0)
+						{
 							tmpItem.setBackground(
 									arComboDataClass.indexOf(comboTmpDataClass) + 1,
 									selectionColor);
+						}
 						else
+						{
 							tmpItem.setBackground(
 									arComboDataClass.indexOf(comboTmpDataClass) + 1,
 									originalColor);
+						}
 					}
 				}
 			});
@@ -705,7 +717,7 @@ public class FileLoadDataAction
 
 		arComboDataType.clear();
 
-		TableItem tmpItem = new TableItem(previewTable, SWT.NONE, 1);
+		TableItem tmpItem = new TableItem(previewTable, SWT.NONE, 2);
 
 		for (int iColIndex = 1; iColIndex < previewTable.getColumnCount(); iColIndex++)
 		{
@@ -794,20 +806,22 @@ public class FileLoadDataAction
 															// float data
 			{
 				// Create data storage
-				CmdDataCreateStorage cmdCreateStorage = (CmdDataCreateStorage) Application.generalManager
+				CmdDataCreateStorage cmdCreateStorage = (CmdDataCreateStorage) GeneralManager.get()
 						.getCommandManager().createCommandByType(
 								ECommandType.CREATE_STORAGE);
 
 				cmdCreateStorage.setAttributes(EManagedObjectType.STORAGE_NUMERICAL);
 				cmdCreateStorage.doCommand();
 				
-				int iTmpStorageId = cmdCreateStorage.getCreatedObject().getID();
-				iAlStorageId.add(iTmpStorageId);
+				IStorage storage = cmdCreateStorage.getCreatedObject();
+				storage.setLabel(previewTable.getItem(0).getText(iColIndex+1));
+				
+				iAlStorageId.add(storage.getID());
 
 				if (!sStorageIDs.equals(""))
 					sStorageIDs += IGeneralManager.sDelimiter_Parser_DataItems;
 
-				sStorageIDs = sStorageIDs + iTmpStorageId;
+				sStorageIDs = sStorageIDs + storage.getID();
 			}
 		}
 
@@ -823,20 +837,18 @@ public class FileLoadDataAction
 		}
 
 		// Trigger file loading command
-		CmdLoadFileNStorages cmdLoadCsv = (CmdLoadFileNStorages) Application.generalManager
+		CmdLoadFileNStorages cmdLoadCsv = (CmdLoadFileNStorages) GeneralManager.get()
 				.getCommandManager().createCommandByType(ECommandType.LOAD_DATA_FILE);
 
-//		ISWTGUIManager iSWTGUIManager = Application.generalManager.getSWTGUIManager();
+//		ISWTGUIManager iSWTGUIManager = GeneralManager.get().getSWTGUIManager();
 //		iSWTGUIManager.setProgressBarVisible(true);
 
 		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sInputPattern, iStartParseFileAtLine, -1);
-
 		cmdLoadCsv.doCommand();
 
 		// Create SET
-		CmdDataCreateSet cmdCreateSet = (CmdDataCreateSet) Application.generalManager
+		CmdDataCreateSet cmdCreateSet = (CmdDataCreateSet) GeneralManager.get()
 				.getCommandManager().createCommandByType(ECommandType.CREATE_SET_DATA);
-
 		cmdCreateSet.setAttributes(null, iAlStorageId,
 				ESetType.GENE_EXPRESSION_DATA);
 		cmdCreateSet.doCommand();
@@ -844,7 +856,7 @@ public class FileLoadDataAction
 
 //		iSWTGUIManager.setProgressBarVisible(false);
 
-		CmdLoadFileLookupTable cmdLoadLookupTableFile = (CmdLoadFileLookupTable) Application.generalManager
+		CmdLoadFileLookupTable cmdLoadLookupTableFile = (CmdLoadFileLookupTable) GeneralManager.get()
 				.getCommandManager().createCommandByType(
 						ECommandType.LOAD_LOOKUP_TABLE_FILE);
 
@@ -856,7 +868,7 @@ public class FileLoadDataAction
 		if (bLogFilter)
 		{
 			ArrayList<Integer> iArSetIDs = new ArrayList<Integer>();
-			CmdDataFilterMath cmdDataFilterLog = (CmdDataFilterMath) Application.generalManager
+			CmdDataFilterMath cmdDataFilterLog = (CmdDataFilterMath) GeneralManager.get()
 				.getCommandManager().createCommandByType(ECommandType.DATA_FILTER_MATH);
 			cmdDataFilterLog.setAttributes(EDataFilterMathType.LIN_2_LOG, iArSetIDs, EManagedObjectType.SET);
 			cmdDataFilterLog.doCommand();
@@ -867,16 +879,16 @@ public class FileLoadDataAction
 
 	private void setDataInViews()
 	{
-
-		for (GLEventListener tmpGLEventListener : Application.generalManager
+		for (AGLEventListener tmpGLEventListener : GeneralManager.get()
 				.getViewGLCanvasManager().getAllGLEventListeners())
 		{
 			if (tmpGLEventListener instanceof GLHeatMap
 					|| tmpGLEventListener.getClass().getSuperclass().equals(
 							AStorageBasedView.class))
 			{
-				((AStorageBasedView) tmpGLEventListener).addSet(iCreatedSetID);
-//				((AStorageBasedView) tmpGLEventListener).initData();
+				tmpGLEventListener.clearSets();
+				tmpGLEventListener.addSet(iCreatedSetID);
+				((AStorageBasedView)tmpGLEventListener).initData();
 			}
 		}
 	}

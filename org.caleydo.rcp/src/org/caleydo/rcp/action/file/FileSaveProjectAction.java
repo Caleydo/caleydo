@@ -1,6 +1,6 @@
 package org.caleydo.rcp.action.file;
 
-import org.caleydo.rcp.Application;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.image.IImageKeys;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.widgets.Composite;
@@ -54,7 +54,7 @@ public class FileSaveProjectAction
 
 		String sFileName = fileDialog.open();
 
-		Application.generalManager.getCommandManager().writeSerializedObjects(sFileName);
+		GeneralManager.get().getCommandManager().writeSerializedObjects(sFileName);
 	}
 
 	@Override

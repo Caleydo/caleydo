@@ -3,6 +3,9 @@ package org.caleydo.rcp.wizard.project;
 import org.caleydo.rcp.action.file.FileOpenProjectAction;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
+import org.eclipse.swt.graphics.Rectangle;
+import org.eclipse.swt.widgets.Monitor;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * Wizard that appears after Caleydo startup.
@@ -16,9 +19,17 @@ public class CaleydoProjectWizard
 	/**
 	 * Constructor.
 	 */
-	public CaleydoProjectWizard()
+	public CaleydoProjectWizard(final Shell parentShell)
 	{
 		super();
+		
+		parentShell.setText("Open project file");
+		Monitor primary = parentShell.getDisplay().getPrimaryMonitor ();
+		Rectangle bounds = primary.getBounds ();
+		Rectangle rect = parentShell.getBounds ();
+		int x = bounds.x + (bounds.width - rect.width) / 2;
+		int y = bounds.y + (bounds.height - rect.height) / 2;
+		parentShell.setLocation (x, y);
 	}
 
 	@Override

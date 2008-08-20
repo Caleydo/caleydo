@@ -1,4 +1,4 @@
-package org.caleydo.testing.applications;
+package org.caleydo.testing.applications.swt;
 
 import java.util.LinkedList;
 import java.util.List;

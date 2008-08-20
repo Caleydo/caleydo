@@ -272,9 +272,8 @@ public class GLParallelCoordinates
 	@Override
 	public void display(final GL gl)
 	{
-
-		GLHelperFunctions.drawAxis(gl);
-		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+//		GLHelperFunctions.drawAxis(gl);
+//		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
 		clipToFrustum(gl);
 

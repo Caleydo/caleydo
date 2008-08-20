@@ -5,7 +5,6 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 public class GLParCoordsView
 	extends AGLViewPart

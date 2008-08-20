@@ -429,8 +429,6 @@ public abstract class AGLEventListener
 
 	public void setDetailLevel(EDetailLevel detailLevel)
 	{
-		System.out.println("Changed detail level to: " +detailLevel);
-		
 		this.detailLevel = detailLevel;
 	}
 }

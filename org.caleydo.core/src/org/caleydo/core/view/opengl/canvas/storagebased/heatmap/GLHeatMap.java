@@ -141,7 +141,9 @@ public class GLHeatMap
 	@Override
 	public void displayLocal(GL gl)
 	{
-
+		if(set == null)
+			return;
+		
 		if (bIsTranslationAnimationActive)
 		{
 			doTranslation();
@@ -164,6 +166,8 @@ public class GLHeatMap
 	@Override
 	public void displayRemote(GL gl)
 	{
+		if(set == null)
+			return;
 
 		if (bIsTranslationAnimationActive)
 		{
@@ -186,8 +190,8 @@ public class GLHeatMap
 	@Override
 	public void display(GL gl)
 	{
-		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-		GLHelperFunctions.drawAxis(gl);
+//		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+//		GLHelperFunctions.drawAxis(gl);
 		gl.glCallList(iGLDisplayListToCall);
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 	}

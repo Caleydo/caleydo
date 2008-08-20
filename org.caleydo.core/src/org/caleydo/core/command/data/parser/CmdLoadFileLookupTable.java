@@ -184,22 +184,13 @@ public class CmdLoadFileLookupTable
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
-
-		// generalManager.logMsg(
-		// "load file via importer... ([" +
-		// sFileName + "]",
-		// LoggerType.STATUS );
-
-		// generalManager.logMsg(
-		// "load file via importer: [LUT-tpye:[" +
-		// sLookupTableType + "]  cast=[" +
-		// iTargetSetId + "])",
-		// LoggerType.VERBOSE );
-
-		LookupTableLoaderProxy loader = null;
-
+		LookupTableLoaderProxy loader = null;	
+		
 		IGenomeIdManager genomeIdManager = generalManager.getGenomeIdManager();
 
+		// Remove old lookuptable if it already exists
+		genomeIdManager.removeMapByType(EMappingType.valueOf(sLookupTableType));
+		
 		try
 		{
 			EMappingType lut_genome_type = EMappingType.valueOf(sLookupTableType);

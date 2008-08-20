@@ -258,6 +258,9 @@ implements ISWTGUIManager
 	@Override
 	public void setProgressBarPercentage(int iPercentage)
 	{
+		if (loadingProgressBar.isDisposed())
+			return;
+		
 		loadingProgressBar.setSelection(iPercentage);
 	}
 	
@@ -281,14 +284,22 @@ implements ISWTGUIManager
 	
 	@Override
 	public void setProgressBarText(String sText)
-	{
+	{	
 		if (generalManager.isStandalone())
-		{
+		{			
 			loadingProgressBarWindow.setText(sText);
 			loadingProgressBarWindow.update();
 		}
 		else
 		{
+//			// If in RCP mode and the splash is already gone
+//			// a new progress bar has to be created
+//			if (loadingProgressBarWindow == null)
+//				createLoadingProgressBar();
+			
+			if (loadingProgressBarLabel.isDisposed())
+				return;
+			
 			loadingProgressBarLabel.setText(sText);
 			loadingProgressBarLabel.update();
 		}

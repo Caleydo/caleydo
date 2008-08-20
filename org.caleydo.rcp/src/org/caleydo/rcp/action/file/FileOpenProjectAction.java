@@ -1,8 +1,8 @@
 package org.caleydo.rcp.action.file;
 
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.image.IImageKeys;
-import org.caleydo.rcp.splashHandlers.ExtensibleSplashHandler;
 import org.eclipse.jface.action.Action;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
@@ -53,9 +53,9 @@ public class FileOpenProjectAction
 		String sFileName = fileDialog.open();
 
 		// View and GL canvas cleanup
-		Application.generalManager.getViewGLCanvasManager().cleanup();
+		GeneralManager.get().getViewGLCanvasManager().cleanup();
 
-		Application.generalManager.getCommandManager().readSerializedObjects(sFileName);
+		GeneralManager.get().getCommandManager().readSerializedObjects(sFileName);
 
 		Application.applicationWorkbenchAdvisor.openLoadedViews();
 	}

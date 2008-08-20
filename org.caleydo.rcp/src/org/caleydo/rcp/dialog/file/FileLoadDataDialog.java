@@ -2,8 +2,10 @@ package org.caleydo.rcp.dialog.file;
 
 import org.caleydo.rcp.action.file.FileLoadDataAction;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -14,6 +16,8 @@ import org.eclipse.swt.widgets.Shell;
 public class FileLoadDataDialog
 	extends Dialog
 {
+	
+	private FileLoadDataAction fileLoadDataAction;
 
 	/**
 	 * Constructor.
@@ -22,6 +26,13 @@ public class FileLoadDataDialog
 	{
 		super(parentShell);
 
+		parentShell.setText("Open project file");
+		Monitor primary = parentShell.getDisplay().getPrimaryMonitor ();
+		Rectangle bounds = primary.getBounds ();
+		Rectangle rect = parentShell.getBounds ();
+		int x = bounds.x + (bounds.width - rect.width) / 2;
+		int y = bounds.y + (bounds.height - rect.height) / 2;
+		parentShell.setLocation (x, y);
 	}
 
 	@Override
@@ -34,13 +45,20 @@ public class FileLoadDataDialog
 	@Override
 	protected Control createDialogArea(Composite parent)
 	{
-
-		FileLoadDataAction fileLoadDataAction = new FileLoadDataAction(parent);
+		fileLoadDataAction = new FileLoadDataAction(parent);
 		fileLoadDataAction.run();
 
 		return parent;
 	}
-
+	
+	@Override
+	protected void okPressed()
+	{
+		fileLoadDataAction.execute();
+		
+		super.okPressed();
+	}
+	
 	/**
 	 * For testing purposes
 	 * 

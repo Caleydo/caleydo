@@ -3,7 +3,7 @@ package org.caleydo.rcp.util.search;
 import java.util.Collection;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
-import org.caleydo.rcp.Application;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
@@ -68,7 +68,7 @@ public class SearchBar
 		{
 			public void focusGained(FocusEvent e)
 			{
-				Collection<PathwayGraph> allPathways = Application.generalManager.getPathwayManager().getAllItems();
+				Collection<PathwayGraph> allPathways = GeneralManager.get().getPathwayManager().getAllItems();
 				String[] sArSearchItems = new String[allPathways.size()];
 				int iIndex = 0;
 				for(PathwayGraph pathway : allPathways)
@@ -90,7 +90,7 @@ public class SearchBar
 				String sSearchEntity = searchBox.getItem(searchBox.getSelectionIndex());
 				sSearchEntity = sSearchEntity.substring(0, sSearchEntity.indexOf(" ("));
 
-				Application.generalManager.getViewGLCanvasManager().getDataEntitySearcher()
+				GeneralManager.get().getViewGLCanvasManager().getDataEntitySearcher()
 						.searchForEntity(sSearchEntity);
 			}
 		});
@@ -118,7 +118,7 @@ public class SearchBar
 				{
 					case SWT.CR:
 					{
-						boolean bFound = Application.generalManager.getViewGLCanvasManager()
+						boolean bFound = GeneralManager.get().getViewGLCanvasManager()
 								.getDataEntitySearcher().searchForEntity(
 										geneSearchText.getText());
 

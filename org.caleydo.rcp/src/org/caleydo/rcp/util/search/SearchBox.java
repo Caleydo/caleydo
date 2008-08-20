@@ -2,6 +2,7 @@ package org.caleydo.rcp.util.search;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.accessibility.ACC;

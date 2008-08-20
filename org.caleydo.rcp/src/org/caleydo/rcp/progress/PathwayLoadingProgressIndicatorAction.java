@@ -1,8 +1,8 @@
 package org.caleydo.rcp.progress;
 
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.specialized.genome.pathway.PathwayLoaderThread;
-import org.caleydo.rcp.Application;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -25,14 +25,14 @@ public class PathwayLoadingProgressIndicatorAction
 				monitor.beginTask("Loading pathways", 100);
 				
 				monitor.subTask("KEGG");
-				PathwayLoaderThread.loadAllPathwaysByType(Application.generalManager, 
-						Application.generalManager.getPathwayManager()
+				PathwayLoaderThread.loadAllPathwaysByType(GeneralManager.get(), 
+						GeneralManager.get().getPathwayManager()
 							.getPathwayDatabaseByType(EPathwayDatabaseType.KEGG));
 				monitor.worked(50);
 				
 				monitor.subTask("BioCarta");
-				PathwayLoaderThread.loadAllPathwaysByType(Application.generalManager, 
-						Application.generalManager.getPathwayManager()
+				PathwayLoaderThread.loadAllPathwaysByType(GeneralManager.get(), 
+						GeneralManager.get().getPathwayManager()
 							.getPathwayDatabaseByType(EPathwayDatabaseType.BIOCARTA));				monitor.worked(50);
 				
 				monitor.done();

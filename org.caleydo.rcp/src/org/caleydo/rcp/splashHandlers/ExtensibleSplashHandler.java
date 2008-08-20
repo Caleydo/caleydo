@@ -1,9 +1,7 @@
 package org.caleydo.rcp.splashHandlers;
 
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.Application;
-import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
-import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -11,15 +9,15 @@ import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.splash.AbstractSplashHandler;
 
 /**
  * Caleydo splash screen with integrated progress bar.
+ * 
+ * @author Marc Streit
  */
 public class ExtensibleSplashHandler
 	extends AbstractSplashHandler
@@ -43,9 +41,6 @@ public class ExtensibleSplashHandler
 		doEventLoop();
 	}
 
-	/**
-	 * 
-	 */
 	private void createUI()
 	{
 		Shell splash = getSplash();
@@ -71,7 +66,7 @@ public class ExtensibleSplashHandler
 		label.setForeground(splash.getDisplay().getSystemColor (SWT.COLOR_WHITE));
 		label.setLayoutData(new RowData(getSplash().getSize().x - 5, 20));
 		
-		Application.generalManager.getSWTGUIManager().setExternalProgressBarAndLabel(
+		GeneralManager.get().getSWTGUIManager().setExternalProgressBarAndLabel(
 				progressBar, label);
 	}
 	

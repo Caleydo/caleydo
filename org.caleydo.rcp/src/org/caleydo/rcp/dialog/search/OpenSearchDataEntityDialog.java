@@ -1,6 +1,6 @@
 package org.caleydo.rcp.dialog.search;
 
-import org.caleydo.rcp.Application;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -74,7 +74,7 @@ public class OpenSearchDataEntityDialog
 	protected void okPressed()
 	{
 
-		boolean bFound = Application.generalManager.getViewGLCanvasManager()
+		boolean bFound = GeneralManager.get().getViewGLCanvasManager()
 				.getDataEntitySearcher().searchForEntity(searchText.getText());
 
 		if (bFound)

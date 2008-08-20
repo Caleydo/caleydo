@@ -15,14 +15,14 @@
 		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_PARALLEL_COORDINATES_3D"		cmdId="69994"	uniqueId="82401" parent="-1" label="Parallel Coordinates" 
 						gl_origin="0 0 0" 
 						gl_rotation="0 0 0 0"					
-						attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
+						attrib3="ORTHOGRAPHIC 0 8 0 8 -20 20"
 						attrib4="transparency 1" 
 						detail="85101" />
 						
 		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_HEAT_MAP_3D"		cmdId="69994"	uniqueId="84401" parent="-1" label="Heat Map" 
 						gl_origin="0 0 0" 
 						gl_rotation="0 0 0 0"					
-						attrib3="ORTHOGRAPHIC -4 4 -4 4 -20 20"
+						attrib3="ORTHOGRAPHIC 0 8 0 8 -20 20"
 						attrib4="transparency 1" 
 						detail="85101" /> 							 						
 

@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import org.caleydo.core.application.core.CaleydoBootloader;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
@@ -14,9 +14,7 @@ import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jface.wizard.WizardDialog;
-import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PlatformUI;
@@ -28,12 +26,6 @@ public class Application
 	implements IApplication
 {
 	public static CaleydoBootloader caleydoCore;
-
-	/**
-	 * Getter method for the Caleydo general manager. Use this reference to get
-	 * access to all specialized managers.
-	 */
-	public static IGeneralManager generalManager;
 
 	public static ApplicationWorkbenchAdvisor applicationWorkbenchAdvisor;
 	
@@ -69,7 +61,6 @@ public class Application
 		
 		// Create Caleydo core
 		caleydoCore = new CaleydoBootloader(bIsWebstart);
-		generalManager = caleydoCore.getGeneralManager();
 		
 		Display display = PlatformUI.createDisplay();
 		
@@ -107,9 +98,9 @@ public class Application
 				// Save preferences before shutdown
 				try
 				{
-					generalManager.getLogger().log(Level.INFO, "Save Caleydo preferences...");
-					generalManager.getPreferenceStore().setValue("firstStart", false);
-					generalManager.getPreferenceStore().save();
+					GeneralManager.get().getLogger().log(Level.INFO, "Save Caleydo preferences...");
+					GeneralManager.get().getPreferenceStore().setValue("firstStart", false);
+					GeneralManager.get().getPreferenceStore().save();
 				}
 				catch (IOException e)
 				{
@@ -156,16 +147,9 @@ public class Application
 			
 			Display display = PlatformUI.createDisplay();
 			Shell shell = new Shell(display);
-			shell.setText("Open project file");
-			Monitor primary = display.getPrimaryMonitor ();
-			Rectangle bounds = primary.getBounds ();
-			Rectangle rect = shell.getBounds ();
-			int x = bounds.x + (bounds.width - rect.width) / 2;
-			int y = bounds.y + (bounds.height - rect.height) / 2;
-			shell.setLocation (x, y);
 			
 			WizardDialog projectWizardDialog = new WizardDialog(shell,
-					new CaleydoProjectWizard());
+					new CaleydoProjectWizard(shell));
 			
 			if(WizardDialog.CANCEL == projectWizardDialog.open())
 			{

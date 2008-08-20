@@ -2,7 +2,7 @@ package org.caleydo.rcp.wizard.firststart;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
-import org.caleydo.rcp.Application;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -84,7 +84,7 @@ public final class FetchPathwayDataPage
 
 			public void widgetSelected(SelectionEvent e)
 			{
-				CmdFetchPathwayData cmdPathwayFetch = (CmdFetchPathwayData) Application.generalManager.getCommandManager().createCommandByType(
+				CmdFetchPathwayData cmdPathwayFetch = (CmdFetchPathwayData) GeneralManager.get().getCommandManager().createCommandByType(
 						ECommandType.FETCH_PATHWAY_DATA);
 			
 				cmdPathwayFetch.setAttributes(composite.getDisplay(),

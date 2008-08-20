@@ -161,25 +161,13 @@ public interface IGenomeIdManager
 	 */
 	public void removeMapByType(final EMappingType codingLutType);
 
-	// MARC: changed parameter from EIDType to EMappingType.
-	// Because in the hashType2MultiMapInt the maps are stored with the
-	// EMappingType as key.
 	public Collection<Integer> getIdIntListByType(int iId, EMappingType type);
 
-	// MARC: changed parameter from EIDType to EMappingType.
-	// Because in the hashType2MultiMapInt the maps are stored with the
-	// EMappingType as key.
 	public Collection<String> getIdStringListByType(String sId, EMappingType type);
 
-	// MARC: changed parameter from EIDType to EMappingType.
-	// Because in the hashType2MultiMapInt the maps are stored with the
-	// EMappingType as key.
 	public Collection<Integer> getIdIntListFromIdListByType(Collection<Integer> iIdList,
 			EMappingType type);
 
-	// MARC: changed parameter from EIDType to EMappingType.
-	// Because in the hashType2MultiMapInt the maps are stored with the
-	// EMappingType as key.
 	public Collection<String> getIdStringListFromIdListByType(Collection<String> sIdList,
 			EMappingType type);
 }

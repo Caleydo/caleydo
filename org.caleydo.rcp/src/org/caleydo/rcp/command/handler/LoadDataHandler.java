@@ -16,8 +16,9 @@ public class LoadDataHandler
 	{
 		FileLoadDataDialog loadDataFileDialog = new FileLoadDataDialog(
 				HandlerUtil.getActiveShell(event));
-		loadDataFileDialog.open();
 
+		loadDataFileDialog.open();
+		
 		return null;
 	}
 
