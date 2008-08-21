@@ -51,10 +51,6 @@ public class GLPathway
 
 	private int iPathwayID = -1;
 
-	private boolean bIsDisplayListDirtyLocal = true;
-
-	private boolean bIsDisplayListDirtyRemote = true;
-
 	private boolean bEnablePathwayTexture = true;
 
 	private IPathwayManager pathwayManager;

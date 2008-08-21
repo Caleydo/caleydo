@@ -392,14 +392,7 @@ public class GLParallelCoordinates
 		}
 	}
 
-	/**
-	 * Set the display list to dirty
-	 */
-	public void setDisplayListDirty()
-	{
-		bIsDisplayListDirtyLocal = true;
-		bIsDisplayListDirtyRemote = true;
-	}
+
 
 	/**
 	 * Initializes the array lists that contain the data. Must be run at program

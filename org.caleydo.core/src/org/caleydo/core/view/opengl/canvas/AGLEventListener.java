@@ -204,12 +204,15 @@ public abstract class AGLEventListener
 
 	}
 
-	public final EManagedObjectType getBaseType()
+	/**
+	 * Set the display list to dirty
+	 */
+	protected void setDisplayListDirty()
 	{
-
-		return null;
+		bIsDisplayListDirtyLocal = true;
+		bIsDisplayListDirtyRemote = true;
 	}
-
+	
 	/**
 	 * This method clips everything outside the frustum
 	 */
@@ -292,11 +295,13 @@ public abstract class AGLEventListener
 	public final void addSet(ISet set)
 	{
 		alSets.add(set);
+		setDisplayListDirty();
 	}
 
 	public final void addSet(int iSetID)
 	{
 		alSets.add((ISet) generalManager.getSetManager().getItem(iSetID));
+		setDisplayListDirty();
 	}
 
 	public void removeSets(ESetType setType)
@@ -307,11 +312,13 @@ public abstract class AGLEventListener
 			if(iter.next().getSetType() == setType)
 				iter.remove();
 		}
+		setDisplayListDirty();
 	}
 	
 	public void clearSets()
 	{
 		alSets.clear();
+		setDisplayListDirty();
 	}
 
 	public final GLCaleydoCanvas getParentGLCanvas()
@@ -321,13 +328,11 @@ public abstract class AGLEventListener
 
 	public final IViewFrustum getViewFrustum()
 	{
-
 		return viewFrustum;
 	}
 
 	public void setFrustum(IViewFrustum viewFrustum)
 	{
-
 		this.viewFrustum = viewFrustum;
 	}
 
@@ -403,13 +408,11 @@ public abstract class AGLEventListener
 
 	public GLToolboxRenderer getToolboxRenderer()
 	{
-
 		return glToolboxRenderer;
 	}
 
 	public final IViewCamera getViewCamera()
 	{
-
 		return viewCamera;
 	}
 
@@ -430,5 +433,6 @@ public abstract class AGLEventListener
 	public void setDetailLevel(EDetailLevel detailLevel)
 	{
 		this.detailLevel = detailLevel;
+		setDisplayListDirty();
 	}
 }
