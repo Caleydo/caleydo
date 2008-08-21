@@ -73,7 +73,7 @@ public class ParCoordsRenderStyle
 	protected float fOcclusionPrevAlpha = 0.1f;
 
 	// how much room between the axis?
-	private float fAxisSpacing = 0.5f;
+	private float fAxisSpacing = 0.3f;
 
 	// --- constants to scale ---
 
@@ -98,7 +98,7 @@ public class ParCoordsRenderStyle
 	// buttons below axis
 	private static final float AXIS_BUTTONS_Y_OFFSET = 0.04f;
 
-	private static final float fAxisSpacingLowerLimit = 0.06f;
+	private static final float fAxisSpacingLowerLimit = 0.03f;
 
 	/**
 	 * Constructor.

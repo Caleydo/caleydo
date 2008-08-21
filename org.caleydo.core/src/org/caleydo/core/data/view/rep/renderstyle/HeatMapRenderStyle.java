@@ -8,6 +8,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 
 /**
  * Heat Map render styles
@@ -60,6 +61,8 @@ public class HeatMapRenderStyle
 
 	private ISet set;
 
+	private EDetailLevel detailLevel = EDetailLevel.HIGH;
+
 	public HeatMapRenderStyle(final IViewFrustum viewFrustum,
 			final GenericSelectionManager contentSelectionManager, ISet set, int iContentVAID,
 			int iStorageVAID, int iNumElements, boolean bRenderVertical)
@@ -94,6 +97,11 @@ public class HeatMapRenderStyle
 
 	}
 
+	public void setDetailLevel(EDetailLevel detailLevel)
+	{
+		this.detailLevel = detailLevel;
+	}
+
 	public void initFieldSizes()
 	{
 		resetFieldDimensions();
@@ -115,49 +123,6 @@ public class HeatMapRenderStyle
 			iVAIndex = set.getVA(iContentVAID).indexOf(iSelectedIndex);
 			alFieldWidths.get(iVAIndex).fWidth = fSelectedFieldWidth;
 		}
-		// for (int iContentIndex : set.getVA(iContentVAID))
-		// {
-		// initOneFieldSize(iContentIndex);
-		// }
-	}
-
-	/**
-	 * @param iStorageIndex The index of the entry in alContentSelection
-	 * @return
-	 */
-	private void initOneFieldSize(final int iContentSelectionIndex)
-	{
-		//
-		// int iCurrentLevel = iNotSelectedLevel;
-		//
-		// for (int iCount = -iLevels; iCount <= iLevels; iCount++)
-		// {
-		// if (iContentSelectionIndex + iCount < 0
-		// || iContentSelectionIndex + iCount >= set.getVA(iContentVAID).size())
-		// continue;
-		// else
-		// {
-		// if (contentSelectionManager.checkStatus(ESelectionType.SELECTION,
-		// set.getVA(iContentVAID).get(iContentSelectionIndex + iCount))
-		// || contentSelectionManager.checkStatus(
-		// ESelectionType.MOUSE_OVER, set.getVA(iContentVAID)
-		// .get(iContentSelectionIndex + iCount)))
-		// {
-		// // TODO: this needs reviewing
-		// if (iCurrentLevel == iNotSelectedLevel
-		// || (iCount < 0 && iCount >= iCurrentLevel)
-		// || (iCount >= 0 && iCount <= iCurrentLevel))
-		// iCurrentLevel = iCount;
-		// }
-		// }
-		// }
-		//
-		// Vec2f vecWidthAndHeight = new Vec2f();
-		// float fWidth = hashLevelToWidth.get(iCurrentLevel);
-		// vecWidthAndHeight.set(fWidth, calcHeightFromWidth(fWidth));
-		//
-		// alFieldWidths.add(fWidth);
-		// // return vecWidthAndHeight;
 	}
 
 	public void setContentSelection(int iContentSelection)
@@ -173,78 +138,46 @@ public class HeatMapRenderStyle
 				.getNumberOfElements(ESelectionType.SELECTION);
 		int iNumberTotal = set.getVA(iContentVAID).size();
 
-		fNormalFieldWidth = (viewFrustum.getWidth() - iNumberSelected * fSelectedFieldWidth)
+		fNormalFieldWidth = (getRenderWidth() - iNumberSelected * fSelectedFieldWidth)
 				/ (iNumberTotal - iNumberSelected);
 
 		fNormalFieldWidth = (fNormalFieldWidth > fMamximumNormalFieldWidth) ? fMamximumNormalFieldWidth
 				: fNormalFieldWidth;
 
-		fFieldHeight = viewFrustum.getHeight() / set.getVA(iStorageVAID).size();
-
-		// TODO implement width dependend on frustum
+		fFieldHeight = getRenderHeight() / set.getVA(iStorageVAID).size();
 
 		alFieldWidths.clear();
-
-	
-
-//		int iVAIndex;
-//		for (int iSelectedIndex : selectedSet)
-//		{
-//			iVAIndex = set.getVA(iContentVAID).indexOf(iSelectedIndex);
-//			alFieldWidths.get(iVAIndex).fWidth = fSelectedFieldWidth;
-//		}
-//
-//		for (int iSelectedIndex : mouseOverSet)
-//		{
-//			iVAIndex = set.getVA(iContentVAID).indexOf(iSelectedIndex);
-//			alFieldWidths.get(iVAIndex).fWidth = fSelectedFieldWidth;
-//		}
 
 		float fTotalFieldWidth = 0;
 		float fCurrentFieldWidth = 0;
 		for (int iContentIndex : set.getVA(iContentVAID))
 		{
-			fCurrentFieldWidth = isSelected(iContentIndex) ? fSelectedFieldWidth : fNormalFieldWidth; 
+			fCurrentFieldWidth = isSelected(iContentIndex) ? fSelectedFieldWidth
+					: fNormalFieldWidth;
 			alFieldWidths.add(new FieldWidthElement(fCurrentFieldWidth, fFieldHeight,
 					fTotalFieldWidth));
 			fTotalFieldWidth += fCurrentFieldWidth;
 		}
 	}
-	
+
 	private boolean isSelected(int iIndex)
 	{
-		if(contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iIndex))
+		if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iIndex))
 			return true;
-		if(contentSelectionManager.checkStatus(ESelectionType.SELECTION, iIndex))
+		if (contentSelectionManager.checkStatus(ESelectionType.SELECTION, iIndex))
 			return true;
-		
+
 		return false;
 	}
 
 	public float getXDistanceAt(int iIndex)
 	{
-		//
-		// float fXDistance = 0;
-		// for (int iCount = 0; iCount < iIndex; iCount++)
-		// {
-		// fXDistance += alFieldWidths.get(iCount);
-		// }
-
 		return alFieldWidths.get(iIndex).fTotalWidth;
-
 	}
 
 	public float getXDistanceAfter(int iIndex)
 	{
-
-		// float fXDistance = 0;
-		// for (int iCount = 0; iCount <= iIndex; iCount++)
-		// {
-		// fXDistance += alFieldWidths.get(iCount);
-		// }
-
 		return alFieldWidths.get(iIndex).fTotalWidth + alFieldWidths.get(iIndex).fWidth;
-
 	}
 
 	public Vec2f getFieldWidthAndHeight(int iIndex)
@@ -269,20 +202,34 @@ public class HeatMapRenderStyle
 		return (viewFrustum.getWidth() / 2);
 	}
 
-	// public float getXSpacing()
-	// {
-	// return COORDINATE_SIDE_SPACING * fScaling;
-	// }
-	//	
-	// public float getYSpacing()
-	// {
-	//		
-	// }
+	public float getXSpacing()
+	{
+		return 0.5f;
+	}
+
+	public float getYSpacing()
+	{
+		return 0.5f;
+	}
 
 	public float getNormalFieldWidth()
 	{
 
 		return fNormalFieldWidth;
+	}
+
+	private float getRenderWidth()
+	{
+		if (detailLevel == EDetailLevel.HIGH)
+			return viewFrustum.getWidth() - 2 * getXSpacing();
+		return viewFrustum.getWidth();
+	}
+
+	private float getRenderHeight()
+	{
+		if (detailLevel == EDetailLevel.HIGH)
+			return viewFrustum.getHeight() - 2 * getYSpacing();
+		return viewFrustum.getHeight();
 	}
 
 }

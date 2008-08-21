@@ -417,8 +417,13 @@ public class PickingManager
 				}
 				else
 				{
-					int iViewUnderInteractionID = hashSignatureToPickingIDHashMap.get(
-							iSignature).get(iOrigianlPickingID);
+					
+					HashMap<Integer, Integer> signatureToPickingID = hashSignatureToPickingIDHashMap.get(
+							iSignature);
+					
+					Integer iViewUnderInteractionID = signatureToPickingID.get(iOrigianlPickingID);
+					if(iViewUnderInteractionID == null)
+						continue;
 					iSignature = getSignatureFromPickingID(iPickingID, iViewUnderInteractionID);
 
 				}
@@ -459,8 +464,7 @@ public class PickingManager
 	private int getSignatureFromPickingID(int iPickingID, int iViewID)
 	{
 
-		int iTemp = iPickingID / 100;
-		int iType = iPickingID - iTemp * 100;
+		int iType = getTypeFromPickingID(iPickingID);
 
 		return (getSignature(iViewID, iType));
 	}

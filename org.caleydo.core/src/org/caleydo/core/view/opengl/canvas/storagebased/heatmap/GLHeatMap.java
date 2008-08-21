@@ -9,6 +9,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
+import javax.naming.OperationNotSupportedException;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
@@ -16,11 +17,14 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.HeatMapRenderStyle;
+import org.caleydo.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
@@ -73,6 +77,7 @@ public class GLHeatMap
 	public GLHeatMap(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
 	{
 		super(iGLCanvasID, sLabel, viewFrustum);
+		viewType = EManagedObjectType.GL_HEAT_MAP;
 
 		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
 		alSelectionTypes.add(ESelectionType.NORMAL);
@@ -87,6 +92,7 @@ public class GLHeatMap
 				EIDType.EXPRESSION_EXPERIMENT).build();
 
 		colorMapper = new ColorMapping(0, 1);
+
 	}
 
 	@Override
@@ -96,7 +102,6 @@ public class GLHeatMap
 
 		if (set == null)
 			return;
-		
 
 	}
 
@@ -139,11 +144,18 @@ public class GLHeatMap
 	}
 
 	@Override
+	public void setDetailLevel(EDetailLevel detailLevel)
+	{
+		super.setDetailLevel(detailLevel);
+		renderStyle.setDetailLevel(detailLevel);
+	}
+
+	@Override
 	public void displayLocal(GL gl)
 	{
-		if(set == null)
+		if (set == null)
 			return;
-		
+
 		if (bIsTranslationAnimationActive)
 		{
 			doTranslation();
@@ -166,7 +178,7 @@ public class GLHeatMap
 	@Override
 	public void displayRemote(GL gl)
 	{
-		if(set == null)
+		if (set == null)
 			return;
 
 		if (bIsTranslationAnimationActive)
@@ -190,8 +202,8 @@ public class GLHeatMap
 	@Override
 	public void display(GL gl)
 	{
-//		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-//		GLHelperFunctions.drawAxis(gl);
+		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		// GLHelperFunctions.drawAxis(gl);
 		gl.glCallList(iGLDisplayListToCall);
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 	}
@@ -306,7 +318,7 @@ public class GLHeatMap
 			// iContentVAID).get(iColumnCount));
 			// }
 		}
-		
+
 		renderStyle = new HeatMapRenderStyle(viewFrustum, contentSelectionManager, set,
 				iContentVAID, iStorageVAID, set.getVA(iStorageVAID).size(), true);
 		// TODO probably remove this here
@@ -395,31 +407,11 @@ public class GLHeatMap
 		// TODO: NullPointer if storage is empty
 		Vec2f vecFieldWidthAndHeight = null;
 
-		String sContent = "";
-		// for(Integer iStorageIndex : alStorageSelection)
-		// {
-		// sContent = "Experiment " +iStorageIndex; // FIXME: from where should
-		// we get a proper name?
-		//			
-		// // Render heat map experiment name
-		// gl.glRotatef(45, 0, 0, 1);
-		// textRenderer.setColor(0, 0, 0, 1);
-		// textRenderer.begin3DRendering();
-		// textRenderer.draw3D(sContent,
-		// fYPosition,
-		// -fXPosition,
-		// 0.01f,
-		// renderStyle.getHeadingFontScalingFactor());
-		// textRenderer.end3DRendering();
-		// gl.glRotatef(-45, 0, 0, 1);
-		// }
-
 		int iCount = 0;
 		for (Integer iContentIndex : set.getVA(iContentVAID))
 		{
 			vecFieldWidthAndHeight = renderStyle.getFieldWidthAndHeight(iCount++);
-			fYPosition = renderStyle.getYCenter() - vecFieldWidthAndHeight.y()
-					* set.getVA(iStorageVAID).size() / 2;
+			fYPosition = 0;
 
 			for (Integer iStorageIndex : set.getVA(iStorageVAID))
 			{
@@ -427,6 +419,7 @@ public class GLHeatMap
 						vecFieldWidthAndHeight);
 
 				fYPosition += vecFieldWidthAndHeight.y();
+
 			}
 
 			float fFontScaling = 0;
@@ -441,23 +434,30 @@ public class GLHeatMap
 					fFontScaling = renderStyle.getHeadingFontScalingFactor();
 				}
 
-				// Render heat map element name
-				gl.glRotatef(90, 0, 0, 1);
-				sContent = getRefSeqFromStorageIndex(iContentIndex);
-				textRenderer.setColor(0, 0, 0, 1);
-				textRenderer.begin3DRendering();
-				textRenderer.draw3D(sContent, (fYPosition + vecFieldWidthAndHeight.y() / 3),
-						-(fXPosition + vecFieldWidthAndHeight.x() / 2),// -
-						// renderStyle
-						// .
-						// getXCenter
-						// (),
-						0.01f, fFontScaling);
-				textRenderer.end3DRendering();
-				gl.glRotatef(-90, 0, 0, 1);
+				if (detailLevel == EDetailLevel.HIGH)
+				{
+					// Render heat map element name
+					String sContent = getRefSeqFromStorageIndex(iContentIndex);
+					renderCaption(gl, sContent, fXPosition + vecFieldWidthAndHeight.x() / 2,
+							fYPosition + 0.1f, 90);
+				}
+
 			}
-			// iCount++;
 			fXPosition += vecFieldWidthAndHeight.x();
+			if (detailLevel == EDetailLevel.HIGH)
+			{
+				if (iCount == set.getVA(iContentVAID).size())
+				{
+					fYPosition = 0;
+					for (Integer iStorageIndex : set.getVA(iStorageVAID))
+					{
+						renderCaption(gl, set.get(iStorageIndex).getLabel(),
+								fXPosition + 0.1f,
+								fYPosition + vecFieldWidthAndHeight.y() / 2, 25);
+						fYPosition += vecFieldWidthAndHeight.y();
+					}
+				}
+			}
 		}
 	}
 
@@ -467,8 +467,17 @@ public class GLHeatMap
 
 		float fLookupValue = set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
 				iContentIndex);
+
+		float fOpacity = 0;
+		if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)
+				|| detailLevel.compareTo(EDetailLevel.LOW) > 0)
+			fOpacity = 1f;
+		else
+			fOpacity = 0.3f;
+
 		Vec3f vecMappingColor = colorMapper.colorMappingLookup(fLookupValue);
-		gl.glColor3f(vecMappingColor.x(), vecMappingColor.y(), vecMappingColor.z());
+
+		gl.glColor4f(vecMappingColor.x(), vecMappingColor.y(), vecMappingColor.z(), fOpacity);
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.HEAT_MAP_FIELD_SELECTION, iContentIndex));
@@ -514,8 +523,10 @@ public class GLHeatMap
 
 			fHeight = set.getVA(iStorageVAID).size() * vecFieldWidthAndHeight.y();
 			fXPosition = renderStyle.getXDistanceAt(iColumnIndex);
-			fYPosition = renderStyle.getYCenter() - vecFieldWidthAndHeight.y()
-					* set.getVA(iStorageVAID).size() / 2;
+			// fYPosition = renderStyle.getYCenter() -
+			// vecFieldWidthAndHeight.y()
+			// * set.getVA(iStorageVAID).size() / 2;
+			fYPosition = 0;
 
 			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(fXPosition, fYPosition, HeatMapRenderStyle.SELECTION_Z);
@@ -669,4 +680,21 @@ public class GLHeatMap
 	{
 		// TODO
 	}
+
+	private void renderCaption(GL gl, String sLabel, float fXOrigin, float fYOrigin,
+			float fRotation)
+	{
+		textRenderer.setColor(0, 0, 0, 1);
+		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		gl.glTranslatef(fXOrigin, fYOrigin, 0);
+		gl.glRotatef(fRotation, 0, 0, 1);
+		textRenderer.begin3DRendering();
+		textRenderer.draw3D(sLabel, 0, 0, 0, renderStyle.getSmallFontScalingFactor());
+		textRenderer.end3DRendering();
+		gl.glRotatef(-fRotation, 0, 0, 1);
+		gl.glTranslatef(-fXOrigin, -fYOrigin, 0);
+		// textRenderer.begin3DRendering();
+		gl.glPopAttrib();
+	}
+
 }

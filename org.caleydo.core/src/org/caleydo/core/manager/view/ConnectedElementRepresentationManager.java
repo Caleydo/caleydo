@@ -55,13 +55,13 @@ public class ConnectedElementRepresentationManager
 
 		switch (selectionMode)
 		{
-			case AddPick:
+			case ADD_PICK:
 				addSelection(iElementID, selectedElementRep);
 				break;
-			case RemovePick:
+			case REMOVE_PICK:
 				removeSelection(iElementID, selectedElementRep);
 				break;
-			case ReplacePick:
+			case REPLACE_PICK:
 				clear();
 				addSelection(iElementID, selectedElementRep);
 				break;

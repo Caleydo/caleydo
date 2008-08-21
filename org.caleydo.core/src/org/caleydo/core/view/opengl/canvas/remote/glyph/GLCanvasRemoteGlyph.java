@@ -6,6 +6,7 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -41,7 +42,7 @@ public class GLCanvasRemoteGlyph
 			final String sLabel, final IViewFrustum viewFrustum)
 	{
 		super(iGLCanvasID, sLabel, viewFrustum, true);
-
+		viewType = EManagedObjectType.GL_GLYPH;
 		viewIDs_ = new ArrayList<Integer>();
 		mouseWheelListener_ = new GlyphMouseListener(this, generalManager);
 

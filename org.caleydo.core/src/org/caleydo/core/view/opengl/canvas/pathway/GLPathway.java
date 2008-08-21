@@ -21,6 +21,7 @@ import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.ESelectionMode;
@@ -90,7 +91,7 @@ public class GLPathway
 			final IViewFrustum viewFrustum)
 	{
 		super(iGLCanvasID, sLabel, viewFrustum, false);
-
+		viewType = EManagedObjectType.GL_PATHWAY;
 		pathwayManager = generalManager.getPathwayManager();
 
 		gLPathwayManager = new GLPathwayManager();
@@ -367,14 +368,14 @@ public class GLPathway
 									* vecScaling.x() + vecTranslation.x(),
 							((iPathwayHeight - vertexRep.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y)
 									* vecScaling.y() + vecTranslation.y(), 0),
-					ESelectionMode.AddPick);		
+					ESelectionMode.ADD_PICK);		
 		}
 		
 		
 //		connectedElementRepresentationManager.modifySelection(iUniqueID,
 //				new SelectedElementRep(iUniqueID,
 //						0, 0, 0),
-//				ESelectionMode.AddPick);		
+//				ESelectionMode.ADD_PICK);		
 		
 //		// Ignore initial gene propagation
 ////		if (iAlSelectionMode.get(0) == 0)
@@ -417,7 +418,7 @@ public class GLPathway
 //										((iPathwayHeight - tmpPathwayVertexGraphItemRep
 //												.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y)
 //												* vecScaling.y() + vecTranslation.y(), 0),
-//								ESelectionMode.AddPick);
+//								ESelectionMode.ADD_PICK);
 //
 //				selectedVertex = tmpPathwayVertexGraphItemRep;
 //			}
@@ -741,7 +742,7 @@ public class GLPathway
 												((iPathwayHeight - tmpPathwayVertexGraphItemRep
 														.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y)
 														* vecScaling.y() + vecTranslation.y(),
-												0), ESelectionMode.AddPick);
+												0), ESelectionMode.ADD_PICK);
 					}
 
 					// TODO: Exit loop after first run and publish only first

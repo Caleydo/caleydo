@@ -1,0 +1,23 @@
+Done since last commit:
+
+Implemented detailLevel awareness for PCs:
+* Icons only shown when high
+* Text only shown when high
+* Normal polylines grey when low or smaller
+
+For HeatMap:
+* Text only shown when high
+* Not selected elements opaque when rendered on the walls
+* Zoomed to full screen when not in high
+
+Implemented Experiment Captions in Heatmap
+
+Implemented axis move, remove, duplicate to be shown only for one axis
+Reenabled automatic axis spacing in PCs
+
+Cleanup in AGlStorageBased and PCs
+
+Added different View Types to EManagedObjectType (HeatMap, PCs, Pathways etc..)
+Added type field to AGLEventListener. Every view now has to set its type in the Constructor.
+Modified EPickingType to hold a reference to the view responsible for the action there.
+Modified the checkForHits in AGLEventListener to check only for Hits that are relevant for the view, based on the aforementioned modifications.

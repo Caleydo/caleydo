@@ -10,9 +10,9 @@ public enum ESelectionMode
 {
 
 	// Flag for adding the pick to the current selection
-	AddPick,
+	ADD_PICK,
 	// Flag for replacing the pick with all stored picks per view and type
-	ReplacePick,
+	REPLACE_PICK,
 	// Flag for removing the picked object from the pick list
-	RemovePick
+	REMOVE_PICK
 }

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
+import javax.media.opengl.GL;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
@@ -25,6 +26,7 @@ import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import sun.java2d.loops.GeneralRenderer;
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
@@ -40,19 +42,6 @@ public abstract class AStorageBasedView
 
 	protected ISet set;
 
-	// /**
-	// * Specify which type of selection is currently active for the content in
-	// * the storages
-	// */
-	// protected EStorageBasedVAType eWhichContentSelection =
-	// EStorageBasedVAType.COMPLETE_SELECTION;
-	//
-	// /**
-	// * Specify which type of selection is currently active for the storages in
-	// * the set
-	// */
-	// protected EStorageBasedVAType eWhichStorageSelection =
-	// EStorageBasedVAType.STORAGE_SELECTION;
 
 	/**
 	 * map selection type to unique id for virtual array
@@ -70,8 +59,6 @@ public abstract class AStorageBasedView
 	 * set
 	 */
 	protected int iStorageVAID = 0;
-
-
 
 	protected int iGLDisplayListIndexLocal;
 	protected int iGLDisplayListIndexRemote;
@@ -144,6 +131,7 @@ public abstract class AStorageBasedView
 	// *
 	// * @param bRenderOnlyContext true if only context, else false
 	// */
+	// @Override
 	// public void setDataFilterLevel(EDataFilterLevel dataFilterLevel)
 	// {
 	// this.dataFilterLevel = dataFilterLevel;
@@ -152,23 +140,22 @@ public abstract class AStorageBasedView
 	public void initData()
 	{
 		set = null;
-		
+
 		for (ISet currentSet : alSets)
 		{
 			if (currentSet.getSetType() == ESetType.GENE_EXPRESSION_DATA)
 				set = currentSet;
 		}
-	
+
 		if (set == null)
 		{
-			
 			mapVAIDs.clear();
 			contentSelectionManager.resetSelectionManager();
 			storageSelectionManager.resetSelectionManager();
 			connectedElementRepresentationManager.clear();
 			return;
 		}
-		
+
 		if (!mapVAIDs.isEmpty())
 		{
 			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values())
@@ -178,8 +165,6 @@ public abstract class AStorageBasedView
 			}
 			mapVAIDs.clear();
 		}
-
-		
 
 		ArrayList<Integer> alTempList = new ArrayList<Integer>();
 		// create VA with empty list
@@ -199,11 +184,15 @@ public abstract class AStorageBasedView
 		initLists();
 	}
 
+	/**
+	 * Initializes a virtual array with all elements, according to the data
+	 * filters, as defined in {@link EDataFilterLevel}.
+	 */
 	protected void initCompleteList()
 	{
 		int iStorageLength = set.depth();
 		// FIXME hack
-		iStorageLength = 50;
+		iStorageLength = 100;
 
 		// initialize virtual array that contains all (filtered) information
 		ArrayList<Integer> alTempList = new ArrayList<Integer>(set.depth());
@@ -244,7 +233,7 @@ public abstract class AStorageBasedView
 
 		int iVAID = set.createStorageVA(alTempList);
 		mapVAIDs.put(EStorageBasedVAType.COMPLETE_SELECTION, iVAID);
-		
+
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
 	}
@@ -253,58 +242,6 @@ public abstract class AStorageBasedView
 	 * View specific data initialization
 	 */
 	protected abstract void initLists();
-
-	// protected ArrayList<Integer> convertDavidIdToExpressionIndices(
-	// ArrayList<Integer> iAlSelection)
-	// {
-	//
-	// ArrayList<Integer> iAlSelectionStorageIndices = new ArrayList<Integer>();
-	// for (int iCount = 0; iCount < iAlSelection.size(); iCount++)
-	// {
-	// int iTmp = generalManager.getGenomeIdManager().getIdIntFromIntByMapping(
-	// iAlSelection.get(iCount), EMappingType.DAVID_2_EXPRESSION_STORAGE_ID);
-	//
-	// // if (iTmp == -1)
-	// // continue;
-	//
-	// iAlSelectionStorageIndices.add(iTmp);
-	// }
-	//
-	// return iAlSelectionStorageIndices;
-	// }
-
-	// protected void cleanSelection(ArrayList<Integer> iAlSelection,
-	// ArrayList<Integer> iAlGroup)
-	// {
-	//
-	// ArrayList<Integer> alDelete = new ArrayList<Integer>(1);
-	// for (int iCount = 0; iCount < iAlSelection.size(); iCount++)
-	// {
-	// // TODO remove elements if -1
-	// if (iAlSelection.get(iCount) == -1)
-	// {
-	// alDelete.add(iCount);
-	// continue;
-	// }
-	// // iAlSelection.set(iCount, iAlSelection.get(iCount) / 1000);
-	// // System.out.println("Storageindexalex: " + iAlSelection[iCount]);
-	// }
-	//
-	// for (int iCount = alDelete.size() - 1; iCount >= 0; iCount--)
-	// {
-	// iAlSelection.remove(alDelete.get(iCount).intValue());
-	// iAlGroup.remove(alDelete.get(iCount).intValue());
-	// }
-	// }
-
-	// protected void mergeSelection(ArrayList<Integer> iAlSelection,
-	// ArrayList<Integer> iAlGroup, ArrayList<Integer> iAlOptional)
-	// {
-	//
-	// alSelection.get(0).mergeSelection(iAlSelection, iAlGroup, iAlOptional);
-	//
-	// initData();
-	// }
 
 	/**
 	 * Create 0:n {@link SelectedElementRep} for the selectionDelta
@@ -316,14 +253,15 @@ public abstract class AStorageBasedView
 	protected abstract SelectedElementRep createElementRep(int iStorageIndex)
 			throws InvalidAttributeValueException;
 
+	@Deprecated
 	protected int getDavidIDFromStorageIndex(int index)
 	{
-
 		int iDavidId = genomeIDManager.getIdIntFromIntByMapping(index,
 				EMappingType.EXPRESSION_INDEX_2_DAVID);
 		return iDavidId;
 	}
 
+	@Deprecated
 	protected String getRefSeqFromStorageIndex(int index)
 	{
 
@@ -337,6 +275,7 @@ public abstract class AStorageBasedView
 			return sRefSeq;
 	}
 
+	@Override
 	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
 	{
 
@@ -349,176 +288,24 @@ public abstract class AStorageBasedView
 		ISelectionDelta internalDelta = contentSelectionManager.setDelta(selectionDelta);
 		handleConnectedElementRep(internalDelta);
 		checkUnselection();
-
-		// // contains all genes in center pathway (not yet)
-		// ArrayList<Integer> iAlSelection = setSelection.getSelectionIdArray();
-		// // contains type - 0 for not selected 1 for selected
-		// ArrayList<Integer> iAlGroup = setSelection.getGroupArray();
-		// ArrayList<Integer> iAlOptional = setSelection.getOptionalDataArray();
-		// // iterate here
-		// ArrayList<Integer> iAlSelectionStorageIndices =
-		// convertDavidIdToExpressionIndices(iAlSelection);
-
-		// cleanSelection(iAlSelectionStorageIndices, iAlGroup);
-		// mergeSelection(iAlSelectionStorageIndices, iAlGroup, iAlOptional);
-
-		// int iSelectedDavidId = 0;
-		// int iSelectedStorageIndex = 0;
-		//
-		// for (int iSelectionCount = 0; iSelectionCount <
-		// iAlSelectionStorageIndices.size(); iSelectionCount++)
-		// {
-		// // TODO: same for click and mouse over atm
-		// if (iAlGroup.get(iSelectionCount) == 1 ||
-		// iAlGroup.get(iSelectionCount) == 2)
-		// {
-		// iSelectedDavidId = iAlSelection.get(iSelectionCount);
-		// iSelectedStorageIndex =
-		// iAlSelectionStorageIndices.get(iSelectionCount);
-		//
-		// // System.out.println("Accession ID: " + iSelectedAccessionID);
-		// // System.out.println("Accession Code: " +sAccessionCode);
-		// // System.out.println("Expression storage index: "
-		// // +iSelectedStorageIndex);
-		//
-		// if (iSelectedStorageIndex >= 0)
-		// {
-		// if (!bRenderStorageHorizontally)
-		// {
-		// // handle local selection
-		// contentSelectionManager
-		// .clearSelection(EViewInternalSelectionType.MOUSE_OVER);
-		// contentSelectionManager.addToType(
-		// EViewInternalSelectionType.MOUSE_OVER, iSelectedStorageIndex);
-		//
-		// // handle external selection
-
-		// TODO
-		//connectedElementRepresentationManager.modifySelection(iSelectedDavidId
-		// ,
-		// createElementRep(iSelectedStorageIndex),
-		// ESelectionMode.AddPick);
-		// }
-		// else
-		// {
-		// storageSelectionManager
-		// .clearSelection(EViewInternalSelectionType.MOUSE_OVER);
-		// storageSelectionManager.addToType(
-		// EViewInternalSelectionType.MOUSE_OVER, iSelectedStorageIndex);
-		// rePosition(iSelectedStorageIndex);
-		//connectedElementRepresentationManager.modifySelection(iSelectedDavidId
-		// ,
-		// createElementRep(iSelectedStorageIndex),
-		// ESelectionMode.AddPick);
-		// }
-		// }
-		// }
-		// }
-
-		bIsDisplayListDirtyLocal = true;
-		bIsDisplayListDirtyRemote = true;
+		setDisplayListDirty();
 	}
 
-	protected abstract void checkUnselection();
+
 
 	@Override
 	public void handleUpdate(IUniqueObject eventTrigger)
 	{
 
-		// generalManager.logMsg(
-		// this.getClass().getSimpleName()
-		// + ": updateReceiver(Object eventTrigger): Update called by "
-		// + eventTrigger.getClass().getSimpleName(),
-		// LoggerType.VERBOSE);
 	}
 
-	// protected void propagateGeneSelection(int iExternalID, int iNewGroupID,
-	// ArrayList<Integer> iAlOldSelection)
-	// {
-	//
-	// int iDavidId = getDavidIDFromStorageIndex(iExternalID);
-	//
-	// generalManager.getViewGLCanvasManager().getInfoAreaManager().setData(
-	// iUniqueID,
-	// iDavidId, EInputDataType.GENE, getInfo());
-	//
-	// // Write currently selected vertex to selection set
-	// // and trigger update event
-	// ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>(2);
-	// // iAlTmpSelectionId.add(1);
-	// ArrayList<Integer> iAlTmpGroup = new ArrayList<Integer>(2);
-	//
-	// if (iDavidId != -1)
-	// {
-	// iAlTmpSelectionId.add(iDavidId);
-	// iAlTmpGroup.add(iNewGroupID);
-	// connectedElementRepresentationManager.modifySelection(iDavidId,
-	// createElementRep(iExternalID), ESelectionMode.ReplacePick);
-	// }
-	//
-	// for (Integer iCurrent : iAlOldSelection)
-	// {
-	// iDavidId = getDavidIDFromStorageIndex(iCurrent);
-	//
-	// if (iDavidId != -1)
-	// {
-	// iAlTmpSelectionId.add(iDavidId);
-	// iAlTmpGroup.add(0);
-	// }
-	// }
-	//
-	// // alSelection.get(1).updateSelectionSet(iUniqueID, iAlTmpSelectionId,
-	// // iAlTmpGroup, null);
-	//
-	// // propagateGeneSet(iAlTmpSelectionId, iAlTmpGroup);
-	// }
 
-	// protected void propagateGeneSet()// ArrayList<Integer> iAlSelection,
-	// // ArrayList<Integer> iAlGroup)
-	// {
-	//
-	// ArrayList<Integer> iAlGroup = alSelection.get(0).getGroupArray();
-	// ArrayList<Integer> iAlSelection =
-	// alSelection.get(0).getSelectionIdArray();
-	//
-	// propagateGenes(iAlSelection, iAlGroup);
-	//
-	// }
-
-	// protected void propagateGenes(ArrayList<Integer> iAlSelection,
-	// ArrayList<Integer> iAlGroup)
-	// {
-	//
-	// ArrayList<Integer> iAlGeneSelection = new
-	// ArrayList<Integer>(iAlSelection.size());
-	//
-	// for (Integer iCurrent : iAlSelection)
-	// {
-	// iAlGeneSelection.add(getDavidIDFromStorageIndex(iCurrent));
-	// }
-	//
-	// alSelection.get(1).updateSelectionSet(iUniqueID, iAlGeneSelection,
-	// iAlGroup, null);
-	// }
-
-	// protected ArrayList<Integer> prepareSelection(GenericSelectionManager
-	// connectedElementRepManager,
-	// EViewInternalSelectionType selectionType)
-	// {
-	//
-	// Set<Integer> selectedSet;
-	// ArrayList<Integer> iAlOldSelection;
-	// selectedSet = connectedElementRepManager.getElements(selectionType);
-	// iAlOldSelection = new ArrayList<Integer>();
-	// for (Integer iCurrent : selectedSet)
-	// {
-	// iAlOldSelection.add(iCurrent);
-	// }
-	// return iAlOldSelection;
-	// }
-
-	protected abstract void rePosition(int iElementID);
-
+	/**
+	 * Clears all selections, meaning that no element is selected or deselected
+	 * after this method was called. Everything returns to "normal". Note that
+	 * virtual array manipulations are not considered selections and are
+	 * therefore not reset.
+	 */
 	public void clearAllSelections()
 	{
 		connectedElementRepresentationManager.clear();
@@ -527,15 +314,11 @@ public abstract class AStorageBasedView
 
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
-
-		// initData();
-
 	}
 
 	@Override
 	public void triggerUpdate()
 	{
-
 		generalManager.getEventPublisher().handleUpdate(this);
 	}
 
@@ -546,9 +329,19 @@ public abstract class AStorageBasedView
 
 		handleConnectedElementRep(selectionDelta);
 		generalManager.getEventPublisher().handleUpdate(this, selectionDelta);
+	}
+	
+	@Override
+	public void broadcastElements(ESelectionType type)
+	{
 
 	}
 
+	/**
+	 * Handles the creation of {@link SelectedElementRep} according to the data in a selectionDelta
+	 * 
+	 * @param selectionDelta the selection data that should be handled
+	 */
 	protected void handleConnectedElementRep(ISelectionDelta selectionDelta)
 	{
 		try
@@ -589,7 +382,7 @@ public abstract class AStorageBasedView
 						continue;
 					}
 					connectedElementRepresentationManager.modifySelection(iDavidID, rep,
-							ESelectionMode.AddPick);
+							ESelectionMode.ADD_PICK);
 				}
 
 			}
@@ -600,10 +393,18 @@ public abstract class AStorageBasedView
 					"Can not handle data type of update in selectionDelta");
 		}
 	}
+	
+	/**
+	 * Re-position a view centered on a element, specified by the element ID
+	 * 
+	 * @param iElementID the ID of the element that should be in the center
+	 */
+	protected abstract void rePosition(int iElementID);
 
-	@Override
-	public void broadcastElements(ESelectionType type)
-	{
-
-	}
+	/**
+	 * Check wheter an element is selected or not
+	 */
+	protected abstract void checkUnselection();
+	
+	
 }

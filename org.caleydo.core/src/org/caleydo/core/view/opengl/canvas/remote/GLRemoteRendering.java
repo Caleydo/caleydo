@@ -35,6 +35,7 @@ import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -161,7 +162,7 @@ public class GLRemoteRendering
 			final ARemoteViewLayoutRenderStyle.LayoutMode layoutMode)
 	{
 		super(iGLCanvasID, sLabel, viewFrustum, true);
-
+		viewType = EManagedObjectType.GL_REMOTE_RENDERING;
 		this.layoutMode = layoutMode;
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))

@@ -23,6 +23,7 @@ import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -140,7 +141,7 @@ public class GLParallelCoordinates
 			final IViewFrustum viewFrustum)
 	{
 		super(iGLCanvasID, sLabel, viewFrustum);
-
+		viewType = EManagedObjectType.GL_PARALLEL_COORDINATES;
 		// alDataStorages = new ArrayList<IStorage>();
 		renderStyle = new ParCoordsRenderStyle(viewFrustum);
 
@@ -203,7 +204,7 @@ public class GLParallelCoordinates
 		iconTextureManager = new GLIconTextureManager(gl);
 
 		initData();
-		
+
 		fXDefaultTranslation = renderStyle.getXSpacing();
 		fYTranslation = renderStyle.getBottomSpacing();
 	}
@@ -222,9 +223,9 @@ public class GLParallelCoordinates
 	@Override
 	public void displayLocal(final GL gl)
 	{
-		if(set == null)
+		if (set == null)
 			return;
-		
+
 		if (bIsTranslationActive)
 		{
 			doTranslation();
@@ -248,9 +249,9 @@ public class GLParallelCoordinates
 	@Override
 	public void displayRemote(final GL gl)
 	{
-		if(set == null)
+		if (set == null)
 			return;
-		
+
 		if (bIsTranslationActive)
 		{
 			doTranslation();
@@ -272,14 +273,13 @@ public class GLParallelCoordinates
 	@Override
 	public void display(final GL gl)
 	{
-//		GLHelperFunctions.drawAxis(gl);
-//		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		// GLHelperFunctions.drawAxis(gl);
+		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
 		clipToFrustum(gl);
 
 		gl.glTranslatef(fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
 
-		
 		if (bIsDraggingActive)
 			handleDragging(gl);
 
@@ -293,7 +293,7 @@ public class GLParallelCoordinates
 		}
 
 		checkUnselection();
-		GLHelperFunctions.drawAxis(gl);
+//		GLHelperFunctions.drawAxis(gl);
 		gl.glCallList(iGLDisplayListToCall);
 
 		gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
@@ -392,8 +392,6 @@ public class GLParallelCoordinates
 		}
 	}
 
-
-
 	/**
 	 * Initializes the array lists that contain the data. Must be run at program
 	 * start, every time you exchange axis and polylines and every time you
@@ -441,8 +439,8 @@ public class GLParallelCoordinates
 		// {
 		//axisSelectionManager.initialAdd(set.getVA(iAxisVAID).get(iAxisCount));
 		// }
-		fAxisSpacing = renderStyle.getAxisSpacing(set.sizeVA(iAxisVAID));
-		
+
+
 		initGates();
 
 	}
@@ -500,19 +498,21 @@ public class GLParallelCoordinates
 	private void buildPolyLineDisplayList(final GL gl, int iGLDisplayListIndex)
 	{
 
+		fAxisSpacing = renderStyle.getAxisSpacing(set.sizeVA(iAxisVAID));
+		
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
 		// if(bIsDraggingActive)
 		// handleDragging(gl);
 
-		renderCoordinateSystem(gl, set.getVA(iAxisVAID).size());
+		renderCoordinateSystem(gl);
 
 		renderPolylines(gl, ESelectionType.DESELECTED);
 		renderPolylines(gl, ESelectionType.NORMAL);
 		renderPolylines(gl, ESelectionType.MOUSE_OVER);
 		renderPolylines(gl, ESelectionType.SELECTION);
 
-		renderGates(gl, set.getVA(iAxisVAID).size());
+		renderGates(gl);
 
 		gl.glEndList();
 	}
@@ -536,23 +536,38 @@ public class GLParallelCoordinates
 		{
 			case NORMAL:
 				setDataToRender = polylineSelectionManager.getElements(renderMode);
-				if (bPreventOcclusion)
-					gl.glColor4fv(renderStyle.getPolylineOcclusionPrevColor(setDataToRender
-							.size()), 0);
+				if (detailLevel.compareTo(EDetailLevel.LOW) < 1)
+				{
+					gl.glColor4fv(renderStyle
+							.getPolylineDeselectedOcclusionPrevColor(setDataToRender.size()),
+							0);
+					gl.glLineWidth(ParCoordsRenderStyle.DESELECTED_POLYLINE_LINE_WIDTH);
+				}
 				else
-					gl.glColor4fv(ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR, 0);
+				{
+					if (bPreventOcclusion)
+						gl.glColor4fv(renderStyle
+								.getPolylineOcclusionPrevColor(setDataToRender.size()), 0);
+					else
+						gl
+								.glColor4fv(
+										ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR,
+										0);
 
-				gl.glLineWidth(ParCoordsRenderStyle.POLYLINE_LINE_WIDTH);
+					gl.glLineWidth(ParCoordsRenderStyle.POLYLINE_LINE_WIDTH);
+				}
 				break;
 			case SELECTION:
 				setDataToRender = polylineSelectionManager.getElements(renderMode);
 				gl.glColor4fv(ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR, 0);
 				gl.glLineWidth(ParCoordsRenderStyle.SELECTED_POLYLINE_LINE_WIDTH);
+				fZDepth = 0.02f;
 				break;
 			case MOUSE_OVER:
 				setDataToRender = polylineSelectionManager.getElements(renderMode);
 				gl.glColor4fv(ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR, 0);
 				gl.glLineWidth(ParCoordsRenderStyle.MOUSE_OVER_POLYLINE_LINE_WIDTH);
+				fZDepth = 0.02f;
 				break;
 			case DESELECTED:
 				setDataToRender = polylineSelectionManager.getElements(renderMode);
@@ -636,10 +651,18 @@ public class GLParallelCoordinates
 		}
 	}
 
-	private void renderCoordinateSystem(GL gl, final int iNumberAxis)
+	/**
+	 * Render the coordinate system of the parallel coordinates, including the
+	 * axis captions and axis-specific buttons
+	 * 
+	 * @param gl the gl context
+	 * @param iNumberAxis
+	 */
+	private void renderCoordinateSystem(GL gl)
 	{
 		textRenderer.setColor(0, 0, 0, 1);
 
+		int iNumberAxis = set.getVA(iAxisVAID).size();
 		// draw X-Axis
 		gl.glColor4fv(ParCoordsRenderStyle.X_AXIS_COLOR, 0);
 		gl.glLineWidth(ParCoordsRenderStyle.X_AXIS_LINE_WIDTH);
@@ -690,112 +713,138 @@ public class GLParallelCoordinates
 			gl.glVertex3f(iCount * fAxisSpacing + ParCoordsRenderStyle.AXIS_MARKER_WIDTH,
 					renderStyle.getAxisHeight(), ParCoordsRenderStyle.AXIS_Z);
 			gl.glEnd();
-
-			String sAxisLabel = null;
-			switch (eAxisDataType)
+			if (detailLevel != EDetailLevel.HIGH)
 			{
-				// TODO not very generic here
-				case EXPRESSION_EXPERIMENT:
-					// Labels
-					// sAxisLabel = alDataStorages.get(iCount).getLabel();
-					sAxisLabel = set.getStorageFromVA(iStorageVAID, iCount).getLabel();
-					break;
-				case EXPRESSION_INDEX:
-					sAxisLabel = getRefSeqFromStorageIndex(set.getVA(iContentVAID).get(iCount));
-					break;
-				default:
-					sAxisLabel = "No Label";
+				// pop the picking id here when we don't want to include the
+				// axis label
+				gl.glPopName();
 			}
-			gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-			gl.glTranslatef(iCount * fAxisSpacing, renderStyle.getAxisHeight()
-					+ renderStyle.getAxisCaptionSpacing(), 0);
-			gl.glRotatef(25, 0, 0, 1);
-			textRenderer.begin3DRendering();
-			textRenderer.draw3D(sAxisLabel, 0, 0, 0, renderStyle.getSmallFontScalingFactor());
-			textRenderer.end3DRendering();
-			gl.glRotatef(-25, 0, 0, 1);
-			gl.glTranslatef(-iCount * fAxisSpacing,
-					-(renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing()), 0);
-
-			textRenderer.begin3DRendering();
-
-			// render values on top and bottom of axis
-			try
+			else
 			{
-				// top
-				textRenderer.draw3D(String.valueOf(set.getMax()), iCount * fAxisSpacing + 2
-						* ParCoordsRenderStyle.AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(),
-						0, renderStyle.getSmallFontScalingFactor());
-
-				// bottom
-				textRenderer.draw3D(String.valueOf(set.getMin()), iCount * fAxisSpacing + 2
-						* ParCoordsRenderStyle.AXIS_MARKER_WIDTH, 0, 0, renderStyle
+				String sAxisLabel = null;
+				switch (eAxisDataType)
+				{
+					// TODO not very generic here
+					case EXPRESSION_EXPERIMENT:
+						// Labels
+						// sAxisLabel = alDataStorages.get(iCount).getLabel();
+						sAxisLabel = set.getStorageFromVA(iStorageVAID, iCount).getLabel();
+						break;
+					case EXPRESSION_INDEX:
+						sAxisLabel = getRefSeqFromStorageIndex(set.getVA(iContentVAID).get(
+								iCount));
+						break;
+					default:
+						sAxisLabel = "No Label";
+				}
+				gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+				gl.glTranslatef(iCount * fAxisSpacing, renderStyle.getAxisHeight()
+						+ renderStyle.getAxisCaptionSpacing(), 0);
+				gl.glRotatef(25, 0, 0, 1);
+				textRenderer.begin3DRendering();
+				textRenderer.draw3D(sAxisLabel, 0, 0, 0, renderStyle
 						.getSmallFontScalingFactor());
 				textRenderer.end3DRendering();
-			}
-			catch (OperationNotSupportedException e)
-			{
-				e.printStackTrace();
-			}
+				gl.glRotatef(-25, 0, 0, 1);
+				gl.glTranslatef(-iCount * fAxisSpacing,
+						-(renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing()),
+						0);
 
-			gl.glPopAttrib();
-			gl.glPopName();
-			// render Buttons
+				textRenderer.begin3DRendering();
 
-			int iNumberOfButtons = 0;
-			if (iCount != 0 || iCount != iNumberAxis - 1)
-				iNumberOfButtons = 4;
-			else
-				iNumberOfButtons = 3;
+				// render values on top and bottom of axis
+				try
+				{
+					// top
+					textRenderer.draw3D(String.valueOf(set.getMax()), iCount * fAxisSpacing
+							+ 2 * ParCoordsRenderStyle.AXIS_MARKER_WIDTH, renderStyle
+							.getAxisHeight(), 0, renderStyle.getSmallFontScalingFactor());
 
-			float fXButtonOrigin = 0;
-			float fYButtonOrigin = 0;
-			int iPickingID = -1;
+					// bottom
+					textRenderer.draw3D(String.valueOf(set.getMin()), iCount * fAxisSpacing
+							+ 2 * ParCoordsRenderStyle.AXIS_MARKER_WIDTH, 0, 0, renderStyle
+							.getSmallFontScalingFactor());
+					textRenderer.end3DRendering();
+				}
+				catch (OperationNotSupportedException e)
+				{
+					e.printStackTrace();
+				}
 
-			fXButtonOrigin = iCount
-					* fAxisSpacing
-					- (iNumberOfButtons * renderStyle.getButtonWidht() + (iNumberOfButtons - 1)
-							* renderStyle.getButtonSpacing()) / 2;
-			fYButtonOrigin = -renderStyle.getAxisButtonYOffset();
+				gl.glPopAttrib();
+				gl.glPopName();
+				// render Buttons
 
-			if (iCount != 0)
-			{
-				iPickingID = pickingManager.getPickingID(iUniqueID,
-						EPickingType.MOVE_AXIS_LEFT, iCount);
-				renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID,
-						EIconTextures.ARROW_LEFT);
-			}
+				if (selectedSet.contains(set.getVA(iAxisVAID).get(iCount))
+						|| mouseOverSet.contains(set.getVA(iAxisVAID).get(iCount)))
+				{
+					int iNumberOfButtons = 0;
+					if (iCount != 0 || iCount != iNumberAxis - 1)
+						iNumberOfButtons = 4;
+					else
+						iNumberOfButtons = 3;
 
-			// remove button
-			fXButtonOrigin = fXButtonOrigin + renderStyle.getButtonWidht()
-					+ renderStyle.getButtonSpacing();
+					float fXButtonOrigin = 0;
+					float fYButtonOrigin = 0;
+					int iPickingID = -1;
 
-			iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.REMOVE_AXIS,
-					iCount);
-			renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID, EIconTextures.REMOVE);
+					fXButtonOrigin = iCount
+							* fAxisSpacing
+							- (iNumberOfButtons * renderStyle.getButtonWidht() + (iNumberOfButtons - 1)
+									* renderStyle.getButtonSpacing()) / 2;
+					fYButtonOrigin = -renderStyle.getAxisButtonYOffset();
 
-			// duplicate axis button
-			fXButtonOrigin = fXButtonOrigin + renderStyle.getButtonWidht()
-					+ renderStyle.getButtonSpacing();
-			iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.DUPLICATE_AXIS,
-					iCount);
-			renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID,
-					EIconTextures.DUPLICATE);
+					if (iCount != 0)
+					{
+						iPickingID = pickingManager.getPickingID(iUniqueID,
+								EPickingType.MOVE_AXIS_LEFT, iCount);
+						renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID,
+								EIconTextures.ARROW_LEFT);
+					}
 
-			if (iCount != iNumberAxis - 1)
-			{
-				// right, move right button
-				fXButtonOrigin = fXButtonOrigin + renderStyle.getButtonWidht()
-						+ renderStyle.getButtonSpacing();
-				iPickingID = pickingManager.getPickingID(iUniqueID,
-						EPickingType.MOVE_AXIS_RIGHT, iCount);
-				renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID,
-						EIconTextures.ARROW_RIGHT);
+					// remove button
+					fXButtonOrigin = fXButtonOrigin + renderStyle.getButtonWidht()
+							+ renderStyle.getButtonSpacing();
+
+					iPickingID = pickingManager.getPickingID(iUniqueID,
+							EPickingType.REMOVE_AXIS, iCount);
+					renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID,
+							EIconTextures.REMOVE);
+
+					// duplicate axis button
+					fXButtonOrigin = fXButtonOrigin + renderStyle.getButtonWidht()
+							+ renderStyle.getButtonSpacing();
+					iPickingID = pickingManager.getPickingID(iUniqueID,
+							EPickingType.DUPLICATE_AXIS, iCount);
+					renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID,
+							EIconTextures.DUPLICATE);
+
+					if (iCount != iNumberAxis - 1)
+					{
+						// right, move right button
+						fXButtonOrigin = fXButtonOrigin + renderStyle.getButtonWidht()
+								+ renderStyle.getButtonSpacing();
+						iPickingID = pickingManager.getPickingID(iUniqueID,
+								EPickingType.MOVE_AXIS_RIGHT, iCount);
+						renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID,
+								EIconTextures.ARROW_RIGHT);
+					}
+				}
 			}
 			iCount++;
 		}
 	}
 
+	/**
+	 * Render a Button, at a specified position with a specified picking ID and
+	 * a specified texture
+	 * 
+	 * @param gl the GL context
+	 * @param fXButtonOrigin the x origin of the button
+	 * @param fYButtonOrigin the y origin of the button
+	 * @param iPickingID the picking id to be assigned to the button
+	 * @param eIconTextures the texture of the button
+	 */
 	private void renderButton(GL gl, float fXButtonOrigin, float fYButtonOrigin,
 			int iPickingID, EIconTextures eIconTextures)
 	{
@@ -828,8 +877,16 @@ public class GLParallelCoordinates
 		tempTexture.disable();
 	}
 
-	private void renderGates(GL gl, int iNumberAxis)
+	/**
+	 * Render the gates and update the fArGateHeights for the
+	 * selection/unselection
+	 * 
+	 * @param gl
+	 * @param iNumberAxis
+	 */
+	private void renderGates(GL gl)
 	{
+		int iNumberAxis = set.getVA(iAxisVAID).size();
 
 		gl.glColor4fv(ParCoordsRenderStyle.GATE_COLOR, 0);
 
@@ -949,22 +1006,23 @@ public class GLParallelCoordinates
 		float fXTextOrigin = fXOrigin + 2 * ParCoordsRenderStyle.AXIS_MARKER_WIDTH;
 		float fYTextOrigin = fYOrigin;
 
-		gl.glColor4f(0.8f, 0.8f, 0.8f, 0.5f);
+		gl.glColor4f(0.9f, 0.9f, 0.9f, 0.8f);
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(fXTextOrigin, fYTextOrigin, 0.002f);
-		gl.glVertex3f(fXTextOrigin + fBackPlaneWidth, fYTextOrigin, 0.002f);
-		gl.glVertex3f(fXTextOrigin + fBackPlaneWidth, fYTextOrigin + fBackPlaneHeight, 0.002f);
-		gl.glVertex3f(fXTextOrigin, fYTextOrigin + fBackPlaneHeight, 0.002f);
+		gl.glVertex3f(fXTextOrigin, fYTextOrigin, 0.03f);
+		gl.glVertex3f(fXTextOrigin + fBackPlaneWidth, fYTextOrigin, 0.03f);
+		gl.glVertex3f(fXTextOrigin + fBackPlaneWidth, fYTextOrigin + fBackPlaneHeight, 0.03f);
+		gl.glVertex3f(fXTextOrigin, fYTextOrigin + fBackPlaneHeight, 0.03f);
 		gl.glEnd();
 
 		textRenderer.begin3DRendering();
 
 		textRenderer.draw3D(decimalFormat.format(fRawValue), fXTextOrigin, fYTextOrigin,
-				0.0021f, renderStyle.getSmallFontScalingFactor());
+				0.031f, renderStyle.getSmallFontScalingFactor());
 		textRenderer.end3DRendering();
 		gl.glPopAttrib();
 	}
 
+	// TODO
 	private void handleDragging(GL gl)
 	{
 
@@ -1068,6 +1126,7 @@ public class GLParallelCoordinates
 
 	}
 
+	@Override
 	protected void checkUnselection()
 	{
 		HashMap<Integer, Boolean> hashDeselectedPolylines = new HashMap<Integer, Boolean>();
@@ -1432,6 +1491,7 @@ public class GLParallelCoordinates
 		bIsTranslationActive = true;
 	}
 
+	// TODO
 	private void doTranslation()
 	{
 
@@ -1464,6 +1524,7 @@ public class GLParallelCoordinates
 		fXTranslation += fDelta;
 	}
 
+	// TODO
 	private void handleAngularBrushing(final GL gl)
 	{
 
@@ -1651,6 +1712,7 @@ public class GLParallelCoordinates
 
 	}
 
+	// TODO
 	private float getAngle(final Vec3f vecOne, final Vec3f vecTwo)
 	{
 

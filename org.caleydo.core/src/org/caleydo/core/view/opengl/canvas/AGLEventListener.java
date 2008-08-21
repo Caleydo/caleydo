@@ -43,6 +43,7 @@ public abstract class AGLEventListener
 {
 	protected IGeneralManager generalManager;
 
+	protected EManagedObjectType viewType = EManagedObjectType.GL_EVENT_LISTENER;
 	// TODO: should be a list of parent canvas object to be generic
 	protected GLCaleydoCanvas parentGLCanvas;
 
@@ -70,7 +71,7 @@ public abstract class AGLEventListener
 	 * by the JOGL animator.
 	 */
 	protected float fAspectRatio = 1f;
-	
+
 	protected EDetailLevel detailLevel = EDetailLevel.HIGH;
 
 	protected boolean bIsDisplayListDirtyLocal = true;
@@ -181,6 +182,7 @@ public abstract class AGLEventListener
 		else
 		{
 
+			// normalize between 0 and 8
 			Rectangle frame = parentGLCanvas.getBounds();
 			viewFrustum.setLeft(0);
 			viewFrustum.setRight(8);// frame.width / 100);
@@ -212,7 +214,7 @@ public abstract class AGLEventListener
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
 	}
-	
+
 	/**
 	 * This method clips everything outside the frustum
 	 */
@@ -307,14 +309,14 @@ public abstract class AGLEventListener
 	public void removeSets(ESetType setType)
 	{
 		Iterator<ISet> iter = alSets.iterator();
-		while(iter.hasNext())
+		while (iter.hasNext())
 		{
-			if(iter.next().getSetType() == setType)
+			if (iter.next().getSetType() == setType)
 				iter.remove();
 		}
 		setDisplayListDirty();
 	}
-	
+
 	public void clearSets()
 	{
 		alSets.clear();
@@ -361,10 +363,11 @@ public abstract class AGLEventListener
 	protected void checkForHits(final GL gl)
 	{
 
-		// TODO: should only iterate over those relevant to the view - should
-		// it?
 		for (EPickingType ePickingType : EPickingType.values())
 		{
+			if (ePickingType.getViewType() != viewType)
+				continue;
+
 			ArrayList<Pick> alHits = null;
 
 			alHits = pickingManager.getHits(iUniqueID, ePickingType);
