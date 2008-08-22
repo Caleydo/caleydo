@@ -63,14 +63,17 @@ public class HeatMapRenderStyle
 
 	private EDetailLevel detailLevel = EDetailLevel.HIGH;
 
+	private boolean bRenderStorageHorizontally;
+
 	public HeatMapRenderStyle(final IViewFrustum viewFrustum,
 			final GenericSelectionManager contentSelectionManager, ISet set, int iContentVAID,
-			int iStorageVAID, int iNumElements, boolean bRenderVertical)
+			int iStorageVAID, int iNumElements, boolean bRenderStorageHorizontally)
 	{
 
 		super(viewFrustum);
 
 		this.contentSelectionManager = contentSelectionManager;
+		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
 
 		this.iContentVAID = iContentVAID;
 		this.iStorageVAID = iStorageVAID;
@@ -138,13 +141,22 @@ public class HeatMapRenderStyle
 				.getNumberOfElements(ESelectionType.SELECTION);
 		int iNumberTotal = set.getVA(iContentVAID).size();
 
-		fNormalFieldWidth = (getRenderWidth() - iNumberSelected * fSelectedFieldWidth)
-				/ (iNumberTotal - iNumberSelected);
+		if (bRenderStorageHorizontally)
+		{
+			fNormalFieldWidth = (getRenderWidth() - iNumberSelected * fSelectedFieldWidth)
+					/ (iNumberTotal - iNumberSelected);
 
-		fNormalFieldWidth = (fNormalFieldWidth > fMamximumNormalFieldWidth) ? fMamximumNormalFieldWidth
-				: fNormalFieldWidth;
+			fNormalFieldWidth = (fNormalFieldWidth > fMamximumNormalFieldWidth) ? fMamximumNormalFieldWidth
+					: fNormalFieldWidth;
 
-		fFieldHeight = getRenderHeight() / set.getVA(iStorageVAID).size();
+			fFieldHeight = getRenderHeight() / set.getVA(iStorageVAID).size();
+		}
+		else
+		{
+			fNormalFieldWidth = (getRenderHeight() - iNumberSelected * fSelectedFieldWidth)
+			/ (iNumberTotal - iNumberSelected);
+			fFieldHeight = (getRenderWidth() / set.getVA(iStorageVAID).size());
+		}
 
 		alFieldWidths.clear();
 

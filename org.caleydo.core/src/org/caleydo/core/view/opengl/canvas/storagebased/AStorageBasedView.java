@@ -192,7 +192,7 @@ public abstract class AStorageBasedView
 	{
 		int iStorageLength = set.depth();
 		// FIXME hack
-		iStorageLength = 100;
+//		iStorageLength = 100;
 
 		// initialize virtual array that contains all (filtered) information
 		ArrayList<Integer> alTempList = new ArrayList<Integer>(set.depth());

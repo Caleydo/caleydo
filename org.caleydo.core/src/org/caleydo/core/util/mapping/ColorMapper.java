@@ -20,7 +20,7 @@ import org.caleydo.util.graph.EGraphItemProperty;
  * 
  * @author Marc Streit
  */
-public class GenomeColorMapper
+public class ColorMapper
 {
 	protected IGenomeIdManager genomeIdManager;
 
@@ -33,7 +33,7 @@ public class GenomeColorMapper
 	 * 
 	 * @param generalManager
 	 */
-	public GenomeColorMapper()
+	public ColorMapper()
 	{
 		alMappingStorage = new ArrayList<IStorage>();
 		genomeIdManager = GeneralManager.get().getGenomeIdManager();

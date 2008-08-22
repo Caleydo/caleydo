@@ -111,7 +111,7 @@ public class GLHeatMap
 		dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
 		bRenderOnlyContext = false;
 
-		bRenderStorageHorizontally = true;
+		bRenderStorageHorizontally = false;
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
@@ -130,7 +130,7 @@ public class GLHeatMap
 
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 
-		bRenderStorageHorizontally = true;
+		bRenderStorageHorizontally = false;
 
 		glToolboxRenderer = new GLToolboxRenderer(gl, generalManager, iUniqueID,
 				iRemoteViewID, new Vec3f(0, 0, 0), layer, true, renderStyle);
@@ -240,7 +240,7 @@ public class GLHeatMap
 
 		if (!bRenderStorageHorizontally)
 		{
-			gl.glTranslatef(vecTranslation.x(), vecTranslation.y(), vecTranslation.z());
+			gl.glTranslatef(vecTranslation.x(),viewFrustum.getHeight(), vecTranslation.z());
 			gl.glRotatef(vecRotation.x(), vecRotation.y(), vecRotation.z(), vecRotation.w());
 		}
 
@@ -255,7 +255,7 @@ public class GLHeatMap
 		if (!bRenderStorageHorizontally)
 		{
 			gl.glRotatef(-vecRotation.x(), vecRotation.y(), vecRotation.z(), vecRotation.w());
-			gl.glTranslatef(-vecTranslation.x(), -vecTranslation.y(), -vecTranslation.z());
+			gl.glTranslatef(-vecTranslation.x(), -viewFrustum.getHeight(), -vecTranslation.z());
 		}
 
 		gl.glDisable(GL.GL_STENCIL_TEST);
@@ -320,7 +320,7 @@ public class GLHeatMap
 		}
 
 		renderStyle = new HeatMapRenderStyle(viewFrustum, contentSelectionManager, set,
-				iContentVAID, iStorageVAID, set.getVA(iStorageVAID).size(), true);
+				iContentVAID, iStorageVAID, set.getVA(iStorageVAID).size(), bRenderStorageHorizontally);
 		// TODO probably remove this here
 		renderStyle.initFieldSizes();
 
@@ -453,7 +453,7 @@ public class GLHeatMap
 					{
 						renderCaption(gl, set.get(iStorageIndex).getLabel(),
 								fXPosition + 0.1f,
-								fYPosition + vecFieldWidthAndHeight.y() / 2, 25);
+								fYPosition + vecFieldWidthAndHeight.y() / 2, 60);
 						fYPosition += vecFieldWidthAndHeight.y();
 					}
 				}

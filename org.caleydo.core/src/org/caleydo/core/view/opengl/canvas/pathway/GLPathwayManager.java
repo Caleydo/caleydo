@@ -24,7 +24,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
-import org.caleydo.core.util.mapping.GenomeColorMapper;
+import org.caleydo.core.util.mapping.ColorMapper;
 import org.caleydo.core.view.opengl.util.GLTextUtils;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemKind;
@@ -72,7 +72,7 @@ public class GLPathwayManager
 
 	private HashMap<Integer, Integer> hashPathwayId2EdgesDisplayListId;
 
-	private GenomeColorMapper genomeMapper;
+	private ColorMapper genomeMapper;
 
 	private GenericSelectionManager internalSelectionManager;
 
@@ -114,7 +114,7 @@ public class GLPathwayManager
 		// Initialize genome mapper
 		// TODO: move to a manager because more classes use the genome mapper
 		// maybe GenomeIdManager is the right place
-		genomeMapper = new GenomeColorMapper();
+		genomeMapper = new ColorMapper();
 		genomeMapper.setMappingData(alSetData);
 	}
 

@@ -182,8 +182,8 @@ public class GLParallelCoordinates
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas)
 	{
-		// dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
-		dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
+		dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
+		//dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
 		bRenderOnlyContext = true;
 
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;

@@ -1,7 +1,7 @@
 package org.caleydo.core.view.opengl.miniview;
 
 import javax.media.opengl.GL;
-import org.caleydo.core.util.mapping.GenomeColorMapper;
+import org.caleydo.core.util.mapping.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 
 /**
@@ -13,12 +13,12 @@ public class GLColorMappingBarMiniView
 	extends AGLMiniView
 {
 
-	private GenomeColorMapper genomeMapper;
+	private ColorMapper genomeMapper;
 
 	/**
 	 * Constructor.
 	 */
-	public GLColorMappingBarMiniView(final GenomeColorMapper genomeMapper)
+	public GLColorMappingBarMiniView(final ColorMapper genomeMapper)
 	{
 
 		super();
