@@ -3,6 +3,7 @@ package org.caleydo.core.data.collection.storage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import javax.management.InvalidAttributeValueException;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.ccontainer.FloatCContainer;

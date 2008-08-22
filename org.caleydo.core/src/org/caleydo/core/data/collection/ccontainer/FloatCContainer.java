@@ -1,5 +1,6 @@
 package org.caleydo.core.data.collection.ccontainer;
 
+import javax.management.InvalidAttributeValueException;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
@@ -90,19 +91,27 @@ public class FloatCContainer
 	@Override
 	public FloatCContainer normalize()
 	{
-		return normalize((float) getMin(), (float) getMax());
+		try
+		{
+			return normalize((int) getMin(), (int) getMax());
+		}
+		catch (InvalidAttributeValueException e)
+		{
+			throw new CaleydoRuntimeException(
+					"Caught InvalidAttributeValueException with automatically calculated values. "
+							+ "Original Message: " + e.getMessage(),
+					CaleydoRuntimeExceptionType.DATAHANDLING);
+		}
 	}
 
 	@Override
 	public FloatCContainer normalizeWithExternalExtrema(final double dMin, final double dMax)
+			throws InvalidAttributeValueException
 	{
 
-		if (dMin > getMin() || dMax < getMax())
-		{
-			throw new CaleydoRuntimeException("Provided external values are more "
-					+ "limiting than calculated ones",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
-		}
+		if (fMin >= fMax)
+			throw new InvalidAttributeValueException("Minimum was bigger or same as maximum");
+
 		return normalize((float) dMin, (float) dMax);
 	}
 
@@ -130,9 +139,14 @@ public class FloatCContainer
 	 * @param fMin the minimum considered in the normalization
 	 * @param fMax the maximum considered in the normalization
 	 * @return
+	 * @throws InvalidAttributeValueException when fMin is >= fMax
 	 */
 	private FloatCContainer normalize(final float fMin, final float fMax)
+			throws InvalidAttributeValueException
 	{
+		if (fMin >= fMax)
+			throw new InvalidAttributeValueException("Minimum was bigger or same as maximum");
+
 		float[] fArTmpTarget = new float[fArContainer.length];
 		if (fArContainer.length > 1)
 		{
@@ -144,6 +158,8 @@ public class FloatCContainer
 				else
 				{
 					fArTmpTarget[iCount] = (fArContainer[iCount] - fMin) / (fMax - fMin);
+					fArTmpTarget[iCount] = (fArTmpTarget[iCount] > 1) ? 1
+							: fArTmpTarget[iCount];
 				}
 			}
 		}

@@ -1,5 +1,6 @@
 package org.caleydo.core.data.collection;
 
+import javax.management.InvalidAttributeValueException;
 
 /**
  * INumericalStorage is a specialization of IStorage. It is meant for numerical
@@ -16,16 +17,27 @@ public interface INumericalStorage
 {
 
 	/**
+	 * <p>
 	 * If you want to consider extremas for normalization which do not occur in
 	 * the dataset, use this method instead of normalize(). This is e.g. useful
 	 * if other sets need to be comparable, but contain larger or smaller
-	 * elements. Normalize operates on the raw data, except if you previously
-	 * called log, then the logarithmized data is used.
+	 * elements.
+	 * </p>
+	 * If dMin is smaller respectively dMax bigger than the actual minimum the
+	 * values that are bigger are set to 0 (minimum) or 1 (maximum) in the
+	 * normalized data. However, the raw data stays the way it is. Therefore
+	 * elements that are drawn at 1 or 0 can have different raw values
+	 * associated.
+	 * <p>
+	 * Normalize operates on the raw data, except if you previously called log,
+	 * then the logarithmized data is used.
 	 * 
 	 * @param dMin the minimum
 	 * @param dMax the maximum
+	 * @throws InvalidAttributeValueException if dMin >= dMax
 	 */
-	public void normalizeWithExternalExtrema(double dMin, double dMax);
+	public void normalizeWithExternalExtrema(double dMin, double dMax)
+			throws InvalidAttributeValueException;
 
 	/**
 	 * Get the minimum of the raw data, respectively the logarithmized data if

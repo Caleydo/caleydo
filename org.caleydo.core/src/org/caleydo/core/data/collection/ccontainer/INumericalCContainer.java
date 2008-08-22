@@ -1,5 +1,6 @@
 package org.caleydo.core.data.collection.ccontainer;
 
+import javax.management.InvalidAttributeValueException;
 
 /**
  * Extension of the ICContainer interface for numerical values
@@ -19,9 +20,11 @@ public interface INumericalCContainer
 	 * 
 	 * @param dMin the minimum
 	 * @param dMax the maximum
-	 * @return
+	 * @return a container with the normalized values
+	 * @throws InvalidAttributeValueException when iMin is >= iMax
 	 */
-	public FloatCContainer normalizeWithExternalExtrema(double dMin, double dMax);
+	public FloatCContainer normalizeWithExternalExtrema(double dMin, double dMax)
+			throws InvalidAttributeValueException;
 
 	/**
 	 * Returns the minimum of the container, double to fit all datatypes

@@ -3,6 +3,7 @@ package org.caleydo.core.data.collection.set;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import javax.management.InvalidAttributeValueException;
 import javax.naming.OperationNotSupportedException;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
@@ -197,6 +198,13 @@ public class Set
 					throw new CaleydoRuntimeException(
 							"Tried to normalize globally on a set wich has"
 									+ "different storage types",
+							CaleydoRuntimeExceptionType.DATAHANDLING);
+				}
+				catch(InvalidAttributeValueException e)
+				{
+					throw new CaleydoRuntimeException(
+							"Caught InvalidAttributeValueException with automatically calculated values. "
+									+ "Original Message: " + e.getMessage(),
 							CaleydoRuntimeExceptionType.DATAHANDLING);
 				}
 			}

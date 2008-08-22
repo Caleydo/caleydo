@@ -1,10 +1,10 @@
 package org.caleydo.core.data.collection.storage;
 
+import javax.management.InvalidAttributeValueException;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ccontainer.INumericalCContainer;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-
 
 /**
  * Storage for Numerical Values, Implementation of INumericalStorage
@@ -23,17 +23,17 @@ public class NumericalStorage
 	 */
 	public NumericalStorage()
 	{
-		super(GeneralManager.get().getIDManager()
-				.createID(EManagedObjectType.STORAGE_NUMERICAL));
+		super(GeneralManager.get().getIDManager().createID(
+				EManagedObjectType.STORAGE_NUMERICAL));
 	}
 
 	@Override
 	public void normalizeWithExternalExtrema(double dMin, double dMax)
+			throws InvalidAttributeValueException
 	{
 
 		INumericalCContainer rawStorage = (INumericalCContainer) hashCContainers
 				.get(EDataRepresentation.RAW);
-		// TODO check if dMin < fMin
 		INumericalCContainer normalizedStorage = (INumericalCContainer) rawStorage
 				.normalizeWithExternalExtrema(dMin, dMax);
 

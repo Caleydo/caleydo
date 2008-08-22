@@ -1,6 +1,5 @@
 package org.caleydo.core.data.collection.ccontainer;
 
-
 /**
  * Interface for the low level containers which hold the data for the storages
  * 

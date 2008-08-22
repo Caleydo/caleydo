@@ -1,5 +1,6 @@
 package org.caleydo.core.data.collection.ccontainer;
 
+import javax.management.InvalidAttributeValueException;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
@@ -92,6 +93,7 @@ public class IntCContainer
 
 	@Override
 	public FloatCContainer normalizeWithExternalExtrema(double dMin, double dMax)
+			throws InvalidAttributeValueException
 	{
 		if (dMin > getMin() || dMax < getMax())
 		{
@@ -105,7 +107,17 @@ public class IntCContainer
 	@Override
 	public FloatCContainer normalize()
 	{
-		return normalize(iMin, iMax);
+		try
+		{
+			return normalize((int) getMin(), (int) getMax());
+		}
+		catch (InvalidAttributeValueException e)
+		{
+			throw new CaleydoRuntimeException(
+					"Caught InvalidAttributeValueException with automatically calculated values. "
+							+ "Original Message: " + e.getMessage(),
+					CaleydoRuntimeExceptionType.DATAHANDLING);
+		}
 	}
 
 	/**
@@ -114,15 +126,19 @@ public class IntCContainer
 	 * @param iMin
 	 * @param iMax
 	 * @return
+	 * @throws InvalidAttributeValueException when iMin is >= iMax
 	 */
 	private FloatCContainer normalize(int iMin, int iMax)
+			throws InvalidAttributeValueException
 	{
-
+		if (iMin >= iMax)
+			throw new InvalidAttributeValueException("Minimum was bigger or same as maximum");
 		float[] fArTmpTarget = new float[iArContainer.length];
 
 		for (int iCount = 0; iCount < iArContainer.length; iCount++)
 		{
 			fArTmpTarget[iCount] = ((float) iArContainer[iCount] - iMin) / (iMax - iMin);
+			fArTmpTarget[iCount] = (fArTmpTarget[iCount] > 1) ? 1 : fArTmpTarget[iCount];
 		}
 		return new FloatCContainer(fArTmpTarget);
 	}
