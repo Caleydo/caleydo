@@ -4,12 +4,7 @@
 package org.caleydo.util.graph;
 
 import java.util.List;
-import org.caleydo.util.graph.EGraphItemKind;
-import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.item.IGraphDataHandler;
-import org.caleydo.util.graph.IGraphComponent;
-import org.caleydo.util.graph.IGraphItemHierarchy;
-import org.caleydo.util.graph.GraphRuntimeException;
 
 /**
  * Interface for all graph items. Could be nodes or edges.

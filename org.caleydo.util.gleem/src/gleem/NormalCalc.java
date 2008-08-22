@@ -30,8 +30,7 @@
 
 package gleem;
 
-import java.util.*;
-import gleem.linalg.*;
+import gleem.linalg.Vec3f;
 
 /** Calculates normals for a set of polygons. */
 @SuppressWarnings("all")

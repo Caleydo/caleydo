@@ -30,7 +30,11 @@
 
 package gleem;
 
-import gleem.linalg.*;
+import gleem.linalg.IntersectionPoint;
+import gleem.linalg.Mat3f;
+import gleem.linalg.MathUtil;
+import gleem.linalg.Vec2f;
+import gleem.linalg.Vec3f;
 
 /** Implements ray casting against a 3D triangle. */
 @SuppressWarnings("all")

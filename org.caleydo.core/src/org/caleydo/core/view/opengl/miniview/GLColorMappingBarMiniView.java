@@ -1,11 +1,13 @@
 package org.caleydo.core.view.opengl.miniview;
 
 import javax.media.opengl.GL;
-import org.caleydo.core.util.mapping.ColorMapper;
+import org.caleydo.core.util.mapping.PathwayColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 
 /**
  * Mini view that renders the current color bar.
+ * 
+ * TODO do this for the marker points
  * 
  * @author Marc Streit
  */
@@ -13,12 +15,12 @@ public class GLColorMappingBarMiniView
 	extends AGLMiniView
 {
 
-	private ColorMapper genomeMapper;
+	private PathwayColorMapper genomeMapper;
 
 	/**
 	 * Constructor.
 	 */
-	public GLColorMappingBarMiniView(final ColorMapper genomeMapper)
+	public GLColorMappingBarMiniView(final PathwayColorMapper genomeMapper)
 	{
 
 		super();
@@ -31,18 +33,15 @@ public class GLColorMappingBarMiniView
 	{
 
 		ColorMapping colorMapper = genomeMapper.getColorMapper();
-
+	
 		gl.glBegin(GL.GL_QUAD_STRIP);
-		gl.glColor3f(colorMapper.getColor_1().x(), colorMapper.getColor_1().y(), colorMapper
-				.getColor_1().z());
+		gl.glColor3fv(colorMapper.getColor(0), 1);
 		gl.glVertex3f(fXOrigin, fYOrigin, fZOrigin);
 		gl.glVertex3f(fXOrigin + fWidth, fYOrigin, fZOrigin);
-		gl.glColor3f(colorMapper.getColor_2().x(), colorMapper.getColor_2().y(), colorMapper
-				.getColor_2().z());
+		gl.glColor3fv(colorMapper.getColor(0.5f), 1);
 		gl.glVertex3f(fXOrigin, fYOrigin + fHeight / 2, fZOrigin);
 		gl.glVertex3f(fXOrigin + fWidth, fYOrigin + fHeight / 2, fZOrigin);
-		gl.glColor3f(colorMapper.getColor_3().x(), colorMapper.getColor_3().y(), colorMapper
-				.getColor_3().z());
+		gl.glColor3fv(colorMapper.getColor(1), 1);
 		gl.glVertex3f(fXOrigin, fYOrigin + fHeight, fZOrigin);
 		gl.glVertex3f(fXOrigin + fWidth, fYOrigin + fHeight, fZOrigin);
 		gl.glEnd();

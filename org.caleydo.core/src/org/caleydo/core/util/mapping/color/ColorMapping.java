@@ -1,150 +1,97 @@
 package org.caleydo.core.util.mapping.color;
 
-import gleem.linalg.Vec3f;
+import java.util.ArrayList;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
- * Class returns a color for an incoming value. The mapping uses three colors.
+ * Color mapping. The class is initialized with a list of inflection points and
+ * an associated color. A color mapping for values between 0 and 1 based on the
+ * provided points is accessible.
  * 
- * @author Michael Kalkusch
- * @author Marc Streit
+ * @author Alexander Lex
  */
 public class ColorMapping
-	extends AColorMapping
 {
 
-	private float fMid;
+	ArrayList<float[]> alColorList;
 
-	private static final int MAPPING_WIDTH = 100;
-
-	private Vec3f color_1 = new Vec3f(0, 1, 0); // green
-
-	private Vec3f color_2 = new Vec3f(0, 0, 0); // yellow
-
-	private Vec3f color_3 = new Vec3f(1, 0, 0); // red
-
-	private float fMappingWidth_div_Mid;
-
-	float[][] fArColorLookupTable_LEFT;
-
-	float[][] fArColorLookupTable_RIGHT;
+	public static int COLOR_DEPTH = 256;
 
 	/**
-	 * Constructor.
+	 * Constructor. Provide a list of {@link ColorMarkerPoint} where the first
+	 * has the smallest value, and each next point has a bigger value. These
+	 * color points work as inflection points. between two adjacent points the
+	 * colors are interpolated.
+	 * 
+	 * @param alMarkerPoints
+	 * @throws CaleydoRuntimeException if values in marker points are not
+	 *             increasing, or if fvalue > 1 || fvalue < 0
 	 */
-	public ColorMapping(final float fMin, final float fMax)
+	public ColorMapping(ArrayList<ColorMarkerPoint> alMarkerPoints)
 	{
-
-		super(fMin, fMax);
-
-		fArColorLookupTable_LEFT = new float[MAPPING_WIDTH][3];
-		fArColorLookupTable_RIGHT = new float[MAPPING_WIDTH][3];
-
-		createLookupTable();
-		this.setValueMinMax(fMin, fMax);
-	}
-
-	public void setValueMinMax(final float fMin, final float fMax)
-	{
-
-		super.setValueMinMax(fMin, fMax);
-
-		fMid = (fMax - fMin) / 2;
-		fMappingWidth_div_Mid = 2.0f * (float) MAPPING_WIDTH / (float) (fMax - fMin);
-
-	}
-
-	private void createLookupTable()
-	{
-
-		for (int iLookupIndex = 0; iLookupIndex < MAPPING_WIDTH; iLookupIndex++)
+		alColorList = new ArrayList<float[]>(COLOR_DEPTH);
+		for (int iCount = 0; iCount < COLOR_DEPTH; iCount++)
 		{
-			// x = index
-			// x0 = 0
-			// x1 = MAPPING_WIDTH
-			// y = ?
-			// y0 = color_1.x
-			// y1 = color_2.x
+			alColorList.add(new float[3]);
+		}
 
-			// Create LUT for color 1 to color 2
-			fArColorLookupTable_LEFT[iLookupIndex][0] = color_1.x() + (float) iLookupIndex
-					* ((color_2.x() - color_1.x()) / MAPPING_WIDTH);
-			fArColorLookupTable_LEFT[iLookupIndex][1] = color_1.y() + (float) iLookupIndex
-					* ((color_2.y() - color_1.y()) / MAPPING_WIDTH);
-			fArColorLookupTable_LEFT[iLookupIndex][2] = color_1.z() + (float) iLookupIndex
-					* ((color_2.z() - color_1.z()) / MAPPING_WIDTH);
+		setUpMapping(alMarkerPoints);
+	}
 
-			// Create LUT for color 2 to color 3
-			fArColorLookupTable_RIGHT[iLookupIndex][0] = color_2.x() + (float) iLookupIndex
-					* ((color_3.x() - color_2.x()) / MAPPING_WIDTH);
-			fArColorLookupTable_RIGHT[iLookupIndex][1] = color_2.y() + (float) iLookupIndex
-					* ((color_3.y() - color_2.y()) / MAPPING_WIDTH);
-			fArColorLookupTable_RIGHT[iLookupIndex][2] = color_2.z() + (float) iLookupIndex
-					* ((color_3.z() - color_2.z()) / MAPPING_WIDTH);
+	/**
+	 * Initialize the color mapping
+	 * 
+	 * @param alMarkerPoints the marker points
+	 */
+	private void setUpMapping(ArrayList<ColorMarkerPoint> alMarkerPoints)
+	{
+		float fSrcValue, fDestValue;
+
+		for (int iCount = 0; iCount < alMarkerPoints.size() - 1; iCount++)
+		{
+			fSrcValue = alMarkerPoints.get(iCount).getValue();
+			fDestValue = alMarkerPoints.get(iCount + 1).getValue();
+
+			if (fDestValue < fSrcValue)
+				throw new CaleydoRuntimeException(
+						"Marker points values have to be increasing in size, "
+								+ "but this was not the case");
+
+			float[] fSrcColor = alMarkerPoints.get(iCount).getColor();
+			float[] fDestColor = alMarkerPoints.get(iCount + 1).getColor();
+
+			int iSrcIndex = (int) (fSrcValue * (COLOR_DEPTH - 1));
+			int iDestIndex = (int) (fDestValue * (COLOR_DEPTH - 1));
+
+			int iColorRange = iDestIndex - iSrcIndex;
+
+			for (int iInnerCount = 1; iInnerCount <= iColorRange; iInnerCount++)
+			{
+				float[] fColor = alColorList.get(iSrcIndex + iInnerCount);
+				float fDivisor = (float) iColorRange / (float) iInnerCount;
+				fColor[0] = fSrcColor[0] + (fDestColor[0] - fSrcColor[0]) / fDivisor;
+				fColor[1] = fSrcColor[1] + (fDestColor[1] - fSrcColor[1]) / fDivisor;
+				fColor[2] = fSrcColor[2] + (fDestColor[2] - fSrcColor[2]) / fDivisor;
+			}
 		}
 	}
 
-	public Vec3f colorMappingLookup(final float fLookupValue)
+	/**
+	 * Return the mapped color for any value between 0 and 1
+	 * 
+	 * @param fValue
+	 * @return
+	 * @throws CaleydoRuntimeException if fvalue > 1 || fvalue < 0
+	 */
+	public float[] getColor(float fValue)
 	{
+		if (fValue > 1 || fValue < 0)
+			throw new CaleydoRuntimeException(
+					"Invalid value in fValue. Has to be between 0 and 1",
+					CaleydoRuntimeExceptionType.COLOR_MAPPING);
 
-		if ((fLookupValue < fMin) || (fLookupValue > fMax) || Float.isNaN(fLookupValue))
-		{
-			return color_outOfRange;
-		}
-
-		int iIndex = 0;
-
-		if (fLookupValue == fMin)
-		{
-			iIndex = 0;
-			return new Vec3f(fArColorLookupTable_LEFT[iIndex][0],
-					fArColorLookupTable_LEFT[iIndex][1], fArColorLookupTable_LEFT[iIndex][2]);
-		}
-		else if (fLookupValue == fMax)
-		{
-			iIndex = fArColorLookupTable_RIGHT.length - 1;
-			iIndex = (int) ((float) (fLookupValue - fMin - fMid) * fMappingWidth_div_Mid - 1);
-			return new Vec3f(fArColorLookupTable_RIGHT[iIndex][0],
-					fArColorLookupTable_RIGHT[iIndex][1], fArColorLookupTable_RIGHT[iIndex][2]);
-		}
-		// handle the case when fLookupValue is excactly in the middle of the
-		// range
-		else if ((fLookupValue - fMin - fMid) == 0.0f)
-		{
-			iIndex = fArColorLookupTable_LEFT.length - 1;
-			return new Vec3f(fArColorLookupTable_LEFT[iIndex][0],
-					fArColorLookupTable_LEFT[iIndex][1], fArColorLookupTable_LEFT[iIndex][2]);
-		}
-		else if (fLookupValue < fMid)
-		{
-			iIndex = (int) ((float) (fLookupValue - fMin) * fMappingWidth_div_Mid);
-
-			return new Vec3f(fArColorLookupTable_LEFT[iIndex][0],
-					fArColorLookupTable_LEFT[iIndex][1], fArColorLookupTable_LEFT[iIndex][2]);
-		}
-		else
-		{
-
-			iIndex = (int) ((float) (fLookupValue - fMin - fMid) * fMappingWidth_div_Mid - 1);
-			return new Vec3f(fArColorLookupTable_RIGHT[iIndex][0],
-					fArColorLookupTable_RIGHT[iIndex][1], fArColorLookupTable_RIGHT[iIndex][2]);
-		}
+		return alColorList.get((int) (fValue * (COLOR_DEPTH - 1)));
 	}
 
-	public Vec3f getColor_1()
-	{
-
-		return color_1;
-	}
-
-	public Vec3f getColor_2()
-	{
-
-		return color_2;
-	}
-
-	public Vec3f getColor_3()
-	{
-
-		return color_3;
-	}
 }

@@ -1,7 +1,9 @@
 package org.caleydo.testing.applications.jogl.gears;
 
-import java.awt.*;
-import java.awt.event.*;
+import java.awt.Dimension;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 
 // import javax.media.opengl.*;
 // import com.sun.opengl.util.*;

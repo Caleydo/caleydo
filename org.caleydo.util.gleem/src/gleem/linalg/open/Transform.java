@@ -1,8 +1,8 @@
 package gleem.linalg.open;
 
 import gleem.linalg.Mat4f;
-import gleem.linalg.Vec3f;
 import gleem.linalg.Rotf;
+import gleem.linalg.Vec3f;
 
 /**
  * Class that holds rotation, translation and scaling.

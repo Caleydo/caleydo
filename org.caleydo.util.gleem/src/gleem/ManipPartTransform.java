@@ -30,8 +30,7 @@
 
 package gleem;
 
-import java.util.*;
-import gleem.linalg.*;
+import gleem.linalg.Mat4f;
 
 /**
  * A Group which contains an offset transformation which is performed before the

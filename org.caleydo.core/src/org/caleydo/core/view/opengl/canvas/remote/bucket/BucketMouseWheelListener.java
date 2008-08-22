@@ -4,9 +4,7 @@ import gleem.linalg.Vec3f;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import org.caleydo.core.data.view.rep.renderstyle.layout.BucketLayoutRenderStyle;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 

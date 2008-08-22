@@ -30,7 +30,8 @@
 
 package gleem;
 
-import gleem.linalg.*;
+import gleem.linalg.Vec2f;
+import gleem.linalg.Vec3f;
 
 /**
  * The only mapping gleem supports right now -- a right truncated pyramid.

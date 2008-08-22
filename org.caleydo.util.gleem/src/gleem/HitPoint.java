@@ -30,7 +30,8 @@
 
 package gleem;
 
-import gleem.linalg.*;
+import gleem.linalg.IntersectionPoint;
+import gleem.linalg.Vec3f;
 
 /** Defines an intersection of a ray with a piece of a manipulator */
 

@@ -12,6 +12,7 @@ package org.caleydo.rcp.model;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.eclipse.core.runtime.ListenerList;
 
 public class ContactsGroup

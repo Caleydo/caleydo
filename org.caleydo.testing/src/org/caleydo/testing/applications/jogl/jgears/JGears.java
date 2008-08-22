@@ -1,13 +1,24 @@
 package org.caleydo.testing.applications.jogl.jgears;
 
-import java.awt.*;
-import java.awt.event.*;
-import java.awt.image.*;
-import java.text.*;
-import javax.swing.*;
-import javax.media.opengl.*;
-import com.sun.opengl.util.*;
-import org.caleydo.testing.applications.jogl.gears.*;
+import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.GradientPaint;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import java.awt.image.BufferedImage;
+import java.text.DecimalFormat;
+import javax.media.opengl.GLCapabilities;
+import javax.media.opengl.GLJPanel;
+import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import org.caleydo.testing.applications.jogl.gears.Gears;
+import com.sun.opengl.util.Animator;
 
 ;
 

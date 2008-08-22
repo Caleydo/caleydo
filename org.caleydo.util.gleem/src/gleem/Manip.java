@@ -30,9 +30,11 @@
 
 package gleem;
 
-import java.util.*;
-import gleem.linalg.*;
-import javax.media.opengl.*;
+import gleem.linalg.Vec3f;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import javax.media.opengl.GL;
 
 /**
  * The base class for all manipulators. Fundamentally a manipulator must support

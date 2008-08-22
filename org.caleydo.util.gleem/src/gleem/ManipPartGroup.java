@@ -30,9 +30,12 @@
 
 package gleem;
 
-import java.util.*;
-import gleem.linalg.*;
-import javax.media.opengl.*;
+import gleem.linalg.Mat4f;
+import gleem.linalg.Vec3f;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import javax.media.opengl.GL;
 
 /**
  * This class groups a set of ManipParts. Makes a set of ManipParts look like

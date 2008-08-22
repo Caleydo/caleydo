@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 import org.caleydo.core.data.mapping.EMappingType;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
 
 /**

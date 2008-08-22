@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.List;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
-import org.caleydo.util.graph.algorithm.AGraphVisitorSearch;
 
 /**
  * Breadth First Search Algorithm.

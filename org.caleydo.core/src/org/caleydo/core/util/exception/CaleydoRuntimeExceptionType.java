@@ -24,7 +24,8 @@ public enum CaleydoRuntimeExceptionType
 	ID("ID Management"),
 	SET("Set"),
 	SELECTION("Selection"),
-	EVENT("Event handling");
+	EVENT("Event handling"),
+	COLOR_MAPPING("Color Mapping");
 
 	private String sExceptionDetail;
 

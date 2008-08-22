@@ -30,11 +30,16 @@
 
 package gleem;
 
-import java.awt.*;
-import java.awt.event.*;
-import javax.media.opengl.*;
-import javax.media.opengl.glu.*;
-import gleem.linalg.*;
+import gleem.linalg.Vec3f;
+import java.awt.BorderLayout;
+import java.awt.Frame;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
+import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
+import javax.media.opengl.GLCanvas;
+import javax.media.opengl.GLEventListener;
+import javax.media.opengl.glu.GLU;
 
 /** Tests the HandleBox Manip. */
 @SuppressWarnings("all")

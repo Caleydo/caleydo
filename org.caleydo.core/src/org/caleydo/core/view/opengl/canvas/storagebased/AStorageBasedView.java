@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
-import javax.media.opengl.GL;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
@@ -26,7 +25,6 @@ import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import sun.java2d.loops.GeneralRenderer;
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
@@ -41,7 +39,6 @@ public abstract class AStorageBasedView
 {
 
 	protected ISet set;
-
 
 	/**
 	 * map selection type to unique id for virtual array
@@ -192,7 +189,7 @@ public abstract class AStorageBasedView
 	{
 		int iStorageLength = set.depth();
 		// FIXME hack
-//		iStorageLength = 100;
+		iStorageLength = 100;
 
 		// initialize virtual array that contains all (filtered) information
 		ArrayList<Integer> alTempList = new ArrayList<Integer>(set.depth());
@@ -291,14 +288,11 @@ public abstract class AStorageBasedView
 		setDisplayListDirty();
 	}
 
-
-
 	@Override
 	public void handleUpdate(IUniqueObject eventTrigger)
 	{
 
 	}
-
 
 	/**
 	 * Clears all selections, meaning that no element is selected or deselected
@@ -330,7 +324,7 @@ public abstract class AStorageBasedView
 		handleConnectedElementRep(selectionDelta);
 		generalManager.getEventPublisher().handleUpdate(this, selectionDelta);
 	}
-	
+
 	@Override
 	public void broadcastElements(ESelectionType type)
 	{
@@ -338,7 +332,8 @@ public abstract class AStorageBasedView
 	}
 
 	/**
-	 * Handles the creation of {@link SelectedElementRep} according to the data in a selectionDelta
+	 * Handles the creation of {@link SelectedElementRep} according to the data
+	 * in a selectionDelta
 	 * 
 	 * @param selectionDelta the selection data that should be handled
 	 */
@@ -393,7 +388,7 @@ public abstract class AStorageBasedView
 					"Can not handle data type of update in selectionDelta");
 		}
 	}
-	
+
 	/**
 	 * Re-position a view centered on a element, specified by the element ID
 	 * 
@@ -405,6 +400,5 @@ public abstract class AStorageBasedView
 	 * Check wheter an element is selected or not
 	 */
 	protected abstract void checkUnselection();
-	
-	
+
 }

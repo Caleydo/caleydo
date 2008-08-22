@@ -9,7 +9,6 @@ import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.util.mapping.GeneAnnotationMapper;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathwayManager;
 import org.caleydo.core.view.opengl.util.GLStarEffectRenderer;

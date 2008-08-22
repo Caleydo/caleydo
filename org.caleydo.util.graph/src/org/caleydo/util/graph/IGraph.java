@@ -4,9 +4,6 @@
 package org.caleydo.util.graph;
 
 import java.util.List;
-import org.caleydo.util.graph.EGraphItemHierarchy;
-import org.caleydo.util.graph.IGraphComponent;
-import org.caleydo.util.graph.GraphRuntimeException;
 
 /**
  * Interface for graphs.

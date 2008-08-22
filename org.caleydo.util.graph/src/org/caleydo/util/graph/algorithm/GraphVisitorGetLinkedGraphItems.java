@@ -3,11 +3,10 @@
  */
 package org.caleydo.util.graph.algorithm;
 
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
-import org.caleydo.util.graph.algorithm.IGraphVisitorSearch;
 
 /**
  * Search for adjacencies in a graph starting with an item.

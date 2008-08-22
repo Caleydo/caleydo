@@ -24,7 +24,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
-import org.caleydo.core.util.mapping.ColorMapper;
+import org.caleydo.core.util.mapping.PathwayColorMapper;
 import org.caleydo.core.view.opengl.util.GLTextUtils;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemKind;
@@ -72,7 +72,7 @@ public class GLPathwayManager
 
 	private HashMap<Integer, Integer> hashPathwayId2EdgesDisplayListId;
 
-	private ColorMapper genomeMapper;
+	private PathwayColorMapper genomeMapper;
 
 	private GenericSelectionManager internalSelectionManager;
 
@@ -80,7 +80,7 @@ public class GLPathwayManager
 
 	private ArrayList<Integer> iArSelectedEdgeRepId;
 
-	private HashMap<Integer, ArrayList<Vec3f>> hashElementId2MappingColorArray;
+	private HashMap<Integer, ArrayList<float[]>> hashElementId2MappingColorArray;
 
 	private int iMappingRowCount = 1;
 
@@ -94,7 +94,7 @@ public class GLPathwayManager
 		renderStyle = new PathwayRenderStyle();
 		hashPathwayId2VerticesDisplayListId = new HashMap<Integer, Integer>();
 		hashPathwayId2EdgesDisplayListId = new HashMap<Integer, Integer>();
-		hashElementId2MappingColorArray = new HashMap<Integer, ArrayList<Vec3f>>();
+		hashElementId2MappingColorArray = new HashMap<Integer, ArrayList<float[]>>();
 
 		hashSelectedVertexRepId2Depth = new HashMap<Integer, Integer>();
 		iArSelectedEdgeRepId = new ArrayList<Integer>();
@@ -114,7 +114,7 @@ public class GLPathwayManager
 		// Initialize genome mapper
 		// TODO: move to a manager because more classes use the genome mapper
 		// maybe GenomeIdManager is the right place
-		genomeMapper = new ColorMapper();
+		genomeMapper = new PathwayColorMapper();
 		genomeMapper.setMappingData(alSetData);
 	}
 
@@ -800,7 +800,7 @@ public class GLPathwayManager
 			final float fNodeWidth, final float fNodeHeight)
 	{
 
-		ArrayList<Vec3f> alMappingColor;
+		ArrayList<float[]> alMappingColor;
 
 		// Check if vertex is already mapped
 		if (hashElementId2MappingColorArray.containsKey(pathwayVertexRep.getId()))
@@ -819,14 +819,14 @@ public class GLPathwayManager
 		drawMapping(gl, alMappingColor, fNodeWidth, fNodeHeight, false);
 	}
 
-	private void drawMapping(final GL gl, final ArrayList<Vec3f> alMappingColor,
+	private void drawMapping(final GL gl, final ArrayList<float[]> alMappingColor,
 			final float fNodeWidth, final float fNodeHeight, final boolean bEnableGrid)
 	{
 
 		int iColumnCount = (int) Math.ceil((float) alMappingColor.size()
 				/ (float) iMappingRowCount);
 
-		Vec3f tmpNodeColor = null;
+		float[] tmpNodeColor = null;
 
 		gl.glPushMatrix();
 
@@ -836,10 +836,10 @@ public class GLPathwayManager
 			tmpNodeColor = alMappingColor.get(0);
 
 			// Check if the mapping gave back a valid color
-			if (tmpNodeColor.x() == -1)
-				tmpNodeColor = renderStyle.getEnzymeNodeColor(true);
+//			if (tmpNodeColor[0] == -1)
+//				tmpNodeColor = renderStyle.getEnzymeNodeColor(true);
 
-			gl.glColor3f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z());
+			gl.glColor3fv(tmpNodeColor, 0);
 			gl.glCallList(iEnzymeNodeDisplayListId);
 		}
 		else
@@ -866,14 +866,15 @@ public class GLPathwayManager
 					else
 						continue;
 
+					// TODO
 					// Check if the mapping gave back a valid color
-					if (tmpNodeColor.x() != -1)
-					{
-						gl.glColor3f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z());
+//					if (tmpNodeColor.x() != -1)
+//					{
+						gl.glColor3fv(tmpNodeColor, 0);
 						gl.glScalef(1.0f / iColumnCount, 1.0f / iMappingRowCount, 1.0f);
 						gl.glCallList(iEnzymeNodeDisplayListId);
 						gl.glScalef(iColumnCount, iMappingRowCount, 1.0f);
-					}
+//					}
 
 					gl.glTranslatef(fNodeWidth * 2.0f / iColumnCount, 0.0f, 0.0f);
 				}

@@ -4,7 +4,7 @@ import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
-import org.caleydo.core.util.mapping.ColorMapper;
+import org.caleydo.core.util.mapping.PathwayColorMapper;
 
 /**
  * Color Mapping for Expression data TODO: not working yet
@@ -17,7 +17,7 @@ public class GLColorMappingMiniView
 	extends AGLMiniView
 {
 
-	private ColorMapper genomeMapper;
+	private PathwayColorMapper genomeMapper;
 
 	private int iMappingRowCount = 1;
 
@@ -28,7 +28,7 @@ public class GLColorMappingMiniView
 	 */
 	public GLColorMappingMiniView()
 	{
-		genomeMapper = new ColorMapper();
+		genomeMapper = new PathwayColorMapper();
 		// genomeMapper.setMappingData(alSets);
 	}
 

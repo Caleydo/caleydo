@@ -5,7 +5,6 @@ package org.caleydo.util.graph;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.caleydo.util.graph.GraphRuntimeException;
 
 /**
  * Graph properties like "INCOMING","OUTGOING" and "ALIAS_PARENT","ALIAS_CHILD"

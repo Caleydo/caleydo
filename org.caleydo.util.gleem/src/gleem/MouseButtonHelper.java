@@ -30,7 +30,8 @@
 
 package gleem;
 
-import java.security.*;
+import java.security.AccessController;
+import java.security.PrivilegedAction;
 
 /**
  * Helper class for figuring out how many mouse buttons are available. (Does not

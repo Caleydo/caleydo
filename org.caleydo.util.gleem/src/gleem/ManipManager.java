@@ -30,10 +30,21 @@
 
 package gleem;
 
-import java.awt.event.*;
-import java.util.*;
-import gleem.linalg.*;
-import javax.media.opengl.*;
+import gleem.linalg.Vec2f;
+import gleem.linalg.Vec3f;
+import java.awt.event.InputEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import javax.media.opengl.GL;
+import javax.media.opengl.GLAutoDrawable;
 
 /**
  * The ManipManager handles making manipulators visible in a window.

@@ -1,7 +1,6 @@
 package org.caleydo.rcp.wizard.firststart;
 
 import org.caleydo.rcp.Application;
-import org.caleydo.rcp.wizard.project.NewProjectImportDataPage;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardDialog;

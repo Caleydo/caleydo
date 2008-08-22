@@ -1,9 +1,8 @@
 package gleem.linalg.open;
 
-import javax.media.opengl.GL;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
-import gleem.linalg.open.Transform;
+import javax.media.opengl.GL;
 
 /**
  * Slerp implementation that can handle rotation, scaling and transformation.

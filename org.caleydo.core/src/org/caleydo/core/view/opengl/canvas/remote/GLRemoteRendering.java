@@ -40,7 +40,7 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.mapping.ColorMapper;
+import org.caleydo.core.util.mapping.PathwayColorMapper;
 import org.caleydo.core.util.slerp.SlerpAction;
 import org.caleydo.core.util.slerp.SlerpMod;
 import org.caleydo.core.util.system.SystemTime;
@@ -217,7 +217,7 @@ public class GLRemoteRendering
 
 		// TODO: the genome mapper should be stored centralized instead of newly
 		// created
-		colorMappingBarMiniView = new GLColorMappingBarMiniView(new ColorMapper());
+		colorMappingBarMiniView = new GLColorMappingBarMiniView(new PathwayColorMapper());
 	}
 
 	@Override

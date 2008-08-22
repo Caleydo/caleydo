@@ -2,7 +2,6 @@ package org.caleydo.testing.applications.swt;
 
 import java.util.LinkedList;
 import java.util.List;
-
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.resource.ImageDescriptor;

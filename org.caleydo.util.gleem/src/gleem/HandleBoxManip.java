@@ -30,9 +30,19 @@
 
 package gleem;
 
-import java.util.*;
-import gleem.linalg.*;
-import javax.media.opengl.*;
+import gleem.linalg.IntersectionPoint;
+import gleem.linalg.Line;
+import gleem.linalg.Mat4f;
+import gleem.linalg.MathUtil;
+import gleem.linalg.Plane;
+import gleem.linalg.PlaneUV;
+import gleem.linalg.Rotf;
+import gleem.linalg.Vec2f;
+import gleem.linalg.Vec3f;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import javax.media.opengl.GL;
 
 /**
  * Patterned after Inventor's HandleBoxManip (by Paul Isaacs and David Mott) and

@@ -7,7 +7,6 @@ import java.util.StringTokenizer;
 import org.caleydo.core.data.map.MultiHashArrayIntegerMap;
 import org.caleydo.core.data.map.MultiHashArrayStringMap;
 import org.caleydo.core.data.mapping.EMappingType;
-import org.caleydo.core.manager.general.GeneralManager;
 
 /**
  * Multi hash map lookup table loader.

@@ -30,8 +30,7 @@
 
 package gleem;
 
-import java.util.*;
-import gleem.linalg.*;
+import gleem.linalg.Vec3f;
 
 /**
  * A 2x2 square in the X-Y plane, centered about the origin, with the normal

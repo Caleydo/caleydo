@@ -30,9 +30,13 @@
 
 package gleem;
 
-import java.util.*;
-import gleem.linalg.*;
-import javax.media.opengl.*;
+import gleem.linalg.IntersectionPoint;
+import gleem.linalg.Mat4f;
+import gleem.linalg.MathUtil;
+import gleem.linalg.Plane;
+import gleem.linalg.Vec3f;
+import java.util.List;
+import javax.media.opengl.GL;
 
 /**
  * A Translate2Manip is a Manip which translates in two dimensions and whose

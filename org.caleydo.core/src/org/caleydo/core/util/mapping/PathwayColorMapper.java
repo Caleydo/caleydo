@@ -1,6 +1,5 @@
 package org.caleydo.core.util.mapping;
 
-import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 import java.util.Iterator;
 import org.caleydo.core.data.collection.ISet;
@@ -11,7 +10,9 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.caleydo.util.graph.EGraphItemProperty;
 
 /**
@@ -20,7 +21,7 @@ import org.caleydo.util.graph.EGraphItemProperty;
  * 
  * @author Marc Streit
  */
-public class ColorMapper
+public class PathwayColorMapper
 {
 	protected IGenomeIdManager genomeIdManager;
 
@@ -33,12 +34,17 @@ public class ColorMapper
 	 * 
 	 * @param generalManager
 	 */
-	public ColorMapper()
+	public PathwayColorMapper()
 	{
 		alMappingStorage = new ArrayList<IStorage>();
 		genomeIdManager = GeneralManager.get().getGenomeIdManager();
-
-		expressionColorMapper = new ColorMapping(0, 1);
+		
+		ArrayList<ColorMarkerPoint> alColorMarkerList = new ArrayList<ColorMarkerPoint>();
+		alColorMarkerList.add(new ColorMarkerPoint(0, 0, 1, 0));
+		alColorMarkerList.add(new ColorMarkerPoint(0.5f, 0, 0, 0));
+		alColorMarkerList.add(new ColorMarkerPoint(1f, 0, 0, 1));
+		
+		expressionColorMapper = new ColorMapping(alColorMarkerList);
 	}
 
 	public void setMappingData(final ArrayList<ISet> alSetData)
@@ -57,23 +63,24 @@ public class ColorMapper
 		}
 	}
 
-	public final ArrayList<Vec3f> getMappingColorArrayByVertexRep(
+	public final ArrayList<float[]> getMappingColorArrayByVertexRep(
 			final PathwayVertexGraphItemRep pathwayVertexRep)
 	{
 
 		// Do nothing if picked node is invalid.
 		if (pathwayVertexRep == null)
 		{
-			return new ArrayList<Vec3f>();
+			return new ArrayList<float[]>();
 		}
+		
+		ArrayList<float[]> arMappingColor = new ArrayList<float[]>();
 		
 		if (pathwayVertexRep.getType().equals(EPathwayVertexType.gene))
 		{
-			ArrayList<Vec3f> arMappingColor = new ArrayList<Vec3f>();
 
 			if (pathwayVertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() > 1)
 			{
-				arMappingColor.add(new Vec3f(0, 1, 1)); // cyan
+				arMappingColor.add(new float[]{0, 1, 1}); // cyan
 			}
 			else
 			{
@@ -86,7 +93,8 @@ public class ColorMapper
 
 				if (iExpressionStorageIndex == -1)
 				{
-					arMappingColor.add(new Vec3f(-1, -1, -1)); // invalid color
+					// FIXME, color from render style here
+					arMappingColor.add(new float[]{0.5f, 0.5f, 0.5f}); // invalid color
 					return arMappingColor;
 				}
 
@@ -102,7 +110,7 @@ public class ColorMapper
 							EDataRepresentation.NORMALIZED, iExpressionStorageIndex);
 
 					arMappingColor.add(expressionColorMapper
-							.colorMappingLookup(fExpressionValue));
+							.getColor(fExpressionValue));
 				}
 			}
 
@@ -110,12 +118,12 @@ public class ColorMapper
 		}
 		else if (pathwayVertexRep.getType().equals(EPathwayVertexType.enzyme))
 		{
-			ArrayList<Vec3f> arMappingColor = new ArrayList<Vec3f>();
-			arMappingColor.add(new Vec3f(-1, -1, -1)); // invalid color
+		
+			arMappingColor.add(new float[]{0.5f, 0.5f, 0.5f}); // invalid color
 			return arMappingColor;
 		}
 
-		return new ArrayList<Vec3f>();
+		throw new CaleydoRuntimeException("Unkonw pathway node type");
 	}
 
 	public ColorMapping getColorMapper()

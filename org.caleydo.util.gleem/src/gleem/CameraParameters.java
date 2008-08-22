@@ -30,7 +30,9 @@
 
 package gleem;
 
-import gleem.linalg.*;
+import gleem.linalg.Mat4f;
+import gleem.linalg.Rotf;
+import gleem.linalg.Vec3f;
 
 /** Container class for camera's parameters. */
 

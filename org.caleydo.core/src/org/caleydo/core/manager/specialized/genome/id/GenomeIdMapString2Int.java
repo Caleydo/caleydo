@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.Set;
 import java.util.logging.Level;
 import org.caleydo.core.data.mapping.EMappingDataType;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdMap;
 import org.caleydo.core.util.ConversionStringInteger;
 

@@ -1,11 +1,11 @@
 package org.caleydo.rcp.action.search;
 
+import org.caleydo.rcp.dialog.search.OpenSearchDataEntityDialog;
+import org.caleydo.rcp.image.IImageKeys;
 import org.eclipse.jface.action.Action;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
-import org.caleydo.rcp.dialog.search.OpenSearchDataEntityDialog;
-import org.caleydo.rcp.image.IImageKeys;
 
 /**
  * @author Marc Streit

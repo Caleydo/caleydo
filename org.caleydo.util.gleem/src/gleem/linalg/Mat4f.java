@@ -31,7 +31,6 @@
 package gleem.linalg;
 
 import java.io.Serializable;
-import java.lang.RuntimeException;
 
 /**
  * A (very incomplete) 4x4 matrix class. Representation assumes multiplication

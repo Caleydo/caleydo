@@ -30,8 +30,7 @@
 
 package gleem;
 
-import java.util.*;
-import gleem.linalg.*;
+import gleem.linalg.Vec3f;
 
 /**
  * A cube of width, height, and depth 2, centered about the origin and aligned

@@ -35,7 +35,6 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.GLIconTextureManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 import com.sun.opengl.util.texture.Texture;
@@ -273,10 +272,11 @@ public class GLParallelCoordinates
 	@Override
 	public void display(final GL gl)
 	{
+		// TODO another display list
 		// GLHelperFunctions.drawAxis(gl);
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-
 		clipToFrustum(gl);
+	
 
 		gl.glTranslatef(fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
 
@@ -307,6 +307,7 @@ public class GLParallelCoordinates
 			gl.glTranslatef(-fXDefaultTranslation + renderStyle.getXSpacing(), -fYTranslation
 					+ renderStyle.getBottomSpacing(), 0.0f);
 		}
+		
 		gl.glDisable(GL.GL_STENCIL_TEST);
 	}
 
@@ -497,11 +498,11 @@ public class GLParallelCoordinates
 	 */
 	private void buildPolyLineDisplayList(final GL gl, int iGLDisplayListIndex)
 	{
-
+	
 		fAxisSpacing = renderStyle.getAxisSpacing(set.sizeVA(iAxisVAID));
 		
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-
+	
 		// if(bIsDraggingActive)
 		// handleDragging(gl);
 
@@ -514,6 +515,7 @@ public class GLParallelCoordinates
 
 		renderGates(gl);
 
+	
 		gl.glEndList();
 	}
 

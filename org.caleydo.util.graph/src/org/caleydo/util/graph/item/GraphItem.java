@@ -1,14 +1,13 @@
 package org.caleydo.util.graph.item;
 
-import java.util.List;
 import java.util.Iterator;
+import java.util.List;
 import org.caleydo.util.graph.EGraphItemHierarchy;
-import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.EGraphItemKind;
+import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.GraphRuntimeException;
 import org.caleydo.util.graph.IGraph;
 import org.caleydo.util.graph.IGraphItem;
-import org.caleydo.util.graph.item.GraphGenericContainer;
 
 /**
  * Base class for IGraphItem.

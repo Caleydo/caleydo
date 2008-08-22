@@ -1,6 +1,5 @@
 package org.caleydo.rcp.perspective;
 
-import org.caleydo.rcp.Application;
 import org.caleydo.rcp.views.GLRemoteRenderingView;
 import org.caleydo.rcp.views.HTMLBrowserView;
 import org.eclipse.ui.IFolderLayout;

@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
-import javax.naming.OperationNotSupportedException;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
@@ -17,13 +16,13 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.HeatMapRenderStyle;
-import org.caleydo.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
@@ -91,8 +90,14 @@ public class GLHeatMap
 		storageSelectionManager = new GenericSelectionManager.Builder(
 				EIDType.EXPRESSION_EXPERIMENT).build();
 
-		colorMapper = new ColorMapping(0, 1);
+		ArrayList<ColorMarkerPoint> alColorMarkerList = new ArrayList<ColorMarkerPoint>();
+		alColorMarkerList.add(new ColorMarkerPoint(0, 0, 1, 0));
+		alColorMarkerList.add(new ColorMarkerPoint(0.2f, 0, 0, 0));
+		alColorMarkerList.add(new ColorMarkerPoint(0.4f, 1, 1, 0));
+		alColorMarkerList.add(new ColorMarkerPoint(0.6f, 0.5f, 1, 0.2f));
+		alColorMarkerList.add(new ColorMarkerPoint(1f, 1, 0, 0));	
 
+		colorMapper = new ColorMapping(alColorMarkerList);
 	}
 
 	@Override
@@ -475,9 +480,9 @@ public class GLHeatMap
 		else
 			fOpacity = 0.3f;
 
-		Vec3f vecMappingColor = colorMapper.colorMappingLookup(fLookupValue);
+		float[] fArMappingColor = colorMapper.getColor(fLookupValue);
 
-		gl.glColor4f(vecMappingColor.x(), vecMappingColor.y(), vecMappingColor.z(), fOpacity);
+		gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.HEAT_MAP_FIELD_SELECTION, iContentIndex));
