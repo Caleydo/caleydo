@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+
 import org.caleydo.util.graph.GraphRuntimeException;
 import org.caleydo.util.graph.IGraphComponent;
 

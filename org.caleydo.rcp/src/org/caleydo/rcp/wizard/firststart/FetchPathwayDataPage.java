@@ -8,7 +8,6 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
@@ -36,8 +35,9 @@ public final class FetchPathwayDataPage
 	{
 		super(PAGE_NAME, PAGE_NAME, null);
 
-		this.setImageDescriptor(ImageDescriptor.createFromImageData(new ImageData(
-				"resources/splash/splash.png")));
+		this.setImageDescriptor(ImageDescriptor.createFromURL(
+				this.getClass().getClassLoader().getResource(
+						"resources/wizard/wizard.png")));
 		
 		thisPage = this;
 		
@@ -47,14 +47,20 @@ public final class FetchPathwayDataPage
 	public void createControl(Composite parent)
 	{
 		final Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new RowLayout(SWT.VERTICAL));
+		
+		RowLayout layout = new RowLayout(SWT.VERTICAL);
+		layout.wrap = true;
+		layout.fill = true;
+		layout.justify = true;
+		layout.center = true;
+		composite.setLayout(layout);
 
 		final Button buttonStartFetch = new Button(composite, SWT.NONE);
 		buttonStartFetch.setText("Start pathway fetching");
+		buttonStartFetch.setAlignment(SWT.CENTER);
 		
 		Group progressBarGroup = new Group(composite, SWT.NONE);
-		GridLayout layout = new GridLayout(2, false);
-		progressBarGroup.setLayout(layout);
+		progressBarGroup.setLayout(new GridLayout(2, false));
 		
 	    Label lblKeggPathwayCacher = new Label(progressBarGroup, SWT.NULL);
 	    lblKeggPathwayCacher.setText("KEGG Pathway Data Download Status:");
@@ -98,7 +104,7 @@ public final class FetchPathwayDataPage
 				buttonStartFetch.setEnabled(false);
 			}
 		});
-		
+
 		setControl(composite);
 	}
 }

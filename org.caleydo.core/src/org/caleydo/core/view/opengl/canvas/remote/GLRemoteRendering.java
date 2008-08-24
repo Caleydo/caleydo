@@ -367,6 +367,7 @@ public class GLRemoteRendering
 						pickingTriggerMouseAdapter, this);
 				
 				tmpGLEventListener.broadcastElements(ESelectionType.NORMAL);
+				tmpGLEventListener.setDetailLevel(EDetailLevel.MEDIUM);
 
 			}
 			else if (stackLayer.containsElement(-1))
@@ -378,6 +379,7 @@ public class GLRemoteRendering
 						pickingTriggerMouseAdapter, this);
 				
 				tmpGLEventListener.broadcastElements(ESelectionType.NORMAL);
+				tmpGLEventListener.setDetailLevel(EDetailLevel.LOW);
 			}
 			else if (poolLayer.containsElement(-1))
 			{
@@ -386,6 +388,7 @@ public class GLRemoteRendering
 
 				tmpGLEventListener.initRemote(gl, iUniqueID, poolLayer,
 						pickingTriggerMouseAdapter, this);
+				tmpGLEventListener.setDetailLevel(EDetailLevel.VERY_LOW);
 			}
 
 			// pickingTriggerMouseAdapter.addGLCanvas(tmpGLEventListener);
@@ -1002,27 +1005,6 @@ public class GLRemoteRendering
 		if (iSlerpFactor == 0)
 		{
 			tmpSlerpAction.start();
-
-			// if
-			// (tmpSlerpAction.getDestinationHierarchyLayer().equals(stackLayer)
-			// || tmpSlerpAction.getDestinationHierarchyLayer().equals(
-			// underInteractionLayer))
-			// {
-			// glConnectionLineRenderer.enableRendering(false);
-			// }
-
-			//tmpSlerpAction.getOriginHierarchyLayer().setElementVisibilityById(
-			// false,
-			// tmpSlerpAction.getOriginHierarchyLayer().
-			// getElementIdByPositionIndex(
-			// tmpSlerpAction.getOriginPosIndex()));
-
-			// // Update layer in toolbox renderer
-			// ((AGLCanvasUser) generalManager
-			// .getViewGLCanvasManager().getItem(
-			// tmpSlerpAction.getElementId()))
-			// .getToolboxRenderer().updateLayer(
-			// tmpSlerpAction.getDestinationHierarchyLayer());
 		}
 
 		if (iSlerpFactor < SLERP_RANGE)
@@ -1073,22 +1055,23 @@ public class GLRemoteRendering
 			RemoteHierarchyLayer destinationLayer = slerpAction.getDestinationHierarchyLayer();
 			destinationLayer.setElementVisibilityById(true, iViewID);
 
+			AGLEventListener glActiveSubView = 
+				GeneralManager.get().getViewGLCanvasManager().getEventListener(iViewID);
+						
 			// Update detail level of moved view when slerp action is finished;
 			if (destinationLayer.equals(underInteractionLayer))
 			{
-				GeneralManager.get().getViewGLCanvasManager().getEventListener(
-						iViewID).setDetailLevel(EDetailLevel.MEDIUM);
+				glActiveSubView.setDetailLevel(EDetailLevel.MEDIUM);
+				generalManager.getGUIBridge().setActiveGLSubView(this, glActiveSubView);
 			}
 			else if (destinationLayer.equals(stackLayer))
 			{
-				GeneralManager.get().getViewGLCanvasManager().getEventListener(
-						iViewID).setDetailLevel(EDetailLevel.LOW);
+				glActiveSubView.setDetailLevel(EDetailLevel.LOW);
 			}
 			else if (destinationLayer.equals(poolLayer) 
 					|| destinationLayer.equals(memoLayer))
 			{
-				GeneralManager.get().getViewGLCanvasManager().getEventListener(
-						iViewID).setDetailLevel(EDetailLevel.VERY_LOW);
+				glActiveSubView.setDetailLevel(EDetailLevel.VERY_LOW);
 			}
 		}
 

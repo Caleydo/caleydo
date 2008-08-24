@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.logging.Level;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
+import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
@@ -106,10 +107,10 @@ public class GLPathwayTextureManager
 
 		TextureCoords texCoords = tmpPathwayTexture.getImageTexCoords();
 
-		float fTextureWidth = GLPathwayManager.SCALING_FACTOR_X
+		float fTextureWidth = PathwayRenderStyle.SCALING_FACTOR_X
 				* ((PathwayGraph) generalManager.getPathwayManager().getItem(iPathwayId))
 						.getWidth();
-		float fTextureHeight = GLPathwayManager.SCALING_FACTOR_Y
+		float fTextureHeight = PathwayRenderStyle.SCALING_FACTOR_Y
 				* ((PathwayGraph) generalManager.getPathwayManager().getItem(iPathwayId))
 						.getHeight();
 

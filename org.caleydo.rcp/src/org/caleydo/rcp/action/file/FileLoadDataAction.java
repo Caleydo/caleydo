@@ -15,14 +15,13 @@ import org.caleydo.core.command.data.filter.CmdDataFilterMath.EDataFilterMathTyp
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
 import org.caleydo.core.data.collection.ESetType;
-import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
 import org.caleydo.rcp.dialog.file.FileLoadDataDialog;
 import org.caleydo.rcp.image.IImageKeys;
 import org.eclipse.jface.action.Action;
@@ -83,6 +82,8 @@ public class FileLoadDataAction
 
 	private Text txtFileName;
 	private Text txtStartParseAtLine;
+	private Text txtMin;
+	private Text txtMax;
 
 	private Table previewTable;
 
@@ -90,25 +91,19 @@ public class FileLoadDataAction
 	private ArrayList<Combo> arComboDataType;
 
 	private String sFileName;
-
-	protected String sFilePath = "";
-
+	private String sFilePath = "";
 	private String sInputPattern = "SKIP;ABORT";
-
 	private String sDelimiter = "";
-
 	private int iCreatedSetID = -1;
-
 	private int iStartParseFileAtLine = 1;
 	
 	private boolean bLogFilter = false;
-
+	
 	/**
 	 * Constructor.
 	 */
 	public FileLoadDataAction(final Composite parentComposite)
 	{
-
 		super("Load Data");
 		setId(ID);
 		setToolTipText("Import data from text file");
@@ -390,6 +385,74 @@ public class FileLoadDataAction
 			public void widgetSelected(SelectionEvent e)
 			{
 				bLogFilter = true;
+			}
+		});
+		
+		txtMin = new Text(mathFiltergGroup, SWT.BORDER);
+		txtMin.setEnabled(false);
+		txtMin.addListener(SWT.Verify, new Listener()
+		{
+			public void handleEvent(Event e)
+			{
+				// Only allow digits
+				String string = e.text;
+				char[] chars = new char[string.length()];
+				string.getChars(0, chars.length, chars, 0);
+				for (int i = 0; i < chars.length; i++)
+				{
+					if (!('0' <= chars[i] && chars[i] <= '9'))
+					{
+						e.doit = false;
+						return;
+					}
+				}
+			}
+		});
+		
+		txtMax = new Text(mathFiltergGroup, SWT.BORDER);
+		txtMax.setEnabled(false);
+		txtMax.addListener(SWT.Verify, new Listener()
+		{
+			public void handleEvent(Event e)
+			{
+				// Only allow digits
+				String string = e.text;
+				char[] chars = new char[string.length()];
+				string.getChars(0, chars.length, chars, 0);
+				for (int i = 0; i < chars.length; i++)
+				{
+					if (!('0' <= chars[i] && chars[i] <= '9'))
+					{
+						e.doit = false;
+						return;
+					}
+				}
+			}
+		});
+		
+		final Button buttonMin = new Button(mathFiltergGroup, SWT.CHECK);
+		buttonMin.setText("Min");
+		buttonMin.setEnabled(true);
+		buttonMin.setSelection(false);
+		buttonMin.addSelectionListener(new SelectionAdapter() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e)
+			{
+				txtMin.setEnabled(true);
+			}
+		});
+				
+		final Button buttonMax = new Button(mathFiltergGroup, SWT.CHECK);
+		buttonMax.setText("Max");
+		buttonMax.setEnabled(true);
+		buttonMax.setSelection(false);
+		buttonMax.addSelectionListener(new SelectionAdapter() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e)
+			{
+				txtMax.setEnabled(true);
 			}
 		});
 		
@@ -783,7 +846,10 @@ public class FileLoadDataAction
 
 		// Build input pattern from data type combos
 		sInputPattern = "";
-
+	
+		float fMin = Float.parseFloat(txtMax.getText());
+		float fMax = Float.parseFloat(txtMax.getText());
+			
 		Combo tmpComboDataType;
 		for (int iColIndex = 0; iColIndex < arComboDataType.size(); iColIndex++)
 		{
@@ -813,7 +879,8 @@ public class FileLoadDataAction
 				cmdCreateStorage.setAttributes(EManagedObjectType.STORAGE_NUMERICAL);
 				cmdCreateStorage.doCommand();
 				
-				IStorage storage = cmdCreateStorage.getCreatedObject();
+				INumericalStorage storage = (INumericalStorage) cmdCreateStorage.getCreatedObject();
+				storage.normalizeWithExternalExtrema(fMin, fMax);
 				storage.setLabel(previewTable.getItem(0).getText(iColIndex+1));
 				
 				iAlStorageId.add(storage.getID());
@@ -874,7 +941,7 @@ public class FileLoadDataAction
 			cmdDataFilterLog.doCommand();
 		}
 		
-		cmdCreateSet.getCreatedObject().normalize();
+//		cmdCreateSet.getCreatedObject().normalize();
 	}
 
 	private void setDataInViews()
@@ -882,12 +949,12 @@ public class FileLoadDataAction
 		for (AGLEventListener tmpGLEventListener : GeneralManager.get()
 				.getViewGLCanvasManager().getAllGLEventListeners())
 		{
-			if (tmpGLEventListener instanceof GLHeatMap
-					|| tmpGLEventListener.getClass().getSuperclass().equals(
-							AStorageBasedView.class))
+			tmpGLEventListener.clearSets();
+			tmpGLEventListener.addSet(iCreatedSetID);
+		
+			if (tmpGLEventListener.getClass().getSuperclass().equals(
+					AStorageBasedView.class))
 			{
-				tmpGLEventListener.clearSets();
-				tmpGLEventListener.addSet(iCreatedSetID);
 				((AStorageBasedView)tmpGLEventListener).initData();
 			}
 		}

@@ -44,5 +44,6 @@
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.osgi_3.1.2.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.ui.workbench_3.1.2.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/webspider/itsucks-console-0.3.0-pre7.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.rcp"/>
 	<classpathentry kind="output" path="bin/class"/>
 </classpath>

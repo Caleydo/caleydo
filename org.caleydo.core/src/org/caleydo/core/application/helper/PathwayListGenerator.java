@@ -54,8 +54,20 @@ public class PathwayListGenerator
 
 			// Cut off path
 			sOutput = tmpFile.toString();
-			sOutput = sOutput.substring(sOutput.lastIndexOf("/") + 1, sOutput.length());
 			
+			if (sOutput.contains("\\"))
+			{
+				sOutput = sOutput.substring(sOutput.lastIndexOf('\\') + 1, sOutput.length());
+			}
+			else if (sOutput.contains("/"))
+			{
+				sOutput = sOutput.substring(sOutput.lastIndexOf('/') + 1, sOutput.length());
+			}
+			else
+			{
+				throw new CaleydoRuntimeException("Problem with detecting path separator.",
+						CaleydoRuntimeExceptionType.DATAHANDLING);
+			}
 			outputWriter.append(sOutput + " ");
 
 			String sImagePath = "";
@@ -63,7 +75,7 @@ public class PathwayListGenerator
 			{
 				sImagePath = sInputImagePath
 						+ tmpFile.toString().substring(
-								tmpFile.toString().lastIndexOf('/') + 1,
+								tmpFile.toString().lastIndexOf('\\') + 1,
 								tmpFile.toString().length() - 4) + ".gif";
 			}
 			// find out image path of biocarta pathway - necessary because xml

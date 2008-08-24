@@ -93,9 +93,8 @@ public class PathwayRenderStyle
 
 	protected float fCompoundNodeHeightGL;
 
-	private static final float SCALING_FACTOR_X = 0.0025f;
-
-	private static final float SCALING_FACTOR_Y = 0.0025f;
+	public static final float SCALING_FACTOR_X = 0.0025f;
+	public static final float SCALING_FACTOR_Y = 0.0025f;
 
 	public PathwayRenderStyle(IViewFrustum viewFrustum)
 	{

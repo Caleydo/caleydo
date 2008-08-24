@@ -119,15 +119,10 @@ public class CmdCreateGLEventListener
 			float fFar = -1;
 
 			fLeft = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
-
 			fRight = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
-
 			fBottom = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
-
 			fTop = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
-
 			fNear = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
-
 			fFar = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
 
 			viewFrustum = new ViewFrustum(EProjectionMode

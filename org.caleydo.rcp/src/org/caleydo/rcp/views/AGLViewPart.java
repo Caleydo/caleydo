@@ -1,28 +1,19 @@
 package org.caleydo.rcp.views;
 
 import java.awt.Frame;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.eclipse.jface.action.Action;
+import org.caleydo.rcp.command.handler.ExitHandler;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.ImageLoader;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.ViewPart;
 
 /**
- * Shared object for all Caleydo viewPart objects.
+ * Shared object for all Caleydo RCP OpenGL views.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -30,19 +21,10 @@ import org.eclipse.ui.part.ViewPart;
 public abstract class AGLViewPart
 	extends ViewPart
 {
-
 	protected Frame frameGL;
-	protected Shell swtShell;
 	protected Composite swtComposite;
 	protected GLCaleydoCanvas glCanvas;
-
 	protected int iViewID;
-
-	public static final String ACTION_WRITE_SCREENSHOT_TEXT = "Save screenshot";
-	public static final String ACTION_WRITE_SCREENSHOT_ICON = "resources/icons/PathwayEditor/back.png";
-
-	private Action actWriteScreenshot;
-	private boolean bEnableWriteScreenshot = false;
 
 	/**
 	 * Constructor.
@@ -62,128 +44,32 @@ public abstract class AGLViewPart
 		this.iViewID = iViewID;
 	}
 
-	protected final void showMessage(String title, String message)
+	@Override
+	public void createPartControl(Composite parent)
 	{
-
-		MessageDialog.openInformation(swtShell, "Info " + title, message);
-	}
-
-	protected void createPartControlSWT(Composite parent)
-	{
-		swtShell = parent.getShell();
 		swtComposite = new Composite(parent, SWT.EMBEDDED);
-
-		createWriteScreenshotAction();
 	}
 
 	public void createPartControlGL()
 	{
-
 		if (frameGL == null)
 		{
 			frameGL = SWT_AWT.new_Frame(swtComposite);
 		}
 
 		frameGL.add(glCanvas);
-		// frameGL.addWindowListener(new WindowAdapter() {
-		// public void windowClosing(WindowEvent e) {
-		//		        	
-		// // Run this on another thread than the AWT event queue to
-		// // make sure the call to Animator.stop() completes before
-		// // exiting
-		// new Thread(new Runnable() {
-		// public void run() {
-		// animatorGL.stop();
-		// frameGL.setVisible(false);
-		// }
-		// }).start();
-		// }
-		// });
-		//		    
-		// frameGL.setVisible(true);
-		//		    
-		// animatorGL.start();
-		// }
 	}
+	
 	@Override
-	public final void setFocus()
+	public void setFocus()
 	{
-		// nothing to do at the moment
+//		final IToolBarManager toolBarManager = getViewSite().getActionBars().getToolBarManager();
+//		toolBarManager.add(ActionFactory.QUIT.create(this.getViewSite().getWorkbenchWindow()));
+//		toolBarManager.update(true);
 	}
-
-	@Override
-	public void dispose()
+	
+	public Composite getSWTComposite()
 	{
-
-		super.dispose();
-
-		// this.setGLCanvasVisible(false);
-		//		
-		// if ( frameGL != null ) {
-		// frameGL.dispose();
-		// frameGL = null;
-		// }
-		//		
-		// if ( animatorGL!= null ) {
-		// if ( animatorGL.isAnimating() ) {
-		// animatorGL.stop();
-		// }
-		// animatorGL = null;
-		// }
-	}
-
-	protected void writeScreenshot()
-	{
-
-		String sFilePath = "screenshot_" + getDateTime() + ".png";
-
-		GC gc = new GC(swtComposite.getDisplay());
-		final Image image = new Image(swtComposite.getDisplay(), swtShell.getBounds());
-		gc.copyArea(image, swtShell.getBounds().x, swtShell.getBounds().y);
-		gc.dispose();
-
-		FileDialog saveFileDialog = new FileDialog(swtShell, SWT.SAVE);
-		saveFileDialog.setFileName(sFilePath);
-		sFilePath = saveFileDialog.open();
-
-		ImageLoader loader = new ImageLoader();
-		loader.data = new ImageData[] { image.getImageData() };
-		loader.save(sFilePath, SWT.IMAGE_PNG);
-
-		// MessageBox messageBox = new MessageBox(swtShell, SWT.OK);
-		// messageBox.setText("Message from SWT");
-		// messageBox.setMessage("Screenshot successfully written to " +
-		// sFilePath);
-		// messageBox.open();
-	}
-
-	private String getDateTime()
-	{
-		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmm");
-		Date date = new Date();
-		return dateFormat.format(date);
-	}
-
-	protected void fillLocalToolBar(IToolBarManager manager)
-	{
-
-		manager.add(actWriteScreenshot);
-	}
-
-	private void createWriteScreenshotAction()
-	{
-		actWriteScreenshot = new Action()
-		{
-			public void run()
-			{
-
-				bEnableWriteScreenshot = !bEnableWriteScreenshot;
-				writeScreenshot();
-			}
-		};
-		actWriteScreenshot.setText(ACTION_WRITE_SCREENSHOT_TEXT);
-		actWriteScreenshot.setToolTipText(ACTION_WRITE_SCREENSHOT_TEXT);
-		actWriteScreenshot.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass()
-				.getClassLoader().getResource(ACTION_WRITE_SCREENSHOT_ICON)));
+		return swtComposite;
 	}
 }

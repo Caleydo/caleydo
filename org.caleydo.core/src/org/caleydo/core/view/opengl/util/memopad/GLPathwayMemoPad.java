@@ -6,6 +6,7 @@ import java.awt.Font;
 import java.io.File;
 import java.util.Iterator;
 import javax.media.opengl.GL;
+import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -177,7 +178,7 @@ public class GLPathwayMemoPad
 
 			float tmp = gLPathwayTextureManager.getTextureByPathwayId(iPathwayId)
 					.getImageHeight()
-					* GLPathwayManager.SCALING_FACTOR_Y;
+					* PathwayRenderStyle.SCALING_FACTOR_Y;
 			gl.glTranslatef(0, tmp, 0.01f);
 			gLPathwayManager.renderPathway(gl, iPathwayId, false);
 			gl.glTranslatef(0, -tmp, 0.01f);

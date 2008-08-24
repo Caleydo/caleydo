@@ -1,7 +1,9 @@
 package org.caleydo.testing.unit.command.data.filter;
 
 import java.util.ArrayList;
+
 import junit.framework.TestCase;
+
 import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
 import org.caleydo.core.data.collection.ccontainer.ICContainer;
 import org.caleydo.core.data.collection.ccontainer.NominalCContainer;

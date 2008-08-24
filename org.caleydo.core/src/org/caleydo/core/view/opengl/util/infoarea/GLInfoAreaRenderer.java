@@ -10,7 +10,6 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.util.mapping.GeneAnnotationMapper;
-import org.caleydo.core.view.opengl.canvas.pathway.GLPathwayManager;
 import org.caleydo.core.view.opengl.util.GLStarEffectRenderer;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
@@ -226,7 +225,7 @@ public class GLInfoAreaRenderer
 		// Save text length as new width if it bigger than previous one
 		float fCurrentWidth = 2.2f
 				* (float) textRenderer.getBounds("ID: " + sElementId).getWidth()
-				* GLPathwayManager.SCALING_FACTOR_X;
+				* PathwayRenderStyle.SCALING_FACTOR_X;
 
 		if (fMaxWidth < fCurrentWidth)
 			fMaxWidth = fCurrentWidth;
@@ -250,7 +249,7 @@ public class GLInfoAreaRenderer
 
 		// Save text length as new width if it bigger than previous one
 		fCurrentWidth = 2.2f * (float) textRenderer.getBounds(sTmp).getWidth()
-				* GLPathwayManager.SCALING_FACTOR_X;
+				* PathwayRenderStyle.SCALING_FACTOR_X;
 		if (fMaxWidth < fCurrentWidth)
 			fMaxWidth = fCurrentWidth;
 
@@ -265,7 +264,7 @@ public class GLInfoAreaRenderer
 		textRenderer.begin3DRendering();
 
 		float fLineHeight = 2.8f * (float) textRenderer.getBounds("A").getHeight()
-				* GLPathwayManager.SCALING_FACTOR_Y;
+				* PathwayRenderStyle.SCALING_FACTOR_Y;
 		float fXOffset = 0.03f;
 		float fYOffset = -0.03f;
 

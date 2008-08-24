@@ -12,7 +12,7 @@ public class HTMLBrowserView
 	extends ViewPart
 {
 
-	public static final String ID = "org.caleydo.rcp.views.HTMLBrowserView";
+	public static final String ID = "HTMLBrowserView.view";
 
 	@Override
 	public void createPartControl(Composite parent)
@@ -33,5 +33,4 @@ public class HTMLBrowserView
 	{
 
 	}
-
 }

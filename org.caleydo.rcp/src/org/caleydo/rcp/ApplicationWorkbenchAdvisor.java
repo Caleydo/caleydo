@@ -32,8 +32,7 @@ public class ApplicationWorkbenchAdvisor
 	@Override
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(
 			IWorkbenchWindowConfigurer configurer)
-	{
-		
+	{	
 		PlatformUI.getPreferenceStore().setValue(
 				IWorkbenchPreferenceConstants.SHOW_PROGRESS_ON_STARTUP, true);
 		
@@ -57,7 +56,6 @@ public class ApplicationWorkbenchAdvisor
 	@Override
 	public void postStartup()
 	{
-
 		super.postStartup();
 		
 		// Check if an early exit should be performed
@@ -72,8 +70,9 @@ public class ApplicationWorkbenchAdvisor
 
 	@Override
 	public boolean preShutdown()
-	{
-
+	{	
+		super.preShutdown();
+		
 		if (gLAnimator.isAnimating())
 			gLAnimator.stop();
 
@@ -91,7 +90,6 @@ public class ApplicationWorkbenchAdvisor
 
 	public void openLoadedViews()
 	{
-
 		// Initialize all GL views in RCP
 		GLCaleydoCanvas canvas;
 		int iInstanceNum = 0;

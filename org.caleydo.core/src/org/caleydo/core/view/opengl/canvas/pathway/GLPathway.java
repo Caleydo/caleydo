@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
@@ -18,6 +19,7 @@ import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.data.selection.SelectionItem;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
+import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
@@ -49,7 +51,6 @@ public class GLPathway
 	extends AGLEventListener
 	implements IMediatorReceiver, IMediatorSender
 {
-
 	private int iPathwayID = -1;
 
 	private boolean bEnablePathwayTexture = true;
@@ -217,7 +218,6 @@ public class GLPathway
 
 	protected void initPathwayData(final GL gl)
 	{
-
 		gLPathwayManager.init(gl, alSets, selectionManager);
 
 		// Create new pathway manager for GL context
@@ -234,7 +234,6 @@ public class GLPathway
 
 	public void renderScene(final GL gl)
 	{
-
 		renderPathwayById(gl, iPathwayID);
 	}
 
@@ -257,7 +256,7 @@ public class GLPathway
 					fPathwayTransparency, false);
 		}
 
-		float tmp = GLPathwayManager.SCALING_FACTOR_Y
+		float tmp = PathwayRenderStyle.SCALING_FACTOR_Y
 				* ((PathwayGraph) pathwayManager.getItem(iPathwayId)).getHeight();
 
 		// Pathway texture height is subtracted from Y to align pathways to
@@ -293,36 +292,7 @@ public class GLPathway
 
 	private void rebuildPathwayDisplayList(final GL gl)
 	{
-		if (selectedVertex != null)
-		{
-			// // Write currently selected vertex to selection set
-			// // Selected elements are rendered highlighted by GLPathwayManager
-			// ArrayList<Integer> iAlTmpSelectionId = new ArrayList<Integer>();
-			// ArrayList<Integer> iAlTmpGroup = new ArrayList<Integer>();
-			//			
-			// alSetSelection.get(1).getReadToken();
-			// int iPreviousSelectedElement = -1;
-			// if (alSetSelection.get(1).getSelectionIdArray() != null)
-			// {
-			// iPreviousSelectedElement =
-			// alSetSelection.get(1).getSelectionIdArray().get(0);
-			// alSetSelection.get(1).returnReadToken();
-			// iAlTmpSelectionId.add(iPreviousSelectedElement);
-			// iAlTmpGroup.add(-1);
-			// }
-			// else
-			// return;
-			//			
-			// iAlTmpSelectionId.add(selectedVertex.getId());
-			// iAlTmpGroup.add(0);
-			//			
-			// alSetSelection.get(1).getWriteToken();
-			// alSetSelection.get(1).mergeSelection(iAlTmpSelectionId,
-			// iAlTmpGroup, null);
-			// alSetSelection.get(1).returnWriteToken();
-			//				
-		}
-
+		gLPathwayManager.init(gl, alSets, selectionManager); // TODO: maybe too slow?
 		gLPathwayManager.performIdenticalNodeHighlighting();
 		gLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
 	}
@@ -364,9 +334,9 @@ public class GLPathway
 
 			connectedElementRepresentationManager.modifySelection(item.getInternalID(),
 					new SelectedElementRep(iUniqueID,
-							(vertexRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X)
+							(vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X)
 									* vecScaling.x() + vecTranslation.x(),
-							((iPathwayHeight - vertexRep.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y)
+							((iPathwayHeight - vertexRep.getYOrigin()) * PathwayRenderStyle.SCALING_FACTOR_Y)
 									* vecScaling.y() + vecTranslation.y(), 0),
 					ESelectionMode.ADD_PICK);		
 		}
@@ -533,35 +503,35 @@ public class GLPathway
 					"Problem because pathway texture width or height is invalid!");
 		}
 
-		float fTmpPathwayWidth = iImageWidth * GLPathwayManager.SCALING_FACTOR_X
+		float fTmpPathwayWidth = iImageWidth * PathwayRenderStyle.SCALING_FACTOR_X
 				* fPathwayScalingFactor;
-		float fTmpPathwayHeight = iImageHeight * GLPathwayManager.SCALING_FACTOR_Y
+		float fTmpPathwayHeight = iImageHeight * PathwayRenderStyle.SCALING_FACTOR_Y
 				* fPathwayScalingFactor;
 
 		if (fTmpPathwayWidth > (viewFrustum.getRight() - viewFrustum.getLeft())
 				&& fTmpPathwayWidth > fTmpPathwayHeight)
 		{
 			vecScaling.setX((viewFrustum.getRight() - viewFrustum.getLeft())
-					/ (iImageWidth * GLPathwayManager.SCALING_FACTOR_X) * fPadding);
+					/ (iImageWidth * PathwayRenderStyle.SCALING_FACTOR_X) * fPadding);
 			vecScaling.setY(vecScaling.x());
 
 			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft() - iImageWidth
-					* GLPathwayManager.SCALING_FACTOR_X * vecScaling.x()) / 2.0f, (viewFrustum
+					* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()) / 2.0f, (viewFrustum
 					.getTop()
 					- viewFrustum.getBottom() - iImageHeight
-					* GLPathwayManager.SCALING_FACTOR_Y * vecScaling.y()) / 2.0f, 0);
+					* PathwayRenderStyle.SCALING_FACTOR_Y * vecScaling.y()) / 2.0f, 0);
 		}
 		else if (fTmpPathwayHeight > (viewFrustum.getTop() - viewFrustum.getBottom()))
 		{
 			vecScaling.setY((viewFrustum.getTop() - viewFrustum.getBottom())
-					/ (iImageHeight * GLPathwayManager.SCALING_FACTOR_Y) * fPadding);
+					/ (iImageHeight * PathwayRenderStyle.SCALING_FACTOR_Y) * fPadding);
 			vecScaling.setX(vecScaling.y());
 
 			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft() - iImageWidth
-					* GLPathwayManager.SCALING_FACTOR_X * vecScaling.x()) / 2.0f, (viewFrustum
+					* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()) / 2.0f, (viewFrustum
 					.getTop()
 					- viewFrustum.getBottom() - iImageHeight
-					* GLPathwayManager.SCALING_FACTOR_Y * vecScaling.y()) / 2.0f, 0);
+					* PathwayRenderStyle.SCALING_FACTOR_Y * vecScaling.y()) / 2.0f, 0);
 		}
 		else
 		{
@@ -737,10 +707,10 @@ public class GLPathway
 										iDavidId,
 										new SelectedElementRep(
 												this.getID(),
-												(tmpPathwayVertexGraphItemRep.getXOrigin() * GLPathwayManager.SCALING_FACTOR_X)
+												(tmpPathwayVertexGraphItemRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X)
 														* vecScaling.x() + vecTranslation.x(),
 												((iPathwayHeight - tmpPathwayVertexGraphItemRep
-														.getYOrigin()) * GLPathwayManager.SCALING_FACTOR_Y)
+														.getYOrigin()) * PathwayRenderStyle.SCALING_FACTOR_Y)
 														* vecScaling.y() + vecTranslation.y(),
 												0), ESelectionMode.ADD_PICK);
 					}
@@ -805,6 +775,8 @@ public class GLPathway
 	}
 
 	@Override
+	//TODO: this method is called much too often
+	// better we cache the string and update it only when display list change
 	public ArrayList<String> getInfo()
 	{
 		ArrayList<String> sAlInfo = new ArrayList<String>();
@@ -817,8 +789,8 @@ public class GLPathway
 		sAlInfo.add("Type: " + pathway.getType().getName() + " Pathway");
 		sAlInfo.add(sPathwayTitle);
 
-		generalManager.getSWTGUIManager().setExternalRCPStatusLineMessage(
-				pathway.getType().getName() + " Pathway: " + sPathwayTitle);
+//		generalManager.getSWTGUIManager().setExternalRCPStatusLineMessage(
+//				pathway.getType().getName() + " Pathway: " + sPathwayTitle);
 
 		return sAlInfo;
 	}
@@ -834,5 +806,19 @@ public class GLPathway
 	public void triggerUpdate(ISelectionDelta selectionDelta)
 	{
 		generalManager.getEventPublisher().handleUpdate(this, selectionDelta);
+	}
+	
+	@Override
+	public void addSet(int setID)
+	{
+		super.addSet(setID);
+		connectedElementRepresentationManager.clear();
+	}
+	
+	@Override
+	public void addSet(ISet set)
+	{
+		super.addSet(set);
+		connectedElementRepresentationManager.clear();
 	}
 }

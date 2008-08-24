@@ -5,8 +5,7 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
@@ -20,7 +19,7 @@ public class NewOrExistingProjectPage
 	extends WizardPage
 {
 
-	public static final String PAGE_NAME = "New or existing project?";
+	public static final String PAGE_NAME = "Project Wizard";
 
 	private boolean bNewProject = true;
 
@@ -31,8 +30,11 @@ public class NewOrExistingProjectPage
 	{
 		super(PAGE_NAME, PAGE_NAME, null);
 
-		this.setImageDescriptor(ImageDescriptor.createFromImageData(new ImageData(
-				"resources/splash/splash.png")));
+		this.setImageDescriptor(ImageDescriptor.createFromURL(
+				this.getClass().getClassLoader().getResource(
+						"resources/wizard/wizard.png")));
+		
+		this.setDescription("Do you want to create a new project or load an existing one?");
 		
 		setPageComplete(false);
 	}
@@ -40,12 +42,12 @@ public class NewOrExistingProjectPage
 	public void createControl(Composite parent)
 	{
 		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new RowLayout(SWT.VERTICAL));
+		composite.setLayout(new FillLayout(SWT.VERTICAL));
 
-		Button buttonNewProject = new Button(composite, SWT.RADIO);
+		Button buttonNewProject = new Button(composite, SWT.NONE);
 		buttonNewProject.setText("Create new project");
 
-		Button buttonExistingProject = new Button(composite, SWT.RADIO);
+		Button buttonExistingProject = new Button(composite, SWT.NONE);
 		buttonExistingProject.setText("Open existing project");
 
 		buttonNewProject.addSelectionListener(new SelectionAdapter()

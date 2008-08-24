@@ -4,7 +4,6 @@ import org.caleydo.rcp.action.file.FileLoadDataAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 
@@ -28,8 +27,9 @@ public class NewProjectImportDataPage
 	{
 		super(PAGE_NAME, PAGE_NAME, null);
 
-		this.setImageDescriptor(ImageDescriptor.createFromImageData(new ImageData(
-				"resources/splash/splash.png")));
+		this.setImageDescriptor(ImageDescriptor.createFromURL(
+				this.getClass().getClassLoader().getResource(
+						"resources/wizard/wizard.png")));
 		
 		setPageComplete(false);
 	}

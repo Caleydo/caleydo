@@ -8,6 +8,7 @@ import org.caleydo.core.application.core.CaleydoBootloader;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import org.caleydo.rcp.core.bridge.RCPBridge;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
 import org.caleydo.rcp.wizard.firststart.FirstStartWizard;
 import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
@@ -34,6 +35,8 @@ public class Application
 	public static String sCaleydoXMLfile = "";
 	
 	public static boolean bDoExit = false;
+	
+	public RCPBridge rcpGuiBridge;
 
 	@Override
 	@SuppressWarnings("unchecked")
@@ -59,8 +62,10 @@ public class Application
 			}
 		}
 		
+		rcpGuiBridge = new RCPBridge();
+		
 		// Create Caleydo core
-		caleydoCore = new CaleydoBootloader(bIsWebstart);
+		caleydoCore = new CaleydoBootloader(bIsWebstart, rcpGuiBridge);
 		
 		Display display = PlatformUI.createDisplay();
 		

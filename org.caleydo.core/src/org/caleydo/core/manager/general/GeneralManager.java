@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.caleydo.core.bridge.gui.IGUIBridge;
+import org.caleydo.core.bridge.gui.standalone.SWTStandaloneBridge;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
@@ -77,11 +79,21 @@ public class GeneralManager
 
 	private Logger logger;
 	
+	private IGUIBridge guiBridge;
+
+	@Override
+	public void init(boolean bIsStandalone, IGUIBridge externalGUIBridge)
+	{
+		this.init(bIsStandalone);
+		
+		this.guiBridge = externalGUIBridge;
+	}
+	
 	@Override
 	public void init(boolean bIsStandalone)
 	{
 		this.bIsStandalone = bIsStandalone;
-		
+	
 		if (bAllManagersInitialized)
 		{
 			throw new CaleydoRuntimeException("Tried to initialize managers multiple times. Abort.");
@@ -110,6 +122,12 @@ public class GeneralManager
 		
 		initLogger();
 		initPreferences();
+		
+		// Init Standalone GUI Bridge if in standalone mode
+		if (bIsStandalone)
+		{
+			guiBridge = new SWTStandaloneBridge();
+		}
 	}
 	
 	/**
@@ -274,6 +292,12 @@ public class GeneralManager
 	public boolean isStandalone()
 	{
 		return bIsStandalone;
+	}
+
+	@Override
+	public IGUIBridge getGUIBridge()
+	{
+		return guiBridge;
 	}
 	
 	// public void serializationOutputTest() {

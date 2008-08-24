@@ -6,15 +6,10 @@ import org.caleydo.core.command.view.rcp.CmdExternalFlagSetter;
 import org.caleydo.core.command.view.rcp.EExternalActionType;
 import org.caleydo.core.command.view.rcp.EExternalFlagSetterType;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.rcp.util.search.SearchBar;
 import org.eclipse.jface.action.Action;
-import org.eclipse.jface.action.IContributionItem;
-import org.eclipse.jface.action.IMenuManager;
-import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.IActionBars;
 
 public class GLRemoteRenderingView
 	extends AGLViewPart
@@ -35,18 +30,16 @@ public class GLRemoteRenderingView
 	public static final String ACTION_ENABLE_NEIGHBORHOOD_TEXT = "Turn on/off neighborhood highlighting";
 	public static final String ACTION_ENABLE_NEIGHBORHOOD_ICON = "resources/icons/PathwayEditor/three_neighborhood.gif";
 
-	protected int iGLCanvasDirectorId;
+	private IAction actToggleLayoutMode;
+	private IAction actClearAll;
 
-	private Action actToggleLayoutMode;
-	private Action actClearAll;
-
-	private Action actEnableGeneMapping;
+	private IAction actEnableGeneMapping;
 	private boolean bEnableGeneMapping = true;
 
-	private Action actEnablePathwayTextures;
+	private IAction actEnablePathwayTextures;
 	private boolean bEnablePathwayTextures = true;
 
-	private Action actEnableNeighborhood;
+	private IAction actEnableNeighborhood;
 	private boolean bEnableNeighborhood = false;
 
 	/**
@@ -54,52 +47,47 @@ public class GLRemoteRenderingView
 	 */
 	public GLRemoteRenderingView()
 	{
-
 		super();
 	}
 
-	/**
-	 * This is a callback that will allow us to create the viewer and initialize
-	 * it.
-	 */
+	@Override
 	public void createPartControl(Composite parent)
 	{
-
-		super.createPartControlSWT(parent);
-
-		createToggleLayoutStyleAction();
-		createClearAllAction();
-		createGeneMappingToggleAction();
-		createPathwayTexturesToggleAction();
-		createNeighborhoodToggleAction();
-
-		contributeToActionBars();
+		super.createPartControl(parent);
+		
+//		createToggleLayoutStyleAction();
+//		createClearAllAction();
+//		createGeneMappingToggleAction();
+//		createPathwayTexturesToggleAction();
+//		createNeighborhoodToggleAction();
+//
+//		contributeToActionBars();
 	}
 
-	protected void contributeToActionBars()
-	{
-		IActionBars bars = getViewSite().getActionBars();
-		fillLocalPullDown(bars.getMenuManager());
-		fillLocalToolBar(bars.getToolBarManager());
-	}
+//	protected void contributeToActionBars()
+//	{
+//		IActionBars bars = getViewSite().getActionBars();
+//		fillLocalPullDown(bars.getMenuManager());
+//		fillLocalToolBar(bars.getToolBarManager());
+//	}
 
-	protected void fillLocalPullDown(IMenuManager manager)
-	{
-	}
-
-	protected void fillLocalToolBar(IToolBarManager manager)
-	{
-
-		IContributionItem searchBar = new SearchBar("Quick search");
-
-		manager.add(new Separator());
-		manager.add(searchBar);
-		manager.add(actToggleLayoutMode);
-		manager.add(actClearAll);
-		manager.add(actEnableGeneMapping);
-		manager.add(actEnablePathwayTextures);
-		manager.add(actEnableNeighborhood);
-	}
+//	protected void fillLocalPullDown(IMenuManager manager)
+//	{
+//	}
+//
+//	protected void fillLocalToolBar(IToolBarManager manager)
+//	{
+//
+////		IContributionItem searchBar = new SearchBar("Quick search");
+//
+////		manager.add(new Separator());
+////		manager.add(searchBar);
+////		manager.add(actToggleLayoutMode);
+////		manager.add(actClearAll);
+////		manager.add(actEnableGeneMapping);
+////		manager.add(actEnablePathwayTextures);
+////		manager.add(actEnableNeighborhood);
+//	}
 
 	private void createToggleLayoutStyleAction()
 	{

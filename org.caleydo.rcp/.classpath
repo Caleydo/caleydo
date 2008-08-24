@@ -15,7 +15,6 @@
 	<classpathentry exported="true" kind="lib" path="/org.caleydo.lib/lib/webspider/itsucks-base-0.3.0-pre7.jar"/>
 	<classpathentry exported="true" kind="lib" path="/org.caleydo.lib/lib/webspider/itsucks-core-0.3.0-pre7.jar"/>
 	<classpathentry exported="true" kind="lib" path="/org.caleydo.lib/lib/webspider/log4j-1.2.14.jar"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.core"/>
 	<classpathentry kind="lib" path="lib/webspider/spring-beans-2.5.jar"/>
 	<classpathentry kind="lib" path="lib/webspider/spring-context-2.5.jar"/>
 	<classpathentry kind="lib" path="lib/webspider/spring-core-2.5.jar"/>

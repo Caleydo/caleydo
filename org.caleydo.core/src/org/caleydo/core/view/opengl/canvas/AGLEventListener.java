@@ -294,13 +294,13 @@ public abstract class AGLEventListener
 	 */
 	public abstract void displayRemote(final GL gl);
 
-	public final void addSet(ISet set)
+	public void addSet(ISet set)
 	{
 		alSets.add(set);
 		setDisplayListDirty();
 	}
 
-	public final void addSet(int iSetID)
+	public void addSet(int iSetID)
 	{
 		alSets.add((ISet) generalManager.getSetManager().getItem(iSetID));
 		setDisplayListDirty();

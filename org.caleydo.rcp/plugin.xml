@@ -75,7 +75,7 @@
       </view> 
       
       <view
-            id="org.caleydo.rcp.views.HTMLBrowserView"
+            id="HTMLBrowserView.view"
             name="Browser"
             icon="resources/icons/browser.png"
             class="org.caleydo.rcp.views.HTMLBrowserView"
@@ -194,6 +194,15 @@
                </parameter>
             </command>
          </menu>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.caleydo.rcp.views.GLRemoteRendering3DView">
+         <command
+               commandId="org.caleydo.rcp.command.fullscreen"
+               icon="resources/icons/eraser.png"
+               label="Hello"
+               style="push">
+         </command>
       </menuContribution>
    </extension>
    <extension

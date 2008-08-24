@@ -1,7 +1,6 @@
 package org.caleydo.rcp;
 
 import org.caleydo.core.manager.general.GeneralManager;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
@@ -29,13 +28,12 @@ public class ApplicationWorkbenchWindowAdvisor
 	@Override
 	public void preWindowOpen()
 	{
-		super.preWindowOpen();
-		
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
-		configurer.setInitialSize(new Point(400, 300));
-		configurer.setShowCoolBar(false);
+//		configurer.setInitialSize(new Point(400, 300));
+		configurer.setShowCoolBar(true);
 		configurer.setShowStatusLine(true);
 		configurer.setShowProgressIndicator(true);
+		configurer.setTitle("Caleydo");
 	}
 	
 	@Override

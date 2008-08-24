@@ -1,6 +1,7 @@
 package org.caleydo.core.application.core;
 
 import java.util.logging.Level;
+import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.IXmlParserManager;
@@ -49,13 +50,31 @@ public class CaleydoBootloader
 		generalManager = GeneralManager.get();
 		generalManager.init(bIsStandalone);
 
-		generalManager.getLogger().log(Level.CONFIG, "===========================");
-		generalManager.getLogger().log(Level.CONFIG, "... Start Caleydo Core ...");
-		generalManager.getLogger().log(Level.CONFIG, "===========================");
+		generalManager.getLogger().log(Level.INFO, "Start Caleydo Core");
 
 		swtGUIManager = generalManager.getSWTGUIManager();
 		xmlParserManager = generalManager.getXmlParserManager();
+		
+		init();
 	}
+	
+	/**
+	 * Constructor.
+	 */
+	public CaleydoBootloader(boolean bIsStandalone, IGUIBridge externalGUIBridge)
+	{
+		generalManager = GeneralManager.get();
+		generalManager.init(bIsStandalone, externalGUIBridge);
+		
+		init();
+	}
+	
+	private void init() 
+	{
+		swtGUIManager = generalManager.getSWTGUIManager();
+		xmlParserManager = generalManager.getXmlParserManager();
+	}
+	
 
 	/**
 	 * Used by RCP to get access to the general manager.

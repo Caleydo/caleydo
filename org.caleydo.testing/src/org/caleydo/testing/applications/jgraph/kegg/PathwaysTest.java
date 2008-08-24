@@ -1,6 +1,7 @@
 package org.caleydo.testing.applications.jgraph.kegg;
 
 import java.io.File;
+
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 

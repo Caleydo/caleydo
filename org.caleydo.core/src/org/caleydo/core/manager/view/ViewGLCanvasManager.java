@@ -266,6 +266,7 @@ public class ViewGLCanvasManager
 				glEventListener = new GLGlyph(iGLCanvasID, sLabel,
 						viewFrustum);
 				break;
+				
 			case CREATE_GL_GLYPH_SLIDER:
 				glEventListener = new GLCanvasGlyphSliderView(iGLCanvasID, sLabel,
 						viewFrustum);

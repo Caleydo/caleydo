@@ -1,6 +1,7 @@
 package org.caleydo.core.manager;
 
 import java.util.logging.Logger;
+import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.id.IDManager;
@@ -28,6 +29,11 @@ public interface IGeneralManager
 	public static final String sDelimiter_Parser_DataItems_Tab = "\t";
 
 	public void init(boolean bIsStandalone);
+	
+	/**
+	 * Init method for external GUI embedding (e.g. RCP)
+	 */
+	public void init(boolean bIsStandalone, IGUIBridge externalGUIBridge);
 
 	public abstract IMementoManager getMementoManager();
 	public abstract IStorageManager getStorageManager();
@@ -61,5 +67,7 @@ public interface IGeneralManager
 	/**
 	 * Returns whether the application runs as standalone test GUI or embedded in RCP
 	 */
-	public boolean isStandalone() ;
+	public boolean isStandalone();
+	
+	public IGUIBridge getGUIBridge();
 }
