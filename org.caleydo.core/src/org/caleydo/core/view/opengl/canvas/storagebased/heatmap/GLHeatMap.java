@@ -22,7 +22,8 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.mapping.color.ColorMapping;
-import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
+import org.caleydo.core.util.mapping.color.ColorMappingManager;
+import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
@@ -30,7 +31,6 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
-import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**
@@ -90,14 +90,8 @@ public class GLHeatMap
 		storageSelectionManager = new GenericSelectionManager.Builder(
 				EIDType.EXPRESSION_EXPERIMENT).build();
 
-		ArrayList<ColorMarkerPoint> alColorMarkerList = new ArrayList<ColorMarkerPoint>();
-		alColorMarkerList.add(new ColorMarkerPoint(0, 0, 1, 0));
-		alColorMarkerList.add(new ColorMarkerPoint(0.2f, 0, 0, 0));
-		alColorMarkerList.add(new ColorMarkerPoint(0.4f, 1, 1, 0));
-		alColorMarkerList.add(new ColorMarkerPoint(0.6f, 0.5f, 1, 0.2f));
-		alColorMarkerList.add(new ColorMarkerPoint(1f, 1, 0, 0));	
 
-		colorMapper = new ColorMapping(alColorMarkerList);
+		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 	}
 
 	@Override
@@ -136,9 +130,6 @@ public class GLHeatMap
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 
 		bRenderStorageHorizontally = false;
-
-		glToolboxRenderer = new GLToolboxRenderer(gl, generalManager, iUniqueID,
-				iRemoteViewID, new Vec3f(0, 0, 0), layer, true, renderStyle);
 
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
 
@@ -444,7 +435,7 @@ public class GLHeatMap
 					// Render heat map element name
 					String sContent = getRefSeqFromStorageIndex(iContentIndex);
 					renderCaption(gl, sContent, fXPosition + vecFieldWidthAndHeight.x() / 2,
-							fYPosition + 0.1f, 90);
+							fYPosition + 0.1f, 90, fFontScaling);
 				}
 
 			}
@@ -458,7 +449,7 @@ public class GLHeatMap
 					{
 						renderCaption(gl, set.get(iStorageIndex).getLabel(),
 								fXPosition + 0.1f,
-								fYPosition + vecFieldWidthAndHeight.y() / 2, 60);
+								fYPosition + vecFieldWidthAndHeight.y() / 2, 60, renderStyle.getSmallFontScalingFactor());
 						fYPosition += vecFieldWidthAndHeight.y();
 					}
 				}
@@ -687,14 +678,14 @@ public class GLHeatMap
 	}
 
 	private void renderCaption(GL gl, String sLabel, float fXOrigin, float fYOrigin,
-			float fRotation)
+			float fRotation, float fFontScaling)
 	{
 		textRenderer.setColor(0, 0, 0, 1);
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		gl.glTranslatef(fXOrigin, fYOrigin, 0);
 		gl.glRotatef(fRotation, 0, 0, 1);
 		textRenderer.begin3DRendering();
-		textRenderer.draw3D(sLabel, 0, 0, 0, renderStyle.getSmallFontScalingFactor());
+		textRenderer.draw3D(sLabel, 0, 0, 0, fFontScaling);
 		textRenderer.end3DRendering();
 		gl.glRotatef(-fRotation, 0, 0, 1);
 		gl.glTranslatef(-fXOrigin, -fYOrigin, 0);

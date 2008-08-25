@@ -64,6 +64,8 @@ public class ParCoordsRenderStyle
 
 	// Line widths
 	public static final float POLYLINE_LINE_WIDTH = 1.0f;
+	
+	public static final int NUMBER_AXIS_MARKERS = 9;
 
 	// modifiable colors
 	protected float[] polylineOcclusionPrevColor = { 0.0f, 0.0f, 0.0f, 1.0f };
@@ -82,7 +84,7 @@ public class ParCoordsRenderStyle
 
 	private static final float COORDINATE_SIDE_SPACING = 0.05f;
 
-	private static final float COORDINATE_BOTTOM_SPACING = 0.07f;
+	private static final float COORDINATE_BOTTOM_SPACING = 0.04f;
 
 	public static final float Y_AXIS_LOW = -0.1f;
 

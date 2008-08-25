@@ -4,8 +4,12 @@ package org.caleydo.core.util.exception;
 /**
  * Base class for all RuntimeException.
  * 
+ * Deprecated! Favour build-in Java exceptions
+ * 
  * @author Michael Kalkusch
+ * @author Alexander Lex
  */
+@Deprecated
 public class CaleydoRuntimeException
 	extends RuntimeException
 {

@@ -1,9 +1,6 @@
 package org.caleydo.core.data.collection.ccontainer;
 
-import javax.management.InvalidAttributeValueException;
 import org.caleydo.core.data.selection.IVirtualArray;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * CContainer implementation for int A container for ints. Initialized with an
@@ -93,13 +90,11 @@ public class IntCContainer
 
 	@Override
 	public FloatCContainer normalizeWithExternalExtrema(double dMin, double dMax)
-			throws InvalidAttributeValueException
 	{
 		if (dMin > getMin() || dMax < getMax())
 		{
-			throw new CaleydoRuntimeException("Provided external values are more "
-					+ "limiting than calculated ones",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalArgumentException("Provided external values are more "
+					+ "limiting than calculated ones");
 		}
 		return normalize((int) dMin, (int) dMax);
 	}
@@ -107,17 +102,7 @@ public class IntCContainer
 	@Override
 	public FloatCContainer normalize()
 	{
-		try
-		{
-			return normalize((int) getMin(), (int) getMax());
-		}
-		catch (InvalidAttributeValueException e)
-		{
-			throw new CaleydoRuntimeException(
-					"Caught InvalidAttributeValueException with automatically calculated values. "
-							+ "Original Message: " + e.getMessage(),
-					CaleydoRuntimeExceptionType.DATAHANDLING);
-		}
+			return normalize((int) getMin(), (int) getMax());		
 	}
 
 	/**
@@ -126,13 +111,13 @@ public class IntCContainer
 	 * @param iMin
 	 * @param iMax
 	 * @return
-	 * @throws InvalidAttributeValueException when iMin is >= iMax
+	 * @throws IllegalAttributeException when iMin is >= iMax
 	 */
 	private FloatCContainer normalize(int iMin, int iMax)
-			throws InvalidAttributeValueException
+			
 	{
 		if (iMin >= iMax)
-			throw new InvalidAttributeValueException("Minimum was bigger or same as maximum");
+			throw new IllegalArgumentException("Minimum was bigger or same as maximum");
 		float[] fArTmpTarget = new float[iArContainer.length];
 
 		for (int iCount = 0; iCount < iArContainer.length; iCount++)

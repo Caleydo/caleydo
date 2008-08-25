@@ -11,7 +11,6 @@ import java.util.Iterator;
 import java.util.Set;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
-import javax.naming.OperationNotSupportedException;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
@@ -154,7 +153,7 @@ public class GLParallelCoordinates
 		storageSelectionManager = new GenericSelectionManager.Builder(
 				EIDType.EXPRESSION_EXPERIMENT).build();
 
-		decimalFormat = new DecimalFormat("#####.##");
+		decimalFormat = new DecimalFormat("#####.#");
 
 		alIsAngleBlocking = new ArrayList<ArrayList<Integer>>();
 		alIsAngleBlocking.add(new ArrayList<Integer>());
@@ -170,9 +169,6 @@ public class GLParallelCoordinates
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
 
-		glToolboxRenderer = new GLParCoordsToolboxRenderer(gl, generalManager, iUniqueID,
-				new Vec3f(0, 0, 0), true, renderStyle);
-
 	}
 
 	@Override
@@ -182,13 +178,10 @@ public class GLParallelCoordinates
 			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas)
 	{
 		dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
-		//dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
+		// dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
 		bRenderOnlyContext = true;
 
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
-
-		glToolboxRenderer = new GLParCoordsToolboxRenderer(gl, generalManager, iUniqueID,
-				iRemoteViewID, new Vec3f(0, 0, 0), layer, true, renderStyle);
 
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
 
@@ -276,7 +269,6 @@ public class GLParallelCoordinates
 		// GLHelperFunctions.drawAxis(gl);
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		clipToFrustum(gl);
-	
 
 		gl.glTranslatef(fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
 
@@ -293,21 +285,21 @@ public class GLParallelCoordinates
 		}
 
 		checkUnselection();
-//		GLHelperFunctions.drawAxis(gl);
+		// GLHelperFunctions.drawAxis(gl);
 		gl.glCallList(iGLDisplayListToCall);
 
 		gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
 
-		if (detailLevel == EDetailLevel.HIGH)
-		{
-			gl.glTranslatef(fXDefaultTranslation - renderStyle.getXSpacing(), fYTranslation
-					- renderStyle.getBottomSpacing(), 0.0f);
+//		if (detailLevel == EDetailLevel.HIGH)
+//		{
+//			gl.glTranslatef(fXDefaultTranslation - renderStyle.getXSpacing(), fYTranslation
+//					- renderStyle.getBottomSpacing(), 0.0f);
+//
+//		
+//			gl.glTranslatef(-fXDefaultTranslation + renderStyle.getXSpacing(), -fYTranslation
+//					+ renderStyle.getBottomSpacing(), 0.0f);
+//		}
 
-			glToolboxRenderer.render(gl);
-			gl.glTranslatef(-fXDefaultTranslation + renderStyle.getXSpacing(), -fYTranslation
-					+ renderStyle.getBottomSpacing(), 0.0f);
-		}
-		
 		gl.glDisable(GL.GL_STENCIL_TEST);
 	}
 
@@ -441,7 +433,6 @@ public class GLParallelCoordinates
 		//axisSelectionManager.initialAdd(set.getVA(iAxisVAID).get(iAxisCount));
 		// }
 
-
 		initGates();
 
 	}
@@ -498,11 +489,11 @@ public class GLParallelCoordinates
 	 */
 	private void buildPolyLineDisplayList(final GL gl, int iGLDisplayListIndex)
 	{
-	
+
 		fAxisSpacing = renderStyle.getAxisSpacing(set.sizeVA(iAxisVAID));
-		
+
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-	
+
 		// if(bIsDraggingActive)
 		// handleDragging(gl);
 
@@ -515,7 +506,6 @@ public class GLParallelCoordinates
 
 		renderGates(gl);
 
-	
 		gl.glEndList();
 	}
 
@@ -640,7 +630,7 @@ public class GLParallelCoordinates
 				{
 					float fYRawValue = currentStorage.getFloat(EDataRepresentation.RAW,
 							iStorageIndex);
-					renderYValues(gl, fCurrentXValue, fCurrentYValue
+					renderBoxedYValues(gl, fCurrentXValue, fCurrentYValue
 							* renderStyle.getAxisHeight(), fYRawValue, renderMode);
 				}
 
@@ -688,6 +678,7 @@ public class GLParallelCoordinates
 		int iCount = 0;
 		while (iCount < iNumberAxis)
 		{
+			float fXPosition = iCount * fAxisSpacing;
 			if (selectedSet.contains(set.getVA(iAxisVAID).get(iCount)))
 			{
 				gl.glColor4fv(ParCoordsRenderStyle.Y_AXIS_SELECTED_COLOR, 0);
@@ -706,14 +697,18 @@ public class GLParallelCoordinates
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.Y_AXIS_SELECTION, set.getVA(iAxisVAID).get(iCount)));
 			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(iCount * fAxisSpacing, ParCoordsRenderStyle.Y_AXIS_LOW,
+			gl.glVertex3f(fXPosition, ParCoordsRenderStyle.Y_AXIS_LOW,
 					ParCoordsRenderStyle.AXIS_Z);
-			gl.glVertex3f(iCount * fAxisSpacing, renderStyle.getAxisHeight(),
-					ParCoordsRenderStyle.AXIS_Z);
-			gl.glVertex3f(iCount * fAxisSpacing - ParCoordsRenderStyle.AXIS_MARKER_WIDTH,
-					renderStyle.getAxisHeight(), ParCoordsRenderStyle.AXIS_Z);
-			gl.glVertex3f(iCount * fAxisSpacing + ParCoordsRenderStyle.AXIS_MARKER_WIDTH,
-					renderStyle.getAxisHeight(), ParCoordsRenderStyle.AXIS_Z);
+			gl
+					.glVertex3f(fXPosition, renderStyle.getAxisHeight(),
+							ParCoordsRenderStyle.AXIS_Z);
+
+			// Top marker
+			gl.glVertex3f(fXPosition - ParCoordsRenderStyle.AXIS_MARKER_WIDTH, renderStyle
+					.getAxisHeight(), ParCoordsRenderStyle.AXIS_Z);
+			gl.glVertex3f(fXPosition + ParCoordsRenderStyle.AXIS_MARKER_WIDTH, renderStyle
+					.getAxisHeight(), ParCoordsRenderStyle.AXIS_Z);
+
 			gl.glEnd();
 			if (detailLevel != EDetailLevel.HIGH)
 			{
@@ -723,6 +718,36 @@ public class GLParallelCoordinates
 			}
 			else
 			{
+
+				// markers on axis
+				float fMarkerSpacing = renderStyle.getAxisHeight()
+						/ (ParCoordsRenderStyle.NUMBER_AXIS_MARKERS + 1);
+				for (int iInnerCount = 1; iInnerCount <= ParCoordsRenderStyle.NUMBER_AXIS_MARKERS; iInnerCount++)
+				{
+					float fCurrentHeight = fMarkerSpacing * iInnerCount;
+					if (iCount == 0)
+					{
+						float fNumber = (float) set.getRawForNormalized(fCurrentHeight
+								/ renderStyle.getAxisHeight());
+
+						Rectangle2D bounds = textRenderer.getBounds(decimalFormat
+								.format(fNumber));
+						float fWidth = (float) bounds.getWidth() * renderStyle.getSmallFontScalingFactor();
+						float fHeightHalf = (float) bounds.getHeight() * renderStyle.getSmallFontScalingFactor() / 3;
+						
+						renderNumber(fNumber, fXPosition - fWidth
+								- ParCoordsRenderStyle.AXIS_MARKER_WIDTH, fCurrentHeight - fHeightHalf);
+					}
+					gl.glColor3fv(ParCoordsRenderStyle.Y_AXIS_COLOR, 0);
+					gl.glBegin(GL.GL_LINES);
+					gl.glVertex3f(fXPosition - ParCoordsRenderStyle.AXIS_MARKER_WIDTH,
+							fCurrentHeight, ParCoordsRenderStyle.AXIS_Z);
+					gl.glVertex3f(fXPosition + ParCoordsRenderStyle.AXIS_MARKER_WIDTH,
+							fCurrentHeight, ParCoordsRenderStyle.AXIS_Z);
+					gl.glEnd();
+
+				}
+
 				String sAxisLabel = null;
 				switch (eAxisDataType)
 				{
@@ -740,7 +765,7 @@ public class GLParallelCoordinates
 						sAxisLabel = "No Label";
 				}
 				gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-				gl.glTranslatef(iCount * fAxisSpacing, renderStyle.getAxisHeight()
+				gl.glTranslatef(fXPosition, renderStyle.getAxisHeight()
 						+ renderStyle.getAxisCaptionSpacing(), 0);
 				gl.glRotatef(25, 0, 0, 1);
 				textRenderer.begin3DRendering();
@@ -748,30 +773,23 @@ public class GLParallelCoordinates
 						.getSmallFontScalingFactor());
 				textRenderer.end3DRendering();
 				gl.glRotatef(-25, 0, 0, 1);
-				gl.glTranslatef(-iCount * fAxisSpacing,
-						-(renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing()),
-						0);
+				gl.glTranslatef(-fXPosition, -(renderStyle.getAxisHeight() + renderStyle
+						.getAxisCaptionSpacing()), 0);
 
 				textRenderer.begin3DRendering();
 
 				// render values on top and bottom of axis
-				try
-				{
-					// top
-					textRenderer.draw3D(String.valueOf(set.getMax()), iCount * fAxisSpacing
-							+ 2 * ParCoordsRenderStyle.AXIS_MARKER_WIDTH, renderStyle
-							.getAxisHeight(), 0, renderStyle.getSmallFontScalingFactor());
 
-					// bottom
-					textRenderer.draw3D(String.valueOf(set.getMin()), iCount * fAxisSpacing
-							+ 2 * ParCoordsRenderStyle.AXIS_MARKER_WIDTH, 0, 0, renderStyle
-							.getSmallFontScalingFactor());
-					textRenderer.end3DRendering();
-				}
-				catch (OperationNotSupportedException e)
-				{
-					e.printStackTrace();
-				}
+				// top
+				textRenderer.draw3D(String.valueOf(set.getMax()), fXPosition + 2
+						* ParCoordsRenderStyle.AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(),
+						0, renderStyle.getSmallFontScalingFactor());
+
+				// bottom
+				textRenderer.draw3D(String.valueOf(set.getMin()), fXPosition + 2
+						* ParCoordsRenderStyle.AXIS_MARKER_WIDTH, 0, 0, renderStyle
+						.getSmallFontScalingFactor());
+				textRenderer.end3DRendering();
 
 				gl.glPopAttrib();
 				gl.glPopName();
@@ -835,6 +853,16 @@ public class GLParallelCoordinates
 			}
 			iCount++;
 		}
+
+		// float fMarkerSpacing = renderStyle.getAxisHeight() /
+		// (ParCoordsRenderStyle.NUMBER_AXIS_MARKERS + 1);
+		// for (int iInnerCount = 1; iInnerCount <=
+		// ParCoordsRenderStyle.NUMBER_AXIS_MARKERS; iInnerCount++)
+		// {
+
+		//
+		// }
+
 	}
 
 	/**
@@ -916,17 +944,10 @@ public class GLParallelCoordinates
 
 			if (detailLevel == EDetailLevel.HIGH)
 			{
-				try
-				{
-					renderYValues(gl, fCurrentPosition, fArGateTipHeight[iCount], (float) set
-							.getRawForNormalized(fArGateTipHeight[iCount]
-									/ renderStyle.getAxisHeight()), ESelectionType.NORMAL);
-				}
-				catch (OperationNotSupportedException e)
-				{
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+
+				renderBoxedYValues(gl, fCurrentPosition, fArGateTipHeight[iCount], (float) set
+						.getRawForNormalized(fArGateTipHeight[iCount]
+								/ renderStyle.getAxisHeight()), ESelectionType.NORMAL);
 
 			}
 			// The body of the gate
@@ -965,16 +986,9 @@ public class GLParallelCoordinates
 
 			if (detailLevel == EDetailLevel.HIGH)
 			{
-				try
-				{
-					renderYValues(gl, fCurrentPosition, fArGateBottomHeight[iCount],
-							(float) set.getRawForNormalized(fArGateBottomHeight[iCount]
-									/ renderStyle.getAxisHeight()), ESelectionType.NORMAL);
-				}
-				catch (OperationNotSupportedException e)
-				{
-					e.printStackTrace();
-				}
+				renderBoxedYValues(gl, fCurrentPosition, fArGateBottomHeight[iCount],
+						(float) set.getRawForNormalized(fArGateBottomHeight[iCount]
+								/ renderStyle.getAxisHeight()), ESelectionType.NORMAL);
 			}
 			iCount++;
 		}
@@ -988,7 +1002,7 @@ public class GLParallelCoordinates
 	 * @param fYOrigin
 	 * @param renderMode
 	 */
-	private void renderYValues(GL gl, float fXOrigin, float fYOrigin, float fRawValue,
+	private void renderBoxedYValues(GL gl, float fXOrigin, float fYOrigin, float fRawValue,
 			ESelectionType renderMode)
 	{
 
@@ -1016,12 +1030,17 @@ public class GLParallelCoordinates
 		gl.glVertex3f(fXTextOrigin, fYTextOrigin + fBackPlaneHeight, 0.03f);
 		gl.glEnd();
 
+		renderNumber(fRawValue, fXTextOrigin, fYTextOrigin);
+		gl.glPopAttrib();
+	}
+
+	private void renderNumber(float fRawValue, float fXOrigin, float fYOrigin)
+	{
 		textRenderer.begin3DRendering();
 
-		textRenderer.draw3D(decimalFormat.format(fRawValue), fXTextOrigin, fYTextOrigin,
-				0.031f, renderStyle.getSmallFontScalingFactor());
+		textRenderer.draw3D(decimalFormat.format(fRawValue), fXOrigin, fYOrigin, 0.031f,
+				renderStyle.getSmallFontScalingFactor());
 		textRenderer.end3DRendering();
-		gl.glPopAttrib();
 	}
 
 	// TODO

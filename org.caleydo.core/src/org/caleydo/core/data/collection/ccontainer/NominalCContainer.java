@@ -2,8 +2,6 @@ package org.caleydo.core.data.collection.ccontainer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Container for nominal string values. Provides access to the values, can
@@ -70,11 +68,10 @@ public class NominalCContainer<T>
 		{
 			Float fTemp = hashNominalToDiscrete.get(tContent);
 			if (fTemp == null)
-				throw new CaleydoRuntimeException(
+				throw new IllegalStateException(
 						"Requested string is not in the possible list of strings. "
 								+ "This happens if you have set the possible list with setPossibleValues "
-								+ "but a Value in the data set is not in this list.",
-						CaleydoRuntimeExceptionType.DATAHANDLING);
+								+ "but a Value in the data set is not in this list.");
 			fArNormalized[iCount] = fTemp.floatValue();
 			iCount++;
 		}

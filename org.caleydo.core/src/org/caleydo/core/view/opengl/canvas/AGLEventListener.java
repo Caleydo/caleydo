@@ -27,7 +27,6 @@ import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
-import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**
@@ -61,8 +60,6 @@ public abstract class AGLEventListener
 	protected IViewFrustum viewFrustum;
 
 	protected IViewCamera viewCamera;
-
-	protected transient GLToolboxRenderer glToolboxRenderer;
 
 	protected IGLCanvasRemoteRendering3D remoteRenderingGLCanvas;
 
@@ -220,28 +217,28 @@ public abstract class AGLEventListener
 	 */
 	protected void clipToFrustum(GL gl)
 	{
-		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
-		gl.glColorMask(false, false, false, false);
-		gl.glClearStencil(0); // Clear The Stencil Buffer To 0
-		gl.glEnable(GL.GL_DEPTH_TEST); // Enables Depth Testing
-		gl.glDepthFunc(GL.GL_LEQUAL); // The Type Of Depth Testing To Do
-		gl.glEnable(GL.GL_STENCIL_TEST);
-		gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);
-		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
-		gl.glDisable(GL.GL_DEPTH_TEST);
-
-		// Clip region that renders in stencil buffer (in this case the frustum)
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), -0.01f);
-		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(), -0.01f);
-		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), -0.01f);
-		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), -0.01f);
-		gl.glEnd();
-
-		gl.glEnable(GL.GL_DEPTH_TEST);
-		gl.glColorMask(true, true, true, true);
-		gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
-		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
+//		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+//		gl.glColorMask(false, false, false, false);
+//		gl.glClearStencil(0); // Clear The Stencil Buffer To 0
+//		gl.glEnable(GL.GL_DEPTH_TEST); // Enables Depth Testing
+//		gl.glDepthFunc(GL.GL_LEQUAL); // The Type Of Depth Testing To Do
+//		gl.glEnable(GL.GL_STENCIL_TEST);
+//		gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);
+//		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
+//		gl.glDisable(GL.GL_DEPTH_TEST);
+//
+//		// Clip region that renders in stencil buffer (in this case the frustum)
+//		gl.glBegin(GL.GL_POLYGON);
+//		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), -0.01f);
+//		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(), -0.01f);
+//		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), -0.01f);
+//		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), -0.01f);
+//		gl.glEnd();
+//
+//		gl.glEnable(GL.GL_DEPTH_TEST);
+//		gl.glColorMask(true, true, true, true);
+//		gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
+//		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 	}
 
 	/**
@@ -408,11 +405,6 @@ public abstract class AGLEventListener
 			final EPickingMode ePickingMode, final int iExternalID, final Pick pick);
 
 	public abstract ArrayList<String> getInfo();
-
-	public GLToolboxRenderer getToolboxRenderer()
-	{
-		return glToolboxRenderer;
-	}
 
 	public final IViewCamera getViewCamera()
 	{

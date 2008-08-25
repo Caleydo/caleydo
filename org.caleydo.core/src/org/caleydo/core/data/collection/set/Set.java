@@ -193,7 +193,7 @@ public class Set
 				{
 					nStorage.normalizeWithExternalExtrema(getMin(), getMax());
 				}
-				catch (OperationNotSupportedException e)
+				catch (UnsupportedOperationException e)
 				{
 					throw new CaleydoRuntimeException(
 							"Tried to normalize globally on a set wich has"
@@ -237,7 +237,7 @@ public class Set
 	}
 
 	@Override
-	public double getMin() throws OperationNotSupportedException
+	public double getMin()
 	{
 		if (dMin == Double.MAX_VALUE)
 			calculateGlobalExtrema();
@@ -245,7 +245,7 @@ public class Set
 	}
 
 	@Override
-	public double getMax() throws OperationNotSupportedException
+	public double getMax()
 	{
 
 		if (dMax == Double.MIN_VALUE)
@@ -255,7 +255,6 @@ public class Set
 
 	@Override
 	public double getRawForNormalized(double dNormalized)
-			throws OperationNotSupportedException
 	{
 		return dNormalized * (getMax() - getMin());
 	}
@@ -383,7 +382,7 @@ public class Set
 					CaleydoRuntimeExceptionType.DATAHANDLING);
 	}
 
-	private void calculateGlobalExtrema() throws OperationNotSupportedException
+	private void calculateGlobalExtrema()
 	{
 		double dTemp = 0.0;
 		if (alStorages.get(0) instanceof INumericalStorage)
@@ -401,7 +400,7 @@ public class Set
 		}
 		else if (alStorages.get(0) instanceof INominalStorage)
 		{
-			throw new OperationNotSupportedException(
+			throw new UnsupportedOperationException(
 					"No minimum or maximum can be calculated " + "on nominal data");
 
 		}

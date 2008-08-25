@@ -29,7 +29,6 @@ public class NumericalStorage
 
 	@Override
 	public void normalizeWithExternalExtrema(double dMin, double dMax)
-			throws InvalidAttributeValueException
 	{
 
 		INumericalCContainer rawStorage = (INumericalCContainer) hashCContainers

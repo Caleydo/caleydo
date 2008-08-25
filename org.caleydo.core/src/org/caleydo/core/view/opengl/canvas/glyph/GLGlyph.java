@@ -93,8 +93,8 @@ public class GLGlyph
 	public void init(GL gl)
 	{
 
-		glToolboxRenderer = new GLGlyphToolboxRenderer(gl, generalManager, iUniqueID,
-				new Vec3f(0, 0, 0), true, renderStyle);
+//		glToolboxRenderer = new GLGlyphToolboxRenderer(gl, generalManager, iUniqueID,
+//				new Vec3f(0, 0, 0), true, renderStyle);
 
 		ISet glyphData = null;
 
@@ -315,8 +315,8 @@ public class GLGlyph
 		gl.glTranslatef(-7.0f, 0.0f, 0f);
 		gl.glRotatef(-45f, 0, 0, 1);
 
-		if (glToolboxRenderer != null)
-			glToolboxRenderer.render(gl);
+//		if (glToolboxRenderer != null)
+//			glToolboxRenderer.render(gl);
 
 		if (mouseListener_ != null)
 			mouseListener_.render(gl);

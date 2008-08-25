@@ -9,11 +9,12 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
- * This class calculates the min and the max value of a
- * storage or a set It is implemented as a command and as a filter.
+ * This class calculates the min and the max value of a storage or a set It is
+ * implemented as a command and as a filter.
  * 
  * TODO: Min max for set not implemented yet
- * @author Alexander Lex 
+ * 
+ * @author Alexander Lex
  */
 
 public class CmdDataFilterMinMax
@@ -44,36 +45,29 @@ public class CmdDataFilterMinMax
 	 */
 	public void doCommand() throws CaleydoRuntimeException
 	{
-		try
-		{
-			if (myStorage == null && mySet != null)
-			{
-				dMinValue = mySet.getMin();
-				dMaxValue = mySet.getMax();
-			}
-			else if (myStorage != null && mySet == null)
-			{
-				dMinValue = myStorage.getMin();
-				dMaxValue = myStorage.getMax();
-			}
-			else
-			{
-				throw new CaleydoRuntimeException(
-						"You have to initialize the filter before using it",
-						CaleydoRuntimeExceptionType.COMMAND);
-			}
 
-			commandManager.runDoCommand(this);
-		}
-		catch (OperationNotSupportedException e)
+		if (myStorage == null && mySet != null)
 		{
-			throw new CaleydoRuntimeException(e.getExplanation(),
-					CaleydoRuntimeExceptionType.COMMAND);
+			dMinValue = mySet.getMin();
+			dMaxValue = mySet.getMax();
 		}
+		else if (myStorage != null && mySet == null)
+		{
+			dMinValue = myStorage.getMin();
+			dMaxValue = myStorage.getMax();
+		}
+		else
+		{
+			throw new IllegalStateException(
+					"You have to initialize the filter before using it");
+		}
+
+		commandManager.runDoCommand(this);
+
 	}
 
 	@Override
-	public void undoCommand() throws CaleydoRuntimeException
+	public void undoCommand()
 	{
 		commandManager.runUndoCommand(this);
 	}

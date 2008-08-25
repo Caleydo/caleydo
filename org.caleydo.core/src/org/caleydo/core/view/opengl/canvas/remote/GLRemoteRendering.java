@@ -217,7 +217,7 @@ public class GLRemoteRendering
 
 		// TODO: the genome mapper should be stored centralized instead of newly
 		// created
-		colorMappingBarMiniView = new GLColorMappingBarMiniView(new PathwayColorMapper());
+		colorMappingBarMiniView = new GLColorMappingBarMiniView();
 	}
 
 	@Override

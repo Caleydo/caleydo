@@ -12,7 +12,9 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.mapping.color.ColorMapping;
+import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
+import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.util.graph.EGraphItemProperty;
 
 /**
@@ -39,12 +41,7 @@ public class PathwayColorMapper
 		alMappingStorage = new ArrayList<IStorage>();
 		genomeIdManager = GeneralManager.get().getGenomeIdManager();
 		
-		ArrayList<ColorMarkerPoint> alColorMarkerList = new ArrayList<ColorMarkerPoint>();
-		alColorMarkerList.add(new ColorMarkerPoint(0, 0, 1, 0));
-		alColorMarkerList.add(new ColorMarkerPoint(0.5f, 0, 0, 0));
-		alColorMarkerList.add(new ColorMarkerPoint(1f, 0, 0, 1));
-		
-		expressionColorMapper = new ColorMapping(alColorMarkerList);
+		expressionColorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 	}
 
 	public void setMappingData(final ArrayList<ISet> alSetData)

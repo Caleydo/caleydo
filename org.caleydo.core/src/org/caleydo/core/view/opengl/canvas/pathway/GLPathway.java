@@ -35,7 +35,6 @@ import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
-import org.caleydo.core.view.opengl.util.GLToolboxRenderer;
 import org.caleydo.core.view.opengl.util.hierarchy.EHierarchyLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 import org.caleydo.util.graph.EGraphItemKind;
@@ -153,9 +152,6 @@ public class GLPathway
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
-		glToolboxRenderer = new GLToolboxRenderer(gl, generalManager, iUniqueID,
-				iRemoteViewID, new Vec3f(0, 0, 0), layer, true, renderStyle);
-
 		init(gl);
 	}
 
@@ -213,7 +209,6 @@ public class GLPathway
 
 		checkForHits(gl);
 		renderScene(gl);
-		glToolboxRenderer.render(gl);
 	}
 
 	protected void initPathwayData(final GL gl)

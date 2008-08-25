@@ -1,8 +1,12 @@
 package org.caleydo.core.util.mapping.color;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
+import sun.misc.Sort;
 
 /**
  * Color mapping. The class is initialized with a list of inflection points and
@@ -15,6 +19,7 @@ public class ColorMapping
 {
 
 	ArrayList<float[]> alColorList;
+	ArrayList<ColorMarkerPoint> alMarkerPoints;
 
 	public static int COLOR_DEPTH = 256;
 
@@ -28,15 +33,16 @@ public class ColorMapping
 	 * @throws CaleydoRuntimeException if values in marker points are not
 	 *             increasing, or if fvalue > 1 || fvalue < 0
 	 */
-	public ColorMapping(ArrayList<ColorMarkerPoint> alMarkerPoints)
+	protected ColorMapping(ArrayList<ColorMarkerPoint> alMarkerPoints)
 	{
+		this.alMarkerPoints = alMarkerPoints;
 		alColorList = new ArrayList<float[]>(COLOR_DEPTH);
 		for (int iCount = 0; iCount < COLOR_DEPTH; iCount++)
 		{
 			alColorList.add(new float[3]);
 		}
 
-		setUpMapping(alMarkerPoints);
+		setUpMapping();
 	}
 
 	/**
@@ -44,8 +50,9 @@ public class ColorMapping
 	 * 
 	 * @param alMarkerPoints the marker points
 	 */
-	private void setUpMapping(ArrayList<ColorMarkerPoint> alMarkerPoints)
+	private void setUpMapping()
 	{
+		Collections.sort(alMarkerPoints);
 		float fSrcValue, fDestValue;
 
 		for (int iCount = 0; iCount < alMarkerPoints.size() - 1; iCount++)
@@ -92,6 +99,16 @@ public class ColorMapping
 					CaleydoRuntimeExceptionType.COLOR_MAPPING);
 
 		return alColorList.get((int) (fValue * (COLOR_DEPTH - 1)));
+	}
+
+	/**
+	 * Get the marker points on which the color mapping is based
+	 * 
+	 * @return the list of marker points
+	 */
+	public ArrayList<ColorMarkerPoint> getMarkerPoints()
+	{
+		return alMarkerPoints;
 	}
 
 }

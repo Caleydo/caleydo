@@ -118,7 +118,7 @@ public interface ISet
 	 * @throws OperationNotSupportedException when executed on nominal data
 	 * @return the absolute minimum value in the set
 	 */
-	public double getMin() throws OperationNotSupportedException;
+	public double getMin();
 
 	/**
 	 * Get the maximum value in the set.
@@ -126,17 +126,15 @@ public interface ISet
 	 * @throws OperationNotSupportedException when executed on nominal data
 	 * @return the absolute minimum value in the set
 	 */
-	public double getMax() throws OperationNotSupportedException;
+	public double getMax();
 
 	/**
 	 * Calculates a raw value based on min and max from a normalized value.
 	 * 
 	 * @param dNormalized a value between 0 and 1
 	 * @return a value between min and max
-	 * @throws OperationNotSupportedException
 	 */
-	public double getRawForNormalized(double dNormalized)
-			throws OperationNotSupportedException;
+	public double getRawForNormalized(double dNormalized);
 
 	/**
 	 * Calculates log10 on all storages in the set. Take care that the set

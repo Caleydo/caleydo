@@ -5,6 +5,7 @@ package org.caleydo.core.util.exception;
  * 
  * @author Michael Kalkusch
  */
+@Deprecated
 public enum CaleydoRuntimeExceptionType
 {
 

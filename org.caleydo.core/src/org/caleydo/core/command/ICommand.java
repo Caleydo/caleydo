@@ -17,14 +17,13 @@ public interface ICommand
 	/**
 	 * Execute a command.
 	 * 
-	 * @throws PrometheusCommandException if an error occurs.
 	 */
-	public abstract void doCommand() throws CaleydoRuntimeException;
+	public abstract void doCommand();
 
 	/**
 	 * Undo the command.
 	 */
-	public abstract void undoCommand() throws CaleydoRuntimeException;
+	public abstract void undoCommand();
 
 	public abstract void setParameterHandler(IParameterHandler parameterHandler);
 

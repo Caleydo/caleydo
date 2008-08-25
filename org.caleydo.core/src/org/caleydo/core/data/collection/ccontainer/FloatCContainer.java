@@ -2,8 +2,6 @@ package org.caleydo.core.data.collection.ccontainer;
 
 import javax.management.InvalidAttributeValueException;
 import org.caleydo.core.data.selection.IVirtualArray;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * A container for floats. Initialized with a float array. The length can not be
@@ -91,26 +89,14 @@ public class FloatCContainer
 	@Override
 	public FloatCContainer normalize()
 	{
-		try
-		{
-			return normalize((int) getMin(), (int) getMax());
-		}
-		catch (InvalidAttributeValueException e)
-		{
-			throw new CaleydoRuntimeException(
-					"Caught InvalidAttributeValueException with automatically calculated values. "
-							+ "Original Message: " + e.getMessage(),
-					CaleydoRuntimeExceptionType.DATAHANDLING);
-		}
+		return normalize((int) getMin(), (int) getMax());
 	}
 
 	@Override
 	public FloatCContainer normalizeWithExternalExtrema(final double dMin, final double dMax)
-			throws InvalidAttributeValueException
 	{
-
 		if (fMin >= fMax)
-			throw new InvalidAttributeValueException("Minimum was bigger or same as maximum");
+			throw new IllegalArgumentException("Minimum was bigger or same as maximum");
 
 		return normalize((float) dMin, (float) dMax);
 	}
@@ -142,10 +128,9 @@ public class FloatCContainer
 	 * @throws InvalidAttributeValueException when fMin is >= fMax
 	 */
 	private FloatCContainer normalize(final float fMin, final float fMax)
-			throws InvalidAttributeValueException
 	{
 		if (fMin >= fMax)
-			throw new InvalidAttributeValueException("Minimum was bigger or same as maximum");
+			throw new IllegalArgumentException("Minimum was bigger or same as maximum");
 
 		float[] fArTmpTarget = new float[fArContainer.length];
 		if (fArContainer.length > 1)

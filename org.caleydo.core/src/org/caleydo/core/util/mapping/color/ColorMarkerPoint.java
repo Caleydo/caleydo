@@ -17,6 +17,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
  * 
  */
 public class ColorMarkerPoint
+implements Comparable<ColorMarkerPoint>
 {
 	private float fValue;
 	private float[] fArColor;
@@ -104,5 +105,11 @@ public class ColorMarkerPoint
 
 		this.fValue = fValue;
 		this.fArColor = fArColor;
+	}
+
+	@Override
+	public int compareTo(ColorMarkerPoint colorMarkerPoint)
+	{
+		return new Float(fValue).compareTo(colorMarkerPoint.getValue());
 	}
 }
