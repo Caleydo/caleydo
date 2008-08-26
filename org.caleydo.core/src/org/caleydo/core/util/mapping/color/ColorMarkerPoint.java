@@ -1,7 +1,5 @@
 package org.caleydo.core.util.mapping.color;
 
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * <p>
@@ -87,20 +85,17 @@ implements Comparable<ColorMarkerPoint>
 	private void init(float fValue, float[] fArColor)
 	{
 		if (fArColor.length != 3)
-			throw new CaleydoRuntimeException("Invalid length of color array fColor",
-					CaleydoRuntimeExceptionType.COLOR_MAPPING);
+			throw new IllegalArgumentException("Invalid length of color array fColor");
 
 		if (fValue > 1 || fValue < 0)
-			throw new CaleydoRuntimeException(
-					"Invalid value for fValue. Has to be between 0 and 1",
-					CaleydoRuntimeExceptionType.COLOR_MAPPING);
+			throw new IllegalArgumentException(
+					"Invalid value for fValue. Has to be between 0 and 1");
 
 		for (float fColorValue : fArColor)
 		{
 			if (fColorValue > 1 || fColorValue < 0)
-				throw new CaleydoRuntimeException(
-						"Invalid value in fArColor. Has to be between 0 and 1",
-						CaleydoRuntimeExceptionType.COLOR_MAPPING);
+				throw new IllegalArgumentException(
+						"Invalid value in fArColor. Has to be between 0 and 1");
 		}
 
 		this.fValue = fValue;

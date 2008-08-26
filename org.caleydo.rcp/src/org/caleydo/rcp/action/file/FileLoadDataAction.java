@@ -99,9 +99,9 @@ public class FileLoadDataAction
 	private String sDelimiter = "";
 	private int iCreatedSetID = -1;
 	private int iStartParseFileAtLine = 1;
-	
+
 	private boolean bLogFilter = false;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -372,25 +372,27 @@ public class FileLoadDataAction
 
 		Label lblMathFilter = new Label(composite, SWT.NONE);
 		lblMathFilter.setText("Apply Filter:");
-		lblMathFilter.setLayoutData(new GridData(GridData.END, GridData.BEGINNING, false, false));
+		lblMathFilter.setLayoutData(new GridData(GridData.END, GridData.BEGINNING, false,
+				false));
 
 		Group mathFiltergGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		mathFiltergGroup.setLayout(new FillLayout());
 		// delimiterGroup.setText("Math filter");
-		
+
 		final Button buttonLog = new Button(mathFiltergGroup, SWT.CHECK);
 		buttonLog.setText("Log (base 10)");
 		buttonLog.setEnabled(true);
 		buttonLog.setSelection(false);
-		buttonLog.addSelectionListener(new SelectionAdapter() {
-			
+		buttonLog.addSelectionListener(new SelectionAdapter()
+		{
+
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
 				bLogFilter = true;
 			}
 		});
-		
+
 		txtMin = new Text(mathFiltergGroup, SWT.BORDER);
 		txtMin.setEnabled(false);
 		txtMin.addListener(SWT.Verify, new Listener()
@@ -411,7 +413,7 @@ public class FileLoadDataAction
 				}
 			}
 		});
-		
+
 		txtMax = new Text(mathFiltergGroup, SWT.BORDER);
 		txtMax.setEnabled(false);
 		txtMax.addListener(SWT.Verify, new Listener()
@@ -432,40 +434,42 @@ public class FileLoadDataAction
 				}
 			}
 		});
-		
+
 		final Button buttonMin = new Button(mathFiltergGroup, SWT.CHECK);
 		buttonMin.setText("Min");
 		buttonMin.setEnabled(true);
 		buttonMin.setSelection(false);
-		buttonMin.addSelectionListener(new SelectionAdapter() {
-			
+		buttonMin.addSelectionListener(new SelectionAdapter()
+		{
+
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
 				txtMin.setEnabled(true);
 			}
 		});
-				
+
 		final Button buttonMax = new Button(mathFiltergGroup, SWT.CHECK);
 		buttonMax.setText("Max");
 		buttonMax.setEnabled(true);
 		buttonMax.setSelection(false);
-		buttonMax.addSelectionListener(new SelectionAdapter() {
-			
+		buttonMax.addSelectionListener(new SelectionAdapter()
+		{
+
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
 				txtMax.setEnabled(true);
 			}
 		});
-		
+
 		Label lblPreview = new Label(composite, SWT.NONE);
 		lblPreview.setText("Data preview:");
 		lblPreview.setLayoutData(new GridData(GridData.END, GridData.BEGINNING, false, false));
 
 		previewTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
 		previewTable.setLinesVisible(false);
-//		previewTable.setHeaderVisible(true);
+		// previewTable.setHeaderVisible(true);
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		data.heightHint = 300;
 		data.widthHint = 700;
@@ -488,7 +492,7 @@ public class FileLoadDataAction
 		final TableEditor editor = new TableEditor(previewTable);
 		editor.horizontalAlignment = SWT.LEFT;
 		editor.grabHorizontal = true;
-		
+
 		previewTable.addListener(SWT.MouseDown, new Listener()
 		{
 			public void handleEvent(Event event)
@@ -497,11 +501,11 @@ public class FileLoadDataAction
 				Point pt = new Point(event.x, event.y);
 
 				int index = 0; // only make caption line editable
-				
+
 				boolean visible = false;
 				final TableItem item = previewTable.getItem(index);
 				for (int iColIndex = 1; iColIndex < previewTable.getColumnCount(); iColIndex++)
-				{	
+				{
 					Rectangle rect = item.getBounds(iColIndex);
 					if (rect.contains(pt))
 					{
@@ -522,7 +526,7 @@ public class FileLoadDataAction
 										{
 											case SWT.TRAVERSE_RETURN:
 												item.setText(column, text.getText());
-				
+
 												// FALL THROUGH
 											case SWT.TRAVERSE_ESCAPE:
 												text.dispose();
@@ -532,7 +536,7 @@ public class FileLoadDataAction
 								}
 							}
 						};
-						
+
 						text.addListener(SWT.FocusOut, textListener);
 						text.addListener(SWT.Traverse, textListener);
 						editor.setEditor(text, item, iColIndex);
@@ -541,19 +545,19 @@ public class FileLoadDataAction
 						text.setFocus();
 						return;
 					}
-					
+
 					if (!visible && rect.intersects(clientArea))
 					{
 						visible = true;
 					}
 				}
-				
+
 				if (!visible)
 					return;
 				index++;
 			}
 		});
-		
+
 		// Read preview table
 		BufferedReader brFile;
 		try
@@ -573,28 +577,28 @@ public class FileLoadDataAction
 			TableColumn column;
 			TableItem item;
 			int iColIndex = 0;
-			
+
 			// Read labels
 			if ((sLine = brFile.readLine()) != null)
 			{
 				tokenizer = new StringTokenizer(sLine, sDelimiter, false);
 				item = new TableItem(previewTable, SWT.NONE);
-				
+
 				item.setText(0, "Label");
 				column = new TableColumn(previewTable, SWT.NONE);
 				column.setWidth(100);
-				
+
 				while (tokenizer.hasMoreTokens())
 				{
 					sTmpNextToken = tokenizer.nextToken();
-		
+
 					column = new TableColumn(previewTable, SWT.NONE);
 					column.setWidth(100);
-	
-					item.setText(iColIndex+1, sTmpNextToken);
-//					item.setBackground(iColCount, Display.getCurrent()
-//							.getSystemColor(SWT.COLOR_TITLE_BACKGROUND));
-					
+
+					item.setText(iColIndex + 1, sTmpNextToken);
+					// item.setBackground(iColCount, Display.getCurrent()
+					// .getSystemColor(SWT.COLOR_TITLE_BACKGROUND));
+
 					iColIndex++;
 				}
 			}
@@ -602,8 +606,7 @@ public class FileLoadDataAction
 			int iRowCount = 0;
 			boolean bCellFilled = false;
 
-			while ((sLine = brFile.readLine()) != null 
-					&& iRowCount < MAX_PREVIEW_TABLE_ROWS)
+			while ((sLine = brFile.readLine()) != null && iRowCount < MAX_PREVIEW_TABLE_ROWS)
 			{
 				// last flag triggers return of delimiter itself
 				tokenizer = new StringTokenizer(sLine, sDelimiter, true);
@@ -653,7 +656,7 @@ public class FileLoadDataAction
 
 		TableItem[] arTmpLabelColumnItem = previewTable.getItems();
 
-//		arTmpLabelColumnItem[0].setText(0, "Label");
+		// arTmpLabelColumnItem[0].setText(0, "Label");
 		arTmpLabelColumnItem[0].setBackground(0, previewTable.getDisplay().getSystemColor(
 				SWT.COLOR_TITLE_BACKGROUND));
 		arTmpLabelColumnItem[1].setText(0, "Data class");
@@ -693,7 +696,7 @@ public class FileLoadDataAction
 			comboTmpDataClass.setItems(new String[] { "SKIP", "RefSeq ID", "Experiment",
 					"Patient" });
 			comboTmpDataClass.select(0); // by default values in that column
-											// should be ignored
+			// should be ignored
 			arComboDataClass.add(comboTmpDataClass);
 
 			TableEditor editor = new TableEditor(previewTable);
@@ -715,7 +718,7 @@ public class FileLoadDataAction
 					for (TableItem tmpItem : previewTable.getItems())
 					{
 						if (comboTmpDataClass.getSelectionIndex() == 0)
-						{	
+						{
 							tmpItem.setBackground(
 									arComboDataClass.indexOf(comboTmpDataClass) + 1,
 									highlightColor);
@@ -795,7 +798,7 @@ public class FileLoadDataAction
 			comboTmpDataType.setEnabled(false);
 			comboTmpDataType.setItems(new String[] { "SKIP", "INT", "FLOAT", "STRING" });
 			comboTmpDataType.select(0); // by default values in that column
-										// should be ignored
+			// should be ignored
 			arComboDataType.add(comboTmpDataType);
 
 			TableEditor editor = new TableEditor(previewTable);
@@ -841,7 +844,7 @@ public class FileLoadDataAction
 		createData();
 		setDataInViews();
 	}
-	
+
 	private void createData()
 	{
 		ArrayList<Integer> iAlStorageId = new ArrayList<Integer>();
@@ -849,21 +852,21 @@ public class FileLoadDataAction
 
 		// Build input pattern from data type combos
 		sInputPattern = "";
-	
+
 		float fMin = Float.parseFloat(txtMax.getText());
 		float fMax = Float.parseFloat(txtMax.getText());
-			
+
 		Combo tmpComboDataType;
 		for (int iColIndex = 0; iColIndex < arComboDataType.size(); iColIndex++)
 		{
 			tmpComboDataType = arComboDataType.get(iColIndex);
-			
+
 			if (arComboDataClass.get(iColIndex).getText().equals("RefSeq ID"))
 			{
 				sInputPattern = sInputPattern + "SKIP" + ";";
 				continue;
 			}
-			
+
 			if (tmpComboDataType.getText().equals("FLOAT")
 					|| tmpComboDataType.getText().equals("SKIP"))
 			{
@@ -871,31 +874,24 @@ public class FileLoadDataAction
 			}
 
 			if (tmpComboDataType.getText().equals("FLOAT")) // currently we only
-															// allow parsing
-															// float data
+			// allow parsing
+			// float data
 			{
 				// Create data storage
-				CmdDataCreateStorage cmdCreateStorage = (CmdDataCreateStorage) GeneralManager.get()
-						.getCommandManager().createCommandByType(
+				CmdDataCreateStorage cmdCreateStorage = (CmdDataCreateStorage) GeneralManager
+						.get().getCommandManager().createCommandByType(
 								ECommandType.CREATE_STORAGE);
 
 				cmdCreateStorage.setAttributes(EManagedObjectType.STORAGE_NUMERICAL);
 				cmdCreateStorage.doCommand();
-				
-				INumericalStorage storage = (INumericalStorage) cmdCreateStorage.getCreatedObject();
-			
-				try
-				{
-					storage.normalizeWithExternalExtrema(fMin, fMax);
-				}
-				catch (InvalidAttributeValueException e)
-				{
-					//TODO
-					throw new CaleydoRuntimeException("Given min/max is invalid");
-				}
-				
-				storage.setLabel(previewTable.getItem(0).getText(iColIndex+1));
-				
+
+				INumericalStorage storage = (INumericalStorage) cmdCreateStorage
+						.getCreatedObject();
+
+				storage.normalizeWithExternalExtrema(fMin, fMax);
+
+				storage.setLabel(previewTable.getItem(0).getText(iColIndex + 1));
+
 				iAlStorageId.add(storage.getID());
 
 				if (!sStorageIDs.equals(""))
@@ -920,41 +916,43 @@ public class FileLoadDataAction
 		CmdLoadFileNStorages cmdLoadCsv = (CmdLoadFileNStorages) GeneralManager.get()
 				.getCommandManager().createCommandByType(ECommandType.LOAD_DATA_FILE);
 
-//		ISWTGUIManager iSWTGUIManager = GeneralManager.get().getSWTGUIManager();
-//		iSWTGUIManager.setProgressBarVisible(true);
+		// ISWTGUIManager iSWTGUIManager =
+		// GeneralManager.get().getSWTGUIManager();
+		// iSWTGUIManager.setProgressBarVisible(true);
 
-		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sInputPattern, iStartParseFileAtLine, -1);
+		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sInputPattern,
+				iStartParseFileAtLine, -1);
 		cmdLoadCsv.doCommand();
 
 		// Create SET
 		CmdDataCreateSet cmdCreateSet = (CmdDataCreateSet) GeneralManager.get()
 				.getCommandManager().createCommandByType(ECommandType.CREATE_SET_DATA);
-		cmdCreateSet.setAttributes(null, iAlStorageId,
-				ESetType.GENE_EXPRESSION_DATA);
+		cmdCreateSet.setAttributes(null, iAlStorageId, ESetType.GENE_EXPRESSION_DATA);
 		cmdCreateSet.doCommand();
 		iCreatedSetID = cmdCreateSet.getCreatedObject().getID();
 
-//		iSWTGUIManager.setProgressBarVisible(false);
+		// iSWTGUIManager.setProgressBarVisible(false);
 
-		CmdLoadFileLookupTable cmdLoadLookupTableFile = (CmdLoadFileLookupTable) GeneralManager.get()
-				.getCommandManager().createCommandByType(
+		CmdLoadFileLookupTable cmdLoadLookupTableFile = (CmdLoadFileLookupTable) GeneralManager
+				.get().getCommandManager().createCommandByType(
 						ECommandType.LOAD_LOOKUP_TABLE_FILE);
 
 		cmdLoadLookupTableFile.setAttributes(sFileName, iStartParseFileAtLine, -1,
 				"DAVID_2_EXPRESSION_STORAGE_ID REVERSE LUT_1", sDelimiter,
 				"REFSEQ_MRNA_2_DAVID");
 		cmdLoadLookupTableFile.doCommand();
-		
+
 		if (bLogFilter)
 		{
 			ArrayList<Integer> iArSetIDs = new ArrayList<Integer>();
 			CmdDataFilterMath cmdDataFilterLog = (CmdDataFilterMath) GeneralManager.get()
-				.getCommandManager().createCommandByType(ECommandType.DATA_FILTER_MATH);
-			cmdDataFilterLog.setAttributes(EDataFilterMathType.LIN_2_LOG, iArSetIDs, EManagedObjectType.SET);
+					.getCommandManager().createCommandByType(ECommandType.DATA_FILTER_MATH);
+			cmdDataFilterLog.setAttributes(EDataFilterMathType.LIN_2_LOG, iArSetIDs,
+					EManagedObjectType.SET);
 			cmdDataFilterLog.doCommand();
 		}
-		
-//		cmdCreateSet.getCreatedObject().normalize();
+
+		// cmdCreateSet.getCreatedObject().normalize();
 	}
 
 	private void setDataInViews()
@@ -964,11 +962,10 @@ public class FileLoadDataAction
 		{
 			tmpGLEventListener.clearSets();
 			tmpGLEventListener.addSet(iCreatedSetID);
-		
-			if (tmpGLEventListener.getClass().getSuperclass().equals(
-					AStorageBasedView.class))
+
+			if (tmpGLEventListener.getClass().getSuperclass().equals(AStorageBasedView.class))
 			{
-				((AStorageBasedView)tmpGLEventListener).initData();
+				((AStorageBasedView) tmpGLEventListener).initData();
 			}
 		}
 	}

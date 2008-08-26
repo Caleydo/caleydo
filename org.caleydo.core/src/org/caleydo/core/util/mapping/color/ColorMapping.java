@@ -1,12 +1,7 @@
 package org.caleydo.core.util.mapping.color;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
-import sun.misc.Sort;
 
 /**
  * Color mapping. The class is initialized with a list of inflection points and
@@ -30,7 +25,7 @@ public class ColorMapping
 	 * colors are interpolated.
 	 * 
 	 * @param alMarkerPoints
-	 * @throws CaleydoRuntimeException if values in marker points are not
+	 * @throws IllegalArgumentException if values in marker points are not
 	 *             increasing, or if fvalue > 1 || fvalue < 0
 	 */
 	protected ColorMapping(ArrayList<ColorMarkerPoint> alMarkerPoints)
@@ -61,7 +56,7 @@ public class ColorMapping
 			fDestValue = alMarkerPoints.get(iCount + 1).getValue();
 
 			if (fDestValue < fSrcValue)
-				throw new CaleydoRuntimeException(
+				throw new IllegalArgumentException(
 						"Marker points values have to be increasing in size, "
 								+ "but this was not the case");
 
@@ -94,9 +89,8 @@ public class ColorMapping
 	public float[] getColor(float fValue)
 	{
 		if (fValue > 1 || fValue < 0)
-			throw new CaleydoRuntimeException(
-					"Invalid value in fValue. Has to be between 0 and 1",
-					CaleydoRuntimeExceptionType.COLOR_MAPPING);
+			throw new IllegalArgumentException(
+					"Invalid value in fValue. Has to be between 0 and 1");
 
 		return alColorList.get((int) (fValue * (COLOR_DEPTH - 1)));
 	}

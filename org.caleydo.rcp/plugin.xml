@@ -26,7 +26,7 @@
             allowMultiple="true"
             category="org.caleydo.rcp.jogl.view.jframe"
             class="org.caleydo.rcp.views.GLHeatMapView"
-            icon="resources/icons/view/storagebased/heatmap/heatmap.png"
+            icon="../org.caleydo.data/resources/icons/view/storagebased/heatmap/heatmap.png"
             id="org.caleydo.rcp.views.GLHeatMapView"
             name="GLHeatMapView">
       </view>      
@@ -35,7 +35,7 @@
             allowMultiple="true"
             category="org.caleydo.rcp.jogl.view.jframe"
             class="org.caleydo.rcp.views.GLParCoordsView"
-            icon="resources/icons/view/storagebased/parcoords/parcoords.png"
+            icon="../org.caleydo.data/resources/icons/view/storagebased/parcoords/parcoords.png"
             id="org.caleydo.rcp.views.GLParCoordsView"
             name="GLParCoordsView">
       </view>         
@@ -44,7 +44,7 @@
             allowMultiple="true"
             category="org.caleydo.rcp.jogl.view.jframe"
             class="org.caleydo.rcp.views.GLPathwayView"
-            icon="resources/icons/view/pathway/pathway.png"
+            icon="../org.caleydo.data/resources/icons/view/pathway/pathway.png"
             id="org.caleydo.rcp.views.GLPathwayView"
             name="GLPathwayView">
       </view> 
@@ -53,7 +53,7 @@
             allowMultiple="true"
             category="org.caleydo.rcp.jogl.view.jframe"
             class="org.caleydo.rcp.views.GLRemoteRenderingView"
-            icon="resources/icons/view/remote/remote.png"
+            icon="../org.caleydo.data/resources/icons/view/remote/remote.png"
             id="org.caleydo.rcp.views.GLRemoteRenderingView"
             name="GLRemoteRenderingView">
       </view> 
@@ -61,7 +61,7 @@
       <view
             id="HTMLBrowserView.view"
             name="Browser"
-            icon="resources/icons/view/browser/browser.png"
+            icon="../org.caleydo.data/resources/icons/view/browser/browser.png"
             class="org.caleydo.rcp.views.HTMLBrowserView"
             category="org.caleydo.rcp.jogl.view.jframe"
             allowMultiple="true">

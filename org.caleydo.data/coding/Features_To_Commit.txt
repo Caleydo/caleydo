@@ -1,2 +1,16 @@
 Done since last commit:
 
+<exclude name="**/LockableExclusivFilterMediator.java" />
+			<exclude name="**/GLCanvasHistogram2D.java" />
+			<exclude name="**/DataTableViewRep.java" />
+			<exclude name="**/NewSetEditorViewRep.java" />
+			<exclude name="**/DataExplorerViewRep.java" />
+			<exclude name="**/LockableIgnoreFilterMediator.java" />
+			<exclude name="**/SetEditorViewRep.java" />
+
+			<exclude name="**/PathwayGraphViewRep.java" />
+			<exclude name="**/SelectionSliderViewRep.java" />
+			<exclude name="**/StorageSliderViewRep.java" />
+			<exclude name="**/GLCanvasHistogram2D.java" />
+			<exclude name="**/GLCanvasHistogram2Dinteractive.java" />
+			<exclude name="**/DataExchangerViewRep.java" />

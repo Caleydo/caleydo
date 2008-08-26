@@ -4,7 +4,6 @@
 package org.caleydo.core.manager.event.mediator;
 
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.selection.ISelection;
 import org.caleydo.core.manager.IGeneralManager;
 
 /**

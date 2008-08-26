@@ -11,14 +11,14 @@ import javax.media.opengl.GLEventListener;
 
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.IVirtualArray;
+import org.caleydo.core.data.collection.selection.IVirtualArray;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.math.statistics.histogram.HistogramData;
-import org.caleydo.core.math.statistics.histogram.HistogramStatisticsSet;
+//import org.caleydo.core.math.statistics.histogram.HistogramData;
+//import org.caleydo.core.math.statistics.histogram.HistogramStatisticsSet;
 import org.caleydo.core.math.statistics.histogram.StatisticHistogramType;
 import org.caleydo.core.view.opengl.canvas.AGLCanvasUser;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;

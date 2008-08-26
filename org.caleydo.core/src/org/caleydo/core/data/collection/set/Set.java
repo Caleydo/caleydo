@@ -200,7 +200,8 @@ public class Set
 									+ "different storage types",
 							CaleydoRuntimeExceptionType.DATAHANDLING);
 				}
-				catch(InvalidAttributeValueException e)
+				// FIXME baaaaaad
+				catch(IllegalArgumentException e)
 				{
 					throw new CaleydoRuntimeException(
 							"Caught InvalidAttributeValueException with automatically calculated values. "

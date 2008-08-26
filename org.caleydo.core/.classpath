@@ -24,7 +24,6 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/org.caleydo/util/graph/org.caleydo.graph_bin.jar"/>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/org.caleydo.util.graph"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/wii/WiiRemoteJ.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/wii/avetanaBT.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/swt/swt.jar"/>
@@ -43,5 +42,7 @@
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.osgi_3.1.2.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.ui.workbench_3.1.2.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/webspider/itsucks-console-0.3.0-pre7.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.util.graph"/>
+	<classpathentry kind="lib" path="/org.caleydo.util.graph/bin/jar/Graph.jar"/>
 	<classpathentry kind="output" path="bin/class"/>
 </classpath>

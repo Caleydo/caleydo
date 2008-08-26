@@ -34,10 +34,9 @@ public interface INumericalStorage
 	 * 
 	 * @param dMin the minimum
 	 * @param dMax the maximum
-	 * @throws InvalidAttributeValueException if dMin >= dMax
+	 * @throws IlleagalAttributeStateException if dMin >= dMax
 	 */
-	public void normalizeWithExternalExtrema(double dMin, double dMax)
-			throws InvalidAttributeValueException;
+	public void normalizeWithExternalExtrema(double dMin, double dMax);
 
 	/**
 	 * Get the minimum of the raw data, respectively the logarithmized data if
