@@ -10,7 +10,7 @@ import com.sun.opengl.util.texture.TextureIO;
 public class TrashCan
 {
 
-	private static String TRASH_CAN_PATH = "resources/icons/trashcan_empty.png";
+	private static String TRASH_CAN_PATH = "resources/icons/view/remote/trashcan_empty.png";
 
 	private Texture trashCanTexture;
 

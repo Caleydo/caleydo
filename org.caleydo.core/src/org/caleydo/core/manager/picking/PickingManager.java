@@ -107,7 +107,7 @@ public class PickingManager
 			return;
 
 		AGLEventListener canvasUser = (AGLEventListener) (GeneralManager.get()
-				.getViewGLCanvasManager().getEventListener(iViewID));
+				.getViewGLCanvasManager().getGLEventListener(iViewID));
 		PickingJoglMouseListener pickingTriggerMouseAdapter = canvasUser.getParentGLCanvas()
 				.getJoglMouseListener();
 

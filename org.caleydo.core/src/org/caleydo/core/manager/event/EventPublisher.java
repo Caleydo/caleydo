@@ -141,7 +141,7 @@ public class EventPublisher
 		{
 			int iCurrentSenderId = iterSenderIDs.next();
 			IMediatorSender sender = (IMediatorSender) GeneralManager.get()
-					.getViewGLCanvasManager().getEventListener(iCurrentSenderId);
+					.getViewGLCanvasManager().getGLEventListener(iCurrentSenderId);
 			
 			if (sender == null)
 			{
@@ -207,7 +207,7 @@ public class EventPublisher
 			IMediatorReceiver receiver = null;
 
 			receiver = (IMediatorReceiver) GeneralManager.get().getViewGLCanvasManager()
-					.getEventListener(iCurrentReceiverId);
+					.getGLEventListener(iCurrentReceiverId);
 
 			newMediator.register(receiver);
 

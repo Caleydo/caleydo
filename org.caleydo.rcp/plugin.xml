@@ -20,30 +20,14 @@
             id="org.caleydo.rcp.jogl.view.jframe">
       </category>
       
-      <view
-            allowMultiple="true"
-            category="org.caleydo.rcp.jogl.view.jframe"
-            class="org.caleydo.rcp.views.GLGearsTestView"
-            icon="resources/icons/pathway3D.png"
-            id="org.caleydo.rcp.views.GLGears3DTestView"
-            name="GLGearsTestView">
-      </view>
       
-      <view
-            allowMultiple="true"
-            category="org.caleydo.rcp.jogl.view.jframe"
-            class="org.caleydo.rcp.views.GLJukeboxPathwayView"
-            icon="resources/icons/pathway3D.png"
-            id="org.caleydo.rcp.views.GLJukeboxPathwayView"
-            name="GLJukeboxPathwayView">
-      </view>     
       
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.jogl.view.jframe"
             class="org.caleydo.rcp.views.GLHeatMapView"
-            icon="resources/icons/heatmap.png"
-            id="org.caleydo.rcp.views.GLHeatmap2DView"
+            icon="resources/icons/view/storagebased/heatmap/heatmap.png"
+            id="org.caleydo.rcp.views.GLHeatMapView"
             name="GLHeatMapView">
       </view>      
 
@@ -51,33 +35,33 @@
             allowMultiple="true"
             category="org.caleydo.rcp.jogl.view.jframe"
             class="org.caleydo.rcp.views.GLParCoordsView"
-            icon="resources/icons/heatmap.png"
+            icon="resources/icons/view/storagebased/parcoords/parcoords.png"
             id="org.caleydo.rcp.views.GLParCoordsView"
-            name="GLParCoordsVieGLHeatMapView">
+            name="GLParCoordsView">
       </view>         
       
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.jogl.view.jframe"
             class="org.caleydo.rcp.views.GLPathwayView"
-            icon="resources/icons/pathway3D.png"
-            id="org.caleydo.rcp.views.GLPathway3DView"
-            name="GLPathGLPathwayView">
+            icon="resources/icons/view/pathway/pathway.png"
+            id="org.caleydo.rcp.views.GLPathwayView"
+            name="GLPathwayView">
       </view> 
       
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.jogl.view.jframe"
             class="org.caleydo.rcp.views.GLRemoteRenderingView"
-            icon="resources/icons/pathway3D.png"
-            id="org.caleydo.rcp.views.GLRemoteRendering3DView"
+            icon="resources/icons/view/remote/remote.png"
+            id="org.caleydo.rcp.views.GLRemoteRenderingView"
             name="GLRemoteRenderingView">
       </view> 
       
       <view
             id="HTMLBrowserView.view"
             name="Browser"
-            icon="resources/icons/browser.png"
+            icon="resources/icons/view/browser/browser.png"
             class="org.caleydo.rcp.views.HTMLBrowserView"
             category="org.caleydo.rcp.jogl.view.jframe"
             allowMultiple="true">
@@ -154,6 +138,18 @@
    </extension>
    <extension
          point="org.eclipse.ui.menus">
+         
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.trim.vertical1">
+         <toolbar
+               id="org.eclipse.ui.examples.contributions.contributedTrim">
+            <control
+                  class="org.caleydo.rcp.TrimTest"
+                  id="contributions.controlContrib1">
+            </control>
+         </toolbar>
+      </menuContribution>         
+         
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
@@ -194,15 +190,6 @@
                </parameter>
             </command>
          </menu>
-      </menuContribution>
-      <menuContribution
-            locationURI="toolbar:org.caleydo.rcp.views.GLRemoteRendering3DView">
-         <command
-               commandId="org.caleydo.rcp.command.fullscreen"
-               icon="resources/icons/eraser.png"
-               label="Hello"
-               style="push">
-         </command>
       </menuContribution>
    </extension>
    <extension

@@ -256,7 +256,6 @@ public class GenomeIdManager
 	public int getIdIntFromStringByMapping(final String sCaleydoId,
 			final EMappingType type)
 	{
-
 		IGenomeIdMap buffer = hashType2Map.get(type);
 
 		assert buffer != null : "getIdFromStringByMapping(" + type + ") type is not allocated";

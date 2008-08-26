@@ -5,6 +5,9 @@ import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
+import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
 
 /**
  * Command for triggering simple actions from the RCP interface that are
@@ -33,18 +36,43 @@ public class CmdExternalActionTrigger
 	{
 		try
 		{
-			Object viewObject = generalManager.getViewGLCanvasManager().getItem(iViewId);
+			Object viewObject = generalManager.getViewGLCanvasManager().getGLEventListener(iViewId);
 
 			if (viewObject instanceof GLRemoteRendering)
 			{
-				if (externalActionType.equals(EExternalActionType.CLEAR_ALL))
+				switch(externalActionType)
 				{
-					((GLRemoteRendering) viewObject).clearAll();
+					case CLEAR_ALL:
+						((GLRemoteRendering) viewObject).clearAll();
+						break;
+					case REMOTE_RENDERING_TOGGLE_LAYOUT_MODE:
+						((GLRemoteRendering) viewObject).toggleLayoutMode();
+						break;
 				}
-				else if (externalActionType
-						.equals(EExternalActionType.REMOTE_RENDERING_TOGGLE_LAYOUT_MODE))
+			}
+			else if (viewObject instanceof GLParallelCoordinates || viewObject instanceof GLHeatMap)
+			{
+				switch(externalActionType)
 				{
-					((GLRemoteRendering) viewObject).toggleLayoutMode();
+					case STORAGEBASED_TOGGLE_RENDER_CONTEXT:
+						((AStorageBasedView) viewObject).toggleRenderContext();
+						break;
+					case STORAGEBASED_PROPAGATE_SELECTIONS:
+						((AStorageBasedView) viewObject).broadcastElements();
+						break;
+				}	
+				
+				if (viewObject instanceof GLParallelCoordinates)
+				{
+					switch (externalActionType)
+					{
+						case STORAGEBASED_SWITCH_AXES_TO_POLYLINES:
+							((GLParallelCoordinates) viewObject).toggleAxisPolylineSwap();
+							break;
+						case PARCOORDS_ANGULAR_BRUSHING:
+							((GLParallelCoordinates) viewObject).triggerAngularBrushing();							
+							break;
+					}
 				}
 			}
 		}

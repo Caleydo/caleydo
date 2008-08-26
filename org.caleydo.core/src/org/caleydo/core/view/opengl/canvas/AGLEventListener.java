@@ -423,6 +423,9 @@ public abstract class AGLEventListener
 		createdCmd.doCommand();
 	}
 
+	/**
+	 * Broadcast elements only with a given type.
+	 */
 	public abstract void broadcastElements(ESelectionType type);
 
 	public void setDetailLevel(EDetailLevel detailLevel)

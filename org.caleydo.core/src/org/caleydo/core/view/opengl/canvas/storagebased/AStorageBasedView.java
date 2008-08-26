@@ -324,13 +324,7 @@ public abstract class AStorageBasedView
 		handleConnectedElementRep(selectionDelta);
 		generalManager.getEventPublisher().handleUpdate(this, selectionDelta);
 	}
-
-	@Override
-	public void broadcastElements(ESelectionType type)
-	{
-
-	}
-
+	
 	/**
 	 * Handles the creation of {@link SelectedElementRep} according to the data
 	 * in a selectionDelta
@@ -339,6 +333,10 @@ public abstract class AStorageBasedView
 	 */
 	protected void handleConnectedElementRep(ISelectionDelta selectionDelta)
 	{
+		// Check for type that can be handled 
+		if (selectionDelta.getIDType() != EIDType.DAVID)
+			return;
+		
 		try
 		{
 			int iStorageIndex = -1;
@@ -365,11 +363,8 @@ public abstract class AStorageBasedView
 						throw new InvalidAttributeValueException("Can not handle data type");
 
 					if (iStorageIndex == -1)
-						throw new CaleydoRuntimeException("No internal id in selection delta",
+						throw new CaleydoRuntimeException("No internal ID in selection delta",
 								CaleydoRuntimeExceptionType.VIEW);
-
-					System.out.println("StorageBased with ID: " + iUniqueID + " David: "
-							+ iDavidID);
 
 					SelectedElementRep rep = createElementRep(iStorageIndex);
 					if (rep == null)
@@ -400,5 +395,16 @@ public abstract class AStorageBasedView
 	 * Check wheter an element is selected or not
 	 */
 	protected abstract void checkUnselection();
+	
+	/**
+	 * Broadcast all elements independent of their type.
+	 */
+	public abstract void broadcastElements();
+	
+	@Override
+	public void broadcastElements(ESelectionType type)
+	{
+		// TODO: implement
+	}
 
 }

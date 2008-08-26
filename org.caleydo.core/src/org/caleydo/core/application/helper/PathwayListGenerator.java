@@ -29,8 +29,7 @@ public class PathwayListGenerator
 	
 	private PrintWriter outputWriter;
 
-	public void run(final IGeneralManager generalManager,
-			String sInputFolderPath, String sInputImagePath,
+	public void run(String sInputFolderPath, String sInputImagePath,
 			String sOutputFileName) throws FileNotFoundException
 	{
 		sInputFolderPath = IGeneralManager.CALEYDO_HOME_PATH + sInputFolderPath;
@@ -54,29 +53,32 @@ public class PathwayListGenerator
 
 			// Cut off path
 			sOutput = tmpFile.toString();
-			
+			String sPathDelimiter = "";
 			if (sOutput.contains("\\"))
 			{
-				sOutput = sOutput.substring(sOutput.lastIndexOf('\\') + 1, sOutput.length());
+				sPathDelimiter = "\\";
 			}
 			else if (sOutput.contains("/"))
 			{
-				sOutput = sOutput.substring(sOutput.lastIndexOf('/') + 1, sOutput.length());
+				sPathDelimiter = "/";
 			}
 			else
 			{
 				throw new CaleydoRuntimeException("Problem with detecting path separator.",
 						CaleydoRuntimeExceptionType.DATAHANDLING);
 			}
+
+			sOutput = sOutput.substring(sOutput.lastIndexOf(sPathDelimiter) + 1, sOutput.length());
+			
 			outputWriter.append(sOutput + " ");
 
 			String sImagePath = "";
 			if (tmpFile.toString().contains(".xml"))
-			{
+			{			
 				sImagePath = sInputImagePath
-						+ tmpFile.toString().substring(
-								tmpFile.toString().lastIndexOf('\\') + 1,
-								tmpFile.toString().length() - 4) + ".gif";
+				+ tmpFile.toString().substring(
+						tmpFile.toString().lastIndexOf(sPathDelimiter) + 1,
+						tmpFile.toString().length() - 4) + ".gif";
 			}
 			// find out image path of biocarta pathway - necessary because xml
 			// path != image path
@@ -120,21 +122,20 @@ public class PathwayListGenerator
 		outputWriter.close();
 	}
 
-//	public static void main(String[] args)
-//	{
-//		PathwayListGenerator pathwayListLoader = new PathwayListGenerator();
-//
-//		try
-//		{
-//			pathwayListLoader.run(INPUT_FOLDER_PATH_KEGG, INPUT_IMAGE_PATH_KEGG,
-//					OUTPUT_FILE_NAME_KEGG);
-//			pathwayListLoader.run(INPUT_FOLDER_PATH_BIOCARTA, INPUT_IMAGE_PATH_BIOCARTA,
-//					OUTPUT_FILE_NAME_BIOCARTA);
-//		}
-//		catch (FileNotFoundException e)
-//		{
-//			e.printStackTrace();
-//		}
-//	}
+	public static void main(String[] args)
+	{
+		PathwayListGenerator pathwayListLoader = new PathwayListGenerator();
 
+		try
+		{
+			pathwayListLoader.run(INPUT_FOLDER_PATH_KEGG, INPUT_IMAGE_PATH_KEGG,
+					OUTPUT_FILE_NAME_KEGG);
+			pathwayListLoader.run(INPUT_FOLDER_PATH_BIOCARTA, INPUT_IMAGE_PATH_BIOCARTA,
+					OUTPUT_FILE_NAME_BIOCARTA);
+		}
+		catch (FileNotFoundException e)
+		{
+			e.printStackTrace();
+		}
+	}
 }

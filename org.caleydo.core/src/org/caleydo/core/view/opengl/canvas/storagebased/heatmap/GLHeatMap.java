@@ -693,4 +693,9 @@ public class GLHeatMap
 		gl.glPopAttrib();
 	}
 
+	@Override
+	public void broadcastElements()
+	{
+		// TODO: implement
+	}
 }

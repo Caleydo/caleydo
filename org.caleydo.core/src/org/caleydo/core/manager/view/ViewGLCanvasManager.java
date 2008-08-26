@@ -118,7 +118,7 @@ public class ViewGLCanvasManager
 		return hashGLCanvasID2GLCanvas.get(iItemID);
 	}
 	
-	public AGLEventListener getEventListener(int iItemID)
+	public AGLEventListener getGLEventListener(int iItemID)
 	{
 		return hashGLEventListenerID2GLEventListener.get(iItemID);
 	}	

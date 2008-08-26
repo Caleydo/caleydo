@@ -66,5 +66,5 @@ public interface IViewGLCanvasManager
 		
 	public GLCaleydoCanvas getCanvas(int iItemID);
 
-	public AGLEventListener getEventListener(int iItemID);
+	public AGLEventListener getGLEventListener(int iItemID);
 }

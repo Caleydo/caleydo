@@ -167,8 +167,7 @@ public class BioCartaPathwayCacher
 
 		try
 		{
-			pathwayListLoader.run(generalManager,
-					PathwayListGenerator.INPUT_FOLDER_PATH_BIOCARTA, 
+			pathwayListLoader.run(PathwayListGenerator.INPUT_FOLDER_PATH_BIOCARTA, 
 					PathwayListGenerator.INPUT_IMAGE_PATH_BIOCARTA,
 					PathwayListGenerator.OUTPUT_FILE_NAME_BIOCARTA);
 		}

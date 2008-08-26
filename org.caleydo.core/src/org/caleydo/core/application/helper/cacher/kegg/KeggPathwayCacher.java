@@ -165,8 +165,7 @@ public class KeggPathwayCacher
 
 		try
 		{
-			pathwayListLoader.run(generalManager,
-					PathwayListGenerator.INPUT_FOLDER_PATH_KEGG, 
+			pathwayListLoader.run(PathwayListGenerator.INPUT_FOLDER_PATH_KEGG, 
 					PathwayListGenerator.INPUT_IMAGE_PATH_KEGG,
 					PathwayListGenerator.OUTPUT_FILE_NAME_KEGG);
 		}

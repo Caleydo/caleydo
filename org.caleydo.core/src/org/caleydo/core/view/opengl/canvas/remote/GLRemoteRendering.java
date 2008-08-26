@@ -21,6 +21,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.ICaleydoGraphItem;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.SelectionItem;
@@ -368,6 +369,8 @@ public class GLRemoteRendering
 				
 				tmpGLEventListener.broadcastElements(ESelectionType.NORMAL);
 				tmpGLEventListener.setDetailLevel(EDetailLevel.MEDIUM);
+				
+				generalManager.getGUIBridge().setActiveGLSubView(this, tmpGLEventListener);
 
 			}
 			else if (stackLayer.containsElement(-1))
@@ -562,7 +565,7 @@ public class GLRemoteRendering
 			return;
 
 		AGLEventListener tmpCanvasUser = ((AGLEventListener) generalManager.getViewGLCanvasManager()
-				.getEventListener(iViewID));
+				.getGLEventListener(iViewID));
 
 		if (tmpCanvasUser == null)
 			throw new CaleydoRuntimeException("Cannot render canvas object which is null!");
@@ -1039,7 +1042,7 @@ public class GLRemoteRendering
 
 		slerpMod.applySlerp(gl, transform);
 
-		((AGLEventListener) generalManager.getViewGLCanvasManager().getEventListener(iViewID))
+		((AGLEventListener) generalManager.getViewGLCanvasManager().getGLEventListener(iViewID))
 				.displayRemote(gl);
 
 		gl.glPopMatrix();
@@ -1056,7 +1059,7 @@ public class GLRemoteRendering
 			destinationLayer.setElementVisibilityById(true, iViewID);
 
 			AGLEventListener glActiveSubView = 
-				GeneralManager.get().getViewGLCanvasManager().getEventListener(iViewID);
+				GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
 						
 			// Update detail level of moved view when slerp action is finished;
 			if (destinationLayer.equals(underInteractionLayer))
@@ -1094,7 +1097,7 @@ public class GLRemoteRendering
 
 		arSlerpActions.clear();
 		
-		generalManager.getViewGLCanvasManager().getEventListener(iViewID)
+		generalManager.getViewGLCanvasManager().getGLEventListener(iViewID)
 			.broadcastElements(ESelectionType.NORMAL);
 
 		// Check if view is already loaded in the stack layer
@@ -1135,7 +1138,7 @@ public class GLRemoteRendering
 				arSlerpActions.add(reverseSlerpAction);
 				
 				// Unregister all elements of the view that is moved out
-				generalManager.getViewGLCanvasManager().getEventListener(
+				generalManager.getViewGLCanvasManager().getGLEventListener(
 						stackLayer.getElementIdByPositionIndex(stackLayer.getNextPositionIndex()))
 							.broadcastElements(ESelectionType.REMOVE);
 			}
@@ -1169,39 +1172,46 @@ public class GLRemoteRendering
 		generalManager.getLogger().log(Level.INFO,
 				"Update called by " + eventTrigger.getClass().getSimpleName());
 
-		int iDavidID = 0;
-		int iGraphItemID = 0;
-		ArrayList<ICaleydoGraphItem> alPathwayVertexGraphItem = new ArrayList<ICaleydoGraphItem>();
-		
-		for (SelectionItem item : selectionDelta)
-		{
-			// Only consider items that are selected
-			if (item.getSelectionType() != ESelectionType.SELECTION)
-				continue;
+
+		// Handle incoming genes
+		if (selectionDelta.getIDType() == EIDType.DAVID)
+		{	
+			int iDavidID = 0;
+			int iGraphItemID = 0;
+			ArrayList<ICaleydoGraphItem> alPathwayVertexGraphItem = new ArrayList<ICaleydoGraphItem>();
+						
+			for (SelectionItem item : selectionDelta)
+			{
+				// Only consider items that are selected
+				if (item.getSelectionType() != ESelectionType.SELECTION)
+					continue;
 				
-			iDavidID = item.getSelectionID();
+				iDavidID = item.getSelectionID();
+				
+				iGraphItemID = generalManager.getPathwayItemManager()
+					.getPathwayVertexGraphItemIdByDavidId(iDavidID);
+				
+				if (iGraphItemID == -1)
+					continue;
+				
+				PathwayVertexGraphItem tmpPathwayVertexGraphItem = ((PathwayVertexGraphItem) generalManager
+						.getPathwayItemManager().getItem(iGraphItemID));
+		
+				if (tmpPathwayVertexGraphItem == null)
+					continue;
+				
+				alPathwayVertexGraphItem.add(tmpPathwayVertexGraphItem);
+			}
 			
-			iGraphItemID = generalManager.getPathwayItemManager()
-				.getPathwayVertexGraphItemIdByDavidId(iDavidID);
-			
-			if (iGraphItemID == -1)
-				continue;
-			
-			PathwayVertexGraphItem tmpPathwayVertexGraphItem = ((PathwayVertexGraphItem) generalManager
-					.getPathwayItemManager().getItem(iGraphItemID));
-
-			if (tmpPathwayVertexGraphItem == null)
-				continue;
-			
-			alPathwayVertexGraphItem.add(tmpPathwayVertexGraphItem);
-
-//			iAlTmpSelectionId.add(iDavidId);
-//			iAlTmpGroupId.add(1); // mouse over
+			if (!alPathwayVertexGraphItem.isEmpty())
+			{
+				loadDependentPathways(alPathwayVertexGraphItem);
+			}
 		}
-
-		if (!alPathwayVertexGraphItem.isEmpty())
+		// Handle incoming pathways
+		else if (selectionDelta.getIDType() == EIDType.PATHWAY)
 		{
-			loadDependentPathways(alPathwayVertexGraphItem);
+			addPathwayView(selectionDelta.getSelectionData().get(0).getSelectionID());
 		}
 	}
 		
@@ -1412,7 +1422,7 @@ public class GLRemoteRendering
 						bEnableNavigationOverlay = false;
 						
 						// Unregister all elements of the view that is moved out
-						generalManager.getViewGLCanvasManager().getEventListener(iExternalID)
+						generalManager.getViewGLCanvasManager().getGLEventListener(iExternalID)
 									.broadcastElements(ESelectionType.REMOVE);
 
 						break;

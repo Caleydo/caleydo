@@ -179,7 +179,7 @@ public class GLParallelCoordinates
 	{
 		dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
 		// dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
-		bRenderOnlyContext = true;
+		bRenderOnlyContext = false;
 
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 
@@ -322,7 +322,14 @@ public class GLParallelCoordinates
 		// TODO we might not need that here!
 		// initLists();
 		initGates();
-
+		
+		setDisplayListDirty();
+	}
+	
+	public void triggerAngularBrushing()
+	{
+		bAngularBrushingSelectPolyline = true;
+		setDisplayListDirty();
 	}
 
 	@Override
@@ -356,6 +363,7 @@ public class GLParallelCoordinates
 	public void preventOcclusion(boolean bPreventOcclusion)
 	{
 		this.bPreventOcclusion = bPreventOcclusion;
+		setDisplayListDirty();
 	}
 
 	/**
@@ -385,6 +393,15 @@ public class GLParallelCoordinates
 		}
 	}
 
+	@Override
+	public void broadcastElements()
+	{
+		contentSelectionManager.moveType(ESelectionType.DESELECTED, ESelectionType.REMOVE);
+		ISelectionDelta delta = contentSelectionManager.getDelta();
+		resetSelections();
+		triggerUpdate(delta);
+	}
+	
 	/**
 	 * Initializes the array lists that contain the data. Must be run at program
 	 * start, every time you exchange axis and polylines and every time you
@@ -1327,20 +1344,14 @@ public class GLParallelCoordinates
 						}
 						else if (iExternalID == EIconIDs.SAVE_SELECTIONS.ordinal())
 						{
-							contentSelectionManager.moveType(ESelectionType.DESELECTED,
-									ESelectionType.REMOVE);
-							ISelectionDelta delta = contentSelectionManager.getDelta();
-							resetSelections();
-							triggerUpdate(delta);
-
+							broadcastElements();
 						}
 						else if (iExternalID == EIconIDs.ANGULAR_BRUSHING.ordinal())
 						{
 							bAngularBrushingSelectPolyline = true;
 						}
 
-						bIsDisplayListDirtyLocal = true;
-						bIsDisplayListDirtyRemote = true;
+						setDisplayListDirty();
 						break;
 				}
 
@@ -1745,5 +1756,4 @@ public class GLParallelCoordinates
 		float fTmp = vecNewOne.dot(vecNewTwo);
 		return (float) Math.acos(fTmp);
 	}
-
 }

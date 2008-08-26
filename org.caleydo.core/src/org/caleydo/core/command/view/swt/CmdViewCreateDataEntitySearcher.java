@@ -37,10 +37,14 @@ public class CmdViewCreateDataEntitySearcher
 		StringTokenizer receiverToken = new StringTokenizer(sDetail,
 				IGeneralManager.sDelimiter_Parser_DataItems);
 
+		int iReceiverID = -1;
 		while (receiverToken.hasMoreTokens())
 		{
-			iAlViewReceiverID.add(StringConversionTool.convertStringToInt(receiverToken
-					.nextToken(), -1));
+			iReceiverID = StringConversionTool.convertStringToInt(receiverToken
+					.nextToken(), -1);
+			
+			if (iReceiverID != -1)
+				iAlViewReceiverID.add(generalManager.getIDManager().getInternalFromExternalID(iReceiverID));
 		}
 	}
 
@@ -54,7 +58,6 @@ public class CmdViewCreateDataEntitySearcher
 						sLabel);
 
 		viewManager.registerItem(dataEntitySearcherView);
-
 		viewManager.addViewRep(dataEntitySearcherView);
 
 		dataEntitySearcherView.setAttributes(iAlViewReceiverID);

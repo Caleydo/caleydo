@@ -18,7 +18,7 @@
 
  		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
 		   		detail="data/genome/mapping/david/HOMO_SAPIENS_DAVID2GENE_SYMBOL.txt"	
-		   		attrib1="DAVID_2_GENE_SYMBOL" 
+		   		attrib1="DAVID_2_GENE_SYMBOL REVERSE" 
 		   		attrib2="\t" 
 		   		attrib3="0 -1" />	
 

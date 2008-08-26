@@ -154,7 +154,7 @@ public class BucketMouseWheelListener
 						
 				if(iGLEventListenerID != -1)
 				{
-					GeneralManager.get().getViewGLCanvasManager().getEventListener(
+					GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
 							iGLEventListenerID).setDetailLevel(EDetailLevel.HIGH);
 				}
 			}
@@ -168,7 +168,7 @@ public class BucketMouseWheelListener
 						
 				if(iGLEventListenerID != -1)
 				{
-					GeneralManager.get().getViewGLCanvasManager().getEventListener(
+					GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
 							iGLEventListenerID).setDetailLevel(EDetailLevel.MEDIUM);
 				}			
 			}
