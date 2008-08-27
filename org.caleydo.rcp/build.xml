@@ -6,10 +6,13 @@
 	<property name="class.dir" value="${bin.dir}/class" />
 	<property name="jar.dir" value="${bin.dir}/jar" />
 	<property name="local.lib.dir" value="lib" />
+	<property name="local.lib.jogl.dir" value="${local.lib.dir}/jogl" />
 	<property name="local.lib.caleydo.dir" value="${local.lib.dir}/org.caleydo" />
+
 	<property name="main-class" value="org.caleydo.rcp.Application" />
 
 	<property name="lib.dir" value="../org.caleydo.lib/lib" />
+	<property name="lib.jogl.dir" value="${lib.dir}/jogl" />
 	<property name="gleem.dir" value="../org.caleydo.util.gleem" />
 
 
@@ -60,14 +63,69 @@
 			<fileset dir="${graph.dir}/${jar.dir}/" />
 			<fileset dir="${gleem.dir}/${jar.dir}/" />
 		</copy>
-		<mkdir dir="${local.lib.dir}/ftp"  />
-		<copy todir="${local.lib.dir}/ftp">
-			<fileset dir="${lib.dir}/ftp" excludes="**/*.zip" />
+		<copy todir="${local.lib.dir}">
+			<fileset dir="${lib.dir}" excludes="**/*.zip">
+				<exclude name="**/jface/" />
+				<exclude name="**/jgraph/" />
+				<exclude name="**/jnlp/" />
+				<exclude name="**/kegg/" />
+				<exclude name="**/muddleware/" />
+				<exclude name="**/swt/" />
+				<exclude name="**/weka/" />
+				<exclude name="**/wii/" />
+			</fileset>
 		</copy>
+
+		<unzip dest="${local.lib.jogl.dir}/linux/x86/">
+			<patternset>
+				<include name="**/*.so" />
+			</patternset>
+			<mapper type="flatten" />
+			<fileset dir="${lib.dir}">
+				<include name="**/linux/x86/**" />
+			</fileset>
+		</unzip>
+
+		<unzip dest="${local.lib.jogl.dir}/linux/x86-64/">
+			<patternset>
+				<include name="**/*.so" />
+			</patternset>
+			<mapper type="flatten" />
+			<fileset dir="${lib.dir}">
+				<include name="**/linux/x86-64/**" />
+			</fileset>
+		</unzip>
+		<unzip dest="${local.lib.jogl.dir}/macosx/">
+			<patternset>
+				<include name="**/*.jnilib" />
+			</patternset>
+			<mapper type="flatten" />
+			<fileset dir="${lib.dir}">
+				<include name="**/macosx/**" />
+			</fileset>
+		</unzip>
+		<unzip dest="${local.lib.jogl.dir}/windows/x86/">
+			<patternset>
+				<include name="**/*.dll" />
+			</patternset>
+			<mapper type="flatten" />
+			<fileset dir="${lib.dir}">
+				<include name="**/windows/x86/**" />
+			</fileset>
+		</unzip>
+		<unzip dest="${local.lib.jogl.dir}/windows/x86-64/">
+			<patternset>
+				<include name="**/*.dll" />
+			</patternset>
+			<mapper type="flatten" />
+			<fileset dir="${lib.dir}">
+				<include name="**/windows/x86-64/**" />
+			</fileset>
+		</unzip>
 	</target>
-	
-	
-	
+
+
+
 	<target name="compile">
 		<mkdir dir="${class.dir}" />
 		<javac srcdir="${src.dir}" destdir="${class.dir}" classpathref="classpath" debug="true">
