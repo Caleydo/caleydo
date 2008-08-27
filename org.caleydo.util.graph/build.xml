@@ -1,5 +1,5 @@
-<project name="Graph" basedir="." default="main">	
-	
+<project name="org.caleydo.util.graph" basedir="." default="main">
+
 	<property name="src.dir" value="src" />
 	<property name="bin.dir" value="bin" />
 	<property name="class.dir" value="${bin.dir}/class" />
@@ -8,10 +8,12 @@
 	<target name="clean">
 		<delete dir="${bin.dir}" />
 	</target>
-	
+
 	<target name="compile">
 		<mkdir dir="${class.dir}" />
-		<javac srcdir="${src.dir}" destdir="${class.dir}" />
+		<javac srcdir="${src.dir}" destdir="${class.dir}">
+			<exclude name="**/org/caleydo/data/**" />
+		</javac>
 	</target>
 
 	<target name="jar" depends="compile">
@@ -22,6 +24,6 @@
 			</manifest>
 		</jar>
 	</target>
-	
+
 	<target name="main" depends="jar" />
 </project>

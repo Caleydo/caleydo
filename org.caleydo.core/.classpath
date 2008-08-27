@@ -17,13 +17,11 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/org.caleydo.lib/lib_src/jgraph/jgraph-latest-stable-src_5_9.jar!/doc/api"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/gleem/gleem_mod_class.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/weka/weka.jar" sourcepath="/org.caleydo.lib/lib_src/weka/weka-src.jar">
 		<attributes>
 			<attribute name="javadoc_location" value="jar:platform:/resource/org.caleydo.lib/doc/weka_javadoc.zip!/doc"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/org.caleydo/util/graph/org.caleydo.graph_bin.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/wii/WiiRemoteJ.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/wii/avetanaBT.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/swt/swt.jar"/>
@@ -43,6 +41,7 @@
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.ui.workbench_3.1.2.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/webspider/itsucks-console-0.3.0-pre7.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.util.graph"/>
-	<classpathentry kind="lib" path="/org.caleydo.util.graph/bin/jar/Graph.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.util.graph/bin/jar/org.caleydo.util.graph.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.util.gleem/bin/jar/org.caleydo.util.gleem.jar"/>
 	<classpathentry kind="output" path="bin/class"/>
 </classpath>

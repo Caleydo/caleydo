@@ -1,4 +1,4 @@
-<project name="Caleydo" basedir="." default="main">
+<project name="org.caleydo.core" basedir="." default="main">
 
 	<property name="src.dir" value="src" />
 
@@ -22,6 +22,11 @@
 	<target name="clean">
 		<delete dir="${bin.dir}" />
 	</target>
+	
+	<target name="clean_all" depends="clean">
+		<ant dir="${graph.dir}" inheritAll="false" target="clean"/>
+		<ant dir="${gleem.dir}" inheritAll="false" target="clean"/>
+	</target>
 
 	<!-- ===== org.caleydo.util.graph ==== -->
 	<target name="build_graph" description="Compile the graph project and create a jar">
@@ -36,7 +41,7 @@
 
 
 
-	<target name="compile">
+	<target name="compile" depends="build_graph, build_gleem">
 		<mkdir dir="${class.dir}" />
 		<javac srcdir="${src.dir}" destdir="${class.dir}" classpathref="classpath" debug="true">
 			<exclude name="**/swt/pathway/*" />

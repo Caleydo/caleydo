@@ -1,4 +1,4 @@
-<project name="Gleem" basedir="." default="main">
+<project name="org.caleydo.util.gleem" basedir="." default="main">
 
 	<property name="src.dir" value="src" />
 	<property name="bin.dir" value="bin" />

@@ -110,10 +110,6 @@
             class="org.caleydo.rcp.splashHandlers.ExtensibleSplashHandler"
             id="org.caleydo.rcp.splashHandlers.extensible">
       </splashHandler>
-      <splashHandlerProductBinding
-            productId="org.caleydo.rcp.product"
-            splashId="org.caleydo.rcp.splashHandlers.extensible">
-      </splashHandlerProductBinding>
    </extension>
    <extension
          point="org.caleydo.rcp.splashExtension">
