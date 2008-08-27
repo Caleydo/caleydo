@@ -17,8 +17,8 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.lib"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.util.gleem"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.util.graph"/>
-	<classpathentry kind="lib" path="/org.caleydo.util.gleem/bin/jar/Gleem.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.util.graph/bin/jar/Graph.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.core/bin/jar/Caleydo.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.core/bin/jar/org.caleydo.core.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.util.graph/bin/jar/org.caleydo.util.graph.jar"/>
+	<classpathentry kind="lib" path="/org.caleydo.util.gleem/bin/jar/org.caleydo.util.gleem.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

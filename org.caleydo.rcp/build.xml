@@ -1,10 +1,12 @@
-<project name="Caleydo RCP" basedir="." default="main">
+<project name="org.caleydo.rcp" basedir="." default="main">
 
 	<property name="src.dir" value="src" />
 
 	<property name="bin.dir" value="bin" />
 	<property name="class.dir" value="${bin.dir}/class" />
 	<property name="jar.dir" value="${bin.dir}/jar" />
+	<property name="local.lib.dir" value="lib" />
+	<property name="local.lib.caleydo.dir" value="${local.lib.dir}/org.caleydo" />
 	<property name="main-class" value="org.caleydo.rcp.Application" />
 
 	<property name="lib.dir" value="../org.caleydo.lib/lib" />
@@ -23,9 +25,15 @@
 		<fileset dir="${core.dir}" includes="**/*.jar" />
 	</path>
 
-
 	<target name="clean">
 		<delete dir="${bin.dir}" />
+		<delete dir="${local.lib.caleydo.dir}" />
+	</target>
+
+	<target name="clean_all" depends="clean">
+		<ant dir="${graph.dir}" inheritAll="false" target="clean" />
+		<ant dir="${gleem.dir}" inheritAll="false" target="clean" />
+		<ant dir="${core.dir}" inheritAll="false" target="clean" />
 	</target>
 
 	<!-- ===== org.caleydo.util.graph ==== -->
@@ -37,21 +45,37 @@
 	<target name="build_gleem" description="Compile the gleem project and create a jar">
 		<ant dir="${gleem.dir}" inheritAll="false" />
 	</target>
-	
+
 	<!-- ===== org.caleydo.core ==== -->
 	<target name="build_core" description="Compile the core project and create a jar">
 		<ant dir="${core.dir}" inheritAll="false" />
 	</target>
 
 
-
-
+	<!-- ===== Copy libraries to RCP ==== -->
+	<target name="copy_jar" depends="build_core">
+		<mkdir dir="${local.lib.caleydo.dir}" />
+		<copy todir="${local.lib.caleydo.dir}">
+			<fileset dir="${core.dir}/${jar.dir}/" />
+			<fileset dir="${graph.dir}/${jar.dir}/" />
+			<fileset dir="${gleem.dir}/${jar.dir}/" />
+		</copy>
+		<mkdir dir="${local.lib.dir}/ftp"  />
+		<copy todir="${local.lib.dir}/ftp">
+			<fileset dir="${lib.dir}/ftp" excludes="**/*.zip" />
+		</copy>
+	</target>
+	
+	
+	
 	<target name="compile">
 		<mkdir dir="${class.dir}" />
 		<javac srcdir="${src.dir}" destdir="${class.dir}" classpathref="classpath" debug="true">
 			<exclude name="**/action/update/*" />
 		</javac>
 	</target>
+
+
 
 	<target name="jar" depends="build_core, compile">
 		<mkdir dir="${jar.dir}" />
@@ -62,7 +86,7 @@
 		</jar>
 	</target>
 
-	<target name="run" depends="build_core, jar">
+	<target name="run" depends=" jar">
 		<java fork="true" classname="${main-class}">
 			<classpath>
 				<path refid="classpath" />
