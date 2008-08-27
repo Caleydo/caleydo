@@ -1,0 +1,159 @@
+<project name="org.caleydo.rcp" basedir="." default="main">
+
+	<property name="src.dir" value="src" />
+
+	<property name="bin.dir" value="bin" />
+	<property name="class.dir" value="${bin.dir}/class" />
+	<property name="jar.dir" value="${bin.dir}/jar" />
+	<property name="local.lib.dir" value="lib" />
+	<property name="local.lib.jogl.dir" value="${local.lib.dir}/jogl" />
+	<property name="local.lib.caleydo.dir" value="${local.lib.dir}/org.caleydo" />
+
+	<property name="main-class" value="org.caleydo.rcp.Application" />
+
+	<property name="lib.dir" value="../org.caleydo.lib/lib" />
+	<property name="lib.jogl.dir" value="${lib.dir}/jogl" />
+	<property name="gleem.dir" value="../org.caleydo.util.gleem" />
+
+
+	<property name="graph.dir" value="../org.caleydo.util.graph" />
+	<property name="gleem.dir" value="../org.caleydo.util.gleem" />
+	<property name="core.dir" value="../org.caleydo.core" />
+
+
+	<path id="classpath">
+		<fileset dir="${lib.dir}" includes="**/*.jar" />
+		<fileset dir="${gleem.dir}" includes="**/*.jar" />
+		<fileset dir="${graph.dir}" includes="**/*.jar" />
+		<fileset dir="${core.dir}" includes="**/*.jar" />
+	</path>
+
+	<target name="clean">
+		<delete dir="${bin.dir}" />
+		<delete dir="${local.lib.dir}" />
+	</target>
+
+	<target name="clean_all" depends="clean">
+		<ant dir="${graph.dir}" inheritAll="false" target="clean" />
+		<ant dir="${gleem.dir}" inheritAll="false" target="clean" />
+		<ant dir="${core.dir}" inheritAll="false" target="clean" />
+	</target>
+
+	<!-- ===== org.caleydo.util.graph ==== -->
+	<target name="build_graph" description="Compile the graph project and create a jar">
+		<ant dir="${graph.dir}" inheritAll="false" />
+	</target>
+
+	<!-- ===== org.caleydo.util.gleem ==== -->
+	<target name="build_gleem" description="Compile the gleem project and create a jar">
+		<ant dir="${gleem.dir}" inheritAll="false" />
+	</target>
+
+	<!-- ===== org.caleydo.core ==== -->
+	<target name="build_core" description="Compile and build jars for gleem, graph and the core project">
+		<ant dir="${core.dir}" inheritAll="false" />
+	</target>
+
+
+	<!-- ===== Copy libraries to RCP ==== -->
+	<target name="copy_jar" depends="build_core" description="Builds all projects, except RCP, moves all
+		relevant libraries to lib/ in RCP">
+		<mkdir dir="${local.lib.caleydo.dir}" />
+		<copy todir="${local.lib.caleydo.dir}">
+			<fileset dir="${core.dir}/${jar.dir}/" />
+			<fileset dir="${graph.dir}/${jar.dir}/" />
+			<fileset dir="${gleem.dir}/${jar.dir}/" />
+		</copy>
+		<copy todir="${local.lib.dir}">
+			<fileset dir="${lib.dir}" excludes="**/*.zip">
+				<exclude name="**/jface/" />
+				<exclude name="**/jgraph/" />
+				<exclude name="**/jnlp/" />
+				<exclude name="**/kegg/" />
+				<exclude name="**/muddleware/" />
+				<exclude name="**/swt/" />
+				<exclude name="**/weka/" />
+				<exclude name="**/wii/" />
+			</fileset>
+		</copy>
+
+		<unzip dest="${local.lib.jogl.dir}/linux/x86/">
+			<patternset>
+				<include name="**/*.so" />
+			</patternset>
+			<mapper type="flatten" />
+			<fileset dir="${lib.dir}">
+				<include name="**/linux/x86/**" />
+			</fileset>
+		</unzip>
+
+		<unzip dest="${local.lib.jogl.dir}/linux/x86-64/">
+			<patternset>
+				<include name="**/*.so" />
+			</patternset>
+			<mapper type="flatten" />
+			<fileset dir="${lib.dir}">
+				<include name="**/linux/x86-64/**" />
+			</fileset>
+		</unzip>
+		<unzip dest="${local.lib.jogl.dir}/macosx/">
+			<patternset>
+				<include name="**/*.jnilib" />
+			</patternset>
+			<mapper type="flatten" />
+			<fileset dir="${lib.dir}">
+				<include name="**/macosx/**" />
+			</fileset>
+		</unzip>
+		<unzip dest="${local.lib.jogl.dir}/windows/x86/">
+			<patternset>
+				<include name="**/*.dll" />
+			</patternset>
+			<mapper type="flatten" />
+			<fileset dir="${lib.dir}">
+				<include name="**/windows/x86/**" />
+			</fileset>
+		</unzip>
+		<unzip dest="${local.lib.jogl.dir}/windows/x86-64/">
+			<patternset>
+				<include name="**/*.dll" />
+			</patternset>
+			<mapper type="flatten" />
+			<fileset dir="${lib.dir}">
+				<include name="**/windows/x86-64/**" />
+			</fileset>
+		</unzip>
+	</target>
+
+
+
+	<target name="compile">
+		<mkdir dir="${class.dir}" />
+		<javac srcdir="${src.dir}" destdir="${class.dir}" classpathref="classpath" debug="true">
+			<exclude name="**/action/update/*" />
+		</javac>
+	</target>
+
+
+
+	<target name="jar" depends="build_core, compile">
+		<mkdir dir="${jar.dir}" />
+		<jar destfile="${jar.dir}/${ant.project.name}.jar" basedir="${class.dir}">
+			<manifest>
+				<attribute name="Main-Class" value="${main-class}" />
+			</manifest>
+		</jar>
+	</target>
+
+	<target name="run" depends=" jar">
+		<java fork="true" classname="${main-class}">
+			<classpath>
+				<path refid="classpath" />
+				<path location="${jar.dir}/${ant.project.name}.jar" />
+			</classpath>
+		</java>
+	</target>
+
+	<target name="main" depends="jar" />
+
+</project>
