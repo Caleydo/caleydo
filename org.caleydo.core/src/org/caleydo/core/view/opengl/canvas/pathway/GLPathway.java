@@ -538,7 +538,6 @@ public class GLPathway
 						.getPathwayItemManager().getItem(iExternalID);
 
 				// Do nothing if new selection is the same as previous selection
-				// TODO: check if selectedVertex is set correctly
 				if (tmpVertexGraphItemRep == selectedVertex
 						&& !pickingMode.equals(EPickingMode.CLICKED))
 				{

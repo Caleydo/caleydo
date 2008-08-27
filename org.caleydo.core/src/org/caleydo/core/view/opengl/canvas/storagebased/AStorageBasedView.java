@@ -275,7 +275,10 @@ public abstract class AStorageBasedView
 	@Override
 	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
 	{
-
+		// Check for type that can be handled 
+		if (selectionDelta.getIDType() != EIDType.DAVID)
+			return;
+		
 		generalManager.getLogger().log(
 				Level.INFO,
 				"Update called by " + eventTrigger.getClass().getSimpleName()
@@ -332,11 +335,7 @@ public abstract class AStorageBasedView
 	 * @param selectionDelta the selection data that should be handled
 	 */
 	protected void handleConnectedElementRep(ISelectionDelta selectionDelta)
-	{
-		// Check for type that can be handled 
-		if (selectionDelta.getIDType() != EIDType.DAVID)
-			return;
-		
+	{	
 		try
 		{
 			int iStorageIndex = -1;

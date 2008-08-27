@@ -92,7 +92,7 @@
          </property>
          <property
                name="windowImages"
-               value="resources/icons/caleydo/caleydo16.gif,resources/icons/caleydo/caleydo32.gif,resources/icons/caleydo/caleydo48.gif,resources/icons/caleydo/caleydo64.gif,resources/icons/caleydo/caleydo128.gif">
+               value="resources/icons/caleydo/caleydo_16x16.png,resources/icons/caleydo/caleydo32.gif,resources/icons/caleydo/caleydo48.gif,resources/icons/caleydo/caleydo64.gif,resources/icons/caleydo/caleydo128.gif">
          </property>
          
                   <property
@@ -110,10 +110,11 @@
             class="org.caleydo.rcp.splashHandlers.ExtensibleSplashHandler"
             id="org.caleydo.rcp.splashHandlers.extensible">
       </splashHandler>
-   </extension>
-   <extension
-         point="org.caleydo.rcp.splashExtension">
-   </extension>
+      <splashHandlerProductBinding
+            productId="org.caleydo.rcp.product"
+            splashId="org.caleydo.rcp.splashHandlers.extensible">
+      </splashHandlerProductBinding>  
+   </extension>   
    <extension
          point="org.eclipse.ui.commands">
       <command
