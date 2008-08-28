@@ -35,6 +35,8 @@ public class PathwayLoadingProgressIndicatorAction
 						GeneralManager.get().getPathwayManager()
 							.getPathwayDatabaseByType(EPathwayDatabaseType.BIOCARTA));				monitor.worked(50);
 				
+				GeneralManager.get().getPathwayManager().notifyPathwayLoadingFinished(true);
+							
 				monitor.done();
 
 				return Status.OK_STATUS;

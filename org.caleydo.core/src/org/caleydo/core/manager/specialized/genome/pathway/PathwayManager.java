@@ -49,8 +49,6 @@ public class PathwayManager
 
 	private PathwayGraph currentPathwayGraph;
 
-	private Thread pathwayLoaderThread;
-
 	private boolean bIsPathwayLoadingFinished;
 
 	/**
@@ -89,7 +87,7 @@ public class PathwayManager
 	@Override
 	public void triggerParsingPathwayDatabases()
 	{
-		pathwayLoaderThread = new PathwayLoaderThread(hashPathwayDatabase.values());
+		new PathwayLoaderThread(hashPathwayDatabase.values());
 	}
 
 	@Override
