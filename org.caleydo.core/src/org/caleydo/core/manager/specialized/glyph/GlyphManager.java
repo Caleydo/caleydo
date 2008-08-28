@@ -21,7 +21,7 @@ public class GlyphManager
 	implements IGlyphManager
 {
 	private IGeneralManager generalManager;
-	
+
 	private HashMap<EGlyphSettingIDs, String> settings;
 
 	private Vector<Integer> sortOrderExt;
@@ -40,7 +40,7 @@ public class GlyphManager
 	public GlyphManager()
 	{
 		generalManager = GeneralManager.get();
-		
+
 		settings = new HashMap<EGlyphSettingIDs, String>();
 		hmGlyphList = new HashMap<Integer, GlyphEntry>();
 		sortOrderExt = new Vector<Integer>();

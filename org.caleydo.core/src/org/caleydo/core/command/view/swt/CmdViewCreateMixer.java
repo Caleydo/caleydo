@@ -35,10 +35,10 @@ public class CmdViewCreateMixer
 
 		if (iExternalID != -1)
 		{
-			iParentContainerId = 
-				generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
+			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(
+					iParentContainerId);
 		}
-		
+
 		MixerViewRep mixerView = (MixerViewRep) viewManager.createView(
 				EManagedObjectType.VIEW_SWT_MIXER, iParentContainerId, sLabel);
 
@@ -47,10 +47,11 @@ public class CmdViewCreateMixer
 		mixerView.setAttributes(iNumberOfSliders);
 		mixerView.initView();
 		mixerView.drawView();
-		
+
 		if (iExternalID != -1)
 		{
-			generalManager.getIDManager().mapInternalToExternalID(mixerView.getID(), iExternalID);
+			generalManager.getIDManager().mapInternalToExternalID(mixerView.getID(),
+					iExternalID);
 		}
 
 		commandManager.runDoCommand(this);

@@ -27,8 +27,7 @@ public class PathwayReactionEdgeGraphItem
 	 * @param sReactionId
 	 * @param sType
 	 */
-	public PathwayReactionEdgeGraphItem(final String sReactionId,
-			final String sType)
+	public PathwayReactionEdgeGraphItem(final String sReactionId, final String sType)
 	{
 		super(EGraphItemKind.EDGE);
 

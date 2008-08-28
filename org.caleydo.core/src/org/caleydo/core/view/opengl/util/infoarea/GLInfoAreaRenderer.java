@@ -380,7 +380,7 @@ public class GLInfoAreaRenderer
 		// + realy);
 
 		GLU glu = new GLU();
-		glu.gluUnProject((double) iWindowCoordinatePositionX, (double) realy, 0.0, //
+		glu.gluUnProject(iWindowCoordinatePositionX, realy, 0.0, //
 				mvmatrix, 0, projmatrix, 0, viewport, 0, wcoord, 0);
 
 		// System.out.println("World coords at z=0.0 are ( " //

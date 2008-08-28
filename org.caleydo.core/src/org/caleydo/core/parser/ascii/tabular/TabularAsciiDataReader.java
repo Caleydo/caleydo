@@ -15,9 +15,6 @@ import org.caleydo.core.parser.ascii.IParserObject;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.system.StringConversionTool;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Loader for tabular data.
@@ -120,11 +117,10 @@ public class TabularAsciiDataReader
 	{
 		for (int iStorageId : iAlTargetStorageId)
 		{
-			alTargetStorages.add((IStorage) GeneralManager.get().getStorageManager().getItem(
-					iStorageId));
+			alTargetStorages.add(GeneralManager.get().getStorageManager().getItem(iStorageId));
 		}
 	}
-	
+
 	protected void allocateStorageBufferForTokenPattern()
 	{
 
@@ -163,7 +159,7 @@ public class TabularAsciiDataReader
 
 		// Init progress bar
 		swtGuiManager.setProgressBarText("Load data file " + this.getFileName());
-		
+
 		String sLine;
 
 		int iColumnIndex = 0;
@@ -196,34 +192,36 @@ public class TabularAsciiDataReader
 
 			for (EStorageType columnDataType : alColumnDataTypes)
 			{
-				if(strTokenLine.hasMoreTokens())
+				if (strTokenLine.hasMoreTokens())
 				{
 					switch (columnDataType)
 					{
 						case INT:
-							
-//							try
-//							{
-								alIntBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] = StringConversionTool
-										.convertStringToInt(strTokenLine.nextToken(), -1);
-								iColumnIndex++;
-//							}
-//							catch (NumberFormatException nfe) 
-//							{
-//						        MessageBox messageBox = new MessageBox(new Shell(), SWT.ABORT | SWT.IGNORE);
-//						        messageBox.setText("Problem during parsing");
-//						        messageBox.setMessage("Cannot convert input in line " +iLineInFile);
-//						        int state = messageBox.open();
-//								switch (state)
-//								{
-//									case SWT.ABORT:
-//										break;
-//									case SWT.IGNORE:
-//										valString = "SWT.IGNORE";
-//										break;
-//								}
-//							}
-							
+
+							// try
+							// {
+							alIntBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] = StringConversionTool
+									.convertStringToInt(strTokenLine.nextToken(), -1);
+							iColumnIndex++;
+							// }
+							// catch (NumberFormatException nfe)
+							// {
+							// MessageBox messageBox = new MessageBox(new
+							// Shell(), SWT.ABORT | SWT.IGNORE);
+							// messageBox.setText("Problem during parsing");
+							// messageBox.setMessage(
+							// "Cannot convert input in line " +iLineInFile);
+							// int state = messageBox.open();
+							// switch (state)
+							// {
+							// case SWT.ABORT:
+							// break;
+							// case SWT.IGNORE:
+							// valString = "SWT.IGNORE";
+							// break;
+							// }
+							// }
+
 							break;
 						case FLOAT:
 							alFloatBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] = StringConversionTool
@@ -246,7 +244,7 @@ public class TabularAsciiDataReader
 											+ columnDataType.toString(),
 									CaleydoRuntimeExceptionType.DATAHANDLING);
 					}
-						
+
 					// Check if the line is finished or early aborted
 					if (iColumnIndex == alColumnDataTypes.size())
 						continue;
@@ -254,12 +252,12 @@ public class TabularAsciiDataReader
 			}
 
 			iLineInFile++;
-			
+
 			// Update progress bar only on each 100th line
 			if (iLineInFile % 1000 == 0)
 			{
-				swtGuiManager.setProgressBarPercentage(
-						(int)(fProgressBarFactor * iLineInFile));
+				swtGuiManager
+						.setProgressBarPercentage((int) (fProgressBarFactor * iLineInFile));
 			}
 		}
 	}

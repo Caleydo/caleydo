@@ -5,7 +5,6 @@ import java.util.ListIterator;
 public class VAIterator
 	implements ListIterator<Integer>
 {
-	
 
 	int iCount = -1;
 	VirtualArray virtualArray;
@@ -50,7 +49,7 @@ public class VAIterator
 	{
 		bLastMoveOperationWasPrevious = false;
 		return virtualArray.get(++iCount);
-	
+
 	}
 
 	@Override
@@ -71,14 +70,14 @@ public class VAIterator
 	{
 		if (iCount < 0)
 			return -1;
-		
+
 		return iCount;
 	}
 
 	@Override
 	public void remove()
 	{
-		if(bLastMoveOperationWasPrevious)		
+		if (bLastMoveOperationWasPrevious)
 			virtualArray.remove(iCount);
 		else
 			virtualArray.remove(--iCount);
@@ -87,7 +86,7 @@ public class VAIterator
 	@Override
 	public void set(Integer iNewElement)
 	{
-		if(bLastMoveOperationWasPrevious)
+		if (bLastMoveOperationWasPrevious)
 			virtualArray.set(iCount, iNewElement);
 		else
 			virtualArray.set(iCount - 1, iNewElement);

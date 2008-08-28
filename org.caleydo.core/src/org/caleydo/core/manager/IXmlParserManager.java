@@ -18,7 +18,7 @@ public interface IXmlParserManager
 {
 
 	public void initHandlers();
-	
+
 	/**
 	 * Register a SaxHandler by its opening Tag. Calls getXmlActivationTag() and
 	 * hasOpeningTagOnlyOnce() for each handler and registers the handler using

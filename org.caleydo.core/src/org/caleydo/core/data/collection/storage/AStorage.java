@@ -42,9 +42,9 @@ public abstract class AStorage
 	public AStorage(int iUniqueID)
 	{
 		super(iUniqueID);
-		
+
 		GeneralManager.get().getStorageManager().registerItem(this);
-		
+
 		hashCContainers = new HashMap<EDataRepresentation, ICContainer>();
 		hashVirtualArrays = new HashMap<Integer, IVirtualArray>();
 		hashIsVirtualArrayEnabled = new HashMap<Integer, Boolean>();
@@ -212,7 +212,7 @@ public abstract class AStorage
 	public Number getNumberVA(EDataRepresentation storageKind, int iIndex, int iUniqueID)
 	{
 		int iContainerIndex = hashVirtualArrays.get(iUniqueID).get(iIndex);
-		return get(storageKind, iContainerIndex);		
+		return get(storageKind, iContainerIndex);
 	}
 
 	@Override

@@ -113,8 +113,7 @@ public abstract class AGenomeIdMap<K, V>
 	@Override
 	public final IGenomeIdMap getCodeResolvedMap(IGenomeIdManager genomeIdManager,
 			EMappingType genomeMappingLUT_1, EMappingType genomeMappingLUT_2,
-			EMappingDataType targetMappingDataType,
-			EMappingDataType sourceMappingDataType)
+			EMappingDataType targetMappingDataType, EMappingDataType sourceMappingDataType)
 	{
 
 		IGenomeIdMap codeResolvedMap = null;

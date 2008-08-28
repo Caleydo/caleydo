@@ -33,12 +33,12 @@ public class CmdViewCreateGlyphConfiguration
 
 		if (iExternalID != -1)
 		{
-			iParentContainerId = 
-				generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
+			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(
+					iParentContainerId);
 		}
-		
+
 		GlyphMappingConfigurationViewRep view = (GlyphMappingConfigurationViewRep) viewManager
-				.createView(EManagedObjectType.VIEW_SWT_GLYPH_MAPPINGCONFIGURATION, 
+				.createView(EManagedObjectType.VIEW_SWT_GLYPH_MAPPINGCONFIGURATION,
 						iParentContainerId, sLabel);
 
 		viewManager.registerItem(view);
@@ -46,7 +46,7 @@ public class CmdViewCreateGlyphConfiguration
 		// view.setAttributes(iWidthX, iHeightY, iNumberOfSliders);
 		view.initView();
 		view.drawView();
-		
+
 		if (iExternalID != -1)
 		{
 			generalManager.getIDManager().mapInternalToExternalID(view.getID(), iExternalID);

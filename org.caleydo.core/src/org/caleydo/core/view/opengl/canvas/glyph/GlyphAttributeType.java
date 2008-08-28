@@ -40,7 +40,7 @@ public class GlyphAttributeType
 
 	public GlyphAttributeType(String name, int externalColumnIndex)
 	{
-		this.generalManager = GeneralManager.get();		
+		this.generalManager = GeneralManager.get();
 		sName = name;
 		hmNominalLookup = new HashMap<String, GlyphAttributeGroup>();
 		hmOrdinalLookup = new HashMap<Float, GlyphAttributeGroup>();

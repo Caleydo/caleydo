@@ -53,10 +53,10 @@ public enum EManagedObjectType
 	EVENT_MEDIATOR(61),
 	EVENT_MEDIATOR_CREATE(62),
 	EVENT_MEDIATOR_ADD_OBJECT(63),
-	
+
 	GRAPH(65),
 	GRAPH_ITEM(66),
-	
+
 	VIEW_SWT_DATA_EXPLORER(99),
 	VIEW_SWT_DATA_TABLE(99),
 	VIEW_SWT_DATA_EXCHANGER(99),
@@ -66,7 +66,7 @@ public enum EManagedObjectType
 	VIEW_SWT_MIXER(99),
 	VIEW_SWT_IMAGE(99),
 	VIEW_SWT_UNDO_REDO(99);
-	
+
 	private int iIdPrefix;
 
 	/**

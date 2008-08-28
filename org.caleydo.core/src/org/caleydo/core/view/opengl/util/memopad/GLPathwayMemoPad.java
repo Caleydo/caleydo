@@ -56,7 +56,7 @@ public class GLPathwayMemoPad
 	{
 		memoPad = new RemoteHierarchyLayer(EHierarchyLevel.MEMO);
 
-		this.generalManager = GeneralManager.get();		
+		this.generalManager = GeneralManager.get();
 		this.gLPathwayManager = gLPathwayManager;
 		this.gLPathwayTextureManager = gLPathwayTextureManager;
 	}

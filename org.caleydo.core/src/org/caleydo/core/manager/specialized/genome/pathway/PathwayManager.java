@@ -48,9 +48,9 @@ public class PathwayManager
 	private PathwayImageMap currentPathwayImageMap;
 
 	private PathwayGraph currentPathwayGraph;
-	
+
 	private Thread pathwayLoaderThread;
-	
+
 	private boolean bIsPathwayLoadingFinished;
 
 	/**
@@ -77,11 +77,11 @@ public class PathwayManager
 				sImagePath);
 
 		hashPathwayDatabase.put(type, tmpPathwayDatabase);
-		
+
 		GeneralManager.get().getLogger().log(
 				Level.INFO,
 				"Setting pathway loading path: database-type:[" + type + "] " + "xml-path:["
-						+ tmpPathwayDatabase.getXMLPath() + "] image-path:[" 
+						+ tmpPathwayDatabase.getXMLPath() + "] image-path:["
 						+ tmpPathwayDatabase.getImagePath() + "] image-map-path:["
 						+ tmpPathwayDatabase.getImageMapPath() + "]");
 	}
@@ -96,8 +96,7 @@ public class PathwayManager
 	public PathwayGraph createPathway(final EPathwayDatabaseType type, final String sName,
 			final String sTitle, final String sImageLink, final String sExternalLink)
 	{
-		PathwayGraph pathway = new PathwayGraph(type, sName, sTitle, sImageLink,
-				sExternalLink);
+		PathwayGraph pathway = new PathwayGraph(type, sName, sTitle, sImageLink, sExternalLink);
 
 		registerItem(pathway);
 		hashPathwayTitleToPathwayId.put(sTitle, pathway.getID());
@@ -114,7 +113,7 @@ public class PathwayManager
 	public int searchPathwayIdByName(final String sPathwayName)
 	{
 		waitUntilPathwayLoadingIsFinished();
-		
+
 		Iterator<String> iterPathwayName = hashPathwayTitleToPathwayId.keySet().iterator();
 		Pattern pattern = Pattern.compile(sPathwayName, Pattern.CASE_INSENSITIVE);
 		Matcher regexMatcher;
@@ -143,8 +142,8 @@ public class PathwayManager
 	public void setPathwayVisibilityStateByID(final int iPathwayID,
 			final boolean bVisibilityState)
 	{
-		waitUntilPathwayLoadingIsFinished();	
-		
+		waitUntilPathwayLoadingIsFinished();
+
 		hashPathwayIdToVisibilityState.put(iPathwayID, bVisibilityState);
 	}
 
@@ -152,7 +151,7 @@ public class PathwayManager
 	public boolean isPathwayVisible(final int iPathwayID)
 	{
 		waitUntilPathwayLoadingIsFinished();
-		
+
 		return hashPathwayIdToVisibilityState.get(iPathwayID);
 	}
 
@@ -169,7 +168,7 @@ public class PathwayManager
 	}
 
 	protected PathwayGraph getCurrenPathwayGraph()
-	{	
+	{
 		return currentPathwayGraph;
 	}
 
@@ -183,7 +182,7 @@ public class PathwayManager
 	{
 		this.bIsPathwayLoadingFinished = bIsPathwayLoadingFinisched;
 	}
-	
+
 	public void waitUntilPathwayLoadingIsFinished()
 	{
 		while (!bIsPathwayLoadingFinished)
@@ -194,19 +193,22 @@ public class PathwayManager
 			}
 			catch (InterruptedException e)
 			{
-				throw new CaleydoRuntimeException("Pathway loader thread has been interrupted!",
+				throw new CaleydoRuntimeException(
+						"Pathway loader thread has been interrupted!",
 						CaleydoRuntimeExceptionType.DATAHANDLING);
 			}
 		}
-//		
-//		try
-//		{
-//			pathwayLoaderThread.join();
-//		}
-//		catch (InterruptedException e)
-//		{
-//			throw new CaleydoRuntimeException("Pathway loader thread has been interrupted!",
-//					CaleydoRuntimeExceptionType.DATAHANDLING);
-//		}
+		//		
+		// try
+		// {
+		// pathwayLoaderThread.join();
+		// }
+		// catch (InterruptedException e)
+		// {
+		// throw new
+		// CaleydoRuntimeException("Pathway loader thread has been interrupted!"
+		// ,
+		// CaleydoRuntimeExceptionType.DATAHANDLING);
+		// }
 	}
 }

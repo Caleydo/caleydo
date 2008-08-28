@@ -41,8 +41,8 @@ public class MementoManager
 	@Override
 	public final int pushMemento(final IMemento addMemento)
 	{
-		//TODO: review when implementing ID management
-		final int iUniqueId = -1;//createId(EManagerObjectType.MEMENTO);
+		// TODO: review when implementing ID management
+		final int iUniqueId = -1;// createId(EManagerObjectType.MEMENTO);
 
 		try
 		{
@@ -113,6 +113,7 @@ public class MementoManager
 		return vecMemento.size();
 	}
 
+	@Override
 	public String toString()
 	{
 

@@ -10,7 +10,7 @@ import org.caleydo.core.data.selection.IVirtualArray;
  * @author Alexander Lex
  */
 public class FloatCContainerIterator
-	extends AContainerIterator	
+	extends AContainerIterator
 {
 
 	private FloatCContainer floatCContainer = null;
@@ -32,7 +32,6 @@ public class FloatCContainerIterator
 		this.virtualArray = virtualArray;
 		this.vaIterator = virtualArray.iterator();
 	}
-
 
 	/**
 	 * Returns the next element in the container Throws a NoSuchElementException

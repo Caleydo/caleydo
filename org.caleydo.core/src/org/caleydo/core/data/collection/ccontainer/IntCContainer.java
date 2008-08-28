@@ -102,7 +102,7 @@ public class IntCContainer
 	@Override
 	public FloatCContainer normalize()
 	{
-			return normalize((int) getMin(), (int) getMax());		
+		return normalize((int) getMin(), (int) getMax());
 	}
 
 	/**
@@ -114,7 +114,7 @@ public class IntCContainer
 	 * @throws IllegalAttributeException when iMin is >= iMax
 	 */
 	private FloatCContainer normalize(int iMin, int iMax)
-			
+
 	{
 		if (iMin >= iMax)
 			throw new IllegalArgumentException("Minimum was bigger or same as maximum");

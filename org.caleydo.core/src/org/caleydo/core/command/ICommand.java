@@ -2,7 +2,6 @@ package org.caleydo.core.command;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.parser.parameter.IParameterHandler;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Design Pattern "Command" ; behavior pattern Is combined with Design Pattern

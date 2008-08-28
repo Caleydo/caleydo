@@ -5,7 +5,7 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 
 // TODO: doku
 public class SWTStandaloneBridge
-implements IGUIBridge
+	implements IGUIBridge
 {
 	@Override
 	public void closeApplication()
@@ -18,6 +18,6 @@ implements IGUIBridge
 			AGLEventListener subGLEventListener)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 }

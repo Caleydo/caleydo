@@ -19,7 +19,7 @@ public class NominalCContainer<T>
 	private HashMap<T, Float> hashNominalToDiscrete;
 
 	private HashMap<Float, T> hashDiscreteToNominal;
-	
+
 	private boolean bHashMapsInitialized = false;
 
 	/**
@@ -33,7 +33,6 @@ public class NominalCContainer<T>
 		hashNominalToDiscrete = new HashMap<T, Float>();
 		hashDiscreteToNominal = new HashMap<Float, T>();
 	}
-	
 
 	/**
 	 * Provide a list with all possible values on the nominal scale. Useful when
@@ -137,32 +136,32 @@ public class NominalCContainer<T>
 		}
 		bHashMapsInitialized = true;
 	}
-	
+
 	@Override
 	public HashMap<T, Float> getHistogram()
 	{
 		HashMap<T, Float> hashTypeToCounter = new HashMap<T, Float>();
 		Float fTemp;
-		
+
 		float fMax = Float.MIN_VALUE;
-		
-		for(T tContent : alContainer)
+
+		for (T tContent : alContainer)
 		{
 			fTemp = hashTypeToCounter.get(tContent);
-			if(fTemp == null)
+			if (fTemp == null)
 				fTemp = new Float(0);
 			++fTemp;
-			if(fTemp > fMax)
+			if (fTemp > fMax)
 				fMax = fTemp;
-			hashTypeToCounter.put(tContent, fTemp);			
+			hashTypeToCounter.put(tContent, fTemp);
 		}
-		
-		for(T tContent : hashTypeToCounter.keySet())
+
+		for (T tContent : hashTypeToCounter.keySet())
 		{
 			fTemp = hashTypeToCounter.get(tContent);
 			fTemp = fTemp / (fMax - 1);
 		}
-		return hashTypeToCounter;		
+		return hashTypeToCounter;
 	}
 
 }

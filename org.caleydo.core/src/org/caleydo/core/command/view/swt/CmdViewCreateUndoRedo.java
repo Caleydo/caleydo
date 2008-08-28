@@ -35,10 +35,10 @@ public class CmdViewCreateUndoRedo
 
 		if (iExternalID != -1)
 		{
-			iParentContainerId = 
-				generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
+			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(
+					iParentContainerId);
 		}
-		
+
 		UndoRedoViewRep undoRedoView = (UndoRedoViewRep) viewManager.createView(
 				EManagedObjectType.VIEW_SWT_UNDO_REDO, iParentContainerId, sLabel);
 
@@ -49,12 +49,13 @@ public class CmdViewCreateUndoRedo
 
 		// Register UNDO/REDO view to command manager.
 		generalManager.getCommandManager().addUndoRedoViewRep(undoRedoView);
-		
+
 		if (iExternalID != -1)
 		{
-			generalManager.getIDManager().mapInternalToExternalID(undoRedoView.getID(), iExternalID);
+			generalManager.getIDManager().mapInternalToExternalID(undoRedoView.getID(),
+					iExternalID);
 		}
-		
+
 		commandManager.runDoCommand(this);
 	}
 

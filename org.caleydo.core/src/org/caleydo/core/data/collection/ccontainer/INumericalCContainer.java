@@ -1,6 +1,5 @@
 package org.caleydo.core.data.collection.ccontainer;
 
-
 /**
  * Extension of the ICContainer interface for numerical values
  * 

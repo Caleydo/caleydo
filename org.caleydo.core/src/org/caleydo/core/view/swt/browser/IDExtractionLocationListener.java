@@ -17,7 +17,7 @@ public class IDExtractionLocationListener
 	extends LocationAdapter
 {
 	private IGeneralManager generalManager;
-	
+
 	private int iBrowserId;
 
 	private int iSelectionSetId;
@@ -27,11 +27,11 @@ public class IDExtractionLocationListener
 	/**
 	 * Constructor.
 	 */
-	public IDExtractionLocationListener(final Browser browser, 
-			final int iBrowserId, final int iSelectionSetId)
+	public IDExtractionLocationListener(final Browser browser, final int iBrowserId,
+			final int iSelectionSetId)
 	{
 		generalManager = GeneralManager.get();
-		
+
 		this.iBrowserId = iBrowserId;
 		this.iSelectionSetId = iSelectionSetId;
 	}
@@ -133,10 +133,12 @@ public class IDExtractionLocationListener
 		}
 
 		// TODO reimplement
-//		Selection tmpSelectionSet = (Selection) generalManager.getSetManager().getItem(
-//				iSelectionSetId);
-//		tmpSelectionSet.updateSelectionSet(iBrowserId, iAlSelectionId, iAlSelectionDepth,
-//				iAlOptional);
+		// Selection tmpSelectionSet = (Selection)
+		// generalManager.getSetManager().getItem(
+		// iSelectionSetId);
+		// tmpSelectionSet.updateSelectionSet(iBrowserId, iAlSelectionId,
+		// iAlSelectionDepth,
+		// iAlOptional);
 	}
 
 	public void updateSkipNextChangeEvent(boolean bSkipNextChangeEvent)

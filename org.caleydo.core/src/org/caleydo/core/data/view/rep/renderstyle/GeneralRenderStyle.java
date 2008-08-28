@@ -30,16 +30,16 @@ public class GeneralRenderStyle
 
 	public static final float MOUSE_OVER_LINE_WIDTH = 3;
 
-//	protected float fFrustumHeight = 0;
-//
-//	protected float fFrustumWidth = 0;
+	// protected float fFrustumHeight = 0;
+	//
+	// protected float fFrustumWidth = 0;
 
-	//protected float fScaling = 1;
+	// protected float fScaling = 1;
 
 	protected static final float BUTTONS_SPACING = 0.005f;
 
 	protected static final float BUTTON_WIDTH = 0.018f;
-	
+
 	protected IViewFrustum viewFrustum;
 
 	/**
@@ -56,8 +56,8 @@ public class GeneralRenderStyle
 	public GeneralRenderStyle(IViewFrustum viewFrustum)
 	{
 		this.viewFrustum = viewFrustum;
-//		fFrustumWidth = viewFrustum.getRight() - viewFrustum.getLeft();
-//		fFrustumHeight = viewFrustum.getTop() - viewFrustum.getBottom();
+		// fFrustumWidth = viewFrustum.getRight() - viewFrustum.getLeft();
+		// fFrustumHeight = viewFrustum.getTop() - viewFrustum.getBottom();
 		// scaling is set to the smaller of the two
 
 	}
@@ -101,7 +101,5 @@ public class GeneralRenderStyle
 			fScaling = viewFrustum.getHeight();
 		return fScaling;
 	}
-	
-	
 
 }

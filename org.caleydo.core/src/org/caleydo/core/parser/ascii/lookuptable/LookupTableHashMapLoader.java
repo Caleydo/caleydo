@@ -43,7 +43,7 @@ public class LookupTableHashMapLoader
 		String sOuterTokenSeperator = lookupTableLoaderProxy.getTokenSeperator();
 
 		fProgressBarFactor = 100f / iStopParsingAtLine;
-		
+
 		while (((sLine = brFile.readLine()) != null) && (iLineInFile <= iStopParsingAtLine))
 		{
 			/**
@@ -115,20 +115,21 @@ public class LookupTableHashMapLoader
 
 				}
 			}
-			
+
 			iLineInFile++;
 
 			// Update progress bar only on each 100th line
 			if (iLineInFile % 1000 == 0)
 			{
-				swtGuiManager.setProgressBarPercentage(
-						(int)(fProgressBarFactor * iLineInFile));
+				swtGuiManager
+						.setProgressBarPercentage((int) (fProgressBarFactor * iLineInFile));
 			}
 		}
-		
+
 		return iLineInFile - iStartParsingAtLine;
 	}
 
+	@Override
 	public final void setHashMap(final IGenomeIdMap setHashMap, final EMappingType type)
 	{
 

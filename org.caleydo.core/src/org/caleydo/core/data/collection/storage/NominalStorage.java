@@ -26,10 +26,9 @@ public class NominalStorage<T>
 	 */
 	public NominalStorage()
 	{
-		super(GeneralManager.get().getIDManager()
-				.createID(EManagedObjectType.STORAGE_NOMINAL));
+		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.STORAGE_NOMINAL));
 	}
-	
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void setRawNominalData(ArrayList<T> alData)
@@ -94,7 +93,8 @@ public class NominalStorage<T>
 	@Override
 	public HashMap<T, Float> getHistogram()
 	{
-		return ((NominalCContainer<T>)hashCContainers.get(EDataRepresentation.RAW)).getHistogram();
+		return ((NominalCContainer<T>) hashCContainers.get(EDataRepresentation.RAW))
+				.getHistogram();
 	}
-	
+
 }

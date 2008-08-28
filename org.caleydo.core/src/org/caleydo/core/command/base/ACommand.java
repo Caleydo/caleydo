@@ -26,7 +26,7 @@ public abstract class ACommand
 	protected transient ICommandManager commandManager;
 
 	protected transient IGeneralManager generalManager;
-	
+
 	private ECommandType cmdType;
 
 	/**
@@ -40,7 +40,7 @@ public abstract class ACommand
 		this.commandManager = generalManager.getCommandManager();
 		this.cmdType = cmdType;
 	}
-	
+
 	@Override
 	public final ECommandType getCommandType()
 	{
@@ -50,7 +50,7 @@ public abstract class ACommand
 	@Override
 	public void setParameterHandler(final IParameterHandler phHandler)
 	{
-		
+
 	}
 
 	@Override

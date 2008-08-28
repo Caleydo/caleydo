@@ -36,8 +36,8 @@ public class PathwayVertexGraphItemRep
 	 * @param sShapeType
 	 * @param sCoords
 	 */
-	public PathwayVertexGraphItemRep(final String sName,
-			final String sShapeType, final String sCoords)
+	public PathwayVertexGraphItemRep(final String sName, final String sShapeType,
+			final String sCoords)
 	{
 		super(EGraphItemKind.NODE);
 
@@ -57,9 +57,8 @@ public class PathwayVertexGraphItemRep
 	 * @param shWidth
 	 * @param shHeight
 	 */
-	public PathwayVertexGraphItemRep(final String sName,
-			final String sShapeType, final short shX, final short shY, final short shWidth,
-			final short shHeight)
+	public PathwayVertexGraphItemRep(final String sName, final String sShapeType,
+			final short shX, final short shY, final short shWidth, final short shHeight)
 	{
 		super(EGraphItemKind.NODE);
 

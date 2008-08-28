@@ -54,10 +54,10 @@ public class CaleydoBootloader
 
 		swtGUIManager = generalManager.getSWTGUIManager();
 		xmlParserManager = generalManager.getXmlParserManager();
-		
+
 		init();
 	}
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -65,16 +65,15 @@ public class CaleydoBootloader
 	{
 		generalManager = GeneralManager.get();
 		generalManager.init(bIsStandalone, externalGUIBridge);
-		
+
 		init();
 	}
-	
-	private void init() 
+
+	private void init()
 	{
 		swtGUIManager = generalManager.getSWTGUIManager();
 		xmlParserManager = generalManager.getXmlParserManager();
 	}
-	
 
 	/**
 	 * Used by RCP to get access to the general manager.
@@ -117,7 +116,7 @@ public class CaleydoBootloader
 	}
 
 	/**
-	 * Start Caleydo core. 
+	 * Start Caleydo core.
 	 * 
 	 */
 	public synchronized void start()
@@ -189,7 +188,7 @@ public class CaleydoBootloader
 	 * @see CaleydoBootloader#isRunning()
 	 */
 	public synchronized void stop()
-	{		
+	{
 		// generalManager.getCommandManager().writeSerializedObjects(
 		// "data/serialize_test.out");
 

@@ -31,13 +31,13 @@ public class CmdViewCreateSwtGLCanvas
 
 		if (iExternalID != -1)
 		{
-			iParentContainerId = 
-				generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
+			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(
+					iParentContainerId);
 		}
-		
+
 		SwtJoglGLCanvasViewRep swtGLCanvasView = (SwtJoglGLCanvasViewRep) viewManager
 				.createGLView(EManagedObjectType.VIEW_GL_CANVAS, iParentContainerId, sLabel);
-		
+
 		swtGLCanvasView.initViewSwtComposite(null);
 		swtGLCanvasView.drawView();
 
@@ -46,7 +46,7 @@ public class CmdViewCreateSwtGLCanvas
 			generalManager.getIDManager().mapInternalToExternalID(
 					swtGLCanvasView.getGLCanvasID(), iExternalID);
 		}
-		
+
 		commandManager.runDoCommand(this);
 	}
 

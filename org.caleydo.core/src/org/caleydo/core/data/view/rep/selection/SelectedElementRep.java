@@ -50,6 +50,7 @@ public class SelectedElementRep
 
 	/**
 	 * Get the ID of the view that created the element rep
+	 * 
 	 * @return the id
 	 */
 	public int getContainingViewID()
@@ -58,8 +59,9 @@ public class SelectedElementRep
 		return iContainingViewID;
 	}
 
-	/** 
+	/**
 	 * Get the point list
+	 * 
 	 * @return
 	 */
 	public ArrayList<Vec3f> getPoints()

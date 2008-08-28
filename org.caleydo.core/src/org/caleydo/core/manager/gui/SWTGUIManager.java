@@ -30,16 +30,17 @@ import org.eclipse.swt.widgets.Shell;
  * the windows and composites. Also the overall layout is defined here and the
  * menus are added to the windows.
  * 
- * This class is not derived from AManager since it does not manages IUniqueObjects.
+ * This class is not derived from AManager since it does not manages
+ * IUniqueObjects.
  * 
  * @author Marc Streit
  * @author Michael Kalkusch
  */
 public class SWTGUIManager
-implements ISWTGUIManager
+	implements ISWTGUIManager
 {
 	protected IGeneralManager generalManager;
-	
+
 	/**
 	 * SWT Display represents a thread.
 	 */
@@ -56,9 +57,9 @@ implements ISWTGUIManager
 	protected Shell loadingProgressBarWindow;
 
 	protected ProgressBar loadingProgressBar;
-	
+
 	protected Label loadingProgressBarLabel;
-	
+
 	protected IStatusLineManager externalRCPStatusLine;
 
 	/**
@@ -67,7 +68,7 @@ implements ISWTGUIManager
 	public SWTGUIManager()
 	{
 		generalManager = GeneralManager.get();
-		
+
 		widgetMap = new Vector<ISWTWidget>();
 		windowMap = new HashMap<Integer, Shell>();
 		compositeMap = new HashMap<Integer, Composite>();
@@ -89,9 +90,9 @@ implements ISWTGUIManager
 		newShell.setImage(new Image(display, "resources/icons/caleydo/caleydo16.ico"));
 		newShell.setText(sLabel);
 
-		int iShellID = generalManager.getIDManager()
-			.createID(EManagedObjectType.GUI_SWT_WINDOW);
-		
+		int iShellID = generalManager.getIDManager().createID(
+				EManagedObjectType.GUI_SWT_WINDOW);
+
 		windowMap.put(iShellID, newShell);
 
 		setUpLayout(newShell, sLayoutAttributes);
@@ -215,7 +216,8 @@ implements ISWTGUIManager
 		Iterator<Shell> shellIterator;
 		Shell currentShell;
 
-		// Close loading progress bar in standalone mode after bootstrapping is completed.
+		// Close loading progress bar in standalone mode after bootstrapping is
+		// completed.
 		if (loadingProgressBarWindow != null)
 			setProgressBarVisible(false);
 
@@ -260,17 +262,16 @@ implements ISWTGUIManager
 	{
 		if (loadingProgressBar.isDisposed())
 			return;
-		
+
 		loadingProgressBar.setSelection(iPercentage);
 	}
-	
-	
+
 	@Override
 	public void setProgressBarPercentageFromExternalThread(final int iPercentage)
 	{
 		if (loadingProgressBar.isDisposed())
 			return;
-		
+
 		loadingProgressBar.getDisplay().asyncExec(new Runnable()
 		{
 			public void run()
@@ -281,25 +282,25 @@ implements ISWTGUIManager
 			}
 		});
 	}
-	
+
 	@Override
 	public void setProgressBarText(String sText)
-	{	
+	{
 		if (generalManager.isStandalone())
-		{			
+		{
 			loadingProgressBarWindow.setText(sText);
 			loadingProgressBarWindow.update();
 		}
 		else
 		{
-//			// If in RCP mode and the splash is already gone
-//			// a new progress bar has to be created
-//			if (loadingProgressBarWindow == null)
-//				createLoadingProgressBar();
-			
+			// // If in RCP mode and the splash is already gone
+			// // a new progress bar has to be created
+			// if (loadingProgressBarWindow == null)
+			// createLoadingProgressBar();
+
 			if (loadingProgressBarLabel.isDisposed())
 				return;
-			
+
 			loadingProgressBarLabel.setText(sText);
 			loadingProgressBarLabel.update();
 		}
@@ -310,7 +311,7 @@ implements ISWTGUIManager
 	{
 		if (loadingProgressBar.isDisposed())
 			return;
-		
+
 		loadingProgressBar.getDisplay().asyncExec(new Runnable()
 		{
 			public void run()
@@ -319,33 +320,33 @@ implements ISWTGUIManager
 			}
 		});
 	}
-	
+
 	public void setProgressBarVisible(final boolean state)
 	{
 		loadingProgressBarWindow.setVisible(state);
 		loadingProgressBar.setVisible(state);
 	}
-	
+
 	@Override
 	public void setExternalProgressBarAndLabel(ProgressBar progressBar, Label progressLabel)
 	{
 		this.loadingProgressBar = progressBar;
 		this.loadingProgressBarLabel = progressLabel;
 	}
-	
+
 	@Override
 	public void setExternalRCPStatusLine(IStatusLineManager statusLine, Display display)
 	{
 		this.display = display;
 		this.externalRCPStatusLine = statusLine;
 	}
-	
+
 	@Override
 	public void setExternalRCPStatusLineMessage(final String sMessage)
 	{
 		if (externalRCPStatusLine == null)
 			return;
-		
+
 		display.asyncExec(new Runnable()
 		{
 			public void run()

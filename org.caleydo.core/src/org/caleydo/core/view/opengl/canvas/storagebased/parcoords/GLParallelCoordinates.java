@@ -290,15 +290,17 @@ public class GLParallelCoordinates
 
 		gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
 
-//		if (detailLevel == EDetailLevel.HIGH)
-//		{
-//			gl.glTranslatef(fXDefaultTranslation - renderStyle.getXSpacing(), fYTranslation
-//					- renderStyle.getBottomSpacing(), 0.0f);
-//
-//		
-//			gl.glTranslatef(-fXDefaultTranslation + renderStyle.getXSpacing(), -fYTranslation
-//					+ renderStyle.getBottomSpacing(), 0.0f);
-//		}
+		// if (detailLevel == EDetailLevel.HIGH)
+		// {
+		// gl.glTranslatef(fXDefaultTranslation - renderStyle.getXSpacing(),
+		// fYTranslation
+		// - renderStyle.getBottomSpacing(), 0.0f);
+		//
+		//		
+		// gl.glTranslatef(-fXDefaultTranslation + renderStyle.getXSpacing(),
+		// -fYTranslation
+		// + renderStyle.getBottomSpacing(), 0.0f);
+		// }
 
 		gl.glDisable(GL.GL_STENCIL_TEST);
 	}
@@ -322,10 +324,10 @@ public class GLParallelCoordinates
 		// TODO we might not need that here!
 		// initLists();
 		initGates();
-		
+
 		setDisplayListDirty();
 	}
-	
+
 	public void triggerAngularBrushing()
 	{
 		bAngularBrushingSelectPolyline = true;
@@ -401,12 +403,13 @@ public class GLParallelCoordinates
 		resetSelections();
 		triggerUpdate(delta);
 	}
-	
+
 	/**
 	 * Initializes the array lists that contain the data. Must be run at program
 	 * start, every time you exchange axis and polylines and every time you
 	 * change storages or selections *
 	 */
+	@Override
 	protected void initLists()
 	{
 
@@ -749,11 +752,14 @@ public class GLParallelCoordinates
 
 						Rectangle2D bounds = textRenderer.getBounds(decimalFormat
 								.format(fNumber));
-						float fWidth = (float) bounds.getWidth() * renderStyle.getSmallFontScalingFactor();
-						float fHeightHalf = (float) bounds.getHeight() * renderStyle.getSmallFontScalingFactor() / 3;
-						
+						float fWidth = (float) bounds.getWidth()
+								* renderStyle.getSmallFontScalingFactor();
+						float fHeightHalf = (float) bounds.getHeight()
+								* renderStyle.getSmallFontScalingFactor() / 3;
+
 						renderNumber(fNumber, fXPosition - fWidth
-								- ParCoordsRenderStyle.AXIS_MARKER_WIDTH, fCurrentHeight - fHeightHalf);
+								- ParCoordsRenderStyle.AXIS_MARKER_WIDTH, fCurrentHeight
+								- fHeightHalf);
 					}
 					gl.glColor3fv(ParCoordsRenderStyle.Y_AXIS_COLOR, 0);
 					gl.glBegin(GL.GL_LINES);

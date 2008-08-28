@@ -11,7 +11,7 @@ public class PathwayDatabase
 	implements Serializable
 {
 	private static final String USER_HOME = "user.home";
-	
+
 	private static final long serialVersionUID = 1L;
 
 	private EPathwayDatabaseType type;
@@ -32,12 +32,12 @@ public class PathwayDatabase
 		this.sXMLPath = sXMLPath;
 		this.sImagePath = sImagePath;
 		this.sImageMapPath = sImageMapPath;
-		
+
 		String sUserHomePath = System.getProperty(USER_HOME);
-		
+
 		if (sXMLPath.startsWith(USER_HOME))
 			this.sXMLPath = sXMLPath.replace(USER_HOME, sUserHomePath);
-		
+
 		if (sImagePath.startsWith(USER_HOME))
 			this.sImagePath = sImagePath.replace(USER_HOME, sUserHomePath);
 

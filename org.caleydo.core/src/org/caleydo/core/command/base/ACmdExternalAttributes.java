@@ -12,7 +12,7 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
 public abstract class ACmdExternalAttributes
 	extends ACommand
 {
-	
+
 	/**
 	 * Unique Id of the object, that will be created.
 	 */
@@ -32,7 +32,7 @@ public abstract class ACmdExternalAttributes
 	protected String sAttribute4;
 
 	protected String sDetail = "";
-	
+
 	protected int iParentContainerId = -1;
 
 	/**
@@ -50,24 +50,19 @@ public abstract class ACmdExternalAttributes
 		super.setParameterHandler(parameterHandler);
 
 		iExternalID = parameterHandler.getValueInt(ECommandType.TAG_UNIQUE_ID.getXmlKey());
-		
+
 		sLabel = parameterHandler.getValueString(ECommandType.TAG_LABEL.getXmlKey());
-		
-		sAttribute1 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE1
-				.getXmlKey());
 
-		sAttribute2 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE2
-				.getXmlKey());
+		sAttribute1 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE1.getXmlKey());
 
-		sAttribute3 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE3
-				.getXmlKey());
+		sAttribute2 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE2.getXmlKey());
 
-		sAttribute4 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE4
-				.getXmlKey());
+		sAttribute3 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey());
+
+		sAttribute4 = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE4.getXmlKey());
 
 		sDetail = parameterHandler.getValueString(ECommandType.TAG_DETAIL.getXmlKey());
-		
-		iParentContainerId = parameterHandler.getValueInt(ECommandType.TAG_PARENT
-				.getXmlKey());
+
+		iParentContainerId = parameterHandler.getValueInt(ECommandType.TAG_PARENT.getXmlKey());
 	}
 }

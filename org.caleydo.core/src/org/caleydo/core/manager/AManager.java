@@ -18,7 +18,7 @@ public abstract class AManager<T extends IUniqueObject>
 	implements IManager<T>
 {
 	protected IGeneralManager generalManager;
-	
+
 	protected HashMap<Integer, T> hashItems;
 
 	/**
@@ -27,19 +27,19 @@ public abstract class AManager<T extends IUniqueObject>
 	protected AManager()
 	{
 		generalManager = GeneralManager.get();
-		
+
 		hashItems = new HashMap<Integer, T>();
 	}
-	
+
 	@Override
 	public T getItem(int iItemID)
 	{
 		if (!hasItem(iItemID))
 		{
-			throw new CaleydoRuntimeException("Requested item with ID " +iItemID + " does not exist!", 
-					CaleydoRuntimeExceptionType.MANAGER);
+			throw new CaleydoRuntimeException("Requested item with ID " + iItemID
+					+ " does not exist!", CaleydoRuntimeExceptionType.MANAGER);
 		}
-		
+
 		return hashItems.get(iItemID);
 	}
 
@@ -64,13 +64,13 @@ public abstract class AManager<T extends IUniqueObject>
 	@Override
 	public void unregisterItem(int iItemID)
 	{
-		hashItems.remove(iItemID);		
+		hashItems.remove(iItemID);
 	}
-	
+
 	@Override
 	public Collection<T> getAllItems()
 	{
 		return hashItems.values();
 	}
-	
+
 }

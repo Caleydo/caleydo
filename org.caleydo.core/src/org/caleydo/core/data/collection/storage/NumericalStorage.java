@@ -1,6 +1,5 @@
 package org.caleydo.core.data.collection.storage;
 
-import javax.management.InvalidAttributeValueException;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ccontainer.INumericalCContainer;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -33,8 +32,8 @@ public class NumericalStorage
 
 		INumericalCContainer rawStorage = (INumericalCContainer) hashCContainers
 				.get(EDataRepresentation.RAW);
-		INumericalCContainer normalizedStorage = (INumericalCContainer) rawStorage
-				.normalizeWithExternalExtrema(dMin, dMax);
+		INumericalCContainer normalizedStorage = rawStorage.normalizeWithExternalExtrema(dMin,
+				dMax);
 
 		hashCContainers.put(EDataRepresentation.NORMALIZED, normalizedStorage);
 	}

@@ -6,7 +6,6 @@ package org.caleydo.core.data.map;
 // import java.util.ArrayList;
 // import java.util.Map;
 
-
 /**
  * This is simply a Map with slightly different semantics. Instead of returning
  * an Object, it returns a Collection with Integer. So for example, you can put(

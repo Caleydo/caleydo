@@ -154,7 +154,7 @@ public class HeatMapRenderStyle
 		else
 		{
 			fNormalFieldWidth = (getRenderHeight() - iNumberSelected * fSelectedFieldWidth)
-			/ (iNumberTotal - iNumberSelected);
+					/ (iNumberTotal - iNumberSelected);
 			fFieldHeight = (getRenderWidth() / set.getVA(iStorageVAID).size());
 		}
 

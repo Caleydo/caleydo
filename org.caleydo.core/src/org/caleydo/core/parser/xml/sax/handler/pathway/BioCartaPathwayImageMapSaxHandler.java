@@ -196,7 +196,7 @@ public class BioCartaPathwayImageMapSaxHandler
 			// TODO: How to handle this case?
 			generalManager.getLogger().log(Level.FINE,
 					"Cannot map BioCarta ID " + sName + " to David ID");
-			
+
 			return;
 		}
 

@@ -43,7 +43,8 @@ public final class LookupTableLoaderProxy
 			case INT2STRING:
 			case STRING2INT:
 			case STRING2STRING:
-				proxyLookupTableLoader = new LookupTableHashMapLoader(sFileName, genomeIdType, this);
+				proxyLookupTableLoader = new LookupTableHashMapLoader(sFileName, genomeIdType,
+						this);
 
 				genomeIdManager.createMapByType(genomeIdType, type);
 
@@ -54,9 +55,11 @@ public final class LookupTableLoaderProxy
 				break;
 
 			case MULTI_INT2INT:
-				proxyLookupTableLoader = new LookupTableMultiMapIntLoader(sFileName, genomeIdType, this);
+				proxyLookupTableLoader = new LookupTableMultiMapIntLoader(sFileName,
+						genomeIdType, this);
 
-				genomeIdManager.createMapByType(genomeIdType, type);// genomeIdType.
+				genomeIdManager.createMapByType(genomeIdType, type);// genomeIdType
+																	// .
 				// getDataMapppingType()
 				// );
 
@@ -86,9 +89,11 @@ public final class LookupTableLoaderProxy
 			// break;
 
 			case MULTI_STRING2STRING:
-				proxyLookupTableLoader = new LookupTableMultiMapStringLoader(sFileName, genomeIdType, this);
+				proxyLookupTableLoader = new LookupTableMultiMapStringLoader(sFileName,
+						genomeIdType, this);
 
-				genomeIdManager.createMapByType(genomeIdType, type);// genomeIdType.
+				genomeIdManager.createMapByType(genomeIdType, type);// genomeIdType
+																	// .
 				// getDataMapppingType()
 				// );
 
@@ -117,11 +122,9 @@ public final class LookupTableLoaderProxy
 			throws IOException
 	{
 		swtGuiManager.setProgressBarPercentage(0);
-		swtGuiManager.setProgressBarText(
-				"Loading mapping from file " + getFileName());
+		swtGuiManager.setProgressBarText("Loading mapping from file " + getFileName());
 
-		proxyLookupTableLoader.loadDataParseFileLUT(brFile,
-				iNumberOfLinesInFile);
+		proxyLookupTableLoader.loadDataParseFileLUT(brFile, iNumberOfLinesInFile);
 	}
 
 	@Override
@@ -130,14 +133,11 @@ public final class LookupTableLoaderProxy
 		proxyLookupTableLoader.wirteBackMapToGenomeIdManager();
 	}
 
-
-
 	@Override
 	public void init()
 	{
 
 	}
-
 
 	public void destroy()
 	{
@@ -145,8 +145,7 @@ public final class LookupTableLoaderProxy
 		proxyLookupTableLoader.destroyLUT();
 	}
 
-	public final IGenomeIdMap createReverseMapFromMap(
-			final EMappingType originMultiMapType,
+	public final IGenomeIdMap createReverseMapFromMap(final EMappingType originMultiMapType,
 			final EMappingType targetMultiMapType)
 	{
 
@@ -159,7 +158,7 @@ public final class LookupTableLoaderProxy
 		}
 
 		IGenomeIdManager genomeIDManager = GeneralManager.get().getGenomeIdManager();
-		
+
 		IGenomeIdMap origionMap = genomeIDManager.getMapByType(originMultiMapType);
 		IGenomeIdMap targetMap = origionMap.getReversedMap();
 

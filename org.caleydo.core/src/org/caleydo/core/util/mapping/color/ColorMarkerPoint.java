@@ -1,6 +1,5 @@
 package org.caleydo.core.util.mapping.color;
 
-
 /**
  * <p>
  * A point that represents an inflection point in a color range. For example,
@@ -15,7 +14,7 @@ package org.caleydo.core.util.mapping.color;
  * 
  */
 public class ColorMarkerPoint
-implements Comparable<ColorMarkerPoint>
+	implements Comparable<ColorMarkerPoint>
 {
 	private float fValue;
 	private float[] fArColor;
@@ -81,7 +80,7 @@ implements Comparable<ColorMarkerPoint>
 	{
 		return fArColor;
 	}
-	
+
 	private void init(float fValue, float[] fArColor)
 	{
 		if (fArColor.length != 3)

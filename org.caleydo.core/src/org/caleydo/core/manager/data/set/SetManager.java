@@ -24,7 +24,7 @@ public class SetManager
 	{
 		ISet set = new Set();
 		set.setSetType(type);
-		
+
 		return set;
 	}
 }

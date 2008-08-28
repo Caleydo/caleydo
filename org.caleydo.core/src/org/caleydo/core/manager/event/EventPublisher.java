@@ -110,13 +110,13 @@ public class EventPublisher
 				newMediator = new LockableMediator(MediatorUpdateType.MEDIATOR_DEFAULT);
 				break;
 
-//			case MEDIATOR_FILTER_ONLY_SET:
-//				newMediator = new LockableExclusivFilterMediator(null);
-//				break;
-//
-//			case MEDIATOR_FILTER_ALL_EXPECT_SET:
-//				newMediator = new LockableIgnoreFilterMediator(null);
-//				break;
+			// case MEDIATOR_FILTER_ONLY_SET:
+			// newMediator = new LockableExclusivFilterMediator(null);
+			// break;
+			//
+			// case MEDIATOR_FILTER_ALL_EXPECT_SET:
+			// newMediator = new LockableIgnoreFilterMediator(null);
+			// break;
 			default:
 				throw new CaleydoRuntimeException("Unknown mediator type " + mediatorType,
 						CaleydoRuntimeExceptionType.EVENT);
@@ -142,11 +142,11 @@ public class EventPublisher
 			int iCurrentSenderId = iterSenderIDs.next();
 			IMediatorSender sender = (IMediatorSender) GeneralManager.get()
 					.getViewGLCanvasManager().getGLEventListener(iCurrentSenderId);
-			
+
 			if (sender == null)
 			{
-				sender = (IMediatorSender) GeneralManager.get()
-					.getViewGLCanvasManager().getItem(iCurrentSenderId);
+				sender = (IMediatorSender) GeneralManager.get().getViewGLCanvasManager()
+						.getItem(iCurrentSenderId);
 			}
 
 			newMediator.register(sender);
@@ -313,7 +313,7 @@ public class EventPublisher
 		}
 
 		// Dont't do anything if sender is not registered
-		if (!hashSender2DataMediators.containsKey((IMediatorSender) eventTrigger))
+		if (!hashSender2DataMediators.containsKey(eventTrigger))
 		{
 			// assert false : "Sender is not registered and calls update(); " +
 			// eventTrigger.toString() + "]";
@@ -322,8 +322,7 @@ public class EventPublisher
 			return;
 		}
 
-		ArrayList<IMediator> arMediators = hashSender2DataMediators
-				.get((IMediatorSender) eventTrigger);
+		ArrayList<IMediator> arMediators = hashSender2DataMediators.get(eventTrigger);
 
 		Iterator<IMediator> iterMediators = arMediators.iterator();
 
@@ -356,8 +355,7 @@ public class EventPublisher
 			return;
 		}
 
-		ArrayList<IMediator> arMediators = hashSender2SelectionMediators
-				.get((IMediatorSender) eventTrigger);
+		ArrayList<IMediator> arMediators = hashSender2SelectionMediators.get(eventTrigger);
 
 		if (arMediators == null)
 		{

@@ -29,6 +29,7 @@ public class SwtJoglGLCanvasViewRep
 		super(iParentContainerId, sLabel, ViewType.SWT_JOGL);
 	}
 
+	@Override
 	public void initViewSwtComposite(Composite swtContainer)
 	{
 
@@ -44,21 +45,22 @@ public class SwtJoglGLCanvasViewRep
 
 		gLCanvas = sWTEmbeddedJoglWidget.getGLCanvas();
 		iGLCanvasID = gLCanvas.getID();
-		
+
 		IViewGLCanvasManager canvasManager = generalManager.getViewGLCanvasManager();
 
 		// Register GL canvas to view manager
 		canvasManager.registerGLCanvas(gLCanvas);
 	}
 
+	@Override
 	public final void initView()
 	{
 	}
-	
+
 	public void drawView()
 	{
 	}
-	
+
 	public int getGLCanvasID()
 	{
 		return iGLCanvasID;

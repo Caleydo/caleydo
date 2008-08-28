@@ -30,9 +30,9 @@ public class CmdDataCreateSelection
 	@Override
 	public void doCommand() throws CaleydoRuntimeException
 	{
-		
+
 		createdObject = new SelectionDelta(idType, internalIDType);
-		
+
 		commandManager.runDoCommand(this);
 	}
 
@@ -41,20 +41,22 @@ public class CmdDataCreateSelection
 	{
 		commandManager.runUndoCommand(this);
 	}
-	
+
 	/**
-	 * Set attributes for object to be constructed, see {@link SelectionDelta#SelectionDelta(EIDType)}
-	 *
+	 * Set attributes for object to be constructed, see
+	 * {@link SelectionDelta#SelectionDelta(EIDType)}
+	 * 
 	 * @param idType see Constructor
 	 */
 	public void setAttributes(EIDType idType)
 	{
 		this.idType = idType;
 	}
-	
+
 	/**
-	 * Set attributes for object to be constructed, see {@link SelectionDelta#SelectionDelta(EIDType, EIDType)}
-	 *
+	 * Set attributes for object to be constructed, see
+	 * {@link SelectionDelta#SelectionDelta(EIDType, EIDType)}
+	 * 
 	 * @param idType see Constructor
 	 * @param internalIDType see Constructor
 	 */
@@ -62,5 +64,5 @@ public class CmdDataCreateSelection
 	{
 		this.internalIDType = internalIDType;
 	}
-	
+
 }

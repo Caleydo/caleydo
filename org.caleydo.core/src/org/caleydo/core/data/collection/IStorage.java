@@ -175,9 +175,10 @@ public interface IStorage
 	 * @return the Number
 	 */
 	public Number getNumberVA(EDataRepresentation storageKind, int iIndex, int iUniqueID);
-	
+
 	/**
-	 * Returns an iterator on the representation chosen in storageKind via a virtual array
+	 * Returns an iterator on the representation chosen in storageKind via a
+	 * virtual array
 	 * 
 	 * @param storageKind specifies which kind of storage (eg: raw, normalized)
 	 * @param iUniqueID the unique id associated with the virtual array

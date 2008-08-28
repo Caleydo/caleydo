@@ -98,6 +98,7 @@ public class ViewGLCanvasManager
 		arWorkspaceJFrame = new ArrayList<JFrame>();
 	}
 
+	@Override
 	public boolean hasItem(int iItemId)
 	{
 
@@ -112,21 +113,22 @@ public class ViewGLCanvasManager
 
 		return false;
 	}
-	
+
 	public GLCaleydoCanvas getCanvas(int iItemID)
 	{
 		return hashGLCanvasID2GLCanvas.get(iItemID);
 	}
-	
+
 	public AGLEventListener getGLEventListener(int iItemID)
 	{
 		return hashGLEventListenerID2GLEventListener.get(iItemID);
-	}	
+	}
 
+	@Override
 	public void registerItem(IView view)
 	{
 		super.registerItem(view);
-	
+
 		switch (view.getViewType())
 		{
 			case SWT_DATA_EXPLORER:
@@ -135,15 +137,15 @@ public class ViewGLCanvasManager
 				break;
 
 			// default: // do nothing
-		} 
+		}
 	}
 
 	@Override
-	public IView createView(final EManagedObjectType type, 
-			final int iParentContainerID, final String sLabel)
+	public IView createView(final EManagedObjectType type, final int iParentContainerID,
+			final String sLabel)
 	{
 		IView view = null;
-		
+
 		switch (type)
 		{
 			case VIEW:
@@ -189,7 +191,7 @@ public class ViewGLCanvasManager
 		}
 
 		registerItem(view);
-		
+
 		return view;
 	}
 
@@ -198,7 +200,7 @@ public class ViewGLCanvasManager
 			final int iParentContainerID, final String sLabel)
 	{
 		IView view = null;
-		
+
 		switch (useViewType)
 		{
 			case VIEW_GL_CANVAS:
@@ -206,13 +208,12 @@ public class ViewGLCanvasManager
 				break;
 
 			default:
-				throw new CaleydoRuntimeException(
-						"Unhandled view type ["
-								+ useViewType.toString() + "]");
+				throw new CaleydoRuntimeException("Unhandled view type ["
+						+ useViewType.toString() + "]");
 		}
-		
+
 		registerItem(view);
-		
+
 		return view;
 	}
 
@@ -235,73 +236,64 @@ public class ViewGLCanvasManager
 	}
 
 	@Override
-	public AGLEventListener createGLEventListener(ECommandType type,
-			final int iGLCanvasID, final String sLabel,
-			final IViewFrustum viewFrustum)
+	public AGLEventListener createGLEventListener(ECommandType type, final int iGLCanvasID,
+			final String sLabel, final IViewFrustum viewFrustum)
 	{
 		GeneralManager.get().getLogger().log(
 				Level.INFO,
-				"Creating GL canvas view from type: [" + type + "] and label: [" + sLabel + "]");
+				"Creating GL canvas view from type: [" + type + "] and label: [" + sLabel
+						+ "]");
 
 		AGLEventListener glEventListener = null;
-		
+
 		switch (type)
 		{
 			case CREATE_GL_HEAT_MAP_3D:
-				glEventListener = new GLHeatMap(iGLCanvasID, sLabel,
-						viewFrustum);
+				glEventListener = new GLHeatMap(iGLCanvasID, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_PATHWAY_3D:
-				glEventListener = new GLPathway(iGLCanvasID,
-						sLabel, viewFrustum);
+				glEventListener = new GLPathway(iGLCanvasID, sLabel, viewFrustum);
 				break;
-				
+
 			case CREATE_GL_PARALLEL_COORDINATES_3D:
-				glEventListener = new GLParallelCoordinates(iGLCanvasID,
-						sLabel, viewFrustum);
+				glEventListener = new GLParallelCoordinates(iGLCanvasID, sLabel, viewFrustum);
 				break;
-				
+
 			case CREATE_GL_GLYPH:
-				glEventListener = new GLGlyph(iGLCanvasID, sLabel,
-						viewFrustum);
+				glEventListener = new GLGlyph(iGLCanvasID, sLabel, viewFrustum);
 				break;
-				
+
 			case CREATE_GL_GLYPH_SLIDER:
-				glEventListener = new GLCanvasGlyphSliderView(iGLCanvasID, sLabel,
-						viewFrustum);
+				glEventListener = new GLCanvasGlyphSliderView(iGLCanvasID, sLabel, viewFrustum);
 				break;
-				
+
 			case CREATE_GL_BUCKET_3D:
-				glEventListener = new GLRemoteRendering(iGLCanvasID, 
-						sLabel, viewFrustum,
+				glEventListener = new GLRemoteRendering(iGLCanvasID, sLabel, viewFrustum,
 						ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET);
 				break;
-				
+
 			case CREATE_GL_JUKEBOX_3D:
-				glEventListener = new GLRemoteRendering(iGLCanvasID,
-						sLabel, viewFrustum,
+				glEventListener = new GLRemoteRendering(iGLCanvasID, sLabel, viewFrustum,
 						ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX);
 				break;
-				
+
 			case CREATE_GL_WII_TEST:
-				glEventListener = new GLCanvasWiiTest(iGLCanvasID, sLabel,
-						viewFrustum);
+				glEventListener = new GLCanvasWiiTest(iGLCanvasID, sLabel, viewFrustum);
 				break;
-				
+
 			case CREATE_GL_REMOTE_GLYPH:
-				glEventListener = new GLCanvasRemoteGlyph(iGLCanvasID,
-						sLabel, viewFrustum);
+				glEventListener = new GLCanvasRemoteGlyph(iGLCanvasID, sLabel, viewFrustum);
 				break;
-				
+
 			default:
 				throw new CaleydoRuntimeException(
 						"ViewJoglManager.createGLCanvasUser() failed due to unhandled type ["
 								+ type.toString() + "]");
 		}
-		
+
 		registerGLEventListenerByGLCanvasID(iGLCanvasID, glEventListener);
-		
+
 		return glEventListener;
 	}
 
@@ -309,12 +301,15 @@ public class ViewGLCanvasManager
 	public boolean registerGLCanvas(final GLCaleydoCanvas glCanvas)
 	{
 		int iGLCanvasID = glCanvas.getID();
-		
+
 		if (hashGLCanvasID2GLCanvas.containsKey(iGLCanvasID))
 		{
-			generalManager.getLogger().log(Level.WARNING, "GL Canvas with ID " 
-					+iGLCanvasID + " is already registered! Do nothing.");
-			
+			generalManager.getLogger()
+					.log(
+							Level.WARNING,
+							"GL Canvas with ID " + iGLCanvasID
+									+ " is already registered! Do nothing.");
+
 			return false;
 		}
 
@@ -340,14 +335,14 @@ public class ViewGLCanvasManager
 	public void registerGLEventListenerByGLCanvasID(final int iGLCanvasID,
 			final AGLEventListener gLEventListener)
 	{
-		hashGLEventListenerID2GLEventListener.put(((AGLEventListener) gLEventListener).getID(),
-				gLEventListener);
+		hashGLEventListenerID2GLEventListener.put((gLEventListener).getID(), gLEventListener);
 
 		if (iGLCanvasID == -1)
 			return;
 
 		if (!hashGLCanvasID2GLEventListeners.containsKey(iGLCanvasID))
-			hashGLCanvasID2GLEventListeners.put(iGLCanvasID, new ArrayList<AGLEventListener>());
+			hashGLCanvasID2GLEventListeners
+					.put(iGLCanvasID, new ArrayList<AGLEventListener>());
 
 		hashGLCanvasID2GLEventListeners.get(iGLCanvasID).add(gLEventListener);
 	}
@@ -402,7 +397,7 @@ public class ViewGLCanvasManager
 					// arDataExplorerViewRep.add( (DataExplorerViewRep) view);
 					return;
 				case SWT_HTML_BROWSER:
-					arHTMLBrowserViewRep.add((HTMLBrowserViewRep) view);
+					arHTMLBrowserViewRep.add(view);
 					return;
 				case SWT_DATA_ENTITY_SEARCHER:
 					dataEntitySearcher = (DataEntitySearcherViewRep) view;

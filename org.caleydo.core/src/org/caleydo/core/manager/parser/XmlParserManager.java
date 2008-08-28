@@ -38,7 +38,7 @@ public class XmlParserManager
 	private int iCountOpenedFiles = 0;
 
 	protected boolean bUnloadSaxHandlerAfterBootstraping = false;
-	
+
 	@Override
 	public void initHandlers()
 	{
@@ -54,12 +54,13 @@ public class XmlParserManager
 		registerAndInitSaxHandler(pathwayImageMapParser);
 		registerAndInitSaxHandler(biocartaPathwayParser);
 		registerAndInitSaxHandler(cmdHandler);
-		registerAndInitSaxHandler(glyphHandler);		
+		registerAndInitSaxHandler(glyphHandler);
 	}
 
 	/**
 	 * @see org.xml.sax.ContentHandler#startDocument()
 	 */
+	@Override
 	public final void startDocument() throws SAXException
 	{
 
@@ -69,6 +70,7 @@ public class XmlParserManager
 	/**
 	 * @see org.xml.sax.ContentHandler#endDocument()
 	 */
+	@Override
 	public final void endDocument() throws SAXException
 	{
 

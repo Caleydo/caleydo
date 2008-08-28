@@ -34,12 +34,18 @@ public interface ISWTGUIManager
 	public void runApplication();
 
 	public void setProgressBarPercentage(int iPercentage);
+
 	public void setProgressBarPercentageFromExternalThread(int iPercentage);
+
 	public void setProgressBarText(String sText);
+
 	public void setProgressBarTextFromExternalThread(final String sText);
+
 	public void setProgressBarVisible(final boolean state);
+
 	public void setExternalProgressBarAndLabel(ProgressBar progressBar, Label progressLabel);
 
 	public void setExternalRCPStatusLineMessage(final String sMessage);
+
 	public void setExternalRCPStatusLine(IStatusLineManager statusLine, Display display);
 }

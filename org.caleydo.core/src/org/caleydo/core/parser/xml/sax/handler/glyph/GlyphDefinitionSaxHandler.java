@@ -37,6 +37,7 @@ public class GlyphDefinitionSaxHandler
 		setXmlActivationTag("glyphview");
 	}
 
+	@Override
 	public void startElement(String namespaceURI, String sSimpleName, String sQualifiedName,
 			Attributes attributes) throws SAXException
 	{
@@ -122,6 +123,7 @@ public class GlyphDefinitionSaxHandler
 		}
 	}
 
+	@Override
 	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName)
 			throws SAXException
 	{
@@ -405,7 +407,7 @@ public class GlyphDefinitionSaxHandler
 
 		for (int i = imin; i < imax; i += iint)
 		{
-			gatActualColumn.addAttribute(i - imin, Integer.toString(i), (float) i);
+			gatActualColumn.addAttribute(i - imin, Integer.toString(i), i);
 		}
 
 	}
@@ -506,6 +508,7 @@ public class GlyphDefinitionSaxHandler
 	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler#destroyHandler()
 	 * @see org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler#destroyHandler()
 	 */
+	@Override
 	public void destroyHandler()
 	{
 

@@ -69,7 +69,6 @@ public abstract class AXmlParserHandler
 		this.bDestroyHandlerAfterClosingTag = setHandlerDestoryedAfterClosingTag;
 	}
 
-
 	/**
 	 * Sends init message to logger.
 	 * 

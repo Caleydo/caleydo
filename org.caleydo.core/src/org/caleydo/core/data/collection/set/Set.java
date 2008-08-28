@@ -3,8 +3,6 @@ package org.caleydo.core.data.collection.set;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import javax.management.InvalidAttributeValueException;
-import javax.naming.OperationNotSupportedException;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.INominalStorage;
@@ -39,7 +37,7 @@ public class Set
 	private double dMin = Double.MAX_VALUE;
 
 	private double dMax = Double.MIN_VALUE;
-	
+
 	private int iDepth = 0;
 
 	private ERawDataType rawDataType;
@@ -116,11 +114,11 @@ public class Set
 				throw new CaleydoRuntimeException(
 						"All storages in a set must be of the same basic type (nunmerical or nominal)",
 						CaleydoRuntimeExceptionType.DATAHANDLING);
-			if(rawDataType != storage.getRawDataType())
+			if (rawDataType != storage.getRawDataType())
 				throw new CaleydoRuntimeException(
 						"All storages in a set must have the same raw data type",
 						CaleydoRuntimeExceptionType.DATAHANDLING);
-			if(iDepth != storage.size())
+			if (iDepth != storage.size())
 				throw new CaleydoRuntimeException(
 						"All storages in a set must be of the same length",
 						CaleydoRuntimeExceptionType.DATAHANDLING);
@@ -201,7 +199,7 @@ public class Set
 							CaleydoRuntimeExceptionType.DATAHANDLING);
 				}
 				// FIXME baaaaaad
-				catch(IllegalArgumentException e)
+				catch (IllegalArgumentException e)
 				{
 					throw new CaleydoRuntimeException(
 							"Caught InvalidAttributeValueException with automatically calculated values. "
@@ -401,8 +399,8 @@ public class Set
 		}
 		else if (alStorages.get(0) instanceof INominalStorage)
 		{
-			throw new UnsupportedOperationException(
-					"No minimum or maximum can be calculated " + "on nominal data");
+			throw new UnsupportedOperationException("No minimum or maximum can be calculated "
+					+ "on nominal data");
 
 		}
 	}

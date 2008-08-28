@@ -45,8 +45,7 @@ public class InformationContentCreator
 	 * @param eInputDataTypes
 	 * @return
 	 */
-	ArrayList<String> getStringContentForID(final int iUniqueID,
-			final EIDType eInputDataTypes)
+	ArrayList<String> getStringContentForID(final int iUniqueID, final EIDType eInputDataTypes)
 	{
 
 		sContent.clear();
@@ -83,8 +82,7 @@ public class InformationContentCreator
 
 			case PATHWAY:
 
-				PathwayGraph pathway = ((PathwayGraph) generalManager.getPathwayManager()
-						.getItem(iUniqueID));
+				PathwayGraph pathway = (generalManager.getPathwayManager().getItem(iUniqueID));
 
 				if (pathway == null)
 				{

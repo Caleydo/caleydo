@@ -123,7 +123,7 @@ public class BitmapLoader
 		{
 			for (int i8 = 0; i8 < nWidth; i8++)
 			{
-				bankData[0][j8 * nWidth + i8] = npalette[((int) bdata[nindex8] & 0xff)];
+				bankData[0][j8 * nWidth + i8] = npalette[(bdata[nindex8] & 0xff)];
 				nindex8++;
 			}
 			nindex8 += npad8;

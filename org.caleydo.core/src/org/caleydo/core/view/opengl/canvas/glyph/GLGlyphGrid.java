@@ -325,9 +325,9 @@ public class GLGlyphGrid
 		float incx = (float) maxx / (float) (xaxisdescription.size());
 		float incy = (float) maxy / (float) (yaxisdescription.size());
 		float linex = (yaxisdescription.size()) * incy; // we always get NAV
-														// first
+		// first
 		float liney = (xaxisdescription.size()) * incx; // we always get NAV
-														// first
+		// first
 
 		// if(incx<1.0f) incx = 1.0f;
 		// if(incy<1.0f) incy = 1.0f;
@@ -456,10 +456,11 @@ public class GLGlyphGrid
 				float y1t = (float) (java.lang.Math.sin(a2) * c);
 
 				/*
-				 * gl.glTranslatef(x1t, y1t, 0f); GLHelperFunctions.drawAxis(gl);
-				 * gl.glTranslatef(-x1t, -y1t, 0f); System.out.println(x1 +
-				 * "          " + y1 + "          " + a1 + "          " + a2 +
-				 * "          " + c + "          " + x1t + "          " + y1t);
+				 * gl.glTranslatef(x1t, y1t, 0f);
+				 * GLHelperFunctions.drawAxis(gl); gl.glTranslatef(-x1t, -y1t,
+				 * 0f); System.out.println(x1 + "          " + y1 + "          "
+				 * + a1 + "          " + a2 + "          " + c + "          " +
+				 * x1t + "          " + y1t);
 				 */
 
 				double dist = 10000000000000.0;
@@ -498,8 +499,9 @@ public class GLGlyphGrid
 		 * = iv.values().iterator(); while(it2.hasNext()) { Vec2i pos1 =
 		 * it2.next(); Vec2i pos =
 		 * glyphMap_.get(pos1.x()).get(pos1.y()).getGridPosition();
-		 * gl.glTranslatef(pos.x(), pos.y(), 0f); GLHelperFunctions.drawAxis(gl);
-		 * gl.glTranslatef(-pos.x(), -pos.y(), 0f); } }
+		 * gl.glTranslatef(pos.x(), pos.y(), 0f);
+		 * GLHelperFunctions.drawAxis(gl); gl.glTranslatef(-pos.x(), -pos.y(),
+		 * 0f); } }
 		 */
 
 		gl.glEndList();

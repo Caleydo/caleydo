@@ -7,15 +7,15 @@ import org.caleydo.core.data.selection.IVirtualArray;
  * Base class for CContainer which can use Generics
  * 
  * @author Alexander Lex
- *
+ * 
  * @param <T> the Type of the container
  */
 
 public abstract class ATypedCContainer<T>
-implements ICContainer
+	implements ICContainer
 {
 	ArrayList<T> alContainer;
-	
+
 	/**
 	 * Returns the element of type T at the index iIndex
 	 * 
@@ -26,13 +26,13 @@ implements ICContainer
 	{
 		return alContainer.get(iIndex);
 	}
-	
+
 	@Override
 	public int size()
 	{
 		return alContainer.size();
 	}
-	
+
 	/**
 	 * Returns an iterator on the data Do not use the iterators remove, add or
 	 * set function, since it will cause an UnsupportedOperationException.
@@ -44,7 +44,6 @@ implements ICContainer
 		return new ContainerIterator<T>(this, alContainer.listIterator());
 	}
 
-	
 	/**
 	 * Returns an iterator on the container which iterates based on a virtual
 	 * array

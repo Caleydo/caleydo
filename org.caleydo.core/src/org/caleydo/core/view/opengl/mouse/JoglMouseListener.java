@@ -3,6 +3,7 @@ package org.caleydo.core.view.opengl.mouse;
 import gleem.linalg.Vec3f;
 import java.awt.Dimension;
 import java.awt.Point;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -133,14 +134,14 @@ public class JoglMouseListener
 		pressedMousePosition.y = prevMouseY;
 
 		/* --- Left -- Mouse Button --- */
-		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)
+		if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0)
 		{
 			// System.err.println(" -- Left --");
 			this.bMouseLeftButtonDown = true;
 		}
 
 		/* --- Right -- Mouse Button --- */
-		if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0)
+		if ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0)
 		{
 			// System.err.println(" -- Right --");
 
@@ -165,7 +166,7 @@ public class JoglMouseListener
 		}
 
 		/* --- Middle -- Mouse Button --- */
-		if ((e.getModifiers() & MouseEvent.BUTTON2_MASK) != 0)
+		if ((e.getModifiers() & InputEvent.BUTTON2_MASK) != 0)
 		{
 			bMouseMiddleButtonDown = true;
 			// System.err.println(" -- Middle --");
@@ -190,7 +191,7 @@ public class JoglMouseListener
 	public void mouseReleased(MouseEvent e)
 	{
 
-		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)
+		if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0)
 		{
 			bMouseLeft_StandbyZoom = false;
 			bMouseMiddleButtonDown = false;
@@ -206,7 +207,7 @@ public class JoglMouseListener
 			}
 		}
 
-		if ((e.getModifiers() & MouseEvent.BUTTON3_MASK) != 0)
+		if ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0)
 		{
 
 			if (bMouseLeft_StandbyZoom)
@@ -229,7 +230,7 @@ public class JoglMouseListener
 			}
 		}
 
-		if ((e.getModifiers() & MouseEvent.BUTTON2_MASK) != 0)
+		if ((e.getModifiers() & InputEvent.BUTTON2_MASK) != 0)
 		{
 			bMouseMiddleButtonDown = false;
 		}
@@ -286,8 +287,8 @@ public class JoglMouseListener
 				/**
 				 * --- ZOOMING ---
 				 */
-				float zoomX = fZoomScale * (float) (x - prevMouseX);
-				float zoomY = fZoomScale * (float) (prevMouseY - y);
+				float zoomX = fZoomScale * (x - prevMouseX);
+				float zoomY = fZoomScale * (prevMouseY - y);
 
 				/* take abs(zoomX) */
 				if ((zoomX < 0.0f) && (zoomY > 0.0f))

@@ -5,7 +5,6 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import gleem.linalg.open.Transform;
 import java.awt.Font;
-import java.awt.event.MouseWheelListener;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -41,7 +40,6 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.mapping.PathwayColorMapper;
 import org.caleydo.core.util.slerp.SlerpAction;
 import org.caleydo.core.util.slerp.SlerpMod;
 import org.caleydo.core.util.system.SystemTime;
@@ -158,8 +156,8 @@ public class GLRemoteRendering
 	/**
 	 * Constructor.
 	 */
-	public GLRemoteRendering(final int iGLCanvasID, 
-			final String sLabel, final IViewFrustum viewFrustum,
+	public GLRemoteRendering(final int iGLCanvasID, final String sLabel,
+			final IViewFrustum viewFrustum,
 			final ARemoteViewLayoutRenderStyle.LayoutMode layoutMode)
 	{
 		super(iGLCanvasID, sLabel, viewFrustum, true);
@@ -176,7 +174,7 @@ public class GLRemoteRendering
 			// Unregister standard mouse wheel listener
 			parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
 			// Register specialized bucket mouse wheel listener
-			parentGLCanvas.addMouseWheelListener((MouseWheelListener) bucketMouseWheelListener);
+			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
 
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX))
@@ -310,8 +308,7 @@ public class GLRemoteRendering
 
 		// If user zooms to the bucket bottom all but the under
 		// interaction layer is _not_ rendered.
-		if (bucketMouseWheelListener == null
-				|| !bucketMouseWheelListener.isZoomedIn())
+		if (bucketMouseWheelListener == null || !bucketMouseWheelListener.isZoomedIn())
 		{
 			glConnectionLineRenderer.render(gl);
 
@@ -346,8 +343,8 @@ public class GLRemoteRendering
 	private void retrieveContainedViews(final GL gl)
 	{
 
-		for (AGLEventListener tmpGLEventListener : generalManager
-				.getViewGLCanvasManager().getAllGLEventListeners())
+		for (AGLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
+				.getAllGLEventListeners())
 		{
 			// Ignore pathway views upon startup
 			// because they will be activated when pathway loader thread has
@@ -357,7 +354,7 @@ public class GLRemoteRendering
 				continue;
 			}
 
-			int iViewID = ((AGLEventListener) tmpGLEventListener).getID();
+			int iViewID = (tmpGLEventListener).getID();
 
 			if (underInteractionLayer.containsElement(-1))
 			{
@@ -366,10 +363,10 @@ public class GLRemoteRendering
 
 				tmpGLEventListener.initRemote(gl, iUniqueID, underInteractionLayer,
 						pickingTriggerMouseAdapter, this);
-				
+
 				tmpGLEventListener.broadcastElements(ESelectionType.NORMAL);
 				tmpGLEventListener.setDetailLevel(EDetailLevel.MEDIUM);
-				
+
 				generalManager.getGUIBridge().setActiveGLSubView(this, tmpGLEventListener);
 
 			}
@@ -380,7 +377,7 @@ public class GLRemoteRendering
 
 				tmpGLEventListener.initRemote(gl, iUniqueID, stackLayer,
 						pickingTriggerMouseAdapter, this);
-				
+
 				tmpGLEventListener.broadcastElements(ESelectionType.NORMAL);
 				tmpGLEventListener.setDetailLevel(EDetailLevel.LOW);
 			}
@@ -405,12 +402,10 @@ public class GLRemoteRendering
 
 			ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
 			arMediatorIDs.add(iViewID);
-			generalManager.getEventPublisher()
-					.addSendersAndReceiversToMediator(
-							generalManager.getEventPublisher().getItem(
-									iBucketEventMediatorID), arMediatorIDs, arMediatorIDs,
-							MediatorType.SELECTION_MEDIATOR,
-							MediatorUpdateType.MEDIATOR_DEFAULT);
+			generalManager.getEventPublisher().addSendersAndReceiversToMediator(
+					generalManager.getEventPublisher().getItem(iBucketEventMediatorID),
+					arMediatorIDs, arMediatorIDs, MediatorType.SELECTION_MEDIATOR,
+					MediatorUpdateType.MEDIATOR_DEFAULT);
 		}
 	}
 
@@ -488,19 +483,20 @@ public class GLRemoteRendering
 						.getCommandManager().createCommandByType(
 								ECommandType.CREATE_GL_PATHWAY_3D);
 
-				cmdPathway.setAttributes(iTmpPathwayID, iAlSetIDs, EProjectionMode.ORTHOGRAPHIC, -4, 4, 4, -4, -20, 20);
+				cmdPathway.setAttributes(iTmpPathwayID, iAlSetIDs,
+						EProjectionMode.ORTHOGRAPHIC, -4, 4, 4, -4, -20, 20);
 				cmdPathway.doCommand();
-				
-				GLPathway pathway = (GLPathway)cmdPathway.getCreatedObject();
+
+				GLPathway pathway = (GLPathway) cmdPathway.getCreatedObject();
 				int iGeneratedViewID = pathway.getID();
-				
+
 				ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
 				arMediatorIDs.add(iGeneratedViewID);
-				
+
 				generalManager.getEventPublisher().addSendersAndReceiversToMediator(
-						generalManager.getEventPublisher().getItem(
-								iBucketEventMediatorID), arMediatorIDs, arMediatorIDs,
-						MediatorType.SELECTION_MEDIATOR, MediatorUpdateType.MEDIATOR_DEFAULT);
+						generalManager.getEventPublisher().getItem(iBucketEventMediatorID),
+						arMediatorIDs, arMediatorIDs, MediatorType.SELECTION_MEDIATOR,
+						MediatorUpdateType.MEDIATOR_DEFAULT);
 
 				if (underInteractionLayer.containsElement(-1))
 				{
@@ -508,11 +504,12 @@ public class GLRemoteRendering
 							spawnLayer, underInteractionLayer);
 					arSlerpActions.add(slerpActionTransition);
 
-					pathway.initRemote(gl, iUniqueID, underInteractionLayer, pickingTriggerMouseAdapter, this);
+					pathway.initRemote(gl, iUniqueID, underInteractionLayer,
+							pickingTriggerMouseAdapter, this);
 					pathway.setDetailLevel(EDetailLevel.MEDIUM);
-					
+
 					// Trigger initial gene propagation
-					pathway.broadcastElements(ESelectionType.NORMAL);	
+					pathway.broadcastElements(ESelectionType.NORMAL);
 				}
 				else if (stackLayer.containsElement(-1))
 				{
@@ -520,9 +517,10 @@ public class GLRemoteRendering
 							spawnLayer, stackLayer);
 					arSlerpActions.add(slerpActionTransition);
 
-					pathway.initRemote(gl, iUniqueID, stackLayer, pickingTriggerMouseAdapter, this);
+					pathway.initRemote(gl, iUniqueID, stackLayer, pickingTriggerMouseAdapter,
+							this);
 					pathway.setDetailLevel(EDetailLevel.LOW);
-					
+
 					// Trigger initial gene propagation
 					pathway.broadcastElements(ESelectionType.NORMAL);
 				}
@@ -532,7 +530,8 @@ public class GLRemoteRendering
 							spawnLayer, poolLayer);
 					arSlerpActions.add(slerpActionTransition);
 
-					pathway.initRemote(gl, iUniqueID, poolLayer, pickingTriggerMouseAdapter, this);
+					pathway.initRemote(gl, iUniqueID, poolLayer, pickingTriggerMouseAdapter,
+							this);
 					pathway.setDetailLevel(EDetailLevel.VERY_LOW);
 				}
 				else
@@ -553,18 +552,19 @@ public class GLRemoteRendering
 			else
 				enableBusyMode(true);
 
-			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clear();
+			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
+					.clear();
 
 			// Trigger mouse over update if an entity is currently selected
 			// TODO: investigate
-//			alSelection.get(0).updateSelectionSet(iUniqueID);
+			// alSelection.get(0).updateSelectionSet(iUniqueID);
 		}
 
 		// Check if view is visible
 		if (!layer.getElementVisibilityById(iViewID))
 			return;
 
-		AGLEventListener tmpCanvasUser = ((AGLEventListener) generalManager.getViewGLCanvasManager()
+		AGLEventListener tmpCanvasUser = (generalManager.getViewGLCanvasManager()
 				.getGLEventListener(iViewID));
 
 		if (tmpCanvasUser == null)
@@ -1042,12 +1042,11 @@ public class GLRemoteRendering
 
 		slerpMod.applySlerp(gl, transform);
 
-		((AGLEventListener) generalManager.getViewGLCanvasManager().getGLEventListener(iViewID))
+		(generalManager.getViewGLCanvasManager().getGLEventListener(iViewID))
 				.displayRemote(gl);
 
 		gl.glPopMatrix();
 
-		
 		// Check if slerp action is finished
 		if (iSlerpFactor >= SLERP_RANGE)
 		{
@@ -1058,9 +1057,9 @@ public class GLRemoteRendering
 			RemoteHierarchyLayer destinationLayer = slerpAction.getDestinationHierarchyLayer();
 			destinationLayer.setElementVisibilityById(true, iViewID);
 
-			AGLEventListener glActiveSubView = 
-				GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID);
-						
+			AGLEventListener glActiveSubView = GeneralManager.get().getViewGLCanvasManager()
+					.getGLEventListener(iViewID);
+
 			// Update detail level of moved view when slerp action is finished;
 			if (destinationLayer.equals(underInteractionLayer))
 			{
@@ -1071,8 +1070,7 @@ public class GLRemoteRendering
 			{
 				glActiveSubView.setDetailLevel(EDetailLevel.LOW);
 			}
-			else if (destinationLayer.equals(poolLayer) 
-					|| destinationLayer.equals(memoLayer))
+			else if (destinationLayer.equals(poolLayer) || destinationLayer.equals(memoLayer))
 			{
 				glActiveSubView.setDetailLevel(EDetailLevel.VERY_LOW);
 			}
@@ -1096,9 +1094,9 @@ public class GLRemoteRendering
 			return;
 
 		arSlerpActions.clear();
-		
-		generalManager.getViewGLCanvasManager().getGLEventListener(iViewID)
-			.broadcastElements(ESelectionType.NORMAL);
+
+		generalManager.getViewGLCanvasManager().getGLEventListener(iViewID).broadcastElements(
+				ESelectionType.NORMAL);
 
 		// Check if view is already loaded in the stack layer
 		if (stackLayer.containsElement(iViewID))
@@ -1136,11 +1134,12 @@ public class GLRemoteRendering
 						.getElementIdByPositionIndex(stackLayer.getNextPositionIndex()),
 						stackLayer, true);
 				arSlerpActions.add(reverseSlerpAction);
-				
+
 				// Unregister all elements of the view that is moved out
 				generalManager.getViewGLCanvasManager().getGLEventListener(
-						stackLayer.getElementIdByPositionIndex(stackLayer.getNextPositionIndex()))
-							.broadcastElements(ESelectionType.REMOVE);
+						stackLayer.getElementIdByPositionIndex(stackLayer
+								.getNextPositionIndex())).broadcastElements(
+						ESelectionType.REMOVE);
 			}
 
 			// Slerp under interaction view to free spot in stack
@@ -1158,7 +1157,6 @@ public class GLRemoteRendering
 		iSlerpFactor = 0;
 	}
 
-
 	@Override
 	public void handleUpdate(IUniqueObject eventTrigger)
 	{
@@ -1172,37 +1170,36 @@ public class GLRemoteRendering
 		generalManager.getLogger().log(Level.INFO,
 				"Update called by " + eventTrigger.getClass().getSimpleName());
 
-
 		// Handle incoming genes
 		if (selectionDelta.getIDType() == EIDType.DAVID)
-		{	
+		{
 			int iDavidID = 0;
 			int iGraphItemID = 0;
 			ArrayList<ICaleydoGraphItem> alPathwayVertexGraphItem = new ArrayList<ICaleydoGraphItem>();
-						
+
 			for (SelectionItem item : selectionDelta)
 			{
 				// Only consider items that are selected
 				if (item.getSelectionType() != ESelectionType.SELECTION)
 					continue;
-				
+
 				iDavidID = item.getSelectionID();
-				
+
 				iGraphItemID = generalManager.getPathwayItemManager()
-					.getPathwayVertexGraphItemIdByDavidId(iDavidID);
-				
+						.getPathwayVertexGraphItemIdByDavidId(iDavidID);
+
 				if (iGraphItemID == -1)
 					continue;
-				
+
 				PathwayVertexGraphItem tmpPathwayVertexGraphItem = ((PathwayVertexGraphItem) generalManager
 						.getPathwayItemManager().getItem(iGraphItemID));
-		
+
 				if (tmpPathwayVertexGraphItem == null)
 					continue;
-				
+
 				alPathwayVertexGraphItem.add(tmpPathwayVertexGraphItem);
 			}
-			
+
 			if (!alPathwayVertexGraphItem.isEmpty())
 			{
 				loadDependentPathways(alPathwayVertexGraphItem);
@@ -1214,50 +1211,54 @@ public class GLRemoteRendering
 			addPathwayView(selectionDelta.getSelectionData().get(0).getSelectionID());
 		}
 	}
-		
-//		// TODO re-implement
-//
-//			ArrayList<IGraphItem> alPathwayVertexGraphItem = new ArrayList<IGraphItem>();
-//
-//			for (int iSelectionIndex = 0; iSelectionIndex < iAlSelection.size(); iSelectionIndex++)
-//			{
-//				int iDavidId = iAlSelection.get(iSelectionIndex);
-//
-//				if (iAlSelectionGroup.get(iSelectionIndex) == -1)
-//				{
-//					generalManager.getViewGLCanvasManager().getSelectionManager().clear();
-//					continue;
-//				}
-//				else if (iAlSelectionGroup.get(iSelectionIndex) != 2)
-//					continue;
-//
-//				alSelection.get(0).clearAllSelectionArrays();
-//
-//				PathwayVertexGraphItem tmpPathwayVertexGraphItem = ((PathwayVertexGraphItem) generalManager
-//						.getPathwayItemManager().getItem(
-//								generalManager.getPathwayItemManager()
-//										.getPathwayVertexGraphItemIdByDavidId(iDavidId)));
-//
-//				alPathwayVertexGraphItem.add(tmpPathwayVertexGraphItem);
-//
-//				iAlTmpSelectionId.add(iDavidId);
-//				iAlTmpGroupId.add(1); // mouse over
-//			}
-//
-//			if (!alPathwayVertexGraphItem.isEmpty())
-//			{
-//				loadDependentPathways(alPathwayVertexGraphItem);
-//			}
-//
-//			alSelection.get(0).mergeSelection(iAlTmpSelectionId, iAlTmpGroupId, null);
-//		}
-//		// Check if update set contains a pathway that was searched by the user
-//		else if (setSelection.getOptionalDataArray() != null)
-//		{
-//			addPathwayView(setSelection.getOptionalDataArray().get(0));
-//
-//			enableBusyMode(true);
-//		}
+
+	// // TODO re-implement
+	//
+	// ArrayList<IGraphItem> alPathwayVertexGraphItem = new
+	// ArrayList<IGraphItem>();
+	//
+	// for (int iSelectionIndex = 0; iSelectionIndex < iAlSelection.size();
+	// iSelectionIndex++)
+	// {
+	// int iDavidId = iAlSelection.get(iSelectionIndex);
+	//
+	// if (iAlSelectionGroup.get(iSelectionIndex) == -1)
+	// {
+	// generalManager.getViewGLCanvasManager().getSelectionManager().clear();
+	// continue;
+	// }
+	// else if (iAlSelectionGroup.get(iSelectionIndex) != 2)
+	// continue;
+	//
+	// alSelection.get(0).clearAllSelectionArrays();
+	//
+	// PathwayVertexGraphItem tmpPathwayVertexGraphItem =
+	// ((PathwayVertexGraphItem) generalManager
+	// .getPathwayItemManager().getItem(
+	// generalManager.getPathwayItemManager()
+	// .getPathwayVertexGraphItemIdByDavidId(iDavidId)));
+	//
+	// alPathwayVertexGraphItem.add(tmpPathwayVertexGraphItem);
+	//
+	// iAlTmpSelectionId.add(iDavidId);
+	// iAlTmpGroupId.add(1); // mouse over
+	// }
+	//
+	// if (!alPathwayVertexGraphItem.isEmpty())
+	// {
+	// loadDependentPathways(alPathwayVertexGraphItem);
+	// }
+	//
+	// alSelection.get(0).mergeSelection(iAlTmpSelectionId, iAlTmpGroupId,
+	// null);
+	// }
+	// // Check if update set contains a pathway that was searched by the user
+	// else if (setSelection.getOptionalDataArray() != null)
+	// {
+	// addPathwayView(setSelection.getOptionalDataArray().get(0));
+	//
+	// enableBusyMode(true);
+	// }
 
 	/**
 	 * Add pathway view. Also used when serialized pathways are loaded.
@@ -1420,10 +1421,11 @@ public class GLRemoteRendering
 						arSlerpActions.add(slerpActionTransition);
 
 						bEnableNavigationOverlay = false;
-						
+
 						// Unregister all elements of the view that is moved out
-						generalManager.getViewGLCanvasManager().getGLEventListener(iExternalID)
-									.broadcastElements(ESelectionType.REMOVE);
+						generalManager.getViewGLCanvasManager()
+								.getGLEventListener(iExternalID).broadcastElements(
+										ESelectionType.REMOVE);
 
 						break;
 
@@ -1632,9 +1634,8 @@ public class GLRemoteRendering
 	private void createEventMediator()
 	{
 		CmdEventCreateMediator tmpMediatorCmd = (CmdEventCreateMediator) generalManager
-				.getCommandManager().createCommandByType(
-						ECommandType.CREATE_EVENT_MEDIATOR);
-		
+				.getCommandManager().createCommandByType(ECommandType.CREATE_EVENT_MEDIATOR);
+
 		ArrayList<Integer> iAlSenderIDs = new ArrayList<Integer>();
 		ArrayList<Integer> iAlReceiverIDs = new ArrayList<Integer>();
 		iAlSenderIDs.add(iUniqueID);
@@ -1749,18 +1750,17 @@ public class GLRemoteRendering
 			// Unregister removed pathways from event mediator
 			ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
 			arMediatorIDs.add(iGLEventListenerIdToRemove);
-			generalManager.getEventPublisher()
-					.addSendersAndReceiversToMediator(
-							generalManager.getEventPublisher().getItem(
-									iBucketEventMediatorID), arMediatorIDs, arMediatorIDs,
-							MediatorType.SELECTION_MEDIATOR,
-							MediatorUpdateType.MEDIATOR_DEFAULT);
+			generalManager.getEventPublisher().addSendersAndReceiversToMediator(
+					generalManager.getEventPublisher().getItem(iBucketEventMediatorID),
+					arMediatorIDs, arMediatorIDs, MediatorType.SELECTION_MEDIATOR,
+					MediatorUpdateType.MEDIATOR_DEFAULT);
 
 			generalManager.getViewGLCanvasManager().unregisterGLEventListener(
 					iGLEventListenerIdToRemove);
 		}
 
-		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clear();
+		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
+				.clear();
 	}
 
 	@Override
@@ -1785,6 +1785,7 @@ public class GLRemoteRendering
 
 		return null;
 	}
+
 	@Override
 	public RemoteHierarchyLayer getUnderInteractionHierarchyLayer()
 	{
@@ -1902,8 +1903,7 @@ public class GLRemoteRendering
 		{
 			if (tmpGLEventListener instanceof GLPathway)
 			{
-				((GLPathway) tmpGLEventListener)
-						.enablePathwayTextures(bEnablePathwayTexture);
+				((GLPathway) tmpGLEventListener).enablePathwayTextures(bEnablePathwayTexture);
 			}
 		}
 	}
@@ -1916,8 +1916,7 @@ public class GLRemoteRendering
 		{
 			if (tmpGLEventListener instanceof GLPathway)
 			{
-				((GLPathway) tmpGLEventListener)
-						.enableNeighborhood(bEnableNeighborhood);
+				((GLPathway) tmpGLEventListener).enableNeighborhood(bEnableNeighborhood);
 			}
 		}
 	}
@@ -1950,19 +1949,19 @@ public class GLRemoteRendering
 	public void triggerUpdate()
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void triggerUpdate(ISelectionDelta selectionDelta)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	@Override
 	public void broadcastElements(ESelectionType type)
 	{
-		
+
 	}
 }

@@ -30,15 +30,16 @@ import de.phleisch.app.itsucks.job.event.JobChangedEvent;
  * Fetch tool for BioCarta HTML and image files.
  * 
  * @author Marc Streit
- *
+ * 
  */
 public class BioCartaPathwayCacher
-	extends Thread {
+	extends Thread
+{
 
 	private static final int EXPECTED_DOWNLOADS = 656;
-	
+
 	private IGeneralManager generalManager;
-	
+
 	/**
 	 * Needed for async access to set progress bar state
 	 */
@@ -47,14 +48,13 @@ public class BioCartaPathwayCacher
 	private ProgressBar progressBar;
 
 	private CmdFetchPathwayData triggeringCommand;
-	
+
 	int iDownloadCount = 0;
-	
+
 	/**
 	 * Constructor.
 	 */
-	public BioCartaPathwayCacher(final Display display, 
-			final ProgressBar progressBar,
+	public BioCartaPathwayCacher(final Display display, final ProgressBar progressBar,
 			final CmdFetchPathwayData triggeringCommand)
 	{
 		this.generalManager = GeneralManager.get();
@@ -62,52 +62,50 @@ public class BioCartaPathwayCacher
 		this.progressBar = progressBar;
 		this.triggeringCommand = triggeringCommand;
 	}
-	
+
 	@Override
 	public void run()
 	{
 		super.run();
-		
-		//load spring application context 
-		ClassPathXmlApplicationContext context = 
-			new ClassPathXmlApplicationContext(
-					ApplicationConstants.CORE_SPRING_CONFIG_FILE);
-		
-		//load dispatcher from spring
+
+		// load spring application context
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+				ApplicationConstants.CORE_SPRING_CONFIG_FILE);
+
+		// load dispatcher from spring
 		Dispatcher dispatcher = (Dispatcher) context.getBean("Dispatcher");
 
-		//configure an download job filter 
+		// configure an download job filter
 		DownloadJobFilter downloadFilter = new DownloadJobFilter();
-		downloadFilter.setAllowedHostNames(new String[] {"cgap.*"});
+		downloadFilter.setAllowedHostNames(new String[] { "cgap.*" });
 		downloadFilter.setMaxRecursionDepth(2);
-		downloadFilter.setSaveToDisk(new String[] {".*BioCarta/h_.*", ".*h_.*gif"});
+		downloadFilter.setSaveToDisk(new String[] { ".*BioCarta/h_.*", ".*h_.*gif" });
 
-		//add the filter to the dispatcher
-		dispatcher.addJobFilter(downloadFilter);	
-		
+		// add the filter to the dispatcher
+		dispatcher.addJobFilter(downloadFilter);
+
 		RegExpJobFilter regExpFilter = new RegExpJobFilter();
 		RegExpFilterRule regExpFilterRule = new RegExpJobFilter.RegExpFilterRule(
 				".*Gene.*|.*m_.*|.*Kegg.*,.*Tissues.*|.*SAGE.*");
-		
+
 		RegExpFilterAction regExpFilterAction = new RegExpJobFilter.RegExpFilterAction();
 		regExpFilterAction.setAccept(false);
-		
+
 		regExpFilterRule.setMatchAction(regExpFilterAction);
-		
+
 		regExpFilter.addFilterRule(regExpFilterRule);
-		
+
 		dispatcher.addJobFilter(regExpFilter);
-		
-		//create an job factory
-		DownloadJobFactory jobFactory = (DownloadJobFactory) 
-			context.getBean("JobFactory");
-		
-		String sOutputFileName = System.getProperty("user.home") + 
-			System.getProperty("file.separator") + "/.caleydo";
-		
-		//create an initial job
+
+		// create an job factory
+		DownloadJobFactory jobFactory = (DownloadJobFactory) context.getBean("JobFactory");
+
+		String sOutputFileName = System.getProperty("user.home")
+				+ System.getProperty("file.separator") + "/.caleydo";
+
+		// create an initial job
 		UrlDownloadJob job = jobFactory.createDownloadJob();
-		
+
 		try
 		{
 			job.setUrl(new URL("http://cgap.nci.nih.gov/Pathways/BioCarta_Pathways"));
@@ -116,16 +114,18 @@ public class BioCartaPathwayCacher
 		{
 			e.printStackTrace();
 		}
-		
+
 		job.setSavePath(new File(sOutputFileName));
 		job.setIgnoreFilter(true);
 		dispatcher.addJob(job);
-		
+
 		dispatcher.getEventManager().registerObserver(new EventObserver()
 		{
 			/*
 			 * (non-Javadoc)
-			 * @see de.phleisch.app.itsucks.event.EventObserver#processEvent(de.phleisch.app.itsucks.event.Event)
+			 * @see
+			 * de.phleisch.app.itsucks.event.EventObserver#processEvent(de.phleisch
+			 * .app.itsucks.event.Event)
 			 */
 			@Override
 			public void processEvent(Event arg0)
@@ -141,39 +141,43 @@ public class BioCartaPathwayCacher
 						{
 							if (progressBar.isDisposed())
 								return;
-							progressBar.setSelection((int)(iDownloadCount * 100 / EXPECTED_DOWNLOADS));
-							
-//							System.out.println("Download count: " +iDownloadCount);
-//							System.out.println("Percentage: " +(int)(iDownloadCount * 100 / EXPECTED_DOWNLOADS));
+							progressBar
+									.setSelection((iDownloadCount * 100 / EXPECTED_DOWNLOADS));
+
+							// System.out.println("Download count: "
+							// +iDownloadCount);
+							// System.out.println("Percentage: "
+							// +(int)(iDownloadCount * 100 /
+							// EXPECTED_DOWNLOADS));
 						}
 					});
 				}
 			}
 		});
-		
-		//start the dispatcher
+
+		// start the dispatcher
 		dispatcher.processJobs();
-		
+
 		triggerPathwayListGeneration();
-		
+
 		if (triggeringCommand != null)
 			triggeringCommand.setFinishedBioCartaCacher();
 	}
-	
-	private void triggerPathwayListGeneration() 
+
+	private void triggerPathwayListGeneration()
 	{
 		// Trigger pathway list generation
 		PathwayListGenerator pathwayListLoader = new PathwayListGenerator();
 
 		try
 		{
-			pathwayListLoader.run(PathwayListGenerator.INPUT_FOLDER_PATH_BIOCARTA, 
+			pathwayListLoader.run(PathwayListGenerator.INPUT_FOLDER_PATH_BIOCARTA,
 					PathwayListGenerator.INPUT_IMAGE_PATH_BIOCARTA,
 					PathwayListGenerator.OUTPUT_FILE_NAME_BIOCARTA);
 		}
 		catch (FileNotFoundException fnfe)
 		{
-			throw new CaleydoRuntimeException("Cannot generate pathway list.", 
+			throw new CaleydoRuntimeException("Cannot generate pathway list.",
 					CaleydoRuntimeExceptionType.DATAHANDLING);
 		}
 	}

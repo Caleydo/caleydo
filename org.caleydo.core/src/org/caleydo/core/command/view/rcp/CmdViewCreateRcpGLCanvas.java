@@ -24,7 +24,7 @@ public class CmdViewCreateRcpGLCanvas
 	{
 		super(cmdType);
 	}
-	
+
 	@Override
 	public void doCommand() throws CaleydoRuntimeException
 	{
@@ -40,10 +40,10 @@ public class CmdViewCreateRcpGLCanvas
 
 		if (iExternalID != -1)
 		{
-			generalManager.getIDManager().mapInternalToExternalID(
-					gLCanvas.getID(), iExternalID);
+			generalManager.getIDManager().mapInternalToExternalID(gLCanvas.getID(),
+					iExternalID);
 		}
-		
+
 		commandManager.runDoCommand(this);
 	}
 

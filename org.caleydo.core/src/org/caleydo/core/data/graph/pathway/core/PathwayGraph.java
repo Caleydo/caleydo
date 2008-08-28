@@ -32,9 +32,8 @@ public class PathwayGraph
 
 	private int iHeight = -1;
 
-	public PathwayGraph(final EPathwayDatabaseType type, 
-			final String sName, final String sTitle, final String sImageLink,
-			final String sLink)
+	public PathwayGraph(final EPathwayDatabaseType type, final String sName,
+			final String sTitle, final String sImageLink, final String sLink)
 	{
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.PATHWAY));
 
@@ -108,6 +107,6 @@ public class PathwayGraph
 	@Override
 	public int getID()
 	{
-		return super.getId() ;
+		return super.getId();
 	}
 }

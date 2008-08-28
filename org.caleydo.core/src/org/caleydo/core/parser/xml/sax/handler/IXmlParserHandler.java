@@ -1,4 +1,5 @@
 package org.caleydo.core.parser.xml.sax.handler;
+
 /**
  * Interface for all XML Handler's registered to the
  * org.caleydo.core.manager.IXmlParserManager

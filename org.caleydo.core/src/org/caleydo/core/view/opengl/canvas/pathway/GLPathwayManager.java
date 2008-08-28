@@ -61,7 +61,7 @@ public class GLPathwayManager
 	private HashMap<Integer, Integer> hashPathwayId2EdgesDisplayListId;
 	private HashMap<Integer, Integer> hashSelectedVertexRepId2Depth;
 	private HashMap<Integer, ArrayList<float[]>> hashElementId2MappingColorArray;
-	
+
 	private PathwayColorMapper genomeMapper;
 
 	private GenericSelectionManager internalSelectionManager;
@@ -95,13 +95,13 @@ public class GLPathwayManager
 		buildHighlightedCompoundNodeDisplayList(gl);
 
 		this.internalSelectionManager = internalSelectionManager;
-		
+
 		// Initialize genome mapper
 		// TODO: move to a manager because more classes use the genome mapper
 		// maybe GenomeIdManager is the right place
 		genomeMapper = new PathwayColorMapper();
 		genomeMapper.setMappingData(alSetData);
-		
+
 		hashElementId2MappingColorArray.clear();
 	}
 
@@ -114,8 +114,7 @@ public class GLPathwayManager
 		if (iPathwayId == -1)
 			return;
 
-		PathwayGraph tmpPathway = (PathwayGraph) generalManager.getPathwayManager().getItem(
-				iPathwayId);
+		PathwayGraph tmpPathway = generalManager.getPathwayManager().getItem(iPathwayId);
 
 		int iVerticesDisplayListId = -1;
 		int iEdgesDisplayListId = -1;
@@ -507,8 +506,10 @@ public class GLPathwayManager
 		{
 			float fCanvasXPos = (vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X);
 			float fCanvasYPos = (vertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y);
-			float fNodeWidth = vertexRep.getWidth() / 2.0f * PathwayRenderStyle.SCALING_FACTOR_X;
-			float fNodeHeight = vertexRep.getHeight() / 2.0f * PathwayRenderStyle.SCALING_FACTOR_Y;
+			float fNodeWidth = vertexRep.getWidth() / 2.0f
+					* PathwayRenderStyle.SCALING_FACTOR_X;
+			float fNodeHeight = vertexRep.getHeight() / 2.0f
+					* PathwayRenderStyle.SCALING_FACTOR_Y;
 
 			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 
@@ -570,8 +571,10 @@ public class GLPathwayManager
 			gl.glBegin(GL.GL_POLYGON);
 			for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++)
 			{
-				gl.glVertex3f(shArCoords[iPointIndex][0] * PathwayRenderStyle.SCALING_FACTOR_X,
-						-shArCoords[iPointIndex][1] * PathwayRenderStyle.SCALING_FACTOR_Y, Z_OFFSET);
+				gl.glVertex3f(
+						shArCoords[iPointIndex][0] * PathwayRenderStyle.SCALING_FACTOR_X,
+						-shArCoords[iPointIndex][1] * PathwayRenderStyle.SCALING_FACTOR_Y,
+						Z_OFFSET);
 			}
 			gl.glEnd();
 
@@ -591,8 +594,10 @@ public class GLPathwayManager
 			gl.glBegin(GL.GL_LINE_STRIP);
 			for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++)
 			{
-				gl.glVertex3f(shArCoords[iPointIndex][0] * PathwayRenderStyle.SCALING_FACTOR_X,
-						-shArCoords[iPointIndex][1] * PathwayRenderStyle.SCALING_FACTOR_Y, Z_OFFSET);
+				gl.glVertex3f(
+						shArCoords[iPointIndex][0] * PathwayRenderStyle.SCALING_FACTOR_X,
+						-shArCoords[iPointIndex][1] * PathwayRenderStyle.SCALING_FACTOR_Y,
+						Z_OFFSET);
 			}
 			gl.glEnd();
 		}
@@ -604,8 +609,10 @@ public class GLPathwayManager
 		{
 			float fCanvasXPos = (vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X);
 			float fCanvasYPos = (vertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y);
-			float fNodeWidth = vertexRep.getWidth() / 2.0f * PathwayRenderStyle.SCALING_FACTOR_X;
-			float fNodeHeight = vertexRep.getHeight() / 2.0f * PathwayRenderStyle.SCALING_FACTOR_Y;
+			float fNodeWidth = vertexRep.getWidth() / 2.0f
+					* PathwayRenderStyle.SCALING_FACTOR_X;
+			float fNodeHeight = vertexRep.getHeight() / 2.0f
+					* PathwayRenderStyle.SCALING_FACTOR_Y;
 
 			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 
@@ -713,12 +720,14 @@ public class GLPathwayManager
 			{
 				tmpTargetGraphItem = (PathwayVertexGraphItemRep) iterTargetGraphItem.next();
 
-				gl.glVertex3f(tmpSourceGraphItem.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X
-						+ fReactionLineOffset, -tmpSourceGraphItem.getYOrigin()
-						* PathwayRenderStyle.SCALING_FACTOR_Y + fReactionLineOffset, 0.02f);
-				gl.glVertex3f(tmpTargetGraphItem.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X
-						+ fReactionLineOffset, -tmpTargetGraphItem.getYOrigin()
-						* PathwayRenderStyle.SCALING_FACTOR_Y + fReactionLineOffset, 0.02f);
+				gl.glVertex3f(tmpSourceGraphItem.getXOrigin()
+						* PathwayRenderStyle.SCALING_FACTOR_X + fReactionLineOffset,
+						-tmpSourceGraphItem.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y
+								+ fReactionLineOffset, 0.02f);
+				gl.glVertex3f(tmpTargetGraphItem.getXOrigin()
+						* PathwayRenderStyle.SCALING_FACTOR_X + fReactionLineOffset,
+						-tmpTargetGraphItem.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y
+								+ fReactionLineOffset, 0.02f);
 			}
 		}
 
@@ -750,8 +759,7 @@ public class GLPathwayManager
 	{
 
 		PathwayVertexGraphItemRep vertexRep;
-		PathwayGraph tmpPathway = (PathwayGraph) generalManager.getPathwayManager().getItem(
-				iPathwayID);
+		PathwayGraph tmpPathway = generalManager.getPathwayManager().getItem(iPathwayID);
 
 		// Don't annotate BioCarta pathways - because of good texture annotation
 		if (tmpPathway.getType().equals(EPathwayDatabaseType.BIOCARTA))
@@ -766,8 +774,10 @@ public class GLPathwayManager
 
 			if (vertexRep != null)
 			{
-				float fNodeWidth = vertexRep.getWidth() / 2.0f * PathwayRenderStyle.SCALING_FACTOR_X;
-				float fNodeHeight = vertexRep.getHeight() / 2.0f * PathwayRenderStyle.SCALING_FACTOR_Y;
+				float fNodeWidth = vertexRep.getWidth() / 2.0f
+						* PathwayRenderStyle.SCALING_FACTOR_X;
+				float fNodeHeight = vertexRep.getHeight() / 2.0f
+						* PathwayRenderStyle.SCALING_FACTOR_Y;
 				float fCanvasXPos = (vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X);
 				float fCanvasYPos = (vertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y);
 
@@ -798,8 +808,7 @@ public class GLPathwayManager
 		{
 			// Request mapping
 			alMappingColor = genomeMapper.getMappingColorArrayByVertexRep(pathwayVertexRep);
-			hashElementId2MappingColorArray.put((Integer) pathwayVertexRep.getId(),
-					alMappingColor);
+			hashElementId2MappingColorArray.put(pathwayVertexRep.getId(), alMappingColor);
 		}
 
 		drawMapping(gl, alMappingColor, fNodeWidth, fNodeHeight, false);
@@ -822,8 +831,8 @@ public class GLPathwayManager
 			tmpNodeColor = alMappingColor.get(0);
 
 			// Check if the mapping gave back a valid color
-//			if (tmpNodeColor[0] == -1)
-//				tmpNodeColor = renderStyle.getEnzymeNodeColor(true);
+			// if (tmpNodeColor[0] == -1)
+			// tmpNodeColor = renderStyle.getEnzymeNodeColor(true);
 
 			gl.glColor3fv(tmpNodeColor, 0);
 			gl.glCallList(iEnzymeNodeDisplayListId);
@@ -854,13 +863,13 @@ public class GLPathwayManager
 
 					// TODO
 					// Check if the mapping gave back a valid color
-//					if (tmpNodeColor.x() != -1)
-//					{
-						gl.glColor3fv(tmpNodeColor, 0);
-						gl.glScalef(1.0f / iColumnCount, 1.0f / iMappingRowCount, 1.0f);
-						gl.glCallList(iEnzymeNodeDisplayListId);
-						gl.glScalef(iColumnCount, iMappingRowCount, 1.0f);
-//					}
+					// if (tmpNodeColor.x() != -1)
+					// {
+					gl.glColor3fv(tmpNodeColor, 0);
+					gl.glScalef(1.0f / iColumnCount, 1.0f / iMappingRowCount, 1.0f);
+					gl.glCallList(iEnzymeNodeDisplayListId);
+					gl.glScalef(iColumnCount, iMappingRowCount, 1.0f);
+					// }
 
 					gl.glTranslatef(fNodeWidth * 2.0f / iColumnCount, 0.0f, 0.0f);
 				}

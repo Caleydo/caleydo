@@ -105,7 +105,8 @@ public class BucketMouseWheelListener
 			bZoomActionRunning = true;
 
 			// Turn off picking while zoom action is running
-			GeneralManager.get().getViewGLCanvasManager().getPickingManager().enablePicking(false);
+			GeneralManager.get().getViewGLCanvasManager().getPickingManager().enablePicking(
+					false);
 
 			int notches = event.getWheelRotation();
 			if (notches < 0)
@@ -147,12 +148,12 @@ public class BucketMouseWheelListener
 			if (iCurrentBucketZoom == BUCKET_ZOOM_MAX)
 			{
 				bBucketBottomReached = true;
-				
+
 				// Update detail level of view in center bucket position
-				int iGLEventListenerID = bucketGLEventListener.getUnderInteractionHierarchyLayer()
-							.getElementIdByPositionIndex(0);
-						
-				if(iGLEventListenerID != -1)
+				int iGLEventListenerID = bucketGLEventListener
+						.getUnderInteractionHierarchyLayer().getElementIdByPositionIndex(0);
+
+				if (iGLEventListenerID != -1)
 				{
 					GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
 							iGLEventListenerID).setDetailLevel(EDetailLevel.HIGH);
@@ -161,16 +162,16 @@ public class BucketMouseWheelListener
 			else if (iCurrentBucketZoom == 0)
 			{
 				bBucketBottomReached = false;
-				
+
 				// Update detail level of view in center bucket position
-				int iGLEventListenerID = bucketGLEventListener.getUnderInteractionHierarchyLayer()
-							.getElementIdByPositionIndex(0);
-						
-				if(iGLEventListenerID != -1)
+				int iGLEventListenerID = bucketGLEventListener
+						.getUnderInteractionHierarchyLayer().getElementIdByPositionIndex(0);
+
+				if (iGLEventListenerID != -1)
 				{
 					GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
 							iGLEventListenerID).setDetailLevel(EDetailLevel.MEDIUM);
-				}			
+				}
 			}
 		}
 		else
@@ -179,7 +180,8 @@ public class BucketMouseWheelListener
 			bZoomActionRunning = false;
 
 			// Turn on picking after zoom action is done
-			GeneralManager.get().getViewGLCanvasManager().getPickingManager().enablePicking(true);
+			GeneralManager.get().getViewGLCanvasManager().getPickingManager().enablePicking(
+					true);
 		}
 	}
 

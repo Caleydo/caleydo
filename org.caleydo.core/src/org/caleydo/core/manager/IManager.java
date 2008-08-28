@@ -30,7 +30,7 @@ public interface IManager<T extends IUniqueObject>
 	 * @throws CaleydoRuntimeException if item does not exist
 	 */
 	public T getItem(final int iItemID);
-	
+
 	public Collection<T> getAllItems();
 
 	/**
@@ -42,6 +42,7 @@ public interface IManager<T extends IUniqueObject>
 
 	/**
 	 * Registers one Id and links it to the reference.
+	 * 
 	 * @param registerItem Object to be registered
 	 * 
 	 * @return TRUE if item was unregistered by this manager

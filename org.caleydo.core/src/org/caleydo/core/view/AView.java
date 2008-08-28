@@ -25,7 +25,7 @@ public abstract class AView
 	implements IView
 {
 	protected IGeneralManager generalManager;
-	
+
 	private final ISetManager setManager;
 
 	/**
@@ -55,7 +55,7 @@ public abstract class AView
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIEW));
 
 		generalManager = GeneralManager.get();
-		
+
 		assert iParentContainerId != 0 : "Constructor iParentContainerId must not be 0!";
 
 		this.iParentContainerId = iParentContainerId;

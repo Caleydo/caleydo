@@ -26,11 +26,9 @@ public class StorageManager
 				return new NominalStorage<String>();
 
 			default:
-				throw new CaleydoRuntimeException(
-						"Ffailed due to unhandled type ["
-								+ type.toString() + "]");
+				throw new CaleydoRuntimeException("Ffailed due to unhandled type ["
+						+ type.toString() + "]");
 		}
 	}
-	
-	
+
 }

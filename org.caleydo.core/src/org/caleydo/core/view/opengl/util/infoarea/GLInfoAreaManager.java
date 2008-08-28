@@ -10,10 +10,10 @@ import javax.media.opengl.GLAutoDrawable;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.data.view.rep.renderstyle.InfoAreaRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 
 /**
@@ -111,11 +111,11 @@ public class GLInfoAreaManager
 
 		gl.glColor3fv(InfoAreaRenderStyle.INFO_AREA_COLOR, 0);
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(fXOrigin, fYOrigin, InfoAreaRenderStyle.INFO_AREA_CONNECTION_Z);
+		gl.glVertex3f(fXOrigin, fYOrigin, GeneralRenderStyle.INFO_AREA_CONNECTION_Z);
 		gl.glVertex3f(fXElementOrigin, fYElementOrigin,
-				InfoAreaRenderStyle.INFO_AREA_CONNECTION_Z);
+				GeneralRenderStyle.INFO_AREA_CONNECTION_Z);
 		gl.glVertex3f(fXElementOrigin, fYElementOrigin + infoArea.getHeight(),
-				InfoAreaRenderStyle.INFO_AREA_CONNECTION_Z);
+				GeneralRenderStyle.INFO_AREA_CONNECTION_Z);
 		gl.glEnd();
 
 		infoArea.renderInfoArea(gl, vecLowerLeft, bFirstTime);
@@ -130,8 +130,8 @@ public class GLInfoAreaManager
 		hashViewIDToInfoOverlay.get(iViewID).render(drawable);
 	}
 
-	public void setData(final int iViewID, final int iUniqueID,
-			final EIDType eInputDataType, final ArrayList<String> sAlContent)
+	public void setData(final int iViewID, final int iUniqueID, final EIDType eInputDataType,
+			final ArrayList<String> sAlContent)
 	{
 
 		bUpdateViewInfo = false;
@@ -163,7 +163,7 @@ public class GLInfoAreaManager
 		while (iterInfoOverlay.hasNext())
 		{
 			iterInfoOverlay.next().setData(
-					((AGLEventListener) generalManager.getViewGLCanvasManager().getGLEventListener(iViewID))
+					(generalManager.getViewGLCanvasManager().getGLEventListener(iViewID))
 							.getInfo());
 		}
 	}

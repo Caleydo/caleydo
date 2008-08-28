@@ -35,9 +35,8 @@ public class CmdGlObjectPathway3D
 	}
 
 	public void setAttributes(final int iPathwayID, final ArrayList<Integer> iArSetIDs,
-			final EProjectionMode eProjectionMode, final float fLeft,
-			final float fRight, final float fTop, final float fBottom, final float fNear,
-			final float fFar)
+			final EProjectionMode eProjectionMode, final float fLeft, final float fRight,
+			final float fTop, final float fBottom, final float fNear, final float fFar)
 	{
 
 		super.setAttributes(eProjectionMode, fLeft, fRight, fTop, fBottom, fNear, fFar,

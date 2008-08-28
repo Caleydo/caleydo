@@ -99,13 +99,13 @@ public class ViewFrustum
 
 		return fFar;
 	}
-	
+
 	@Override
 	public float getWidth()
 	{
 		return fRight - fLeft;
 	}
-	
+
 	@Override
 	public float getHeight()
 	{
@@ -153,24 +153,23 @@ public class ViewFrustum
 
 		this.fFar = fFar;
 	}
-	
+
 	@Override
 	public void considerAspectRatio(boolean bConsiderAspectRatio)
 	{
 		this.bConsiderAspectRatio = bConsiderAspectRatio;
 	}
-	
+
 	@Override
 	public void setProjectionMatrix(GL gl)
 	{
-		setProjectionMatrix(gl, 1);	
+		setProjectionMatrix(gl, 1);
 	}
-	
+
 	@Override
 	public void setProjectionMatrix(GL gl, float fAspectRatio)
 	{
-//		fAspectRatio = (float) height / (float) width;
-
+		// fAspectRatio = (float) height / (float) width;
 
 		float fLeft = getLeft();
 		float fRight = getRight();

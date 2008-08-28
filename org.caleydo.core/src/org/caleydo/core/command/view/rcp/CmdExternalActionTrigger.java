@@ -36,11 +36,12 @@ public class CmdExternalActionTrigger
 	{
 		try
 		{
-			Object viewObject = generalManager.getViewGLCanvasManager().getGLEventListener(iViewId);
+			Object viewObject = generalManager.getViewGLCanvasManager().getGLEventListener(
+					iViewId);
 
 			if (viewObject instanceof GLRemoteRendering)
 			{
-				switch(externalActionType)
+				switch (externalActionType)
 				{
 					case CLEAR_ALL:
 						((GLRemoteRendering) viewObject).clearAll();
@@ -50,9 +51,10 @@ public class CmdExternalActionTrigger
 						break;
 				}
 			}
-			else if (viewObject instanceof GLParallelCoordinates || viewObject instanceof GLHeatMap)
+			else if (viewObject instanceof GLParallelCoordinates
+					|| viewObject instanceof GLHeatMap)
 			{
-				switch(externalActionType)
+				switch (externalActionType)
 				{
 					case STORAGEBASED_TOGGLE_RENDER_CONTEXT:
 						((AStorageBasedView) viewObject).toggleRenderContext();
@@ -60,8 +62,8 @@ public class CmdExternalActionTrigger
 					case STORAGEBASED_PROPAGATE_SELECTIONS:
 						((AStorageBasedView) viewObject).broadcastElements();
 						break;
-				}	
-				
+				}
+
 				if (viewObject instanceof GLParallelCoordinates)
 				{
 					switch (externalActionType)
@@ -70,7 +72,7 @@ public class CmdExternalActionTrigger
 							((GLParallelCoordinates) viewObject).toggleAxisPolylineSwap();
 							break;
 						case PARCOORDS_ANGULAR_BRUSHING:
-							((GLParallelCoordinates) viewObject).triggerAngularBrushing();							
+							((GLParallelCoordinates) viewObject).triggerAngularBrushing();
 							break;
 					}
 				}
@@ -83,7 +85,7 @@ public class CmdExternalActionTrigger
 			throw new CaleydoRuntimeException("ERROR in CMD: " + e.toString(),
 					CaleydoRuntimeExceptionType.DATAHANDLING);
 		}
-		
+
 		commandManager.runDoCommand(this);
 	}
 

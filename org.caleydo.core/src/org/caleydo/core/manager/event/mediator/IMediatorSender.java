@@ -2,7 +2,6 @@ package org.caleydo.core.manager.event.mediator;
 
 import org.caleydo.core.data.selection.ISelectionDelta;
 
-
 /**
  * Interface for a mediator sender
  * 
@@ -17,12 +16,12 @@ public interface IMediatorSender
 	 * Trigger an empty update
 	 */
 	public void triggerUpdate();
-	
+
 	/**
 	 * Trigger an update with the selection delta specified
 	 * 
 	 * @param selectionDelta the selection delta
 	 */
 	public void triggerUpdate(ISelectionDelta selectionDelta);
-	
+
 }

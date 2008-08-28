@@ -45,6 +45,6 @@ public interface IPathwayItemManager
 	public int getPathwayVertexGraphItemIdByDavidId(final int iDavidId);
 
 	public int getDavidIdByPathwayVertexGraphItemId(final int iPathwayVertexGraphItemId);
-	
+
 	public PathwayVertexGraphItemRep getPathwayVertexRep(int iID);
 }

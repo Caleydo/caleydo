@@ -37,7 +37,7 @@ public class GLCoordinateUtils
 		// inaccurate in the bucket
 		// For an explanation look at page 161 in the red book
 		// 0.3 at least works for the bucket when the user zooms in
-		glu.gluUnProject((double) iWindowCoordinatePositionX, (double) realy, 0.3f, //
+		glu.gluUnProject(iWindowCoordinatePositionX, realy, 0.3f, //
 				mvmatrix, 0, projmatrix, 0, viewport, 0, wcoord, 0);
 
 		// System.out.println("World coords at z=0.0 are ( " //

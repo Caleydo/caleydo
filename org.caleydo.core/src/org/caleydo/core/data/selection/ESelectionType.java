@@ -42,17 +42,16 @@ public enum ESelectionType
 		return iType;
 	}
 
-
 	public static ESelectionType valueOf(int iRep)
 	{
-		if(bIsFirstTime)
+		if (bIsFirstTime)
 		{
 			init();
 			bIsFirstTime = false;
 		}
 		return hashValuesToEnum.get(iRep);
 	}
-	
+
 	private static void init()
 	{
 		hashValuesToEnum = new HashMap<Integer, ESelectionType>();

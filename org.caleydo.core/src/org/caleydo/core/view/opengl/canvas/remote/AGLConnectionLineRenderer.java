@@ -42,7 +42,8 @@ public abstract class AGLConnectionLineRenderer
 		this.underInteractionLayer = underInteractionLayer;
 		this.stackLayer = stackLayer;
 
-		connectedElementRepManager = GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
+		connectedElementRepManager = GeneralManager.get().getViewGLCanvasManager()
+				.getConnectedElementRepresentationManager();
 
 		hashViewToPointLists = new HashMap<Integer, ArrayList<ArrayList<Vec3f>>>();
 	}

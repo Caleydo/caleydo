@@ -20,6 +20,7 @@ public class GlyphRenderStyle
 		super(viewFrustum);
 	}
 
+	@Override
 	public float getButtonWidht()
 	{
 

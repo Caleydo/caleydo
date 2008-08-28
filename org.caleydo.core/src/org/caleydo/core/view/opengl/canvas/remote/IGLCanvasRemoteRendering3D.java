@@ -13,7 +13,7 @@ public interface IGLCanvasRemoteRendering3D
 
 	public RemoteHierarchyLayer getHierarchyLayerByGLEventListenerId(
 			final int iGLEventListenerId);
-	
+
 	/**
 	 * Returns the center layer of the bucket.
 	 */

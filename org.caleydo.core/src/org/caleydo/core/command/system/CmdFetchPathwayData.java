@@ -24,11 +24,11 @@ public class CmdFetchPathwayData
 	private ProgressBar progressBarKeggPathwayImageCacher = null;
 	private ProgressBar progressBarBioCartaPathwayCacher = null;
 	private WizardPage parentWizardPage = null;
-	
+
 	private boolean isKeggCacherFinished = false;
 	private boolean isKeggImageCacherFinished = false;
 	private boolean isBioCartaCacherFinished = false;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -66,8 +66,8 @@ public class CmdFetchPathwayData
 	{
 		super.setParameterHandler(parameterHandler);
 	}
-	
-	public void setAttributes(final Display display, 
+
+	public void setAttributes(final Display display,
 			final ProgressBar progressBarKeggPathwayCacher,
 			final ProgressBar progressBarKeggPathwayImageCacher,
 			final ProgressBar progressBarBioCartaPathwayCacher,
@@ -79,37 +79,37 @@ public class CmdFetchPathwayData
 		this.progressBarBioCartaPathwayCacher = progressBarBioCartaPathwayCacher;
 		this.parentWizardPage = parentWizardPage;
 	}
-	
-	public void setFinishedKeggCacher() 
+
+	public void setFinishedKeggCacher()
 	{
 		isKeggCacherFinished = true;
 		notifyWizard();
 	}
-	
-	public void setFinishedKeggImageCacher() 
+
+	public void setFinishedKeggImageCacher()
 	{
 		isKeggImageCacherFinished = true;
 		notifyWizard();
 	}
-	
-	public void setFinishedBioCartaCacher() 
+
+	public void setFinishedBioCartaCacher()
 	{
 		isBioCartaCacherFinished = true;
 		notifyWizard();
 	}
-	
-	public void notifyWizard() 
+
+	public void notifyWizard()
 	{
 		if (parentWizardPage == null)
 			return;
-		
+
 		if (isKeggCacherFinished && isKeggImageCacherFinished && isBioCartaCacherFinished)
 		{
 			display.asyncExec(new Runnable()
 			{
 				public void run()
 				{
-					parentWizardPage.setPageComplete(true);		
+					parentWizardPage.setPageComplete(true);
 				}
 			});
 		}

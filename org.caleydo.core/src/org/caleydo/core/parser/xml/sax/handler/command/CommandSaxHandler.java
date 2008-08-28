@@ -59,62 +59,49 @@ public class CommandSaxHandler
 		IParameterHandler phAttributes = new ParameterHandler();
 
 		/* create new Frame */
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_PROCESS
-				.getXmlKey(), ECommandType.TAG_PROCESS.getDefault(),
-				ParameterHandlerType.STRING);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_PROCESS.getXmlKey(),
+				ECommandType.TAG_PROCESS.getDefault(), ParameterHandlerType.STRING);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_LABEL
-				.getXmlKey(), ECommandType.TAG_LABEL.getDefault(),
-				ParameterHandlerType.STRING);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_LABEL.getXmlKey(),
+				ECommandType.TAG_LABEL.getDefault(), ParameterHandlerType.STRING);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_CMD_ID
-				.getXmlKey(), ECommandType.TAG_CMD_ID.getDefault(),
-				ParameterHandlerType.INT);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_CMD_ID.getXmlKey(),
+				ECommandType.TAG_CMD_ID.getDefault(), ParameterHandlerType.INT);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_UNIQUE_ID
-				.getXmlKey(), ECommandType.TAG_UNIQUE_ID.getDefault(),
-				ParameterHandlerType.INT);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_UNIQUE_ID.getXmlKey(),
+				ECommandType.TAG_UNIQUE_ID.getDefault(), ParameterHandlerType.INT);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_MEMENTO_ID
-				.getXmlKey(), ECommandType.TAG_MEMENTO_ID.getDefault(),
-				ParameterHandlerType.INT);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_MEMENTO_ID.getXmlKey(),
+				ECommandType.TAG_MEMENTO_ID.getDefault(), ParameterHandlerType.INT);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_TYPE
-				.getXmlKey(), ECommandType.TAG_TYPE.getDefault(),
-				ParameterHandlerType.STRING);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_TYPE.getXmlKey(),
+				ECommandType.TAG_TYPE.getDefault(), ParameterHandlerType.STRING);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_PARENT
-				.getXmlKey(), ECommandType.TAG_PARENT.getDefault(),
-				ParameterHandlerType.INT);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_PARENT.getXmlKey(),
+				ECommandType.TAG_PARENT.getDefault(), ParameterHandlerType.INT);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_ATTRIBUTE1
-				.getXmlKey(), ECommandType.TAG_ATTRIBUTE1.getDefault(),
-				ParameterHandlerType.STRING);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_ATTRIBUTE1.getXmlKey(),
+				ECommandType.TAG_ATTRIBUTE1.getDefault(), ParameterHandlerType.STRING);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_ATTRIBUTE2
-				.getXmlKey(), ECommandType.TAG_ATTRIBUTE2.getDefault(),
-				ParameterHandlerType.STRING);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_ATTRIBUTE2.getXmlKey(),
+				ECommandType.TAG_ATTRIBUTE2.getDefault(), ParameterHandlerType.STRING);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_ATTRIBUTE3
-				.getXmlKey(), ECommandType.TAG_ATTRIBUTE3.getDefault(),
-				ParameterHandlerType.STRING);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_ATTRIBUTE3.getXmlKey(),
+				ECommandType.TAG_ATTRIBUTE3.getDefault(), ParameterHandlerType.STRING);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_ATTRIBUTE4
-				.getXmlKey(), ECommandType.TAG_ATTRIBUTE4.getDefault(),
-				ParameterHandlerType.STRING);
-
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_POS_GL_ORIGIN
-				.getXmlKey(), ECommandType.TAG_POS_GL_ORIGIN.getDefault(),
-				ParameterHandlerType.VEC3F);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_ATTRIBUTE4.getXmlKey(),
+				ECommandType.TAG_ATTRIBUTE4.getDefault(), ParameterHandlerType.STRING);
 
 		phAttributes.setValueBySaxAttributes(attrs,
-				ECommandType.TAG_POS_GL_ROTATION.getXmlKey(),
-				ECommandType.TAG_POS_GL_ROTATION.getDefault(),
+				ECommandType.TAG_POS_GL_ORIGIN.getXmlKey(), ECommandType.TAG_POS_GL_ORIGIN
+						.getDefault(), ParameterHandlerType.VEC3F);
+
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_POS_GL_ROTATION
+				.getXmlKey(), ECommandType.TAG_POS_GL_ROTATION.getDefault(),
 				ParameterHandlerType.VEC4F);
 
-		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_DETAIL
-				.getXmlKey(), ECommandType.TAG_DETAIL.getDefault(),
-				ParameterHandlerType.STRING);
+		phAttributes.setValueBySaxAttributes(attrs, ECommandType.TAG_DETAIL.getXmlKey(),
+				ECommandType.TAG_DETAIL.getDefault(), ParameterHandlerType.STRING);
 
 		// generalManager.logMsg(
 		// "XML-TAG= " + phAttributes.getValueString(
@@ -125,8 +112,8 @@ public class CommandSaxHandler
 
 		if (lastCommand != null)
 		{
-			String sData_Cmd_process = phAttributes
-					.getValueString(ECommandType.TAG_PROCESS.getXmlKey());
+			String sData_Cmd_process = phAttributes.getValueString(ECommandType.TAG_PROCESS
+					.getXmlKey());
 
 			if (sData_Cmd_process.equals(ECommandType.RUN_CMD_NOW.toString()))
 			{
@@ -178,8 +165,8 @@ public class CommandSaxHandler
 					ECommandType.CMDQUEUE_ID.getXmlKey(), -1);
 
 			sData_Queue_type = SXmlParserHandler.assignStringValue(attrs,
-					ECommandType.COMMAND_QUEUE_RUN.getXmlKey(),
-					ECommandType.COMMAND_QUEUE_RUN.toString());
+					ECommandType.COMMAND_QUEUE_RUN.getXmlKey(), ECommandType.COMMAND_QUEUE_RUN
+							.toString());
 
 			iData_Queue_ThreadPool_Id = SXmlParserHandler.assignIntValueIfValid(attrs,
 					ECommandType.CMD_THREAD_POOL_ID.getXmlKey(), -1);
@@ -235,6 +222,7 @@ public class CommandSaxHandler
 	 * @see org.xml.sax.ContentHandler#startElement(Stringt, Stringt, Stringt,
 	 *      org.xml.sax.Attributes)
 	 */
+	@Override
 	public void startElement(String namespaceURI, String localName, String qName,
 			Attributes attrs) throws SAXException
 	{
@@ -347,6 +335,7 @@ public class CommandSaxHandler
 	/**
 	 * @see org.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
 	 */
+	@Override
 	public void endElement(String namespaceURI, String localName, String qName)
 			throws SAXException
 	{
@@ -414,6 +403,7 @@ public class CommandSaxHandler
 	/**
 	 * Cleanup called by Manager after Handler is not used any more.
 	 */
+	@Override
 	public void destroyHandler()
 	{
 		super.destroyHandler();

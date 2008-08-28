@@ -1,6 +1,5 @@
 package org.caleydo.core.command;
 
-
 /**
  * Type of Command Queue "tag's" and "key's" Example:
  * LOAD_DATA_FILE("cmd","type") in XML: <cmd type="LOAD_DATA_FILE" /> Example 2:
@@ -20,7 +19,7 @@ public enum ECommandType
 	LOAD_URL_IN_BROWSER("cmd", "type", "-1", "Load URL in browser"),
 
 	FETCH_PATHWAY_DATA("cmd", "type", "", "No description available!"),
-	
+
 	DATA_FILTER_MATH("cmd", "type", "-1", "Filter data by using math operations"),
 	DATA_FILTER_MIN_MAX("cmd", "type", "-1", "Evaluate min and max of an entity"),
 
@@ -33,7 +32,7 @@ public enum ECommandType
 	CREATE_GL_PATHWAY_3D("cmd", "type", "-1", "Create Pathway 3D"),
 	CREATE_GL_PARALLEL_COORDINATES_3D("cmd", "type", "-1", "Create Parallel Coordinates 3D"),
 	CREATE_GL_BUCKET_3D("cmd", "type", "-1", "Create Bucket 3D"),
-	CREATE_GL_JUKEBOX_3D( "cmd", "type", "-1", "Create Jukebox 3D"),
+	CREATE_GL_JUKEBOX_3D("cmd", "type", "-1", "Create Jukebox 3D"),
 	CREATE_GL_WII_TEST("cmd", "type", "-1", "No description available!"),
 	CREATE_GL_REMOTE_GLYPH("cmd", "type", "-1", "Create Remote Glyph"),
 
@@ -92,9 +91,8 @@ public enum ECommandType
 	CMD_THREAD_POOL_WAIT_ID("cmdqueue", "queue_thread_wait", "-1", "No description available!"),
 
 	/*
-	 * ================================================= 
-	 * Import from former Type "CommandType" 
-	 * =================================================
+	 * ================================================= Import from former Type
+	 * "CommandType" =================================================
 	 */
 	SYSTEM_SHUT_DOWN("cmd", "type", "-1", "Caleydo system shut down"),
 
@@ -117,7 +115,7 @@ public enum ECommandType
 	TAG_PROCESS("cmd", "process", "RUN_CMD_NOW"),
 	TAG_LABEL("cmd", "label", ""),
 	TAG_POS_GL_ORIGIN("cmd", "gl_origin", "0 0 0"),
-	
+
 	/** Values indicate axis: (X,Y,Z) and rotation-angle (ALPHA) in (radiant). */
 	TAG_POS_GL_ROTATION("cmd", "gl_rotation", "0 0 1 0.0");
 
@@ -153,21 +151,19 @@ public enum ECommandType
 	 * @param sDefaultValue
 	 * @param sInfoText
 	 */
-	private ECommandType(String sXmlTag, String sXmlKey,
-			String sDefaultValue, String sInfoText)
+	private ECommandType(String sXmlTag, String sXmlKey, String sDefaultValue, String sInfoText)
 	{
 		this.sXmlTag = sXmlTag;
 		this.sXmlKey = sXmlKey;
 		this.sDefaultValue = sDefaultValue;
 		this.sInfoText = sInfoText;
 	}
-	
+
 	private ECommandType(String sXmlTag, String sXmlKey, String sDefaultValue)
 	{
-		this(sXmlTag, sXmlKey, sDefaultValue,
-				"Description is not valid! This is a TAG.");
+		this(sXmlTag, sXmlKey, sDefaultValue, "Description is not valid! This is a TAG.");
 	}
-	
+
 	/**
 	 * * Tag: Example: <CmdQueue type="COMMAND_QUEUE_OPEN"> <br>
 	 * "type" is the Key.<br>

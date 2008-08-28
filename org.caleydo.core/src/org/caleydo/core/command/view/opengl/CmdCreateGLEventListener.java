@@ -39,7 +39,6 @@ public class CmdCreateGLEventListener
 
 	protected ArrayList<Integer> iAlSetIDs;
 
-
 	/**
 	 * Constructor.
 	 */
@@ -87,8 +86,8 @@ public class CmdCreateGLEventListener
 				.getXmlKey());
 
 		/* convert Vec4f to roation Rotf */
-		Vec4f vec4fRotation = parameterHandler
-				.getValueVec4f(ECommandType.TAG_POS_GL_ROTATION.getXmlKey());
+		Vec4f vec4fRotation = parameterHandler.getValueVec4f(ECommandType.TAG_POS_GL_ROTATION
+				.getXmlKey());
 
 		cameraRotation.set(new Vec3f(vec4fRotation.x(), vec4fRotation.y(), vec4fRotation.z()),
 				(float) Math.toRadians(vec4fRotation.w()));
@@ -105,8 +104,7 @@ public class CmdCreateGLEventListener
 				sProjectionMode = frustumToken.nextToken();
 
 			if (!sProjectionMode.equals(EProjectionMode.ORTHOGRAPHIC.name())
-					&& !sProjectionMode.equals(EProjectionMode.PERSPECTIVE
-							.name()))
+					&& !sProjectionMode.equals(EProjectionMode.PERSPECTIVE.name()))
 			{
 				return;
 			}
@@ -125,8 +123,8 @@ public class CmdCreateGLEventListener
 			fNear = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
 			fFar = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
 
-			viewFrustum = new ViewFrustum(EProjectionMode
-					.valueOf(sProjectionMode), fLeft, fRight, fBottom, fTop, fNear, fFar);
+			viewFrustum = new ViewFrustum(EProjectionMode.valueOf(sProjectionMode), fLeft,
+					fRight, fBottom, fTop, fNear, fFar);
 
 		}
 		catch (Exception e)
@@ -162,27 +160,28 @@ public class CmdCreateGLEventListener
 		}
 
 		// Fill selection IDs
-//		if (divideSetAndSelectionIDs.hasMoreTokens())
-//		{
-//			StringTokenizer divideIDs = new StringTokenizer(divideSetAndSelectionIDs
-//					.nextToken(), IGeneralManager.sDelimiter_Parser_DataItems);
-//
-//			while (divideIDs.hasMoreTokens())
-//			{
-//				iAlSelectionIDs.add(StringConversionTool.convertStringToInt(divideIDs
-//						.nextToken(), -1));
-//			}
-//		}
-		
+		// if (divideSetAndSelectionIDs.hasMoreTokens())
+		// {
+		// StringTokenizer divideIDs = new
+		// StringTokenizer(divideSetAndSelectionIDs
+		// .nextToken(), IGeneralManager.sDelimiter_Parser_DataItems);
+		//
+		// while (divideIDs.hasMoreTokens())
+		// {
+		// iAlSelectionIDs.add(StringConversionTool.convertStringToInt(divideIDs
+		// .nextToken(), -1));
+		// }
+		// }
+
 		// Convert external IDs from XML file to internal IDs
 		iAlSetIDs = GeneralManager.get().getIDManager()
-			.convertExternalToInternalIDs(iAlSetIDs);
-		
+				.convertExternalToInternalIDs(iAlSetIDs);
+
 	}
 
-	public void setAttributes(final EProjectionMode eProjectionMode,
-			final float fLeft, final float fRight, final float fTop, final float fBottom,
-			final float fNear, final float fFar, final ArrayList<Integer> iArSetIDs)
+	public void setAttributes(final EProjectionMode eProjectionMode, final float fLeft,
+			final float fRight, final float fTop, final float fBottom, final float fNear,
+			final float fFar, final ArrayList<Integer> iArSetIDs)
 	{
 
 		viewFrustum = new ViewFrustum(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear,
@@ -198,29 +197,30 @@ public class CmdCreateGLEventListener
 		IViewGLCanvasManager glCanvasManager = generalManager.getViewGLCanvasManager();
 
 		if (iExternalID != -1 && iParentContainerId != -1)
-		{	
-			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
+		{
+			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(
+					iParentContainerId);
 		}
-		
-		createdObject = glCanvasManager.createGLEventListener(viewType,
-				iParentContainerId,	sLabel, viewFrustum);
-		
+
+		createdObject = glCanvasManager.createGLEventListener(viewType, iParentContainerId,
+				sLabel, viewFrustum);
+
 		if (iExternalID != -1)
 		{
-			generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), 
+			generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(),
 					iExternalID);
 		}
-		
-		((AGLEventListener) createdObject).getViewCamera().setCameraPosition(cameraOrigin);
-		((AGLEventListener) createdObject).getViewCamera().setCameraRotation(cameraRotation);
+
+		(createdObject).getViewCamera().setCameraPosition(cameraOrigin);
+		(createdObject).getViewCamera().setCameraRotation(cameraRotation);
 
 		// Set sets in views
-		AGLEventListener glCanvas = ((AGLEventListener) createdObject);
+		AGLEventListener glCanvas = (createdObject);
 		for (Integer iSetID : iAlSetIDs)
 		{
 			glCanvas.addSet(iSetID);
 		}
-		
+
 		commandManager.runDoCommand(this);
 	}
 

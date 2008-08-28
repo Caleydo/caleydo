@@ -106,8 +106,8 @@ public class PickingManager
 		if (bEnablePicking == false)
 			return;
 
-		AGLEventListener canvasUser = (AGLEventListener) (GeneralManager.get()
-				.getViewGLCanvasManager().getGLEventListener(iViewID));
+		AGLEventListener canvasUser = (GeneralManager.get().getViewGLCanvasManager()
+				.getGLEventListener(iViewID));
 		PickingJoglMouseListener pickingTriggerMouseAdapter = canvasUser.getParentGLCanvas()
 				.getJoglMouseListener();
 
@@ -177,12 +177,11 @@ public class PickingManager
 
 		/* create 5x5 pixel picking region near cursor location */
 		GLU glu = new GLU();
-		glu.gluPickMatrix((double) pickPoint.x, (double) (viewport[3] - pickPoint.y),// 
+		glu.gluPickMatrix(pickPoint.x, (viewport[3] - pickPoint.y),// 
 				5.0, 5.0, viewport, 0); // pick width and height is set to 5
 		// (i.e. picking tolerance)
 
-		float fAspectRatio = (float) (float) (viewport[3] - viewport[1])
-				/ (float) (viewport[2] - viewport[0]);
+		float fAspectRatio = (viewport[3] - viewport[1]) / (viewport[2] - viewport[0]);
 
 		IViewFrustum viewFrustum = canvasUser.getViewFrustum();
 
@@ -417,12 +416,13 @@ public class PickingManager
 				}
 				else
 				{
-					
-					HashMap<Integer, Integer> signatureToPickingID = hashSignatureToPickingIDHashMap.get(
-							iSignature);
-					
-					Integer iViewUnderInteractionID = signatureToPickingID.get(iOrigianlPickingID);
-					if(iViewUnderInteractionID == null)
+
+					HashMap<Integer, Integer> signatureToPickingID = hashSignatureToPickingIDHashMap
+							.get(iSignature);
+
+					Integer iViewUnderInteractionID = signatureToPickingID
+							.get(iOrigianlPickingID);
+					if (iViewUnderInteractionID == null)
 						continue;
 					iSignature = getSignatureFromPickingID(iPickingID, iViewUnderInteractionID);
 

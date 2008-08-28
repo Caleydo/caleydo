@@ -26,16 +26,16 @@ public class PathwayListGenerator
 	public final static String INPUT_FOLDER_PATH_BIOCARTA = "cgap.nci.nih.gov/Pathways/BioCarta/";
 	public final static String INPUT_IMAGE_PATH_BIOCARTA = "cgap.nci.nih.gov/BIOCARTA/Pathways/";
 	public final static String OUTPUT_FILE_NAME_BIOCARTA = "pathway_list_BIOCARTA.txt";
-	
+
 	private PrintWriter outputWriter;
 
-	public void run(String sInputFolderPath, String sInputImagePath,
-			String sOutputFileName) throws FileNotFoundException
+	public void run(String sInputFolderPath, String sInputImagePath, String sOutputFileName)
+			throws FileNotFoundException
 	{
 		sInputFolderPath = IGeneralManager.CALEYDO_HOME_PATH + sInputFolderPath;
 		sInputImagePath = IGeneralManager.CALEYDO_HOME_PATH + sInputImagePath;
 		sOutputFileName = IGeneralManager.CALEYDO_HOME_PATH + sOutputFileName;
-		
+
 		outputWriter = new PrintWriter(sOutputFileName);
 
 		File folder = new File(sInputFolderPath);
@@ -68,17 +68,18 @@ public class PathwayListGenerator
 						CaleydoRuntimeExceptionType.DATAHANDLING);
 			}
 
-			sOutput = sOutput.substring(sOutput.lastIndexOf(sPathDelimiter) + 1, sOutput.length());
-			
+			sOutput = sOutput.substring(sOutput.lastIndexOf(sPathDelimiter) + 1, sOutput
+					.length());
+
 			outputWriter.append(sOutput + " ");
 
 			String sImagePath = "";
 			if (tmpFile.toString().contains(".xml"))
-			{			
+			{
 				sImagePath = sInputImagePath
-				+ tmpFile.toString().substring(
-						tmpFile.toString().lastIndexOf(sPathDelimiter) + 1,
-						tmpFile.toString().length() - 4) + ".gif";
+						+ tmpFile.toString().substring(
+								tmpFile.toString().lastIndexOf(sPathDelimiter) + 1,
+								tmpFile.toString().length() - 4) + ".gif";
 			}
 			// find out image path of biocarta pathway - necessary because xml
 			// path != image path
@@ -93,8 +94,15 @@ public class PathwayListGenerator
 					{
 						if (sLine.contains("http://cgap.nci.nih.gov/BIOCARTA/Pathways/"))
 						{
-							sImagePath = sLine.substring(sLine.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/") + 42,
-											sLine.indexOf(".gif",sLine.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/")) + 4);
+							sImagePath = sLine
+									.substring(
+											sLine
+													.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/") + 42,
+											sLine
+													.indexOf(
+															".gif",
+															sLine
+																	.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/")) + 4);
 
 							sImagePath = sInputImagePath + sImagePath;
 
@@ -104,9 +112,8 @@ public class PathwayListGenerator
 				}
 				catch (IOException e)
 				{
-					throw new CaleydoRuntimeException(
-							"Cannot open pathway list file at " + tmpFile.toString(),
-							CaleydoRuntimeExceptionType.DATAHANDLING);
+					throw new CaleydoRuntimeException("Cannot open pathway list file at "
+							+ tmpFile.toString(), CaleydoRuntimeExceptionType.DATAHANDLING);
 				}
 
 			}

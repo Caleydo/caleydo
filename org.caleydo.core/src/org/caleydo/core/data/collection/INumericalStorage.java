@@ -1,6 +1,5 @@
 package org.caleydo.core.data.collection;
 
-import javax.management.InvalidAttributeValueException;
 
 /**
  * INumericalStorage is a specialization of IStorage. It is meant for numerical

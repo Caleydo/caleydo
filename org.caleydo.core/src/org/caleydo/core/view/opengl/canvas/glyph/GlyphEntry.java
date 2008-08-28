@@ -32,7 +32,7 @@ public class GlyphEntry
 
 	public GlyphEntry(int id, GLGlyphGenerator generator)
 	{
-		this.generalManager = GeneralManager.get();		
+		this.generalManager = GeneralManager.get();
 		id_ = id;
 		generator_ = generator;
 		parameter_ = new Vector<Integer>();

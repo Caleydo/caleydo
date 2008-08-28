@@ -36,7 +36,8 @@ public class CmdExternalFlagSetter
 
 		commandManager.runDoCommand(this);
 
-		Object viewObject = generalManager.getViewGLCanvasManager().getGLEventListener(iViewId);
+		Object viewObject = generalManager.getViewGLCanvasManager()
+				.getGLEventListener(iViewId);
 
 		if (viewObject instanceof GLPathway)
 		{

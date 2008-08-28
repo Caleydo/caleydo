@@ -62,10 +62,11 @@ public class GLSliderMiniView
 
 	TextRenderer textRenderer = null;
 
-	public GLSliderMiniView(PickingJoglMouseListener pickingTriggerMouseAdapter, final int iViewID,
-			final int iSliderID)
+	public GLSliderMiniView(PickingJoglMouseListener pickingTriggerMouseAdapter,
+			final int iViewID, final int iSliderID)
 	{
-		this.pickingManager = GeneralManager.get().getViewGLCanvasManager().getPickingManager();
+		this.pickingManager = GeneralManager.get().getViewGLCanvasManager()
+				.getPickingManager();
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
 		this.iUniqueId = iViewID;
 		this.iSliderID = iSliderID;

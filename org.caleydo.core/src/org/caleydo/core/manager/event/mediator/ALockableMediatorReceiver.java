@@ -34,7 +34,7 @@ public abstract class ALockableMediatorReceiver
 	protected ALockableMediatorReceiver()
 	{
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.EVENT_MEDIATOR));
-		
+
 		bUpdateIsStalled = new AtomicBoolean(false);
 	}
 
@@ -97,7 +97,7 @@ public abstract class ALockableMediatorReceiver
 			updateReceiverSpecialMediator(eventTrigger, selectionDelta);
 		}
 	}
-	
+
 	/**
 	 * Called by org.caleydo.core.manager.event.mediator.IMediatorReceiver#
 	 * updateReceiver(java.lang.Object, org.caleydo.core.data.collection.ISet)

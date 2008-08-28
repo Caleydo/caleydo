@@ -7,14 +7,14 @@ public class Caretaker
 {
 
 	IGeneralManager generalManager;
-	
+
 	public Caretaker()
 	{
 		generalManager = GeneralManager.get();
 	}
-	
+
 	public void createMementos()
 	{
-	//	generalManager.getSelectionManager().getAllItems()
+		// generalManager.getSelectionManager().getAllItems()
 	}
 }

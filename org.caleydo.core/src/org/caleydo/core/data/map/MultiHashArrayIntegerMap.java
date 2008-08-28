@@ -79,10 +79,11 @@ public class MultiHashArrayIntegerMap
 		return null;
 	}
 
+	@Override
 	public void putAll(Map mapToPut)
 	{
 
-		super.putAll((MultiIntegerMap) mapToPut);
+		super.putAll(mapToPut);
 	}
 
 	public Object put(Integer key, Integer value)
@@ -140,6 +141,7 @@ public class MultiHashArrayIntegerMap
 		return null;
 	}
 
+	@Override
 	public boolean containsValue(Object value)
 	{
 
@@ -162,6 +164,7 @@ public class MultiHashArrayIntegerMap
 		return false;
 	}
 
+	@Override
 	public void clear()
 	{
 
@@ -180,6 +183,7 @@ public class MultiHashArrayIntegerMap
 		super.clear();
 	}
 
+	@Override
 	public Collection<ArrayList<Integer>> values()
 	{
 

@@ -282,6 +282,7 @@ public class ViewCameraPitchRollYaw
 	/**
 	 * Creates a clone of this camera by copying all settings.
 	 */
+	@Override
 	public ViewCameraBase clone()
 	{
 
@@ -292,6 +293,7 @@ public class ViewCameraPitchRollYaw
 		return exportClone;
 	}
 
+	@Override
 	public String toString()
 	{
 

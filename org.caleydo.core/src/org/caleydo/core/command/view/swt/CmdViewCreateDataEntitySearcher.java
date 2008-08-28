@@ -40,11 +40,12 @@ public class CmdViewCreateDataEntitySearcher
 		int iReceiverID = -1;
 		while (receiverToken.hasMoreTokens())
 		{
-			iReceiverID = StringConversionTool.convertStringToInt(receiverToken
-					.nextToken(), -1);
-			
+			iReceiverID = StringConversionTool.convertStringToInt(receiverToken.nextToken(),
+					-1);
+
 			if (iReceiverID != -1)
-				iAlViewReceiverID.add(generalManager.getIDManager().getInternalFromExternalID(iReceiverID));
+				iAlViewReceiverID.add(generalManager.getIDManager().getInternalFromExternalID(
+						iReceiverID));
 		}
 	}
 
@@ -54,14 +55,13 @@ public class CmdViewCreateDataEntitySearcher
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
 		DataEntitySearcherViewRep dataEntitySearcherView = (DataEntitySearcherViewRep) viewManager
-				.createView(EManagedObjectType.VIEW_SWT_DATA_ENTITY_SEARCHER, -1,
-						sLabel);
+				.createView(EManagedObjectType.VIEW_SWT_DATA_ENTITY_SEARCHER, -1, sLabel);
 
 		viewManager.registerItem(dataEntitySearcherView);
 		viewManager.addViewRep(dataEntitySearcherView);
 
 		dataEntitySearcherView.setAttributes(iAlViewReceiverID);
-		
+
 		commandManager.runDoCommand(this);
 	}
 

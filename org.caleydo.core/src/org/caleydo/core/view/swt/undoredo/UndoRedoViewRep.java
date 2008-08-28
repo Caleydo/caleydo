@@ -27,7 +27,6 @@ public class UndoRedoViewRep
 
 	/**
 	 * Constructor.
-
 	 */
 	public UndoRedoViewRep(int iParentContainerId, String sLabel)
 	{

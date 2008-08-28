@@ -64,7 +64,7 @@ public class ParCoordsRenderStyle
 
 	// Line widths
 	public static final float POLYLINE_LINE_WIDTH = 1.0f;
-	
+
 	public static final int NUMBER_AXIS_MARKERS = 9;
 
 	// modifiable colors

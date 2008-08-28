@@ -37,8 +37,7 @@ public interface ICommandManager
 			final int sQueueThreadWait);
 
 	/**
-	 * create a new command. Calls createCommandByType(CommandType)
-	 * internal.
+	 * create a new command. Calls createCommandByType(CommandType) internal.
 	 * 
 	 * @see org.caleydo.core.manager.ICommandManager#createCommandByType(ECommandType)
 	 * @param phAttributes Define several attributes and assign them in new

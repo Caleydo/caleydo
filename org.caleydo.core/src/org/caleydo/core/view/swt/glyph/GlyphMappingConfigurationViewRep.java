@@ -71,6 +71,7 @@ public class GlyphMappingConfigurationViewRep
 	 * @see org.caleydo.core.view.AView#retrieveGUIContainer()
 	 * @see org.caleydo.core.view.IView#initView()
 	 */
+	@Override
 	protected void initViewSwtComposite(Composite swtContainer)
 	{
 
@@ -210,6 +211,7 @@ public class GlyphMappingConfigurationViewRep
 
 		button.addSelectionListener(new SelectionAdapter()
 		{
+			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
 				switchBody(compositeScatterplotBody);
@@ -229,6 +231,7 @@ public class GlyphMappingConfigurationViewRep
 		button.setText("+");
 		button.addSelectionListener(new SelectionAdapter()
 		{
+			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
 				switchBody(compositeGlyphDefinition);

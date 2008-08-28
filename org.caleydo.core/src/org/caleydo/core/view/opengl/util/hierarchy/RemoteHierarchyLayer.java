@@ -152,9 +152,9 @@ public class RemoteHierarchyLayer
 	public void removeElement(int iElementId)
 	{
 
-		if (llElementId.contains((Integer) iElementId))
+		if (llElementId.contains(iElementId))
 		{
-			int iReplacePosition = llElementId.indexOf((Integer) iElementId);
+			int iReplacePosition = llElementId.indexOf(iElementId);
 
 			llElementId.set(iReplacePosition, -1);
 			llElementIdVisibleState.set(iReplacePosition, false);

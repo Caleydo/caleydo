@@ -44,22 +44,23 @@ import org.eclipse.jface.preference.PreferenceStore;
  */
 public class GeneralManager
 	implements IGeneralManager
-{	
+{
 	/**
 	 * General manager as a singleton
 	 */
 	private static IGeneralManager generalManager;
-	
+
 	/**
-	 * Preferences store enables storing and restoring of application specific preference data.
+	 * Preferences store enables storing and restoring of application specific
+	 * preference data.
 	 */
 	private PreferenceStore preferenceStore;
-	
+
 	/**
 	 * Determines whether Caleydo runs as standalone test GUI or in RCP mode.
 	 */
 	private boolean bIsStandalone = true;
-	
+
 	private boolean bAllManagersInitialized = false;
 
 	private IStorageManager storageManager;
@@ -78,25 +79,26 @@ public class GeneralManager
 	private IDManager IDManager;
 
 	private Logger logger;
-	
+
 	private IGUIBridge guiBridge;
 
 	@Override
 	public void init(boolean bIsStandalone, IGUIBridge externalGUIBridge)
 	{
 		this.init(bIsStandalone);
-		
+
 		this.guiBridge = externalGUIBridge;
 	}
-	
+
 	@Override
 	public void init(boolean bIsStandalone)
 	{
 		this.bIsStandalone = bIsStandalone;
-	
+
 		if (bAllManagersInitialized)
 		{
-			throw new CaleydoRuntimeException("Tried to initialize managers multiple times. Abort.");
+			throw new CaleydoRuntimeException(
+					"Tried to initialize managers multiple times. Abort.");
 		}
 
 		bAllManagersInitialized = true;
@@ -104,7 +106,7 @@ public class GeneralManager
 		storageManager = new StorageManager();
 		// virtualArrayManager = new VirtualArrayManager(this, 4);
 		setManager = new SetManager();
-//		connectedElementRepManager = new SelectionManager();
+		// connectedElementRepManager = new SelectionManager();
 		mementoManager = new MementoManager();
 		commandManager = new CommandManager();
 		viewGLCanvasManager = new ViewGLCanvasManager();
@@ -117,22 +119,22 @@ public class GeneralManager
 		xmlParserManager = new XmlParserManager();
 		glyphManager = new GlyphManager();
 		IDManager = new IDManager();
-		
+
 		xmlParserManager.initHandlers();
-		
+
 		initLogger();
 		initPreferences();
-		
+
 		// Init Standalone GUI Bridge if in standalone mode
 		if (bIsStandalone)
 		{
 			guiBridge = new SWTStandaloneBridge();
 		}
 	}
-	
+
 	/**
-	 * Returns the general method as a singleton object.
-	 * When first called the general manager is created (lazy).
+	 * Returns the general method as a singleton object. When first called the
+	 * general manager is created (lazy).
 	 */
 	public static IGeneralManager get()
 	{
@@ -143,11 +145,11 @@ public class GeneralManager
 		return generalManager;
 	}
 
+	private void initPreferences()
+	{
+		preferenceStore = new PreferenceStore(IGeneralManager.CALEYDO_HOME_PATH
+				+ PREFERENCE_FILE_NAME);
 
-	private void initPreferences() 
-	{				
-		preferenceStore = new PreferenceStore(IGeneralManager.CALEYDO_HOME_PATH + PREFERENCE_FILE_NAME);
-		
 		try
 		{
 			preferenceStore.load();
@@ -156,31 +158,32 @@ public class GeneralManager
 		{
 			logger.log(Level.INFO, "Create new preference store at "
 					+ IGeneralManager.CALEYDO_HOME_PATH + PREFERENCE_FILE_NAME);
-			
+
 			// Create .caleydo folder
 			if (!(new File(IGeneralManager.CALEYDO_HOME_PATH).exists()))
 			{
-				if(!(new File(IGeneralManager.CALEYDO_HOME_PATH).mkdir()))
-					throw new CaleydoRuntimeException("Unable to create home folder .caleydo. Check user permissions!", 
+				if (!(new File(IGeneralManager.CALEYDO_HOME_PATH).mkdir()))
+					throw new CaleydoRuntimeException(
+							"Unable to create home folder .caleydo. Check user permissions!",
 							CaleydoRuntimeExceptionType.DATAHANDLING);
 			}
-				
+
 			try
-			{				
-				preferenceStore.setValue("firstStart", true);	
+			{
+				preferenceStore.setValue("firstStart", true);
 				preferenceStore.save();
 			}
 			catch (IOException e1)
 			{
-				throw new CaleydoRuntimeException("Unable to save preference file.", 
+				throw new CaleydoRuntimeException("Unable to save preference file.",
 						CaleydoRuntimeExceptionType.DATAHANDLING);
 			}
 		}
-		
+
 		// Create log folder in .caleydo
 		new File(IGeneralManager.CALEYDO_HOME_PATH + "logs").mkdirs();
 	}
-	
+
 	/**
 	 * Initialize the Java internal logger
 	 */
@@ -207,14 +210,13 @@ public class GeneralManager
 		return storageManager;
 	}
 
-	
 	// public IVirtualArrayManager getVirtualArrayManager() {
 	// return virtualArrayManager;
 	// }
-//		public ISelectionManager getSelectionManager()
-//		{
-//			return connectedElementRepManager;
-//		}
+	// public ISelectionManager getSelectionManager()
+	// {
+	// return connectedElementRepManager;
+	// }
 
 	@Override
 	public ISetManager getSetManager()
@@ -277,7 +279,7 @@ public class GeneralManager
 	}
 
 	@Override
-	public PreferenceStore getPreferenceStore() 
+	public PreferenceStore getPreferenceStore()
 	{
 		return preferenceStore;
 	}
@@ -299,7 +301,7 @@ public class GeneralManager
 	{
 		return guiBridge;
 	}
-	
+
 	// public void serializationOutputTest() {
 	//		
 	// try

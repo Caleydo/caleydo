@@ -28,13 +28,13 @@ public class PathwayLoaderThread
 {
 	private static final String PATHWAY_LIST_KEGG = "pathway_list_KEGG.txt";
 	private static final String PATHWAY_LIST_BIOCARTA = "pathway_list_BIOCARTA.txt";
-	
+
 	/**
 	 * Needed for updating progress bar
 	 */
 	private static final int APPROX_PATHWAY_COUNT_KEGG = 214;
 	private static final int APPROX_PATHWAY_COUNT_BIOCARTA = 314;
-	
+
 	private IGeneralManager generalManager;
 
 	private Collection<PathwayDatabase> pathwayDatabases;
@@ -44,8 +44,7 @@ public class PathwayLoaderThread
 	 * 
 	 * @param sXMLPath
 	 */
-	public PathwayLoaderThread(
-			final Collection<PathwayDatabase> pathwayDatabases)
+	public PathwayLoaderThread(final Collection<PathwayDatabase> pathwayDatabases)
 	{
 		super("Pathway Loader Thread");
 
@@ -69,7 +68,7 @@ public class PathwayLoaderThread
 			loadAllPathwaysByType(generalManager, iterPathwayDatabase.next());
 		}
 
-//		notifyViews();
+		// notifyViews();
 	}
 
 	public static void loadAllPathwaysByType(final IGeneralManager generalManager,
@@ -79,8 +78,9 @@ public class PathwayLoaderThread
 		// File folder = new File(sXMLPath);
 		// File[] arFiles = folder.listFiles();
 
-		generalManager.getLogger().log(Level.INFO, "Start parsing " +pathwayDatabase.getName() +" pathways.");
-		
+		generalManager.getLogger().log(Level.INFO,
+				"Start parsing " + pathwayDatabase.getName() + " pathways.");
+
 		GLRemoteRendering tmpGLRemoteRendering3D = null;
 		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
 				.getAllGLEventListeners())
@@ -98,12 +98,12 @@ public class PathwayLoaderThread
 		String sFileName = "";
 		String sPathwayPath = pathwayDatabase.getXMLPath();
 		float fProgressFactor = 0;
-		
+
 		if (pathwayDatabase.getName().equals("KEGG"))
 		{
 			sFileName = IGeneralManager.CALEYDO_HOME_PATH + PATHWAY_LIST_KEGG;
-			fProgressFactor = 100f / APPROX_PATHWAY_COUNT_KEGG ;
-			
+			fProgressFactor = 100f / APPROX_PATHWAY_COUNT_KEGG;
+
 			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread(
 					"Loading KEGG Pathways...");
 		}
@@ -111,11 +111,11 @@ public class PathwayLoaderThread
 		{
 			sFileName = IGeneralManager.CALEYDO_HOME_PATH + PATHWAY_LIST_BIOCARTA;
 			fProgressFactor = 100f / APPROX_PATHWAY_COUNT_BIOCARTA;
-			
+
 			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread(
-				"Loading BioCarta Pathways...");
+					"Loading BioCarta Pathways...");
 		}
-		
+
 		int iPathwayIndex = 0;
 		try
 		{
@@ -129,7 +129,6 @@ public class PathwayLoaderThread
 				file = new BufferedReader(new FileReader(sFileName));
 			}
 
-			
 			StringTokenizer tokenizer;
 			String sPathwayName;
 			PathwayGraph tmpPathwayGraph;
@@ -138,16 +137,16 @@ public class PathwayLoaderThread
 				tokenizer = new StringTokenizer(sLine, " ");
 
 				sPathwayName = tokenizer.nextToken();
-				
+
 				// Skip non pathway files
 				if (!sPathwayName.endsWith(".xml") && !sLine.contains("h_"))
 					continue;
-				
+
 				generalManager.getXmlParserManager().parseXmlFileByName(
 						sPathwayPath + sPathwayName);
 
-				tmpPathwayGraph = ((PathwayManager)generalManager.getPathwayManager())
-					.getCurrenPathwayGraph();
+				tmpPathwayGraph = ((PathwayManager) generalManager.getPathwayManager())
+						.getCurrenPathwayGraph();
 				tmpPathwayGraph.setWidth(StringConversionTool.convertStringToInt(tokenizer
 						.nextToken(), -1));
 				tmpPathwayGraph.setHeight(StringConversionTool.convertStringToInt(tokenizer
@@ -163,63 +162,64 @@ public class PathwayLoaderThread
 							"Pathway texture width=" + iImageWidth + " / height="
 									+ iImageHeight);
 				}
-				
+
 				iPathwayIndex++;
-				
+
 				// Update progress bar only on each 10th pathway
 				if (iPathwayIndex % 10 == 0)
 				{
-					generalManager.getSWTGUIManager().setProgressBarPercentageFromExternalThread(
-							(int)(fProgressFactor * iPathwayIndex));
+					generalManager.getSWTGUIManager()
+							.setProgressBarPercentageFromExternalThread(
+									(int) (fProgressFactor * iPathwayIndex));
 				}
 			}
 
 		}
 		catch (FileNotFoundException e)
 		{
-			throw new CaleydoRuntimeException(
-					"Pathway list file: " + sFileName + " not found.",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new CaleydoRuntimeException("Pathway list file: " + sFileName
+					+ " not found.", CaleydoRuntimeExceptionType.DATAHANDLING);
 		}
 		catch (IOException e)
 		{
-			throw new CaleydoRuntimeException(
-					"Error reading data from pathway list file: " + sFileName,
-					CaleydoRuntimeExceptionType.DATAHANDLING);			
+			throw new CaleydoRuntimeException("Error reading data from pathway list file: "
+					+ sFileName, CaleydoRuntimeExceptionType.DATAHANDLING);
 		}
 
 		if (tmpGLRemoteRendering3D != null)
 			tmpGLRemoteRendering3D.enableBusyMode(false);
-		
+
 		generalManager.getPathwayManager().notifyPathwayLoadingFinished(true);
-		generalManager.getLogger().log(Level.INFO, "Finished parsing " +pathwayDatabase.getName() +" pathways.");
+		generalManager.getLogger().log(Level.INFO,
+				"Finished parsing " + pathwayDatabase.getName() + " pathways.");
 	}
 
-//	/**
-//	 * Method notifies all dependent views that the loading is ready.
-//	 */
-//	private void notifyViews()
-//	{
-//		int iTmpPathwayId;
-//
-//		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
-//				.getAllGLEventListeners())
-//		{
-//			if (tmpGLEventListener instanceof GLCanvasRemoteRendering3D)
-//			{
-//				for (GLEventListener tmpGLEventListenerInner : generalManager
-//						.getViewGLCanvasManager().getAllGLEventListeners())
-//				{
-//					if (tmpGLEventListenerInner instanceof GLCanvasPathway3D)
-//					{
-//						iTmpPathwayId = ((GLCanvasPathway3D) tmpGLEventListenerInner)
-//								.getPathwayID();
-//
-//						((GLCanvasRemoteRendering3D) tmpGLEventListener)
-//								.addPathwayView(iTmpPathwayId);
-//					}
-//				}
-//			}
-//		}
-//	}
+	// /**
+	// * Method notifies all dependent views that the loading is ready.
+	// */
+	// private void notifyViews()
+	// {
+	// int iTmpPathwayId;
+	//
+	// for (GLEventListener tmpGLEventListener :
+	// generalManager.getViewGLCanvasManager()
+	// .getAllGLEventListeners())
+	// {
+	// if (tmpGLEventListener instanceof GLCanvasRemoteRendering3D)
+	// {
+	// for (GLEventListener tmpGLEventListenerInner : generalManager
+	// .getViewGLCanvasManager().getAllGLEventListeners())
+	// {
+	// if (tmpGLEventListenerInner instanceof GLCanvasPathway3D)
+	// {
+	// iTmpPathwayId = ((GLCanvasPathway3D) tmpGLEventListenerInner)
+	// .getPathwayID();
+	//
+	// ((GLCanvasRemoteRendering3D) tmpGLEventListener)
+	// .addPathwayView(iTmpPathwayId);
+	// }
+	// }
+	// }
+	// }
+	// }
 }

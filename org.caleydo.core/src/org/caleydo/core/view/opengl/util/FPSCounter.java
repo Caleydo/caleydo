@@ -189,7 +189,7 @@ public class FPSCounter
 		if (++frameCount >= 100)
 		{
 			long endTime = System.currentTimeMillis();
-			float fps = 100.0f / (float) (endTime - startTime) * 1000;
+			float fps = 100.0f / (endTime - startTime) * 1000;
 			recomputeFPSSize(fps);
 			frameCount = 0;
 			startTime = System.currentTimeMillis();

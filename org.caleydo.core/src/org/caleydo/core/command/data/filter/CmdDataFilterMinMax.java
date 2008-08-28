@@ -1,12 +1,10 @@
 package org.caleydo.core.command.data.filter;
 
-import javax.naming.OperationNotSupportedException;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * This class calculates the min and the max value of a storage or a set It is

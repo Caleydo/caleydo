@@ -4,7 +4,7 @@ package org.caleydo.core.view.opengl.canvas;
  * Enum determines the detail level of the views.
  * 
  * @author Marc Streit
- *
+ * 
  */
 public enum EDetailLevel
 {
@@ -14,15 +14,15 @@ public enum EDetailLevel
 	 */
 	VERY_LOW,
 	/**
-	 *  bucket walls
+	 * bucket walls
 	 */
-	LOW, 
+	LOW,
 	/**
-	 * bucket center (but not zoomed)	
+	 * bucket center (but not zoomed)
 	 */
-	MEDIUM, 
+	MEDIUM,
 	/**
-	 *  bucket zoomed in or standalone
+	 * bucket zoomed in or standalone
 	 */
 	HIGH
 }

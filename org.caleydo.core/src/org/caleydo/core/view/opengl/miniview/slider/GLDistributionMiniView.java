@@ -49,8 +49,8 @@ public class GLDistributionMiniView
 
 	TextRenderer textRenderer = null;
 
-	public GLDistributionMiniView(PickingJoglMouseListener pickingTriggerMouseAdapter, final int iViewID,
-			final int iDistributionID)
+	public GLDistributionMiniView(PickingJoglMouseListener pickingTriggerMouseAdapter,
+			final int iViewID, final int iDistributionID)
 	{
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 16), false);
 		textRenderer.setColor(0, 0, 0, 1);
@@ -60,6 +60,7 @@ public class GLDistributionMiniView
 		fHeight = 1.0f;
 	}
 
+	@Override
 	public void setHeight(final float fHeight)
 	{
 		this.fHeight = fHeight;

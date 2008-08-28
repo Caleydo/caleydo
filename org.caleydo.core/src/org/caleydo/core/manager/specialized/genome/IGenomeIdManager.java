@@ -16,12 +16,11 @@ import org.caleydo.core.data.mapping.EMappingType;
 public interface IGenomeIdManager
 {
 
-	public int getIdIntFromStringByMapping(final String sCaleydoId,
-			final EMappingType type);
+	public int getIdIntFromStringByMapping(final String sCaleydoId, final EMappingType type);
 
 	/**
-	 * expose all keys for one EIDType from <key,value>. Note is was
-	 * required for EIDType.NCBI_GENEID in specific.
+	 * expose all keys for one EIDType from <key,value>. Note is was required
+	 * for EIDType.NCBI_GENEID in specific.
 	 * 
 	 * @see IGenomeIdManager#getAllValuesByGenomeIdTypeHashMap(EMappingType)
 	 * @param type specify one EIDType
@@ -31,8 +30,8 @@ public interface IGenomeIdManager
 	public HashMap<Integer, Integer> getAllKeysByGenomeIdTypeHashMap(EMappingType type);
 
 	/**
-	 * expose all values for one EIDType from <key,value>. Note is was
-	 * required for EIDType.NCBI_GENEID in specific.
+	 * expose all values for one EIDType from <key,value>. Note is was required
+	 * for EIDType.NCBI_GENEID in specific.
 	 * 
 	 * @see IGenomeIdManager#getAllKeysByGenomeIdTypeHashMap(EMappingType)
 	 * @param type specify one EIDType
@@ -79,8 +78,7 @@ public interface IGenomeIdManager
 	 * @param type defines, which id is mapped to the other id
 	 * @return "target" id using type
 	 */
-	public String getIdStringFromIntByMapping(final int iUniqueId,
-			final EMappingType type);
+	public String getIdStringFromIntByMapping(final int iUniqueId, final EMappingType type);
 
 	/**
 	 * Get lock to start adding key, value pairs to a specific HashMap defined
@@ -93,8 +91,8 @@ public interface IGenomeIdManager
 	public boolean buildLUT_startEditing(final EMappingType type);
 
 	/**
-	 * After calling buildLUT_startEditing(EMappingType) this closes the
-	 * map and frees the lock. Now another map can be filled with data.
+	 * After calling buildLUT_startEditing(EMappingType) this closes the map and
+	 * frees the lock. Now another map can be filled with data.
 	 * 
 	 * @return true if stop editing was successful.
 	 */
@@ -128,8 +126,8 @@ public interface IGenomeIdManager
 			final EMappingDataType dataType);
 
 	/**
-	 * Set a Map and register it to a EMappingType. Note: (Object) map
-	 * must be an object of type: IGenomeIdMap, MultiHashArrayStringMap or
+	 * Set a Map and register it to a EMappingType. Note: (Object) map must be
+	 * an object of type: IGenomeIdMap, MultiHashArrayStringMap or
 	 * MultiHashArrayIntegerMap
 	 * 
 	 * @param codingLutType define EMappingType used for identifying
@@ -141,8 +139,8 @@ public interface IGenomeIdManager
 	public void setMapByType(final EMappingType codingLutType, Object map);
 
 	/**
-	 * Remove a Map using the EMappingType. Note: (Object) map must be an
-	 * object of type: IGenomeIdMap, MultiHashArrayStringMap or
+	 * Remove a Map using the EMappingType. Note: (Object) map must be an object
+	 * of type: IGenomeIdMap, MultiHashArrayStringMap or
 	 * MultiHashArrayIntegerMap
 	 * 
 	 * @param codingLutType define EMappingType used for identifying
@@ -161,8 +159,8 @@ public interface IGenomeIdManager
 
 	public Collection<String> getIdStringListFromIdListByType(Collection<String> sIdList,
 			EMappingType type);
-	
+
 	public MultiHashArrayIntegerMap getMultiMapIntegerByType(final EMappingType type);
-	
+
 	public MultiHashArrayStringMap getMultiMapStringByType(final EMappingType type);
 }

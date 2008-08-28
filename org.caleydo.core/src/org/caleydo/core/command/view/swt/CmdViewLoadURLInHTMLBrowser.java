@@ -41,7 +41,7 @@ public class CmdViewLoadURLInHTMLBrowser
 
 		Iterator<IView> iterHTMLBrowser = generalManager.getViewGLCanvasManager()
 				.getViewRepByType(ViewType.SWT_HTML_BROWSER).iterator();
-	
+
 		while (iterHTMLBrowser.hasNext())
 		{
 			((HTMLBrowserViewRep) iterHTMLBrowser.next()).setUrl(sTargetURL);

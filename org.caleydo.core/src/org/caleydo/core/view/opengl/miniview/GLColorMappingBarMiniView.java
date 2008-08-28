@@ -46,7 +46,7 @@ public class GLColorMappingBarMiniView
 		{
 			gl.glColor3fv(markerPoint.getColor(), 0);
 			float fYCurrent = fYOrigin + fHeight * markerPoint.getValue();
-			gl.glVertex3f(fXOrigin, fYCurrent , fZOrigin);
+			gl.glVertex3f(fXOrigin, fYCurrent, fZOrigin);
 			gl.glVertex3f(fXOrigin + fWidth, fYCurrent, fZOrigin);
 			iCount++;
 		}

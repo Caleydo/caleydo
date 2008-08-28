@@ -32,6 +32,7 @@ public class GLConnectionLineRendererJukebox
 		super(underInteractionLayer, stackLayer, poolLayer);
 	}
 
+	@Override
 	protected void renderConnectionLines(final GL gl)
 	{
 
@@ -44,8 +45,8 @@ public class GLConnectionLineRendererJukebox
 		matSrc.makeIdent();
 		matDest.makeIdent();
 
-		Iterator<Integer> iterSelectedElementID = connectedElementRepManager.getAllSelectedElements()
-				.iterator();
+		Iterator<Integer> iterSelectedElementID = connectedElementRepManager
+				.getAllSelectedElements().iterator();
 
 		ArrayList<ArrayList<Vec3f>> alPointLists = null;// 
 

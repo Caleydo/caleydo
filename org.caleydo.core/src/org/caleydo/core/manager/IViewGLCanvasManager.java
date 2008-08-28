@@ -23,18 +23,18 @@ import com.sun.opengl.util.Animator;
 public interface IViewGLCanvasManager
 	extends IViewManager, IManager<IView>
 {
-	public AGLEventListener createGLEventListener(ECommandType type,
-			final int iGLCanvasID, String sLabel, IViewFrustum viewFrustum);
+	public AGLEventListener createGLEventListener(ECommandType type, final int iGLCanvasID,
+			String sLabel, IViewFrustum viewFrustum);
 
-	public IView createGLView(final EManagedObjectType type,
-			final int iParentContainerID, final String sLabel);
-	
+	public IView createGLView(final EManagedObjectType type, final int iParentContainerID,
+			final String sLabel);
+
 	public Collection<GLCaleydoCanvas> getAllGLCanvasUsers();
 
 	public Collection<AGLEventListener> getAllGLEventListeners();
 
 	public boolean registerGLCanvas(final GLCaleydoCanvas glCanvas);
-	
+
 	public boolean unregisterGLCanvas(final int iGLCanvasId);
 
 	public void registerGLEventListenerByGLCanvasID(final int iGLCanvasID,
@@ -63,7 +63,7 @@ public interface IViewGLCanvasManager
 	 * Removes all views, canvas and GL event listeners
 	 */
 	public void cleanup();
-		
+
 	public GLCaleydoCanvas getCanvas(int iItemID);
 
 	public AGLEventListener getGLEventListener(int iItemID);

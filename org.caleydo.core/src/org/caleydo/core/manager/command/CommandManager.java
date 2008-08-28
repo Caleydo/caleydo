@@ -200,10 +200,10 @@ public class CommandManager
 		ICommand newCmd = commandFactory.createCommandQueue(sCmdType, sProcessType, iCmdId,
 				iCmdQueueId, sQueueThread, sQueueThreadWait);
 
-//		int iNewCmdId = createId(EManagerObjectType.COMMAND);
-//		newCmd.setId(iNewCmdId);
-//
-//		registerItem(newCmd, iNewCmdId);
+		// int iNewCmdId = createId(EManagerObjectType.COMMAND);
+		// newCmd.setId(iNewCmdId);
+		//
+		// registerItem(newCmd, iNewCmdId);
 
 		return newCmd;
 	}

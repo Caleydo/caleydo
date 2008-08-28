@@ -32,7 +32,7 @@ public class VirtualArray
 	public VirtualArray(int iLength)
 	{
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
-		
+
 		this.iLength = iLength;
 		init();
 	}
@@ -135,13 +135,13 @@ public class VirtualArray
 	public void removeByElement(int iElement)
 	{
 		Iterator<Integer> iter = iAlVirtualArray.iterator();
-		while(iter.hasNext())
+		while (iter.hasNext())
 		{
-			if(iter.next() == iElement)
+			if (iter.next() == iElement)
 				iter.remove();
 		}
 	}
-	
+
 	@Override
 	public Integer size()
 	{
@@ -153,19 +153,19 @@ public class VirtualArray
 	{
 		init();
 	}
-	
+
 	@Override
 	public int indexOf(int iElement)
 	{
 		return iAlVirtualArray.indexOf(iElement);
 	}
-	
+
 	@Override
 	public ArrayList<Integer> getIndexList()
 	{
 		return iAlVirtualArray;
 	}
-	
+
 	/**
 	 * Initialize Virtual Array
 	 */
@@ -178,6 +178,5 @@ public class VirtualArray
 			iAlVirtualArray.add(iCount);
 		}
 	}
-
 
 }

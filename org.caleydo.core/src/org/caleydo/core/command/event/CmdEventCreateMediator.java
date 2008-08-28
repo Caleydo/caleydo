@@ -23,7 +23,7 @@ public class CmdEventCreateMediator
 	extends ACmdExternalAttributes
 {
 	private IMediator mediator;
-	
+
 	protected ArrayList<Integer> iArSenderIDs;
 
 	protected ArrayList<Integer> iArReceiverIDs;
@@ -49,9 +49,10 @@ public class CmdEventCreateMediator
 
 		if (iExternalID != -1)
 		{
-			generalManager.getIDManager().mapInternalToExternalID(mediator.getID(), iExternalID);
+			generalManager.getIDManager().mapInternalToExternalID(mediator.getID(),
+					iExternalID);
 		}
-		
+
 		commandManager.runDoCommand(this);
 	}
 
@@ -90,10 +91,12 @@ public class CmdEventCreateMediator
 			/* assume DATA_MEDIATOR as default */
 			mediatorType = MediatorType.DATA_MEDIATOR;
 		}
-		
+
 		// Convert external to internal IDs
-		iArSenderIDs = generalManager.getIDManager().convertExternalToInternalIDs(iArSenderIDs);
-		iArReceiverIDs = generalManager.getIDManager().convertExternalToInternalIDs(iArReceiverIDs);
+		iArSenderIDs = generalManager.getIDManager()
+				.convertExternalToInternalIDs(iArSenderIDs);
+		iArReceiverIDs = generalManager.getIDManager().convertExternalToInternalIDs(
+				iArReceiverIDs);
 	}
 
 	public void setAttributes(ArrayList<Integer> iArSenderIDs,
@@ -110,7 +113,7 @@ public class CmdEventCreateMediator
 
 		commandManager.runUndoCommand(this);
 	}
-	
+
 	public int getMediatorID()
 	{
 		return mediator.getID();

@@ -70,19 +70,15 @@ public class BucketLayoutRenderStyle
 								.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
 										+ Math
 												.pow(
-														(double) ((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2),
+														((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2),
 														2))));
 		fTiltAngleRad_Vertical = Vec3f.convertGrad2Radiant(90); // 90 degrees is
 		// the maximum
 		// possible
 		// angle
 
-		float fScalingCorrection = ((float) Math
-				.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
-						+ Math
-								.pow(
-										(double) ((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2),
-										2))) / 4f;
+		float fScalingCorrection = ((float) Math.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
+				+ Math.pow(((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2), 2))) / 4f;
 
 		//System.out.println(Vec3f.convertRadiant2Grad(fTiltAngleRad_Horizontal)
 		// );

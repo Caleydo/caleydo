@@ -275,10 +275,10 @@ public abstract class AStorageBasedView
 	@Override
 	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
 	{
-		// Check for type that can be handled 
+		// Check for type that can be handled
 		if (selectionDelta.getIDType() != EIDType.DAVID)
 			return;
-		
+
 		generalManager.getLogger().log(
 				Level.INFO,
 				"Update called by " + eventTrigger.getClass().getSimpleName()
@@ -327,7 +327,7 @@ public abstract class AStorageBasedView
 		handleConnectedElementRep(selectionDelta);
 		generalManager.getEventPublisher().handleUpdate(this, selectionDelta);
 	}
-	
+
 	/**
 	 * Handles the creation of {@link SelectedElementRep} according to the data
 	 * in a selectionDelta
@@ -335,7 +335,7 @@ public abstract class AStorageBasedView
 	 * @param selectionDelta the selection data that should be handled
 	 */
 	protected void handleConnectedElementRep(ISelectionDelta selectionDelta)
-	{	
+	{
 		try
 		{
 			int iStorageIndex = -1;
@@ -394,12 +394,12 @@ public abstract class AStorageBasedView
 	 * Check wheter an element is selected or not
 	 */
 	protected abstract void checkUnselection();
-	
+
 	/**
 	 * Broadcast all elements independent of their type.
 	 */
 	public abstract void broadcastElements();
-	
+
 	@Override
 	public void broadcastElements(ESelectionType type)
 	{

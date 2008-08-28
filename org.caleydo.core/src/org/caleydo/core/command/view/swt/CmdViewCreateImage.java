@@ -36,10 +36,10 @@ public class CmdViewCreateImage
 
 		if (iExternalID != -1)
 		{
-			iParentContainerId = 
-				generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
+			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(
+					iParentContainerId);
 		}
-		
+
 		ImageViewRep imageView = (ImageViewRep) viewManager.createView(
 				EManagedObjectType.VIEW_SWT_IMAGE, iParentContainerId, sLabel);
 
@@ -48,10 +48,11 @@ public class CmdViewCreateImage
 		imageView.setAttributes(sImagePath);
 		imageView.initView();
 		imageView.drawView();
-		
+
 		if (iExternalID != -1)
 		{
-			generalManager.getIDManager().mapInternalToExternalID(imageView.getID(), iExternalID);
+			generalManager.getIDManager().mapInternalToExternalID(imageView.getID(),
+					iExternalID);
 		}
 
 		commandManager.runDoCommand(this);

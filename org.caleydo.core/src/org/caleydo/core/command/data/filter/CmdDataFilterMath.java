@@ -66,9 +66,8 @@ public class CmdDataFilterMath
 		}
 
 		// Convert external IDs from XML file to internal IDs
-		iAlIDs = GeneralManager.get().getIDManager()
-			.convertExternalToInternalIDs(iAlIDs);
-		
+		iAlIDs = GeneralManager.get().getIDManager().convertExternalToInternalIDs(iAlIDs);
+
 		if (sAttribute3.equals(""))
 			objectType = EManagedObjectType.STORAGE;
 		else

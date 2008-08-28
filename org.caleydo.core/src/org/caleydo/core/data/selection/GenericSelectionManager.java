@@ -270,7 +270,7 @@ public class GenericSelectionManager
 			hashSelectionTypes.put(eType, new HashMap<Integer, Boolean>());
 		}
 		iNumberOfElements = 0;
-		virtualArray = null;		
+		virtualArray = null;
 		selectionDelta = new SelectionDelta(internalIDType);
 	}
 

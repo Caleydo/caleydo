@@ -60,7 +60,6 @@ public class MultiHashArrayGMap<Type, Value extends ArrayList<Type>>
 	// // TODO Auto-generated constructor stub
 	// }
 
-
 	public Type removeItem(Type key, Type item)
 	{
 
@@ -74,6 +73,7 @@ public class MultiHashArrayGMap<Type, Value extends ArrayList<Type>>
 		return item;
 	}
 
+	@Override
 	public void putAll(Map mapToPut)
 	{
 
@@ -157,6 +157,7 @@ public class MultiHashArrayGMap<Type, Value extends ArrayList<Type>>
 		return null;
 	}
 
+	@Override
 	public boolean containsValue(Object value)
 	{
 
@@ -180,6 +181,7 @@ public class MultiHashArrayGMap<Type, Value extends ArrayList<Type>>
 		return false;
 	}
 
+	@Override
 	public void clear()
 	{
 
@@ -199,6 +201,7 @@ public class MultiHashArrayGMap<Type, Value extends ArrayList<Type>>
 	}
 
 	// public Collection <ArrayList<Type>> values()
+	@Override
 	public Collection<Value> values()
 	{
 

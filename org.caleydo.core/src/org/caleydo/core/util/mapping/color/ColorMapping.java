@@ -2,6 +2,7 @@ package org.caleydo.core.util.mapping.color;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Color mapping. The class is initialized with a list of inflection points and

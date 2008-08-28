@@ -67,7 +67,7 @@ public class GLDragAndDrop
 		realy = viewport[3] - currentMousePos.y - 1;
 
 		GLU glu = new GLU();
-		glu.gluUnProject((double) currentMousePos.x, (double) realy, 0.0, //
+		glu.gluUnProject(currentMousePos.x, realy, 0.0, //
 				mvmatrix, 0, projmatrix, 0, viewport, 0, wcoord, 0);
 
 		fArCurrentMousePos[0] = (float) wcoord[0];

@@ -15,6 +15,7 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.data.view.rep.renderstyle.HeatMapRenderStyle;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -90,8 +91,8 @@ public class GLHeatMap
 		storageSelectionManager = new GenericSelectionManager.Builder(
 				EIDType.EXPRESSION_EXPERIMENT).build();
 
-
-		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
+		colorMapper = ColorMappingManager.get().getColorMapping(
+				EColorMappingType.GENE_EXPRESSION);
 	}
 
 	@Override
@@ -236,7 +237,7 @@ public class GLHeatMap
 
 		if (!bRenderStorageHorizontally)
 		{
-			gl.glTranslatef(vecTranslation.x(),viewFrustum.getHeight(), vecTranslation.z());
+			gl.glTranslatef(vecTranslation.x(), viewFrustum.getHeight(), vecTranslation.z());
 			gl.glRotatef(vecRotation.x(), vecRotation.y(), vecRotation.z(), vecRotation.w());
 		}
 
@@ -251,7 +252,9 @@ public class GLHeatMap
 		if (!bRenderStorageHorizontally)
 		{
 			gl.glRotatef(-vecRotation.x(), vecRotation.y(), vecRotation.z(), vecRotation.w());
-			gl.glTranslatef(-vecTranslation.x(), -viewFrustum.getHeight(), -vecTranslation.z());
+			gl
+					.glTranslatef(-vecTranslation.x(), -viewFrustum.getHeight(),
+							-vecTranslation.z());
 		}
 
 		gl.glDisable(GL.GL_STENCIL_TEST);
@@ -265,6 +268,7 @@ public class GLHeatMap
 		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
 	}
 
+	@Override
 	protected void initLists()
 	{
 
@@ -316,7 +320,8 @@ public class GLHeatMap
 		}
 
 		renderStyle = new HeatMapRenderStyle(viewFrustum, contentSelectionManager, set,
-				iContentVAID, iStorageVAID, set.getVA(iStorageVAID).size(), bRenderStorageHorizontally);
+				iContentVAID, iStorageVAID, set.getVA(iStorageVAID).size(),
+				bRenderStorageHorizontally);
 		// TODO probably remove this here
 		renderStyle.initFieldSizes();
 
@@ -449,7 +454,8 @@ public class GLHeatMap
 					{
 						renderCaption(gl, set.get(iStorageIndex).getLabel(),
 								fXPosition + 0.1f,
-								fYPosition + vecFieldWidthAndHeight.y() / 2, 60, renderStyle.getSmallFontScalingFactor());
+								fYPosition + vecFieldWidthAndHeight.y() / 2, 60, renderStyle
+										.getSmallFontScalingFactor());
 						fYPosition += vecFieldWidthAndHeight.y();
 					}
 				}
@@ -501,12 +507,12 @@ public class GLHeatMap
 		switch (eSelectionType)
 		{
 			case SELECTION:
-				gl.glColor4fv(HeatMapRenderStyle.SELECTED_COLOR, 0);
-				gl.glLineWidth(HeatMapRenderStyle.SELECTED_LINE_WIDTH);
+				gl.glColor4fv(GeneralRenderStyle.SELECTED_COLOR, 0);
+				gl.glLineWidth(GeneralRenderStyle.SELECTED_LINE_WIDTH);
 				break;
 			case MOUSE_OVER:
-				gl.glColor4fv(HeatMapRenderStyle.MOUSE_OVER_COLOR, 0);
-				gl.glLineWidth(HeatMapRenderStyle.MOUSE_OVER_LINE_WIDTH);
+				gl.glColor4fv(GeneralRenderStyle.MOUSE_OVER_COLOR, 0);
+				gl.glLineWidth(GeneralRenderStyle.MOUSE_OVER_LINE_WIDTH);
 				break;
 		}
 

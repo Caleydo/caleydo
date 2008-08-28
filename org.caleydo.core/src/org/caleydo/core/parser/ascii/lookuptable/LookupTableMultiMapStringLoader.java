@@ -32,7 +32,8 @@ public class LookupTableMultiMapStringLoader
 	/**
 	 * Constructor.
 	 */
-	public LookupTableMultiMapStringLoader(final String sFileName, final EMappingType genomeIdType,
+	public LookupTableMultiMapStringLoader(final String sFileName,
+			final EMappingType genomeIdType,
 			final LookupTableLoaderProxy lookupTableLoaderProxy)
 	{
 
@@ -48,7 +49,7 @@ public class LookupTableMultiMapStringLoader
 		int iLineInFile = 1;
 
 		fProgressBarFactor = 100f / iStopParsingAtLine;
-		
+
 		while (((sLine = brFile.readLine()) != null) && (iLineInFile <= iStopParsingAtLine))
 		{
 
@@ -109,14 +110,14 @@ public class LookupTableMultiMapStringLoader
 				}
 
 			}
-			
+
 			iLineInFile++;
-			
+
 			// Update progress bar only on each 100th line
 			if (iLineInFile % 1000 == 0)
 			{
-				swtGuiManager.setProgressBarPercentage(
-						(int)(fProgressBarFactor * iLineInFile));
+				swtGuiManager
+						.setProgressBarPercentage((int) (fProgressBarFactor * iLineInFile));
 			}
 		}
 		return iLineInFile;
@@ -135,7 +136,7 @@ public class LookupTableMultiMapStringLoader
 		String sLine;
 
 		int iLineInFile = 1;
-		
+
 		fProgressBarFactor = 100f / iStopParsingAtLine;
 
 		while (((sLine = brFile.readLine()) != null) && (iLineInFile <= iStopParsingAtLine))
@@ -198,26 +199,27 @@ public class LookupTableMultiMapStringLoader
 					}
 
 				}
-				
+
 				if (!bMaintainLoop)
 				{
 					return -1;
 				}
 			}
-			
+
 			iLineInFile++;
-			
+
 			// Update progress bar only on each 100th line
 			if (iLineInFile % 1000 == 0)
 			{
-				swtGuiManager.setProgressBarPercentage(
-						(int)(fProgressBarFactor * iLineInFile));
+				swtGuiManager
+						.setProgressBarPercentage((int) (fProgressBarFactor * iLineInFile));
 			}
 		}
 
 		return iLineInFile;
 	}
 
+	@Override
 	public final void initLUT()
 	{
 
@@ -227,6 +229,7 @@ public class LookupTableMultiMapStringLoader
 		}
 	}
 
+	@Override
 	public final void destroyLUT()
 	{
 
@@ -339,6 +342,7 @@ public class LookupTableMultiMapStringLoader
 
 	// MARC: Changed method from Integer to String because we are
 	// in the MultiMapString class.
+	@Override
 	public void setMultiMapString(final MultiHashArrayStringMap setHashMap,
 			final EMappingType type)
 	{

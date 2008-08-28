@@ -41,6 +41,7 @@ public class MixerViewRep
 	 * 
 	 * @see org.caleydo.core.view.IView#initView()
 	 */
+	@Override
 	protected void initViewSwtComposite(Composite swtContainer)
 	{
 

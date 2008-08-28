@@ -1,6 +1,5 @@
 package org.caleydo.core.data.collection;
 
-
 /**
  * Interface for objects with labels and a cache.
  * 
@@ -41,14 +40,13 @@ public interface ICollection
 	 * @param iUniqueID the unique ID associated with the virtual array
 	 */
 	public void disableVirtualArray(int iUniqueID);
-	
+
 	/**
 	 * Deletes the virtual arrays associated with the unique id
 	 * 
 	 * @param iUniqueID the unique ID associated with the virtual array
 	 */
 	public void removeVirtualArray(int iUniqueID);
-	
 
 	/**
 	 * Resets the virtual arrays to the original values

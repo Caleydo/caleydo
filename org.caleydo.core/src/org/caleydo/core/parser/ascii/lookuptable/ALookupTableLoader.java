@@ -25,20 +25,19 @@ public abstract class ALookupTableLoader
 	protected final IGenomeIdManager genomeIdManager;
 
 	protected LookupTableLoaderProxy lookupTableLoaderProxy;
-	
+
 	/**
-	 * Factor with that the line index must be multiplied to get a normalized (0-100) 
-	 * progress percentage value.
+	 * Factor with that the line index must be multiplied to get a normalized
+	 * (0-100) progress percentage value.
 	 */
 	protected float fProgressBarFactor = 0;
-	
+
 	protected ISWTGUIManager swtGuiManager;
-	
+
 	/**
 	 * Constructor.
 	 */
-	public ALookupTableLoader(final String sFileName,
-			final EMappingType genomeIdType,
+	public ALookupTableLoader(final String sFileName, final EMappingType genomeIdType,
 			final LookupTableLoaderProxy lookupTableLoaderProxy)
 	{
 		this.lookupTableLoaderProxy = lookupTableLoaderProxy;

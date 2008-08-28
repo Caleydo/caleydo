@@ -6,6 +6,7 @@ public class GlyphKeyListener
 
 	boolean bKeyControlPressed = false;
 
+	@Override
 	public void keyPressed(java.awt.event.KeyEvent event)
 	{
 
@@ -20,6 +21,7 @@ public class GlyphKeyListener
 		}
 	}
 
+	@Override
 	public void keyReleased(java.awt.event.KeyEvent event)
 	{
 

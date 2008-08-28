@@ -95,9 +95,9 @@ public class CommandFactory
 				break;
 			}
 
-			/**
-			 * ---------------------- DATA CONTAINERS ----------------------
-			 */
+				/**
+				 * ---------------------- DATA CONTAINERS ----------------------
+				 */
 			case CREATE_STORAGE:
 			{
 				createdCommand = new CmdDataCreateStorage(cmdType);
@@ -113,15 +113,15 @@ public class CommandFactory
 				createdCommand = new CmdDataCreateSet(cmdType);
 				break;
 			}
-//			case CREATE_SELECTION:
-//			{
-//				createdCommand = new CmdDataCreateSelection(cmdType);
-//				break;
-//			}
+				// case CREATE_SELECTION:
+				// {
+				// createdCommand = new CmdDataCreateSelection(cmdType);
+				// break;
+				// }
 
-			/**
-			 * ---------------------- SWT ----------------------
-			 */
+				/**
+				 * ---------------------- SWT ----------------------
+				 */
 			case CREATE_SWT_WINDOW:
 			{
 				createdCommand = new CmdWindowCreate(cmdType);
@@ -133,9 +133,9 @@ public class CommandFactory
 				break;
 			}
 
-			/**
-			 * ---------------------- VIEW ----------------------
-			 */
+				/**
+				 * ---------------------- VIEW ----------------------
+				 */
 			case CREATE_VIEW_SWT_GLCANVAS:
 			{
 				createdCommand = new CmdViewCreateSwtGLCanvas(cmdType);
@@ -198,9 +198,9 @@ public class CommandFactory
 				break;
 			}
 
-			/**
-			 * ---------------------- OPEN GL ----------------------
-			 */
+				/**
+				 * ---------------------- OPEN GL ----------------------
+				 */
 			case CREATE_GL_PATHWAY_3D:
 			{
 				createdCommand = new CmdGlObjectPathway3D(cmdType);
@@ -228,10 +228,10 @@ public class CommandFactory
 				createdCommand = new CmdExternalActionTrigger(cmdType);
 				break;
 			}
-			
-			/**
-			 * ---------------------- EVENT - SYSTEM ----------------------
-			 */
+
+				/**
+				 * ---------------------- EVENT - SYSTEM ----------------------
+				 */
 			case CREATE_EVENT_MEDIATOR:
 			{
 				createdCommand = new CmdEventCreateMediator(cmdType);
@@ -267,10 +267,10 @@ public class CommandFactory
 				createdCommand = new CmdFetchPathwayData(cmdType);
 				break;
 			}
-			
-			/**
-			 * ---------------------- DATA FILTER ----------------------
-			 */
+
+				/**
+				 * ---------------------- DATA FILTER ----------------------
+				 */
 			case DATA_FILTER_MATH:
 			{
 				createdCommand = new CmdDataFilterMath(cmdType);
@@ -282,9 +282,8 @@ public class CommandFactory
 				break;
 			}
 			default:
-				throw new CaleydoRuntimeException(
-						"Unsupported CommandQueue key= ["
-								+ cmdType + "]", CaleydoRuntimeExceptionType.COMMAND);
+				throw new CaleydoRuntimeException("Unsupported CommandQueue key= [" + cmdType
+						+ "]", CaleydoRuntimeExceptionType.COMMAND);
 		} // end switch
 
 		return createdCommand;
@@ -304,8 +303,8 @@ public class CommandFactory
 		int iNewUniqueId = iCmdId;
 		if (iCmdId < 0)
 		{
-			//TODO: review when implementing ID management
-			iNewUniqueId = -1; //commandManager.createId(null);
+			// TODO: review when implementing ID management
+			iNewUniqueId = -1; // commandManager.createId(null);
 		}
 		/**
 		 * End: Create a new uniqueId if necessary

@@ -34,12 +34,14 @@ public class CmdDataCreateStorage
 	public void doCommand() throws CaleydoRuntimeException
 	{
 		IStorageManager storageManager = generalManager.getStorageManager();
-		createdObject = (IStorage) storageManager.createStorage(storageType);
+		createdObject = storageManager.createStorage(storageType);
 		createdObject.setLabel(sLabel);
 
-		generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(), iExternalID);
-		
-		generalManager.getLogger().log(Level.INFO, "Created Storage with ID: " + createdObject.getID());
+		generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(),
+				iExternalID);
+
+		generalManager.getLogger().log(Level.INFO,
+				"Created Storage with ID: " + createdObject.getID());
 		commandManager.runDoCommand(this);
 	}
 

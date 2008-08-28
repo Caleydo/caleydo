@@ -4,5 +4,6 @@ public interface IMementoOriginator
 {
 
 	public void setMemento(IMemento memento);
+
 	public IMemento createMemento();
 }

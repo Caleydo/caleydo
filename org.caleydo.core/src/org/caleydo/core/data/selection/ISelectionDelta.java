@@ -50,15 +50,17 @@ public interface ISelectionDelta
 	 * @return the type of the internal id
 	 */
 	public EIDType getInternalIDType();
-	
+
 	/**
 	 * Returns the number of elements in the selection delta
+	 * 
 	 * @return the size
 	 */
 	public int size();
-	
+
 	/**
 	 * Returns a deep copy of the selection delta
+	 * 
 	 * @return the new selection delta, copy of the old one
 	 */
 	public ISelectionDelta clone();

@@ -5,7 +5,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Level;
 import javax.media.opengl.GL;
-import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -32,7 +31,7 @@ public class GLPathwayTextureManager
 	 */
 	public GLPathwayTextureManager()
 	{
-		this.generalManager = GeneralManager.get();		
+		this.generalManager = GeneralManager.get();
 
 		hashPathwayIdToTexture = new HashMap<Integer, Texture>();
 	}
@@ -44,11 +43,11 @@ public class GLPathwayTextureManager
 
 		Texture pathwayTexture = null;
 
-		String sPathwayTexturePath = ((PathwayGraph) generalManager.getPathwayManager()
-				.getItem(iPathwayId)).getImageLink();
+		String sPathwayTexturePath = (generalManager.getPathwayManager().getItem(iPathwayId))
+				.getImageLink();
 
-		EPathwayDatabaseType type = ((PathwayGraph) generalManager.getPathwayManager()
-				.getItem(iPathwayId)).getType();
+		EPathwayDatabaseType type = (generalManager.getPathwayManager().getItem(iPathwayId))
+				.getType();
 
 		sPathwayTexturePath = generalManager.getPathwayManager()
 				.getPathwayDatabaseByType(type).getImagePath()
@@ -108,11 +107,9 @@ public class GLPathwayTextureManager
 		TextureCoords texCoords = tmpPathwayTexture.getImageTexCoords();
 
 		float fTextureWidth = PathwayRenderStyle.SCALING_FACTOR_X
-				* ((PathwayGraph) generalManager.getPathwayManager().getItem(iPathwayId))
-						.getWidth();
+				* (generalManager.getPathwayManager().getItem(iPathwayId)).getWidth();
 		float fTextureHeight = PathwayRenderStyle.SCALING_FACTOR_Y
-				* ((PathwayGraph) generalManager.getPathwayManager().getItem(iPathwayId))
-						.getHeight();
+				* (generalManager.getPathwayManager().getItem(iPathwayId)).getHeight();
 
 		// gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager().
 		// getPickingManager()

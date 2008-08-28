@@ -21,10 +21,11 @@ public interface INominalCContainer<T>
 	 * @param sAlPossibleValues the List
 	 */
 	public void setPossibleValues(ArrayList<T> tAlPossibleValues);
-	
+
 	/**
 	 * Create a histogram for the values in the container
-	 * @return the 
+	 * 
+	 * @return the
 	 */
 	public HashMap<T, Float> getHistogram();
 

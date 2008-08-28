@@ -51,7 +51,7 @@ public class CmdDataCreateSet
 			throw new CaleydoRuntimeException("No data available for creating storage.",
 					CaleydoRuntimeExceptionType.DATAHANDLING);
 		}
-		
+
 		for (int iStorageID : iAlStorageIDs)
 		{
 			newSet.addStorage(iStorageID);
@@ -67,10 +67,10 @@ public class CmdDataCreateSet
 
 		createdObject = setManager.createSet(setType);
 		createdObject.setLabel(sLabel);
-		
+
 		if (iExternalID != -1)
-			generalManager.getIDManager().mapInternalToExternalID(
-					createdObject.getID(), iExternalID);
+			generalManager.getIDManager().mapInternalToExternalID(createdObject.getID(),
+					iExternalID);
 
 		fillSets(createdObject);
 
@@ -116,10 +116,10 @@ public class CmdDataCreateSet
 						.nextToken(), -1));
 			}
 		}
-		
+
 		// Convert external IDs from XML file to internal IDs
-		iAlStorageIDs = GeneralManager.get().getIDManager()
-			.convertExternalToInternalIDs(iAlStorageIDs);
+		iAlStorageIDs = GeneralManager.get().getIDManager().convertExternalToInternalIDs(
+				iAlStorageIDs);
 
 		/**
 		 * read "attrib3" key ...

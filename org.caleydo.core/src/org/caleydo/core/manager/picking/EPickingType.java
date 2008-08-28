@@ -48,9 +48,10 @@ public enum EPickingType
 	{
 		this.viewType = viewType;
 	}
-	
+
 	/**
 	 * Returns the view type associated with the Picking Type
+	 * 
 	 * @return
 	 */
 	public EManagedObjectType getViewType()

@@ -56,8 +56,7 @@ public class GenomeIdManager
 	 */
 	public GenomeIdManager()
 	{
-		hashType2Map = new HashMap<EMappingType, IGenomeIdMap>(
-				iInitialCountAllLookupTables);
+		hashType2Map = new HashMap<EMappingType, IGenomeIdMap>(iInitialCountAllLookupTables);
 
 		hashType2MultiMapInt = new HashMap<EMappingType, MultiHashArrayIntegerMap>(
 				iInitialCountMultiMapLookupTables);
@@ -143,8 +142,7 @@ public class GenomeIdManager
 		return hashType2Map.get(type);
 	}
 
-	public final MultiHashArrayIntegerMap getMultiMapIntegerByType(
-			final EMappingType type)
+	public final MultiHashArrayIntegerMap getMultiMapIntegerByType(final EMappingType type)
 	{
 		return hashType2MultiMapInt.get(type);
 	}
@@ -253,8 +251,7 @@ public class GenomeIdManager
 		return true;
 	}
 
-	public int getIdIntFromStringByMapping(final String sCaleydoId,
-			final EMappingType type)
+	public int getIdIntFromStringByMapping(final String sCaleydoId, final EMappingType type)
 	{
 		IGenomeIdMap buffer = hashType2Map.get(type);
 
@@ -285,8 +282,7 @@ public class GenomeIdManager
 		return buffer.getStringByStringChecked(sCaleydoId);
 	}
 
-	public String getIdStringFromIntByMapping(final int iUniqueId,
-			final EMappingType type)
+	public String getIdStringFromIntByMapping(final int iUniqueId, final EMappingType type)
 	{
 
 		IGenomeIdMap buffer = hashType2Map.get(type);
@@ -309,8 +305,7 @@ public class GenomeIdManager
 	// MARC: changed parameter from EIDType to EMappingType.
 	// Because in the hashType2MultiMapString the maps are stored with the
 	// EMappingType as key.
-	public ArrayList<String> getIdStringListByType(String sId,
-			EMappingType genomeMappingType)
+	public ArrayList<String> getIdStringListByType(String sId, EMappingType genomeMappingType)
 	{
 
 		return hashType2MultiMapString.get(genomeMappingType).get(sId);
@@ -488,9 +483,8 @@ public class GenomeIdManager
 	}
 
 	/**
-	 * Creates a HashMap from the the MultiMap requested using
-	 * (EMappingType) type; < EMappingType - Id , index from [0..
-	 * multiMap.keySet().size()-1) >
+	 * Creates a HashMap from the the MultiMap requested using (EMappingType)
+	 * type; < EMappingType - Id , index from [0.. multiMap.keySet().size()-1) >
 	 * 
 	 * @param type
 	 * @return HashMap with < EMappingType - Id , index from [0..
@@ -498,8 +492,7 @@ public class GenomeIdManager
 	 * @see EMappingType.NCBI_GENEID_2_GENE_SHORT_NAME
 	 * @see EMappingType."NCBI_GENEID_2_NCBI_GENEID_CODE REVERSE
 	 */
-	public HashMap<Integer, Integer> getAllKeysByGenomeIdTypeHashMap(
-			final EMappingType type)
+	public HashMap<Integer, Integer> getAllKeysByGenomeIdTypeHashMap(final EMappingType type)
 	{
 
 		try

@@ -37,10 +37,10 @@ public class CmdViewCreateHTMLBrowser
 
 		if (iExternalID != -1)
 		{
-			iParentContainerId = 
-				generalManager.getIDManager().getInternalFromExternalID(iParentContainerId);
+			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(
+					iParentContainerId);
 		}
-		
+
 		HTMLBrowserViewRep browserView = (HTMLBrowserViewRep) viewManager.createView(
 				EManagedObjectType.VIEW_SWT_BROWSER, iParentContainerId, sLabel);
 
@@ -49,10 +49,11 @@ public class CmdViewCreateHTMLBrowser
 		browserView.setAttributes(browserType);
 		browserView.initView();
 		browserView.drawView();
-		
+
 		if (iExternalID != -1)
 		{
-			generalManager.getIDManager().mapInternalToExternalID(browserView.getID(), iExternalID);
+			generalManager.getIDManager().mapInternalToExternalID(browserView.getID(),
+					iExternalID);
 		}
 
 		commandManager.runDoCommand(this);

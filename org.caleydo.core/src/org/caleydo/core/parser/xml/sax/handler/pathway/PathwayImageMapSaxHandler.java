@@ -28,6 +28,7 @@ public class PathwayImageMapSaxHandler
 		setXmlActivationTag("imagemap");
 	}
 
+	@Override
 	public void startElement(String namespaceURI, String sSimpleName, String sQualifiedName,
 			Attributes attributes) throws SAXException
 	{
@@ -49,6 +50,7 @@ public class PathwayImageMapSaxHandler
 		}
 	}
 
+	@Override
 	public void endElement(String namespaceURI, String sSimpleName, String sQualifiedName)
 			throws SAXException
 	{
@@ -146,6 +148,7 @@ public class PathwayImageMapSaxHandler
 	 * @see org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler#destroyHandler()
 	 * @see org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler#destroyHandler()
 	 */
+	@Override
 	public void destroyHandler()
 	{
 

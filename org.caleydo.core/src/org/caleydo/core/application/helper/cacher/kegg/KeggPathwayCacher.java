@@ -35,9 +35,9 @@ public class KeggPathwayCacher
 	extends Thread
 {
 	private static final int EXPECTED_DOWNLOADS = 213;
-	
+
 	private IGeneralManager generalManager;
-	
+
 	/**
 	 * Needed for async access to set progress bar state
 	 */
@@ -46,14 +46,13 @@ public class KeggPathwayCacher
 	private ProgressBar progressBar;
 
 	private CmdFetchPathwayData triggeringCommand;
-	
+
 	int iDownloadCount = 0;
 
 	/**
 	 * Constructor.
 	 */
-	public KeggPathwayCacher(final Display display, 
-			final ProgressBar progressBar,
+	public KeggPathwayCacher(final Display display, final ProgressBar progressBar,
 			final CmdFetchPathwayData triggeringCommand)
 	{
 		this.generalManager = GeneralManager.get();
@@ -118,12 +117,14 @@ public class KeggPathwayCacher
 		job.setSavePath(new File(sOutputFileName));
 		job.setIgnoreFilter(true);
 		dispatcher.addJob(job);
-		
+
 		dispatcher.getEventManager().registerObserver(new EventObserver()
 		{
 			/*
 			 * (non-Javadoc)
-			 * @see de.phleisch.app.itsucks.event.EventObserver#processEvent(de.phleisch.app.itsucks.event.Event)
+			 * @see
+			 * de.phleisch.app.itsucks.event.EventObserver#processEvent(de.phleisch
+			 * .app.itsucks.event.Event)
 			 */
 			@Override
 			public void processEvent(Event arg0)
@@ -139,10 +140,14 @@ public class KeggPathwayCacher
 						{
 							if (progressBar.isDisposed())
 								return;
-							progressBar.setSelection((int)(iDownloadCount * 100 / EXPECTED_DOWNLOADS));
-							
-//							System.out.println("Download count: " +iDownloadCount);
-//							System.out.println("Percentage: " +(int)(iDownloadCount * 100 / EXPECTED_DOWNLOADS));
+							progressBar
+									.setSelection((iDownloadCount * 100 / EXPECTED_DOWNLOADS));
+
+							// System.out.println("Download count: "
+							// +iDownloadCount);
+							// System.out.println("Percentage: "
+							// +(int)(iDownloadCount * 100 /
+							// EXPECTED_DOWNLOADS));
 						}
 					});
 				}
@@ -151,27 +156,27 @@ public class KeggPathwayCacher
 
 		// start the dispatcher
 		dispatcher.processJobs();
-		
+
 		triggerPathwayListGeneration();
-		
+
 		if (triggeringCommand != null)
 			triggeringCommand.setFinishedKeggCacher();
 	}
 
-	private void triggerPathwayListGeneration() 
+	private void triggerPathwayListGeneration()
 	{
 		// Trigger pathway list generation
 		PathwayListGenerator pathwayListLoader = new PathwayListGenerator();
 
 		try
 		{
-			pathwayListLoader.run(PathwayListGenerator.INPUT_FOLDER_PATH_KEGG, 
+			pathwayListLoader.run(PathwayListGenerator.INPUT_FOLDER_PATH_KEGG,
 					PathwayListGenerator.INPUT_IMAGE_PATH_KEGG,
 					PathwayListGenerator.OUTPUT_FILE_NAME_KEGG);
 		}
 		catch (FileNotFoundException fnfe)
 		{
-			throw new CaleydoRuntimeException("Cannot generate pathway list.", 
+			throw new CaleydoRuntimeException("Cannot generate pathway list.",
 					CaleydoRuntimeExceptionType.DATAHANDLING);
 		}
 	}

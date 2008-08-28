@@ -1,6 +1,5 @@
 package org.caleydo.core.util.exception;
 
-
 /**
  * Base class for all RuntimeException.
  * 

@@ -4,7 +4,7 @@ import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.util.graph.IGraphItem;
 
 public interface ICaleydoGraphItem
-extends IUniqueObject, IGraphItem
+	extends IUniqueObject, IGraphItem
 {
 
 }

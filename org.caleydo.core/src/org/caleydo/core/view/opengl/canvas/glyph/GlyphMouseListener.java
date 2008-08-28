@@ -3,6 +3,7 @@ package org.caleydo.core.view.opengl.canvas.glyph;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import java.awt.Dimension;
+import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
@@ -66,8 +67,7 @@ public class GlyphMouseListener
 		int viewport[] = new int[4];
 		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0); // size of window
 
-		float fAspectRatio = (float) (float) (viewport[3] - viewport[1])
-				/ (float) (viewport[2] - viewport[0]);
+		float fAspectRatio = (viewport[3] - viewport[1]) / (viewport[2] - viewport[0]);
 
 		// System.out.println(fAspectRatio + " => " + viewport[0] + ", " +
 		// viewport[1] + ", " + viewport[2] + ", " + viewport[3] );
@@ -154,7 +154,7 @@ public class GlyphMouseListener
 		}
 
 		/* --- Left -- Mouse Button --- */
-		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)
+		if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0)
 		{
 			if (iRubberBandStartX != 0 && iRubberBandStartY != 0)
 			{
@@ -164,7 +164,7 @@ public class GlyphMouseListener
 		}
 
 		/* --- Middle -- Mouse Button --- */
-		if ((e.getModifiers() & MouseEvent.BUTTON2_MASK) != 0)
+		if ((e.getModifiers() & InputEvent.BUTTON2_MASK) != 0)
 		{
 
 			/**
@@ -237,7 +237,7 @@ public class GlyphMouseListener
 	public void mousePressed(MouseEvent e)
 	{
 
-		if ((e.getModifiers() & MouseEvent.BUTTON1_MASK) != 0)
+		if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0)
 		{
 			iRubberBandStartX = e.getX();
 			iRubberBandStartY = e.getY();

@@ -47,11 +47,11 @@ public class LockableMediator
 	{
 		if (arSender.contains(sender))
 		{
-//			 throw new CaleydoRuntimeException(
-//			 "LockableMediator.register() receiver that is already registered!", 
-//			 CaleydoRuntimeExceptionType.EVENT);
-			
-			 return false;
+			// throw new CaleydoRuntimeException(
+			//"LockableMediator.register() receiver that is already registered!",
+			// CaleydoRuntimeExceptionType.EVENT);
+
+			return false;
 		}
 
 		arSender.add(sender);
@@ -131,7 +131,7 @@ public class LockableMediator
 			while (iter.hasNext())
 			{
 
-				IMediatorReceiver currentReceiver = (IMediatorReceiver) iter.next();
+				IMediatorReceiver currentReceiver = iter.next();
 
 				// Prevent circular updates
 				if (!currentReceiver.getClass().equals(eventTrigger.getClass()))
@@ -152,13 +152,14 @@ public class LockableMediator
 	 *      org.caleydo.core.data.collection.ISet)
 	 */
 	@Override
-	public void updateReceiverSpecialMediator(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
+	public void updateReceiverSpecialMediator(IUniqueObject eventTrigger,
+			ISelectionDelta selectionDelta)
 	{
 		Iterator<IMediatorReceiver> iter = arReceiver.iterator();
 
 		while (iter.hasNext())
 		{
-			IMediatorReceiver currentReceiver = (IMediatorReceiver) iter.next();
+			IMediatorReceiver currentReceiver = iter.next();
 
 			/* Prevent circular updates */
 			if (!currentReceiver.equals(eventTrigger))
@@ -177,11 +178,10 @@ public class LockableMediator
 		}
 	}
 
-
 	@Override
 	public void updateContinue(Object eventTrigger)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 }

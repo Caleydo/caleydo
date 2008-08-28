@@ -51,6 +51,7 @@ public class CmdLoadGlyphDefinition
 
 	/**
 	 * Set attributes for the command
+	 * 
 	 * @param sPathwayXMLPath
 	 */
 	public void setAttributes(final String sPathwayXMLPath)

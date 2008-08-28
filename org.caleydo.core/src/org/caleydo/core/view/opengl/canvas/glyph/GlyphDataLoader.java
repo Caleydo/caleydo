@@ -27,7 +27,7 @@ public class GlyphDataLoader
 
 	public GlyphDataLoader()
 	{
-		this.generalManager = GeneralManager.get();		
+		this.generalManager = GeneralManager.get();
 	}
 
 	public HashMap<Integer, GlyphEntry> getGlyphList()
@@ -40,8 +40,7 @@ public class GlyphDataLoader
 	public HashMap<Integer, GlyphEntry> loadGlyphs(ISet glyphData)
 	{
 
-		GLGlyphGenerator generator = generalManager.getGlyphManager()
-				.getGlyphGenerator();
+		GLGlyphGenerator generator = generalManager.getGlyphManager().getGlyphGenerator();
 
 		glyphs = new HashMap<Integer, GlyphEntry>();
 
@@ -98,7 +97,7 @@ public class GlyphDataLoader
 								{
 								}
 								glyphAttributeType.addAttribute(t2, nominalStorage.getRaw(i),
-										(float) t2);
+										t2);
 							}
 
 							if (t2 == -1 && !(nominalStorage.getRaw(i)).equals("-1"))

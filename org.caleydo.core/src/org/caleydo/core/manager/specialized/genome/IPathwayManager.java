@@ -23,7 +23,7 @@ public interface IPathwayManager
 	public void triggerParsingPathwayDatabases();
 
 	public void createPathwayImageMap(final String sImageLink);
-	
+
 	public PathwayImageMap getCurrentPathwayImageMap();
 
 	public int searchPathwayIdByName(final String sPathwayName);
@@ -34,8 +34,8 @@ public interface IPathwayManager
 			final boolean bVisibilityState);
 
 	public boolean isPathwayVisible(final int iPathwayID);
-	
+
 	public void notifyPathwayLoadingFinished(boolean bIsPathwayLoadingFinisched);
-	
+
 	public void waitUntilPathwayLoadingIsFinished();
 }

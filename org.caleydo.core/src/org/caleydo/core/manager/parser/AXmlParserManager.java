@@ -20,7 +20,7 @@ public abstract class AXmlParserManager
 	implements IXmlParserManager
 {
 	protected IGeneralManager generalManager;
-	
+
 	/**
 	 * Token to avoid registering and unregistering handlers during processing
 	 * XMl data.
@@ -54,7 +54,7 @@ public abstract class AXmlParserManager
 	protected AXmlParserManager()
 	{
 		generalManager = GeneralManager.get();
-		
+
 		hashTag2XmlParser = new Hashtable<String, IXmlParserHandler>();
 		llXmlParserStack = new LinkedList<IXmlParserHandler>();
 	}
@@ -120,8 +120,7 @@ public abstract class AXmlParserManager
 			currentHandler = null;
 		} // else ... if ( ! llXmlParserStack.isEmpty() ) {
 
-
-			/**
+		/**
 		 * Clean up XmlParserHandler..
 		 */
 		if (buffer.isHandlerDestoryedAfterClosingTag())

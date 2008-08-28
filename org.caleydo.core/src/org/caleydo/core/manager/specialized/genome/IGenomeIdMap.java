@@ -118,7 +118,6 @@ public interface IGenomeIdMap
 	 */
 	public IGenomeIdMap getCodeResolvedMap(IGenomeIdManager genomeIdManager,
 			EMappingType genomeMappingLUT_1, EMappingType genomeMappingLUT_2,
-			EMappingDataType targetMappingDataType,
-			EMappingDataType sourceMappingDataType);
+			EMappingDataType targetMappingDataType, EMappingDataType sourceMappingDataType);
 
 }

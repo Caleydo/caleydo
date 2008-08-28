@@ -5,6 +5,7 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACommand;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.ascii.tabular.TabularAsciiDataReader;
 import org.caleydo.core.parser.parameter.IParameterHandler;
@@ -50,30 +51,28 @@ public class CmdLoadFileNStorages
 	{
 		super.setParameterHandler(parameterHandler);
 
-		this.sFileName = parameterHandler.getValueString(ECommandType.TAG_DETAIL
+		this.sFileName = parameterHandler.getValueString(ECommandType.TAG_DETAIL.getXmlKey());
+		this.sTokenPattern = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE1
 				.getXmlKey());
-		this.sTokenPattern = parameterHandler
-				.getValueString(ECommandType.TAG_ATTRIBUTE1.getXmlKey());
 
 		StringTokenizer tokenizer = new StringTokenizer(parameterHandler
 				.getValueString(ECommandType.TAG_ATTRIBUTE2.getXmlKey()),
-				GeneralManager.sDelimiter_Parser_DataItems);
+				IGeneralManager.sDelimiter_Parser_DataItems);
 
 		iAlStorageIDs = new ArrayList<Integer>();
 
 		while (tokenizer.hasMoreTokens())
 		{
-			iAlStorageIDs.add(StringConversionTool.convertStringToInt(tokenizer
-					.nextToken(), -1));
+			iAlStorageIDs.add(StringConversionTool.convertStringToInt(tokenizer.nextToken(),
+					-1));
 		}
 
 		// Convert external IDs from XML file to internal IDs
-		iAlStorageIDs = GeneralManager.get().getIDManager()
-			.convertExternalToInternalIDs(iAlStorageIDs);
-		
+		iAlStorageIDs = GeneralManager.get().getIDManager().convertExternalToInternalIDs(
+				iAlStorageIDs);
+
 		int[] iArrayStartStop = StringConversionTool.convertStringToIntArrayVariableLength(
-				parameterHandler
-						.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey()), " ");
+				parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey()), " ");
 
 		if (iArrayStartStop.length > 0)
 		{
@@ -114,8 +113,8 @@ public class CmdLoadFileNStorages
 	{
 		generalManager.getLogger().log(
 				Level.INFO,
-				"Loading data from file " + sFileName + " using token pattern " + sTokenPattern
-						+ ". Data is stored in Storage with ID "
+				"Loading data from file " + sFileName + " using token pattern "
+						+ sTokenPattern + ". Data is stored in Storage with ID "
 						+ iAlStorageIDs.toString());
 
 		TabularAsciiDataReader loader = null;

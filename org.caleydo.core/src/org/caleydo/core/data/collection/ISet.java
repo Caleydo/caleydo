@@ -66,7 +66,8 @@ public interface ISet
 	public IStorage getStorageFromVA(int iUniqueID, int iIndex);
 
 	/**
-	 * Get an iterator that iterates over the storages considering the Virtual Array. 
+	 * Get an iterator that iterates over the storages considering the Virtual
+	 * Array.
 	 * 
 	 * @param the unique ID of the set virtula array
 	 * @return the set iterator

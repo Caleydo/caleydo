@@ -23,7 +23,8 @@ public class LookupTableMultiMapIntLoader
 	/**
 	 * Constructor.
 	 */
-	public LookupTableMultiMapIntLoader(final String sFileName, final EMappingType genomeIdType,
+	public LookupTableMultiMapIntLoader(final String sFileName,
+			final EMappingType genomeIdType,
 			final LookupTableLoaderProxy lookupTableLoaderProxy)
 	{
 		super(sFileName, genomeIdType, lookupTableLoaderProxy);
@@ -40,7 +41,7 @@ public class LookupTableMultiMapIntLoader
 		int iStopParsingAtLine = lookupTableLoaderProxy.getStopParsingAtLine();
 
 		fProgressBarFactor = 100f / iStopParsingAtLine;
-		
+
 		while (((sLine = brFile.readLine()) != null) && (iLineInFile <= iStopParsingAtLine))
 		{
 
@@ -90,28 +91,28 @@ public class LookupTableMultiMapIntLoader
 						npe.printStackTrace();
 					}
 				}
-				
+
 				if (!bMaintainLoop)
-				{	
+				{
 					return -1;
 				}
 			}
-			
+
 			iLineInFile++;
-			
+
 			// Update progress bar only on each 100th line
 			if (iLineInFile % 1000 == 0)
 			{
-				swtGuiManager.setProgressBarPercentage(
-						(int)(fProgressBarFactor * iLineInFile));
+				swtGuiManager
+						.setProgressBarPercentage((int) (fProgressBarFactor * iLineInFile));
 			}
 		}
 
 		return iLineInFile;
 	}
 
-	public void setMultiMapInteger(MultiHashArrayIntegerMap setMultiHashMap,
-			EMappingType type)
+	@Override
+	public void setMultiMapInteger(MultiHashArrayIntegerMap setMultiHashMap, EMappingType type)
 	{
 
 		// genomeIdManager.

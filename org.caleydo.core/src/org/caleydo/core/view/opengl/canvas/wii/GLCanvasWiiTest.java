@@ -97,8 +97,8 @@ public class GLCanvasWiiTest
 	/**
 	 * Constructor.
 	 */
-	public GLCanvasWiiTest(final int iGLCanvasID, 
-			final String sLabel, final IViewFrustum viewFrustum)
+	public GLCanvasWiiTest(final int iGLCanvasID, final String sLabel,
+			final IViewFrustum viewFrustum)
 	{
 
 		super(iGLCanvasID, sLabel, viewFrustum, true);
@@ -319,6 +319,7 @@ public class GLCanvasWiiTest
 
 	}
 
+	@Override
 	public void display(final GL gl)
 	{
 
@@ -424,6 +425,7 @@ public class GLCanvasWiiTest
 		// z-=inc;
 	}
 
+	@Override
 	public void displayChanged(GLAutoDrawable drawable, boolean modeChanged,
 			boolean deviceChanged)
 	{
@@ -432,6 +434,7 @@ public class GLCanvasWiiTest
 
 	}
 
+	@Override
 	public void init(final GL gl)
 	{
 
@@ -789,10 +792,10 @@ public class GLCanvasWiiTest
 	{
 
 	}
-	
+
 	@Override
 	public void broadcastElements(ESelectionType type)
 	{
-		
+
 	}
 }

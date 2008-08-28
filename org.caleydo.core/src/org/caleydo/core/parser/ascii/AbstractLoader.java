@@ -55,7 +55,7 @@ public abstract class AbstractLoader
 	protected int iLineInFile = 0;
 
 	protected ISWTGUIManager swtGuiManager;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -63,7 +63,7 @@ public abstract class AbstractLoader
 	{
 		this.sFileName = sFileName;
 		this.swtGuiManager = GeneralManager.get().getSWTGUIManager();
-			
+
 		init();
 	}
 
@@ -232,7 +232,8 @@ public abstract class AbstractLoader
 			}
 		}
 
-		GeneralManager.get().getLogger().log(Level.INFO, "Start loading file " + sFileName + "...");
+		GeneralManager.get().getLogger().log(Level.INFO,
+				"Start loading file " + sFileName + "...");
 
 		try
 		{

@@ -365,8 +365,10 @@ public class KgmlSaxHandler
 
 		// Create edge (data)
 		IGraphItem relationEdge = generalManager.getPathwayItemManager().createRelationEdge(
-				((PathwayVertexGraphItemRep) graphItemIn).getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT),
-				((PathwayVertexGraphItemRep) graphItemOut).getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT), sType);
+				((PathwayVertexGraphItemRep) graphItemIn)
+						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT),
+				((PathwayVertexGraphItemRep) graphItemOut)
+						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT), sType);
 
 		// Create edge representation
 		generalManager.getPathwayItemManager().createRelationEdgeRep(currentPathway,
@@ -566,6 +568,7 @@ public class KgmlSaxHandler
 	 * @see org.caleydo.core.parser.handler.IXmlParserHandler#destroyHandler()
 	 * @see org.caleydo.core.parser.handler.AXmlParserHandler#destroyHandler()
 	 */
+	@Override
 	public void destroyHandler()
 	{
 

@@ -38,8 +38,8 @@ public class GLCanvasRemoteGlyph
 	 * Constructor.
 	 * 
 	 */
-	public GLCanvasRemoteGlyph(final int iGLCanvasID, 
-			final String sLabel, final IViewFrustum viewFrustum)
+	public GLCanvasRemoteGlyph(final int iGLCanvasID, final String sLabel,
+			final IViewFrustum viewFrustum)
 	{
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 		viewType = EManagedObjectType.GL_GLYPH;
@@ -173,11 +173,10 @@ public class GLCanvasRemoteGlyph
 		{
 			AGLEventListener tmpGLEventListener = iterGLEventListener.next();
 
-			if (tmpGLEventListener == this
-					|| tmpGLEventListener.getClass() != GLGlyph.class)
+			if (tmpGLEventListener == this || tmpGLEventListener.getClass() != GLGlyph.class)
 				continue;
 
-			int iViewID = ((AGLEventListener) tmpGLEventListener).getID();
+			int iViewID = (tmpGLEventListener).getID();
 
 			viewIDs_.add(iViewID);
 		}
@@ -187,8 +186,8 @@ public class GLCanvasRemoteGlyph
 	private void renderViewByID(final GL gl, final int iViewID)
 	{
 
-		AGLEventListener tmpCanvasUser = ((AGLEventListener) generalManager.getViewGLCanvasManager()
-				.getItem(iViewID));
+		AGLEventListener tmpCanvasUser = ((AGLEventListener) generalManager
+				.getViewGLCanvasManager().getItem(iViewID));
 
 		if (tmpCanvasUser == null)
 			throw new CaleydoRuntimeException("Cannot render canvas object which is null!");
@@ -214,10 +213,10 @@ public class GLCanvasRemoteGlyph
 	{
 
 	}
-	
+
 	@Override
 	public void broadcastElements(ESelectionType type)
 	{
-		
+
 	}
 }

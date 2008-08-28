@@ -29,6 +29,7 @@ public class SWTEmbeddedJoglWidget
 		super(parentComposite);
 	}
 
+	@Override
 	public void createEmbeddedComposite()
 	{
 		super.createEmbeddedComposite();

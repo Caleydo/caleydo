@@ -63,7 +63,7 @@ public class GLPathway
 	private GenericSelectionManager selectionManager;
 
 	private PathwayVertexGraphItemRep selectedVertex;
-	
+
 	/**
 	 * Own texture manager is needed for each GL context, because textures
 	 * cannot be bound to multiple GL contexts.
@@ -79,8 +79,7 @@ public class GLPathway
 	/**
 	 * Constructor.
 	 */
-	public GLPathway(final int iGLCanvasID, final String sLabel,
-			final IViewFrustum viewFrustum)
+	public GLPathway(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
 	{
 		super(iGLCanvasID, sLabel, viewFrustum, false);
 		viewType = EManagedObjectType.GL_PATHWAY;
@@ -244,7 +243,7 @@ public class GLPathway
 		}
 
 		float tmp = PathwayRenderStyle.SCALING_FACTOR_Y
-				* ((PathwayGraph) pathwayManager.getItem(iPathwayId)).getHeight();
+				* (pathwayManager.getItem(iPathwayId)).getHeight();
 
 		// Pathway texture height is subtracted from Y to align pathways to
 		// front level
@@ -254,8 +253,7 @@ public class GLPathway
 		{
 			if (remoteRenderingGLCanvas.getHierarchyLayerByGLEventListenerId(iUniqueID)
 					.getLevel().equals(EHierarchyLevel.UNDER_INTERACTION)
-					&& remoteRenderingGLCanvas.getBucketMouseWheelListener()
-							.isZoomedIn())
+					&& remoteRenderingGLCanvas.getBucketMouseWheelListener().isZoomedIn())
 			{
 				gLPathwayManager.renderPathway(gl, iPathwayId, true);
 			}
@@ -279,7 +277,8 @@ public class GLPathway
 
 	private void rebuildPathwayDisplayList(final GL gl)
 	{
-		gLPathwayManager.init(gl, alSets, selectionManager); // TODO: maybe too slow?
+		gLPathwayManager.init(gl, alSets, selectionManager); // TODO: maybe too
+																// slow?
 		gLPathwayManager.performIdenticalNodeHighlighting();
 		gLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
 	}
@@ -300,30 +299,33 @@ public class GLPathway
 
 		selectedVertex = null;
 
-		int iPathwayHeight = ((PathwayGraph) generalManager.getPathwayManager().getItem(
-					iPathwayID)).getHeight();
+		int iPathwayHeight = (generalManager.getPathwayManager().getItem(iPathwayID))
+				.getHeight();
 
-		
 		ISelectionDelta internalDelta = resolveExternalSelectionDelta(selectionDelta);
 		selectionManager.setDelta(internalDelta);
-		
 
 		for (SelectionItem item : internalDelta)
-		{	
+		{
 			if (item.getSelectionType() != ESelectionType.MOUSE_OVER)
 				continue;
-			
-			PathwayVertexGraphItemRep vertexRep = (PathwayVertexGraphItemRep)generalManager.getPathwayItemManager().getItem(item.getSelectionID());
-				
-//			System.out.println("Pathway with ID: " + iUniqueID + " David: " + item.getInternalID());
 
-			connectedElementRepresentationManager.modifySelection(item.getInternalID(),
-					new SelectedElementRep(iUniqueID,
-							(vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X)
-									* vecScaling.x() + vecTranslation.x(),
-							((iPathwayHeight - vertexRep.getYOrigin()) * PathwayRenderStyle.SCALING_FACTOR_Y)
-									* vecScaling.y() + vecTranslation.y(), 0),
-					ESelectionMode.ADD_PICK);		
+			PathwayVertexGraphItemRep vertexRep = (PathwayVertexGraphItemRep) generalManager
+					.getPathwayItemManager().getItem(item.getSelectionID());
+
+			// System.out.println("Pathway with ID: " + iUniqueID + " David: " +
+			// item.getInternalID());
+
+			connectedElementRepresentationManager
+					.modifySelection(
+							item.getInternalID(),
+							new SelectedElementRep(
+									iUniqueID,
+									(vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X)
+											* vecScaling.x() + vecTranslation.x(),
+									((iPathwayHeight - vertexRep.getYOrigin()) * PathwayRenderStyle.SCALING_FACTOR_Y)
+											* vecScaling.y() + vecTranslation.y(), 0),
+							ESelectionMode.ADD_PICK);
 		}
 	}
 
@@ -355,9 +357,9 @@ public class GLPathway
 
 	private ISelectionDelta resolveExternalSelectionDelta(ISelectionDelta selectionDelta)
 	{
-		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.PATHWAY_VERTEX, EIDType.DAVID);
+		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.PATHWAY_VERTEX,
+				EIDType.DAVID);
 
-		
 		int iDavidID = 0;
 		int iPathwayVertexGraphItemID = 0;
 
@@ -379,7 +381,7 @@ public class GLPathway
 					iPathwayVertexGraphItemID).getAllItemsByProp(
 					EGraphItemProperty.ALIAS_CHILD))
 			{
-				if(!pathwayManager.getItem(iPathwayID).containsItem(tmpGraphItemRep))
+				if (!pathwayManager.getItem(iPathwayID).containsItem(tmpGraphItemRep))
 					continue;
 				newSelectionDelta.addSelection(tmpGraphItemRep.getId(), item
 						.getSelectionType(), iDavidID);
@@ -410,8 +412,8 @@ public class GLPathway
 		float fPathwayScalingFactor = 0;
 		float fPadding = 0.98f;
 
-		if (((PathwayGraph) generalManager.getPathwayManager().getItem(iPathwayId)).getType()
-				.equals(EPathwayDatabaseType.BIOCARTA))
+		if ((generalManager.getPathwayManager().getItem(iPathwayId)).getType().equals(
+				EPathwayDatabaseType.BIOCARTA))
 		{
 			fPathwayScalingFactor = 5;
 		}
@@ -420,8 +422,7 @@ public class GLPathway
 			fPathwayScalingFactor = 3.2f;
 		}
 
-		PathwayGraph tmpPathwayGraph = (PathwayGraph) generalManager.getPathwayManager()
-				.getItem(iPathwayId);
+		PathwayGraph tmpPathwayGraph = generalManager.getPathwayManager().getItem(iPathwayId);
 
 		int iImageWidth = tmpPathwayGraph.getWidth();
 		int iImageHeight = tmpPathwayGraph.getHeight();
@@ -448,10 +449,9 @@ public class GLPathway
 			vecScaling.setY(vecScaling.x());
 
 			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft() - iImageWidth
-					* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()) / 2.0f, (viewFrustum
-					.getTop()
-					- viewFrustum.getBottom() - iImageHeight
-					* PathwayRenderStyle.SCALING_FACTOR_Y * vecScaling.y()) / 2.0f, 0);
+					* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()) / 2.0f,
+					(viewFrustum.getTop() - viewFrustum.getBottom() - iImageHeight
+							* PathwayRenderStyle.SCALING_FACTOR_Y * vecScaling.y()) / 2.0f, 0);
 		}
 		else if (fTmpPathwayHeight > (viewFrustum.getTop() - viewFrustum.getBottom()))
 		{
@@ -460,10 +460,9 @@ public class GLPathway
 			vecScaling.setX(vecScaling.y());
 
 			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft() - iImageWidth
-					* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()) / 2.0f, (viewFrustum
-					.getTop()
-					- viewFrustum.getBottom() - iImageHeight
-					* PathwayRenderStyle.SCALING_FACTOR_Y * vecScaling.y()) / 2.0f, 0);
+					* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()) / 2.0f,
+					(viewFrustum.getTop() - viewFrustum.getBottom() - iImageHeight
+							* PathwayRenderStyle.SCALING_FACTOR_Y * vecScaling.y()) / 2.0f, 0);
 		}
 		else
 		{
@@ -546,23 +545,27 @@ public class GLPathway
 					pickingManager
 							.flushHits(iUniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION);
 
-					//TODO: rewrite!
-//					// Write info area content
-//					// TODO: now only the first parent graph item is read
-//					// actually the whole array (all genes) must me displayed in
-//					// the
-//					// info area
-//					PathwayVertexGraphItem tmp = (PathwayVertexGraphItem) tmpVertexGraphItemRep
-//							.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0);
-//
-//					int iDavidId = generalManager.getPathwayItemManager()
-//							.getDavidIdByPathwayVertexGraphItemId(tmp.getId());
-//
-//					if (iDavidId == -1 || iDavidId == 0)
-//						return;
-//
-//					generalManager.getViewGLCanvasManager().getInfoAreaManager().setData(
-//							iUniqueID, iDavidId, EIDType.DAVID, getInfo());
+					// TODO: rewrite!
+					// // Write info area content
+					// // TODO: now only the first parent graph item is read
+					// // actually the whole array (all genes) must me displayed
+					// in
+					// // the
+					// // info area
+					// PathwayVertexGraphItem tmp = (PathwayVertexGraphItem)
+					// tmpVertexGraphItemRep
+					//.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0)
+					// ;
+					//
+					// int iDavidId = generalManager.getPathwayItemManager()
+					// .getDavidIdByPathwayVertexGraphItemId(tmp.getId());
+					//
+					// if (iDavidId == -1 || iDavidId == 0)
+					// return;
+					//
+					//generalManager.getViewGLCanvasManager().getInfoAreaManager
+					// ().setData(
+					// iUniqueID, iDavidId, EIDType.DAVID, getInfo());
 
 					return;
 				}
@@ -619,15 +622,18 @@ public class GLPathway
 
 						// Check if vertex is contained in this pathway
 						// viewFrustum
-						if (!((PathwayGraph) generalManager.getPathwayManager().getItem(
-								iPathwayID)).containsItem(tmpPathwayVertexGraphItemRep))
+						if (!(generalManager.getPathwayManager().getItem(iPathwayID))
+								.containsItem(tmpPathwayVertexGraphItemRep))
 							continue;
 
-						int iPathwayHeight = ((PathwayGraph) generalManager
-								.getPathwayManager().getItem(iPathwayID)).getHeight();
+						int iPathwayHeight = (generalManager.getPathwayManager()
+								.getItem(iPathwayID)).getHeight();
 
-						connectedElementRepresentationManager.modifySelection(iDavidId,
-										new SelectedElementRep(this.getID(),
+						connectedElementRepresentationManager
+								.modifySelection(
+										iDavidId,
+										new SelectedElementRep(
+												this.getID(),
 												(tmpPathwayVertexGraphItemRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X)
 														* vecScaling.x() + vecTranslation.x(),
 												((iPathwayHeight - tmpPathwayVertexGraphItemRep
@@ -644,16 +650,16 @@ public class GLPathway
 				break;
 		}
 	}
-	
+
+	@Override
 	public void broadcastElements(ESelectionType type)
 	{
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.DAVID);
 
 		// TODO: Move to own method (outside this class)
 		// Store all genes in that pathway with selection group 0
-		Iterator<IGraphItem> iterPathwayVertexGraphItem = ((PathwayGraph) generalManager
-				.getPathwayManager().getItem(iPathwayID)).getAllItemsByKind(
-				EGraphItemKind.NODE).iterator();
+		Iterator<IGraphItem> iterPathwayVertexGraphItem = (generalManager.getPathwayManager()
+				.getItem(iPathwayID)).getAllItemsByKind(EGraphItemKind.NODE).iterator();
 		Iterator<IGraphItem> iterPathwayVertexGraphItemRep;
 		PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep = null;
 		PathwayVertexGraphItem tmpPathwayVertexGraphItem = null;
@@ -690,22 +696,21 @@ public class GLPathway
 	}
 
 	@Override
-	//TODO: this method is called much too often
+	// TODO: this method is called much too often
 	// better we cache the string and update it only when display list change
 	public ArrayList<String> getInfo()
 	{
 		ArrayList<String> sAlInfo = new ArrayList<String>();
 
-		PathwayGraph pathway = ((PathwayGraph) generalManager.getPathwayManager().getItem(
-				iPathwayID));
+		PathwayGraph pathway = (generalManager.getPathwayManager().getItem(iPathwayID));
 
 		String sPathwayTitle = pathway.getTitle();
 
 		sAlInfo.add("Type: " + pathway.getType().getName() + " Pathway");
 		sAlInfo.add(sPathwayTitle);
 
-//		generalManager.getSWTGUIManager().setExternalRCPStatusLineMessage(
-//				pathway.getType().getName() + " Pathway: " + sPathwayTitle);
+		// generalManager.getSWTGUIManager().setExternalRCPStatusLineMessage(
+		// pathway.getType().getName() + " Pathway: " + sPathwayTitle);
 
 		return sAlInfo;
 	}
@@ -721,14 +726,14 @@ public class GLPathway
 	{
 		generalManager.getEventPublisher().handleUpdate(this, selectionDelta);
 	}
-	
+
 	@Override
 	public void addSet(int setID)
 	{
 		super.addSet(setID);
 		connectedElementRepresentationManager.clear();
 	}
-	
+
 	@Override
 	public void addSet(ISet set)
 	{

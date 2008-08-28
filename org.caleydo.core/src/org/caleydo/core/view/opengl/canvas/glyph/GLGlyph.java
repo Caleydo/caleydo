@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.canvas.glyph;
 
-import gleem.linalg.Vec3f;
 import gleem.linalg.open.Vec2i;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -74,8 +73,7 @@ public class GLGlyph
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLGlyph(final int iGLCanvasID, final String sLabel,
-			final IViewFrustum viewFrustum)
+	public GLGlyph(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
 	{
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 
@@ -93,8 +91,9 @@ public class GLGlyph
 	public void init(GL gl)
 	{
 
-//		glToolboxRenderer = new GLGlyphToolboxRenderer(gl, generalManager, iUniqueID,
-//				new Vec3f(0, 0, 0), true, renderStyle);
+		// glToolboxRenderer = new GLGlyphToolboxRenderer(gl, generalManager,
+		// iUniqueID,
+		// new Vec3f(0, 0, 0), true, renderStyle);
 
 		ISet glyphData = null;
 
@@ -293,12 +292,12 @@ public class GLGlyph
 				if (pos == null)
 					continue;
 
-				gl.glTranslatef((float) pos.x(), -(float) pos.y(), 0f);
+				gl.glTranslatef(pos.x(), -(float) pos.y(), 0f);
 				gl.glPushName(pickingManager.getPickingID(iUniqueID,
 						EPickingType.GLYPH_FIELD_SELECTION, e.getID()));
 				gl.glCallList(e.getGlList(gl));
 				gl.glPopName();
-				gl.glTranslatef(-(float) pos.x(), (float) pos.y(), 0f);
+				gl.glTranslatef(-(float) pos.x(), pos.y(), 0f);
 			}
 			gl.glEndList();
 
@@ -315,8 +314,8 @@ public class GLGlyph
 		gl.glTranslatef(-7.0f, 0.0f, 0f);
 		gl.glRotatef(-45f, 0, 0, 1);
 
-//		if (glToolboxRenderer != null)
-//			glToolboxRenderer.render(gl);
+		// if (glToolboxRenderer != null)
+		// glToolboxRenderer.render(gl);
 
 		if (mouseListener_ != null)
 			mouseListener_.render(gl);
@@ -629,6 +628,6 @@ public class GLGlyph
 	@Override
 	public void broadcastElements(ESelectionType type)
 	{
-		
+
 	}
 }

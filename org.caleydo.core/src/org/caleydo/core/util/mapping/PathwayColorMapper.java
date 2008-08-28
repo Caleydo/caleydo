@@ -13,7 +13,6 @@ import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.util.graph.EGraphItemProperty;
 
@@ -40,8 +39,9 @@ public class PathwayColorMapper
 	{
 		alMappingStorage = new ArrayList<IStorage>();
 		genomeIdManager = GeneralManager.get().getGenomeIdManager();
-		
-		expressionColorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
+
+		expressionColorMapper = ColorMappingManager.get().getColorMapping(
+				EColorMappingType.GENE_EXPRESSION);
 	}
 
 	public void setMappingData(final ArrayList<ISet> alSetData)
@@ -69,21 +69,22 @@ public class PathwayColorMapper
 		{
 			return new ArrayList<float[]>();
 		}
-		
+
 		ArrayList<float[]> arMappingColor = new ArrayList<float[]>();
-		
+
 		if (pathwayVertexRep.getType().equals(EPathwayVertexType.gene))
 		{
 
 			if (pathwayVertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() > 1)
 			{
-				arMappingColor.add(new float[]{0, 1, 1}); // cyan
+				arMappingColor.add(new float[] { 0, 1, 1 }); // cyan
 			}
 			else
 			{
 				int iDavidId = GeneralManager.get().getPathwayItemManager()
 						.getDavidIdByPathwayVertexGraphItemId(
-								pathwayVertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0).getId());
+								pathwayVertexRep.getAllItemsByProp(
+										EGraphItemProperty.ALIAS_PARENT).get(0).getId());
 
 				int iExpressionStorageIndex = genomeIdManager.getIdIntFromIntByMapping(
 						iDavidId, EMappingType.DAVID_2_EXPRESSION_STORAGE_ID);
@@ -91,7 +92,8 @@ public class PathwayColorMapper
 				if (iExpressionStorageIndex == -1)
 				{
 					// FIXME, color from render style here
-					arMappingColor.add(new float[]{0.5f, 0.5f, 0.5f}); // invalid color
+					arMappingColor.add(new float[] { 0.5f, 0.5f, 0.5f }); // invalid
+																			// color
 					return arMappingColor;
 				}
 
@@ -106,8 +108,7 @@ public class PathwayColorMapper
 					float fExpressionValue = expressionStorage.getFloat(
 							EDataRepresentation.NORMALIZED, iExpressionStorageIndex);
 
-					arMappingColor.add(expressionColorMapper
-							.getColor(fExpressionValue));
+					arMappingColor.add(expressionColorMapper.getColor(fExpressionValue));
 				}
 			}
 
@@ -115,8 +116,9 @@ public class PathwayColorMapper
 		}
 		else if (pathwayVertexRep.getType().equals(EPathwayVertexType.enzyme))
 		{
-		
-			arMappingColor.add(new float[]{0.5f, 0.5f, 0.5f}); // invalid color
+
+			arMappingColor.add(new float[] { 0.5f, 0.5f, 0.5f }); // invalid
+																	// color
 			return arMappingColor;
 		}
 
