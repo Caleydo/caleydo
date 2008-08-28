@@ -4,6 +4,8 @@ import java.util.logging.Level;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
+import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
+import org.caleydo.core.manager.specialized.genome.IPathwayManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.caleydo.util.graph.IGraphItem;
@@ -19,8 +21,10 @@ import org.xml.sax.SAXException;
 public class BioCartaPathwayImageMapSaxHandler
 	extends AXmlParserHandler
 {
+	private IPathwayItemManager pathwayItemManager;
+	private IPathwayManager pathwayManager;
+	
 	private final static String BIOCARTA_EXTERNAL_URL_PATHWAY = "http://cgap.nci.nih.gov/Pathways/BioCarta/";
-
 	private final static String BIOCARTA_EXTERNAL_URL_VERTEX = "http://cgap.nci.nih.gov";
 
 	private Attributes attributes;
@@ -39,6 +43,9 @@ public class BioCartaPathwayImageMapSaxHandler
 	public BioCartaPathwayImageMapSaxHandler()
 	{
 		super();
+		
+		pathwayItemManager = generalManager.getPathwayItemManager();
+		pathwayManager = generalManager.getPathwayManager();
 
 		setXmlActivationTag("span");
 	}
@@ -140,7 +147,7 @@ public class BioCartaPathwayImageMapSaxHandler
 		sImageLink = sImageLink
 				.substring(sImageLink.lastIndexOf('/') + 1, sImageLink.length());
 
-		currentPathway = generalManager.getPathwayManager().createPathway(
+		currentPathway = pathwayManager.createPathway(
 				EPathwayDatabaseType.BIOCARTA, "<name>", sTitle, sImageLink,
 				BIOCARTA_EXTERNAL_URL_PATHWAY + sName);
 
@@ -200,7 +207,7 @@ public class BioCartaPathwayImageMapSaxHandler
 			return;
 		}
 
-		IGraphItem vertex = generalManager.getPathwayItemManager().createVertexGene(sName,
+		IGraphItem vertex = pathwayItemManager.createVertexGene(sName,
 				"gene", BIOCARTA_EXTERNAL_URL_VERTEX + sExternalLink, "", iDavidId);
 
 		generalManager.getPathwayItemManager().createVertexRep(currentPathway, vertex, sName,

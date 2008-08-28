@@ -17,6 +17,7 @@ import org.caleydo.core.data.graph.pathway.item.edge.PathwayRelationEdgeGraphIte
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexShape;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
@@ -51,7 +52,7 @@ public class GLPathwayManager
 
 	private PathwayRenderStyle renderStyle;
 
-	private boolean bEnableGeneMapping = true;
+	private boolean bEnableGeneMapping = false;
 	private boolean bEnableEdgeRendering = false;
 	private boolean bEnableIdenticalNodeHighlighting = true;
 	private boolean bEnableNeighborhood = false;
@@ -103,6 +104,16 @@ public class GLPathwayManager
 		genomeMapper.setMappingData(alSetData);
 
 		hashElementId2MappingColorArray.clear();
+		
+		if(generalManager.getGenomeIdManager().hasAnyMapByType(
+				EMappingType.DAVID_2_EXPRESSION_STORAGE_ID))
+		{
+			bEnableGeneMapping = true;
+		}	
+		else
+		{
+			bEnableGeneMapping = false;			
+		}
 	}
 
 	public void buildPathwayDisplayList(final GL gl, final IUniqueObject containingView,
@@ -605,7 +616,10 @@ public class GLPathwayManager
 		// else if (shape.equals(EPathwayVertexShape.rectangle)
 		// || shape.equals(EPathwayVertexShape.rect))
 		else if (vertexType.equals(EPathwayVertexType.gene)
-				|| vertexType.equals(EPathwayVertexType.enzyme))
+				|| vertexType.equals(EPathwayVertexType.enzyme)
+				// new kegg data assign enzymes without mapping to "undefined"
+				// which we represent as other
+				|| vertexType.equals(EPathwayVertexType.other)) 
 		{
 			float fCanvasXPos = (vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X);
 			float fCanvasYPos = (vertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y);

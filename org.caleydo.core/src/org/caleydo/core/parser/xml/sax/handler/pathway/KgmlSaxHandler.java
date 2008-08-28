@@ -8,6 +8,9 @@ import org.caleydo.core.data.graph.pathway.item.edge.PathwayReactionEdgeGraphIte
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
+import org.caleydo.core.manager.specialized.genome.IPathwayManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
@@ -29,6 +32,9 @@ public class KgmlSaxHandler
 	extends AXmlParserHandler
 	implements IXmlParserHandler
 {
+	private IPathwayItemManager pathwayItemManager;
+	private IPathwayManager pathwayManager;
+	
 	private Attributes attributes;
 
 	private String sAttributeName = "";
@@ -62,6 +68,9 @@ public class KgmlSaxHandler
 		hashKgmlNameToVertexRepId = new HashMap<String, IGraphItem>();
 		hashKgmlReactionIdToVertexRepId = new HashMap<String, IGraphItem>();
 
+		pathwayItemManager = generalManager.getPathwayItemManager();
+		pathwayManager = generalManager.getPathwayManager();
+		
 		alCurrentVertex = new ArrayList<IGraphItem>();
 
 		setXmlActivationTag("pathway");
@@ -176,7 +185,7 @@ public class KgmlSaxHandler
 		String sPathwayTexturePath = sImageLink.substring(sImageLink.lastIndexOf('/') + 1,
 				sImageLink.length());
 
-		currentPathway = generalManager.getPathwayManager().createPathway(
+		currentPathway = pathwayManager.createPathway(
 				EPathwayDatabaseType.KEGG, sName, sTitle, sPathwayTexturePath, sExternalLink);
 	}
 
@@ -252,7 +261,7 @@ public class KgmlSaxHandler
 					continue;
 				}
 
-				currentVertex = generalManager.getPathwayItemManager().createVertexGene(
+				currentVertex = pathwayItemManager.createVertexGene(
 						sTmpVertexName, sType, sExternalLink, sReactionId, iDavidId);
 
 				alCurrentVertex.add(currentVertex);
@@ -260,7 +269,7 @@ public class KgmlSaxHandler
 		}
 		else
 		{
-			currentVertex = generalManager.getPathwayItemManager().createVertex(sName, sType,
+			currentVertex = pathwayItemManager.createVertex(sName, sType,
 					sExternalLink, sReactionId);
 
 			alCurrentVertex.add(currentVertex);
@@ -317,7 +326,7 @@ public class KgmlSaxHandler
 			}
 		}
 
-		IGraphItem vertexRep = generalManager.getPathwayItemManager().createVertexRep(
+		IGraphItem vertexRep = pathwayItemManager.createVertexRep(
 				currentPathway, alCurrentVertex, sName, sShapeType, shXPosition, shYPosition,
 				shWidth, shHeight);
 
@@ -364,14 +373,14 @@ public class KgmlSaxHandler
 		IGraphItem graphItemOut = hashKgmlEntryIdToVertexRepId.get(iTargetVertexId);
 
 		// Create edge (data)
-		IGraphItem relationEdge = generalManager.getPathwayItemManager().createRelationEdge(
+		IGraphItem relationEdge = pathwayItemManager.createRelationEdge(
 				((PathwayVertexGraphItemRep) graphItemIn)
 						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT),
 				((PathwayVertexGraphItemRep) graphItemOut)
 						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT), sType);
 
 		// Create edge representation
-		generalManager.getPathwayItemManager().createRelationEdgeRep(currentPathway,
+		pathwayItemManager.createRelationEdgeRep(currentPathway,
 				relationEdge, graphItemIn, graphItemOut);
 
 	}
@@ -450,10 +459,10 @@ public class KgmlSaxHandler
 			}
 		}
 
-		currentReactionSubstrateEdgeRep = generalManager.getPathwayItemManager()
+		currentReactionSubstrateEdgeRep = pathwayItemManager
 				.createReactionEdge(currentPathway, sReactionName, sReactionType);
 
-		currentReactionProductEdgeRep = generalManager.getPathwayItemManager()
+		currentReactionProductEdgeRep = pathwayItemManager
 				.createReactionEdge(currentPathway, sReactionName, sReactionType);
 
 	}

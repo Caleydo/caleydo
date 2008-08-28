@@ -21,7 +21,13 @@ public class NewOrExistingProjectPage
 
 	public static final String PAGE_NAME = "Project Wizard";
 
-	private boolean bNewProject = true;
+	public enum EProjectType {
+		NEW_PROJECT,
+		EXISTING_PROJECT,
+		PATHWAY_VIEWER_MODE
+	}
+	
+	private EProjectType projectType;
 
 	/**
 	 * Constructor.
@@ -49,12 +55,16 @@ public class NewOrExistingProjectPage
 
 		Button buttonExistingProject = new Button(composite, SWT.NONE);
 		buttonExistingProject.setText("Open existing project");
+		buttonExistingProject.setEnabled(false);
+		
+		Button buttonPathwayViewerMode = new Button(composite, SWT.NONE);
+		buttonPathwayViewerMode.setText("Pathway viewer mode");
 
 		buttonNewProject.addSelectionListener(new SelectionAdapter()
 		{
 			public void widgetSelected(SelectionEvent e)
 			{
-				bNewProject = true;
+				projectType = EProjectType.NEW_PROJECT;
 				setPageComplete(true);
 			}
 		});
@@ -63,17 +73,25 @@ public class NewOrExistingProjectPage
 		{
 			public void widgetSelected(SelectionEvent e)
 			{
-				bNewProject = false;
+				projectType = EProjectType.EXISTING_PROJECT;
 				setPageComplete(true);
 			}
 		});
-
+		
+		buttonPathwayViewerMode.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				projectType = EProjectType.PATHWAY_VIEWER_MODE;
+				setPageComplete(true);
+			}
+		});
+		
 		setControl(composite);
 	}
 
-	public boolean newOrExisting()
+	public EProjectType getProjectType()
 	{
-
-		return bNewProject;
+		return projectType;
 	}
 }

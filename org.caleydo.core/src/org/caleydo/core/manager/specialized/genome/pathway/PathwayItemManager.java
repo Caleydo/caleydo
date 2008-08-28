@@ -33,22 +33,17 @@ public class PathwayItemManager
 
 	private static final long serialVersionUID = 1L;
 
-	private HashMap<String, ICaleydoGraphItem> hashVertexNameToGraphItem;
-
 	// TODO: replace these hash maps by GenomeIDManager
 	private HashMap<Integer, Integer> hashDavidIdToPathwayVertexGraphItemId;
 	private HashMap<Integer, Integer> hashPathwayVertexGraphItemIdToDavidId;
 
 	private HashMap<Integer, PathwayVertexGraphItemRep> hashIDToPathwayVertexGraphItemRep;
 
-	private boolean bHashDavidIdToPathwayVertexGraphItemIdInvalid = true;
-
 	/**
 	 * Constructor.
 	 */
 	public PathwayItemManager()
 	{
-		hashVertexNameToGraphItem = new HashMap<String, ICaleydoGraphItem>();
 		hashDavidIdToPathwayVertexGraphItemId = new HashMap<Integer, Integer>();
 		hashPathwayVertexGraphItemIdToDavidId = new HashMap<Integer, Integer>();
 		hashIDToPathwayVertexGraphItemRep = new HashMap<Integer, PathwayVertexGraphItemRep>();
@@ -58,14 +53,6 @@ public class PathwayItemManager
 	public IGraphItem createVertex(final String sName, final String sType,
 			final String sExternalLink, final String sReactionId)
 	{
-
-		// Check if same vertex is already contained
-		if (hashVertexNameToGraphItem.containsKey(sName))
-		{
-			// Return existing vertex
-			return hashVertexNameToGraphItem.get(sName);
-		}
-
 		ICaleydoGraphItem pathwayVertex = new PathwayVertexGraphItem(sName, sType,
 				sExternalLink, sReactionId);
 
@@ -73,9 +60,7 @@ public class PathwayItemManager
 
 		((PathwayManager) generalManager.getPathwayManager()).getRootPathway().addItem(
 				pathwayVertex);
-
-		hashVertexNameToGraphItem.put(sName, pathwayVertex);
-
+		
 		return pathwayVertex;
 	}
 

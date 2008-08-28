@@ -518,11 +518,10 @@ public class GLParallelCoordinates
 		// handleDragging(gl);
 
 		renderCoordinateSystem(gl);
-
-		renderPolylines(gl, ESelectionType.DESELECTED);
-		renderPolylines(gl, ESelectionType.NORMAL);
 		renderPolylines(gl, ESelectionType.MOUSE_OVER);
 		renderPolylines(gl, ESelectionType.SELECTION);
+		renderPolylines(gl, ESelectionType.DESELECTED);
+		renderPolylines(gl, ESelectionType.NORMAL);
 
 		renderGates(gl);
 
@@ -542,7 +541,7 @@ public class GLParallelCoordinates
 	{
 
 		Set<Integer> setDataToRender = null;
-		float fZDepth = 0.0f;
+		float fZDepth = 0f;
 
 		switch (renderMode)
 		{
@@ -573,13 +572,13 @@ public class GLParallelCoordinates
 				setDataToRender = polylineSelectionManager.getElements(renderMode);
 				gl.glColor4fv(ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR, 0);
 				gl.glLineWidth(ParCoordsRenderStyle.SELECTED_POLYLINE_LINE_WIDTH);
-				fZDepth = 0.02f;
+				fZDepth = 0.002f;
 				break;
 			case MOUSE_OVER:
 				setDataToRender = polylineSelectionManager.getElements(renderMode);
 				gl.glColor4fv(ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR, 0);
 				gl.glLineWidth(ParCoordsRenderStyle.MOUSE_OVER_POLYLINE_LINE_WIDTH);
-				fZDepth = 0.02f;
+				fZDepth = 0.002f;
 				break;
 			case DESELECTED:
 				setDataToRender = polylineSelectionManager.getElements(renderMode);

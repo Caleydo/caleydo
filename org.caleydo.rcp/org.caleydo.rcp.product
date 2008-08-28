@@ -24,7 +24,7 @@ All Rights Reserved.
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
-   <windowImages i16="/org.caleydo.rcp/resources/icons/caleydo/caleydo_16x16.png" i32="/org.caleydo.rcp/resources/icons/caleydo/caleydo32.gif" i48="/org.caleydo.rcp/resources/icons/caleydo/caleydo48.gif" i64="/org.caleydo.rcp/resources/icons/caleydo/caleydo64.gif" i128="/org.caleydo.rcp/resources/icons/caleydo/caleydo128.gif"/>
+   <windowImages i16="/org.caleydo.data/resources/icons/caleydo/caleydo_16x16.png" i32="/org.caleydo.data/resources/icons/caleydo/caleydo32.png" i48="/org.caleydo.data/resources/icons/caleydo/caleydo48.png" i64="/org.caleydo.data/resources/icons/caleydo/caleydo64.png" i128="/org.caleydo.data/resources/icons/caleydo/caleydo128.png"/>
 
    <splash
       location="org.caleydo.rcp" />

@@ -36,7 +36,7 @@ public class HeatMapRenderStyle
 
 	public static final float FIELD_Z = 0.0f;
 
-	public static final float SELECTION_Z = 0.001f;
+	public static final float SELECTION_Z = 0.005f;
 
 	private float fSelectedFieldWidth = 1.0f;
 

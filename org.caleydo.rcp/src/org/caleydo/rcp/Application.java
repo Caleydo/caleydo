@@ -26,15 +26,21 @@ import org.eclipse.ui.PlatformUI;
 public class Application
 	implements IApplication
 {
+	private static String BOOTSTRAP_FILE_GENE_EXPRESSION_MODE 
+		= "data/bootstrap/shared/webstart/bootstrap_webstart_gene_expression.xml";
+
+	private static String BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE 
+		= "data/bootstrap/shared/webstart/bootstrap_webstart_pathway_viewer.xml";
+
 	public static CaleydoBootloader caleydoCore;
 
 	public static ApplicationWorkbenchAdvisor applicationWorkbenchAdvisor;
 	
 	public static boolean bIsWebstart = false;
+	public static boolean bDoExit = false;
+	public static boolean bPathwayViewerMode = false;
 	
 	public static String sCaleydoXMLfile = "";
-	
-	public static boolean bDoExit = false;
 	
 	public RCPBridge rcpGuiBridge;
 
@@ -146,10 +152,6 @@ public class Application
 		// dialog is opened
 		if (sCaleydoXMLfile.equals(""))
 		{
-			sCaleydoXMLfile = "data/bootstrap/shared/webstart/bootstrap_webstart_test.xml";
-			caleydoCore.setXmlFileName(sCaleydoXMLfile);
-			caleydoCore.start();
-			
 			Display display = PlatformUI.createDisplay();
 			Shell shell = new Shell(display);
 			
@@ -162,6 +164,14 @@ public class Application
 			}
 			
 			shell.dispose();
+			
+			if (bPathwayViewerMode)	
+				sCaleydoXMLfile = BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE;
+			else
+				sCaleydoXMLfile = BOOTSTRAP_FILE_GENE_EXPRESSION_MODE;
+			
+			caleydoCore.setXmlFileName(sCaleydoXMLfile);
+			caleydoCore.start();
 		}	
 		else
 		{

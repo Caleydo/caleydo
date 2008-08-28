@@ -295,16 +295,16 @@ public class GLPathway
 		generalManager.getLogger().log(Level.FINE,
 				"Update called by " + eventTrigger.getClass().getSimpleName());
 
+		selectionManager.clearSelections();
+		
 		setDisplayListDirty();
 
 		selectedVertex = null;
 
 		int iPathwayHeight = (generalManager.getPathwayManager().getItem(iPathwayID))
 				.getHeight();
-
 		ISelectionDelta internalDelta = resolveExternalSelectionDelta(selectionDelta);
 		selectionManager.setDelta(internalDelta);
-
 		for (SelectionItem item : internalDelta)
 		{
 			if (item.getSelectionType() != ESelectionType.MOUSE_OVER)
@@ -569,21 +569,33 @@ public class GLPathway
 
 					return;
 				}
-
+				
 				selectionManager.clearSelection(ESelectionType.MOUSE_OVER);
-
 				selectedVertex = tmpVertexGraphItemRep;
 
 				PathwayVertexGraphItem tmpVertexGraphItem = null;
 				for (IGraphItem tmpGraphItem : tmpVertexGraphItemRep
 						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT))
 				{
+					if (pickingMode == EPickingMode.MOUSE_OVER)
+					{
+						// Add new vertex to internal selection manager
+						selectionManager.addToType(ESelectionType.MOUSE_OVER,
+								tmpVertexGraphItemRep.getId());						
+					}
+					else if (pickingMode == EPickingMode.CLICKED)
+					{
+						// Add new vertex to internal selection manager
+						selectionManager.addToType(ESelectionType.SELECTION,
+								tmpVertexGraphItemRep.getId());		
+					}
+					else
+					{
+						return;
+					}
+				
 					tmpVertexGraphItem = (PathwayVertexGraphItem) tmpGraphItem;
-
-					// Add new vertex to internal selection manager
-					selectionManager.addToType(ESelectionType.MOUSE_OVER,
-							tmpVertexGraphItemRep.getId());
-
+					
 					loadURLInBrowser(((PathwayVertexGraphItem) selectedVertex
 							.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0))
 							.getExternalLink());

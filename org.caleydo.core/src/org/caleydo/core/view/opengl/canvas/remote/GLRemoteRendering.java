@@ -303,6 +303,7 @@ public class GLRemoteRendering
 			updateBusyMode(gl);
 
 		doSlerpActions(gl);
+		initializeNewPathways(gl);
 
 		renderLayer(gl, underInteractionLayer);
 
@@ -310,18 +311,17 @@ public class GLRemoteRendering
 		// interaction layer is _not_ rendered.
 		if (bucketMouseWheelListener == null || !bucketMouseWheelListener.isZoomedIn())
 		{
-			glConnectionLineRenderer.render(gl);
-
 			// if
 			// (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET
 			// ))
 			// {
 			renderPoolAndMemoLayerBackground(gl);
 
-			gl.glPushName(generalManager.getViewGLCanvasManager().getPickingManager()
-					.getPickingID(iUniqueID, EPickingType.MEMO_PAD_SELECTION,
-							MEMO_PAD_PICKING_ID));
-			gl.glPopName();
+			// gl.glPushName(generalManager.getViewGLCanvasManager().
+			// getPickingManager()
+			// .getPickingID(iUniqueID, EPickingType.MEMO_PAD_SELECTION,
+			// MEMO_PAD_PICKING_ID));
+			// gl.glPopName();
 			// }
 
 			renderLayer(gl, poolLayer);
@@ -329,6 +329,7 @@ public class GLRemoteRendering
 			renderLayer(gl, stackLayer);
 			renderLayer(gl, spawnLayer);
 			renderLayer(gl, memoLayer);
+
 		}
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
@@ -338,6 +339,8 @@ public class GLRemoteRendering
 
 		colorMappingBarMiniView.render(gl, layoutRenderStyle.getColorBarXPos(),
 				layoutRenderStyle.getColorBarYPos(), 4);
+		
+		glConnectionLineRenderer.render(gl);
 	}
 
 	private void retrieveContainedViews(final GL gl)
@@ -411,30 +414,28 @@ public class GLRemoteRendering
 
 	private void renderBucketWall(final GL gl)
 	{
-
-		gl.glColor4f(0.4f, 0.4f, 0.4f, 0.8f);
+		gl.glColor4f(0.4f, 0.4f, 0.4f, 1f);
 		gl.glLineWidth(4);
 
 		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(0, 0, -0.01f);
-		gl.glVertex3f(0, 8, -0.01f);
-		gl.glVertex3f(8, 8, -0.01f);
-		gl.glVertex3f(8, 0, -0.01f);
+		gl.glVertex3f(0, 0, -0.02f);
+		gl.glVertex3f(0, 8, -0.02f);
+		gl.glVertex3f(8, 8, -0.02f);
+		gl.glVertex3f(8, 0, -0.02f);
 		gl.glEnd();
 
-		gl.glColor4f(0.9f, 0.9f, 0.9f, 0.4f);
+		gl.glColor4f(0.96f, 0.96f, 0.96f, 1f);
 
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(0, 0, -0.01f);
-		gl.glVertex3f(0, 8, -0.01f);
-		gl.glVertex3f(8, 8, -0.01f);
-		gl.glVertex3f(8, 0, -0.01f);
+		gl.glVertex3f(0, 0, -0.02f);
+		gl.glVertex3f(0, 8, -0.02f);
+		gl.glVertex3f(8, 8, -0.02f);
+		gl.glVertex3f(8, 0, -0.02f);
 		gl.glEnd();
 	}
 
 	private void renderLayer(final GL gl, final RemoteHierarchyLayer layer)
 	{
-
 		Iterator<Integer> iterElementList = layer.getElementList().iterator();
 		int iViewId = 0;
 		int iLayerPositionIndex = 0;
@@ -442,8 +443,6 @@ public class GLRemoteRendering
 		while (iterElementList.hasNext())
 		{
 			iViewId = iterElementList.next();
-
-			renderEmptyBucketWall(gl, layer, iLayerPositionIndex);
 
 			// Check if spot in layer is currently empty
 			if (iViewId != -1)
@@ -453,6 +452,8 @@ public class GLRemoteRendering
 				renderViewByID(gl, iViewId, layer);
 				gl.glPopName();
 			}
+			else
+				renderEmptyBucketWall(gl, layer, iLayerPositionIndex);
 
 			iLayerPositionIndex++;
 		}
@@ -461,105 +462,6 @@ public class GLRemoteRendering
 	private void renderViewByID(final GL gl, final int iViewID,
 			final RemoteHierarchyLayer layer)
 	{
-
-		// Init newly created pathways
-		// FIXME: this specialization to pathways in the bucket is not good!
-		if (!iAlUninitializedPathwayIDs.isEmpty() && arSlerpActions.isEmpty())
-		{
-			int iTmpPathwayID = iAlUninitializedPathwayIDs.get(0);
-
-			// Check if pathway is already loaded in bucket
-			if (!generalManager.getPathwayManager().isPathwayVisible(iTmpPathwayID))
-			{
-				ArrayList<Integer> iAlSetIDs = new ArrayList<Integer>();
-
-				for (ISet tmpSet : alSets)
-				{
-					iAlSetIDs.add(tmpSet.getID());
-				}
-
-				// Create Pathway3D view
-				CmdGlObjectPathway3D cmdPathway = (CmdGlObjectPathway3D) generalManager
-						.getCommandManager().createCommandByType(
-								ECommandType.CREATE_GL_PATHWAY_3D);
-
-				cmdPathway.setAttributes(iTmpPathwayID, iAlSetIDs,
-						EProjectionMode.ORTHOGRAPHIC, -4, 4, 4, -4, -20, 20);
-				cmdPathway.doCommand();
-
-				GLPathway pathway = (GLPathway) cmdPathway.getCreatedObject();
-				int iGeneratedViewID = pathway.getID();
-
-				ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
-				arMediatorIDs.add(iGeneratedViewID);
-
-				generalManager.getEventPublisher().addSendersAndReceiversToMediator(
-						generalManager.getEventPublisher().getItem(iBucketEventMediatorID),
-						arMediatorIDs, arMediatorIDs, MediatorType.SELECTION_MEDIATOR,
-						MediatorUpdateType.MEDIATOR_DEFAULT);
-
-				if (underInteractionLayer.containsElement(-1))
-				{
-					SlerpAction slerpActionTransition = new SlerpAction(iGeneratedViewID,
-							spawnLayer, underInteractionLayer);
-					arSlerpActions.add(slerpActionTransition);
-
-					pathway.initRemote(gl, iUniqueID, underInteractionLayer,
-							pickingTriggerMouseAdapter, this);
-					pathway.setDetailLevel(EDetailLevel.MEDIUM);
-
-					// Trigger initial gene propagation
-					pathway.broadcastElements(ESelectionType.NORMAL);
-				}
-				else if (stackLayer.containsElement(-1))
-				{
-					SlerpAction slerpActionTransition = new SlerpAction(iGeneratedViewID,
-							spawnLayer, stackLayer);
-					arSlerpActions.add(slerpActionTransition);
-
-					pathway.initRemote(gl, iUniqueID, stackLayer, pickingTriggerMouseAdapter,
-							this);
-					pathway.setDetailLevel(EDetailLevel.LOW);
-
-					// Trigger initial gene propagation
-					pathway.broadcastElements(ESelectionType.NORMAL);
-				}
-				else if (poolLayer.containsElement(-1))
-				{
-					SlerpAction slerpActionTransition = new SlerpAction(iGeneratedViewID,
-							spawnLayer, poolLayer);
-					arSlerpActions.add(slerpActionTransition);
-
-					pathway.initRemote(gl, iUniqueID, poolLayer, pickingTriggerMouseAdapter,
-							this);
-					pathway.setDetailLevel(EDetailLevel.VERY_LOW);
-				}
-				else
-				{
-					generalManager.getLogger().log(Level.SEVERE,
-							"No empty space left to add new pathway!");
-					iAlUninitializedPathwayIDs.remove(0);
-					return;
-				}
-
-				spawnLayer.addElement(iGeneratedViewID);
-			}
-
-			iAlUninitializedPathwayIDs.remove(0);
-
-			if (iAlUninitializedPathwayIDs.isEmpty())
-				enableBusyMode(false);
-			else
-				enableBusyMode(true);
-
-			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
-					.clear();
-
-			// Trigger mouse over update if an entity is currently selected
-			// TODO: investigate
-			// alSelection.get(0).updateSelectionSet(iUniqueID);
-		}
-
 		// Check if view is visible
 		if (!layer.getElementVisibilityById(iViewID))
 			return;
@@ -588,16 +490,6 @@ public class GLRemoteRendering
 		// renderBucketWall(gl);
 		// }
 
-		// Render transparent plane for picking views without texture (e.g. PC)
-		gl.glColor4f(1, 1, 1, 0);
-
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(0, 0, -0.01f);
-		gl.glVertex3f(0, 8, -0.01f);
-		gl.glVertex3f(8, 8, -0.01f);
-		gl.glVertex3f(8, 0, -0.01f);
-		gl.glEnd();
-
 		if (layer.equals(poolLayer))
 		{
 			String sRenderText = tmpCanvasUser.getInfo().get(1);
@@ -614,7 +506,20 @@ public class GLRemoteRendering
 
 		// GLHelperFunctions.drawAxis(gl);
 
+		renderBucketWall(gl);
+
 		tmpCanvasUser.displayRemote(gl);
+
+		// // Render transparent plane for picking views without texture (e.g.
+		// PC)
+		// gl.glColor4f(1, 1, 1, 0);
+		//
+		// gl.glBegin(GL.GL_POLYGON);
+		// gl.glVertex3f(0, 0, -0.01f);
+		// gl.glVertex3f(0, 8, -0.01f);
+		// gl.glVertex3f(8, 8, -0.01f);
+		// gl.glVertex3f(8, 0, -0.01f);
+		// gl.glEnd();
 
 		if (layer.equals(stackLayer))
 		{
@@ -1963,5 +1868,106 @@ public class GLRemoteRendering
 	public void broadcastElements(ESelectionType type)
 	{
 
+	}
+
+	private void initializeNewPathways(final GL gl)
+	{
+		// Init newly created pathways
+		// FIXME: this specialization to pathways in the bucket is not good!
+		if (!iAlUninitializedPathwayIDs.isEmpty() && arSlerpActions.isEmpty())
+		{
+			int iTmpPathwayID = iAlUninitializedPathwayIDs.get(0);
+
+			// Check if pathway is already loaded in bucket
+			if (!generalManager.getPathwayManager().isPathwayVisible(iTmpPathwayID))
+			{
+				ArrayList<Integer> iAlSetIDs = new ArrayList<Integer>();
+
+				for (ISet tmpSet : alSets)
+				{
+					iAlSetIDs.add(tmpSet.getID());
+				}
+
+				// Create Pathway3D view
+				CmdGlObjectPathway3D cmdPathway = (CmdGlObjectPathway3D) generalManager
+						.getCommandManager().createCommandByType(
+								ECommandType.CREATE_GL_PATHWAY_3D);
+
+				cmdPathway.setAttributes(iTmpPathwayID, iAlSetIDs,
+						EProjectionMode.ORTHOGRAPHIC, -4, 4, 4, -4, -20, 20);
+				cmdPathway.doCommand();
+
+				GLPathway pathway = (GLPathway) cmdPathway.getCreatedObject();
+				int iGeneratedViewID = pathway.getID();
+
+				ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
+				arMediatorIDs.add(iGeneratedViewID);
+
+				generalManager.getEventPublisher().addSendersAndReceiversToMediator(
+						generalManager.getEventPublisher().getItem(iBucketEventMediatorID),
+						arMediatorIDs, arMediatorIDs, MediatorType.SELECTION_MEDIATOR,
+						MediatorUpdateType.MEDIATOR_DEFAULT);
+
+				if (underInteractionLayer.containsElement(-1))
+				{
+					SlerpAction slerpActionTransition = new SlerpAction(iGeneratedViewID,
+							spawnLayer, underInteractionLayer);
+					arSlerpActions.add(slerpActionTransition);
+
+					pathway.initRemote(gl, iUniqueID, underInteractionLayer,
+							pickingTriggerMouseAdapter, this);
+					pathway.setDetailLevel(EDetailLevel.MEDIUM);
+
+					// Trigger initial gene propagation
+					pathway.broadcastElements(ESelectionType.NORMAL);
+				}
+				else if (stackLayer.containsElement(-1))
+				{
+					SlerpAction slerpActionTransition = new SlerpAction(iGeneratedViewID,
+							spawnLayer, stackLayer);
+					arSlerpActions.add(slerpActionTransition);
+
+					pathway.initRemote(gl, iUniqueID, stackLayer, pickingTriggerMouseAdapter,
+							this);
+					pathway.setDetailLevel(EDetailLevel.LOW);
+
+					// Trigger initial gene propagation
+					pathway.broadcastElements(ESelectionType.NORMAL);
+				}
+				else if (poolLayer.containsElement(-1))
+				{
+					SlerpAction slerpActionTransition = new SlerpAction(iGeneratedViewID,
+							spawnLayer, poolLayer);
+					arSlerpActions.add(slerpActionTransition);
+
+					pathway.initRemote(gl, iUniqueID, poolLayer, pickingTriggerMouseAdapter,
+							this);
+					pathway.setDetailLevel(EDetailLevel.VERY_LOW);
+				}
+				else
+				{
+					generalManager.getLogger().log(Level.SEVERE,
+							"No empty space left to add new pathway!");
+					iAlUninitializedPathwayIDs.remove(0);
+					return;
+				}
+
+				spawnLayer.addElement(iGeneratedViewID);
+			}
+
+			iAlUninitializedPathwayIDs.remove(0);
+
+			if (iAlUninitializedPathwayIDs.isEmpty())
+				enableBusyMode(false);
+			else
+				enableBusyMode(true);
+
+			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
+					.clear();
+
+			// Trigger mouse over update if an entity is currently selected
+			// TODO: investigate
+			// alSelection.get(0).updateSelectionSet(iUniqueID);
+		}
 	}
 }

@@ -63,7 +63,7 @@ public class ExtensibleSplashHandler
 		
 		Label label = new Label(composite, SWT.NONE);
 		label.setText("Loading...");
-		label.setForeground(splash.getDisplay().getSystemColor (SWT.COLOR_WHITE));
+		label.setForeground(splash.getDisplay().getSystemColor (SWT.COLOR_BLACK));
 		label.setLayoutData(new RowData(getSplash().getSize().x - 5, 20));
 		
 		GeneralManager.get().getSWTGUIManager().setExternalProgressBarAndLabel(
