@@ -38,6 +38,8 @@ public class HeatMapRenderStyle
 
 	public static final float SELECTION_Z = 0.005f;
 
+	private static final float SELECTED_FIELD_WIDTH_PERCENTAGE = 0.1f;
+	private static final float MAXIMUM_SELECTED_AREA_PERCENTAGE = 0.8f;
 	private float fSelectedFieldWidth = 1.0f;
 
 	private float fMamximumNormalFieldWidth = fSelectedFieldWidth / 3 * 2;
@@ -141,23 +143,35 @@ public class HeatMapRenderStyle
 				.getNumberOfElements(ESelectionType.SELECTION);
 		int iNumberTotal = set.getVA(iContentVAID).size();
 
+		
+		float fSelecteFieldWidthPercentage = SELECTED_FIELD_WIDTH_PERCENTAGE;
+		if(iNumberSelected > 0 && SELECTED_FIELD_WIDTH_PERCENTAGE * iNumberSelected > 1 )
+		{
+			fSelecteFieldWidthPercentage = 1.0f / iNumberSelected;
+		}
+		
+		
 		if (bRenderStorageHorizontally)
 		{
+			
+			fSelectedFieldWidth = getRenderWidth() * MAXIMUM_SELECTED_AREA_PERCENTAGE * fSelecteFieldWidthPercentage;
+			
 			fNormalFieldWidth = (getRenderWidth() - iNumberSelected * fSelectedFieldWidth)
 					/ (iNumberTotal - iNumberSelected);
-
-			fNormalFieldWidth = (fNormalFieldWidth > fMamximumNormalFieldWidth) ? fMamximumNormalFieldWidth
-					: fNormalFieldWidth;
 
 			fFieldHeight = getRenderHeight() / set.getVA(iStorageVAID).size();
 		}
 		else
 		{
+			fSelectedFieldWidth = getRenderHeight() * MAXIMUM_SELECTED_AREA_PERCENTAGE *  fSelecteFieldWidthPercentage;
 			fNormalFieldWidth = (getRenderHeight() - iNumberSelected * fSelectedFieldWidth)
 					/ (iNumberTotal - iNumberSelected);
+
 			fFieldHeight = (getRenderWidth() / set.getVA(iStorageVAID).size());
 		}
 
+		fNormalFieldWidth = (fNormalFieldWidth > fMamximumNormalFieldWidth) ? fMamximumNormalFieldWidth
+				: fNormalFieldWidth;
 		alFieldWidths.clear();
 
 		float fTotalFieldWidth = 0;

@@ -11,6 +11,8 @@ import java.util.Iterator;
 import java.util.Set;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
+import javax.media.opengl.glu.GLU;
+import javax.media.opengl.glu.GLUnurbs;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
@@ -179,7 +181,7 @@ public class GLParallelCoordinates
 	{
 		dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
 		// dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
-		bRenderOnlyContext = false;
+		
 
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 
@@ -188,6 +190,7 @@ public class GLParallelCoordinates
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
+		toggleRenderContext();
 	}
 
 	@Override
@@ -517,11 +520,13 @@ public class GLParallelCoordinates
 		// if(bIsDraggingActive)
 		// handleDragging(gl);
 
-		renderCoordinateSystem(gl);
-		renderPolylines(gl, ESelectionType.MOUSE_OVER);
-		renderPolylines(gl, ESelectionType.SELECTION);
+		renderCoordinateSystem(gl);	
+		
 		renderPolylines(gl, ESelectionType.DESELECTED);
 		renderPolylines(gl, ESelectionType.NORMAL);
+		renderPolylines(gl, ESelectionType.MOUSE_OVER);
+		renderPolylines(gl, ESelectionType.SELECTION);
+		
 
 		renderGates(gl);
 
@@ -1741,11 +1746,11 @@ public class GLParallelCoordinates
 		// GLHelperFunctions.drawPointAt(gl, vecUpperPoint);
 		// GLHelperFunctions.drawPointAt(gl, vecLowerLine)
 
-		// GLU glu = new GLU();
-		// GLUnurbs theNurb = glu.gluNewNurbsRenderer();
-		// glu.gluBeginCurve(theNurb);
-		// //glu.gluNurbsCurve(theNurb, arg1, arg2, arg3, arg4, arg5, arg6)
-		// glu.gluEndCurve(theNurb);
+//		 GLU glu = new GLU();
+//		 GLUnurbs theNurb = glu.gluNewNurbsRenderer();
+//		 glu.gluBeginCurve(theNurb);
+//		 glu.gluNurbsCurve(theNurb, arg1, arg2, arg3, arg4, arg5, arg6)
+//		 glu.gluEndCurve(theNurb);
 
 	}
 

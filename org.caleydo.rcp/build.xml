@@ -8,6 +8,7 @@
 	<property name="local.lib.dir" value="lib" />
 	<property name="local.lib.jogl.dir" value="${local.lib.dir}/jogl" />
 	<property name="local.lib.caleydo.dir" value="${local.lib.dir}/org.caleydo" />
+	<property name="eclipse.home.absolute" location="/opt/eclipse" />
 
 	<property name="main-class" value="org.caleydo.rcp.Application" />
 
@@ -26,7 +27,7 @@
 		<fileset dir="${gleem.dir}" includes="**/*.jar" />
 		<fileset dir="${graph.dir}" includes="**/*.jar" />
 		<fileset dir="${core.dir}" includes="**/*.jar" />
-		<fileset dir="${eclipse.home}/plugins" includes="**/*.jar" />
+		<fileset dir="${eclipse.home.absolute}" includes="**/*.jar" />
 	</path>
 
 	<target name="clean">

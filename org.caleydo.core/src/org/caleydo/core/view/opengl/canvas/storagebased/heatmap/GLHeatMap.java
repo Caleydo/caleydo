@@ -93,6 +93,8 @@ public class GLHeatMap
 
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
+		
+		
 	}
 
 	@Override

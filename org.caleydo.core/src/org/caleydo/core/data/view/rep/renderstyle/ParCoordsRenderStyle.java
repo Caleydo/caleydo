@@ -100,7 +100,7 @@ public class ParCoordsRenderStyle
 	// buttons below axis
 	private static final float AXIS_BUTTONS_Y_OFFSET = 0.04f;
 
-	private static final float fAxisSpacingLowerLimit = 0.03f;
+	private static final float fAxisSpacingLowerLimit = 0.001f;
 
 	/**
 	 * Constructor.

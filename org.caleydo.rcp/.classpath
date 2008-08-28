@@ -14,7 +14,11 @@
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/webspider/spring-beans-2.5.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/webspider/spring-context-2.5.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/webspider/spring-core-2.5.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jogl/jogl.jar" sourcepath="/org.caleydo.lib/lib_src/jogl/jogl-src_1.1.0.zip"/>
+	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jogl/jogl.jar" sourcepath="/org.caleydo.lib/lib_src/jogl/jogl-src_1.1.0.zip">
+		<attributes>
+			<attribute name="javadoc_location" value="jar:platform:/resource/org.caleydo.lib/lib/jogl/jogl-1.1.1-docs.zip!/jogl-1.1.1-docs"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jogl/gluegen-rt.jar" sourcepath="/org.caleydo.lib/lib_src/jogl/jogl-src_1.1.0.zip"/>
 	<classpathentry kind="lib" path="/org.caleydo.core/bin/jar/org.caleydo.core.jar" sourcepath="/org.caleydo.core/src"/>
 	<classpathentry kind="lib" path="/org.caleydo.util.gleem/bin/jar/org.caleydo.util.gleem.jar"/>

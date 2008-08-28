@@ -22,8 +22,6 @@ import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.picking.ESelectionMode;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -38,6 +36,7 @@ public abstract class AStorageBasedView
 	implements IMediatorReceiver, IMediatorSender
 {
 
+	int test;
 	protected ISet set;
 
 	/**
@@ -96,7 +95,7 @@ public abstract class AStorageBasedView
 	/**
 	 * Constructor.
 	 */
-	public AStorageBasedView(final int iGLCanvasID, final String sLabel,
+	protected AStorageBasedView(final int iGLCanvasID, final String sLabel,
 			final IViewFrustum viewFrustum)
 	{
 		super(iGLCanvasID, sLabel, viewFrustum, true);
@@ -273,6 +272,12 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
+	public void handleUpdate(IUniqueObject eventTrigger)
+	{
+
+	}
+
+	@Override
 	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
 	{
 		// Check for type that can be handled
@@ -289,12 +294,6 @@ public abstract class AStorageBasedView
 		handleConnectedElementRep(internalDelta);
 		checkUnselection();
 		setDisplayListDirty();
-	}
-
-	@Override
-	public void handleUpdate(IUniqueObject eventTrigger)
-	{
-
 	}
 
 	/**
@@ -362,8 +361,7 @@ public abstract class AStorageBasedView
 						throw new InvalidAttributeValueException("Can not handle data type");
 
 					if (iStorageIndex == -1)
-						throw new CaleydoRuntimeException("No internal ID in selection delta",
-								CaleydoRuntimeExceptionType.VIEW);
+						throw new IllegalArgumentException("No internal ID in selection delta");
 
 					SelectedElementRep rep = createElementRep(iStorageIndex);
 					if (rep == null)

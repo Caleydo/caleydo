@@ -347,7 +347,7 @@ public class GLPathway
 				if (iDavidID == -1)
 					continue;
 
-				newSelectionDelta.addSelection(iDavidID, item.getSelectionType());
+				newSelectionDelta.addSelection(iDavidID, item.getSelectionType(), item.getSelectionID());
 			}
 		}
 

@@ -189,13 +189,13 @@ public class PathwayManager
 		{
 			try
 			{
+				int i = 1;
 				Thread.sleep(1000);
 			}
 			catch (InterruptedException e)
 			{
-				throw new CaleydoRuntimeException(
-						"Pathway loader thread has been interrupted!",
-						CaleydoRuntimeExceptionType.DATAHANDLING);
+				throw new IllegalThreadStateException(
+						"Pathway loader thread has been interrupted!");
 			}
 		}
 		//		

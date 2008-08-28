@@ -577,8 +577,15 @@ public class GenericSelectionManager
 						virtualArray.removeByElement(iInternalID);
 				}
 
-				selectionDelta.addSelection(iInternalID, item.getSelectionType(), item
-						.getSelectionID());
+				// caution, here we expect that the id that is used for
+				// connections is stored in the internal id of the
+				// externalSelectionDelta
+				if (item.getInternalID() != -1)
+					selectionDelta.addSelection(iInternalID, item.getSelectionType(), item
+							.getInternalID());
+				else
+					selectionDelta.addSelection(iInternalID, item.getSelectionType(), item
+							.getSelectionID());
 			}
 		}
 
