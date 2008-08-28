@@ -201,7 +201,7 @@ public class GLHeatMap
 	@Override
 	public void display(GL gl)
 	{
-		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		//GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		// GLHelperFunctions.drawAxis(gl);
 		gl.glCallList(iGLDisplayListToCall);
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
@@ -473,7 +473,8 @@ public class GLHeatMap
 				iContentIndex);
 
 		float fOpacity = 0;
-		if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)
+		if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex) ||
+				contentSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex)
 				|| detailLevel.compareTo(EDetailLevel.LOW) > 0)
 			fOpacity = 1f;
 		else

@@ -482,10 +482,9 @@ public class PickingManager
 
 		if (iViewID > 9999999 || iViewID < 100)
 		{
-			throw new CaleydoRuntimeException(
+			throw new IllegalArgumentException(
 					"PickingManager: The view id has to be in a range between "
-							+ "9,999,999 and 100, but was: " + iViewID,
-					CaleydoRuntimeExceptionType.MANAGER);
+							+ "9,999,999 and 100, but was: " + iViewID);
 		}
 	}
 
@@ -494,9 +493,8 @@ public class PickingManager
 
 		if (iType > 99 || iType < 0)
 		{
-			throw new CaleydoRuntimeException(
-					"PickingManager: Type has to be larger then or exactly 0 and less than 100",
-					CaleydoRuntimeExceptionType.MANAGER);
+			throw new IllegalArgumentException(
+					"PickingManager: Type has to be larger then or exactly 0 and less than 100");
 		}
 	}
 

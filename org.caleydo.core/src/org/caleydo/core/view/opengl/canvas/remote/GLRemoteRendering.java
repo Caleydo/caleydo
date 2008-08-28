@@ -339,7 +339,7 @@ public class GLRemoteRendering
 
 		colorMappingBarMiniView.render(gl, layoutRenderStyle.getColorBarXPos(),
 				layoutRenderStyle.getColorBarYPos(), 4);
-		
+
 		glConnectionLineRenderer.render(gl);
 	}
 
@@ -1256,7 +1256,6 @@ public class GLRemoteRendering
 						break;
 
 					case DRAGGED:
-
 						break;
 				}
 

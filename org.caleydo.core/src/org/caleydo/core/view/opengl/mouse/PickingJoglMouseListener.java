@@ -32,7 +32,6 @@ public class PickingJoglMouseListener
 	 */
 	public PickingJoglMouseListener()
 	{
-
 		super();
 		pickedPointDragStart = new Point();
 	}
@@ -40,7 +39,6 @@ public class PickingJoglMouseListener
 	@Override
 	public void mousePressed(MouseEvent mouseEvent)
 	{
-
 		super.mousePressed(mouseEvent);
 
 		if (mouseEvent.getButton() == MouseEvent.BUTTON1)
@@ -58,7 +56,6 @@ public class PickingJoglMouseListener
 	@Override
 	public void mouseMoved(MouseEvent mouseEvent)
 	{
-
 		super.mouseMoved(mouseEvent);
 
 		bMouseMoved = true;
@@ -68,7 +65,6 @@ public class PickingJoglMouseListener
 	@Override
 	public void mouseReleased(MouseEvent mouseEvent)
 	{
-
 		super.mouseReleased(mouseEvent);
 
 		if (mouseEvent.getButton() == MouseEvent.BUTTON1)
@@ -81,7 +77,6 @@ public class PickingJoglMouseListener
 	@Override
 	public void mouseDragged(MouseEvent mouseEvent)
 	{
-
 		super.mouseDragged(mouseEvent);
 
 		bMouseDragged = true;
@@ -90,26 +85,17 @@ public class PickingJoglMouseListener
 
 	public final boolean wasLeftMouseButtonPressed()
 	{
-
-		boolean bTmp = bLeftMouseButtonPressed;
-
-		return bTmp;
+		return bLeftMouseButtonPressed;
 	}
 
 	public final boolean wasRightMouseButtonPressed()
 	{
-
-		boolean bTmp = bRightMouseButtonPressed;
-
-		return bTmp;
+		return bRightMouseButtonPressed;
 	}
 
 	public final boolean wasMouseMoved()
 	{
-
-		boolean bTmp = bMouseMoved;
-
-		return bTmp;
+		return bMouseMoved;
 	}
 
 	// FIXME: Hack to conserve the mouse state - discuss mouse states
@@ -120,36 +106,26 @@ public class PickingJoglMouseListener
 
 	public final boolean wasMouseReleased()// boolean bDoConserveState)
 	{
-
-		boolean bTmp = bMouseReleased;
-		// if(!bDoConserveState)
-
-		return bTmp;
+		return bMouseReleased;
 	}
 
 	public final boolean wasMouseDragged()
 	{
-
-		boolean bTmp = bMouseDragged;
-
-		return bTmp;
+		return bMouseDragged;
 	}
 
 	public final Point getPickedPoint()
 	{
-
 		return pickedPointCurrent;
 	}
 
 	public final Point getPickedPointDragStart()
 	{
-
 		return pickedPointDragStart;
 	}
 
 	public final void resetEvents()
 	{
-
 		bMouseDragged = false;
 		bMouseReleased = false;
 		bMouseMoved = false;

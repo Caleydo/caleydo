@@ -18,6 +18,7 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
+ * @author Alexander Lex
  */
 
 public class JoglMouseListener
@@ -104,26 +105,29 @@ public class JoglMouseListener
 	// canvas.addMouseMotionListener(this);
 	// }
 	/* Methods required for the implementation of MouseListener */
+	@Override
 	public void mouseEntered(MouseEvent e)
 	{
 
 	}
-
+	@Override
 	public void mouseExited(MouseEvent e)
 	{
-
+		
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent e)
 	{
-
+		
 	}
 
+	@Override
 	public void mouseMoved(MouseEvent e)
 	{
 
 	}
-
+	@Override
 	public void mousePressed(MouseEvent e)
 	{
 
@@ -188,6 +192,7 @@ public class JoglMouseListener
 		}
 	}
 
+	@Override
 	public void mouseReleased(MouseEvent e)
 	{
 
@@ -236,13 +241,14 @@ public class JoglMouseListener
 		}
 	}
 
-	// Methods required for the implementation of MouseMotionListener
-	public void mouseDragged(MouseEvent e)
+
+	@Override
+	public void mouseDragged(MouseEvent event)
 	{
 
-		int x = e.getX();
-		int y = e.getY();
-		Dimension size = e.getComponent().getSize();
+		int x = event.getX();
+		int y = event.getY();
+		Dimension size = event.getComponent().getSize();
 
 		if (!bMouseRightButtonDown)
 		{

@@ -181,7 +181,6 @@ public class GLParallelCoordinates
 	{
 		dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
 		// dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
-		
 
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 
@@ -520,13 +519,12 @@ public class GLParallelCoordinates
 		// if(bIsDraggingActive)
 		// handleDragging(gl);
 
-		renderCoordinateSystem(gl);	
-		
+		renderCoordinateSystem(gl);
+
 		renderPolylines(gl, ESelectionType.DESELECTED);
 		renderPolylines(gl, ESelectionType.NORMAL);
 		renderPolylines(gl, ESelectionType.MOUSE_OVER);
 		renderPolylines(gl, ESelectionType.SELECTION);
-		
 
 		renderGates(gl);
 
@@ -967,6 +965,22 @@ public class GLParallelCoordinates
 			gl.glVertex3f(fCurrentPosition - fGateWidth, fArGateTipHeight[iCount]
 					- fGateTipHeight, 0.001f);
 			gl.glEnd();
+
+			// invisible part, for better picking
+			gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+
+			gl.glBegin(GL.GL_POLYGON);
+			gl.glColor4f(0, 0, 0, 0f);
+			gl.glVertex3f(fCurrentPosition + 3 * fGateWidth, fArGateTipHeight[iCount]
+					- fGateTipHeight, 0.001f);
+			gl.glVertex3f(fCurrentPosition + 3 * fGateWidth, fArGateTipHeight[iCount]
+					+ fGateTipHeight, 0.001f);
+			gl.glVertex3f(fCurrentPosition - 3 * fGateWidth, fArGateTipHeight[iCount]
+					+ fGateTipHeight, 0.001f);
+			gl.glVertex3f(fCurrentPosition - 3 * fGateWidth, fArGateTipHeight[iCount]
+					- fGateTipHeight, 0.001f);
+			gl.glEnd();
+			gl.glPopAttrib();
 			gl.glPopName();
 
 			if (detailLevel == EDetailLevel.HIGH)
@@ -1009,6 +1023,23 @@ public class GLParallelCoordinates
 			gl.glVertex3f(fCurrentPosition - fGateWidth, fArGateBottomHeight[iCount]
 					+ fGateTipHeight, 0.001f);
 			gl.glEnd();
+
+			// invisible part, for better picking
+			gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+
+			gl.glBegin(GL.GL_POLYGON);
+			gl.glColor4f(0, 0, 0, 0.0f);
+			gl.glVertex3f(fCurrentPosition + 3 * fGateWidth, fArGateBottomHeight[iCount],
+					0.001f);
+			gl.glVertex3f(fCurrentPosition + 3 * fGateWidth, fArGateBottomHeight[iCount]
+					+ fGateTipHeight, 0.001f);
+			gl.glVertex3f(fCurrentPosition - 3 * fGateWidth, fArGateBottomHeight[iCount]
+					+ fGateTipHeight, 0.001f);
+			gl.glVertex3f(fCurrentPosition - 3 * fGateWidth, fArGateBottomHeight[iCount],
+					0.001f);
+			gl.glEnd();
+			gl.glPopAttrib();
+
 			gl.glPopName();
 
 			if (detailLevel == EDetailLevel.HIGH)
@@ -1279,6 +1310,10 @@ public class GLParallelCoordinates
 
 						axisSelectionManager.clearSelection(ESelectionType.SELECTION);
 						axisSelectionManager.addToType(ESelectionType.SELECTION, iExternalID);
+						if (bRenderStorageHorizontally)
+						{
+							connectedElementRepresentationManager.clear();
+						}
 
 						if (eAxisDataType == EIDType.EXPRESSION_INDEX)
 						{
@@ -1290,7 +1325,10 @@ public class GLParallelCoordinates
 					case MOUSE_OVER:
 						axisSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
 						axisSelectionManager.addToType(ESelectionType.MOUSE_OVER, iExternalID);
-
+						if (bRenderStorageHorizontally)
+						{
+							connectedElementRepresentationManager.clear();
+						}
 						if (eAxisDataType == EIDType.EXPRESSION_INDEX)
 						{
 							triggerUpdate(axisSelectionManager.getDelta());
@@ -1298,12 +1336,16 @@ public class GLParallelCoordinates
 						setDisplayListDirty();
 						break;
 				}
+
 				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 			case LOWER_GATE_TIP_SELECTION:
 				switch (ePickingMode)
 				{
 					case CLICKED:
+						bIsDraggingActive = true;
+						draggedObject = EPickingType.LOWER_GATE_TIP_SELECTION;
+						iDraggedGateNumber = iExternalID;
 						break;
 					case DRAGGED:
 						bIsDraggingActive = true;
@@ -1317,6 +1359,9 @@ public class GLParallelCoordinates
 				switch (ePickingMode)
 				{
 					case CLICKED:
+						bIsDraggingActive = true;
+						draggedObject = EPickingType.LOWER_GATE_BOTTOM_SELECTION;
+						iDraggedGateNumber = iExternalID;
 						break;
 					case DRAGGED:
 						bIsDraggingActive = true;
@@ -1461,8 +1506,9 @@ public class GLParallelCoordinates
 
 		if (bRenderStorageHorizontally)
 		{
-			fXValue = set.getVA(iAxisVAID).indexOf(iStorageIndex);
-			fXValue = fXValue + renderStyle.getXSpacing() + fXTranslation;
+			fXValue = set.getVA(iAxisVAID).indexOf(iStorageIndex)
+					* renderStyle.getAxisSpacing(set.getVA(iAxisVAID).size());
+			fXValue = fXValue + renderStyle.getXSpacing();
 			fYValue = renderStyle.getBottomSpacing();
 		}
 		else
@@ -1746,11 +1792,11 @@ public class GLParallelCoordinates
 		// GLHelperFunctions.drawPointAt(gl, vecUpperPoint);
 		// GLHelperFunctions.drawPointAt(gl, vecLowerLine)
 
-//		 GLU glu = new GLU();
-//		 GLUnurbs theNurb = glu.gluNewNurbsRenderer();
-//		 glu.gluBeginCurve(theNurb);
-//		 glu.gluNurbsCurve(theNurb, arg1, arg2, arg3, arg4, arg5, arg6)
-//		 glu.gluEndCurve(theNurb);
+		// GLU glu = new GLU();
+		// GLUnurbs theNurb = glu.gluNewNurbsRenderer();
+		// glu.gluBeginCurve(theNurb);
+		// glu.gluNurbsCurve(theNurb, arg1, arg2, arg3, arg4, arg5, arg6)
+		// glu.gluEndCurve(theNurb);
 
 	}
 
