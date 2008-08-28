@@ -26,6 +26,7 @@
 		<fileset dir="${gleem.dir}" includes="**/*.jar" />
 		<fileset dir="${graph.dir}" includes="**/*.jar" />
 		<fileset dir="${core.dir}" includes="**/*.jar" />
+		<fileset dir="${eclipse.home}/plugins" includes="**/*.jar" />
 	</path>
 
 	<target name="clean">

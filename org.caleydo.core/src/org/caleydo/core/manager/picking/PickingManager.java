@@ -181,7 +181,8 @@ public class PickingManager
 				5.0, 5.0, viewport, 0); // pick width and height is set to 5
 		// (i.e. picking tolerance)
 
-		float fAspectRatio = (viewport[3] - viewport[1]) / (viewport[2] - viewport[0]);
+		float fAspectRatio = (float)(viewport[3] - viewport[1])
+						/ (float)(viewport[2] - viewport[0]);
 
 		IViewFrustum viewFrustum = canvasUser.getViewFrustum();
 
