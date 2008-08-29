@@ -8,6 +8,7 @@ import java.awt.event.MouseEvent;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public class PickingJoglMouseListener
 	extends JoglMouseListener
@@ -98,13 +99,7 @@ public class PickingJoglMouseListener
 		return bMouseMoved;
 	}
 
-	// FIXME: Hack to conserve the mouse state - discuss mouse states
-	// public final boolean wasMouseReleased()
-	// {
-	// return wasMouseReleased(false);
-	// }
-
-	public final boolean wasMouseReleased()// boolean bDoConserveState)
+	public final boolean wasMouseReleased()
 	{
 		return bMouseReleased;
 	}

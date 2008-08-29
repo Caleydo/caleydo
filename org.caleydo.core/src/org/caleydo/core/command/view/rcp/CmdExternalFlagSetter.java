@@ -2,8 +2,8 @@ package org.caleydo.core.command.view.rcp;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
 
 /**
@@ -31,7 +31,7 @@ public class CmdExternalFlagSetter
 	}
 
 	@Override
-	public void doCommand() throws CaleydoRuntimeException
+	public void doCommand()
 	{
 
 		commandManager.runDoCommand(this);
@@ -56,17 +56,31 @@ public class CmdExternalFlagSetter
 		}
 		else if (viewObject instanceof GLParallelCoordinates)
 		{
+			GLParallelCoordinates parCoords = (GLParallelCoordinates) viewObject;
 			switch (externalFlagSetterType)
 			{
 				case PARCOORDS_OCCLUSION_PREVENTION:
-					((GLParallelCoordinates) viewObject).preventOcclusion(bFlag);
+					parCoords.preventOcclusion(bFlag);
+					break;
+				case STORAGEBASED_CHANGE_ORIENTATION:
+					parCoords.renderStorageAsPolyline(bFlag);
+					break;
+			}
+		}
+		else if (viewObject instanceof GLHeatMap)
+		{
+			GLHeatMap heatMap = (GLHeatMap) viewObject;
+			switch (externalFlagSetterType)
+			{
+				case STORAGEBASED_CHANGE_ORIENTATION:
+					heatMap.renderHorizontally(bFlag);
 					break;
 			}
 		}
 	}
 
 	@Override
-	public void undoCommand() throws CaleydoRuntimeException
+	public void undoCommand()
 	{
 		commandManager.runUndoCommand(this);
 	}

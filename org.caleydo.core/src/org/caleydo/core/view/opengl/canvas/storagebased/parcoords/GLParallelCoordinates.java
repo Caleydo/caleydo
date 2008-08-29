@@ -11,8 +11,6 @@ import java.util.Iterator;
 import java.util.Set;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
-import javax.media.opengl.glu.GLU;
-import javax.media.opengl.glu.GLUnurbs;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
@@ -312,9 +310,9 @@ public class GLParallelCoordinates
 	 * arrays is an axis or whether the array corresponds to an axis and every
 	 * entry across arrays is a polyline
 	 */
-	public void toggleAxisPolylineSwap()
+	public void renderStorageAsPolyline(boolean bRenderStorageHorizontally)
 	{
-		bRenderStorageHorizontally = !bRenderStorageHorizontally;
+		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
 		// bRenderInfoArea = false;
 		EIDType eTempType = eAxisDataType;
 		eAxisDataType = ePolylineDataType;
@@ -1375,38 +1373,38 @@ public class GLParallelCoordinates
 				switch (ePickingMode)
 				{
 					case CLICKED:
-						if (iExternalID == EIconIDs.TOGGLE_RENDER_ARRAY_AS_POLYLINE.ordinal())
-						{
-							if (bRenderStorageHorizontally == true)
-								toggleAxisPolylineSwap();
-							else
-								toggleAxisPolylineSwap();
-						}
-						else if (iExternalID == EIconIDs.TOGGLE_PREVENT_OCCLUSION.ordinal())
-						{
-							if (bPreventOcclusion == true)
-								preventOcclusion(false);
-							else
-								preventOcclusion(true);
-						}
-						else if (iExternalID == EIconIDs.TOGGLE_RENDER_CONTEXT.ordinal())
-						{
-							toggleRenderContext();
-						}
-						else if (iExternalID == EIconIDs.RESET_SELECTIONS.ordinal())
-						{
-							resetSelections();
-						}
-						else if (iExternalID == EIconIDs.SAVE_SELECTIONS.ordinal())
-						{
-							broadcastElements();
-						}
-						else if (iExternalID == EIconIDs.ANGULAR_BRUSHING.ordinal())
-						{
-							bAngularBrushingSelectPolyline = true;
-						}
-
-						setDisplayListDirty();
+//						if (iExternalID == EIconIDs.TOGGLE_RENDER_ARRAY_AS_POLYLINE.ordinal())
+//						{
+//							if (bRenderStorageHorizontally == true)
+//								renderStorageHorizontally();
+//							else
+//								ren();
+//						}
+//						else if (iExternalID == EIconIDs.TOGGLE_PREVENT_OCCLUSION.ordinal())
+//						{
+//							if (bPreventOcclusion == true)
+//								preventOcclusion(false);
+//							else
+//								preventOcclusion(true);
+//						}
+//						else if (iExternalID == EIconIDs.TOGGLE_RENDER_CONTEXT.ordinal())
+//						{
+//							toggleRenderContext();
+//						}
+//						else if (iExternalID == EIconIDs.RESET_SELECTIONS.ordinal())
+//						{
+//							resetSelections();
+//						}
+//						else if (iExternalID == EIconIDs.SAVE_SELECTIONS.ordinal())
+//						{
+//							broadcastElements();
+//						}
+//						else if (iExternalID == EIconIDs.ANGULAR_BRUSHING.ordinal())
+//						{
+//							bAngularBrushingSelectPolyline = true;
+//						}
+//
+//						setDisplayListDirty();
 						break;
 				}
 

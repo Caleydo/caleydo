@@ -6,16 +6,18 @@ import org.caleydo.rcp.action.view.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
-public class SwitchAxesToPolylinesAction
+public class ChangeOrientationAction
 extends AToolBarAction
 {
 	public static final String TEXT = "Switch dimensions";
-	public static final String ICON = "resources/icons/view/storagebased/axes_as_polylines.png";
+	public static final String ICON = "resources/icons/view/storagebased/change_orientation.png";
 
+	private boolean bEnable = false;
+	
 	/**
 	 * Constructor.
 	 */
-	public SwitchAxesToPolylinesAction(int iViewID)
+	public ChangeOrientationAction(int iViewID)
 	{
 		super(iViewID);
 		
@@ -29,7 +31,7 @@ extends AToolBarAction
 	public void run()
 	{
 		super.run();
-			
-		triggerCmdExternalAction(EExternalActionType.STORAGEBASED_SWITCH_AXES_TO_POLYLINES);
+		bEnable = !bEnable;	
+		triggerCmdSExternalFlagSetter(bEnable, EExternalFlagSetterType.STORAGEBASED_CHANGE_ORIENTATION);
 	};
 }

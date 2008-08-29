@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.caleydo.rcp.action.view.pathway.TextureAction;
 import org.caleydo.rcp.action.view.storagebased.PropagateSelectionsAction;
-import org.caleydo.rcp.action.view.storagebased.SwitchAxesToPolylinesAction;
+import org.caleydo.rcp.action.view.storagebased.ChangeOrientationAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 
@@ -28,7 +28,7 @@ public class GLHeatMapView
 		
 		IAction propagateSelectionAction = new PropagateSelectionsAction(iViewID);
 		alToolbar.add(propagateSelectionAction);	
-		IAction switchAxesToPolylinesAction = new SwitchAxesToPolylinesAction(iViewID);
+		IAction switchAxesToPolylinesAction = new ChangeOrientationAction(iViewID);
 		alToolbar.add(switchAxesToPolylinesAction);	
 	}
 	

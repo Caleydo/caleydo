@@ -3,7 +3,7 @@ package org.caleydo.rcp.views;
 import java.util.ArrayList;
 
 import org.caleydo.rcp.action.view.storagebased.PropagateSelectionsAction;
-import org.caleydo.rcp.action.view.storagebased.SwitchAxesToPolylinesAction;
+import org.caleydo.rcp.action.view.storagebased.ChangeOrientationAction;
 import org.caleydo.rcp.action.view.storagebased.parcoords.AngularBrushingAction;
 import org.caleydo.rcp.action.view.storagebased.parcoords.OcclusionPreventionAction;
 import org.caleydo.rcp.action.view.storagebased.parcoords.ToggleRenderContextAction;
@@ -34,7 +34,7 @@ public class GLParCoordsView
 		alToolbar.add(occlusionPreventionAction);	
 		IAction propagateSelectionAction = new PropagateSelectionsAction(iViewID);
 		alToolbar.add(propagateSelectionAction);	
-		IAction switchAxesToPolylinesAction = new SwitchAxesToPolylinesAction(iViewID);
+		IAction switchAxesToPolylinesAction = new ChangeOrientationAction(iViewID);
 		alToolbar.add(switchAxesToPolylinesAction);	
 		IAction toggleRenderContextAction = new ToggleRenderContextAction(iViewID);
 		alToolbar.add(toggleRenderContextAction);	
