@@ -3,9 +3,6 @@
 	<name>org.caleydo.rcp</name>
 	<comment></comment>
 	<projects>
-		<project>org.caleydo.core</project>
-		<project>org.caleydo.lib</project>
-		<project>org.calyedo.util.graph</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
