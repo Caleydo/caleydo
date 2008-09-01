@@ -1,4 +1,4 @@
-package org.caleydo.testing.applications.jgraph.kegg;
+package org.caleydo.testing.applications.gui.swt.jgraph.kegg;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

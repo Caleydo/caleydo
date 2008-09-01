@@ -1,4 +1,4 @@
-package org.caleydo.testing.applications.jgraph.kegg;
+package org.caleydo.testing.applications.gui.swt.jgraph.kegg;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;

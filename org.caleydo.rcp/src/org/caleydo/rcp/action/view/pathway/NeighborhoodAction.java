@@ -9,7 +9,7 @@ public class NeighborhoodAction
 extends AToolBarAction
 {
 	public static final String TEXT = "Turn on/off neighborhood";
-	public static final String ICON = "resources/icons/general/no_icon_available.png";
+	public static final String ICON = "resources/icons/view/pathway/neighborhood.png";
 
 	private boolean bEnable = false;
 	

@@ -9,7 +9,7 @@ public class TextureAction
 extends AToolBarAction
 {
 	public static final String TEXT = "Turn on/off pathway textures";
-	public static final String ICON = "resources/icons/general/no_icon_available.png";
+	public static final String ICON = "resources/icons/view/pathway/texture_on_off.png";
 
 	private boolean bEnable = true;
 	

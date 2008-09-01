@@ -9,7 +9,7 @@ public class GeneMappingAction
 extends AToolBarAction
 {
 	public static final String TEXT = "Turn on/off gene mapping";
-	public static final String ICON = "resources/icons/general/no_icon_available.png";
+	public static final String ICON = "resources/icons/view/pathway/gene_mapping.png";
 
 	private boolean bEnable = true;
 	
