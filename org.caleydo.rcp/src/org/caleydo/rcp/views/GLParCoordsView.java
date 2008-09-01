@@ -4,9 +4,10 @@ import java.util.ArrayList;
 
 import org.caleydo.rcp.action.view.storagebased.PropagateSelectionsAction;
 import org.caleydo.rcp.action.view.storagebased.ChangeOrientationAction;
+import org.caleydo.rcp.action.view.storagebased.UseRandomSamplingAction;
 import org.caleydo.rcp.action.view.storagebased.parcoords.AngularBrushingAction;
 import org.caleydo.rcp.action.view.storagebased.parcoords.OcclusionPreventionAction;
-import org.caleydo.rcp.action.view.storagebased.parcoords.ToggleRenderContextAction;
+import org.caleydo.rcp.action.view.storagebased.parcoords.RenderContextAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 
@@ -36,8 +37,10 @@ public class GLParCoordsView
 		alToolbar.add(propagateSelectionAction);	
 		IAction switchAxesToPolylinesAction = new ChangeOrientationAction(iViewID);
 		alToolbar.add(switchAxesToPolylinesAction);	
-		IAction toggleRenderContextAction = new ToggleRenderContextAction(iViewID);
-		alToolbar.add(toggleRenderContextAction);	
+		IAction toggleRenderContextAction = new RenderContextAction(iViewID);
+		alToolbar.add(toggleRenderContextAction);
+		IAction useRandomSamplingAction = new UseRandomSamplingAction(iViewID);
+		alToolbar.add(useRandomSamplingAction);
 	}
 	
 	@Override

@@ -10,7 +10,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.util.gleem"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.util.graph"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/kegg/keggapi.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/swt/swt.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.core.resources_3.1.2.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.core.runtime_3.1.2.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.jface_3.1.1.jar"/>
@@ -23,5 +22,6 @@
 			<attribute name="javadoc_location" value="jar:platform:/resource/org.caleydo.lib/lib_src/jgraph/jgraph-latest-stable-src_5_9.jar!/doc/api"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

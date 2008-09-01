@@ -138,8 +138,15 @@ public class Set
 	@Override
 	public IStorage getStorageFromVA(int iUniqueID, int iIndex)
 	{
-		int iTmp = hashSetVAs.get(iUniqueID).get(iIndex);
-		return alStorages.get(iTmp);
+		if (hashSetVAs.containsKey(iUniqueID))
+		{
+			int iTmp = hashSetVAs.get(iUniqueID).get(iIndex);
+			return alStorages.get(iTmp);
+		}
+		else
+		{
+			throw new IllegalArgumentException("No such virtual array " + iUniqueID + " registered for storages");
+		}
 	}
 
 	@Override
@@ -153,8 +160,10 @@ public class Set
 	{
 		if (hashSetVAs.containsKey(iUniqueID))
 			return hashSetVAs.get(iUniqueID).size();
-		else
+		else if (hashStorageVAs.containsKey(iUniqueID))
 			return hashStorageVAs.get(iUniqueID).size();
+		else
+			throw new IllegalArgumentException("No such virtual array has been registered");
 
 	}
 
@@ -295,7 +304,9 @@ public class Set
 		return iUniqueID;
 	}
 
+	// TODO obsolete?
 	@Override
+	@Deprecated
 	public void enableVirtualArray(int iUniqueID)
 	{
 		if (hashIsVAEnabled.get(iUniqueID) == null)
@@ -330,8 +341,14 @@ public class Set
 	@Override
 	public void resetVirtualArray(int iUniqueID)
 	{
-		hashSetVAs.get(iUniqueID).reset();
-		hashStorageVAs.get(iUniqueID).reset();
+		if (hashSetVAs.containsKey(iUniqueID))
+		{
+			hashSetVAs.get(iUniqueID).reset();
+			return;
+		}
+
+		if (hashStorageVAs.containsKey(iUniqueID))
+			hashStorageVAs.get(iUniqueID).reset();
 	}
 
 	@Override
@@ -343,18 +360,17 @@ public class Set
 			storage.removeVirtualArray(iUniqueID);
 		}
 		hashStorageVAs.remove(iUniqueID);
-
 	}
 
 	@Override
 	public IVirtualArray getVA(int iUniqueID)
 	{
-		if (hashSetVAs.get(iUniqueID) != null)
+		if (hashSetVAs.containsKey(iUniqueID))
 			return hashSetVAs.get(iUniqueID);
-		else if (hashStorageVAs.get(iUniqueID) != null)
+		else if (hashStorageVAs.containsKey(iUniqueID))
 			return hashStorageVAs.get(iUniqueID);
 		else
-			throw new IllegalArgumentException("No Virtual Array for that unique id.");
+			throw new IllegalArgumentException("No Virtual Array for the unique id: " + iUniqueID);
 	}
 
 	private void calculateGlobalExtrema()

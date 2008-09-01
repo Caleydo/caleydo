@@ -41,23 +41,19 @@ public class CmdExternalActionTrigger
 			{
 				case CLEAR_ALL:
 					((GLRemoteRendering) viewObject).clearAll();
-					break;
+					return;
 				case REMOTE_RENDERING_TOGGLE_LAYOUT_MODE:
 					((GLRemoteRendering) viewObject).toggleLayoutMode();
-					break;
+					return;
 			}
 		}
-		else if (viewObject instanceof GLParallelCoordinates
-				|| viewObject instanceof GLHeatMap)
+		else if (viewObject instanceof AStorageBasedView)
 		{
 			switch (externalActionType)
-			{
-				case STORAGEBASED_TOGGLE_RENDER_CONTEXT:
-					((AStorageBasedView) viewObject).toggleRenderContext();
-					break;
+			{			
 				case STORAGEBASED_PROPAGATE_SELECTIONS:
 					((AStorageBasedView) viewObject).broadcastElements();
-					break;
+					return;
 			}
 
 			if (viewObject instanceof GLParallelCoordinates)
@@ -66,7 +62,7 @@ public class CmdExternalActionTrigger
 				{
 					case PARCOORDS_ANGULAR_BRUSHING:
 						((GLParallelCoordinates) viewObject).triggerAngularBrushing();
-						break;
+						return;
 				}
 			}
 		}

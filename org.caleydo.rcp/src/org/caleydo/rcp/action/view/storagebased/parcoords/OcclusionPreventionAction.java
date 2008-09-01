@@ -33,6 +33,6 @@ extends AToolBarAction
 			
 		bEnable = !bEnable;
 		
-		triggerCmdSExternalFlagSetter(bEnable, EExternalFlagSetterType.PARCOORDS_OCCLUSION_PREVENTION);
+		triggerCmdExternalFlagSetter(bEnable, EExternalFlagSetterType.PARCOORDS_OCCLUSION_PREVENTION);
 	};
 }

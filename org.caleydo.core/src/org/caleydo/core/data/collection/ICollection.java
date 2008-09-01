@@ -32,6 +32,7 @@ public interface ICollection
 	 * 
 	 * @param iUniqueID the unique id of the calling instance
 	 */
+	@Deprecated
 	public void enableVirtualArray(int iUniqueID);
 
 	/**
@@ -39,6 +40,7 @@ public interface ICollection
 	 * 
 	 * @param iUniqueID the unique ID associated with the virtual array
 	 */
+	@Deprecated
 	public void disableVirtualArray(int iUniqueID);
 
 	/**

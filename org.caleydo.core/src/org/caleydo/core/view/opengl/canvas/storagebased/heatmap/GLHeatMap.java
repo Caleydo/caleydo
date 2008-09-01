@@ -92,8 +92,7 @@ public class GLHeatMap
 				EIDType.EXPRESSION_EXPERIMENT).build();
 
 		colorMapper = ColorMappingManager.get().getColorMapping(
-				EColorMappingType.GENE_EXPRESSION);
-		
+				EColorMappingType.GENE_EXPRESSION);		
 		
 	}
 
@@ -272,7 +271,7 @@ public class GLHeatMap
 
 		if (renderStyle != null)
 		{
-			renderStyle.setContentSelection(iContentVAID);
+			renderStyle.setActiveVirtualArray(iContentVAID);
 		}
 
 		int iNumberOfColumns = set.getVA(iContentVAID).size();
@@ -652,9 +651,25 @@ public class GLHeatMap
 	}
 
 	@Override
-	public void toggleRenderContext()
+	public void renderContext(boolean bRenderOnlyContext)
 	{
-		// TODO Auto-generated method stub
+		
+		this.bRenderOnlyContext = bRenderOnlyContext;
+
+		if (this.bRenderOnlyContext)
+			iContentVAID = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
+		else
+		{
+			if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION))
+				initCompleteList();
+
+			iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
+		}
+
+		contentSelectionManager.setVA(set.getVA(iContentVAID));
+		renderStyle.setActiveVirtualArray(iContentVAID);
+
+		setDisplayListDirty();
 
 	}
 

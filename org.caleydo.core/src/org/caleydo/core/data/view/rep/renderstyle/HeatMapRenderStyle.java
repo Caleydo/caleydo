@@ -130,9 +130,15 @@ public class HeatMapRenderStyle
 		}
 	}
 
-	public void setContentSelection(int iContentSelection)
+	/**
+	 * Set the active virtual array of the heat map here, when it changed during runtime. Needed to calculate
+	 * the widht and height of an element.
+	 * 
+	 * @param iContentVAID the id of the content virtual array
+	 */
+	public void setActiveVirtualArray(int iContentVAID)
 	{
-		this.iContentVAID = iContentSelection;
+		this.iContentVAID = iContentVAID;
 	}
 
 	public void resetFieldDimensions()
@@ -143,19 +149,18 @@ public class HeatMapRenderStyle
 				.getNumberOfElements(ESelectionType.SELECTION);
 		int iNumberTotal = set.getVA(iContentVAID).size();
 
-		
 		float fSelecteFieldWidthPercentage = SELECTED_FIELD_WIDTH_PERCENTAGE;
-		if(iNumberSelected > 0 && SELECTED_FIELD_WIDTH_PERCENTAGE * iNumberSelected > 1 )
+		if (iNumberSelected > 0 && SELECTED_FIELD_WIDTH_PERCENTAGE * iNumberSelected > 1)
 		{
 			fSelecteFieldWidthPercentage = 1.0f / iNumberSelected;
 		}
-		
-		
+
 		if (bRenderStorageHorizontally)
 		{
-			
-			fSelectedFieldWidth = getRenderWidth() * MAXIMUM_SELECTED_AREA_PERCENTAGE * fSelecteFieldWidthPercentage;
-			
+
+			fSelectedFieldWidth = getRenderWidth() * MAXIMUM_SELECTED_AREA_PERCENTAGE
+					* fSelecteFieldWidthPercentage;
+
 			fNormalFieldWidth = (getRenderWidth() - iNumberSelected * fSelectedFieldWidth)
 					/ (iNumberTotal - iNumberSelected);
 
@@ -163,7 +168,8 @@ public class HeatMapRenderStyle
 		}
 		else
 		{
-			fSelectedFieldWidth = getRenderHeight() * MAXIMUM_SELECTED_AREA_PERCENTAGE *  fSelecteFieldWidthPercentage;
+			fSelectedFieldWidth = getRenderHeight() * MAXIMUM_SELECTED_AREA_PERCENTAGE
+					* fSelecteFieldWidthPercentage;
 			fNormalFieldWidth = (getRenderHeight() - iNumberSelected * fSelectedFieldWidth)
 					/ (iNumberTotal - iNumberSelected);
 

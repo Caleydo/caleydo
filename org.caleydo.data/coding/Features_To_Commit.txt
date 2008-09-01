@@ -1,8 +1,2 @@
 Done since last commit:
 
-Added build.xml to org.caleydo libs, and target Run Copy Libs to External tools. By executing that all the libs are copied to core, rcp and gleem.
-PCs now use GL_LINE_STRIPS instead of GL_LINES to render lines, except when rendering a selection. Then they still use GL_LINES because they need to draw the value information.
-Using static import now for renderstyle, makes GLRenderStyle.STATIC_MEMBER unnecessary.
-Implemented random sampling for HeatMap and PCs
-Changed constructor of VirtualArray to take List instead of ArrayList, and consequently the interfaces in the set as well
-Removed several CaleydoRuntimeExceptions

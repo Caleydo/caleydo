@@ -97,6 +97,8 @@ public abstract class AStorageBasedView
 
 	protected boolean bUseRandomSampling = true;
 
+	private int iNumberOfRandomElements = 1000;
+
 	/**
 	 * Constructor.
 	 */
@@ -125,7 +127,7 @@ public abstract class AStorageBasedView
 	 * {@link EStorageBasedVAType#EXTERNAL_SELECTION}
 	 * 
 	 */
-	public abstract void toggleRenderContext();
+	public abstract void renderContext(boolean bRenderContext);
 
 	// /**
 	// * Set which level of data filtering should be applied.
@@ -148,15 +150,6 @@ public abstract class AStorageBasedView
 				set = currentSet;
 		}
 
-		if (set == null)
-		{
-			mapVAIDs.clear();
-			contentSelectionManager.resetSelectionManager();
-			storageSelectionManager.resetSelectionManager();
-			connectedElementRepresentationManager.clear();
-			return;
-		}
-
 		if (!mapVAIDs.isEmpty())
 		{
 			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values())
@@ -165,6 +158,15 @@ public abstract class AStorageBasedView
 					set.removeVirtualArray(mapVAIDs.get(eSelectionType));
 			}
 			mapVAIDs.clear();
+		}
+
+		if (set == null)
+		{
+			mapVAIDs.clear();
+			contentSelectionManager.resetSelectionManager();
+			storageSelectionManager.resetSelectionManager();
+			connectedElementRepresentationManager.clear();
+			return;
 		}
 
 		ArrayList<Integer> alTempList = new ArrayList<Integer>();
@@ -191,20 +193,11 @@ public abstract class AStorageBasedView
 	 */
 	protected void initCompleteList()
 	{
-//		int iStorageLength;
-//		if (bUseRandomSampling)
-//			// TODO not the place
-//			iStorageLength = 1000;
-//		else
-//			iStorageLength = set.depth();
-
-	
-
 		// initialize virtual array that contains all (filtered) information
 		ArrayList<Integer> alTempList = new ArrayList<Integer>(set.depth());
 
-		for(int iCount = 0; iCount < set.depth(); iCount++)
-		{		
+		for (int iCount = 0; iCount < set.depth(); iCount++)
+		{
 			if (dataFilterLevel != EDataFilterLevel.COMPLETE)
 			{
 				// Here we get mapping data for all values
@@ -237,20 +230,20 @@ public abstract class AStorageBasedView
 			}
 			alTempList.add(iCount);
 		}
-		
+
 		if (bUseRandomSampling)
 		{
-			int iNumberOfRandomElements = 1000;
 			Collections.shuffle(alTempList);
-			if(alTempList.size() > iNumberOfRandomElements)
+			if (alTempList.size() > iNumberOfRandomElements)
 			{
 				ArrayList<Integer> alNewList = new ArrayList<Integer>();
 				alNewList.addAll(alTempList.subList(0, iNumberOfRandomElements));
 				alTempList = alNewList;
 			}
-			
+
 		}
 
+		// TODO: remove possible old virtual array
 		int iVAID = set.createStorageVA(alTempList);
 		mapVAIDs.put(EStorageBasedVAType.COMPLETE_SELECTION, iVAID);
 
@@ -426,6 +419,33 @@ public abstract class AStorageBasedView
 	public void broadcastElements(ESelectionType type)
 	{
 		// TODO: implement
+	}
+
+	public final void useRandomSampling(boolean bUseRandomSampling)
+	{
+		if (this.bUseRandomSampling != bUseRandomSampling)
+		{
+			this.bUseRandomSampling = bUseRandomSampling;
+		}
+		// TODO, probably do this with initCompleteList, take care of selection manager though
+		initData();
+		initCompleteList();
+	}
+
+	/**
+	 * 
+	 * @param iNumberOfRandomElements
+	 */
+	public final void setNumberOfSamplesToShow(int iNumberOfRandomElements)
+	{
+		if (iNumberOfRandomElements != this.iNumberOfRandomElements && bUseRandomSampling)
+		{
+			this.iNumberOfRandomElements = iNumberOfRandomElements;
+			initData();
+			return;
+		}
+		// TODO, probably do this with initCompleteList, take care of selection manager though
+		this.iNumberOfRandomElements = iNumberOfRandomElements;
 	}
 
 }

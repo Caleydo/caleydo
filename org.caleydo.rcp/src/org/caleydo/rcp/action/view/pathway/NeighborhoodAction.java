@@ -33,6 +33,6 @@ extends AToolBarAction
 			
 		bEnable = !bEnable;
 		
-		triggerCmdSExternalFlagSetter(bEnable, EExternalFlagSetterType.PATHWAY_NEIGHBORHOOD);
+		triggerCmdExternalFlagSetter(bEnable, EExternalFlagSetterType.PATHWAY_NEIGHBORHOOD);
 	};
 }

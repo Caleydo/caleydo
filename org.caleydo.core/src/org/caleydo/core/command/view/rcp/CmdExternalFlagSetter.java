@@ -3,6 +3,7 @@ package org.caleydo.core.command.view.rcp;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
+import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
 
@@ -45,38 +46,58 @@ public class CmdExternalFlagSetter
 			{
 				case PATHWAY_GENE_MAPPING:
 					((GLPathway) viewObject).enableGeneMapping(bFlag);
-					break;
+					return;
 				case PATHWAY_NEIGHBORHOOD:
 					((GLPathway) viewObject).enableNeighborhood(bFlag);
-					break;
+					return;
 				case PATHWAY_TEXTURES:
 					((GLPathway) viewObject).enablePathwayTextures(bFlag);
+					return;
+			}
+		
+		}
+		
+		if (viewObject instanceof AStorageBasedView)
+		{
+			AStorageBasedView sbView = (AStorageBasedView) viewObject;
+			switch (externalFlagSetterType)
+			{
+				case STORAGEBASED_USE_RANDOM_SAMPLING:
+					sbView.useRandomSampling(bFlag);
+					return;
+				case STORAGEBASED_RENDER_CONTEXT:
+					((AStorageBasedView) viewObject).renderContext(bFlag);
 					break;
 			}
 		}
-		else if (viewObject instanceof GLParallelCoordinates)
+		
+		if (viewObject instanceof GLParallelCoordinates)
 		{
 			GLParallelCoordinates parCoords = (GLParallelCoordinates) viewObject;
 			switch (externalFlagSetterType)
 			{
 				case PARCOORDS_OCCLUSION_PREVENTION:
 					parCoords.preventOcclusion(bFlag);
-					break;
+					return;
 				case STORAGEBASED_CHANGE_ORIENTATION:
 					parCoords.renderStorageAsPolyline(bFlag);
-					break;
+					return;
 			}
+			return;
 		}
-		else if (viewObject instanceof GLHeatMap)
+		
+		if (viewObject instanceof GLHeatMap)
 		{
 			GLHeatMap heatMap = (GLHeatMap) viewObject;
 			switch (externalFlagSetterType)
 			{
 				case STORAGEBASED_CHANGE_ORIENTATION:
 					heatMap.renderHorizontally(bFlag);
-					break;
+					return;
 			}
 		}
+		
+
 	}
 
 	@Override

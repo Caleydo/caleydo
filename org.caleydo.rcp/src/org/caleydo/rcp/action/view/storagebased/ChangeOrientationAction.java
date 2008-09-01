@@ -32,6 +32,6 @@ extends AToolBarAction
 	{
 		super.run();
 		bEnable = !bEnable;	
-		triggerCmdSExternalFlagSetter(bEnable, EExternalFlagSetterType.STORAGEBASED_CHANGE_ORIENTATION);
+		triggerCmdExternalFlagSetter(bEnable, EExternalFlagSetterType.STORAGEBASED_CHANGE_ORIENTATION);
 	};
 }

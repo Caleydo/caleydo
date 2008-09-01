@@ -188,7 +188,7 @@ public class GLParallelCoordinates
 		iGLDisplayListIndexRemote = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
-		toggleRenderContext();
+		// toggleRenderContext();
 	}
 
 	@Override
@@ -280,14 +280,14 @@ public class GLParallelCoordinates
 		// infoAreaManager.renderInfoArea(gl, bInfoAreaFirstTime);
 		// bInfoAreaFirstTime = false;
 
+		checkUnselection();
+		// GLHelperFunctions.drawAxis(gl);
+		gl.glCallList(iGLDisplayListToCall);
+
 		if (bIsAngularBrushingActive && iSelectedLineID != -1)
 		{
 			handleAngularBrushing(gl);
 		}
-
-		checkUnselection();
-		// GLHelperFunctions.drawAxis(gl);
-		gl.glCallList(iGLDisplayListToCall);
 
 		gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
 
@@ -336,9 +336,9 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public void toggleRenderContext()
+	public void renderContext(boolean bRenderOnlyContext)
 	{
-		bRenderOnlyContext = !bRenderOnlyContext;
+		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (bRenderOnlyContext)
 			iContentVAID = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
@@ -403,6 +403,7 @@ public class GLParallelCoordinates
 		ISelectionDelta delta = contentSelectionManager.getDelta();
 		resetSelections();
 		triggerUpdate(delta);
+		setDisplayListDirty();
 	}
 
 	/**
@@ -486,7 +487,6 @@ public class GLParallelCoordinates
 	 */
 	private void initGates()
 	{
-
 		fArGateTipHeight = new float[set.getVA(iAxisVAID).size()];
 		fArGateBottomHeight = new float[set.getVA(iAxisVAID).size()];
 
@@ -498,7 +498,6 @@ public class GLParallelCoordinates
 					- renderStyle.getGateTipHeight();
 			alIsGateBlocking.add(new ArrayList<Integer>());
 		}
-
 	}
 
 	/**
@@ -643,17 +642,16 @@ public class GLParallelCoordinates
 						iStorageIndex);
 				if (iVertexCount != 0)
 				{
-					if (bRenderingSelection)					
+					if (bRenderingSelection)
 						gl.glBegin(GL.GL_LINES);
-				
+
 					gl.glVertex3f(fPreviousXValue, fPreviousYValue
 							* renderStyle.getAxisHeight(), fZDepth);
 					gl.glVertex3f(fCurrentXValue,
 							fCurrentYValue * renderStyle.getAxisHeight(), fZDepth);
-					
-					if (bRenderingSelection)					
+
+					if (bRenderingSelection)
 						gl.glEnd();
-				
 
 				}
 
@@ -671,7 +669,6 @@ public class GLParallelCoordinates
 
 			if (!bRenderingSelection)
 				gl.glEnd();
-
 
 			if (renderMode != ESelectionType.DESELECTED)
 				gl.glPopName();
@@ -1264,6 +1261,8 @@ public class GLParallelCoordinates
 				{
 
 					case CLICKED:
+						if (bIsAngularBrushingActive)
+							break;
 						connectedElementRepresentationManager.clear();
 						polylineSelectionManager.clearSelection(ESelectionType.SELECTION);
 						polylineSelectionManager.addToType(ESelectionType.SELECTION,
@@ -1286,6 +1285,9 @@ public class GLParallelCoordinates
 						setDisplayListDirty();
 						break;
 					case MOUSE_OVER:
+						if (bIsAngularBrushingActive)
+							break;
+
 						connectedElementRepresentationManager.clear();
 
 						polylineSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
@@ -1308,7 +1310,8 @@ public class GLParallelCoordinates
 				switch (ePickingMode)
 				{
 					case CLICKED:
-
+						if (bIsAngularBrushingActive)
+							break;
 						axisSelectionManager.clearSelection(ESelectionType.SELECTION);
 						axisSelectionManager.addToType(ESelectionType.SELECTION, iExternalID);
 						if (bRenderStorageHorizontally)
@@ -1324,6 +1327,8 @@ public class GLParallelCoordinates
 						setDisplayListDirty();
 						break;
 					case MOUSE_OVER:
+						if (bIsAngularBrushingActive)
+							break;
 						axisSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
 						axisSelectionManager.addToType(ESelectionType.MOUSE_OVER, iExternalID);
 						if (bRenderStorageHorizontally)
@@ -1549,6 +1554,21 @@ public class GLParallelCoordinates
 			sAlInfo.add(set.getVA(iPolylineVAID).size() + " experiments as polylines and "
 					+ set.getVA(iAxisVAID).size() + " genes as axis.");
 		}
+
+		if (bRenderOnlyContext)
+		{
+			sAlInfo.add("Showing only Genes which occur in one of the other views in Focus");
+		}
+		else
+		{
+			if (dataFilterLevel == EDataFilterLevel.COMPLETE)
+				sAlInfo.add("Showing all Genes in the dataset");
+			else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING)
+				sAlInfo.add("Showing all Genes that have a known DAVID ID mapping");
+			else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT)
+				sAlInfo
+						.add("Showing all Genes that are contained in any of the KEGG or Biocarta Pathways");
+		}
 		return sAlInfo;
 	}
 
@@ -1728,12 +1748,56 @@ public class GLParallelCoordinates
 		gl.glEnd();
 		gl.glPopName();
 
-		// gl.glLineStipple(1, GL.GL_LINE_STIPPLE_PATTERN);
-		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(vecTriangleOrigin.x(), vecTriangleOrigin.y(),
-				vecTriangleOrigin.z() + 0.02f);
-		gl.glVertex3f(vecTriangleLimit.x(), vecTriangleLimit.y(), vecLowerPoint.z() + 0.02f);
+		// draw angle polygon
+		gl.glColor4fv(ANGULAR_POLYGON_COLOR, 0);
+		gl.glPointSize(5);
+		gl.glTranslatef(vecTriangleOrigin.x(), vecTriangleOrigin.y(), 0);
+		gl.glBegin(GL.GL_POLYGON);
+		rotf.set(new Vec3f(0, 0, 1), -fCurrentAngle / 10);
+		Vec3f tempVector = vecCenterLine.copy();
+
+		gl.glVertex3f(0, 0, 0.02f);
+		for (int iCount = 0; iCount <= 10; iCount++)
+		{
+			Vec3f vecPoint = tempVector.copy();
+			vecPoint.normalize();
+			gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z() + 0.02f);
+			tempVector = rotf.rotateVector(tempVector);
+		}
 		gl.glEnd();
+
+		gl.glBegin(GL.GL_POLYGON);
+		rotf.set(new Vec3f(0, 0, 1), fCurrentAngle / 10);
+		tempVector = vecCenterLine.copy();
+
+		gl.glVertex3f(0, 0, 0.02f);
+		for (int iCount = 0; iCount <= 10; iCount++)
+		{
+			Vec3f vecPoint = tempVector.copy();
+			vecPoint.normalize();
+			gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z() + 0.02f);
+			tempVector = rotf.rotateVector(tempVector);
+
+		}
+
+		// gl.glVertex3f(vecUpperPoint.x(), vecUpperPoint.y(), vecUpperPoint.z()
+		// + 0.02f);
+		gl.glEnd();
+
+		//		
+		gl.glTranslatef(-vecTriangleOrigin.x(), -vecTriangleOrigin.y(), 0);
+		// gl.glBegin(GL.GL_LINE_STRIP);
+		// for(int i=0; i <= Math.toDegrees(fCurrentAngle) ; i++)
+		// gl.glVertex3f((float)Math.sin(i*Math.PI/180)*fLength,
+		// (float)Math.cos(i*Math.PI/180)*fLength, 1);
+		// gl.glEnd();
+		// gl.glLineStipple(1, GL.GL_LINE_STIPPLE_PATTERN);
+		// gl.glBegin(GL.GL_LINES);
+		// gl.glVertex3f(vecTriangleOrigin.x(), vecTriangleOrigin.y(),
+		// vecTriangleOrigin.z() + 0.02f);
+		// gl.glVertex3f(vecTriangleLimit.x(), vecTriangleLimit.y(),
+		// vecLowerPoint.z() + 0.02f);
+		// gl.glEnd();
 
 		// check selection
 

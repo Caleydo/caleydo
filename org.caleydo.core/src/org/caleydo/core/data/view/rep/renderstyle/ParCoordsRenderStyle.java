@@ -20,7 +20,7 @@ public class ParCoordsRenderStyle
 
 	public static final float[] POLYLINE_MOUSE_OVER_COLOR = { 1.0f, 0.0f, 0.0f, 1.0f };
 
-	public static final float MOUSE_OVER_POLYLINE_LINE_WIDTH = 10.0f;
+	public static final float MOUSE_OVER_POLYLINE_LINE_WIDTH = 4.0f;
 
 	public static final float DESELECTED_POLYLINE_LINE_WIDTH = 1.0f;
 
@@ -58,9 +58,10 @@ public class ParCoordsRenderStyle
 
 	public static final float[] GATE_COLOR = { 0.61f, 0.705f, 1.0f, 0.8f };
 
-	public static final float[] ANGULAR_COLOR = { 0, 0, 1, 1 };
+	public static final float[] ANGULAR_COLOR = { 0.17f, 0.45f, 0.84f, 1 };
+	public static final float[] ANGULAR_POLYGON_COLOR = { 0.17f, 0.45f, 0.84f, 0.2f };
 
-	public static final float ANGLUAR_LINE_WIDTH = 2;
+	public static final float ANGLUAR_LINE_WIDTH = 4;
 
 	// Line widths
 	public static final float POLYLINE_LINE_WIDTH = 1.0f;

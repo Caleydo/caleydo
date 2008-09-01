@@ -32,7 +32,7 @@ extends Action
 		tmpCmd.doCommand();
 	}
 
-	public final void triggerCmdSExternalFlagSetter(final boolean bFlag, EExternalFlagSetterType type)
+	public final void triggerCmdExternalFlagSetter(final boolean bFlag, EExternalFlagSetterType type)
 	{
 
 		CmdExternalFlagSetter tmpCmd = (CmdExternalFlagSetter) GeneralManager.get()
