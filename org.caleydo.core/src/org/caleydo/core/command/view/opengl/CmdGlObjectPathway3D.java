@@ -38,9 +38,8 @@ public class CmdGlObjectPathway3D
 			final EProjectionMode eProjectionMode, final float fLeft, final float fRight,
 			final float fTop, final float fBottom, final float fNear, final float fFar)
 	{
-
 		super.setAttributes(eProjectionMode, fLeft, fRight, fTop, fBottom, fNear, fFar,
-				iArSetIDs);
+				iArSetIDs, -1);
 
 		this.iAlSetIDs = iArSetIDs;
 		this.iPathwayID = iPathwayID;

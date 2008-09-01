@@ -212,7 +212,6 @@ public class SWTGUIManager
 	@Override
 	public void runApplication()
 	{
-
 		Iterator<Shell> shellIterator;
 		Shell currentShell;
 
@@ -227,8 +226,6 @@ public class SWTGUIManager
 			currentShell = shellIterator.next();
 			currentShell.setVisible(true);// open();
 		}
-
-		GeneralManager.get().getViewGLCanvasManager().createAnimator();
 
 		shellIterator = windowMap.values().iterator();
 

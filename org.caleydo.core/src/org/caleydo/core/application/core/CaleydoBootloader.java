@@ -125,30 +125,21 @@ public class CaleydoBootloader
 		{
 			parseXmlConfigFile(getXmlFileName());
 			generalManager.getLogger().log(Level.INFO, "  config loaded, start GUI ... ");
-		}
-		catch (CaleydoRuntimeException gre)
-		{
-			generalManager.getLogger().log(Level.SEVERE,
-					" loading GUI config failed! " + gre.toString());
-			bIsRunning = false;
-			return;
-		}
 
-		try
-		{
-			swtGUIManager.runApplication();
+			if (generalManager.isStandalone())
+			{
+				swtGUIManager.runApplication();
+			}
+			
+			// Start OpenGL rendering
+			generalManager.getViewGLCanvasManager().startAnimator();
+			
 			generalManager.getLogger().log(Level.INFO, "  config loaded ... [DONE]");
 		}
 		catch (CaleydoRuntimeException gre)
 		{
 			generalManager.getLogger()
 					.log(Level.SEVERE, "run_SWT() failed. " + gre.toString());
-			bIsRunning = false;
-		}
-		catch (Exception e)
-		{
-			generalManager.getLogger().log(Level.SEVERE,
-					"run_SWT() caused system error. " + e.toString());
 			bIsRunning = false;
 		}
 	}

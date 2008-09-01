@@ -181,13 +181,13 @@ public class CmdCreateGLEventListener
 
 	public void setAttributes(final EProjectionMode eProjectionMode, final float fLeft,
 			final float fRight, final float fTop, final float fBottom, final float fNear,
-			final float fFar, final ArrayList<Integer> iArSetIDs)
+			final float fFar, final ArrayList<Integer> iArSetIDs, final int iParentCanvasID)
 	{
-
 		viewFrustum = new ViewFrustum(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear,
 				fFar);
 
 		this.iAlSetIDs = iArSetIDs;
+		this.iParentContainerId = iParentCanvasID;
 	}
 
 	@Override
@@ -211,14 +211,13 @@ public class CmdCreateGLEventListener
 					iExternalID);
 		}
 
-		(createdObject).getViewCamera().setCameraPosition(cameraOrigin);
-		(createdObject).getViewCamera().setCameraRotation(cameraRotation);
+		createdObject.getViewCamera().setCameraPosition(cameraOrigin);
+		createdObject.getViewCamera().setCameraRotation(cameraRotation);
 
 		// Set sets in views
-		AGLEventListener glCanvas = (createdObject);
 		for (Integer iSetID : iAlSetIDs)
 		{
-			glCanvas.addSet(iSetID);
+			createdObject.addSet(iSetID);
 		}
 
 		commandManager.runDoCommand(this);

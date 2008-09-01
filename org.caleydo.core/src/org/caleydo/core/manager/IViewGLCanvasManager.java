@@ -55,10 +55,8 @@ public interface IViewGLCanvasManager
 
 	public GLInfoAreaManager getInfoAreaManager();
 
-	public void createAnimator();
-
-	public Animator getAnimator();
-
+	public void startAnimator();
+	
 	/**
 	 * Removes all views, canvas and GL event listeners
 	 */

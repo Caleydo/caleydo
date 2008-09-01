@@ -495,7 +495,7 @@ public class KgmlSaxHandler
 
 		IGraphItem graphItemOut = hashKgmlReactionIdToVertexRepId
 				.get(((PathwayReactionEdgeGraphItem) currentReactionSubstrateEdgeRep
-						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).toArray()[0])
+						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0))
 						.getReactionId());
 
 		if (graphItemIn == null || graphItemOut == null)
@@ -508,15 +508,26 @@ public class KgmlSaxHandler
 
 		currentReactionSubstrateEdgeRep.addItemDoubleLinked(graphItemOut,
 				EGraphItemProperty.OUTGOING);
-
+		
 		IGraphItem tmpReactionEdge = (PathwayReactionEdgeGraphItem) currentReactionSubstrateEdgeRep
-				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).toArray()[0];
+				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0);
 
-		tmpReactionEdge.addItemDoubleLinked((IGraphItem) graphItemIn.getAllItemsByProp(
-				EGraphItemProperty.ALIAS_PARENT).toArray()[0], EGraphItemProperty.INCOMING);
+		if (tmpReactionEdge == null)
+			return;
+		
+		if (graphItemIn.getAllItemsByProp(
+				EGraphItemProperty.ALIAS_PARENT).size() == 0)
+			return;
+		
+		tmpReactionEdge.addItemDoubleLinked(graphItemIn.getAllItemsByProp(
+				EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.INCOMING);
 
+		if (graphItemOut.getAllItemsByProp(
+				EGraphItemProperty.ALIAS_PARENT).size() == 0)
+			return;
+		
 		tmpReactionEdge.addItemDoubleLinked((IGraphItem) graphItemOut.getAllItemsByProp(
-				EGraphItemProperty.ALIAS_PARENT).toArray()[0], EGraphItemProperty.OUTGOING);
+				EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.OUTGOING);
 	}
 
 	/**
@@ -549,7 +560,7 @@ public class KgmlSaxHandler
 		// Enzyme
 		IGraphItem graphItemIn = hashKgmlReactionIdToVertexRepId
 				.get(((PathwayReactionEdgeGraphItem) currentReactionProductEdgeRep
-						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).toArray()[0])
+						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0))
 						.getReactionId());
 
 		if (graphItemIn == null || graphItemOut == null)
@@ -564,13 +575,24 @@ public class KgmlSaxHandler
 				EGraphItemProperty.OUTGOING);
 
 		IGraphItem tmpReactionEdge = (PathwayReactionEdgeGraphItem) currentReactionProductEdgeRep
-				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).toArray()[0];
+				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0);
 
+		if (tmpReactionEdge == null)
+			return;
+		
+		if (graphItemIn.getAllItemsByProp(
+				EGraphItemProperty.ALIAS_PARENT).size() == 0)
+			return;
+				
 		tmpReactionEdge.addItemDoubleLinked((IGraphItem) graphItemIn.getAllItemsByProp(
-				EGraphItemProperty.ALIAS_PARENT).toArray()[0], EGraphItemProperty.INCOMING);
+				EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.INCOMING);
 
+		if (graphItemOut.getAllItemsByProp(
+				EGraphItemProperty.ALIAS_PARENT).size() == 0)
+			return;
+		
 		tmpReactionEdge.addItemDoubleLinked((IGraphItem) graphItemOut.getAllItemsByProp(
-				EGraphItemProperty.ALIAS_PARENT).toArray()[0], EGraphItemProperty.OUTGOING);
+				EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.OUTGOING);
 	}
 
 	/**

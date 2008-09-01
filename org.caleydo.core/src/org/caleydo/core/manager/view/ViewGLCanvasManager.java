@@ -3,7 +3,6 @@ package org.caleydo.core.manager.view;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.logging.Level;
 import javax.media.opengl.GLEventListener;
 import javax.swing.JFrame;
@@ -96,6 +95,8 @@ public class ViewGLCanvasManager
 		arDataExplorerViewRep = new ArrayList<IView>();
 		arHTMLBrowserViewRep = new ArrayList<IView>();
 		arWorkspaceJFrame = new ArrayList<JFrame>();
+		
+		fpsAnimator = new FPSAnimator(null, 60);
 	}
 
 	@Override
@@ -304,9 +305,7 @@ public class ViewGLCanvasManager
 
 		if (hashGLCanvasID2GLCanvas.containsKey(iGLCanvasID))
 		{
-			generalManager.getLogger()
-					.log(
-							Level.WARNING,
+			generalManager.getLogger().log(Level.WARNING,
 							"GL Canvas with ID " + iGLCanvasID
 									+ " is already registered! Do nothing.");
 
@@ -314,6 +313,7 @@ public class ViewGLCanvasManager
 		}
 
 		hashGLCanvasID2GLCanvas.put(iGLCanvasID, glCanvas);
+		fpsAnimator.add(glCanvas);
 
 		return true;
 	}
@@ -481,23 +481,9 @@ public class ViewGLCanvasManager
 		return infoAreaManager;
 	}
 
-	public void createAnimator()
+	@Override
+	public void startAnimator()
 	{
-
-		fpsAnimator = new FPSAnimator(null, 60);
-
-		Iterator<GLCaleydoCanvas> iterGLCanvas = hashGLCanvasID2GLCanvas.values().iterator();
-		while (iterGLCanvas.hasNext())
-		{
-			fpsAnimator.add(iterGLCanvas.next());
-		}
-
 		fpsAnimator.start();
-	}
-
-	public Animator getAnimator()
-	{
-
-		return fpsAnimator;
 	}
 }

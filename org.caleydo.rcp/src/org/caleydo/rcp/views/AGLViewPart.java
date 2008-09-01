@@ -9,8 +9,6 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.part.ViewPart;
 
 /**
@@ -25,7 +23,7 @@ public abstract class AGLViewPart
 	protected Frame frameGL;
 	protected Composite swtComposite;
 	protected GLCaleydoCanvas glCanvas;
-	protected int iViewID;
+	protected int iGLEventListenerID;
 
 	protected static ArrayList<IAction> alToolbar; 
 	
@@ -37,14 +35,11 @@ public abstract class AGLViewPart
 		super();
 	}
 
-	public void setGLCanvas(final GLCaleydoCanvas glCanvas)
+	public void setGLData(final GLCaleydoCanvas glCanvas,
+			final int iGLEventListenerID)
 	{
 		this.glCanvas = glCanvas;
-	}
-
-	public void setViewId(final int iViewID)
-	{
-		this.iViewID = iViewID;
+		this.iGLEventListenerID = iGLEventListenerID;
 	}
 
 	@Override

@@ -2,11 +2,11 @@ package org.caleydo.rcp.views;
 
 import java.util.ArrayList;
 
+import org.caleydo.rcp.action.view.TakeSnapshotAction;
 import org.caleydo.rcp.action.view.remote.EraseAction;
 import org.caleydo.rcp.action.view.remote.ToggleLayoutAction;
 import org.caleydo.rcp.util.search.SearchBar;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.widgets.Composite;
 
@@ -28,18 +28,17 @@ public class GLRemoteRenderingView
 	public void createPartControl(Composite parent)
 	{
 		super.createPartControl(parent);
-		
-
 	}
 
 	public static void createToolBarItems(int iViewID)
 	{
 		alToolbar = new ArrayList<IAction>();
 		
+		IAction takeSnapshotAction = new TakeSnapshotAction(iViewID);
+		alToolbar.add(takeSnapshotAction);	
 		IAction eraseAction = new EraseAction(iViewID);
+		alToolbar.add(eraseAction);		
 		IAction toggleLayoutAction = new ToggleLayoutAction(iViewID);
-		
-		alToolbar.add(eraseAction);
 		alToolbar.add(toggleLayoutAction);
 	}
 	
@@ -47,11 +46,10 @@ public class GLRemoteRenderingView
 	{
 		if (alToolbar == null)
 		{
-			createToolBarItems(iViewID);
+			createToolBarItems(iGLEventListenerID);
 		}
 		
-		IToolBarManager toolBarManager = getViewSite().getActionBars().getToolBarManager();
-		
+		IToolBarManager toolBarManager = getViewSite().getActionBars().getToolBarManager();	
 		fillToolBar(toolBarManager);
 	}
 	

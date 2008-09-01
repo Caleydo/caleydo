@@ -31,8 +31,7 @@ public class GLPathwayView
 		IAction neighborhoodAction = new NeighborhoodAction(iViewID);
 		alToolbar.add(neighborhoodAction);
 		IAction geneMappingAction = new GeneMappingAction(iViewID);
-		alToolbar.add(geneMappingAction);
-		
+		alToolbar.add(geneMappingAction);	
 	}
 	
 	@Override
@@ -40,7 +39,7 @@ public class GLPathwayView
 	{
 		if (alToolbar == null)
 		{
-			createToolBarItems(iViewID);
+			createToolBarItems(iGLEventListenerID);
 		}
 		
 		IToolBarManager toolBarManager = getViewSite().getActionBars().getToolBarManager();

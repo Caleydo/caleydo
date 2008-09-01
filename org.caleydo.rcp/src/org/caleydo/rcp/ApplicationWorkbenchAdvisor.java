@@ -11,6 +11,7 @@ import org.caleydo.rcp.views.GLParCoordsView;
 import org.caleydo.rcp.views.GLPathwayView;
 import org.caleydo.rcp.views.GLRemoteRenderingView;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPreferenceConstants;
 import org.eclipse.ui.PlatformUI;
@@ -27,7 +28,7 @@ public class ApplicationWorkbenchAdvisor
 {
 	private static final String PERSPECTIVE_ID = "org.caleydo.rcp.perspective";
 
-	protected Animator gLAnimator;
+//	public static Animator glAnimator;
 
 	@Override
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(
@@ -65,6 +66,12 @@ public class ApplicationWorkbenchAdvisor
 			return;
 		}
 		
+		// Filter preference pages
+		PreferenceManager preferenceManager = this.getWorkbenchConfigurer().getWorkbench().getPreferenceManager();
+//		preferenceManager.remove("org.eclipse.ui.preferencePages.Workbench");
+		preferenceManager.remove("org.eclipse.update.internal.ui.preferences.MainPreferencePage");
+		preferenceManager.remove("org.eclipse.help.ui.browsersPreferencePage");
+		
 		openLoadedViews();
 	}
 
@@ -73,8 +80,8 @@ public class ApplicationWorkbenchAdvisor
 	{	
 		super.preShutdown();
 		
-		if (gLAnimator.isAnimating())
-			gLAnimator.stop();
+//		if (glAnimator.isAnimating())
+//			glAnimator.stop();
 
 //		if (caleydoCore != null)
 //		{
@@ -95,7 +102,7 @@ public class ApplicationWorkbenchAdvisor
 		int iInstanceNum = 0;
 		AGLViewPart viewPart = null;
 
-		gLAnimator = new FPSAnimator(null, 60);
+//		glAnimator = new FPSAnimator(null, 60);
 
 		for(AGLEventListener tmpGLEventListener : GeneralManager.get()
 				.getViewGLCanvasManager().getAllGLEventListeners())
@@ -134,11 +141,10 @@ public class ApplicationWorkbenchAdvisor
 				if (viewPart == null)
 					continue;
 
-				viewPart.setGLCanvas(canvas);
-				viewPart.setViewId(((AGLEventListener) tmpGLEventListener).getID());
+				viewPart.setGLData(canvas, tmpGLEventListener.getID());
 				viewPart.createPartControlGL();
 
-				gLAnimator.add(canvas);
+//				glAnimator.add(canvas);
 
 				iInstanceNum++;
 
@@ -153,6 +159,6 @@ public class ApplicationWorkbenchAdvisor
 		// alert.setMessage("Start animator!");
 		// alert.open();
 
-		gLAnimator.start();
+//		glAnimator.stop();
 	}
 }

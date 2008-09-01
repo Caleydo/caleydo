@@ -15,7 +15,7 @@
    
    <extension
          point="org.eclipse.ui.views">
-      <category
+     <category
             name="Caleydo"
             id="org.caleydo.rcp.jogl.view.jframe">
       </category>
@@ -65,7 +65,7 @@
             class="org.caleydo.rcp.views.HTMLBrowserView"
             category="org.caleydo.rcp.jogl.view.jframe"
             allowMultiple="true">
-      </view>    
+      </view>       
       
    </extension>   
    
@@ -92,7 +92,7 @@
          </property>
          <property
                name="windowImages"
-               value="/org.caleydo.data/resources/icons/caleydo/caleydo_16x16.png,/org.caleydo.data/resources/icons/caleydo/caleydo32.png,/org.caleydo.data/resources/icons/caleydo/caleydo48.png,/org.caleydo.data/resources/icons/caleydo/caleydo64.png,/org.caleydo.data/resources/icons/caleydo/caleydo128.png">
+               value="/org.caleydo.data/resources/icons/caleydo/caleydo16.g,/org.caleydo.data/resources/icons/caleydo/caleydo32.png,/org.caleydo.data/resources/icons/caleydo/caleydo48.png,/org.caleydo.data/resources/icons/caleydo/caleydo64.png,/org.caleydo.data/resources/icons/caleydo/caleydo128.png">
          </property>
          
                   <property
@@ -132,6 +132,21 @@
             id="org.caleydo.rcp.command.loaddata"
             name="Load Data">
       </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenHeatMapHandler"
+            id="org.caleydo.rcp.command.openviews.heatmap"
+            name="Open heatmap">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenParCoordsHandler"
+            id="org.caleydo.rcp.command.openviews.parcoords"
+            name="Open parallel coordinates">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenRemoteHandler"
+            id="org.caleydo.rcp.command.openviews.remote"
+            name="Open bucket / jukebox">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -157,6 +172,19 @@
                   label="Load Data"
                   style="push">
             </command>
+            <separator
+                  name="org.caleydo.rcp.separator2"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="org.eclipse.ui.window.preferences"
+                  mnemonic="P"
+                  style="push">
+            </command>
+            <separator
+                  name="org.caleydo.rcp.separator1"
+                  visible="true">
+            </separator>
             <command
                   commandId="org.caleydo.rcp.command.exit"
                   label="Exit"
@@ -173,6 +201,27 @@
                   mnemonic="F"
                   style="push">
             </command>
+            <menu
+                  label="Open Views">
+               <command
+                     commandId="org.caleydo.rcp.command.openviews.heatmap"
+                     icon="resources/icons/view/storagebased/heatmap/heatmap.png"
+                     label="Heatmap"
+                     style="push">
+               </command>
+               <command
+                     commandId="org.caleydo.rcp.command.openviews.parcoords"
+                     icon="resources/icons/view/storagebased/parcoords/parcoords.png"
+                     label="Parallel coordinates"
+                     style="push">
+               </command>
+               <command
+                     commandId="org.caleydo.rcp.command.openviews.remote"
+                     icon="resources/icons/view/remote/remote.png"
+                     label="Bucket / jukebox"
+                     style="push">
+               </command>
+            </menu>
          </menu>
          <menu
                id="adminMenu"
@@ -202,7 +251,32 @@
                state="true"
                style="push">
          </action>
+         <menu
+               id="org.caleydo.rcp.menu1"
+               label="label">
+         </menu>
       </actionSet>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="org.caleydo.rcp.preferences.SamplePreferencePage"
+            id="org.caleydo.rcp.preferences.SamplePreferencePage"
+            name="Sample Preferences">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="org.caleydo.rcp.preferences.PreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.browserSupport">
+      <support
+            class="org.caleydo.rcp.AbstractWorkbenchBrowserSupport1"
+            default="true">
+      </support>
    </extension>
 
 </plugin>

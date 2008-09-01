@@ -310,7 +310,7 @@ public class GLRemoteRendering
 		// If user zooms to the bucket bottom all but the under
 		// interaction layer is _not_ rendered.
 		if (bucketMouseWheelListener == null || !bucketMouseWheelListener.isZoomedIn())
-		{
+		{	
 			// if
 			// (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET
 			// ))
@@ -330,6 +330,7 @@ public class GLRemoteRendering
 			renderLayer(gl, spawnLayer);
 			renderLayer(gl, memoLayer);
 
+			glConnectionLineRenderer.render(gl);
 		}
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
@@ -339,8 +340,6 @@ public class GLRemoteRendering
 
 		colorMappingBarMiniView.render(gl, layoutRenderStyle.getColorBarXPos(),
 				layoutRenderStyle.getColorBarYPos(), 4);
-
-		glConnectionLineRenderer.render(gl);
 	}
 
 	private void retrieveContainedViews(final GL gl)
