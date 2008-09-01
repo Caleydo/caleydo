@@ -16,9 +16,6 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
  */
 public class CaleydoBootloader
 {
-
-	private boolean bIsRunning = false;
-
 	/**
 	 * File name of the local XML file
 	 */
@@ -104,18 +101,6 @@ public class CaleydoBootloader
 	}
 
 	/**
-	 * Test if Caleydo core is running.
-	 * 
-	 * @see CaleydoBootloader#start()
-	 * @see CaleydoBootloader#stop()
-	 * @return TRUE if Caleydo core is running
-	 */
-	public final synchronized boolean isRunning()
-	{
-		return bIsRunning;
-	}
-
-	/**
 	 * Start Caleydo core.
 	 * 
 	 */
@@ -124,7 +109,6 @@ public class CaleydoBootloader
 		try
 		{
 			parseXmlConfigFile(getXmlFileName());
-			generalManager.getLogger().log(Level.INFO, "  config loaded, start GUI ... ");
 
 			if (generalManager.isStandalone())
 			{
@@ -133,65 +117,27 @@ public class CaleydoBootloader
 			
 			// Start OpenGL rendering
 			generalManager.getViewGLCanvasManager().startAnimator();
-			
-			generalManager.getLogger().log(Level.INFO, "  config loaded ... [DONE]");
 		}
 		catch (CaleydoRuntimeException gre)
 		{
+
 			generalManager.getLogger()
-					.log(Level.SEVERE, "run_SWT() failed. " + gre.toString());
-			bIsRunning = false;
+					.log(Level.SEVERE, "Problems during startup. " + gre.toString());
+			
+			generalManager.getGUIBridge().closeApplication();
 		}
 	}
 
-	public synchronized boolean parseXmlConfigFile(final String sFileName)
+	public void parseXmlConfigFile(final String sFileName)
 	{
-		try
-		{
-			xmlParserManager.parseXmlFileByName(sFileName);
+		xmlParserManager.parseXmlFileByName(sFileName);
 
-			// generalManager.getCommandManager().readSerializedObjects(
-			// "data/serialize_test.out");
+		// generalManager.getCommandManager().readSerializedObjects(
+		// "data/serialize_test.out");
 
-			bIsRunning = true;
-			return true;
-		}
-		catch (CaleydoRuntimeException gre)
-		{
-			generalManager.getLogger().log(Level.SEVERE,
-					"run_parseXmlConfigFile(" + sFileName + ") failed. " + gre.toString());
-			return false;
-		}
-		catch (Exception e)
-		{
-			generalManager.getLogger().log(
-					Level.SEVERE,
-					"run_parseXmlConfigFile(" + sFileName + ") caused system error. "
-							+ e.toString());
-			return false;
-		}
-	}
-
-	/**
-	 * Stop the Caleydo core and clean up all managers.
-	 * 
-	 * @see CaleydoBootloader#start()
-	 * @see CaleydoBootloader#isRunning()
-	 */
-	public synchronized void stop()
-	{
 		// generalManager.getCommandManager().writeSerializedObjects(
 		// "data/serialize_test.out");
 
-		if (bIsRunning)
-		{
-			if (generalManager != null)
-			{
-				generalManager.getLogger().log(Level.INFO, "Bye bye!");
-
-				bIsRunning = false;
-			}
-		}
 	}
 
 	/**
@@ -208,7 +154,6 @@ public class CaleydoBootloader
 		}
 
 		caleydo.start();
-		caleydo.stop();
 
 		System.exit(0);
 

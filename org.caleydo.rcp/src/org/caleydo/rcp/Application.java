@@ -118,9 +118,9 @@ public class Application
 					throw new CaleydoRuntimeException("Unable to save preference file.", 
 							CaleydoRuntimeExceptionType.DATAHANDLING);
 				}
-			}
+			}		
 			
-			disposeCaleydoCore();
+			GeneralManager.get().getLogger().log(Level.INFO, "Bye bye!");
 			display.dispose();
 		}
 	}
@@ -183,18 +183,6 @@ public class Application
 		{
 			// Trigger pathway loading
 			new PathwayLoadingProgressIndicatorAction().run(null);
-		}
-	}
-
-	protected void disposeCaleydoCore()
-	{
-		if (caleydoCore != null)
-		{
-			if (caleydoCore.isRunning())
-			{
-				caleydoCore.stop();
-				caleydoCore = null;
-			}
 		}
 	}
 }

@@ -36,6 +36,13 @@ public class GLParCoordsView
 		createToolBarItems(-1);
 	}
 	
+	@Override
+	public void createPartControl(Composite parent)
+	{
+		super.createPartControl(parent);	
+		createStandaloneGLParts(ECommandType.CREATE_GL_PARALLEL_COORDINATES_3D);
+	}
+	
 	public static void createToolBarItems(int iViewID)
 	{
 		alToolbar = new ArrayList<IAction>();
@@ -53,45 +60,7 @@ public class GLParCoordsView
 		IAction useRandomSamplingAction = new UseRandomSamplingAction(iViewID);
 		alToolbar.add(useRandomSamplingAction);
 	}
-	
-	private void createStandaloneGLParts()
-	{
-		IGeneralManager generalManager = GeneralManager.get();
 		
-		CmdViewCreateRcpGLCanvas cmdCanvas = (CmdViewCreateRcpGLCanvas) generalManager
-			.getCommandManager().createCommandByType(ECommandType.CREATE_VIEW_RCP_GLCANVAS);
-		cmdCanvas.doCommand();
-		
-		ArrayList<Integer> iAlSets = new ArrayList<Integer>();
-		for (ISet set : generalManager.getSetManager().getAllItems())
-		{
-			iAlSets.add(set.getID());
-		}
-		
-		CmdCreateGLEventListener cmdView = (CmdCreateGLEventListener) generalManager
-			.getCommandManager().createCommandByType(
-				ECommandType.CREATE_GL_PARALLEL_COORDINATES_3D);
-		cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20, 
-				iAlSets, cmdCanvas.getCreatedObject().getID());
-		cmdView.doCommand();
-		
-		GLCaleydoCanvas glCanvas = cmdCanvas.getCreatedObject();
-		setGLData(glCanvas, cmdView.getCreatedObject().getID());
-		createPartControlGL();
-		
-//		Animator animator = ApplicationWorkbenchAdvisor.glAnimator;
-//		animator.add(glCanvas);
-//		animator.start();
-	}
-	
-	@Override
-	public void createPartControl(Composite parent)
-	{
-		super.createPartControl(parent);
-		
-		createStandaloneGLParts();
-	}
-	
 	@Override
 	protected final void fillToolBar()
 	{

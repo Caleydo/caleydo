@@ -262,6 +262,7 @@ All Rights Reserved.
          id="org.caleydo.core"
          download-size="0"
          install-size="0"
-         version="0.0.0"/>
-
+         version="0.0.0"
+         unpack="false"/>
+         
 </feature>

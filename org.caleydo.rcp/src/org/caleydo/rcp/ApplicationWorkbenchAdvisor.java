@@ -20,15 +20,10 @@ import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
 import org.eclipse.ui.application.WorkbenchAdvisor;
 import org.eclipse.ui.application.WorkbenchWindowAdvisor;
 
-import com.sun.opengl.util.Animator;
-import com.sun.opengl.util.FPSAnimator;
-
 public class ApplicationWorkbenchAdvisor
 	extends WorkbenchAdvisor
 {
 	private static final String PERSPECTIVE_ID = "org.caleydo.rcp.perspective";
-
-//	public static Animator glAnimator;
 
 	@Override
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(
@@ -80,18 +75,6 @@ public class ApplicationWorkbenchAdvisor
 	{	
 		super.preShutdown();
 		
-//		if (glAnimator.isAnimating())
-//			glAnimator.stop();
-
-//		if (caleydoCore != null)
-//		{
-//			if (caleydoCore.isRunning())
-//			{
-//				caleydoCore.stop();
-//				caleydoCore = null;
-//			}
-//		}
-		
 		return true;
 	}
 
@@ -101,8 +84,6 @@ public class ApplicationWorkbenchAdvisor
 		GLCaleydoCanvas canvas;
 		int iInstanceNum = 0;
 		AGLViewPart viewPart = null;
-
-//		glAnimator = new FPSAnimator(null, 60);
 
 		for(AGLEventListener tmpGLEventListener : GeneralManager.get()
 				.getViewGLCanvasManager().getAllGLEventListeners())
@@ -144,10 +125,7 @@ public class ApplicationWorkbenchAdvisor
 				viewPart.setGLData(canvas, tmpGLEventListener.getID());
 				viewPart.createPartControlGL();
 
-//				glAnimator.add(canvas);
-
 				iInstanceNum++;
-
 			}
 			catch (CoreException e)
 			{
@@ -158,7 +136,5 @@ public class ApplicationWorkbenchAdvisor
 		// MessageBox alert = new MessageBox(new Shell(), SWT.OK);
 		// alert.setMessage("Start animator!");
 		// alert.open();
-
-//		glAnimator.stop();
 	}
 }

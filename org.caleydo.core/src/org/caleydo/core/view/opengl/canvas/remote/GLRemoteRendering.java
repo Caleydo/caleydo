@@ -126,7 +126,7 @@ public class GLRemoteRendering
 
 	private ArrayList<Integer> iAlUninitializedPathwayIDs;
 
-	private int iBucketEventMediatorID = -1;
+	private int iMediatorID = -1;
 
 	// Memo pad variables
 	private static final int MEMO_PAD_PICKING_ID = 1;
@@ -396,16 +396,10 @@ public class GLRemoteRendering
 			// pickingTriggerMouseAdapter.addGLCanvas(tmpGLEventListener);
 			pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION, iViewID);
 
-			// Register new view to mediator
-			// generalManager.getEventPublisher()
-			// .registerSenderToMediator(iBucketEventMediatorID, iViewID);
-			// generalManager.getEventPublisher()
-			// .registerSenderToMediator(iBucketEventMediatorID, iViewID);
-
 			ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
 			arMediatorIDs.add(iViewID);
 			generalManager.getEventPublisher().addSendersAndReceiversToMediator(
-					generalManager.getEventPublisher().getItem(iBucketEventMediatorID),
+					generalManager.getEventPublisher().getItem(iMediatorID),
 					arMediatorIDs, arMediatorIDs, MediatorType.SELECTION_MEDIATOR,
 					MediatorUpdateType.MEDIATOR_DEFAULT);
 		}
@@ -1547,7 +1541,7 @@ public class GLRemoteRendering
 				MediatorType.SELECTION_MEDIATOR);
 		tmpMediatorCmd.doCommand();
 
-		iBucketEventMediatorID = tmpMediatorCmd.getMediatorID();
+		iMediatorID = tmpMediatorCmd.getMediatorID();
 	}
 
 	public void toggleLayoutMode()
@@ -1654,7 +1648,7 @@ public class GLRemoteRendering
 			ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
 			arMediatorIDs.add(iGLEventListenerIdToRemove);
 			generalManager.getEventPublisher().addSendersAndReceiversToMediator(
-					generalManager.getEventPublisher().getItem(iBucketEventMediatorID),
+					generalManager.getEventPublisher().getItem(iMediatorID),
 					arMediatorIDs, arMediatorIDs, MediatorType.SELECTION_MEDIATOR,
 					MediatorUpdateType.MEDIATOR_DEFAULT);
 
@@ -1902,7 +1896,7 @@ public class GLRemoteRendering
 				arMediatorIDs.add(iGeneratedViewID);
 
 				generalManager.getEventPublisher().addSendersAndReceiversToMediator(
-						generalManager.getEventPublisher().getItem(iBucketEventMediatorID),
+						generalManager.getEventPublisher().getItem(iMediatorID),
 						arMediatorIDs, arMediatorIDs, MediatorType.SELECTION_MEDIATOR,
 						MediatorUpdateType.MEDIATOR_DEFAULT);
 
@@ -1967,5 +1961,10 @@ public class GLRemoteRendering
 			// TODO: investigate
 			// alSelection.get(0).updateSelectionSet(iUniqueID);
 		}
+	}
+	
+	public int getMediatorID()
+	{
+		return iMediatorID;
 	}
 }

@@ -324,6 +324,8 @@ public class ViewGLCanvasManager
 
 		if (hashGLCanvasID2GLCanvas.containsKey(iGLCanvasId))
 		{
+			fpsAnimator.remove(hashGLCanvasID2GLCanvas.get(iGLCanvasId));
+
 			hashGLCanvasID2GLCanvas.remove(iGLCanvasId);
 			hashGLCanvasID2GLEventListeners.remove(iGLCanvasId);
 		}
