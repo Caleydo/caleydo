@@ -12,6 +12,7 @@
 	<property name="graph.dir" value="../org.caleydo.util.graph" />
 	<property name="core.dir" value="../org.caleydo.core" />
 	<property name="rcp.dir" value="../org.caleydo.rcp" />
+	<property name="data.dir" value="../org.caleydo.data" />
 
 
 	<target name="clean">
@@ -19,15 +20,27 @@
 		<delete dir="${graph.dir}/${lib.dir}" />
 		<delete dir="${rcp.dir}/${lib.dir}" />
 		<delete dir="${core.dir}/${lib.dir}" />
+		<delete>
+			<fileset dir="${data.dir}">
+				<include name="hs_err_pid*.log" />
+			</fileset>
+		</delete>
 	</target>
 
+	<target name="clean_error_logs">
+		<delete>
+			<fileset dir="${data.dir}">
+				<include name="hs_err_pid*.log" />
+			</fileset>
+		</delete>
+	</target>
 
 	<!-- ===== Copy libraries to RCP ==== -->
 	<target name="copy_rcp" description="Moves all
 		relevant libraries to lib/ in RCP">
-		<mkdir dir="${rcp.dir}/${lib.dir}" />
-		<copy todir="${rcp.dir}/${lib.dir}">
-			<fileset dir="${lib.dir}/jogl" excludes="**/*.zip">				
+		<mkdir dir="${rcp.dir}/${lib.jogl.dir}" />
+		<copy todir="${rcp.dir}/${lib.jogl.dir}">
+			<fileset dir="${lib.dir}/jogl" excludes="**/*.zip">
 			</fileset>
 		</copy>
 		<!--
@@ -107,12 +120,12 @@
 			</fileset>
 		</copy>
 	</target>
-	
+
 	<target name="copy_gleem" description="Moves all
 		relevant libraries to lib/ in RCP">
 		<mkdir dir="${gleem.dir}/${lib.dir}" />
 		<copy todir="${gleem.dir}/${lib.dir}/jogl">
-			<fileset dir="${lib.dir}/jogl" excludes="**/*.zip">				
+			<fileset dir="${lib.dir}/jogl" excludes="**/*.zip">
 			</fileset>
 		</copy>
 	</target>
