@@ -16,9 +16,11 @@ a:hover { text-decoration:none;}
 
 #main { width:100%;}
 #content { margin:0 auto; padding:0; width:760px; padding:10px 10px 20px 10px; background-color:#FCFFF5;}
-#content h1 { margin:0; text-transform:uppercase; font-size:1.5em; color:#FFFFFF; background:#D1DBBD; width:750px; padding:5px; margin-top:20px;}
-.red { color:#FF5220;}
+#content h1 { margin:0; font-size:1.2em; color:#FFFFFF; text-transform:uppercase; background:#b1bba2; width:750px; padding:5px; margin-top:20px;}
+#content h2 { margin:0; font-size:1em; color:#000000; padding:5px; margin-top:20px;}
 #content p { padding-bottom:0px; margin-bottom:0;}
+
+#maintenance { font-size:0.85em; }
 
 #footer {background:url(../images/footer_bckg.jpg) repeat-x #193340 0 2px; height:100px; border-top:2px solid #0A0A0B;}
 #left_footer { float:left; padding:80px 0 0 10px; text-transform:uppercase; color:#FFFFFF; font-weight:bold; font-size:12px;}
