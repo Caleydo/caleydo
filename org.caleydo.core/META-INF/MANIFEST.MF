@@ -122,7 +122,8 @@ Export-Package: org.caleydo.core,
 Require-Bundle: org.eclipse.swt;bundle-version="3.4.0",
  org.eclipse.jface;bundle-version="3.4.0",
  org.caleydo.util.gleem;bundle-version="1.0.0",
- org.caleydo.util.graph;bundle-version="1.0.0"
+ org.caleydo.util.graph;bundle-version="1.0.0",
+ org.eclipse.core.runtime;bundle-version="3.4.0"
 Bundle-ClassPath: lib/ftp/edtftpj.jar,
  lib/jogl/gluegen-rt.jar,
  lib/jogl/jogl.jar,

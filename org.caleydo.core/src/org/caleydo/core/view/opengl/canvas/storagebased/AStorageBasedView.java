@@ -2,7 +2,10 @@ package org.caleydo.core.view.opengl.canvas.storagebased;
 
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.EnumMap;
+import java.util.Random;
 import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
 import org.caleydo.core.data.IUniqueObject;
@@ -91,6 +94,8 @@ public abstract class AStorageBasedView
 	 * Define what level of filtering on the data should be applied
 	 */
 	protected EDataFilterLevel dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
+
+	protected boolean bUseRandomSampling = true;
 
 	/**
 	 * Constructor.
@@ -186,14 +191,20 @@ public abstract class AStorageBasedView
 	 */
 	protected void initCompleteList()
 	{
-		int iStorageLength = set.depth();
-		// FIXME hack
-		iStorageLength = 100;
+//		int iStorageLength;
+//		if (bUseRandomSampling)
+//			// TODO not the place
+//			iStorageLength = 1000;
+//		else
+//			iStorageLength = set.depth();
+
+	
 
 		// initialize virtual array that contains all (filtered) information
 		ArrayList<Integer> alTempList = new ArrayList<Integer>(set.depth());
-		for (int iCount = 0; iCount < iStorageLength; iCount++)
-		{
+
+		for(int iCount = 0; iCount < set.depth(); iCount++)
+		{		
 			if (dataFilterLevel != EDataFilterLevel.COMPLETE)
 			{
 				// Here we get mapping data for all values
@@ -225,6 +236,19 @@ public abstract class AStorageBasedView
 				}
 			}
 			alTempList.add(iCount);
+		}
+		
+		if (bUseRandomSampling)
+		{
+			int iNumberOfRandomElements = 1000;
+			Collections.shuffle(alTempList);
+			if(alTempList.size() > iNumberOfRandomElements)
+			{
+				ArrayList<Integer> alNewList = new ArrayList<Integer>();
+				alNewList.addAll(alTempList.subList(0, iNumberOfRandomElements));
+				alTempList = alNewList;
+			}
+			
 		}
 
 		int iVAID = set.createStorageVA(alTempList);

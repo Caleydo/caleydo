@@ -3,6 +3,7 @@ package org.caleydo.core.data.collection.set;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.INominalStorage;
@@ -15,8 +16,6 @@ import org.caleydo.core.data.selection.VirtualArray;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Implementation of the ISet interface
@@ -79,8 +78,8 @@ public class Set
 		IStorageManager storageManager = GeneralManager.get().getStorageManager();
 
 		if (!storageManager.hasItem(iStorageID))
-			throw new CaleydoRuntimeException("Requested Storage with ID " + iStorageID
-					+ " does not exist.", CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalArgumentException("Requested Storage with ID " + iStorageID
+					+ " does not exist.");
 
 		addStorage(storageManager.getItem(iStorageID));
 	}
@@ -111,17 +110,14 @@ public class Set
 			// "Storages in a set must have the same raw data type",
 			// CaleydoRuntimeExceptionType.DATAHANDLING);
 			if (!bIsNumerical && storage instanceof INumericalStorage)
-				throw new CaleydoRuntimeException(
-						"All storages in a set must be of the same basic type (nunmerical or nominal)",
-						CaleydoRuntimeExceptionType.DATAHANDLING);
+				throw new IllegalArgumentException(
+						"All storages in a set must be of the same basic type (nunmerical or nominal)");
 			if (rawDataType != storage.getRawDataType())
-				throw new CaleydoRuntimeException(
-						"All storages in a set must have the same raw data type",
-						CaleydoRuntimeExceptionType.DATAHANDLING);
+				throw new IllegalArgumentException(
+						"All storages in a set must have the same raw data type");
 			if (iDepth != storage.size())
-				throw new CaleydoRuntimeException(
-						"All storages in a set must be of the same length",
-						CaleydoRuntimeExceptionType.DATAHANDLING);
+				throw new IllegalArgumentException(
+						"All storages in a set must be of the same length");
 		}
 		alStorages.add(storage);
 	}
@@ -187,32 +183,15 @@ public class Set
 			if (storage instanceof INumericalStorage)
 			{
 				INumericalStorage nStorage = (INumericalStorage) storage;
-				try
-				{
-					nStorage.normalizeWithExternalExtrema(getMin(), getMax());
-				}
-				catch (UnsupportedOperationException e)
-				{
-					throw new CaleydoRuntimeException(
-							"Tried to normalize globally on a set wich has"
-									+ "different storage types",
-							CaleydoRuntimeExceptionType.DATAHANDLING);
-				}
-				// FIXME baaaaaad
-				catch (IllegalArgumentException e)
-				{
-					throw new CaleydoRuntimeException(
-							"Caught InvalidAttributeValueException with automatically calculated values. "
-									+ "Original Message: " + e.getMessage(),
-							CaleydoRuntimeExceptionType.DATAHANDLING);
-				}
+
+				nStorage.normalizeWithExternalExtrema(getMin(), getMax());
+
 			}
 			else
 			{
-				throw new CaleydoRuntimeException(
+				throw new UnsupportedOperationException(
 						"Tried to normalize globally on a set wich has"
-								+ "different storage types",
-						CaleydoRuntimeExceptionType.DATAHANDLING);
+								+ "contains nominal storages, currently not supported!");
 			}
 		}
 	}
@@ -271,10 +250,9 @@ public class Set
 			}
 			else
 			{
-				throw new CaleydoRuntimeException(
-						"Tried to normalize globally on a set wich has"
-								+ "different storage types",
-						CaleydoRuntimeExceptionType.DATAHANDLING);
+				throw new UnsupportedOperationException(
+						"Tried to calcualte log values on a set wich has"
+								+ "contains nominal storages. This is not possible!");
 			}
 		}
 	}
@@ -288,7 +266,7 @@ public class Set
 	}
 
 	@Override
-	public int createStorageVA(ArrayList<Integer> iAlSelections)
+	public int createStorageVA(List<Integer> iAlSelections)
 	{
 		IVirtualArray virtualArray = new VirtualArray(depth(), iAlSelections);
 		return doCreateStorageVA(virtualArray);
@@ -322,8 +300,7 @@ public class Set
 	{
 		if (hashIsVAEnabled.get(iUniqueID) == null)
 		{
-			throw new CaleydoRuntimeException("No such virtual array exists, create it first",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalStateException("No such virtual array exists, create it first");
 		}
 		else
 		{
@@ -377,8 +354,7 @@ public class Set
 		else if (hashStorageVAs.get(iUniqueID) != null)
 			return hashStorageVAs.get(iUniqueID);
 		else
-			throw new CaleydoRuntimeException("No Virtual Array for that unique id",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalArgumentException("No Virtual Array for that unique id.");
 	}
 
 	private void calculateGlobalExtrema()

@@ -17,6 +17,7 @@ import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.data.view.rep.renderstyle.HeatMapRenderStyle;
+import static org.caleydo.core.data.view.rep.renderstyle.HeatMapRenderStyle.*;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -31,7 +32,6 @@ import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**
@@ -465,13 +465,13 @@ public class GLHeatMap
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.HEAT_MAP_FIELD_SELECTION, iContentIndex));
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(fXPosition, fYPosition, HeatMapRenderStyle.FIELD_Z);
+		gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);
 		gl.glVertex3f(fXPosition + vecFieldWidthAndHeight.x(), fYPosition,
-				HeatMapRenderStyle.FIELD_Z);
+				FIELD_Z);
 		gl.glVertex3f(fXPosition + vecFieldWidthAndHeight.x(), fYPosition
-				+ vecFieldWidthAndHeight.y(), HeatMapRenderStyle.FIELD_Z);
+				+ vecFieldWidthAndHeight.y(), FIELD_Z);
 		gl.glVertex3f(fXPosition, fYPosition + vecFieldWidthAndHeight.y(),
-				HeatMapRenderStyle.FIELD_Z);
+				FIELD_Z);
 		gl.glEnd();
 
 		gl.glPopName();
@@ -512,12 +512,12 @@ public class GLHeatMap
 			fYPosition = 0;
 
 			gl.glBegin(GL.GL_LINE_LOOP);
-			gl.glVertex3f(fXPosition, fYPosition, HeatMapRenderStyle.SELECTION_Z);
+			gl.glVertex3f(fXPosition, fYPosition, SELECTION_Z);
 			gl.glVertex3f(fXPosition + vecFieldWidthAndHeight.x(), fYPosition,
-					HeatMapRenderStyle.SELECTION_Z);
+					SELECTION_Z);
 			gl.glVertex3f(fXPosition + vecFieldWidthAndHeight.x(), fYPosition + fHeight,
-					HeatMapRenderStyle.SELECTION_Z);
-			gl.glVertex3f(fXPosition, fYPosition + fHeight, HeatMapRenderStyle.SELECTION_Z);
+					SELECTION_Z);
+			gl.glVertex3f(fXPosition, fYPosition + fHeight, SELECTION_Z);
 			gl.glEnd();
 
 			fHeight = 0;

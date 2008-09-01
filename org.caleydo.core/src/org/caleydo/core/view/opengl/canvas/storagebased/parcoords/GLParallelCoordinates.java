@@ -20,6 +20,7 @@ import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.view.camera.IViewFrustum;
+import static org.caleydo.core.data.view.rep.renderstyle.ParCoordsRenderStyle.*;
 import org.caleydo.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -561,35 +562,38 @@ public class GLParallelCoordinates
 						gl.glColor4fv(renderStyle
 								.getPolylineOcclusionPrevColor(setDataToRender.size()), 0);
 					else
-						gl
-								.glColor4fv(
-										ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR,
-										0);
+						gl.glColor4fv(POLYLINE_NO_OCCLUSION_PREV_COLOR, 0);
 
 					gl.glLineWidth(ParCoordsRenderStyle.POLYLINE_LINE_WIDTH);
 				}
 				break;
 			case SELECTION:
 				setDataToRender = polylineSelectionManager.getElements(renderMode);
-				gl.glColor4fv(ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR, 0);
-				gl.glLineWidth(ParCoordsRenderStyle.SELECTED_POLYLINE_LINE_WIDTH);
+				gl.glColor4fv(POLYLINE_SELECTED_COLOR, 0);
+				gl.glLineWidth(SELECTED_POLYLINE_LINE_WIDTH);
 				fZDepth = 0.002f;
 				break;
 			case MOUSE_OVER:
 				setDataToRender = polylineSelectionManager.getElements(renderMode);
-				gl.glColor4fv(ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR, 0);
-				gl.glLineWidth(ParCoordsRenderStyle.MOUSE_OVER_POLYLINE_LINE_WIDTH);
+				gl.glColor4fv(POLYLINE_MOUSE_OVER_COLOR, 0);
+				gl.glLineWidth(MOUSE_OVER_POLYLINE_LINE_WIDTH);
 				fZDepth = 0.002f;
 				break;
 			case DESELECTED:
 				setDataToRender = polylineSelectionManager.getElements(renderMode);
 				gl.glColor4fv(renderStyle
 						.getPolylineDeselectedOcclusionPrevColor(setDataToRender.size()), 0);
-				gl.glLineWidth(ParCoordsRenderStyle.DESELECTED_POLYLINE_LINE_WIDTH);
+				gl.glLineWidth(DESELECTED_POLYLINE_LINE_WIDTH);
 				break;
 			default:
 				setDataToRender = polylineSelectionManager.getElements(ESelectionType.NORMAL);
 		}
+
+		boolean bRenderingSelection = false;
+
+		if (renderMode == ESelectionType.SELECTION || renderMode == ESelectionType.MOUSE_OVER
+				&& detailLevel == EDetailLevel.HIGH)
+			bRenderingSelection = true;
 
 		Iterator<Integer> dataIterator = setDataToRender.iterator();
 		// this loop executes once per polyline
@@ -599,6 +603,9 @@ public class GLParallelCoordinates
 			if (renderMode != ESelectionType.DESELECTED)
 				gl.glPushName(pickingManager.getPickingID(iUniqueID,
 						EPickingType.POLYLINE_SELECTION, iPolyLineID));
+
+			if (!bRenderingSelection)
+				gl.glBegin(GL.GL_LINE_STRIP);
 
 			IStorage currentStorage = null;
 
@@ -636,17 +643,21 @@ public class GLParallelCoordinates
 						iStorageIndex);
 				if (iVertexCount != 0)
 				{
-					gl.glBegin(GL.GL_LINES);
+					if (bRenderingSelection)					
+						gl.glBegin(GL.GL_LINES);
+				
 					gl.glVertex3f(fPreviousXValue, fPreviousYValue
 							* renderStyle.getAxisHeight(), fZDepth);
 					gl.glVertex3f(fCurrentXValue,
 							fCurrentYValue * renderStyle.getAxisHeight(), fZDepth);
-					gl.glEnd();
+					
+					if (bRenderingSelection)					
+						gl.glEnd();
+				
+
 				}
 
-				if (renderMode == ESelectionType.SELECTION
-						|| renderMode == ESelectionType.MOUSE_OVER
-						&& detailLevel == EDetailLevel.HIGH)
+				if (bRenderingSelection)
 				{
 					float fYRawValue = currentStorage.getFloat(EDataRepresentation.RAW,
 							iStorageIndex);
@@ -657,6 +668,10 @@ public class GLParallelCoordinates
 				fPreviousXValue = fCurrentXValue;
 				fPreviousYValue = fCurrentYValue;
 			}
+
+			if (!bRenderingSelection)
+				gl.glEnd();
+
 
 			if (renderMode != ESelectionType.DESELECTED)
 				gl.glPopName();
@@ -676,8 +691,8 @@ public class GLParallelCoordinates
 
 		int iNumberAxis = set.getVA(iAxisVAID).size();
 		// draw X-Axis
-		gl.glColor4fv(ParCoordsRenderStyle.X_AXIS_COLOR, 0);
-		gl.glLineWidth(ParCoordsRenderStyle.X_AXIS_LINE_WIDTH);
+		gl.glColor4fv(X_AXIS_COLOR, 0);
+		gl.glLineWidth(X_AXIS_LINE_WIDTH);
 
 		gl
 				.glPushName(pickingManager.getPickingID(iUniqueID,
@@ -701,33 +716,28 @@ public class GLParallelCoordinates
 			float fXPosition = iCount * fAxisSpacing;
 			if (selectedSet.contains(set.getVA(iAxisVAID).get(iCount)))
 			{
-				gl.glColor4fv(ParCoordsRenderStyle.Y_AXIS_SELECTED_COLOR, 0);
-				gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_SELECTED_LINE_WIDTH);
+				gl.glColor4fv(Y_AXIS_SELECTED_COLOR, 0);
+				gl.glLineWidth(Y_AXIS_SELECTED_LINE_WIDTH);
 			}
 			else if (mouseOverSet.contains(set.getVA(iAxisVAID).get(iCount)))
 			{
-				gl.glColor4fv(ParCoordsRenderStyle.Y_AXIS_MOUSE_OVER_COLOR, 0);
-				gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_MOUSE_OVER_LINE_WIDTH);
+				gl.glColor4fv(Y_AXIS_MOUSE_OVER_COLOR, 0);
+				gl.glLineWidth(Y_AXIS_MOUSE_OVER_LINE_WIDTH);
 			}
 			else
 			{
-				gl.glColor4fv(ParCoordsRenderStyle.Y_AXIS_COLOR, 0);
-				gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH);
+				gl.glColor4fv(Y_AXIS_COLOR, 0);
+				gl.glLineWidth(Y_AXIS_LINE_WIDTH);
 			}
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.Y_AXIS_SELECTION, set.getVA(iAxisVAID).get(iCount)));
 			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(fXPosition, ParCoordsRenderStyle.Y_AXIS_LOW,
-					ParCoordsRenderStyle.AXIS_Z);
-			gl
-					.glVertex3f(fXPosition, renderStyle.getAxisHeight(),
-							ParCoordsRenderStyle.AXIS_Z);
+			gl.glVertex3f(fXPosition, Y_AXIS_LOW, AXIS_Z);
+			gl.glVertex3f(fXPosition, renderStyle.getAxisHeight(), AXIS_Z);
 
 			// Top marker
-			gl.glVertex3f(fXPosition - ParCoordsRenderStyle.AXIS_MARKER_WIDTH, renderStyle
-					.getAxisHeight(), ParCoordsRenderStyle.AXIS_Z);
-			gl.glVertex3f(fXPosition + ParCoordsRenderStyle.AXIS_MARKER_WIDTH, renderStyle
-					.getAxisHeight(), ParCoordsRenderStyle.AXIS_Z);
+			gl.glVertex3f(fXPosition - AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(), AXIS_Z);
+			gl.glVertex3f(fXPosition + AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(), AXIS_Z);
 
 			gl.glEnd();
 			if (detailLevel != EDetailLevel.HIGH)
@@ -740,9 +750,8 @@ public class GLParallelCoordinates
 			{
 
 				// markers on axis
-				float fMarkerSpacing = renderStyle.getAxisHeight()
-						/ (ParCoordsRenderStyle.NUMBER_AXIS_MARKERS + 1);
-				for (int iInnerCount = 1; iInnerCount <= ParCoordsRenderStyle.NUMBER_AXIS_MARKERS; iInnerCount++)
+				float fMarkerSpacing = renderStyle.getAxisHeight() / (NUMBER_AXIS_MARKERS + 1);
+				for (int iInnerCount = 1; iInnerCount <= NUMBER_AXIS_MARKERS; iInnerCount++)
 				{
 					float fCurrentHeight = fMarkerSpacing * iInnerCount;
 					if (iCount == 0)
@@ -757,16 +766,13 @@ public class GLParallelCoordinates
 						float fHeightHalf = (float) bounds.getHeight()
 								* renderStyle.getSmallFontScalingFactor() / 3;
 
-						renderNumber(fNumber, fXPosition - fWidth
-								- ParCoordsRenderStyle.AXIS_MARKER_WIDTH, fCurrentHeight
-								- fHeightHalf);
+						renderNumber(fNumber, fXPosition - fWidth - AXIS_MARKER_WIDTH,
+								fCurrentHeight - fHeightHalf);
 					}
-					gl.glColor3fv(ParCoordsRenderStyle.Y_AXIS_COLOR, 0);
+					gl.glColor3fv(Y_AXIS_COLOR, 0);
 					gl.glBegin(GL.GL_LINES);
-					gl.glVertex3f(fXPosition - ParCoordsRenderStyle.AXIS_MARKER_WIDTH,
-							fCurrentHeight, ParCoordsRenderStyle.AXIS_Z);
-					gl.glVertex3f(fXPosition + ParCoordsRenderStyle.AXIS_MARKER_WIDTH,
-							fCurrentHeight, ParCoordsRenderStyle.AXIS_Z);
+					gl.glVertex3f(fXPosition - AXIS_MARKER_WIDTH, fCurrentHeight, AXIS_Z);
+					gl.glVertex3f(fXPosition + AXIS_MARKER_WIDTH, fCurrentHeight, AXIS_Z);
 					gl.glEnd();
 
 				}
@@ -805,13 +811,12 @@ public class GLParallelCoordinates
 
 				// top
 				textRenderer.draw3D(String.valueOf(set.getMax()), fXPosition + 2
-						* ParCoordsRenderStyle.AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(),
-						0, renderStyle.getSmallFontScalingFactor());
+						* AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(), 0, renderStyle
+						.getSmallFontScalingFactor());
 
 				// bottom
 				textRenderer.draw3D(String.valueOf(set.getMin()), fXPosition + 2
-						* ParCoordsRenderStyle.AXIS_MARKER_WIDTH, 0, 0, renderStyle
-						.getSmallFontScalingFactor());
+						* AXIS_MARKER_WIDTH, 0, 0, renderStyle.getSmallFontScalingFactor());
 				textRenderer.end3DRendering();
 
 				gl.glPopAttrib();
@@ -878,9 +883,9 @@ public class GLParallelCoordinates
 		}
 
 		// float fMarkerSpacing = renderStyle.getAxisHeight() /
-		// (ParCoordsRenderStyle.NUMBER_AXIS_MARKERS + 1);
+		// (NUMBER_AXIS_MARKERS + 1);
 		// for (int iInnerCount = 1; iInnerCount <=
-		// ParCoordsRenderStyle.NUMBER_AXIS_MARKERS; iInnerCount++)
+		// NUMBER_AXIS_MARKERS; iInnerCount++)
 		// {
 
 		//
@@ -914,16 +919,14 @@ public class GLParallelCoordinates
 		gl.glBegin(GL.GL_POLYGON);
 
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fXButtonOrigin, fYButtonOrigin, ParCoordsRenderStyle.AXIS_Z);
+		gl.glVertex3f(fXButtonOrigin, fYButtonOrigin, AXIS_Z);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fXButtonOrigin, fYButtonOrigin + renderStyle.getButtonWidht(),
-				ParCoordsRenderStyle.AXIS_Z);
+		gl.glVertex3f(fXButtonOrigin, fYButtonOrigin + renderStyle.getButtonWidht(), AXIS_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
 		gl.glVertex3f(fXButtonOrigin + renderStyle.getButtonWidht(), fYButtonOrigin
-				+ renderStyle.getButtonWidht(), ParCoordsRenderStyle.AXIS_Z);
+				+ renderStyle.getButtonWidht(), AXIS_Z);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(fXButtonOrigin + renderStyle.getButtonWidht(), fYButtonOrigin,
-				ParCoordsRenderStyle.AXIS_Z);
+		gl.glVertex3f(fXButtonOrigin + renderStyle.getButtonWidht(), fYButtonOrigin, AXIS_Z);
 		gl.glEnd();
 		gl.glPopName();
 		gl.glPopAttrib();
@@ -941,7 +944,7 @@ public class GLParallelCoordinates
 	{
 		int iNumberAxis = set.getVA(iAxisVAID).size();
 
-		gl.glColor4fv(ParCoordsRenderStyle.GATE_COLOR, 0);
+		gl.glColor4fv(GATE_COLOR, 0);
 
 		final float fGateWidth = renderStyle.getGateWidth();
 		final float fGateTipHeight = renderStyle.getGateTipHeight();
@@ -1067,15 +1070,15 @@ public class GLParallelCoordinates
 			return;
 
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-		gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH);
-		gl.glColor4fv(ParCoordsRenderStyle.Y_AXIS_COLOR, 0);
+		gl.glLineWidth(Y_AXIS_LINE_WIDTH);
+		gl.glColor4fv(Y_AXIS_COLOR, 0);
 
 		Rectangle2D tempRectangle = textRenderer.getBounds(decimalFormat.format(fYOrigin));
 		float fBackPlaneWidth = (float) tempRectangle.getWidth()
 				* renderStyle.getSmallFontScalingFactor();
 		float fBackPlaneHeight = (float) tempRectangle.getHeight()
 				* renderStyle.getSmallFontScalingFactor();
-		float fXTextOrigin = fXOrigin + 2 * ParCoordsRenderStyle.AXIS_MARKER_WIDTH;
+		float fXTextOrigin = fXOrigin + 2 * AXIS_MARKER_WIDTH;
 		float fYTextOrigin = fYOrigin;
 
 		gl.glColor4f(0.9f, 0.9f, 0.9f, 0.8f);
@@ -1373,38 +1376,44 @@ public class GLParallelCoordinates
 				switch (ePickingMode)
 				{
 					case CLICKED:
-//						if (iExternalID == EIconIDs.TOGGLE_RENDER_ARRAY_AS_POLYLINE.ordinal())
-//						{
-//							if (bRenderStorageHorizontally == true)
-//								renderStorageHorizontally();
-//							else
-//								ren();
-//						}
-//						else if (iExternalID == EIconIDs.TOGGLE_PREVENT_OCCLUSION.ordinal())
-//						{
-//							if (bPreventOcclusion == true)
-//								preventOcclusion(false);
-//							else
-//								preventOcclusion(true);
-//						}
-//						else if (iExternalID == EIconIDs.TOGGLE_RENDER_CONTEXT.ordinal())
-//						{
-//							toggleRenderContext();
-//						}
-//						else if (iExternalID == EIconIDs.RESET_SELECTIONS.ordinal())
-//						{
-//							resetSelections();
-//						}
-//						else if (iExternalID == EIconIDs.SAVE_SELECTIONS.ordinal())
-//						{
-//							broadcastElements();
-//						}
-//						else if (iExternalID == EIconIDs.ANGULAR_BRUSHING.ordinal())
-//						{
-//							bAngularBrushingSelectPolyline = true;
-//						}
-//
-//						setDisplayListDirty();
+						// if (iExternalID ==
+						// EIconIDs.TOGGLE_RENDER_ARRAY_AS_POLYLINE.ordinal())
+						// {
+						// if (bRenderStorageHorizontally == true)
+						// renderStorageHorizontally();
+						// else
+						// ren();
+						// }
+						// else if (iExternalID ==
+						// EIconIDs.TOGGLE_PREVENT_OCCLUSION.ordinal())
+						// {
+						// if (bPreventOcclusion == true)
+						// preventOcclusion(false);
+						// else
+						// preventOcclusion(true);
+						// }
+						// else if (iExternalID ==
+						// EIconIDs.TOGGLE_RENDER_CONTEXT.ordinal())
+						// {
+						// toggleRenderContext();
+						// }
+						// else if (iExternalID ==
+						// EIconIDs.RESET_SELECTIONS.ordinal())
+						// {
+						// resetSelections();
+						// }
+						// else if (iExternalID ==
+						// EIconIDs.SAVE_SELECTIONS.ordinal())
+						// {
+						// broadcastElements();
+						// }
+						// else if (iExternalID ==
+						// EIconIDs.ANGULAR_BRUSHING.ordinal())
+						// {
+						// bAngularBrushingSelectPolyline = true;
+						// }
+						//
+						// setDisplayListDirty();
 						break;
 				}
 
@@ -1532,12 +1541,12 @@ public class GLParallelCoordinates
 		sAlInfo.add("Type: Parallel Coordinates");
 		if (!bRenderStorageHorizontally)
 		{
-			sAlInfo.add(set.getVA(iContentVAID).size() + " genes as polylines and "
+			sAlInfo.add(set.getVA(iPolylineVAID).size() + " genes as polylines and "
 					+ set.getVA(iAxisVAID).size() + " experiments as axis.");
 		}
 		else
 		{
-			sAlInfo.add(set.getVA(iStorageVAID).size() + " experiments as polylines and "
+			sAlInfo.add(set.getVA(iPolylineVAID).size() + " experiments as polylines and "
 					+ set.getVA(iAxisVAID).size() + " genes as axis.");
 		}
 		return sAlInfo;
@@ -1698,8 +1707,8 @@ public class GLParallelCoordinates
 		vecUpperPoint.add(vecTriangleOrigin);
 		vecLowerPoint.add(vecTriangleOrigin);
 
-		gl.glColor4fv(ParCoordsRenderStyle.ANGULAR_COLOR, 0);
-		gl.glLineWidth(ParCoordsRenderStyle.ANGLUAR_LINE_WIDTH);
+		gl.glColor4fv(ANGULAR_COLOR, 0);
+		gl.glLineWidth(ANGLUAR_LINE_WIDTH);
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.ANGULAR_UPPER,
 				iPosition));

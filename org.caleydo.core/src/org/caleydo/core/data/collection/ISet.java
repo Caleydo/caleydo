@@ -1,6 +1,7 @@
 package org.caleydo.core.data.collection;
 
 import java.util.ArrayList;
+import java.util.List;
 import javax.naming.OperationNotSupportedException;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.set.SetIterator;
@@ -160,7 +161,7 @@ public interface ISet
 	 * @param iAlSelections a list of indices
 	 * @return the id of the newly created VA
 	 */
-	public int createStorageVA(ArrayList<Integer> iAlSelections);
+	public int createStorageVA(List<Integer> iAlSelections);
 
 	/**
 	 * Creates a default virtual array for the set

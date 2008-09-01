@@ -2,6 +2,7 @@ package org.caleydo.core.data.selection;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -43,13 +44,14 @@ public class VirtualArray
 	 * point for the virtual array.
 	 * 
 	 * @param iLength
-	 * @param iAlVirtualArray
+	 * @param iLVirtualArray
 	 */
-	public VirtualArray(int iLength, ArrayList<Integer> iAlVirtualArray)
+	public VirtualArray(int iLength, List<Integer> iLVirtualArray)
 	{
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.VIRTUAL_ARRAY));
 		this.iLength = iLength;
-		this.iAlVirtualArray = iAlVirtualArray;
+		this.iAlVirtualArray = new ArrayList<Integer>();
+		iAlVirtualArray.addAll(iLVirtualArray);
 	}
 
 	@Override
