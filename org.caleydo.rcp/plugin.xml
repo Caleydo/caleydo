@@ -62,10 +62,10 @@
             id="HTMLBrowserView.view"
             name="Browser"
             icon="../org.caleydo.data/resources/icons/view/browser/browser.png"
-            class="org.caleydo.rcp.views.HTMLBrowserView"
+            class="org.caleydo.rcp.views.browser.HTMLBrowserView"
             category="org.caleydo.rcp.jogl.view.jframe"
             allowMultiple="true">
-      </view>       
+      </view>
       
    </extension>   
    
@@ -135,17 +135,22 @@
       <command
             defaultHandler="org.caleydo.rcp.command.handler.view.OpenHeatMapHandler"
             id="org.caleydo.rcp.command.openviews.heatmap"
-            name="Open heatmap">
+            name="Open Heatmap">
       </command>
       <command
             defaultHandler="org.caleydo.rcp.command.handler.view.OpenParCoordsHandler"
             id="org.caleydo.rcp.command.openviews.parcoords"
-            name="Open parallel coordinates">
+            name="Open Parallel Coordinates">
       </command>
       <command
             defaultHandler="org.caleydo.rcp.command.handler.view.OpenRemoteHandler"
             id="org.caleydo.rcp.command.openviews.remote"
-            name="Open bucket / jukebox">
+            name="Open Bucket / Jukebox">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenBrowserHandler"
+            id="org.caleydo.rcp.command.openviews.browser"
+            name="Open Web Browser">
       </command>
    </extension>
    <extension
@@ -157,7 +162,7 @@
                id="org.eclipse.ui.examples.contributions.contributedTrim">
             <control
                   class="org.caleydo.rcp.TrimTest"
-                  id="contributions.controlContrib1">
+                  id="contributions.controlContrib.test">
             </control>
          </toolbar>
       </menuContribution>         
@@ -212,13 +217,19 @@
                <command
                      commandId="org.caleydo.rcp.command.openviews.parcoords"
                      icon="resources/icons/view/storagebased/parcoords/parcoords.png"
-                     label="Parallel coordinates"
+                     label="Parallel Coordinates"
                      style="push">
                </command>
                <command
                      commandId="org.caleydo.rcp.command.openviews.remote"
                      icon="resources/icons/view/remote/remote.png"
                      label="Bucket / jukebox"
+                     style="push">
+               </command>
+               <command
+                     commandId="org.caleydo.rcp.command.openviews.browser"
+                     icon="resources/icons/view/browser/browser.png"
+                     label="Web Browser"
                      style="push">
                </command>
             </menu>
@@ -236,6 +247,16 @@
                </parameter>
             </command>
          </menu>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.trim.status">
+         <toolbar
+               id="org.eclipse.ui.examples.contributions.contributedStatus">
+            <control
+                  class="org.caleydo.rcp.util.info.InfoArea"
+                  id="contributions.controlContrib.info">
+            </control>
+         </toolbar>
       </menuContribution>
    </extension>
    <extension
@@ -274,8 +295,8 @@
    <extension
          point="org.eclipse.ui.browserSupport">
       <support
-            class="org.caleydo.rcp.AbstractWorkbenchBrowserSupport1"
-            default="true">
+            class="org.caleydo.rcp.views.browser.AbstractWorkbenchBrowserSupport"
+            default="false">
       </support>
    </extension>
 

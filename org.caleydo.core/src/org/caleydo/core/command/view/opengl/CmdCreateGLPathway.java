@@ -12,7 +12,7 @@ import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
  * 
  * @author Marc Streit
  */
-public class CmdGlObjectPathway3D
+public class CmdCreateGLPathway
 	extends CmdCreateGLEventListener
 {
 
@@ -21,7 +21,7 @@ public class CmdGlObjectPathway3D
 	/**
 	 * Constructor.
 	 */
-	public CmdGlObjectPathway3D(final ECommandType cmdType)
+	public CmdCreateGLPathway(final ECommandType cmdType)
 	{
 		super(cmdType);
 	}

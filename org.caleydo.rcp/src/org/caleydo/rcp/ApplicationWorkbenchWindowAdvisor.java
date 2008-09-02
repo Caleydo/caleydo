@@ -31,7 +31,7 @@ public class ApplicationWorkbenchWindowAdvisor
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
 //		configurer.setInitialSize(new Point(400, 300));
 		configurer.setShowCoolBar(false);
-		configurer.setShowStatusLine(true);
+		configurer.setShowStatusLine(false);
 		configurer.setShowProgressIndicator(true);
 		configurer.setTitle("Caleydo");
 	}

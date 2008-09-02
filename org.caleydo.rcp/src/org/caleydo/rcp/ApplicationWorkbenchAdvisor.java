@@ -12,6 +12,7 @@ import org.caleydo.rcp.views.GLPathwayView;
 import org.caleydo.rcp.views.GLRemoteRenderingView;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.preference.PreferenceManager;
+import org.eclipse.swt.widgets.ExpandBar;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPreferenceConstants;
 import org.eclipse.ui.PlatformUI;
@@ -67,7 +68,7 @@ public class ApplicationWorkbenchAdvisor
 		preferenceManager.remove("org.eclipse.update.internal.ui.preferences.MainPreferencePage");
 		preferenceManager.remove("org.eclipse.help.ui.browsersPreferencePage");
 		
-		openLoadedViews();
+//		openLoadedViews();
 	}
 
 	@Override
@@ -78,63 +79,63 @@ public class ApplicationWorkbenchAdvisor
 		return true;
 	}
 
-	public void openLoadedViews()
-	{
-		// Initialize all GL views in RCP
-		GLCaleydoCanvas canvas;
-		int iInstanceNum = 0;
-		AGLViewPart viewPart = null;
-
-		for(AGLEventListener tmpGLEventListener : GeneralManager.get()
-				.getViewGLCanvasManager().getAllGLEventListeners())
-		{
-			canvas = ((AGLEventListener) tmpGLEventListener).getParentGLCanvas();
-
-			// Ignore this event listener if there is no containing canvas view.
-			if (canvas == null)
-				continue;
-
-			try
-			{
-				if (tmpGLEventListener instanceof GLParallelCoordinates)
-				{
-					viewPart = (GLParCoordsView) PlatformUI.getWorkbench()
-							.getActiveWorkbenchWindow().getActivePage().showView(
-									GLParCoordsView.ID, Integer.toString(iInstanceNum),
-									IWorkbenchPage.VIEW_ACTIVATE);
-				}
-				else if (tmpGLEventListener instanceof GLPathway)
-				{
-					viewPart = (GLPathwayView) PlatformUI.getWorkbench()
-							.getActiveWorkbenchWindow().getActivePage().showView(
-									GLPathwayView.ID, Integer.toString(iInstanceNum),
-									IWorkbenchPage.VIEW_ACTIVATE);
-				}
-				else if (tmpGLEventListener instanceof GLRemoteRendering)
-				{
-					viewPart = (GLRemoteRenderingView) PlatformUI.getWorkbench()
-							.getActiveWorkbenchWindow().getActivePage().showView(
-									GLRemoteRenderingView.ID,
-									Integer.toString(iInstanceNum),
-									IWorkbenchPage.VIEW_ACTIVATE);
-				}
-
-				if (viewPart == null)
-					continue;
-
-				viewPart.setGLData(canvas, tmpGLEventListener.getID());
-				viewPart.createPartControlGL();
-
-				iInstanceNum++;
-			}
-			catch (CoreException e)
-			{
-				e.printStackTrace();
-			}
-		}
+//	public void openLoadedViews()
+//	{
+//		// Initialize all GL views in RCP
+//		GLCaleydoCanvas canvas;
+//		int iInstanceNum = 0;
+//		AGLViewPart viewPart = null;
+//
+//		for(AGLEventListener tmpGLEventListener : GeneralManager.get()
+//				.getViewGLCanvasManager().getAllGLEventListeners())
+//		{
+//			canvas = ((AGLEventListener) tmpGLEventListener).getParentGLCanvas();
+//
+//			// Ignore this event listener if there is no containing canvas view.
+//			if (canvas == null)
+//				continue;
+//
+//			try
+//			{
+//				if (tmpGLEventListener instanceof GLParallelCoordinates)
+//				{
+//					viewPart = (GLParCoordsView) PlatformUI.getWorkbench()
+//							.getActiveWorkbenchWindow().getActivePage().showView(
+//									GLParCoordsView.ID, Integer.toString(iInstanceNum),
+//									IWorkbenchPage.VIEW_ACTIVATE);
+//				}
+//				else if (tmpGLEventListener instanceof GLPathway)
+//				{
+//					viewPart = (GLPathwayView) PlatformUI.getWorkbench()
+//							.getActiveWorkbenchWindow().getActivePage().showView(
+//									GLPathwayView.ID, Integer.toString(iInstanceNum),
+//									IWorkbenchPage.VIEW_ACTIVATE);
+//				}
+//				else if (tmpGLEventListener instanceof GLRemoteRendering)
+//				{
+//					viewPart = (GLRemoteRenderingView) PlatformUI.getWorkbench()
+//							.getActiveWorkbenchWindow().getActivePage().showView(
+//									GLRemoteRenderingView.ID,
+//									Integer.toString(iInstanceNum),
+//									IWorkbenchPage.VIEW_ACTIVATE);
+//				}
+//
+//				if (viewPart == null)
+//					continue;
+//
+//				viewPart.setGLData(canvas, tmpGLEventListener.getID());
+//				viewPart.createPartControlGL();
+//
+//				iInstanceNum++;
+//			}
+//			catch (CoreException e)
+//			{
+//				e.printStackTrace();
+//			}
+//		}
 
 		// MessageBox alert = new MessageBox(new Shell(), SWT.OK);
 		// alert.setMessage("Start animator!");
 		// alert.open();
-	}
+//	}
 }

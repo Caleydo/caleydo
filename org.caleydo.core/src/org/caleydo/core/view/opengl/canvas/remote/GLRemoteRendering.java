@@ -14,7 +14,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.event.CmdEventCreateMediator;
-import org.caleydo.core.command.view.opengl.CmdGlObjectPathway3D;
+import org.caleydo.core.command.view.opengl.CmdCreateGLPathway;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.ICaleydoGraphItem;
@@ -152,6 +152,8 @@ public class GLRemoteRendering
 	private boolean bBusyMode = false;
 
 	private boolean bBusyModeChanged = false;
+	
+	private ArrayList<Integer> iAlContainedViewIDs;
 
 	/**
 	 * Constructor.
@@ -245,7 +247,7 @@ public class GLRemoteRendering
 		time = new SystemTime();
 		((SystemTime) time).rebase();
 
-		retrieveContainedViews(gl);
+		initializeContainedViews(gl);
 
 		trashCan.init(gl);
 
@@ -342,12 +344,21 @@ public class GLRemoteRendering
 				layoutRenderStyle.getColorBarYPos(), 4);
 	}
 
-	private void retrieveContainedViews(final GL gl)
+	public void setInitialContainedViews(ArrayList<Integer> iAlInitialContainedViewIDs)
+	{
+		iAlContainedViewIDs = iAlInitialContainedViewIDs;
+	}
+	
+	private void initializeContainedViews(final GL gl)
 	{
 
-		for (AGLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
-				.getAllGLEventListeners())
+//		for (AGLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
+//				.getAllGLEventListeners())
+		for (int iContainedViewID : iAlContainedViewIDs)
 		{
+			AGLEventListener tmpGLEventListener = 
+				generalManager.getViewGLCanvasManager().getGLEventListener(iContainedViewID);
+			
 			// Ignore pathway views upon startup
 			// because they will be activated when pathway loader thread has
 			// finished
@@ -1881,7 +1892,7 @@ public class GLRemoteRendering
 				}
 
 				// Create Pathway3D view
-				CmdGlObjectPathway3D cmdPathway = (CmdGlObjectPathway3D) generalManager
+				CmdCreateGLPathway cmdPathway = (CmdCreateGLPathway) generalManager
 						.getCommandManager().createCommandByType(
 								ECommandType.CREATE_GL_PATHWAY_3D);
 

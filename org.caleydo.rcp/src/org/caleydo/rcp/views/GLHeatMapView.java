@@ -32,7 +32,9 @@ public class GLHeatMapView
 	public void createPartControl(Composite parent)
 	{
 		super.createPartControl(parent);	
-		createStandaloneGLParts(ECommandType.CREATE_GL_HEAT_MAP_3D);
+		
+		createGLCanvas();
+		createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D, glCanvas.getID());
 	}
 	
 	public static void createToolBarItems(int iViewID)

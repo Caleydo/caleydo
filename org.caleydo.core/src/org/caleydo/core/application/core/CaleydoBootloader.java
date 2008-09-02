@@ -113,10 +113,10 @@ public class CaleydoBootloader
 			if (generalManager.isStandalone())
 			{
 				swtGUIManager.runApplication();
+				
+				// Start OpenGL rendering
+				generalManager.getViewGLCanvasManager().startAnimator();
 			}
-			
-			// Start OpenGL rendering
-			generalManager.getViewGLCanvasManager().startAnimator();
 		}
 		catch (CaleydoRuntimeException gre)
 		{

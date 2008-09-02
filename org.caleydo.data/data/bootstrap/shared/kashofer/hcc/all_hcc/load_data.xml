@@ -4,20 +4,20 @@
 	
 	<!-- Expression data set/storage/ -->
 	
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="45301" label="HCC011_K.txt, Type a HCC  normalized"  attrib1="NUMERICAL" attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="46301" label="HCC013_K.txt, Type a HCC  normalized"  attrib1="NUMERICAL" attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="47301" label="HCC015_WH.txt, Type a HCC  normalized"  attrib1="NUMERICAL" attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="48301" label="HCC022_WH.txt, Type a HCC  normalized"  attrib1="NUMERICAL" attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="49301" label="HCC025_WH.txt, Type a HCC  normalized"  attrib1="NUMERICAL" attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="50301" label="HCC031.txt, Type a HCC  normalized"  attrib1="NUMERICAL" attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="51301" label="HCC0103_WH.txt, Type a HCC  normalized"  attrib1="NUMERICAL" attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="52301" label="HCC0104_WH.txt, Type a HCC  normalized"  attrib1="NUMERICAL" attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="53301" label="HCC0105_WH.txt, Type a HCC  normalized"  attrib1="NUMERICAL" attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="54301" label="HCC0107_WH.txt, Type a HCC  normalized"  attrib1="NUMERICAL" attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="55301" label="HCC0108.txt, Type a HCC  normalized"  attrib1="NUMERICAL" attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="56301" label="HCC0114.txt, Type a HCC  normalized"  attrib1="NUMERICAL" attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="57301" label="HCC0116_K.txt, Type a HCC  normalized"  attrib1="NUMERICAL" attrib2="test data	from file" />
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="58301" label="HCC0119.txt, Type a HCC  normalized"  attrib1="NUMERICAL" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="45301" label="HCC011_K"  attrib1="NUMERICAL" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="46301" label="HCC013_K"  attrib1="NUMERICAL" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="47301" label="HCC015_WH"  attrib1="NUMERICAL" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="48301" label="HCC022_WH"  attrib1="NUMERICAL" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="49301" label="HCC025_WH"  attrib1="NUMERICAL" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="50301" label="HCC031"  attrib1="NUMERICAL" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="51301" label="HCC0103_WH"  attrib1="NUMERICAL" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="52301" label="HCC0104_WH"  attrib1="NUMERICAL" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="53301" label="HCC0105_WH"  attrib1="NUMERICAL" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="54301" label="HCC0107_WH"  attrib1="NUMERICAL" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="55301" label="HCC0108"  attrib1="NUMERICAL" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="56301" label="HCC0114"  attrib1="NUMERICAL" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="57301" label="HCC0116_K"  attrib1="NUMERICAL" attrib2="test data	from file" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="58301" label="HCC0119"  attrib1="NUMERICAL" attrib2="test data	from file" />
 
 
 	<!-- Data file loading -->      

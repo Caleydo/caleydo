@@ -9,8 +9,8 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.mapping.GeneAnnotationMapper;
 
 /**
- * Creates the content for eg the InfoArea Just pass it an ID and an
- * Inputdatatype, it returns an AL of Relevant data
+ * Creates the content for e.g. the InfoArea. Just pass it an ID and an
+ * Inputdatatype, it returns an AL of relevant data
  * 
  * @author Alexander Lex
  * @author Marc Streit

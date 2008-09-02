@@ -19,7 +19,7 @@ import org.caleydo.core.command.system.CmdLoadPathwayData;
 import org.caleydo.core.command.system.CmdSystemExit;
 import org.caleydo.core.command.system.path.CmdSetPathwayDatabasePath;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
-import org.caleydo.core.command.view.opengl.CmdGlObjectPathway3D;
+import org.caleydo.core.command.view.opengl.CmdCreateGLPathway;
 import org.caleydo.core.command.view.rcp.CmdExternalActionTrigger;
 import org.caleydo.core.command.view.rcp.CmdExternalFlagSetter;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
@@ -203,7 +203,7 @@ public class CommandFactory
 				 */
 			case CREATE_GL_PATHWAY_3D:
 			{
-				createdCommand = new CmdGlObjectPathway3D(cmdType);
+				createdCommand = new CmdCreateGLPathway(cmdType);
 				break;
 			}
 			case CREATE_GL_HEAT_MAP_3D:

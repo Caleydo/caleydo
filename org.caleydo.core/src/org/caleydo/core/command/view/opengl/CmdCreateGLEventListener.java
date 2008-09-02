@@ -180,7 +180,7 @@ public class CmdCreateGLEventListener
 	}
 
 	public void setAttributes(final EProjectionMode eProjectionMode, final float fLeft,
-			final float fRight, final float fTop, final float fBottom, final float fNear,
+			final float fRight, final float fBottom, final float fTop, final float fNear,
 			final float fFar, final ArrayList<Integer> iArSetIDs, final int iParentCanvasID)
 	{
 		viewFrustum = new ViewFrustum(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear,
@@ -189,7 +189,22 @@ public class CmdCreateGLEventListener
 		this.iAlSetIDs = iArSetIDs;
 		this.iParentContainerId = iParentCanvasID;
 	}
-
+	
+	public void setAttributes(final EProjectionMode eProjectionMode, final float fLeft,
+			final float fRight, final float fBottom, final float fTop, final float fNear,
+			final float fFar, final ArrayList<Integer> iArSetIDs, final int iParentCanvasID,
+			final float fCamOriginX, final float fCamOriginY, final float fCamOriginZ,
+			final float fCamRotationX, final float fCamRotationY, final float fCamRotationZ,
+			final float fCamRotationAngle)
+	{
+		setAttributes(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, 
+				fFar, iArSetIDs, iParentCanvasID);
+		
+		cameraOrigin.set(fCamOriginX, fCamOriginY, fCamOriginZ);
+		cameraRotation.set(new Vec3f(fCamRotationX, fCamRotationY, fCamRotationZ),
+				(float) Math.toRadians(fCamRotationAngle));
+	}
+	
 	@Override
 	public void doCommand()
 	{

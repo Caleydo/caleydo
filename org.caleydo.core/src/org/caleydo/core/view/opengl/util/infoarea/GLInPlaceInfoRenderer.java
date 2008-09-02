@@ -20,7 +20,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * 
  * @author Marc Streit
  */
-public class GLInfoAreaRenderer
+public class GLInPlaceInfoRenderer
 {
 
 	private float[] fArWorldCoordinatePosition;
@@ -49,7 +49,7 @@ public class GLInfoAreaRenderer
 	 * Constructor.
 	 * 
 	 */
-	public GLInfoAreaRenderer()
+	public GLInPlaceInfoRenderer()
 	{
 		fArWorldCoordinatePosition = new float[3];
 		starEffectRenderer = new GLStarEffectRenderer();

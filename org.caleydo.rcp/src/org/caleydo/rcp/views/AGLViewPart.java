@@ -47,19 +47,24 @@ public abstract class AGLViewPart
 		super();
 	}
 
+	protected void createGLCanvas()
+	{
+		CmdViewCreateRcpGLCanvas cmdCanvas = (CmdViewCreateRcpGLCanvas) GeneralManager.get()
+			.getCommandManager().createCommandByType(ECommandType.CREATE_VIEW_RCP_GLCANVAS);
+		cmdCanvas.doCommand();
+		
+		glCanvas = cmdCanvas.getCreatedObject();
+	}
+	
 	/**
-	 * This class creates the GL content (canvas + event listener)
+	 * This class creates the GL event listener contained in a RCP view
 	 * for a RCP view. 
 	 * 
 	 * @param glViewType
 	 */
-	protected void createStandaloneGLParts(ECommandType glViewType)
+	protected int createGLEventListener(ECommandType glViewType, int iParentCanvasID)
 	{
 		IGeneralManager generalManager = GeneralManager.get();
-		
-		CmdViewCreateRcpGLCanvas cmdCanvas = (CmdViewCreateRcpGLCanvas) generalManager
-			.getCommandManager().createCommandByType(ECommandType.CREATE_VIEW_RCP_GLCANVAS);
-		cmdCanvas.doCommand();
 		
 		ArrayList<Integer> iAlSets = new ArrayList<Integer>();
 		for (ISet set : generalManager.getSetManager().getAllItems())
@@ -69,13 +74,21 @@ public abstract class AGLViewPart
 		
 		CmdCreateGLEventListener cmdView = (CmdCreateGLEventListener) generalManager
 			.getCommandManager().createCommandByType(glViewType);
-		cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20, 
-				iAlSets, cmdCanvas.getCreatedObject().getID());
+		
+		if (glViewType == ECommandType.CREATE_GL_BUCKET_3D)
+		{	
+			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1.5f, 1.5f, -1.5f, 1.5f, 2.9f, 100, 
+					iAlSets, iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);	
+		}
+		else
+		{
+			cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20, 
+					iAlSets, iParentCanvasID);
+		}
 		cmdView.doCommand();
 		
 		int iViewID = cmdView.getCreatedObject().getID();
 		
-		GLCaleydoCanvas glCanvas = cmdCanvas.getCreatedObject();
 		setGLData(glCanvas, iViewID);
 		createPartControlGL();
 
@@ -92,9 +105,11 @@ public abstract class AGLViewPart
 							iAlMediatorIDs, iAlMediatorIDs, MediatorType.SELECTION_MEDIATOR,
 							MediatorUpdateType.MEDIATOR_DEFAULT);
 				
-				return;
+				return iViewID;
 			}
 		}
+		
+		return iViewID;
 	}
 	
 	@Override
@@ -103,7 +118,6 @@ public abstract class AGLViewPart
 		swtComposite = new Composite(parent, SWT.EMBEDDED);		
 		fillToolBar();
 	}
-
 	
 	public void setGLData(final GLCaleydoCanvas glCanvas,
 			final int iGLEventListenerID)
@@ -158,5 +172,7 @@ public abstract class AGLViewPart
 
 		GeneralManager.get().getViewGLCanvasManager().unregisterGLCanvas(glCanvas.getID());
 		GeneralManager.get().getViewGLCanvasManager().unregisterGLEventListener(iGLEventListenerID);
+
+		// TODO: unregister from all event listeners!!
 	}
 }

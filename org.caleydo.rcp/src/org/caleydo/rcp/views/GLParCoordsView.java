@@ -40,8 +40,10 @@ public class GLParCoordsView
 	@Override
 	public void createPartControl(Composite parent)
 	{
-		super.createPartControl(parent);	
-		createStandaloneGLParts(ECommandType.CREATE_GL_PARALLEL_COORDINATES_3D);
+		super.createPartControl(parent);
+		
+		createGLCanvas();
+		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_3D, glCanvas.getID());
 	}
 	
 	public static void createToolBarItems(int iViewID)

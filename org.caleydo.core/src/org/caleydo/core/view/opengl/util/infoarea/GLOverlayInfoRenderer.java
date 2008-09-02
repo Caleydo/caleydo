@@ -15,8 +15,10 @@ import com.sun.opengl.util.j2d.Overlay;
  * Class implements the overlay info area.
  * 
  * @author Marc Streit
+ * 
+ * @deprecated Use status line + tooltip approach
  */
-public class GLInfoOverlayRenderer
+public class GLOverlayInfoRenderer
 {
 
 	private Overlay glOverlay;
@@ -28,7 +30,7 @@ public class GLInfoOverlayRenderer
 	/**
 	 * Constructor.
 	 */
-	public GLInfoOverlayRenderer()
+	public GLOverlayInfoRenderer()
 	{
 		font = new Font("Courier", Font.BOLD, 16);
 		sAlContent = new ArrayList<String>();

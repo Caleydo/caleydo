@@ -56,8 +56,9 @@ public class FileOpenProjectAction
 		GeneralManager.get().getViewGLCanvasManager().cleanup();
 
 		GeneralManager.get().getCommandManager().readSerializedObjects(sFileName);
-
-		Application.applicationWorkbenchAdvisor.openLoadedViews();
+		
+		//TODO notify views
+//		Application.applicationWorkbenchAdvisor.openLoadedViews();
 	}
 
 	@Override

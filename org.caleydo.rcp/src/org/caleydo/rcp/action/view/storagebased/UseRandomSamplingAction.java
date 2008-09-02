@@ -10,7 +10,7 @@ public class UseRandomSamplingAction
 
 	public boolean bFlag = true;
 	public static final String TEXT = "Use random sampling";
-	public static final String ICON = "resources/icons/view/storagebased/propagate_selection.png";
+	public static final String ICON = "resources/icons/view/storagebased/random_sampling.png";
 
 	public UseRandomSamplingAction(int iViewID)
 	{

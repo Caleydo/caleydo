@@ -1,11 +1,13 @@
 package org.caleydo.rcp.perspective;
 
+import java.util.ArrayList;
+
+import org.caleydo.rcp.Application;
+import org.caleydo.rcp.EStartViewsMode;
 import org.caleydo.rcp.views.GLRemoteRenderingView;
-import org.caleydo.rcp.views.HTMLBrowserView;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
-import org.eclipse.ui.IViewLayout;
 
 public class GenomePerspective
 	implements IPerspectiveFactory
@@ -25,18 +27,22 @@ public class GenomePerspective
 		// layout.addStandaloneView(GLJukeboxPathwayView.ID, false,
 		// IPageLayout.LEFT, 1.0f, layout.getEditorArea());
 
-		IFolderLayout folder = layout.createFolder("views", IPageLayout.LEFT, 1.0f, layout
-				.getEditorArea());
-		// folder.addPlaceholder(GLJukeboxPathwayView.ID);
-		// folder.addView(GLJukeboxPathwayView.ID + ":1");
-		// folder.addView(GLHeatmap2DView.ID + ":1");
-		// folder.addView(GLHeatmap2DView_second.ID + ":1");
-		// folder.addView(GLHeatmap2DView_third.ID + ":1");
-		// folder.addView(Pathway2DView.ID + ":1");
-		folder.addView(HTMLBrowserView.ID + ":1");
-		// folder.addView(IBrowserConstants.BROWSER_VIEW_ID);
-		// folder.addView(GLJukeboxPathwayView.ID + ":2");
-		IViewLayout viewLayout = layout.getViewLayout(GLRemoteRenderingView.ID);
-		viewLayout.setCloseable(false);
+//		IFolderLayout folder = layout.createFolder("views", IPageLayout.LEFT, 1.0f, layout
+//				.getEditorArea());
+//		
+//		ArrayList<EStartViewsMode> alStartViews = Application.alStartViews;
+//		if (alStartViews.contains(EStartViewsMode.REMOTE))
+//		{
+//			folder.addView(GLRemoteRenderingView.ID + ":1");
+//			alStartViews.remove(EStartViewsMode.REMOTE);
+//		}
+//		
+//		for (EStartViewsMode startViewsMode : alStartViews)
+//		{
+//			folder.addView(startViewsMode.getRCPViewID() + ":1");
+//		}
+		
+//		IViewLayout viewLayout = layout.getViewLayout(GLRemoteRenderingView.ID);
+//		viewLayout.setCloseable(false);
 	}
 }

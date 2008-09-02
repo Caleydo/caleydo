@@ -12,7 +12,6 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.data.view.rep.renderstyle.InfoAreaRenderStyle;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 
@@ -29,11 +28,9 @@ import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 public class GLInfoAreaManager
 {
 
-	private IGeneralManager generalManager;
-
 	private Point pickedPoint;
 
-	private GLTextInfoAreaRenderer infoArea;
+	private GLInPlaceInfoRenderer2 infoArea;
 
 	private float fXOrigin = 0;
 
@@ -47,7 +44,7 @@ public class GLInfoAreaManager
 
 	private InformationContentCreator contentCreator;
 
-	private HashMap<Integer, GLInfoOverlayRenderer> hashViewIDToInfoOverlay;
+	private HashMap<Integer, GLOverlayInfoRenderer> hashViewIDToInfoOverlay;
 
 	private boolean bUpdateViewInfo = true;
 
@@ -59,14 +56,13 @@ public class GLInfoAreaManager
 	 */
 	public GLInfoAreaManager()
 	{
-		this.generalManager = GeneralManager.get();
-		hashViewIDToInfoOverlay = new HashMap<Integer, GLInfoOverlayRenderer>();
+		hashViewIDToInfoOverlay = new HashMap<Integer, GLOverlayInfoRenderer>();
 	}
 
 	public void initInfoInPlace(final IViewFrustum viewFrustum)
 	{
 
-		infoArea = new GLTextInfoAreaRenderer(viewFrustum);
+		infoArea = new GLInPlaceInfoRenderer2(viewFrustum);
 	}
 
 	public void initInfoOverlay(final int iViewID, final GLAutoDrawable drawable)
@@ -78,7 +74,7 @@ public class GLInfoAreaManager
 
 		if (!hashViewIDToInfoOverlay.containsKey(iViewID))
 		{
-			GLInfoOverlayRenderer infoOverlayRenderer = new GLInfoOverlayRenderer();
+			GLOverlayInfoRenderer infoOverlayRenderer = new GLOverlayInfoRenderer();
 
 			hashViewIDToInfoOverlay.put(iViewID, infoOverlayRenderer);
 
@@ -139,7 +135,7 @@ public class GLInfoAreaManager
 		sAlContent.add("---------------------------------------------------------");
 		sAlContent.addAll(contentCreator.getStringContentForID(iUniqueID, eInputDataType));
 
-		Iterator<GLInfoOverlayRenderer> iterInfoOverlay = hashViewIDToInfoOverlay.values()
+		Iterator<GLOverlayInfoRenderer> iterInfoOverlay = hashViewIDToInfoOverlay.values()
 				.iterator();
 
 		while (iterInfoOverlay.hasNext())
@@ -157,13 +153,13 @@ public class GLInfoAreaManager
 			return;
 		}
 
-		Iterator<GLInfoOverlayRenderer> iterInfoOverlay = hashViewIDToInfoOverlay.values()
+		Iterator<GLOverlayInfoRenderer> iterInfoOverlay = hashViewIDToInfoOverlay.values()
 				.iterator();
 
 		while (iterInfoOverlay.hasNext())
 		{
 			iterInfoOverlay.next().setData(
-					(generalManager.getViewGLCanvasManager().getGLEventListener(iViewID))
+					(GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID))
 							.getInfo());
 		}
 	}

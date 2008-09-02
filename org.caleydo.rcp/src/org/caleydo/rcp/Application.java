@@ -1,7 +1,9 @@
 package org.caleydo.rcp;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 import java.util.logging.Level;
 
 import org.caleydo.core.application.core.CaleydoBootloader;
@@ -10,6 +12,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.rcp.core.bridge.RCPBridge;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
+import org.caleydo.rcp.views.GLRemoteRenderingView;
 import org.caleydo.rcp.wizard.firststart.FirstStartWizard;
 import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
 import org.eclipse.equinox.app.IApplication;
@@ -18,6 +21,7 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 /**
@@ -42,6 +46,8 @@ public class Application
 	
 	public static String sCaleydoXMLfile = "";
 	
+	public static ArrayList<EStartViewsMode> alStartViews;
+	
 	public RCPBridge rcpGuiBridge;
 
 	@Override
@@ -50,6 +56,8 @@ public class Application
 	{
 		System.out.println("Caleydo RCP: bootstrapping ...");
 
+		alStartViews = new ArrayList<EStartViewsMode>();
+		
 		Map<String, Object> map = (Map<String, Object>) context.getArguments();
 
 		if (map.size() > 0)
@@ -61,9 +69,29 @@ public class Application
 				for (int iParamIndex = 0; iParamIndex < sArParam.length; iParamIndex++)
 				{
 					if (sArParam[iParamIndex].equals("webstart"))
+					{
 						bIsWebstart = true;
-					else 
+					}
+					else if (sArParam[iParamIndex].equals(EStartViewsMode.PARALLEL_COORDINATES.getCommandLineArgument()))
+					{
+						alStartViews.add(EStartViewsMode.PARALLEL_COORDINATES);
+					}
+					else if (sArParam[iParamIndex].equals(EStartViewsMode.HEATMAP.getCommandLineArgument()))
+					{
+						alStartViews.add(EStartViewsMode.HEATMAP);						
+					}
+					else if (sArParam[iParamIndex].equals(EStartViewsMode.BROWSER.getCommandLineArgument()))
+					{
+						alStartViews.add(EStartViewsMode.BROWSER);						
+					}		
+					else if (sArParam[iParamIndex].equals(EStartViewsMode.REMOTE.getCommandLineArgument()))
+					{
+						alStartViews.add(EStartViewsMode.REMOTE);						
+					}
+					else
+					{
 						sCaleydoXMLfile = sArParam[iParamIndex];		
+					}
 				}				
 			}
 		}
@@ -179,10 +207,41 @@ public class Application
 			caleydoCore.start();
 		}
 		
+		// Start OpenGL rendering
+		GeneralManager.get().getViewGLCanvasManager().startAnimator();
+		
 		if (!bDoExit)
 		{
 			// Trigger pathway loading
 			new PathwayLoadingProgressIndicatorAction().run(null);
 		}
+		
+		openViewsInRCP();
+	}
+	
+	private static void openViewsInRCP() 
+	{
+		// Open Views in RCP
+		try
+		{
+			ArrayList<EStartViewsMode> alStartViews = Application.alStartViews;
+			if (alStartViews.contains(EStartViewsMode.REMOTE))
+			{
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+					.getActivePage().showView(GLRemoteRenderingView.ID);
+				alStartViews.remove(EStartViewsMode.REMOTE);
+			}
+			
+			for (EStartViewsMode startViewsMode : alStartViews)
+			{
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+						.getActivePage().showView(startViewsMode.getRCPViewID());
+			}		
+		}
+		catch (PartInitException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();			
+		}	
 	}
 }

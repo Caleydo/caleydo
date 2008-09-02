@@ -2,6 +2,9 @@ package org.caleydo.rcp.views;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.rcp.action.view.TakeSnapshotAction;
 
 import org.caleydo.rcp.action.view.remote.CloseOrResetContainedViews;
@@ -16,21 +19,34 @@ public class GLRemoteRenderingView
 {
 
 	public static final String ID = "org.caleydo.rcp.views.GLRemoteRenderingView";
+	
+	private ArrayList<Integer> iAlContainedViewIDs;
 
-/**
+	/**
 	 * Constructor.
 	 */
 	public GLRemoteRenderingView()
 	{
 		super();
+		
+		createToolBarItems(-1);
+		iAlContainedViewIDs = new ArrayList<Integer>();
 	}
 
 	@Override
 	public void createPartControl(Composite parent)
 	{
 		super.createPartControl(parent);
+		
+		createGLCanvas();
+		iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D, -1));
+		iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_3D, -1));
+		createGLEventListener(ECommandType.CREATE_GL_BUCKET_3D, glCanvas.getID());
+		
+		((GLRemoteRendering)GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iGLEventListenerID))
+			.setInitialContainedViews(iAlContainedViewIDs);
 	}
-
+	
 	public static void createToolBarItems(int iViewID)
 	{
 		alToolbar = new ArrayList<IAction>();
@@ -68,6 +84,18 @@ public class GLRemoteRenderingView
 		for (IAction toolBarAction : alToolbar)
 		{
 			toolBarManager.add(toolBarAction);			
+		}
+	}
+	
+	@Override
+	public void dispose()
+	{
+		super.dispose();
+
+		for (Integer iContainedViewID : iAlContainedViewIDs)
+		{
+			GeneralManager.get().getViewGLCanvasManager()
+				.unregisterGLEventListener(iContainedViewID);			
 		}
 	}
 }

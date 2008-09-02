@@ -1,5 +1,6 @@
 package org.caleydo.rcp.command.handler.view;
 
+import org.caleydo.rcp.views.GLParCoordsView;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -17,11 +18,10 @@ public class OpenParCoordsHandler
 		try
 		{
 			HandlerUtil.getActiveWorkbenchWindow(event)
-				.getActivePage().showView("org.caleydo.rcp.views.GLParCoordsView");
+				.getActivePage().showView(GLParCoordsView.ID);
 		}
 		catch (PartInitException e)
 		{
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

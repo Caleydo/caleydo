@@ -9,7 +9,12 @@ public enum EIconTextures
 	REMOVE("resources/icons/view/storagebased/parcoords/axis_delete.png"),
 	LOCK("resources/icons/view/remote/lock.png"),
 	DUPLICATE("resources/icons/view/storagebased/parcoords/axis_copy.png"),
-
+	POLYLINE_TO_AXIS("resources/icons/general/no_icon_available.png"),
+	PREVENT_OCCLUSION("resources/icons/general/no_icon_available.png"),
+	RENDER_SELECTION("resources/icons/general/no_icon_available.png"),
+	RESET_SELECTIONS("resources/icons/general/no_icon_available.png"),
+	SAVE_SELECTIONS("resources/icons/general/no_icon_available.png"),
+	ANGULAR_BRUSHING("resources/icons/view/storagebased/parcoords/angular_brush.png"),
 
 	GLYPH_SORT_RANDOM("resources/icons/view/glyph/sort_random.png"),
 	GLYPH_SORT_CIRCLE("resources/icons/view/glyph/sort_spirale.png"),

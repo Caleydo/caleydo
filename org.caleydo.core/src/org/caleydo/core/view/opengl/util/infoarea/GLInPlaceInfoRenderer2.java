@@ -21,7 +21,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * @author Alexander Lex
  */
 
-public class GLTextInfoAreaRenderer
+public class GLInPlaceInfoRenderer2
 {
 
 	private TextRenderer textRenderer;
@@ -51,7 +51,7 @@ public class GLTextInfoAreaRenderer
 	 * Constructor
 	 * 
 	 */
-	public GLTextInfoAreaRenderer(IViewFrustum viewFrustum)
+	public GLInPlaceInfoRenderer2(IViewFrustum viewFrustum)
 	{
 		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 16), false);
 		contentCreator = new InformationContentCreator();
