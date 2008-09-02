@@ -320,6 +320,7 @@ public class GLParallelCoordinates
 		ePolylineDataType = eTempType;
 		fXTranslation = 0;
 		connectedElementRepresentationManager.clear();
+		resetSelections();
 		initContentVariables();
 
 		// TODO we might not need that here!
@@ -372,6 +373,7 @@ public class GLParallelCoordinates
 	/**
 	 * Reset all selections and deselections
 	 */
+	@Override
 	public void resetSelections()
 	{
 		for (int iCount = 0; iCount < fArGateTipHeight.length; iCount++)
@@ -394,15 +396,23 @@ public class GLParallelCoordinates
 		{
 			alCurrent.clear();
 		}
+		setDisplayListDirty();
 	}
 
 	@Override
 	public void broadcastElements()
 	{
-		contentSelectionManager.moveType(ESelectionType.DESELECTED, ESelectionType.REMOVE);
-		ISelectionDelta delta = contentSelectionManager.getDelta();
-		resetSelections();
+		saveSelection();
+		// TODO getCompleteDelta
+		ISelectionDelta delta = contentSelectionManager.getCompleteDelta();
 		triggerUpdate(delta);
+		setDisplayListDirty();
+	}
+
+	public void saveSelection()
+	{
+		contentSelectionManager.moveType(ESelectionType.DESELECTED, ESelectionType.REMOVE);
+		resetSelections();
 		setDisplayListDirty();
 	}
 
@@ -939,6 +949,8 @@ public class GLParallelCoordinates
 	 */
 	private void renderGates(GL gl)
 	{
+		if (detailLevel != EDetailLevel.HIGH)
+			return;
 		int iNumberAxis = set.getVA(iAxisVAID).size();
 
 		gl.glColor4fv(GATE_COLOR, 0);
@@ -1224,15 +1236,13 @@ public class GLParallelCoordinates
 			}
 		}
 
+		polylineSelectionManager.clearSelection(ESelectionType.DESELECTED);
+
 		for (Integer iCurrent : set.getVA(iPolylineVAID))
 		{
 			if (hashDeselectedPolylines.get(iCurrent) != null)
 			{
 				polylineSelectionManager.addToType(ESelectionType.DESELECTED, iCurrent);
-			}
-			else
-			{
-				polylineSelectionManager.removeFromType(ESelectionType.DESELECTED, iCurrent);
 			}
 		}
 	}
@@ -1261,8 +1271,18 @@ public class GLParallelCoordinates
 				{
 
 					case CLICKED:
-						if (bIsAngularBrushingActive)
+						// if (bIsAngularBrushingActive)
+						// break;
+
+						if (bAngularBrushingSelectPolyline)
+						{
+							bAngularBrushingSelectPolyline = false;
+							bIsAngularBrushingActive = true;
+							iSelectedLineID = iExternalID;
+							linePick = pick;
+							bIsAngularBrushingFirstTime = true;
 							break;
+						}
 						connectedElementRepresentationManager.clear();
 						polylineSelectionManager.clearSelection(ESelectionType.SELECTION);
 						polylineSelectionManager.addToType(ESelectionType.SELECTION,
@@ -1274,19 +1294,11 @@ public class GLParallelCoordinates
 							triggerUpdate(polylineSelectionManager.getDelta());
 						}
 
-						if (bAngularBrushingSelectPolyline)
-						{
-							bAngularBrushingSelectPolyline = false;
-							bIsAngularBrushingActive = true;
-							iSelectedLineID = iExternalID;
-							linePick = pick;
-							bIsAngularBrushingFirstTime = true;
-						}
 						setDisplayListDirty();
 						break;
 					case MOUSE_OVER:
-						if (bIsAngularBrushingActive)
-							break;
+						// if (bIsAngularBrushingActive)
+						// break;
 
 						connectedElementRepresentationManager.clear();
 
@@ -1491,6 +1503,8 @@ public class GLParallelCoordinates
 			case ANGULAR_UPPER:
 				switch (ePickingMode)
 				{
+					case CLICKED:
+						bIsAngularDraggingActive = true;
 					case DRAGGED:
 						bIsAngularDraggingActive = true;
 				}
@@ -1500,6 +1514,8 @@ public class GLParallelCoordinates
 			case ANGULAR_LOWER:
 				switch (ePickingMode)
 				{
+					case CLICKED:
+						bIsAngularDraggingActive = true;
 					case DRAGGED:
 						bIsAngularDraggingActive = true;
 				}
@@ -1645,7 +1661,6 @@ public class GLParallelCoordinates
 
 		if (bIsAngularBrushingFirstTime)
 		{
-
 			fCurrentAngle = fDefaultAngle;
 			Point currentPoint = linePick.getPickedPoint();
 			float[] fArPoint = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(
@@ -1674,6 +1689,12 @@ public class GLParallelCoordinates
 			// getArrayFloat()[iAxisLeftIndex] * renderStyle.getAxisHeight());
 			// vecRightPoint.setY(alDataStorages.get(iPolylineIndex).
 			// getArrayFloat()[iAxisRightIndex] * renderStyle.getAxisHeight());
+			vecLeftPoint.setY(set.get(iSelectedLineID).getFloat(
+					EDataRepresentation.NORMALIZED, iAxisLeftIndex)
+					* renderStyle.getAxisHeight());
+			vecRightPoint.setY(set.get(iSelectedLineID).getFloat(
+					EDataRepresentation.NORMALIZED, iAxisRightIndex)
+					* renderStyle.getAxisHeight());
 		}
 		else
 		{
@@ -1703,6 +1724,7 @@ public class GLParallelCoordinates
 		Rotf rotf = new Rotf();
 
 		Vec3f vecCenterLine = vecTriangleLimit.minus(vecTriangleOrigin);
+		float fLegLength = vecCenterLine.length();
 
 		if (bIsAngularDraggingActive)
 		{
@@ -1749,19 +1771,21 @@ public class GLParallelCoordinates
 		gl.glPopName();
 
 		// draw angle polygon
+
 		gl.glColor4fv(ANGULAR_POLYGON_COLOR, 0);
-		gl.glPointSize(5);
-		gl.glTranslatef(vecTriangleOrigin.x(), vecTriangleOrigin.y(), 0);
 		gl.glBegin(GL.GL_POLYGON);
 		rotf.set(new Vec3f(0, 0, 1), -fCurrentAngle / 10);
 		Vec3f tempVector = vecCenterLine.copy();
+		gl.glVertex3f(vecTriangleOrigin.x(), vecTriangleOrigin.y(),
+				vecTriangleOrigin.z() + 0.02f);
 
-		gl.glVertex3f(0, 0, 0.02f);
 		for (int iCount = 0; iCount <= 10; iCount++)
 		{
 			Vec3f vecPoint = tempVector.copy();
 			vecPoint.normalize();
-			gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z() + 0.02f);
+			vecPoint.scale(fLegLength);
+			gl.glVertex3f(vecTriangleOrigin.x() + vecPoint.x(), vecTriangleOrigin.y()
+					+ vecPoint.y(), vecTriangleOrigin.z() + vecPoint.z() + 0.02f);
 			tempVector = rotf.rotateVector(tempVector);
 		}
 		gl.glEnd();
@@ -1770,12 +1794,16 @@ public class GLParallelCoordinates
 		rotf.set(new Vec3f(0, 0, 1), fCurrentAngle / 10);
 		tempVector = vecCenterLine.copy();
 
-		gl.glVertex3f(0, 0, 0.02f);
+		gl.glVertex3f(vecTriangleOrigin.x(), vecTriangleOrigin.y(),
+				vecTriangleOrigin.z() + 0.02f);
 		for (int iCount = 0; iCount <= 10; iCount++)
 		{
 			Vec3f vecPoint = tempVector.copy();
 			vecPoint.normalize();
-			gl.glVertex3f(vecPoint.x(), vecPoint.y(), vecPoint.z() + 0.02f);
+			vecPoint.scale(fLegLength);
+			gl.glVertex3f(vecTriangleOrigin.x() + vecPoint.x(), vecTriangleOrigin.y()
+					+ vecPoint.y(), vecTriangleOrigin.z() + vecPoint.z() + 0.02f);
+
 			tempVector = rotf.rotateVector(tempVector);
 
 		}
@@ -1785,7 +1813,7 @@ public class GLParallelCoordinates
 		gl.glEnd();
 
 		//		
-		gl.glTranslatef(-vecTriangleOrigin.x(), -vecTriangleOrigin.y(), 0);
+		// gl.glTranslatef(-vecTriangleOrigin.x(), -vecTriangleOrigin.y(), 0);
 		// gl.glBegin(GL.GL_LINE_STRIP);
 		// for(int i=0; i <= Math.toDegrees(fCurrentAngle) ; i++)
 		// gl.glVertex3f((float)Math.sin(i*Math.PI/180)*fLength,

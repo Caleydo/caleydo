@@ -59,7 +59,7 @@ public class ParCoordsRenderStyle
 	public static final float[] GATE_COLOR = { 0.61f, 0.705f, 1.0f, 0.8f };
 
 	public static final float[] ANGULAR_COLOR = { 0.17f, 0.45f, 0.84f, 1 };
-	public static final float[] ANGULAR_POLYGON_COLOR = { 0.17f, 0.45f, 0.84f, 0.2f };
+	public static final float[] ANGULAR_POLYGON_COLOR = { 0.17f, 0.45f, 0.84f, 0.4f };
 
 	public static final float ANGLUAR_LINE_WIDTH = 4;
 

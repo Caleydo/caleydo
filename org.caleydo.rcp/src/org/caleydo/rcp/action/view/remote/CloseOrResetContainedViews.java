@@ -1,20 +1,20 @@
-package org.caleydo.rcp.action.view;
+package org.caleydo.rcp.action.view.remote;
 
 import org.caleydo.core.command.view.rcp.EExternalActionType;
-import org.caleydo.core.command.view.rcp.EExternalFlagSetterType;
+import org.caleydo.rcp.action.view.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 
 
-public class ClearSelectionsAction
+public class CloseOrResetContainedViews
 extends AToolBarAction
 {
-	public static final String TEXT = "Clear selections";
+	public static final String TEXT = "Remove Pathways, Reset Other views";
 	public static final String ICON = "resources/icons/general/clear_selections.png";
 
 	/**
 	 * Constructor.
 	 */
-	public ClearSelectionsAction(int iViewID)
+	public CloseOrResetContainedViews(int iViewID)
 	{
 		super(iViewID);
 		
@@ -29,6 +29,6 @@ extends AToolBarAction
 	{
 		super.run();
 			
-		triggerCmdExternalAction(EExternalActionType.CLEAR_SELECTIONS);
+		triggerCmdExternalAction(EExternalActionType.CLOSE_OR_RESET_CONTAINED_VIEWS);
 	};
 }

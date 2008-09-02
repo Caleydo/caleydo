@@ -216,31 +216,29 @@ public abstract class AGLEventListener
 	 */
 	protected void clipToFrustum(GL gl)
 	{
-//		 gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
-//		 gl.glColorMask(false, false, false, false);
-//		 gl.glClearStencil(0); // Clear The Stencil Buffer To 0
-//		 gl.glEnable(GL.GL_DEPTH_TEST); // Enables Depth Testing
-//		 gl.glDepthFunc(GL.GL_LEQUAL); // The Type Of Depth Testing To Do
-//		 gl.glEnable(GL.GL_STENCIL_TEST);
-//		 gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);
-//		 gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
-//		 gl.glDisable(GL.GL_DEPTH_TEST);
-//		
-//		 // Clip region that renders in stencil buffer (in this case the
-//		 //frustum)
-//		 gl.glBegin(GL.GL_POLYGON);
-//		 gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(),
-//		 -0.01f);
-//		 gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(),
-//		 -0.01f);
-//		 gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), -0.01f);
-//		 gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), -0.01f);
-//		 gl.glEnd();
-//		
-//		 gl.glEnable(GL.GL_DEPTH_TEST);
-//		 gl.glColorMask(true, true, true, true);
-//		 gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
-//		 gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
+		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+		gl.glColorMask(false, false, false, false);
+		gl.glClearStencil(0); // Clear The Stencil Buffer To 0
+		gl.glEnable(GL.GL_DEPTH_TEST); // Enables Depth Testing
+		gl.glDepthFunc(GL.GL_LEQUAL); // The Type Of Depth Testing To Do
+		gl.glEnable(GL.GL_STENCIL_TEST);
+		gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);
+		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
+		gl.glDisable(GL.GL_DEPTH_TEST);
+
+		// Clip region that renders in stencil buffer (in this case the
+		// frustum)
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), -0.01f);
+		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(), -0.01f);
+		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), -0.01f);
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), -0.01f);
+		gl.glEnd();
+
+		gl.glEnable(GL.GL_DEPTH_TEST);
+		gl.glColorMask(true, true, true, true);
+		gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
+		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 	}
 
 	/**
@@ -370,24 +368,22 @@ public abstract class AGLEventListener
 			ArrayList<Pick> alHits = null;
 
 			alHits = pickingManager.getHits(iUniqueID, ePickingType);
-			if (alHits != null)
+			if (alHits != null && alHits.size() != 0)
 			{
-				if (alHits.size() != 0)
+
+				for (int iCount = 0; iCount < alHits.size(); iCount++)
 				{
-					for (int iCount = 0; iCount < alHits.size(); iCount++)
-					{
-						Pick tempPick = alHits.get(iCount);
-						int iPickingID = tempPick.getPickingID();
-						int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueID,
-								iPickingID);
+					Pick tempPick = alHits.get(iCount);
+					int iPickingID = tempPick.getPickingID();
+					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueID,
+							iPickingID);
 
-						// FIXME: Is this ok?
-						if (iExternalID == -1)
-							continue;
+					// FIXME: Is this ok?
+					if (iExternalID == -1)
+						continue;
 
-						EPickingMode ePickingMode = tempPick.getPickingMode();
-						handleEvents(ePickingType, ePickingMode, iExternalID, tempPick);
-					}
+					EPickingMode ePickingMode = tempPick.getPickingMode();
+					handleEvents(ePickingType, ePickingMode, iExternalID, tempPick);
 				}
 			}
 		}

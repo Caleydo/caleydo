@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.rcp.action.view.storagebased.ChangeOrientationAction;
+import org.caleydo.rcp.action.view.storagebased.ClearSelectionsAction;
 import org.caleydo.rcp.action.view.storagebased.PropagateSelectionsAction;
 import org.caleydo.rcp.action.view.storagebased.UseRandomSamplingAction;
 import org.caleydo.rcp.action.view.storagebased.parcoords.RenderContextAction;
@@ -46,6 +47,8 @@ public class GLHeatMapView
 		alToolbar.add(useRandomSamplingAction);
 		IAction toggleRenderContextAction = new RenderContextAction(iViewID);
 		alToolbar.add(toggleRenderContextAction);
+		IAction clearSelectionsAction = new ClearSelectionsAction(iViewID);
+		alToolbar.add(clearSelectionsAction);
 	}
 	
 	@Override

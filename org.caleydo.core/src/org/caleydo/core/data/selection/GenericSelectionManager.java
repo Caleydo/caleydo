@@ -2,15 +2,14 @@ package org.caleydo.core.data.selection;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.logging.Level;
-import javax.management.InvalidAttributeValueException;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * <p>
@@ -62,14 +61,14 @@ public class GenericSelectionManager
 
 	// EnumMap<Enum, V>
 	// HashMap<SelectionEnumeration, Integer> hash;
-	private HashMap<ESelectionType, HashMap<Integer, Boolean>> hashSelectionTypes;
+	private EnumMap<ESelectionType, HashMap<Integer, Boolean>> hashSelectionTypes;
 
 	private ESelectionType eNormalType;
 
 	private EIDType internalIDType;
 	private EIDType externalIDType;
 
-	private int iNumberOfElements = 0;
+	// private int iNumberOfElements = 0;
 
 	private ArrayList<ESelectionType> alSelectionTypes;
 
@@ -203,7 +202,8 @@ public class GenericSelectionManager
 			}
 		}
 
-		hashSelectionTypes = new HashMap<ESelectionType, HashMap<Integer, Boolean>>();
+		hashSelectionTypes = new EnumMap<ESelectionType, HashMap<Integer, Boolean>>(
+				ESelectionType.class);
 		selectionDelta = new SelectionDelta(internalIDType);
 
 		for (ESelectionType eType : alSelectionTypes)
@@ -220,7 +220,6 @@ public class GenericSelectionManager
 	 */
 	public void initialAdd(int iElementID)
 	{
-		iNumberOfElements++;
 		hashSelectionTypes.get(eNormalType).put(iElementID, null);
 	}
 
@@ -235,8 +234,6 @@ public class GenericSelectionManager
 		{
 			hashSelectionTypes.get(eNormalType).put(iElementID, null);
 		}
-
-		iNumberOfElements += iAlElementIDs.size();
 	}
 
 	/**
@@ -269,22 +266,24 @@ public class GenericSelectionManager
 		{
 			hashSelectionTypes.put(eType, new HashMap<Integer, Boolean>());
 		}
-		iNumberOfElements = 0;
 		virtualArray = null;
 		selectionDelta = new SelectionDelta(internalIDType);
 	}
 
 	/**
-	 * Clears all selections. All selections are written into the "normal" type
+	 * Clears all selections. All selections are written into the "normal" type.
+	 * This is not included in the delta.
 	 */
 	public void clearSelections()
 	{
+		bIsDeltaWritingEnabled = false;
 		for (ESelectionType eType : alSelectionTypes)
 		{
 			if (eType == eNormalType)
 				continue;
 			clearSelection(eType);
 		}
+		bIsDeltaWritingEnabled = true;
 	}
 
 	/**
@@ -299,9 +298,11 @@ public class GenericSelectionManager
 			return;
 
 		if (eSelectionType == eNormalType)
-			throw new CaleydoRuntimeException(
-					"SelectionManager: cannot reset selections of normal selection",
-					CaleydoRuntimeExceptionType.VIEW);
+			throw new IllegalArgumentException(
+					"SelectionManager: cannot reset selections of normal selection");
+
+		if (hashSelectionTypes.get(eSelectionType).isEmpty())
+			return;
 
 		for (int iSelectionID : hashSelectionTypes.get(eSelectionType).keySet())
 		{
@@ -317,14 +318,13 @@ public class GenericSelectionManager
 	 * 
 	 * @param sSelectionType
 	 * @return the elements in the type
-	 * @throws CaleydoRuntimeException when called with
+	 * @throws IllegalArgumentException when called with
 	 *             {@link ESelectionType#REMOVE}
 	 */
 	public Set<Integer> getElements(ESelectionType eSelectionType)
-			throws CaleydoRuntimeException
 	{
 		if (eSelectionType == ESelectionType.REMOVE)
-			throw new CaleydoRuntimeException("Can not return removed values");
+			throw new IllegalArgumentException("Can not return removed values");
 		return hashSelectionTypes.get(eSelectionType).keySet();
 	}
 
@@ -341,7 +341,6 @@ public class GenericSelectionManager
 	 */
 	public void addToType(ESelectionType targetType, int iElementID)
 	{
-
 		if (targetType != ESelectionType.REMOVE
 				&& hashSelectionTypes.get(targetType).containsKey(iElementID))
 			return;
@@ -393,14 +392,13 @@ public class GenericSelectionManager
 	 * 
 	 * @param eSelectionType
 	 * @param iElementID
-	 * @throws CaleydoRuntimeException if called with the normal type
+	 * @throws IllegalArgumentException if called with the normal type
 	 */
 	public void removeFromType(ESelectionType eSelectionType, int iElementID)
 	{
 		if (eSelectionType == eNormalType || eSelectionType == ESelectionType.REMOVE)
-			throw new CaleydoRuntimeException(
-					"SelectionManager: cannot remove from normal or remove selection",
-					CaleydoRuntimeExceptionType.VIEW);
+			throw new IllegalArgumentException(
+					"SelectionManager: cannot remove from normal or remove selection");
 
 		if (hashSelectionTypes.get(eSelectionType).containsKey(iElementID))
 		{
@@ -415,19 +413,19 @@ public class GenericSelectionManager
 	 * 
 	 * @param srcType the source type
 	 * @param targetType the target type
-	 * @throws InvalidAttributeValueException when called with
+	 * @throws IllegalArgumentException when called with
 	 *             {@link ESelectionType#REMOVE}
 	 */
 	public void moveType(ESelectionType srcType, ESelectionType targetType)
-			throws CaleydoRuntimeException
 	{
 		if (srcType == ESelectionType.REMOVE)
-			throw new CaleydoRuntimeException("Can not move from REMOVE type");
+			throw new IllegalArgumentException("Can not move from REMOVE type");
 
 		HashMap<Integer, Boolean> tempHash = hashSelectionTypes.remove(srcType);
 		for (Integer value : tempHash.keySet())
 		{
 			selectionDelta.addSelection(value, targetType);
+			virtualArray.removeByElement(value);
 		}
 		if (targetType != ESelectionType.REMOVE)
 			hashSelectionTypes.get(targetType).putAll(tempHash);
@@ -442,7 +440,12 @@ public class GenericSelectionManager
 	 */
 	public int getNumberOfElements()
 	{
-		return iNumberOfElements;
+		int iNumElements = 0;
+		for (ESelectionType selectionType : hashSelectionTypes.keySet())
+		{
+			iNumElements += hashSelectionTypes.get(selectionType).size();
+		}
+		return iNumElements;
 	}
 
 	/**
@@ -507,7 +510,6 @@ public class GenericSelectionManager
 				{
 					GeneralManager.get().getLogger().log(Level.WARNING,
 							"No external ID for " + item.getSelectionID());
-
 					continue;
 				}
 
@@ -519,6 +521,34 @@ public class GenericSelectionManager
 		selectionDelta = new SelectionDelta(internalIDType);
 
 		return returnDelta;
+	}
+
+	/**
+	 * Provides a selection delta that contains all elements in the view, with
+	 * the appropriate external and internal selection IDs
+	 * 
+	 * @return the SelectionDelta containing all entries in the selection manager
+	 */
+	public SelectionDelta getCompleteDelta()
+	{
+		SelectionDelta tempDelta = new SelectionDelta(externalIDType, internalIDType);
+		HashMap<Integer, Boolean> tempHash;
+		for (ESelectionType selectionType : ESelectionType.values())
+		{
+			tempHash = hashSelectionTypes.get(selectionType);
+			for (Integer iElement : tempHash.keySet())
+			{
+				int iExternalID = getExternalFromInternalID(iElement);
+				if (iExternalID == -1)
+				{
+					GeneralManager.get().getLogger().log(Level.WARNING,
+							"No external ID for " + iElement);
+					continue;
+				}
+				tempDelta.addSelection(iExternalID, selectionType, iElement);
+			}
+		}
+		return tempDelta;
 	}
 
 	/**

@@ -11,6 +11,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.rcp.action.view.storagebased.ChangeOrientationAction;
+import org.caleydo.rcp.action.view.storagebased.ClearSelectionsAction;
 import org.caleydo.rcp.action.view.storagebased.PropagateSelectionsAction;
 import org.caleydo.rcp.action.view.storagebased.UseRandomSamplingAction;
 import org.caleydo.rcp.action.view.storagebased.parcoords.AngularBrushingAction;
@@ -59,6 +60,8 @@ public class GLParCoordsView
 		alToolbar.add(toggleRenderContextAction);
 		IAction useRandomSamplingAction = new UseRandomSamplingAction(iViewID);
 		alToolbar.add(useRandomSamplingAction);
+		IAction clearSelectionsAction = new ClearSelectionsAction(iViewID);
+		alToolbar.add(clearSelectionsAction);
 	}
 		
 	@Override

@@ -39,7 +39,7 @@ public class CmdExternalActionTrigger
 		{
 			switch (externalActionType)
 			{
-				case CLEAR_ALL:
+				case CLOSE_OR_RESET_CONTAINED_VIEWS:
 					((GLRemoteRendering) viewObject).clearAll();
 					return;
 				case REMOTE_RENDERING_TOGGLE_LAYOUT_MODE:
@@ -53,6 +53,9 @@ public class CmdExternalActionTrigger
 			{			
 				case STORAGEBASED_PROPAGATE_SELECTIONS:
 					((AStorageBasedView) viewObject).broadcastElements();
+					return;
+				case STORAGEBASED_CLEAR_SELECTIONS:
+					((AStorageBasedView) viewObject).resetSelections();
 					return;
 			}
 

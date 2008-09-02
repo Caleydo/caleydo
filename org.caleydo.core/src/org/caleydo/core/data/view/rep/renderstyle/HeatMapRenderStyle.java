@@ -3,12 +3,14 @@ package org.caleydo.core.data.view.rep.renderstyle;
 import gleem.linalg.Vec2f;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import com.sun.org.apache.bcel.internal.generic.IALOAD;
 
 /**
  * Heat Map render styles
@@ -67,6 +69,10 @@ public class HeatMapRenderStyle
 
 	private boolean bRenderStorageHorizontally;
 
+	private Set<Integer> sOldSelected;
+
+	private int iOldSelectionManagerSize = -1;
+
 	public HeatMapRenderStyle(final IViewFrustum viewFrustum,
 			final GenericSelectionManager contentSelectionManager, ISet set, int iContentVAID,
 			int iStorageVAID, int iNumElements, boolean bRenderStorageHorizontally)
@@ -74,6 +80,7 @@ public class HeatMapRenderStyle
 
 		super(viewFrustum);
 
+		sOldSelected = new HashSet<Integer>();
 		this.contentSelectionManager = contentSelectionManager;
 		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
 
@@ -104,35 +111,62 @@ public class HeatMapRenderStyle
 
 	public void setDetailLevel(EDetailLevel detailLevel)
 	{
+		// make sure that widht and height are completely reiinitialized
+		iOldSelectionManagerSize = -1;
 		this.detailLevel = detailLevel;
 	}
 
-	public void initFieldSizes()
+	/**
+	 * Initializes or updates field sizes based on selections, virtual arrays
+	 * etc. Call this every time something has changed.
+	 */
+	public void updateFieldSizes()
 	{
-		resetFieldDimensions();
+
 		Set<Integer> selectedSet = contentSelectionManager
 				.getElements(ESelectionType.SELECTION);
 
 		Set<Integer> mouseOverSet = contentSelectionManager
 				.getElements(ESelectionType.MOUSE_OVER);
 
-		int iVAIndex;
-		for (int iSelectedIndex : selectedSet)
+		if (selectedSet.size() + mouseOverSet.size() != sOldSelected.size()
+				|| alFieldWidths.size() == 0
+				|| iOldSelectionManagerSize != contentSelectionManager.getNumberOfElements())
 		{
-			iVAIndex = set.getVA(iContentVAID).indexOf(iSelectedIndex);
-			alFieldWidths.get(iVAIndex).fWidth = fSelectedFieldWidth;
+			resetFieldDimensions();
+			iOldSelectionManagerSize = contentSelectionManager.getNumberOfElements();
+		}
+		int iVAIndex;
+		if (sOldSelected != null)
+		{
+			for (int iOldIndex : sOldSelected)
+			{
+				iVAIndex = set.getVA(iContentVAID).indexOf(iOldIndex);
+				if (iVAIndex != -1)
+					alFieldWidths.get(iVAIndex).fWidth = fNormalFieldWidth;
+			}
 		}
 
-		for (int iSelectedIndex : mouseOverSet)
+		sOldSelected.clear();
+		for (Integer iSelectedIndex : selectedSet)
 		{
 			iVAIndex = set.getVA(iContentVAID).indexOf(iSelectedIndex);
 			alFieldWidths.get(iVAIndex).fWidth = fSelectedFieldWidth;
+			sOldSelected.add(iSelectedIndex.intValue());
 		}
+
+		for (Integer iSelectedIndex : mouseOverSet)
+		{
+			iVAIndex = set.getVA(iContentVAID).indexOf(iSelectedIndex);
+			alFieldWidths.get(iVAIndex).fWidth = fSelectedFieldWidth;
+			sOldSelected.add(iSelectedIndex.intValue());
+		}
+
 	}
 
 	/**
-	 * Set the active virtual array of the heat map here, when it changed during runtime. Needed to calculate
-	 * the widht and height of an element.
+	 * Set the active virtual array of the heat map here, when it changed during
+	 * runtime. Needed to calculate the widht and height of an element.
 	 * 
 	 * @param iContentVAID the id of the content virtual array
 	 */
@@ -141,7 +175,7 @@ public class HeatMapRenderStyle
 		this.iContentVAID = iContentVAID;
 	}
 
-	public void resetFieldDimensions()
+	private void resetFieldDimensions()
 	{
 		int iNumberSelected = contentSelectionManager
 				.getNumberOfElements(ESelectionType.MOUSE_OVER);
@@ -205,6 +239,11 @@ public class HeatMapRenderStyle
 	public float getXDistanceAt(int iIndex)
 	{
 		return alFieldWidths.get(iIndex).fTotalWidth;
+	}
+
+	public void setXDistanceAt(int iIndex, float fTotalWidth)
+	{
+		alFieldWidths.get(iIndex).fTotalWidth = fTotalWidth;
 	}
 
 	public float getXDistanceAfter(int iIndex)

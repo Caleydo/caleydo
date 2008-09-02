@@ -6,7 +6,7 @@
 	<classpathentry exported="true" kind="lib" path="resources/"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
-	<classpathentry excluding="**/.svn/|*.html|org/caleydo/rcp/action/update/" kind="src" path="src"/>
+	<classpathentry excluding="**/.svn/|*.html|org/caleydo/rcp/action/update/|org/caleydo/rcp/action/view/remote/EraseAction.java" kind="src" path="src"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.data"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

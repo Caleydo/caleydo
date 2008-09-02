@@ -9,13 +9,14 @@ import java.util.Set;
 import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
+import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.view.camera.IViewFrustum;
-import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.data.view.rep.renderstyle.HeatMapRenderStyle;
 import static org.caleydo.core.data.view.rep.renderstyle.HeatMapRenderStyle.*;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
@@ -65,6 +66,8 @@ public class GLHeatMap
 	private float fAnimationTargetTranslation = 0;
 
 	private SelectedElementRep elementRep;
+	
+	
 
 	/**
 	 * Constructor.
@@ -146,6 +149,7 @@ public class GLHeatMap
 	{
 		super.setDetailLevel(detailLevel);
 		renderStyle.setDetailLevel(detailLevel);
+		renderStyle.updateFieldSizes();
 	}
 
 	@Override
@@ -302,7 +306,7 @@ public class GLHeatMap
 				iContentVAID, iStorageVAID, set.getVA(iStorageVAID).size(),
 				bRenderStorageHorizontally);
 		// TODO probably remove this here
-		renderStyle.initFieldSizes();
+//		renderStyle.initFieldSizes();
 
 		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
 
@@ -379,7 +383,7 @@ public class GLHeatMap
 	private void renderHeatMap(final GL gl)
 	{
 
-		renderStyle.initFieldSizes();
+		renderStyle.updateFieldSizes();
 		float fXPosition = 0;
 		float fYPosition = 0;
 		// renderStyle.clearFieldWidths();
@@ -397,7 +401,6 @@ public class GLHeatMap
 			{
 				renderElement(gl, iStorageIndex, iContentIndex, fXPosition, fYPosition,
 						vecFieldWidthAndHeight);
-
 				fYPosition += vecFieldWidthAndHeight.y();
 
 			}
@@ -421,9 +424,10 @@ public class GLHeatMap
 					renderCaption(gl, sContent, fXPosition + vecFieldWidthAndHeight.x() / 2,
 							fYPosition + 0.1f, 90, fFontScaling);
 				}
-
+				renderStyle.setXDistanceAt(set.getVA(iContentVAID).indexOf(iContentIndex), fXPosition);
 			}
 			fXPosition += vecFieldWidthAndHeight.x();
+			
 			if (detailLevel == EDetailLevel.HIGH)
 			{
 				if (iCount == set.getVA(iContentVAID).size())
@@ -487,12 +491,12 @@ public class GLHeatMap
 		switch (eSelectionType)
 		{
 			case SELECTION:
-				gl.glColor4fv(GeneralRenderStyle.SELECTED_COLOR, 0);
-				gl.glLineWidth(GeneralRenderStyle.SELECTED_LINE_WIDTH);
+				gl.glColor4fv(SELECTED_COLOR, 0);
+				gl.glLineWidth(SELECTED_LINE_WIDTH);
 				break;
 			case MOUSE_OVER:
-				gl.glColor4fv(GeneralRenderStyle.MOUSE_OVER_COLOR, 0);
-				gl.glLineWidth(GeneralRenderStyle.MOUSE_OVER_LINE_WIDTH);
+				gl.glColor4fv(MOUSE_OVER_COLOR, 0);
+				gl.glLineWidth(MOUSE_OVER_LINE_WIDTH);
 				break;
 		}
 
@@ -528,8 +532,7 @@ public class GLHeatMap
 	protected SelectedElementRep createElementRep(int iStorageIndex)
 			throws InvalidAttributeValueException
 	{
-		// TODO not the best place here...
-		renderStyle.initFieldSizes();
+		renderStyle.updateFieldSizes();
 		SelectedElementRep elementRep;// = new SelectedElementRep(iUniqueID,
 		// 0.0f, 0.0f, 0.0f);
 
@@ -698,6 +701,16 @@ public class GLHeatMap
 	@Override
 	public void broadcastElements()
 	{
-		// TODO: implement
+		ISelectionDelta delta = contentSelectionManager.getCompleteDelta();
+		triggerUpdate(delta);
+		setDisplayListDirty();
+	}
+
+	@Override
+	public void resetSelections()
+	{
+		contentSelectionManager.clearSelections();
+		storageSelectionManager.clearSelections();
+		setDisplayListDirty();
 	}
 }

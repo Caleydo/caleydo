@@ -3,7 +3,8 @@ package org.caleydo.rcp.views;
 import java.util.ArrayList;
 
 import org.caleydo.rcp.action.view.TakeSnapshotAction;
-import org.caleydo.rcp.action.view.remote.EraseAction;
+
+import org.caleydo.rcp.action.view.remote.CloseOrResetContainedViews;
 import org.caleydo.rcp.action.view.remote.ToggleLayoutAction;
 import org.caleydo.rcp.util.search.SearchBar;
 import org.eclipse.jface.action.IAction;
@@ -36,8 +37,8 @@ public class GLRemoteRenderingView
 		
 		IAction takeSnapshotAction = new TakeSnapshotAction(iViewID);
 		alToolbar.add(takeSnapshotAction);	
-		IAction eraseAction = new EraseAction(iViewID);
-		alToolbar.add(eraseAction);		
+		IAction closeOrResetContainedViews = new CloseOrResetContainedViews(iViewID);
+		alToolbar.add(closeOrResetContainedViews);		
 		IAction toggleLayoutAction = new ToggleLayoutAction(iViewID);
 		alToolbar.add(toggleLayoutAction);
 	}

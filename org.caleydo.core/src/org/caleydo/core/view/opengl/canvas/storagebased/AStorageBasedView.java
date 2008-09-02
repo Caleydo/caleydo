@@ -447,5 +447,7 @@ public abstract class AStorageBasedView
 		// TODO, probably do this with initCompleteList, take care of selection manager though
 		this.iNumberOfRandomElements = iNumberOfRandomElements;
 	}
+	
+	public abstract void resetSelections();
 
 }
