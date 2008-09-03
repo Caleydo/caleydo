@@ -16,7 +16,8 @@ import org.caleydo.rcp.views.GLRemoteRenderingView;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
 
 
@@ -41,13 +42,13 @@ implements IGUIBridge
 	public void setActiveGLSubView(AGLEventListener parentGLEventListener,
 			AGLEventListener subGLEventListener)
 	{	
-		for (IWorkbenchPage rcpView :	PlatformUI.getWorkbench()
-				.getWorkbenchWindows()[0].getPages())
+		for (IViewReference rcpView : PlatformUI.getWorkbench()
+				.getWorkbenchWindows()[0].getActivePage().getViewReferences())
 		{
-			if (!(rcpView instanceof GLRemoteRenderingView))
+			if (!rcpView.getId().equals(GLRemoteRenderingView.ID))
 				continue;
-
-			GLRemoteRenderingView remoteRenderingRCPView = (GLRemoteRenderingView)rcpView;
+			
+			GLRemoteRenderingView remoteRenderingRCPView = (GLRemoteRenderingView)rcpView.getView(false);
 			
 			final IToolBarManager toolBarManager = remoteRenderingRCPView.getViewSite().getActionBars().getToolBarManager();
 			toolBarManager.removeAll();
