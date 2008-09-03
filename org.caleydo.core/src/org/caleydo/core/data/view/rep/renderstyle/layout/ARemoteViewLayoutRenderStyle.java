@@ -1,6 +1,7 @@
 package org.caleydo.core.data.view.rep.renderstyle.layout;
 
 import org.caleydo.core.data.view.camera.EProjectionMode;
+import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.EHierarchyLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
@@ -73,9 +74,9 @@ public abstract class ARemoteViewLayoutRenderStyle
 	 * 
 	 * @param generalManager
 	 */
-	public ARemoteViewLayoutRenderStyle()
+	public ARemoteViewLayoutRenderStyle(IViewFrustum viewFrustum)
 	{
-
+		super(viewFrustum);
 		underInteractionLayer = new RemoteHierarchyLayer(EHierarchyLevel.UNDER_INTERACTION);
 		stackLayer = new RemoteHierarchyLayer(EHierarchyLevel.STACK);
 		poolLayer = new RemoteHierarchyLayer(EHierarchyLevel.POOL);
@@ -93,9 +94,9 @@ public abstract class ARemoteViewLayoutRenderStyle
 	 * Constructor. Copies layers from previous layer. Used for toggle between
 	 * layouts.
 	 */
-	public ARemoteViewLayoutRenderStyle(final ARemoteViewLayoutRenderStyle previousLayoutStyle)
+	public ARemoteViewLayoutRenderStyle(IViewFrustum viewFrustum, final ARemoteViewLayoutRenderStyle previousLayoutStyle)
 	{
-
+		super(viewFrustum);
 		underInteractionLayer = previousLayoutStyle.getUnderInteractionLayer();
 		stackLayer = previousLayoutStyle.getStackLayer();
 		poolLayer = previousLayoutStyle.getPoolLayer();

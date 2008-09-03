@@ -11,7 +11,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.pathway.GLPathwayManager;
+import org.caleydo.core.view.opengl.canvas.pathway.GLPathwayContentCreator;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathwayTextureManager;
 import org.caleydo.core.view.opengl.util.hierarchy.EHierarchyLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
@@ -43,7 +43,7 @@ public class GLPathwayMemoPad
 
 	private IGeneralManager generalManager;
 
-	private GLPathwayManager gLPathwayManager;
+	private GLPathwayContentCreator gLPathwayContentCreator;
 
 	private GLPathwayTextureManager gLPathwayTextureManager;
 
@@ -51,13 +51,13 @@ public class GLPathwayMemoPad
 
 	private Texture trashCanTexture;
 
-	public GLPathwayMemoPad(final GLPathwayManager gLPathwayManager,
+	public GLPathwayMemoPad(final GLPathwayContentCreator gLPathwayContentCreator,
 			final GLPathwayTextureManager gLPathwayTextureManager)
 	{
 		memoPad = new RemoteHierarchyLayer(EHierarchyLevel.MEMO);
 
 		this.generalManager = GeneralManager.get();
-		this.gLPathwayManager = gLPathwayManager;
+		this.gLPathwayContentCreator = gLPathwayContentCreator;
 		this.gLPathwayTextureManager = gLPathwayTextureManager;
 	}
 
@@ -180,7 +180,7 @@ public class GLPathwayMemoPad
 					.getImageHeight()
 					* PathwayRenderStyle.SCALING_FACTOR_Y;
 			gl.glTranslatef(0, tmp, 0.01f);
-			gLPathwayManager.renderPathway(gl, iPathwayId, false);
+			gLPathwayContentCreator.renderPathway(gl, iPathwayId, false);
 			gl.glTranslatef(0, -tmp, 0.01f);
 
 			gl.glPopMatrix();

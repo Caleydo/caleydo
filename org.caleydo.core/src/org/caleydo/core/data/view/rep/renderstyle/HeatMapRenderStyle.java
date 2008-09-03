@@ -72,6 +72,8 @@ public class HeatMapRenderStyle
 
 	private int iOldSelectionManagerSize = -1;
 
+	private boolean bResetFieldDimensions = false;
+
 	public HeatMapRenderStyle(final IViewFrustum viewFrustum,
 			final GenericSelectionManager contentSelectionManager, ISet set, int iContentVAID,
 			int iStorageVAID, int iNumElements, boolean bRenderStorageHorizontally)
@@ -130,7 +132,8 @@ public class HeatMapRenderStyle
 
 		if (selectedSet.size() + mouseOverSet.size() != sOldSelected.size()
 				|| alFieldWidths.size() == 0
-				|| iOldSelectionManagerSize != contentSelectionManager.getNumberOfElements())
+				|| iOldSelectionManagerSize != contentSelectionManager.getNumberOfElements()
+				|| bResetFieldDimensions)
 		{
 			resetFieldDimensions();
 			iOldSelectionManagerSize = contentSelectionManager.getNumberOfElements();
@@ -274,12 +277,12 @@ public class HeatMapRenderStyle
 
 	public float getXSpacing()
 	{
-		return 0.5f;
+		return 0.4f;
 	}
 
 	public float getYSpacing()
 	{
-		return 0.5f;
+		return 0.3f;
 	}
 
 	public float getNormalFieldWidth()
@@ -288,18 +291,58 @@ public class HeatMapRenderStyle
 		return fNormalFieldWidth;
 	}
 
+	public void setBRenderStorageHorizontally(boolean bRenderStorageHorizontally)
+	{
+		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
+		bResetFieldDimensions = true;
+	}
+
 	private float getRenderWidth()
 	{
+		// if (!bRenderStorageHorizontally)
+		// {
 		if (detailLevel == EDetailLevel.HIGH)
-			return viewFrustum.getWidth() - 2 * getXSpacing();
+			return viewFrustum.getWidth() - 2.4f * getXSpacing() - getColorMappingBarWidth();
 		return viewFrustum.getWidth();
+		// }
+		//
+		// if (detailLevel == EDetailLevel.HIGH)
+		// return viewFrustum.getHeight() - 2 * getYSpacing();
+		// return viewFrustum.getHeight();
 	}
 
 	private float getRenderHeight()
 	{
+		// if (!bRenderStorageHorizontally)
+		// {
 		if (detailLevel == EDetailLevel.HIGH)
 			return viewFrustum.getHeight() - 2 * getYSpacing();
 		return viewFrustum.getHeight();
+		// }
+		// if (detailLevel == EDetailLevel.HIGH)
+		// return viewFrustum.getWidth() - 2 * getXSpacing() -
+		// getColorMappingBarWidth();
+		// return viewFrustum.getWidth();
+
+	}
+
+	public float getColorMappingBarWidth()
+	{
+		return viewFrustum.getWidth() / 40;
+	}
+
+	public float getColorMappingBarHeight()
+	{
+		return viewFrustum.getHeight() / 3;
+	}
+
+	/**
+	 * If this method is called, the next updateFieldSizes call will completely
+	 * reinitialize the field dimensions, which is computationally costly. Use with care!
+	 */
+	public void setFieldDimensionsDirty()
+	{
+		bResetFieldDimensions = true;
 	}
 
 }

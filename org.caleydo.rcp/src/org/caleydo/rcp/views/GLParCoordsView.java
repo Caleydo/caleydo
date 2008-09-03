@@ -10,6 +10,7 @@ import org.caleydo.rcp.action.view.storagebased.UseRandomSamplingAction;
 import org.caleydo.rcp.action.view.storagebased.parcoords.AngularBrushingAction;
 import org.caleydo.rcp.action.view.storagebased.parcoords.OcclusionPreventionAction;
 import org.caleydo.rcp.action.view.storagebased.parcoords.RenderContextAction;
+import org.caleydo.rcp.action.view.storagebased.parcoords.SaveSelectionsAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.widgets.Composite;
@@ -52,6 +53,8 @@ public class GLParCoordsView
 		alToolbar.add(useRandomSamplingAction);
 		IAction clearSelectionsAction = new ClearSelectionsAction(iViewID);
 		alToolbar.add(clearSelectionsAction);
+		IAction saveSelectionsAction = new SaveSelectionsAction(iViewID);
+		alToolbar.add(saveSelectionsAction);
 	}
 		
 	@Override

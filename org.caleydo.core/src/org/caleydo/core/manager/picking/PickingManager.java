@@ -418,6 +418,9 @@ public class PickingManager
 
 					HashMap<Integer, Integer> signatureToPickingID = hashSignatureToPickingIDHashMap
 							.get(iSignature);
+					
+					if(signatureToPickingID == null)
+						continue;
 
 					Integer iViewUnderInteractionID = signatureToPickingID
 							.get(iOrigianlPickingID);

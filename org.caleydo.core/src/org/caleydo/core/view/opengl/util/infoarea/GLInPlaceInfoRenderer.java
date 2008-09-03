@@ -8,6 +8,7 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.util.mapping.GeneAnnotationMapper;
 import org.caleydo.core.view.opengl.util.GLStarEffectRenderer;
@@ -49,7 +50,7 @@ public class GLInPlaceInfoRenderer
 	 * Constructor.
 	 * 
 	 */
-	public GLInPlaceInfoRenderer()
+	public GLInPlaceInfoRenderer(IViewFrustum viewFrustum)
 	{
 		fArWorldCoordinatePosition = new float[3];
 		starEffectRenderer = new GLStarEffectRenderer();
@@ -60,7 +61,7 @@ public class GLInPlaceInfoRenderer
 
 		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 16), false);
 
-		renderStyle = new PathwayRenderStyle();
+		renderStyle = new PathwayRenderStyle(viewFrustum);
 	}
 
 	public void renderInfoArea(final GL gl, final PathwayVertexGraphItemRep pickedVertexRep)

@@ -8,8 +8,8 @@ import org.eclipse.jface.resource.ImageDescriptor;
 public class PropagateSelectionsAction
 extends AToolBarAction
 {
-	public static final String TEXT = "Propagate selections to other views";
-	public static final String ICON = "resources/icons/view/storagebased/propagate_selection.png";
+	public static final String TEXT = "Broadcast elements to other views";
+	public static final String ICON = "resources/icons/view/storagebased/broadcast_elements.png";
 
 	/**
 	 * Constructor.

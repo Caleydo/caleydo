@@ -1,7 +1,7 @@
 package org.caleydo.core.data.view.rep.renderstyle;
 
 public class ConnectionLineRenderStyle
-	extends GeneralRenderStyle
+
 {
 
 	// yellow

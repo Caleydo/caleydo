@@ -56,7 +56,7 @@ public class GLPathway
 
 	private IPathwayManager pathwayManager;
 
-	private GLPathwayManager gLPathwayManager;
+	private GLPathwayContentCreator gLPathwayContentCreator;
 
 	private ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
@@ -85,7 +85,7 @@ public class GLPathway
 		viewType = EManagedObjectType.GL_PATHWAY;
 		pathwayManager = generalManager.getPathwayManager();
 
-		gLPathwayManager = new GLPathwayManager();
+		gLPathwayContentCreator = new GLPathwayContentCreator(viewFrustum);
 		hashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
 		// hashPathwayContainingSelectedVertex2VertexCount = new
 		// HashMap<Integer, Integer>();
@@ -204,7 +204,7 @@ public class GLPathway
 
 	protected void initPathwayData(final GL gl)
 	{
-		gLPathwayManager.init(gl, alSets, selectionManager);
+		gLPathwayContentCreator.init(gl, alSets, selectionManager);
 
 		// Create new pathway manager for GL context
 		if (!hashGLcontext2TextureManager.containsKey(gl))
@@ -215,7 +215,7 @@ public class GLPathway
 		calculatePathwayScaling(gl, iPathwayID);
 		pathwayManager.setPathwayVisibilityStateByID(iPathwayID, true);
 
-		// gLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
+		// gLPathwayContentCreator.buildPathwayDisplayList(gl, this, iPathwayID);
 	}
 
 	public void renderScene(final GL gl)
@@ -255,16 +255,16 @@ public class GLPathway
 					.getLevel().equals(EHierarchyLevel.UNDER_INTERACTION)
 					&& remoteRenderingGLCanvas.getBucketMouseWheelListener().isZoomedIn())
 			{
-				gLPathwayManager.renderPathway(gl, iPathwayId, true);
+				gLPathwayContentCreator.renderPathway(gl, iPathwayId, true);
 			}
 			else
 			{
-				gLPathwayManager.renderPathway(gl, iPathwayId, false);
+				gLPathwayContentCreator.renderPathway(gl, iPathwayId, false);
 			}
 		}
 		else
 		{
-			gLPathwayManager.renderPathway(gl, iPathwayId, false);
+			gLPathwayContentCreator.renderPathway(gl, iPathwayId, false);
 		}
 
 		gl.glTranslatef(0, -tmp, 0);
@@ -277,10 +277,10 @@ public class GLPathway
 
 	private void rebuildPathwayDisplayList(final GL gl)
 	{
-		gLPathwayManager.init(gl, alSets, selectionManager); // TODO: maybe too
+		gLPathwayContentCreator.init(gl, alSets, selectionManager); // TODO: maybe too
 																// slow?
-		gLPathwayManager.performIdenticalNodeHighlighting();
-		gLPathwayManager.buildPathwayDisplayList(gl, this, iPathwayID);
+		gLPathwayContentCreator.performIdenticalNodeHighlighting();
+		gLPathwayContentCreator.buildPathwayDisplayList(gl, this, iPathwayID);
 	}
 
 	@Override
@@ -477,18 +477,18 @@ public class GLPathway
 
 	public void setMappingRowCount(final int iMappingRowCount)
 	{
-		gLPathwayManager.setMappingRowCount(iMappingRowCount);
+		gLPathwayContentCreator.setMappingRowCount(iMappingRowCount);
 	}
 
 	public void enableGeneMapping(final boolean bEnableMapping)
 	{
-		gLPathwayManager.enableGeneMapping(bEnableMapping);
+		gLPathwayContentCreator.enableGeneMapping(bEnableMapping);
 		setDisplayListDirty();
 	}
 
 	public void enablePathwayTextures(final boolean bEnablePathwayTexture)
 	{
-		gLPathwayManager.enableEdgeRendering(!bEnablePathwayTexture);
+		gLPathwayContentCreator.enableEdgeRendering(!bEnablePathwayTexture);
 		setDisplayListDirty();
 
 		this.bEnablePathwayTexture = bEnablePathwayTexture;
@@ -498,20 +498,20 @@ public class GLPathway
 	{
 		setDisplayListDirty();
 
-		gLPathwayManager.enableNeighborhood(bEnableNeighborhood);
+		gLPathwayContentCreator.enableNeighborhood(bEnableNeighborhood);
 	}
 
 	public void enableIdenticalNodeHighlighting(final boolean bEnableIdenticalNodeHighlighting)
 	{
 		setDisplayListDirty();
 
-		gLPathwayManager.enableIdenticalNodeHighlighting(bEnableIdenticalNodeHighlighting);
+		gLPathwayContentCreator.enableIdenticalNodeHighlighting(bEnableIdenticalNodeHighlighting);
 	}
 
 	public void enableAnnotation(final boolean bEnableAnnotation)
 	{
 
-		gLPathwayManager.enableAnnotation(bEnableAnnotation);
+		gLPathwayContentCreator.enableAnnotation(bEnableAnnotation);
 	}
 
 	@Override

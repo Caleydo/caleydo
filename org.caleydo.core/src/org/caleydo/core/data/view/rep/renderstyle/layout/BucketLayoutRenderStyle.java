@@ -4,6 +4,7 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 import org.caleydo.core.data.view.camera.EProjectionMode;
+import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**
@@ -17,18 +18,19 @@ public class BucketLayoutRenderStyle
 	/**
 	 * Constructor.
 	 */
-	public BucketLayoutRenderStyle()
+	public BucketLayoutRenderStyle(IViewFrustum viewFrustum)
 	{
-		super();
+		super(viewFrustum);
 		initLayout();
 	}
 
 	/**
 	 * Constructor.
 	 */
-	public BucketLayoutRenderStyle(final ARemoteViewLayoutRenderStyle previousLayoutStyle)
+	public BucketLayoutRenderStyle(IViewFrustum viewFrustum,
+			final ARemoteViewLayoutRenderStyle previousLayoutStyle)
 	{
-		super(previousLayoutStyle);
+		super(viewFrustum, previousLayoutStyle);
 		initLayout();
 	}
 

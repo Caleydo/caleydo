@@ -65,6 +65,10 @@ public class CmdExternalActionTrigger
 					case PARCOORDS_ANGULAR_BRUSHING:
 						((GLParallelCoordinates) viewObject).triggerAngularBrushing();
 						return;
+					case PARCOORDS_SAVE_SELECTIONS:
+						((GLParallelCoordinates) viewObject).saveSelection();
+						return;
+						
 				}
 			}
 		}

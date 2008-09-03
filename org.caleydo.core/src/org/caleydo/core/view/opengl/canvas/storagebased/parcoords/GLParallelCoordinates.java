@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.storagebased.parcoords;
 
+import static org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle.getDecimalFormat;
 import static org.caleydo.core.data.view.rep.renderstyle.ParCoordsRenderStyle.ANGLUAR_LINE_WIDTH;
 import static org.caleydo.core.data.view.rep.renderstyle.ParCoordsRenderStyle.ANGULAR_COLOR;
 import static org.caleydo.core.data.view.rep.renderstyle.ParCoordsRenderStyle.ANGULAR_POLYGON_COLOR;
@@ -26,7 +27,6 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -141,8 +141,6 @@ public class GLParallelCoordinates
 	//
 	// private ArrayList<Integer> alAxisSelection;
 
-	private DecimalFormat decimalFormat;
-
 	private SelectedElementRep elementRep;
 
 	// holds the textures for the icons
@@ -174,8 +172,6 @@ public class GLParallelCoordinates
 		// TODO no mapping
 		storageSelectionManager = new GenericSelectionManager.Builder(
 				EIDType.EXPRESSION_EXPERIMENT).build();
-
-		decimalFormat = new DecimalFormat("#####.#");
 
 		alIsAngleBlocking = new ArrayList<ArrayList<Integer>>();
 		alIsAngleBlocking.add(new ArrayList<Integer>());
@@ -550,10 +546,21 @@ public class GLParallelCoordinates
 
 		renderCoordinateSystem(gl);
 
-		renderPolylines(gl, ESelectionType.DESELECTED);
-		renderPolylines(gl, ESelectionType.NORMAL);
-		renderPolylines(gl, ESelectionType.MOUSE_OVER);
-		renderPolylines(gl, ESelectionType.SELECTION);
+		// FIXME if uses z buffer fighting to avoid artfacts when tiltet
+		if (detailLevel.compareTo(EDetailLevel.LOW) < 1)
+		{
+			renderPolylines(gl, ESelectionType.MOUSE_OVER);
+			renderPolylines(gl, ESelectionType.SELECTION);
+			renderPolylines(gl, ESelectionType.DESELECTED);
+			renderPolylines(gl, ESelectionType.NORMAL);
+		}
+		else
+		{		
+			renderPolylines(gl, ESelectionType.DESELECTED);
+			renderPolylines(gl, ESelectionType.NORMAL);
+			renderPolylines(gl, ESelectionType.MOUSE_OVER);
+			renderPolylines(gl, ESelectionType.SELECTION);
+		}
 
 		renderGates(gl);
 
@@ -585,6 +592,7 @@ public class GLParallelCoordinates
 							.getPolylineDeselectedOcclusionPrevColor(setDataToRender.size()),
 							0);
 					gl.glLineWidth(ParCoordsRenderStyle.DESELECTED_POLYLINE_LINE_WIDTH);
+					fZDepth = -0.001f;
 				}
 				else
 				{
@@ -607,7 +615,7 @@ public class GLParallelCoordinates
 				setDataToRender = polylineSelectionManager.getElements(renderMode);
 				gl.glColor4fv(POLYLINE_MOUSE_OVER_COLOR, 0);
 				gl.glLineWidth(MOUSE_OVER_POLYLINE_LINE_WIDTH);
-				fZDepth = 0.002f;
+				fZDepth = 0.02f;
 				break;
 			case DESELECTED:
 				setDataToRender = polylineSelectionManager.getElements(renderMode);
@@ -787,8 +795,8 @@ public class GLParallelCoordinates
 						float fNumber = (float) set.getRawForNormalized(fCurrentHeight
 								/ renderStyle.getAxisHeight());
 
-						Rectangle2D bounds = textRenderer.getBounds(decimalFormat
-								.format(fNumber));
+						Rectangle2D bounds = textRenderer.getBounds(getDecimalFormat().format(
+								fNumber));
 						float fWidth = (float) bounds.getWidth()
 								* renderStyle.getSmallFontScalingFactor();
 						float fHeightHalf = (float) bounds.getHeight()
@@ -867,7 +875,7 @@ public class GLParallelCoordinates
 					fXButtonOrigin = iCount
 							* fAxisSpacing
 							- (iNumberOfButtons * renderStyle.getButtonWidht() + (iNumberOfButtons - 1)
-									* renderStyle.getButtonSpacing()) / 2;
+									* renderStyle.getSmallSpacing()) / 2;
 					fYButtonOrigin = -renderStyle.getAxisButtonYOffset();
 
 					if (iCount != 0)
@@ -880,7 +888,7 @@ public class GLParallelCoordinates
 
 					// remove button
 					fXButtonOrigin = fXButtonOrigin + renderStyle.getButtonWidht()
-							+ renderStyle.getButtonSpacing();
+							+ renderStyle.getSmallSpacing();
 
 					iPickingID = pickingManager.getPickingID(iUniqueID,
 							EPickingType.REMOVE_AXIS, iCount);
@@ -889,7 +897,7 @@ public class GLParallelCoordinates
 
 					// duplicate axis button
 					fXButtonOrigin = fXButtonOrigin + renderStyle.getButtonWidht()
-							+ renderStyle.getButtonSpacing();
+							+ renderStyle.getSmallSpacing();
 					iPickingID = pickingManager.getPickingID(iUniqueID,
 							EPickingType.DUPLICATE_AXIS, iCount);
 					renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID,
@@ -899,7 +907,7 @@ public class GLParallelCoordinates
 					{
 						// right, move right button
 						fXButtonOrigin = fXButtonOrigin + renderStyle.getButtonWidht()
-								+ renderStyle.getButtonSpacing();
+								+ renderStyle.getSmallSpacing();
 						iPickingID = pickingManager.getPickingID(iUniqueID,
 								EPickingType.MOVE_AXIS_RIGHT, iCount);
 						renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID,
@@ -1103,7 +1111,8 @@ public class GLParallelCoordinates
 		gl.glLineWidth(Y_AXIS_LINE_WIDTH);
 		gl.glColor4fv(Y_AXIS_COLOR, 0);
 
-		Rectangle2D tempRectangle = textRenderer.getBounds(decimalFormat.format(fYOrigin));
+		Rectangle2D tempRectangle = textRenderer
+				.getBounds(getDecimalFormat().format(fYOrigin));
 		float fBackPlaneWidth = (float) tempRectangle.getWidth()
 				* renderStyle.getSmallFontScalingFactor();
 		float fBackPlaneHeight = (float) tempRectangle.getHeight()
@@ -1127,7 +1136,7 @@ public class GLParallelCoordinates
 	{
 		textRenderer.begin3DRendering();
 
-		textRenderer.draw3D(decimalFormat.format(fRawValue), fXOrigin, fYOrigin, 0.031f,
+		textRenderer.draw3D(getDecimalFormat().format(fRawValue), fXOrigin, fYOrigin, 0.031f,
 				renderStyle.getSmallFontScalingFactor());
 		textRenderer.end3DRendering();
 	}

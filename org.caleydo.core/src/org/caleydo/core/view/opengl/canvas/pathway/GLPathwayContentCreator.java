@@ -20,6 +20,7 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -38,7 +39,7 @@ import org.caleydo.util.graph.algorithm.GraphVisitorSearchBFS;
  * 
  * @author Marc Streit
  */
-public class GLPathwayManager
+public class GLPathwayContentCreator
 {
 
 	private IGeneralManager generalManager;
@@ -74,11 +75,11 @@ public class GLPathwayManager
 	/**
 	 * Constructor.
 	 */
-	public GLPathwayManager()
+	public GLPathwayContentCreator(IViewFrustum viewFrustum)
 	{
 		this.generalManager = GeneralManager.get();
 
-		renderStyle = new PathwayRenderStyle();
+		renderStyle = new PathwayRenderStyle(viewFrustum);
 		hashPathwayId2VerticesDisplayListId = new HashMap<Integer, Integer>();
 		hashPathwayId2EdgesDisplayListId = new HashMap<Integer, Integer>();
 		hashElementId2MappingColorArray = new HashMap<Integer, ArrayList<float[]>>();

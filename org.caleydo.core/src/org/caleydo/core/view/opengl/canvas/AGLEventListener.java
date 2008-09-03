@@ -73,6 +73,7 @@ public abstract class AGLEventListener
 
 	protected boolean bIsDisplayListDirtyLocal = true;
 	protected boolean bIsDisplayListDirtyRemote = true;
+	protected boolean bHasFrustumChanged = false;
 
 	/**
 	 * Constructor.
@@ -188,6 +189,7 @@ public abstract class AGLEventListener
 
 			bIsDisplayListDirtyLocal = true;
 			bIsDisplayListDirtyRemote = true;
+			bHasFrustumChanged = true;
 		}
 
 		GL gl = drawable.getGL();

@@ -36,7 +36,9 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
+import org.caleydo.core.view.opengl.miniview.GLColorMappingBarMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**
@@ -52,6 +54,9 @@ public class GLHeatMap
 	private HeatMapRenderStyle renderStyle;
 
 	private ColorMapping colorMapper;
+
+	private GLColorMappingBarMiniView colorMappingBar;
+
 
 	private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
 
@@ -70,8 +75,6 @@ public class GLHeatMap
 	private float fAnimationTargetTranslation = 0;
 
 	private SelectedElementRep elementRep;
-	
-	
 
 	/**
 	 * Constructor.
@@ -99,8 +102,9 @@ public class GLHeatMap
 				EIDType.EXPRESSION_EXPERIMENT).build();
 
 		colorMapper = ColorMappingManager.get().getColorMapping(
-				EColorMappingType.GENE_EXPRESSION);		
-		
+				EColorMappingType.GENE_EXPRESSION);
+
+		colorMappingBar = new GLColorMappingBarMiniView(viewFrustum);
 	}
 
 	@Override
@@ -108,9 +112,10 @@ public class GLHeatMap
 	{
 		initData();
 
+		colorMappingBar.setHeight(renderStyle.getColorMappingBarHeight());
+		colorMappingBar.setWidth(renderStyle.getColorMappingBarWidth());
 		if (set == null)
 			return;
-
 	}
 
 	@Override
@@ -208,8 +213,8 @@ public class GLHeatMap
 	@Override
 	public void display(GL gl)
 	{
-		//GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-		// GLHelperFunctions.drawAxis(gl);
+//		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+//		GLHelperFunctions.drawAxis(gl);
 		gl.glCallList(iGLDisplayListToCall);
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 	}
@@ -217,10 +222,30 @@ public class GLHeatMap
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex)
 	{
 
+		if(bHasFrustumChanged)
+		{
+			renderStyle.setFieldDimensionsDirty();
+			bHasFrustumChanged = false;
+		}
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
-		clipToFrustum(gl);
+	
+		// FIXME: bad hack, normalize frustum to 0:1 to avoid that
+		//clipToFrustum(gl);
+		float fLeftOffset = 0;
+		if(remoteRenderingGLCanvas == null)
+			fLeftOffset = 0.05f;
+		else
+			fLeftOffset = 0.15f;
+//		GLHelperFunctions.drawAxis(gl);
+		if (detailLevel == EDetailLevel.HIGH)
+		{
+			colorMappingBar.render(gl, fLeftOffset,
+					(viewFrustum.getHeight() - colorMappingBar.getHeight()) / 2, 0.2f);	
+			gl.glTranslatef(fLeftOffset + colorMappingBar.getWidth(), 0, 0);
+		}
 
+		
 		if (!bRenderStorageHorizontally)
 		{
 			gl.glTranslatef(vecTranslation.x(), viewFrustum.getHeight(), vecTranslation.z());
@@ -242,6 +267,10 @@ public class GLHeatMap
 					.glTranslatef(-vecTranslation.x(), -viewFrustum.getHeight(),
 							-vecTranslation.z());
 		}
+		if (detailLevel == EDetailLevel.HIGH)
+		{
+			gl.glTranslatef(-fLeftOffset - colorMappingBar.getWidth(), 0, 0);
+		}
 
 		gl.glDisable(GL.GL_STENCIL_TEST);
 
@@ -250,8 +279,9 @@ public class GLHeatMap
 
 	public void renderHorizontally(boolean bRenderStorageHorizontally)
 	{
-
+		
 		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
+		renderStyle.setBRenderStorageHorizontally(bRenderStorageHorizontally);
 		setDisplayListDirty();
 	}
 
@@ -310,7 +340,7 @@ public class GLHeatMap
 				iContentVAID, iStorageVAID, set.getVA(iStorageVAID).size(),
 				bRenderStorageHorizontally);
 		// TODO probably remove this here
-//		renderStyle.initFieldSizes();
+		// renderStyle.initFieldSizes();
 
 		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
 
@@ -367,7 +397,8 @@ public class GLHeatMap
 						contentSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
 						contentSelectionManager.addToType(ESelectionType.MOUSE_OVER,
 								iExternalID);
-
+						
+						renderStyle.setFieldDimensionsDirty();
 						if (eFieldDataType == EIDType.EXPRESSION_INDEX)
 						{
 							triggerUpdate(contentSelectionManager.getDelta());
@@ -410,6 +441,20 @@ public class GLHeatMap
 			}
 
 			float fFontScaling = 0;
+			
+			float fColumnDegrees = 0;
+			float fLineDegrees = 0;
+			if(bRenderStorageHorizontally)
+			{
+				fColumnDegrees = 0;
+				fLineDegrees = 25;
+			}
+			else
+			{
+				fColumnDegrees = 60;
+				fLineDegrees = 90;
+			}
+			
 			if (vecFieldWidthAndHeight.x() > 0.1f)
 			{
 				if (vecFieldWidthAndHeight.x() < 0.2f)
@@ -426,12 +471,13 @@ public class GLHeatMap
 					// Render heat map element name
 					String sContent = getRefSeqFromStorageIndex(iContentIndex);
 					renderCaption(gl, sContent, fXPosition + vecFieldWidthAndHeight.x() / 2,
-							fYPosition + 0.1f, 90, fFontScaling);
+							fYPosition + 0.1f, fLineDegrees, fFontScaling);
 				}
-				renderStyle.setXDistanceAt(set.getVA(iContentVAID).indexOf(iContentIndex), fXPosition);
+				renderStyle.setXDistanceAt(set.getVA(iContentVAID).indexOf(iContentIndex),
+						fXPosition);
 			}
 			fXPosition += vecFieldWidthAndHeight.x();
-			
+
 			if (detailLevel == EDetailLevel.HIGH)
 			{
 				if (iCount == set.getVA(iContentVAID).size())
@@ -441,7 +487,7 @@ public class GLHeatMap
 					{
 						renderCaption(gl, set.get(iStorageIndex).getLabel(),
 								fXPosition + 0.1f,
-								fYPosition + vecFieldWidthAndHeight.y() / 2, 60, renderStyle
+								fYPosition + vecFieldWidthAndHeight.y() / 2, fColumnDegrees, renderStyle
 										.getSmallFontScalingFactor());
 						fYPosition += vecFieldWidthAndHeight.y();
 					}
@@ -458,8 +504,9 @@ public class GLHeatMap
 				iContentIndex);
 
 		float fOpacity = 0;
-		if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex) ||
-				contentSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex)
+		if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)
+				|| contentSelectionManager
+						.checkStatus(ESelectionType.SELECTION, iContentIndex)
 				|| detailLevel.compareTo(EDetailLevel.LOW) > 0)
 			fOpacity = 1f;
 		else
@@ -473,12 +520,10 @@ public class GLHeatMap
 				EPickingType.HEAT_MAP_FIELD_SELECTION, iContentIndex));
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);
-		gl.glVertex3f(fXPosition + vecFieldWidthAndHeight.x(), fYPosition,
-				FIELD_Z);
+		gl.glVertex3f(fXPosition + vecFieldWidthAndHeight.x(), fYPosition, FIELD_Z);
 		gl.glVertex3f(fXPosition + vecFieldWidthAndHeight.x(), fYPosition
 				+ vecFieldWidthAndHeight.y(), FIELD_Z);
-		gl.glVertex3f(fXPosition, fYPosition + vecFieldWidthAndHeight.y(),
-				FIELD_Z);
+		gl.glVertex3f(fXPosition, fYPosition + vecFieldWidthAndHeight.y(), FIELD_Z);
 		gl.glEnd();
 
 		gl.glPopName();
@@ -520,8 +565,7 @@ public class GLHeatMap
 
 			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(fXPosition, fYPosition, SELECTION_Z);
-			gl.glVertex3f(fXPosition + vecFieldWidthAndHeight.x(), fYPosition,
-					SELECTION_Z);
+			gl.glVertex3f(fXPosition + vecFieldWidthAndHeight.x(), fYPosition, SELECTION_Z);
 			gl.glVertex3f(fXPosition + vecFieldWidthAndHeight.x(), fYPosition + fHeight,
 					SELECTION_Z);
 			gl.glVertex3f(fXPosition, fYPosition + fHeight, SELECTION_Z);
@@ -536,6 +580,7 @@ public class GLHeatMap
 	protected SelectedElementRep createElementRep(int iStorageIndex)
 			throws InvalidAttributeValueException
 	{
+		
 		renderStyle.updateFieldSizes();
 		SelectedElementRep elementRep;// = new SelectedElementRep(iUniqueID,
 		// 0.0f, 0.0f, 0.0f);
@@ -660,7 +705,7 @@ public class GLHeatMap
 	@Override
 	public void renderContext(boolean bRenderOnlyContext)
 	{
-		
+
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
 		if (this.bRenderOnlyContext)

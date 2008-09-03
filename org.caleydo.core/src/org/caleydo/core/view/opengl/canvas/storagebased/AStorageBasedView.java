@@ -95,7 +95,7 @@ public abstract class AStorageBasedView
 
 	protected boolean bUseRandomSampling = true;
 
-	private int iNumberOfRandomElements = 1000;
+	private int iNumberOfRandomElements = 100;
 
 	/**
 	 * Constructor.

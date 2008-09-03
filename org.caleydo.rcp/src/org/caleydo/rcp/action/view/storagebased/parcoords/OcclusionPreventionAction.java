@@ -11,7 +11,7 @@ extends AToolBarAction
 	public static final String TEXT = "Toggle occlusion prevention";
 	public static final String ICON = "resources/icons/view/storagebased/parcoords/occlusion_prevention.png";
 
-	private boolean bEnable = false;
+	private boolean bEnable = true;
 	
 	/**
 	 * Constructor.

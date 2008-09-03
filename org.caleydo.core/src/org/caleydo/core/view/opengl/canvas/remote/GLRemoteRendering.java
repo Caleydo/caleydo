@@ -154,6 +154,7 @@ public class GLRemoteRendering
 	private boolean bBusyModeChanged = false;
 	
 	private ArrayList<Integer> iAlContainedViewIDs;
+	
 
 	/**
 	 * Constructor.
@@ -168,7 +169,7 @@ public class GLRemoteRendering
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
 		{
-			layoutRenderStyle = new BucketLayoutRenderStyle();
+			layoutRenderStyle = new BucketLayoutRenderStyle(viewFrustum);
 
 			bucketMouseWheelListener = new BucketMouseWheelListener(this,
 					(BucketLayoutRenderStyle) layoutRenderStyle);
@@ -181,7 +182,7 @@ public class GLRemoteRendering
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX))
 		{
-			layoutRenderStyle = new JukeboxLayoutRenderStyle();
+			layoutRenderStyle = new JukeboxLayoutRenderStyle(viewFrustum);
 		}
 
 		underInteractionLayer = layoutRenderStyle.initUnderInteractionLayer();
@@ -218,7 +219,7 @@ public class GLRemoteRendering
 
 		// TODO: the genome mapper should be stored centralized instead of newly
 		// created
-		colorMappingBarMiniView = new GLColorMappingBarMiniView();
+		colorMappingBarMiniView = new GLColorMappingBarMiniView(viewFrustum);
 	}
 
 	@Override
@@ -235,7 +236,7 @@ public class GLRemoteRendering
 			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas)
 	{
 
-		// not implemented for a remote view
+		throw new IllegalStateException("Not implemented to be rendered remote");
 	}
 
 	@Override
@@ -1562,7 +1563,7 @@ public class GLRemoteRendering
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
 		{
-			layoutRenderStyle = new BucketLayoutRenderStyle(layoutRenderStyle);
+			layoutRenderStyle = new BucketLayoutRenderStyle(viewFrustum, layoutRenderStyle);
 
 			bucketMouseWheelListener = new BucketMouseWheelListener(this,
 					(BucketLayoutRenderStyle) layoutRenderStyle);
@@ -1574,7 +1575,7 @@ public class GLRemoteRendering
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX))
 		{
-			layoutRenderStyle = new JukeboxLayoutRenderStyle(layoutRenderStyle);
+			layoutRenderStyle = new JukeboxLayoutRenderStyle(viewFrustum, layoutRenderStyle);
 
 			// Unregister bucket wheel listener
 			parentGLCanvas.removeMouseWheelListener(bucketMouseWheelListener);

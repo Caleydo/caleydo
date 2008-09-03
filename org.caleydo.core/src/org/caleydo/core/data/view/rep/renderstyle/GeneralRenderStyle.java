@@ -1,5 +1,6 @@
 package org.caleydo.core.data.view.rep.renderstyle;
 
+import java.text.DecimalFormat;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 
 /**
@@ -12,9 +13,9 @@ public class GeneralRenderStyle
 
 	private static final float VERY_SMALL_FONT_SCALING_FACTOR = 0.0005f;
 
-	private static final float SMALL_FONT_SCALING_FACTOR = 0.0008f;
+	private static final float SMALL_FONT_SCALING_FACTOR = 0.0007f;
 
-	private static final float HEADING_FONT_SCALING_FACTOR = 0.001f;
+	private static final float HEADING_FONT_SCALING_FACTOR = 0.0009f;
 
 	public static final float INFO_AREA_Z = 0.02f;
 
@@ -41,13 +42,14 @@ public class GeneralRenderStyle
 	protected static final float BUTTON_WIDTH = 0.018f;
 
 	protected IViewFrustum viewFrustum;
+	
+	private static DecimalFormat decimalFormat;
 
 	/**
 	 * Default constructor.
 	 */
-	public GeneralRenderStyle()
-	{
-
+	private GeneralRenderStyle()
+	{		
 	}
 
 	/**
@@ -55,17 +57,26 @@ public class GeneralRenderStyle
 	 */
 	public GeneralRenderStyle(IViewFrustum viewFrustum)
 	{
+		this();
+		decimalFormat = new DecimalFormat("#####.#");
 		this.viewFrustum = viewFrustum;
 		// fFrustumWidth = viewFrustum.getRight() - viewFrustum.getLeft();
 		// fFrustumHeight = viewFrustum.getTop() - viewFrustum.getBottom();
 		// scaling is set to the smaller of the two
 
 	}
+	
+	public static DecimalFormat getDecimalFormat()
+	{
+		return decimalFormat;
+	}
 
 	public float getSmallFontScalingFactor()
 	{
 
-		return SMALL_FONT_SCALING_FACTOR * getScaling();
+		float fScaling  = SMALL_FONT_SCALING_FACTOR * getScaling();
+		return fScaling;
+	
 	}
 
 	public float getVerySmallFontScalingFactor()
@@ -80,7 +91,7 @@ public class GeneralRenderStyle
 		return HEADING_FONT_SCALING_FACTOR * getScaling();
 	}
 
-	public float getButtonSpacing()
+	public float getSmallSpacing()
 	{
 
 		return BUTTONS_SPACING * getScaling();

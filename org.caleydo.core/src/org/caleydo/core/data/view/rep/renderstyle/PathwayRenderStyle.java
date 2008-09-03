@@ -103,12 +103,6 @@ public class PathwayRenderStyle
 		init();
 	}
 
-	public PathwayRenderStyle()
-	{
-
-		init();
-	}
-
 	/**
 	 * Constructor. Initializes the pathway render style. TODO: load pathway
 	 * style from XML file.

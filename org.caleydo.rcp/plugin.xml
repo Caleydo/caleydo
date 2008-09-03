@@ -285,6 +285,11 @@
             id="org.caleydo.rcp.preferences.SamplePreferencePage"
             name="Sample Preferences">
       </page>
+            <page
+            class="org.caleydo.rcp.preferences.ColorMappingPreferencePage"
+            id="org.caleydo.rcp.preferences.ColorMappingPreferencePage"
+            name="Color Mapping">
+      </page>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">

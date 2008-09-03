@@ -9,7 +9,7 @@ public class CloseOrResetContainedViews
 extends AToolBarAction
 {
 	public static final String TEXT = "Remove Pathways, Reset Other views";
-	public static final String ICON = "resources/icons/general/clear_selections.png";
+	public static final String ICON = "resources/icons/view/remote/close_or_reset_contained_views.png";
 
 	/**
 	 * Constructor.
