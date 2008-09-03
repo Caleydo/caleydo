@@ -3,6 +3,8 @@ package org.caleydo.rcp.views;
 import java.util.ArrayList;
 
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.command.ICommand;
+import org.caleydo.core.command.view.swt.CmdViewCreateDataEntitySearcher;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.rcp.action.view.TakeSnapshotAction;
@@ -41,6 +43,14 @@ public class GLRemoteRenderingView
 		iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D, -1));
 		iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_3D, -1));
 		createGLEventListener(ECommandType.CREATE_GL_BUCKET_3D, glCanvas.getID());
+		
+		// Trigger gene/pathway search command
+		ArrayList<Integer> iAlReceiverIDs = new ArrayList<Integer>();
+		iAlReceiverIDs.add(iGLEventListenerID);
+		CmdViewCreateDataEntitySearcher cmd = (CmdViewCreateDataEntitySearcher) GeneralManager.get().getCommandManager()
+			.createCommandByType(ECommandType.CREATE_VIEW_DATA_ENTITY_SEARCHER);
+		cmd.setAttributes(iAlReceiverIDs);
+		cmd.doCommand();
 		
 		((GLRemoteRendering)GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iGLEventListenerID))
 			.setInitialContainedViews(iAlContainedViewIDs);
@@ -96,5 +106,7 @@ public class GLRemoteRenderingView
 			GeneralManager.get().getViewGLCanvasManager()
 				.unregisterGLEventListener(iContainedViewID);			
 		}
+		
+		//TODO: cleanup data entity searcher view
 	}
 }

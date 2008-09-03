@@ -5,10 +5,9 @@ import org.caleydo.rcp.Application;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
@@ -45,27 +44,24 @@ public class ExtensibleSplashHandler
 	private void createUI()
 	{
 		Shell splash = getSplash();
-		splash.setLayout(new FillLayout());
-		// Force shell to inherit the splash background
-		splash.setBackgroundMode(SWT.INHERIT_DEFAULT);
-		
-		// Create the composite
-		final Composite composite = new Composite(splash, SWT.NONE);
-		
+
 		// Configure layout
 		RowLayout layout = new RowLayout(SWT.VERTICAL);
 //	    layout.marginLeft = 12;
 	    layout.marginTop = 2;
 //	    layout.justify = true;
-		composite.setLayout(layout);
+		splash.setLayout(layout);
 		
-		progressBar = new ProgressBar(composite, SWT.SMOOTH);
-		progressBar.setLayoutData(new RowData(getSplash().getSize().x - 5, 20));
+		progressBar = new ProgressBar(splash, SWT.SMOOTH);
+		progressBar.setLayoutData(new RowData(getSplash().getSize().x - 5, 25));
 		
-		Label label = new Label(composite, SWT.NONE);
+		Label label = new Label(splash, SWT.NONE);
 		label.setText("Loading...");
-		label.setForeground(splash.getDisplay().getSystemColor (SWT.COLOR_BLACK));
+//		label.setForeground(splash.getDisplay().getSystemColor (SWT.COLOR_BLACK));
 		label.setLayoutData(new RowData(getSplash().getSize().x - 5, 20));
+		label.setFont(new Font(splash.getDisplay(),"Arial",10, SWT.NONE));
+	
+		splash.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		
 		GeneralManager.get().getSWTGUIManager().setExternalProgressBarAndLabel(
 				progressBar, label);

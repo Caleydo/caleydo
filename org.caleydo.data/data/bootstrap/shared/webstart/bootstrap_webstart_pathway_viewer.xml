@@ -12,20 +12,6 @@
 		<!-- Creating Data -->
 			<read-xml-file target="data/bootstrap/shared/webstart/load_data.xml" />						   																			
 
-		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_RCP_GLCANVAS"	cmdId="69991"	uniqueId="24" 
-			parent="10331" label="Canvas"	attrib2="300 300" detail="1077991"	/>	
-			
-		<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_BUCKET_3D"		cmdId="69994"	uniqueId="83401" parent="24" label="LinkBucket" 
-						gl_origin="0 0 -8" 
-						gl_rotation="0 0 0 0"					
-						attrib3="PERSPECTIVE -1.5 1.5 -1.5 1.5 2.9 100"
-						attrib4="transparency 1" 								
-						detail="" /> 				
-	
-						
-	    <!-- Search View -->
-	      	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_DATA_ENTITY_SEARCHER" 	cmdId="69991" uniqueId="12345" label="Data Entity Search" 	detail="83401" /> 				
-	
 		<!-- Setting paths -->	
 		<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set Biocarta Pathway Paths" 
 			detail="BIOCARTA"

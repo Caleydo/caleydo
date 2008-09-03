@@ -16,7 +16,7 @@ public class CmdViewCreateDataEntitySearcher
 	extends ACmdExternalAttributes
 {
 
-	private ArrayList<Integer> iAlViewReceiverID;
+	private ArrayList<Integer> iAlViewReceiverIDs;
 
 	/**
 	 * Constructor.
@@ -26,7 +26,7 @@ public class CmdViewCreateDataEntitySearcher
 
 		super(cmdType);
 
-		iAlViewReceiverID = new ArrayList<Integer>();
+		iAlViewReceiverIDs = new ArrayList<Integer>();
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class CmdViewCreateDataEntitySearcher
 					-1);
 
 			if (iReceiverID != -1)
-				iAlViewReceiverID.add(generalManager.getIDManager().getInternalFromExternalID(
+				iAlViewReceiverIDs.add(generalManager.getIDManager().getInternalFromExternalID(
 						iReceiverID));
 		}
 	}
@@ -60,7 +60,7 @@ public class CmdViewCreateDataEntitySearcher
 		viewManager.registerItem(dataEntitySearcherView);
 		viewManager.addViewRep(dataEntitySearcherView);
 
-		dataEntitySearcherView.setAttributes(iAlViewReceiverID);
+		dataEntitySearcherView.setAttributes(iAlViewReceiverIDs);
 
 		commandManager.runDoCommand(this);
 	}
@@ -69,5 +69,10 @@ public class CmdViewCreateDataEntitySearcher
 	public void undoCommand() throws CaleydoRuntimeException
 	{
 		commandManager.runUndoCommand(this);
+	}
+	
+	public void setAttributes(ArrayList<Integer> iAlViewReceiverIDs)
+	{
+		this.iAlViewReceiverIDs = iAlViewReceiverIDs; 
 	}
 }
