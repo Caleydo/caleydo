@@ -313,7 +313,6 @@ public class ViewGLCanvasManager
 		}
 
 		hashGLCanvasID2GLCanvas.put(iGLCanvasID, glCanvas);
-		fpsAnimator.add(glCanvas);
 
 		return true;
 	}
@@ -486,6 +485,13 @@ public class ViewGLCanvasManager
 	@Override
 	public void startAnimator()
 	{
+		// add all canvas objects before starting animator
+		// this is needed because all the views are fully filled with needed data at that time.
+		for (GLCaleydoCanvas glCanvas : hashGLCanvasID2GLCanvas.values())
+		{
+			fpsAnimator.add(glCanvas);
+		}
+		
 		fpsAnimator.start();
 	}
 }

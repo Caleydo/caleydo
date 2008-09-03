@@ -351,12 +351,6 @@ public class GLRemoteRendering
 	
 	private void initializeContainedViews(final GL gl)
 	{
-
-//		for (AGLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
-//				.getAllGLEventListeners())
-		if (iAlContainedViewIDs == null)
-			return;
-		
 		for (int iContainedViewID : iAlContainedViewIDs)
 		{
 			AGLEventListener tmpGLEventListener = 
