@@ -620,8 +620,8 @@ public class GLPathway
 
 					// TODO: do this just for first or think about better
 					// solution!
-					generalManager.getViewGLCanvasManager().getInfoAreaManager().setData(
-							iUniqueID, iDavidId, EIDType.DAVID, getInfo());
+//					generalManager.getViewGLCanvasManager().getInfoAreaManager().setData(
+//							iUniqueID, iDavidId, EIDType.DAVID, getShortInfo());
 
 					Iterator<IGraphItem> iterPathwayVertexGraphItemRep = tmpVertexGraphItem
 							.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
@@ -708,23 +708,29 @@ public class GLPathway
 	}
 
 	@Override
-	// TODO: this method is called much too often
-	// better we cache the string and update it only when display list change
-	public ArrayList<String> getInfo()
+	public String getShortInfo()
 	{
-		ArrayList<String> sAlInfo = new ArrayList<String>();
-
+		PathwayGraph pathway = (generalManager.getPathwayManager().getItem(iPathwayID));
+		
+		return "Pathway named " + pathway.getTitle() 
+			+ " (" +pathway.getType().getName() + ")";
+	}
+	
+	@Override
+	public String getDetailedInfo()
+	{
+		StringBuffer sInfoText = new StringBuffer();
 		PathwayGraph pathway = (generalManager.getPathwayManager().getItem(iPathwayID));
 
 		String sPathwayTitle = pathway.getTitle();
 
-		sAlInfo.add("Type: " + pathway.getType().getName() + " Pathway");
-		sAlInfo.add(sPathwayTitle);
+		sInfoText.append("Type: " + pathway.getType().getName() + " Pathway");
+		sInfoText.append(sPathwayTitle);
 
 		// generalManager.getSWTGUIManager().setExternalRCPStatusLineMessage(
 		// pathway.getType().getName() + " Pathway: " + sPathwayTitle);
 
-		return sAlInfo;
+		return sInfoText.toString();
 	}
 
 	@Override

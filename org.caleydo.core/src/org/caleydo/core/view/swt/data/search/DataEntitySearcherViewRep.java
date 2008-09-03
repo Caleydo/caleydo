@@ -8,7 +8,7 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.SelectionDelta;
-import org.caleydo.core.manager.IEventPublisher.MediatorType;
+import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.AView;
@@ -47,7 +47,7 @@ implements IMediatorSender{;
 		ArrayList<Integer> iAlSenderIDs = new ArrayList<Integer>();
 		iAlSenderIDs.add(iUniqueID);
 		
-		tmpMediatorCmd.setAttributes(iAlSenderIDs, iAlViewReceiverIDs, MediatorType.SELECTION_MEDIATOR);
+		tmpMediatorCmd.setAttributes(iAlSenderIDs, iAlViewReceiverIDs, EMediatorType.SELECTION_MEDIATOR);
 		tmpMediatorCmd.doCommand();
 	}
 	

@@ -3,7 +3,7 @@ package org.caleydo.core.manager.event.mediator;
 /**
  * @author Michael Kalkusch
  */
-public enum MediatorUpdateType
+public enum EMediatorUpdateType
 {
 	MEDIATOR_DEFAULT,
 	MEDIATOR_FILTER_ONLY_SET,

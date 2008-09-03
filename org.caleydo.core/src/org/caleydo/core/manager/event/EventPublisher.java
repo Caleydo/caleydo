@@ -7,11 +7,12 @@ import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.manager.event.mediator.EMediatorType;
+import org.caleydo.core.manager.event.mediator.EMediatorUpdateType;
 import org.caleydo.core.manager.event.mediator.IMediator;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.event.mediator.LockableMediator;
-import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
@@ -25,18 +26,12 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 public class EventPublisher
 	extends AManager<IMediator>
 	implements IEventPublisher
-{
-
+{	
 	protected HashMap<IMediatorSender, ArrayList<IMediator>> hashSender2DataMediators;
-
 	protected HashMap<IMediatorReceiver, ArrayList<IMediator>> hashReceiver2DataMediators;
-
 	protected HashMap<IMediatorSender, ArrayList<IMediator>> hashSender2SelectionMediators;
-
 	protected HashMap<IMediatorReceiver, ArrayList<IMediator>> hashReceiver2SelectionMediators;
-
 	protected HashMap<IMediatorSender, ArrayList<IMediator>> hashSender2ViewMediators;
-
 	protected HashMap<IMediatorReceiver, ArrayList<IMediator>> hashReceiver2ViewMediators;
 
 	/**
@@ -45,15 +40,12 @@ public class EventPublisher
 	 */
 	public EventPublisher()
 	{
-		/* Data */
 		hashSender2DataMediators = new HashMap<IMediatorSender, ArrayList<IMediator>>();
 		hashReceiver2DataMediators = new HashMap<IMediatorReceiver, ArrayList<IMediator>>();
 
-		/* Selection */
 		hashSender2SelectionMediators = new HashMap<IMediatorSender, ArrayList<IMediator>>();
 		hashReceiver2SelectionMediators = new HashMap<IMediatorReceiver, ArrayList<IMediator>>();
 
-		/* View */
 		hashReceiver2ViewMediators = new HashMap<IMediatorReceiver, ArrayList<IMediator>>();
 		hashSender2ViewMediators = new HashMap<IMediatorSender, ArrayList<IMediator>>();
 	}
@@ -62,11 +54,6 @@ public class EventPublisher
 			HashMap<IMediatorReceiver, ArrayList<IMediator>> insertIntoHashMap,
 			IMediatorReceiver receiver, IMediator newMediator)
 	{
-
-		assert insertIntoHashMap != null : "can not handle insertIntoHashMap null-pointer";
-		assert receiver != null : "can not handle receiver null-pointer";
-		assert newMediator != null : "can not handle newMediator null-pointer";
-
 		if (!insertIntoHashMap.containsKey(receiver))
 		{
 			insertIntoHashMap.put(receiver, new ArrayList<IMediator>());
@@ -93,23 +80,19 @@ public class EventPublisher
 		}
 
 		bufferArrayList.add(newMediator);
-
-		// //unchecked!
-		// insertIntoHashMap.get(sender).add(newMediator);
 	}
 
 	public synchronized IMediator createMediator(ArrayList<Integer> arSenderIDs,
-			ArrayList<Integer> arReceiverIDs, MediatorType mediatorType,
-			MediatorUpdateType mediatorUpdateType)
+			ArrayList<Integer> arReceiverIDs, EMediatorType mediatorType,
+			EMediatorUpdateType mediatorUpdateType)
 	{
 		IMediator newMediator = null;
 
 		switch (mediatorUpdateType)
 		{
 			case MEDIATOR_DEFAULT:
-				newMediator = new LockableMediator(MediatorUpdateType.MEDIATOR_DEFAULT);
+				newMediator = new LockableMediator(mediatorType, mediatorUpdateType);
 				break;
-
 			// case MEDIATOR_FILTER_ONLY_SET:
 			// newMediator = new LockableExclusivFilterMediator(null);
 			// break;
@@ -118,7 +101,7 @@ public class EventPublisher
 			// newMediator = new LockableIgnoreFilterMediator(null);
 			// break;
 			default:
-				throw new CaleydoRuntimeException("Unknown mediator type " + mediatorType,
+				throw new CaleydoRuntimeException("Unknown mediator type " + mediatorUpdateType,
 						CaleydoRuntimeExceptionType.EVENT);
 		}
 
@@ -132,7 +115,7 @@ public class EventPublisher
 
 	public void addSendersAndReceiversToMediator(IMediator newMediator,
 			ArrayList<Integer> arSenderIDs, ArrayList<Integer> arReceiverIDs,
-			MediatorType mediatorType, MediatorUpdateType mediatorUpdateType)
+			EMediatorType mediatorType, EMediatorUpdateType mediatorUpdateType)
 	{
 		Iterator<Integer> iterSenderIDs = arSenderIDs.iterator();
 
@@ -155,39 +138,15 @@ public class EventPublisher
 			{
 
 				case DATA_MEDIATOR:
-
-					// if (!hashSender2DataMediators.containsKey(sender))
-					// {
-					// hashSender2DataMediators.put(sender,
-					// new ArrayList<IMediator>());
-					// }
-					// hashSender2DataMediators.get(sender).add(newMediator);
-
 					insertSender(hashSender2DataMediators, sender, newMediator);
 					break;
 
 				case SELECTION_MEDIATOR:
 					insertSender(hashSender2SelectionMediators, sender, newMediator);
-
-					// if
-					// (!hashSender2SelectionMediators.containsKey(sender))
-					// {
-					// hashSender2SelectionMediators.put(sender, new
-					// ArrayList<IMediator>());
-					// }
-					// hashSender2SelectionMediators.get(sender).add(
-					// newMediator)
-					// ;
 					break;
 
 				case VIEW_MEDIATOR:
 					insertSender(hashSender2ViewMediators, sender, newMediator);
-					// if (!hashSender2ViewMediators.containsKey(sender))
-					// {
-					// hashSender2ViewMediators.put(sender, new
-					// ArrayList<IMediator>());
-					// }
-					// hashSender2ViewMediators.get(sender).add(newMediator);
 					break;
 
 				default:
@@ -213,19 +172,7 @@ public class EventPublisher
 
 			switch (mediatorType)
 			{
-
 				case DATA_MEDIATOR:
-					// if
-					// (!hashReceiver2DataMediators.containsKey(receiver))
-					// {
-					// hashReceiver2DataMediators.put(receiver, new
-					// ArrayList<IMediator>());
-					// }
-					// hashReceiver2DataMediators.get(receiver).add(
-					// newMediator);
-
-					// assert false : "test this code!";
-
 					insertReceiver(hashReceiver2DataMediators, receiver, newMediator);
 					break;
 
@@ -246,6 +193,46 @@ public class EventPublisher
 		}
 	}
 
+	public void registerSenderToMediatorGroup(EMediatorType mediatorType, 
+			IMediatorSender sender)
+	{
+		for (IMediator mediator : hashItems.values())
+		{
+			switch(mediatorType)
+			{
+				case DATA_MEDIATOR:
+					mediator.register(sender);
+					break;
+				case SELECTION_MEDIATOR:
+					mediator.register(sender);
+					break;
+				case VIEW_MEDIATOR:
+					mediator.register(sender);
+					break;
+			}
+		}
+	}
+	
+	public void registerReceiverToMediatorGroup(EMediatorType mediatorType, 
+			IMediatorReceiver receiver)
+	{
+		for (IMediator mediator : hashItems.values())
+		{
+			switch(mediatorType)
+			{
+				case DATA_MEDIATOR:
+					mediator.register(receiver);
+					break;
+				case SELECTION_MEDIATOR:
+					mediator.register(receiver);
+					break;
+				case VIEW_MEDIATOR:
+					mediator.register(receiver);
+					break;
+			}
+		}
+	}
+	
 	public void registerSenderToMediator(int iMediatorId, IMediatorSender sender)
 	{
 
@@ -395,5 +382,4 @@ public class EventPublisher
 		// TODO Auto-generated method stub
 		return false;
 	}
-
 }

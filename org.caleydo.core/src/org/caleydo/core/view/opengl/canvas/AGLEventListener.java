@@ -122,13 +122,13 @@ public abstract class AGLEventListener
 	public void init(GLAutoDrawable drawable)
 	{
 
-		generalManager.getViewGLCanvasManager().getInfoAreaManager().initInfoOverlay(
-				iUniqueID, drawable);
-
-		generalManager.getViewGLCanvasManager().getInfoAreaManager().initInfoInPlace(
-				viewFrustum);
-
-		generalManager.getViewGLCanvasManager().getInfoAreaManager().enable(false);
+//		generalManager.getViewGLCanvasManager().getInfoAreaManager().initInfoOverlay(
+//				iUniqueID, drawable);
+//
+//		generalManager.getViewGLCanvasManager().getInfoAreaManager().initInfoInPlace(
+//				viewFrustum);
+//
+//		generalManager.getViewGLCanvasManager().getInfoAreaManager().enable(false);
 
 		pickingTriggerMouseAdapter.addGLCanvas(this);
 
@@ -158,8 +158,8 @@ public abstract class AGLEventListener
 
 		displayLocal(gl);
 
-		generalManager.getViewGLCanvasManager().getInfoAreaManager().renderInfoOverlay(
-				iUniqueID, drawable);
+//		generalManager.getViewGLCanvasManager().getInfoAreaManager().renderInfoOverlay(
+//				iUniqueID, drawable);
 	}
 
 	@Override
@@ -178,7 +178,6 @@ public abstract class AGLEventListener
 			viewFrustum.considerAspectRatio(true);
 		else
 		{
-
 			// normalize between 0 and 8
 			Rectangle frame = parentGLCanvas.getBounds();
 			viewFrustum.setLeft(0);
@@ -404,7 +403,8 @@ public abstract class AGLEventListener
 	abstract protected void handleEvents(final EPickingType ePickingType,
 			final EPickingMode ePickingMode, final int iExternalID, final Pick pick);
 
-	public abstract ArrayList<String> getInfo();
+	public abstract String getShortInfo();
+	public abstract String getDetailedInfo();
 
 	public final IViewCamera getViewCamera()
 	{

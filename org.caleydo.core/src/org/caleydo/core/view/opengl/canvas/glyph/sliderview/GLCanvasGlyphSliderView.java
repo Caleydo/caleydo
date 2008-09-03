@@ -353,15 +353,20 @@ public class GLCanvasGlyphSliderView
 		gl.glPopMatrix();
 
 	}
+	
+	@Override
+	public String getShortInfo()
+	{
+		return "Glyph slider";
+	}
 
 	@Override
-	public ArrayList<String> getInfo()
+	public String getDetailedInfo()
 	{
-
-		ArrayList<String> alInfo = new ArrayList<String>();
-		alInfo.add("Type: Glyph Slider View");
-		alInfo.add("GL: Showing Sliders for Glyph View");
-		return alInfo;
+		StringBuffer sInfoText = new StringBuffer();
+		sInfoText.append("Type: Glyph Slider View");
+		sInfoText.append("GL: Showing Sliders for Glyph View");
+		return sInfoText.toString();
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package org.caleydo.rcp;
 
+import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 
@@ -7,11 +8,12 @@ public class ApplicationActionBarAdvisor extends ActionBarAdvisor {
 
 //	private IContributionItem viewList;
 //	private MenuManager showViewMenuManager; 
+	public static IStatusLineManager statusLineManager;
 	
     public ApplicationActionBarAdvisor(IActionBarConfigurer configurer) {
         super(configurer);
 //        
-//        configurer.getStatusLineManager().add(action)
+        statusLineManager = configurer.getStatusLineManager();
     }
 
 //    @Override

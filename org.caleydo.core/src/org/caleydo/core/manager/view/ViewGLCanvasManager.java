@@ -321,7 +321,6 @@ public class ViewGLCanvasManager
 	@Override
 	public boolean unregisterGLCanvas(final int iGLCanvasId)
 	{
-
 		if (hashGLCanvasID2GLCanvas.containsKey(iGLCanvasId))
 		{
 			fpsAnimator.remove(hashGLCanvasID2GLCanvas.get(iGLCanvasId));

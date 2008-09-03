@@ -24,9 +24,10 @@ public class LockableMediator
 	/**
 	 * Constructor.
 	 */
-	public LockableMediator(final MediatorUpdateType mediatorType)
+	public LockableMediator(final EMediatorType mediatorType,
+			final EMediatorUpdateType mediatorUpdateType)
 	{
-		super(mediatorType);
+		super(mediatorType, mediatorUpdateType);
 
 		arReceiver = new ArrayList<IMediatorReceiver>();
 		arSender = new ArrayList<IMediatorSender>();

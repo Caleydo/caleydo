@@ -9,8 +9,8 @@ import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.view.camera.EProjectionMode;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IEventPublisher.MediatorType;
-import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
+import org.caleydo.core.manager.event.mediator.EMediatorType;
+import org.caleydo.core.manager.event.mediator.EMediatorUpdateType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
@@ -101,8 +101,8 @@ public abstract class AGLViewPart
 			{	
 				generalManager.getEventPublisher().addSendersAndReceiversToMediator(
 						generalManager.getEventPublisher().getItem(((GLRemoteRendering)glEventListener).getMediatorID()),
-							iAlMediatorIDs, iAlMediatorIDs, MediatorType.SELECTION_MEDIATOR,
-							MediatorUpdateType.MEDIATOR_DEFAULT);
+							iAlMediatorIDs, iAlMediatorIDs, EMediatorType.SELECTION_MEDIATOR,
+							EMediatorUpdateType.MEDIATOR_DEFAULT);
 				
 				return iViewID;
 			}

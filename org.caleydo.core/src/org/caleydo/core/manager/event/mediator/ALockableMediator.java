@@ -14,26 +14,22 @@ import org.caleydo.core.util.exception.CaleydoRuntimeException;
 public abstract class ALockableMediator
 	extends ALockableMediatorReceiver
 {
-	private final MediatorUpdateType mediatorUpdateType;
+	private final EMediatorType mediatorType;
+	private final EMediatorUpdateType mediatorUpdateType;
 
 	/**
 	 * Constructor.
 	 */
-	protected ALockableMediator(final MediatorUpdateType mediatorUpdateType)
+	protected ALockableMediator(final EMediatorType mediatorType,
+			final EMediatorUpdateType mediatorUpdateType)
 	{
 		super();
 
-		if (mediatorUpdateType == null)
-		{
-			this.mediatorUpdateType = MediatorUpdateType.MEDIATOR_DEFAULT;
-		}
-		else
-		{
-			this.mediatorUpdateType = mediatorUpdateType;
-		}
+		this.mediatorUpdateType = mediatorUpdateType;
+		this.mediatorType = mediatorType;
 	}
 
-	public final MediatorUpdateType getMediatorUpdateTypeType()
+	public final EMediatorUpdateType getMediatorUpdateTypeType()
 	{
 
 		return mediatorUpdateType;
@@ -63,5 +59,11 @@ public abstract class ALockableMediator
 		}
 
 		destroyMediatorDerivedObject(sender);
+	}
+	
+	
+	public EMediatorType getType()
+	{
+		return mediatorType;
 	}
 }

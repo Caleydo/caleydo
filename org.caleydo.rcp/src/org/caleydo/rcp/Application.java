@@ -6,11 +6,13 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import org.caleydo.core.application.core.CaleydoBootloader;
+import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.rcp.core.bridge.RCPBridge;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
+import org.caleydo.rcp.util.info.InfoArea;
 import org.caleydo.rcp.views.GLRemoteRenderingView;
 import org.caleydo.rcp.wizard.firststart.FirstStartWizard;
 import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
@@ -22,6 +24,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
  * This class controls all aspects of the application's execution
@@ -213,6 +216,16 @@ public class Application
 		}
 		
 		openViewsInRCP();
+		
+		// Register the info area to all mediator from type SELECTION
+//		GeneralManager.get().getEventPublisher().registerReceiverToMediatorGroup(
+//				EMediatorType.SELECTION_MEDIATOR, this);
+		
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
+		
+		// Register the info area to all mediator from type SELECTION
+		GeneralManager.get().getEventPublisher().registerReceiverToMediatorGroup(
+				EMediatorType.SELECTION_MEDIATOR, InfoArea.getInfoArea());
 		
 		// Start OpenGL rendering
 		GeneralManager.get().getViewGLCanvasManager().startAnimator();

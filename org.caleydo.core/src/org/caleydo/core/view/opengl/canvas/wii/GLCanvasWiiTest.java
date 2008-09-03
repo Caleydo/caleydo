@@ -2,7 +2,6 @@ package org.caleydo.core.view.opengl.canvas.wii;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.ArrayList;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
@@ -760,7 +759,13 @@ public class GLCanvasWiiTest
 	}
 
 	@Override
-	public ArrayList<String> getInfo()
+	public String getShortInfo()
+	{
+		return "WIIIIIIIIIIIIII";
+	}
+	
+	@Override
+	public String getDetailedInfo()
 	{
 
 		// TODO Auto-generated method stub

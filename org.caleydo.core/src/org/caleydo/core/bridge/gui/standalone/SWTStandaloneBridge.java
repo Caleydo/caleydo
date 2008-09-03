@@ -20,4 +20,11 @@ public class SWTStandaloneBridge
 		// TODO Auto-generated method stub
 
 	}
+
+	@Override
+	public void setShortInfo(String sMessage)
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

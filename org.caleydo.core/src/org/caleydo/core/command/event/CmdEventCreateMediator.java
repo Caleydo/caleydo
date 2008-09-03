@@ -5,9 +5,9 @@ import java.util.StringTokenizer;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IEventPublisher.MediatorType;
+import org.caleydo.core.manager.event.mediator.EMediatorType;
+import org.caleydo.core.manager.event.mediator.EMediatorUpdateType;
 import org.caleydo.core.manager.event.mediator.IMediator;
-import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.system.StringConversionTool;
@@ -28,7 +28,7 @@ public class CmdEventCreateMediator
 
 	protected ArrayList<Integer> iArReceiverIDs;
 
-	protected MediatorType mediatorType;
+	protected EMediatorType mediatorType;
 
 	/**
 	 * Constructor.
@@ -45,7 +45,7 @@ public class CmdEventCreateMediator
 	public void doCommand() throws CaleydoRuntimeException
 	{
 		mediator = generalManager.getEventPublisher().createMediator(iArSenderIDs,
-				iArReceiverIDs, mediatorType, MediatorUpdateType.MEDIATOR_DEFAULT);
+				iArReceiverIDs, mediatorType, EMediatorUpdateType.MEDIATOR_DEFAULT);
 
 		if (iExternalID != -1)
 		{
@@ -84,12 +84,12 @@ public class CmdEventCreateMediator
 
 		if (sMediatorType.length() > 0)
 		{
-			mediatorType = MediatorType.valueOf(sMediatorType);
+			mediatorType = EMediatorType.valueOf(sMediatorType);
 		}
 		else
 		{
 			/* assume DATA_MEDIATOR as default */
-			mediatorType = MediatorType.DATA_MEDIATOR;
+			mediatorType = EMediatorType.DATA_MEDIATOR;
 		}
 
 		// Convert external to internal IDs
@@ -100,7 +100,7 @@ public class CmdEventCreateMediator
 	}
 
 	public void setAttributes(ArrayList<Integer> iArSenderIDs,
-			ArrayList<Integer> iArReceiverIDs, MediatorType mediatorType)
+			ArrayList<Integer> iArReceiverIDs, EMediatorType mediatorType)
 	{
 		this.iArSenderIDs = iArSenderIDs;
 		this.iArReceiverIDs = iArReceiverIDs;

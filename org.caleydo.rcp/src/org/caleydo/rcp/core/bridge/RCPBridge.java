@@ -16,7 +16,6 @@ import org.caleydo.rcp.views.GLRemoteRenderingView;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
 
@@ -85,5 +84,11 @@ implements IGUIBridge
 				}
 			});
 		}
+	}
+
+	@Override
+	public void setShortInfo(String sMessage)
+	{	
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 	}
 }

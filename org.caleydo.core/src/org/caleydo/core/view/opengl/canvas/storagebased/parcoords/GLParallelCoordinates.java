@@ -1586,36 +1586,35 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public ArrayList<String> getInfo()
+	public String getShortInfo()
 	{
-		ArrayList<String> sAlInfo = new ArrayList<String>();
-		sAlInfo.add("Type: Parallel Coordinates");
-		if (!bRenderStorageHorizontally)
-		{
-			sAlInfo.add(set.getVA(iPolylineVAID).size() + " genes as polylines and "
-					+ set.getVA(iAxisVAID).size() + " experiments as axis.");
-		}
-		else
-		{
-			sAlInfo.add(set.getVA(iPolylineVAID).size() + " experiments as polylines and "
-					+ set.getVA(iAxisVAID).size() + " genes as axis.");
-		}
+		return "Parallel Coordaintes (" +set.getVA(iPolylineVAID).size() + " genes / " + 
+			set.getVA(iAxisVAID).size() + " experiments)";
+	}
+	
+	@Override
+	public String getDetailedInfo()
+	{
+		StringBuffer sInfoText = new StringBuffer();
+		sInfoText.append("<b>Type:</b> Parallel Coordinates\n");
+		sInfoText.append(set.getVA(iPolylineVAID).size() + " Genes as polylines and "
+				+ set.getVA(iAxisVAID).size() + " experiments as axis.\n");
 
 		if (bRenderOnlyContext)
 		{
-			sAlInfo.add("Showing only Genes which occur in one of the other views in Focus");
+			sInfoText.append("Showing only genes which occur in one of the other views in focus\n");
 		}
 		else
 		{
 			if (dataFilterLevel == EDataFilterLevel.COMPLETE)
-				sAlInfo.add("Showing all Genes in the dataset");
+				sInfoText.append("Showing all Genes in the dataset\n");
 			else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING)
-				sAlInfo.add("Showing all Genes that have a known DAVID ID mapping");
+				sInfoText.append("Showing all Genes that have a known DAVID ID mapping\n");
 			else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT)
-				sAlInfo
-						.add("Showing all Genes that are contained in any of the KEGG or Biocarta Pathways");
+				sInfoText.append("Showing all genes that are contained in any of the KEGG or Biocarta Pathways\n");
 		}
-		return sAlInfo;
+		
+		return sInfoText.toString();
 	}
 
 	@Override

@@ -158,9 +158,9 @@ public class GLInfoAreaManager
 
 		while (iterInfoOverlay.hasNext())
 		{
-			iterInfoOverlay.next().setData(
-					(GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID))
-							.getInfo());
+//			iterInfoOverlay.next().setData(
+//					(GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iViewID))
+//							.getDetailedInfo());
 		}
 	}
 

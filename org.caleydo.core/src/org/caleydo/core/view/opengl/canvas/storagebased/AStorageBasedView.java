@@ -37,7 +37,6 @@ public abstract class AStorageBasedView
 	implements IMediatorReceiver, IMediatorSender
 {
 
-	int test;
 	protected ISet set;
 
 	/**

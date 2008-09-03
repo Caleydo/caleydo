@@ -347,13 +347,19 @@ public class GLHeatMap
 	}
 
 	@Override
-	public ArrayList<String> getInfo()
+	public String getShortInfo()
 	{
-
-		ArrayList<String> alInfo = new ArrayList<String>();
-		alInfo.add("Type: Heat Map");
-		alInfo.add(set.getVA(iContentVAID).size() + " gene expression values");
-		return alInfo;
+		return "Heat Map (" + set.getVA(iContentVAID).size() + " genes / " + 
+			set.getVA(iStorageVAID).size() + " experiments)";
+	}
+	
+	@Override
+	public String getDetailedInfo()
+	{
+		StringBuffer sInfoText = new StringBuffer();
+		sInfoText.append("Heat Map");
+		sInfoText.append(set.getVA(iContentVAID).size() + " gene expression values");
+		return sInfoText.toString();
 	}
 
 	@Override

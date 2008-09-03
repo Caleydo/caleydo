@@ -198,13 +198,18 @@ public class GLCanvasRemoteGlyph
 	}
 
 	@Override
-	public ArrayList<String> getInfo()
+	public String getShortInfo()
 	{
-
-		ArrayList<String> alInfo = new ArrayList<String>();
-		alInfo.add("Type: Glyph Map");
-		alInfo.add("GL: Showing test clinical data");
-		return alInfo;
+		return "Glyph Bucket";
+	}
+	
+	@Override
+	public String getDetailedInfo()
+	{
+		StringBuffer sInfoText = new StringBuffer();
+		sInfoText.append("Type: Glyph Map");
+		sInfoText.append("GL: Showing test clinical data");
+		return sInfoText.toString();
 	}
 
 	@Override

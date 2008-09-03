@@ -6,9 +6,9 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IEventPublisher.MediatorType;
+import org.caleydo.core.manager.event.mediator.EMediatorType;
+import org.caleydo.core.manager.event.mediator.EMediatorUpdateType;
 import org.caleydo.core.manager.event.mediator.IMediator;
-import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.system.StringConversionTool;
@@ -28,7 +28,7 @@ public class CmdEventMediatorAddObject
 
 	protected ArrayList<Integer> iArReceiverIDs;
 
-	protected MediatorType mediatorType;
+	protected EMediatorType mediatorType;
 
 	/**
 	 * Constructor.
@@ -54,7 +54,7 @@ public class CmdEventMediatorAddObject
 		}
 
 		eventPublisher.addSendersAndReceiversToMediator(mediator, iArSenderIDs,
-				iArReceiverIDs, mediatorType, MediatorUpdateType.MEDIATOR_DEFAULT);
+				iArReceiverIDs, mediatorType, EMediatorUpdateType.MEDIATOR_DEFAULT);
 
 		commandManager.runDoCommand(this);
 	}
@@ -87,16 +87,16 @@ public class CmdEventMediatorAddObject
 
 		if (sMediatorType.length() < 1)
 		{
-			mediatorType = MediatorType.DATA_MEDIATOR;
+			mediatorType = EMediatorType.DATA_MEDIATOR;
 		}
 		else
 		{
-			mediatorType = MediatorType.valueOf(sMediatorType);
+			mediatorType = EMediatorType.valueOf(sMediatorType);
 		}
 	}
 
 	public void setAttributes(int iEventMediatorId, ArrayList<Integer> iArSenderIDs,
-			ArrayList<Integer> iArReceiverIDs, MediatorType mediatorType)
+			ArrayList<Integer> iArReceiverIDs, EMediatorType mediatorType)
 	{
 
 		this.iExternalID = iEventMediatorId;

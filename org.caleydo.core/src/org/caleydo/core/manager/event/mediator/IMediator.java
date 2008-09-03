@@ -41,7 +41,9 @@ public interface IMediator
 	public boolean hasReceiver(IMediatorReceiver receiver);
 
 	public boolean hasSender(IMediatorSender sender);
-
+	
+	public EMediatorType getType();
+	
 	/**
 	 * Called before destruction of Mediator. Only creator of the Mediator my
 	 * call this method.

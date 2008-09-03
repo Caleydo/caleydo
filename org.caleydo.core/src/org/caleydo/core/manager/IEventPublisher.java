@@ -1,10 +1,11 @@
 package org.caleydo.core.manager;
 
 import java.util.ArrayList;
+import org.caleydo.core.manager.event.mediator.EMediatorType;
+import org.caleydo.core.manager.event.mediator.EMediatorUpdateType;
 import org.caleydo.core.manager.event.mediator.IMediator;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
-import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
 
 /**
  * Handle events using Publish subscriber design pattern.
@@ -15,23 +16,14 @@ import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
 public interface IEventPublisher
 	extends IManager<IMediator>, IMediatorReceiver
 {
-
-	public enum MediatorType
-	{
-		DATA_MEDIATOR,
-		SELECTION_MEDIATOR,
-		VIEW_MEDIATOR; // for future usage
-
-	}
-
 	/**
 	 * Creates a mediator and registers the senders and receivers to this
 	 * mediator. mediatorUpdateType defines whether selection filtering is
 	 * supported or not.
 	 */
 	public IMediator createMediator(ArrayList<Integer> arSenderIDs,
-			ArrayList<Integer> arReceiverIDs, MediatorType mediatorType,
-			MediatorUpdateType mediatorUpdateType);
+			ArrayList<Integer> arReceiverIDs, EMediatorType mediatorType,
+			EMediatorUpdateType mediatorUpdateType);
 
 	/**
 	 * Adds a list of senders and or receivers to a Mediator.
@@ -44,7 +36,7 @@ public interface IEventPublisher
 	 */
 	public void addSendersAndReceiversToMediator(IMediator newMediator,
 			ArrayList<Integer> arSenderIDs, ArrayList<Integer> arReceiverIDs,
-			MediatorType mediatorType, MediatorUpdateType mediatorUpdateType);
+			EMediatorType mediatorType, EMediatorUpdateType mediatorUpdateType);
 
 	/**
 	 * Adds a sender to an existing mediator.
@@ -102,4 +94,9 @@ public interface IEventPublisher
 	 */
 	public boolean hasRelation(IMediatorSender sender, IMediatorReceiver receiver);
 
+	public void registerSenderToMediatorGroup(EMediatorType mediatorType, 
+			IMediatorSender sender);
+	
+	public void registerReceiverToMediatorGroup(EMediatorType mediatorType, 
+			IMediatorReceiver receiver);
 }

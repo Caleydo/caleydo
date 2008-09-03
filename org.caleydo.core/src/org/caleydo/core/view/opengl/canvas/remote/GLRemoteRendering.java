@@ -30,10 +30,10 @@ import org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRender
 import org.caleydo.core.data.view.rep.renderstyle.layout.BucketLayoutRenderStyle;
 import org.caleydo.core.data.view.rep.renderstyle.layout.JukeboxLayoutRenderStyle;
 import org.caleydo.core.data.view.rep.renderstyle.layout.ARemoteViewLayoutRenderStyle.LayoutMode;
-import org.caleydo.core.manager.IEventPublisher.MediatorType;
+import org.caleydo.core.manager.event.mediator.EMediatorType;
+import org.caleydo.core.manager.event.mediator.EMediatorUpdateType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
-import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -302,9 +302,6 @@ public class GLRemoteRendering
 		// layoutRenderStyle.initTransitionLayer();
 		// layoutRenderStyle.initUnderInteractionLayer();
 
-		if (bBusyModeChanged)
-			updateBusyMode(gl);
-
 		doSlerpActions(gl);
 		initializeNewPathways(gl);
 
@@ -343,6 +340,9 @@ public class GLRemoteRendering
 
 		colorMappingBarMiniView.render(gl, layoutRenderStyle.getColorBarXPos(),
 				layoutRenderStyle.getColorBarYPos(), 4);
+		
+		if (bBusyModeChanged)
+			updateBusyMode(gl);
 	}
 
 	public void setInitialContainedViews(ArrayList<Integer> iAlInitialContainedViewIDs)
@@ -409,8 +409,8 @@ public class GLRemoteRendering
 			arMediatorIDs.add(iViewID);
 			generalManager.getEventPublisher().addSendersAndReceiversToMediator(
 					generalManager.getEventPublisher().getItem(iMediatorID),
-					arMediatorIDs, arMediatorIDs, MediatorType.SELECTION_MEDIATOR,
-					MediatorUpdateType.MEDIATOR_DEFAULT);
+					arMediatorIDs, arMediatorIDs, EMediatorType.SELECTION_MEDIATOR,
+					EMediatorUpdateType.MEDIATOR_DEFAULT);
 		}
 	}
 
@@ -494,7 +494,7 @@ public class GLRemoteRendering
 
 		if (layer.equals(poolLayer))
 		{
-			String sRenderText = tmpCanvasUser.getInfo().get(1);
+			String sRenderText = tmpCanvasUser.getShortInfo();
 
 			// Limit pathway name in length
 			if (sRenderText.length() > 16)
@@ -1527,14 +1527,19 @@ public class GLRemoteRendering
 
 		}
 	}
+	
+	@Override
+	public String getShortInfo()
+	{
+		return "Bucket / Jukebox";
+	}
 
 	@Override
-	public ArrayList<String> getInfo()
+	public String getDetailedInfo()
 	{
-
-		ArrayList<String> sAlInfo = new ArrayList<String>();
-		sAlInfo.add("No info available!");
-		return sAlInfo;
+		StringBuffer sInfoText = new StringBuffer();
+		sInfoText.append("Bucket / Jukebox");
+		return sInfoText.toString();
 	}
 
 	private void createEventMediator()
@@ -1547,7 +1552,7 @@ public class GLRemoteRendering
 		iAlSenderIDs.add(iUniqueID);
 		iAlReceiverIDs.add(iUniqueID);
 		tmpMediatorCmd.setAttributes(iAlSenderIDs, iAlReceiverIDs,
-				MediatorType.SELECTION_MEDIATOR);
+				EMediatorType.SELECTION_MEDIATOR);
 		tmpMediatorCmd.doCommand();
 
 		iMediatorID = tmpMediatorCmd.getMediatorID();
@@ -1658,8 +1663,8 @@ public class GLRemoteRendering
 			arMediatorIDs.add(iGLEventListenerIdToRemove);
 			generalManager.getEventPublisher().addSendersAndReceiversToMediator(
 					generalManager.getEventPublisher().getItem(iMediatorID),
-					arMediatorIDs, arMediatorIDs, MediatorType.SELECTION_MEDIATOR,
-					MediatorUpdateType.MEDIATOR_DEFAULT);
+					arMediatorIDs, arMediatorIDs, EMediatorType.SELECTION_MEDIATOR,
+					EMediatorUpdateType.MEDIATOR_DEFAULT);
 
 			generalManager.getViewGLCanvasManager().unregisterGLEventListener(
 					iGLEventListenerIdToRemove);
@@ -1906,8 +1911,8 @@ public class GLRemoteRendering
 
 				generalManager.getEventPublisher().addSendersAndReceiversToMediator(
 						generalManager.getEventPublisher().getItem(iMediatorID),
-						arMediatorIDs, arMediatorIDs, MediatorType.SELECTION_MEDIATOR,
-						MediatorUpdateType.MEDIATOR_DEFAULT);
+						arMediatorIDs, arMediatorIDs, EMediatorType.SELECTION_MEDIATOR,
+						EMediatorUpdateType.MEDIATOR_DEFAULT);
 
 				if (underInteractionLayer.containsElement(-1))
 				{
