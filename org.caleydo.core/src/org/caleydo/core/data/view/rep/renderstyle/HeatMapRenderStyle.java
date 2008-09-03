@@ -10,7 +10,6 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
-import com.sun.org.apache.bcel.internal.generic.IALOAD;
 
 /**
  * Heat Map render styles

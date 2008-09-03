@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import javax.management.InvalidAttributeValueException;
-
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateSet;
 import org.caleydo.core.command.data.CmdDataCreateStorage;
@@ -21,7 +19,6 @@ import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;

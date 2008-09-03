@@ -1,11 +1,5 @@
 package org.caleydo.rcp.perspective;
 
-import java.util.ArrayList;
-
-import org.caleydo.rcp.Application;
-import org.caleydo.rcp.EStartViewsMode;
-import org.caleydo.rcp.views.GLRemoteRenderingView;
-import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 

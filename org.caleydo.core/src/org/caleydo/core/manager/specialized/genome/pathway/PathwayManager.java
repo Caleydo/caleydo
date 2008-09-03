@@ -11,8 +11,6 @@ import org.caleydo.core.data.view.rep.jgraph.PathwayImageMap;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.core.Graph;
 

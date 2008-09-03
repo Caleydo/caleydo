@@ -1,19 +1,6 @@
 package org.caleydo.rcp;
 
-import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
-import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
-import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
-import org.caleydo.rcp.views.AGLViewPart;
-import org.caleydo.rcp.views.GLParCoordsView;
-import org.caleydo.rcp.views.GLPathwayView;
-import org.caleydo.rcp.views.GLRemoteRenderingView;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.preference.PreferenceManager;
-import org.eclipse.swt.widgets.ExpandBar;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPreferenceConstants;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.IWorkbenchConfigurer;

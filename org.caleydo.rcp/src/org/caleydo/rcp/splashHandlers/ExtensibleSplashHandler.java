@@ -1,11 +1,7 @@
 package org.caleydo.rcp.splashHandlers;
 
-import java.util.ArrayList;
-
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.Application;
-import org.caleydo.rcp.EStartViewsMode;
-import org.caleydo.rcp.views.GLRemoteRenderingView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
@@ -16,8 +12,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PartInitException;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.splash.AbstractSplashHandler;
 
 /**

@@ -4,7 +4,6 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
 
 /**

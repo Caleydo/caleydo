@@ -1,11 +1,9 @@
 package org.caleydo.rcp;
 
-import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.rcp.views.GLHeatMapView;
 import org.caleydo.rcp.views.GLParCoordsView;
 import org.caleydo.rcp.views.GLRemoteRenderingView;
 import org.caleydo.rcp.views.browser.HTMLBrowserView;
-import org.eclipse.ui.internal.browser.BrowserViewer;
 
 /**
  * Enum for triggering view loading in RCP over the command line.

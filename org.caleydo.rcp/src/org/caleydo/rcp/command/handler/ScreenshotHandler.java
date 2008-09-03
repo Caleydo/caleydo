@@ -1,19 +1,9 @@
 package org.caleydo.rcp.command.handler;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
-
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.GC;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
-import org.eclipse.swt.graphics.ImageLoader;
-import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.ui.handlers.HandlerUtil;
 
 public class ScreenshotHandler
 	extends AbstractHandler

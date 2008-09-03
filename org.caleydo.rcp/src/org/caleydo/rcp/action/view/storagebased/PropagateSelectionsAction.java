@@ -1,7 +1,6 @@
 package org.caleydo.rcp.action.view.storagebased;
 
 import org.caleydo.core.command.view.rcp.EExternalActionType;
-import org.caleydo.core.command.view.rcp.EExternalFlagSetterType;
 import org.caleydo.rcp.action.view.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 

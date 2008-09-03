@@ -8,8 +8,6 @@ import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import com.sun.opengl.util.BufferUtil;

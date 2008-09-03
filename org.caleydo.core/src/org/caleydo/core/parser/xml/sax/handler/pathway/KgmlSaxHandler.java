@@ -8,7 +8,6 @@ import org.caleydo.core.data.graph.pathway.item.edge.PathwayReactionEdgeGraphIte
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EMappingType;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;

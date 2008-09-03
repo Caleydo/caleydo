@@ -1,5 +1,11 @@
 package org.caleydo.core.view.opengl.canvas.storagebased.heatmap;
 
+import static org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
+import static org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle.MOUSE_OVER_LINE_WIDTH;
+import static org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
+import static org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle.SELECTED_LINE_WIDTH;
+import static org.caleydo.core.data.view.rep.renderstyle.HeatMapRenderStyle.FIELD_Z;
+import static org.caleydo.core.data.view.rep.renderstyle.HeatMapRenderStyle.SELECTION_Z;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
@@ -9,7 +15,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
-import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
@@ -18,7 +23,6 @@ import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.HeatMapRenderStyle;
-import static org.caleydo.core.data.view.rep.renderstyle.HeatMapRenderStyle.*;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;

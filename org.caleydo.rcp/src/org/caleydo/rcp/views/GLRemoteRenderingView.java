@@ -6,7 +6,6 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.rcp.action.view.TakeSnapshotAction;
-
 import org.caleydo.rcp.action.view.remote.CloseOrResetContainedViews;
 import org.caleydo.rcp.action.view.remote.ToggleLayoutAction;
 import org.caleydo.rcp.util.search.SearchBar;

@@ -3,7 +3,6 @@ package org.caleydo.rcp;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Random;
 import java.util.logging.Level;
 
 import org.caleydo.core.application.core.CaleydoBootloader;

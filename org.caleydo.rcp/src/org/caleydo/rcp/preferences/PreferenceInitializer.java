@@ -1,9 +1,8 @@
 package org.caleydo.rcp.preferences;
 
+import org.caleydo.rcp.Activator;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
-
-import org.caleydo.rcp.Activator;
 
 /**
  * Class used to initialize default preference values.

@@ -14,7 +14,6 @@ import org.caleydo.core.manager.event.mediator.MediatorUpdateType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;

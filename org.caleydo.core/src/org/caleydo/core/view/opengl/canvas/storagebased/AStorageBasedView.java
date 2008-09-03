@@ -2,10 +2,8 @@ package org.caleydo.core.view.opengl.canvas.storagebased;
 
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumMap;
-import java.util.Random;
 import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
 import org.caleydo.core.data.IUniqueObject;

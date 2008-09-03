@@ -11,7 +11,6 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
-import com.sun.opengl.util.Animator;
 
 /**
  * Make Jogl GLCanvas addressable by iD and provide ground for XML bootstrapping

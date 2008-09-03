@@ -3,13 +3,6 @@ package org.caleydo.rcp.views;
 import java.util.ArrayList;
 
 import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
-import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
-import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.view.camera.EProjectionMode;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.rcp.action.view.storagebased.ChangeOrientationAction;
 import org.caleydo.rcp.action.view.storagebased.ClearSelectionsAction;
 import org.caleydo.rcp.action.view.storagebased.PropagateSelectionsAction;
