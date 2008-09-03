@@ -206,9 +206,6 @@ public class Application
 			caleydoCore.start();
 		}
 		
-		// Start OpenGL rendering
-		GeneralManager.get().getViewGLCanvasManager().startAnimator();
-		
 		if (!bDoExit)
 		{
 			// Trigger pathway loading
@@ -216,6 +213,9 @@ public class Application
 		}
 		
 		openViewsInRCP();
+		
+		// Start OpenGL rendering
+		GeneralManager.get().getViewGLCanvasManager().startAnimator();
 	}
 	
 	private static void openViewsInRCP() 
