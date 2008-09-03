@@ -24,17 +24,12 @@ public class GLHeatMapView
 	public GLHeatMapView()
 	{
 		super();
-		
-		createToolBarItems(-1);
 	}
 	
 	@Override
 	public void createPartControl(Composite parent)
 	{
 		super.createPartControl(parent);	
-		
-		createGLCanvas();
-		createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D, glCanvas.getID());
 	}
 	
 	public static void createToolBarItems(int iViewID)
@@ -56,10 +51,10 @@ public class GLHeatMapView
 	@Override
 	protected final void fillToolBar()
 	{
-		if (alToolbar == null)
-		{
-			createToolBarItems(iGLEventListenerID);
-		}
+		createGLCanvas();
+		createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D, glCanvas.getID());		
+		
+		createToolBarItems(iGLEventListenerID);
 		
 		IToolBarManager toolBarManager = getViewSite().getActionBars().getToolBarManager();
 		fillToolBar(toolBarManager);

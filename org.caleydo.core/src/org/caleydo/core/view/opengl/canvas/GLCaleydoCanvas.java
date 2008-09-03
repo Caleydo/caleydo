@@ -53,7 +53,6 @@ public class GLCaleydoCanvas
 
 	public void init(GLAutoDrawable drawable)
 	{
-
 		generalManager.getLogger().log(
 				Level.INFO,
 				"Creating canvas with ID " + iGLCanvasID + "." + "\nOpenGL capabilities:"

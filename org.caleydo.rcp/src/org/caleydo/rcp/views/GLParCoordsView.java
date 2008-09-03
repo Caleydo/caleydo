@@ -26,17 +26,12 @@ public class GLParCoordsView
 	public GLParCoordsView()
 	{
 		super();
-		
-		createToolBarItems(-1);
 	}
 	
 	@Override
 	public void createPartControl(Composite parent)
 	{
-		super.createPartControl(parent);
-		
-		createGLCanvas();
-		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_3D, glCanvas.getID());
+		super.createPartControl(parent);		
 	}
 	
 	public static void createToolBarItems(int iViewID)
@@ -62,10 +57,10 @@ public class GLParCoordsView
 	@Override
 	protected final void fillToolBar()
 	{
-		if (alToolbar == null)
-		{
-			createToolBarItems(iGLEventListenerID);
-		}
+		createGLCanvas();
+		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_3D, glCanvas.getID());
+	
+		createToolBarItems(iGLEventListenerID);
 		
 		IToolBarManager toolBarManager = getViewSite().getActionBars().getToolBarManager();
 		fillToolBar(toolBarManager);
