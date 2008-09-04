@@ -2,6 +2,8 @@ package org.caleydo.core.util.mapping.color;
 
 import java.util.ArrayList;
 import java.util.EnumMap;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.eclipse.jface.preference.PreferenceStore;
 
 /**
  * Manage color mappings for different situations system-wide. There can only be
@@ -53,6 +55,12 @@ public class ColorMappingManager
 			ArrayList<ColorMarkerPoint> alMarkerPoints)
 	{
 		hashColorMapping.put(colorMappingType, new ColorMapping(alMarkerPoints));
+	}
+	
+	public void initiFromPreferenceStore()
+	{
+		PreferenceStore store = GeneralManager.get().getPreferenceStore();
+		
 	}
 
 	/**

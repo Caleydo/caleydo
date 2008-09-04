@@ -2,7 +2,6 @@ package org.caleydo.testing.applications.objecttest.command.memento;
 
 import org.caleydo.core.command.memento.IMemento;
 import org.caleydo.core.command.memento.IMementoCreator;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Class for testing IMemento.
@@ -45,20 +44,9 @@ public final class MementoTesterObject
 			testMementos[i] = creator.createMemento();
 		}
 
-		try
+		for (int i = (iTestRuns - 1); i > -1; i--)
 		{
-			for (int i = (iTestRuns - 1); i > -1; i--)
-			{
-				creator.setMemento(testMementos[i]);
-			}
-		}
-		catch (CaleydoRuntimeException pe)
-		{
-			return false;
-		}
-		catch (Exception e)
-		{
-			return false;
+			creator.setMemento(testMementos[i]);
 		}
 
 		return true;

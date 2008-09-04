@@ -3,7 +3,6 @@ package org.caleydo.rcp.views;
 import java.util.ArrayList;
 
 import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.ICommand;
 import org.caleydo.core.command.view.swt.CmdViewCreateDataEntitySearcher;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;

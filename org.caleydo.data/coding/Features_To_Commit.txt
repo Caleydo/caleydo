@@ -1,7 +1,2 @@
 Done since last commit:
 
-Added decimalFormat to GeneralRenderStyle. Use only this from now on.
-Implemented text for color bar.
-Added color bar to heat map.
-Fixed Ugly Selected Line
-Fixed HeatMap selected Element rep update bug

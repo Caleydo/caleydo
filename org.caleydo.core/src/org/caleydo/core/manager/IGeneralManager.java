@@ -36,41 +36,42 @@ public interface IGeneralManager
 	 */
 	public void init(boolean bIsStandalone, IGUIBridge externalGUIBridge);
 
-	public abstract IMementoManager getMementoManager();
 
-	public abstract IStorageManager getStorageManager();
+	public IMementoManager getMementoManager();
 
-	public abstract ISetManager getSetManager();
+	public IStorageManager getStorageManager();
 
-	// public abstract ISelectionManager getSelectionManager();
-	public abstract ICommandManager getCommandManager();
+	public ISetManager getSetManager();
 
-	public abstract ISWTGUIManager getSWTGUIManager();
+	// public  ISelectionManager getSelectionManager();
+	public  ICommandManager getCommandManager();
 
-	public abstract IViewGLCanvasManager getViewGLCanvasManager();
+	public  ISWTGUIManager getSWTGUIManager();
 
-	public abstract IEventPublisher getEventPublisher();
+	public  IViewGLCanvasManager getViewGLCanvasManager();
 
-	public abstract IXmlParserManager getXmlParserManager();
+	public  IEventPublisher getEventPublisher();
 
-	public abstract IPathwayManager getPathwayManager();
+	public  IXmlParserManager getXmlParserManager();
 
-	public abstract IPathwayItemManager getPathwayItemManager();
+	public  IPathwayManager getPathwayManager();
 
-	public abstract IGenomeIdManager getGenomeIdManager();
+	public  IPathwayItemManager getPathwayItemManager();
 
-	public abstract IGlyphManager getGlyphManager();
+	public  IGenomeIdManager getGenomeIdManager();
 
-	public abstract IDManager getIDManager();
+	public  IGlyphManager getGlyphManager();
 
-	// public abstract IVirtualArrayManager getVirtualArrayManager();
+	public  IDManager getIDManager();
+
+	// public  IVirtualArrayManager getVirtualArrayManager();
 
 	/**
 	 * Returns the logger.
 	 * 
 	 * @return logger
 	 */
-	public abstract Logger getLogger();
+	public  Logger getLogger();
 
 	/**
 	 * Returns the preference store where Caleydo stores its preferences. The

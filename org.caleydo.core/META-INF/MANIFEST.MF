@@ -141,3 +141,4 @@ Bundle-ClassPath: lib/ftp/edtftpj.jar,
  lib/wii/avetanaBT.jar,
  lib/wii/WiiRemoteJ.jar,
  .
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

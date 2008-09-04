@@ -28,3 +28,4 @@ Export-Package: com.sun.gluegen.runtime,
  gleem.linalg.open,
  javax.media.opengl,
  javax.media.opengl.glu
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

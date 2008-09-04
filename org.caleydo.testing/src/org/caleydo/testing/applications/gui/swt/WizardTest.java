@@ -35,7 +35,7 @@ public class WizardTest
 {
 	public static WizardTest mainWindow;
 	AddEntryAction addEntryAction;
-	List entries;
+	List<AddressEntry> entries;
 	private TableViewer viewer;
 
 	public WizardTest()
@@ -43,7 +43,7 @@ public class WizardTest
 		super(null);
 		mainWindow = this;
 		addEntryAction = new AddEntryAction();
-		entries = new LinkedList();
+		entries = new LinkedList<AddressEntry>();
 		addToolBar(SWT.NONE);
 	}
 
@@ -360,9 +360,11 @@ class AddressBookLabelProvider
 class AddressBookContentProvider
 	implements IStructuredContentProvider
 {
+
+	@SuppressWarnings("unchecked")
 	public Object[] getElements(Object inputElement)
 	{
-		return ((List) inputElement).toArray();
+		return ((List<AddressEntry>) inputElement).toArray();
 	}
 
 	public void dispose()

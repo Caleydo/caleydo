@@ -32,8 +32,6 @@ import org.caleydo.core.manager.specialized.genome.pathway.PathwayManager;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 import org.caleydo.core.manager.view.ViewGLCanvasManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.eclipse.jface.preference.PreferenceStore;
 
 /**
@@ -97,7 +95,7 @@ public class GeneralManager
 
 		if (bAllManagersInitialized)
 		{
-			throw new CaleydoRuntimeException(
+			throw new IllegalStateException(
 					"Tried to initialize managers multiple times. Abort.");
 		}
 
@@ -163,9 +161,8 @@ public class GeneralManager
 			if (!(new File(IGeneralManager.CALEYDO_HOME_PATH).exists()))
 			{
 				if (!(new File(IGeneralManager.CALEYDO_HOME_PATH).mkdir()))
-					throw new CaleydoRuntimeException(
-							"Unable to create home folder .caleydo. Check user permissions!",
-							CaleydoRuntimeExceptionType.DATAHANDLING);
+					throw new IllegalStateException(
+							"Unable to create home folder .caleydo. Check user permissions!");
 			}
 
 			try
@@ -175,8 +172,7 @@ public class GeneralManager
 			}
 			catch (IOException e1)
 			{
-				throw new CaleydoRuntimeException("Unable to save preference file.",
-						CaleydoRuntimeExceptionType.DATAHANDLING);
+				throw new IllegalStateException("Unable to save preference file.");
 			}
 		}
 

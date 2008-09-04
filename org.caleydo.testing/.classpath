@@ -10,12 +10,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.util.gleem"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.util.graph"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/kegg/keggapi.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.core.resources_3.1.2.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.core.runtime_3.1.2.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.jface_3.1.1.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.jface.text_3.1.2.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.osgi_3.1.2.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jface/org.eclipse.ui.workbench_3.1.2.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jogl/demos/jogl-demos.jar"/>
 	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jgraph/jgraph.jar" sourcepath="/org.caleydo.lib/lib_src/jgraph/jgraph-latest-stable-src_5_9.jar">
 		<attributes>

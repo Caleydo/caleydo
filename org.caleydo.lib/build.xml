@@ -13,6 +13,7 @@
 	<property name="core.dir" value="../org.caleydo.core" />
 	<property name="rcp.dir" value="../org.caleydo.rcp" />
 	<property name="data.dir" value="../org.caleydo.data" />
+	<property name="testing.dir" value="../org.caleydo.testing" />
 
 
 	<target name="clean">
@@ -20,6 +21,7 @@
 		<delete dir="${graph.dir}/${lib.dir}" />
 		<delete dir="${rcp.dir}/${lib.dir}" />
 		<delete dir="${core.dir}/${lib.dir}" />
+		<delete dir="${testing.dir}/${lib.dir}" />
 		<delete>
 			<fileset dir="${data.dir}">
 				<include name="hs_err_pid*.log" />
@@ -130,6 +132,25 @@
 		</copy>
 	</target>
 
-	<target name="main" depends="clean, copy_rcp, copy_core, copy_gleem" />
+	<target name="copy_testing" description="Moves all
+		relevant libraries to lib/ in testing">
+		<mkdir dir="${testing.dir}/${lib.dir}" />
+		<copy todir="${testing.dir}/${lib.dir}/jogl">
+			<fileset dir="${lib.dir}/jogl" excludes="**/*.zip">
+			</fileset>
+		</copy>
+		<copy todir="${testing.dir}/${lib.dir}/kegg">
+			<fileset dir="${lib.dir}/kegg" excludes="**/*.zip">
+			</fileset>
+		</copy>
+		<copy todir="${testing.dir}/${lib.dir}/jgraph">
+			<fileset dir="${lib.dir}/jgraph" excludes="**/*.zip">
+			</fileset>
+		</copy>
+
+
+	</target>
+
+	<target name="main" depends="clean, copy_rcp, copy_core, copy_gleem, copy_testing" />
 
 </project>
