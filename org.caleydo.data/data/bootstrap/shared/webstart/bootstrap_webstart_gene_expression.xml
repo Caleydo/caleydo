@@ -8,10 +8,7 @@
 
       	<!-- Creating GenomeId mapping -->
 		  	<read-xml-file target="data/bootstrap/shared/webstart/load_genome_id_mapping.xml" />	   				
-						
-		<!-- Creating Data -->
-			<read-xml-file target="data/bootstrap/shared/webstart/load_data.xml" />						   																
-						
+									
 		<!-- Setting paths -->	
 		<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_SYSTEM_PATH_PATHWAYS" 			cmdId="" uniqueId="11331" label="Set Biocarta Pathway Paths" 
 			detail="BIOCARTA"

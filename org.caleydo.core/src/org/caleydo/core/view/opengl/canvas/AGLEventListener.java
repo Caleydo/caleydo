@@ -433,4 +433,12 @@ public abstract class AGLEventListener
 		this.detailLevel = detailLevel;
 		setDisplayListDirty();
 	}
+	
+	public boolean isRenderedRemote() 
+	{
+		if (remoteRenderingGLCanvas == null)
+			return false;
+		
+		return true;
+	}
 }

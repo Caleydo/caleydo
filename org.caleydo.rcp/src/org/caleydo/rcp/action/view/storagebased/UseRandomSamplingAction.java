@@ -20,6 +20,7 @@ public class UseRandomSamplingAction
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader()
 				.getResource(ICON)));
+		setChecked(bFlag);
 	}
 
 	@Override

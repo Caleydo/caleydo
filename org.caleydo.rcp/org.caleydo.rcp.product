@@ -19,6 +19,7 @@ All Rights Reserved.
    </configIni>
 
    <launcherArgs>
+      <programArgs>data/bootstrap/shared/kashofer/hcc/all_hcc/rcp/bootstrap.xml browser remote parcoords</programArgs>
       <vmArgs>-Xms512m -Xmx1024m -Dsun.java2d.opengl=true -Djava.util.logging.config.file=data/logging/logging.properties
 -Xss16384k</vmArgs>
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
@@ -34,7 +35,6 @@ All Rights Reserved.
          <bmp/>
       </win>
    </launcher>
-
 
    <vm>
    </vm>

@@ -91,16 +91,6 @@ public class CaleydoBootloader
 	}
 
 	/**
-	 * Get local XML file name.
-	 * 
-	 * @return XML file name or XPath
-	 */
-	public final String getXmlFileName()
-	{
-		return this.sFileName;
-	}
-
-	/**
 	 * Start Caleydo core.
 	 * 
 	 */
@@ -108,7 +98,7 @@ public class CaleydoBootloader
 	{
 		try
 		{
-			parseXmlConfigFile(getXmlFileName());
+			parseXmlConfigFile(sFileName);
 
 			if (generalManager.isStandalone())
 			{

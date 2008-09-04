@@ -18,7 +18,6 @@ import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.data.selection.SelectionItem;
 import org.caleydo.core.data.view.camera.IViewFrustum;
-import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
@@ -74,8 +73,6 @@ public class GLPathway
 
 	private Vec3f vecTranslation;
 
-	private GeneralRenderStyle renderStyle;
-
 	/**
 	 * Constructor.
 	 */
@@ -95,7 +92,6 @@ public class GLPathway
 
 		vecScaling = new Vec3f(1, 1, 1);
 		vecTranslation = new Vec3f(0, 0, 0);
-		renderStyle = new GeneralRenderStyle(viewFrustum);
 
 		// initialize internal gene selection manager
 		ArrayList<ESelectionType> alSelectionType = new ArrayList<ESelectionType>();
@@ -613,6 +609,7 @@ public class GLPathway
 								EPickingType.PATHWAY_TEXTURE_SELECTION);
 						// connectedElementRepManager.clear();
 
+						connectedElementRepresentationManager.clear();
 						continue;
 					}
 
@@ -722,10 +719,8 @@ public class GLPathway
 		StringBuffer sInfoText = new StringBuffer();
 		PathwayGraph pathway = (generalManager.getPathwayManager().getItem(iPathwayID));
 
-		String sPathwayTitle = pathway.getTitle();
-
-		sInfoText.append("Type: " + pathway.getType().getName() + " Pathway");
-		sInfoText.append(sPathwayTitle);
+		sInfoText.append("<b>Pathway</b>\n\n<b>Name:</b> "+ pathway.getTitle()
+			+ "\n<b>Type:</b> "+pathway.getType().getName());
 
 		// generalManager.getSWTGUIManager().setExternalRCPStatusLineMessage(
 		// pathway.getType().getName() + " Pathway: " + sPathwayTitle);

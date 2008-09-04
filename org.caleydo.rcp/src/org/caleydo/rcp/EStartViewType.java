@@ -3,7 +3,7 @@ package org.caleydo.rcp;
 import org.caleydo.rcp.views.GLHeatMapView;
 import org.caleydo.rcp.views.GLParCoordsView;
 import org.caleydo.rcp.views.GLRemoteRenderingView;
-import org.caleydo.rcp.views.browser.HTMLBrowserView;
+import org.caleydo.rcp.views.HTMLBrowserView;
 
 /**
  * Enum for triggering view loading in RCP over the command line.
@@ -11,7 +11,7 @@ import org.caleydo.rcp.views.browser.HTMLBrowserView;
  * @author Marc Streit
  *
  */
-public enum EStartViewsMode
+public enum EStartViewType
 {
 	PARALLEL_COORDINATES("parcoords", GLParCoordsView.ID),
 	HEATMAP("heatmap", GLHeatMapView.ID),
@@ -25,7 +25,7 @@ public enum EStartViewsMode
 	 * Constructor
 	 * @param sTriggerCommand
 	 */
-	private EStartViewsMode(String sTriggerCommand,
+	private EStartViewType(String sTriggerCommand,
 			String sRCPViewID)
 	{
 		this.sCommandLineArgument = sTriggerCommand;

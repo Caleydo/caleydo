@@ -3,14 +3,18 @@ package org.caleydo.rcp.views;
 import java.util.ArrayList;
 
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.rcp.Application;
 import org.caleydo.rcp.action.view.storagebased.ChangeOrientationAction;
 import org.caleydo.rcp.action.view.storagebased.ClearSelectionsAction;
 import org.caleydo.rcp.action.view.storagebased.PropagateSelectionsAction;
+import org.caleydo.rcp.action.view.storagebased.RenderContextAction;
 import org.caleydo.rcp.action.view.storagebased.UseRandomSamplingAction;
-import org.caleydo.rcp.action.view.storagebased.parcoords.RenderContextAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 
 
 public class GLHeatMapView
@@ -50,7 +54,7 @@ public class GLHeatMapView
 	
 	@Override
 	protected final void fillToolBar()
-	{
+	{	
 		createGLCanvas();
 		createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D, glCanvas.getID());		
 		

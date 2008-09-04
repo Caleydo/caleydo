@@ -10,7 +10,6 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.mapping.PathwayColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
@@ -20,16 +19,12 @@ import com.sun.opengl.util.j2d.TextRenderer;
 /**
  * Mini view that renders the current color bar.
  * 
- * TODO do this for the marker points
- * 
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public class GLColorMappingBarMiniView
 	extends AGLMiniView
 {
-
-	private PathwayColorMapper genomeMapper;
-
 	private TextRenderer textRenderer;
 	private GeneralRenderStyle renderStyle;
 
@@ -64,7 +59,8 @@ public class GLColorMappingBarMiniView
 		}
 		if (geneExpressionSet == null)
 		{
-			throw new IllegalStateException("No set containing gene expression data exists");
+			//this is the case when the application is in pathway viewer mode
+			return;
 		}
 
 		ArrayList<ColorMarkerPoint> alColorMarkerPoints = colorMapper.getMarkerPoints();

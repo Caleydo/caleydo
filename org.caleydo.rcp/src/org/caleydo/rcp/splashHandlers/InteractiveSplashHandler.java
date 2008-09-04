@@ -18,7 +18,7 @@ import org.eclipse.ui.splash.AbstractSplashHandler;
  * 
  * @author Marc Streit
  */
-public class ExtensibleSplashHandler
+public class InteractiveSplashHandler
 	extends AbstractSplashHandler
 {
 	private ProgressBar progressBar;

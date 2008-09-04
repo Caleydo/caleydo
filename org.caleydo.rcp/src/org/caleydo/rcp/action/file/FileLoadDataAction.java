@@ -390,6 +390,20 @@ public class FileLoadDataAction
 			}
 		});
 
+		final Button buttonMin = new Button(mathFiltergGroup, SWT.CHECK);
+		buttonMin.setText("Min");
+		buttonMin.setEnabled(true);
+		buttonMin.setSelection(false);
+		buttonMin.addSelectionListener(new SelectionAdapter()
+		{
+
+			@Override
+			public void widgetSelected(SelectionEvent e)
+			{
+				txtMin.setEnabled(true);
+			}
+		});
+		
 		txtMin = new Text(mathFiltergGroup, SWT.BORDER);
 		txtMin.setEnabled(false);
 		txtMin.addListener(SWT.Verify, new Listener()
@@ -410,7 +424,21 @@ public class FileLoadDataAction
 				}
 			}
 		});
+		
+		final Button buttonMax = new Button(mathFiltergGroup, SWT.CHECK);
+		buttonMax.setText("Max");
+		buttonMax.setEnabled(true);
+		buttonMax.setSelection(false);
+		buttonMax.addSelectionListener(new SelectionAdapter()
+		{
 
+			@Override
+			public void widgetSelected(SelectionEvent e)
+			{
+				txtMax.setEnabled(true);
+			}
+		});
+		
 		txtMax = new Text(mathFiltergGroup, SWT.BORDER);
 		txtMax.setEnabled(false);
 		txtMax.addListener(SWT.Verify, new Listener()
@@ -429,34 +457,6 @@ public class FileLoadDataAction
 						return;
 					}
 				}
-			}
-		});
-
-		final Button buttonMin = new Button(mathFiltergGroup, SWT.CHECK);
-		buttonMin.setText("Min");
-		buttonMin.setEnabled(true);
-		buttonMin.setSelection(false);
-		buttonMin.addSelectionListener(new SelectionAdapter()
-		{
-
-			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
-				txtMin.setEnabled(true);
-			}
-		});
-
-		final Button buttonMax = new Button(mathFiltergGroup, SWT.CHECK);
-		buttonMax.setText("Max");
-		buttonMax.setEnabled(true);
-		buttonMax.setSelection(false);
-		buttonMax.addSelectionListener(new SelectionAdapter()
-		{
-
-			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
-				txtMax.setEnabled(true);
 			}
 		});
 
@@ -850,9 +850,15 @@ public class FileLoadDataAction
 		// Build input pattern from data type combos
 		sInputPattern = "";
 
-		float fMin = Float.parseFloat(txtMax.getText());
-		float fMax = Float.parseFloat(txtMax.getText());
+		float fMin = -1;
+		float fMax = -1;
 
+		if (!txtMax.getText().isEmpty() && !txtMin.getText().isEmpty())
+		{		
+			fMin = Float.parseFloat(txtMax.getText());
+			fMax = Float.parseFloat(txtMax.getText());
+		}
+		
 		Combo tmpComboDataType;
 		for (int iColIndex = 0; iColIndex < arComboDataType.size(); iColIndex++)
 		{
@@ -885,8 +891,6 @@ public class FileLoadDataAction
 				INumericalStorage storage = (INumericalStorage) cmdCreateStorage
 						.getCreatedObject();
 
-				storage.normalizeWithExternalExtrema(fMin, fMax);
-
 				storage.setLabel(previewTable.getItem(0).getText(iColIndex + 1));
 
 				iAlStorageId.add(storage.getID());
@@ -895,6 +899,11 @@ public class FileLoadDataAction
 					sStorageIDs += IGeneralManager.sDelimiter_Parser_DataItems;
 
 				sStorageIDs = sStorageIDs + storage.getID();
+				
+				if (fMin != -1 && fMax != -1)
+				{
+					storage.normalizeWithExternalExtrema(fMin, fMax);
+				}
 			}
 		}
 
@@ -949,7 +958,10 @@ public class FileLoadDataAction
 			cmdDataFilterLog.doCommand();
 		}
 
-		// cmdCreateSet.getCreatedObject().normalize();
+		if (fMin == -1 && fMax == -1)
+		{
+			cmdCreateSet.getCreatedObject().normalize();
+		}
 	}
 
 	private void setDataInViews()

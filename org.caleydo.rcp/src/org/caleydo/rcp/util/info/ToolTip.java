@@ -1,5 +1,6 @@
 package org.caleydo.rcp.util.info;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 
@@ -10,6 +11,8 @@ import org.caleydo.core.data.selection.SelectionItem;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.StyleRange;
+import org.eclipse.swt.custom.StyledText;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FillLayout;
@@ -24,7 +27,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * Tool tip like box for multi line info output.
+ * Tool tip like box for multi-line info output.
  * 
  * @author Friederich Kupzog
  * @author Marc Streit
@@ -34,11 +37,12 @@ public class ToolTip
 {
 	static private Shell tip = null;
 	static private Composite comp = null;
-	static private Label label = null;
+	static private StyledText label = null;
 	static private Label icon = null;
 	static private Control lastControl = null;
 	
 	private static final int MAX_LINES = 80;
+	private static final int MAX_CHARS_PER_LINE = 50;
 
 	private Control parentControl;
 	private InfoArea infoArea;
@@ -123,24 +127,19 @@ public class ToolTip
 							if (item.getSelectionType() == ESelectionType.MOUSE_OVER 
 									|| item.getSelectionType() == ESelectionType.SELECTION)
 							{
-								sDetailText = sDetailText + "RefSeq: ";
+								sDetailText = sDetailText + "<b>RefSeq: </b>";
 								sDetailText = sDetailText + genomeIDManager.getIdStringFromIntByMapping(
 										item.getSelectionID(), EMappingType.DAVID_2_REFSEQ_MRNA);
 								sDetailText = sDetailText + "\n";
 								
-								sDetailText = sDetailText + "Gene symbol: ";
+								sDetailText = sDetailText + "<b>Gene symbol: </b>";
 								sDetailText = sDetailText + genomeIDManager.getIdStringFromIntByMapping(
 										item.getSelectionID(), EMappingType.DAVID_2_GENE_SYMBOL);
 								sDetailText = sDetailText + "\n";
 								
-								sDetailText = sDetailText + "Gene name: ";
+								sDetailText = sDetailText + "<b>Gene name: </b>";
 								sDetailText = sDetailText + genomeIDManager.getIdStringFromIntByMapping(
 										item.getSelectionID(), EMappingType.DAVID_2_GENE_NAME);
-								sDetailText = sDetailText + "\n";
-								
-								sDetailText = sDetailText + "Entrez Gene ID: ";
-								sDetailText = sDetailText + genomeIDManager.getIdStringFromIntByMapping(
-										item.getSelectionID(), EMappingType.DAVID_2_ENTREZ_GENE_ID);
 								sDetailText = sDetailText + "\n";
 								
 								if (iterSelectionItems.hasNext())
@@ -219,13 +218,72 @@ public class ToolTip
 				.getSystemColor(SWT.COLOR_INFO_BACKGROUND));
 
 		// Label
-		label = new Label(comp, SWT.NONE);
+		label = new StyledText(comp, SWT.NONE);
 		label.setForeground(parentControl.getDisplay().getSystemColor(
 				SWT.COLOR_INFO_FOREGROUND));
 		label.setBackground(parentControl.getDisplay().getSystemColor(
 				SWT.COLOR_INFO_BACKGROUND));
 		iLineIndex = 0;
-		label.setText(getNextLine(iLineIndex));
+
+		String sLineText = getNextLine(iLineIndex);
+		
+		// Add line breaks if lines are too long
+		StringTokenizer tokenizer = new StringTokenizer(sLineText, "\n", true);
+		String sTmp;
+		sLineText = "";
+		while(tokenizer.hasMoreTokens())
+		{
+			sTmp = tokenizer.nextToken();
+			
+			if (sTmp.length() > MAX_CHARS_PER_LINE && sTmp.contains(" "))
+			{
+				int bla = MAX_CHARS_PER_LINE + sTmp.substring(MAX_CHARS_PER_LINE).indexOf(" ");
+				bla ++;
+				
+				if (sTmp.substring(MAX_CHARS_PER_LINE).indexOf(" ") != -1)
+				{	
+					sLineText = sLineText + new StringBuffer(sTmp).insert(
+							MAX_CHARS_PER_LINE + sTmp.substring(MAX_CHARS_PER_LINE).indexOf(" ") + 1, "\n").toString(); 
+				}
+				else
+				{
+					sLineText = sLineText + sTmp;
+				}
+			}
+			else
+			{
+				sLineText = sLineText + sTmp;
+			}
+			
+//			sLineText = sLineText + "\n";
+		}
+	
+		
+		ArrayList<Integer> iAlStartIndex = new ArrayList<Integer>();
+		ArrayList<Integer> iAlLength = new ArrayList<Integer>();		
+		int iStartIndex = 0;		
+		
+		// Handle bold text parts
+		while (sLineText.contains("<b>"))
+		{
+			iStartIndex = sLineText.indexOf("<b>");
+			iAlStartIndex.add(iStartIndex);
+			iAlLength.add(sLineText.indexOf("</b>") - iStartIndex - 3);
+			sLineText = sLineText.replaceFirst("<b>", "");
+			sLineText = sLineText.replaceFirst("</b>", "");			
+		}
+		
+		label.setText(sLineText);
+		
+		StyleRange styleRange;
+		for (int iOccurenceIndex = 0; iOccurenceIndex < iAlStartIndex.size(); iOccurenceIndex++)
+		{
+			styleRange = new StyleRange();
+			styleRange.fontStyle = SWT.BOLD;
+			styleRange.start = iAlStartIndex.get(iOccurenceIndex);
+			styleRange.length = iAlLength.get(iOccurenceIndex);
+			label.setStyleRange(styleRange);
+		}
 
 		// Icon
 		icon = new Label(comp, SWT.NONE);
@@ -318,7 +376,7 @@ public class ToolTip
 		Button button = new Button(shell, SWT.PUSH);
 		button.setText("Hallo");
 		new ToolTip(button,
-				"Dies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\n");
+				"Dies ist ein <b>Test</b> text!\nDies ist<b>ein</b>Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\n");
 		button.setBounds(40, 50, 50, 20);
 
 		shell.open();

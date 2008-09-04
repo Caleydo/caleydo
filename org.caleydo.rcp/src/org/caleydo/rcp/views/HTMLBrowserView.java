@@ -1,4 +1,4 @@
-package org.caleydo.rcp.views.browser;
+package org.caleydo.rcp.views;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;

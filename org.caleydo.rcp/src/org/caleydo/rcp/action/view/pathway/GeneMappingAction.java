@@ -19,11 +19,11 @@ extends AToolBarAction
 	public GeneMappingAction(int iViewID)
 	{
 		super(iViewID);
-		
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromURL(this.getClass()
 				.getClassLoader().getResource(ICON)));
+		setChecked(bEnable);
 	}
 	
 	@Override

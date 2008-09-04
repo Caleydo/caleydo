@@ -22,6 +22,7 @@ extends AToolBarAction
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromURL(this.getClass()
 				.getClassLoader().getResource(ICON)));
+		setChecked(false);
 	}
 	
 	@Override

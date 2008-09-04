@@ -17,43 +17,43 @@
          point="org.eclipse.ui.views">
      <category
             name="Caleydo"
-            id="org.caleydo.rcp.jogl.view.jframe">
+            id="org.caleydo.rcp.views">
       </category>
       
       
       
       <view
             allowMultiple="true"
-            category="org.caleydo.rcp.jogl.view.jframe"
+            category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.GLHeatMapView"
-            icon="../org.caleydo.data/resources/icons/view/storagebased/heatmap/heatmap.png"
+            icon="resources/icons/view/storagebased/heatmap/heatmap.png"
             id="org.caleydo.rcp.views.GLHeatMapView"
             name="GLHeatMapView">
       </view>      
 
       <view
             allowMultiple="true"
-            category="org.caleydo.rcp.jogl.view.jframe"
+            category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.GLParCoordsView"
-            icon="../org.caleydo.data/resources/icons/view/storagebased/parcoords/parcoords.png"
+            icon="resources/icons/view/storagebased/parcoords/parcoords.png"
             id="org.caleydo.rcp.views.GLParCoordsView"
             name="GLParCoordsView">
       </view>         
       
       <view
             allowMultiple="true"
-            category="org.caleydo.rcp.jogl.view.jframe"
+            category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.GLPathwayView"
-            icon="../org.caleydo.data/resources/icons/view/pathway/pathway.png"
+            icon="resources/icons/view/pathway/pathway.png"
             id="org.caleydo.rcp.views.GLPathwayView"
             name="GLPathwayView">
       </view> 
       
       <view
             allowMultiple="true"
-            category="org.caleydo.rcp.jogl.view.jframe"
+            category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.GLRemoteRenderingView"
-            icon="../org.caleydo.data/resources/icons/view/remote/remote.png"
+            icon="resources/icons/view/remote/remote.png"
             id="org.caleydo.rcp.views.GLRemoteRenderingView"
             name="GLRemoteRenderingView">
       </view> 
@@ -61,9 +61,9 @@
       <view
             id="HTMLBrowserView.view"
             name="Browser"
-            icon="../org.caleydo.data/resources/icons/view/browser/browser.png"
-            class="org.caleydo.rcp.views.browser.HTMLBrowserView"
-            category="org.caleydo.rcp.jogl.view.jframe"
+            icon="resources/icons/view/browser/browser.png"
+            class="org.caleydo.rcp.views.HTMLBrowserView"
+            category="org.caleydo.rcp.views"
             allowMultiple="true">
       </view>
       
@@ -92,7 +92,7 @@
          </property>
          <property
                name="windowImages"
-               value="/org.caleydo.data/resources/icons/caleydo/caleydo16.g,/org.caleydo.data/resources/icons/caleydo/caleydo32.png,/org.caleydo.data/resources/icons/caleydo/caleydo48.png,/org.caleydo.data/resources/icons/caleydo/caleydo64.png,/org.caleydo.data/resources/icons/caleydo/caleydo128.png">
+               value="/org.caleydo.data/resources/icons/caleydo/caleydo16.gif,/org.caleydo.data/resources/icons/caleydo/caleydo32.gif,/org.caleydo.data/resources/icons/caleydo/caleydo48.gif,/org.caleydo.data/resources/icons/caleydo/caleydo64.gif,/org.caleydo.data/resources/icons/caleydo/caleydo128.gif">
          </property>
          
                   <property
@@ -107,13 +107,13 @@
    <extension
          point="org.eclipse.ui.splashHandlers">
       <splashHandler
-            class="org.caleydo.rcp.splashHandlers.ExtensibleSplashHandler"
-            id="org.caleydo.rcp.splashHandlers.extensible">
+            class="org.caleydo.rcp.splashHandlers.InteractiveSplashHandler"
+            id="org.caleydo.rcp.splashHandlers.progress">
       </splashHandler>
       <splashHandlerProductBinding
             productId="org.caleydo.rcp.product"
-            splashId="org.caleydo.rcp.splashHandlers.extensible">
-      </splashHandlerProductBinding>        
+            splashId="org.caleydo.rcp.splashHandlers.progress">
+      </splashHandlerProductBinding>         
    </extension>   
    <extension
          point="org.eclipse.ui.commands">
@@ -296,13 +296,6 @@
       <initializer
             class="org.caleydo.rcp.preferences.PreferenceInitializer">
       </initializer>
-   </extension>
-   <extension
-         point="org.eclipse.ui.browserSupport">
-      <support
-            class="org.caleydo.rcp.views.browser.AbstractWorkbenchBrowserSupport"
-            default="false">
-      </support>
    </extension>
 
 </plugin>

@@ -27,7 +27,6 @@ All Rights Reserved.
    </license>
 
    <url>
-      <update label="Caleydo Update Site" url="http://galactica.icg.tugraz.at/caleydo/"/>
       <discovery label="Caleydo website" url="http://www.caleydo.org"/>
       <discovery label="Graz University of Technology - Institute for Computer Graphics and Visison (ICG)" url="http://www.icg.tugraz.at"/>
    </url>
@@ -44,14 +43,14 @@ All Rights Reserved.
       <import plugin="org.eclipse.core.runtime" version="3.3.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.help" version="3.3.0" match="compatible"/>
       <import plugin="com.ibm.icu"/>
-      <import plugin="org.eclipse.help.base" version="3.3.0" match="compatible"/>
-      <import plugin="org.eclipse.ui" version="3.2.0" match="compatible"/>
-      <import plugin="org.eclipse.ui.forms" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.help.base" version="3.1.0" match="compatible"/>
       <import plugin="org.apache.jasper" version="5.5.17" match="greaterOrEqual"/>
       <import plugin="org.eclipse.equinox.jsp.jasper.registry" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.equinox.http.registry" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.jface" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.ui.workbench"/>
+      <import plugin="org.eclipse.ui.views.log" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.core" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.equinox.security" version="1.0.0" match="compatible"/>
       <import plugin="org.eclipse.equinox.common" version="3.4.0" match="greaterOrEqual"/>
@@ -63,11 +62,11 @@ All Rights Reserved.
       <import plugin="org.eclipse.equinox.common" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.core.runtime" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.ui" version="3.3.0" match="compatible"/>
+      <import plugin="org.eclipse.swt" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.util.gleem" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.util.graph" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.4.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui" version="3.4.0" match="greaterOrEqual"/>
       <import feature="org.eclipse.rcp" version="3.3.2.R33x_r20071022-8y8eE9CEV3FspP8HJrY1M2dS"/>
-      <import plugin="org.eclipse.ui.workbench"/>
-      <import plugin="org.eclipse.ui.views.log" version="1.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
@@ -86,13 +85,6 @@ All Rights Reserved.
 
    <plugin
          id="org.eclipse.help.base"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.eclipse.help.ui"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -264,5 +256,19 @@ All Rights Reserved.
          install-size="0"
          version="0.0.0"
          unpack="false"/>
-         
+
+   <plugin
+         id="org.caleydo.util.gleem"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.util.graph"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>

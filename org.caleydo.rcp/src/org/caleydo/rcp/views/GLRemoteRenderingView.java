@@ -6,6 +6,7 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.swt.CmdViewCreateDataEntitySearcher;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
+import org.caleydo.rcp.Application;
 import org.caleydo.rcp.action.view.TakeSnapshotAction;
 import org.caleydo.rcp.action.view.remote.CloseOrResetContainedViews;
 import org.caleydo.rcp.action.view.remote.ToggleLayoutAction;
@@ -39,8 +40,14 @@ public class GLRemoteRenderingView
 		super.createPartControl(parent);
 		
 		createGLCanvas();
-		iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D, -1));
-		iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_3D, -1));
+		
+		// Only create parcoords and heatmap if the application is NOT in pathway viewer mode
+		if (!Application.bPathwayViewerMode)
+		{
+			iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D, -1));
+			iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_3D, -1));
+		}		
+		
 		createGLEventListener(ECommandType.CREATE_GL_BUCKET_3D, glCanvas.getID());
 		
 		// Trigger gene/pathway search command

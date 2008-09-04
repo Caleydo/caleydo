@@ -2,6 +2,7 @@ package org.caleydo.rcp;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
@@ -49,7 +50,7 @@ public class Application
 
 	public static String sCaleydoXMLfile = "";
 
-	public static ArrayList<EStartViewsMode> alStartViews;
+	public static ArrayList<EStartViewType> alStartViews;
 
 	public RCPBridge rcpGuiBridge;
 
@@ -59,7 +60,7 @@ public class Application
 	{
 		System.out.println("Caleydo RCP: bootstrapping ...");
 
-		alStartViews = new ArrayList<EStartViewsMode>();
+		alStartViews = new ArrayList<EStartViewType>();
 
 		Map<String, Object> map = (Map<String, Object>) context.getArguments();
 
@@ -75,25 +76,25 @@ public class Application
 					{
 						bIsWebstart = true;
 					}
-					else if (sArParam[iParamIndex].equals(EStartViewsMode.PARALLEL_COORDINATES
+					else if (sArParam[iParamIndex].equals(EStartViewType.PARALLEL_COORDINATES
 							.getCommandLineArgument()))
 					{
-						alStartViews.add(EStartViewsMode.PARALLEL_COORDINATES);
+						alStartViews.add(EStartViewType.PARALLEL_COORDINATES);
 					}
-					else if (sArParam[iParamIndex].equals(EStartViewsMode.HEATMAP
+					else if (sArParam[iParamIndex].equals(EStartViewType.HEATMAP
 							.getCommandLineArgument()))
 					{
-						alStartViews.add(EStartViewsMode.HEATMAP);
+						alStartViews.add(EStartViewType.HEATMAP);						
 					}
-					else if (sArParam[iParamIndex].equals(EStartViewsMode.BROWSER
+					else if (sArParam[iParamIndex].equals(EStartViewType.BROWSER
 							.getCommandLineArgument()))
 					{
-						alStartViews.add(EStartViewsMode.BROWSER);
-					}
-					else if (sArParam[iParamIndex].equals(EStartViewsMode.REMOTE
+						alStartViews.add(EStartViewType.BROWSER);						
+					}		
+					else if (sArParam[iParamIndex].equals(EStartViewType.REMOTE
 							.getCommandLineArgument()))
 					{
-						alStartViews.add(EStartViewsMode.REMOTE);
+						alStartViews.add(EStartViewType.REMOTE);						
 					}
 					else
 					{
@@ -187,6 +188,14 @@ public class Application
 		// dialog is opened
 		if (sCaleydoXMLfile.equals(""))
 		{
+			if (bPathwayViewerMode)	
+				sCaleydoXMLfile = BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE;
+			else
+				sCaleydoXMLfile = BOOTSTRAP_FILE_GENE_EXPRESSION_MODE;
+			
+			caleydoCore.setXmlFileName(sCaleydoXMLfile);
+			caleydoCore.start();
+
 			Display display = PlatformUI.createDisplay();
 			Shell shell = new Shell(display);
 
@@ -199,14 +208,6 @@ public class Application
 			}
 
 			shell.dispose();
-
-			if (bPathwayViewerMode)
-				sCaleydoXMLfile = BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE;
-			else
-				sCaleydoXMLfile = BOOTSTRAP_FILE_GENE_EXPRESSION_MODE;
-
-			caleydoCore.setXmlFileName(sCaleydoXMLfile);
-			caleydoCore.start();
 		}
 		else
 		{
@@ -285,18 +286,33 @@ public class Application
 
 	private static void openViewsInRCP()
 	{
+		if (bPathwayViewerMode)
+		{
+			// Filter all views except remote and browser in case of pathway viewer mode
+			Iterator<EStartViewType> iterStartViewsType = alStartViews.iterator();
+			EStartViewType type;
+			while (iterStartViewsType.hasNext())
+			{
+				type = iterStartViewsType.next();
+				if (type != EStartViewType.REMOTE 
+						&& type != EStartViewType.BROWSER)
+				{
+					iterStartViewsType.remove();
+				}
+			}
+		}
+		
 		// Open Views in RCP
 		try
 		{
-			ArrayList<EStartViewsMode> alStartViews = Application.alStartViews;
-			if (alStartViews.contains(EStartViewsMode.REMOTE))
+			if (alStartViews.contains(EStartViewType.REMOTE))
 			{
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
 						GLRemoteRenderingView.ID);
-				alStartViews.remove(EStartViewsMode.REMOTE);
+				alStartViews.remove(EStartViewType.REMOTE);
 			}
 
-			for (EStartViewsMode startViewsMode : alStartViews)
+			for (EStartViewType startViewsMode : alStartViews)
 			{
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
 						startViewsMode.getRCPViewID());
