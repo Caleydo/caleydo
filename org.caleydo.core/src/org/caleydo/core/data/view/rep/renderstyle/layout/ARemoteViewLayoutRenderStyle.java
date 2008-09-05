@@ -28,45 +28,29 @@ public abstract class ARemoteViewLayoutRenderStyle
 	}
 
 	protected RemoteHierarchyLayer underInteractionLayer;
-
 	protected RemoteHierarchyLayer stackLayer;
-
 	protected RemoteHierarchyLayer poolLayer;
-
 	protected RemoteHierarchyLayer transitionLayer;
-
 	protected RemoteHierarchyLayer spawnLayer;
-
 	protected RemoteHierarchyLayer memoLayer;
 
 	protected EProjectionMode eProjectionMode;
 
 	protected float fScalingFactorUnderInteractionLayer;
-
 	protected float fScalingFactorStackLayer;
-
 	protected float fScalingFactorPoolLayer;
-
 	protected float fScalingFactorMemoLayer;
-
 	protected float fScalingFactorTransitionLayer;
-
 	protected float fScalingFactorSpawnLayer;
 
 	protected float fTrashCanXPos;
-
 	protected float fTrashCanYPos;
-
 	protected float fTrashCanWidth;
-
 	protected float fTrashCanHeight;
 
 	protected float fColorBarXPos;
-
 	protected float fColorBarYPos;
-
 	protected float fColorBarWidth;
-
 	protected float fColorBarHeight;
 
 	/**

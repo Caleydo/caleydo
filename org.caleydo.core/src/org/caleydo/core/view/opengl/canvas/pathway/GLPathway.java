@@ -70,7 +70,6 @@ public class GLPathway
 	private HashMap<GL, GLPathwayTextureManager> hashGLcontext2TextureManager;
 
 	private Vec3f vecScaling;
-
 	private Vec3f vecTranslation;
 
 	/**
@@ -709,8 +708,7 @@ public class GLPathway
 	{
 		PathwayGraph pathway = (generalManager.getPathwayManager().getItem(iPathwayID));
 		
-		return "Pathway named " + pathway.getTitle() 
-			+ " (" +pathway.getType().getName() + ")";
+		return pathway.getTitle() + " (" +pathway.getType().getName() + ")";
 	}
 	
 	@Override

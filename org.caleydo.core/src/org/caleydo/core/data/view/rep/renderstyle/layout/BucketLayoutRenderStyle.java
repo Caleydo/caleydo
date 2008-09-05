@@ -42,7 +42,7 @@ public class BucketLayoutRenderStyle
 		fScalingFactorStackLayer = 0.5f;
 		fScalingFactorPoolLayer = 0.025f;
 		fScalingFactorMemoLayer = 0.08f;
-		fScalingFactorTransitionLayer = 0.05f;
+		fScalingFactorTransitionLayer = 0.1f;
 		fScalingFactorSpawnLayer = 0.01f;
 	}
 

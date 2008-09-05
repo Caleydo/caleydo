@@ -26,8 +26,6 @@ public class GLCaleydoCanvas
 {
 	private static final long serialVersionUID = 1L;
 
-	private IGeneralManager generalManager;
-
 	private int iGLCanvasID;
 
 	private FPSCounter fpsCounter;
@@ -38,11 +36,9 @@ public class GLCaleydoCanvas
 	{
 		super(glCapabilities);
 
-		this.generalManager = GeneralManager.get();
-
 		joglMouseListener = new PickingJoglMouseListener();
 
-		this.iGLCanvasID = generalManager.getIDManager().createID(
+		this.iGLCanvasID = GeneralManager.get().getIDManager().createID(
 				EManagedObjectType.VIEW_GL_CANVAS);
 
 		// Register mouse listener to GL canvas
@@ -53,7 +49,7 @@ public class GLCaleydoCanvas
 
 	public void init(GLAutoDrawable drawable)
 	{
-		generalManager.getLogger().log(
+		GeneralManager.get().getLogger().log(
 				Level.INFO,
 				"Creating canvas with ID " + iGLCanvasID + "." + "\nOpenGL capabilities:"
 						+ drawable.getChosenGLCapabilities());
@@ -120,19 +116,18 @@ public class GLCaleydoCanvas
 
 	public final PickingJoglMouseListener getJoglMouseListener()
 	{
-
 		return joglMouseListener;
-	}
-
-	public final void setJoglMouseListener(final PickingJoglMouseListener joglMouseListener)
-	{
-
-		this.joglMouseListener = joglMouseListener;
 	}
 
 	@Override
 	public int getID()
 	{
 		return iGLCanvasID;
+	}
+	
+	public void setNavigationModes(boolean bEnablePan, 
+			boolean bEnableRotate, boolean bEnableZoom)
+	{
+		joglMouseListener.setNavigationModes(bEnablePan, bEnableRotate, bEnableZoom);
 	}
 }

@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.mouse;
 
+import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import java.awt.Dimension;
 import java.awt.Point;
@@ -36,15 +37,15 @@ public class JoglMouseListener
 	protected Point pressedMousePosition;
 
 	protected boolean bMouseLeftButtonDown = false;
-
 	protected boolean bMouseRightButtonDown = false;
-
 	protected boolean bMouseMiddleButtonDown = false;
-
 	protected boolean bMouseLeft_StandbyZoom = false;
-
 	protected boolean bMouseRight_StandbyRotate = false;
-
+	
+	protected boolean bEnablePan = true;
+	protected boolean bEnableRotate = true;
+	protected boolean bEnableZoom = true;
+	
 	/**
 	 * Define mouse sensitivity. Higher value indicates more degrees of
 	 * rotation. Default value 1.0
@@ -252,43 +253,43 @@ public class JoglMouseListener
 
 		if (!bMouseRightButtonDown)
 		{
-			if (!bMouseMiddleButtonDown)
+			if (!bMouseMiddleButtonDown && bEnableRotate)
 			{
-				// /**
-				// * --- ROTATION ---
-				// */
-				// Rotf currentRotX = new Rotf();
-				// Rotf currentRotY = new Rotf();
-				//		   	    
-				// float fpercentX = (float)(x-prevMouseX)/(float)(size.width)
-				// * fMouseSensitivityRotation;
-				//		    	
-				// float fpercentY = (float)(y-prevMouseY)/(float)(size.height)
-				// * fMouseSensitivityRotation;
-				//		    	
-				//		    	
-				// currentRotX.set(new Vec3f(0,1,0),
-				// fpercentX * (float)Math.PI);
-				//		   	    
-				// currentRotY.set(new Vec3f(1,0,0),
-				// fpercentY * (float)Math.PI);
-				//		   	    
-				// /* concatinate rotations.. */
-				// currentRotX = currentRotX.times(currentRotY);
-				//		   	    
-				// prevMouseX = x;
-				// prevMouseY = y;
-				//			    
-				// /* set new paramters to ViewCamera */
-				// Iterator<AGLCanvasUser> iterGLCanvas = alGlCanvas.iterator();
-				//			    
-				// while (iterGLCanvas.hasNext())
-				// {
-				// iterGLCanvas.next().getViewCamera().addCameraRotation(
-				// currentRotX);
-				// }
+				 /**
+				 * --- ROTATION ---
+				 */
+				 Rotf currentRotX = new Rotf();
+				 Rotf currentRotY = new Rotf();
+						   	    
+				 float fpercentX = (float)(x-prevMouseX)/(float)(size.width)
+				 * fMouseSensitivityRotation;
+						    	
+				 float fpercentY = (float)(y-prevMouseY)/(float)(size.height)
+				 * fMouseSensitivityRotation;
+						    	
+						    	
+				 currentRotX.set(new Vec3f(0,1,0),
+				 fpercentX * (float)Math.PI);
+						   	    
+				 currentRotY.set(new Vec3f(1,0,0),
+				 fpercentY * (float)Math.PI);
+						   	    
+				 /* concatinate rotations.. */
+				 currentRotX = currentRotX.times(currentRotY);
+						   	    
+				 prevMouseX = x;
+				 prevMouseY = y;
+							    
+				 /* set new paramters to ViewCamera */
+				 Iterator<AGLEventListener> iterGLCanvas = alGlCanvas.iterator();
+							    
+				 while (iterGLCanvas.hasNext())
+				 {
+				 iterGLCanvas.next().getViewCamera().addCameraRotation(
+				 currentRotX);
+				 }
 			}
-			else
+			else if (bEnableZoom)
 			{
 				/**
 				 * --- ZOOMING ---
@@ -315,7 +316,7 @@ public class JoglMouseListener
 				}
 			}
 		}
-		else
+		else if (bEnablePan)
 		{
 			/**
 			 * --- PANING ---
@@ -358,5 +359,12 @@ public class JoglMouseListener
 		{
 			iterGLCanvas.next().getViewCamera().addCameraScale(new Vec3f(0, 0, fZoom));
 		}
+	}
+		
+	public void setNavigationModes(boolean bEnablePan, boolean bEnableRotate, boolean bEnableZoom)
+	{
+		this.bEnablePan = bEnablePan;
+		this.bEnableRotate = bEnableRotate;
+		this.bEnableZoom = bEnableZoom;
 	}
 }

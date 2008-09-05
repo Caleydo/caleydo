@@ -14,6 +14,7 @@ public enum EPickingType
 	// BUCKET_SWITCH_ICON_SELECTION,
 	// BUCKET_SEARCH_PATHWAY,
 	VIEW_SELECTION(EManagedObjectType.GL_REMOTE_RENDERING),
+	MEMO_PAD_SELECTION(EManagedObjectType.GL_REMOTE_RENDERING),
 
 	// parallel coordinates
 	POLYLINE_SELECTION(EManagedObjectType.GL_PARALLEL_COORDINATES),
@@ -34,7 +35,6 @@ public enum EPickingType
 	// pathway manager
 	PATHWAY_ELEMENT_SELECTION(EManagedObjectType.GL_PATHWAY),
 	PATHWAY_TEXTURE_SELECTION(EManagedObjectType.GL_PATHWAY),
-	MEMO_PAD_SELECTION(EManagedObjectType.GL_PATHWAY),
 
 	// heat map
 	HEAT_MAP_FIELD_SELECTION(EManagedObjectType.GL_HEAT_MAP),

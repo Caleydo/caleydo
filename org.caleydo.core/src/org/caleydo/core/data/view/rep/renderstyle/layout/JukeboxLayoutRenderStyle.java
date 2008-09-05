@@ -117,7 +117,7 @@ public class JukeboxLayoutRenderStyle
 			Transform transform = new Transform();
 			transform.setTranslation(new Vec3f(-1.45f * 1 / fAspectRatio, fYAdd, 4.1f));
 
-			fYAdd += 0.15f * fSelectedScaling;
+			fYAdd += 0.19f * fSelectedScaling;
 
 			transform.setScale(new Vec3f(fSelectedScaling * fScalingFactorPoolLayer,
 					fSelectedScaling * fScalingFactorPoolLayer, fSelectedScaling

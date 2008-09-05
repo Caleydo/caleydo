@@ -122,7 +122,7 @@ public final class LookupTableLoaderProxy
 			throws IOException
 	{
 		swtGuiManager.setProgressBarPercentage(0);
-		swtGuiManager.setProgressBarText("Loading mapping from file " + getFileName());
+		swtGuiManager.setProgressBarText("Loading mapping files...");
 
 		proxyLookupTableLoader.loadDataParseFileLUT(brFile, iNumberOfLinesInFile);
 	}

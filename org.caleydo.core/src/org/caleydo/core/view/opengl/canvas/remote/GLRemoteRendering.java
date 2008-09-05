@@ -81,21 +81,15 @@ public class GLRemoteRendering
 	private ARemoteViewLayoutRenderStyle.LayoutMode layoutMode;
 
 	private static final int SLERP_RANGE = 1000;
-
-	private static final int SLERP_SPEED = 1200;
+	private static final int SLERP_SPEED = 1400;
 
 	protected int iMouseOverViewID = -1;
 
 	protected RemoteHierarchyLayer underInteractionLayer;
-
 	protected RemoteHierarchyLayer stackLayer;
-
 	protected RemoteHierarchyLayer poolLayer;
-
 	protected RemoteHierarchyLayer transitionLayer;
-
 	protected RemoteHierarchyLayer spawnLayer;
-
 	protected RemoteHierarchyLayer memoLayer;
 
 	private ArrayList<SlerpAction> arSlerpActions;
@@ -110,16 +104,19 @@ public class GLRemoteRendering
 	protected AGLConnectionLineRenderer glConnectionLineRenderer;
 
 	private int iNavigationMouseOverViewID_left = -1;
-
 	private int iNavigationMouseOverViewID_right = -1;
-
 	private int iNavigationMouseOverViewID_out = -1;
-
 	private int iNavigationMouseOverViewID_in = -1;
-
 	private int iNavigationMouseOverViewID_lock = -1;
 
 	private boolean bEnableNavigationOverlay = false;
+	
+	/**
+	 * When the system is in the busy mode the background color will turn yellow
+	 * and the system interaction will be turned off.
+	 */
+	private boolean bBusyMode = true;
+	private boolean bBusyModeChanged = true;
 
 	// FIXME: should be a singleton
 	private GLIconTextureManager glIconTextureManager;
@@ -130,7 +127,6 @@ public class GLRemoteRendering
 
 	// Memo pad variables
 	private static final int MEMO_PAD_PICKING_ID = 1;
-
 	private static final int TRASH_CAN_PICKING_ID = 2;
 
 	protected TextRenderer textRenderer;
@@ -144,17 +140,10 @@ public class GLRemoteRendering
 	private TrashCan trashCan;
 
 	private GLColorMappingBarMiniView colorMappingBarMiniView;
-
-	/**
-	 * When the system is in the busy mode the background color will turn yellow
-	 * and the system interaction will be turned off.
-	 */
-	private boolean bBusyMode = false;
-
-	private boolean bBusyModeChanged = false;
 	
 	private ArrayList<Integer> iAlContainedViewIDs;
 	
+	private int iGLDisplayList;
 
 	/**
 	 * Constructor.
@@ -166,7 +155,7 @@ public class GLRemoteRendering
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 		viewType = EManagedObjectType.GL_REMOTE_RENDERING;
 		this.layoutMode = layoutMode;
-
+		
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
 		{
 			layoutRenderStyle = new BucketLayoutRenderStyle(viewFrustum);
@@ -225,7 +214,8 @@ public class GLRemoteRendering
 	@Override
 	public void initLocal(final GL gl)
 	{
-
+		iGLDisplayList = gl.glGenLists(1);
+		
 		init(gl);
 	}
 
@@ -269,6 +259,12 @@ public class GLRemoteRendering
 
 		pickingManager.handlePicking(iUniqueID, gl, true);
 
+//		if (bIsDisplayListDirtyLocal)
+//		{
+//			buildDisplayList(gl);
+//			bIsDisplayListDirtyLocal = false;
+//		}
+		
 		display(gl);
 
 		if (pickingTriggerMouseAdapter.getPickedPoint() != null)
@@ -290,10 +286,26 @@ public class GLRemoteRendering
 		display(gl);
 	}
 
+//	private void buildDisplayList(final GL gl)
+//	{
+//		gl.glNewList(iGLDisplayList, GL.GL_COMPILE);
+//
+//		// If user zooms to the bucket bottom all but the under
+//		// interaction layer is _not_ rendered.
+//		if (bucketMouseWheelListener == null || !bucketMouseWheelListener.isZoomedIn())
+//		{	
+//			glConnectionLineRenderer.render(gl);
+//		}
+//
+////		colorMappingBarMiniView.render(gl, layoutRenderStyle.getColorBarXPos(),
+////				layoutRenderStyle.getColorBarYPos(), 4f);
+//		
+//		gl.glEndList();
+//	}
+	
 	@Override
 	public void display(final GL gl)
-	{
-
+	{		
 		time.update();
 
 		layoutRenderStyle.initPoolLayer(iMouseOverViewID);
@@ -311,25 +323,17 @@ public class GLRemoteRendering
 		// interaction layer is _not_ rendered.
 		if (bucketMouseWheelListener == null || !bucketMouseWheelListener.isZoomedIn())
 		{	
-			// if
-			// (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET
-			// ))
-			// {
 			renderPoolAndMemoLayerBackground(gl);
-
-			// gl.glPushName(generalManager.getViewGLCanvasManager().
-			// getPickingManager()
-			// .getPickingID(iUniqueID, EPickingType.MEMO_PAD_SELECTION,
-			// MEMO_PAD_PICKING_ID));
-			// gl.glPopName();
-			// }
 
 			renderLayer(gl, poolLayer);
 			renderLayer(gl, transitionLayer);
 			renderLayer(gl, stackLayer);
 			renderLayer(gl, spawnLayer);
+		
+			gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.MEMO_PAD_SELECTION, MEMO_PAD_PICKING_ID));
 			renderLayer(gl, memoLayer);
-
+			gl.glPopName();
+			
 			glConnectionLineRenderer.render(gl);
 		}
 
@@ -343,6 +347,8 @@ public class GLRemoteRendering
 		
 		if (bBusyModeChanged)
 			updateBusyMode(gl);
+		
+//		gl.glCallList(iGLDisplayList);
 	}
 
 	public void setInitialContainedViews(ArrayList<Integer> iAlInitialContainedViewIDs)
@@ -970,7 +976,11 @@ public class GLRemoteRendering
 			// Update detail level of moved view when slerp action is finished;
 			if (destinationLayer.equals(underInteractionLayer))
 			{
-				glActiveSubView.setDetailLevel(EDetailLevel.MEDIUM);
+				if (bucketMouseWheelListener.isZoomedIn())
+					glActiveSubView.setDetailLevel(EDetailLevel.HIGH);
+				else
+					glActiveSubView.setDetailLevel(EDetailLevel.MEDIUM);
+				
 				generalManager.getGUIBridge().setActiveGLSubView(this, glActiveSubView);
 			}
 			else if (destinationLayer.equals(stackLayer))
@@ -1239,6 +1249,8 @@ public class GLRemoteRendering
 						generalManager.getViewGLCanvasManager().getInfoAreaManager()
 								.setDataAboutView(iExternalID);
 
+						setDisplayListDirty();
+						
 						break;
 
 					case CLICKED:
@@ -1751,6 +1763,7 @@ public class GLRemoteRendering
 			gl.glEnd();
 
 			// Render memo pad background
+			 
 			gl.glColor4f(0.9f, 0.9f, 0.3f, 0.5f);
 			gl.glLineWidth(4);
 			gl.glBegin(GL.GL_POLYGON);
@@ -1771,10 +1784,7 @@ public class GLRemoteRendering
 		}
 
 		// Render trash can
-		gl
-				.glPushName(generalManager.getViewGLCanvasManager().getPickingManager()
-						.getPickingID(iUniqueID, EPickingType.MEMO_PAD_SELECTION,
-								TRASH_CAN_PICKING_ID));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.MEMO_PAD_SELECTION, TRASH_CAN_PICKING_ID));
 		trashCan.render(gl, layoutRenderStyle);
 		gl.glPopName();
 
@@ -1844,12 +1854,12 @@ public class GLRemoteRendering
 
 		if (bBusyMode)
 		{
-			generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(false);
+			pickingManager.enablePicking(false);
 			gl.glClearColor(1, 1, 0.6f, 1f); // yellowish background (busy mode)
 		}
 		else
 		{
-			generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(true);
+			pickingManager.enablePicking(true);
 			gl.glClearColor(1, 1, 1, 1); // white background
 		}
 

@@ -34,9 +34,8 @@ public class CmdCreateGLEventListener
 	protected IViewFrustum viewFrustum;
 
 	protected Vec3f cameraOrigin;
-
 	protected Rotf cameraRotation;
-
+	
 	protected ArrayList<Integer> iAlSetIDs;
 
 	/**

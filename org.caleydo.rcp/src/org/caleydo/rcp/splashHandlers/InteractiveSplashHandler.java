@@ -1,6 +1,7 @@
 package org.caleydo.rcp.splashHandlers;
 
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.rcp.Activator;
 import org.caleydo.rcp.Application;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
@@ -44,27 +45,27 @@ public class InteractiveSplashHandler
 	private void createUI()
 	{
 		Shell splash = getSplash();
-
-		// Configure layout
-		RowLayout layout = new RowLayout(SWT.VERTICAL);
-//	    layout.marginLeft = 12;
-	    layout.marginTop = 2;
-//	    layout.justify = true;
-		splash.setLayout(layout);
 		
-		progressBar = new ProgressBar(splash, SWT.SMOOTH);
-		progressBar.setLayoutData(new RowData(getSplash().getSize().x - 5, 25));
+		progressBar = new ProgressBar(splash, SWT.SMOOTH | SWT.BORDER);
+		progressBar.setBounds(20, 200, getSplash().getSize().x - 40, 25);
 		
-		Label label = new Label(splash, SWT.NONE);
-		label.setText("Loading...");
+		Label progressMessageLabel = new Label(splash, SWT.NONE);
+		progressMessageLabel.setText("Loading...");
 //		label.setForeground(splash.getDisplay().getSystemColor (SWT.COLOR_BLACK));
-		label.setLayoutData(new RowData(getSplash().getSize().x - 5, 20));
-		label.setFont(new Font(splash.getDisplay(),"Arial",10, SWT.NONE));
+		progressMessageLabel.setFont(new Font(splash.getDisplay(),"Arial",10, SWT.NONE));
+		progressMessageLabel.setBounds(20, 230, getSplash().getSize().x - 40, 25);
+		progressMessageLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
+		
+		Label versionLabel = new Label(splash, SWT.NONE);
+		versionLabel.setText("Version " +Activator.sBundleVersion);
+		versionLabel.setFont(new Font(splash.getDisplay(),"Arial",10, SWT.NONE));
+		versionLabel.setBounds(185, 177, 300, 20);
+		versionLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
 	
 		splash.setBackgroundMode(SWT.INHERIT_DEFAULT);
 		
 		GeneralManager.get().getSWTGUIManager().setExternalProgressBarAndLabel(
-				progressBar, label);
+				progressBar, progressMessageLabel);
 	}
 	
 	private void doEventLoop()

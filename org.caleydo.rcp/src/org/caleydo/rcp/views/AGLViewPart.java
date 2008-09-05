@@ -50,6 +50,7 @@ public abstract class AGLViewPart
 	{
 		CmdViewCreateRcpGLCanvas cmdCanvas = (CmdViewCreateRcpGLCanvas) GeneralManager.get()
 			.getCommandManager().createCommandByType(ECommandType.CREATE_VIEW_RCP_GLCANVAS);
+		cmdCanvas.setAttributes(-1, false, false, false);
 		cmdCanvas.doCommand();
 		
 		glCanvas = cmdCanvas.getCreatedObject();

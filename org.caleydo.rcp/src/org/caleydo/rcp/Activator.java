@@ -3,6 +3,7 @@ package org.caleydo.rcp;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -16,6 +17,8 @@ public class Activator
 
 	// The shared instance
 	private static Activator plugin;
+	
+	public static String sBundleVersion;
 
 	/**
 	 * The constructor
@@ -29,6 +32,8 @@ public class Activator
 	{
 		super.start(context);
 		plugin = this;
+		
+		sBundleVersion = getBundle().getHeaders().get(Constants.BUNDLE_VERSION).toString();
 	}
 
 	@Override

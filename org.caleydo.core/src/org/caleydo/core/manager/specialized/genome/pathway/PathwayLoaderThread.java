@@ -62,12 +62,11 @@ public class PathwayLoaderThread
 		super.run();
 
 		Iterator<PathwayDatabase> iterPathwayDatabase = pathwayDatabases.iterator();
-
 		while (iterPathwayDatabase.hasNext())
 		{
 			loadAllPathwaysByType(generalManager, iterPathwayDatabase.next());
 		}
-
+		
 		generalManager.getPathwayManager().notifyPathwayLoadingFinished(true);
 		// notifyViews();
 	}
@@ -93,7 +92,7 @@ public class PathwayLoaderThread
 				break;
 			}
 		}
-
+		
 		BufferedReader file = null;
 		String sLine = null;
 		String sFileName = "";
@@ -186,7 +185,7 @@ public class PathwayLoaderThread
 			throw new CaleydoRuntimeException("Error reading data from pathway list file: "
 					+ sFileName, CaleydoRuntimeExceptionType.DATAHANDLING);
 		}
-
+		
 		if (tmpGLRemoteRendering3D != null)
 			tmpGLRemoteRendering3D.enableBusyMode(false);
 

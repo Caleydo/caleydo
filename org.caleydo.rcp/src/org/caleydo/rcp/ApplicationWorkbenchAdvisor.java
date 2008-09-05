@@ -34,7 +34,7 @@ public class ApplicationWorkbenchAdvisor
 	{
 		super.initialize(configurer);
 		
-		configurer.setSaveAndRestore(true);
+		configurer.setSaveAndRestore(false);
 	}
 
 	@Override

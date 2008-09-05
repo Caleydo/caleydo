@@ -22,6 +22,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
+import org.caleydo.rcp.Application;
 import org.caleydo.rcp.dialog.file.FileLoadDataDialog;
 import org.caleydo.rcp.image.IImageKeys;
 import org.eclipse.jface.action.Action;
@@ -840,6 +841,8 @@ public class FileLoadDataAction
 	{
 		createData();
 		setDataInViews();
+		
+		Application.bPathwayViewerMode = false;
 	}
 
 	private void createData()
