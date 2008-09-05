@@ -555,7 +555,7 @@ public class GLParallelCoordinates
 			renderPolylines(gl, ESelectionType.NORMAL);
 		}
 		else
-		{		
+		{
 			renderPolylines(gl, ESelectionType.DESELECTED);
 			renderPolylines(gl, ESelectionType.NORMAL);
 			renderPolylines(gl, ESelectionType.MOUSE_OVER);
@@ -1588,10 +1588,10 @@ public class GLParallelCoordinates
 	@Override
 	public String getShortInfo()
 	{
-		return "Parallel Coordaintes (" +set.getVA(iPolylineVAID).size() + " genes / " + 
-			set.getVA(iAxisVAID).size() + " experiments)";
+		return "Parallel Coordinates (" + set.getVA(iPolylineVAID).size() + " genes / "
+				+ set.getVA(iAxisVAID).size() + " experiments)";
 	}
-	
+
 	@Override
 	public String getDetailedInfo()
 	{
@@ -1602,18 +1602,30 @@ public class GLParallelCoordinates
 
 		if (bRenderOnlyContext)
 		{
-			sInfoText.append("Showing only genes which occur in one of the other views in focus\n");
+			sInfoText
+					.append("Showing only genes which occur in one of the other views in focus\n");
 		}
 		else
 		{
+			if (bUseRandomSampling)
+			{
+				sInfoText.append("Random sampling active, sample size: "
+						+ iNumberOfRandomElements + "\n");
+			}
+			else
+			{
+				sInfoText.append("Random sampling inactive\n");
+			}
+
 			if (dataFilterLevel == EDataFilterLevel.COMPLETE)
 				sInfoText.append("Showing all Genes in the dataset\n");
 			else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING)
 				sInfoText.append("Showing all Genes that have a known DAVID ID mapping\n");
 			else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT)
-				sInfoText.append("Showing all genes that are contained in any of the KEGG or Biocarta Pathways\n");
+				sInfoText
+						.append("Showing all genes that are contained in any of the KEGG or Biocarta Pathways\n");
 		}
-		
+
 		return sInfoText.toString();
 	}
 

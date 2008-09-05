@@ -123,6 +123,11 @@ public interface IVirtualArray
 	 * Reset the virtual array to the indices in the managed data entity
 	 */
 	public void reset();
+	
+	/**
+	 * Reset the virtual array to contain no elements
+	 */
+	public void clear();
 
 	/**
 	 * Returns the index of the first occurrence of the specified element in

@@ -94,7 +94,7 @@ public abstract class AStorageBasedView
 
 	protected boolean bUseRandomSampling = true;
 
-	private int iNumberOfRandomElements = 100;
+	protected int iNumberOfRandomElements = 100;
 
 	/**
 	 * Constructor.
@@ -154,6 +154,8 @@ public abstract class AStorageBasedView
 				if (mapVAIDs.containsKey(eSelectionType))
 					set.removeVirtualArray(mapVAIDs.get(eSelectionType));
 			}
+			iContentVAID = -1;
+			iStorageVAID = -1;
 			mapVAIDs.clear();
 		}
 
@@ -326,6 +328,27 @@ public abstract class AStorageBasedView
 		bIsDisplayListDirtyRemote = true;
 	}
 
+	public void resetView()
+	{
+//		contentSelectionManager.resetSelectionManager();
+//		storageSelectionManager.resetSelectionManager();
+//		if (bRenderOnlyContext == true)
+//			set.getVA(iContentVAID).clear();
+//		else
+//			initCompleteList();
+//		
+//		set.getVA(iStorageVAID).reset();
+//		
+//
+//		contentSelectionManager.setVA(set.getVA(iContentVAID));
+//		storageSelectionManager.setVA(set.getVA(iStorageVAID));
+		
+		initData();
+		
+		//resetSelections();
+		setDisplayListDirty();
+	}
+
 	@Override
 	public void triggerUpdate()
 	{
@@ -424,7 +447,8 @@ public abstract class AStorageBasedView
 		{
 			this.bUseRandomSampling = bUseRandomSampling;
 		}
-		// TODO, probably do this with initCompleteList, take care of selection manager though
+		// TODO, probably do this with initCompleteList, take care of selection
+		// manager though
 		initData();
 		initCompleteList();
 	}
@@ -441,10 +465,11 @@ public abstract class AStorageBasedView
 			initData();
 			return;
 		}
-		// TODO, probably do this with initCompleteList, take care of selection manager though
+		// TODO, probably do this with initCompleteList, take care of selection
+		// manager though
 		this.iNumberOfRandomElements = iNumberOfRandomElements;
 	}
-	
+
 	public abstract void resetSelections();
 
 }

@@ -57,7 +57,6 @@ public class GLHeatMap
 
 	private GLColorMappingBarMiniView colorMappingBar;
 
-
 	private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
 
 	// private boolean bRenderHorizontally = false;
@@ -213,8 +212,8 @@ public class GLHeatMap
 	@Override
 	public void display(GL gl)
 	{
-//		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-//		GLHelperFunctions.drawAxis(gl);
+		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		// GLHelperFunctions.drawAxis(gl);
 		gl.glCallList(iGLDisplayListToCall);
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 	}
@@ -222,30 +221,28 @@ public class GLHeatMap
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex)
 	{
 
-		if(bHasFrustumChanged)
+		if (bHasFrustumChanged)
 		{
 			renderStyle.setFieldDimensionsDirty();
 			bHasFrustumChanged = false;
 		}
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
-	
 		// FIXME: bad hack, normalize frustum to 0:1 to avoid that
-		//clipToFrustum(gl);
+		// clipToFrustum(gl);
 		float fLeftOffset = 0;
-		if(remoteRenderingGLCanvas == null)
+		if (remoteRenderingGLCanvas == null)
 			fLeftOffset = 0.05f;
 		else
 			fLeftOffset = 0.15f;
-//		GLHelperFunctions.drawAxis(gl);
+		// GLHelperFunctions.drawAxis(gl);
 		if (detailLevel == EDetailLevel.HIGH)
 		{
-			colorMappingBar.render(gl, fLeftOffset,
-					(viewFrustum.getHeight() - colorMappingBar.getHeight()) / 2, 0.2f);	
+			colorMappingBar.render(gl, fLeftOffset, (viewFrustum.getHeight() - colorMappingBar
+					.getHeight()) / 2, 0.2f);
 			gl.glTranslatef(fLeftOffset + colorMappingBar.getWidth(), 0, 0);
 		}
 
-		
 		if (!bRenderStorageHorizontally)
 		{
 			gl.glTranslatef(vecTranslation.x(), viewFrustum.getHeight(), vecTranslation.z());
@@ -279,7 +276,7 @@ public class GLHeatMap
 
 	public void renderHorizontally(boolean bRenderStorageHorizontally)
 	{
-		
+
 		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
 		renderStyle.setBRenderStorageHorizontally(bRenderStorageHorizontally);
 		setDisplayListDirty();
@@ -349,16 +346,55 @@ public class GLHeatMap
 	@Override
 	public String getShortInfo()
 	{
-		return "Heat Map (" + set.getVA(iContentVAID).size() + " genes / " + 
-			set.getVA(iStorageVAID).size() + " experiments)";
+		return "Heat Map (" + set.getVA(iContentVAID).size() + " genes / "
+				+ set.getVA(iStorageVAID).size() + " experiments)";
 	}
-	
+
 	@Override
 	public String getDetailedInfo()
 	{
+		// StringBuffer sInfoText = new StringBuffer();
+		// sInfoText.append("Heat Map");
+		// sInfoText.append(set.getVA(iContentVAID).size() +
+		// " gene expression values");
+		// return sInfoText.toString();
+
 		StringBuffer sInfoText = new StringBuffer();
-		sInfoText.append("Heat Map");
-		sInfoText.append(set.getVA(iContentVAID).size() + " gene expression values");
+		sInfoText.append("<b>Type:</b> Heat Map\n");
+
+		if (bRenderStorageHorizontally)
+			sInfoText.append(set.getVA(iContentVAID).size() + "Genes in columns and "
+					+ set.getVA(iStorageVAID).size() + " experiments in rows.\n");
+		else
+			sInfoText.append(set.getVA(iContentVAID).size() + " Genes in rows and "
+					+ set.getVA(iStorageVAID).size() + " experiments in columns.\n");
+
+		if (bRenderOnlyContext)
+		{
+			sInfoText
+					.append("Showing only genes which occur in one of the other views in focus\n");
+		}
+		else
+		{
+			if (bUseRandomSampling)
+			{
+				sInfoText.append("Random sampling active, sample size: "
+						+ iNumberOfRandomElements + "\n");
+			}
+			else
+			{
+				sInfoText.append("Random sampling inactive\n");
+			}
+
+			if (dataFilterLevel == EDataFilterLevel.COMPLETE)
+				sInfoText.append("Showing all genes in the dataset\n");
+			else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING)
+				sInfoText.append("Showing all genes that have a known DAVID ID mapping\n");
+			else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT)
+				sInfoText
+						.append("Showing all genes that are contained in any of the KEGG or Biocarta pathways\n");
+		}
+
 		return sInfoText.toString();
 	}
 
@@ -403,7 +439,7 @@ public class GLHeatMap
 						contentSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
 						contentSelectionManager.addToType(ESelectionType.MOUSE_OVER,
 								iExternalID);
-						
+
 						renderStyle.setFieldDimensionsDirty();
 						if (eFieldDataType == EIDType.EXPRESSION_INDEX)
 						{
@@ -447,10 +483,10 @@ public class GLHeatMap
 			}
 
 			float fFontScaling = 0;
-			
+
 			float fColumnDegrees = 0;
 			float fLineDegrees = 0;
-			if(bRenderStorageHorizontally)
+			if (bRenderStorageHorizontally)
 			{
 				fColumnDegrees = 0;
 				fLineDegrees = 25;
@@ -460,7 +496,7 @@ public class GLHeatMap
 				fColumnDegrees = 60;
 				fLineDegrees = 90;
 			}
-			
+
 			if (vecFieldWidthAndHeight.x() > 0.1f)
 			{
 				if (vecFieldWidthAndHeight.x() < 0.2f)
@@ -493,8 +529,8 @@ public class GLHeatMap
 					{
 						renderCaption(gl, set.get(iStorageIndex).getLabel(),
 								fXPosition + 0.1f,
-								fYPosition + vecFieldWidthAndHeight.y() / 2, fColumnDegrees, renderStyle
-										.getSmallFontScalingFactor());
+								fYPosition + vecFieldWidthAndHeight.y() / 2, fColumnDegrees,
+								renderStyle.getSmallFontScalingFactor());
 						fYPosition += vecFieldWidthAndHeight.y();
 					}
 				}
@@ -586,7 +622,7 @@ public class GLHeatMap
 	protected SelectedElementRep createElementRep(int iStorageIndex)
 			throws InvalidAttributeValueException
 	{
-		
+
 		renderStyle.updateFieldSizes();
 		SelectedElementRep elementRep;// = new SelectedElementRep(iUniqueID,
 		// 0.0f, 0.0f, 0.0f);

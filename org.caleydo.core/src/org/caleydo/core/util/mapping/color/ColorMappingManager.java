@@ -54,6 +54,11 @@ public class ColorMappingManager
 	public void initColorMapping(EColorMappingType colorMappingType,
 			ArrayList<ColorMarkerPoint> alMarkerPoints)
 	{
+		if(hashColorMapping.containsKey(colorMappingType))
+		{
+			hashColorMapping.get(colorMappingType).resetColorMapping(alMarkerPoints);
+			return;
+		}
 		hashColorMapping.put(colorMappingType, new ColorMapping(alMarkerPoints));
 	}
 	

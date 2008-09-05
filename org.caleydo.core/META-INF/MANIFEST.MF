@@ -3,8 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Caleydo Core
 Bundle-SymbolicName: org.caleydo.core
 Bundle-Version: 1.0.0
-Export-Package: org.caleydo.core,
- org.caleydo.core.application.core,
+Export-Package: org.caleydo.core.application.core,
  org.caleydo.core.application.helper,
  org.caleydo.core.application.helper.cacher.biocarta,
  org.caleydo.core.application.helper.cacher.kegg,

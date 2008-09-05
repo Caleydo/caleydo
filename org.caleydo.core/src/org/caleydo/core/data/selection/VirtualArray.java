@@ -155,6 +155,12 @@ public class VirtualArray
 	{
 		init();
 	}
+	
+	@Override
+	public void clear()
+	{
+		iAlVirtualArray.clear();
+	}
 
 	@Override
 	public int indexOf(int iElement)

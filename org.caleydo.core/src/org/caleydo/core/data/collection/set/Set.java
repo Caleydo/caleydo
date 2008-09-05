@@ -163,7 +163,7 @@ public class Set
 		else if (hashStorageVAs.containsKey(iUniqueID))
 			return hashStorageVAs.get(iUniqueID).size();
 		else
-			throw new IllegalArgumentException("No such virtual array has been registered");
+			throw new IllegalArgumentException("No such virtual array has been registered:" + iUniqueID);
 
 	}
 

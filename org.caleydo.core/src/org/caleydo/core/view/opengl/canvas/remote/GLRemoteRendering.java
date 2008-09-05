@@ -1647,7 +1647,7 @@ public class GLRemoteRendering
 					|| tmpGLEventListenerToRemove instanceof GLParallelCoordinates)
 			{
 				// Remove all elements from heatmap and parallel coordinates
-				((AStorageBasedView) tmpGLEventListenerToRemove).clearAllSelections();
+				((AStorageBasedView) tmpGLEventListenerToRemove).resetView();
 			}
 		}
 

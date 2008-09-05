@@ -30,9 +30,9 @@ public class PreferenceInitializer
 		store.setDefault(COLOR_MARKER_POINT_VALUE + "1", 0.0f);
 		store.setDefault(COLOR_MARKER_POINT_VALUE + "2", 0.2f);
 		store.setDefault(COLOR_MARKER_POINT_VALUE + "3", 1.0f);	
-		store.setDefault(COLOR_MARKER_POINT_COLOR + "1", "255,126,0");
-		store.setDefault(COLOR_MARKER_POINT_COLOR + "2", "0,255,0");
-		store.setDefault(COLOR_MARKER_POINT_COLOR + "3", "0,0,255");
+		store.setDefault(COLOR_MARKER_POINT_COLOR + "1", "0,255,0");
+		store.setDefault(COLOR_MARKER_POINT_COLOR + "2", "0,0,0");
+		store.setDefault(COLOR_MARKER_POINT_COLOR + "3", "255,0,0");
 		
 
 		

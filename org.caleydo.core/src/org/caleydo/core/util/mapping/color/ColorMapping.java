@@ -31,6 +31,20 @@ public class ColorMapping
 	 */
 	protected ColorMapping(ArrayList<ColorMarkerPoint> alMarkerPoints)
 	{
+		init(alMarkerPoints);
+	}
+
+	/**
+	 * Reset the color mapping, same principles as constructor {@link ColorMapping#ColorMapping(ArrayList)}
+	 * @param alMarkerPoints
+	 */
+	protected void resetColorMapping(ArrayList<ColorMarkerPoint> alMarkerPoints)
+	{
+		init(alMarkerPoints);
+	}
+
+	private void init(ArrayList<ColorMarkerPoint> alMarkerPoints)
+	{
 		this.alMarkerPoints = alMarkerPoints;
 		alColorList = new ArrayList<float[]>(COLOR_DEPTH);
 		for (int iCount = 0; iCount < COLOR_DEPTH; iCount++)

@@ -13,6 +13,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.rcp.core.bridge.RCPBridge;
 import org.caleydo.rcp.preferences.PreferenceConstants;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
@@ -84,17 +85,17 @@ public class Application
 					else if (sArParam[iParamIndex].equals(EStartViewType.HEATMAP
 							.getCommandLineArgument()))
 					{
-						alStartViews.add(EStartViewType.HEATMAP);						
+						alStartViews.add(EStartViewType.HEATMAP);
 					}
 					else if (sArParam[iParamIndex].equals(EStartViewType.BROWSER
 							.getCommandLineArgument()))
 					{
-						alStartViews.add(EStartViewType.BROWSER);						
-					}		
+						alStartViews.add(EStartViewType.BROWSER);
+					}
 					else if (sArParam[iParamIndex].equals(EStartViewType.REMOTE
 							.getCommandLineArgument()))
 					{
-						alStartViews.add(EStartViewType.REMOTE);						
+						alStartViews.add(EStartViewType.REMOTE);
 					}
 					else
 					{
@@ -188,11 +189,11 @@ public class Application
 		// dialog is opened
 		if (sCaleydoXMLfile.equals(""))
 		{
-			if (bPathwayViewerMode)	
+			if (bPathwayViewerMode)
 				sCaleydoXMLfile = BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE;
 			else
 				sCaleydoXMLfile = BOOTSTRAP_FILE_GENE_EXPRESSION_MODE;
-			
+
 			caleydoCore.setXmlFileName(sCaleydoXMLfile);
 			caleydoCore.start();
 
@@ -254,33 +255,49 @@ public class Application
 		ArrayList<ColorMarkerPoint> alMarkerPoints = new ArrayList<ColorMarkerPoint>();
 		for (int iCount = 1; iCount <= iNumberOfMarkerPoints; iCount++)
 		{
-			
-			
-			float colorMarkerValue = store.getFloat(PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
+			float colorMarkerValue = store
+					.getFloat(PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
 			String color = store.getString(PreferenceConstants.COLOR_MARKER_POINT_COLOR
 					+ iCount);
-			StringTokenizer tokenizer = new StringTokenizer(color, ",", false);
-			float[] fArColor = new float[tokenizer.countTokens()];
-			int iInnerCount = 0;
-			while (tokenizer.hasMoreTokens())
-			{
-				try
-				{
-					String token = tokenizer.nextToken();
-					int iTemp = Integer.parseInt(token);
-					fArColor[iInnerCount] = (float) iTemp / 255;
-				}
-				catch (Exception e)
-				{
 
+			float[] fArColor = new float[3];
+			if (color.isEmpty())
+			{
+				fArColor[0] = 0;
+				fArColor[1] = 0;
+				fArColor[2] = 0;
+			}
+			else
+			{
+				StringTokenizer tokenizer = new StringTokenizer(color, ",", false);
+				int iInnerCount = 0;
+				while (tokenizer.hasMoreTokens())
+				{
+					try
+					{
+						String token = tokenizer.nextToken();
+						int iTemp = Integer.parseInt(token);
+						fArColor[iInnerCount] = (float) iTemp / 255;
+					}
+					catch (Exception e)
+					{
+
+					}
+					iInnerCount++;
 				}
-				iInnerCount++;
 			}
 			alMarkerPoints.add(new ColorMarkerPoint(colorMarkerValue, fArColor));
 		}
-		
+
 		// TODO not generic
-		ColorMappingManager.get().initColorMapping(EColorMappingType.GENE_EXPRESSION, alMarkerPoints);
+		ColorMappingManager.get().initColorMapping(EColorMappingType.GENE_EXPRESSION,
+				alMarkerPoints);
+
+		for (AGLEventListener view : GeneralManager.get().getViewGLCanvasManager()
+				.getAllGLEventListeners())
+		{
+			view.setDisplayListDirty();
+		}
 
 	}
 
@@ -288,20 +305,20 @@ public class Application
 	{
 		if (bPathwayViewerMode)
 		{
-			// Filter all views except remote and browser in case of pathway viewer mode
+			// Filter all views except remote and browser in case of pathway
+			// viewer mode
 			Iterator<EStartViewType> iterStartViewsType = alStartViews.iterator();
 			EStartViewType type;
 			while (iterStartViewsType.hasNext())
 			{
 				type = iterStartViewsType.next();
-				if (type != EStartViewType.REMOTE 
-						&& type != EStartViewType.BROWSER)
+				if (type != EStartViewType.REMOTE && type != EStartViewType.BROWSER)
 				{
 					iterStartViewsType.remove();
 				}
 			}
 		}
-		
+
 		// Open Views in RCP
 		try
 		{

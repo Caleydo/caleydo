@@ -14,8 +14,11 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.FocusAdapter;
+import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Label;
@@ -45,7 +48,7 @@ public class ColorMappingPreferencePage
 	private int iNumberOfColorPoints = 0;
 	private Spinner numColorPointsSpinner;
 
-	private class MyModifyListener
+	private class NumColorPointsFocusListener
 		implements ModifyListener
 	{
 
@@ -74,6 +77,7 @@ public class ColorMappingPreferencePage
 					alColorMarkerPointSpinners.get(iCount).setEnabled(false);
 				}
 			}
+			setFirstAndLastColorMarkerPointSpinner();
 		}
 
 	}
@@ -83,7 +87,7 @@ public class ColorMappingPreferencePage
 		super(GRID);
 		// setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setPreferenceStore(GeneralManager.get().getPreferenceStore());
-		setDescription("Set color mapping for different use cases");
+		setDescription("Set color mapping for different use cases, the values in the spinners are % of your data range.");
 	}
 
 	/**
@@ -127,7 +131,7 @@ public class ColorMappingPreferencePage
 
 		numColorPointsSpinner.setSelection(iNumberOfColorPoints);
 
-		MyModifyListener listener = new MyModifyListener();
+		NumColorPointsFocusListener listener = new NumColorPointsFocusListener();
 		listener.setSpinner(numColorPointsSpinner);
 		numColorPointsSpinner.addModifyListener(listener);
 
@@ -145,22 +149,33 @@ public class ColorMappingPreferencePage
 
 			Spinner markerPointSpinner = new Spinner(getFieldEditorParent(), SWT.BORDER);
 
+			getFieldEditorParent().addMouseMoveListener(new MouseMoveListener()
+			{
+				@Override
+				public void mouseMove(org.eclipse.swt.events.MouseEvent e)
+				{
+
+					setFirstAndLastColorMarkerPointSpinner();
+
+				}
+			});
+
+			// markerPointSpinner.add
+			// markerPointSpinner.setEnabled(false);
+
+			// markerPointSpinner.setEnabled(false);
+
 			markerPointSpinner.setMinimum(0);
 			markerPointSpinner.setMaximum(100);
 
 			markerPointSpinner.setSelection((int) (getPreferenceStore().getDouble(
 					COLOR_MARKER_POINT_VALUE + iCount) * 100));
 
-			if (iCount == 1)
-			{
-				markerPointSpinner.setSelection(0);
-				markerPointSpinner.setEnabled(false);
-			}
-			else if (iCount == iNumberOfColorPoints)
-			{
-				markerPointSpinner.setSelection(100);
-				markerPointSpinner.setEnabled(false);
-			}
+//			if (iCount == iNumberOfColorPoints)
+//			{
+//				markerPointSpinner.setSelection(100);
+//				markerPointSpinner.setEnabled(false);
+//			}
 
 			if (iCount <= iNumberOfColorPoints)
 			{
@@ -224,7 +239,7 @@ public class ColorMappingPreferencePage
 	{
 		boolean bReturn = super.performOk();
 
-		getPreferenceStore().setValue("NumberOfColorPoints", iNumberOfColorPoints);
+		getPreferenceStore().setValue(NUMBER_OF_COLOR_MARKER_POINTS, iNumberOfColorPoints);
 
 		for (int iCount = 0; iCount < iNumberOfColorPoints; iCount++)
 		{
@@ -237,5 +252,14 @@ public class ColorMappingPreferencePage
 		ColorMappingManager.get().initiFromPreferenceStore();
 		Application.initializeColorMapping();
 		return bReturn;
+	}
+
+	private void setFirstAndLastColorMarkerPointSpinner()
+	{
+		alColorMarkerPointSpinners.get(0).setSelection(0);
+		alColorMarkerPointSpinners.get(0).setEnabled(false);
+	
+		alColorMarkerPointSpinners.get(iNumberOfColorPoints-1).setSelection(100);
+		alColorMarkerPointSpinners.get(iNumberOfColorPoints-1).setEnabled(false);
 	}
 }

@@ -206,7 +206,7 @@ public abstract class AGLEventListener
 	/**
 	 * Set the display list to dirty
 	 */
-	protected void setDisplayListDirty()
+	public void setDisplayListDirty()
 	{
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
