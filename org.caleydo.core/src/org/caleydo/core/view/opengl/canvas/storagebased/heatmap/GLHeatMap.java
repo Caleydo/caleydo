@@ -497,14 +497,16 @@ public class GLHeatMap
 				fLineDegrees = 90;
 			}
 
-			if (vecFieldWidthAndHeight.x() > 0.1f)
+			if (vecFieldWidthAndHeight.x() > 0.08f)
 			{
+				boolean bRenderShortName = false;
 				if (vecFieldWidthAndHeight.x() < 0.2f)
 				{
 					fFontScaling = renderStyle.getSmallFontScalingFactor();
 				}
 				else
 				{
+					bRenderShortName = true;
 					fFontScaling = renderStyle.getHeadingFontScalingFactor();
 				}
 
@@ -512,12 +514,20 @@ public class GLHeatMap
 				{
 					// Render heat map element name
 					String sContent = getRefSeqFromStorageIndex(iContentIndex);
-					renderCaption(gl, sContent, fXPosition + vecFieldWidthAndHeight.x() / 2,
-							fYPosition + 0.1f, fLineDegrees, fFontScaling);
+					renderCaption(gl, sContent, fXPosition + vecFieldWidthAndHeight.x() / 6
+							* 2.5f, fYPosition + 0.1f, fLineDegrees, fFontScaling);
+
+					if (bRenderShortName)
+					{
+						sContent = getShortNameFromDavid(iContentIndex);
+						renderCaption(gl, sContent, fXPosition + vecFieldWidthAndHeight.x()
+								/ 6 * 4.5f, fYPosition + 0.1f, fLineDegrees, fFontScaling);
+					}
 				}
-				renderStyle.setXDistanceAt(set.getVA(iContentVAID).indexOf(iContentIndex),
-						fXPosition);
+
 			}
+			renderStyle.setXDistanceAt(set.getVA(iContentVAID).indexOf(iContentIndex),
+					fXPosition);
 			fXPosition += vecFieldWidthAndHeight.x();
 
 			if (detailLevel == EDetailLevel.HIGH)

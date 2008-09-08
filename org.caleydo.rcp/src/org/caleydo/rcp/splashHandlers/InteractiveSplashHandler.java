@@ -6,9 +6,8 @@ import org.caleydo.rcp.Application;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.layout.RowData;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
@@ -49,12 +48,15 @@ public class InteractiveSplashHandler
 		progressBar = new ProgressBar(splash, SWT.SMOOTH | SWT.BORDER);
 		progressBar.setBounds(20, 200, getSplash().getSize().x - 40, 25);
 		
+		splash.setBackgroundMode(SWT.INHERIT_DEFAULT);
+		
 		Label progressMessageLabel = new Label(splash, SWT.NONE);
 		progressMessageLabel.setText("Loading...");
 //		label.setForeground(splash.getDisplay().getSystemColor (SWT.COLOR_BLACK));
 		progressMessageLabel.setFont(new Font(splash.getDisplay(),"Arial",10, SWT.NONE));
 		progressMessageLabel.setBounds(20, 230, getSplash().getSize().x - 40, 25);
 		progressMessageLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
+
 		
 		Label versionLabel = new Label(splash, SWT.NONE);
 		versionLabel.setText("Version " +Activator.sBundleVersion);
@@ -62,7 +64,7 @@ public class InteractiveSplashHandler
 		versionLabel.setBounds(185, 177, 300, 20);
 		versionLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
 	
-		splash.setBackgroundMode(SWT.INHERIT_DEFAULT);
+
 		
 		GeneralManager.get().getSWTGUIManager().setExternalProgressBarAndLabel(
 				progressBar, progressMessageLabel);

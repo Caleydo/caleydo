@@ -9,18 +9,20 @@ import java.util.StringTokenizer;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.caleydo.rcp.Activator;
 import org.caleydo.rcp.Application;
 import org.eclipse.jface.preference.ColorFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IPreferenceStore;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseMoveListener;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Label;
@@ -49,10 +51,10 @@ public class ColorMappingPreferencePage
 
 	private int iNumberOfColorPoints = 0;
 	private Spinner numColorPointsSpinner;
-	
+
 	private CLabel colorMappingPreviewLabel;
 
-	private class NumColorPointsFocusListener
+	private class NumColorPointsModifyListener
 		implements ModifyListener
 	{
 		private Spinner spinner;
@@ -61,7 +63,7 @@ public class ColorMappingPreferencePage
 		{
 			this.spinner = spinner;
 		}
-		
+
 		@Override
 		public void modifyText(ModifyEvent e)
 		{
@@ -81,10 +83,32 @@ public class ColorMappingPreferencePage
 				}
 			}
 			setFirstAndLastColorMarkerPointSpinner();
-			
+
 			updateColorMappingPreview();
 		}
+	}
+	
+	//private class SomethingElseChangedLis
 
+	private class ColorChangedListener
+		implements IPropertyChangeListener
+	{
+		@Override
+		public void propertyChange(PropertyChangeEvent event)
+		{
+			updateColorMappingPreview();
+		}
+	}
+	
+	private class MarkerPointValueChangedModifyListener
+	implements ModifyListener
+	{
+		@Override
+		public void modifyText(ModifyEvent e)
+		{
+			updateColorMappingPreview();		
+		}
+		
 	}
 
 	public ColorMappingPreferencePage()
@@ -136,30 +160,35 @@ public class ColorMappingPreferencePage
 
 		numColorPointsSpinner.setSelection(iNumberOfColorPoints);
 
-		NumColorPointsFocusListener listener = new NumColorPointsFocusListener();
+		NumColorPointsModifyListener listener = new NumColorPointsModifyListener();
 		listener.setSpinner(numColorPointsSpinner);
 		numColorPointsSpinner.addModifyListener(listener);
 
 		alColorFieldEditors = new ArrayList<ColorFieldEditor>();
 		alColorMarkerPointSpinners = new ArrayList<Spinner>();
+
+		 IPropertyChangeListener changeListener = new ColorChangedListener();
+		 ModifyListener markerPointValueChangedListener = new MarkerPointValueChangedModifyListener();
 		for (int iCount = 1; iCount <= 5; iCount++)
 		{
 			ColorFieldEditor colorFieldEditor = new ColorFieldEditor(COLOR_MARKER_POINT_COLOR
 					+ iCount, "Color " + iCount, getFieldEditorParent());
 			colorFieldEditor.load();
 			colorFieldEditor.fillIntoGrid(getFieldEditorParent(), 3);
-
+			colorFieldEditor.getColorSelector().addListener(changeListener);
 			alColorFieldEditors.add(colorFieldEditor);
 			addField(colorFieldEditor);
 
 			Spinner markerPointSpinner = new Spinner(getFieldEditorParent(), SWT.BORDER);
+			
+			markerPointSpinner.addModifyListener(markerPointValueChangedListener);			
+	
 
 			getFieldEditorParent().addMouseMoveListener(new MouseMoveListener()
 			{
 				@Override
 				public void mouseMove(org.eclipse.swt.events.MouseEvent e)
 				{
-
 					setFirstAndLastColorMarkerPointSpinner();
 
 				}
@@ -176,11 +205,11 @@ public class ColorMappingPreferencePage
 			markerPointSpinner.setSelection((int) (getPreferenceStore().getDouble(
 					COLOR_MARKER_POINT_VALUE + iCount) * 100));
 
-//			if (iCount == iNumberOfColorPoints)
-//			{
-//				markerPointSpinner.setSelection(100);
-//				markerPointSpinner.setEnabled(false);
-//			}
+			// if (iCount == iNumberOfColorPoints)
+			// {
+			// markerPointSpinner.setSelection(100);
+			// markerPointSpinner.setEnabled(false);
+			// }
 
 			if (iCount <= iNumberOfColorPoints)
 			{
@@ -195,22 +224,24 @@ public class ColorMappingPreferencePage
 			alColorMarkerPointSpinners.add(markerPointSpinner);
 			markerPointSpinner.update();
 		}
-		
-//	    CLabel labelGradientBg = new CLabel(getFieldEditorParent(), SWT.SHADOW_IN);
-//	    labelGradientBg.setText("CLabel with gradient colored background");
-//	    labelGradientBg.setBounds(10, 10, 300, 100);
-//	    labelGradientBg.setBackground(
-//	      new Color[] {
-//	        getFieldEditorParent().getDisplay().getSystemColor(SWT.COLOR_GREEN),
-//	        getFieldEditorParent().getDisplay().getSystemColor(SWT.COLOR_WHITE),
-//	        getFieldEditorParent().getDisplay().getSystemColor(SWT.COLOR_RED)},
-//	      new int[] { 50, 100 });
-		
+
+		// CLabel labelGradientBg = new CLabel(getFieldEditorParent(),
+		// SWT.SHADOW_IN);
+		// labelGradientBg.setText("CLabel with gradient colored background");
+		// labelGradientBg.setBounds(10, 10, 300, 100);
+		// labelGradientBg.setBackground(
+		// new Color[] {
+		// getFieldEditorParent().getDisplay().getSystemColor(SWT.COLOR_GREEN),
+		// getFieldEditorParent().getDisplay().getSystemColor(SWT.COLOR_WHITE),
+		// getFieldEditorParent().getDisplay().getSystemColor(SWT.COLOR_RED)},
+		// new int[] { 50, 100 });
+
 		colorMappingPreviewLabel = new CLabel(getFieldEditorParent(), SWT.SHADOW_IN);
-	    colorMappingPreviewLabel.setBounds(10, 10, 300, 100);
-	    colorMappingPreviewLabel.setText("                          ");
-	    
-	    updateColorMappingPreview();
+		colorMappingPreviewLabel.setBounds(10, 10, 300, 100);
+		colorMappingPreviewLabel.setText("                          ");
+		
+		initialColorMappingPreview();
+
 	}
 
 	private void setNumberOfColorPoints(int iNumberOfColorPoints)
@@ -248,11 +279,13 @@ public class ColorMappingPreferencePage
 		alColorFieldEditors.get(0).loadDefault();
 		alColorFieldEditors.get(1).loadDefault();
 		alColorFieldEditors.get(2).loadDefault();
+	
 	}
 
 	@Override
 	public void init(IWorkbench workbench)
 	{
+
 	}
 
 	public boolean performOk()
@@ -278,12 +311,12 @@ public class ColorMappingPreferencePage
 	{
 		alColorMarkerPointSpinners.get(0).setSelection(0);
 		alColorMarkerPointSpinners.get(0).setEnabled(false);
-	
-		alColorMarkerPointSpinners.get(iNumberOfColorPoints-1).setSelection(100);
-		alColorMarkerPointSpinners.get(iNumberOfColorPoints-1).setEnabled(false);
+
+		alColorMarkerPointSpinners.get(iNumberOfColorPoints - 1).setSelection(100);
+		alColorMarkerPointSpinners.get(iNumberOfColorPoints - 1).setEnabled(false);
 	}
-	
-	private void updateColorMappingPreview()
+
+	private void initialColorMappingPreview()
 	{
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 		store.getInt("");
@@ -292,21 +325,21 @@ public class ColorMappingPreferencePage
 				.getInt(PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
 
 		Color[] alColor = new Color[iNumberOfMarkerPoints];
-		int[] iArColorMarkerPoints = new int[iNumberOfMarkerPoints-1];
+		int[] iArColorMarkerPoints = new int[iNumberOfMarkerPoints - 1];
 		for (int iCount = 1; iCount <= iNumberOfMarkerPoints; iCount++)
 		{
-			int iColorMarkerPoint = (int)(100 * getPreferenceStore()
-					.getFloat(PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount));
-			
+			int iColorMarkerPoint = (int) (100 * getPreferenceStore().getFloat(
+					PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount));
+
 			// Gradient label does not need the 0 point
 			if (iColorMarkerPoint != 0)
 			{
-				iArColorMarkerPoints[iCount-2] = iColorMarkerPoint;
+				iArColorMarkerPoints[iCount - 2] = iColorMarkerPoint;
 			}
-			
-			String color = getPreferenceStore().getString(PreferenceConstants.COLOR_MARKER_POINT_COLOR
-			+ iCount);
-			
+
+			String color = getPreferenceStore().getString(
+					PreferenceConstants.COLOR_MARKER_POINT_COLOR + iCount);
+
 			int[] iArColor = new int[3];
 			if (color.isEmpty())
 			{
@@ -332,10 +365,83 @@ public class ColorMappingPreferencePage
 					iInnerCount++;
 				}
 			}
-			alColor[iCount-1] = new Color(getFieldEditorParent().getDisplay(), 
-					iArColor[0], iArColor[1], iArColor[2]);
-		}		
-	   
+			alColor[iCount - 1] = new Color(getFieldEditorParent().getDisplay(), iArColor[0],
+					iArColor[1], iArColor[2]);
+		}
+
+		colorMappingPreviewLabel.setBackground(alColor, iArColorMarkerPoints);
+		colorMappingPreviewLabel.update();
+
+	}
+
+	private void updateColorMappingPreview()
+	{
+		// IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+		// store.getInt("");
+		// store = GeneralManager.get().getPreferenceStore();
+		// int iNumberOfMarkerPoints = store
+		// .getInt(PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
+
+		Color[] alColor = new Color[iNumberOfColorPoints];
+		int[] iArColorMarkerPoints = new int[iNumberOfColorPoints - 1];
+
+		for (int iCount = 0; iCount < iNumberOfColorPoints; iCount++)
+		{
+			RGB rgb = alColorFieldEditors.get(iCount).getColorSelector().getColorValue();
+			if (rgb == null)
+				return;
+			alColor[iCount] = new Color(getFieldEditorParent().getDisplay(), rgb);
+
+			if (iCount != 0)
+			{
+				iArColorMarkerPoints[iCount - 1] = alColorMarkerPointSpinners.get(iCount)
+						.getSelection();
+			}
+		}
+		// for (int iCount = 1; iCount <= iNumberOfColorPoints; iCount++)
+		// {
+		// int iColorMarkerPoint = (int)(100 * getPreferenceStore()
+		// .getFloat(PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount));
+		//			
+		// // Gradient label does not need the 0 point
+		// if (iColorMarkerPoint != 0)
+		// {
+		// iArColorMarkerPoints[iCount-2] = iColorMarkerPoint;
+		// }
+		//			
+		// String color = getPreferenceStore().getString(PreferenceConstants.
+		// COLOR_MARKER_POINT_COLOR
+		// + iCount);
+		//			
+		// int[] iArColor = new int[3];
+		// if (color.isEmpty())
+		// {
+		// iArColor[0] = 0;
+		// iArColor[1] = 0;
+		// iArColor[2] = 0;
+		// }
+		// else
+		// {
+		// StringTokenizer tokenizer = new StringTokenizer(color, ",", false);
+		// int iInnerCount = 0;
+		// while (tokenizer.hasMoreTokens())
+		// {
+		// try
+		// {
+		// String token = tokenizer.nextToken();
+		// iArColor[iInnerCount] = Integer.parseInt(token);
+		// }
+		// catch (Exception e)
+		// {
+		//
+		// }
+		// iInnerCount++;
+		// }
+		// }
+		// alColor[iCount-1] = new Color(getFieldEditorParent().getDisplay(),
+		// iArColor[0], iArColor[1], iArColor[2]);
+		// }
+
 		colorMappingPreviewLabel.setBackground(alColor, iArColorMarkerPoints);
 		colorMappingPreviewLabel.update();
 	}

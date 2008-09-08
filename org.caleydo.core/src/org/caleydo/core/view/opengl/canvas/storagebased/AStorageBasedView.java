@@ -285,6 +285,20 @@ public abstract class AStorageBasedView
 		else
 			return sRefSeq;
 	}
+	
+	@Deprecated
+	protected String getShortNameFromDavid(int index)
+	{
+
+		// Convert expression storage ID to RefSeq
+		int iDavidID = getDavidIDFromStorageIndex(index);
+		String sGeneSymbol = genomeIDManager.getIdStringFromIntByMapping(iDavidID,
+				EMappingType.DAVID_2_GENE_SYMBOL);
+		if (sGeneSymbol == "")
+			return "Unkonwn Gene";
+		else
+			return sGeneSymbol;
+	}
 
 	@Override
 	public void handleUpdate(IUniqueObject eventTrigger)
