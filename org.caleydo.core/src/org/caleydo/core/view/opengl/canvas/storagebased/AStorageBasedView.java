@@ -94,7 +94,7 @@ public abstract class AStorageBasedView
 
 	protected boolean bUseRandomSampling = true;
 
-	protected int iNumberOfRandomElements = 100;
+	protected int iNumberOfRandomElements = 2000;
 
 	/**
 	 * Constructor.
@@ -320,6 +320,7 @@ public abstract class AStorageBasedView
 
 		contentSelectionManager.clearSelections();
 		ISelectionDelta internalDelta = contentSelectionManager.setDelta(selectionDelta);
+		//handleConnectedElementRep(internalDelta);
 		handleConnectedElementRep(internalDelta);
 		checkUnselection();
 		setDisplayListDirty();

@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.Set;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.picking.ESelectionMode;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 
 /**
@@ -66,8 +64,7 @@ public class ConnectedElementRepresentationManager
 				addSelection(iElementID, selectedElementRep);
 				break;
 			default:
-				throw new CaleydoRuntimeException("No selection mode specified",
-						CaleydoRuntimeExceptionType.MANAGER);
+				throw new IllegalArgumentException("No selection mode specified");
 		}
 	}
 
@@ -143,9 +140,8 @@ public class ConnectedElementRepresentationManager
 				.get(iElementID);
 
 		if (tempList == null)
-			throw new CaleydoRuntimeException(
-					"SelectionManager: No representations for this element ID",
-					CaleydoRuntimeExceptionType.MANAGER);
+			throw new IllegalArgumentException(
+					"SelectionManager: No representations for this element ID");
 		return tempList;
 	}
 

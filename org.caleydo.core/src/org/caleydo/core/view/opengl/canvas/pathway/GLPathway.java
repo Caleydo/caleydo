@@ -343,6 +343,7 @@ public class GLPathway
 					continue;
 
 				newSelectionDelta.addSelection(iDavidID, item.getSelectionType(), item.getSelectionID());
+				System.out.println("ExternalID: "+iDavidID + ", Internal: " + item.getSelectionID() + ", State: " + item.getSelectionType());
 			}
 		}
 
@@ -378,6 +379,7 @@ public class GLPathway
 			{
 				if (!pathwayManager.getItem(iPathwayID).containsItem(tmpGraphItemRep))
 					continue;
+				
 				newSelectionDelta.addSelection(tmpGraphItemRep.getId(), item
 						.getSelectionType(), iDavidID);
 			}

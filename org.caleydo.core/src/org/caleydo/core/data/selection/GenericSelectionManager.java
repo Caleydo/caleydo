@@ -9,7 +9,6 @@ import java.util.logging.Level;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * <p>
@@ -610,7 +609,7 @@ public class GenericSelectionManager
 				// caution, here we expect that the id that is used for
 				// connections is stored in the internal id of the
 				// externalSelectionDelta
-				if (item.getInternalID() != -1)
+				if (item.getInternalID() != -1 && item.getInternalID() != iInternalID)
 					selectionDelta.addSelection(iInternalID, item.getSelectionType(), item
 							.getInternalID());
 				else

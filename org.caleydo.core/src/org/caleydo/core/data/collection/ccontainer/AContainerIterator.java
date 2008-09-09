@@ -2,8 +2,6 @@ package org.caleydo.core.data.collection.ccontainer;
 
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.VAIterator;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Abstract container iterator for all ICContainers. Supports virtual arrays.
@@ -37,9 +35,8 @@ public class AContainerIterator
 	public void remove()
 	{
 		if (virtualArray == null)
-			throw new CaleydoRuntimeException(
-					"Remove is only defined if a virtual array is enabled, which is currently not the case",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalStateException(
+					"Remove is only defined if a virtual array is enabled, which is currently not the case");
 		else
 			vaIterator.remove();
 	}

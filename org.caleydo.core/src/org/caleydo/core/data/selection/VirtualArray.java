@@ -6,8 +6,6 @@ import java.util.List;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Implementation of IVirtualArray
@@ -72,11 +70,10 @@ public class VirtualArray
 		if (iNewElement < iLength)
 			iAlVirtualArray.add(iNewElement);
 		else
-			throw new CaleydoRuntimeException(
+			throw new IllegalArgumentException(
 					"Tried to add a element to a virtual array that is not within the "
 							+ "allowed range (which is determined by the length of the collection "
-							+ "on which the virtual array is applied",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+							+ "on which the virtual array is applied");
 	}
 
 	@Override
@@ -85,11 +82,10 @@ public class VirtualArray
 		if (iNewElement < iLength)
 			iAlVirtualArray.add(iIndex, iNewElement);
 		else
-			throw new CaleydoRuntimeException(
+			throw new IllegalArgumentException(
 					"Tried to add a element to a virtual array that is not within the "
 							+ "allowed range (which is determined by the length of the collection "
-							+ "on which the virtual array is applied",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+							+ "on which the virtual array is applied");
 	}
 
 	@Override
@@ -98,11 +94,10 @@ public class VirtualArray
 		if (iNewElement < iLength)
 			iAlVirtualArray.set(iIndex, iNewElement);
 		else
-			throw new CaleydoRuntimeException(
+			throw new IllegalArgumentException(
 					"Tried to add a element to a virtual array that is not within the "
 							+ "allowed range (which is determined by the length of the collection "
-							+ "on which the virtual array is applied",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+							+ "on which the virtual array is applied");
 	}
 
 	@Override
