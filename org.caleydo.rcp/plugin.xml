@@ -156,16 +156,6 @@
    <extension
          point="org.eclipse.ui.menus">
          
-      <menuContribution
-            locationURI="toolbar:org.eclipse.ui.trim.vertical1">
-         <toolbar
-               id="org.eclipse.ui.examples.contributions.contributedTrim">
-            <control
-                  class="org.caleydo.rcp.TrimTest"
-                  id="contributions.controlContrib.test">
-            </control>
-         </toolbar>
-      </menuContribution>         
          
       <menuContribution
             locationURI="menu:org.eclipse.ui.main.menu">

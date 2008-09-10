@@ -47,10 +47,10 @@ public class ConnectedElementRepresentationManager
 	 * @param selectionMode
 	 */
 
-	public void modifySelection(final int iElementID,
+	public void modifySelection(int iElementID,
 			final SelectedElementRep selectedElementRep, final ESelectionMode selectionMode)
 	{
-
+		iElementID = 0;
 		switch (selectionMode)
 		{
 			case ADD_PICK:
@@ -74,9 +74,10 @@ public class ConnectedElementRepresentationManager
 	 * @param iElementID
 	 * @param selectedElementRep
 	 */
-	public void addSelection(final int iElementID, final SelectedElementRep selectedElementRep)
+	public void addSelection(int iElementID, final SelectedElementRep selectedElementRep)
 	{
-
+		// FIXME temp hack
+		iElementID = 0;
 		if (!hashSelectedElementID2SelectedElementReps.containsKey(iElementID))
 		{
 			hashSelectedElementID2SelectedElementReps.put(iElementID,
