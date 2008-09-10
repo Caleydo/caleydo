@@ -77,46 +77,46 @@ a tumor sample is. This is due to the fact that the different cancer
 types have unique expression patterns. As a consequence targeted therapy
 is possible. Other applications include the study of the effects of
 drugs, personalized medicine and many more.</p>
-<p>Traditionally gene expression analysis has been mainly a
-statistical task. However, the <b>Caleydo Team</b> believes that the
-visual analysis and exploration can provide additional insights into the
-data, and can help to discover new features of the data that are lost in
-a purely statistical approach.</p>
+<p>Traditionally gene expression analysis has been dominated by
+statistics. However, the <b>Caleydo Team</b> believes that the visual
+analysis and exploration can provide additional insights into the data,
+and can help to discover new features that are lost in a purely
+statistical approach.</p>
 <p>Currently <b>Caleydo</b> supports two types of visual gene
-expression analysis: Parallel Coordinates and Heat Maps. The former is a
-color representation of expression values, which allows to identify
-hot-spots and similarities.</p>
-<h1>Parallel Coordinates</h1>
+expression analysis: <b>Parallel Coordinates</b> and <b>Heat Maps</b>.</p>
+
+<h2>Parallel Coordinates</h2>
 <p><img src="../../images/projects/gene_expression/pc.png"
 	alt="Parallel coordinates screenshot" style="border-style: none"
 	align="right" /> <b>Parallel Coordinates</b> are a well established
 method to visualize multi-dimensional data, however, they have been used
-sparsely for the visualization of gene expression regulation. Our
+rarely for the visualization of gene expression regulation. Our
 implementation of parallel coordinates aims to be especially usable and
 explicitly targets the needs of gene expression analysis.</p>
 <p>Among the key features are:
 <ul>
-	<li>Several brushes (selection tools)</li>
+	<li>Different brushes (selection tools)</li>
 	<li>Occlusion prevention techniques</li>
 	<li>Axis and polylines can be exchanged, thus supporting different
 	use cases</li>
 	<li>Moving, removing duplication of axis</li>
 </ul>
 </p>
-<p>The main contribution of the system however, is the seamless
-integration of its different parts. The parallel coordinates provide
-several feature to support such an integration. More on that is
-described in <a href="#Integration">Integration of Multiple
-Visualizations</a></p>
-<h1>Heat Maps</h1>
+<p>The main contribution of the <b>Caleydo Framework</b> however, is
+the seamless integration of its different parts. The parallel
+coordinates provide several features to support such an integration, see
+<a href="#Integration">Integration of Multiple Visualizations</a> for
+more information.</p>
+
+<h2>Heat Maps</h2>
 <p><img src="../../images/projects/gene_expression/heat_map.png"
 	alt="Heat map screenshot" style="border-style: none" align="right" />
 A heat map is a visualization where the magnitude of a value is
 correlated to a color. The different values are arranged in rows and
-columns, corresponding to their meaning. Heat Maps are a standard way of
-visualizing gene expression regulation. Caleydo currently uses heat maps
-mainly to visualize contextual information, therefore the usually seen
-clustering of the elements is not yet implemented.</p>
+columns, corresponding to their meaning. Heat Maps are the standard way
+of visualizing gene expression regulation. Caleydo currently uses heat
+maps mainly to visualize contextual information, therefore the usually
+seen clustering of the elements is not yet implemented.</p>
 <p>Features of the heat map include:
 <ul>
 	<li>Freely selectable color mapping</li>
@@ -125,14 +125,16 @@ clustering of the elements is not yet implemented.</p>
 </p>
 <p>Again, the integration of the heat map with other parts is one of
 the areas the Caleydo project focuses on.</p>
-<h1>Integration of Multiple Visualizations</h1>
+
+<h2>Integration of Multiple Visualizations</h2>
 <p><a name="Integration" /></p>
 <p><img src="../../images/projects/gene_expression/linked.png"
 	alt="Heat map screenshot" style="border-style: none" align="right" />
-Taking the InfoVis paradigm of multiple linked views, Caleydo contains
-the <b>Link Bucket</b>. The Link Bucket is a concept that arranges 2D
-visualizations in a 2.5D environemnt, thereby allowing to browse several
-visualization in context to each other.</p>
+In the Caleydo Project, we use the InfoVis paradigm of <b>multiple
+linked views</b>, and take it to the next level, with the <b>Link Bucket</b>.
+The Link Bucket is a concept that arranges 2D visualizations in a 2.5D
+environment, thereby allowing a user to browse several visualization in
+context with each other.</p>
 <p><b>Visual Links</b>, which are lines drawn between selected
 elements facilitate the easy identification of related elements in the
 different representations. The <b>Link Bucket</b> thereby connects gene
@@ -140,17 +142,17 @@ expression information with pathways in a non-occluding and highly
 informative and interactive way.</p>
 <p>The gene expression visualizations such as the heat map are aware
 of their current environment, only displaying as much information as
-necessary thereby avoiding visual clutter. For example, only gene
+necessary and thereby avoid visual clutter. For example, only gene
 expression data that is relevant in the context of the currently loaded
 <a href="../pathways/pathways.html">pathways</a> is displayed.</p>
 <p>For a detailed exploration of one view the <b>Link Bucket</b>
 allows the user to zoom into the center view, thereby revealing all the
-interaction features available in the standalone visualizations.</p>
+interaction features available in the stand-alone visualizations.</p>
 <p>More information on navigation in the <b>Link Bucket</b> and on
 loading new visualizations is available in the <a
 	href="../pathways/pathways.html">pathways section</a>.</p>
 
-<h1>Publications</h1>
+<h2>Publications</h2>
 <ul>
 	<li>Alexander Lex:<br />
 	<b>Master's Thesis: Exploration of Gene Expression Data in a
@@ -164,7 +166,7 @@ loading new visualizations is available in the <a
 <p><br />
 website maintained by <a href="http://www.icg.tugraz.at/Members/alex"><strong>Alexander
 Lex</strong></a><br />
-last updated on 2008-09-09</p>
+last updated on 2008-09-10</p>
 </div>
 
 </div>
