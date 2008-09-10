@@ -119,8 +119,9 @@ a:hover {
 #content h2 {
 	margin: 0;
 	font-size: 1em;
-	color: #000000;
-	padding: 5px;
+	color: #FFFFFF;
+	background: #b1bba2;
+	padding-left: 5px;
 	margin-top: 20px;
 }
 
