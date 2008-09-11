@@ -21,6 +21,7 @@ import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.GlyphRenderStyle;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -85,6 +86,7 @@ public class GLGlyph
 		gman.registerGlyphView(this);
 
 		selectionManager = new GenericSelectionManager.Builder(EIDType.CLINICAL_ID).build();
+		viewType = EManagedObjectType.GL_GLYPH;
 	}
 
 	@Override

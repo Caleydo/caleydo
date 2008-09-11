@@ -365,7 +365,7 @@ public class GLSliderMiniView
 			gl.glTranslatef(0f, Seperator.getPos(), 0.1f);
 
 			gl.glPushName(pickingManager
-					.getPickingID(iUniqueId, EPickingType.Y_AXIS_SELECTION,
+					.getPickingID(iUniqueId, EPickingType.SLIDER_SELECTION,
 							(iSliderID * iIdOffset) + Seperator.getID()));
 
 			float linewidthhalf = iSeperatorWidth / 200.0f;

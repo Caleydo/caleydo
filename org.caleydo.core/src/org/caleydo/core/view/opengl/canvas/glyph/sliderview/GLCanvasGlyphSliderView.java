@@ -22,6 +22,7 @@ import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -35,6 +36,7 @@ import org.caleydo.core.view.opengl.miniview.slider.GLDistributionMiniView;
 import org.caleydo.core.view.opengl.miniview.slider.GLSliderMiniView;
 import org.caleydo.core.view.opengl.miniview.slider.GLDistributionMiniView.BORDER;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 import com.sun.opengl.util.j2d.TextRenderer;
 
@@ -91,6 +93,7 @@ public class GLCanvasGlyphSliderView
 		alGridPosition = new ArrayList<Vec2f>();
 
 		selectionManager = new GenericSelectionManager.Builder(EIDType.CLINICAL_ID).build();
+		viewType = EManagedObjectType.GL_GLYPH_SLIDER;
 	}
 
 	@Override
@@ -249,6 +252,7 @@ public class GLCanvasGlyphSliderView
 	@Override
 	public void display(GL gl)
 	{
+		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		gl.glEnable(GL.GL_DEPTH);
 		gl.glEnable(GL.GL_BLEND);
 
@@ -373,7 +377,7 @@ public class GLCanvasGlyphSliderView
 	protected void handleEvents(EPickingType pickingType, EPickingMode pickingMode,
 			int externalID, Pick pick)
 	{
-		if (pickingType == EPickingType.Y_AXIS_SELECTION)
+		if (pickingType == EPickingType.SLIDER_SELECTION)
 		{
 			for (int i = 0; i < alSlider.size(); ++i)
 			{

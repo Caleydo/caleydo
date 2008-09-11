@@ -6,11 +6,11 @@ Bundle-Version: 1.0.0
 Bundle-Activator: org.caleydo.rcp.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.eclipse.swt,
  org.eclipse.jface,
  org.eclipse.ui.workbench,
  org.eclipse.ui.views.log;bundle-version="1.0.0",
- org.caleydo.core;bundle-version="1.0.0"
+ org.caleydo.core;bundle-version="1.0.0",
+ org.eclipse.swt;bundle-version="3.4.0"
 Bundle-ActivationPolicy: lazy
 Bundle-ClassPath: .,
  resources/,
@@ -31,28 +31,28 @@ Bundle-NativeCode:
  processor=x86;
  processor=x86-64;
  processor=ppc,
- /lib/jogl/linux/x86/libgluegen-rt.so;
- /lib/jogl/linux/x86/libjogl_cg.so;
- /lib/jogl/linux/x86/libjogl_awt.so;
- /lib/jogl/linux/x86/libjogl.so;
+ lib/jogl/linux/x86/libgluegen-rt.so;
+ lib/jogl/linux/x86/libjogl_cg.so;
+ lib/jogl/linux/x86/libjogl_awt.so;
+ lib/jogl/linux/x86/libjogl.so;
  osname=linux;
  processor=x86,
- /lib/jogl/linux/x86-64/libgluegen-rt.so;
- /lib/jogl/linux/x86-64/libjogl_cg.so;
- /lib/jogl/linux/x86-64/libjogl_awt.so;
- /lib/jogl/linux/x86-64/libjogl.so;
+ lib/jogl/linux/x86-64/libgluegen-rt.so;
+ lib/jogl/linux/x86-64/libjogl_cg.so;
+ lib/jogl/linux/x86-64/libjogl_awt.so;
+ lib/jogl/linux/x86-64/libjogl.so;
  osname=linux;
  processor=x86-64,
- /lib/jogl/windows/x86/gluegen-rt.dll;
- /lib/jogl/windows/x86/jogl_cg.dll;
- /lib/jogl/windows/x86/jogl_awt.dll;
- /lib/jogl/windows/x86/jogl.dll;
+ lib/jogl/windows/x86/gluegen-rt.dll;
+ lib/jogl/windows/x86/jogl_cg.dll;
+ lib/jogl/windows/x86/jogl_awt.dll;
+ lib/jogl/windows/x86/jogl.dll;
  osname=win32;
  processor=x86,
- /lib/jogl/windows/x86-64/gluegen-rt.dll;
- /lib/jogl/windows/x86-64/jogl_cg.dll;
- /lib/jogl/windows/x86-64/jogl_awt.dll;
- /lib/jogl/windows/x86-64/jogl.dll;
+ lib/jogl/windows/x86-64/gluegen-rt.dll;
+ lib/jogl/windows/x86-64/jogl_cg.dll;
+ lib/jogl/windows/x86-64/jogl_awt.dll;
+ lib/jogl/windows/x86-64/jogl.dll;
  osname=win32;
  processor=x86-64
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

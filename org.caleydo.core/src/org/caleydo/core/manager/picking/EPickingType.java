@@ -40,7 +40,9 @@ public enum EPickingType
 	HEAT_MAP_FIELD_SELECTION(EManagedObjectType.GL_HEAT_MAP),
 
 	// glyph
-	GLYPH_FIELD_SELECTION(EManagedObjectType.GL_GLYPH);
+	GLYPH_FIELD_SELECTION(EManagedObjectType.GL_GLYPH),
+	// TODO: works only for glyph sliders now, new solution?
+	SLIDER_SELECTION(EManagedObjectType.GL_GLYPH_SLIDER);
 
 	private EManagedObjectType viewType;
 
