@@ -14,6 +14,10 @@ a:hover {
 	text-decoration: none;
 }
 
+a img {
+	border: 0;
+}
+
 #container {
 	background: url(../images/bckg.jpg) 0 100px repeat-x #D1DBBD;
 }
