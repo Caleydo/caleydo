@@ -28,7 +28,6 @@ import org.caleydo.core.view.opengl.canvas.glyph.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.sliderview.GLCanvasGlyphSliderView;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
-import org.caleydo.core.view.opengl.miniview.slider.GLSliderMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 

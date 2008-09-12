@@ -2,7 +2,6 @@ package org.caleydo.core.command.view.swt;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Class implements the command for creating a data explorer view.
@@ -26,7 +25,7 @@ public class CmdViewCreateDataExplorer
 	 * Method creates a data explorer view, sets the attributes and calls the
 	 * init and draw method.
 	 */
-	public void doCommand() throws CaleydoRuntimeException
+	public void doCommand()
 	{
 
 		// IViewManager viewManager = ((IViewManager) generalManager
@@ -53,7 +52,7 @@ public class CmdViewCreateDataExplorer
 	}
 
 	@Override
-	public void undoCommand() throws CaleydoRuntimeException
+	public void undoCommand()
 	{
 		commandManager.runUndoCommand(this);
 	}

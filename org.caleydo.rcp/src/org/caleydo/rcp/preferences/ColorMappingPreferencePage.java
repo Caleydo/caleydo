@@ -31,14 +31,9 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
 /**
- * This class represents a preference page that is contributed to the
- * Preferences dialog. By subclassing <samp>FieldEditorPreferencePage</samp>, we
- * can use the field support built into JFace that allows us to create a page
- * that is small and knows how to save, restore and apply itself.
- * <p>
- * This page is used to modify preferences only. They are stored in the
- * preference store that belongs to the main plug-in class. That way,
- * preferences can be accessed directly via the preference store.
+ * Preference page for color mapping settings
+ * 
+ * @author Alexander Lex
  */
 
 public class ColorMappingPreferencePage
@@ -87,8 +82,6 @@ public class ColorMappingPreferencePage
 			updateColorMappingPreview();
 		}
 	}
-	
-	//private class SomethingElseChangedLis
 
 	private class ColorChangedListener
 		implements IPropertyChangeListener
@@ -99,16 +92,16 @@ public class ColorMappingPreferencePage
 			updateColorMappingPreview();
 		}
 	}
-	
+
 	private class MarkerPointValueChangedModifyListener
-	implements ModifyListener
+		implements ModifyListener
 	{
 		@Override
 		public void modifyText(ModifyEvent e)
 		{
-			updateColorMappingPreview();		
+			updateColorMappingPreview();
 		}
-		
+
 	}
 
 	public ColorMappingPreferencePage()
@@ -127,15 +120,6 @@ public class ColorMappingPreferencePage
 	@Override
 	public void createFieldEditors()
 	{
-		// // String[][] sar = {{ "2", "2" }, { "3", "3" }, {"4", "4" }};
-		// numColorPointsFE = new IntegerFieldEditor("NumberOfColorPoints",
-		// "Number of Color Points", getFieldEditorParent(), 2);
-		//		
-		// RowLayout layout = new RowLayout(SWT.HORIZONTAL);
-		// layout.wrap = true;
-		// layout.fill = false;
-		// layout.justify = true;
-		// getFieldEditorParent().setLayout(layout);
 		GridLayout gridLayout = new GridLayout();
 		gridLayout.numColumns = 3;
 		getFieldEditorParent().setLayout(gridLayout);
@@ -167,8 +151,8 @@ public class ColorMappingPreferencePage
 		alColorFieldEditors = new ArrayList<ColorFieldEditor>();
 		alColorMarkerPointSpinners = new ArrayList<Spinner>();
 
-		 IPropertyChangeListener changeListener = new ColorChangedListener();
-		 ModifyListener markerPointValueChangedListener = new MarkerPointValueChangedModifyListener();
+		IPropertyChangeListener changeListener = new ColorChangedListener();
+		ModifyListener markerPointValueChangedListener = new MarkerPointValueChangedModifyListener();
 		for (int iCount = 1; iCount <= 5; iCount++)
 		{
 			ColorFieldEditor colorFieldEditor = new ColorFieldEditor(COLOR_MARKER_POINT_COLOR
@@ -180,9 +164,8 @@ public class ColorMappingPreferencePage
 			addField(colorFieldEditor);
 
 			Spinner markerPointSpinner = new Spinner(getFieldEditorParent(), SWT.BORDER);
-			
-			markerPointSpinner.addModifyListener(markerPointValueChangedListener);			
-	
+
+			markerPointSpinner.addModifyListener(markerPointValueChangedListener);
 
 			getFieldEditorParent().addMouseMoveListener(new MouseMoveListener()
 			{
@@ -194,22 +177,12 @@ public class ColorMappingPreferencePage
 				}
 			});
 
-			// markerPointSpinner.add
-			// markerPointSpinner.setEnabled(false);
-
-			// markerPointSpinner.setEnabled(false);
-
+		
 			markerPointSpinner.setMinimum(0);
 			markerPointSpinner.setMaximum(100);
 
 			markerPointSpinner.setSelection((int) (getPreferenceStore().getDouble(
 					COLOR_MARKER_POINT_VALUE + iCount) * 100));
-
-			// if (iCount == iNumberOfColorPoints)
-			// {
-			// markerPointSpinner.setSelection(100);
-			// markerPointSpinner.setEnabled(false);
-			// }
 
 			if (iCount <= iNumberOfColorPoints)
 			{
@@ -225,21 +198,10 @@ public class ColorMappingPreferencePage
 			markerPointSpinner.update();
 		}
 
-		// CLabel labelGradientBg = new CLabel(getFieldEditorParent(),
-		// SWT.SHADOW_IN);
-		// labelGradientBg.setText("CLabel with gradient colored background");
-		// labelGradientBg.setBounds(10, 10, 300, 100);
-		// labelGradientBg.setBackground(
-		// new Color[] {
-		// getFieldEditorParent().getDisplay().getSystemColor(SWT.COLOR_GREEN),
-		// getFieldEditorParent().getDisplay().getSystemColor(SWT.COLOR_WHITE),
-		// getFieldEditorParent().getDisplay().getSystemColor(SWT.COLOR_RED)},
-		// new int[] { 50, 100 });
-
 		colorMappingPreviewLabel = new CLabel(getFieldEditorParent(), SWT.SHADOW_IN);
 		colorMappingPreviewLabel.setBounds(10, 10, 300, 100);
 		colorMappingPreviewLabel.setText("                          ");
-		
+
 		initialColorMappingPreview();
 
 	}
@@ -252,8 +214,6 @@ public class ColorMappingPreferencePage
 	@Override
 	protected void performDefaults()
 	{
-
-		// super.performDefaults();
 
 		iNumberOfColorPoints = getPreferenceStore().getDefaultInt(
 				NUMBER_OF_COLOR_MARKER_POINTS);
@@ -273,20 +233,12 @@ public class ColorMappingPreferencePage
 						(int) (getPreferenceStore().getDefaultDouble(
 								COLOR_MARKER_POINT_VALUE + "3") * 100));
 
-		// getPreferenceStore().setValue("ColorPoint1", "0,255,0");
-		// getPreferenceStore().setValue("ColorPoint2", "0,0,0");
-		// getPreferenceStore().setValue("ColorPoint3", "255,0,1");
 		alColorFieldEditors.get(0).loadDefault();
 		alColorFieldEditors.get(1).loadDefault();
 		alColorFieldEditors.get(2).loadDefault();
-	
-	}
-
-	@Override
-	public void init(IWorkbench workbench)
-	{
 
 	}
+
 
 	public boolean performOk()
 	{
@@ -316,6 +268,8 @@ public class ColorMappingPreferencePage
 		alColorMarkerPointSpinners.get(iNumberOfColorPoints - 1).setEnabled(false);
 	}
 
+	// not to nice, since it would be good to get the values with updateColorMapping
+	// but that doesn't work since it's initialized to late
 	private void initialColorMappingPreview()
 	{
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
@@ -376,12 +330,6 @@ public class ColorMappingPreferencePage
 
 	private void updateColorMappingPreview()
 	{
-		// IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		// store.getInt("");
-		// store = GeneralManager.get().getPreferenceStore();
-		// int iNumberOfMarkerPoints = store
-		// .getInt(PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
-
 		Color[] alColor = new Color[iNumberOfColorPoints];
 		int[] iArColorMarkerPoints = new int[iNumberOfColorPoints - 1];
 
@@ -398,51 +346,14 @@ public class ColorMappingPreferencePage
 						.getSelection();
 			}
 		}
-		// for (int iCount = 1; iCount <= iNumberOfColorPoints; iCount++)
-		// {
-		// int iColorMarkerPoint = (int)(100 * getPreferenceStore()
-		// .getFloat(PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount));
-		//			
-		// // Gradient label does not need the 0 point
-		// if (iColorMarkerPoint != 0)
-		// {
-		// iArColorMarkerPoints[iCount-2] = iColorMarkerPoint;
-		// }
-		//			
-		// String color = getPreferenceStore().getString(PreferenceConstants.
-		// COLOR_MARKER_POINT_COLOR
-		// + iCount);
-		//			
-		// int[] iArColor = new int[3];
-		// if (color.isEmpty())
-		// {
-		// iArColor[0] = 0;
-		// iArColor[1] = 0;
-		// iArColor[2] = 0;
-		// }
-		// else
-		// {
-		// StringTokenizer tokenizer = new StringTokenizer(color, ",", false);
-		// int iInnerCount = 0;
-		// while (tokenizer.hasMoreTokens())
-		// {
-		// try
-		// {
-		// String token = tokenizer.nextToken();
-		// iArColor[iInnerCount] = Integer.parseInt(token);
-		// }
-		// catch (Exception e)
-		// {
-		//
-		// }
-		// iInnerCount++;
-		// }
-		// }
-		// alColor[iCount-1] = new Color(getFieldEditorParent().getDisplay(),
-		// iArColor[0], iArColor[1], iArColor[2]);
-		// }
-
 		colorMappingPreviewLabel.setBackground(alColor, iArColorMarkerPoints);
 		colorMappingPreviewLabel.update();
+	}
+
+	@Override
+	public void init(IWorkbench workbench)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

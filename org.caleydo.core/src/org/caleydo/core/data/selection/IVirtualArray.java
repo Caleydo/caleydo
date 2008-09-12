@@ -2,6 +2,7 @@ package org.caleydo.core.data.selection;
 
 import java.util.ArrayList;
 import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * A Virtual Array provides an association between a modifiable index in the

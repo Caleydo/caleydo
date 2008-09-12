@@ -4,7 +4,6 @@
 package org.caleydo.util.graph.algorithm;
 
 import java.util.List;
-
 import org.caleydo.util.graph.IGraph;
 import org.caleydo.util.graph.IGraphItem;
 

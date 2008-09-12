@@ -2,7 +2,6 @@ package org.caleydo.core.command.system;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACommand;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Command shuts down application.
@@ -22,13 +21,13 @@ public class CmdSystemExit
 	}
 
 	@Override
-	public void doCommand() throws CaleydoRuntimeException
+	public void doCommand()
 	{
 		System.exit(0);
 	}
 
 	@Override
-	public void undoCommand() throws CaleydoRuntimeException
+	public void undoCommand()
 	{
 		// no undo of system shutdown!
 	}

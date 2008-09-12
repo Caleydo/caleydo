@@ -1,8 +1,6 @@
 package org.caleydo.rcp.core.bridge;
 
 import org.caleydo.core.bridge.gui.IGUIBridge;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
@@ -32,8 +30,7 @@ implements IGUIBridge
 		}
 		catch (ExecutionException e)
 		{
-			throw new CaleydoRuntimeException("Cannot execute exit command.", 
-					CaleydoRuntimeExceptionType.GUI_RCP);
+			throw new IllegalStateException("Cannot execute exit command.");
 		}
 	}
 	

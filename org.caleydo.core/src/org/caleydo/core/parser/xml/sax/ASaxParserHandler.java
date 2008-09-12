@@ -1,8 +1,6 @@
 package org.caleydo.core.parser.xml.sax;
 
 import org.caleydo.core.data.xml.IMementoCallbackXML;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -154,8 +152,7 @@ public abstract class ASaxParserHandler
 			}
 			catch (SAXException s_e)
 			{
-				throw new CaleydoRuntimeException(s_e.toString(),
-						CaleydoRuntimeExceptionType.SAXPARSER);
+				throw new IllegalStateException(s_e.toString());
 			}
 		}
 		if (!bErrorWhileParsing)

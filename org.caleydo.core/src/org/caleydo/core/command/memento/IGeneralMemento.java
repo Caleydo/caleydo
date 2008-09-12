@@ -1,7 +1,5 @@
 package org.caleydo.core.command.memento;
 
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * One base implementation of the IMemento interface. Desing pattern "IMemento"
@@ -89,14 +87,13 @@ public class IGeneralMemento
 
 	@Override
 	public void setMementoState(final Object setMementoCreator,
-			final IMementoState setMemetoState) throws CaleydoRuntimeException
+			final IMementoState setMemetoState)
 	{
 
 		if (mementoCreator != setMementoCreator)
 		{
-			throw new CaleydoRuntimeException(
-					"IGeneralMemento.setMementoState() failed due to setting data not from the creator of the IMemento.",
-					CaleydoRuntimeExceptionType.MEMENTO);
+			throw new IllegalStateException(
+					"IGeneralMemento.setMementoState() failed due to setting data not from the creator of the IMemento.");
 		}
 		// assert mementoCreator == setMementoCreator:
 		// "IGeneralMemento.setMementoState() failed due to setting data not from the creator of the IMemento."

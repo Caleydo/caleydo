@@ -9,7 +9,6 @@ import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.EMediatorUpdateType;
 import org.caleydo.core.manager.event.mediator.IMediator;
 import org.caleydo.core.parser.parameter.IParameterHandler;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.system.StringConversionTool;
 
 /**
@@ -42,7 +41,7 @@ public class CmdEventCreateMediator
 	}
 
 	@Override
-	public void doCommand() throws CaleydoRuntimeException
+	public void doCommand()
 	{
 		mediator = generalManager.getEventPublisher().createMediator(iArSenderIDs,
 				iArReceiverIDs, mediatorType, EMediatorUpdateType.MEDIATOR_DEFAULT);
@@ -108,7 +107,7 @@ public class CmdEventCreateMediator
 	}
 
 	@Override
-	public void undoCommand() throws CaleydoRuntimeException
+	public void undoCommand()
 	{
 
 		commandManager.runUndoCommand(this);

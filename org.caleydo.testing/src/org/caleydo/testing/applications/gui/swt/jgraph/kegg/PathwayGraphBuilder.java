@@ -2,10 +2,8 @@ package org.caleydo.testing.applications.gui.swt.jgraph.kegg;
 
 import java.awt.Color;
 import java.awt.geom.Rectangle2D;
-
 import javax.swing.JFrame;
 import javax.swing.JScrollPane;
-
 import org.jgraph.JGraph;
 import org.jgraph.graph.DefaultCellViewFactory;
 import org.jgraph.graph.DefaultGraphCell;

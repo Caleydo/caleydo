@@ -1,7 +1,6 @@
 package org.caleydo.testing.applications.base.map;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.data.map.MultiHashArrayGMap;
 
 /**

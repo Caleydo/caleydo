@@ -288,7 +288,7 @@ public class GLParallelCoordinates
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		clipToFrustum(gl);
 
-		gl.glTranslatef(fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
+		//gl.glTranslatef(fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
 
 		if (bIsDraggingActive)
 			handleDragging(gl);
@@ -306,7 +306,7 @@ public class GLParallelCoordinates
 			handleAngularBrushing(gl);
 		}
 
-		gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
+		//gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
 
 		// if (detailLevel == EDetailLevel.HIGH)
 		// {
@@ -536,34 +536,43 @@ public class GLParallelCoordinates
 	 */
 	private void buildPolyLineDisplayList(final GL gl, int iGLDisplayListIndex)
 	{
-
 		fAxisSpacing = renderStyle.getAxisSpacing(set.sizeVA(iAxisVAID));
 
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-
-		// if(bIsDraggingActive)
-		// handleDragging(gl);
-
-		renderCoordinateSystem(gl);
-
-		// FIXME if uses z buffer fighting to avoid artfacts when tiltet
-		if (detailLevel.compareTo(EDetailLevel.LOW) < 1)
+		
+		
+		if (contentSelectionManager.getNumberOfElements() == 0)
 		{
-			renderPolylines(gl, ESelectionType.MOUSE_OVER);
-			renderPolylines(gl, ESelectionType.SELECTION);
-			renderPolylines(gl, ESelectionType.DESELECTED);
-			renderPolylines(gl, ESelectionType.NORMAL);
+			renderSymbol(gl);
 		}
 		else
 		{
-			renderPolylines(gl, ESelectionType.DESELECTED);
-			renderPolylines(gl, ESelectionType.NORMAL);
-			renderPolylines(gl, ESelectionType.MOUSE_OVER);
-			renderPolylines(gl, ESelectionType.SELECTION);
+			gl.glTranslatef(fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
+			// if(bIsDraggingActive)
+			// handleDragging(gl);
+
+			renderCoordinateSystem(gl);
+
+			// FIXME if uses z buffer fighting to avoid artfacts when tiltet
+			if (detailLevel.compareTo(EDetailLevel.LOW) < 1)
+			{
+				renderPolylines(gl, ESelectionType.MOUSE_OVER);
+				renderPolylines(gl, ESelectionType.SELECTION);
+				renderPolylines(gl, ESelectionType.DESELECTED);
+				renderPolylines(gl, ESelectionType.NORMAL);
+			}
+			else
+			{
+				renderPolylines(gl, ESelectionType.DESELECTED);
+				renderPolylines(gl, ESelectionType.NORMAL);
+				renderPolylines(gl, ESelectionType.MOUSE_OVER);
+				renderPolylines(gl, ESelectionType.SELECTION);
+			}
+
+			renderGates(gl);
+			gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
 		}
-
-		renderGates(gl);
-
+		
 		gl.glEndList();
 	}
 
@@ -965,6 +974,39 @@ public class GLParallelCoordinates
 		gl.glVertex3f(fXButtonOrigin + renderStyle.getButtonWidht(), fYButtonOrigin, AXIS_Z);
 		gl.glEnd();
 		gl.glPopName();
+		gl.glPopAttrib();
+		tempTexture.disable();
+	}
+
+	/**
+	 * Render the symbol of the view instead of the view
+	 * 
+	 * @param gl
+	 */
+	private void renderSymbol(GL gl)
+	{
+		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
+		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
+		Texture tempTexture = iconTextureManager
+				.getIconTexture(EIconTextures.PAR_COORDS_SYMBOL);
+		tempTexture.enable();
+		tempTexture.bind();
+
+		TextureCoords texCoords = tempTexture.getImageTexCoords();
+
+		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		gl.glColor4f(1f, 1, 1, 1f);
+		gl.glBegin(GL.GL_POLYGON);
+
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(fXButtonOrigin, fYButtonOrigin, 0.01f);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(fXButtonOrigin, 2 * fYButtonOrigin, 0.01f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(fXButtonOrigin * 2, 2 * fYButtonOrigin, 0.01f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(fXButtonOrigin * 2, fYButtonOrigin, 0.01f);
+		gl.glEnd();
 		gl.glPopAttrib();
 		tempTexture.disable();
 	}

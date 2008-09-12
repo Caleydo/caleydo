@@ -16,11 +16,9 @@ package org.caleydo.testing.applications.gui.jogl;
 import java.awt.EventQueue;
 import java.io.File;
 import java.util.Date;
-
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.AbstractTableModel;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.graphics.RGB;

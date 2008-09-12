@@ -2,7 +2,6 @@ package org.caleydo.core.command.view.swt;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Class implements the command for the data exchanger view.
@@ -23,7 +22,7 @@ public class CmdViewCreateSetEditor
 	}
 
 	@Override
-	public void doCommand() throws CaleydoRuntimeException
+	public void doCommand()
 	{
 
 		// IViewManager viewManager = ((IViewManager) generalManager
@@ -49,7 +48,7 @@ public class CmdViewCreateSetEditor
 	}
 
 	@Override
-	public void undoCommand() throws CaleydoRuntimeException
+	public void undoCommand()
 	{
 		commandManager.runUndoCommand(this);
 	}

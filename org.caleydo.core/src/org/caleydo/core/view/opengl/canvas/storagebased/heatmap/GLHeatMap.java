@@ -38,8 +38,11 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.miniview.GLColorMappingBarMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
+import org.caleydo.core.view.opengl.util.EIconTextures;
+import org.caleydo.core.view.opengl.util.GLIconTextureManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureCoords;
 
 /**
  * Rendering the GLHeatMap
@@ -75,6 +78,8 @@ public class GLHeatMap
 
 	private SelectedElementRep elementRep;
 
+	private GLIconTextureManager iconTextureManager;
+
 	/**
 	 * Constructor.
 	 * 
@@ -109,6 +114,7 @@ public class GLHeatMap
 	@Override
 	public void init(GL gl)
 	{
+		iconTextureManager = new GLIconTextureManager(gl);
 		initData();
 
 		colorMappingBar.setHeight(renderStyle.getColorMappingBarHeight());
@@ -228,50 +234,90 @@ public class GLHeatMap
 		}
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
-		// FIXME: bad hack, normalize frustum to 0:1 to avoid that
-		// clipToFrustum(gl);
-		float fLeftOffset = 0;
-		if (remoteRenderingGLCanvas == null)
-			fLeftOffset = 0.05f;
+		if (contentSelectionManager.getNumberOfElements() == 0)
+		{
+			renderSymbol(gl);
+		}
 		else
-			fLeftOffset = 0.15f;
-		// GLHelperFunctions.drawAxis(gl);
-		if (detailLevel == EDetailLevel.HIGH)
 		{
-			colorMappingBar.render(gl, fLeftOffset, (viewFrustum.getHeight() - colorMappingBar
-					.getHeight()) / 2, 0.2f);
-			gl.glTranslatef(fLeftOffset + colorMappingBar.getWidth(), 0, 0);
+
+			// FIXME: bad hack, normalize frustum to 0:1 to avoid that
+			// clipToFrustum(gl);
+			float fLeftOffset = 0;
+			if (remoteRenderingGLCanvas == null)
+				fLeftOffset = 0.05f;
+			else
+				fLeftOffset = 0.15f;
+			// GLHelperFunctions.drawAxis(gl);
+			if (detailLevel == EDetailLevel.HIGH)
+			{
+				colorMappingBar.render(gl, fLeftOffset,
+						(viewFrustum.getHeight() - colorMappingBar.getHeight()) / 2, 0.2f);
+				gl.glTranslatef(fLeftOffset + colorMappingBar.getWidth(), 0, 0);
+			}
+
+			if (!bRenderStorageHorizontally)
+			{
+				gl.glTranslatef(vecTranslation.x(), viewFrustum.getHeight(), vecTranslation
+						.z());
+				gl.glRotatef(vecRotation.x(), vecRotation.y(), vecRotation.z(), vecRotation
+						.w());
+			}
+
+			gl.glTranslatef(fAnimationTranslation, 0.0f, 0.0f);
+
+			renderHeatMap(gl);
+			renderSelection(gl, ESelectionType.MOUSE_OVER);
+			renderSelection(gl, ESelectionType.SELECTION);
+
+			gl.glTranslatef(-fAnimationTranslation, 0.0f, 0.0f);
+
+			if (!bRenderStorageHorizontally)
+			{
+				gl.glRotatef(-vecRotation.x(), vecRotation.y(), vecRotation.z(), vecRotation
+						.w());
+				gl.glTranslatef(-vecTranslation.x(), -viewFrustum.getHeight(), -vecTranslation
+						.z());
+			}
+			if (detailLevel == EDetailLevel.HIGH)
+			{
+				gl.glTranslatef(-fLeftOffset - colorMappingBar.getWidth(), 0, 0);
+			}
+
+			gl.glDisable(GL.GL_STENCIL_TEST);
 		}
-
-		if (!bRenderStorageHorizontally)
-		{
-			gl.glTranslatef(vecTranslation.x(), viewFrustum.getHeight(), vecTranslation.z());
-			gl.glRotatef(vecRotation.x(), vecRotation.y(), vecRotation.z(), vecRotation.w());
-		}
-
-		gl.glTranslatef(fAnimationTranslation, 0.0f, 0.0f);
-
-		renderHeatMap(gl);
-		renderSelection(gl, ESelectionType.MOUSE_OVER);
-		renderSelection(gl, ESelectionType.SELECTION);
-
-		gl.glTranslatef(-fAnimationTranslation, 0.0f, 0.0f);
-
-		if (!bRenderStorageHorizontally)
-		{
-			gl.glRotatef(-vecRotation.x(), vecRotation.y(), vecRotation.z(), vecRotation.w());
-			gl
-					.glTranslatef(-vecTranslation.x(), -viewFrustum.getHeight(),
-							-vecTranslation.z());
-		}
-		if (detailLevel == EDetailLevel.HIGH)
-		{
-			gl.glTranslatef(-fLeftOffset - colorMappingBar.getWidth(), 0, 0);
-		}
-
-		gl.glDisable(GL.GL_STENCIL_TEST);
-
 		gl.glEndList();
+	}
+
+	/**
+	 * Render the symbol of the view instead of the view
+	 * @param gl
+	 */
+	private void renderSymbol(GL gl)
+	{		
+		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
+		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
+		Texture tempTexture = iconTextureManager.getIconTexture(EIconTextures.HEAT_MAP_SYMBOL);
+		tempTexture.enable();
+		tempTexture.bind();
+
+		TextureCoords texCoords = tempTexture.getImageTexCoords();
+
+		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		gl.glColor4f(1f, 1, 1, 1f);
+		gl.glBegin(GL.GL_POLYGON);
+
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(fXButtonOrigin, fYButtonOrigin, 0.01f);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(fXButtonOrigin, 2 * fYButtonOrigin , 0.01f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(fXButtonOrigin * 2, 2 * fYButtonOrigin, 0.01f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(fXButtonOrigin * 2, fYButtonOrigin, 0.01f);
+		gl.glEnd();
+		gl.glPopAttrib();
+		tempTexture.disable();
 	}
 
 	public void renderHorizontally(boolean bRenderStorageHorizontally)

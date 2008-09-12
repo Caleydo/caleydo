@@ -15,7 +15,9 @@ public enum EIconTextures
 	RESET_SELECTIONS("resources/icons/general/no_icon_available.png"),
 	SAVE_SELECTIONS("resources/icons/general/no_icon_available.png"),
 	ANGULAR_BRUSHING("resources/icons/view/storagebased/parcoords/angular_brush.png"),
-
+	HEAT_MAP_SYMBOL("resources/icons/view/storagebased/heatmap/heatmap128x128.png"),
+	PAR_COORDS_SYMBOL("resources/icons/view/storagebased/parcoords/parcoords128x128.png"),
+	        
 	GLYPH_SORT_RANDOM("resources/icons/view/glyph/sort_random.png"),
 	GLYPH_SORT_CIRCLE("resources/icons/view/glyph/sort_spirale.png"),
 	GLYPH_SORT_RECTANGLE("resources/icons/view/glyph/sort_zickzack.png");

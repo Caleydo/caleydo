@@ -1,7 +1,6 @@
 package org.caleydo.util.graph;
 
 import java.util.List;
-
 import org.caleydo.util.graph.item.IGraphDataHandler;
 
 /**

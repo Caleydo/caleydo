@@ -2,7 +2,6 @@ package org.caleydo.core.manager.event.mediator;
 
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Abstract class for the mediator that belongs to the event mechanism.
@@ -54,7 +53,7 @@ public abstract class ALockableMediator
 	{
 		if (!GeneralManager.get().equals(sender))
 		{
-			throw new CaleydoRuntimeException(
+			throw new IllegalArgumentException(
 					"IMediator.destroyMediator() may only be callled by its creator!");
 		}
 

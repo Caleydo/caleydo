@@ -17,9 +17,7 @@ import javax.media.opengl.GLJPanel;
 import javax.swing.JCheckBox;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-
 import org.caleydo.testing.applications.gui.jogl.gears.Gears;
-
 import com.sun.opengl.util.Animator;
 
 ;

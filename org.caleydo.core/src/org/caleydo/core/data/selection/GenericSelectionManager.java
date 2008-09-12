@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * <p>

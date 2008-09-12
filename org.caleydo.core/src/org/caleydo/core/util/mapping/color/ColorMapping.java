@@ -2,7 +2,6 @@ package org.caleydo.core.util.mapping.color;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Color mapping. The class is initialized with a list of inflection points and
@@ -99,7 +98,7 @@ public class ColorMapping
 	 * 
 	 * @param fValue
 	 * @return
-	 * @throws CaleydoRuntimeException if fvalue > 1 || fvalue < 0
+	 * @throws IllegalArgumentException if fvalue > 1 || fvalue < 0
 	 */
 	public float[] getColor(float fValue)
 	{

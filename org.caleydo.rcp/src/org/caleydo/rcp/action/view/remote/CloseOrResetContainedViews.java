@@ -2,7 +2,6 @@ package org.caleydo.rcp.action.view.remote;
 
 import org.caleydo.core.command.view.rcp.EExternalActionType;
 import org.caleydo.rcp.action.view.AToolBarAction;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 

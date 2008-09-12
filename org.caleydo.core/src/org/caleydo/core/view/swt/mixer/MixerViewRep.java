@@ -1,7 +1,6 @@
 package org.caleydo.core.view.swt.mixer;
 
 import java.util.ArrayList;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
@@ -77,17 +76,7 @@ public class MixerViewRep
 	 */
 	public void setSliderValueByIndex(int iSliderIndex, int iSliderValue)
 	{
-
-		try
-		{
-			sliderList.get(iSliderIndex).setSelection(iSliderValue);
-
-		}
-		catch (Exception e)
-		{
-			throw new CaleydoRuntimeException("Mixer Slider with index " + iSliderIndex
-					+ " does not exist!");
-		}
+		sliderList.get(iSliderIndex).setSelection(iSliderValue);
 	}
 
 	/**
@@ -99,17 +88,7 @@ public class MixerViewRep
 	 */
 	public int getSliderValueByIndex(int iSliderIndex)
 	{
-
-		try
-		{
-			return sliderList.get(iSliderIndex).getSelection();
-
-		}
-		catch (Exception e)
-		{
-			throw new CaleydoRuntimeException("Mixer Slider with index " + iSliderIndex
-					+ " does not exist!");
-		}
+		return sliderList.get(iSliderIndex).getSelection();
 	}
 
 	/**

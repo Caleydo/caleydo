@@ -1,6 +1,5 @@
 package org.caleydo.core.command.memento;
 
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Interface for creator-object's of IMemento's. This interface must be
@@ -32,5 +31,5 @@ public interface IMementoCreator
 	 * @param setMemento org.caleydo.command.memento.Memento to reset the object
 	 *            in a previous state
 	 */
-	public void setMemento(IMemento setMemento) throws CaleydoRuntimeException;
+	public void setMemento(IMemento setMemento);
 }

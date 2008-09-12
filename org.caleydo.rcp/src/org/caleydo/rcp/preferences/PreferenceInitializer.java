@@ -1,14 +1,12 @@
 package org.caleydo.rcp.preferences;
 
+import static org.caleydo.rcp.preferences.PreferenceConstants.COLOR_MARKER_POINT_COLOR;
+import static org.caleydo.rcp.preferences.PreferenceConstants.COLOR_MARKER_POINT_VALUE;
+import static org.caleydo.rcp.preferences.PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS;
+
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.rcp.Activator;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
-import org.eclipse.swt.SWT;
-
-import com.sun.gluegen.runtime.CPU;
-
-import static org.caleydo.rcp.preferences.PreferenceConstants.*;
 
 /**
  * Class used to initialize default preference values.

@@ -1,6 +1,5 @@
 package org.caleydo.core.util.slerp;
 
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**
@@ -112,7 +111,7 @@ public class SlerpAction
 	{
 
 		if (originHierarchyLayer == null)
-			throw new CaleydoRuntimeException("Slerp origin layer is null!");
+			throw new IllegalStateException("Slerp origin layer is null!");
 
 		return originHierarchyLayer;
 	}
@@ -121,7 +120,7 @@ public class SlerpAction
 	{
 
 		if (destinationHierarchyLayer == null)
-			throw new CaleydoRuntimeException("Slerp destination layer is null!");
+			throw new IllegalStateException("Slerp destination layer is null!");
 
 		return destinationHierarchyLayer;
 	}
@@ -130,7 +129,7 @@ public class SlerpAction
 	{
 
 		if (iOriginPosIndex == -1)
-			throw new CaleydoRuntimeException("Invalid slerp origin position (-1)!");
+			throw new IllegalStateException("Invalid slerp origin position (-1)!");
 
 		return iOriginPosIndex;
 	}
@@ -139,7 +138,7 @@ public class SlerpAction
 	{
 
 		if (iDestinationPosIndex == -1)
-			throw new CaleydoRuntimeException("Invalid slerp destination position (-1)!");
+			throw new IllegalStateException("Invalid slerp destination position (-1)!");
 
 		return iDestinationPosIndex;
 	}

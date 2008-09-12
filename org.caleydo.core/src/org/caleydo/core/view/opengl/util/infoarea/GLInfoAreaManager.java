@@ -12,7 +12,6 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.data.view.rep.renderstyle.InfoAreaRenderStyle;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 
 /**

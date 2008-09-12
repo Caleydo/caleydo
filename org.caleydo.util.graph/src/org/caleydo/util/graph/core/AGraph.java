@@ -2,7 +2,6 @@ package org.caleydo.util.graph.core;
 
 import java.io.Serializable;
 import java.util.HashMap;
-
 import org.caleydo.util.graph.EGraphProperty;
 import org.caleydo.util.graph.IGraph;
 
