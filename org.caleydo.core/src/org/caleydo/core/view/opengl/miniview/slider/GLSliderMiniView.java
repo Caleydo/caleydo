@@ -4,12 +4,12 @@ import gleem.linalg.Vec4f;
 import java.awt.Font;
 import java.util.ArrayList;
 import javax.media.opengl.GL;
+import org.caleydo.core.data.view.rep.renderstyle.border.IBorderRenderStyle;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.opengl.miniview.AGLMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
@@ -23,27 +23,13 @@ import com.sun.opengl.util.j2d.TextRenderer;
 public class GLSliderMiniView
 	extends AGLMiniView
 {
-	public enum BORDER
-	{
-		FULL,
-		LEFT,
-		RIGHT,
-		TOP,
-		BOTTOM;
-	}
 
 	protected PickingManager pickingManager = null;
 	protected PickingJoglMouseListener pickingTriggerMouseAdapter;
 
 	private int iSliderID = 0;
 
-	private boolean bBorderLeft = true;
-	private boolean bBorderTop = true;
-	private boolean bBorderRight = true;
-	private boolean bBorderBottom = true;
-	private int iBorderWidth = 1;
-	private int iSeperatorWidth = 3;
-	private Vec4f vBorderColor = new Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
+	private int iSeperatorWidth = 2;
 	private Vec4f vSeperatorColor = new Vec4f(1.0f, 0.0f, 0.0f, 1.0f);
 	private Vec4f vSeperatorBondColor = new Vec4f(0.75f, 0.75f, 0.75f, 0.33f);
 
@@ -55,12 +41,13 @@ public class GLSliderMiniView
 	private ArrayList<Float> alAxisScaleOrdinal = null;
 	private ArrayList<String> alAxisScaleNominal = null;
 
-	private boolean bDoDragging = false;
 	private boolean bSelectionChanged = false;
+	private boolean bDoDragging = false;
 	private int iDraggedSeperator = -1;
 	float fLastSelectedBlock = -1f;
 
-	TextRenderer textRenderer = null;
+	private TextRenderer textRenderer = null;
+	private IBorderRenderStyle borderStyle = null;
 
 	public GLSliderMiniView(PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final int iViewID, final int iSliderID)
@@ -97,9 +84,12 @@ public class GLSliderMiniView
 	@Override
 	public void setHeight(final float fHeight)
 	{
+		float fHeightOld = this.fHeight;
 		this.fHeight = fHeight;
-		alSeperator.get(0).setPos(0f);
-		alSeperator.get(1).setPos(fHeight);
+
+		// recalc seperator positions
+		for (SliderSeperator Seperator : alSeperator)
+			Seperator.setPos(Seperator.getPos() / fHeightOld * fHeight);
 	}
 
 	public void setAxisScale(float min, float max, float increment)
@@ -151,7 +141,7 @@ public class GLSliderMiniView
 	{
 		if (alAxisScaleOrdinal == null)
 		{
-			throw (new CaleydoRuntimeException(
+			throw (new RuntimeException(
 					"someone wanted odinal data from GLSlider, but has not set any"));
 		}
 
@@ -185,7 +175,7 @@ public class GLSliderMiniView
 	{
 		if (alAxisScaleNominal == null)
 		{
-			throw (new CaleydoRuntimeException(
+			throw (new RuntimeException(
 					"someone wanted nominal data from GLSlider, but has not set any"));
 		}
 
@@ -213,39 +203,9 @@ public class GLSliderMiniView
 		return selection;
 	}
 
-	public void setBorderWidth(final int width)
+	public void setBorderStyle(IBorderRenderStyle borderStyle)
 	{
-		iBorderWidth = width;
-	}
-
-	public void setBorder(BORDER borderpart, boolean onoff)
-	{
-		switch (borderpart)
-		{
-			case LEFT:
-				bBorderLeft = onoff;
-				break;
-			case TOP:
-				bBorderTop = onoff;
-				break;
-			case RIGHT:
-				bBorderRight = onoff;
-				break;
-			case BOTTOM:
-				bBorderBottom = onoff;
-				break;
-			default:
-				bBorderLeft = onoff;
-				bBorderTop = onoff;
-				bBorderRight = onoff;
-				bBorderBottom = onoff;
-				break;
-		}
-	}
-
-	public void setBorderColor(Vec4f color)
-	{
-		vBorderColor = color;
+		this.borderStyle = borderStyle;
 	}
 
 	public void setSeperatorColor(Vec4f color)
@@ -274,57 +234,11 @@ public class GLSliderMiniView
 
 	private void drawBorder(GL gl)
 	{
-		gl.glPushMatrix();
-		gl.glLineWidth(iBorderWidth);
-
-		if (bBorderLeft)
-		{
-			gl.glBegin(GL.GL_LINES);
-			gl.glColor4f(vBorderColor.get(0), vBorderColor.get(1), vBorderColor.get(2),
-					vBorderColor.get(3));
-			gl.glVertex3f(0, 0, 0);
-			gl.glVertex3f(0, fHeight, 0);
-			gl.glEnd();
-		}
-
-		gl.glTranslatef(0f, fHeight, 0f);
-
-		if (bBorderTop)
-		{
-			gl.glBegin(GL.GL_LINES);
-			gl.glColor4f(vBorderColor.get(0), vBorderColor.get(1), vBorderColor.get(2),
-					vBorderColor.get(3));
-			gl.glVertex3f(0, 0, 0);
-			gl.glVertex3f(fWidth, 0, 0);
-			gl.glEnd();
-		}
-
-		gl.glTranslatef(fWidth, 0f, 0f);
-
-		if (bBorderRight)
-		{
-			gl.glBegin(GL.GL_LINES);
-			gl.glColor4f(vBorderColor.get(0), vBorderColor.get(1), vBorderColor.get(2),
-					vBorderColor.get(3));
-			gl.glVertex3f(0, 0, 0);
-			gl.glVertex3f(0, -fHeight, 0);
-			gl.glEnd();
-		}
-
-		gl.glTranslatef(0f, -fHeight, 0f);
-
-		if (bBorderBottom)
-		{
-			gl.glBegin(GL.GL_LINES);
-			gl.glColor4f(vBorderColor.get(0), vBorderColor.get(1), vBorderColor.get(2),
-					vBorderColor.get(3));
-			gl.glVertex3f(0, 0, 0);
-			gl.glVertex3f(-fWidth, 0, 0);
-			gl.glEnd();
-		}
-
-		gl.glLineWidth(1);
-		gl.glPopMatrix();
+		if (borderStyle == null)
+			return;
+		gl.glScalef(fWidth, fHeight, 1.0f);
+		borderStyle.display(gl);
+		gl.glScalef(1.0f / fWidth, 1.0f / fHeight, 1.0f);
 	}
 
 	private void drawSeperator(GL gl)
@@ -332,6 +246,7 @@ public class GLSliderMiniView
 		for (SliderSeperator Seperator : alSeperator)
 		{
 			// recalculate position
+
 			if (bDoDragging && iDraggedSeperator == Seperator.getID())
 			{
 				float[] fArTargetWorldCoordinates = GLCoordinateUtils
@@ -354,8 +269,8 @@ public class GLSliderMiniView
 					bSelectionChanged = true;
 					fLastSelectedBlock = actual;
 				}
-
 				Seperator.setPos(canvasY);
+
 			}
 
 			gl.glPushMatrix();
@@ -384,8 +299,8 @@ public class GLSliderMiniView
 			gl.glBegin(GL.GL_QUADS);
 			gl.glNormal3i(0, 1, 0);
 			gl.glVertex3f(0, linewidthhalf, 0);
-			gl.glVertex3f(0.2f, 0.2f, 0);
-			gl.glVertex3f(0.2f, -0.2f, 0);
+			gl.glVertex3f(0.05f, 0.05f, 0);
+			gl.glVertex3f(0.05f, -0.05f, 0);
 			gl.glVertex3f(0, -linewidthhalf, 0);
 			gl.glEnd();
 
@@ -407,9 +322,9 @@ public class GLSliderMiniView
 				if (alAxisScaleNominal.size() > index)
 					value = alAxisScaleNominal.get(index);
 
-			gl.glTranslatef(0.3f, -0.15f, 0);
+			gl.glTranslatef(0.1f, -0.05f, 0);
 
-			float scale = 0.25f;
+			float scale = 0.05f;
 			gl.glScalef(scale, scale, scale);
 			textRenderer.begin3DRendering();
 			textRenderer.draw3D(value, 0, 0, 0, 0.1f);
@@ -421,12 +336,7 @@ public class GLSliderMiniView
 		}
 
 		if (pickingTriggerMouseAdapter.wasMouseReleased())
-		{
-			if (bDoDragging)
-				bSelectionChanged = true;
-
 			bDoDragging = false;
-		}
 
 	}
 
@@ -447,8 +357,8 @@ public class GLSliderMiniView
 
 			if (iSliderID == sliderid && !bDoDragging)
 			{
-				bDoDragging = true;
 				iDraggedSeperator = seperatorid;
+				bDoDragging = true;
 
 				SliderSeperator seperator = alSeperator.get(seperatorid);
 

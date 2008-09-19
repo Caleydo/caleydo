@@ -2,6 +2,7 @@ package org.caleydo.core.view.opengl.canvas.glyph.sliderview;
 
 import gleem.linalg.Vec2f;
 import java.awt.Font;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,6 +21,8 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.data.view.rep.renderstyle.border.BorderRenderStyle;
+import org.caleydo.core.data.view.rep.renderstyle.border.BorderRenderStyleLineSolid;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -29,12 +32,12 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.glyph.GlyphAttributeType;
-import org.caleydo.core.view.opengl.canvas.glyph.GlyphEntry;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphAttributeType;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.miniview.slider.GLDistributionMiniView;
 import org.caleydo.core.view.opengl.miniview.slider.GLSliderMiniView;
-import org.caleydo.core.view.opengl.miniview.slider.GLDistributionMiniView.BORDER;
+import org.caleydo.core.view.opengl.mouse.JoglMouseListener;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
@@ -45,7 +48,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  * 
  * @author Stefan Sauer
  */
-public class GLCanvasGlyphSliderView
+public class GLGlyphSliderView
 	extends AGLEventListener
 	implements IMediatorSender, IMediatorReceiver
 {
@@ -64,8 +67,8 @@ public class GLCanvasGlyphSliderView
 
 	private TextRenderer textRenderer = null;
 
-	private float fSliderWidth = 2.0f;
-	private float fSliderHeight = 5.0f;
+	private float fSliderWidth = 1.0f;
+	private float fSliderHeight = 1.0f;
 	private int iMaxCols = 100000;
 
 	private GenericSelectionManager selectionManager = null;
@@ -79,7 +82,7 @@ public class GLCanvasGlyphSliderView
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLCanvasGlyphSliderView(final int iGLCanvasID, final String sLabel,
+	public GLGlyphSliderView(final int iGLCanvasID, final String sLabel,
 			final IViewFrustum viewFrustum)
 	{
 
@@ -100,6 +103,16 @@ public class GLCanvasGlyphSliderView
 	@SuppressWarnings("unchecked")
 	public void init(GL gl)
 	{
+		// disable view rotation, zooming
+		{
+			MouseListener[] ml = parentGLCanvas.getMouseListeners();
+			for (MouseListener l : ml)
+			{
+				if (l instanceof JoglMouseListener)
+					((JoglMouseListener) l).setNavigationModes(true, false, false);
+			}
+		}
+
 		// find dataset
 		ISet glyphData = null;
 
@@ -150,6 +163,10 @@ public class GLCanvasGlyphSliderView
 
 		Collection<GlyphAttributeType> types = gman.getGlyphAttributes();
 
+		BorderRenderStyleLineSolid borderStyle = new BorderRenderStyleLineSolid();
+//		borderStyle.setBorder((BorderRenderStyle.BORDER.RIGHT | BorderRenderStyle.BORDER.LEFT), false);
+		borderStyle.init(gl);
+
 		int slidercounter = 0;
 		for (GlyphAttributeType typ : types)
 		{
@@ -163,6 +180,7 @@ public class GLCanvasGlyphSliderView
 					iUniqueID, slidercounter);
 			alSlider.add(slider);
 
+			slider.setBorderStyle(borderStyle);
 			slider.setHeight(fSliderHeight);
 			slider.setWidth(fSliderWidth);
 			slider.setAxisScale(-1, typ.getMaxIndex(), 1);
@@ -174,18 +192,16 @@ public class GLCanvasGlyphSliderView
 			alDistribution.add(dmv);
 			dmv.setHeight(fSliderHeight);
 			dmv.setWidth(fSliderWidth);
-			dmv.setBorder(BORDER.FULL, false);
 			// dmv.setDistributionAlign( GLDistributionMiniView.ALIGN.LEFT);
 
 			slidercounter++;
 		}
-
 		// build slider position grid
 		int x = 0;
 		int y = 0;
 		for (int i = 0; i < alSlider.size(); ++i)
 		{
-			Vec2f pos = new Vec2f(x * (fSliderWidth + 2.0f), y * (fSliderHeight + 2.0f));
+			Vec2f pos = new Vec2f(x * (fSliderWidth), y * (fSliderHeight + 2.0f));
 
 			alGridPosition.add(pos);
 			++x;
@@ -252,11 +268,23 @@ public class GLCanvasGlyphSliderView
 	@Override
 	public void display(GL gl)
 	{
+		// gl.glScalef(0.25f, 0.25f, 1f);
+
+		gl.glPushMatrix();
+
 		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		gl.glEnable(GL.GL_DEPTH);
 		gl.glEnable(GL.GL_BLEND);
 
+		float blockheight = 1.0f;
+		float blockwidth = 1.0f;
+
+		gl.glTranslatef(0.35f, 0.25f, 0f);
+		blockheight = viewFrustum.getHeight() - 0.5f;
+		blockwidth = viewFrustum.getWidth() / (alSlider.size() * 3);
+
 		gl.glPushMatrix();
+		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
 		for (int i = 0; i < alDistribution.size(); ++i)
 		{
@@ -273,18 +301,21 @@ public class GLCanvasGlyphSliderView
 				dmv.setNormalicedSelectedDistribution(dist.get(1));
 			}
 
+			dmv.setHeight(blockheight);
+			dmv.setWidth(blockwidth);
+
 			dmv.render(gl, 0, 0, 0);
 
 			gl.glTranslatef(-0.2f, 0f, 0f);
 			gl.glRotatef(90f, 0, 0, 1);
-			gl.glScalef(0.25f, 0.25f, 0.25f);
+			gl.glScalef(blockwidth / 5f, blockwidth / 5f, blockwidth / 5f);
 
 			textRenderer.begin3DRendering();
 			textRenderer.draw3D(typ.getName(), 0, 0, 0, 0.1f);
 			textRenderer.end3DRendering();
 
 			gl.glRotatef(-90f, 0, 0, 1);
-			gl.glScalef(4.0f, 4.0f, 4.0f);
+			gl.glScalef(5f / blockwidth, 5f / blockwidth, 5f / blockwidth);
 			gl.glTranslatef(-position.x() + 0.2f, -position.y(), 0);
 		}
 		gl.glPopMatrix();
@@ -295,6 +326,8 @@ public class GLCanvasGlyphSliderView
 		{
 			Vec2f position = alGridPosition.get(s.getID());
 			gl.glTranslatef(position.x(), position.y(), 0);
+			s.setHeight(blockheight);
+			s.setWidth(blockwidth);
 			s.render(gl, 0, 0, 0);
 			gl.glTranslatef(-position.x(), -position.y(), 0);
 
@@ -356,8 +389,10 @@ public class GLCanvasGlyphSliderView
 
 		gl.glPopMatrix();
 
+		gl.glPopMatrix();
+
 	}
-	
+
 	@Override
 	public String getShortInfo()
 	{

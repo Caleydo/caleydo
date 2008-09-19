@@ -1,6 +1,7 @@
-package org.caleydo.core.view.opengl.canvas.glyph;
+package org.caleydo.core.view.opengl.canvas.glyph.gridview;
 
 import gleem.linalg.open.Vec2i;
+import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -31,7 +32,9 @@ import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
+import org.caleydo.core.view.opengl.mouse.JoglMouseListener;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**
@@ -138,6 +141,16 @@ public class GLGlyph
 			return;
 		}
 
+		// disable view rotation, zooming
+		{
+			MouseListener[] ml = parentGLCanvas.getMouseListeners();
+			for (MouseListener l : ml)
+			{
+				if (l instanceof JoglMouseListener)
+					((JoglMouseListener) l).setNavigationModes(true, false, false);
+			}
+		}
+
 		grid_ = new GLGlyphGrid(renderStyle);
 		grid_.loadData(glyphData);
 
@@ -208,11 +221,13 @@ public class GLGlyph
 	public void displayLocal(GL gl)
 	{
 
-		// GLHelperFunctions.drawAxis(gl);
+		// gl.glTranslatef(viewFrustum.getWidth()+4f,
+		// viewFrustum.getHeight()+2f, -10f);
+		gl.glTranslatef(0, 0, -10f);
 
-		gl.glTranslatef(0f, 0f, -10f);
 		gl.glRotatef(45f, 1, 0, 0);
 		// gl.glRotatef( 45f, -1,0,0 );
+
 		gl.glRotatef(80f, -1, 0, 0); // 35
 
 		pickingManager.handlePicking(iUniqueID, gl, true);
@@ -331,7 +346,7 @@ public class GLGlyph
 	{
 		return "Glpyh";
 	}
-	
+
 	@Override
 	public String getDetailedInfo()
 	{

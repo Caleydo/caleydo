@@ -24,8 +24,8 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.view.opengl.canvas.glyph.GLGlyph;
-import org.caleydo.core.view.opengl.canvas.glyph.sliderview.GLCanvasGlyphSliderView;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
+import org.caleydo.core.view.opengl.canvas.glyph.sliderview.GLGlyphSliderView;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
@@ -180,9 +180,8 @@ public abstract class AGLEventListener
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height)
 	{
-		// TODO, glyph slider should adapt to varying view frustums
 		if (remoteRenderingGLCanvas != null || this instanceof GLRemoteRendering
-				|| this instanceof GLCanvasGlyphSliderView || this instanceof GLGlyph)
+				|| this instanceof GLGlyph)
 			viewFrustum.considerAspectRatio(true);
 		else
 		{
@@ -373,13 +372,13 @@ public abstract class AGLEventListener
 
 		for (EPickingType ePickingType : EPickingType.values())
 		{
-//			if (ePickingType.getViewType() != viewType)
-//			{
-//				if(viewType == EManagedObjectType.GL_EVENT_LISTENER)
-//					throw new IllegalStateException("Views must define their view type in the constructor");
-//				continue;
-//			}
-			
+			// if (ePickingType.getViewType() != viewType)
+			// {
+			// if(viewType == EManagedObjectType.GL_EVENT_LISTENER)
+			// throw new IllegalStateException(
+			// "Views must define their view type in the constructor");
+			// continue;
+			// }
 
 			ArrayList<Pick> alHits = null;
 

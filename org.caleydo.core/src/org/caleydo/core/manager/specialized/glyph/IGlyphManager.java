@@ -2,10 +2,10 @@ package org.caleydo.core.manager.specialized.glyph;
 
 import java.util.Collection;
 import java.util.HashMap;
-import org.caleydo.core.view.opengl.canvas.glyph.GLGlyph;
-import org.caleydo.core.view.opengl.canvas.glyph.GLGlyphGenerator;
-import org.caleydo.core.view.opengl.canvas.glyph.GlyphAttributeType;
-import org.caleydo.core.view.opengl.canvas.glyph.GlyphEntry;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyphGenerator;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphAttributeType;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 
 /**
  * @author Sauer Stefan

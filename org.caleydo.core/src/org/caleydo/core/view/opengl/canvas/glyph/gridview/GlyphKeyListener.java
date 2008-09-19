@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.glyph;
+package org.caleydo.core.view.opengl.canvas.glyph.gridview;
 
 public class GlyphKeyListener
 	extends java.awt.event.KeyAdapter

@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.glyph;
+package org.caleydo.core.view.opengl.canvas.glyph.gridview;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,8 +10,6 @@ import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Loading data into the glyph storage
@@ -115,9 +113,8 @@ public class GlyphDataLoader
 					}
 					else
 					{
-						throw new CaleydoRuntimeException(
-								"GlyphDataLoader: ERROR. There should be only STRING values in the storage",
-								CaleydoRuntimeExceptionType.VIEW);
+						throw new RuntimeException(
+								"GlyphDataLoader: ERROR. There should be only STRING values in the storage");
 
 					}
 

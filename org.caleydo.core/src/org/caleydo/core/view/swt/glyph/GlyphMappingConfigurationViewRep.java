@@ -8,7 +8,7 @@ import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
-import org.caleydo.core.view.opengl.canvas.glyph.GlyphAttributeType;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphAttributeType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.CLabel;

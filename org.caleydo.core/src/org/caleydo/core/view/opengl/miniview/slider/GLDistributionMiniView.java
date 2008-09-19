@@ -4,6 +4,7 @@ import gleem.linalg.Vec4f;
 import java.awt.Font;
 import java.util.ArrayList;
 import javax.media.opengl.GL;
+import org.caleydo.core.data.view.rep.renderstyle.border.IBorderRenderStyle;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.opengl.miniview.AGLMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
@@ -17,14 +18,6 @@ import com.sun.opengl.util.j2d.TextRenderer;
 public class GLDistributionMiniView
 	extends AGLMiniView
 {
-	public enum BORDER
-	{
-		FULL,
-		LEFT,
-		RIGHT,
-		TOP,
-		BOTTOM;
-	}
 
 	public enum ALIGN
 	{
@@ -33,14 +26,8 @@ public class GLDistributionMiniView
 		CENTER;
 	}
 
-	private boolean bBorderLeft = true;
-	private boolean bBorderTop = true;
-	private boolean bBorderRight = true;
-	private boolean bBorderBottom = true;
 	private ALIGN alignment = ALIGN.LEFT;
 
-	private int iBorderWidth = 1;
-	private Vec4f vBorderColor = new Vec4f(0.0f, 0.0f, 0.0f, 1.0f);
 	private Vec4f vDistributionColor = new Vec4f(0.0f, 0.75f, 0.0f, 1.0f);
 	private Vec4f vDistributionSelectedColor = new Vec4f(0.0f, 0.5f, 0.0f, 1.0f);
 
@@ -48,6 +35,8 @@ public class GLDistributionMiniView
 	private ArrayList<Float> alNormalicedSelectedDistribution = null;
 
 	TextRenderer textRenderer = null;
+
+	private IBorderRenderStyle borderStyle;
 
 	public GLDistributionMiniView(PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final int iViewID, final int iDistributionID)
@@ -89,7 +78,7 @@ public class GLDistributionMiniView
 		// ++inccounter;
 		// }
 
-		throw (new CaleydoRuntimeException("not implemented yet"));
+		throw (new RuntimeException("not implemented yet"));
 	}
 
 	public void setNormalicedSelectedDistribution(final ArrayList<Float> values)
@@ -99,38 +88,12 @@ public class GLDistributionMiniView
 
 	public void setSelectedDistribution(final ArrayList<Float> values)
 	{
-		throw (new CaleydoRuntimeException("not implemented yet"));
+		throw (new RuntimeException("not implemented yet"));
 	}
 
-	public void setBorderWidth(final int width)
+	public void setBorderStyle(IBorderRenderStyle borderStyle)
 	{
-		iBorderWidth = width;
-	}
-
-	public void setBorder(BORDER borderpart, boolean onoff)
-	{
-		switch (borderpart)
-		{
-			case LEFT:
-				bBorderLeft = onoff;
-				break;
-			case TOP:
-				bBorderTop = onoff;
-				break;
-			case RIGHT:
-				bBorderRight = onoff;
-				break;
-			case BOTTOM:
-				bBorderBottom = onoff;
-				break;
-			case FULL:
-			default:
-				bBorderLeft = onoff;
-				bBorderTop = onoff;
-				bBorderRight = onoff;
-				bBorderBottom = onoff;
-				break;
-		}
+		this.borderStyle = borderStyle;
 	}
 
 	public void setDistributionAlign(ALIGN align)
@@ -153,56 +116,12 @@ public class GLDistributionMiniView
 
 	private void drawBorder(GL gl)
 	{
-		gl.glPushMatrix();
-		gl.glLineWidth(iBorderWidth);
+		if (borderStyle == null)
+			return;
+		gl.glScalef(fWidth, fHeight, 1.0f);
+		borderStyle.display(gl);
+		gl.glScalef(1.0f / fWidth, 1.0f / fHeight, 1.0f);
 
-		if (bBorderLeft)
-		{
-			gl.glBegin(GL.GL_LINES);
-			gl.glColor4f(vBorderColor.get(0), vBorderColor.get(1), vBorderColor.get(2),
-					vBorderColor.get(3));
-			gl.glVertex3f(0, 0, 0);
-			gl.glVertex3f(0, fHeight, 0);
-			gl.glEnd();
-		}
-
-		gl.glTranslatef(0f, fHeight, 0f);
-
-		if (bBorderTop)
-		{
-			gl.glBegin(GL.GL_LINES);
-			gl.glColor4f(vBorderColor.get(0), vBorderColor.get(1), vBorderColor.get(2),
-					vBorderColor.get(3));
-			gl.glVertex3f(0, 0, 0);
-			gl.glVertex3f(fWidth, 0, 0);
-			gl.glEnd();
-		}
-
-		gl.glTranslatef(fWidth, 0f, 0f);
-
-		if (bBorderRight)
-		{
-			gl.glBegin(GL.GL_LINES);
-			gl.glColor4f(vBorderColor.get(0), vBorderColor.get(1), vBorderColor.get(2),
-					vBorderColor.get(3));
-			gl.glVertex3f(0, 0, 0);
-			gl.glVertex3f(0, -fHeight, 0);
-			gl.glEnd();
-		}
-
-		gl.glTranslatef(0f, -fHeight, 0f);
-
-		if (bBorderBottom)
-		{
-			gl.glBegin(GL.GL_LINES);
-			gl.glColor4f(vBorderColor.get(0), vBorderColor.get(1), vBorderColor.get(2),
-					vBorderColor.get(3));
-			gl.glVertex3f(0, 0, 0);
-			gl.glVertex3f(-fWidth, 0, 0);
-			gl.glEnd();
-		}
-
-		gl.glPopMatrix();
 	}
 
 	private void drawDistribution(GL gl)

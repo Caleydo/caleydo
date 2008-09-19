@@ -10,10 +10,9 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.glyph.GLGlyph;
-import org.caleydo.core.view.opengl.canvas.glyph.GlyphMouseListener;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphMouseListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
@@ -26,9 +25,11 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
  * @author Marc Streit
  */
 
-public class GLCanvasRemoteGlyph
+public class GLRemoteGlyph
 	extends AGLEventListener
 {
+
+	private static final long serialVersionUID = 5300993249138796018L;
 
 	private ArrayList<Integer> viewIDs_;
 
@@ -38,7 +39,7 @@ public class GLCanvasRemoteGlyph
 	 * Constructor.
 	 * 
 	 */
-	public GLCanvasRemoteGlyph(final int iGLCanvasID, final String sLabel,
+	public GLRemoteGlyph(final int iGLCanvasID, final String sLabel,
 			final IViewFrustum viewFrustum)
 	{
 		super(iGLCanvasID, sLabel, viewFrustum, true);
@@ -68,7 +69,7 @@ public class GLCanvasRemoteGlyph
 					.getViewGLCanvasManager().getItem(iViewId));
 
 			if (tmpCanvasUser == null)
-				throw new CaleydoRuntimeException("Cannot render canvas object which is null!");
+				throw new RuntimeException("Cannot render canvas object which is null!");
 			tmpCanvasUser.init(gl);
 		}
 	}
@@ -190,7 +191,7 @@ public class GLCanvasRemoteGlyph
 				.getViewGLCanvasManager().getItem(iViewID));
 
 		if (tmpCanvasUser == null)
-			throw new CaleydoRuntimeException("Cannot render canvas object which is null!");
+			throw new RuntimeException("Cannot render canvas object which is null!");
 
 		tmpCanvasUser.displayRemote(gl);
 
@@ -202,7 +203,7 @@ public class GLCanvasRemoteGlyph
 	{
 		return "Glyph Bucket";
 	}
-	
+
 	@Override
 	public String getDetailedInfo()
 	{

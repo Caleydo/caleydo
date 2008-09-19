@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.glyph;
+package org.caleydo.core.view.opengl.canvas.glyph.gridview;
 
 import gleem.linalg.open.Vec2i;
 import java.util.HashMap;

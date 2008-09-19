@@ -5,7 +5,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
-import org.caleydo.core.view.opengl.canvas.glyph.GlyphAttributeType;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphAttributeType;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

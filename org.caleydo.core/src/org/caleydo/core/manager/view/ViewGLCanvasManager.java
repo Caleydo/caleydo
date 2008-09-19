@@ -14,16 +14,15 @@ import org.caleydo.core.manager.IViewGLCanvasManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.PickingManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.glyph.GLGlyph;
-import org.caleydo.core.view.opengl.canvas.glyph.sliderview.GLCanvasGlyphSliderView;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
+import org.caleydo.core.view.opengl.canvas.glyph.sliderview.GLGlyphSliderView;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
-import org.caleydo.core.view.opengl.canvas.remote.glyph.GLCanvasRemoteGlyph;
+import org.caleydo.core.view.opengl.canvas.remote.glyph.GLRemoteGlyph;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
 import org.caleydo.core.view.opengl.canvas.wii.GLCanvasWiiTest;
@@ -186,7 +185,7 @@ public class ViewGLCanvasManager
 				view = new GlyphMappingConfigurationViewRep(iParentContainerID, sLabel);
 				break;
 			default:
-				throw new CaleydoRuntimeException(
+				throw new RuntimeException(
 						"StorageManagerSimple.createView() failed due to unhandled type ["
 								+ type.toString() + "]");
 		}
@@ -209,7 +208,7 @@ public class ViewGLCanvasManager
 				break;
 
 			default:
-				throw new CaleydoRuntimeException("Unhandled view type ["
+				throw new RuntimeException("Unhandled view type ["
 						+ useViewType.toString() + "]");
 		}
 
@@ -266,7 +265,7 @@ public class ViewGLCanvasManager
 				break;
 
 			case CREATE_GL_GLYPH_SLIDER:
-				glEventListener = new GLCanvasGlyphSliderView(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener = new GLGlyphSliderView(iGLCanvasID, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_BUCKET_3D:
@@ -284,11 +283,11 @@ public class ViewGLCanvasManager
 				break;
 
 			case CREATE_GL_REMOTE_GLYPH:
-				glEventListener = new GLCanvasRemoteGlyph(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener = new GLRemoteGlyph(iGLCanvasID, sLabel, viewFrustum);
 				break;
 
 			default:
-				throw new CaleydoRuntimeException(
+				throw new RuntimeException(
 						"ViewJoglManager.createGLCanvasUser() failed due to unhandled type ["
 								+ type.toString() + "]");
 		}

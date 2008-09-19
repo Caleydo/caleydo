@@ -7,10 +7,10 @@ import java.util.Vector;
 import java.util.logging.Level;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.glyph.GLGlyph;
-import org.caleydo.core.view.opengl.canvas.glyph.GLGlyphGenerator;
-import org.caleydo.core.view.opengl.canvas.glyph.GlyphAttributeType;
-import org.caleydo.core.view.opengl.canvas.glyph.GlyphEntry;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyphGenerator;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphAttributeType;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 
 /**
  * Glyph manager

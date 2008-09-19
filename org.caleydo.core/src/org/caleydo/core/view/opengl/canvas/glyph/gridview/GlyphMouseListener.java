@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.glyph;
+package org.caleydo.core.view.opengl.canvas.glyph.gridview;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
@@ -66,6 +66,10 @@ public class GlyphMouseListener
 
 		int viewport[] = new int[4];
 		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0); // size of window
+
+		// this should only happen, if the view isn't generated yet
+		if ((viewport[2] - viewport[0]) == 0)
+			return;
 
 		float fAspectRatio = (viewport[3] - viewport[1]) / (viewport[2] - viewport[0]);
 
