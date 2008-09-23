@@ -15,19 +15,20 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 
 /**
- * Specialized mouse wheel listener for "diving" into the bucket.
+ * Specialized mouse wheel listener for the glyph plane view
  * 
- * @author Marc Streit
+ * @author Sauer Stefan
  */
 public class GlyphMouseListener
 	implements MouseListener, MouseMotionListener, MouseWheelListener
 {
+	protected float fZoomScale = 0.072f;
+
+	protected float fPanScale = 3.1f;
 
 	private IGeneralManager generalManager;
 
 	private AGLEventListener viewCanvas;
-
-	private int notches_ = 0;
 
 	protected int prevMouseX, prevMouseY;
 
@@ -55,7 +56,6 @@ public class GlyphMouseListener
 	public void render(GL gl)
 	{
 
-		viewCanvas.getViewCamera().addCameraScale(new Vec3f(0, 0, notches_ / 1f));
 		// viewCanvas.getViewCamera().addCameraRotation(currentRotation);
 
 		// float x = currentRotation.get(new Vec3f(1,0,0));
@@ -123,24 +123,18 @@ public class GlyphMouseListener
 			GLHelperFunctions.drawAxis(gl);
 
 		}
-
-		notches_ = 0;
 	}
 
 	@Override
-	public void mouseWheelMoved(MouseWheelEvent event)
+	public void mouseWheelMoved(MouseWheelEvent e)
 	{
+		float fZoom = fZoomScale * e.getWheelRotation();
+		float fZoomOld = viewCanvas.getViewCamera().getCameraScale().z();
 
-		// Turn off picking while zoom action is running
-		// generalManager.getViewGLCanvasManager().getPickingManager().
-		// enablePicking(false);
+		if ((fZoomOld + fZoom) > -3)
+			fZoom = 0f;
 
-		int notches = event.getWheelRotation();
-
-		// System.out.println("Mouse Wheel: " + Integer.toString(notches) );
-
-		notches_ += notches;
-
+		viewCanvas.getViewCamera().addCameraScale(new Vec3f(0, 0, fZoom));
 	}
 
 	// Methods required for the implementation of MouseMotionListener
@@ -176,38 +170,47 @@ public class GlyphMouseListener
 			 */
 			// Rotf currentRotX = new Rotf();
 			// Rotf currentRotY = new Rotf();
-			//		   	    
+			//					   	    
 			// float fpercentX = (float)(x-prevMouseX)/(float)(size.width)
 			// * fMouseSensitivityRotation;
-			//		    	
+			//					    	
 			// float fpercentY = (float)(y-prevMouseY)/(float)(size.height)
 			// * fMouseSensitivityRotation;
-			//		    	
-			//		    	
+			//					    	
+			//					    	
 			// currentRotX.set(new Vec3f(0,1,0),
-			// fpercentX * MathUtil.PI);
-			//		   	    
+			// fpercentX * (float)Math.PI);
+			//					   	    
 			// currentRotY.set(new Vec3f(1,0,0),
-			// fpercentY * MathUtil.PI);
-			//		   	    
+			// fpercentY * (float)Math.PI);
+			//					   	    
 			// /* concatinate rotations.. */
 			// currentRotation = currentRotX.times(currentRotY);
-			//		   	    
+			//					   	    
 			// prevMouseX = x;
 			// prevMouseY = y;
-			//			    
-			// /* set new paramters to ViewCamera */
-			// /*
-			// Iterator<AGLCanvasUser> iterGLCanvas = alGlCanvas.iterator();
-			//			    
-			// while (iterGLCanvas.hasNext())
-			// {
-			//iterGLCanvas.next().getViewCamera().addCameraRotation(currentRotX)
-			// ;
-			// }
-			// */
-			//			    
+			//						    
 			// viewCanvas.getViewCamera().addCameraRotation(currentRotation);
+		}
+
+		/* --- Right -- Mouse Button --- */
+		if ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0)
+		{
+			/**
+			 * --- PANING ---
+			 */
+			// 0.819152044f = COS(BOGENMASS(35))
+			// 0.573576436f = SIN(BOGENMASS(35))
+			Vec3f addVec3f = new Vec3f(fPanScale
+					* ((float) (x - prevMouseX) / (float) size.width), fPanScale
+					* ((float) (prevMouseY - y) / (float) size.height) * 0.819152044f,
+					fPanScale * ((float) (prevMouseY - y) / (float) size.height)
+							* -0.573576436f);
+
+			prevMouseX = x;
+			prevMouseY = y;
+
+			viewCanvas.getViewCamera().addCameraPosition(addVec3f);
 		}
 
 	}
@@ -247,6 +250,12 @@ public class GlyphMouseListener
 			iRubberBandStartY = e.getY();
 			iRubberBandCurrentX = e.getX();
 			iRubberBandCurrentY = e.getY();
+		}
+		/* --- Right -- Mouse Button --- */
+		if ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0)
+		{
+			prevMouseX = e.getX();
+			prevMouseY = e.getY();
 		}
 	}
 

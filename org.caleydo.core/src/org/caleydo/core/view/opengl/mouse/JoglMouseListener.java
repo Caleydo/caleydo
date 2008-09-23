@@ -39,11 +39,11 @@ public class JoglMouseListener
 	protected boolean bMouseMiddleButtonDown = false;
 	protected boolean bMouseLeft_StandbyZoom = false;
 	protected boolean bMouseRight_StandbyRotate = false;
-	
+
 	protected boolean bEnablePan = true;
 	protected boolean bEnableRotate = true;
 	protected boolean bEnableZoom = true;
-	
+
 	/**
 	 * Define mouse sensitivity. Higher value indicates more degrees of
 	 * rotation. Default value 1.0
@@ -109,16 +109,17 @@ public class JoglMouseListener
 	{
 
 	}
+
 	@Override
 	public void mouseExited(MouseEvent e)
 	{
-		
+
 	}
 
 	@Override
 	public void mouseClicked(MouseEvent e)
 	{
-		
+
 	}
 
 	@Override
@@ -126,6 +127,7 @@ public class JoglMouseListener
 	{
 
 	}
+
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
@@ -240,100 +242,99 @@ public class JoglMouseListener
 		}
 	}
 
-
 	@Override
 	public void mouseDragged(MouseEvent event)
 	{
-//
-//		int x = event.getX();
-//		int y = event.getY();
-//		Dimension size = event.getComponent().getSize();
-//
-//		if (!bMouseRightButtonDown)
-//		{
-//			if (!bMouseMiddleButtonDown && bEnableRotate)
-//			{
-//				 /**
-//				 * --- ROTATION ---
-//				 */
-//				 Rotf currentRotX = new Rotf();
-//				 Rotf currentRotY = new Rotf();
-//						   	    
-//				 float fpercentX = (float)(x-prevMouseX)/(float)(size.width)
-//				 * fMouseSensitivityRotation;
-//						    	
-//				 float fpercentY = (float)(y-prevMouseY)/(float)(size.height)
-//				 * fMouseSensitivityRotation;
-//						    	
-//						    	
-//				 currentRotX.set(new Vec3f(0,1,0),
-//				 fpercentX * (float)Math.PI);
-//						   	    
-//				 currentRotY.set(new Vec3f(1,0,0),
-//				 fpercentY * (float)Math.PI);
-//						   	    
-//				 /* concatinate rotations.. */
-//				 currentRotX = currentRotX.times(currentRotY);
-//						   	    
-//				 prevMouseX = x;
-//				 prevMouseY = y;
-//							    
-//				 /* set new paramters to ViewCamera */
-//				 Iterator<AGLEventListener> iterGLCanvas = alGlCanvas.iterator();
-//							    
-//				 while (iterGLCanvas.hasNext())
-//				 {
-//				 iterGLCanvas.next().getViewCamera().addCameraRotation(
-//				 currentRotX);
-//				 }
-//			}
-//			else if (bEnableZoom)
-//			{
-//				/**
-//				 * --- ZOOMING ---
-//				 */
-//				float zoomX = fZoomScale * (x - prevMouseX);
-//				float zoomY = fZoomScale * (prevMouseY - y);
-//
-//				/* take abs(zoomX) */
-//				if ((zoomX < 0.0f) && (zoomY > 0.0f))
-//				{
-//					zoomX = -zoomX;
-//				}
-//
-//				prevMouseX = x;
-//				prevMouseY = y;
-//
-//				/* set new paramters to ViewCamera */
-//				Iterator<AGLEventListener> iterGLCanvas = alGlCanvas.iterator();
-//
-//				while (iterGLCanvas.hasNext())
-//				{
-//					iterGLCanvas.next().getViewCamera().addCameraScale(
-//							new Vec3f(0, 0, zoomY + zoomX));
-//				}
-//			}
-//		}
-//		else if (bEnablePan)
-//		{
-//			/**
-//			 * --- PANING ---
-//			 */
-//			Vec3f addVec3f = new Vec3f(fPanScale
-//					* ((float) (x - prevMouseX) / (float) size.width), fPanScale
-//					* ((float) (prevMouseY - y) / (float) size.height), 0.0f);
-//
-//			prevMouseX = x;
-//			prevMouseY = y;
-//
-//			/* set new paramters to ViewCamera */
-//			Iterator<AGLEventListener> iterGLCanvas = alGlCanvas.iterator();
-//
-//			while (iterGLCanvas.hasNext())
-//			{
-//				iterGLCanvas.next().getViewCamera().addCameraPosition(addVec3f);
-//			}
-//		}
+		//
+		// int x = event.getX();
+		// int y = event.getY();
+		// Dimension size = event.getComponent().getSize();
+		//
+		// if (!bMouseRightButtonDown)
+		// {
+		// if (!bMouseMiddleButtonDown && bEnableRotate)
+		// {
+		// /**
+		// * --- ROTATION ---
+		// */
+		// Rotf currentRotX = new Rotf();
+		// Rotf currentRotY = new Rotf();
+		//						   	    
+		// float fpercentX = (float)(x-prevMouseX)/(float)(size.width)
+		// * fMouseSensitivityRotation;
+		//						    	
+		// float fpercentY = (float)(y-prevMouseY)/(float)(size.height)
+		// * fMouseSensitivityRotation;
+		//						    	
+		//						    	
+		// currentRotX.set(new Vec3f(0,1,0),
+		// fpercentX * (float)Math.PI);
+		//						   	    
+		// currentRotY.set(new Vec3f(1,0,0),
+		// fpercentY * (float)Math.PI);
+		//						   	    
+		// /* concatinate rotations.. */
+		// currentRotX = currentRotX.times(currentRotY);
+		//						   	    
+		// prevMouseX = x;
+		// prevMouseY = y;
+		//							    
+		// /* set new paramters to ViewCamera */
+		// Iterator<AGLEventListener> iterGLCanvas = alGlCanvas.iterator();
+		//							    
+		// while (iterGLCanvas.hasNext())
+		// {
+		// iterGLCanvas.next().getViewCamera().addCameraRotation(
+		// currentRotX);
+		// }
+		// }
+		// else if (bEnableZoom)
+		// {
+		// /**
+		// * --- ZOOMING ---
+		// */
+		// float zoomX = fZoomScale * (x - prevMouseX);
+		// float zoomY = fZoomScale * (prevMouseY - y);
+		//
+		// /* take abs(zoomX) */
+		// if ((zoomX < 0.0f) && (zoomY > 0.0f))
+		// {
+		// zoomX = -zoomX;
+		// }
+		//
+		// prevMouseX = x;
+		// prevMouseY = y;
+		//
+		// /* set new paramters to ViewCamera */
+		// Iterator<AGLEventListener> iterGLCanvas = alGlCanvas.iterator();
+		//
+		// while (iterGLCanvas.hasNext())
+		// {
+		// iterGLCanvas.next().getViewCamera().addCameraScale(
+		// new Vec3f(0, 0, zoomY + zoomX));
+		// }
+		// }
+		// }
+		// else if (bEnablePan)
+		// {
+		// /**
+		// * --- PANING ---
+		// */
+		// Vec3f addVec3f = new Vec3f(fPanScale
+		// * ((float) (x - prevMouseX) / (float) size.width), fPanScale
+		// * ((float) (prevMouseY - y) / (float) size.height), 0.0f);
+		//
+		// prevMouseX = x;
+		// prevMouseY = y;
+		//
+		// /* set new paramters to ViewCamera */
+		// Iterator<AGLEventListener> iterGLCanvas = alGlCanvas.iterator();
+		//
+		// while (iterGLCanvas.hasNext())
+		// {
+		// iterGLCanvas.next().getViewCamera().addCameraPosition(addVec3f);
+		// }
+		// }
 	}
 
 	public void addGLCanvas(final AGLEventListener gLCanvas)
@@ -345,6 +346,8 @@ public class JoglMouseListener
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e)
 	{
+		if (!bEnableZoom)
+			return;
 
 		/**
 		 * --- NORMAL ZOOM ---
@@ -358,8 +361,9 @@ public class JoglMouseListener
 			iterGLCanvas.next().getViewCamera().addCameraScale(new Vec3f(0, 0, fZoom));
 		}
 	}
-		
-	public void setNavigationModes(boolean bEnablePan, boolean bEnableRotate, boolean bEnableZoom)
+
+	public void setNavigationModes(boolean bEnablePan, boolean bEnableRotate,
+			boolean bEnableZoom)
 	{
 		this.bEnablePan = bEnablePan;
 		this.bEnableRotate = bEnableRotate;

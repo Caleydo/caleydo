@@ -134,6 +134,7 @@ public class GLGlyphSliderView
 
 		// load ids to selectionManager
 		selectionManager.resetSelectionManager();
+
 		try
 		{
 			IStorage store = glyphData.get(0);
@@ -164,7 +165,8 @@ public class GLGlyphSliderView
 		Collection<GlyphAttributeType> types = gman.getGlyphAttributes();
 
 		BorderRenderStyleLineSolid borderStyle = new BorderRenderStyleLineSolid();
-//		borderStyle.setBorder((BorderRenderStyle.BORDER.RIGHT | BorderRenderStyle.BORDER.LEFT), false);
+		// borderStyle.setBorder((BorderRenderStyle.BORDER.RIGHT |
+		// BorderRenderStyle.BORDER.LEFT), false);
 		borderStyle.init(gl);
 
 		int slidercounter = 0;
@@ -272,7 +274,7 @@ public class GLGlyphSliderView
 
 		gl.glPushMatrix();
 
-		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		gl.glEnable(GL.GL_DEPTH);
 		gl.glEnable(GL.GL_BLEND);
 

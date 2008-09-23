@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.glyph.gridview;
 
+import gleem.linalg.Vec3f;
 import gleem.linalg.open.Vec2i;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -9,11 +10,7 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.storage.ERawDataType;
-import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
@@ -34,7 +31,6 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.JoglMouseListener;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**
@@ -69,6 +65,10 @@ public class GLGlyph
 
 	private GenericSelectionManager selectionManager = null;
 
+	private int iViewRole = 0;
+
+	private String sLabel = null;
+
 	/**
 	 * Constructor.
 	 * 
@@ -81,6 +81,8 @@ public class GLGlyph
 	{
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 
+		this.sLabel = sLabel;
+
 		mouseListener_ = new GlyphMouseListener(this, generalManager);
 		keyListener_ = new GlyphKeyListener();
 		renderStyle = new GlyphRenderStyle(viewFrustum);
@@ -90,15 +92,27 @@ public class GLGlyph
 
 		selectionManager = new GenericSelectionManager.Builder(EIDType.CLINICAL_ID).build();
 		viewType = EManagedObjectType.GL_GLYPH;
+
+		if (sLabel.equals("Glyph Single View"))
+			iViewRole = 1;
+
+		if (sLabel.equals("Glyph Selection View"))
+			iViewRole = 2;
 	}
 
 	@Override
 	public void init(GL gl)
 	{
 
-		// glToolboxRenderer = new GLGlyphToolboxRenderer(gl, generalManager,
-		// iUniqueID,
-		// new Vec3f(0, 0, 0), true, renderStyle);
+		// disable view rotation, zooming
+		{
+			MouseListener[] ml = parentGLCanvas.getMouseListeners();
+			for (MouseListener l : ml)
+			{
+				if (l instanceof JoglMouseListener)
+					((JoglMouseListener) l).setNavigationModes(true, false, false);
+			}
+		}
 
 		ISet glyphData = null;
 
@@ -111,45 +125,12 @@ public class GLGlyph
 			}
 		}
 
-		if (glyphData == null)
-		{
-			generalManager.getLogger()
-					.log(Level.SEVERE, "no glyph data found - shutting down");
-			return;
-		}
-
-		// load ids to selectionManager
-		selectionManager.resetSelectionManager();
-		try
-		{
-			IStorage store = glyphData.get(0);
-			if (store instanceof NominalStorage
-					&& store.getRawDataType() == ERawDataType.STRING)
-			{
-				INominalStorage<String> nominalStorage = (INominalStorage<String>) store;
-				for (int i = 0; i < nominalStorage.size(); ++i)
-				{
-					int id = Integer.parseInt(nominalStorage.getRaw(i));
-					selectionManager.initialAdd(id);
-				}
-			}
-		}
-		catch (NumberFormatException e)
-		{
-			generalManager.getLogger().log(Level.SEVERE,
-					"first glyph data row isn't the index - shutting down");
-			return;
-		}
-
-		// disable view rotation, zooming
-		{
-			MouseListener[] ml = parentGLCanvas.getMouseListeners();
-			for (MouseListener l : ml)
-			{
-				if (l instanceof JoglMouseListener)
-					((JoglMouseListener) l).setNavigationModes(true, false, false);
-			}
-		}
+		// if (glyphData == null)
+		// {
+		// generalManager.getLogger()
+		// .log(Level.SEVERE, "no glyph data found - shutting down");
+		// return;
+		// }
 
 		grid_ = new GLGlyphGrid(renderStyle);
 		grid_.loadData(glyphData);
@@ -165,6 +146,21 @@ public class GLGlyph
 
 		// init glyph gl
 		bRedrawDisplayList_ = true;
+
+		{ // load ids to the selection manager
+			selectionManager.resetSelectionManager();
+
+			int sendParameter = Integer.parseInt(gman
+					.getSetting(EGlyphSettingIDs.UPDATESENDPARAMETER));
+
+			ArrayList<Integer> tmpExtID = new ArrayList<Integer>();
+
+			for (GlyphEntry g : gman.getGlyphs().values())
+				tmpExtID.add(g.getParameter(sendParameter));
+
+			selectionManager.initialAdd(tmpExtID);
+		}
+
 	}
 
 	@Override
@@ -173,20 +169,28 @@ public class GLGlyph
 
 		bIsLocal = true;
 
+		this.getViewCamera().addCameraScale(new Vec3f(0, 0, -10f));
+
 		init(gl);
 
-		// parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
-		// Register specialized mouse wheel listener
-		parentGLCanvas.addMouseWheelListener(mouseListener_);
-		// parentGLCanvas.addMouseListener(mouseListener_);
+		// disable standart mouse movement (DON't remove the listeners, it will
+		// affect the picking!
+		{
+			MouseListener[] ml = parentGLCanvas.getMouseListeners();
+			for (MouseListener l : ml)
+			{
+				if (l instanceof JoglMouseListener)
+					((JoglMouseListener) l).setNavigationModes(false, false, false);
+			}
+		}
 
-		// parentGLCanvas.addMouseMotionListener(mouseListener_);
+		// Register specialized mouse wheel listener
+		parentGLCanvas.addMouseListener(mouseListener_);
+
+		parentGLCanvas.addMouseMotionListener(mouseListener_);
+		parentGLCanvas.addMouseWheelListener(mouseListener_);
 
 		parentGLCanvas.addKeyListener(keyListener_);
-
-		// parentGLCanvas.removeMouseMotionListener(
-		// parentGLCanvas.getJoglMouseListener() );
-		// parentGLCanvas.addMouseMotionListener(mouseListener_);
 
 	}
 
@@ -223,7 +227,6 @@ public class GLGlyph
 
 		// gl.glTranslatef(viewFrustum.getWidth()+4f,
 		// viewFrustum.getHeight()+2f, -10f);
-		gl.glTranslatef(0, 0, -10f);
 
 		gl.glRotatef(45f, 1, 0, 0);
 		// gl.glRotatef( 45f, -1,0,0 );
@@ -270,6 +273,17 @@ public class GLGlyph
 			grid_.buildScatterplotGrid(gl);
 			grid_.setGlyphPositions();
 			gl.glPopMatrix();
+		}
+
+		if (iViewRole == 2)
+		{
+			HashMap<Integer, GlyphEntry> tmp = new HashMap<Integer, GlyphEntry>();
+			for (GlyphEntry g : gman.getGlyphs().values())
+			{
+				if (g.isSelected())
+					tmp.put(g.getID(), g);
+			}
+			grid_.setGlyphList(tmp);
 		}
 
 		gl.glPushMatrix();
@@ -334,9 +348,12 @@ public class GLGlyph
 		// if (glToolboxRenderer != null)
 		// glToolboxRenderer.render(gl);
 
-		if (mouseListener_ != null)
-			mouseListener_.render(gl);
+		// if (mouseListener_ != null)
+		// mouseListener_.render(gl);
 
+		gl.glPopMatrix();
+
+		gl.glPushMatrix();
 		gl.glPopMatrix();
 
 	}
@@ -449,6 +466,16 @@ public class GLGlyph
 					// sel.updateSelectionSet(iUniqueID, ids, selections, null);
 					// }
 
+					selectionManager.clearSelections();
+					for (int i = 0; i < ids.size(); ++i)
+					{
+						if (selections.get(i) > 0)
+							selectionManager.addToType(ESelectionType.SELECTION, ids.get(i));
+						else
+							selectionManager.addToType(ESelectionType.DESELECTED, ids.get(i));
+					}
+					triggerUpdate(selectionManager.getDelta());
+
 					break;
 				default:
 					// System.out.println("picking Mode " +
@@ -488,7 +515,7 @@ public class GLGlyph
 	{
 
 		generalManager.getLogger().log(Level.INFO,
-				"Update called by " + eventTrigger.getClass().getSimpleName());
+				sLabel + ": Update called by " + eventTrigger.getClass().getSimpleName());
 
 		selectionManager.clearSelections();
 		selectionManager.setDelta(selectionDelta);

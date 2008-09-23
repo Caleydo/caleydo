@@ -227,6 +227,13 @@ public class GLGlyphGrid
 		return glyphs_;
 	}
 
+	public void setGlyphList(HashMap<Integer, GlyphEntry> glyphs)
+	{
+		clearGlyphMap();
+		glyphs_ = glyphs;
+		setGlyphPositions();
+	}
+
 	private void clearGlyphMap()
 	{
 
@@ -239,10 +246,12 @@ public class GLGlyphGrid
 	{
 
 		glyphDataLoader = new GlyphDataLoader();
-
-		glyphs_ = glyphDataLoader.loadGlyphs(glyphData);
-
-		generalManager.getGlyphManager().initGlyphGenerator();
+		if (glyphData != null)
+		{
+			glyphDataLoader.loadGlyphs(glyphData);
+			gman.initGlyphGenerator();
+		}
+		glyphs_ = gman.getGlyphs();
 
 		setGlyphPositions(iPositionType);
 		// setGlyphPositionsRectangle();

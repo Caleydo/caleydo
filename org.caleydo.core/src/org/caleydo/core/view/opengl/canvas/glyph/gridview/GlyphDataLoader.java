@@ -10,6 +10,7 @@ import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 
 /**
  * Loading data into the glyph storage
@@ -20,12 +21,14 @@ public class GlyphDataLoader
 {
 
 	private IGeneralManager generalManager;
+	private IGlyphManager gman = null;
 
 	private HashMap<Integer, GlyphEntry> glyphs = new HashMap<Integer, GlyphEntry>();
 
 	public GlyphDataLoader()
 	{
 		this.generalManager = GeneralManager.get();
+		this.gman = generalManager.getGlyphManager();
 	}
 
 	public HashMap<Integer, GlyphEntry> getGlyphList()
@@ -35,27 +38,20 @@ public class GlyphDataLoader
 	}
 
 	@SuppressWarnings("unchecked")
-	public HashMap<Integer, GlyphEntry> loadGlyphs(ISet glyphData)
+	public void loadGlyphs(ISet glyphData)
 	{
+		glyphs = new HashMap<Integer, GlyphEntry>();
 
 		GLGlyphGenerator generator = generalManager.getGlyphManager().getGlyphGenerator();
 
-		glyphs = new HashMap<Integer, GlyphEntry>();
-
-		ArrayList<IStorage> alStorages = new ArrayList<IStorage>();
-		for (IStorage tmpStorage : glyphData)
-		{
-			alStorages.add(tmpStorage);
-		}
-
 		ArrayList<int[]> aliStoreMapped = new ArrayList<int[]>();
-		ArrayList<String[]> alsStoreString = new ArrayList<String[]>();
-		ArrayList<String> alsStoreStringColTitel = new ArrayList<String>();
+		ArrayList<INominalStorage<String>> alsStoreString = new ArrayList<INominalStorage<String>>();
+		// ArrayList<String> alsStoreStringColTitel = new ArrayList<String>();
 
 		{ // convert values to dictionary indices
 			int counter = 0;
 			int pcounter = 0;
-			for (IStorage tmpStorage : alStorages)
+			for (IStorage tmpStorage : glyphData)
 			{
 				GlyphAttributeType glyphAttributeType = generalManager.getGlyphManager()
 						.getGlyphAttributeTypeWithExternalColumnNumber(counter);
@@ -68,7 +64,6 @@ public class GlyphDataLoader
 					{
 
 						INominalStorage<String> nominalStorage = (INominalStorage<String>) tmpStorage;
-						// String[] temp1 = tmpStorage.getArrayString();
 						int[] temp2 = new int[nominalStorage.size()];
 
 						for (int i = 0; i < nominalStorage.size(); ++i)
@@ -115,30 +110,21 @@ public class GlyphDataLoader
 					{
 						throw new RuntimeException(
 								"GlyphDataLoader: ERROR. There should be only STRING values in the storage");
-
 					}
 
 					glyphAttributeType.setInternalColumnNumber(pcounter);
 					++pcounter;
+
 				}
 				else
-				{
+				{ // its something for the string storage
 					if (tmpStorage instanceof NominalStorage
 							&& tmpStorage.getRawDataType() == ERawDataType.STRING)
 					{
-						alsStoreStringColTitel.add(tmpStorage.getLabel());
-
-						// FIXME hack
-						String[] sArTmp = new String[tmpStorage.size()];
-						for (int iCount = 0; iCount < tmpStorage.size(); iCount++)
-						{
-							sArTmp[iCount] = ((INominalStorage<String>) tmpStorage)
-									.getRaw(iCount);
-						}
-						alsStoreString.add(sArTmp);
+						alsStoreString.add((INominalStorage<String>) tmpStorage);
 					}
 					else
-						System.out.println("ERROR" + tmpStorage.getLabel());
+						System.out.println("ERROR " + tmpStorage.getLabel());
 				}
 
 				++counter;
@@ -149,13 +135,14 @@ public class GlyphDataLoader
 		{
 			this.generalManager.getLogger().log(Level.SEVERE,
 					"GlyphDataLoader: No data in file found");
-			return glyphs;
+			return;
 		}
 
 		int size = aliStoreMapped.get(0).length;
 
 		// now convert the storages to real glyphs
-		int counter = 1;
+
+		int counter = gman.getGlyphs().size();
 		for (int i = 0; i < size; ++i)
 		{
 			GlyphEntry g = new GlyphEntry(counter, generator);
@@ -163,16 +150,15 @@ public class GlyphDataLoader
 			for (int[] s : aliStoreMapped)
 				g.addParameter(s[i]);
 
-			for (int j = 0; j < alsStoreStringColTitel.size(); ++j)
-				g.addStringParameter(alsStoreStringColTitel.get(j), alsStoreString.get(j)[i]);
+			for (int j = 0; j < alsStoreString.size(); ++j)
+				g.addStringParameter(alsStoreString.get(j).getLabel(), alsStoreString.get(j)
+						.getRaw(i));
 
 			glyphs.put(counter, g);
 			++counter;
 		}
 
 		generalManager.getGlyphManager().addGlyphs(glyphs);
-
-		return glyphs;
 	}
 
 }

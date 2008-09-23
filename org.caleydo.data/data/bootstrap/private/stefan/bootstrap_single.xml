@@ -21,7 +21,7 @@
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_GLYPH"		cmdId="69994"	uniqueId="82401" parent="99075" label="Glyph"
 							gl_origin="0 0 0"
 							gl_rotation="0 0 0 0"
-							attrib3="PERSPECTIVE -1.5 1.5 -1.5 1.5 2.9 1000"
+							attrib3="PERSPECTIVE -1 1 -1 1 2.9 1000"
 							detail="351010" />
 <!--							attrib3="ORTHOGRAPHIC -8 8 -8 8 -20 20"-->
 
