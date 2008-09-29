@@ -101,7 +101,7 @@ public class GLHeatMap
 		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX)
 				.externalIDType(EIDType.DAVID).mappingType(
 						EMappingType.EXPRESSION_INDEX_2_DAVID,
-						EMappingType.DAVID_2_EXPRESSION_STORAGE_ID).build();
+						EMappingType.DAVID_2_EXPRESSION_INDEX).build();
 		storageSelectionManager = new GenericSelectionManager.Builder(
 				EIDType.EXPRESSION_EXPERIMENT).build();
 

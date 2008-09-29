@@ -505,8 +505,8 @@ public class GenericSelectionManager
 			returnDelta = new SelectionDelta(externalIDType, internalIDType);
 			for (SelectionItem item : selectionDelta)
 			{
-				int iExternalID = getExternalFromInternalID(item.getSelectionID());
-				if (iExternalID == -1)
+				Integer iExternalID = GeneralManager.get().getGenomeIdManager().getID(internalToExternalMapping, item.getSelectionID());
+				if (iExternalID == null || iExternalID == -1)
 				{
 					GeneralManager.get().getLogger().log(Level.WARNING,
 							"No external ID for " + item.getSelectionID());
@@ -538,8 +538,8 @@ public class GenericSelectionManager
 			tempHash = hashSelectionTypes.get(selectionType);
 			for (Integer iElement : tempHash.keySet())
 			{
-				int iExternalID = getExternalFromInternalID(iElement);
-				if (iExternalID == -1)
+				Integer iExternalID = GeneralManager.get().getGenomeIdManager().getID(internalToExternalMapping, iElement);
+				if (iExternalID == null || iExternalID == -1)
 				{
 					GeneralManager.get().getLogger().log(Level.WARNING,
 							"No external ID for " + iElement);
@@ -581,8 +581,8 @@ public class GenericSelectionManager
 			selectionDelta = new SelectionDelta(internalIDType);
 			for (SelectionItem item : externalSelectionDelta)
 			{
-				int iInternalID = getInternalFromExternalID(item.getSelectionID());
-				if (iInternalID == -1)
+				Integer iInternalID = GeneralManager.get().getGenomeIdManager().getID(externalToInternalMapping, item.getSelectionID());
+				if (iInternalID == null || iInternalID == -1)
 				{
 					GeneralManager.get().getLogger().log(Level.WARNING,
 							"No internal id for " + item.getSelectionID());
@@ -632,19 +632,5 @@ public class GenericSelectionManager
 		bIsDeltaWritingEnabled = true;
 
 		return selectionDelta;
-	}
-
-	private int getExternalFromInternalID(int index)
-	{
-		int iID = GeneralManager.get().getGenomeIdManager().getIdIntFromIntByMapping(index,
-				internalToExternalMapping);
-		return iID;
-	}
-
-	private int getInternalFromExternalID(int index)
-	{
-		int iID = GeneralManager.get().getGenomeIdManager().getIdIntFromIntByMapping(index,
-				externalToInternalMapping);
-		return iID;
 	}
 }

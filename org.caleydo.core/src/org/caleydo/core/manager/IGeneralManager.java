@@ -5,7 +5,6 @@ import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.id.IDManager;
-import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
 import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
@@ -58,7 +57,7 @@ public interface IGeneralManager
 
 	public  IPathwayItemManager getPathwayItemManager();
 
-	public  IGenomeIdManager getGenomeIdManager();
+	public  IIDMappingManager getGenomeIdManager();
 
 	public  IGlyphManager getGlyphManager();
 

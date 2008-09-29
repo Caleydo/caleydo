@@ -59,14 +59,12 @@ public class InformationContentCreator
 
 				if (iUniqueID != -1)
 				{
-					sRefSeq = generalManager.getGenomeIdManager().getIdStringFromIntByMapping(
-							iUniqueID, EMappingType.DAVID_2_REFSEQ_MRNA);
+					sRefSeq = generalManager.getGenomeIdManager().getID(
+							EMappingType.DAVID_2_REFSEQ_MRNA, iUniqueID);
 					sGeneName = generalManager.getGenomeIdManager()
-							.getIdStringFromIntByMapping(iUniqueID,
-									EMappingType.DAVID_2_GENE_NAME);
+							.getID(EMappingType.DAVID_2_GENE_NAME, iUniqueID);
 					sGeneSymbol = generalManager.getGenomeIdManager()
-							.getIdStringFromIntByMapping(iUniqueID,
-									EMappingType.DAVID_2_GENE_SYMBOL);
+							.getID(EMappingType.DAVID_2_GENE_SYMBOL, iUniqueID);
 				}
 
 				// Cut too long gene names

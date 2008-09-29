@@ -106,8 +106,8 @@ public class GLPathwayContentCreator
 
 		hashElementId2MappingColorArray.clear();
 		
-		if(generalManager.getGenomeIdManager().hasAnyMapByType(
-				EMappingType.DAVID_2_EXPRESSION_STORAGE_ID))
+		if(generalManager.getGenomeIdManager().hasMapping(
+				EMappingType.DAVID_2_EXPRESSION_INDEX))
 		{
 			bEnableGeneMapping = true;
 		}	
@@ -201,25 +201,19 @@ public class GLPathwayContentCreator
 			// if (iAlTmpSelectedGraphItemDepth.get(iItemIndex) != 0)
 			// continue;
 
-			Iterator<IGraphItem> iterGraphItems = ((IGraphItem) generalManager
-					.getPathwayItemManager().getItem(
-							iAlTmpSelectedGraphItemIds.get(iItemIndex))).getAllItemsByProp(
-					EGraphItemProperty.ALIAS_PARENT).iterator();
-			Iterator<IGraphItem> iterIdenticalGraphItemReps;
-			IGraphItem identicalNode;
-
-			while (iterGraphItems.hasNext())
+			for (IGraphItem graphItem : ((IGraphItem) generalManager.getPathwayItemManager().getItem(
+					iAlTmpSelectedGraphItemIds.get(iItemIndex))).getAllItemsByProp(
+							EGraphItemProperty.ALIAS_PARENT))
 			{
-				iterIdenticalGraphItemReps = iterGraphItems.next().getAllItemsByProp(
-						EGraphItemProperty.ALIAS_CHILD).iterator();
-
-				while (iterIdenticalGraphItemReps.hasNext())
+				for (IGraphItem graphItemRep : graphItem.getAllItemsByProp(
+						EGraphItemProperty.ALIAS_CHILD))
 				{
-					identicalNode = iterIdenticalGraphItemReps.next();
-
-					hashSelectedVertexRepId2Depth.put(identicalNode.getId(), 0);
-
-					performNeighborhoodAlgorithm(identicalNode);
+					hashSelectedVertexRepId2Depth.put(graphItemRep.getId(), 0);
+					
+					if (bEnableNeighborhood)
+					{
+						performNeighborhoodAlgorithm(graphItemRep);
+					}
 				}
 			}
 		}
@@ -251,7 +245,6 @@ public class GLPathwayContentCreator
 
 	private void performNeighborhoodAlgorithm(final IGraphItem selectedVertex)
 	{
-
 		GraphVisitorSearchBFS graphVisitorSearchBFS;
 
 		if (bEnableNeighborhood)

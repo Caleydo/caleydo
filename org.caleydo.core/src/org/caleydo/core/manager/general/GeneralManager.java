@@ -9,6 +9,7 @@ import org.caleydo.core.bridge.gui.standalone.SWTStandaloneBridge;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.IMementoManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
@@ -21,12 +22,11 @@ import org.caleydo.core.manager.data.storage.StorageManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.gui.SWTGUIManager;
 import org.caleydo.core.manager.id.IDManager;
+import org.caleydo.core.manager.mapping.IDMappingManager;
 import org.caleydo.core.manager.memento.MementoManager;
 import org.caleydo.core.manager.parser.XmlParserManager;
-import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
-import org.caleydo.core.manager.specialized.genome.id.GenomeIdManager;
 import org.caleydo.core.manager.specialized.genome.pathway.PathwayItemManager;
 import org.caleydo.core.manager.specialized.genome.pathway.PathwayManager;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
@@ -72,7 +72,7 @@ public class GeneralManager
 	private IPathwayItemManager pathwayItemManager;
 	private IEventPublisher eventPublisher;
 	private IXmlParserManager xmlParserManager;
-	private IGenomeIdManager genomeIdManager;
+	private IIDMappingManager genomeIdManager;
 	private IGlyphManager glyphManager;
 	private IDManager IDManager;
 
@@ -110,7 +110,7 @@ public class GeneralManager
 		viewGLCanvasManager = new ViewGLCanvasManager();
 		sWTGUIManager = new SWTGUIManager();
 		eventPublisher = new EventPublisher();
-		genomeIdManager = new GenomeIdManager();
+		genomeIdManager = new IDMappingManager();
 		pathwayManager = new PathwayManager();
 		// serializationInputTest();
 		pathwayItemManager = new PathwayItemManager();
@@ -257,7 +257,7 @@ public class GeneralManager
 	}
 
 	@Override
-	public IGenomeIdManager getGenomeIdManager()
+	public IIDMappingManager getGenomeIdManager()
 	{
 		return this.genomeIdManager;
 	}

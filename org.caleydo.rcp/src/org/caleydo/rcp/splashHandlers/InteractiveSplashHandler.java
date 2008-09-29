@@ -58,7 +58,7 @@ public class InteractiveSplashHandler
 
 		
 		Label versionLabel = new Label(splash, SWT.NONE);
-		versionLabel.setText("Version " +Activator.sBundleVersion);
+		versionLabel.setText("Version " +Activator.sBundleVersion + " BETA");
 		versionLabel.setFont(new Font(splash.getDisplay(),"Arial",10, SWT.NONE));
 		versionLabel.setBounds(185, 177, 300, 20);
 		versionLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));

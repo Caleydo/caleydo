@@ -148,15 +148,6 @@ public final class LookupTableLoaderProxy
 	public final IGenomeIdMap createReverseMapFromMap(final EMappingType originMultiMapType,
 			final EMappingType targetMultiMapType)
 	{
-
-		/* consistency check */
-		if ((originMultiMapType.getTypeOrigin() != targetMultiMapType.getTypeTarget())
-				|| (originMultiMapType.getTypeTarget() != targetMultiMapType.getTypeOrigin()))
-		{
-			assert false : "Can not create reverse multimap, because originMapType and targetMapType do not match!";
-			return null;
-		}
-
 		IGenomeIdManager genomeIDManager = GeneralManager.get().getGenomeIdManager();
 
 		IGenomeIdMap origionMap = genomeIDManager.getMapByType(originMultiMapType);

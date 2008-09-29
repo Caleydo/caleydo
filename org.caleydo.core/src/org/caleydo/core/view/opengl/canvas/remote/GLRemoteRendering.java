@@ -529,7 +529,7 @@ public class GLRemoteRendering
 		// gl.glVertex3f(8, 0, -0.01f);
 		// gl.glEnd();
 
-		if (layer.equals(stackLayer))
+		if (layer.equals(stackLayer))// || layer.equals(underInteractionLayer))
 		{
 			renderNavigationOverlay(gl, iViewID);
 		}
@@ -708,6 +708,29 @@ public class GLRemoteRendering
 				textureMoveRight = glIconTextureManager
 						.getIconTexture(EIconTextures.ARROW_LEFT);
 			}
+//			else if (underInteractionLayer.getPositionIndexByElementId(iViewID) == 0) // center
+//			{
+//				topWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
+//				bottomWallPickingType = EPickingType.BUCKET_MOVE_IN_ICON_SELECTION;
+//				leftWallPickingType = EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
+//				rightWallPickingType = EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
+//
+//				if (iNavigationMouseOverViewID_out == iViewID)
+//					tmpColor_out.set(1, 0.3f, 0.3f, 0.9f);
+//				else if (iNavigationMouseOverViewID_in == iViewID)
+//					tmpColor_in.set(1, 0.3f, 0.3f, 0.9f);
+//				else if (iNavigationMouseOverViewID_left == iViewID)
+//					tmpColor_left.set(1, 0.3f, 0.3f, 0.9f);
+//				else if (iNavigationMouseOverViewID_right == iViewID)
+//					tmpColor_right.set(1, 0.3f, 0.3f, 0.9f);
+//
+//				textureMoveIn = glIconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
+//				textureMoveOut = glIconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
+//				textureMoveLeft = glIconTextureManager
+//						.getIconTexture(EIconTextures.ARROW_DOWN);
+//				textureMoveRight = glIconTextureManager
+//						.getIconTexture(EIconTextures.ARROW_LEFT);
+//			}			
 		}
 		// else if (underInteractionLayer.containsElement(iViewID))
 		// {
@@ -1374,7 +1397,7 @@ public class GLRemoteRendering
 						arSlerpActions.clear();
 
 						int iDestinationPosIndex = stackLayer
-								.getPositionIndexByElementId(iExternalID);
+							.getPositionIndexByElementId(iExternalID);
 
 						if (iDestinationPosIndex == 3)
 							iDestinationPosIndex = 0;
@@ -1395,15 +1418,14 @@ public class GLRemoteRendering
 
 							SlerpAction slerpAction = new SlerpAction(stackLayer
 									.getElementIdByPositionIndex(iDestinationPosIndex),
-									stackLayer, stackLayer, stackLayer
-											.getPositionIndexByElementId(iExternalID));
+									stackLayer, stackLayer, stackLayer.getPositionIndexByElementId(iExternalID));
 							arSlerpActions.add(slerpAction);
 
 							SlerpAction slerpActionTransitionReverse = new SlerpAction(
 									iExternalID, transitionLayer, stackLayer,
 									iDestinationPosIndex);
 							arSlerpActions.add(slerpActionTransitionReverse);
-						}
+						}	
 
 						bEnableNavigationOverlay = false;
 

@@ -322,50 +322,28 @@ public class XmlParserManager
 
 		iCountOpenedFiles++;
 
-		try
+		URL resourceUrl = this.getClass().getClassLoader().getResource(filename);
+		InputSource inSource = null;
+
+		if (resourceUrl != null)
 		{
-			URL resourceUrl = this.getClass().getClassLoader().getResource(filename);
-			InputSource inSource = null;
-
-			if (resourceUrl != null)
-			{
-				inSource = CaleydoInputStream.openInputStreamFromUrl(resourceUrl,
-						generalManager);
-			}
-			else
-			{
-				inSource = CaleydoInputStream
-						.openInputStreamFromFile(filename, generalManager);
-			}
-
-			generalManager.getLogger().log(Level.FINE, "Start parsing file " + filename);
-
-			boolean status = CaleydoInputStream.parseOnce(inSource, filename, this,
+			inSource = CaleydoInputStream.openInputStreamFromUrl(resourceUrl,
 					generalManager);
-
-			generalManager.getLogger().log(Level.FINE, "Finished parsing file " + filename);
-
-			return status;
-
 		}
-		catch (CaleydoRuntimeException gve)
+		else
 		{
-			// generalManager.logMsg("XmlParserManager.parseXmlFileByName( " +
-			// filename + ") failed; caleydo_error: " +
-			// gve.toString(),
-			// LoggerType.MINOR_ERROR_XML );
-
-			return false;
+			inSource = CaleydoInputStream
+					.openInputStreamFromFile(filename, generalManager);
 		}
-		catch (RuntimeException e)
-		{
-			// generalManager.logMsg("XmlParserManager.parseXmlFileByName( " +
-			// filename + ") failed; system_error: " +
-			// e.toString(),
-			// LoggerType.MINOR_ERROR_XML );
 
-			return false;
-		}
+		generalManager.getLogger().log(Level.FINE, "Start parsing file " + filename);
+
+		boolean status = CaleydoInputStream.parseOnce(inSource, filename, this,
+				generalManager);
+
+		generalManager.getLogger().log(Level.FINE, "Finished parsing file " + filename);
+
+		return status;
 	}
 
 	/**

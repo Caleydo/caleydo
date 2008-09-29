@@ -166,7 +166,7 @@ public class GLParallelCoordinates
 		// TODO this is only valid for genes
 		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX)
 				.mappingType(EMappingType.EXPRESSION_INDEX_2_DAVID,
-						EMappingType.DAVID_2_EXPRESSION_STORAGE_ID).externalIDType(
+						EMappingType.DAVID_2_EXPRESSION_INDEX).externalIDType(
 						EIDType.DAVID).build();
 
 		// TODO no mapping

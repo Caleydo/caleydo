@@ -21,7 +21,7 @@ public enum EIDType
 
 	DAVID(EStorageType.INT, "david", "david-id"),
 
-	REFSEQ_MRNA(EStorageType.INT, "refseq-mrna", "refseq-mrna-id"),
+	REFSEQ_MRNA(EStorageType.STRING, "refseq-mrna", "refseq-mrna-id"),
 
 	ENTREZ_GENE_ID(EStorageType.INT, "entrez-gene-id", "entrez-gene-id"),
 

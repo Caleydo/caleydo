@@ -69,9 +69,9 @@ public class IDExtractionLocationListener
 		{
 			String sExtractedID = event.location.substring(sSearchPhrase_NCBIGeneId.length());
 
-			int iDavidId = generalManager.getGenomeIdManager().getIdIntFromIntByMapping(
-					StringConversionTool.convertStringToInt(sExtractedID, -1),
-					EMappingType.ENTREZ_GENE_ID_2_DAVID);
+			int iDavidId = generalManager.getGenomeIdManager().getID(
+					EMappingType.ENTREZ_GENE_ID_2_DAVID,
+					StringConversionTool.convertStringToInt(sExtractedID, -1));
 
 			if (iDavidId == -1)
 				return;

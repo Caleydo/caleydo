@@ -5,6 +5,8 @@ package org.caleydo.core.data.mapping;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
+ * 
+ * @TODO: replace this type by generics
  */
 public enum EMappingDataType
 {
@@ -16,7 +18,9 @@ public enum EMappingDataType
 
 	MULTI_INT2INT(true, false),
 	MULTI_STRING2STRING(true, false),
-
+	MULTI_STRING2INT(true, false),
+	MULTI_INT2STRING(true, false),
+	
 	NONE(false, false);
 
 	private final boolean bUseMultiMap;

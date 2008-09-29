@@ -30,9 +30,9 @@
 		   		
  		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
 		   		detail="data/genome/mapping/BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt"	
-		   		attrib1="BIOCARTA_GENE_ID_2_DAVID LUT_2" 
+		   		attrib1="BIOCARTA_GENE_ID_2_REFSEQ_MRNA LUT_2" 
 		   		attrib2=";" 
 		   		attrib3="0 -1"
-		   		attrib4="REFSEQ_MRNA_2_DAVID" />				   			   			   		  		
+		   		attrib4="BIOCARTA_GENE_ID_2_DAVID" />				   			   			   		  		
 		   		
 </details>

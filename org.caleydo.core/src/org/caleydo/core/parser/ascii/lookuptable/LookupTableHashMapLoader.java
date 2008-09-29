@@ -64,7 +64,7 @@ public class LookupTableHashMapLoader
 					{
 						// Special case for creating indexing of storages
 						if (currentGenomeIdType
-								.equals(EMappingType.DAVID_2_EXPRESSION_STORAGE_ID))
+								.equals(EMappingType.DAVID_2_EXPRESSION_INDEX))
 							genomeIdMap.put(sLine, Integer.toString(iLineInFile
 									- iStartParsingAtLine));
 						else
@@ -79,7 +79,7 @@ public class LookupTableHashMapLoader
 
 							// Special case for creating indexing of storages
 							if (currentGenomeIdType
-									.equals(EMappingType.DAVID_2_EXPRESSION_STORAGE_ID))
+									.equals(EMappingType.DAVID_2_EXPRESSION_INDEX))
 								genomeIdMap.put(buffer, Integer.toString(iLineInFile
 										- iStartParsingAtLine));
 							else

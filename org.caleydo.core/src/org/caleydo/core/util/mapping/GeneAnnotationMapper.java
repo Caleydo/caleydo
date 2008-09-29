@@ -1,7 +1,7 @@
 package org.caleydo.core.util.mapping;
 
+import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 
 /**
  * 
@@ -11,7 +11,7 @@ import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
  */
 public class GeneAnnotationMapper
 {
-	protected IGenomeIdManager genomeIDManager;
+	protected IIDMappingManager genomeIDManager;
 
 	/**
 	 * Constructor.

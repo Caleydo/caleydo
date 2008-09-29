@@ -947,7 +947,7 @@ public class FileLoadDataAction
 						ECommandType.LOAD_LOOKUP_TABLE_FILE);
 
 		cmdLoadLookupTableFile.setAttributes(sFileName, iStartParseFileAtLine, -1,
-				"DAVID_2_EXPRESSION_STORAGE_ID REVERSE LUT_1", sDelimiter,
+				"DAVID_2_EXPRESSION_INDEX REVERSE LUT_1", sDelimiter,
 				"REFSEQ_MRNA_2_DAVID");
 		cmdLoadLookupTableFile.doCommand();
 

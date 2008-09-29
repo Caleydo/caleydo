@@ -28,18 +28,18 @@
 		   		attrib2="\t" 
 		   		attrib3="0 -1" />	
 		   		
- 		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
+		    <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
 		   		detail="data/genome/mapping/BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt"	
-		   		attrib1="BIOCARTA_GENE_ID_2_DAVID LUT_2" 
+		   		attrib1="BIOCARTA_GENE_ID_2_REFSEQ_MRNA LUT_2" 
 		   		attrib2=";" 
 		   		attrib3="0 -1"
-		   		attrib4="REFSEQ_MRNA_2_DAVID" />	
+		   		attrib4="BIOCARTA_GENE_ID_2_DAVID" />		
 		   		
   		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
 		   		detail="data/genome/microarray/kashofer/sn_gr_3_in_5_of_probes_filtered.csv"	
-		   		attrib1="DAVID_2_EXPRESSION_STORAGE_ID REVERSE LUT_1" 
+		   		attrib1="REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE LUT_1" 
 		   		attrib2="\t" 
 		   		attrib3="1 -1"
-		   		attrib4="REFSEQ_MRNA_2_DAVID" />		   						   			   			   		  		
+		   		attrib4="DAVID_2_EXPRESSION_INDEX" />		   						   			   			   		  		
 		   		
 </details>

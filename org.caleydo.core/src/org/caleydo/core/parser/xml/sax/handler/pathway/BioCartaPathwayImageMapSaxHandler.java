@@ -3,7 +3,7 @@ package org.caleydo.core.parser.xml.sax.handler.pathway;
 import java.util.logging.Level;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EMappingType;
-import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
+import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
@@ -193,12 +193,11 @@ public class BioCartaPathwayImageMapSaxHandler
 		}
 
 		// Convert BioCarta ID to DAVID ID
-		IGenomeIdManager genomeIdManager = generalManager.getGenomeIdManager();
+		IIDMappingManager genomeIdManager = generalManager.getGenomeIdManager();
 
-		int iDavidId = genomeIdManager.getIdIntFromStringByMapping(sName,
-				EMappingType.BIOCARTA_GENE_ID_2_DAVID);
+		Integer iDavidId = genomeIdManager.getID(EMappingType.BIOCARTA_GENE_ID_2_DAVID, sName);
 
-		if (iDavidId == -1 || iDavidId == 0)
+		if (iDavidId == null || iDavidId == -1 || iDavidId == 0)
 		{
 			// TODO: How to handle this case?
 			generalManager.getLogger().log(Level.FINE,

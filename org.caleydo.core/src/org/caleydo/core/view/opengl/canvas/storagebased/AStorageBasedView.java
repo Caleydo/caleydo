@@ -18,10 +18,10 @@ import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.SelectionItem;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
+import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.picking.ESelectionMode;
-import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -61,7 +61,7 @@ public abstract class AStorageBasedView
 
 	protected int iGLDisplayListToCall = 0;
 
-	protected IGenomeIdManager genomeIDManager;
+	protected IIDMappingManager genomeIDManager;
 
 	protected ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
@@ -267,8 +267,7 @@ public abstract class AStorageBasedView
 	@Deprecated
 	protected int getDavidIDFromStorageIndex(int index)
 	{
-		int iDavidId = genomeIDManager.getIdIntFromIntByMapping(index,
-				EMappingType.EXPRESSION_INDEX_2_DAVID);
+		int iDavidId = genomeIDManager.getID(EMappingType.EXPRESSION_INDEX_2_DAVID, index);
 		return iDavidId;
 	}
 
@@ -278,8 +277,7 @@ public abstract class AStorageBasedView
 
 		// Convert expression storage ID to RefSeq
 		int iDavidId = getDavidIDFromStorageIndex(index);
-		String sRefSeq = genomeIDManager.getIdStringFromIntByMapping(iDavidId,
-				EMappingType.DAVID_2_REFSEQ_MRNA);
+		String sRefSeq = genomeIDManager.getID(EMappingType.DAVID_2_REFSEQ_MRNA, iDavidId);
 		if (sRefSeq == "")
 			return "Unkonwn Gene";
 		else
@@ -292,8 +290,7 @@ public abstract class AStorageBasedView
 
 		// Convert expression storage ID to RefSeq
 		int iDavidID = getDavidIDFromStorageIndex(index);
-		String sGeneSymbol = genomeIDManager.getIdStringFromIntByMapping(iDavidID,
-				EMappingType.DAVID_2_GENE_SYMBOL);
+		String sGeneSymbol = genomeIDManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
 		if (sGeneSymbol == "")
 			return "Unkonwn Gene";
 		else

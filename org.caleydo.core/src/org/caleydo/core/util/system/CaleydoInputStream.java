@@ -150,14 +150,6 @@ public class CaleydoInputStream
 								+ " at column=" + saxe.getColumnNumber() + ".\n SAX error: "
 								+ saxe.toString(), saxe);
 			}
-			catch (IOException e)
-			{
-				generalManager.getLogger().log(Level.SEVERE, "IO-error during parsing", e);
-			} // try
-			catch (Exception e)
-			{
-				generalManager.getLogger().log(Level.SEVERE, "Error during parsing", e);
-			} // try
 
 			/**
 			 * close file...
@@ -183,10 +175,6 @@ public class CaleydoInputStream
 		catch (IOException ioe)
 		{
 			generalManager.getLogger().log(Level.SEVERE, "IO-error during parsing", ioe);
-		}
-		catch (Exception e)
-		{
-			generalManager.getLogger().log(Level.SEVERE, "Error during parsing", e);
 		}
 
 		return true;

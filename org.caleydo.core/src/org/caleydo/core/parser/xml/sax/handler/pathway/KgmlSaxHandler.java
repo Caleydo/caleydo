@@ -239,23 +239,26 @@ public class KgmlSaxHandler
 		if (sType.equals("gene"))
 		{
 			StringTokenizer sTokenText = new StringTokenizer(sName, " ");
-			int iDavidId = -1;
+			Integer iDavidId = -1;
 			String sTmpVertexName = "";
 
 			while (sTokenText.hasMoreTokens())
 			{
 				sTmpVertexName = sTokenText.nextToken();
 
-				iDavidId = generalManager.getGenomeIdManager().getIdIntFromIntByMapping(
-						StringConversionTool.convertStringToInt(sTmpVertexName.substring(4),
-								-1), EMappingType.ENTREZ_GENE_ID_2_DAVID);
+				if (sTmpVertexName.substring(4).equals(""))
+					continue;
+				
+				iDavidId = generalManager.getGenomeIdManager().getID(
+						EMappingType.ENTREZ_GENE_ID_2_DAVID,
+						Integer.valueOf(sTmpVertexName.substring(4)));
 
-				if (iDavidId == -1)
+				if (iDavidId == null)
 				{
 					generalManager.getLogger().log(
-							Level.FINE,
+							Level.WARNING,
 							"NCBI Gene ID " + sTmpVertexName
-									+ " cannot be mapped to David Id.");
+									+ " cannot be mapped to David ID.");
 
 					continue;
 				}

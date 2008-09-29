@@ -8,8 +8,8 @@ import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
@@ -24,7 +24,7 @@ import org.caleydo.util.graph.EGraphItemProperty;
  */
 public class PathwayColorMapper
 {
-	protected IGenomeIdManager genomeIdManager;
+	protected IIDMappingManager genomeIdManager;
 
 	protected ArrayList<IStorage> alMappingStorage;
 
@@ -86,10 +86,10 @@ public class PathwayColorMapper
 								pathwayVertexRep.getAllItemsByProp(
 										EGraphItemProperty.ALIAS_PARENT).get(0).getId());
 
-				int iExpressionStorageIndex = genomeIdManager.getIdIntFromIntByMapping(
-						iDavidId, EMappingType.DAVID_2_EXPRESSION_STORAGE_ID);
+				Integer iExpressionStorageIndex = genomeIdManager.getID(
+						EMappingType.DAVID_2_EXPRESSION_INDEX, iDavidId);
 
-				if (iExpressionStorageIndex == -1)
+				if (iExpressionStorageIndex == null || iExpressionStorageIndex == -1)
 				{
 					// FIXME, color from render style here
 					arMappingColor.add(new float[] { 0.5f, 0.5f, 0.5f }); // invalid

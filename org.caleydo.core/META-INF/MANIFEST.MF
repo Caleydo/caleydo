@@ -61,7 +61,6 @@ Export-Package: org.caleydo.core.application.core,
  org.caleydo.core.manager.parser,
  org.caleydo.core.manager.picking,
  org.caleydo.core.manager.specialized.genome,
- org.caleydo.core.manager.specialized.genome.id,
  org.caleydo.core.manager.specialized.genome.pathway,
  org.caleydo.core.manager.specialized.glyph,
  org.caleydo.core.manager.view,
@@ -141,3 +140,4 @@ Bundle-ClassPath: lib/ftp/edtftpj.jar,
  lib/wii/WiiRemoteJ.jar,
  .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Import-Package: org.caleydo.core.manager

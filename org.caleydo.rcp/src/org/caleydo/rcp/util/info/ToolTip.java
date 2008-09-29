@@ -8,8 +8,8 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.SelectionItem;
+import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.genome.IGenomeIdManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
@@ -118,7 +118,7 @@ public class ToolTip
 						Iterator<SelectionItem> iterSelectionItems 
 							= infoArea.getSelectionDelta().getSelectionData().iterator();
 						SelectionItem item;
-						IGenomeIdManager genomeIDManager = GeneralManager.get().getGenomeIdManager();
+						IIDMappingManager genomeIDManager = GeneralManager.get().getGenomeIdManager();
 
 						while(iterSelectionItems.hasNext())
 						{
@@ -128,18 +128,18 @@ public class ToolTip
 									|| item.getSelectionType() == ESelectionType.SELECTION)
 							{
 								sDetailText = sDetailText + "<b>RefSeq: </b>";
-								sDetailText = sDetailText + genomeIDManager.getIdStringFromIntByMapping(
-										item.getSelectionID(), EMappingType.DAVID_2_REFSEQ_MRNA);
+								sDetailText = sDetailText + genomeIDManager.getID(
+										EMappingType.DAVID_2_REFSEQ_MRNA, item.getSelectionID());
 								sDetailText = sDetailText + "\n";
 								
 								sDetailText = sDetailText + "<b>Gene symbol: </b>";
-								sDetailText = sDetailText + genomeIDManager.getIdStringFromIntByMapping(
-										item.getSelectionID(), EMappingType.DAVID_2_GENE_SYMBOL);
+								sDetailText = sDetailText + genomeIDManager.getID(
+										EMappingType.DAVID_2_GENE_SYMBOL, item.getSelectionID());
 								sDetailText = sDetailText + "\n";
 								
 								sDetailText = sDetailText + "<b>Gene name: </b>";
-								sDetailText = sDetailText + genomeIDManager.getIdStringFromIntByMapping(
-										item.getSelectionID(), EMappingType.DAVID_2_GENE_NAME);
+								sDetailText = sDetailText + genomeIDManager.getID(
+										EMappingType.DAVID_2_GENE_NAME, item.getSelectionID());
 								sDetailText = sDetailText + "\n";
 								
 								if (iterSelectionItems.hasNext())

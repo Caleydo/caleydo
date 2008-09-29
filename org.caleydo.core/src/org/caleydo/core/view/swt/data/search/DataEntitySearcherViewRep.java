@@ -79,8 +79,8 @@ implements IMediatorSender{;
 	
 	private boolean searchForRefSeq(final String sEntity) {
 		
-		int iDavidID = generalManager.getGenomeIdManager().getIdIntFromStringByMapping(sEntity, 
-			EMappingType.REFSEQ_MRNA_2_DAVID);
+		int iDavidID = generalManager.getGenomeIdManager().getID(
+				EMappingType.REFSEQ_MRNA_2_DAVID, sEntity);
 		
 		if (iDavidID == -1)
 			return false;
@@ -100,8 +100,8 @@ implements IMediatorSender{;
 		if (iNCBIGeneID == -1)
 			return false;
 		
-		int iDavidID = generalManager.getGenomeIdManager().getIdIntFromIntByMapping(
-				iNCBIGeneID, EMappingType.ENTREZ_GENE_ID_2_DAVID);
+		int iDavidID = generalManager.getGenomeIdManager().getID(
+				EMappingType.ENTREZ_GENE_ID_2_DAVID, iNCBIGeneID);
 		
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.DAVID);
 		selectionDelta.addSelection(iDavidID, ESelectionType.SELECTION);
@@ -112,8 +112,8 @@ implements IMediatorSender{;
 	
 	private boolean searchForGeneShortName(final String sEntity) {
 		
-		int iDavidID = generalManager.getGenomeIdManager().getIdIntFromStringByMapping(sEntity, 
-				EMappingType.GENE_SYMBOL_2_DAVID);
+		int iDavidID = generalManager.getGenomeIdManager().getID(
+				EMappingType.GENE_SYMBOL_2_DAVID, sEntity);
 		
 		if (iDavidID == -1)
 			return false;
