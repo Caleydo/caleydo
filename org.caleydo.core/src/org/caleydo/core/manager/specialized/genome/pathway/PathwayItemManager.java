@@ -67,10 +67,12 @@ public class PathwayItemManager
 	public IGraphItem createVertexGene(final String sName, final String sType,
 			final String sExternalLink, final String sReactionId, final int iDavidId)
 	{
-
+		// Do not create a new vertex if it is already registered
+		if (hashDavidIdToPathwayVertexGraphItemId.containsKey(iDavidId))
+			return hashItems.get(hashDavidIdToPathwayVertexGraphItemId.get(iDavidId));
+		
 		IGraphItem tmpGraphItem = createVertex(sName, sType, sExternalLink, sReactionId);
-
-		// Extract David gene ID and add element
+		
 		hashDavidIdToPathwayVertexGraphItemId.put(iDavidId, tmpGraphItem.getId());
 		hashPathwayVertexGraphItemIdToDavidId.put(tmpGraphItem.getId(), iDavidId);
 
