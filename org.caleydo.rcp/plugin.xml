@@ -92,12 +92,11 @@
          </property>
          <property
                name="windowImages"
-               value="/org.caleydo.data/resources/icons/caleydo/caleydo16.gif,/org.caleydo.data/resources/icons/caleydo/caleydo32.gif,/org.caleydo.data/resources/icons/caleydo/caleydo48.gif,/org.caleydo.data/resources/icons/caleydo/caleydo64.gif,/org.caleydo.data/resources/icons/caleydo/caleydo128.gif">
+               value="icons/caleydo16.gif">
          </property>
-         
-                  <property
-                                    name="preferenceCustomization"
-                                    value="plugin_customization.ini"/>
+          <property
+               name="preferenceCustomization"
+               value="plugin_customization.ini"/>
          <property
                name="preferenceCustomization"
                value="plugin_customization.ini">
