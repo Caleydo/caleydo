@@ -19,9 +19,8 @@ import org.caleydo.core.parser.ascii.AbstractLoader;
  * @author Michael Kalkusch
  * @author Marc Streit
  */
-public class ALookupTableLoader
+public class LookupTableLoader
 	extends AbstractLoader
-	implements ILookupTableLoader
 {
 	protected EMappingType mappingType;
 
@@ -38,7 +37,7 @@ public class ALookupTableLoader
 	/**
 	 * Constructor.
 	 */
-	public ALookupTableLoader(final String sFileName, final EMappingType mappingType,
+	public LookupTableLoader(final String sFileName, final EMappingType mappingType,
 			EMappingDataType dataType)
 	{
 		super(sFileName);

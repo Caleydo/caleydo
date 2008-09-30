@@ -267,7 +267,11 @@ public abstract class AStorageBasedView
 	@Deprecated
 	protected int getDavidIDFromStorageIndex(int index)
 	{
-		int iDavidId = genomeIDManager.getID(EMappingType.EXPRESSION_INDEX_2_DAVID, index);
+		Integer iDavidId = genomeIDManager.getID(EMappingType.EXPRESSION_INDEX_2_DAVID, index);
+		
+		if (iDavidId == null)
+			return -1;
+		
 		return iDavidId;
 	}
 
@@ -276,7 +280,11 @@ public abstract class AStorageBasedView
 	{
 
 		// Convert expression storage ID to RefSeq
-		int iDavidId = getDavidIDFromStorageIndex(index);
+		Integer iDavidId = getDavidIDFromStorageIndex(index);
+		
+		if (iDavidId == null)
+			return "Unknown Gene";
+		
 		String sRefSeq = genomeIDManager.getID(EMappingType.DAVID_2_REFSEQ_MRNA, iDavidId);
 		if (sRefSeq == "")
 			return "Unkonwn Gene";
@@ -287,9 +295,12 @@ public abstract class AStorageBasedView
 	@Deprecated
 	protected String getShortNameFromDavid(int index)
 	{
-
 		// Convert expression storage ID to RefSeq
-		int iDavidID = getDavidIDFromStorageIndex(index);
+		Integer iDavidID = getDavidIDFromStorageIndex(index);
+		
+		if (iDavidID == null)
+			return "Unknown Gene";
+		
 		String sGeneSymbol = genomeIDManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
 		if (sGeneSymbol == "")
 			return "Unkonwn Gene";

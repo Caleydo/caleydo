@@ -7,7 +7,7 @@ import org.caleydo.core.data.mapping.EMappingDataType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.parser.ascii.lookuptable.ALookupTableLoader;
+import org.caleydo.core.parser.ascii.lookuptable.LookupTableLoader;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.util.system.StringConversionTool;
 
@@ -181,7 +181,7 @@ public class CmdLoadFileLookupTable
 	 */
 	public void doCommand()
 	{
-		ALookupTableLoader loader = null;
+		LookupTableLoader loader = null;
 
 		IIDMappingManager genomeIdManager = generalManager.getGenomeIdManager();
 
@@ -229,7 +229,7 @@ public class CmdLoadFileLookupTable
 			}
 		}
 		
-		loader = new ALookupTableLoader(sFileName, mappingType, dataType);
+		loader = new LookupTableLoader(sFileName, mappingType, dataType);
 
 		loader.setTokenSeperator(sLookupTableDelimiter);
 

@@ -11,6 +11,7 @@ import java.util.Set;
  * @author Marc Streit
  * @author Alexander Lex
  */
+@SuppressWarnings("serial")
 public class MultiHashMap<KeyType, ValueType>
 	extends HashMap<KeyType, Set<ValueType>>
 	implements Map<KeyType, Set<ValueType>>
