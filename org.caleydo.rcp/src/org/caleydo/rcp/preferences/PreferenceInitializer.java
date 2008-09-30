@@ -32,8 +32,9 @@ public class PreferenceInitializer
 		store.setDefault(COLOR_MARKER_POINT_COLOR + "2", "0,0,0");
 		store.setDefault(COLOR_MARKER_POINT_COLOR + "3", "255,0,0");
 		
-
-		
 		store.setDefault(NUMBER_OF_COLOR_MARKER_POINTS, 3);
+		
+		store.setDefault(PreferenceConstants.HM_NUM_RANDOM_SAMPLING_POINT, 200);
+		store.setDefault(PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT, 2000);
 	}
 }

@@ -1,6 +1,7 @@
 package org.caleydo.core.manager.mapping;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.logging.Level;
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.map.MultiHashMap;
@@ -20,7 +21,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 public class IDMappingManager
 	implements IIDMappingManager
 {
-	protected HashMap<EMappingType, HashMap<?, ?>> hashType2Mapping;
+	protected HashMap<EMappingType, Map<?, ?>> hashType2Mapping;
 
 	private IGeneralManager generalManager = GeneralManager.get();
 
@@ -30,7 +31,7 @@ public class IDMappingManager
 	 */
 	public IDMappingManager()
 	{
-		hashType2Mapping = new HashMap<EMappingType, HashMap<?, ?>>();
+		hashType2Mapping = new HashMap<EMappingType, Map<?, ?>>();
 	}
 
 	@Override

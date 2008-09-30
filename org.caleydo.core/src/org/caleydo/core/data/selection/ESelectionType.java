@@ -13,6 +13,7 @@ public enum ESelectionType
 	NORMAL(0),
 	SELECTION(1),
 	MOUSE_OVER(2),
+	ADD(99),
 	DESELECTED(-2),
 	REMOVE(-1);
 

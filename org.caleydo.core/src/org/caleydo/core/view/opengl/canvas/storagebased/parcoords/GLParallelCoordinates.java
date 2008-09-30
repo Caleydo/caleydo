@@ -175,6 +175,8 @@ public class GLParallelCoordinates
 
 		alIsAngleBlocking = new ArrayList<ArrayList<Integer>>();
 		alIsAngleBlocking.add(new ArrayList<Integer>());
+		// TODO use constant instead
+		iNumberOfRandomElements = generalManager.getPreferenceStore().getInt("pcNumRandomSamplinPoints");
 	}
 
 	@Override
@@ -288,7 +290,7 @@ public class GLParallelCoordinates
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		clipToFrustum(gl);
 
-		//gl.glTranslatef(fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
+		gl.glTranslatef(fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
 
 		if (bIsDraggingActive)
 			handleDragging(gl);
@@ -306,7 +308,7 @@ public class GLParallelCoordinates
 			handleAngularBrushing(gl);
 		}
 
-		//gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
+		gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
 
 		// if (detailLevel == EDetailLevel.HIGH)
 		// {
@@ -541,13 +543,15 @@ public class GLParallelCoordinates
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 		
 		
-		if (contentSelectionManager.getNumberOfElements() == 0)
+//		if (contentSelectionManager.getNumberOfElements() == 0)
+//		{
+//			gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
+//			renderSymbol(gl);
+//			gl.glTranslatef(+fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
+//		}
+//		else
 		{
-			renderSymbol(gl);
-		}
-		else
-		{
-			gl.glTranslatef(fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
+		
 			// if(bIsDraggingActive)
 			// handleDragging(gl);
 
@@ -570,7 +574,7 @@ public class GLParallelCoordinates
 			}
 
 			renderGates(gl);
-			gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
+			
 		}
 		
 		gl.glEndList();

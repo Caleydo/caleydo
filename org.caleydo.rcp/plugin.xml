@@ -270,16 +270,21 @@
    </extension>
    <extension
          point="org.eclipse.ui.preferencePages">
-      <page
-            class="org.caleydo.rcp.preferences.SamplePreferencePage"
-            id="org.caleydo.rcp.preferences.SamplePreferencePage"
-            name="Sample Preferences">
-      </page>
             <page
             class="org.caleydo.rcp.preferences.ColorMappingPreferencePage"
             id="org.caleydo.rcp.preferences.ColorMappingPreferencePage"
-            name="Color Mapping">
+            name="Color Mapping Preferences">
       </page>
+            <page
+                  class="org.caleydo.rcp.preferences.HeatMapPreferencePage"
+                  id="org.caleydo.rcp.HeatMapPreferences"
+                  name="Heat Map Preferences">
+            </page>
+            <page
+                  class="org.caleydo.rcp.preferences.ParCoordsPreferencePage"
+                  id="org.caleydo.rcp.page1"
+                  name="Parallel Coordinates Preferences">
+            </page>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">

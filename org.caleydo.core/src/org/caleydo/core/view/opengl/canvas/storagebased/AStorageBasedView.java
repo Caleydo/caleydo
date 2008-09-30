@@ -475,8 +475,9 @@ public abstract class AStorageBasedView
 	}
 
 	/**
+	 * Set the number of samples which are shown in the view. The distribution is purely random
 	 * 
-	 * @param iNumberOfRandomElements
+	 * @param iNumberOfRandomElements the number
 	 */
 	public final void setNumberOfSamplesToShow(int iNumberOfRandomElements)
 	{
@@ -492,5 +493,5 @@ public abstract class AStorageBasedView
 	}
 
 	public abstract void resetSelections();
-
+	
 }

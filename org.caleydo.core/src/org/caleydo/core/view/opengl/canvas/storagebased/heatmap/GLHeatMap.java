@@ -41,6 +41,7 @@ import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLIconTextureManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
+import org.eclipse.jface.preference.PreferenceStore;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -109,6 +110,8 @@ public class GLHeatMap
 				EColorMappingType.GENE_EXPRESSION);
 
 		colorMappingBar = new GLColorMappingBarMiniView(viewFrustum);
+		// TODO use constant instead
+		iNumberOfRandomElements = generalManager.getPreferenceStore().getInt("hmNumRandomSamplinPoints");
 	}
 
 	@Override
@@ -560,12 +563,16 @@ public class GLHeatMap
 				{
 					// Render heat map element name
 					String sContent = getRefSeqFromStorageIndex(iContentIndex);
+					if(sContent == null)
+						sContent = "Unknown";
 					renderCaption(gl, sContent, fXPosition + vecFieldWidthAndHeight.x() / 6
 							* 2.5f, fYPosition + 0.1f, fLineDegrees, fFontScaling);
 
 					if (bRenderShortName)
 					{
 						sContent = getShortNameFromDavid(iContentIndex);
+						if(sContent == null)
+							sContent = "Unknown";
 						renderCaption(gl, sContent, fXPosition + vecFieldWidthAndHeight.x()
 								/ 6 * 4.5f, fYPosition + 0.1f, fLineDegrees, fFontScaling);
 					}

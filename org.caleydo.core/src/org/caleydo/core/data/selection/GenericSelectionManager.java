@@ -478,6 +478,12 @@ public class GenericSelectionManager
 		return false;
 	}
 
+	/**
+	 * Check whether an element is in any selection
+	 * 
+	 * @param iElementID the element id 
+	 * @return true if the element exists in the selection manager, else false
+	 */
 	public boolean checkStatus(int iElementID)
 	{
 		for (ESelectionType type : alSelectionTypes)
@@ -592,7 +598,7 @@ public class GenericSelectionManager
 
 				if (!checkStatus(iInternalID))
 				{
-					if (item.getSelectionType() != ESelectionType.REMOVE)
+					if (item.getSelectionType() == ESelectionType.ADD)
 					{
 						initialAdd(iInternalID);
 

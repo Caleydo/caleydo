@@ -2,6 +2,7 @@ package org.caleydo.rcp;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -14,6 +15,7 @@ import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
 import org.caleydo.rcp.core.bridge.RCPBridge;
 import org.caleydo.rcp.preferences.PreferenceConstants;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
@@ -223,6 +225,7 @@ public class Application
 		}
 
 		initializeColorMapping();
+//		initializeViewSettings();
 
 		openViewsInRCP();
 
@@ -248,6 +251,7 @@ public class Application
 		// ourselves
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 		store.getInt("");
+		
 		store = GeneralManager.get().getPreferenceStore();
 		int iNumberOfMarkerPoints = store
 				.getInt(PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
@@ -300,6 +304,25 @@ public class Application
 		}
 
 	}
+	
+	           
+//	private static void initializeViewSettings()
+//	{
+//		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+//		int iNumberOfSamples = store.getInt(PreferenceConstants.HM_NUM_RANDOM_SAMPLING_POINT);
+//		Collection<AGLEventListener> eventListeners = GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners();
+//		for(AGLEventListener eventListener : eventListeners)
+//		{
+//			if(eventListener instanceof GLHeatMap)
+//			{
+//				GLHeatMap heatMap = (GLHeatMap)eventListener;
+////				if(!heatMap.isRenderedRemote())
+////				{
+//				heatMap.setNumberOfSamplesToShow(iNumberOfSamples);
+////				}
+//			}
+//		}
+//	}
 
 	private static void openViewsInRCP()
 	{

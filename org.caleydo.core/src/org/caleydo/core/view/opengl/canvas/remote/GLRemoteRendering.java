@@ -381,7 +381,7 @@ public class GLRemoteRendering
 				tmpGLEventListener.initRemote(gl, iUniqueID, underInteractionLayer,
 						pickingTriggerMouseAdapter, this);
 
-				tmpGLEventListener.broadcastElements(ESelectionType.NORMAL);
+				tmpGLEventListener.broadcastElements(ESelectionType.ADD);
 				tmpGLEventListener.setDetailLevel(EDetailLevel.MEDIUM);
 
 				generalManager.getGUIBridge().setActiveGLSubView(this, tmpGLEventListener);
@@ -395,7 +395,7 @@ public class GLRemoteRendering
 				tmpGLEventListener.initRemote(gl, iUniqueID, stackLayer,
 						pickingTriggerMouseAdapter, this);
 
-				tmpGLEventListener.broadcastElements(ESelectionType.NORMAL);
+				tmpGLEventListener.broadcastElements(ESelectionType.ADD);
 				tmpGLEventListener.setDetailLevel(EDetailLevel.LOW);
 			}
 			else if (poolLayer.containsElement(-1))
@@ -1036,7 +1036,7 @@ public class GLRemoteRendering
 		arSlerpActions.clear();
 
 		generalManager.getViewGLCanvasManager().getGLEventListener(iViewID).broadcastElements(
-				ESelectionType.NORMAL);
+				ESelectionType.ADD);
 
 		// Check if view is already loaded in the stack layer
 		if (stackLayer.containsElement(iViewID))
@@ -1957,7 +1957,7 @@ public class GLRemoteRendering
 					pathway.setDetailLevel(EDetailLevel.MEDIUM);
 
 					// Trigger initial gene propagation
-					pathway.broadcastElements(ESelectionType.NORMAL);
+					pathway.broadcastElements(ESelectionType.ADD);
 				}
 				else if (stackLayer.containsElement(-1))
 				{
@@ -1970,7 +1970,7 @@ public class GLRemoteRendering
 					pathway.setDetailLevel(EDetailLevel.LOW);
 
 					// Trigger initial gene propagation
-					pathway.broadcastElements(ESelectionType.NORMAL);
+					pathway.broadcastElements(ESelectionType.ADD);
 				}
 				else if (poolLayer.containsElement(-1))
 				{

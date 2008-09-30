@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
+import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.swt.layout.RowLayout;
@@ -16,14 +17,14 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * 
  * @author Alexander Lex
  */
-public class HeatMapPreferencePage
+public class ParCoordsPreferencePage
 	extends FieldEditorPreferencePage
 	implements IWorkbenchPreferencePage
 {
 
 	private IntegerFieldEditor numRandomSamplesFE;
 
-	public HeatMapPreferencePage()
+	public ParCoordsPreferencePage()
 	{
 		super(GRID);
 		// setPreferenceStore(Activator.getDefault().getPreferenceStore());
@@ -45,7 +46,7 @@ public class HeatMapPreferencePage
 		layout.wrap = true;
 		getFieldEditorParent().setLayout(layout);
 		numRandomSamplesFE = new IntegerFieldEditor(
-				PreferenceConstants.HM_NUM_RANDOM_SAMPLING_POINT, "Number of Random Samples:",
+				PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT, "Number of Random Samples:",
 				getFieldEditorParent());
 		numRandomSamplesFE.loadDefault();
 		addField(numRandomSamplesFE);
@@ -74,12 +75,12 @@ public class HeatMapPreferencePage
 				.getViewGLCanvasManager().getAllGLEventListeners();
 		for (AGLEventListener eventListener : eventListeners)
 		{
-			if (eventListener instanceof GLHeatMap)
+			if (eventListener instanceof GLParallelCoordinates)
 			{
-				GLHeatMap heatMap = (GLHeatMap) eventListener;
+				GLParallelCoordinates parCoords = (GLParallelCoordinates) eventListener;
 				// if(!heatMap.isRenderedRemote())
 				// {
-				heatMap.setNumberOfSamplesToShow(numRandomSamplesFE.getIntValue());
+				parCoords.setNumberOfSamplesToShow(numRandomSamplesFE.getIntValue());
 				// }
 			}
 		}

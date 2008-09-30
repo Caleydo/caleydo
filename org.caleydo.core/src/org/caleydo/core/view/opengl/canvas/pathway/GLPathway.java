@@ -697,7 +697,7 @@ public class GLPathway
 					generalManager.getLogger().log(Level.WARNING, "Invalid David Gene ID.");
 					continue;
 				}
-
+			
 				selectionDelta.addSelection(iDavidId, type);
 			}
 		}

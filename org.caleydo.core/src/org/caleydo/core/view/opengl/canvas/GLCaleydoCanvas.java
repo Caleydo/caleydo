@@ -34,6 +34,7 @@ public class GLCaleydoCanvas
 	public GLCaleydoCanvas(final GLCapabilities glCapabilities)
 	{
 		super(glCapabilities);
+		this.getContext().setSynchronized(true);
 
 		joglMouseListener = new PickingJoglMouseListener();
 
@@ -44,6 +45,7 @@ public class GLCaleydoCanvas
 		this.addMouseListener(joglMouseListener);
 		this.addMouseMotionListener(joglMouseListener);
 		this.addMouseWheelListener(joglMouseListener);
+
 	}
 
 	public void init(GLAutoDrawable drawable)
@@ -123,9 +125,9 @@ public class GLCaleydoCanvas
 	{
 		return iGLCanvasID;
 	}
-	
-	public void setNavigationModes(boolean bEnablePan, 
-			boolean bEnableRotate, boolean bEnableZoom)
+
+	public void setNavigationModes(boolean bEnablePan, boolean bEnableRotate,
+			boolean bEnableZoom)
 	{
 		joglMouseListener.setNavigationModes(bEnablePan, bEnableRotate, bEnableZoom);
 	}

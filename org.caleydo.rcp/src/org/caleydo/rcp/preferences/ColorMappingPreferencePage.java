@@ -177,7 +177,6 @@ public class ColorMappingPreferencePage
 				}
 			});
 
-		
 			markerPointSpinner.setMinimum(0);
 			markerPointSpinner.setMaximum(100);
 
@@ -239,7 +238,6 @@ public class ColorMappingPreferencePage
 
 	}
 
-
 	public boolean performOk()
 	{
 		boolean bReturn = super.performOk();
@@ -268,7 +266,8 @@ public class ColorMappingPreferencePage
 		alColorMarkerPointSpinners.get(iNumberOfColorPoints - 1).setEnabled(false);
 	}
 
-	// not to nice, since it would be good to get the values with updateColorMapping
+	// not to nice, since it would be good to get the values with
+	// updateColorMapping
 	// but that doesn't work since it's initialized to late
 	private void initialColorMappingPreview()
 	{
@@ -354,6 +353,6 @@ public class ColorMappingPreferencePage
 	public void init(IWorkbench workbench)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 }
