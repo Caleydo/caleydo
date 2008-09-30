@@ -79,10 +79,10 @@ public class SearchBar
 				}
 
 				searchBox.setItems(sArSearchItems);
-//				searchBox.removeFocusListener(this);
+				searchBox.removeFocusListener(this);
 			}
 		});
-
+		
 		searchBox.addSelectionListener(new SelectionAdapter()
 		{
 			public void widgetSelected(SelectionEvent e)
@@ -91,7 +91,7 @@ public class SearchBar
 				sSearchEntity = sSearchEntity.substring(0, sSearchEntity.indexOf(" ("));
 
 				GeneralManager.get().getViewGLCanvasManager().getDataEntitySearcher()
-						.searchForEntity(sSearchEntity);
+						.searchForEntity(sSearchEntity);	
 			}
 		});
 
@@ -109,7 +109,7 @@ public class SearchBar
 				geneSearchText.pack();
 			}
 		});
-
+		
 		geneSearchText.addKeyListener(new KeyAdapter()
 		{
 			public void keyPressed(KeyEvent event)

@@ -1,6 +1,7 @@
 package org.caleydo.core.manager;
 
-import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 import org.caleydo.core.data.mapping.EMappingDataType;
 import org.caleydo.core.data.mapping.EMappingType;
 
@@ -20,9 +21,11 @@ public interface IIDMappingManager
 
 	public <KeyType, ValueType> void createCodeResolvedMap(EMappingType mappingType, EMappingType destMappingType);
 	
-	public <KeyType, ValueType> HashMap<KeyType, ValueType> getMapping(EMappingType type);
+	public <KeyType, ValueType> Map<KeyType, ValueType> getMapping(EMappingType type);
 	
 	public boolean hasMapping(EMappingType type);
 	
 	public <KeyType, ValueType> ValueType getID(EMappingType type, KeyType key);
+	
+	public <KeyType, ValueType> Set<ValueType> getMultiID(EMappingType type, KeyType key);
 }

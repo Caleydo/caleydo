@@ -194,40 +194,44 @@ public class CmdLoadFileLookupTable
 
 		dataType = mappingType.getDataMapppingType();
 
-		// FIXME: find solution for lut resolve process
-		if (bResolveCodeMappingUsingCodeToId_LUT_BOTH)
-		{
-			if (dataType == EMappingDataType.INT2INT)
-			{
-				dataType = EMappingDataType.STRING2STRING;
-			}
-			else if (dataType == EMappingDataType.MULTI_INT2INT)
-			{
-				dataType = EMappingDataType.MULTI_STRING2STRING;
-			}
-		}
-		else if (bResolveCodeMappingUsingCodeToId_LUT_1)
-		{
-			if (dataType == EMappingDataType.INT2STRING)
-			{
-				dataType = EMappingDataType.STRING2STRING;
-			}
-			else if (dataType == EMappingDataType.INT2INT)
-			{
-				dataType = EMappingDataType.STRING2INT;
-			}
-		}
-		else if (bResolveCodeMappingUsingCodeToId_LUT_2)
-		{
-			if (dataType == EMappingDataType.STRING2INT)
-			{
-				dataType = EMappingDataType.STRING2STRING;
-			}
-			else if (dataType == EMappingDataType.INT2INT)
-			{
-				dataType = EMappingDataType.INT2STRING;
-			}
-		}
+//		// FIXME: find solution for lut resolve process
+//		if (bResolveCodeMappingUsingCodeToId_LUT_BOTH)
+//		{
+//			if (dataType == EMappingDataType.INT2INT)
+//			{
+//				dataType = EMappingDataType.STRING2STRING;
+//			}
+//			else if (dataType == EMappingDataType.MULTI_INT2INT)
+//			{
+//				dataType = EMappingDataType.MULTI_STRING2STRING;
+//			}
+//		}
+//		else if (bResolveCodeMappingUsingCodeToId_LUT_1)
+//		{
+//			if (dataType == EMappingDataType.INT2STRING)
+//			{
+//				dataType = EMappingDataType.STRING2STRING;
+//			}
+//			else if (dataType == EMappingDataType.INT2INT)
+//			{
+//				dataType = EMappingDataType.STRING2INT;
+//			}
+//		}
+//		else if (bResolveCodeMappingUsingCodeToId_LUT_2)
+//		{
+//			if (dataType == EMappingDataType.STRING2INT)
+//			{
+//				dataType = EMappingDataType.STRING2STRING;
+//			}
+//			else if (dataType == EMappingDataType.INT2INT)
+//			{
+//				dataType = EMappingDataType.INT2STRING;
+//			}
+//			else if (dataType == EMappingDataType.MULTI_STRING2STRING)
+//			{
+//				dataType = EMappingDataType
+//			}
+//		}
 		
 		loader = new LookupTableLoader(sFileName, mappingType, dataType);
 

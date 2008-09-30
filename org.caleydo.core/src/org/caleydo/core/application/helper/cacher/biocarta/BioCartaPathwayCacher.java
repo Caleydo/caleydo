@@ -6,8 +6,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import org.caleydo.core.application.helper.PathwayListGenerator;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
-import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.eclipse.swt.widgets.Display;
@@ -37,9 +35,7 @@ public class BioCartaPathwayCacher
 {
 
 	private static final int EXPECTED_DOWNLOADS = 656;
-
-	private IGeneralManager generalManager;
-
+	
 	/**
 	 * Needed for async access to set progress bar state
 	 */
@@ -57,7 +53,6 @@ public class BioCartaPathwayCacher
 	public BioCartaPathwayCacher(final Display display, final ProgressBar progressBar,
 			final CmdFetchPathwayData triggeringCommand)
 	{
-		this.generalManager = GeneralManager.get();
 		this.display = display;
 		this.progressBar = progressBar;
 		this.triggeringCommand = triggeringCommand;
@@ -141,8 +136,8 @@ public class BioCartaPathwayCacher
 						{
 							if (progressBar.isDisposed())
 								return;
-							progressBar
-									.setSelection((iDownloadCount * 100 / EXPECTED_DOWNLOADS));
+							
+							progressBar.setSelection((iDownloadCount * 100 / EXPECTED_DOWNLOADS));
 
 							// System.out.println("Download count: "
 							// +iDownloadCount);

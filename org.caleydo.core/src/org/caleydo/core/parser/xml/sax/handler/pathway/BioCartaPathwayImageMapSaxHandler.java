@@ -1,5 +1,6 @@
 package org.caleydo.core.parser.xml.sax.handler.pathway;
 
+import java.util.Set;
 import java.util.logging.Level;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.mapping.EMappingType;
@@ -154,6 +155,7 @@ public class BioCartaPathwayImageMapSaxHandler
 		sTitle = "";
 	}
 
+	@SuppressWarnings("unchecked")
 	private void handleAreaTag()
 	{
 
@@ -195,22 +197,29 @@ public class BioCartaPathwayImageMapSaxHandler
 		// Convert BioCarta ID to DAVID ID
 		IIDMappingManager genomeIdManager = generalManager.getGenomeIdManager();
 
-		Integer iDavidId = genomeIdManager.getID(EMappingType.BIOCARTA_GENE_ID_2_DAVID, sName);
-
-		if (iDavidId == null || iDavidId == -1 || iDavidId == 0)
-		{
-			// TODO: How to handle this case?
-			generalManager.getLogger().log(Level.FINE,
-					"Cannot map BioCarta ID " + sName + " to David ID");
-
+		Set<Integer> iSetDavidID = 
+			(Set<Integer>)genomeIdManager.<String, Integer>getMultiID(EMappingType.BIOCARTA_GENE_ID_2_DAVID, sName);
+		
+		if (iSetDavidID == null)
 			return;
+		
+		for (Integer iDavidId : iSetDavidID)
+		{
+			if (iDavidId == null || iDavidId == -1 || iDavidId == 0)
+			{
+				// TODO: How to handle this case?
+				generalManager.getLogger().log(Level.FINE,
+						"Cannot map BioCarta ID " + sName + " to David ID");
+	
+				return;
+			}
+	
+			IGraphItem vertex = pathwayItemManager.createVertexGene(sName,
+					"gene", BIOCARTA_EXTERNAL_URL_VERTEX + sExternalLink, "", iDavidId);
+	
+			generalManager.getPathwayItemManager().createVertexRep(currentPathway, vertex, sName,
+					sShape, sCoords);
 		}
-
-		IGraphItem vertex = pathwayItemManager.createVertexGene(sName,
-				"gene", BIOCARTA_EXTERNAL_URL_VERTEX + sExternalLink, "", iDavidId);
-
-		generalManager.getPathwayItemManager().createVertexRep(currentPathway, vertex, sName,
-				sShape, sCoords);
 	}
 
 	@Override

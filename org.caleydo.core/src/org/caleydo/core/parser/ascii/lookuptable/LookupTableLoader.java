@@ -182,10 +182,6 @@ public class LookupTableLoader
 				swtGuiManager.setProgressBarPercentage((int) (fProgressBarFactor * iLineInFile));
 			}
 		}
-
-		System.out.println("HUHU");
-		
-//		return iLineInFile - iStartParsingAtLine;
 	}
 	
 	@Override

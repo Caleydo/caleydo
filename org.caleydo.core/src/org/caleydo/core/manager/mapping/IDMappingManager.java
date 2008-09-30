@@ -2,6 +2,7 @@ package org.caleydo.core.manager.mapping;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.logging.Level;
 import org.caleydo.core.data.collection.EStorageType;
 import org.caleydo.core.data.map.MultiHashMap;
@@ -95,19 +96,17 @@ public class IDMappingManager
 	@SuppressWarnings("unchecked")
 	public <KeyType, ValueType> void createCodeResolvedMap(EMappingType mappingType, EMappingType destMappingType)
 	{
-		HashMap codeResolvedMap = null;
+		Map codeResolvedMap = null;
 		
 		EIDType originKeyType = mappingType.getTypeOrigin();
 		EIDType originValueType = mappingType.getTypeTarget();
 		EIDType destKeyType = destMappingType.getTypeOrigin();
 		EIDType destValueType = destMappingType.getTypeTarget();
 		
-		HashMap<KeyType, ValueType> srcMap = (HashMap<KeyType, ValueType>)hashType2Mapping.get(mappingType);
+		Map<KeyType, ValueType> srcMap = (Map<KeyType, ValueType>)hashType2Mapping.get(mappingType);
 		
 		// Remove old unresolved map
 		hashType2Mapping.remove(mappingType);
-		
-		// TODO: implement for multi maps
 		
 		if (originKeyType == destKeyType)
 		{
@@ -137,15 +136,37 @@ public class IDMappingManager
 				else if (originKeyType.getStorageType() == EStorageType.STRING 
 						&& destValueType.getStorageType() == EStorageType.INT)
 				{
-					codeResolvedMap = new HashMap<String, Integer>();
-										
 					EMappingType conversionType = EMappingType.valueOf(originValueType
 							+ "_2_" + destValueType);
-
-					for (KeyType key : srcMap.keySet())
-					{						
-						codeResolvedMap.put(key, 
-								generalManager.getGenomeIdManager().getID(conversionType, srcMap.get(key)));
+					
+					if (!mappingType.isMultiMap())
+					{	
+						codeResolvedMap = new HashMap<String, Integer>();						
+		
+						for (KeyType key : srcMap.keySet())
+						{						
+							codeResolvedMap.put(key, 
+									generalManager.getGenomeIdManager().getID(conversionType, srcMap.get(key)));
+						}
+					}
+					else
+					{
+						codeResolvedMap = new MultiHashMap<String, Integer>();
+						MultiHashMap<String, String> srcMultiMap = (MultiHashMap<String, String>)srcMap;
+						Integer iID = 0;
+						
+						for (KeyType key : srcMap.keySet())
+						{					
+							for (String sID : srcMultiMap.getAll(key))
+							{
+								iID = generalManager.getGenomeIdManager().getID(conversionType, sID);
+								
+								if (iID == null)
+									continue;
+								
+								codeResolvedMap.put(key, iID);
+							}
+						}
 					}
 				}
 			}
@@ -198,9 +219,9 @@ public class IDMappingManager
 
 	@Override
 	@SuppressWarnings("unchecked")
-	public <KeyType, ValueType> HashMap<KeyType, ValueType> getMapping(EMappingType type)
+	public <KeyType, ValueType> Map<KeyType, ValueType> getMapping(EMappingType type)
 	{
-		return (HashMap<KeyType, ValueType>) hashType2Mapping.get(type);
+		return (Map<KeyType, ValueType>) hashType2Mapping.get(type);
 	}
 
 	@Override
@@ -213,7 +234,16 @@ public class IDMappingManager
 	@SuppressWarnings("unchecked")
 	public <KeyType, ValueType> ValueType getID(EMappingType type, KeyType key)
 	{
-		HashMap<KeyType, ValueType> tmpHashMap = (HashMap<KeyType, ValueType>) hashType2Mapping.get(type);
-		return tmpHashMap.get(key);
+		Map<KeyType, ValueType> tmpMap;		
+		tmpMap = (HashMap<KeyType, ValueType>) hashType2Mapping.get(type);
+		return tmpMap.get(key);
+	}
+	
+	@SuppressWarnings("unchecked")
+	public <KeyType, ValueType> Set<ValueType> getMultiID(EMappingType type, KeyType key)
+	{
+		MultiHashMap<KeyType, ValueType> tmpMap;
+		tmpMap = (MultiHashMap<KeyType, ValueType>) hashType2Mapping.get(type);
+		return tmpMap.getAll(key);
 	}
 }

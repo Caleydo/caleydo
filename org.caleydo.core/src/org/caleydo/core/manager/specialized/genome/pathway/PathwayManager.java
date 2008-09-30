@@ -1,6 +1,7 @@
 package org.caleydo.core.manager.specialized.genome.pathway;
 
 import java.io.Serializable;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -135,6 +136,14 @@ public class PathwayManager
 	}
 
 	@Override
+	public Collection<PathwayGraph> getAllItems()
+	{
+		waitUntilPathwayLoadingIsFinished();
+		
+		return super.getAllItems();
+	}
+	
+	@Override
 	public void setPathwayVisibilityStateByID(final int iPathwayID,
 			final boolean bVisibilityState)
 	{
@@ -185,7 +194,6 @@ public class PathwayManager
 		{
 			try
 			{
-				int i = 1;
 				Thread.sleep(1000);
 			}
 			catch (InterruptedException e)
@@ -194,17 +202,5 @@ public class PathwayManager
 						"Pathway loader thread has been interrupted!");
 			}
 		}
-		//		
-		// try
-		// {
-		// pathwayLoaderThread.join();
-		// }
-		// catch (InterruptedException e)
-		// {
-		// throw new
-		// CaleydoRuntimeException("Pathway loader thread has been interrupted!"
-		// ,
-		// CaleydoRuntimeExceptionType.DATAHANDLING);
-		// }
 	}
 }

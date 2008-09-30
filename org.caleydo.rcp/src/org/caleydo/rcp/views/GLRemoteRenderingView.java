@@ -58,8 +58,11 @@ public class GLRemoteRenderingView
 		cmd.setAttributes(iAlReceiverIDs);
 		cmd.doCommand();
 		
-		((GLRemoteRendering)GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iGLEventListenerID))
-			.setInitialContainedViews(iAlContainedViewIDs);
+		GLRemoteRendering glRemoteRenderedView = ((GLRemoteRendering)GeneralManager.get()
+				.getViewGLCanvasManager().getGLEventListener(iGLEventListenerID));
+		
+		glRemoteRenderedView.setInitialContainedViews(iAlContainedViewIDs);
+		glRemoteRenderedView.enableBusyMode(false);
 	}
 	
 	public static void createToolBarItems(int iViewID)
