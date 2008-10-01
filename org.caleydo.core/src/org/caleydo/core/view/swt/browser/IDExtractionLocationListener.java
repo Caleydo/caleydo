@@ -69,11 +69,11 @@ public class IDExtractionLocationListener
 		{
 			String sExtractedID = event.location.substring(sSearchPhrase_NCBIGeneId.length());
 
-			int iDavidId = generalManager.getGenomeIdManager().getID(
+			Integer iDavidId = generalManager.getGenomeIdManager().getID(
 					EMappingType.ENTREZ_GENE_ID_2_DAVID,
 					StringConversionTool.convertStringToInt(sExtractedID, -1));
 
-			if (iDavidId == -1)
+			if (iDavidId == null || iDavidId == -1)
 				return;
 
 			int iPathwayGraphItemId = generalManager.getPathwayItemManager()
@@ -125,7 +125,7 @@ public class IDExtractionLocationListener
 			// iArSelectionId = new int[0];
 			// iArSelectionDepth = new int[0];
 
-			iAlOptional.add(iPathwayId);
+			//iAlOptional.add(iPathwayId);
 		}
 		else
 		{

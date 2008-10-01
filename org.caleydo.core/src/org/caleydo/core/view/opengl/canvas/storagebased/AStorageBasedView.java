@@ -83,7 +83,7 @@ public abstract class AStorageBasedView
 	/**
 	 * flag whether the whole data or the selection should be rendered
 	 */
-	protected boolean bRenderOnlyContext = true;
+	protected boolean bRenderOnlyContext;
 
 	protected TextRenderer textRenderer;
 
@@ -125,6 +125,16 @@ public abstract class AStorageBasedView
 	 * 
 	 */
 	public abstract void renderContext(boolean bRenderContext);
+
+	/**
+	 * Check whether only context is beeing rendered
+	 * 
+	 * @return
+	 */
+	public boolean isRenderingOnlyContext()
+	{
+		return bRenderOnlyContext;
+	}
 
 	// /**
 	// * Set which level of data filtering should be applied.
@@ -268,10 +278,10 @@ public abstract class AStorageBasedView
 	protected int getDavidIDFromStorageIndex(int index)
 	{
 		Integer iDavidId = genomeIDManager.getID(EMappingType.EXPRESSION_INDEX_2_DAVID, index);
-		
+
 		if (iDavidId == null)
 			return -1;
-		
+
 		return iDavidId;
 	}
 
@@ -281,26 +291,26 @@ public abstract class AStorageBasedView
 
 		// Convert expression storage ID to RefSeq
 		Integer iDavidId = getDavidIDFromStorageIndex(index);
-		
+
 		if (iDavidId == null)
 			return "Unknown Gene";
-		
+
 		String sRefSeq = genomeIDManager.getID(EMappingType.DAVID_2_REFSEQ_MRNA, iDavidId);
 		if (sRefSeq == "")
 			return "Unkonwn Gene";
 		else
 			return sRefSeq;
 	}
-	
+
 	@Deprecated
 	protected String getShortNameFromDavid(int index)
 	{
 		// Convert expression storage ID to RefSeq
 		Integer iDavidID = getDavidIDFromStorageIndex(index);
-		
+
 		if (iDavidID == null)
 			return "Unknown Gene";
-		
+
 		String sGeneSymbol = genomeIDManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
 		if (sGeneSymbol == "")
 			return "Unkonwn Gene";
@@ -328,10 +338,19 @@ public abstract class AStorageBasedView
 
 		contentSelectionManager.clearSelections();
 		ISelectionDelta internalDelta = contentSelectionManager.setDelta(selectionDelta);
-		//handleConnectedElementRep(internalDelta);
+		initForAddedElements();
+		// handleConnectedElementRep(internalDelta);
 		handleConnectedElementRep(internalDelta);
 		checkUnselection();
 		setDisplayListDirty();
+	}
+
+	/**
+	 * This method is called when new elements are added from externally - if
+	 * you need to react to it do it here, if not don't do anything.
+	 */
+	protected void initForAddedElements()
+	{
 	}
 
 	/**
@@ -351,22 +370,22 @@ public abstract class AStorageBasedView
 
 	public void resetView()
 	{
-//		contentSelectionManager.resetSelectionManager();
-//		storageSelectionManager.resetSelectionManager();
-//		if (bRenderOnlyContext == true)
-//			set.getVA(iContentVAID).clear();
-//		else
-//			initCompleteList();
-//		
-//		set.getVA(iStorageVAID).reset();
-//		
-//
-//		contentSelectionManager.setVA(set.getVA(iContentVAID));
-//		storageSelectionManager.setVA(set.getVA(iStorageVAID));
-		
+		// contentSelectionManager.resetSelectionManager();
+		// storageSelectionManager.resetSelectionManager();
+		// if (bRenderOnlyContext == true)
+		// set.getVA(iContentVAID).clear();
+		// else
+		// initCompleteList();
+		//		
+		// set.getVA(iStorageVAID).reset();
+		//		
+		//
+		// contentSelectionManager.setVA(set.getVA(iContentVAID));
+		// storageSelectionManager.setVA(set.getVA(iStorageVAID));
+
 		initData();
-		
-		//resetSelections();
+
+		// resetSelections();
 		setDisplayListDirty();
 	}
 
@@ -475,7 +494,8 @@ public abstract class AStorageBasedView
 	}
 
 	/**
-	 * Set the number of samples which are shown in the view. The distribution is purely random
+	 * Set the number of samples which are shown in the view. The distribution
+	 * is purely random
 	 * 
 	 * @param iNumberOfRandomElements the number
 	 */
@@ -493,5 +513,5 @@ public abstract class AStorageBasedView
 	}
 
 	public abstract void resetSelections();
-	
+
 }

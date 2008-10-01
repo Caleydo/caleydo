@@ -197,7 +197,7 @@ public class GenericSelectionManager
 			alSelectionTypes = new ArrayList<ESelectionType>();
 			for (ESelectionType selectionType : ESelectionType.values())
 			{
-				// if (selectionType != ESelectionType.REMOVE)
+				if (selectionType != ESelectionType.ADD)
 				alSelectionTypes.add(selectionType);
 			}
 		}
@@ -344,6 +344,9 @@ public class GenericSelectionManager
 		if (targetType != ESelectionType.REMOVE
 				&& hashSelectionTypes.get(targetType).containsKey(iElementID))
 			return;
+		
+		if(targetType == ESelectionType.ADD)
+			throw new IllegalArgumentException("ADD may not be stored in the selection manager");
 
 		for (ESelectionType currentType : alSelectionTypes)
 		{

@@ -35,6 +35,8 @@ public class PreferenceInitializer
 		store.setDefault(NUMBER_OF_COLOR_MARKER_POINTS, 3);
 		
 		store.setDefault(PreferenceConstants.HM_NUM_RANDOM_SAMPLING_POINT, 200);
+		store.setDefault(PreferenceConstants.HM_LIMIT_REMOTE_TO_CONTEXT, true);
 		store.setDefault(PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT, 2000);
+		store.setDefault(PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT, true);
 	}
 }

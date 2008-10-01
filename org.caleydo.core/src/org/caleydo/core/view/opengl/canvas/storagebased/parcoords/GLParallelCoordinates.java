@@ -166,8 +166,8 @@ public class GLParallelCoordinates
 		// TODO this is only valid for genes
 		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX)
 				.mappingType(EMappingType.EXPRESSION_INDEX_2_DAVID,
-						EMappingType.DAVID_2_EXPRESSION_INDEX).externalIDType(
-						EIDType.DAVID).build();
+						EMappingType.DAVID_2_EXPRESSION_INDEX).externalIDType(EIDType.DAVID)
+				.build();
 
 		// TODO no mapping
 		storageSelectionManager = new GenericSelectionManager.Builder(
@@ -176,7 +176,8 @@ public class GLParallelCoordinates
 		alIsAngleBlocking = new ArrayList<ArrayList<Integer>>();
 		alIsAngleBlocking.add(new ArrayList<Integer>());
 		// TODO use constant instead
-		iNumberOfRandomElements = generalManager.getPreferenceStore().getInt("pcNumRandomSamplinPoints");
+		iNumberOfRandomElements = generalManager.getPreferenceStore().getInt(
+				"pcNumRandomSamplinPoints");
 	}
 
 	@Override
@@ -197,6 +198,7 @@ public class GLParallelCoordinates
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas)
 	{
+		bRenderOnlyContext = true;
 		dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
 		// dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
 
@@ -430,7 +432,7 @@ public class GLParallelCoordinates
 
 	public void saveSelection()
 	{
-		contentSelectionManager.moveType(ESelectionType.DESELECTED, ESelectionType.REMOVE);
+		polylineSelectionManager.moveType(ESelectionType.DESELECTED, ESelectionType.REMOVE);
 		resetSelections();
 		setDisplayListDirty();
 	}
@@ -481,7 +483,7 @@ public class GLParallelCoordinates
 		// // this for loop executes one per axis
 		// for (int iAxisCount = 0; iAxisCount < iNumberOfAxis; iAxisCount++)
 		// {
-		//axisSelectionManager.initialAdd(set.getVA(iAxisVAID).get(iAxisCount));
+		// axisSelectionManager.initialAdd(set.getVA(iAxisVAID).get(iAxisCount));
 		// }
 
 		initGates();
@@ -529,6 +531,13 @@ public class GLParallelCoordinates
 		}
 	}
 
+	@Override
+	protected void initForAddedElements()
+	{
+		if (bRenderStorageHorizontally)
+			initGates();
+	}
+
 	/**
 	 * Build polyline display list. Renders coordinate system, polylines and
 	 * gates, by calling the render methods
@@ -541,17 +550,16 @@ public class GLParallelCoordinates
 		fAxisSpacing = renderStyle.getAxisSpacing(set.sizeVA(iAxisVAID));
 
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-		
-		
-//		if (contentSelectionManager.getNumberOfElements() == 0)
-//		{
-//			gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
-//			renderSymbol(gl);
-//			gl.glTranslatef(+fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
-//		}
-//		else
+
+		if (contentSelectionManager.getNumberOfElements() == 0)
 		{
-		
+			gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
+			renderSymbol(gl);
+			gl.glTranslatef(+fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
+		}
+		else
+		{
+
 			// if(bIsDraggingActive)
 			// handleDragging(gl);
 
@@ -574,9 +582,9 @@ public class GLParallelCoordinates
 			}
 
 			renderGates(gl);
-			
+
 		}
-		
+
 		gl.glEndList();
 	}
 
@@ -664,7 +672,8 @@ public class GLParallelCoordinates
 			if (bRenderStorageHorizontally)
 			{
 				int iWhichStorage = iPolyLineID;
-				currentStorage = set.getStorageFromVA(iStorageVAID, iWhichStorage);
+				//currentStorage = set.getStorageFromVA(iStorageVAID, iWhichStorage);
+				currentStorage = set.get(iWhichStorage);//, iIndex)iStorageVAID, iWhichStorage);
 			}
 
 			float fPreviousXValue = 0;
@@ -789,7 +798,8 @@ public class GLParallelCoordinates
 			gl.glVertex3f(fXPosition + AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(), AXIS_Z);
 
 			gl.glEnd();
-			if (detailLevel != EDetailLevel.HIGH)
+			if (detailLevel != EDetailLevel.HIGH
+					|| !renderStyle.isEnoughSpaceForText(iNumberAxis))
 			{
 				// pop the picking id here when we don't want to include the
 				// axis label
@@ -1634,8 +1644,9 @@ public class GLParallelCoordinates
 	@Override
 	public String getShortInfo()
 	{
-		return "Parallel Coordinates (" + set.getVA(iPolylineVAID).size() + " genes / "
-				+ set.getVA(iAxisVAID).size() + " experiments)";
+
+		return "Parallel Coordinates (" + set.getVA(iContentVAID).size() + " genes / "
+				+ set.getVA(iStorageVAID).size() + " experiments)";
 	}
 
 	@Override

@@ -4,8 +4,8 @@ import java.util.Collection;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.swt.layout.RowLayout;
@@ -23,13 +23,14 @@ public class ParCoordsPreferencePage
 {
 
 	private IntegerFieldEditor numRandomSamplesFE;
+	private BooleanFieldEditor limitRemoteToContext;
 
 	public ParCoordsPreferencePage()
 	{
 		super(GRID);
 		// setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setPreferenceStore(GeneralManager.get().getPreferenceStore());
-		setDescription("Preferences for the Heat Map view.");
+		setDescription("Preferences for the Parallel Coordinates view view.");
 	}
 
 	/**
@@ -50,6 +51,14 @@ public class ParCoordsPreferencePage
 				getFieldEditorParent());
 		numRandomSamplesFE.loadDefault();
 		addField(numRandomSamplesFE);
+
+		limitRemoteToContext = new BooleanFieldEditor(
+				PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT,
+				"Limit remote views to show contextual information only",
+				getFieldEditorParent());
+		limitRemoteToContext.loadDefault();
+		addField(limitRemoteToContext);
+		
 		getFieldEditorParent().pack();
 	}
 

@@ -5,6 +5,7 @@ import java.util.Collection;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.IntegerFieldEditor;
 import org.eclipse.swt.layout.RowLayout;
@@ -22,6 +23,7 @@ public class HeatMapPreferencePage
 {
 
 	private IntegerFieldEditor numRandomSamplesFE;
+	private BooleanFieldEditor limitRemoteToContext;
 
 	public HeatMapPreferencePage()
 	{
@@ -49,6 +51,14 @@ public class HeatMapPreferencePage
 				getFieldEditorParent());
 		numRandomSamplesFE.loadDefault();
 		addField(numRandomSamplesFE);
+		
+		limitRemoteToContext = new BooleanFieldEditor(
+				PreferenceConstants.HM_LIMIT_REMOTE_TO_CONTEXT,
+				"Limit remote views to show contextual information only",
+				getFieldEditorParent());
+		limitRemoteToContext.loadDefault();
+		addField(limitRemoteToContext);
+		
 		getFieldEditorParent().pack();
 	}
 

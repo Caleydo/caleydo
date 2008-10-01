@@ -24,27 +24,16 @@ public class ParCoordsRenderStyle
 
 	public static final float DESELECTED_POLYLINE_LINE_WIDTH = 1.0f;
 
-	public static final float[] Y_AXIS_COLOR = { 0.0f, 0.0f, 0.0f, 1.0f };
+	public static final float[] Y_AXIS_COLOR = { 0.0f, 0.0f, 1.0f, 1.0f };
 
 	public static final float Y_AXIS_LINE_WIDTH = 1.0f;
 
-	public static final float[] Y_AXIS_SELECTED_COLOR = SELECTED_COLOR;// {1.0f,
-	// 0.0f,
-	// 0.0f,
-	// 1.0f
-	// };
+	public static final float[] Y_AXIS_SELECTED_COLOR = SELECTED_COLOR;
 
 	public static final float Y_AXIS_SELECTED_LINE_WIDTH = 4.0f;
 
-	public static final float[] Y_AXIS_MOUSE_OVER_COLOR = SELECTED_COLOR;//{0.0f
-	// ,
-	// 1.0f
-	// ,
-	// 0.0f
-	// ,
-	// 1.0f
-	// }
-	// ;
+	public static final float[] Y_AXIS_MOUSE_OVER_COLOR = SELECTED_COLOR;
+
 
 	public static final float Y_AXIS_MOUSE_OVER_LINE_WIDTH = 4.0f;
 
@@ -102,6 +91,8 @@ public class ParCoordsRenderStyle
 	private static final float AXIS_BUTTONS_Y_OFFSET = 0.04f;
 
 	private static final float fAxisSpacingLowerLimit = 0.001f;
+
+	private static final float fMinAxisSpacingForText = 0.2f;
 
 	/**
 	 * Constructor.
@@ -190,6 +181,14 @@ public class ParCoordsRenderStyle
 	{
 
 		return COORDINATE_TOP_SPACING / 3 * getScaling();
+	}
+	
+	public boolean isEnoughSpaceForText(int iNumberOfAxis)
+	{
+		float fScaling = getScaling();
+		if(getAxisSpacing(iNumberOfAxis) > fMinAxisSpacingForText)
+			return true;
+		return false;
 	}
 	// GATE_WIDTH = 0.015f;
 	// private static final float GATE_NEGATIVE_Y_OFFSET = -0.04f;
