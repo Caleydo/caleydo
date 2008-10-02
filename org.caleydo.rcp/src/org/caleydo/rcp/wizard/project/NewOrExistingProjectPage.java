@@ -6,6 +6,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
@@ -48,16 +49,16 @@ public class NewOrExistingProjectPage
 	public void createControl(Composite parent)
 	{
 		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new FillLayout(SWT.VERTICAL));
+		composite.setLayout(new RowLayout(SWT.VERTICAL));
 
-		Button buttonNewProject = new Button(composite, SWT.NONE);
+		Button buttonNewProject = new Button(composite, SWT.RADIO);
 		buttonNewProject.setText("Create new project");
 
-		Button buttonExistingProject = new Button(composite, SWT.NONE);
+		Button buttonExistingProject = new Button(composite, SWT.RADIO);
 		buttonExistingProject.setText("Open existing project");
 		buttonExistingProject.setEnabled(false);
 		
-		Button buttonPathwayViewerMode = new Button(composite, SWT.NONE);
+		Button buttonPathwayViewerMode = new Button(composite, SWT.RADIO);
 		buttonPathwayViewerMode.setText("Pathway viewer mode");
 
 		buttonNewProject.addSelectionListener(new SelectionAdapter()
@@ -88,6 +89,7 @@ public class NewOrExistingProjectPage
 		});
 		
 		setControl(composite);
+		composite.pack();
 	}
 
 	public EProjectType getProjectType()

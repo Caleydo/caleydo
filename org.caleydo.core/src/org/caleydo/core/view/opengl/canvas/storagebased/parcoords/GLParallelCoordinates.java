@@ -41,6 +41,7 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.SelectionItem;
 import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.data.view.rep.renderstyle.ParCoordsRenderStyle;
 import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
@@ -424,8 +425,11 @@ public class GLParallelCoordinates
 	public void broadcastElements()
 	{
 		saveSelection();
-		// TODO getCompleteDelta
 		ISelectionDelta delta = contentSelectionManager.getCompleteDelta();
+		for(SelectionItem selection : delta)
+		{
+			selection.setSelectionType(ESelectionType.ADD);
+		}
 		triggerUpdate(delta);
 		setDisplayListDirty();
 	}

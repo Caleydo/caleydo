@@ -542,7 +542,7 @@ public class GenericSelectionManager
 	{
 		SelectionDelta tempDelta = new SelectionDelta(externalIDType, internalIDType);
 		HashMap<Integer, Boolean> tempHash;
-		for (ESelectionType selectionType : ESelectionType.values())
+		for (ESelectionType selectionType : alSelectionTypes)
 		{
 			tempHash = hashSelectionTypes.get(selectionType);
 			for (Integer iElement : tempHash.keySet())

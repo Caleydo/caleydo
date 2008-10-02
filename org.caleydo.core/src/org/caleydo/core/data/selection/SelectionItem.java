@@ -70,5 +70,14 @@ public class SelectionItem
 	{
 		return iInternalID;
 	}
+	
+	/**
+	 * Set the selection type
+	 * @param selectionType the selection type
+	 */
+	public void setSelectionType(ESelectionType selectionType)
+	{
+		this.selectionType = selectionType;
+	}
 
 }
