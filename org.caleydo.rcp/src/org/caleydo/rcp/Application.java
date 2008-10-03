@@ -123,10 +123,10 @@ public class Application
 			firstStartWizard.open();
 		}
 
-		if (bIsWebstart && !bDoExit)
-		{
-			startCaleydoCore();
-		}
+//		if (bIsWebstart && !bDoExit)
+//		{
+//			startCaleydoCore();
+//		}
 
 		try
 		{
@@ -250,18 +250,8 @@ public class Application
 		openViewsInRCP();
 
 		// Register the info area to all mediator from type SELECTION
-		// GeneralManager.get().getEventPublisher().
-		// registerReceiverToMediatorGroup(
-		// EMediatorType.SELECTION_MEDIATOR, this);
-
-		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-
-		// Register the info area to all mediator from type SELECTION
 		GeneralManager.get().getEventPublisher().registerReceiverToMediatorGroup(
 				EMediatorType.SELECTION_MEDIATOR, InfoArea.getInfoArea());
-
-		// Start OpenGL rendering
-		GeneralManager.get().getViewGLCanvasManager().startAnimator();
 	}
 
 	public static void initializeColorMapping()

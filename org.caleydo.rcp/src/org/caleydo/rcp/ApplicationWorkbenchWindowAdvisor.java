@@ -47,5 +47,11 @@ public class ApplicationWorkbenchWindowAdvisor
 		GeneralManager.get().getSWTGUIManager().setExternalRCPStatusLine(
 				getWindowConfigurer().getActionBarConfigurer().getStatusLineManager(), 
 				getWindowConfigurer().getWindow().getShell().getDisplay());
+
+		
+		if (Application.bIsWebstart && !Application.bDoExit)
+		{
+			Application.startCaleydoCore();
+		}
 	}
 }

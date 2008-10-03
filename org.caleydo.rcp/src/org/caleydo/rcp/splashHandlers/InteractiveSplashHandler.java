@@ -97,7 +97,10 @@ public class InteractiveSplashHandler
 	{		
 		if (!Application.bIsWebstart && !Application.bDoExit)
 		{
-			Application.startCaleydoCore();			
+			Application.startCaleydoCore();	
+			
+			// Start OpenGL rendering
+			GeneralManager.get().getViewGLCanvasManager().startAnimator();
 		}
 //		super.dispose();
 	}

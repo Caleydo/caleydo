@@ -104,8 +104,12 @@ public class LookupTableLoader
 							// Special case for creating indexing of storages
 							if (mappingType.equals(EMappingType.REFSEQ_MRNA_2_EXPRESSION_INDEX))
 							{
-								genomeIdManager.getMapping(mappingType).put(Integer.valueOf(buffer), iLineInFile
+								// FIXME: Check for empty refseq mapping lines in data file using delimiter in tokenizer
+								// Workaround: Ignore integer values - that is the case if no refseq is available in this line
+								genomeIdManager.getMapping(mappingType).put(buffer, iLineInFile
 										- iStartParsingAtLine);
+								
+								break;
 							}
 							else
 							{

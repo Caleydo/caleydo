@@ -157,27 +157,9 @@ public class KeggPathwayCacher
 		// start the dispatcher
 		dispatcher.processJobs();
 
-		triggerPathwayListGeneration();
-
 		if (triggeringCommand != null)
 			triggeringCommand.setFinishedKeggCacher();
 	}
 
-	private void triggerPathwayListGeneration()
-	{
-		// Trigger pathway list generation
-		PathwayListGenerator pathwayListLoader = new PathwayListGenerator();
 
-		try
-		{
-			pathwayListLoader.run(PathwayListGenerator.INPUT_FOLDER_PATH_KEGG,
-					PathwayListGenerator.INPUT_IMAGE_PATH_KEGG,
-					PathwayListGenerator.OUTPUT_FILE_NAME_KEGG);
-		}
-		catch (FileNotFoundException fnfe)
-		{
-			throw new CaleydoRuntimeException("Cannot generate pathway list.",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
-		}
-	}
 }

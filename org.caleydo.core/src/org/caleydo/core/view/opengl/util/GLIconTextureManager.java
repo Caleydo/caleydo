@@ -36,7 +36,7 @@ public class GLIconTextureManager
 				Texture tmpTexture;
 				String sFileName = eIconTextures.getFileName();
 
-				if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null)
+				if (this.getClass().getClassLoader().getResource(sFileName) != null)
 				{
 					tmpTexture = TextureIO.newTexture(TextureIO.newTextureData(this.getClass()
 							.getClassLoader().getResourceAsStream(sFileName), true, "PNG"));

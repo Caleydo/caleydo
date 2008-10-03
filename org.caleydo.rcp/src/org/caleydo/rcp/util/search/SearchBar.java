@@ -12,9 +12,7 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -45,22 +43,22 @@ public class SearchBar
 	{
 
 		Composite composite = new Composite(parent, SWT.NONE);
-		RowLayout rowLayout = new RowLayout();
-		rowLayout.fill = true;
-		// rowLayout.justify = true;
-		// rowLayout.pack = true;
-		rowLayout.type = SWT.VERTICAL;
-		// rowLayout.wrap = false;
-		composite.setLayout(rowLayout);
+//		composite.setLayout(new FillLayout());
+//		RowLayout rowLayout = new RowLayout();
+//		rowLayout.fill = true;
+////		// rowLayout.justify = true;
+//		rowLayout.pack = true;
+//		rowLayout.type = SWT.VERTICAL;
+////		// rowLayout.wrap = false;
+//		composite.setLayout(rowLayout);
 
-		Composite searchInputComposite = new Composite(composite, SWT.NONE);
-		searchInputComposite.setLayout(new GridLayout(4, false));
-		searchInputComposite.setSize(400, 20);
+		composite.setLayout(new GridLayout(4, false));
+		composite.setSize(400, 20);
 
-		Label searchInputLabel = new Label(searchInputComposite, SWT.NULL);
+		Label searchInputLabel = new Label(composite, SWT.NULL);
 		searchInputLabel.setText("Pathway search:");
 		searchInputLabel.pack();
-		searchBox = new SearchBox(searchInputComposite, SWT.NONE);
+		searchBox = new SearchBox(composite, SWT.NONE);
 
 		String items[] = { "No pathways available!                                                      " };
 		searchBox.setItems(items);
@@ -96,11 +94,11 @@ public class SearchBar
 		});
 
 		// Gene search
-		Label entitySearchLabel = new Label(searchInputComposite, SWT.NULL);
+		Label entitySearchLabel = new Label(composite, SWT.NULL);
 		entitySearchLabel.setText("Gene search:");
 
-		geneSearchText = new Text(searchInputComposite, SWT.BORDER | SWT.SINGLE);
-		geneSearchText.setLayoutData(new GridData(GridData.FILL_BOTH));
+		geneSearchText = new Text(composite, SWT.BORDER | SWT.SINGLE);
+//		geneSearchText.setLayoutData(new GridData(GridData.FILL_BOTH));
 		geneSearchText.addFocusListener(new FocusAdapter()
 		{
 			public void focusGained(FocusEvent e)

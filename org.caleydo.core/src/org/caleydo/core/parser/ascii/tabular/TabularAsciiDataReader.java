@@ -198,29 +198,9 @@ public class TabularAsciiDataReader
 					{
 						case INT:
 
-							// try
-							// {
 							alIntBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] = StringConversionTool
 									.convertStringToInt(strTokenLine.nextToken(), -1);
 							iColumnIndex++;
-							// }
-							// catch (NumberFormatException nfe)
-							// {
-							// MessageBox messageBox = new MessageBox(new
-							// Shell(), SWT.ABORT | SWT.IGNORE);
-							// messageBox.setText("Problem during parsing");
-							// messageBox.setMessage(
-							// "Cannot convert input in line " +iLineInFile);
-							// int state = messageBox.open();
-							// switch (state)
-							// {
-							// case SWT.ABORT:
-							// break;
-							// case SWT.IGNORE:
-							// valString = "SWT.IGNORE";
-							// break;
-							// }
-							// }
 
 							break;
 						case FLOAT:

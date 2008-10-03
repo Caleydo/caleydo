@@ -94,15 +94,10 @@ public class PathwayListGenerator
 					{
 						if (sLine.contains("http://cgap.nci.nih.gov/BIOCARTA/Pathways/"))
 						{
-							sImagePath = sLine
-									.substring(
-											sLine
-													.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/") + 42,
-											sLine
-													.indexOf(
-															".gif",
-															sLine
-																	.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/")) + 4);
+							sImagePath = sLine.substring(sLine
+											.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/") + 42,
+										sLine.indexOf(".gif", sLine
+											.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/")) + 4);
 
 							sImagePath = sInputImagePath + sImagePath;
 

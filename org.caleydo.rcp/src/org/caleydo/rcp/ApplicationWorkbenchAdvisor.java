@@ -54,8 +54,6 @@ public class ApplicationWorkbenchAdvisor
 //		preferenceManager.remove("org.eclipse.ui.preferencePages.Workbench");
 //		preferenceManager.remove("org.eclipse.update.internal.ui.preferences.MainPreferencePage");
 //		preferenceManager.remove("org.eclipse.help.ui.browsersPreferencePage");
-		
-//		openLoadedViews();
 	}
 
 	@Override

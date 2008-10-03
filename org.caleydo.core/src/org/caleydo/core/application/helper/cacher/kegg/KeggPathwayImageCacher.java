@@ -1,12 +1,16 @@
 package org.caleydo.core.application.helper.cacher.kegg;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
+import org.caleydo.core.application.helper.PathwayListGenerator;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
 import com.enterprisedt.net.ftp.FTPConnectMode;
@@ -23,6 +27,7 @@ public class KeggPathwayImageCacher
 	extends Thread
 {
 	private static final int EXPECTED_DOWNLOADS = 214;
+	private static final int MAX_FTP_CONNECTIONS = 10;
 
 	private IGeneralManager generalManager;
 
@@ -35,7 +40,7 @@ public class KeggPathwayImageCacher
 
 	private CmdFetchPathwayData triggeringCommand;
 
-	private int iConcurrentFtpConnections = 0;
+	private Integer iConcurrentFtpConnections = 0;
 
 	private int iDownloadCount = 0;
 
@@ -102,7 +107,7 @@ public class KeggPathwayImageCacher
 
 			for (int iFileCount = 0; iFileCount < iFilesToDownload; iFileCount++)
 			{
-				if (iConcurrentFtpConnections > 30)
+				if (iConcurrentFtpConnections > MAX_FTP_CONNECTIONS)
 				{
 					Thread.sleep(500);
 					iFileCount--;
@@ -120,6 +125,7 @@ public class KeggPathwayImageCacher
 
 					threadContainer.add(new KeggSinglePathwayImageCacherThread(this,
 							sTmpFileName, sDirName));
+					
 					iConcurrentFtpConnections++;
 
 					iDownloadCount++;
@@ -130,8 +136,8 @@ public class KeggPathwayImageCacher
 						{
 							if (progressBar.isDisposed())
 								return;
-							progressBar
-									.setSelection((iDownloadCount * 100 / EXPECTED_DOWNLOADS));
+							
+							progressBar.setSelection((iDownloadCount * 100 / EXPECTED_DOWNLOADS));
 						}
 					});
 				}
@@ -145,10 +151,30 @@ public class KeggPathwayImageCacher
 
 		if (triggeringCommand != null)
 			triggeringCommand.setFinishedKeggImageCacher();
+
+		triggerPathwayListGeneration();
 	}
 
 	public void threadFinishNotification()
 	{
 		iConcurrentFtpConnections--;
+	}
+	
+	private void triggerPathwayListGeneration()
+	{
+		// Trigger pathway list generation
+		PathwayListGenerator pathwayListLoader = new PathwayListGenerator();
+
+		try
+		{
+			pathwayListLoader.run(PathwayListGenerator.INPUT_FOLDER_PATH_KEGG,
+					PathwayListGenerator.INPUT_IMAGE_PATH_KEGG,
+					PathwayListGenerator.OUTPUT_FILE_NAME_KEGG);
+		}
+		catch (FileNotFoundException fnfe)
+		{
+			throw new CaleydoRuntimeException("Cannot generate pathway list.",
+					CaleydoRuntimeExceptionType.DATAHANDLING);
+		}
 	}
 }

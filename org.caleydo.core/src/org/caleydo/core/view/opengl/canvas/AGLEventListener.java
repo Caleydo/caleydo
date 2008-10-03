@@ -145,27 +145,30 @@ public abstract class AGLEventListener
 	@Override
 	public void display(GLAutoDrawable drawable)
 	{
-
-		((GLEventListener) parentGLCanvas).display(drawable);
-
-		/** Read viewing parameters... */
-		final Vec3f rot_Vec3f = new Vec3f();
-		final Vec3f position = viewCamera.getCameraPosition();
-		final float w = viewCamera.getCameraRotationGrad(rot_Vec3f);
-
-		GL gl = drawable.getGL();
-
-		/** Translation */
-		gl.glTranslatef(position.x(), position.y(), position.z());
-
-		/** Rotation */
-		gl.glRotatef(w, rot_Vec3f.x(), rot_Vec3f.y(), rot_Vec3f.z());
-
-		displayLocal(gl);
-
-		// generalManager.getViewGLCanvasManager().getInfoAreaManager().
-		// renderInfoOverlay(
-		// iUniqueID, drawable);
+//		synchronized (drawable)
+//		{			
+			((GLEventListener) parentGLCanvas).display(drawable);
+	
+			/** Read viewing parameters... */
+			final Vec3f rot_Vec3f = new Vec3f();
+			final Vec3f position = viewCamera.getCameraPosition();
+			final float w = viewCamera.getCameraRotationGrad(rot_Vec3f);
+	
+			GL gl = drawable.getGL();
+	
+			/** Translation */
+			gl.glTranslatef(position.x(), position.y(), position.z());
+	
+			/** Rotation */
+			gl.glRotatef(w, rot_Vec3f.x(), rot_Vec3f.y(), rot_Vec3f.z());
+	
+			displayLocal(gl);
+	
+			// generalManager.getViewGLCanvasManager().getInfoAreaManager().
+			// renderInfoOverlay(
+			// iUniqueID, drawable);
+		
+//		}
 	}
 
 	@Override
