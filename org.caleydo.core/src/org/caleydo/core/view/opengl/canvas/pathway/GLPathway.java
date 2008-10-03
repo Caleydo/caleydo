@@ -537,32 +537,8 @@ public class GLPathway
 				if (tmpVertexGraphItemRep == selectedVertex
 						&& !pickingMode.equals(EPickingMode.CLICKED))
 				{
-					pickingManager
-							.flushHits(iUniqueID, EPickingType.PATHWAY_ELEMENT_SELECTION);
-					pickingManager
-							.flushHits(iUniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION);
-
-					// TODO: rewrite!
-					// // Write info area content
-					// // TODO: now only the first parent graph item is read
-					// // actually the whole array (all genes) must me displayed
-					// in
-					// // the
-					// // info area
-					// PathwayVertexGraphItem tmp = (PathwayVertexGraphItem)
-					// tmpVertexGraphItemRep
-					//.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0)
-					// ;
-					//
-					// int iDavidId = generalManager.getPathwayItemManager()
-					// .getDavidIdByPathwayVertexGraphItemId(tmp.getId());
-					//
-					// if (iDavidId == -1 || iDavidId == 0)
-					// return;
-					//
-					//generalManager.getViewGLCanvasManager().getInfoAreaManager
-					// ().setData(
-					// iUniqueID, iDavidId, EIDType.DAVID, getInfo());
+					pickingManager.flushHits(iUniqueID, EPickingType.PATHWAY_ELEMENT_SELECTION);
+					pickingManager.flushHits(iUniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION);
 
 					return;
 				}
@@ -606,8 +582,8 @@ public class GLPathway
 								.log(Level.WARNING, "Invalid David Gene ID.");
 						pickingManager.flushHits(iUniqueID,
 								EPickingType.PATHWAY_ELEMENT_SELECTION);
-						pickingManager.flushHits(iUniqueID,
-								EPickingType.PATHWAY_TEXTURE_SELECTION);
+//						pickingManager.flushHits(iUniqueID,
+//								EPickingType.PATHWAY_TEXTURE_SELECTION);
 						// connectedElementRepManager.clear();
 
 						connectedElementRepresentationManager.clear();
@@ -656,7 +632,7 @@ public class GLPathway
 				triggerUpdate(createExternalSelectionDelta(selectionManager.getDelta()));
 
 				pickingManager.flushHits(iUniqueID, EPickingType.PATHWAY_ELEMENT_SELECTION);
-				pickingManager.flushHits(iUniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION);
+//				pickingManager.flushHits(iUniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION);
 				break;
 		}
 	}

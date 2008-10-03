@@ -328,6 +328,12 @@ public class KgmlSaxHandler
 			}
 		}
 
+		if (alCurrentVertex.isEmpty())
+		{
+			//TODO: investigate!
+			return;
+		}
+		
 		IGraphItem vertexRep = pathwayItemManager.createVertexRep(
 				currentPathway, alCurrentVertex, sName, sShapeType, shXPosition, shYPosition,
 				shWidth, shHeight);

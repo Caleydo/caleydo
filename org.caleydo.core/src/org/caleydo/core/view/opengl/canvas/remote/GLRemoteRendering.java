@@ -749,10 +749,10 @@ public class GLRemoteRendering
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(2.66f, 2.66f, 0.02f);
-		gl.glVertex3f(2.66f, 5.33f, 0.02f);
-		gl.glVertex3f(5.33f, 5.33f, 0.02f);
-		gl.glVertex3f(5.33f, 2.66f, 0.02f);
+		gl.glVertex3f(2.66f, 2.66f, 0.1f);
+		gl.glVertex3f(2.66f, 5.33f, 0.1f);
+		gl.glVertex3f(5.33f, 5.33f, 0.1f);
+		gl.glVertex3f(5.33f, 2.66f, 0.1f);
 		gl.glEnd();
 
 		textureLock.enable();
@@ -762,13 +762,13 @@ public class GLRemoteRendering
 				.w());
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(2.66f, 2.66f, 0.03f);
+		gl.glVertex3f(2.66f, 2.66f, 0.11f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(2.66f, 5.33f, 0.03f);
+		gl.glVertex3f(2.66f, 5.33f, 0.11f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(5.33f, 5.33f, 0.03f);
+		gl.glVertex3f(5.33f, 5.33f, 0.11f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(5.33f, 2.66f, 0.03f);
+		gl.glVertex3f(5.33f, 2.66f, 0.11f);
 		gl.glEnd();
 
 		textureLock.disable();
@@ -780,19 +780,19 @@ public class GLRemoteRendering
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(0, 0, 0.02f);
-		gl.glVertex3f(2.66f, 2.66f, 0.02f);
-		gl.glVertex3f(5.33f, 2.66f, 0.02f);
-		gl.glVertex3f(8, 0, 0.02f);
+		gl.glVertex3f(0, 0, 0.1f);
+		gl.glVertex3f(2.66f, 2.66f, 0.1f);
+		gl.glVertex3f(5.33f, 2.66f, 0.1f);
+		gl.glVertex3f(8, 0, 0.1f);
 		gl.glEnd();
 
 		gl.glColor4f(tmpColor_in.x(), tmpColor_in.y(), tmpColor_in.z(), tmpColor_in.w());
 
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(0.05f, 0.05f, 0.02f);
-		gl.glVertex3f(2.66f, 2.66f, 0.02f);
-		gl.glVertex3f(5.33f, 2.66f, 0.02f);
-		gl.glVertex3f(7.95f, 0.02f, 0.02f);
+		gl.glVertex3f(0.05f, 0.05f, 0.1f);
+		gl.glVertex3f(2.66f, 2.66f, 0.1f);
+		gl.glVertex3f(5.33f, 2.66f, 0.1f);
+		gl.glVertex3f(7.95f, 0.02f, 0.1f);
 		gl.glEnd();
 
 		textureMoveIn.enable();
@@ -801,13 +801,13 @@ public class GLRemoteRendering
 		// gl.glColor4f(1,0.3f,0.3f,0.9f);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(2.66f, 0.05f, 0.03f);
+		gl.glVertex3f(2.66f, 0.05f, 0.11f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(2.66f, 2.66f, 0.03f);
+		gl.glVertex3f(2.66f, 2.66f, 0.11f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(5.33f, 2.66f, 0.03f);
+		gl.glVertex3f(5.33f, 2.66f, 0.11f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(5.33f, 0.05f, 0.03f);
+		gl.glVertex3f(5.33f, 0.05f, 0.11f);
 		gl.glEnd();
 
 		textureMoveIn.disable();
@@ -819,20 +819,20 @@ public class GLRemoteRendering
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(8, 0, 0.02f);
-		gl.glVertex3f(5.33f, 2.66f, 0.02f);
-		gl.glVertex3f(5.33f, 5.33f, 0.02f);
-		gl.glVertex3f(8, 8, 0.02f);
+		gl.glVertex3f(8, 0, 0.1f);
+		gl.glVertex3f(5.33f, 2.66f, 0.1f);
+		gl.glVertex3f(5.33f, 5.33f, 0.1f);
+		gl.glVertex3f(8, 8, 0.1f);
 		gl.glEnd();
 
 		gl.glColor4f(tmpColor_right.x(), tmpColor_right.y(), tmpColor_right.z(),
 				tmpColor_right.w());
 
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(7.95f, 0.05f, 0.02f);
-		gl.glVertex3f(5.33f, 2.66f, 0.02f);
-		gl.glVertex3f(5.33f, 5.33f, 0.02f);
-		gl.glVertex3f(7.95f, 7.95f, 0.02f);
+		gl.glVertex3f(7.95f, 0.05f, 0.1f);
+		gl.glVertex3f(5.33f, 2.66f, 0.1f);
+		gl.glVertex3f(5.33f, 5.33f, 0.1f);
+		gl.glVertex3f(7.95f, 7.95f, 0.1f);
 		gl.glEnd();
 
 		textureMoveRight.enable();
@@ -841,13 +841,13 @@ public class GLRemoteRendering
 		// gl.glColor4f(0,1,0,1);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(7.95f, 2.66f, 0.03f);
+		gl.glVertex3f(7.95f, 2.66f, 0.11f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(5.33f, 2.66f, 0.03f);
+		gl.glVertex3f(5.33f, 2.66f, 0.11f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(5.33f, 5.33f, 0.03f);
+		gl.glVertex3f(5.33f, 5.33f, 0.11f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(7.95f, 5.33f, 0.03f);
+		gl.glVertex3f(7.95f, 5.33f, 0.11f);
 		gl.glEnd();
 
 		textureMoveRight.disable();
@@ -859,20 +859,20 @@ public class GLRemoteRendering
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(0, 0, 0.02f);
-		gl.glVertex3f(0, 8, 0.02f);
-		gl.glVertex3f(2.66f, 5.33f, 0.02f);
-		gl.glVertex3f(2.66f, 2.66f, 0.02f);
+		gl.glVertex3f(0, 0, 0.1f);
+		gl.glVertex3f(0, 8, 0.1f);
+		gl.glVertex3f(2.66f, 5.33f, 0.1f);
+		gl.glVertex3f(2.66f, 2.66f, 0.1f);
 		gl.glEnd();
 
 		gl.glColor4f(tmpColor_left.x(), tmpColor_left.y(), tmpColor_left.z(), tmpColor_left
 				.w());
 
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(0.05f, 0.05f, 0.02f);
-		gl.glVertex3f(0.05f, 7.95f, 0.02f);
-		gl.glVertex3f(2.66f, 5.33f, 0.02f);
-		gl.glVertex3f(2.66f, 2.66f, 0.02f);
+		gl.glVertex3f(0.05f, 0.05f, 0.1f);
+		gl.glVertex3f(0.05f, 7.95f, 0.1f);
+		gl.glVertex3f(2.66f, 5.33f, 0.1f);
+		gl.glVertex3f(2.66f, 2.66f, 0.1f);
 		gl.glEnd();
 
 		textureMoveLeft.enable();
@@ -881,13 +881,13 @@ public class GLRemoteRendering
 		// gl.glColor4f(0,1,0,1);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(0.05f, 2.66f, 0.03f);
+		gl.glVertex3f(0.05f, 2.66f, 0.11f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(0.05f, 5.33f, 0.03f);
+		gl.glVertex3f(0.05f, 5.33f, 0.11f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(2.66f, 5.33f, 0.03f);
+		gl.glVertex3f(2.66f, 5.33f, 0.11f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(2.66f, 2.66f, 0.03f);
+		gl.glVertex3f(2.66f, 2.66f, 0.11f);
 		gl.glEnd();
 
 		textureMoveLeft.disable();
@@ -899,18 +899,18 @@ public class GLRemoteRendering
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(0, 8, 0.02f);
-		gl.glVertex3f(8, 8, 0.02f);
-		gl.glVertex3f(5.33f, 5.33f, 0.02f);
-		gl.glVertex3f(2.66f, 5.33f, 0.02f);
+		gl.glVertex3f(0, 8, 0.1f);
+		gl.glVertex3f(8, 8, 0.1f);
+		gl.glVertex3f(5.33f, 5.33f, 0.1f);
+		gl.glVertex3f(2.66f, 5.33f, 0.1f);
 		gl.glEnd();
 
 		gl.glColor4f(tmpColor_out.x(), tmpColor_out.y(), tmpColor_out.z(), tmpColor_out.w());
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(0.05f, 7.95f, 0.02f);
-		gl.glVertex3f(7.95f, 7.95f, 0.02f);
-		gl.glVertex3f(5.33f, 5.33f, 0.02f);
-		gl.glVertex3f(2.66f, 5.33f, 0.02f);
+		gl.glVertex3f(0.05f, 7.95f, 0.1f);
+		gl.glVertex3f(7.95f, 7.95f, 0.1f);
+		gl.glVertex3f(5.33f, 5.33f, 0.1f);
+		gl.glVertex3f(2.66f, 5.33f, 0.1f);
 		gl.glEnd();
 
 		textureMoveOut.enable();
@@ -919,13 +919,13 @@ public class GLRemoteRendering
 		// gl.glColor4f(0,1,0,1);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(2.66f, 7.95f, 0.03f);
+		gl.glVertex3f(2.66f, 7.95f, 0.11f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(5.33f, 7.95f, 0.03f);
+		gl.glVertex3f(5.33f, 7.95f, 0.11f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(5.33f, 5.33f, 0.03f);
+		gl.glVertex3f(5.33f, 5.33f, 0.11f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(2.66f, 5.33f, 0.03f);
+		gl.glVertex3f(2.66f, 5.33f, 0.11f);
 		gl.glEnd();
 
 		textureMoveOut.disable();

@@ -1,5 +1,9 @@
 package org.caleydo.rcp.wizard.project;
 
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
+import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.action.file.FileOpenProjectAction;
 import org.caleydo.rcp.wizard.project.NewOrExistingProjectPage.EProjectType;
@@ -111,15 +115,15 @@ public class CaleydoProjectWizard
 			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
 					.getProjectType() == EProjectType.PATHWAY_VIEWER_MODE)
 			{
-//				// Remove heatmap and par coord views
-//				for (AGLEventListener glEventListener : GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners())
-//				{
-//					if (glEventListener instanceof GLHeatMap 
-//							|| glEventListener instanceof GLParallelCoordinates)
-//					{
-//						GeneralManager.get().getViewGLCanvasManager().unregisterGLEventListener(glEventListener.getID());
-//					}
-//				}
+				// Remove heatmap and par coord views
+				for (AGLEventListener glEventListener : GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners())
+				{
+					if (glEventListener instanceof GLHeatMap 
+							|| glEventListener instanceof GLParallelCoordinates)
+					{
+						GeneralManager.get().getViewGLCanvasManager().unregisterGLEventListener(glEventListener.getID());
+					}
+				}
 				
 				this.performFinish();
 			}
