@@ -23,6 +23,7 @@ import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.rcp.Application;
+import org.caleydo.rcp.EApplicationMode;
 import org.caleydo.rcp.dialog.file.FileLoadDataDialog;
 import org.caleydo.rcp.image.IImageKeys;
 import org.eclipse.jface.action.Action;
@@ -842,7 +843,8 @@ public class FileLoadDataAction
 		createData();
 		setDataInViews();
 		
-		Application.bPathwayViewerMode = false;
+		// TODO: review
+		//Application.applicationMode = EApplicationMode.STANDARD;
 	}
 
 	private void createData()
@@ -947,8 +949,8 @@ public class FileLoadDataAction
 						ECommandType.LOAD_LOOKUP_TABLE_FILE);
 
 		cmdLoadLookupTableFile.setAttributes(sFileName, iStartParseFileAtLine, -1,
-				"DAVID_2_EXPRESSION_INDEX REVERSE LUT_1", sDelimiter,
-				"REFSEQ_MRNA_2_DAVID");
+				"REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE LUT_1", sDelimiter,
+				"DAVID_2_EXPRESSION_INDEX");
 		cmdLoadLookupTableFile.doCommand();
 
 		if (bLogFilter)

@@ -398,6 +398,7 @@ public class GLParallelCoordinates
 	@Override
 	public void resetSelections()
 	{
+		// TODO clear in other views too
 		for (int iCount = 0; iCount < fArGateTipHeight.length; iCount++)
 		{
 			fArGateTipHeight[iCount] = 0;
@@ -419,6 +420,8 @@ public class GLParallelCoordinates
 			alCurrent.clear();
 		}
 		setDisplayListDirty();
+		connectedElementRepresentationManager.clear();
+	
 	}
 
 	@Override

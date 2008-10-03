@@ -31,7 +31,7 @@ public class NewProjectImportDataPage
 				this.getClass().getClassLoader().getResource(
 						"resources/wizard/wizard.png")));
 		
-		setPageComplete(false);
+		setPageComplete(true);
 	}
 
 	@Override
@@ -44,7 +44,7 @@ public class NewProjectImportDataPage
 		fileLoadDataAction.run();
 
 		setControl(topLevel);
-//		setPageComplete(true);
+		//setPageComplete(true);
 	}
 	
 	public FileLoadDataAction getFileLoadDataAction()

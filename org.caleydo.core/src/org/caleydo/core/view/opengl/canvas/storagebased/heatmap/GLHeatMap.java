@@ -385,6 +385,7 @@ public class GLHeatMap
 		renderStyle = new HeatMapRenderStyle(viewFrustum, contentSelectionManager, set,
 				iContentVAID, iStorageVAID, set.getVA(iStorageVAID).size(),
 				bRenderStorageHorizontally);
+		renderStyle.setDetailLevel(detailLevel);
 		// TODO probably remove this here
 		// renderStyle.initFieldSizes();
 
@@ -546,7 +547,7 @@ public class GLHeatMap
 				fLineDegrees = 90;
 			}
 
-			if (vecFieldWidthAndHeight.x() > 0.08f)
+			if (vecFieldWidthAndHeight.x() > 0.1f)
 			{
 				boolean bRenderShortName = false;
 				if (vecFieldWidthAndHeight.x() < 0.2f)

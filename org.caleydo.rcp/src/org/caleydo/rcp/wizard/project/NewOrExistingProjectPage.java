@@ -25,7 +25,8 @@ public class NewOrExistingProjectPage
 	public enum EProjectType {
 		NEW_PROJECT,
 		EXISTING_PROJECT,
-		PATHWAY_VIEWER_MODE
+		PATHWAY_VIEWER_MODE,
+		SAMPLE_DATA
 	}
 	
 	private EProjectType projectType;
@@ -60,6 +61,9 @@ public class NewOrExistingProjectPage
 		
 		Button buttonPathwayViewerMode = new Button(composite, SWT.RADIO);
 		buttonPathwayViewerMode.setText("Pathway viewer mode");
+		
+		Button buttonSampleDataMode = new Button(composite, SWT.RADIO);
+		buttonSampleDataMode.setText("Start with sample gene expression data");
 
 		buttonNewProject.addSelectionListener(new SelectionAdapter()
 		{
@@ -85,6 +89,17 @@ public class NewOrExistingProjectPage
 			{
 				projectType = EProjectType.PATHWAY_VIEWER_MODE;
 				setPageComplete(true);
+				// TODO: disable next button here
+			}
+		});
+		
+		buttonSampleDataMode.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				projectType = EProjectType.SAMPLE_DATA;
+				setPageComplete(true);
+				// TODO: disable next button here
 			}
 		});
 		

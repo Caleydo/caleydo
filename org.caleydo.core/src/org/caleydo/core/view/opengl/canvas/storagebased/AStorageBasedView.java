@@ -159,11 +159,13 @@ public abstract class AStorageBasedView
 
 		if (!mapVAIDs.isEmpty())
 		{
-			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values())
-			{
-				if (mapVAIDs.containsKey(eSelectionType))
-					set.removeVirtualArray(mapVAIDs.get(eSelectionType));
-			}
+			// This should be done once we get some thread safety, memory leak, and a big one
+//			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values())
+//			{
+//				
+//				//if (mapVAIDs.containsKey(eSelectionType))
+//				//	set.removeVirtualArray(mapVAIDs.get(eSelectionType));
+//			}
 			iContentVAID = -1;
 			iStorageVAID = -1;
 			mapVAIDs.clear();

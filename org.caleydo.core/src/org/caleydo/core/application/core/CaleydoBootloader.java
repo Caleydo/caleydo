@@ -6,7 +6,6 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Basic Caleydo Bootloader.
@@ -96,26 +95,16 @@ public class CaleydoBootloader
 	 */
 	public synchronized void start()
 	{
-		try
-		{
-			parseXmlConfigFile(sFileName);
+		parseXmlConfigFile(sFileName);
 
-			if (generalManager.isStandalone())
-			{
-				// Start OpenGL rendering
-				generalManager.getViewGLCanvasManager().startAnimator();
-				
-				swtGUIManager.runApplication();
-			}
-		}
-		catch (CaleydoRuntimeException gre)
+		if (generalManager.isStandalone())
 		{
+			// Start OpenGL rendering
+			generalManager.getViewGLCanvasManager().startAnimator();
 
-			generalManager.getLogger()
-					.log(Level.SEVERE, "Problems during startup. " + gre.toString());
-			
-			generalManager.getGUIBridge().closeApplication();
+			swtGUIManager.runApplication();
 		}
+
 	}
 
 	public void parseXmlConfigFile(final String sFileName)

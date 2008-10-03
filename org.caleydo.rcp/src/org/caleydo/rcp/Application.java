@@ -2,7 +2,6 @@ package org.caleydo.rcp;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.StringTokenizer;
@@ -15,7 +14,6 @@ import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
 import org.caleydo.rcp.core.bridge.RCPBridge;
 import org.caleydo.rcp.preferences.PreferenceConstants;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
@@ -23,6 +21,7 @@ import org.caleydo.rcp.util.info.InfoArea;
 import org.caleydo.rcp.views.GLRemoteRenderingView;
 import org.caleydo.rcp.wizard.firststart.FirstStartWizard;
 import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
+import org.caleydo.rcp.wizard.project.DataImportWizard;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -41,6 +40,8 @@ public class Application
 {
 	private static String BOOTSTRAP_FILE_GENE_EXPRESSION_MODE = "data/bootstrap/shared/webstart/bootstrap_webstart_gene_expression.xml";
 
+	private static String BOOTSTRAP_FILE_SAMPLE_DATA_MODE = "data/bootstrap/shared/kashofer/hcc/all_hcc/rcp/bootstrap.xml";
+
 	private static String BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE = "data/bootstrap/shared/webstart/bootstrap_webstart_pathway_viewer.xml";
 
 	public static CaleydoBootloader caleydoCore;
@@ -49,7 +50,7 @@ public class Application
 
 	public static boolean bIsWebstart = false;
 	public static boolean bDoExit = false;
-	public static boolean bPathwayViewerMode = false;
+	public static EApplicationMode applicationMode = EApplicationMode.STANDARD;
 
 	public static String sCaleydoXMLfile = "";
 
@@ -191,14 +192,6 @@ public class Application
 		// dialog is opened
 		if (sCaleydoXMLfile.equals(""))
 		{
-			if (bPathwayViewerMode)
-				sCaleydoXMLfile = BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE;
-			else
-				sCaleydoXMLfile = BOOTSTRAP_FILE_GENE_EXPRESSION_MODE;
-
-			caleydoCore.setXmlFileName(sCaleydoXMLfile);
-			caleydoCore.start();
-
 			Display display = PlatformUI.createDisplay();
 			Shell shell = new Shell(display);
 
@@ -210,6 +203,33 @@ public class Application
 				bDoExit = true;
 			}
 
+			switch (applicationMode)
+			{
+				case PATHWAY_VIEWER:
+					sCaleydoXMLfile = BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE;
+					break;
+				case SAMPLE_DATA:
+					sCaleydoXMLfile = BOOTSTRAP_FILE_SAMPLE_DATA_MODE;
+					break;
+				default:
+					sCaleydoXMLfile = BOOTSTRAP_FILE_GENE_EXPRESSION_MODE;
+
+			}
+			caleydoCore.setXmlFileName(sCaleydoXMLfile);
+			caleydoCore.start();
+
+			if(applicationMode == EApplicationMode.STANDARD)
+			{
+				WizardDialog dataImportWizard = new WizardDialog(shell,
+						new DataImportWizard(shell));
+
+				if (WizardDialog.CANCEL == dataImportWizard.open())
+				{
+					bDoExit = true;
+				}
+			}
+			
+			
 			shell.dispose();
 		}
 		else
@@ -225,7 +245,7 @@ public class Application
 		}
 
 		initializeColorMapping();
-//		initializeViewSettings();
+		// initializeViewSettings();
 
 		openViewsInRCP();
 
@@ -251,7 +271,7 @@ public class Application
 		// ourselves
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 		store.getInt("");
-		
+
 		store = GeneralManager.get().getPreferenceStore();
 		int iNumberOfMarkerPoints = store
 				.getInt(PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
@@ -304,29 +324,10 @@ public class Application
 		}
 
 	}
-	
-	           
-//	private static void initializeViewSettings()
-//	{
-//		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-//		int iNumberOfSamples = store.getInt(PreferenceConstants.HM_NUM_RANDOM_SAMPLING_POINT);
-//		Collection<AGLEventListener> eventListeners = GeneralManager.get().getViewGLCanvasManager().getAllGLEventListeners();
-//		for(AGLEventListener eventListener : eventListeners)
-//		{
-//			if(eventListener instanceof GLHeatMap)
-//			{
-//				GLHeatMap heatMap = (GLHeatMap)eventListener;
-////				if(!heatMap.isRenderedRemote())
-////				{
-//				heatMap.setNumberOfSamplesToShow(iNumberOfSamples);
-////				}
-//			}
-//		}
-//	}
 
 	private static void openViewsInRCP()
 	{
-		if (bPathwayViewerMode)
+		if (applicationMode == EApplicationMode.PATHWAY_VIEWER)
 		{
 			// Filter all views except remote and browser in case of pathway
 			// viewer mode

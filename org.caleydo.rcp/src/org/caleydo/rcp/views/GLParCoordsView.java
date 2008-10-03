@@ -6,6 +6,7 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
 import org.caleydo.rcp.Application;
+import org.caleydo.rcp.EApplicationMode;
 import org.caleydo.rcp.action.view.storagebased.ChangeOrientationAction;
 import org.caleydo.rcp.action.view.storagebased.ClearSelectionsAction;
 import org.caleydo.rcp.action.view.storagebased.PropagateSelectionsAction;
@@ -78,7 +79,7 @@ public class GLParCoordsView
 	@Override
 	protected final void fillToolBar()
 	{
-		if (Application.bPathwayViewerMode)
+		if (Application.applicationMode == EApplicationMode.PATHWAY_VIEWER)
 		{
 			MessageBox alert = new MessageBox(new Shell(), SWT.OK);
 			alert.setMessage("Cannot create heat map in pathway viewer mode!");
