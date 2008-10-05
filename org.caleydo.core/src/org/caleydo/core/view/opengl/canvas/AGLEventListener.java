@@ -24,6 +24,7 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.util.exception.ExceptionHandler;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.sliderview.GLGlyphSliderView;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
@@ -145,8 +146,8 @@ public abstract class AGLEventListener
 	@Override
 	public void display(GLAutoDrawable drawable)
 	{
-//		synchronized (drawable)
-//		{			
+		try
+		{
 			((GLEventListener) parentGLCanvas).display(drawable);
 	
 			/** Read viewing parameters... */
@@ -168,7 +169,11 @@ public abstract class AGLEventListener
 			// renderInfoOverlay(
 			// iUniqueID, drawable);
 		
-//		}
+		}
+		catch (RuntimeException exception)
+		{
+			ExceptionHandler.get().handleException(exception);
+		}
 	}
 
 	@Override

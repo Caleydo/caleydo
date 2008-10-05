@@ -43,6 +43,8 @@ import org.eclipse.jface.preference.PreferenceStore;
 public class GeneralManager
 	implements IGeneralManager
 {
+	
+
 	/**
 	 * General manager as a singleton
 	 */
