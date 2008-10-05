@@ -34,7 +34,7 @@ public class GLCaleydoCanvas
 	public GLCaleydoCanvas(final GLCapabilities glCapabilities)
 	{
 		super(glCapabilities);
-		this.getContext().setSynchronized(true);
+//		this.getContext().setSynchronized(true);
 
 		joglMouseListener = new PickingJoglMouseListener();
 

@@ -230,7 +230,6 @@ public class Application
 				}
 			}
 			
-			
 			shell.dispose();
 		}
 		else
