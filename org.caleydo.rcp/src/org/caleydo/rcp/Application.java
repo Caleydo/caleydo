@@ -201,6 +201,7 @@ public class Application
 			if (WizardDialog.CANCEL == projectWizardDialog.open())
 			{
 				bDoExit = true;
+				return;
 			}
 
 			switch (applicationMode)
