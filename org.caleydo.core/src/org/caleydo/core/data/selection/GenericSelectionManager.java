@@ -606,8 +606,9 @@ public class GenericSelectionManager
 						initialAdd(iInternalID);
 
 						if (virtualArray != null)
-							virtualArray.add(iInternalID);
+							virtualArray.add(iInternalID);						
 					}
+					continue;
 				}
 				else
 				{
