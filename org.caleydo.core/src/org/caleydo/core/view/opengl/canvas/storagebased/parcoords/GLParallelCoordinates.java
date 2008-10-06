@@ -296,8 +296,12 @@ public class GLParallelCoordinates
 		gl.glTranslatef(fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
 
 		if (bIsDraggingActive)
+		{
 			handleDragging(gl);
-
+			if(pickingTriggerMouseAdapter.wasMouseReleased())
+				bIsDraggingActive = false;
+		}
+			
 		// if(bRenderInfoArea)
 		// infoAreaManager.renderInfoArea(gl, bInfoAreaFirstTime);
 		// bInfoAreaFirstTime = false;
@@ -309,6 +313,9 @@ public class GLParallelCoordinates
 		if (bIsAngularBrushingActive && iSelectedLineID != -1)
 		{
 			handleAngularBrushing(gl);
+//			if(pickingTriggerMouseAdapter.wasMouseReleased())
+//				bIsAngularBrushingActive = false;
+	
 		}
 
 		gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
