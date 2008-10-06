@@ -1246,14 +1246,25 @@ public class GLRemoteRendering
 						.getId();
 
 				iAlUninitializedPathwayIDs.add(iPathwayID);
-
-				// Disable picking until pathways are loaded
-				generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(
-						false);
+				
+//				if (iAlUninitializedPathwayIDs.size() > 20)
+//				{
+//					// Disable picking until pathways are loaded
+//					generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(
+//							false);
+//
+//					iSlerpFactor = 0;
+//					
+//					return;
+//				}
 			}
-
-			iSlerpFactor = 0;
 		}
+		
+		// Disable picking until pathways are loaded
+		generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(
+				false);
+
+		iSlerpFactor = 0;
 	}
 
 	@Override
@@ -1987,6 +1998,7 @@ public class GLRemoteRendering
 					generalManager.getLogger().log(Level.SEVERE,
 							"No empty space left to add new pathway!");
 					iAlUninitializedPathwayIDs.remove(0);
+					enableBusyMode(false);
 					return;
 				}
 
@@ -2000,8 +2012,8 @@ public class GLRemoteRendering
 			else
 				enableBusyMode(true);
 
-			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
-					.clear();
+//			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
+//					.clear();
 
 			// Trigger mouse over update if an entity is currently selected
 			// TODO: investigate

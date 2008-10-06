@@ -9,7 +9,7 @@ public enum EHierarchyLevel
 {
 	UNDER_INTERACTION(1),
 	STACK(4),
-	POOL(100),
+	POOL(18),
 	MEMO(5),
 	TRANSITION(1),
 	SPAWN(1);

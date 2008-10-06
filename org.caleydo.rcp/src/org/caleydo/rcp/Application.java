@@ -39,9 +39,7 @@ public class Application
 	implements IApplication
 {
 	private static String BOOTSTRAP_FILE_GENE_EXPRESSION_MODE = "data/bootstrap/shared/webstart/bootstrap_webstart_gene_expression.xml";
-
-	private static String BOOTSTRAP_FILE_SAMPLE_DATA_MODE = "data/bootstrap/shared/kashofer/hcc/all_hcc/rcp/bootstrap.xml";
-
+	private static String BOOTSTRAP_FILE_SAMPLE_DATA_MODE = "data/bootstrap/shared/sample/bootstrap_gene_expression_sample.xml";
 	private static String BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE = "data/bootstrap/shared/webstart/bootstrap_webstart_pathway_viewer.xml";
 
 	public static CaleydoBootloader caleydoCore;
