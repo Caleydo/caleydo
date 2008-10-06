@@ -198,7 +198,7 @@ public class GenericSelectionManager
 			for (ESelectionType selectionType : ESelectionType.values())
 			{
 				if (selectionType != ESelectionType.ADD)
-				alSelectionTypes.add(selectionType);
+					alSelectionTypes.add(selectionType);
 			}
 		}
 
@@ -301,7 +301,9 @@ public class GenericSelectionManager
 			throw new IllegalArgumentException(
 					"SelectionManager: cannot reset selections of normal selection");
 
-		if (hashSelectionTypes.get(eSelectionType).isEmpty())
+		// TODO the first condition should not be necessary, investigate
+		if (hashSelectionTypes.get(eSelectionType) == null
+				|| hashSelectionTypes.get(eSelectionType).isEmpty())
 			return;
 
 		for (int iSelectionID : hashSelectionTypes.get(eSelectionType).keySet())
@@ -344,9 +346,10 @@ public class GenericSelectionManager
 		if (targetType != ESelectionType.REMOVE
 				&& hashSelectionTypes.get(targetType).containsKey(iElementID))
 			return;
-		
-		if(targetType == ESelectionType.ADD)
-			throw new IllegalArgumentException("ADD may not be stored in the selection manager");
+
+		if (targetType == ESelectionType.ADD)
+			throw new IllegalArgumentException(
+					"ADD may not be stored in the selection manager");
 
 		for (ESelectionType currentType : alSelectionTypes)
 		{
@@ -484,7 +487,7 @@ public class GenericSelectionManager
 	/**
 	 * Check whether an element is in any selection
 	 * 
-	 * @param iElementID the element id 
+	 * @param iElementID the element id
 	 * @return true if the element exists in the selection manager, else false
 	 */
 	public boolean checkStatus(int iElementID)
@@ -514,7 +517,8 @@ public class GenericSelectionManager
 			returnDelta = new SelectionDelta(externalIDType, internalIDType);
 			for (SelectionItem item : selectionDelta)
 			{
-				Integer iExternalID = GeneralManager.get().getGenomeIdManager().getID(internalToExternalMapping, item.getSelectionID());
+				Integer iExternalID = GeneralManager.get().getGenomeIdManager().getID(
+						internalToExternalMapping, item.getSelectionID());
 				if (iExternalID == null || iExternalID == -1)
 				{
 					GeneralManager.get().getLogger().log(Level.WARNING,
@@ -536,7 +540,8 @@ public class GenericSelectionManager
 	 * Provides a selection delta that contains all elements in the view, with
 	 * the appropriate external and internal selection IDs
 	 * 
-	 * @return the SelectionDelta containing all entries in the selection manager
+	 * @return the SelectionDelta containing all entries in the selection
+	 *         manager
 	 */
 	public SelectionDelta getCompleteDelta()
 	{
@@ -547,7 +552,8 @@ public class GenericSelectionManager
 			tempHash = hashSelectionTypes.get(selectionType);
 			for (Integer iElement : tempHash.keySet())
 			{
-				Integer iExternalID = GeneralManager.get().getGenomeIdManager().getID(internalToExternalMapping, iElement);
+				Integer iExternalID = GeneralManager.get().getGenomeIdManager().getID(
+						internalToExternalMapping, iElement);
 				if (iExternalID == null || iExternalID == -1)
 				{
 					GeneralManager.get().getLogger().log(Level.WARNING,
@@ -590,7 +596,8 @@ public class GenericSelectionManager
 			selectionDelta = new SelectionDelta(internalIDType);
 			for (SelectionItem item : externalSelectionDelta)
 			{
-				Integer iInternalID = GeneralManager.get().getGenomeIdManager().getID(externalToInternalMapping, item.getSelectionID());
+				Integer iInternalID = GeneralManager.get().getGenomeIdManager().getID(
+						externalToInternalMapping, item.getSelectionID());
 				if (iInternalID == null || iInternalID == -1)
 				{
 					GeneralManager.get().getLogger().log(Level.WARNING,
@@ -606,7 +613,7 @@ public class GenericSelectionManager
 						initialAdd(iInternalID);
 
 						if (virtualArray != null)
-							virtualArray.add(iInternalID);						
+							virtualArray.add(iInternalID);
 					}
 					continue;
 				}
