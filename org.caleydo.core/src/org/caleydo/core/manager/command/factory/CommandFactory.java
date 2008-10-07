@@ -207,6 +207,7 @@ public class CommandFactory
 				break;
 			}
 			case CREATE_GL_HEAT_MAP_3D:
+			case CREATE_GL_TEXTURE_HEAT_MAP_3D:
 			case CREATE_GL_GLYPH:
 			case CREATE_GL_GLYPH_SLIDER:
 			case CREATE_GL_PARALLEL_COORDINATES_3D:
