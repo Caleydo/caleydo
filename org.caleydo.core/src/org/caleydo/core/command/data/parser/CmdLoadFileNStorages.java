@@ -109,7 +109,7 @@ public class CmdLoadFileNStorages
 	}
 
 	@Override
-	public void doCommand() throws CaleydoRuntimeException
+	public void doCommand()
 	{
 		generalManager.getLogger().log(
 				Level.INFO,

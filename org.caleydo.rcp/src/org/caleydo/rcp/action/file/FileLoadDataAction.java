@@ -405,7 +405,7 @@ public class FileLoadDataAction
 				txtMin.setEnabled(true);
 			}
 		});
-		
+
 		txtMin = new Text(mathFiltergGroup, SWT.BORDER);
 		txtMin.setEnabled(false);
 		txtMin.addListener(SWT.Verify, new Listener()
@@ -418,15 +418,16 @@ public class FileLoadDataAction
 				string.getChars(0, chars.length, chars, 0);
 				for (int i = 0; i < chars.length; i++)
 				{
-					if (!('0' <= chars[i] && chars[i] <= '9'))
-					{
-						e.doit = false;
-						return;
-					}
+					// TODO
+					// if (!('0' <= chars[i] && chars[i] <= '9'))
+					// {
+					// e.doit = false;
+					// return;
+					// }
 				}
 			}
 		});
-		
+
 		final Button buttonMax = new Button(mathFiltergGroup, SWT.CHECK);
 		buttonMax.setText("Max");
 		buttonMax.setEnabled(true);
@@ -440,7 +441,7 @@ public class FileLoadDataAction
 				txtMax.setEnabled(true);
 			}
 		});
-		
+
 		txtMax = new Text(mathFiltergGroup, SWT.BORDER);
 		txtMax.setEnabled(false);
 		txtMax.addListener(SWT.Verify, new Listener()
@@ -453,11 +454,12 @@ public class FileLoadDataAction
 				string.getChars(0, chars.length, chars, 0);
 				for (int i = 0; i < chars.length; i++)
 				{
-					if (!('0' <= chars[i] && chars[i] <= '9'))
-					{
-						e.doit = false;
-						return;
-					}
+					// TODO
+					// if (!('0' <= chars[i] && chars[i] <= '9'))
+					// {
+					// e.doit = false;
+					// return;
+					// }
 				}
 			}
 		});
@@ -817,7 +819,7 @@ public class FileLoadDataAction
 			// for (TableItem tmpItem : previewTable.getItems())
 			// {
 			// if (arComcomboTmpDataType.getSelectionIndex() == 0)
-			//tmpItem.setBackground(arComboDataType.indexOf(comboTmpDataType)+1,
+			// tmpItem.setBackground(arComboDataType.indexOf(comboTmpDataType)+1,
 			// highlightColor);
 			// }
 			// }
@@ -827,10 +829,10 @@ public class FileLoadDataAction
 			// for (TableItem tmpItem : previewTable.getItems())
 			// {
 			// if (comboTmpDataType.getSelectionIndex() > 0)
-			//tmpItem.setBackground(arComboDataClass.indexOf(comboTmpDataType)+1
+			// tmpItem.setBackground(arComboDataClass.indexOf(comboTmpDataType)+1
 			// , selectionColor);
 			// else
-			//tmpItem.setBackground(arComboDataClass.indexOf(comboTmpDataType)+1
+			// tmpItem.setBackground(arComboDataClass.indexOf(comboTmpDataType)+1
 			// , originalColor);
 			// }
 			// }
@@ -842,9 +844,9 @@ public class FileLoadDataAction
 	{
 		createData();
 		setDataInViews();
-		
+
 		// TODO: review
-		//Application.applicationMode = EApplicationMode.STANDARD;
+		// Application.applicationMode = EApplicationMode.STANDARD;
 	}
 
 	private void createData()
@@ -855,15 +857,15 @@ public class FileLoadDataAction
 		// Build input pattern from data type combos
 		sInputPattern = "";
 
-		float fMin = -1;
-		float fMax = -1;
+		float fMin = Float.NaN;
+		float fMax = Float.NaN;
 
 		if (!txtMax.getText().isEmpty() && !txtMin.getText().isEmpty())
-		{		
-			fMin = Float.parseFloat(txtMax.getText());
+		{
+			fMin = Float.parseFloat(txtMin.getText());
 			fMax = Float.parseFloat(txtMax.getText());
 		}
-		
+
 		Combo tmpComboDataType;
 		for (int iColIndex = 0; iColIndex < arComboDataType.size(); iColIndex++)
 		{
@@ -904,11 +906,7 @@ public class FileLoadDataAction
 					sStorageIDs += IGeneralManager.sDelimiter_Parser_DataItems;
 
 				sStorageIDs = sStorageIDs + storage.getID();
-				
-				if (fMin != -1 && fMax != -1)
-				{
-					storage.normalizeWithExternalExtrema(fMin, fMax);
-				}
+
 			}
 		}
 
@@ -963,9 +961,18 @@ public class FileLoadDataAction
 			cmdDataFilterLog.doCommand();
 		}
 
-		if (fMin == -1 && fMax == -1)
+		if (!Float.isNaN(fMin) && !Float.isNaN(fMax))
 		{
-			cmdCreateSet.getCreatedObject().normalize();
+			for (int iStorageID : iAlStorageId)
+			{
+				INumericalStorage storage = (INumericalStorage) GeneralManager.get()
+						.getStorageManager().getItem(iStorageID);
+				storage.normalizeWithExternalExtrema(fMin, fMax);
+			}
+		}
+		else
+		{
+			cmdCreateSet.getCreatedObject().normalizeGlobally();
 		}
 	}
 

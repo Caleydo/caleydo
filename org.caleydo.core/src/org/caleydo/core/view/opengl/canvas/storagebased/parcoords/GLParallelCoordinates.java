@@ -1,28 +1,28 @@
 package org.caleydo.core.view.opengl.canvas.storagebased.parcoords;
 
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.ANGLUAR_LINE_WIDTH;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.ANGULAR_COLOR;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.ANGULAR_POLYGON_COLOR;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.AXIS_MARKER_WIDTH;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.AXIS_Z;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.DESELECTED_POLYLINE_LINE_WIDTH;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.GATE_COLOR;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.MOUSE_OVER_POLYLINE_LINE_WIDTH;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.NUMBER_AXIS_MARKERS;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.SELECTED_POLYLINE_LINE_WIDTH;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.X_AXIS_COLOR;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.X_AXIS_LINE_WIDTH;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.Y_AXIS_COLOR;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.Y_AXIS_LOW;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.Y_AXIS_MOUSE_OVER_COLOR;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.Y_AXIS_MOUSE_OVER_LINE_WIDTH;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.Y_AXIS_SELECTED_COLOR;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.Y_AXIS_SELECTED_LINE_WIDTH;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.getDecimalFormat;
-import static org.caleydo.core.view.opengl.renderstyle.ParCoordsRenderStyle.ANGLUAR_LINE_WIDTH;
-import static org.caleydo.core.view.opengl.renderstyle.ParCoordsRenderStyle.ANGULAR_COLOR;
-import static org.caleydo.core.view.opengl.renderstyle.ParCoordsRenderStyle.ANGULAR_POLYGON_COLOR;
-import static org.caleydo.core.view.opengl.renderstyle.ParCoordsRenderStyle.AXIS_MARKER_WIDTH;
-import static org.caleydo.core.view.opengl.renderstyle.ParCoordsRenderStyle.AXIS_Z;
-import static org.caleydo.core.view.opengl.renderstyle.ParCoordsRenderStyle.DESELECTED_POLYLINE_LINE_WIDTH;
-import static org.caleydo.core.view.opengl.renderstyle.ParCoordsRenderStyle.GATE_COLOR;
-import static org.caleydo.core.view.opengl.renderstyle.ParCoordsRenderStyle.MOUSE_OVER_POLYLINE_LINE_WIDTH;
-import static org.caleydo.core.view.opengl.renderstyle.ParCoordsRenderStyle.NUMBER_AXIS_MARKERS;
-import static org.caleydo.core.view.opengl.renderstyle.ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR;
-import static org.caleydo.core.view.opengl.renderstyle.ParCoordsRenderStyle.POLYLINE_NO_OCCLUSION_PREV_COLOR;
-import static org.caleydo.core.view.opengl.renderstyle.ParCoordsRenderStyle.POLYLINE_SELECTED_COLOR;
-import static org.caleydo.core.view.opengl.renderstyle.ParCoordsRenderStyle.SELECTED_POLYLINE_LINE_WIDTH;
-import static org.caleydo.core.view.opengl.renderstyle.ParCoordsRenderStyle.X_AXIS_COLOR;
-import static org.caleydo.core.view.opengl.renderstyle.ParCoordsRenderStyle.X_AXIS_LINE_WIDTH;
-import static org.caleydo.core.view.opengl.renderstyle.ParCoordsRenderStyle.Y_AXIS_COLOR;
-import static org.caleydo.core.view.opengl.renderstyle.ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH;
-import static org.caleydo.core.view.opengl.renderstyle.ParCoordsRenderStyle.Y_AXIS_LOW;
-import static org.caleydo.core.view.opengl.renderstyle.ParCoordsRenderStyle.Y_AXIS_MOUSE_OVER_COLOR;
-import static org.caleydo.core.view.opengl.renderstyle.ParCoordsRenderStyle.Y_AXIS_MOUSE_OVER_LINE_WIDTH;
-import static org.caleydo.core.view.opengl.renderstyle.ParCoordsRenderStyle.Y_AXIS_SELECTED_COLOR;
-import static org.caleydo.core.view.opengl.renderstyle.ParCoordsRenderStyle.Y_AXIS_SELECTED_LINE_WIDTH;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import java.awt.Point;
@@ -54,7 +54,6 @@ import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
-import org.caleydo.core.view.opengl.renderstyle.ParCoordsRenderStyle;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.GLIconTextureManager;
@@ -298,25 +297,25 @@ public class GLParallelCoordinates
 		if (bIsDraggingActive)
 		{
 			handleDragging(gl);
-			if(pickingTriggerMouseAdapter.wasMouseReleased())
+			if (pickingTriggerMouseAdapter.wasMouseReleased())
 				bIsDraggingActive = false;
 		}
-			
+
 		// if(bRenderInfoArea)
 		// infoAreaManager.renderInfoArea(gl, bInfoAreaFirstTime);
 		// bInfoAreaFirstTime = false;
 
-		checkUnselection();
-		// GLHelperFunctions.drawAxis(gl);
-		gl.glCallList(iGLDisplayListToCall);
-
 		if (bIsAngularBrushingActive && iSelectedLineID != -1)
 		{
 			handleAngularBrushing(gl);
-//			if(pickingTriggerMouseAdapter.wasMouseReleased())
-//				bIsAngularBrushingActive = false;
-	
+			// if(pickingTriggerMouseAdapter.wasMouseReleased())
+			// bIsAngularBrushingActive = false;
+
 		}
+
+		checkUnselection();
+		// GLHelperFunctions.drawAxis(gl);
+		gl.glCallList(iGLDisplayListToCall);
 
 		gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
 
@@ -428,7 +427,7 @@ public class GLParallelCoordinates
 		}
 		setDisplayListDirty();
 		connectedElementRepresentationManager.clear();
-	
+
 	}
 
 	@Override
@@ -436,7 +435,7 @@ public class GLParallelCoordinates
 	{
 		saveSelection();
 		ISelectionDelta delta = contentSelectionManager.getCompleteDelta();
-		for(SelectionItem selection : delta)
+		for (SelectionItem selection : delta)
 		{
 			selection.setSelectionType(ESelectionType.ADD);
 		}
@@ -686,8 +685,11 @@ public class GLParallelCoordinates
 			if (bRenderStorageHorizontally)
 			{
 				int iWhichStorage = iPolyLineID;
-				//currentStorage = set.getStorageFromVA(iStorageVAID, iWhichStorage);
-				currentStorage = set.get(iWhichStorage);//, iIndex)iStorageVAID, iWhichStorage);
+				// currentStorage = set.getStorageFromVA(iStorageVAID,
+				// iWhichStorage);
+				currentStorage = set.get(iWhichStorage);// ,
+				// iIndex)iStorageVAID,
+				// iWhichStorage);
 			}
 
 			float fPreviousXValue = 0;
@@ -715,6 +717,10 @@ public class GLParallelCoordinates
 				fCurrentXValue = iVertexCount * fAxisSpacing;
 				fCurrentYValue = currentStorage.getFloat(EDataRepresentation.NORMALIZED,
 						iStorageIndex);
+				if (Float.isNaN(fCurrentYValue))
+				{
+					fCurrentYValue = ParCoordsRenderStyle.NAN_Y_OFFSET;
+				}
 				if (iVertexCount != 0)
 				{
 					if (bRenderingSelection)
@@ -829,7 +835,7 @@ public class GLParallelCoordinates
 					float fCurrentHeight = fMarkerSpacing * iInnerCount;
 					if (iCount == 0)
 					{
-						float fNumber = (float) set.getRawForNormalized(fCurrentHeight
+						float fNumber = (float)set.getMin() + (float) set.getRawForNormalized(fCurrentHeight
 								/ renderStyle.getAxisHeight());
 
 						Rectangle2D bounds = textRenderer.getBounds(getDecimalFormat().format(
@@ -883,12 +889,14 @@ public class GLParallelCoordinates
 				// render values on top and bottom of axis
 
 				// top
-				textRenderer.draw3D(String.valueOf(set.getMax()), fXPosition + 2
+				String text = getDecimalFormat().format(set.getMax());
+				textRenderer.draw3D(text, fXPosition + 2
 						* AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(), 0, renderStyle
 						.getSmallFontScalingFactor());
 
 				// bottom
-				textRenderer.draw3D(String.valueOf(set.getMin()), fXPosition + 2
+				text = getDecimalFormat().format(set.getMin());
+				textRenderer.draw3D(text, fXPosition + 2
 						* AXIS_MARKER_WIDTH, 0, 0, renderStyle.getSmallFontScalingFactor());
 				textRenderer.end3DRendering();
 
@@ -1095,7 +1103,7 @@ public class GLParallelCoordinates
 			if (detailLevel == EDetailLevel.HIGH)
 			{
 
-				renderBoxedYValues(gl, fCurrentPosition, fArGateTipHeight[iCount], (float) set
+				renderBoxedYValues(gl, fCurrentPosition, fArGateTipHeight[iCount], (float)set.getMin() + (float) set
 						.getRawForNormalized(fArGateTipHeight[iCount]
 								/ renderStyle.getAxisHeight()), ESelectionType.NORMAL);
 
@@ -1174,8 +1182,8 @@ public class GLParallelCoordinates
 	{
 
 		// don't render values that are below the y axis
-		if (fYOrigin < 0)
-			return;
+//		if (fYOrigin < 0)
+//			return;
 
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		gl.glLineWidth(Y_AXIS_LINE_WIDTH);
@@ -1206,8 +1214,14 @@ public class GLParallelCoordinates
 	{
 		textRenderer.begin3DRendering();
 
-		textRenderer.draw3D(getDecimalFormat().format(fRawValue), fXOrigin, fYOrigin, 0.031f,
-				renderStyle.getSmallFontScalingFactor());
+		String text = "";
+		if (Float.isNaN(fRawValue))
+			text = "NaN";
+		else
+			text = getDecimalFormat().format(fRawValue);
+
+		textRenderer.draw3D(text, fXOrigin, fYOrigin, 0.031f, renderStyle
+				.getSmallFontScalingFactor());
 		textRenderer.end3DRendering();
 	}
 
@@ -1276,7 +1290,7 @@ public class GLParallelCoordinates
 		{
 			bIsDraggingActive = false;
 		}
-		handleUnselection(iDraggedGateNumber);
+
 	}
 
 	/**
@@ -1318,6 +1332,10 @@ public class GLParallelCoordinates
 	@Override
 	protected void checkUnselection()
 	{
+		for (int iCount = 0; iCount < fArGateTipHeight.length; iCount++)
+		{
+			handleUnselection(iCount);
+		}
 		HashMap<Integer, Boolean> hashDeselectedPolylines = new HashMap<Integer, Boolean>();
 
 		for (ArrayList<Integer> alCurrent : alIsGateBlocking)
@@ -1790,17 +1808,11 @@ public class GLParallelCoordinates
 		iAxisLeftIndex = set.getVA(iAxisVAID).get(iPosition);
 		iAxisRightIndex = set.getVA(iAxisVAID).get(iPosition + 1);
 
-		// int iPolylineIndex = alPolylineSelection.indexOf(iSelectedLineID);
-
 		Vec3f vecLeftPoint = new Vec3f(0, 0, 0);
 		Vec3f vecRightPoint = new Vec3f(0, 0, 0);
 
 		if (bRenderStorageHorizontally)
 		{
-			// vecLeftPoint.setY(alDataStorages.get(iPolylineIndex).
-			// getArrayFloat()[iAxisLeftIndex] * renderStyle.getAxisHeight());
-			// vecRightPoint.setY(alDataStorages.get(iPolylineIndex).
-			// getArrayFloat()[iAxisRightIndex] * renderStyle.getAxisHeight());
 			vecLeftPoint.setY(set.get(iSelectedLineID).getFloat(
 					EDataRepresentation.NORMALIZED, iAxisLeftIndex)
 					* renderStyle.getAxisHeight());
@@ -1821,15 +1833,11 @@ public class GLParallelCoordinates
 		vecLeftPoint.setX(iPosition * fAxisSpacing);
 		vecRightPoint.setX((iPosition + 1) * fAxisSpacing);
 
-		// GLHelperFunctions.drawPointAt(gl, vecLeftPoint);
-		// GLHelperFunctions.drawPointAt(gl, vecRightPoint);
-
 		Vec3f vecDirectional = vecRightPoint.minus(vecLeftPoint);
 		float fLength = vecDirectional.length();
 		vecDirectional.normalize();
 
 		Vec3f vecTriangleOrigin = vecLeftPoint.addScaled(fLength / 4, vecDirectional);
-		// GLHelperFunctions.drawPointAt(gl, vecTriangleOrigin);
 
 		Vec3f vecTriangleLimit = vecLeftPoint.addScaled(fLength / 4 * 3, vecDirectional);
 
@@ -1923,21 +1931,6 @@ public class GLParallelCoordinates
 		// gl.glVertex3f(vecUpperPoint.x(), vecUpperPoint.y(), vecUpperPoint.z()
 		// + 0.02f);
 		gl.glEnd();
-
-		//		
-		// gl.glTranslatef(-vecTriangleOrigin.x(), -vecTriangleOrigin.y(), 0);
-		// gl.glBegin(GL.GL_LINE_STRIP);
-		// for(int i=0; i <= Math.toDegrees(fCurrentAngle) ; i++)
-		// gl.glVertex3f((float)Math.sin(i*Math.PI/180)*fLength,
-		// (float)Math.cos(i*Math.PI/180)*fLength, 1);
-		// gl.glEnd();
-		// gl.glLineStipple(1, GL.GL_LINE_STIPPLE_PATTERN);
-		// gl.glBegin(GL.GL_LINES);
-		// gl.glVertex3f(vecTriangleOrigin.x(), vecTriangleOrigin.y(),
-		// vecTriangleOrigin.z() + 0.02f);
-		// gl.glVertex3f(vecTriangleLimit.x(), vecTriangleLimit.y(),
-		// vecLowerPoint.z() + 0.02f);
-		// gl.glEnd();
 
 		// check selection
 

@@ -97,8 +97,13 @@ public class NumericalCContainer<T extends Number>
 				fArTmpTarget[iCount] = Float.NaN;
 			else
 			{
+
 				fArTmpTarget[iCount] = (alContainer.get(iCount).floatValue() - (float) dMin)
 						/ ((float) dMax - (float) dMin);
+				if (fArTmpTarget[iCount] > 1)
+					fArTmpTarget[iCount] = 1;
+				else if (fArTmpTarget[iCount] < 0)
+					fArTmpTarget[iCount] = 0;
 			}
 		}
 		return new FloatCContainer(fArTmpTarget);

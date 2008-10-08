@@ -143,8 +143,11 @@ public class FloatCContainer
 				else
 				{
 					fArTmpTarget[iCount] = (fArContainer[iCount] - fMin) / (fMax - fMin);
-					fArTmpTarget[iCount] = (fArTmpTarget[iCount] > 1) ? 1
-							: fArTmpTarget[iCount];
+					if(fArTmpTarget[iCount] > 1)
+						fArTmpTarget[iCount] = 1;
+					else if(fArTmpTarget[iCount] <  0)
+						fArTmpTarget[iCount] = 0;
+				
 				}
 			}
 		}

@@ -1,14 +1,16 @@
 package org.caleydo.rcp.preferences;
 
-import static org.caleydo.rcp.preferences.PreferenceConstants.COLOR_MARKER_POINT_COLOR;
-import static org.caleydo.rcp.preferences.PreferenceConstants.COLOR_MARKER_POINT_VALUE;
-import static org.caleydo.rcp.preferences.PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS;
+import static org.caleydo.core.util.preferences.PreferenceConstants.COLOR_MARKER_POINT_COLOR;
+import static org.caleydo.core.util.preferences.PreferenceConstants.COLOR_MARKER_POINT_VALUE;
+import static org.caleydo.core.util.preferences.PreferenceConstants.NAN_COLOR;
+import static org.caleydo.core.util.preferences.PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS;
 
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
+import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.Activator;
 import org.caleydo.rcp.Application;
 import org.eclipse.jface.preference.ColorFieldEditor;
@@ -48,6 +50,8 @@ public class ColorMappingPreferencePage
 	private Spinner numColorPointsSpinner;
 
 	private CLabel colorMappingPreviewLabel;
+	
+	private ColorFieldEditor nanColorFE;
 
 	private class NumColorPointsModifyListener
 		implements ModifyListener
@@ -200,6 +204,11 @@ public class ColorMappingPreferencePage
 		colorMappingPreviewLabel = new CLabel(getFieldEditorParent(), SWT.SHADOW_IN);
 		colorMappingPreviewLabel.setBounds(10, 10, 300, 100);
 		colorMappingPreviewLabel.setText("                          ");
+		
+		nanColorFE = new ColorFieldEditor(NAN_COLOR,
+				 "Color for NAN values:",  getFieldEditorParent());
+		nanColorFE.load();
+		addField(nanColorFE);
 
 		initialColorMappingPreview();
 
@@ -252,7 +261,7 @@ public class ColorMappingPreferencePage
 			alColorFieldEditors.get(iCount).store();
 		}
 
-		ColorMappingManager.get().initiFromPreferenceStore();
+		//ColorMappingManager.get().initiFromPreferenceStore();
 		Application.initializeColorMapping();
 		return bReturn;
 	}

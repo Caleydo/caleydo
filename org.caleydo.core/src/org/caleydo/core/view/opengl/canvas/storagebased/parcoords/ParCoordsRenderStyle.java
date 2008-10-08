@@ -1,6 +1,7 @@
-package org.caleydo.core.view.opengl.renderstyle;
+package org.caleydo.core.view.opengl.canvas.storagebased.parcoords;
 
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
  * Render styles for the parallel coordinates
@@ -56,6 +57,8 @@ public class ParCoordsRenderStyle
 	public static final float POLYLINE_LINE_WIDTH = 1.0f;
 
 	public static final int NUMBER_AXIS_MARKERS = 9;
+	
+	public static final float NAN_Y_OFFSET = -0.03f;
 
 	// modifiable colors
 	protected float[] polylineOcclusionPrevColor = { 0.0f, 0.0f, 0.0f, 1.0f };

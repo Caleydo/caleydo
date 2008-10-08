@@ -2,6 +2,9 @@ package org.caleydo.core.util.mapping.color;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.util.conversion.ConversionTools;
+import org.caleydo.core.util.preferences.PreferenceConstants;
 
 /**
  * Color mapping. The class is initialized with a list of inflection points and
@@ -15,6 +18,8 @@ public class ColorMapping
 
 	ArrayList<float[]> alColorList;
 	ArrayList<ColorMarkerPoint> alMarkerPoints;
+
+	float[] fArNotANumberColor = { 0, 0, 1 };
 
 	public static int COLOR_DEPTH = 256;
 
@@ -34,7 +39,9 @@ public class ColorMapping
 	}
 
 	/**
-	 * Reset the color mapping, same principles as constructor {@link ColorMapping#ColorMapping(ArrayList)}
+	 * Reset the color mapping, same principles as constructor
+	 * {@link ColorMapping#ColorMapping(ArrayList)}
+	 * 
 	 * @param alMarkerPoints
 	 */
 	protected void resetColorMapping(ArrayList<ColorMarkerPoint> alMarkerPoints)
@@ -52,6 +59,8 @@ public class ColorMapping
 		}
 
 		setUpMapping();
+		fArNotANumberColor = ConversionTools.getColorFromString(GeneralManager.get()
+				.getPreferenceStore().getString(PreferenceConstants.NAN_COLOR));
 	}
 
 	/**
@@ -97,11 +106,16 @@ public class ColorMapping
 	 * Return the mapped color for any value between 0 and 1
 	 * 
 	 * @param fValue
-	 * @return
+	 * @return float array with length 3, RGB
 	 * @throws IllegalArgumentException if fvalue > 1 || fvalue < 0
 	 */
 	public float[] getColor(float fValue)
 	{
+		if (Float.isNaN(fValue))
+		{
+			return fArNotANumberColor;
+		}
+
 		if (fValue > 1 || fValue < 0)
 			throw new IllegalArgumentException(
 					"Invalid value in fValue. Has to be between 0 and 1");

@@ -1,10 +1,12 @@
 package org.caleydo.rcp.preferences;
 
-import static org.caleydo.rcp.preferences.PreferenceConstants.COLOR_MARKER_POINT_COLOR;
-import static org.caleydo.rcp.preferences.PreferenceConstants.COLOR_MARKER_POINT_VALUE;
-import static org.caleydo.rcp.preferences.PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS;
+import static org.caleydo.core.util.preferences.PreferenceConstants.COLOR_MARKER_POINT_COLOR;
+import static org.caleydo.core.util.preferences.PreferenceConstants.COLOR_MARKER_POINT_VALUE;
+import static org.caleydo.core.util.preferences.PreferenceConstants.NAN_COLOR;
+import static org.caleydo.core.util.preferences.PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS;
 
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.jface.preference.IPreferenceStore;
 
@@ -31,6 +33,7 @@ public class PreferenceInitializer
 		store.setDefault(COLOR_MARKER_POINT_COLOR + "1", "0,255,0");
 		store.setDefault(COLOR_MARKER_POINT_COLOR + "2", "0,0,0");
 		store.setDefault(COLOR_MARKER_POINT_COLOR + "3", "255,0,0");
+		store.setDefault(NAN_COLOR, "0,0,255");
 		
 		store.setDefault(NUMBER_OF_COLOR_MARKER_POINTS, 3);
 		

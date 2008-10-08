@@ -4,18 +4,18 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.StringTokenizer;
 import java.util.logging.Level;
 
 import org.caleydo.core.application.core.CaleydoBootloader;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.util.conversion.ConversionTools;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
+import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.rcp.core.bridge.RCPBridge;
-import org.caleydo.rcp.preferences.PreferenceConstants;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
 import org.caleydo.rcp.util.info.InfoArea;
 import org.caleydo.rcp.views.GLRemoteRenderingView;
@@ -260,56 +260,31 @@ public class Application
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 		store.getInt("");
 
-		store = GeneralManager.get().getPreferenceStore();
-		int iNumberOfMarkerPoints = store
-				.getInt(PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
-
-		ArrayList<ColorMarkerPoint> alMarkerPoints = new ArrayList<ColorMarkerPoint>();
-		for (int iCount = 1; iCount <= iNumberOfMarkerPoints; iCount++)
-		{
-			float colorMarkerValue = store
-					.getFloat(PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
-			String color = store.getString(PreferenceConstants.COLOR_MARKER_POINT_COLOR
-					+ iCount);
-
-			float[] fArColor = new float[3];
-			if (color.isEmpty())
-			{
-				fArColor[0] = 0;
-				fArColor[1] = 0;
-				fArColor[2] = 0;
-			}
-			else
-			{
-				StringTokenizer tokenizer = new StringTokenizer(color, ",", false);
-				int iInnerCount = 0;
-				while (tokenizer.hasMoreTokens())
-				{
-					try
-					{
-						String token = tokenizer.nextToken();
-						int iTemp = Integer.parseInt(token);
-						fArColor[iInnerCount] = (float) iTemp / 255;
-					}
-					catch (Exception e)
-					{
-
-					}
-					iInnerCount++;
-				}
-			}
-			alMarkerPoints.add(new ColorMarkerPoint(colorMarkerValue, fArColor));
-		}
-
-		// TODO not generic
-		ColorMappingManager.get().initColorMapping(EColorMappingType.GENE_EXPRESSION,
-				alMarkerPoints);
-
-		for (AGLEventListener view : GeneralManager.get().getViewGLCanvasManager()
-				.getAllGLEventListeners())
-		{
-			view.setDisplayListDirty();
-		}
+		ColorMappingManager.get().initiFromPreferenceStore();
+//		store = GeneralManager.get().getPreferenceStore();
+//		int iNumberOfMarkerPoints = store
+//				.getInt(PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
+//
+//		ArrayList<ColorMarkerPoint> alMarkerPoints = new ArrayList<ColorMarkerPoint>();
+//		for (int iCount = 1; iCount <= iNumberOfMarkerPoints; iCount++)
+//		{
+//			float colorMarkerValue = store
+//					.getFloat(PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
+//			String color = store.getString(PreferenceConstants.COLOR_MARKER_POINT_COLOR
+//					+ iCount);
+//			
+//			alMarkerPoints.add(new ColorMarkerPoint(colorMarkerValue, ConversionTools.getColorFromString(color)));
+//		}
+//
+//		// TODO not generic
+//		ColorMappingManager.get().initColorMapping(EColorMappingType.GENE_EXPRESSION,
+//				alMarkerPoints);
+//
+//		for (AGLEventListener view : GeneralManager.get().getViewGLCanvasManager()
+//				.getAllGLEventListeners())
+//		{
+//			view.setDisplayListDirty();
+//		}
 
 	}
 

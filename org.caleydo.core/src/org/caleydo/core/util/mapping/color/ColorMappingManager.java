@@ -3,6 +3,9 @@ package org.caleydo.core.util.mapping.color;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.util.conversion.ConversionTools;
+import org.caleydo.core.util.preferences.PreferenceConstants;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.eclipse.jface.preference.PreferenceStore;
 
 /**
@@ -54,18 +57,46 @@ public class ColorMappingManager
 	public void initColorMapping(EColorMappingType colorMappingType,
 			ArrayList<ColorMarkerPoint> alMarkerPoints)
 	{
-		if(hashColorMapping.containsKey(colorMappingType))
+		if (hashColorMapping.containsKey(colorMappingType))
 		{
 			hashColorMapping.get(colorMappingType).resetColorMapping(alMarkerPoints);
 			return;
 		}
 		hashColorMapping.put(colorMappingType, new ColorMapping(alMarkerPoints));
 	}
-	
+
+	/**
+	 * Initializes a gene expression color mapping from values stored in the preference store.
+	 * Sets all display list to dirty to have immediate effect.
+	 */
 	public void initiFromPreferenceStore()
 	{
 		PreferenceStore store = GeneralManager.get().getPreferenceStore();
-		
+		int iNumberOfMarkerPoints = store
+				.getInt(PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
+
+		ArrayList<ColorMarkerPoint> alMarkerPoints = new ArrayList<ColorMarkerPoint>();
+		for (int iCount = 1; iCount <= iNumberOfMarkerPoints; iCount++)
+		{
+			float colorMarkerValue = store
+					.getFloat(PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
+			String color = store.getString(PreferenceConstants.COLOR_MARKER_POINT_COLOR
+					+ iCount);
+
+			alMarkerPoints.add(new ColorMarkerPoint(colorMarkerValue, ConversionTools
+					.getColorFromString(color)));
+		}
+
+		// TODO not generic
+		initColorMapping(EColorMappingType.GENE_EXPRESSION,
+				alMarkerPoints);
+
+		for (AGLEventListener view : GeneralManager.get().getViewGLCanvasManager()
+				.getAllGLEventListeners())
+		{
+			view.setDisplayListDirty();
+		}
+
 	}
 
 	/**
