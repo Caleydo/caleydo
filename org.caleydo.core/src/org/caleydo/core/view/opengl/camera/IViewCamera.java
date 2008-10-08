@@ -1,4 +1,4 @@
-package org.caleydo.core.data.view.camera;
+package org.caleydo.core.view.opengl.camera;
 
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;

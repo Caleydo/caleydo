@@ -1,4 +1,4 @@
-package org.caleydo.core.data.view.camera;
+package org.caleydo.core.view.opengl.camera;
 
 import java.io.Serializable;
 import javax.media.opengl.GL;

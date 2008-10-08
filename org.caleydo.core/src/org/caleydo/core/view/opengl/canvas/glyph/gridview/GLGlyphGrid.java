@@ -11,11 +11,11 @@ import java.util.Vector;
 import java.util.logging.Level;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.view.rep.renderstyle.GlyphRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
 import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
+import org.caleydo.core.view.opengl.renderstyle.GlyphRenderStyle;
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**

@@ -20,13 +20,13 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
-import org.caleydo.core.data.view.camera.IViewFrustum;
-import org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.util.mapping.PathwayColorMapper;
+import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.view.opengl.util.GLTextUtils;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemKind;

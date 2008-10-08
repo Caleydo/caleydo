@@ -1,4 +1,4 @@
-package org.caleydo.core.data.view.rep.renderstyle;
+package org.caleydo.core.view.opengl.renderstyle;
 
 public class ConnectionLineRenderStyle
 

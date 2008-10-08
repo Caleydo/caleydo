@@ -3,7 +3,7 @@
  */
 package org.caleydo.core.view.opengl.mouse;
 
-import org.caleydo.core.data.view.camera.IViewCamera;
+import org.caleydo.core.view.opengl.camera.IViewCamera;
 
 // import java.awt.event.MouseListener;
 // import java.awt.event.MouseMotionListener;
@@ -58,7 +58,7 @@ public interface IJoglMouseListener
 	/**
 	 * Returns true if any data of the camera has changed.
 	 * 
-	 * @see org.caleydo.core.data.view.camera.IViewCamera#hasViewCameraChanged()
+	 * @see org.caleydo.core.view.opengl.camera.IViewCamera#hasViewCameraChanged()
 	 * @return
 	 */
 	public boolean hasViewCameraChanged();

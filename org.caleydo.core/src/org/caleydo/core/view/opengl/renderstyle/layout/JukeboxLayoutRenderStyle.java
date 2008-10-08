@@ -1,10 +1,10 @@
-package org.caleydo.core.data.view.rep.renderstyle.layout;
+package org.caleydo.core.view.opengl.renderstyle.layout;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
-import org.caleydo.core.data.view.camera.EProjectionMode;
-import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.EProjectionMode;
+import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**

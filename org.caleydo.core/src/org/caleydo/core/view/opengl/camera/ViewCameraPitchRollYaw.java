@@ -1,4 +1,4 @@
-package org.caleydo.core.data.view.camera;
+package org.caleydo.core.view.opengl.camera;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
@@ -7,7 +7,7 @@ import gleem.linalg.Vec3f;
  * Camera model using yaw, pitch and roll to manipulate the camera. Note: using
  * OpenGL camera convention. camera viewing in -z direction onto the x-y plane.
  * 
- * @see org.caleydo.core.data.view.camera.IViewCamera
+ * @see org.caleydo.core.view.opengl.camera.IViewCamera
  * @author Michael Kalkusch
  * @author Marc Streit
  */

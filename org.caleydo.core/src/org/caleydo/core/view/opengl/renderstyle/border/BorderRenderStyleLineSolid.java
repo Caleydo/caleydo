@@ -1,4 +1,4 @@
-package org.caleydo.core.data.view.rep.renderstyle.border;
+package org.caleydo.core.view.opengl.renderstyle.border;
 
 import javax.media.opengl.GL;
 

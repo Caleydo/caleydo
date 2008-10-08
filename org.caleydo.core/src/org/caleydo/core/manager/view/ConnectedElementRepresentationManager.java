@@ -3,7 +3,7 @@ package org.caleydo.core.manager.view;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
-import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.manager.picking.ESelectionMode;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 

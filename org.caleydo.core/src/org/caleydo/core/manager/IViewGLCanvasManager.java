@@ -2,11 +2,11 @@ package org.caleydo.core.manager;
 
 import java.util.Collection;
 import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.IView;
+import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;

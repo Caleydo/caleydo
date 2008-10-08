@@ -9,9 +9,9 @@ import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.view.camera.IViewFrustum;
-import org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle;
-import org.caleydo.core.data.view.rep.renderstyle.InfoAreaRenderStyle;
+import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
+import org.caleydo.core.view.opengl.renderstyle.InfoAreaRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 
 /**

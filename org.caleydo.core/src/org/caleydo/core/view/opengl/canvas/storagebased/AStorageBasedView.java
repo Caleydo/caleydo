@@ -15,14 +15,14 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionItem;
-import org.caleydo.core.data.view.camera.IViewFrustum;
-import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.picking.ESelectionMode;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
+import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import com.sun.opengl.util.j2d.TextRenderer;
 

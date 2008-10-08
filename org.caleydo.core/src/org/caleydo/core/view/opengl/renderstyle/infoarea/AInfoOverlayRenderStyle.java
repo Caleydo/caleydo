@@ -1,4 +1,4 @@
-package org.caleydo.core.data.view.rep.renderstyle.infoarea;
+package org.caleydo.core.view.opengl.renderstyle.infoarea;
 
 import java.awt.Color;
 

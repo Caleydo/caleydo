@@ -1,8 +1,8 @@
-package org.caleydo.core.data.view.rep.renderstyle;
+package org.caleydo.core.view.opengl.renderstyle;
 
 import gleem.linalg.Vec3f;
-import org.caleydo.core.data.view.camera.IViewFrustum;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.caleydo.core.view.opengl.camera.IViewFrustum;
 
 public class PathwayRenderStyle
 	extends GeneralRenderStyle
@@ -424,8 +424,8 @@ public class PathwayRenderStyle
 	}
 
 	/**
-	 * @see org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle#neighborhoodNodeColorArraysize
-	 * @see org.caleydo.core.data.view.rep.renderstyle.PathwayRenderStyle#highlightedNodeColor
+	 * @see org.caleydo.core.view.opengl.renderstyle.PathwayRenderStyle#neighborhoodNodeColorArraysize
+	 * @see org.caleydo.core.view.opengl.renderstyle.PathwayRenderStyle#highlightedNodeColor
 	 * @param depth [0..1.. (neighborhoodNodeColorArraysize-1) ] ; if depth ==0
 	 *            highlightedNodeColor is returened
 	 * @return

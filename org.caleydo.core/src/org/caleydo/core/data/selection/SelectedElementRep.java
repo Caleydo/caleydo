@@ -1,4 +1,4 @@
-package org.caleydo.core.data.view.rep.selection;
+package org.caleydo.core.data.selection;
 
 import gleem.linalg.Vec3f;
 import java.util.ArrayList;

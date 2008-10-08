@@ -1,6 +1,6 @@
-package org.caleydo.core.data.view.rep.renderstyle;
+package org.caleydo.core.view.opengl.renderstyle;
 
-import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.IViewFrustum;
 
 /**
  * Render styles for the parallel coordinates

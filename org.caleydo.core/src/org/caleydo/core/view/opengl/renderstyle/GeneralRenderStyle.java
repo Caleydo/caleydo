@@ -1,7 +1,7 @@
-package org.caleydo.core.data.view.rep.renderstyle;
+package org.caleydo.core.view.opengl.renderstyle;
 
 import java.text.DecimalFormat;
-import org.caleydo.core.data.view.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.IViewFrustum;
 
 /**
  * Render Styles for the whole system

@@ -1,13 +1,12 @@
 package org.caleydo.core.view.opengl.canvas.storagebased.heatmap;
 
-import static org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
-import static org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle.MOUSE_OVER_LINE_WIDTH;
-import static org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
-import static org.caleydo.core.data.view.rep.renderstyle.GeneralRenderStyle.SELECTED_LINE_WIDTH;
-import static org.caleydo.core.data.view.rep.renderstyle.HeatMapRenderStyle.FIELD_Z;
-import static org.caleydo.core.data.view.rep.renderstyle.HeatMapRenderStyle.SELECTION_Z;
+import static org.caleydo.core.view.opengl.canvas.storagebased.heatmap.HeatMapRenderStyle.FIELD_Z;
+import static org.caleydo.core.view.opengl.canvas.storagebased.heatmap.HeatMapRenderStyle.SELECTION_Z;
+import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
+import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_LINE_WIDTH;
+import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
+import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_LINE_WIDTH;
 import gleem.linalg.Rotf;
-import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import java.util.ArrayList;
@@ -21,9 +20,7 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
-import org.caleydo.core.data.view.camera.IViewFrustum;
-import org.caleydo.core.data.view.rep.renderstyle.HeatMapRenderStyle;
-import org.caleydo.core.data.view.rep.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -31,6 +28,7 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
+import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
@@ -41,7 +39,6 @@ import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLIconTextureManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
-import org.eclipse.jface.preference.PreferenceStore;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -80,6 +77,7 @@ public class GLHeatMap
 	private SelectedElementRep elementRep;
 
 	private GLIconTextureManager iconTextureManager;
+	private ArrayList<Float> fAlXDistances;
 
 	/**
 	 * Constructor.
@@ -111,7 +109,9 @@ public class GLHeatMap
 
 		colorMappingBar = new GLColorMappingBarMiniView(viewFrustum);
 		// TODO use constant instead
-		iNumberOfRandomElements = generalManager.getPreferenceStore().getInt("hmNumRandomSamplinPoints");
+		iNumberOfRandomElements = generalManager.getPreferenceStore().getInt(
+				"hmNumRandomSamplinPoints");
+		fAlXDistances = new ArrayList<Float>();
 	}
 
 	@Override
@@ -231,8 +231,7 @@ public class GLHeatMap
 	{
 
 		if (bHasFrustumChanged)
-		{
-			renderStyle.setFieldDimensionsDirty();
+		{		
 			bHasFrustumChanged = false;
 		}
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
@@ -294,10 +293,11 @@ public class GLHeatMap
 
 	/**
 	 * Render the symbol of the view instead of the view
+	 * 
 	 * @param gl
 	 */
 	private void renderSymbol(GL gl)
-	{		
+	{
 		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
 		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
 		Texture tempTexture = iconTextureManager.getIconTexture(EIconTextures.HEAT_MAP_SYMBOL);
@@ -313,7 +313,7 @@ public class GLHeatMap
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(fXButtonOrigin, fYButtonOrigin, 0.01f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fXButtonOrigin, 2 * fYButtonOrigin , 0.01f);
+		gl.glVertex3f(fXButtonOrigin, 2 * fYButtonOrigin, 0.01f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
 		gl.glVertex3f(fXButtonOrigin * 2, 2 * fYButtonOrigin, 0.01f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
@@ -490,7 +490,6 @@ public class GLHeatMap
 						contentSelectionManager.addToType(ESelectionType.MOUSE_OVER,
 								iExternalID);
 
-						renderStyle.setFieldDimensionsDirty();
 						if (eFieldDataType == EIDType.EXPRESSION_INDEX)
 						{
 							triggerUpdate(contentSelectionManager.getDelta());
@@ -509,26 +508,40 @@ public class GLHeatMap
 
 	private void renderHeatMap(final GL gl)
 	{
-
+		fAlXDistances.clear();
 		renderStyle.updateFieldSizes();
 		float fXPosition = 0;
 		float fYPosition = 0;
+		float fFieldWith = 0;
+		float fFieldHeight = 0;
 		// renderStyle.clearFieldWidths();
 
-		// TODO: NullPointer if storage is empty
-		Vec2f vecFieldWidthAndHeight = null;
 
 		int iCount = 0;
 		for (Integer iContentIndex : set.getVA(iContentVAID))
 		{
-			vecFieldWidthAndHeight = renderStyle.getFieldWidthAndHeight(iCount++);
+			iCount++;
+			if (contentSelectionManager.checkStatus(ESelectionType.NORMAL, iContentIndex))
+			{
+				fFieldWith = renderStyle.getNormalFieldWidth();
+				fFieldHeight = renderStyle.getFieldHeight();
+			}
+			else if (contentSelectionManager.checkStatus(ESelectionType.SELECTION,
+					iContentIndex)
+					|| contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER,
+							iContentIndex))
+			{
+				fFieldWith = renderStyle.getSelectedFieldWidth();
+				fFieldHeight = renderStyle.getFieldHeight();
+			}
+		
 			fYPosition = 0;
 
 			for (Integer iStorageIndex : set.getVA(iStorageVAID))
 			{
 				renderElement(gl, iStorageIndex, iContentIndex, fXPosition, fYPosition,
-						vecFieldWidthAndHeight);
-				fYPosition += vecFieldWidthAndHeight.y();
+						fFieldWith, fFieldHeight);
+				fYPosition += fFieldHeight;
 
 			}
 
@@ -547,10 +560,12 @@ public class GLHeatMap
 				fLineDegrees = 90;
 			}
 
-			if (vecFieldWidthAndHeight.x() > 0.1f)
+			
+			// render line captions
+			if (fFieldWith > 0.1f)
 			{
 				boolean bRenderShortName = false;
-				if (vecFieldWidthAndHeight.x() < 0.2f)
+				if (fFieldWith < 0.2f)
 				{
 					fFontScaling = renderStyle.getSmallFontScalingFactor();
 				}
@@ -564,26 +579,28 @@ public class GLHeatMap
 				{
 					// Render heat map element name
 					String sContent = getRefSeqFromStorageIndex(iContentIndex);
-					if(sContent == null)
+					if (sContent == null)
 						sContent = "Unknown";
-					renderCaption(gl, sContent, fXPosition + vecFieldWidthAndHeight.x() / 6
+					renderCaption(gl, sContent, fXPosition + fFieldWith / 6
 							* 2.5f, fYPosition + 0.1f, fLineDegrees, fFontScaling);
 
 					if (bRenderShortName)
 					{
 						sContent = getShortNameFromDavid(iContentIndex);
-						if(sContent == null)
+						if (sContent == null)
 							sContent = "Unknown";
-						renderCaption(gl, sContent, fXPosition + vecFieldWidthAndHeight.x()
+						renderCaption(gl, sContent, fXPosition + fFieldWith
 								/ 6 * 4.5f, fYPosition + 0.1f, fLineDegrees, fFontScaling);
 					}
 				}
 
 			}
-			renderStyle.setXDistanceAt(set.getVA(iContentVAID).indexOf(iContentIndex),
-					fXPosition);
-			fXPosition += vecFieldWidthAndHeight.x();
+//			renderStyle.setXDistanceAt(set.getVA(iContentVAID).indexOf(iContentIndex),
+//					fXPosition);
+			fAlXDistances.add(fXPosition);
+			fXPosition += fFieldWith;
 
+			// render column captions
 			if (detailLevel == EDetailLevel.HIGH)
 			{
 				if (iCount == set.getVA(iContentVAID).size())
@@ -593,9 +610,9 @@ public class GLHeatMap
 					{
 						renderCaption(gl, set.get(iStorageIndex).getLabel(),
 								fXPosition + 0.1f,
-								fYPosition + vecFieldWidthAndHeight.y() / 2, fColumnDegrees,
+								fYPosition + fFieldHeight / 2, fColumnDegrees,
 								renderStyle.getSmallFontScalingFactor());
-						fYPosition += vecFieldWidthAndHeight.y();
+						fYPosition += fFieldHeight;
 					}
 				}
 			}
@@ -603,7 +620,7 @@ public class GLHeatMap
 	}
 
 	private void renderElement(final GL gl, final int iStorageIndex, final int iContentIndex,
-			final float fXPosition, final float fYPosition, final Vec2f vecFieldWidthAndHeight)
+			final float fXPosition, final float fYPosition, final float fFieldWidth, final float fFieldHeight)
 	{
 
 		float fLookupValue = set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
@@ -626,10 +643,10 @@ public class GLHeatMap
 				EPickingType.HEAT_MAP_FIELD_SELECTION, iContentIndex));
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);
-		gl.glVertex3f(fXPosition + vecFieldWidthAndHeight.x(), fYPosition, FIELD_Z);
-		gl.glVertex3f(fXPosition + vecFieldWidthAndHeight.x(), fYPosition
-				+ vecFieldWidthAndHeight.y(), FIELD_Z);
-		gl.glVertex3f(fXPosition, fYPosition + vecFieldWidthAndHeight.y(), FIELD_Z);
+		gl.glVertex3f(fXPosition + fFieldWidth, fYPosition, FIELD_Z);
+		gl.glVertex3f(fXPosition + fFieldWidth, fYPosition
+				+ fFieldHeight, FIELD_Z);
+		gl.glVertex3f(fXPosition, fYPosition + fFieldHeight, FIELD_Z);
 		gl.glEnd();
 
 		gl.glPopName();
@@ -660,10 +677,11 @@ public class GLHeatMap
 			int iColumnIndex = set.getVA(iContentVAID).indexOf(iCurrentColumn);
 			if (iColumnIndex == -1)
 				continue;
-			Vec2f vecFieldWidthAndHeight = renderStyle.getFieldWidthAndHeight(iColumnIndex);
+			
+//			Vec2f vecFieldWidthAndHeight = renderStyle.getFieldWidthAndHeight(iColumnIndex);
 
-			fHeight = set.getVA(iStorageVAID).size() * vecFieldWidthAndHeight.y();
-			fXPosition = renderStyle.getXDistanceAt(iColumnIndex);
+			fHeight = set.getVA(iStorageVAID).size() * renderStyle.getFieldHeight();
+			fXPosition = fAlXDistances.get(iColumnIndex);
 			// fYPosition = renderStyle.getYCenter() -
 			// vecFieldWidthAndHeight.y()
 			// * set.getVA(iStorageVAID).size() / 2;
@@ -671,8 +689,8 @@ public class GLHeatMap
 
 			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(fXPosition, fYPosition, SELECTION_Z);
-			gl.glVertex3f(fXPosition + vecFieldWidthAndHeight.x(), fYPosition, SELECTION_Z);
-			gl.glVertex3f(fXPosition + vecFieldWidthAndHeight.x(), fYPosition + fHeight,
+			gl.glVertex3f(fXPosition + renderStyle.getSelectedFieldWidth(), fYPosition, SELECTION_Z);
+			gl.glVertex3f(fXPosition + renderStyle.getSelectedFieldWidth(), fYPosition + fHeight,
 					SELECTION_Z);
 			gl.glVertex3f(fXPosition, fYPosition + fHeight, SELECTION_Z);
 			gl.glEnd();
@@ -701,14 +719,14 @@ public class GLHeatMap
 			return null;
 		}
 		// renderStyle.resetFieldWidths();
-		Vec2f vecFieldWithAndHeight = renderStyle.getFieldWidthAndHeight(iContentIndex);
+//		Vec2f vecFieldWithAndHeight = renderStyle.getFieldWidthAndHeight(iContentIndex);
 
 		// for (int iCount = 0; iCount <= iContentIndex; iCount++)
 		// {
 		// vecFieldWithAndHeight = renderStyle.getFieldWidthAndHeight(iCount);
 		// }
 
-		float fXValue = renderStyle.getXDistanceAt(iContentIndex) + vecFieldWithAndHeight.x()
+		float fXValue = fAlXDistances.get(iContentIndex) + renderStyle.getSelectedFieldWidth()
 				/ 2;// + renderStyle.getXSpacing();
 
 		float fYValue = renderStyle.getYCenter();// + vecFieldWithAndHeight.y()

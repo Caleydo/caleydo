@@ -8,9 +8,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 import javax.media.opengl.GL;
-import org.caleydo.core.data.view.rep.renderstyle.ConnectionLineRenderStyle;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
+import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
 /**

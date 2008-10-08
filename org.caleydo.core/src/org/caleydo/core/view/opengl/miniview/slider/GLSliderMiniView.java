@@ -4,7 +4,6 @@ import gleem.linalg.Vec4f;
 import java.awt.Font;
 import java.util.ArrayList;
 import javax.media.opengl.GL;
-import org.caleydo.core.data.view.rep.renderstyle.border.IBorderRenderStyle;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -12,6 +11,7 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.opengl.miniview.AGLMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.renderstyle.border.IBorderRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import com.sun.opengl.util.j2d.TextRenderer;
 

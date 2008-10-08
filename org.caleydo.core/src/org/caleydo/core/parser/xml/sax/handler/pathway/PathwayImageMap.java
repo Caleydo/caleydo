@@ -1,4 +1,4 @@
-package org.caleydo.core.data.view.rep.jgraph;
+package org.caleydo.core.parser.xml.sax.handler.pathway;
 
 import java.awt.Point;
 import java.awt.Rectangle;

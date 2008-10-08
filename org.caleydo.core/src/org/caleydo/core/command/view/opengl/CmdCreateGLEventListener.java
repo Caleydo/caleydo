@@ -8,9 +8,6 @@ import java.util.StringTokenizer;
 import java.util.logging.Level;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
-import org.caleydo.core.data.view.camera.EProjectionMode;
-import org.caleydo.core.data.view.camera.IViewFrustum;
-import org.caleydo.core.data.view.camera.ViewFrustum;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -18,6 +15,9 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.core.view.opengl.camera.EProjectionMode;
+import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 
 /**
