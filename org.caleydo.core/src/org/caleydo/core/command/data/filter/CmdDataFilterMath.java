@@ -137,7 +137,7 @@ public class CmdDataFilterMath
 	}
 
 	@Override
-	public void undoCommand() throws CaleydoRuntimeException
+	public void undoCommand()
 	{
 		commandManager.runUndoCommand(this);
 	}

@@ -1,5 +1,7 @@
 package org.caleydo.core.command.memento;
 
+import org.caleydo.core.util.exception.CaleydoRuntimeException;
+
 /**
  * IMemento has a public interface and a pseudo-private interface. This
  * pseudo-private interface is the "small" interface for the creator-object of

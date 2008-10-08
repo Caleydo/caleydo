@@ -5,7 +5,6 @@ import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.swt.browser.EBrowserType;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
 
@@ -18,9 +17,8 @@ import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
 public class CmdViewCreateHTMLBrowser
 	extends ACmdCreational<HTMLBrowserViewRep>
 {
-
 	private EBrowserType browserType;
-
+	
 	/**
 	 * Constructor.
 	 */
@@ -30,7 +28,7 @@ public class CmdViewCreateHTMLBrowser
 	}
 
 	@Override
-	public void doCommand() throws CaleydoRuntimeException
+	public void doCommand()
 	{
 
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
@@ -40,13 +38,22 @@ public class CmdViewCreateHTMLBrowser
 			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(
 					iParentContainerId);
 		}
-
-		HTMLBrowserViewRep browserView = (HTMLBrowserViewRep) viewManager.createView(
-				EManagedObjectType.VIEW_SWT_BROWSER, iParentContainerId, sLabel);
+		
+		HTMLBrowserViewRep browserView = null;
+		
+		if (browserType == EBrowserType.GENOME)
+		{
+			browserView = (HTMLBrowserViewRep) viewManager.createView(
+						EManagedObjectType.VIEW_SWT_BROWSER_GENOME, iParentContainerId, sLabel);			
+		}
+		else
+		{
+			browserView = (HTMLBrowserViewRep) viewManager.createView(
+					EManagedObjectType.VIEW_SWT_BROWSER_GENERAL, iParentContainerId, sLabel);						
+		}
 
 		viewManager.registerItem(browserView);
 
-		browserView.setAttributes(browserType);
 		browserView.initView();
 		browserView.drawView();
 
@@ -71,9 +78,14 @@ public class CmdViewCreateHTMLBrowser
 		else
 			browserType = EBrowserType.GENERAL;
 	}
+	
+	public void setAttributes(EBrowserType browserType)
+	{
+		this.browserType = browserType;
+	}
 
 	@Override
-	public void undoCommand() throws CaleydoRuntimeException
+	public void undoCommand()
 	{
 		commandManager.runUndoCommand(this);
 	}

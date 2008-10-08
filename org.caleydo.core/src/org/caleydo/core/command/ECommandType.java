@@ -16,7 +16,6 @@ public enum ECommandType
 	LOAD_DATA_FILE("cmd", "type", "", "No description available!"),
 	LOAD_LOOKUP_TABLE_FILE("cmd", "type", "", "Load a lookup table"),
 	LOAD_ON_DEMAND("cmd", "process", "LOAD_ON_DEMAND", "No description available!"),
-	LOAD_URL_IN_BROWSER("cmd", "type", "-1", "Load URL in browser"),
 
 	FETCH_PATHWAY_DATA("cmd", "type", "", "No description available!"),
 

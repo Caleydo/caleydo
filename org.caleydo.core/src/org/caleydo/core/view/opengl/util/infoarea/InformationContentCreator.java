@@ -59,11 +59,11 @@ public class InformationContentCreator
 
 				if (iUniqueID != -1)
 				{
-					sRefSeq = generalManager.getGenomeIdManager().getID(
+					sRefSeq = generalManager.getIDMappingManager().getID(
 							EMappingType.DAVID_2_REFSEQ_MRNA, iUniqueID);
-					sGeneName = generalManager.getGenomeIdManager()
+					sGeneName = generalManager.getIDMappingManager()
 							.getID(EMappingType.DAVID_2_GENE_NAME, iUniqueID);
-					sGeneSymbol = generalManager.getGenomeIdManager()
+					sGeneSymbol = generalManager.getIDMappingManager()
 							.getID(EMappingType.DAVID_2_GENE_SYMBOL, iUniqueID);
 				}
 

@@ -68,7 +68,7 @@ public class CommandQueueVector
 	}
 
 	@Override
-	public void doCommand() throws CaleydoRuntimeException
+	public void doCommand()
 	{
 
 		if (bQueueIsExcecuting)
@@ -113,7 +113,7 @@ public class CommandQueueVector
 	}
 
 	@Override
-	public void undoCommand() throws CaleydoRuntimeException
+	public void undoCommand()
 	{
 
 		if (this.bQueueCanBeExecutedSeveralTimes)

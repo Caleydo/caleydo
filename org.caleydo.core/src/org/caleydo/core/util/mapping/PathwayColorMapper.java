@@ -38,7 +38,7 @@ public class PathwayColorMapper
 	public PathwayColorMapper()
 	{
 		alMappingStorage = new ArrayList<IStorage>();
-		genomeIdManager = GeneralManager.get().getGenomeIdManager();
+		genomeIdManager = GeneralManager.get().getIDMappingManager();
 
 		expressionColorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);

@@ -195,7 +195,7 @@ public class BioCartaPathwayImageMapSaxHandler
 		}
 
 		// Convert BioCarta ID to DAVID ID
-		IIDMappingManager genomeIdManager = generalManager.getGenomeIdManager();
+		IIDMappingManager genomeIdManager = generalManager.getIDMappingManager();
 
 		Set<Integer> iSetDavidID = 
 			(Set<Integer>)genomeIdManager.<String, Integer>getMultiID(EMappingType.BIOCARTA_GENE_ID_2_DAVID, sName);

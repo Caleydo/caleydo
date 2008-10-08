@@ -425,23 +425,10 @@ public class GLGlyphSliderView
 		pickingManager.flushHits(iUniqueID, pickingType);
 
 	}
-
-	@Override
-	public void triggerUpdate()
-	{
-		generalManager.getEventPublisher().handleUpdate(this);
-	}
-
 	@Override
 	public void triggerUpdate(ISelectionDelta selectionDelta)
 	{
 		generalManager.getEventPublisher().handleUpdate(this, selectionDelta);
-	}
-
-	@Override
-	public void handleUpdate(IUniqueObject eventTrigger)
-	{
-		// TODO Auto-generated method stub
 	}
 
 	@Override

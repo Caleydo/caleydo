@@ -4,7 +4,6 @@ import javax.media.opengl.GLCapabilities;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.manager.IViewGLCanvasManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 
 /**
@@ -30,8 +29,14 @@ public class CmdViewCreateRcpGLCanvas
 	}
 
 	@Override
-	public void doCommand() throws CaleydoRuntimeException
+	public void doCommand()
 	{
+////		System.loadLibrary("libgluegen-rt.so");
+////		System.loadLibrary("libjogl_cg.so");
+////		System.loadLibrary("libjogl_awt.so");
+//		System.loadLibrary("libjogl.so");
+//		System.loadLibrary("libgluegen-rt.so");
+		
 		GLCapabilities glCapabilities = new GLCapabilities();
 		glCapabilities.setStencilBits(1);
 
@@ -54,7 +59,7 @@ public class CmdViewCreateRcpGLCanvas
 	}
 
 	@Override
-	public void undoCommand() throws CaleydoRuntimeException
+	public void undoCommand()
 	{
 		commandManager.runUndoCommand(this);
 	}

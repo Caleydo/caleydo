@@ -15,7 +15,7 @@ public class ExceptionHandler
 	 * Determine whether to hide exceptions and log them, or whether to throw
 	 * them
 	 */
-	public static final boolean HIDE_EXCEPTIONS = true;
+	public static final boolean HIDE_EXCEPTIONS = false;
 
 	private static ExceptionHandler singletonInstance = null;
 

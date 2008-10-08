@@ -3,7 +3,6 @@ package org.caleydo.core.command.system;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.parser.parameter.IParameterHandler;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Command triggers loading of pathways.
@@ -23,14 +22,14 @@ public class CmdLoadPathwayData
 	}
 
 	@Override
-	public void doCommand() throws CaleydoRuntimeException
+	public void doCommand()
 	{
 		generalManager.getPathwayManager().triggerParsingPathwayDatabases();
 		commandManager.runDoCommand(this);
 	}
 
 	@Override
-	public void undoCommand() throws CaleydoRuntimeException
+	public void undoCommand()
 	{
 		commandManager.runUndoCommand(this);
 	}

@@ -4,7 +4,6 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IViewGLCanvasManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
 
 /**
@@ -25,7 +24,7 @@ public class CmdViewCreateSwtGLCanvas
 	}
 
 	@Override
-	public void doCommand() throws CaleydoRuntimeException
+	public void doCommand()
 	{
 		IViewGLCanvasManager viewManager = generalManager.getViewGLCanvasManager();
 
@@ -51,7 +50,7 @@ public class CmdViewCreateSwtGLCanvas
 	}
 
 	@Override
-	public void undoCommand() throws CaleydoRuntimeException
+	public void undoCommand()
 	{
 		commandManager.runUndoCommand(this);
 	}

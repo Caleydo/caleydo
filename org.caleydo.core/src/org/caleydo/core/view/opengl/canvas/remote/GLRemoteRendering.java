@@ -1098,12 +1098,6 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	public void handleUpdate(IUniqueObject eventTrigger)
-	{
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
 	{
 
@@ -1897,13 +1891,6 @@ public class GLRemoteRendering
 		}
 
 		bBusyModeChanged = false;
-	}
-
-	@Override
-	public void triggerUpdate()
-	{
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

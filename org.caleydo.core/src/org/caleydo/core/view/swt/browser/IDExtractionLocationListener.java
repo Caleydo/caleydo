@@ -69,7 +69,7 @@ public class IDExtractionLocationListener
 		{
 			String sExtractedID = event.location.substring(sSearchPhrase_NCBIGeneId.length());
 
-			Integer iDavidId = generalManager.getGenomeIdManager().getID(
+			Integer iDavidId = generalManager.getIDMappingManager().getID(
 					EMappingType.ENTREZ_GENE_ID_2_DAVID,
 					StringConversionTool.convertStringToInt(sExtractedID, -1));
 

@@ -79,7 +79,7 @@ implements IMediatorSender{;
 	
 	private boolean searchForRefSeq(final String sEntity) {
 		
-		int iDavidID = generalManager.getGenomeIdManager().getID(
+		int iDavidID = generalManager.getIDMappingManager().getID(
 				EMappingType.REFSEQ_MRNA_2_DAVID, sEntity);
 		
 		if (iDavidID == -1)
@@ -100,7 +100,7 @@ implements IMediatorSender{;
 		if (iNCBIGeneID == -1)
 			return false;
 		
-		int iDavidID = generalManager.getGenomeIdManager().getID(
+		int iDavidID = generalManager.getIDMappingManager().getID(
 				EMappingType.ENTREZ_GENE_ID_2_DAVID, iNCBIGeneID);
 		
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.DAVID);
@@ -112,7 +112,7 @@ implements IMediatorSender{;
 	
 	private boolean searchForGeneShortName(final String sEntity) {
 		
-		int iDavidID = generalManager.getGenomeIdManager().getID(
+		int iDavidID = generalManager.getIDMappingManager().getID(
 				EMappingType.GENE_SYMBOL_2_DAVID, sEntity);
 		
 		if (iDavidID == -1)
@@ -137,12 +137,6 @@ implements IMediatorSender{;
 
 		// TODO Auto-generated method stub
 		
-	}
-
-	@Override
-	public void triggerUpdate()
-	{
-		generalManager.getEventPublisher().handleUpdate(this);
 	}
 
 	@Override

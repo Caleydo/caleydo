@@ -34,7 +34,6 @@ import org.caleydo.core.command.view.swt.CmdViewCreatePathway;
 import org.caleydo.core.command.view.swt.CmdViewCreateSetEditor;
 import org.caleydo.core.command.view.swt.CmdViewCreateSwtGLCanvas;
 import org.caleydo.core.command.view.swt.CmdViewCreateUndoRedo;
-import org.caleydo.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import org.caleydo.core.command.window.swt.CmdContainerCreate;
 import org.caleydo.core.command.window.swt.CmdWindowCreate;
 import org.caleydo.core.manager.ICommandManager;
@@ -75,10 +74,6 @@ public class CommandFactory
 
 		switch (cmdType)
 		{
-
-			/**
-			 * ---------------------- DATA LOADING ----------------------
-			 */
 			case LOAD_LOOKUP_TABLE_FILE:
 			{
 				createdCommand = new CmdLoadFileLookupTable(cmdType);
@@ -89,15 +84,6 @@ public class CommandFactory
 				createdCommand = new CmdLoadFileNStorages(cmdType);
 				break;
 			}
-			case LOAD_URL_IN_BROWSER:
-			{
-				createdCommand = new CmdViewLoadURLInHTMLBrowser(cmdType);
-				break;
-			}
-
-				/**
-				 * ---------------------- DATA CONTAINERS ----------------------
-				 */
 			case CREATE_STORAGE:
 			{
 				createdCommand = new CmdDataCreateStorage(cmdType);
@@ -113,15 +99,6 @@ public class CommandFactory
 				createdCommand = new CmdDataCreateSet(cmdType);
 				break;
 			}
-				// case CREATE_SELECTION:
-				// {
-				// createdCommand = new CmdDataCreateSelection(cmdType);
-				// break;
-				// }
-
-				/**
-				 * ---------------------- SWT ----------------------
-				 */
 			case CREATE_SWT_WINDOW:
 			{
 				createdCommand = new CmdWindowCreate(cmdType);
@@ -132,10 +109,6 @@ public class CommandFactory
 				createdCommand = new CmdContainerCreate(cmdType);
 				break;
 			}
-
-				/**
-				 * ---------------------- VIEW ----------------------
-				 */
 			case CREATE_VIEW_SWT_GLCANVAS:
 			{
 				createdCommand = new CmdViewCreateSwtGLCanvas(cmdType);
@@ -197,10 +170,6 @@ public class CommandFactory
 				createdCommand = new CmdViewCreateDataEntitySearcher(cmdType);
 				break;
 			}
-
-				/**
-				 * ---------------------- OPEN GL ----------------------
-				 */
 			case CREATE_GL_PATHWAY_3D:
 			{
 				createdCommand = new CmdCreateGLPathway(cmdType);
@@ -229,10 +198,6 @@ public class CommandFactory
 				createdCommand = new CmdExternalActionTrigger(cmdType);
 				break;
 			}
-
-				/**
-				 * ---------------------- EVENT - SYSTEM ----------------------
-				 */
 			case CREATE_EVENT_MEDIATOR:
 			{
 				createdCommand = new CmdEventCreateMediator(cmdType);
@@ -268,10 +233,6 @@ public class CommandFactory
 				createdCommand = new CmdFetchPathwayData(cmdType);
 				break;
 			}
-
-				/**
-				 * ---------------------- DATA FILTER ----------------------
-				 */
 			case DATA_FILTER_MATH:
 			{
 				createdCommand = new CmdDataFilterMath(cmdType);

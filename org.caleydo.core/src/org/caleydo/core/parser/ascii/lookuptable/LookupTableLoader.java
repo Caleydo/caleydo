@@ -45,11 +45,11 @@ public class LookupTableLoader
 		this.mappingType = mappingType;
 
 		swtGuiManager = GeneralManager.get().getSWTGUIManager();
-		genomeIdManager = GeneralManager.get().getGenomeIdManager();
+		genomeIdManager = GeneralManager.get().getIDMappingManager();
 
 		setTokenSeperator(IGeneralManager.sDelimiter_Parser_DataType);
 		
-		IIDMappingManager genomeIdManager = GeneralManager.get().getGenomeIdManager();
+		IIDMappingManager genomeIdManager = GeneralManager.get().getIDMappingManager();
 
 		genomeIdManager.createMap(mappingType, dataType);
 	}

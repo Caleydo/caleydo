@@ -7,8 +7,10 @@ import org.caleydo.core.view.ViewType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.browser.Browser;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -19,26 +21,21 @@ import org.eclipse.swt.widgets.ToolItem;
 /**
  * Simple HTML browser.
  * 
- * @author Michael Kalkusch
  * @author Marc Streit
  */
 public class HTMLBrowserViewRep
 	extends AView
 	implements IView
 {
-	public EBrowserType browserType;
-
 	public final static String CALEYDO_HOME = "http://www.caleydo.org";
 
 	protected Browser browser;
 
 	protected String sUrl = CALEYDO_HOME;
 
-	protected Text textField;
+	protected Text textURL;
 
-	// protected int iSelectionSetId;
-
-	private IDExtractionLocationListener idExtractionLocationListener;
+	protected IDExtractionLocationListener idExtractionLocationListener;
 
 	/**
 	 * Constructor.
@@ -46,55 +43,53 @@ public class HTMLBrowserViewRep
 	public HTMLBrowserViewRep(final int iParentContainerId, final String sLabel)
 	{
 		super(iParentContainerId, sLabel, ViewType.SWT_HTML_BROWSER);
-
-		// Default browser type
-		this.browserType = EBrowserType.GENERAL;
-
-		// CmdDataCreateSelection selectedSetCmd = (CmdDataCreateSelection)
-		// generalManager
-		//.getCommandManager().createCommandByType(CommandType.CREATE_SELECTION)
-		// ;
-		//
-		// selectedSetCmd.doCommand();
 	}
-
-	public void setAttributes(EBrowserType browserType)
-	{
-		this.browserType = browserType;
-	}
-
+	
 	@Override
-	protected void initViewSwtComposite(Composite swtContainer)
+	protected void initViewSwtComposite(Composite parent)
 	{
-		swtContainer.setLayout(new GridLayout(1, false));
-
-		ToolBar toolbar = new ToolBar(swtContainer, SWT.NONE);
-		toolbar.setBounds(0, 0, 300, 30);
-
+		Composite composite = new Composite(parent, SWT.NONE);
+		GridLayout layout = new GridLayout(1, false);
+		composite.setLayout(layout);
+		composite.setLayoutData(new GridData(GridData.FILL,GridData.FILL,true,true));
+		
+		Composite browserBarComposite = new Composite(composite, SWT.NONE);
+		browserBarComposite.setLayout(new GridLayout(2, false));
+		
+		ToolBar toolbar = new ToolBar(browserBarComposite, SWT.NONE);
+		GridData data = new GridData(GridData.FILL_VERTICAL);
+		toolbar.setLayoutData(data);
+		
 		ToolItem goButton = new ToolItem(toolbar, SWT.PUSH);
-		goButton.setText("Go");
+		goButton.setImage(new Image(parent.getDisplay(), 
+				"resources/icons/view/browser/refresh.png"));
+//		goButton.setText("Go");
 
 		ToolItem backButton = new ToolItem(toolbar, SWT.PUSH);
-		backButton.setText("Back");
+		backButton.setImage(new Image(parent.getDisplay(), 
+			"resources/icons/view/browser/back.png"));
+//		backButton.setText("Back");
 
 		ToolItem stopButton = new ToolItem(toolbar, SWT.PUSH);
-		stopButton.setText("Stop");
+		stopButton.setImage(new Image(parent.getDisplay(), 
+			"resources/icons/view/browser/stop.png"));
+//		stopButton.setText("Stop");
 
-		textField = new Text(swtContainer, SWT.BORDER);
-		// textField.setBounds(0, 30, 300, 25);
-		textField.setText(sUrl);
+		textURL = new Text(browserBarComposite, SWT.BORDER);
+		textURL.setText(sUrl);
+		data = new GridData(GridData.FILL_BOTH);
+		textURL.setLayoutData(data);
 
-		GridData data = new GridData();
+		data = new GridData();
 		data.horizontalAlignment = GridData.FILL;
 		data.grabExcessHorizontalSpace = true;
-		textField.setLayoutData(data);
+		data.heightHint = 45;
+		browserBarComposite.setLayoutData(data);
 
 		Listener listener = new Listener()
 		{
-
 			public void handleEvent(Event event)
 			{
-
 				ToolItem item = (ToolItem) event.widget;
 				String string = item.getText();
 				if (string.equals("Back"))
@@ -103,7 +98,7 @@ public class HTMLBrowserViewRep
 					browser.stop();
 				else if (string.equals("Go"))
 				{
-					sUrl = textField.getText();
+					sUrl = textURL.getText();
 					drawView();
 				}
 			}
@@ -113,18 +108,18 @@ public class HTMLBrowserViewRep
 		backButton.addListener(SWT.Selection, listener);
 		stopButton.addListener(SWT.Selection, listener);
 
-		textField.addListener(SWT.DefaultSelection, new Listener()
+		textURL.addListener(SWT.DefaultSelection, new Listener()
 		{
 
 			public void handleEvent(Event e)
 			{
 
-				sUrl = textField.getText();
+				sUrl = textURL.getText();
 				drawView();
 			}
 		});
 
-		swtContainer.getDisplay().addFilter(SWT.FocusIn, new Listener()
+		parent.getDisplay().addFilter(SWT.FocusIn, new Listener()
 		{
 
 			public void handleEvent(Event event)
@@ -135,17 +130,13 @@ public class HTMLBrowserViewRep
 			}
 		});
 
-		browser = new Browser(swtContainer, SWT.NONE);
+		browser = new Browser(composite, SWT.NONE);
 
 		idExtractionLocationListener = new IDExtractionLocationListener(browser, iUniqueID, -1);
 		browser.addLocationListener(idExtractionLocationListener);
 
 		data = new GridData();
-		data.horizontalAlignment = GridData.FILL;
-		data.verticalAlignment = GridData.FILL;
-		data.grabExcessHorizontalSpace = true;
-		data.grabExcessVerticalSpace = true;
-		browser.setLayoutData(data);
+		browser.setLayoutData(new GridData(GridData.FILL,GridData.FILL,true,true));
 	}
 
 	public void drawView()
@@ -170,13 +161,13 @@ public class HTMLBrowserViewRep
 
 		try
 		{
-			swtContainer.getDisplay().asyncExec(new Runnable()
+			parent.getDisplay().asyncExec(new Runnable()
 			{
 
 				public void run()
 				{
 
-					textField.setText(sUrl);
+					textURL.setText(sUrl);
 					browser.setUrl(sUrl);
 					// browser.refresh();
 				}
@@ -190,23 +181,9 @@ public class HTMLBrowserViewRep
 
 	public void setUrl(String sUrl)
 	{
-
-		if (browserType.equals(EBrowserType.GENERAL))
-		{
-			this.sUrl = sUrl;
-		}
-		else if (browserType.equals(EBrowserType.PUBMED))
-		{
-			this.sUrl = browserType.getBrowserQueryStringPrefix() + sUrl;
-		}
+		this.sUrl = sUrl;
 
 		idExtractionLocationListener.updateSkipNextChangeEvent(true);
 		drawView();
 	}
-
-	// public void setUrlByBrowserQueryType(String sUrl,
-	// final EBrowserQueryType browserQueryType) {
-	//		
-	// this.sUrl = browserQueryType.getBrowserQueryStringPrefix() + sUrl;
-	// }
 }

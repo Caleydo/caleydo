@@ -13,7 +13,6 @@ import org.caleydo.core.manager.specialized.genome.IPathwayManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
-import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraph;
 import org.caleydo.util.graph.IGraphItem;
@@ -249,7 +248,7 @@ public class KgmlSaxHandler
 				if (sTmpVertexName.substring(4).equals(""))
 					continue;
 				
-				iDavidId = generalManager.getGenomeIdManager().getID(
+				iDavidId = generalManager.getIDMappingManager().getID(
 						EMappingType.ENTREZ_GENE_ID_2_DAVID,
 						Integer.valueOf(sTmpVertexName.substring(4)));
 

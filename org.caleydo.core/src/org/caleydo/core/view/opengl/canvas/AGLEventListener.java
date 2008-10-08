@@ -7,8 +7,6 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
-import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.view.swt.CmdViewLoadURLInHTMLBrowser;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
@@ -26,7 +24,6 @@ import org.caleydo.core.view.opengl.camera.IViewCamera;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.camera.ViewCameraBase;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
-import org.caleydo.core.view.opengl.canvas.glyph.sliderview.GLGlyphSliderView;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
@@ -432,18 +429,6 @@ public abstract class AGLEventListener
 	public final IViewCamera getViewCamera()
 	{
 		return viewCamera;
-	}
-
-	public void loadURLInBrowser(final String sUrl)
-	{
-		if (sUrl.length() == 0)
-			return;
-
-		CmdViewLoadURLInHTMLBrowser createdCmd = (CmdViewLoadURLInHTMLBrowser) generalManager
-				.getCommandManager().createCommandByType(ECommandType.LOAD_URL_IN_BROWSER);
-
-		createdCmd.setAttributes(sUrl);
-		createdCmd.doCommand();
 	}
 
 	/**

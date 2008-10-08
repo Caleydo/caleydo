@@ -4,7 +4,6 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
 
 /**
@@ -29,7 +28,7 @@ public class CmdViewCreateUndoRedo
 	 * Method creates a undo/redo view, sets the attributes and calls the init
 	 * and draw method.
 	 */
-	public void doCommand() throws CaleydoRuntimeException
+	public void doCommand()
 	{
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
@@ -60,7 +59,7 @@ public class CmdViewCreateUndoRedo
 	}
 
 	@Override
-	public void undoCommand() throws CaleydoRuntimeException
+	public void undoCommand()
 	{
 		commandManager.runUndoCommand(this);
 	}

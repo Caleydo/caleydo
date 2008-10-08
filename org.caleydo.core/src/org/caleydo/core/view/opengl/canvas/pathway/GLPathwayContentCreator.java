@@ -106,7 +106,7 @@ public class GLPathwayContentCreator
 
 		hashElementId2MappingColorArray.clear();
 		
-		if(generalManager.getGenomeIdManager().hasMapping(
+		if(generalManager.getIDMappingManager().hasMapping(
 				EMappingType.DAVID_2_EXPRESSION_INDEX))
 		{
 			bEnableGeneMapping = true;

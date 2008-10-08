@@ -92,13 +92,6 @@ public class InfoArea
 	}
 
 	@Override
-	public void handleUpdate(IUniqueObject eventTrigger)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public void handleUpdate(final IUniqueObject eventTrigger, final ISelectionDelta selectionDelta)
 	{
 		if (!(eventTrigger instanceof AGLEventListener))
@@ -135,10 +128,10 @@ public class InfoArea
 					if (item.getSelectionType() == ESelectionType.MOUSE_OVER 
 							|| item.getSelectionType() == ESelectionType.SELECTION)
 					{
-						sDetailText = sDetailText + GeneralManager.get().getGenomeIdManager().getID(
+						sDetailText = sDetailText + GeneralManager.get().getIDMappingManager().getID(
 								EMappingType.DAVID_2_GENE_SYMBOL, item.getSelectionID());
 
-						sDetailText = sDetailText + " (" + GeneralManager.get().getGenomeIdManager().getID(
+						sDetailText = sDetailText + " (" + GeneralManager.get().getIDMappingManager().getID(
 								EMappingType.DAVID_2_REFSEQ_MRNA, item.getSelectionID()) + ")";
 
 						

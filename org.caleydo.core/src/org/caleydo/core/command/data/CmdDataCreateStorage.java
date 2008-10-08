@@ -31,7 +31,7 @@ public class CmdDataCreateStorage
 	}
 
 	@Override
-	public void doCommand() throws CaleydoRuntimeException
+	public void doCommand()
 	{
 		IStorageManager storageManager = generalManager.getStorageManager();
 		createdObject = storageManager.createStorage(storageType);
@@ -46,7 +46,7 @@ public class CmdDataCreateStorage
 	}
 
 	@Override
-	public void undoCommand() throws CaleydoRuntimeException
+	public void undoCommand()
 	{
 		commandManager.runUndoCommand(this);
 	}

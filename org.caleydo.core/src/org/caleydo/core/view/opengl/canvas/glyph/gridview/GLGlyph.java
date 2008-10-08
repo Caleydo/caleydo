@@ -528,14 +528,6 @@ public class GLGlyph
 	}
 
 	@Override
-	public void handleUpdate(IUniqueObject eventTrigger)
-	{
-
-		generalManager.getLogger().log(Level.INFO,
-				"Update called by " + eventTrigger.getClass().getSimpleName());
-	}
-
-	@Override
 	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
 	{
 
@@ -684,12 +676,6 @@ public class GLGlyph
 	{
 
 		bRedrawDisplayList_ = true;
-	}
-
-	@Override
-	public void triggerUpdate()
-	{
-		generalManager.getEventPublisher().handleUpdate(this);
 	}
 
 	@Override

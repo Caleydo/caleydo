@@ -19,7 +19,7 @@ public class SWTNativeWidget
 	/**
 	 * Constructor
 	 * 
-	 * @param composite Reference to the composite that is supposed to be
+	 * @param parent Reference to the composite that is supposed to be
 	 *            filled.
 	 */
 	public SWTNativeWidget(Composite parentComposite)

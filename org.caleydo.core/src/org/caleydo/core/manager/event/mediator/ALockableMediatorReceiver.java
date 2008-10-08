@@ -55,20 +55,6 @@ public abstract class ALockableMediatorReceiver
 	}
 
 	/**
-	 * Frees lock called by updateStall() and calls update() respectevly
-	 * updateReceiver()
-	 * 
-	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#updateContinue(Object)
-	 */
-	public final void updateContinue(IUniqueObject eventTrigger)
-	{
-
-		bUpdateIsStalled.set(false);
-
-		handleUpdate(eventTrigger);
-	}
-
-	/**
 	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#isUpdateStalled()
 	 */
 	public final boolean isUpdateStalled()
@@ -76,14 +62,6 @@ public abstract class ALockableMediatorReceiver
 
 		return bUpdateIsStalled.get();
 	}
-
-	/**
-	 * Derived classes must implement this method instead of update(Object).
-	 * 
-	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#handleUpdate(IUniqueObject)
-	 * @param eventTrigger
-	 */
-	public abstract void handleUpdate(IUniqueObject eventTrigger);
 
 	/**
 	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#hanleUpdate(IUniqueObject,

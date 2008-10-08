@@ -517,7 +517,7 @@ public class GenericSelectionManager
 			returnDelta = new SelectionDelta(externalIDType, internalIDType);
 			for (SelectionItem item : selectionDelta)
 			{
-				Integer iExternalID = GeneralManager.get().getGenomeIdManager().getID(
+				Integer iExternalID = GeneralManager.get().getIDMappingManager().getID(
 						internalToExternalMapping, item.getSelectionID());
 				if (iExternalID == null || iExternalID == -1)
 				{
@@ -552,7 +552,7 @@ public class GenericSelectionManager
 			tempHash = hashSelectionTypes.get(selectionType);
 			for (Integer iElement : tempHash.keySet())
 			{
-				Integer iExternalID = GeneralManager.get().getGenomeIdManager().getID(
+				Integer iExternalID = GeneralManager.get().getIDMappingManager().getID(
 						internalToExternalMapping, iElement);
 				if (iExternalID == null || iExternalID == -1)
 				{
@@ -596,7 +596,7 @@ public class GenericSelectionManager
 			selectionDelta = new SelectionDelta(internalIDType);
 			for (SelectionItem item : externalSelectionDelta)
 			{
-				Integer iInternalID = GeneralManager.get().getGenomeIdManager().getID(
+				Integer iInternalID = GeneralManager.get().getIDMappingManager().getID(
 						externalToInternalMapping, item.getSelectionID());
 				if (iInternalID == null || iInternalID == -1)
 				{

@@ -61,7 +61,7 @@ public class CmdDataCreateSet
 	/**
 	 * Load data from file using a token pattern.
 	 */
-	public void doCommand() throws CaleydoRuntimeException
+	public void doCommand()
 	{
 		ISetManager setManager = generalManager.getSetManager();
 
@@ -81,7 +81,7 @@ public class CmdDataCreateSet
 	}
 
 	@Override
-	public void undoCommand() throws CaleydoRuntimeException
+	public void undoCommand()
 	{
 		commandManager.runUndoCommand(this);
 	}

@@ -259,7 +259,7 @@ public class GeneralManager
 	}
 
 	@Override
-	public IIDMappingManager getGenomeIdManager()
+	public IIDMappingManager getIDMappingManager()
 	{
 		return this.genomeIdManager;
 	}

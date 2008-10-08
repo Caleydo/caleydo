@@ -4,7 +4,6 @@ import gleem.linalg.Vec4f;
 import java.awt.Font;
 import java.util.ArrayList;
 import javax.media.opengl.GL;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.opengl.miniview.AGLMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.border.IBorderRenderStyle;

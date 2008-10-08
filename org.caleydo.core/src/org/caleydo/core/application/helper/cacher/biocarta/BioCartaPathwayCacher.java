@@ -34,7 +34,7 @@ public class BioCartaPathwayCacher
 	extends Thread
 {
 
-	private static final int EXPECTED_DOWNLOADS = 656;
+	private static final int EXPECTED_DOWNLOADS = 865;
 	
 	/**
 	 * Needed for async access to set progress bar state
@@ -116,12 +116,6 @@ public class BioCartaPathwayCacher
 
 		dispatcher.getEventManager().registerObserver(new EventObserver()
 		{
-			/*
-			 * (non-Javadoc)
-			 * @see
-			 * de.phleisch.app.itsucks.event.EventObserver#processEvent(de.phleisch
-			 * .app.itsucks.event.Event)
-			 */
 			@Override
 			public void processEvent(Event arg0)
 			{
@@ -137,13 +131,12 @@ public class BioCartaPathwayCacher
 							if (progressBar.isDisposed())
 								return;
 							
-							progressBar.setSelection((iDownloadCount * 100 / EXPECTED_DOWNLOADS));
+							progressBar.setSelection((int)(iDownloadCount * 100f / EXPECTED_DOWNLOADS));
 
-							// System.out.println("Download count: "
-							// +iDownloadCount);
-							// System.out.println("Percentage: "
-							// +(int)(iDownloadCount * 100 /
-							// EXPECTED_DOWNLOADS));
+//							 System.out.println("Download count: "
+//							 +iDownloadCount);
+//							 System.out.println("Percentage: "
+//							 +(int)(iDownloadCount * 100f / EXPECTED_DOWNLOADS));
 						}
 					});
 				}

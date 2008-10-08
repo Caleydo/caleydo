@@ -21,7 +21,6 @@ import org.caleydo.core.util.system.StringConversionTool;
 public class CmdLoadFileLookupTable
 	extends ACommand
 {
-
 	protected String sFileName;
 
 	private String sLookupTableInfo;
@@ -129,7 +128,6 @@ public class CmdLoadFileLookupTable
 
 	private void extractParameters()
 	{
-
 		StringTokenizer tokenizer = new StringTokenizer(sLookupTableInfo,
 				IGeneralManager.sDelimiter_Parser_DataItems);
 
@@ -183,7 +181,7 @@ public class CmdLoadFileLookupTable
 	{
 		LookupTableLoader loader = null;
 
-		IIDMappingManager genomeIdManager = generalManager.getGenomeIdManager();
+		IIDMappingManager genomeIdManager = generalManager.getIDMappingManager();
 
 		// Remove old lookuptable if it already exists
 //		genomeIdManager.removeMapByType(EMappingType.valueOf(sLookupTableType));
@@ -193,54 +191,10 @@ public class CmdLoadFileLookupTable
 		EMappingDataType dataType;
 
 		dataType = mappingType.getDataMapppingType();
-
-//		// FIXME: find solution for lut resolve process
-//		if (bResolveCodeMappingUsingCodeToId_LUT_BOTH)
-//		{
-//			if (dataType == EMappingDataType.INT2INT)
-//			{
-//				dataType = EMappingDataType.STRING2STRING;
-//			}
-//			else if (dataType == EMappingDataType.MULTI_INT2INT)
-//			{
-//				dataType = EMappingDataType.MULTI_STRING2STRING;
-//			}
-//		}
-//		else if (bResolveCodeMappingUsingCodeToId_LUT_1)
-//		{
-//			if (dataType == EMappingDataType.INT2STRING)
-//			{
-//				dataType = EMappingDataType.STRING2STRING;
-//			}
-//			else if (dataType == EMappingDataType.INT2INT)
-//			{
-//				dataType = EMappingDataType.STRING2INT;
-//			}
-//		}
-//		else if (bResolveCodeMappingUsingCodeToId_LUT_2)
-//		{
-//			if (dataType == EMappingDataType.STRING2INT)
-//			{
-//				dataType = EMappingDataType.STRING2STRING;
-//			}
-//			else if (dataType == EMappingDataType.INT2INT)
-//			{
-//				dataType = EMappingDataType.INT2STRING;
-//			}
-//			else if (dataType == EMappingDataType.MULTI_STRING2STRING)
-//			{
-//				dataType = EMappingDataType
-//			}
-//		}
 		
 		loader = new LookupTableLoader(sFileName, mappingType, dataType);
 
 		loader.setTokenSeperator(sLookupTableDelimiter);
-
-		// if ( sFileName.endsWith( sCommaSeperatedFileExtension )) {
-		// loader.setTokenSeperator(
-		// IGeneralManager.sDelimiter_Parser_DataType );
-		// }
 
 		loader.setStartParsingStopParsingAtLine(iStartPareseFileAtLine,
 				iStopParseFileAtLine);
@@ -252,34 +206,8 @@ public class CmdLoadFileLookupTable
 				|| bResolveCodeMappingUsingCodeToId_LUT_2
 				|| bResolveCodeMappingUsingCodeToId_LUT_BOTH)
 		{
-//				EMappingType genomeMappingLUT_1 = null;
-//				EMappingType genomeMappingLUT_2 = null;
-//
-//				if (bResolveCodeMappingUsingCodeToId_LUT_1
-//						|| bResolveCodeMappingUsingCodeToId_LUT_BOTH)
-//				{
-//					genomeMappingLUT_1 = EMappingType.valueOf(sCodeResolvingLUTMappingType_1);
-//				}
-//
-//				if (bResolveCodeMappingUsingCodeToId_LUT_2
-//						|| bResolveCodeMappingUsingCodeToId_LUT_BOTH)
-//				{
-//					genomeMappingLUT_2 = EMappingType.valueOf(sCodeResolvingLUTMappingType_2);
-//				}
-
 			genomeIdManager.createCodeResolvedMap(mappingType, 
 					EMappingType.valueOf(sCodeResolvingLUTMappingType_1));
-			
-//				if (dataType == EMappingDataType.MULTI_INT2INT)
-//				{
-////					loader.createCodeResolvedMultiMapFromMultiMapString(generalManager,
-////							mappingType, genomeMappingLUT_1, genomeMappingLUT_2);
-//				}
-//				else
-//				{
-////					loader.createCodeResolvedMapFromMap(generalManager, mappingType,
-////							genomeMappingLUT_1, genomeMappingLUT_2, targetMappingDataType);
-//				}
 		}
 
 		/* --- create reverse Map ... --- */
@@ -297,32 +225,6 @@ public class CmdLoadFileLookupTable
 					+ "_2_" + mappingType.getTypeOrigin().toString());
 
 			genomeIdManager.createReverseMap(mappingType, reverseMappingType);
-			
-//				if (reverseMappingType.isMultiMap())
-//				{
-//					switch (reverseMappingType.getTypeOrigin().getStorageType())
-//					{
-//						case INT:
-//							loader.createReverseMultiMap(generalManager,
-//									mappingType, reverseMappingType);
-//							break;
-//
-//						case STRING:
-////							loader.createReverseMultiMapFromMultiMapString(generalManager,
-////									lut_genome_type, lut_genome_reverse_type);
-//							break;
-//
-//						default:
-//							throw new RuntimeException(
-//									"Reverse mapping not suported yet for this type="
-//											+ reverseMappingType.toString());
-//
-//					}
-//				}
-//				else
-//				{
-////					loader.createReverseMapFromMap(lut_genome_type, lut_genome_reverse_type);
-//				}
 		}
 
 		commandManager.runDoCommand(this);
@@ -331,7 +233,6 @@ public class CmdLoadFileLookupTable
 	@Override
 	public void undoCommand()
 	{
-
 		commandManager.runUndoCommand(this);
 	}
 }

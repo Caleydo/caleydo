@@ -4,7 +4,6 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Command sets relevant file paths in PathwayMaanger.
@@ -26,7 +25,7 @@ public class CmdLoadGlyphDefinition
 	}
 
 	@Override
-	public void doCommand() throws CaleydoRuntimeException
+	public void doCommand()
 	{
 		IGlyphManager gm = generalManager.getGlyphManager();
 
@@ -36,7 +35,7 @@ public class CmdLoadGlyphDefinition
 	}
 
 	@Override
-	public void undoCommand() throws CaleydoRuntimeException
+	public void undoCommand()
 	{
 		commandManager.runUndoCommand(this);
 	}

@@ -279,12 +279,6 @@ public class GLPathway
 	}
 
 	@Override
-	public void handleUpdate(IUniqueObject eventTrigger)
-	{
-
-	}
-
-	@Override
 	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
 	{
 		generalManager.getLogger().log(Level.FINE,
@@ -568,10 +562,6 @@ public class GLPathway
 					}
 				
 					tmpVertexGraphItem = (PathwayVertexGraphItem) tmpGraphItem;
-					
-					loadURLInBrowser(((PathwayVertexGraphItem) selectedVertex
-							.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0))
-							.getExternalLink());
 
 					int iDavidId = generalManager.getPathwayItemManager()
 							.getDavidIdByPathwayVertexGraphItemId(tmpVertexGraphItem.getId());
@@ -702,12 +692,6 @@ public class GLPathway
 		// pathway.getType().getName() + " Pathway: " + sPathwayTitle);
 
 		return sInfoText.toString();
-	}
-
-	@Override
-	public void triggerUpdate()
-	{
-		generalManager.getEventPublisher().handleUpdate(this);
 	}
 
 	@Override

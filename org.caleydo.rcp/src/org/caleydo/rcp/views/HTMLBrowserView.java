@@ -17,10 +17,10 @@ public class HTMLBrowserView
 	@Override
 	public void createPartControl(Composite parent)
 	{
-		parent.setLayout(new RowLayout(SWT.VERTICAL));
+//		parent.setLayout(new RowLayout(SWT.VERTICAL));
 		
 		HTMLBrowserViewRep browserView = (HTMLBrowserViewRep) GeneralManager.get().getViewGLCanvasManager().createView(
-				EManagedObjectType.VIEW_SWT_BROWSER, -1, "Browser");
+				EManagedObjectType.VIEW_SWT_BROWSER_GENOME, -1, "Browser");
 
 		browserView.initViewRCP(parent);
 		browserView.drawView();

@@ -3,6 +3,7 @@ package org.caleydo.rcp.wizard.firststart;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.eclipse.jface.dialogs.DialogPage;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
@@ -46,17 +47,21 @@ public final class FetchPathwayDataPage
 
 	public void createControl(Composite parent)
 	{
-		final Composite composite = new Composite(parent, SWT.NONE);
-		
+		Composite composite = new Composite(parent, SWT.NULL);
 		RowLayout layout = new RowLayout(SWT.VERTICAL);
 		layout.wrap = true;
 		layout.fill = true;
 		layout.justify = true;
 		layout.center = true;
 		composite.setLayout(layout);
-
+		
+		setControl(createContent(composite, this));
+	}
+	
+	public static Composite createContent(final Composite composite, final DialogPage parentPage)
+	{
 		final Button buttonStartFetch = new Button(composite, SWT.NONE);
-		buttonStartFetch.setText("Start pathway fetching");
+		buttonStartFetch.setText("Fetch pathways");
 		buttonStartFetch.setAlignment(SWT.CENTER);
 		
 		Group progressBarGroup = new Group(composite, SWT.NONE);
@@ -97,14 +102,14 @@ public final class FetchPathwayDataPage
 						progressBarKeggPathwayCacher,
 						progressBarKeggImagePathwayCacher,
 						progressBarBioCartaPathwayCacher,
-						thisPage);
+						parentPage);
 				
 				cmdPathwayFetch.doCommand();
 				
 				buttonStartFetch.setEnabled(false);
 			}
 		});
-
-		setControl(composite);
+		
+		return composite;
 	}
 }

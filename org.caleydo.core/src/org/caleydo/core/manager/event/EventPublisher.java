@@ -290,49 +290,6 @@ public class EventPublisher
 	}
 
 	@Override
-	public void handleUpdate(IUniqueObject eventTrigger)
-	{
-
-		// Prevent update during initialization of data.
-		if (hashSender2DataMediators.isEmpty())
-		{
-			return;
-		}
-
-		// Dont't do anything if sender is not registered
-		if (!hashSender2DataMediators.containsKey(eventTrigger))
-		{
-			// assert false : "Sender is not registered and calls update(); " +
-			// eventTrigger.toString() + "]";
-			/* work around! */
-
-			return;
-		}
-
-		ArrayList<IMediator> arMediators = hashSender2DataMediators.get(eventTrigger);
-
-		Iterator<IMediator> iterMediators = arMediators.iterator();
-
-		IMediator tmpMediator;
-
-		while (iterMediators.hasNext())
-		{
-			tmpMediator = iterMediators.next();
-
-			if (tmpMediator != null)
-			{
-				tmpMediator.handleUpdate(eventTrigger);
-			}
-			else
-			{
-				// TODO: print message
-				assert false : "Mediator is null while calling update(); "
-						+ eventTrigger.toString() + "]";
-			}
-		}
-	}
-
-	@Override
 	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
 	{
 

@@ -31,7 +31,7 @@ public class ParCoordsPreferencePage
 		super(GRID);
 		// setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setPreferenceStore(GeneralManager.get().getPreferenceStore());
-		setDescription("Preferences for the Parallel Coordinates view view.");
+		setDescription("Preferences for the Parallel Coordinates view.");
 	}
 
 	/**

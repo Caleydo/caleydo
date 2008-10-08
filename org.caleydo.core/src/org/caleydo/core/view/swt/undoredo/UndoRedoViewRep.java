@@ -72,7 +72,7 @@ public class UndoRedoViewRep
 	public void addCommand(final ICommand command)
 	{
 
-		swtContainer.getDisplay().asyncExec(new Runnable()
+		parent.getDisplay().asyncExec(new Runnable()
 		{
 
 			public void run()

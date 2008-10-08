@@ -4,7 +4,6 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.swt.glyph.GlyphMappingConfigurationViewRep;
 
 /**
@@ -26,7 +25,7 @@ public class CmdViewCreateGlyphConfiguration
 	}
 
 	@Override
-	public void doCommand() throws CaleydoRuntimeException
+	public void doCommand()
 	{
 
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
@@ -56,7 +55,7 @@ public class CmdViewCreateGlyphConfiguration
 	}
 
 	@Override
-	public void undoCommand() throws CaleydoRuntimeException
+	public void undoCommand()
 	{
 		commandManager.runUndoCommand(this);
 	}

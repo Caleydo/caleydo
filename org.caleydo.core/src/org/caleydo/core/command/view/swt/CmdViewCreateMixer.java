@@ -5,7 +5,6 @@ import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.swt.mixer.MixerViewRep;
 
 /**
@@ -29,7 +28,7 @@ public class CmdViewCreateMixer
 	}
 
 	@Override
-	public void doCommand() throws CaleydoRuntimeException
+	public void doCommand()
 	{
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
@@ -70,7 +69,7 @@ public class CmdViewCreateMixer
 	}
 
 	@Override
-	public void undoCommand() throws CaleydoRuntimeException
+	public void undoCommand()
 	{
 		commandManager.runUndoCommand(this);
 	}

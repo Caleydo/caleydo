@@ -20,7 +20,7 @@ public class GeneAnnotationMapper
 	 */
 	public GeneAnnotationMapper()
 	{
-		genomeIDManager = GeneralManager.get().getGenomeIdManager();
+		genomeIDManager = GeneralManager.get().getIDMappingManager();
 	}
 
 	public final String getGeneShortNameByNCBIGeneId(String sGeneId)

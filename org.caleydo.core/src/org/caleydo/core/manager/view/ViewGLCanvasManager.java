@@ -13,7 +13,6 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
@@ -28,6 +27,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoor
 import org.caleydo.core.view.opengl.canvas.wii.GLCanvasWiiTest;
 import org.caleydo.core.view.opengl.renderstyle.layout.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
+import org.caleydo.core.view.swt.browser.GenomeHTMLBrowserViewRep;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
 import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
 import org.caleydo.core.view.swt.glyph.GlyphMappingConfigurationViewRep;
@@ -55,17 +55,6 @@ public class ViewGLCanvasManager
 
 	protected HashMap<Integer, AGLEventListener> hashGLEventListenerID2GLEventListener;
 
-	/**
-	 * List of data explorer view reps (needed for mediator registration when
-	 * data is created).
-	 */
-	protected ArrayList<IView> arDataExplorerViewRep;
-
-	/**
-	 * List of HTML browser view reps
-	 */
-	protected ArrayList<IView> arHTMLBrowserViewRep;
-
 	protected ArrayList<JFrame> arWorkspaceJFrame;
 
 	private Animator fpsAnimator;
@@ -92,8 +81,6 @@ public class ViewGLCanvasManager
 		hashGLCanvasID2GLEventListeners = new HashMap<Integer, ArrayList<AGLEventListener>>();
 		hashGLEventListenerID2GLEventListener = new HashMap<Integer, AGLEventListener>();
 
-		arDataExplorerViewRep = new ArrayList<IView>();
-		arHTMLBrowserViewRep = new ArrayList<IView>();
 		arWorkspaceJFrame = new ArrayList<JFrame>();
 		
 		fpsAnimator = new FPSAnimator(null, 60);
@@ -170,9 +157,12 @@ public class ViewGLCanvasManager
 			case VIEW_SWT_MIXER:
 				view = new MixerViewRep(iParentContainerID, sLabel);
 				break;
-			case VIEW_SWT_BROWSER:
+			case VIEW_SWT_BROWSER_GENERAL:
 				view = new HTMLBrowserViewRep(iParentContainerID, sLabel);
 				break;
+			case VIEW_SWT_BROWSER_GENOME:
+				view = new GenomeHTMLBrowserViewRep(iParentContainerID, sLabel);
+				break;	
 			case VIEW_SWT_IMAGE:
 				view = new ImageViewRep(iParentContainerID, sLabel);
 				break;
@@ -216,24 +206,6 @@ public class ViewGLCanvasManager
 		registerItem(view);
 
 		return view;
-	}
-
-	public ArrayList<IView> getViewRepByType(ViewType viewType)
-	{
-
-		switch (viewType)
-		{
-			case SWT_DATA_EXPLORER:
-				return arDataExplorerViewRep;
-
-			case SWT_HTML_BROWSER:
-				return arHTMLBrowserViewRep;
-
-			default:
-				assert false : "unsupportet view Type";
-				return null;
-		} // switch (viewType)
-
 	}
 
 	@Override
@@ -359,8 +331,6 @@ public class ViewGLCanvasManager
 		hashGLCanvasID2GLEventListeners.clear();
 		hashGLEventListenerID2GLEventListener.clear();
 		hashItems.clear();
-		arDataExplorerViewRep.clear();
-		arHTMLBrowserViewRep.clear();
 	}
 
 	@Override
@@ -395,13 +365,6 @@ public class ViewGLCanvasManager
 				case SWT_DATA_EXCHANGER:
 					System.err.println("Ignore: addViewRep(" + view.getViewType()
 							+ ") type SWT_DATA_EXCHANGER!");
-					return;
-
-				case SWT_DATA_EXPLORER:
-					// arDataExplorerViewRep.add( (DataExplorerViewRep) view);
-					return;
-				case SWT_HTML_BROWSER:
-					arHTMLBrowserViewRep.add(view);
 					return;
 				case SWT_DATA_ENTITY_SEARCHER:
 					dataEntitySearcher = (DataEntitySearcherViewRep) view;

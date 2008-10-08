@@ -106,7 +106,7 @@ public abstract class AStorageBasedView
 
 		mapVAIDs = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
 
-		genomeIDManager = generalManager.getGenomeIdManager();
+		genomeIDManager = generalManager.getIDMappingManager();
 
 		connectedElementRepresentationManager = generalManager.getViewGLCanvasManager()
 				.getConnectedElementRepresentationManager();
@@ -321,12 +321,6 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public void handleUpdate(IUniqueObject eventTrigger)
-	{
-
-	}
-
-	@Override
 	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
 	{
 		// Check for type that can be handled
@@ -390,13 +384,7 @@ public abstract class AStorageBasedView
 		// resetSelections();
 		setDisplayListDirty();
 	}
-
-	@Override
-	public void triggerUpdate()
-	{
-		generalManager.getEventPublisher().handleUpdate(this);
-	}
-
+	
 	@Override
 	public void triggerUpdate(ISelectionDelta selectionDelta)
 	{

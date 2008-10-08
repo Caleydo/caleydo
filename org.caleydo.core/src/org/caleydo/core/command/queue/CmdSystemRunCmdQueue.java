@@ -27,7 +27,7 @@ public class CmdSystemRunCmdQueue
 	}
 
 	@Override
-	public void doCommand() throws CaleydoRuntimeException
+	public void doCommand()
 	{
 
 		ICommandQueue cmdQueue = this.generalManager.getCommandManager()
@@ -43,7 +43,7 @@ public class CmdSystemRunCmdQueue
 	}
 
 	@Override
-	public void undoCommand() throws CaleydoRuntimeException
+	public void undoCommand()
 	{
 
 		ICommandQueue cmdQueue = this.generalManager.getCommandManager()

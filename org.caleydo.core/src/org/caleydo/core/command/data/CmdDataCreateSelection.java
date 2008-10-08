@@ -5,7 +5,6 @@ import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.SelectionDelta;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Class creates a selection.
@@ -28,7 +27,7 @@ public class CmdDataCreateSelection
 	}
 
 	@Override
-	public void doCommand() throws CaleydoRuntimeException
+	public void doCommand()
 	{
 
 		createdObject = new SelectionDelta(idType, internalIDType);
@@ -37,7 +36,7 @@ public class CmdDataCreateSelection
 	}
 
 	@Override
-	public void undoCommand() throws CaleydoRuntimeException
+	public void undoCommand()
 	{
 		commandManager.runUndoCommand(this);
 	}

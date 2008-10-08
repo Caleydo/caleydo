@@ -18,10 +18,10 @@ Bundle-ClassPath: .,
  lib/jogl/gluegen-rt.jar,
  lib/jogl/jogl.jar
 Bundle-NativeCode: 
- /lib/jogl/macosx/libgluegen-rt.jnilib;
- /lib/jogl/macosx/libjogl_cg.jnilib;
- /lib/jogl/macosx/libjogl_awt.jnilib;
- /lib/jogl/macosx/libjogl.jnilib;
+ lib/jogl/macosx/libgluegen-rt.jnilib;
+ lib/jogl/macosx/libjogl_cg.jnilib;
+ lib/jogl/macosx/libjogl_awt.jnilib;
+ lib/jogl/macosx/libjogl.jnilib;
  osname=macosx;
  osname=mac;
  osname=macos;

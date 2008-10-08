@@ -39,7 +39,7 @@ public abstract class AView
 
 	protected String sLabel;
 
-	protected Composite swtContainer;
+	protected Composite parent;
 
 	/**
 	 * Constructor
@@ -67,7 +67,7 @@ public abstract class AView
 		setManager = generalManager.getSetManager();
 	}
 
-	protected abstract void initViewSwtComposite(Composite swtContainer);
+	protected abstract void initViewSwtComposite(Composite parent);
 
 	/**
 	 * Sets the unique ID of the parent container. Normally it is already set in
@@ -82,11 +82,10 @@ public abstract class AView
 		this.iParentContainerId = iParentContainerId;
 	}
 
-	public final void initViewRCP(Composite swtContainer)
+	public final void initViewRCP(Composite parent)
 	{
-
-		this.swtContainer = swtContainer;
-		initViewSwtComposite(swtContainer);
+		this.parent = parent;
+		initViewSwtComposite(parent);
 	}
 
 	@Override
@@ -101,11 +100,11 @@ public abstract class AView
 		SWTNativeWidget sWTNativeWidget = (SWTNativeWidget) generalManager.getSWTGUIManager()
 				.createWidget(EManagedObjectType.GUI_SWT_NATIVE_WIDGET, iParentContainerId);
 
-		swtContainer = sWTNativeWidget.getSWTWidget();
+		parent = sWTNativeWidget.getSWTWidget();
 
-		assert swtContainer != null : "empty SWT container";
+		assert parent != null : "empty SWT container";
 
-		initViewSwtComposite(swtContainer);
+		initViewSwtComposite(parent);
 	}
 
 	@Override
@@ -121,11 +120,11 @@ public abstract class AView
 
 		this.sLabel = label;
 
-		if (swtContainer != null)
+		if (parent != null)
 		{
 			try
 			{
-				swtContainer.getShell().setText(label);
+				parent.getShell().setText(label);
 			}
 			catch (SWTException se)
 			{

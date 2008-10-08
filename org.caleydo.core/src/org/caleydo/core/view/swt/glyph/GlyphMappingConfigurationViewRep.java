@@ -159,17 +159,17 @@ public class GlyphMappingConfigurationViewRep
 		};
 
 		GridLayout layout = new GridLayout();
-		swtContainer.setBackground(new Color(null, 255, 255, 255));
+		parent.setBackground(new Color(null, 255, 255, 255));
 
-		addHeaderScatterplot(swtContainer);
-		addBodyScatterplotAxisDefinition(swtContainer);
-		addHeaderGlyphDefinition(swtContainer);
-		addBodyGlyphDefinition(swtContainer);
+		addHeaderScatterplot(parent);
+		addBodyScatterplotAxisDefinition(parent);
+		addHeaderGlyphDefinition(parent);
+		addBodyGlyphDefinition(parent);
 
-		swtContainer.setLayout(layout);
+		parent.setLayout(layout);
 		layout.numColumns = 1;
 
-		swtContainer.getParent().setSize(600, 300);
+		parent.getParent().setSize(600, 300);
 
 	}
 
@@ -183,7 +183,7 @@ public class GlyphMappingConfigurationViewRep
 			data.exclude = false;
 
 			comp.setVisible(true);
-			swtContainer.layout(false);
+			parent.layout(false);
 
 		}
 		else
@@ -193,7 +193,7 @@ public class GlyphMappingConfigurationViewRep
 			data.exclude = true;
 
 			comp.setVisible(false);
-			swtContainer.layout(false);
+			parent.layout(false);
 
 		}
 	}

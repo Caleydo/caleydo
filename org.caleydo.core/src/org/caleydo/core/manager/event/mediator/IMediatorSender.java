@@ -11,12 +11,6 @@ import org.caleydo.core.data.selection.ISelectionDelta;
  */
 public interface IMediatorSender
 {
-
-	/**
-	 * Trigger an empty update
-	 */
-	public void triggerUpdate();
-
 	/**
 	 * Trigger an update with the selection delta specified
 	 * 

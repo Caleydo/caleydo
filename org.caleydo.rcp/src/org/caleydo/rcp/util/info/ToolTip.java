@@ -118,7 +118,7 @@ public class ToolTip
 						Iterator<SelectionItem> iterSelectionItems 
 							= infoArea.getSelectionDelta().getSelectionData().iterator();
 						SelectionItem item;
-						IIDMappingManager genomeIDManager = GeneralManager.get().getGenomeIdManager();
+						IIDMappingManager genomeIDManager = GeneralManager.get().getIDMappingManager();
 
 						while(iterSelectionItems.hasNext())
 						{

@@ -12,6 +12,7 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Manages mapping tables.
@@ -74,17 +75,34 @@ public class IDMappingManager
 	@SuppressWarnings("unchecked")
 	public <SrcType, DestType> void createReverseMap(EMappingType srcType, EMappingType reverseType)
 	{
-		if (srcType.isMultiMap())
-			hashType2Mapping.put(reverseType, new MultiHashMap<DestType, SrcType>());
-		else
-			hashType2Mapping.put(reverseType, new HashMap<DestType, SrcType>());
-		
-		HashMap<DestType, SrcType> reverseMap = (HashMap<DestType, SrcType>) hashType2Mapping.get(reverseType);
-		HashMap<SrcType, DestType> sourceMap = (HashMap<SrcType, DestType>) hashType2Mapping.get(srcType);
+		Map<DestType, SrcType> reverseMap;
 
-		for (SrcType key : sourceMap.keySet())
+		if (srcType.isMultiMap())
 		{
-			reverseMap.put(sourceMap.get(key), key);
+			hashType2Mapping.put(reverseType, new MultiHashMap<DestType, SrcType>());
+
+			reverseMap = (MultiHashMap<DestType, SrcType>) hashType2Mapping.get(reverseType);
+			MultiHashMap<SrcType, DestType> sourceMap = (MultiHashMap<SrcType, DestType>) hashType2Mapping.get(srcType);
+
+			for (SrcType key : sourceMap.keySet())
+			{
+				for (DestType value : sourceMap.getAll(key))
+				{
+					reverseMap.put(value, key);					
+				}
+			}
+		}
+		else
+		{
+			hashType2Mapping.put(reverseType, new HashMap<DestType, SrcType>());
+			
+			reverseMap = (HashMap<DestType, SrcType>) hashType2Mapping.get(reverseType);
+			Map<SrcType, DestType> sourceMap = (HashMap<SrcType, DestType>) hashType2Mapping.get(srcType);
+
+			for (SrcType key : sourceMap.keySet())
+			{
+				reverseMap.put(sourceMap.get(key), key);
+			}
 		}
 	}
 	
@@ -117,21 +135,21 @@ public class IDMappingManager
 				{
 					codeResolvedMap = new HashMap<Integer, Integer>();
 				
-					//TODO: implement
+					throw new NotImplementedException();
 				}
 				else if (originKeyType.getStorageType() == EStorageType.INT 
 						&& destValueType.getStorageType() == EStorageType.STRING)
 				{
 					codeResolvedMap = new HashMap<Integer, String>();
 				
-					//TODO: implement
+					throw new NotImplementedException();
 				}
 				else if (originKeyType.getStorageType() == EStorageType.STRING 
 						&& destValueType.getStorageType() == EStorageType.STRING)
 				{
 					codeResolvedMap = new HashMap<String, String>();
 				
-					//TODO: implement
+					throw new NotImplementedException();
 				}
 				else if (originKeyType.getStorageType() == EStorageType.STRING 
 						&& destValueType.getStorageType() == EStorageType.INT)
@@ -146,7 +164,7 @@ public class IDMappingManager
 						for (KeyType key : srcMap.keySet())
 						{						
 							codeResolvedMap.put(key, 
-									generalManager.getGenomeIdManager().getID(conversionType, srcMap.get(key)));
+									generalManager.getIDMappingManager().getID(conversionType, srcMap.get(key)));
 						}
 					}
 					else
@@ -159,7 +177,7 @@ public class IDMappingManager
 						{					
 							for (String sID : srcMultiMap.getAll(key))
 							{
-								iID = generalManager.getGenomeIdManager().getID(conversionType, sID);
+								iID = generalManager.getIDMappingManager().getID(conversionType, sID);
 								
 								if (iID == null)
 									continue;
@@ -185,7 +203,7 @@ public class IDMappingManager
 
 					for (KeyType key : srcMap.keySet())
 					{						
-						codeResolvedMap.put(generalManager.getGenomeIdManager().getID(conversionType, key), 
+						codeResolvedMap.put(generalManager.getIDMappingManager().getID(conversionType, key), 
 								srcMap.get(key));
 					}
 				}
@@ -194,21 +212,21 @@ public class IDMappingManager
 				{
 					codeResolvedMap = new HashMap<Integer, String>();
 				
-					//TODO: implement
+					throw new NotImplementedException();
 				}
 				else if (destKeyType.getStorageType() == EStorageType.STRING 
 						&& destValueType.getStorageType() == EStorageType.STRING)
 				{
 					codeResolvedMap = new HashMap<String, String>();
 
-					//TODO: implement
+					throw new NotImplementedException();
 				}
 				else if (destKeyType.getStorageType() == EStorageType.STRING 
 						&& destValueType.getStorageType() == EStorageType.INT)
 				{
 					codeResolvedMap = new HashMap<String, Integer>();
 				
-					//TODO: implement
+					throw new NotImplementedException();
 				}
 			}	
 		}

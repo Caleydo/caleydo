@@ -1,12 +1,19 @@
 package org.caleydo.core.command.system;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import org.caleydo.core.application.helper.cacher.biocarta.BioCartaPathwayCacher;
 import org.caleydo.core.application.helper.cacher.kegg.KeggPathwayCacher;
 import org.caleydo.core.application.helper.cacher.kegg.KeggPathwayImageCacher;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
+import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
+import org.eclipse.jface.dialogs.DialogPage;
+import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
@@ -23,7 +30,7 @@ public class CmdFetchPathwayData
 	private ProgressBar progressBarKeggPathwayCacher = null;
 	private ProgressBar progressBarKeggPathwayImageCacher = null;
 	private ProgressBar progressBarBioCartaPathwayCacher = null;
-	private WizardPage parentWizardPage = null;
+	private DialogPage parentPage = null;
 
 	private boolean isKeggCacherFinished = false;
 	private boolean isKeggImageCacherFinished = false;
@@ -38,8 +45,20 @@ public class CmdFetchPathwayData
 	}
 
 	@Override
-	public void doCommand() throws CaleydoRuntimeException
+	public void doCommand()
 	{
+		clearOldPathwayData();
+		
+		try
+		{
+			generalManager.getPreferenceStore().setValue("pathwayDataOK", false);
+			generalManager.getPreferenceStore().save();
+		}
+		catch (IOException e1)
+		{
+			throw new IllegalStateException("Unable to save preference file.");
+		}
+		
 		BioCartaPathwayCacher bioCartaPathwayCacher = new BioCartaPathwayCacher(display,
 				progressBarBioCartaPathwayCacher, this);
 		bioCartaPathwayCacher.start();
@@ -56,7 +75,7 @@ public class CmdFetchPathwayData
 	}
 
 	@Override
-	public void undoCommand() throws CaleydoRuntimeException
+	public void undoCommand()
 	{
 		commandManager.runUndoCommand(this);
 	}
@@ -71,13 +90,13 @@ public class CmdFetchPathwayData
 			final ProgressBar progressBarKeggPathwayCacher,
 			final ProgressBar progressBarKeggPathwayImageCacher,
 			final ProgressBar progressBarBioCartaPathwayCacher,
-			final WizardPage parentWizardPage)
+			final DialogPage parentPage)
 	{
 		this.display = display;
 		this.progressBarKeggPathwayCacher = progressBarKeggPathwayCacher;
 		this.progressBarKeggPathwayImageCacher = progressBarKeggPathwayImageCacher;
 		this.progressBarBioCartaPathwayCacher = progressBarBioCartaPathwayCacher;
-		this.parentWizardPage = parentWizardPage;
+		this.parentPage = parentPage;
 	}
 
 	public void setFinishedKeggCacher()
@@ -100,7 +119,7 @@ public class CmdFetchPathwayData
 
 	public void notifyWizard()
 	{
-		if (parentWizardPage == null)
+		if (parentPage == null)
 			return;
 
 		if (isKeggCacherFinished && isKeggImageCacherFinished && isBioCartaCacherFinished)
@@ -109,9 +128,83 @@ public class CmdFetchPathwayData
 			{
 				public void run()
 				{
-					parentWizardPage.setPageComplete(true);
+					if (parentPage instanceof WizardPage)
+					{
+						((WizardPage)parentPage).setPageComplete(true);
+					}
+					else if (parentPage instanceof PreferencePage)
+					{
+						((PreferencePage)parentPage).setValid(true);
+					}
+					
+					try
+					{
+						// TODO: replace with constants
+						generalManager.getPreferenceStore().setValue("pathwayDataOK", true);
+						generalManager.getPreferenceStore().setValue("lastPathwayDataUpdate", getDateTime());
+						generalManager.getPreferenceStore().save();
+					}
+					catch (IOException e1)
+					{
+						throw new IllegalStateException("Unable to save preference file.");
+					}
 				}
 			});
 		}
+	}
+	
+//	private void createBackup()
+//	{
+//		new File(IGeneralManager.CALEYDO_HOME_PATH + "kegg").renameTo(
+//				new File(IGeneralManager.CALEYDO_HOME_PATH + "backup_kegg"));
+//		new File(IGeneralManager.CALEYDO_HOME_PATH + "cgap.nci.nih.gov").renameTo(
+//				new File(IGeneralManager.CALEYDO_HOME_PATH + "backup_cgap.nci.nih.gov"));
+//		new File(IGeneralManager.CALEYDO_HOME_PATH + "www.genome.jp").renameTo(
+//				new File(IGeneralManager.CALEYDO_HOME_PATH + "backup_www.genome.jp"));
+//		
+//		new File(IGeneralManager.CALEYDO_HOME_PATH + "pathway_list_KEGG.txt").renameTo(
+//				new File(IGeneralManager.CALEYDO_HOME_PATH + "backup_pathway_list_KEGG.txt"));
+//		new File(IGeneralManager.CALEYDO_HOME_PATH + "pathway_list_BIOCARTA.txt").renameTo(
+//				new File(IGeneralManager.CALEYDO_HOME_PATH + "backup_pathway_list_BIOCARTA.txt"));
+//	}
+//	
+//	private void restoreBackup()
+//	{
+//		
+//	}
+	
+	private void clearOldPathwayData()
+	{
+		deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH + "kegg"));
+		deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH + "cgap.nci.nih.gov"));
+		deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH + "www.genome.jp"));
+		
+		deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH + "pathway_list_KEGG.txt"));
+		deleteDir(new File(IGeneralManager.CALEYDO_HOME_PATH + "pathway_list_BIOCARTA.txt"));		
+	}
+
+	// Deletes all files and subdirectories under dir.
+    // Returns true if all deletions were successful.
+    // If a deletion fails, the method stops attempting to delete and returns false.
+    public static boolean deleteDir(File dir) {
+        if (dir.isDirectory()) {
+            String[] children = dir.list();
+            for (int i=0; i<children.length; i++) {
+                boolean success = deleteDir(new File(dir, children[i]));
+                if (!success) {
+                    return false;
+                }
+            }
+        }
+    
+        // The directory is now empty so delete it
+        return dir.delete();
+    } 
+    
+	private String getDateTime()
+	{
+		DateFormat dateFormat = new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss");
+		Date date = new Date();
+		return dateFormat.format(date);
 	}
 }

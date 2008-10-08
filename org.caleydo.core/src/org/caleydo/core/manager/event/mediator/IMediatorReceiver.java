@@ -12,14 +12,6 @@ import org.caleydo.core.data.selection.ISelectionDelta;
  */
 public interface IMediatorReceiver
 {
-
-	/**
-	 * Update called by Mediator triggered by IMediatorSender.
-	 * 
-	 * @param eventTrigger Calling object, that created the update
-	 */
-	public void handleUpdate(IUniqueObject eventTrigger);
-
 	/**
 	 * Update called by Mediator triggered by IMediatorSender.
 	 * 

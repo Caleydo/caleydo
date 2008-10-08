@@ -113,38 +113,6 @@ public class LockableMediator
 	}
 
 	/**
-	 * Notification of update events. Calles updateReceiver(IMediatorSender)
-	 * internal if updates are not stalled.
-	 * 
-	 * @see org.caleydo.core.manager.event.mediator.IMediatorReceiver#handleUpdate(IUniqueObject)
-	 * @see org.caleydo.core.observer.mediator.AThreadedMediatorReceiver#handleUpdate(IUniqueObject)
-	 */
-	@Override
-	public void handleUpdate(IUniqueObject eventTrigger)
-	{
-
-		assert eventTrigger != null : "can not handle null-pointer";
-
-		if (bUpdateIsStalled.get())
-		{
-			Iterator<IMediatorReceiver> iter = arReceiver.iterator();
-
-			while (iter.hasNext())
-			{
-
-				IMediatorReceiver currentReceiver = iter.next();
-
-				// Prevent circular updates
-				if (!currentReceiver.getClass().equals(eventTrigger.getClass()))
-				{
-					currentReceiver.handleUpdate(eventTrigger);
-				}
-			} // while (iter.hasNext())
-
-		} // if ( bUpdateIsStalled.get() ) {
-	}
-
-	/**
 	 * Base implementation.
 	 * 
 	 * @see org.caleydo.core.manager.event.mediator.LockableExclusivFilterMediator

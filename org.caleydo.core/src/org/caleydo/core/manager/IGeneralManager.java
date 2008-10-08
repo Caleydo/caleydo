@@ -57,7 +57,7 @@ public interface IGeneralManager
 
 	public  IPathwayItemManager getPathwayItemManager();
 
-	public  IIDMappingManager getGenomeIdManager();
+	public  IIDMappingManager getIDMappingManager();
 
 	public  IGlyphManager getGlyphManager();
 

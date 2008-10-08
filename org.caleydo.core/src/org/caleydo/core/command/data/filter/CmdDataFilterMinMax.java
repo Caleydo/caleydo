@@ -4,7 +4,6 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * This class calculates the min and the max value of a storage or a set It is
@@ -41,7 +40,7 @@ public class CmdDataFilterMinMax
 	 * Calculates the minimum and the maximum of either a set or a storage
 	 * depending on what has been set using the setAttributes methods
 	 */
-	public void doCommand() throws CaleydoRuntimeException
+	public void doCommand()
 	{
 
 		if (myStorage == null && mySet != null)

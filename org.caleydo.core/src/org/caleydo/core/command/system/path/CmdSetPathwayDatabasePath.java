@@ -5,7 +5,6 @@ import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Command sets relevant file paths in PathwayMaanger.
@@ -38,7 +37,7 @@ public class CmdSetPathwayDatabasePath
 	 * 
 	 * @see org.caleydo.core.command.ICommand#doCommand()
 	 */
-	public void doCommand() throws CaleydoRuntimeException
+	public void doCommand()
 	{
 
 		IPathwayManager pathwayManager = generalManager.getPathwayManager();
@@ -49,7 +48,7 @@ public class CmdSetPathwayDatabasePath
 	}
 
 	@Override
-	public void undoCommand() throws CaleydoRuntimeException
+	public void undoCommand()
 	{
 
 		commandManager.runUndoCommand(this);
