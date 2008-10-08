@@ -1,5 +1,8 @@
 package org.caleydo.core.view.opengl.canvas.glyph.gridview;
 
+
+import gleem.linalg.Rotf;
+import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Vec2i;
 import java.awt.event.MouseListener;
@@ -30,6 +33,7 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.JoglMouseListener;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.renderstyle.GlyphRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 
@@ -104,7 +108,7 @@ public class GLGlyph
 	public void init(GL gl)
 	{
 
-		// disable view rotation, zooming
+		// disable std view rotation, zooming
 		{
 			MouseListener[] ml = parentGLCanvas.getMouseListeners();
 			for (MouseListener l : ml)
@@ -135,14 +139,9 @@ public class GLGlyph
 		grid_ = new GLGlyphGrid(renderStyle);
 		grid_.loadData(glyphData);
 
-		grid_.buildGrid(gl);
-
-		grid_.buildScatterplotGrid(gl);
+		grid_.buildGrids(gl);
 
 		grid_.selectAll();
-
-		// grid_.setGridSize(30, 60);
-		// grid_.setGlyphPositions(EIconIDs.DISPLAY_SCATTERPLOT.ordinal());
 
 		// init glyph gl
 		bRedrawDisplayList_ = true;
@@ -169,11 +168,18 @@ public class GLGlyph
 
 		bIsLocal = true;
 
-		this.getViewCamera().addCameraScale(new Vec3f(0, 0, -10f));
+		float fInitZoom = -10f;
+
+		// position /scale camera
+		Rotf t = new Rotf();
+		t.set(new Vec3f(-1, 0, 0), (float) (Math.PI / 4.0 - 2.0 * Math.PI * (-(fInitZoom + 3))
+				/ 360.0));
+		this.getViewCamera().setCameraRotation(t);
+		this.getViewCamera().addCameraPosition(new Vec3f(0, 0, fInitZoom));
 
 		init(gl);
 
-		// disable standart mouse movement (DON't remove the listeners, it will
+		// disable standard mouse movement (DON't remove the listeners, it will
 		// affect the picking!
 		{
 			MouseListener[] ml = parentGLCanvas.getMouseListeners();
@@ -187,10 +193,18 @@ public class GLGlyph
 		// Register specialized mouse wheel listener
 		parentGLCanvas.addMouseListener(mouseListener_);
 
-		parentGLCanvas.addMouseMotionListener(mouseListener_);
-		parentGLCanvas.addMouseWheelListener(mouseListener_);
+		if (iViewRole != 2)
+		{
+			parentGLCanvas.addMouseMotionListener(mouseListener_);
+			parentGLCanvas.addMouseWheelListener(mouseListener_);
 
-		parentGLCanvas.addKeyListener(keyListener_);
+			parentGLCanvas.addKeyListener(keyListener_);
+		}
+
+		grid_.setGlyphPositions(EIconIDs.DISPLAY_RECTANGLE);
+
+		if (this.iViewRole == 2)
+			grid_.setGlyphPositions(EIconIDs.DISPLAY_CIRCLE);
 
 	}
 
@@ -217,22 +231,12 @@ public class GLGlyph
 		init(gl);
 
 		grid_.setGridSize(30, 60);
-		grid_.setGlyphPositions(EIconIDs.DISPLAY_SCATTERPLOT.ordinal());
-		// this.grid_.setGlyphPositions(EIconIDs.DISPLAY_RANDOM.ordinal());
+		grid_.setGlyphPositions(EIconIDs.DISPLAY_SCATTERPLOT);
 	}
 
 	@Override
 	public void displayLocal(GL gl)
 	{
-
-		// gl.glTranslatef(viewFrustum.getWidth()+4f,
-		// viewFrustum.getHeight()+2f, -10f);
-
-		gl.glRotatef(45f, 1, 0, 0);
-		// gl.glRotatef( 45f, -1,0,0 );
-
-		gl.glRotatef(80f, -1, 0, 0); // 35
-
 		pickingManager.handlePicking(iUniqueID, gl, true);
 
 		display(gl);
@@ -258,82 +262,22 @@ public class GLGlyph
 			return;
 
 		if (bRedrawDisplayList_)
-		{ // redraw glyphs
-			gl.glPushMatrix();
-			Iterator<GlyphEntry> git = grid_.getGlyphList().values().iterator();
+			initDisplayLists(gl);
 
-			while (git.hasNext())
-			{
-				GlyphEntry e = git.next();
-				e.generateGLLists(gl);
-			}
-			gl.glPopMatrix();
-
-			gl.glPushMatrix();
-			grid_.buildScatterplotGrid(gl);
-			grid_.setGlyphPositions();
-			gl.glPopMatrix();
-		}
-
-		if (iViewRole == 2)
-		{
-			HashMap<Integer, GlyphEntry> tmp = new HashMap<Integer, GlyphEntry>();
-			for (GlyphEntry g : gman.getGlyphs().values())
-			{
-				if (g.isSelected())
-					tmp.put(g.getID(), g);
-			}
-			grid_.setGlyphList(tmp);
-		}
+		organizeGlyphsForViewRole();
 
 		gl.glPushMatrix();
 
 		// rotate grid
 		gl.glRotatef(45f, 0, 0, 1);
 
-		gl.glScalef(0.15f, 0.15f, 0.15f);
-
-		// draw helplines
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-		// GLHelperFunctions.drawAxis(gl);
+		if (iViewRole != 2) // don't scale down for the selectionview
+			gl.glScalef(0.15f, 0.15f, 0.15f);
 
 		gl.glTranslatef(8, 0, 0f);
 
 		if (displayList_ < 0 || bRedrawDisplayList_)
-		{
-			gl.glDeleteLists(displayList_, 1);
-
-			displayList_ = gl.glGenLists(1);
-			gl.glNewList(displayList_, GL.GL_COMPILE);
-
-			if (grid_.getGlyphList() == null)
-			{
-				// something is wrong (no data?)
-				gl.glPopMatrix();
-				return;
-			}
-
-			Iterator<GlyphEntry> git = grid_.getGlyphList().values().iterator();
-
-			while (git.hasNext())
-			{
-				GlyphEntry e = git.next();
-
-				Vec2i pos = grid_.getGridPosition(e.getX(), e.getY());
-				if (pos == null)
-					continue;
-
-				gl.glTranslatef(pos.x(), -(float) pos.y(), 0f);
-				gl.glPushName(pickingManager.getPickingID(iUniqueID,
-						EPickingType.GLYPH_FIELD_SELECTION, e.getID()));
-				gl.glCallList(e.getGlList(gl));
-				gl.glPopName();
-				gl.glTranslatef(-(float) pos.x(), pos.y(), 0f);
-			}
-			gl.glEndList();
-
-			bRedrawDisplayList_ = false;
-		}
+			redrawView(gl);
 
 		int displayListGrid = grid_.getGridLayout(bIsLocal);
 		if (displayListGrid >= 0)
@@ -345,17 +289,99 @@ public class GLGlyph
 		gl.glTranslatef(-7.0f, 0.0f, 0f);
 		gl.glRotatef(-45f, 0, 0, 1);
 
-		// if (glToolboxRenderer != null)
-		// glToolboxRenderer.render(gl);
+		gl.glPopMatrix();
 
 		// if (mouseListener_ != null)
 		// mouseListener_.render(gl);
 
+	}
+
+	private void initDisplayLists(GL gl)
+	{
+		gl.glPushMatrix();
+		Iterator<GlyphEntry> git = grid_.getGlyphList().values().iterator();
+
+		while (git.hasNext())
+		{
+			GlyphEntry e = git.next();
+			e.generateGLLists(gl);
+		}
 		gl.glPopMatrix();
 
 		gl.glPushMatrix();
+		grid_.buildGrids(gl);
+		grid_.setGlyphPositions();
 		gl.glPopMatrix();
 
+	}
+
+	private void redrawView(GL gl)
+	{
+		gl.glPushMatrix();
+
+		gl.glDeleteLists(displayList_, 1);
+
+		displayList_ = gl.glGenLists(1);
+		gl.glNewList(displayList_, GL.GL_COMPILE);
+
+		if (grid_.getGlyphList() == null)
+		{
+			// something is wrong (no data?)
+			gl.glPopMatrix();
+			return;
+		}
+
+		Iterator<GlyphEntry> git = grid_.getGlyphList().values().iterator();
+
+		while (git.hasNext())
+		{
+			GlyphEntry e = git.next();
+
+			Vec2i pos = grid_.getGridPosition(e.getX(), e.getY());
+			if (pos == null)
+				continue;
+
+			gl.glTranslatef(pos.x(), -(float) pos.y(), 0f);
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+					EPickingType.GLYPH_FIELD_SELECTION, e.getID()));
+			gl.glCallList(e.getGlList(gl));
+			gl.glPopName();
+			gl.glTranslatef(-(float) pos.x(), pos.y(), 0f);
+		}
+		gl.glEndList();
+
+		bRedrawDisplayList_ = false;
+
+		gl.glPopMatrix();
+	}
+
+	private void organizeGlyphsForViewRole()
+	{
+		if (iViewRole != 2)
+			return;
+
+		HashMap<Integer, GlyphEntry> tmp = new HashMap<Integer, GlyphEntry>();
+		for (GlyphEntry g : gman.getGlyphs().values())
+		{
+			if (g.isSelected())
+				tmp.put(g.getID(), g);
+		}
+		grid_.setGlyphList(tmp);
+
+		// position camera
+		Vec3f campos = new Vec3f();
+		Vec2f camcenter = grid_.getGlyphCenter();
+
+		float diag = grid_.getGlyphLowerLeftUpperRightDiagonale();
+
+		float x = (float) (Math.sin(Math.PI / 4.0) * (camcenter.x() + 8.0f));
+		float y = (float) (Math.cos(Math.PI / 4.0) * (camcenter.x() + 8.0f));
+
+		float f = 1.0f - diag * 0.05f;
+
+		campos.set(-x, -y + 8, 7 + f * 10);
+
+		this.getViewCamera().setCameraPosition(campos);
 	}
 
 	@Override
@@ -484,20 +510,19 @@ public class GLGlyph
 			}
 		}
 
-		if (pickingType == EPickingType.PC_ICON_SELECTION)
-		{
-			switch (pickingMode)
-			{
-				case CLICKED:
-
-					this.grid_.setGlyphPositions(iExternalID);
-					// System.out.println("ICON id = " + iExternalID);
-					bRedrawDisplayList_ = true;
-					break;
-				default:
-			}
-
-		}
+		// if (pickingType == EPickingType.PC_ICON_SELECTION)
+		// {
+		// switch (pickingMode)
+		// {
+		// case CLICKED:
+		//
+		// this.grid_.setGlyphPositions(iExternalID);
+		// bRedrawDisplayList_ = true;
+		// break;
+		// default:
+		// }
+		//
+		// }
 
 		pickingManager.flushHits(iUniqueID, pickingType);
 	}

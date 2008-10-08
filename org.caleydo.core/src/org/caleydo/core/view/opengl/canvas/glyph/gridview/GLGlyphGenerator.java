@@ -101,8 +101,6 @@ public class GLGlyphGenerator
 		if (box_h < 0.1f)
 			box_h = 1.0f;
 
-		box_h = box_h / iMaxHeight;
-
 		int dltemp = gl.glGenLists(1);
 		gl.glNewList(dltemp, GL.GL_COMPILE);
 
@@ -180,9 +178,27 @@ public class GLGlyphGenerator
 		else
 			gl.glColor4f(0.7f, 0.7f, 0.7f, 1.0f); // gray
 
-		gl.glScalef(1.0f, 1.0f, box_h);
+		if (iMaxHeight < 10)
+		{
+			gl.glScalef(1.0f, 1.0f, 0.5f);
 
-		gl.glCallList(iTowerBox);
+			int height = (int) box_h;
+			for (int i = 0; i < (height - 1); ++i)
+			{
+				gl.glCallList(iTowerBox);
+				gl.glCallList(iTowerTop);
+				gl.glTranslatef(0, 0, 1.2f);
+			}
+			gl.glCallList(iTowerBox);
+
+		}
+		else
+		{
+			box_h = box_h / iMaxHeight;
+
+			gl.glScalef(1.0f, 1.0f, box_h);
+			gl.glCallList(iTowerBox);
+		}
 
 		int tc = glyph.getParameter(indexTopColor_);
 		if (colorTop.size() > tc && tc >= 0)
@@ -332,7 +348,7 @@ public class GLGlyphGenerator
 
 		float xmin = 0f;
 		float ymin = 0f;
-		float zmin = 0.0f;
+		//float zmin = 0.0f;
 		float xmax = 0.75f;
 		float ymax = 0.75f;
 		float zmax = 1.0f;
