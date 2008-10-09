@@ -229,13 +229,13 @@ public class GLParallelCoordinates
 	 * 
 	 * @param dataFilterLevel the level of filtering
 	 */
-	public void setDataFilterLevel(EDataFilterLevel dataFilterLevel)
+	public synchronized void setDataFilterLevel(EDataFilterLevel dataFilterLevel)
 	{
 		this.dataFilterLevel = dataFilterLevel;
 	}
 
 	@Override
-	public void displayLocal(final GL gl)
+	public synchronized void displayLocal(final GL gl)
 	{
 		if (set == null)
 			return;
@@ -253,15 +253,16 @@ public class GLParallelCoordinates
 			bIsDisplayListDirtyLocal = false;
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
-		display(gl);
+		
 		checkForHits(gl);
+		display(gl);
+
 
 		pickingTriggerMouseAdapter.resetEvents();
 	}
 
 	@Override
-	public void displayRemote(final GL gl)
+	public synchronized void displayRemote(final GL gl)
 	{
 		if (set == null)
 			return;
@@ -278,14 +279,13 @@ public class GLParallelCoordinates
 		}
 
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
+	
 		display(gl);
-
 		checkForHits(gl);
-
 	}
 
 	@Override
-	public void display(final GL gl)
+	public synchronized void display(final GL gl)
 	{
 		// TODO another display list
 		// GLHelperFunctions.drawAxis(gl);
@@ -296,7 +296,7 @@ public class GLParallelCoordinates
 
 		if (bIsDraggingActive)
 		{
-			handleDragging(gl);
+			handleGateDragging(gl);
 			if (pickingTriggerMouseAdapter.wasMouseReleased())
 				bIsDraggingActive = false;
 		}
@@ -339,7 +339,7 @@ public class GLParallelCoordinates
 	 * arrays is an axis or whether the array corresponds to an axis and every
 	 * entry across arrays is a polyline
 	 */
-	public void renderStorageAsPolyline(boolean bRenderStorageHorizontally)
+	public synchronized void renderStorageAsPolyline(boolean bRenderStorageHorizontally)
 	{
 		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
 		// bRenderInfoArea = false;
@@ -358,14 +358,14 @@ public class GLParallelCoordinates
 		setDisplayListDirty();
 	}
 
-	public void triggerAngularBrushing()
+	public synchronized void triggerAngularBrushing()
 	{
 		bAngularBrushingSelectPolyline = true;
 		setDisplayListDirty();
 	}
 
 	@Override
-	public void renderContext(boolean bRenderOnlyContext)
+	public synchronized void renderContext(boolean bRenderOnlyContext)
 	{
 		this.bRenderOnlyContext = bRenderOnlyContext;
 
@@ -392,7 +392,7 @@ public class GLParallelCoordinates
 	 * 
 	 * @param bPreventOcclusion
 	 */
-	public void preventOcclusion(boolean bPreventOcclusion)
+	public synchronized void preventOcclusion(boolean bPreventOcclusion)
 	{
 		this.bPreventOcclusion = bPreventOcclusion;
 		setDisplayListDirty();
@@ -402,7 +402,7 @@ public class GLParallelCoordinates
 	 * Reset all selections and deselections
 	 */
 	@Override
-	public void resetSelections()
+	public synchronized void resetSelections()
 	{
 		// TODO clear in other views too
 		for (int iCount = 0; iCount < fArGateTipHeight.length; iCount++)
@@ -431,7 +431,7 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public void broadcastElements()
+	public synchronized void broadcastElements()
 	{
 		saveSelection();
 		ISelectionDelta delta = contentSelectionManager.getCompleteDelta();
@@ -443,7 +443,7 @@ public class GLParallelCoordinates
 		setDisplayListDirty();
 	}
 
-	public void saveSelection()
+	public synchronized void saveSelection()
 	{
 		polylineSelectionManager.moveType(ESelectionType.DESELECTED, ESelectionType.REMOVE);
 		resetSelections();
@@ -719,7 +719,7 @@ public class GLParallelCoordinates
 						iStorageIndex);
 				if (Float.isNaN(fCurrentYValue))
 				{
-					fCurrentYValue = ParCoordsRenderStyle.NAN_Y_OFFSET;
+					fCurrentYValue = renderStyle.getNaNYOffset();
 				}
 				if (iVertexCount != 0)
 				{
@@ -1225,8 +1225,11 @@ public class GLParallelCoordinates
 		textRenderer.end3DRendering();
 	}
 
-	// TODO
-	private void handleDragging(GL gl)
+	/**
+	 * Renders the gates and updates their values
+	 * @param gl
+	 */
+	private void handleGateDragging(GL gl)
 	{
 
 		// bIsDisplayListDirtyLocal = true;
@@ -1259,7 +1262,7 @@ public class GLParallelCoordinates
 		}
 		else if (draggedObject == EPickingType.LOWER_GATE_BOTTOM_SELECTION)
 		{
-			float fLowerLimit = renderStyle.getGateYOffset() - renderStyle.getGateTipHeight();
+			float fLowerLimit = renderStyle.getGateMinimumValue() - renderStyle.getGateTipHeight();
 			float fUpperLimit = fArGateTipHeight[iDraggedGateNumber] - 2
 					* renderStyle.getGateTipHeight();
 
@@ -1269,7 +1272,7 @@ public class GLParallelCoordinates
 			}
 			else if (height < fLowerLimit)
 			{
-				height = renderStyle.getGateYOffset() - renderStyle.getGateTipHeight();
+				height = fLowerLimit;//renderStyle.getGateYOffset() - renderStyle.getGateTipHeight();
 			}
 			else if (height > fUpperLimit)
 			{
@@ -1299,7 +1302,7 @@ public class GLParallelCoordinates
 	 * @param iAxisNumber
 	 */
 	// TODO revise
-	private void handleUnselection(int iAxisNumber)
+	private void handleGateUnselection(int iAxisNumber)
 	{
 
 		ArrayList<Integer> alCurrentGateBlocks = alIsGateBlocking.get(iAxisNumber);
@@ -1319,6 +1322,8 @@ public class GLParallelCoordinates
 						EDataRepresentation.NORMALIZED, iPolylineIndex);
 			}
 
+			if(Float.isNaN(fCurrentValue))
+				fCurrentValue = renderStyle.getNaNYOffset();
 			if (fCurrentValue <= fArGateTipHeight[iAxisNumber] / renderStyle.getAxisHeight()
 					&& fCurrentValue >= fArGateBottomHeight[iAxisNumber]
 							/ renderStyle.getAxisHeight())
@@ -1334,7 +1339,7 @@ public class GLParallelCoordinates
 	{
 		for (int iCount = 0; iCount < fArGateTipHeight.length; iCount++)
 		{
-			handleUnselection(iCount);
+			handleGateUnselection(iCount);
 		}
 		HashMap<Integer, Boolean> hashDeselectedPolylines = new HashMap<Integer, Boolean>();
 
@@ -1674,7 +1679,7 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public String getShortInfo()
+	public synchronized String getShortInfo()
 	{
 
 		return "Parallel Coordinates (" + set.getVA(iContentVAID).size() + " genes / "
@@ -1682,7 +1687,7 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public String getDetailedInfo()
+	public synchronized String getDetailedInfo()
 	{
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Parallel Coordinates\n");

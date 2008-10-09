@@ -24,6 +24,7 @@ import org.caleydo.core.manager.picking.ESelectionMode;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
@@ -95,7 +96,7 @@ public abstract class AStorageBasedView
 	protected boolean bUseRandomSampling = true;
 
 	protected int iNumberOfRandomElements = 100;
-
+	
 	/**
 	 * Constructor.
 	 */
@@ -147,7 +148,7 @@ public abstract class AStorageBasedView
 	// this.dataFilterLevel = dataFilterLevel;
 	// }
 
-	public void initData()
+	public synchronized final void initData()
 	{
 		set = null;
 
@@ -202,7 +203,7 @@ public abstract class AStorageBasedView
 	 * Initializes a virtual array with all elements, according to the data
 	 * filters, as defined in {@link EDataFilterLevel}.
 	 */
-	protected void initCompleteList()
+	protected final void initCompleteList()
 	{
 		// initialize virtual array that contains all (filtered) information
 		ArrayList<Integer> alTempList = new ArrayList<Integer>(set.depth());
@@ -321,7 +322,7 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
+	public synchronized final void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
 	{
 		// Check for type that can be handled
 		if (selectionDelta.getIDType() != EIDType.DAVID)
@@ -335,14 +336,14 @@ public abstract class AStorageBasedView
 		contentSelectionManager.clearSelections();
 		ISelectionDelta internalDelta = contentSelectionManager.setDelta(selectionDelta);
 		initForAddedElements();
-		// handleConnectedElementRep(internalDelta);
 		handleConnectedElementRep(internalDelta);
+//		handleConnectedElementRep(internalDelta);
 		checkUnselection();
 		setDisplayListDirty();
 	}
 
 	/**
-	 * This method is called when new elements are added from externally - if
+	 * This method is called when new elements are added from external - if
 	 * you need to react to it do it here, if not don't do anything.
 	 */
 	protected void initForAddedElements()
@@ -355,7 +356,7 @@ public abstract class AStorageBasedView
 	 * virtual array manipulations are not considered selections and are
 	 * therefore not reset.
 	 */
-	public void clearAllSelections()
+	public synchronized final void clearAllSelections()
 	{
 		connectedElementRepresentationManager.clear();
 		contentSelectionManager.clearSelections();
@@ -364,32 +365,19 @@ public abstract class AStorageBasedView
 		setDisplayListDirty();
 	}
 
-	public void resetView()
+	/**
+	 * Reset the view to its initial state, synchronized
+	 */
+	public synchronized final void resetView()
 	{
-		// contentSelectionManager.resetSelectionManager();
-		// storageSelectionManager.resetSelectionManager();
-		// if (bRenderOnlyContext == true)
-		// set.getVA(iContentVAID).clear();
-		// else
-		// initCompleteList();
-		//		
-		// set.getVA(iStorageVAID).reset();
-		//		
-		//
-		// contentSelectionManager.setVA(set.getVA(iContentVAID));
-		// storageSelectionManager.setVA(set.getVA(iStorageVAID));
-
 		initData();
-
-		// resetSelections();
 		setDisplayListDirty();
 	}
 	
 	@Override
-	public void triggerUpdate(ISelectionDelta selectionDelta)
+	public final synchronized void triggerUpdate(ISelectionDelta selectionDelta)
 	{
 		// TODO connects to one element only here
-
 		handleConnectedElementRep(selectionDelta);
 		generalManager.getEventPublisher().handleUpdate(this, selectionDelta);
 	}
@@ -466,12 +454,16 @@ public abstract class AStorageBasedView
 	public abstract void broadcastElements();
 
 	@Override
-	public void broadcastElements(ESelectionType type)
+	public synchronized void broadcastElements(ESelectionType type)
 	{
 		// TODO: implement
 	}
 
-	public final void useRandomSampling(boolean bUseRandomSampling)
+	/**
+	 * Set whether to use random sampling or not, synchronized
+	 * @param bUseRandomSampling
+	 */
+	public synchronized final void useRandomSampling(boolean bUseRandomSampling)
 	{
 		if (this.bUseRandomSampling != bUseRandomSampling)
 		{
@@ -489,7 +481,7 @@ public abstract class AStorageBasedView
 	 * 
 	 * @param iNumberOfRandomElements the number
 	 */
-	public final void setNumberOfSamplesToShow(int iNumberOfRandomElements)
+	public synchronized final void setNumberOfSamplesToShow(int iNumberOfRandomElements)
 	{
 		if (iNumberOfRandomElements != this.iNumberOfRandomElements && bUseRandomSampling)
 		{

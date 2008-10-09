@@ -162,7 +162,7 @@ public class GLHeatMap
 	}
 
 	@Override
-	public void setDetailLevel(EDetailLevel detailLevel)
+	public synchronized void setDetailLevel(EDetailLevel detailLevel)
 	{
 		super.setDetailLevel(detailLevel);
 		renderStyle.setDetailLevel(detailLevel);
@@ -170,7 +170,7 @@ public class GLHeatMap
 	}
 
 	@Override
-	public void displayLocal(GL gl)
+	public synchronized void displayLocal(GL gl)
 	{
 		if (set == null)
 			return;
@@ -191,11 +191,12 @@ public class GLHeatMap
 
 		display(gl);
 		checkForHits(gl);
+
 		pickingTriggerMouseAdapter.resetEvents();
 	}
 
 	@Override
-	public void displayRemote(GL gl)
+	public synchronized void displayRemote(GL gl)
 	{
 		if (set == null)
 			return;
@@ -215,11 +216,12 @@ public class GLHeatMap
 
 		display(gl);
 		checkForHits(gl);
+
 		// pickingTriggerMouseAdapter.resetEvents();
 	}
 
 	@Override
-	public void display(GL gl)
+	public synchronized void display(GL gl)
 	{
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		// GLHelperFunctions.drawAxis(gl);
@@ -231,7 +233,7 @@ public class GLHeatMap
 	{
 
 		if (bHasFrustumChanged)
-		{		
+		{
 			bHasFrustumChanged = false;
 		}
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
@@ -323,7 +325,7 @@ public class GLHeatMap
 		tempTexture.disable();
 	}
 
-	public void renderHorizontally(boolean bRenderStorageHorizontally)
+	public synchronized void renderHorizontally(boolean bRenderStorageHorizontally)
 	{
 
 		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
@@ -484,6 +486,11 @@ public class GLHeatMap
 						break;
 
 					case MOUSE_OVER:
+
+						if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER,
+								iExternalID))
+							break;
+
 						connectedElementRepresentationManager.clear();
 
 						contentSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
@@ -516,7 +523,6 @@ public class GLHeatMap
 		float fFieldHeight = 0;
 		// renderStyle.clearFieldWidths();
 
-
 		int iCount = 0;
 		for (Integer iContentIndex : set.getVA(iContentVAID))
 		{
@@ -534,7 +540,7 @@ public class GLHeatMap
 				fFieldWith = renderStyle.getSelectedFieldWidth();
 				fFieldHeight = renderStyle.getFieldHeight();
 			}
-		
+
 			fYPosition = 0;
 
 			for (Integer iStorageIndex : set.getVA(iStorageVAID))
@@ -560,7 +566,6 @@ public class GLHeatMap
 				fLineDegrees = 90;
 			}
 
-			
 			// render line captions
 			if (fFieldWith > 0.1f)
 			{
@@ -581,22 +586,22 @@ public class GLHeatMap
 					String sContent = getRefSeqFromStorageIndex(iContentIndex);
 					if (sContent == null)
 						sContent = "Unknown";
-					renderCaption(gl, sContent, fXPosition + fFieldWith / 6
-							* 2.5f, fYPosition + 0.1f, fLineDegrees, fFontScaling);
+					renderCaption(gl, sContent, fXPosition + fFieldWith / 6 * 2.5f,
+							fYPosition + 0.1f, fLineDegrees, fFontScaling);
 
 					if (bRenderShortName)
 					{
 						sContent = getShortNameFromDavid(iContentIndex);
 						if (sContent == null)
 							sContent = "Unknown";
-						renderCaption(gl, sContent, fXPosition + fFieldWith
-								/ 6 * 4.5f, fYPosition + 0.1f, fLineDegrees, fFontScaling);
+						renderCaption(gl, sContent, fXPosition + fFieldWith / 6 * 4.5f,
+								fYPosition + 0.1f, fLineDegrees, fFontScaling);
 					}
 				}
 
 			}
-//			renderStyle.setXDistanceAt(set.getVA(iContentVAID).indexOf(iContentIndex),
-//					fXPosition);
+			// renderStyle.setXDistanceAt(set.getVA(iContentVAID).indexOf(iContentIndex),
+			// fXPosition);
 			fAlXDistances.add(fXPosition);
 			fXPosition += fFieldWith;
 
@@ -609,9 +614,8 @@ public class GLHeatMap
 					for (Integer iStorageIndex : set.getVA(iStorageVAID))
 					{
 						renderCaption(gl, set.get(iStorageIndex).getLabel(),
-								fXPosition + 0.1f,
-								fYPosition + fFieldHeight / 2, fColumnDegrees,
-								renderStyle.getSmallFontScalingFactor());
+								fXPosition + 0.1f, fYPosition + fFieldHeight / 2,
+								fColumnDegrees, renderStyle.getSmallFontScalingFactor());
 						fYPosition += fFieldHeight;
 					}
 				}
@@ -620,7 +624,8 @@ public class GLHeatMap
 	}
 
 	private void renderElement(final GL gl, final int iStorageIndex, final int iContentIndex,
-			final float fXPosition, final float fYPosition, final float fFieldWidth, final float fFieldHeight)
+			final float fXPosition, final float fYPosition, final float fFieldWidth,
+			final float fFieldHeight)
 	{
 
 		float fLookupValue = set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
@@ -644,8 +649,7 @@ public class GLHeatMap
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);
 		gl.glVertex3f(fXPosition + fFieldWidth, fYPosition, FIELD_Z);
-		gl.glVertex3f(fXPosition + fFieldWidth, fYPosition
-				+ fFieldHeight, FIELD_Z);
+		gl.glVertex3f(fXPosition + fFieldWidth, fYPosition + fFieldHeight, FIELD_Z);
 		gl.glVertex3f(fXPosition, fYPosition + fFieldHeight, FIELD_Z);
 		gl.glEnd();
 
@@ -677,8 +681,9 @@ public class GLHeatMap
 			int iColumnIndex = set.getVA(iContentVAID).indexOf(iCurrentColumn);
 			if (iColumnIndex == -1)
 				continue;
-			
-//			Vec2f vecFieldWidthAndHeight = renderStyle.getFieldWidthAndHeight(iColumnIndex);
+
+			// Vec2f vecFieldWidthAndHeight =
+			// renderStyle.getFieldWidthAndHeight(iColumnIndex);
 
 			fHeight = set.getVA(iStorageVAID).size() * renderStyle.getFieldHeight();
 			fXPosition = fAlXDistances.get(iColumnIndex);
@@ -689,9 +694,10 @@ public class GLHeatMap
 
 			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(fXPosition, fYPosition, SELECTION_Z);
-			gl.glVertex3f(fXPosition + renderStyle.getSelectedFieldWidth(), fYPosition, SELECTION_Z);
-			gl.glVertex3f(fXPosition + renderStyle.getSelectedFieldWidth(), fYPosition + fHeight,
+			gl.glVertex3f(fXPosition + renderStyle.getSelectedFieldWidth(), fYPosition,
 					SELECTION_Z);
+			gl.glVertex3f(fXPosition + renderStyle.getSelectedFieldWidth(), fYPosition
+					+ fHeight, SELECTION_Z);
 			gl.glVertex3f(fXPosition, fYPosition + fHeight, SELECTION_Z);
 			gl.glEnd();
 
@@ -701,11 +707,36 @@ public class GLHeatMap
 	}
 
 	@Override
+	protected void handleConnectedElementRep(ISelectionDelta selectionDelta)
+	{
+		renderStyle.updateFieldSizes();
+		fAlXDistances.clear();
+		float fDistance = 0;
+
+		for (Integer iStorageIndex : set.getVA(iContentVAID))
+		{
+			fAlXDistances.add(fDistance);
+			if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iStorageIndex)
+					|| contentSelectionManager.checkStatus(ESelectionType.SELECTION,
+							iStorageIndex))
+			// if(selectionDelta.)
+			{
+				fDistance += renderStyle.getSelectedFieldWidth();
+			}
+			else
+			{
+				fDistance += renderStyle.getNormalFieldWidth();
+			}
+
+		}
+		super.handleConnectedElementRep(selectionDelta);
+	}
+
+	@Override
 	protected SelectedElementRep createElementRep(int iStorageIndex)
 			throws InvalidAttributeValueException
 	{
 
-		renderStyle.updateFieldSizes();
 		SelectedElementRep elementRep;// = new SelectedElementRep(iUniqueID,
 		// 0.0f, 0.0f, 0.0f);
 
@@ -719,7 +750,8 @@ public class GLHeatMap
 			return null;
 		}
 		// renderStyle.resetFieldWidths();
-//		Vec2f vecFieldWithAndHeight = renderStyle.getFieldWidthAndHeight(iContentIndex);
+		// Vec2f vecFieldWithAndHeight =
+		// renderStyle.getFieldWidthAndHeight(iContentIndex);
 
 		// for (int iCount = 0; iCount <= iContentIndex; iCount++)
 		// {
@@ -872,7 +904,7 @@ public class GLHeatMap
 	}
 
 	@Override
-	public void broadcastElements()
+	public synchronized void broadcastElements()
 	{
 		ISelectionDelta delta = contentSelectionManager.getCompleteDelta();
 		triggerUpdate(delta);
@@ -880,7 +912,7 @@ public class GLHeatMap
 	}
 
 	@Override
-	public void resetSelections()
+	public synchronized void resetSelections()
 	{
 		contentSelectionManager.clearSelections();
 		storageSelectionManager.clearSelections();

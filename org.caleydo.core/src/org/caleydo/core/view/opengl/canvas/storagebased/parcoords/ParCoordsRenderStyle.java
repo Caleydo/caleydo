@@ -58,7 +58,7 @@ public class ParCoordsRenderStyle
 
 	public static final int NUMBER_AXIS_MARKERS = 9;
 	
-	public static final float NAN_Y_OFFSET = -0.03f;
+	private static final float NAN_Y_OFFSET = -0.007f;
 
 	// modifiable colors
 	protected float[] polylineOcclusionPrevColor = { 0.0f, 0.0f, 0.0f, 1.0f };
@@ -172,6 +172,16 @@ public class ParCoordsRenderStyle
 	{
 
 		return GATE_NEGATIVE_Y_OFFSET * getScaling();
+	}
+	
+	public float getGateMinimumValue()
+	{
+		return (GATE_NEGATIVE_Y_OFFSET + NAN_Y_OFFSET) * getScaling();  
+	}
+	
+	public float getNaNYOffset()
+	{
+		return NAN_Y_OFFSET * getScaling();
 	}
 
 	public float getGateTipHeight()
