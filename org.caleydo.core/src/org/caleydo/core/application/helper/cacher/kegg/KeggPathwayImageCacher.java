@@ -28,9 +28,7 @@ public class KeggPathwayImageCacher
 {
 	private static final int EXPECTED_DOWNLOADS = 214;
 	private static final int MAX_FTP_CONNECTIONS = 10;
-
-	private IGeneralManager generalManager;
-
+	
 	/**
 	 * Needed for async access to set progress bar state
 	 */
@@ -50,7 +48,6 @@ public class KeggPathwayImageCacher
 	public KeggPathwayImageCacher(final Display display, final ProgressBar progressBar,
 			final CmdFetchPathwayData triggeringCommand)
 	{
-		this.generalManager = GeneralManager.get();
 		this.display = display;
 		this.progressBar = progressBar;
 		this.triggeringCommand = triggeringCommand;

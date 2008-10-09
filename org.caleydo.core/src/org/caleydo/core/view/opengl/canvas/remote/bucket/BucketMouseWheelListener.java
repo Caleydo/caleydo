@@ -102,17 +102,27 @@ public class BucketMouseWheelListener
 		else
 		// zoom to bottom of the bucket
 		{
+			int notches = event.getWheelRotation();
+			if (notches < 0)
+			{
+				if (iCurrentBucketZoom == 400)
+					return;
+				
+				bZoomIn = true;
+			}
+			else
+			{
+				if (iCurrentBucketZoom == 0)
+					return;
+				
+				bZoomIn = false;
+			}
+		
 			bZoomActionRunning = true;
-
+			
 			// Turn off picking while zoom action is running
 			GeneralManager.get().getViewGLCanvasManager().getPickingManager().enablePicking(
 					false);
-
-			int notches = event.getWheelRotation();
-			if (notches < 0)
-				bZoomIn = true;
-			else
-				bZoomIn = false;
 		}
 	}
 

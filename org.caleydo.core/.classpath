@@ -1,23 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.6"/>
-	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry excluding="**/.svn/|*.html|org/caleydo/core/data/collection/virtualarray/|org/caleydo/core/data/collection/IVirtualArray.java|org/caleydo/core/view/swt/data/explorer/|org/caleydo/core/view/swt/pathway/|org/caleydo/core/view/swt/slider/|org/caleydo/core/view/swt/toolbar/|org/caleydo/core/view/swt/data/exchanger/|org/caleydo/core/view/swt/data/DataTableViewRep.java|org/caleydo/core/view/opengl/canvas/histogram/|org/caleydo/core/manager/data/ACollectionManager.java|org/caleydo/core/data/collection/parser/|org/caleydo/core/util/midi/device/|org/caleydo/core/view/opengl/canvas/isosurface/|org/caleydo/core/view/opengl/canvas/scatterplot/|org/caleydo/core/manager/parser/XmlParserManagerThread.java|org/caleydo/core/math/|org/caleydo/core/util/mapping/color/AColorMappingVecf.java|org/caleydo/core/util/mapping/color/ColorMapping3f_3SamplePoints.java|org/caleydo/core/util/mapping/color/ColorMapping3f.java|org/caleydo/core/util/mapping/color/ColorMapping4f.java|org/caleydo/core/data/collection/old_virtualarray/|org/caleydo/core/manager/event/mediator/LockableIgnoreFilterMediator.java|org/caleydo/core/manager/event/mediator/LockableExclusivFilterMediator.java|org/caleydo/core/data/selection/ISelection.java|org/caleydo/core/data/selection/Selection.java|org/caleydo/core/view/opengl/canvas/remote/GLCanvasRemoteRendering3D.java|org/caleydo/core/view/opengl/canvas/pathway/GLCanvasPathway3D.java|org/caleydo/core/util/mapping/color/IColorMapping.java|org/caleydo/core/util/mapping/color/AColorMapping.java|org/caleydo/core/view/opengl/util/GLToolboxRenderer.java|org/caleydo/core/data/map/GenericMultiMap.java|org/caleydo/core/data/map/IGMultiMap.java|org/caleydo/core/data/map/IMultiMap.java|org/caleydo/core/data/map/MultiHashArrayGMap.java|org/caleydo/core/data/map/MultiHashArrayIntegerMap.java|org/caleydo/core/data/map/MultiHashArrayStringMap.java|org/caleydo/core/data/map/MultiIntegerMap.java|org/caleydo/core/data/map/MultiStringMap.java|org/caleydo/core/manager/specialized/genome/id/GenomeIdMapInt2Int.java|org/caleydo/core/manager/specialized/genome/id/GenomeIdMapInt2String.java|org/caleydo/core/manager/specialized/genome/id/GenomeIdMapString2Int.java|org/caleydo/core/manager/specialized/genome/id/GenomeIdMapString2String.java|org/caleydo/core/manager/specialized/genome/IGenomeIdMap.java|org/caleydo/core/manager/specialized/genome/id/AGenomeIdMap.java|org/caleydo/core/parser/ascii/lookuptable/LookupTableMultiMapIntLoader.java|org/caleydo/core/parser/ascii/lookuptable/LookupTableMultiMapStringLoader.java|org/caleydo/core/parser/ascii/lookuptable/LookupTableHashMapLoader.java|org/caleydo/core/parser/ascii/lookuptable/LookupTableLoaderProxy.java|org/caleydo/core/util/ConversionStringInteger.java" kind="src" path="src"/>
-	<classpathentry exported="true" kind="lib" path="lib/ftp/edtftpj.jar" sourcepath="org.caleydo.coresrc.zip"/>
-	<classpathentry exported="true" kind="lib" path="lib/jogl/gluegen-rt.jar" sourcepath="org.caleydo.coresrc.zip"/>
-	<classpathentry exported="true" kind="lib" path="lib/jogl/jogl.jar" sourcepath="org.caleydo.coresrc.zip"/>
-	<classpathentry exported="true" kind="lib" path="lib/tagsoup/tagsoup-1.1.3.jar" sourcepath="org.caleydo.coresrc.zip"/>
-	<classpathentry exported="true" kind="lib" path="lib/webspider/commons-codec-1.2.jar" sourcepath="org.caleydo.coresrc.zip"/>
-	<classpathentry exported="true" kind="lib" path="lib/webspider/commons-httpclient-3.1.jar" sourcepath="org.caleydo.coresrc.zip"/>
-	<classpathentry exported="true" kind="lib" path="lib/webspider/commons-logging-1.1.1.jar" sourcepath="org.caleydo.coresrc.zip"/>
-	<classpathentry exported="true" kind="lib" path="lib/webspider/itsucks-base-0.3.0-pre7.jar" sourcepath="org.caleydo.coresrc.zip"/>
-	<classpathentry exported="true" kind="lib" path="lib/webspider/itsucks-console-0.3.0-pre7.jar" sourcepath="org.caleydo.coresrc.zip"/>
-	<classpathentry exported="true" kind="lib" path="lib/webspider/itsucks-core-0.3.0-pre7.jar" sourcepath="org.caleydo.coresrc.zip"/>
-	<classpathentry exported="true" kind="lib" path="lib/webspider/log4j-1.2.14.jar" sourcepath="org.caleydo.coresrc.zip"/>
-	<classpathentry exported="true" kind="lib" path="lib/webspider/spring-beans-2.5.jar" sourcepath="org.caleydo.coresrc.zip"/>
-	<classpathentry exported="true" kind="lib" path="lib/webspider/spring-context-2.5.jar" sourcepath="org.caleydo.coresrc.zip"/>
-	<classpathentry exported="true" kind="lib" path="lib/webspider/spring-core-2.5.jar" sourcepath="org.caleydo.coresrc.zip"/>
-	<classpathentry exported="true" kind="lib" path="lib/wii/avetanaBT.jar" sourcepath="org.caleydo.coresrc.zip"/>
-	<classpathentry exported="true" kind="lib" path="lib/wii/WiiRemoteJ.jar" sourcepath="org.caleydo.coresrc.zip"/>
+	<classpathentry exported="true" kind="lib" path="lib/ftp/edtftpj.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jogl/gluegen-rt.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/jogl/jogl.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/tagsoup/tagsoup-1.1.3.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/webspider/commons-codec-1.2.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/webspider/commons-httpclient-3.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/webspider/commons-logging-1.1.1.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/webspider/itsucks-base-0.3.0-pre7.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/webspider/itsucks-console-0.3.0-pre7.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/webspider/itsucks-core-0.3.0-pre7.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/webspider/log4j-1.2.14.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/webspider/spring-beans-2.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/webspider/spring-context-2.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/webspider/spring-core-2.5.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/wii/avetanaBT.jar"/>
+	<classpathentry exported="true" kind="lib" path="lib/wii/WiiRemoteJ.jar"/>
+	<classpathentry exported="true" kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="org.eclipse.jdt.launching.CLASSPATH_ATTR_LIBRARY_PATH_ENTRY" value="C:/Compiler/java/jre1.6/jre/lib"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="bin/class"/>
 </classpath>

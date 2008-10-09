@@ -1882,7 +1882,7 @@ public class GLRemoteRendering
 		if (bBusyMode)
 		{
 			pickingManager.enablePicking(false);
-			gl.glClearColor(1, 1, 0.6f, 1f); // yellowish background (busy mode)
+			gl.glClearColor(0.7f, 0.7f, 0.7f, 1f); // yellowish background (busy mode)
 		}
 		else
 		{

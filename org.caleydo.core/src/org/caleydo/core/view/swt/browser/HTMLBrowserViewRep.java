@@ -1,16 +1,20 @@
 package org.caleydo.core.view.swt.browser;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.logging.Level;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
@@ -61,18 +65,22 @@ public class HTMLBrowserViewRep
 		toolbar.setLayoutData(data);
 		
 		ToolItem goButton = new ToolItem(toolbar, SWT.PUSH);
+
 		goButton.setImage(new Image(parent.getDisplay(), 
-				"resources/icons/view/browser/refresh.png"));
+				generalManager.getClass()
+				.getClassLoader().getResourceAsStream("resources/icons/view/browser/refresh.png")));
 //		goButton.setText("Go");
 
 		ToolItem backButton = new ToolItem(toolbar, SWT.PUSH);
 		backButton.setImage(new Image(parent.getDisplay(), 
-			"resources/icons/view/browser/back.png"));
+				generalManager.getClass()
+				.getClassLoader().getResourceAsStream("resources/icons/view/browser/back.png")));
 //		backButton.setText("Back");
 
 		ToolItem stopButton = new ToolItem(toolbar, SWT.PUSH);
 		stopButton.setImage(new Image(parent.getDisplay(), 
-			"resources/icons/view/browser/stop.png"));
+				generalManager.getClass()
+				.getClassLoader().getResourceAsStream("resources/icons/view/browser/stop.png")));
 //		stopButton.setText("Stop");
 
 		textURL = new Text(browserBarComposite, SWT.BORDER);
