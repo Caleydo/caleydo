@@ -169,7 +169,10 @@ public class GenomeHTMLBrowserViewRep
 						String sRefSeqID = generalManager.getIDMappingManager()
 							.getID(EMappingType.DAVID_2_REFSEQ_MRNA, selectionItem.getSelectionID());
 						
-						list.add(sRefSeqID);
+						String sGeneShortName = generalManager.getIDMappingManager()
+							.getID(EMappingType.DAVID_2_GENE_SYMBOL, selectionItem.getSelectionID());
+						
+						list.add(sRefSeqID + " - " + sGeneShortName);
 						iAlDavidID.add(selectionItem.getSelectionID());
 						
 						iItemsToLoad++;

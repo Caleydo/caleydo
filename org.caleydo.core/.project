@@ -3,9 +3,6 @@
 	<name>org.caleydo.core</name>
 	<comment></comment>
 	<projects>
-		<project>Muddleware_raw</project>
-		<project>org.caleydo.lib</project>
-		<project>org.calyedo.util.graph</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

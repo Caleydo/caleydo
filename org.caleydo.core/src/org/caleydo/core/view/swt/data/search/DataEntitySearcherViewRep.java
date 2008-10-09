@@ -10,6 +10,8 @@ import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
+import org.caleydo.core.manager.specialized.genome.pathway.PathwayDatabase;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.ViewType;
@@ -62,10 +64,22 @@ implements IMediatorSender{;
 		return false;
 	}
 	
-	private boolean searchForPathway(final String sEntity) {
+	private boolean searchForPathway(String sEntity) {
+		
+		EPathwayDatabaseType ePathwayDatabaseType;
+		
+		if (sEntity.contains("KEGG"))
+			ePathwayDatabaseType = EPathwayDatabaseType.KEGG;
+		else if (sEntity.contains("BioCarta"))
+			ePathwayDatabaseType = EPathwayDatabaseType.BIOCARTA;
+		else
+			return false;
+		
+		sEntity = sEntity.substring(0, sEntity.indexOf(" ("));
 		
 		int iPathwayID = 
-			generalManager.getPathwayManager().searchPathwayIdByName(sEntity);
+			generalManager.getPathwayManager().searchPathwayIdByName(
+					sEntity, ePathwayDatabaseType);
 		
 		if(iPathwayID == -1)
 			return false;

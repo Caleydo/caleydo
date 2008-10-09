@@ -12,7 +12,6 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * Manages mapping tables.
@@ -135,21 +134,21 @@ public class IDMappingManager
 				{
 					codeResolvedMap = new HashMap<Integer, Integer>();
 				
-					throw new NotImplementedException();
+					throw new RuntimeException("Not implemented!");
 				}
 				else if (originKeyType.getStorageType() == EStorageType.INT 
 						&& destValueType.getStorageType() == EStorageType.STRING)
 				{
 					codeResolvedMap = new HashMap<Integer, String>();
 				
-					throw new NotImplementedException();
+					throw new RuntimeException("Not implemented!");
 				}
 				else if (originKeyType.getStorageType() == EStorageType.STRING 
 						&& destValueType.getStorageType() == EStorageType.STRING)
 				{
 					codeResolvedMap = new HashMap<String, String>();
 				
-					throw new NotImplementedException();
+					throw new RuntimeException("Not implemented!");
 				}
 				else if (originKeyType.getStorageType() == EStorageType.STRING 
 						&& destValueType.getStorageType() == EStorageType.INT)
@@ -212,21 +211,21 @@ public class IDMappingManager
 				{
 					codeResolvedMap = new HashMap<Integer, String>();
 				
-					throw new NotImplementedException();
+					throw new RuntimeException("Not implemented!");
 				}
 				else if (destKeyType.getStorageType() == EStorageType.STRING 
 						&& destValueType.getStorageType() == EStorageType.STRING)
 				{
 					codeResolvedMap = new HashMap<String, String>();
 
-					throw new NotImplementedException();
+					throw new RuntimeException("Not implemented!");
 				}
 				else if (destKeyType.getStorageType() == EStorageType.STRING 
 						&& destValueType.getStorageType() == EStorageType.INT)
 				{
 					codeResolvedMap = new HashMap<String, Integer>();
 				
-					throw new NotImplementedException();
+					throw new RuntimeException("Not implemented!");
 				}
 			}	
 		}

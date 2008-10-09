@@ -86,7 +86,7 @@ public class SearchBar
 			public void widgetSelected(SelectionEvent e)
 			{
 				String sSearchEntity = searchBox.getItem(searchBox.getSelectionIndex());
-				sSearchEntity = sSearchEntity.substring(0, sSearchEntity.indexOf(" ("));
+//				sSearchEntity = sSearchEntity.substring(0, sSearchEntity.indexOf(" ("));
 
 				GeneralManager.get().getViewGLCanvasManager().getDataEntitySearcher()
 						.searchForEntity(sSearchEntity);	

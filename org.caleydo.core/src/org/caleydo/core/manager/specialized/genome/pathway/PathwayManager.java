@@ -107,7 +107,8 @@ public class PathwayManager
 	}
 
 	@Override
-	public int searchPathwayIdByName(final String sPathwayName)
+	public int searchPathwayIdByName(final String sPathwayName, 
+			EPathwayDatabaseType ePathwayDatabaseType)
 	{
 		waitUntilPathwayLoadingIsFinished();
 
@@ -123,7 +124,14 @@ public class PathwayManager
 
 			if (regexMatcher.find())
 			{
-				return hashPathwayTitleToPathwayId.get(sTmpPathwayName);
+				int iPathwayID = hashPathwayTitleToPathwayId.get(sTmpPathwayName);
+				
+				// Ignore the found pathway if it has the same name but is contained
+				// in a different database
+				if (getItem(iPathwayID).getType() != ePathwayDatabaseType)
+					continue;
+				
+				return iPathwayID;
 			}
 		}
 

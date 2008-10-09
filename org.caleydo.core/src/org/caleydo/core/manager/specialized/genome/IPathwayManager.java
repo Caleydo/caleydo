@@ -26,7 +26,7 @@ public interface IPathwayManager
 
 	public PathwayImageMap getCurrentPathwayImageMap();
 
-	public int searchPathwayIdByName(final String sPathwayName);
+	public int searchPathwayIdByName(final String sPathwayName, EPathwayDatabaseType ePathwayDatabaseType);
 
 	public PathwayDatabase getPathwayDatabaseByType(EPathwayDatabaseType type);
 
