@@ -8,8 +8,9 @@ import static org.caleydo.core.util.preferences.PreferenceConstants.NUMBER_OF_CO
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
+import org.caleydo.core.data.collection.ESetType;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.Activator;
 import org.caleydo.rcp.Application;
@@ -50,8 +51,10 @@ public class ColorMappingPreferencePage
 	private Spinner numColorPointsSpinner;
 
 	private CLabel colorMappingPreviewLabel;
-	
+
 	private ColorFieldEditor nanColorFE;
+
+	private ISet set;
 
 	private class NumColorPointsModifyListener
 		implements ModifyListener
@@ -114,6 +117,14 @@ public class ColorMappingPreferencePage
 		// setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setPreferenceStore(GeneralManager.get().getPreferenceStore());
 		setDescription("Set color mapping for different use cases, the values in the spinners are % of your data range.");
+
+		for (ISet set : GeneralManager.get().getSetManager().getAllItems())
+		{
+			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA)
+			{
+				this.set = set;
+			}
+		}
 	}
 
 	/**
@@ -168,6 +179,7 @@ public class ColorMappingPreferencePage
 			addField(colorFieldEditor);
 
 			Spinner markerPointSpinner = new Spinner(getFieldEditorParent(), SWT.BORDER);
+			markerPointSpinner.setDigits(2);
 
 			markerPointSpinner.addModifyListener(markerPointValueChangedListener);
 
@@ -177,15 +189,17 @@ public class ColorMappingPreferencePage
 				public void mouseMove(org.eclipse.swt.events.MouseEvent e)
 				{
 					setFirstAndLastColorMarkerPointSpinner();
-
 				}
 			});
 
-			markerPointSpinner.setMinimum(0);
-			markerPointSpinner.setMaximum(100);
+			markerPointSpinner.setMinimum((int) (set.getMin() * 100));
+			markerPointSpinner.setMaximum((int) (set.getMax() * 100));
 
-			markerPointSpinner.setSelection((int) (getPreferenceStore().getDouble(
-					COLOR_MARKER_POINT_VALUE + iCount) * 100));
+			double dSpinnerValue = getPreferenceStore().getDouble(COLOR_MARKER_POINT_VALUE + iCount);
+			
+			dSpinnerValue = set.getRawForNormalized(dSpinnerValue);
+
+			markerPointSpinner.setSelection((int) (dSpinnerValue * 100));
 
 			if (iCount <= iNumberOfColorPoints)
 			{
@@ -204,9 +218,9 @@ public class ColorMappingPreferencePage
 		colorMappingPreviewLabel = new CLabel(getFieldEditorParent(), SWT.SHADOW_IN);
 		colorMappingPreviewLabel.setBounds(10, 10, 300, 100);
 		colorMappingPreviewLabel.setText("                          ");
-		
-		nanColorFE = new ColorFieldEditor(NAN_COLOR,
-				 "Color for NAN values:",  getFieldEditorParent());
+
+		nanColorFE = new ColorFieldEditor(NAN_COLOR, "Color for NAN values:",
+				getFieldEditorParent());
 		nanColorFE.load();
 		addField(nanColorFE);
 
@@ -255,23 +269,26 @@ public class ColorMappingPreferencePage
 
 		for (int iCount = 0; iCount < iNumberOfColorPoints; iCount++)
 		{
-			getPreferenceStore().setValue(COLOR_MARKER_POINT_VALUE + (iCount + 1),
-					(float) alColorMarkerPointSpinners.get(iCount).getSelection() / 100);
+			double dRaw = (double) alColorMarkerPointSpinners.get(iCount).getSelection() / 100;
+			// get normalized value for real value
+			double dNormalized = set.getNormalizedForRaw(dRaw);
+			getPreferenceStore()
+					.setValue(COLOR_MARKER_POINT_VALUE + (iCount + 1), ((float)Math.round(dNormalized*100))/100);
 
 			alColorFieldEditors.get(iCount).store();
 		}
 
-		//ColorMappingManager.get().initiFromPreferenceStore();
+		// ColorMappingManager.get().initiFromPreferenceStore();
 		Application.initializeColorMapping();
 		return bReturn;
 	}
 
 	private void setFirstAndLastColorMarkerPointSpinner()
 	{
-		alColorMarkerPointSpinners.get(0).setSelection(0);
+		alColorMarkerPointSpinners.get(0).setSelection((int)(set.getMin() * 100));
 		alColorMarkerPointSpinners.get(0).setEnabled(false);
 
-		alColorMarkerPointSpinners.get(iNumberOfColorPoints - 1).setSelection(100);
+		alColorMarkerPointSpinners.get(iNumberOfColorPoints - 1).setSelection((int)(set.getMax() *100));
 		alColorMarkerPointSpinners.get(iNumberOfColorPoints - 1).setEnabled(false);
 	}
 

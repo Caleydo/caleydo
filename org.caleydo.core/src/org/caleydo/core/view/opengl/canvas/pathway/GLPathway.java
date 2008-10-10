@@ -102,9 +102,8 @@ public class GLPathway
 		selectionManager = new GenericSelectionManager.Builder(EIDType.PATHWAY_VERTEX).build();
 	}
 
-	public void setPathwayID(final int iPathwayID)
+	public synchronized void setPathwayID(final int iPathwayID)
 	{
-
 		// Unregister former pathway in visibility list
 		if (iPathwayID != -1)
 			generalManager.getPathwayManager().setPathwayVisibilityStateByID(this.iPathwayID,
@@ -153,7 +152,7 @@ public class GLPathway
 	}
 
 	@Override
-	public void displayLocal(final GL gl)
+	public synchronized void displayLocal(final GL gl)
 	{
 
 		// Check if pathway exists or if it's already loaded
@@ -172,7 +171,7 @@ public class GLPathway
 	}
 
 	@Override
-	public void displayRemote(final GL gl)
+	public synchronized void displayRemote(final GL gl)
 	{
 
 		// Check if pathway exists or if it's already loaded
@@ -190,7 +189,7 @@ public class GLPathway
 	}
 
 	@Override
-	public void display(final GL gl)
+	public synchronized void display(final GL gl)
 	{
 
 		checkForHits(gl);
@@ -213,7 +212,7 @@ public class GLPathway
 		// gLPathwayContentCreator.buildPathwayDisplayList(gl, this, iPathwayID);
 	}
 
-	public void renderScene(final GL gl)
+	public synchronized void renderScene(final GL gl)
 	{
 		renderPathwayById(gl, iPathwayID);
 	}
@@ -279,7 +278,7 @@ public class GLPathway
 	}
 
 	@Override
-	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
+	public synchronized void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
 	{
 		generalManager.getLogger().log(Level.FINE,
 				"Update called by " + eventTrigger.getClass().getSimpleName());
@@ -466,18 +465,18 @@ public class GLPathway
 		}
 	}
 
-	public void setMappingRowCount(final int iMappingRowCount)
+	public synchronized void setMappingRowCount(final int iMappingRowCount)
 	{
 		gLPathwayContentCreator.setMappingRowCount(iMappingRowCount);
 	}
 
-	public void enableGeneMapping(final boolean bEnableMapping)
+	public synchronized void enableGeneMapping(final boolean bEnableMapping)
 	{
 		gLPathwayContentCreator.enableGeneMapping(bEnableMapping);
 		setDisplayListDirty();
 	}
 
-	public void enablePathwayTextures(final boolean bEnablePathwayTexture)
+	public synchronized void enablePathwayTextures(final boolean bEnablePathwayTexture)
 	{
 		gLPathwayContentCreator.enableEdgeRendering(!bEnablePathwayTexture);
 		setDisplayListDirty();
@@ -485,21 +484,21 @@ public class GLPathway
 		this.bEnablePathwayTexture = bEnablePathwayTexture;
 	}
 
-	public void enableNeighborhood(final boolean bEnableNeighborhood)
+	public synchronized void enableNeighborhood(final boolean bEnableNeighborhood)
 	{
 		setDisplayListDirty();
 
 		gLPathwayContentCreator.enableNeighborhood(bEnableNeighborhood);
 	}
 
-	public void enableIdenticalNodeHighlighting(final boolean bEnableIdenticalNodeHighlighting)
+	public synchronized void enableIdenticalNodeHighlighting(final boolean bEnableIdenticalNodeHighlighting)
 	{
 		setDisplayListDirty();
 
 		gLPathwayContentCreator.enableIdenticalNodeHighlighting(bEnableIdenticalNodeHighlighting);
 	}
 
-	public void enableAnnotation(final boolean bEnableAnnotation)
+	public synchronized void enableAnnotation(final boolean bEnableAnnotation)
 	{
 
 		gLPathwayContentCreator.enableAnnotation(bEnableAnnotation);
@@ -628,7 +627,7 @@ public class GLPathway
 	}
 
 	@Override
-	public void broadcastElements(ESelectionType type)
+	public synchronized void broadcastElements(ESelectionType type)
 	{
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.DAVID);
 
@@ -672,7 +671,7 @@ public class GLPathway
 	}
 
 	@Override
-	public String getShortInfo()
+	public synchronized String getShortInfo()
 	{
 		PathwayGraph pathway = (generalManager.getPathwayManager().getItem(iPathwayID));
 		
@@ -680,7 +679,7 @@ public class GLPathway
 	}
 	
 	@Override
-	public String getDetailedInfo()
+	public synchronized String getDetailedInfo()
 	{
 		StringBuffer sInfoText = new StringBuffer();
 		PathwayGraph pathway = (generalManager.getPathwayManager().getItem(iPathwayID));
@@ -695,20 +694,20 @@ public class GLPathway
 	}
 
 	@Override
-	public void triggerUpdate(ISelectionDelta selectionDelta)
+	public synchronized void triggerUpdate(ISelectionDelta selectionDelta)
 	{
 		generalManager.getEventPublisher().handleUpdate(this, selectionDelta);
 	}
 
 	@Override
-	public void addSet(int setID)
+	public synchronized void addSet(int setID)
 	{
 		super.addSet(setID);
 		connectedElementRepresentationManager.clear();
 	}
 
 	@Override
-	public void addSet(ISet set)
+	public synchronized void addSet(ISet set)
 	{
 		super.addSet(set);
 		connectedElementRepresentationManager.clear();

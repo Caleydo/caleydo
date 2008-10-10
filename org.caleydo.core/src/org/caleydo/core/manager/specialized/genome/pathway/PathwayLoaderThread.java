@@ -9,13 +9,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
-import javax.media.opengl.GLEventListener;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.system.StringConversionTool;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 
 /**
@@ -66,7 +66,7 @@ public class PathwayLoaderThread
 		{
 			loadAllPathwaysByType(generalManager, iterPathwayDatabase.next());
 		}
-		
+
 		generalManager.getPathwayManager().notifyPathwayLoadingFinished(true);
 		// notifyViews();
 	}
@@ -82,17 +82,19 @@ public class PathwayLoaderThread
 				"Start parsing " + pathwayDatabase.getName() + " pathways.");
 
 		GLRemoteRendering tmpGLRemoteRendering3D = null;
-		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
+		for (AGLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
 				.getAllGLEventListeners())
 		{
+			if (!tmpGLEventListener.isRenderedRemote())
+				tmpGLEventListener.enableBusyMode(true);
 			if (tmpGLEventListener instanceof GLRemoteRendering)
 			{
 				tmpGLRemoteRendering3D = ((GLRemoteRendering) tmpGLEventListener);
-				tmpGLRemoteRendering3D.enableBusyMode(true);
-				break;
+				// tmpGLRemoteRendering3D.enableBusyMode(true);
+				// break;
 			}
 		}
-		
+
 		BufferedReader file = null;
 		String sLine = null;
 		String sFileName = "";
@@ -185,9 +187,16 @@ public class PathwayLoaderThread
 			throw new CaleydoRuntimeException("Error reading data from pathway list file: "
 					+ sFileName, CaleydoRuntimeExceptionType.DATAHANDLING);
 		}
-		
-		if (tmpGLRemoteRendering3D != null)
-			tmpGLRemoteRendering3D.enableBusyMode(false);
+
+		for (AGLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
+				.getAllGLEventListeners())
+		{
+			if (!tmpGLEventListener.isRenderedRemote())
+				tmpGLEventListener.enableBusyMode(false);
+		}
+
+		// if (tmpGLRemoteRendering3D != null)
+		// tmpGLRemoteRendering3D.enableBusyMode(false);
 
 		generalManager.getLogger().log(Level.INFO,
 				"Finished parsing " + pathwayDatabase.getName() + " pathways.");

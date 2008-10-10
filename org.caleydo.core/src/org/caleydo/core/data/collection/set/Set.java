@@ -243,7 +243,19 @@ public class Set
 	@Override
 	public double getRawForNormalized(double dNormalized)
 	{
-		return dNormalized * (getMax() - getMin());
+		if(dNormalized == 0)
+			return getMin();
+	//	if(getMin() > 0)
+			return getMin() + dNormalized * (getMax() - getMin());
+	//	return (dNormalized) * (getMax() + getMin());
+	}
+	
+	public double getNormalizedForRaw(double dRaw)
+	{
+		if(dRaw < getMin() || dRaw > getMax())
+			throw new IllegalArgumentException("Value may not be smaller than min or larger than max");
+		
+		return (dRaw - getMin()) / (getMax() - getMin()) ;
 	}
 
 	@Override

@@ -26,5 +26,12 @@ public class PreferenceConstants {
 	public static final String PC_NUM_RANDOM_SAMPLING_POINT = "pcNumRandomSamplinPoints";
 	public static final String PC_LIMIT_REMOTE_TO_CONTEXT = "pcLimitRemoteToContext";
 	
+	// General
+	public static final String FIRST_START = "firstStart";
+	
+	public static final String PATHWAY_DATA_OK = "pathwayDataOK";
+	
+	public static final String LAST_PATHWAY_UPDATE = "lastPathwayDataUpdate";
+	
 	
 }

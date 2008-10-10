@@ -12,6 +12,7 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
+import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.eclipse.jface.dialogs.DialogPage;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.jface.wizard.WizardPage;
@@ -51,7 +52,7 @@ public class CmdFetchPathwayData
 		
 		try
 		{
-			generalManager.getPreferenceStore().setValue("pathwayDataOK", false);
+			generalManager.getPreferenceStore().setValue(PreferenceConstants.PATHWAY_DATA_OK, false);
 			generalManager.getPreferenceStore().save();
 		}
 		catch (IOException e1)
@@ -139,9 +140,8 @@ public class CmdFetchPathwayData
 					
 					try
 					{
-						// TODO: replace with constants
-						generalManager.getPreferenceStore().setValue("pathwayDataOK", true);
-						generalManager.getPreferenceStore().setValue("lastPathwayDataUpdate", getDateTime());
+						generalManager.getPreferenceStore().setValue(PreferenceConstants.PATHWAY_DATA_OK, true);
+						generalManager.getPreferenceStore().setValue(PreferenceConstants.LAST_PATHWAY_UPDATE, getDateTime());
 						generalManager.getPreferenceStore().save();
 					}
 					catch (IOException e1)

@@ -74,6 +74,13 @@ public abstract class AGLEventListener
 	protected boolean bIsDisplayListDirtyLocal = true;
 	protected boolean bIsDisplayListDirtyRemote = true;
 	protected boolean bHasFrustumChanged = false;
+	
+	/**
+	 * When the system is in the busy mode the background color will turn yellow
+	 * and the system interaction will be turned off.
+	 */
+	protected boolean bBusyMode = false;
+	protected boolean bBusyModeChanged = false;
 
 	/**
 	 * Constructor.
@@ -141,7 +148,7 @@ public abstract class AGLEventListener
 	}
 
 	@Override
-	public void display(GLAutoDrawable drawable)
+	public synchronized void display(GLAutoDrawable drawable)
 	{
 		try
 		{
@@ -229,31 +236,31 @@ public abstract class AGLEventListener
 	 */
 	protected void clipToFrustum(GL gl)
 	{
-		// gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
-		// gl.glColorMask(false, false, false, false);
-		// gl.glClearStencil(0); // Clear The Stencil Buffer To 0
-		// gl.glEnable(GL.GL_DEPTH_TEST); // Enables Depth Testing
-		// gl.glDepthFunc(GL.GL_LEQUAL); // The Type Of Depth Testing To Do
-		// gl.glEnable(GL.GL_STENCIL_TEST);
-		// gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);
-		// gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
-		// gl.glDisable(GL.GL_DEPTH_TEST);
-		//
-		// // Clip region that renders in stencil buffer (in this case the
-		// // frustum)
-		// gl.glBegin(GL.GL_POLYGON);
-		// gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(),
-		// -0.01f);
-		// gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(),
-		// -0.01f);
-		// gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), -0.01f);
-		// gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), -0.01f);
-		// gl.glEnd();
-		//
-		// gl.glEnable(GL.GL_DEPTH_TEST);
-		// gl.glColorMask(true, true, true, true);
-		// gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
-		// gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
+		 gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+		 gl.glColorMask(false, false, false, false);
+		 gl.glClearStencil(0); // Clear The Stencil Buffer To 0
+		 gl.glEnable(GL.GL_DEPTH_TEST); // Enables Depth Testing
+		 gl.glDepthFunc(GL.GL_LEQUAL); // The Type Of Depth Testing To Do
+		 gl.glEnable(GL.GL_STENCIL_TEST);
+		 gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);
+		 gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
+		 gl.glDisable(GL.GL_DEPTH_TEST);
+		
+		 // Clip region that renders in stencil buffer (in this case the
+		 // frustum)
+		 gl.glBegin(GL.GL_POLYGON);
+		 gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(),
+		 -0.01f);
+		 gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(),
+		 -0.01f);
+		 gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), -0.01f);
+		 gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), -0.01f);
+		 gl.glEnd();
+		
+		 gl.glEnable(GL.GL_DEPTH_TEST);
+		 gl.glColorMask(true, true, true, true);
+		 gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
+		 gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 	}
 
 	/**
@@ -306,19 +313,19 @@ public abstract class AGLEventListener
 	 */
 	public abstract void displayRemote(final GL gl);
 
-	public void addSet(ISet set)
+	public synchronized void addSet(ISet set)
 	{
 		alSets.add(set);
 		setDisplayListDirty();
 	}
 
-	public void addSet(int iSetID)
+	public synchronized void addSet(int iSetID)
 	{
 		alSets.add(generalManager.getSetManager().getItem(iSetID));
 		setDisplayListDirty();
 	}
 
-	public void removeSets(ESetType setType)
+	public synchronized void removeSets(ESetType setType)
 	{
 		Iterator<ISet> iter = alSets.iterator();
 		while (iter.hasNext())
@@ -329,7 +336,7 @@ public abstract class AGLEventListener
 		setDisplayListDirty();
 	}
 
-	public void clearSets()
+	public synchronized void clearSets()
 	{
 		alSets.clear();
 		setDisplayListDirty();
@@ -348,22 +355,6 @@ public abstract class AGLEventListener
 	public void setFrustum(IViewFrustum viewFrustum)
 	{
 		this.viewFrustum = viewFrustum;
-	}
-
-	/**
-	 * @param gl the gl of the context, remote gl when called remote
-	 * @param leftPoint is the bottom left point if bRenderLeftToRight is true,
-	 *            else the top left point
-	 * @param layer
-	 * @param bIsCalledLocally true if called locally
-	 * @param bRenderLeftToRight true if it should be rendered left to right,
-	 *            false if top to bottom
-	 */
-	public void renderToolbox(final GL gl, final Vec3f leftPoint,
-			final RemoteHierarchyLayer layer, final boolean bIsCalledLocally,
-			final boolean bRenderLeftToRight)
-	{
-
 	}
 
 	/**
@@ -436,7 +427,7 @@ public abstract class AGLEventListener
 	 */
 	public abstract void broadcastElements(ESelectionType type);
 
-	public void setDetailLevel(EDetailLevel detailLevel)
+	public synchronized void setDetailLevel(EDetailLevel detailLevel)
 	{
 		this.detailLevel = detailLevel;
 		setDisplayListDirty();
@@ -448,5 +439,29 @@ public abstract class AGLEventListener
 			return false;
 
 		return true;
+	}
+	
+	protected void updateBusyMode(final GL gl)
+	{
+
+		if (bBusyMode)
+		{
+			pickingManager.enablePicking(false);
+			gl.glClearColor(0.7f, 0.7f, 0.7f, 1f); // yellowish background (busy mode)
+		}
+		else
+		{
+			pickingManager.enablePicking(true);
+			gl.glClearColor(1, 1, 1, 1); // white background
+		}
+
+		bBusyModeChanged = false;
+	}
+	
+	public void enableBusyMode(final boolean bBusyMode)
+	{
+
+		this.bBusyMode = bBusyMode;
+		bBusyModeChanged = true;
 	}
 }

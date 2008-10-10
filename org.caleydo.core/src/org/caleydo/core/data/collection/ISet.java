@@ -137,6 +137,14 @@ public interface ISet
 	 * @return a value between min and max
 	 */
 	public double getRawForNormalized(double dNormalized);
+	
+	/**
+	 * Calculates a normalized value based on min and max.
+	 * 
+	 * @param dRaw the raw value
+	 * @return a value between 0 and 1
+	 */
+	public double getNormalizedForRaw(double dRaw);
 
 	/**
 	 * Calculates log10 on all storages in the set. Take care that the set

@@ -165,10 +165,16 @@ public class RemoteHierarchyLayer
 
 	public void removeAllElements()
 	{
-
 		llElementId.clear();
 		llElementIdImportanceQueue.clear();
 		llElementIdVisibleState.clear();
+		
+		// Initialize elements with -1
+		for (int iPositionIndex = 0; iPositionIndex < level.getCapacity(); iPositionIndex++)
+		{
+			llElementId.add(-1);
+			llElementIdVisibleState.add(false);
+		}
 	}
 
 	public boolean containsElement(int iElementId)
