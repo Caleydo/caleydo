@@ -4,7 +4,7 @@ import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.EHierarchyLevel;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
 
 /**
  * Abstract render style for remote rendered views as Jukebox and Bucket.
@@ -27,12 +27,12 @@ public abstract class ARemoteViewLayoutRenderStyle
 		JUKEBOX
 	}
 
-	protected RemoteHierarchyLayer underInteractionLayer;
-	protected RemoteHierarchyLayer stackLayer;
-	protected RemoteHierarchyLayer poolLayer;
-	protected RemoteHierarchyLayer transitionLayer;
-	protected RemoteHierarchyLayer spawnLayer;
-	protected RemoteHierarchyLayer memoLayer;
+	protected RemoteHierarchyLevel underInteractionLayer;
+	protected RemoteHierarchyLevel stackLayer;
+	protected RemoteHierarchyLevel poolLayer;
+	protected RemoteHierarchyLevel transitionLayer;
+	protected RemoteHierarchyLevel spawnLayer;
+	protected RemoteHierarchyLevel memoLayer;
 
 	protected EProjectionMode eProjectionMode;
 
@@ -61,12 +61,12 @@ public abstract class ARemoteViewLayoutRenderStyle
 	public ARemoteViewLayoutRenderStyle(IViewFrustum viewFrustum)
 	{
 		super(viewFrustum);
-		underInteractionLayer = new RemoteHierarchyLayer(EHierarchyLevel.UNDER_INTERACTION);
-		stackLayer = new RemoteHierarchyLayer(EHierarchyLevel.STACK);
-		poolLayer = new RemoteHierarchyLayer(EHierarchyLevel.POOL);
-		transitionLayer = new RemoteHierarchyLayer(EHierarchyLevel.TRANSITION);
-		spawnLayer = new RemoteHierarchyLayer(EHierarchyLevel.SPAWN);
-		memoLayer = new RemoteHierarchyLayer(EHierarchyLevel.MEMO);
+		underInteractionLayer = new RemoteHierarchyLevel(EHierarchyLevel.UNDER_INTERACTION);
+		stackLayer = new RemoteHierarchyLevel(EHierarchyLevel.STACK);
+		poolLayer = new RemoteHierarchyLevel(EHierarchyLevel.POOL);
+		transitionLayer = new RemoteHierarchyLevel(EHierarchyLevel.TRANSITION);
+		spawnLayer = new RemoteHierarchyLevel(EHierarchyLevel.SPAWN);
+		memoLayer = new RemoteHierarchyLevel(EHierarchyLevel.MEMO);
 
 		underInteractionLayer.setParentLayer(stackLayer);
 		stackLayer.setChildLayer(underInteractionLayer);
@@ -89,49 +89,49 @@ public abstract class ARemoteViewLayoutRenderStyle
 		spawnLayer = previousLayoutStyle.getSpawnLayer();
 	}
 
-	public abstract RemoteHierarchyLayer initUnderInteractionLayer();
+	public abstract RemoteHierarchyLevel initUnderInteractionLayer();
 
-	public abstract RemoteHierarchyLayer initStackLayer();
+	public abstract RemoteHierarchyLevel initStackLayer();
 
-	public abstract RemoteHierarchyLayer initPoolLayer(final int iMouseOverViewID);
+	public abstract RemoteHierarchyLevel initPoolLayer(final int iMouseOverViewID);
 
-	public abstract RemoteHierarchyLayer initMemoLayer();
+	public abstract RemoteHierarchyLevel initMemoLayer();
 
-	public abstract RemoteHierarchyLayer initTransitionLayer();
+	public abstract RemoteHierarchyLevel initTransitionLayer();
 
-	public abstract RemoteHierarchyLayer initSpawnLayer();
+	public abstract RemoteHierarchyLevel initSpawnLayer();
 
-	public RemoteHierarchyLayer getUnderInteractionLayer()
+	public RemoteHierarchyLevel getUnderInteractionLayer()
 	{
 
 		return underInteractionLayer;
 	}
 
-	public RemoteHierarchyLayer getStackLayer()
+	public RemoteHierarchyLevel getStackLayer()
 	{
 
 		return stackLayer;
 	}
 
-	public RemoteHierarchyLayer getPoolLayer()
+	public RemoteHierarchyLevel getPoolLayer()
 	{
 
 		return poolLayer;
 	}
 
-	public RemoteHierarchyLayer getTransitionLayer()
+	public RemoteHierarchyLevel getTransitionLayer()
 	{
 
 		return transitionLayer;
 	}
 
-	public RemoteHierarchyLayer getSpawnLayer()
+	public RemoteHierarchyLevel getSpawnLayer()
 	{
 
 		return spawnLayer;
 	}
 
-	public RemoteHierarchyLayer getMemoLayer()
+	public RemoteHierarchyLevel getMemoLayer()
 	{
 
 		return memoLayer;

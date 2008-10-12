@@ -14,7 +14,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
 import wiiremotej.IRLight;
 import wiiremotej.WiiRemote;
 import wiiremotej.WiiRemoteJ;
@@ -791,7 +791,7 @@ public class GLCanvasWiiTest
 
 	@Override
 	public void initRemote(final GL gl, final int iRemoteViewID,
-			final RemoteHierarchyLayer layer,
+			final RemoteHierarchyLevel layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas)
 	{

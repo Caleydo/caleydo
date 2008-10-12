@@ -58,7 +58,7 @@ import org.caleydo.core.view.opengl.renderstyle.layout.ARemoteViewLayoutRenderSt
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLIconTextureManager;
 import org.caleydo.core.view.opengl.util.drag.GLDragAndDrop;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
 import org.caleydo.core.view.opengl.util.trashcan.TrashCan;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
@@ -85,12 +85,12 @@ public class GLRemoteRendering
 
 	protected int iMouseOverViewID = -1;
 
-	protected RemoteHierarchyLayer underInteractionLayer;
-	protected RemoteHierarchyLayer stackLayer;
-	protected RemoteHierarchyLayer poolLayer;
-	protected RemoteHierarchyLayer transitionLayer;
-	protected RemoteHierarchyLayer spawnLayer;
-	protected RemoteHierarchyLayer memoLayer;
+	protected RemoteHierarchyLevel underInteractionLayer;
+	protected RemoteHierarchyLevel stackLayer;
+	protected RemoteHierarchyLevel poolLayer;
+	protected RemoteHierarchyLevel transitionLayer;
+	protected RemoteHierarchyLevel spawnLayer;
+	protected RemoteHierarchyLevel memoLayer;
 
 	private ArrayList<SlerpAction> arSlerpActions;
 
@@ -214,7 +214,7 @@ public class GLRemoteRendering
 
 	@Override
 	public void initRemote(final GL gl, final int iRemoteViewID,
-			final RemoteHierarchyLayer layer,
+			final RemoteHierarchyLevel layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas)
 	{
@@ -438,7 +438,7 @@ public class GLRemoteRendering
 		gl.glEnd();
 	}
 
-	private void renderLayer(final GL gl, final RemoteHierarchyLayer layer)
+	private void renderLayer(final GL gl, final RemoteHierarchyLevel layer)
 	{
 		Iterator<Integer> iterElementList = layer.getElementList().iterator();
 		int iViewId = 0;
@@ -464,7 +464,7 @@ public class GLRemoteRendering
 	}
 
 	private void renderViewByID(final GL gl, final int iViewID,
-			final RemoteHierarchyLayer layer)
+			final RemoteHierarchyLevel layer)
 	{
 		// Check if view is visible
 		if (!layer.getElementVisibilityById(iViewID))
@@ -533,7 +533,7 @@ public class GLRemoteRendering
 		gl.glPopMatrix();
 	}
 
-	private void renderEmptyBucketWall(final GL gl, final RemoteHierarchyLayer layer,
+	private void renderEmptyBucketWall(final GL gl, final RemoteHierarchyLevel layer,
 			final int iLayerPositionIndex)
 	{
 
@@ -938,7 +938,6 @@ public class GLRemoteRendering
 
 	private void doSlerpActions(final GL gl)
 	{
-
 		if (arSlerpActions.isEmpty())
 			return;
 
@@ -947,6 +946,8 @@ public class GLRemoteRendering
 		if (iSlerpFactor == 0)
 		{
 			tmpSlerpAction.start();
+			
+			System.out.println("Start slerp action " +tmpSlerpAction);
 		}
 
 		if (iSlerpFactor < SLERP_RANGE)
@@ -956,6 +957,9 @@ public class GLRemoteRendering
 
 			if (iSlerpFactor > SLERP_RANGE)
 				iSlerpFactor = SLERP_RANGE;
+			
+			if (iSlerpFactor == 0)
+				System.out.println("ALARM!!!!!!!!!!!!!!!!!!!!");
 		}
 
 		slerpView(gl, tmpSlerpAction);
@@ -971,9 +975,13 @@ public class GLRemoteRendering
 			slerpMod.playSlerpSound();
 		}
 
-		Transform transform = slerpMod.interpolate(slerpAction.getOriginHierarchyLayer()
+		generalManager.getLogger().log(Level.INFO, "Slerp action running from " 
+				+ slerpAction.getOriginHierarchyLevel() + ": " + slerpAction.getOriginPosIndex() 
+				+ " to " + slerpAction.getDestinationHierarchyLevel() + ": " + slerpAction.getDestinationPosIndex());
+		
+		Transform transform = slerpMod.interpolate(slerpAction.getOriginHierarchyLevel()
 				.getTransformByPositionIndex(slerpAction.getOriginPosIndex()), slerpAction
-				.getDestinationHierarchyLayer().getTransformByPositionIndex(
+				.getDestinationHierarchyLevel().getTransformByPositionIndex(
 						slerpAction.getDestinationPosIndex()), (float) iSlerpFactor
 				/ SLERP_RANGE);
 
@@ -993,7 +1001,7 @@ public class GLRemoteRendering
 
 			iSlerpFactor = 0;
 
-			RemoteHierarchyLayer destinationLayer = slerpAction.getDestinationHierarchyLayer();
+			RemoteHierarchyLevel destinationLayer = slerpAction.getDestinationHierarchyLevel();
 			destinationLayer.setElementVisibilityById(true, iViewID);
 
 			AGLEventListener glActiveSubView = GeneralManager.get().getViewGLCanvasManager()
@@ -1070,6 +1078,8 @@ public class GLRemoteRendering
 					transitionLayer);
 			arSlerpActions.add(slerpActionTransition);
 
+			System.out.println("Slerp view with ID " + iViewID + " from pool layer to transition layer.");
+			
 			if (!stackLayer.containsElement(-1))
 			{
 				// Slerp view from stack to pool
@@ -1148,55 +1158,7 @@ public class GLRemoteRendering
 			addPathwayView(selectionDelta.getSelectionData().get(0).getSelectionID());
 		}
 	}
-
-	// // TODO re-implement
-	//
-	// ArrayList<IGraphItem> alPathwayVertexGraphItem = new
-	// ArrayList<IGraphItem>();
-	//
-	// for (int iSelectionIndex = 0; iSelectionIndex < iAlSelection.size();
-	// iSelectionIndex++)
-	// {
-	// int iDavidId = iAlSelection.get(iSelectionIndex);
-	//
-	// if (iAlSelectionGroup.get(iSelectionIndex) == -1)
-	// {
-	// generalManager.getViewGLCanvasManager().getSelectionManager().clear();
-	// continue;
-	// }
-	// else if (iAlSelectionGroup.get(iSelectionIndex) != 2)
-	// continue;
-	//
-	// alSelection.get(0).clearAllSelectionArrays();
-	//
-	// PathwayVertexGraphItem tmpPathwayVertexGraphItem =
-	// ((PathwayVertexGraphItem) generalManager
-	// .getPathwayItemManager().getItem(
-	// generalManager.getPathwayItemManager()
-	// .getPathwayVertexGraphItemIdByDavidId(iDavidId)));
-	//
-	// alPathwayVertexGraphItem.add(tmpPathwayVertexGraphItem);
-	//
-	// iAlTmpSelectionId.add(iDavidId);
-	// iAlTmpGroupId.add(1); // mouse over
-	// }
-	//
-	// if (!alPathwayVertexGraphItem.isEmpty())
-	// {
-	// loadDependentPathways(alPathwayVertexGraphItem);
-	// }
-	//
-	// alSelection.get(0).mergeSelection(iAlTmpSelectionId, iAlTmpGroupId,
-	// null);
-	// }
-	// // Check if update set contains a pathway that was searched by the user
-	// else if (setSelection.getOptionalDataArray() != null)
-	// {
-	// addPathwayView(setSelection.getOptionalDataArray().get(0));
-	//
-	// enableBusyMode(true);
-	// }
-
+	
 	/**
 	 * Add pathway view. Also used when serialized pathways are loaded.
 	 * 
@@ -1204,13 +1166,11 @@ public class GLRemoteRendering
 	 */
 	public synchronized void addPathwayView(final int iPathwayIDToLoad)
 	{
-
 		iAlUninitializedPathwayIDs.add(iPathwayIDToLoad);
 	}
 
 	public synchronized void loadDependentPathways(final List<ICaleydoGraphItem> alVertex)
 	{
-
 		// Remove pathways from stacked layer view
 		// poolLayer.removeAllElements();
 
@@ -1260,14 +1220,13 @@ public class GLRemoteRendering
 		// Disable picking until pathways are loaded
 		generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(false);
 
-		iSlerpFactor = 0;
+//		iSlerpFactor = 0;
 	}
 
 	@Override
 	protected void handleEvents(EPickingType pickingType, EPickingMode pickingMode,
 			int iExternalID, Pick pick)
 	{
-
 		switch (pickingType)
 		{
 			case VIEW_SELECTION:
@@ -1602,7 +1561,6 @@ public class GLRemoteRendering
 
 	public synchronized void toggleLayoutMode()
 	{
-
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
 			layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX;
 		else
@@ -1657,7 +1615,6 @@ public class GLRemoteRendering
 
 	public synchronized void clearAll()
 	{
-
 		iAlUninitializedPathwayIDs.clear();
 		arSlerpActions.clear();
 		// Remove all pathway views
@@ -1727,7 +1684,7 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	public synchronized RemoteHierarchyLayer getHierarchyLayerByGLEventListenerId(
+	public synchronized RemoteHierarchyLevel getHierarchyLayerByGLEventListenerId(
 			final int iGLEventListenerId)
 	{
 		if (underInteractionLayer.containsElement(iGLEventListenerId))
@@ -1750,7 +1707,7 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	public RemoteHierarchyLayer getUnderInteractionHierarchyLayer()
+	public RemoteHierarchyLevel getUnderInteractionHierarchyLayer()
 	{
 		return underInteractionLayer;
 	}
@@ -1777,7 +1734,6 @@ public class GLRemoteRendering
 
 	protected void renderPoolAndMemoLayerBackground(final GL gl)
 	{
-
 		// Pool layer background
 
 		float fWidth = 0.8f;
@@ -1846,7 +1802,6 @@ public class GLRemoteRendering
 
 	public synchronized void enableGeneMapping(final boolean bEnableMapping)
 	{
-
 		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
 				.getAllGLEventListeners())
 		{
@@ -1859,7 +1814,6 @@ public class GLRemoteRendering
 
 	public synchronized void enablePathwayTextures(final boolean bEnablePathwayTexture)
 	{
-
 		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
 				.getAllGLEventListeners())
 		{
@@ -1872,7 +1826,6 @@ public class GLRemoteRendering
 
 	public synchronized void enableNeighborhood(final boolean bEnableNeighborhood)
 	{
-
 		for (GLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
 				.getAllGLEventListeners())
 		{
@@ -1886,14 +1839,11 @@ public class GLRemoteRendering
 	@Override
 	public synchronized void triggerUpdate(ISelectionDelta selectionDelta)
 	{
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public synchronized void broadcastElements(ESelectionType type)
 	{
-
 	}
 
 	private synchronized void initializeNewPathways(final GL gl)

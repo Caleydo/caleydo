@@ -1,6 +1,7 @@
 package org.caleydo.core.util.slerp;
 
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
+import com.sun.org.apache.bcel.internal.generic.LLOAD;
 
 /**
  * Slerp action in 3D scene.
@@ -9,12 +10,11 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
  */
 public class SlerpAction
 {
-
 	private int iElementId = -1;
 
-	private RemoteHierarchyLayer originHierarchyLayer;
+	private RemoteHierarchyLevel originHierarchyLayer;
 
-	private RemoteHierarchyLayer destinationHierarchyLayer;
+	private RemoteHierarchyLevel destinationHierarchyLayer;
 
 	private int iOriginPosIndex = -1;
 
@@ -27,10 +27,9 @@ public class SlerpAction
 	 * @param originHierarchyLayer
 	 * @param bSlerpUpInHierarchy
 	 */
-	public SlerpAction(int iElementId, RemoteHierarchyLayer originHierarchyLayer,
+	public SlerpAction(int iElementId, RemoteHierarchyLevel originHierarchyLayer,
 			boolean bSlerpUpInHierarchy)
 	{
-
 		if (bSlerpUpInHierarchy)
 			destinationHierarchyLayer = originHierarchyLayer.getParentLayer();
 		else
@@ -46,10 +45,9 @@ public class SlerpAction
 	 * @param originHierarchyLayer
 	 * @param destinationHierarchyLayer
 	 */
-	public SlerpAction(int iElementId, RemoteHierarchyLayer originHierarchyLayer,
-			RemoteHierarchyLayer destinationHierarchyLayer)
+	public SlerpAction(int iElementId, RemoteHierarchyLevel originHierarchyLayer,
+			RemoteHierarchyLevel destinationHierarchyLayer)
 	{
-
 		init(iElementId, originHierarchyLayer, destinationHierarchyLayer);
 	}
 
@@ -61,18 +59,16 @@ public class SlerpAction
 	 * @param destinationHierarchyLayer
 	 * @param iDestinationPosIndex
 	 */
-	public SlerpAction(int iElementId, RemoteHierarchyLayer originHierarchyLayer,
-			RemoteHierarchyLayer destinationHierarchyLayer, int iDestinationPosIndex)
+	public SlerpAction(int iElementId, RemoteHierarchyLevel originHierarchyLayer,
+			RemoteHierarchyLevel destinationHierarchyLayer, int iDestinationPosIndex)
 	{
-
 		this.iDestinationPosIndex = iDestinationPosIndex;
 		init(iElementId, originHierarchyLayer, destinationHierarchyLayer);
 	}
 
-	private void init(int iElementId, RemoteHierarchyLayer originHierarchyLayer,
-			RemoteHierarchyLayer destinationHierarchyLayer)
+	private void init(int iElementId, RemoteHierarchyLevel originHierarchyLayer,
+			RemoteHierarchyLevel destinationHierarchyLayer)
 	{
-
 		this.iElementId = iElementId;
 		this.originHierarchyLayer = originHierarchyLayer;
 		this.destinationHierarchyLayer = destinationHierarchyLayer;
@@ -80,12 +76,20 @@ public class SlerpAction
 
 	public void start()
 	{
-
 		iOriginPosIndex = originHierarchyLayer.getPositionIndexByElementId(iElementId);
 
+		if (iOriginPosIndex == -1)
+		{			
+			throw new IllegalStateException("Element with ID " + iElementId + 
+					" does not exist in " +originHierarchyLayer);		
+		}
+		
 		if (iDestinationPosIndex == -1)
 		{
 			this.iDestinationPosIndex = destinationHierarchyLayer.getNextPositionIndex();
+			
+			if (iDestinationPosIndex == -1)
+				throw new IllegalStateException("Cannot add " + iElementId + " to " + destinationHierarchyLayer);
 		}
 
 		originHierarchyLayer.removeElement(iElementId);
@@ -103,22 +107,19 @@ public class SlerpAction
 
 	public int getElementId()
 	{
-
 		return iElementId;
 	}
 
-	public RemoteHierarchyLayer getOriginHierarchyLayer()
+	public RemoteHierarchyLevel getOriginHierarchyLevel()
 	{
-
 		if (originHierarchyLayer == null)
 			throw new IllegalStateException("Slerp origin layer is null!");
 
 		return originHierarchyLayer;
 	}
 
-	public RemoteHierarchyLayer getDestinationHierarchyLayer()
+	public RemoteHierarchyLevel getDestinationHierarchyLevel()
 	{
-
 		if (destinationHierarchyLayer == null)
 			throw new IllegalStateException("Slerp destination layer is null!");
 
@@ -127,7 +128,6 @@ public class SlerpAction
 
 	public int getOriginPosIndex()
 	{
-
 		if (iOriginPosIndex == -1)
 			throw new IllegalStateException("Invalid slerp origin position (-1)!");
 
@@ -136,7 +136,6 @@ public class SlerpAction
 
 	public int getDestinationPosIndex()
 	{
-
 		if (iDestinationPosIndex == -1)
 			throw new IllegalStateException("Invalid slerp destination position (-1)!");
 

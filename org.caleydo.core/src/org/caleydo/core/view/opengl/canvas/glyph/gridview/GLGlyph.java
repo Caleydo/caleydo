@@ -35,7 +35,7 @@ import org.caleydo.core.view.opengl.mouse.JoglMouseListener;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.renderstyle.GlyphRenderStyle;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
 
 /**
  * Rendering the Glyph View
@@ -210,7 +210,7 @@ public class GLGlyph
 
 	@Override
 	public void initRemote(final GL gl, final int iRemoteViewID,
-			final RemoteHierarchyLayer layer,
+			final RemoteHierarchyLevel layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas)
 

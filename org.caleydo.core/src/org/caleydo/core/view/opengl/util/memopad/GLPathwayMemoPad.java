@@ -14,7 +14,7 @@ import org.caleydo.core.view.opengl.canvas.pathway.GLPathwayContentCreator;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathwayTextureManager;
 import org.caleydo.core.view.opengl.renderstyle.PathwayRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.EHierarchyLevel;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -39,7 +39,7 @@ public class GLPathwayMemoPad
 
 	private static float SCALING_FACTOR_MEMO_PAD = 0.4f;
 
-	private RemoteHierarchyLayer memoPad;
+	private RemoteHierarchyLevel memoPad;
 
 	private IGeneralManager generalManager;
 
@@ -54,7 +54,7 @@ public class GLPathwayMemoPad
 	public GLPathwayMemoPad(final GLPathwayContentCreator gLPathwayContentCreator,
 			final GLPathwayTextureManager gLPathwayTextureManager)
 	{
-		memoPad = new RemoteHierarchyLayer(EHierarchyLevel.MEMO);
+		memoPad = new RemoteHierarchyLevel(EHierarchyLevel.MEMO);
 
 		this.generalManager = GeneralManager.get();
 		this.gLPathwayContentCreator = gLPathwayContentCreator;

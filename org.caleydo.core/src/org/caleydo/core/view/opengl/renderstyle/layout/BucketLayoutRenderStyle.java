@@ -5,7 +5,7 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
 
 /**
  * Render style for bucket view.
@@ -47,7 +47,7 @@ public class BucketLayoutRenderStyle
 	}
 
 	@Override
-	public RemoteHierarchyLayer initUnderInteractionLayer()
+	public RemoteHierarchyLevel initUnderInteractionLayer()
 	{
 		Transform transformUnderInteraction = new Transform();
 		transformUnderInteraction.setTranslation(new Vec3f(-2, -2, 4 * fZoomFactor));
@@ -59,7 +59,7 @@ public class BucketLayoutRenderStyle
 	}
 
 	@Override
-	public RemoteHierarchyLayer initStackLayer()
+	public RemoteHierarchyLevel initStackLayer()
 	{
 		Transform transform;
 
@@ -182,7 +182,7 @@ public class BucketLayoutRenderStyle
 	}
 
 	@Override
-	public RemoteHierarchyLayer initPoolLayer(final int iMouseOverViewID)
+	public RemoteHierarchyLevel initPoolLayer(final int iMouseOverViewID)
 	{
 
 		float fSelectedScaling = 1;
@@ -216,7 +216,7 @@ public class BucketLayoutRenderStyle
 	}
 
 	@Override
-	public RemoteHierarchyLayer initMemoLayer()
+	public RemoteHierarchyLevel initMemoLayer()
 	{
 
 		// Create free memo spots
@@ -251,7 +251,7 @@ public class BucketLayoutRenderStyle
 	}
 
 	@Override
-	public RemoteHierarchyLayer initTransitionLayer()
+	public RemoteHierarchyLevel initTransitionLayer()
 	{
 
 		Transform transformTransition = new Transform();
@@ -264,7 +264,7 @@ public class BucketLayoutRenderStyle
 	}
 
 	@Override
-	public RemoteHierarchyLayer initSpawnLayer()
+	public RemoteHierarchyLevel initSpawnLayer()
 	{
 
 		Transform transformSpawn = new Transform();

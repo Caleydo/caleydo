@@ -11,7 +11,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
 
 /**
  * Class is responsible for rendering and drawing of connection lines (resp.
@@ -23,9 +23,9 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 public abstract class AGLConnectionLineRenderer
 {
 
-	protected RemoteHierarchyLayer underInteractionLayer;
+	protected RemoteHierarchyLevel underInteractionLayer;
 
-	protected RemoteHierarchyLayer stackLayer;
+	protected RemoteHierarchyLevel stackLayer;
 
 	protected ConnectedElementRepresentationManager connectedElementRepManager;
 
@@ -36,8 +36,8 @@ public abstract class AGLConnectionLineRenderer
 	/**
 	 * Constructor.
 	 */
-	public AGLConnectionLineRenderer(final RemoteHierarchyLayer underInteractionLayer,
-			final RemoteHierarchyLayer stackLayer, final RemoteHierarchyLayer poolLayer)
+	public AGLConnectionLineRenderer(final RemoteHierarchyLevel underInteractionLayer,
+			final RemoteHierarchyLevel stackLayer, final RemoteHierarchyLevel poolLayer)
 	{
 		this.underInteractionLayer = underInteractionLayer;
 		this.stackLayer = stackLayer;

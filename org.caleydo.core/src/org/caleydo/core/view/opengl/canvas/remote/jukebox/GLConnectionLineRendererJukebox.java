@@ -8,7 +8,7 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
 
 /**
  * Specialized connection line renderer for bucket view.
@@ -26,8 +26,8 @@ public class GLConnectionLineRendererJukebox
 	 * @param stackLayer
 	 * @param poolLayer
 	 */
-	public GLConnectionLineRendererJukebox(final RemoteHierarchyLayer underInteractionLayer,
-			final RemoteHierarchyLayer stackLayer, final RemoteHierarchyLayer poolLayer)
+	public GLConnectionLineRendererJukebox(final RemoteHierarchyLevel underInteractionLayer,
+			final RemoteHierarchyLevel stackLayer, final RemoteHierarchyLevel poolLayer)
 	{
 		super(underInteractionLayer, stackLayer, poolLayer);
 	}
@@ -65,7 +65,7 @@ public class GLConnectionLineRendererJukebox
 							.get(iElementIndex);
 
 					// Check if element is in stack
-					RemoteHierarchyLayer activeLayer = null;
+					RemoteHierarchyLevel activeLayer = null;
 					if (stackLayer.containsElement(selectedElementRep.getContainingViewID()))
 					{
 						activeLayer = stackLayer;

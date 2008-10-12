@@ -9,9 +9,8 @@ import java.util.LinkedList;
  * 
  * @author Marc Streit
  */
-public class RemoteHierarchyLayer
+public class RemoteHierarchyLevel
 {
-
 	private EHierarchyLevel level;
 
 	private HashMap<Integer, Transform> hashElementPositionIndexToTransform;
@@ -25,9 +24,9 @@ public class RemoteHierarchyLayer
 
 	private LinkedList<Boolean> llElementIdVisibleState;
 
-	private RemoteHierarchyLayer parentLayer;
+	private RemoteHierarchyLevel parentLayer;
 
-	private RemoteHierarchyLayer childLayer;
+	private RemoteHierarchyLevel childLayer;
 
 	/**
 	 * Constructor.
@@ -35,9 +34,8 @@ public class RemoteHierarchyLayer
 	 * @param generalManager
 	 * @param iCapacity
 	 */
-	public RemoteHierarchyLayer(final EHierarchyLevel level)
+	public RemoteHierarchyLevel(final EHierarchyLevel level)
 	{
-
 		this.level = level;
 		hashElementPositionIndexToTransform = new HashMap<Integer, Transform>();
 		llElementId = new LinkedList<Integer>();
@@ -52,33 +50,28 @@ public class RemoteHierarchyLayer
 		}
 	}
 
-	public void setParentLayer(final RemoteHierarchyLayer parentLayer)
+	public void setParentLayer(final RemoteHierarchyLevel parentLayer)
 	{
-
 		this.parentLayer = parentLayer;
 	}
 
-	public final RemoteHierarchyLayer getParentLayer()
+	public final RemoteHierarchyLevel getParentLayer()
 	{
-
 		return parentLayer;
 	}
 
-	public void setChildLayer(final RemoteHierarchyLayer childLayer)
+	public void setChildLayer(final RemoteHierarchyLevel childLayer)
 	{
-
 		this.childLayer = childLayer;
 	}
 
-	public final RemoteHierarchyLayer getChildLayer()
+	public final RemoteHierarchyLevel getChildLayer()
 	{
-
 		return childLayer;
 	}
 
 	public void replaceElement(int iElementId, int iDestinationPosIndex)
 	{
-
 		llElementId.set(iDestinationPosIndex, iElementId);
 		llElementIdVisibleState.set(iDestinationPosIndex, false);
 		llElementIdImportanceQueue.addFirst(iElementId);
@@ -98,7 +91,6 @@ public class RemoteHierarchyLayer
 	 */
 	public int addElement(int iElementId)
 	{
-
 		if (llElementId.contains(-1))
 		{
 			int iReplacePosition = llElementId.indexOf(-1);
@@ -151,7 +143,6 @@ public class RemoteHierarchyLayer
 
 	public void removeElement(int iElementId)
 	{
-
 		if (llElementId.contains(iElementId))
 		{
 			int iReplacePosition = llElementId.indexOf(iElementId);
@@ -179,39 +170,35 @@ public class RemoteHierarchyLayer
 
 	public boolean containsElement(int iElementId)
 	{
-
 		return llElementId.contains(iElementId);
 	}
 
 	public void setElementByPositionIndex(final int iPositionIndex, final int iElementId)
 	{
-
 		llElementId.set(iPositionIndex, iElementId);
 		llElementIdImportanceQueue.set(iPositionIndex, iElementId);
+
+		System.out.println("Set element with ID " +iElementId + " in " +this + "at index " + iPositionIndex);
 	}
 
 	public final Transform getTransformByElementId(int iElementId)
 	{
-
 		return hashElementPositionIndexToTransform
 				.get(getPositionIndexByElementId(iElementId));
 	}
 
 	public final Transform getTransformByPositionIndex(int iPosIndex)
 	{
-
 		return hashElementPositionIndexToTransform.get(iPosIndex);
 	}
 
 	public final int getPositionIndexByElementId(int iElementId)
 	{
-
 		return llElementId.indexOf(iElementId);
 	}
 
 	public final int getNextPositionIndex()
 	{
-
 		if (llElementId.contains(-1))
 		{
 			return llElementId.indexOf(-1);
@@ -225,7 +212,6 @@ public class RemoteHierarchyLayer
 
 	public void setElementVisibilityById(final boolean bVisibility, final int iElementId)
 	{
-
 		if (!llElementId.contains(iElementId))
 			return;
 
@@ -234,19 +220,22 @@ public class RemoteHierarchyLayer
 
 	public final boolean getElementVisibilityById(final int iElementId)
 	{
-
 		return llElementIdVisibleState.get(llElementId.indexOf(iElementId));
 	}
 
 	public final int getCapacity()
 	{
-
 		return level.getCapacity();
 	}
 
 	public final EHierarchyLevel getLevel()
 	{
-
 		return level;
+	}
+	
+	@Override
+	public String toString()
+	{
+		return level.getName();
 	}
 }

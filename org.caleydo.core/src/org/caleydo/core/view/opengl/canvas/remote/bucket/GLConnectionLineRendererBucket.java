@@ -8,7 +8,7 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
 
 /**
  * Specialized connection line renderer for bucket view.
@@ -26,8 +26,8 @@ public class GLConnectionLineRendererBucket
 	 * @param stackLayer
 	 * @param poolLayer
 	 */
-	public GLConnectionLineRendererBucket(final RemoteHierarchyLayer underInteractionLayer,
-			final RemoteHierarchyLayer stackLayer, final RemoteHierarchyLayer poolLayer)
+	public GLConnectionLineRendererBucket(final RemoteHierarchyLevel underInteractionLayer,
+			final RemoteHierarchyLevel stackLayer, final RemoteHierarchyLevel poolLayer)
 	{
 		super(underInteractionLayer, stackLayer, poolLayer);
 	}
@@ -60,7 +60,7 @@ public class GLConnectionLineRendererBucket
 			{
 				SelectedElementRep selectedElementRep = iterSelectedElementRep.next();
 
-				RemoteHierarchyLayer activeLayer = null;
+				RemoteHierarchyLevel activeLayer = null;
 				// Check if element is in under interaction layer
 				if (underInteractionLayer.containsElement(selectedElementRep
 						.getContainingViewID()))

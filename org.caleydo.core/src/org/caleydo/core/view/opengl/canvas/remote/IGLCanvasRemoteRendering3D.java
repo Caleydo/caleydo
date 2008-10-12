@@ -1,7 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.remote;
 
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListener;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
 
 /**
  * Interface for accessing views that remotely render other views.
@@ -11,13 +11,13 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLayer;
 public interface IGLCanvasRemoteRendering3D
 {
 
-	public RemoteHierarchyLayer getHierarchyLayerByGLEventListenerId(
+	public RemoteHierarchyLevel getHierarchyLayerByGLEventListenerId(
 			final int iGLEventListenerId);
 
 	/**
 	 * Returns the center layer of the bucket.
 	 */
-	public RemoteHierarchyLayer getUnderInteractionHierarchyLayer();
+	public RemoteHierarchyLevel getUnderInteractionHierarchyLayer();
 
 	public BucketMouseWheelListener getBucketMouseWheelListener();
 }
