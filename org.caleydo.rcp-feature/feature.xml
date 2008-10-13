@@ -48,11 +48,10 @@ All Rights Reserved.
       <import plugin="org.eclipse.equinox.jsp.jasper.registry" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.equinox.http.registry" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui" version="3.2.0" match="compatible"/>
-      <import plugin="org.eclipse.jface" version="3.4.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.ui.workbench"/>
-      <import plugin="org.eclipse.ui.views.log" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.core" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.eclipse.swt" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.lib.jogl" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.util.gleem" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.util.graph" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.equinox.security" version="1.0.0" match="compatible"/>
       <import plugin="org.eclipse.equinox.common" version="3.4.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.equinox.preferences" version="3.2.200" match="greaterOrEqual"/>
@@ -63,9 +62,10 @@ All Rights Reserved.
       <import plugin="org.eclipse.equinox.common" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.core.runtime" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.ui" version="3.3.0" match="compatible"/>
-      <import plugin="org.caleydo.util.gleem" version="1.0.0" match="greaterOrEqual"/>
-      <import plugin="org.caleydo.util.graph" version="1.0.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.swt" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.eclipse.jface" version="3.4.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.runtime" version="3.4.0" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.lib.core" version="1.0.0" match="greaterOrEqual"/>
       <import feature="org.eclipse.rcp" version="3.3.2.R33x_r20071022-8y8eE9CEV3FspP8HJrY1M2dS"/>
    </requires>
 

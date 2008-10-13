@@ -141,3 +141,4 @@ Bundle-ClassPath: lib/ftp/edtftpj.jar,
  .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.caleydo.core.manager
+Bundle-ActivationPolicy: lazy

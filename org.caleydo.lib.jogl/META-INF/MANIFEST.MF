@@ -3,13 +3,13 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Jogl Plug-in
 Bundle-SymbolicName: org.caleydo.lib.jogl
 Bundle-Version: 1.0.0
-Bundle-ClassPath: gluegen-rt.jar,
- jogl.jar
+Bundle-ClassPath: lib/jogl/gluegen-rt.jar,
+ lib/jogl/jogl.jar
 Bundle-NativeCode: 
- macosx/libgluegen-rt.jnilib;
- macosx/libjogl_cg.jnilib;
- macosx/libjogl_awt.jnilib;
- macosx/libjogl.jnilib;
+ lib/jogl/macosx/libgluegen-rt.jnilib;
+ lib/jogl/macosx/libjogl_cg.jnilib;
+ lib/jogl/macosx/libjogl_awt.jnilib;
+ lib/jogl/macosx/libjogl.jnilib;
  osname=macosx;
  osname=mac;
  osname=macos;
@@ -19,10 +19,10 @@ Bundle-NativeCode:
  processor=x86;
  processor=x86-64;
  processor=ppc,
- linux/x86/libgluegen-rt.so;
- linux/x86/libjogl_cg.so;
- linux/x86/libjogl_awt.so;
- linux/x86/libjogl.so;
+ lib/jogl/linux/x86/libgluegen-rt.so;
+ lib/jogl/linux/x86/libjogl_cg.so;
+ lib/jogl/linux/x86/libjogl_awt.so;
+ lib/jogl/linux/x86/libjogl.so;
  osname=linux;
  processor=x86,
  lib/jogl/linux/x86-64/libgluegen-rt.so;
@@ -31,16 +31,16 @@ Bundle-NativeCode:
  lib/jogl/linux/x86-64/libjogl.so;
  osname=linux;
  processor=x86-64,
- windows/x86/gluegen-rt.dll;
- windows/x86/jogl_cg.dll;
- windows/x86/jogl_awt.dll;
- windows/x86/jogl.dll;
+ lib/jogl/windows/x86/gluegen-rt.dll;
+ lib/jogl/windows/x86/jogl_cg.dll;
+ lib/jogl/windows/x86/jogl_awt.dll;
+ lib/jogl/windows/x86/jogl.dll;
  osname=win32;
  processor=x86,
- windows/x86-64/gluegen-rt.dll;
- windows/x86-64/jogl_cg.dll;
- windows/x86-64/jogl_awt.dll;
- windows/x86-64/jogl.dll;
+ lib/jogl/windows/x86-64/gluegen-rt.dll;
+ lib/jogl/windows/x86-64/jogl_cg.dll;
+ lib/jogl/windows/x86-64/jogl_awt.dll;
+ lib/jogl/windows/x86-64/jogl.dll;
  osname=win32;
  processor=x86-64
 Export-Package: com.sun.gluegen.runtime,
