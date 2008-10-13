@@ -228,4 +228,3 @@ Export-Package: com.enterprisedt,
    javax.sound.sampled,
    new wiiremotej",
  wiiremotej.event;uses:="wiiremotej"
-Bundle-ActivationPolicy: lazy

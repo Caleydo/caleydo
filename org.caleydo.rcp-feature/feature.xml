@@ -272,7 +272,13 @@ All Rights Reserved.
          unpack="false"/>
 
    <plugin
-         id="org.caleydo.libs.jogl"
+         id="org.caleydo.lib.jogl"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.caleydo.lib.core"
          download-size="0"
          install-size="0"
          version="0.0.0"/>
