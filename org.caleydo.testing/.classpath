@@ -5,17 +5,10 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/3"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.data"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.lib"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.lib.core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.rcp"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.util.gleem"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.util.graph"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/kegg/keggapi.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jogl/demos/jogl-demos.jar"/>
-	<classpathentry kind="lib" path="/org.caleydo.lib/lib/jgraph/jgraph.jar" sourcepath="/org.caleydo.lib/lib_src/jgraph/jgraph-latest-stable-src_5_9.jar">
-		<attributes>
-			<attribute name="javadoc_location" value="jar:platform:/resource/org.caleydo.lib/lib_src/jgraph/jgraph-latest-stable-src_5_9.jar!/doc/api"/>
-		</attributes>
-	</classpathentry>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

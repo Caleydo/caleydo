@@ -40,6 +40,35 @@ public class GLRemoteRenderingView
 	{
 		super.createPartControl(parent);
 		
+//		Composite composite = new Composite(parent, SWT.EMBEDDED);
+//		Frame frame = SWT_AWT.new_Frame(composite);
+//
+//		GLCanvas canvas = new GLCanvas();
+//
+//		canvas.addGLEventListener(new Gears());
+//		frame.add(canvas);
+//		// frame.setSize(300, 300);
+//		final Animator animator = new Animator(canvas);
+//		frame.addWindowListener(new WindowAdapter()
+//		{
+//			public void windowClosing(WindowEvent e)
+//			{
+//				// Run this on another thread than the AWT event queue to
+//				// make sure the call to Animator.stop() completes before
+//				// exiting
+//				new Thread(new Runnable()
+//				{
+//					public void run()
+//					{
+//						animator.stop();
+//						System.exit(0);
+//					}
+//				}).start();
+//			}
+//		});
+//		frame.setVisible(true);
+//		animator.start();
+		
 		createGLCanvas();
 		
 		// Only create parcoords and heatmap if the application is NOT in pathway viewer mode

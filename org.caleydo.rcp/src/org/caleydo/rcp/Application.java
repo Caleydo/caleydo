@@ -9,15 +9,10 @@ import java.util.logging.Level;
 import org.caleydo.core.application.core.CaleydoBootloader;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.conversion.ConversionTools;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
-import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.util.preferences.PreferenceConstants;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.rcp.core.bridge.RCPBridge;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
-import org.caleydo.rcp.util.info.InfoArea;
 import org.caleydo.rcp.views.GLRemoteRenderingView;
 import org.caleydo.rcp.wizard.firststart.FirstStartWizard;
 import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
@@ -61,7 +56,7 @@ public class Application
 	public Object start(IApplicationContext context) throws Exception
 	{
 		System.out.println("Caleydo RCP: bootstrapping ...");
-
+		
 		alStartViews = new ArrayList<EStartViewType>();
 
 		Map<String, Object> map = (Map<String, Object>) context.getArguments();
@@ -247,9 +242,9 @@ public class Application
 
 		openViewsInRCP();
 
-		// Register the info area to all mediator from type SELECTION
-		GeneralManager.get().getEventPublisher().registerReceiverToMediatorGroup(
-				EMediatorType.SELECTION_MEDIATOR, InfoArea.getInfoArea());
+//		// Register the info area to all mediator from type SELECTION
+//		GeneralManager.get().getEventPublisher().registerReceiverToMediatorGroup(
+//				EMediatorType.SELECTION_MEDIATOR, InfoArea.getInfoArea());
 	}
 
 	public static void initializeColorMapping()

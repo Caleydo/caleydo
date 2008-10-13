@@ -1,12 +1,8 @@
 <project name="org.caleydo.rcp" basedir="." default="main">
 
-
 	<property name="lib.dir" value="lib" />
-	<property name="lib.jogl.dir" value="${lib.dir}/jogl" />
 	<property name="lib.caleydo.dir" value="${local.lib.dir}/org.caleydo" />
 	<property name="eclipse.home.absolute" location="/opt/eclipse" />
-
-
 
 	<property name="gleem.dir" value="../org.caleydo.util.gleem" />
 	<property name="graph.dir" value="../org.caleydo.util.graph" />
@@ -37,120 +33,6 @@
 		</delete>
 	</target>
 
-	<!-- ===== Copy libraries to RCP ==== -->
-	<target name="copy_rcp" description="Moves all
-		relevant libraries to lib/ in RCP">
-		<mkdir dir="${rcp.dir}/${lib.jogl.dir}" />
-		<copy todir="${rcp.dir}/${lib.jogl.dir}">
-			<fileset dir="${lib.dir}/jogl" excludes="**/*.zip">
-			</fileset>
-		</copy>
-		<!--
-		<copy todir="${rcp.dir}/${lib.dir}">
-			<fileset dir="${lib.dir}" excludes="**/*.zip">
-				<exclude name="**/jface/" />
-				<exclude name="**/jgraph/" />
-				<exclude name="**/jnlp/" />
-				<exclude name="**/kegg/" />
-				<exclude name="**/muddleware/" />
-				<exclude name="**/swt/" />
-				<exclude name="**/weka/" />
-				<exclude name="**/wii/" />
-			</fileset>
-		</copy>
--->
-		<unzip dest="${rcp.dir}/${lib.jogl.dir}/linux/x86/">
-			<patternset>
-				<include name="**/*.so" />
-			</patternset>
-			<mapper type="flatten" />
-			<fileset dir="${lib.dir}">
-				<include name="**/linux/x86/**" />
-			</fileset>
-		</unzip>
-
-		<unzip dest="${rcp.dir}/${lib.jogl.dir}/linux/x86-64/">
-			<patternset>
-				<include name="**/*.so" />
-			</patternset>
-			<mapper type="flatten" />
-			<fileset dir="${lib.dir}">
-				<include name="**/linux/x86-64/**" />
-			</fileset>
-		</unzip>
-		<unzip dest="${rcp.dir}/${lib.jogl.dir}/macosx/">
-			<patternset>
-				<include name="**/*.jnilib" />
-			</patternset>
-			<mapper type="flatten" />
-			<fileset dir="${lib.dir}">
-				<include name="**/macosx/**" />
-			</fileset>
-		</unzip>
-		<unzip dest="${rcp.dir}/${lib.jogl.dir}/windows/x86/">
-			<patternset>
-				<include name="**/*.dll" />
-			</patternset>
-			<mapper type="flatten" />
-			<fileset dir="${lib.dir}">
-				<include name="**/windows/x86/**" />
-			</fileset>
-		</unzip>
-		<unzip dest="${rcp.dir}/${lib.jogl.dir}/windows/x86-64/">
-			<patternset>
-				<include name="**/*.dll" />
-			</patternset>
-			<mapper type="flatten" />
-			<fileset dir="${lib.dir}">
-				<include name="**/windows/x86-64/**" />
-			</fileset>
-		</unzip>
-	</target>
-
-	<target name="copy_core" description="Moves all
-		relevant libraries to lib/ in RCP">
-		<mkdir dir="${core.dir}/${lib.dir}" />
-		<copy todir="${core.dir}/${lib.dir}">
-			<fileset dir="${lib.dir}" excludes="**/*.zip">
-				<exclude name="**/jface/" />
-				<exclude name="**/jgraph/" />
-				<exclude name="**/jnlp/" />
-				<exclude name="**/kegg/" />
-				<exclude name="**/muddleware/" />
-				<exclude name="**/swt/" />
-				<exclude name="**/weka/" />
-			</fileset>
-		</copy>
-	</target>
-
-	<target name="copy_gleem" description="Moves all
-		relevant libraries to lib/ in RCP">
-		<mkdir dir="${gleem.dir}/${lib.dir}" />
-		<copy todir="${gleem.dir}/${lib.dir}/jogl">
-			<fileset dir="${lib.dir}/jogl" excludes="**/*.zip">
-			</fileset>
-		</copy>
-	</target>
-
-	<target name="copy_testing" description="Moves all
-		relevant libraries to lib/ in testing">
-		<mkdir dir="${testing.dir}/${lib.dir}" />
-		<copy todir="${testing.dir}/${lib.dir}/jogl">
-			<fileset dir="${lib.dir}/jogl" excludes="**/*.zip">
-			</fileset>
-		</copy>
-		<copy todir="${testing.dir}/${lib.dir}/kegg">
-			<fileset dir="${lib.dir}/kegg" excludes="**/*.zip">
-			</fileset>
-		</copy>
-		<copy todir="${testing.dir}/${lib.dir}/jgraph">
-			<fileset dir="${lib.dir}/jgraph" excludes="**/*.zip">
-			</fileset>
-		</copy>
-
-
-	</target>
-
-	<target name="main" depends="clean, copy_rcp, copy_core, copy_gleem, copy_testing" />
+	<target name="main" depends="clean" />
 
 </project>
