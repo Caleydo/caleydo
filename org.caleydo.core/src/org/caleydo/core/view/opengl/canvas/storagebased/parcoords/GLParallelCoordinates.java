@@ -1376,16 +1376,10 @@ public class GLParallelCoordinates
 	protected void handleEvents(final EPickingType ePickingType,
 			final EPickingMode ePickingMode, final int iExternalID, final Pick pick)
 	{
-
-		if (remoteRenderingGLCanvas != null)
+		if (detailLevel == EDetailLevel.VERY_LOW)
 		{
-			// Check if selection occurs in the pool or memo layer of the remote
-			// rendered view (i.e. bucket, jukebox)
-			if (remoteRenderingGLCanvas.getHierarchyLayerByGLEventListenerId(iUniqueID)
-					.getCapacity() > 5)
-			{
-				return;
-			}
+			pickingManager.flushHits(iUniqueID, ePickingType);
+			return;
 		}
 
 		switch (ePickingType)

@@ -50,7 +50,6 @@ public abstract class AGLConnectionLineRenderer
 
 	public void enableRendering(final boolean bEnableRendering)
 	{
-
 		this.bEnableRendering = bEnableRendering;
 	}
 

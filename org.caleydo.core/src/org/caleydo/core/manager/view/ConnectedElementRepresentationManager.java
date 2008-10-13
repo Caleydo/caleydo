@@ -151,7 +151,6 @@ public class ConnectedElementRepresentationManager
 	 */
 	public void clear()
 	{
-
 		hashSelectedElementID2SelectedElementReps.clear();
 	}
 

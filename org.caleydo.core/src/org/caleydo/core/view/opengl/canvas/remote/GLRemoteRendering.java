@@ -309,7 +309,7 @@ public class GLRemoteRendering
 		// layoutRenderStyle.initTransitionLayer();
 		// layoutRenderStyle.initUnderInteractionLayer();
 
-		doSlerpActions(gl);
+ 		doSlerpActions(gl);
 		initializeNewPathways(gl);
 
 		renderLayer(gl, underInteractionLayer);
@@ -947,7 +947,7 @@ public class GLRemoteRendering
 		{
 			tmpSlerpAction.start();
 			
-			System.out.println("Start slerp action " +tmpSlerpAction);
+//			System.out.println("Start slerp action " +tmpSlerpAction);
 		}
 
 		if (iSlerpFactor < SLERP_RANGE)
@@ -957,9 +957,6 @@ public class GLRemoteRendering
 
 			if (iSlerpFactor > SLERP_RANGE)
 				iSlerpFactor = SLERP_RANGE;
-			
-			if (iSlerpFactor == 0)
-				System.out.println("ALARM!!!!!!!!!!!!!!!!!!!!");
 		}
 
 		slerpView(gl, tmpSlerpAction);
@@ -991,7 +988,7 @@ public class GLRemoteRendering
 
 		(generalManager.getViewGLCanvasManager().getGLEventListener(iViewID))
 				.displayRemote(gl);
-
+		
 		gl.glPopMatrix();
 
 		// Check if slerp action is finished
@@ -1078,7 +1075,7 @@ public class GLRemoteRendering
 					transitionLayer);
 			arSlerpActions.add(slerpActionTransition);
 
-			System.out.println("Slerp view with ID " + iViewID + " from pool layer to transition layer.");
+//			System.out.println("Slerp view with ID " + iViewID + " from pool layer to transition layer.");
 			
 			if (!stackLayer.containsElement(-1))
 			{
@@ -1203,17 +1200,6 @@ public class GLRemoteRendering
 						.getId();
 
 				iAlUninitializedPathwayIDs.add(iPathwayID);
-
-				// if (iAlUninitializedPathwayIDs.size() > 20)
-				// {
-				// // Disable picking until pathways are loaded
-				// generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(
-				// false);
-				//
-				// iSlerpFactor = 0;
-				//					
-				// return;
-				// }
 			}
 		}
 

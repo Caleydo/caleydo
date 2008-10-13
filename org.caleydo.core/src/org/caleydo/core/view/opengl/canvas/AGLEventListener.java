@@ -168,10 +168,6 @@ public abstract class AGLEventListener
 			gl.glRotatef(w, rot_Vec3f.x(), rot_Vec3f.y(), rot_Vec3f.z());
 	
 			displayLocal(gl);
-	
-			// generalManager.getViewGLCanvasManager().getInfoAreaManager().
-			// renderInfoOverlay(
-			// iUniqueID, drawable);
 		
 		}
 		catch (RuntimeException exception)

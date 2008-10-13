@@ -31,6 +31,7 @@ import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.PathwayRenderStyle;
@@ -173,8 +174,7 @@ public class GLPathway
 	@Override
 	public synchronized void displayRemote(final GL gl)
 	{
-
-		// Check if pathway exists or if it's already loaded
+		// Check if pathway exists or if it is already loaded
 		// FIXME: not good because check in every rendered frame
 		if (!generalManager.getPathwayManager().hasItem(iPathwayID))
 			return;
@@ -191,7 +191,6 @@ public class GLPathway
 	@Override
 	public synchronized void display(final GL gl)
 	{
-
 		checkForHits(gl);
 		renderScene(gl);
 	}
@@ -301,8 +300,8 @@ public class GLPathway
 			PathwayVertexGraphItemRep vertexRep = (PathwayVertexGraphItemRep) generalManager
 					.getPathwayItemManager().getItem(item.getSelectionID());
 
-			// System.out.println("Pathway with ID: " + iUniqueID + " David: " +
-			// item.getInternalID());
+//			 System.out.println("Pathway with ID: " + iUniqueID + " David: " +
+//			 item.getInternalID());
 
 			connectedElementRepresentationManager
 					.modifySelection(
@@ -505,19 +504,16 @@ public class GLPathway
 	}
 
 	@Override
-	protected void handleEvents(EPickingType pickingType, EPickingMode pickingMode,
+	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode,
 			int iExternalID, Pick pick)
 	{
-
-		// Check if selection occurs in the pool or memo layer of the remote
-		// rendered view (i.e. bucket, jukebox)
-		if (remoteRenderingGLCanvas.getHierarchyLayerByGLEventListenerId(iUniqueID)
-				.getCapacity() > 5)
+		if (detailLevel == EDetailLevel.VERY_LOW)
 		{
+			pickingManager.flushHits(iUniqueID, ePickingType);
 			return;
 		}
-
-		switch (pickingType)
+		
+		switch (ePickingType)
 		{
 			case PATHWAY_ELEMENT_SELECTION:
 
@@ -571,8 +567,8 @@ public class GLPathway
 								.log(Level.WARNING, "Invalid David Gene ID.");
 						pickingManager.flushHits(iUniqueID,
 								EPickingType.PATHWAY_ELEMENT_SELECTION);
-//						pickingManager.flushHits(iUniqueID,
-//								EPickingType.PATHWAY_TEXTURE_SELECTION);
+						pickingManager.flushHits(iUniqueID,
+								EPickingType.PATHWAY_TEXTURE_SELECTION);
 						// connectedElementRepManager.clear();
 
 						connectedElementRepresentationManager.clear();
@@ -580,11 +576,6 @@ public class GLPathway
 					}
 
 					connectedElementRepresentationManager.clear();
-
-					// TODO: do this just for first or think about better
-					// solution!
-//					generalManager.getViewGLCanvasManager().getInfoAreaManager().setData(
-//							iUniqueID, iDavidId, EIDType.DAVID, getShortInfo());
 
 					Iterator<IGraphItem> iterPathwayVertexGraphItemRep = tmpVertexGraphItem
 							.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
@@ -620,8 +611,7 @@ public class GLPathway
 
 				triggerUpdate(createExternalSelectionDelta(selectionManager.getDelta()));
 
-				pickingManager.flushHits(iUniqueID, EPickingType.PATHWAY_ELEMENT_SELECTION);
-//				pickingManager.flushHits(iUniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION);
+				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 		}
 	}

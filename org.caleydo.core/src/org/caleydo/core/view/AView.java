@@ -102,8 +102,6 @@ public abstract class AView
 
 		parent = sWTNativeWidget.getSWTWidget();
 
-		assert parent != null : "empty SWT container";
-
 		initViewSwtComposite(parent);
 	}
 

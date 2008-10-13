@@ -453,22 +453,16 @@ public class GLHeatMap
 	}
 
 	@Override
-	protected void handleEvents(EPickingType pickingType, EPickingMode pickingMode,
+	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode,
 			int iExternalID, Pick pick)
 	{
-
-		if (remoteRenderingGLCanvas != null)
+		if (detailLevel == EDetailLevel.VERY_LOW)
 		{
-			// Check if selection occurs in the pool or memo layer of the remote
-			// rendered view (i.e. bucket, jukebox)
-			if (remoteRenderingGLCanvas.getHierarchyLayerByGLEventListenerId(iUniqueID)
-					.getCapacity() > 5)
-			{
-				return;
-			}
+			pickingManager.flushHits(iUniqueID, ePickingType);
+			return;
 		}
 
-		switch (pickingType)
+		switch (ePickingType)
 		{
 			case HEAT_MAP_FIELD_SELECTION:
 				switch (pickingMode)
@@ -510,7 +504,7 @@ public class GLHeatMap
 				bIsDisplayListDirtyLocal = true;
 				bIsDisplayListDirtyRemote = true;
 
-				pickingManager.flushHits(iUniqueID, pickingType);
+				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 		}
 	}
