@@ -240,6 +240,11 @@ public class GLParallelCoordinates
 		if (set == null)
 			return;
 
+		if (fArGateBottomHeight == null || fArGateTipHeight == null)
+		{
+			initGates();
+		}
+		
 		if (bIsTranslationActive)
 		{
 			doTranslation();
@@ -266,6 +271,11 @@ public class GLParallelCoordinates
 	{
 		if (set == null)
 			return;
+		
+		if (fArGateBottomHeight == null || fArGateTipHeight == null)
+		{
+			initGates();
+		}
 
 		if (bIsTranslationActive)
 		{
@@ -292,6 +302,7 @@ public class GLParallelCoordinates
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		clipToFrustum(gl);
 
+		
 		gl.glTranslatef(fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
 
 		if (bIsDraggingActive)
@@ -501,7 +512,7 @@ public class GLParallelCoordinates
 		// axisSelectionManager.initialAdd(set.getVA(iAxisVAID).get(iAxisCount));
 		// }
 
-		initGates();
+		//initGates();
 
 	}
 
@@ -837,7 +848,7 @@ public class GLParallelCoordinates
 					float fCurrentHeight = fMarkerSpacing * iInnerCount;
 					if (iCount == 0)
 					{
-						float fNumber = (float)set.getMin() + (float) set.getRawForNormalized(fCurrentHeight
+						float fNumber =  (float) set.getRawForNormalized(fCurrentHeight
 								/ renderStyle.getAxisHeight());
 
 						Rectangle2D bounds = textRenderer.getBounds(getDecimalFormat().format(
@@ -1665,8 +1676,15 @@ public class GLParallelCoordinates
 			// get the value on the leftmost axis
 			fYValue = set.getStorageFromVA(iStorageVAID, 0).getFloat(
 					EDataRepresentation.NORMALIZED, iStorageIndex);
-
-			fYValue = fYValue * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
+			
+			if(Float.isNaN(fYValue))
+			{
+				fYValue = renderStyle.getNaNYOffset() * renderStyle.getAxisHeight()  + renderStyle.getBottomSpacing();
+			}
+			else
+			{
+				fYValue = fYValue * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
+			}
 		}
 
 		SelectedElementRep elementRep = new SelectedElementRep(iUniqueID, fXValue, fYValue,

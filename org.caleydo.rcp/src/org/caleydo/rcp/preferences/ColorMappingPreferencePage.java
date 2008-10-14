@@ -28,6 +28,8 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.ui.IWorkbench;
@@ -46,6 +48,7 @@ public class ColorMappingPreferencePage
 
 	private ArrayList<ColorFieldEditor> alColorFieldEditors;
 	private ArrayList<Spinner> alColorMarkerPointSpinners;
+	private ArrayList<Label> alColorMarkerPointLabels;
 
 	private int iNumberOfColorPoints = 0;
 	private Spinner numColorPointsSpinner;
@@ -99,6 +102,7 @@ public class ColorMappingPreferencePage
 			updateColorMappingPreview();
 		}
 	}
+	
 
 	private class MarkerPointValueChangedModifyListener
 		implements ModifyListener
@@ -118,6 +122,7 @@ public class ColorMappingPreferencePage
 		setPreferenceStore(GeneralManager.get().getPreferenceStore());
 		setDescription("Set color mapping for different use cases, the values in the spinners are % of your data range.");
 
+		
 		for (ISet set : GeneralManager.get().getSetManager().getAllItems())
 		{
 			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA)
@@ -135,20 +140,34 @@ public class ColorMappingPreferencePage
 	@Override
 	public void createFieldEditors()
 	{
-		GridLayout gridLayout = new GridLayout();
-		gridLayout.numColumns = 3;
-		getFieldEditorParent().setLayout(gridLayout);
+		
+	
+//		Composite numColorComposite = new Composite(, SWT.NONE);	
+//		GridData gridData1 = new GridData(SWT.FILL, SWT.FILL, false, false);
+//		gridData1.horizontalSpan = 2;
+		
+//		getFieldEditorParent().setLayoutData(gridData1);
+//		GridLayout gridLayout = new GridLayout(2, false);
+//		numColorComposite.setLayout(gridLayout);
+//		gridLayout.makeColumnsEqualWidth = true;
+		
+		
+//		GridData gridData1 = new GridData(SWT.FILL, SWT.FILL, false, false);
+//	
+//		gridData1.horizontalSpan = 2;	
 
-		GridData gridData1 = new GridData();
 		Label numColorPointsLabel = new Label(getFieldEditorParent(), SWT.LEFT);
 		numColorPointsLabel.setText("Number of Color Points:");
-		numColorPointsLabel.setLayoutData(gridData1);
+//		numColorPointsLabel.setLayoutData(gridData1);
 
 		numColorPointsSpinner = new Spinner(getFieldEditorParent(), SWT.BORDER);
 		numColorPointsSpinner.setMinimum(2);
 		numColorPointsSpinner.setMaximum(5);
 		numColorPointsSpinner.setIncrement(1);
-		numColorPointsSpinner.setLayoutData(gridData1);
+//		gridData1 = new GridData();
+//		gridData1.horizontalSpan = 2;	
+//		numColorPointsSpinner.setLayoutData(gridData1);
+		
 
 		iNumberOfColorPoints = getPreferenceStore().getInt(NUMBER_OF_COLOR_MARKER_POINTS);
 		if (iNumberOfColorPoints == 0)
@@ -163,21 +182,32 @@ public class ColorMappingPreferencePage
 		listener.setSpinner(numColorPointsSpinner);
 		numColorPointsSpinner.addModifyListener(listener);
 
+		
+//		Composite colorPointsComposite = new Composite(getFieldEditorParent(), SWT.NONE);
+//		gridLayout = new GridLayout(3, false);
+//		colorPointsComposite.setLayout(gridLayout);
+		
 		alColorFieldEditors = new ArrayList<ColorFieldEditor>();
 		alColorMarkerPointSpinners = new ArrayList<Spinner>();
+		alColorMarkerPointLabels = new ArrayList<Label>();
 
 		IPropertyChangeListener changeListener = new ColorChangedListener();
 		ModifyListener markerPointValueChangedListener = new MarkerPointValueChangedModifyListener();
 		for (int iCount = 1; iCount <= 5; iCount++)
 		{
+//			gridData1 = new GridData();
+//			Group group = new Group(getFieldEditorParent(), SWT.SHADOW_ETCHED_IN);
+//			
 			ColorFieldEditor colorFieldEditor = new ColorFieldEditor(COLOR_MARKER_POINT_COLOR
 					+ iCount, "Color " + iCount, getFieldEditorParent());
 			colorFieldEditor.load();
-			colorFieldEditor.fillIntoGrid(getFieldEditorParent(), 3);
 			colorFieldEditor.getColorSelector().addListener(changeListener);
 			alColorFieldEditors.add(colorFieldEditor);
+			//colorFieldEditor.fillIntoGrid(composite, 1);
 			addField(colorFieldEditor);
-
+//		
+			Label markerPointLabel = new Label(getFieldEditorParent(), SWT.RIGHT);
+			alColorMarkerPointLabels.add(markerPointLabel);
 			Spinner markerPointSpinner = new Spinner(getFieldEditorParent(), SWT.BORDER);
 			markerPointSpinner.setDigits(2);
 
@@ -196,6 +226,7 @@ public class ColorMappingPreferencePage
 			markerPointSpinner.setMaximum((int) (set.getMax() * 100));
 
 			double dSpinnerValue = getPreferenceStore().getDouble(COLOR_MARKER_POINT_VALUE + iCount);
+			markerPointLabel.setText(dSpinnerValue * 100 + "%");
 			
 			dSpinnerValue = set.getRawForNormalized(dSpinnerValue);
 
@@ -212,20 +243,31 @@ public class ColorMappingPreferencePage
 				markerPointSpinner.setEnabled(false);
 			}
 			alColorMarkerPointSpinners.add(markerPointSpinner);
-			markerPointSpinner.update();
+			//markerPointSpinner.update();
 		}
-
+//		Composite colorMappingPreviewComposite = new Composite(getFieldEditorParent(), SWT.NONE);
+//		getFieldEditorParent() = new GridLayout(1, false);
+//		colorMappingPreviewComposite.setLayout(gridLayout);
+//
+		Label label = new Label(getFieldEditorParent(), SWT.RIGHT);
+		label.setText("Preview:");
 		colorMappingPreviewLabel = new CLabel(getFieldEditorParent(), SWT.SHADOW_IN);
 		colorMappingPreviewLabel.setBounds(10, 10, 300, 100);
 		colorMappingPreviewLabel.setText("                          ");
+		
+		Composite nanColorComposite = new Composite(getFieldEditorParent(), SWT.NONE);
+//		gridLayout = new GridLayout(1, false);
+//		nanColorComposite.setLayout(gridLayout);
 
 		nanColorFE = new ColorFieldEditor(NAN_COLOR, "Color for NAN values:",
-				getFieldEditorParent());
+				nanColorComposite);
 		nanColorFE.load();
 		addField(nanColorFE);
 
 		initialColorMappingPreview();
-
+		
+//	//	composite.pack();
+	//	getFieldEditorParent().pack();
 	}
 
 	private void setNumberOfColorPoints(int iNumberOfColorPoints)
@@ -367,8 +409,11 @@ public class ColorMappingPreferencePage
 
 			if (iCount != 0)
 			{
-				iArColorMarkerPoints[iCount - 1] = alColorMarkerPointSpinners.get(iCount)
-						.getSelection();
+				double dRaw = ((double)alColorMarkerPointSpinners.get(iCount).getSelection())/100;
+				int iNormalizedTo100 = (int)(set.getNormalizedForRaw(dRaw)*100);
+				alColorMarkerPointLabels.get(iCount).setText(iNormalizedTo100 + "%");
+				iArColorMarkerPoints[iCount - 1] = iNormalizedTo100;
+				
 			}
 		}
 		colorMappingPreviewLabel.setBackground(alColor, iArColorMarkerPoints);
@@ -381,4 +426,4 @@ public class ColorMappingPreferencePage
 		// TODO Auto-generated method stub
 
 	}
-}
+}  //  @jve:decl-index=0:visual-constraint="115,105"

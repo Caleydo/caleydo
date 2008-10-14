@@ -58,7 +58,7 @@ public class ParCoordsRenderStyle
 
 	public static final int NUMBER_AXIS_MARKERS = 9;
 	
-	private static final float NAN_Y_OFFSET = -0.007f;
+	private static final float NAN_Y_OFFSET = -0.04f;
 
 	// modifiable colors
 	protected float[] polylineOcclusionPrevColor = { 0.0f, 0.0f, 0.0f, 1.0f };
@@ -86,9 +86,9 @@ public class ParCoordsRenderStyle
 	// gates
 	private static final float GATE_WIDTH = 0.005f;
 
-	private static final float GATE_NEGATIVE_Y_OFFSET = -0.01f;
+	private static final float GATE_NEGATIVE_Y_OFFSET = -0.015f;
 
-	private static final float GATE_TIP_HEIGHT = 0.01f;
+	private static final float GATE_TIP_HEIGHT = 0.015f;
 
 	// buttons below axis
 	private static final float AXIS_BUTTONS_Y_OFFSET = 0.04f;
@@ -139,7 +139,6 @@ public class ParCoordsRenderStyle
 
 	public float getAxisHeight()
 	{
-
 		return viewFrustum.getHeight() - (COORDINATE_TOP_SPACING + COORDINATE_BOTTOM_SPACING)
 				* getScaling();
 	}
@@ -171,23 +170,23 @@ public class ParCoordsRenderStyle
 	public float getGateYOffset()
 	{
 
-		return GATE_NEGATIVE_Y_OFFSET * getScaling();
+		return GATE_NEGATIVE_Y_OFFSET * getAxisHeight();
 	}
 	
 	public float getGateMinimumValue()
 	{
-		return (GATE_NEGATIVE_Y_OFFSET + NAN_Y_OFFSET) * getScaling();  
+		return NAN_Y_OFFSET * getAxisHeight();  
 	}
 	
 	public float getNaNYOffset()
 	{
-		return NAN_Y_OFFSET * getScaling();
+		return NAN_Y_OFFSET;
 	}
 
 	public float getGateTipHeight()
 	{
 
-		return GATE_TIP_HEIGHT * getScaling();
+		return GATE_TIP_HEIGHT * getAxisHeight();
 	}
 
 	public float getAxisCaptionSpacing()
