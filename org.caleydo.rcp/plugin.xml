@@ -28,7 +28,7 @@
             class="org.caleydo.rcp.views.GLHeatMapView"
             icon="resources/icons/view/storagebased/heatmap/heatmap.png"
             id="org.caleydo.rcp.views.GLHeatMapView"
-            name="GLHeatMapView">
+            name="Heat Map">
       </view>      
 
       <view
@@ -37,7 +37,7 @@
             class="org.caleydo.rcp.views.GLParCoordsView"
             icon="resources/icons/view/storagebased/parcoords/parcoords.png"
             id="org.caleydo.rcp.views.GLParCoordsView"
-            name="GLParCoordsView">
+            name="Parallel Coordinates">
       </view>         
       
       <view
@@ -46,7 +46,7 @@
             class="org.caleydo.rcp.views.GLPathwayView"
             icon="resources/icons/view/pathway/pathway.png"
             id="org.caleydo.rcp.views.GLPathwayView"
-            name="GLPathwayView">
+            name="Pathway">
       </view> 
       
       <view
@@ -55,7 +55,7 @@
             class="org.caleydo.rcp.views.GLRemoteRenderingView"
             icon="resources/icons/view/remote/remote.png"
             id="org.caleydo.rcp.views.GLRemoteRenderingView"
-            name="GLRemoteRenderingView">
+            name="Bucket">
       </view> 
       
       <view
@@ -234,6 +234,15 @@
                      name="org.eclipse.ui.views.showView.viewId"
                      value="org.eclipse.pde.runtime.LogView">
                </parameter>
+            </command>
+         </menu>
+         <menu
+               label="Help"
+               tooltip="Help">
+            <command
+                  commandId="org.eclipse.ui.help.aboutAction"
+                  label="About Caleydo"
+                  style="push">
             </command>
          </menu>
       </menuContribution>

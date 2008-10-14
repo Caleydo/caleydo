@@ -4,12 +4,12 @@
 <product name="Caleydo" id="org.caleydo.rcp.product" application="org.caleydo.rcp.application" useFeatures="true">
 
    <aboutInfo>
+      <image path="resources/wizard/wizard.png"/>
       <text>
-         Caleydo visualization framework
-Caleydo is a general purpose visualization framework.
+         Caleydo Visualization Framework
 Check out www.caleydo.org
 
-(c) Copyright by www.geneview.org and Institute for Computer Graphics and Vision (ICG)
+(c) Copyright by www.caleydo.org and Institute for Computer Graphics and Vision
 Graz University of Technology - 2008.
 All Rights Reserved.
       </text>
@@ -36,6 +36,7 @@ All Rights Reserved.
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>

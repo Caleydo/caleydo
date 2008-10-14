@@ -10,6 +10,7 @@ import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
 import org.caleydo.rcp.action.view.TakeSnapshotAction;
 import org.caleydo.rcp.action.view.remote.CloseOrResetContainedViews;
+import org.caleydo.rcp.action.view.remote.SearchAction;
 import org.caleydo.rcp.action.view.remote.ToggleLayoutAction;
 import org.caleydo.rcp.util.search.SearchBar;
 import org.eclipse.jface.action.IAction;
@@ -105,6 +106,11 @@ public class GLRemoteRenderingView
 		alToolbar.add(closeOrResetContainedViews);		
 		IAction toggleLayoutAction = new ToggleLayoutAction(iViewID);
 		alToolbar.add(toggleLayoutAction);
+		
+//		if (System.getProperty("os.name").contains("Win"))
+//		{
+//			alToolbar.add(new SearchAction(iViewID));
+//		}
 	}
 	
 	protected final void fillToolBar()
@@ -125,10 +131,13 @@ public class GLRemoteRenderingView
 	 * @param toolBarManager
 	 */
 	public static void fillToolBar(final IToolBarManager toolBarManager)
-	{		
+	{	
 		// Add search bar
-		toolBarManager.add(new SearchBar("Quick search"));
-
+//		if (!System.getProperty("os.name").contains("Win"))
+//		{
+			toolBarManager.add(new SearchBar("Quick search"));
+//		}
+		
 		for (IAction toolBarAction : alToolbar)
 		{
 			toolBarManager.add(toolBarAction);			

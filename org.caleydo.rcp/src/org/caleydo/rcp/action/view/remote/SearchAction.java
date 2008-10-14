@@ -1,10 +1,12 @@
-package org.caleydo.rcp.util.search;
+package org.caleydo.rcp.action.view.remote;
 
 import java.util.Collection;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.eclipse.jface.action.ControlContribution;
+import org.caleydo.rcp.action.view.AToolBarAction;
+import org.caleydo.rcp.util.search.SearchBox;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
@@ -13,53 +15,52 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 
 /**
- * Search bar that allows searching for genes and pathways.
- * 
+ * Search bar in an own shell.
+ * This is just a workaround for the WinXP classic style layout problem of the toolbar.
+ * Currently not in use.
+ *
  * @author Marc Streit
  */
-public class SearchBar
-	extends ControlContribution
+public class SearchAction
+extends AToolBarAction
 {
+	public static final String TEXT = "Search for gene/pathway";
+	public static final String ICON = "resources/icons/view/remote/search.png";
+
 	private SearchBox searchBox;
-
 	private Text geneSearchText;
-
-	private final static int MAX_PATHWAY_TITLE_LENGTH = 65;
 	
 	/**
 	 * Constructor.
 	 */
-	public SearchBar(String id)
+	public SearchAction(int iViewID)
 	{
-		super(id);
+		super(iViewID);
+		
+		setText(TEXT);
+		setToolTipText(TEXT);
+		setImageDescriptor(ImageDescriptor.createFromURL(this.getClass()
+				.getClassLoader().getResource(ICON)));
+		setChecked(false);
 	}
-
-	protected Control createControl(Composite parent)
+	
+	@Override
+	public void run()
 	{
-
-		Composite composite = new Composite(parent, SWT.NONE);
-//		composite.setLayout(new FillLayout());
-//		RowLayout rowLayout = new RowLayout();
-//		rowLayout.fill = true;
-////		// rowLayout.justify = true;
-//		rowLayout.pack = true;
-//		rowLayout.type = SWT.VERTICAL;
-////		// rowLayout.wrap = false;
-//		composite.setLayout(rowLayout);
-
-		composite.setLayout(new GridLayout(4, false));
-		composite.setSize(400, 20);
-
-		Label searchInputLabel = new Label(composite, SWT.NULL);
+		super.run();
+			
+		Shell shell = new Shell(PlatformUI.getWorkbench().getDisplay(), SWT.SHELL_TRIM);
+		shell.setLayout(new GridLayout(2, false));
+		Label searchInputLabel = new Label(shell, SWT.NULL);
 		searchInputLabel.setText("Pathway search:");
 		searchInputLabel.pack();
-		searchBox = new SearchBox(composite, SWT.BORDER);
+		searchBox = new SearchBox(shell, SWT.BORDER);
 
 		String items[] = { "No pathways available!                                                      " };
 		searchBox.setItems(items);
@@ -70,18 +71,9 @@ public class SearchBar
 				Collection<PathwayGraph> allPathways = GeneralManager.get().getPathwayManager().getAllItems();
 				String[] sArSearchItems = new String[allPathways.size()];
 				int iIndex = 0;
-				String sPathwayTitle = "";
 				for(PathwayGraph pathway : allPathways)
 				{
-					sPathwayTitle = pathway.getTitle();
-					
-					if (sPathwayTitle.length() > MAX_PATHWAY_TITLE_LENGTH)
-						sPathwayTitle = sPathwayTitle.substring(0, MAX_PATHWAY_TITLE_LENGTH) + "... ";
-					
-//					sArSearchItems[iIndex] = pathway.getType().toString() 
-//						+ " - " + sPathwayTitle;
-					
-					sArSearchItems[iIndex] = sPathwayTitle + " ("
+					sArSearchItems[iIndex] = pathway.getTitle() + " ("
 						+ pathway.getType().toString() + ")";
 					iIndex++;
 				}
@@ -102,12 +94,12 @@ public class SearchBar
 						.searchForEntity(sSearchEntity);	
 			}
 		});
-
+		
 		// Gene search
-		Label entitySearchLabel = new Label(composite, SWT.NULL);
+		Label entitySearchLabel = new Label(shell, SWT.NULL);
 		entitySearchLabel.setText("Gene search:");
 
-		geneSearchText = new Text(composite, SWT.BORDER | SWT.SINGLE);
+		geneSearchText = new Text(shell, SWT.BORDER | SWT.SINGLE);
 //		geneSearchText.setLayoutData(new GridData(GridData.FILL_BOTH));
 		geneSearchText.addFocusListener(new FocusAdapter()
 		{
@@ -141,8 +133,10 @@ public class SearchBar
 				}
 			}
 		});
-
-		composite.pack();
-		return composite;
+		
+		this.setEnabled(false);
+		
+		shell.pack();
+		shell.open();
 	}
 }

@@ -25,7 +25,7 @@ public class KeggPathwayImageCacher
 	extends Thread
 {
 	private static final int EXPECTED_DOWNLOADS = 214;
-	private static final int MAX_FTP_CONNECTIONS = 10;
+	private static final int MAX_FTP_CONNECTIONS = 5;
 	
 	/**
 	 * Needed for async access to set progress bar state

@@ -472,7 +472,7 @@ public final class SearchBox
 		Rectangle displayRect = getMonitor().getClientArea();
 		int width = Math.max(comboSize.x, listRect.width + 2);
 		int height = listRect.height + 2;
-		int x = parentRect.x - 300; // move drop down to the left
+		int x = parentRect.x; 
 		int y = parentRect.y + comboSize.y;
 		if (y + height > displayRect.y + displayRect.height)
 			y = parentRect.y - height;
