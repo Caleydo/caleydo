@@ -91,6 +91,12 @@ public class GeneralRenderStyle
 		return HEADING_FONT_SCALING_FACTOR * getScaling();
 	}
 
+	public float getVerySmallSpacing()
+	{
+
+		return BUTTONS_SPACING / 5 * getScaling();
+	}
+	
 	public float getSmallSpacing()
 	{
 

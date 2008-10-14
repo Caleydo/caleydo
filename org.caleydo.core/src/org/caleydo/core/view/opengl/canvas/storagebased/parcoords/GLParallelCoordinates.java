@@ -244,7 +244,7 @@ public class GLParallelCoordinates
 		{
 			initGates();
 		}
-		
+
 		if (bIsTranslationActive)
 		{
 			doTranslation();
@@ -258,10 +258,9 @@ public class GLParallelCoordinates
 			bIsDisplayListDirtyLocal = false;
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-		
+
 		checkForHits(gl);
 		display(gl);
-
 
 		pickingTriggerMouseAdapter.resetEvents();
 	}
@@ -271,7 +270,7 @@ public class GLParallelCoordinates
 	{
 		if (set == null)
 			return;
-		
+
 		if (fArGateBottomHeight == null || fArGateTipHeight == null)
 		{
 			initGates();
@@ -289,7 +288,7 @@ public class GLParallelCoordinates
 		}
 
 		iGLDisplayListToCall = iGLDisplayListIndexRemote;
-	
+
 		display(gl);
 		checkForHits(gl);
 	}
@@ -302,7 +301,6 @@ public class GLParallelCoordinates
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		clipToFrustum(gl);
 
-		
 		gl.glTranslatef(fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
 
 		if (bIsDraggingActive)
@@ -512,7 +510,7 @@ public class GLParallelCoordinates
 		// axisSelectionManager.initialAdd(set.getVA(iAxisVAID).get(iAxisCount));
 		// }
 
-		//initGates();
+		// initGates();
 
 	}
 
@@ -848,7 +846,7 @@ public class GLParallelCoordinates
 					float fCurrentHeight = fMarkerSpacing * iInnerCount;
 					if (iCount == 0)
 					{
-						float fNumber =  (float) set.getRawForNormalized(fCurrentHeight
+						float fNumber = (float) set.getRawForNormalized(fCurrentHeight
 								/ renderStyle.getAxisHeight());
 
 						Rectangle2D bounds = textRenderer.getBounds(getDecimalFormat().format(
@@ -903,14 +901,13 @@ public class GLParallelCoordinates
 
 				// top
 				String text = getDecimalFormat().format(set.getMax());
-				textRenderer.draw3D(text, fXPosition + 2
-						* AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(), 0, renderStyle
-						.getSmallFontScalingFactor());
+				textRenderer.draw3D(text, fXPosition + 2 * AXIS_MARKER_WIDTH, renderStyle
+						.getAxisHeight(), 0, renderStyle.getSmallFontScalingFactor());
 
 				// bottom
 				text = getDecimalFormat().format(set.getMin());
-				textRenderer.draw3D(text, fXPosition + 2
-						* AXIS_MARKER_WIDTH, 0, 0, renderStyle.getSmallFontScalingFactor());
+				textRenderer.draw3D(text, fXPosition + 2 * AXIS_MARKER_WIDTH, 0, 0,
+						renderStyle.getSmallFontScalingFactor());
 				textRenderer.end3DRendering();
 
 				gl.glPopAttrib();
@@ -1116,7 +1113,7 @@ public class GLParallelCoordinates
 			if (detailLevel == EDetailLevel.HIGH)
 			{
 
-				renderBoxedYValues(gl, fCurrentPosition, fArGateTipHeight[iCount], (float)set.getMin() + (float) set
+				renderBoxedYValues(gl, fCurrentPosition, fArGateTipHeight[iCount], (float) set
 						.getRawForNormalized(fArGateTipHeight[iCount]
 								/ renderStyle.getAxisHeight()), ESelectionType.NORMAL);
 
@@ -1174,9 +1171,12 @@ public class GLParallelCoordinates
 
 			if (detailLevel == EDetailLevel.HIGH)
 			{
-				renderBoxedYValues(gl, fCurrentPosition, fArGateBottomHeight[iCount],
-						(float) set.getRawForNormalized(fArGateBottomHeight[iCount]
-								/ renderStyle.getAxisHeight()), ESelectionType.NORMAL);
+				double temp = set.getMin();
+				float fValue = (float) set.getRawForNormalized(fArGateBottomHeight[iCount]
+						/ renderStyle.getAxisHeight());
+				if (fValue > set.getMin())
+					renderBoxedYValues(gl, fCurrentPosition, fArGateBottomHeight[iCount],
+							fValue, ESelectionType.NORMAL);
 			}
 			iCount++;
 		}
@@ -1195,28 +1195,29 @@ public class GLParallelCoordinates
 	{
 
 		// don't render values that are below the y axis
-//		if (fYOrigin < 0)
-//			return;
+		// if (fYOrigin < 0)
+		// return;
 
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		gl.glLineWidth(Y_AXIS_LINE_WIDTH);
 		gl.glColor4fv(Y_AXIS_COLOR, 0);
 
-		Rectangle2D tempRectangle = textRenderer
-				.getBounds(getDecimalFormat().format(fYOrigin));
+		Rectangle2D tempRectangle = textRenderer.getBounds(getDecimalFormat()
+				.format(fRawValue));
+		float fSmallSpacing = renderStyle.getVerySmallSpacing();
 		float fBackPlaneWidth = (float) tempRectangle.getWidth()
-				* renderStyle.getSmallFontScalingFactor();
+				* renderStyle.getSmallFontScalingFactor() + 2 * fSmallSpacing;
 		float fBackPlaneHeight = (float) tempRectangle.getHeight()
-				* renderStyle.getSmallFontScalingFactor();
+				* renderStyle.getSmallFontScalingFactor() + 2 * fSmallSpacing;
 		float fXTextOrigin = fXOrigin + 2 * AXIS_MARKER_WIDTH;
 		float fYTextOrigin = fYOrigin;
 
-		gl.glColor4f(0.9f, 0.9f, 0.9f, 0.8f);
+		gl.glColor4f(1f, 1f, 1f, 0.8f);
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(fXTextOrigin, fYTextOrigin, 0.03f);
-		gl.glVertex3f(fXTextOrigin + fBackPlaneWidth, fYTextOrigin, 0.03f);
+		gl.glVertex3f(fXTextOrigin - fSmallSpacing, fYTextOrigin - fSmallSpacing, 0.03f);
+		gl.glVertex3f(fXTextOrigin + fBackPlaneWidth, fYTextOrigin - fSmallSpacing, 0.03f);
 		gl.glVertex3f(fXTextOrigin + fBackPlaneWidth, fYTextOrigin + fBackPlaneHeight, 0.03f);
-		gl.glVertex3f(fXTextOrigin, fYTextOrigin + fBackPlaneHeight, 0.03f);
+		gl.glVertex3f(fXTextOrigin - fSmallSpacing, fYTextOrigin + fBackPlaneHeight, 0.03f);
 		gl.glEnd();
 
 		renderNumber(fRawValue, fXTextOrigin, fYTextOrigin);
@@ -1240,6 +1241,7 @@ public class GLParallelCoordinates
 
 	/**
 	 * Renders the gates and updates their values
+	 * 
 	 * @param gl
 	 */
 	private void handleGateDragging(GL gl)
@@ -1275,7 +1277,8 @@ public class GLParallelCoordinates
 		}
 		else if (draggedObject == EPickingType.LOWER_GATE_BOTTOM_SELECTION)
 		{
-			float fLowerLimit = renderStyle.getGateMinimumValue() - renderStyle.getGateTipHeight();
+			float fLowerLimit = renderStyle.getGateMinimumValue()
+					- renderStyle.getGateTipHeight();
 			float fUpperLimit = fArGateTipHeight[iDraggedGateNumber] - 2
 					* renderStyle.getGateTipHeight();
 
@@ -1285,7 +1288,8 @@ public class GLParallelCoordinates
 			}
 			else if (height < fLowerLimit)
 			{
-				height = fLowerLimit;//renderStyle.getGateYOffset() - renderStyle.getGateTipHeight();
+				height = fLowerLimit;// renderStyle.getGateYOffset() -
+										// renderStyle.getGateTipHeight();
 			}
 			else if (height > fUpperLimit)
 			{
@@ -1335,7 +1339,7 @@ public class GLParallelCoordinates
 						EDataRepresentation.NORMALIZED, iPolylineIndex);
 			}
 
-			if(Float.isNaN(fCurrentValue))
+			if (Float.isNaN(fCurrentValue))
 				fCurrentValue = renderStyle.getNaNYOffset();
 			if (fCurrentValue <= fArGateTipHeight[iAxisNumber] / renderStyle.getAxisHeight()
 					&& fCurrentValue >= fArGateBottomHeight[iAxisNumber]
@@ -1676,14 +1680,16 @@ public class GLParallelCoordinates
 			// get the value on the leftmost axis
 			fYValue = set.getStorageFromVA(iStorageVAID, 0).getFloat(
 					EDataRepresentation.NORMALIZED, iStorageIndex);
-			
-			if(Float.isNaN(fYValue))
+
+			if (Float.isNaN(fYValue))
 			{
-				fYValue = renderStyle.getNaNYOffset() * renderStyle.getAxisHeight()  + renderStyle.getBottomSpacing();
+				fYValue = renderStyle.getNaNYOffset() * renderStyle.getAxisHeight()
+						+ renderStyle.getBottomSpacing();
 			}
 			else
 			{
-				fYValue = fYValue * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
+				fYValue = fYValue * renderStyle.getAxisHeight()
+						+ renderStyle.getBottomSpacing();
 			}
 		}
 
