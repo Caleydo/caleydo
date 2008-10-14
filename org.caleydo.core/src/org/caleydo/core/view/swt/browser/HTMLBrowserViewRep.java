@@ -1,6 +1,8 @@
 package org.caleydo.core.view.swt.browser;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.logging.Level;
@@ -32,6 +34,10 @@ public class HTMLBrowserViewRep
 	implements IView
 {
 	public final static String CALEYDO_HOME = "http://www.caleydo.org";
+	
+	private final static String REFRESH_IMAGE = "resources/icons/view/browser/refresh.png";
+	private final static String BACK_IMAGE = "resources/icons/view/browser/back.png";
+	private final static String STOP_IMAGE = "resources/icons/view/browser/stop.png";
 
 	protected Browser browser;
 
@@ -66,21 +72,43 @@ public class HTMLBrowserViewRep
 		
 		ToolItem goButton = new ToolItem(toolbar, SWT.PUSH);
 
-		goButton.setImage(new Image(parent.getDisplay(), 
-				generalManager.getClass()
-				.getClassLoader().getResourceAsStream("resources/icons/view/browser/refresh.png")));
+		if (generalManager.getClass().getClassLoader().getResourceAsStream(REFRESH_IMAGE) != null)
+		{
+			goButton.setImage(new Image(parent.getDisplay(), 
+					generalManager.getClass()
+					.getClassLoader().getResourceAsStream(REFRESH_IMAGE)));
+		}
+		else
+		{
+			goButton.setImage(new Image(parent.getDisplay(), REFRESH_IMAGE));
+		}
+		
 //		goButton.setText("Go");
 
 		ToolItem backButton = new ToolItem(toolbar, SWT.PUSH);
-		backButton.setImage(new Image(parent.getDisplay(), 
-				generalManager.getClass()
-				.getClassLoader().getResourceAsStream("resources/icons/view/browser/back.png")));
+		if (generalManager.getClass().getClassLoader().getResourceAsStream(BACK_IMAGE) != null)
+		{
+			backButton.setImage(new Image(parent.getDisplay(), 
+					generalManager.getClass()
+					.getClassLoader().getResourceAsStream(BACK_IMAGE)));
+		}
+		else
+		{
+			backButton.setImage(new Image(parent.getDisplay(), BACK_IMAGE));
+		}
 //		backButton.setText("Back");
 
 		ToolItem stopButton = new ToolItem(toolbar, SWT.PUSH);
-		stopButton.setImage(new Image(parent.getDisplay(), 
-				generalManager.getClass()
-				.getClassLoader().getResourceAsStream("resources/icons/view/browser/stop.png")));
+		if (generalManager.getClass().getClassLoader().getResourceAsStream(STOP_IMAGE) != null)
+		{
+			stopButton.setImage(new Image(parent.getDisplay(), 
+					generalManager.getClass()
+					.getClassLoader().getResourceAsStream(STOP_IMAGE)));
+		}
+		else
+		{
+			stopButton.setImage(new Image(parent.getDisplay(), STOP_IMAGE));
+		}
 //		stopButton.setText("Stop");
 
 		textURL = new Text(browserBarComposite, SWT.BORDER);

@@ -1,9 +1,14 @@
 package org.caleydo.core.view.opengl.canvas.storagebased.heatmap;
 
-import gleem.linalg.Vec3f;
+import static org.caleydo.core.view.opengl.canvas.storagebased.heatmap.HeatMapRenderStyle.FIELD_Z;
+//import gleem.linalg.Vec3f;
+//import gleem.linalg.Vec4f;
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
+import javax.media.opengl.glu.GLU;
+import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
@@ -29,8 +34,12 @@ import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.GLIconTextureManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
+import org.eclipse.swt.widgets.Display;
+import com.sun.opengl.util.BufferUtil;
+import com.sun.opengl.util.j2d.TextureRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
+import com.sun.opengl.util.texture.TextureData;
 
 /**
  * Rendering the GLHeatMap
@@ -48,10 +57,28 @@ public class GLTextureHeatMap
 
 	private GLColorMappingBarMiniView colorMappingBar;
 
+	private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
+
+	// private boolean bRenderHorizontally = false;
+
+	//private Vec4f vecRotation = new Vec4f(-90, 0, 0, 1);
+
+	//private Vec3f vecTranslation;
+
+	private float fAnimationDefaultTranslation = 0;
+
+	private float fAnimationTranslation = 0;
+
+	private boolean bIsTranslationAnimationActive = false;
+
+	private float fAnimationTargetTranslation = 0;
+
 	private SelectedElementRep elementRep;
 
 	private GLIconTextureManager iconTextureManager;
-
+	
+	private ArrayList<Float> fAlXDistances;
+	
 	/**
 	 * Constructor.
 	 * 
@@ -85,6 +112,7 @@ public class GLTextureHeatMap
 		// TODO use constant instead
 		iNumberOfRandomElements = generalManager.getPreferenceStore().getInt(
 				"hmNumRandomSamplinPoints");
+		fAlXDistances = new ArrayList<Float>();
 	}
 
 	@Override
@@ -181,18 +209,68 @@ public class GLTextureHeatMap
 		checkForHits(gl);
 		// pickingTriggerMouseAdapter.resetEvents();
 	}
-
+	
+	
 	@Override
 	public void display(GL gl)
-	{
+	{	
 		GLHelperFunctions.drawAxis(gl);
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		
+		float xpos = 0, ypos = 0, w = 0, h= 0;		
+		
+		renderStyle.updateFieldSizes();
+		
+		w = renderStyle.getNormalFieldWidth();
+		h = renderStyle.getFieldHeight();
+		
+		
+		
+	/*	for(Integer iContentIndex : set.getVA(iContentVAID))
+		{	
+			ypos = 0;
+			
+			for (Integer iStorageIndex : set.getVA(iStorageVAID))
+			{
+				float lookup = set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED, iContentIndex);
+				
+				float[] color = colorMapper.getColor(lookup);
+				
+				gl.glColor4f(color[0],color[1],color[2],1.0f);
+				gl.glBegin(GL.GL_POLYGON);
+				gl.glVertex3f(xpos, ypos, FIELD_Z);
+				gl.glVertex3f(xpos + w, ypos, FIELD_Z);
+				gl.glVertex3f(xpos + w, ypos
+						+ h, FIELD_Z);
+				gl.glVertex3f(xpos, ypos + h, FIELD_Z);
+				gl.glEnd();
+
+				gl.glPopName();
+				
+				ypos += h;
+				
+			}
+			xpos += w;	
+		} */
+			
+		/*
+		gl.glClearColor(0, 0, 0, 0);
 		gl.glBegin(GL.GL_POLYGON);
+		gl.glColor3f(0,1,0);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(0, 1, 0);
 		gl.glVertex3f(1, 0, 0);
 		gl.glEnd();
-
+		*/
+		
+		/*
+		textRenderer.setColor(1, 0, 1, 1);
+		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		textRenderer.begin3DRendering();
+		textRenderer.draw3D("test 123 test", 1, 1, 0, renderStyle.getSmallFontScalingFactor());
+		textRenderer.end3DRendering();
+		gl.glPopAttrib();
+		*/
+		
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		// GLHelperFunctions.drawAxis(gl);
 		// gl.glCallList(iGLDisplayListToCall);
@@ -375,6 +453,22 @@ public class GLTextureHeatMap
 		// TODO
 	}
 
+	private void renderCaption(GL gl, String sLabel, float fXOrigin, float fYOrigin,
+			float fRotation, float fFontScaling)
+	{
+		textRenderer.setColor(0, 0, 0, 1);
+		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		gl.glTranslatef(fXOrigin, fYOrigin, 0);
+		gl.glRotatef(fRotation, 0, 0, 1);
+		textRenderer.begin3DRendering();
+		textRenderer.draw3D(sLabel, 0, 0, 0, fFontScaling);
+		textRenderer.end3DRendering();
+		gl.glRotatef(-fRotation, 0, 0, 1);
+		gl.glTranslatef(-fXOrigin, -fYOrigin, 0);
+		// textRenderer.begin3DRendering();
+		gl.glPopAttrib();
+	}
+	
 	@Override
 	public void broadcastElements()
 	{
