@@ -112,7 +112,7 @@ public abstract class AStorageBasedView
 		connectedElementRepresentationManager = generalManager.getViewGLCanvasManager()
 				.getConnectedElementRepresentationManager();
 
-		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 16), false);
+		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 32), false);
 
 	}
 

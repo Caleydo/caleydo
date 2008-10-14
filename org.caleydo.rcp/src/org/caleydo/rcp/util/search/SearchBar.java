@@ -12,6 +12,7 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -54,14 +55,17 @@ public class SearchBar
 //		composite.setLayout(rowLayout);
 
 		composite.setLayout(new GridLayout(4, false));
-		composite.setSize(400, 20);
+		composite.setSize(600, 20);
 
 		Label searchInputLabel = new Label(composite, SWT.NULL);
 		searchInputLabel.setText("Pathway search:");
 		searchInputLabel.pack();
 		searchBox = new SearchBox(composite, SWT.BORDER);
 
-		String items[] = { "No pathways available!                                                      " };
+		String items[] = { "No pathways available!" };
+		GridData data = new GridData();
+		data.widthHint = 430;
+		searchBox.setLayoutData(data);
 		searchBox.setItems(items);
 		searchBox.addFocusListener(new FocusAdapter()
 		{

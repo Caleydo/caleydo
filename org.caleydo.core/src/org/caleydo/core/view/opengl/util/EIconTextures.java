@@ -24,7 +24,8 @@ public enum EIconTextures
 	
 	BROWSER_REFRESH_IMAGE("resources/icons/view/browser/refresh.png"),
 	BROWSER_BACK_IMAGE("resources/icons/view/browser/back.png"),
-	BROWSER_STOP_IMAGE("resources/icons/view/browser/stop.png");
+	BROWSER_STOP_IMAGE("resources/icons/view/browser/stop.png"),
+	BROWSER_HOME_IMAGE("resources/icons/view/browser/home.png");
 
 	private String sFileName;
 

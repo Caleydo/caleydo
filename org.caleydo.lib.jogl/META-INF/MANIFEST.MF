@@ -62,3 +62,4 @@ Export-Package: com.sun.gluegen.runtime,
  com.sun.opengl.util.texture.spi,
  javax.media.opengl,
  javax.media.opengl.glu
+Bundle-Vendor: Graz University of Technology

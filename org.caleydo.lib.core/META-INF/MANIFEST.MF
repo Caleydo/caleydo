@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Core
+Bundle-Name: Caleydo Core Libraries Plug-in
 Bundle-SymbolicName: org.caleydo.lib.core
 Bundle-Version: 1.0.0
 Bundle-ClassPath: lib/ftp/edtftpj.jar,
@@ -228,3 +228,4 @@ Export-Package: com.enterprisedt,
    javax.sound.sampled,
    new wiiremotej",
  wiiremotej.event;uses:="wiiremotej"
+Bundle-Vendor: Graz University of Technology

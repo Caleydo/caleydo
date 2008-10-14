@@ -38,6 +38,11 @@ public class HTMLBrowserViewRep
 	protected Text textURL;
 
 	protected IDExtractionLocationListener idExtractionLocationListener;
+	
+	private ToolItem goButton;
+	private ToolItem homeButton;
+	private ToolItem backButton;
+	private ToolItem stopButton;
 
 	/**
 	 * Constructor.
@@ -62,7 +67,7 @@ public class HTMLBrowserViewRep
 		GridData data = new GridData(GridData.FILL_VERTICAL);
 //		toolbar.setLayoutData(data);
 		
-		ToolItem goButton = new ToolItem(toolbar, SWT.PUSH);
+		goButton = new ToolItem(toolbar, SWT.PUSH);
 
 		if (getClass().getClassLoader().getResourceAsStream(
 				EIconTextures.BROWSER_REFRESH_IMAGE.getFileName()) != null)
@@ -76,10 +81,8 @@ public class HTMLBrowserViewRep
 			goButton.setImage(new Image(parent.getDisplay(), 
 					EIconTextures.BROWSER_REFRESH_IMAGE.getFileName()));
 		}
-		
-//		goButton.setText("Go");
 
-		ToolItem backButton = new ToolItem(toolbar, SWT.PUSH);
+		backButton = new ToolItem(toolbar, SWT.PUSH);
 		if (generalManager.getClass().getClassLoader().getResourceAsStream(
 				EIconTextures.BROWSER_BACK_IMAGE.getFileName()) != null)
 		{
@@ -92,9 +95,8 @@ public class HTMLBrowserViewRep
 			backButton.setImage(new Image(parent.getDisplay(), 
 					EIconTextures.BROWSER_BACK_IMAGE.getFileName()));
 		}
-//		backButton.setText("Back");
 
-		ToolItem stopButton = new ToolItem(toolbar, SWT.PUSH);
+		stopButton = new ToolItem(toolbar, SWT.PUSH);
 		if (generalManager.getClass().getClassLoader().getResourceAsStream(
 				EIconTextures.BROWSER_STOP_IMAGE.getFileName()) != null)
 		{
@@ -107,11 +109,26 @@ public class HTMLBrowserViewRep
 			stopButton.setImage(new Image(parent.getDisplay(), 
 					EIconTextures.BROWSER_STOP_IMAGE.getFileName()));
 		}
-//		stopButton.setText("Stop");
 
+		homeButton = new ToolItem(toolbar, SWT.PUSH);
+
+		if (getClass().getClassLoader().getResourceAsStream(
+				EIconTextures.BROWSER_HOME_IMAGE.getFileName()) != null)
+		{
+			homeButton.setImage(new Image(parent.getDisplay(), 
+					getClass().getClassLoader().getResourceAsStream(
+							EIconTextures.BROWSER_HOME_IMAGE.getFileName())));
+		}
+		else
+		{
+			homeButton.setImage(new Image(parent.getDisplay(), 
+					EIconTextures.BROWSER_HOME_IMAGE.getFileName()));
+		}
+		
 		textURL = new Text(browserBarComposite, SWT.BORDER);
 		textURL.setText(sUrl);
-		data = new GridData(GridData.FILL_BOTH);
+		data = new GridData(GridData.FILL_HORIZONTAL);
+		data.heightHint = 15;
 		textURL.setLayoutData(data);
 
 		data = new GridData();
@@ -125,29 +142,36 @@ public class HTMLBrowserViewRep
 			public void handleEvent(Event event)
 			{
 				ToolItem item = (ToolItem) event.widget;
-				String string = item.getText();
-				if (string.equals("Back"))
+				if (item.equals(backButton))
+				{
 					browser.back();
-				else if (string.equals("Stop"))
+				}
+				else if (item.equals(stopButton))
+				{
 					browser.stop();
-				else if (string.equals("Go"))
+				}
+				else if (item.equals(goButton))
 				{
 					sUrl = textURL.getText();
-					drawView();
+				}
+				else if (item.equals(homeButton))
+				{
+					sUrl = "www.caleydo.org";
+					textURL.setText("www.caleydo.org");
+					browser.setUrl(sUrl);
 				}
 			}
 		};
 
 		goButton.addListener(SWT.Selection, listener);
-//		backButton.addListener(SWT.Selection, listener);
-//		stopButton.addListener(SWT.Selection, listener);
+		backButton.addListener(SWT.Selection, listener);
+		stopButton.addListener(SWT.Selection, listener);
+		homeButton.addListener(SWT.Selection, listener);
 
 		textURL.addListener(SWT.DefaultSelection, new Listener()
 		{
-
 			public void handleEvent(Event e)
 			{
-
 				sUrl = textURL.getText();
 				drawView();
 			}
@@ -164,7 +188,7 @@ public class HTMLBrowserViewRep
 			}
 		});
 
-		browser = new Browser(composite, SWT.NONE);
+		browser = new Browser(composite, SWT.BORDER);
 
 		idExtractionLocationListener = new IDExtractionLocationListener(browser, iUniqueID, -1);
 		browser.addLocationListener(idExtractionLocationListener);

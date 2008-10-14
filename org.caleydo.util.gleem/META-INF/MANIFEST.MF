@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Gleem
+Bundle-Name: Gleem Plug-in
 Bundle-SymbolicName: org.caleydo.util.gleem
 Bundle-Version: 1.0.0
 Bundle-ClassPath: gleem.jar
@@ -9,3 +9,4 @@ Export-Package: gleem,
  gleem.linalg.open
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.caleydo.lib.jogl;bundle-version="1.0.0"
+Bundle-Vendor: Graz University of Technology

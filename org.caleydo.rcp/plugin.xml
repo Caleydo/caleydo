@@ -85,18 +85,15 @@
          <property
                name="appName"
                value="Caleydo">
-         </property>
+         </property>        
          <property
-               name="aboutText"
-               value="Caleydo visualization framework&#x0A;Caleydo is a general purpose visualization framework.&#x0A;Check out www.caleydo.org&#x0A;&#x0A;(c) Copyright by www.geneview.org and Institute for Computer Graphics and Vision (ICG)&#x0A;Graz University of Technology - 2008.&#x0A;All Rights Reserved.">
+               name="aboutImage"
+               value="splash.bmp">
          </property>
          <property
                name="windowImages"
                value="icons/caleydo16.gif">
          </property>
-          <property
-               name="preferenceCustomization"
-               value="plugin_customization.ini"/>
          <property
                name="preferenceCustomization"
                value="plugin_customization.ini">

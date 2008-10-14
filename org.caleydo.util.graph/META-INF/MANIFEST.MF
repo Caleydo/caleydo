@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Graph
+Bundle-Name: Caleydo Graph Plug-in
 Bundle-SymbolicName: org.caleydo.util.graph
 Bundle-Version: 1.0.0
 Export-Package: org.caleydo.data,
@@ -13,3 +13,4 @@ Export-Package: org.caleydo.data,
  org.caleydo.util.graph.core,
  org.caleydo.util.graph.item
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Vendor: Graz University of Technology
