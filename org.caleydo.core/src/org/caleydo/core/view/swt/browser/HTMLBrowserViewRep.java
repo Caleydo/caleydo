@@ -1,20 +1,15 @@
 package org.caleydo.core.view.swt.browser;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
+import java.io.File;
 import java.util.logging.Level;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
-import org.eclipse.jface.resource.ImageDescriptor;
+import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.ImageData;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -23,6 +18,7 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
+import com.sun.opengl.util.texture.TextureIO;
 
 /**
  * Simple HTML browser.
@@ -34,10 +30,6 @@ public class HTMLBrowserViewRep
 	implements IView
 {
 	public final static String CALEYDO_HOME = "http://www.caleydo.org";
-	
-	private final static String REFRESH_IMAGE = "resources/icons/view/browser/refresh.png";
-	private final static String BACK_IMAGE = "resources/icons/view/browser/back.png";
-	private final static String STOP_IMAGE = "resources/icons/view/browser/stop.png";
 
 	protected Browser browser;
 
@@ -68,46 +60,52 @@ public class HTMLBrowserViewRep
 		
 		ToolBar toolbar = new ToolBar(browserBarComposite, SWT.NONE);
 		GridData data = new GridData(GridData.FILL_VERTICAL);
-		toolbar.setLayoutData(data);
+//		toolbar.setLayoutData(data);
 		
 		ToolItem goButton = new ToolItem(toolbar, SWT.PUSH);
 
-		if (generalManager.getClass().getClassLoader().getResourceAsStream(REFRESH_IMAGE) != null)
+		if (getClass().getClassLoader().getResourceAsStream(
+				EIconTextures.BROWSER_REFRESH_IMAGE.getFileName()) != null)
 		{
 			goButton.setImage(new Image(parent.getDisplay(), 
-					generalManager.getClass()
-					.getClassLoader().getResourceAsStream(REFRESH_IMAGE)));
+					getClass().getClassLoader().getResourceAsStream(
+							EIconTextures.BROWSER_REFRESH_IMAGE.getFileName())));
 		}
 		else
 		{
-			goButton.setImage(new Image(parent.getDisplay(), REFRESH_IMAGE));
+			goButton.setImage(new Image(parent.getDisplay(), 
+					EIconTextures.BROWSER_REFRESH_IMAGE.getFileName()));
 		}
 		
 //		goButton.setText("Go");
 
 		ToolItem backButton = new ToolItem(toolbar, SWT.PUSH);
-		if (generalManager.getClass().getClassLoader().getResourceAsStream(BACK_IMAGE) != null)
+		if (generalManager.getClass().getClassLoader().getResourceAsStream(
+				EIconTextures.BROWSER_BACK_IMAGE.getFileName()) != null)
 		{
 			backButton.setImage(new Image(parent.getDisplay(), 
-					generalManager.getClass()
-					.getClassLoader().getResourceAsStream(BACK_IMAGE)));
+					this.getClass().getClassLoader().getResourceAsStream(
+							EIconTextures.BROWSER_BACK_IMAGE.getFileName())));
 		}
 		else
 		{
-			backButton.setImage(new Image(parent.getDisplay(), BACK_IMAGE));
+			backButton.setImage(new Image(parent.getDisplay(), 
+					EIconTextures.BROWSER_BACK_IMAGE.getFileName()));
 		}
 //		backButton.setText("Back");
 
 		ToolItem stopButton = new ToolItem(toolbar, SWT.PUSH);
-		if (generalManager.getClass().getClassLoader().getResourceAsStream(STOP_IMAGE) != null)
+		if (generalManager.getClass().getClassLoader().getResourceAsStream(
+				EIconTextures.BROWSER_STOP_IMAGE.getFileName()) != null)
 		{
 			stopButton.setImage(new Image(parent.getDisplay(), 
-					generalManager.getClass()
-					.getClassLoader().getResourceAsStream(STOP_IMAGE)));
+					this.getClass().getClassLoader().getResourceAsStream(
+							EIconTextures.BROWSER_STOP_IMAGE.getFileName())));
 		}
 		else
 		{
-			stopButton.setImage(new Image(parent.getDisplay(), STOP_IMAGE));
+			stopButton.setImage(new Image(parent.getDisplay(), 
+					EIconTextures.BROWSER_STOP_IMAGE.getFileName()));
 		}
 //		stopButton.setText("Stop");
 
@@ -141,8 +139,8 @@ public class HTMLBrowserViewRep
 		};
 
 		goButton.addListener(SWT.Selection, listener);
-		backButton.addListener(SWT.Selection, listener);
-		stopButton.addListener(SWT.Selection, listener);
+//		backButton.addListener(SWT.Selection, listener);
+//		stopButton.addListener(SWT.Selection, listener);
 
 		textURL.addListener(SWT.DefaultSelection, new Listener()
 		{
