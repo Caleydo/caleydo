@@ -109,7 +109,8 @@ public class Application
 		Display display = PlatformUI.createDisplay();
 
 		// Check if Caleydo will be started the first time
-		if (caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(PreferenceConstants.LAST_PATHWAY_UPDATE))
+		if (!caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(
+				PreferenceConstants.PATHWAY_DATA_OK))
 		{
 			WizardDialog firstStartWizard = new WizardDialog(display.getActiveShell(),
 					new FirstStartWizard());

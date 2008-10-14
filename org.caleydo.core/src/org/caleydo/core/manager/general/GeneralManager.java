@@ -32,6 +32,7 @@ import org.caleydo.core.manager.specialized.genome.pathway.PathwayManager;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 import org.caleydo.core.manager.view.ViewGLCanvasManager;
+import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.eclipse.jface.preference.PreferenceStore;
 
 /**
@@ -169,7 +170,8 @@ public class GeneralManager
 
 			try
 			{
-				preferenceStore.setValue("firstStart", true);
+				preferenceStore.setValue(PreferenceConstants.FIRST_START, true);
+				preferenceStore.setValue(PreferenceConstants.PATHWAY_DATA_OK, false);
 				preferenceStore.save();
 			}
 			catch (IOException e1)
