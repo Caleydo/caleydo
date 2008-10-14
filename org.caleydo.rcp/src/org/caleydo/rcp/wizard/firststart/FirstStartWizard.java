@@ -61,6 +61,7 @@ public class FirstStartWizard
 
 		// Create the parent shell for the dialog, but don't show it
 		Shell shell = new Shell(display);
+		shell.setActive();
 
 		// Create the dialog
 		WizardDialog firstStartWizard = new WizardDialog(shell, new FirstStartWizard());

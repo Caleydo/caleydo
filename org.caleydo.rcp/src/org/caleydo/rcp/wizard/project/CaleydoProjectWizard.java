@@ -37,6 +37,7 @@ public class CaleydoProjectWizard
 		int x = bounds.x + (bounds.width - rect.width) / 2;
 		int y = bounds.y + (bounds.height - rect.height) / 2;
 		parentShell.setLocation(x, y);
+		parentShell.setActive();
 	}
 
 	@Override
