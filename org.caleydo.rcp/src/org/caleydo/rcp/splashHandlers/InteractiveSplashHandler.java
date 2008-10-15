@@ -62,8 +62,6 @@ public class InteractiveSplashHandler
 		versionLabel.setFont(new Font(splash.getDisplay(),"Arial",10, SWT.NONE));
 		versionLabel.setBounds(185, 177, 300, 20);
 		versionLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
-	
-
 		
 		GeneralManager.get().getSWTGUIManager().setExternalProgressBarAndLabel(
 				progressBar, progressMessageLabel);

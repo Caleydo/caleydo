@@ -247,6 +247,14 @@ public class Application
 		// Register the info area to all mediator from type SELECTION
 		GeneralManager.get().getEventPublisher().registerReceiverToMediatorGroup(
 				EMediatorType.SELECTION_MEDIATOR, InfoArea.getInfoArea());
+		
+		if (GeneralManager.get().isStandalone())
+		{
+			// Start OpenGL rendering
+			GeneralManager.get().getViewGLCanvasManager().startAnimator();
+
+			GeneralManager.get().getSWTGUIManager().runApplication();
+		}
 	}
 
 	public static void initializeColorMapping()

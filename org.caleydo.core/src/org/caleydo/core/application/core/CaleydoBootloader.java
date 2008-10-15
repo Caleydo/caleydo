@@ -96,27 +96,11 @@ public class CaleydoBootloader
 	public synchronized void start()
 	{
 		parseXmlConfigFile(sFileName);
-
-		if (generalManager.isStandalone())
-		{
-			// Start OpenGL rendering
-			generalManager.getViewGLCanvasManager().startAnimator();
-
-			swtGUIManager.runApplication();
-		}
-
 	}
 
 	public void parseXmlConfigFile(final String sFileName)
 	{
 		xmlParserManager.parseXmlFileByName(sFileName);
-
-		// generalManager.getCommandManager().readSerializedObjects(
-		// "data/serialize_test.out");
-
-		// generalManager.getCommandManager().writeSerializedObjects(
-		// "data/serialize_test.out");
-
 	}
 
 	/**
@@ -134,6 +118,14 @@ public class CaleydoBootloader
 
 		caleydo.start();
 
+		if (GeneralManager.get().isStandalone())
+		{
+			// Start OpenGL rendering
+			GeneralManager.get().getViewGLCanvasManager().startAnimator();
+
+			GeneralManager.get().getSWTGUIManager().runApplication();
+		}
+		
 		System.exit(0);
 
 		return;
