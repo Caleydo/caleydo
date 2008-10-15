@@ -225,7 +225,6 @@ public class GLRemoteRendering
 	@Override
 	public void init(final GL gl)
 	{
-
 		glIconTextureManager = new GLIconTextureManager(gl);
 
 		time = new SystemTime();
@@ -242,6 +241,7 @@ public class GLRemoteRendering
 	@Override
 	public synchronized void displayLocal(final GL gl)
 	{
+		gl.glClearColor(0.5f, 0.5f, 0.5f, 1f);
 
 		if (pickingTriggerMouseAdapter.wasRightMouseButtonPressed())
 		{
@@ -416,21 +416,26 @@ public class GLRemoteRendering
 		}
 	}
 
-	private void renderBucketWall(final GL gl)
+	private void renderBucketWall(final GL gl, boolean bRenderBorder)
 	{
-		gl.glColor4f(0.4f, 0.4f, 0.4f, 1f);
-		gl.glLineWidth(4);
-
-		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(0, 0, -0.02f);
-		gl.glVertex3f(0, 8, -0.02f);
-		gl.glVertex3f(8, 8, -0.02f);
-		gl.glVertex3f(8, 0, -0.02f);
-		gl.glEnd();
-
-		gl.glColor4f(0.96f, 0.96f, 0.96f, 1f);
+//		gl.glColor4f(0.96f, 0.96f, 0.96f, 1f);
+		gl.glColor4f(0.95f, 0.95f, 0.95f, 1f);
+//		gl.glColor4f(1f, 1f, 1f, 1f);
 
 		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(0, 0, -0.03f);
+		gl.glVertex3f(0, 8, -0.03f);
+		gl.glVertex3f(8, 8, -0.03f);
+		gl.glVertex3f(8, 0, -0.03f);
+		gl.glEnd();
+		
+		if (!bRenderBorder)
+			return;
+		
+		gl.glColor4f(0.4f, 0.4f, 0.4f, 1f);
+		gl.glLineWidth(1f);
+
+		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(0, 0, -0.02f);
 		gl.glVertex3f(0, 8, -0.02f);
 		gl.glVertex3f(8, 8, -0.02f);
@@ -510,7 +515,10 @@ public class GLRemoteRendering
 
 		// GLHelperFunctions.drawAxis(gl);
 
-		renderBucketWall(gl);
+		if(layer.equals(underInteractionLayer))
+			renderBucketWall(gl, false);
+		else
+			renderBucketWall(gl, true);
 
 		tmpCanvasUser.displayRemote(gl);
 
@@ -553,7 +561,7 @@ public class GLRemoteRendering
 		if (!layer.equals(transitionLayer) && !layer.equals(spawnLayer)
 				&& !layer.equals(poolLayer))
 		{
-			renderBucketWall(gl);
+			renderBucketWall(gl, true);
 		}
 
 		gl.glPopMatrix();
@@ -1726,8 +1734,8 @@ public class GLRemoteRendering
 
 		if (layoutMode.equals(LayoutMode.BUCKET))
 		{
-			gl.glColor4f(0.9f, 0.9f, 0.3f, 0.5f);
-			gl.glLineWidth(4);
+			gl.glColor4f(0.85f, 0.85f, 0.85f, 1f);
+			gl.glLineWidth(1);
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glVertex3f(-2 / fAspectRatio, -2, 4);
 			gl.glVertex3f(-2 / fAspectRatio, 2, 4);
@@ -1735,8 +1743,8 @@ public class GLRemoteRendering
 			gl.glVertex3f(-2 / fAspectRatio + fWidth, -2, 4);
 			gl.glEnd();
 
-			gl.glColor4f(0.4f, 0.4f, 0.4f, 0.8f);
-			gl.glLineWidth(4);
+			gl.glColor4f(0.4f, 0.4f, 0.4f, 1);
+			gl.glLineWidth(1);
 			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(-2 / fAspectRatio, -2, 4);
 			gl.glVertex3f(-2 / fAspectRatio, 2, 4);
@@ -1745,9 +1753,8 @@ public class GLRemoteRendering
 			gl.glEnd();
 
 			// Render memo pad background
-
-			gl.glColor4f(0.9f, 0.9f, 0.3f, 0.5f);
-			gl.glLineWidth(4);
+			gl.glColor4f(0.85f, 0.85f, 0.85f, 1f);
+			gl.glLineWidth(1);
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glVertex3f(2 / fAspectRatio, -2, 4);
 			gl.glVertex3f(2 / fAspectRatio, 2, 4);
@@ -1755,8 +1762,8 @@ public class GLRemoteRendering
 			gl.glVertex3f(2 / fAspectRatio - fWidth, -2, 4);
 			gl.glEnd();
 
-			gl.glColor4f(0.4f, 0.4f, 0.4f, 0.8f);
-			gl.glLineWidth(4);
+			gl.glColor4f(0.4f, 0.4f, 0.4f, 1);
+			gl.glLineWidth(1);
 			gl.glBegin(GL.GL_LINE_LOOP);
 			gl.glVertex3f(2 / fAspectRatio, -2, 4);
 			gl.glVertex3f(2 / fAspectRatio, 2, 4);

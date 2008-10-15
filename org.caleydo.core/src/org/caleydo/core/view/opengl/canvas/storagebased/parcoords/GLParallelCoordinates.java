@@ -1207,9 +1207,9 @@ public class GLParallelCoordinates
 				.format(fRawValue));
 		float fSmallSpacing = renderStyle.getVerySmallSpacing();
 		float fBackPlaneWidth = (float) tempRectangle.getWidth()
-				* renderStyle.getSmallFontScalingFactor() + 2 * fSmallSpacing;
+				* renderStyle.getSmallFontScalingFactor();// + 2 * fSmallSpacing;
 		float fBackPlaneHeight = (float) tempRectangle.getHeight()
-				* renderStyle.getSmallFontScalingFactor() + 2 * fSmallSpacing;
+				* renderStyle.getSmallFontScalingFactor();// + 2 * fSmallSpacing;
 		float fXTextOrigin = fXOrigin + 2 * AXIS_MARKER_WIDTH;
 		float fYTextOrigin = fYOrigin;
 

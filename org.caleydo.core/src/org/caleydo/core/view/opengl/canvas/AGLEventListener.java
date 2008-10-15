@@ -443,12 +443,12 @@ public abstract class AGLEventListener
 		if (bBusyMode)
 		{
 			pickingManager.enablePicking(false);
-			gl.glClearColor(0.7f, 0.7f, 0.7f, 1f); // yellowish background (busy mode)
+			gl.glClearColor(0.4f, 0.4f, 0.4f, 1f);
 		}
 		else
 		{
 			pickingManager.enablePicking(true);
-			gl.glClearColor(1, 1, 1, 1); // white background
+			gl.glClearColor(0.7f, 0.7f, 0.7f, 1f);
 		}
 
 		bBusyModeChanged = false;

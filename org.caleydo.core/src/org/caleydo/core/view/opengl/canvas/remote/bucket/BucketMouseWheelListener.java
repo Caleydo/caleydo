@@ -105,7 +105,7 @@ public class BucketMouseWheelListener
 			int notches = event.getWheelRotation();
 			if (notches < 0)
 			{
-				if (iCurrentBucketZoom == 400)
+				if (iCurrentBucketZoom == BUCKET_ZOOM_MAX)
 					return;
 				
 				bZoomIn = true;
