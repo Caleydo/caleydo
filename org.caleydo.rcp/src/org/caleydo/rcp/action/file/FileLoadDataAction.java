@@ -59,6 +59,7 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
@@ -123,7 +124,7 @@ public class FileLoadDataAction
 	 */
 	public FileLoadDataAction(final IWorkbenchWindow window)
 	{
-		this((Composite) null);
+//		this((Composite) null);
 
 		parentComposite = null;
 		this.window = window;
@@ -132,7 +133,6 @@ public class FileLoadDataAction
 	@Override
 	public void run()
 	{
-
 		// Check if load data GUI is embedded in a wizard or if a own dialog
 		// must be created.
 		if (parentComposite == null && window != null)
@@ -148,7 +148,6 @@ public class FileLoadDataAction
 
 	private void createGUI()
 	{
-
 		composite = new Composite(parentComposite, SWT.NONE);
 		GridLayout layout = new GridLayout(2, false);
 		composite.setLayout(layout);
@@ -1006,6 +1005,5 @@ public class FileLoadDataAction
 	@Override
 	public void dispose()
 	{
-
 	}
 }

@@ -5,7 +5,7 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
-import org.eclipse.ui.handlers.HandlerUtil;
+import org.eclipse.swt.widgets.Shell;
 
 public class LoadDataHandler
 	extends AbstractHandler
@@ -15,7 +15,7 @@ public class LoadDataHandler
 	public Object execute(ExecutionEvent event) throws ExecutionException
 	{
 		FileLoadDataDialog loadDataFileDialog = new FileLoadDataDialog(
-				HandlerUtil.getActiveShell(event));
+				new Shell());
 
 		loadDataFileDialog.open();
 		
