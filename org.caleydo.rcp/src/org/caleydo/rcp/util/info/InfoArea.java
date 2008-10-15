@@ -12,6 +12,8 @@ import org.caleydo.core.data.selection.SelectionItem;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.rcp.util.info.EInfoType;
+import org.caleydo.rcp.util.info.ToolTip;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Font;
 import org.eclipse.swt.layout.RowData;

@@ -13,6 +13,7 @@ import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.core.bridge.RCPBridge;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
+import org.caleydo.rcp.util.info.InfoArea;
 import org.caleydo.rcp.views.GLRemoteRenderingView;
 import org.caleydo.rcp.wizard.firststart.FirstStartWizard;
 import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
@@ -243,9 +244,9 @@ public class Application
 
 		openViewsInRCP();
 
-//		// Register the info area to all mediator from type SELECTION
-//		GeneralManager.get().getEventPublisher().registerReceiverToMediatorGroup(
-//				EMediatorType.SELECTION_MEDIATOR, InfoArea.getInfoArea());
+		// Register the info area to all mediator from type SELECTION
+		GeneralManager.get().getEventPublisher().registerReceiverToMediatorGroup(
+				EMediatorType.SELECTION_MEDIATOR, InfoArea.getInfoArea());
 	}
 
 	public static void initializeColorMapping()
