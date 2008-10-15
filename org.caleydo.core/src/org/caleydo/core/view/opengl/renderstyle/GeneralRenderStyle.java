@@ -13,7 +13,7 @@ public class GeneralRenderStyle
 
 	private static final float VERY_SMALL_FONT_SCALING_FACTOR = 0.0005f;
 
-	private static final float SMALL_FONT_SCALING_FACTOR = 0.0004f;
+	private static final float SMALL_FONT_SCALING_FACTOR = 0.0007f;
 
 	private static final float HEADING_FONT_SCALING_FACTOR = 0.0009f;
 
