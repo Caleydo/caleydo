@@ -1,5 +1,6 @@
 package org.caleydo.rcp.views;
 
+import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
@@ -9,15 +10,14 @@ import org.eclipse.ui.part.ViewPart;
 public class HTMLBrowserView
 	extends ViewPart
 {
-
-	public static final String ID = "HTMLBrowserView.view";
+	public static final String ID = "org.caleydo.rcp.views.HTMLBrowserView";
+	
+	private HTMLBrowserViewRep browserView;
 
 	@Override
 	public void createPartControl(Composite parent)
-	{
-//		parent.setLayout(new RowLayout(SWT.VERTICAL));
-		
-		HTMLBrowserViewRep browserView = (HTMLBrowserViewRep) GeneralManager.get().getViewGLCanvasManager().createView(
+	{	
+		browserView = (HTMLBrowserViewRep) GeneralManager.get().getViewGLCanvasManager().createView(
 				EManagedObjectType.VIEW_SWT_BROWSER_GENOME, -1, "Browser");
 
 		browserView.initViewRCP(parent);
@@ -30,5 +30,16 @@ public class HTMLBrowserView
 	public void setFocus()
 	{
 
+	}
+	
+	@Override
+	public void dispose()
+	{
+		super.dispose();
+		
+		GeneralManager.get().getEventPublisher().removeReceiver((IMediatorReceiver)browserView);
+		
+		GeneralManager.get().getViewGLCanvasManager()
+			.unregisterItem(browserView.getID());
 	}
 }

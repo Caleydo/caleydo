@@ -11,6 +11,7 @@ public class GenomePerspective
 	{
 
 		layout.setEditorAreaVisible(false);
+		layout.getViewLayout("org.caleydo.rcp.views.HTMLBrowserView").setCloseable(false);
 
 		// layout.addView(GLJukeboxPathwayView.ID +":1", IPageLayout.LEFT,
 		// 0.5f, layout.getEditorArea());

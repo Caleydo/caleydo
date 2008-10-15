@@ -99,4 +99,6 @@ public interface IEventPublisher
 	
 	public void registerReceiverToMediatorGroup(EMediatorType mediatorType, 
 			IMediatorReceiver receiver);
+	
+	public void removeReceiver(IMediatorReceiver receiver);
 }

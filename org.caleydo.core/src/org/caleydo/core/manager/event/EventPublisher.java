@@ -81,6 +81,39 @@ public class EventPublisher
 
 		bufferArrayList.add(newMediator);
 	}
+	
+	public void removeReceiver(IMediatorReceiver receiver)
+	{
+		if (hashReceiver2DataMediators.containsKey(receiver))
+		{
+			for (IMediator mediator : hashReceiver2DataMediators.get(receiver))
+			{
+				mediator.unregister(receiver);
+			}
+
+			hashReceiver2DataMediators.remove(receiver);
+		}
+		
+		if (hashReceiver2ViewMediators.containsKey(receiver))
+		{
+			for (IMediator mediator : hashReceiver2ViewMediators.get(receiver))
+			{
+				mediator.unregister(receiver);
+			}
+
+			hashReceiver2ViewMediators.remove(receiver);
+		}
+		
+		if (hashReceiver2SelectionMediators.containsKey(receiver))
+		{
+			for (IMediator mediator : hashReceiver2SelectionMediators.get(receiver))
+			{
+				mediator.unregister(receiver);
+			}
+
+			hashReceiver2SelectionMediators.remove(receiver);
+		}
+	}
 
 	public synchronized IMediator createMediator(ArrayList<Integer> arSenderIDs,
 			ArrayList<Integer> arReceiverIDs, EMediatorType mediatorType,
@@ -202,12 +235,15 @@ public class EventPublisher
 			{
 				case DATA_MEDIATOR:
 					mediator.register(sender);
+//					hashSender2DataMediators.get(sender).add(mediator);
 					break;
 				case SELECTION_MEDIATOR:
 					mediator.register(sender);
+//					hashSender2SelectionMediators.get(sender).add(mediator);
 					break;
 				case VIEW_MEDIATOR:
 					mediator.register(sender);
+//					hashSender2ViewMediators.get(sender).add(mediator);
 					break;
 			}
 		}
@@ -222,12 +258,15 @@ public class EventPublisher
 			{
 				case DATA_MEDIATOR:
 					mediator.register(receiver);
+//					hashReceiver2DataMediators.get(receiver).add(mediator);
 					break;
 				case SELECTION_MEDIATOR:
 					mediator.register(receiver);
+//					hashReceiver2SelectionMediators.get(receiver).add(mediator);
 					break;
 				case VIEW_MEDIATOR:
 					mediator.register(receiver);
+//					hashReceiver2ViewMediators.get(receiver).add(mediator);
 					break;
 			}
 		}

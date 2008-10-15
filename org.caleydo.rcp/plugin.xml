@@ -59,12 +59,11 @@
       </view> 
       
       <view
-            id="HTMLBrowserView.view"
+            id="org.caleydo.rcp.views.HTMLBrowserView"
             name="Browser"
             icon="resources/icons/view/browser/browser.png"
             class="org.caleydo.rcp.views.HTMLBrowserView"
-            category="org.caleydo.rcp.views"
-            allowMultiple="true">
+            category="org.caleydo.rcp.views">
       </view>
       
    </extension>   

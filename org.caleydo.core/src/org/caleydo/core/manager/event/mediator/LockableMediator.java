@@ -130,6 +130,13 @@ public class LockableMediator
 		{
 			IMediatorReceiver currentReceiver = iter.next();
 
+			// Remove receiver if it does not exist anymore
+			if (currentReceiver == null)
+			{
+				arReceiver.remove(currentReceiver);
+				return;
+			}
+			
 			/* Prevent circular updates */
 			if (!currentReceiver.equals(eventTrigger))
 			{
