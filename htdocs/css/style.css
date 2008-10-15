@@ -129,6 +129,15 @@ a img {
 	margin-top: 20px;
 }
 
+#content h3 {
+	margin: 0;
+	font-size: 1em;
+	color: #b1bba2;
+	padding-left: 0px;
+	margin-top: 15px;
+
+}
+
 #content p {
 	padding-bottom: 0px;
 	margin-bottom: 0;

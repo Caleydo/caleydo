@@ -11,7 +11,7 @@ which means you can use it in any way you want provided you keep the link to the
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 
-<title>Caleydo Project - Publications</title>
+<title>Caleydo Project - Help</title>
 <link href="css/style.css" rel="stylesheet" type="text/css" />
 </head>
 
@@ -48,22 +48,146 @@ which means you can use it in any way you want provided you keep the link to the
 <h1 class="red">Help</h1>
 
 <ul>
-<li><a href="#Installation">Installation</a></li>
+	<li><a href="#Prerequisites">Prerequisites</a></li>
+	<li><a href="#Installation">Installation</a></li>
+	<li><a href="#Startup">Startup</a></li>
+	<li><a href="#Dataloading">Data Loading</a></li>
+	<li><a href="#Pathways">Pathways</a></li>
+	<li><a href="#ParallelCoordinates">Parallel Coordinates</a></li>
+	<li><a href="#HeatMap">Heat Map</a></li>
+	<li><a href="#Uninstallation">Uninstallation</a></li>
+	<li><a href="#KnownIssues">Known Issues</a></li>
 </ul>
 
-<h2><a name="#Installation"></a>Installation</h2>
+<h2><a name="Prerequisites"></a>Prerequisites</h2>
 
-<h2>Data loading</h2>
+<p><b>Caleydo</b> visualizes thousands of data points and therefore
+is a resource intensive application and requires somewhat recent
+hardware. The system requirements vary widely with the amount of data
+you want to load and visualize simultaneously. We recommend the
+following hardware and software configurations:</p>
+<ul>
+	<li>A graphics card with at least 64 MB RAM is recommended.</li>
+	<li>Up to data graphics card drivers</li>
+	<li>Currently only Sun Java 6 is supported.
+	Download and install the latest <a
+		href="http://java.sun.com/javase/downloads/index.jsp">Java Runtime
+	Environment</a>. OpenJDK is not supported</li>
+	<li>Supported operating systems: Windows and Linux. Mac OS are not
+	supported (though it should theoretically run).</li>
+	<li>A mouse with a mouse wheel.</li>
+	<li>For the first start only: a broadband Internet connection.</li>
+</ul>
+<h2><a name="Installation"></a>Installation</h2>
 
+<h3>Webstart intallation</h3>
+<p>To run <b>Caleydo</b> as a webstart application, make sure you
+have Java installed and then simply click the large web start icon on
+the <a href="index.html">home</a> or the <a href="downloads.html">downloads</a>
+page.</p>
+<p>The application now downloads to your local hard drive and then
+executes. Note that you do not need to have administrator privileges to
+do that.</p>
+<p>Using web start ensures that you always have the most current
+version of <b>Caleydo</b></p>
+
+<h3>Pathway Fetching</h3>
+<p>When you start <b>Caleydo</b> for the first time you will be
+asked to fetch the pathways from <a
+	href="http://www.biocarta.com/Biocarta">BioCarta</a> and <a
+	href="http://www.genome.jp/kegg/">KEGG</a>. Click <i>Fetch pathways</i>
+to start the process. <b>Caleydo</b> will then load the pathways from
+the databases and store them on your local computer.</p>
+<p>The download will not surpass 30MB, but will exceed 1000 files. The data is stored in your users home
+directory.</p>
+<p>When the download is complete click <i>Finish</i>. You will need
+to do this only once, but you can redo it to update the pathway database.</p>
+
+<h2><a name="Startup"></a>Startup</h2>
+<p>Upon startup you are presented with choices for different
+execution modes:</p>
+<ul>
+	<li>Create new project</li>
+	<li>Pathway viewer mode</li>
+	<li>Start with sample gene expression data</li>
+</ul>
+<p>Select <i>Create new project</i> if you have your own gene
+expression data that you want to load. Select the <i>Pathway viewer
+mode</i> if you don't have gene expression data but are interested in
+browsing pathways and their interconnections. Select <i>Start with
+sample gene expression data</i> if you want to try out <b>Caleydo</b>
+without bothering loading your own data. The data you see in this mode
+is randomly generated.</p>
+
+
+<h2><a name="Dataloading"></a>Data Loading</h2>
+<p><img src="images/help/data_import.png"
+	alt="Data loader screenshot"
+	style="border-style: none; float: right; padding-left: 1em;" /> To be
+able to import gene expression data in <b>Caleydo</b> you have to
+follow these conventions:</p>
+<ul>
+	<li>The first column of the file has to contain a valid Refseq
+	accession number.</li>
+	<li>Data for one microarray experiment is in one column and all
+	columns are of equal length.</li>
+	<li>If you have not-a-number values, they have to be specified by
+	<i>NaN</i>.</li>
+	<li>Every experiment has a caption</li>
+	<li>The file has to be comma separated text file. The
+	delimiter is arbitrary (can be selected upon import).</li>
+	<li>You may have columns in the file which you do not want to
+	import.</li>
+	<li>Your file may contain a header which is to be ignored.</li>
+</ul>
+<p>To select a data file click the <i>Choose data file</i> button.
+If you have a header in your file, adjust the number of ignored lines by
+editing the <i>Ignore lines in header</i> text field.</p>
+<p>The delimiter of your file can be adjusted by checking the
+appropriate box for the separators. The data preview will adjust
+immediately.</p>
+<p>If you want your data to be logarithmized for the visualizations
+check the log 10 box.</p>
+<p>The <i>min</i> and <i>max</i> options are disabled by default. If
+you want to clip your data to a certain range use min and max to do
+that. Note that you currently have to use both or none for it to work.</p>
+<p>To import data you have to select the type for each column.
+Currently the first column has to be the refseq list. Therefore you have
+to select refseq at the first drop down box. The rest should be
+experiments. If you want to ignore a line simply don't select it.</p>
 <h2>The Bucket</h2>
 
-<h2>Pathways</h2>
+<h2><a name="Pathways"></a>Pathways</h2>
 
-<h2>Parallel Coordinates</h2>
+<h2><a name="ParallelCoordinates"></a>Parallel Coordinates</h2>
 
-<h2>Heat Map</h2>
+<h2><a name="HeatMap"></a>Heat Map</h2>
 
-<h2>Known Issues</h2>
+<h2><a name="Uninstallation"></a>Uninstallation</h2>
+
+<p>When you want to uninstall <b>Caleydo</b> you need to run <i>javaws
+-viewer</i> in a console, which will bring up the Java web start management
+console. In the Java Cache Viewer select <b>Caleydo</b> and remove it.
+Now switch to <i>Resources</i> in the cache viewer and delete all <b>Caleydo</b>
+resources as well.</p>
+<p>Finally, go to your home directory (<i>C:\Documents and
+Settings\User\</i> in Windows or <i>/home/user/</i> in Linux) and delete
+the <i>.caleydo</i> folder.</p>
+
+<h2><a name="KnownIssues"></a>Known Issues</h2>
+<h3>General</h3>
+<h3>Windows</h3>
+<ul>
+	<li><b>Windows XP classic style - GUI elements</b> <br />
+	Due to a bug in the GUI library we use, the pathway and gene search
+	dialog can not be used with Windows XP classic style.<br />
+	<b>Solution:</b> Use the standard XP skin.</li>
+	<li><b>Web start windows are blank</b><br />
+	When starting via web start the download window and the security alert
+	window are blank (render the background). This is an issue with
+	graphics card drivers. <br />
+	<b>Solution:</b> Install the latest graphics card drivers.</li>
+</ul>
 
 
 <!-- Website maintenance message -->
@@ -71,7 +195,7 @@ which means you can use it in any way you want provided you keep the link to the
 <p><br />
 website maintained by <a href="http://www.icg.tugraz.at/Members/alex">Alexander
 Lex</a><br />
-last updated on 2008-10-14</p>
+last updated on 2008-10-15</p>
 </div>
 
 </div>
