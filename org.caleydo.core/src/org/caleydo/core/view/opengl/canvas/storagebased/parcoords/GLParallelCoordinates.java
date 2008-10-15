@@ -511,7 +511,8 @@ public class GLParallelCoordinates
 		// }
 
 		// initGates();
-
+		fArGateBottomHeight = null;
+		fArGateTipHeight = null;
 	}
 
 	/**
