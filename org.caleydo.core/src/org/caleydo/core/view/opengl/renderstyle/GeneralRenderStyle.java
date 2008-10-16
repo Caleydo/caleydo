@@ -26,6 +26,12 @@ public class GeneralRenderStyle
 	public static final float[] SELECTED_COLOR = { 1, 1, 0, 1 };
 
 	public static final float[] MOUSE_OVER_COLOR = { 1, 1, 0, 1 };
+	
+	private static final float[] BACKGROUND_COLOR = {0.7f, 0.7f, 0.7f, 1f};
+	
+	public static final float LOADING_BOX_HALF_WIDTH = 0.8f;
+	
+	public static final float LOADING_BOX_HALF_HEIGHT = 0.2f;
 
 	public static final float SELECTED_LINE_WIDTH = 3;
 
@@ -64,6 +70,16 @@ public class GeneralRenderStyle
 		// fFrustumHeight = viewFrustum.getTop() - viewFrustum.getBottom();
 		// scaling is set to the smaller of the two
 
+	}
+	
+	public float getXCenter()
+	{
+		return (viewFrustum.getRight() - viewFrustum.getLeft())/2;
+	}
+	
+	public float getYCenter()
+	{
+		return (viewFrustum.getTop() - viewFrustum.getBottom())/2;
 	}
 	
 	public static DecimalFormat getDecimalFormat()
@@ -117,5 +133,11 @@ public class GeneralRenderStyle
 			fScaling = viewFrustum.getHeight();
 		return fScaling;
 	}
+	
+	public float[] getBackgroundColor()
+	{
+		return BACKGROUND_COLOR;
+	}
+
 
 }

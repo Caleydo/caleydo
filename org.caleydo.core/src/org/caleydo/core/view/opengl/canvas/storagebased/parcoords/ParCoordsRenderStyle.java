@@ -97,6 +97,8 @@ public class ParCoordsRenderStyle
 
 	private static final float fMinAxisSpacingForText = 0.2f;
 
+	private static final float[] BACKGROUND_COLOR =	{1, 1, 1, 1};
+
 	/**
 	 * Constructor.
 	 * 
@@ -202,6 +204,12 @@ public class ParCoordsRenderStyle
 			return true;
 		return false;
 	}
+	
+	public float[] getBackgroundColor()
+	{
+		return BACKGROUND_COLOR;
+	}
+	
 	// GATE_WIDTH = 0.015f;
 	// private static final float GATE_NEGATIVE_Y_OFFSET = -0.04f;
 	// private static final float GATE_TIP_HEIGHT

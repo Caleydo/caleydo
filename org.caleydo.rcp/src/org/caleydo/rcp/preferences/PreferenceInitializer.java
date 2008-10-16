@@ -28,7 +28,7 @@ public class PreferenceInitializer
 
 		
 		store.setDefault(COLOR_MARKER_POINT_VALUE + "1", 0.0f);
-		store.setDefault(COLOR_MARKER_POINT_VALUE + "2", 0.2f);
+		store.setDefault(COLOR_MARKER_POINT_VALUE + "2", 0.5f);
 		store.setDefault(COLOR_MARKER_POINT_VALUE + "3", 1.0f);	
 		store.setDefault(COLOR_MARKER_POINT_COLOR + "1", "0,255,0");
 		store.setDefault(COLOR_MARKER_POINT_COLOR + "2", "0,0,0");
@@ -37,9 +37,9 @@ public class PreferenceInitializer
 		
 		store.setDefault(NUMBER_OF_COLOR_MARKER_POINTS, 3);
 		
-		store.setDefault(PreferenceConstants.HM_NUM_RANDOM_SAMPLING_POINT, 200);
+		store.setDefault(PreferenceConstants.HM_NUM_RANDOM_SAMPLING_POINT, 100);
 		store.setDefault(PreferenceConstants.HM_LIMIT_REMOTE_TO_CONTEXT, true);
-		store.setDefault(PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT, 2000);
+		store.setDefault(PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT, 1000);
 		store.setDefault(PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT, true);
 	}
 }

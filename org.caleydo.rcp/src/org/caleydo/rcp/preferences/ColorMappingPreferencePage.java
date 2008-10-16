@@ -287,15 +287,15 @@ public class ColorMappingPreferencePage
 		alColorMarkerPointSpinners.get(0)
 				.setSelection(
 						(int) (getPreferenceStore().getDefaultDouble(
-								COLOR_MARKER_POINT_VALUE + "1") * 100));
+								COLOR_MARKER_POINT_VALUE + "1") * 100 * 10));
 		alColorMarkerPointSpinners.get(1)
 				.setSelection(
 						(int) (getPreferenceStore().getDefaultDouble(
-								COLOR_MARKER_POINT_VALUE + "2") * 100));
+								COLOR_MARKER_POINT_VALUE + "2") * 100 * 10));
 		alColorMarkerPointSpinners.get(2)
 				.setSelection(
 						(int) (getPreferenceStore().getDefaultDouble(
-								COLOR_MARKER_POINT_VALUE + "3") * 100));
+								COLOR_MARKER_POINT_VALUE + "3") * 100 * 10));
 
 		alColorFieldEditors.get(0).loadDefault();
 		alColorFieldEditors.get(1).loadDefault();

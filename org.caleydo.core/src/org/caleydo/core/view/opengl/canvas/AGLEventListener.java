@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec3f;
+import java.awt.Font;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,8 +27,11 @@ import org.caleydo.core.view.opengl.camera.ViewCameraBase;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
+import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
  * Abstract class for OpenGL views.
@@ -74,13 +78,15 @@ public abstract class AGLEventListener
 	protected boolean bIsDisplayListDirtyLocal = true;
 	protected boolean bIsDisplayListDirtyRemote = true;
 	protected boolean bHasFrustumChanged = false;
-	
+
 	/**
 	 * When the system is in the busy mode the background color will turn yellow
 	 * and the system interaction will be turned off.
 	 */
 	protected boolean bBusyMode = false;
 	protected boolean bBusyModeChanged = false;
+
+	protected GeneralRenderStyle renderStyle;
 
 	/**
 	 * Constructor.
@@ -153,22 +159,22 @@ public abstract class AGLEventListener
 		try
 		{
 			((GLEventListener) parentGLCanvas).display(drawable);
-	
+
 			/** Read viewing parameters... */
 			final Vec3f rot_Vec3f = new Vec3f();
 			final Vec3f position = viewCamera.getCameraPosition();
 			final float w = viewCamera.getCameraRotationGrad(rot_Vec3f);
-	
+
 			GL gl = drawable.getGL();
-	
+
 			/** Translation */
 			gl.glTranslatef(position.x(), position.y(), position.z());
-	
+
 			/** Rotation */
 			gl.glRotatef(w, rot_Vec3f.x(), rot_Vec3f.y(), rot_Vec3f.z());
-	
+
 			displayLocal(gl);
-		
+
 		}
 		catch (RuntimeException exception)
 		{
@@ -232,31 +238,29 @@ public abstract class AGLEventListener
 	 */
 	protected void clipToFrustum(GL gl)
 	{
-		 gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
-		 gl.glColorMask(false, false, false, false);
-		 gl.glClearStencil(0); // Clear The Stencil Buffer To 0
-		 gl.glEnable(GL.GL_DEPTH_TEST); // Enables Depth Testing
-		 gl.glDepthFunc(GL.GL_LEQUAL); // The Type Of Depth Testing To Do
-		 gl.glEnable(GL.GL_STENCIL_TEST);
-		 gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);
-		 gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
-		 gl.glDisable(GL.GL_DEPTH_TEST);
-		
-		 // Clip region that renders in stencil buffer (in this case the
-		 // frustum)
-		 gl.glBegin(GL.GL_POLYGON);
-		 gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(),
-		 -0.01f);
-		 gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(),
-		 -0.01f);
-		 gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), -0.01f);
-		 gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), -0.01f);
-		 gl.glEnd();
-		
-		 gl.glEnable(GL.GL_DEPTH_TEST);
-		 gl.glColorMask(true, true, true, true);
-		 gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
-		 gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
+		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+		gl.glColorMask(false, false, false, false);
+		gl.glClearStencil(0); // Clear The Stencil Buffer To 0
+		gl.glEnable(GL.GL_DEPTH_TEST); // Enables Depth Testing
+		gl.glDepthFunc(GL.GL_LEQUAL); // The Type Of Depth Testing To Do
+		gl.glEnable(GL.GL_STENCIL_TEST);
+		gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);
+		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
+		gl.glDisable(GL.GL_DEPTH_TEST);
+
+		// Clip region that renders in stencil buffer (in this case the
+		// frustum)
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), -0.01f);
+		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(), -0.01f);
+		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), -0.01f);
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), -0.01f);
+		gl.glEnd();
+
+		gl.glEnable(GL.GL_DEPTH_TEST);
+		gl.glColorMask(true, true, true, true);
+		gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
+		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 	}
 
 	/**
@@ -436,24 +440,101 @@ public abstract class AGLEventListener
 
 		return true;
 	}
-	
+
 	protected void updateBusyMode(final GL gl)
 	{
 
+		// TODO replace text from textrenderer with texture
 		if (bBusyMode)
 		{
 			pickingManager.enablePicking(false);
-			gl.glClearColor(0.4f, 0.4f, 0.4f, 1f);
+
+			gl.glColor4f(1, 1, 1, 0.3f);
+			gl.glBegin(GL.GL_POLYGON);
+			gl.glVertex3f(-9, -9, 4.2f);
+			gl.glVertex3f(-9, 9, 4.2f);
+			gl.glVertex3f(9, 9, 4.2f);
+			gl.glVertex3f(9, -9, 4.2f);
+			gl.glEnd();
+
+			if (renderStyle == null || this instanceof GLRemoteRendering)
+			{
+				// TODO bad hack here, frustum wrong or renderStyle null
+
+				gl.glColor4f(0.5f, 0.5f, 0.5f, 0.8f);
+				gl.glBegin(GL.GL_POLYGON);
+				gl.glVertex3f(0 - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH,
+						0 - GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+				gl.glVertex3f(0 - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH,
+						0 + GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+				gl.glVertex3f(0 + GeneralRenderStyle.LOADING_BOX_HALF_WIDTH,
+						0 + GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+				gl.glVertex3f(0 + GeneralRenderStyle.LOADING_BOX_HALF_WIDTH,
+						0 - GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+				gl.glEnd();
+
+				TextRenderer textRenderer = new TextRenderer(
+						new Font("Arial", Font.BOLD, 128), false);
+				textRenderer.setColor(1, 1, 1, 1);
+				textRenderer.begin3DRendering();
+
+				textRenderer.draw3D("Loading...",
+						0 - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH,
+						0 - GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.22f, 0.001f);
+				textRenderer.end3DRendering();
+			}
+			else
+			{
+				// That's fine here, keep this
+
+				gl.glColor4f(0.5f, 0.5f, 0.5f, 0.8f);
+				gl.glBegin(GL.GL_POLYGON);
+				gl.glVertex3f(renderStyle.getXCenter()
+						- GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, renderStyle.getYCenter()
+						- GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+				gl.glVertex3f(renderStyle.getXCenter()
+						- GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, renderStyle.getYCenter()
+						+ GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+				gl.glVertex3f(renderStyle.getXCenter()
+						+ GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, renderStyle.getYCenter()
+						+ GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+				gl.glVertex3f(renderStyle.getXCenter()
+						+ GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, renderStyle.getYCenter()
+						- GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+				gl.glEnd();
+
+				TextRenderer textRenderer = new TextRenderer(
+						new Font("Arial", Font.BOLD, 128), false);
+				textRenderer.setColor(1, 1, 1, 1);
+				textRenderer.begin3DRendering();
+
+				textRenderer.draw3D("Loading...", renderStyle.getXCenter()
+						- GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, renderStyle.getYCenter()
+						- GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.22f, 0.001f);
+				textRenderer.end3DRendering();
+
+				// gl.glClearColor(0.4f, 0.4f, 0.4f, 1f);
+				// gl.glClearColor(1f, 0.4f, 0.4f, 1f);
+			}
+
 		}
 		else
 		{
+
 			pickingManager.enablePicking(true);
-			gl.glClearColor(0.7f, 0.7f, 0.7f, 1f);
+			// if (renderStyle == null)
+			// gl.glClearColor(0.7f, 0.7f, 0.7f, 1f);
+			// else
+			// {
+			// float[] color = renderStyle.getBackgroundColor();
+			// gl.glClearColor(color[0], color[1], color[2], color[3]);
+			// //gl.glClearColor(1f, 0.4f, 0.4f, 1f);
+			// }
 		}
 
-		bBusyModeChanged = false;
+		// bBusyModeChanged = false;
 	}
-	
+
 	public void enableBusyMode(final boolean bBusyMode)
 	{
 

@@ -35,7 +35,7 @@ public class GLColorMappingBarMiniView
 	{
 
 		super();
-		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 16), false);
+		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 18), false);
 		renderStyle = new GeneralRenderStyle(viewFrustum);
 
 	}

@@ -226,7 +226,7 @@ public class GLHeatMap
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		// GLHelperFunctions.drawAxis(gl);
 		gl.glCallList(iGLDisplayListToCall);
-		if (bBusyModeChanged)
+		if (bBusyModeChanged || bBusyMode)
 			updateBusyMode(gl);
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 	}

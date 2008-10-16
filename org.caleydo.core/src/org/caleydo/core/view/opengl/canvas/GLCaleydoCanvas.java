@@ -48,6 +48,7 @@ public class GLCaleydoCanvas
 
 	}
 
+	@Override
 	public void init(GLAutoDrawable drawable)
 	{
 		GeneralManager.get().getLogger().log(

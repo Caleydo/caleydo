@@ -152,6 +152,7 @@ public class GLRemoteRendering
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
 		{
 			layoutRenderStyle = new BucketLayoutRenderStyle(viewFrustum);
+			super.renderStyle = layoutRenderStyle;
 
 			bucketMouseWheelListener = new BucketMouseWheelListener(this,
 					(BucketLayoutRenderStyle) layoutRenderStyle);
@@ -341,7 +342,9 @@ public class GLRemoteRendering
 		colorMappingBarMiniView.render(gl, layoutRenderStyle.getColorBarXPos(),
 				layoutRenderStyle.getColorBarYPos(), 4);
 
-		if (bBusyModeChanged)
+//		if (bBusyModeChanged)
+//			updateBusyMode(gl);
+		if(bBusyMode || bBusyModeChanged)
 			updateBusyMode(gl);
 
 		// gl.glCallList(iGLDisplayList);
@@ -1213,6 +1216,7 @@ public class GLRemoteRendering
 
 		// Disable picking until pathways are loaded
 		generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(false);
+		
 
 //		iSlerpFactor = 0;
 	}

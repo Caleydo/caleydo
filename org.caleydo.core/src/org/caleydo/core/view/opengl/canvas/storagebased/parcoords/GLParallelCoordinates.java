@@ -113,7 +113,7 @@ public class GLParallelCoordinates
 
 	private boolean bIsTranslationActive = false;
 
-	private ParCoordsRenderStyle renderStyle;
+	
 
 	// private boolean bRenderInfoArea = false;
 	// private boolean bInfoAreaFirstTime = false;
@@ -152,6 +152,8 @@ public class GLParallelCoordinates
 	private GenericSelectionManager polylineSelectionManager;
 	private GenericSelectionManager axisSelectionManager;
 
+	protected ParCoordsRenderStyle renderStyle;
+	
 	/**
 	 * Constructor.
 	 */
@@ -162,6 +164,7 @@ public class GLParallelCoordinates
 		viewType = EManagedObjectType.GL_PARALLEL_COORDINATES;
 		// alDataStorages = new ArrayList<IStorage>();
 		renderStyle = new ParCoordsRenderStyle(viewFrustum);
+		super.renderStyle = this.renderStyle;
 
 		// TODO this is only valid for genes
 		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX)
@@ -341,7 +344,7 @@ public class GLParallelCoordinates
 		// }
 
 		gl.glDisable(GL.GL_STENCIL_TEST);
-		if (bBusyModeChanged)
+		if (bBusyModeChanged || bBusyMode)
 			updateBusyMode(gl);
 	}
 
