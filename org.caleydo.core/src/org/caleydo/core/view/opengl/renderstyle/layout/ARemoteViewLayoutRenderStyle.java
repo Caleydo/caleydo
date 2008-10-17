@@ -14,11 +14,10 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
 public abstract class ARemoteViewLayoutRenderStyle
 	extends GeneralRenderStyle
 {
-
+	public final static float NAVIGATION_OVERLAY_TRANSPARENCY = 1f;
+	
 	protected float fAspectRatio = 1.0f;
-
 	protected float fZoomFactor = 0.0f;
-
 	protected float fPoolLayerWidth = 0.8f;
 
 	public enum LayoutMode

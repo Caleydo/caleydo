@@ -77,7 +77,6 @@ public class GLRemoteRendering
 	extends AGLEventListener
 	implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering3D
 {
-
 	private ARemoteViewLayoutRenderStyle.LayoutMode layoutMode;
 
 	private static final int SLERP_RANGE = 1000;
@@ -523,7 +522,14 @@ public class GLRemoteRendering
 		else
 			renderBucketWall(gl, true);
 
-		tmpCanvasUser.displayRemote(gl);
+		if (!bEnableNavigationOverlay || !layer.equals(stackLayer))
+		{
+			tmpCanvasUser.displayRemote(gl);
+		}
+		else
+		{
+			renderNavigationOverlay(gl, iViewID);
+		}
 
 		// // Render transparent plane for picking views without texture (e.g.
 		// PC)
@@ -535,11 +541,6 @@ public class GLRemoteRendering
 		// gl.glVertex3f(8, 8, -0.01f);
 		// gl.glVertex3f(8, 0, -0.01f);
 		// gl.glEnd();
-
-		if (layer.equals(stackLayer))// || layer.equals(underInteractionLayer))
-		{
-			renderNavigationOverlay(gl, iViewID);
-		}
 
 		gl.glPopMatrix();
 	}
@@ -572,10 +573,6 @@ public class GLRemoteRendering
 
 	private void renderNavigationOverlay(final GL gl, final int iViewID)
 	{
-
-		if (!bEnableNavigationOverlay)
-			return;
-
 		glConnectionLineRenderer.enableRendering(false);
 
 		EPickingType leftWallPickingType = null;
@@ -583,22 +580,50 @@ public class GLRemoteRendering
 		EPickingType topWallPickingType = null;
 		EPickingType bottomWallPickingType = null;
 
-		Vec4f tmpColor_out = new Vec4f(0.9f, 0.9f, 0.9f, 0.9f);
-		Vec4f tmpColor_in = new Vec4f(0.9f, 0.9f, 0.9f, 0.9f);
-		Vec4f tmpColor_left = new Vec4f(0.9f, 0.9f, 0.9f, 0.9f);
-		Vec4f tmpColor_right = new Vec4f(0.9f, 0.9f, 0.9f, 0.9f);
-		Vec4f tmpColor_lock = new Vec4f(0.9f, 0.9f, 0.9f, 0.9f);
+		Vec4f tmpColor_out = new Vec4f(0.9f, 0.9f, 0.9f, 
+				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+		Vec4f tmpColor_in = new Vec4f(0.9f, 0.9f, 0.9f, 
+				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+		Vec4f tmpColor_left = new Vec4f(0.9f, 0.9f, 0.9f, 
+				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+		Vec4f tmpColor_right = new Vec4f(0.9f, 0.9f, 0.9f,
+				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+		Vec4f tmpColor_lock = new Vec4f(0.9f, 0.9f, 0.9f, 
+				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-		Texture textureLock = glIconTextureManager.getIconTexture(EIconTextures.LOCK);
+		// Assign view symbol
+		Texture textureViewSymbol;
+		AGLEventListener view = generalManager
+			.getViewGLCanvasManager().getGLEventListener(iViewID);
+		if (view instanceof GLHeatMap)
+		{
+			textureViewSymbol = glIconTextureManager.getIconTexture(
+					EIconTextures.HEAT_MAP_SYMBOL);
+		}
+		else if (view instanceof GLParallelCoordinates)
+		{
+			textureViewSymbol = glIconTextureManager.getIconTexture(
+					EIconTextures.PAR_COORDS_SYMBOL);
+		}
+		else if (view instanceof GLPathway)
+		{
+			textureViewSymbol = glIconTextureManager.getIconTexture(
+					EIconTextures.PAR_COORDS_SYMBOL);
+		}
+		else
+		{
+			throw new IllegalStateException("Unknown view that has no symbol assigned.");
+		}
+		
 		Texture textureMoveLeft = null;
 		Texture textureMoveRight = null;
 		Texture textureMoveOut = null;
 		Texture textureMoveIn = null;
 
-		TextureCoords texCoords = textureLock.getImageTexCoords();
+		TextureCoords texCoords = textureViewSymbol.getImageTexCoords();
 
 		if (iNavigationMouseOverViewID_lock == iViewID)
-			tmpColor_lock.set(1, 0.3f, 0.3f, 0.9f);
+			tmpColor_lock.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
 		if (layoutMode.equals(LayoutMode.JUKEBOX))
 		{
@@ -608,13 +633,13 @@ public class GLRemoteRendering
 			rightWallPickingType = EPickingType.BUCKET_MOVE_IN_ICON_SELECTION;
 
 			if (iNavigationMouseOverViewID_out == iViewID)
-				tmpColor_left.set(1, 0.3f, 0.3f, 0.9f);
+				tmpColor_left.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 			else if (iNavigationMouseOverViewID_in == iViewID)
-				tmpColor_right.set(1, 0.3f, 0.3f, 0.9f);
+				tmpColor_right.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 			else if (iNavigationMouseOverViewID_left == iViewID)
-				tmpColor_in.set(1, 0.3f, 0.3f, 0.9f);
+				tmpColor_in.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 			else if (iNavigationMouseOverViewID_right == iViewID)
-				tmpColor_out.set(1, 0.3f, 0.3f, 0.9f);
+				tmpColor_out.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
 			textureMoveIn = glIconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
 			textureMoveOut = glIconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
@@ -631,13 +656,13 @@ public class GLRemoteRendering
 				rightWallPickingType = EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
 
 				if (iNavigationMouseOverViewID_out == iViewID)
-					tmpColor_out.set(1, 0.3f, 0.3f, 0.9f);
+					tmpColor_out.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_in == iViewID)
-					tmpColor_in.set(1, 0.3f, 0.3f, 0.9f);
+					tmpColor_in.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_left == iViewID)
-					tmpColor_left.set(1, 0.3f, 0.3f, 0.9f);
+					tmpColor_left.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_right == iViewID)
-					tmpColor_right.set(1, 0.3f, 0.3f, 0.9f);
+					tmpColor_right.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
 				textureMoveIn = glIconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
 				textureMoveOut = glIconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
@@ -654,13 +679,13 @@ public class GLRemoteRendering
 				rightWallPickingType = EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
 
 				if (iNavigationMouseOverViewID_out == iViewID)
-					tmpColor_in.set(1, 0.3f, 0.3f, 0.9f);
+					tmpColor_in.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_in == iViewID)
-					tmpColor_out.set(1, 0.3f, 0.3f, 0.9f);
+					tmpColor_out.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_left == iViewID)
-					tmpColor_right.set(1, 0.3f, 0.3f, 0.9f);
+					tmpColor_right.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_right == iViewID)
-					tmpColor_left.set(1, 0.3f, 0.3f, 0.9f);
+					tmpColor_left.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
 				textureMoveIn = glIconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
 				textureMoveOut = glIconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
@@ -677,13 +702,13 @@ public class GLRemoteRendering
 				rightWallPickingType = EPickingType.BUCKET_MOVE_IN_ICON_SELECTION;
 
 				if (iNavigationMouseOverViewID_out == iViewID)
-					tmpColor_left.set(1, 0.3f, 0.3f, 0.9f);
+					tmpColor_left.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_in == iViewID)
-					tmpColor_right.set(1, 0.3f, 0.3f, 0.9f);
+					tmpColor_right.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_left == iViewID)
-					tmpColor_in.set(1, 0.3f, 0.3f, 0.9f);
+					tmpColor_in.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_right == iViewID)
-					tmpColor_out.set(1, 0.3f, 0.3f, 0.9f);
+					tmpColor_out.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
 				textureMoveIn = glIconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
 				textureMoveOut = glIconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
@@ -700,13 +725,13 @@ public class GLRemoteRendering
 				rightWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
 
 				if (iNavigationMouseOverViewID_out == iViewID)
-					tmpColor_right.set(1, 0.3f, 0.3f, 0.9f);
+					tmpColor_right.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_in == iViewID)
-					tmpColor_left.set(1, 0.3f, 0.3f, 0.9f);
+					tmpColor_left.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_left == iViewID)
-					tmpColor_out.set(1, 0.3f, 0.3f, 0.9f);
+					tmpColor_out.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_right == iViewID)
-					tmpColor_in.set(1, 0.3f, 0.3f, 0.9f);
+					tmpColor_in.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
 				textureMoveIn = glIconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
 				textureMoveOut = glIconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
@@ -755,37 +780,47 @@ public class GLRemoteRendering
 		// rightWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
 		// }
 
-		gl.glLineWidth(4);
+		gl.glLineWidth(1);
 
-		// CENTER - NAVIGATION: LOCK
+		float fNavigationZValue = 0f;
+		
+		// CENTER - NAVIGATION: VIEW IDENTIFICATION ICON
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.BUCKET_LOCK_ICON_SELECTION, iViewID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(2.66f, 2.66f, 0.02f);
-		gl.glVertex3f(2.66f, 5.33f, 0.02f);
-		gl.glVertex3f(5.33f, 5.33f, 0.02f);
-		gl.glVertex3f(5.33f, 2.66f, 0.02f);
+		gl.glVertex3f(2.66f, 2.66f, fNavigationZValue);
+		gl.glVertex3f(2.66f, 5.33f, fNavigationZValue);
+		gl.glVertex3f(5.33f, 5.33f, fNavigationZValue);
+		gl.glVertex3f(5.33f, 2.66f, fNavigationZValue);
 		gl.glEnd();
 
-		textureLock.enable();
-		textureLock.bind();
+		gl.glColor4f(tmpColor_lock.x(), tmpColor_lock.y(), tmpColor_lock.z(), 
+				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+		
+//		gl.glBegin(GL.GL_POLYGON);
+//		gl.glVertex3f(2.66f, 2.66f, 0.02f);
+//		gl.glVertex3f(2.66f, 5.33f, 0.02f);
+//		gl.glVertex3f(5.33f, 5.33f, 0.02f);
+//		gl.glVertex3f(5.33f, 2.66f, 0.02f);
+//		gl.glEnd();
+		
+		textureViewSymbol.enable();
+		textureViewSymbol.bind();
 
-		gl.glColor4f(tmpColor_lock.x(), tmpColor_lock.y(), tmpColor_lock.z(), tmpColor_lock
-				.w());
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(2.66f, 2.66f, 0.03f);
+		gl.glVertex3f(2.66f, 2.66f, fNavigationZValue);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(2.66f, 5.33f, 0.03f);
+		gl.glVertex3f(2.66f, 5.33f, fNavigationZValue);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(5.33f, 5.33f, 0.03f);
+		gl.glVertex3f(5.33f, 5.33f, fNavigationZValue);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(5.33f, 2.66f, 0.03f);
+		gl.glVertex3f(5.33f, 2.66f, fNavigationZValue);
 		gl.glEnd();
 
-		textureLock.disable();
+		textureViewSymbol.disable();
 
 		gl.glPopName();
 
@@ -794,20 +829,21 @@ public class GLRemoteRendering
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(0, 0, 0.02f);
-		gl.glVertex3f(2.66f, 2.66f, 0.02f);
-		gl.glVertex3f(5.33f, 2.66f, 0.02f);
-		gl.glVertex3f(8, 0, 0.02f);
+		gl.glVertex3f(0, 0, fNavigationZValue);
+		gl.glVertex3f(2.66f, 2.66f, fNavigationZValue);
+		gl.glVertex3f(5.33f, 2.66f, fNavigationZValue);
+		gl.glVertex3f(8, 0, fNavigationZValue);
 		gl.glEnd();
 
-		gl.glColor4f(tmpColor_in.x(), tmpColor_in.y(), tmpColor_in.z(), tmpColor_in.w());
+		gl.glColor4f(tmpColor_in.x(), tmpColor_in.y(), tmpColor_in.z(), 
+				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(0.05f, 0.05f, 0.02f);
-		gl.glVertex3f(2.66f, 2.66f, 0.02f);
-		gl.glVertex3f(5.33f, 2.66f, 0.02f);
-		gl.glVertex3f(7.95f, 0.02f, 0.02f);
-		gl.glEnd();
+//		gl.glBegin(GL.GL_POLYGON);
+//		gl.glVertex3f(0.05f, 0.05f, 0.02f);
+//		gl.glVertex3f(2.66f, 2.66f, 0.02f);
+//		gl.glVertex3f(5.33f, 2.66f, 0.02f);
+//		gl.glVertex3f(7.95f, 0.02f, 0.02f);
+//		gl.glEnd();
 
 		textureMoveIn.enable();
 		textureMoveIn.bind();
@@ -815,13 +851,13 @@ public class GLRemoteRendering
 		// gl.glColor4f(1,0.3f,0.3f,0.9f);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(2.66f, 0.05f, 0.03f);
+		gl.glVertex3f(2.66f, 0.05f, fNavigationZValue);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(2.66f, 2.66f, 0.03f);
+		gl.glVertex3f(2.66f, 2.66f, fNavigationZValue);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(5.33f, 2.66f, 0.03f);
+		gl.glVertex3f(5.33f, 2.66f, fNavigationZValue);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(5.33f, 0.05f, 0.03f);
+		gl.glVertex3f(5.33f, 0.05f, fNavigationZValue);
 		gl.glEnd();
 
 		textureMoveIn.disable();
@@ -833,21 +869,21 @@ public class GLRemoteRendering
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(8, 0, 0.02f);
-		gl.glVertex3f(5.33f, 2.66f, 0.02f);
-		gl.glVertex3f(5.33f, 5.33f, 0.02f);
-		gl.glVertex3f(8, 8, 0.02f);
+		gl.glVertex3f(8, 0, fNavigationZValue);
+		gl.glVertex3f(5.33f, 2.66f, fNavigationZValue);
+		gl.glVertex3f(5.33f, 5.33f, fNavigationZValue);
+		gl.glVertex3f(8, 8, fNavigationZValue);
 		gl.glEnd();
 
 		gl.glColor4f(tmpColor_right.x(), tmpColor_right.y(), tmpColor_right.z(),
-				tmpColor_right.w());
+				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(7.95f, 0.05f, 0.02f);
-		gl.glVertex3f(5.33f, 2.66f, 0.02f);
-		gl.glVertex3f(5.33f, 5.33f, 0.02f);
-		gl.glVertex3f(7.95f, 7.95f, 0.02f);
-		gl.glEnd();
+//		gl.glBegin(GL.GL_POLYGON);
+//		gl.glVertex3f(7.95f, 0.05f, 0.02f);
+//		gl.glVertex3f(5.33f, 2.66f, 0.02f);
+//		gl.glVertex3f(5.33f, 5.33f, 0.02f);
+//		gl.glVertex3f(7.95f, 7.95f, 0.02f);
+//		gl.glEnd();
 
 		textureMoveRight.enable();
 		textureMoveRight.bind();
@@ -855,13 +891,13 @@ public class GLRemoteRendering
 		// gl.glColor4f(0,1,0,1);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(7.95f, 2.66f, 0.03f);
+		gl.glVertex3f(7.95f, 2.66f, fNavigationZValue);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(5.33f, 2.66f, 0.03f);
+		gl.glVertex3f(5.33f, 2.66f, fNavigationZValue);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(5.33f, 5.33f, 0.03f);
+		gl.glVertex3f(5.33f, 5.33f, fNavigationZValue);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(7.95f, 5.33f, 0.03f);
+		gl.glVertex3f(7.95f, 5.33f, fNavigationZValue);
 		gl.glEnd();
 
 		textureMoveRight.disable();
@@ -873,21 +909,21 @@ public class GLRemoteRendering
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(0, 0, 0.02f);
-		gl.glVertex3f(0, 8, 0.02f);
-		gl.glVertex3f(2.66f, 5.33f, 0.02f);
-		gl.glVertex3f(2.66f, 2.66f, 0.02f);
+		gl.glVertex3f(0, 0, fNavigationZValue);
+		gl.glVertex3f(0, 8, fNavigationZValue);
+		gl.glVertex3f(2.66f, 5.33f, fNavigationZValue);
+		gl.glVertex3f(2.66f, 2.66f, fNavigationZValue);
 		gl.glEnd();
 
-		gl.glColor4f(tmpColor_left.x(), tmpColor_left.y(), tmpColor_left.z(), tmpColor_left
-				.w());
+		gl.glColor4f(tmpColor_left.x(), tmpColor_left.y(), tmpColor_left.z(),
+				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(0.05f, 0.05f, 0.02f);
-		gl.glVertex3f(0.05f, 7.95f, 0.02f);
-		gl.glVertex3f(2.66f, 5.33f, 0.02f);
-		gl.glVertex3f(2.66f, 2.66f, 0.02f);
-		gl.glEnd();
+//		gl.glBegin(GL.GL_POLYGON);
+//		gl.glVertex3f(0.05f, 0.05f, fNavigationZValue);
+//		gl.glVertex3f(0.05f, 7.95f, fNavigationZValue);
+//		gl.glVertex3f(2.66f, 5.33f, fNavigationZValue);
+//		gl.glVertex3f(2.66f, 2.66f, fNavigationZValue);
+//		gl.glEnd();
 
 		textureMoveLeft.enable();
 		textureMoveLeft.bind();
@@ -895,13 +931,13 @@ public class GLRemoteRendering
 		// gl.glColor4f(0,1,0,1);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(0.05f, 2.66f, 0.03f);
+		gl.glVertex3f(0.05f, 2.66f, fNavigationZValue);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(0.05f, 5.33f, 0.03f);
+		gl.glVertex3f(0.05f, 5.33f, fNavigationZValue);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(2.66f, 5.33f, 0.03f);
+		gl.glVertex3f(2.66f, 5.33f, fNavigationZValue);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(2.66f, 2.66f, 0.03f);
+		gl.glVertex3f(2.66f, 2.66f, fNavigationZValue);
 		gl.glEnd();
 
 		textureMoveLeft.disable();
@@ -913,19 +949,21 @@ public class GLRemoteRendering
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(0, 8, 0.02f);
-		gl.glVertex3f(8, 8, 0.02f);
-		gl.glVertex3f(5.33f, 5.33f, 0.02f);
-		gl.glVertex3f(2.66f, 5.33f, 0.02f);
+		gl.glVertex3f(0, 8, fNavigationZValue);
+		gl.glVertex3f(8, 8, fNavigationZValue);
+		gl.glVertex3f(5.33f, 5.33f, fNavigationZValue);
+		gl.glVertex3f(2.66f, 5.33f, fNavigationZValue);
 		gl.glEnd();
 
-		gl.glColor4f(tmpColor_out.x(), tmpColor_out.y(), tmpColor_out.z(), tmpColor_out.w());
-		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(0.05f, 7.95f, 0.02f);
-		gl.glVertex3f(7.95f, 7.95f, 0.02f);
-		gl.glVertex3f(5.33f, 5.33f, 0.02f);
-		gl.glVertex3f(2.66f, 5.33f, 0.02f);
-		gl.glEnd();
+		gl.glColor4f(tmpColor_out.x(), tmpColor_out.y(), tmpColor_out.z(), 
+				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+		
+//		gl.glBegin(GL.GL_POLYGON);
+//		gl.glVertex3f(0.05f, 7.95f, 0.02f);
+//		gl.glVertex3f(7.95f, 7.95f, 0.02f);
+//		gl.glVertex3f(5.33f, 5.33f, 0.02f);
+//		gl.glVertex3f(2.66f, 5.33f, 0.02f);
+//		gl.glEnd();
 
 		textureMoveOut.enable();
 		textureMoveOut.bind();
@@ -933,13 +971,13 @@ public class GLRemoteRendering
 		// gl.glColor4f(0,1,0,1);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(2.66f, 7.95f, 0.03f);
+		gl.glVertex3f(2.66f, 7.95f, fNavigationZValue);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(5.33f, 7.95f, 0.03f);
+		gl.glVertex3f(5.33f, 7.95f, fNavigationZValue);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(5.33f, 5.33f, 0.03f);
+		gl.glVertex3f(5.33f, 5.33f, fNavigationZValue);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(2.66f, 5.33f, 0.03f);
+		gl.glVertex3f(2.66f, 5.33f, fNavigationZValue);
 		gl.glEnd();
 
 		textureMoveOut.disable();
