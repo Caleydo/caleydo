@@ -1,6 +1,5 @@
 package org.caleydo.core.view.swt.browser;
 
-import java.io.File;
 import java.util.logging.Level;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
@@ -18,7 +17,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
 import org.eclipse.swt.widgets.ToolItem;
-import com.sun.opengl.util.texture.TextureIO;
 
 /**
  * Simple HTML browser.

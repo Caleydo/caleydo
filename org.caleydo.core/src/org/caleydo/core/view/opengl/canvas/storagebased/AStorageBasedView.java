@@ -24,7 +24,6 @@ import org.caleydo.core.manager.picking.ESelectionMode;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**

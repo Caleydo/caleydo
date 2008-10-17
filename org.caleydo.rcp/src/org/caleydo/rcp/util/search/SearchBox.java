@@ -66,7 +66,7 @@ public final class SearchBox
 
 	// private String listItems[];
 
-	private ArrayList listItems;
+	private ArrayList<String> listItems;
 
 	private Font font;
 
@@ -1126,7 +1126,7 @@ public final class SearchBox
 		if (listItems != null)
 			listItems.clear();
 		else
-			listItems = new ArrayList(items.length);
+			listItems = new ArrayList<String>(items.length);
 
 		for (int i = 0; i < items.length; i++)
 		{
@@ -1288,7 +1288,6 @@ public final class SearchBox
 
 	private String[] getFilteredList()
 	{
-
 		if (listItems == null)
 		{
 			return null;

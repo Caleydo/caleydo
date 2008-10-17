@@ -11,7 +11,6 @@ import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
-import org.caleydo.core.manager.specialized.genome.pathway.PathwayDatabase;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.ViewType;

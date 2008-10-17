@@ -1,14 +1,14 @@
 package org.caleydo.core.view.opengl.canvas.glyph.gridview;
 
+import gleem.linalg.Vec2f;
+import gleem.linalg.open.Vec2i;
 import java.util.ArrayList;
 import java.util.Vector;
 import java.util.logging.Level;
-import gleem.linalg.Vec2f;
-import gleem.linalg.open.Vec2i;
 import javax.media.opengl.GL;
-import org.caleydo.core.view.opengl.renderstyle.GlyphRenderStyle;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.renderstyle.GlyphRenderStyle;
 
 public class GlyphGridPositionModel
 {

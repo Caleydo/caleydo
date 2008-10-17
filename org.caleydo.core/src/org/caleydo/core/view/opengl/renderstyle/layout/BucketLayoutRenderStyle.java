@@ -68,23 +68,14 @@ public class BucketLayoutRenderStyle
 
 		fTiltAngleRad_Horizontal = (float) Math
 				.acos(((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2)
-						/ ((float) Math
-								.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
-										+ Math
-												.pow(
-														((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2),
-														2))));
-		fTiltAngleRad_Vertical = Vec3f.convertGrad2Radiant(90); // 90 degrees is
-		// the maximum
-		// possible
-		// angle
-
+					/ ((float) Math.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
+					+ Math.pow(((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2),
+							2))));
+		fTiltAngleRad_Vertical = Vec3f.convertGrad2Radiant(90);
+		
 		float fScalingCorrection = ((float) Math.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
 				+ Math.pow(((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2), 2))) / 4f;
 
-		//System.out.println(Vec3f.convertRadiant2Grad(fTiltAngleRad_Horizontal)
-		// );
-		// System.out.println("Aspect ratio: " +fAspectRatio);
 
 		// FIXME: handle case when height > width
 		// if (fAspectRatio < 1.0)
@@ -266,9 +257,8 @@ public class BucketLayoutRenderStyle
 	@Override
 	public RemoteHierarchyLevel initSpawnLayer()
 	{
-
 		Transform transformSpawn = new Transform();
-		transformSpawn.setTranslation(new Vec3f(4.4f, 3.9f, 4.1f));
+		transformSpawn.setTranslation(new Vec3f(0, 0, 0));
 		transformSpawn.setScale(new Vec3f(fScalingFactorSpawnLayer, fScalingFactorSpawnLayer,
 				fScalingFactorSpawnLayer));
 		spawnLayer.setTransformByPositionIndex(0, transformSpawn);

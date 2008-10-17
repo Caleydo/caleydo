@@ -30,13 +30,7 @@ public class CmdViewCreateRcpGLCanvas
 
 	@Override
 	public void doCommand()
-	{
-//		System.loadLibrary("libgluegen-rt.so");
-////		System.loadLibrary("libjogl_cg.so");
-////		System.loadLibrary("libjogl_awt.so");
-//		System.loadLibrary("libjogl.so");
-//		System.loadLibrary("libgluegen-rt.so");
-		
+	{	
 		GLCapabilities glCapabilities = new GLCapabilities();
 		glCapabilities.setStencilBits(1);
 

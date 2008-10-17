@@ -1,7 +1,6 @@
 package org.caleydo.core.util.slerp;
 
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
-import com.sun.org.apache.bcel.internal.generic.LLOAD;
 
 /**
  * Slerp action in 3D scene.

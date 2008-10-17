@@ -90,7 +90,7 @@ public class PathwayLoaderThread
 			if (tmpGLEventListener instanceof GLRemoteRendering)
 			{
 				tmpGLRemoteRendering3D = ((GLRemoteRendering) tmpGLEventListener);
-				// tmpGLRemoteRendering3D.enableBusyMode(true);
+				tmpGLRemoteRendering3D.enableBusyMode(true);
 				// break;
 			}
 		}
@@ -195,8 +195,10 @@ public class PathwayLoaderThread
 				tmpGLEventListener.enableBusyMode(false);
 		}
 
-		// if (tmpGLRemoteRendering3D != null)
-		// tmpGLRemoteRendering3D.enableBusyMode(false);
+		 if (tmpGLRemoteRendering3D != null)
+		 {
+			 tmpGLRemoteRendering3D.enableBusyMode(false);
+		 }
 
 		generalManager.getLogger().log(Level.INFO,
 				"Finished parsing " + pathwayDatabase.getName() + " pathways.");

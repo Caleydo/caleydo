@@ -1,6 +1,5 @@
 package org.caleydo.core.data;
 
-import java.io.Serializable;
 
 /**
  * Abstract class providing methods defined in IUniqueManagedObject.
@@ -9,7 +8,7 @@ import java.io.Serializable;
  * @author Marc Streit
  */
 public abstract class AUniqueObject
-	implements IUniqueObject, Serializable
+	implements IUniqueObject
 {
 	/**
 	 * Unique Id

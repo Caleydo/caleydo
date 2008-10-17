@@ -8,9 +8,9 @@ import java.util.Iterator;
 import java.util.Vector;
 import java.util.logging.Level;
 import javax.media.opengl.GL;
-import org.caleydo.core.view.opengl.renderstyle.GlyphRenderStyle;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
 import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
+import org.caleydo.core.view.opengl.renderstyle.GlyphRenderStyle;
 import com.sun.opengl.util.j2d.TextRenderer;
 
 public class GlyphGridPositionModelScatterplot

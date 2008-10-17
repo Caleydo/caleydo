@@ -1,10 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.storagebased.heatmap;
 
-import gleem.linalg.Vec2f;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;

@@ -87,7 +87,7 @@
          </property>        
          <property
                name="aboutImage"
-               value="splash.bmp">
+               value="resources/wizard/wizard.png">
          </property>
          <property
                name="windowImages"
@@ -96,6 +96,10 @@
          <property
                name="preferenceCustomization"
                value="plugin_customization.ini">
+         </property>
+         <property
+               name="aboutText"
+               value="Caleydo Visualization Framework&#x0A;Check out www.caleydo.org&#x0A;&#x0A;(c) Copyright by www.caleydo.org and Institute for Computer Graphics and Vision&#x0A;Graz University of Technology - 2008.&#x0A;All Rights Reserved.">
          </property>
       </product>
    </extension>

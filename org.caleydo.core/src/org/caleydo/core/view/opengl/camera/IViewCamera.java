@@ -101,7 +101,7 @@ public interface IViewCamera
 	public void setCameraRotationVec3f(final Vec3f setRotVec3f);
 
 	/**
-	 * Apply new zooming, wchich is a scaling operation. Updates the ViewMatrix
+	 * Apply new zooming, which is a scaling operation. Updates the ViewMatrix
 	 * using the existing Rotation & Zoom.
 	 * 
 	 * @param setZoom new zoom values
@@ -117,17 +117,11 @@ public interface IViewCamera
 	public void addCameraScale(final Vec3f setScale);
 
 	/**
-	 * Apply new Pan, Zoom and Roation at once. Note: Does the same as calling
-	 * prometheus.data.collection.view.camera.ViewCamera#setViewPan(Vec3f) ,
-	 * prometheus.data.collection.view.camera.ViewCamera#setViewRotate(Rotf) and
-	 * prometheus.data.collection.view.camera.ViewCamera#setViewZoom(Vec3f) .
+	 * Apply new Pan, Zoom and Rotation at once. Note: Does the same as calling
 	 * 
 	 * @param setPan new pan values
 	 * @param setZoom new zoom/scale values
 	 * @param setRot new rotation values
-	 * @see prometheus.data.collection.view.camera.IViewCamera#setCameraPosition(Vec3f)
-	 * @see prometheus.data.collection.view.camera.IViewCamera#setCameraRotation(Rotf)
-	 * @see prometheus.data.collection.view.camera.IViewCamera#setCameraScale(Vec3f)
 	 */
 	public void setCameraAll(final Vec3f setPos, final Vec3f setScale, final Rotf setRot);
 

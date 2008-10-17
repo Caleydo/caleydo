@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -60,7 +61,14 @@ public class KeggPathwayCacher
 		// load spring application context
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
 				ApplicationConstants.CORE_SPRING_CONFIG_FILE);
-
+		
+//		HttpRetrieverConfiguration httpRetrieverConfiguration = 
+//			((HttpRetriever)context.getBean("HttpRetriever")).getConfiguration();
+//		
+//		httpRetrieverConfiguration = createProxySettings(httpRetrieverConfiguration);
+//		 
+//		((HttpRetriever)context.getBean("HttpRetriever")).setConfiguration(httpRetrieverConfiguration);
+		
 		// load dispatcher from spring
 		final Dispatcher dispatcher = (Dispatcher) context.getBean("Dispatcher");
 
@@ -86,16 +94,15 @@ public class KeggPathwayCacher
 		regExpFilter.addFilterRule(regExpFilterRule);
 
 		dispatcher.addJobFilter(regExpFilter);
-
+	
 		// create an job factory
 		DownloadJobFactory jobFactory = (DownloadJobFactory) context.getBean("JobFactory");
 
-		String sOutputFileName = System.getProperty("user.home")
-				+ System.getProperty("file.separator") + "/.caleydo";
+		String sOutputFileName = GeneralManager.CALEYDO_HOME_PATH;
 
 		// create an initial job
 		UrlDownloadJob job = jobFactory.createDownloadJob();
-
+		
 		try
 		{
 			job.setUrl(new URL("http://www.genome.jp/kegg/xml/hsa/index.html"));
@@ -119,7 +126,7 @@ public class KeggPathwayCacher
 			 */
 			@Override
 			public void processEvent(Event arg0)
-			{
+			{	
 				if (arg0 instanceof JobChangedEvent
 						&& ((JobChangedEvent) arg0).getJob().getState() == Job.STATE_FINISHED)
 				{
@@ -152,5 +159,29 @@ public class KeggPathwayCacher
 			triggeringCommand.setFinishedKeggCacher();
 	}
 
-
+//	public HttpRetrieverConfiguration createProxySettings(HttpRetrieverConfiguration httpRetrieverConfiguration) {
+//
+//		httpRetrieverConfiguration.setProxyEnabled(true);
+//
+//		httpRetrieverConfiguration.setProxyServer("proxy.tugraz.at");
+//
+//		httpRetrieverConfiguration.setProxyPort(Integer.parseInt("3128"));
+//		// } else {
+//		// retrieverConfiguration.setProxyEnabled(false);
+//		// }
+//
+//		// if (this.enableAuthenticationCheckBox
+//		// .isSelected()) {
+//		httpRetrieverConfiguration.setProxyAuthenticationEnabled(false);
+//
+////		httpRetrieverConfiguration.setProxyUser("....");
+////
+////		httpRetrieverConfiguration.setProxyPassword("....");
+//		// } else {
+//		// retrieverConfiguration.setProxyAuthenticationEnabled(false);
+//		// }
+//		
+//		return httpRetrieverConfiguration;
+//		
+//	}
 }

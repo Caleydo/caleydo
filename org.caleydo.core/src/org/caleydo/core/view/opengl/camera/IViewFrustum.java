@@ -46,7 +46,7 @@ public interface IViewFrustum
 	public void setFar(final float fFar);
 
 	/**
-	 * Define wheter to consider aspect ratios when setting the projection
+	 * Define whether to consider aspect ratios when setting the projection
 	 * matrix. This guarantees rectangular appearance of views
 	 * 
 	 * @param bConsiderAspectRatio

@@ -56,7 +56,7 @@ public class Application
 	@SuppressWarnings("unchecked")
 	public Object start(IApplicationContext context) throws Exception
 	{
-		System.out.println("Caleydo RCP: bootstrapping ...");
+		System.out.println("Start Caleydo...");
 		
 		alStartViews = new ArrayList<EStartViewType>();
 
@@ -189,6 +189,8 @@ public class Application
 		{
 			Display display = PlatformUI.createDisplay();
 			Shell shell = new Shell(display);
+//			shell.setActive();
+//			shell.setFocus();
 
 			WizardDialog projectWizardDialog = new WizardDialog(shell,
 					new CaleydoProjectWizard(shell));

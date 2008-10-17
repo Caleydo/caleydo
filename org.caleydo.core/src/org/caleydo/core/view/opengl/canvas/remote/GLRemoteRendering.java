@@ -36,6 +36,7 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.slerp.SlerpAction;
 import org.caleydo.core.util.slerp.SlerpMod;
+import org.caleydo.core.util.spline.Spline3D;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
@@ -136,6 +137,8 @@ public class GLRemoteRendering
 	private ArrayList<Integer> iAlContainedViewIDs;
 
 	private int iGLDisplayList;
+	
+	private Spline3D spline;
 
 	/**
 	 * Constructor.
@@ -308,7 +311,8 @@ public class GLRemoteRendering
 		// layoutRenderStyle.initStackLayer();
 		// layoutRenderStyle.initTransitionLayer();
 		// layoutRenderStyle.initUnderInteractionLayer();
-
+		// layoutRenderStyle.initSpawnLayer();
+		
  		doSlerpActions(gl);
 		initializeNewPathways(gl);
 
@@ -341,8 +345,7 @@ public class GLRemoteRendering
 		colorMappingBarMiniView.render(gl, layoutRenderStyle.getColorBarXPos(),
 				layoutRenderStyle.getColorBarYPos(), 4);
 
-//		if (bBusyModeChanged)
-//			updateBusyMode(gl);
+
 		if(bBusyMode || bBusyModeChanged)
 			updateBusyMode(gl);
 
@@ -420,10 +423,11 @@ public class GLRemoteRendering
 
 	private void renderBucketWall(final GL gl, boolean bRenderBorder)
 	{
-//		gl.glColor4f(0.96f, 0.96f, 0.96f, 1f);
-		gl.glColor4f(0.95f, 0.95f, 0.95f, 1f);
-//		gl.glColor4f(1f, 1f, 1f, 1f);
-
+		if (arSlerpActions.isEmpty())
+			gl.glColor4f(0.95f, 0.95f, 0.95f, 1.0f);
+		else
+			gl.glColor4f(0.95f, 0.95f, 0.95f, 0.4f);
+			
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(0, 0, -0.03f);
 		gl.glVertex3f(0, 8, -0.03f);
@@ -463,8 +467,10 @@ public class GLRemoteRendering
 				renderViewByID(gl, iViewId, layer);
 				gl.glPopName();
 			}
-			else
+//			else
+//			{
 				renderEmptyBucketWall(gl, layer, iLayerPositionIndex);
+//			}
 
 			iLayerPositionIndex++;
 		}
@@ -496,10 +502,10 @@ public class GLRemoteRendering
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
 
-		// if (layer.equals(underInteractionLayer) || layer.equals(stackLayer))
-		// {
-		// renderBucketWall(gl);
-		// }
+//		 if (layer.equals(underInteractionLayer) || layer.equals(stackLayer))
+//		 {
+//			 renderBucketWall(gl);
+//		 }
 
 		if (layer.equals(poolLayer))
 		{
@@ -548,7 +554,6 @@ public class GLRemoteRendering
 	private void renderEmptyBucketWall(final GL gl, final RemoteHierarchyLevel layer,
 			final int iLayerPositionIndex)
 	{
-
 		gl.glPushMatrix();
 
 		Transform transform = layer.getTransformByPositionIndex(iLayerPositionIndex);

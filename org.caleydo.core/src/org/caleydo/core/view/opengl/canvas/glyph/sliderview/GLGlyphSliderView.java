@@ -37,9 +37,7 @@ import org.caleydo.core.view.opengl.miniview.slider.GLDistributionMiniView;
 import org.caleydo.core.view.opengl.miniview.slider.GLSliderMiniView;
 import org.caleydo.core.view.opengl.mouse.JoglMouseListener;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
-import org.caleydo.core.view.opengl.renderstyle.border.BorderRenderStyle;
 import org.caleydo.core.view.opengl.renderstyle.border.BorderRenderStyleLineSolid;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
 import com.sun.opengl.util.j2d.TextRenderer;
 
