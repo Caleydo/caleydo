@@ -18,20 +18,6 @@ public class HeatMapRenderStyle
 	extends GeneralRenderStyle
 {
 
-	private class FieldWidthElement
-	{
-		protected float fWidth = 0;
-		protected float fHeight = 0;
-		protected float fTotalWidth = 0;
-
-		protected FieldWidthElement(float fWidth, float fHeight, float fTotalWidth)
-		{
-			this.fWidth = fWidth;
-			this.fHeight = fHeight;
-			this.fTotalWidth = fTotalWidth;
-		}
-	}
-
 	public static final float FIELD_Z = 0.0f;
 
 	public static final float SELECTION_Z = 0.005f;
@@ -50,7 +36,7 @@ public class HeatMapRenderStyle
 
 	private int iNotSelectedLevel = 1000;
 
-//	private ArrayList<FieldWidthElement> alFieldWidths;
+	// private ArrayList<FieldWidthElement> alFieldWidths;
 
 	private HashMap<Integer, Float> hashLevelToWidth;
 
@@ -79,7 +65,7 @@ public class HeatMapRenderStyle
 		this.iStorageVAID = iStorageVAID;
 
 		this.set = set;
-//		alFieldWidths = new ArrayList<FieldWidthElement>();
+		// alFieldWidths = new ArrayList<FieldWidthElement>();
 
 		// init fish eye
 		float fDelta = (fSelectedFieldWidth - fNormalFieldWidth) / (iLevels + 1);
@@ -107,8 +93,6 @@ public class HeatMapRenderStyle
 		this.detailLevel = detailLevel;
 	}
 
-
-
 	/**
 	 * Set the active virtual array of the heat map here, when it changed during
 	 * runtime. Needed to calculate the widht and height of an element.
@@ -120,7 +104,6 @@ public class HeatMapRenderStyle
 		this.iContentVAID = iContentVAID;
 	}
 
-	
 	/**
 	 * Initializes or updates field sizes based on selections, virtual arrays
 	 * etc. Call this every time something has changed.
@@ -164,24 +147,21 @@ public class HeatMapRenderStyle
 				: fNormalFieldWidth;
 	}
 
-
 	public float getNormalFieldWidth()
 	{
-		
+
 		return fNormalFieldWidth;
 	}
-	
+
 	public float getSelectedFieldWidth()
 	{
 		return fSelectedFieldWidth;
 	}
-	
+
 	public float getFieldHeight()
 	{
 		return fFieldHeight;
 	}
-	
-
 
 	public float getYCenter()
 	{
@@ -205,7 +185,6 @@ public class HeatMapRenderStyle
 	{
 		return 0.3f;
 	}
-
 
 	public void setBRenderStorageHorizontally(boolean bRenderStorageHorizontally)
 	{

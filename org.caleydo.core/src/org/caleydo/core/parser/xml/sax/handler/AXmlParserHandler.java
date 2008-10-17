@@ -3,8 +3,6 @@ package org.caleydo.core.parser.xml.sax.handler;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -36,9 +34,8 @@ public abstract class AXmlParserHandler
 	{
 		if (tag.length() < 2)
 		{
-			throw new CaleydoRuntimeException(
-					"setXmlActivationTag() tag must be at least one char!",
-					CaleydoRuntimeExceptionType.SAXPARSER);
+			throw new IllegalStateException(
+					"setXmlActivationTag() tag must be at least one char!");
 		}
 
 		this.sOpeningTag = tag;

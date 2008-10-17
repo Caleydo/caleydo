@@ -338,8 +338,6 @@ public class GenericSelectionManager
 	 * 
 	 * @param targetType the selection type the element should be added to
 	 * @param iElementID the id of the element
-	 * @throws CaleydoRuntimeException if the element is not in the selection
-	 *             manager
 	 */
 	public void addToType(ESelectionType targetType, int iElementID)
 	{

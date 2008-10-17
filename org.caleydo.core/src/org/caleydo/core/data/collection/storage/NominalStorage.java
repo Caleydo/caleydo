@@ -6,8 +6,6 @@ import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.ccontainer.NominalCContainer;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Implementation of INominalStorage
@@ -34,15 +32,13 @@ public class NominalStorage<T>
 	public void setRawNominalData(ArrayList<T> alData)
 	{
 		if (bRawDataSet)
-			throw new CaleydoRuntimeException("Raw data was already set, tried to set again.",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalStateException("Raw data was already set, tried to set again.");
 
 		bRawDataSet = true;
 
 		if (alData.isEmpty())
 		{
-			throw new CaleydoRuntimeException("Raw Data is empty",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalStateException("Raw Data is empty");
 		}
 		else
 		{
@@ -63,15 +59,14 @@ public class NominalStorage<T>
 	{
 		if (alPossibleValues.isEmpty())
 		{
-			throw new CaleydoRuntimeException("Raw Data is empty",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalStateException("Raw Data is empty");
 		}
 		else
 		{
 			if (hashCContainers.get(EDataRepresentation.RAW) instanceof NominalCContainer)
 			{
-				throw new CaleydoRuntimeException("Raw data format does not correspond to"
-						+ "specified value list.", CaleydoRuntimeExceptionType.DATAHANDLING);
+				throw new IllegalStateException("Raw data format does not correspond to"
+						+ "specified value list.");
 			}
 			else
 			{

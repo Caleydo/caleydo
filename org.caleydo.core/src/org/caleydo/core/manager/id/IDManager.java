@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Returns a system-wide unique id for the different managed units
@@ -86,8 +85,8 @@ public class IDManager
 	{
 		if (!hashExternalToInternalID.containsKey(iExternalID))
 		{
-			throw new CaleydoRuntimeException("Given external ID " + iExternalID
-					+ " does not map to any internal ID.", CaleydoRuntimeExceptionType.ID);
+			throw new IllegalArgumentException("Given external ID " + iExternalID
+					+ " does not map to any internal ID.");
 		}
 
 		return hashExternalToInternalID.get(iExternalID);
@@ -97,8 +96,8 @@ public class IDManager
 	{
 		if (!hashInternalToExternalID.containsKey(iInternalID))
 		{
-			throw new CaleydoRuntimeException("Given internal ID " + iInternalID
-					+ " does not map to an external ID.", CaleydoRuntimeExceptionType.ID);
+			throw new IllegalArgumentException("Given internal ID " + iInternalID
+					+ " does not map to an external ID.");
 		}
 
 		return hashInternalToExternalID.get(iInternalID);
@@ -114,9 +113,8 @@ public class IDManager
 	private int calculateID(EManagedObjectType type, int iCount)
 	{
 		if (iCount > 99999)
-			throw new CaleydoRuntimeException(
-					"ID Overflow. Number of IDs is limited to 99,999 per type",
-					CaleydoRuntimeExceptionType.MANAGER);
+			throw new IllegalStateException(
+					"ID Overflow. Number of IDs is limited to 99,999 per type");
 		return (iCount * 100 + type.getIdPrefix());
 	}
 }

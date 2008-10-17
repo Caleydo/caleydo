@@ -34,7 +34,7 @@ public interface IVirtualArray
 	 * Adds a element to the end of the list.
 	 * 
 	 * @param iNewElement the index to the collection
-	 * @throws CaleydoRuntimeException if the value of the new element is larger
+	 * @throws IllegalArgumentException if the value of the new element is larger
 	 *             than allowed. The maximum allowed value is the length of the
 	 *             collection which is managed - 1
 	 */

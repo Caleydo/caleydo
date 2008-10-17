@@ -3,9 +3,7 @@ package org.caleydo.testing.applications.gui.jogl;
 import java.awt.Frame;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-
 import javax.media.opengl.GLCanvas;
-
 import org.caleydo.testing.applications.gui.jogl.gears.Gears;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
@@ -14,7 +12,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
-
 import com.sun.opengl.util.Animator;
 
 public class SWTEmbeddedAWTGears

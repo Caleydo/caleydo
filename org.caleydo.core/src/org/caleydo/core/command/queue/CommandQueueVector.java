@@ -8,9 +8,6 @@ import java.util.ListIterator;
 import java.util.Vector;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.ICommand;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
-
 /**
  * Create a queue of command's, that can be executed in a row.
  * 
@@ -73,25 +70,22 @@ public class CommandQueueVector
 
 		if (bQueueIsExcecuting)
 		{
-			throw new CaleydoRuntimeException(
-					"Can not execute command queue, that is already processed!",
-					CaleydoRuntimeExceptionType.COMMAND);
-			// return;
+			throw new IllegalStateException(
+					"Can not execute command queue, that is already processed!");
 		}
 
 		if ((!bQueueCanBeExecutedSeveralTimes) && (bQueueWasExcecuted))
 		{
-			throw new CaleydoRuntimeException(
-					"Can not execute command queue, that is already processed!",
-					CaleydoRuntimeExceptionType.COMMAND);
+			throw new IllegalStateException(
+					"Can not execute command queue, that is already processed!");
 		}
 		/**
 		 * critical section
 		 */
 		bQueueIsExcecuting = true;
 
-		try
-		{
+//		try
+//		{
 			Iterator<ICommand> iter = vecCommandsInQueue.iterator();
 
 			while (iter.hasNext())
@@ -99,12 +93,12 @@ public class CommandQueueVector
 				iter.next().doCommand();
 			}
 
-		}
-		catch (CaleydoRuntimeException pre)
-		{
-			System.err.print("Exception during execution of CommandQueue [" + this.iCmdQueueId
-					+ "] with exception:[" + pre.toString() + "]");
-		}
+//		}
+//		catch (CaleydoRuntimeException pre)
+//		{
+//			System.err.print("Exception during execution of CommandQueue [" + this.iCmdQueueId
+//					+ "] with exception:[" + pre.toString() + "]");
+//		}
 
 		bQueueWasExcecuted = true;
 
@@ -118,16 +112,14 @@ public class CommandQueueVector
 
 		if (this.bQueueCanBeExecutedSeveralTimes)
 		{
-			throw new CaleydoRuntimeException(
-					"Can not call undo() on command queue, that can be executed several times!",
-					CaleydoRuntimeExceptionType.COMMAND);
+			throw new IllegalStateException(
+					"Can not call undo() on command queue, that can be executed several times!");
 		}
 
 		if (this.bQueueIsExcecuting)
 		{
-			throw new CaleydoRuntimeException(
-					"Can not execute command queue, that is already processed!",
-					CaleydoRuntimeExceptionType.COMMAND);
+			throw new IllegalStateException(
+					"Can not execute command queue, that is already processed!");
 		}
 
 		/**

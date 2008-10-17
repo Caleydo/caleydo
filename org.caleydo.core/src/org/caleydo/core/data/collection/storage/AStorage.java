@@ -13,8 +13,6 @@ import org.caleydo.core.data.collection.ccontainer.IntCContainerIterator;
 import org.caleydo.core.data.collection.ccontainer.NumericalCContainer;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Abstact Storage class. Implements all of the methods the different IStorages
@@ -74,8 +72,7 @@ public abstract class AStorage
 	{
 
 		if (bRawDataSet)
-			throw new CaleydoRuntimeException("Raw data was already set, tried to set again.",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalStateException("Raw data was already set, tried to set again.");
 
 		rawDataType = ERawDataType.FLOAT;
 		bRawDataSet = true;
@@ -89,8 +86,7 @@ public abstract class AStorage
 	{
 
 		if (bRawDataSet)
-			throw new CaleydoRuntimeException("Raw data was already set, tried to set again.",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalStateException("Raw data was already set, tried to set again.");
 
 		rawDataType = ERawDataType.INT;
 		bRawDataSet = true;
@@ -103,11 +99,9 @@ public abstract class AStorage
 	public float getFloat(EDataRepresentation storageKind, int iIndex)
 	{
 		if (!hashCContainers.containsKey(storageKind))
-			throw new CaleydoRuntimeException("Requested storage kind not produced",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalArgumentException("Requested storage kind not produced");
 		if (!(hashCContainers.get(storageKind) instanceof FloatCContainer))
-			throw new CaleydoRuntimeException("Requested storage kind is not of type float",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalArgumentException("Requested storage kind is not of type float");
 
 		FloatCContainer container = (FloatCContainer) hashCContainers.get(storageKind);
 		return container.get(iIndex);
@@ -118,8 +112,7 @@ public abstract class AStorage
 	{
 
 		if (!(hashCContainers.get(storageKind) instanceof FloatCContainer))
-			throw new CaleydoRuntimeException("Requested storage kind is not of type float",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalArgumentException("Requested storage kind is not of type float");
 
 		FloatCContainer container = (FloatCContainer) hashCContainers.get(storageKind);
 		return container.iterator();
@@ -136,8 +129,7 @@ public abstract class AStorage
 			int iUniqueID)
 	{
 		if (!(hashCContainers.get(storageKind) instanceof FloatCContainer))
-			throw new CaleydoRuntimeException("Requested storage kind is not of type float",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalArgumentException("Requested storage kind is not of type float");
 
 		FloatCContainer container = (FloatCContainer) hashCContainers.get(storageKind);
 		return container.iterator(hashVirtualArrays.get(iUniqueID));
@@ -147,8 +139,7 @@ public abstract class AStorage
 	public int getInt(EDataRepresentation storageKind, int iIndex)
 	{
 		if (!(hashCContainers.get(storageKind) instanceof IntCContainer))
-			throw new CaleydoRuntimeException("Requested storage kind is not of type int",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalArgumentException("Requested storage kind is not of type int");
 
 		IntCContainer container = (IntCContainer) hashCContainers.get(storageKind);
 		return container.get(iIndex);
@@ -158,8 +149,7 @@ public abstract class AStorage
 	public IntCContainerIterator intIterator(EDataRepresentation storageKind)
 	{
 		if (!(hashCContainers.get(storageKind) instanceof IntCContainer))
-			throw new CaleydoRuntimeException("Requested storage kind is not of type int",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalArgumentException("Requested storage kind is not of type int");
 
 		IntCContainer container = (IntCContainer) hashCContainers.get(storageKind);
 		return container.iterator();
@@ -175,8 +165,7 @@ public abstract class AStorage
 	public IntCContainerIterator intVAIterator(EDataRepresentation storageKind, int iUniqueID)
 	{
 		if (!(hashCContainers.get(storageKind) instanceof FloatCContainer))
-			throw new CaleydoRuntimeException("Requested storage kind is not of type float",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalArgumentException("Requested storage kind is not of type float");
 
 		IntCContainer container = (IntCContainer) hashCContainers.get(storageKind);
 		return container.iterator(hashVirtualArrays.get(iUniqueID));
@@ -186,9 +175,8 @@ public abstract class AStorage
 	public Number get(EDataRepresentation storageKind, int iIndex)
 	{
 		if (!(hashCContainers.get(storageKind) instanceof NumericalCContainer))
-			throw new CaleydoRuntimeException(
-					"Requested storage kind is not a subtype of Number",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalArgumentException(
+					"Requested storage kind is not a subtype of Number");
 
 		NumericalCContainer<?> container = (NumericalCContainer<?>) hashCContainers
 				.get(storageKind);
@@ -199,9 +187,8 @@ public abstract class AStorage
 	public Iterator<? extends Number> iterator(EDataRepresentation storageKind)
 	{
 		if (!(hashCContainers.get(storageKind) instanceof NumericalCContainer))
-			throw new CaleydoRuntimeException(
-					"Requested storage kind is not a subtype of Number",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalArgumentException(
+					"Requested storage kind is not a subtype of Number");
 
 		NumericalCContainer<?> container = (NumericalCContainer<?>) hashCContainers
 				.get(storageKind);
@@ -219,9 +206,8 @@ public abstract class AStorage
 	public Iterator<? extends Number> iteratorVA(EDataRepresentation storageKind, int iUniqueID)
 	{
 		if (!(hashCContainers.get(storageKind) instanceof NumericalCContainer))
-			throw new CaleydoRuntimeException(
-					"Requested storage kind is not a subtype of Number",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalArgumentException(
+					"Requested storage kind is not a subtype of Number");
 
 		NumericalCContainer<?> container = (NumericalCContainer<?>) hashCContainers
 				.get(storageKind);
@@ -258,8 +244,8 @@ public abstract class AStorage
 	{
 		if (hashIsVirtualArrayEnabled.get(iUniqueID) == null)
 		{
-			throw new CaleydoRuntimeException("Virtual array for ID: " + iUniqueID
-					+ " is not set", CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalStateException("Virtual array for ID: " + iUniqueID
+					+ " is not set");
 		}
 		else if (!hashIsVirtualArrayEnabled.get(iUniqueID))
 			hashIsVirtualArrayEnabled.put(iUniqueID, true);

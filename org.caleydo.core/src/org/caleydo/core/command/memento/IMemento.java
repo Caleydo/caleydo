@@ -1,7 +1,5 @@
 package org.caleydo.core.command.memento;
 
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-
 /**
  * IMemento has a public interface and a pseudo-private interface. This
  * pseudo-private interface is the "small" interface for the creator-object of
@@ -32,7 +30,7 @@ public interface IMemento
 	 *            memento
 	 * @param setMemetoState details for restoring the state of the creator
 	 *            object setMementoCreator
-	 * @throws CaleydoRuntimeException are thrown in case of full storage or
+	 * @throws IllegalStateException are thrown in case of full storage or
 	 *             maximum number of mementos
 	 */
 	public void setMementoState(final Object setMementoCreator,

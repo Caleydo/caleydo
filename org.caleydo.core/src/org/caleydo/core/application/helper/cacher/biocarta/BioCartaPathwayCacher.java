@@ -6,8 +6,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import org.caleydo.core.application.helper.PathwayListGenerator;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -165,8 +163,7 @@ public class BioCartaPathwayCacher
 		}
 		catch (FileNotFoundException fnfe)
 		{
-			throw new CaleydoRuntimeException("Cannot generate pathway list.",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new RuntimeException("Cannot generate pathway list.");
 		}
 	}
 }

@@ -6,7 +6,6 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
@@ -69,7 +68,7 @@ public abstract class AXmlParserManager
 
 		if (this.currentHandler == null)
 		{
-			throw new CaleydoRuntimeException(
+			throw new IllegalStateException(
 					"AXmlParserManager.closeCurrentTag() current handler is null! Can not close handler");
 			// return false;
 		}
@@ -150,14 +149,14 @@ public abstract class AXmlParserManager
 
 		if (bProcessingXmlDataNow)
 		{
-			throw new CaleydoRuntimeException(
+			throw new IllegalStateException(
 					"AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because Xml file is processed now!");
 			// return false;
 		}
 
 		if (hashTag2XmlParser.contains(handler))
 		{
-			throw new CaleydoRuntimeException(
+			throw new IllegalStateException(
 					"AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because it is already registered!");
 			// return false;
 		}
@@ -166,7 +165,7 @@ public abstract class AXmlParserManager
 
 		if (hashTag2XmlParser.containsKey(key))
 		{
-			throw new CaleydoRuntimeException(
+			throw new IllegalStateException(
 					"AXmlParserManager.registerAndInitSaxHandler() can not register Handler, because String ["
 							+ handler.getXmlActivationTag() + "] is already registered!");
 			// return false;
@@ -195,14 +194,14 @@ public abstract class AXmlParserManager
 
 		if (bProcessingXmlDataNow)
 		{
-			throw new CaleydoRuntimeException(
+			throw new IllegalStateException(
 					"AXmlParserManager.registerSaxHandler() can not register Handler, because Xml file is processed now!");
 			// return false;
 		}
 
 		if (!hashTag2XmlParser.containsKey(sActivationXmlTag))
 		{
-			throw new CaleydoRuntimeException(
+			throw new IllegalStateException(
 					"AXmlParserManager.unregisterSaxHandler() can not unregister Handler, because it is not registered!");
 			// return false;
 		}

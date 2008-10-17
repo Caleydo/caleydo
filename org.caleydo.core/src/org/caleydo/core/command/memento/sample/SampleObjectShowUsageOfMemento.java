@@ -3,8 +3,6 @@ package org.caleydo.core.command.memento.sample;
 import org.caleydo.core.command.memento.IGeneralMemento;
 import org.caleydo.core.command.memento.IMemento;
 import org.caleydo.core.command.memento.IMementoCreator;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Sample code for IMemento objects. Implementation of Desing Pattern "IMemento"
@@ -60,27 +58,27 @@ public class SampleObjectShowUsageOfMemento
 	}
 
 	@Override
-	public void setMemento(IMemento setMemento) throws CaleydoRuntimeException
+	public void setMemento(IMemento setMemento)
 	{
 
 		SampleMementoState bufferMementoState = null;
 
 		// Test if getMementoState() returns the correct "SampleMementoState"
 		// object...
-		try
-		{
+//		try
+//		{
 			bufferMementoState = (SampleMementoState) setMemento.getMementoState(this);
 
 			// Reset parameters...
 			this.iMyData = bufferMementoState.getData();
 			this.fMyData = bufferMementoState.getPostData();
 
-		}
-		catch (Exception e)
-		{
-			throw new CaleydoRuntimeException("setMemento() with wrong IMementoState! "
-					+ e.toString(), CaleydoRuntimeExceptionType.MEMENTO);
-		}
+//		}
+//		catch (Exception e)
+//		{
+//			throw new CaleydoRuntimeException("setMemento() with wrong IMementoState! "
+//					+ e.toString(), CaleydoRuntimeExceptionType.MEMENTO);
+//		}
 
 	}
 

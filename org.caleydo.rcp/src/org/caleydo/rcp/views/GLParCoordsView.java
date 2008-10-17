@@ -18,7 +18,6 @@ import org.caleydo.rcp.action.view.storagebased.parcoords.OcclusionPreventionAct
 import org.caleydo.rcp.action.view.storagebased.parcoords.SaveSelectionsAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.MessageBox;

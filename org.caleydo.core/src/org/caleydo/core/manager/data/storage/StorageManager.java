@@ -6,10 +6,9 @@ import org.caleydo.core.data.collection.storage.NumericalStorage;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
- * @author Michael Kalkusch TODO: review
+ * @author Michael Kalkusch
  */
 public class StorageManager
 	extends AManager<IStorage>
@@ -26,7 +25,7 @@ public class StorageManager
 				return new NominalStorage<String>();
 
 			default:
-				throw new CaleydoRuntimeException("Ffailed due to unhandled type ["
+				throw new IllegalStateException("Failed due to unhandled type ["
 						+ type.toString() + "]");
 		}
 	}

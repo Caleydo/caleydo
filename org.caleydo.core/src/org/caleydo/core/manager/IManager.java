@@ -2,7 +2,6 @@ package org.caleydo.core.manager;
 
 import java.util.Collection;
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Interface for all managers that allow classes to access managed objects.
@@ -27,7 +26,7 @@ public interface IManager<T extends IUniqueObject>
 	 * 
 	 * @param iItemID unique id used for lookup
 	 * @return object bound to iItemID
-	 * @throws CaleydoRuntimeException if item does not exist
+	 * @throws IllegalArgumentException if item does not exist
 	 */
 	public T getItem(final int iItemID);
 

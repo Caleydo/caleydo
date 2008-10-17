@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Base class for manager classes.
@@ -36,8 +34,8 @@ public abstract class AManager<T extends IUniqueObject>
 	{
 		if (!hasItem(iItemID))
 		{
-			throw new CaleydoRuntimeException("Requested item with ID " + iItemID
-					+ " does not exist!", CaleydoRuntimeExceptionType.MANAGER);
+			throw new IllegalArgumentException("Requested item with ID " + iItemID
+					+ " does not exist!");
 		}
 
 		return hashItems.get(iItemID);

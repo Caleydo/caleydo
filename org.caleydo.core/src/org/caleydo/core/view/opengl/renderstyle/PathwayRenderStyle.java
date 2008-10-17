@@ -1,7 +1,6 @@
 package org.caleydo.core.view.opengl.renderstyle;
 
 import gleem.linalg.Vec3f;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 
 public class PathwayRenderStyle
@@ -435,7 +434,7 @@ public class PathwayRenderStyle
 
 		if (depth >= neighborhoodNodeColorArraysize)
 		{
-			throw new CaleydoRuntimeException("getNeighborhoodNodeColorByDepth(" + depth
+			throw new IllegalStateException("getNeighborhoodNodeColorByDepth(" + depth
 					+ ") exceed range!");
 		}
 		return this.neighborhoodNodeColorArray[depth];

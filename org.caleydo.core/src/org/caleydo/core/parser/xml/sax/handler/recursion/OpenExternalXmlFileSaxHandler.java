@@ -2,8 +2,6 @@ package org.caleydo.core.parser.xml.sax.handler.recursion;
 
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.xml.sax.Attributes;
 
 /**
@@ -53,15 +51,14 @@ public class OpenExternalXmlFileSaxHandler
 		if (qName.equalsIgnoreCase(this.sOpeningTag))
 		{
 			String sTargetFileName = "";
-
-			try
-			{
+//
+//			try
+//			{
 				sTargetFileName = attributes.getValue(sXML_attribute_target);
 
 				if (sTargetFileName == null)
 				{
-					throw new CaleydoRuntimeException("no XML-file specified!",
-							CaleydoRuntimeExceptionType.SAXPARSER);
+					throw new IllegalArgumentException("no XML-file specified!");
 				}
 
 				/**
@@ -69,14 +66,14 @@ public class OpenExternalXmlFileSaxHandler
 				 */
 				xmlParserManager.parseXmlFileByName(sTargetFileName);
 
-			}
-			catch (CaleydoRuntimeException cre)
-			{
-				throw new CaleydoRuntimeException(
-						"file [" + sTargetFileName
-								+ "] could not be loaded! Skip file... (Error="
-								+ cre.toString() + ")", CaleydoRuntimeExceptionType.SAXPARSER);
-			}
+//			}
+//			catch (CaleydoRuntimeException cre)
+//			{
+//				throw new CaleydoRuntimeException(
+//						"file [" + sTargetFileName
+//								+ "] could not be loaded! Skip file... (Error="
+//								+ cre.toString() + ")", CaleydoRuntimeExceptionType.SAXPARSER);
+//			}
 
 		} // if ( qName.equalsIgnoreCase( this.sOpeningTag ) )
 		else
@@ -88,10 +85,6 @@ public class OpenExternalXmlFileSaxHandler
 	/**
 	 * endElement for pareser callbacks
 	 * 
-	 * @see org.xml.sax.helpers.DefaultHandler#endElement(Stringt, Stringt,
-	 *      Stringt)
-	 * @see prometheus.net.dwt.swing.parser.ASaxParserHandler#endElement(String,
-	 *      String, String)
 	 * @param uri URI @see org.xml.sax.helpers.DefaultHandler
 	 * @param localName lacalName @see org.xml.sax.helpers.DefaultHandler
 	 * @param qName tag to parse for @see org.xml.sax.helpers.DefaultHandler

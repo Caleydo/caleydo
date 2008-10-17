@@ -3,7 +3,6 @@ package org.caleydo.core.command.queue;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACommand;
 import org.caleydo.core.parser.parameter.IParameterHandler;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Runs a command queue.
@@ -35,7 +34,7 @@ public class CmdSystemRunCmdQueue
 
 		if (cmdQueue == null)
 		{
-			throw new CaleydoRuntimeException(
+			throw new IllegalStateException(
 					"CmdSystemRunCmdQueue::doCommand() cmdQueue==null !");
 		}
 
@@ -51,7 +50,7 @@ public class CmdSystemRunCmdQueue
 
 		if (cmdQueue == null)
 		{
-			throw new CaleydoRuntimeException(
+			throw new IllegalStateException(
 					"CmdSystemRunCmdQueue::doCommand() cmdQueue==null !");
 		}
 

@@ -10,7 +10,6 @@ import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
 import org.caleydo.rcp.action.view.TakeSnapshotAction;
 import org.caleydo.rcp.action.view.remote.CloseOrResetContainedViews;
-import org.caleydo.rcp.action.view.remote.SearchAction;
 import org.caleydo.rcp.action.view.remote.ToggleLayoutAction;
 import org.caleydo.rcp.util.search.SearchBar;
 import org.eclipse.jface.action.IAction;

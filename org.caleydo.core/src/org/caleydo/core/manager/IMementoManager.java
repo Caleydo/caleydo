@@ -3,7 +3,6 @@ package org.caleydo.core.manager;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import org.caleydo.core.command.memento.IMemento;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Administration of IMemento's
@@ -20,7 +19,7 @@ public interface IMementoManager
 	 * @return unique mementoId
 	 * @throws exception on errors
 	 */
-	public abstract int pushMemento(IMemento addMemento) throws CaleydoRuntimeException;
+	public abstract int pushMemento(IMemento addMemento);
 
 	/**
 	 * Add a new IMemento to the IMementoManager and register a unique
