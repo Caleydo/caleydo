@@ -247,13 +247,11 @@ public class GLTextureHeatMap
 		System.out.println("fFieldHeigh" + fFieldHeigh);
 		*/
 		
-		int iTextureWidth = set.getVA(iContentVAID).size()*1;
+		int iTextureWidth = set.getVA(iContentVAID).size();
 		int iTextureHeight = set.getVA(iStorageVAID).size()*10;
 		
 		float fLookupValue = 0;
 		float fOpacity = 0;
-		
-		//FloatBuffer fbTexture = BufferUtil.newFloatBuffer(iTextureWidth * iTextureHeight * 4);
 		
 		BufferedImage img = new BufferedImage(iTextureWidth, iTextureHeight, BufferedImage.TYPE_INT_RGB);
 		Graphics g = img.getGraphics();
@@ -275,57 +273,46 @@ public class GLTextureHeatMap
 						iContentIndex);
 				 
 				float[] fArMappingColor = colorMapper.getColor(fLookupValue); 
-				//float[] rgba = {fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity};
 				
+								
 				Color HeatMapColor = new Color(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 				g.setColor(HeatMapColor);
 			
 				g.fillRect(fXPosition,fYPosition,fFieldWidth,fFieldHeight);
-				
-				//fbTexture.put(rgba);
+												
 				fYPosition += fFieldHeight;
 			}
 			fXPosition += fFieldWidth;
 		}
-		
-		//fbTexture.rewind();
 		
 		return img;	
 	}
 	
 	private void renderTextureHeatMap(GL gl)
 	{
-		/*
-		FloatBuffer img = drawHeatMap(gl);
-		
-		gl.glGenTextures(1, texName, 0);
-	    gl.glBindTexture(GL.GL_TEXTURE_2D, texName[0]);
-	    gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP);
-	    gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_CLAMP);
-	    gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
-	        GL.GL_NEAREST);
-	    gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
-	        GL.GL_NEAREST);
-	    gl.glTexImage2D(GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, set.getVA(iContentVAID).size(),
-	    		set.getVA(iStorageVAID).size(), 0, GL.GL_RGBA, GL.GL_FLOAT, img); 
-	    
-	    gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-	    gl.glBindTexture(GL.GL_TEXTURE_2D, texName[0]);		
-	    */
-		
 	    gl.glEnable(GL.GL_TEXTURE_2D);
 		
 	    BufferedImage img = drawHeatMap(gl);
 	    
-		THeatMap = TextureIO.newTexture(img, true);
+	    THeatMap = TextureIO.newTexture(img, false);
 		
 		THeatMap.enable();
 		THeatMap.bind();
+		
+	    gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_REPEAT);
+	    gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_REPEAT);
+	    gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
+	        GL.GL_NEAREST);
+	    gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
+	        GL.GL_NEAREST);
 		
 	    TextureCoords texCoords = THeatMap.getImageTexCoords();
 	   
 	    gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 	    gl.glColor4f(1f, 1, 1, 1f);
+	    
+	    gl.glPushName(pickingManager.getPickingID(iUniqueID, 
+	    		EPickingType.HEAT_MAP_FIELD_SELECTION, 1));
 	    
 	    gl.glBegin(GL.GL_QUADS);
 	    gl.glTexCoord2d(texCoords.left(),texCoords.bottom());
@@ -337,11 +324,15 @@ public class GLTextureHeatMap
 	    gl.glTexCoord2d(texCoords.left(), texCoords.top());
 		gl.glVertex3f(7.0f, 0.0f, 0);
 		gl.glEnd();
+		
+		gl.glPopName();
+		
 	    gl.glFlush();
 
 		gl.glPopAttrib();
 		
 		THeatMap.disable();
+		
 	}
 	
 	@Override
@@ -605,6 +596,8 @@ public class GLTextureHeatMap
 							triggerUpdate(contentSelectionManager.getDelta());
 						}
 
+						System.out.println("click on texture");
+						
 						break;
 
 					case MOUSE_OVER:
@@ -623,6 +616,8 @@ public class GLTextureHeatMap
 						{
 							triggerUpdate(contentSelectionManager.getDelta());
 						}
+						
+						System.out.println("mouse over texture");
 
 						break;
 				}
