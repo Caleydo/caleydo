@@ -390,6 +390,8 @@ public class GLHeatMap
 				iContentVAID, iStorageVAID, set.getVA(iStorageVAID).size(),
 				bRenderStorageHorizontally);
 		renderStyle.setDetailLevel(detailLevel);
+		super.renderStyle = renderStyle;
+	
 		// TODO probably remove this here
 		// renderStyle.initFieldSizes();
 

@@ -27,7 +27,6 @@ import org.caleydo.core.view.opengl.camera.ViewCameraBase;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
-import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
@@ -87,6 +86,9 @@ public abstract class AGLEventListener
 	protected boolean bBusyModeChanged = false;
 
 	protected GeneralRenderStyle renderStyle;
+	
+	private int iFrameCounter = 0;
+	private static final int NUMBER_OF_FRAMES = 5;
 
 	/**
 	 * Constructor.
@@ -443,13 +445,27 @@ public abstract class AGLEventListener
 
 	protected void updateBusyMode(final GL gl)
 	{
+		float fTransparency = 0.3f * iFrameCounter / NUMBER_OF_FRAMES;
+		float fLoadingTransparency = 0.8f * iFrameCounter / NUMBER_OF_FRAMES;
+		float fTextTransparency = 1f * iFrameCounter / NUMBER_OF_FRAMES;
 
+			
 		// TODO replace text from textrenderer with texture
-		if (bBusyMode)
+		if (bBusyMode || iFrameCounter > 0)
 		{
+			if(bBusyMode)
+			{
+				if(iFrameCounter < NUMBER_OF_FRAMES)
+					iFrameCounter++;
+			}
+			else
+			{
+				iFrameCounter--;
+			}
+			
 			pickingManager.enablePicking(false);
 
-			gl.glColor4f(1, 1, 1, 0.3f);
+			gl.glColor4f(1, 1, 1, fTransparency);
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glVertex3f(-9, -9, 4.2f);
 			gl.glVertex3f(-9, 9, 4.2f);
@@ -461,7 +477,7 @@ public abstract class AGLEventListener
 			{
 				// TODO bad hack here, frustum wrong or renderStyle null
 
-				gl.glColor4f(0.5f, 0.5f, 0.5f, 0.8f);
+				gl.glColor4f(0.5f, 0.5f, 0.5f, fLoadingTransparency);
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glVertex3f(0 - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH,
 						0 - GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
@@ -475,7 +491,7 @@ public abstract class AGLEventListener
 
 				TextRenderer textRenderer = new TextRenderer(
 						new Font("Arial", Font.BOLD, 128), false);
-				textRenderer.setColor(1, 1, 1, 1);
+				textRenderer.setColor(1, 1, 1, fTextTransparency);
 				textRenderer.begin3DRendering();
 
 				textRenderer.draw3D("Loading...",
@@ -487,7 +503,7 @@ public abstract class AGLEventListener
 			{
 				// That's fine here, keep this
 
-				gl.glColor4f(0.5f, 0.5f, 0.5f, 0.8f);
+				gl.glColor4f(0.5f, 0.5f, 0.5f, fLoadingTransparency);
 				gl.glBegin(GL.GL_POLYGON);
 				gl.glVertex3f(renderStyle.getXCenter()
 						- GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, renderStyle.getYCenter()
@@ -505,7 +521,7 @@ public abstract class AGLEventListener
 
 				TextRenderer textRenderer = new TextRenderer(
 						new Font("Arial", Font.BOLD, 128), false);
-				textRenderer.setColor(1, 1, 1, 1);
+				textRenderer.setColor(1, 1, 1, fTextTransparency);
 				textRenderer.begin3DRendering();
 
 				textRenderer.draw3D("Loading...", renderStyle.getXCenter()
@@ -520,7 +536,7 @@ public abstract class AGLEventListener
 		}
 		else
 		{
-
+			iFrameCounter = 0;
 			pickingManager.enablePicking(true);
 			// if (renderStyle == null)
 			// gl.glClearColor(0.7f, 0.7f, 0.7f, 1f);
