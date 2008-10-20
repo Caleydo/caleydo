@@ -36,6 +36,10 @@ public class CmdFetchPathwayData
 	private boolean isKeggCacherFinished = false;
 	private boolean isKeggImageCacherFinished = false;
 	private boolean isBioCartaCacherFinished = false;
+	
+	private BioCartaPathwayCacher bioCartaPathwayCacher;
+	private KeggPathwayCacher keggPathwayCacher;
+	private KeggPathwayImageCacher keggPathwayImageCacher;
 
 	/**
 	 * Constructor.
@@ -60,16 +64,8 @@ public class CmdFetchPathwayData
 			throw new IllegalStateException("Unable to save preference file.");
 		}
 		
-		BioCartaPathwayCacher bioCartaPathwayCacher = new BioCartaPathwayCacher(display,
-				progressBarBioCartaPathwayCacher, this);
 		bioCartaPathwayCacher.start();
-
-		KeggPathwayCacher keggPathwayCacher = new KeggPathwayCacher(display,
-				progressBarKeggPathwayCacher, this);
 		keggPathwayCacher.start();
-
-		KeggPathwayImageCacher keggPathwayImageCacher = new KeggPathwayImageCacher(display,
-				progressBarKeggPathwayImageCacher, this);
 		keggPathwayImageCacher.start();
 
 		commandManager.runDoCommand(this);
@@ -98,6 +94,22 @@ public class CmdFetchPathwayData
 		this.progressBarKeggPathwayImageCacher = progressBarKeggPathwayImageCacher;
 		this.progressBarBioCartaPathwayCacher = progressBarBioCartaPathwayCacher;
 		this.parentPage = parentPage;
+		
+		bioCartaPathwayCacher = new BioCartaPathwayCacher(display,
+				progressBarBioCartaPathwayCacher, this);
+		
+		keggPathwayCacher = new KeggPathwayCacher(display,
+				progressBarKeggPathwayCacher, this);
+		
+		keggPathwayImageCacher = new KeggPathwayImageCacher(display,
+				progressBarKeggPathwayImageCacher, this);
+	}
+	
+	public void setProxySettings(String sProxyServer,
+			int iProxyPort) 
+	{
+		bioCartaPathwayCacher.setProxySettings(sProxyServer, iProxyPort);
+		keggPathwayCacher.setProxySettings(sProxyServer, iProxyPort);
 	}
 
 	public void setFinishedKeggCacher()

@@ -1,8 +1,10 @@
 package org.caleydo.core.application.helper.cacher.kegg;
 
 import java.io.File;
+import java.io.NotSerializableException;
 import java.net.MalformedURLException;
 import java.net.URL;
+import org.caleydo.core.application.helper.cacher.APathwayCacher;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.swt.widgets.Display;
@@ -16,6 +18,7 @@ import de.phleisch.app.itsucks.filter.download.impl.DownloadJobFilter;
 import de.phleisch.app.itsucks.filter.download.impl.RegExpJobFilter;
 import de.phleisch.app.itsucks.filter.download.impl.RegExpJobFilter.RegExpFilterAction;
 import de.phleisch.app.itsucks.filter.download.impl.RegExpJobFilter.RegExpFilterRule;
+import de.phleisch.app.itsucks.io.http.impl.HttpRetrieverConfiguration;
 import de.phleisch.app.itsucks.job.Job;
 import de.phleisch.app.itsucks.job.download.impl.DownloadJobFactory;
 import de.phleisch.app.itsucks.job.download.impl.UrlDownloadJob;
@@ -27,21 +30,8 @@ import de.phleisch.app.itsucks.job.event.JobChangedEvent;
  * @author Marc Streit
  */
 public class KeggPathwayCacher
-	extends Thread
+	extends APathwayCacher
 {
-	private static final int EXPECTED_DOWNLOADS = 213;
-
-	/**
-	 * Needed for async access to set progress bar state
-	 */
-	private Display display;
-
-	private ProgressBar progressBar;
-
-	private CmdFetchPathwayData triggeringCommand;
-
-	int iDownloadCount = 0;
-
 	/**
 	 * Constructor.
 	 */
@@ -51,6 +41,8 @@ public class KeggPathwayCacher
 		this.display = display;
 		this.progressBar = progressBar;
 		this.triggeringCommand = triggeringCommand;
+		
+		iExpectedDownloads = 213;
 	}
 
 	@Override
@@ -61,13 +53,6 @@ public class KeggPathwayCacher
 		// load spring application context
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
 				ApplicationConstants.CORE_SPRING_CONFIG_FILE);
-		
-//		HttpRetrieverConfiguration httpRetrieverConfiguration = 
-//			((HttpRetriever)context.getBean("HttpRetriever")).getConfiguration();
-//		
-//		httpRetrieverConfiguration = createProxySettings(httpRetrieverConfiguration);
-//		 
-//		((HttpRetriever)context.getBean("HttpRetriever")).setConfiguration(httpRetrieverConfiguration);
 		
 		// load dispatcher from spring
 		final Dispatcher dispatcher = (Dispatcher) context.getBean("Dispatcher");
@@ -95,12 +80,10 @@ public class KeggPathwayCacher
 
 		dispatcher.addJobFilter(regExpFilter);
 	
-		// create an job factory
 		DownloadJobFactory jobFactory = (DownloadJobFactory) context.getBean("JobFactory");
 
 		String sOutputFileName = GeneralManager.CALEYDO_HOME_PATH;
 
-		// create an initial job
 		UrlDownloadJob job = jobFactory.createDownloadJob();
 		
 		try
@@ -115,73 +98,13 @@ public class KeggPathwayCacher
 		job.setSavePath(new File(sOutputFileName));
 		job.setIgnoreFilter(true);
 		dispatcher.addJob(job);
-
-		dispatcher.getEventManager().registerObserver(new EventObserver()
-		{
-			/*
-			 * (non-Javadoc)
-			 * @see
-			 * de.phleisch.app.itsucks.event.EventObserver#processEvent(de.phleisch
-			 * .app.itsucks.event.Event)
-			 */
-			@Override
-			public void processEvent(Event arg0)
-			{	
-				if (arg0 instanceof JobChangedEvent
-						&& ((JobChangedEvent) arg0).getJob().getState() == Job.STATE_FINISHED)
-				{
-					iDownloadCount++;
-
-					display.asyncExec(new Runnable()
-					{
-						public void run()
-						{
-							if (progressBar.isDisposed())
-								return;
-							progressBar
-									.setSelection((iDownloadCount * 100 / EXPECTED_DOWNLOADS));
-
-							// System.out.println("Download count: "
-							// +iDownloadCount);
-							// System.out.println("Percentage: "
-							// +(int)(iDownloadCount * 100 /
-							// EXPECTED_DOWNLOADS));
-						}
-					});
-				}
-			}
-		});
-
-		// start the dispatcher
-		dispatcher.processJobs();
-
-		if (triggeringCommand != null)
-			triggeringCommand.setFinishedKeggCacher();
+		
+		processJobs(dispatcher);
 	}
 
-//	public HttpRetrieverConfiguration createProxySettings(HttpRetrieverConfiguration httpRetrieverConfiguration) {
-//
-//		httpRetrieverConfiguration.setProxyEnabled(true);
-//
-//		httpRetrieverConfiguration.setProxyServer("proxy.tugraz.at");
-//
-//		httpRetrieverConfiguration.setProxyPort(Integer.parseInt("3128"));
-//		// } else {
-//		// retrieverConfiguration.setProxyEnabled(false);
-//		// }
-//
-//		// if (this.enableAuthenticationCheckBox
-//		// .isSelected()) {
-//		httpRetrieverConfiguration.setProxyAuthenticationEnabled(false);
-//
-////		httpRetrieverConfiguration.setProxyUser("....");
-////
-////		httpRetrieverConfiguration.setProxyPassword("....");
-//		// } else {
-//		// retrieverConfiguration.setProxyAuthenticationEnabled(false);
-//		// }
-//		
-//		return httpRetrieverConfiguration;
-//		
-//	}
+	@Override
+	protected void triggerPathwayListGeneration()
+	{
+		throw new IllegalStateException("Pathway list generation is not supported!");
+	}
 }

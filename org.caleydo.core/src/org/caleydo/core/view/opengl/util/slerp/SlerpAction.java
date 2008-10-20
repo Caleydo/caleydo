@@ -1,4 +1,4 @@
-package org.caleydo.core.util.slerp;
+package org.caleydo.core.view.opengl.util.slerp;
 
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
 

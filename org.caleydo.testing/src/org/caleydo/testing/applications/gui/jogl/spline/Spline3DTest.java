@@ -1,7 +1,9 @@
-package org.caleydo.core.util.spline;
+package org.caleydo.testing.applications.gui.jogl.spline;
 
 import gleem.linalg.Vec3f;
 import javax.media.opengl.GL;
+
+import org.caleydo.core.view.opengl.util.spline.Spline3D;
 
 /**
  * 

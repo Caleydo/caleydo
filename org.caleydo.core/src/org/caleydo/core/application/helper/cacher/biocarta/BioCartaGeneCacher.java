@@ -80,7 +80,6 @@ public class BioCartaGeneCacher
 		job.setIgnoreFilter(true);
 		dispatcher.addJob(job);
 
-		// start the dispatcher
 		dispatcher.processJobs();
 	}
 	

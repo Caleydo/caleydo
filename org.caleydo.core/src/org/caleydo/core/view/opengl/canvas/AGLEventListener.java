@@ -489,14 +489,28 @@ public abstract class AGLEventListener
 						0 - GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
 				gl.glEnd();
 
+				// Frame around box
+				gl.glColor4f(0.2f, 0.2f, 0.2f, fLoadingTransparency);
+				gl.glLineWidth(2);
+				gl.glBegin(GL.GL_LINE_LOOP);
+				gl.glVertex3f(0 - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH,
+						0 - GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+				gl.glVertex3f(0 - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH,
+						0 + GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+				gl.glVertex3f(0 + GeneralRenderStyle.LOADING_BOX_HALF_WIDTH,
+						0 + GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+				gl.glVertex3f(0 + GeneralRenderStyle.LOADING_BOX_HALF_WIDTH,
+						0 - GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+				gl.glEnd();
+				
 				TextRenderer textRenderer = new TextRenderer(
 						new Font("Arial", Font.BOLD, 128), false);
 				textRenderer.setColor(1, 1, 1, fTextTransparency);
 				textRenderer.begin3DRendering();
 
 				textRenderer.draw3D("Loading...",
-						0 - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH,
-						0 - GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.22f, 0.001f);
+						0 - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH / 2,
+						0 - GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT / 2, 4.22f, 0.001f);
 				textRenderer.end3DRendering();
 			}
 			else

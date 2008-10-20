@@ -69,7 +69,8 @@ public class PathwayUpdatePreferencePage
 		lastUpdateLabel.setText("Last complete update: " +GeneralManager.get()
 				.getPreferenceStore().getString("lastPathwayDataUpdate"));
 		
-		return FetchPathwayDataPage.createContent(composite, this);
+		FetchPathwayDataPage page = new FetchPathwayDataPage();
+		return page.createContent(composite, this);
 	}
 	
 	@Override

@@ -5,6 +5,7 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import gleem.linalg.open.Transform;
 import java.awt.Font;
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -34,9 +35,6 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.slerp.SlerpAction;
-import org.caleydo.core.util.slerp.SlerpMod;
-import org.caleydo.core.util.spline.Spline3D;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
@@ -60,6 +58,9 @@ import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLIconTextureManager;
 import org.caleydo.core.view.opengl.util.drag.GLDragAndDrop;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
+import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
+import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
+import org.caleydo.core.view.opengl.util.spline.Spline3D;
 import org.caleydo.core.view.opengl.util.trashcan.TrashCan;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
@@ -136,9 +137,9 @@ public class GLRemoteRendering
 
 	private ArrayList<Integer> iAlContainedViewIDs;
 
-	private int iGLDisplayList;
+//	private int iGLDisplayList;
 	
-	private Spline3D spline;
+//	private FloatBuffer splinePoints = FloatBuffer.allocate(8*3);
 
 	/**
 	 * Constructor.
@@ -210,7 +211,7 @@ public class GLRemoteRendering
 	@Override
 	public void initLocal(final GL gl)
 	{
-		iGLDisplayList = gl.glGenLists(1);
+//		iGLDisplayList = gl.glGenLists(1);
 
 		init(gl);
 	}
@@ -227,7 +228,16 @@ public class GLRemoteRendering
 
 	@Override
 	public void init(final GL gl)
-	{
+	{        
+//        float[] fArPoints = {1,2,-1,0,1,2,2,0,0,3,3,1,2,3,-2,1,3,1,1,3,0,2,-1,-1};
+//        splinePoints.put(fArPoints);
+//        splinePoints.rewind();
+//		gl.glClearColor(1,1,1,1);
+//        gl.glShadeModel(GL.GL_SMOOTH);
+//		gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, 8, splinePoints); 
+//		gl.glEnable(GL.GL_MAP1_VERTEX_3);
+        glConnectionLineRenderer.init(gl);
+        
 		glIconTextureManager = new GLIconTextureManager(gl);
 
 		time = new SystemTime();
@@ -304,6 +314,22 @@ public class GLRemoteRendering
 	@Override
 	public synchronized void display(final GL gl)
 	{
+//		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
+//		gl.glColor3f((float)0, (float)1, (float)0);
+//        gl.glBegin(GL.GL_LINE_STRIP);
+//        for (int i=0; i<=100; i++)
+//            gl.glEvalCoord1f((float)(i)/100);
+//        gl.glEnd();
+//
+//        gl.glPointSize((float)10);
+//
+//        gl.glColor3f((float)1, (float)0, (float)0);
+//        gl.glBegin(GL.GL_POINTS);
+//        for (int i=0; i<8; i++)
+//            gl.glVertex3f(splinePoints.get(i), splinePoints.get(i+1), splinePoints.get(i+2));
+//        gl.glEnd();
+//        gl.glFlush();
+		
 		time.update();
 
 		layoutRenderStyle.initPoolLayer(iMouseOverViewID);
@@ -322,6 +348,8 @@ public class GLRemoteRendering
 		// interaction layer is _not_ rendered.
 		if (bucketMouseWheelListener == null || !bucketMouseWheelListener.isZoomedIn())
 		{
+			glConnectionLineRenderer.render(gl);
+			
 			renderPoolAndMemoLayerBackground(gl);
 
 			renderLayer(gl, poolLayer);
@@ -333,8 +361,6 @@ public class GLRemoteRendering
 					EPickingType.MEMO_PAD_SELECTION, MEMO_PAD_PICKING_ID));
 			renderLayer(gl, memoLayer);
 			gl.glPopName();
-
-			glConnectionLineRenderer.render(gl);
 		}
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))

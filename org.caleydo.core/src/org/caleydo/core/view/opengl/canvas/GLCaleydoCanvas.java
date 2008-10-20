@@ -76,8 +76,8 @@ public class GLCaleydoCanvas
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
-		gl.glEnable(GL.GL_POINT_SMOOTH);
-		gl.glHint(GL.GL_POINT_SMOOTH_HINT, GL.GL_NICEST);
+//		gl.glEnable(GL.GL_POINT_SMOOTH);
+//		gl.glHint(GL.GL_POINT_SMOOTH_HINT, GL.GL_NICEST);
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
 		gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
@@ -96,9 +96,11 @@ public class GLCaleydoCanvas
 	@Override
 	public void display(GLAutoDrawable drawable)
 	{
-
 		final GL gl = drawable.getGL();
-
+		
+		// turn this on during debugging if anything changes in the init() code
+//		init(drawable);
+		
 		// load identity matrix
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 		gl.glLoadIdentity();

@@ -5,7 +5,9 @@ import java.io.FileNotFoundException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import org.caleydo.core.application.helper.PathwayListGenerator;
+import org.caleydo.core.application.helper.cacher.APathwayCacher;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
+import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -29,22 +31,8 @@ import de.phleisch.app.itsucks.job.event.JobChangedEvent;
  * 
  */
 public class BioCartaPathwayCacher
-	extends Thread
-{
-
-	private static final int EXPECTED_DOWNLOADS = 865;
-	
-	/**
-	 * Needed for async access to set progress bar state
-	 */
-	private Display display;
-
-	private ProgressBar progressBar;
-
-	private CmdFetchPathwayData triggeringCommand;
-
-	int iDownloadCount = 0;
-
+	extends APathwayCacher
+{	
 	/**
 	 * Constructor.
 	 */
@@ -54,6 +42,8 @@ public class BioCartaPathwayCacher
 		this.display = display;
 		this.progressBar = progressBar;
 		this.triggeringCommand = triggeringCommand;
+		
+		iExpectedDownloads = 865;
 	}
 
 	@Override
@@ -110,47 +100,13 @@ public class BioCartaPathwayCacher
 
 		job.setSavePath(new File(sOutputFileName));
 		job.setIgnoreFilter(true);
+
 		dispatcher.addJob(job);
-
-		dispatcher.getEventManager().registerObserver(new EventObserver()
-		{
-			@Override
-			public void processEvent(Event arg0)
-			{
-				if (arg0 instanceof JobChangedEvent
-						&& ((JobChangedEvent) arg0).getJob().getState() == Job.STATE_FINISHED)
-				{
-					iDownloadCount++;
-
-					display.asyncExec(new Runnable()
-					{
-						public void run()
-						{
-							if (progressBar.isDisposed())
-								return;
-							
-							progressBar.setSelection((int)(iDownloadCount * 100f / EXPECTED_DOWNLOADS));
-
-//							 System.out.println("Download count: "
-//							 +iDownloadCount);
-//							 System.out.println("Percentage: "
-//							 +(int)(iDownloadCount * 100f / EXPECTED_DOWNLOADS));
-						}
-					});
-				}
-			}
-		});
-
-		// start the dispatcher
-		dispatcher.processJobs();
-
-		triggerPathwayListGeneration();
-
-		if (triggeringCommand != null)
-			triggeringCommand.setFinishedBioCartaCacher();
+		
+		processJobs(dispatcher);
 	}
 
-	private void triggerPathwayListGeneration()
+	protected void triggerPathwayListGeneration()
 	{
 		// Trigger pathway list generation
 		PathwayListGenerator pathwayListLoader = new PathwayListGenerator();
