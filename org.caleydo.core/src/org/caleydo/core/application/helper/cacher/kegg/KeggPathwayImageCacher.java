@@ -2,44 +2,34 @@ package org.caleydo.core.application.helper.cacher.kegg;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import org.apache.log4j.Level;
-import org.apache.log4j.Logger;
+import java.net.MalformedURLException;
+import java.net.URL;
 import org.caleydo.core.application.helper.PathwayListGenerator;
+import org.caleydo.core.application.helper.cacher.APathwayCacher;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.ProgressBar;
-import com.enterprisedt.net.ftp.FTPConnectMode;
-import com.enterprisedt.net.ftp.FTPFile;
-import com.enterprisedt.net.ftp.FileTransferClient;
+import org.springframework.context.support.ClassPathXmlApplicationContext;
+import de.phleisch.app.itsucks.constants.ApplicationConstants;
+import de.phleisch.app.itsucks.core.Dispatcher;
+import de.phleisch.app.itsucks.filter.download.impl.DownloadJobFilter;
+import de.phleisch.app.itsucks.filter.download.impl.RegExpJobFilter;
+import de.phleisch.app.itsucks.filter.download.impl.RegExpJobFilter.RegExpFilterAction;
+import de.phleisch.app.itsucks.filter.download.impl.RegExpJobFilter.RegExpFilterRule;
+import de.phleisch.app.itsucks.job.download.impl.DownloadJobFactory;
+import de.phleisch.app.itsucks.job.download.impl.UrlDownloadJob;
 
 /**
- * Fetch tool for KEGG image files.
+ * Fetch tool for KEGG XML files.
  * 
  * @author Marc Streit
- * 
  */
 public class KeggPathwayImageCacher
-	extends Thread
+	extends APathwayCacher
 {
-	private static final int EXPECTED_DOWNLOADS = 214;
-	private static final int MAX_FTP_CONNECTIONS = 3;
-	
-	/**
-	 * Needed for async access to set progress bar state
-	 */
-	private Display display;
-
-	private ProgressBar progressBar;
-
-	private CmdFetchPathwayData triggeringCommand;
-
-	private Integer iConcurrentFtpConnections = 0;
-
-	private int iDownloadCount = 0;
-
 	/**
 	 * Constructor.
 	 */
@@ -49,113 +39,74 @@ public class KeggPathwayImageCacher
 		this.display = display;
 		this.progressBar = progressBar;
 		this.triggeringCommand = triggeringCommand;
+		
+		iExpectedDownloads = 642;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see java.lang.Thread#run()
-	 */
 	@Override
 	public void run()
 	{
-		String sServerName = "ftp.genome.ad.jp";
-		String sDirName = "/pub/kegg/pathway/organisms/hsa/";
+		super.run();
 
-		// set up logger so that we get some output
-		Logger log = Logger.getLogger(KeggPathwayImageCacher.class);
-		log.setLevel(Level.INFO);
+		// load spring application context
+		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
+				ApplicationConstants.CORE_SPRING_CONFIG_FILE);
+		
+		// load dispatcher from spring
+		final Dispatcher dispatcher = (Dispatcher) context.getBean("Dispatcher");
 
-		// Create KEGG folder in .caleydo
-		new File(System.getProperty("user.home") + "/.caleydo/kegg").mkdir();
+		// configure an download job filter
+		DownloadJobFilter downloadFilter = new DownloadJobFilter();
+		downloadFilter.setAllowedHostNames(new String[] { "www.genome.ad.jp*" });
+		downloadFilter.setMaxRecursionDepth(2);
+		downloadFilter.setSaveToDisk(new String[] { ".*gif" });
 
-		FileTransferClient ftp = null;
+		// add the filter to the dispatcher
+		dispatcher.addJobFilter(downloadFilter);
 
+		RegExpJobFilter regExpFilter = new RegExpJobFilter();
+		RegExpFilterRule regExpFilterRule = new RegExpJobFilter.RegExpFilterRule(
+				".*KGMLViewer.*|.*PathwayViewer.*|.*xmlview.*|.*html"
+						+ "|.*atlas|.*css|.*menu.*|.*feedback.*|.*docs.|.*menu.*|.*compound.*|.*hsa\\+.*|.*Fig.*|.*glycan.*|.*up\\+.*|.*misc.*|.*document.*|javascrip.*");
+
+		RegExpFilterAction regExpFilterAction = new RegExpJobFilter.RegExpFilterAction();
+		regExpFilterAction.setAccept(false);
+
+		regExpFilterRule.setMatchAction(regExpFilterAction);
+		regExpFilter.addFilterRule(regExpFilterRule);
+
+		dispatcher.addJobFilter(regExpFilter);
+	
+		DownloadJobFactory jobFactory = (DownloadJobFactory) context.getBean("JobFactory");
+
+		String sOutputFileName = GeneralManager.CALEYDO_HOME_PATH;
+
+		UrlDownloadJob job = jobFactory.createDownloadJob();
+		
 		try
 		{
-			// create client
-			log.info("Creating FTP client");
-			ftp = new FileTransferClient();
-			ftp.getAdvancedFTPSettings().setConnectMode(FTPConnectMode.PASV);
-
-			// set remote host
-			ftp.setRemoteHost(sServerName);
-			ftp.setUserName("anonymous");
-			ftp.setPassword("");
-
-			// connect to the server
-			log.info("Connecting to server " + sServerName);
-			ftp.connect();
-			log.info("Connected and logged in to server " + sServerName);
-
-			// ftp.changeDirectory(sDirName);
-
-			log.info("Getting current directory listing");
-			FTPFile[] files = ftp.directoryList(sDirName);
-			ftp.disconnect();
-
-			ArrayList<KeggSinglePathwayImageCacherThread> threadContainer = new ArrayList<KeggSinglePathwayImageCacherThread>();
-
-			String sTmpFileName = "";
-			int iPatternIndex = 0;
-
-			final int iFilesToDownload = files.length;
-
-			for (int iFileCount = 0; iFileCount < iFilesToDownload; iFileCount++)
-			{
-				if (iConcurrentFtpConnections > MAX_FTP_CONNECTIONS)
-				{
-					Thread.sleep(500);
-					iFileCount--;
-					continue;
-				}
-
-				sTmpFileName = files[iFileCount].toString();
-
-				// Download only image files
-				if (sTmpFileName.contains(".gif"))
-				{
-					iPatternIndex = sTmpFileName.indexOf(".gif");
-					sTmpFileName = sTmpFileName
-							.substring(iPatternIndex - 8, iPatternIndex + 4);
-
-					threadContainer.add(new KeggSinglePathwayImageCacherThread(this,
-							sTmpFileName, sDirName));
-					
-					iConcurrentFtpConnections++;
-
-					iDownloadCount++;
-
-					display.asyncExec(new Runnable()
-					{
-						public void run()
-						{
-							if (progressBar.isDisposed())
-								return;
-							
-							progressBar.setSelection((iDownloadCount * 100 / EXPECTED_DOWNLOADS));
-						}
-					});
-				}
-			}
-
+//			job.setUrl(new URL("http://www.genome.ad.jp/dbget-bin/get_pathway?org_name=hsa&mapno=00500"));
+			job.setUrl(new URL("http://www.genome.ad.jp/kegg-bin/show_organism?menu_type=pathway_maps&org=hsa"));
 		}
-		catch (Exception e)
+		catch (MalformedURLException e)
 		{
 			e.printStackTrace();
 		}
+		// "http://www.genome.jp/kegg/pathway/hsa/hsa00380.gif
+		job.setSavePath(new File(sOutputFileName));
+		job.setIgnoreFilter(true);
+		dispatcher.addJob(job);
+		
+		processJobs(dispatcher);
+		
+		triggerPathwayListGeneration();
 
 		if (triggeringCommand != null)
 			triggeringCommand.setFinishedKeggImageCacher();
-
-		triggerPathwayListGeneration();
 	}
 
-	public void threadFinishNotification()
-	{
-		iConcurrentFtpConnections--;
-	}
-	
-	private void triggerPathwayListGeneration()
+	@Override
+	protected void triggerPathwayListGeneration()
 	{
 		// Trigger pathway list generation
 		PathwayListGenerator pathwayListLoader = new PathwayListGenerator();
@@ -168,8 +119,7 @@ public class KeggPathwayImageCacher
 		}
 		catch (FileNotFoundException fnfe)
 		{
-			throw new CaleydoRuntimeException("Cannot generate pathway list.",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new RuntimeException("Cannot generate KEGG pathway list.");
 		}
 	}
 }

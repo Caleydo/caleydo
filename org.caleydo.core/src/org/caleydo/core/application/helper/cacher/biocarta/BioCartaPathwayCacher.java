@@ -43,7 +43,7 @@ public class BioCartaPathwayCacher
 		this.progressBar = progressBar;
 		this.triggeringCommand = triggeringCommand;
 		
-		iExpectedDownloads = 865;
+		iExpectedDownloads = 891;
 	}
 
 	@Override
@@ -104,6 +104,11 @@ public class BioCartaPathwayCacher
 		dispatcher.addJob(job);
 		
 		processJobs(dispatcher);
+
+		triggerPathwayListGeneration();
+
+		if (triggeringCommand != null)
+			triggeringCommand.setFinishedBioCartaCacher();
 	}
 
 	protected void triggerPathwayListGeneration()
@@ -119,7 +124,7 @@ public class BioCartaPathwayCacher
 		}
 		catch (FileNotFoundException fnfe)
 		{
-			throw new RuntimeException("Cannot generate pathway list.");
+			throw new RuntimeException("Cannot generate BioCarta pathway list.");
 		}
 	}
 }

@@ -70,11 +70,6 @@ public abstract class APathwayCacher
 		
 		// start the dispatcher
 		dispatcher.processJobs();
-
-		triggerPathwayListGeneration();
-
-		if (triggeringCommand != null)
-			triggeringCommand.setFinishedBioCartaCacher();
 	}
 	
 	protected abstract void triggerPathwayListGeneration();

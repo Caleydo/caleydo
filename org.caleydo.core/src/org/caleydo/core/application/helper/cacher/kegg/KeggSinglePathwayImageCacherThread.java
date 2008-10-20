@@ -15,7 +15,7 @@ public class KeggSinglePathwayImageCacherThread
 {
 	private String sFileName;
 
-	private KeggPathwayImageCacher keggCacher;
+	private KeggPathwayImageCacherFTP keggCacher;
 
 	/**
 	 * Constructor.
@@ -23,7 +23,7 @@ public class KeggSinglePathwayImageCacherThread
 	 * @param generalManager
 	 * @param sXMLPath
 	 */
-	public KeggSinglePathwayImageCacherThread(KeggPathwayImageCacher keggCacher,
+	public KeggSinglePathwayImageCacherThread(KeggPathwayImageCacherFTP keggCacher,
 			String sFileName, String sDirName)
 	{
 		this.sFileName = sFileName;

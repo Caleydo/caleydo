@@ -60,8 +60,8 @@ public class KeggPathwayCacher
 		// configure an download job filter
 		DownloadJobFilter downloadFilter = new DownloadJobFilter();
 		downloadFilter.setAllowedHostNames(new String[] { "www.genome.jp.*" });
-		downloadFilter.setMaxRecursionDepth(2);
-		downloadFilter.setSaveToDisk(new String[] { ".*xml" });
+		downloadFilter.setMaxRecursionDepth(3);
+		downloadFilter.setSaveToDisk(new String[] { ".*xml|.*gif" });
 
 		// add the filter to the dispatcher
 		dispatcher.addJobFilter(downloadFilter);
@@ -69,7 +69,7 @@ public class KeggPathwayCacher
 		RegExpJobFilter regExpFilter = new RegExpJobFilter();
 		RegExpFilterRule regExpFilterRule = new RegExpJobFilter.RegExpFilterRule(
 				".*KGMLViewer.*|.*PathwayViewer.*|.*xmlview.*|.*dbget.*|.*html"
-						+ "|.*atlas|.*css|.*menu.*|.*feedback.*|.*docs.|.*menu.*");
+						+ "|.*atlas|.*css|.*menu.*|.*feedback.*|.*docs.|.*menu.*|.*Fig.*");
 
 		RegExpFilterAction regExpFilterAction = new RegExpJobFilter.RegExpFilterAction();
 		regExpFilterAction.setAccept(false);
@@ -100,6 +100,11 @@ public class KeggPathwayCacher
 		dispatcher.addJob(job);
 		
 		processJobs(dispatcher);
+		
+		triggerPathwayListGeneration();
+
+		if (triggeringCommand != null)
+			triggeringCommand.setFinishedKeggCacher();
 	}
 
 	@Override

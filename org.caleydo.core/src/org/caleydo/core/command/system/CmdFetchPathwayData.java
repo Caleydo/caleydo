@@ -110,6 +110,7 @@ public class CmdFetchPathwayData
 	{
 		bioCartaPathwayCacher.setProxySettings(sProxyServer, iProxyPort);
 		keggPathwayCacher.setProxySettings(sProxyServer, iProxyPort);
+		keggPathwayImageCacher.setProxySettings(sProxyServer, iProxyPort);
 	}
 
 	public void setFinishedKeggCacher()
