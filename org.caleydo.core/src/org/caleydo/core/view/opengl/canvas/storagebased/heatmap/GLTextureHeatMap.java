@@ -80,7 +80,8 @@ public class GLTextureHeatMap
 	
 	private Texture THeatMap;
 	
-	private int[] texName = new int[2];
+	private BufferedImage BImage;
+	
 	
 	/**
 	 * Constructor.
@@ -214,7 +215,7 @@ public class GLTextureHeatMap
 		// pickingTriggerMouseAdapter.resetEvents();
 	}
 	
-	private BufferedImage drawHeatMap(GL gl) 
+	private void drawHeatMap(GL gl) 
 	{
 		fAlXDistances.clear();
 		renderStyle.updateFieldSizes();
@@ -222,23 +223,17 @@ public class GLTextureHeatMap
 		int fXPosition = 0;
 		int fYPosition = 0;
 		int fFieldWidth = 1;
-		int fFieldHeight = 10;
+		int fFieldHeight = 1;
 		
-		/*
-		float fFieldWidt = renderStyle.getNormalFieldWidth();
-		float fFieldHeigh = renderStyle.getFieldHeight();
-		System.out.println("fFieldWidt" + fFieldWidt);
-		System.out.println("fFieldHeigh" + fFieldHeigh);
-		*/
-		
-		int iTextureWidth = set.getVA(iContentVAID).size();
-		int iTextureHeight = set.getVA(iStorageVAID).size()*10;
+		int iTextureWidth = set.getVA(iContentVAID).size()*1;
+		int iTextureHeight = set.getVA(iStorageVAID).size()*1;
 		
 		float fLookupValue = 0;
 		float fOpacity = 0;
 		
-		BufferedImage img = new BufferedImage(iTextureWidth, iTextureHeight, BufferedImage.TYPE_INT_RGB);
-		Graphics g = img.getGraphics();
+		BImage = new BufferedImage(iTextureWidth, iTextureHeight, 
+				BufferedImage.TYPE_INT_RGB);
+		Graphics graphic = BImage.getGraphics();
 		
 		for (Integer iContentIndex : set.getVA(iContentVAID))
 		{
@@ -259,36 +254,39 @@ public class GLTextureHeatMap
 				float[] fArMappingColor = colorMapper.getColor(fLookupValue); 
 				
 								
-				Color HeatMapColor = new Color(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
-				g.setColor(HeatMapColor);
+				Color HeatMapColor = new Color(fArMappingColor[0], fArMappingColor[1], 
+						fArMappingColor[2], fOpacity);
+				graphic.setColor(HeatMapColor);
 			
-				g.fillRect(fXPosition,fYPosition,fFieldWidth,fFieldHeight);
+				graphic.fillRect(fXPosition,fYPosition,fFieldWidth,fFieldHeight);
 												
 				fYPosition += fFieldHeight;
 			}
 			fXPosition += fFieldWidth;
 		}
 		
-		return img;	
 	}
 	
 	private void renderTextureHeatMap(GL gl)
 	{
 	    gl.glEnable(GL.GL_TEXTURE_2D);
 		
-	    BufferedImage img = drawHeatMap(gl);
+	    drawHeatMap(gl);
 	    
-	    THeatMap = TextureIO.newTexture(img, false);
-		
+	    //THeatMap = TextureIO.newTexture(BImage, true); //Mipmapping on --> Problem with dimension (2^n*2^n)
+	    THeatMap = TextureIO.newTexture(BImage, false); //Mipmapping off --> Problem with big textures 
+	    
 		THeatMap.enable();
 		THeatMap.bind();
 		
-	    gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_REPEAT);
-	    gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_REPEAT);
+		
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP);
+	    gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_CLAMP);
 	    gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
 	        GL.GL_NEAREST);
 	    gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER,
-	        GL.GL_NEAREST);
+	    		//GL.GL_NEAREST_MIPMAP_NEAREST);
+	    		GL.GL_NEAREST);
 		
 	    TextureCoords texCoords = THeatMap.getImageTexCoords();
 	   
@@ -298,17 +296,33 @@ public class GLTextureHeatMap
 	    gl.glPushName(pickingManager.getPickingID(iUniqueID, 
 	    		EPickingType.HEAT_MAP_FIELD_SELECTION, 1));
 	    
-	    gl.glBegin(GL.GL_QUADS);
-	    gl.glTexCoord2d(texCoords.left(),texCoords.bottom());
-		gl.glVertex3f(0.0f, 0.0f, 0);
-	    gl.glTexCoord2d(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(0.0f, 5.0f, 0);
-	    gl.glTexCoord2d(texCoords.right(), texCoords.top());
-		gl.glVertex3f(7.0f, 5.0f, 0);
-	    gl.glTexCoord2d(texCoords.left(), texCoords.top());
-		gl.glVertex3f(7.0f, 0.0f, 0);
-		gl.glEnd();
-		
+	    if (!bRenderStorageHorizontally)
+	    {
+	    	gl.glBegin(GL.GL_QUADS);
+		    gl.glTexCoord2d(texCoords.left(),texCoords.bottom());
+			gl.glVertex3f(0.0f, 0.0f, 0);
+		    gl.glTexCoord2d(texCoords.left(), texCoords.top());
+			gl.glVertex3f(0.0f, 7.0f, 0);
+		    gl.glTexCoord2d(texCoords.right(), texCoords.top());
+			gl.glVertex3f(4.0f, 7.0f, 0);
+		    gl.glTexCoord2d(texCoords.right(), texCoords.bottom());
+			gl.glVertex3f(4.0f, 0.0f, 0);
+			gl.glEnd();
+	    }
+			
+		else
+		{
+		    gl.glBegin(GL.GL_QUADS);
+		    gl.glTexCoord2d(texCoords.left(),texCoords.bottom());
+			gl.glVertex3f(0.0f, 0.0f, 0);
+		    gl.glTexCoord2d(texCoords.left(), texCoords.top());
+			gl.glVertex3f(0.0f, 4.0f, 0);
+		    gl.glTexCoord2d(texCoords.right(), texCoords.top());
+			gl.glVertex3f(7.0f, 4.0f, 0);
+		    gl.glTexCoord2d(texCoords.right(), texCoords.bottom());
+			gl.glVertex3f(7.0f, 0.0f, 0);
+			gl.glEnd();
+		}
 		gl.glPopName();
 		
 	    gl.glFlush();
@@ -357,7 +371,7 @@ public class GLTextureHeatMap
 				gl.glTranslatef(fLeftOffset + colorMappingBar.getWidth(), 0, 0);
 			}
 
-			/*
+			
 			if (!bRenderStorageHorizontally)
 			{
 				gl.glTranslatef(vecTranslation.x(), viewFrustum.getHeight(), vecTranslation
@@ -365,12 +379,11 @@ public class GLTextureHeatMap
 				gl.glRotatef(vecRotation.x(), vecRotation.y(), vecRotation.z(), vecRotation
 						.w());
 			}
-			*/
-		
+			
 			gl.glTranslatef(fAnimationTranslation, 0.0f, 0.0f);
 			
 			renderTextureHeatMap(gl);
-			
+					
 			//renderHeatMap(gl);
 			//renderSelection(gl, ESelectionType.MOUSE_OVER);
 			//renderSelection(gl, ESelectionType.SELECTION);
@@ -393,6 +406,8 @@ public class GLTextureHeatMap
 			
 		}	
 		gl.glEndList();
+		
+		System.out.println(getDetailedInfo());
 	}
 
 	/**
@@ -581,6 +596,10 @@ public class GLTextureHeatMap
 						}
 
 						System.out.println("click on texture");
+						if(bRenderStorageHorizontally)
+							bRenderStorageHorizontally = false;
+							else
+								bRenderStorageHorizontally = true;
 						
 						break;
 
