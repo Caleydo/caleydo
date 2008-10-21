@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Caleydo RCP Plug-in
 Bundle-SymbolicName: org.caleydo.rcp; singleton:=true
-Bundle-Version: 1.0.0
+Bundle-Version: 1.0.1
 Bundle-Activator: org.caleydo.rcp.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,

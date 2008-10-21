@@ -64,9 +64,7 @@ public class CmdFetchPathwayData
 			throw new IllegalStateException("Unable to save preference file.");
 		}
 		
-		bioCartaPathwayCacher.start();
 		keggPathwayCacher.start();
-		keggPathwayImageCacher.start();
 
 		commandManager.runDoCommand(this);
 	}
@@ -117,12 +115,14 @@ public class CmdFetchPathwayData
 	{
 		isKeggCacherFinished = true;
 		notifyWizard();
+		keggPathwayImageCacher.start();
 	}
 
 	public void setFinishedKeggImageCacher()
 	{
 		isKeggImageCacherFinished = true;
 		notifyWizard();
+		bioCartaPathwayCacher.start();
 	}
 
 	public void setFinishedBioCartaCacher()
