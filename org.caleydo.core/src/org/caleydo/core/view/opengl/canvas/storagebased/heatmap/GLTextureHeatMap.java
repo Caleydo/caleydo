@@ -3,9 +3,7 @@ package org.caleydo.core.view.opengl.canvas.storagebased.heatmap;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.BufferedImage;
+import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
@@ -35,9 +33,10 @@ import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLIconTextureManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
+import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
-import com.sun.opengl.util.texture.TextureIO;
+import com.sun.opengl.util.texture.TextureData;
 
 
 /**
@@ -79,9 +78,8 @@ public class GLTextureHeatMap
 	private ArrayList<Float> fAlXDistances;
 	
 	private Texture THeatMap;
-	
-	private BufferedImage BImage;
-	
+		
+	private FloatBuffer FbTexture;
 	
 	/**
 	 * Constructor.
@@ -220,24 +218,16 @@ public class GLTextureHeatMap
 		fAlXDistances.clear();
 		renderStyle.updateFieldSizes();
 		
-		int fXPosition = 0;
-		int fYPosition = 0;
-		int fFieldWidth = 1;
-		int fFieldHeight = 1;
-		
-		int iTextureWidth = set.getVA(iContentVAID).size()*1;
-		int iTextureHeight = set.getVA(iStorageVAID).size()*1;
+		int iTextureWidth = set.getVA(iContentVAID).size();
+		int iTextureHeight = set.getVA(iStorageVAID).size();
 		
 		float fLookupValue = 0;
 		float fOpacity = 0;
-		
-		BImage = new BufferedImage(iTextureWidth, iTextureHeight, 
-				BufferedImage.TYPE_INT_RGB);
-		Graphics graphic = BImage.getGraphics();
+				
+		FbTexture = BufferUtil.newFloatBuffer(iTextureWidth * iTextureHeight * 4); 
 		
 		for (Integer iContentIndex : set.getVA(iContentVAID))
 		{
-			fYPosition = 0;
 			for (Integer iStorageIndex: set.getVA(iStorageVAID))
 			{
 				if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex)
@@ -253,33 +243,39 @@ public class GLTextureHeatMap
 				 
 				float[] fArMappingColor = colorMapper.getColor(fLookupValue); 
 				
+				float[] fArRgba = {fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity};
 								
-				Color HeatMapColor = new Color(fArMappingColor[0], fArMappingColor[1], 
-						fArMappingColor[2], fOpacity);
-				graphic.setColor(HeatMapColor);
-			
-				graphic.fillRect(fXPosition,fYPosition,fFieldWidth,fFieldHeight);
-												
-				fYPosition += fFieldHeight;
+				FbTexture.put(fArRgba);
 			}
-			fXPosition += fFieldWidth;
 		}
-		
+		FbTexture.rewind();	
 	}
 	
 	private void renderTextureHeatMap(GL gl)
 	{
-	    gl.glEnable(GL.GL_TEXTURE_2D);
-		
 	    drawHeatMap(gl);
+
+	    TextureData texData = new TextureData(
+	    		GL.GL_RGBA /*internalFormat*/, 
+	    		set.getVA(iContentVAID).size() /*width*/, 
+	    		set.getVA(iStorageVAID).size() /*height*/, 
+	    		0 /*border*/, 
+	    		GL.GL_RGBA /*pixelFormat*/, 
+	    		GL.GL_FLOAT /*pixelType*/, 
+	    		false /*mipmap*/, 
+	    		false /*dataIsCompressed*/, 
+	    		false /*mustFlipVertically*/, 
+	    		FbTexture /*(Float-)Buffer*/, 
+	    		null /*TextureData.Flusher flusher*/);
 	    
-	    //THeatMap = TextureIO.newTexture(BImage, true); //Mipmapping on --> Problem with dimension (2^n*2^n)
-	    THeatMap = TextureIO.newTexture(BImage, false); //Mipmapping off --> Problem with big textures 
+	    /* Todo: find another way to initialize a texture*/
+	    THeatMap = iconTextureManager.getIconTexture(EIconTextures.HEAT_MAP_SYMBOL);
 	    
-		THeatMap.enable();
+	    THeatMap.updateImage(texData);
+	    
+	    THeatMap.enable();
 		THeatMap.bind();
-		
-		
+			
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP);
 	    gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_CLAMP);
 	    gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER,
@@ -329,8 +325,7 @@ public class GLTextureHeatMap
 
 		gl.glPopAttrib();
 		
-		THeatMap.disable();
-		
+		THeatMap.disable();	    
 	}
 	
 	@Override
@@ -407,7 +402,6 @@ public class GLTextureHeatMap
 		}	
 		gl.glEndList();
 		
-		System.out.println(getDetailedInfo());
 	}
 
 	/**
@@ -595,11 +589,11 @@ public class GLTextureHeatMap
 							triggerUpdate(contentSelectionManager.getDelta());
 						}
 
-						System.out.println("click on texture");
+						/*System.out.println("click on texture");
 						if(bRenderStorageHorizontally)
 							bRenderStorageHorizontally = false;
 							else
-								bRenderStorageHorizontally = true;
+								bRenderStorageHorizontally = true;*/
 						
 						break;
 
@@ -620,7 +614,7 @@ public class GLTextureHeatMap
 							triggerUpdate(contentSelectionManager.getDelta());
 						}
 						
-						System.out.println("mouse over texture");
+						//System.out.println("mouse over texture");
 
 						break;
 				}
