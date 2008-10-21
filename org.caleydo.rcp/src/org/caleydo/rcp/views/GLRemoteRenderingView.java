@@ -1,6 +1,7 @@
 package org.caleydo.rcp.views;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.swt.CmdViewCreateDataEntitySearcher;
@@ -76,7 +77,16 @@ public class GLRemoteRenderingView
 		{
 			iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D, -1));
 			iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_3D, -1));
-			iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_GLYPH, -1));
+			
+			// FIXME: This is just a temporary solution to check if glyph view
+			// should be added to bucket.
+			try
+			{
+				GeneralManager.get().getIDManager().getInternalFromExternalID(453010);
+				iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_GLYPH, -1));
+			}catch (IllegalArgumentException e) {
+				GeneralManager.get().getLogger().log(Level.WARNING, "Cannot add glyph to bucket! No glyph data loaded!");
+			}
 		}		
 		
 		createGLEventListener(ECommandType.CREATE_GL_BUCKET_3D, glCanvas.getID());

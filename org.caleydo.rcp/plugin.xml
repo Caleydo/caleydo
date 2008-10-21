@@ -71,7 +71,7 @@
             class="org.caleydo.rcp.views.GLGlyphView"
             icon="resources/icons/view/glyph/glyph.png"
             id="org.caleydo.rcp.views.GLGlyphView"
-            name="Glyph View">
+            name="Glyph">
       </view>
       <view
             allowMultiple="true"
@@ -79,7 +79,7 @@
             class="org.caleydo.rcp.views.GLGlyphSliderView"
             icon="resources/icons/view/glyph/glyph.png"
             id="org.caleydo.rcp.views.GLGlyphSliderView"
-            name="Glyph Slider View">
+            name="Glyph Slider">
       </view>
       <view
             allowMultiple="true"
@@ -87,7 +87,7 @@
             class="org.caleydo.rcp.views.SWTGlyphMappingConfigurationView"
             icon="resources/icons/view/glyph/glyph.png"
             id="org.caleydo.rcp.views.SWTGlyphMappingConfigurationView"
-            name="Glyph Mapping Configuration View">
+            name="Glyph Mapping Configuration">
       </view>
       
    </extension>   

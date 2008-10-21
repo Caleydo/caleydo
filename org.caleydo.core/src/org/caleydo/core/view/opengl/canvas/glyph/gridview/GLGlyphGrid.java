@@ -417,48 +417,48 @@ public class GLGlyphGrid
 		for (GlyphGridPositionModel model : positionModels.values())
 			model.buildGrid(glyphMap_, gl);
 
-		// std grid
-		Vec4f gridColor_ = renderStyle.getGridColor();
-
-		// delete list if present (rebuild grid)
-		if (GLGridList_ >= 0)
-			gl.glDeleteLists(GLGridList_, 1);
-
-		// draw grid
-		GLGridList_ = gl.glGenLists(1);
-		gl.glNewList(GLGridList_, GL.GL_COMPILE);
-
-		gl.glLineWidth(1);
-
-		gl.glTranslatef(0f, -100f, 0f);
-
-		for (int i = 0; i < 200; ++i)
-		{
-			gl.glTranslatef(0f, 1f, 0f);
-			gl.glBegin(GL.GL_LINES);
-			gl.glColor4f(gridColor_.get(0), gridColor_.get(1), gridColor_.get(2), gridColor_
-					.get(3));
-			gl.glVertex3f(-100, 0, 0);
-			gl.glVertex3f(100, 0, 0);
-			gl.glEnd();
-		}
-
-		gl.glTranslatef(-100f, -100f, 0f);
-
-		for (int i = 0; i < 200; ++i)
-		{
-			gl.glTranslatef(1f, 0f, 0f);
-			gl.glBegin(GL.GL_LINES);
-			gl.glColor4f(gridColor_.get(0), gridColor_.get(1), gridColor_.get(2), gridColor_
-					.get(3));
-			gl.glVertex3f(0, -100, 0);
-			gl.glVertex3f(0, 100, 0);
-			gl.glEnd();
-		}
-
-		gl.glTranslatef(-100f, 0f, 0f);
-
-		gl.glEndList();
+//		// std grid
+//		Vec4f gridColor_ = renderStyle.getGridColor();
+//
+//		// delete list if present (rebuild grid)
+//		if (GLGridList_ >= 0)
+//			gl.glDeleteLists(GLGridList_, 1);
+//
+//		// draw grid
+//		GLGridList_ = gl.glGenLists(1);
+//		gl.glNewList(GLGridList_, GL.GL_COMPILE);
+//
+//		gl.glLineWidth(1);
+//
+//		gl.glTranslatef(0f, -100f, 0f);
+//
+//		for (int i = 0; i < 200; ++i)
+//		{
+//			gl.glTranslatef(0f, 1f, 0f);
+//			gl.glBegin(GL.GL_LINES);
+//			gl.glColor4f(gridColor_.get(0), gridColor_.get(1), gridColor_.get(2), gridColor_
+//					.get(3));
+//			gl.glVertex3f(-100, 0, 0);
+//			gl.glVertex3f(100, 0, 0);
+//			gl.glEnd();
+//		}
+//
+//		gl.glTranslatef(-100f, -100f, 0f);
+//
+//		for (int i = 0; i < 200; ++i)
+//		{
+//			gl.glTranslatef(1f, 0f, 0f);
+//			gl.glBegin(GL.GL_LINES);
+//			gl.glColor4f(gridColor_.get(0), gridColor_.get(1), gridColor_.get(2), gridColor_
+//					.get(3));
+//			gl.glVertex3f(0, -100, 0);
+//			gl.glVertex3f(0, 100, 0);
+//			gl.glEnd();
+//		}
+//
+//		gl.glTranslatef(-100f, 0f, 0f);
+//
+//		gl.glEndList();
 	}
 
 	public void setGlyphPositions()

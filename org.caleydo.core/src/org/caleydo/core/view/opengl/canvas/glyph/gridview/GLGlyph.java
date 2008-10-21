@@ -278,9 +278,9 @@ public class GLGlyph
 		if (displayList_ < 0 || bRedrawDisplayList_)
 			redrawView(gl);
 
-//		int displayListGrid = grid_.getGridLayout(bIsLocal);
-//		if (displayListGrid >= 0)
-//			gl.glCallList(displayListGrid);
+		int displayListGrid = grid_.getGridLayout(bIsLocal);
+		if (displayListGrid >= 0)
+			gl.glCallList(displayListGrid);
 
 		if (displayList_ >= 0)
 			gl.glCallList(displayList_);
