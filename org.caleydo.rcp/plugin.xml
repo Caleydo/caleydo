@@ -65,6 +65,30 @@
             class="org.caleydo.rcp.views.HTMLBrowserView"
             category="org.caleydo.rcp.views">
       </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.views.GLGlyphView"
+            icon="resources/icons/view/glyph/glyph.png"
+            id="org.caleydo.rcp.views.GLGlyphView"
+            name="Glyph View">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.views.GLGlyphSliderView"
+            icon="resources/icons/view/glyph/glyph.png"
+            id="org.caleydo.rcp.views.GLGlyphSliderView"
+            name="Glyph Slider View">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.views.SWTGlyphMappingConfigurationView"
+            icon="resources/icons/view/glyph/glyph.png"
+            id="org.caleydo.rcp.views.SWTGlyphMappingConfigurationView"
+            name="Glyph Mapping Configuration View">
+      </view>
       
    </extension>   
    
@@ -151,6 +175,21 @@
             id="org.caleydo.rcp.command.openviews.browser"
             name="Open Web Browser">
       </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenGlyphViewHandler"
+            id="org.caleydo.rcp.command.openviews.glyphview"
+            name="Open Glyph View">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenGlyphSliderViewHandler"
+            id="org.caleydo.rcp.command.openviews.glyphsliderview"
+            name="Open Glyph Slider View">
+      </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenGlyphMappingConfigurationHandler"
+            id="org.caleydo.rcp.command.openviews.glyphmappingconfigurationview"
+            name="Open Glyph Mapping Configuration View">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -219,6 +258,24 @@
                      commandId="org.caleydo.rcp.command.openviews.browser"
                      icon="resources/icons/view/browser/browser.png"
                      label="Web Browser"
+                     style="push">
+               </command>
+               <command
+                     commandId="org.caleydo.rcp.command.openviews.glyphview"
+                     icon="resources/icons/view/glyph/glyph.png"
+                     label="Glyph View"
+                     style="push">
+               </command>
+               <command
+                     commandId="org.caleydo.rcp.command.openviews.glyphsliderview"
+                     icon="resources/icons/view/glyph/glyph.png"
+                     label="Glyph Slider View"
+                     style="push">
+               </command>
+               <command
+                     commandId="org.caleydo.rcp.command.openviews.glyphmappingconfigurationview"
+                     icon="resources/icons/view/glyph/glyph.png"
+                     label="Glyph Mapping Configuration"
                      style="push">
                </command>
             </menu>

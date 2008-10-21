@@ -45,7 +45,7 @@ public class GLRemoteGlyph
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 		viewType = EManagedObjectType.GL_GLYPH;
 		viewIDs_ = new ArrayList<Integer>();
-		mouseWheelListener_ = new GlyphMouseListener(this, generalManager);
+		mouseWheelListener_ = new GlyphMouseListener(this);
 
 		// Unregister standard mouse wheel listener
 		// parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);

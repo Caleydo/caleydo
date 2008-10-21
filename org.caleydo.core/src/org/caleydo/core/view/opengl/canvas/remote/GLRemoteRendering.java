@@ -41,6 +41,7 @@ import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListener;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.GLConnectionLineRendererBucket;
@@ -637,6 +638,11 @@ public class GLRemoteRendering
 					EIconTextures.PAR_COORDS_SYMBOL);
 		}
 		else if (view instanceof GLPathway)
+		{
+			textureViewSymbol = glIconTextureManager.getIconTexture(
+					EIconTextures.PAR_COORDS_SYMBOL);
+		}
+		else if (view instanceof GLGlyph)
 		{
 			textureViewSymbol = glIconTextureManager.getIconTexture(
 					EIconTextures.PAR_COORDS_SYMBOL);

@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.glyph.gridview;
 
 import gleem.linalg.open.Vec2i;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
 import javax.media.opengl.GL;
@@ -132,6 +133,21 @@ public class GlyphEntry
 		if (parameter_.size() <= index)
 			return -1;
 		return parameter_.get(index);
+	}
+
+	public String getStringParameter(String colname)
+	{
+
+		if (!vsParameterString.containsKey(colname))
+			return "";
+		return vsParameterString.get(colname);
+	}
+
+	public ArrayList<String> getStringParameterColumnNames()
+	{
+		ArrayList<String> temp = new ArrayList<String>();
+		temp.addAll(vsParameterString.keySet());
+		return temp;
 	}
 
 	public void generateGLLists(GL gl)

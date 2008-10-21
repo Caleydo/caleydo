@@ -10,7 +10,7 @@ import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
+import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 
 /**
  * Loading data into the glyph storage
@@ -21,14 +21,14 @@ public class GlyphDataLoader
 {
 
 	private IGeneralManager generalManager;
-	private IGlyphManager gman = null;
+	private GlyphManager gman = null;
 
 	private HashMap<Integer, GlyphEntry> glyphs = new HashMap<Integer, GlyphEntry>();
 
 	public GlyphDataLoader()
 	{
 		this.generalManager = GeneralManager.get();
-		this.gman = generalManager.getGlyphManager();
+		this.gman = (GlyphManager) generalManager.getGlyphManager();
 	}
 
 	public HashMap<Integer, GlyphEntry> getGlyphList()
@@ -40,6 +40,9 @@ public class GlyphDataLoader
 	@SuppressWarnings("unchecked")
 	public void loadGlyphs(ISet glyphData)
 	{
+		if (gman.storageLoaded(glyphData.getLabel()))
+			return;
+
 		glyphs = new HashMap<Integer, GlyphEntry>();
 
 		GLGlyphGenerator generator = generalManager.getGlyphManager().getGlyphGenerator();
@@ -158,7 +161,8 @@ public class GlyphDataLoader
 			++counter;
 		}
 
-		generalManager.getGlyphManager().addGlyphs(glyphs);
+		((GlyphManager) generalManager.getGlyphManager()).addGlyphs(glyphs, glyphData
+				.getLabel());
 	}
 
 }

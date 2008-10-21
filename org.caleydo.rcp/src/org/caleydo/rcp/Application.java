@@ -57,7 +57,7 @@ public class Application
 	public Object start(IApplicationContext context) throws Exception
 	{
 		System.out.println("Start Caleydo...");
-		
+
 		alStartViews = new ArrayList<EStartViewType>();
 
 		Map<String, Object> map = (Map<String, Object>) context.getArguments();
@@ -83,6 +83,11 @@ public class Application
 							.getCommandLineArgument()))
 					{
 						alStartViews.add(EStartViewType.HEATMAP);
+					}
+					else if (sArParam[iParamIndex].equals(EStartViewType.GLYPHVIEW
+							.getCommandLineArgument()))
+					{
+						alStartViews.add(EStartViewType.GLYPHVIEW);
 					}
 					else if (sArParam[iParamIndex].equals(EStartViewType.BROWSER
 							.getCommandLineArgument()))
@@ -110,6 +115,7 @@ public class Application
 		Display display = PlatformUI.createDisplay();
 
 		// Check if Caleydo will be started the first time
+
 		if (!caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(
 				PreferenceConstants.PATHWAY_DATA_OK))
 		{
@@ -118,11 +124,10 @@ public class Application
 			firstStartWizard.open();
 		}
 
-//		if (bIsWebstart && !bDoExit)
-//		{
-//			startCaleydoCore();
-//		}
-
+		// if (bIsWebstart && !bDoExit)
+		// {
+		// startCaleydoCore();
+		// }
 		try
 		{
 			applicationWorkbenchAdvisor = new ApplicationWorkbenchAdvisor();
@@ -216,17 +221,17 @@ public class Application
 			caleydoCore.setXmlFileName(sCaleydoXMLfile);
 			caleydoCore.start();
 
-			if(applicationMode == EApplicationMode.STANDARD)
+			if (applicationMode == EApplicationMode.STANDARD)
 			{
-				WizardDialog dataImportWizard = new WizardDialog(shell,
-						new DataImportWizard(shell));
+				WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(
+						shell));
 
 				if (WizardDialog.CANCEL == dataImportWizard.open())
 				{
 					bDoExit = true;
 				}
 			}
-			
+
 			shell.dispose();
 		}
 		else
@@ -249,7 +254,7 @@ public class Application
 		// Register the info area to all mediator from type SELECTION
 		GeneralManager.get().getEventPublisher().registerReceiverToMediatorGroup(
 				EMediatorType.SELECTION_MEDIATOR, InfoArea.getInfoArea());
-		
+
 		if (GeneralManager.get().isStandalone())
 		{
 			// Start OpenGL rendering
@@ -268,30 +273,34 @@ public class Application
 		store.getInt("");
 
 		ColorMappingManager.get().initiFromPreferenceStore();
-//		store = GeneralManager.get().getPreferenceStore();
-//		int iNumberOfMarkerPoints = store
-//				.getInt(PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
-//
-//		ArrayList<ColorMarkerPoint> alMarkerPoints = new ArrayList<ColorMarkerPoint>();
-//		for (int iCount = 1; iCount <= iNumberOfMarkerPoints; iCount++)
-//		{
-//			float colorMarkerValue = store
-//					.getFloat(PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
-//			String color = store.getString(PreferenceConstants.COLOR_MARKER_POINT_COLOR
-//					+ iCount);
-//			
-//			alMarkerPoints.add(new ColorMarkerPoint(colorMarkerValue, ConversionTools.getColorFromString(color)));
-//		}
-//
-//		// TODO not generic
-//		ColorMappingManager.get().initColorMapping(EColorMappingType.GENE_EXPRESSION,
-//				alMarkerPoints);
-//
-//		for (AGLEventListener view : GeneralManager.get().getViewGLCanvasManager()
-//				.getAllGLEventListeners())
-//		{
-//			view.setDisplayListDirty();
-//		}
+		// store = GeneralManager.get().getPreferenceStore();
+		// int iNumberOfMarkerPoints = store
+		// .getInt(PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
+		//
+		// ArrayList<ColorMarkerPoint> alMarkerPoints = new
+		// ArrayList<ColorMarkerPoint>();
+		// for (int iCount = 1; iCount <= iNumberOfMarkerPoints; iCount++)
+		// {
+		// float colorMarkerValue = store
+		// .getFloat(PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
+		// String color =
+		// store.getString(PreferenceConstants.COLOR_MARKER_POINT_COLOR
+		// + iCount);
+		//			
+		// alMarkerPoints.add(new ColorMarkerPoint(colorMarkerValue,
+		// ConversionTools.getColorFromString(color)));
+		// }
+		//
+		// // TODO not generic
+		// ColorMappingManager.get().initColorMapping(EColorMappingType.GENE_EXPRESSION,
+		// alMarkerPoints);
+		//
+		// for (AGLEventListener view :
+		// GeneralManager.get().getViewGLCanvasManager()
+		// .getAllGLEventListeners())
+		// {
+		// view.setDisplayListDirty();
+		// }
 
 	}
 

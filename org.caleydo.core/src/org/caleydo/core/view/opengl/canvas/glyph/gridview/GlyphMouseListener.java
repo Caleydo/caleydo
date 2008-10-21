@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.canvas.glyph.gridview;
 
-
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import java.awt.Dimension;
@@ -10,9 +9,10 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
+import java.util.ArrayList;
 import javax.media.opengl.GL;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 
 /**
  * Specialized mouse wheel listener for the glyph plane view
@@ -26,15 +26,17 @@ public class GlyphMouseListener
 
 	protected float fPanScale = 3.0f;
 
-	private IGeneralManager generalManager;
-
 	private AGLEventListener viewCanvas;
 
 	protected int prevMouseX, prevMouseY;
 
-	protected int iRubberBandStartX = 0, iRubberBandStartY = 0;
+	protected boolean bRubberBandEnabled = false;
 
+	protected int iRubberBandStartX = 0, iRubberBandStartY = 0;
 	protected int iRubberBandCurrentX = 0, iRubberBandCurrentY = 0;
+
+	protected Vec3f vRubberBandStart = null;
+	protected Vec3f vRubberBandCurrent = null;
 
 	protected Rotf currentRotation = null;
 
@@ -43,19 +45,61 @@ public class GlyphMouseListener
 	/**
 	 * Constructor.
 	 */
-	public GlyphMouseListener(final AGLEventListener remoteRendering3D,
-			final IGeneralManager generalManager)
+	public GlyphMouseListener(final AGLEventListener remoteRendering3D)
 	{
 
 		this.viewCanvas = remoteRendering3D;
-		this.generalManager = generalManager;
 
 		this.currentRotation = new Rotf();
+		this.vRubberBandStart = new Vec3f();
+		this.vRubberBandCurrent = new Vec3f();
 	}
 
+	/**
+	 * This function returns the corner points of the Rubberband. Empty list, if
+	 * there is no rubberband
+	 */
+	public ArrayList<Vec3f> getRubberBandPoints()
+	{
+		ArrayList<Vec3f> list = new ArrayList<Vec3f>();
+		if (bRubberBandEnabled && iRubberBandStartX != 0 && iRubberBandStartY != 0)
+		{
+			list.add(new Vec3f(vRubberBandStart));
+			list.add(new Vec3f(vRubberBandCurrent));
+		}
+		return list;
+	}
+
+	/**
+	 * renders the rubberband selection
+	 * 
+	 * @param gl
+	 */
 	public void render(GL gl)
 	{
+		if (!bRubberBandEnabled)
+			return;
 
+		if (iRubberBandStartX != 0 && iRubberBandStartY != 0)
+		{
+			// starting point
+			if (vRubberBandStart.x() == 0 && vRubberBandStart.y() == 0)
+				vRubberBandStart = this.convertMousePositionToWorldPosition(gl,
+						iRubberBandStartX, iRubberBandStartY);
+
+			// moving point
+			vRubberBandCurrent = this.convertMousePositionToWorldPosition(gl,
+					iRubberBandCurrentX, iRubberBandCurrentY);
+
+		}
+		else
+		{
+			if (vRubberBandStart.x() != 0 && vRubberBandStart.y() != 0)
+			{
+				vRubberBandStart = new Vec3f();
+				vRubberBandCurrent = new Vec3f();
+			}
+		}
 	}
 
 	@Override
@@ -94,13 +138,9 @@ public class GlyphMouseListener
 		viewCanvas.getViewCamera().setCameraRotation(t);
 	}
 
-	// Methods required for the implementation of MouseMotionListener
+	@Override
 	public void mouseDragged(MouseEvent e)
 	{
-
-		int x = e.getX();
-		int y = e.getY();
-		Dimension size = e.getComponent().getSize();
 
 		if (prevMouseX == 0 && prevMouseY == 0)
 		{
@@ -121,95 +161,50 @@ public class GlyphMouseListener
 		/* --- Middle -- Mouse Button --- */
 		if ((e.getModifiers() & InputEvent.BUTTON2_MASK) != 0)
 		{
-
-			/**
-			 * --- ROTATION ---
-			 */
-			// Rotf currentRotX = new Rotf();
-			// Rotf currentRotY = new Rotf();
-			//					   	    
-			// float fpercentX = (float)(x-prevMouseX)/(float)(size.width)
-			// * fMouseSensitivityRotation;
-			//					    	
-			// float fpercentY = (float)(y-prevMouseY)/(float)(size.height)
-			// * fMouseSensitivityRotation;
-			//					    	
-			//					    	
-			// currentRotX.set(new Vec3f(0,1,0),
-			// fpercentX * (float)Math.PI);
-			//					   	    
-			// currentRotY.set(new Vec3f(1,0,0),
-			// fpercentY * (float)Math.PI);
-			//					   	    
-			// /* concatinate rotations.. */
-			// currentRotation = currentRotX.times(currentRotY);
-			//					   	    
-			// prevMouseX = x;
-			// prevMouseY = y;
-			//						    
-			// viewCanvas.getViewCamera().addCameraRotation(currentRotation);
+			handleRotation(e);
 		}
 
 		/* --- Right -- Mouse Button --- */
 		if ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0)
 		{
-			/**
-			 * --- PANING ---
-			 */
-
-			float rot = viewCanvas.getViewCamera().getCameraRotation().get(new Vec3f(0, 0, 1));
-			fPanScale = -viewCanvas.getViewCamera().getCameraPosition().z();
-
-			Vec3f addVec3f = new Vec3f(fPanScale
-					* ((float) (x - prevMouseX) / (float) size.width),
-					fPanScale * ((float) (prevMouseY - y) / (float) size.height)
-							* (float) Math.cos(rot), -fPanScale
-							* ((float) (prevMouseY - y) / (float) size.height)
-							* (float) Math.sin(rot));
-
-			prevMouseX = x;
-			prevMouseY = y;
-
-			viewCanvas.getViewCamera().addCameraPosition(addVec3f);
+			handlePanning(e);
 		}
 
 	}
 
+	@Override
 	public void mouseMoved(MouseEvent e)
 	{
-
 	}
 
+	@Override
 	public void mouseClicked(MouseEvent arg0)
 	{
-
-		// TODO Auto-generated method stub
-
 	}
 
+	@Override
 	public void mouseEntered(MouseEvent arg0)
 	{
-
-		// TODO Auto-generated method stub
-
 	}
 
+	@Override
 	public void mouseExited(MouseEvent arg0)
 	{
-
-		// TODO Auto-generated method stub
-
 	}
 
+	@Override
 	public void mousePressed(MouseEvent e)
 	{
 
 		if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0)
 		{
-			iRubberBandStartX = e.getX();
-			iRubberBandStartY = e.getY();
-			iRubberBandCurrentX = e.getX();
-			iRubberBandCurrentY = e.getY();
+			if (bRubberBandEnabled)
+			{
+				iRubberBandStartX = e.getX();
+				iRubberBandStartY = e.getY();
+				iRubberBandCurrentX = e.getX();
+				iRubberBandCurrentY = e.getY();
+			}
 		}
 		/* --- Right -- Mouse Button --- */
 		if ((e.getModifiers() & InputEvent.BUTTON3_MASK) != 0)
@@ -219,11 +214,110 @@ public class GlyphMouseListener
 		}
 	}
 
+	@Override
 	public void mouseReleased(MouseEvent arg0)
 	{
+		iRubberBandStartX = 0;
+		iRubberBandStartX = 0;
+	}
 
-		iRubberBandStartX = 0;
-		iRubberBandStartX = 0;
+	/**
+	 * This handles the panning for the view. It flyes over the drawing plane
+	 * 
+	 * @param MouseEvent e
+	 */
+	private void handlePanning(MouseEvent e)
+	{
+		int x = e.getX();
+		int y = e.getY();
+		Dimension size = e.getComponent().getSize();
+
+		float rot = viewCanvas.getViewCamera().getCameraRotation().get(new Vec3f(0, 0, 1));
+		fPanScale = -viewCanvas.getViewCamera().getCameraPosition().z();
+
+		Vec3f addVec3f = new Vec3f(
+				fPanScale * ((float) (x - prevMouseX) / (float) size.width), fPanScale
+						* ((float) (prevMouseY - y) / (float) size.height)
+						* (float) Math.cos(rot), -fPanScale
+						* ((float) (prevMouseY - y) / (float) size.height)
+						* (float) Math.sin(rot));
+
+		prevMouseX = x;
+		prevMouseY = y;
+
+		viewCanvas.getViewCamera().addCameraPosition(addVec3f);
+	}
+
+	/**
+	 * This handles the rotation for the view. Not used for now
+	 * 
+	 * @param MouseEvent e
+	 */
+	private void handleRotation(MouseEvent e)
+	{
+		// Rotf currentRotX = new Rotf();
+		// Rotf currentRotY = new Rotf();
+		//					   	    
+		// float fpercentX = (float)(x-prevMouseX)/(float)(size.width)
+		// * fMouseSensitivityRotation;
+		//					    	
+		// float fpercentY = (float)(y-prevMouseY)/(float)(size.height)
+		// * fMouseSensitivityRotation;
+		//					    	
+		//					    	
+		// currentRotX.set(new Vec3f(0,1,0),
+		// fpercentX * (float)Math.PI);
+		//					   	    
+		// currentRotY.set(new Vec3f(1,0,0),
+		// fpercentY * (float)Math.PI);
+		//					   	    
+		// /* concatinate rotations.. */
+		// currentRotation = currentRotX.times(currentRotY);
+		//					   	    
+		// prevMouseX = x;
+		// prevMouseY = y;
+		//						    
+		// viewCanvas.getViewCamera().addCameraRotation(currentRotation);
+	}
+
+	/**
+	 * This method converts the mouse coordinates to world coordinates
+	 * (including perspective correction)
+	 * 
+	 * @param gl
+	 * @param x
+	 * @param y
+	 * @return new coordinates
+	 */
+	private Vec3f convertMousePositionToWorldPosition(GL gl, int x, int y)
+	{
+		float[] fArTargetWorldCoordinates = GLCoordinateUtils
+				.convertWindowCoordinatesToWorldCoordinates(gl, x, y);
+
+		Vec3f mousePos = new Vec3f(fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1],
+				fArTargetWorldCoordinates[2]);
+
+		Vec3f camPos = viewCanvas.getViewCamera().getCameraPosition();
+		float camRot = viewCanvas.getViewCamera()
+				.getCameraRotationRadiant(new Vec3f(-1, 0, 0));
+
+		float yy = camPos.z() * (float) Math.cos(Math.PI / 2 - camRot) - camPos.y()
+				* (float) Math.sin(Math.PI / 2 - camRot);
+		float zz = -camPos.z() * (float) Math.sin(Math.PI / 2 - camRot) - camPos.y()
+				* (float) Math.cos(Math.PI / 2 - camRot);
+
+		Vec3f camPosWorld = new Vec3f(-camPos.x(), yy, zz);
+
+		Vec3f dir = mousePos.minus(camPosWorld);
+		dir.normalize();
+
+		float l = -camPosWorld.z() / dir.z();
+
+		float xp = (camPosWorld.x() + l * dir.x());
+		float yp = camPosWorld.y() + l * dir.y();
+		float zp = camPosWorld.z() + l * dir.z();
+
+		return new Vec3f(xp, yp, zp);
 	}
 
 }

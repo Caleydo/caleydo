@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.canvas.glyph.gridview;
 
-
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
@@ -70,6 +69,10 @@ public class GLGlyph
 
 	private int iViewRole = 0;
 
+	private int iCornerOffset = 8;
+
+	private float iViewScale = 0.15f;
+
 	private String sLabel = null;
 
 	/**
@@ -86,7 +89,7 @@ public class GLGlyph
 
 		this.sLabel = sLabel;
 
-		mouseListener_ = new GlyphMouseListener(this, generalManager);
+		mouseListener_ = new GlyphMouseListener(this);
 		keyListener_ = new GlyphKeyListener();
 		renderStyle = new GlyphRenderStyle(viewFrustum);
 
@@ -103,19 +106,15 @@ public class GLGlyph
 			iViewRole = 2;
 	}
 
+	public void setViewMode(EIconIDs iconIDs)
+	{
+		grid_.setGlyphPositions(iconIDs);
+		bRedrawDisplayList_ = true;
+	}
+
 	@Override
 	public void init(GL gl)
 	{
-
-		// disable std view rotation, zooming
-		{
-			MouseListener[] ml = parentGLCanvas.getMouseListeners();
-			for (MouseListener l : ml)
-			{
-				if (l instanceof JoglMouseListener)
-					((JoglMouseListener) l).setNavigationModes(true, false, false);
-			}
-		}
 
 		ISet glyphData = null;
 
@@ -127,13 +126,6 @@ public class GLGlyph
 					glyphData = tmpSet;
 			}
 		}
-
-		// if (glyphData == null)
-		// {
-		// generalManager.getLogger()
-		// .log(Level.SEVERE, "no glyph data found - shutting down");
-		// return;
-		// }
 
 		grid_ = new GLGlyphGrid(renderStyle);
 		grid_.loadData(glyphData);
@@ -190,9 +182,10 @@ public class GLGlyph
 		}
 
 		// Register specialized mouse wheel listener
-		parentGLCanvas.addMouseListener(mouseListener_);
+		if (mouseListener_ != null)
+			parentGLCanvas.addMouseListener(mouseListener_);
 
-		if (iViewRole != 2)
+		if (iViewRole != 2 && mouseListener_ != null)
 		{
 			parentGLCanvas.addMouseMotionListener(mouseListener_);
 			parentGLCanvas.addMouseWheelListener(mouseListener_);
@@ -201,6 +194,7 @@ public class GLGlyph
 		}
 
 		grid_.setGlyphPositions(EIconIDs.DISPLAY_RECTANGLE);
+		// grid_.setGlyphPositions(EIconIDs.DISPLAY_PLUS);
 
 		if (this.iViewRole == 2)
 			grid_.setGlyphPositions(EIconIDs.DISPLAY_CIRCLE);
@@ -223,14 +217,14 @@ public class GLGlyph
 
 		for (GLCaleydoCanvas c : cc)
 		{
-			// System.out.println("canvas name:" + c.getName() );
 			c.addKeyListener(keyListener_);
 		}
 
 		init(gl);
 
 		grid_.setGridSize(30, 60);
-		grid_.setGlyphPositions(EIconIDs.DISPLAY_SCATTERPLOT);
+		grid_.setGlyphPositions(EIconIDs.DISPLAY_RECTANGLE);
+		// grid_.setGlyphPositions(EIconIDs.DISPLAY_SCATTERPLOT);
 	}
 
 	@Override
@@ -270,17 +264,23 @@ public class GLGlyph
 		// rotate grid
 		gl.glRotatef(45f, 0, 0, 1);
 
-		if (iViewRole != 2) // don't scale down for the selectionview
-			gl.glScalef(0.15f, 0.15f, 0.15f);
+		float scale = iViewScale;
 
-		gl.glTranslatef(8, 0, 0f);
+		if (iViewRole == 2) // don't scale down for the selectionview
+			scale = 1;
+
+		gl.glScalef(scale, scale, scale);
+		gl.glTranslatef(iCornerOffset, 0, 0f);
+
+		if (mouseListener_ != null)
+			handleMouseListenerRubberband(gl, scale);
 
 		if (displayList_ < 0 || bRedrawDisplayList_)
 			redrawView(gl);
 
-		int displayListGrid = grid_.getGridLayout(bIsLocal);
-		if (displayListGrid >= 0)
-			gl.glCallList(displayListGrid);
+//		int displayListGrid = grid_.getGridLayout(bIsLocal);
+//		if (displayListGrid >= 0)
+//			gl.glCallList(displayListGrid);
 
 		if (displayList_ >= 0)
 			gl.glCallList(displayList_);
@@ -290,8 +290,8 @@ public class GLGlyph
 
 		gl.glPopMatrix();
 
-		// if (mouseListener_ != null)
-		// mouseListener_.render(gl);
+		if (mouseListener_ != null)
+			mouseListener_.render(gl);
 
 	}
 
@@ -383,6 +383,57 @@ public class GLGlyph
 		this.getViewCamera().setCameraPosition(campos);
 	}
 
+	private void handleMouseListenerRubberband(GL gl, float scale)
+	{
+		ArrayList<Vec3f> points = mouseListener_.getRubberBandPoints();
+		if (points.size() < 2)
+			return;
+
+		Vec3f sPos = points.get(0);
+		Vec3f cPos = points.get(1);
+
+		// scale
+		sPos.scale(1 / scale);
+		cPos.scale(1 / scale);
+
+		// rotate
+		double w = -Math.PI / 4.0;
+		float sxx = (float) (sPos.x() * Math.cos(w) - sPos.y() * Math.sin(w));
+		float syy = (float) (sPos.x() * Math.sin(w) + sPos.y() * Math.cos(w));
+
+		float cxx = (float) (cPos.x() * Math.cos(w) - cPos.y() * Math.sin(w));
+		float cyy = (float) (cPos.x() * Math.sin(w) + cPos.y() * Math.cos(w));
+
+		// translate
+		cxx -= iCornerOffset;
+		sxx -= iCornerOffset;
+
+		Vec3f sPosNew = new Vec3f(sxx, syy, sPos.z());
+		Vec3f cPosNew = new Vec3f(cxx, cyy, cPos.z());
+
+		// handle selections
+		grid_.selectRubberBand(gl, sPosNew, cPosNew);
+
+		// set to grid
+		Vec2i iPoint1 = new Vec2i();
+		iPoint1.setXY(Math.round(sPosNew.x()), Math.round(sPosNew.y()));
+		Vec2i iPoint2 = new Vec2i();
+		iPoint2.setXY(Math.round(cPosNew.x()), Math.round(cPosNew.y()));
+
+		gl.glPushMatrix();
+		gl.glTranslatef(iPoint1.x(), iPoint1.y(), 0);
+		// GLHelperFunctions.drawAxis(gl);
+		gl.glPopMatrix();
+
+		gl.glPushMatrix();
+		gl.glTranslatef(iPoint2.x(), iPoint2.y(), 0);
+		// GLHelperFunctions.drawAxis(gl);
+		gl.glPopMatrix();
+
+		bRedrawDisplayList_ = true;
+
+	}
+
 	@Override
 	public String getShortInfo()
 	{
@@ -421,8 +472,6 @@ public class GLGlyph
 						return;
 					}
 
-					// int sendParameter =
-					// this.grid_.getDataLoader().getSendParameter();
 					int sendParameter = Integer.parseInt(generalManager.getGlyphManager()
 							.getSetting(EGlyphSettingIDs.UPDATESENDPARAMETER));
 					int sendID = g.getParameter(sendParameter);
@@ -450,10 +499,14 @@ public class GLGlyph
 
 					if (!g.isSelected())
 					{
+						ArrayList<String> colnames = g.getStringParameterColumnNames();
+						String sampleid = g.getStringParameter(colnames.get(0));
+
 						System.out.println("  select object index: "
 								+ Integer.toString(iExternalID) + " on Point " + g.getX()
 								+ " " + g.getY() + " with Patient ID " + sendID
-								+ " and T staging " + stagingT + " and dfs " + dfs);
+								+ " and T staging " + stagingT + " and dfs " + dfs + " + "
+								+ sampleid);
 						g.select();
 
 						ids.add(sendID);
@@ -485,12 +538,6 @@ public class GLGlyph
 					bRedrawDisplayList_ = true;
 
 					// push patient id to other screens
-					// TODO rewrite this with new selection
-					// for (Selection sel : alSelection)
-					// {
-					// sel.updateSelectionSet(iUniqueID, ids, selections, null);
-					// }
-
 					selectionManager.clearSelections();
 					for (int i = 0; i < ids.size(); ++i)
 					{
@@ -508,20 +555,6 @@ public class GLGlyph
 
 			}
 		}
-
-		// if (pickingType == EPickingType.PC_ICON_SELECTION)
-		// {
-		// switch (pickingMode)
-		// {
-		// case CLICKED:
-		//
-		// this.grid_.setGlyphPositions(iExternalID);
-		// bRedrawDisplayList_ = true;
-		// break;
-		// default:
-		// }
-		//
-		// }
 
 		pickingManager.flushHits(iUniqueID, pickingType);
 	}
@@ -575,100 +608,6 @@ public class GLGlyph
 			bRedrawDisplayList_ = true;
 		}
 
-		// TODO rewrite this with new mechanisms
-		// ArrayList<Integer> iAlSelection =
-		// refSetSelection.getSelectionIdArray();
-		// ArrayList<Integer> iAlSelectionMode =
-		// refSetSelection.getGroupArray();
-		// ArrayList<Integer> iAlSelectionOptional =
-		// refSetSelection.getOptionalDataArray();
-		//
-		// if (eventTrigger.getClass() == GLCanvasGlyphSliderView.class)
-		// {
-		// if (iAlSelection.size() <= 0)
-		// return;
-		//
-		// HashMap<Integer, HashMap<Integer, Boolean>> parameterValueSelectedMap
-		// = new HashMap<Integer, HashMap<Integer, Boolean>>();
-		// for (int i = 0; i < iAlSelection.size(); ++i)
-		// {
-		// int internalindex = iAlSelection.get(i);
-		// boolean isselected = (iAlSelectionMode.get(i) == 1) ? true : false;
-		// if (!parameterValueSelectedMap.containsKey(internalindex))
-		// parameterValueSelectedMap.put(internalindex,
-		// new HashMap<Integer, Boolean>());
-		//
-		//parameterValueSelectedMap.get(internalindex).put(iAlSelectionOptional.
-		// get(i),
-		// isselected);
-		// }
-		//
-		// grid_.deSelectAll();
-		//
-		// HashMap<Integer, GlyphEntry> glyphs = grid_.getGlyphList();
-		//
-		// Iterator<GlyphEntry> it = glyphs.values().iterator();
-		// while (it.hasNext())
-		// {
-		// GlyphEntry g = it.next();
-		//
-		// boolean isselected = true;
-		// for (int internalindex : parameterValueSelectedMap.keySet())
-		// {
-		// int param = g.getParameter(internalindex);
-		// HashMap<Integer, Boolean> p =
-		// parameterValueSelectedMap.get(internalindex);
-		//
-		// if (p.containsKey(param))
-		// {
-		// if (!p.get(param))
-		// // g.select();
-		// // else
-		// isselected = false;
-		//
-		// }
-		// else
-		// { // not in the list
-		// isselected = false;
-		// }
-		//
-		// }
-		// if (isselected)
-		// g.select();
-		//
-		// }
-		//
-		// bRedrawDisplayList_ = true;
-		// }
-		// else
-		// {
-		// int sendParameter =
-		// Integer.parseInt(generalManager.getGlyphManager().getSetting(
-		// EGlyphSettingIDs.UPDATESENDPARAMETER));
-		//
-		// if (iAlSelection.size() != 0)
-		// {
-		// for (int i = 0; i < iAlSelection.size(); ++i)
-		// {
-		// int sid = iAlSelection.get(i);
-		// int gid = iAlSelectionMode.get(i);
-		//
-		// Iterator<GlyphEntry> git = grid_.getGlyphList().values().iterator();
-		//
-		// while (git.hasNext())
-		// {
-		// GlyphEntry g = git.next();
-		// if (g.getParameter(sendParameter) == sid)
-		// if (gid == 1)
-		// g.select();
-		// else
-		// g.deSelect();
-		// }
-		// bRedrawDisplayList_ = true;
-		// }
-		// }
-		// }
-
 	}
 
 	public void forceRebuild()
@@ -689,4 +628,5 @@ public class GLGlyph
 	{
 
 	}
+
 }

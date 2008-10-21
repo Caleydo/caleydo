@@ -2,11 +2,13 @@ package org.caleydo.rcp.core.bridge;
 
 import org.caleydo.core.bridge.gui.IGUIBridge;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
 import org.caleydo.rcp.command.handler.ExitHandler;
+import org.caleydo.rcp.views.GLGlyphView;
 import org.caleydo.rcp.views.GLHeatMapView;
 import org.caleydo.rcp.views.GLParCoordsView;
 import org.caleydo.rcp.views.GLPathwayView;
@@ -70,6 +72,11 @@ implements IGUIBridge
 				{
 					GLParCoordsView.createToolBarItems(subGLEventListener.getID());
 					GLParCoordsView.fillToolBar(toolBarManager);
+				}
+				else if (subGLEventListener instanceof GLGlyph)
+				{
+					GLGlyphView.createToolBarItems(subGLEventListener.getID());
+					GLGlyphView.fillToolBar(toolBarManager);
 				}
 			}
 			

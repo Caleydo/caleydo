@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.glyph.gridview;
 
 import gleem.linalg.Vec2f;
+import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import gleem.linalg.open.Vec2i;
 import java.util.ArrayList;
@@ -15,6 +16,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
 import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 import org.caleydo.core.view.opengl.renderstyle.GlyphRenderStyle;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 
 /**
  * Glyph View Grid saves & organizes the positions in the grid
@@ -86,6 +88,8 @@ public class GLGlyphGrid
 
 		for (GlyphGridPositionModel model : positionModels.values())
 			model.setWorldLimit(x, y);
+
+		glyphMap_.clear();
 
 		for (int i = 0; i < worldLimit_.x(); ++i)
 		{
@@ -170,7 +174,6 @@ public class GLGlyphGrid
 
 		int ssi = Integer.parseInt(generalManager.getGlyphManager().getSetting(
 				EGlyphSettingIDs.UPDATESENDPARAMETER));
-		// int ssi = glyphDataLoader.getSendParameter();
 		ArrayList<Integer> temp = new ArrayList<Integer>();
 		for (GlyphEntry g : glyphs_.values())
 		{
@@ -180,6 +183,113 @@ public class GLGlyphGrid
 			}
 			g.select();
 		}
+		return temp;
+	}
+
+	public ArrayList<Integer> selectRubberBand(GL gl, Vec3f point1, Vec3f point2)
+	{
+
+		int ssi = Integer.parseInt(generalManager.getGlyphManager().getSetting(
+				EGlyphSettingIDs.UPDATESENDPARAMETER));
+		ArrayList<Integer> temp = new ArrayList<Integer>();
+
+		// find points in glyph map
+		if (glyphMap_.size() < 1)
+			return temp;
+
+		Vec2f fPoint1 = new Vec2f(Math.round(point1.x()), Math.round(point1.y()));
+		Vec2f fPoint2 = new Vec2f(Math.round(point2.x()), Math.round(point2.y()));
+
+		GlyphGridPosition pos1 = null;
+		GlyphGridPosition pos2 = null;
+
+		Vec2f diff1 = new Vec2f();
+		diff1.set(1000f, 1000f);
+
+		float length1 = 1000000;
+		float length2 = 1000000;
+
+		for (int i = 0; i < glyphMap_.size(); ++i)
+		{
+			for (int j = 0; j < glyphMap_.get(i).size(); ++j)
+			{
+
+				Vec2f pos1ij = glyphMap_.get(i).get(j).getGridPosition().toVec2f();
+				pos1ij.sub(fPoint1);
+
+				// System.out.println(i + " " + j + " " + length1);
+
+				if (pos1ij.length() < length1)
+				{
+					pos1 = glyphMap_.get(i).get(j);
+					length1 = pos1ij.length();
+				}
+
+				Vec2f pos2i = glyphMap_.get(i).get(j).getGridPosition().toVec2f();
+				pos2i.sub(fPoint2);
+
+				if (pos2i.length() < length2)
+				{
+					pos2 = glyphMap_.get(i).get(j);
+					length2 = pos2i.length();
+				}
+
+			}
+		}
+		if (pos1 == null || pos2 == null)
+			return temp;
+
+		/*
+		 * Vec2i grpos = glyphMap_.get(2).get(5).getPosition(); int glx =
+		 * glyphMap_.get(2).get(5).getGlyph().getX(); int gly =
+		 * glyphMap_.get(2).get(5).getGlyph().getY();
+		 */
+		// System.out.println(grpos.x() + ", " + grpos.y() + " | " + glx + " " +
+		// gly);
+//		System.out.println("p1(" + pos1.getPosition().x() + "," + pos1.getPosition().y()
+//				+ "), p2 (" + pos2.getPosition().x() + "," + pos2.getPosition().y() + ")");
+
+		int smallX = pos1.getPosition().y() / 2;
+		int bigX = pos2.getPosition().y() / 2;
+		if (smallX > bigX)
+		{
+			smallX = pos2.getPosition().y() / 2;
+			bigX = pos1.getPosition().y() / 2;
+		}
+
+		int smallY = pos1.getPosition().x();
+		int bigY = pos2.getPosition().x();
+		if (smallY > bigY)
+		{
+			smallY = pos2.getPosition().x();
+			bigY = pos1.getPosition().x();
+		}
+
+		gl.glPushMatrix();
+		gl.glTranslatef(pos1.getGridPosition().x(), pos1.getGridPosition().y(), 0);
+		GLHelperFunctions.drawAxis(gl);
+		gl.glPopMatrix();
+
+		gl.glPushMatrix();
+		gl.glTranslatef(pos2.getGridPosition().x(), pos2.getGridPosition().y(), 0);
+		GLHelperFunctions.drawAxis(gl);
+		gl.glPopMatrix();
+
+		deSelectAll();
+
+		// System.out.println(smallX + " to " + bigX + " | " + smallY + " to " +
+		// bigY);
+
+		for (int i = smallX; i < bigX; ++i)
+		{
+			for (int j = smallY; j < bigY; ++j)
+			{
+				GlyphGridPosition ggp = glyphMap_.get(i).get(j);
+				if (!ggp.isPositionFree())
+					ggp.getGlyph().select();
+			}
+		}
+
 		return temp;
 	}
 

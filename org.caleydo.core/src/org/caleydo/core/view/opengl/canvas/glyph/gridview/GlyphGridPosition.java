@@ -27,13 +27,13 @@ public class GlyphGridPosition
 	public Vec2i getPosition()
 	{
 
-		return position_;
+		return new Vec2i(position_);
 	}
 
 	public Vec2i getGridPosition()
 	{
 
-		return gridPosition_;
+		return new Vec2i(gridPosition_);
 	}
 
 	public GlyphEntry getGlyph()

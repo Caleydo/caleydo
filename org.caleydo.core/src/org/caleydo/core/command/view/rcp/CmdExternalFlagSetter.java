@@ -2,6 +2,8 @@ package org.caleydo.core.command.view.rcp;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.EIconIDs;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
@@ -95,6 +97,27 @@ public class CmdExternalFlagSetter
 					heatMap.renderHorizontally(bFlag);
 					return;
 			}
+		}
+		
+		if(viewObject instanceof GLGlyph)
+		{
+			GLGlyph glyphview = (GLGlyph)viewObject;
+			switch(externalFlagSetterType)
+			{
+				case GLYPH_VIEWMODE_SCATTERLOT:
+					glyphview.setViewMode(EIconIDs.DISPLAY_SCATTERPLOT);
+					return;
+				case GLYPH_VIEWMODE_RECTANGLE:
+					glyphview.setViewMode(EIconIDs.DISPLAY_RECTANGLE);
+					return;
+				case GLYPH_VIEWMODE_CIRCLE:
+					glyphview.setViewMode(EIconIDs.DISPLAY_CIRCLE);
+					return;
+				case GLYPH_VIEWMODE_RANDOM:
+					glyphview.setViewMode(EIconIDs.DISPLAY_RANDOM);
+					return;
+			}
+			
 		}
 		
 

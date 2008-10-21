@@ -31,6 +31,8 @@ public class GlyphManager
 	private HashMap<Integer, GlyphAttributeType> dataTypesExt = null;
 
 	private HashMap<Integer, GlyphEntry> hmGlyphList = null;
+	
+	private HashMap<String, String> hmLoadedStoraged = null;
 
 	private HashSet<GLGlyph> registeredViews = null;
 
@@ -43,6 +45,7 @@ public class GlyphManager
 
 		settings = new HashMap<EGlyphSettingIDs, String>();
 		hmGlyphList = new HashMap<Integer, GlyphEntry>();
+		hmLoadedStoraged = new HashMap<String, String>();
 		sortOrderExt = new Vector<Integer>();
 
 		generator = new GLGlyphGenerator();
@@ -208,10 +211,25 @@ public class GlyphManager
 	{
 		hmGlyphList.putAll(glyphlist);
 	}
+	
+	public void addGlyphs(HashMap<Integer, GlyphEntry> glyphlist, String storagename)
+	{
+		if(hmLoadedStoraged.containsKey(storagename))
+			return;
+		
+		hmGlyphList.putAll(glyphlist);
+		hmLoadedStoraged.put(storagename, null);
+	}
 
 	public HashMap<Integer, GlyphEntry> getGlyphs()
 	{
 		return hmGlyphList;
 	}
 
+	public boolean storageLoaded(String storageName)
+	{
+		if(hmLoadedStoraged.containsKey(storageName))
+			return true;
+		return false;
+	}
 }

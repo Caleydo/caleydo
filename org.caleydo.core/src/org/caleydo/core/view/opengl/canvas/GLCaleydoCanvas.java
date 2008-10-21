@@ -108,7 +108,7 @@ public class GLCaleydoCanvas
 		// clear screen
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
-		fpsCounter.draw();
+		//fpsCounter.draw();
 	}
 
 	@Override

@@ -22,12 +22,11 @@ public class GlyphGridPositionModel
 	protected Vec2f glyphCenterWorld = null;
 	protected Vec2i glyphCenterGrid = null;
 
-
 	public GlyphGridPositionModel(GlyphRenderStyle renderStyle)
 	{
 		generalManager = GeneralManager.get();
 		this.renderStyle = renderStyle;
-		
+
 		worldLimit = new Vec2i();
 		glyphCenterWorld = new Vec2f();
 		glyphCenterGrid = new Vec2i();
