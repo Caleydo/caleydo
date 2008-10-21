@@ -532,15 +532,30 @@ public abstract class AGLEventListener
 						+ GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, renderStyle.getYCenter()
 						- GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
 				gl.glEnd();
+				
+				// Frame around box
+				gl.glColor4f(0.2f, 0.2f, 0.2f, fLoadingTransparency);
+				gl.glLineWidth(2);
+				gl.glBegin(GL.GL_LINE_LOOP);
+				gl.glVertex3f(renderStyle.getXCenter() - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH,
+						renderStyle.getYCenter() - GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+				gl.glVertex3f(renderStyle.getXCenter() - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH,
+						renderStyle.getYCenter() + GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+				gl.glVertex3f(renderStyle.getXCenter() + GeneralRenderStyle.LOADING_BOX_HALF_WIDTH,
+						renderStyle.getYCenter() + GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+				gl.glVertex3f(renderStyle.getXCenter() + GeneralRenderStyle.LOADING_BOX_HALF_WIDTH,
+						renderStyle.getYCenter() - GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+				gl.glEnd();
 
 				TextRenderer textRenderer = new TextRenderer(
 						new Font("Arial", Font.BOLD, 128), false);
 				textRenderer.setColor(1, 1, 1, fTextTransparency);
 				textRenderer.begin3DRendering();
 
-				textRenderer.draw3D("Loading...", renderStyle.getXCenter()
-						- GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, renderStyle.getYCenter()
-						- GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.22f, 0.001f);
+				
+				textRenderer.draw3D("Loading...",
+						renderStyle.getXCenter() - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH / 2,
+						renderStyle.getYCenter() - GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT / 2, 4.22f, 0.001f);
 				textRenderer.end3DRendering();
 
 				// gl.glClearColor(0.4f, 0.4f, 0.4f, 1f);
