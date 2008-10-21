@@ -550,9 +550,8 @@ public abstract class AGLEventListener
 				TextRenderer textRenderer = new TextRenderer(
 						new Font("Arial", Font.BOLD, 128), false);
 				textRenderer.setColor(1, 1, 1, fTextTransparency);
-				textRenderer.begin3DRendering();
-
 				
+				textRenderer.begin3DRendering();				
 				textRenderer.draw3D("Loading...",
 						renderStyle.getXCenter() - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH / 2,
 						renderStyle.getYCenter() - GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT / 2, 4.22f, 0.001f);

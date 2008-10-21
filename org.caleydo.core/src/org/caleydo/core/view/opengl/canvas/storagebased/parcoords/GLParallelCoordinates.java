@@ -1824,7 +1824,7 @@ public class GLParallelCoordinates
 			Point currentPoint = linePick.getPickedPoint();
 			float[] fArPoint = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(
 					gl, currentPoint.x, currentPoint.y);
-			vecAngularBrusingPoint = new Vec3f(fArPoint[0], fArPoint[1], fArPoint[2]);
+			vecAngularBrusingPoint = new Vec3f(fArPoint[0], fArPoint[1], 0);
 			bIsAngularBrushingFirstTime = false;
 
 		}
@@ -1880,7 +1880,7 @@ public class GLParallelCoordinates
 			Point pickedPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			float fArPoint[] = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(
 					gl, pickedPoint.x, pickedPoint.y);
-			Vec3f vecPickedPoint = new Vec3f(fArPoint[0], fArPoint[1], fArPoint[2]);
+			Vec3f vecPickedPoint = new Vec3f(fArPoint[0], fArPoint[1], 0);
 			Vec3f vecTempLine = vecPickedPoint.minus(vecTriangleOrigin);
 
 			fCurrentAngle = getAngle(vecTempLine, vecCenterLine);
