@@ -43,7 +43,7 @@ public class BioCartaPathwayCacher
 		this.progressBar = progressBar;
 		this.triggeringCommand = triggeringCommand;
 		
-		iExpectedDownloads = 891;
+		iExpectedDownloads = 888;
 	}
 
 	@Override

@@ -101,7 +101,7 @@ public class KeggPathwayCacher
 		
 		processJobs(dispatcher);
 		
-		triggerPathwayListGeneration();
+//		triggerPathwayListGeneration();
 
 		if (triggeringCommand != null)
 			triggeringCommand.setFinishedKeggCacher();

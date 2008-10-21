@@ -92,7 +92,6 @@ public class KeggPathwayImageCacher
 		{
 			e.printStackTrace();
 		}
-		// "http://www.genome.jp/kegg/pathway/hsa/hsa00380.gif
 		job.setSavePath(new File(sOutputFileName));
 		job.setIgnoreFilter(true);
 		dispatcher.addJob(job);

@@ -52,7 +52,7 @@ public class KeggSinglePathwayImageCacherThread
 
 			// System.out.println("Start downloading file " +sFileName);
 
-			ftp.downloadFile(System.getProperty("user.home") + "/.caleydo/kegg/" + sFileName,
+			ftp.downloadFile(System.getProperty("user.home") + "/.caleydo/www.genome.ad.jp/kegg/" + sFileName,
 					sDirName + sFileName);
 
 			// System.out.println("Finished downloading file " +sFileName);
