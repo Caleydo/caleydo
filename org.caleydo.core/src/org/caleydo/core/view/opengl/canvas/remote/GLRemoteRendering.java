@@ -640,12 +640,12 @@ public class GLRemoteRendering
 		else if (view instanceof GLPathway)
 		{
 			textureViewSymbol = glIconTextureManager.getIconTexture(
-					EIconTextures.PAR_COORDS_SYMBOL);
+					EIconTextures.PATHWAY_SYMBOL);
 		}
 		else if (view instanceof GLGlyph)
 		{
 			textureViewSymbol = glIconTextureManager.getIconTexture(
-					EIconTextures.PAR_COORDS_SYMBOL);
+					EIconTextures.GLYPH_SYMBOL);
 		}
 		else
 		{
