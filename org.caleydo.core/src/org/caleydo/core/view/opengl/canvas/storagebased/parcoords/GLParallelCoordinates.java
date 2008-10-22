@@ -43,10 +43,12 @@ import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionItem;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
@@ -186,7 +188,24 @@ public class GLParallelCoordinates
 	@Override
 	public void initLocal(final GL gl)
 	{
-		dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
+		String sLevel = GeneralManager.get().getPreferenceStore().getString(PreferenceConstants.DATA_FILTER_LEVEL);
+		if (sLevel.equals("complete"))
+		{
+			dataFilterLevel = EDataFilterLevel.COMPLETE;
+		}
+		else if (sLevel.equals("only_mapping"))
+		{
+			dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
+		}
+		else if (sLevel.equals("only_context"))
+		{
+			dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
+		}
+		else
+		{
+			throw new IllegalStateException("Unknown data filter level");
+		}
+		
 		bRenderOnlyContext = false;
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
@@ -226,16 +245,7 @@ public class GLParallelCoordinates
 		fYTranslation = renderStyle.getBottomSpacing();
 	}
 
-	/**
-	 * Set the level of data filtering, according to the parameters defined in
-	 * {@link EDataFilterLevel}
-	 * 
-	 * @param dataFilterLevel the level of filtering
-	 */
-	public synchronized void setDataFilterLevel(EDataFilterLevel dataFilterLevel)
-	{
-		this.dataFilterLevel = dataFilterLevel;
-	}
+
 
 	@Override
 	public synchronized void displayLocal(final GL gl)

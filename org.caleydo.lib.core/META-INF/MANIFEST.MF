@@ -530,3 +530,4 @@ Export-Package: com.sun.cdc.io;uses:="javax.microedition.io",
    new wiiremotej",
  wiiremotej.event;uses:="wiiremotej"
 Bundle-Vendor: Graz University of Technology
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6

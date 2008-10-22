@@ -41,5 +41,7 @@ public class PreferenceInitializer
 		store.setDefault(PreferenceConstants.HM_LIMIT_REMOTE_TO_CONTEXT, true);
 		store.setDefault(PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT, 1000);
 		store.setDefault(PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT, true);
+		store.setDefault(PreferenceConstants.XP_CLASSIC_STYLE_MODE, false);
+		store.setDefault(PreferenceConstants.DATA_FILTER_LEVEL, "only_context");
 	}
 }

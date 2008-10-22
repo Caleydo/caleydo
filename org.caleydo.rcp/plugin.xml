@@ -355,6 +355,11 @@
                   id="org.caleydo.rcp.PathwayUpdatePreferences"
                   name="Update Pathways">
             </page>
+            <page
+                  class="org.caleydo.rcp.preferences.GeneralPreferencePage"
+                  id="org.caleydo.rcp.GeneralPreferencePage"
+                  name="General">
+            </page>
    </extension>
    <extension
          point="org.eclipse.core.runtime.preferences">

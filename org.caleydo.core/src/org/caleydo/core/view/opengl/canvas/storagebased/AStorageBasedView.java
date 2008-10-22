@@ -492,6 +492,17 @@ public abstract class AStorageBasedView
 		// manager though
 		this.iNumberOfRandomElements = iNumberOfRandomElements;
 	}
+	
+	/**
+	 * Set the level of data filtering, according to the parameters defined in
+	 * {@link EDataFilterLevel}
+	 * 
+	 * @param dataFilterLevel the level of filtering
+	 */
+	public synchronized void setDataFilterLevel(EDataFilterLevel dataFilterLevel)
+	{
+		this.dataFilterLevel = dataFilterLevel;
+	}
 
 	public abstract void resetSelections();
 

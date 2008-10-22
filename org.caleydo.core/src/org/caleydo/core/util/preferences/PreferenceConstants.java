@@ -33,5 +33,9 @@ public class PreferenceConstants {
 	
 	public static final String LAST_PATHWAY_UPDATE = "lastPathwayDataUpdate";
 	
+	public static final String XP_CLASSIC_STYLE_MODE = "enableXPClassicStyleMode";
+	
+	public static final String DATA_FILTER_LEVEL = "dataFilterLevel";
+	
 	
 }
