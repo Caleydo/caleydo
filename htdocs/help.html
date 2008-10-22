@@ -69,12 +69,11 @@ following hardware and software configurations:</p>
 <ul>
 	<li>A graphics card with at least 64 MB RAM is recommended.</li>
 	<li>Up to date graphics card drivers</li>
-	<li>Currently only Sun Java 6 is supported.
-	Download and install the latest <a
-		href="http://java.sun.com/javase/downloads/index.jsp">Java Runtime
-	Environment</a>. OpenJDK is not supported</li>
-	<li>Supported operating systems: Windows and Linux. Mac Operating Systems are not
-	supported (though it should theoretically run).</li>
+	<li>Currently only Sun Java 6 is supported. Download and install
+	the latest <a href="http://java.sun.com/javase/downloads/index.jsp">Java
+	Runtime Environment</a>. OpenJDK is not supported</li>
+	<li>Supported operating systems: Windows and Linux. Mac Operating
+	Systems are not supported (though it should theoretically run).</li>
 	<li>A mouse with a mouse wheel.</li>
 	<li>For the first start only: a broadband Internet connection.</li>
 </ul>
@@ -98,10 +97,11 @@ asked to fetch the pathways from <a
 	href="http://www.genome.jp/kegg/">KEGG</a>. Click <i>Fetch pathways</i>
 to start the process. <b>Caleydo</b> will then load the pathways from
 the databases and store them on your local computer.</p>
-<p>The download will not surpass 30MB, but will exceed 1000 files. The data is stored in your users home
-directory.</p>
+<p>The download will not surpass 30MB, but will exceed 1000 files.
+The data is stored in your users home directory.</p>
 <p>When the download is complete click <i>Finish</i>. You will need
-to do this only once, but you can redo it to update the pathway database.</p>
+to do this only once, but you can redo it to update the pathway
+database.</p>
 
 <h2><a name="Startup"></a>Startup</h2>
 <p>Upon startup you are presented with choices for different
@@ -124,8 +124,8 @@ is randomly generated.</p>
 <p><img src="images/help/data_import.png"
 	alt="Data loader screenshot"
 	style="border-style: none; float: right; padding-left: 1em;" /> To be
-able to import gene expression data in <b>Caleydo</b> you have to
-follow these conventions:</p>
+able to import gene expression data in <b>Caleydo</b> you have to follow
+these conventions:</p>
 <ul>
 	<li>The first column of the file has to contain a valid RefSeq
 	accession number.</li>
@@ -134,8 +134,8 @@ follow these conventions:</p>
 	<li>If you have not-a-number values, they have to be specified by
 	<i>NaN</i>.</li>
 	<li>Every experiment has a caption</li>
-	<li>The file has to be comma separated text file. The
-	delimiter is arbitrary (can be selected upon import).</li>
+	<li>The file has to be comma separated text file. The delimiter is
+	arbitrary (can be selected upon import).</li>
 	<li>You may have columns in the file which you do not want to
 	import.</li>
 	<li>Your file may contain a header which is to be ignored.</li>
@@ -171,22 +171,32 @@ console. In the Java Cache Viewer select <b>Caleydo</b> and remove it.
 Now switch to <i>Resources</i> in the cache viewer and delete all <b>Caleydo</b>
 resources as well.</p>
 <p>Finally, go to your home directory (<i>C:\Documents and
-Settings\User\</i> in Windows or <i>/home/user/</i> in Linux) and delete
-the <i>.caleydo</i> folder.</p>
+Settings\User\</i> in Windows or <i>/home/user/</i> in Linux) and delete the
+<i>.caleydo</i> folder.</p>
 
 <h2><a name="KnownIssues"></a>Known Issues</h2>
 <h3>General</h3>
 <h3>Windows</h3>
+Many issues on Windows are due to old Java versions or old graphics card
+drivers. Please update those if possible. If you do not want to or can
+not update your system, we provide a compatibility mode, which can be
+downloaded <a href="download/webstart/caleydo_compatibility_mode.jnlp">here</a>.
+However, using this mode will seriously impair the rendering performance
+of Caleydo.
 <ul>
-	<li><b>Windows XP classic style - GUI elements</b> <br />
-	Due to a bug in the GUI library we use, the pathway and gene search
-	dialog can not be used with Windows XP classic style.<br />
-	<b>Solution:</b> Use the standard XP skin.</li>
 	<li><b>Web start windows are blank</b><br />
 	When starting via web start the download window and the security alert
 	window are blank (render the background). This is an issue with
 	graphics card drivers. <br />
 	<b>Solution:</b> Install the latest graphics card drivers.</li>
+	<li><b>Can not search for pathways or genes: Windows XP
+	classic style - GUI elements</b> <br />
+	Due to a bug in the GUI library we use, the pathway and gene search
+	dialog can not be used with Windows XP classic style.<br />
+	<b>Solution:</b> Use the standard XP skin, or go to File > Preferences
+	> General and select "Enable Windows XP Classic Style compatibility".
+	The former will allow you to use the GUI as intended, the latter will
+	add a button which opens a search dialog.</li>
 </ul>
 
 
@@ -195,7 +205,7 @@ the <i>.caleydo</i> folder.</p>
 <p><br />
 website maintained by <a href="http://www.icg.tugraz.at/Members/alex">Alexander
 Lex</a><br />
-last updated on 2008-10-15</p>
+last updated on 2008-10-22</p>
 </div>
 
 </div>
