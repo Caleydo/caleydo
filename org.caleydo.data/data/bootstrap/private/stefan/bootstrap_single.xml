@@ -33,6 +33,7 @@
 			<read-xml-file target="data/bootstrap/private/stefan/load_data.xml" />
 
 		<!-- Window	10331	-->
+		<!-- 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="10331" label="Glyph" attrib1="ROW	HORIZONTAL"	/>
 
 			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="99075"
@@ -44,9 +45,6 @@
 							attrib3="PERSPECTIVE -1 1 -1 1 2.9 1000"
 							detail="351010" />
 <!--							attrib3="ORTHOGRAPHIC -8 8 -8 8 -20 20"-->
-
-
-
 
 <!-- 2nd window -->
 <!--

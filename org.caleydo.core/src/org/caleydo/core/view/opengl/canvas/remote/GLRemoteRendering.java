@@ -17,6 +17,7 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.event.CmdEventCreateMediator;
 import org.caleydo.core.command.view.opengl.CmdCreateGLPathway;
 import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.ICaleydoGraphItem;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
@@ -1933,6 +1934,9 @@ public class GLRemoteRendering
 
 				for (ISet tmpSet : alSets)
 				{
+					if (tmpSet.getSetType() != ESetType.GENE_EXPRESSION_DATA)
+						continue;
+					
 					iAlSetIDs.add(tmpSet.getID());
 				}
 
