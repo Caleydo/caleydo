@@ -327,6 +327,12 @@ public class GLParallelCoordinates
 		// infoAreaManager.renderInfoArea(gl, bInfoAreaFirstTime);
 		// bInfoAreaFirstTime = false;
 
+
+
+		checkUnselection();
+		// GLHelperFunctions.drawAxis(gl);
+		gl.glCallList(iGLDisplayListToCall);
+
 		if (bIsAngularBrushingActive && iSelectedLineID != -1)
 		{
 			handleAngularBrushing(gl);
@@ -334,11 +340,7 @@ public class GLParallelCoordinates
 			// bIsAngularBrushingActive = false;
 
 		}
-
-		checkUnselection();
-		// GLHelperFunctions.drawAxis(gl);
-		gl.glCallList(iGLDisplayListToCall);
-
+		
 		gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
 
 		// if (detailLevel == EDetailLevel.HIGH)
@@ -1834,7 +1836,7 @@ public class GLParallelCoordinates
 			Point currentPoint = linePick.getPickedPoint();
 			float[] fArPoint = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(
 					gl, currentPoint.x, currentPoint.y);
-			vecAngularBrusingPoint = new Vec3f(fArPoint[0], fArPoint[1], 0);
+			vecAngularBrusingPoint = new Vec3f(fArPoint[0], fArPoint[1], 0.01f);
 			bIsAngularBrushingFirstTime = false;
 
 		}
@@ -1890,7 +1892,7 @@ public class GLParallelCoordinates
 			Point pickedPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			float fArPoint[] = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(
 					gl, pickedPoint.x, pickedPoint.y);
-			Vec3f vecPickedPoint = new Vec3f(fArPoint[0], fArPoint[1], 0);
+			Vec3f vecPickedPoint = new Vec3f(fArPoint[0], fArPoint[1], 0.01f);
 			Vec3f vecTempLine = vecPickedPoint.minus(vecTriangleOrigin);
 
 			fCurrentAngle = getAngle(vecTempLine, vecCenterLine);
@@ -1932,6 +1934,7 @@ public class GLParallelCoordinates
 		// draw angle polygon
 
 		gl.glColor4fv(ANGULAR_POLYGON_COLOR, 0);
+		//gl.glColor4f(1, 0, 0, 0.5f);
 		gl.glBegin(GL.GL_POLYGON);
 		rotf.set(new Vec3f(0, 0, 1), -fCurrentAngle / 10);
 		Vec3f tempVector = vecCenterLine.copy();
