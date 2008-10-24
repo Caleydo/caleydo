@@ -13,7 +13,6 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
-import org.caleydo.core.view.opengl.util.spline.Spline3D;
 
 /**
  * Class is responsible for rendering and drawing of connection lines (resp.
@@ -63,7 +62,7 @@ public abstract class AGLConnectionLineRenderer
 	public void render(final GL gl)
 	{
 
-		if ((connectedElementRepManager.getAllSelectedElements().size() == 0)
+		if ((connectedElementRepManager.getOccuringIDTypes().size() == 0)
 				|| (bEnableRendering == false))
 			return;
 

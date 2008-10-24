@@ -1709,7 +1709,7 @@ public class GLParallelCoordinates
 			}
 		}
 
-		SelectedElementRep elementRep = new SelectedElementRep(iUniqueID, fXValue, fYValue,
+		SelectedElementRep elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, fXValue, fYValue,
 				0.0f);
 		return elementRep;
 	}

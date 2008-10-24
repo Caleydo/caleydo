@@ -6,6 +6,7 @@ import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 import java.util.Iterator;
 import javax.media.opengl.GL;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
@@ -45,78 +46,85 @@ public class GLConnectionLineRendererJukebox
 		matSrc.makeIdent();
 		matDest.makeIdent();
 
-		Iterator<Integer> iterSelectedElementID = connectedElementRepManager
-				.getAllSelectedElements().iterator();
-
-		ArrayList<ArrayList<Vec3f>> alPointLists = null;// 
-
-		while (iterSelectedElementID.hasNext())
+		for (EIDType idType : connectedElementRepManager.getOccuringIDTypes())
 		{
-			int iSelectedElementID = iterSelectedElementID.next();
 
-			ArrayList<SelectedElementRep> alSelectedElementRep = connectedElementRepManager
-					.getSelectedElementRepsByElementID(iSelectedElementID);
+			Iterator<Integer> iterSelectedElementID = connectedElementRepManager
+					.getIDList(idType).iterator();
 
-			for (int iStackPositionIndex = 0; iStackPositionIndex < stackLayer.getCapacity(); iStackPositionIndex++)
+			ArrayList<ArrayList<Vec3f>> alPointLists = null;// 
+
+			while (iterSelectedElementID.hasNext())
 			{
-				for (int iElementIndex = 0; iElementIndex < alSelectedElementRep.size(); iElementIndex++)
+				int iSelectedElementID = iterSelectedElementID.next();
+
+				ArrayList<SelectedElementRep> alSelectedElementRep = connectedElementRepManager
+						.getSelectedElementRepsByElementID(idType, iSelectedElementID);
+
+				for (int iStackPositionIndex = 0; iStackPositionIndex < stackLayer
+						.getCapacity(); iStackPositionIndex++)
 				{
-					SelectedElementRep selectedElementRep = alSelectedElementRep
-							.get(iElementIndex);
-
-					// Check if element is in stack
-					RemoteHierarchyLevel activeLayer = null;
-					if (stackLayer.containsElement(selectedElementRep.getContainingViewID()))
+					for (int iElementIndex = 0; iElementIndex < alSelectedElementRep.size(); iElementIndex++)
 					{
-						activeLayer = stackLayer;
-					}
+						SelectedElementRep selectedElementRep = alSelectedElementRep
+								.get(iElementIndex);
 
-					// Check if the element is in the currently iterated view in
-					// the stack
-					if (stackLayer.getPositionIndexByElementId(selectedElementRep
-							.getContainingViewID()) != iStackPositionIndex
-							&& stackLayer.getPositionIndexByElementId(selectedElementRep
-									.getContainingViewID()) != iStackPositionIndex + 1)
-					{
-						continue;
-					}
-
-					if (activeLayer != null)
-					{
-						vecTranslation = activeLayer.getTransformByElementId(
-								selectedElementRep.getContainingViewID()).getTranslation();
-						vecScale = activeLayer.getTransformByElementId(
-								selectedElementRep.getContainingViewID()).getScale();
-						rotation = activeLayer.getTransformByElementId(
-								selectedElementRep.getContainingViewID()).getRotation();
-
-						ArrayList<Vec3f> alPoints = selectedElementRep.getPoints();
-						ArrayList<Vec3f> alPointsTransformed = new ArrayList<Vec3f>();
-
-						for (Vec3f vecCurrentPoint : alPoints)
+						// Check if element is in stack
+						RemoteHierarchyLevel activeLayer = null;
+						if (stackLayer.containsElement(selectedElementRep
+								.getContainingViewID()))
 						{
-							alPointsTransformed.add(transform(vecCurrentPoint, vecTranslation,
-									vecScale, rotation));
+							activeLayer = stackLayer;
 						}
-						int iKey = selectedElementRep.getContainingViewID();
 
-						alPointLists = hashViewToPointLists.get(iKey);
-						if (alPointLists == null)
+						// Check if the element is in the currently iterated
+						// view in
+						// the stack
+						if (stackLayer.getPositionIndexByElementId(selectedElementRep
+								.getContainingViewID()) != iStackPositionIndex
+								&& stackLayer.getPositionIndexByElementId(selectedElementRep
+										.getContainingViewID()) != iStackPositionIndex + 1)
 						{
-							alPointLists = new ArrayList<ArrayList<Vec3f>>();
-							hashViewToPointLists.put(iKey, alPointLists);
+							continue;
 						}
-						alPointLists.add(alPointsTransformed);
 
+						if (activeLayer != null)
+						{
+							vecTranslation = activeLayer.getTransformByElementId(
+									selectedElementRep.getContainingViewID()).getTranslation();
+							vecScale = activeLayer.getTransformByElementId(
+									selectedElementRep.getContainingViewID()).getScale();
+							rotation = activeLayer.getTransformByElementId(
+									selectedElementRep.getContainingViewID()).getRotation();
+
+							ArrayList<Vec3f> alPoints = selectedElementRep.getPoints();
+							ArrayList<Vec3f> alPointsTransformed = new ArrayList<Vec3f>();
+
+							for (Vec3f vecCurrentPoint : alPoints)
+							{
+								alPointsTransformed.add(transform(vecCurrentPoint,
+										vecTranslation, vecScale, rotation));
+							}
+							int iKey = selectedElementRep.getContainingViewID();
+
+							alPointLists = hashViewToPointLists.get(iKey);
+							if (alPointLists == null)
+							{
+								alPointLists = new ArrayList<ArrayList<Vec3f>>();
+								hashViewToPointLists.put(iKey, alPointLists);
+							}
+							alPointLists.add(alPointsTransformed);
+
+						}
 					}
-				}
 
-				if (hashViewToPointLists.size() > 1)
-				{
-					renderLineBundling(gl);
-				}
+					if (hashViewToPointLists.size() > 1)
+					{
+						renderLineBundling(gl);
+					}
 
-				hashViewToPointLists.clear();
+					hashViewToPointLists.clear();
+				}
 			}
 		}
 	}

@@ -306,7 +306,7 @@ public class GLPathway
 			connectedElementRepresentationManager
 					.modifySelection(
 							item.getInternalID(),
-							new SelectedElementRep(
+							new SelectedElementRep(EIDType.EXPRESSION_INDEX,
 									iUniqueID,
 									(vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X)
 											* vecScaling.x() + vecTranslation.x(),
@@ -598,7 +598,7 @@ public class GLPathway
 						connectedElementRepresentationManager
 								.modifySelection(
 										iDavidId,
-										new SelectedElementRep(
+										new SelectedElementRep(EIDType.EXPRESSION_INDEX,
 												this.getID(),
 												(tmpPathwayVertexGraphItemRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X)
 														* vecScaling.x() + vecTranslation.x(),

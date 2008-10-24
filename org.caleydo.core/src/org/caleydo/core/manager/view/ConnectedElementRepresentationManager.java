@@ -3,6 +3,7 @@ package org.caleydo.core.manager.view;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.manager.picking.ESelectionMode;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
@@ -28,7 +29,7 @@ import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 public class ConnectedElementRepresentationManager
 {
 
-	HashMap<Integer, ArrayList<SelectedElementRep>> hashSelectedElementID2SelectedElementReps;
+	HashMap<EIDType, HashMap<Integer, ArrayList<SelectedElementRep>>> hashIDTypes;
 
 	/**
 	 * Constructor.
@@ -36,7 +37,7 @@ public class ConnectedElementRepresentationManager
 	 */
 	protected ConnectedElementRepresentationManager()
 	{
-		hashSelectedElementID2SelectedElementReps = new HashMap<Integer, ArrayList<SelectedElementRep>>();
+		hashIDTypes = new HashMap<EIDType, HashMap<Integer, ArrayList<SelectedElementRep>>>();
 	}
 
 	/**
@@ -47,8 +48,8 @@ public class ConnectedElementRepresentationManager
 	 * @param selectionMode
 	 */
 
-	public void modifySelection(int iElementID,
-			final SelectedElementRep selectedElementRep, final ESelectionMode selectionMode)
+	public void modifySelection(int iElementID, final SelectedElementRep selectedElementRep,
+			final ESelectionMode selectionMode)
 	{
 		iElementID = 0;
 		switch (selectionMode)
@@ -76,15 +77,21 @@ public class ConnectedElementRepresentationManager
 	 */
 	public void addSelection(int iElementID, final SelectedElementRep selectedElementRep)
 	{
+		HashMap<Integer, ArrayList<SelectedElementRep>> tmpHash = hashIDTypes
+				.get(selectedElementRep.getIDType());
+		if (tmpHash == null)
+		{
+			tmpHash = new HashMap<Integer, ArrayList<SelectedElementRep>>();
+			hashIDTypes.put(selectedElementRep.getIDType(), tmpHash);
+		}
 		// FIXME temp hack
 		iElementID = 0;
-		if (!hashSelectedElementID2SelectedElementReps.containsKey(iElementID))
+		if (!tmpHash.containsKey(iElementID))
 		{
-			hashSelectedElementID2SelectedElementReps.put(iElementID,
-					new ArrayList<SelectedElementRep>());
+			tmpHash.put(iElementID, new ArrayList<SelectedElementRep>());
 		}
 
-		hashSelectedElementID2SelectedElementReps.get(iElementID).add(selectedElementRep);
+		tmpHash.get(iElementID).add(selectedElementRep);
 	}
 
 	/**
@@ -96,11 +103,10 @@ public class ConnectedElementRepresentationManager
 	public void removeSelection(final int iElementID, SelectedElementRep selectedElementRep)
 	{
 
-		if (hashSelectedElementID2SelectedElementReps.containsKey(iElementID))
+		if (hashIDTypes.containsKey(iElementID))
 		{
-			hashSelectedElementID2SelectedElementReps.get(iElementID).remove(
-					selectedElementRep);
-			hashSelectedElementID2SelectedElementReps.remove(iElementID);
+			hashIDTypes.get(iElementID).remove(selectedElementRep);
+			hashIDTypes.remove(iElementID);
 		}
 	}
 
@@ -112,33 +118,44 @@ public class ConnectedElementRepresentationManager
 	 */
 	public void replaceSelection(final int iElementID, SelectedElementRep selectedElementRep)
 	{
-
 		clear();
 		addSelection(iElementID, selectedElementRep);
 	}
 
 	/**
-	 * Get all selected elements
+	 * Get a list of all occurring {@link EIDTypes}
+	 * 
+	 * @return a Set of EIDType
+	 */
+	public Set<EIDType> getOccuringIDTypes()
+	{
+		return hashIDTypes.keySet();
+	}
+
+	/**
+	 * Get a list or IDs of all selected elements of a type
 	 * 
 	 * @return a Set of IDs
 	 */
-	public Set<Integer> getAllSelectedElements()
+	public Set<Integer> getIDList(EIDType idType)
 	{
 
-		return hashSelectedElementID2SelectedElementReps.keySet();
+		return hashIDTypes.get(idType).keySet();
 	}
 
 	/**
 	 * Get a representation of a particular element
 	 * 
-	 * @param iElementID
-	 * @return
+	 * @param idType the type of the object to be connected (eg. gene
+	 *            expression, clinical)
+	 * @param iElementID the id of the object to be connected
+	 * @return a list of the representations of the poings
 	 */
-	public ArrayList<SelectedElementRep> getSelectedElementRepsByElementID(final int iElementID)
+	public ArrayList<SelectedElementRep> getSelectedElementRepsByElementID(EIDType idType,
+			final int iElementID)
 	{
 
-		ArrayList<SelectedElementRep> tempList = hashSelectedElementID2SelectedElementReps
-				.get(iElementID);
+		ArrayList<SelectedElementRep> tempList = hashIDTypes.get(idType).get(iElementID);
 
 		if (tempList == null)
 			throw new IllegalArgumentException(
@@ -151,7 +168,7 @@ public class ConnectedElementRepresentationManager
 	 */
 	public void clear()
 	{
-		hashSelectedElementID2SelectedElementReps.clear();
+		hashIDTypes.clear();
 	}
 
 }

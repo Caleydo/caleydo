@@ -850,7 +850,7 @@ public class GLTextureHeatMap
 
 		if (bRenderStorageHorizontally)
 		{
-			elementRep = new SelectedElementRep(iUniqueID, fXValue + fAnimationTranslation,
+			elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, fXValue + fAnimationTranslation,
 					fYValue, 0);
 
 		}
@@ -859,7 +859,7 @@ public class GLTextureHeatMap
 			Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
 			Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
 			vecPoint.setY(vecPoint.y() + vecTranslation.y());
-			elementRep = new SelectedElementRep(iUniqueID, vecPoint.x(), vecPoint.y()
+			elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, vecPoint.x(), vecPoint.y()
 					- fAnimationTranslation, 0);
 
 		}
