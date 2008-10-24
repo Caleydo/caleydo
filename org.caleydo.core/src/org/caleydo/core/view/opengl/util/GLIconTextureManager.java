@@ -25,11 +25,15 @@ public class GLIconTextureManager
 	 * 
 	 * @param gl
 	 */
-	public GLIconTextureManager(final GL gl)
+	public GLIconTextureManager()
 	{
-
 		mapIconTextures = new EnumMap<EIconTextures, Texture>(EIconTextures.class);
-		for (EIconTextures eIconTextures : EIconTextures.values())
+
+	}
+
+	public Texture getIconTexture(GL gl, final EIconTextures eIconTextures)
+	{
+		if (!mapIconTextures.containsKey(eIconTextures))
 		{
 			try
 			{
@@ -48,13 +52,12 @@ public class GLIconTextureManager
 				}
 
 				mapIconTextures.put(eIconTextures, tmpTexture);
-
 			}
-			catch (GLException e)
+			catch (IllegalArgumentException e)
 			{
 				e.printStackTrace();
 			}
-			catch (IllegalArgumentException e)
+			catch (GLException e)
 			{
 				e.printStackTrace();
 			}
@@ -63,11 +66,27 @@ public class GLIconTextureManager
 				e.printStackTrace();
 			}
 		}
-	}
-
-	public Texture getIconTexture(final EIconTextures eIconTextures)
-	{
-
 		return mapIconTextures.get(eIconTextures);
 	}
+
+	// public static Texture loadIconTexture(EIconTextures eIconTextures)
+	// {
+	// Texture tmpTexture;
+	// String sFileName = eIconTextures.getFileName();
+	//
+	// if (this.getClass().getClassLoader().getResourceAsStream(sFileName) !=
+	// null)
+	// {
+	// tmpTexture =
+	// TextureIO.newTexture(TextureIO.newTextureData(this.getClass()
+	// .getClassLoader().getResourceAsStream(sFileName), true, "PNG"));
+	// }
+	// else
+	// {
+	// tmpTexture = TextureIO.newTexture(TextureIO.newTextureData(new File(
+	// eIconTextures.getFileName()), true, "PNG"));
+	// }
+	//
+	// mapIconTextures.put(eIconTextures, tmpTexture);
+	// }
 }

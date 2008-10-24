@@ -29,9 +29,9 @@ public class GeneralRenderStyle
 	
 	private static final float[] BACKGROUND_COLOR = {0.7f, 0.7f, 0.7f, 1f};
 	
-	public static final float LOADING_BOX_HALF_WIDTH = 0.8f;
+	public static final float LOADING_BOX_HALF_WIDTH = 1f;
 	
-	public static final float LOADING_BOX_HALF_HEIGHT = 0.2f;
+	public static final float LOADING_BOX_HALF_HEIGHT = 0.3f;
 
 	public static final float SELECTED_LINE_WIDTH = 3;
 

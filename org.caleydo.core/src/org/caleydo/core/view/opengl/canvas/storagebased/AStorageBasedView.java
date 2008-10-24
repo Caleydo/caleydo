@@ -411,6 +411,10 @@ public abstract class AStorageBasedView
 						iStorageIndex = item.getInternalID();
 						iDavidID = item.getSelectionID();
 					}
+					else if (selectionDelta.getIDType() == EIDType.EXPERIMENT)
+					{
+						
+					}
 					else
 						throw new InvalidAttributeValueException("Can not handle data type");
 

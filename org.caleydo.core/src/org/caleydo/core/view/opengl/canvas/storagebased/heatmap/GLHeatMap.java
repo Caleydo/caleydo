@@ -76,7 +76,6 @@ public class GLHeatMap
 
 	private SelectedElementRep elementRep;
 
-	private GLIconTextureManager iconTextureManager;
 	private ArrayList<Float> fAlXDistances;
 
 	/**
@@ -117,7 +116,7 @@ public class GLHeatMap
 	@Override
 	public void init(GL gl)
 	{
-		iconTextureManager = new GLIconTextureManager(gl);
+		//iconTextureManager = new GLIconTextureManager(gl);
 		initData();
 
 		colorMappingBar.setHeight(renderStyle.getColorMappingBarHeight());
@@ -304,7 +303,7 @@ public class GLHeatMap
 	{
 		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
 		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
-		Texture tempTexture = iconTextureManager.getIconTexture(EIconTextures.HEAT_MAP_SYMBOL);
+		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_SYMBOL);
 		tempTexture.enable();
 		tempTexture.bind();
 

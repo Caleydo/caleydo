@@ -115,7 +115,8 @@ public class GLRemoteRendering
 	private boolean bEnableNavigationOverlay = false;
 
 	// FIXME: should be a singleton
-	private GLIconTextureManager glIconTextureManager;
+	
+//	private GLIconTextureManager iconTextureManager;
 
 	private ArrayList<Integer> iAlUninitializedPathwayIDs;
 
@@ -240,7 +241,7 @@ public class GLRemoteRendering
 //		gl.glEnable(GL.GL_MAP1_VERTEX_3);
         glConnectionLineRenderer.init(gl);
         
-		glIconTextureManager = new GLIconTextureManager(gl);
+		//iconTextureManager = new GLIconTextureManager(gl);
 
 		time = new SystemTime();
 		((SystemTime) time).rebase();
@@ -630,22 +631,22 @@ public class GLRemoteRendering
 			.getViewGLCanvasManager().getGLEventListener(iViewID);
 		if (view instanceof GLHeatMap)
 		{
-			textureViewSymbol = glIconTextureManager.getIconTexture(
+			textureViewSymbol = iconTextureManager.getIconTexture(gl,
 					EIconTextures.HEAT_MAP_SYMBOL);
 		}
 		else if (view instanceof GLParallelCoordinates)
 		{
-			textureViewSymbol = glIconTextureManager.getIconTexture(
+			textureViewSymbol = iconTextureManager.getIconTexture(gl, 
 					EIconTextures.PAR_COORDS_SYMBOL);
 		}
 		else if (view instanceof GLPathway)
 		{
-			textureViewSymbol = glIconTextureManager.getIconTexture(
+			textureViewSymbol = iconTextureManager.getIconTexture(gl, 
 					EIconTextures.PATHWAY_SYMBOL);
 		}
 		else if (view instanceof GLGlyph)
 		{
-			textureViewSymbol = glIconTextureManager.getIconTexture(
+			textureViewSymbol = iconTextureManager.getIconTexture(gl, 
 					EIconTextures.GLYPH_SYMBOL);
 		}
 		else
@@ -679,10 +680,10 @@ public class GLRemoteRendering
 			else if (iNavigationMouseOverViewID_right == iViewID)
 				tmpColor_out.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-			textureMoveIn = glIconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
-			textureMoveOut = glIconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
-			textureMoveLeft = glIconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
-			textureMoveRight = glIconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
+			textureMoveIn = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+			textureMoveOut = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+			textureMoveLeft = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+			textureMoveRight = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
 		}
 		else
 		{
@@ -702,12 +703,12 @@ public class GLRemoteRendering
 				else if (iNavigationMouseOverViewID_right == iViewID)
 					tmpColor_right.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-				textureMoveIn = glIconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
-				textureMoveOut = glIconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
-				textureMoveLeft = glIconTextureManager
-						.getIconTexture(EIconTextures.ARROW_DOWN);
-				textureMoveRight = glIconTextureManager
-						.getIconTexture(EIconTextures.ARROW_LEFT);
+				textureMoveIn = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveOut = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveLeft = iconTextureManager
+						.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveRight = iconTextureManager
+						.getIconTexture(gl, EIconTextures.ARROW_LEFT);
 			}
 			else if (stackLayer.getPositionIndexByElementId(iViewID) == 2) // bottom
 			{
@@ -725,12 +726,12 @@ public class GLRemoteRendering
 				else if (iNavigationMouseOverViewID_right == iViewID)
 					tmpColor_left.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-				textureMoveIn = glIconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
-				textureMoveOut = glIconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
-				textureMoveLeft = glIconTextureManager
-						.getIconTexture(EIconTextures.ARROW_DOWN);
-				textureMoveRight = glIconTextureManager
-						.getIconTexture(EIconTextures.ARROW_LEFT);
+				textureMoveIn = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveOut = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveLeft = iconTextureManager
+						.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveRight = iconTextureManager
+						.getIconTexture(gl, EIconTextures.ARROW_LEFT);
 			}
 			else if (stackLayer.getPositionIndexByElementId(iViewID) == 1) // left
 			{
@@ -748,12 +749,12 @@ public class GLRemoteRendering
 				else if (iNavigationMouseOverViewID_right == iViewID)
 					tmpColor_out.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-				textureMoveIn = glIconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
-				textureMoveOut = glIconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
-				textureMoveLeft = glIconTextureManager
-						.getIconTexture(EIconTextures.ARROW_DOWN);
-				textureMoveRight = glIconTextureManager
-						.getIconTexture(EIconTextures.ARROW_LEFT);
+				textureMoveIn = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveOut = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveLeft = iconTextureManager
+						.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveRight = iconTextureManager
+						.getIconTexture(gl, EIconTextures.ARROW_LEFT);
 			}
 			else if (stackLayer.getPositionIndexByElementId(iViewID) == 3) // right
 			{
@@ -771,12 +772,12 @@ public class GLRemoteRendering
 				else if (iNavigationMouseOverViewID_right == iViewID)
 					tmpColor_in.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-				textureMoveIn = glIconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
-				textureMoveOut = glIconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
-				textureMoveLeft = glIconTextureManager
-						.getIconTexture(EIconTextures.ARROW_DOWN);
-				textureMoveRight = glIconTextureManager
-						.getIconTexture(EIconTextures.ARROW_LEFT);
+				textureMoveIn = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveOut = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveLeft = iconTextureManager
+						.getIconTexture(gl, EIconTextures.ARROW_DOWN);
+				textureMoveRight = iconTextureManager
+						.getIconTexture(gl, EIconTextures.ARROW_LEFT);
 			}
 			// else if
 			// (underInteractionLayer.getPositionIndexByElementId(iViewID) == 0)
@@ -800,12 +801,12 @@ public class GLRemoteRendering
 			// tmpColor_right.set(1, 0.3f, 0.3f, 0.9f);
 			//
 			// textureMoveIn =
-			// glIconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
+			// iconTextureManager.getIconTexture(EIconTextures.ARROW_LEFT);
 			// textureMoveOut =
-			// glIconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
-			// textureMoveLeft = glIconTextureManager
+			// iconTextureManager.getIconTexture(EIconTextures.ARROW_DOWN);
+			// textureMoveLeft = iconTextureManager
 			// .getIconTexture(EIconTextures.ARROW_DOWN);
-			// textureMoveRight = glIconTextureManager
+			// textureMoveRight = iconTextureManager
 			// .getIconTexture(EIconTextures.ARROW_LEFT);
 			// }
 		}

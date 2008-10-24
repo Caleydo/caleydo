@@ -145,9 +145,6 @@ public class GLParallelCoordinates
 
 	private SelectedElementRep elementRep;
 
-	// holds the textures for the icons
-	private GLIconTextureManager iconTextureManager;
-
 	private int iPolylineVAID = 0;
 	private int iAxisVAID = 0;
 
@@ -237,7 +234,7 @@ public class GLParallelCoordinates
 	@Override
 	public void init(final GL gl)
 	{
-		iconTextureManager = new GLIconTextureManager(gl);
+		//iconTextureManager = new GLIconTextureManager(gl);
 
 		initData();
 
@@ -1014,7 +1011,7 @@ public class GLParallelCoordinates
 			int iPickingID, EIconTextures eIconTextures)
 	{
 
-		Texture tempTexture = iconTextureManager.getIconTexture(eIconTextures);
+		Texture tempTexture = iconTextureManager.getIconTexture(gl, eIconTextures);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -1050,7 +1047,7 @@ public class GLParallelCoordinates
 		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
 		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
 		Texture tempTexture = iconTextureManager
-				.getIconTexture(EIconTextures.PAR_COORDS_SYMBOL);
+				.getIconTexture(gl, EIconTextures.PAR_COORDS_SYMBOL);
 		tempTexture.enable();
 		tempTexture.bind();
 

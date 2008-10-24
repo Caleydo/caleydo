@@ -131,7 +131,7 @@ public class GLTextureHeatMap
 	@Override
 	public void init(GL gl)
 	{
-		iconTextureManager = new GLIconTextureManager(gl);
+	//	iconTextureManager = new GLIconTextureManager(gl);
 		initData();
 
 		colorMappingBar.setHeight(renderStyle.getColorMappingBarHeight());
@@ -305,7 +305,7 @@ public class GLTextureHeatMap
 	    		null /*TextureData.Flusher flusher*/);
 	    
 	    /* Todo: find another way to initialize a texture*/
-	    THeatMap = iconTextureManager.getIconTexture(EIconTextures.HEAT_MAP_SYMBOL);
+	    THeatMap = iconTextureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_SYMBOL);
 	    
 	    THeatMap.updateImage(texData);
 	    
@@ -430,7 +430,7 @@ public class GLTextureHeatMap
 		// TODO move to base when a base exists
 		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
 		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
-		Texture tempTexture = iconTextureManager.getIconTexture(EIconTextures.HEAT_MAP_SYMBOL);
+		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_SYMBOL);
 		tempTexture.enable();
 		tempTexture.bind();
 

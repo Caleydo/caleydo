@@ -28,7 +28,10 @@ public enum EIconTextures
 	BROWSER_REFRESH_IMAGE("resources/icons/view/browser/refresh.png"),
 	BROWSER_BACK_IMAGE("resources/icons/view/browser/back.png"),
 	BROWSER_STOP_IMAGE("resources/icons/view/browser/stop.png"),
-	BROWSER_HOME_IMAGE("resources/icons/view/browser/home.png");
+	BROWSER_HOME_IMAGE("resources/icons/view/browser/home.png"),
+	
+	LOADING("resources/loading/loading_background.png"),
+	LOADING_CIRCLE("resources/loading/loading_circle.png");
 
 	private String sFileName;
 
