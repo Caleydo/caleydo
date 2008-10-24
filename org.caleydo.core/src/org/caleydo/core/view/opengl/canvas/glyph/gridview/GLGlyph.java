@@ -33,6 +33,7 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.JoglMouseListener;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GlyphRenderStyle;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
 
 /**
@@ -250,7 +251,6 @@ public class GLGlyph
 	@Override
 	public void display(GL gl)
 	{
-
 		if (grid_ == null)
 			return;
 
@@ -292,6 +292,15 @@ public class GLGlyph
 
 		if (mouseListener_ != null)
 			mouseListener_.render(gl);
+		
+		
+//		Vec3f pos = getGlyphPosition(grid_.getGlyph(39));
+//		gl.glPushMatrix();
+//		GLHelperFunctions.drawAxis(gl);
+//		gl.glTranslatef(pos.x(), pos.y(), pos.z());
+//		GLHelperFunctions.drawAxis(gl);
+//		gl.glPopMatrix();
+		
 
 	}
 
@@ -431,8 +440,40 @@ public class GLGlyph
 		gl.glPopMatrix();
 
 		bRedrawDisplayList_ = true;
-
+		
 	}
+	
+	/**
+	 * Gives the Position of a Glyph in relation to the "normal" World, without view interferences
+	 *
+	 * @param glyph
+	 * @return the center position ot the glyph
+	 */
+	private Vec3f getGlyphPosition(GlyphEntry glyph)
+	{
+		Vec2i gridpos = grid_.getGridPosition( glyph.getX(), glyph.getY() );
+		gridpos.setY( -gridpos.y() );
+		
+		// rotate
+		double w = Math.PI / 4.0;
+		float sxx = (float) (gridpos.x() * Math.cos(w) - gridpos.y() * Math.sin(w));
+		float syy = (float) (gridpos.x() * Math.sin(w) + gridpos.y() * Math.cos(w));
+
+		// translate grid offset
+		sxx += (float) (iCornerOffset * Math.cos(w));
+		syy += (float) (iCornerOffset * Math.sin(w));
+
+		// translate to glyph center
+		syy += (float) (Math.sin(w));
+
+		Vec3f realpos = new Vec3f();
+		realpos.set(sxx, syy, 1.0f);
+		realpos.scale(iViewScale);
+		
+		return realpos;
+	}
+	
+	
 
 	@Override
 	public String getShortInfo()
