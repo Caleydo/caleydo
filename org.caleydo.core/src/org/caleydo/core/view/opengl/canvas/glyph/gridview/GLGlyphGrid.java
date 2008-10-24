@@ -360,6 +360,16 @@ public class GLGlyphGrid
 		return glyphMap_.get(x).get(y).getGridPosition();
 	}
 
+	public Vec2i getGridPosition(GlyphEntry glyph)
+	{
+		for (Vector<GlyphGridPosition> v1 : glyphMap_)
+			for (GlyphGridPosition v2 : v1)
+				if(glyph == v2.getGlyph())
+					return v2.getGridPosition();
+
+		return new Vec2i();
+	}
+
 	public GlyphEntry getGlyph(int id)
 	{
 

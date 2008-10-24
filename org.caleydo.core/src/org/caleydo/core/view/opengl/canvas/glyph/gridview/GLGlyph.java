@@ -4,24 +4,32 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Vec2i;
+
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
+
+import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
+
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.SelectionItem;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
+import org.caleydo.core.manager.picking.ESelectionMode;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
@@ -97,7 +105,7 @@ public class GLGlyph
 		gman = (GlyphManager) generalManager.getGlyphManager();
 		gman.registerGlyphView(this);
 
-		selectionManager = new GenericSelectionManager.Builder(EIDType.CLINICAL_ID).build();
+		selectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT).build();
 		viewType = EManagedObjectType.GL_GLYPH;
 
 		if (sLabel.equals("Glyph Single View"))
@@ -111,6 +119,9 @@ public class GLGlyph
 	{
 		grid_.setGlyphPositions(iconIDs);
 		bRedrawDisplayList_ = true;
+		
+		generalManager.getViewGLCanvasManager()
+			.getConnectedElementRepresentationManager().clear();
 	}
 
 	@Override
@@ -146,8 +157,24 @@ public class GLGlyph
 
 			ArrayList<Integer> tmpExtID = new ArrayList<Integer>();
 
+			String sTmpExperiment;
+			int iExperimentID;
 			for (GlyphEntry g : gman.getGlyphs().values())
-				tmpExtID.add(g.getParameter(sendParameter));
+			{
+				// Remove quote chars in experiment string
+				sTmpExperiment = g.getStringParameter("sid");
+				
+				iExperimentID = generalManager.getIDMappingManager().getID(
+						EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX,
+							sTmpExperiment);
+				
+				tmpExtID.add(iExperimentID);
+				
+//				g.getID()			
+//				iGeneratedExperimentID = generalManager.getIDManager().createID(EManagedObjectType.)
+//				
+//				tmpExtID.add(g.getStringParameter("slide_id")); // FIXME: do not hand over static column
+			}
 
 			selectionManager.initialAdd(tmpExtID);
 		}
@@ -451,7 +478,8 @@ public class GLGlyph
 	 */
 	private Vec3f getGlyphPosition(GlyphEntry glyph)
 	{
-		Vec2i gridpos = grid_.getGridPosition( glyph.getX(), glyph.getY() );
+		//Vec2i gridpos = grid_.getGridPosition( glyph.getX(), glyph.getY() );
+		Vec2i gridpos = grid_.getGridPosition( glyph );
 		gridpos.setY( -gridpos.y() );
 		
 		// rotate
@@ -472,8 +500,6 @@ public class GLGlyph
 		
 		return realpos;
 	}
-	
-	
 
 	@Override
 	public String getShortInfo()
@@ -502,7 +528,7 @@ public class GLGlyph
 			switch (pickingMode)
 			{
 				case CLICKED:
-
+					
 					GlyphEntry g = grid_.getGlyph(iExternalID);
 
 					if (g == null)
@@ -513,10 +539,8 @@ public class GLGlyph
 						return;
 					}
 
-					int sendParameter = Integer.parseInt(generalManager.getGlyphManager()
-							.getSetting(EGlyphSettingIDs.UPDATESENDPARAMETER));
-					int sendID = g.getParameter(sendParameter);
-
+					int sendID = g.getID();
+					
 					// create selection lists for other screens
 					ArrayList<Integer> ids = new ArrayList<Integer>();
 					ArrayList<Integer> selections = new ArrayList<Integer>();
@@ -585,8 +609,12 @@ public class GLGlyph
 						if (selections.get(i) > 0)
 							selectionManager.addToType(ESelectionType.SELECTION, ids.get(i));
 						else
-							selectionManager.addToType(ESelectionType.DESELECTED, ids.get(i));
+							selectionManager.addToType(ESelectionType.NORMAL, ids.get(i));
 					}
+					
+					generalManager.getViewGLCanvasManager()
+						.getConnectedElementRepresentationManager().clear();
+					
 					triggerUpdate(selectionManager.getDelta());
 
 					break;
@@ -609,21 +637,31 @@ public class GLGlyph
 
 		selectionManager.clearSelections();
 		selectionManager.setDelta(selectionDelta);
-
-		int sendParameter = Integer.parseInt(gman
-				.getSetting(EGlyphSettingIDs.UPDATESENDPARAMETER));
-
+		
+		int iExperimentID;
+		Vec3f vecGlyphPos;
+		for (SelectionItem item : selectionDelta)
+		{
+			if (item.getSelectionType() != ESelectionType.SELECTION)
+				continue;
+			
+			iExperimentID = item.getSelectionID();
+			vecGlyphPos = getGlyphPosition(grid_.getGlyph(iExperimentID));
+			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().modifySelection(
+					iExperimentID, new SelectedElementRep(EIDType.EXPERIMENT,
+							iUniqueID, vecGlyphPos.x(), vecGlyphPos.y(), vecGlyphPos.z()),
+					ESelectionMode.ADD_PICK);
+		}
+		
 		HashMap<Integer, GlyphEntry> glyphmap = new HashMap<Integer, GlyphEntry>();
 		for (GlyphEntry g : grid_.getGlyphList().values())
-			glyphmap.put(g.getParameter(sendParameter), g);
+			glyphmap.put(g.getID(), g);
 
 		{
 			java.util.Set<Integer> selected = selectionManager
 					.getElements(ESelectionType.SELECTION);
 			java.util.Set<Integer> unselected = selectionManager
-					.getElements(ESelectionType.DESELECTED);
-
-			int counter = 0;
+					.getElements(ESelectionType.NORMAL);
 
 			for (int id : selected)
 			{
@@ -631,7 +669,6 @@ public class GLGlyph
 				if (g != null)
 				{
 					g.select();
-					counter++;
 				}
 			}
 
@@ -641,10 +678,8 @@ public class GLGlyph
 				if (g != null)
 				{
 					g.deSelect();
-					counter++;
 				}
 			}
-			System.out.println("changed selection of " + counter + " glyphs");
 
 			bRedrawDisplayList_ = true;
 		}
@@ -659,9 +694,12 @@ public class GLGlyph
 
 	@Override
 	public void triggerUpdate(ISelectionDelta selectionDelta)
-	{
+	{	
 		if (selectionDelta.getSelectionData().size() > 0)
+		{
+			handleConnectedElementRep(selectionDelta);
 			generalManager.getEventPublisher().handleUpdate(this, selectionDelta);
+		}
 	}
 
 	@Override
@@ -669,5 +707,36 @@ public class GLGlyph
 	{
 
 	}
+	
+	/**
+	 * Handles the creation of {@link SelectedElementRep} according to the data
+	 * in a selectionDelta
+	 * 
+	 * @param selectionDelta the selection data that should be handled
+	 * 
+	 * @TODO: method copied from AStorageBasedView - put in base class?
+	 * @deprecated
+	 * 
+	 */
+	protected void handleConnectedElementRep(ISelectionDelta selectionDelta)
+	{		
+		if (selectionDelta.size() > 0)
+		{
+			int iExperimentID;
+			Vec3f vecGlyphPos;
+			for (SelectionItem item : selectionDelta)
+			{
+				if (item.getSelectionType() != ESelectionType.SELECTION)
+					continue;
+				
+				iExperimentID = item.getSelectionID();
+				vecGlyphPos = getGlyphPosition(grid_.getGlyph(iExperimentID));
+				generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().modifySelection(
+						iExperimentID, new SelectedElementRep(EIDType.EXPERIMENT,
+								iUniqueID, vecGlyphPos.x(), vecGlyphPos.y(), vecGlyphPos.z()),
+						ESelectionMode.ADD_PICK);
+			}
 
+		}
+	}
 }

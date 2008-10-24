@@ -195,11 +195,11 @@ public abstract class AbstractLoader
 		}
 		catch (IOException ioe)
 		{
-			// TODO
+			throw new RuntimeException();
 		}
 		catch (Exception ex)
 		{
-			// TODO
+			throw new RuntimeException();
 		}
 
 		iLinesInFileToBeRead = iCountLinesToBeRead;

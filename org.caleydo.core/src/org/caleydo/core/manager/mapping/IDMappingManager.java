@@ -210,8 +210,15 @@ public class IDMappingManager
 						&& destValueType.getStorageType() == EStorageType.STRING)
 				{
 					codeResolvedMap = new HashMap<Integer, String>();
-				
-					throw new RuntimeException("Not implemented!");
+					
+					EMappingType conversionType = EMappingType.valueOf(originKeyType
+							+ "_2_" + destKeyType);
+
+					for (KeyType key : srcMap.keySet())
+					{						
+						codeResolvedMap.put(generalManager.getIDMappingManager().getID(conversionType, key), 
+								srcMap.get(key));
+					}
 				}
 				else if (destKeyType.getStorageType() == EStorageType.STRING 
 						&& destValueType.getStorageType() == EStorageType.STRING)

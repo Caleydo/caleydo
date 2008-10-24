@@ -8,6 +8,8 @@ import java.util.StringTokenizer;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
+ * 
+ * @deprecated Use java standard way instead
  */
 public final class StringConversionTool
 {

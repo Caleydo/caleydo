@@ -84,6 +84,7 @@ public class GLRemoteRenderingView
 			{
 				GeneralManager.get().getIDManager().getInternalFromExternalID(453010);
 				iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_GLYPH, -1));
+				iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_GLYPH, -1));
 			}catch (IllegalArgumentException e) {
 				GeneralManager.get().getLogger().log(Level.WARNING, "Cannot add glyph to bucket! No glyph data loaded!");
 			}

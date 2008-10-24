@@ -8,6 +8,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.collection.storage.NominalStorage;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
@@ -141,28 +142,32 @@ public class GlyphDataLoader
 			return;
 		}
 
-		int size = aliStoreMapped.get(0).length;
-
 		// now convert the storages to real glyphs
 
-		int counter = gman.getGlyphs().size();
-		for (int i = 0; i < size; ++i)
+//		int counter = gman.getGlyphs().size();
+		int iExperimentID;
+		for (int i = 0; i <  aliStoreMapped.get(0).length; ++i)
 		{
-			GlyphEntry g = new GlyphEntry(counter, generator);
+			// Extract glyph ID from mapping
+			iExperimentID = generalManager.getIDMappingManager().getID(
+					EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX, 
+						alsStoreString.get(0).getRaw(i));
+			
+			GlyphEntry g = new GlyphEntry(iExperimentID, generator);
 
 			for (int[] s : aliStoreMapped)
 				g.addParameter(s[i]);
 
 			for (int j = 0; j < alsStoreString.size(); ++j)
+			{
 				g.addStringParameter(alsStoreString.get(j).getLabel(), alsStoreString.get(j)
 						.getRaw(i));
+			}
 
-			glyphs.put(counter, g);
-			++counter;
+			glyphs.put(iExperimentID, g);
 		}
 
 		((GlyphManager) generalManager.getGlyphManager()).addGlyphs(glyphs, glyphData
 				.getLabel());
 	}
-
 }

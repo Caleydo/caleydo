@@ -84,7 +84,9 @@ public class LookupTableLoader
 					{
 						// Special case for creating indexing of storages
 						// TODO review sLine should be integer?
-						if (mappingType.equals(EMappingType.REFSEQ_MRNA_2_EXPRESSION_INDEX))
+						if (mappingType.equals(EMappingType.REFSEQ_MRNA_2_EXPRESSION_INDEX)
+								|| mappingType.equals(EMappingType.OLIGO_2_EXPRESSION_INDEX)
+								|| mappingType.equals(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX))
 						{	
 							genomeIdManager.getMapping(mappingType).put(sLine, iLineInFile
 									- iStartParsingAtLine);
@@ -102,7 +104,9 @@ public class LookupTableLoader
 							String buffer = strTokenText.nextToken();
 
 							// Special case for creating indexing of storages
-							if (mappingType.equals(EMappingType.REFSEQ_MRNA_2_EXPRESSION_INDEX))
+							if (mappingType.equals(EMappingType.REFSEQ_MRNA_2_EXPRESSION_INDEX)
+									|| mappingType.equals(EMappingType.OLIGO_2_EXPRESSION_INDEX)
+									|| mappingType.equals(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX))
 							{
 								// FIXME: Check for empty refseq mapping lines in data file using delimiter in tokenizer
 								// Workaround: Ignore integer values - that is the case if no refseq is available in this line

@@ -102,7 +102,7 @@ public class GLHeatMap
 						EMappingType.EXPRESSION_INDEX_2_DAVID,
 						EMappingType.DAVID_2_EXPRESSION_INDEX).build();
 		storageSelectionManager = new GenericSelectionManager.Builder(
-				EIDType.EXPRESSION_EXPERIMENT).build();
+				EIDType.EXPERIMENT).build();
 
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);

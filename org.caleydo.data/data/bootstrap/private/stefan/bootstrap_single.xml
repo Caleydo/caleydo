@@ -32,20 +32,6 @@
 		<!-- Creating Data -->
 			<read-xml-file target="data/bootstrap/private/stefan/load_data.xml" />
 
-		<!-- Window	10331	-->
-		<!-- 
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SWT_WINDOW"			cmdId="40991"	uniqueId="10331" label="Glyph" attrib1="ROW	HORIZONTAL"	/>
-
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_VIEW_SWT_GLCANVAS"	cmdId="69991"	uniqueId="99075"
-			  	parent="10331" label="Canvas"	attrib2="600 600" detail="1077991"	/>
-
-			<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_GL_GLYPH"		cmdId="69994"	uniqueId="82401" parent="99075" label="Glyph"
-							gl_origin="0 0 0"
-							gl_rotation="0 0 0 0"
-							attrib3="PERSPECTIVE -1 1 -1 1 2.9 1000"
-							detail="351010" />
-<!--							attrib3="ORTHOGRAPHIC -8 8 -8 8 -20 20"-->
-
 <!-- 2nd window -->
 <!--
 

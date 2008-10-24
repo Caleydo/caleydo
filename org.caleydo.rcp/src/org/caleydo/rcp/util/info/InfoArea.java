@@ -112,13 +112,16 @@ public class InfoArea
 				txtViewInfo.setText(((AGLEventListener)eventTrigger).getShortInfo());
 //				viewInfoToolTip.updateText(((AGLEventListener)eventTrigger).getDetailInfo().get(1));
 			
-				if (selectionDelta.getIDType() != EIDType.DAVID)
-					return;
+//				if (selectionDelta.getIDType() != EIDType.DAVID)
+//					return;
 								
 				String sDetailText = "";
 				
 				Iterator<SelectionItem> iterSelectionItems 
 					= selectionDelta.getSelectionData().iterator();
+
+				EIDType eIDType = selectionDelta.getIDType();
+				
 				SelectionItem item;
 
 				while(iterSelectionItems.hasNext())
@@ -128,12 +131,23 @@ public class InfoArea
 					if (item.getSelectionType() == ESelectionType.MOUSE_OVER 
 							|| item.getSelectionType() == ESelectionType.SELECTION)
 					{
-						sDetailText = sDetailText + GeneralManager.get().getIDMappingManager().getID(
-								EMappingType.DAVID_2_GENE_SYMBOL, item.getSelectionID());
-
-						sDetailText = sDetailText + " (" + GeneralManager.get().getIDMappingManager().getID(
-								EMappingType.DAVID_2_REFSEQ_MRNA, item.getSelectionID()) + ")";
-
+						if (eIDType == EIDType.DAVID)
+						{
+							sDetailText = sDetailText + GeneralManager.get().getIDMappingManager().getID(
+									EMappingType.DAVID_2_GENE_SYMBOL, item.getSelectionID());
+		
+							sDetailText = sDetailText + " (" + GeneralManager.get().getIDMappingManager().getID(
+									EMappingType.DAVID_2_REFSEQ_MRNA, item.getSelectionID()) + ")";
+						}
+						else if (eIDType == EIDType.EXPERIMENT)
+						{
+							sDetailText = GeneralManager.get().getIDMappingManager().getID(
+									EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT, item.getSelectionID());
+						}
+						else
+						{
+							continue;
+						}
 						
 						if (iterSelectionItems.hasNext())
 							sDetailText = sDetailText + ", ";

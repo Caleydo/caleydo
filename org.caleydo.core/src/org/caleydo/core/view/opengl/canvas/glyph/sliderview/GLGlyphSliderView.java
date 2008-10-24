@@ -93,7 +93,7 @@ public class GLGlyphSliderView
 		alGlyphAttributeTypes = new ArrayList<GlyphAttributeType>();
 		alGridPosition = new ArrayList<Vec2f>();
 
-		selectionManager = new GenericSelectionManager.Builder(EIDType.CLINICAL_ID).build();
+		selectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT).build();
 		viewType = EManagedObjectType.GL_GLYPH_SLIDER;
 	}
 

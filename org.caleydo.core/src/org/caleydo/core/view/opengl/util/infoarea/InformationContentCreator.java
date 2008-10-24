@@ -93,7 +93,7 @@ public class InformationContentCreator
 				sContent.add("PW: " + sPathwayTitle);
 				break;
 
-			case EXPRESSION_EXPERIMENT:
+			case EXPERIMENT:
 
 				sContent.add("Type: Experiment");
 				break;

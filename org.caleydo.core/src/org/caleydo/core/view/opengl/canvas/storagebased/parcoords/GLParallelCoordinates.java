@@ -85,7 +85,7 @@ public class GLParallelCoordinates
 
 	// Specify the current input data type for the axis and polylines
 	// Is used for meta information, such as captions
-	private EIDType eAxisDataType = EIDType.EXPRESSION_EXPERIMENT;
+	private EIDType eAxisDataType = EIDType.EXPERIMENT;
 
 	private EIDType ePolylineDataType = EIDType.EXPRESSION_INDEX;
 
@@ -176,7 +176,7 @@ public class GLParallelCoordinates
 
 		// TODO no mapping
 		storageSelectionManager = new GenericSelectionManager.Builder(
-				EIDType.EXPRESSION_EXPERIMENT).build();
+				EIDType.EXPERIMENT).build();
 
 		alIsAngleBlocking = new ArrayList<ArrayList<Integer>>();
 		alIsAngleBlocking.add(new ArrayList<Integer>());
@@ -887,7 +887,7 @@ public class GLParallelCoordinates
 				switch (eAxisDataType)
 				{
 					// TODO not very generic here
-					case EXPRESSION_EXPERIMENT:
+					case EXPERIMENT:
 						// Labels
 						// sAxisLabel = alDataStorages.get(iCount).getLabel();
 						sAxisLabel = set.getStorageFromVA(iStorageVAID, iCount).getLabel();

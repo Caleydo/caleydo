@@ -132,8 +132,7 @@ public class TabularAsciiDataReader
 					alIntBuffers.add(new int[iStopParsingAtLine - iStartParsingAtLine + 1]);
 					break;
 				case FLOAT:
-					alFloatBuffers
-							.add(new float[iStopParsingAtLine - iStartParsingAtLine + 1]);
+					alFloatBuffers.add(new float[iStopParsingAtLine - iStartParsingAtLine + 1]);
 					break;
 				case STRING:
 					alStringBuffers.add(new ArrayList<String>(iStopParsingAtLine
