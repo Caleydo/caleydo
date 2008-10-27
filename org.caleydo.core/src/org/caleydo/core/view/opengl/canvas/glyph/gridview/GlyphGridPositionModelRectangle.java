@@ -27,7 +27,6 @@ public class GlyphGridPositionModelRectangle
 		for (GlyphEntry g : gg)
 		{
 
-			g.setPosition(i, j);
 			glyphMap.get(i).get(j).setGlyph(g);
 
 			++i;

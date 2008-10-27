@@ -9,6 +9,7 @@ import java.util.Vector;
 import java.util.logging.Level;
 import javax.media.opengl.GL;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
+import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 import org.caleydo.core.view.opengl.renderstyle.GlyphRenderStyle;
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -17,16 +18,19 @@ public class GlyphGridPositionModelScatterplot
 	extends GlyphGridPositionModel
 {
 	private HashMap<Integer, HashMap<Integer, Vec2i>> scatterpointmap = null;
-	private IGlyphManager gman = null;
+	private GlyphManager gman = null;
 
 	public GlyphGridPositionModelScatterplot(GlyphRenderStyle renderStyle)
 	{
 		super(renderStyle);
-		gman = generalManager.getGlyphManager();
+		gman = (GlyphManager)generalManager.getGlyphManager();
 	}
 
 	public void buildGrid(Vector<Vector<GlyphGridPosition>> glyphMap, GL gl)
 	{
+		if(!gman.isActive())
+			return;
+		
 		// delete list if present (rebuild grid)
 		if (iDisplayListGrid >= 0)
 			gl.glDeleteLists(iDisplayListGrid, 1);
@@ -35,7 +39,9 @@ public class GlyphGridPositionModelScatterplot
 		Vec4f gridColor_ = renderStyle.getGridColor();
 
 		int maxx = worldLimit.x() - (worldLimit.x() / 5);
-		int maxy = maxx;
+		int maxy = worldLimit.y() - (worldLimit.y() / 5);
+		
+		System.out.println("worldlimit " + worldLimit.x() + " " + worldLimit.y() + " | " +  maxx + " " + maxy);
 
 		int scatterParamX = Integer.parseInt(gman.getSetting(EGlyphSettingIDs.SCATTERPLOTX));
 		int scatterParamY = Integer.parseInt(gman.getSetting(EGlyphSettingIDs.SCATTERPLOTY));

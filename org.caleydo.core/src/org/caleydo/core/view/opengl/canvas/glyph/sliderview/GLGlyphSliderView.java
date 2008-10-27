@@ -11,12 +11,9 @@ import java.util.Iterator;
 import java.util.logging.Level;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.collection.IStorage;
-import org.caleydo.core.data.collection.storage.ERawDataType;
-import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
@@ -26,7 +23,6 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
@@ -130,29 +126,25 @@ public class GLGlyphSliderView
 			return;
 		}
 
-		// load ids to selectionManager
-		selectionManager.resetSelectionManager();
+		{ // load ids to the selection manager
+			selectionManager.resetSelectionManager();
 
-		try
-		{
-			IStorage store = glyphData.get(0);
-			if (store instanceof NominalStorage
-					&& store.getRawDataType() == ERawDataType.STRING)
+			ArrayList<Integer> tmpExtID = new ArrayList<Integer>();
+
+			String sTmpExperiment;
+			int iExperimentID;
+			for (GlyphEntry g : gman.getGlyphs().values())
 			{
-				INominalStorage<String> nominalStorage = (INominalStorage<String>) store;
+				sTmpExperiment = g.getStringParameter("sid");
 
-				for (int i = 0; i < nominalStorage.size(); ++i)
-				{
-					int id = Integer.parseInt(nominalStorage.getRaw(i));
-					selectionManager.initialAdd(id);
-				}
+				iExperimentID = generalManager.getIDMappingManager().getID(
+						EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX, sTmpExperiment);
+
+				tmpExtID.add(iExperimentID);
+
 			}
-		}
-		catch (NumberFormatException e)
-		{
-			generalManager.getLogger().log(Level.SEVERE,
-					"first glyph data row isn't the index - shutting down");
-			return;
+
+			selectionManager.initialAdd(tmpExtID);
 		}
 
 		// build slider
@@ -336,8 +328,6 @@ public class GLGlyphSliderView
 			{
 				// col , value index
 				HashMap<Integer, HashSet<Integer>> columnIndexMap = new HashMap<Integer, HashSet<Integer>>();
-				int sendParameter = Integer.parseInt(gman
-						.getSetting(EGlyphSettingIDs.UPDATESENDPARAMETER));
 
 				for (int i = 0; i < alSlider.size(); ++i)
 				{
@@ -371,14 +361,15 @@ public class GLGlyphSliderView
 							isselected = false;
 					}
 
-					int id = g.getParameter(sendParameter);
-
 					if (isselected)
-						selectionManager.addToType(ESelectionType.SELECTION, id);
+						selectionManager.addToType(ESelectionType.SELECTION, g.getID());
 					else
-						selectionManager.addToType(ESelectionType.DESELECTED, id);
+						selectionManager.addToType(ESelectionType.NORMAL, g.getID());
 
 				}
+
+				generalManager.getViewGLCanvasManager()
+						.getConnectedElementRepresentationManager().clear();
 
 				triggerUpdate(selectionManager.getDelta());
 			}
@@ -423,6 +414,7 @@ public class GLGlyphSliderView
 		pickingManager.flushHits(iUniqueID, pickingType);
 
 	}
+
 	@Override
 	public void triggerUpdate(ISelectionDelta selectionDelta)
 	{

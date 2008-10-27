@@ -10,6 +10,8 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.SelectionItem;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.glyph.GlyphManager;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StyleRange;
 import org.eclipse.swt.custom.StyledText;
@@ -40,14 +42,14 @@ public class ToolTip
 	static private StyledText label = null;
 	static private Label icon = null;
 	static private Control lastControl = null;
-	
+
 	private static final int MAX_LINES = 80;
 	private static final int MAX_CHARS_PER_LINE = 50;
 
 	private Control parentControl;
 	private InfoArea infoArea;
 	private EInfoType infoType;
-	
+
 	private String sText;
 	private String[] sArLines;
 	int iLineIndex;
@@ -65,15 +67,14 @@ public class ToolTip
 		parentControl.addListener(SWT.MouseHover, this);
 		iLineIndex = 0;
 	}
-	
+
 	/**
 	 * Constructor
 	 */
-	public ToolTip(Control control, String sText, 
-			InfoArea infoArea, EInfoType infoType)
+	public ToolTip(Control control, String sText, InfoArea infoArea, EInfoType infoType)
 	{
 		this(control, sText);
-		
+
 		this.infoArea = infoArea;
 		this.infoType = infoType;
 	}
@@ -106,51 +107,76 @@ public class ToolTip
 				{
 					if (infoType == EInfoType.VIEW_INFO)
 					{
-						sText = infoArea.getUpdateTriggeringView().getDetailedInfo();						
+						sText = infoArea.getUpdateTriggeringView().getDetailedInfo();
 					}
 					else if (infoType == EInfoType.DETAILED_INFO)
 					{
-						if (infoArea.getSelectionDelta().getIDType() != EIDType.DAVID)
-							return;
-										
-						String sDetailText = "";
-						
-						Iterator<SelectionItem> iterSelectionItems 
-							= infoArea.getSelectionDelta().getSelectionData().iterator();
-						SelectionItem item;
-						IIDMappingManager genomeIDManager = GeneralManager.get().getIDMappingManager();
 
-						while(iterSelectionItems.hasNext())
+						String sDetailText = "";
+
+						Iterator<SelectionItem> iterSelectionItems = infoArea
+								.getSelectionDelta().getSelectionData().iterator();
+						EIDType eIDType = infoArea.getSelectionDelta().getIDType();
+						SelectionItem item;
+						GlyphManager gman = (GlyphManager) GeneralManager.get()
+								.getGlyphManager();
+						IIDMappingManager genomeIDManager = GeneralManager.get()
+								.getIDMappingManager();
+
+						while (iterSelectionItems.hasNext())
 						{
 							item = iterSelectionItems.next();
-							
-							if (item.getSelectionType() == ESelectionType.MOUSE_OVER 
+
+							if (item.getSelectionType() == ESelectionType.MOUSE_OVER
 									|| item.getSelectionType() == ESelectionType.SELECTION)
 							{
-								sDetailText = sDetailText + "<b>RefSeq: </b>";
-								sDetailText = sDetailText + genomeIDManager.getID(
-										EMappingType.DAVID_2_REFSEQ_MRNA, item.getSelectionID());
-								sDetailText = sDetailText + "\n";
-								
-								sDetailText = sDetailText + "<b>Gene symbol: </b>";
-								sDetailText = sDetailText + genomeIDManager.getID(
-										EMappingType.DAVID_2_GENE_SYMBOL, item.getSelectionID());
-								sDetailText = sDetailText + "\n";
-								
-								sDetailText = sDetailText + "<b>Gene name: </b>";
-								sDetailText = sDetailText + genomeIDManager.getID(
-										EMappingType.DAVID_2_GENE_NAME, item.getSelectionID());
-								sDetailText = sDetailText + "\n";
-								
+								if (eIDType == EIDType.DAVID)
+								{
+									sDetailText = sDetailText + "<b>RefSeq: </b>";
+									sDetailText = sDetailText
+											+ genomeIDManager.getID(
+													EMappingType.DAVID_2_REFSEQ_MRNA, item
+															.getSelectionID());
+									sDetailText = sDetailText + "\n";
+
+									sDetailText = sDetailText + "<b>Gene symbol: </b>";
+									sDetailText = sDetailText
+											+ genomeIDManager.getID(
+													EMappingType.DAVID_2_GENE_SYMBOL, item
+															.getSelectionID());
+									sDetailText = sDetailText + "\n";
+
+									sDetailText = sDetailText + "<b>Gene name: </b>";
+									sDetailText = sDetailText
+											+ genomeIDManager.getID(
+													EMappingType.DAVID_2_GENE_NAME, item
+															.getSelectionID());
+									sDetailText = sDetailText + "\n";
+								}
+								else if (eIDType == EIDType.EXPERIMENT)
+								{
+									GlyphEntry glyph = gman.getGlyphs().get(
+											item.getSelectionID());
+
+									if (glyph != null)
+										sDetailText = glyph.getGlyphDescription("\n");
+									else
+										sDetailText = "glyph not found";
+								}
+								else
+								{
+									continue;
+								}
+
 								if (iterSelectionItems.hasNext())
 									sDetailText = sDetailText + "\n";
 							}
 						}
-						
+
 						sText = sDetailText;
 					}
 				}
-				
+
 				if (lastControl != parentControl)
 				{
 					prepareText();
@@ -226,24 +252,27 @@ public class ToolTip
 		iLineIndex = 0;
 
 		String sLineText = getNextLine(iLineIndex);
-		
+
 		// Add line breaks if lines are too long
 		StringTokenizer tokenizer = new StringTokenizer(sLineText, "\n", true);
 		String sTmp;
 		sLineText = "";
-		while(tokenizer.hasMoreTokens())
+		while (tokenizer.hasMoreTokens())
 		{
 			sTmp = tokenizer.nextToken();
-			
+
 			if (sTmp.length() > MAX_CHARS_PER_LINE && sTmp.contains(" "))
 			{
 				int bla = MAX_CHARS_PER_LINE + sTmp.substring(MAX_CHARS_PER_LINE).indexOf(" ");
-				bla ++;
-				
+				bla++;
+
 				if (sTmp.substring(MAX_CHARS_PER_LINE).indexOf(" ") != -1)
-				{	
-					sLineText = sLineText + new StringBuffer(sTmp).insert(
-							MAX_CHARS_PER_LINE + sTmp.substring(MAX_CHARS_PER_LINE).indexOf(" ") + 1, "\n").toString(); 
+				{
+					sLineText = sLineText
+							+ new StringBuffer(sTmp).insert(
+									MAX_CHARS_PER_LINE
+											+ sTmp.substring(MAX_CHARS_PER_LINE).indexOf(" ")
+											+ 1, "\n").toString();
 				}
 				else
 				{
@@ -254,15 +283,14 @@ public class ToolTip
 			{
 				sLineText = sLineText + sTmp;
 			}
-			
-//			sLineText = sLineText + "\n";
+
+			// sLineText = sLineText + "\n";
 		}
-	
-		
+
 		ArrayList<Integer> iAlStartIndex = new ArrayList<Integer>();
-		ArrayList<Integer> iAlLength = new ArrayList<Integer>();		
-		int iStartIndex = 0;		
-		
+		ArrayList<Integer> iAlLength = new ArrayList<Integer>();
+		int iStartIndex = 0;
+
 		// Handle bold text parts
 		while (sLineText.contains("<b>"))
 		{
@@ -270,11 +298,11 @@ public class ToolTip
 			iAlStartIndex.add(iStartIndex);
 			iAlLength.add(sLineText.indexOf("</b>") - iStartIndex - 3);
 			sLineText = sLineText.replaceFirst("<b>", "");
-			sLineText = sLineText.replaceFirst("</b>", "");			
+			sLineText = sLineText.replaceFirst("</b>", "");
 		}
-		
+
 		label.setText(sLineText);
-		
+
 		StyleRange styleRange;
 		for (int iOccurenceIndex = 0; iOccurenceIndex < iAlStartIndex.size(); iOccurenceIndex++)
 		{
@@ -367,7 +395,7 @@ public class ToolTip
 		this.sText = sText;
 		label.update();
 	}
-	
+
 	public static void main(String[] args)
 	{
 		Display display = new Display();
@@ -375,7 +403,8 @@ public class ToolTip
 		shell.setSize(200, 300);
 		Button button = new Button(shell, SWT.PUSH);
 		button.setText("Hallo");
-		new ToolTip(button,
+		new ToolTip(
+				button,
 				"Dies ist ein <b>Test</b> text!\nDies ist<b>ein</b>Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nDies ist ein Test text!\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\nHALLO HALLO\n");
 		button.setBounds(40, 50, 50, 20);
 

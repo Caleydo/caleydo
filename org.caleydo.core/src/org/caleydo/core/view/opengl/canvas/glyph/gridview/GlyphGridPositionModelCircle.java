@@ -31,6 +31,13 @@ public class GlyphGridPositionModelCircle
 			centerY = x_max / 2 + 1;
 
 		}
+		
+		if(centerX > glyphMap_.size())
+			centerX = glyphMap_.size()-1;
+
+		if(centerY > glyphMap_.get(centerX).size())
+			centerY = glyphMap_.get(centerX).size()-1;
+		
 		glyphCenterGrid.setXY(centerX, centerY);
 		glyphCenterWorld.set(glyphMap_.get(centerX).get(centerY).getGridPosition().toVec2f());
 
@@ -92,7 +99,6 @@ public class GlyphGridPositionModelCircle
 					y = worldLimit.y() - 1;
 				isfree = glyphMap_.get(x).get(y).isPositionFree();
 			}
-			g.setPosition(x, y);
 			glyphMap_.get(x).get(y).setGlyph(g);
 
 		}

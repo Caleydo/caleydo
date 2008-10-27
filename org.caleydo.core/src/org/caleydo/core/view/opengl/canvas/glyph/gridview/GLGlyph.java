@@ -4,17 +4,14 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Vec2i;
-
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.logging.Level;
-
-import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
-
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDType;
@@ -31,7 +28,6 @@ import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.ESelectionMode;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
@@ -41,7 +37,6 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.JoglMouseListener;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GlyphRenderStyle;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
 
 /**
@@ -62,7 +57,8 @@ public class GLGlyph
 
 	int displayListButtons_ = -1;
 
-	boolean bRedrawDisplayList_ = true;
+	boolean bRedrawDisplayListGrid = true;
+	boolean bRedrawDisplayListGlyph = true;
 
 	boolean bIsLocal = false;
 
@@ -115,17 +111,17 @@ public class GLGlyph
 			iViewRole = 2;
 	}
 
-	public void setViewMode(EIconIDs iconIDs)
+	public synchronized void setViewMode(EIconIDs iconIDs)
 	{
 		grid_.setGlyphPositions(iconIDs);
-		bRedrawDisplayList_ = true;
-		
-		generalManager.getViewGLCanvasManager()
-			.getConnectedElementRepresentationManager().clear();
+		forceRebuild();
+
+		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
+				.clear();
 	}
 
 	@Override
-	public void init(GL gl)
+	public synchronized void init(GL gl)
 	{
 
 		ISet glyphData = null;
@@ -147,13 +143,10 @@ public class GLGlyph
 		grid_.selectAll();
 
 		// init glyph gl
-		bRedrawDisplayList_ = true;
+		forceRebuild();
 
 		{ // load ids to the selection manager
 			selectionManager.resetSelectionManager();
-
-			int sendParameter = Integer.parseInt(gman
-					.getSetting(EGlyphSettingIDs.UPDATESENDPARAMETER));
 
 			ArrayList<Integer> tmpExtID = new ArrayList<Integer>();
 
@@ -161,19 +154,13 @@ public class GLGlyph
 			int iExperimentID;
 			for (GlyphEntry g : gman.getGlyphs().values())
 			{
-				// Remove quote chars in experiment string
 				sTmpExperiment = g.getStringParameter("sid");
-				
+
 				iExperimentID = generalManager.getIDMappingManager().getID(
-						EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX,
-							sTmpExperiment);
-				
+						EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX, sTmpExperiment);
+
 				tmpExtID.add(iExperimentID);
-				
-//				g.getID()			
-//				iGeneratedExperimentID = generalManager.getIDManager().createID(EManagedObjectType.)
-//				
-//				tmpExtID.add(g.getStringParameter("slide_id")); // FIXME: do not hand over static column
+
 			}
 
 			selectionManager.initialAdd(tmpExtID);
@@ -182,7 +169,7 @@ public class GLGlyph
 	}
 
 	@Override
-	public void initLocal(GL gl)
+	public synchronized void initLocal(GL gl)
 	{
 
 		bIsLocal = true;
@@ -230,7 +217,7 @@ public class GLGlyph
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID,
+	public synchronized void initRemote(final GL gl, final int iRemoteViewID,
 			final RemoteHierarchyLevel layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas)
@@ -256,7 +243,7 @@ public class GLGlyph
 	}
 
 	@Override
-	public void displayLocal(GL gl)
+	public synchronized void displayLocal(GL gl)
 	{
 		pickingManager.handlePicking(iUniqueID, gl, true);
 
@@ -268,7 +255,7 @@ public class GLGlyph
 	}
 
 	@Override
-	public void displayRemote(GL gl)
+	public synchronized void displayRemote(GL gl)
 	{
 
 		display(gl);
@@ -276,12 +263,12 @@ public class GLGlyph
 	}
 
 	@Override
-	public void display(GL gl)
+	public synchronized void display(GL gl)
 	{
 		if (grid_ == null)
 			return;
 
-		if (bRedrawDisplayList_)
+		if (bRedrawDisplayListGrid || bRedrawDisplayListGlyph)
 			initDisplayLists(gl);
 
 		organizeGlyphsForViewRole();
@@ -302,7 +289,7 @@ public class GLGlyph
 		if (mouseListener_ != null)
 			handleMouseListenerRubberband(gl, scale);
 
-		if (displayList_ < 0 || bRedrawDisplayList_)
+		if (displayList_ < 0 || bRedrawDisplayListGlyph)
 			redrawView(gl);
 
 		int displayListGrid = grid_.getGridLayout(bIsLocal);
@@ -319,15 +306,6 @@ public class GLGlyph
 
 		if (mouseListener_ != null)
 			mouseListener_.render(gl);
-		
-		
-//		Vec3f pos = getGlyphPosition(grid_.getGlyph(39));
-//		gl.glPushMatrix();
-//		GLHelperFunctions.drawAxis(gl);
-//		gl.glTranslatef(pos.x(), pos.y(), pos.z());
-//		GLHelperFunctions.drawAxis(gl);
-//		gl.glPopMatrix();
-		
 
 	}
 
@@ -343,11 +321,15 @@ public class GLGlyph
 		}
 		gl.glPopMatrix();
 
-		gl.glPushMatrix();
-		grid_.buildGrids(gl);
-		grid_.setGlyphPositions();
-		gl.glPopMatrix();
+		if (!bRedrawDisplayListGlyph)
+		{
+			gl.glPushMatrix();
+			grid_.buildGrids(gl);
+			grid_.setGlyphPositions();
+			gl.glPopMatrix();
+		}
 
+		bRedrawDisplayListGrid = false;
 	}
 
 	private void redrawView(GL gl)
@@ -370,22 +352,22 @@ public class GLGlyph
 
 		while (git.hasNext())
 		{
-			GlyphEntry e = git.next();
+			GlyphEntry ge = git.next();
 
-			Vec2i pos = grid_.getGridPosition(e.getX(), e.getY());
+			Vec2i pos = grid_.getGridPosition(ge);
 			if (pos == null)
 				continue;
 
 			gl.glTranslatef(pos.x(), -(float) pos.y(), 0f);
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.GLYPH_FIELD_SELECTION, e.getID()));
-			gl.glCallList(e.getGlList(gl));
+					EPickingType.GLYPH_FIELD_SELECTION, ge.getID()));
+			gl.glCallList(ge.getGlList(gl));
 			gl.glPopName();
 			gl.glTranslatef(-(float) pos.x(), pos.y(), 0f);
 		}
 		gl.glEndList();
 
-		bRedrawDisplayList_ = false;
+		bRedrawDisplayListGlyph = false;
 
 		gl.glPopMatrix();
 	}
@@ -466,22 +448,23 @@ public class GLGlyph
 		// GLHelperFunctions.drawAxis(gl);
 		gl.glPopMatrix();
 
-		bRedrawDisplayList_ = true;
-		
+		forceRebuild();
+
 	}
-	
+
 	/**
-	 * Gives the Position of a Glyph in relation to the "normal" World, without view interferences
-	 *
+	 * Gives the Position of a Glyph in relation to the "normal" World, without
+	 * view interferences
+	 * 
 	 * @param glyph
 	 * @return the center position ot the glyph
 	 */
 	private Vec3f getGlyphPosition(GlyphEntry glyph)
 	{
-		//Vec2i gridpos = grid_.getGridPosition( glyph.getX(), glyph.getY() );
-		Vec2i gridpos = grid_.getGridPosition( glyph );
-		gridpos.setY( -gridpos.y() );
-		
+		// Vec2i gridpos = grid_.getGridPosition( glyph.getX(), glyph.getY() );
+		Vec2i gridpos = grid_.getGridPosition(glyph);
+		gridpos.setY(-gridpos.y());
+
 		// rotate
 		double w = Math.PI / 4.0;
 		float sxx = (float) (gridpos.x() * Math.cos(w) - gridpos.y() * Math.sin(w));
@@ -497,18 +480,18 @@ public class GLGlyph
 		Vec3f realpos = new Vec3f();
 		realpos.set(sxx, syy, 1.0f);
 		realpos.scale(iViewScale);
-		
+
 		return realpos;
 	}
 
 	@Override
-	public String getShortInfo()
+	public synchronized String getShortInfo()
 	{
 		return "Glpyh";
 	}
 
 	@Override
-	public String getDetailedInfo()
+	public synchronized String getDetailedInfo()
 	{
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("Type: Glyph Map");
@@ -528,7 +511,6 @@ public class GLGlyph
 			switch (pickingMode)
 			{
 				case CLICKED:
-					
 					GlyphEntry g = grid_.getGlyph(iExternalID);
 
 					if (g == null)
@@ -540,17 +522,25 @@ public class GLGlyph
 					}
 
 					int sendID = g.getID();
-					
-					// create selection lists for other screens
-					ArrayList<Integer> ids = new ArrayList<Integer>();
-					ArrayList<Integer> selections = new ArrayList<Integer>();
 
+					// create selection lists for other screens
+					HashMap<Integer, Boolean> isSelected = new HashMap<Integer, Boolean>();
+
+					// if the ctrl button is not down, we deselect everything
 					if (!keyListener_.isControlDown())
 					{
 						ArrayList<Integer> deselect = grid_.deSelectAll();
-						ids.addAll(deselect);
-						while (selections.size() < ids.size())
-							selections.add(-1);
+						for (Integer i : deselect)
+							isSelected.put(i, false);
+
+						// if the ctrl button is down, we select the old
+						// selection
+					}
+					else
+					{
+						for (GlyphEntry ge : grid_.getGlyphList().values())
+							if (ge.isSelected())
+								isSelected.put(ge.getID(), true);
 					}
 
 					// test output only....
@@ -561,6 +551,7 @@ public class GLGlyph
 
 					int stagingT = g.getParameter(paramt);
 					int dfs = g.getParameter(paramdfs);
+					Vec2i pos = grid_.getGridPosition(g);
 
 					if (!g.isSelected())
 					{
@@ -568,54 +559,42 @@ public class GLGlyph
 						String sampleid = g.getStringParameter(colnames.get(0));
 
 						System.out.println("  select object index: "
-								+ Integer.toString(iExternalID) + " on Point " + g.getX()
-								+ " " + g.getY() + " with Patient ID " + sendID
+								+ Integer.toString(iExternalID) + " on Point " + pos.x()
+								+ " " + pos.y() + " with Patient ID " + sendID
 								+ " and T staging " + stagingT + " and dfs " + dfs + " + "
 								+ sampleid);
 						g.select();
 
-						ids.add(sendID);
-						selections.add(1);
+						isSelected.put(sendID, true);
 					}
 					else
 					{
 						System.out.println("DEselect object index: "
-								+ Integer.toString(iExternalID) + " on Point " + g.getX()
-								+ " " + g.getY() + " with Patient ID " + sendID
+								+ Integer.toString(iExternalID) + " on Point " + pos.x()
+								+ " " + pos.y() + " with Patient ID " + sendID
 								+ " and T staging " + stagingT + " and dfs " + dfs);
 						g.deSelect();
 
-						ids.add(sendID);
-						selections.add(-1);
+						isSelected.put(sendID, false);
 					}
 
-					if (grid_.getNumOfSelected() == 0)
-					{
-						ArrayList<Integer> select = grid_.selectAll();
-						ids.addAll(select);
-						while (selections.size() < ids.size())
-							selections.add(1);
-					}
-
-					generalManager.getGlyphManager()
-							.getGlyphAttributeTypeWithExternalColumnNumber(2)
-							.printDistribution();
-					bRedrawDisplayList_ = true;
-
-					// push patient id to other screens
 					selectionManager.clearSelections();
-					for (int i = 0; i < ids.size(); ++i)
+					Set<Integer> keyset = isSelected.keySet();
+					for (int key : keyset)
 					{
-						if (selections.get(i) > 0)
-							selectionManager.addToType(ESelectionType.SELECTION, ids.get(i));
+						if (isSelected.get(key))
+							selectionManager.addToType(ESelectionType.SELECTION, key);
 						else
-							selectionManager.addToType(ESelectionType.NORMAL, ids.get(i));
+							selectionManager.addToType(ESelectionType.NORMAL, key);
 					}
-					
+
 					generalManager.getViewGLCanvasManager()
-						.getConnectedElementRepresentationManager().clear();
-					
+							.getConnectedElementRepresentationManager().clear();
+
 					triggerUpdate(selectionManager.getDelta());
+
+					// only the glyphs need to be redrawn
+					bRedrawDisplayListGlyph = true;
 
 					break;
 				default:
@@ -629,7 +608,8 @@ public class GLGlyph
 	}
 
 	@Override
-	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
+	public synchronized void handleUpdate(IUniqueObject eventTrigger,
+			ISelectionDelta selectionDelta)
 	{
 
 		generalManager.getLogger().log(Level.INFO,
@@ -637,64 +617,50 @@ public class GLGlyph
 
 		selectionManager.clearSelections();
 		selectionManager.setDelta(selectionDelta);
-		
-		int iExperimentID;
-		Vec3f vecGlyphPos;
+
+		GlyphEntry actualGlyph = null;
 		for (SelectionItem item : selectionDelta)
 		{
-			if (item.getSelectionType() != ESelectionType.SELECTION)
+			actualGlyph = grid_.getGlyph(item.getSelectionID());
+
+			if (actualGlyph == null) // not glyph to this id found
 				continue;
-			
-			iExperimentID = item.getSelectionID();
-			vecGlyphPos = getGlyphPosition(grid_.getGlyph(iExperimentID));
-			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().modifySelection(
-					iExperimentID, new SelectedElementRep(EIDType.EXPERIMENT,
-							iUniqueID, vecGlyphPos.x(), vecGlyphPos.y(), vecGlyphPos.z()),
-					ESelectionMode.ADD_PICK);
+
+			if (item.getSelectionType() == ESelectionType.NORMAL)
+				actualGlyph.deSelect();
+
+			if (item.getSelectionType() == ESelectionType.SELECTION)
+				actualGlyph.select();
+
 		}
-		
-		HashMap<Integer, GlyphEntry> glyphmap = new HashMap<Integer, GlyphEntry>();
+
+		Vec3f vecGlyphPos;
 		for (GlyphEntry g : grid_.getGlyphList().values())
-			glyphmap.put(g.getID(), g);
-
 		{
-			java.util.Set<Integer> selected = selectionManager
-					.getElements(ESelectionType.SELECTION);
-			java.util.Set<Integer> unselected = selectionManager
-					.getElements(ESelectionType.NORMAL);
+			if (!g.isSelected())
+				continue;
 
-			for (int id : selected)
-			{
-				GlyphEntry g = glyphmap.get(id);
-				if (g != null)
-				{
-					g.select();
-				}
-			}
-
-			for (int id : unselected)
-			{
-				GlyphEntry g = glyphmap.get(id);
-				if (g != null)
-				{
-					g.deSelect();
-				}
-			}
-
-			bRedrawDisplayList_ = true;
+			vecGlyphPos = getGlyphPosition(g);
+			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
+					.modifySelection(
+							g.getID(),
+							new SelectedElementRep(EIDType.EXPERIMENT, iUniqueID, vecGlyphPos
+									.x(), vecGlyphPos.y(), vecGlyphPos.z()),
+							ESelectionMode.ADD_PICK);
 		}
 
+		bRedrawDisplayListGlyph = true;
 	}
 
-	public void forceRebuild()
+	public synchronized void forceRebuild()
 	{
-
-		bRedrawDisplayList_ = true;
+		bRedrawDisplayListGrid = true;
+		bRedrawDisplayListGlyph = true;
 	}
 
 	@Override
-	public void triggerUpdate(ISelectionDelta selectionDelta)
-	{	
+	public synchronized void triggerUpdate(ISelectionDelta selectionDelta)
+	{
 		if (selectionDelta.getSelectionData().size() > 0)
 		{
 			handleConnectedElementRep(selectionDelta);
@@ -703,40 +669,37 @@ public class GLGlyph
 	}
 
 	@Override
-	public void broadcastElements(ESelectionType type)
+	public synchronized void broadcastElements(ESelectionType type)
 	{
 
 	}
-	
+
 	/**
 	 * Handles the creation of {@link SelectedElementRep} according to the data
 	 * in a selectionDelta
 	 * 
 	 * @param selectionDelta the selection data that should be handled
 	 * 
-	 * @TODO: method copied from AStorageBasedView - put in base class?
-	 * @deprecated
-	 * 
 	 */
 	protected void handleConnectedElementRep(ISelectionDelta selectionDelta)
-	{		
+	{
 		if (selectionDelta.size() > 0)
 		{
-			int iExperimentID;
 			Vec3f vecGlyphPos;
-			for (SelectionItem item : selectionDelta)
-			{
-				if (item.getSelectionType() != ESelectionType.SELECTION)
-					continue;
-				
-				iExperimentID = item.getSelectionID();
-				vecGlyphPos = getGlyphPosition(grid_.getGlyph(iExperimentID));
-				generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().modifySelection(
-						iExperimentID, new SelectedElementRep(EIDType.EXPERIMENT,
-								iUniqueID, vecGlyphPos.x(), vecGlyphPos.y(), vecGlyphPos.z()),
-						ESelectionMode.ADD_PICK);
-			}
 
+			for (GlyphEntry g : grid_.getGlyphList().values())
+			{
+				if (!g.isSelected())
+					continue;
+
+				vecGlyphPos = getGlyphPosition(g);
+				generalManager.getViewGLCanvasManager()
+						.getConnectedElementRepresentationManager().modifySelection(
+								g.getID(),
+								new SelectedElementRep(EIDType.EXPERIMENT, iUniqueID,
+										vecGlyphPos.x(), vecGlyphPos.y(), vecGlyphPos.z()),
+								ESelectionMode.ADD_PICK);
+			}
 		}
 	}
 }

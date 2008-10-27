@@ -35,7 +35,9 @@ public class GlyphManager
 	private HashMap<String, String> hmLoadedStoraged = null;
 
 	private HashSet<GLGlyph> registeredViews = null;
-
+	
+	private boolean bIsActive = false;
+	
 	/**
 	 * Constructor.
 	 */
@@ -72,6 +74,11 @@ public class GlyphManager
 		generalManager.getLogger().log(Level.INFO, "loadGlyphDefinitaion");
 		generalManager.getXmlParserManager().parseXmlFileByName(xmlPath);
 
+		bIsActive = true;
+	}
+	
+	public boolean isActive() {
+		return bIsActive;
 	}
 
 	// settings accessors

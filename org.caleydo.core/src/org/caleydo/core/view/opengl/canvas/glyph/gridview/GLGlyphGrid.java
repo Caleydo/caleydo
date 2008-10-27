@@ -25,6 +25,7 @@ import org.caleydo.core.view.opengl.util.GLHelperFunctions;
  */
 public class GLGlyphGrid
 {
+	private boolean bEnableWorldGrid = false;
 
 	private IGeneralManager generalManager = null;
 
@@ -40,9 +41,9 @@ public class GLGlyphGrid
 
 	private EIconIDs iPositionType = EIconIDs.DISPLAY_RECTANGLE;
 
-	private Vec2i worldLimit_ = new Vec2i();
+	private Vec2i worldLimit_ = null;
 
-	private Vec2f glyphCenter = new Vec2f();
+	private Vec2f glyphCenter = null;
 
 	private Vec2f glyphLowerLeft = null;
 	private Vec2f glyphUpperRight = null;
@@ -59,6 +60,9 @@ public class GLGlyphGrid
 
 		glyphLowerLeft = new Vec2f();
 		glyphUpperRight = new Vec2f();
+
+		worldLimit_ = new Vec2i();
+		glyphCenter = new Vec2f();
 
 		glyphMap_ = new Vector<Vector<GlyphGridPosition>>();
 
@@ -171,15 +175,12 @@ public class GLGlyphGrid
 
 	public ArrayList<Integer> selectAll()
 	{
-
-		int ssi = Integer.parseInt(generalManager.getGlyphManager().getSetting(
-				EGlyphSettingIDs.UPDATESENDPARAMETER));
 		ArrayList<Integer> temp = new ArrayList<Integer>();
 		for (GlyphEntry g : glyphs_.values())
 		{
 			if (!g.isSelected())
 			{
-				temp.add(g.getParameter(ssi));
+				temp.add(g.getID());
 			}
 			g.select();
 		}
@@ -189,8 +190,6 @@ public class GLGlyphGrid
 	public ArrayList<Integer> selectRubberBand(GL gl, Vec3f point1, Vec3f point2)
 	{
 
-		int ssi = Integer.parseInt(generalManager.getGlyphManager().getSetting(
-				EGlyphSettingIDs.UPDATESENDPARAMETER));
 		ArrayList<Integer> temp = new ArrayList<Integer>();
 
 		// find points in glyph map
@@ -246,9 +245,10 @@ public class GLGlyphGrid
 		 */
 		// System.out.println(grpos.x() + ", " + grpos.y() + " | " + glx + " " +
 		// gly);
-//		System.out.println("p1(" + pos1.getPosition().x() + "," + pos1.getPosition().y()
-//				+ "), p2 (" + pos2.getPosition().x() + "," + pos2.getPosition().y() + ")");
-
+		// System.out.println("p1(" + pos1.getPosition().x() + "," +
+		// pos1.getPosition().y()
+		// + "), p2 (" + pos2.getPosition().x() + "," + pos2.getPosition().y() +
+		// ")");
 		int smallX = pos1.getPosition().y() / 2;
 		int bigX = pos2.getPosition().y() / 2;
 		if (smallX > bigX)
@@ -364,7 +364,7 @@ public class GLGlyphGrid
 	{
 		for (Vector<GlyphGridPosition> v1 : glyphMap_)
 			for (GlyphGridPosition v2 : v1)
-				if(glyph == v2.getGlyph())
+				if (glyph == v2.getGlyph())
 					return v2.getGridPosition();
 
 		return new Vec2i();
@@ -427,48 +427,51 @@ public class GLGlyphGrid
 		for (GlyphGridPositionModel model : positionModels.values())
 			model.buildGrid(glyphMap_, gl);
 
-//		// std grid
-//		Vec4f gridColor_ = renderStyle.getGridColor();
-//
-//		// delete list if present (rebuild grid)
-//		if (GLGridList_ >= 0)
-//			gl.glDeleteLists(GLGridList_, 1);
-//
-//		// draw grid
-//		GLGridList_ = gl.glGenLists(1);
-//		gl.glNewList(GLGridList_, GL.GL_COMPILE);
-//
-//		gl.glLineWidth(1);
-//
-//		gl.glTranslatef(0f, -100f, 0f);
-//
-//		for (int i = 0; i < 200; ++i)
-//		{
-//			gl.glTranslatef(0f, 1f, 0f);
-//			gl.glBegin(GL.GL_LINES);
-//			gl.glColor4f(gridColor_.get(0), gridColor_.get(1), gridColor_.get(2), gridColor_
-//					.get(3));
-//			gl.glVertex3f(-100, 0, 0);
-//			gl.glVertex3f(100, 0, 0);
-//			gl.glEnd();
-//		}
-//
-//		gl.glTranslatef(-100f, -100f, 0f);
-//
-//		for (int i = 0; i < 200; ++i)
-//		{
-//			gl.glTranslatef(1f, 0f, 0f);
-//			gl.glBegin(GL.GL_LINES);
-//			gl.glColor4f(gridColor_.get(0), gridColor_.get(1), gridColor_.get(2), gridColor_
-//					.get(3));
-//			gl.glVertex3f(0, -100, 0);
-//			gl.glVertex3f(0, 100, 0);
-//			gl.glEnd();
-//		}
-//
-//		gl.glTranslatef(-100f, 0f, 0f);
-//
-//		gl.glEndList();
+		if (!bEnableWorldGrid)
+			return;
+
+		// std grid
+		Vec4f gridColor_ = renderStyle.getGridColor();
+
+		// delete list if present (rebuild grid)
+		if (GLGridList_ >= 0)
+			gl.glDeleteLists(GLGridList_, 1);
+
+		// draw grid
+		GLGridList_ = gl.glGenLists(1);
+		gl.glNewList(GLGridList_, GL.GL_COMPILE);
+
+		gl.glLineWidth(1);
+
+		gl.glTranslatef(0f, -100f, 0f);
+
+		for (int i = 0; i < 200; ++i)
+		{
+			gl.glTranslatef(0f, 1f, 0f);
+			gl.glBegin(GL.GL_LINES);
+			gl.glColor4f(gridColor_.get(0), gridColor_.get(1), gridColor_.get(2), gridColor_
+					.get(3));
+			gl.glVertex3f(-100, 0, 0);
+			gl.glVertex3f(100, 0, 0);
+			gl.glEnd();
+		}
+
+		gl.glTranslatef(-100f, -100f, 0f);
+
+		for (int i = 0; i < 200; ++i)
+		{
+			gl.glTranslatef(1f, 0f, 0f);
+			gl.glBegin(GL.GL_LINES);
+			gl.glColor4f(gridColor_.get(0), gridColor_.get(1), gridColor_.get(2), gridColor_
+					.get(3));
+			gl.glVertex3f(0, -100, 0);
+			gl.glVertex3f(0, 100, 0);
+			gl.glEnd();
+		}
+
+		gl.glTranslatef(-100f, 0f, 0f);
+
+		gl.glEndList();
 	}
 
 	public void setGlyphPositions()

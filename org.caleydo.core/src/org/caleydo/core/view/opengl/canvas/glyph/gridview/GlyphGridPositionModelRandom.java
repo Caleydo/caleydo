@@ -40,7 +40,6 @@ public class GlyphGridPositionModelRandom
 
 			if (bFoundplace)
 			{
-				g.setPosition(x, y);
 				glyphMap.get(x).get(y).setGlyph(g);
 			}
 		}

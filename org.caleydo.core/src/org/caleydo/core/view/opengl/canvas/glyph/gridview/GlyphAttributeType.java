@@ -161,6 +161,13 @@ public class GlyphAttributeType
 		return names;
 	}
 
+	public String getParameterString(int index)
+	{
+		if(hmGroupLookup.containsKey(index))
+			return hmGroupLookup.get(index).getGroupName();
+		return "";
+	}
+
 	public void incDistribution(int index)
 	{
 

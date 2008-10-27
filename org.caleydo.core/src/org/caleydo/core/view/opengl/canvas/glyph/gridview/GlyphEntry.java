@@ -1,23 +1,22 @@
 package org.caleydo.core.view.opengl.canvas.glyph.gridview;
 
-import gleem.linalg.open.Vec2i;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Vector;
 import javax.media.opengl.GL;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 
 public class GlyphEntry
 {
 
 	private IGeneralManager generalManager;
 
+	private GlyphManager gman;
+
 	private int id_;
-
-	private Vec2i pos_ = new Vec2i();
-
-	private Vec2i posGoTo_;
 
 	private boolean selected_ = false;
 
@@ -34,44 +33,17 @@ public class GlyphEntry
 	public GlyphEntry(int id, GLGlyphGenerator generator)
 	{
 		this.generalManager = GeneralManager.get();
+		gman = (GlyphManager) generalManager.getGlyphManager();
 		id_ = id;
 		generator_ = generator;
 		parameter_ = new Vector<Integer>();
 
-		posGoTo_ = new Vec2i();
-		posGoTo_.setXY(0, 0);
-		pos_ = new Vec2i();
-		pos_.setXY(0, 0);
 	}
 
 	public int getID()
 	{
 
 		return id_;
-	}
-
-	public int getX()
-	{
-
-		return pos_.x();
-	}
-
-	public int getY()
-	{
-
-		return pos_.y();
-	}
-
-	public Vec2i getXY()
-	{
-
-		return pos_;
-	}
-
-	public void setPosition(int x, int y)
-	{
-
-		pos_.setXY(x, y);
 	}
 
 	public void select()
@@ -155,6 +127,33 @@ public class GlyphEntry
 
 		glListSelected_ = generator_.generateGlyph(gl, this, true);
 		glList_ = generator_.generateGlyph(gl, this, false);
+	}
+
+	public String getGlyphDescription(String seperator)
+	{
+		StringBuffer sInfoText = new StringBuffer();
+		String name;
+		String value;
+
+		sInfoText.append("ID "
+				+ GeneralManager.get().getIDMappingManager().getID(
+						EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT, id_) + seperator);
+
+		for (int iAttributeIndex = 1; iAttributeIndex < gman.getGlyphAttributes().size(); ++iAttributeIndex)
+		{
+
+			name = gman.getGlyphAttributeTypeWithInternalColumnNumber(iAttributeIndex)
+					.getName();
+			GlyphAttributeType type = gman
+					.getGlyphAttributeTypeWithInternalColumnNumber(iAttributeIndex);
+
+			value = type.getParameterString(getParameter(iAttributeIndex));
+
+			sInfoText.append(name + ": " + value + seperator);
+		}
+
+		return sInfoText.toString();
+
 	}
 
 }

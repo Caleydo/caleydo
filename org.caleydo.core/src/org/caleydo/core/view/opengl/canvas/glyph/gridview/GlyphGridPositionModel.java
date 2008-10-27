@@ -34,8 +34,7 @@ public class GlyphGridPositionModel
 
 	public void setWorldLimit(int x, int y)
 	{
-		worldLimit.setX(x);
-		worldLimit.setY(y);
+		worldLimit.setXY(x, y);
 	}
 
 	public int getGridLayout()
