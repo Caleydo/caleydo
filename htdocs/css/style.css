@@ -63,10 +63,10 @@ a img {
 #menu ul li {
 	display: inline-block;
 	float: left;
-	width: 96.5px;
+	width: 95px;
 	list-style: none;
 	text-align: center;
-	height: 30px;
+	height: 32px;
 	border-right-style: solid;
 	border-width: thin;
 	border-color: #FCFFF5
@@ -75,7 +75,7 @@ a img {
 #menu a {
 	display: block;
 	float: left;
-	width: 100px;
+	width: 95px;
 	color: #FFFFFF;
 	font-size: 14px;
 	font-weight: bold;
