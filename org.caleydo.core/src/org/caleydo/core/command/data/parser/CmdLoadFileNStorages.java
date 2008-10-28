@@ -23,7 +23,7 @@ public class CmdLoadFileNStorages
 {
 	private String sFileName;
 	private String sTokenPattern;
-	private String sTokenSeparator;
+	private String sTokenSeparator = "";
 
 	private int iStartParseFileAtLine = 0;
 
@@ -125,7 +125,10 @@ public class CmdLoadFileNStorages
 			loader.setTargetStorages(iAlStorageIDs);
 			loader.setStartParsingStopParsingAtLine(iStartParseFileAtLine,
 					iStopParseFileAtLine);
-			//loader.setTokenSeperator(sTokenSeparator);
+			
+			if (!sTokenSeparator.isEmpty())
+				loader.setTokenSeperator(sTokenSeparator);
+			
 			loader.loadData();
 
 			commandManager.runDoCommand(this);
