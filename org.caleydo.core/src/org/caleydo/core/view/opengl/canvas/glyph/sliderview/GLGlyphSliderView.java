@@ -89,7 +89,7 @@ public class GLGlyphSliderView
 		alGlyphAttributeTypes = new ArrayList<GlyphAttributeType>();
 		alGridPosition = new ArrayList<Vec2f>();
 
-		selectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT).build();
+		selectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 		viewType = EManagedObjectType.GL_GLYPH_SLIDER;
 	}
 
@@ -369,7 +369,7 @@ public class GLGlyphSliderView
 				}
 
 				generalManager.getViewGLCanvasManager()
-						.getConnectedElementRepresentationManager().clear();
+						.getConnectedElementRepresentationManager().clear(EIDType.EXPERIMENT_INDEX);
 
 				triggerUpdate(selectionManager.getDelta());
 			}

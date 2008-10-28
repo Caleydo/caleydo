@@ -153,7 +153,7 @@ public class ToolTip
 															.getSelectionID());
 									sDetailText = sDetailText + "\n";
 								}
-								else if (eIDType == EIDType.EXPERIMENT)
+								else if (eIDType == EIDType.EXPERIMENT_INDEX)
 								{
 									GlyphEntry glyph = gman.getGlyphs().get(
 											item.getSelectionID());

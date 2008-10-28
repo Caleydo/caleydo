@@ -80,6 +80,7 @@ public abstract class AGLConnectionLineRenderer
 		{
 			hashViewToCenterPoint.put(iKey, calculateCenter(hashViewToPointLists.get(iKey)));
 		}
+		
 		Vec3f vecCenter = calculateCenter(hashViewToCenterPoint.values());
 
 		for (Integer iKey : keySet)
@@ -99,6 +100,7 @@ public abstract class AGLConnectionLineRenderer
 							hashViewToCenterPoint.get(iKey));
 				}
 			}
+			
 			renderLine(gl, vecViewBundlingPoint, vecCenter, 0);
 		}
 	}

@@ -101,7 +101,7 @@ public class GLHeatMap
 						EMappingType.EXPRESSION_INDEX_2_DAVID,
 						EMappingType.DAVID_2_EXPRESSION_INDEX).build();
 		storageSelectionManager = new GenericSelectionManager.Builder(
-				EIDType.EXPERIMENT).build();
+				EIDType.EXPERIMENT_INDEX).build();
 
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
@@ -469,7 +469,7 @@ public class GLHeatMap
 				switch (pickingMode)
 				{
 					case CLICKED:
-						connectedElementRepresentationManager.clear();
+						connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 
 						contentSelectionManager.clearSelection(ESelectionType.SELECTION);
 						contentSelectionManager.addToType(ESelectionType.SELECTION,
@@ -488,7 +488,7 @@ public class GLHeatMap
 								iExternalID))
 							break;
 
-						connectedElementRepresentationManager.clear();
+						connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 
 						contentSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
 						contentSelectionManager.addToType(ESelectionType.MOUSE_OVER,

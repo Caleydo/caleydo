@@ -85,7 +85,7 @@ public class GLParallelCoordinates
 
 	// Specify the current input data type for the axis and polylines
 	// Is used for meta information, such as captions
-	private EIDType eAxisDataType = EIDType.EXPERIMENT;
+	private EIDType eAxisDataType = EIDType.EXPERIMENT_INDEX;
 
 	private EIDType ePolylineDataType = EIDType.EXPRESSION_INDEX;
 
@@ -173,7 +173,7 @@ public class GLParallelCoordinates
 
 		// TODO no mapping
 		storageSelectionManager = new GenericSelectionManager.Builder(
-				EIDType.EXPERIMENT).build();
+				EIDType.EXPERIMENT_INDEX).build();
 
 		alIsAngleBlocking = new ArrayList<ArrayList<Integer>>();
 		alIsAngleBlocking.add(new ArrayList<Integer>());
@@ -370,7 +370,7 @@ public class GLParallelCoordinates
 		eAxisDataType = ePolylineDataType;
 		ePolylineDataType = eTempType;
 		fXTranslation = 0;
-		connectedElementRepresentationManager.clear();
+		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 		resetSelections();
 		initContentVariables();
 
@@ -449,7 +449,7 @@ public class GLParallelCoordinates
 			alCurrent.clear();
 		}
 		setDisplayListDirty();
-		connectedElementRepresentationManager.clear();
+		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 
 	}
 
@@ -1430,7 +1430,7 @@ public class GLParallelCoordinates
 							bIsAngularBrushingFirstTime = true;
 							break;
 						}
-						connectedElementRepresentationManager.clear();
+						connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 						polylineSelectionManager.clearSelection(ESelectionType.SELECTION);
 						polylineSelectionManager.addToType(ESelectionType.SELECTION,
 								iExternalID);
@@ -1447,7 +1447,7 @@ public class GLParallelCoordinates
 						// if (bIsAngularBrushingActive)
 						// break;
 
-						connectedElementRepresentationManager.clear();
+						connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 
 						polylineSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
 						polylineSelectionManager.addToType(ESelectionType.MOUSE_OVER,
@@ -1475,7 +1475,7 @@ public class GLParallelCoordinates
 						axisSelectionManager.addToType(ESelectionType.SELECTION, iExternalID);
 						if (bRenderStorageHorizontally)
 						{
-							connectedElementRepresentationManager.clear();
+							connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 						}
 
 						if (eAxisDataType == EIDType.EXPRESSION_INDEX)
@@ -1492,7 +1492,7 @@ public class GLParallelCoordinates
 						axisSelectionManager.addToType(ESelectionType.MOUSE_OVER, iExternalID);
 						if (bRenderStorageHorizontally)
 						{
-							connectedElementRepresentationManager.clear();
+							connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 						}
 						if (eAxisDataType == EIDType.EXPRESSION_INDEX)
 						{

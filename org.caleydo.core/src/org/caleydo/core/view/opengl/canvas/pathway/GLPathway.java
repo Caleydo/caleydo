@@ -282,6 +282,9 @@ public class GLPathway
 		generalManager.getLogger().log(Level.FINE,
 				"Update called by " + eventTrigger.getClass().getSimpleName());
 
+		if (selectionDelta.getIDType() != EIDType.DAVID)
+			return;
+		
 		selectionManager.clearSelections();
 		
 		setDisplayListDirty();
@@ -571,11 +574,11 @@ public class GLPathway
 								EPickingType.PATHWAY_TEXTURE_SELECTION);
 						// connectedElementRepManager.clear();
 
-						connectedElementRepresentationManager.clear();
+						connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 						continue;
 					}
 
-					connectedElementRepresentationManager.clear();
+					connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 
 					Iterator<IGraphItem> iterPathwayVertexGraphItemRep = tmpVertexGraphItem
 							.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
@@ -595,10 +598,8 @@ public class GLPathway
 						int iPathwayHeight = (generalManager.getPathwayManager()
 								.getItem(iPathwayID)).getHeight();
 
-						connectedElementRepresentationManager
-								.modifySelection(
-										iDavidId,
-										new SelectedElementRep(EIDType.EXPRESSION_INDEX,
+						connectedElementRepresentationManager.modifySelection(
+										iDavidId, new SelectedElementRep(EIDType.EXPRESSION_INDEX,
 												this.getID(),
 												(tmpPathwayVertexGraphItemRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X)
 														* vecScaling.x() + vecTranslation.x(),
@@ -693,13 +694,13 @@ public class GLPathway
 	public synchronized void addSet(int setID)
 	{
 		super.addSet(setID);
-		connectedElementRepresentationManager.clear();
+		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 	}
 
 	@Override
 	public synchronized void addSet(ISet set)
 	{
 		super.addSet(set);
-		connectedElementRepresentationManager.clear();
+		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 	}
 }

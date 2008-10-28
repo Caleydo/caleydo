@@ -101,7 +101,7 @@ public class GLGlyph
 		gman = (GlyphManager) generalManager.getGlyphManager();
 		gman.registerGlyphView(this);
 
-		selectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT).build();
+		selectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 		viewType = EManagedObjectType.GL_GLYPH;
 
 		if (sLabel.equals("Glyph Single View"))
@@ -116,8 +116,8 @@ public class GLGlyph
 		grid_.setGlyphPositions(iconIDs);
 		forceRebuild();
 
-		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
-				.clear();
+		generalManager.getViewGLCanvasManager()
+			.getConnectedElementRepresentationManager().clear(EIDType.EXPERIMENT_INDEX);
 	}
 
 	@Override
@@ -589,8 +589,8 @@ public class GLGlyph
 					}
 
 					generalManager.getViewGLCanvasManager()
-							.getConnectedElementRepresentationManager().clear();
-
+						.getConnectedElementRepresentationManager().clear(EIDType.EXPERIMENT_INDEX);
+					
 					triggerUpdate(selectionManager.getDelta());
 
 					// only the glyphs need to be redrawn
@@ -611,7 +611,9 @@ public class GLGlyph
 	public synchronized void handleUpdate(IUniqueObject eventTrigger,
 			ISelectionDelta selectionDelta)
 	{
-
+		if (selectionDelta.getIDType() != EIDType.EXPERIMENT_INDEX)
+			return;
+		
 		generalManager.getLogger().log(Level.INFO,
 				sLabel + ": Update called by " + eventTrigger.getClass().getSimpleName());
 
@@ -644,7 +646,7 @@ public class GLGlyph
 			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
 					.modifySelection(
 							g.getID(),
-							new SelectedElementRep(EIDType.EXPERIMENT, iUniqueID, vecGlyphPos
+							new SelectedElementRep(EIDType.EXPERIMENT_INDEX, iUniqueID, vecGlyphPos
 									.x(), vecGlyphPos.y(), vecGlyphPos.z()),
 							ESelectionMode.ADD_PICK);
 		}
@@ -696,7 +698,7 @@ public class GLGlyph
 				generalManager.getViewGLCanvasManager()
 						.getConnectedElementRepresentationManager().modifySelection(
 								g.getID(),
-								new SelectedElementRep(EIDType.EXPERIMENT, iUniqueID,
+								new SelectedElementRep(EIDType.EXPERIMENT_INDEX, iUniqueID,
 										vecGlyphPos.x(), vecGlyphPos.y(), vecGlyphPos.z()),
 								ESelectionMode.ADD_PICK);
 			}

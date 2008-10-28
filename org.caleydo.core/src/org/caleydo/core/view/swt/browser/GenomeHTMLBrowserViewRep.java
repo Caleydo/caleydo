@@ -1,5 +1,7 @@
 package org.caleydo.core.view.swt.browser;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.mapping.EMappingType;
@@ -137,11 +139,14 @@ public class GenomeHTMLBrowserViewRep
 
 	@Override
 	public void handleUpdate(IUniqueObject eventTrigger, final ISelectionDelta selectionDelta)
-	{
+	{		
 		parent.getDisplay().asyncExec(new Runnable()
 		{
 			public void run()
-			{				
+			{		
+				if (!checkInternetConnection())
+					return;
+				
 				int iItemsToLoad = 0;
 				SelectionItem selectionItem;
 				for (int iItemIndex = 0; iItemIndex < selectionDelta.getSelectionData().size(); iItemIndex++)

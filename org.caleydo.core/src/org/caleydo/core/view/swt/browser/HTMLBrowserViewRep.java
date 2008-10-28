@@ -1,5 +1,7 @@
 package org.caleydo.core.view.swt.browser;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.logging.Level;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
@@ -124,7 +126,10 @@ public class HTMLBrowserViewRep
 		}
 		
 		textURL = new Text(browserBarComposite, SWT.BORDER);
-		textURL.setText(sUrl);
+		
+		if (checkInternetConnection())
+			textURL.setText(sUrl);
+		
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.heightHint = 15;
 		textURL.setLayoutData(data);
@@ -139,6 +144,9 @@ public class HTMLBrowserViewRep
 		{
 			public void handleEvent(Event event)
 			{
+				if (!checkInternetConnection())
+					return;
+				
 				ToolItem item = (ToolItem) event.widget;
 				if (item.equals(backButton))
 				{
@@ -155,7 +163,7 @@ public class HTMLBrowserViewRep
 				else if (item.equals(homeButton))
 				{
 					sUrl = "www.caleydo.org";
-					textURL.setText("www.caleydo.org");
+					textURL.setText(CALEYDO_HOME);
 					browser.setUrl(sUrl);
 				}
 			}
@@ -199,22 +207,6 @@ public class HTMLBrowserViewRep
 	{
 		generalManager.getLogger().log(Level.INFO, "Load " + sUrl);
 
-		// // Check internet connection
-		// try
-		// {
-		// InetAddress.getByName("www.google.at");
-		//			
-		// } catch (UnknownHostException e)
-		// {
-		// generalManager.getSingelton().logMsg(
-		// this.getClass().getSimpleName() +
-		// ": No internet connection found!",
-		// LoggerType.VERBOSE );
-		//			
-		// textField.setText("No internet connection found!");
-		// return;
-		// }
-
 		try
 		{
 			parent.getDisplay().asyncExec(new Runnable()
@@ -222,7 +214,9 @@ public class HTMLBrowserViewRep
 
 				public void run()
 				{
-
+					if (!checkInternetConnection())
+						return;
+					
 					textURL.setText(sUrl);
 					browser.setUrl(sUrl);
 					// browser.refresh();
@@ -241,5 +235,23 @@ public class HTMLBrowserViewRep
 
 		idExtractionLocationListener.updateSkipNextChangeEvent(true);
 		drawView();
+	}
+	
+	
+	protected boolean checkInternetConnection()
+	{
+		 // Check internet connection
+		try
+		{
+			InetAddress.getByName("www.google.at");
+
+		}
+		catch (UnknownHostException e)
+		{
+			textURL.setText("No internet connection available!");
+			return false;
+		}
+		
+		return true;
 	}
 }

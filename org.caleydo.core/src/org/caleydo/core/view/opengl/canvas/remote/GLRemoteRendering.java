@@ -140,10 +140,6 @@ public class GLRemoteRendering
 
 	private ArrayList<Integer> iAlContainedViewIDs;
 
-//	private int iGLDisplayList;
-	
-//	private FloatBuffer splinePoints = FloatBuffer.allocate(8*3);
-
 	/**
 	 * Constructor.
 	 */
@@ -232,13 +228,6 @@ public class GLRemoteRendering
 	@Override
 	public void init(final GL gl)
 	{        
-//        float[] fArPoints = {1,2,-1,0,1,2,2,0,0,3,3,1,2,3,-2,1,3,1,1,3,0,2,-1,-1};
-//        splinePoints.put(fArPoints);
-//        splinePoints.rewind();
-//		gl.glClearColor(1,1,1,1);
-//        gl.glShadeModel(GL.GL_SMOOTH);
-//		gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, 8, splinePoints); 
-//		gl.glEnable(GL.GL_MAP1_VERTEX_3);
         glConnectionLineRenderer.init(gl);
         
 		//iconTextureManager = new GLIconTextureManager(gl);
@@ -317,23 +306,7 @@ public class GLRemoteRendering
 	@Override
 	public synchronized void display(final GL gl)
 	{
-//		gl.glClear(GL.GL_COLOR_BUFFER_BIT);
-//		gl.glColor3f((float)0, (float)1, (float)0);
-//        gl.glBegin(GL.GL_LINE_STRIP);
-//        for (int i=0; i<=100; i++)
-//            gl.glEvalCoord1f((float)(i)/100);
-//        gl.glEnd();
-//
-//        gl.glPointSize((float)10);
-//
-//        gl.glColor3f((float)1, (float)0, (float)0);
-//        gl.glBegin(GL.GL_POINTS);
-//        for (int i=0; i<8; i++)
-//            gl.glVertex3f(splinePoints.get(i), splinePoints.get(i+1), splinePoints.get(i+2));
-//        gl.glEnd();
-//        gl.glFlush();
-		
-		time.update();
+				time.update();
 
 		layoutRenderStyle.initPoolLayer(iMouseOverViewID);
 		// layoutRenderStyle.initMemoLayer();
@@ -607,7 +580,7 @@ public class GLRemoteRendering
 
 	private void renderNavigationOverlay(final GL gl, final int iViewID)
 	{
-		glConnectionLineRenderer.enableRendering(false);
+//		glConnectionLineRenderer.enableRendering(false);
 
 		EPickingType leftWallPickingType = null;
 		EPickingType rightWallPickingType = null;
@@ -824,8 +797,8 @@ public class GLRemoteRendering
 		float fNavigationZValue = 0f;
 		
 		// CENTER - NAVIGATION: VIEW IDENTIFICATION ICON
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.BUCKET_LOCK_ICON_SELECTION, iViewID));
+//		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+//				EPickingType.BUCKET_LOCK_ICON_SELECTION, iViewID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL.GL_LINE_LOOP);
@@ -861,7 +834,7 @@ public class GLRemoteRendering
 
 		textureViewSymbol.disable();
 
-		gl.glPopName();
+//		gl.glPopName();
 
 		// BOTTOM - NAVIGATION: MOVE IN
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, bottomWallPickingType, iViewID));
@@ -1341,27 +1314,27 @@ public class GLRemoteRendering
 
 				break;
 
-			case BUCKET_LOCK_ICON_SELECTION:
-				switch (pickingMode)
-				{
-					case CLICKED:
-
-						break;
-
-					case MOUSE_OVER:
-
-						iNavigationMouseOverViewID_lock = iExternalID;
-						iNavigationMouseOverViewID_left = -1;
-						iNavigationMouseOverViewID_right = -1;
-						iNavigationMouseOverViewID_out = -1;
-						iNavigationMouseOverViewID_in = -1;
-
-						break;
-				}
-
-				pickingManager.flushHits(iUniqueID, EPickingType.BUCKET_LOCK_ICON_SELECTION);
-
-				break;
+//			case BUCKET_LOCK_ICON_SELECTION:
+//				switch (pickingMode)
+//				{
+//					case CLICKED:
+//
+//						break;
+//
+//					case MOUSE_OVER:
+//
+//						iNavigationMouseOverViewID_lock = iExternalID;
+//						iNavigationMouseOverViewID_left = -1;
+//						iNavigationMouseOverViewID_right = -1;
+//						iNavigationMouseOverViewID_out = -1;
+//						iNavigationMouseOverViewID_in = -1;
+//
+//						break;
+//				}
+//
+//				pickingManager.flushHits(iUniqueID, EPickingType.BUCKET_LOCK_ICON_SELECTION);
+//
+//				break;
 
 			case BUCKET_MOVE_IN_ICON_SELECTION:
 				switch (pickingMode)
@@ -1369,6 +1342,7 @@ public class GLRemoteRendering
 					case CLICKED:
 						loadViewToUnderInteractionLayer(iExternalID);
 						bEnableNavigationOverlay = false;
+//						glConnectionLineRenderer.enableRendering(true);
 						break;
 
 					case MOUSE_OVER:
@@ -1395,6 +1369,8 @@ public class GLRemoteRendering
 						// Check if other slerp action is currently running
 						if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE)
 							break;
+						
+//						glConnectionLineRenderer.enableRendering(true);
 
 						arSlerpActions.clear();
 
@@ -1435,6 +1411,8 @@ public class GLRemoteRendering
 						if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE)
 							break;
 
+//						glConnectionLineRenderer.enableRendering(true);
+						
 						arSlerpActions.clear();
 
 						int iDestinationPosIndex = stackLayer
@@ -1496,6 +1474,8 @@ public class GLRemoteRendering
 						// Check if other slerp action is currently running
 						if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE)
 							break;
+						
+//						glConnectionLineRenderer.enableRendering(true);
 
 						arSlerpActions.clear();
 
@@ -1747,7 +1727,7 @@ public class GLRemoteRendering
 		}
 
 		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
-				.clear();
+				.clearAll();
 		
 		for (AGLEventListener eventListener : generalManager
 				.getViewGLCanvasManager().getAllGLEventListeners())

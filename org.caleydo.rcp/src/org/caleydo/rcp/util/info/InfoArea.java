@@ -147,7 +147,7 @@ public class InfoArea
 											EMappingType.DAVID_2_REFSEQ_MRNA,
 											item.getSelectionID()) + ")";
 						}
-						else if (eIDType == EIDType.EXPERIMENT)
+						else if (eIDType == EIDType.EXPERIMENT_INDEX)
 						{
 							GlyphEntry glyph = gman.getGlyphs().get(item.getSelectionID());
 

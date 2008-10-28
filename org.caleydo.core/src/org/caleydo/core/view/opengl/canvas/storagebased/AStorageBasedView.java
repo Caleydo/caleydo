@@ -176,7 +176,7 @@ public abstract class AStorageBasedView
 			mapVAIDs.clear();
 			contentSelectionManager.resetSelectionManager();
 			storageSelectionManager.resetSelectionManager();
-			connectedElementRepresentationManager.clear();
+			connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 			return;
 		}
 
@@ -357,7 +357,7 @@ public abstract class AStorageBasedView
 	 */
 	public synchronized final void clearAllSelections()
 	{
-		connectedElementRepresentationManager.clear();
+		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 		contentSelectionManager.clearSelections();
 		storageSelectionManager.clearSelections();
 
@@ -411,7 +411,7 @@ public abstract class AStorageBasedView
 						iStorageIndex = item.getInternalID();
 						iDavidID = item.getSelectionID();
 					}
-					else if (selectionDelta.getIDType() == EIDType.EXPERIMENT)
+					else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX)
 					{
 						
 					}

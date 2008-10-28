@@ -61,7 +61,7 @@ public class ConnectedElementRepresentationManager
 				removeSelection(iElementID, selectedElementRep);
 				break;
 			case REPLACE_PICK:
-				clear();
+				clear(selectedElementRep.getIDType());
 				addSelection(iElementID, selectedElementRep);
 				break;
 			default:
@@ -118,7 +118,7 @@ public class ConnectedElementRepresentationManager
 	 */
 	public void replaceSelection(final int iElementID, SelectedElementRep selectedElementRep)
 	{
-		clear();
+		clear(selectedElementRep.getIDType());
 		addSelection(iElementID, selectedElementRep);
 	}
 
@@ -166,9 +166,22 @@ public class ConnectedElementRepresentationManager
 	/**
 	 * Clear all selections and representations
 	 */
-	public void clear()
+	public void clearAll()
 	{
 		hashIDTypes.clear();
 	}
-
+	
+	/**
+	 * Clear all selections of a given type
+	 */
+	public void clear(EIDType eIDType)
+	{
+		if (!hashIDTypes.containsKey(eIDType))
+			return;
+		
+		hashIDTypes.get(eIDType).clear();
+		hashIDTypes.remove(eIDType);
+		
+//		hashIDTypes.clear();
+	}
 }
