@@ -228,6 +228,7 @@ public class GLRemoteRendering
 	@Override
 	public void init(final GL gl)
 	{        
+		gl.glClearColor(0.5f, 0.5f, 0.5f, 1f);
         glConnectionLineRenderer.init(gl);
         
 		//iconTextureManager = new GLIconTextureManager(gl);
@@ -246,7 +247,7 @@ public class GLRemoteRendering
 	@Override
 	public synchronized void displayLocal(final GL gl)
 	{
-		gl.glClearColor(0.5f, 0.5f, 0.5f, 1f);
+
 
 		if (pickingTriggerMouseAdapter.wasRightMouseButtonPressed())
 		{
@@ -425,10 +426,10 @@ public class GLRemoteRendering
 
 	private void renderBucketWall(final GL gl, boolean bRenderBorder)
 	{
-		if (arSlerpActions.isEmpty())
+		//if (arSlerpActions.isEmpty())
 			gl.glColor4f(0.95f, 0.95f, 0.95f, 1.0f);
-		else
-			gl.glColor4f(0.95f, 0.95f, 0.95f, 0.4f);
+////		else
+//			gl.glColor4f(0.95f, 0.95f, 0.95f, 0.4f);
 			
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(0, 0, -0.03f);

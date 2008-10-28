@@ -90,7 +90,7 @@ public class FileLoadDataAction
 	private ArrayList<Combo> arComboDataClass;
 	private ArrayList<Combo> arComboDataType;
 
-	private String sFileName;
+	private String sFileName = "";
 	private String sFilePath = "";
 	private String sInputPattern = "SKIP;ABORT";
 	private String sDelimiter = "";
@@ -217,13 +217,16 @@ public class FileLoadDataAction
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
-				createDataPreviewTable("\t");
-
 				buttonDelimiter[1].setSelection(false);
 				buttonDelimiter[2].setSelection(false);
 				buttonDelimiter[3].setSelection(false);
 				buttonDelimiter[4].setSelection(false);
 				buttonDelimiter[5].setSelection(false);
+				
+				if (sFileName.isEmpty())
+					return;
+				
+				createDataPreviewTable("\t");
 
 				composite.pack();
 			}
@@ -237,14 +240,16 @@ public class FileLoadDataAction
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
-
-				createDataPreviewTable(";");
-
 				buttonDelimiter[0].setSelection(false);
 				buttonDelimiter[2].setSelection(false);
 				buttonDelimiter[3].setSelection(false);
 				buttonDelimiter[4].setSelection(false);
 				buttonDelimiter[5].setSelection(false);
+				
+				if (sFileName.isEmpty())
+					return;
+
+				createDataPreviewTable(";");
 
 				composite.pack();
 			}
@@ -258,13 +263,16 @@ public class FileLoadDataAction
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
-				createDataPreviewTable(",");
-
 				buttonDelimiter[0].setSelection(false);
 				buttonDelimiter[1].setSelection(false);
 				buttonDelimiter[3].setSelection(false);
 				buttonDelimiter[4].setSelection(false);
 				buttonDelimiter[5].setSelection(false);
+				
+				if (sFileName.isEmpty())
+					return;
+				
+				createDataPreviewTable(",");
 
 				composite.pack();
 			}
@@ -278,13 +286,16 @@ public class FileLoadDataAction
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
-				createDataPreviewTable(".");
-
 				buttonDelimiter[0].setSelection(false);
 				buttonDelimiter[1].setSelection(false);
 				buttonDelimiter[2].setSelection(false);
 				buttonDelimiter[4].setSelection(false);
 				buttonDelimiter[5].setSelection(false);
+				
+				if (sFileName.isEmpty())
+					return;
+				
+				createDataPreviewTable(".");
 
 				composite.pack();
 			}
@@ -298,13 +309,16 @@ public class FileLoadDataAction
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
-				createDataPreviewTable(" ");
-
 				buttonDelimiter[0].setSelection(false);
 				buttonDelimiter[1].setSelection(false);
 				buttonDelimiter[2].setSelection(false);
 				buttonDelimiter[3].setSelection(false);
 				buttonDelimiter[5].setSelection(false);
+				
+				if (sFileName.isEmpty())
+					return;
+				
+				createDataPreviewTable(" ");
 
 				composite.pack();
 			}
@@ -318,13 +332,16 @@ public class FileLoadDataAction
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
-				createDataPreviewTable(" ");
-
 				buttonDelimiter[0].setSelection(false);
 				buttonDelimiter[1].setSelection(false);
 				buttonDelimiter[2].setSelection(false);
 				buttonDelimiter[3].setSelection(false);
 				buttonDelimiter[4].setSelection(false);
+				
+				if (sFileName.isEmpty())
+					return;
+				
+				createDataPreviewTable(" ");
 
 				composite.pack();
 			}
@@ -925,7 +942,7 @@ public class FileLoadDataAction
 		// GeneralManager.get().getSWTGUIManager();
 		// iSWTGUIManager.setProgressBarVisible(true);
 
-		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sInputPattern,
+		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sInputPattern, sDelimiter,
 				iStartParseFileAtLine, -1);
 		cmdLoadCsv.doCommand();
 

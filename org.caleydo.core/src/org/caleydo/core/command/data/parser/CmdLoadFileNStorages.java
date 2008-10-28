@@ -21,24 +21,22 @@ import org.caleydo.core.util.system.StringConversionTool;
 public class CmdLoadFileNStorages
 	extends ACommand
 {
+	private String sFileName;
+	private String sTokenPattern;
+	private String sTokenSeparator;
 
-	protected String sFileName;
-
-	protected String sTokenPattern;
-
-	protected int iStartParseFileAtLine = 0;
+	private int iStartParseFileAtLine = 0;
 
 	/**
 	 * Default is -1 indicating read till end of file.
 	 */
-	protected int iStopParseFileAtLine = -1;
+	private int iStopParseFileAtLine = -1;
 
-	protected ArrayList<Integer> iAlStorageIDs;
+	private ArrayList<Integer> iAlStorageIDs;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param cmdType
 	 */
 	public CmdLoadFileNStorages(final ECommandType cmdType)
 	{
@@ -96,7 +94,7 @@ public class CmdLoadFileNStorages
 	}
 
 	public void setAttributes(final ArrayList<Integer> iAlStorageId, final String sFileName,
-			final String sTokenPattern, final int iStartParseFileAtLine,
+			final String sTokenPattern, final String sTokenSeparator, final int iStartParseFileAtLine,
 			final int iStopParseFileAtLine)
 	{
 
@@ -105,6 +103,7 @@ public class CmdLoadFileNStorages
 		this.sTokenPattern = sTokenPattern;
 		this.iStartParseFileAtLine = iStartParseFileAtLine;
 		this.iStopParseFileAtLine = iStopParseFileAtLine;
+		this.sTokenSeparator = sTokenSeparator;
 	}
 
 	@Override
@@ -126,7 +125,7 @@ public class CmdLoadFileNStorages
 			loader.setTargetStorages(iAlStorageIDs);
 			loader.setStartParsingStopParsingAtLine(iStartParseFileAtLine,
 					iStopParseFileAtLine);
-
+			//loader.setTokenSeperator(sTokenSeparator);
 			loader.loadData();
 
 			commandManager.runDoCommand(this);

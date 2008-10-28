@@ -1,3 +1,4 @@
+
 package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec3f;
@@ -456,8 +457,6 @@ public abstract class AGLEventListener
 	{
 		float fTransparency = 0.3f * iFrameCounter / NUMBER_OF_FRAMES;
 		float fLoadingTransparency = 0.8f * iFrameCounter / NUMBER_OF_FRAMES;
-		float fTextTransparency = 1f * iFrameCounter / NUMBER_OF_FRAMES;
-
 		// TODO replace text from textrenderer with texture
 		if (bBusyMode || iFrameCounter > 0)
 		{
@@ -472,143 +471,89 @@ public abstract class AGLEventListener
 			}
 
 			pickingManager.enablePicking(false);
-			//
-			// gl.glColor4f(1, 1, 1, fTransparency);
-			// gl.glBegin(GL.GL_POLYGON);
-			// gl.glVertex3f(-9, -9, 4.2f);
-			// gl.glVertex3f(-9, 9, 4.2f);
-			// gl.glVertex3f(9, 9, 4.2f);
-			// gl.glVertex3f(9, -9, 4.2f);
-			// gl.glEnd();
 
+			gl.glColor4f(1, 1, 1, fTransparency);
+			gl.glBegin(GL.GL_POLYGON);
+			gl.glVertex3f(-9, -9, 4.2f);
+			gl.glVertex3f(-9, 9, 4.2f);
+			gl.glVertex3f(9, 9, 4.2f);
+			gl.glVertex3f(9, -9, 4.2f);
+			gl.glEnd();
+
+			float fXCenter, fYCenter;
 			if (renderStyle == null || this instanceof GLRemoteRendering)
 			{
-				// TODO bad hack here, frustum wrong or renderStyle null
-
-				Texture tempTexture = iconTextureManager.getIconTexture(gl,
-						EIconTextures.LOADING);
-				tempTexture.enable();
-				tempTexture.bind();
-
-				TextureCoords texCoords = tempTexture.getImageTexCoords();
-
-				gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-				gl.glColor4f(1.0f, 1.0f, 1.0f, 1);// fLoadingTransparency);
-
-				gl.glBegin(GL.GL_POLYGON);
-
-				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-				gl.glVertex3f(0 - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH,
-						0 - GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
-				gl.glTexCoord2f(texCoords.left(), texCoords.top());
-				gl.glVertex3f(0 - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH,
-						0 + GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
-				gl.glTexCoord2f(texCoords.right(), texCoords.top());
-				gl.glVertex3f(0 + GeneralRenderStyle.LOADING_BOX_HALF_WIDTH,
-						0 + GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
-				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-
-				gl.glVertex3f(0 + GeneralRenderStyle.LOADING_BOX_HALF_WIDTH,
-						0 - GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
-				gl.glEnd();
-
-				tempTexture.disable();
-
-				// gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
-				Texture circleTexture = iconTextureManager.getIconTexture(gl,
-						EIconTextures.LOADING_CIRCLE);
-				circleTexture.enable();
-				circleTexture.bind();
-				texCoords = circleTexture.getImageTexCoords();
-
-				gl.glTranslatef(-0.6f, 0, 0);
-				gl.glRotatef(iRotationFrameCounter, 0, 0, 1);
-		
-				gl.glBegin(GL.GL_POLYGON);
-				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-				gl.glVertex3f(-0.1f, -0.1f, 4.22f);
-				gl.glTexCoord2f(texCoords.left(), texCoords.top());
-				gl.glVertex3f(-0.1f, 0.1f, 4.22f);
-				gl.glTexCoord2f(texCoords.right(), texCoords.top());
-				gl.glVertex3f(0.1f, 0.1f, 4.22f);
-				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-				gl.glVertex3f(0.1f, -0.1f, 4.22f);
-				gl.glEnd();
-		
-				gl.glRotatef(-iRotationFrameCounter, 0, 0 , 1);
-				gl.glTranslatef(0.6f, 0, 0);
-
-				iRotationFrameCounter += 3;
-				gl.glPopAttrib();
-
-				// circleTexture.disable();
-
+				fXCenter = 0;
+				fYCenter = 0;
 			}
 			else
 			{
-				// That's fine here, keep this
-
-				gl.glColor4f(0.5f, 0.5f, 0.5f, fLoadingTransparency);
-				gl.glBegin(GL.GL_POLYGON);
-				gl.glVertex3f(renderStyle.getXCenter()
-						- GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, renderStyle.getYCenter()
-						- GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
-				gl.glVertex3f(renderStyle.getXCenter()
-						- GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, renderStyle.getYCenter()
-						+ GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
-				gl.glVertex3f(renderStyle.getXCenter()
-						+ GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, renderStyle.getYCenter()
-						+ GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
-				gl.glVertex3f(renderStyle.getXCenter()
-						+ GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, renderStyle.getYCenter()
-						- GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
-				gl.glEnd();
-
-				// Frame around box
-				gl.glColor4f(0.2f, 0.2f, 0.2f, fLoadingTransparency);
-				gl.glLineWidth(2);
-				gl.glBegin(GL.GL_LINE_LOOP);
-				gl.glVertex3f(renderStyle.getXCenter()
-						- GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, renderStyle.getYCenter()
-						- GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
-				gl.glVertex3f(renderStyle.getXCenter()
-						- GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, renderStyle.getYCenter()
-						+ GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
-				gl.glVertex3f(renderStyle.getXCenter()
-						+ GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, renderStyle.getYCenter()
-						+ GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
-				gl.glVertex3f(renderStyle.getXCenter()
-						+ GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, renderStyle.getYCenter()
-						- GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
-				gl.glEnd();
-
-				TextRenderer textRenderer = new TextRenderer(
-						new Font("Arial", Font.BOLD, 128), false);
-				textRenderer.setColor(1, 1, 1, fTextTransparency);
-				
-				textRenderer.begin3DRendering();				
-				textRenderer.draw3D("Loading...",
-						renderStyle.getXCenter() - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH / 2,
-						renderStyle.getYCenter() - GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT / 2, 4.22f, 0.001f);
-				textRenderer.end3DRendering();
-
-				// gl.glClearColor(0.4f, 0.4f, 0.4f, 1f);
-				// gl.glClearColor(1f, 0.4f, 0.4f, 1f);
+				fXCenter = renderStyle.getXCenter();
+				fYCenter = renderStyle.getYCenter();
 			}
 
+			// TODO bad hack here, frustum wrong or renderStyle null
+
+			Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.LOADING);
+			tempTexture.enable();
+			tempTexture.bind();
+
+			TextureCoords texCoords = tempTexture.getImageTexCoords();
+
+			gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+			gl.glColor4f(1.0f, 1.0f, 1.0f, fLoadingTransparency);
+
+			gl.glBegin(GL.GL_POLYGON);
+
+			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+			gl.glVertex3f(fXCenter - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, fYCenter
+					- GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+			gl.glTexCoord2f(texCoords.left(), texCoords.top());
+			gl.glVertex3f(fXCenter - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, fYCenter
+					+ GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+			gl.glTexCoord2f(texCoords.right(), texCoords.top());
+			gl.glVertex3f(fXCenter + GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, fYCenter
+					+ GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+
+			gl.glVertex3f(fXCenter + GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, fYCenter
+					- GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+			gl.glEnd();
+
+			tempTexture.disable();
+
+			// gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
+			Texture circleTexture = iconTextureManager.getIconTexture(gl,
+					EIconTextures.LOADING_CIRCLE);
+			circleTexture.enable();
+			circleTexture.bind();
+			texCoords = circleTexture.getImageTexCoords();
+
+			gl.glTranslatef(fXCenter - 0.6f, fYCenter, 0);
+			gl.glRotatef(-iRotationFrameCounter, 0, 0, 1);
+
+			gl.glBegin(GL.GL_POLYGON);
+			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+			gl.glVertex3f(-0.1f, -0.1f, 4.22f);
+			gl.glTexCoord2f(texCoords.left(), texCoords.top());
+			gl.glVertex3f(-0.1f, 0.1f, 4.22f);
+			gl.glTexCoord2f(texCoords.right(), texCoords.top());
+			gl.glVertex3f(0.1f, 0.1f, 4.22f);
+			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+			gl.glVertex3f(0.1f, -0.1f, 4.22f);
+			gl.glEnd();
+			gl.glRotatef(+iRotationFrameCounter, 0, 0, 1);
+			gl.glTranslatef(fXCenter + 0.6f, fYCenter, 0);
+
+			iRotationFrameCounter += 3;
+			gl.glPopAttrib();
+
+			circleTexture.disable();
 		}
 		else
 		{
 			iFrameCounter = 0;
 			pickingManager.enablePicking(true);
-			// if (renderStyle == null)
-			// gl.glClearColor(0.7f, 0.7f, 0.7f, 1f);
-			// else
-			// {
-			// float[] color = renderStyle.getBackgroundColor();
-			// gl.glClearColor(color[0], color[1], color[2], color[3]);
-			// //gl.glClearColor(1f, 0.4f, 0.4f, 1f);
-			// }
 		}
 
 		// bBusyModeChanged = false;
@@ -621,3 +566,4 @@ public abstract class AGLEventListener
 		bBusyModeChanged = true;
 	}
 }
+

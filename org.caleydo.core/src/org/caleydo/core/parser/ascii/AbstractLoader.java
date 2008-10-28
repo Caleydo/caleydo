@@ -70,15 +70,15 @@ public abstract class AbstractLoader
 	/**
 	 * Set the current token separator.
 	 * 
-	 * @param token current token separator
+	 * @param sTokenSeparator current token separator
 	 */
-	public final void setTokenSeperator(final String token)
+	public final void setTokenSeperator(final String sTokenSeparator)
 	{
 
-		if (token.equals("\\t"))
+		if (sTokenSeparator.equals("\\t"))
 			sTokenSeperator = "\t";
 		else
-			sTokenSeperator = token;
+			sTokenSeperator = sTokenSeparator;
 	}
 
 	/**
