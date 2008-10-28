@@ -59,6 +59,7 @@ public class GLGlyph
 
 	boolean bRedrawDisplayListGrid = true;
 	boolean bRedrawDisplayListGlyph = true;
+	boolean bDrawConnectionRepLines = true;
 
 	boolean bIsLocal = false;
 
@@ -101,7 +102,8 @@ public class GLGlyph
 		gman = (GlyphManager) generalManager.getGlyphManager();
 		gman.registerGlyphView(this);
 
-		selectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
+		selectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX)
+				.build();
 		viewType = EManagedObjectType.GL_GLYPH;
 
 		if (sLabel.equals("Glyph Single View"))
@@ -116,8 +118,8 @@ public class GLGlyph
 		grid_.setGlyphPositions(iconIDs);
 		forceRebuild();
 
-		generalManager.getViewGLCanvasManager()
-			.getConnectedElementRepresentationManager().clear(EIDType.EXPERIMENT_INDEX);
+		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
+				.clear(EIDType.EXPERIMENT_INDEX);
 	}
 
 	@Override
@@ -138,7 +140,7 @@ public class GLGlyph
 		grid_ = new GLGlyphGrid(renderStyle);
 		grid_.loadData(glyphData);
 
-		grid_.buildGrids(gl);
+		// grid_.buildGrids(gl);
 
 		grid_.selectAll();
 
@@ -321,7 +323,7 @@ public class GLGlyph
 		}
 		gl.glPopMatrix();
 
-		if (!bRedrawDisplayListGlyph)
+		if (bRedrawDisplayListGrid)
 		{
 			gl.glPushMatrix();
 			grid_.buildGrids(gl);
@@ -559,10 +561,9 @@ public class GLGlyph
 						String sampleid = g.getStringParameter(colnames.get(0));
 
 						System.out.println("  select object index: "
-								+ Integer.toString(iExternalID) + " on Point " + pos.x()
-								+ " " + pos.y() + " with Patient ID " + sendID
-								+ " and T staging " + stagingT + " and dfs " + dfs + " + "
-								+ sampleid);
+								+ Integer.toString(iExternalID) + " on Point " + pos.x() + " "
+								+ pos.y() + " with Patient ID " + sendID + " and T staging "
+								+ stagingT + " and dfs " + dfs + " + " + sampleid);
 						g.select();
 
 						isSelected.put(sendID, true);
@@ -570,9 +571,9 @@ public class GLGlyph
 					else
 					{
 						System.out.println("DEselect object index: "
-								+ Integer.toString(iExternalID) + " on Point " + pos.x()
-								+ " " + pos.y() + " with Patient ID " + sendID
-								+ " and T staging " + stagingT + " and dfs " + dfs);
+								+ Integer.toString(iExternalID) + " on Point " + pos.x() + " "
+								+ pos.y() + " with Patient ID " + sendID + " and T staging "
+								+ stagingT + " and dfs " + dfs);
 						g.deSelect();
 
 						isSelected.put(sendID, false);
@@ -589,8 +590,9 @@ public class GLGlyph
 					}
 
 					generalManager.getViewGLCanvasManager()
-						.getConnectedElementRepresentationManager().clear(EIDType.EXPERIMENT_INDEX);
-					
+							.getConnectedElementRepresentationManager().clear(
+									EIDType.EXPERIMENT_INDEX);
+
 					triggerUpdate(selectionManager.getDelta());
 
 					// only the glyphs need to be redrawn
@@ -613,7 +615,7 @@ public class GLGlyph
 	{
 		if (selectionDelta.getIDType() != EIDType.EXPERIMENT_INDEX)
 			return;
-		
+
 		generalManager.getLogger().log(Level.INFO,
 				sLabel + ": Update called by " + eventTrigger.getClass().getSimpleName());
 
@@ -636,20 +638,8 @@ public class GLGlyph
 
 		}
 
-		Vec3f vecGlyphPos;
-		for (GlyphEntry g : grid_.getGlyphList().values())
-		{
-			if (!g.isSelected())
-				continue;
-
-			vecGlyphPos = getGlyphPosition(g);
-			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
-					.modifySelection(
-							g.getID(),
-							new SelectedElementRep(EIDType.EXPERIMENT_INDEX, iUniqueID, vecGlyphPos
-									.x(), vecGlyphPos.y(), vecGlyphPos.z()),
-							ESelectionMode.ADD_PICK);
-		}
+		if (selectionDelta.size() > 0)
+			handleConnectedElementRep();
 
 		bRedrawDisplayListGlyph = true;
 	}
@@ -665,7 +655,7 @@ public class GLGlyph
 	{
 		if (selectionDelta.getSelectionData().size() > 0)
 		{
-			handleConnectedElementRep(selectionDelta);
+			handleConnectedElementRep();
 			generalManager.getEventPublisher().handleUpdate(this, selectionDelta);
 		}
 	}
@@ -677,31 +667,29 @@ public class GLGlyph
 	}
 
 	/**
-	 * Handles the creation of {@link SelectedElementRep} according to the data
-	 * in a selectionDelta
-	 * 
-	 * @param selectionDelta the selection data that should be handled
+	 * Handles the creation of {@link SelectedElementRep} uses internal
+	 * selection (not the delta)
 	 * 
 	 */
-	protected void handleConnectedElementRep(ISelectionDelta selectionDelta)
+	protected void handleConnectedElementRep()
 	{
-		if (selectionDelta.size() > 0)
+		if (!bDrawConnectionRepLines)
+			return;
+
+		Vec3f vecGlyphPos;
+
+		for (GlyphEntry g : grid_.getGlyphList().values())
 		{
-			Vec3f vecGlyphPos;
+			if (!g.isSelected())
+				continue;
 
-			for (GlyphEntry g : grid_.getGlyphList().values())
-			{
-				if (!g.isSelected())
-					continue;
-
-				vecGlyphPos = getGlyphPosition(g);
-				generalManager.getViewGLCanvasManager()
-						.getConnectedElementRepresentationManager().modifySelection(
-								g.getID(),
-								new SelectedElementRep(EIDType.EXPERIMENT_INDEX, iUniqueID,
-										vecGlyphPos.x(), vecGlyphPos.y(), vecGlyphPos.z()),
-								ESelectionMode.ADD_PICK);
-			}
+			vecGlyphPos = getGlyphPosition(g);
+			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
+					.modifySelection(
+							g.getID(),
+							new SelectedElementRep(EIDType.EXPERIMENT_INDEX, iUniqueID,
+									vecGlyphPos.x(), vecGlyphPos.y(), vecGlyphPos.z()),
+							ESelectionMode.ADD_PICK);
 		}
 	}
 }
