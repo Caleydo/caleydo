@@ -512,7 +512,7 @@ public class GLGlyph
 		{
 			switch (pickingMode)
 			{
-				case CLICKED:
+				case MOUSE_OVER:
 					GlyphEntry g = grid_.getGlyph(iExternalID);
 
 					if (g == null)

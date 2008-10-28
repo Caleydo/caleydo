@@ -95,7 +95,7 @@ public abstract class AStorageBasedView
 	protected boolean bUseRandomSampling = true;
 
 	protected int iNumberOfRandomElements = 100;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -159,12 +159,13 @@ public abstract class AStorageBasedView
 
 		if (!mapVAIDs.isEmpty())
 		{
-			// This should be done once we get some thread safety, memory leak, and a big one
+			// This should be done once we get some thread safety, memory leak,
+			// and a big one
 			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values())
 			{
-				
-				//if (mapVAIDs.containsKey(eSelectionType))
-				//	set.removeVirtualArray(mapVAIDs.get(eSelectionType));
+
+				// if (mapVAIDs.containsKey(eSelectionType))
+				// set.removeVirtualArray(mapVAIDs.get(eSelectionType));
 			}
 			iContentVAID = -1;
 			iStorageVAID = -1;
@@ -268,12 +269,13 @@ public abstract class AStorageBasedView
 
 	/**
 	 * Create 0:n {@link SelectedElementRep} for the selectionDelta
-	 * 
+	 * @param idType TODO
 	 * @param selectionDelta the selection delta which should be represented
+	 * 
 	 * @throws InvalidAttributeValueException when the selectionDelta does not
 	 *             contain a valid type for this view
 	 */
-	protected abstract SelectedElementRep createElementRep(int iStorageIndex)
+	protected abstract SelectedElementRep createElementRep(EIDType idType, int iStorageIndex)
 			throws InvalidAttributeValueException;
 
 	@Deprecated
@@ -321,29 +323,38 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public synchronized final void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
+	public synchronized final void handleUpdate(IUniqueObject eventTrigger,
+			ISelectionDelta selectionDelta)
 	{
-		// Check for type that can be handled
-		if (selectionDelta.getIDType() != EIDType.DAVID)
-			return;
-
 		generalManager.getLogger().log(
 				Level.INFO,
 				"Update called by " + eventTrigger.getClass().getSimpleName()
 						+ ", received in: " + this.getClass().getName());
+		// Check for type that can be handled
+		if (selectionDelta.getIDType() == EIDType.DAVID)
+		{
 
-		contentSelectionManager.clearSelections();
-		ISelectionDelta internalDelta = contentSelectionManager.setDelta(selectionDelta);
-		initForAddedElements();
-		handleConnectedElementRep(internalDelta);
-//		handleConnectedElementRep(internalDelta);
-		checkUnselection();
-		setDisplayListDirty();
+			contentSelectionManager.clearSelections();
+			ISelectionDelta internalDelta = contentSelectionManager.setDelta(selectionDelta);
+			initForAddedElements();
+			handleConnectedElementRep(internalDelta);
+			// handleConnectedElementRep(internalDelta);
+			checkUnselection();
+			setDisplayListDirty();
+		}
+		else if(selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX)
+		{
+		//	generalManager.getIDMappingManager().getID(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX, key)(type)
+			
+			ISelectionDelta internalDelta = storageSelectionManager.setDelta(selectionDelta);
+			handleConnectedElementRep(selectionDelta);
+			setDisplayListDirty();			
+		}
 	}
 
 	/**
-	 * This method is called when new elements are added from external - if
-	 * you need to react to it do it here, if not don't do anything.
+	 * This method is called when new elements are added from external - if you
+	 * need to react to it do it here, if not don't do anything.
 	 */
 	protected void initForAddedElements()
 	{
@@ -372,7 +383,7 @@ public abstract class AStorageBasedView
 		initData();
 		setDisplayListDirty();
 	}
-	
+
 	@Override
 	public final synchronized void triggerUpdate(ISelectionDelta selectionDelta)
 	{
@@ -392,28 +403,33 @@ public abstract class AStorageBasedView
 		try
 		{
 			int iStorageIndex = -1;
-			int iDavidID = -1;
+			int iID = -1;
+			EIDType idType;
 			if (selectionDelta.size() > 0)
 			{
 				for (SelectionItem item : selectionDelta)
 				{
-					if (item.getSelectionType() != ESelectionType.MOUSE_OVER)
+					if (!(item.getSelectionType() == ESelectionType.MOUSE_OVER || item.getSelectionType() == ESelectionType.SELECTION))
+			//		if (!(item.getSelectionType() == ESelectionType.MOUSE_OVER))						
 						continue;
 
 					if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX)
 					{
 						iStorageIndex = item.getSelectionID();
-						iDavidID = item.getInternalID();
-
+						iID = item.getInternalID();
+						idType = EIDType.EXPRESSION_INDEX;
 					}
 					else if (selectionDelta.getInternalIDType() == EIDType.EXPRESSION_INDEX)
 					{
 						iStorageIndex = item.getInternalID();
-						iDavidID = item.getSelectionID();
+						iID = item.getSelectionID();
+						idType = EIDType.EXPRESSION_INDEX;
 					}
 					else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX)
 					{
-						
+						iID = item.getSelectionID();
+						iStorageIndex = iID;
+						idType = EIDType.EXPERIMENT_INDEX;
 					}
 					else
 						throw new InvalidAttributeValueException("Can not handle data type");
@@ -421,12 +437,12 @@ public abstract class AStorageBasedView
 					if (iStorageIndex == -1)
 						throw new IllegalArgumentException("No internal ID in selection delta");
 
-					SelectedElementRep rep = createElementRep(iStorageIndex);
+					SelectedElementRep rep = createElementRep(idType, iStorageIndex);
 					if (rep == null)
 					{
 						continue;
 					}
-					connectedElementRepresentationManager.modifySelection(iDavidID, rep,
+					connectedElementRepresentationManager.modifySelection(iID, rep,
 							ESelectionMode.ADD_PICK);
 				}
 
@@ -464,6 +480,7 @@ public abstract class AStorageBasedView
 
 	/**
 	 * Set whether to use random sampling or not, synchronized
+	 * 
 	 * @param bUseRandomSampling
 	 */
 	public synchronized final void useRandomSampling(boolean bUseRandomSampling)
@@ -496,7 +513,7 @@ public abstract class AStorageBasedView
 		// manager though
 		this.iNumberOfRandomElements = iNumberOfRandomElements;
 	}
-	
+
 	/**
 	 * Set the level of data filtering, according to the parameters defined in
 	 * {@link EDataFilterLevel}

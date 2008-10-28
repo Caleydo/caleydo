@@ -179,8 +179,9 @@ public class ConnectedElementRepresentationManager
 		if (!hashIDTypes.containsKey(eIDType))
 			return;
 		
-		hashIDTypes.get(eIDType).clear();
-		hashIDTypes.remove(eIDType);
+		HashMap tmp = hashIDTypes.get(eIDType);
+		tmp.clear();
+		//hashIDTypes.remove(eIDType);
 		
 //		hashIDTypes.clear();
 	}

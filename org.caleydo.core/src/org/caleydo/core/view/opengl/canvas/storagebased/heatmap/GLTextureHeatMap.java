@@ -856,7 +856,7 @@ public class GLTextureHeatMap
 	}
 	
 	@Override
-	protected SelectedElementRep createElementRep(int iStorageIndex)
+	protected SelectedElementRep createElementRep(EIDType idType, int iStorageIndex)
 			throws InvalidAttributeValueException
 	{
 		SelectedElementRep elementRep;// = new SelectedElementRep(iUniqueID,

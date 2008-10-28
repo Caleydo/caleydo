@@ -730,7 +730,7 @@ public class GLHeatMap
 	}
 
 	@Override
-	protected SelectedElementRep createElementRep(int iStorageIndex)
+	protected SelectedElementRep createElementRep(EIDType idType, int iStorageIndex)
 			throws InvalidAttributeValueException
 	{
 
