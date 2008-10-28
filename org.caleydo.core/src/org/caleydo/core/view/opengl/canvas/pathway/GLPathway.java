@@ -535,7 +535,8 @@ public class GLPathway
 					return;
 				}
 				
-				selectionManager.clearSelection(ESelectionType.MOUSE_OVER);
+//				selectionManager.clearSelection(ESelectionType.MOUSE_OVER);
+//				selectionManager.clearSelection(ESelectionType.SELECTION);
 				selectedVertex = tmpVertexGraphItemRep;
 
 				PathwayVertexGraphItem tmpVertexGraphItem = null;
@@ -544,12 +545,16 @@ public class GLPathway
 				{
 					if (pickingMode == EPickingMode.MOUSE_OVER)
 					{
+						selectionManager.clearSelection(ESelectionType.MOUSE_OVER);
+						
 						// Add new vertex to internal selection manager
 						selectionManager.addToType(ESelectionType.MOUSE_OVER,
 								tmpVertexGraphItemRep.getId());						
 					}
 					else if (pickingMode == EPickingMode.CLICKED)
 					{
+						selectionManager.clearSelection(ESelectionType.SELECTION);
+						
 						// Add new vertex to internal selection manager
 						selectionManager.addToType(ESelectionType.SELECTION,
 								tmpVertexGraphItemRep.getId());		
@@ -572,7 +577,6 @@ public class GLPathway
 								EPickingType.PATHWAY_ELEMENT_SELECTION);
 						pickingManager.flushHits(iUniqueID,
 								EPickingType.PATHWAY_TEXTURE_SELECTION);
-						// connectedElementRepManager.clear();
 
 						connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 						continue;

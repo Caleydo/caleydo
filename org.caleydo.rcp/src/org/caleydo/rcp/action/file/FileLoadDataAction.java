@@ -95,7 +95,7 @@ public class FileLoadDataAction
 	private String sInputPattern = "SKIP;ABORT";
 	private String sDelimiter = "";
 	private int iCreatedSetID = -1;
-	private int iStartParseFileAtLine = 1;
+	private int iStartParseFileAtLine = 2;
 
 	private boolean bLogFilter = false;
 
@@ -581,7 +581,7 @@ public class FileLoadDataAction
 			String sLine = "";
 
 			// Ignore unwanted header files of file
-			for (int iIgnoreLineIndex = 1; iIgnoreLineIndex < iStartParseFileAtLine; iIgnoreLineIndex++)
+			for (int iIgnoreLineIndex = 2; iIgnoreLineIndex < iStartParseFileAtLine; iIgnoreLineIndex++)
 			{
 				brFile.readLine();
 			}
@@ -709,7 +709,12 @@ public class FileLoadDataAction
 			comboTmpDataClass.setSize(previewTable.getColumn(iColIndex).getWidth(), 35);
 			comboTmpDataClass.setItems(new String[] { "SKIP", "RefSeq ID", "Experiment",
 					"Patient" });
-			comboTmpDataClass.select(0); // by default values in that column
+			
+			if (iColIndex == 1)
+				comboTmpDataClass.select(1);
+			else
+				comboTmpDataClass.select(2); // by default set columns to experiment
+			
 			// should be ignored
 			arComboDataClass.add(comboTmpDataClass);
 
@@ -717,9 +722,17 @@ public class FileLoadDataAction
 			editor.grabHorizontal = true;
 			editor.setEditor(comboTmpDataClass, tmpItem, iColIndex);
 
+			// Set corresponding column background color to yellow
+			for (TableItem tmpTableItem : previewTable.getItems())
+			{
+				tmpTableItem.setBackground(
+						arComboDataClass.indexOf(comboTmpDataClass) + 1,
+						Display.getCurrent().getSystemColor(
+								SWT.COLOR_RED));
+			}
+			
 			comboTmpDataClass.addMouseTrackListener(new MouseTrackAdapter()
 			{
-
 				public Color originalColor = txtFileName.getBackground();
 				public Color highlightColor = Display.getCurrent().getSystemColor(
 						SWT.COLOR_YELLOW);
@@ -811,7 +824,12 @@ public class FileLoadDataAction
 			comboTmpDataType.setSize(previewTable.getColumn(iColIndex).getWidth(), 35);
 			comboTmpDataType.setEnabled(false);
 			comboTmpDataType.setItems(new String[] { "SKIP", "INT", "FLOAT", "STRING" });
-			comboTmpDataType.select(0); // by default values in that column
+			
+			if (iColIndex == 1)
+				comboTmpDataType.select(0);
+			else
+				comboTmpDataType.select(2); // by default set columns to experiment
+			
 			// should be ignored
 			arComboDataType.add(comboTmpDataType);
 
@@ -943,7 +961,8 @@ public class FileLoadDataAction
 		// iSWTGUIManager.setProgressBarVisible(true);
 
 		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sInputPattern, sDelimiter,
-				iStartParseFileAtLine, -1);
+				iStartParseFileAtLine-1, -1);
+
 		cmdLoadCsv.doCommand();
 
 		// Create SET
