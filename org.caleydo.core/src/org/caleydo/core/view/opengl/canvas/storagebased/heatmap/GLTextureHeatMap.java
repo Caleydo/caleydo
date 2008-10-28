@@ -1,17 +1,11 @@
 package org.caleydo.core.view.opengl.canvas.storagebased.heatmap;
 
 import static org.caleydo.core.view.opengl.canvas.storagebased.heatmap.HeatMapRenderStyle.FIELD_Z;
-import static org.caleydo.core.view.opengl.canvas.storagebased.heatmap.HeatMapRenderStyle.SELECTION_Z;
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_LINE_WIDTH;
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
-import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_LINE_WIDTH;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
@@ -89,7 +83,7 @@ public class GLTextureHeatMap
 	private FloatBuffer FbTexture;
 	
 	private int iSelector = 0;
-	private int iNrSel = 24;
+	private int iNrSel = 10;
 	
 	/**
 	 * Constructor.
@@ -131,7 +125,7 @@ public class GLTextureHeatMap
 	@Override
 	public void init(GL gl)
 	{
-	//	iconTextureManager = new GLIconTextureManager(gl);
+		iconTextureManager = new GLIconTextureManager();
 		initData();
 
 		colorMappingBar.setHeight(renderStyle.getColorMappingBarHeight());
@@ -262,23 +256,31 @@ public class GLTextureHeatMap
 		FbTexture.rewind();
 	}
 	
-	private void drawSelectionQuads(GL gl, float fxOffset, float fyOffset, float fHeight, 
-			float fWidth, int iCount)
+	private void drawSelectionQuads(GL gl)
 	{
+		float fHeight;
+		float fWidth;
+		float fxOffset = 0.0f;
+		
+		fHeight = viewFrustum.getHeight();
+		fWidth = viewFrustum.getWidth() / 4.0f;
+		
 		gl.glColor4f(0, 0, 0, 0);
 		
-		float fStep = fHeight/iCount;
+		float fStep = fHeight/iNrSel;
 		
-		for (int i = 1; i <= iCount; i++)
+		//System.out.println("höhe: " + viewFrustum.getHeight() + "breite: " + viewFrustum.getWidth());
+		
+		for (int i = 1; i <= iNrSel; i++)
 		{
 			gl.glPushName(pickingManager.getPickingID(iUniqueID, 
 		    		EPickingType.HEAT_MAP_FIELD_SELECTION, i));
 			
 			gl.glBegin(GL.GL_QUADS);
-			gl.glVertex3f(fxOffset, fyOffset, 0);
-			gl.glVertex3f(fxOffset, fyOffset + fWidth, 0);
-			gl.glVertex3f(fxOffset + fStep, fyOffset + fWidth, 0);
-			gl.glVertex3f(fxOffset + fStep, fyOffset, 0);
+			gl.glVertex3f(fxOffset, 0.0f, 0);
+			gl.glVertex3f(fxOffset, fWidth, 0);
+			gl.glVertex3f(fxOffset + fStep, fWidth, 0);
+			gl.glVertex3f(fxOffset + fStep, 0.0f, 0);
 			gl.glEnd();	
 			
 			fxOffset += fStep;
@@ -289,6 +291,9 @@ public class GLTextureHeatMap
 	
 	private void renderTextureHeatMap(GL gl)
 	{
+		float fHeight;
+		float fWidth;
+		
 	    drawHeatMap(gl);
 
 	    TextureData texData = new TextureData(
@@ -306,7 +311,7 @@ public class GLTextureHeatMap
 	    
 	    /* Todo: find another way to initialize a texture*/
 	    THeatMap = iconTextureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_SYMBOL);
-	    
+
 	    THeatMap.updateImage(texData);
 	    
 	    THeatMap.enable();
@@ -325,15 +330,18 @@ public class GLTextureHeatMap
 	    gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 	    gl.glColor4f(1f, 1, 1, 1f);
 	    
+	    fHeight = viewFrustum.getHeight();
+		fWidth = viewFrustum.getWidth() / 4.0f;
+	    
 	    gl.glBegin(GL.GL_QUADS);
 	    gl.glTexCoord2d(texCoords.left(),texCoords.bottom());
 		gl.glVertex3f(0f, 0.0f, 0);
 	    gl.glTexCoord2d(texCoords.left(), texCoords.top());
-		gl.glVertex3f(0f, 2.0f, 0);
+		gl.glVertex3f(0f, fWidth, 0);
 	    gl.glTexCoord2d(texCoords.right(), texCoords.top());
-		gl.glVertex3f(4f, 2.0f, 0);
+		gl.glVertex3f(fHeight, fWidth, 0);
 	    gl.glTexCoord2d(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(4f, 0.0f, 0);
+		gl.glVertex3f(fHeight, 0.0f, 0);
 		gl.glEnd();
 
 	    gl.glFlush();
@@ -342,7 +350,7 @@ public class GLTextureHeatMap
 		
 		THeatMap.disable();
 		
-		drawSelectionQuads(gl, 0.0f, 0.0f, 4.0f, 2.0f, iNrSel);
+		drawSelectionQuads(gl);
 	}
 	
 	@Override
@@ -396,6 +404,7 @@ public class GLTextureHeatMap
 			
 			renderTextureHeatMap(gl);
 			renderHeatMap(gl);
+			renderMarker(gl);
 
 			//renderSelection(gl, ESelectionType.MOUSE_OVER);
 			//renderSelection(gl, ESelectionType.SELECTION);
@@ -453,6 +462,33 @@ public class GLTextureHeatMap
 		tempTexture.disable();
 	}
 
+	private void renderMarker(final GL gl)
+	{
+		if (iSelector != 0)
+		{		
+			float fStep = viewFrustum.getHeight()/iNrSel;
+			float fHelper = set.getVA(iContentVAID).size()/iNrSel;
+			float fFieldWith = (viewFrustum.getHeight() -2.0f) / (set.getVA(iContentVAID).size()/iNrSel);
+			float fSel = (fHelper * iSelector) - (fHelper * (iSelector -1));
+			
+			gl.glColor4f(0f, 0f, 1f, 1f);
+			
+			gl.glLineWidth(2f);
+			gl.glBegin(GL.GL_LINES);	
+			gl.glVertex3f(fStep*(iSelector-1), 0.0f, 0.0f);
+			gl.glVertex3f(fStep*(iSelector-1), 2.0f, 0.0f);
+			gl.glVertex3f(fStep*(iSelector-1), 2.0f, 0.0f);
+			gl.glVertex3f(1.0f, 2.1f, 0.0f);			
+			gl.glVertex3f(fStep*iSelector, 0.0f, 0.0f);
+			gl.glVertex3f(fStep*iSelector, 2.0f, 0.0f);
+			gl.glVertex3f(fStep*iSelector, 2.0f, 0.0f);
+			gl.glVertex3f(1.0f+fFieldWith*fSel, 2.1f, 0.0f);	
+			gl.glEnd();
+			
+			gl.glFlush();
+		}
+	}
+	
 	private void renderHeatMap(final GL gl)
 	{
 		fAlXDistances.clear();
@@ -474,10 +510,11 @@ public class GLTextureHeatMap
 			if((iCount < (fHelper * (iSelector -1))) || (iCount > (fHelper * iSelector)))
 				continue;
 						
-			fFieldWith = renderStyle.getNormalFieldWidth()*3;
-			fFieldHeight = renderStyle.getFieldHeight()/1.5f;
-
+			fFieldWith = (viewFrustum.getHeight() -2.0f) / (set.getVA(iContentVAID).size()/iNrSel);
+			fFieldHeight = (viewFrustum.getWidth() - 3.0f) / set.getVA(iStorageVAID).size();
+			
 			fYPosition = 2.1f;
+			//fYPosition = viewFrustum.getWidth() / 3.0f;
 
 			for (Integer iStorageIndex : set.getVA(iStorageVAID))
 			{
@@ -548,6 +585,7 @@ public class GLTextureHeatMap
 				if (iCount == fHelper * iSelector)
 				{
 					fYPosition = 2.1f;
+					//fYPosition = viewFrustum.getWidth() / 3.0f;
 					for (Integer iStorageIndex : set.getVA(iStorageVAID))
 					{
 						renderCaption(gl, set.get(iStorageIndex).getLabel(),
