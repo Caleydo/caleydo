@@ -83,7 +83,7 @@ public class GLTextureHeatMap
 	private FloatBuffer FbTexture;
 	
 	private int iSelector = 0;
-	private int iNrSel = 10;
+	private int iNrSel = 100;
 	
 	/**
 	 * Constructor.

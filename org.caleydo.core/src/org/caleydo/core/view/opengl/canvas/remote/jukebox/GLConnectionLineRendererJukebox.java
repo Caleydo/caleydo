@@ -9,6 +9,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
+import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
 
 /**
@@ -120,7 +121,15 @@ public class GLConnectionLineRendererJukebox
 
 					if (hashViewToPointLists.size() > 1)
 					{
-						renderLineBundling(gl);
+						float[] fArColor;
+						if (idType == EIDType.DAVID)
+							fArColor = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR_1;
+						else if (idType == EIDType.EXPERIMENT_INDEX)
+							fArColor = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR_2;
+						else
+							throw new IllegalStateException("No color defined for the connection type " +idType);
+						
+						renderLineBundling(gl, fArColor);				
 					}
 
 					hashViewToPointLists.clear();

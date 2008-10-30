@@ -33,7 +33,8 @@ public class ConnectionLineRenderStyle
 	// public static final float[] CONNECTION_AREA_LINE_COLOR = {0.08f, 0.408f,
 	// 0.068f, 0.8f};
 	// red
-	public static final float[] CONNECTION_AREA_LINE_COLOR = { 1f, 1f, 0f, 1f };
+	public static final float[] CONNECTION_LINE_COLOR_1 = { 1f, 1f, 0f, 1f };
+	public static final float[] CONNECTION_LINE_COLOR_2 = { 0.25f, 0.6f, 1f, 1f };
 
 	public static final float CONNECTION_LINE_WIDTH = 3;
 }

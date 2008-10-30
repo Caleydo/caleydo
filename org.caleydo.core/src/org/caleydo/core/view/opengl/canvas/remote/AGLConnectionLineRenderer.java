@@ -71,7 +71,7 @@ public abstract class AGLConnectionLineRenderer
 
 	protected abstract void renderConnectionLines(final GL gl);
 
-	protected void renderLineBundling(final GL gl)
+	protected void renderLineBundling(final GL gl, float[] fArColor)
 	{
 		Set<Integer> keySet = hashViewToPointLists.keySet();
 		HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
@@ -97,11 +97,11 @@ public abstract class AGLConnectionLineRenderer
 				else
 				{
 					renderLine(gl, vecViewBundlingPoint, alCurrentPoints.get(0), 0, 
-							hashViewToCenterPoint.get(iKey));
+							hashViewToCenterPoint.get(iKey), fArColor);
 				}
 			}
 			
-			renderLine(gl, vecViewBundlingPoint, vecCenter, 0);
+			renderLine(gl, vecViewBundlingPoint, vecCenter, 0, fArColor);
 		}
 	}
 
@@ -142,7 +142,7 @@ public abstract class AGLConnectionLineRenderer
 		// alPoints.get(alPoints.size()-1).y(), alPoints.get(0).z());
 		gl.glEnd();
 
-		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_AREA_LINE_COLOR, 0);
+		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR_1, 0);
 		gl.glLineWidth(2);
 		gl.glBegin(GL.GL_LINES);
 		for (Vec3f vecCurrent : alPoints)
@@ -171,8 +171,17 @@ public abstract class AGLConnectionLineRenderer
 		gl.glEnd();
 	}
 
+	/**
+	 * Render straight connection lines.
+	 * 
+	 * @param gl
+	 * @param vecSrcPoint
+	 * @param vecDestPoint
+	 * @param iNumberOfLines
+	 * @param fArColor
+	 */
 	private void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint,
-			final int iNumberOfLines)
+			final int iNumberOfLines, float[] fArColor)
 	{
 		// Line shadow
 		gl.glColor4f(0.3f, 0.3f, 0.3f, 1);// , 0.6f);
@@ -182,7 +191,7 @@ public abstract class AGLConnectionLineRenderer
 		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z() - 0.001f);
 		gl.glEnd();
 
-		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_AREA_LINE_COLOR, 0);
+		gl.glColor4fv(fArColor, 0);
 		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + iNumberOfLines);
 		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z());
@@ -190,8 +199,18 @@ public abstract class AGLConnectionLineRenderer
 		gl.glEnd();
 	}
 	
+	/**
+	 * Render curved connection lines.
+	 * 
+	 * @param gl
+	 * @param vecSrcPoint
+	 * @param vecDestPoint
+	 * @param iNumberOfLines
+	 * @param vecViewCenterPoint
+	 * @param fArColor
+	 */
 	private void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint,
-			final int iNumberOfLines, Vec3f vecViewCenterPoint)
+			final int iNumberOfLines, Vec3f vecViewCenterPoint, float[] fArColor)
 	{
 		Vec3f[] arSplinePoints = new Vec3f[3];
 		
@@ -229,7 +248,7 @@ public abstract class AGLConnectionLineRenderer
 		}
 		gl.glEnd();
 		
-		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_AREA_LINE_COLOR, 0);
+		gl.glColor4fv(fArColor, 0);
 				
 		gl.glPointSize(3.2f);
 		gl.glBegin(GL.GL_POINTS);
