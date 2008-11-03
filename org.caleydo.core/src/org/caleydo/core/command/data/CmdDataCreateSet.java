@@ -11,8 +11,6 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.system.StringConversionTool;
 
 /**
@@ -48,8 +46,7 @@ public class CmdDataCreateSet
 		if (iAlStorageIDs.isEmpty())// ||
 		// ( iAlVirtualArrayIDs.isEmpty()))
 		{
-			throw new CaleydoRuntimeException("No data available for creating storage.",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalStateException("No data available for creating storage.");
 		}
 
 		for (int iStorageID : iAlStorageIDs)

@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import org.caleydo.core.data.AUniqueObject;
+import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
 import org.caleydo.core.data.collection.ccontainer.FloatCContainerIterator;
 import org.caleydo.core.data.collection.ccontainer.ICContainer;
+import org.caleydo.core.data.collection.ccontainer.INumericalCContainer;
 import org.caleydo.core.data.collection.ccontainer.IntCContainer;
 import org.caleydo.core.data.collection.ccontainer.IntCContainerIterator;
 import org.caleydo.core.data.collection.ccontainer.NumericalCContainer;
@@ -33,6 +35,8 @@ public abstract class AStorage
 	boolean bRawDataSet = false;
 
 	ERawDataType rawDataType = ERawDataType.UNDEFINED;
+	
+	EDataRepresentation dataRep;
 
 	/**
 	 * Constructor Initializes objects
@@ -221,17 +225,6 @@ public abstract class AStorage
 
 	}
 
-	@Override
-	public void normalize()
-	{
-
-		EDataRepresentation srcDataKind = EDataRepresentation.RAW;
-		if (hashCContainers.containsKey(EDataRepresentation.LOG10))
-			srcDataKind = EDataRepresentation.LOG10;
-
-		hashCContainers.put(EDataRepresentation.NORMALIZED, hashCContainers.get(srcDataKind)
-				.normalize());
-	}
 
 	@Override
 	public int size()

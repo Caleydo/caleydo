@@ -117,8 +117,8 @@ public class CmdLoadFileNStorages
 
 		TabularAsciiDataReader loader = null;
 
-		try
-		{
+//		try
+//		{
 			loader = new TabularAsciiDataReader(sFileName);
 
 			loader.setTokenPattern(sTokenPattern);
@@ -133,13 +133,13 @@ public class CmdLoadFileNStorages
 
 			commandManager.runDoCommand(this);
 
-		} // try
-		catch (Exception e)
-		{
-			generalManager.getLogger().log(Level.SEVERE,
-					"Error during parsing data file " + sFileName);
-			e.printStackTrace();
-		} // catch
+//		} // try
+//		catch (Exception e)
+//		{
+//			generalManager.getLogger().log(Level.SEVERE,
+//					"Error during parsing data file " + sFileName);
+//			e.printStackTrace();
+//		} // catch
 	}
 
 	@Override

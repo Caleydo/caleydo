@@ -1,7 +1,6 @@
 package org.caleydo.core.application.helper.cacher.kegg;
 
 import java.io.File;
-import java.io.NotSerializableException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import org.caleydo.core.application.helper.cacher.APathwayCacher;
@@ -12,17 +11,12 @@ import org.eclipse.swt.widgets.ProgressBar;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import de.phleisch.app.itsucks.constants.ApplicationConstants;
 import de.phleisch.app.itsucks.core.Dispatcher;
-import de.phleisch.app.itsucks.event.Event;
-import de.phleisch.app.itsucks.event.EventObserver;
 import de.phleisch.app.itsucks.filter.download.impl.DownloadJobFilter;
 import de.phleisch.app.itsucks.filter.download.impl.RegExpJobFilter;
 import de.phleisch.app.itsucks.filter.download.impl.RegExpJobFilter.RegExpFilterAction;
 import de.phleisch.app.itsucks.filter.download.impl.RegExpJobFilter.RegExpFilterRule;
-import de.phleisch.app.itsucks.io.http.impl.HttpRetrieverConfiguration;
-import de.phleisch.app.itsucks.job.Job;
 import de.phleisch.app.itsucks.job.download.impl.DownloadJobFactory;
 import de.phleisch.app.itsucks.job.download.impl.UrlDownloadJob;
-import de.phleisch.app.itsucks.job.event.JobChangedEvent;
 
 /**
  * Fetch tool for KEGG XML files.

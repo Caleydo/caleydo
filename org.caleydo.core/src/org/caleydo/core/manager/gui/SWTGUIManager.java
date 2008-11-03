@@ -15,6 +15,7 @@ import org.caleydo.core.view.swt.widget.SWTEmbeddedGraphWidget;
 import org.caleydo.core.view.swt.widget.SWTEmbeddedJoglWidget;
 import org.caleydo.core.view.swt.widget.SWTNativeWidget;
 import org.eclipse.jface.action.IStatusLineManager;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -87,7 +88,7 @@ public class SWTGUIManager
 		Shell newShell = new Shell(display);
 		newShell.setLayout(new GridLayout());
 		newShell.setMaximized(true);
-		newShell.setImage(new Image(display, "resources/icons/caleydo/caleydo16.ico"));
+		newShell.setImage(new Image(display, "resources/icons/caleydo/caleydo16.gif"));
 		newShell.setText(sLabel);
 
 		int iShellID = generalManager.getIDManager().createID(
@@ -244,7 +245,10 @@ public class SWTGUIManager
 	{
 		loadingProgressBarWindow = new Shell(display, SWT.TITLE | SWT.BORDER);
 		loadingProgressBarWindow.setMaximized(false);
-		loadingProgressBarWindow.setText("Loading org.caleydo.core...");
+		loadingProgressBarWindow.setText("Loading Caleydo...");
+		loadingProgressBarWindow.setImage(new Image(display,
+				this.getClass().getClassLoader().getResourceAsStream(
+						"resources/icons/caleydo/caleydo16.gif")));
 
 		loadingProgressBar = new ProgressBar(loadingProgressBarWindow, SWT.SMOOTH);
 		loadingProgressBar.setBounds(10, 10, 430, 40);

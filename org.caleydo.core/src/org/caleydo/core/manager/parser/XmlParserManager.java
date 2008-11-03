@@ -10,8 +10,6 @@ import org.caleydo.core.parser.xml.sax.handler.pathway.BioCartaPathwayImageMapSa
 import org.caleydo.core.parser.xml.sax.handler.pathway.KgmlSaxHandler;
 import org.caleydo.core.parser.xml.sax.handler.pathway.PathwayImageMapSaxHandler;
 import org.caleydo.core.parser.xml.sax.handler.recursion.OpenExternalXmlFileSaxHandler;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.system.CaleydoInputStream;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
@@ -251,9 +249,8 @@ public class XmlParserManager
 		 */
 		if (currentHandler != handler)
 		{
-			throw new CaleydoRuntimeException(
-					"sectionFinishedByHandler() called by wrong handler!",
-					CaleydoRuntimeExceptionType.SAXPARSER);
+			throw new IllegalStateException(
+					"sectionFinishedByHandler() called by wrong handler!");
 		}
 
 		closeCurrentTag();
@@ -271,8 +268,8 @@ public class XmlParserManager
 	{
 
 		iCountOpenedFiles++;
-		try
-		{
+//		try
+//		{
 			// generalManager.logMsg("XmlParserManager.parseXmlString( " +
 			// sMuddlewareXPath + ") parse...",
 			// LoggerType.VERBOSE );
@@ -292,28 +289,28 @@ public class XmlParserManager
 			// LoggerType.STATUS );
 
 			return status;
-
-		}
-		catch (CaleydoRuntimeException gve)
-		{
-			// generalManager.logMsg("XmlParserManager.parseXmlString( " +
-			// sMuddlewareXPath +
-			// "," + xmlString + ") failed; caleydo_error: " +
-			// gve.toString(),
-			// LoggerType.MINOR_ERROR_XML );
-
-			return false;
-		}
-		catch (RuntimeException e)
-		{
-			// generalManager.logMsg("XmlParserManager.parseXmlString( " +
-			// sMuddlewareXPath +
-			// "," + xmlString + ") failed; system_error: " +
-			// e.toString(),
-			// LoggerType.MINOR_ERROR_XML );
-
-			return false;
-		}
+//
+//		}
+//		catch (CaleydoRuntimeException gve)
+//		{
+//			// generalManager.logMsg("XmlParserManager.parseXmlString( " +
+//			// sMuddlewareXPath +
+//			// "," + xmlString + ") failed; caleydo_error: " +
+//			// gve.toString(),
+//			// LoggerType.MINOR_ERROR_XML );
+//
+//			return false;
+//		}
+//		catch (RuntimeException e)
+//		{
+//			// generalManager.logMsg("XmlParserManager.parseXmlString( " +
+//			// sMuddlewareXPath +
+//			// "," + xmlString + ") failed; system_error: " +
+//			// e.toString(),
+//			// LoggerType.MINOR_ERROR_XML );
+//
+//			return false;
+//		}
 	}
 
 	@Override
@@ -357,8 +354,8 @@ public class XmlParserManager
 
 		iCountOpenedFiles++;
 
-		try
-		{
+//		try
+//		{
 			URL resourceUrl = this.getClass().getClassLoader().getResource(filename);
 			InputSource inSource = null;
 
@@ -375,27 +372,27 @@ public class XmlParserManager
 
 			return CaleydoInputStream.parseOnce(inSource, filename, this, generalManager);
 
-		}
-		catch (CaleydoRuntimeException gve)
-		{
-			// generalManager.logMsg(
-			// "XmlParserManager.parseXmlFileByNameAndHandler( " + filename +
-			// ") failed; caleydo_error: " +
-			// gve.toString(),
-			// LoggerType.MINOR_ERROR_XML );
-
-			return false;
-		}
-		catch (RuntimeException e)
-		{
-			// generalManager.logMsg(
-			// "XmlParserManager.parseXmlFileByNameAndHandler( " + filename +
-			// ") failed; system_error: " +
-			// e.toString(),
-			// LoggerType.MINOR_ERROR_XML );
-
-			return false;
-		}
+//		}
+//		catch (CaleydoRuntimeException gve)
+//		{
+//			// generalManager.logMsg(
+//			// "XmlParserManager.parseXmlFileByNameAndHandler( " + filename +
+//			// ") failed; caleydo_error: " +
+//			// gve.toString(),
+//			// LoggerType.MINOR_ERROR_XML );
+//
+//			return false;
+//		}
+//		catch (RuntimeException e)
+//		{
+//			// generalManager.logMsg(
+//			// "XmlParserManager.parseXmlFileByNameAndHandler( " + filename +
+//			// ") failed; system_error: " +
+//			// e.toString(),
+//			// LoggerType.MINOR_ERROR_XML );
+//
+//			return false;
+//		}
 	}
 
 	/**
@@ -406,32 +403,32 @@ public class XmlParserManager
 	{
 
 		iCountOpenedFiles++;
-		try
-		{
+//		try
+//		{
 
 			return CaleydoInputStream.parseOnce(inputStream, inputStreamText, this,
 					generalManager);
-		}
-		catch (CaleydoRuntimeException gve)
-		{
-			// generalManager.logMsg(
-			// "XmlParserManager.parseXmlFileByInputStream( ) failed; caleydo_error: "
-			// +
-			// gve.toString(),
-			// LoggerType.MINOR_ERROR_XML );
-
-			return false;
-		}
-		catch (RuntimeException e)
-		{
-			// generalManager.logMsg(
-			// "XmlParserManager.parseXmlFileByInputStream( ) failed; system_error: "
-			// +
-			// e.toString(),
-			// LoggerType.MINOR_ERROR_XML );
-
-			return false;
-		}
+//		}
+//		catch (CaleydoRuntimeException gve)
+//		{
+//			// generalManager.logMsg(
+//			// "XmlParserManager.parseXmlFileByInputStream( ) failed; caleydo_error: "
+//			// +
+//			// gve.toString(),
+//			// LoggerType.MINOR_ERROR_XML );
+//
+//			return false;
+//		}
+//		catch (RuntimeException e)
+//		{
+//			// generalManager.logMsg(
+//			// "XmlParserManager.parseXmlFileByInputStream( ) failed; system_error: "
+//			// +
+//			// e.toString(),
+//			// LoggerType.MINOR_ERROR_XML );
+//
+//			return false;
+//		}
 	}
 
 	public void destroyHandler()

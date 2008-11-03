@@ -82,7 +82,7 @@ public class EnzymeCodeConverter
 			enzymeCodeConverter.convertData();
 
 		}
-		catch (Exception e)
+		catch (IOException e)
 		{
 			e.printStackTrace();
 		}

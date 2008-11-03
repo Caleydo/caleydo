@@ -101,8 +101,25 @@ public class FloatCContainer
 		return normalize((float) dMin, (float) dMax);
 	}
 
+//	@Override
+//	public FloatCContainer log10()
+//	{
+//		float[] fArTarget = new float[fArContainer.length];
+//
+//		float fTmp;
+//		for (int index = 0; index < fArContainer.length; index++)
+//		{
+//			fTmp = fArContainer[index];
+//			fArTarget[index] = (float) Math.log10(fTmp);
+//			if (fArTarget[index] == Float.NEGATIVE_INFINITY)
+//				fArTarget[index] = Float.NaN;
+//		}
+//
+//		return new FloatCContainer(fArTarget);
+//	}
+	
 	@Override
-	public FloatCContainer log10()
+	public FloatCContainer log(int iBase)
 	{
 		float[] fArTarget = new float[fArContainer.length];
 
@@ -110,14 +127,13 @@ public class FloatCContainer
 		for (int index = 0; index < fArContainer.length; index++)
 		{
 			fTmp = fArContainer[index];
-			fArTarget[index] = (float) Math.log10(fTmp);
+			fArTarget[index] = (float) Math.log(fTmp) / (float) Math.log(iBase);
 			if (fArTarget[index] == Float.NEGATIVE_INFINITY)
 				fArTarget[index] = Float.NaN;
 		}
 
 		return new FloatCContainer(fArTarget);
 	}
-
 	/**
 	 * Does the actual normalization between 0 and 1 values that are NaN in the
 	 * input are kept to be NaN
@@ -140,15 +156,12 @@ public class FloatCContainer
 			{
 				if (Float.isNaN(fArContainer[iCount]))
 					fArTmpTarget[iCount] = Float.NaN;
-				else
-				{
-					fArTmpTarget[iCount] = (fArContainer[iCount] - fMin) / (fMax - fMin);
-					if(fArTmpTarget[iCount] > 1)
-						fArTmpTarget[iCount] = 1;
-					else if(fArTmpTarget[iCount] <  0)
-						fArTmpTarget[iCount] = 0;
-				
-				}
+
+				fArTmpTarget[iCount] = (fArContainer[iCount] - fMin) / (fMax - fMin);
+				if (fArTmpTarget[iCount] > 1)
+					fArTmpTarget[iCount] = 1;
+				else if (fArTmpTarget[iCount] < 0)
+					fArTmpTarget[iCount] = 0;
 			}
 		}
 		return new FloatCContainer(fArTmpTarget);

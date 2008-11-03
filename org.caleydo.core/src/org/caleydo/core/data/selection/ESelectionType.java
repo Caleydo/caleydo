@@ -21,5 +21,13 @@ public enum ESelectionType
 	 * Type that is used to signal removal of an element. Elements moved to
 	 * REMOVE are not recoverable.
 	 */
-	REMOVE;
+	REMOVE,
+	
+	/**
+	 * Pathway neighborhoods
+	 * TODO: if needed more use the hash map in the selection manager
+	 */
+	NEIGHBORHOOD_1,
+	NEIGHBORHOOD_2,
+	NEIGHBORHOOD_3;
 }

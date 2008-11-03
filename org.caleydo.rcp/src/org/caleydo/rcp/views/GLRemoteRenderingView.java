@@ -6,11 +6,13 @@ import java.util.logging.Level;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.swt.CmdViewCreateDataEntitySearcher;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
 import org.caleydo.rcp.action.view.TakeSnapshotAction;
 import org.caleydo.rcp.action.view.remote.CloseOrResetContainedViews;
+import org.caleydo.rcp.action.view.remote.SearchAction;
 import org.caleydo.rcp.action.view.remote.ToggleLayoutAction;
 import org.caleydo.rcp.util.search.SearchBar;
 import org.eclipse.jface.action.IAction;
@@ -40,35 +42,6 @@ public class GLRemoteRenderingView
 	public void createPartControl(Composite parent)
 	{
 		super.createPartControl(parent);
-		
-//		Composite composite = new Composite(parent, SWT.EMBEDDED);
-//		Frame frame = SWT_AWT.new_Frame(composite);
-//
-//		GLCanvas canvas = new GLCanvas();
-//
-//		canvas.addGLEventListener(new Gears());
-//		frame.add(canvas);
-//		// frame.setSize(300, 300);
-//		final Animator animator = new Animator(canvas);
-//		frame.addWindowListener(new WindowAdapter()
-//		{
-//			public void windowClosing(WindowEvent e)
-//			{
-//				// Run this on another thread than the AWT event queue to
-//				// make sure the call to Animator.stop() completes before
-//				// exiting
-//				new Thread(new Runnable()
-//				{
-//					public void run()
-//					{
-//						animator.stop();
-//						System.exit(0);
-//					}
-//				}).start();
-//			}
-//		});
-//		frame.setVisible(true);
-//		animator.start();
 		
 		createGLCanvas();
 		
@@ -119,10 +92,11 @@ public class GLRemoteRenderingView
 		IAction toggleLayoutAction = new ToggleLayoutAction(iViewID);
 		alToolbar.add(toggleLayoutAction);
 		
-//		if (System.getProperty("os.name").contains("Win"))
-//		{
-//			alToolbar.add(new SearchAction(iViewID));
-//		}
+		if (GeneralManager.get().getPreferenceStore().getBoolean(
+				PreferenceConstants.XP_CLASSIC_STYLE_MODE))
+		{
+			alToolbar.add(new SearchAction(iViewID));
+		}
 	}
 	
 	protected final void fillToolBar()
@@ -145,10 +119,11 @@ public class GLRemoteRenderingView
 	public static void fillToolBar(final IToolBarManager toolBarManager)
 	{	
 		// Add search bar
-//		if (!System.getProperty("os.name").contains("Win"))
-//		{
+		if (!GeneralManager.get().getPreferenceStore().getBoolean(
+				PreferenceConstants.XP_CLASSIC_STYLE_MODE))
+		{
 			toolBarManager.add(new SearchBar("Quick search"));
-//		}
+		}
 		
 		for (IAction toolBarAction : alToolbar)
 		{

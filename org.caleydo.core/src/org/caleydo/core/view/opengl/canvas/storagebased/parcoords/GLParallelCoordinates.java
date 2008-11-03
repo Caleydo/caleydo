@@ -58,8 +58,8 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.GLIconTextureManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
+import org.eclipse.core.runtime.SafeRunner;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -72,6 +72,7 @@ import com.sun.opengl.util.texture.TextureCoords;
 public class GLParallelCoordinates
 	extends AStorageBasedView
 {
+	
 
 	private float fAxisSpacing = 0;
 
@@ -139,7 +140,7 @@ public class GLParallelCoordinates
 
 	// private ArrayList<Integer> alPolylineSelection;
 	//
-	// private ArrayList<Integer> alAxisSelection;
+	// private ArrayList<Integer> alAxisSelection;b
 
 	private SelectedElementRep elementRep;
 
@@ -357,12 +358,14 @@ public class GLParallelCoordinates
 	 */
 	public synchronized void renderStorageAsPolyline(boolean bRenderStorageHorizontally)
 	{
+	
 		if(bRenderStorageHorizontally != this.bRenderStorageHorizontally)
 		{
 			EIDType eTempType = eAxisDataType;
 			eAxisDataType = ePolylineDataType;
 			ePolylineDataType = eTempType;
 		}
+
 		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
 		// bRenderInfoArea = false;
 	
@@ -1180,7 +1183,6 @@ public class GLParallelCoordinates
 
 			if (detailLevel == EDetailLevel.HIGH)
 			{
-				double temp = set.getMin();
 				float fValue = (float) set.getRawForNormalized(fArGateBottomHeight[iCount]
 						/ renderStyle.getAxisHeight());
 				if (fValue > set.getMin())
@@ -1352,8 +1354,7 @@ public class GLParallelCoordinates
 
 			if (Float.isNaN(fCurrentValue))
 				fCurrentValue = renderStyle.getNaNYOffset();
-			if (fCurrentValue <= fArGateTipHeight[iAxisNumber] / renderStyle.getAxisHeight()
-					&& fCurrentValue >= fArGateBottomHeight[iAxisNumber]
+			if (fCurrentValue <= (fArGateTipHeight[iAxisNumber] - 0.0000000001f)/ renderStyle.getAxisHeight() && fCurrentValue >= fArGateBottomHeight[iAxisNumber]
 							/ renderStyle.getAxisHeight())
 			{
 				alCurrentGateBlocks.add(iPolylineIndex);
@@ -2024,5 +2025,17 @@ public class GLParallelCoordinates
 		vecNewTwo.normalize();
 		float fTmp = vecNewOne.dot(vecNewTwo);
 		return (float) Math.acos(fTmp);
+	}
+
+	@Override
+	public void changeOrientation(boolean defaultOrientation)
+	{
+		renderStorageAsPolyline(defaultOrientation);		
+	}
+
+	@Override
+	public boolean isInDefaultOrientation()
+	{
+		return bRenderStorageHorizontally;
 	}
 }

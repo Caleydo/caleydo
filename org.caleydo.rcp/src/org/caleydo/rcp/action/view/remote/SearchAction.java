@@ -14,6 +14,10 @@ import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.events.ShellListener;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
@@ -30,11 +34,13 @@ import org.eclipse.ui.PlatformUI;
 public class SearchAction
 extends AToolBarAction
 {
-	public static final String TEXT = "Search for gene/pathway";
+	public static final String TEXT = "Search for pathway or gene";
 	public static final String ICON = "resources/icons/view/remote/search.png";
 
 	private SearchBox searchBox;
 	private Text geneSearchText;
+	private final SearchAction searchAction;
+	
 	
 	/**
 	 * Constructor.
@@ -48,6 +54,8 @@ extends AToolBarAction
 		setImageDescriptor(ImageDescriptor.createFromURL(this.getClass()
 				.getClassLoader().getResource(ICON)));
 		setChecked(false);
+		
+		this.searchAction = this;
 	}
 	
 	@Override
@@ -57,6 +65,22 @@ extends AToolBarAction
 			
 		Shell shell = new Shell(PlatformUI.getWorkbench().getDisplay(), SWT.SHELL_TRIM);
 		shell.setLayout(new GridLayout(2, false));
+		shell.setText(TEXT);
+		shell.setImage(new Image(shell.getDisplay(), 
+				"resources/icons/view/remote/search.png"));
+		shell.setActive();
+		
+		shell.addShellListener(new ShellAdapter() {
+			@Override
+			public void shellClosed(ShellEvent e)
+			{
+				super.shellClosed(e);
+				
+				searchAction.setEnabled(true);
+				searchAction.setChecked(false);
+			}
+		});
+		
 		Label searchInputLabel = new Label(shell, SWT.NULL);
 		searchInputLabel.setText("Pathway search:");
 		searchInputLabel.pack();

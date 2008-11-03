@@ -55,6 +55,7 @@ public abstract class AGLViewPart
 		cmdCanvas.doCommand();
 
 		glCanvas = cmdCanvas.getCreatedObject();
+		glCanvas.setParentComposite(swtComposite);
 	}
 
 	/**

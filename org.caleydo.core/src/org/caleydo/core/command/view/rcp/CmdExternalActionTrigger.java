@@ -56,6 +56,8 @@ public class CmdExternalActionTrigger
 				case STORAGEBASED_CLEAR_SELECTIONS:
 					((AStorageBasedView) viewObject).resetSelections();
 					return;
+				case STORAGEBASED_RESET_VIEW:
+					((AStorageBasedView) viewObject).resetView();
 			}
 
 			if (viewObject instanceof GLParallelCoordinates)

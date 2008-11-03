@@ -93,8 +93,8 @@ public class CmdCreateGLEventListener
 		StringTokenizer frustumToken = new StringTokenizer(sAttribute3,
 				IGeneralManager.sDelimiter_Parser_DataItems);
 
-		try
-		{
+//		try
+//		{
 			// Parse projection mode (PERSPECTIVE / ORTHOGRAPHIC)
 			String sProjectionMode = "";
 
@@ -124,13 +124,13 @@ public class CmdCreateGLEventListener
 			viewFrustum = new ViewFrustum(EProjectionMode.valueOf(sProjectionMode), fLeft,
 					fRight, fBottom, fTop, fNear, fFar);
 
-		}
-		catch (Exception e)
-		{
-
-			generalManager.getLogger().log(Level.SEVERE,
-					"Error in extraction view frustum from XML argument.", e);
-		}
+//		}
+//		catch (Exception e)
+//		{
+//
+//			generalManager.getLogger().log(Level.SEVERE,
+//					"Error in extraction view frustum from XML argument.", e);
+//		}
 	}
 
 	/**

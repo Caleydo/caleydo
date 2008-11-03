@@ -52,7 +52,7 @@ public class NumericalCContainer<T extends Number>
 	}
 
 	@Override
-	public FloatCContainer log10()
+	public FloatCContainer log(int iBase)
 	{
 		float[] fArTarget = new float[alContainer.size()];
 
@@ -60,7 +60,7 @@ public class NumericalCContainer<T extends Number>
 		for (int index = 0; index < alContainer.size(); index++)
 		{
 			fTmp = alContainer.get(index).floatValue();
-			fArTarget[index] = (float) Math.log10(fTmp);
+			fArTarget[index] = (float) Math.log(fTmp) / (float) Math.log(iBase);
 			if (fArTarget[index] == Float.NEGATIVE_INFINITY)
 				fArTarget[index] = Float.NaN;
 		}

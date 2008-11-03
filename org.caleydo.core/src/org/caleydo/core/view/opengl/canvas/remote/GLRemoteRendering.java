@@ -159,6 +159,7 @@ public class GLRemoteRendering
 			parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
 			// Register specialized bucket mouse wheel listener
 			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
+			parentGLCanvas.addMouseListener(bucketMouseWheelListener);
 
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX))
@@ -323,9 +324,9 @@ public class GLRemoteRendering
 			
 			renderPoolAndMemoLayerBackground(gl);
 
-			renderLayer(gl, poolLayer);
 			renderLayer(gl, transitionLayer);
 			renderLayer(gl, stackLayer);
+			renderLayer(gl, poolLayer);
 			renderLayer(gl, spawnLayer);
 
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
@@ -1028,9 +1029,9 @@ public class GLRemoteRendering
 			slerpMod.playSlerpSound();
 		}
 
-		generalManager.getLogger().log(Level.INFO, "Slerp action running from " 
-				+ slerpAction.getOriginHierarchyLevel() + ": " + slerpAction.getOriginPosIndex() 
-				+ " to " + slerpAction.getDestinationHierarchyLevel() + ": " + slerpAction.getDestinationPosIndex());
+//		generalManager.getLogger().log(Level.INFO, "Slerp action running from " 
+//				+ slerpAction.getOriginHierarchyLevel() + ": " + slerpAction.getOriginPosIndex() 
+//				+ " to " + slerpAction.getDestinationHierarchyLevel() + ": " + slerpAction.getDestinationPosIndex());
 		
 		Transform transform = slerpMod.interpolate(slerpAction.getOriginHierarchyLevel()
 				.getTransformByPositionIndex(slerpAction.getOriginPosIndex()), slerpAction
@@ -1099,8 +1100,12 @@ public class GLRemoteRendering
 
 		arSlerpActions.clear();
 
-		generalManager.getViewGLCanvasManager().getGLEventListener(iViewID).broadcastElements(
-				ESelectionType.ADD);
+		// Only broadcast elements if view is moved from pool to bucket
+		if (poolLayer.containsElement(iViewID))
+		{
+			generalManager.getViewGLCanvasManager().getGLEventListener(iViewID).broadcastElements(
+					ESelectionType.ADD);	
+		}
 
 		// Check if view is already loaded in the stack layer
 		if (stackLayer.containsElement(iViewID))
@@ -1667,6 +1672,9 @@ public class GLRemoteRendering
 	{
 		iAlUninitializedPathwayIDs.clear();
 		arSlerpActions.clear();
+		
+		generalManager.getPathwayManager().resetPathwayVisiblityState();
+		
 		// Remove all pathway views
 		int iGLEventListenerId = -1;
 
@@ -1976,7 +1984,8 @@ public class GLRemoteRendering
 				{
 					generalManager.getLogger().log(Level.SEVERE,
 							"No empty space left to add new pathway!");
-					iAlUninitializedPathwayIDs.remove(0);
+					iAlUninitializedPathwayIDs.clear();
+					
 					for (AGLEventListener eventListener : generalManager
 							.getViewGLCanvasManager().getAllGLEventListeners())
 					{
@@ -1987,6 +1996,11 @@ public class GLRemoteRendering
 				}
 
 				spawnLayer.addElement(iGeneratedViewID);
+			}
+			else
+			{
+				generalManager.getLogger().log(Level.WARNING,
+						"Pathway with ID: " + iTmpPathwayID + " is already loaded in Bucket.");
 			}
 
 			iAlUninitializedPathwayIDs.remove(0);
@@ -2007,9 +2021,6 @@ public class GLRemoteRendering
 					if (!eventListener.isRenderedRemote())
 						eventListener.enableBusyMode(true);
 			}
-
-			// generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
-			// .clear();
 
 			// Trigger mouse over update if an entity is currently selected
 			// TODO: investigate

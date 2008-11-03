@@ -88,6 +88,14 @@ public class LookupTableLoader
 								|| mappingType.equals(EMappingType.OLIGO_2_EXPRESSION_INDEX)
 								|| mappingType.equals(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX))
 						{	
+							// Remove multiple RefSeqs because all point to the same gene DAVID ID
+							if (sLine.contains(";"))
+								sLine = sLine.substring(0, sLine.indexOf(";"));
+							
+							// Remove version in RefSeq (NM_*.* -> NM_*)
+							if (sLine.contains("."))
+								sLine = sLine.substring(0, sLine.indexOf("."));							
+							
 							genomeIdManager.getMapping(mappingType).put(sLine, iLineInFile
 									- iStartParsingAtLine);
 						}
@@ -108,11 +116,27 @@ public class LookupTableLoader
 									|| mappingType.equals(EMappingType.OLIGO_2_EXPRESSION_INDEX)
 									|| mappingType.equals(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX))
 							{
-								// FIXME: Check for empty refseq mapping lines in data file using delimiter in tokenizer
-								// Workaround: Ignore integer values - that is the case if no refseq is available in this line
-								genomeIdManager.getMapping(mappingType).put(buffer, iLineInFile
-										- iStartParsingAtLine);
+								// Remove multiple RefSeqs because all point to the same gene DAVID ID
+								if (buffer.contains(";"))
+									buffer = sLine.substring(0, sLine.indexOf(";"));
 								
+								// Remove version in RefSeq (NM_*.* -> NM_*)
+								if (buffer.contains("."))
+									buffer = buffer.substring(0, buffer.indexOf("."));	
+								
+								// Check for integer values that must be ignored
+								// - in that case no RefSeq is available or the
+								// cell is empty
+								try
+								{
+									Float.valueOf(buffer);
+								}
+								catch (NumberFormatException e)
+								{
+									genomeIdManager.getMapping(mappingType).put(buffer,
+											iLineInFile - iStartParsingAtLine);
+								}
+
 								break;
 							}
 							else

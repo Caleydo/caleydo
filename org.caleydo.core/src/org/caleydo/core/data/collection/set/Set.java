@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import org.caleydo.core.data.AUniqueObject;
+import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.INumericalStorage;
@@ -33,8 +34,10 @@ public class Set
 
 	private String sLabel;
 
+	private boolean bArtificialMin = false;
 	private double dMin = Double.MAX_VALUE;
 
+	private boolean bArtificialMax = false;
 	private double dMax = Double.MIN_VALUE;
 
 	private int iDepth = 0;
@@ -43,10 +46,12 @@ public class Set
 
 	private boolean bIsNumerical;
 
-	HashMap<Integer, IVirtualArray> hashStorageVAs;
-	HashMap<Integer, IVirtualArray> hashSetVAs;
+	private HashMap<Integer, IVirtualArray> hashStorageVAs;
+	private HashMap<Integer, IVirtualArray> hashSetVAs;
 
-	HashMap<Integer, Boolean> hashIsVAEnabled;
+	private HashMap<Integer, Boolean> hashIsVAEnabled;
+
+	private EExternalDataRepresentation externalDataRep;
 
 	public Set()
 	{
@@ -145,7 +150,8 @@ public class Set
 		}
 		else
 		{
-			throw new IllegalArgumentException("No such virtual array " + iUniqueID + " registered for storages");
+			throw new IllegalArgumentException("No such virtual array " + iUniqueID
+					+ " registered for storages");
 		}
 	}
 
@@ -163,7 +169,8 @@ public class Set
 		else if (hashStorageVAs.containsKey(iUniqueID))
 			return hashStorageVAs.get(iUniqueID).size();
 		else
-			throw new IllegalArgumentException("No such virtual array has been registered:" + iUniqueID);
+			throw new IllegalArgumentException("No such virtual array has been registered:"
+					+ iUniqueID);
 
 	}
 
@@ -173,8 +180,7 @@ public class Set
 		return iDepth;
 	}
 
-	@Override
-	public void normalize()
+	private void normalize()
 	{
 
 		for (IStorage storage : alStorages)
@@ -183,8 +189,7 @@ public class Set
 		}
 	}
 
-	@Override
-	public void normalizeGlobally()
+	private void normalizeGlobally()
 	{
 
 		for (IStorage storage : alStorages)
@@ -234,28 +239,42 @@ public class Set
 	@Override
 	public double getMax()
 	{
-
 		if (dMax == Double.MIN_VALUE)
 			calculateGlobalExtrema();
 		return dMax;
 	}
 
 	@Override
+	public void setMin(double dMin)
+	{
+		bArtificialMin = true;
+		this.dMin = dMin;
+	}
+
+	@Override
+	public void setMax(double dMax)
+	{
+		bArtificialMax = true;
+		this.dMax = dMax;
+	}
+
+	@Override
 	public double getRawForNormalized(double dNormalized)
 	{
-		if(dNormalized == 0)
+		if (dNormalized == 0)
 			return getMin();
-	//	if(getMin() > 0)
-			return getMin() + dNormalized * (getMax() - getMin());
-	//	return (dNormalized) * (getMax() + getMin());
+		// if(getMin() > 0)
+		return getMin() + dNormalized * (getMax() - getMin());
+		// return (dNormalized) * (getMax() + getMin());
 	}
-	
+
 	public double getNormalizedForRaw(double dRaw)
 	{
-		if(dRaw < getMin() || dRaw > getMax())
-			throw new IllegalArgumentException("Value may not be smaller than min or larger than max");
-		
-		return (dRaw - getMin()) / (getMax() - getMin()) ;
+		if (dRaw < getMin() || dRaw > getMax())
+			throw new IllegalArgumentException(
+					"Value may not be smaller than min or larger than max");
+
+		return (dRaw - getMin()) / (getMax() - getMin());
 	}
 
 	@Override
@@ -268,6 +287,26 @@ public class Set
 			{
 				INumericalStorage nStorage = (INumericalStorage) storage;
 				nStorage.log10();
+			}
+			else
+			{
+				throw new UnsupportedOperationException(
+						"Tried to calcualte log values on a set wich has"
+								+ "contains nominal storages. This is not possible!");
+			}
+		}
+	}
+	
+	@Override
+	public void log2()
+	{
+
+		for (IStorage storage : alStorages)
+		{
+			if (storage instanceof INumericalStorage)
+			{
+				INumericalStorage nStorage = (INumericalStorage) storage;
+				nStorage.log2();
 			}
 			else
 			{
@@ -382,7 +421,8 @@ public class Set
 		else if (hashStorageVAs.containsKey(iUniqueID))
 			return hashStorageVAs.get(iUniqueID);
 		else
-			throw new IllegalArgumentException("No Virtual Array for the unique id: " + iUniqueID);
+			throw new IllegalArgumentException("No Virtual Array for the unique id: "
+					+ iUniqueID);
 	}
 
 	private void calculateGlobalExtrema()
@@ -394,10 +434,10 @@ public class Set
 			{
 				INumericalStorage nStorage = (INumericalStorage) storage;
 				dTemp = nStorage.getMin();
-				if (dTemp < dMin)
+				if (!bArtificialMin && dTemp < dMin)
 					dMin = dTemp;
 				dTemp = nStorage.getMax();
-				if (dTemp > dMax)
+				if (!bArtificialMax && dTemp > dMax)
 					dMax = dTemp;
 			}
 		}
@@ -420,4 +460,38 @@ public class Set
 		}
 		return iUniqueID;
 	}
+
+	@Override
+	public void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep)
+	{
+		if (externalDataRep == this.externalDataRep)
+			return;
+
+		this.externalDataRep = externalDataRep;
+
+		for(IStorage storage : alStorages)
+		{
+			if(storage instanceof INumericalStorage)
+			{
+				((INumericalStorage)storage).setExternalDataRepresentation(externalDataRep);
+			}
+		}
+		
+		switch (externalDataRep)
+		{
+			case NORMAL:
+				normalizeGlobally();
+				break;
+			case LOG10:
+				log10();
+				normalizeGlobally();
+				break;
+			case LOG2:
+				log2();
+				normalizeGlobally();
+				break;
+		}
+
+	}
+
 }

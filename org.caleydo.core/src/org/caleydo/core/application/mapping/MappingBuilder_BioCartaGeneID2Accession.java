@@ -111,7 +111,7 @@ public class MappingBuilder_BioCartaGeneID2Accession
 			mappingBuilder.loadAllFilesInFolder(BIOCARTA_INPUT_FOLDER_PATH);
 
 		}
-		catch (Exception e)
+		catch (IOException e)
 		{
 			e.printStackTrace();
 		}

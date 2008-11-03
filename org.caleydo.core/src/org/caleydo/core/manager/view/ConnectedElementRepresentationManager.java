@@ -2,6 +2,7 @@ package org.caleydo.core.manager.view;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Set;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -185,4 +186,25 @@ public class ConnectedElementRepresentationManager
 		
 //		hashIDTypes.clear();
 	}
+
+	
+	public void clearByView(EIDType idType, int iViewID)
+	{
+		HashMap<Integer, ArrayList<SelectedElementRep>> hashReps = hashIDTypes.get(idType);
+		if(hashReps == null)
+			return;
+		for(int iElementID : hashReps.keySet())
+		{
+			ArrayList<SelectedElementRep> alRep = hashReps.get(iElementID);
+			
+			Iterator<SelectedElementRep> iterator = alRep.iterator();
+			while(iterator.hasNext())
+			{
+				if(iterator.next().getContainingViewID() == iViewID)
+					iterator.remove();
+			}
+		}
+	}
+
+
 }

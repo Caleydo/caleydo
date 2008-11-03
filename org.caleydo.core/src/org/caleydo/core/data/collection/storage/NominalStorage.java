@@ -2,7 +2,9 @@ package org.caleydo.core.data.collection.storage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.INominalStorage;
+import org.caleydo.core.data.collection.ccontainer.INumericalCContainer;
 import org.caleydo.core.data.collection.ccontainer.NominalCContainer;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -90,6 +92,26 @@ public class NominalStorage<T>
 	{
 		return ((NominalCContainer<T>) hashCContainers.get(EDataRepresentation.RAW))
 				.getHistogram();
+	}
+
+	@Override
+	public void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep)
+	{
+		
+		if (externalDataRep != EExternalDataRepresentation.NORMAL)
+			throw new IllegalArgumentException(
+					"Nominal storages support only raw representations");
+
+		dataRep = EDataRepresentation.RAW;
+
+	}
+
+	@Override
+	public void normalize()
+	{
+
+		hashCContainers.put(EDataRepresentation.NORMALIZED, hashCContainers.get(
+				EDataRepresentation.RAW).normalize());
 	}
 
 }

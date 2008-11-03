@@ -150,7 +150,7 @@ public class IntCContainer
 	}
 
 	@Override
-	public FloatCContainer log10()
+	public FloatCContainer log(int iBase)
 	{
 
 		float[] fArTarget = new float[iArContainer.length];
@@ -159,7 +159,7 @@ public class IntCContainer
 		for (int index = 0; index < iArContainer.length; index++)
 		{
 			fTmp = iArContainer[index];
-			fArTarget[index] = (float) Math.log10(fTmp);
+			fArTarget[index] = (float) Math.log(fTmp) / (float) Math.log(iBase);
 		}
 
 		return new FloatCContainer(fArTarget);

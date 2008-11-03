@@ -70,6 +70,8 @@ public class CmdExternalFlagSetter
 				case STORAGEBASED_RENDER_CONTEXT:
 					((AStorageBasedView) viewObject).renderContext(bFlag);
 					break;
+				case STORAGEBASED_CHANGE_ORIENTATION:
+					((AStorageBasedView) viewObject).changeOrientation(bFlag);
 			}
 		}
 		
@@ -81,23 +83,23 @@ public class CmdExternalFlagSetter
 				case PARCOORDS_OCCLUSION_PREVENTION:
 					parCoords.preventOcclusion(bFlag);
 					return;
-				case STORAGEBASED_CHANGE_ORIENTATION:
-					parCoords.renderStorageAsPolyline(bFlag);
-					return;
+//				case STORAGEBASED_CHANGE_ORIENTATION:
+//					parCoords.renderStorageAsPolyline(bFlag);
+//					return;
 			}
 			return;
 		}
 		
-		if (viewObject instanceof GLHeatMap)
-		{
-			GLHeatMap heatMap = (GLHeatMap) viewObject;
-			switch (externalFlagSetterType)
-			{
-				case STORAGEBASED_CHANGE_ORIENTATION:
-					heatMap.renderHorizontally(bFlag);
-					return;
-			}
-		}
+//		if (viewObject instanceof GLHeatMap)
+//		{
+//			GLHeatMap heatMap = (GLHeatMap) viewObject;
+//			switch (externalFlagSetterType)
+//			{
+//				case STORAGEBASED_CHANGE_ORIENTATION:
+//					heatMap.renderHorizontally(bFlag);
+//					return;
+//			}
+//		}
 		
 		if(viewObject instanceof GLGlyph)
 		{

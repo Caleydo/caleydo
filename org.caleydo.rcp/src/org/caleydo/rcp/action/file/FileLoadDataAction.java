@@ -10,12 +10,12 @@ import java.util.StringTokenizer;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateSet;
 import org.caleydo.core.command.data.CmdDataCreateStorage;
-import org.caleydo.core.command.data.filter.CmdDataFilterMath;
-import org.caleydo.core.command.data.filter.CmdDataFilterMath.EDataFilterMathType;
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
+import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.INumericalStorage;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -97,7 +97,8 @@ public class FileLoadDataAction
 	private int iCreatedSetID = -1;
 	private int iStartParseFileAtLine = 2;
 
-	private boolean bLogFilter = false;
+	private String sDataRepMode = "Normal";
+	//private boolean bLogFilter = false;
 
 	/**
 	 * Constructor.
@@ -121,7 +122,7 @@ public class FileLoadDataAction
 	 */
 	public FileLoadDataAction(final IWorkbenchWindow window)
 	{
-//		this((Composite) null);
+		// this((Composite) null);
 
 		parentComposite = null;
 		this.window = window;
@@ -228,6 +229,11 @@ public class FileLoadDataAction
 				
 				createDataPreviewTable("\t");
 
+				if (sFileName.isEmpty())
+					return;
+
+				createDataPreviewTable("\t");
+
 				composite.pack();
 			}
 		});
@@ -246,6 +252,11 @@ public class FileLoadDataAction
 				buttonDelimiter[4].setSelection(false);
 				buttonDelimiter[5].setSelection(false);
 				
+				if (sFileName.isEmpty())
+					return;
+
+				createDataPreviewTable(";");
+
 				if (sFileName.isEmpty())
 					return;
 
@@ -274,6 +285,11 @@ public class FileLoadDataAction
 				
 				createDataPreviewTable(",");
 
+				if (sFileName.isEmpty())
+					return;
+
+				createDataPreviewTable(",");
+
 				composite.pack();
 			}
 		});
@@ -295,6 +311,11 @@ public class FileLoadDataAction
 				if (sFileName.isEmpty())
 					return;
 				
+				createDataPreviewTable(".");
+
+				if (sFileName.isEmpty())
+					return;
+
 				createDataPreviewTable(".");
 
 				composite.pack();
@@ -320,6 +341,11 @@ public class FileLoadDataAction
 				
 				createDataPreviewTable(" ");
 
+				if (sFileName.isEmpty())
+					return;
+
+				createDataPreviewTable(" ");
+
 				composite.pack();
 			}
 		});
@@ -341,6 +367,11 @@ public class FileLoadDataAction
 				if (sFileName.isEmpty())
 					return;
 				
+				createDataPreviewTable(" ");
+
+				if (sFileName.isEmpty())
+					return;
+
 				createDataPreviewTable(" ");
 
 				composite.pack();
@@ -391,19 +422,34 @@ public class FileLoadDataAction
 		mathFiltergGroup.setLayout(new FillLayout());
 		// delimiterGroup.setText("Math filter");
 
-		final Button buttonLog = new Button(mathFiltergGroup, SWT.CHECK);
-		buttonLog.setText("Log (base 10)");
-		buttonLog.setEnabled(true);
-		buttonLog.setSelection(false);
-		buttonLog.addSelectionListener(new SelectionAdapter()
+		final Combo dataRepCombo = new Combo(mathFiltergGroup, SWT.DROP_DOWN);
+		String[] sArOptions = {"Normal", "Log10", "Log2"};
+		dataRepCombo.setItems(sArOptions);
+		dataRepCombo.setEnabled(true);
+		dataRepCombo.select(0);
+		dataRepCombo.addSelectionListener(new SelectionAdapter()
 		{
-
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
-				bLogFilter = true;
+				sDataRepMode = dataRepCombo.getText();
+			
 			}
 		});
+		
+//		final Button buttonLog = new Button(mathFiltergGroup, SWT.CHECK);
+//		buttonLog.setText("Log (base 10)");
+//		buttonLog.setEnabled(true);
+//		buttonLog.setSelection(false);
+//		buttonLog.addSelectionListener(new SelectionAdapter()
+//		{
+//
+//			@Override
+//			public void widgetSelected(SelectionEvent e)
+//			{
+//				bLogFilter = true;
+//			}
+//		});
 
 		final Button buttonMin = new Button(mathFiltergGroup, SWT.CHECK);
 		buttonMin.setText("Min");
@@ -709,12 +755,14 @@ public class FileLoadDataAction
 			comboTmpDataClass.setSize(previewTable.getColumn(iColIndex).getWidth(), 35);
 			comboTmpDataClass.setItems(new String[] { "SKIP", "RefSeq ID", "Experiment",
 					"Patient" });
-			
+
 			if (iColIndex == 1)
 				comboTmpDataClass.select(1);
 			else
-				comboTmpDataClass.select(2); // by default set columns to experiment
-			
+				comboTmpDataClass.select(2); // by default set columns to
+												// experiment
+
+
 			// should be ignored
 			arComboDataClass.add(comboTmpDataClass);
 
@@ -722,15 +770,15 @@ public class FileLoadDataAction
 			editor.grabHorizontal = true;
 			editor.setEditor(comboTmpDataClass, tmpItem, iColIndex);
 
+
 			// Set corresponding column background color to yellow
 			for (TableItem tmpTableItem : previewTable.getItems())
 			{
-				tmpTableItem.setBackground(
-						arComboDataClass.indexOf(comboTmpDataClass) + 1,
-						Display.getCurrent().getSystemColor(
-								SWT.COLOR_RED));
+				tmpTableItem.setBackground(arComboDataClass.indexOf(comboTmpDataClass) + 1,
+						Display.getCurrent().getSystemColor(SWT.COLOR_RED));
 			}
-			
+
+
 			comboTmpDataClass.addMouseTrackListener(new MouseTrackAdapter()
 			{
 				public Color originalColor = txtFileName.getBackground();
@@ -824,12 +872,13 @@ public class FileLoadDataAction
 			comboTmpDataType.setSize(previewTable.getColumn(iColIndex).getWidth(), 35);
 			comboTmpDataType.setEnabled(false);
 			comboTmpDataType.setItems(new String[] { "SKIP", "INT", "FLOAT", "STRING" });
-			
+
 			if (iColIndex == 1)
 				comboTmpDataType.select(0);
 			else
-				comboTmpDataType.select(2); // by default set columns to experiment
-			
+				comboTmpDataType.select(2); // by default set columns to
+											// experiment
+
 			// should be ignored
 			arComboDataType.add(comboTmpDataType);
 
@@ -887,15 +936,6 @@ public class FileLoadDataAction
 
 		// Build input pattern from data type combos
 		sInputPattern = "";
-
-		float fMin = Float.NaN;
-		float fMax = Float.NaN;
-
-		if (!txtMax.getText().isEmpty() && !txtMin.getText().isEmpty())
-		{
-			fMin = Float.parseFloat(txtMin.getText());
-			fMax = Float.parseFloat(txtMax.getText());
-		}
 
 		Combo tmpComboDataType;
 		for (int iColIndex = 0; iColIndex < arComboDataType.size(); iColIndex++)
@@ -960,9 +1000,9 @@ public class FileLoadDataAction
 		// GeneralManager.get().getSWTGUIManager();
 		// iSWTGUIManager.setProgressBarVisible(true);
 
-		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sInputPattern, sDelimiter,
-				iStartParseFileAtLine-1, -1);
 
+		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sInputPattern, sDelimiter,
+				iStartParseFileAtLine - 1, -1);
 		cmdLoadCsv.doCommand();
 
 		// Create SET
@@ -970,7 +1010,8 @@ public class FileLoadDataAction
 				.getCommandManager().createCommandByType(ECommandType.CREATE_SET_DATA);
 		cmdCreateSet.setAttributes(null, iAlStorageId, ESetType.GENE_EXPRESSION_DATA);
 		cmdCreateSet.doCommand();
-		iCreatedSetID = cmdCreateSet.getCreatedObject().getID();
+		ISet set = cmdCreateSet.getCreatedObject();
+		iCreatedSetID = set.getID();
 
 		// iSWTGUIManager.setProgressBarVisible(false);
 
@@ -983,29 +1024,66 @@ public class FileLoadDataAction
 				"DAVID_2_EXPRESSION_INDEX");
 		cmdLoadLookupTableFile.doCommand();
 
-		if (bLogFilter)
+		if (!txtMin.getText().isEmpty())
 		{
-			ArrayList<Integer> iArSetIDs = new ArrayList<Integer>();
-			CmdDataFilterMath cmdDataFilterLog = (CmdDataFilterMath) GeneralManager.get()
-					.getCommandManager().createCommandByType(ECommandType.DATA_FILTER_MATH);
-			cmdDataFilterLog.setAttributes(EDataFilterMathType.LIN_2_LOG, iArSetIDs,
-					EManagedObjectType.SET);
-			cmdDataFilterLog.doCommand();
+			float fMin = Float.parseFloat(txtMin.getText());
+			if (!Float.isNaN(fMin))
+			{
+				set.setMin(fMin);
+			}
+
 		}
 
-		if (!Float.isNaN(fMin) && !Float.isNaN(fMax))
+		if (!txtMax.getText().isEmpty())
 		{
-			for (int iStorageID : iAlStorageId)
+			float fMax = Float.parseFloat(txtMax.getText());
+			if (!Float.isNaN(fMax))
 			{
-				INumericalStorage storage = (INumericalStorage) GeneralManager.get()
-						.getStorageManager().getItem(iStorageID);
-				storage.normalizeWithExternalExtrema(fMin, fMax);
+				set.setMax(fMax);
 			}
+		}
+
+	
+		if (sDataRepMode.equals("Normal"))
+		{
+			set.setExternalDataRepresentation(EExternalDataRepresentation.NORMAL);
+			// ArrayList<Integer> iArSetIDs = new ArrayList<Integer>();
+			// iArSetIDs.add(iCreatedSetID);
+			
+			// CmdDataFilterMath cmdDataFilterLog = (CmdDataFilterMath)
+			// GeneralManager.get()
+			// .getCommandManager().createCommandByType(ECommandType.DATA_FILTER_MATH);
+			// cmdDataFilterLog.setAttributes(EDataFilterMathType.LIN_2_LOG,
+			// iArSetIDs,
+			// EManagedObjectType.SET);
+			// cmdDataFilterLog.doCommand();
+		}
+		else if(sDataRepMode.equals("Log10"))
+		{
+			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG10);	
+		}
+		else if(sDataRepMode.equals("Log2"))
+		{
+			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG2);	
 		}
 		else
 		{
-			cmdCreateSet.getCreatedObject().normalizeGlobally();
+			throw new IllegalStateException("Unknown data representation type");
 		}
+
+		// if (!Float.isNaN(fMin) && !Float.isNaN(fMax))
+		// {
+		// for (int iStorageID : iAlStorageId)
+		// {
+		// INumericalStorage storage = (INumericalStorage) GeneralManager.get()
+		// .getStorageManager().getItem(iStorageID);
+		// storage.normalizeWithExternalExtrema(fMin, fMax);
+		// }
+		// }
+		// else
+		// {
+		// cmdCreateSet.getCreatedObject().normalizeGlobally();
+		// }
 	}
 
 	private void setDataInViews()

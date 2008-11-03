@@ -34,6 +34,8 @@ public interface IPathwayManager
 			final boolean bVisibilityState);
 
 	public boolean isPathwayVisible(final int iPathwayID);
+	
+	public void resetPathwayVisiblityState();
 
 	public void notifyPathwayLoadingFinished(boolean bIsPathwayLoadingFinisched);
 

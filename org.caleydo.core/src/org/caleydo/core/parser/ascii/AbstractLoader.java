@@ -197,10 +197,6 @@ public abstract class AbstractLoader
 		{
 			throw new RuntimeException();
 		}
-		catch (Exception ex)
-		{
-			throw new RuntimeException();
-		}
 
 		iLinesInFileToBeRead = iCountLinesToBeRead;
 

@@ -102,7 +102,7 @@ public interface ISet
 	 * storage. Operates with the raw data as basis by default, however when a
 	 * logarithmized representation is in the storage this is used.
 	 */
-	public void normalize();
+	//public void normalize();
 
 	/**
 	 * Normalize all storages in the set, based on values of all storages. For a
@@ -112,7 +112,7 @@ public interface ISet
 	 * representation is in the storage this is used. Make sure that all
 	 * storages are logarithmized.
 	 */
-	public void normalizeGlobally();
+	//public void normalizeGlobally();
 
 	/**
 	 * Get the minimum value in the set.
@@ -131,13 +131,27 @@ public interface ISet
 	public double getMax();
 
 	/**
+	 * Set an artificial minimum for the dataset. All elements smaller than that
+	 * are clipped to this value in the representation. This only affects the
+	 * normalization, does not alter the raw data
+	 */
+	public void setMin(double dMin);
+
+	/**
+	 * Set an artificial maximum for the dataset. All elements smaller than that
+	 * are clipped to this value in the representation. This only affects the
+	 * normalization, does not alter the raw data
+	 */
+	public void setMax(double dMax);
+
+	/**
 	 * Calculates a raw value based on min and max from a normalized value.
 	 * 
 	 * @param dNormalized a value between 0 and 1
 	 * @return a value between min and max
 	 */
 	public double getRawForNormalized(double dNormalized);
-	
+
 	/**
 	 * Calculates a normalized value based on min and max.
 	 * 
@@ -147,14 +161,30 @@ public interface ISet
 	public double getNormalizedForRaw(double dRaw);
 
 	/**
+	 * Switch the representation of the data. When this is called the data in
+	 * normalized is replaced with data calculated from the mode specified.
+	 * 
+	 * @param dataRep
+	 */
+	public void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep);
+
+	/**
 	 * Calculates log10 on all storages in the set. Take care that the set
 	 * contains only numerical storages, since nominal storages will cause a
 	 * runtime exception. If you have mixed data you have to call log10 on all
-	 * the storages that support it manually Call normalize() after this to have
-	 * it represented correctly in the visualizations.
+	 * the storages that support it manually. 
 	 */
 	public void log10();
 
+	
+	/**
+	 * Calculates log2 on all storages in the set. Take care that the set
+	 * contains only numerical storages, since nominal storages will cause a
+	 * runtime exception. If you have mixed data you have to call log2 on all
+	 * the storages that support it manually. 
+	 */
+	public void log2();
+	
 	/**
 	 * Creates a default virtual array for the storages in the set
 	 * 

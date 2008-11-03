@@ -19,7 +19,8 @@ public enum ECommandType
 
 	FETCH_PATHWAY_DATA("cmd", "type", "", "No description available!"),
 
-	DATA_FILTER_MATH("cmd", "type", "-1", "Filter data by using math operations"),
+	//DATA_FILTER_MATH("cmd", "type", "-1", "Filter data by using math operations"),
+	SET_DATA_REPRESENTATION("cmd", "type", "-1", "Set data representation (Raw, Log2, Log10)"),
 	DATA_FILTER_MIN_MAX("cmd", "type", "-1", "Evaluate min and max of an entity"),
 
 	CREATE_EVENT_MEDIATOR("cmd", "type", null, "Create Event Mediator"),

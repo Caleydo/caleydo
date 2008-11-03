@@ -61,7 +61,6 @@ public class GLPathwayContentCreator
 
 	private HashMap<Integer, Integer> hashPathwayId2VerticesDisplayListId;
 	private HashMap<Integer, Integer> hashPathwayId2EdgesDisplayListId;
-	private HashMap<Integer, Integer> hashSelectedVertexRepId2Depth;
 	private HashMap<Integer, ArrayList<float[]>> hashElementId2MappingColorArray;
 
 	private PathwayColorMapper genomeMapper;
@@ -84,7 +83,6 @@ public class GLPathwayContentCreator
 		hashPathwayId2EdgesDisplayListId = new HashMap<Integer, Integer>();
 		hashElementId2MappingColorArray = new HashMap<Integer, ArrayList<float[]>>();
 
-		hashSelectedVertexRepId2Depth = new HashMap<Integer, Integer>();
 		iArSelectedEdgeRepId = new ArrayList<Integer>();
 	}
 
@@ -168,39 +166,37 @@ public class GLPathwayContentCreator
 
 	public void performIdenticalNodeHighlighting()
 	{
-		hashSelectedVertexRepId2Depth.clear();
+		if (internalSelectionManager == null)
+			return;
+		
 		iArSelectedEdgeRepId.clear();
 
 		ArrayList<Integer> iAlTmpSelectedGraphItemIds = new ArrayList<Integer>();
-		iAlTmpSelectedGraphItemIds.addAll(internalSelectionManager
-				.getElements(ESelectionType.MOUSE_OVER));
-
-		// ArrayList<Integer> iAlTmpSelectedGraphItemDepth =
-		// alSetSelection.get(1).getGroupArray();
-
+		Set<Integer> tmpItemIDs;
+		tmpItemIDs = internalSelectionManager.getElements(ESelectionType.MOUSE_OVER);
+		
+		if (tmpItemIDs != null)
+			iAlTmpSelectedGraphItemIds.addAll(tmpItemIDs);
+		
+		tmpItemIDs = internalSelectionManager.getElements(ESelectionType.SELECTION);
+		
+		if (tmpItemIDs != null)
+			iAlTmpSelectedGraphItemIds.addAll(tmpItemIDs);
+		
 		if (iAlTmpSelectedGraphItemIds.size() == 0)
+		{
 			return;
+		}
 
 		// Copy selection IDs to array list object
 		for (int iItemIndex = 0; iItemIndex < iAlTmpSelectedGraphItemIds.size(); iItemIndex++)
 		{
-			// // Check if ID is valid
-			// if (iAlTmpSelectedGraphItemIds.get(iItemIndex) == 0)
-			// continue;
-
-			hashSelectedVertexRepId2Depth.put(iAlTmpSelectedGraphItemIds.get(iItemIndex), 0);// iAlTmpSelectedGraphItemDepth
-			// .
-			// get
-			// (
-			// iItemIndex));
-
 			if (!bEnableIdenticalNodeHighlighting)
 				continue;
 
 			// // Perform identical node highlighting only on nodes with depth 0
 			// if (iAlTmpSelectedGraphItemDepth.get(iItemIndex) != 0)
 			// continue;
-
 			for (IGraphItem graphItem : ((IGraphItem) generalManager.getPathwayItemManager().getItem(
 					iAlTmpSelectedGraphItemIds.get(iItemIndex))).getAllItemsByProp(
 							EGraphItemProperty.ALIAS_PARENT))
@@ -208,7 +204,8 @@ public class GLPathwayContentCreator
 				for (IGraphItem graphItemRep : graphItem.getAllItemsByProp(
 						EGraphItemProperty.ALIAS_CHILD))
 				{
-					hashSelectedVertexRepId2Depth.put(graphItemRep.getId(), 0);
+					internalSelectionManager.addToType(ESelectionType.MOUSE_OVER, 
+							graphItemRep.getId());
 					
 					if (bEnableNeighborhood)
 					{
@@ -216,30 +213,6 @@ public class GLPathwayContentCreator
 					}
 				}
 			}
-		}
-
-		// Store currently selected vertices back to selection set
-		Set<Entry<Integer, Integer>> setAllSelectedVertices = hashSelectedVertexRepId2Depth
-				.entrySet();
-
-		// int[] iArTmpGraphItemId = new int[setAllSelectedVertices.size()];
-		// int[] iArTmpGraphItemDepth = new int[setAllSelectedVertices.size()];
-
-		ArrayList<Integer> iAlTmpGraphItemId = new ArrayList<Integer>();
-		ArrayList<Integer> iAlTmpGraphItemDepth = new ArrayList<Integer>();
-
-		Iterator<Entry<Integer, Integer>> iterAllSelectedVertices = setAllSelectedVertices
-				.iterator();
-
-		int iItemIndex = 0;
-		Entry<Integer, Integer> tmpEntry;
-		while (iterAllSelectedVertices.hasNext())
-		{
-			tmpEntry = iterAllSelectedVertices.next();
-
-			iAlTmpGraphItemId.add(tmpEntry.getKey());
-			iAlTmpGraphItemDepth.add(tmpEntry.getValue());
-			iItemIndex++;
 		}
 	}
 
@@ -263,7 +236,10 @@ public class GLPathwayContentCreator
 		List<List<IGraphItem>> lDepthSearchResult = graphVisitorSearchBFS
 				.getSearchResultDepthOrdered();
 		List<IGraphItem> lGraphItems = new ArrayList<IGraphItem>();
-
+		
+		int iTmpDepth = 0;
+		ESelectionType tmpType;
+		
 		for (int iDepthIndex = 0; iDepthIndex < lDepthSearchResult.size(); iDepthIndex++)
 		{
 			lGraphItems = lDepthSearchResult.get(iDepthIndex);
@@ -273,12 +249,23 @@ public class GLPathwayContentCreator
 				// Check if selected item is a vertex
 				if (lGraphItems.get(iItemIndex) instanceof PathwayVertexGraphItemRep)
 				{
-					hashSelectedVertexRepId2Depth.put(lGraphItems.get(iItemIndex).getId(),
-							(iDepthIndex + 1) / 2); // consider
-					// only
-					// vertices
-					// for
-					// depth
+					iTmpDepth = (iDepthIndex + 1) / 2;
+					
+					if (iTmpDepth == 1)
+						tmpType = ESelectionType.NEIGHBORHOOD_1;
+					else if (iTmpDepth == 2)
+						tmpType = ESelectionType.NEIGHBORHOOD_2;
+					else if (iTmpDepth == 3)
+						tmpType = ESelectionType.NEIGHBORHOOD_3;
+					else
+					{
+						throw new IllegalStateException(
+							"Neighborhood depth greater than 3 is not supported!");
+					}
+						
+					internalSelectionManager.addToType(tmpType,
+							lGraphItems.get(iItemIndex).getId());
+
 				}
 				else
 				{
@@ -519,7 +506,8 @@ public class GLPathwayContentCreator
 			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 
 			// Handle selection highlighting of element
-			if (hashSelectedVertexRepId2Depth.containsKey(vertexRep.getId()))
+			if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER,
+					vertexRep.getId()))
 			{
 				tmpNodeColor = renderStyle.getHighlightedNodeColor();
 
@@ -549,7 +537,8 @@ public class GLPathwayContentCreator
 			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 
 			// Handle selection highlighting of element
-			if (hashSelectedVertexRepId2Depth.containsKey(vertexRep.getId()))
+			if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER,
+					vertexRep.getId()))
 			{
 				tmpNodeColor = renderStyle.getHighlightedNodeColor();
 
@@ -584,7 +573,8 @@ public class GLPathwayContentCreator
 			gl.glEnd();
 
 			// Handle selection highlighting of element
-			if (hashSelectedVertexRepId2Depth.containsKey(vertexRep.getId()))
+			if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER,
+					vertexRep.getId()))
 			{
 				tmpNodeColor = renderStyle.getHighlightedNodeColor();
 				gl.glColor4f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z(), 1);
@@ -624,26 +614,34 @@ public class GLPathwayContentCreator
 
 			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 
+			int iVertexRepID = vertexRep.getId();
+			
 			// Handle selection highlighting of element
-			if (hashSelectedVertexRepId2Depth.containsKey(vertexRep.getId()))
+			if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iVertexRepID)
+					|| internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_1, iVertexRepID)
+					|| internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_2, iVertexRepID)
+					|| internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_3, iVertexRepID))
 			{
-				int iDepth = hashSelectedVertexRepId2Depth.get(vertexRep.getId());
+//				int iDepth = hashSelectedVertexRepId2Depth.get(vertexRep.getId());
 				tmpNodeColor = renderStyle.getHighlightedNodeColor();
 
-				if (iDepth != 0)
-				{
+//				if (iDepth != 0)
+//				{
 					gl.glEnable(GL.GL_LINE_STIPPLE);
-				}
+//				}
 
-				if (iDepth == 1)
+				if (internalSelectionManager.checkStatus(
+						ESelectionType.NEIGHBORHOOD_1, iVertexRepID))
 				{
 					gl.glLineStipple(4, (short) 0xAAAA);
 				}
-				else if (iDepth == 2)
+				else if (internalSelectionManager.checkStatus(
+						ESelectionType.NEIGHBORHOOD_2, iVertexRepID))
 				{
 					gl.glLineStipple(2, (short) 0xAAAA);
 				}
-				else if (iDepth == 3)
+				else if (internalSelectionManager.checkStatus(
+						ESelectionType.NEIGHBORHOOD_3, iVertexRepID))
 				{
 					gl.glLineStipple(1, (short) 0xAAAA);
 				}

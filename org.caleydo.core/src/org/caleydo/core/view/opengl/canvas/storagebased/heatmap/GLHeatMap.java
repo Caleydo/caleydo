@@ -918,4 +918,16 @@ public class GLHeatMap
 		storageSelectionManager.clearSelections();
 		setDisplayListDirty();
 	}
+
+	@Override
+	public void changeOrientation(boolean defaultOrientation)
+	{
+		renderHorizontally(defaultOrientation);	
+	}
+
+	@Override
+	public boolean isInDefaultOrientation()
+	{
+		return bRenderStorageHorizontally;
+	}
 }

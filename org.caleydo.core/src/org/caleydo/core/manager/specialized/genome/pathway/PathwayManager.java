@@ -161,6 +161,17 @@ public class PathwayManager
 	}
 
 	@Override
+	public void resetPathwayVisiblityState()
+	{		
+		waitUntilPathwayLoadingIsFinished();
+		
+		for (int iPathwayID : hashPathwayIdToVisibilityState.keySet())
+		{
+			hashPathwayIdToVisibilityState.put(iPathwayID, false);			
+		}	
+	}
+	
+	@Override
 	public boolean isPathwayVisible(final int iPathwayID)
 	{
 		waitUntilPathwayLoadingIsFinished();

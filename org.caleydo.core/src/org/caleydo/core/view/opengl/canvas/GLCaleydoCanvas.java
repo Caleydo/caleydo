@@ -11,6 +11,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.FPSCounter;
+import org.eclipse.swt.widgets.Composite;
 
 /**
  * Class implements a GL canvas. The canvas is registered in the
@@ -30,7 +31,12 @@ public class GLCaleydoCanvas
 	private FPSCounter fpsCounter;
 
 	private PickingJoglMouseListener joglMouseListener;
+	
+	private Composite parentComposite;
 
+	/**
+	 * Constructor.
+	 */
 	public GLCaleydoCanvas(final GLCapabilities glCapabilities)
 	{
 		super(glCapabilities);
@@ -133,5 +139,15 @@ public class GLCaleydoCanvas
 			boolean bEnableZoom)
 	{
 		joglMouseListener.setNavigationModes(bEnablePan, bEnableRotate, bEnableZoom);
+	}
+	
+	public void setParentComposite(Composite composite)
+	{
+		parentComposite = composite;
+	}
+	
+	public Composite getParentComposite()
+	{
+		return parentComposite;
 	}
 }

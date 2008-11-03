@@ -103,6 +103,10 @@ public class PathwayItemManager
 
 			pathwayVertex.addItem(pathwayVertexRep, EGraphItemProperty.ALIAS_CHILD);
 		}
+		
+		hashIDToPathwayVertexGraphItemRep.put(pathwayVertexRep.getId(), 
+				(PathwayVertexGraphItemRep)pathwayVertexRep);
+		
 		return pathwayVertexRep;
 	}
 
@@ -123,6 +127,9 @@ public class PathwayItemManager
 
 		parentVertex.addItem(pathwayVertexRep, EGraphItemProperty.ALIAS_CHILD);
 
+		hashIDToPathwayVertexGraphItemRep.put(pathwayVertexRep.getId(), 
+				(PathwayVertexGraphItemRep)pathwayVertexRep);
+		
 		return pathwayVertexRep;
 	}
 
@@ -241,7 +248,7 @@ public class PathwayItemManager
 
 		if (!hashIDToPathwayVertexGraphItemRep.containsKey(iID))
 		{
-			throw new CaleydoRuntimeException("Requested pathway vertex representation ID "
+			throw new IllegalArgumentException("Requested pathway vertex representation ID "
 					+ iID + " does not exist!");
 		}
 

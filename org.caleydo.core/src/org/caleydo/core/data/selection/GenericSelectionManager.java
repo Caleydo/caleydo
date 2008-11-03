@@ -319,7 +319,7 @@ public class GenericSelectionManager
 	 * Returns all elements that are in a specific selection type
 	 * 
 	 * @param sSelectionType
-	 * @return the elements in the type
+	 * @return the elements in the type. Null if the type does not exist yet.
 	 * @throws IllegalArgumentException when called with
 	 *             {@link ESelectionType#REMOVE}
 	 */
@@ -327,7 +327,11 @@ public class GenericSelectionManager
 	{
 		if (eSelectionType == ESelectionType.REMOVE)
 			throw new IllegalArgumentException("Can not return removed values");
-		return hashSelectionTypes.get(eSelectionType).keySet();
+
+		if (hashSelectionTypes.containsKey(eSelectionType))
+			return hashSelectionTypes.get(eSelectionType).keySet();
+
+		return null;
 	}
 
 	/**
@@ -533,6 +537,7 @@ public class GenericSelectionManager
 
 		return returnDelta;
 	}
+
 
 	/**
 	 * Creates a delta, based on the original delta, which contains an addition

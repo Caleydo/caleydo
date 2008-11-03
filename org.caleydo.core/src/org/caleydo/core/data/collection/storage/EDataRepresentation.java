@@ -11,5 +11,6 @@ public enum EDataRepresentation
 {
 	RAW,
 	NORMALIZED,
-	LOG10;
+	LOG10,
+	LOG2;
 }

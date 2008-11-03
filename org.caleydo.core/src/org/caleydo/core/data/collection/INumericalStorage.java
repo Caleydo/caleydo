@@ -1,6 +1,5 @@
 package org.caleydo.core.data.collection;
 
-
 /**
  * INumericalStorage is a specialization of IStorage. It is meant for numerical
  * data of a continuous range, equivalent to the set of real numbers. In terms
@@ -68,6 +67,14 @@ public interface INumericalStorage
 	 * data instead of the raw data
 	 */
 	public void log10();
+
+	/**
+	 * Calculates the log2 of the raw data. Log data can be retrieved by using
+	 * the get methods with EDataRepresentation.LOG10. Call normalize after this
+	 * operation if you want to display the result Normalize then uses the log
+	 * data instead of the raw data
+	 */
+	public void log2();
 
 	/**
 	 * Remove log and normalized data. Normalize has to be called again.

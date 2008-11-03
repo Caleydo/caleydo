@@ -453,7 +453,7 @@ public abstract class AGLEventListener
 		return true;
 	}
 
-	protected void updateBusyMode(final GL gl)
+	protected synchronized void updateBusyMode(final GL gl)
 	{
 		float fTransparency = 0.3f * iFrameCounter / NUMBER_OF_FRAMES;
 		float fLoadingTransparency = 0.8f * iFrameCounter / NUMBER_OF_FRAMES;

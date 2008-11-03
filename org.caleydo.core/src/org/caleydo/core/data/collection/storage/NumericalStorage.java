@@ -1,5 +1,6 @@
 package org.caleydo.core.data.collection.storage;
 
+import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ccontainer.INumericalCContainer;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -27,15 +28,23 @@ public class NumericalStorage
 	}
 
 	@Override
-	public void normalizeWithExternalExtrema(double dMin, double dMax)
+	public void normalize()
 	{
 
-		INumericalCContainer rawStorage = (INumericalCContainer) hashCContainers
-				.get(EDataRepresentation.RAW);
-		INumericalCContainer normalizedStorage = rawStorage.normalizeWithExternalExtrema(dMin,
-				dMax);
+		INumericalCContainer iRawContainer = (INumericalCContainer)hashCContainers.get(dataRep);
 
-		hashCContainers.put(EDataRepresentation.NORMALIZED, normalizedStorage);
+		hashCContainers.put(EDataRepresentation.NORMALIZED, iRawContainer.normalize());
+	}
+
+	@Override
+	public void normalizeWithExternalExtrema(double dMin, double dMax)
+	{
+		INumericalCContainer rawStorage = (INumericalCContainer) hashCContainers.get(dataRep);
+
+		INumericalCContainer numericalContainer = rawStorage.normalizeWithExternalExtrema(
+				dMin, dMax);
+
+		hashCContainers.put(EDataRepresentation.NORMALIZED, numericalContainer);
 	}
 
 	@Override
@@ -47,19 +56,13 @@ public class NumericalStorage
 	@Override
 	public double getMin()
 	{
-		EDataRepresentation dataKind = EDataRepresentation.RAW;
-		if (hashCContainers.containsKey(EDataRepresentation.LOG10))
-			dataKind = EDataRepresentation.LOG10;
-		return ((INumericalCContainer) (hashCContainers.get(dataKind))).getMin();
+		return ((INumericalCContainer) (hashCContainers.get(dataRep))).getMin();
 	}
 
 	@Override
 	public double getMax()
 	{
-		EDataRepresentation dataKind = EDataRepresentation.RAW;
-		if (hashCContainers.containsKey(EDataRepresentation.LOG10))
-			dataKind = EDataRepresentation.LOG10;
-		return ((INumericalCContainer) (hashCContainers.get(dataKind))).getMax();
+		return ((INumericalCContainer) (hashCContainers.get(dataRep))).getMax();
 	}
 
 	@Override
@@ -73,13 +76,40 @@ public class NumericalStorage
 	{
 		hashCContainers.put(EDataRepresentation.LOG10,
 				((INumericalCContainer) (hashCContainers.get(EDataRepresentation.RAW)))
-						.log10());
+						.log(10));
+	}
+
+	@Override
+	public void log2()
+	{
+		hashCContainers.put(EDataRepresentation.LOG2, ((INumericalCContainer) (hashCContainers
+				.get(EDataRepresentation.RAW))).log(2));
 	}
 
 	@Override
 	public void reset()
 	{
+		hashCContainers.remove(EDataRepresentation.LOG2);
 		hashCContainers.remove(EDataRepresentation.LOG10);
 		hashCContainers.remove(EDataRepresentation.NORMALIZED);
 	}
+
+	@Override
+	public void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep)
+	{
+		switch (externalDataRep)
+		{
+			case NORMAL:
+				dataRep = EDataRepresentation.RAW;
+				break;
+			case LOG10:
+				dataRep = EDataRepresentation.LOG10;
+				break;
+			case LOG2:
+				dataRep = EDataRepresentation.LOG2;
+				break;
+		}
+
+	}
+
 }

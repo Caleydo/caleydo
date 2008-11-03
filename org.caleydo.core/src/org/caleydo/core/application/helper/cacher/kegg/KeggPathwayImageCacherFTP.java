@@ -70,8 +70,8 @@ public class KeggPathwayImageCacherFTP
 
 		FileTransferClient ftp = null;
 
-		try
-		{
+		// try
+		// {
 			// create client
 			log.info("Creating FTP client");
 			ftp = new FileTransferClient();
@@ -138,11 +138,11 @@ public class KeggPathwayImageCacherFTP
 				}
 			}
 
-		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
-		}
+//		}
+//		catch (Exception e)
+//		{
+//			e.printStackTrace();
+//		}
 
 		if (triggeringCommand != null)
 			triggeringCommand.setFinishedKeggImageCacher();
@@ -168,8 +168,7 @@ public class KeggPathwayImageCacherFTP
 		}
 		catch (FileNotFoundException fnfe)
 		{
-			throw new CaleydoRuntimeException("Cannot generate pathway list.",
-					CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalStateException("Cannot generate pathway list, File not found.");
 		}
 	}
 }

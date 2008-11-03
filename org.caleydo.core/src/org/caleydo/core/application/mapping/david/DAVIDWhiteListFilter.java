@@ -77,9 +77,9 @@ public class DAVIDWhiteListFilter
 			whitelistFilter.convertData();
 
 		}
-		catch (Exception e)
-		{
-			e.printStackTrace();
+		catch (IOException ioe)
+		{			
+			ioe.printStackTrace();
 		}
 	}
 }

@@ -333,12 +333,25 @@ public abstract class AStorageBasedView
 		// Check for type that can be handled
 		if (selectionDelta.getIDType() == EIDType.DAVID)
 		{
-
-			contentSelectionManager.clearSelections();
-			ISelectionDelta internalDelta = contentSelectionManager.setDelta(selectionDelta);
+			for (SelectionItem item : selectionDelta)
+			{
+				if (item.getSelectionType() == ESelectionType.ADD
+						|| item.getSelectionType() == ESelectionType.REMOVE)
+				{
+					break;
+				}
+				else
+				{
+					contentSelectionManager.clearSelections();
+					break;				
+				}
+			}
+			contentSelectionManager.setDelta(selectionDelta);
+			ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
 			initForAddedElements();
+			connectedElementRepresentationManager.clearByView(EIDType.EXPRESSION_INDEX, iUniqueID);
 			handleConnectedElementRep(internalDelta);
-			// handleConnectedElementRep(internalDelta);
+//			handleConnectedElementRep(internalDelta);
 			checkUnselection();
 			setDisplayListDirty();
 		}
@@ -350,6 +363,10 @@ public abstract class AStorageBasedView
 			handleConnectedElementRep(selectionDelta);
 			setDisplayListDirty();			
 		}
+
+		
+
+
 	}
 
 	/**
@@ -526,5 +543,9 @@ public abstract class AStorageBasedView
 	}
 
 	public abstract void resetSelections();
+	
+	public abstract void changeOrientation(boolean bDefaultOrientation);
+	
+	public abstract boolean isInDefaultOrientation();
 
 }

@@ -37,12 +37,21 @@ public interface INumericalCContainer
 	 */
 	public double getMax();
 
+//	/**
+//	 * Calculates a logarithmic representation (logarithm to the base of 10) for
+//	 * the data, which it returns as a new ICContainer
+//	 * 
+//	 * @return
+//	 */
+//	public FloatCContainer log10();
+
+
 	/**
-	 * Calculates a logarithmic representation (logarithm to the base of 10) for
+	 * Calculates a logarithmic representation of a base for
 	 * the data, which it returns as a new ICContainer
 	 * 
 	 * @return
 	 */
-	public FloatCContainer log10();
+	public FloatCContainer log(int iBase);
 
 }

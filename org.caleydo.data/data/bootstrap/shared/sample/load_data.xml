@@ -20,8 +20,8 @@
 			attrib1="SKIP;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;ABORT"	attrib2="45301 46301 47301 48301 49301 50301 51301 52301 53301 54301" attrib3="1 -1" />			
 
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="85101" label=""  attrib1="35201" attrib2="45301 46301 47301 48301 49301 50301 51301 52301 53301 54301" attrib3="GENE_EXPRESSION_DATA" />
-	
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="DATA_FILTER_MATH"			cmdId="99010"	uniqueId="-1"	attrib1="NORMALIZE"	attrib2="85101" attrib3="SET"/>									
+									
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_DATA_REPRESENTATION"			cmdId="99010"	uniqueId="-1"	attrib1="NORMAL"	attrib2="85101" attrib3="SET"/>									
 
 
 </details>

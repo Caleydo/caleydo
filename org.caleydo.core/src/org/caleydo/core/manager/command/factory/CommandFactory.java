@@ -5,7 +5,7 @@ import org.caleydo.core.command.ICommand;
 import org.caleydo.core.command.data.CmdDataCreateSet;
 import org.caleydo.core.command.data.CmdDataCreateStorage;
 import org.caleydo.core.command.data.CmdDataCreateVirtualArray;
-import org.caleydo.core.command.data.filter.CmdDataFilterMath;
+import org.caleydo.core.command.data.CmdSetDataRepresentation;
 import org.caleydo.core.command.data.filter.CmdDataFilterMinMax;
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
@@ -39,8 +39,6 @@ import org.caleydo.core.command.window.swt.CmdWindowCreate;
 import org.caleydo.core.manager.ICommandManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Class is responsible for creating the commands. The commands are created
@@ -233,9 +231,14 @@ public class CommandFactory
 				createdCommand = new CmdFetchPathwayData(cmdType);
 				break;
 			}
-			case DATA_FILTER_MATH:
+				// case DATA_FILTER_MATH:
+				// {
+				// createdCommand = new CmdDataFilterMath(cmdType);
+				// break;
+				// }
+			case SET_DATA_REPRESENTATION:
 			{
-				createdCommand = new CmdDataFilterMath(cmdType);
+				createdCommand = new CmdSetDataRepresentation(cmdType);
 				break;
 			}
 			case DATA_FILTER_MIN_MAX:
@@ -244,8 +247,8 @@ public class CommandFactory
 				break;
 			}
 			default:
-				throw new CaleydoRuntimeException("Unsupported CommandQueue key= [" + cmdType
-						+ "]", CaleydoRuntimeExceptionType.COMMAND);
+				throw new IllegalStateException("Unsupported CommandQueue key= [" + cmdType
+						+ "]");
 		} // end switch
 
 		return createdCommand;
@@ -272,16 +275,16 @@ public class CommandFactory
 		 * End: Create a new uniqueId if necessary
 		 */
 
-		try
-		{
-			queueType = ECommandType.valueOf(sCmdType);
-		}
-		catch (IllegalArgumentException iae)
-		{
-			throw new CaleydoRuntimeException(
-					"Undefined CommandQueue key= [" + sCmdType + "]",
-					CaleydoRuntimeExceptionType.SAXPARSER);
-		}
+		// try
+		// {
+		queueType = ECommandType.valueOf(sCmdType);
+		// }
+		// catch (IllegalArgumentException iae)
+		// {
+		// throw new CaleydoRuntimeException(
+		// "Undefined CommandQueue key= [" + sCmdType + "]",
+		// CaleydoRuntimeExceptionType.SAXPARSER);
+		// }
 
 		switch (queueType)
 		{
@@ -295,8 +298,8 @@ public class CommandFactory
 				return new CmdSystemRunCmdQueue(queueType, iCmdQueueId);
 
 			default:
-				throw new CaleydoRuntimeException("Unsupported CommandQueue key= [" + sCmdType
-						+ "]", CaleydoRuntimeExceptionType.COMMAND);
+				throw new IllegalStateException("Unsupported CommandQueue key= [" + sCmdType
+						+ "]");
 		}
 
 	}

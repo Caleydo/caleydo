@@ -8,8 +8,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import javax.swing.ImageIcon;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Helper tool can load a pathway list from a local folder. This is needed
@@ -64,8 +62,7 @@ public class PathwayListGenerator
 			}
 			else
 			{
-				throw new CaleydoRuntimeException("Problem with detecting path separator.",
-						CaleydoRuntimeExceptionType.DATAHANDLING);
+				throw new IllegalStateException("Problem with detecting path separator.");
 			}
 
 			sOutput = sOutput.substring(sOutput.lastIndexOf(sPathDelimiter) + 1, sOutput
@@ -94,10 +91,15 @@ public class PathwayListGenerator
 					{
 						if (sLine.contains("http://cgap.nci.nih.gov/BIOCARTA/Pathways/"))
 						{
-							sImagePath = sLine.substring(sLine
-											.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/") + 42,
-										sLine.indexOf(".gif", sLine
-											.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/")) + 4);
+							sImagePath = sLine
+									.substring(
+											sLine
+													.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/") + 42,
+											sLine
+													.indexOf(
+															".gif",
+															sLine
+																	.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/")) + 4);
 
 							sImagePath = sInputImagePath + sImagePath;
 
@@ -107,8 +109,8 @@ public class PathwayListGenerator
 				}
 				catch (IOException e)
 				{
-					throw new CaleydoRuntimeException("Cannot open pathway list file at "
-							+ tmpFile.toString(), CaleydoRuntimeExceptionType.DATAHANDLING);
+					throw new IllegalStateException("Cannot open pathway list file at "
+							+ tmpFile.toString());
 				}
 
 			}

@@ -10,6 +10,7 @@ import org.caleydo.rcp.action.view.storagebased.ChangeOrientationAction;
 import org.caleydo.rcp.action.view.storagebased.ClearSelectionsAction;
 import org.caleydo.rcp.action.view.storagebased.PropagateSelectionsAction;
 import org.caleydo.rcp.action.view.storagebased.RenderContextAction;
+import org.caleydo.rcp.action.view.storagebased.ResetViewAction;
 import org.caleydo.rcp.action.view.storagebased.UseRandomSamplingAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
@@ -45,7 +46,11 @@ public class GLHeatMapView
 		alToolbar.add(switchAxesToPolylinesAction);
 		IAction clearSelectionsAction = new ClearSelectionsAction(iViewID);
 		alToolbar.add(clearSelectionsAction);
-
+		IAction resetViewAction = new ResetViewAction(iViewID);
+		alToolbar.add(resetViewAction);
+		IAction propagateSelectionAction = new PropagateSelectionsAction(iViewID);
+		alToolbar.add(propagateSelectionAction);
+		
 		if (heatMap.isRenderedRemote()
 				&& GeneralManager.get().getPreferenceStore().getBoolean(
 						PreferenceConstants.HM_LIMIT_REMOTE_TO_CONTEXT))
@@ -55,8 +60,7 @@ public class GLHeatMapView
 		alToolbar.add(toggleRenderContextAction);
 		IAction useRandomSamplingAction = new UseRandomSamplingAction(iViewID);
 		alToolbar.add(useRandomSamplingAction);
-		IAction propagateSelectionAction = new PropagateSelectionsAction(iViewID);
-		alToolbar.add(propagateSelectionAction);
+		
 
 	}
 

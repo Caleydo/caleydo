@@ -87,7 +87,7 @@ public class MultipleAccessionCodeExtractor
 			enzymeCodeConverter.convertData();
 
 		}
-		catch (Exception e)
+		catch (IOException e)
 		{
 			e.printStackTrace();
 		}

@@ -12,6 +12,7 @@ import org.caleydo.rcp.action.view.storagebased.ChangeOrientationAction;
 import org.caleydo.rcp.action.view.storagebased.ClearSelectionsAction;
 import org.caleydo.rcp.action.view.storagebased.PropagateSelectionsAction;
 import org.caleydo.rcp.action.view.storagebased.RenderContextAction;
+import org.caleydo.rcp.action.view.storagebased.ResetViewAction;
 import org.caleydo.rcp.action.view.storagebased.UseRandomSamplingAction;
 import org.caleydo.rcp.action.view.storagebased.parcoords.AngularBrushingAction;
 import org.caleydo.rcp.action.view.storagebased.parcoords.OcclusionPreventionAction;
@@ -60,16 +61,19 @@ public class GLParCoordsView
 		alToolbar.add(clearSelectionsAction);
 		IAction saveSelectionsAction = new SaveSelectionsAction(iViewID);
 		alToolbar.add(saveSelectionsAction);
+		IAction resetViewAction = new ResetViewAction(iViewID);
+		alToolbar.add(resetViewAction);
+		IAction propagateSelectionAction = new PropagateSelectionsAction(iViewID);
+		alToolbar.add(propagateSelectionAction);
 		// only if standalone or explicitly requested
 		if (pcs.isRenderedRemote()
 				&& GeneralManager.get().getPreferenceStore().getBoolean(
 						PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT))
 			return;
 
-		IAction propagateSelectionAction = new PropagateSelectionsAction(iViewID);
-		alToolbar.add(propagateSelectionAction);
 		IAction toggleRenderContextAction = new RenderContextAction(iViewID);
 		alToolbar.add(toggleRenderContextAction);
+
 		IAction useRandomSamplingAction = new UseRandomSamplingAction(iViewID);
 		alToolbar.add(useRandomSamplingAction);
 
