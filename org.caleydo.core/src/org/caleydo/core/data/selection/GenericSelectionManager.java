@@ -341,13 +341,13 @@ public class GenericSelectionManager
 	 */
 	public void addToType(ESelectionType targetType, int iElementID)
 	{
-		if (targetType != ESelectionType.REMOVE
-				&& hashSelectionTypes.get(targetType).containsKey(iElementID))
-			return;
-
 		if (targetType == ESelectionType.ADD)
 			throw new IllegalArgumentException(
 					"ADD may not be stored in the selection manager");
+
+		if (targetType != ESelectionType.REMOVE
+				&& hashSelectionTypes.get(targetType).containsKey(iElementID))
+			return;
 
 		for (ESelectionType currentType : alSelectionTypes)
 		{
@@ -532,6 +532,32 @@ public class GenericSelectionManager
 		selectionDelta = new SelectionDelta(internalIDType);
 
 		return returnDelta;
+	}
+
+	/**
+	 * Creates a delta, based on the original delta, which contains an addition
+	 * ADD for every changed element which is not removed.
+	 * 
+	 * @return the selection delta with ADD for all not REMOVE types
+	 */
+	public ISelectionDelta getBroadcastDelta()
+	{
+		ISelectionDelta originalDelta = getDelta();
+		ISelectionDelta newDelta = new SelectionDelta(originalDelta.getIDType());
+
+		for (SelectionItem item : originalDelta)
+		{
+
+			if (item.getSelectionType() == ESelectionType.REMOVE)
+				newDelta.addSelection(item.getSelectionID(), ESelectionType.REMOVE);
+			else
+			{
+				newDelta.addSelection(item.getSelectionID(), ESelectionType.ADD);
+				newDelta.addSelection(item.getSelectionID(), item.getSelectionType());
+			}
+		}
+
+		return newDelta;
 	}
 
 	/**

@@ -63,7 +63,8 @@ public abstract class AGLViewPart
 	 * 
 	 * @param glViewType
 	 */
-	protected int createGLEventListener(ECommandType glViewType, int iParentCanvasID)
+	protected int createGLEventListener(ECommandType glViewType, int iParentCanvasID,
+			boolean bRegisterToOverallMediator)
 	{
 		IGeneralManager generalManager = GeneralManager.get();
 
@@ -98,6 +99,16 @@ public abstract class AGLViewPart
 		setGLData(glCanvas, iViewID);
 		createPartControlGL();
 
+		if (bRegisterToOverallMediator)
+			registerViewToMediator(iViewID);
+		
+		return iViewID;
+	}
+	
+	public void registerViewToMediator(int iViewID)
+	{
+		IGeneralManager generalManager = GeneralManager.get();
+		
 		// Add created view to bucket mediator
 		// FIXME: this approach is not general - think about better one
 		ArrayList<Integer> iAlMediatorIDs = new ArrayList<Integer>();
@@ -112,12 +123,8 @@ public abstract class AGLViewPart
 								((GLRemoteRendering) glEventListener).getMediatorID()),
 						iAlMediatorIDs, iAlMediatorIDs, EMediatorType.SELECTION_MEDIATOR,
 						EMediatorUpdateType.MEDIATOR_DEFAULT);
-
-				return iViewID;
 			}
 		}
-
-		return iViewID;
 	}
 
 	@Override

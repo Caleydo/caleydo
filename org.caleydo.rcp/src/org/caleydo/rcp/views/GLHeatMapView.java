@@ -64,7 +64,7 @@ public class GLHeatMapView
 	protected final void fillToolBar()
 	{
 		createGLCanvas();
-		createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D, glCanvas.getID());
+		createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D, glCanvas.getID(), true);
 
 		createToolBarItems(iGLEventListenerID);
 

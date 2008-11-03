@@ -22,7 +22,7 @@ import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.glyph.GLRemoteGlyph;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLTextureHeatMap;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
 import org.caleydo.core.view.opengl.canvas.wii.GLCanvasWiiTest;
 import org.caleydo.core.view.opengl.renderstyle.layout.ARemoteViewLayoutRenderStyle;
@@ -225,7 +225,7 @@ public class ViewGLCanvasManager
 				glEventListener = new GLHeatMap(iGLCanvasID, sLabel, viewFrustum);
 				break;
 			case CREATE_GL_TEXTURE_HEAT_MAP_3D:
-				glEventListener = new GLTextureHeatMap(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener = new GLHierarchicalHeatMap(iGLCanvasID, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_PATHWAY_3D:

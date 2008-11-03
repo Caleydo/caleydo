@@ -38,7 +38,7 @@ public class GLGlyphSliderView
 	{
 
 		createGLCanvas();
-		createGLEventListener(ECommandType.CREATE_GL_GLYPH_SLIDER, glCanvas.getID());
+		createGLEventListener(ECommandType.CREATE_GL_GLYPH_SLIDER, glCanvas.getID(), true);
 
 		createToolBarItems(iGLEventListenerID);
 

@@ -5,7 +5,6 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import gleem.linalg.open.Transform;
 import java.awt.Font;
-import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -35,7 +34,6 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
@@ -57,12 +55,10 @@ import org.caleydo.core.view.opengl.renderstyle.layout.BucketLayoutRenderStyle;
 import org.caleydo.core.view.opengl.renderstyle.layout.JukeboxLayoutRenderStyle;
 import org.caleydo.core.view.opengl.renderstyle.layout.ARemoteViewLayoutRenderStyle.LayoutMode;
 import org.caleydo.core.view.opengl.util.EIconTextures;
-import org.caleydo.core.view.opengl.util.GLIconTextureManager;
 import org.caleydo.core.view.opengl.util.drag.GLDragAndDrop;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
 import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
 import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
-import org.caleydo.core.view.opengl.util.spline.Spline3D;
 import org.caleydo.core.view.opengl.util.trashcan.TrashCan;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
@@ -247,8 +243,6 @@ public class GLRemoteRendering
 	@Override
 	public synchronized void displayLocal(final GL gl)
 	{
-
-
 		if (pickingTriggerMouseAdapter.wasRightMouseButtonPressed())
 		{
 			bEnableNavigationOverlay = !bEnableNavigationOverlay;
@@ -490,7 +484,7 @@ public class GLRemoteRendering
 				.getGLEventListener(iViewID));
 
 		if (tmpCanvasUser == null)
-			throw new CaleydoRuntimeException("Cannot render canvas object which is null!");
+			throw new IllegalStateException("Cannot render canvas object which is null!");
 
 		gl.glPushMatrix();
 

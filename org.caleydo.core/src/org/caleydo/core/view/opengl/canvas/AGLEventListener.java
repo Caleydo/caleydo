@@ -380,13 +380,13 @@ public abstract class AGLEventListener
 
 		for (EPickingType ePickingType : EPickingType.values())
 		{
-			// if (ePickingType.getViewType() != viewType)
-			// {
-			// if(viewType == EManagedObjectType.GL_EVENT_LISTENER)
-			// throw new IllegalStateException(
-			// "Views must define their view type in the constructor");
-			// continue;
-			// }
+			 if (ePickingType.getViewType() != viewType)
+			{
+				if (viewType == EManagedObjectType.GL_EVENT_LISTENER)
+					throw new IllegalStateException(
+							"Views must define their view type in the constructor");
+				continue;
+			}
 
 			ArrayList<Pick> alHits = null;
 

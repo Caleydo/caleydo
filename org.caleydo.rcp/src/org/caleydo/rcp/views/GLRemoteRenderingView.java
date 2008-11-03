@@ -75,22 +75,23 @@ public class GLRemoteRenderingView
 		// Only create parcoords and heatmap if the application is NOT in pathway viewer mode
 		if (Application.applicationMode != EApplicationMode.PATHWAY_VIEWER)
 		{
-			iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D, -1));
-			iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_3D, -1));
+			iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D, -1, true));
+//			iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_TEXTURE_HEAT_MAP_3D, -1));			
+			iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_3D, -1, true));
 			
 			// FIXME: This is just a temporary solution to check if glyph view
 			// should be added to bucket.
 			try
 			{
 				GeneralManager.get().getIDManager().getInternalFromExternalID(453010);
-				iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_GLYPH, -1));
-				iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_GLYPH, -1));
+				iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_GLYPH, -1, true));
+				iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_GLYPH, -1, true));
 			}catch (IllegalArgumentException e) {
 				GeneralManager.get().getLogger().log(Level.WARNING, "Cannot add glyph to bucket! No glyph data loaded!");
 			}
 		}		
 		
-		createGLEventListener(ECommandType.CREATE_GL_BUCKET_3D, glCanvas.getID());
+		createGLEventListener(ECommandType.CREATE_GL_BUCKET_3D, glCanvas.getID(), true);
 		
 		// Trigger gene/pathway search command
 		ArrayList<Integer> iAlReceiverIDs = new ArrayList<Integer>();

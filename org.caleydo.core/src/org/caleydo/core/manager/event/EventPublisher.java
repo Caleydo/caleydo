@@ -331,36 +331,44 @@ public class EventPublisher
 	@Override
 	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
 	{
-
-		// Prevent update during initialization of data.
-		if (hashSender2SelectionMediators.isEmpty())
+		ArrayList<IMediator> arMediator; 
+		
+		if (!hashSender2SelectionMediators.isEmpty())
 		{
-			return;
-		}
-
-		ArrayList<IMediator> arMediators = hashSender2SelectionMediators.get(eventTrigger);
-
-		if (arMediators == null)
-		{
-			assert false : "empty (ArrayList) arMediators from hashSender2SelectionMediators.get( eventTrigger)";
-			return;
-		}
-
-		Iterator<IMediator> iterMediators = arMediators.iterator();
-
-		IMediator tmpMediator;
-
-		while (iterMediators.hasNext())
-		{
-			tmpMediator = iterMediators.next();
-
-			if (tmpMediator != null)
+			arMediator = hashSender2SelectionMediators.get(eventTrigger);
+			
+			if (arMediator != null)
 			{
-				tmpMediator.handleUpdate(eventTrigger, selectionDelta);
+				for (IMediator mediator : arMediator)
+				{
+					mediator.handleUpdate(eventTrigger, selectionDelta);
+				}
 			}
-			else
+		}
+
+		if (!hashSender2DataMediators.isEmpty())
+		{
+			arMediator = hashSender2DataMediators.get(eventTrigger);
+			
+			if (arMediator != null)
 			{
-				// TODO: print message
+				for (IMediator mediator : arMediator)
+				{
+					mediator.handleUpdate(eventTrigger, selectionDelta);
+				}
+			}
+		}
+		
+		if (!hashSender2ViewMediators.isEmpty())
+		{
+			arMediator = hashSender2ViewMediators.get(eventTrigger);
+			
+			if (arMediator != null)
+			{
+				for (IMediator mediator : arMediator)
+				{
+					mediator.handleUpdate(eventTrigger, selectionDelta);
+				}
 			}
 		}
 	}

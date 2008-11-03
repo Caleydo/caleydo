@@ -89,7 +89,8 @@ public class GLParCoordsView
 		}
 
 		createGLCanvas();
-		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_3D, glCanvas.getID());
+		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_3D, 
+				glCanvas.getID(), true);
 
 		createToolBarItems(iGLEventListenerID);
 

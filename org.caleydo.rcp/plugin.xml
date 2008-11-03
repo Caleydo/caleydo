@@ -19,9 +19,7 @@
             name="Caleydo"
             id="org.caleydo.rcp.views">
       </category>
-      
-      
-      
+       
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
@@ -29,6 +27,15 @@
             icon="resources/icons/view/storagebased/heatmap/heatmap.png"
             id="org.caleydo.rcp.views.GLHeatMapView"
             name="Heat Map">
+      </view>
+      
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.views.GLHierarchicalHeatMapView"
+            icon="resources/icons/view/storagebased/heatmap/heatmap.png"
+            id="org.caleydo.rcp.views.GLHierarchicalHeatMapView"
+            name="Hierarchical Heat Map">
       </view>      
 
       <view
@@ -190,6 +197,11 @@
             id="org.caleydo.rcp.command.openviews.glyphmappingconfigurationview"
             name="Open Glyph Mapping Configuration View">
       </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenHierarchicalHeatMapHandler"
+            id="org.caleydo.rcp.command.openviews.hierarchical_heatmap"
+            name="Open Hierarchical Heat Map">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -234,8 +246,7 @@
                   mnemonic="F"
                   style="push">
             </command>
-            <menu
-                  label="Open Views">
+            <menu label="Open Views">
                <command
                      commandId="org.caleydo.rcp.command.openviews.heatmap"
                      icon="resources/icons/view/storagebased/heatmap/heatmap.png"
@@ -278,6 +289,13 @@
                      label="Glyph Mapping Configuration"
                      style="push">
                </command>
+               <command
+                     commandId="org.caleydo.rcp.command.openviews.hierarchical_heatmap"
+                     icon="resources/icons/view/storagebased/heatmap/heatmap.png"
+                     label="Hierarchical Heat Map"
+                     style="push">
+               </command>
+              
             </menu>
          </menu>
          <menu

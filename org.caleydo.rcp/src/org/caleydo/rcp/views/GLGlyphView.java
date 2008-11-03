@@ -64,7 +64,7 @@ public class GLGlyphView
 	{
 
 		createGLCanvas();
-		createGLEventListener(ECommandType.CREATE_GL_GLYPH, glCanvas.getID());
+		createGLEventListener(ECommandType.CREATE_GL_GLYPH, glCanvas.getID(), true);
 
 		createToolBarItems(iGLEventListenerID);
 
