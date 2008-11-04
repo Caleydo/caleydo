@@ -107,16 +107,16 @@ public class CmdExternalFlagSetter
 			switch(externalFlagSetterType)
 			{
 				case GLYPH_VIEWMODE_SCATTERLOT:
-					glyphview.setViewMode(EIconIDs.DISPLAY_SCATTERPLOT);
+					glyphview.setPositionModel(EIconIDs.DISPLAY_SCATTERPLOT);
 					return;
 				case GLYPH_VIEWMODE_RECTANGLE:
-					glyphview.setViewMode(EIconIDs.DISPLAY_RECTANGLE);
+					glyphview.setPositionModel(EIconIDs.DISPLAY_RECTANGLE);
 					return;
 				case GLYPH_VIEWMODE_CIRCLE:
-					glyphview.setViewMode(EIconIDs.DISPLAY_CIRCLE);
+					glyphview.setPositionModel(EIconIDs.DISPLAY_CIRCLE);
 					return;
 				case GLYPH_VIEWMODE_RANDOM:
-					glyphview.setViewMode(EIconIDs.DISPLAY_RANDOM);
+					glyphview.setPositionModel(EIconIDs.DISPLAY_RANDOM);
 					return;
 			}
 			

@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.glyph.gridview;
+package org.caleydo.core.view.opengl.canvas.glyph.gridview.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -12,6 +12,8 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyphGenerator;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 
 /**
  * Loading data into the glyph storage

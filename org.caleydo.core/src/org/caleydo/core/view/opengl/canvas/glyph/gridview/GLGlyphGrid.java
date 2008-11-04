@@ -15,6 +15,13 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
 import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphDataLoader;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModel;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelCircle;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelPlus;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelRandom;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelRectangle;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelScatterplot;
 import org.caleydo.core.view.opengl.renderstyle.GlyphRenderStyle;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 
@@ -249,20 +256,37 @@ public class GLGlyphGrid
 		// pos1.getPosition().y()
 		// + "), p2 (" + pos2.getPosition().x() + "," + pos2.getPosition().y() +
 		// ")");
-		int smallX = pos1.getPosition().y() / 2;
-		int bigX = pos2.getPosition().y() / 2;
-		if (smallX > bigX)
+		GlyphGridPosition pos1s = null;
+		GlyphGridPosition pos2s = null;
+
+		for (int i = 0; i < glyphMap_.size(); ++i)
 		{
-			smallX = pos2.getPosition().y() / 2;
-			bigX = pos1.getPosition().y() / 2;
+			for (int j = 0; j < glyphMap_.get(i).size(); ++j)
+			{
+				GlyphGridPosition tempPos = glyphMap_.get(i).get(j);
+				if (pos1.getGridPosition().x() == tempPos.getGridPosition().x()
+						&& pos1.getGridPosition().y() == -tempPos.getGridPosition().y())
+					pos1s = tempPos;
+				if (pos2.getGridPosition().x() == tempPos.getGridPosition().x()
+						&& pos2.getGridPosition().y() == -tempPos.getGridPosition().y())
+					pos2s = tempPos;
+			}
 		}
 
-		int smallY = pos1.getPosition().x();
-		int bigY = pos2.getPosition().x();
+		int smallX = pos1s.getPosition().x();
+		int bigX = pos2s.getPosition().x();
+		if (smallX > bigX)
+		{
+			smallX = pos2s.getPosition().x();
+			bigX = pos1s.getPosition().x();
+		}
+
+		int smallY = pos1s.getPosition().y();
+		int bigY = pos2s.getPosition().y();
 		if (smallY > bigY)
 		{
-			smallY = pos2.getPosition().x();
-			bigY = pos1.getPosition().x();
+			smallY = pos2s.getPosition().y();
+			bigY = pos1s.getPosition().y();
 		}
 
 		gl.glPushMatrix();
@@ -277,8 +301,13 @@ public class GLGlyphGrid
 
 		deSelectAll();
 
-		// System.out.println(smallX + " to " + bigX + " | " + smallY + " to " +
-		// bigY);
+		if (smallY % 2 == 1)
+			smallX++;
+
+		if (bigY % 2 == 1 && bigX % 2 == 1)
+			bigX++;
+
+		System.out.println(smallX + " to " + bigX + " | " + smallY + " to " + bigY);
 
 		for (int i = smallX; i < bigX; ++i)
 		{
@@ -315,11 +344,17 @@ public class GLGlyphGrid
 
 	public int getGlyphGLList(GL gl, int x, int y)
 	{
+		if (x >= 0 && glyphMap_.size() > x)
+		{
+			Vector<GlyphGridPosition> vGGP = glyphMap_.get(x);
 
-		if (glyphMap_.contains(x))
-			if (glyphMap_.get(x).contains(y))
-				if (glyphMap_.get(x).get(y).getGlyph() != null)
-					return glyphMap_.get(x).get(y).getGlyph().getGlList(gl);
+			if (y >= 0 && vGGP.size() > y)
+			{
+				GlyphGridPosition ggpos = vGGP.get(y);
+				if (ggpos.getGlyph() != null)
+					return ggpos.getGlyph().getGlList(gl);
+			}
+		}
 
 		generalManager.getLogger().log(
 				Level.WARNING,
@@ -330,30 +365,36 @@ public class GLGlyphGrid
 
 	public int getGlyphID(int x, int y)
 	{
+		if (x >= 0 && glyphMap_.size() > x)
+		{
+			Vector<GlyphGridPosition> vGGP = glyphMap_.get(x);
 
-		if (glyphMap_.contains(x))
-			if (glyphMap_.get(x).contains(y))
-				if (glyphMap_.get(x).get(y).getGlyph() != null)
-					return glyphMap_.get(x).get(y).getGlyph().getID();
+			if (y >= 0 && vGGP.size() > y)
+			{
+				GlyphGridPosition ggpos = vGGP.get(y);
+				if (ggpos.getGlyph() != null)
+					return ggpos.getGlyph().getID();
+			}
+		}
 
-		generalManager.getLogger().log(
-				Level.WARNING,
-				"Someone wanted a Glyph on the grid position " + x + ", " + y
-						+ ", but there is nothing");
+//		generalManager.getLogger().log(
+//				Level.WARNING,
+//				"Someone wanted a Glyph on the grid position " + x + ", " + y
+//						+ ", but there is nothing");
 		return -1;
 	}
 
 	public Vec2i getGridPosition(int x, int y)
 	{
 
-		if (x >= worldLimit_.x() || y >= worldLimit_.y())
+		if (x >= worldLimit_.x() || y >= worldLimit_.y() || x<0 || y<0)
 		{
-			generalManager.getLogger()
-					.log(
-							Level.WARNING,
-							"Someone wanted a Glyph outside the grid! (" + x + ", " + y
-									+ ") WorldLimit (" + worldLimit_.x() + ","
-									+ worldLimit_.y() + ")");
+//			generalManager.getLogger()
+//					.log(
+//							Level.WARNING,
+//							"Someone wanted a Glyph outside the grid! (" + x + ", " + y
+//									+ ") WorldLimit (" + worldLimit_.x() + ","
+//									+ worldLimit_.y() + ")");
 			return null;
 		}
 
@@ -366,6 +407,16 @@ public class GLGlyphGrid
 			for (GlyphGridPosition v2 : v1)
 				if (glyph == v2.getGlyph())
 					return v2.getGridPosition();
+
+		return new Vec2i();
+	}
+
+	public Vec2i getPosition(GlyphEntry glyph)
+	{
+		for (Vector<GlyphGridPosition> v1 : glyphMap_)
+			for (GlyphGridPosition v2 : v1)
+				if (glyph == v2.getGlyph())
+					return v2.getPosition();
 
 		return new Vec2i();
 	}

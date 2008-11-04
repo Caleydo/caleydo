@@ -9,8 +9,8 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyphGenerator;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphAttributeType;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
 
 /**
  * Glyph manager

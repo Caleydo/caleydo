@@ -30,7 +30,11 @@ public class GlyphMouseListener
 
 	protected int prevMouseX, prevMouseY;
 
-	protected boolean bRubberBandEnabled = false;
+	protected boolean bEnablePan = false;
+	protected boolean bEnableRotate = false;
+	protected boolean bEnableZoom = false;
+
+	protected boolean bRubberBandEnabled = true;
 
 	protected int iRubberBandStartX = 0, iRubberBandStartY = 0;
 	protected int iRubberBandCurrentX = 0, iRubberBandCurrentY = 0;
@@ -105,37 +109,7 @@ public class GlyphMouseListener
 	@Override
 	public void mouseWheelMoved(MouseWheelEvent e)
 	{
-		float fZoom = fZoomScale * e.getWheelRotation();
-		Vec3f camPosOld = viewCanvas.getViewCamera().getCameraPosition();
-		float fRotOld = viewCanvas.getViewCamera().getCameraRotation().get(new Vec3f(0, 0, 1));
-
-		Vec3f addVec3f = new Vec3f(0, (fZoom * (float) Math.sin(fRotOld)),
-				(fZoom * (float) Math.cos(fRotOld)) + fZoom);
-
-		Vec3f camPosNew = new Vec3f(camPosOld);
-		camPosNew.add(addVec3f);
-
-		float height = camPosNew.y() * ((float) Math.sin(fRotOld)) + camPosNew.z()
-				* ((float) Math.cos(fRotOld));
-
-		if (height > -3)
-			return;
-
-		float angle = (float) (Math.PI / 4.0 - 2.0 * Math.PI * (-(camPosOld.z() + 3)) / 360.0);
-
-		if (angle < 0)
-		{
-			angle = 0;
-
-			if (addVec3f.z() < 0)
-				addVec3f = new Vec3f(0, 0, 0);
-		}
-
-		viewCanvas.getViewCamera().addCameraPosition(addVec3f);
-
-		Rotf t = new Rotf();
-		t.set(new Vec3f(-1, 0, 0), angle);
-		viewCanvas.getViewCamera().setCameraRotation(t);
+		handleZooming(e);
 	}
 
 	@Override
@@ -228,6 +202,9 @@ public class GlyphMouseListener
 	 */
 	private void handlePanning(MouseEvent e)
 	{
+		if (!bEnablePan)
+			return;
+
 		int x = e.getX();
 		int y = e.getY();
 		Dimension size = e.getComponent().getSize();
@@ -249,12 +226,16 @@ public class GlyphMouseListener
 	}
 
 	/**
-	 * This handles the rotation for the view. Not used for now
+	 * This handles the rotation for the view.
+	 * Not used for now
 	 * 
 	 * @param MouseEvent e
 	 */
 	private void handleRotation(MouseEvent e)
 	{
+		if (!bEnableRotate)
+			return;
+
 		// Rotf currentRotX = new Rotf();
 		// Rotf currentRotY = new Rotf();
 		//					   	    
@@ -279,6 +260,49 @@ public class GlyphMouseListener
 		//						    
 		// viewCanvas.getViewCamera().addCameraRotation(currentRotation);
 	}
+
+	/**
+	 * This handles the zooming for the view.
+	 * 
+	 * @param MouseEvent e
+	 */
+	private void handleZooming(MouseWheelEvent e)
+	{
+		if (!bEnableZoom)
+			return;
+		float fZoom = fZoomScale * e.getWheelRotation();
+		Vec3f camPosOld = viewCanvas.getViewCamera().getCameraPosition();
+		float fRotOld = viewCanvas.getViewCamera().getCameraRotation().get(new Vec3f(0, 0, 1));
+
+		Vec3f addVec3f = new Vec3f(0, (fZoom * (float) Math.sin(fRotOld)),
+				(fZoom * (float) Math.cos(fRotOld)) + fZoom);
+
+		Vec3f camPosNew = new Vec3f(camPosOld);
+		camPosNew.add(addVec3f);
+
+		float height = camPosNew.y() * ((float) Math.sin(fRotOld)) + camPosNew.z()
+				* ((float) Math.cos(fRotOld));
+
+		if (height > -3)
+			return;
+
+		float angle = (float) (Math.PI / 4.0 - 2.0 * Math.PI * (-(camPosOld.z() + 3)) / 360.0);
+
+		if (angle < 0)
+		{
+			angle = 0;
+
+			if (addVec3f.z() < 0)
+				addVec3f = new Vec3f(0, 0, 0);
+		}
+
+		viewCanvas.getViewCamera().addCameraPosition(addVec3f);
+
+		Rotf t = new Rotf();
+		t.set(new Vec3f(-1, 0, 0), angle);
+		viewCanvas.getViewCamera().setCameraRotation(t);
+	}
+	
 
 	/**
 	 * This method converts the mouse coordinates to world coordinates
@@ -320,4 +344,19 @@ public class GlyphMouseListener
 		return new Vec3f(xp, yp, zp);
 	}
 
+	/**
+	 * Enables / Disables Mouse Zoom, Pan & Rotating Rotating is not functional
+	 * in this special MouseListener
+	 * 
+	 * @param enable/disable Panning
+	 * @param enable/disable Rotation
+	 * @param enable/disable Zooming
+	 */
+	public void setNavigationModes(boolean bEnablePan, boolean bEnableRotate,
+			boolean bEnableZoom)
+	{
+		this.bEnablePan = bEnablePan;
+		this.bEnableRotate = bEnableRotate;
+		this.bEnableZoom = bEnableZoom;
+	}
 }

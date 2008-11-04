@@ -4,8 +4,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyphGenerator;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphAttributeType;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
 
 /**
  * @author Sauer Stefan

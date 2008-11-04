@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.glyph.gridview;
+package org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels;
 
 import gleem.linalg.Vec4f;
 import gleem.linalg.open.Vec2i;
@@ -10,6 +10,9 @@ import java.util.logging.Level;
 import javax.media.opengl.GL;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphGridPosition;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
 import org.caleydo.core.view.opengl.renderstyle.GlyphRenderStyle;
 import com.sun.opengl.util.j2d.TextRenderer;
 

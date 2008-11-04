@@ -8,6 +8,7 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
 
 public class GlyphEntry
 {
@@ -40,9 +41,14 @@ public class GlyphEntry
 
 	}
 
+	/**
+	 * Returns the internal mapping id of the glyhp. Use the IDMappingManager to
+	 * get the id inside the given csv file
+	 * 
+	 * @return the id of the glyph.
+	 */
 	public int getID()
 	{
-
 		return id_;
 	}
 
@@ -70,13 +76,11 @@ public class GlyphEntry
 
 	public boolean isSelected()
 	{
-
 		return selected_;
 	}
 
 	public int getGlList(GL gl)
 	{
-
 		if (selected_)
 		{
 			return glListSelected_;
@@ -129,6 +133,12 @@ public class GlyphEntry
 		glList_ = generator_.generateGlyph(gl, this, false);
 	}
 
+	/**
+	 * This method returns a String representation of the holding data
+	 * 
+	 * @param seperator between the data fields
+	 * @return data text
+	 */
 	public String getGlyphDescription(String seperator)
 	{
 		StringBuffer sInfoText = new StringBuffer();

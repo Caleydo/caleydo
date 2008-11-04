@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.glyph.gridview;
+package org.caleydo.core.view.opengl.canvas.glyph.gridview.data;
 
 import java.util.ArrayList;
 import java.util.HashMap;
