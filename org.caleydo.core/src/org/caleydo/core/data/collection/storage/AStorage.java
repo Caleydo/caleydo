@@ -76,7 +76,7 @@ public abstract class AStorage
 	{
 
 		if (bRawDataSet)
-			throw new IllegalStateException("Raw data was already set, tried to set again.");
+			throw new IllegalStateException("Raw data was already set in Storage " + iUniqueID + " , tried to set again.");
 
 		rawDataType = ERawDataType.FLOAT;
 		bRawDataSet = true;

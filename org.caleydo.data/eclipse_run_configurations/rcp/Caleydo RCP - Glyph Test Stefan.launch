@@ -10,14 +10,13 @@
 <booleanAttribute key="clearwslog" value="false"/>
 <stringAttribute key="configLocation" value="${workspace_loc}/.metadata/.plugins/org.eclipse.pde.core/Caleydo RCP - Glyph Test Stefan"/>
 <booleanAttribute key="default" value="false"/>
-<stringAttribute key="deselected_workspace_plugins" value="org.caleydo.testing"/>
 <booleanAttribute key="includeOptional" value="true"/>
 <stringAttribute key="location" value="${workspace_loc}/../runtime-org.caleydo.rcp.product"/>
 <booleanAttribute key="org.eclipse.debug.core.appendEnvironmentVariables" value="true"/>
 <listAttribute key="org.eclipse.debug.ui.favoriteGroups">
 <listEntry value="org.eclipse.debug.ui.launchGroup.debug"/>
 </listAttribute>
-<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl}&#13;&#10;data/bootstrap/private/stefan/bootstrap_single.xml browser remote glyphview"/>
+<stringAttribute key="org.eclipse.jdt.launching.PROGRAM_ARGUMENTS" value="-os ${target.os} -ws ${target.ws} -arch ${target.arch} -nl ${target.nl} -consoleLog&#13;&#10;data/bootstrap/private/stefan/bootstrap_single.xml browser remote glyphview"/>
 <stringAttribute key="org.eclipse.jdt.launching.SOURCE_PATH_PROVIDER" value="org.eclipse.pde.ui.workbenchClasspathProvider"/>
 <stringAttribute key="org.eclipse.jdt.launching.VM_ARGUMENTS" value="-Xms512m -Xmx1024m -Dsun.java2d.opengl=true -Djava.util.logging.config.file=data/logging/logging.properties -Xss16384k"/>
 <stringAttribute key="org.eclipse.jdt.launching.WORKING_DIRECTORY" value="${workspace_loc:org.caleydo.data}"/>
@@ -25,7 +24,7 @@
 <stringAttribute key="product" value="org.caleydo.rcp.product"/>
 <stringAttribute key="productFile" value="/org.caleydo.rcp/org.caleydo.rcp.product"/>
 <booleanAttribute key="restart" value="false"/>
-<stringAttribute key="selected_target_plugins" value="com.ibm.icu,org.eclipse.swt,org.eclipse.core.jobs,org.eclipse.ui.workbench,org.eclipse.equinox.common,org.eclipse.core.runtime.compatibility.registry,org.eclipse.ui,org.eclipse.core.expressions,org.eclipse.core.commands,org.eclipse.equinox.preferences,org.eclipse.equinox.registry,org.eclipse.core.databinding,org.eclipse.help,org.eclipse.equinox.app,org.eclipse.osgi,org.eclipse.jface.databinding,org.eclipse.osgi.services,org.eclipse.jface,javax.servlet,org.eclipse.core.runtime.compatibility.auth,org.eclipse.core.runtime,org.eclipse.core.contenttype,org.eclipse.swt.gtk.linux.x86"/>
+<stringAttribute key="selected_target_plugins" value="org.eclipse.osgi,org.eclipse.core.runtime.compatibility.auth,org.eclipse.osgi.services,org.eclipse.swt,javax.servlet,org.eclipse.equinox.app,org.eclipse.core.runtime.compatibility.registry,org.eclipse.equinox.registry,org.eclipse.jface.databinding,org.eclipse.equinox.preferences,org.eclipse.core.commands,org.eclipse.ui.workbench,org.eclipse.help,org.eclipse.ui,org.eclipse.core.jobs,org.eclipse.equinox.common,org.eclipse.core.expressions,org.eclipse.core.runtime,org.eclipse.core.databinding,org.eclipse.core.contenttype,org.eclipse.swt.gtk.linux.x86,org.eclipse.jface,com.ibm.icu"/>
 <booleanAttribute key="show_selected_only" value="false"/>
 <booleanAttribute key="tracing" value="false"/>
 <booleanAttribute key="useDefaultConfig" value="true"/>

@@ -251,7 +251,9 @@ public class TabularAsciiDataReader
 		int iStorageIndex = 0;
 
 		for (EStorageType storageType : alColumnDataTypes)
-		{
+		{	
+//			if(iStorageIndex + 1 == alTargetStorages.size())
+//				break;
 			switch (storageType)
 			{
 				case INT:
