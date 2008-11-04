@@ -58,12 +58,38 @@ terms.</p>
 	href="http://www.caleydo.org/download/webstart/caleydo.jnlp"><img
 	src="images/logos/webstart.png" alt="Start Caleydo"
 	style="border-style: none" /><br />
-<b style="padding-left: 15px">Version 1.0.1 Beta</b></a></p>
+<b style="padding-left: 15px">Version 1.0.2 Beta</b></a></p>
 
 <p>If you have troubles running Caleydo please refer to the <a
 	href="help.html#KnownIssues">Help Section</a>. You will also find a
 link to a compatibility mode there.</p>
 <h2>Changelog</h2>
+<h3>Version 1.0.2</h3>
+<h4>New Features</h4>
+<ul>
+<li>Views have a new "reset view" function that clears all changes</li>
+<li>Genes in pool layer are highlighted as well</li>
+<li>Added log base 2 support</li>
+<li>Added an XP classic style mode. (Enable via Preferences -> General)</li>
+<li>Added support for different filter levels (all genes - genes with david mapping - genes that occur in pathways). All genes mode is slow, needs improvement.</li>
+<li>Data loader is now a view, not only a dialog. This allows runtime changes to data.</li>
+</ul>
+<h4>Fixed Bugs</h4>
+<ul>
+<li>Color mapping now uses correct values on reset default</li>
+<li>Default color for NaN set to gray</li>
+<li>Improved mouse events under windows, needs further testing</li>
+<li>Min and max works now separately</li>
+<li>Pathways can be loaded more than once now</li>
+<li>Selection consistency when moving views improved</li>
+<li>Data RefSeq mapping loader ignores version of RefSeqs (NM_*.* -> NM_*).</li>
+<li>Multiple RefSeq numbers per micro-array spot in data files are ignored because they all point to the same DAVID gene ID.</li>
+<li>All experiments in data loader are selected by default.</li>
+<li>Corrected mapping of genes to actual values</li>
+<li>Browser now does not complain all the time when it is offline</li>
+<li>All delimiters for data import work now (not only Tab)</li>
+</ul>
+
 <h3>Version 1.0.1</h3>
 <ul>
 	<li>Added proxy support for pathway download</li>
@@ -89,7 +115,7 @@ November 2007. A more recent video will follow soon.</p>
 website maintained by <a href="http://www.icg.tugraz.at/Members/streit"><strong>Marc
 Streit</strong></a> and <a href="http://www.icg.tugraz.at/Members/alex"><strong>Alexander
 Lex</strong></a><br />
-last updated on 2008-10-22</p>
+last updated on 2008-11-05</p>
 </div>
 
 </div>
