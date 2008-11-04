@@ -39,6 +39,10 @@ public enum EPickingType
 	// heat map
 	HEAT_MAP_FIELD_SELECTION(EManagedObjectType.GL_HEAT_MAP),
 
+	// hierarchical heat map
+	HIER_HEAT_MAP_FIELD_SELECTION(EManagedObjectType.GL_HEAT_MAP),
+	HIER_HEAT_MAP_TEXTURE_SELECTION(EManagedObjectType.GL_HEAT_MAP),
+	
 	// glyph
 	GLYPH_FIELD_SELECTION(EManagedObjectType.GL_GLYPH),
 	// TODO: works only for glyph sliders now, new solution?
