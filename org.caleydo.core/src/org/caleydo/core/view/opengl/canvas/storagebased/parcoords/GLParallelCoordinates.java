@@ -59,7 +59,6 @@ import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
-import org.eclipse.core.runtime.SafeRunner;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -72,7 +71,6 @@ import com.sun.opengl.util.texture.TextureCoords;
 public class GLParallelCoordinates
 	extends AStorageBasedView
 {
-	
 
 	private float fAxisSpacing = 0;
 
@@ -358,8 +356,8 @@ public class GLParallelCoordinates
 	 */
 	public synchronized void renderStorageAsPolyline(boolean bRenderStorageHorizontally)
 	{
-	
-		if(bRenderStorageHorizontally != this.bRenderStorageHorizontally)
+
+		if (bRenderStorageHorizontally != this.bRenderStorageHorizontally)
 		{
 			EIDType eTempType = eAxisDataType;
 			eAxisDataType = ePolylineDataType;
@@ -368,7 +366,7 @@ public class GLParallelCoordinates
 
 		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
 		// bRenderInfoArea = false;
-	
+
 		fXTranslation = 0;
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 		resetSelections();
@@ -533,7 +531,7 @@ public class GLParallelCoordinates
 	{
 		if (bRenderStorageHorizontally)
 		{
-			
+
 			iPolylineVAID = iStorageVAID;
 			iAxisVAID = iContentVAID;
 			polylineSelectionManager = storageSelectionManager;
@@ -587,39 +585,41 @@ public class GLParallelCoordinates
 
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
-		if (contentSelectionManager.getNumberOfElements() == 0)
+		// if (contentSelectionManager.getNumberOfElements() == 0)
+		// {
+		// gl.glTranslatef(-fXDefaultTranslation - fXTranslation,
+		// -fYTranslation, 0.0f);
+		// renderSymbol(gl);
+		// gl.glTranslatef(+fXDefaultTranslation + fXTranslation, fYTranslation,
+		// 0.0f);
+		// }
+		// else
+		// {
+
+		// if(bIsDraggingActive)
+		// handleDragging(gl);
+
+		renderCoordinateSystem(gl);
+
+		// FIXME if uses z buffer fighting to avoid artfacts when tiltet
+		if (detailLevel.compareTo(EDetailLevel.LOW) < 1)
 		{
-			gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
-			renderSymbol(gl);
-			gl.glTranslatef(+fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
+			renderPolylines(gl, ESelectionType.MOUSE_OVER);
+			renderPolylines(gl, ESelectionType.SELECTION);
+			renderPolylines(gl, ESelectionType.DESELECTED);
+			renderPolylines(gl, ESelectionType.NORMAL);
 		}
 		else
 		{
-
-			// if(bIsDraggingActive)
-			// handleDragging(gl);
-
-			renderCoordinateSystem(gl);
-
-			// FIXME if uses z buffer fighting to avoid artfacts when tiltet
-			if (detailLevel.compareTo(EDetailLevel.LOW) < 1)
-			{
-				renderPolylines(gl, ESelectionType.MOUSE_OVER);
-				renderPolylines(gl, ESelectionType.SELECTION);
-				renderPolylines(gl, ESelectionType.DESELECTED);
-				renderPolylines(gl, ESelectionType.NORMAL);
-			}
-			else
-			{
-				renderPolylines(gl, ESelectionType.DESELECTED);
-				renderPolylines(gl, ESelectionType.NORMAL);
-				renderPolylines(gl, ESelectionType.MOUSE_OVER);
-				renderPolylines(gl, ESelectionType.SELECTION);
-			}
-
-			renderGates(gl);
-
+			renderPolylines(gl, ESelectionType.DESELECTED);
+			renderPolylines(gl, ESelectionType.NORMAL);
+			renderPolylines(gl, ESelectionType.MOUSE_OVER);
+			renderPolylines(gl, ESelectionType.SELECTION);
 		}
+
+		renderGates(gl);
+
+		// }
 
 		gl.glEndList();
 	}
@@ -1354,7 +1354,9 @@ public class GLParallelCoordinates
 
 			if (Float.isNaN(fCurrentValue))
 				fCurrentValue = renderStyle.getNaNYOffset();
-			if (fCurrentValue <= (fArGateTipHeight[iAxisNumber] - 0.0000000001f)/ renderStyle.getAxisHeight() && fCurrentValue >= fArGateBottomHeight[iAxisNumber]
+			if (fCurrentValue <= (fArGateTipHeight[iAxisNumber] - 0.0000000001f)
+					/ renderStyle.getAxisHeight()
+					&& fCurrentValue >= fArGateBottomHeight[iAxisNumber]
 							/ renderStyle.getAxisHeight())
 			{
 				alCurrentGateBlocks.add(iPolylineIndex);
@@ -2030,7 +2032,7 @@ public class GLParallelCoordinates
 	@Override
 	public void changeOrientation(boolean defaultOrientation)
 	{
-		renderStorageAsPolyline(defaultOrientation);		
+		renderStorageAsPolyline(defaultOrientation);
 	}
 
 	@Override
