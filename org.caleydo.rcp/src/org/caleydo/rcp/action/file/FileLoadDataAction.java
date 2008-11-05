@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.command.ECommandType;
@@ -90,6 +92,7 @@ public class FileLoadDataAction
 	private ArrayList<Combo> arComboDataClass;
 	private ArrayList<Combo> arComboDataType;
 
+	private String sInputFile = "";
 	private String sFileName = "";
 	private String sFilePath = "";
 	private String sInputPattern = "SKIP;ABORT";
@@ -99,6 +102,8 @@ public class FileLoadDataAction
 
 	private String sDataRepMode = "Normal";
 	//private boolean bLogFilter = false;
+	
+	private int iOldSetID;
 
 	/**
 	 * Constructor.
@@ -116,16 +121,14 @@ public class FileLoadDataAction
 		arComboDataClass = new ArrayList<Combo>();
 		arComboDataType = new ArrayList<Combo>();
 	}
-
+	
 	/**
 	 * Constructor.
 	 */
-	public FileLoadDataAction(final IWorkbenchWindow window)
+	public FileLoadDataAction(final Composite parentComposite, String sInputFile)
 	{
-		// this((Composite) null);
-
-		parentComposite = null;
-		this.window = window;
+		this(parentComposite);
+		this.sInputFile = sInputFile;
 	}
 
 	@Override
@@ -155,7 +158,7 @@ public class FileLoadDataAction
 
 		txtFileName = new Text(composite, SWT.BORDER);
 		txtFileName.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
-
+		
 		buttonFileChooser.addSelectionListener(new SelectionAdapter()
 		{
 			@Override
@@ -436,20 +439,6 @@ public class FileLoadDataAction
 			
 			}
 		});
-		
-//		final Button buttonLog = new Button(mathFiltergGroup, SWT.CHECK);
-//		buttonLog.setText("Log (base 10)");
-//		buttonLog.setEnabled(true);
-//		buttonLog.setSelection(false);
-//		buttonLog.addSelectionListener(new SelectionAdapter()
-//		{
-//
-//			@Override
-//			public void widgetSelected(SelectionEvent e)
-//			{
-//				bLogFilter = true;
-//			}
-//		});
 
 		final Button buttonMin = new Button(mathFiltergGroup, SWT.CHECK);
 		buttonMin.setText("Min");
@@ -534,6 +523,17 @@ public class FileLoadDataAction
 		data.heightHint = 300;
 		data.widthHint = 700;
 		previewTable.setLayoutData(data);
+		
+		// Check if an external file name is given to the action
+		if (!sInputFile.isEmpty())
+		{
+			txtFileName.setText(sInputFile);
+			sFileName = sInputFile;
+			sDataRepMode = "Log10";
+			dataRepCombo.select(1);
+			 
+			createDataPreviewTable("\t");
+		}
 	}
 
 	private void createDataPreviewTable(final String sDelimiter)
@@ -702,13 +702,11 @@ public class FileLoadDataAction
 		}
 		catch (FileNotFoundException e)
 		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new IllegalStateException("File not found!");
 		}
 		catch (IOException ioe)
 		{
-			// TODO Auto-generated catch block
-			ioe.printStackTrace();
+			throw new IllegalStateException("Input/output problem!");
 		}
 
 		createDataClassBar();
@@ -834,6 +832,7 @@ public class FileLoadDataAction
 							|| comboTmpDataClass.getSelectionIndex() == 1)
 					{
 						arComboDataType.get(iColIndex).setEnabled(false);
+						arComboDataType.get(iColIndex).select(0);
 						// arButtonNormalize.get(iColIndex).setSelection(false);
 					}
 					else
@@ -885,45 +884,23 @@ public class FileLoadDataAction
 			TableEditor editor = new TableEditor(previewTable);
 			editor.grabHorizontal = true;
 			editor.setEditor(comboTmpDataType, tmpItem, iColIndex);
-
-			// comboTmpDataType.addMouseTrackListener(new MouseTrackAdapter() {
-			//
-			// public Color originalColor = txtFileName.getBackground();
-			// public Color highlightColor =
-			// comboTmpDataType.getDisplay().getSystemColor(SWT.COLOR_YELLOW);
-			// public Color selectionColor =
-			// comboTmpDataType.getDisplay().getSystemColor(SWT.COLOR_BLUE);
-			//					
-			// public void mouseEnter(MouseEvent e) {
-			// // Set corresponding column background color to yellow
-			// for (TableItem tmpItem : previewTable.getItems())
-			// {
-			// if (arComcomboTmpDataType.getSelectionIndex() == 0)
-			// tmpItem.setBackground(arComboDataType.indexOf(comboTmpDataType)+1,
-			// highlightColor);
-			// }
-			// }
-			//	
-			// public void mouseExit(MouseEvent e) {
-			// // Set back to original color
-			// for (TableItem tmpItem : previewTable.getItems())
-			// {
-			// if (comboTmpDataType.getSelectionIndex() > 0)
-			// tmpItem.setBackground(arComboDataClass.indexOf(comboTmpDataType)+1
-			// , selectionColor);
-			// else
-			// tmpItem.setBackground(arComboDataClass.indexOf(comboTmpDataType)+1
-			// , originalColor);
-			// }
-			// }
-			// });
 		}
 	}
 
 	public void execute()
-	{
+	{	
+		for (ISet set : GeneralManager.get().getSetManager().getAllItems())
+		{
+			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA)
+			{
+				iOldSetID = set.getID();
+				break;
+			}
+		}
+		
 		createData();
 		setDataInViews();
+		clearOldData();
 
 		// TODO: review
 		// Application.applicationMode = EApplicationMode.STANDARD;
@@ -1042,21 +1019,10 @@ public class FileLoadDataAction
 				set.setMax(fMax);
 			}
 		}
-
 	
 		if (sDataRepMode.equals("Normal"))
 		{
 			set.setExternalDataRepresentation(EExternalDataRepresentation.NORMAL);
-			// ArrayList<Integer> iArSetIDs = new ArrayList<Integer>();
-			// iArSetIDs.add(iCreatedSetID);
-			
-			// CmdDataFilterMath cmdDataFilterLog = (CmdDataFilterMath)
-			// GeneralManager.get()
-			// .getCommandManager().createCommandByType(ECommandType.DATA_FILTER_MATH);
-			// cmdDataFilterLog.setAttributes(EDataFilterMathType.LIN_2_LOG,
-			// iArSetIDs,
-			// EManagedObjectType.SET);
-			// cmdDataFilterLog.doCommand();
 		}
 		else if(sDataRepMode.equals("Log10"))
 		{
@@ -1070,20 +1036,6 @@ public class FileLoadDataAction
 		{
 			throw new IllegalStateException("Unknown data representation type");
 		}
-
-		// if (!Float.isNaN(fMin) && !Float.isNaN(fMax))
-		// {
-		// for (int iStorageID : iAlStorageId)
-		// {
-		// INumericalStorage storage = (INumericalStorage) GeneralManager.get()
-		// .getStorageManager().getItem(iStorageID);
-		// storage.normalizeWithExternalExtrema(fMin, fMax);
-		// }
-		// }
-		// else
-		// {
-		// cmdCreateSet.getCreatedObject().normalizeGlobally();
-		// }
 	}
 
 	private void setDataInViews()
@@ -1101,6 +1053,11 @@ public class FileLoadDataAction
 		}
 	}
 
+	private void clearOldData() 
+	{
+		GeneralManager.get().getSetManager().unregisterItem(iOldSetID);
+	}
+
 	/**
 	 * For testing purposes
 	 * 
@@ -1112,7 +1069,7 @@ public class FileLoadDataAction
 		FileLoadDataDialog dialog = new FileLoadDataDialog(new Shell());
 		dialog.open();
 	}
-
+	
 	@Override
 	public void dispose()
 	{

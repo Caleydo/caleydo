@@ -72,7 +72,7 @@ public class CmdDataCreateSet
 		fillSets(createdObject);
 
 		generalManager.getLogger().log(Level.INFO,
-				"New Set with ID " + iExternalID + " created.");
+				"New Set with internal ID " + createdObject.getID() + " and external ID " + iExternalID + " created.");
 
 		commandManager.runDoCommand(this);
 	}

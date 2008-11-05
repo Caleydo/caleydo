@@ -240,7 +240,7 @@ public class GLRemoteRendering
 		colorMappingBarMiniView.setWidth(layoutRenderStyle.getColorBarWidth());
 		colorMappingBarMiniView.setHeight(layoutRenderStyle.getColorBarHeight());
 	}
-
+	
 	@Override
 	public synchronized void displayLocal(final GL gl)
 	{

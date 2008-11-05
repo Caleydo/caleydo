@@ -346,7 +346,9 @@ public class ViewGLCanvasManager
 		if (parentGLCanvas != null)
 		{
 			parentGLCanvas.removeGLEventListener(gLEventListenerToRemove);
-			hashGLCanvasID2GLEventListeners.get(parentGLCanvas.getID()).remove(
+			
+			if (hashGLCanvasID2GLEventListeners.containsKey(parentGLCanvas.getID()))
+				hashGLCanvasID2GLEventListeners.get(parentGLCanvas.getID()).remove(
 					gLEventListenerToRemove);
 		}
 

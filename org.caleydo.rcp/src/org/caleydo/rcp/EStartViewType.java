@@ -5,6 +5,7 @@ import org.caleydo.rcp.views.GLHeatMapView;
 import org.caleydo.rcp.views.GLParCoordsView;
 import org.caleydo.rcp.views.GLRemoteRenderingView;
 import org.caleydo.rcp.views.HTMLBrowserView;
+import org.caleydo.rcp.views.TabularDataView;
 
 /**
  * Enum for triggering view loading in RCP over the command line.
@@ -13,9 +14,13 @@ import org.caleydo.rcp.views.HTMLBrowserView;
  */
 public enum EStartViewType
 {
-	PARALLEL_COORDINATES("parcoords", GLParCoordsView.ID), GLYPHVIEW("glyphview",
-			GLGlyphView.ID), HEATMAP("heatmap", GLHeatMapView.ID), REMOTE("remote",
-			GLRemoteRenderingView.ID), BROWSER("browser", HTMLBrowserView.ID);
+
+	GLYPHVIEW("glyphview", GLGlyphView.ID), 
+	PARALLEL_COORDINATES("parcoords", GLParCoordsView.ID),
+	HEATMAP("heatmap", GLHeatMapView.ID), 
+	REMOTE("remote", GLRemoteRenderingView.ID),
+	BROWSER("browser", HTMLBrowserView.ID), 
+	TABULAR("tabular", TabularDataView.ID);
 
 	private String sCommandLineArgument;
 	private String sRCPViewID;

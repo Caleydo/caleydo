@@ -19,7 +19,7 @@ public enum EIconTextures
 	HEAT_MAP_SYMBOL("resources/icons/view/storagebased/heatmap/heatmap128x128.png"),
 	PAR_COORDS_SYMBOL("resources/icons/view/storagebased/parcoords/parcoords128x128.png"),
 	GLYPH_SYMBOL("resources/icons/view/glyph/glyph128x128.png"),        
-	PATHWAY_SYMBOL("resources/icons/view/pathway/pathway128x128.png"),        
+	PATHWAY_SYMBOL("resources/icons/view/pathway/pathway128x128.png"), 	
 	
 	GLYPH_SORT_RANDOM("resources/icons/view/glyph/sort_random.png"),
 	GLYPH_SORT_CIRCLE("resources/icons/view/glyph/sort_spirale.png"),

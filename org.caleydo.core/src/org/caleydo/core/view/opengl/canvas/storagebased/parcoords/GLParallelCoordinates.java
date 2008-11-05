@@ -267,6 +267,7 @@ public class GLParallelCoordinates
 		display(gl);
 
 		pickingTriggerMouseAdapter.resetEvents();
+		
 	}
 
 	@Override
@@ -1368,6 +1369,11 @@ public class GLParallelCoordinates
 	@Override
 	protected void checkUnselection()
 	{
+		if(fArGateTipHeight == null)
+		{
+			initGates();
+		}
+		
 		for (int iCount = 0; iCount < fArGateTipHeight.length; iCount++)
 		{
 			handleGateUnselection(iCount);

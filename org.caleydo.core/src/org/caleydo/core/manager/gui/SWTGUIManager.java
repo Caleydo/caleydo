@@ -246,9 +246,9 @@ public class SWTGUIManager
 		loadingProgressBarWindow = new Shell(display, SWT.TITLE | SWT.BORDER);
 		loadingProgressBarWindow.setMaximized(false);
 		loadingProgressBarWindow.setText("Loading Caleydo...");
-		loadingProgressBarWindow.setImage(new Image(display,
-				this.getClass().getClassLoader().getResourceAsStream(
-						"resources/icons/caleydo/caleydo16.gif")));
+//		loadingProgressBarWindow.setImage(new Image(display,
+//				this.getClass().getClassLoader().getResourceAsStream(
+//						"resources/icons/caleydo/caleydo16.gif")));
 
 		loadingProgressBar = new ProgressBar(loadingProgressBarWindow, SWT.SMOOTH);
 		loadingProgressBar.setBounds(10, 10, 430, 40);

@@ -32,7 +32,6 @@ public class Activator
 	{
 		super.start(context);
 		plugin = this;
-		
 		sBundleVersion = getBundle().getHeaders().get(Constants.BUNDLE_VERSION).toString();
 	}
 

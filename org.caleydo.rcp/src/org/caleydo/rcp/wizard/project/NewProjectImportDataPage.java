@@ -19,6 +19,8 @@ public class NewProjectImportDataPage
 	public static final String PAGE_NAME = "Import data to new project";
 	
 	public FileLoadDataAction fileLoadDataAction;
+	
+	private String sInputFile;
 
 	/**
 	 * Constructor.
@@ -33,6 +35,16 @@ public class NewProjectImportDataPage
 		
 		setPageComplete(true);
 	}
+	
+	/**
+	 * Constructor.
+	 */
+	public NewProjectImportDataPage(String sFileName)
+	{
+		this();
+		
+		this.sInputFile = sFileName;
+	}
 
 	@Override
 	public void createControl(Composite parent)
@@ -40,7 +52,11 @@ public class NewProjectImportDataPage
 		Composite topLevel = new Composite(parent, SWT.NONE);
 		topLevel.setLayout(new FillLayout());
 
-		fileLoadDataAction = new FileLoadDataAction(topLevel);
+		if (sInputFile != null)
+			fileLoadDataAction = new FileLoadDataAction(topLevel, sInputFile);
+		else
+			fileLoadDataAction = new FileLoadDataAction(topLevel);
+		
 		fileLoadDataAction.run();
 
 		setControl(topLevel);

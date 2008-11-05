@@ -38,6 +38,8 @@ public class Application
 	private static String BOOTSTRAP_FILE_SAMPLE_DATA_MODE = "data/bootstrap/shared/sample/bootstrap_gene_expression_sample.xml";
 	private static String BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE = "data/bootstrap/shared/webstart/bootstrap_webstart_pathway_viewer.xml";
 
+	private static String REAL_DATA_SAMPLE_FILE = "data/genome/microarray/sample/HCC_sample_dataset.csv";
+	
 	public static CaleydoBootloader caleydoCore;
 
 	public static ApplicationWorkbenchAdvisor applicationWorkbenchAdvisor;
@@ -98,6 +100,11 @@ public class Application
 							.getCommandLineArgument()))
 					{
 						alStartViews.add(EStartViewType.REMOTE);
+					}
+					else if (sArParam[iParamIndex].equals(EStartViewType.TABULAR
+							.getCommandLineArgument()))
+					{
+						alStartViews.add(EStartViewType.TABULAR);
 					}
 					else
 					{
@@ -211,7 +218,7 @@ public class Application
 				case PATHWAY_VIEWER:
 					sCaleydoXMLfile = BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE;
 					break;
-				case SAMPLE_DATA:
+				case SAMPLE_DATA_RANDOM:
 					sCaleydoXMLfile = BOOTSTRAP_FILE_SAMPLE_DATA_MODE;
 					break;
 				default:
@@ -225,6 +232,16 @@ public class Application
 			{
 				WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(
 						shell));
+
+				if (WizardDialog.CANCEL == dataImportWizard.open())
+				{
+					bDoExit = true;
+				}
+			}
+			else if(applicationMode == EApplicationMode.SAMPLE_DATA_REAL)
+			{
+				WizardDialog dataImportWizard = new WizardDialog(shell,
+						new DataImportWizard(shell, REAL_DATA_SAMPLE_FILE));
 
 				if (WizardDialog.CANCEL == dataImportWizard.open())
 				{
@@ -259,7 +276,6 @@ public class Application
 		{
 			// Start OpenGL rendering
 			GeneralManager.get().getViewGLCanvasManager().startAnimator();
-
 			GeneralManager.get().getSWTGUIManager().runApplication();
 		}
 	}
@@ -273,35 +289,6 @@ public class Application
 		store.getInt("");
 
 		ColorMappingManager.get().initiFromPreferenceStore();
-		// store = GeneralManager.get().getPreferenceStore();
-		// int iNumberOfMarkerPoints = store
-		// .getInt(PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
-		//
-		// ArrayList<ColorMarkerPoint> alMarkerPoints = new
-		// ArrayList<ColorMarkerPoint>();
-		// for (int iCount = 1; iCount <= iNumberOfMarkerPoints; iCount++)
-		// {
-		// float colorMarkerValue = store
-		// .getFloat(PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
-		// String color =
-		// store.getString(PreferenceConstants.COLOR_MARKER_POINT_COLOR
-		// + iCount);
-		//			
-		// alMarkerPoints.add(new ColorMarkerPoint(colorMarkerValue,
-		// ConversionTools.getColorFromString(color)));
-		// }
-		//
-		// // TODO not generic
-		// ColorMappingManager.get().initColorMapping(EColorMappingType.GENE_EXPRESSION,
-		// alMarkerPoints);
-		//
-		// for (AGLEventListener view :
-		// GeneralManager.get().getViewGLCanvasManager()
-		// .getAllGLEventListeners())
-		// {
-		// view.setDisplayListDirty();
-		// }
-
 	}
 
 	private static void openViewsInRCP()

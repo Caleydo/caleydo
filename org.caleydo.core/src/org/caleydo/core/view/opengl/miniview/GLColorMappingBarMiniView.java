@@ -41,7 +41,7 @@ public class GLColorMappingBarMiniView
 	}
 
 	@Override
-	public void render(GL gl, float fXOrigin, float fYOrigin, float fZOrigin)
+	public synchronized void render(GL gl, float fXOrigin, float fYOrigin, float fZOrigin)
 	{
 		// TODO: generalize
 		textRenderer.setColor(0, 0, 0, 1);
@@ -50,13 +50,22 @@ public class GLColorMappingBarMiniView
 
 		ISet geneExpressionSet = null;
 		Collection<ISet> sets = GeneralManager.get().getSetManager().getAllItems();
+
+		int iSetCount = 0;		
 		for (ISet set : sets)
 		{
 			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA)
 			{
+				iSetCount++;
 				geneExpressionSet = set;
 			}
 		}
+		
+		// FIXME: Bad hack: find a better way to ensure that not more 
+		// than one gene expression set is valid for this view.
+		if (iSetCount > 1)
+			return;
+		
 		if (geneExpressionSet == null)
 		{
 			//this is the case when the application is in pathway viewer mode

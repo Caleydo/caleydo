@@ -5,7 +5,7 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.RowLayout;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
@@ -25,7 +25,8 @@ public class NewOrExistingProjectPage
 		NEW_PROJECT,
 		EXISTING_PROJECT,
 		PATHWAY_VIEWER_MODE,
-		SAMPLE_DATA
+		SAMPLE_DATA_RANDOM,
+		SAMPLE_DATA_REAL
 	}
 	
 	private EProjectType projectType;
@@ -49,10 +50,12 @@ public class NewOrExistingProjectPage
 	public void createControl(Composite parent)
 	{
 		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new RowLayout(SWT.VERTICAL));
+		composite.setLayout(new FillLayout(SWT.VERTICAL));
 
 		Button buttonNewProject = new Button(composite, SWT.RADIO);
-		buttonNewProject.setText("Create new project");
+		buttonNewProject.setText("Load data from file (CSV, TXT)");
+		buttonNewProject.setSelection(true);
+		setPageComplete(true);
 
 		Button buttonExistingProject = new Button(composite, SWT.RADIO);
 		buttonExistingProject.setText("Open existing project");
@@ -61,8 +64,14 @@ public class NewOrExistingProjectPage
 		Button buttonPathwayViewerMode = new Button(composite, SWT.RADIO);
 		buttonPathwayViewerMode.setText("Pathway viewer mode");
 		
+		Button buttonRandomSampleDataMode = new Button(composite, SWT.RADIO);
+		buttonRandomSampleDataMode.setText("Start with random generated sample gene expression data");
+		
 		Button buttonSampleDataMode = new Button(composite, SWT.RADIO);
-		buttonSampleDataMode.setText("Start with sample gene expression data");
+		buttonSampleDataMode.setText("Start with sample gene expression data\n(see: http://www.ncbi.nlm.nih.gov/pubmed/17241883)");
+		
+//		Link sampleDataPaperLink = new Link(composite, SWT.BORDER);
+//		sampleDataPaperLink.setText("See: <a>http://www.ncbi.nlm.nih.gov/pubmed/17241883</a>");
 
 		buttonNewProject.addSelectionListener(new SelectionAdapter()
 		{
@@ -88,7 +97,15 @@ public class NewOrExistingProjectPage
 			{
 				projectType = EProjectType.PATHWAY_VIEWER_MODE;
 				setPageComplete(true);
-				// TODO: disable next button here
+			}
+		});
+		
+		buttonRandomSampleDataMode.addSelectionListener(new SelectionAdapter()
+		{
+			public void widgetSelected(SelectionEvent e)
+			{
+				projectType = EProjectType.SAMPLE_DATA_RANDOM;
+				setPageComplete(true);
 			}
 		});
 		
@@ -96,9 +113,8 @@ public class NewOrExistingProjectPage
 		{
 			public void widgetSelected(SelectionEvent e)
 			{
-				projectType = EProjectType.SAMPLE_DATA;
+				projectType = EProjectType.SAMPLE_DATA_REAL;
 				setPageComplete(true);
-				// TODO: disable next button here
 			}
 		});
 		

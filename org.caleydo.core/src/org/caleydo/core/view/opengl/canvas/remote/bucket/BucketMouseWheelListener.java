@@ -224,7 +224,7 @@ public class BucketMouseWheelListener
 				bucketGLEventListener.getParentGLCanvas().getParentComposite().forceFocus();
 				bucketGLEventListener.getParentGLCanvas().getParentComposite().isFocusControl();
 				bucketGLEventListener.getParentGLCanvas().getParentComposite().redraw();
-				bucketGLEventListener.getParentGLCanvas().getParentComposite().notifyAll();
+//				bucketGLEventListener.getParentGLCanvas().getParentComposite().notifyAll();
 			}
 		});
 		

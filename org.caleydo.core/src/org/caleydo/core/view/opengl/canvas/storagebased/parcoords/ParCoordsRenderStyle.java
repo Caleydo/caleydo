@@ -35,7 +35,6 @@ public class ParCoordsRenderStyle
 
 	public static final float[] Y_AXIS_MOUSE_OVER_COLOR = SELECTED_COLOR;
 
-
 	public static final float Y_AXIS_MOUSE_OVER_LINE_WIDTH = 4.0f;
 
 	public static final float[] X_AXIS_COLOR = { 0.0f, 0.0f, 1.0f, 1.0f };
@@ -57,13 +56,13 @@ public class ParCoordsRenderStyle
 	public static final float POLYLINE_LINE_WIDTH = 1.0f;
 
 	public static final int NUMBER_AXIS_MARKERS = 9;
-	
+
 	private static final float NAN_Y_OFFSET = -0.04f;
 
 	// modifiable colors
 	protected float[] polylineOcclusionPrevColor = { 0.0f, 0.0f, 0.0f, 1.0f };
 
-	protected float[] polylineDeselectedColor = { 0.0f, 0.0f, 0.0f, 0.1f };
+	protected float[] polylineDeselectedColor = { 0.0f, 0.0f, 0.0f, 0.001f };
 
 	protected float fOcclusionPrevAlpha = 0.1f;
 
@@ -97,7 +96,7 @@ public class ParCoordsRenderStyle
 
 	private static final float fMinAxisSpacingForText = 0.2f;
 
-	private static final float[] BACKGROUND_COLOR =	{1, 1, 1, 1};
+	private static final float[] BACKGROUND_COLOR = { 1, 1, 1, 1 };
 
 	/**
 	 * Constructor.
@@ -122,9 +121,9 @@ public class ParCoordsRenderStyle
 
 	public float[] getPolylineDeselectedOcclusionPrevColor(int iNumberOfRenderedLines)
 	{
-
-		polylineDeselectedColor[3] = (float) (0.5 / Math.sqrt(iNumberOfRenderedLines));
-		return polylineDeselectedColor;
+		 polylineDeselectedColor[3] = (float) (0.2 /
+		 Math.sqrt(iNumberOfRenderedLines));
+		 return polylineDeselectedColor;
 	}
 
 	public float getAxisSpacing(final int iNumberOfAxis)
@@ -174,12 +173,12 @@ public class ParCoordsRenderStyle
 
 		return GATE_NEGATIVE_Y_OFFSET * getAxisHeight();
 	}
-	
+
 	public float getGateMinimumValue()
 	{
-		return NAN_Y_OFFSET * getAxisHeight();  
+		return NAN_Y_OFFSET * getAxisHeight();
 	}
-	
+
 	public float getNaNYOffset()
 	{
 		return NAN_Y_OFFSET;
@@ -196,20 +195,20 @@ public class ParCoordsRenderStyle
 
 		return COORDINATE_TOP_SPACING / 3 * getScaling();
 	}
-	
+
 	public boolean isEnoughSpaceForText(int iNumberOfAxis)
 	{
 		float fScaling = getScaling();
-		if(getAxisSpacing(iNumberOfAxis) > fMinAxisSpacingForText)
+		if (getAxisSpacing(iNumberOfAxis) > fMinAxisSpacingForText)
 			return true;
 		return false;
 	}
-	
+
 	public float[] getBackgroundColor()
 	{
 		return BACKGROUND_COLOR;
 	}
-	
+
 	// GATE_WIDTH = 0.015f;
 	// private static final float GATE_NEGATIVE_Y_OFFSET = -0.04f;
 	// private static final float GATE_TIP_HEIGHT

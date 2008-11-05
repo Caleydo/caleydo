@@ -56,6 +56,8 @@ public class NumericalStorage
 	@Override
 	public double getMin()
 	{
+		if(!hashCContainers.containsKey(dataRep))
+			throw new IllegalStateException("The requested data representation was not produced.");
 		return ((INumericalCContainer) (hashCContainers.get(dataRep))).getMin();
 	}
 

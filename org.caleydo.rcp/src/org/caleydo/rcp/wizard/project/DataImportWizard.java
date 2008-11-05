@@ -17,13 +17,15 @@ public class DataImportWizard
 	extends Wizard
 {
 
+	private String sInputFile;
+	
 	/**
 	 * Constructor.
 	 */
 	public DataImportWizard(final Shell parentShell)
 	{
 		super();
-
+		
 		parentShell.setText("Open project file");
 		Monitor primary = parentShell.getDisplay().getPrimaryMonitor();
 		Rectangle bounds = primary.getBounds();
@@ -34,10 +36,21 @@ public class DataImportWizard
 		parentShell.setActive();
 	}
 
+	/**
+	 * Constructor.
+	 */
+	public DataImportWizard(final Shell parentShell, String sInputFile)
+	{
+		this(parentShell);
+		
+		this.sInputFile = sInputFile;
+	}
+
+
 	@Override
 	public void addPages()
 	{
-		addPage(new NewProjectImportDataPage());
+		addPage(new NewProjectImportDataPage(sInputFile));
 	}
 
 	@Override
@@ -77,69 +90,6 @@ public class DataImportWizard
 	public IWizardPage getNextPage(IWizardPage page)
 	{
 		return null;
-//		if (page instanceof NewOrExistingProjectPage)
-//		{
-//			if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
-//					.getProjectType() == EProjectType.NEW_PROJECT)
-//			{
-//				NewProjectImportDataPage nextPage = (NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME);
-//
-//				nextPage.setPageComplete(true);
-//				return nextPage;
-//			}
-//			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
-//					.getProjectType() == EProjectType.EXISTING_PROJECT)
-//			{
-//				FileOpenProjectAction fileOpenProjectAction = new FileOpenProjectAction(this
-//						.getShell());
-//				fileOpenProjectAction.run();
-//
-//				this.performFinish();
-//			}
-//			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
-//					.getProjectType() == EProjectType.SAMPLE_DATA)
-//			{
-//
-//			}
-//			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
-//					.getProjectType() == EProjectType.PATHWAY_VIEWER_MODE)
-//			{
-//				// Remove heatmap and par coord views
-//				for (AGLEventListener glEventListener : GeneralManager.get()
-//						.getViewGLCanvasManager().getAllGLEventListeners())
-//				{
-//					if (glEventListener instanceof GLHeatMap
-//							|| glEventListener instanceof GLParallelCoordinates)
-//					{
-//						GeneralManager.get().getViewGLCanvasManager()
-//								.unregisterGLEventListener(glEventListener.getID());
-//					}
-//				}
-//
-//				this.performFinish();
-//			}
-//		}
-//
-//		return page;
-	}
 
-	// /**
-	// * For testing purposes
-	// */
-	// public static void main(String[] args)
-	// {
-	//
-	// Display display = new Display();
-	//
-	// // Create the parent shell for the dialog, but don't show it
-	// Shell shell = new Shell(display);
-	//
-	// // Create the dialog
-	// WizardDialog projectWizardDialog = new WizardDialog(shell, new
-	// CaleydoProjectWizard());
-	// projectWizardDialog.open();
-	//
-	// // Dispose the display
-	// display.dispose();
-	// }
+	}
 }

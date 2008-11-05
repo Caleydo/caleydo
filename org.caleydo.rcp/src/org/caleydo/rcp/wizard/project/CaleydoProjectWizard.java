@@ -49,15 +49,7 @@ public class CaleydoProjectWizard
 	@Override
 	public boolean performFinish()
 	{
-//		if (((NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME))
-//				.isPageComplete())
-//		{
-//			((NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME))
-//					.getFileLoadDataAction().execute();
-//			Application.applicationMode = EApplicationMode.STANDARD;
-//			return true;
-//		}
-//		else
+
 		if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
 				.isPageComplete())
 		{
@@ -68,9 +60,13 @@ public class CaleydoProjectWizard
 			{
 				Application.applicationMode = EApplicationMode.PATHWAY_VIEWER;
 			}
-			else if(page.getProjectType() == EProjectType.SAMPLE_DATA)
+			else if(page.getProjectType() == EProjectType.SAMPLE_DATA_RANDOM)
 			{
-				Application.applicationMode = EApplicationMode.SAMPLE_DATA;
+				Application.applicationMode = EApplicationMode.SAMPLE_DATA_RANDOM;
+			}
+			else if(page.getProjectType() == EProjectType.SAMPLE_DATA_REAL)
+			{
+				Application.applicationMode = EApplicationMode.SAMPLE_DATA_REAL;
 			}
 
 			return true;
@@ -88,12 +84,6 @@ public class CaleydoProjectWizard
 	@Override
 	public boolean canFinish()
 	{
-//		if (((NewProjectImportDataPage) getPage(NewProjectImportDataPage.PAGE_NAME))
-//				.isPageComplete())
-//		{
-//			return true;
-//		}
-//		else 
 		if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
 				.isPageComplete())
 		{
@@ -126,7 +116,12 @@ public class CaleydoProjectWizard
 				this.performFinish();
 			}
 			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
-					.getProjectType() == EProjectType.SAMPLE_DATA)
+					.getProjectType() == EProjectType.SAMPLE_DATA_RANDOM)
+			{
+
+			}
+			else if (((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME))
+					.getProjectType() == EProjectType.SAMPLE_DATA_REAL)
 			{
 
 			}
@@ -151,24 +146,4 @@ public class CaleydoProjectWizard
 
 		return page;
 	}
-
-	// /**
-	// * For testing purposes
-	// */
-	// public static void main(String[] args)
-	// {
-	//
-	// Display display = new Display();
-	//
-	// // Create the parent shell for the dialog, but don't show it
-	// Shell shell = new Shell(display);
-	//
-	// // Create the dialog
-	// WizardDialog projectWizardDialog = new WizardDialog(shell, new
-	// CaleydoProjectWizard());
-	// projectWizardDialog.open();
-	//
-	// // Dispose the display
-	// display.dispose();
-	// }
 }

@@ -96,6 +96,14 @@
             id="org.caleydo.rcp.views.SWTGlyphMappingConfigurationView"
             name="Glyph Mapping Configuration">
       </view>
+      <view
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.views.TabularDataView"
+            icon="resources/icons/view/browser/browser.png"
+            id="org.caleydo.rcp.views.TabularDataView"
+            name="Tabular Data Viewer">
+      </view>
+
       
    </extension>   
    
@@ -202,6 +210,11 @@
             id="org.caleydo.rcp.command.openviews.hierarchical_heatmap"
             name="Open Hierarchical Heat Map">
       </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenTabularDataHandler"
+            id="org.caleydo.rcp.command.openviews.tabulardata"
+            name="Open Tabular Data Viewer">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -295,7 +308,12 @@
                      label="Hierarchical Heat Map"
                      style="push">
                </command>
-              
+               <command
+                     commandId="org.caleydo.rcp.command.openviews.tabulardata"
+                     icon="resources/icons/view/browser/browser.png"
+                     label="Tabular Data Viewer"
+                     style="push">
+               </command>
             </menu>
          </menu>
          <menu

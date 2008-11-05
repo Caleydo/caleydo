@@ -33,7 +33,7 @@ public class PreferenceInitializer
 		store.setDefault(COLOR_MARKER_POINT_COLOR + "1", "0,255,0");
 		store.setDefault(COLOR_MARKER_POINT_COLOR + "2", "0,0,0");
 		store.setDefault(COLOR_MARKER_POINT_COLOR + "3", "255,0,0");
-		store.setDefault(NAN_COLOR, "0,0,255");
+		store.setDefault(NAN_COLOR, "100,100,100");
 		
 		store.setDefault(NUMBER_OF_COLOR_MARKER_POINTS, 3);
 		

@@ -4,5 +4,6 @@ public enum EApplicationMode
 {
 	STANDARD,
 	PATHWAY_VIEWER,
-	SAMPLE_DATA
+	SAMPLE_DATA_RANDOM,
+	SAMPLE_DATA_REAL
 }

@@ -1,15 +1,14 @@
 package org.caleydo.core.data.collection.storage;
 
 import java.util.ArrayList;
+import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.Iterator;
 import org.caleydo.core.data.AUniqueObject;
-import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
 import org.caleydo.core.data.collection.ccontainer.FloatCContainerIterator;
 import org.caleydo.core.data.collection.ccontainer.ICContainer;
-import org.caleydo.core.data.collection.ccontainer.INumericalCContainer;
 import org.caleydo.core.data.collection.ccontainer.IntCContainer;
 import org.caleydo.core.data.collection.ccontainer.IntCContainerIterator;
 import org.caleydo.core.data.collection.ccontainer.NumericalCContainer;
@@ -26,7 +25,7 @@ public abstract class AStorage
 	extends AUniqueObject
 	implements IStorage
 {
-	protected HashMap<EDataRepresentation, ICContainer> hashCContainers;
+	protected EnumMap<EDataRepresentation, ICContainer> hashCContainers;
 	protected HashMap<Integer, IVirtualArray> hashVirtualArrays;
 	protected HashMap<Integer, Boolean> hashIsVirtualArrayEnabled;
 
@@ -47,7 +46,7 @@ public abstract class AStorage
 
 		GeneralManager.get().getStorageManager().registerItem(this);
 
-		hashCContainers = new HashMap<EDataRepresentation, ICContainer>();
+		hashCContainers = new EnumMap<EDataRepresentation, ICContainer>(EDataRepresentation.class);
 		hashVirtualArrays = new HashMap<Integer, IVirtualArray>();
 		hashIsVirtualArrayEnabled = new HashMap<Integer, Boolean>();
 		sLabel = new String("Not specified");
@@ -222,7 +221,7 @@ public abstract class AStorage
 	public void setRawData(ArrayList<? super Number> alNumber)
 	{
 		// TODO Auto-generated method stub
-
+		throw new IllegalStateException("Not implemented");
 	}
 
 
