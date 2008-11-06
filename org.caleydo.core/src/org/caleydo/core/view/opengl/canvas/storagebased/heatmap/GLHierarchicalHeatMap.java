@@ -2,7 +2,6 @@ package org.caleydo.core.view.opengl.canvas.storagebased.heatmap;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
-import gleem.linalg.Vec4f;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -56,7 +55,9 @@ import com.sun.opengl.util.texture.TextureIO;
 public class GLHierarchicalHeatMap
 	extends AStorageBasedView
 {
-	private final static float HEAT_MAP_SCALE_FACTOR = 0.5f;
+	private final static float HEAT_MAP_SCALE_FACTOR_NORMAL = 0.5f;
+	
+	private final static float HEAT_MAP_SCALE_FACTOR_INFOCUS = 0.7f;
 	
 	private HeatMapRenderStyle renderStyle;
 
@@ -68,19 +69,13 @@ public class GLHierarchicalHeatMap
 
 	// private boolean bRenderHorizontally = false;
 
-	private Vec4f vecRotation = new Vec4f(-90, 0, 0, 1);
-
 	private Vec3f vecTranslation;
-
-	private float fAnimationDefaultTranslation = 0;
 
 	private float fAnimationTranslation = 0;
 
 	private boolean bIsTranslationAnimationActive = false;
 
 	private float fAnimationTargetTranslation = 0;
-
-	private SelectedElementRep elementRep;
 
 	private GLIconTextureManager iconTextureManager;
 	
@@ -98,9 +93,15 @@ public class GLHierarchicalHeatMap
 	//number of partitions for selection in overViewBar
 	private int iNrSelBar = 10;
 	
+	//array of textures for holding the data samples
 	private Texture []THeatMap = new Texture[iNrSelBar];
 	
+	//embedded heatmap
 	private GLHeatMap glHeatMapView;
+	
+	private boolean bIsHeatmapInFocus = false;
+	
+	private boolean bPanningMode = false;
 	
 	/*
 	 * Stores the last triggered selection delta.
@@ -242,7 +243,7 @@ public class GLHierarchicalHeatMap
 	}
 	
 	@Override
-	public void setDetailLevel(EDetailLevel detailLevel)
+	public synchronized void setDetailLevel(EDetailLevel detailLevel)
 	{
 		super.setDetailLevel(detailLevel);
 		renderStyle.setDetailLevel(detailLevel);
@@ -424,7 +425,7 @@ public class GLHierarchicalHeatMap
 
 			gl.glColor4f(1f, 1f, 0f, 1f);
 			
-			gl.glLineWidth(2f);
+			gl.glLineWidth(3f);
 			
 			gl.glBegin(GL.GL_LINE_LOOP);			
 			gl.glVertex3f(0, fStep*(iNrSel - iSelector + 1), 0);
@@ -432,12 +433,10 @@ public class GLHierarchicalHeatMap
 			gl.glVertex3f(fFieldWith, fStep*(iNrSel - iSelector), 0);		
 			gl.glVertex3f(0, fStep*(iNrSel - iSelector), 0);		
 			gl.glEnd();
-			
-			gl.glFlush();
 		}
 	}
 	
-	private void renderMarkerOverviewbar(final GL gl)
+	private void renderMarkerOverviewBar(final GL gl)
 	{
 		if (iSelectorBar != 0)
 		{		
@@ -447,7 +446,7 @@ public class GLHierarchicalHeatMap
 
 			gl.glColor4f(1f, 1f, 0f, 1f);
 			
-			gl.glLineWidth(2f);
+			gl.glLineWidth(3f);
 			
 			gl.glBegin(GL.GL_LINE_LOOP);			
 			gl.glVertex3f(0, fStep*(iNrSelBar - iSelectorBar + 1), 0);
@@ -455,8 +454,6 @@ public class GLHierarchicalHeatMap
 			gl.glVertex3f(fFieldWith, fStep*(iNrSelBar - iSelectorBar), 0);		
 			gl.glVertex3f(0, fStep*(iNrSelBar - iSelectorBar), 0);		
 			gl.glEnd();
-			
-			gl.glFlush();
 		}
 	}
 	
@@ -478,7 +475,6 @@ public class GLHierarchicalHeatMap
 	    TextureCoords texCoords = THeatMap[iSelectorBar-1].getImageTexCoords();
 	   
 	    gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-//	    gl.glColor4f(1f, 1, 1, 1f);
 	    
 	    fHeight = viewFrustum.getHeight();
 		fWidth = viewFrustum.getWidth() / 4.0f;
@@ -494,8 +490,6 @@ public class GLHierarchicalHeatMap
 		gl.glVertex3f(fWidth, 0, 0);
 		gl.glEnd();
 
-	    gl.glFlush();
-
 		gl.glPopAttrib();
 		
 		THeatMap[iSelectorBar-1].disable();
@@ -504,13 +498,12 @@ public class GLHierarchicalHeatMap
 	}
 	
 	@Override
-	public void display(GL gl)
+	public synchronized void display(GL gl)
 	{		
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		// GLHelperFunctions.drawAxis(gl);
 		gl.glCallList(iGLDisplayListToCall);
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);		
-		renderEmbeddedHeatMap(gl);
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex)
@@ -529,22 +522,49 @@ public class GLHierarchicalHeatMap
 		{
 			// FIXME: bad hack, normalize frustum to 0:1 to avoid that
 			// clipToFrustum(gl);
-			float fLeftOffset = 0;
-			if (remoteRenderingGLCanvas == null)
-				fLeftOffset = 0.05f;
-			else
-				fLeftOffset = 0.15f;
-
+			
+			if(bIsHeatmapInFocus)
+			{
+				gl.glScalef(0.2f, 1, 1);
+			}
+			
 			renderOverviewBar(gl);	
-			renderMarkerOverviewbar(gl);
+			renderMarkerOverviewBar(gl);
+			
 			gl.glTranslatef(0.2f, 0, 0);
 			
 			renderTextureHeatMap(gl);
 			renderMarkerTexture(gl);
-
-			if (detailLevel == EDetailLevel.HIGH)
+			
+			gl.glTranslatef(-0.2f, 0, 0);
+			
+			if(bIsHeatmapInFocus)
 			{
-				gl.glTranslatef(-fLeftOffset - colorMappingBar.getWidth(), 0, 0);
+				gl.glScalef(5, 1, 1);
+				gl.glTranslatef(0.5f, 0f, 0f);
+				gl.glScalef(HEAT_MAP_SCALE_FACTOR_INFOCUS, HEAT_MAP_SCALE_FACTOR_INFOCUS, HEAT_MAP_SCALE_FACTOR_INFOCUS);
+			
+			}
+			else
+			{	
+				gl.glTranslatef(2.5f, 0.4f, 0f);
+				gl.glScalef(HEAT_MAP_SCALE_FACTOR_NORMAL, HEAT_MAP_SCALE_FACTOR_NORMAL, HEAT_MAP_SCALE_FACTOR_NORMAL);
+			}
+			
+			glHeatMapView.displayRemote(gl);
+//			renderEmbeddedHeatMap(gl);
+			
+			gl.glFlush();
+			
+			if(bIsHeatmapInFocus)
+			{
+				gl.glTranslatef(-0.5f, 0f, 0f);
+				gl.glScalef(1/HEAT_MAP_SCALE_FACTOR_INFOCUS, 1/HEAT_MAP_SCALE_FACTOR_INFOCUS, 1/HEAT_MAP_SCALE_FACTOR_INFOCUS);
+			}
+			else
+			{
+				gl.glTranslatef(-2.5f, -0.4f, 0f);
+				gl.glScalef(1/HEAT_MAP_SCALE_FACTOR_NORMAL, 1/HEAT_MAP_SCALE_FACTOR_NORMAL, 1/HEAT_MAP_SCALE_FACTOR_NORMAL);
 			}
 
 			gl.glDisable(GL.GL_STENCIL_TEST);
@@ -628,16 +648,16 @@ public class GLHierarchicalHeatMap
 		lastSelectionDelta = delta;
 	}
 	
-	private void renderEmbeddedHeatMap(final GL gl)
-	{
-		gl.glTranslatef(2.3f, 0f, 0);
-		gl.glScalef(HEAT_MAP_SCALE_FACTOR, HEAT_MAP_SCALE_FACTOR, HEAT_MAP_SCALE_FACTOR);
-		glHeatMapView.displayRemote(gl);
-		gl.glScalef(1/HEAT_MAP_SCALE_FACTOR, 1/HEAT_MAP_SCALE_FACTOR, 1/HEAT_MAP_SCALE_FACTOR);
-		gl.glTranslatef(-2.3f, 0f, 0);
-	}
+//	private void renderEmbeddedHeatMap(final GL gl)
+//	{
+//		gl.glTranslatef(2.3f, 0f, 0f);
+//		gl.glScalef(HEAT_MAP_SCALE_FACTOR_NORMAL, HEAT_MAP_SCALE_FACTOR_NORMAL, HEAT_MAP_SCALE_FACTOR_NORMAL);
+//		glHeatMapView.displayRemote(gl);
+//		gl.glScalef(1/HEAT_MAP_SCALE_FACTOR_NORMAL, 1/HEAT_MAP_SCALE_FACTOR_NORMAL, 1/HEAT_MAP_SCALE_FACTOR_NORMAL);
+//		gl.glTranslatef(-2.3f, 0f, 0f);
+//	}
 	
-	public void renderHorizontally(boolean bRenderStorageHorizontally)
+	public synchronized void renderHorizontally(boolean bRenderStorageHorizontally)
 	{
 
 		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
@@ -783,9 +803,9 @@ public class GLHierarchicalHeatMap
 
 					case MOUSE_OVER:
 
-						//System.out.println("mouse over OverviewBar part:" + iExternalID);
-						//iSelectorBar = iExternalID;
-						//setDisplayListDirty();
+//						System.out.println("mouse over OverviewBar part:" + iExternalID);
+//						iSelectorBar = iExternalID;
+//						setDisplayListDirty();
 						break;
 				}
 
@@ -805,10 +825,10 @@ public class GLHierarchicalHeatMap
 
 					case MOUSE_OVER:
 			
-						//triggerSelectionBlock(iExternalID);
-						//System.out.println("click on texture part:" + iExternalID);
-						//iSelector = iExternalID;
-						//setDisplayListDirty();
+//						triggerSelectionBlock(iExternalID);
+//						//System.out.println("click on texture part:" + iExternalID);
+//						iSelector = iExternalID;
+//						setDisplayListDirty();
 						break;
 				}
 
