@@ -9,8 +9,6 @@ import java.util.Hashtable;
 import java.util.StringTokenizer;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.data.ParameterKeyValueDataAndDefault;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Handles attributes from XML file used to create objects.
@@ -74,9 +72,8 @@ public final class ParameterHandler
 				return getValueInt(key);
 			case STRING:
 				return getValueString(key);
-
 			default:
-				throw new CaleydoRuntimeException("ParameterHandler.getValue(" + key
+				throw new IllegalArgumentException("ParameterHandler.getValue(" + key
 						+ ") uses unregistered enumeration!");
 		}
 	}
@@ -91,16 +88,7 @@ public final class ParameterHandler
 	@Override
 	public int getValueInt(final String key)
 	{
-
-		try
-		{
-			return hashKey2Integer.getValue(key);
-		}
-		catch (NullPointerException npe)
-		{
-			throw new CaleydoRuntimeException("getValueInt(" + key
-					+ ") failed, because key was not registered!");
-		}
+		return hashKey2Integer.getValue(key);
 	}
 
 	@Override
@@ -112,16 +100,9 @@ public final class ParameterHandler
 			return new Vec3f();
 		}
 
-		try
-		{
-			return new Vec3f(hashKey2Float.getValue(key + "_GL0"), hashKey2Float.getValue(key
-					+ "_GL1"), hashKey2Float.getValue(key + "_GL2"));
-		}
-		catch (NullPointerException npe)
-		{
-			throw new CaleydoRuntimeException("getValueInt(" + key
-					+ ") failed, because key was not registered!");
-		}
+		return new Vec3f(hashKey2Float.getValue(key + "_GL0"), hashKey2Float.getValue(key
+				+ "_GL1"), hashKey2Float.getValue(key + "_GL2"));
+
 	}
 
 	@Override
@@ -133,17 +114,10 @@ public final class ParameterHandler
 			return new Vec4f();
 		}
 
-		try
-		{
-			return new Vec4f(hashKey2Float.getValue(key + "_GLROT0"), hashKey2Float
-					.getValue(key + "_GLROT1"), hashKey2Float.getValue(key + "_GLROT2"),
-					hashKey2Float.getValue(key + "_GLROT3"));
-		}
-		catch (NullPointerException npe)
-		{
-			throw new CaleydoRuntimeException("getValueInt(" + key
-					+ ") failed, because key was not registered!");
-		}
+		return new Vec4f(hashKey2Float.getValue(key + "_GLROT0"), hashKey2Float.getValue(key
+				+ "_GLROT1"), hashKey2Float.getValue(key + "_GLROT2"), hashKey2Float
+				.getValue(key + "_GLROT3"));
+
 	}
 
 	@Override
@@ -175,7 +149,7 @@ public final class ParameterHandler
 
 		if (currentType == null)
 		{
-			throw new CaleydoRuntimeException("ParameterHandler.setValue(" + key
+			throw new IllegalArgumentException("ParameterHandler.setValue(" + key
 					+ " , * ) key was not registered as type!");
 		}
 
@@ -197,14 +171,14 @@ public final class ParameterHandler
 					break;
 
 				default:
-					throw new CaleydoRuntimeException("ParameterHandler.setValue(" + key
+					throw new IllegalArgumentException("ParameterHandler.setValue(" + key
 							+ ",*) uses unregistered enumeration!");
 			}
 
 		}
 		catch (NumberFormatException nfe)
 		{
-			new CaleydoRuntimeException("ParameterHandler.setValue(" + key + "," + value
+			new IllegalStateException("ParameterHandler.setValue(" + key + "," + value
 					+ ") value was not valid due to enumeration type="
 					+ currentType.toString() + " !");
 
@@ -234,13 +208,13 @@ public final class ParameterHandler
 					break;
 
 				default:
-					throw new CaleydoRuntimeException("ParameterHandler.setValueAndType("
+					throw new IllegalArgumentException("ParameterHandler.setValueAndType("
 							+ key + ") uses unregistered enumeration!");
 			}
 		}
 		catch (NumberFormatException nfe)
 		{
-			new CaleydoRuntimeException("ParameterHandler.setValueAndType(" + key + ","
+			new IllegalArgumentException("ParameterHandler.setValueAndType(" + key + ","
 					+ value + ") value was not valid due to enumeration type="
 					+ type.toString() + " !");
 
@@ -317,9 +291,8 @@ public final class ParameterHandler
 
 					if (tokenizer.countTokens() != 3)
 					{
-						throw new CaleydoRuntimeException("Error in parameter " + key + "=["
-								+ value + "] needs three float values!",
-								CaleydoRuntimeExceptionType.CONVERSION);
+						throw new IllegalArgumentException("Error in parameter " + key + "=["
+								+ value + "] needs three float values!");
 					} // if
 
 					for (int i = 0; tokenizer.hasMoreTokens(); i++)
@@ -338,9 +311,8 @@ public final class ParameterHandler
 
 					if (tokenizer.countTokens() != 4)
 					{
-						throw new CaleydoRuntimeException("Error in parameter " + key + "=["
-								+ value + "] needs four float values!",
-								CaleydoRuntimeExceptionType.CONVERSION);
+						throw new IllegalArgumentException("Error in parameter " + key + "=["
+								+ value + "] needs four float values!");
 					} // if
 
 					for (int i = 0; tokenizer.hasMoreTokens(); i++)
@@ -353,13 +325,13 @@ public final class ParameterHandler
 					break;
 
 				default:
-					throw new CaleydoRuntimeException("ParameterHandler.setValueAndType("
+					throw new IllegalStateException("ParameterHandler.setValueAndType("
 							+ key + ") uses unregistered enumeration!");
 			}
 		}
 		catch (NumberFormatException nfe)
 		{
-			new CaleydoRuntimeException("ParameterHandler.setValueAndTypeAndDefault(" + key
+			new IllegalStateException("ParameterHandler.setValueAndTypeAndDefault(" + key
 					+ "," + defaultValue
 					+ ") defaultValue was not valid due to enumeration type="
 					+ type.toString() + " !");
@@ -392,13 +364,13 @@ public final class ParameterHandler
 					break;
 
 				default:
-					throw new CaleydoRuntimeException("ParameterHandler.setValueAndType("
+					throw new IllegalArgumentException("ParameterHandler.setValueAndType("
 							+ key + ") uses unregistered enumeration!");
 			}
 		}
 		catch (NumberFormatException nfe)
 		{
-			new CaleydoRuntimeException("ParameterHandler.setValueAndType(" + key + ","
+			new IllegalStateException("ParameterHandler.setValueAndType(" + key + ","
 					+ value + ") value was not valid due to enumeration type="
 					+ type.toString() + " !");
 

@@ -2,7 +2,6 @@ package org.caleydo.core.data.selection;
 
 import java.util.ArrayList;
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * A Virtual Array provides an association between a modifiable index in the
@@ -48,7 +47,7 @@ public interface IVirtualArray
 	 * @param iIndex the position on which to insert the new element
 	 * @param iNewElement the index to the collection
 	 * 
-	 * @throws CaleydoRuntimeException if the value of the new element is larger
+	 * @throws IllegalArgumentException if the value of the new element is larger
 	 *             than allowed. The maximum allowed value is the length of the
 	 *             collection which is managed - 1
 	 */

@@ -7,6 +7,7 @@ import java.util.logging.Level;
 import javax.media.opengl.GLEventListener;
 import javax.swing.JFrame;
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IViewGLCanvasManager;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -82,7 +83,7 @@ public class ViewGLCanvasManager
 		hashGLEventListenerID2GLEventListener = new HashMap<Integer, AGLEventListener>();
 
 		arWorkspaceJFrame = new ArrayList<JFrame>();
-		
+
 		fpsAnimator = new FPSAnimator(null, 60);
 	}
 
@@ -162,7 +163,7 @@ public class ViewGLCanvasManager
 				break;
 			case VIEW_SWT_BROWSER_GENOME:
 				view = new GenomeHTMLBrowserViewRep(iParentContainerID, sLabel);
-				break;	
+				break;
 			case VIEW_SWT_IMAGE:
 				view = new ImageViewRep(iParentContainerID, sLabel);
 				break;
@@ -199,8 +200,8 @@ public class ViewGLCanvasManager
 				break;
 
 			default:
-				throw new RuntimeException("Unhandled view type ["
-						+ useViewType.toString() + "]");
+				throw new RuntimeException("Unhandled view type [" + useViewType.toString()
+						+ "]");
 		}
 
 		registerItem(view);
@@ -222,20 +223,27 @@ public class ViewGLCanvasManager
 		switch (type)
 		{
 			case CREATE_GL_HEAT_MAP_3D:
-				glEventListener = new GLHeatMap(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener = new GLHeatMap(ESetType.GENE_EXPRESSION_DATA, iGLCanvasID,
+						sLabel, viewFrustum);
 				break;
 			case CREATE_GL_TEXTURE_HEAT_MAP_3D:
-				glEventListener = new GLHierarchicalHeatMap(iGLCanvasID, sLabel, viewFrustum);
+				glEventListener = new GLHierarchicalHeatMap(ESetType.GENE_EXPRESSION_DATA,
+						iGLCanvasID, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_PATHWAY_3D:
 				glEventListener = new GLPathway(iGLCanvasID, sLabel, viewFrustum);
 				break;
 
-			case CREATE_GL_PARALLEL_COORDINATES_3D:
-				glEventListener = new GLParallelCoordinates(iGLCanvasID, sLabel, viewFrustum);
+			case CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION:
+				glEventListener = new GLParallelCoordinates(ESetType.GENE_EXPRESSION_DATA,
+						iGLCanvasID, sLabel, viewFrustum);
 				break;
 
+			case CREATE_GL_PARALLEL_COORDINATES_CLINICAL:
+				glEventListener = new GLParallelCoordinates(ESetType.CLINICAL_DATA,
+						iGLCanvasID, sLabel, viewFrustum);
+				break;
 			case CREATE_GL_GLYPH:
 				glEventListener = new GLGlyph(iGLCanvasID, sLabel, viewFrustum);
 				break;
@@ -280,7 +288,9 @@ public class ViewGLCanvasManager
 
 		if (hashGLCanvasID2GLCanvas.containsKey(iGLCanvasID))
 		{
-			generalManager.getLogger().log(Level.WARNING,
+			generalManager.getLogger()
+					.log(
+							Level.WARNING,
 							"GL Canvas with ID " + iGLCanvasID
 									+ " is already registered! Do nothing.");
 
@@ -346,10 +356,10 @@ public class ViewGLCanvasManager
 		if (parentGLCanvas != null)
 		{
 			parentGLCanvas.removeGLEventListener(gLEventListenerToRemove);
-			
+
 			if (hashGLCanvasID2GLEventListeners.containsKey(parentGLCanvas.getID()))
 				hashGLCanvasID2GLEventListeners.get(parentGLCanvas.getID()).remove(
-					gLEventListenerToRemove);
+						gLEventListenerToRemove);
 		}
 
 		hashGLEventListenerID2GLEventListener.remove(iGLEventListenerID);
@@ -453,13 +463,14 @@ public class ViewGLCanvasManager
 	@Override
 	public void startAnimator()
 	{
-//		// add all canvas objects before starting animator
-//		// this is needed because all the views are fully filled with needed data at that time.
-//		for (GLCaleydoCanvas glCanvas : hashGLCanvasID2GLCanvas.values())
-//		{
-//			fpsAnimator.add(glCanvas);
-//		}
-		
+		// // add all canvas objects before starting animator
+		// // this is needed because all the views are fully filled with needed
+		// data at that time.
+		// for (GLCaleydoCanvas glCanvas : hashGLCanvasID2GLCanvas.values())
+		// {
+		// fpsAnimator.add(glCanvas);
+		// }
+
 		fpsAnimator.start();
 	}
 }

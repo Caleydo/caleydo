@@ -10,7 +10,6 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -122,7 +121,7 @@ public class PathwayColorMapper
 			return arMappingColor;
 		}
 
-		throw new CaleydoRuntimeException("Unkonw pathway node type");
+		throw new IllegalStateException("Unkonw pathway node type");
 	}
 
 	public ColorMapping getColorMapper()

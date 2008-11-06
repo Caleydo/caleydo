@@ -9,7 +9,6 @@ import java.util.logging.Level;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * <p>
@@ -370,11 +369,10 @@ public class GenericSelectionManager
 				return;
 			}
 		}
-
+		System.out.println("Pathways mishandle GenericSelectionManager");
 		// // TODO: investigate
-		// throw new CaleydoRuntimeException(
-		// "SelectionManager: element to be removed does not exist",
-		// CaleydoRuntimeExceptionType.VIEW);
+		// throw new IllegalArgumentException(
+		// "SelectionManager: element to be removed does not exist");
 	}
 
 	/**
@@ -382,7 +380,7 @@ public class GenericSelectionManager
 	 * 
 	 * @param targetType the selection type the element should be added to
 	 * @param idCollection collection of element ids
-	 * @throws CaleydoRuntimeException if the element is not in the selection
+	 * @throws IllegalArgumentException if the element is not in the selection
 	 *             manager
 	 */
 	public void addToType(ESelectionType targetType, Collection<Integer> idCollection)
@@ -537,7 +535,6 @@ public class GenericSelectionManager
 
 		return returnDelta;
 	}
-
 
 	/**
 	 * Creates a delta, based on the original delta, which contains an addition

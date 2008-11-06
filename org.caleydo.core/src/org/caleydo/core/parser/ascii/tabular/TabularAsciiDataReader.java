@@ -12,8 +12,6 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.ascii.AbstractLoader;
 import org.caleydo.core.parser.ascii.IParserObject;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.system.StringConversionTool;
 
 /**
@@ -143,8 +141,8 @@ public class TabularAsciiDataReader
 				case ABORT:
 					return;
 				default:
-					throw new CaleydoRuntimeException("Unknown token pattern detected: "
-							+ storageType.toString(), CaleydoRuntimeExceptionType.DATAHANDLING);
+					throw new IllegalStateException("Unknown token pattern detected: "
+							+ storageType.toString());
 			}
 		}
 	}
@@ -218,10 +216,9 @@ public class TabularAsciiDataReader
 							iColumnIndex = alColumnDataTypes.size();
 							break;
 						default:
-							throw new CaleydoRuntimeException(
+							throw new IllegalStateException(
 									"Unknown token pattern detected: "
-											+ columnDataType.toString(),
-									CaleydoRuntimeExceptionType.DATAHANDLING);
+											+ columnDataType.toString());
 					}
 
 					// Check if the line is finished or early aborted
@@ -281,8 +278,8 @@ public class TabularAsciiDataReader
 				case ABORT:
 					return;
 				default:
-					throw new CaleydoRuntimeException("Unknown token pattern detected: "
-							+ storageType.toString(), CaleydoRuntimeExceptionType.DATAHANDLING);
+					throw new IllegalStateException("Unknown token pattern detected: "
+							+ storageType.toString());
 			}
 		}
 	}

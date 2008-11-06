@@ -1,7 +1,5 @@
 package org.caleydo.core.view.swt.browser;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 import java.util.ArrayList;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.mapping.EMappingType;

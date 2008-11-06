@@ -97,9 +97,14 @@ public abstract class AStorageBasedView
 	protected int iNumberOfRandomElements = 100;
 
 	/**
-	 * Constructor.
+	 * Constructor for storage based views
+	 * 
+	 * @param setType from the type of set the kind of visualization is derived
+	 * @param iGLCanvasID
+	 * @param sLabel
+	 * @param viewFrustum
 	 */
-	protected AStorageBasedView(final int iGLCanvasID, final String sLabel,
+	protected AStorageBasedView(ESetType setType, final int iGLCanvasID, final String sLabel,
 			final IViewFrustum viewFrustum)
 	{
 		super(iGLCanvasID, sLabel, viewFrustum, true);
@@ -269,6 +274,7 @@ public abstract class AStorageBasedView
 
 	/**
 	 * Create 0:n {@link SelectedElementRep} for the selectionDelta
+	 * 
 	 * @param idType TODO
 	 * @param selectionDelta the selection delta which should be represented
 	 * 
@@ -343,29 +349,28 @@ public abstract class AStorageBasedView
 				else
 				{
 					contentSelectionManager.clearSelections();
-					break;				
+					break;
 				}
 			}
 			contentSelectionManager.setDelta(selectionDelta);
 			ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
 			initForAddedElements();
-			connectedElementRepresentationManager.clearByView(EIDType.EXPRESSION_INDEX, iUniqueID);
+			connectedElementRepresentationManager.clearByView(EIDType.EXPRESSION_INDEX,
+					iUniqueID);
 			handleConnectedElementRep(internalDelta);
-//			handleConnectedElementRep(internalDelta);
+			// handleConnectedElementRep(internalDelta);
 			checkUnselection();
 			setDisplayListDirty();
 		}
-		else if(selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX)
+		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX)
 		{
-		//	generalManager.getIDMappingManager().getID(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX, key)(type)
-			
+			// generalManager.getIDMappingManager().getID(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX,
+			// key)(type)
+
 			ISelectionDelta internalDelta = storageSelectionManager.setDelta(selectionDelta);
 			handleConnectedElementRep(selectionDelta);
-			setDisplayListDirty();			
+			setDisplayListDirty();
 		}
-
-		
-
 
 	}
 
@@ -426,8 +431,10 @@ public abstract class AStorageBasedView
 			{
 				for (SelectionItem item : selectionDelta)
 				{
-					if (!(item.getSelectionType() == ESelectionType.MOUSE_OVER || item.getSelectionType() == ESelectionType.SELECTION))
-			//		if (!(item.getSelectionType() == ESelectionType.MOUSE_OVER))						
+					if (!(item.getSelectionType() == ESelectionType.MOUSE_OVER || item
+							.getSelectionType() == ESelectionType.SELECTION))
+						// if (!(item.getSelectionType() ==
+						// ESelectionType.MOUSE_OVER))
 						continue;
 
 					if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX)
@@ -543,9 +550,9 @@ public abstract class AStorageBasedView
 	}
 
 	public abstract void resetSelections();
-	
+
 	public abstract void changeOrientation(boolean bDefaultOrientation);
-	
+
 	public abstract boolean isInDefaultOrientation();
 
 }

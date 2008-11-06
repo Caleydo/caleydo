@@ -12,8 +12,6 @@ import java.util.logging.Level;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
@@ -179,13 +177,13 @@ public class PathwayLoaderThread
 		}
 		catch (FileNotFoundException e)
 		{
-			throw new CaleydoRuntimeException("Pathway list file: " + sFileName
-					+ " not found.", CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalStateException("Pathway list file: " + sFileName
+					+ " not found.");
 		}
 		catch (IOException e)
 		{
-			throw new CaleydoRuntimeException("Error reading data from pathway list file: "
-					+ sFileName, CaleydoRuntimeExceptionType.DATAHANDLING);
+			throw new IllegalStateException("Error reading data from pathway list file: "
+					+ sFileName);
 		}
 
 		for (AGLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()

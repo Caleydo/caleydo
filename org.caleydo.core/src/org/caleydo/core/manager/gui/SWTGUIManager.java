@@ -8,14 +8,12 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.core.view.swt.ISWTWidget;
 import org.caleydo.core.view.swt.widget.ASWTWidget;
 import org.caleydo.core.view.swt.widget.SWTEmbeddedGraphWidget;
 import org.caleydo.core.view.swt.widget.SWTEmbeddedJoglWidget;
 import org.caleydo.core.view.swt.widget.SWTNativeWidget;
 import org.eclipse.jface.action.IStatusLineManager;
-import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -170,7 +168,7 @@ public class SWTGUIManager
 				widgetMap.add(newSWTWidget);
 				return newSWTWidget;
 			default:
-				throw new CaleydoRuntimeException(
+				throw new IllegalStateException(
 						"StorageManagerSimple.createView() failed due to unhandled type ["
 								+ useWidgetType.toString() + "]");
 		}
@@ -246,9 +244,9 @@ public class SWTGUIManager
 		loadingProgressBarWindow = new Shell(display, SWT.TITLE | SWT.BORDER);
 		loadingProgressBarWindow.setMaximized(false);
 		loadingProgressBarWindow.setText("Loading Caleydo...");
-//		loadingProgressBarWindow.setImage(new Image(display,
-//				this.getClass().getClassLoader().getResourceAsStream(
-//						"resources/icons/caleydo/caleydo16.gif")));
+		// loadingProgressBarWindow.setImage(new Image(display,
+		// this.getClass().getClassLoader().getResourceAsStream(
+		// "resources/icons/caleydo/caleydo16.gif")));
 
 		loadingProgressBar = new ProgressBar(loadingProgressBarWindow, SWT.SMOOTH);
 		loadingProgressBar.setBounds(10, 10, 430, 40);

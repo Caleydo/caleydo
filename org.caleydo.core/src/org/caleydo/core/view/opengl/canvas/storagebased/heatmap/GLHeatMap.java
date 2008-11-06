@@ -14,8 +14,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
-import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
+import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
@@ -30,7 +29,6 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.mapping.color.ColorMapping;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
@@ -40,7 +38,6 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.miniview.GLColorMappingBarMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.EIconTextures;
-import org.caleydo.core.view.opengl.util.GLIconTextureManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -89,9 +86,9 @@ public class GLHeatMap
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLHeatMap(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
+	public GLHeatMap(ESetType setType, final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
 	{
-		super(iGLCanvasID, sLabel, viewFrustum);
+		super(setType, iGLCanvasID, sLabel, viewFrustum);
 		viewType = EManagedObjectType.GL_HEAT_MAP;
 
 		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();

@@ -14,7 +14,6 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraph;

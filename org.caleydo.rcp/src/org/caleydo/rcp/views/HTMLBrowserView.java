@@ -1,8 +1,5 @@
 package org.caleydo.rcp.views;
 
-import java.net.InetAddress;
-import java.net.UnknownHostException;
-
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;

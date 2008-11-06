@@ -10,6 +10,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.event.CmdEventCreateMediator;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
+import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
@@ -118,10 +119,10 @@ public class GLHierarchicalHeatMap
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLHierarchicalHeatMap(final int iGLCanvasID, final String sLabel,
+	public GLHierarchicalHeatMap(ESetType setType, final int iGLCanvasID, final String sLabel,
 			final IViewFrustum viewFrustum)
 	{
-		super(iGLCanvasID, sLabel, viewFrustum);
+		super(setType, iGLCanvasID, sLabel, viewFrustum);
 		viewType = EManagedObjectType.GL_HEAT_MAP;
 
 		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();

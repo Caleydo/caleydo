@@ -94,7 +94,6 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	@SuppressWarnings("unchecked")
 	public void init(GL gl)
 	{
 		// disable view rotation, zooming

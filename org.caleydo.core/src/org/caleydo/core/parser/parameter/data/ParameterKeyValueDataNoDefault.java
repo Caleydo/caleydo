@@ -6,7 +6,6 @@ package org.caleydo.core.parser.parameter.data;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import org.caleydo.core.parser.parameter.IParameterKeyValuePair;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Stores key-value pair and default-key,default-value in same place. Attention:
@@ -112,7 +111,7 @@ public final class ParameterKeyValueDataNoDefault<T>
 
 		if (bDefaultValuesSetFinished)
 		{
-			throw new CaleydoRuntimeException(
+			throw new IllegalStateException(
 					"setDefaultValue() is callled after writing data to this class! Once data valeus are written setDefaultValue() must not be called any more!");
 		}
 		hashKey2Generic.put(key, value);

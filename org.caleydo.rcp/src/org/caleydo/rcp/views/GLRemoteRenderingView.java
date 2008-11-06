@@ -50,7 +50,7 @@ public class GLRemoteRenderingView
 		{
 			iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D, -1, true));
 //			iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_TEXTURE_HEAT_MAP_3D, -1));			
-			iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_3D, -1, true));
+			iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION, -1, true));
 			
 			// FIXME: This is just a temporary solution to check if glyph view
 			// should be added to bucket.

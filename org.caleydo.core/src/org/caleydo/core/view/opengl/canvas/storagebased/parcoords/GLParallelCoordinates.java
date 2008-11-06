@@ -33,6 +33,7 @@ import java.util.Iterator;
 import java.util.Set;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
+import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
@@ -153,10 +154,10 @@ public class GLParallelCoordinates
 	/**
 	 * Constructor.
 	 */
-	public GLParallelCoordinates(final int iGLCanvasID, final String sLabel,
+	public GLParallelCoordinates(ESetType setType, final int iGLCanvasID, final String sLabel,
 			final IViewFrustum viewFrustum)
 	{
-		super(iGLCanvasID, sLabel, viewFrustum);
+		super(setType, iGLCanvasID, sLabel, viewFrustum);
 		viewType = EManagedObjectType.GL_PARALLEL_COORDINATES;
 		// alDataStorages = new ArrayList<IStorage>();
 		renderStyle = new ParCoordsRenderStyle(viewFrustum);

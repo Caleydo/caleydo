@@ -14,8 +14,6 @@ import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.event.mediator.LockableMediator;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Implements event mediator pattern.
@@ -26,7 +24,7 @@ import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 public class EventPublisher
 	extends AManager<IMediator>
 	implements IEventPublisher
-{	
+{
 	protected HashMap<IMediatorSender, ArrayList<IMediator>> hashSender2DataMediators;
 	protected HashMap<IMediatorReceiver, ArrayList<IMediator>> hashReceiver2DataMediators;
 	protected HashMap<IMediatorSender, ArrayList<IMediator>> hashSender2SelectionMediators;
@@ -74,14 +72,14 @@ public class EventPublisher
 
 		if (bufferArrayList.contains(sender))
 		{
-			throw new CaleydoRuntimeException("Try to insert an existing object! "
+			throw new IllegalStateException("Try to insert an existing object! "
 					+ sender.toString() + " ==> " + newMediator.toString() + " inside map"
-					+ bufferArrayList.toString(), CaleydoRuntimeExceptionType.OBSERVER);
+					+ bufferArrayList.toString());
 		}
 
 		bufferArrayList.add(newMediator);
 	}
-	
+
 	public void removeReceiver(IMediatorReceiver receiver)
 	{
 		if (hashReceiver2DataMediators.containsKey(receiver))
@@ -93,7 +91,7 @@ public class EventPublisher
 
 			hashReceiver2DataMediators.remove(receiver);
 		}
-		
+
 		if (hashReceiver2ViewMediators.containsKey(receiver))
 		{
 			for (IMediator mediator : hashReceiver2ViewMediators.get(receiver))
@@ -103,7 +101,7 @@ public class EventPublisher
 
 			hashReceiver2ViewMediators.remove(receiver);
 		}
-		
+
 		if (hashReceiver2SelectionMediators.containsKey(receiver))
 		{
 			for (IMediator mediator : hashReceiver2SelectionMediators.get(receiver))
@@ -134,8 +132,7 @@ public class EventPublisher
 			// newMediator = new LockableIgnoreFilterMediator(null);
 			// break;
 			default:
-				throw new CaleydoRuntimeException("Unknown mediator type " + mediatorUpdateType,
-						CaleydoRuntimeExceptionType.EVENT);
+				throw new IllegalStateException("Unknown mediator type " + mediatorUpdateType);
 		}
 
 		registerItem(newMediator);
@@ -183,8 +180,8 @@ public class EventPublisher
 					break;
 
 				default:
-					throw new CaleydoRuntimeException("createMediator() unknown type sender: "
-							+ mediatorType.toString(), CaleydoRuntimeExceptionType.OBSERVER);
+					throw new IllegalStateException("createMediator() unknown type sender: "
+							+ mediatorType.toString());
 
 			}
 		}
@@ -218,112 +215,110 @@ public class EventPublisher
 					break;
 
 				default:
-					throw new CaleydoRuntimeException(
-							"createMediator() unknown type receiver: "
-									+ mediatorType.toString(),
-							CaleydoRuntimeExceptionType.OBSERVER);
+					throw new IllegalStateException("createMediator() unknown type receiver: "
+							+ mediatorType.toString());
 			}
 		}
 	}
 
-	public void registerSenderToMediatorGroup(EMediatorType mediatorType, 
+	public void registerSenderToMediatorGroup(EMediatorType mediatorType,
 			IMediatorSender sender)
 	{
 		for (IMediator mediator : hashItems.values())
 		{
-			switch(mediatorType)
+			switch (mediatorType)
 			{
 				case DATA_MEDIATOR:
 					mediator.register(sender);
-//					hashSender2DataMediators.get(sender).add(mediator);
+					// hashSender2DataMediators.get(sender).add(mediator);
 					break;
 				case SELECTION_MEDIATOR:
 					mediator.register(sender);
-//					hashSender2SelectionMediators.get(sender).add(mediator);
+					// hashSender2SelectionMediators.get(sender).add(mediator);
 					break;
 				case VIEW_MEDIATOR:
 					mediator.register(sender);
-//					hashSender2ViewMediators.get(sender).add(mediator);
+					// hashSender2ViewMediators.get(sender).add(mediator);
 					break;
 			}
 		}
 	}
-	
-	public void registerReceiverToMediatorGroup(EMediatorType mediatorType, 
+
+	public void registerReceiverToMediatorGroup(EMediatorType mediatorType,
 			IMediatorReceiver receiver)
 	{
 		for (IMediator mediator : hashItems.values())
 		{
-			switch(mediatorType)
+			switch (mediatorType)
 			{
 				case DATA_MEDIATOR:
 					mediator.register(receiver);
-//					hashReceiver2DataMediators.get(receiver).add(mediator);
+					// hashReceiver2DataMediators.get(receiver).add(mediator);
 					break;
 				case SELECTION_MEDIATOR:
 					mediator.register(receiver);
-//					hashReceiver2SelectionMediators.get(receiver).add(mediator);
+					// hashReceiver2SelectionMediators.get(receiver).add(mediator);
 					break;
 				case VIEW_MEDIATOR:
 					mediator.register(receiver);
-//					hashReceiver2ViewMediators.get(receiver).add(mediator);
+					// hashReceiver2ViewMediators.get(receiver).add(mediator);
 					break;
 			}
 		}
 	}
-	
+
 	public void registerSenderToMediator(int iMediatorId, IMediatorSender sender)
 	{
-
+		throw new IllegalStateException("Not implemented");
 		// TODO Auto-generated method stub
 
 	}
 
 	public void registerSenderToMediator(int iMediatorId, int iMediatorSenderId)
 	{
-
+		throw new IllegalStateException("Not implemented");
 		// TODO Auto-generated method stub
 
 	}
 
 	public void registerReceiverToMediator(int iMediatorId, IMediatorReceiver receiver)
 	{
-
+		throw new IllegalStateException("Not implemented");
 		// TODO Auto-generated method stub
 
 	}
 
 	public void registerReceiverToMediator(int iMediatorId, int iMediatorReceiverId)
 	{
-
+		throw new IllegalStateException("Not implemented");
 		// TODO Auto-generated method stub
 
 	}
 
 	public void unregisterSenderToMediator(int iMediatorId, IMediatorSender sender)
 	{
-
+		throw new IllegalStateException("Not implemented");
 		// TODO Auto-generated method stub
 
 	}
 
 	public void unregisterSenderToMediator(int iMediatorId, int iMediatorSenderId)
 	{
-
+		throw new IllegalStateException("Not implemented");
 		// TODO Auto-generated method stub
 
 	}
 
 	public void unregisterReceiverToMediator(int iMediatorId, IMediatorReceiver receiver)
 	{
-
+		throw new IllegalStateException("Not implemented");
 		// TODO Auto-generated method stub
 
 	}
 
 	public void unregisterReceiverToMediator(int iMediatorId, int iMediatorReceiverId)
 	{
-
+		throw new IllegalStateException("Not implemented");
 		// TODO Auto-generated method stub
 
 	}
@@ -331,12 +326,12 @@ public class EventPublisher
 	@Override
 	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
 	{
-		ArrayList<IMediator> arMediator; 
-		
+		ArrayList<IMediator> arMediator;
+
 		if (!hashSender2SelectionMediators.isEmpty())
 		{
 			arMediator = hashSender2SelectionMediators.get(eventTrigger);
-			
+
 			if (arMediator != null)
 			{
 				for (IMediator mediator : arMediator)
@@ -349,7 +344,7 @@ public class EventPublisher
 		if (!hashSender2DataMediators.isEmpty())
 		{
 			arMediator = hashSender2DataMediators.get(eventTrigger);
-			
+
 			if (arMediator != null)
 			{
 				for (IMediator mediator : arMediator)
@@ -358,11 +353,11 @@ public class EventPublisher
 				}
 			}
 		}
-		
+
 		if (!hashSender2ViewMediators.isEmpty())
 		{
 			arMediator = hashSender2ViewMediators.get(eventTrigger);
-			
+
 			if (arMediator != null)
 			{
 				for (IMediator mediator : arMediator)
@@ -376,14 +371,14 @@ public class EventPublisher
 	public void removeMediator(IMediatorSender sender)
 	{
 
+		throw new IllegalStateException("Not implemented");
 		// TODO Auto-generated method stub
 
 	}
 
 	public boolean hasRelation(IMediatorSender sender, IMediatorReceiver receiver)
 	{
-
+		throw new IllegalStateException("Not implemented");
 		// TODO Auto-generated method stub
-		return false;
 	}
 }

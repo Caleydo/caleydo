@@ -3,7 +3,6 @@ package org.caleydo.core.manager.id;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
 
 /**
  * Returns a system-wide unique id for the different managed units
@@ -78,7 +77,7 @@ public class IDManager
 	 * 
 	 * @param iExternalID the external id
 	 * @return the internal id
-	 * @throws CaleydoRuntimeException if now mapping exists
+	 * @throws IllegalArgumentException if now mapping exists
 	 */
 	public int getInternalFromExternalID(int iExternalID)
 

@@ -31,7 +31,10 @@ public enum ECommandType
 	CREATE_GL_GLYPH("cmd", "type", "-1", "Create Glyph"),
 	CREATE_GL_GLYPH_SLIDER("cmd", "type", "-1", "Create Glyph Slider View"),
 	CREATE_GL_PATHWAY_3D("cmd", "type", "-1", "Create Pathway 3D"),
-	CREATE_GL_PARALLEL_COORDINATES_3D("cmd", "type", "-1", "Create Parallel Coordinates 3D"),
+	CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION("cmd", "type", "-1", "Create Parallel Coordinates for gene expression"),
+	CREATE_GL_PARALLEL_COORDINATES_CLINICAL("cmd", "type", "-1", "Create Parallel Coordinates for clinical data"),
+	
+	
 	CREATE_GL_BUCKET_3D("cmd", "type", "-1", "Create Bucket 3D"),
 	CREATE_GL_JUKEBOX_3D("cmd", "type", "-1", "Create Jukebox 3D"),
 	CREATE_GL_WII_TEST("cmd", "type", "-1", "No description available!"),

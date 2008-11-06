@@ -7,8 +7,6 @@ import java.util.Iterator;
 import java.util.Vector;
 import org.caleydo.core.command.memento.IMemento;
 import org.caleydo.core.manager.IMementoManager;
-import org.caleydo.core.util.exception.CaleydoRuntimeException;
-import org.caleydo.core.util.exception.CaleydoRuntimeExceptionType;
 
 /**
  * Simple IMemento Manager, that stores all IMemento's in a Vector.
@@ -44,19 +42,10 @@ public class MementoManager
 		// TODO: review when implementing ID management
 		final int iUniqueId = -1;// createId(EManagerObjectType.MEMENTO);
 
-		try
-		{
-			vecMemento.add(addMemento);
-			iVecMementoStorageSize = vecMemento.size();
-			hashMementoId2Index.put(iUniqueId, iVecMementoStorageSize - 1);
-			return iUniqueId;
-
-		}
-		catch (Exception e)
-		{
-			throw new CaleydoRuntimeException("setMemento(IMemento) failed. " + e.toString(),
-					CaleydoRuntimeExceptionType.MEMENTO);
-		}
+		vecMemento.add(addMemento);
+		iVecMementoStorageSize = vecMemento.size();
+		hashMementoId2Index.put(iUniqueId, iVecMementoStorageSize - 1);
+		return iUniqueId;
 	}
 
 	@Override
