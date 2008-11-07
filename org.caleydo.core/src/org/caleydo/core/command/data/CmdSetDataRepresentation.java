@@ -25,6 +25,7 @@ public class CmdSetDataRepresentation
 	private ArrayList<Integer> iAlIDs;
 
 	private EExternalDataRepresentation externalDataRep;
+	private boolean bIsSetHomogeneous;
 
 	private EManagedObjectType objectType;
 
@@ -71,20 +72,44 @@ public class CmdSetDataRepresentation
 						"Setting of external data rep is only allowed on storages or sets");
 		}
 
+		// default is homogeneous
+		if (sAttribute4.equals(""))
+			bIsSetHomogeneous = true;
+		else
+		{
+			if (sAttribute4.equals("homogeneous"))
+				bIsSetHomogeneous = true;
+			else if (sAttribute4.equals("inhomogeneous"))
+				bIsSetHomogeneous = false;
+			else
+				throw new IllegalArgumentException(
+						"Illegal string for attrib 4: 'homogeneous' and 'inhomogeneous' are valid.");
+		}
+
 	}
 
 	/**
 	 * Overwrites the specified storage with the results of the operation
 	 * 
-	 * @param dataFilterMathType The type of operation
+	 * @param externalDataRep Determines how the data is visualized. For options
+	 *            see {@link EExternalDataRepresentation}
+	 * @param bIsSetHomogeneous Determines whether a set is homogeneous or not.
+	 *            Homogeneous means that the sat has a global maximum and
+	 *            minimum, meaning that all storages in the set contain equal
+	 *            data. If false, each storage is treated separately, has it's
+	 *            own min and max etc. Sets that contain nominal data MUST be
+	 *            inhomogeneous.
 	 * @param iAlStorageID The source storage ids. This storage is overwritten
 	 *            with the result.
+	 * @param objectType Signal whether you want to apply this on a set or a storage.
 	 */
 	public void setAttributes(EExternalDataRepresentation externalDataRep,
-			ArrayList<Integer> iAlStorageID, EManagedObjectType objectType)
+			boolean bIsSetHomogeneous, ArrayList<Integer> iAlStorageID,
+			EManagedObjectType objectType)
 	{
 
 		this.externalDataRep = externalDataRep;
+		this.bIsSetHomogeneous = bIsSetHomogeneous;
 		this.iAlIDs = iAlStorageID;
 		if (objectType != EManagedObjectType.STORAGE && objectType != EManagedObjectType.SET)
 			throw new IllegalArgumentException(
@@ -114,7 +139,7 @@ public class CmdSetDataRepresentation
 			{
 				tmpSet = generalManager.getSetManager().getItem(currentID);
 
-				tmpSet.setExternalDataRepresentation(externalDataRep);
+				tmpSet.setExternalDataRepresentation(externalDataRep, bIsSetHomogeneous);
 			}
 		}
 		commandManager.runDoCommand(this);

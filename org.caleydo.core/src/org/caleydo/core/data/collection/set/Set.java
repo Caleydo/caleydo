@@ -53,6 +53,8 @@ public class Set
 
 	private EExternalDataRepresentation externalDataRep;
 
+	private boolean bIsSetHomogeneous = false;
+
 	public Set()
 	{
 		super(GeneralManager.get().getIDManager().createID(EManagedObjectType.SET));
@@ -182,7 +184,7 @@ public class Set
 
 	private void normalize()
 	{
-
+		bIsSetHomogeneous = false;
 		for (IStorage storage : alStorages)
 		{
 			storage.normalize();
@@ -191,7 +193,7 @@ public class Set
 
 	private void normalizeGlobally()
 	{
-
+		bIsSetHomogeneous = true;
 		for (IStorage storage : alStorages)
 		{
 			if (storage instanceof INumericalStorage)
@@ -204,7 +206,7 @@ public class Set
 			else
 			{
 				throw new UnsupportedOperationException(
-						"Tried to normalize globally on a set wich has"
+						"Tried to normalize globally on a set wich"
 								+ "contains nominal storages, currently not supported!");
 			}
 		}
@@ -261,6 +263,10 @@ public class Set
 	@Override
 	public double getRawForNormalized(double dNormalized)
 	{
+		if (!bIsSetHomogeneous)
+			throw new IllegalStateException(
+					"Can not produce raw data on set level for inhomogenous sets. Access via storages");
+
 		if (dNormalized == 0)
 			return getMin();
 		// if(getMin() > 0)
@@ -270,6 +276,10 @@ public class Set
 
 	public double getNormalizedForRaw(double dRaw)
 	{
+		if (!bIsSetHomogeneous)
+			throw new IllegalStateException(
+					"Can not produce normalized data on set level for inhomogenous sets. Access via storages");
+
 		if (dRaw < getMin() || dRaw > getMax())
 			throw new IllegalArgumentException(
 					"Value may not be smaller than min or larger than max");
@@ -280,7 +290,6 @@ public class Set
 	@Override
 	public void log10()
 	{
-
 		for (IStorage storage : alStorages)
 		{
 			if (storage instanceof INumericalStorage)
@@ -296,7 +305,7 @@ public class Set
 			}
 		}
 	}
-	
+
 	@Override
 	public void log2()
 	{
@@ -462,36 +471,64 @@ public class Set
 	}
 
 	@Override
-	public void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep)
+	public void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep,
+			boolean bIsSetHomogeneous)
 	{
+		this.bIsSetHomogeneous = bIsSetHomogeneous;
 		if (externalDataRep == this.externalDataRep)
 			return;
 
 		this.externalDataRep = externalDataRep;
 
-		for(IStorage storage : alStorages)
+		for (IStorage storage : alStorages)
 		{
-			if(storage instanceof INumericalStorage)
+			if (storage instanceof INumericalStorage)
 			{
-				((INumericalStorage)storage).setExternalDataRepresentation(externalDataRep);
+				((INumericalStorage) storage).setExternalDataRepresentation(externalDataRep);
 			}
 		}
-		
-		switch (externalDataRep)
+
+		if (bIsSetHomogeneous)
 		{
-			case NORMAL:
-				normalizeGlobally();
-				break;
-			case LOG10:
-				log10();
-				normalizeGlobally();
-				break;
-			case LOG2:
-				log2();
-				normalizeGlobally();
-				break;
+			switch (externalDataRep)
+			{
+				case NORMAL:
+					normalizeGlobally();
+					break;
+				case LOG10:
+					log10();
+					normalizeGlobally();
+					break;
+				case LOG2:
+					log2();
+					normalizeGlobally();
+					break;
+			}
+		}
+		else
+		{
+			switch (externalDataRep)
+			{
+				case NORMAL:
+					normalize();
+					break;
+				case LOG10:
+					log10();
+					normalize();
+					break;
+				case LOG2:
+					log2();
+					normalize();
+					break;
+			}
 		}
 
+	}
+	
+	@Override
+	public boolean isSetHomogeneous()
+	{
+		return bIsSetHomogeneous;
 	}
 
 }

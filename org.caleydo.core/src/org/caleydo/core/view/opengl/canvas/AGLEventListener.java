@@ -543,7 +543,7 @@ public abstract class AGLEventListener
 			gl.glRotatef(+iRotationFrameCounter, 0, 0, 1);
 			gl.glTranslatef(fXCenter + 0.6f, fYCenter, 0);
 
-			iRotationFrameCounter += 3;
+			iRotationFrameCounter += 20;
 			gl.glPopAttrib();
 
 			circleTexture.disable();

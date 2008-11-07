@@ -1,7 +1,10 @@
 package org.caleydo.core.data.collection.ccontainer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Set;
 
 /**
  * Container for nominal string values. Provides access to the values, can
@@ -125,10 +128,18 @@ public class NominalCContainer<T>
 		// float[] fArNormalized = new float[sAlStorage.size()];
 
 		int iCount = 0;
-		for (T tContent : hashNominalToDiscrete.keySet())
+		
+		Set<T> keySet =  hashNominalToDiscrete.keySet();
+		Object[] sortedArray = new Object[keySet.size()];
+		keySet.toArray(sortedArray);
+		Arrays.sort(sortedArray, 0, sortedArray.length-1);
+
+		
+		for (Object content : sortedArray)
 		{
-			Float fDiscrete = hashNominalToDiscrete.get(tContent);
+			Float fDiscrete = hashNominalToDiscrete.get(content);
 			fDiscrete = fDivisor * iCount;
+			T tContent = (T)content;
 			hashNominalToDiscrete.put(tContent, fDiscrete);
 			hashDiscreteToNominal.put(fDiscrete, tContent);
 

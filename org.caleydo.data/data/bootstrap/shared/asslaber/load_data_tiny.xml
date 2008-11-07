@@ -1,0 +1,31 @@
+<!-- must be called inside a CommandBuffer section-->
+
+<details>
+	
+	<!-- Expression data set/storage/ -->
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="45301" label="A001"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="46301" label="A002"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="47301" label="A003"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="48301" label="A004"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="49301" label="A005"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="50301" label="A006"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="51301" label="A007"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="53301" label="A009"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="54301" label="A012"  attrib1="NUMERICAL" />
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="55301" label="A013"  attrib1="NUMERICAL" />
+	
+	
+	<!-- Data file loading -->      
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/asslaber/gene_matrix.csv"	
+		attrib1="SKIP;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;ABORT"	attrib2="45301 46301 47301 48301 49301 50301 51301 53301 54301 55301" attrib3="1 -1" />			
+
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="85101" label=""  attrib1="35201" attrib2="45301 46301 47301 48301 49301 50301 51301 53301 54301 55301" attrib3="GENE_EXPRESSION_DATA" />
+			
+	<!-- Data filtering (preprocessing) -->																
+	<!--<Cmd mementoId="0" process="RUN_CMD_NOW" type="DATA_FILTER_MATH"			cmdId="99010"	uniqueId="-1"	attrib1="NORMALIZE"	attrib2="45301 46301 47301 48301 49301 50301 51301 52301 53301 54301 55301 56301 57301 58301" attrib3="STORAGE"/>	-->								
+	<!--<Cmd mementoId="0" process="RUN_CMD_NOW" type="DATA_FILTER_MATH"			cmdId="99010"	uniqueId="-1"	attrib1="NORMALIZE"	attrib2="85101 86101 87101 88101 89101 90101 91101 92101 93101 94101 95101 96101 97101 98101" attrib3="SET"/> -->									
+	<!--<Cmd mementoId="0" process="RUN_CMD_NOW" type="DATA_FILTER_MATH"			cmdId="99010"	uniqueId="-1"	attrib1="LIN_2_LOG"	attrib2="85101" attrib3="SET"/>-->									
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="SET_DATA_REPRESENTATION"			cmdId="99010"	uniqueId="-1"	attrib1="NORMAL"	attrib2="85101" attrib3="SET"/>									
+	
+
+</details>

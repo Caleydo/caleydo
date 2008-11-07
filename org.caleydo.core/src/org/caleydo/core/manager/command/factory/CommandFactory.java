@@ -173,11 +173,13 @@ public class CommandFactory
 				createdCommand = new CmdCreateGLPathway(cmdType);
 				break;
 			}
+			// the next entries are all CmdCreateGLEventListener, so we do it only once
 			case CREATE_GL_HEAT_MAP_3D:
 			case CREATE_GL_TEXTURE_HEAT_MAP_3D:
 			case CREATE_GL_GLYPH:
 			case CREATE_GL_GLYPH_SLIDER:
 			case CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION:
+			case CREATE_GL_PARALLEL_COORDINATES_CLINICAL:
 			case CREATE_GL_BUCKET_3D:
 			case CREATE_GL_JUKEBOX_3D:
 			case CREATE_GL_WII_TEST:

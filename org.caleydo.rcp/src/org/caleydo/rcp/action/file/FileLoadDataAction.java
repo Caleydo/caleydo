@@ -1020,15 +1020,15 @@ public class FileLoadDataAction
 	
 		if (sDataRepMode.equals("Normal"))
 		{
-			set.setExternalDataRepresentation(EExternalDataRepresentation.NORMAL);
+			set.setExternalDataRepresentation(EExternalDataRepresentation.NORMAL, true);
 		}
 		else if(sDataRepMode.equals("Log10"))
 		{
-			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG10);	
+			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG10, true);	
 		}
 		else if(sDataRepMode.equals("Log2"))
 		{
-			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG2);	
+			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG2, true);	
 		}
 		else
 		{

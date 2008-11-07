@@ -38,6 +38,7 @@ public abstract class AStorageBasedView
 {
 
 	protected ISet set;
+	protected ESetType setType;
 
 	/**
 	 * map selection type to unique id for virtual array
@@ -109,6 +110,8 @@ public abstract class AStorageBasedView
 	{
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 
+		this.setType = setType;
+		
 		mapVAIDs = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
 
 		genomeIDManager = generalManager.getIDMappingManager();
@@ -158,19 +161,16 @@ public abstract class AStorageBasedView
 
 		for (ISet currentSet : alSets)
 		{
-			if (currentSet.getSetType() == ESetType.GENE_EXPRESSION_DATA)
+			if (currentSet.getSetType() == setType)
 				set = currentSet;
 		}
 
 		if (!mapVAIDs.isEmpty())
 		{
-			// This should be done once we get some thread safety, memory leak,
-			// and a big one
 			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values())
 			{
-
-				// if (mapVAIDs.containsKey(eSelectionType))
-				// set.removeVirtualArray(mapVAIDs.get(eSelectionType));
+				if (mapVAIDs.containsKey(eSelectionType))
+					set.removeVirtualArray(mapVAIDs.get(eSelectionType));
 			}
 			iContentVAID = -1;
 			iStorageVAID = -1;

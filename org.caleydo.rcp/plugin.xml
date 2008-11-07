@@ -45,6 +45,14 @@
             icon="resources/icons/view/storagebased/parcoords/parcoords.png"
             id="org.caleydo.rcp.views.GLParCoordsView"
             name="Parallel Coordinates">
+      </view>
+      <view
+            allowMultiple="true"
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.views.ClinicalGLParCoordsView"
+            icon="resources/icons/view/storagebased/parcoords/parcoords.png"
+            id="org.caleydo.rcp.views.ClinicalGLParCoordsView"
+            name="Clinical Parallel Coordinates">
       </view>         
       
       <view
@@ -215,6 +223,11 @@
             id="org.caleydo.rcp.command.openviews.tabulardata"
             name="Open Tabular Data Viewer">
       </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenClinicalParCoordsHandler"
+            id="org.caleydo.rcp.command.openviews.clinicalparcoords"
+            name="Open Clinical Parallel Coordinates">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -267,9 +280,21 @@
                      style="push">
                </command>
                <command
+                     commandId="org.caleydo.rcp.command.openviews.hierarchical_heatmap"
+                     icon="resources/icons/view/storagebased/heatmap/heatmap.png"
+                     label="Hierarchical Heat Map"
+                     style="push">
+               </command>
+               <command
                      commandId="org.caleydo.rcp.command.openviews.parcoords"
                      icon="resources/icons/view/storagebased/parcoords/parcoords.png"
                      label="Parallel Coordinates"
+                     style="push">
+               </command>
+               <command
+                     commandId="org.caleydo.rcp.command.openviews.clinicalparcoords"
+                     icon="resources/icons/view/storagebased/parcoords/parcoords.png"
+                     label="Clinical Parallel Coordinates"
                      style="push">
                </command>
                <command
@@ -300,12 +325,6 @@
                      commandId="org.caleydo.rcp.command.openviews.glyphmappingconfigurationview"
                      icon="resources/icons/view/glyph/glyph.png"
                      label="Glyph Mapping Configuration"
-                     style="push">
-               </command>
-               <command
-                     commandId="org.caleydo.rcp.command.openviews.hierarchical_heatmap"
-                     icon="resources/icons/view/storagebased/heatmap/heatmap.png"
-                     label="Hierarchical Heat Map"
                      style="push">
                </command>
                <command

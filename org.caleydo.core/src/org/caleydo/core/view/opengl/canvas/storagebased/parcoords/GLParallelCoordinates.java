@@ -34,6 +34,8 @@ import java.util.Set;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ESetType;
+import org.caleydo.core.data.collection.INominalStorage;
+import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
@@ -268,7 +270,7 @@ public class GLParallelCoordinates
 		display(gl);
 
 		pickingTriggerMouseAdapter.resetEvents();
-		
+
 	}
 
 	@Override
@@ -763,10 +765,23 @@ public class GLParallelCoordinates
 
 				if (bRenderingSelection)
 				{
-					float fYRawValue = currentStorage.getFloat(EDataRepresentation.RAW,
-							iStorageIndex);
+					String sRawValue;
+					if (currentStorage instanceof INumericalStorage)
+					{
+						sRawValue = getDecimalFormat().format(
+								currentStorage
+										.getFloat(EDataRepresentation.RAW, iStorageIndex));
+
+					}
+					else
+					{
+
+						sRawValue = ((INominalStorage<String>) currentStorage)
+								.getRaw(iStorageIndex);
+					}
+
 					renderBoxedYValues(gl, fCurrentXValue, fCurrentYValue
-							* renderStyle.getAxisHeight(), fYRawValue, renderMode);
+							* renderStyle.getAxisHeight(), sRawValue, renderMode);
 				}
 
 				fPreviousXValue = fCurrentXValue;
@@ -860,18 +875,25 @@ public class GLParallelCoordinates
 					float fCurrentHeight = fMarkerSpacing * iInnerCount;
 					if (iCount == 0)
 					{
-						float fNumber = (float) set.getRawForNormalized(fCurrentHeight
-								/ renderStyle.getAxisHeight());
+						if (set.isSetHomogeneous())
+						{
+							float fNumber = (float) set.getRawForNormalized(fCurrentHeight
+									/ renderStyle.getAxisHeight());
 
-						Rectangle2D bounds = textRenderer.getBounds(getDecimalFormat().format(
-								fNumber));
-						float fWidth = (float) bounds.getWidth()
-								* renderStyle.getSmallFontScalingFactor();
-						float fHeightHalf = (float) bounds.getHeight()
-								* renderStyle.getSmallFontScalingFactor() / 3;
+							Rectangle2D bounds = textRenderer.getBounds(getDecimalFormat()
+									.format(fNumber));
+							float fWidth = (float) bounds.getWidth()
+									* renderStyle.getSmallFontScalingFactor();
+							float fHeightHalf = (float) bounds.getHeight()
+									* renderStyle.getSmallFontScalingFactor() / 3;
 
-						renderNumber(fNumber, fXPosition - fWidth - AXIS_MARKER_WIDTH,
-								fCurrentHeight - fHeightHalf);
+							renderNumber(getDecimalFormat().format(fNumber), fXPosition
+									- fWidth - AXIS_MARKER_WIDTH, fCurrentHeight - fHeightHalf);
+						}
+						else
+						{
+							// TODO: storage based access
+						}
 					}
 					gl.glColor3fv(Y_AXIS_COLOR, 0);
 					gl.glBegin(GL.GL_LINES);
@@ -885,17 +907,18 @@ public class GLParallelCoordinates
 				switch (eAxisDataType)
 				{
 					// TODO not very generic here
-					case EXPERIMENT:
-						// Labels
-						// sAxisLabel = alDataStorages.get(iCount).getLabel();
-						sAxisLabel = set.getStorageFromVA(iStorageVAID, iCount).getLabel();
-						break;
+					// case EXPERIMENT:
+					// // Labels
+					// // sAxisLabel = alDataStorages.get(iCount).getLabel();
+
 					case EXPRESSION_INDEX:
 						sAxisLabel = getRefSeqFromStorageIndex(set.getVA(iContentVAID).get(
 								iCount));
 						break;
 					default:
-						sAxisLabel = "No Label";
+						sAxisLabel = set.getStorageFromVA(iStorageVAID, iCount).getLabel();
+						break;
+
 				}
 				gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 				gl.glTranslatef(fXPosition, renderStyle.getAxisHeight()
@@ -909,20 +932,27 @@ public class GLParallelCoordinates
 				gl.glTranslatef(-fXPosition, -(renderStyle.getAxisHeight() + renderStyle
 						.getAxisCaptionSpacing()), 0);
 
-				textRenderer.begin3DRendering();
+				if (set.isSetHomogeneous())
+				{
+					textRenderer.begin3DRendering();
 
-				// render values on top and bottom of axis
+					// render values on top and bottom of axis
 
-				// top
-				String text = getDecimalFormat().format(set.getMax());
-				textRenderer.draw3D(text, fXPosition + 2 * AXIS_MARKER_WIDTH, renderStyle
-						.getAxisHeight(), 0, renderStyle.getSmallFontScalingFactor());
+					// top
+					String text = getDecimalFormat().format(set.getMax());
+					textRenderer.draw3D(text, fXPosition + 2 * AXIS_MARKER_WIDTH, renderStyle
+							.getAxisHeight(), 0, renderStyle.getSmallFontScalingFactor());
 
-				// bottom
-				text = getDecimalFormat().format(set.getMin());
-				textRenderer.draw3D(text, fXPosition + 2 * AXIS_MARKER_WIDTH, 0, 0,
-						renderStyle.getSmallFontScalingFactor());
-				textRenderer.end3DRendering();
+					// bottom
+					text = getDecimalFormat().format(set.getMin());
+					textRenderer.draw3D(text, fXPosition + 2 * AXIS_MARKER_WIDTH, 0, 0,
+							renderStyle.getSmallFontScalingFactor());
+					textRenderer.end3DRendering();
+				}
+				else
+				{
+					// TODO
+				}
 
 				gl.glPopAttrib();
 				gl.glPopName();
@@ -1126,10 +1156,18 @@ public class GLParallelCoordinates
 
 			if (detailLevel == EDetailLevel.HIGH)
 			{
-
-				renderBoxedYValues(gl, fCurrentPosition, fArGateTipHeight[iCount], (float) set
-						.getRawForNormalized(fArGateTipHeight[iCount]
-								/ renderStyle.getAxisHeight()), ESelectionType.NORMAL);
+				if (set.isSetHomogeneous())
+				{
+					renderBoxedYValues(gl, fCurrentPosition, fArGateTipHeight[iCount],
+							getDecimalFormat().format(
+									set.getRawForNormalized(fArGateTipHeight[iCount]
+											/ renderStyle.getAxisHeight())),
+							ESelectionType.NORMAL);
+				}
+				else
+				{
+					// TODO storage based acces
+				}
 
 			}
 			// The body of the gate
@@ -1185,11 +1223,18 @@ public class GLParallelCoordinates
 
 			if (detailLevel == EDetailLevel.HIGH)
 			{
-				float fValue = (float) set.getRawForNormalized(fArGateBottomHeight[iCount]
-						/ renderStyle.getAxisHeight());
-				if (fValue > set.getMin())
-					renderBoxedYValues(gl, fCurrentPosition, fArGateBottomHeight[iCount],
-							fValue, ESelectionType.NORMAL);
+				if (set.isSetHomogeneous())
+				{
+					float fValue = (float) set.getRawForNormalized(fArGateBottomHeight[iCount]
+							/ renderStyle.getAxisHeight());
+					if (fValue > set.getMin())
+						renderBoxedYValues(gl, fCurrentPosition, fArGateBottomHeight[iCount],
+								getDecimalFormat().format(fValue), ESelectionType.NORMAL);
+				}
+				else
+				{
+					// TODO storage based access
+				}
 			}
 			iCount++;
 		}
@@ -1203,7 +1248,7 @@ public class GLParallelCoordinates
 	 * @param fYOrigin
 	 * @param renderMode
 	 */
-	private void renderBoxedYValues(GL gl, float fXOrigin, float fYOrigin, float fRawValue,
+	private void renderBoxedYValues(GL gl, float fXOrigin, float fYOrigin, String sRawValue,
 			ESelectionType renderMode)
 	{
 
@@ -1215,8 +1260,7 @@ public class GLParallelCoordinates
 		gl.glLineWidth(Y_AXIS_LINE_WIDTH);
 		gl.glColor4fv(Y_AXIS_COLOR, 0);
 
-		Rectangle2D tempRectangle = textRenderer.getBounds(getDecimalFormat()
-				.format(fRawValue));
+		Rectangle2D tempRectangle = textRenderer.getBounds(sRawValue);
 		float fSmallSpacing = renderStyle.getVerySmallSpacing();
 		float fBackPlaneWidth = (float) tempRectangle.getWidth()
 				* renderStyle.getSmallFontScalingFactor();// + 2 *
@@ -1235,21 +1279,21 @@ public class GLParallelCoordinates
 		gl.glVertex3f(fXTextOrigin - fSmallSpacing, fYTextOrigin + fBackPlaneHeight, 0.03f);
 		gl.glEnd();
 
-		renderNumber(fRawValue, fXTextOrigin, fYTextOrigin);
+		renderNumber(sRawValue, fXTextOrigin, fYTextOrigin);
 		gl.glPopAttrib();
 	}
 
-	private void renderNumber(float fRawValue, float fXOrigin, float fYOrigin)
+	private void renderNumber(String sRawValue, float fXOrigin, float fYOrigin)
 	{
 		textRenderer.begin3DRendering();
 
-		String text = "";
-		if (Float.isNaN(fRawValue))
-			text = "NaN";
-		else
-			text = getDecimalFormat().format(fRawValue);
+		// String text = "";
+		// if (Float.isNaN(fRawValue))
+		// text = "NaN";
+		// else
+		// text = getDecimalFormat().format(fRawValue);
 
-		textRenderer.draw3D(text, fXOrigin, fYOrigin, 0.031f, renderStyle
+		textRenderer.draw3D(sRawValue, fXOrigin, fYOrigin, 0.031f, renderStyle
 				.getSmallFontScalingFactor());
 		textRenderer.end3DRendering();
 	}
@@ -1370,11 +1414,11 @@ public class GLParallelCoordinates
 	@Override
 	protected void checkUnselection()
 	{
-		if(fArGateTipHeight == null)
+		if (fArGateTipHeight == null)
 		{
 			initGates();
 		}
-		
+
 		for (int iCount = 0; iCount < fArGateTipHeight.length; iCount++)
 		{
 			handleGateUnselection(iCount);

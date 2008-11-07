@@ -102,8 +102,7 @@ public interface ISet
 	 * storage. Operates with the raw data as basis by default, however when a
 	 * logarithmized representation is in the storage this is used.
 	 */
-	//public void normalize();
-
+	// public void normalize();
 	/**
 	 * Normalize all storages in the set, based on values of all storages. For a
 	 * numerical storage, this would mean, that global minima and maxima are
@@ -112,8 +111,7 @@ public interface ISet
 	 * representation is in the storage this is used. Make sure that all
 	 * storages are logarithmized.
 	 */
-	//public void normalizeGlobally();
-
+	// public void normalizeGlobally();
 	/**
 	 * Get the minimum value in the set.
 	 * 
@@ -164,27 +162,42 @@ public interface ISet
 	 * Switch the representation of the data. When this is called the data in
 	 * normalized is replaced with data calculated from the mode specified.
 	 * 
-	 * @param dataRep
+	 * @param externalDataRep Determines how the data is visualized. For options
+	 *            see {@link EExternalDataRepresentation}
+	 * @param bIsSetHomogeneous Determines whether a set is homogeneous or not.
+	 *            Homogeneous means that the sat has a global maximum and
+	 *            minimum, meaning that all storages in the set contain equal
+	 *            data. If false, each storage is treated separately, has it's
+	 *            own min and max etc. Sets that contain nominal data MUST be
+	 *            inhomogeneous.
 	 */
-	public void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep);
+	public void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep,
+			boolean bIsSetHomogeneous);
+
+	/**
+	 * Returns true if the set contains homgeneous data (data of the same kind,
+	 * with one global minimum and maximum), else false
+	 * 
+	 * @return
+	 */
+	public boolean isSetHomogeneous();
 
 	/**
 	 * Calculates log10 on all storages in the set. Take care that the set
 	 * contains only numerical storages, since nominal storages will cause a
 	 * runtime exception. If you have mixed data you have to call log10 on all
-	 * the storages that support it manually. 
+	 * the storages that support it manually.
 	 */
 	public void log10();
 
-	
 	/**
 	 * Calculates log2 on all storages in the set. Take care that the set
 	 * contains only numerical storages, since nominal storages will cause a
 	 * runtime exception. If you have mixed data you have to call log2 on all
-	 * the storages that support it manually. 
+	 * the storages that support it manually.
 	 */
 	public void log2();
-	
+
 	/**
 	 * Creates a default virtual array for the storages in the set
 	 * 

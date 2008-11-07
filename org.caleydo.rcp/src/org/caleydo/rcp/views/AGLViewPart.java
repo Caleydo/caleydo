@@ -62,7 +62,9 @@ public abstract class AGLViewPart
 	 * This class creates the GL event listener contained in a RCP view for a
 	 * RCP view.
 	 * 
-	 * @param glViewType
+	 * @param glViewType The type of view. See {@link ECommandType}
+	 * @param iParentCanvasID the id of canvas where you want to render
+	 * @param bRegisterToOverallMediator true if you want this to listen and send to main mediator
 	 */
 	protected int createGLEventListener(ECommandType glViewType, int iParentCanvasID,
 			boolean bRegisterToOverallMediator)
