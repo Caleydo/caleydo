@@ -17,6 +17,7 @@ import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.cell.GLCell;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.sliderview.GLGlyphSliderView;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
@@ -252,6 +253,10 @@ public class ViewGLCanvasManager
 				glEventListener = new GLGlyphSliderView(iGLCanvasID, sLabel, viewFrustum);
 				break;
 
+			case CREATE_GL_CELL:
+				glEventListener = new GLCell(iGLCanvasID, sLabel, viewFrustum);
+				break;
+				
 			case CREATE_GL_BUCKET_3D:
 				glEventListener = new GLRemoteRendering(iGLCanvasID, sLabel, viewFrustum,
 						ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET);

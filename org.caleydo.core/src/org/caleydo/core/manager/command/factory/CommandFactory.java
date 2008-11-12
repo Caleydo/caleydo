@@ -183,6 +183,7 @@ public class CommandFactory
 			case CREATE_GL_BUCKET_3D:
 			case CREATE_GL_JUKEBOX_3D:
 			case CREATE_GL_WII_TEST:
+			case CREATE_GL_CELL:
 			case CREATE_GL_REMOTE_GLYPH:
 			{
 				createdCommand = new CmdCreateGLEventListener(cmdType);

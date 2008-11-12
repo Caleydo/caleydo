@@ -19,7 +19,6 @@ public enum ECommandType
 
 	FETCH_PATHWAY_DATA("cmd", "type", "", "No description available!"),
 
-	//DATA_FILTER_MATH("cmd", "type", "-1", "Filter data by using math operations"),
 	SET_DATA_REPRESENTATION("cmd", "type", "-1", "Set data representation (Raw, Log2, Log10)"),
 	DATA_FILTER_MIN_MAX("cmd", "type", "-1", "Evaluate min and max of an entity"),
 
@@ -33,12 +32,11 @@ public enum ECommandType
 	CREATE_GL_PATHWAY_3D("cmd", "type", "-1", "Create Pathway 3D"),
 	CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION("cmd", "type", "-1", "Create Parallel Coordinates for gene expression"),
 	CREATE_GL_PARALLEL_COORDINATES_CLINICAL("cmd", "type", "-1", "Create Parallel Coordinates for clinical data"),
-	
-	
 	CREATE_GL_BUCKET_3D("cmd", "type", "-1", "Create Bucket 3D"),
 	CREATE_GL_JUKEBOX_3D("cmd", "type", "-1", "Create Jukebox 3D"),
 	CREATE_GL_WII_TEST("cmd", "type", "-1", "No description available!"),
 	CREATE_GL_REMOTE_GLYPH("cmd", "type", "-1", "Create Remote Glyph"),
+	CREATE_GL_CELL("cmd", "type", "-1", "Create Cell Component Localizer"),
 
 	EXTERNAL_FLAG_SETTER("cmd", "type", "-1", "External flag setter"),
 	EXTERNAL_ACTION_TRIGGER("cmd", "type", "-1", "External action trigger"),

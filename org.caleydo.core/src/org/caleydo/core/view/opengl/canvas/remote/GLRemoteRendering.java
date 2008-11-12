@@ -40,6 +40,7 @@ import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.cell.GLCell;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListener;
@@ -618,6 +619,11 @@ public class GLRemoteRendering
 			textureViewSymbol = iconTextureManager.getIconTexture(gl, 
 					EIconTextures.GLYPH_SYMBOL);
 		}
+		else if (view instanceof GLCell)
+		{
+			textureViewSymbol = iconTextureManager.getIconTexture(gl, 
+					EIconTextures.GLYPH_SYMBOL);
+		}		
 		else
 		{
 			throw new IllegalStateException("Unknown view that has no symbol assigned.");

@@ -18,8 +18,9 @@ public class DAVIDWhiteListFilter
 
 	// private static final String FILE_NAME = "DAVID2ENTREZ_GENE_ID.txt";
 	// private static final String FILE_NAME = "DAVID2REFSEQ_MRNA.txt";
-	private static final String FILE_NAME = "DAVID2GENE_NAME.txt";
-
+    // private static final String FILE_NAME = "DAVID2GENE_NAME.txt";
+    private static final String FILE_NAME = "DAVID2GOTERM_CC_ALL.txt";
+	
 	public DAVIDWhiteListFilter()
 		throws IOException
 	{
