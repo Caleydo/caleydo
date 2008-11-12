@@ -2,7 +2,6 @@ package org.caleydo.rcp.action.file;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
@@ -22,6 +21,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
+import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.dialog.file.FileLoadDataDialog;
 import org.caleydo.rcp.image.IImageKeys;
 import org.eclipse.jface.action.Action;
@@ -620,7 +620,7 @@ public class FileLoadDataAction
 		BufferedReader brFile;
 		try
 		{
-			brFile = new BufferedReader(new FileReader(sFileName));
+			brFile =  GeneralManager.get().getResourceLoader().getResource(sFileName);
 
 			String sLine = "";
 

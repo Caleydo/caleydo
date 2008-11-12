@@ -1,12 +1,15 @@
 package org.caleydo.core.view.swt.browser;
 
+import java.io.BufferedInputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.opengl.util.EIconTextures;
+import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.browser.Browser;
@@ -67,64 +70,24 @@ public class HTMLBrowserViewRep
 		GridData data = new GridData(GridData.FILL_VERTICAL);
 //		toolbar.setLayoutData(data);
 		
+		ResourceLoader resourceLoader = GeneralManager.get().getResourceLoader();
+		
 		goButton = new ToolItem(toolbar, SWT.PUSH);
-
-		if (getClass().getClassLoader().getResourceAsStream(
-				EIconTextures.BROWSER_REFRESH_IMAGE.getFileName()) != null)
-		{
-			goButton.setImage(new Image(parent.getDisplay(), 
-					getClass().getClassLoader().getResourceAsStream(
-							EIconTextures.BROWSER_REFRESH_IMAGE.getFileName())));
-		}
-		else
-		{
-			goButton.setImage(new Image(parent.getDisplay(), 
-					EIconTextures.BROWSER_REFRESH_IMAGE.getFileName()));
-		}
+		goButton.setImage(resourceLoader.getImage(parent.getDisplay(),
+							EIconTextures.BROWSER_REFRESH_IMAGE.getFileName()));
 
 		backButton = new ToolItem(toolbar, SWT.PUSH);
-		if (generalManager.getClass().getClassLoader().getResourceAsStream(
-				EIconTextures.BROWSER_BACK_IMAGE.getFileName()) != null)
-		{
-			backButton.setImage(new Image(parent.getDisplay(), 
-					this.getClass().getClassLoader().getResourceAsStream(
-							EIconTextures.BROWSER_BACK_IMAGE.getFileName())));
-		}
-		else
-		{
-			backButton.setImage(new Image(parent.getDisplay(), 
-					EIconTextures.BROWSER_BACK_IMAGE.getFileName()));
-		}
+		backButton.setImage(resourceLoader.getImage(parent.getDisplay(),
+							EIconTextures.BROWSER_BACK_IMAGE.getFileName()));
 
 		stopButton = new ToolItem(toolbar, SWT.PUSH);
-		if (generalManager.getClass().getClassLoader().getResourceAsStream(
-				EIconTextures.BROWSER_STOP_IMAGE.getFileName()) != null)
-		{
-			stopButton.setImage(new Image(parent.getDisplay(), 
-					this.getClass().getClassLoader().getResourceAsStream(
-							EIconTextures.BROWSER_STOP_IMAGE.getFileName())));
-		}
-		else
-		{
-			stopButton.setImage(new Image(parent.getDisplay(), 
-					EIconTextures.BROWSER_STOP_IMAGE.getFileName()));
-		}
+		stopButton.setImage(resourceLoader.getImage(parent.getDisplay(),
+							EIconTextures.BROWSER_STOP_IMAGE.getFileName()));
 
 		homeButton = new ToolItem(toolbar, SWT.PUSH);
+		homeButton.setImage(resourceLoader.getImage(parent.getDisplay(),
+							EIconTextures.BROWSER_HOME_IMAGE.getFileName()));
 
-		if (getClass().getClassLoader().getResourceAsStream(
-				EIconTextures.BROWSER_HOME_IMAGE.getFileName()) != null)
-		{
-			homeButton.setImage(new Image(parent.getDisplay(), 
-					getClass().getClassLoader().getResourceAsStream(
-							EIconTextures.BROWSER_HOME_IMAGE.getFileName())));
-		}
-		else
-		{
-			homeButton.setImage(new Image(parent.getDisplay(), 
-					EIconTextures.BROWSER_HOME_IMAGE.getFileName()));
-		}
-		
 		textURL = new Text(browserBarComposite, SWT.BORDER);
 		
 		if (checkInternetConnection())

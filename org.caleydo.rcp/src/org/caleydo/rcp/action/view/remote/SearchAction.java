@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.view.AToolBarAction;
 import org.caleydo.rcp.util.search.SearchBox;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -51,8 +52,8 @@ extends AToolBarAction
 		
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromURL(this.getClass()
-				.getClassLoader().getResource(ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(), ICON)));
 		setChecked(false);
 		
 		this.searchAction = this;

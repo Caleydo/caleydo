@@ -9,6 +9,7 @@ import java.util.logging.Level;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.data.loader.ResourceLoader;
 
 /**
  * Loader for raw data in text format.
@@ -171,17 +172,7 @@ public abstract class AbstractLoader
 
 		try
 		{
-			BufferedReader brFile = null;
-
-			if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null)
-			{
-				brFile = new BufferedReader(new InputStreamReader(this.getClass()
-						.getClassLoader().getResourceAsStream(sFileName)));
-			}
-			else
-			{
-				brFile = new BufferedReader(new FileReader(sFileName));
-			}
+			BufferedReader brFile = GeneralManager.get().getResourceLoader().getResource(sFileName);
 
 			while (((brFile.readLine()) != null) && (iCountLines <= iStopParsingAtLine))
 			{
@@ -209,24 +200,7 @@ public abstract class AbstractLoader
 	public boolean loadData()
 	{
 
-		BufferedReader brFile = null;
-
-		if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null)
-		{
-			brFile = new BufferedReader(new InputStreamReader(this.getClass().getClassLoader()
-					.getResourceAsStream(sFileName)));
-		}
-		else
-		{
-			try
-			{
-				brFile = new BufferedReader(new FileReader(sFileName));
-			}
-			catch (FileNotFoundException e)
-			{
-				e.printStackTrace();
-			}
-		}
+		BufferedReader brFile = GeneralManager.get().getResourceLoader().getResource(sFileName);
 
 		GeneralManager.get().getLogger().log(Level.INFO,
 				"Start loading file " + sFileName + "...");

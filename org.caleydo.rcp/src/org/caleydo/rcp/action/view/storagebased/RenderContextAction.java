@@ -3,8 +3,10 @@ package org.caleydo.rcp.action.view.storagebased;
 import org.caleydo.core.command.view.rcp.EExternalFlagSetterType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
+import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.view.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.PlatformUI;
 
 public class RenderContextAction
 	extends AToolBarAction
@@ -26,10 +28,8 @@ public class RenderContextAction
 	
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader()
-				.getResource(ICON)));
-
-	
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(), ICON)));
 
 		setChecked(bEnable);
 //		setEnabled(bEnable);

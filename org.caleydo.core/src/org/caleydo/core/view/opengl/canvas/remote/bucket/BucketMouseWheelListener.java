@@ -67,7 +67,7 @@ public class BucketMouseWheelListener
 			int notches = event.getWheelRotation();
 
 			// Change bucket tilt angle of left and right wall if CTRL is down
-			if (event.isControlDown())
+			if (event.isControlDown() || event.isAltDown())
 			{
 				fTmpAngle = bucketLayoutRenderStyle.getZoomFactor();
 
@@ -84,25 +84,7 @@ public class BucketMouseWheelListener
 					bucketLayoutRenderStyle.setZoomFactor(fTmpAngle);
 			}
 
-			// Change bucket tilt angle of top and bottom wall if CTRL is down
-			if (event.isAltDown())
-			{
-				fTmpAngle = bucketLayoutRenderStyle.getZoomFactor();
-
-				if (notches < 0)
-					fTmpAngle += fStepSize;
-				else
-					fTmpAngle -= fStepSize;
-
-				if (fTmpAngle >= 1)
-					bucketLayoutRenderStyle.setZoomFactor(1);
-				else if (fTmpAngle <= 0)
-					bucketLayoutRenderStyle.setZoomFactor(0);
-				else
-					bucketLayoutRenderStyle.setZoomFactor(fTmpAngle);
-			}
-
-			bucketLayoutRenderStyle.initStackLayer();
+			bucketLayoutRenderStyle.initStackLayer(false);
 			bucketLayoutRenderStyle.initUnderInteractionLayer();
 		}
 		else
@@ -125,6 +107,7 @@ public class BucketMouseWheelListener
 			}
 		
 			bZoomActionRunning = true;
+			bucketLayoutRenderStyle.initStackLayer(bZoomIn);
 			
 			// Turn off picking while zoom action is running
 			GeneralManager.get().getViewGLCanvasManager().getPickingManager().enablePicking(

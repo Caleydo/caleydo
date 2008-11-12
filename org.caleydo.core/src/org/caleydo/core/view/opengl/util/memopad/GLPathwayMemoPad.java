@@ -3,7 +3,6 @@ package org.caleydo.core.view.opengl.util.memopad;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 import java.awt.Font;
-import java.io.File;
 import java.util.Iterator;
 import javax.media.opengl.GL;
 import org.caleydo.core.manager.IGeneralManager;
@@ -18,7 +17,6 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
-import com.sun.opengl.util.texture.TextureIO;
 
 /**
  * Class that implements the memo pad that can store pathways inclusive their
@@ -79,29 +77,7 @@ public class GLPathwayMemoPad
 			fMemoPos += 0.9f;
 		}
 
-		try
-		{
-
-			if (this.getClass().getClassLoader().getResource(TRASH_BIN_PATH) != null)
-			{
-				trashCanTexture = TextureIO.newTexture(TextureIO.newTextureData(this
-						.getClass().getClassLoader().getResourceAsStream(TRASH_BIN_PATH),
-						false, "PNG"));
-			}
-			else
-			{
-				trashCanTexture = TextureIO.newTexture(TextureIO.newTextureData(new File(
-						TRASH_BIN_PATH), false, "PNG"));
-			}
-
-		}
-		catch (Exception e)
-		{
-			System.out.println("GLPathwayMemoPad.init() Error loading texture from "
-					+ TRASH_BIN_PATH);
-			e.printStackTrace();
-		}
-
+		trashCanTexture = GeneralManager.get().getResourceLoader().getTexture(TRASH_BIN_PATH);
 		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 24), false);
 	}
 

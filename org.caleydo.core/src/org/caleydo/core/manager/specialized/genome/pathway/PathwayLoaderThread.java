@@ -2,9 +2,7 @@ package org.caleydo.core.manager.specialized.genome.pathway;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.StringTokenizer;
@@ -59,12 +57,28 @@ public class PathwayLoaderThread
 	{
 		super.run();
 
+		// Turn off busy mode
+		for (AGLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
+				.getAllGLEventListeners())
+		{
+			if (!tmpGLEventListener.isRenderedRemote())
+				tmpGLEventListener.enableBusyMode(true);
+		}
+		
 		Iterator<PathwayDatabase> iterPathwayDatabase = pathwayDatabases.iterator();
 		while (iterPathwayDatabase.hasNext())
 		{
 			loadAllPathwaysByType(generalManager, iterPathwayDatabase.next());
 		}
 
+		// Turn off busy mode
+		for (AGLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
+				.getAllGLEventListeners())
+		{
+			if (!tmpGLEventListener.isRenderedRemote())
+				tmpGLEventListener.enableBusyMode(false);
+		}
+		
 		generalManager.getPathwayManager().notifyPathwayLoadingFinished(true);
 		// notifyViews();
 	}
@@ -78,20 +92,6 @@ public class PathwayLoaderThread
 
 		generalManager.getLogger().log(Level.INFO,
 				"Start parsing " + pathwayDatabase.getName() + " pathways.");
-
-		GLRemoteRendering tmpGLRemoteRendering3D = null;
-		for (AGLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
-				.getAllGLEventListeners())
-		{
-			if (!tmpGLEventListener.isRenderedRemote())
-				tmpGLEventListener.enableBusyMode(true);
-			if (tmpGLEventListener instanceof GLRemoteRendering)
-			{
-				tmpGLRemoteRendering3D = ((GLRemoteRendering) tmpGLEventListener);
-				tmpGLRemoteRendering3D.enableBusyMode(true);
-				// break;
-			}
-		}
 
 		BufferedReader file = null;
 		String sLine = null;
@@ -119,16 +119,8 @@ public class PathwayLoaderThread
 		int iPathwayIndex = 0;
 		try
 		{
-			if (generalManager.getClass().getClassLoader().getResourceAsStream(sFileName) != null)
-			{
-				file = new BufferedReader(new InputStreamReader(generalManager.getClass()
-						.getClassLoader().getResourceAsStream(sFileName)));
-			}
-			else
-			{
-				file = new BufferedReader(new FileReader(sFileName));
-			}
-
+			file = GeneralManager.get().getResourceLoader().getResource(sFileName);
+			
 			StringTokenizer tokenizer;
 			String sPathwayName;
 			PathwayGraph tmpPathwayGraph;
@@ -186,17 +178,11 @@ public class PathwayLoaderThread
 					+ sFileName);
 		}
 
-		for (AGLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
-				.getAllGLEventListeners())
-		{
-			if (!tmpGLEventListener.isRenderedRemote())
-				tmpGLEventListener.enableBusyMode(false);
-		}
 
-		 if (tmpGLRemoteRendering3D != null)
-		 {
-			 tmpGLRemoteRendering3D.enableBusyMode(false);
-		 }
+//		 if (tmpGLRemoteRendering3D != null)
+//		 {
+//			 tmpGLRemoteRendering3D.enableBusyMode(false);
+//		 }
 
 		generalManager.getLogger().log(Level.INFO,
 				"Finished parsing " + pathwayDatabase.getName() + " pathways.");

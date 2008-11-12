@@ -33,6 +33,7 @@ import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 import org.caleydo.core.manager.view.ViewGLCanvasManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
+import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.preference.PreferenceStore;
 
 /**
@@ -83,6 +84,8 @@ public class GeneralManager
 
 	private IGUIBridge guiBridge;
 
+	private ResourceLoader resourceLoader;
+	
 	@Override
 	public void init(boolean bIsStandalone, IGUIBridge externalGUIBridge)
 	{
@@ -125,6 +128,8 @@ public class GeneralManager
 
 		initLogger();
 		initPreferences();
+		
+		resourceLoader = new ResourceLoader();
 
 		// Init Standalone GUI Bridge if in standalone mode
 		if (bIsStandalone)
@@ -145,7 +150,7 @@ public class GeneralManager
 		}
 		return generalManager;
 	}
-
+	
 	private void initPreferences()
 	{
 		preferenceStore = new PreferenceStore(IGeneralManager.CALEYDO_HOME_PATH
@@ -196,6 +201,12 @@ public class GeneralManager
 	public final Logger getLogger()
 	{
 		return logger;
+	}
+	
+	@Override
+	public ResourceLoader getResourceLoader()
+	{		
+		return resourceLoader;
 	}
 
 	@Override

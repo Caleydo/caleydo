@@ -8,6 +8,7 @@ import org.caleydo.core.manager.id.IDManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
 import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
+import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.preference.PreferenceStore;
 
 /**
@@ -35,14 +36,12 @@ public interface IGeneralManager
 	 */
 	public void init(boolean bIsStandalone, IGUIBridge externalGUIBridge);
 
-
 	public IMementoManager getMementoManager();
 
 	public IStorageManager getStorageManager();
 
 	public ISetManager getSetManager();
 
-	// public  ISelectionManager getSelectionManager();
 	public  ICommandManager getCommandManager();
 
 	public  ISWTGUIManager getSWTGUIManager();
@@ -62,16 +61,23 @@ public interface IGeneralManager
 	public  IGlyphManager getGlyphManager();
 
 	public  IDManager getIDManager();
-
-	// public  IVirtualArrayManager getVirtualArrayManager();
-
+	
 	/**
 	 * Returns the logger.
 	 * 
 	 * @return logger
 	 */
-	public  Logger getLogger();
+	public Logger getLogger();
 
+	/**
+	 * Resource loader that is responsible for loading images, 
+	 * textures and data files in the Caleydo framework.
+	 * DO NOT LOAD YOUR FILES ON YOUR OWN!
+	 * 
+	 * @return resource loader
+	 */
+	public ResourceLoader getResourceLoader();
+	
 	/**
 	 * Returns the preference store where Caleydo stores its preferences. The
 	 * object can store and restore preferences to/from a predefined file.

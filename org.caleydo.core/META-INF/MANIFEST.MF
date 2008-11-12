@@ -421,22 +421,9 @@ Require-Bundle: org.eclipse.swt;bundle-version="3.4.0",
  org.caleydo.util.graph;bundle-version="1.0.0",
  org.eclipse.core.runtime;bundle-version="3.4.0",
  org.caleydo.lib.jogl;bundle-version="1.0.0",
- org.caleydo.lib.core;bundle-version="1.0.0"
-Bundle-ClassPath: lib/ftp/edtftpj.jar,
- lib/tagsoup/tagsoup-1.1.3.jar,
- lib/webspider/commons-codec-1.2.jar,
- lib/webspider/commons-httpclient-3.1.jar,
- lib/webspider/commons-logging-1.1.1.jar,
- lib/webspider/itsucks-base-0.3.0-pre7.jar,
- lib/webspider/itsucks-console-0.3.0-pre7.jar,
- lib/webspider/itsucks-core-0.3.0-pre7.jar,
- lib/webspider/log4j-1.2.14.jar,
- lib/webspider/spring-beans-2.5.jar,
- lib/webspider/spring-context-2.5.jar,
- lib/webspider/spring-core-2.5.jar,
- lib/wii/avetanaBT.jar,
- lib/wii/WiiRemoteJ.jar,
- .
+ org.caleydo.lib.core;bundle-version="1.0.0",
+ org.caleydo.data;bundle-version="1.0.0"
+Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.caleydo.core.manager
 Bundle-ActivationPolicy: lazy

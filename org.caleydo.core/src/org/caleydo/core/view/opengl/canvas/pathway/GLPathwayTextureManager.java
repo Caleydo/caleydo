@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.canvas.pathway;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.logging.Level;
@@ -10,9 +9,9 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.renderstyle.PathwayRenderStyle;
+import org.caleydo.data.loader.ResourceLoader;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
-import com.sun.opengl.util.texture.TextureIO;
 
 /**
  * OpenGL pathway texture manager
@@ -56,38 +55,18 @@ public class GLPathwayTextureManager
 		generalManager.getLogger().log(Level.INFO,
 				"Load pathway texture with ID: " + iPathwayId);
 
-		try
-		{
-			if (this.getClass().getClassLoader().getResource(sPathwayTexturePath) != null)
-			{
-				pathwayTexture = TextureIO.newTexture(TextureIO.newTextureData(this.getClass()
-						.getClassLoader().getResourceAsStream(sPathwayTexturePath), true,
-						"GIF"));
-			}
-			else
-			{
-				pathwayTexture = TextureIO.newTexture(TextureIO.newTextureData(new File(
-						sPathwayTexturePath), true, "GIF"));
-			}
+			
+		pathwayTexture = generalManager.getResourceLoader().getTexture(sPathwayTexturePath);
+		
 
-			// pathwayTexture.setTexParameteri(GL.GL_TEXTURE_MIN_FILTER,
-			// GL.GL_LINEAR);
-			// pathwayTexture.setTexParameteri(GL.GL_TEXTURE_MAG_FILTER,
-			// GL.GL_LINEAR);
+		// pathwayTexture.setTexParameteri(GL.GL_TEXTURE_MIN_FILTER,
+		// GL.GL_LINEAR);
+		// pathwayTexture.setTexParameteri(GL.GL_TEXTURE_MAG_FILTER,
+		// GL.GL_LINEAR);
 
-			hashPathwayIdToTexture.put(iPathwayId, pathwayTexture);
+		hashPathwayIdToTexture.put(iPathwayId, pathwayTexture);
 
-			return pathwayTexture;
-
-		}
-		catch (Exception e)
-		{
-			generalManager.getLogger().log(Level.SEVERE,
-					"Error loading pathway texture: " + sPathwayTexturePath);
-			e.printStackTrace();
-		}
-
-		return null;
+		return pathwayTexture;
 	}
 
 	public void renderPathway(final GL gl, final AGLEventListener containingView,

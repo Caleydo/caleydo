@@ -31,6 +31,7 @@ import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener.EBusyModeState;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
@@ -225,8 +226,10 @@ public class GLHeatMap
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		// GLHelperFunctions.drawAxis(gl);
 		gl.glCallList(iGLDisplayListToCall);
-		if (bBusyModeChanged || bBusyMode)
-			updateBusyMode(gl);
+		
+		if(eBusyModeState != EBusyModeState.OFF)
+			renderBusyMode(gl);
+		
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 	}
 

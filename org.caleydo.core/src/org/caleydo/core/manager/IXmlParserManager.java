@@ -39,9 +39,8 @@ public interface IXmlParserManager
 	 * Unregister a Handler by its String
 	 * 
 	 * @param sOpeningAndClosingTag tag to identify handler.
-	 * @return TRUE if handle was unregistered.
 	 */
-	public boolean unregisterSaxHandler(final String sActivationXmlTag);
+	public void unregisterSaxHandler(final String sActivationXmlTag);
 
 	/**
 	 * Callback called by org.caleydo.core.parser.handler.IXmlParserHandler if
@@ -60,18 +59,6 @@ public interface IXmlParserManager
 	 * @return true if file existed and was parsed successfully
 	 */
 	public boolean parseXmlFileByName(String filename);
-
-	/**
-	 * Open a new XML file and start parsing it
-	 * 
-	 * @param inputStream stream containing an XML file.
-	 * @param inputStreamText label only
-	 * @return true if file existed and was parsed successfully
-	 */
-	public boolean parseXmlFileByInputStream(InputSource inputStream,
-			final String inputStreamText);
-
-	public boolean parseXmlString(final String sMuddlewareXPath, final String xmlString);
 
 	/**
 	 * Cleanup called by Manager after Handler is not used any more.

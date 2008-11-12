@@ -62,7 +62,7 @@ public class JukeboxLayoutRenderStyle
 	}
 
 	@Override
-	public RemoteHierarchyLevel initStackLayer()
+	public RemoteHierarchyLevel initStackLayer(boolean bIsZoomedIn)
 	{
 
 		float fTiltAngleDegree = 57; // degree

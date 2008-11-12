@@ -1,12 +1,20 @@
 package org.caleydo.core.manager.parser;
 
+import java.io.IOException;
 import java.util.Hashtable;
 import java.util.LinkedList;
+import java.util.logging.Level;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
+import org.ccil.cowan.tagsoup.HTMLSchema;
+import org.ccil.cowan.tagsoup.Parser;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
+import org.xml.sax.helpers.XMLReaderFactory;
 
 /**
  * Abstract parser manager.
@@ -31,8 +39,6 @@ public abstract class AXmlParserManager
 	 * tag was found or the closing tag was precessed this reference is null.
 	 */
 	protected IXmlParserHandler currentHandler = null;
-
-	// protected String sCurrentClosingTag = "";
 
 	/**
 	 * Contains the Handler of the previous opening tags. If a new tag is opened
@@ -184,14 +190,9 @@ public abstract class AXmlParserManager
 		return true;
 	}
 
-	/**
-	 * @see org.caleydo.core.manager.IXmlParserManager#unregisterSaxHandler(Stringt)
-	 */
-	public final boolean unregisterSaxHandler(final String sActivationXmlTag)
+	@Override
+	public final void unregisterSaxHandler(final String sActivationXmlTag)
 	{
-
-		assert sActivationXmlTag != null : "Can not handle null pointer as handler";
-
 		if (bProcessingXmlDataNow)
 		{
 			throw new IllegalStateException(
@@ -208,34 +209,80 @@ public abstract class AXmlParserManager
 
 		IXmlParserHandler parserHandler = hashTag2XmlParser.remove(sActivationXmlTag);
 
-		if (parserHandler != null)
+		if (parserHandler == null)
 		{
-
-			// generalManager.logMsg(
-			// "XmlParserManager.unregisterHandler( key=["
-			// + sActivationXmlTag + "] "
-			// + parserHandler.getClass().getSimpleName()
-			// + " ) done.",
-			// LoggerType.TRANSITION );
-
-			return true;
+			throw new IllegalStateException("Cannot unregister parser handler!");
 		}
 
-		// generalManager.logMsg(
-		// "XmlParserManager.unregisterHandler( "
-		// + sActivationXmlTag + " ) failed to unload!",
-		// LoggerType.ERROR );
-
-		return false;
+		return;
 	}
 
-	/*
-	 * @seeorg.caleydo.core.xml.parser.manager.IXmlParserManager#
-	 * getCurrentXmlParserHandler()
-	 */
+	@Override
 	public final IXmlParserHandler getCurrentXmlParserHandler()
 	{
-
 		return this.currentHandler;
+	}
+	
+	public boolean parseOnce(final String sFileName)
+	{
+		InputSource inputSource = generalManager.getResourceLoader().getInputSource(sFileName);
+		
+		try
+		{
+			XMLReader reader = null;
+
+			if (sFileName.contains(".xml"))
+			{
+				reader = XMLReaderFactory.createXMLReader();
+
+				// Entity resolver avoids the XML Reader
+				// to check external DTDs.
+				reader.setFeature(
+						"http://apache.org/xml/features/nonvalidating/load-external-dtd",
+						false);
+
+				reader.setEntityResolver(this);
+				reader.setContentHandler(this);
+			}
+			else
+			{
+				reader = XMLReaderFactory.createXMLReader("org.ccil.cowan.tagsoup.Parser");
+				// reader.setFeature(org.ccil.cowan.tagsoup.Parser.
+				// defaultAttributesFeature, false);
+
+				reader.setEntityResolver(this);
+				reader.setContentHandler(this);
+
+				HTMLSchema htmlSchema = new HTMLSchema();
+				reader.setProperty(Parser.schemaProperty, htmlSchema);
+			}
+
+			generalManager.getLogger().log(Level.FINE, "Start parsing file " + sFileName);
+			
+			reader.parse(inputSource);
+			
+			if (inputSource.getByteStream() != null)
+			{
+				inputSource.getByteStream().close();
+			}
+			else if (inputSource.getCharacterStream() != null)
+			{
+				inputSource.getCharacterStream().close();
+			}
+
+			generalManager.getLogger().log(Level.FINE, "Finished parsing file " + sFileName);
+
+		}
+		catch (SAXException saxe)
+		{
+			throw new IllegalStateException(
+					"SAXParser-error during parsing.\n SAX error: " + saxe.toString());
+		}
+		catch (IOException ioe)
+		{
+			throw new IllegalStateException("IO-error during parsing");
+		}
+
+		return true;
 	}
 }

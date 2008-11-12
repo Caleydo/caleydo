@@ -5,6 +5,8 @@ import java.io.IOException;
 import java.util.EnumMap;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLException;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.data.loader.ResourceLoader;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureIO;
 
@@ -35,58 +37,10 @@ public class GLIconTextureManager
 	{
 		if (!mapIconTextures.containsKey(eIconTextures))
 		{
-			try
-			{
-				Texture tmpTexture;
-				String sFileName = eIconTextures.getFileName();
-
-				if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null)
-				{
-					tmpTexture = TextureIO.newTexture(TextureIO.newTextureData(this.getClass()
-							.getClassLoader().getResourceAsStream(sFileName), true, "PNG"));
-				}
-				else
-				{
-					tmpTexture = TextureIO.newTexture(TextureIO.newTextureData(new File(
-							eIconTextures.getFileName()), true, "PNG"));
-				}
-
-				mapIconTextures.put(eIconTextures, tmpTexture);
-			}
-			catch (IllegalArgumentException e)
-			{
-				e.printStackTrace();
-			}
-			catch (GLException e)
-			{
-				e.printStackTrace();
-			}
-			catch (IOException e)
-			{
-				e.printStackTrace();
-			}
+			Texture tmpTexture = GeneralManager.get().getResourceLoader()
+				.getTexture(eIconTextures.getFileName());
+			mapIconTextures.put(eIconTextures, tmpTexture);
 		}
 		return mapIconTextures.get(eIconTextures);
 	}
-
-	// public static Texture loadIconTexture(EIconTextures eIconTextures)
-	// {
-	// Texture tmpTexture;
-	// String sFileName = eIconTextures.getFileName();
-	//
-	// if (this.getClass().getClassLoader().getResourceAsStream(sFileName) !=
-	// null)
-	// {
-	// tmpTexture =
-	// TextureIO.newTexture(TextureIO.newTextureData(this.getClass()
-	// .getClassLoader().getResourceAsStream(sFileName), true, "PNG"));
-	// }
-	// else
-	// {
-	// tmpTexture = TextureIO.newTexture(TextureIO.newTextureData(new File(
-	// eIconTextures.getFileName()), true, "PNG"));
-	// }
-	//
-	// mapIconTextures.put(eIconTextures, tmpTexture);
-	// }
 }

@@ -46,6 +46,13 @@ public abstract class AGLEventListener
 	extends AUniqueObject
 	implements GLEventListener
 {
+	public enum EBusyModeState
+	{
+		SWITCH_OFF,
+		ON,
+		OFF
+	}
+
 	protected IGeneralManager generalManager;
 
 	protected EManagedObjectType viewType = EManagedObjectType.GL_EVENT_LISTENER;
@@ -81,20 +88,15 @@ public abstract class AGLEventListener
 	protected boolean bIsDisplayListDirtyRemote = true;
 	protected boolean bHasFrustumChanged = false;
 
-	/**
-	 * When the system is in the busy mode the background color will turn yellow
-	 * and the system interaction will be turned off.
-	 */
-	protected boolean bBusyMode = false;
-	protected boolean bBusyModeChanged = false;
-
 	protected GeneralRenderStyle renderStyle;
 
 	protected GLIconTextureManager iconTextureManager;
 
 	private int iFrameCounter = 0;
 	private int iRotationFrameCounter = 0;
-	private static final int NUMBER_OF_FRAMES = 5;
+	private static final int NUMBER_OF_FRAMES = 15;
+
+	protected EBusyModeState eBusyModeState = EBusyModeState.OFF;
 
 	/**
 	 * Constructor.
@@ -451,117 +453,116 @@ public abstract class AGLEventListener
 		return true;
 	}
 
-	protected synchronized void updateBusyMode(final GL gl)
+	protected synchronized void renderBusyMode(final GL gl)
 	{
 		float fTransparency = 0.3f * iFrameCounter / NUMBER_OF_FRAMES;
 		float fLoadingTransparency = 0.8f * iFrameCounter / NUMBER_OF_FRAMES;
-		// TODO replace text from textrenderer with texture
-		if (bBusyMode || iFrameCounter > 0)
+
+		if (eBusyModeState == EBusyModeState.ON && iFrameCounter < NUMBER_OF_FRAMES)
 		{
-			if (bBusyMode)
-			{
-				if (iFrameCounter < NUMBER_OF_FRAMES)
-					iFrameCounter++;
-			}
-			else
-			{
-				iFrameCounter--;
-			}
+			iFrameCounter++;
+		}
+		else if (eBusyModeState == EBusyModeState.SWITCH_OFF)
+		{
+			iFrameCounter--;
+		}
 
-			pickingManager.enablePicking(false);
+		pickingManager.enablePicking(false);
 
-			gl.glColor4f(1, 1, 1, fTransparency);
-			gl.glBegin(GL.GL_POLYGON);
-			gl.glVertex3f(-9, -9, 4.2f);
-			gl.glVertex3f(-9, 9, 4.2f);
-			gl.glVertex3f(9, 9, 4.2f);
-			gl.glVertex3f(9, -9, 4.2f);
-			gl.glEnd();
+		gl.glColor4f(1, 1, 1, fTransparency);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(-9, -9, 4.2f);
+		gl.glVertex3f(-9, 9, 4.2f);
+		gl.glVertex3f(9, 9, 4.2f);
+		gl.glVertex3f(9, -9, 4.2f);
+		gl.glEnd();
 
-			float fXCenter, fYCenter;
-			if (renderStyle == null || this instanceof GLRemoteRendering)
-			{
-				fXCenter = 0;
-				fYCenter = 0;
-			}
-			else
-			{
-				fXCenter = renderStyle.getXCenter();
-				fYCenter = renderStyle.getYCenter();
-			}
-
-			// TODO bad hack here, frustum wrong or renderStyle null
-
-			Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.LOADING);
-			tempTexture.enable();
-			tempTexture.bind();
-
-			TextureCoords texCoords = tempTexture.getImageTexCoords();
-
-			gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-			gl.glColor4f(1.0f, 1.0f, 1.0f, fLoadingTransparency);
-
-			gl.glBegin(GL.GL_POLYGON);
-
-			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-			gl.glVertex3f(fXCenter - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, fYCenter
-					- GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
-			gl.glTexCoord2f(texCoords.left(), texCoords.top());
-			gl.glVertex3f(fXCenter - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, fYCenter
-					+ GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
-			gl.glTexCoord2f(texCoords.right(), texCoords.top());
-			gl.glVertex3f(fXCenter + GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, fYCenter
-					+ GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
-			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-
-			gl.glVertex3f(fXCenter + GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, fYCenter
-					- GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
-			gl.glEnd();
-
-			tempTexture.disable();
-
-			// gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
-			Texture circleTexture = iconTextureManager.getIconTexture(gl,
-					EIconTextures.LOADING_CIRCLE);
-			circleTexture.enable();
-			circleTexture.bind();
-			texCoords = circleTexture.getImageTexCoords();
-
-			gl.glTranslatef(fXCenter - 0.6f, fYCenter, 0);
-			gl.glRotatef(-iRotationFrameCounter, 0, 0, 1);
-
-			gl.glBegin(GL.GL_POLYGON);
-			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-			gl.glVertex3f(-0.1f, -0.1f, 4.22f);
-			gl.glTexCoord2f(texCoords.left(), texCoords.top());
-			gl.glVertex3f(-0.1f, 0.1f, 4.22f);
-			gl.glTexCoord2f(texCoords.right(), texCoords.top());
-			gl.glVertex3f(0.1f, 0.1f, 4.22f);
-			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-			gl.glVertex3f(0.1f, -0.1f, 4.22f);
-			gl.glEnd();
-			gl.glRotatef(+iRotationFrameCounter, 0, 0, 1);
-			gl.glTranslatef(fXCenter + 0.6f, fYCenter, 0);
-
-			iRotationFrameCounter += 20;
-			gl.glPopAttrib();
-
-			circleTexture.disable();
+		float fXCenter, fYCenter;
+		if (renderStyle == null || this instanceof GLRemoteRendering)
+		{
+			fXCenter = 0;
+			fYCenter = 0;
 		}
 		else
 		{
-			iFrameCounter = 0;
-			pickingManager.enablePicking(true);
+			fXCenter = renderStyle.getXCenter();
+			fYCenter = renderStyle.getYCenter();
 		}
 
-		// bBusyModeChanged = false;
+		// TODO bad hack here, frustum wrong or renderStyle null
+
+		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.LOADING);
+		tempTexture.enable();
+		tempTexture.bind();
+
+		TextureCoords texCoords = tempTexture.getImageTexCoords();
+
+		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		gl.glColor4f(1.0f, 1.0f, 1.0f, fLoadingTransparency);
+
+		gl.glBegin(GL.GL_POLYGON);
+
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(fXCenter - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, fYCenter
+				- GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(fXCenter - GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, fYCenter
+				+ GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(fXCenter + GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, fYCenter
+				+ GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+
+		gl.glVertex3f(fXCenter + GeneralRenderStyle.LOADING_BOX_HALF_WIDTH, fYCenter
+				- GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
+		gl.glEnd();
+
+		tempTexture.disable();
+
+		// gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
+		Texture circleTexture = iconTextureManager.getIconTexture(gl,
+				EIconTextures.LOADING_CIRCLE);
+		circleTexture.enable();
+		circleTexture.bind();
+		texCoords = circleTexture.getImageTexCoords();
+
+		gl.glTranslatef(fXCenter - 0.6f, fYCenter, 0);
+		gl.glRotatef(-iRotationFrameCounter, 0, 0, 1);
+
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(-0.1f, -0.1f, 4.22f);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(-0.1f, 0.1f, 4.22f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(0.1f, 0.1f, 4.22f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(0.1f, -0.1f, 4.22f);
+		gl.glEnd();
+		gl.glRotatef(+iRotationFrameCounter, 0, 0, 1);
+		gl.glTranslatef(fXCenter + 0.6f, fYCenter, 0);
+
+		iRotationFrameCounter += 3;
+		gl.glPopAttrib();
+
+		circleTexture.disable();
+
+		if (eBusyModeState == EBusyModeState.SWITCH_OFF && iFrameCounter == 0)
+		{
+			pickingManager.enablePicking(true);
+			eBusyModeState = EBusyModeState.OFF;
+		}
 	}
 
 	public void enableBusyMode(final boolean bBusyMode)
 	{
+		System.out.println("Busy mode state: " +bBusyMode);
+		
+		if (!bBusyMode && eBusyModeState == EBusyModeState.ON)
+			eBusyModeState = EBusyModeState.SWITCH_OFF;
+		else if (bBusyMode)
+			eBusyModeState = EBusyModeState.ON;
 
-		this.bBusyMode = bBusyMode;
-		bBusyModeChanged = true;
 	}
 }
 

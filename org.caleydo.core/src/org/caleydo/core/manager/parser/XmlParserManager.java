@@ -1,8 +1,6 @@
 package org.caleydo.core.manager.parser;
 
-import java.net.URL;
 import java.util.Iterator;
-import java.util.logging.Level;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 import org.caleydo.core.parser.xml.sax.handler.command.CommandSaxHandler;
 import org.caleydo.core.parser.xml.sax.handler.glyph.GlyphDefinitionSaxHandler;
@@ -10,9 +8,7 @@ import org.caleydo.core.parser.xml.sax.handler.pathway.BioCartaPathwayImageMapSa
 import org.caleydo.core.parser.xml.sax.handler.pathway.KgmlSaxHandler;
 import org.caleydo.core.parser.xml.sax.handler.pathway.PathwayImageMapSaxHandler;
 import org.caleydo.core.parser.xml.sax.handler.recursion.OpenExternalXmlFileSaxHandler;
-import org.caleydo.core.util.system.CaleydoInputStream;
 import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 /**
@@ -55,23 +51,15 @@ public class XmlParserManager
 		registerAndInitSaxHandler(glyphHandler);
 	}
 
-	/**
-	 * @see org.xml.sax.ContentHandler#startDocument()
-	 */
 	@Override
 	public final void startDocument() throws SAXException
 	{
-
 		setXmlFileProcessedNow(true);
 	}
 
-	/**
-	 * @see org.xml.sax.ContentHandler#endDocument()
-	 */
 	@Override
 	public final void endDocument() throws SAXException
 	{
-
 		setXmlFileProcessedNow(false);
 
 		if (currentHandler != null)
@@ -90,15 +78,13 @@ public class XmlParserManager
 			{
 				this.destroyHandler();
 			}
-
-		} // else .. if ( currentHandler != null )
+		}
 	}
 
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attrib)
 			throws SAXException
 	{
-
 		if (currentHandler == null)
 		{
 			// generalManager.logMsg( " < TAG= " + qName,
@@ -261,186 +247,16 @@ public class XmlParserManager
 		setXmlFileProcessedNow(true);
 	}
 
-	/**
-	 * @see org.caleydo.core.manager.IXmlParserManager#parseXmlFileByName(java.lang.String)
-	 */
-	public boolean parseXmlString(final String sMuddlewareXPath, final String xmlString)
-	{
-
-		iCountOpenedFiles++;
-//		try
-//		{
-			// generalManager.logMsg("XmlParserManager.parseXmlString( " +
-			// sMuddlewareXPath + ") parse...",
-			// LoggerType.VERBOSE );
-
-			InputSource inStream = new InputSource(xmlString);
-
-			// generalManager.logMsg("XmlParserManager.parseXmlString( XPath=["
-			// + sMuddlewareXPath + "] , ..) done.",
-			// LoggerType.VERBOSE_EXTRA );
-
-			boolean status = CaleydoInputStream.parseOnce(inStream, sMuddlewareXPath, this,
-					generalManager);
-
-			// generalManager.logMsg(
-			// "XmlParserManager.parseXmlFileByName( XPath=[" + sMuddlewareXPath
-			// + "], ..) done.",
-			// LoggerType.STATUS );
-
-			return status;
-//
-//		}
-//		catch (CaleydoRuntimeException gve)
-//		{
-//			// generalManager.logMsg("XmlParserManager.parseXmlString( " +
-//			// sMuddlewareXPath +
-//			// "," + xmlString + ") failed; caleydo_error: " +
-//			// gve.toString(),
-//			// LoggerType.MINOR_ERROR_XML );
-//
-//			return false;
-//		}
-//		catch (RuntimeException e)
-//		{
-//			// generalManager.logMsg("XmlParserManager.parseXmlString( " +
-//			// sMuddlewareXPath +
-//			// "," + xmlString + ") failed; system_error: " +
-//			// e.toString(),
-//			// LoggerType.MINOR_ERROR_XML );
-//
-//			return false;
-//		}
-	}
-
 	@Override
-	public boolean parseXmlFileByName(final String filename)
+	public boolean parseXmlFileByName(final String sFileName)
 	{
-
 		iCountOpenedFiles++;
 
-		URL resourceUrl = this.getClass().getClassLoader().getResource(filename);
-		InputSource inSource = null;
-
-		if (resourceUrl != null)
-		{
-			inSource = CaleydoInputStream.openInputStreamFromUrl(resourceUrl,
-					generalManager);
-		}
-		else
-		{
-			inSource = CaleydoInputStream
-					.openInputStreamFromFile(filename, generalManager);
-		}
-
-		generalManager.getLogger().log(Level.FINE, "Start parsing file " + filename);
-
-		boolean status = CaleydoInputStream.parseOnce(inSource, filename, this,
-				generalManager);
-
-		generalManager.getLogger().log(Level.FINE, "Finished parsing file " + filename);
-
-		return status;
-	}
-
-	/**
-	 * @see org.caleydo.core.manager.IXmlParserManager#parseXmlFileByName(Stringt)
-	 */
-	public boolean parseXmlFileByNameAndHandler(final String filename,
-			final OpenExternalXmlFileSaxHandler openFileHandler)
-	{
-
-		// this.swapXmlParserHandler( currentHandler, openFileHandler );
-
-		iCountOpenedFiles++;
-
-//		try
-//		{
-			URL resourceUrl = this.getClass().getClassLoader().getResource(filename);
-			InputSource inSource = null;
-
-			if (resourceUrl != null)
-			{
-				inSource = CaleydoInputStream.openInputStreamFromUrl(resourceUrl,
-						generalManager);
-			}
-			else
-			{
-				inSource = CaleydoInputStream
-						.openInputStreamFromFile(filename, generalManager);
-			}
-
-			return CaleydoInputStream.parseOnce(inSource, filename, this, generalManager);
-
-//		}
-//		catch (CaleydoRuntimeException gve)
-//		{
-//			// generalManager.logMsg(
-//			// "XmlParserManager.parseXmlFileByNameAndHandler( " + filename +
-//			// ") failed; caleydo_error: " +
-//			// gve.toString(),
-//			// LoggerType.MINOR_ERROR_XML );
-//
-//			return false;
-//		}
-//		catch (RuntimeException e)
-//		{
-//			// generalManager.logMsg(
-//			// "XmlParserManager.parseXmlFileByNameAndHandler( " + filename +
-//			// ") failed; system_error: " +
-//			// e.toString(),
-//			// LoggerType.MINOR_ERROR_XML );
-//
-//			return false;
-//		}
-	}
-
-	/**
-	 * @see org.caleydo.core.manager.IXmlParserManager#parseXmlFileByInputStream(org.xml.sax.InputSource)
-	 */
-	public boolean parseXmlFileByInputStream(InputSource inputStream,
-			final String inputStreamText)
-	{
-
-		iCountOpenedFiles++;
-//		try
-//		{
-
-			return CaleydoInputStream.parseOnce(inputStream, inputStreamText, this,
-					generalManager);
-//		}
-//		catch (CaleydoRuntimeException gve)
-//		{
-//			// generalManager.logMsg(
-//			// "XmlParserManager.parseXmlFileByInputStream( ) failed; caleydo_error: "
-//			// +
-//			// gve.toString(),
-//			// LoggerType.MINOR_ERROR_XML );
-//
-//			return false;
-//		}
-//		catch (RuntimeException e)
-//		{
-//			// generalManager.logMsg(
-//			// "XmlParserManager.parseXmlFileByInputStream( ) failed; system_error: "
-//			// +
-//			// e.toString(),
-//			// LoggerType.MINOR_ERROR_XML );
-//
-//			return false;
-//		}
+		return parseOnce(sFileName);
 	}
 
 	public void destroyHandler()
 	{
-
-		// generalManager.logMsg( "XmlParserManager.destoryHandler() ... ",
-		// LoggerType.VERBOSE );
-
-		/**
-		 * Linked list...
-		 */
-
 		if (llXmlParserStack == null)
 		{
 			// generalManager.logMsg(

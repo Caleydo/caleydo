@@ -25,7 +25,7 @@ All Rights Reserved.
       <vmArgsMac>-XstartOnFirstThread -Dorg.eclipse.swt.internal.carbon.smallFonts</vmArgsMac>
    </launcherArgs>
 
-   <windowImages i16="icons/caleydo16.gif"/>
+   <windowImages i16="resources/icons/caleydo16.gif"/>
 
    <splash
       location="org.caleydo.rcp" />

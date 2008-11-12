@@ -89,15 +89,10 @@ public abstract class ARemoteViewLayoutRenderStyle
 	}
 
 	public abstract RemoteHierarchyLevel initUnderInteractionLayer();
-
-	public abstract RemoteHierarchyLevel initStackLayer();
-
+	public abstract RemoteHierarchyLevel initStackLayer(boolean bIsZoomedIn);
 	public abstract RemoteHierarchyLevel initPoolLayer(final int iMouseOverViewID);
-
 	public abstract RemoteHierarchyLevel initMemoLayer();
-
 	public abstract RemoteHierarchyLevel initTransitionLayer();
-
 	public abstract RemoteHierarchyLevel initSpawnLayer();
 
 	public RemoteHierarchyLevel getUnderInteractionLayer()

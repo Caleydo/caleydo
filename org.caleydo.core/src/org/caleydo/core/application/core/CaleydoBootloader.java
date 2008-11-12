@@ -95,11 +95,6 @@ public class CaleydoBootloader
 	 */
 	public synchronized void start()
 	{
-		parseXmlConfigFile(sFileName);
-	}
-
-	public void parseXmlConfigFile(final String sFileName)
-	{
 		xmlParserManager.parseXmlFileByName(sFileName);
 	}
 

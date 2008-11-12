@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.GC;
@@ -30,8 +31,8 @@ extends AToolBarAction
 		
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromURL(this.getClass()
-				.getClassLoader().getResource(ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(), ICON)));
 	}
 	
 	@Override

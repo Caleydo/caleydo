@@ -24,7 +24,7 @@
             allowMultiple="true"
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.GLHeatMapView"
-            icon="resources/icons/view/storagebased/heatmap/heatmap.png"
+            icon="resources/icons/view/heatmap.png"
             id="org.caleydo.rcp.views.GLHeatMapView"
             name="Heat Map">
       </view>
@@ -42,7 +42,7 @@
             allowMultiple="true"
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.GLParCoordsView"
-            icon="resources/icons/view/storagebased/parcoords/parcoords.png"
+            icon="resources/icons/view/parcoords.png"
             id="org.caleydo.rcp.views.GLParCoordsView"
             name="Parallel Coordinates">
       </view>
@@ -59,7 +59,7 @@
             allowMultiple="true"
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.GLPathwayView"
-            icon="resources/icons/view/pathway/pathway.png"
+            icon="resources/icons/view/pathway.png"
             id="org.caleydo.rcp.views.GLPathwayView"
             name="Pathway">
       </view> 
@@ -68,7 +68,7 @@
             allowMultiple="true"
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.GLRemoteRenderingView"
-            icon="resources/icons/view/remote/remote.png"
+            icon="resources/icons/view/remote.png"
             id="org.caleydo.rcp.views.GLRemoteRenderingView"
             name="Bucket">
       </view> 
@@ -76,7 +76,7 @@
       <view
             id="org.caleydo.rcp.views.HTMLBrowserView"
             name="Browser"
-            icon="resources/icons/view/browser/browser.png"
+            icon="resources/icons/view/browser.png"
             class="org.caleydo.rcp.views.HTMLBrowserView"
             category="org.caleydo.rcp.views">
       </view>
@@ -107,7 +107,7 @@
       <view
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.TabularDataView"
-            icon="resources/icons/view/browser/browser.png"
+            icon="resources/icons/view/browser.png"
             id="org.caleydo.rcp.views.TabularDataView"
             name="Tabular Data Viewer">
       </view>
@@ -138,7 +138,7 @@
          </property>
          <property
                name="windowImages"
-               value="icons/caleydo16.gif">
+               value="resources/icons/caleydo16.gif">
          </property>
          <property
                name="preferenceCustomization"
@@ -275,7 +275,7 @@
             <menu label="Open Views">
                <command
                      commandId="org.caleydo.rcp.command.openviews.heatmap"
-                     icon="resources/icons/view/storagebased/heatmap/heatmap.png"
+                     icon="resources/icons/view/heatmap.png"
                      label="Heatmap"
                      style="push">
                </command>
@@ -287,7 +287,7 @@
                </command>
                <command
                      commandId="org.caleydo.rcp.command.openviews.parcoords"
-                     icon="resources/icons/view/storagebased/parcoords/parcoords.png"
+                     icon="resources/icons/view/parcoords.png"
                      label="Parallel Coordinates"
                      style="push">
                </command>
@@ -299,13 +299,13 @@
                </command>
                <command
                      commandId="org.caleydo.rcp.command.openviews.remote"
-                     icon="resources/icons/view/remote/remote.png"
+                     icon="resources/icons/view/remote.png"
                      label="Bucket / jukebox"
                      style="push">
                </command>
                <command
                      commandId="org.caleydo.rcp.command.openviews.browser"
-                     icon="resources/icons/view/browser/browser.png"
+                     icon="resources/icons/view/browser.png"
                      label="Web Browser"
                      style="push">
                </command>
@@ -329,7 +329,7 @@
                </command>
                <command
                      commandId="org.caleydo.rcp.command.openviews.tabulardata"
-                     icon="resources/icons/view/browser/browser.png"
+                     icon="resources/icons/view/browser.png"
                      label="Tabular Data Viewer"
                      style="push">
                </command>

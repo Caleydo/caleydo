@@ -169,7 +169,7 @@ public class GLRemoteRendering
 		}
 
 		underInteractionLayer = layoutRenderStyle.initUnderInteractionLayer();
-		stackLayer = layoutRenderStyle.initStackLayer();
+		stackLayer = layoutRenderStyle.initStackLayer(bucketMouseWheelListener.isZoomedIn());
 		poolLayer = layoutRenderStyle.initPoolLayer(-1);
 		memoLayer = layoutRenderStyle.initMemoLayer();
 		transitionLayer = layoutRenderStyle.initTransitionLayer();
@@ -245,7 +245,8 @@ public class GLRemoteRendering
 	@Override
 	public synchronized void displayLocal(final GL gl)
 	{
-		if (pickingTriggerMouseAdapter.wasRightMouseButtonPressed())
+		if (pickingTriggerMouseAdapter.wasRightMouseButtonPressed()
+				&& !bucketMouseWheelListener.isZoomedIn())
 		{
 			bEnableNavigationOverlay = !bEnableNavigationOverlay;
 
@@ -316,6 +317,7 @@ public class GLRemoteRendering
 		initializeNewPathways(gl);
 
 		renderLayer(gl, underInteractionLayer);
+		renderLayer(gl, stackLayer);
 
 		// If user zooms to the bucket bottom all but the under
 		// interaction layer is _not_ rendered.
@@ -326,7 +328,6 @@ public class GLRemoteRendering
 			renderPoolAndMemoLayerBackground(gl);
 
 			renderLayer(gl, transitionLayer);
-			renderLayer(gl, stackLayer);
 			renderLayer(gl, poolLayer);
 			renderLayer(gl, spawnLayer);
 
@@ -345,8 +346,8 @@ public class GLRemoteRendering
 				layoutRenderStyle.getColorBarYPos(), 4);
 
 
-		if(bBusyMode || bBusyModeChanged)
-			updateBusyMode(gl);
+		if(eBusyModeState != EBusyModeState.OFF)
+			renderBusyMode(gl);
 
 		// gl.glCallList(iGLDisplayList);
 	}
@@ -422,10 +423,10 @@ public class GLRemoteRendering
 
 	private void renderBucketWall(final GL gl, boolean bRenderBorder)
 	{
-		//if (arSlerpActions.isEmpty())
-			gl.glColor4f(0.95f, 0.95f, 0.95f, 1.0f);
-////		else
-//			gl.glColor4f(0.95f, 0.95f, 0.95f, 0.4f);
+		if (arSlerpActions.isEmpty())
+			gl.glColor4f(1f, 1f, 1f, 1.0f);
+		else
+			gl.glColor4f(1f, 1f, 1f, 0.3f);
 			
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(0, 0, -0.03f);
@@ -1273,6 +1274,13 @@ public class GLRemoteRendering
 		// Disable picking until pathways are loaded
 		generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(false);
 		
+		// Turn on busy mode
+		for (AGLEventListener tmpGLEventListener : GeneralManager.get()
+				.getViewGLCanvasManager().getAllGLEventListeners())
+		{
+			if (!tmpGLEventListener.isRenderedRemote())
+				tmpGLEventListener.enableBusyMode(true);
+		}
 
 //		iSlerpFactor = 0;
 	}
@@ -1650,7 +1658,7 @@ public class GLRemoteRendering
 		}
 
 		underInteractionLayer = layoutRenderStyle.initUnderInteractionLayer();
-		stackLayer = layoutRenderStyle.initStackLayer();
+		stackLayer = layoutRenderStyle.initStackLayer(bucketMouseWheelListener.isZoomedIn());
 		poolLayer = layoutRenderStyle.initPoolLayer(-1);
 		memoLayer = layoutRenderStyle.initMemoLayer();
 		transitionLayer = layoutRenderStyle.initTransitionLayer();
@@ -1791,7 +1799,7 @@ public class GLRemoteRendering
 		layoutRenderStyle.setAspectRatio(fAspectRatio);
 
 		layoutRenderStyle.initUnderInteractionLayer();
-		layoutRenderStyle.initStackLayer();
+		layoutRenderStyle.initStackLayer(bucketMouseWheelListener.isZoomedIn());
 		layoutRenderStyle.initPoolLayer(iMouseOverViewID);
 		layoutRenderStyle.initMemoLayer();
 	}
@@ -2019,13 +2027,6 @@ public class GLRemoteRendering
 					if (!eventListener.isRenderedRemote())
 						eventListener.enableBusyMode(false);
 				}
-			}
-			else
-			{
-				for (AGLEventListener eventListener : generalManager.getViewGLCanvasManager()
-						.getAllGLEventListeners())
-					if (!eventListener.isRenderedRemote())
-						eventListener.enableBusyMode(true);
 			}
 
 			// Trigger mouse over update if an entity is currently selected

@@ -54,6 +54,7 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener.EBusyModeState;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
@@ -349,8 +350,9 @@ public class GLParallelCoordinates
 		// }
 
 		gl.glDisable(GL.GL_STENCIL_TEST);
-		if (bBusyModeChanged || bBusyMode)
-			updateBusyMode(gl);
+		
+		if(eBusyModeState != EBusyModeState.OFF)
+			renderBusyMode(gl);
 	}
 
 	/**

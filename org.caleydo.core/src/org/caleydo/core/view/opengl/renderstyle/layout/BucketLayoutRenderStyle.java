@@ -59,72 +59,107 @@ public class BucketLayoutRenderStyle
 	}
 
 	@Override
-	public RemoteHierarchyLevel initStackLayer()
+	public RemoteHierarchyLevel initStackLayer(boolean bIsZoomedIn)
 	{
 		Transform transform;
 
-		float fTiltAngleRad_Horizontal;
-		float fTiltAngleRad_Vertical;
-
-		fTiltAngleRad_Horizontal = (float) Math
-				.acos(((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2)
-					/ ((float) Math.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
-					+ Math.pow(((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2),
-							2))));
-		fTiltAngleRad_Vertical = Vec3f.convertGrad2Radiant(90);
+		if (!bIsZoomedIn)
+		{		
+			float fTiltAngleRad_Horizontal;
+			float fTiltAngleRad_Vertical;
 		
-		float fScalingCorrection = ((float) Math.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
-				+ Math.pow(((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2), 2))) / 4f;
+			fTiltAngleRad_Horizontal = (float) Math
+					.acos(((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2)
+						/ ((float) Math.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
+						+ Math.pow(((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2),
+								2))));
+			fTiltAngleRad_Vertical = Vec3f.convertGrad2Radiant(90);
+			
+			float fScalingCorrection = ((float) Math.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
+					+ Math.pow(((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2), 2))) / 4f;
+		
+		
+			// FIXME: handle case when height > width
+			// if (fAspectRatio < 1.0)
+			// {
+			// // 1.0f / fAspectRatio;
+			//	    	
+			//	    	
+			// }
+			// else
+			// {
+			//	    	
+			// }
+		
+			// TOP BUCKET WALL
+			transform = new Transform();
+			transform.setTranslation(new Vec3f(-2, 2 - 4f
+					* (float) Math.cos(fTiltAngleRad_Vertical) * fScalingCorrection, 4 - 4
+					* (float) Math.sin(fTiltAngleRad_Vertical) * (1 - fZoomFactor)));
+			transform.setScale(new Vec3f(fScalingFactorStackLayer, fScalingFactorStackLayer
+					* (1 - fZoomFactor), fScalingFactorStackLayer * (1 - fZoomFactor)));
+			transform.setRotation(new Rotf(new Vec3f(1, 0, 0), fTiltAngleRad_Vertical));
+			stackLayer.setTransformByPositionIndex(0, transform);
+		
+			// BOTTOM BUCKET WALL
+			transform = new Transform();
+			transform.setTranslation(new Vec3f(-2, -2, 4));
+			transform.setScale(new Vec3f(fScalingFactorStackLayer, fScalingFactorStackLayer
+					* (1 - fZoomFactor), fScalingFactorStackLayer * (1 - fZoomFactor)));
+			transform.setRotation(new Rotf(new Vec3f(-1, 0, 0), fTiltAngleRad_Vertical));
+			stackLayer.setTransformByPositionIndex(2, transform);
+		
+			// LEFT BUCKET WALL
+			transform = new Transform();
+			transform.setTranslation(new Vec3f(fPoolLayerWidth - 2 * 1 / fAspectRatio, -2, 4));
+			transform.setScale(new Vec3f(fScalingFactorStackLayer * fScalingCorrection,
+					fScalingFactorStackLayer, fScalingFactorStackLayer * fScalingCorrection));
+			transform.setRotation(new Rotf(new Vec3f(0, 1, 0), fTiltAngleRad_Horizontal));
+			stackLayer.setTransformByPositionIndex(1, transform);
+		
+			// RIGHT BUCKET WALL
+			transform = new Transform();
+			transform.setTranslation(new Vec3f(-fPoolLayerWidth + 2 * 1 / fAspectRatio - 4f
+					* (float) Math.cos(fTiltAngleRad_Horizontal) * fScalingCorrection, -2, 4 - 4
+					* (float) Math.sin(fTiltAngleRad_Horizontal) * fScalingCorrection));
+			transform.setScale(new Vec3f(fScalingFactorStackLayer * fScalingCorrection,
+					fScalingFactorStackLayer, fScalingFactorStackLayer * fScalingCorrection));
+			transform.setRotation(new Rotf(new Vec3f(0, -1f, 0), fTiltAngleRad_Horizontal));
+			stackLayer.setTransformByPositionIndex(3, transform);
+		}
+		else
+		{
+			float fScalingFactorZoomedIn = 0.4f;
+						
+			// TOP BUCKET WALL
+			transform = new Transform();
+			transform.setTranslation(new Vec3f(-7.25f, 0.8f, -4f));
+			transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn, fScalingFactorZoomedIn));
+			transform.setRotation(new Rotf(new Vec3f(0, 0, 0), 0));
+			stackLayer.setTransformByPositionIndex(0, transform);
 
+			// BOTTOM BUCKET WALL
+			transform = new Transform();
+			transform.setTranslation(new Vec3f(-7.25f, -4, -4f));
+			transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn, fScalingFactorZoomedIn));
+			transform.setRotation(new Rotf(new Vec3f(0, 0, 0), 0));
+			stackLayer.setTransformByPositionIndex(1, transform);
 
-		// FIXME: handle case when height > width
-		// if (fAspectRatio < 1.0)
-		// {
-		// // 1.0f / fAspectRatio;
-		//	    	
-		//	    	
-		// }
-		// else
-		// {
-		//	    	
-		// }
+			// LEFT BUCKET WALL
+			transform = new Transform();
+			transform.setTranslation(new Vec3f(4.05f, 0.8f, -4f));
+			transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn, fScalingFactorZoomedIn));
+			transform.setRotation(new Rotf(new Vec3f(0, 0, 0), 0));
+			stackLayer.setTransformByPositionIndex(3, transform);
 
-		// TOP BUCKET WALL
-		transform = new Transform();
-		transform.setTranslation(new Vec3f(-2, 2 - 4f
-				* (float) Math.cos(fTiltAngleRad_Vertical) * fScalingCorrection, 4 - 4
-				* (float) Math.sin(fTiltAngleRad_Vertical) * (1 - fZoomFactor)));
-		transform.setScale(new Vec3f(fScalingFactorStackLayer, fScalingFactorStackLayer
-				* (1 - fZoomFactor), fScalingFactorStackLayer * (1 - fZoomFactor)));
-		transform.setRotation(new Rotf(new Vec3f(1, 0, 0), fTiltAngleRad_Vertical));
-		stackLayer.setTransformByPositionIndex(0, transform);
-
-		// BOTTOM BUCKET WALL
-		transform = new Transform();
-		transform.setTranslation(new Vec3f(-2, -2, 4));
-		transform.setScale(new Vec3f(fScalingFactorStackLayer, fScalingFactorStackLayer
-				* (1 - fZoomFactor), fScalingFactorStackLayer * (1 - fZoomFactor)));
-		transform.setRotation(new Rotf(new Vec3f(-1, 0, 0), fTiltAngleRad_Vertical));
-		stackLayer.setTransformByPositionIndex(2, transform);
-
-		// LEFT BUCKET WALL
-		transform = new Transform();
-		transform.setTranslation(new Vec3f(fPoolLayerWidth - 2 * 1 / fAspectRatio, -2, 4));
-		transform.setScale(new Vec3f(fScalingFactorStackLayer * fScalingCorrection,
-				fScalingFactorStackLayer, fScalingFactorStackLayer * fScalingCorrection));
-		transform.setRotation(new Rotf(new Vec3f(0, 1, 0), fTiltAngleRad_Horizontal));
-		stackLayer.setTransformByPositionIndex(1, transform);
-
-		// RIGHT BUCKET WALL
-		transform = new Transform();
-		transform.setTranslation(new Vec3f(-fPoolLayerWidth + 2 * 1 / fAspectRatio - 4f
-				* (float) Math.cos(fTiltAngleRad_Horizontal) * fScalingCorrection, -2, 4 - 4
-				* (float) Math.sin(fTiltAngleRad_Horizontal) * fScalingCorrection));
-		transform.setScale(new Vec3f(fScalingFactorStackLayer * fScalingCorrection,
-				fScalingFactorStackLayer, fScalingFactorStackLayer * fScalingCorrection));
-		transform.setRotation(new Rotf(new Vec3f(0, -1f, 0), fTiltAngleRad_Horizontal));
-		stackLayer.setTransformByPositionIndex(3, transform);
-
+			// RIGHT BUCKET WALL
+			transform = new Transform();
+			transform.setTranslation(new Vec3f(4.05f, -4, -4f));;
+			transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn, fScalingFactorZoomedIn));
+			transform.setRotation(new Rotf(new Vec3f(0, 0, 0), 0));
+			stackLayer.setTransformByPositionIndex(2, transform);
+		}
+		
 		// // OLD static bucket implementation
 		//
 		// // TOP BUCKET WALL

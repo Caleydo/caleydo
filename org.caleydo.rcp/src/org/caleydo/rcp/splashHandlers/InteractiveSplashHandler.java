@@ -7,7 +7,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.ProgressBar;
 import org.eclipse.swt.widgets.Shell;
@@ -40,9 +39,8 @@ public class InteractiveSplashHandler
 		// loading until all work is done
 		doEventLoop();
 		
-		splash.setImage(new Image(splash.getDisplay(), 
-				this.getClass().getClassLoader().getResourceAsStream(
-						"icons/caleydo16.gif")));
+//		splash.setImage(GeneralManager.get().getResourceLoader().getImage(splash.getDisplay(), 
+//										"resources/icons/caleydo16.gif"));
 		
 		splash.setText("Loading Caleydo...");
 	}
