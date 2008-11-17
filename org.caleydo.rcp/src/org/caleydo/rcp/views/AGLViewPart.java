@@ -11,11 +11,13 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.EMediatorUpdateType;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.eclipse.jface.action.IAction;
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
@@ -37,6 +39,7 @@ public abstract class AGLViewPart
 	protected int iGLEventListenerID;
 
 	protected static ArrayList<IAction> alToolbar;
+	protected static ArrayList<IContributionItem> alToolbarContributions;
 
 	/**
 	 * Constructor.
@@ -62,9 +65,12 @@ public abstract class AGLViewPart
 	 * This class creates the GL event listener contained in a RCP view for a
 	 * RCP view.
 	 * 
-	 * @param glViewType The type of view. See {@link ECommandType}
-	 * @param iParentCanvasID the id of canvas where you want to render
-	 * @param bRegisterToOverallMediator true if you want this to listen and send to main mediator
+	 * @param glViewType
+	 *            The type of view. See {@link ECommandType}
+	 * @param iParentCanvasID
+	 *            the id of canvas where you want to render
+	 * @param bRegisterToOverallMediator
+	 *            true if you want this to listen and send to main mediator
 	 */
 	protected int createGLEventListener(ECommandType glViewType, int iParentCanvasID,
 			boolean bRegisterToOverallMediator)
@@ -104,14 +110,14 @@ public abstract class AGLViewPart
 
 		if (bRegisterToOverallMediator)
 			registerViewToMediator(iViewID);
-		
+
 		return iViewID;
 	}
-	
+
 	public void registerViewToMediator(int iViewID)
 	{
 		IGeneralManager generalManager = GeneralManager.get();
-		
+
 		// Add created view to bucket mediator
 		// FIXME: this approach is not general - think about better one
 		ArrayList<Integer> iAlMediatorIDs = new ArrayList<Integer>();
@@ -177,10 +183,24 @@ public abstract class AGLViewPart
 	 */
 	public static void fillToolBar(final IToolBarManager toolBarManager)
 	{
+		// Add ControlContribution items
+		if (!GeneralManager.get().getPreferenceStore().getBoolean(
+				PreferenceConstants.XP_CLASSIC_STYLE_MODE))
+		{
+			if (alToolbarContributions != null)
+				for (IContributionItem item : alToolbarContributions)
+					toolBarManager.add(item);
+
+			alToolbarContributions = null;
+		}
+
+		// add action items
 		for (IAction toolBarAction : alToolbar)
 		{
 			toolBarManager.add(toolBarAction);
 		}
+		alToolbar = null;
+
 	}
 
 	@Override

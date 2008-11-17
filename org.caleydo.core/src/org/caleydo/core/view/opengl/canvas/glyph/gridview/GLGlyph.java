@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Set;
 import java.util.logging.Level;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.IUniqueObject;
@@ -29,7 +28,6 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.ESelectionMode;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
-import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
@@ -37,8 +35,10 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.JoglMouseListener;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GlyphRenderStyle;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
+import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureCoords;
 
 /**
  * Rendering the Glyph View
@@ -84,7 +84,7 @@ public class GLGlyph
 
 	private String sLabel = null;
 
-	private boolean bEnableSelection = true;
+	private boolean bEnableSelection = false;
 	private int iSelectionBrushSize = 2;
 	private ArrayList<Vec2i> alSelectionBrushCornerPoints = null;
 
@@ -114,9 +114,9 @@ public class GLGlyph
 				.build();
 		viewType = EManagedObjectType.GL_GLYPH;
 
-		//TODO change this to real parameter
-		if (sLabel.equals("Glyph Single View"))
-			iViewRole = 1;
+		// TODO change this to real parameter
+		// if (sLabel.equals("Glyph Single View"))
+		iViewRole = 1;
 
 		if (sLabel.equals("Glyph Selection View"))
 			iViewRole = 2;
@@ -138,15 +138,51 @@ public class GLGlyph
 	}
 
 	/**
+	 * Gets the used positioning model
+	 * 
+	 */
+	public synchronized EIconIDs getPositionModel()
+	{
+		if (grid_ != null)
+			return grid_.getGlyphPositions();
+		return EIconIDs.DISPLAY_RECTANGLE;
+	}
+
+	/**
 	 * Sets the Selection Brush
 	 * 
 	 * @param enable / disable selection brush
 	 * @param size of the brush
 	 */
-	public synchronized void setSelectionBrush(boolean enableDisable, int size)
+	public synchronized void setSelectionBrush(int size)
 	{
-		bEnableSelection = enableDisable;
-		iSelectionBrushSize = size;
+		if (size <= 0)
+		{
+			bEnableSelection = false;
+			ArrayList<Integer> ids = null;
+			if (size == -1)
+				ids = grid_.selectAll();
+			if (size == -2)
+				ids = grid_.deSelectAll();
+
+			selectionManager.clearSelections();
+			alSelectionBrushCornerPoints.clear();
+
+			if (ids != null) // no grid set
+				for (int id : ids)
+					selectionManager.addToType(ESelectionType.SELECTION, id);
+
+			bDrawConnectionRepLines = false;
+			triggerUpdate(selectionManager.getDelta());
+			bDrawConnectionRepLines = true;
+
+			bRedrawDisplayListGlyph = true;
+		}
+		else
+		{
+			bEnableSelection = true;
+			iSelectionBrushSize = size;
+		}
 	}
 
 	@Override
@@ -167,7 +203,7 @@ public class GLGlyph
 		grid_ = new GLGlyphGrid(renderStyle);
 		grid_.loadData(glyphData);
 
-		grid_.selectAll();
+		// grid_.selectAll();
 
 		// init glyph gl
 		forceRebuild();
@@ -296,7 +332,16 @@ public class GLGlyph
 	public synchronized void display(GL gl)
 	{
 		if (grid_ == null)
+		{
+			renderSymbol(gl);
 			return;
+		}
+
+		if (grid_.getGlyphList().keySet().size() == 0)
+		{
+			renderSymbol(gl);
+			return;
+		}
 
 		if (bRedrawDisplayListGrid || bRedrawDisplayListGlyph)
 			initDisplayLists(gl);
@@ -331,13 +376,46 @@ public class GLGlyph
 
 		if (alSelectionBrushCornerPoints != null)
 		{
+			int size = alSelectionBrushCornerPoints.size();
+			
+			Vec2i oldpoint = null;
+			if(size > 1)
+				oldpoint = alSelectionBrushCornerPoints.get(size-1);
+			
 			for (Vec2i point : alSelectionBrushCornerPoints)
 			{
 				gl.glPushMatrix();
 				gl.glTranslatef(point.x(), -point.y(), 0);
-
-				GLHelperFunctions.drawAxis(gl);
+				
+				gl.glLineWidth(3);
+				
+				if(!keyListener_.isControlDown())
+					gl.glColor4f(0, 1, 0, 1);
+				else
+					gl.glColor4f(1, 0, 0, 1);
+				
+				gl.glBegin(GL.GL_LINES);
+				gl.glVertex3f(0, 0, 0);
+				gl.glVertex3f(0, 0, 1);
+				gl.glEnd();
+				
+				if(oldpoint != null) {
+					int x = point.x() - oldpoint.x();
+					int y = point.y() - oldpoint.y();
+				
+					gl.glBegin(GL.GL_LINES);
+					gl.glVertex3f(0, 0, 1);
+					gl.glVertex3f(-x, y, 1);
+					gl.glEnd();
+					
+					gl.glBegin(GL.GL_LINES);
+					gl.glVertex3f(0, 0, 0);
+					gl.glVertex3f(-x, y, 0);
+					gl.glEnd();
+				}
 				gl.glPopMatrix();
+				
+				oldpoint = point;
 			}
 		}
 
@@ -422,6 +500,40 @@ public class GLGlyph
 		bRedrawDisplayListGlyph = false;
 
 		gl.glPopMatrix();
+	}
+
+	/**
+	 * Render the symbol of the view instead of the view
+	 * 
+	 * @param gl
+	 */
+	private void renderSymbol(GL gl)
+	{
+		float fXButtonOrigin = 1.3f * renderStyle.getScaling();
+		float fYButtonOrigin = 1.3f * renderStyle.getScaling();
+		Texture tempTexture = iconTextureManager
+				.getIconTexture(gl, EIconTextures.GLYPH_SYMBOL);
+		tempTexture.enable();
+		tempTexture.bind();
+
+		TextureCoords texCoords = tempTexture.getImageTexCoords();
+
+		// gl.glTranslatef(0.2f, 0.2f, 0);
+		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		gl.glColor4f(1f, 1, 1, 1f);
+		gl.glBegin(GL.GL_POLYGON);
+
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(fXButtonOrigin, fYButtonOrigin, 0.01f);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(fXButtonOrigin, 2 * fYButtonOrigin, 0.01f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(fXButtonOrigin * 2, 2 * fYButtonOrigin, 0.01f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(fXButtonOrigin * 2, fYButtonOrigin, 0.01f);
+		gl.glEnd();
+		gl.glPopAttrib();
+		tempTexture.disable();
 	}
 
 	private void organizeGlyphsForViewRole()
@@ -601,45 +713,36 @@ public class GLGlyph
 					grid_.getGlyph(id).deSelect();
 		}
 
-		// generate corner points for the brush (for display)
-		// left
-		int leftID = grid_.getGlyphID(pos.x() - iSelectionBrushSize + 1, pos.y());
-		if (leftID >= 0)
-		{
-			Vec2i lPos = grid_.getGridPosition(grid_.getGlyph(leftID));
-			lPos.setY(lPos.y() - 1);
-			alSelectionBrushCornerPoints.add(lPos);
+		Vec2i gridPos = grid_.getGridPosition(glyph);
+		Vec2i temp = null;
+		
+		{ // left
+			temp = new Vec2i(gridPos);
+			temp.setX(gridPos.x() - (iSelectionBrushSize - 1));
+			temp.setY(gridPos.y() - (iSelectionBrushSize - 0));
+			alSelectionBrushCornerPoints.add(temp);
 		}
 
-		// top
-		int topID = grid_.getGlyphID(pos.x(), pos.y()
-				+ selectedGridHeight[(selectedGridHeight.length - 1) / 2]);
-		if (topID >= 0)
-		{
-			Vec2i tPos = grid_.getGridPosition(grid_.getGlyph(topID));
-			tPos.setX(tPos.x() + 1);
-			tPos.setY(tPos.y() - 1);
-			alSelectionBrushCornerPoints.add(tPos);
+		{ // top
+			temp = new Vec2i(gridPos);
+			temp.setX(gridPos.x() + (iSelectionBrushSize - 0));
+			temp.setY(gridPos.y() - (iSelectionBrushSize - 0));
+			alSelectionBrushCornerPoints.add(temp);
 		}
 
-		// right
-		int rightID = grid_.getGlyphID(pos.x() + iSelectionBrushSize - 1, pos.y());
-		if (rightID >= 0)
-		{
-			Vec2i rPos = grid_.getGridPosition(grid_.getGlyph(rightID));
-			rPos.setX(rPos.x() + 1);
-			alSelectionBrushCornerPoints.add(rPos);
+		{ // right
+			temp = new Vec2i(gridPos);
+			temp.setX(gridPos.x() + (iSelectionBrushSize - 0));
+			temp.setY(gridPos.y() + (iSelectionBrushSize - 1));
+			alSelectionBrushCornerPoints.add(temp);
 		}
 
-		// bottom
-		int bottomID = grid_.getGlyphID(pos.x(), pos.y()
-				- selectedGridHeight[(selectedGridHeight.length - 1) / 2]);
-		if (bottomID >= 0)
-		{
-			Vec2i bPos = grid_.getGridPosition(grid_.getGlyph(bottomID));
-			alSelectionBrushCornerPoints.add(bPos);
+		{ // bottom
+			temp = new Vec2i(gridPos);
+			temp.setX(gridPos.x() - (iSelectionBrushSize - 1));
+			temp.setY(gridPos.y() + (iSelectionBrushSize - 1));
+			alSelectionBrushCornerPoints.add(temp);
 		}
-
 	}
 
 	@Override
@@ -726,12 +829,12 @@ public class GLGlyph
 
 		if (selectionDelta.size() > 0)
 			handleConnectedElementRep(selectionDelta);
-		
+
 		bRedrawDisplayListGlyph = true;
-		
-		if( eventTrigger instanceof GLGlyph)
+
+		if (eventTrigger instanceof GLGlyph)
 			return;
-		
+
 		GlyphEntry actualGlyph = null;
 		for (SelectionItem item : selectionDelta)
 		{
@@ -794,8 +897,8 @@ public class GLGlyph
 
 			if (actualGlyph == null)
 				continue;
-			
-			if(item.getSelectionType() != ESelectionType.MOUSE_OVER)
+
+			if (item.getSelectionType() != ESelectionType.MOUSE_OVER)
 				continue;
 
 			vecGlyphPos = getGlyphPosition(actualGlyph);
@@ -806,5 +909,20 @@ public class GLGlyph
 									vecGlyphPos.x(), vecGlyphPos.y(), vecGlyphPos.z()),
 							ESelectionMode.ADD_PICK);
 		}
+	}
+
+	public synchronized void resetSelection()
+	{
+		for (GlyphEntry g : gman.getGlyphs().values())
+			g.select();
+
+		grid_.loadData(null);
+		forceRebuild();
+	}
+
+	public synchronized void removeUnselected()
+	{
+		grid_.loadData(null);
+		forceRebuild();
 	}
 }

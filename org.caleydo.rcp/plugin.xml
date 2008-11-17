@@ -33,7 +33,7 @@
             allowMultiple="true"
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.GLHierarchicalHeatMapView"
-            icon="resources/icons/view/storagebased/heatmap/heatmap.png"
+            icon="resources/icons/view/heatmap.png"
             id="org.caleydo.rcp.views.GLHierarchicalHeatMapView"
             name="Hierarchical Heat Map">
       </view>      
@@ -50,7 +50,7 @@
             allowMultiple="true"
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.ClinicalGLParCoordsView"
-            icon="resources/icons/view/storagebased/parcoords/parcoords.png"
+            icon="resources/icons/view/parcoords.png"
             id="org.caleydo.rcp.views.ClinicalGLParCoordsView"
             name="Clinical Parallel Coordinates">
       </view>         
@@ -84,7 +84,7 @@
             allowMultiple="true"
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.GLGlyphView"
-            icon="resources/icons/view/glyph/glyph.png"
+            icon="resources/icons/view/glyph.png"
             id="org.caleydo.rcp.views.GLGlyphView"
             name="Glyph">
       </view>
@@ -92,7 +92,7 @@
             allowMultiple="true"
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.GLGlyphSliderView"
-            icon="resources/icons/view/glyph/glyph.png"
+            icon="resources/icons/view/glyph.png"
             id="org.caleydo.rcp.views.GLGlyphSliderView"
             name="Glyph Slider">
       </view>
@@ -100,7 +100,7 @@
             allowMultiple="true"
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.SWTGlyphMappingConfigurationView"
-            icon="resources/icons/view/glyph/glyph.png"
+            icon="resources/icons/view/glyph.png"
             id="org.caleydo.rcp.views.SWTGlyphMappingConfigurationView"
             name="Glyph Mapping Configuration">
       </view>
@@ -281,7 +281,7 @@
                </command>
                <command
                      commandId="org.caleydo.rcp.command.openviews.hierarchical_heatmap"
-                     icon="resources/icons/view/storagebased/heatmap/heatmap.png"
+                     icon="resources/icons/view/heatmap.png"
                      label="Hierarchical Heat Map"
                      style="push">
                </command>
@@ -293,7 +293,7 @@
                </command>
                <command
                      commandId="org.caleydo.rcp.command.openviews.clinicalparcoords"
-                     icon="resources/icons/view/storagebased/parcoords/parcoords.png"
+                     icon="resources/icons/view/parcoords.png"
                      label="Clinical Parallel Coordinates"
                      style="push">
                </command>
@@ -311,19 +311,19 @@
                </command>
                <command
                      commandId="org.caleydo.rcp.command.openviews.glyphview"
-                     icon="resources/icons/view/glyph/glyph.png"
+                     icon="resources/icons/view/glyph.png"
                      label="Glyph View"
                      style="push">
                </command>
                <command
                      commandId="org.caleydo.rcp.command.openviews.glyphsliderview"
-                     icon="resources/icons/view/glyph/glyph.png"
+                     icon="resources/icons/view/glyph.png"
                      label="Glyph Slider View"
                      style="push">
                </command>
                <command
                      commandId="org.caleydo.rcp.command.openviews.glyphmappingconfigurationview"
-                     icon="resources/icons/view/glyph/glyph.png"
+                     icon="resources/icons/view/glyph.png"
                      label="Glyph Mapping Configuration"
                      style="push">
                </command>

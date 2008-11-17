@@ -1,8 +1,10 @@
 package org.caleydo.rcp.action.view.glyph;
 
 import org.caleydo.core.command.view.rcp.EExternalFlagSetterType;
+import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.view.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.ui.PlatformUI;
 
 
 public class ChangeViewModeToScatterplotAction
@@ -22,9 +24,8 @@ extends AToolBarAction
 		
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromURL(this.getClass()
-				.getClassLoader().getResource(ICON)));
-		//setChecked(bEnable);
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(), ICON)));
 	}
 	
 	@Override

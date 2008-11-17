@@ -14,7 +14,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
-import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
+import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphDataLoader;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModel;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelCircle;
@@ -36,7 +36,7 @@ public class GLGlyphGrid
 
 	private IGeneralManager generalManager = null;
 
-	private IGlyphManager gman = null;
+	private GlyphManager gman = null;
 
 	private Vector<Vector<GlyphGridPosition>> glyphMap_;
 
@@ -63,7 +63,7 @@ public class GLGlyphGrid
 	{
 		this.generalManager = GeneralManager.get();
 		this.renderStyle = renderStyle;
-		gman = generalManager.getGlyphManager();
+		gman = (GlyphManager) generalManager.getGlyphManager();
 
 		glyphLowerLeft = new Vec2f();
 		glyphUpperRight = new Vec2f();
@@ -377,24 +377,24 @@ public class GLGlyphGrid
 			}
 		}
 
-//		generalManager.getLogger().log(
-//				Level.WARNING,
-//				"Someone wanted a Glyph on the grid position " + x + ", " + y
-//						+ ", but there is nothing");
+		// generalManager.getLogger().log(
+		// Level.WARNING,
+		// "Someone wanted a Glyph on the grid position " + x + ", " + y
+		// + ", but there is nothing");
 		return -1;
 	}
 
 	public Vec2i getGridPosition(int x, int y)
 	{
 
-		if (x >= worldLimit_.x() || y >= worldLimit_.y() || x<0 || y<0)
+		if (x >= worldLimit_.x() || y >= worldLimit_.y() || x < 0 || y < 0)
 		{
-//			generalManager.getLogger()
-//					.log(
-//							Level.WARNING,
-//							"Someone wanted a Glyph outside the grid! (" + x + ", " + y
-//									+ ") WorldLimit (" + worldLimit_.x() + ","
-//									+ worldLimit_.y() + ")");
+			// generalManager.getLogger()
+			// .log(
+			// Level.WARNING,
+			// "Someone wanted a Glyph outside the grid! (" + x + ", " + y
+			// + ") WorldLimit (" + worldLimit_.x() + ","
+			// + worldLimit_.y() + ")");
 			return null;
 		}
 
@@ -456,14 +456,17 @@ public class GLGlyphGrid
 
 	public void loadData(ISet glyphData)
 	{
-
 		glyphDataLoader = new GlyphDataLoader();
 		if (glyphData != null)
 		{
 			glyphDataLoader.loadGlyphs(glyphData);
 			gman.initGlyphGenerator();
 		}
-		glyphs_ = gman.getGlyphs();
+
+		if (gman.getSelectedGlyphs().size() > 0)
+			glyphs_ = gman.getSelectedGlyphs();
+		else
+			glyphs_ = gman.getGlyphs();
 
 		setGlyphPositions(iPositionType);
 		// setGlyphPositionsRectangle();
@@ -523,6 +526,11 @@ public class GLGlyphGrid
 		gl.glTranslatef(-100f, 0f, 0f);
 
 		gl.glEndList();
+	}
+
+	public EIconIDs getGlyphPositions()
+	{
+		return iPositionType;
 	}
 
 	public void setGlyphPositions()

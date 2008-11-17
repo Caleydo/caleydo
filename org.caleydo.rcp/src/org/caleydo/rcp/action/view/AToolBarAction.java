@@ -3,8 +3,10 @@ package org.caleydo.rcp.action.view;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.rcp.CmdExternalActionTrigger;
 import org.caleydo.core.command.view.rcp.CmdExternalFlagSetter;
+import org.caleydo.core.command.view.rcp.CmdExternalObjectSetter;
 import org.caleydo.core.command.view.rcp.EExternalActionType;
 import org.caleydo.core.command.view.rcp.EExternalFlagSetterType;
+import org.caleydo.core.command.view.rcp.EExternalObjectSetterType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.jface.action.Action;
 
@@ -40,6 +42,17 @@ extends Action
 						ECommandType.EXTERNAL_FLAG_SETTER);
 
 		tmpCmd.setAttributes(iViewID, bFlag, type);
+		tmpCmd.doCommand();
+	}
+	
+	public final void triggerCmdExternalObjectSetter(final Object object, EExternalObjectSetterType type)
+	{
+
+		CmdExternalObjectSetter tmpCmd = (CmdExternalObjectSetter) GeneralManager.get()
+				.getCommandManager().createCommandByType(
+						ECommandType.EXTERNAL_OBJECT_SETTER);
+
+		tmpCmd.setAttributes(iViewID, object, type);
 		tmpCmd.doCommand();
 	}
 }

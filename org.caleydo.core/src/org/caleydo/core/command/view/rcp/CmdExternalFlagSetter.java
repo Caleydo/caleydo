@@ -118,6 +118,13 @@ public class CmdExternalFlagSetter
 				case GLYPH_VIEWMODE_RANDOM:
 					glyphview.setPositionModel(EIconIDs.DISPLAY_RANDOM);
 					return;
+				case GLYPH_SELECTION:
+					if(!bFlag)
+						glyphview.resetSelection();
+					else
+						glyphview.removeUnselected();
+					
+					return;
 			}
 			
 		}

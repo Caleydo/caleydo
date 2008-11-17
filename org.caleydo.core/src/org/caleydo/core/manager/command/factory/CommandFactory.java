@@ -22,6 +22,7 @@ import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.command.view.opengl.CmdCreateGLPathway;
 import org.caleydo.core.command.view.rcp.CmdExternalActionTrigger;
 import org.caleydo.core.command.view.rcp.CmdExternalFlagSetter;
+import org.caleydo.core.command.view.rcp.CmdExternalObjectSetter;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.command.view.swt.CmdViewCreateDataEntitySearcher;
 import org.caleydo.core.command.view.swt.CmdViewCreateDataExchanger;
@@ -187,6 +188,11 @@ public class CommandFactory
 			case CREATE_GL_REMOTE_GLYPH:
 			{
 				createdCommand = new CmdCreateGLEventListener(cmdType);
+				break;
+			}
+			case EXTERNAL_OBJECT_SETTER:
+			{
+				createdCommand = new CmdExternalObjectSetter(cmdType);
 				break;
 			}
 			case EXTERNAL_FLAG_SETTER:

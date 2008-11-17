@@ -34,7 +34,7 @@ public class GlyphMouseListener
 	protected boolean bEnableRotate = false;
 	protected boolean bEnableZoom = false;
 
-	protected boolean bRubberBandEnabled = true;
+	protected boolean bRubberBandEnabled = false;
 
 	protected int iRubberBandStartX = 0, iRubberBandStartY = 0;
 	protected int iRubberBandCurrentX = 0, iRubberBandCurrentY = 0;

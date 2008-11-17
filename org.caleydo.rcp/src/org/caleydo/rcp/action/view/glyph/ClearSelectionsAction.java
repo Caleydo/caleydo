@@ -6,18 +6,14 @@ import org.caleydo.rcp.action.view.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
-public class ChangeViewModeToRandomAction
+public class ClearSelectionsAction
 	extends AToolBarAction
 {
-	public static final String TEXT = "Switch View To Random";
-	public static final String ICON = "resources/icons/view/glyph/sort_random.png";
 
-	private boolean bEnable = false;
-
-	/**
-	 * Constructor.
-	 */
-	public ChangeViewModeToRandomAction(int iViewID)
+	public static final String TEXT = "Clear the selection";
+	public static final String ICON = "resources/icons/view/glyph/selection_clear.png";
+	
+	public ClearSelectionsAction(int iViewID)
 	{
 		super(iViewID);
 
@@ -31,7 +27,7 @@ public class ChangeViewModeToRandomAction
 	public void run()
 	{
 		super.run();
-		// bEnable = !bEnable;
-		triggerCmdExternalFlagSetter(bEnable, EExternalFlagSetterType.GLYPH_VIEWMODE_RANDOM);
+
+		triggerCmdExternalFlagSetter(false, EExternalFlagSetterType.GLYPH_SELECTION);
 	};
 }

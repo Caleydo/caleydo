@@ -31,13 +31,15 @@ public class GlyphManager
 	private HashMap<Integer, GlyphAttributeType> dataTypesExt = null;
 
 	private HashMap<Integer, GlyphEntry> hmGlyphList = null;
-	
+
 	private HashMap<String, String> hmLoadedStoraged = null;
 
 	private HashSet<GLGlyph> registeredViews = null;
-	
+
 	private boolean bIsActive = false;
-	
+
+	private int iSelectionBrushSize;
+
 	/**
 	 * Constructor.
 	 */
@@ -76,9 +78,20 @@ public class GlyphManager
 
 		bIsActive = true;
 	}
-	
-	public boolean isActive() {
+
+	public boolean isActive()
+	{
 		return bIsActive;
+	}
+
+	public void setSelectionBrushSize(int size)
+	{
+		iSelectionBrushSize = size;
+	}
+
+	public int getSelectionBrushSize()
+	{
+		return iSelectionBrushSize;
 	}
 
 	// settings accessors
@@ -218,12 +231,12 @@ public class GlyphManager
 	{
 		hmGlyphList.putAll(glyphlist);
 	}
-	
+
 	public void addGlyphs(HashMap<Integer, GlyphEntry> glyphlist, String storagename)
 	{
-		if(hmLoadedStoraged.containsKey(storagename))
+		if (hmLoadedStoraged.containsKey(storagename))
 			return;
-		
+
 		hmGlyphList.putAll(glyphlist);
 		hmLoadedStoraged.put(storagename, null);
 	}
@@ -233,9 +246,19 @@ public class GlyphManager
 		return hmGlyphList;
 	}
 
+	public HashMap<Integer, GlyphEntry> getSelectedGlyphs()
+	{
+		HashMap<Integer, GlyphEntry> temp = new HashMap<Integer, GlyphEntry>();
+		for (int i : hmGlyphList.keySet())
+			if (hmGlyphList.get(i).isSelected())
+				temp.put(i, hmGlyphList.get(i));
+
+		return temp;
+	}
+
 	public boolean storageLoaded(String storageName)
 	{
-		if(hmLoadedStoraged.containsKey(storageName))
+		if (hmLoadedStoraged.containsKey(storageName))
 			return true;
 		return false;
 	}
