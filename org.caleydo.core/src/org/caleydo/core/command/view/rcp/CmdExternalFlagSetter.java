@@ -7,6 +7,7 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
 
 /**
@@ -72,6 +73,8 @@ public class CmdExternalFlagSetter
 					break;
 				case STORAGEBASED_CHANGE_ORIENTATION:
 					((AStorageBasedView) viewObject).changeOrientation(bFlag);
+				case STORAGEBASED_HEATMAP_IN_FOCUS:
+					((GLHierarchicalHeatMap) viewObject).changeFocus(bFlag);
 			}
 		}
 		

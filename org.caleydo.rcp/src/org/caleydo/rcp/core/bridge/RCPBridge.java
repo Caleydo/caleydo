@@ -6,6 +6,7 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
 import org.caleydo.rcp.command.handler.ExitHandler;
 import org.caleydo.rcp.views.GLGlyphView;
@@ -64,6 +65,11 @@ implements IGUIBridge
 					GLPathwayView.fillToolBar(toolBarManager);
 				}
 				else if (subGLEventListener instanceof GLHeatMap)
+				{
+					GLHeatMapView.createToolBarItems(subGLEventListener.getID());
+					GLHeatMapView.fillToolBar(toolBarManager);
+				}
+				else if (subGLEventListener instanceof GLHierarchicalHeatMap)
 				{
 					GLHeatMapView.createToolBarItems(subGLEventListener.getID());
 					GLHeatMapView.fillToolBar(toolBarManager);

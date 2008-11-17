@@ -58,7 +58,7 @@ public class GLHierarchicalHeatMap
 {
 	private final static float HEAT_MAP_SCALE_FACTOR_NORMAL = 0.5f;
 	
-	private final static float HEAT_MAP_SCALE_FACTOR_INFOCUS = 0.7f;
+	private final static float HEAT_MAP_SCALE_FACTOR_INFOCUS = 0.65f;
 	
 	private HeatMapRenderStyle renderStyle;
 
@@ -166,6 +166,7 @@ public class GLHierarchicalHeatMap
 			return;
 		
 		initFloatBuffer(gl);
+		triggerSelectionBlock(iSelector);
 	}
 
 	@Override
@@ -523,6 +524,9 @@ public class GLHierarchicalHeatMap
 		{
 			// FIXME: bad hack, normalize frustum to 0:1 to avoid that
 			// clipToFrustum(gl);
+			       
+	        gl.glMatrixMode(GL.GL_MODELVIEW);
+	        gl.glLoadIdentity();	
 			
 			if(bIsHeatmapInFocus)
 			{
@@ -621,8 +625,8 @@ public class GLHierarchicalHeatMap
 		}
 		
 		int iCount = 0;
-		float fHelper = set.getVA(iContentVAID).size()/iNrSel/iNrSelBar;
-		float fTemp = set.getVA(iContentVAID).size()/iNrSelBar;
+		float fCntTexture = set.getVA(iContentVAID).size()/iNrSel/iNrSelBar;
+		float fCntBar = set.getVA(iContentVAID).size()/iNrSelBar;
 		
 		SelectionDelta delta = new SelectionDelta(EIDType.DAVID);
 		for (Integer iContentIndex : set.getVA(iContentVAID))
@@ -630,13 +634,13 @@ public class GLHierarchicalHeatMap
 			iCount++;
 			
 			//overviewbar selection
-			if((iCount <= (fTemp * (iSelectorBar - 1)) || (iCount > (fTemp *iSelectorBar))))
+			if((iCount <= (fCntBar * (iSelectorBar - 1)) || (iCount > (fCntBar *iSelectorBar))))
 			{
 				continue;
 			}
 			
 			//texture selection
-			if(((iCount%fTemp) <= (fHelper * (iSelectedElement -1))) || ((iCount%fTemp) > (fHelper * iSelectedElement)))
+			if(((iCount%fCntBar) <= (fCntTexture * (iSelectedElement -1))) || ((iCount%fCntBar) > (fCntTexture * iSelectedElement)))
 			{
 				continue;
 			}
@@ -663,6 +667,13 @@ public class GLHierarchicalHeatMap
 
 		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
 		renderStyle.setBRenderStorageHorizontally(bRenderStorageHorizontally);
+		setDisplayListDirty();
+	}
+	
+	public synchronized void renderinFocus(boolean bRenderinFocus)
+	{
+
+		this.bIsHeatmapInFocus = bRenderinFocus;
 		setDisplayListDirty();
 	}
 
@@ -799,14 +810,15 @@ public class GLHierarchicalHeatMap
 						iSelector = 1;
 						triggerSelectionBlock(iSelector);
 						setDisplayListDirty();
-						
 						break;
 
 					case MOUSE_OVER:
 
 //						System.out.println("mouse over OverviewBar part:" + iExternalID);
-//						iSelectorBar = iExternalID;
-//						setDisplayListDirty();
+						iSelectorBar = iExternalID;
+						iSelector = 1;
+						triggerSelectionBlock(iSelector);
+						setDisplayListDirty();
 						break;
 				}
 
@@ -826,10 +838,10 @@ public class GLHierarchicalHeatMap
 
 					case MOUSE_OVER:
 			
-//						triggerSelectionBlock(iExternalID);
-//						//System.out.println("click on texture part:" + iExternalID);
-//						iSelector = iExternalID;
-//						setDisplayListDirty();
+						triggerSelectionBlock(iExternalID);
+						//System.out.println("click on texture part:" + iExternalID);
+						iSelector = iExternalID;
+						setDisplayListDirty();
 						break;
 				}
 
@@ -1004,7 +1016,7 @@ public class GLHierarchicalHeatMap
 	@Override
 	public void changeOrientation(boolean defaultOrientation)
 	{
-		renderHorizontally(defaultOrientation);	
+		renderHorizontally(defaultOrientation); 
 	}
 
 	@Override
@@ -1012,4 +1024,21 @@ public class GLHierarchicalHeatMap
 	{
 		return bRenderStorageHorizontally;
 	}
+	
+	public void changeFocus(boolean bInFocus)
+	{
+		if(bIsHeatmapInFocus)
+			bIsHeatmapInFocus = false;
+		else
+			bIsHeatmapInFocus = true;	
+		
+		setDisplayListDirty();
+		triggerSelectionBlock(iSelector);
+	}
+	
+	public boolean isInFocus()
+	{
+		return bIsHeatmapInFocus;
+	}
+	
 }

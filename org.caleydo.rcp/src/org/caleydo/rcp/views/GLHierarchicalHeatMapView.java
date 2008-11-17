@@ -8,6 +8,8 @@ import org.caleydo.core.manager.event.mediator.EMediatorUpdateType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
+import org.caleydo.rcp.action.view.storagebased.InFocusAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.widgets.Composite;
@@ -33,12 +35,14 @@ public class GLHierarchicalHeatMapView
 
 	public static void createToolBarItems(int iViewID)
 	{
-//		GLHeatMap heatMap = (GLHeatMap) GeneralManager.get().getViewGLCanvasManager()
-//				.getGLEventListener(iViewID);
+		GLHierarchicalHeatMap hierarchicalHeatMap = (GLHierarchicalHeatMap) GeneralManager.get().getViewGLCanvasManager()
+				.getGLEventListener(iViewID);
 
 		alToolbar = new ArrayList<IAction>();
 
-		// TODO: insert icons + action	
+		// TODO: insert icons + action
+		IAction switchFocus = new InFocusAction(iViewID);
+		alToolbar.add(switchFocus);
 	}
 
 	@Override
