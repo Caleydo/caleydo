@@ -56,9 +56,13 @@ import com.sun.opengl.util.texture.TextureIO;
 public class GLHierarchicalHeatMap
 	extends AStorageBasedView
 {
-	private final static float HEAT_MAP_SCALE_FACTOR_NORMAL = 0.5f;
+	private final static float HEAT_MAP_SCALE_FACTOR_NORMAL = 0.45f;
 	
-	private final static float HEAT_MAP_SCALE_FACTOR_INFOCUS = 0.65f;
+	private final static float HEAT_MAP_SCALE_FACTOR_INFOCUS = 0.55f;
+	
+	private final static float SAMPLES_PER_TEXTURE = 1000f;
+	
+	private final static float SAMPLES_PER_HEATMAP = 25f;
 	
 	private HeatMapRenderStyle renderStyle;
 
@@ -82,22 +86,22 @@ public class GLHierarchicalHeatMap
 	
 	private ArrayList<Float> fAlXDistances;
 		
-	//selector for heatmap in texture
+	//selector for heat map in texture
 	private int iSelector = 1;
 
 	//selector for texture in overviewBar
 	private int iSelectorBar = 1;
 	
 	//number of partitions for selection in texture
-	private int iNrSel = 25;
+	private int iNrSel = 0;
 	
 	//number of partitions for selection in overViewBar
-	private int iNrSelBar = 10;
+	private int iNrSelBar = 0;
 	
 	//array of textures for holding the data samples
-	private Texture []THeatMap = new Texture[iNrSelBar];
+	private Texture []THeatMap;
 	
-	//embedded heatmap
+	//embedded heat map
 	private GLHeatMap glHeatMapView;
 	
 	private boolean bIsHeatmapInFocus = false;
@@ -123,7 +127,7 @@ public class GLHierarchicalHeatMap
 			final IViewFrustum viewFrustum)
 	{
 		super(setType, iGLCanvasID, sLabel, viewFrustum);
-		viewType = EManagedObjectType.GL_HEAT_MAP;
+		viewType = EManagedObjectType.GL_HIER_HEAT_MAP;
 
 		ArrayList<ESelectionType> alSelectionTypes = new ArrayList<ESelectionType>();
 		alSelectionTypes.add(ESelectionType.NORMAL);
@@ -294,6 +298,11 @@ public class GLHierarchicalHeatMap
 	{
 		fAlXDistances.clear();
 		renderStyle.updateFieldSizes();
+		
+		iNrSelBar = (int) Math.ceil(set.getVA(iContentVAID).size()/SAMPLES_PER_TEXTURE);
+		iNrSel = (int) Math.ceil((set.getVA(iContentVAID).size()/iNrSelBar)/SAMPLES_PER_HEATMAP);
+	
+		THeatMap = new Texture[iNrSelBar];
 		
 		int iTextureHeight = set.getVA(iContentVAID).size();
 		int iTextureWidth = set.getVA(iStorageVAID).size();
@@ -527,16 +536,16 @@ public class GLHierarchicalHeatMap
 			       
 	        gl.glMatrixMode(GL.GL_MODELVIEW);
 	        gl.glLoadIdentity();	
+						
+			renderOverviewBar(gl);	
+			renderMarkerOverviewBar(gl);
+			
+			gl.glTranslatef(0.2f, 0, 0);
 			
 			if(bIsHeatmapInFocus)
 			{
 				gl.glScalef(0.2f, 1, 1);
 			}
-			
-			renderOverviewBar(gl);	
-			renderMarkerOverviewBar(gl);
-			
-			gl.glTranslatef(0.2f, 0, 0);
 			
 			renderTextureHeatMap(gl);
 			renderMarkerTexture(gl);
@@ -552,7 +561,7 @@ public class GLHierarchicalHeatMap
 			}
 			else
 			{	
-				gl.glTranslatef(2.5f, 0.4f, 0f);
+				gl.glTranslatef(2.5f, 0f, 0f);
 				gl.glScalef(HEAT_MAP_SCALE_FACTOR_NORMAL, HEAT_MAP_SCALE_FACTOR_NORMAL, HEAT_MAP_SCALE_FACTOR_NORMAL);
 			}
 			
@@ -568,7 +577,7 @@ public class GLHierarchicalHeatMap
 			}
 			else
 			{
-				gl.glTranslatef(-2.5f, -0.4f, 0f);
+				gl.glTranslatef(-3f, 0f, 0f);
 				gl.glScalef(1/HEAT_MAP_SCALE_FACTOR_NORMAL, 1/HEAT_MAP_SCALE_FACTOR_NORMAL, 1/HEAT_MAP_SCALE_FACTOR_NORMAL);
 			}
 
@@ -653,27 +662,11 @@ public class GLHierarchicalHeatMap
 		lastSelectionDelta = delta;
 	}
 	
-//	private void renderEmbeddedHeatMap(final GL gl)
-//	{
-//		gl.glTranslatef(2.3f, 0f, 0f);
-//		gl.glScalef(HEAT_MAP_SCALE_FACTOR_NORMAL, HEAT_MAP_SCALE_FACTOR_NORMAL, HEAT_MAP_SCALE_FACTOR_NORMAL);
-//		glHeatMapView.displayRemote(gl);
-//		gl.glScalef(1/HEAT_MAP_SCALE_FACTOR_NORMAL, 1/HEAT_MAP_SCALE_FACTOR_NORMAL, 1/HEAT_MAP_SCALE_FACTOR_NORMAL);
-//		gl.glTranslatef(-2.3f, 0f, 0f);
-//	}
-	
 	public synchronized void renderHorizontally(boolean bRenderStorageHorizontally)
 	{
 
 		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
 		renderStyle.setBRenderStorageHorizontally(bRenderStorageHorizontally);
-		setDisplayListDirty();
-	}
-	
-	public synchronized void renderinFocus(boolean bRenderinFocus)
-	{
-
-		this.bIsHeatmapInFocus = bRenderinFocus;
 		setDisplayListDirty();
 	}
 
