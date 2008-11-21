@@ -96,6 +96,10 @@ public abstract class AStorageBasedView
 	protected boolean bUseRandomSampling = true;
 
 	protected int iNumberOfRandomElements = 100;
+	
+	protected int iNumberOfSamplesPerTexture = 100;
+	
+	protected int iNumberOfSamplesPerHeatmap = 100;
 
 	/**
 	 * Constructor for storage based views
@@ -536,6 +540,26 @@ public abstract class AStorageBasedView
 		// TODO, probably do this with initCompleteList, take care of selection
 		// manager though
 		this.iNumberOfRandomElements = iNumberOfRandomElements;
+	}
+	
+	/**
+	 * Set the number of samples which are shown in one texture
+	 * 
+	 * @param iNumberOfSamplesPerTexture the number
+	 */
+	public synchronized final void setNumberOfSamplesPerTexture(int iNumberOfSamplesPerTexture)
+	{
+		this.iNumberOfSamplesPerTexture = iNumberOfSamplesPerTexture;
+	}
+	
+	/**
+	 * Set the number of samples which are shown in one heat map
+	 * 
+	 * @param iNumberOfSamplesPerHeatmap the number
+	 */
+	public synchronized final void setNumberOfSamplesPerHeatmap(int iNumberOfSamplesPerHeatmap)
+	{
+		this.iNumberOfSamplesPerHeatmap = iNumberOfSamplesPerHeatmap;
 	}
 
 	/**

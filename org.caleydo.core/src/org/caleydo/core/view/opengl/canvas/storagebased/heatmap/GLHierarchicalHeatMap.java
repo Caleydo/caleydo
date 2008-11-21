@@ -60,9 +60,9 @@ public class GLHierarchicalHeatMap
 	
 	private final static float HEAT_MAP_SCALE_FACTOR_INFOCUS = 0.55f;
 	
-	private final static float SAMPLES_PER_TEXTURE = 1000f;
+	private float fSamplesPerTexture = 0f;
 	
-	private final static float SAMPLES_PER_HEATMAP = 25f;
+	private float fSamplesPerHeatmap = 0f;
 	
 	private HeatMapRenderStyle renderStyle;
 
@@ -148,6 +148,12 @@ public class GLHierarchicalHeatMap
 		// TODO use constant instead
 		iNumberOfRandomElements = generalManager.getPreferenceStore().getInt(
 				"hmNumRandomSamplinPoints");
+		
+		fSamplesPerTexture = generalManager.getPreferenceStore().getInt(
+				"hmNumSamplesPerTexture");
+		
+		fSamplesPerHeatmap = generalManager.getPreferenceStore().getInt(
+				"hmNumSamplesPerHeatmap");
 		
 		fAlXDistances = new ArrayList<Float>();
 	}
@@ -299,8 +305,8 @@ public class GLHierarchicalHeatMap
 		fAlXDistances.clear();
 		renderStyle.updateFieldSizes();
 		
-		iNrSelBar = (int) Math.ceil(set.getVA(iContentVAID).size()/SAMPLES_PER_TEXTURE);
-		iNrSel = (int) Math.ceil((set.getVA(iContentVAID).size()/iNrSelBar)/SAMPLES_PER_HEATMAP);
+		iNrSelBar = (int) Math.ceil(set.getVA(iContentVAID).size()/fSamplesPerTexture);
+		iNrSel = (int) Math.ceil((set.getVA(iContentVAID).size()/iNrSelBar)/fSamplesPerHeatmap);
 	
 		THeatMap = new Texture[iNrSelBar];
 		

@@ -22,6 +22,8 @@ public class PreferenceConstants {
 	// Heat Map
 	public static final String HM_NUM_RANDOM_SAMPLING_POINT = "hmNumRandomSamplinPoints";
 	public static final String HM_LIMIT_REMOTE_TO_CONTEXT = "hmLimitRemoteToContext";
+	public static final String HM_NUM_SAMPLES_PER_TEXTURE = "hmNumSamplesPerTexture";
+	public static final String HM_NUM_SAMPLES_PER_HEATMAP = "hmNumSamplesPerHeatmap";
 	// Parallel Coordinates
 	public static final String PC_NUM_RANDOM_SAMPLING_POINT = "pcNumRandomSamplinPoints";
 	public static final String PC_LIMIT_REMOTE_TO_CONTEXT = "pcLimitRemoteToContext";
