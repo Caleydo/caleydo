@@ -11,6 +11,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoor
 import org.caleydo.rcp.command.handler.ExitHandler;
 import org.caleydo.rcp.views.GLGlyphView;
 import org.caleydo.rcp.views.GLHeatMapView;
+import org.caleydo.rcp.views.GLHierarchicalHeatMapView;
 import org.caleydo.rcp.views.GLParCoordsView;
 import org.caleydo.rcp.views.GLPathwayView;
 import org.caleydo.rcp.views.GLRemoteRenderingView;
@@ -71,8 +72,8 @@ implements IGUIBridge
 				}
 				else if (subGLEventListener instanceof GLHierarchicalHeatMap)
 				{
-					GLHeatMapView.createToolBarItems(subGLEventListener.getID());
-					GLHeatMapView.fillToolBar(toolBarManager);
+					GLHierarchicalHeatMapView.createToolBarItems(subGLEventListener.getID());
+					GLHierarchicalHeatMapView.fillToolBar(toolBarManager);
 				}
 				else if (subGLEventListener instanceof GLParallelCoordinates)
 				{

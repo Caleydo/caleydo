@@ -30,6 +30,7 @@ import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
@@ -37,6 +38,8 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.miniview.GLColorMappingBarMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.renderstyle.layout.ARemoteViewLayoutRenderStyle;
+import org.caleydo.core.view.opengl.renderstyle.layout.BucketLayoutRenderStyle;
 import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLIconTextureManager;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
@@ -58,7 +61,11 @@ public class GLHierarchicalHeatMap
 {
 	private final static float HEAT_MAP_SCALE_FACTOR_NORMAL = 0.45f;
 	
-	private final static float HEAT_MAP_SCALE_FACTOR_INFOCUS = 0.55f;
+	private final static float HEAT_MAP_SCALE_FACTOR_INFOCUS = 0.9f;
+	
+	private final static float GAP_LEVEL1_2 = 0.4f;
+	
+	private final static float MAX_NUM_SAMPLES = 10f;
 	
 	private float fSamplesPerTexture = 0f;
 	
@@ -103,7 +110,7 @@ public class GLHierarchicalHeatMap
 	
 	//embedded heat map
 	private GLHeatMap glHeatMapView;
-	
+
 	private boolean bIsHeatmapInFocus = false;
 	
 	private boolean bPanningMode = false;
@@ -163,7 +170,7 @@ public class GLHierarchicalHeatMap
 	{
 		createHeatMap();
 		createEventMediator();
-		
+			
 		glHeatMapView.initRemote(gl, getID(), null, 
 				pickingTriggerMouseAdapter, null);
 
@@ -222,8 +229,11 @@ public class GLHierarchicalHeatMap
 		ArrayList<Integer> alSet = new ArrayList<Integer>();
 		alSet.add(alSets.get(0).getID());
 		
-		cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20, alSet,
-			-1);
+		float fHeatMapHeight = viewFrustum.getHeight();
+		float fHeatMapWidth = viewFrustum.getWidth();
+		
+		cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 
+				0, fHeatMapWidth, -20, 20, alSet, -1);
 
 		cmdView.doCommand();
 
@@ -429,7 +439,7 @@ public class GLHierarchicalHeatMap
 			fyOffset += fStep;
 			
 			gl.glPopName();
-		}   	    
+		}   	 
 	}
 
 	private void renderMarkerTexture(final GL gl)
@@ -442,7 +452,7 @@ public class GLHierarchicalHeatMap
 
 			gl.glColor4f(1f, 1f, 0f, 1f);
 			
-			gl.glLineWidth(3f);
+			gl.glLineWidth(2f);
 			
 			gl.glBegin(GL.GL_LINE_LOOP);			
 			gl.glVertex3f(0, fStep*(iNrSel - iSelector + 1), 0);
@@ -450,6 +460,28 @@ public class GLHierarchicalHeatMap
 			gl.glVertex3f(fFieldWith, fStep*(iNrSel - iSelector), 0);		
 			gl.glVertex3f(0, fStep*(iNrSel - iSelector), 0);		
 			gl.glEnd();
+			
+//			gl.glBegin(GL.GL_LINES);
+//			gl.glVertex3f(fFieldWith, fStep*(iNrSel - iSelector + 1), 0);
+//			gl.glVertex3f(fFieldWith + 0.2f, fHeight, 0);
+//			gl.glVertex3f(fFieldWith, fStep*(iNrSel - iSelector), 0);	
+//			gl.glVertex3f(fFieldWith + 0.2f, 0, 0);
+//			gl.glEnd();
+			
+			if (set.getVA(iStorageVAID).size() > MAX_NUM_SAMPLES &&
+					bIsHeatmapInFocus == false)
+			{
+				gl.glPushName(pickingManager.getPickingID(iUniqueID, 
+			    		EPickingType.HIER_HEAT_MAP_INFOCUS_SELECTION, 1));
+				
+				gl.glBegin(GL.GL_POLYGON);
+				gl.glVertex3f(fFieldWith, fStep*(iNrSel - iSelector + 1), 0);
+				gl.glVertex3f(fFieldWith+0.1f, fStep*(iNrSel - iSelector + 1)-((fStep*(iNrSel - iSelector + 1)-fStep*(iNrSel - iSelector))/2.0f), 0);
+				gl.glVertex3f(fFieldWith, fStep*(iNrSel - iSelector), 0);		
+				gl.glEnd();
+				
+				gl.glPopName();
+			}
 		}
 	}
 	
@@ -463,7 +495,7 @@ public class GLHierarchicalHeatMap
 
 			gl.glColor4f(1f, 1f, 0f, 1f);
 			
-			gl.glLineWidth(3f);
+			gl.glLineWidth(2f);
 			
 			gl.glBegin(GL.GL_LINE_LOOP);			
 			gl.glVertex3f(0, fStep*(iNrSelBar - iSelectorBar + 1), 0);
@@ -471,6 +503,33 @@ public class GLHierarchicalHeatMap
 			gl.glVertex3f(fFieldWith, fStep*(iNrSelBar - iSelectorBar), 0);		
 			gl.glVertex3f(0, fStep*(iNrSelBar - iSelectorBar), 0);		
 			gl.glEnd();
+			
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(fFieldWith, fStep*(iNrSelBar - iSelectorBar + 1), 0);
+			gl.glVertex3f(GAP_LEVEL1_2, fHeight, 0);
+			gl.glVertex3f(fFieldWith, fStep*(iNrSelBar - iSelectorBar), 0);
+			gl.glVertex3f(GAP_LEVEL1_2, 0, 0);
+			gl.glEnd();
+			
+			if (iSelector != 0)
+			{
+				float fStepTex = fHeight/iNrSel;
+				float foffset = ((fStep*(iNrSelBar - iSelectorBar + 1))-(fStep*(iNrSelBar - iSelectorBar)))/iNrSel;
+								
+				gl.glBegin(GL.GL_LINE_LOOP);			
+				gl.glVertex3f(0, fStep*(iNrSelBar - iSelectorBar + 1)-((iSelector-1)*foffset), 0);
+				gl.glVertex3f(fFieldWith, fStep*(iNrSelBar - iSelectorBar + 1)-((iSelector-1)*foffset), 0);
+				gl.glVertex3f(fFieldWith, fStep*(iNrSelBar - iSelectorBar+1)-((iSelector)*foffset), 0);	
+				gl.glVertex3f(0, fStep*(iNrSelBar - iSelectorBar+1)-((iSelector)*foffset), 0);		
+				gl.glEnd();
+				
+				gl.glBegin(GL.GL_LINES);
+				gl.glVertex3f(fFieldWith, fStep*(iNrSelBar - iSelectorBar + 1)-((iSelector-1)*foffset), 0);
+				gl.glVertex3f(GAP_LEVEL1_2, fStepTex*(iNrSel - iSelector + 1), 0);
+				gl.glVertex3f(fFieldWith, fStep*(iNrSelBar - iSelectorBar+1)-((iSelector)*foffset), 0);	
+				gl.glVertex3f(GAP_LEVEL1_2, fStepTex*(iNrSel - iSelector), 0);
+				gl.glEnd();
+			}
 		}
 	}
 	
@@ -546,7 +605,7 @@ public class GLHierarchicalHeatMap
 			renderOverviewBar(gl);	
 			renderMarkerOverviewBar(gl);
 			
-			gl.glTranslatef(0.2f, 0, 0);
+			gl.glTranslatef(GAP_LEVEL1_2, 0, 0);
 			
 			if(bIsHeatmapInFocus)
 			{
@@ -556,7 +615,7 @@ public class GLHierarchicalHeatMap
 			renderTextureHeatMap(gl);
 			renderMarkerTexture(gl);
 			
-			gl.glTranslatef(-0.2f, 0, 0);
+			gl.glTranslatef(-GAP_LEVEL1_2, 0, 0);
 			
 			if(bIsHeatmapInFocus)
 			{
@@ -670,9 +729,16 @@ public class GLHierarchicalHeatMap
 	
 	public synchronized void renderHorizontally(boolean bRenderStorageHorizontally)
 	{
+		
+		if(glHeatMapView.isInDefaultOrientation())
+			glHeatMapView.changeOrientation(false);
+		else
+			glHeatMapView.changeOrientation(true);
+		
+		triggerSelectionBlock(iSelector);
 
-		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
-		renderStyle.setBRenderStorageHorizontally(bRenderStorageHorizontally);
+//		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
+//		renderStyle.setBRenderStorageHorizontally(bRenderStorageHorizontally);
 		setDisplayListDirty();
 	}
 
@@ -799,6 +865,20 @@ public class GLHierarchicalHeatMap
 
 		switch (ePickingType)
 		{
+			case HIER_HEAT_MAP_INFOCUS_SELECTION:
+				switch (pickingMode)
+				{
+					case CLICKED:
+						
+						bIsHeatmapInFocus = true;
+						setDisplayListDirty();
+						break;
+						
+					case MOUSE_OVER:
+						break;
+				}
+				pickingManager.flushHits(iUniqueID, ePickingType);
+				break;
 			case HIER_HEAT_MAP_TEXTURE_SELECTION:
 				switch (pickingMode)
 				{
@@ -807,7 +887,7 @@ public class GLHierarchicalHeatMap
 						//System.out.println("click on OverviewBar part:" + iExternalID);
 						iSelectorBar = iExternalID;
 						iSelector = 1;
-						triggerSelectionBlock(iSelector);
+						triggerSelectionBlock(iSelector);															
 						setDisplayListDirty();
 						break;
 
@@ -831,7 +911,8 @@ public class GLHierarchicalHeatMap
 			
 						triggerSelectionBlock(iExternalID);
 						//System.out.println("click on texture part:" + iExternalID);
-						iSelector = iExternalID;
+						iSelector = iExternalID;	
+						bIsHeatmapInFocus = false;
 						setDisplayListDirty();
 						break;
 
@@ -1026,11 +1107,8 @@ public class GLHierarchicalHeatMap
 	
 	public void changeFocus(boolean bInFocus)
 	{
-		if(bIsHeatmapInFocus)
-			bIsHeatmapInFocus = false;
-		else
-			bIsHeatmapInFocus = true;	
-		
+		bIsHeatmapInFocus = (bIsHeatmapInFocus == true) ? false:true;
+							
 		setDisplayListDirty();
 		triggerSelectionBlock(iSelector);
 	}

@@ -9,6 +9,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
+import org.caleydo.rcp.action.view.storagebased.ChangeOrientationAction;
 import org.caleydo.rcp.action.view.storagebased.InFocusAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
@@ -43,6 +44,9 @@ public class GLHierarchicalHeatMapView
 		// TODO: insert icons + action
 		IAction switchFocus = new InFocusAction(iViewID);
 		alToolbar.add(switchFocus);
+		
+		IAction switchOrientation = new ChangeOrientationAction(iViewID);
+		alToolbar.add(switchOrientation);
 	}
 
 	@Override

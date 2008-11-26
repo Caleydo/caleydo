@@ -42,6 +42,7 @@ public enum EPickingType
 	// hierarchical heat map
 	HIER_HEAT_MAP_FIELD_SELECTION(EManagedObjectType.GL_HIER_HEAT_MAP),
 	HIER_HEAT_MAP_TEXTURE_SELECTION(EManagedObjectType.GL_HIER_HEAT_MAP),
+	HIER_HEAT_MAP_INFOCUS_SELECTION(EManagedObjectType.GL_HIER_HEAT_MAP),
 	
 	// glyph
 	GLYPH_FIELD_SELECTION(EManagedObjectType.GL_GLYPH),
