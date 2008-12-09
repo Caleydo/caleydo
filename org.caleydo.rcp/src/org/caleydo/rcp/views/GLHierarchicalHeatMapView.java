@@ -42,8 +42,8 @@ public class GLHierarchicalHeatMapView
 		alToolbar = new ArrayList<IAction>();
 
 		// TODO: insert icons + action
-		IAction switchFocus = new InFocusAction(iViewID);
-		alToolbar.add(switchFocus);
+//		IAction switchFocus = new InFocusAction(iViewID);
+//		alToolbar.add(switchFocus);
 		
 		IAction switchOrientation = new ChangeOrientationAction(iViewID);
 		alToolbar.add(switchOrientation);
