@@ -207,6 +207,7 @@ public class GLHeatMap
 			doTranslation();
 		}
 
+		
 		if (bIsDisplayListDirtyRemote)
 		{
 			buildDisplayList(gl, iGLDisplayListIndexRemote);

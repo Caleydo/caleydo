@@ -380,7 +380,7 @@ public abstract class AGLEventListener
 
 		for (EPickingType ePickingType : EPickingType.values())
 		{
-			 if (ePickingType.getViewType() != viewType)
+			if (ePickingType.getViewType() != viewType)
 			{
 				if (viewType == EManagedObjectType.GL_EVENT_LISTENER)
 					throw new IllegalStateException(

@@ -63,7 +63,7 @@ public class GLCell
 	public GLCell(final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
 	{
 		super(iGLCanvasID, sLabel, viewFrustum, false);
-		viewType = EManagedObjectType.GL_PATHWAY;
+		viewType = EManagedObjectType.GL_CELL_LOCALIZATION;
 
 		connectedElementRepresentationManager = generalManager.getViewGLCanvasManager()
 				.getConnectedElementRepresentationManager();

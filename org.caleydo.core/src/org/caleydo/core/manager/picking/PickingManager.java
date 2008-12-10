@@ -396,7 +396,8 @@ public class PickingManager
 					|| iType == EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION.ordinal()
 					|| iType == EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION.ordinal()
 					|| iType == EPickingType.BUCKET_LOCK_ICON_SELECTION.ordinal()
-					|| iType == EPickingType.VIEW_SELECTION.ordinal())
+					|| iType == EPickingType.VIEW_SELECTION.ordinal()
+					|| iType == EPickingType.HIER_HEAT_MAP_VIEW_SELECTION.ordinal())
 			// || iType == EPickingType.BUCKET_REMOVE_ICON_SELECTION.ordinal()
 			// || iType == EPickingType.BUCKET_SWITCH_ICON_SELECTION.ordinal())
 			{
