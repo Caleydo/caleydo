@@ -45,8 +45,8 @@ public class GLHierarchicalHeatMapView
 //		IAction switchFocus = new InFocusAction(iViewID);
 //		alToolbar.add(switchFocus);
 		
-		IAction switchOrientation = new ChangeOrientationAction(iViewID);
-		alToolbar.add(switchOrientation);
+//		IAction switchOrientation = new ChangeOrientationAction(iViewID);
+//		alToolbar.add(switchOrientation);
 	}
 
 	@Override
