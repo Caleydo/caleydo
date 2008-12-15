@@ -13,7 +13,6 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphDataLoader;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModel;
@@ -32,7 +31,7 @@ import org.caleydo.core.view.opengl.util.GLHelperFunctions;
  */
 public class GLGlyphGrid
 {
-	private boolean bEnableWorldGrid = false;
+	private boolean bEnableWorldGrid = true;
 
 	private IGeneralManager generalManager = null;
 
@@ -59,11 +58,13 @@ public class GLGlyphGrid
 
 	private HashMap<EIconIDs, GlyphGridPositionModel> positionModels = null;
 
+	private GLGlyphGenerator glyphGenerator;
+
 	public GLGlyphGrid(GlyphRenderStyle renderStyle)
 	{
 		this.generalManager = GeneralManager.get();
 		this.renderStyle = renderStyle;
-		gman = (GlyphManager) generalManager.getGlyphManager();
+		gman = generalManager.getGlyphManager();
 
 		glyphLowerLeft = new Vec2f();
 		glyphUpperRight = new Vec2f();
@@ -85,6 +86,8 @@ public class GLGlyphGrid
 				new GlyphGridPositionModelScatterplot(renderStyle));
 
 		setGridSize(50, 100);
+
+		glyphGenerator = new GLGlyphGenerator();
 	}
 
 	/*
@@ -147,6 +150,11 @@ public class GLGlyphGrid
 		return new Vec2f(glyphUpperRight);
 	}
 
+	public GLGlyphGenerator getGlyphGenerator()
+	{
+		return glyphGenerator;
+	}
+
 	public float getGlyphLowerLeftUpperRightDiagonale()
 	{
 		Vec2f ll = getGlyphLowerLeft();
@@ -165,15 +173,13 @@ public class GLGlyphGrid
 	public ArrayList<Integer> deSelectAll()
 	{
 
-		int ssi = Integer.parseInt(generalManager.getGlyphManager().getSetting(
-				EGlyphSettingIDs.UPDATESENDPARAMETER));
 		// int ssi = glyphDataLoader.getSendParameter();
 		ArrayList<Integer> temp = new ArrayList<Integer>();
 		for (GlyphEntry g : glyphs_.values())
 		{
 			if (g.isSelected())
 			{
-				temp.add(g.getParameter(ssi));
+				temp.add(g.getID());
 			}
 			g.deSelect();
 		}
@@ -460,7 +466,6 @@ public class GLGlyphGrid
 		if (glyphData != null)
 		{
 			glyphDataLoader.loadGlyphs(glyphData);
-			gman.initGlyphGenerator();
 		}
 
 		if (gman.getSelectedGlyphs().size() > 0)

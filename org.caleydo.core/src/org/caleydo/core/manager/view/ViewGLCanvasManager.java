@@ -32,6 +32,7 @@ import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.swt.browser.GenomeHTMLBrowserViewRep;
 import org.caleydo.core.view.swt.browser.HTMLBrowserViewRep;
 import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
+import org.caleydo.core.view.swt.glyph.GlyphDataExportViewRep;
 import org.caleydo.core.view.swt.glyph.GlyphMappingConfigurationViewRep;
 import org.caleydo.core.view.swt.image.ImageViewRep;
 import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
@@ -174,6 +175,9 @@ public class ViewGLCanvasManager
 			case VIEW_SWT_DATA_ENTITY_SEARCHER:
 				view = new DataEntitySearcherViewRep(iParentContainerID, sLabel);
 				break;
+			case VIEW_SWT_GLYPH_DATAEXPORT:
+				view = new GlyphDataExportViewRep(iParentContainerID, sLabel);
+				break;
 			case VIEW_SWT_GLYPH_MAPPINGCONFIGURATION:
 				view = new GlyphMappingConfigurationViewRep(iParentContainerID, sLabel);
 				break;
@@ -256,7 +260,7 @@ public class ViewGLCanvasManager
 			case CREATE_GL_CELL:
 				glEventListener = new GLCell(iGLCanvasID, sLabel, viewFrustum);
 				break;
-				
+
 			case CREATE_GL_BUCKET_3D:
 				glEventListener = new GLRemoteRendering(iGLCanvasID, sLabel, viewFrustum,
 						ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET);

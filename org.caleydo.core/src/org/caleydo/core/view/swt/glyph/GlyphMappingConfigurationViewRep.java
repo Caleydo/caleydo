@@ -4,10 +4,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
-import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
+import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyphGenerator;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphObjectDefinition;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphObjectDefinition.DIRECTION;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
@@ -29,14 +34,24 @@ public class GlyphMappingConfigurationViewRep
 	extends AView
 	implements IView
 {
+	private class DataPack
+	{
+		public Composite composite;
+		public CCombo comboBox;
+		public GlyphObjectDefinition model;
+
+		public String parameterName;
+		public EGlyphSettingIDs parameterType;
+		public DIRECTION parameterValue;
+	}
 
 	private static final long serialVersionUID = 6402651939169536561L;
 
-	private IGlyphManager gman = null;
+	private GlyphManager gman = null;
 
 	private ArrayList<String> columnNames = null;
-	private HashMap<String, Integer> extColNumToArrayIndex = null;
-	private HashMap<Integer, String> arrayIndexToExtColNum = null;
+	private HashMap<Integer, Integer> extColNumToArrayIndex = null;
+	private HashMap<Integer, Integer> arrayIndexToExtColNum = null;
 
 	SelectionListener listener = null;
 
@@ -44,14 +59,12 @@ public class GlyphMappingConfigurationViewRep
 	Color bodyBackgroundColor = new Color(null, 255, 255, 255);
 
 	Composite compositeScatterplotBody = null;
-	Composite compositeGlyphDefinition = null;
 
 	CCombo ccomboScatterplotX = null;
 	CCombo ccomboScatterplotY = null;
 
-	CCombo ccomboTopColor = null;
-	CCombo ccomboBoxColor = null;
-	CCombo ccomboBoxHeight = null;
+	private HashMap<Integer, Composite> composites = null;
+	private HashMap<CCombo, DataPack> comboBoxes = null;
 
 	/**
 	 * Constructor.
@@ -60,9 +73,12 @@ public class GlyphMappingConfigurationViewRep
 	{
 		super(iParentContainerId, sLabel, ViewType.SWT_GLYPH_MAPPINGCONFIGURATION);
 
+		composites = new HashMap<Integer, Composite>();
+		comboBoxes = new HashMap<CCombo, DataPack>();
+
 		columnNames = new ArrayList<String>();
-		extColNumToArrayIndex = new HashMap<String, Integer>();
-		arrayIndexToExtColNum = new HashMap<Integer, String>();
+		extColNumToArrayIndex = new HashMap<Integer, Integer>();
+		arrayIndexToExtColNum = new HashMap<Integer, Integer>();
 
 		gman = generalManager.getGlyphManager();
 	}
@@ -86,10 +102,8 @@ public class GlyphMappingConfigurationViewRep
 				continue;
 
 			columnNames.add(at.getName());
-			// columnIndices.add();
-			String colnum = String.valueOf(at.getExternalColumnNumber());
-			extColNumToArrayIndex.put(colnum, counter);
-			arrayIndexToExtColNum.put(counter, colnum);
+			extColNumToArrayIndex.put(at.getExternalColumnNumber(), counter);
+			arrayIndexToExtColNum.put(counter, at.getExternalColumnNumber());
 			counter++;
 		}
 
@@ -118,7 +132,8 @@ public class GlyphMappingConfigurationViewRep
 				if (event.widget == ccomboScatterplotX)
 				{
 					int selectedindex = ccomboScatterplotX.getSelectionIndex();
-					String selectedCol = arrayIndexToExtColNum.get(selectedindex);
+					String selectedCol = String.valueOf(arrayIndexToExtColNum
+							.get(selectedindex));
 					generalManager.getGlyphManager().setSetting(EGlyphSettingIDs.SCATTERPLOTX,
 							selectedCol);
 				}
@@ -126,34 +141,35 @@ public class GlyphMappingConfigurationViewRep
 				if (event.widget == ccomboScatterplotY)
 				{
 					int selectedindex = ccomboScatterplotY.getSelectionIndex();
-					String selectedCol = arrayIndexToExtColNum.get(selectedindex);
+					String selectedCol = String.valueOf(arrayIndexToExtColNum
+							.get(selectedindex));
 
 					System.out.println(selectedCol);
 
 					generalManager.getGlyphManager().setSetting(EGlyphSettingIDs.SCATTERPLOTY,
 							selectedCol);
 				}
-				if (event.widget == ccomboTopColor)
+
+				DataPack box = comboBoxes.get(event.widget);
+
+				// TODO remove if, after removing scatterplot axis definition
+				// from this view
+				if (box.parameterType == EGlyphSettingIDs.SCALE
+						|| box.parameterType == EGlyphSettingIDs.COLOR)
 				{
-					int selectedindex = ccomboTopColor.getSelectionIndex();
-					String selectedCol = arrayIndexToExtColNum.get(selectedindex);
-					generalManager.getGlyphManager().setSetting(EGlyphSettingIDs.TOPCOLOR,
-							selectedCol);
+					int selectedindex = box.comboBox.getSelectionIndex();
+					int selectedCol = arrayIndexToExtColNum.get(selectedindex);
+
+					box.model.setPartParameterIndex(box.parameterName, box.parameterType,
+							box.parameterValue, selectedCol);
+
 				}
-				if (event.widget == ccomboBoxHeight)
-				{
-					int selectedindex = ccomboBoxHeight.getSelectionIndex();
-					String selectedCol = arrayIndexToExtColNum.get(selectedindex);
-					generalManager.getGlyphManager().setSetting(EGlyphSettingIDs.BOXHEIGHT,
-							selectedCol);
-				}
-				if (event.widget == ccomboBoxColor)
-				{
-					int selectedindex = ccomboBoxColor.getSelectionIndex();
-					String selectedCol = arrayIndexToExtColNum.get(selectedindex);
-					generalManager.getGlyphManager().setSetting(EGlyphSettingIDs.BOXCOLOR,
-							selectedCol);
-				}
+
+				for (AGLEventListener agleventlistener : generalManager
+						.getViewGLCanvasManager().getAllGLEventListeners())
+					if (agleventlistener instanceof GLGlyph)
+						((GLGlyph) agleventlistener).forceRebuild();
+
 			}
 
 		};
@@ -163,38 +179,65 @@ public class GlyphMappingConfigurationViewRep
 
 		addHeaderScatterplot(parent);
 		addBodyScatterplotAxisDefinition(parent);
-		addHeaderGlyphDefinition(parent);
-		addBodyGlyphDefinition(parent);
+
+		for (int i = 0; i < 30; ++i)
+		{
+			GlyphObjectDefinition model = GLGlyphGenerator.getDetailLevelModel(i);
+
+			if (model == null)
+				continue;
+
+			addHeaderGlyphDefinition(parent, model);
+			addBodyGlyphDefinition(parent, model);
+
+		}
 
 		parent.setLayout(layout);
 		layout.numColumns = 1;
 
-		parent.getParent().setSize(600, 300);
+		// useless in rcp
+		// parent.getParent().setSize(600, 300);
 
 	}
 
+	/**
+	 * Show/Hide a Body Component defined with the detail level. Uses
+	 * "switchBody(Composite comp)".
+	 * 
+	 * @param level
+	 */
+	private void switchBody(int level)
+	{
+		Composite composite = composites.get(level);
+
+		if (composite == null)
+			return;
+
+		switchBody(composite);
+	}
+
+	/**
+	 * Show/Hide a Component (the given one)
+	 * 
+	 * @param comp
+	 */
 	private void switchBody(Composite comp)
 	{
-
 		if (comp.getVisible() == false)
 		{
-
 			GridData data = (GridData) comp.getLayoutData();
 			data.exclude = false;
 
 			comp.setVisible(true);
 			parent.layout(false);
-
 		}
 		else
 		{
-
 			GridData data = (GridData) comp.getLayoutData();
 			data.exclude = true;
 
 			comp.setVisible(false);
 			parent.layout(false);
-
 		}
 	}
 
@@ -223,7 +266,13 @@ public class GlyphMappingConfigurationViewRep
 		label.computeSize(300, 30);
 	}
 
-	private void addHeaderGlyphDefinition(Composite parent)
+	/**
+	 * Creates a header line, defined with the Glyph model
+	 * 
+	 * @param parent
+	 * @param model
+	 */
+	private void addHeaderGlyphDefinition(Composite parent, final GlyphObjectDefinition model)
 	{
 		Composite comp = getHeaderComposite(parent);
 
@@ -234,15 +283,22 @@ public class GlyphMappingConfigurationViewRep
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
-				switchBody(compositeGlyphDefinition);
+				switchBody(model.getDetailLevel());
 			}
 		});
 		CLabel label = new CLabel(comp, SWT.LEFT);
-		label.setText("Glyph Definition");
+		label.setText(model.getDescription());
+		// label.setText(Integer.toString(model.getDetailLevel()));
 		label.setBackground(headerBackgroundColor);
 		label.computeSize(300, 30);
 	}
 
+	/**
+	 * creates generic header line
+	 * 
+	 * @param parent
+	 * @return
+	 */
 	private Composite getHeaderComposite(Composite parent)
 	{
 		GridData gd = new GridData();
@@ -260,7 +316,13 @@ public class GlyphMappingConfigurationViewRep
 		return comp;
 	}
 
-	private void addBodyGlyphDefinition(Composite parent)
+	/**
+	 * Creates the Body of a header component, depending on a Glyph model
+	 * 
+	 * @param parent
+	 * @param model
+	 */
+	private void addBodyGlyphDefinition(Composite parent, final GlyphObjectDefinition model)
 	{
 		Composite comp = getBodyComposite(parent);
 
@@ -269,28 +331,58 @@ public class GlyphMappingConfigurationViewRep
 		gd.horizontalAlignment = GridData.FILL;
 		gd.grabExcessHorizontalSpace = true;
 
-		// 1st line
+		for (String name : model.getObjectPartNames())
 		{
-			String id = gman.getSetting(EGlyphSettingIDs.TOPCOLOR);
-			int sid = extColNumToArrayIndex.get(id);
-			ccomboTopColor = makeLabelComboBoxLine(layout, gd, comp, sid, "Top Color: ");
+			// scale part
+			for (DIRECTION dir : DIRECTION.values())
+			{
+				if (model.canPartScale(name, dir))
+				{
+					String description = model.getPartParameterDescription(name,
+							EGlyphSettingIDs.SCALE, dir);
+
+					int index = model.getPartParameterIndexExternal(name,
+							EGlyphSettingIDs.SCALE, dir);
+					if (extColNumToArrayIndex.containsKey(index))
+						index = extColNumToArrayIndex.get(index);
+					CCombo box = makeLabelComboBoxLine(layout, gd, comp, index, description);
+
+					DataPack pack = new DataPack();
+					pack.comboBox = box;
+					pack.composite = comp;
+					pack.model = model;
+					pack.parameterName = name;
+					pack.parameterType = EGlyphSettingIDs.SCALE;
+					pack.parameterValue = dir;
+					comboBoxes.put(box, pack);
+				}
+			}
+
+			// color part
+			if (model.canPartColorChange(name))
+			{
+				String description = model.getPartParameterDescription(name,
+						EGlyphSettingIDs.COLOR, null);
+
+				int index = model.getPartParameterIndexExternal(name, EGlyphSettingIDs.COLOR,
+						null);
+				if (extColNumToArrayIndex.containsKey(index))
+					index = extColNumToArrayIndex.get(index);
+				CCombo box = makeLabelComboBoxLine(layout, gd, comp, index, description);
+
+				DataPack pack = new DataPack();
+				pack.comboBox = box;
+				pack.composite = comp;
+				pack.model = model;
+				pack.parameterName = name;
+				pack.parameterType = EGlyphSettingIDs.COLOR;
+				pack.parameterValue = null;
+				comboBoxes.put(box, pack);
+			}
+
 		}
 
-		// 2nd line
-		{
-			String id = gman.getSetting(EGlyphSettingIDs.BOXCOLOR);
-			int sid = extColNumToArrayIndex.get(id);
-			ccomboBoxColor = makeLabelComboBoxLine(layout, gd, comp, sid, "Box Color: ");
-		}
-
-		// 3rd line
-		{
-			String id = gman.getSetting(EGlyphSettingIDs.BOXHEIGHT);
-			int sid = extColNumToArrayIndex.get(id);
-			ccomboBoxHeight = makeLabelComboBoxLine(layout, gd, comp, sid, "Box Height: ");
-		}
-
-		compositeGlyphDefinition = comp;
+		composites.put(model.getDetailLevel(), comp);
 	}
 
 	private void addBodyScatterplotAxisDefinition(Composite parent)
@@ -305,19 +397,25 @@ public class GlyphMappingConfigurationViewRep
 		// 1st line
 		{
 			String id = gman.getSetting(EGlyphSettingIDs.SCATTERPLOTX);
-			int sid = extColNumToArrayIndex.get(id);
+			int sid = extColNumToArrayIndex.get(Integer.parseInt(id));
 			ccomboScatterplotX = makeLabelComboBoxLine(layout, gd, comp, sid, "X Axis: ");
 		}
 
 		// 2nd line
 		{
 			String id = gman.getSetting(EGlyphSettingIDs.SCATTERPLOTY);
-			int sid = extColNumToArrayIndex.get(id);
+			int sid = extColNumToArrayIndex.get(Integer.parseInt(id));
 			ccomboScatterplotY = makeLabelComboBoxLine(layout, gd, comp, sid, "Y Axis: ");
 		}
 		compositeScatterplotBody = comp;
 	}
 
+	/**
+	 * Creates a generic Body component
+	 * 
+	 * @param parent
+	 * @return
+	 */
 	private Composite getBodyComposite(Composite parent)
 	{
 		GridData gd = new GridData();
@@ -335,6 +433,16 @@ public class GlyphMappingConfigurationViewRep
 		return comp;
 	}
 
+	/**
+	 * Creates a Combo Box Line in a Base Component
+	 * 
+	 * @param layout
+	 * @param gd
+	 * @param block
+	 * @param selectedid
+	 * @param text
+	 * @return
+	 */
 	private CCombo makeLabelComboBoxLine(GridLayout layout, GridData gd, Composite block,
 			int selectedid, String text)
 	{

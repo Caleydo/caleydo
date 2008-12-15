@@ -6,10 +6,9 @@ package org.caleydo.core.manager.specialized.glyph;
 public enum EGlyphSettingIDs
 {
 	SORTORDER,
-	TOPCOLOR,
-	BOXCOLOR,
-	BOXHEIGHT,
-	UPDATESENDPARAMETER,
 	SCATTERPLOTX,
-	SCATTERPLOTY
+	SCATTERPLOTY,
+
+	COLOR,
+	SCALE,
 }

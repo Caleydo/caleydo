@@ -2,7 +2,7 @@ package org.caleydo.core.command.system;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
-import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
+import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
@@ -27,7 +27,7 @@ public class CmdLoadGlyphDefinition
 	@Override
 	public void doCommand()
 	{
-		IGlyphManager gm = generalManager.getGlyphManager();
+		GlyphManager gm = generalManager.getGlyphManager();
 
 		gm.loadGlyphDefinitaion(sXMLPath);
 

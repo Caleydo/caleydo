@@ -5,6 +5,11 @@ import java.util.Vector;
 import java.util.logging.Level;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
 import org.caleydo.core.parser.xml.sax.handler.AXmlParserHandler;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyphGenerator;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphObjectDefinition;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphObjectDefinitionPart;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphObjectDefinition.ANCHOR;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphObjectDefinition.DIRECTION;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -24,11 +29,9 @@ public class GlyphDefinitionSaxHandler
 
 	private GlyphAttributeType gatActualColumn = null;
 
-	private Vector<Vec4f> colors = null;
-
-	private boolean bLoadingColorTop = false;
-
-	private boolean bLoadingColorBox = false;
+	private GlyphObjectDefinition glyphDefinition = null;
+	private GlyphObjectDefinitionPart glyphDefinitionPart = null;
+	private String glyphPartName = null;
 
 	public GlyphDefinitionSaxHandler()
 	{
@@ -47,77 +50,34 @@ public class GlyphDefinitionSaxHandler
 
 		if ("".equals(sElementName))
 		{
-			sElementName = sQualifiedName; // namespaceAware = false
+			sElementName = sQualifiedName;
 		}
 
 		if (attributes != null)
 		{
 
 			if (sElementName.equals("glyphview"))
-			{
-				// generalManager.getLogger().log(Level.INFO,
-				// "GlyphDefinitionHandler:: el=glyphview");
 				tagHierarchie.clear();
-
-			}
 			else if (sElementName.equals("profile"))
-			{
-				// generalManager.getLogger().log(Level.INFO,
-				// "GlyphDefinitionHandler:: el= "
-				// +tagHierarchie.lastElement()+"->profile");
 				handleProfileTag();
-
-			}
-			else if (sElementName.equals("settings"))
-			{
-				// generalManager.getLogger().log(Level.INFO,
-				// "GlyphDefinitionHandler:: el= "
-				// +tagHierarchie.lastElement()+"->settings");
-				// handleSettingsTag();
-
-			}
 			else if (sElementName.equals("item"))
-			{
-				// generalManager.getLogger().log(Level.INFO,
-				// "GlyphDefinitionHandler:: el= "
-				// +tagHierarchie.lastElement()+"->item");
 				handleItemTag();
-
-			}
-			else if (sElementName.equals("data"))
-			{
-				// generalManager.getLogger().log(Level.INFO,
-				// "GlyphDefinitionHandler:: el= "
-				// +tagHierarchie.lastElement()+"->data");
-			}
 			else if (sElementName.equals("column"))
-			{
-				// generalManager.getLogger().log(Level.INFO,
-				// "GlyphDefinitionHandler:: el= "
-				// +tagHierarchie.lastElement()+"->column");
 				handleColumnBeginTag();
-			}
 			else if (sElementName.equals("nominal"))
-			{
-				// generalManager.getLogger().log(Level.INFO,
-				// "GlyphDefinitionHandler:: el= "
-				// +tagHierarchie.lastElement()+"->column");
 				handleNominalTag();
-			}
 			else if (sElementName.equals("int"))
-			{
-				// generalManager.getLogger().log(Level.INFO,
-				// "GlyphDefinitionHandler:: el= "
-				// +tagHierarchie.lastElement()+"->column");
 				handleIntTag();
-			}
 			else if (sElementName.equals("color"))
-			{
-				// generalManager.getLogger().log(Level.INFO,
-				// "GlyphDefinitionHandler:: el= "
-				// +tagHierarchie.lastElement()+"->column");
 				handleColorTag();
-			}
+			else if (sElementName.equals("glyph"))
+				handleGlyphTag();
+			else if (sElementName.equals("part"))
+				handleGlyphPartTag();
+			else if (sElementName.equals("parameter"))
+				handleGlyphParameterTag();
+			else if (sElementName.equals("anchor"))
+				handleGlyphAnchorTag();
 
 			tagHierarchie.add(sElementName);
 		}
@@ -143,7 +103,11 @@ public class GlyphDefinitionSaxHandler
 			{
 				handleItemEndTag();
 			}
+			if (eName.equals("glyph"))
+			{
+				handleGlyphEndTag();
 
+			}
 			if (eName.equals(sOpeningTag))
 			{
 				/**
@@ -169,26 +133,18 @@ public class GlyphDefinitionSaxHandler
 
 	private void handleItemEndTag()
 	{
-
-		if (colors != null)
-		{
-			if (bLoadingColorTop)
-				generalManager.getGlyphManager().getGlyphGenerator().setColorsTop(colors);
-			if (bLoadingColorBox)
-				generalManager.getGlyphManager().getGlyphGenerator().setColorsBox(colors);
-
-			colors = null;
-			bLoadingColorTop = false;
-			bLoadingColorBox = false;
-		}
-
+		if (glyphDefinitionPart != null)
+			glyphDefinitionPart = null;
 	}
 
 	private void handleSettings()
 	{
 
-		String key = "";
-		String value = "";
+		String type = "";
+		String colnum = "";
+		String level = "";
+		String on = "";
+		String direction = "";
 
 		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
 		{
@@ -196,36 +152,48 @@ public class GlyphDefinitionSaxHandler
 
 			if (sAttributeName.equals(""))
 				sAttributeName = attributes.getQName(iAttributeIndex);
+			if (sAttributeName.equals("level"))
+				level = attributes.getValue(iAttributeIndex);
 			if (sAttributeName.equals("type"))
-				key = attributes.getValue(iAttributeIndex);
-			if (sAttributeName.equals("value"))
-				value = attributes.getValue(iAttributeIndex);
-
+				type = attributes.getValue(iAttributeIndex);
+			if (sAttributeName.equals("colnum"))
+				colnum = attributes.getValue(iAttributeIndex);
+			if (sAttributeName.equals("on"))
+				on = attributes.getValue(iAttributeIndex);
+			if (sAttributeName.equals("direction"))
+				direction = attributes.getValue(iAttributeIndex);
 		}
 
-		if (key.equals("sort"))
-			generalManager.getGlyphManager().addSortColumn(value);
-		if (key.equals("boxHeight"))
-			generalManager.getGlyphManager().setSetting(EGlyphSettingIDs.BOXHEIGHT, value);
-		if (key.equals("updateSendParameter"))
-			generalManager.getGlyphManager().setSetting(EGlyphSettingIDs.UPDATESENDPARAMETER,
-					value);
-		if (key.equals("scatterPlotAxisX"))
-			generalManager.getGlyphManager().setSetting(EGlyphSettingIDs.SCATTERPLOTX, value);
-		if (key.equals("scatterPlotAxisY"))
-			generalManager.getGlyphManager().setSetting(EGlyphSettingIDs.SCATTERPLOTY, value);
+		if (type.equals("sort"))
+			generalManager.getGlyphManager().addSortColumn(colnum);
+		if (type.equals("scatterPlotAxisX"))
+			generalManager.getGlyphManager().setSetting(EGlyphSettingIDs.SCATTERPLOTX, colnum);
+		if (type.equals("scatterPlotAxisY"))
+			generalManager.getGlyphManager().setSetting(EGlyphSettingIDs.SCATTERPLOTY, colnum);
 
-		if (key.equals("topColor"))
+		if (type.equals("scale"))
 		{
-			generalManager.getGlyphManager().setSetting(EGlyphSettingIDs.TOPCOLOR, value);
-			colors = new Vector<Vec4f>();
-			bLoadingColorTop = true;
+			if (!level.equals("") && !direction.equals(""))
+			{
+				int iLevel = Integer.parseInt(level);
+				int iColnum = Integer.parseInt(colnum);
+				DIRECTION dir = DIRECTION.valueOf(direction.toUpperCase());
+
+				GLGlyphGenerator.getDetailLevelModel(iLevel).setPartParameterIndex(on,
+						EGlyphSettingIDs.SCALE, dir, iColnum);
+			}
 		}
-		if (key.equals("boxColor"))
+
+		if (type.equals("color") && !level.equals(""))
 		{
-			generalManager.getGlyphManager().setSetting(EGlyphSettingIDs.BOXCOLOR, value);
-			colors = new Vector<Vec4f>();
-			bLoadingColorBox = true;
+			int iLevel = Integer.parseInt(level);
+			int iColnum = Integer.parseInt(colnum);
+
+			GLGlyphGenerator.getDetailLevelModel(iLevel).setPartParameterIndex(on,
+					EGlyphSettingIDs.COLOR, null, iColnum);
+
+			glyphDefinitionPart = GLGlyphGenerator.getDetailLevelModel(iLevel)
+					.getObjectPartDefinition(on);
 		}
 
 	}
@@ -233,7 +201,7 @@ public class GlyphDefinitionSaxHandler
 	private void handleProfileTag()
 	{
 
-		// we meight want to support some profiles in the future
+		// we might want to support some profiles in the future
 	}
 
 	private void handleColumnBeginTag()
@@ -250,8 +218,6 @@ public class GlyphDefinitionSaxHandler
 
 			if (sAttributeName.equals(""))
 				sAttributeName = attributes.getQName(iAttributeIndex);
-			// if(sAttributeName.equals("type")) type =
-			// attributes.getValue(iAttributeIndex);
 			if (sAttributeName.equals("colnum"))
 				col = attributes.getValue(iAttributeIndex);
 			if (sAttributeName.equals("label"))
@@ -501,7 +467,177 @@ public class GlyphDefinitionSaxHandler
 					color.set(3, fvalue);
 			}
 		}
-		colors.add(color);
+		glyphDefinitionPart.addColor(color);
+	}
+
+	private void handleGlyphTag()
+	{
+		String pTag = tagHierarchie.lastElement(); // parent tag
+
+		if (!pTag.equals("glyphobjects"))
+		{
+			generalManager
+					.getLogger()
+					.log(Level.WARNING,
+							"GlyphSaxDefinitionHandler::handleGlyphTag() - glyph tag not in glyphobjects tag embeded");
+			return;
+		}
+
+		String file = "";
+		String description = "";
+		int detaillevel = -1;
+
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
+		{
+			String sAttributeName = attributes.getLocalName(iAttributeIndex);
+
+			if (sAttributeName.equals(""))
+				sAttributeName = attributes.getQName(iAttributeIndex);
+
+			if (sAttributeName.equals("source"))
+				file = attributes.getValue(iAttributeIndex);
+
+			if (sAttributeName.equals("description"))
+				description = attributes.getValue(iAttributeIndex);
+
+			if (sAttributeName.equals("detaillevel"))
+				try
+				{
+					detaillevel = Integer.parseInt(attributes.getValue(iAttributeIndex));
+				}
+				catch (Exception e)
+				{
+					generalManager
+							.getLogger()
+							.log(Level.WARNING,
+									"GlyphSaxDefinitionHandler::handleGlyphTag() - detaillevel wasn't a integer");
+				}
+		}
+		glyphDefinition = new GlyphObjectDefinition();
+		glyphDefinition.setDetailLevel(detaillevel);
+		glyphDefinition.setDescription(description);
+		glyphDefinition.setSourceFile(file);
+	}
+
+	private void handleGlyphEndTag()
+	{
+		if (glyphDefinition == null)
+			return;
+
+		GLGlyphGenerator.setDetailLevelModel(glyphDefinition);
+		glyphDefinition = null;
+		glyphPartName = null;
+	}
+
+	private void handleGlyphPartTag()
+	{
+		String pTag = tagHierarchie.lastElement(); // parent tag
+
+		if (!pTag.equals("glyph"))
+		{
+			generalManager
+					.getLogger()
+					.log(Level.WARNING,
+							"GlyphSaxDefinitionHandler::handleGlyphPartTag() - glyphpart tag not in glyph tag embeded");
+			return;
+		}
+
+		if (glyphDefinition == null)
+		{
+			generalManager.getLogger().log(Level.SEVERE,
+					"GlyphSaxDefinitionHandler::handleGlyphPartTag() - wtf?");
+			return;
+		}
+
+		glyphPartName = null;
+
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
+		{
+			String sAttributeName = attributes.getLocalName(iAttributeIndex);
+
+			if (sAttributeName.equals(""))
+				sAttributeName = attributes.getQName(iAttributeIndex);
+
+			if (sAttributeName.equals("name"))
+				glyphPartName = attributes.getValue(iAttributeIndex);
+		}
+
+		glyphDefinition.addGlyphPart(glyphPartName);
+	}
+
+	private void handleGlyphParameterTag()
+	{
+		String pTag = tagHierarchie.lastElement(); // parent tag
+
+		if (!pTag.equals("part"))
+		{
+			generalManager
+					.getLogger()
+					.log(
+							Level.WARNING,
+							"GlyphSaxDefinitionHandler::handleGlyphParameterTag() - glyph parameter tag not in glyph part tag embeded");
+			return;
+		}
+
+		String type = null;
+		String value = null;
+		String description = null;
+
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
+		{
+			String sAttributeName = attributes.getLocalName(iAttributeIndex);
+
+			if (sAttributeName.equals(""))
+				sAttributeName = attributes.getQName(iAttributeIndex);
+
+			if (sAttributeName.equals("type"))
+				type = attributes.getValue(iAttributeIndex);
+			if (sAttributeName.equals("value"))
+				value = attributes.getValue(iAttributeIndex);
+			if (sAttributeName.equals("description"))
+				description = attributes.getValue(iAttributeIndex);
+		}
+
+		if (type != null)
+			glyphDefinition.addGlyphPartParameter(glyphPartName, type, value, description);
+	}
+
+	private void handleGlyphAnchorTag()
+	{
+		String pTag = tagHierarchie.lastElement(); // parent tag
+
+		if (!pTag.equals("part"))
+		{
+			generalManager
+					.getLogger()
+					.log(
+							Level.WARNING,
+							"GlyphSaxDefinitionHandler::handleGlyphAnchorTag() - glyph parameter tag not in glyph part tag embeded");
+			return;
+		}
+
+		ANCHOR type = null;
+		String to = null;
+
+		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++)
+		{
+			String sAttributeName = attributes.getLocalName(iAttributeIndex);
+
+			if (sAttributeName.equals(""))
+				sAttributeName = attributes.getQName(iAttributeIndex);
+
+			if (sAttributeName.equals("type"))
+			{
+				String temp = attributes.getValue(iAttributeIndex).toLowerCase().toUpperCase();
+				type = ANCHOR.valueOf(temp);
+			}
+			if (sAttributeName.equals("to"))
+				to = attributes.getValue(iAttributeIndex);
+
+		}
+
+		if (type != null)
+			glyphDefinition.addGlyphAnchor(glyphPartName, type, to);
 	}
 
 	/**

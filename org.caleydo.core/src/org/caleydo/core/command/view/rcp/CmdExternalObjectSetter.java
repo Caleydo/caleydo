@@ -47,8 +47,16 @@ public class CmdExternalObjectSetter
 				case GLYPH_SELECTIONBRUSH:
 					if (object instanceof Integer)
 					{
-						int size = (Integer)object;
+						int size = (Integer) object;
 						glyphview.setSelectionBrush(size);
+					}
+					return;
+
+				case GLYPH_CHANGEPERSONALNAME:
+					if (object instanceof String)
+					{
+						String name = (String) object;
+						glyphview.setPersonalName(name);
 					}
 					return;
 			}

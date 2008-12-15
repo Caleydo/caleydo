@@ -22,6 +22,7 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionItem;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -31,6 +32,7 @@ import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
 import org.caleydo.core.view.opengl.mouse.JoglMouseListener;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
@@ -83,6 +85,7 @@ public class GLGlyph
 	private float iViewScale = 0.15f;
 
 	private String sLabel = null;
+	private String sLabelPersonal = null;
 
 	private boolean bEnableSelection = false;
 	private int iSelectionBrushSize = 2;
@@ -107,8 +110,7 @@ public class GLGlyph
 		keyListener_ = new GlyphKeyListener();
 		renderStyle = new GlyphRenderStyle(viewFrustum);
 
-		gman = (GlyphManager) generalManager.getGlyphManager();
-		gman.registerGlyphView(this);
+		gman = generalManager.getGlyphManager();
 
 		selectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX)
 				.build();
@@ -343,6 +345,42 @@ public class GLGlyph
 			return;
 		}
 
+		// switch between detail level
+		if (mouseListener_ != null && !isRenderedRemote())
+		{
+			float height = -mouseListener_.getCameraHeight();
+
+			// System.out.println(height);
+
+			if (height > 20)
+			{
+				if (grid_.getGlyphGenerator().getDetailLevel() != GLGlyphGenerator.DETAILLEVEL.LEVEL_MIN)
+				{
+					grid_.getGlyphGenerator().setDetailLevel(
+							GLGlyphGenerator.DETAILLEVEL.LEVEL_MIN);
+					bRedrawDisplayListGlyph = true;
+				}
+			}
+			else if (height < 4)
+			{
+				if (grid_.getGlyphGenerator().getDetailLevel() != GLGlyphGenerator.DETAILLEVEL.LEVEL_MAX)
+				{
+					grid_.getGlyphGenerator().setDetailLevel(
+							GLGlyphGenerator.DETAILLEVEL.LEVEL_MAX);
+					bRedrawDisplayListGlyph = true;
+				}
+			}
+			else
+			{
+				if (grid_.getGlyphGenerator().getDetailLevel() != GLGlyphGenerator.DETAILLEVEL.LEVEL_MID)
+				{
+					grid_.getGlyphGenerator().setDetailLevel(
+							GLGlyphGenerator.DETAILLEVEL.LEVEL_MID);
+					bRedrawDisplayListGlyph = true;
+				}
+			}
+		}
+
 		if (bRedrawDisplayListGrid || bRedrawDisplayListGlyph)
 			initDisplayLists(gl);
 
@@ -375,49 +413,7 @@ public class GLGlyph
 			gl.glCallList(displayList_);
 
 		if (alSelectionBrushCornerPoints != null)
-		{
-			int size = alSelectionBrushCornerPoints.size();
-			
-			Vec2i oldpoint = null;
-			if(size > 1)
-				oldpoint = alSelectionBrushCornerPoints.get(size-1);
-			
-			for (Vec2i point : alSelectionBrushCornerPoints)
-			{
-				gl.glPushMatrix();
-				gl.glTranslatef(point.x(), -point.y(), 0);
-				
-				gl.glLineWidth(3);
-				
-				if(!keyListener_.isControlDown())
-					gl.glColor4f(0, 1, 0, 1);
-				else
-					gl.glColor4f(1, 0, 0, 1);
-				
-				gl.glBegin(GL.GL_LINES);
-				gl.glVertex3f(0, 0, 0);
-				gl.glVertex3f(0, 0, 1);
-				gl.glEnd();
-				
-				if(oldpoint != null) {
-					int x = point.x() - oldpoint.x();
-					int y = point.y() - oldpoint.y();
-				
-					gl.glBegin(GL.GL_LINES);
-					gl.glVertex3f(0, 0, 1);
-					gl.glVertex3f(-x, y, 1);
-					gl.glEnd();
-					
-					gl.glBegin(GL.GL_LINES);
-					gl.glVertex3f(0, 0, 0);
-					gl.glVertex3f(-x, y, 0);
-					gl.glEnd();
-				}
-				gl.glPopMatrix();
-				
-				oldpoint = point;
-			}
-		}
+			renderSelectionBrush(gl);
 
 		gl.glTranslatef(-7.0f, 0.0f, 0f);
 		gl.glRotatef(-45f, 0, 0, 1);
@@ -439,10 +435,12 @@ public class GLGlyph
 		gl.glPushMatrix();
 		Iterator<GlyphEntry> git = grid_.getGlyphList().values().iterator();
 
+		GLGlyphGenerator generator = grid_.getGlyphGenerator();
+
 		while (git.hasNext())
 		{
 			GlyphEntry e = git.next();
-			e.generateGLLists(gl);
+			e.generateGLLists(gl, generator);
 		}
 		gl.glPopMatrix();
 
@@ -500,6 +498,57 @@ public class GLGlyph
 		bRedrawDisplayListGlyph = false;
 
 		gl.glPopMatrix();
+	}
+
+	/**
+	 * Renders the selection brush
+	 * 
+	 * @param gl
+	 */
+	private void renderSelectionBrush(GL gl)
+	{
+		int size = alSelectionBrushCornerPoints.size();
+
+		Vec2i oldpoint = null;
+		if (size > 1)
+			oldpoint = alSelectionBrushCornerPoints.get(size - 1);
+
+		for (Vec2i point : alSelectionBrushCornerPoints)
+		{
+			gl.glPushMatrix();
+			gl.glTranslatef(point.x(), -point.y(), 0);
+
+			gl.glLineWidth(3);
+
+			if (!keyListener_.isControlDown())
+				gl.glColor4f(0, 1, 0, 1);
+			else
+				gl.glColor4f(1, 0, 0, 1);
+
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(0, 0, 0);
+			gl.glVertex3f(0, 0, 1);
+			gl.glEnd();
+
+			if (oldpoint != null)
+			{
+				int x = point.x() - oldpoint.x();
+				int y = point.y() - oldpoint.y();
+
+				gl.glBegin(GL.GL_LINES);
+				gl.glVertex3f(0, 0, 1);
+				gl.glVertex3f(-x, y, 1);
+				gl.glEnd();
+
+				gl.glBegin(GL.GL_LINES);
+				gl.glVertex3f(0, 0, 0);
+				gl.glVertex3f(-x, y, 0);
+				gl.glEnd();
+			}
+			gl.glPopMatrix();
+
+			oldpoint = point;
+		}
 	}
 
 	/**
@@ -715,7 +764,7 @@ public class GLGlyph
 
 		Vec2i gridPos = grid_.getGridPosition(glyph);
 		Vec2i temp = null;
-		
+
 		{ // left
 			temp = new Vec2i(gridPos);
 			temp.setX(gridPos.x() - (iSelectionBrushSize - 1));
@@ -748,6 +797,9 @@ public class GLGlyph
 	@Override
 	public synchronized String getShortInfo()
 	{
+		if (sLabelPersonal != null)
+			return "Glpyh - " + sLabelPersonal;
+
 		return "Glpyh";
 	}
 
@@ -924,5 +976,76 @@ public class GLGlyph
 	{
 		grid_.loadData(null);
 		forceRebuild();
+	}
+
+	public void setPersonalName(String name)
+	{
+		sLabelPersonal = name;
+	}
+
+	public String getPersonalName()
+	{
+		return sLabelPersonal;
+	}
+
+	/**
+	 * Temporary fix
+	 * 
+	 * @param addHeader you want a header?
+	 * @param viewName
+	 * @return
+	 */
+	@Deprecated
+	public String getContainingDataAsCSV(boolean addHeader, String viewName)
+	{
+		Collection<GlyphEntry> list = grid_.getGlyphList().values();
+
+		String content = "";
+
+		// make header
+		if (addHeader)
+		{
+			content += "GROUP; ID";
+
+			for (int i = 1; i < gman.getGlyphAttributes().size(); ++i)
+			{
+				String name = gman.getGlyphAttributeTypeWithInternalColumnNumber(i).getName();
+
+				content += "; " + name;
+			}
+
+			GlyphEntry ge = (GlyphEntry) list.toArray()[0];
+			ArrayList<String> names = ge.getStringParameterColumnNames();
+
+			for (String name : names)
+			{
+				content += "; " + name;
+			}
+			content += "\r\n";
+		}
+
+		for (GlyphEntry ge : list)
+		{
+			String line = viewName + "; ";
+
+			line += GeneralManager.get().getIDMappingManager().getID(
+					EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT, ge.getID());
+
+			for (int i = 0; i < ge.getNumberOfParameters(); ++i)
+			{
+				GlyphAttributeType type = gman
+						.getGlyphAttributeTypeWithInternalColumnNumber(i);
+
+				line += "; " + type.getParameterString(ge.getParameter(i));
+			}
+
+			for (String name : ge.getStringParameterColumnNames())
+			{
+				line += "; " + ge.getStringParameter(name);
+			}
+			content += line + "\r\n";
+		}
+
+		return content;
 	}
 }

@@ -2,13 +2,12 @@ package org.caleydo.core.manager.specialized.glyph;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Vector;
 import java.util.logging.Level;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyphGenerator;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
 
@@ -18,7 +17,6 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeTyp
  * @author Sauer Stefan
  */
 public class GlyphManager
-	implements IGlyphManager
 {
 	private IGeneralManager generalManager;
 
@@ -26,15 +24,11 @@ public class GlyphManager
 
 	private Vector<Integer> sortOrderExt;
 
-	private GLGlyphGenerator generator = null;
-
 	private HashMap<Integer, GlyphAttributeType> dataTypesExt = null;
 
 	private HashMap<Integer, GlyphEntry> hmGlyphList = null;
 
 	private HashMap<String, String> hmLoadedStoraged = null;
-
-	private HashSet<GLGlyph> registeredViews = null;
 
 	private boolean bIsActive = false;
 
@@ -52,23 +46,7 @@ public class GlyphManager
 		hmLoadedStoraged = new HashMap<String, String>();
 		sortOrderExt = new Vector<Integer>();
 
-		generator = new GLGlyphGenerator();
 		dataTypesExt = new HashMap<Integer, GlyphAttributeType>();
-		registeredViews = new HashSet<GLGlyph>();
-	}
-
-	public void registerGlyphView(GLGlyph view)
-	{
-
-		if (!registeredViews.contains(view))
-			registeredViews.add(view);
-	}
-
-	public void unregisterGlyphView(GLGlyph view)
-	{
-
-		if (!registeredViews.contains(view))
-			registeredViews.remove(view);
 	}
 
 	public void loadGlyphDefinitaion(String xmlPath)
@@ -110,10 +88,10 @@ public class GlyphManager
 			settings.remove(type);
 		settings.put(type, value);
 
-		initGlyphGenerator();
-
-		for (GLGlyph v : registeredViews)
-			v.forceRebuild();
+		for (AGLEventListener agleventlistener : generalManager.getViewGLCanvasManager()
+				.getAllGLEventListeners())
+			if (agleventlistener instanceof GLGlyph)
+				((GLGlyph) agleventlistener).forceRebuild();
 	}
 
 	public int getSortOrder(int depth)
@@ -171,55 +149,6 @@ public class GlyphManager
 			if (t.getInternalColumnNumber() == colnum)
 				return t;
 		return null;
-	}
-
-	public GLGlyphGenerator getGlyphGenerator()
-	{
-
-		return generator;
-	}
-
-	public void initGlyphGenerator()
-	{
-
-		try
-		{
-			// init indices
-			int ebtc = Integer.parseInt(getSetting(EGlyphSettingIDs.TOPCOLOR));
-			GlyphAttributeType typ = getGlyphAttributeTypeWithExternalColumnNumber(ebtc);
-			if (typ != null)
-			{
-				int ibtc = typ.getInternalColumnNumber();
-				generator.setIndexTopColor(ibtc);
-			}
-			ebtc = Integer.parseInt(getSetting(EGlyphSettingIDs.BOXCOLOR));
-			typ = getGlyphAttributeTypeWithExternalColumnNumber(ebtc);
-			if (typ != null)
-			{
-				int ibtc = typ.getInternalColumnNumber();
-				generator.setIndexBoxColor(ibtc);
-			}
-			ebtc = Integer.parseInt(getSetting(EGlyphSettingIDs.BOXHEIGHT));
-			typ = getGlyphAttributeTypeWithExternalColumnNumber(ebtc);
-			if (typ != null)
-			{
-				int ibtc = typ.getInternalColumnNumber();
-				generator.setIndexHeight(ibtc);
-			}
-
-			// set max height value
-			ebtc = Integer.parseInt(getSetting(EGlyphSettingIDs.BOXHEIGHT));
-			int maxHeight = getGlyphAttributeTypeWithExternalColumnNumber(ebtc).getMaxIndex();
-			generator.setMaxHeight(maxHeight);
-
-		}
-		catch (Exception ex)
-		{
-			this.generalManager.getLogger().log(
-					Level.WARNING,
-					"GlyphManager::initGlyphGenerator() - parsing integer failed!\r\n"
-							+ ex.getMessage());
-		}
 	}
 
 	public void addGlyph(int id, GlyphEntry glyph)

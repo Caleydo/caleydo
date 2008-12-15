@@ -135,11 +135,6 @@ public class GlyphAttributeType
 		return -1;
 	}
 
-	/*
-	 * public int getIndex(float value) { if(hmOrdinalLookup.containsKey(value))
-	 * return hmOrdinalLookup.get(value).getGroup(); return -1; }
-	 */
-
 	public int getMaxIndex()
 	{
 
@@ -163,7 +158,7 @@ public class GlyphAttributeType
 
 	public String getParameterString(int index)
 	{
-		if(hmGroupLookup.containsKey(index))
+		if (hmGroupLookup.containsKey(index))
 			return hmGroupLookup.get(index).getGroupName();
 		return "";
 	}

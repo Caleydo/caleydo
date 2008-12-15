@@ -7,7 +7,7 @@ import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.id.IDManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
-import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
+import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.preference.PreferenceStore;
 
@@ -42,26 +42,26 @@ public interface IGeneralManager
 
 	public ISetManager getSetManager();
 
-	public  ICommandManager getCommandManager();
+	public ICommandManager getCommandManager();
 
-	public  ISWTGUIManager getSWTGUIManager();
+	public ISWTGUIManager getSWTGUIManager();
 
-	public  IViewGLCanvasManager getViewGLCanvasManager();
+	public IViewGLCanvasManager getViewGLCanvasManager();
 
-	public  IEventPublisher getEventPublisher();
+	public IEventPublisher getEventPublisher();
 
-	public  IXmlParserManager getXmlParserManager();
+	public IXmlParserManager getXmlParserManager();
 
-	public  IPathwayManager getPathwayManager();
+	public IPathwayManager getPathwayManager();
 
-	public  IPathwayItemManager getPathwayItemManager();
+	public IPathwayItemManager getPathwayItemManager();
 
-	public  IIDMappingManager getIDMappingManager();
+	public IIDMappingManager getIDMappingManager();
 
-	public  IGlyphManager getGlyphManager();
+	public GlyphManager getGlyphManager();
 
-	public  IDManager getIDManager();
-	
+	public IDManager getIDManager();
+
 	/**
 	 * Returns the logger.
 	 * 
@@ -70,14 +70,13 @@ public interface IGeneralManager
 	public Logger getLogger();
 
 	/**
-	 * Resource loader that is responsible for loading images, 
-	 * textures and data files in the Caleydo framework.
-	 * DO NOT LOAD YOUR FILES ON YOUR OWN!
+	 * Resource loader that is responsible for loading images, textures and data
+	 * files in the Caleydo framework. DO NOT LOAD YOUR FILES ON YOUR OWN!
 	 * 
 	 * @return resource loader
 	 */
 	public ResourceLoader getResourceLoader();
-	
+
 	/**
 	 * Returns the preference store where Caleydo stores its preferences. The
 	 * object can store and restore preferences to/from a predefined file.

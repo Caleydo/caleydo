@@ -74,6 +74,18 @@ public class GlyphMouseListener
 		return list;
 	}
 
+	public float getCameraHeight()
+	{
+
+		Vec3f camPos = viewCanvas.getViewCamera().getCameraPosition();
+		float fRot = viewCanvas.getViewCamera().getCameraRotation().get(new Vec3f(0, 0, 1));
+
+		float height = camPos.y() * ((float) Math.sin(fRot)) + camPos.z()
+				* ((float) Math.cos(fRot));
+
+		return height;
+	}
+
 	/**
 	 * renders the rubberband selection
 	 * 
@@ -226,8 +238,7 @@ public class GlyphMouseListener
 	}
 
 	/**
-	 * This handles the rotation for the view.
-	 * Not used for now
+	 * This handles the rotation for the view. Not used for now
 	 * 
 	 * @param MouseEvent e
 	 */
@@ -302,7 +313,6 @@ public class GlyphMouseListener
 		t.set(new Vec3f(-1, 0, 0), angle);
 		viewCanvas.getViewCamera().setCameraRotation(t);
 	}
-	
 
 	/**
 	 * This method converts the mouse coordinates to world coordinates

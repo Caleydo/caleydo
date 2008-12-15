@@ -12,7 +12,6 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyphGenerator;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 
 /**
@@ -31,7 +30,7 @@ public class GlyphDataLoader
 	public GlyphDataLoader()
 	{
 		this.generalManager = GeneralManager.get();
-		this.gman = (GlyphManager) generalManager.getGlyphManager();
+		this.gman = generalManager.getGlyphManager();
 	}
 
 	public HashMap<Integer, GlyphEntry> getGlyphList()
@@ -47,8 +46,6 @@ public class GlyphDataLoader
 			return;
 
 		glyphs = new HashMap<Integer, GlyphEntry>();
-
-		GLGlyphGenerator generator = generalManager.getGlyphManager().getGlyphGenerator();
 
 		ArrayList<int[]> aliStoreMapped = new ArrayList<int[]>();
 		ArrayList<INominalStorage<String>> alsStoreString = new ArrayList<INominalStorage<String>>();
@@ -146,16 +143,16 @@ public class GlyphDataLoader
 
 		// now convert the storages to real glyphs
 
-//		int counter = gman.getGlyphs().size();
+		// int counter = gman.getGlyphs().size();
 		int iExperimentID;
-		for (int i = 0; i <  aliStoreMapped.get(0).length; ++i)
+		for (int i = 0; i < aliStoreMapped.get(0).length; ++i)
 		{
 			// Extract glyph ID from mapping
 			iExperimentID = generalManager.getIDMappingManager().getID(
-					EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX, 
-						alsStoreString.get(0).getRaw(i));
-			
-			GlyphEntry g = new GlyphEntry(iExperimentID, generator);
+					EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX,
+					alsStoreString.get(0).getRaw(i));
+
+			GlyphEntry g = new GlyphEntry(iExperimentID);
 
 			for (int[] s : aliStoreMapped)
 				g.addParameter(s[i]);
@@ -169,7 +166,6 @@ public class GlyphDataLoader
 			glyphs.put(iExperimentID, g);
 		}
 
-		((GlyphManager) generalManager.getGlyphManager()).addGlyphs(glyphs, glyphData
-				.getLabel());
+		generalManager.getGlyphManager().addGlyphs(glyphs, glyphData.getLabel());
 	}
 }

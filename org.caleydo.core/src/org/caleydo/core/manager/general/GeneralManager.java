@@ -30,7 +30,6 @@ import org.caleydo.core.manager.specialized.genome.IPathwayManager;
 import org.caleydo.core.manager.specialized.genome.pathway.PathwayItemManager;
 import org.caleydo.core.manager.specialized.genome.pathway.PathwayManager;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
-import org.caleydo.core.manager.specialized.glyph.IGlyphManager;
 import org.caleydo.core.manager.view.ViewGLCanvasManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.data.loader.ResourceLoader;
@@ -45,7 +44,6 @@ import org.eclipse.jface.preference.PreferenceStore;
 public class GeneralManager
 	implements IGeneralManager
 {
-	
 
 	/**
 	 * General manager as a singleton
@@ -77,7 +75,7 @@ public class GeneralManager
 	private IEventPublisher eventPublisher;
 	private IXmlParserManager xmlParserManager;
 	private IIDMappingManager genomeIdManager;
-	private IGlyphManager glyphManager;
+	private GlyphManager glyphManager;
 	private IDManager IDManager;
 
 	private Logger logger;
@@ -85,7 +83,7 @@ public class GeneralManager
 	private IGUIBridge guiBridge;
 
 	private ResourceLoader resourceLoader;
-	
+
 	@Override
 	public void init(boolean bIsStandalone, IGUIBridge externalGUIBridge)
 	{
@@ -128,7 +126,7 @@ public class GeneralManager
 
 		initLogger();
 		initPreferences();
-		
+
 		resourceLoader = new ResourceLoader();
 
 		// Init Standalone GUI Bridge if in standalone mode
@@ -150,7 +148,7 @@ public class GeneralManager
 		}
 		return generalManager;
 	}
-	
+
 	private void initPreferences()
 	{
 		preferenceStore = new PreferenceStore(IGeneralManager.CALEYDO_HOME_PATH
@@ -202,10 +200,10 @@ public class GeneralManager
 	{
 		return logger;
 	}
-	
+
 	@Override
 	public ResourceLoader getResourceLoader()
-	{		
+	{
 		return resourceLoader;
 	}
 
@@ -284,7 +282,7 @@ public class GeneralManager
 	}
 
 	@Override
-	public IGlyphManager getGlyphManager()
+	public GlyphManager getGlyphManager()
 	{
 		return glyphManager;
 	}

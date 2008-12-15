@@ -10,6 +10,11 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
 
+/**
+ * This class represents a single glyph. It stores all its parameter.
+ * 
+ * @author Steve
+ */
 public class GlyphEntry
 {
 
@@ -25,18 +30,15 @@ public class GlyphEntry
 
 	private HashMap<String, String> vsParameterString = new HashMap<String, String>();
 
-	private GLGlyphGenerator generator_ = null;
-
 	private int glList_ = 0;
 
 	private int glListSelected_ = 0;
 
-	public GlyphEntry(int id, GLGlyphGenerator generator)
+	public GlyphEntry(int id)
 	{
 		this.generalManager = GeneralManager.get();
 		gman = (GlyphManager) generalManager.getGlyphManager();
 		id_ = id;
-		generator_ = generator;
 		parameter_ = new Vector<Integer>();
 
 	}
@@ -105,10 +107,16 @@ public class GlyphEntry
 
 	public int getParameter(int index)
 	{
-
+		if (index < 0)
+			return -1;
 		if (parameter_.size() <= index)
 			return -1;
 		return parameter_.get(index);
+	}
+
+	public int getNumberOfParameters()
+	{
+		return parameter_.size();
 	}
 
 	public String getStringParameter(String colname)
@@ -126,11 +134,16 @@ public class GlyphEntry
 		return temp;
 	}
 
-	public void generateGLLists(GL gl)
+	public int getNumberOfStringParameters()
+	{
+		return vsParameterString.size();
+	}
+
+	public void generateGLLists(GL gl, GLGlyphGenerator generator)
 	{
 
-		glListSelected_ = generator_.generateGlyph(gl, this, true);
-		glList_ = generator_.generateGlyph(gl, this, false);
+		glListSelected_ = generator.generateGlyph(gl, this, true);
+		glList_ = generator.generateGlyph(gl, this, false);
 	}
 
 	/**

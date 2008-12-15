@@ -1,30 +1,158 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <glyphview version="1.0">
-<!-- nominal ordinal numeric -->
+ <glyphobjects>
+  <glyph detaillevel="0" source="resources/3dmodels/glyph/glyph.obj"  description="Minimal Detail Level">
 
+   <part name="base">
+   	<parameter type="color" description="Farbe" />
+   </part>
+  
+  </glyph>
+  
+  <glyph detaillevel="1" source="resources/3dmodels/glyph/glyph.obj" description="Medium Detail Level" >
+
+   <part name="base" detail="Sockel" />
+
+   
+   
+   <part name="tower" detail="Tower" >
+<!--      <anchor type="top" to="top" />-->
+     <anchor type="bottom" to="base" />
+   	<parameter type="scale" value="z" description="Quader - Höhe" />
+   	<parameter type="color"           description="Quader - Farbe" />
+   </part>
+   
+   <part name="top" detail="Deckel">
+    <anchor type="bottom" to="tower" />
+   	<parameter type="color"           description="Deckel - Farbe" />
+   </part>
+  </glyph>
+  
+  <glyph detaillevel="2" source="resources/3dmodels/glyph/glyph2.obj" description="Maximum Detail Level" >
+
+   <part name="base" detail="Sockel" />
+
+   <part name="tower" detail="Tower" >
+    <anchor type="bottom" to="base" />
+   	<parameter type="scale" value="z" description="Quader - Höhe" />
+   	<parameter type="color"           description="Quader - Farbe" />
+   </part>
+   
+   <part name="top" detail="Deckel">
+    <anchor type="bottom" to="tower" />
+   	<parameter type="color"           description="Deckel - Farbe" />
+   </part>
+   
+   <part name="cylinder1" detail="Zylinder 1">
+    <anchor type="bottom" to="base" />
+   	<parameter type="scale" value="z" description="Zylinder 1 - Höhe" />
+   	<parameter type="color"           description="Zylinder 1 - Farbe" />
+   </part>
+   <part name="cylinder2" detail="Zylinder 2">
+    <anchor type="bottom" to="base" />
+   	<parameter type="scale" value="z" description="Zylinder 2 - Höhe" />
+   	<parameter type="color"           description="Zylinder 2 - Farbe" />
+   </part>
+   <part name="cylinder3" detail="Zylinder 3">
+    <anchor type="bottom" to="base" />
+   	<parameter type="scale" value="z" description="Zylinder 3 - Höhe" />
+   	<parameter type="color"           description="Zylinder 3 - Farbe" />
+   </part>
+   <part name="cylinder4" detail="Zylinder 4">
+    <anchor type="bottom" to="base" />
+   	<parameter type="scale" value="z" description="Zylinder 4 - Höhe" />
+   	<parameter type="color"           description="Zylinder 4 - Farbe" />
+   </part>
+   
+  </glyph>
+  
+ </glyphobjects>
+ 
+ 
+ <!-- nominal ordinal numeric -->
  <profile name="default">
   <settings>
-   <item type="sort"                value="2" />
-   <item type="sort"                value="7" />
-   <item type="sort"                value="9" />
-   <item type="topColor"            value="7">
-     <color rn="0.0"  gn="0.0"  bn="0.0"  a="1.0" /> <!-- black -->
-     <color rn="-1.0" gn="-1.0" bn="-1.0" a="-1.0" /> <!-- special mode (same color as box) -->
-   </item>
-   <item type="boxColor"            value="2">
+   <item type="sort" colnum="2" />
+   <item type="sort" colnum="7" />
+   <item type="sort" colnum="9" />
+   
+   <item level="0" type="color" on="base" colnum="2">
      <color rn="1.0" gn="1.0" bn="1.0" a="1.0" />
      <color rn="0.0" gn="1.0" bn="0.0" a="1.0" /> <!-- green -->
      <color r ="0.0" g ="255" b ="255" a="1.0" /> <!-- tuerkis -->
      <color r ="255" gn="1.0" bn="0.0" a="1.0" /> <!-- yellow -->
      <color rgb="#ff0000"              a="1.0" /> <!-- red -->
    </item>
-   <item type="boxHeight"           value="9" />
+   
+   <item level="1" type="color" on="tower" colnum="2">
+     <color rn="1.0" gn="1.0" bn="1.0" a="1.0" />
+     <color rn="0.0" gn="1.0" bn="0.0" a="1.0" /> <!-- green -->
+     <color r ="0.0" g ="255" b ="255" a="1.0" /> <!-- tuerkis -->
+     <color r ="255" gn="1.0" bn="0.0" a="1.0" /> <!-- yellow -->
+     <color rgb="#ff0000"              a="1.0" /> <!-- red -->
+   </item>
+   
+   <item level="1" type="color" on="top" colnum="7">
+     <color rn="0.0"  gn="0.0"  bn="0.0"  a="1.0" /> <!-- black -->
+     <color rn="-1.0" gn="-1.0" bn="-1.0" a="-1.0" /> <!-- special mode (same color as box) -->
+   </item>
+
+   <item level="1" type="scale" on="tower" direction="z" colnum="9" />
 
 
-   <item type="updateSendParameter" value="0" />
+   <item level="2" type="color" on="tower" colnum="2">
+     <color rn="1.0" gn="1.0" bn="1.0" a="1.0" />
+     <color rn="0.0" gn="1.0" bn="0.0" a="1.0" /> <!-- green -->
+     <color r ="0.0" g ="255" b ="255" a="1.0" /> <!-- tuerkis -->
+     <color r ="255" gn="1.0" bn="0.0" a="1.0" /> <!-- yellow -->
+     <color rgb="#ff0000"              a="1.0" /> <!-- red -->
+   </item>
+   
+   <item level="2" type="color" on="top" colnum="7">
+     <color rn="0.0"  gn="0.0"  bn="0.0"  a="1.0" /> <!-- black -->
+     <color rn="-1.0" gn="-1.0" bn="-1.0" a="-1.0" /> <!-- special mode (same color as box) -->
+   </item>
 
-   <item type="scatterPlotAxisX"    value="2" />
-   <item type="scatterPlotAxisY"    value="5" />
+   <item level="2" type="scale" on="tower" direction="z" colnum="9" />
+
+   <item level="2" type="color" on="cylinder1" colnum="3">
+     <color rn="1.0" gn="1.0" bn="1.0" a="1.0" />
+     <color rn="0.0" gn="1.0" bn="0.0" a="1.0" /> <!-- green -->
+     <color r ="0.0" g ="255" b ="255" a="1.0" /> <!-- tuerkis -->
+     <color r ="255" gn="1.0" bn="0.0" a="1.0" /> <!-- yellow -->
+     <color rgb="#ff0000"              a="1.0" /> <!-- red -->
+   </item>
+   <item level="2" type="scale" on="cylinder1" direction="z" colnum="3" />
+   
+   <item level="2" type="color" on="cylinder2" colnum="4">
+     <color rn="1.0" gn="1.0" bn="1.0" a="1.0" />
+     <color rn="0.0" gn="1.0" bn="0.0" a="1.0" /> <!-- green -->
+     <color r ="0.0" g ="255" b ="255" a="1.0" /> <!-- tuerkis -->
+     <color r ="255" gn="1.0" bn="0.0" a="1.0" /> <!-- yellow -->
+     <color rgb="#ff0000"              a="1.0" /> <!-- red -->
+   </item>
+   <item level="2" type="scale" on="cylinder2" direction="z" colnum="4" />
+   
+   <item level="2" type="color" on="cylinder3" colnum="5">
+     <color rn="1.0" gn="1.0" bn="1.0" a="1.0" />
+     <color rn="0.0" gn="1.0" bn="0.0" a="1.0" /> <!-- green -->
+     <color r ="0.0" g ="255" b ="255" a="1.0" /> <!-- tuerkis -->
+     <color r ="255" gn="1.0" bn="0.0" a="1.0" /> <!-- yellow -->
+     <color rgb="#ff0000"              a="1.0" /> <!-- red -->
+   </item>
+   <item level="2" type="scale" on="cylinder3" direction="z" colnum="5" />
+   
+   <item level="2" type="color" on="cylinder4" colnum="6">
+     <color rn="1.0" gn="1.0" bn="1.0" a="1.0" />
+     <color rn="0.0" gn="1.0" bn="0.0" a="1.0" /> <!-- green -->
+     <color r ="0.0" g ="255" b ="255" a="1.0" /> <!-- tuerkis -->
+     <color r ="255" gn="1.0" bn="0.0" a="1.0" /> <!-- yellow -->
+     <color rgb="#ff0000"              a="1.0" /> <!-- red -->
+   </item>
+   <item level="2" type="scale" on="cylinder4" direction="z" colnum="6" />
+
+   <item type="scatterPlotAxisX"    colnum="2" />
+   <item type="scatterPlotAxisY"    colnum="5" />
   </settings>
 
 
@@ -96,12 +224,9 @@
    </column>
 
   </data>
-
-
-
-
-
-
-
  </profile>
+ 
+
+ 
+ 
 </glyphview>
