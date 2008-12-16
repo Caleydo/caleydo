@@ -5,7 +5,6 @@ import gleem.linalg.Vec3f;
 import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
-import java.util.Set;
 import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
@@ -22,6 +21,7 @@ import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.data.selection.SelectionItem;
+import org.caleydo.core.data.selection.SelectionQuadruple;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -106,7 +106,9 @@ public class GLHierarchicalHeatMap
 	private int iPickedSample = 0;
 	private int iFirstSample = 0;
 	private int iLastSample = 0;
-
+	
+	private ArrayList<SelectionQuadruple> iAlSelection = new ArrayList<SelectionQuadruple>();
+	
 	private boolean bRenderCaption;
 
 	private float fAnimationScale = 1.0f;
@@ -115,8 +117,6 @@ public class GLHierarchicalHeatMap
 	private GLHeatMap glHeatMapView;
 
 	private boolean bIsHeatmapInFocus = false;
-
-	private boolean bPanningMode = false;
 
 	// dragging stuff
 	private boolean bIsDraggingActive = false;
@@ -256,13 +256,13 @@ public class GLHierarchicalHeatMap
 		glHeatMapView = (GLHeatMap) cmdView.getCreatedObject();
 
 		// // Register heatmap as sender to event mediator
-		ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
-		arMediatorIDs.add(glHeatMapView.getID());
+//		ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
+//		arMediatorIDs.add(glHeatMapView.getID());
 
-		generalManager.getEventPublisher().registerSenderToMediatorGroup(
-				EMediatorType.SELECTION_MEDIATOR, glHeatMapView);
-		generalManager.getEventPublisher().registerReceiverToMediatorGroup(
-				EMediatorType.SELECTION_MEDIATOR, glHeatMapView);
+//		generalManager.getEventPublisher().registerSenderToMediatorGroup(
+//				EMediatorType.SELECTION_MEDIATOR, glHeatMapView);
+//		generalManager.getEventPublisher().registerReceiverToMediatorGroup(
+//				EMediatorType.SELECTION_MEDIATOR, glHeatMapView);
 
 	}
 
@@ -271,6 +271,8 @@ public class GLHierarchicalHeatMap
 		CmdEventCreateMediator tmpMediatorCmd = (CmdEventCreateMediator) generalManager
 				.getCommandManager().createCommandByType(ECommandType.CREATE_EVENT_MEDIATOR);
 
+		//receiver = embedded heatmap
+		//sender = hierarchical heatmap
 		ArrayList<Integer> iAlSenderIDs = new ArrayList<Integer>();
 		ArrayList<Integer> iAlReceiverIDs = new ArrayList<Integer>();
 		iAlSenderIDs.add(iUniqueID);
@@ -278,6 +280,18 @@ public class GLHierarchicalHeatMap
 		tmpMediatorCmd
 				.setAttributes(iAlSenderIDs, iAlReceiverIDs, EMediatorType.VIEW_MEDIATOR);
 		tmpMediatorCmd.doCommand();
+		
+		//sender = embedded heatmap
+		//receiver = hierarchical heatmap
+		tmpMediatorCmd = (CmdEventCreateMediator) generalManager
+		.getCommandManager().createCommandByType(ECommandType.CREATE_EVENT_MEDIATOR);
+		iAlSenderIDs = new ArrayList<Integer>();
+		iAlReceiverIDs = new ArrayList<Integer>();
+		iAlSenderIDs.add(glHeatMapView.getID());
+		iAlReceiverIDs.add(iUniqueID);
+		tmpMediatorCmd.setAttributes(iAlSenderIDs, iAlReceiverIDs, EMediatorType.VIEW_MEDIATOR);
+		tmpMediatorCmd.doCommand();
+		
 	}
 
 	@Override
@@ -326,6 +340,84 @@ public class GLHierarchicalHeatMap
 		// pickingTriggerMouseAdapter.resetEvents();
 	}
 
+	private void searchlist()
+	{
+		int iCount = 0, iTextureCounter = 0;
+		SelectionQuadruple temp;
+		
+		iAlSelection.clear();
+		for (Integer iContentIndex : set.getVA(iContentVAID))
+		{
+			iCount++;
+			if (iCount == iNumberSamples[iTextureCounter])
+			{
+				iTextureCounter++;
+				iCount = 0;
+			}
+			if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex))
+			{
+				temp = new SelectionQuadruple(iTextureCounter, iCount, iContentIndex,
+						ESelectionType.MOUSE_OVER);
+				iAlSelection.add(temp);
+			}
+			if (contentSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex))
+			{
+				temp = new SelectionQuadruple(iTextureCounter, iCount, iContentIndex,
+						ESelectionType.SELECTION);
+				iAlSelection.add(temp);
+			}
+		}
+	}
+		
+	private void renderSelectedElementsOverviewBar(GL gl)
+	{
+		float fHeight = viewFrustum.getHeight();
+		float fStep = fHeight / iNrSelBar;
+		float fBarWidth = 0.1f;
+		
+		gl.glColor4f(1f, 1f, 0f, 1f);
+		
+		for(SelectionQuadruple selection : iAlSelection)
+		{
+			// elements in overview bar
+			if(iSelectorBar != (selection.getTexture() + 1))
+			{
+				gl.glBegin(GL.GL_QUADS);
+				gl.glVertex3f(fBarWidth, fStep * (iNrSelBar - (selection.getTexture() + 1) + 1), 0);
+				gl.glVertex3f(fBarWidth + 0.05f, fStep * (iNrSelBar - (selection.getTexture() + 1) + 1), 0);
+				gl.glVertex3f(fBarWidth + 0.05f, fStep * (iNrSelBar - (selection.getTexture() + 1)), 0);
+				gl.glVertex3f(fBarWidth, fStep * (iNrSelBar - (selection.getTexture() + 1)), 0);
+				gl.glEnd();
+			}
+		}	
+	}
+	private void renderSelectedElementsTexture(GL gl)
+	{
+		float fFieldWith = viewFrustum.getWidth() / 4.0f;
+		float fHeightSample = viewFrustum.getHeight() / iNumberSamples[iSelectorBar - 1];
+
+		gl.glColor4f(1f, 1f, 0f, 1f);
+		
+		for(SelectionQuadruple selection : iAlSelection)
+		{			
+			// elements in texture
+			if (iSelectorBar == (selection.getTexture() + 1))
+			{			
+				gl.glLineWidth(1f);
+				gl.glBegin(GL.GL_LINE_LOOP);
+				gl.glVertex3f(0, viewFrustum.getHeight()
+						- ((selection.getPos() - 1) * fHeightSample), 0);
+				gl.glVertex3f(fFieldWith, viewFrustum.getHeight()
+						- ((selection.getPos() - 1) * fHeightSample), 0);
+				gl.glVertex3f(fFieldWith, viewFrustum.getHeight()
+						- (selection.getPos() * fHeightSample), 0);
+				gl.glVertex3f(0, viewFrustum.getHeight()
+						- (selection.getPos() * fHeightSample), 0);
+				gl.glEnd();
+			}
+		}
+	}
+	
 	private void initFloatBuffer(GL gl)
 	{
 		fAlXDistances.clear();
@@ -795,7 +887,7 @@ public class GLHierarchicalHeatMap
 
 	@Override
 	public synchronized void display(GL gl)
-	{
+	{	
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		// GLHelperFunctions.drawAxis(gl);
 		if (bIsDraggingActive)
@@ -843,6 +935,8 @@ public class GLHierarchicalHeatMap
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex)
 	{
+		searchlist();
+		
 		if (bHasFrustumChanged)
 		{
 			bHasFrustumChanged = false;
@@ -865,6 +959,7 @@ public class GLHierarchicalHeatMap
 
 			renderOverviewBar(gl);
 			renderMarkerOverviewBar(gl);
+			renderSelectedElementsOverviewBar(gl);
 
 			gl.glTranslatef(GAP_LEVEL1_2, 0, 0);
 
@@ -882,6 +977,7 @@ public class GLHierarchicalHeatMap
 			renderTextureHeatMap(gl);
 			renderMarkerTexture(gl);
 			renderTextureSelectionCursor(gl);
+			renderSelectedElementsTexture(gl);
 
 			renderDraggingCursor(gl);
 
@@ -940,8 +1036,6 @@ public class GLHierarchicalHeatMap
 			// Remove old block selection items from heatmap
 			for (SelectionItem item : lastSelectionDelta)
 			{
-				//System.out.println(item.getSelectionType());
-				
 				item.setSelectionType(ESelectionType.REMOVE);
 			}
 			triggerUpdate(lastSelectionDelta);
@@ -955,7 +1049,7 @@ public class GLHierarchicalHeatMap
 		for (Integer iContentIndex : set.getVA(iContentVAID))
 		{
 			iCount++;
-			
+
 			// overviewbar selection
 			if (iCount <= (fCntBar * (iSelectorBar - 1))
 					|| (iCount > (fCntBar * iSelectorBar)))
@@ -971,7 +1065,12 @@ public class GLHierarchicalHeatMap
 			}
 
 			delta.addSelection(getDavidIDFromStorageIndex(iContentIndex), ESelectionType.ADD);
-			//delta.addSelection(getDavidIDFromStorageIndex(iContentIndex), ESelectionType.MOUSE_OVER);
+			for (SelectionQuadruple selection : iAlSelection)
+			{
+				if (selection.getContentIndex() == iContentIndex)
+					delta.addSelection(getDavidIDFromStorageIndex(iContentIndex), selection
+							.getSelectionType());
+			}
 		}
 
 		triggerUpdate(delta);
@@ -1102,7 +1201,7 @@ public class GLHierarchicalHeatMap
 
 		return sInfoText.toString();
 	}
-
+	
 	@Override
 	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode,
 			int iExternalID, Pick pick)
@@ -1323,7 +1422,7 @@ public class GLHierarchicalHeatMap
 			if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iStorageIndex)
 					|| contentSelectionManager.checkStatus(ESelectionType.SELECTION,
 							iStorageIndex))
-			// if(selectionDelta.)
+			// if(selectionDelta.)				
 			{
 				fDistance += renderStyle.getSelectedFieldWidth();
 			}
@@ -1331,6 +1430,7 @@ public class GLHierarchicalHeatMap
 			{
 				fDistance += renderStyle.getNormalFieldWidth();
 			}
+			//contentSelectionManager.addToType(ESelectionType.SELECTION, iStorageIndex);
 
 		}
 		super.handleConnectedElementRep(selectionDelta);
