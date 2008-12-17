@@ -30,6 +30,11 @@ public interface IManager<T extends IUniqueObject>
 	 */
 	public T getItem(final int iItemID);
 
+	/**
+	 * Return a collection of all items stored in the manager.
+	 * 
+	 * @return the collection of the type the manager manges
+	 */
 	public Collection<T> getAllItems();
 
 	/**

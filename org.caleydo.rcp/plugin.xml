@@ -241,6 +241,11 @@
             id="org.caleydo.rcp.command.openviews.clinicalparcoords"
             name="Open Clinical Parallel Coordinates">
       </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.ExportHandler"
+            id="org.caleydo.rcp.command.export"
+            name="Export">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -256,8 +261,13 @@
                   label="Load Data"
                   style="push">
             </command>
+            <command
+                  commandId="org.caleydo.rcp.command.export"
+                  label="Export"
+                  style="push">
+            </command>
             <separator
-                  name="org.caleydo.rcp.separator2"
+                  name="org.caleydo.rcp.separator1"
                   visible="true">
             </separator>
             <command
@@ -266,7 +276,7 @@
                   style="push">
             </command>
             <separator
-                  name="org.caleydo.rcp.separator1"
+                  name="org.caleydo.rcp.separator2"
                   visible="true">
             </separator>
             <command

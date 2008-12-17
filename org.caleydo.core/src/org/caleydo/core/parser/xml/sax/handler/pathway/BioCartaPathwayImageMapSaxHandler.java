@@ -155,7 +155,6 @@ public class BioCartaPathwayImageMapSaxHandler
 		sTitle = "";
 	}
 
-	@SuppressWarnings("unchecked")
 	private void handleAreaTag()
 	{
 

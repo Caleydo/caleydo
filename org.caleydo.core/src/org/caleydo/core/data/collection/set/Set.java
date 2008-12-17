@@ -11,6 +11,7 @@ import org.caleydo.core.data.collection.INominalStorage;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
+import org.caleydo.core.data.collection.export.SetExporter;
 import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.VirtualArray;
@@ -529,6 +530,12 @@ public class Set
 	public boolean isSetHomogeneous()
 	{
 		return bIsSetHomogeneous;
+	}
+	
+	public void export()
+	{
+		SetExporter exporter = new SetExporter();
+		exporter.export(this);
 	}
 
 }
