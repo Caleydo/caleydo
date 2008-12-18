@@ -54,22 +54,14 @@ public class GLConnectionLineRendererBucket
 		for (EIDType idType : connectedElementRepManager.getOccuringIDTypes())
 		{
 
-			Iterator<Integer> iterSelectedElementID = connectedElementRepManager.getIDList(
-					idType).iterator();
+			ArrayList<ArrayList<Vec3f>> alPointLists = null; 
 
-			ArrayList<ArrayList<Vec3f>> alPointLists = null;// 
-
-			while (iterSelectedElementID.hasNext())
+			for (int iSelectedElementID : connectedElementRepManager.getIDList(
+					idType))
 			{
-				int iSelectedElementID = iterSelectedElementID.next();
-				Iterator<SelectedElementRep> iterSelectedElementRep = connectedElementRepManager
-						.getSelectedElementRepsByElementID(idType, iSelectedElementID)
-						.iterator();
-
-				while (iterSelectedElementRep.hasNext())
+				for (SelectedElementRep selectedElementRep: connectedElementRepManager
+						.getSelectedElementRepsByElementID(idType, iSelectedElementID))
 				{
-					SelectedElementRep selectedElementRep = iterSelectedElementRep.next();
-
 					iViewID = selectedElementRep.getContainingViewID();
 
 					// Check if view is contained in focus level
