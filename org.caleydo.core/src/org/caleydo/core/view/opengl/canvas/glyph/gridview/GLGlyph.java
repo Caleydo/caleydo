@@ -19,7 +19,9 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionItem;
+import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -33,12 +35,12 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
-import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.JoglMouseListener;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GlyphRenderStyle;
-import org.caleydo.core.view.opengl.util.EIconTextures;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -175,7 +177,7 @@ public class GLGlyph
 					selectionManager.addToType(ESelectionType.SELECTION, id);
 
 			bDrawConnectionRepLines = false;
-			triggerUpdate(selectionManager.getDelta());
+			triggerUpdate(EMediatorType.SELECTION_MEDIATOR, selectionManager.getDelta(), null);
 			bDrawConnectionRepLines = true;
 
 			bRedrawDisplayListGlyph = true;
@@ -286,9 +288,9 @@ public class GLGlyph
 
 	@Override
 	public synchronized void initRemote(final GL gl, final int iRemoteViewID,
-			final RemoteHierarchyLevel layer,
+			final RemoteLevel layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
-			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas)
+			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 
 	{
 
@@ -850,10 +852,47 @@ public class GLGlyph
 							.getConnectedElementRepresentationManager().clear(
 									EIDType.EXPERIMENT_INDEX);
 
-					triggerUpdate(selectionManager.getDelta());
+					triggerUpdate(EMediatorType.SELECTION_MEDIATOR, selectionManager
+							.getDelta(), null);
 
+					// <<<<<<< .working
 					// only the glyphs need to be redrawn
 					bRedrawDisplayListGlyph = true;
+					// =======
+					// if (grid_.getNumOfSelected() == 0)
+					// {
+					// ArrayList<Integer> select = grid_.selectAll();
+					// ids.addAll(select);
+					// while (selections.size() < ids.size())
+					// selections.add(1);
+					// }
+					//
+					// generalManager.getGlyphManager()
+					// .getGlyphAttributeTypeWithExternalColumnNumber(2)
+					// .printDistribution();
+					// bRedrawDisplayList_ = true;
+					//
+					// // push patient id to other screens
+					// // TODO rewrite this with new selection
+					// // for (Selection sel : alSelection)
+					// // {
+					// // sel.updateSelectionSet(iUniqueID, ids, selections,
+					// null);
+					// // }
+					//
+					// selectionManager.clearSelections();
+					// for (int i = 0; i < ids.size(); ++i)
+					// {
+					// if (selections.get(i) > 0)
+					// selectionManager.addToType(ESelectionType.SELECTION,
+					// ids.get(i));
+					// else
+					// selectionManager.addToType(ESelectionType.DESELECTED,
+					// ids.get(i));
+					// }
+					// triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
+					// selectionManager.getDelta(), null);
+					// >>>>>>> .merge-right.r1683
 
 					break;
 				default:
@@ -867,8 +906,8 @@ public class GLGlyph
 	}
 
 	@Override
-	public synchronized void handleUpdate(IUniqueObject eventTrigger,
-			ISelectionDelta selectionDelta)
+	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
+			Collection<SelectionCommand> colSelectionCommand, EMediatorType eMediatorType)
 	{
 		if (selectionDelta.getIDType() != EIDType.EXPERIMENT_INDEX)
 			return;
@@ -915,12 +954,15 @@ public class GLGlyph
 	}
 
 	@Override
-	public synchronized void triggerUpdate(ISelectionDelta selectionDelta)
+	public void triggerUpdate(EMediatorType eMediatorType, ISelectionDelta selectionDelta,
+			Collection<SelectionCommand> colSelectionCommand)
 	{
 		if (selectionDelta.getSelectionData().size() > 0)
 		{
 			handleConnectedElementRep(selectionDelta);
-			generalManager.getEventPublisher().handleUpdate(this, selectionDelta);
+
+			generalManager.getEventPublisher().triggerUpdate(eMediatorType, this,
+					selectionDelta, null);
 		}
 	}
 
@@ -942,7 +984,7 @@ public class GLGlyph
 		Vec3f vecGlyphPos;
 		GlyphEntry actualGlyph = null;
 
-		ArrayList<SelectionItem> selection = selectionDelta.getSelectionData();
+		Collection<SelectionItem> selection = selectionDelta.getSelectionData();
 		for (SelectionItem item : selection)
 		{
 			actualGlyph = grid_.getGlyph(item.getSelectionID());
@@ -954,12 +996,12 @@ public class GLGlyph
 				continue;
 
 			vecGlyphPos = getGlyphPosition(actualGlyph);
+			// TODO, use new ConnectionIDs
 			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
-					.modifySelection(
+					.addSelection(
 							actualGlyph.getID(),
 							new SelectedElementRep(EIDType.EXPERIMENT_INDEX, iUniqueID,
-									vecGlyphPos.x(), vecGlyphPos.y(), vecGlyphPos.z()),
-							ESelectionMode.ADD_PICK);
+									vecGlyphPos.x(), vecGlyphPos.y(), vecGlyphPos.z()));
 		}
 	}
 
@@ -1047,5 +1089,11 @@ public class GLGlyph
 		}
 
 		return content;
+	}
+
+	@Override
+	public int getNumberOfSelections(ESelectionType eSelectionType)
+	{
+		throw new IllegalStateException("Not implemented yet. Do this now!");
 	}
 }

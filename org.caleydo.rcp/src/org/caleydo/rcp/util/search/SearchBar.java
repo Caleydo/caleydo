@@ -79,8 +79,8 @@ public class SearchBar
 				{
 					sPathwayTitle = pathway.getTitle();
 					
-					if (sPathwayTitle.length() > MAX_PATHWAY_TITLE_LENGTH)
-						sPathwayTitle = sPathwayTitle.substring(0, MAX_PATHWAY_TITLE_LENGTH) + "... ";
+//					if (sPathwayTitle.length() > MAX_PATHWAY_TITLE_LENGTH)
+//						sPathwayTitle = sPathwayTitle.substring(0, MAX_PATHWAY_TITLE_LENGTH) + "... ";
 					
 //					sArSearchItems[iIndex] = pathway.getType().toString() 
 //						+ " - " + sPathwayTitle;

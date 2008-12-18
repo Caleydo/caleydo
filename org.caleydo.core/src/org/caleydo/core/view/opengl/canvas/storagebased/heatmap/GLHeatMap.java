@@ -10,6 +10,7 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
@@ -18,10 +19,13 @@ import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -31,15 +35,14 @@ import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener.EBusyModeState;
-import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.miniview.GLColorMappingBarMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
-import org.caleydo.core.view.opengl.util.EIconTextures;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -132,19 +135,21 @@ public class GLHeatMap
 		dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
 		bRenderOnlyContext = false;
 
+		generalManager.getEventPublisher().addSender(
+				EMediatorType.PROPAGATION_MEDIATOR, this);
+		
 		bRenderStorageHorizontally = false;
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
-
 	}
 
 	@Override
 	public void initRemote(final GL gl, final int iRemoteViewID,
-			final RemoteHierarchyLevel layer,
+			final RemoteLevel layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
-			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas)
+			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
 		dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
 		bRenderOnlyContext = true;
@@ -188,10 +193,13 @@ public class GLHeatMap
 			bIsDisplayListDirtyLocal = false;
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
+		
 		display(gl);
 		checkForHits(gl);
 
+		if(eBusyModeState != EBusyModeState.OFF)
+			renderBusyMode(gl);
+		
 		pickingTriggerMouseAdapter.resetEvents();
 	}
 
@@ -227,9 +235,6 @@ public class GLHeatMap
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		// GLHelperFunctions.drawAxis(gl);
 		gl.glCallList(iGLDisplayListToCall);
-		
-		if(eBusyModeState != EBusyModeState.OFF)
-			renderBusyMode(gl);
 		
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 	}
@@ -472,21 +477,30 @@ public class GLHeatMap
 			case HEAT_MAP_FIELD_SELECTION:
 				switch (pickingMode)
 				{
-					case CLICKED:
-						connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
+
+					case DOUBLE_CLICKED:
+//						connectedElementRepresentationManager.clear();
 
 						contentSelectionManager.clearSelection(ESelectionType.SELECTION);
 						contentSelectionManager.addToType(ESelectionType.SELECTION,
 								iExternalID);
 
+						contentSelectionManager.addConnectionID(generalManager.getIDManager()
+								.createID(EManagedObjectType.CONNECTION), iExternalID);
+						
 						if (eFieldDataType == EIDType.EXPRESSION_INDEX)
 						{
-							triggerUpdate(contentSelectionManager.getDelta());
+							Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
+							colSelectionCommand.add(new SelectionCommand(ESelectionCommandType.CLEAR,
+									ESelectionType.MOUSE_OVER));
+							triggerUpdate(EMediatorType.SELECTION_MEDIATOR, 
+									contentSelectionManager.getDelta(), colSelectionCommand);
 						}
 
 						break;
-
+					case CLICKED:
 					case MOUSE_OVER:
+						
 
 						if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER,
 								iExternalID))
@@ -497,10 +511,17 @@ public class GLHeatMap
 						contentSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
 						contentSelectionManager.addToType(ESelectionType.MOUSE_OVER,
 								iExternalID);
+						
+						contentSelectionManager.addConnectionID(generalManager.getIDManager()
+								.createID(EManagedObjectType.CONNECTION), iExternalID);
 
 						if (eFieldDataType == EIDType.EXPRESSION_INDEX)
 						{
-							triggerUpdate(contentSelectionManager.getDelta());
+							Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
+							colSelectionCommand.add(new SelectionCommand(ESelectionCommandType.CLEAR,
+									ESelectionType.MOUSE_OVER));
+							triggerUpdate(EMediatorType.SELECTION_MEDIATOR, 
+									contentSelectionManager.getDelta(), colSelectionCommand);
 						}
 
 						break;
@@ -908,7 +929,7 @@ public class GLHeatMap
 	public synchronized void broadcastElements()
 	{
 		ISelectionDelta delta = contentSelectionManager.getCompleteDelta();
-		triggerUpdate(delta);
+		triggerUpdate(EMediatorType.SELECTION_MEDIATOR, delta, null);
 		setDisplayListDirty();
 	}
 

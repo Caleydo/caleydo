@@ -103,16 +103,16 @@ public class GLPathwayContentCreator
 		genomeMapper.setMappingData(alSetData);
 
 		hashElementId2MappingColorArray.clear();
-		
-		if(generalManager.getIDMappingManager().hasMapping(
-				EMappingType.DAVID_2_EXPRESSION_INDEX))
-		{
-			bEnableGeneMapping = true;
-		}	
-		else
-		{
-			bEnableGeneMapping = false;			
-		}
+
+//		if (generalManager.getIDMappingManager().hasMapping(
+//				EMappingType.DAVID_2_EXPRESSION_INDEX))
+//		{
+//			bEnableGeneMapping = true;
+//		}
+//		else
+//		{
+//			bEnableGeneMapping = false;
+//		}
 	}
 
 	public void buildPathwayDisplayList(final GL gl, final IUniqueObject containingView,
@@ -168,21 +168,21 @@ public class GLPathwayContentCreator
 	{
 		if (internalSelectionManager == null)
 			return;
-		
+
 		iArSelectedEdgeRepId.clear();
 
 		ArrayList<Integer> iAlTmpSelectedGraphItemIds = new ArrayList<Integer>();
 		Set<Integer> tmpItemIDs;
 		tmpItemIDs = internalSelectionManager.getElements(ESelectionType.MOUSE_OVER);
-		
+
 		if (tmpItemIDs != null)
 			iAlTmpSelectedGraphItemIds.addAll(tmpItemIDs);
-		
+
 		tmpItemIDs = internalSelectionManager.getElements(ESelectionType.SELECTION);
-		
+
 		if (tmpItemIDs != null)
 			iAlTmpSelectedGraphItemIds.addAll(tmpItemIDs);
-		
+
 		if (iAlTmpSelectedGraphItemIds.size() == 0)
 		{
 			return;
@@ -197,16 +197,24 @@ public class GLPathwayContentCreator
 			// // Perform identical node highlighting only on nodes with depth 0
 			// if (iAlTmpSelectedGraphItemDepth.get(iItemIndex) != 0)
 			// continue;
-			for (IGraphItem graphItem : ((IGraphItem) generalManager.getPathwayItemManager().getItem(
-					iAlTmpSelectedGraphItemIds.get(iItemIndex))).getAllItemsByProp(
-							EGraphItemProperty.ALIAS_PARENT))
+			for (IGraphItem graphItem : ((IGraphItem) generalManager.getPathwayItemManager()
+					.getItem(iAlTmpSelectedGraphItemIds.get(iItemIndex)))
+					.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT))
 			{
-				for (IGraphItem graphItemRep : graphItem.getAllItemsByProp(
-						EGraphItemProperty.ALIAS_CHILD))
+				for (IGraphItem graphItemRep : graphItem
+						.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD))
 				{
-					internalSelectionManager.addToType(ESelectionType.MOUSE_OVER, 
-							graphItemRep.getId());
-					
+					if (tmpItemIDs.contains(graphItemRep.getId()))
+						continue;
+					internalSelectionManager.addToType(ESelectionType.MOUSE_OVER, graphItemRep
+							.getId());
+					for (int iConnectionID : internalSelectionManager
+							.getConnectionForElementID(iAlTmpSelectedGraphItemIds
+									.get(iItemIndex)))
+					{
+						internalSelectionManager.addConnectionID(iConnectionID, graphItemRep
+								.getId());
+					}
 					if (bEnableNeighborhood)
 					{
 						performNeighborhoodAlgorithm(graphItemRep);
@@ -236,10 +244,10 @@ public class GLPathwayContentCreator
 		List<List<IGraphItem>> lDepthSearchResult = graphVisitorSearchBFS
 				.getSearchResultDepthOrdered();
 		List<IGraphItem> lGraphItems = new ArrayList<IGraphItem>();
-		
+
 		int iTmpDepth = 0;
 		ESelectionType tmpType;
-		
+
 		for (int iDepthIndex = 0; iDepthIndex < lDepthSearchResult.size(); iDepthIndex++)
 		{
 			lGraphItems = lDepthSearchResult.get(iDepthIndex);
@@ -250,7 +258,7 @@ public class GLPathwayContentCreator
 				if (lGraphItems.get(iItemIndex) instanceof PathwayVertexGraphItemRep)
 				{
 					iTmpDepth = (iDepthIndex + 1) / 2;
-					
+
 					if (iTmpDepth == 1)
 						tmpType = ESelectionType.NEIGHBORHOOD_1;
 					else if (iTmpDepth == 2)
@@ -260,11 +268,11 @@ public class GLPathwayContentCreator
 					else
 					{
 						throw new IllegalStateException(
-							"Neighborhood depth greater than 3 is not supported!");
+								"Neighborhood depth greater than 3 is not supported!");
 					}
-						
-					internalSelectionManager.addToType(tmpType,
-							lGraphItems.get(iItemIndex).getId());
+
+					internalSelectionManager.addToType(tmpType, lGraphItems.get(iItemIndex)
+							.getId());
 
 				}
 				else
@@ -506,8 +514,10 @@ public class GLPathwayContentCreator
 			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 
 			// Handle selection highlighting of element
-			if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER,
-					vertexRep.getId()))
+			if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, vertexRep
+					.getId())
+					|| internalSelectionManager.checkStatus(ESelectionType.SELECTION,
+							vertexRep.getId()))
 			{
 				tmpNodeColor = renderStyle.getHighlightedNodeColor();
 
@@ -537,8 +547,8 @@ public class GLPathwayContentCreator
 			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 
 			// Handle selection highlighting of element
-			if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER,
-					vertexRep.getId()))
+			if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, vertexRep
+					.getId()))
 			{
 				tmpNodeColor = renderStyle.getHighlightedNodeColor();
 
@@ -573,8 +583,8 @@ public class GLPathwayContentCreator
 			gl.glEnd();
 
 			// Handle selection highlighting of element
-			if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER,
-					vertexRep.getId()))
+			if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, vertexRep
+					.getId()))
 			{
 				tmpNodeColor = renderStyle.getHighlightedNodeColor();
 				gl.glColor4f(tmpNodeColor.x(), tmpNodeColor.y(), tmpNodeColor.z(), 1);
@@ -603,7 +613,7 @@ public class GLPathwayContentCreator
 				|| vertexType.equals(EPathwayVertexType.enzyme)
 				// new kegg data assign enzymes without mapping to "undefined"
 				// which we represent as other
-				|| vertexType.equals(EPathwayVertexType.other)) 
+				|| vertexType.equals(EPathwayVertexType.other))
 		{
 			float fCanvasXPos = (vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X);
 			float fCanvasYPos = (vertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y);
@@ -615,34 +625,36 @@ public class GLPathwayContentCreator
 			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 
 			int iVertexRepID = vertexRep.getId();
-			
+
 			// Handle selection highlighting of element
 			if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iVertexRepID)
-					|| internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_1, iVertexRepID)
-					|| internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_2, iVertexRepID)
-					|| internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_3, iVertexRepID))
+					|| internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_1,
+							iVertexRepID)
+					|| internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_2,
+							iVertexRepID)
+					|| internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_3,
+							iVertexRepID)
+					|| internalSelectionManager.checkStatus(ESelectionType.SELECTION,
+							iVertexRepID))
 			{
-//				int iDepth = hashSelectedVertexRepId2Depth.get(vertexRep.getId());
 				tmpNodeColor = renderStyle.getHighlightedNodeColor();
 
-//				if (iDepth != 0)
-//				{
-					gl.glEnable(GL.GL_LINE_STIPPLE);
-//				}
-
-				if (internalSelectionManager.checkStatus(
-						ESelectionType.NEIGHBORHOOD_1, iVertexRepID))
+				if (internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_1,
+						iVertexRepID))
 				{
+					gl.glEnable(GL.GL_LINE_STIPPLE);
 					gl.glLineStipple(4, (short) 0xAAAA);
 				}
-				else if (internalSelectionManager.checkStatus(
-						ESelectionType.NEIGHBORHOOD_2, iVertexRepID))
+				else if (internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_2,
+						iVertexRepID))
 				{
+					gl.glEnable(GL.GL_LINE_STIPPLE);
 					gl.glLineStipple(2, (short) 0xAAAA);
 				}
-				else if (internalSelectionManager.checkStatus(
-						ESelectionType.NEIGHBORHOOD_3, iVertexRepID))
+				else if (internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_3,
+						iVertexRepID))
 				{
+					gl.glEnable(GL.GL_LINE_STIPPLE);
 					gl.glLineStipple(1, (short) 0xAAAA);
 				}
 

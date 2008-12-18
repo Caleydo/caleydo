@@ -17,10 +17,5 @@ public class VirtualArrayManager
 	extends AManager<IVirtualArray>
 	implements IVirtualArrayManager
 {
-	@Override
-	public IVirtualArray createVirtualArray(EManagedObjectType useSelectionType)
-	{
-		// TODO Auto-generated method stub
-		return null;
-	}
+
 }

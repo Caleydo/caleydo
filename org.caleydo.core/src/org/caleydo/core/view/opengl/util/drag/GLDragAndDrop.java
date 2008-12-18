@@ -3,6 +3,9 @@ package org.caleydo.core.view.opengl.util.drag;
 import java.awt.Point;
 import javax.media.opengl.GL;
 import javax.media.opengl.glu.GLU;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteElementManager;
 
 /**
  * Object stores the view that is currently dragged until it is dropped.
@@ -11,7 +14,6 @@ import javax.media.opengl.glu.GLU;
  */
 public class GLDragAndDrop
 {
-
 	private int iDragObjectId = -1;
 
 	private boolean bDragActionRunning = false;
@@ -20,39 +22,33 @@ public class GLDragAndDrop
 
 	public GLDragAndDrop()
 	{
-
 		fArCurrentMousePos = new float[2];
 	}
 
 	public int getDraggedObjectedId()
 	{
-
 		return iDragObjectId;
 	}
 
 	public void startDragAction(final int iDragObjectId)
 	{
-
 		bDragActionRunning = true;
 		this.iDragObjectId = iDragObjectId;
 	}
 
 	public void stopDragAction()
 	{
-
 		bDragActionRunning = false;
 		iDragObjectId = -1;
 	}
 
 	public boolean isDragActionRunning()
 	{
-
 		return bDragActionRunning;
 	}
 
 	public void setCurrentMousePos(final GL gl, final Point currentMousePos)
 	{
-
 		double mvmatrix[] = new double[16];
 		double projmatrix[] = new double[16];
 		int realy = 0;// GL y coord pos
@@ -74,8 +70,23 @@ public class GLDragAndDrop
 		fArCurrentMousePos[1] = (float) wcoord[1];
 	}
 
-	// public void renderDragThumbnailTexture(final GL gl,
-	// final AGLCanvasUser containingView) {
-	//		
-	// }
+	public void renderDragThumbnailTexture(final GL gl)
+	{
+		float fOffset = 0.02f;
+
+		gl.glPushMatrix();
+		gl.glTranslatef(fArCurrentMousePos[0] + fOffset, fArCurrentMousePos[1] + fOffset, 5);
+		gl.glScalef(0.05f, 0.05f, 0.05f);
+
+		int iGLEventListenerID = RemoteElementManager.get()
+			.getItem(iDragObjectId).getContainedElementID();
+		
+		if (iGLEventListenerID != -1)
+		{	
+			GeneralManager.get().getViewGLCanvasManager()
+				.getGLEventListener(iGLEventListenerID).displayRemote(gl);
+		}
+		
+		gl.glPopMatrix();
+	}
 }

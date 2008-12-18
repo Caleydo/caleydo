@@ -20,6 +20,7 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.cell.GLCell;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.sliderview.GLGlyphSliderView;
+import org.caleydo.core.view.opengl.canvas.panel.GLSelectionPanel;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.glyph.GLRemoteGlyph;
@@ -37,6 +38,7 @@ import org.caleydo.core.view.swt.glyph.GlyphMappingConfigurationViewRep;
 import org.caleydo.core.view.swt.image.ImageViewRep;
 import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
 import org.caleydo.core.view.swt.mixer.MixerViewRep;
+import org.caleydo.core.view.swt.tabular.TabularDataViewRep;
 import org.caleydo.core.view.swt.undoredo.UndoRedoViewRep;
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
@@ -145,17 +147,8 @@ public class ViewGLCanvasManager
 				// return new Pathway2DViewRep(generalManager, iViewID,
 				// iParentContainerID, sLabel);
 				break;
-			case VIEW_SWT_DATA_EXPLORER:
-				// return new DataExplorerViewRep(generalManager, iViewID,
-				// iParentContainerID, sLabel);
-				break;
-			case VIEW_SWT_DATA_EXCHANGER:
-				// return new DataExchangerViewRep(generalManager, iViewID,
-				// iParentContainerID, sLabel);
-				break;
-			case VIEW_SWT_DATA_SET_EDITOR:
-				// return new NewSetEditorViewRep(generalManager, iViewID,
-				// iParentContainerID, sLabel);
+			case VIEW_SWT_TABULAR_DATA_VIEWER:
+				view = new TabularDataViewRep(iParentContainerID, sLabel);
 				break;
 			case VIEW_SWT_MIXER:
 				view = new MixerViewRep(iParentContainerID, sLabel);
@@ -279,6 +272,10 @@ public class ViewGLCanvasManager
 				glEventListener = new GLRemoteGlyph(iGLCanvasID, sLabel, viewFrustum);
 				break;
 
+			case CREATE_GL_PANEL_SELECTION:
+				glEventListener = new GLSelectionPanel(iGLCanvasID, sLabel, viewFrustum);
+				break;
+				
 			default:
 				throw new RuntimeException(
 						"ViewJoglManager.createGLCanvasUser() failed due to unhandled type ["
@@ -355,7 +352,6 @@ public class ViewGLCanvasManager
 	@Override
 	public void unregisterGLEventListener(final int iGLEventListenerID)
 	{
-
 		GLEventListener gLEventListenerToRemove = hashGLEventListenerID2GLEventListener
 				.get(iGLEventListenerID);
 
@@ -381,12 +377,6 @@ public class ViewGLCanvasManager
 		{
 			switch (view.getViewType())
 			{
-
-				case SWT_SET_EDITOR:
-				case SWT_DATA_EXCHANGER:
-					System.err.println("Ignore: addViewRep(" + view.getViewType()
-							+ ") type SWT_DATA_EXCHANGER!");
-					return;
 				case SWT_DATA_ENTITY_SEARCHER:
 					dataEntitySearcher = (DataEntitySearcherViewRep) view;
 

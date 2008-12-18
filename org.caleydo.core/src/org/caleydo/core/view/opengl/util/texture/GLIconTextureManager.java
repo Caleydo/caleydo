@@ -1,14 +1,9 @@
-package org.caleydo.core.view.opengl.util;
+package org.caleydo.core.view.opengl.util.texture;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.EnumMap;
 import javax.media.opengl.GL;
-import javax.media.opengl.GLException;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.data.loader.ResourceLoader;
 import com.sun.opengl.util.texture.Texture;
-import com.sun.opengl.util.texture.TextureIO;
 
 /**
  * Manager handles OpenGL icons as textures. TODO move this to manager to use it

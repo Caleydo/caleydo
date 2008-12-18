@@ -228,6 +228,9 @@ public class CmdCreateGLEventListener
 		createdObject.getViewCamera().setCameraRotation(cameraRotation);
 
 		// Set sets in views
+		if (iAlSetIDs == null)
+			return;
+		
 		for (Integer iSetID : iAlSetIDs)
 		{
 			createdObject.addSet(iSetID);

@@ -5,7 +5,8 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 
 /**
  * Render style for jukebox view.
@@ -38,33 +39,33 @@ public class JukeboxLayoutRenderStyle
 	{
 		eProjectionMode = EProjectionMode.ORTHOGRAPHIC;
 
-		fScalingFactorUnderInteractionLayer = 0.28f;
-		fScalingFactorStackLayer = 0.13f;
-		fScalingFactorPoolLayer = 0.02f;
-		fScalingFactorMemoLayer = 0.05f;
-		fScalingFactorTransitionLayer = 0.025f;
-		fScalingFactorSpawnLayer = 0.005f;
+		fScalingFactorFocusLevel = 0.28f;
+		fScalingFactorStackLevel = 0.13f;
+		fScalingFactorPoolLevel = 0.02f;
+		fScalingFactorSelectionLevel = 0.05f;
+		fScalingFactorTransitionLevel = 0.025f;
+		fScalingFactorSpawnLevel = 0.005f;
 	}
 
 	@Override
-	public RemoteHierarchyLevel initUnderInteractionLayer()
+	public RemoteLevel initUnderInteractionLevel()
 	{
+		fScalingFactorFocusLevel = (4 * 0.045f) / fAspectRatio;
 
-		fScalingFactorUnderInteractionLayer = (4 * 0.045f) / fAspectRatio;
+		Transform transform = new Transform();
+		transform.setTranslation(new Vec3f(0f / fAspectRatio, -0.9f, 0f));
+		transform.setScale(new Vec3f(fScalingFactorFocusLevel,
+				fScalingFactorFocusLevel, fScalingFactorFocusLevel));
+		
+		focusLevel.getElementByPositionIndex(0).setTransform(transform);
 
-		Transform transformUnderInteraction = new Transform();
-		transformUnderInteraction.setTranslation(new Vec3f(0f / fAspectRatio, -0.9f, 0f));
-		transformUnderInteraction.setScale(new Vec3f(fScalingFactorUnderInteractionLayer,
-				fScalingFactorUnderInteractionLayer, fScalingFactorUnderInteractionLayer));
-		underInteractionLayer.setTransformByPositionIndex(0, transformUnderInteraction);
-
-		return underInteractionLayer;
+		return focusLevel;
 	}
 
 	@Override
-	public RemoteHierarchyLevel initStackLayer(boolean bIsZoomedIn)
+	public RemoteLevel initStackLevel(boolean bIsZoomedIn)
 	{
-
+		RemoteLevelElement element;
 		float fTiltAngleDegree = 57; // degree
 		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
 		float fLayerYPos = 0.6f;
@@ -72,7 +73,7 @@ public class JukeboxLayoutRenderStyle
 
 		// Create free pathway layer spots
 		Transform transform;
-		for (int iLayerIndex = 0; iLayerIndex < iMaxLayers; iLayerIndex++)
+		for (int iLevelIndex = 0; iLevelIndex < iMaxLayers; iLevelIndex++)
 		{
 			// Store current model-view matrix
 			transform = new Transform();
@@ -82,30 +83,28 @@ public class JukeboxLayoutRenderStyle
 			// transform.setTranslation(new Vec3f(-2.7f + fLayerYPos, 1.1f, 0));
 			// transform.setRotation(new Rotf(new Vec3f(-0.7f, -1f, 0),
 			// fTiltAngleRad));
-			transform.setScale(new Vec3f(fScalingFactorStackLayer, fScalingFactorStackLayer,
-					fScalingFactorStackLayer));
+			transform.setScale(new Vec3f(fScalingFactorStackLevel, fScalingFactorStackLevel,
+					fScalingFactorStackLevel));
 			transform.setRotation(new Rotf(new Vec3f(-1f, -0.7f, 0), fTiltAngleRad));
 
-			stackLayer.setTransformByPositionIndex(iLayerIndex, transform);
+			stackLevel.getElementByPositionIndex(iLevelIndex).setTransform(transform);
 
 			fLayerYPos -= 0.7f;
 		}
 
-		return stackLayer;
+		return stackLevel;
 	}
 
 	@Override
-	public RemoteHierarchyLevel initPoolLayer(final int iMouseOverViewID)
+	public RemoteLevel initPoolLevel(int iSelectedRemoteLevelElementID)
 	{
-
 		float fSelectedScaling = 1;
 		float fYAdd = -1.4f;
 
-		int iSelectedViewIndex = poolLayer.getPositionIndexByElementId(iMouseOverViewID);
-
-		for (int iViewIndex = 0; iViewIndex < poolLayer.getCapacity(); iViewIndex++)
-		{
-			if (iViewIndex == iSelectedViewIndex)
+		int iRemoteLevelElementID = 0;
+		for (RemoteLevelElement element : poolLevel.getAllElements())
+		{			
+			if (element.getID() == iSelectedRemoteLevelElementID)
 			{
 				fSelectedScaling = 2;
 			}
@@ -119,30 +118,33 @@ public class JukeboxLayoutRenderStyle
 
 			fYAdd += 0.19f * fSelectedScaling;
 
-			transform.setScale(new Vec3f(fSelectedScaling * fScalingFactorPoolLayer,
-					fSelectedScaling * fScalingFactorPoolLayer, fSelectedScaling
-							* fScalingFactorPoolLayer));
-			poolLayer.setTransformByPositionIndex(iViewIndex, transform);
+			transform.setScale(new Vec3f(fSelectedScaling * fScalingFactorPoolLevel,
+					fSelectedScaling * fScalingFactorPoolLevel, fSelectedScaling
+							* fScalingFactorPoolLevel));
+			
+			poolLevel.getElementByPositionIndex(iRemoteLevelElementID).setTransform(transform);
+			iRemoteLevelElementID++;
 		}
 
-		return poolLayer;
+		return poolLevel;
 	}
 
 	@Override
-	public RemoteHierarchyLevel initMemoLayer()
+	public RemoteLevel initMemoLevel()
 	{
-
 		// Create free memo spots
+		RemoteLevelElement element;
 		Transform transform;
 		float fMemoPos = 0.0f;
-		for (int iMemoIndex = 0; iMemoIndex < memoLayer.getCapacity(); iMemoIndex++)
+		for (int iMemoIndex = 0; iMemoIndex < selectionLevel.getCapacity(); iMemoIndex++)
 		{
 			// Store current model-view matrix
 			transform = new Transform();
 			transform.setTranslation(new Vec3f(fMemoPos, -1.4f, 4.1f));
-			transform.setScale(new Vec3f(fScalingFactorMemoLayer, fScalingFactorMemoLayer,
-					fScalingFactorMemoLayer));
-			memoLayer.setTransformByPositionIndex(iMemoIndex, transform);
+			transform.setScale(new Vec3f(fScalingFactorSelectionLevel, fScalingFactorSelectionLevel,
+					fScalingFactorSelectionLevel));
+			
+			selectionLevel.getElementByPositionIndex(0).setTransform(transform);;
 
 			fMemoPos += 0.42f;
 		}
@@ -157,32 +159,32 @@ public class JukeboxLayoutRenderStyle
 		fColorBarWidth = 0.1f;
 		fColorBarHeight = 2f;
 
-		return memoLayer;
+		return selectionLevel;
 	}
 
 	@Override
-	public RemoteHierarchyLevel initTransitionLayer()
+	public RemoteLevel initTransitionLevel()
 	{
+		Transform transform = new Transform();
+		transform.setTranslation(new Vec3f(0f, 0f, 4.1f));
+		transform.setScale(new Vec3f(fScalingFactorTransitionLevel,
+				fScalingFactorTransitionLevel, fScalingFactorTransitionLevel));
+		
+		transitionLevel.getElementByPositionIndex(0).setTransform(transform);
 
-		Transform transformTransition = new Transform();
-		transformTransition.setTranslation(new Vec3f(0f, 0f, 4.1f));
-		transformTransition.setScale(new Vec3f(fScalingFactorTransitionLayer,
-				fScalingFactorTransitionLayer, fScalingFactorTransitionLayer));
-		transitionLayer.setTransformByPositionIndex(0, transformTransition);
-
-		return transitionLayer;
+		return transitionLevel;
 	}
 
 	@Override
-	public RemoteHierarchyLevel initSpawnLayer()
+	public RemoteLevel initSpawnLevel()
 	{
+		Transform transform = new Transform();
+		transform.setTranslation(new Vec3f(-4.4f, 3.9f, 4.1f));
+		transform.setScale(new Vec3f(fScalingFactorSpawnLevel, fScalingFactorSpawnLevel,
+				fScalingFactorSpawnLevel));
+		
+		spawnLevel.getElementByPositionIndex(0).setTransform(transform);;
 
-		Transform transformSpawn = new Transform();
-		transformSpawn.setTranslation(new Vec3f(-4.4f, 3.9f, 4.1f));
-		transformSpawn.setScale(new Vec3f(fScalingFactorSpawnLayer, fScalingFactorSpawnLayer,
-				fScalingFactorSpawnLayer));
-		spawnLayer.setTransformByPositionIndex(0, transformSpawn);
-
-		return spawnLayer;
+		return spawnLevel;
 	}
 }

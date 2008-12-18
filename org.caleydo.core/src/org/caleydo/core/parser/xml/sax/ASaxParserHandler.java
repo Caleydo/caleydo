@@ -106,8 +106,6 @@ public abstract class ASaxParserHandler
 
 		assert setLocator != null : "setSaxHandlerLocator() Error due to null-pointer";
 
-		System.out.println("ASaxParserHandler.setSaxHandlerLocator() DUMDIDUM");
-
 		this.locator = setLocator;
 		setDocumentLocator(locator);
 	}

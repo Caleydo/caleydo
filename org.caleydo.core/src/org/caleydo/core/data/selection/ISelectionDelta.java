@@ -1,6 +1,6 @@
 package org.caleydo.core.data.selection;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import org.caleydo.core.data.mapping.EIDType;
 
 /**
@@ -17,7 +17,7 @@ public interface ISelectionDelta
 	 * 
 	 * @return
 	 */
-	public ArrayList<SelectionItem> getSelectionData();
+	public Collection<SelectionItem> getSelectionData();
 
 	/**
 	 * Add a new selection to the delta
@@ -25,7 +25,7 @@ public interface ISelectionDelta
 	 * @param iSelectionID the selection id
 	 * @param selectionType the selection type
 	 */
-	public void addSelection(int iSelectionID, ESelectionType selectionType);
+	public SelectionItem addSelection(int iSelectionID, ESelectionType selectionType);
 
 	/**
 	 * Add a new selection to the delta, including the optional internal id
@@ -34,7 +34,7 @@ public interface ISelectionDelta
 	 * @param selectionType the selection type
 	 * @param iInternalID the internal id
 	 */
-	public void addSelection(int iSelectionID, ESelectionType selectionType, int iInternalID);
+	public SelectionItem addSelection(int iSelectionID, ESelectionType selectionType, int iInternalID);
 
 	/**
 	 * Get the type of the id, which has to be listed in {@link EIDType}
@@ -64,5 +64,15 @@ public interface ISelectionDelta
 	 * @return the new selection delta, copy of the old one
 	 */
 	public ISelectionDelta clone();
+
+	/**
+	 * Add an ID for connections to the delta, based on a selection id that is
+	 * already stored in a delta. This id is meant to be persistent across
+	 * conversion processes
+	 * 
+	 * @param iSelectionID the original selection id
+	 * @param iConnectionID the connection id
+	 */
+	public void addConnectionID(int iSelectionID, int iConnectionID);
 
 }

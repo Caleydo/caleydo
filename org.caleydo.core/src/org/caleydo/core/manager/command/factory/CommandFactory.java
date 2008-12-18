@@ -9,7 +9,6 @@ import org.caleydo.core.command.data.CmdSetDataRepresentation;
 import org.caleydo.core.command.data.filter.CmdDataFilterMinMax;
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
-import org.caleydo.core.command.event.CmdEventCreateMediator;
 import org.caleydo.core.command.event.CmdEventMediatorAddObject;
 import org.caleydo.core.command.queue.CmdSystemRunCmdQueue;
 import org.caleydo.core.command.queue.CommandQueueVector;
@@ -186,6 +185,7 @@ public class CommandFactory
 			case CREATE_GL_WII_TEST:
 			case CREATE_GL_CELL:
 			case CREATE_GL_REMOTE_GLYPH:
+			case CREATE_GL_PANEL_SELECTION:
 			{
 				createdCommand = new CmdCreateGLEventListener(cmdType);
 				break;
@@ -203,11 +203,6 @@ public class CommandFactory
 			case EXTERNAL_ACTION_TRIGGER:
 			{
 				createdCommand = new CmdExternalActionTrigger(cmdType);
-				break;
-			}
-			case CREATE_EVENT_MEDIATOR:
-			{
-				createdCommand = new CmdEventCreateMediator(cmdType);
 				break;
 			}
 			case EVENT_MEDIATOR_ADD_OBJECT:

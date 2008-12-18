@@ -3,8 +3,8 @@ package org.caleydo.core.view.opengl.renderstyle.layout;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
-import org.caleydo.core.view.opengl.util.hierarchy.EHierarchyLevel;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteElementManager;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 
 /**
  * Abstract render style for remote rendered views as Jukebox and Bucket.
@@ -16,6 +16,8 @@ public abstract class ARemoteViewLayoutRenderStyle
 {
 	public final static float NAVIGATION_OVERLAY_TRANSPARENCY = 1f;
 	
+	protected RemoteElementManager remoteElementManager;
+	
 	protected float fAspectRatio = 1.0f;
 	protected float fZoomFactor = 0.0f;
 	protected float fPoolLayerWidth = 0.8f;
@@ -23,24 +25,25 @@ public abstract class ARemoteViewLayoutRenderStyle
 	public enum LayoutMode
 	{
 		BUCKET,
-		JUKEBOX
+		JUKEBOX,
+		LIST
 	}
 
-	protected RemoteHierarchyLevel underInteractionLayer;
-	protected RemoteHierarchyLevel stackLayer;
-	protected RemoteHierarchyLevel poolLayer;
-	protected RemoteHierarchyLevel transitionLayer;
-	protected RemoteHierarchyLevel spawnLayer;
-	protected RemoteHierarchyLevel memoLayer;
+	protected RemoteLevel focusLevel;
+	protected RemoteLevel stackLevel;
+	protected RemoteLevel poolLevel;
+	protected RemoteLevel transitionLevel;
+	protected RemoteLevel spawnLevel;
+	protected RemoteLevel selectionLevel;
 
 	protected EProjectionMode eProjectionMode;
 
-	protected float fScalingFactorUnderInteractionLayer;
-	protected float fScalingFactorStackLayer;
-	protected float fScalingFactorPoolLayer;
-	protected float fScalingFactorMemoLayer;
-	protected float fScalingFactorTransitionLayer;
-	protected float fScalingFactorSpawnLayer;
+	protected float fScalingFactorFocusLevel;
+	protected float fScalingFactorStackLevel;
+	protected float fScalingFactorPoolLevel;
+	protected float fScalingFactorSelectionLevel;
+	protected float fScalingFactorTransitionLevel;
+	protected float fScalingFactorSpawnLevel;
 
 	protected float fTrashCanXPos;
 	protected float fTrashCanYPos;
@@ -60,17 +63,15 @@ public abstract class ARemoteViewLayoutRenderStyle
 	public ARemoteViewLayoutRenderStyle(IViewFrustum viewFrustum)
 	{
 		super(viewFrustum);
-		underInteractionLayer = new RemoteHierarchyLevel(EHierarchyLevel.UNDER_INTERACTION);
-		stackLayer = new RemoteHierarchyLevel(EHierarchyLevel.STACK);
-		poolLayer = new RemoteHierarchyLevel(EHierarchyLevel.POOL);
-		transitionLayer = new RemoteHierarchyLevel(EHierarchyLevel.TRANSITION);
-		spawnLayer = new RemoteHierarchyLevel(EHierarchyLevel.SPAWN);
-		memoLayer = new RemoteHierarchyLevel(EHierarchyLevel.MEMO);
-
-		underInteractionLayer.setParentLayer(stackLayer);
-		stackLayer.setChildLayer(underInteractionLayer);
-		stackLayer.setParentLayer(poolLayer);
-		poolLayer.setChildLayer(stackLayer);
+		
+		focusLevel = new RemoteLevel(1, "Focus Level", null, stackLevel);
+		stackLevel = new RemoteLevel(4, "Stack Level", focusLevel, poolLevel);
+		poolLevel = new RemoteLevel(100, "Pool Level", stackLevel, null);
+		transitionLevel = new RemoteLevel(1, "Transition Level", null, null);
+		spawnLevel = new RemoteLevel(1, "Spawn Level", null, stackLevel);
+		selectionLevel = new RemoteLevel(1, "Selection Level", null, stackLevel);
+		
+		remoteElementManager = RemoteElementManager.get();
 	}
 
 	/**
@@ -80,126 +81,113 @@ public abstract class ARemoteViewLayoutRenderStyle
 	public ARemoteViewLayoutRenderStyle(IViewFrustum viewFrustum, final ARemoteViewLayoutRenderStyle previousLayoutStyle)
 	{
 		super(viewFrustum);
-		underInteractionLayer = previousLayoutStyle.getUnderInteractionLayer();
-		stackLayer = previousLayoutStyle.getStackLayer();
-		poolLayer = previousLayoutStyle.getPoolLayer();
-		memoLayer = previousLayoutStyle.getMemoLayer();
-		transitionLayer = previousLayoutStyle.getTransitionLayer();
-		spawnLayer = previousLayoutStyle.getSpawnLayer();
+		focusLevel = previousLayoutStyle.getUnderInteractionLayer();
+		stackLevel = previousLayoutStyle.getStackLayer();
+		poolLevel = previousLayoutStyle.getPoolLayer();
+		selectionLevel = previousLayoutStyle.getMemoLayer();
+		transitionLevel = previousLayoutStyle.getTransitionLayer();
+		spawnLevel = previousLayoutStyle.getSpawnLayer();
 	}
 
-	public abstract RemoteHierarchyLevel initUnderInteractionLayer();
-	public abstract RemoteHierarchyLevel initStackLayer(boolean bIsZoomedIn);
-	public abstract RemoteHierarchyLevel initPoolLayer(final int iMouseOverViewID);
-	public abstract RemoteHierarchyLevel initMemoLayer();
-	public abstract RemoteHierarchyLevel initTransitionLayer();
-	public abstract RemoteHierarchyLevel initSpawnLayer();
+	public abstract RemoteLevel initUnderInteractionLevel();
+	public abstract RemoteLevel initStackLevel(boolean bIsZoomedIn);
+	public abstract RemoteLevel initPoolLevel(int iMouseOverViewID);
+	public abstract RemoteLevel initMemoLevel();
+	public abstract RemoteLevel initTransitionLevel();
+	public abstract RemoteLevel initSpawnLevel();
 
-	public RemoteHierarchyLevel getUnderInteractionLayer()
+	public RemoteLevel getUnderInteractionLayer()
 	{
-
-		return underInteractionLayer;
+		return focusLevel;
 	}
 
-	public RemoteHierarchyLevel getStackLayer()
+	public RemoteLevel getStackLayer()
 	{
-
-		return stackLayer;
+		return stackLevel;
 	}
 
-	public RemoteHierarchyLevel getPoolLayer()
+	public RemoteLevel getPoolLayer()
 	{
-
-		return poolLayer;
+		return poolLevel;
 	}
 
-	public RemoteHierarchyLevel getTransitionLayer()
+	public RemoteLevel getTransitionLayer()
 	{
-
-		return transitionLayer;
+		return transitionLevel;
 	}
 
-	public RemoteHierarchyLevel getSpawnLayer()
+	public RemoteLevel getSpawnLayer()
 	{
-
-		return spawnLayer;
+		return spawnLevel;
 	}
 
-	public RemoteHierarchyLevel getMemoLayer()
+	public RemoteLevel getMemoLayer()
 	{
-
-		return memoLayer;
+		return selectionLevel;
 	}
 
 	public EProjectionMode getProjectionMode()
 	{
-
 		return eProjectionMode;
 	}
 
 	public float getTrashCanXPos()
 	{
-
 		return fTrashCanXPos;
 	}
 
 	public float getTrashCanYPos()
 	{
-
 		return fTrashCanYPos;
 	}
 
 	public float getTrashCanWidth()
 	{
-
 		return fTrashCanWidth;
 	}
 
 	public float getTrashCanHeight()
 	{
-
 		return fTrashCanHeight;
 	}
 
 	public float getColorBarXPos()
 	{
-
 		return fColorBarXPos;
 	}
 
 	public float getColorBarYPos()
 	{
-
 		return fColorBarYPos;
 	}
 
 	public float getColorBarWidth()
 	{
-
 		return fColorBarWidth;
 	}
 
 	public float getColorBarHeight()
 	{
-
 		return fColorBarHeight;
 	}
 
 	public void setAspectRatio(final float fAspectRatio)
 	{
-
 		this.fAspectRatio = fAspectRatio;
+	}
+	
+	public float getAspectRatio()
+	{
+		return fAspectRatio;
 	}
 
 	public void setZoomFactor(final float fZoomFactor)
 	{
-
 		this.fZoomFactor = fZoomFactor;
 	}
 
 	public float getZoomFactor()
 	{
-
 		return fZoomFactor;
 	}
 }

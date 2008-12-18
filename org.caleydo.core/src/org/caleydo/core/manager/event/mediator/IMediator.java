@@ -1,17 +1,17 @@
 package org.caleydo.core.manager.event.mediator;
 
+import java.util.Collection;
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.manager.IEventPublisher;
+import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.SelectionCommand;
 
 /**
- * @see
  * @author Michael Kalkusch
- * @author MArc Streit
+ * @author Marc Streit
  */
 public interface IMediator
-	extends IMediatorReceiver, IUniqueObject
+	extends IUniqueObject
 {
-
 	/**
 	 * Register a new event sender to the mediator.
 	 * 
@@ -42,12 +42,5 @@ public interface IMediator
 
 	public boolean hasSender(IMediatorSender sender);
 	
-	public EMediatorType getType();
-	
-	/**
-	 * Called before destruction of Mediator. Only creator of the Mediator my
-	 * call this method.
-	 */
-	public void destroyMediator(final IEventPublisher sender);
-
+	public void triggerUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand);
 }

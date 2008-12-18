@@ -1,6 +1,5 @@
 package org.caleydo.core.view.swt.browser;
 
-import java.io.BufferedInputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
@@ -8,12 +7,11 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
-import org.caleydo.core.view.opengl.util.EIconTextures;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;

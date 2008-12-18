@@ -1,5 +1,8 @@
 package org.caleydo.core.data.selection;
 
+import java.util.ArrayList;
+import java.util.Collection;
+
 /**
  * A SelectionItem represents one selection in the framework. It holds the id of
  * the selected element, the type of the selection as defined in
@@ -13,6 +16,7 @@ public class SelectionItem
 	private int iSelectionID = -1;
 	private ESelectionType selectionType;
 	private int iInternalID = -1;
+	private ArrayList<Integer> alConnectionID;
 
 	/**
 	 * Constructor
@@ -24,6 +28,7 @@ public class SelectionItem
 	{
 		this.iSelectionID = iSelectionID;
 		this.selectionType = selectionType;
+		alConnectionID = new ArrayList<Integer>();
 	}
 
 	/**
@@ -38,7 +43,18 @@ public class SelectionItem
 	{
 		this(iSelectionID, selectionType);
 		this.iInternalID = iInternalID;
+		alConnectionID = new ArrayList<Integer>();
 	}
+	
+	/**
+	 * Set a connection ID which is meant to be persistent over conversion steps
+	 * @param iConnectionID the new id
+	 */
+	public void setConnectionID(int iConnectionID)
+	{
+		alConnectionID.add(iConnectionID);
+	}
+	
 
 	/**
 	 * Returns the selection ID
@@ -72,6 +88,15 @@ public class SelectionItem
 	}
 	
 	/**
+	 * Returns the connection ID of the element.
+	 * @return the connection ID
+	 */
+	public Collection<Integer> getConnectionID()
+	{
+		return alConnectionID;
+	}
+	
+	/**
 	 * Set the selection type
 	 * @param selectionType the selection type
 	 */
@@ -79,5 +104,4 @@ public class SelectionItem
 	{
 		this.selectionType = selectionType;
 	}
-
 }

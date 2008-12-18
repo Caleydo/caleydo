@@ -1,13 +1,9 @@
 package org.caleydo.rcp.views;
 
-import org.caleydo.rcp.action.file.FileLoadDataAction;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
+import org.caleydo.core.manager.event.mediator.EMediatorType;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.view.swt.tabular.TabularDataViewRep;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.part.ViewPart;
 
@@ -16,38 +12,22 @@ public class TabularDataView
 {
 	public static final String ID = "org.caleydo.rcp.views.TabularDataView";
 
+	private TabularDataViewRep tabularDataView;
+		
 	@Override
 	public void createPartControl(Composite parent)
 	{	
-		Composite composite = new Composite(parent, SWT.NONE);
-		composite.setLayout(new GridLayout(1, false));
-		
-		GridData gridData = new GridData(GridData.FILL_BOTH);
+		tabularDataView = (TabularDataViewRep) GeneralManager.get().getViewGLCanvasManager().createView(
+				EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER, -1, "Tabular Data Viewer");
 
-		Composite upperComposite = new Composite(composite, SWT.NONE);
-		upperComposite.setLayout(new FillLayout());
-		upperComposite.setLayoutData(gridData);
+		tabularDataView.initViewRCP(parent);
+		tabularDataView.drawView();
 
-		final FileLoadDataAction fileLoadDataAction = new FileLoadDataAction(upperComposite);
-		fileLoadDataAction.run();
-		
-		Button applyButton = new Button(composite, SWT.PUSH);
-		applyButton.setText("Apply");
 
-		gridData = new GridData(GridData.HORIZONTAL_ALIGN_END);
-		gridData.heightHint = 30;
-		gridData.widthHint = 500;
-		
-		applyButton.setLayoutData(gridData);
-		
-		applyButton.addSelectionListener(new SelectionAdapter() {		
-			
-			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
-				fileLoadDataAction.execute();
-			}
-		});
+		GeneralManager.get().getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, tabularDataView);
+		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, tabularDataView);
+
+		GeneralManager.get().getViewGLCanvasManager().registerItem(tabularDataView);
 	}
 
 	@Override
@@ -60,5 +40,8 @@ public class TabularDataView
 	public void dispose()
 	{
 		super.dispose();
+	
+		GeneralManager.get().getEventPublisher().removeSender(EMediatorType.SELECTION_MEDIATOR, tabularDataView);
+		GeneralManager.get().getEventPublisher().removeReceiver(EMediatorType.SELECTION_MEDIATOR, tabularDataView);
 	}
 }

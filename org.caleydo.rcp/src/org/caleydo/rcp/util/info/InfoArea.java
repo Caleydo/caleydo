@@ -1,6 +1,8 @@
 package org.caleydo.rcp.util.info;
 
+import java.util.Collection;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.logging.Level;
 
 import org.caleydo.core.data.IUniqueObject;
@@ -8,7 +10,9 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionItem;
+import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
@@ -96,8 +100,7 @@ public class InfoArea
 	}
 
 	@Override
-	public void handleUpdate(final IUniqueObject eventTrigger,
-			final ISelectionDelta selectionDelta)
+	public void handleUpdate(final IUniqueObject eventTrigger, final ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand, EMediatorType eMediatorType)
 	{
 		if (!(eventTrigger instanceof AGLEventListener))
 			return;
@@ -105,10 +108,12 @@ public class InfoArea
 		GeneralManager.get().getLogger().log(
 				Level.INFO,
 				"Update called by " + eventTrigger.getClass().getSimpleName()
-						+ ", received in: " + this.getClass().getName());
+						+ ", received in: " + this.getClass().getSimpleName());
 
 		updateTriggeringView = (AGLEventListener) eventTrigger;
-		this.selectionDelta = selectionDelta;
+		
+		if (!selectionDelta.getSelectionData().isEmpty())
+			this.selectionDelta = selectionDelta;
 
 		txtViewInfo.getDisplay().asyncExec(new Runnable()
 		{
@@ -118,10 +123,12 @@ public class InfoArea
 
 				String sDetailText = "";
 
-				Iterator<SelectionItem> iterSelectionItems = selectionDelta.getSelectionData()
-						.iterator();
-
 				EIDType eIDType = selectionDelta.getIDType();
+
+				String sGeneSymbol = "";
+				
+				Iterator<SelectionItem> iterSelectionItems 
+					= selectionDelta.getSelectionData().iterator();
 
 				SelectionItem item;
 
@@ -136,16 +143,24 @@ public class InfoArea
 					{
 						if (eIDType == EIDType.DAVID)
 						{
-							sDetailText = sDetailText
-									+ GeneralManager.get().getIDMappingManager().getID(
-											EMappingType.DAVID_2_GENE_SYMBOL,
-											item.getSelectionID());
 
-							sDetailText = sDetailText
-									+ " ("
-									+ GeneralManager.get().getIDMappingManager().getID(
-											EMappingType.DAVID_2_REFSEQ_MRNA,
-											item.getSelectionID()) + ")";
+							Set<String> sSetRefSeqID = GeneralManager.get().getIDMappingManager()
+								.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA, item.getSelectionID());
+							
+							sGeneSymbol = sDetailText + GeneralManager.get().getIDMappingManager().getID(
+									EMappingType.DAVID_2_GENE_SYMBOL, item.getSelectionID());
+	
+							sDetailText = sDetailText + sGeneSymbol + " ("; 
+							for (String sRefSeqID : sSetRefSeqID) 
+							{
+								sDetailText = sDetailText + sRefSeqID;
+								sDetailText = sDetailText + ", ";
+							}
+							
+							// Remove last comma
+							sDetailText = sDetailText.substring(0, sDetailText.length() -2);						
+							sDetailText += ")";
+
 						}
 						else if (eIDType == EIDType.EXPERIMENT_INDEX)
 						{
@@ -164,9 +179,16 @@ public class InfoArea
 						if (iterSelectionItems.hasNext())
 							sDetailText = sDetailText + ", ";
 					}
+					
+					// Remove last comma
+					if (sDetailText.length() > 2)
+						sDetailText = sDetailText.substring(0, sDetailText.length() -1);
 				}
-
-				txtDetailedInfo.setText(sDetailText);
+			
+				// Prevent to reset info when view info updates
+				// TODO: think about better way!
+				if (!sDetailText.isEmpty())
+					txtDetailedInfo.setText(sDetailText);
 			}
 		});
 	}

@@ -13,10 +13,10 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphMouseListener;
-import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 
 /**
  * Rendering glyph views remotely.
@@ -83,9 +83,9 @@ public class GLRemoteGlyph
 
 	@Override
 	public void initRemote(final GL gl, final int iRemoteViewID,
-			final RemoteHierarchyLevel layer,
+			final RemoteLevel layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
-			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas)
+			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
 
 		// not implemented for a remote view
@@ -224,5 +224,11 @@ public class GLRemoteGlyph
 	public void broadcastElements(ESelectionType type)
 	{
 
+	}
+	
+	@Override
+	public int getNumberOfSelections(ESelectionType eSelectionType)
+	{
+		return 0;
 	}
 }

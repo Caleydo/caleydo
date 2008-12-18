@@ -2,7 +2,7 @@ package org.caleydo.core.data;
 
 
 /**
- * Abstract class providing methods defined in IUniqueManagedObject.
+ * Abstract class providing methods defined in IUniqueObject.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit

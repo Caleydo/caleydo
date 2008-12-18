@@ -12,9 +12,9 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import wiiremotej.IRLight;
 import wiiremotej.WiiRemote;
 import wiiremotej.WiiRemoteJ;
@@ -791,9 +791,9 @@ public class GLCanvasWiiTest
 
 	@Override
 	public void initRemote(final GL gl, final int iRemoteViewID,
-			final RemoteHierarchyLevel layer,
+			final RemoteLevel layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
-			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas)
+			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
 
 	}
@@ -802,5 +802,11 @@ public class GLCanvasWiiTest
 	public void broadcastElements(ESelectionType type)
 	{
 
+	}
+	
+	@Override
+	public int getNumberOfSelections(ESelectionType eSelectionType)
+	{
+		return 0;
 	}
 }

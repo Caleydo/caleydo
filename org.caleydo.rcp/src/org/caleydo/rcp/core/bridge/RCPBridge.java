@@ -18,6 +18,8 @@ import org.caleydo.rcp.views.GLRemoteRenderingView;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
 

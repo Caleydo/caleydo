@@ -2,6 +2,7 @@ package org.caleydo.rcp.preferences;
 
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.rcp.wizard.firststart.FetchPathwayDataPage;
+import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowLayout;
@@ -55,7 +56,6 @@ public class PathwayUpdatePreferencePage
 	@Override
 	protected Control createContents(Composite parent)
 	{
-		this.setValid(false);
 		Composite composite = new Composite(parent, SWT.NULL);
 		
 		RowLayout layout = new RowLayout(SWT.VERTICAL);
@@ -73,19 +73,32 @@ public class PathwayUpdatePreferencePage
 		return page.createContent(composite, this);
 	}
 	
-	@Override
-	protected void performApply()
-	{	
-		 MessageBox messageBox = new MessageBox(this.getShell(), SWT.OK);
-		 messageBox.setText("Pathway Update Notification");
-		 messageBox.setMessage("You have updated your pathway data. " +
-		 		"The system needs to restart in order to load the new data.");
-		 messageBox.open();
+//	@Override
+//	public boolean okToLeave()
+//	{
+////		return super.okToLeave();
+//		
+//		 MessageBox messageBox = new MessageBox(this.getShell(), SWT.OK);
+//		 messageBox.setText("Pathway Update Notification");
+//		 messageBox.setMessage("Please wait until pathway loading is completed!.");
+//		 messageBox.open();
+//		
+//		return false;
+//	}
 	
-		 PlatformUI.getWorkbench().restart();
-		 
-		 super.performApply();
-	}
+//	@Override
+//	protected void performApply()
+//	{	
+//		 MessageBox messageBox = new MessageBox(this.getShell(), SWT.OK);
+//		 messageBox.setText("Pathway Update Notification");
+//		 messageBox.setMessage("You have updated your pathway data. " +
+//		 		"The system needs to restart in order to load the new data.");
+//		 messageBox.open();
+//	
+//		 PlatformUI.getWorkbench().restart();
+//		 
+//		 super.performApply();
+//	}
 	
 	@Override
 	public boolean performCancel()

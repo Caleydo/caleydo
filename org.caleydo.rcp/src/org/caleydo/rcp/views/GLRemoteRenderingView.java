@@ -67,18 +67,14 @@ public class GLRemoteRenderingView
 		createGLEventListener(ECommandType.CREATE_GL_BUCKET_3D, glCanvas.getID(), true);
 		
 		// Trigger gene/pathway search command
-		ArrayList<Integer> iAlReceiverIDs = new ArrayList<Integer>();
-		iAlReceiverIDs.add(iGLEventListenerID);
 		CmdViewCreateDataEntitySearcher cmd = (CmdViewCreateDataEntitySearcher) GeneralManager.get().getCommandManager()
 			.createCommandByType(ECommandType.CREATE_VIEW_DATA_ENTITY_SEARCHER);
-		cmd.setAttributes(iAlReceiverIDs);
 		cmd.doCommand();
 		
 		GLRemoteRendering glRemoteRenderedView = ((GLRemoteRendering)GeneralManager.get()
 				.getViewGLCanvasManager().getGLEventListener(iGLEventListenerID));
 		
 		glRemoteRenderedView.setInitialContainedViews(iAlContainedViewIDs);
-		glRemoteRenderedView.enableBusyMode(false);
 	}
 	
 	public static void createToolBarItems(int iViewID)
@@ -108,6 +104,7 @@ public class GLRemoteRenderingView
 		
 		IToolBarManager toolBarManager = getViewSite().getActionBars().getToolBarManager();	
 		fillToolBar(toolBarManager);
+		
 	}
 	
 	/**

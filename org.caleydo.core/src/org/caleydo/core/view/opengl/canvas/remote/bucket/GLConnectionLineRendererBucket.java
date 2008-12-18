@@ -9,12 +9,13 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
-import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 
 /**
  * Specialized connection line renderer for bucket view.
  * 
+ * @author Alexander Lex
  * @author Marc Streit
  */
 public class GLConnectionLineRendererBucket
@@ -24,20 +25,19 @@ public class GLConnectionLineRendererBucket
 	/**
 	 * Constructor.
 	 * 
-	 * @param underInteractionLayer
-	 * @param stackLayer
-	 * @param poolLayer
+	 * @param underInteractionLevel
+	 * @param stackLevel
+	 * @param poolLevel
 	 */
-	public GLConnectionLineRendererBucket(final RemoteHierarchyLevel underInteractionLayer,
-			final RemoteHierarchyLevel stackLayer, final RemoteHierarchyLevel poolLayer)
+	public GLConnectionLineRendererBucket(final RemoteLevel focusLevel,
+			final RemoteLevel stackLevel, final RemoteLevel poolLevel)
 	{
-		super(underInteractionLayer, stackLayer, poolLayer);
+		super(focusLevel, stackLevel, poolLevel);
 	}
 
 	@Override
 	protected void renderConnectionLines(final GL gl)
 	{
-
 		Vec3f vecTranslation;
 		Vec3f vecScale;
 
@@ -47,11 +47,15 @@ public class GLConnectionLineRendererBucket
 		matSrc.makeIdent();
 		matDest.makeIdent();
 
+		int iViewID = 0;
+		RemoteLevel activeLevel = null;
+		RemoteLevelElement remoteLevelElement = null;
+
 		for (EIDType idType : connectedElementRepManager.getOccuringIDTypes())
 		{
 
-			Iterator<Integer> iterSelectedElementID = connectedElementRepManager
-					.getIDList(idType).iterator();
+			Iterator<Integer> iterSelectedElementID = connectedElementRepManager.getIDList(
+					idType).iterator();
 
 			ArrayList<ArrayList<Vec3f>> alPointLists = null;// 
 
@@ -59,33 +63,42 @@ public class GLConnectionLineRendererBucket
 			{
 				int iSelectedElementID = iterSelectedElementID.next();
 				Iterator<SelectedElementRep> iterSelectedElementRep = connectedElementRepManager
-						.getSelectedElementRepsByElementID(idType, iSelectedElementID).iterator();
+						.getSelectedElementRepsByElementID(idType, iSelectedElementID)
+						.iterator();
 
 				while (iterSelectedElementRep.hasNext())
 				{
 					SelectedElementRep selectedElementRep = iterSelectedElementRep.next();
 
-					RemoteHierarchyLevel activeLayer = null;
-					// Check if element is in under interaction layer
-					if (underInteractionLayer.containsElement(selectedElementRep
-							.getContainingViewID()))
+					iViewID = selectedElementRep.getContainingViewID();
+
+					// Check if view is contained in focus level
+					for (RemoteLevelElement element : focusLevel.getAllElements())
 					{
-						activeLayer = underInteractionLayer;
-					}
-					else if (stackLayer.containsElement(selectedElementRep
-							.getContainingViewID()))
-					{
-						activeLayer = stackLayer;
+						if (element.getContainedElementID() == iViewID)
+						{
+							activeLevel = focusLevel;
+							remoteLevelElement = element;
+							break;
+						}
 					}
 
-					if (activeLayer != null)
+					// Check if view is contained in stack level
+					for (RemoteLevelElement element : stackLevel.getAllElements())
 					{
-						vecTranslation = activeLayer.getTransformByElementId(
-								selectedElementRep.getContainingViewID()).getTranslation();
-						vecScale = activeLayer.getTransformByElementId(
-								selectedElementRep.getContainingViewID()).getScale();
-						rotation = activeLayer.getTransformByElementId(
-								selectedElementRep.getContainingViewID()).getRotation();
+						if (element.getContainedElementID() == iViewID)
+						{
+							activeLevel = stackLevel;
+							remoteLevelElement = element;
+							break;
+						}
+					}
+
+					if (activeLevel != null)
+					{
+						vecTranslation = remoteLevelElement.getTransform().getTranslation();
+						vecScale = remoteLevelElement.getTransform().getScale();
+						rotation = remoteLevelElement.getTransform().getRotation();
 
 						ArrayList<Vec3f> alPoints = selectedElementRep.getPoints();
 						ArrayList<Vec3f> alPointsTransformed = new ArrayList<Vec3f>();
@@ -110,15 +123,7 @@ public class GLConnectionLineRendererBucket
 
 				if (hashViewToPointLists.size() > 1)
 				{
-					float[] fArColor;
-					if (idType == EIDType.EXPRESSION_INDEX)
-						fArColor = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR_1;
-					else if (idType == EIDType.EXPERIMENT_INDEX)
-						fArColor = ConnectionLineRenderStyle.CONNECTION_LINE_COLOR_2;
-					else
-						throw new IllegalStateException("No color defined for the connection type " +idType);
-					
-					renderLineBundling(gl, fArColor);
+					renderLineBundling(gl, new float[] { 0, 0, 0 });
 					hashViewToPointLists.clear();
 				}
 			}

@@ -78,7 +78,6 @@ public class ParCoordsPreferencePage
 	@Override
 	public boolean performOk()
 	{
-
 		boolean bReturn = super.performOk();
 
 		Collection<AGLEventListener> eventListeners = GeneralManager.get()

@@ -9,7 +9,6 @@ import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.event.CmdEventCreateMediator;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
@@ -33,17 +32,17 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
-import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.miniview.GLColorMappingBarMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
-import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.GLIconTextureManager;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.spline.Spline3D;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -171,13 +170,15 @@ public class GLHierarchicalHeatMap
 				"hmNumSamplesPerHeatmap");
 
 		fAlXDistances = new ArrayList<Float>();
+		
+		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
+		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
 	}
 
 	@Override
 	public void init(GL gl)
 	{
 		createHeatMap();
-		createEventMediator();
 
 		// FIXME: the two nulls here break the interface, it is not possible to
 		// determine whether a view is rendered remote with this initialization
@@ -210,10 +211,9 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID,
-			final RemoteHierarchyLevel layer,
-			final PickingJoglMouseListener pickingTriggerMouseAdapter,
-			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas)
+	public void initRemote(GL gl, int remoteViewID, RemoteLevel level,
+			PickingJoglMouseListener pickingTriggerMouseAdapter,
+			IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
 		dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
 		bRenderOnlyContext = true;
@@ -256,43 +256,16 @@ public class GLHierarchicalHeatMap
 		glHeatMapView = (GLHeatMap) cmdView.getCreatedObject();
 
 		// // Register heatmap as sender to event mediator
-//		ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
-//		arMediatorIDs.add(glHeatMapView.getID());
+		ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
+		arMediatorIDs.add(glHeatMapView.getID());
 
-//		generalManager.getEventPublisher().registerSenderToMediatorGroup(
-//				EMediatorType.SELECTION_MEDIATOR, glHeatMapView);
-//		generalManager.getEventPublisher().registerReceiverToMediatorGroup(
-//				EMediatorType.SELECTION_MEDIATOR, glHeatMapView);
+		generalManager.getEventPublisher().addSender(EMediatorType.HIERACHICAL_HEAT_MAP, glHeatMapView);
+		generalManager.getEventPublisher().addReceiver(EMediatorType.HIERACHICAL_HEAT_MAP, glHeatMapView);
 
+		generalManager.getEventPublisher().addSender(EMediatorType.HIERACHICAL_HEAT_MAP, this);
+		generalManager.getEventPublisher().addReceiver(EMediatorType.HIERACHICAL_HEAT_MAP, this);
 	}
 
-	private void createEventMediator()
-	{
-		CmdEventCreateMediator tmpMediatorCmd = (CmdEventCreateMediator) generalManager
-				.getCommandManager().createCommandByType(ECommandType.CREATE_EVENT_MEDIATOR);
-
-		//receiver = embedded heatmap
-		//sender = hierarchical heatmap
-		ArrayList<Integer> iAlSenderIDs = new ArrayList<Integer>();
-		ArrayList<Integer> iAlReceiverIDs = new ArrayList<Integer>();
-		iAlSenderIDs.add(iUniqueID);
-		iAlReceiverIDs.add(glHeatMapView.getID());
-		tmpMediatorCmd
-				.setAttributes(iAlSenderIDs, iAlReceiverIDs, EMediatorType.VIEW_MEDIATOR);
-		tmpMediatorCmd.doCommand();
-		
-		//sender = embedded heatmap
-		//receiver = hierarchical heatmap
-		tmpMediatorCmd = (CmdEventCreateMediator) generalManager
-		.getCommandManager().createCommandByType(ECommandType.CREATE_EVENT_MEDIATOR);
-		iAlSenderIDs = new ArrayList<Integer>();
-		iAlReceiverIDs = new ArrayList<Integer>();
-		iAlSenderIDs.add(glHeatMapView.getID());
-		iAlReceiverIDs.add(iUniqueID);
-		tmpMediatorCmd.setAttributes(iAlSenderIDs, iAlReceiverIDs, EMediatorType.VIEW_MEDIATOR);
-		tmpMediatorCmd.doCommand();
-		
-	}
 
 	@Override
 	public synchronized void setDetailLevel(EDetailLevel detailLevel)
@@ -1038,7 +1011,7 @@ public class GLHierarchicalHeatMap
 			{
 				item.setSelectionType(ESelectionType.REMOVE);
 			}
-			triggerUpdate(lastSelectionDelta);
+			triggerUpdate(EMediatorType.HIERACHICAL_HEAT_MAP, lastSelectionDelta, null);
 			lastSelectionDelta = null;
 		}
 
@@ -1073,7 +1046,7 @@ public class GLHierarchicalHeatMap
 			}
 		}
 
-		triggerUpdate(delta);
+		triggerUpdate(EMediatorType.HIERACHICAL_HEAT_MAP, delta, null);
 
 		lastSelectionDelta = delta;
 	}
@@ -1561,7 +1534,7 @@ public class GLHierarchicalHeatMap
 	public void broadcastElements()
 	{
 		ISelectionDelta delta = contentSelectionManager.getCompleteDelta();
-		triggerUpdate(delta);
+		triggerUpdate(EMediatorType.SELECTION_MEDIATOR, delta, null);
 		setDisplayListDirty();
 	}
 
@@ -1596,5 +1569,6 @@ public class GLHierarchicalHeatMap
 	{
 		return bIsHeatmapInFocus;
 	}
+
 
 }

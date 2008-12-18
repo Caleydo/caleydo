@@ -1,7 +1,9 @@
 package org.caleydo.core.view.opengl.canvas.pathway;
 
 import gleem.linalg.Vec3f;
+import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -12,18 +14,20 @@ import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.data.selection.SelectionItem;
+import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
-import org.caleydo.core.manager.picking.ESelectionMode;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
@@ -32,19 +36,21 @@ import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
-import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.PathwayRenderStyle;
-import org.caleydo.core.view.opengl.util.hierarchy.EHierarchyLevel;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
+import org.eclipse.swt.SWT;
+import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
  * Single OpenGL pathway view
  * 
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public class GLPathway
 	extends AGLEventListener
@@ -70,6 +76,11 @@ public class GLPathway
 
 	private Vec3f vecScaling;
 	private Vec3f vecTranslation;
+
+	private TextRenderer textRenderer;
+	private boolean bEnableTitleRendering = true;
+	private int iHorizontalTextAlignment = SWT.CENTER;
+	private int iVerticalTextAlignment = SWT.BOTTOM;
 
 	/**
 	 * Constructor.
@@ -99,6 +110,8 @@ public class GLPathway
 		}
 
 		selectionManager = new GenericSelectionManager.Builder(EIDType.PATHWAY_VERTEX).build();
+
+		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 24), false);
 	}
 
 	public synchronized void setPathwayID(final int iPathwayID)
@@ -120,29 +133,29 @@ public class GLPathway
 	@Override
 	public void initLocal(final GL gl)
 	{
-
+		iGLDisplayListIndexLocal = gl.glGenLists(1);
+		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
 		pickingTriggerMouseAdapter.resetEvents();
 		// TODO: individual toolboxrenderer
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID,
-			final RemoteHierarchyLevel layer,
+	public void initRemote(final GL gl, final int iRemoteViewID, final RemoteLevel layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
-			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas)
+			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
-
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
-
 		this.pickingTriggerMouseAdapter = pickingTriggerMouseAdapter;
+
+		iGLDisplayListIndexRemote = gl.glGenLists(1);
+		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
 	}
 
 	@Override
 	public void init(final GL gl)
 	{
-
 		// Check if pathway exists or if it's already loaded
 		if (!generalManager.getPathwayManager().hasItem(iPathwayID))
 			return;
@@ -153,7 +166,6 @@ public class GLPathway
 	@Override
 	public synchronized void displayLocal(final GL gl)
 	{
-
 		// Check if pathway exists or if it's already loaded
 		// FIXME: not good because check in every rendered frame
 		if (!generalManager.getPathwayManager().hasItem(iPathwayID))
@@ -162,9 +174,10 @@ public class GLPathway
 		pickingManager.handlePicking(iUniqueID, gl, false);
 		if (bIsDisplayListDirtyLocal)
 		{
-			rebuildPathwayDisplayList(gl);
+			rebuildPathwayDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
 		}
+		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		display(gl);
 		pickingTriggerMouseAdapter.resetEvents();
 	}
@@ -179,10 +192,10 @@ public class GLPathway
 
 		if (bIsDisplayListDirtyRemote)
 		{
-			rebuildPathwayDisplayList(gl);
+			rebuildPathwayDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
 		}
-
+		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		display(gl);
 	}
 
@@ -190,7 +203,11 @@ public class GLPathway
 	public synchronized void display(final GL gl)
 	{
 		checkForHits(gl);
-		renderScene(gl);
+
+		// TODO: also put this in global DL
+		renderPathwayById(gl, iPathwayID);
+
+		gl.glCallList(iGLDisplayListToCall);
 	}
 
 	protected void initPathwayData(final GL gl)
@@ -206,7 +223,7 @@ public class GLPathway
 
 			selectionManager.initialAdd(tmpPathwayVertexGraphItemRep.getId());
 		}
-		
+
 		gLPathwayContentCreator.init(gl, alSets, selectionManager);
 
 		// Create new pathway manager for GL context
@@ -218,17 +235,12 @@ public class GLPathway
 		calculatePathwayScaling(gl, iPathwayID);
 		pathwayManager.setPathwayVisibilityStateByID(iPathwayID, true);
 
-		// gLPathwayContentCreator.buildPathwayDisplayList(gl, this, iPathwayID);
-	}
-
-	public synchronized void renderScene(final GL gl)
-	{
-		renderPathwayById(gl, iPathwayID);
+		// gLPathwayContentCreator.buildPathwayDisplayList(gl, this,
+		// iPathwayID);
 	}
 
 	private void renderPathwayById(final GL gl, final int iPathwayId)
 	{
-
 		gl.glPushMatrix();
 		gl.glTranslatef(vecTranslation.x(), vecTranslation.y(), vecTranslation.z());
 		gl.glScalef(vecScaling.x(), vecScaling.y(), vecScaling.z());
@@ -236,10 +248,6 @@ public class GLPathway
 		if (bEnablePathwayTexture)
 		{
 			float fPathwayTransparency = 1.0f;
-
-			// if (containedHierarchyLayer.getCapacity() == 4) // check if layer
-			// is the stack layer (todo: better would be a stack type)
-			// fPathwayTransparency = 0.6f;
 
 			hashGLcontext2TextureManager.get(gl).renderPathway(gl, this, iPathwayId,
 					fPathwayTransparency, false);
@@ -254,9 +262,12 @@ public class GLPathway
 
 		if (remoteRenderingGLCanvas.getBucketMouseWheelListener() != null)
 		{
-			if (remoteRenderingGLCanvas.getHierarchyLayerByGLEventListenerId(iUniqueID)
-					.getLevel().equals(EHierarchyLevel.UNDER_INTERACTION)
-					&& remoteRenderingGLCanvas.getBucketMouseWheelListener().isZoomedIn())
+			// if
+			// (remoteRenderingGLCanvas.getHierarchyLayerByGLEventListenerId(iUniqueID)
+			// .getLevel().equals(EHierarchyLevel.UNDER_INTERACTION)
+			// &&
+			// remoteRenderingGLCanvas.getBucketMouseWheelListener().isZoomedIn())
+			if (detailLevel == EDetailLevel.HIGH)
 			{
 				gLPathwayContentCreator.renderPathway(gl, iPathwayId, true);
 			}
@@ -278,126 +289,68 @@ public class GLPathway
 		gl.glPopMatrix();
 	}
 
-	private void rebuildPathwayDisplayList(final GL gl)
+	private void rebuildPathwayDisplayList(final GL gl, int iGLDisplayListIndex)
 	{
-		// TODO: maybe too slow?
-		gLPathwayContentCreator.init(gl, alSets, selectionManager); 
 		gLPathwayContentCreator.buildPathwayDisplayList(gl, this, iPathwayID);
+
+		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+		renderPathwayName(gl);
+		gl.glEndList();
 	}
 
 	@Override
-	public synchronized void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
+	public synchronized void handleUpdate(IUniqueObject eventTrigger,
+			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand,
+			EMediatorType eMediatorType)
 	{
-		generalManager.getLogger().log(Level.FINE,
-				"Update called by " + eventTrigger.getClass().getSimpleName());
+		generalManager.getLogger().log(
+				Level.INFO,
+				"Update called by " + eventTrigger.getClass().getSimpleName()
+						+ ", received in: " + this.getClass().getSimpleName());
 
 		if (selectionDelta.getIDType() != EIDType.DAVID)
 			return;
-		
+
+		selectionManager.executeSelectionCommands(colSelectionCommand);
 
 		for (SelectionItem item : selectionDelta)
 		{
+			// Ignore ADD and REMOVE in pathway
 			if (item.getSelectionType() == ESelectionType.ADD
 					|| item.getSelectionType() == ESelectionType.REMOVE)
 			{
-				break;
-			}
-			else
-			{
-				selectionManager.clearSelections();
-				break;				
-			}
-		}	
-		
-		ISelectionDelta rebroadcastSelectionDelta = new SelectionDelta(EIDType.DAVID);
-		
-		// Rebroadcast elements that should be removed but are contained in this pathway
-		// Only do this for pathways inside the bucket!
-		if (detailLevel != EDetailLevel.VERY_LOW)
-		{	
-			for (SelectionItem item : selectionDelta)
-			{
-				if (item.getSelectionType() == ESelectionType.REMOVE)
-				{
-					// Check if item is contained in this pathway
-					int iDavidID = item.getSelectionID();
-					PathwayVertexGraphItem tmpVertexGraphItem = (PathwayVertexGraphItem)
-						generalManager.getPathwayItemManager().getItem(
-								generalManager.getPathwayItemManager()
-									.getPathwayVertexGraphItemIdByDavidId(iDavidID));
-					
-					Iterator<IGraphItem> iterPathwayVertexGraphItemRep = tmpVertexGraphItem
-						.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD).iterator();
-
-					PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep = null;
-					while (iterPathwayVertexGraphItemRep.hasNext())
-					{
-						tmpPathwayVertexGraphItemRep = ((PathwayVertexGraphItemRep) 
-								iterPathwayVertexGraphItemRep.next());
-
-						// Check if vertex is contained in this pathway
-						// viewFrustum
-						if (!(generalManager.getPathwayManager().getItem(iPathwayID))
-								.containsItem(tmpPathwayVertexGraphItemRep))
-						{
-							continue;
-						}
-
-						rebroadcastSelectionDelta.addSelection(
-								iDavidID, ESelectionType.ADD);
-						
-						// Preserve selection
-						if (selectionManager.checkStatus(ESelectionType.MOUSE_OVER, 
-								tmpPathwayVertexGraphItemRep.getId()))
-						{	
-							rebroadcastSelectionDelta.addSelection(
-									iDavidID, ESelectionType.MOUSE_OVER);
-						}
-					}				
-				}
+				return;
 			}
 		}
-		
+
+		ISelectionDelta resolvedDelta = resolveExternalSelectionDelta(selectionDelta);
+		selectionManager.setDelta(resolvedDelta);
+
 		setDisplayListDirty();
 
 		int iPathwayHeight = (generalManager.getPathwayManager().getItem(iPathwayID))
 				.getHeight();
-		
-		ISelectionDelta internalDelta = resolveExternalSelectionDelta(selectionDelta);
-		selectionManager.setDelta(internalDelta);
-		selectionManager.setDelta(resolveExternalSelectionDelta(rebroadcastSelectionDelta));
-		
-		gLPathwayContentCreator.performIdenticalNodeHighlighting();
-		
-		for (SelectionItem item : internalDelta)
-		{			
+		for (SelectionItem item : resolvedDelta)
+		{
 			if (item.getSelectionType() != ESelectionType.MOUSE_OVER)
 				continue;
 
 			PathwayVertexGraphItemRep vertexRep = (PathwayVertexGraphItemRep) generalManager
 					.getPathwayItemManager().getItem(item.getSelectionID());
 
-//			System.out.println("Pathway with ID: " + iUniqueID + " David: " +
-//					item.getInternalID());
-			
-			if (detailLevel != EDetailLevel.VERY_LOW)
-			{
-				connectedElementRepresentationManager
-					.modifySelection(
-							item.getInternalID(),
-							new SelectedElementRep(EIDType.EXPRESSION_INDEX,
-									iUniqueID,
-									(vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X)
-											* vecScaling.x() + vecTranslation.x(),
-									((iPathwayHeight - vertexRep.getYOrigin()) * PathwayRenderStyle.SCALING_FACTOR_Y)
-											* vecScaling.y() + vecTranslation.y(), 0),
-							ESelectionMode.ADD_PICK);
-			}
+			SelectedElementRep elementRep = new SelectedElementRep(
+					EIDType.EXPRESSION_INDEX,
+					iUniqueID,
+					(vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X)
+							* vecScaling.x() + vecTranslation.x(),
+					((iPathwayHeight - vertexRep.getYOrigin()) * PathwayRenderStyle.SCALING_FACTOR_Y)
+							* vecScaling.y() + vecTranslation.y(), 0);
 
+			for (Integer iConnectionID : item.getConnectionID())
+			{
+				connectedElementRepresentationManager.addSelection(iConnectionID, elementRep);
+			}
 		}
-		
-		if (!rebroadcastSelectionDelta.getSelectionData().isEmpty())
-			triggerUpdate(rebroadcastSelectionDelta);
 	}
 
 	private ISelectionDelta createExternalSelectionDelta(ISelectionDelta selectionDelta)
@@ -406,26 +359,31 @@ public class GLPathway
 
 		IPathwayItemManager pathwayItemManager = generalManager.getPathwayItemManager();
 		int iDavidID = 0;
-		int iLastDavidID = 0;
 		for (SelectionItem item : selectionDelta)
 		{
 			for (IGraphItem pathwayVertexGraphItem : pathwayItemManager.getItem(
 					item.getSelectionID()).getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT))
-			{	
+			{
 				iDavidID = generalManager.getPathwayItemManager()
 						.getDavidIdByPathwayVertexGraphItemId(pathwayVertexGraphItem.getId());
 
 				if (iDavidID == -1)
 					continue;
-			
-//				// Ignore multiple nodes with same DAVID ID
-//				if (iLastDavidID == iDavidID)
-//					continue;
-				
-				newSelectionDelta.addSelection(iDavidID, item.getSelectionType(), item.getSelectionID());
-				System.out.println("ExternalID: "+iDavidID + ", Internal: " + item.getSelectionID() + ", State: " + item.getSelectionType());
-				
-				iLastDavidID = iDavidID;
+
+				// // Ignore multiple nodes with same DAVID ID
+				// if (iLastDavidID == iDavidID)
+				// continue;
+
+				newSelectionDelta.addSelection(iDavidID, item.getSelectionType(), item
+						.getSelectionID());
+				for (Integer iConnectionID : item.getConnectionID())
+				{
+					newSelectionDelta.addConnectionID(iDavidID, iConnectionID);
+				}
+				// System.out.println("ExternalID: " + iDavidID + ", Internal: "
+				// + item.getSelectionID() + ", State: " +
+				// item.getSelectionType());
+
 			}
 		}
 
@@ -461,9 +419,13 @@ public class GLPathway
 			{
 				if (!pathwayManager.getItem(iPathwayID).containsItem(tmpGraphItemRep))
 					continue;
-				
-				newSelectionDelta.addSelection(tmpGraphItemRep.getId(), item
-						.getSelectionType(), iDavidID);
+
+				SelectionItem newItem = newSelectionDelta.addSelection(
+						tmpGraphItemRep.getId(), item.getSelectionType(), iDavidID);
+				for (int iConnectionID : item.getConnectionID())
+				{
+					newItem.setConnectionID(iConnectionID);
+				}
 			}
 		}
 
@@ -580,11 +542,13 @@ public class GLPathway
 		gLPathwayContentCreator.enableNeighborhood(bEnableNeighborhood);
 	}
 
-	public synchronized void enableIdenticalNodeHighlighting(final boolean bEnableIdenticalNodeHighlighting)
+	public synchronized void enableIdenticalNodeHighlighting(
+			final boolean bEnableIdenticalNodeHighlighting)
 	{
 		setDisplayListDirty();
 
-		gLPathwayContentCreator.enableIdenticalNodeHighlighting(bEnableIdenticalNodeHighlighting);
+		gLPathwayContentCreator
+				.enableIdenticalNodeHighlighting(bEnableIdenticalNodeHighlighting);
 	}
 
 	public synchronized void enableAnnotation(final boolean bEnableAnnotation)
@@ -602,124 +566,139 @@ public class GLPathway
 			pickingManager.flushHits(iUniqueID, ePickingType);
 			return;
 		}
-		
+
 		switch (ePickingType)
 		{
 			case PATHWAY_ELEMENT_SELECTION:
-
-				setDisplayListDirty();
 
 				PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) generalManager
 						.getPathwayItemManager().getItem(iExternalID);
 
 				// Do nothing if new selection is the same as previous selection
-				if (selectionManager.checkStatus(ESelectionType.MOUSE_OVER, tmpVertexGraphItemRep.getId())
-						&& !pickingMode.equals(EPickingMode.CLICKED))
+				if (selectionManager.checkStatus(ESelectionType.MOUSE_OVER,
+						tmpVertexGraphItemRep.getId())
+						&& !pickingMode.equals(EPickingMode.CLICKED)
+						&& !pickingMode.equals(EPickingMode.DOUBLE_CLICKED))
 				{
-					pickingManager.flushHits(iUniqueID, EPickingType.PATHWAY_ELEMENT_SELECTION);
-					pickingManager.flushHits(iUniqueID, EPickingType.PATHWAY_TEXTURE_SELECTION);
+					pickingManager.flushHits(iUniqueID, ePickingType);
 
 					return;
 				}
-		
 
-//				selectionManager.clearSelection(ESelectionType.MOUSE_OVER);
-//				selectionManager.clearSelection(ESelectionType.SELECTION);
-		
-				PathwayVertexGraphItem tmpVertexGraphItem = null;
-				for (IGraphItem tmpGraphItem : tmpVertexGraphItemRep
-						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT))
+				setDisplayListDirty();
+
+				selectionManager.clearSelection(ESelectionType.SELECTION);
+				selectionManager.clearSelection(ESelectionType.MOUSE_OVER);
+				selectionManager.clearSelection(ESelectionType.NEIGHBORHOOD_1);
+				selectionManager.clearSelection(ESelectionType.NEIGHBORHOOD_2);
+				selectionManager.clearSelection(ESelectionType.NEIGHBORHOOD_3);
+
+				if (pickingMode == EPickingMode.DOUBLE_CLICKED)
 				{
-					if (pickingMode == EPickingMode.MOUSE_OVER)
-					{
-						selectionManager.clearSelection(ESelectionType.MOUSE_OVER);
-						
-						// Add new vertex to internal selection manager
-						selectionManager.addToType(ESelectionType.MOUSE_OVER,
-								tmpVertexGraphItemRep.getId());						
-					}
-					else if (pickingMode == EPickingMode.CLICKED)
-					{
-						selectionManager.clearSelection(ESelectionType.SELECTION);
-						
-						// Add new vertex to internal selection manager
-						selectionManager.addToType(ESelectionType.SELECTION,
-								tmpVertexGraphItemRep.getId());		
-					}
-					else
-					{
-						return;
-					}
-				
-					tmpVertexGraphItem = (PathwayVertexGraphItem) tmpGraphItem;
-
-					int iDavidId = generalManager.getPathwayItemManager()
-							.getDavidIdByPathwayVertexGraphItemId(tmpVertexGraphItem.getId());
-
-					if (iDavidId == -1 || iDavidId == 0)
-					{
-						generalManager.getLogger()
-								.log(Level.WARNING, "Invalid David Gene ID.");
-						pickingManager.flushHits(iUniqueID,
-								EPickingType.PATHWAY_ELEMENT_SELECTION);
-						pickingManager.flushHits(iUniqueID,
-								EPickingType.PATHWAY_TEXTURE_SELECTION);
-
-						connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
-						continue;
-					}
-
-					connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
-
-					gLPathwayContentCreator.performIdenticalNodeHighlighting();
-					
-					PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep;
-					int	iPathwayHeight = (generalManager.getPathwayManager()
-							.getItem(iPathwayID)).getHeight();	
-					
-					for (int iVertexRepID : selectionManager.getElements(ESelectionType.MOUSE_OVER))
-					{
-//<<<<<<< .working
-//						tmpPathwayVertexGraphItemRep = ((PathwayVertexGraphItemRep) iterPathwayVertexGraphItemRep
-//								.next());
-//
-//						// Check if vertex is contained in this pathway
-//						// viewFrustum
-//						if (!(generalManager.getPathwayManager().getItem(iPathwayID))
-//								.containsItem(tmpPathwayVertexGraphItemRep))
-//							continue;
-//
-//						int iPathwayHeight = (generalManager.getPathwayManager()
-//								.getItem(iPathwayID)).getHeight();
-//
-//						connectedElementRepresentationManager.modifySelection(
-//										iDavidId, new SelectedElementRep(EIDType.EXPRESSION_INDEX,
-//												this.getID(),
-//												(tmpPathwayVertexGraphItemRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X)
-//														* vecScaling.x() + vecTranslation.x(),
-//												((iPathwayHeight - tmpPathwayVertexGraphItemRep
-//														.getYOrigin()) * PathwayRenderStyle.SCALING_FACTOR_Y)
-//														* vecScaling.y() + vecTranslation.y(),
-//												0), ESelectionMode.ADD_PICK);
-//=======
-						tmpPathwayVertexGraphItemRep = generalManager.getPathwayItemManager().getPathwayVertexRep(iVertexRepID);
-						
-						connectedElementRepresentationManager.modifySelection(
-								iDavidId, new SelectedElementRep(EIDType.EXPRESSION_INDEX, this.getID(),
-										(tmpPathwayVertexGraphItemRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X)
-												* vecScaling.x() + vecTranslation.x(),
-										((iPathwayHeight - tmpPathwayVertexGraphItemRep
-												.getYOrigin()) * PathwayRenderStyle.SCALING_FACTOR_Y)
-												* vecScaling.y() + vecTranslation.y(),
-										0), ESelectionMode.ADD_PICK);
-//>>>>>>> .merge-right.r1616
-					}
+					// Add new vertex to internal selection manager
+					selectionManager.addToType(ESelectionType.SELECTION, tmpVertexGraphItemRep
+							.getId());
+				}
+				else if (pickingMode == EPickingMode.MOUSE_OVER
+						|| pickingMode == EPickingMode.CLICKED)
+				{
+					// Add new vertex to internal selection manager
+					selectionManager.addToType(ESelectionType.MOUSE_OVER,
+							tmpVertexGraphItemRep.getId());
 				}
 
-				triggerUpdate(createExternalSelectionDelta(selectionManager.getDelta()));
+				int iConnectionID = generalManager.getIDManager().createID(
+						EManagedObjectType.CONNECTION);
+				selectionManager.addConnectionID(iConnectionID, tmpVertexGraphItemRep.getId());
+				connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
+				gLPathwayContentCreator.performIdenticalNodeHighlighting();
+
+				createConnectionLines(tmpVertexGraphItemRep, iConnectionID);
+
+				Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
+				colSelectionCommand.add(new SelectionCommand(ESelectionCommandType.CLEAR,
+						ESelectionType.MOUSE_OVER));
+
+				ISelectionDelta delta = selectionManager.getDelta();
+				triggerUpdate(EMediatorType.SELECTION_MEDIATOR,// BUCKET_INTERNAL_INCOMING_MEDIATOR,
+						createExternalSelectionDelta(delta), colSelectionCommand);
 
 				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
+			// case PATHWAY_TEXTURE_SELECTION:
+			//				
+			// // Trigger empty update
+			// // TODO: think about better solution
+			// triggerUpdate(EMediatorType.SELECTION_MEDIATOR, new
+			// SelectionDelta(EIDType.DAVID));
+			// pickingManager.flushHits(iUniqueID, ePickingType);
+			//				
+			// break;
+		}
+	}
+
+	private void createConnectionLines(PathwayVertexGraphItemRep vertexGraphItemRep,
+			int iConnectionID)
+	{
+		// PathwayVertexGraphItem tmpVertexGraphItem = null;
+		for (IGraphItem tmpGraphItem : vertexGraphItemRep
+				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT))
+		{
+			// else if (pickingMode == EPickingMode.CLICKED)
+			// {
+			// selectionManager.clearSelection(ESelectionType.SELECTION);
+			//				
+			// // Add new vertex to internal selection manager
+			// selectionManager.addToType(ESelectionType.SELECTION,
+			// tmpVertexGraphItemRep.getId());
+			// }
+			// else
+			// {
+			// return;
+			// }
+			//		
+			// tmpVertexGraphItem = (PathwayVertexGraphItem) tmpGraphItem;
+			//
+			// int iDavidId = generalManager.getPathwayItemManager()
+			// .getDavidIdByPathwayVertexGraphItemId(tmpVertexGraphItem.getId());
+			//
+			// if (iDavidId == -1 || iDavidId == 0)
+			// {
+			// generalManager.getLogger().log(Level.WARNING,
+			// "Invalid David Gene ID.");
+			// // pickingManager.flushHits(iUniqueID,
+			// // EPickingType.PATHWAY_ELEMENT_SELECTION);
+			// // pickingManager.flushHits(iUniqueID,
+			// // EPickingType.PATHWAY_TEXTURE_SELECTION);
+			//
+			// // connectedElementRepresentationManager.clear();
+			// // gLPathwayContentCreator.performIdenticalNodeHighlighting();
+			// continue;
+			// }
+
+			PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep;
+			int iPathwayHeight = (generalManager.getPathwayManager().getItem(iPathwayID))
+					.getHeight();
+
+			for (int iVertexRepID : selectionManager.getElements(ESelectionType.MOUSE_OVER))
+			{
+				tmpPathwayVertexGraphItemRep = generalManager.getPathwayItemManager()
+						.getPathwayVertexRep(iVertexRepID);
+
+				SelectedElementRep elementRep = new SelectedElementRep(
+						EIDType.EXPRESSION_INDEX,
+						this.getID(),
+						(tmpPathwayVertexGraphItemRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X)
+								* vecScaling.x() + vecTranslation.x(),
+						((iPathwayHeight - tmpPathwayVertexGraphItemRep.getYOrigin()) * PathwayRenderStyle.SCALING_FACTOR_Y)
+								* vecScaling.y() + vecTranslation.y(), 0);
+
+				// for (Integer iConnectionID : selectionManager
+				// .getConnectionForElementID(iVertexRepID))
+				// {
+				connectedElementRepresentationManager.addSelection(iConnectionID, elementRep);
+				// }
+			}
 		}
 	}
 
@@ -729,22 +708,23 @@ public class GLPathway
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.DAVID);
 
 		// TODO: Move to own method (outside this class)
-		Iterator<IGraphItem> iterPathwayVertexGraphItem = (generalManager.getPathwayManager()
-				.getItem(iPathwayID)).getAllItemsByKind(EGraphItemKind.NODE).iterator();
-		Iterator<IGraphItem> iterPathwayVertexGraphItemRep;
+		Iterator<IGraphItem> iterPathwayVertexGraphItemRep = (generalManager
+				.getPathwayManager().getItem(iPathwayID)).getAllItemsByKind(
+				EGraphItemKind.NODE).iterator();
+		Iterator<IGraphItem> iterPathwayVertexGraphItem;
 		PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep = null;
 		PathwayVertexGraphItem tmpPathwayVertexGraphItem = null;
-		while (iterPathwayVertexGraphItem.hasNext())
+		while (iterPathwayVertexGraphItemRep.hasNext())
 		{
-			tmpPathwayVertexGraphItemRep = ((PathwayVertexGraphItemRep) iterPathwayVertexGraphItem
+			tmpPathwayVertexGraphItemRep = ((PathwayVertexGraphItemRep) iterPathwayVertexGraphItemRep
 					.next());
 
-			iterPathwayVertexGraphItemRep = tmpPathwayVertexGraphItemRep.getAllItemsByProp(
+			iterPathwayVertexGraphItem = tmpPathwayVertexGraphItemRep.getAllItemsByProp(
 					EGraphItemProperty.ALIAS_PARENT).iterator();
 
-			while (iterPathwayVertexGraphItemRep.hasNext())
+			while (iterPathwayVertexGraphItem.hasNext())
 			{
-				tmpPathwayVertexGraphItem = (PathwayVertexGraphItem) iterPathwayVertexGraphItemRep
+				tmpPathwayVertexGraphItem = (PathwayVertexGraphItem) iterPathwayVertexGraphItem
 						.next();
 
 				int iDavidId = generalManager.getPathwayItemManager()
@@ -756,34 +736,30 @@ public class GLPathway
 					generalManager.getLogger().log(Level.WARNING, "Invalid David Gene ID.");
 					continue;
 				}
-							
+
 				selectionDelta.addSelection(iDavidId, type);
-				
-//				// Preserve current selections
-//				if (selectionManager.checkStatus(ESelectionType.MOUSE_OVER, tmpPathwayVertexGraphItemRep.getId()))
-//					selectionDelta.addSelection(iDavidId, ESelectionType.MOUSE_OVER);
 			}
 		}
 
-		triggerUpdate(selectionDelta);
+		triggerUpdate(EMediatorType.SELECTION_MEDIATOR, selectionDelta, null);
 	}
 
 	@Override
 	public synchronized String getShortInfo()
 	{
 		PathwayGraph pathway = (generalManager.getPathwayManager().getItem(iPathwayID));
-		
-		return pathway.getTitle() + " (" +pathway.getType().getName() + ")";
+
+		return pathway.getTitle() + " (" + pathway.getType().getName() + ")";
 	}
-	
+
 	@Override
 	public synchronized String getDetailedInfo()
 	{
 		StringBuffer sInfoText = new StringBuffer();
 		PathwayGraph pathway = (generalManager.getPathwayManager().getItem(iPathwayID));
 
-		sInfoText.append("<b>Pathway</b>\n\n<b>Name:</b> "+ pathway.getTitle()
-			+ "\n<b>Type:</b> "+pathway.getType().getName());
+		sInfoText.append("<b>Pathway</b>\n\n<b>Name:</b> " + pathway.getTitle()
+				+ "\n<b>Type:</b> " + pathway.getType().getName());
 
 		// generalManager.getSWTGUIManager().setExternalRCPStatusLineMessage(
 		// pathway.getType().getName() + " Pathway: " + sPathwayTitle);
@@ -792,9 +768,11 @@ public class GLPathway
 	}
 
 	@Override
-	public synchronized void triggerUpdate(ISelectionDelta selectionDelta)
+	public synchronized void triggerUpdate(EMediatorType eMediatorType,
+			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
 	{
-		generalManager.getEventPublisher().handleUpdate(this, selectionDelta);
+		generalManager.getEventPublisher().triggerUpdate(eMediatorType, this, selectionDelta,
+				colSelectionCommand);
 	}
 
 	@Override
@@ -809,5 +787,61 @@ public class GLPathway
 	{
 		super.addSet(set);
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
+	}
+
+	public void renderPathwayName(final GL gl)
+	{
+		if (!bEnableTitleRendering)
+			return;
+
+		float fHorizontalPosition = 0;
+		float fVerticalPosition = 0;
+
+		if (iHorizontalTextAlignment == SWT.LEFT)
+			fHorizontalPosition = 0.2f;
+		else if (iHorizontalTextAlignment == SWT.RIGHT)
+			fHorizontalPosition = 3.5f;
+		else if (iHorizontalTextAlignment == SWT.CENTER)
+			fHorizontalPosition = 1.8f;
+
+		if (iVerticalTextAlignment == SWT.TOP)
+			fVerticalPosition = 7.8f;
+		else if (iVerticalTextAlignment == SWT.BOTTOM)
+			fVerticalPosition = 0.2f;
+		else if (iVerticalTextAlignment == SWT.CENTER)
+			fVerticalPosition = 1;
+
+		String sPathwayName = generalManager.getPathwayManager().getItem(iPathwayID)
+				.getTitle();
+
+		int iMaxChars = 40;
+		if (iHorizontalTextAlignment == SWT.RIGHT)
+			iMaxChars = 30;
+
+		if (sPathwayName.length() > iMaxChars)
+			sPathwayName = sPathwayName.subSequence(0, iMaxChars - 3) + "...";
+
+		textRenderer.begin3DRendering();
+		textRenderer.setColor(0.2f, 0.2f, 0.2f, 1.0f);
+		textRenderer.draw3D(sPathwayName, fHorizontalPosition, fVerticalPosition, 0.05f,
+				0.011f);
+		textRenderer.end3DRendering();
+	}
+
+	public void enableTitleRendering(boolean bEnable)
+	{
+		bEnableTitleRendering = bEnable;
+	}
+
+	public void setAlignment(int iHorizontalAlignment, int iVerticalAlignment)
+	{
+		this.iHorizontalTextAlignment = iHorizontalAlignment;
+		this.iVerticalTextAlignment = iVerticalAlignment;
+	}
+
+	@Override
+	public int getNumberOfSelections(ESelectionType eSelectionType)
+	{
+		return selectionManager.getElements(eSelectionType).size();
 	}
 }

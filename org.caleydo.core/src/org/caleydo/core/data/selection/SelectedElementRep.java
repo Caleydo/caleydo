@@ -12,7 +12,6 @@ import org.caleydo.core.data.mapping.EIDType;
  */
 public class SelectedElementRep
 {
-
 	private int iContainingViewID;
 
 	private EIDType idType;
@@ -33,6 +32,7 @@ public class SelectedElementRep
 	public SelectedElementRep(EIDType idType, final int iContainingViewID,
 			final float fXCoord, final float fYCoord, final float fZCoord)
 	{
+
 		this.idType = idType;
 		this.iContainingViewID = iContainingViewID;
 		alPoints = new ArrayList<Vec3f>();
@@ -48,6 +48,7 @@ public class SelectedElementRep
 	public SelectedElementRep(EIDType idType, final int iContainingViewID,
 			final ArrayList<Vec3f> alPoints)
 	{
+
 		this.idType = idType;
 		this.iContainingViewID = iContainingViewID;
 		this.alPoints = alPoints;
@@ -72,7 +73,6 @@ public class SelectedElementRep
 	 */
 	public int getContainingViewID()
 	{
-
 		return iContainingViewID;
 	}
 

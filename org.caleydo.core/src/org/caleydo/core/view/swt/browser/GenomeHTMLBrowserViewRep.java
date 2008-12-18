@@ -1,13 +1,18 @@
 package org.caleydo.core.view.swt.browser;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Set;
 import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionItem;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -37,6 +42,7 @@ public class GenomeHTMLBrowserViewRep
 	private Button buttonBioCarta;
 	private Button buttonPubMed;
 	private Button buttonEntrez;
+	private Button buttonGeneCards;
 	
 	private ArrayList<Integer> iAlDavidID;
 	
@@ -50,9 +56,6 @@ public class GenomeHTMLBrowserViewRep
 		super(iParentContainerID, sLabel);
 		
 		urlGenerator = new URLGenerator();
-		
-		generalManager.getEventPublisher().registerReceiverToMediatorGroup(
-				EMediatorType.DATA_MEDIATOR, this);
 		
 		iAlDavidID = new ArrayList<Integer>();
 	}
@@ -81,6 +84,8 @@ public class GenomeHTMLBrowserViewRep
 	    buttonEntrez.setSelection(true);
 	    buttonPubMed = new Button(groupQueryType, SWT.RADIO);
 	    buttonPubMed.setText(EBrowserQueryType.PubMed.toString());
+	    buttonGeneCards = new Button(groupQueryType, SWT.RADIO);
+	    buttonGeneCards.setText(EBrowserQueryType.GeneCards.toString());
 	    
 	    SelectionListener queryTypeListener = new SelectionAdapter() {
 	    	
@@ -106,16 +111,17 @@ public class GenomeHTMLBrowserViewRep
 	    buttonKEGG.addSelectionListener(queryTypeListener);
 	    buttonPubMed.addSelectionListener(queryTypeListener);
 	    buttonEntrez.addSelectionListener(queryTypeListener);
+	    buttonGeneCards.addSelectionListener(queryTypeListener);
 	    
 	    GridData data = new GridData();
-	    data.widthHint = 200;
+	    data.widthHint = 130;
 		groupQueryType.setLayoutData(data);
 		groupQueryType.setLayout(new GridLayout(1, false));
 	    
 	    list = new List(leftColumnComposite, SWT.SINGLE | SWT.BORDER);
 	    data = new GridData(GridData.FILL_VERTICAL);
 	    data.grabExcessVerticalSpace = true;
-		data.widthHint = 200;
+		data.widthHint = 130;
 		list.setLayoutData(data);
 		
 		list.addSelectionListener(new SelectionAdapter() {
@@ -136,8 +142,11 @@ public class GenomeHTMLBrowserViewRep
 	}
 
 	@Override
-	public void handleUpdate(IUniqueObject eventTrigger, final ISelectionDelta selectionDelta)
+	public void handleUpdate(IUniqueObject eventTrigger, final ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand, EMediatorType eMediatorType)
 	{		
+		if (selectionDelta.getIDType() != EIDType.DAVID)
+			return;
+		
 		parent.getDisplay().asyncExec(new Runnable()
 		{
 			public void run()
@@ -146,18 +155,17 @@ public class GenomeHTMLBrowserViewRep
 					return;
 				
 				int iItemsToLoad = 0;
-				SelectionItem selectionItem;
-				for (int iItemIndex = 0; iItemIndex < selectionDelta.getSelectionData().size(); iItemIndex++)
+			//	SelectionItem selectionItem;
+				
+				for(SelectionItem selectionItem : selectionDelta)
 				{
-					selectionItem = selectionDelta.getSelectionData().get(iItemIndex);
-					
 					if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER 
 							|| selectionItem.getSelectionType() == ESelectionType.SELECTION)
 					{
 						if (iItemsToLoad == 0)
 						{
 				    		String sURL = urlGenerator.createURL(eBrowserQueryType, 
-									selectionDelta.getSelectionData().get(iItemIndex).getSelectionID());  
+									selectionItem.getSelectionID());  
 				    		
 				    		browser.setUrl(sURL);
 				    		browser.update();
@@ -167,13 +175,23 @@ public class GenomeHTMLBrowserViewRep
 							list.removeAll();
 						}
 						
-						String sRefSeqID = generalManager.getIDMappingManager()
-							.getID(EMappingType.DAVID_2_REFSEQ_MRNA, selectionItem.getSelectionID());
+						Set<String> sSetRefSeqID = GeneralManager.get().getIDMappingManager()
+						.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA, selectionItem.getSelectionID());
+					
+						String sOutput = "";
+						sOutput = sOutput + GeneralManager.get().getIDMappingManager().getID(
+							EMappingType.DAVID_2_GENE_SYMBOL, selectionItem.getSelectionID());
+					
+						for (String sRefSeqID : sSetRefSeqID) 
+						{
+							sOutput = sOutput + "\n";
+							sOutput = sOutput + sRefSeqID;
+						}
 						
-						String sGeneShortName = generalManager.getIDMappingManager()
-							.getID(EMappingType.DAVID_2_GENE_SYMBOL, selectionItem.getSelectionID());
+						if (iAlDavidID.contains(selectionItem.getSelectionID()))
+							continue; 
 						
-						list.add(sRefSeqID + " - " + sGeneShortName);
+						list.add(sOutput);
 						iAlDavidID.add(selectionItem.getSelectionID());
 						
 						iItemsToLoad++;

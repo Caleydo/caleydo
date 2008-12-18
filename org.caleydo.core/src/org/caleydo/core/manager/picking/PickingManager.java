@@ -117,13 +117,18 @@ public class PickingManager
 
 		EPickingMode ePickingMode = EPickingMode.CLICKED;
 
-		if (pickingTriggerMouseAdapter.wasLeftMouseButtonPressed())
+		if (pickingTriggerMouseAdapter.wasMouseDoubleClicked())
+		{
+			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+			ePickingMode = EPickingMode.DOUBLE_CLICKED;
+		}
+		else if (pickingTriggerMouseAdapter.wasLeftMouseButtonPressed())
 		// || bMouseReleased)
 		{
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			// bIsMouseOverPickingEvent = false;
 			ePickingMode = EPickingMode.CLICKED;
-		}
+		}	
 		else if (pickingTriggerMouseAdapter.wasMouseDragged())
 		{
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
@@ -395,13 +400,13 @@ public class PickingManager
 					|| iType == EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION.ordinal()
 					|| iType == EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION.ordinal()
 					|| iType == EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION.ordinal()
-					|| iType == EPickingType.BUCKET_LOCK_ICON_SELECTION.ordinal()
+					|| iType == EPickingType.BUCKET_REMOVE_ICON_SELECTION.ordinal()
+//					|| iType == EPickingType.BUCKET_LOCK_ICON_SELECTION.ordinal()
 					|| iType == EPickingType.VIEW_SELECTION.ordinal()
 					|| iType == EPickingType.HIER_HEAT_MAP_VIEW_SELECTION.ordinal())
 			// || iType == EPickingType.BUCKET_REMOVE_ICON_SELECTION.ordinal()
 			// || iType == EPickingType.BUCKET_SWITCH_ICON_SELECTION.ordinal())
-			{
-
+			{			
 				iSignature = getSignatureFromPickingID(iPickingID, iViewID);
 
 				iOrigianlPickingID = iPickingID;

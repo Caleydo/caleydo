@@ -1,6 +1,5 @@
 package org.caleydo.rcp.dialog.file;
 
-import org.caleydo.rcp.action.file.FileLoadDataAction;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Composite;
@@ -17,7 +16,7 @@ public class FileLoadDataDialog
 	extends Dialog
 {
 	
-	private FileLoadDataAction fileLoadDataAction;
+//	private FileLoadDataAction fileLoadDataAction;
 
 	/**
 	 * Constructor.
@@ -45,8 +44,8 @@ public class FileLoadDataDialog
 	@Override
 	protected Control createDialogArea(Composite parent)
 	{
-		fileLoadDataAction = new FileLoadDataAction(parent);
-		fileLoadDataAction.run();
+//		fileLoadDataAction = new FileLoadDataAction(parent);
+//		fileLoadDataAction.run();
 
 		return parent;
 	}
@@ -54,7 +53,7 @@ public class FileLoadDataDialog
 	@Override
 	protected void okPressed()
 	{
-		fileLoadDataAction.execute();
+//		fileLoadDataAction.execute();
 		
 		super.okPressed();
 	}

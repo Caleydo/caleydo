@@ -89,6 +89,11 @@ public class PickingJoglMouseListener
 		return bLeftMouseButtonPressed;
 	}
 
+	public final boolean wasMouseDoubleClicked()
+	{
+		return bMouseDoubleClick;
+	}
+	
 	public final boolean wasRightMouseButtonPressed()
 	{
 		return bRightMouseButtonPressed;

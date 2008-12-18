@@ -6,7 +6,8 @@ import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoor
 import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.AXIS_MARKER_WIDTH;
 import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.AXIS_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.DESELECTED_POLYLINE_LINE_WIDTH;
-import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.GATE_COLOR;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.GATE_TIP_COLOR;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.GATE_BODY_COLOR;
 import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.MOUSE_OVER_POLYLINE_LINE_WIDTH;
 import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.NUMBER_AXIS_MARKERS;
 import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR;
@@ -28,6 +29,7 @@ import gleem.linalg.Vec3f;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -40,12 +42,15 @@ import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionItem;
+import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -54,15 +59,14 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener.EBusyModeState;
-import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
-import org.caleydo.core.view.opengl.util.EIconTextures;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -93,6 +97,8 @@ public class GLParallelCoordinates
 	private EIDType ePolylineDataType = EIDType.EXPRESSION_INDEX;
 
 	private boolean bIsDraggingActive = false;
+
+	private boolean bIsGateMouseOver = false;
 
 	private EPickingType draggedObject;
 
@@ -127,7 +133,12 @@ public class GLParallelCoordinates
 
 	private boolean bIsAngularBrushingFirstTime = false;
 
+	private boolean bIsGateDraggingFirstTime = false;
+
 	private boolean bIsAngularDraggingActive = false;
+
+	private float fGateTopSpacing;
+	private float fGateBottomSpacing;
 
 	private Vec3f vecAngularBrusingPoint;
 
@@ -205,6 +216,8 @@ public class GLParallelCoordinates
 			throw new IllegalStateException("Unknown data filter level");
 		}
 
+		generalManager.getEventPublisher().addSender(EMediatorType.PROPAGATION_MEDIATOR, this);
+
 		bRenderOnlyContext = false;
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
@@ -214,10 +227,9 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID,
-			final RemoteHierarchyLevel layer,
+	public void initRemote(final GL gl, final int iRemoteViewID, final RemoteLevel layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
-			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas)
+			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
 		bRenderOnlyContext = true;
 		dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
@@ -236,6 +248,7 @@ public class GLParallelCoordinates
 	@Override
 	public void init(final GL gl)
 	{
+
 		initData();
 
 		fXDefaultTranslation = renderStyle.getXSpacing();
@@ -269,6 +282,9 @@ public class GLParallelCoordinates
 
 		checkForHits(gl);
 		display(gl);
+
+		if (eBusyModeState != EBusyModeState.OFF)
+			renderBusyMode(gl);
 
 		pickingTriggerMouseAdapter.resetEvents();
 
@@ -350,9 +366,6 @@ public class GLParallelCoordinates
 		// }
 
 		gl.glDisable(GL.GL_STENCIL_TEST);
-		
-		if(eBusyModeState != EBusyModeState.OFF)
-			renderBusyMode(gl);
 	}
 
 	/**
@@ -466,7 +479,7 @@ public class GLParallelCoordinates
 		{
 			selection.setSelectionType(ESelectionType.ADD);
 		}
-		triggerUpdate(delta);
+		triggerUpdate(EMediatorType.PROPAGATION_MEDIATOR, delta, null);
 		setDisplayListDirty();
 	}
 
@@ -1116,13 +1129,23 @@ public class GLParallelCoordinates
 			return;
 		int iNumberAxis = set.getVA(iAxisVAID).size();
 
-		gl.glColor4fv(GATE_COLOR, 0);
-
 		final float fGateWidth = renderStyle.getGateWidth();
 		final float fGateTipHeight = renderStyle.getGateTipHeight();
 		int iCount = 0;
 		while (iCount < iNumberAxis)
 		{
+			float[] fArGateColor;
+			if ((bIsGateMouseOver || bIsDraggingActive) && iCount == iDraggedGateNumber
+					&& draggedObject == EPickingType.LOWER_GATE_TIP_SELECTION)
+			{
+				fArGateColor = POLYLINE_SELECTED_COLOR;
+				bIsGateMouseOver = false;
+			}
+			else
+			{
+				fArGateColor = GATE_TIP_COLOR;
+			}
+			gl.glColor4fv(fArGateColor, 0);
 			float fCurrentPosition = iCount * fAxisSpacing;
 
 			// The tip of the gate (which is pickable)
@@ -1172,6 +1195,7 @@ public class GLParallelCoordinates
 				}
 
 			}
+			gl.glColor4fv(GATE_BODY_COLOR, 0);
 			// The body of the gate
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.LOWER_GATE_BODY_SELECTION, iCount));
@@ -1193,6 +1217,18 @@ public class GLParallelCoordinates
 
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.LOWER_GATE_BOTTOM_SELECTION, iCount));
+
+			if ((bIsGateMouseOver || bIsDraggingActive) && iCount == iDraggedGateNumber
+					&& draggedObject == EPickingType.LOWER_GATE_BOTTOM_SELECTION)
+			{
+				fArGateColor = POLYLINE_SELECTED_COLOR;
+				bIsGateMouseOver = false;
+			}
+			else
+			{
+				fArGateColor = GATE_TIP_COLOR;
+			}
+			gl.glColor4fv(fArGateColor, 0);
 			// The bottom of the gate
 			gl.glBegin(GL.GL_POLYGON);
 			// variable
@@ -1316,53 +1352,45 @@ public class GLParallelCoordinates
 				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
 
 		float height = fArTargetWorldCoordinates[1];
+		if (bIsGateDraggingFirstTime)
+		{
+			fGateTopSpacing = fArGateTipHeight[iDraggedGateNumber] - height;
+			fGateBottomSpacing = height - fArGateBottomHeight[iDraggedGateNumber];
+			bIsGateDraggingFirstTime = false;
+		}
+		float fTipUpperLimit = renderStyle.getAxisHeight();
+		float fTipLowerLimit = fArGateBottomHeight[iDraggedGateNumber] + 2
+				* renderStyle.getGateTipHeight();
+		float fBottomLowerLimit = renderStyle.getGateMinimumValue()
+				- renderStyle.getGateTipHeight();
+		float fBottomUpperLimit = fArGateTipHeight[iDraggedGateNumber] - 2
+				* renderStyle.getGateTipHeight();
+
 		if (draggedObject == EPickingType.LOWER_GATE_TIP_SELECTION)
 		{
-			float fLowerLimit = fArGateBottomHeight[iDraggedGateNumber] + 2
-					* renderStyle.getGateTipHeight();
-
-			if (height > renderStyle.getAxisHeight())
-			{
-				height = renderStyle.getAxisHeight();
-			}
-			else if (height < 0)
-			{
-				height = 0;
-			}
-			else if (height < fLowerLimit)
-			{
-				height = fLowerLimit;
-			}
 
 			fArGateTipHeight[iDraggedGateNumber] = height;
 		}
 		else if (draggedObject == EPickingType.LOWER_GATE_BOTTOM_SELECTION)
 		{
-			float fLowerLimit = renderStyle.getGateMinimumValue()
-					- renderStyle.getGateTipHeight();
-			float fUpperLimit = fArGateTipHeight[iDraggedGateNumber] - 2
-					* renderStyle.getGateTipHeight();
-
-			if (height > renderStyle.getAxisHeight() - renderStyle.getGateTipHeight())
-			{
-				height = renderStyle.getAxisHeight() - renderStyle.getGateTipHeight();
-			}
-			else if (height < fLowerLimit)
-			{
-				height = fLowerLimit;// renderStyle.getGateYOffset() -
-				// renderStyle.getGateTipHeight();
-			}
-			else if (height > fUpperLimit)
-			{
-				height = fUpperLimit;
-			}
 
 			fArGateBottomHeight[iDraggedGateNumber] = height;
 		}
 		else if (draggedObject == EPickingType.LOWER_GATE_BODY_SELECTION)
 		{
+			fArGateTipHeight[iDraggedGateNumber] = height + fGateTopSpacing;
+			fArGateBottomHeight[iDraggedGateNumber] = height - fGateBottomSpacing;
 
 		}
+
+		if (fArGateTipHeight[iDraggedGateNumber] > fTipUpperLimit)
+			fArGateTipHeight[iDraggedGateNumber] = fTipUpperLimit;
+		if (fArGateTipHeight[iDraggedGateNumber] < fTipLowerLimit)
+			fArGateTipHeight[iDraggedGateNumber] = fTipLowerLimit;
+		if (fArGateBottomHeight[iDraggedGateNumber] > fBottomUpperLimit)
+			fArGateBottomHeight[iDraggedGateNumber] = fBottomUpperLimit;
+		if (fArGateBottomHeight[iDraggedGateNumber] < fBottomLowerLimit)
+			fArGateBottomHeight[iDraggedGateNumber] = fBottomLowerLimit;
 
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
@@ -1413,6 +1441,8 @@ public class GLParallelCoordinates
 
 	}
 
+	// TODO: revise this, not very performance friendly, especially the clearing
+	// of the DESELECTED
 	@Override
 	protected void checkUnselection()
 	{
@@ -1445,12 +1475,9 @@ public class GLParallelCoordinates
 
 		polylineSelectionManager.clearSelection(ESelectionType.DESELECTED);
 
-		for (Integer iCurrent : set.getVA(iPolylineVAID))
+		for (int iCurrent : hashDeselectedPolylines.keySet())
 		{
-			if (hashDeselectedPolylines.get(iCurrent) != null)
-			{
-				polylineSelectionManager.addToType(ESelectionType.DESELECTED, iCurrent);
-			}
+			polylineSelectionManager.addToType(ESelectionType.DESELECTED, iCurrent);
 		}
 	}
 
@@ -1470,8 +1497,7 @@ public class GLParallelCoordinates
 
 				switch (ePickingMode)
 				{
-
-					case CLICKED:
+					case DOUBLE_CLICKED:
 						// if (bIsAngularBrushingActive)
 						// break;
 
@@ -1489,11 +1515,24 @@ public class GLParallelCoordinates
 						polylineSelectionManager.addToType(ESelectionType.SELECTION,
 								iExternalID);
 
-						if (!bAngularBrushingSelectPolyline)
-							triggerUpdate(polylineSelectionManager.getDelta());
+						polylineSelectionManager.addConnectionID(generalManager.getIDManager()
+								.createID(EManagedObjectType.CONNECTION), iExternalID);
+
+						if (ePolylineDataType == EIDType.EXPRESSION_INDEX
+								&& !bAngularBrushingSelectPolyline)
+						{
+							Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
+							colSelectionCommand.add(new SelectionCommand(ESelectionCommandType.CLEAR,
+									ESelectionType.MOUSE_OVER));
+							
+							triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
+									polylineSelectionManager.getDelta(), colSelectionCommand);
+
+						}
 
 						setDisplayListDirty();
 						break;
+					case CLICKED:
 					case MOUSE_OVER:
 						// if (bIsAngularBrushingActive)
 						// break;
@@ -1503,14 +1542,23 @@ public class GLParallelCoordinates
 						polylineSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
 						polylineSelectionManager.addToType(ESelectionType.MOUSE_OVER,
 								iExternalID);
-
-						triggerUpdate(polylineSelectionManager.getDelta());
-
+						polylineSelectionManager.addConnectionID(generalManager.getIDManager()
+								.createID(EManagedObjectType.CONNECTION), iExternalID);
+						if (ePolylineDataType == EIDType.EXPRESSION_INDEX)
+						{
+							Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
+							colSelectionCommand.add(new SelectionCommand(ESelectionCommandType.CLEAR,
+									ESelectionType.MOUSE_OVER)); 
+							
+							triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
+									polylineSelectionManager.getDelta(), colSelectionCommand);
+						}
 						setDisplayListDirty();
 						break;
 				}
 				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
+
 
 			case X_AXIS_SELECTION:
 				pickingManager.flushHits(iUniqueID, ePickingType);
@@ -1526,7 +1574,17 @@ public class GLParallelCoordinates
 
 						connectedElementRepresentationManager.clear(eAxisDataType);
 
-						triggerUpdate(axisSelectionManager.getDelta());
+						triggerUpdate(EMediatorType.SELECTION_MEDIATOR, axisSelectionManager.getDelta(), null);
+
+
+						if (eAxisDataType == EIDType.EXPRESSION_INDEX)
+						{
+							Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
+							colSelectionCommand.add(new SelectionCommand(ESelectionCommandType.CLEAR,
+									ESelectionType.MOUSE_OVER));
+							triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
+									axisSelectionManager.getDelta(), colSelectionCommand);
+						}
 
 						rePosition(iExternalID);
 						setDisplayListDirty();
@@ -1537,10 +1595,15 @@ public class GLParallelCoordinates
 						axisSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
 						axisSelectionManager.addToType(ESelectionType.MOUSE_OVER, iExternalID);
 
-						connectedElementRepresentationManager.clear(eAxisDataType);
-
-						triggerUpdate(axisSelectionManager.getDelta());
-
+						if (bRenderStorageHorizontally)
+						{
+							connectedElementRepresentationManager.clear(eAxisDataType);
+						}
+						if (eAxisDataType == EIDType.EXPRESSION_INDEX)
+						{
+							triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
+									axisSelectionManager.getDelta(), null);
+						}
 						setDisplayListDirty();
 						break;
 				}
@@ -1550,32 +1613,69 @@ public class GLParallelCoordinates
 			case LOWER_GATE_TIP_SELECTION:
 				switch (ePickingMode)
 				{
+					case MOUSE_OVER:
+						bIsGateMouseOver = true;
+						iDraggedGateNumber = iExternalID;
+						draggedObject = EPickingType.LOWER_GATE_TIP_SELECTION;
+						setDisplayListDirty();
+						break;
 					case CLICKED:
 						bIsDraggingActive = true;
 						draggedObject = EPickingType.LOWER_GATE_TIP_SELECTION;
 						iDraggedGateNumber = iExternalID;
 						break;
-					case DRAGGED:
-						bIsDraggingActive = true;
-						draggedObject = EPickingType.LOWER_GATE_TIP_SELECTION;
-						iDraggedGateNumber = iExternalID;
-						break;
+					// case DRAGGED:
+					// bIsDraggingActive = true;
+					// draggedObject = EPickingType.LOWER_GATE_TIP_SELECTION;
+					// iDraggedGateNumber = iExternalID;
+					// break;
+
 				}
 				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 			case LOWER_GATE_BOTTOM_SELECTION:
 				switch (ePickingMode)
 				{
+					case MOUSE_OVER:
+						bIsGateMouseOver = true;
+						iDraggedGateNumber = iExternalID;
+						draggedObject = EPickingType.LOWER_GATE_BOTTOM_SELECTION;
+						setDisplayListDirty();
+						break;
 					case CLICKED:
 						bIsDraggingActive = true;
 						draggedObject = EPickingType.LOWER_GATE_BOTTOM_SELECTION;
 						iDraggedGateNumber = iExternalID;
 						break;
-					case DRAGGED:
+					// case DRAGGED:
+					// bIsDraggingActive = true;
+					// draggedObject = EPickingType.LOWER_GATE_BOTTOM_SELECTION;
+					// iDraggedGateNumber = iExternalID;
+					// break;
+				}
+				pickingManager.flushHits(iUniqueID, ePickingType);
+				break;
+
+			case LOWER_GATE_BODY_SELECTION:
+				switch (ePickingMode)
+				{
+					case MOUSE_OVER:
+						bIsGateMouseOver = true;
+						iDraggedGateNumber = iExternalID;
+						draggedObject = EPickingType.LOWER_GATE_BODY_SELECTION;
+						setDisplayListDirty();
+						break;
+					case CLICKED:
 						bIsDraggingActive = true;
-						draggedObject = EPickingType.LOWER_GATE_BOTTOM_SELECTION;
+						bIsGateDraggingFirstTime = true;
+						draggedObject = EPickingType.LOWER_GATE_BODY_SELECTION;
 						iDraggedGateNumber = iExternalID;
 						break;
+					// case DRAGGED:
+					// bIsDraggingActive = true;
+					// draggedObject = EPickingType.LOWER_GATE_BODY_SELECTION;
+					// iDraggedGateNumber = iExternalID;
+					// break;
 				}
 				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;

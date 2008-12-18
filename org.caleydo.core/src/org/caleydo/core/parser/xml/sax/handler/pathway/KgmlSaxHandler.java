@@ -254,10 +254,11 @@ public class KgmlSaxHandler
 
 				if (iDavidId == null)
 				{
-					generalManager.getLogger().log(
-							Level.WARNING,
-							"NCBI Gene ID " + sTmpVertexName
-									+ " cannot be mapped to David ID.");
+					// TODO: what should we do in this case?
+//					generalManager.getLogger().log(
+//							Level.WARNING,
+//							"NCBI Gene ID " + sTmpVertexName
+//									+ " cannot be mapped to David ID.");
 
 					continue;
 				}

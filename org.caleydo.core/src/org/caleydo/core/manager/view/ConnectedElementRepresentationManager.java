@@ -41,34 +41,6 @@ public class ConnectedElementRepresentationManager
 		hashIDTypes = new HashMap<EIDType, HashMap<Integer, ArrayList<SelectedElementRep>>>();
 	}
 
-	/**
-	 * Modify a selection in a way specified by selectionMode
-	 * 
-	 * @param iElementID
-	 * @param selectedElementRep
-	 * @param selectionMode
-	 */
-
-	public void modifySelection(int iElementID, final SelectedElementRep selectedElementRep,
-			final ESelectionMode selectionMode)
-	{
-		iElementID = 0;
-		switch (selectionMode)
-		{
-			case ADD_PICK:
-				addSelection(iElementID, selectedElementRep);
-				break;
-			case REMOVE_PICK:
-				removeSelection(iElementID, selectedElementRep);
-				break;
-			case REPLACE_PICK:
-				clear(selectedElementRep.getIDType());
-				addSelection(iElementID, selectedElementRep);
-				break;
-			default:
-				throw new IllegalArgumentException("No selection mode specified");
-		}
-	}
 
 	/**
 	 * Add a selection
@@ -86,7 +58,7 @@ public class ConnectedElementRepresentationManager
 			hashIDTypes.put(selectedElementRep.getIDType(), tmpHash);
 		}
 		// FIXME temp hack
-		iElementID = 0;
+		//iElementID = 0;
 		if (!tmpHash.containsKey(iElementID))
 		{
 			tmpHash.put(iElementID, new ArrayList<SelectedElementRep>());
@@ -140,7 +112,6 @@ public class ConnectedElementRepresentationManager
 	 */
 	public Set<Integer> getIDList(EIDType idType)
 	{
-
 		return hashIDTypes.get(idType).keySet();
 	}
 
@@ -180,7 +151,7 @@ public class ConnectedElementRepresentationManager
 		if (!hashIDTypes.containsKey(eIDType))
 			return;
 		
-		HashMap tmp = hashIDTypes.get(eIDType);
+		HashMap<Integer, ArrayList<SelectedElementRep>> tmp = hashIDTypes.get(eIDType);
 		tmp.clear();
 		//hashIDTypes.remove(eIDType);
 		

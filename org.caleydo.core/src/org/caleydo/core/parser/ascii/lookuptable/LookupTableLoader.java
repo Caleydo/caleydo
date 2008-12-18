@@ -133,6 +133,7 @@ public class LookupTableLoader
 								}
 								catch (NumberFormatException e)
 								{
+//									System.out.println(buffer + " " + (iLineInFile - iStartParsingAtLine));
 									genomeIdManager.getMapping(mappingType).put(buffer,
 											iLineInFile - iStartParsingAtLine);
 								}
@@ -192,18 +193,18 @@ public class LookupTableLoader
 					iStopParsingAtLine = -1;
 
 				}
-				catch (NullPointerException npe)
-				{
-					bMaintainLoop = false;
-
-					// reset return value to indicate error
-					iStopParsingAtLine = 1;
-
-					System.out.println("LookupTableHashMapLoader NullPointerException! "
-							+ npe.toString());
-					npe.printStackTrace();
-
-				}
+//				catch (NullPointerException npe)
+//				{
+//					bMaintainLoop = false;
+//
+//					// reset return value to indicate error
+//					iStopParsingAtLine = 1;
+//
+//					System.out.println("LookupTableHashMapLoader NullPointerException! "
+//							+ npe.toString());
+//					npe.printStackTrace();
+//
+//				}
 			}
 
 			iLineInFile++;

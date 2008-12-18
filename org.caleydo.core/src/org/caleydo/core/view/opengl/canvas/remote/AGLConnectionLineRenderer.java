@@ -12,7 +12,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 
 /**
  * Class is responsible for rendering and drawing of connection lines (resp.
@@ -23,9 +23,9 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
  */
 public abstract class AGLConnectionLineRenderer
 {
-	protected RemoteHierarchyLevel underInteractionLayer;
+	protected RemoteLevel focusLevel;
 
-	protected RemoteHierarchyLevel stackLayer;
+	protected RemoteLevel stackLevel;
 
 	protected ConnectedElementRepresentationManager connectedElementRepManager;
 
@@ -36,11 +36,11 @@ public abstract class AGLConnectionLineRenderer
 	/**
 	 * Constructor.
 	 */
-	public AGLConnectionLineRenderer(final RemoteHierarchyLevel underInteractionLayer,
-			final RemoteHierarchyLevel stackLayer, final RemoteHierarchyLevel poolLayer)
+	public AGLConnectionLineRenderer(final RemoteLevel underInteractionLayer,
+			final RemoteLevel stackLayer, final RemoteLevel poolLayer)
 	{
-		this.underInteractionLayer = underInteractionLayer;
-		this.stackLayer = stackLayer;
+		this.focusLevel = underInteractionLayer;
+		this.stackLevel = stackLayer;
 
 		connectedElementRepManager = GeneralManager.get().getViewGLCanvasManager()
 				.getConnectedElementRepresentationManager();
@@ -142,7 +142,10 @@ public abstract class AGLConnectionLineRenderer
 		// alPoints.get(alPoints.size()-1).y(), alPoints.get(0).z());
 		gl.glEnd();
 
-		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR_1, 0);
+//		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR_1, 0);
+
+		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
+
 		gl.glLineWidth(2);
 		gl.glBegin(GL.GL_LINES);
 		for (Vec3f vecCurrent : alPoints)
@@ -184,15 +187,22 @@ public abstract class AGLConnectionLineRenderer
 			final int iNumberOfLines, float[] fArColor)
 	{
 		// Line shadow
-		gl.glColor4f(0.3f, 0.3f, 0.3f, 1);// , 0.6f);
-		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + iNumberOfLines + 4);
+		//gl.glColor4f(0.3f, 0.3f, 0.3f, 1);// , 0.6f);
+		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, 0);
+//		gl.glColor4f(28/255f, 122/255f, 254/255f, 1f);
+		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 1.5f);
 		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z() - 0.001f);
 		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z() - 0.001f);
 		gl.glEnd();
 
-		gl.glColor4fv(fArColor, 0);
-		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + iNumberOfLines);
+
+//		gl.glColor4fv(fArColor, 0);
+
+		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
+//		gl.glColor4f(254/255f, 160/255f, 28/255f, 1f);
+		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
+
 		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z());
 		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z());
@@ -229,18 +239,9 @@ public abstract class AGLConnectionLineRenderer
 		gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, 3, splinePoints); 
 		
 		// Line shadow
-		gl.glColor4f(0.3f, 0.3f, 0.3f, 1);// , 0.6f);
-		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + iNumberOfLines + 4);
-		
-//		gl.glPointSize(5);
-//		gl.glBegin(GL.GL_POINTS);
-//		for (int i=0; i<=10; i++)
-//		{
-//			gl.glEvalCoord1f((float)(i)/10);
-//		}
-//		gl.glEnd();
-//		
-		
+		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, 0);
+//		gl.glColor4f(28/255f, 122/255f, 254/255f, 1f);
+		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 2);
 		gl.glBegin(GL.GL_LINE_STRIP);
 		for (int i=0; i<=10; i++)
 		{
@@ -248,9 +249,12 @@ public abstract class AGLConnectionLineRenderer
 		}
 		gl.glEnd();
 		
-		gl.glColor4fv(fArColor, 0);
+//		gl.glColor4fv(fArColor, 0);
+		// Point to mask artefacts		
+		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
+//		gl.glColor4f(254/255f, 160/255f, 28/255f, 1f);
 				
-		gl.glPointSize(3.2f);
+		gl.glPointSize(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH-0.5f);
 		gl.glBegin(GL.GL_POINTS);
 		for (int i=0; i<=10; i++)
 		{
@@ -258,7 +262,8 @@ public abstract class AGLConnectionLineRenderer
 		}
 		gl.glEnd();
 
-		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + iNumberOfLines);
+		// The spline
+		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
 		
 		gl.glBegin(GL.GL_LINE_STRIP);
 		for (int i=0; i<=10; i++)
@@ -300,7 +305,7 @@ public abstract class AGLConnectionLineRenderer
 ////		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z() - 0.001f);
 ////		gl.glEnd();
 //
-//		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_AREA_LINE_COLOR, 0);
+//		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
 //		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + iNumberOfLines);
 //		gl.glBegin(GL.GL_LINES);
 //

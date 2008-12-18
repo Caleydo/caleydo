@@ -30,6 +30,7 @@ import org.eclipse.swt.widgets.TableItem;
  * @see org.caleydo.core.view.IView
  * @author Sauer Stefan
  */
+// FIXME again bad hack, does not implement IMediator interfaces
 public class GlyphDataExportViewRep
 	extends AView
 	implements IView

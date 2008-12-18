@@ -22,7 +22,6 @@ public enum ECommandType
 	SET_DATA_REPRESENTATION("cmd", "type", "-1", "Set data representation (Raw, Log2, Log10)"),
 	DATA_FILTER_MIN_MAX("cmd", "type", "-1", "Evaluate min and max of an entity"),
 
-	CREATE_EVENT_MEDIATOR("cmd", "type", null, "Create Event Mediator"),
 	EVENT_MEDIATOR_ADD_OBJECT("cmd", "type", null, "Add Objects ad sender or receiver to Event Mediator"),
 
 	CREATE_GL_HEAT_MAP_3D("cmd", "type", "-1", "Create Heat Map"),
@@ -37,6 +36,8 @@ public enum ECommandType
 	CREATE_GL_WII_TEST("cmd", "type", "-1", "No description available!"),
 	CREATE_GL_REMOTE_GLYPH("cmd", "type", "-1", "Create Remote Glyph"),
 	CREATE_GL_CELL("cmd", "type", "-1", "Create Cell Component Localizer"),
+	CREATE_GL_PANEL_SELECTION("cmd", "type", "-1", "Create Selection Panel"),
+
 
 	EXTERNAL_OBJECT_SETTER("cmd", "type", "-1", "External object setter"),
 	EXTERNAL_FLAG_SETTER("cmd", "type", "-1", "External flag setter"),

@@ -1,15 +1,15 @@
 package org.caleydo.core.view.swt.data.search;
 
-import java.util.ArrayList;
-import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.event.CmdEventCreateMediator;
+import java.util.Collection;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.AView;
@@ -27,7 +27,6 @@ public class DataEntitySearcherViewRep
 extends AView 
 implements IMediatorSender{;
 
-	
 	/**
 	 * Constructor.
 	 * 
@@ -38,18 +37,9 @@ implements IMediatorSender{;
 		super(iParentContainerId, 
 				sLabel,
 				ViewType.SWT_DATA_ENTITY_SEARCHER);
-	}
-	
-	public void setAttributes(final ArrayList<Integer> iAlViewReceiverIDs) {
-
-		CmdEventCreateMediator tmpMediatorCmd = (CmdEventCreateMediator) generalManager.getCommandManager()
-			.createCommandByType(ECommandType.CREATE_EVENT_MEDIATOR);
 		
-		ArrayList<Integer> iAlSenderIDs = new ArrayList<Integer>();
-		iAlSenderIDs.add(iUniqueID);
-		
-		tmpMediatorCmd.setAttributes(iAlSenderIDs, iAlViewReceiverIDs, EMediatorType.SELECTION_MEDIATOR);
-		tmpMediatorCmd.doCommand();
+		GeneralManager.get().getEventPublisher().addSender(
+				EMediatorType.SELECTION_MEDIATOR, this);
 	}
 	
 	public boolean searchForEntity(final String sEntity) {
@@ -85,23 +75,22 @@ implements IMediatorSender{;
 
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.PATHWAY);
 		selectionDelta.addSelection(iPathwayID, ESelectionType.SELECTION);
-		triggerUpdate(selectionDelta);
+		triggerUpdate(EMediatorType.SELECTION_MEDIATOR, selectionDelta, null);
 		
 		return true;
 	}
 	
 	private boolean searchForRefSeq(final String sEntity) {
 		
-		int iDavidID = generalManager.getIDMappingManager().getID(
+		Integer iDavidID = generalManager.getIDMappingManager().getID(
 				EMappingType.REFSEQ_MRNA_2_DAVID, sEntity);
 		
-		if (iDavidID == -1)
+		if (iDavidID == null || iDavidID == -1)
 			return false;
 		
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.DAVID);
 		selectionDelta.addSelection(iDavidID, ESelectionType.SELECTION);
-		triggerUpdate(selectionDelta);
-	
+		triggerUpdate(EMediatorType.SELECTION_MEDIATOR, selectionDelta, null);
 		return true;
 	}
 	
@@ -118,22 +107,22 @@ implements IMediatorSender{;
 		
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.DAVID);
 		selectionDelta.addSelection(iDavidID, ESelectionType.SELECTION);
-		triggerUpdate(selectionDelta);
+		triggerUpdate(EMediatorType.SELECTION_MEDIATOR, selectionDelta, null);
 		
 		return true;
 	}
 	
 	private boolean searchForGeneShortName(final String sEntity) {
 		
-		int iDavidID = generalManager.getIDMappingManager().getID(
-				EMappingType.GENE_SYMBOL_2_DAVID, sEntity);
+		Integer iDavidID = generalManager.getIDMappingManager().getID(
+				EMappingType.GENE_SYMBOL_2_DAVID, sEntity.toUpperCase());
 		
-		if (iDavidID == -1)
+		if (iDavidID == null || iDavidID == -1)
 			return false;
 		
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.DAVID);
 		selectionDelta.addSelection(iDavidID, ESelectionType.SELECTION);
-		triggerUpdate(selectionDelta);
+		triggerUpdate(EMediatorType.SELECTION_MEDIATOR, selectionDelta, null);
 
 		return true;
 	}
@@ -153,8 +142,8 @@ implements IMediatorSender{;
 	}
 
 	@Override
-	public void triggerUpdate(ISelectionDelta selectionDelta)
+	public void triggerUpdate(EMediatorType eMediatorType, ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
 	{
-		generalManager.getEventPublisher().handleUpdate(this, selectionDelta);
+		generalManager.getEventPublisher().triggerUpdate(eMediatorType, this, selectionDelta, null);
 	}
 }

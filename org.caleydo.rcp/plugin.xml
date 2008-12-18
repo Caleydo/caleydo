@@ -182,11 +182,6 @@
             name="Full Screen">
       </command>
       <command
-            defaultHandler="org.caleydo.rcp.command.handler.LoadDataHandler"
-            id="org.caleydo.rcp.command.loaddata"
-            name="Load Data">
-      </command>
-      <command
             defaultHandler="org.caleydo.rcp.command.handler.view.OpenHeatMapHandler"
             id="org.caleydo.rcp.command.openviews.heatmap"
             name="Open Heatmap">
@@ -257,7 +252,7 @@
                id="fileMenu"
                label="File">
             <command
-                  commandId="org.caleydo.rcp.command.loaddata"
+                  commandId="org.caleydo.rcp.command.openviews.tabulardata"
                   label="Load Data"
                   style="push">
             </command>

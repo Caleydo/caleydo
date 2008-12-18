@@ -38,7 +38,8 @@ public class Application
 	private static String BOOTSTRAP_FILE_SAMPLE_DATA_MODE = "data/bootstrap/shared/sample/bootstrap_gene_expression_sample.xml";
 	private static String BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE = "data/bootstrap/shared/webstart/bootstrap_webstart_pathway_viewer.xml";
 
-	private static String REAL_DATA_SAMPLE_FILE = "data/genome/microarray/sample/sample_microarray_dataset.csv";
+	private static String REAL_DATA_SAMPLE_FILE = "data/genome/microarray/sample/HCC_sample_dataset.csv";
+//	private static String REAL_DATA_SAMPLE_FILE = "data/genome/microarray/sample/sample_microarray_dataset.csv";
 	
 	public static CaleydoBootloader caleydoCore;
 
@@ -58,7 +59,7 @@ public class Application
 	@SuppressWarnings("unchecked")
 	public Object start(IApplicationContext context) throws Exception
 	{
-		System.out.println("Start Caleydo...");
+//		System.out.println("Start Caleydo...");
 
 		alStartViews = new ArrayList<EStartViewType>();
 
@@ -114,6 +115,9 @@ public class Application
 			}
 		}
 
+//		 System.setProperty("network.proxy_host", "webproxy.kages.at");
+//		 System.setProperty("network.proxy_port", "80");
+		
 		rcpGuiBridge = new RCPBridge();
 
 		// Create Caleydo core
@@ -257,20 +261,22 @@ public class Application
 			caleydoCore.start();
 		}
 
-		if (!bDoExit)
-		{
-			// Trigger pathway loading
-			new PathwayLoadingProgressIndicatorAction().run(null);
-		}
-
 		initializeColorMapping();
 		// initializeViewSettings();
 
 		openViewsInRCP();
 
-		// Register the info area to all mediator from type SELECTION
-		GeneralManager.get().getEventPublisher().registerReceiverToMediatorGroup(
+		if (!bDoExit)
+		{
+			// Trigger pathway loading
+			new PathwayLoadingProgressIndicatorAction().run(null);
+		}
+		
+		// Register the info area to all mediator from type SELECTION and VIEW_SELECTION
+		GeneralManager.get().getEventPublisher().addReceiver(
 				EMediatorType.SELECTION_MEDIATOR, InfoArea.getInfoArea());
+		GeneralManager.get().getEventPublisher().addReceiver(
+				EMediatorType.VIEW_SELECTION, InfoArea.getInfoArea());
 
 		if (GeneralManager.get().isStandalone())
 		{

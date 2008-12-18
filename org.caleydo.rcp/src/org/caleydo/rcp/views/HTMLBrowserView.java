@@ -1,5 +1,6 @@
 package org.caleydo.rcp.views;
 
+import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -23,6 +24,9 @@ public class HTMLBrowserView
 		browserView.initViewRCP(parent);
 		browserView.drawView();
 
+		GeneralManager.get().getEventPublisher().addReceiver(
+				EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver)browserView);
+		
 		GeneralManager.get().getViewGLCanvasManager().registerItem(browserView);
 	}
 
@@ -37,7 +41,13 @@ public class HTMLBrowserView
 	{
 		super.dispose();
 		
-		GeneralManager.get().getEventPublisher().removeReceiver((IMediatorReceiver)browserView);
+		GeneralManager.get().getEventPublisher().removeReceiver(
+				EMediatorType.SELECTION_MEDIATOR,
+				(IMediatorReceiver)browserView);
+
+		GeneralManager.get().getEventPublisher().removeReceiver(
+				EMediatorType.SELECTION_MEDIATOR,
+				(IMediatorReceiver)browserView);
 		
 		GeneralManager.get().getViewGLCanvasManager()
 			.unregisterItem(browserView.getID());

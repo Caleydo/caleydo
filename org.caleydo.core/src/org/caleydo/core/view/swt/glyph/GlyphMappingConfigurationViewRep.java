@@ -30,6 +30,8 @@ import org.eclipse.swt.widgets.Composite;
  * @see org.caleydo.core.view.IView
  * @author Sauer Stefan
  */
+
+//FIXME: bad hack, should implement IMediatorReciever
 public class GlyphMappingConfigurationViewRep
 	extends AView
 	implements IView

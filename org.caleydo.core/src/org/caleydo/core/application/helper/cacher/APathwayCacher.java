@@ -56,8 +56,8 @@ public abstract class APathwayCacher
 							
 							progressBar.setSelection((int)(iDownloadCount * 100f / iExpectedDownloads));
 
-							 System.out.println("Download count: "
-							 +iDownloadCount);
+//							 System.out.println("Download count: "
+//							 +iDownloadCount);
 //							 System.out.println("Percentage: "
 //							 +(int)(iDownloadCount * 100f / EXPECTED_DOWNLOADS));
 						}

@@ -8,7 +8,10 @@ import org.caleydo.core.manager.data.IStorageManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 
 /**
- * @author Michael Kalkusch
+ * Manager for storage objects.
+ * 
+ * @author Alexander Lex
+ * @author Marc Streit
  */
 public class StorageManager
 	extends AManager<IStorage>

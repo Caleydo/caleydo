@@ -17,6 +17,8 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -28,13 +30,13 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
-import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.miniview.slider.GLDistributionMiniView;
 import org.caleydo.core.view.opengl.miniview.slider.GLSliderMiniView;
 import org.caleydo.core.view.opengl.mouse.JoglMouseListener;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.border.BorderRenderStyleLineSolid;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
@@ -89,7 +91,8 @@ public class GLGlyphSliderView
 		alGlyphAttributeTypes = new ArrayList<GlyphAttributeType>();
 		alGridPosition = new ArrayList<Vec2f>();
 
-		selectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
+		selectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX)
+				.build();
 		viewType = EManagedObjectType.GL_GLYPH_SLIDER;
 	}
 
@@ -213,10 +216,9 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID,
-			final RemoteHierarchyLevel layer,
+	public void initRemote(final GL gl, final int iRemoteViewID, final RemoteLevel layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
-			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas)
+			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 
 	{
 
@@ -368,9 +370,12 @@ public class GLGlyphSliderView
 				}
 
 				generalManager.getViewGLCanvasManager()
-						.getConnectedElementRepresentationManager().clear(EIDType.EXPERIMENT_INDEX);
+						.getConnectedElementRepresentationManager().clear(
+								EIDType.EXPERIMENT_INDEX);
 
-				triggerUpdate(selectionManager.getDelta());
+				triggerUpdate(EMediatorType.SELECTION_MEDIATOR, selectionManager.getDelta(),
+						null);
+
 			}
 		}
 
@@ -415,13 +420,16 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	public void triggerUpdate(ISelectionDelta selectionDelta)
+	public void triggerUpdate(EMediatorType eMediatorType, ISelectionDelta selectionDelta,
+			Collection<SelectionCommand> colSelectionCommand)
 	{
-		generalManager.getEventPublisher().handleUpdate(this, selectionDelta);
+		generalManager.getEventPublisher().triggerUpdate(eMediatorType, this, selectionDelta,
+				null);
 	}
 
 	@Override
-	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta)
+	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
+			Collection<SelectionCommand> colSelectionCommand, EMediatorType eMediatorType)
 	{
 		// TODO Auto-generated method stub
 	}
@@ -430,5 +438,11 @@ public class GLGlyphSliderView
 	public void broadcastElements(ESelectionType type)
 	{
 
+	}
+
+	@Override
+	public int getNumberOfSelections(ESelectionType eSelectionType)
+	{
+		throw new IllegalStateException("Not implemented yet. Do this now!");
 	}
 }

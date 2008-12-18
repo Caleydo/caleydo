@@ -1,6 +1,6 @@
 package org.caleydo.core.view.opengl.util.slerp;
 
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 
 /**
  * Slerp action in 3D scene.
@@ -9,135 +9,63 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
  */
 public class SlerpAction
 {
-	private int iElementId = -1;
+	private int iElementID = -1;
 
-	private RemoteHierarchyLevel originHierarchyLayer;
+	private RemoteLevelElement originRemoteLevelElement;
 
-	private RemoteHierarchyLevel destinationHierarchyLayer;
-
-	private int iOriginPosIndex = -1;
-
-	private int iDestinationPosIndex = -1;
+	private RemoteLevelElement destinationRemoteLevelElement;
 
 	/**
 	 * Constructor.
-	 * 
-	 * @param iElementId
-	 * @param originHierarchyLayer
-	 * @param bSlerpUpInHierarchy
 	 */
-	public SlerpAction(int iElementId, RemoteHierarchyLevel originHierarchyLayer,
-			boolean bSlerpUpInHierarchy)
+	public SlerpAction(int iElementID, RemoteLevelElement originRemoteLevelElement,
+			RemoteLevelElement destinationRemoteLevelElement)
 	{
-		if (bSlerpUpInHierarchy)
-			destinationHierarchyLayer = originHierarchyLayer.getParentLayer();
-		else
-			destinationHierarchyLayer = originHierarchyLayer.getChildLayer();
-
-		init(iElementId, originHierarchyLayer, destinationHierarchyLayer);
+		this.originRemoteLevelElement = originRemoteLevelElement;
+		this.destinationRemoteLevelElement = destinationRemoteLevelElement;
+		this.iElementID = iElementID;
 	}
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param iElementId
-	 * @param originHierarchyLayer
-	 * @param destinationHierarchyLayer
 	 */
-	public SlerpAction(int iElementId, RemoteHierarchyLevel originHierarchyLayer,
-			RemoteHierarchyLevel destinationHierarchyLayer)
+	public SlerpAction(RemoteLevelElement originRemoteLevelElement,
+			RemoteLevelElement destinationRemoteLevelElement)
 	{
-		init(iElementId, originHierarchyLayer, destinationHierarchyLayer);
-	}
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param iElementId
-	 * @param originHierarchyLayer
-	 * @param destinationHierarchyLayer
-	 * @param iDestinationPosIndex
-	 */
-	public SlerpAction(int iElementId, RemoteHierarchyLevel originHierarchyLayer,
-			RemoteHierarchyLevel destinationHierarchyLayer, int iDestinationPosIndex)
-	{
-		this.iDestinationPosIndex = iDestinationPosIndex;
-		init(iElementId, originHierarchyLayer, destinationHierarchyLayer);
-	}
-
-	private void init(int iElementId, RemoteHierarchyLevel originHierarchyLayer,
-			RemoteHierarchyLevel destinationHierarchyLayer)
-	{
-		this.iElementId = iElementId;
-		this.originHierarchyLayer = originHierarchyLayer;
-		this.destinationHierarchyLayer = destinationHierarchyLayer;
+		this.originRemoteLevelElement = originRemoteLevelElement;
+		this.destinationRemoteLevelElement = destinationRemoteLevelElement;
+		this.iElementID = originRemoteLevelElement.getContainedElementID();
 	}
 
 	public void start()
 	{
-		iOriginPosIndex = originHierarchyLayer.getPositionIndexByElementId(iElementId);
-
-		if (iOriginPosIndex == -1)
-		{			
-			throw new IllegalStateException("Element with ID " + iElementId + 
-					" does not exist in " +originHierarchyLayer);		
-		}
-		
-		if (iDestinationPosIndex == -1)
-		{
-			this.iDestinationPosIndex = destinationHierarchyLayer.getNextPositionIndex();
-			
-			if (iDestinationPosIndex == -1)
-				throw new IllegalStateException("Cannot add " + iElementId + " to " + destinationHierarchyLayer);
-		}
-
-		originHierarchyLayer.removeElement(iElementId);
-
-		if (destinationHierarchyLayer.getElementList().size() < destinationHierarchyLayer
-				.getCapacity())
-		{
-			destinationHierarchyLayer.addElement(iElementId);
-		}
-		else
-		{
-			destinationHierarchyLayer.replaceElement(iElementId, iDestinationPosIndex);
-		}
+		originRemoteLevelElement.setContainedElementID(-1);
 	}
 
+	public void finished()
+	{
+		destinationRemoteLevelElement.setContainedElementID(iElementID);
+	}
+	
 	public int getElementId()
 	{
-		return iElementId;
+		return iElementID;
 	}
 
-	public RemoteHierarchyLevel getOriginHierarchyLevel()
+	public RemoteLevelElement getOriginRemoteLevelElement()
 	{
-		if (originHierarchyLayer == null)
+		if (originRemoteLevelElement == null)
 			throw new IllegalStateException("Slerp origin layer is null!");
 
-		return originHierarchyLayer;
+		return originRemoteLevelElement;
 	}
 
-	public RemoteHierarchyLevel getDestinationHierarchyLevel()
+	public RemoteLevelElement getDestinationRemoteLevelElement()
 	{
-		if (destinationHierarchyLayer == null)
+		if (destinationRemoteLevelElement == null)
 			throw new IllegalStateException("Slerp destination layer is null!");
 
-		return destinationHierarchyLayer;
-	}
-
-	public int getOriginPosIndex()
-	{
-		if (iOriginPosIndex == -1)
-			throw new IllegalStateException("Invalid slerp origin position (-1)!");
-
-		return iOriginPosIndex;
-	}
-
-	public int getDestinationPosIndex()
-	{
-		if (iDestinationPosIndex == -1)
-			throw new IllegalStateException("Invalid slerp destination position (-1)!");
-
-		return iDestinationPosIndex;
+		return destinationRemoteLevelElement;
 	}
 }

@@ -3,6 +3,9 @@ package org.caleydo.rcp.views;
 import java.util.ArrayList;
 
 import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.manager.event.mediator.EMediatorType;
+import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
+import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
@@ -95,7 +98,7 @@ public class GLParCoordsView
 		createGLCanvas();
 		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION, 
 				glCanvas.getID(), true);
-
+		
 		createToolBarItems(iGLEventListenerID);
 
 		IToolBarManager toolBarManager = getViewSite().getActionBars().getToolBarManager();

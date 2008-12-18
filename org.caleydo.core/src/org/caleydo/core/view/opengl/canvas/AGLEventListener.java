@@ -26,14 +26,15 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.camera.ViewCameraBase;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
-import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering3D;
+import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
-import org.caleydo.core.view.opengl.util.EIconTextures;
-import org.caleydo.core.view.opengl.util.GLIconTextureManager;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteHierarchyLevel;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
+
 
 /**
  * Abstract class for OpenGL views.
@@ -74,7 +75,7 @@ public abstract class AGLEventListener
 
 	protected IViewCamera viewCamera;
 
-	protected IGLCanvasRemoteRendering3D remoteRenderingGLCanvas;
+	protected IGLCanvasRemoteRendering remoteRenderingGLCanvas;
 
 	/**
 	 * The views current aspect ratio. Value gets updated when reshape is called
@@ -86,6 +87,12 @@ public abstract class AGLEventListener
 
 	protected boolean bIsDisplayListDirtyLocal = true;
 	protected boolean bIsDisplayListDirtyRemote = true;
+	
+	protected int iGLDisplayListIndexLocal;
+	protected int iGLDisplayListIndexRemote;
+
+	protected int iGLDisplayListToCall = 0;
+	
 	protected boolean bHasFrustumChanged = false;
 
 	protected GeneralRenderStyle renderStyle;
@@ -121,17 +128,17 @@ public abstract class AGLEventListener
 			// Register GL event listener view to GL canvas
 			parentGLCanvas.addGLEventListener(this);
 
-			generalManager.getViewGLCanvasManager().registerGLEventListenerByGLCanvasID(
-					parentGLCanvas.getID(), this);
+//			generalManager.getViewGLCanvasManager().registerGLEventListenerByGLCanvasID(
+//					parentGLCanvas.getID(), this);
 
 			pickingTriggerMouseAdapter = parentGLCanvas.getJoglMouseListener();
 		}
-		// Frustum will only be remotely rendered by another view
-		else
-		{
-			generalManager.getViewGLCanvasManager().registerGLEventListenerByGLCanvasID(-1,
-					this);
-		}
+//		// Frustum will only be remotely rendered by another view
+//		else
+//		{
+//			generalManager.getViewGLCanvasManager().registerGLEventListenerByGLCanvasID(-1,
+//					this);
+//		}
 
 		this.viewFrustum = viewFrustum;
 
@@ -297,9 +304,9 @@ public abstract class AGLEventListener
 	 * @param gl
 	 */
 	public abstract void initRemote(final GL gl, final int iRemoteViewID,
-			final RemoteHierarchyLevel layer,
+			final RemoteLevel level,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
-			final IGLCanvasRemoteRendering3D remoteRenderingGLCanvas);
+			final IGLCanvasRemoteRendering remoteRenderingGLCanvas);
 
 	/**
 	 * GL display method that has to be called in all cases
@@ -467,8 +474,6 @@ public abstract class AGLEventListener
 			iFrameCounter--;
 		}
 
-		pickingManager.enablePicking(false);
-
 		gl.glColor4f(1, 1, 1, fTransparency);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(-9, -9, 4.2f);
@@ -552,17 +557,29 @@ public abstract class AGLEventListener
 			pickingManager.enablePicking(true);
 			eBusyModeState = EBusyModeState.OFF;
 		}
+		
+//		System.out.println("Busy mode status: " +eBusyModeState);
 	}
 
 	public void enableBusyMode(final boolean bBusyMode)
 	{
-		System.out.println("Busy mode state: " +bBusyMode);
-		
 		if (!bBusyMode && eBusyModeState == EBusyModeState.ON)
+		{
 			eBusyModeState = EBusyModeState.SWITCH_OFF;
+		}
 		else if (bBusyMode)
+		{
+			pickingManager.enablePicking(false);
 			eBusyModeState = EBusyModeState.ON;
-
+		}
+			
+//		System.out.println("Busy mode change: " +eBusyModeState.toString());
 	}
+	
+	/**
+	 * Method return true if an element is currently selected for a given selection type.
+	 * 
+	 */
+	public abstract int getNumberOfSelections(ESelectionType eSelectionType);
 }
 

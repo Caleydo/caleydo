@@ -3,7 +3,6 @@ package org.caleydo.core.view.opengl.mouse;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import java.awt.Dimension;
-import java.awt.Point;
 import java.awt.event.InputEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
@@ -34,9 +33,8 @@ public class JoglMouseListener
 
 	protected int prevMouseX, prevMouseY;
 
-	protected Point pressedMousePosition;
-
 	protected boolean bMouseLeftButtonDown = false;
+	protected boolean bMouseDoubleClick = false;
 	protected boolean bMouseRightButtonDown = false;
 	protected boolean bMouseMiddleButtonDown = false;
 	protected boolean bMouseLeft_StandbyZoom = false;
@@ -54,45 +52,7 @@ public class JoglMouseListener
 
 	public JoglMouseListener()
 	{
-
-		pressedMousePosition = new Point();
 		alGlCanvas = new ArrayList<AGLEventListener>();
-	}
-
-	public final void setMouseSensitivityRotation(float fSetMouseSensitivityRotation)
-	{
-
-		this.fMouseSensitivityRotation = fSetMouseSensitivityRotation;
-	}
-
-	public final float getMouseSensitivityRotation()
-	{
-
-		return this.fMouseSensitivityRotation;
-	}
-
-	public final boolean isMouseRightButtondown()
-	{
-
-		return bMouseRightButtonDown;
-	}
-
-	public final boolean isMouseMiddleButtondown()
-	{
-
-		return bMouseMiddleButtonDown;
-	}
-
-	public final boolean isMouseLeftButtondown()
-	{
-
-		return bMouseLeftButtonDown;
-	}
-
-	public final Point getPressedMousePosition()
-	{
-
-		return pressedMousePosition;
 	}
 
 	/**
@@ -121,7 +81,7 @@ public class JoglMouseListener
 	@Override
 	public void mouseClicked(MouseEvent e)
 	{
-
+	
 	}
 
 	@Override
@@ -133,13 +93,15 @@ public class JoglMouseListener
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
-
 		prevMouseX = e.getX();
 		prevMouseY = e.getY();
 
-		pressedMousePosition.x = prevMouseX;
-		pressedMousePosition.y = prevMouseY;
-
+		if (e.getClickCount() > 1)
+		{
+			bMouseDoubleClick = true;
+//			System.out.println("Double click!");
+		}
+		
 		/* --- Left -- Mouse Button --- */
 		if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0)
 		{
@@ -198,7 +160,8 @@ public class JoglMouseListener
 	@Override
 	public void mouseReleased(MouseEvent e)
 	{
-
+		bMouseDoubleClick = false;
+		
 		if ((e.getModifiers() & InputEvent.BUTTON1_MASK) != 0)
 		{
 			bMouseLeft_StandbyZoom = false;

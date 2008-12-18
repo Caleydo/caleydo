@@ -9,13 +9,13 @@ import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
-import org.caleydo.core.manager.event.mediator.EMediatorUpdateType;
+import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
+import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
-import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IToolBarManager;
@@ -103,38 +103,20 @@ public abstract class AGLViewPart
 		}
 		cmdView.doCommand();
 
-		int iViewID = cmdView.getCreatedObject().getID();
+		AGLEventListener glView = cmdView.getCreatedObject();
+		int iViewID = glView.getID();
 
 		setGLData(glCanvas, iViewID);
 		createPartControlGL();
 
-		if (bRegisterToOverallMediator)
-			registerViewToMediator(iViewID);
+//		generalManager.getEventPublisher().addSender(
+//				EMediatorType.SELECTION_MEDIATOR, (IMediatorSender)glView);
+//		generalManager.getEventPublisher().addReceiver(
+//				EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver)glView);
 
 		return iViewID;
 	}
 
-	public void registerViewToMediator(int iViewID)
-	{
-		IGeneralManager generalManager = GeneralManager.get();
-
-		// Add created view to bucket mediator
-		// FIXME: this approach is not general - think about better one
-		ArrayList<Integer> iAlMediatorIDs = new ArrayList<Integer>();
-		iAlMediatorIDs.add(iViewID);
-		for (AGLEventListener glEventListener : generalManager.getViewGLCanvasManager()
-				.getAllGLEventListeners())
-		{
-			if (glEventListener instanceof GLRemoteRendering)
-			{
-				generalManager.getEventPublisher().addSendersAndReceiversToMediator(
-						generalManager.getEventPublisher().getItem(
-								((GLRemoteRendering) glEventListener).getMediatorID()),
-						iAlMediatorIDs, iAlMediatorIDs, EMediatorType.SELECTION_MEDIATOR,
-						EMediatorUpdateType.MEDIATOR_DEFAULT);
-			}
-		}
-	}
 
 	@Override
 	public void createPartControl(Composite parent)

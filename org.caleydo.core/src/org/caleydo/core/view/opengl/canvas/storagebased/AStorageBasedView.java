@@ -2,8 +2,10 @@ package org.caleydo.core.view.opengl.canvas.storagebased;
 
 import java.awt.Font;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumMap;
+import java.util.Set;
 import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
 import org.caleydo.core.data.IUniqueObject;
@@ -16,8 +18,10 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionItem;
 import org.caleydo.core.manager.IIDMappingManager;
+import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.picking.ESelectionMode;
@@ -57,11 +61,6 @@ public abstract class AStorageBasedView
 	 */
 	protected int iStorageVAID = 0;
 
-	protected int iGLDisplayListIndexLocal;
-	protected int iGLDisplayListIndexRemote;
-
-	protected int iGLDisplayListToCall = 0;
-
 	protected IIDMappingManager genomeIDManager;
 
 	protected ConnectedElementRepresentationManager connectedElementRepresentationManager;
@@ -96,7 +95,7 @@ public abstract class AStorageBasedView
 	protected boolean bUseRandomSampling = true;
 
 	protected int iNumberOfRandomElements = 100;
-	
+
 	protected int iNumberOfSamplesPerTexture = 100;
 	
 	protected int iNumberOfSamplesPerHeatmap = 100;
@@ -123,7 +122,7 @@ public abstract class AStorageBasedView
 		connectedElementRepresentationManager = generalManager.getViewGLCanvasManager()
 				.getConnectedElementRepresentationManager();
 
-		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 16), false);
+		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 16), false);
 
 	}
 
@@ -171,6 +170,10 @@ public abstract class AStorageBasedView
 
 		if (!mapVAIDs.isEmpty())
 		{
+
+			// This should be done once we get some thread safety, memory leak,
+			// and a big one
+
 			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values())
 			{
 				if (mapVAIDs.containsKey(eSelectionType))
@@ -302,18 +305,24 @@ public abstract class AStorageBasedView
 	@Deprecated
 	protected String getRefSeqFromStorageIndex(int index)
 	{
-
 		// Convert expression storage ID to RefSeq
 		Integer iDavidId = getDavidIDFromStorageIndex(index);
 
-		if (iDavidId == null)
-			return "Unknown Gene";
+//		if (iDavidId == null)
+//			return "Unknown Gene";
 
-		String sRefSeq = genomeIDManager.getID(EMappingType.DAVID_2_REFSEQ_MRNA, iDavidId);
-		if (sRefSeq == "")
-			return "Unkonwn Gene";
-		else
-			return sRefSeq;
+		Set<String> sSetRefSeqID = genomeIDManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA, iDavidId);
+		String sOutput = "";
+		for (String sRefSeqID : sSetRefSeqID) 
+		{
+//			if (sRefSeqID == "")
+//				continue;
+			
+			sOutput += sRefSeqID;
+			sOutput += " | ";
+		}
+		
+		return sOutput;
 	}
 
 	@Deprecated
@@ -333,46 +342,46 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
+
 	public synchronized final void handleUpdate(IUniqueObject eventTrigger,
-			ISelectionDelta selectionDelta)
+			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand,
+			EMediatorType eMediatorType)
+
 	{
+
 		generalManager.getLogger().log(
 				Level.INFO,
 				"Update called by " + eventTrigger.getClass().getSimpleName()
-						+ ", received in: " + this.getClass().getName());
+						+ ", received in: " + this.getClass().getSimpleName());
+
 		// Check for type that can be handled
 		if (selectionDelta.getIDType() == EIDType.DAVID)
 		{
-			for (SelectionItem item : selectionDelta)
-			{
-				if (item.getSelectionType() == ESelectionType.ADD
-						|| item.getSelectionType() == ESelectionType.REMOVE)
-				{
-					break;
-				}
-				else
-				{
-					contentSelectionManager.clearSelections();
-					break;
-				}
-			}
+			if (selectionDelta.getIDType() != EIDType.DAVID)
+				return;
+
+			contentSelectionManager.executeSelectionCommands(colSelectionCommand);
+
+			generalManager.getLogger().log(
+					Level.INFO,
+					"Update called by " + eventTrigger.getClass().getSimpleName()
+							+ ", received in: " + this.getClass().getSimpleName());
+
 			contentSelectionManager.setDelta(selectionDelta);
 			ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
 			initForAddedElements();
-			connectedElementRepresentationManager.clearByView(EIDType.EXPRESSION_INDEX,
-					iUniqueID);
 			handleConnectedElementRep(internalDelta);
-			// handleConnectedElementRep(internalDelta);
 			checkUnselection();
 			setDisplayListDirty();
 		}
+
 		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX)
 		{
 			// generalManager.getIDMappingManager().getID(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX,
 			// key)(type)
 
-			ISelectionDelta internalDelta = storageSelectionManager.setDelta(selectionDelta);
-			handleConnectedElementRep(selectionDelta);
+			storageSelectionManager.setDelta(selectionDelta);
+			handleConnectedElementRep(storageSelectionManager.getCompleteDelta());
 			setDisplayListDirty();
 		}
 
@@ -411,11 +420,13 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public final synchronized void triggerUpdate(ISelectionDelta selectionDelta)
+	public final synchronized void triggerUpdate(EMediatorType eMediatorType,
+			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
 	{
 		// TODO connects to one element only here
 		handleConnectedElementRep(selectionDelta);
-		generalManager.getEventPublisher().handleUpdate(this, selectionDelta);
+		generalManager.getEventPublisher().triggerUpdate(eMediatorType, this, selectionDelta,
+				colSelectionCommand);
 	}
 
 	/**
@@ -429,8 +440,10 @@ public abstract class AStorageBasedView
 		try
 		{
 			int iStorageIndex = -1;
+
 			int iID = -1;
 			EIDType idType;
+
 			if (selectionDelta.size() > 0)
 			{
 				for (SelectionItem item : selectionDelta)
@@ -444,12 +457,15 @@ public abstract class AStorageBasedView
 					if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX)
 					{
 						iStorageIndex = item.getSelectionID();
+
 						iID = item.getInternalID();
 						idType = EIDType.EXPRESSION_INDEX;
+
 					}
 					else if (selectionDelta.getInternalIDType() == EIDType.EXPRESSION_INDEX)
 					{
 						iStorageIndex = item.getInternalID();
+
 						iID = item.getSelectionID();
 						idType = EIDType.EXPRESSION_INDEX;
 					}
@@ -458,6 +474,7 @@ public abstract class AStorageBasedView
 						iID = item.getSelectionID();
 						iStorageIndex = iID;
 						idType = EIDType.EXPERIMENT_INDEX;
+
 					}
 					else
 						throw new InvalidAttributeValueException("Can not handle data type");
@@ -470,8 +487,11 @@ public abstract class AStorageBasedView
 					{
 						continue;
 					}
-					connectedElementRepresentationManager.modifySelection(iID, rep,
-							ESelectionMode.ADD_PICK);
+
+					for (Integer iConnectionID : item.getConnectionID())
+					{
+						connectedElementRepresentationManager.addSelection(iConnectionID, rep);
+					}
 				}
 
 			}
@@ -503,7 +523,7 @@ public abstract class AStorageBasedView
 	@Override
 	public synchronized void broadcastElements(ESelectionType type)
 	{
-		// TODO: implement
+		// nothing to do
 	}
 
 	/**
@@ -579,4 +599,9 @@ public abstract class AStorageBasedView
 
 	public abstract boolean isInDefaultOrientation();
 
+	@Override
+	public int getNumberOfSelections(ESelectionType eSelectionType)
+	{
+		return contentSelectionManager.getElements(eSelectionType).size();
+	}
 }

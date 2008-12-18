@@ -365,9 +365,10 @@ public final class SearchBox
 		Point listSize = list.computeSize(wHint, SWT.DEFAULT, changed);
 		int borderWidth = getBorderWidth();
 
-		height = Math.max(hHint, Math.max(textSize.y, arrowSize.y) + 2 * borderWidth);
+		height = Math.max(hHint, Math.max(textSize.y, arrowSize.y) + 2 * borderWidth);	
 		width = Math.max(wHint, Math.max(textWidth + 2 * spacer + arrowSize.x + 2
 				* borderWidth, listSize.x));
+		
 		return new Point(width, height);
 	}
 
@@ -457,8 +458,8 @@ public final class SearchBox
 		Point listSize = list.computeSize(SWT.DEFAULT, itemHeight, false);
 
 		// Restrict size of the drop down menu
-		if (listSize.x > 700)
-			listSize.x = 700;
+		if (listSize.x > 200)
+			listSize.x = 200;
 
 		list.setBounds(1, 1, Math.max(size.x - 2, listSize.x), listSize.y);
 

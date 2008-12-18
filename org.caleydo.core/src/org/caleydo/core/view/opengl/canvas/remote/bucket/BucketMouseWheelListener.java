@@ -84,8 +84,8 @@ public class BucketMouseWheelListener
 					bucketLayoutRenderStyle.setZoomFactor(fTmpAngle);
 			}
 
-			bucketLayoutRenderStyle.initStackLayer(false);
-			bucketLayoutRenderStyle.initUnderInteractionLayer();
+			bucketLayoutRenderStyle.initStackLevel(false);
+			bucketLayoutRenderStyle.initUnderInteractionLevel();
 		}
 		else
 		// zoom to bottom of the bucket
@@ -107,7 +107,7 @@ public class BucketMouseWheelListener
 			}
 		
 			bZoomActionRunning = true;
-			bucketLayoutRenderStyle.initStackLayer(bZoomIn);
+			bucketLayoutRenderStyle.initStackLevel(bZoomIn);
 			
 			// Turn off picking while zoom action is running
 			GeneralManager.get().getViewGLCanvasManager().getPickingManager().enablePicking(
@@ -117,7 +117,6 @@ public class BucketMouseWheelListener
 
 	public void render()
 	{
-
 		if (!bZoomActionRunning)
 			return;
 
@@ -150,7 +149,7 @@ public class BucketMouseWheelListener
 
 				// Update detail level of view in center bucket position
 				int iGLEventListenerID = bucketGLEventListener
-						.getUnderInteractionHierarchyLayer().getElementIdByPositionIndex(0);
+						.getFocusLevel().getElementByPositionIndex(0).getContainedElementID();
 
 				if (iGLEventListenerID != -1)
 				{
@@ -164,7 +163,7 @@ public class BucketMouseWheelListener
 
 				// Update detail level of view in center bucket position
 				int iGLEventListenerID = bucketGLEventListener
-						.getUnderInteractionHierarchyLayer().getElementIdByPositionIndex(0);
+						.getFocusLevel().getElementByPositionIndex(0).getContainedElementID();
 
 				if (iGLEventListenerID != -1)
 				{
@@ -189,6 +188,13 @@ public class BucketMouseWheelListener
 		return bBucketBottomReached;
 	}
 
+	public void triggerZoom(boolean bZoomIn)
+	{	
+		bZoomActionRunning = true;
+		this.bZoomIn = bZoomIn;
+		bucketLayoutRenderStyle.initStackLevel(bZoomIn);
+	}
+	
 	@Override
 	public void mouseClicked(MouseEvent e)
 	{
@@ -198,11 +204,14 @@ public class BucketMouseWheelListener
 	@Override
 	public void mouseEntered(MouseEvent e)
 	{
+		if (bucketGLEventListener == null)
+			return;
+		
 		// TODO: investigate which of these calls is really needed to force focus.
 		bucketGLEventListener.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable()
 		{
 			public void run()
-			{
+			{		
 				bucketGLEventListener.getParentGLCanvas().getParentComposite().setFocus();
 				bucketGLEventListener.getParentGLCanvas().getParentComposite().forceFocus();
 				bucketGLEventListener.getParentGLCanvas().getParentComposite().isFocusControl();

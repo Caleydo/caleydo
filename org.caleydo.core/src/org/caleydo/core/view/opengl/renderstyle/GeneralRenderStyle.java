@@ -32,6 +32,10 @@ public class GeneralRenderStyle
 	public static final float LOADING_BOX_HALF_WIDTH = 1f;
 	
 	public static final float LOADING_BOX_HALF_HEIGHT = 0.3f;
+	
+	public static final float SELECTION_BOX_WIDTH = 0.5f;
+	
+	public static final float SELECTION_BOX_HEIGHT = 0.3f;
 
 	public static final float SELECTED_LINE_WIDTH = 3;
 

@@ -1,6 +1,8 @@
 package org.caleydo.core.manager.event.mediator;
 
+import java.util.Collection;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.SelectionCommand;
 
 /**
  * Interface for a mediator sender
@@ -13,9 +15,8 @@ public interface IMediatorSender
 {
 	/**
 	 * Trigger an update with the selection delta specified
-	 * 
-	 * @param selectionDelta the selection delta
+	 * @param eMediatorType TODO
+	 * @param colSelectionCommand TODO
 	 */
-	public void triggerUpdate(ISelectionDelta selectionDelta);
-
+	public void triggerUpdate(EMediatorType eMediatorType, ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand);
 }
