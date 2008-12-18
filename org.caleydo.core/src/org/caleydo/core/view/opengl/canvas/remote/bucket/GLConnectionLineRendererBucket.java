@@ -68,9 +68,12 @@ public class GLConnectionLineRendererBucket
 				{
 					remoteLevelElement = viewGLCanvasManager.getGLEventListener(
 							selectedElementRep.getContainingViewID()).getRemoteLevelElement();
+					// views that are not rendered remote
+					if(remoteLevelElement == null)
+						continue;
 					
 					activeLevel = remoteLevelElement.getRemoteLevel();
-					
+										
 					if (activeLevel == stackLevel || activeLevel == focusLevel)
 					{
 						vecTranslation = remoteLevelElement.getTransform().getTranslation();

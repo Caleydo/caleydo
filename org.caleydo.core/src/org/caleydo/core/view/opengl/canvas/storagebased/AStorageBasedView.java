@@ -354,11 +354,9 @@ public abstract class AStorageBasedView
 						+ ", received in: " + this.getClass().getSimpleName());
 
 		// Check for type that can be handled
-		if (selectionDelta.getIDType() == EIDType.DAVID)
+		if (selectionDelta.getIDType() == EIDType.DAVID
+				|| selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX)
 		{
-			if (selectionDelta.getIDType() != EIDType.DAVID)
-				return;
-
 			contentSelectionManager.executeSelectionCommands(colSelectionCommand);
 
 			generalManager.getLogger().log(

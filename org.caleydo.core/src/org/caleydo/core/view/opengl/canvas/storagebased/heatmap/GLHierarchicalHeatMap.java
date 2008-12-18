@@ -11,15 +11,17 @@ import javax.media.opengl.GL;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.data.collection.ESetType;
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDelta;
-import org.caleydo.core.data.selection.SelectionItem;
 import org.caleydo.core.data.selection.SelectionQuadruple;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -126,8 +128,7 @@ public class GLHierarchicalHeatMap
 	 * Stores the last triggered selection delta. This list is used to trigger
 	 * the removing of the items before a new block is triggered.
 	 */
-	private SelectionDelta lastSelectionDelta;
-
+	// private SelectionDelta lastSelectionDelta;
 	/**
 	 * Constructor.
 	 * 
@@ -170,8 +171,9 @@ public class GLHierarchicalHeatMap
 
 		fAlXDistances = new ArrayList<Float>();
 
-		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
-		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
+		generalManager.getEventPublisher().addSender(EMediatorType.HIERACHICAL_HEAT_MAP, this);
+		generalManager.getEventPublisher().addReceiver(EMediatorType.HIERACHICAL_HEAT_MAP,
+				this);
 	}
 
 	@Override
@@ -210,7 +212,8 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	public void initRemote(GL gl, int remoteViewID, PickingJoglMouseListener pickingTriggerMouseAdapter,
+	public void initRemote(GL gl, int remoteViewID,
+			PickingJoglMouseListener pickingTriggerMouseAdapter,
 			IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
 		dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
@@ -240,22 +243,25 @@ public class GLHierarchicalHeatMap
 		CmdCreateGLEventListener cmdView = (CmdCreateGLEventListener) generalManager
 				.getCommandManager().createCommandByType(ECommandType.CREATE_GL_HEAT_MAP_3D);
 
-		ArrayList<Integer> alSet = new ArrayList<Integer>();
-		alSet.add(alSets.get(0).getID());
+		ArrayList<Integer> alSetIDs = new ArrayList<Integer>();
 
+		for (ISet set : alSets)
+		{
+			alSetIDs.add(set.getID());
+		}
 		float fHeatMapHeight = viewFrustum.getHeight();
 		float fHeatMapWidth = viewFrustum.getWidth();
 
 		cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, fHeatMapHeight, 0,
-				fHeatMapWidth, -20, 20, alSet, -1);
+				fHeatMapWidth, -20, 20, alSetIDs, -1);
 
 		cmdView.doCommand();
 
 		glHeatMapView = (GLHeatMap) cmdView.getCreatedObject();
 
 		// // Register heatmap as sender to event mediator
-		ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
-		arMediatorIDs.add(glHeatMapView.getID());
+		// ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
+		// arMediatorIDs.add(glHeatMapView.getID());
 
 		generalManager.getEventPublisher().addSender(EMediatorType.HIERACHICAL_HEAT_MAP,
 				glHeatMapView);
@@ -967,8 +973,6 @@ public class GLHierarchicalHeatMap
 
 			gl.glTranslatef(-GAP_LEVEL1_2, 0, 0);
 
-			triggerSelectionBlock();
-
 			gl.glDisable(GL.GL_STENCIL_TEST);
 
 		}
@@ -1010,21 +1014,23 @@ public class GLHierarchicalHeatMap
 
 	private void triggerSelectionBlock()
 	{
-		if (lastSelectionDelta != null)
-		{
-			// Remove old block selection items from heatmap
-			for (SelectionItem item : lastSelectionDelta)
-			{
-				item.setSelectionType(ESelectionType.REMOVE);
-			}
-			triggerUpdate(EMediatorType.HIERACHICAL_HEAT_MAP, lastSelectionDelta, null);
-			lastSelectionDelta = null;
-		}
+		// if (lastSelectionDelta != null)
+		// {
+		// Remove old block selection items from heatmap
+		// for (SelectionItem item : lastSelectionDelta)
+		// {
+		// item.setSelectionType(ESelectionType.REMOVE);
+		// }
+
+		// triggerUpdate(EMediatorType.HIERACHICAL_HEAT_MAP, new Se,
+		// alSelectionCommand);
+		// lastSelectionDelta = null;
+		// }
 
 		int iCount = 0;
 		float fCntBar = iNumberSamples[iSelectorBar - 1];
 
-		SelectionDelta delta = new SelectionDelta(EIDType.DAVID);
+		SelectionDelta delta = new SelectionDelta(EIDType.EXPRESSION_INDEX);
 		for (Integer iContentIndex : set.getVA(iContentVAID))
 		{
 			iCount++;
@@ -1043,18 +1049,22 @@ public class GLHierarchicalHeatMap
 				continue;
 			}
 
-			delta.addSelection(getDavidIDFromStorageIndex(iContentIndex), ESelectionType.ADD);
+			delta.addSelection(iContentIndex, ESelectionType.ADD);
 			for (SelectionQuadruple selection : iAlSelection)
 			{
 				if (selection.getContentIndex() == iContentIndex)
-					delta.addSelection(getDavidIDFromStorageIndex(iContentIndex), selection
-							.getSelectionType());
+					delta.addSelection(iContentIndex, selection.getSelectionType());
 			}
 		}
 
-		triggerUpdate(EMediatorType.HIERACHICAL_HEAT_MAP, delta, null);
+		// TODO this should not be done, the above neither. Use the
+		// selection manager and it's automatically generated deltas
+		// instead.
+		ArrayList<SelectionCommand> alSelectionCommand = new ArrayList<SelectionCommand>();
+		alSelectionCommand.add(new SelectionCommand(ESelectionCommandType.RESET));
+		triggerUpdate(EMediatorType.HIERACHICAL_HEAT_MAP, delta, alSelectionCommand);
 
-		lastSelectionDelta = delta;
+		// lastSelectionDelta = delta;
 	}
 
 	public synchronized void renderHorizontally(boolean bRenderStorageHorizontally)
@@ -1354,12 +1364,14 @@ public class GLHierarchicalHeatMap
 
 						bIsHeatmapInFocus = false;
 						PickingPoint = pick.getPickedPoint();
+						triggerSelectionBlock();
 						setDisplayListDirty();
 						break;
 
 					case MOUSE_OVER:
 
 						PickingPoint = pick.getPickedPoint();
+						triggerSelectionBlock();
 						setDisplayListDirty();
 						break;
 				}
@@ -1395,29 +1407,30 @@ public class GLHierarchicalHeatMap
 	@Override
 	protected void handleConnectedElementRep(ISelectionDelta selectionDelta)
 	{
-		renderStyle.updateFieldSizes();
-		fAlXDistances.clear();
-		float fDistance = 0;
-
-		for (Integer iStorageIndex : set.getVA(iContentVAID))
-		{
-			fAlXDistances.add(fDistance);
-			if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iStorageIndex)
-					|| contentSelectionManager.checkStatus(ESelectionType.SELECTION,
-							iStorageIndex))
-			// if(selectionDelta.)
-			{
-				fDistance += renderStyle.getSelectedFieldWidth();
-			}
-			else
-			{
-				fDistance += renderStyle.getNormalFieldWidth();
-			}
-			// contentSelectionManager.addToType(ESelectionType.SELECTION,
-			// iStorageIndex);
-
-		}
-		super.handleConnectedElementRep(selectionDelta);
+		// renderStyle.updateFieldSizes();
+		// fAlXDistances.clear();
+		// float fDistance = 0;
+		//
+		// for (Integer iStorageIndex : set.getVA(iContentVAID))
+		// {
+		// fAlXDistances.add(fDistance);
+		// if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER,
+		// iStorageIndex)
+		// || contentSelectionManager.checkStatus(ESelectionType.SELECTION,
+		// iStorageIndex))
+		// // if(selectionDelta.)
+		// {
+		// fDistance += renderStyle.getSelectedFieldWidth();
+		// }
+		// else
+		// {
+		// fDistance += renderStyle.getNormalFieldWidth();
+		// }
+		// // contentSelectionManager.addToType(ESelectionType.SELECTION,
+		// // iStorageIndex);
+		//
+		// }
+		// super.handleConnectedElementRep(selectionDelta);
 	}
 
 	@Override
@@ -1545,7 +1558,7 @@ public class GLHierarchicalHeatMap
 	public void broadcastElements()
 	{
 		ISelectionDelta delta = contentSelectionManager.getCompleteDelta();
-		triggerUpdate(EMediatorType.SELECTION_MEDIATOR, delta, null);
+		triggerUpdate(EMediatorType.HIERACHICAL_HEAT_MAP, delta, null);
 		setDisplayListDirty();
 	}
 

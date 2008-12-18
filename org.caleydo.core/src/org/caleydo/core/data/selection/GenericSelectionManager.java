@@ -10,6 +10,7 @@ import java.util.logging.Level;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.general.GeneralManager;
+import com.sun.org.apache.regexp.internal.RE;
 
 /**
  * <p>
@@ -290,7 +291,8 @@ public class GenericSelectionManager
 		{
 			hashSelectionTypes.put(eType, new HashMap<Integer, Integer>());
 		}
-		virtualArray = null;
+		if (virtualArray != null)
+			virtualArray.clear();
 		selectionDelta = new SelectionDelta(internalIDType);
 	}
 
@@ -726,8 +728,34 @@ public class GenericSelectionManager
 		bIsDeltaWritingEnabled = false;
 		for (SelectionItem item : selectionDelta)
 		{
-			if (externalToInternalMapping != null)
+
+			if (selectionDelta.getIDType() == internalIDType)
 			{
+				int iSelectionID = 0;
+				iSelectionID = item.getSelectionID();
+
+				if (iSelectionID == -1)
+				{
+					GeneralManager.get().getLogger().log(Level.WARNING,
+							"No internal id for " + item.getSelectionID());
+
+					continue;
+				}
+
+				addToType(item.getSelectionType(), iSelectionID);
+
+				if (isConnectedType(item.getSelectionType()))
+				{
+					for (Integer iConnectionID : item.getConnectionID())
+					{
+						addConnectionID(iConnectionID, iSelectionID);
+					}
+				}
+			}
+			else
+			{
+				// TODO check wheter external id type is ok
+
 				Set<Integer> iTmpSetID = convertExternalToInternal(item.getSelectionID());
 
 				if (iTmpSetID == null)
@@ -755,43 +783,7 @@ public class GenericSelectionManager
 
 				}
 			}
-			else
-			{
-				int iSelectionID = 0;
-				iSelectionID = item.getSelectionID();
 
-				if (iSelectionID == -1)
-				{
-					GeneralManager.get().getLogger().log(Level.WARNING,
-							"No internal id for " + item.getSelectionID());
-
-					continue;
-				}
-
-				addToType(item.getSelectionType(), iSelectionID);
-
-				if (isConnectedType(item.getSelectionType()))
-				{
-					for (Integer iConnectionID : item.getConnectionID())
-					{
-						addConnectionID(iConnectionID, iSelectionID);
-					}
-				}
-			}
-
-			// if (item.getSelectionType() == ESelectionType.MOUSE_OVER
-			// || item.getSelectionType() == ESelectionType.SELECTION)
-			// {
-			// if (item.getConnectionID() != null)
-			// {
-			// for (Integer iConnectionID : item.getConnectionID())
-			// {
-			// GeneralManager.get().getViewGLCanvasManager()
-			// .getConnectedElementRepresentationManager().addRelation(
-			// iConnectionID, iSelectionID);
-			// }
-			// }
-			// }
 		}
 
 		bIsDeltaWritingEnabled = true;
@@ -851,6 +843,12 @@ public class GenericSelectionManager
 			{
 				case CLEAR:
 					clearSelection(command.getSelectionType());
+					break;
+				case CLEAR_ALL:
+					clearSelections();
+					break;
+				case RESET:
+					resetSelectionManager();
 					break;
 			}
 		}
