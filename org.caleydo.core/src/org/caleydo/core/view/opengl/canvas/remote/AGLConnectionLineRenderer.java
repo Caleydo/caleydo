@@ -52,11 +52,11 @@ public abstract class AGLConnectionLineRenderer
 	{
 		this.bEnableRendering = bEnableRendering;
 	}
-	
+
 	protected void init(final GL gl)
-	{        
-        gl.glShadeModel(GL.GL_SMOOTH);
-		gl.glEnable(GL.GL_MAP1_VERTEX_3);	
+	{
+		gl.glShadeModel(GL.GL_SMOOTH);
+		gl.glEnable(GL.GL_MAP1_VERTEX_3);
 	}
 
 	public void render(final GL gl)
@@ -80,7 +80,7 @@ public abstract class AGLConnectionLineRenderer
 		{
 			hashViewToCenterPoint.put(iKey, calculateCenter(hashViewToPointLists.get(iKey)));
 		}
-		
+
 		Vec3f vecCenter = calculateCenter(hashViewToCenterPoint.values());
 
 		for (Integer iKey : keySet)
@@ -96,11 +96,11 @@ public abstract class AGLConnectionLineRenderer
 				}
 				else
 				{
-					renderLine(gl, vecViewBundlingPoint, alCurrentPoints.get(0), 0, 
+					renderLine(gl, vecViewBundlingPoint, alCurrentPoints.get(0), 0,
 							hashViewToCenterPoint.get(iKey), fArColor);
 				}
 			}
-			
+
 			renderLine(gl, vecViewBundlingPoint, vecCenter, 0, fArColor);
 		}
 	}
@@ -142,7 +142,7 @@ public abstract class AGLConnectionLineRenderer
 		// alPoints.get(alPoints.size()-1).y(), alPoints.get(0).z());
 		gl.glEnd();
 
-//		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR_1, 0);
+		// gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR_1, 0);
 
 		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
 
@@ -187,20 +187,19 @@ public abstract class AGLConnectionLineRenderer
 			final int iNumberOfLines, float[] fArColor)
 	{
 		// Line shadow
-		//gl.glColor4f(0.3f, 0.3f, 0.3f, 1);// , 0.6f);
+		// gl.glColor4f(0.3f, 0.3f, 0.3f, 1);// , 0.6f);
 		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, 0);
-//		gl.glColor4f(28/255f, 122/255f, 254/255f, 1f);
+		// gl.glColor4f(28/255f, 122/255f, 254/255f, 1f);
 		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 1.5f);
 		gl.glBegin(GL.GL_LINES);
 		gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z() - 0.001f);
 		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z() - 0.001f);
 		gl.glEnd();
 
-
-//		gl.glColor4fv(fArColor, 0);
+		// gl.glColor4fv(fArColor, 0);
 
 		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
-//		gl.glColor4f(254/255f, 160/255f, 28/255f, 1f);
+		// gl.glColor4f(254/255f, 160/255f, 28/255f, 1f);
 		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
 
 		gl.glBegin(GL.GL_LINES);
@@ -208,7 +207,7 @@ public abstract class AGLConnectionLineRenderer
 		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z());
 		gl.glEnd();
 	}
-	
+
 	/**
 	 * Render curved connection lines.
 	 * 
@@ -223,104 +222,112 @@ public abstract class AGLConnectionLineRenderer
 			final int iNumberOfLines, Vec3f vecViewCenterPoint, float[] fArColor)
 	{
 		Vec3f[] arSplinePoints = new Vec3f[3];
-		
-		arSplinePoints[0] = vecSrcPoint.copy();		
+
+		arSplinePoints[0] = vecSrcPoint.copy();
 		arSplinePoints[1] = calculateBundlingPoint(vecSrcPoint, vecViewCenterPoint);
 		arSplinePoints[2] = vecDestPoint.copy();
-		
-		FloatBuffer splinePoints = FloatBuffer.allocate(8*3);
-//        float[] fArPoints = {1,2,-1,0,1,2,2,0,0,3,3,1,2,3,-2,1,3,1,1,3,0,2,-1,-1};
-		float[] fArPoints = {arSplinePoints[0].x(), arSplinePoints[0].y(), arSplinePoints[0].z(),
-				arSplinePoints[1].x(), arSplinePoints[1].y(), arSplinePoints[1].z(),
-				arSplinePoints[2].x(), arSplinePoints[2].y(), arSplinePoints[2].z()};
+
+		FloatBuffer splinePoints = FloatBuffer.allocate(8 * 3);
+		// float[] fArPoints =
+		// {1,2,-1,0,1,2,2,0,0,3,3,1,2,3,-2,1,3,1,1,3,0,2,-1,-1};
+		float[] fArPoints = { arSplinePoints[0].x(), arSplinePoints[0].y(),
+				arSplinePoints[0].z(), arSplinePoints[1].x(), arSplinePoints[1].y(),
+				arSplinePoints[1].z(), arSplinePoints[2].x(), arSplinePoints[2].y(),
+				arSplinePoints[2].z() };
 		splinePoints.put(fArPoints);
-        splinePoints.rewind();
-		
-		gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, 3, splinePoints); 
-		
+		splinePoints.rewind();
+
+		gl.glMap1f(GL.GL_MAP1_VERTEX_3, 0.0f, 1.0f, 3, 3, splinePoints);
+
 		// Line shadow
 		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_SHADOW_COLOR, 0);
-//		gl.glColor4f(28/255f, 122/255f, 254/255f, 1f);
+		// gl.glColor4f(28/255f, 122/255f, 254/255f, 1f);
 		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + 2);
 		gl.glBegin(GL.GL_LINE_STRIP);
-		for (int i=0; i<=10; i++)
+		for (int i = 0; i <= 10; i++)
 		{
-			gl.glEvalCoord1f((float)(i)/10);
+			gl.glEvalCoord1f((float) (i) / 10);
 		}
 		gl.glEnd();
-		
-//		gl.glColor4fv(fArColor, 0);
-		// Point to mask artefacts		
+
+		// gl.glColor4fv(fArColor, 0);
+		// Point to mask artefacts
 		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
-//		gl.glColor4f(254/255f, 160/255f, 28/255f, 1f);
-				
-		gl.glPointSize(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH-0.5f);
+		// gl.glColor4f(254/255f, 160/255f, 28/255f, 1f);
+
+		gl.glPointSize(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH - 0.5f);
 		gl.glBegin(GL.GL_POINTS);
-		for (int i=0; i<=10; i++)
+		for (int i = 0; i <= 10; i++)
 		{
-			gl.glEvalCoord1f((float)(i)/10);
+			gl.glEvalCoord1f((float) (i) / 10);
 		}
 		gl.glEnd();
 
 		// The spline
 		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH);
-		
+
 		gl.glBegin(GL.GL_LINE_STRIP);
-		for (int i=0; i<=10; i++)
+		for (int i = 0; i <= 10; i++)
 		{
-			gl.glEvalCoord1f((float)(i)/10);
+			gl.glEvalCoord1f((float) (i) / 10);
 		}
 		gl.glEnd();
 	}
-	
-//	private void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f vecDestPoint,
-//			final int iNumberOfLines, Vec3f vecViewCenterPoint)
-//	{
-//		Vec3f[] arSplinePoints = new Vec3f[3];
-//		
-////		Vec3f vecDirection = new Vec3f();
-////		vecDirection = vecCenter.minus(vecViewCenter);
-////		float fLength = vecDirection.length();
-////		vecDirection.normalize();
-////
-////		Vec3f vecViewBundlingPoint2 = new Vec3f();
-////		// Vec3f vecDestBundingPoint = new Vec3f();
-////
-////		vecViewBundlingPoint = vecViewCenter.copy();
-////		vecDirection.scale(fLength / 3);
-////		vecViewBundlingPoint.add(vecDirection);
-//		
-//		arSplinePoints[0] = vecSrcPoint.copy();		
-//		arSplinePoints[1] = calculateBundlingPoint(vecSrcPoint, vecViewCenterPoint);
-//		arSplinePoints[2] = vecDestPoint.copy();
-//		
-//		// FIXME: Do not create spline in every render frame
-//		Spline3D spline = new Spline3D(arSplinePoints, 0.001f, 0.01f);
-//		
-////		// Line shadow
-////		gl.glColor4f(0.3f, 0.3f, 0.3f, 1);// , 0.6f);
-////		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + iNumberOfLines + 4);
-////		gl.glBegin(GL.GL_LINES);
-////		gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z() - 0.001f);
-////		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z() - 0.001f);
-////		gl.glEnd();
-//
-//		gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
-//		gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH + iNumberOfLines);
-//		gl.glBegin(GL.GL_LINES);
-//
-//		for (int i=0; i<(arSplinePoints.length-1)*10; i++)
-//		{
-//			Vec3f vec = spline.getPositionAt((float)i / 10);
-//			gl.glVertex3f(vec.x(), vec.y(), vec.z());
-//			vec = spline.getPositionAt(((float)i+1) / 10);
-//			gl.glVertex3f(vec.x(), vec.y(), vec.z());			
-//		}
-////		gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z());
-////		gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z());
-//
-//		gl.glEnd();
-//	}
+
+	// private void renderLine(final GL gl, final Vec3f vecSrcPoint, final Vec3f
+	// vecDestPoint,
+	// final int iNumberOfLines, Vec3f vecViewCenterPoint)
+	// {
+	// Vec3f[] arSplinePoints = new Vec3f[3];
+	//		
+	// // Vec3f vecDirection = new Vec3f();
+	// // vecDirection = vecCenter.minus(vecViewCenter);
+	// // float fLength = vecDirection.length();
+	// // vecDirection.normalize();
+	// //
+	// // Vec3f vecViewBundlingPoint2 = new Vec3f();
+	// // // Vec3f vecDestBundingPoint = new Vec3f();
+	// //
+	// // vecViewBundlingPoint = vecViewCenter.copy();
+	// // vecDirection.scale(fLength / 3);
+	// // vecViewBundlingPoint.add(vecDirection);
+	//		
+	// arSplinePoints[0] = vecSrcPoint.copy();
+	// arSplinePoints[1] = calculateBundlingPoint(vecSrcPoint,
+	// vecViewCenterPoint);
+	// arSplinePoints[2] = vecDestPoint.copy();
+	//		
+	// // FIXME: Do not create spline in every render frame
+	// Spline3D spline = new Spline3D(arSplinePoints, 0.001f, 0.01f);
+	//		
+	// // // Line shadow
+	// // gl.glColor4f(0.3f, 0.3f, 0.3f, 1);// , 0.6f);
+	// // gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH +
+	// iNumberOfLines + 4);
+	// // gl.glBegin(GL.GL_LINES);
+	// // gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z() -
+	// 0.001f);
+	// // gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z() -
+	// 0.001f);
+	// // gl.glEnd();
+	//
+	// gl.glColor4fv(ConnectionLineRenderStyle.CONNECTION_LINE_COLOR, 0);
+	// gl.glLineWidth(ConnectionLineRenderStyle.CONNECTION_LINE_WIDTH +
+	// iNumberOfLines);
+	// gl.glBegin(GL.GL_LINES);
+	//
+	// for (int i=0; i<(arSplinePoints.length-1)*10; i++)
+	// {
+	// Vec3f vec = spline.getPositionAt((float)i / 10);
+	// gl.glVertex3f(vec.x(), vec.y(), vec.z());
+	// vec = spline.getPositionAt(((float)i+1) / 10);
+	// gl.glVertex3f(vec.x(), vec.y(), vec.z());
+	// }
+	// // gl.glVertex3f(vecSrcPoint.x(), vecSrcPoint.y(), vecSrcPoint.z());
+	// // gl.glVertex3f(vecDestPoint.x(), vecDestPoint.y(), vecDestPoint.z());
+	//
+	// gl.glEnd();
+	// }
 
 	private Vec3f calculateCenter(ArrayList<ArrayList<Vec3f>> alPointLists)
 	{

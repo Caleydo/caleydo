@@ -13,11 +13,12 @@ import java.nio.channels.FileChannel;
 public class MappingBuilder_BioCartaGeneID2Accession
 {
 
-	private static String BIOCARTA_INPUT_FOLDER_PATH = System.getProperty("user.home") + "/.caleydo/cgap.nci.nih.gov/Genes";
+	private static String BIOCARTA_INPUT_FOLDER_PATH = System.getProperty("user.home")
+			+ "/.caleydo/cgap.nci.nih.gov/Genes";
 	private static String OUTPUT_FILE_PATH = "data/genome/mapping/BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt";
 
 	private static String SEARCH_SEQUENCE = "http://www.ncbi.nih.gov/entrez/query.fcgi?db=nucleotide&cmd=search&term=NM_";
-	
+
 	private PrintWriter outputWriter;
 
 	public MappingBuilder_BioCartaGeneID2Accession()
@@ -62,20 +63,21 @@ public class MappingBuilder_BioCartaGeneID2Accession
 			String sFileText = new String(bArTmp); // one big string
 
 			while (sFileText.contains(SEARCH_SEQUENCE))
-			{	
-				int iStartIndex = sFileText.indexOf(SEARCH_SEQUENCE) + SEARCH_SEQUENCE.length();
-	
+			{
+				int iStartIndex = sFileText.indexOf(SEARCH_SEQUENCE)
+						+ SEARCH_SEQUENCE.length();
+
 				if (iStartIndex == -1)
 					return;
-	
-				String sAccessionNumber = sFileText.substring(iStartIndex - 3, sFileText.indexOf('"',
-						iStartIndex));
-	
+
+				String sAccessionNumber = sFileText.substring(iStartIndex - 3, sFileText
+						.indexOf('"', iStartIndex));
+
 				String sBioCartaGeneId = file.getName().substring(
 						file.getName().lastIndexOf("BCID=") + 5, file.getName().length());
-	
+
 				appendMappingToFile(sBioCartaGeneId, sAccessionNumber);
-				
+
 				// Remove already parsed file part
 				sFileText = sFileText.substring(iStartIndex) + SEARCH_SEQUENCE.length();
 			}

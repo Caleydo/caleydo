@@ -149,22 +149,22 @@ public class CmdLoadFileLookupTable
 						IGeneralManager.sDelimiter_Parser_DataItems);
 
 				sCodeResolvingLUTMappingType_1 = tokenizer.nextToken();
-//				
+				//				
 				if (sLookupTableOptions.equals("LUT_1"))
 				{
-//					sCodeResolvingLUTMappingType_1 = tokenizer.nextToken();
+					// sCodeResolvingLUTMappingType_1 = tokenizer.nextToken();
 					bResolveCodeMappingUsingCodeToId_LUT_1 = true;
 				}
 				else if (sLookupTableOptions.equals("LUT_2"))
 				{
-//					sCodeResolvingLUTMappingType_2 = tokenizer.nextToken();
+					// sCodeResolvingLUTMappingType_2 = tokenizer.nextToken();
 					bResolveCodeMappingUsingCodeToId_LUT_2 = true;
 				}
 				else if (sLookupTableOptions.equals("LUT_BOTH"))
 				{
-//					sCodeResolvingLUTMappingType_1 = tokenizer.nextToken();
-//					sCodeResolvingLUTMappingType_2 = tokenizer.nextToken();
-//
+					// sCodeResolvingLUTMappingType_1 = tokenizer.nextToken();
+					// sCodeResolvingLUTMappingType_2 = tokenizer.nextToken();
+					//
 					bResolveCodeMappingUsingCodeToId_LUT_BOTH = true;
 				}
 			}
@@ -184,30 +184,28 @@ public class CmdLoadFileLookupTable
 		IIDMappingManager genomeIdManager = generalManager.getIDMappingManager();
 
 		// Remove old lookuptable if it already exists
-//		genomeIdManager.removeMapByType(EMappingType.valueOf(sLookupTableType));
+		// genomeIdManager.removeMapByType(EMappingType.valueOf(sLookupTableType));
 
 		EMappingType mappingType = EMappingType.valueOf(sLookupTableType);
 
 		EMappingDataType dataType;
 
 		dataType = mappingType.getDataMapppingType();
-		
+
 		loader = new LookupTableLoader(sFileName, mappingType, dataType);
 
 		loader.setTokenSeperator(sLookupTableDelimiter);
 
-		loader.setStartParsingStopParsingAtLine(iStartPareseFileAtLine,
-				iStopParseFileAtLine);
+		loader.setStartParsingStopParsingAtLine(iStartPareseFileAtLine, iStopParseFileAtLine);
 
 		loader.loadData();
 
 		/* --- Map codes in LUT to IDs --- */
-		if (bResolveCodeMappingUsingCodeToId_LUT_1
-				|| bResolveCodeMappingUsingCodeToId_LUT_2
+		if (bResolveCodeMappingUsingCodeToId_LUT_1 || bResolveCodeMappingUsingCodeToId_LUT_2
 				|| bResolveCodeMappingUsingCodeToId_LUT_BOTH)
 		{
-			genomeIdManager.createCodeResolvedMap(mappingType, 
-					EMappingType.valueOf(sCodeResolvingLUTMappingType_1));
+			genomeIdManager.createCodeResolvedMap(mappingType, EMappingType
+					.valueOf(sCodeResolvingLUTMappingType_1));
 		}
 
 		/* --- create reverse Map ... --- */
@@ -217,11 +215,11 @@ public class CmdLoadFileLookupTable
 			{
 				mappingType = EMappingType.valueOf(sCodeResolvingLUTMappingType_1);
 			}
-				
+
 			// Concatenate genome id type target and origin type in swapped
 			// order to determine reverse genome mapping type.
-			EMappingType reverseMappingType = EMappingType.valueOf(
-					mappingType.getTypeTarget().toString()
+			EMappingType reverseMappingType = EMappingType.valueOf(mappingType.getTypeTarget()
+					.toString()
 					+ "_2_" + mappingType.getTypeOrigin().toString());
 
 			genomeIdManager.createReverseMap(mappingType, reverseMappingType);

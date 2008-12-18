@@ -31,7 +31,7 @@ public class GLCaleydoCanvas
 	private FPSCounter fpsCounter;
 
 	private PickingJoglMouseListener joglMouseListener;
-	
+
 	private Composite parentComposite;
 
 	/**
@@ -40,7 +40,7 @@ public class GLCaleydoCanvas
 	public GLCaleydoCanvas(final GLCapabilities glCapabilities)
 	{
 		super(glCapabilities);
-//		this.getContext().setSynchronized(true);
+		// this.getContext().setSynchronized(true);
 
 		joglMouseListener = new PickingJoglMouseListener();
 
@@ -82,8 +82,8 @@ public class GLCaleydoCanvas
 		gl.glEnable(GL.GL_BLEND);
 		gl.glBlendFunc(GL.GL_SRC_ALPHA, GL.GL_ONE_MINUS_SRC_ALPHA);
 
-//		gl.glEnable(GL.GL_POINT_SMOOTH);
-//		gl.glHint(GL.GL_POINT_SMOOTH_HINT, GL.GL_NICEST);
+		// gl.glEnable(GL.GL_POINT_SMOOTH);
+		// gl.glHint(GL.GL_POINT_SMOOTH_HINT, GL.GL_NICEST);
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
 		gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
@@ -103,10 +103,10 @@ public class GLCaleydoCanvas
 	public void display(GLAutoDrawable drawable)
 	{
 		final GL gl = drawable.getGL();
-		
+
 		// turn this on during debugging if anything changes in the init() code
-//		init(drawable);
-		
+		// init(drawable);
+
 		// load identity matrix
 		gl.glMatrixMode(GL.GL_MODELVIEW);
 		gl.glLoadIdentity();
@@ -114,7 +114,7 @@ public class GLCaleydoCanvas
 		// clear screen
 		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
 
-		//fpsCounter.draw();
+		// fpsCounter.draw();
 	}
 
 	@Override
@@ -140,12 +140,12 @@ public class GLCaleydoCanvas
 	{
 		joglMouseListener.setNavigationModes(bEnablePan, bEnableRotate, bEnableZoom);
 	}
-	
+
 	public void setParentComposite(Composite composite)
 	{
 		parentComposite = composite;
 	}
-	
+
 	public Composite getParentComposite()
 	{
 		return parentComposite;

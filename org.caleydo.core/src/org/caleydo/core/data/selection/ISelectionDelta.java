@@ -34,7 +34,8 @@ public interface ISelectionDelta
 	 * @param selectionType the selection type
 	 * @param iInternalID the internal id
 	 */
-	public SelectionItem addSelection(int iSelectionID, ESelectionType selectionType, int iInternalID);
+	public SelectionItem addSelection(int iSelectionID, ESelectionType selectionType,
+			int iInternalID);
 
 	/**
 	 * Get the type of the id, which has to be listed in {@link EIDType}

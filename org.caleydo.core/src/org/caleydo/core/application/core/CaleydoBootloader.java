@@ -120,7 +120,7 @@ public class CaleydoBootloader
 
 			GeneralManager.get().getSWTGUIManager().runApplication();
 		}
-		
+
 		System.exit(0);
 
 		return;

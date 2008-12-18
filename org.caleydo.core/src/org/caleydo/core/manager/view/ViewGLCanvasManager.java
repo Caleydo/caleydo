@@ -44,7 +44,7 @@ import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.FPSAnimator;
 
 /**
- * Manage all canvas, view, ViewRep's and GLCanvas objects.
+ * Manage all canvas, view, ViewReps and GLCanvas objects.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -275,7 +275,7 @@ public class ViewGLCanvasManager
 			case CREATE_GL_PANEL_SELECTION:
 				glEventListener = new GLSelectionPanel(iGLCanvasID, sLabel, viewFrustum);
 				break;
-				
+
 			default:
 				throw new RuntimeException(
 						"ViewJoglManager.createGLCanvasUser() failed due to unhandled type ["

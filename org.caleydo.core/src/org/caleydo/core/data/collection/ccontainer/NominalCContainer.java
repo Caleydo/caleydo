@@ -2,7 +2,6 @@ package org.caleydo.core.data.collection.ccontainer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -128,18 +127,17 @@ public class NominalCContainer<T>
 		// float[] fArNormalized = new float[sAlStorage.size()];
 
 		int iCount = 0;
-		
-		Set<T> keySet =  hashNominalToDiscrete.keySet();
+
+		Set<T> keySet = hashNominalToDiscrete.keySet();
 		Object[] sortedArray = new Object[keySet.size()];
 		keySet.toArray(sortedArray);
-		Arrays.sort(sortedArray, 0, sortedArray.length-1);
+		Arrays.sort(sortedArray, 0, sortedArray.length - 1);
 
-		
 		for (Object content : sortedArray)
 		{
 			Float fDiscrete = hashNominalToDiscrete.get(content);
 			fDiscrete = fDivisor * iCount;
-			T tContent = (T)content;
+			T tContent = (T) content;
 			hashNominalToDiscrete.put(tContent, fDiscrete);
 			hashDiscreteToNominal.put(fDiscrete, tContent);
 

@@ -1,15 +1,11 @@
 package org.caleydo.core.parser.ascii;
 
 import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.logging.Level;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.ISWTGUIManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.data.loader.ResourceLoader;
 
 /**
  * Loader for raw data in text format.
@@ -172,7 +168,8 @@ public abstract class AbstractLoader
 
 		try
 		{
-			BufferedReader brFile = GeneralManager.get().getResourceLoader().getResource(sFileName);
+			BufferedReader brFile = GeneralManager.get().getResourceLoader().getResource(
+					sFileName);
 
 			while (((brFile.readLine()) != null) && (iCountLines <= iStopParsingAtLine))
 			{
@@ -200,7 +197,8 @@ public abstract class AbstractLoader
 	public boolean loadData()
 	{
 
-		BufferedReader brFile = GeneralManager.get().getResourceLoader().getResource(sFileName);
+		BufferedReader brFile = GeneralManager.get().getResourceLoader()
+				.getResource(sFileName);
 
 		GeneralManager.get().getLogger().log(Level.INFO,
 				"Start loading file " + sFileName + "...");

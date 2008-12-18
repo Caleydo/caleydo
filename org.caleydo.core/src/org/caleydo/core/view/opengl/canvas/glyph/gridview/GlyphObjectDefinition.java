@@ -99,7 +99,7 @@ public class GlyphObjectDefinition
 		if (parts.containsKey(name))
 			parts.get(name).addAnchor(anc, to);
 	}
-	
+
 	public String getGlyphAnchorPlace(String name, ANCHOR anchor)
 	{
 		if (!parts.containsKey(name))
@@ -246,7 +246,5 @@ public class GlyphObjectDefinition
 		}
 		return parts.get(name).getParameterIndexInternal(type, dir);
 	}
-
-
 
 }

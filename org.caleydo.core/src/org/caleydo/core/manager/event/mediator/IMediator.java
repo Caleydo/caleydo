@@ -41,6 +41,7 @@ public interface IMediator
 	public boolean hasReceiver(IMediatorReceiver receiver);
 
 	public boolean hasSender(IMediatorSender sender);
-	
-	public void triggerUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand);
+
+	public void triggerUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
+			Collection<SelectionCommand> colSelectionCommand);
 }

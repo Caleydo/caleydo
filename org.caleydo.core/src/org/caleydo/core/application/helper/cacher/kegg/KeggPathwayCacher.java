@@ -35,7 +35,7 @@ public class KeggPathwayCacher
 		this.display = display;
 		this.progressBar = progressBar;
 		this.triggeringCommand = triggeringCommand;
-		
+
 		iExpectedDownloads = 213;
 	}
 
@@ -47,7 +47,7 @@ public class KeggPathwayCacher
 		// load spring application context
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
 				ApplicationConstants.CORE_SPRING_CONFIG_FILE);
-		
+
 		// load dispatcher from spring
 		final Dispatcher dispatcher = (Dispatcher) context.getBean("Dispatcher");
 
@@ -73,13 +73,13 @@ public class KeggPathwayCacher
 		regExpFilter.addFilterRule(regExpFilterRule);
 
 		dispatcher.addJobFilter(regExpFilter);
-	
+
 		DownloadJobFactory jobFactory = (DownloadJobFactory) context.getBean("JobFactory");
 
 		String sOutputFileName = GeneralManager.CALEYDO_HOME_PATH;
 
 		UrlDownloadJob job = jobFactory.createDownloadJob();
-		
+
 		try
 		{
 			job.setUrl(new URL("http://www.genome.jp/kegg/xml/hsa/index.html"));
@@ -92,10 +92,10 @@ public class KeggPathwayCacher
 		job.setSavePath(new File(sOutputFileName));
 		job.setIgnoreFilter(true);
 		dispatcher.addJob(job);
-		
+
 		processJobs(dispatcher);
-		
-//		triggerPathwayListGeneration();
+
+		// triggerPathwayListGeneration();
 
 		if (triggeringCommand != null)
 			triggeringCommand.setFinishedKeggCacher();

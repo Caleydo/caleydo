@@ -3,7 +3,6 @@ package org.caleydo.core.parser.xml.sax.handler.pathway;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 import org.caleydo.core.data.graph.pathway.item.edge.PathwayReactionEdgeGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
@@ -32,7 +31,7 @@ public class KgmlSaxHandler
 {
 	private IPathwayItemManager pathwayItemManager;
 	private IPathwayManager pathwayManager;
-	
+
 	private Attributes attributes;
 
 	private String sAttributeName = "";
@@ -68,7 +67,7 @@ public class KgmlSaxHandler
 
 		pathwayItemManager = generalManager.getPathwayItemManager();
 		pathwayManager = generalManager.getPathwayManager();
-		
+
 		alCurrentVertex = new ArrayList<IGraphItem>();
 
 		setXmlActivationTag("pathway");
@@ -183,8 +182,8 @@ public class KgmlSaxHandler
 		String sPathwayTexturePath = sImageLink.substring(sImageLink.lastIndexOf('/') + 1,
 				sImageLink.length());
 
-		currentPathway = pathwayManager.createPathway(
-				EPathwayDatabaseType.KEGG, sName, sTitle, sPathwayTexturePath, sExternalLink);
+		currentPathway = pathwayManager.createPathway(EPathwayDatabaseType.KEGG, sName,
+				sTitle, sPathwayTexturePath, sExternalLink);
 	}
 
 	/**
@@ -247,7 +246,7 @@ public class KgmlSaxHandler
 
 				if (sTmpVertexName.substring(4).equals(""))
 					continue;
-				
+
 				iDavidId = generalManager.getIDMappingManager().getID(
 						EMappingType.ENTREZ_GENE_ID_2_DAVID,
 						Integer.valueOf(sTmpVertexName.substring(4)));
@@ -255,24 +254,24 @@ public class KgmlSaxHandler
 				if (iDavidId == null)
 				{
 					// TODO: what should we do in this case?
-//					generalManager.getLogger().log(
-//							Level.WARNING,
-//							"NCBI Gene ID " + sTmpVertexName
-//									+ " cannot be mapped to David ID.");
+					// generalManager.getLogger().log(
+					// Level.WARNING,
+					// "NCBI Gene ID " + sTmpVertexName
+					// + " cannot be mapped to David ID.");
 
 					continue;
 				}
 
-				currentVertex = pathwayItemManager.createVertexGene(
-						sTmpVertexName, sType, sExternalLink, sReactionId, iDavidId);
+				currentVertex = pathwayItemManager.createVertexGene(sTmpVertexName, sType,
+						sExternalLink, sReactionId, iDavidId);
 
 				alCurrentVertex.add(currentVertex);
 			}
 		}
 		else
 		{
-			currentVertex = pathwayItemManager.createVertex(sName, sType,
-					sExternalLink, sReactionId);
+			currentVertex = pathwayItemManager.createVertex(sName, sType, sExternalLink,
+					sReactionId);
 
 			alCurrentVertex.add(currentVertex);
 		}
@@ -330,13 +329,13 @@ public class KgmlSaxHandler
 
 		if (alCurrentVertex.isEmpty())
 		{
-			//TODO: investigate!
+			// TODO: investigate!
 			return;
 		}
-		
-		IGraphItem vertexRep = pathwayItemManager.createVertexRep(
-				currentPathway, alCurrentVertex, sName, sShapeType, shXPosition, shYPosition,
-				shWidth, shHeight);
+
+		IGraphItem vertexRep = pathwayItemManager.createVertexRep(currentPathway,
+				alCurrentVertex, sName, sShapeType, shXPosition, shYPosition, shWidth,
+				shHeight);
 
 		hashKgmlEntryIdToVertexRepId.put(iCurrentEntryId, vertexRep);
 		hashKgmlNameToVertexRepId.put(((PathwayVertexGraphItem) currentVertex).getName(),
@@ -388,8 +387,8 @@ public class KgmlSaxHandler
 						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT), sType);
 
 		// Create edge representation
-		pathwayItemManager.createRelationEdgeRep(currentPathway,
-				relationEdge, graphItemIn, graphItemOut);
+		pathwayItemManager.createRelationEdgeRep(currentPathway, relationEdge, graphItemIn,
+				graphItemOut);
 
 	}
 
@@ -467,11 +466,11 @@ public class KgmlSaxHandler
 			}
 		}
 
-		currentReactionSubstrateEdgeRep = pathwayItemManager
-				.createReactionEdge(currentPathway, sReactionName, sReactionType);
+		currentReactionSubstrateEdgeRep = pathwayItemManager.createReactionEdge(
+				currentPathway, sReactionName, sReactionType);
 
-		currentReactionProductEdgeRep = pathwayItemManager
-				.createReactionEdge(currentPathway, sReactionName, sReactionType);
+		currentReactionProductEdgeRep = pathwayItemManager.createReactionEdge(currentPathway,
+				sReactionName, sReactionType);
 
 	}
 
@@ -516,24 +515,22 @@ public class KgmlSaxHandler
 
 		currentReactionSubstrateEdgeRep.addItemDoubleLinked(graphItemOut,
 				EGraphItemProperty.OUTGOING);
-		
+
 		IGraphItem tmpReactionEdge = (PathwayReactionEdgeGraphItem) currentReactionSubstrateEdgeRep
 				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0);
 
 		if (tmpReactionEdge == null)
 			return;
-		
-		if (graphItemIn.getAllItemsByProp(
-				EGraphItemProperty.ALIAS_PARENT).size() == 0)
+
+		if (graphItemIn.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() == 0)
 			return;
-		
+
 		tmpReactionEdge.addItemDoubleLinked(graphItemIn.getAllItemsByProp(
 				EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.INCOMING);
 
-		if (graphItemOut.getAllItemsByProp(
-				EGraphItemProperty.ALIAS_PARENT).size() == 0)
+		if (graphItemOut.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() == 0)
 			return;
-		
+
 		tmpReactionEdge.addItemDoubleLinked((IGraphItem) graphItemOut.getAllItemsByProp(
 				EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.OUTGOING);
 	}
@@ -587,18 +584,16 @@ public class KgmlSaxHandler
 
 		if (tmpReactionEdge == null)
 			return;
-		
-		if (graphItemIn.getAllItemsByProp(
-				EGraphItemProperty.ALIAS_PARENT).size() == 0)
+
+		if (graphItemIn.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() == 0)
 			return;
-				
+
 		tmpReactionEdge.addItemDoubleLinked((IGraphItem) graphItemIn.getAllItemsByProp(
 				EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.INCOMING);
 
-		if (graphItemOut.getAllItemsByProp(
-				EGraphItemProperty.ALIAS_PARENT).size() == 0)
+		if (graphItemOut.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size() == 0)
 			return;
-		
+
 		tmpReactionEdge.addItemDoubleLinked((IGraphItem) graphItemOut.getAllItemsByProp(
 				EGraphItemProperty.ALIAS_PARENT).get(0), EGraphItemProperty.OUTGOING);
 	}

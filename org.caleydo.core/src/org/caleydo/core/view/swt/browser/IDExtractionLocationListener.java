@@ -125,7 +125,7 @@ public class IDExtractionLocationListener
 			// iArSelectionId = new int[0];
 			// iArSelectionDepth = new int[0];
 
-			//iAlOptional.add(iPathwayId);
+			// iAlOptional.add(iPathwayId);
 		}
 		else
 		{

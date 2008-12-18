@@ -22,6 +22,7 @@ public interface IMediatorReceiver
 	 * @param colSelectionCommand TODO
 	 * @param eMediatorType TODO
 	 */
-	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand, EMediatorType eMediatorType);
+	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
+			Collection<SelectionCommand> colSelectionCommand, EMediatorType eMediatorType);
 
 }

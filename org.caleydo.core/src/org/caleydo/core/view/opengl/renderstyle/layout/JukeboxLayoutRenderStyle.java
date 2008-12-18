@@ -29,7 +29,8 @@ public class JukeboxLayoutRenderStyle
 	/**
 	 * Constructor.
 	 */
-	public JukeboxLayoutRenderStyle(IViewFrustum viewFrustum, final ARemoteViewLayoutRenderStyle previousLayoutStyle)
+	public JukeboxLayoutRenderStyle(IViewFrustum viewFrustum,
+			final ARemoteViewLayoutRenderStyle previousLayoutStyle)
 	{
 		super(viewFrustum, previousLayoutStyle);
 		initLayout();
@@ -54,9 +55,9 @@ public class JukeboxLayoutRenderStyle
 
 		Transform transform = new Transform();
 		transform.setTranslation(new Vec3f(0f / fAspectRatio, -0.9f, 0f));
-		transform.setScale(new Vec3f(fScalingFactorFocusLevel,
-				fScalingFactorFocusLevel, fScalingFactorFocusLevel));
-		
+		transform.setScale(new Vec3f(fScalingFactorFocusLevel, fScalingFactorFocusLevel,
+				fScalingFactorFocusLevel));
+
 		focusLevel.getElementByPositionIndex(0).setTransform(transform);
 
 		return focusLevel;
@@ -103,7 +104,7 @@ public class JukeboxLayoutRenderStyle
 
 		int iRemoteLevelElementID = 0;
 		for (RemoteLevelElement element : poolLevel.getAllElements())
-		{			
+		{
 			if (element.getID() == iSelectedRemoteLevelElementID)
 			{
 				fSelectedScaling = 2;
@@ -121,7 +122,7 @@ public class JukeboxLayoutRenderStyle
 			transform.setScale(new Vec3f(fSelectedScaling * fScalingFactorPoolLevel,
 					fSelectedScaling * fScalingFactorPoolLevel, fSelectedScaling
 							* fScalingFactorPoolLevel));
-			
+
 			poolLevel.getElementByPositionIndex(iRemoteLevelElementID).setTransform(transform);
 			iRemoteLevelElementID++;
 		}
@@ -141,10 +142,11 @@ public class JukeboxLayoutRenderStyle
 			// Store current model-view matrix
 			transform = new Transform();
 			transform.setTranslation(new Vec3f(fMemoPos, -1.4f, 4.1f));
-			transform.setScale(new Vec3f(fScalingFactorSelectionLevel, fScalingFactorSelectionLevel,
-					fScalingFactorSelectionLevel));
-			
-			selectionLevel.getElementByPositionIndex(0).setTransform(transform);;
+			transform.setScale(new Vec3f(fScalingFactorSelectionLevel,
+					fScalingFactorSelectionLevel, fScalingFactorSelectionLevel));
+
+			selectionLevel.getElementByPositionIndex(0).setTransform(transform);
+			;
 
 			fMemoPos += 0.42f;
 		}
@@ -169,7 +171,7 @@ public class JukeboxLayoutRenderStyle
 		transform.setTranslation(new Vec3f(0f, 0f, 4.1f));
 		transform.setScale(new Vec3f(fScalingFactorTransitionLevel,
 				fScalingFactorTransitionLevel, fScalingFactorTransitionLevel));
-		
+
 		transitionLevel.getElementByPositionIndex(0).setTransform(transform);
 
 		return transitionLevel;
@@ -182,8 +184,9 @@ public class JukeboxLayoutRenderStyle
 		transform.setTranslation(new Vec3f(-4.4f, 3.9f, 4.1f));
 		transform.setScale(new Vec3f(fScalingFactorSpawnLevel, fScalingFactorSpawnLevel,
 				fScalingFactorSpawnLevel));
-		
-		spawnLevel.getElementByPositionIndex(0).setTransform(transform);;
+
+		spawnLevel.getElementByPositionIndex(0).setTransform(transform);
+		;
 
 		return spawnLevel;
 	}

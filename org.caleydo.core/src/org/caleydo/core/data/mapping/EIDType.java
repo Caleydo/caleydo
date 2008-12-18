@@ -20,16 +20,17 @@ public enum EIDType
 	REFSEQ_MRNA(EStorageType.STRING, "refseq-mrna", "refseq-mrna-id"),
 	ENTREZ_GENE_ID(EStorageType.INT, "entrez-gene-id", "entrez-gene-id"),
 	EXPRESSION_INDEX(EStorageType.INT, "expression-index", "The index of a gene expression value"),
-//	EXPRESSION_EXPERIMENT(EStorageType.INT, "expression-experiment", "A expression experiment containing gene expression values"),
+	// EXPRESSION_EXPERIMENT(EStorageType.INT, "expression-experiment",
+	// "A expression experiment containing gene expression values"),
 	PATHWAY_VERTEX(EStorageType.INT, "pathway vertex id", "The id of the pathway vertex"),
 	PATHWAY(EStorageType.INT, "pathway id", "The ID of a pathway"),
 	EXPERIMENT(EStorageType.STRING, "experiment id", "The ID that connects clinical with microarray data"),
 	EXPERIMENT_INDEX(EStorageType.INT, "experiment index", "The experiment index"),
 	CELL_COMPONENT(EStorageType.STRING, "GO cell component", "The GO cell component"),
-	
+
 	// FIXME: Make this general! Needed for Asslaber data
 	OLIGO(EStorageType.STRING, "oligo", "oligo-id");
-	
+
 	private final EStorageType storageType;
 
 	private final String sName;

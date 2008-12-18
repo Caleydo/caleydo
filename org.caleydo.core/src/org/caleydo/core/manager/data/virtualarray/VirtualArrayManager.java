@@ -3,7 +3,6 @@ package org.caleydo.core.manager.data.virtualarray;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.data.IVirtualArrayManager;
-import org.caleydo.core.manager.id.EManagedObjectType;
 
 /**
  * Singleton that manages all virtual arrays.

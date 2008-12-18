@@ -28,7 +28,6 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
-import org.caleydo.core.manager.picking.ESelectionMode;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;

@@ -101,7 +101,8 @@ public class CmdSetDataRepresentation
 	 *            inhomogeneous.
 	 * @param iAlStorageID The source storage ids. This storage is overwritten
 	 *            with the result.
-	 * @param objectType Signal whether you want to apply this on a set or a storage.
+	 * @param objectType Signal whether you want to apply this on a set or a
+	 *            storage.
 	 */
 	public void setAttributes(EExternalDataRepresentation externalDataRep,
 			boolean bIsSetHomogeneous, ArrayList<Integer> iAlStorageID,

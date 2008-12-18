@@ -34,7 +34,7 @@ public abstract class AStorage
 	boolean bRawDataSet = false;
 
 	ERawDataType rawDataType = ERawDataType.UNDEFINED;
-	
+
 	EDataRepresentation dataRep;
 
 	/**
@@ -46,7 +46,8 @@ public abstract class AStorage
 
 		GeneralManager.get().getStorageManager().registerItem(this);
 
-		hashCContainers = new EnumMap<EDataRepresentation, ICContainer>(EDataRepresentation.class);
+		hashCContainers = new EnumMap<EDataRepresentation, ICContainer>(
+				EDataRepresentation.class);
 		hashVirtualArrays = new HashMap<Integer, IVirtualArray>();
 		hashIsVirtualArrayEnabled = new HashMap<Integer, Boolean>();
 		sLabel = new String("Not specified");
@@ -75,7 +76,8 @@ public abstract class AStorage
 	{
 
 		if (bRawDataSet)
-			throw new IllegalStateException("Raw data was already set in Storage " + iUniqueID + " , tried to set again.");
+			throw new IllegalStateException("Raw data was already set in Storage " + iUniqueID
+					+ " , tried to set again.");
 
 		rawDataType = ERawDataType.FLOAT;
 		bRawDataSet = true;
@@ -223,7 +225,6 @@ public abstract class AStorage
 		// TODO Auto-generated method stub
 		throw new IllegalStateException("Not implemented");
 	}
-
 
 	@Override
 	public int size()

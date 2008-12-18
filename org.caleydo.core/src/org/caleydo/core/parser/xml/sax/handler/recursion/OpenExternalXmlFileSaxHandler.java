@@ -51,29 +51,29 @@ public class OpenExternalXmlFileSaxHandler
 		if (qName.equalsIgnoreCase(this.sOpeningTag))
 		{
 			String sTargetFileName = "";
-//
-//			try
-//			{
-				sTargetFileName = attributes.getValue(sXML_attribute_target);
+			//
+			// try
+			// {
+			sTargetFileName = attributes.getValue(sXML_attribute_target);
 
-				if (sTargetFileName == null)
-				{
-					throw new IllegalArgumentException("no XML-file specified!");
-				}
+			if (sTargetFileName == null)
+			{
+				throw new IllegalArgumentException("no XML-file specified!");
+			}
 
-				/**
-				 * Recursion...
-				 */
-				xmlParserManager.parseXmlFileByName(sTargetFileName);
+			/**
+			 * Recursion...
+			 */
+			xmlParserManager.parseXmlFileByName(sTargetFileName);
 
-//			}
-//			catch (CaleydoRuntimeException cre)
-//			{
-//				throw new CaleydoRuntimeException(
-//						"file [" + sTargetFileName
-//								+ "] could not be loaded! Skip file... (Error="
-//								+ cre.toString() + ")", CaleydoRuntimeExceptionType.SAXPARSER);
-//			}
+			// }
+			// catch (CaleydoRuntimeException cre)
+			// {
+			// throw new CaleydoRuntimeException(
+			// "file [" + sTargetFileName
+			// + "] could not be loaded! Skip file... (Error="
+			// + cre.toString() + ")", CaleydoRuntimeExceptionType.SAXPARSER);
+			// }
 
 		} // if ( qName.equalsIgnoreCase( this.sOpeningTag ) )
 		else

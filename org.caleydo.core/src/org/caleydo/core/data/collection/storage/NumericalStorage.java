@@ -31,7 +31,8 @@ public class NumericalStorage
 	public void normalize()
 	{
 
-		INumericalCContainer iRawContainer = (INumericalCContainer)hashCContainers.get(dataRep);
+		INumericalCContainer iRawContainer = (INumericalCContainer) hashCContainers
+				.get(dataRep);
 
 		hashCContainers.put(EDataRepresentation.NORMALIZED, iRawContainer.normalize());
 	}
@@ -56,8 +57,9 @@ public class NumericalStorage
 	@Override
 	public double getMin()
 	{
-		if(!hashCContainers.containsKey(dataRep))
-			throw new IllegalStateException("The requested data representation was not produced.");
+		if (!hashCContainers.containsKey(dataRep))
+			throw new IllegalStateException(
+					"The requested data representation was not produced.");
 		return ((INumericalCContainer) (hashCContainers.get(dataRep))).getMin();
 	}
 

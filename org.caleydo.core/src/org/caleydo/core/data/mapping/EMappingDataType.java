@@ -20,7 +20,7 @@ public enum EMappingDataType
 	MULTI_STRING2STRING(true, false),
 	MULTI_STRING2INT(true, false),
 	MULTI_INT2STRING(true, false),
-	
+
 	NONE(false, false);
 
 	private final boolean bUseMultiMap;

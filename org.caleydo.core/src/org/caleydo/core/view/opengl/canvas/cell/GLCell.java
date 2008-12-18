@@ -132,26 +132,26 @@ public class GLCell
 		generalManager.getLogger().log(Level.FINE,
 				"Update called by " + eventTrigger.getClass().getSimpleName());
 
-		// if (selectionDelta.getIDType() != EIDType.DAVID)
-		// return;
-		//
-		// for (SelectionItem item : selectionDelta)
-		// {
-		// if (item.getSelectionType() == ESelectionType.ADD
-		// || item.getSelectionType() == ESelectionType.REMOVE)
-		// {
-		// break;
-		// }
-		// else
-		// {
-		// selectionManager.clearSelections();
-		// break;
-		// }
-		// }
-		//
-		// resolveExternalSelectionDelta(selectionDelta);
-		//		
-		// setDisplayListDirty();
+		if (selectionDelta.getIDType() != EIDType.DAVID)
+			return;
+
+		for (SelectionItem item : selectionDelta)
+		{
+			if (item.getSelectionType() == ESelectionType.ADD
+					|| item.getSelectionType() == ESelectionType.REMOVE)
+			{
+				break;
+			}
+			else
+			{
+				selectionManager.clearSelections();
+				break;
+			}
+		}
+
+		resolveExternalSelectionDelta(selectionDelta);
+
+		setDisplayListDirty();
 	}
 
 	private ISelectionDelta resolveExternalSelectionDelta(ISelectionDelta selectionDelta)
@@ -163,10 +163,17 @@ public class GLCell
 
 		for (SelectionItem item : selectionDelta)
 		{
+			if (item.getSelectionType() != ESelectionType.MOUSE_OVER
+					&& item.getSelectionType() != ESelectionType.SELECTION)
+			{
+				continue;
+			}
+
 			iDavidID = item.getSelectionID();
+
 			System.out.println("Cell component: "
-					+ GeneralManager.get().getIDMappingManager().getMapping(
-							EMappingType.DAVID_2_CELL_COMPONENT));
+					+ GeneralManager.get().getIDMappingManager().getID(
+							EMappingType.DAVID_2_CELL_COMPONENT, iDavidID));
 		}
 		//
 		// iPathwayVertexGraphItemID = generalManager.getPathwayItemManager()
@@ -246,7 +253,8 @@ public class GLCell
 	public void triggerUpdate(EMediatorType mediatorType, ISelectionDelta selectionDelta,
 			Collection<SelectionCommand> colSelectionCommand)
 	{
-		generalManager.getEventPublisher().triggerUpdate(EMediatorType.SELECTION_MEDIATOR, this, selectionDelta, null);
+		generalManager.getEventPublisher().triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
+				this, selectionDelta, null);
 	}
 
 	@Override

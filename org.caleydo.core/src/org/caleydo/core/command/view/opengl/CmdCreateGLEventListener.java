@@ -5,7 +5,6 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import java.util.logging.Level;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.manager.IGeneralManager;
@@ -34,7 +33,7 @@ public class CmdCreateGLEventListener
 
 	protected Vec3f cameraOrigin;
 	protected Rotf cameraRotation;
-	
+
 	protected ArrayList<Integer> iAlSetIDs;
 
 	/**
@@ -93,44 +92,44 @@ public class CmdCreateGLEventListener
 		StringTokenizer frustumToken = new StringTokenizer(sAttribute3,
 				IGeneralManager.sDelimiter_Parser_DataItems);
 
-//		try
-//		{
-			// Parse projection mode (PERSPECTIVE / ORTHOGRAPHIC)
-			String sProjectionMode = "";
+		// try
+		// {
+		// Parse projection mode (PERSPECTIVE / ORTHOGRAPHIC)
+		String sProjectionMode = "";
 
-			if (frustumToken.hasMoreTokens())
-				sProjectionMode = frustumToken.nextToken();
+		if (frustumToken.hasMoreTokens())
+			sProjectionMode = frustumToken.nextToken();
 
-			if (!sProjectionMode.equals(EProjectionMode.ORTHOGRAPHIC.name())
-					&& !sProjectionMode.equals(EProjectionMode.PERSPECTIVE.name()))
-			{
-				return;
-			}
+		if (!sProjectionMode.equals(EProjectionMode.ORTHOGRAPHIC.name())
+				&& !sProjectionMode.equals(EProjectionMode.PERSPECTIVE.name()))
+		{
+			return;
+		}
 
-			float fLeft = -1;
-			float fRight = -1;
-			float fBottom = -1;
-			float fTop = -1;
-			float fNear = -1;
-			float fFar = -1;
+		float fLeft = -1;
+		float fRight = -1;
+		float fBottom = -1;
+		float fTop = -1;
+		float fNear = -1;
+		float fFar = -1;
 
-			fLeft = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
-			fRight = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
-			fBottom = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
-			fTop = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
-			fNear = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
-			fFar = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
+		fLeft = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
+		fRight = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
+		fBottom = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
+		fTop = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
+		fNear = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
+		fFar = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
 
-			viewFrustum = new ViewFrustum(EProjectionMode.valueOf(sProjectionMode), fLeft,
-					fRight, fBottom, fTop, fNear, fFar);
+		viewFrustum = new ViewFrustum(EProjectionMode.valueOf(sProjectionMode), fLeft, fRight,
+				fBottom, fTop, fNear, fFar);
 
-//		}
-//		catch (Exception e)
-//		{
-//
-//			generalManager.getLogger().log(Level.SEVERE,
-//					"Error in extraction view frustum from XML argument.", e);
-//		}
+		// }
+		// catch (Exception e)
+		// {
+		//
+		// generalManager.getLogger().log(Level.SEVERE,
+		// "Error in extraction view frustum from XML argument.", e);
+		// }
 	}
 
 	/**
@@ -187,7 +186,7 @@ public class CmdCreateGLEventListener
 		this.iAlSetIDs = iArSetIDs;
 		this.iParentContainerId = iParentCanvasID;
 	}
-	
+
 	public void setAttributes(final EProjectionMode eProjectionMode, final float fLeft,
 			final float fRight, final float fBottom, final float fTop, final float fNear,
 			final float fFar, final ArrayList<Integer> iArSetIDs, final int iParentCanvasID,
@@ -195,14 +194,14 @@ public class CmdCreateGLEventListener
 			final float fCamRotationX, final float fCamRotationY, final float fCamRotationZ,
 			final float fCamRotationAngle)
 	{
-		setAttributes(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, 
-				fFar, iArSetIDs, iParentCanvasID);
-		
+		setAttributes(eProjectionMode, fLeft, fRight, fBottom, fTop, fNear, fFar, iArSetIDs,
+				iParentCanvasID);
+
 		cameraOrigin.set(fCamOriginX, fCamOriginY, fCamOriginZ);
 		cameraRotation.set(new Vec3f(fCamRotationX, fCamRotationY, fCamRotationZ),
 				(float) Math.toRadians(fCamRotationAngle));
 	}
-	
+
 	@Override
 	public void doCommand()
 	{
@@ -230,7 +229,7 @@ public class CmdCreateGLEventListener
 		// Set sets in views
 		if (iAlSetIDs == null)
 			return;
-		
+
 		for (Integer iSetID : iAlSetIDs)
 		{
 			createdObject.addSet(iSetID);

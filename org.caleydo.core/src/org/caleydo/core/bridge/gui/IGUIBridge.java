@@ -10,7 +10,7 @@ public interface IGUIBridge
 
 	public void setActiveGLSubView(AGLEventListener parentGLEventListener,
 			AGLEventListener subGLEventListener);
-	
+
 	public void setShortInfo(String sMessage);
 
 }

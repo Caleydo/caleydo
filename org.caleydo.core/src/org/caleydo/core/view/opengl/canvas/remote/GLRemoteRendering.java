@@ -87,8 +87,8 @@ public class GLRemoteRendering
 	private static final int SLERP_RANGE = 1000;
 	private static final int SLERP_SPEED = 1400;
 
-//	private GenericSelectionManager selectionManager;
-	
+	// private GenericSelectionManager selectionManager;
+
 	private int iMouseOverObjectID = -1;
 
 	private RemoteLevel focusLevel;
@@ -118,8 +118,8 @@ public class GLRemoteRendering
 	private boolean bEnableNavigationOverlay = false;
 
 	// FIXME: should be a singleton
-	
-//	private GLIconTextureManager iconTextureManager;
+
+	// private GLIconTextureManager iconTextureManager;
 
 	private ArrayList<Integer> iAlUninitializedPathwayIDs;
 
@@ -137,10 +137,10 @@ public class GLRemoteRendering
 
 	private ArrayList<Integer> iAlContainedViewIDs;
 
-//	private int iGLDisplayList;
+	// private int iGLDisplayList;
 
 	private GLSelectionPanel glSelectionPanel;
-	
+
 	private ISelectionDelta lastSelectionDelta;
 
 	/**
@@ -153,7 +153,7 @@ public class GLRemoteRendering
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 		viewType = EManagedObjectType.GL_REMOTE_RENDERING;
 		this.layoutMode = layoutMode;
-		
+
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
 		{
 			layoutRenderStyle = new BucketLayoutRenderStyle(viewFrustum);
@@ -166,7 +166,7 @@ public class GLRemoteRendering
 			parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
 			// Register specialized bucket mouse wheel listener
 			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
-//			parentGLCanvas.addMouseListener(bucketMouseWheelListener);
+			// parentGLCanvas.addMouseListener(bucketMouseWheelListener);
 
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX))
@@ -176,7 +176,7 @@ public class GLRemoteRendering
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.LIST))
 		{
 			layoutRenderStyle = new ListLayoutRenderStyle(viewFrustum);
-		}		
+		}
 
 		focusLevel = layoutRenderStyle.initUnderInteractionLevel();
 		stackLevel = layoutRenderStyle.initStackLevel(bucketMouseWheelListener.isZoomedIn());
@@ -187,13 +187,13 @@ public class GLRemoteRendering
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
 		{
-			glConnectionLineRenderer = new GLConnectionLineRendererBucket(
-					focusLevel, stackLevel, poolLevel);
+			glConnectionLineRenderer = new GLConnectionLineRendererBucket(focusLevel,
+					stackLevel, poolLevel);
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX))
 		{
-			glConnectionLineRenderer = new GLConnectionLineRendererJukebox(
-					focusLevel, stackLevel, poolLevel);
+			glConnectionLineRenderer = new GLConnectionLineRendererJukebox(focusLevel,
+					stackLevel, poolLevel);
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.LIST))
 		{
@@ -212,44 +212,47 @@ public class GLRemoteRendering
 
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 24), false);
 
-//		trashCan = new TrashCan();
+		// trashCan = new TrashCan();
 
 		// TODO: the genome mapper should be stored centralized instead of newly
 		// created
 		colorMappingBarMiniView = new GLColorMappingBarMiniView(viewFrustum);
-		
+
 		// Create selection panel
-		CmdCreateGLEventListener cmdCreateGLView = (CmdCreateGLEventListener) generalManager.getCommandManager()
-			.createCommandByType(ECommandType.CREATE_GL_PANEL_SELECTION);
-		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0, 4, -20, 20, null, -1);
+		CmdCreateGLEventListener cmdCreateGLView = (CmdCreateGLEventListener) generalManager
+				.getCommandManager().createCommandByType(
+						ECommandType.CREATE_GL_PANEL_SELECTION);
+		cmdCreateGLView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 0.8f, 0, 4, -20, 20,
+				null, -1);
 		cmdCreateGLView.doCommand();
 		glSelectionPanel = (GLSelectionPanel) cmdCreateGLView.getCreatedObject();
-		
-//		selectionManager = new GenericSelectionManager.Builder(EIDType.DAVID).build();
+
+		// selectionManager = new
+		// GenericSelectionManager.Builder(EIDType.DAVID).build();
 
 		// Registration to event system
-		generalManager.getEventPublisher().addSender(
-				EMediatorType.SELECTION_MEDIATOR, (IMediatorSender)this);
-		generalManager.getEventPublisher().addReceiver(
-				EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver)this);
+		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
+				(IMediatorSender) this);
+		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
+				(IMediatorReceiver) this);
 		generalManager.getEventPublisher().addSender(EMediatorType.VIEW_SELECTION, this);
-//		generalManager.getEventPublisher().addSender(
-//				EMediatorType.SELECTION_MEDIATOR, (IMediatorSender)this);		
-//		generalManager.getEventPublisher().addReceiver(
-//				EMediatorType.BUCKET_INTERNAL_INCOMING_MEDIATOR, (IMediatorReceiver)this);
+		// generalManager.getEventPublisher().addSender(
+		// EMediatorType.SELECTION_MEDIATOR, (IMediatorSender)this);
+		// generalManager.getEventPublisher().addReceiver(
+		// EMediatorType.BUCKET_INTERNAL_INCOMING_MEDIATOR,
+		// (IMediatorReceiver)this);
 	}
 
 	@Override
 	public void initLocal(final GL gl)
 	{
-//		iGLDisplayList = gl.glGenLists(1);
+		// iGLDisplayList = gl.glGenLists(1);
 
 		init(gl);
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID,
-			final RemoteLevel layer,
+	public void initRemote(final GL gl, final int iRemoteViewID, final RemoteLevel layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
@@ -259,37 +262,39 @@ public class GLRemoteRendering
 
 	@Override
 	public void init(final GL gl)
-	{        
+	{
 		gl.glClearColor(0.5f, 0.5f, 0.5f, 1f);
-		
+
 		if (glConnectionLineRenderer != null)
 			glConnectionLineRenderer.init(gl);
-        
-		//iconTextureManager = new GLIconTextureManager(gl);
+
+		// iconTextureManager = new GLIconTextureManager(gl);
 
 		time = new SystemTime();
 		((SystemTime) time).rebase();
 
 		initializeContainedViews(gl);
-		
-		selectionLevel.getElementByPositionIndex(0).setContainedElementID(glSelectionPanel.getID());
-//		selectionLevel.setElementVisibilityById(true, glSelectionPanel.getID());
-		
-		glSelectionPanel.initRemote(gl, getID(), null, 
-				pickingTriggerMouseAdapter, remoteRenderingGLCanvas);
 
-//		trashCan.init(gl);
+		selectionLevel.getElementByPositionIndex(0).setContainedElementID(
+				glSelectionPanel.getID());
+		// selectionLevel.setElementVisibilityById(true,
+		// glSelectionPanel.getID());
+
+		glSelectionPanel.initRemote(gl, getID(), null, pickingTriggerMouseAdapter,
+				remoteRenderingGLCanvas);
+
+		// trashCan.init(gl);
 
 		colorMappingBarMiniView.setWidth(layoutRenderStyle.getColorBarWidth());
 		colorMappingBarMiniView.setHeight(layoutRenderStyle.getColorBarHeight());
 	}
-	
+
 	@Override
 	public synchronized void displayLocal(final GL gl)
 	{
-		if ((pickingTriggerMouseAdapter.wasRightMouseButtonPressed()
-				&& !bucketMouseWheelListener.isZoomedIn())
-				&&  !(layoutRenderStyle instanceof ListLayoutRenderStyle))
+		if ((pickingTriggerMouseAdapter.wasRightMouseButtonPressed() && !bucketMouseWheelListener
+				.isZoomedIn())
+				&& !(layoutRenderStyle instanceof ListLayoutRenderStyle))
 		{
 			bEnableNavigationOverlay = !bEnableNavigationOverlay;
 
@@ -304,12 +309,12 @@ public class GLRemoteRendering
 		// buildDisplayList(gl);
 		// bIsDisplayListDirtyLocal = false;
 		// }
-		
+
 		display(gl);
 
-		if(eBusyModeState != EBusyModeState.OFF)
+		if (eBusyModeState != EBusyModeState.OFF)
 			renderBusyMode(gl);
-		
+
 		if (pickingTriggerMouseAdapter.getPickedPoint() != null)
 			dragAndDrop.setCurrentMousePos(gl, pickingTriggerMouseAdapter.getPickedPoint());
 
@@ -317,68 +322,67 @@ public class GLRemoteRendering
 		{
 			dragAndDrop.renderDragThumbnailTexture(gl);
 		}
-		
-		if (pickingTriggerMouseAdapter.wasMouseReleased()
-				&& dragAndDrop.isDragActionRunning())
+
+		if (pickingTriggerMouseAdapter.wasMouseReleased() && dragAndDrop.isDragActionRunning())
 		{
 			int iDraggedObjectId = dragAndDrop.getDraggedObjectedId();
 
-//			System.out.println("over: " +iExternalID);
-//			System.out.println("dragged: " +iDraggedObjectId);
-			
+			// System.out.println("over: " +iExternalID);
+			// System.out.println("dragged: " +iDraggedObjectId);
+
 			if (iMouseOverObjectID != iDraggedObjectId)
 			{
-				RemoteLevelElement mouseOverElement = 
-					RemoteElementManager.get().getItem(iMouseOverObjectID);
-				
-				RemoteLevelElement originElement =
-					RemoteElementManager.get().getItem(iDraggedObjectId);
-				
+				RemoteLevelElement mouseOverElement = RemoteElementManager.get().getItem(
+						iMouseOverObjectID);
+
+				RemoteLevelElement originElement = RemoteElementManager.get().getItem(
+						iDraggedObjectId);
+
 				int iMouseOverElementID = mouseOverElement.getContainedElementID();
 				int iOriginElementID = originElement.getContainedElementID();
-				
+
 				mouseOverElement.setContainedElementID(iOriginElementID);
 				originElement.setContainedElementID(iMouseOverElementID);
 			}
 
-//			if (iDraggedObjectId != -1 && iMouseOverObjectID != iDraggedObjectId)
-//			{
-				
-				
-//				if (focusLevel.containsElement(mouseOverElement))
-//				{
-//					focusLevel.replaceElement(originElement, mouseOverElement);
-////					focusLevel.setElementVisibilityById(true, iDraggedObjectId);
-//				}
-//				else if (focusLevel.containsElement(originElement))
-//				{
-//					focusLevel.replaceElement(mouseOverElement, originElement);
-////					focusLevel.setElementVisibilityById(true, iMouseOverObjectID);
-//				}
-//
-//				if (stackLevel.containsElement(iMouseOverObjectID) 
-//						&& stackLevel.containsElement(iDraggedObjectId))
-//				{
-//					stackLevel.swapElements(iMouseOverObjectID, iDraggedObjectId);
-//				}
-//				else
-//				{		
-//					if (stackLevel.containsElement(iMouseOverObjectID))
-//					{
-//						stackLevel.replaceElement(iDraggedObjectId, 
-//								stackLevel.getPositionIndexByElementID(iMouseOverObjectID));
-////						stackLevel.setElementVisibilityById(true, iDraggedObjectId);
-//					}
-//					else if (stackLevel.containsElement(iDraggedObjectId))
-//					{
-//						stackLevel.replaceElement(iMouseOverObjectID, 
-//								stackLevel.getPositionIndexByElementID(iDraggedObjectId));
-////						stackLevel.setElementVisibilityById(true, iMouseOverObjectID);
-//					}
-//				}
-//			}
-			
-//			System.out.println("Stop drag!");
+			// if (iDraggedObjectId != -1 && iMouseOverObjectID !=
+			// iDraggedObjectId)
+			// {
+
+			// if (focusLevel.containsElement(mouseOverElement))
+			// {
+			// focusLevel.replaceElement(originElement, mouseOverElement);
+			// // focusLevel.setElementVisibilityById(true, iDraggedObjectId);
+			// }
+			// else if (focusLevel.containsElement(originElement))
+			// {
+			// focusLevel.replaceElement(mouseOverElement, originElement);
+			// // focusLevel.setElementVisibilityById(true, iMouseOverObjectID);
+			// }
+			//
+			// if (stackLevel.containsElement(iMouseOverObjectID)
+			// && stackLevel.containsElement(iDraggedObjectId))
+			// {
+			// stackLevel.swapElements(iMouseOverObjectID, iDraggedObjectId);
+			// }
+			// else
+			// {
+			// if (stackLevel.containsElement(iMouseOverObjectID))
+			// {
+			// stackLevel.replaceElement(iDraggedObjectId,
+			// stackLevel.getPositionIndexByElementID(iMouseOverObjectID));
+			// // stackLevel.setElementVisibilityById(true, iDraggedObjectId);
+			// }
+			// else if (stackLevel.containsElement(iDraggedObjectId))
+			// {
+			// stackLevel.replaceElement(iMouseOverObjectID,
+			// stackLevel.getPositionIndexByElementID(iDraggedObjectId));
+			// // stackLevel.setElementVisibilityById(true, iMouseOverObjectID);
+			// }
+			// }
+			// }
+
+			// System.out.println("Stop drag!");
 
 			dragAndDrop.stopDragAction();
 		}
@@ -399,16 +403,16 @@ public class GLRemoteRendering
 	public synchronized void display(final GL gl)
 	{
 
-		time.update();		
-		
+		time.update();
+
 		layoutRenderStyle.initPoolLevel(iMouseOverObjectID);
-//		 layoutRenderStyle.initMemoLayer();
+		// layoutRenderStyle.initMemoLayer();
 		// layoutRenderStyle.initStackLayer();
 		// layoutRenderStyle.initTransitionLayer();
 		// layoutRenderStyle.initUnderInteractionLayer();
 		// layoutRenderStyle.initSpawnLayer();
-		
- 		doSlerpActions(gl);
+
+		doSlerpActions(gl);
 		initializeNewPathways(gl);
 
 		renderRemoteLevel(gl, focusLevel);
@@ -421,14 +425,14 @@ public class GLRemoteRendering
 			// comment here for connection lines
 			if (glConnectionLineRenderer != null)
 				glConnectionLineRenderer.render(gl);
-			
+
 			renderPoolAndMemoLayerBackground(gl);
 
 			renderRemoteLevel(gl, transitionLevel);
 			renderRemoteLevel(gl, poolLevel);
 			renderRemoteLevel(gl, spawnLevel);
 
-			renderRemoteLevel(gl, selectionLevel);	
+			renderRemoteLevel(gl, selectionLevel);
 		}
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
@@ -440,11 +444,12 @@ public class GLRemoteRendering
 				layoutRenderStyle.getColorBarYPos(), 4);
 
 		renderHandles(gl);
-		
+
 		// gl.glCallList(iGLDisplayList);
 	}
 
-	public synchronized void setInitialContainedViews(ArrayList<Integer> iAlInitialContainedViewIDs)
+	public synchronized void setInitialContainedViews(
+			ArrayList<Integer> iAlInitialContainedViewIDs)
 	{
 		iAlContainedViewIDs = iAlInitialContainedViewIDs;
 	}
@@ -479,7 +484,8 @@ public class GLRemoteRendering
 				generalManager.getGUIBridge().setActiveGLSubView(this, tmpGLEventListener);
 
 			}
-			else if (stackLevel.hasFreePosition() && !(layoutRenderStyle instanceof ListLayoutRenderStyle))
+			else if (stackLevel.hasFreePosition()
+					&& !(layoutRenderStyle instanceof ListLayoutRenderStyle))
 			{
 				stackLevel.getNextFree().setContainedElementID(iViewID);
 
@@ -500,34 +506,34 @@ public class GLRemoteRendering
 
 			// pickingTriggerMouseAdapter.addGLCanvas(tmpGLEventListener);
 			pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION, iViewID);
-			
-			generalManager.getEventPublisher().addSender(
-					EMediatorType.SELECTION_MEDIATOR, (IMediatorSender)tmpGLEventListener);
-			generalManager.getEventPublisher().addReceiver(
-					EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver)tmpGLEventListener);	
+
+			generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
+					(IMediatorSender) tmpGLEventListener);
+			generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
+					(IMediatorReceiver) tmpGLEventListener);
 		}
 	}
 
 	private void renderBucketWall(final GL gl, boolean bRenderBorder)
-	{		
+	{
 		if (arSlerpActions.isEmpty())
 			gl.glColor4f(1f, 1f, 1f, 1.0f); // normal mode
 		else
 			gl.glColor4f(1f, 1f, 1f, 0.3f);
-			
+
 		if (!iAlUninitializedPathwayIDs.isEmpty())
 			gl.glColor4f(1f, 1f, 1f, 0.3f);
-		
+
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(0, 0, -0.03f);
 		gl.glVertex3f(0, 8, -0.03f);
 		gl.glVertex3f(8, 8, -0.03f);
 		gl.glVertex3f(8, 0, -0.03f);
 		gl.glEnd();
-		
+
 		if (!bRenderBorder)
 			return;
-		
+
 		gl.glColor4f(0.4f, 0.4f, 0.4f, 1f);
 		gl.glLineWidth(1f);
 
@@ -546,36 +552,34 @@ public class GLRemoteRendering
 			renderRemoteLevelElement(gl, element, level);
 
 			if (!(layoutRenderStyle instanceof ListLayoutRenderStyle))
-					renderEmptyBucketWall(gl, element, level);
+				renderEmptyBucketWall(gl, element, level);
 		}
 	}
 
-	private void renderRemoteLevelElement(final GL gl, 
-			RemoteLevelElement element, RemoteLevel level)
-	{	
-//		// Check if view is visible
-//		if (!level.getElementVisibilityById(iViewID))
-//			return;
+	private void renderRemoteLevelElement(final GL gl, RemoteLevelElement element,
+			RemoteLevel level)
+	{
+		// // Check if view is visible
+		// if (!level.getElementVisibilityById(iViewID))
+		// return;
 
 		if (element.getContainedElementID() == -1)
 			return;
-		
+
 		int iViewID = element.getContainedElementID();
-	
+
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.VIEW_SELECTION, iViewID));
-		
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION,
+				iViewID));
+
 		AGLEventListener glEventListener = (generalManager.getViewGLCanvasManager()
 				.getGLEventListener(iViewID));
 
-
-//		if (tmpCanvasUser == null)
+		// if (tmpCanvasUser == null)
 
 		if (glEventListener == null)
 			throw new IllegalStateException("Cannot render canvas object which is null!");
-
 
 		gl.glPushMatrix();
 
@@ -586,10 +590,10 @@ public class GLRemoteRendering
 		Vec3f axis = new Vec3f();
 		float fAngle = rot.get(axis);
 
-		gl.glTranslatef(translation.x(), translation.y(), translation.z());		
+		gl.glTranslatef(translation.x(), translation.y(), translation.z());
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
-		gl.glScalef(scale.x(), scale.y(), scale.z());		
-		
+		gl.glScalef(scale.x(), scale.y(), scale.z());
+
 		if (level.equals(poolLevel))
 		{
 			String sRenderText = glEventListener.getShortInfo();
@@ -600,7 +604,7 @@ public class GLRemoteRendering
 				iMaxChars = 80;
 			else
 				iMaxChars = 20;
-			
+
 			if (sRenderText.length() > iMaxChars && scale.x() < 0.03f)
 				sRenderText = sRenderText.subSequence(0, iMaxChars - 3) + "...";
 
@@ -608,39 +612,43 @@ public class GLRemoteRendering
 				textRenderer.setColor(1, 1, 1, 1);
 			else
 				textRenderer.setColor(0, 0, 0, 1);
-			
+
 			if (glEventListener.getNumberOfSelections(ESelectionType.MOUSE_OVER) > 0)
 			{
 				textRenderer.setColor(1, 0, 0, 1);
-				sRenderText = glEventListener.getNumberOfSelections(ESelectionType.MOUSE_OVER) + " - " + sRenderText;
+				sRenderText = glEventListener.getNumberOfSelections(ESelectionType.MOUSE_OVER)
+						+ " - " + sRenderText;
 			}
 
 			float fTextScalingFactor = 0.09f;
 			if (element.getID() == iMouseOverObjectID)
 			{
-				renderPoolSelection(gl, translation.x() + 3f, translation.y() * scale.y() + 5.3f,
-						(float)textRenderer.getBounds(sRenderText).getWidth() * 0.06f + 23, 6f); // 1.8f -> pool focus scaling
+				renderPoolSelection(gl, translation.x() + 3f, translation.y() * scale.y()
+						+ 5.3f,
+						(float) textRenderer.getBounds(sRenderText).getWidth() * 0.06f + 23,
+						6f); // 1.8f -> pool focus scaling
 
 				gl.glTranslatef(4f, 1.3f, 0);
-				
+
 				fTextScalingFactor = 0.075f;
 			}
-			
+
 			textRenderer.begin3DRendering();
-			textRenderer.draw3D(sRenderText, 8.5f, 3, 0, fTextScalingFactor); // scale factor
+			textRenderer.draw3D(sRenderText, 8.5f, 3, 0, fTextScalingFactor); // scale
+																				// factor
 			textRenderer.end3DRendering();
 		}
 		// Prevent rendering of view textures when simple list view
-//		if ((layoutRenderStyle instanceof ListLayoutRenderStyle
-//				&& (layer == poolLayer || layer == stackLayer)))
-//		{
-//			gl.glPopMatrix();
-//			return;
-//		}
-		
-		if(level != selectionLevel && level != poolLevel)
+		// if ((layoutRenderStyle instanceof ListLayoutRenderStyle
+		// && (layer == poolLayer || layer == stackLayer)))
+		// {
+		// gl.glPopMatrix();
+		// return;
+		// }
+
+		if (level != selectionLevel && level != poolLevel)
 		{
-			if(level.equals(focusLevel))
+			if (level.equals(focusLevel))
 				renderBucketWall(gl, false);
 			else
 				renderBucketWall(gl, true);
@@ -667,19 +675,19 @@ public class GLRemoteRendering
 		// gl.glEnd();
 
 		gl.glPopMatrix();
-		
+
 		gl.glPopName();
 		gl.glPopName();
 	}
 
-	private void renderEmptyBucketWall(final GL gl,	
-			RemoteLevelElement element,	RemoteLevel level)
+	private void renderEmptyBucketWall(final GL gl, RemoteLevelElement element,
+			RemoteLevel level)
 	{
 		gl.glPushMatrix();
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-		
+
 		Transform transform = element.getTransform();
 		Vec3f translation = transform.getTranslation();
 		Rotf rot = transform.getRotation();
@@ -696,7 +704,7 @@ public class GLRemoteRendering
 		{
 			renderBucketWall(gl, true);
 		}
-		
+
 		gl.glPopName();
 
 		gl.glPopMatrix();
@@ -704,81 +712,87 @@ public class GLRemoteRendering
 
 	private void renderHandles(final GL gl)
 	{
-//		glConnectionLineRenderer.enableRendering(false);
+		// glConnectionLineRenderer.enableRendering(false);
 
-//		IViewFrustum frustum = glEventListener.getViewFrustum();
+		// IViewFrustum frustum = glEventListener.getViewFrustum();
 		float fBilboardWidth = 0.1f;
 
 		// Bucket stack top
-		gl.glTranslatef( 2 - fBilboardWidth, 2 - fBilboardWidth, 4f);
+		gl.glTranslatef(2 - fBilboardWidth, 2 - fBilboardWidth, 4f);
 		renderSingleHandle(gl, stackLevel.getElementByPositionIndex(0).getID(),
-				EPickingType.BUCKET_REMOVE_ICON_SELECTION, EIconTextures.NAVIGATION_REMOVE_VIEW);
-		gl.glTranslatef( -0.17f, 0, 0);		
+				EPickingType.BUCKET_REMOVE_ICON_SELECTION,
+				EIconTextures.NAVIGATION_REMOVE_VIEW);
+		gl.glTranslatef(-0.17f, 0, 0);
 		renderSingleHandle(gl, stackLevel.getElementByPositionIndex(0).getID(),
 				EPickingType.BUCKET_DRAG_ICON_SELECTION, EIconTextures.NAVIGATION_DRAG_VIEW);
-		gl.glTranslatef( -2 + 0.17f + fBilboardWidth, -2 + fBilboardWidth, -4f);
-		
+		gl.glTranslatef(-2 + 0.17f + fBilboardWidth, -2 + fBilboardWidth, -4f);
+
 		// Bucket stack left
 		gl.glTranslatef(-2f / fAspectRatio + 0.8f + 0.1f, 1.9f, 4);
 		gl.glRotatef(90, 0, 0, 1);
 		renderSingleHandle(gl, stackLevel.getElementByPositionIndex(1).getID(),
-				EPickingType.BUCKET_REMOVE_ICON_SELECTION, EIconTextures.NAVIGATION_REMOVE_VIEW);
-		gl.glTranslatef( -0.17f, 0, 0);		
+				EPickingType.BUCKET_REMOVE_ICON_SELECTION,
+				EIconTextures.NAVIGATION_REMOVE_VIEW);
+		gl.glTranslatef(-0.17f, 0, 0);
 		renderSingleHandle(gl, stackLevel.getElementByPositionIndex(1).getID(),
 				EPickingType.BUCKET_DRAG_ICON_SELECTION, EIconTextures.NAVIGATION_DRAG_VIEW);
 		gl.glRotatef(-90, 0, 0, 1);
 		gl.glTranslatef(2f / fAspectRatio - 0.8f - 0.1f, -1.9f + 0.17f, -4f);
-		
+
 		// Bucket stack bottom
 		gl.glTranslatef(2 - fBilboardWidth, -2 + 0.1f, 4f);
 		gl.glRotatef(180, 1, 0, 0);
 		renderSingleHandle(gl, stackLevel.getElementByPositionIndex(2).getID(),
-				EPickingType.BUCKET_REMOVE_ICON_SELECTION, EIconTextures.NAVIGATION_REMOVE_VIEW);
-		gl.glTranslatef( -0.17f, 0, 0);		
+				EPickingType.BUCKET_REMOVE_ICON_SELECTION,
+				EIconTextures.NAVIGATION_REMOVE_VIEW);
+		gl.glTranslatef(-0.17f, 0, 0);
 		renderSingleHandle(gl, stackLevel.getElementByPositionIndex(2).getID(),
 				EPickingType.BUCKET_DRAG_ICON_SELECTION, EIconTextures.NAVIGATION_DRAG_VIEW);
 		gl.glRotatef(-180, 1, 0, 0);
-		gl.glTranslatef( -2 + 0.17f + fBilboardWidth, 2 - 0.1f, -4f);	
-		
+		gl.glTranslatef(-2 + 0.17f + fBilboardWidth, 2 - 0.1f, -4f);
+
 		// Bucket stack right
 		gl.glTranslatef(2f / fAspectRatio - fBilboardWidth - 0.8f, 1.55f, 4f);
 		gl.glRotatef(-90, 0, 0, 1);
 		renderSingleHandle(gl, stackLevel.getElementByPositionIndex(3).getID(),
 				EPickingType.BUCKET_DRAG_ICON_SELECTION, EIconTextures.NAVIGATION_DRAG_VIEW);
-		gl.glTranslatef( -0.17f, 0, 0);		
+		gl.glTranslatef(-0.17f, 0, 0);
 		renderSingleHandle(gl, stackLevel.getElementByPositionIndex(3).getID(),
-				EPickingType.BUCKET_REMOVE_ICON_SELECTION, EIconTextures.NAVIGATION_REMOVE_VIEW);
+				EPickingType.BUCKET_REMOVE_ICON_SELECTION,
+				EIconTextures.NAVIGATION_REMOVE_VIEW);
 		gl.glPopName();
 		gl.glRotatef(90, 0, 0, 1);
-		gl.glTranslatef(-2f / fAspectRatio + fBilboardWidth + 0.8f, -1.55f - 0.17f, -4f);		
-		
+		gl.glTranslatef(-2f / fAspectRatio + fBilboardWidth + 0.8f, -1.55f - 0.17f, -4f);
+
 		// Bucket center
-		gl.glTranslatef( 2 - 2*fBilboardWidth, 2 - 2*fBilboardWidth, 0.05f);
-		gl.glScalef(2,2,2);
+		gl.glTranslatef(2 - 2 * fBilboardWidth, 2 - 2 * fBilboardWidth, 0.05f);
+		gl.glScalef(2, 2, 2);
 		renderSingleHandle(gl, focusLevel.getElementByPositionIndex(0).getID(),
-				EPickingType.BUCKET_REMOVE_ICON_SELECTION, EIconTextures.NAVIGATION_REMOVE_VIEW);
-		gl.glTranslatef( -0.17f, 0, 0);		
+				EPickingType.BUCKET_REMOVE_ICON_SELECTION,
+				EIconTextures.NAVIGATION_REMOVE_VIEW);
+		gl.glTranslatef(-0.17f, 0, 0);
 		renderSingleHandle(gl, focusLevel.getElementByPositionIndex(0).getID(),
 				EPickingType.BUCKET_DRAG_ICON_SELECTION, EIconTextures.NAVIGATION_DRAG_VIEW);
-		gl.glScalef(1/2f,1/2f,1/2f);
-		gl.glTranslatef( -2 + 2*0.17f + 2*fBilboardWidth, -2 + 2*fBilboardWidth, -0.05f);
+		gl.glScalef(1 / 2f, 1 / 2f, 1 / 2f);
+		gl.glTranslatef(-2 + 2 * 0.17f + 2 * fBilboardWidth, -2 + 2 * fBilboardWidth, -0.05f);
 
 	}
-	
-	private void renderSingleHandle(final GL gl, int iRemoteLevelElementID, 
+
+	private void renderSingleHandle(final GL gl, int iRemoteLevelElementID,
 			EPickingType ePickingType, EIconTextures eIconTexture)
 	{
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, ePickingType, iRemoteLevelElementID));
-		
-//		renderRemoveButton(gl, 0, 0, 0.1f);
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, ePickingType,
+				iRemoteLevelElementID));
+
+		// renderRemoveButton(gl, 0, 0, 0.1f);
 
 		Texture tempTexture = iconTextureManager.getIconTexture(gl, eIconTexture);
 		tempTexture.enable();
 		tempTexture.bind();
 
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
-		gl.glColor3f(1,1,1);
-		gl.glBegin(GL.GL_POLYGON);		
+		gl.glColor3f(1, 1, 1);
+		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
 		gl.glVertex3f(0, 0, -0.01f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
@@ -788,17 +802,18 @@ public class GLRemoteRendering
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
 		gl.glVertex3f(-0.2f, 0, -0.01f);
 		gl.glEnd();
-	
+
 		tempTexture.disable();
-		
+
 		gl.glPopName();
 	}
-	
-	private void renderRemoveButton(final GL gl, float fXOrigin, float fYOrigin, float fButtonLength)
+
+	private void renderRemoveButton(final GL gl, float fXOrigin, float fYOrigin,
+			float fButtonLength)
 	{
-		gl.glColor4f(1,1,1,1);
+		gl.glColor4f(1, 1, 1, 1);
 		gl.glLineWidth(2);
-		gl.glBegin(GL.GL_LINE_LOOP);		
+		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(fXOrigin, fYOrigin, 0f);
 		gl.glVertex3f(fXOrigin, fYOrigin + fButtonLength, 0f);
 		gl.glVertex3f(fXOrigin + fButtonLength, fYOrigin + fButtonLength, 0f);
@@ -811,35 +826,35 @@ public class GLRemoteRendering
 		gl.glVertex3f(fXOrigin + fButtonLength, fYOrigin, 0f);
 		gl.glEnd();
 	}
-	
+
 	private void renderNavigationOverlay(final GL gl, final int iRemoteLevelElementID)
 	{
 		if (glConnectionLineRenderer != null)
 			glConnectionLineRenderer.enableRendering(false);
-		
-		RemoteLevelElement remoteLevelElement = RemoteElementManager.get()
-			.getItem(iRemoteLevelElementID);
+
+		RemoteLevelElement remoteLevelElement = RemoteElementManager.get().getItem(
+				iRemoteLevelElementID);
 
 		EPickingType leftWallPickingType = null;
 		EPickingType rightWallPickingType = null;
 		EPickingType topWallPickingType = null;
 		EPickingType bottomWallPickingType = null;
 
-		Vec4f tmpColor_out = new Vec4f(0.9f, 0.9f, 0.9f, 
+		Vec4f tmpColor_out = new Vec4f(0.9f, 0.9f, 0.9f,
 				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-		Vec4f tmpColor_in = new Vec4f(0.9f, 0.9f, 0.9f, 
+		Vec4f tmpColor_in = new Vec4f(0.9f, 0.9f, 0.9f,
 				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-		Vec4f tmpColor_left = new Vec4f(0.9f, 0.9f, 0.9f, 
+		Vec4f tmpColor_left = new Vec4f(0.9f, 0.9f, 0.9f,
 				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 		Vec4f tmpColor_right = new Vec4f(0.9f, 0.9f, 0.9f,
 				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-		Vec4f tmpColor_lock = new Vec4f(0.9f, 0.9f, 0.9f, 
+		Vec4f tmpColor_lock = new Vec4f(0.9f, 0.9f, 0.9f,
 				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
 		// Assign view symbol
 		Texture textureViewSymbol;
-		AGLEventListener view = generalManager
-			.getViewGLCanvasManager().getGLEventListener(remoteLevelElement.getContainedElementID());
+		AGLEventListener view = generalManager.getViewGLCanvasManager().getGLEventListener(
+				remoteLevelElement.getContainedElementID());
 		if (view instanceof GLHeatMap)
 		{
 			textureViewSymbol = iconTextureManager.getIconTexture(gl,
@@ -847,29 +862,29 @@ public class GLRemoteRendering
 		}
 		else if (view instanceof GLParallelCoordinates)
 		{
-			textureViewSymbol = iconTextureManager.getIconTexture(gl, 
+			textureViewSymbol = iconTextureManager.getIconTexture(gl,
 					EIconTextures.PAR_COORDS_SYMBOL);
 		}
 		else if (view instanceof GLPathway)
 		{
-			textureViewSymbol = iconTextureManager.getIconTexture(gl, 
+			textureViewSymbol = iconTextureManager.getIconTexture(gl,
 					EIconTextures.PATHWAY_SYMBOL);
 		}
 		else if (view instanceof GLGlyph)
 		{
-			textureViewSymbol = iconTextureManager.getIconTexture(gl, 
+			textureViewSymbol = iconTextureManager.getIconTexture(gl,
 					EIconTextures.GLYPH_SYMBOL);
 		}
 		else if (view instanceof GLCell)
 		{
-			textureViewSymbol = iconTextureManager.getIconTexture(gl, 
+			textureViewSymbol = iconTextureManager.getIconTexture(gl,
 					EIconTextures.GLYPH_SYMBOL);
-		}		
+		}
 		else
 		{
 			throw new IllegalStateException("Unknown view that has no symbol assigned.");
 		}
-		
+
 		Texture textureMoveLeft = null;
 		Texture textureMoveRight = null;
 		Texture textureMoveOut = null;
@@ -878,7 +893,8 @@ public class GLRemoteRendering
 		TextureCoords texCoords = textureViewSymbol.getImageTexCoords();
 
 		if (iNavigationMouseOverViewID_lock == iRemoteLevelElementID)
-			tmpColor_lock.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+			tmpColor_lock.set(1, 0.3f, 0.3f,
+					ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
 		if (layoutMode.equals(LayoutMode.JUKEBOX))
 		{
@@ -888,13 +904,17 @@ public class GLRemoteRendering
 			rightWallPickingType = EPickingType.BUCKET_MOVE_IN_ICON_SELECTION;
 
 			if (iNavigationMouseOverViewID_out == iRemoteLevelElementID)
-				tmpColor_left.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+				tmpColor_left.set(1, 0.3f, 0.3f,
+						ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 			else if (iNavigationMouseOverViewID_in == iRemoteLevelElementID)
-				tmpColor_right.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+				tmpColor_right.set(1, 0.3f, 0.3f,
+						ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 			else if (iNavigationMouseOverViewID_left == iRemoteLevelElementID)
-				tmpColor_in.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+				tmpColor_in.set(1, 0.3f, 0.3f,
+						ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 			else if (iNavigationMouseOverViewID_right == iRemoteLevelElementID)
-				tmpColor_out.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+				tmpColor_out.set(1, 0.3f, 0.3f,
+						ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
 			textureMoveIn = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
 			textureMoveOut = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
@@ -911,20 +931,26 @@ public class GLRemoteRendering
 				rightWallPickingType = EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION;
 
 				if (iNavigationMouseOverViewID_out == iRemoteLevelElementID)
-					tmpColor_out.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+					tmpColor_out.set(1, 0.3f, 0.3f,
+							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_in == iRemoteLevelElementID)
-					tmpColor_in.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+					tmpColor_in.set(1, 0.3f, 0.3f,
+							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_left == iRemoteLevelElementID)
-					tmpColor_left.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+					tmpColor_left.set(1, 0.3f, 0.3f,
+							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_right == iRemoteLevelElementID)
-					tmpColor_right.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+					tmpColor_right.set(1, 0.3f, 0.3f,
+							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-				textureMoveIn = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
-				textureMoveOut = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveLeft = iconTextureManager
-						.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveRight = iconTextureManager
+				textureMoveIn = iconTextureManager
 						.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveOut = iconTextureManager.getIconTexture(gl,
+						EIconTextures.ARROW_DOWN);
+				textureMoveLeft = iconTextureManager.getIconTexture(gl,
+						EIconTextures.ARROW_DOWN);
+				textureMoveRight = iconTextureManager.getIconTexture(gl,
+						EIconTextures.ARROW_LEFT);
 			}
 			else if (stackLevel.getPositionIndexByElementID(remoteLevelElement) == 2) // bottom
 			{
@@ -934,20 +960,26 @@ public class GLRemoteRendering
 				rightWallPickingType = EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION;
 
 				if (iNavigationMouseOverViewID_out == iRemoteLevelElementID)
-					tmpColor_in.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+					tmpColor_in.set(1, 0.3f, 0.3f,
+							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_in == iRemoteLevelElementID)
-					tmpColor_out.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+					tmpColor_out.set(1, 0.3f, 0.3f,
+							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_left == iRemoteLevelElementID)
-					tmpColor_right.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+					tmpColor_right.set(1, 0.3f, 0.3f,
+							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_right == iRemoteLevelElementID)
-					tmpColor_left.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+					tmpColor_left.set(1, 0.3f, 0.3f,
+							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-				textureMoveIn = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
-				textureMoveOut = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveLeft = iconTextureManager
-						.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveRight = iconTextureManager
+				textureMoveIn = iconTextureManager
 						.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveOut = iconTextureManager.getIconTexture(gl,
+						EIconTextures.ARROW_DOWN);
+				textureMoveLeft = iconTextureManager.getIconTexture(gl,
+						EIconTextures.ARROW_DOWN);
+				textureMoveRight = iconTextureManager.getIconTexture(gl,
+						EIconTextures.ARROW_LEFT);
 			}
 			else if (stackLevel.getPositionIndexByElementID(remoteLevelElement) == 1) // left
 			{
@@ -957,20 +989,26 @@ public class GLRemoteRendering
 				rightWallPickingType = EPickingType.BUCKET_MOVE_IN_ICON_SELECTION;
 
 				if (iNavigationMouseOverViewID_out == iRemoteLevelElementID)
-					tmpColor_left.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+					tmpColor_left.set(1, 0.3f, 0.3f,
+							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_in == iRemoteLevelElementID)
-					tmpColor_right.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+					tmpColor_right.set(1, 0.3f, 0.3f,
+							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_left == iRemoteLevelElementID)
-					tmpColor_in.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+					tmpColor_in.set(1, 0.3f, 0.3f,
+							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_right == iRemoteLevelElementID)
-					tmpColor_out.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+					tmpColor_out.set(1, 0.3f, 0.3f,
+							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-				textureMoveIn = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
-				textureMoveOut = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveLeft = iconTextureManager
-						.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveRight = iconTextureManager
+				textureMoveIn = iconTextureManager
 						.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveOut = iconTextureManager.getIconTexture(gl,
+						EIconTextures.ARROW_DOWN);
+				textureMoveLeft = iconTextureManager.getIconTexture(gl,
+						EIconTextures.ARROW_DOWN);
+				textureMoveRight = iconTextureManager.getIconTexture(gl,
+						EIconTextures.ARROW_LEFT);
 			}
 			else if (stackLevel.getPositionIndexByElementID(remoteLevelElement) == 3) // right
 			{
@@ -980,20 +1018,26 @@ public class GLRemoteRendering
 				rightWallPickingType = EPickingType.BUCKET_MOVE_OUT_ICON_SELECTION;
 
 				if (iNavigationMouseOverViewID_out == iRemoteLevelElementID)
-					tmpColor_right.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+					tmpColor_right.set(1, 0.3f, 0.3f,
+							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_in == iRemoteLevelElementID)
-					tmpColor_left.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+					tmpColor_left.set(1, 0.3f, 0.3f,
+							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_left == iRemoteLevelElementID)
-					tmpColor_out.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+					tmpColor_out.set(1, 0.3f, 0.3f,
+							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 				else if (iNavigationMouseOverViewID_right == iRemoteLevelElementID)
-					tmpColor_in.set(1, 0.3f, 0.3f, ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
+					tmpColor_in.set(1, 0.3f, 0.3f,
+							ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-				textureMoveIn = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_LEFT);
-				textureMoveOut = iconTextureManager.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveLeft = iconTextureManager
-						.getIconTexture(gl, EIconTextures.ARROW_DOWN);
-				textureMoveRight = iconTextureManager
+				textureMoveIn = iconTextureManager
 						.getIconTexture(gl, EIconTextures.ARROW_LEFT);
+				textureMoveOut = iconTextureManager.getIconTexture(gl,
+						EIconTextures.ARROW_DOWN);
+				textureMoveLeft = iconTextureManager.getIconTexture(gl,
+						EIconTextures.ARROW_DOWN);
+				textureMoveRight = iconTextureManager.getIconTexture(gl,
+						EIconTextures.ARROW_LEFT);
 			}
 			// else if
 			// (underInteractionLayer.getPositionIndexByElementID(iViewID) == 0)
@@ -1038,10 +1082,10 @@ public class GLRemoteRendering
 		gl.glLineWidth(1);
 
 		float fNavigationZValue = 0f;
-		
+
 		// CENTER - NAVIGATION: VIEW IDENTIFICATION ICON
-//		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-//				EPickingType.BUCKET_LOCK_ICON_SELECTION, iViewID));
+		// gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		// EPickingType.BUCKET_LOCK_ICON_SELECTION, iViewID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL.GL_LINE_LOOP);
@@ -1051,16 +1095,16 @@ public class GLRemoteRendering
 		gl.glVertex3f(5.33f, 2.66f, fNavigationZValue);
 		gl.glEnd();
 
-		gl.glColor4f(tmpColor_lock.x(), tmpColor_lock.y(), tmpColor_lock.z(), 
+		gl.glColor4f(tmpColor_lock.x(), tmpColor_lock.y(), tmpColor_lock.z(),
 				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-		
-//		gl.glBegin(GL.GL_POLYGON);
-//		gl.glVertex3f(2.66f, 2.66f, 0.02f);
-//		gl.glVertex3f(2.66f, 5.33f, 0.02f);
-//		gl.glVertex3f(5.33f, 5.33f, 0.02f);
-//		gl.glVertex3f(5.33f, 2.66f, 0.02f);
-//		gl.glEnd();
-		
+
+		// gl.glBegin(GL.GL_POLYGON);
+		// gl.glVertex3f(2.66f, 2.66f, 0.02f);
+		// gl.glVertex3f(2.66f, 5.33f, 0.02f);
+		// gl.glVertex3f(5.33f, 5.33f, 0.02f);
+		// gl.glVertex3f(5.33f, 2.66f, 0.02f);
+		// gl.glEnd();
+
 		textureViewSymbol.enable();
 		textureViewSymbol.bind();
 
@@ -1077,11 +1121,11 @@ public class GLRemoteRendering
 
 		textureViewSymbol.disable();
 
-//		gl.glPopName();
+		// gl.glPopName();
 
 		// BOTTOM - NAVIGATION: MOVE IN
-		gl.glPushName(pickingManager.getPickingID(
-				iUniqueID, bottomWallPickingType, iRemoteLevelElementID));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, bottomWallPickingType,
+				iRemoteLevelElementID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL.GL_LINE_LOOP);
@@ -1091,15 +1135,15 @@ public class GLRemoteRendering
 		gl.glVertex3f(8, 0, fNavigationZValue);
 		gl.glEnd();
 
-		gl.glColor4f(tmpColor_in.x(), tmpColor_in.y(), tmpColor_in.z(), 
+		gl.glColor4f(tmpColor_in.x(), tmpColor_in.y(), tmpColor_in.z(),
 				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-//		gl.glBegin(GL.GL_POLYGON);
-//		gl.glVertex3f(0.05f, 0.05f, 0.02f);
-//		gl.glVertex3f(2.66f, 2.66f, 0.02f);
-//		gl.glVertex3f(5.33f, 2.66f, 0.02f);
-//		gl.glVertex3f(7.95f, 0.02f, 0.02f);
-//		gl.glEnd();
+		// gl.glBegin(GL.GL_POLYGON);
+		// gl.glVertex3f(0.05f, 0.05f, 0.02f);
+		// gl.glVertex3f(2.66f, 2.66f, 0.02f);
+		// gl.glVertex3f(5.33f, 2.66f, 0.02f);
+		// gl.glVertex3f(7.95f, 0.02f, 0.02f);
+		// gl.glEnd();
 
 		textureMoveIn.enable();
 		textureMoveIn.bind();
@@ -1121,8 +1165,8 @@ public class GLRemoteRendering
 		gl.glPopName();
 
 		// RIGHT - NAVIGATION: MOVE RIGHT
-		gl.glPushName(pickingManager.getPickingID(
-				iUniqueID, rightWallPickingType, iRemoteLevelElementID));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, rightWallPickingType,
+				iRemoteLevelElementID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL.GL_LINE_LOOP);
@@ -1135,12 +1179,12 @@ public class GLRemoteRendering
 		gl.glColor4f(tmpColor_right.x(), tmpColor_right.y(), tmpColor_right.z(),
 				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-//		gl.glBegin(GL.GL_POLYGON);
-//		gl.glVertex3f(7.95f, 0.05f, 0.02f);
-//		gl.glVertex3f(5.33f, 2.66f, 0.02f);
-//		gl.glVertex3f(5.33f, 5.33f, 0.02f);
-//		gl.glVertex3f(7.95f, 7.95f, 0.02f);
-//		gl.glEnd();
+		// gl.glBegin(GL.GL_POLYGON);
+		// gl.glVertex3f(7.95f, 0.05f, 0.02f);
+		// gl.glVertex3f(5.33f, 2.66f, 0.02f);
+		// gl.glVertex3f(5.33f, 5.33f, 0.02f);
+		// gl.glVertex3f(7.95f, 7.95f, 0.02f);
+		// gl.glEnd();
 
 		textureMoveRight.enable();
 		textureMoveRight.bind();
@@ -1162,8 +1206,8 @@ public class GLRemoteRendering
 		gl.glPopName();
 
 		// LEFT - NAVIGATION: MOVE LEFT
-		gl.glPushName(pickingManager.getPickingID(
-				iUniqueID, leftWallPickingType, iRemoteLevelElementID));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, leftWallPickingType,
+				iRemoteLevelElementID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL.GL_LINE_LOOP);
@@ -1176,12 +1220,12 @@ public class GLRemoteRendering
 		gl.glColor4f(tmpColor_left.x(), tmpColor_left.y(), tmpColor_left.z(),
 				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-//		gl.glBegin(GL.GL_POLYGON);
-//		gl.glVertex3f(0.05f, 0.05f, fNavigationZValue);
-//		gl.glVertex3f(0.05f, 7.95f, fNavigationZValue);
-//		gl.glVertex3f(2.66f, 5.33f, fNavigationZValue);
-//		gl.glVertex3f(2.66f, 2.66f, fNavigationZValue);
-//		gl.glEnd();
+		// gl.glBegin(GL.GL_POLYGON);
+		// gl.glVertex3f(0.05f, 0.05f, fNavigationZValue);
+		// gl.glVertex3f(0.05f, 7.95f, fNavigationZValue);
+		// gl.glVertex3f(2.66f, 5.33f, fNavigationZValue);
+		// gl.glVertex3f(2.66f, 2.66f, fNavigationZValue);
+		// gl.glEnd();
 
 		textureMoveLeft.enable();
 		textureMoveLeft.bind();
@@ -1203,8 +1247,8 @@ public class GLRemoteRendering
 		gl.glPopName();
 
 		// TOP - NAVIGATION: MOVE OUT
-		gl.glPushName(pickingManager.getPickingID(
-				iUniqueID, topWallPickingType, iRemoteLevelElementID));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, topWallPickingType,
+				iRemoteLevelElementID));
 
 		gl.glColor4f(0.5f, 0.5f, 0.5f, 1);
 		gl.glBegin(GL.GL_LINE_LOOP);
@@ -1214,15 +1258,15 @@ public class GLRemoteRendering
 		gl.glVertex3f(2.66f, 5.33f, fNavigationZValue);
 		gl.glEnd();
 
-		gl.glColor4f(tmpColor_out.x(), tmpColor_out.y(), tmpColor_out.z(), 
+		gl.glColor4f(tmpColor_out.x(), tmpColor_out.y(), tmpColor_out.z(),
 				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
-		
-//		gl.glBegin(GL.GL_POLYGON);
-//		gl.glVertex3f(0.05f, 7.95f, 0.02f);
-//		gl.glVertex3f(7.95f, 7.95f, 0.02f);
-//		gl.glVertex3f(5.33f, 5.33f, 0.02f);
-//		gl.glVertex3f(2.66f, 5.33f, 0.02f);
-//		gl.glEnd();
+
+		// gl.glBegin(GL.GL_POLYGON);
+		// gl.glVertex3f(0.05f, 7.95f, 0.02f);
+		// gl.glVertex3f(7.95f, 7.95f, 0.02f);
+		// gl.glVertex3f(5.33f, 5.33f, 0.02f);
+		// gl.glVertex3f(2.66f, 5.33f, 0.02f);
+		// gl.glEnd();
 
 		textureMoveOut.enable();
 		textureMoveOut.bind();
@@ -1244,22 +1288,22 @@ public class GLRemoteRendering
 		gl.glPopName();
 	}
 
-	private void renderPoolSelection(final  GL gl, 
-			float fXOrigin, float fYOrigin, float fWidth, float fHeight)
+	private void renderPoolSelection(final GL gl, float fXOrigin, float fYOrigin,
+			float fWidth, float fHeight)
 	{
 		float fPanelSideWidth = 2.5f;
-		
-		Texture tempTexture = iconTextureManager.getIconTexture(gl, 
+
+		Texture tempTexture = iconTextureManager.getIconTexture(gl,
 				EIconTextures.PANEL_SELECTION_SIDE);
 		tempTexture.enable();
 		tempTexture.bind();
 
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 
-		gl.glColor4f(1,1,1,0.75f);
-		
+		gl.glColor4f(1, 1, 1, 0.75f);
+
 		// Left background piece
-		gl.glBegin(GL.GL_POLYGON);		
+		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(fXOrigin + 0.1f, fYOrigin - fHeight, -0.01f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
@@ -1271,7 +1315,7 @@ public class GLRemoteRendering
 		gl.glEnd();
 
 		// Right background piece
-		gl.glBegin(GL.GL_POLYGON);		
+		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 		gl.glVertex3f(fXOrigin + fWidth, fYOrigin - fHeight, -0.01f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
@@ -1281,18 +1325,18 @@ public class GLRemoteRendering
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(fXOrigin + fWidth + fPanelSideWidth, fYOrigin - fHeight, -0.01f);
 		gl.glEnd();
-		
+
 		tempTexture.disable();
-		
+
 		// Center background piece
-		tempTexture = iconTextureManager.getIconTexture(gl, 
+		tempTexture = iconTextureManager.getIconTexture(gl,
 				EIconTextures.PANEL_SELECTION_CENTER);
 		tempTexture.enable();
 		tempTexture.bind();
 
 		texCoords = tempTexture.getImageTexCoords();
-		
-		gl.glBegin(GL.GL_POLYGON);		
+
+		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(fXOrigin + fPanelSideWidth + 0.1f, fYOrigin - fHeight, -0.01f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
@@ -1302,20 +1346,20 @@ public class GLRemoteRendering
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 		gl.glVertex3f(fXOrigin + fWidth, fYOrigin - fHeight, -0.01f);
 		gl.glEnd();
-		
+
 		tempTexture.disable();
-	
-		gl.glPopName();
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, 
-				EPickingType.BUCKET_REMOVE_ICON_SELECTION, iMouseOverObjectID));
-		
-		renderRemoveButton(gl, fXOrigin + 2.5f, fYOrigin + 1f, 1.8f);
-		
+
 		gl.glPopName();
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.VIEW_SELECTION, iMouseOverObjectID));
+				EPickingType.BUCKET_REMOVE_ICON_SELECTION, iMouseOverObjectID));
+
+		renderRemoveButton(gl, fXOrigin + 2.5f, fYOrigin + 1f, 1.8f);
+
+		gl.glPopName();
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION,
+				iMouseOverObjectID));
 	}
-	
+
 	private void doSlerpActions(final GL gl)
 	{
 		if (arSlerpActions.isEmpty())
@@ -1326,8 +1370,8 @@ public class GLRemoteRendering
 		if (iSlerpFactor == 0)
 		{
 			tmpSlerpAction.start();
-			
-//			System.out.println("Start slerp action " +tmpSlerpAction);
+
+			// System.out.println("Start slerp action " +tmpSlerpAction);
 		}
 
 		if (iSlerpFactor < SLERP_RANGE)
@@ -1345,7 +1389,7 @@ public class GLRemoteRendering
 	private void slerpView(final GL gl, SlerpAction slerpAction)
 	{
 		int iViewID = slerpAction.getElementId();
-		
+
 		SlerpMod slerpMod = new SlerpMod();
 
 		if ((iSlerpFactor == 0))
@@ -1353,12 +1397,16 @@ public class GLRemoteRendering
 			slerpMod.playSlerpSound();
 		}
 
-//		generalManager.getLogger().log(Level.INFO, "Slerp action running from " 
-//				+ slerpAction.getOriginHierarchyLevel() + ": " + slerpAction.getOriginPosIndex() 
-//				+ " to " + slerpAction.getDestinationHierarchyLevel() + ": " + slerpAction.getDestinationPosIndex());
-		
-		Transform transform = slerpMod.interpolate(slerpAction.getOriginRemoteLevelElement().getTransform(), 
-				slerpAction.getDestinationRemoteLevelElement().getTransform(), 
+		// generalManager.getLogger().log(Level.INFO,
+		// "Slerp action running from "
+		// + slerpAction.getOriginHierarchyLevel() + ": " +
+		// slerpAction.getOriginPosIndex()
+		// + " to " + slerpAction.getDestinationHierarchyLevel() + ": " +
+		// slerpAction.getDestinationPosIndex());
+
+		Transform transform = slerpMod.interpolate(slerpAction.getOriginRemoteLevelElement()
+				.getTransform(),
+				slerpAction.getDestinationRemoteLevelElement().getTransform(),
 				(float) iSlerpFactor / SLERP_RANGE);
 
 		gl.glPushMatrix();
@@ -1367,7 +1415,7 @@ public class GLRemoteRendering
 
 		(generalManager.getViewGLCanvasManager().getGLEventListener(iViewID))
 				.displayRemote(gl);
-		
+
 		gl.glPopMatrix();
 
 		// Check if slerp action is finished
@@ -1376,68 +1424,76 @@ public class GLRemoteRendering
 			arSlerpActions.remove(slerpAction);
 
 			iSlerpFactor = 0;
-			
+
 			slerpAction.finished();
 
-////			RemoteElementManager destinationLayer = slerpAction.getDestinationHierarchyLevel();
-////			destinationLayer.setElementVisibilityById(true, iViewID);
-//
-//			AGLEventListener glActiveSubView = GeneralManager.get().getViewGLCanvasManager()
-//					.getGLEventListener(iViewID);
-//
-//			// Update detail level of moved view when slerp action is finished;
-//			if (destinationLayer.equals(focusLevel))
-//			{
-//				if (bucketMouseWheelListener.isZoomedIn() || layoutRenderStyle instanceof ListLayoutRenderStyle)
-//					glActiveSubView.setDetailLevel(EDetailLevel.HIGH);
-//				else
-//					glActiveSubView.setDetailLevel(EDetailLevel.MEDIUM);
-//				
-//				if (glActiveSubView instanceof GLPathway)
-//				{
-//					((GLPathway)glActiveSubView).enableTitleRendering(true);
-//					((GLPathway)glActiveSubView).setAlignment(SWT.CENTER, SWT.BOTTOM);
-//				}
-//
-//				generalManager.getGUIBridge().setActiveGLSubView(this, glActiveSubView);
-//			}
-//			else if (destinationLayer.equals(stackLevel))
-//			{
-//				glActiveSubView.setDetailLevel(EDetailLevel.LOW);
-//				
-//				if (glActiveSubView instanceof GLPathway)
-//				{
-//					((GLPathway)glActiveSubView).enableTitleRendering(true);
-//					
-//					int iStackPos = stackLevel.getPositionIndexByElementID(iViewID);
-//					switch (iStackPos)
-//					{
-//						case 0:
-//							((GLPathway)glActiveSubView).setAlignment(SWT.CENTER, SWT.TOP);
-//							break;
-//						case 1:
-//							((GLPathway)glActiveSubView).setAlignment(SWT.LEFT, SWT.BOTTOM);
-//							break;
-//						case 2:
-//							((GLPathway)glActiveSubView).setAlignment(SWT.CENTER, SWT.BOTTOM);
-//							break;
-//						case 3:
-//							((GLPathway)glActiveSubView).setAlignment(SWT.RIGHT, SWT.BOTTOM);
-//							break;
-//						default:
-//							break;
-//					}
-//				}
-//			}
-//			else if (destinationLayer.equals(poolLevel) || destinationLayer.equals(selectionLevel))
-//			{
-//				glActiveSubView.setDetailLevel(EDetailLevel.VERY_LOW);
-//				
-//				if (glActiveSubView instanceof GLPathway)
-//				{
-//					((GLPathway)glActiveSubView).enableTitleRendering(false);
-//				}
-//			}
+			// // RemoteElementManager destinationLayer =
+			// slerpAction.getDestinationHierarchyLevel();
+			// // destinationLayer.setElementVisibilityById(true, iViewID);
+			//
+			// AGLEventListener glActiveSubView =
+			// GeneralManager.get().getViewGLCanvasManager()
+			// .getGLEventListener(iViewID);
+			//
+			// // Update detail level of moved view when slerp action is
+			// finished;
+			// if (destinationLayer.equals(focusLevel))
+			// {
+			// if (bucketMouseWheelListener.isZoomedIn() || layoutRenderStyle
+			// instanceof ListLayoutRenderStyle)
+			// glActiveSubView.setDetailLevel(EDetailLevel.HIGH);
+			// else
+			// glActiveSubView.setDetailLevel(EDetailLevel.MEDIUM);
+			//				
+			// if (glActiveSubView instanceof GLPathway)
+			// {
+			// ((GLPathway)glActiveSubView).enableTitleRendering(true);
+			// ((GLPathway)glActiveSubView).setAlignment(SWT.CENTER,
+			// SWT.BOTTOM);
+			// }
+			//
+			// generalManager.getGUIBridge().setActiveGLSubView(this,
+			// glActiveSubView);
+			// }
+			// else if (destinationLayer.equals(stackLevel))
+			// {
+			// glActiveSubView.setDetailLevel(EDetailLevel.LOW);
+			//				
+			// if (glActiveSubView instanceof GLPathway)
+			// {
+			// ((GLPathway)glActiveSubView).enableTitleRendering(true);
+			//					
+			// int iStackPos = stackLevel.getPositionIndexByElementID(iViewID);
+			// switch (iStackPos)
+			// {
+			// case 0:
+			// ((GLPathway)glActiveSubView).setAlignment(SWT.CENTER, SWT.TOP);
+			// break;
+			// case 1:
+			// ((GLPathway)glActiveSubView).setAlignment(SWT.LEFT, SWT.BOTTOM);
+			// break;
+			// case 2:
+			// ((GLPathway)glActiveSubView).setAlignment(SWT.CENTER,
+			// SWT.BOTTOM);
+			// break;
+			// case 3:
+			// ((GLPathway)glActiveSubView).setAlignment(SWT.RIGHT, SWT.BOTTOM);
+			// break;
+			// default:
+			// break;
+			// }
+			// }
+			// }
+			// else if (destinationLayer.equals(poolLevel) ||
+			// destinationLayer.equals(selectionLevel))
+			// {
+			// glActiveSubView.setDetailLevel(EDetailLevel.VERY_LOW);
+			//				
+			// if (glActiveSubView instanceof GLPathway)
+			// {
+			// ((GLPathway)glActiveSubView).enableTitleRendering(false);
+			// }
+			// }
 		}
 
 		// After last slerp action is done the line connections are turned on
@@ -1455,120 +1511,123 @@ public class GLRemoteRendering
 	private void loadViewToFocusLevel(final int iRemoteLevelElementID)
 	{
 		RemoteLevelElement element = RemoteElementManager.get().getItem(iRemoteLevelElementID);
-		
+
 		// Check if other slerp action is currently running
 		if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE)
 			return;
 
 		arSlerpActions.clear();
-		
+
 		int iViewID = element.getContainedElementID();
 
 		// Only broadcast elements if view is moved from pool to bucket
 		if (poolLevel.containsElement(element))
 		{
-			generalManager.getViewGLCanvasManager().getGLEventListener(iViewID).broadcastElements(
-					ESelectionType.ADD);	
+			generalManager.getViewGLCanvasManager().getGLEventListener(iViewID)
+					.broadcastElements(ESelectionType.ADD);
 		}
 
-//		if (layoutRenderStyle instanceof ListLayoutRenderStyle)
-//		{
-//			// Slerp selected view to under interaction transition position
-//			SlerpAction slerpActionTransition = new SlerpAction(iRemoteLevelElementID, poolLevel,
-//					transitionLevel);
-//			arSlerpActions.add(slerpActionTransition);
-//
-//			// Check if focus has a free spot
-//			if (focusLevel.getElementByPositionIndex(0).getContainedElementID() != -1)
-//			{
-//				// Slerp under interaction view to free spot in pool
-//				SlerpAction reverseSlerpAction = new SlerpAction(focusLevel
-//						.getElementIDByPositionIndex(0), focusLevel, poolLevel);
-//				arSlerpActions.add(reverseSlerpAction);
-//			}
-//
-//			// Slerp selected view from transition position to under interaction
-//			// position
-//			SlerpAction slerpAction = new SlerpAction(iViewID, transitionLevel,
-//					focusLevel);
-//			arSlerpActions.add(slerpAction);
-//		}
-//		else
+		// if (layoutRenderStyle instanceof ListLayoutRenderStyle)
+		// {
+		// // Slerp selected view to under interaction transition position
+		// SlerpAction slerpActionTransition = new
+		// SlerpAction(iRemoteLevelElementID, poolLevel,
+		// transitionLevel);
+		// arSlerpActions.add(slerpActionTransition);
+		//
+		// // Check if focus has a free spot
+		// if (focusLevel.getElementByPositionIndex(0).getContainedElementID()
+		// != -1)
+		// {
+		// // Slerp under interaction view to free spot in pool
+		// SlerpAction reverseSlerpAction = new SlerpAction(focusLevel
+		// .getElementIDByPositionIndex(0), focusLevel, poolLevel);
+		// arSlerpActions.add(reverseSlerpAction);
+		// }
+		//
+		// // Slerp selected view from transition position to under interaction
+		// // position
+		// SlerpAction slerpAction = new SlerpAction(iViewID, transitionLevel,
+		// focusLevel);
+		// arSlerpActions.add(slerpAction);
+		// }
+		// else
 		{
 			// Check if view is already loaded in the stack layer
 			if (stackLevel.containsElement(element))
 			{
 				// Slerp selected view to transition position
-				SlerpAction slerpActionTransition = new SlerpAction(element, 
-						transitionLevel.getElementByPositionIndex(0));
+				SlerpAction slerpActionTransition = new SlerpAction(element, transitionLevel
+						.getElementByPositionIndex(0));
 				arSlerpActions.add(slerpActionTransition);
-	
+
 				// Check if focus level is free
 				if (!focusLevel.hasFreePosition())
 				{
 					// Slerp focus view to free spot in stack
-					SlerpAction reverseSlerpAction = new SlerpAction(
-							focusLevel.getElementByPositionIndex(0).getContainedElementID(),
-							focusLevel.getElementByPositionIndex(0), element);
+					SlerpAction reverseSlerpAction = new SlerpAction(focusLevel
+							.getElementByPositionIndex(0).getContainedElementID(), focusLevel
+							.getElementByPositionIndex(0), element);
 					arSlerpActions.add(reverseSlerpAction);
 				}
-	
-				// Slerp selected view from transition position to focus position
+
+				// Slerp selected view from transition position to focus
+				// position
 				SlerpAction slerpAction = new SlerpAction(element.getContainedElementID(),
-						transitionLevel.getElementByPositionIndex(0), 
-						focusLevel.getElementByPositionIndex(0));
+						transitionLevel.getElementByPositionIndex(0), focusLevel
+								.getElementByPositionIndex(0));
 				arSlerpActions.add(slerpAction);
 			}
 			else
 			{
 				// Slerp selected view to transition position
-				SlerpAction slerpActionTransition = new SlerpAction(element,
-						transitionLevel.getElementByPositionIndex(0));
+				SlerpAction slerpActionTransition = new SlerpAction(element, transitionLevel
+						.getElementByPositionIndex(0));
 				arSlerpActions.add(slerpActionTransition);
 
 				RemoteLevelElement freeStackElement = null;
 				if (!stackLevel.hasFreePosition())
 				{
 					freeStackElement = stackLevel.getElementByPositionIndex(1);
-					
+
 					// Slerp view from stack to pool
-					SlerpAction reverseSlerpAction = new SlerpAction(
-							freeStackElement,
+					SlerpAction reverseSlerpAction = new SlerpAction(freeStackElement,
 							poolLevel.getNextFree());
 					arSlerpActions.add(reverseSlerpAction);
-	
+
 					// Unregister all elements of the view that is moved out
 					generalManager.getViewGLCanvasManager().getGLEventListener(
-							freeStackElement.getContainedElementID())
-							.broadcastElements(ESelectionType.REMOVE);
+							freeStackElement.getContainedElementID()).broadcastElements(
+							ESelectionType.REMOVE);
 				}
 				else
 				{
 					freeStackElement = stackLevel.getNextFree();
 				}
-				
+
 				if (!focusLevel.hasFreePosition())
 				{
 					// Slerp focus view to free spot in stack
-					SlerpAction reverseSlerpAction2 = new SlerpAction(
-							focusLevel.getElementByPositionIndex(0), 
-							freeStackElement);
-					arSlerpActions.add(reverseSlerpAction2);					
+					SlerpAction reverseSlerpAction2 = new SlerpAction(focusLevel
+							.getElementByPositionIndex(0), freeStackElement);
+					arSlerpActions.add(reverseSlerpAction2);
 				}
-	
-				// Slerp selected view from transition position to focus position
-				SlerpAction slerpAction = new SlerpAction(iViewID, 
-						transitionLevel.getElementByPositionIndex(0),
-						focusLevel.getElementByPositionIndex(0));
+
+				// Slerp selected view from transition position to focus
+				// position
+				SlerpAction slerpAction = new SlerpAction(iViewID, transitionLevel
+						.getElementByPositionIndex(0), focusLevel.getElementByPositionIndex(0));
 				arSlerpActions.add(slerpAction);
 			}
 		}
-		
+
 		iSlerpFactor = 0;
 	}
 
 	@Override
-	public synchronized void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand, EMediatorType eMediatorType)
+	public synchronized void handleUpdate(IUniqueObject eventTrigger,
+			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand,
+			EMediatorType eMediatorType)
 	{
 
 		generalManager.getLogger().log(
@@ -1576,15 +1635,16 @@ public class GLRemoteRendering
 				"Update called by " + eventTrigger.getClass().getSimpleName()
 						+ ", received in: " + this.getClass().getSimpleName());
 
-		// Special case for empty update that pathway sends for updating info area
+		// Special case for empty update that pathway sends for updating info
+		// area
 		if (!selectionDelta.iterator().hasNext())
 			return;
-		
+
 		// Handle incoming genes
 		if (selectionDelta.getIDType() == EIDType.DAVID)
 		{
 			lastSelectionDelta = selectionDelta;
-			
+
 			// PATHWAY LOADING OF DEPENDENT PATHWAYS
 			int iDavidID = 0;
 			int iGraphItemID = 0;
@@ -1622,13 +1682,13 @@ public class GLRemoteRendering
 		else if (selectionDelta.getIDType() == EIDType.PATHWAY)
 		{
 			Iterator<SelectionItem> iterator = selectionDelta.getSelectionData().iterator();
-			if(iterator.hasNext())
+			if (iterator.hasNext())
 				addPathwayView(iterator.next().getSelectionID());
 			else
 				throw new IllegalStateException("Illegals selection delta state: no pathways");
 		}
 	}
-	
+
 	/**
 	 * Add pathway view. Also used when serialized pathways are loaded.
 	 * 
@@ -1680,14 +1740,14 @@ public class GLRemoteRendering
 
 		if (iAlUninitializedPathwayIDs.isEmpty())
 			return;
-		
+
 		// Disable picking until pathways are loaded
 		generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(false);
-		
+
 		// Zoom out of the bucket when loading pathways
 		if (bucketMouseWheelListener.isZoomedIn())
 			bucketMouseWheelListener.triggerZoom(false);
-		
+
 		// Turn on busy mode
 		for (AGLEventListener tmpGLEventListener : GeneralManager.get()
 				.getViewGLCanvasManager().getAllGLEventListeners())
@@ -1696,7 +1756,7 @@ public class GLRemoteRendering
 				tmpGLEventListener.enableBusyMode(true);
 		}
 
-//		iSlerpFactor = 0;
+		// iSlerpFactor = 0;
 	}
 
 	@Override
@@ -1709,11 +1769,11 @@ public class GLRemoteRendering
 				switch (pickingMode)
 				{
 					case MOUSE_OVER:
-					case DRAGGED:	
+					case DRAGGED:
 						iMouseOverObjectID = iExternalID;
-						break;	
+						break;
 					case CLICKED:
-						
+
 						// Check if view is contained in pool level
 						for (RemoteLevelElement element : poolLevel.getAllElements())
 						{
@@ -1722,31 +1782,33 @@ public class GLRemoteRendering
 								loadViewToFocusLevel(iExternalID);
 								break;
 							}
-						}	
+						}
 						break;
 				}
 
 				pickingManager.flushHits(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT);
-				
+
 				break;
-			
+
 			case VIEW_SELECTION:
 				switch (pickingMode)
 				{
 					case MOUSE_OVER:
-		
+
 						generalManager.getViewGLCanvasManager().getInfoAreaManager()
 								.setDataAboutView(iExternalID);
 
 						setDisplayListDirty();
-						
+
 						int iGLEventListenerID = iExternalID;
-						
+
 						if (iGLEventListenerID != -1)
-						{		
+						{
 							generalManager.getEventPublisher().triggerUpdate(
-									EMediatorType.VIEW_SELECTION, generalManager.getViewGLCanvasManager()
-									.getGLEventListener(iGLEventListenerID), new SelectionDelta(EIDType.DAVID), null);
+									EMediatorType.VIEW_SELECTION,
+									generalManager.getViewGLCanvasManager()
+											.getGLEventListener(iGLEventListenerID),
+									new SelectionDelta(EIDType.DAVID), null);
 						}
 
 						break;
@@ -1755,67 +1817,67 @@ public class GLRemoteRendering
 
 						generalManager.getViewGLCanvasManager().getInfoAreaManager()
 								.setDataAboutView(iExternalID);
-						
-						break;					
+
+						break;
 				}
 
 				pickingManager.flushHits(iUniqueID, EPickingType.VIEW_SELECTION);
 
 				break;
 
-
-//			case BUCKET_LOCK_ICON_SELECTION:
-//				switch (pickingMode)
-//				{
-//					case CLICKED:
-//
-//						break;
-//
-//					case MOUSE_OVER:
-//
-//						iNavigationMouseOverViewID_lock = iExternalID;
-//						iNavigationMouseOverViewID_left = -1;
-//						iNavigationMouseOverViewID_right = -1;
-//						iNavigationMouseOverViewID_out = -1;
-//						iNavigationMouseOverViewID_in = -1;
-//
-//						break;
-//				}
-//
-//				pickingManager.flushHits(iUniqueID, EPickingType.BUCKET_LOCK_ICON_SELECTION);
-//
-//				break;
+			// case BUCKET_LOCK_ICON_SELECTION:
+			// switch (pickingMode)
+			// {
+			// case CLICKED:
+			//
+			// break;
+			//
+			// case MOUSE_OVER:
+			//
+			// iNavigationMouseOverViewID_lock = iExternalID;
+			// iNavigationMouseOverViewID_left = -1;
+			// iNavigationMouseOverViewID_right = -1;
+			// iNavigationMouseOverViewID_out = -1;
+			// iNavigationMouseOverViewID_in = -1;
+			//
+			// break;
+			// }
+			//
+			// pickingManager.flushHits(iUniqueID,
+			// EPickingType.BUCKET_LOCK_ICON_SELECTION);
+			//
+			// break;
 
 			case BUCKET_DRAG_ICON_SELECTION:
-				
+
 				switch (pickingMode)
 				{
 					case CLICKED:
-						
+
 						if (!dragAndDrop.isDragActionRunning())
 						{
-//							System.out.println("Start drag!");
+							// System.out.println("Start drag!");
 							dragAndDrop.startDragAction(iExternalID);
 						}
-						
+
 						iMouseOverObjectID = iExternalID;
-						
+
 						break;
 				}
 
 				pickingManager.flushHits(iUniqueID, EPickingType.BUCKET_DRAG_ICON_SELECTION);
 
-				break;				
-				
+				break;
+
 			case BUCKET_REMOVE_ICON_SELECTION:
-				
+
 				switch (pickingMode)
 				{
 					case CLICKED:
 
-						RemoteLevelElement element = 
-							RemoteElementManager.get().getItem(iExternalID);
-						
+						RemoteLevelElement element = RemoteElementManager.get().getItem(
+								iExternalID);
+
 						clearView(element.getContainedElementID());
 						element.setContainedElementID(-1);
 						break;
@@ -1831,7 +1893,7 @@ public class GLRemoteRendering
 					case CLICKED:
 						loadViewToFocusLevel(iExternalID);
 						bEnableNavigationOverlay = false;
-//						glConnectionLineRenderer.enableRendering(true);
+						// glConnectionLineRenderer.enableRendering(true);
 						break;
 
 					case MOUSE_OVER:
@@ -1858,22 +1920,23 @@ public class GLRemoteRendering
 						// Check if other slerp action is currently running
 						if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE)
 							break;
-						
-//						glConnectionLineRenderer.enableRendering(true);
+
+						// glConnectionLineRenderer.enableRendering(true);
 
 						arSlerpActions.clear();
 
-						RemoteLevelElement element = RemoteElementManager.get().getItem(iExternalID);
-						SlerpAction slerpActionTransition = new SlerpAction(
-								element, poolLevel.getNextFree());
+						RemoteLevelElement element = RemoteElementManager.get().getItem(
+								iExternalID);
+						SlerpAction slerpActionTransition = new SlerpAction(element, poolLevel
+								.getNextFree());
 						arSlerpActions.add(slerpActionTransition);
 
 						bEnableNavigationOverlay = false;
 
 						// Unregister all elements of the view that is moved out
-						generalManager.getViewGLCanvasManager()
-								.getGLEventListener(element.getContainedElementID()).broadcastElements(
-										ESelectionType.REMOVE);
+						generalManager.getViewGLCanvasManager().getGLEventListener(
+								element.getContainedElementID()).broadcastElements(
+								ESelectionType.REMOVE);
 
 						break;
 
@@ -1901,14 +1964,15 @@ public class GLRemoteRendering
 						if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE)
 							break;
 
-//						glConnectionLineRenderer.enableRendering(true);
-						
+						// glConnectionLineRenderer.enableRendering(true);
+
 						arSlerpActions.clear();
 
-						RemoteLevelElement selectedElement = 
-							RemoteElementManager.get().getItem(iExternalID);
-						
-						int iDestinationPosIndex = stackLevel.getPositionIndexByElementID(selectedElement);
+						RemoteLevelElement selectedElement = RemoteElementManager.get()
+								.getItem(iExternalID);
+
+						int iDestinationPosIndex = stackLevel
+								.getPositionIndexByElementID(selectedElement);
 
 						if (iDestinationPosIndex == 3)
 							iDestinationPosIndex = 0;
@@ -1916,7 +1980,8 @@ public class GLRemoteRendering
 							iDestinationPosIndex++;
 
 						// Check if destination position in stack is free
-						if (stackLevel.getElementByPositionIndex(iDestinationPosIndex).getContainedElementID() == -1)
+						if (stackLevel.getElementByPositionIndex(iDestinationPosIndex)
+								.getContainedElementID() == -1)
 						{
 							SlerpAction slerpAction = new SlerpAction(selectedElement,
 									stackLevel.getElementByPositionIndex(iDestinationPosIndex));
@@ -1925,7 +1990,8 @@ public class GLRemoteRendering
 						else
 						{
 							SlerpAction slerpActionTransition = new SlerpAction(
-									selectedElement, transitionLevel.getElementByPositionIndex(0));
+									selectedElement, transitionLevel
+											.getElementByPositionIndex(0));
 							arSlerpActions.add(slerpActionTransition);
 
 							SlerpAction slerpAction = new SlerpAction(stackLevel
@@ -1934,9 +2000,9 @@ public class GLRemoteRendering
 							arSlerpActions.add(slerpAction);
 
 							SlerpAction slerpActionTransitionReverse = new SlerpAction(
-									selectedElement.getContainedElementID(), 
-									transitionLevel.getElementByPositionIndex(0), 
-									stackLevel.getElementByPositionIndex(iDestinationPosIndex));
+									selectedElement.getContainedElementID(), transitionLevel
+											.getElementByPositionIndex(0), stackLevel
+											.getElementByPositionIndex(iDestinationPosIndex));
 							arSlerpActions.add(slerpActionTransitionReverse);
 						}
 
@@ -1967,16 +2033,16 @@ public class GLRemoteRendering
 						// Check if other slerp action is currently running
 						if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE)
 							break;
-						
-//						glConnectionLineRenderer.enableRendering(true);
+
+						// glConnectionLineRenderer.enableRendering(true);
 
 						arSlerpActions.clear();
 
-						RemoteLevelElement selectedElement = 
-							RemoteElementManager.get().getItem(iExternalID);
-						
-						int iDestinationPosIndex = stackLevel.getPositionIndexByElementID(selectedElement);
+						RemoteLevelElement selectedElement = RemoteElementManager.get()
+								.getItem(iExternalID);
 
+						int iDestinationPosIndex = stackLevel
+								.getPositionIndexByElementID(selectedElement);
 
 						if (iDestinationPosIndex == 0)
 							iDestinationPosIndex = 3;
@@ -1984,7 +2050,8 @@ public class GLRemoteRendering
 							iDestinationPosIndex--;
 
 						// Check if destination position in stack is free
-						if (stackLevel.getElementByPositionIndex(iDestinationPosIndex).getContainedElementID() == -1)
+						if (stackLevel.getElementByPositionIndex(iDestinationPosIndex)
+								.getContainedElementID() == -1)
 						{
 							SlerpAction slerpAction = new SlerpAction(selectedElement,
 									stackLevel.getElementByPositionIndex(iDestinationPosIndex));
@@ -1993,7 +2060,8 @@ public class GLRemoteRendering
 						else
 						{
 							SlerpAction slerpActionTransition = new SlerpAction(
-									selectedElement, transitionLevel.getElementByPositionIndex(0));
+									selectedElement, transitionLevel
+											.getElementByPositionIndex(0));
 							arSlerpActions.add(slerpActionTransition);
 
 							SlerpAction slerpAction = new SlerpAction(stackLevel
@@ -2002,9 +2070,9 @@ public class GLRemoteRendering
 							arSlerpActions.add(slerpAction);
 
 							SlerpAction slerpActionTransitionReverse = new SlerpAction(
-									selectedElement.getContainedElementID(), 
-									transitionLevel.getElementByPositionIndex(0), 
-									stackLevel.getElementByPositionIndex(iDestinationPosIndex));
+									selectedElement.getContainedElementID(), transitionLevel
+											.getElementByPositionIndex(0), stackLevel
+											.getElementByPositionIndex(iDestinationPosIndex));
 							arSlerpActions.add(slerpActionTransitionReverse);
 						}
 
@@ -2028,54 +2096,55 @@ public class GLRemoteRendering
 
 				break;
 
-//			case MEMO_PAD_SELECTION:
-//				switch (pickingMode)
-//				{
-//					case CLICKED:
-//
-//						break;
-//
-//					case DRAGGED:
-//
-//						int iDraggedObjectId = dragAndDrop.getDraggedObjectedId();
-//
-//						if (iExternalID == TRASH_CAN_PICKING_ID)
-//						{
-//							if (iDraggedObjectId != -1)
-//							{
-//								// if
-//								// (memoLayer.containsElement(iDraggedObjectId))
-//								// {
-//								memoLayer.removeElement(iDraggedObjectId);
-//								// dragAndDrop.stopDragAction();
-//								// break;
-//								// }
-//
-//								underInteractionLayer.removeElement(iDraggedObjectId);
-//								stackLayer.removeElement(iDraggedObjectId);
-//								poolLayer.removeElement(iDraggedObjectId);
-//							}
-//						}
-//						else if (iExternalID == MEMO_PAD_PICKING_ID)
-//						{
-//							if (iDraggedObjectId != -1)
-//							{
-//								if (!memoLayer.containsElement(iDraggedObjectId))
-//								{
-//									memoLayer.addElement(iDraggedObjectId);
-//									memoLayer.setElementVisibilityById(true, iDraggedObjectId);
-//								}
-//							}
-//						}
-//
-//						dragAndDrop.stopDragAction();
-//
-//						break;
-//				}
-//
-//				pickingManager.flushHits(iUniqueID, EPickingType.MEMO_PAD_SELECTION);
+			// case MEMO_PAD_SELECTION:
+			// switch (pickingMode)
+			// {
+			// case CLICKED:
+			//
+			// break;
+			//
+			// case DRAGGED:
+			//
+			// int iDraggedObjectId = dragAndDrop.getDraggedObjectedId();
+			//
+			// if (iExternalID == TRASH_CAN_PICKING_ID)
+			// {
+			// if (iDraggedObjectId != -1)
+			// {
+			// // if
+			// // (memoLayer.containsElement(iDraggedObjectId))
+			// // {
+			// memoLayer.removeElement(iDraggedObjectId);
+			// // dragAndDrop.stopDragAction();
+			// // break;
+			// // }
+			//
+			// underInteractionLayer.removeElement(iDraggedObjectId);
+			// stackLayer.removeElement(iDraggedObjectId);
+			// poolLayer.removeElement(iDraggedObjectId);
+			// }
+			// }
+			// else if (iExternalID == MEMO_PAD_PICKING_ID)
+			// {
+			// if (iDraggedObjectId != -1)
+			// {
+			// if (!memoLayer.containsElement(iDraggedObjectId))
+			// {
+			// memoLayer.addElement(iDraggedObjectId);
+			// memoLayer.setElementVisibilityById(true, iDraggedObjectId);
+			// }
+			// }
+			// }
+			//
+			// dragAndDrop.stopDragAction();
+			//
+			// break;
+			// }
+			//
+			// pickingManager.flushHits(iUniqueID,
+			// EPickingType.MEMO_PAD_SELECTION);
 
-//				break;
+			// break;
 
 		}
 	}
@@ -2096,18 +2165,18 @@ public class GLRemoteRendering
 
 	private void createEventMediator()
 	{
-		generalManager.getEventPublisher().addSender(
-				EMediatorType.SELECTION_MEDIATOR, (IMediatorSender)this);
-		
-		generalManager.getEventPublisher().addReceiver(
-				EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver)this);
+		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
+				(IMediatorSender) this);
+
+		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
+				(IMediatorReceiver) this);
 	}
 
 	public synchronized void toggleLayoutMode()
 	{
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
 			layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.LIST;
-//			layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX;
+		// layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX;
 		else
 			layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET;
 
@@ -2123,8 +2192,8 @@ public class GLRemoteRendering
 			// Register specialized bucket mouse wheel listener
 			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
 
-			glConnectionLineRenderer = new GLConnectionLineRendererBucket(
-					focusLevel, stackLevel, poolLevel);
+			glConnectionLineRenderer = new GLConnectionLineRendererBucket(focusLevel,
+					stackLevel, poolLevel);
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX))
 		{
@@ -2134,25 +2203,25 @@ public class GLRemoteRendering
 			parentGLCanvas.removeMouseWheelListener(bucketMouseWheelListener);
 			// Register standard mouse wheel listener
 			parentGLCanvas.addMouseWheelListener(pickingTriggerMouseAdapter);
-		
-			glConnectionLineRenderer = new GLConnectionLineRendererJukebox(
-					focusLevel, stackLevel, poolLevel);
+
+			glConnectionLineRenderer = new GLConnectionLineRendererJukebox(focusLevel,
+					stackLevel, poolLevel);
 		}
 		else if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.LIST))
 		{
 			layoutRenderStyle = new ListLayoutRenderStyle(viewFrustum, layoutRenderStyle);
 			glConnectionLineRenderer = null;
-			
-//			// Copy views from stack to pool
-//			for (Integer iElementID : stackLevel.getElementList())
-//			{
-//				if (iElementID == -1)
-//					continue;
-//				
-//				poolLevel.addElement(iElementID);
-////				poolLevel.setElementVisibilityById(true, iElementID);
-//			}
-//			stackLevel.clear();
+
+			// // Copy views from stack to pool
+			// for (Integer iElementID : stackLevel.getElementList())
+			// {
+			// if (iElementID == -1)
+			// continue;
+			//				
+			// poolLevel.addElement(iElementID);
+			// // poolLevel.setElementVisibilityById(true, iElementID);
+			// }
+			// stackLevel.clear();
 		}
 
 		focusLevel = layoutRenderStyle.initUnderInteractionLevel();
@@ -2170,8 +2239,7 @@ public class GLRemoteRendering
 	}
 
 	/**
-	 * Unregister view from event system.
-	 * Remove view from GL render loop.
+	 * Unregister view from event system. Remove view from GL render loop.
 	 */
 	private void clearView(int iViewID)
 	{
@@ -2181,111 +2249,114 @@ public class GLRemoteRendering
 		if (glEventListener instanceof IMediatorSender)
 		{
 			generalManager.getEventPublisher().removeSenderFromAllGroups(
-					(IMediatorSender)glEventListener);			
+					(IMediatorSender) glEventListener);
 		}
-		
+
 		if (glEventListener instanceof IMediatorReceiver)
 		{
 			generalManager.getEventPublisher().removeReceiverFromAllGroups(
-					(IMediatorReceiver)glEventListener);
-		}			
+					(IMediatorReceiver) glEventListener);
+		}
 
 		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
 				.clearAll();
-		
-		for (AGLEventListener eventListener : generalManager
-				.getViewGLCanvasManager().getAllGLEventListeners())
+
+		for (AGLEventListener eventListener : generalManager.getViewGLCanvasManager()
+				.getAllGLEventListeners())
 		{
 			if (!eventListener.isRenderedRemote())
 				eventListener.enableBusyMode(false);
 		}
 		generalManager.getViewGLCanvasManager().unregisterGLEventListener(iViewID);
 
-		
 		glEventListener = null;
 	}
-	
+
 	public synchronized void clearAll()
 	{
-//		iAlUninitializedPathwayIDs.clear();
-//		arSlerpActions.clear();
-//		
-//		generalManager.getPathwayManager().resetPathwayVisiblityState();
-//		
-//		// Remove all pathway views
-//		int iGLEventListenerId = -1;
-//
-//		ArrayList<GLEventListener> alGLEventListenerToRemove = new ArrayList<GLEventListener>();
-//
-//		for (GLEventListener tmpGLEventListenerToRemove : generalManager
-//				.getViewGLCanvasManager().getAllGLEventListeners())
-//		{
-//			iGLEventListenerId = ((AGLEventListener) tmpGLEventListenerToRemove).getID();
-//
-//			if (tmpGLEventListenerToRemove instanceof GLPathway)
-//			{
-//				if (poolLevel.containsElement(iGLEventListenerId))
-//					poolLevel.removeElement(iGLEventListenerId);
-//				else if (stackLevel.containsElement(iGLEventListenerId))
-//					stackLevel.removeElement(iGLEventListenerId);
-//				else if (focusLevel.containsElement(iGLEventListenerId))
-//					focusLevel.removeElement(iGLEventListenerId);
-//				else if (selectionLevel.containsElement(iGLEventListenerId))
-//					selectionLevel.removeElement(iGLEventListenerId);
-//				else if (transitionLevel.containsElement(iGLEventListenerId))
-//					transitionLevel.removeElement(iGLEventListenerId);
-//				else if (spawnLevel.containsElement(iGLEventListenerId))
-//					spawnLevel.removeElement(iGLEventListenerId);
-//
-//				alGLEventListenerToRemove.add(tmpGLEventListenerToRemove);
-//			}
-//			else if (tmpGLEventListenerToRemove instanceof GLHeatMap
-//					|| tmpGLEventListenerToRemove instanceof GLParallelCoordinates)
-//			{
-//				// Remove all elements from heatmap and parallel coordinates
-//				((AStorageBasedView) tmpGLEventListenerToRemove).resetView();
-//			}
-//		}
-//
-//		for (int iGLEventListenerIndex = 0; iGLEventListenerIndex < alGLEventListenerToRemove
-//				.size(); iGLEventListenerIndex++)
-//		{
-//			clearView(iGLEventListenerIndex);
-//		}
-//
-//		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
-//				.clear();
-//		
-//		for (AGLEventListener eventListener : generalManager
-//				.getViewGLCanvasManager().getAllGLEventListeners())
-//		{
-//			if (!eventListener.isRenderedRemote())
-//				eventListener.enableBusyMode(false);
-//		}
+		// iAlUninitializedPathwayIDs.clear();
+		// arSlerpActions.clear();
+		//		
+		// generalManager.getPathwayManager().resetPathwayVisiblityState();
+		//		
+		// // Remove all pathway views
+		// int iGLEventListenerId = -1;
+		//
+		// ArrayList<GLEventListener> alGLEventListenerToRemove = new
+		// ArrayList<GLEventListener>();
+		//
+		// for (GLEventListener tmpGLEventListenerToRemove : generalManager
+		// .getViewGLCanvasManager().getAllGLEventListeners())
+		// {
+		// iGLEventListenerId = ((AGLEventListener)
+		// tmpGLEventListenerToRemove).getID();
+		//
+		// if (tmpGLEventListenerToRemove instanceof GLPathway)
+		// {
+		// if (poolLevel.containsElement(iGLEventListenerId))
+		// poolLevel.removeElement(iGLEventListenerId);
+		// else if (stackLevel.containsElement(iGLEventListenerId))
+		// stackLevel.removeElement(iGLEventListenerId);
+		// else if (focusLevel.containsElement(iGLEventListenerId))
+		// focusLevel.removeElement(iGLEventListenerId);
+		// else if (selectionLevel.containsElement(iGLEventListenerId))
+		// selectionLevel.removeElement(iGLEventListenerId);
+		// else if (transitionLevel.containsElement(iGLEventListenerId))
+		// transitionLevel.removeElement(iGLEventListenerId);
+		// else if (spawnLevel.containsElement(iGLEventListenerId))
+		// spawnLevel.removeElement(iGLEventListenerId);
+		//
+		// alGLEventListenerToRemove.add(tmpGLEventListenerToRemove);
+		// }
+		// else if (tmpGLEventListenerToRemove instanceof GLHeatMap
+		// || tmpGLEventListenerToRemove instanceof GLParallelCoordinates)
+		// {
+		// // Remove all elements from heatmap and parallel coordinates
+		// ((AStorageBasedView) tmpGLEventListenerToRemove).resetView();
+		// }
+		// }
+		//
+		// for (int iGLEventListenerIndex = 0; iGLEventListenerIndex <
+		// alGLEventListenerToRemove
+		// .size(); iGLEventListenerIndex++)
+		// {
+		// clearView(iGLEventListenerIndex);
+		// }
+		//
+		// generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
+		// .clear();
+		//		
+		// for (AGLEventListener eventListener : generalManager
+		// .getViewGLCanvasManager().getAllGLEventListeners())
+		// {
+		// if (!eventListener.isRenderedRemote())
+		// eventListener.enableBusyMode(false);
+		// }
 	}
 
-//	@Override
-//	public synchronized RemoteLevel getHierarchyLayerByGLEventListenerId(
-//			final int iGLEventListenerId)
-//	{
-//		if (focusLevel.containsElement(iGLEventListenerId))
-//			return focusLevel;
-//		else if (stackLevel.containsElement(iGLEventListenerId))
-//			return stackLevel;
-//		else if (poolLevel.containsElement(iGLEventListenerId))
-//			return poolLevel;
-//		else if (transitionLevel.containsElement(iGLEventListenerId))
-//			return transitionLevel;
-//		else if (spawnLevel.containsElement(iGLEventListenerId))
-//			return spawnLevel;
-//		else if (selectionLevel.containsElement(iGLEventListenerId))
-//			return selectionLevel;
-//
-//		generalManager.getLogger().log(Level.WARNING,
-//				"GL Event Listener " + iGLEventListenerId + " is not contained in any layer!");
-//
-//		return null;
-//	}
+	// @Override
+	// public synchronized RemoteLevel getHierarchyLayerByGLEventListenerId(
+	// final int iGLEventListenerId)
+	// {
+	// if (focusLevel.containsElement(iGLEventListenerId))
+	// return focusLevel;
+	// else if (stackLevel.containsElement(iGLEventListenerId))
+	// return stackLevel;
+	// else if (poolLevel.containsElement(iGLEventListenerId))
+	// return poolLevel;
+	// else if (transitionLevel.containsElement(iGLEventListenerId))
+	// return transitionLevel;
+	// else if (spawnLevel.containsElement(iGLEventListenerId))
+	// return spawnLevel;
+	// else if (selectionLevel.containsElement(iGLEventListenerId))
+	// return selectionLevel;
+	//
+	// generalManager.getLogger().log(Level.WARNING,
+	// "GL Event Listener " + iGLEventListenerId +
+	// " is not contained in any layer!");
+	//
+	// return null;
+	// }
 
 	@Override
 	public RemoteLevel getFocusLevel()
@@ -2300,7 +2371,8 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	public synchronized void reshape(GLAutoDrawable drawable, int x, int y, int width, int height)
+	public synchronized void reshape(GLAutoDrawable drawable, int x, int y, int width,
+			int height)
 	{
 		super.reshape(drawable, x, y, width, height);
 
@@ -2339,24 +2411,24 @@ public class GLRemoteRendering
 			gl.glVertex3f(-2 / fAspectRatio + fWidth, -2, 4);
 			gl.glEnd();
 
-//			// Render memo pad background
-//			gl.glColor4f(0.85f, 0.85f, 0.85f, 1f);
-//			gl.glLineWidth(1);
-//			gl.glBegin(GL.GL_POLYGON);
-//			gl.glVertex3f(2 / fAspectRatio, -2, 4);
-//			gl.glVertex3f(2 / fAspectRatio, 2, 4);
-//			gl.glVertex3f(2 / fAspectRatio - fWidth, 2, 4);
-//			gl.glVertex3f(2 / fAspectRatio - fWidth, -2, 4);
-//			gl.glEnd();
-//
-//			gl.glColor4f(0.4f, 0.4f, 0.4f, 1);
-//			gl.glLineWidth(1);
-//			gl.glBegin(GL.GL_LINE_LOOP);
-//			gl.glVertex3f(2 / fAspectRatio, -2, 4);
-//			gl.glVertex3f(2 / fAspectRatio, 2, 4);
-//			gl.glVertex3f(2 / fAspectRatio - fWidth, 2, 4);
-//			gl.glVertex3f(2 / fAspectRatio - fWidth, -2, 4);
-//			gl.glEnd();
+			// // Render memo pad background
+			// gl.glColor4f(0.85f, 0.85f, 0.85f, 1f);
+			// gl.glLineWidth(1);
+			// gl.glBegin(GL.GL_POLYGON);
+			// gl.glVertex3f(2 / fAspectRatio, -2, 4);
+			// gl.glVertex3f(2 / fAspectRatio, 2, 4);
+			// gl.glVertex3f(2 / fAspectRatio - fWidth, 2, 4);
+			// gl.glVertex3f(2 / fAspectRatio - fWidth, -2, 4);
+			// gl.glEnd();
+			//
+			// gl.glColor4f(0.4f, 0.4f, 0.4f, 1);
+			// gl.glLineWidth(1);
+			// gl.glBegin(GL.GL_LINE_LOOP);
+			// gl.glVertex3f(2 / fAspectRatio, -2, 4);
+			// gl.glVertex3f(2 / fAspectRatio, 2, 4);
+			// gl.glVertex3f(2 / fAspectRatio - fWidth, 2, 4);
+			// gl.glVertex3f(2 / fAspectRatio - fWidth, -2, 4);
+			// gl.glEnd();
 		}
 
 		// Render caption
@@ -2407,10 +2479,11 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	public synchronized void triggerUpdate(EMediatorType eMediatorType, ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
+	public synchronized void triggerUpdate(EMediatorType eMediatorType,
+			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
 	{
-		generalManager.getEventPublisher().triggerUpdate(
-				eMediatorType, this, selectionDelta, colSelectionCommand);
+		generalManager.getEventPublisher().triggerUpdate(eMediatorType, this, selectionDelta,
+				colSelectionCommand);
 	}
 
 	@Override
@@ -2435,7 +2508,7 @@ public class GLRemoteRendering
 				{
 					if (tmpSet.getSetType() != ESetType.GENE_EXPRESSION_DATA)
 						continue;
-					
+
 					iAlSetIDs.add(tmpSet.getID());
 				}
 
@@ -2452,19 +2525,20 @@ public class GLRemoteRendering
 				int iGeneratedViewID = glPathway.getID();
 
 				GeneralManager.get().getEventPublisher().addSender(
-						EMediatorType.SELECTION_MEDIATOR, (IMediatorSender)glPathway);
+						EMediatorType.SELECTION_MEDIATOR, (IMediatorSender) glPathway);
 				GeneralManager.get().getEventPublisher().addReceiver(
-						EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver)glPathway);
+						EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver) glPathway);
 
 				// Trigger last delta to new pathways
 				if (lastSelectionDelta != null)
 					triggerUpdate(EMediatorType.SELECTION_MEDIATOR, lastSelectionDelta, null);
-				
+
 				if (focusLevel.hasFreePosition())
 				{
-					spawnLevel.getElementByPositionIndex(0).setContainedElementID(iGeneratedViewID);
-					SlerpAction slerpActionTransition = new SlerpAction(
-							spawnLevel.getElementByPositionIndex(0), focusLevel.getNextFree());
+					spawnLevel.getElementByPositionIndex(0).setContainedElementID(
+							iGeneratedViewID);
+					SlerpAction slerpActionTransition = new SlerpAction(spawnLevel
+							.getElementByPositionIndex(0), focusLevel.getNextFree());
 					arSlerpActions.add(slerpActionTransition);
 
 					glPathway.initRemote(gl, iUniqueID, focusLevel,
@@ -2474,25 +2548,28 @@ public class GLRemoteRendering
 					// Trigger initial gene propagation
 					glPathway.broadcastElements(ESelectionType.ADD);
 				}
-				else if (stackLevel.hasFreePosition() && !(layoutRenderStyle instanceof ListLayoutRenderStyle))
+				else if (stackLevel.hasFreePosition()
+						&& !(layoutRenderStyle instanceof ListLayoutRenderStyle))
 				{
-					spawnLevel.getElementByPositionIndex(0).setContainedElementID(iGeneratedViewID);
-					SlerpAction slerpActionTransition = new SlerpAction(
-							spawnLevel.getElementByPositionIndex(0), stackLevel.getNextFree());
+					spawnLevel.getElementByPositionIndex(0).setContainedElementID(
+							iGeneratedViewID);
+					SlerpAction slerpActionTransition = new SlerpAction(spawnLevel
+							.getElementByPositionIndex(0), stackLevel.getNextFree());
 					arSlerpActions.add(slerpActionTransition);
 
-					glPathway.initRemote(gl, iUniqueID, stackLevel, 
+					glPathway.initRemote(gl, iUniqueID, stackLevel,
 							pickingTriggerMouseAdapter, this);
 					glPathway.setDetailLevel(EDetailLevel.LOW);
 
 					// Trigger initial gene propagation
-					glPathway.broadcastElements(ESelectionType.ADD);					
+					glPathway.broadcastElements(ESelectionType.ADD);
 				}
 				else if (poolLevel.hasFreePosition())
 				{
-					spawnLevel.getElementByPositionIndex(0).setContainedElementID(iGeneratedViewID);
-					SlerpAction slerpActionTransition = new SlerpAction(
-							spawnLevel.getElementByPositionIndex(0), poolLevel.getNextFree());
+					spawnLevel.getElementByPositionIndex(0).setContainedElementID(
+							iGeneratedViewID);
+					SlerpAction slerpActionTransition = new SlerpAction(spawnLevel
+							.getElementByPositionIndex(0), poolLevel.getNextFree());
 					arSlerpActions.add(slerpActionTransition);
 
 					glPathway.initRemote(gl, iUniqueID, poolLevel, pickingTriggerMouseAdapter,
@@ -2504,17 +2581,18 @@ public class GLRemoteRendering
 					generalManager.getLogger().log(Level.SEVERE,
 							"No empty space left to add new pathway!");
 					iAlUninitializedPathwayIDs.clear();
-					
+
 					for (AGLEventListener eventListener : generalManager
 							.getViewGLCanvasManager().getAllGLEventListeners())
 					{
 						if (!eventListener.isRenderedRemote())
 							eventListener.enableBusyMode(false);
 					}
-					
+
 					// Enable picking after all pathways are loaded
-					generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(true);
-					
+					generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(
+							true);
+
 					return;
 				}
 			}
@@ -2529,15 +2607,16 @@ public class GLRemoteRendering
 			if (iAlUninitializedPathwayIDs.isEmpty())
 			{
 				// Enable picking after all pathways are loaded
-				generalManager.getViewGLCanvasManager().getPickingManager().enablePicking(true);
-				
+				generalManager.getViewGLCanvasManager().getPickingManager()
+						.enablePicking(true);
+
 				for (AGLEventListener eventListener : generalManager.getViewGLCanvasManager()
 						.getAllGLEventListeners())
 				{
 					if (!eventListener.isRenderedRemote())
 						eventListener.enableBusyMode(false);
-				}			
-			}			
+				}
+			}
 		}
 	}
 
@@ -2545,7 +2624,7 @@ public class GLRemoteRendering
 	{
 		return iMediatorID;
 	}
-	
+
 	@Override
 	public void enableBusyMode(boolean busyMode)
 	{
@@ -2553,16 +2632,16 @@ public class GLRemoteRendering
 
 		if (eBusyModeState == EBusyModeState.ON)
 		{
-//			parentGLCanvas.removeMouseListener(pickingTriggerMouseAdapter);
+			// parentGLCanvas.removeMouseListener(pickingTriggerMouseAdapter);
 			parentGLCanvas.removeMouseWheelListener(bucketMouseWheelListener);
 		}
 		else
 		{
-//			parentGLCanvas.addMouseListener(pickingTriggerMouseAdapter);
+			// parentGLCanvas.addMouseListener(pickingTriggerMouseAdapter);
 			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
 		}
 	}
-	
+
 	@Override
 	public int getNumberOfSelections(ESelectionType eSelectionType)
 	{

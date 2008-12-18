@@ -31,7 +31,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Sauer Stefan
  */
 
-//FIXME: bad hack, should implement IMediatorReciever
+// FIXME: bad hack, should implement IMediatorReciever
 public class GlyphMappingConfigurationViewRep
 	extends AView
 	implements IView

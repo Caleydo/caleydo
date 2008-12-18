@@ -763,7 +763,7 @@ public class GLCanvasWiiTest
 	{
 		return "WIIIIIIIIIIIIII";
 	}
-	
+
 	@Override
 	public String getDetailedInfo()
 	{
@@ -790,8 +790,7 @@ public class GLCanvasWiiTest
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID,
-			final RemoteLevel layer,
+	public void initRemote(final GL gl, final int iRemoteViewID, final RemoteLevel layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
@@ -803,7 +802,7 @@ public class GLCanvasWiiTest
 	{
 
 	}
-	
+
 	@Override
 	public int getNumberOfSelections(ESelectionType eSelectionType)
 	{

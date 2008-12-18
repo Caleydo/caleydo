@@ -34,6 +34,7 @@ import java.text.DecimalFormat;
 import javax.media.opengl.GLDrawable;
 import javax.media.opengl.GLException;
 import com.sun.opengl.util.j2d.TextRenderer;
+import com.sun.opengl.util.texture.Texture;
 
 /**
  * A simple class which uses the TextRenderer to provide an FPS counter overlaid

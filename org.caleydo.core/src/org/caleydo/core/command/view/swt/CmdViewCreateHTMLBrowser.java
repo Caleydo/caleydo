@@ -18,7 +18,7 @@ public class CmdViewCreateHTMLBrowser
 	extends ACmdCreational<HTMLBrowserViewRep>
 {
 	private EBrowserType browserType;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -38,18 +38,18 @@ public class CmdViewCreateHTMLBrowser
 			iParentContainerId = generalManager.getIDManager().getInternalFromExternalID(
 					iParentContainerId);
 		}
-		
+
 		HTMLBrowserViewRep browserView = null;
-		
+
 		if (browserType == EBrowserType.GENOME)
 		{
 			browserView = (HTMLBrowserViewRep) viewManager.createView(
-						EManagedObjectType.VIEW_SWT_BROWSER_GENOME, iParentContainerId, sLabel);			
+					EManagedObjectType.VIEW_SWT_BROWSER_GENOME, iParentContainerId, sLabel);
 		}
 		else
 		{
 			browserView = (HTMLBrowserViewRep) viewManager.createView(
-					EManagedObjectType.VIEW_SWT_BROWSER_GENERAL, iParentContainerId, sLabel);						
+					EManagedObjectType.VIEW_SWT_BROWSER_GENERAL, iParentContainerId, sLabel);
 		}
 
 		viewManager.registerItem(browserView);
@@ -78,7 +78,7 @@ public class CmdViewCreateHTMLBrowser
 		else
 			browserType = EBrowserType.GENERAL;
 	}
-	
+
 	public void setAttributes(EBrowserType browserType)
 	{
 		this.browserType = browserType;

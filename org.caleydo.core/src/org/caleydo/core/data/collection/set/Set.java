@@ -525,13 +525,13 @@ public class Set
 		}
 
 	}
-	
+
 	@Override
 	public boolean isSetHomogeneous()
 	{
 		return bIsSetHomogeneous;
 	}
-	
+
 	public void export()
 	{
 		SetExporter exporter = new SetExporter();

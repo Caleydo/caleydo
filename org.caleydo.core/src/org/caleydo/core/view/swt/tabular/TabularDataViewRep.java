@@ -98,10 +98,9 @@ public class TabularDataViewRep
 	private int iStartParseFileAtLine = 2;
 
 	private String sDataRepMode = "Normal";
-	//private boolean bLogFilter = false;
-	
-	private int iOldSetID;
+	// private boolean bLogFilter = false;
 
+	private int iOldSetID;
 
 	/**
 	 * Constructor.
@@ -113,18 +112,18 @@ public class TabularDataViewRep
 		arComboDataClass = new ArrayList<Combo>();
 		arComboDataType = new ArrayList<Combo>();
 	}
-	
+
 	public void setInputFile(String sInputFile)
 	{
 		this.sInputFile = sInputFile;
 	}
-	
+
 	@Override
 	protected void initViewSwtComposite(Composite parent)
 	{
 		final Composite highLevelComposite = new Composite(parent, SWT.NONE);
 		highLevelComposite.setLayout(new GridLayout(1, false));
-		
+
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 
 		Composite upperComposite = new Composite(highLevelComposite, SWT.NONE);
@@ -137,17 +136,18 @@ public class TabularDataViewRep
 		gridData = new GridData(GridData.HORIZONTAL_ALIGN_END);
 		gridData.heightHint = 30;
 		gridData.widthHint = 500;
-		
+
 		applyButton.setLayoutData(gridData);
-		applyButton.addSelectionListener(new SelectionAdapter() {		
-			
+		applyButton.addSelectionListener(new SelectionAdapter()
+		{
+
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
 				execute();
 			}
 		});
-		
+
 		composite = new Composite(upperComposite, SWT.NONE);
 		GridLayout layout = new GridLayout(2, false);
 		composite.setLayout(layout);
@@ -157,7 +157,7 @@ public class TabularDataViewRep
 
 		txtFileName = new Text(composite, SWT.BORDER);
 		txtFileName.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
-		
+
 		buttonFileChooser.addSelectionListener(new SelectionAdapter()
 		{
 			@Override
@@ -395,7 +395,7 @@ public class TabularDataViewRep
 		// delimiterGroup.setText("Math filter");
 
 		final Combo dataRepCombo = new Combo(mathFiltergGroup, SWT.DROP_DOWN);
-		String[] sArOptions = {"Normal", "Log10", "Log2"};
+		String[] sArOptions = { "Normal", "Log10", "Log2" };
 		dataRepCombo.setItems(sArOptions);
 		dataRepCombo.setEnabled(true);
 		dataRepCombo.select(0);
@@ -405,7 +405,7 @@ public class TabularDataViewRep
 			public void widgetSelected(SelectionEvent e)
 			{
 				sDataRepMode = dataRepCombo.getText();
-			
+
 			}
 		});
 
@@ -492,7 +492,7 @@ public class TabularDataViewRep
 		data.heightHint = 300;
 		data.widthHint = 700;
 		previewTable.setLayoutData(data);
-		
+
 		// Check if an external file name is given to the action
 		if (!sInputFile.isEmpty())
 		{
@@ -500,7 +500,7 @@ public class TabularDataViewRep
 			sFileName = sInputFile;
 			sDataRepMode = "Log10";
 			dataRepCombo.select(1);
-			 
+
 			createDataPreviewTable("\t");
 		}
 	}
@@ -509,7 +509,7 @@ public class TabularDataViewRep
 	{
 
 	}
-	
+
 	private void createDataPreviewTable(final String sDelimiter)
 	{
 
@@ -527,7 +527,8 @@ public class TabularDataViewRep
 		editor.horizontalAlignment = SWT.LEFT;
 		editor.grabHorizontal = true;
 
-		previewTable.addSelectionListener(new SelectionAdapter() {
+		previewTable.addSelectionListener(new SelectionAdapter()
+		{
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
@@ -535,25 +536,26 @@ public class TabularDataViewRep
 				super.widgetSelected(e);
 
 				String sSelection = e.item.toString();
-				Integer iSelectedRowIndex = new Integer(sSelection.substring(sSelection.lastIndexOf(' ')+1, 
-						sSelection.lastIndexOf('}')));
-				
+				Integer iSelectedRowIndex = new Integer(sSelection.substring(sSelection
+						.lastIndexOf(' ') + 1, sSelection.lastIndexOf('}')));
+
 				Integer iDavidID = GeneralManager.get().getIDMappingManager().getID(
 						EMappingType.EXPRESSION_INDEX_2_DAVID, iSelectedRowIndex);
-				
+
 				if (iDavidID == null || iDavidID == -1)
 					return;
-				
+
 				SelectionDelta tmpDelta = new SelectionDelta(EIDType.DAVID);
 				tmpDelta.addSelection(iDavidID, ESelectionType.MOUSE_OVER);
-				
-				Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
-				colSelectionCommand.add(new SelectionCommand(ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER));
 
-				triggerUpdate(EMediatorType.SELECTION_MEDIATOR, tmpDelta, colSelectionCommand);		
+				Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
+				colSelectionCommand.add(new SelectionCommand(ESelectionCommandType.CLEAR,
+						ESelectionType.MOUSE_OVER));
+
+				triggerUpdate(EMediatorType.SELECTION_MEDIATOR, tmpDelta, colSelectionCommand);
 			}
 		});
-		
+
 		previewTable.addListener(SWT.MouseDown, new Listener()
 		{
 			public void handleEvent(Event event)
@@ -573,7 +575,7 @@ public class TabularDataViewRep
 						final int column = iColIndex;
 						final Text text = new Text(previewTable, SWT.NONE);
 						Listener textListener = new Listener()
-						{	
+						{
 							public void handleEvent(final Event e)
 							{
 								switch (e.type)
@@ -623,7 +625,7 @@ public class TabularDataViewRep
 		BufferedReader brFile;
 		try
 		{
-			brFile =  GeneralManager.get().getResourceLoader().getResource(sFileName);
+			brFile = GeneralManager.get().getResourceLoader().getResource(sFileName);
 
 			String sLine = "";
 
@@ -759,7 +761,7 @@ public class TabularDataViewRep
 				comboTmpDataClass.select(1);
 			else
 				comboTmpDataClass.select(2); // by default set columns to
-												// experiment
+			// experiment
 
 			// should be ignored
 			arComboDataClass.add(comboTmpDataClass);
@@ -874,7 +876,7 @@ public class TabularDataViewRep
 				comboTmpDataType.select(0);
 			else
 				comboTmpDataType.select(2); // by default set columns to
-											// experiment
+			// experiment
 
 			// should be ignored
 			arComboDataType.add(comboTmpDataType);
@@ -886,7 +888,7 @@ public class TabularDataViewRep
 	}
 
 	public void execute()
-	{	
+	{
 		for (ISet set : GeneralManager.get().getSetManager().getAllItems())
 		{
 			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA)
@@ -895,7 +897,7 @@ public class TabularDataViewRep
 				break;
 			}
 		}
-		
+
 		createData();
 		setDataInViews();
 		clearOldData();
@@ -1016,19 +1018,20 @@ public class TabularDataViewRep
 				set.setMax(fMax);
 			}
 		}
-	
-		// TODO only ok for homogeneous sets (meaning only sets with the same data type and range)
+
+		// TODO only ok for homogeneous sets (meaning only sets with the same
+		// data type and range)
 		if (sDataRepMode.equals("Normal"))
 		{
 			set.setExternalDataRepresentation(EExternalDataRepresentation.NORMAL, true);
 		}
-		else if(sDataRepMode.equals("Log10"))
+		else if (sDataRepMode.equals("Log10"))
 		{
-			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG10, true);	
+			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG10, true);
 		}
-		else if(sDataRepMode.equals("Log2"))
+		else if (sDataRepMode.equals("Log2"))
 		{
-			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG2, true);	
+			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG2, true);
 		}
 		else
 		{
@@ -1051,24 +1054,23 @@ public class TabularDataViewRep
 		}
 	}
 
-	private void clearOldData() 
+	private void clearOldData()
 	{
 		GeneralManager.get().getSetManager().unregisterItem(iOldSetID);
 	}
-
 
 	@Override
 	public void triggerUpdate(EMediatorType eMediatorType, ISelectionDelta selectionDelta,
 			Collection<SelectionCommand> colSelectionCommand)
 	{
-		GeneralManager.get().getEventPublisher().triggerUpdate(
-				eMediatorType, this, selectionDelta, colSelectionCommand);
+		GeneralManager.get().getEventPublisher().triggerUpdate(eMediatorType, this,
+				selectionDelta, colSelectionCommand);
 	}
 
 	@Override
 	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
 			Collection<SelectionCommand> colSelectionCommand, EMediatorType mediatorType)
 	{
-		
+
 	}
 }

@@ -105,9 +105,9 @@ public class GLHierarchicalHeatMap
 	private int iPickedSample = 0;
 	private int iFirstSample = 0;
 	private int iLastSample = 0;
-	
+
 	private ArrayList<SelectionQuadruple> iAlSelection = new ArrayList<SelectionQuadruple>();
-	
+
 	private boolean bRenderCaption;
 
 	private float fAnimationScale = 1.0f;
@@ -170,7 +170,7 @@ public class GLHierarchicalHeatMap
 				"hmNumSamplesPerHeatmap");
 
 		fAlXDistances = new ArrayList<Float>();
-		
+
 		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
 		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
 	}
@@ -259,13 +259,15 @@ public class GLHierarchicalHeatMap
 		ArrayList<Integer> arMediatorIDs = new ArrayList<Integer>();
 		arMediatorIDs.add(glHeatMapView.getID());
 
-		generalManager.getEventPublisher().addSender(EMediatorType.HIERACHICAL_HEAT_MAP, glHeatMapView);
-		generalManager.getEventPublisher().addReceiver(EMediatorType.HIERACHICAL_HEAT_MAP, glHeatMapView);
+		generalManager.getEventPublisher().addSender(EMediatorType.HIERACHICAL_HEAT_MAP,
+				glHeatMapView);
+		generalManager.getEventPublisher().addReceiver(EMediatorType.HIERACHICAL_HEAT_MAP,
+				glHeatMapView);
 
 		generalManager.getEventPublisher().addSender(EMediatorType.HIERACHICAL_HEAT_MAP, this);
-		generalManager.getEventPublisher().addReceiver(EMediatorType.HIERACHICAL_HEAT_MAP, this);
+		generalManager.getEventPublisher().addReceiver(EMediatorType.HIERACHICAL_HEAT_MAP,
+				this);
 	}
-
 
 	@Override
 	public synchronized void setDetailLevel(EDetailLevel detailLevel)
@@ -317,7 +319,7 @@ public class GLHierarchicalHeatMap
 	{
 		int iCount = 0, iTextureCounter = 0;
 		SelectionQuadruple temp;
-		
+
 		iAlSelection.clear();
 		for (Integer iContentIndex : set.getVA(iContentVAID))
 		{
@@ -341,41 +343,47 @@ public class GLHierarchicalHeatMap
 			}
 		}
 	}
-		
+
 	private void renderSelectedElementsOverviewBar(GL gl)
 	{
 		float fHeight = viewFrustum.getHeight();
 		float fStep = fHeight / iNrSelBar;
 		float fBarWidth = 0.1f;
-		
+
 		gl.glColor4f(1f, 1f, 0f, 1f);
-		
-		for(SelectionQuadruple selection : iAlSelection)
+
+		for (SelectionQuadruple selection : iAlSelection)
 		{
 			// elements in overview bar
-			if(iSelectorBar != (selection.getTexture() + 1))
+			if (iSelectorBar != (selection.getTexture() + 1))
 			{
 				gl.glBegin(GL.GL_QUADS);
-				gl.glVertex3f(fBarWidth, fStep * (iNrSelBar - (selection.getTexture() + 1) + 1), 0);
-				gl.glVertex3f(fBarWidth + 0.05f, fStep * (iNrSelBar - (selection.getTexture() + 1) + 1), 0);
-				gl.glVertex3f(fBarWidth + 0.05f, fStep * (iNrSelBar - (selection.getTexture() + 1)), 0);
-				gl.glVertex3f(fBarWidth, fStep * (iNrSelBar - (selection.getTexture() + 1)), 0);
+				gl.glVertex3f(fBarWidth, fStep
+						* (iNrSelBar - (selection.getTexture() + 1) + 1), 0);
+				gl.glVertex3f(fBarWidth + 0.05f, fStep
+						* (iNrSelBar - (selection.getTexture() + 1) + 1), 0);
+				gl.glVertex3f(fBarWidth + 0.05f, fStep
+						* (iNrSelBar - (selection.getTexture() + 1)), 0);
+				gl
+						.glVertex3f(fBarWidth, fStep
+								* (iNrSelBar - (selection.getTexture() + 1)), 0);
 				gl.glEnd();
 			}
-		}	
+		}
 	}
+
 	private void renderSelectedElementsTexture(GL gl)
 	{
 		float fFieldWith = viewFrustum.getWidth() / 4.0f;
 		float fHeightSample = viewFrustum.getHeight() / iNumberSamples[iSelectorBar - 1];
 
 		gl.glColor4f(1f, 1f, 0f, 1f);
-		
-		for(SelectionQuadruple selection : iAlSelection)
-		{			
+
+		for (SelectionQuadruple selection : iAlSelection)
+		{
 			// elements in texture
 			if (iSelectorBar == (selection.getTexture() + 1))
-			{			
+			{
 				gl.glLineWidth(1f);
 				gl.glBegin(GL.GL_LINE_LOOP);
 				gl.glVertex3f(0, viewFrustum.getHeight()
@@ -390,7 +398,7 @@ public class GLHierarchicalHeatMap
 			}
 		}
 	}
-	
+
 	private void initFloatBuffer(GL gl)
 	{
 		fAlXDistances.clear();
@@ -860,7 +868,7 @@ public class GLHierarchicalHeatMap
 
 	@Override
 	public synchronized void display(GL gl)
-	{	
+	{
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		// GLHelperFunctions.drawAxis(gl);
 		if (bIsDraggingActive)
@@ -909,7 +917,7 @@ public class GLHierarchicalHeatMap
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex)
 	{
 		searchlist();
-		
+
 		if (bHasFrustumChanged)
 		{
 			bHasFrustumChanged = false;
@@ -1174,7 +1182,7 @@ public class GLHierarchicalHeatMap
 
 		return sInfoText.toString();
 	}
-	
+
 	@Override
 	protected void handleEvents(EPickingType ePickingType, EPickingMode pickingMode,
 			int iExternalID, Pick pick)
@@ -1230,7 +1238,8 @@ public class GLHierarchicalHeatMap
 
 						if (iExternalID == 1)
 						{
-							if ((iSamplesPerHeatmap) < MAX_SAMPLES_PER_HEATMAP && iFirstSample > 0)
+							if ((iSamplesPerHeatmap) < MAX_SAMPLES_PER_HEATMAP
+									&& iFirstSample > 0)
 							{
 								iFirstSample--;
 								iSamplesPerHeatmap++;
@@ -1252,7 +1261,8 @@ public class GLHierarchicalHeatMap
 								iSamplesPerHeatmap--;
 							}
 						}
-						if (iExternalID == 4 && iLastSample < (iNumberSamples[iSelectorBar - 1] -1))
+						if (iExternalID == 4
+								&& iLastSample < (iNumberSamples[iSelectorBar - 1] - 1))
 						{
 							if ((iSamplesPerHeatmap) < MAX_SAMPLES_PER_HEATMAP)
 							{
@@ -1269,7 +1279,8 @@ public class GLHierarchicalHeatMap
 
 						if (iExternalID == 1)
 						{
-							if (iSamplesPerHeatmap < MAX_SAMPLES_PER_HEATMAP && iFirstSample > 0)
+							if (iSamplesPerHeatmap < MAX_SAMPLES_PER_HEATMAP
+									&& iFirstSample > 0)
 								iSamplesPerHeatmap++;
 						}
 						if (iExternalID == 2)
@@ -1282,7 +1293,8 @@ public class GLHierarchicalHeatMap
 							if (iSamplesPerHeatmap > MIN_SAMPLES_PER_HEATMAP)
 								iSamplesPerHeatmap--;
 						}
-						if (iExternalID == 4 && iLastSample < (iNumberSamples[iSelectorBar - 1] - 1))
+						if (iExternalID == 4
+								&& iLastSample < (iNumberSamples[iSelectorBar - 1] - 1))
 						{
 							if (iSamplesPerHeatmap < MAX_SAMPLES_PER_HEATMAP)
 								iSamplesPerHeatmap++;
@@ -1395,7 +1407,7 @@ public class GLHierarchicalHeatMap
 			if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iStorageIndex)
 					|| contentSelectionManager.checkStatus(ESelectionType.SELECTION,
 							iStorageIndex))
-			// if(selectionDelta.)				
+			// if(selectionDelta.)
 			{
 				fDistance += renderStyle.getSelectedFieldWidth();
 			}
@@ -1403,7 +1415,8 @@ public class GLHierarchicalHeatMap
 			{
 				fDistance += renderStyle.getNormalFieldWidth();
 			}
-			//contentSelectionManager.addToType(ESelectionType.SELECTION, iStorageIndex);
+			// contentSelectionManager.addToType(ESelectionType.SELECTION,
+			// iStorageIndex);
 
 		}
 		super.handleConnectedElementRep(selectionDelta);
@@ -1569,6 +1582,5 @@ public class GLHierarchicalHeatMap
 	{
 		return bIsHeatmapInFocus;
 	}
-
 
 }

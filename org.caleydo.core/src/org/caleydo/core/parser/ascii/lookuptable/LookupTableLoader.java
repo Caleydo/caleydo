@@ -33,7 +33,7 @@ public class LookupTableLoader
 	protected float fProgressBarFactor = 0;
 
 	protected ISWTGUIManager swtGuiManager;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -41,14 +41,14 @@ public class LookupTableLoader
 			EMappingDataType dataType)
 	{
 		super(sFileName);
-		
+
 		this.mappingType = mappingType;
 
 		swtGuiManager = GeneralManager.get().getSWTGUIManager();
 		genomeIdManager = GeneralManager.get().getIDMappingManager();
 
 		setTokenSeperator(IGeneralManager.sDelimiter_Parser_DataType);
-		
+
 		IIDMappingManager genomeIdManager = GeneralManager.get().getIDMappingManager();
 
 		genomeIdManager.createMap(mappingType, dataType);
@@ -86,22 +86,25 @@ public class LookupTableLoader
 						// TODO review sLine should be integer?
 						if (mappingType.equals(EMappingType.REFSEQ_MRNA_2_EXPRESSION_INDEX)
 								|| mappingType.equals(EMappingType.OLIGO_2_EXPRESSION_INDEX)
-								|| mappingType.equals(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX))
-						{	
-							// Remove multiple RefSeqs because all point to the same gene DAVID ID
+								|| mappingType
+										.equals(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX))
+						{
+							// Remove multiple RefSeqs because all point to the
+							// same gene DAVID ID
 							if (sLine.contains(";"))
 								sLine = sLine.substring(0, sLine.indexOf(";"));
-							
+
 							// Remove version in RefSeq (NM_*.* -> NM_*)
 							if (sLine.contains("."))
-								sLine = sLine.substring(0, sLine.indexOf("."));							
-							
-							genomeIdManager.getMapping(mappingType).put(sLine, iLineInFile
-									- iStartParsingAtLine);
+								sLine = sLine.substring(0, sLine.indexOf("."));
+
+							genomeIdManager.getMapping(mappingType).put(sLine,
+									iLineInFile - iStartParsingAtLine);
 						}
 						else
 						{
-							genomeIdManager.getMapping(mappingType).put(sLine, strTokenText.nextToken());
+							genomeIdManager.getMapping(mappingType).put(sLine,
+									strTokenText.nextToken());
 						}
 					}
 					else
@@ -112,18 +115,22 @@ public class LookupTableLoader
 							String buffer = strTokenText.nextToken();
 
 							// Special case for creating indexing of storages
-							if (mappingType.equals(EMappingType.REFSEQ_MRNA_2_EXPRESSION_INDEX)
-									|| mappingType.equals(EMappingType.OLIGO_2_EXPRESSION_INDEX)
-									|| mappingType.equals(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX))
+							if (mappingType
+									.equals(EMappingType.REFSEQ_MRNA_2_EXPRESSION_INDEX)
+									|| mappingType
+											.equals(EMappingType.OLIGO_2_EXPRESSION_INDEX)
+									|| mappingType
+											.equals(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX))
 							{
-								// Remove multiple RefSeqs because all point to the same gene DAVID ID
+								// Remove multiple RefSeqs because all point to
+								// the same gene DAVID ID
 								if (buffer.contains(";"))
 									buffer = sLine.substring(0, sLine.indexOf(";"));
-								
+
 								// Remove version in RefSeq (NM_*.* -> NM_*)
 								if (buffer.contains("."))
-									buffer = buffer.substring(0, buffer.indexOf("."));	
-								
+									buffer = buffer.substring(0, buffer.indexOf("."));
+
 								// Check for integer values that must be ignored
 								// - in that case no RefSeq is available or the
 								// cell is empty
@@ -133,7 +140,8 @@ public class LookupTableLoader
 								}
 								catch (NumberFormatException e)
 								{
-//									System.out.println(buffer + " " + (iLineInFile - iStartParsingAtLine));
+									// System.out.println(buffer + " " +
+									// (iLineInFile - iStartParsingAtLine));
 									genomeIdManager.getMapping(mappingType).put(buffer,
 											iLineInFile - iStartParsingAtLine);
 								}
@@ -146,31 +154,35 @@ public class LookupTableLoader
 								{
 									if (mappingType.getTypeTarget().getStorageType() == EStorageType.INT)
 									{
-										genomeIdManager.getMapping(mappingType).put(Integer.valueOf(buffer), 
+										genomeIdManager.getMapping(mappingType).put(
+												Integer.valueOf(buffer),
 												Integer.valueOf(strTokenText.nextToken()));
 									}
 									else if (mappingType.getTypeTarget().getStorageType() == EStorageType.STRING)
 									{
-										genomeIdManager.getMapping(mappingType).put(Integer.valueOf(buffer), 
+										genomeIdManager.getMapping(mappingType).put(
+												Integer.valueOf(buffer),
 												strTokenText.nextToken());
 									}
 									else
-										throw new IllegalStateException("Unsupported data type!");
+										throw new IllegalStateException(
+												"Unsupported data type!");
 								}
 								else if (mappingType.getTypeOrigin().getStorageType() == EStorageType.STRING)
 								{
 									if (mappingType.getTypeTarget().getStorageType() == EStorageType.INT)
 									{
-										genomeIdManager.getMapping(mappingType).put(buffer, 
+										genomeIdManager.getMapping(mappingType).put(buffer,
 												Integer.valueOf(strTokenText.nextToken()));
 									}
 									else if (mappingType.getTypeTarget().getStorageType() == EStorageType.STRING)
 									{
-										genomeIdManager.getMapping(mappingType).put(buffer, 
+										genomeIdManager.getMapping(mappingType).put(buffer,
 												strTokenText.nextToken());
 									}
 									else
-										throw new IllegalStateException("Unsupported data type!");								
+										throw new IllegalStateException(
+												"Unsupported data type!");
 								}
 								else
 									throw new IllegalStateException("Unsupported data type!");
@@ -193,18 +205,18 @@ public class LookupTableLoader
 					iStopParsingAtLine = -1;
 
 				}
-//				catch (NullPointerException npe)
-//				{
-//					bMaintainLoop = false;
-//
-//					// reset return value to indicate error
-//					iStopParsingAtLine = 1;
-//
-//					System.out.println("LookupTableHashMapLoader NullPointerException! "
-//							+ npe.toString());
-//					npe.printStackTrace();
-//
-//				}
+				// catch (NullPointerException npe)
+				// {
+				// bMaintainLoop = false;
+				//
+				// // reset return value to indicate error
+				// iStopParsingAtLine = 1;
+				//
+				// System.out.println("LookupTableHashMapLoader NullPointerException! "
+				// + npe.toString());
+				// npe.printStackTrace();
+				//
+				// }
 			}
 
 			iLineInFile++;
@@ -212,22 +224,23 @@ public class LookupTableLoader
 			// Update progress bar only on each 100th line
 			if (iLineInFile % 1000 == 0)
 			{
-				swtGuiManager.setProgressBarPercentage((int) (fProgressBarFactor * iLineInFile));
+				swtGuiManager
+						.setProgressBarPercentage((int) (fProgressBarFactor * iLineInFile));
 			}
 		}
 	}
-	
+
 	@Override
 	protected void setArraysToStorages()
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void init()
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 }

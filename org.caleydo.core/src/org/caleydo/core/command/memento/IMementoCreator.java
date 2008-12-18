@@ -1,6 +1,5 @@
 package org.caleydo.core.command.memento;
 
-
 /**
  * Interface for creator-object's of IMemento's. This interface must be
  * implemented by all objects, that create Mementos and restore a previous state

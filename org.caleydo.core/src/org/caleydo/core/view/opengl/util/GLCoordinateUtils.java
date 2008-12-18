@@ -49,8 +49,8 @@ public class GLCoordinateUtils
 		fArWorldCoordinatePosition[0] = (float) wcoord[0];
 		fArWorldCoordinatePosition[1] = (float) wcoord[1];
 		// TODO: z is manually set to 0
-		//fArWorldCoordinatePosition[2] = 0;// (float)wcoord[2];
-		fArWorldCoordinatePosition[2] =  (float)wcoord[2];
+		// fArWorldCoordinatePosition[2] = 0;// (float)wcoord[2];
+		fArWorldCoordinatePosition[2] = (float) wcoord[2];
 
 		return fArWorldCoordinatePosition;
 	}

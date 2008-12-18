@@ -1,4 +1,3 @@
-
 package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec3f;
@@ -34,7 +33,6 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
-
 
 /**
  * Abstract class for OpenGL views.
@@ -87,12 +85,12 @@ public abstract class AGLEventListener
 
 	protected boolean bIsDisplayListDirtyLocal = true;
 	protected boolean bIsDisplayListDirtyRemote = true;
-	
+
 	protected int iGLDisplayListIndexLocal;
 	protected int iGLDisplayListIndexRemote;
 
 	protected int iGLDisplayListToCall = 0;
-	
+
 	protected boolean bHasFrustumChanged = false;
 
 	protected GeneralRenderStyle renderStyle;
@@ -128,17 +126,17 @@ public abstract class AGLEventListener
 			// Register GL event listener view to GL canvas
 			parentGLCanvas.addGLEventListener(this);
 
-//			generalManager.getViewGLCanvasManager().registerGLEventListenerByGLCanvasID(
-//					parentGLCanvas.getID(), this);
+			// generalManager.getViewGLCanvasManager().registerGLEventListenerByGLCanvasID(
+			// parentGLCanvas.getID(), this);
 
 			pickingTriggerMouseAdapter = parentGLCanvas.getJoglMouseListener();
 		}
-//		// Frustum will only be remotely rendered by another view
-//		else
-//		{
-//			generalManager.getViewGLCanvasManager().registerGLEventListenerByGLCanvasID(-1,
-//					this);
-//		}
+		// // Frustum will only be remotely rendered by another view
+		// else
+		// {
+		// generalManager.getViewGLCanvasManager().registerGLEventListenerByGLCanvasID(-1,
+		// this);
+		// }
 
 		this.viewFrustum = viewFrustum;
 
@@ -557,8 +555,8 @@ public abstract class AGLEventListener
 			pickingManager.enablePicking(true);
 			eBusyModeState = EBusyModeState.OFF;
 		}
-		
-//		System.out.println("Busy mode status: " +eBusyModeState);
+
+		// System.out.println("Busy mode status: " +eBusyModeState);
 	}
 
 	public void enableBusyMode(final boolean bBusyMode)
@@ -572,14 +570,14 @@ public abstract class AGLEventListener
 			pickingManager.enablePicking(false);
 			eBusyModeState = EBusyModeState.ON;
 		}
-			
-//		System.out.println("Busy mode change: " +eBusyModeState.toString());
+
+		// System.out.println("Busy mode change: " +eBusyModeState.toString());
 	}
-	
+
 	/**
-	 * Method return true if an element is currently selected for a given selection type.
+	 * Method return true if an element is currently selected for a given
+	 * selection type.
 	 * 
 	 */
 	public abstract int getNumberOfSelections(ESelectionType eSelectionType);
 }
-

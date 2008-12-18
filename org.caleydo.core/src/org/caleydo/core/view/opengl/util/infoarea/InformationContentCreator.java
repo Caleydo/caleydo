@@ -61,10 +61,10 @@ public class InformationContentCreator
 				{
 					sRefSeq = generalManager.getIDMappingManager().getID(
 							EMappingType.DAVID_2_REFSEQ_MRNA, iUniqueID);
-					sGeneName = generalManager.getIDMappingManager()
-							.getID(EMappingType.DAVID_2_GENE_NAME, iUniqueID);
-					sGeneSymbol = generalManager.getIDMappingManager()
-							.getID(EMappingType.DAVID_2_GENE_SYMBOL, iUniqueID);
+					sGeneName = generalManager.getIDMappingManager().getID(
+							EMappingType.DAVID_2_GENE_NAME, iUniqueID);
+					sGeneSymbol = generalManager.getIDMappingManager().getID(
+							EMappingType.DAVID_2_GENE_SYMBOL, iUniqueID);
 				}
 
 				// Cut too long gene names

@@ -3,7 +3,6 @@ package org.caleydo.core.view.opengl.util.trashcan;
 import javax.media.opengl.GL;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.renderstyle.layout.ARemoteViewLayoutRenderStyle;
-import org.caleydo.data.loader.ResourceLoader;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 

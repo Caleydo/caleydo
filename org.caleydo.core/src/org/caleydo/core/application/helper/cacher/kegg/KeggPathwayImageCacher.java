@@ -37,7 +37,7 @@ public class KeggPathwayImageCacher
 		this.display = display;
 		this.progressBar = progressBar;
 		this.triggeringCommand = triggeringCommand;
-		
+
 		iExpectedDownloads = 642;
 	}
 
@@ -49,7 +49,7 @@ public class KeggPathwayImageCacher
 		// load spring application context
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext(
 				ApplicationConstants.CORE_SPRING_CONFIG_FILE);
-		
+
 		// load dispatcher from spring
 		final Dispatcher dispatcher = (Dispatcher) context.getBean("Dispatcher");
 
@@ -74,17 +74,20 @@ public class KeggPathwayImageCacher
 		regExpFilter.addFilterRule(regExpFilterRule);
 
 		dispatcher.addJobFilter(regExpFilter);
-	
+
 		DownloadJobFactory jobFactory = (DownloadJobFactory) context.getBean("JobFactory");
 
 		String sOutputFileName = GeneralManager.CALEYDO_HOME_PATH;
 
 		UrlDownloadJob job = jobFactory.createDownloadJob();
-		
+
 		try
 		{
-//			job.setUrl(new URL("http://www.genome.ad.jp/dbget-bin/get_pathway?org_name=hsa&mapno=00500"));
-			job.setUrl(new URL("http://www.genome.ad.jp/kegg-bin/show_organism?menu_type=pathway_maps&org=hsa"));
+			// job.setUrl(new
+			// URL("http://www.genome.ad.jp/dbget-bin/get_pathway?org_name=hsa&mapno=00500"));
+			job
+					.setUrl(new URL(
+							"http://www.genome.ad.jp/kegg-bin/show_organism?menu_type=pathway_maps&org=hsa"));
 		}
 		catch (MalformedURLException e)
 		{
@@ -93,9 +96,9 @@ public class KeggPathwayImageCacher
 		job.setSavePath(new File(sOutputFileName));
 		job.setIgnoreFilter(true);
 		dispatcher.addJob(job);
-		
+
 		processJobs(dispatcher);
-		
+
 		triggerPathwayListGeneration();
 
 		if (triggeringCommand != null)

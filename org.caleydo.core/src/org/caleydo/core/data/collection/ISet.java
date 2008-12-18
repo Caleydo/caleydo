@@ -236,8 +236,7 @@ public interface ISet
 	 * @return the virtual array associated with the unique ID
 	 */
 	public IVirtualArray getVA(int iUniqueID);
-	
+
 	public void export();
-	
 
 }

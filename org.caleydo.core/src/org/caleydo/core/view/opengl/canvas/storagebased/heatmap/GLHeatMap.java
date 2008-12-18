@@ -90,7 +90,8 @@ public class GLHeatMap
 	 * @param sLabel
 	 * @param viewFrustum
 	 */
-	public GLHeatMap(ESetType setType, final int iGLCanvasID, final String sLabel, final IViewFrustum viewFrustum)
+	public GLHeatMap(ESetType setType, final int iGLCanvasID, final String sLabel,
+			final IViewFrustum viewFrustum)
 	{
 		super(setType, iGLCanvasID, sLabel, viewFrustum);
 		viewType = EManagedObjectType.GL_HEAT_MAP;
@@ -104,8 +105,8 @@ public class GLHeatMap
 				.externalIDType(EIDType.DAVID).mappingType(
 						EMappingType.EXPRESSION_INDEX_2_DAVID,
 						EMappingType.DAVID_2_EXPRESSION_INDEX).build();
-		storageSelectionManager = new GenericSelectionManager.Builder(
-				EIDType.EXPERIMENT_INDEX).build();
+		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX)
+				.build();
 
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
@@ -120,7 +121,7 @@ public class GLHeatMap
 	@Override
 	public void init(GL gl)
 	{
-		//iconTextureManager = new GLIconTextureManager(gl);
+		// iconTextureManager = new GLIconTextureManager(gl);
 		initData();
 
 		colorMappingBar.setHeight(renderStyle.getColorMappingBarHeight());
@@ -135,9 +136,8 @@ public class GLHeatMap
 		dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
 		bRenderOnlyContext = false;
 
-		generalManager.getEventPublisher().addSender(
-				EMediatorType.PROPAGATION_MEDIATOR, this);
-		
+		generalManager.getEventPublisher().addSender(EMediatorType.PROPAGATION_MEDIATOR, this);
+
 		bRenderStorageHorizontally = false;
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
@@ -146,8 +146,7 @@ public class GLHeatMap
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID,
-			final RemoteLevel layer,
+	public void initRemote(final GL gl, final int iRemoteViewID, final RemoteLevel layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
@@ -193,13 +192,13 @@ public class GLHeatMap
 			bIsDisplayListDirtyLocal = false;
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-		
+
 		display(gl);
 		checkForHits(gl);
 
-		if(eBusyModeState != EBusyModeState.OFF)
+		if (eBusyModeState != EBusyModeState.OFF)
 			renderBusyMode(gl);
-		
+
 		pickingTriggerMouseAdapter.resetEvents();
 	}
 
@@ -215,7 +214,6 @@ public class GLHeatMap
 			doTranslation();
 		}
 
-		
 		if (bIsDisplayListDirtyRemote)
 		{
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
@@ -235,7 +233,7 @@ public class GLHeatMap
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		// GLHelperFunctions.drawAxis(gl);
 		gl.glCallList(iGLDisplayListToCall);
-		
+
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 	}
 
@@ -312,7 +310,8 @@ public class GLHeatMap
 	{
 		float fXButtonOrigin = 0.33f * renderStyle.getScaling();
 		float fYButtonOrigin = 0.33f * renderStyle.getScaling();
-		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.HEAT_MAP_SYMBOL);
+		Texture tempTexture = iconTextureManager.getIconTexture(gl,
+				EIconTextures.HEAT_MAP_SYMBOL);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -399,7 +398,7 @@ public class GLHeatMap
 				bRenderStorageHorizontally);
 		renderStyle.setDetailLevel(detailLevel);
 		super.renderStyle = renderStyle;
-	
+
 		// TODO probably remove this here
 		// renderStyle.initFieldSizes();
 
@@ -479,7 +478,7 @@ public class GLHeatMap
 				{
 
 					case DOUBLE_CLICKED:
-//						connectedElementRepresentationManager.clear();
+						// connectedElementRepresentationManager.clear();
 
 						contentSelectionManager.clearSelection(ESelectionType.SELECTION);
 						contentSelectionManager.addToType(ESelectionType.SELECTION,
@@ -487,20 +486,19 @@ public class GLHeatMap
 
 						contentSelectionManager.addConnectionID(generalManager.getIDManager()
 								.createID(EManagedObjectType.CONNECTION), iExternalID);
-						
+
 						if (eFieldDataType == EIDType.EXPRESSION_INDEX)
 						{
 							Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
-							colSelectionCommand.add(new SelectionCommand(ESelectionCommandType.CLEAR,
-									ESelectionType.MOUSE_OVER));
-							triggerUpdate(EMediatorType.SELECTION_MEDIATOR, 
+							colSelectionCommand.add(new SelectionCommand(
+									ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER));
+							triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
 									contentSelectionManager.getDelta(), colSelectionCommand);
 						}
 
 						break;
 					case CLICKED:
 					case MOUSE_OVER:
-						
 
 						if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER,
 								iExternalID))
@@ -511,16 +509,16 @@ public class GLHeatMap
 						contentSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
 						contentSelectionManager.addToType(ESelectionType.MOUSE_OVER,
 								iExternalID);
-						
+
 						contentSelectionManager.addConnectionID(generalManager.getIDManager()
 								.createID(EManagedObjectType.CONNECTION), iExternalID);
 
 						if (eFieldDataType == EIDType.EXPRESSION_INDEX)
 						{
 							Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
-							colSelectionCommand.add(new SelectionCommand(ESelectionCommandType.CLEAR,
-									ESelectionType.MOUSE_OVER));
-							triggerUpdate(EMediatorType.SELECTION_MEDIATOR, 
+							colSelectionCommand.add(new SelectionCommand(
+									ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER));
+							triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
 									contentSelectionManager.getDelta(), colSelectionCommand);
 						}
 
@@ -606,10 +604,11 @@ public class GLHeatMap
 				{
 					// Render heat map element name
 					String sContent = getRefSeqFromStorageIndex(iContentIndex);
-					if (sContent == null)
-						sContent = "Unknown";
-					renderCaption(gl, sContent, fXPosition + fFieldWith / 6 * 2.5f,
-							fYPosition + 0.1f, fLineDegrees, fFontScaling);
+					// if (sContent == null)
+					// sContent = "Unknown";
+					// renderCaption(gl, sContent, fXPosition + fFieldWith / 6 *
+					// 2.5f,
+					// fYPosition + 0.1f, fLineDegrees, fFontScaling);
 
 					if (bRenderShortName)
 					{
@@ -788,8 +787,8 @@ public class GLHeatMap
 
 		if (bRenderStorageHorizontally)
 		{
-			elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, fXValue + fAnimationTranslation,
-					fYValue, 0);
+			elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, fXValue
+					+ fAnimationTranslation, fYValue, 0);
 
 		}
 		else
@@ -797,8 +796,8 @@ public class GLHeatMap
 			Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
 			Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
 			vecPoint.setY(vecPoint.y() + vecTranslation.y());
-			elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, vecPoint.x(), vecPoint.y()
-					- fAnimationTranslation, 0);
+			elementRep = new SelectedElementRep(EIDType.EXPRESSION_INDEX, iUniqueID, vecPoint
+					.x(), vecPoint.y() - fAnimationTranslation, 0);
 
 		}
 		return elementRep;
@@ -944,7 +943,7 @@ public class GLHeatMap
 	@Override
 	public void changeOrientation(boolean defaultOrientation)
 	{
-		renderHorizontally(defaultOrientation);	
+		renderHorizontally(defaultOrientation);
 	}
 
 	@Override

@@ -1,13 +1,12 @@
 package org.caleydo.core.data.selection;
 
-
 public class SelectionQuadruple
 {
 	private int iTexture;
 	private int iPos;
 	private int iContentIndex;
 	private ESelectionType selectionType;
-	
+
 	public SelectionQuadruple()
 	{
 		this.iTexture = 0;
@@ -15,28 +14,31 @@ public class SelectionQuadruple
 		this.iContentIndex = 0;
 		this.selectionType = ESelectionType.NORMAL;
 	}
-	
-	public SelectionQuadruple(int iTexture, int iPos, int iContentIndex, ESelectionType selectionType)
+
+	public SelectionQuadruple(int iTexture, int iPos, int iContentIndex,
+			ESelectionType selectionType)
 	{
 		this.iTexture = iTexture;
 		this.iPos = iPos;
 		this.iContentIndex = iContentIndex;
 		this.setSelectionType(selectionType);
 	}
-	
+
 	public void setTexture(int iTexture)
 	{
 		this.iTexture = iTexture;
 	}
+
 	public int getTexture()
 	{
 		return iTexture;
 	}
-	
+
 	public void setPos(int iPos)
 	{
 		this.iPos = iPos;
 	}
+
 	public int getPos()
 	{
 		return iPos;
@@ -61,5 +63,5 @@ public class SelectionQuadruple
 	{
 		return selectionType;
 	}
-	
+
 }

@@ -16,8 +16,11 @@ public class Spline3D
 	 * Constructor.
 	 * 
 	 * @param points Input points
-	 * @param accuracy Accuracy works very smooth when using 0.001-0.010. The higher the rougher, cheaper in first calc, same speed (!) when cached.
-	 * @param margin Margin defines the margin-of-error the actual answer. measured in units.
+	 * @param accuracy Accuracy works very smooth when using 0.001-0.010. The
+	 *            higher the rougher, cheaper in first calc, same speed (!) when
+	 *            cached.
+	 * @param margin Margin defines the margin-of-error the actual answer.
+	 *            measured in units.
 	 */
 	public Spline3D(Vec3f[] points, float accuracy, float margin)
 	{

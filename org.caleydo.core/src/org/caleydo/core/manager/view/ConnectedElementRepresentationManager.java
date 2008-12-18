@@ -6,7 +6,6 @@ import java.util.Iterator;
 import java.util.Set;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
-import org.caleydo.core.manager.picking.ESelectionMode;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 
 /**
@@ -41,7 +40,6 @@ public class ConnectedElementRepresentationManager
 		hashIDTypes = new HashMap<EIDType, HashMap<Integer, ArrayList<SelectedElementRep>>>();
 	}
 
-
 	/**
 	 * Add a selection
 	 * 
@@ -58,7 +56,7 @@ public class ConnectedElementRepresentationManager
 			hashIDTypes.put(selectedElementRep.getIDType(), tmpHash);
 		}
 		// FIXME temp hack
-		//iElementID = 0;
+		// iElementID = 0;
 		if (!tmpHash.containsKey(iElementID))
 		{
 			tmpHash.put(iElementID, new ArrayList<SelectedElementRep>());
@@ -142,7 +140,7 @@ public class ConnectedElementRepresentationManager
 	{
 		hashIDTypes.clear();
 	}
-	
+
 	/**
 	 * Clear all selections of a given type
 	 */
@@ -150,32 +148,30 @@ public class ConnectedElementRepresentationManager
 	{
 		if (!hashIDTypes.containsKey(eIDType))
 			return;
-		
+
 		HashMap<Integer, ArrayList<SelectedElementRep>> tmp = hashIDTypes.get(eIDType);
 		tmp.clear();
-		//hashIDTypes.remove(eIDType);
-		
-//		hashIDTypes.clear();
+		// hashIDTypes.remove(eIDType);
+
+		// hashIDTypes.clear();
 	}
 
-	
 	public void clearByView(EIDType idType, int iViewID)
 	{
 		HashMap<Integer, ArrayList<SelectedElementRep>> hashReps = hashIDTypes.get(idType);
-		if(hashReps == null)
+		if (hashReps == null)
 			return;
-		for(int iElementID : hashReps.keySet())
+		for (int iElementID : hashReps.keySet())
 		{
 			ArrayList<SelectedElementRep> alRep = hashReps.get(iElementID);
-			
+
 			Iterator<SelectedElementRep> iterator = alRep.iterator();
-			while(iterator.hasNext())
+			while (iterator.hasNext())
 			{
-				if(iterator.next().getContainingViewID() == iViewID)
+				if (iterator.next().getContainingViewID() == iViewID)
 					iterator.remove();
 			}
 		}
 	}
-
 
 }

@@ -59,7 +59,7 @@ public class PathwayItemManager
 
 		((PathwayManager) generalManager.getPathwayManager()).getRootPathway().addItem(
 				pathwayVertex);
-		
+
 		return pathwayVertex;
 	}
 
@@ -69,9 +69,9 @@ public class PathwayItemManager
 		// Do not create a new vertex if it is already registered
 		if (hashDavidIdToPathwayVertexGraphItemId.containsKey(iDavidId))
 			return hashItems.get(hashDavidIdToPathwayVertexGraphItemId.get(iDavidId));
-		
+
 		IGraphItem tmpGraphItem = createVertex(sName, sType, sExternalLink, sReactionId);
-		
+
 		hashDavidIdToPathwayVertexGraphItemId.put(iDavidId, tmpGraphItem.getId());
 		hashPathwayVertexGraphItemIdToDavidId.put(tmpGraphItem.getId(), iDavidId);
 
@@ -102,10 +102,10 @@ public class PathwayItemManager
 
 			pathwayVertex.addItem(pathwayVertexRep, EGraphItemProperty.ALIAS_CHILD);
 		}
-		
-		hashIDToPathwayVertexGraphItemRep.put(pathwayVertexRep.getId(), 
-				(PathwayVertexGraphItemRep)pathwayVertexRep);
-		
+
+		hashIDToPathwayVertexGraphItemRep.put(pathwayVertexRep.getId(),
+				(PathwayVertexGraphItemRep) pathwayVertexRep);
+
 		return pathwayVertexRep;
 	}
 
@@ -126,9 +126,9 @@ public class PathwayItemManager
 
 		parentVertex.addItem(pathwayVertexRep, EGraphItemProperty.ALIAS_CHILD);
 
-		hashIDToPathwayVertexGraphItemRep.put(pathwayVertexRep.getId(), 
-				(PathwayVertexGraphItemRep)pathwayVertexRep);
-		
+		hashIDToPathwayVertexGraphItemRep.put(pathwayVertexRep.getId(),
+				(PathwayVertexGraphItemRep) pathwayVertexRep);
+
 		return pathwayVertexRep;
 	}
 

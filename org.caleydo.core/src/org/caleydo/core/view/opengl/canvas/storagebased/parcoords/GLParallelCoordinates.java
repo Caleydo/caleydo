@@ -6,8 +6,8 @@ import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoor
 import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.AXIS_MARKER_WIDTH;
 import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.AXIS_Z;
 import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.DESELECTED_POLYLINE_LINE_WIDTH;
-import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.GATE_TIP_COLOR;
 import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.GATE_BODY_COLOR;
+import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.GATE_TIP_COLOR;
 import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.MOUSE_OVER_POLYLINE_LINE_WIDTH;
 import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.NUMBER_AXIS_MARKERS;
 import static org.caleydo.core.view.opengl.canvas.storagebased.parcoords.ParCoordsRenderStyle.POLYLINE_MOUSE_OVER_COLOR;
@@ -1522,9 +1522,9 @@ public class GLParallelCoordinates
 								&& !bAngularBrushingSelectPolyline)
 						{
 							Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
-							colSelectionCommand.add(new SelectionCommand(ESelectionCommandType.CLEAR,
-									ESelectionType.MOUSE_OVER));
-							
+							colSelectionCommand.add(new SelectionCommand(
+									ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER));
+
 							triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
 									polylineSelectionManager.getDelta(), colSelectionCommand);
 
@@ -1547,9 +1547,9 @@ public class GLParallelCoordinates
 						if (ePolylineDataType == EIDType.EXPRESSION_INDEX)
 						{
 							Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
-							colSelectionCommand.add(new SelectionCommand(ESelectionCommandType.CLEAR,
-									ESelectionType.MOUSE_OVER)); 
-							
+							colSelectionCommand.add(new SelectionCommand(
+									ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER));
+
 							triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
 									polylineSelectionManager.getDelta(), colSelectionCommand);
 						}
@@ -1558,7 +1558,6 @@ public class GLParallelCoordinates
 				}
 				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
-
 
 			case X_AXIS_SELECTION:
 				pickingManager.flushHits(iUniqueID, ePickingType);
@@ -1574,14 +1573,14 @@ public class GLParallelCoordinates
 
 						connectedElementRepresentationManager.clear(eAxisDataType);
 
-						triggerUpdate(EMediatorType.SELECTION_MEDIATOR, axisSelectionManager.getDelta(), null);
-
+						triggerUpdate(EMediatorType.SELECTION_MEDIATOR, axisSelectionManager
+								.getDelta(), null);
 
 						if (eAxisDataType == EIDType.EXPRESSION_INDEX)
 						{
 							Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
-							colSelectionCommand.add(new SelectionCommand(ESelectionCommandType.CLEAR,
-									ESelectionType.MOUSE_OVER));
+							colSelectionCommand.add(new SelectionCommand(
+									ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER));
 							triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
 									axisSelectionManager.getDelta(), colSelectionCommand);
 						}

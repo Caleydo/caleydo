@@ -27,7 +27,7 @@ import de.phleisch.app.itsucks.job.download.impl.UrlDownloadJob;
  */
 public class BioCartaPathwayCacher
 	extends APathwayCacher
-{	
+{
 	/**
 	 * Constructor.
 	 */
@@ -37,7 +37,7 @@ public class BioCartaPathwayCacher
 		this.display = display;
 		this.progressBar = progressBar;
 		this.triggeringCommand = triggeringCommand;
-		
+
 		iExpectedDownloads = 888;
 	}
 
@@ -97,7 +97,7 @@ public class BioCartaPathwayCacher
 		job.setIgnoreFilter(true);
 
 		dispatcher.addJob(job);
-		
+
 		processJobs(dispatcher);
 
 		triggerPathwayListGeneration();

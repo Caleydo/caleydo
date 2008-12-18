@@ -24,7 +24,6 @@ import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
-import org.caleydo.core.manager.picking.ESelectionMode;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
@@ -97,7 +96,7 @@ public abstract class AStorageBasedView
 	protected int iNumberOfRandomElements = 100;
 
 	protected int iNumberOfSamplesPerTexture = 100;
-	
+
 	protected int iNumberOfSamplesPerHeatmap = 100;
 
 	/**
@@ -114,7 +113,7 @@ public abstract class AStorageBasedView
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 
 		this.setType = setType;
-		
+
 		mapVAIDs = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
 
 		genomeIDManager = generalManager.getIDMappingManager();
@@ -308,20 +307,21 @@ public abstract class AStorageBasedView
 		// Convert expression storage ID to RefSeq
 		Integer iDavidId = getDavidIDFromStorageIndex(index);
 
-//		if (iDavidId == null)
-//			return "Unknown Gene";
+		// if (iDavidId == null)
+		// return "Unknown Gene";
 
-		Set<String> sSetRefSeqID = genomeIDManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA, iDavidId);
+		Set<String> sSetRefSeqID = genomeIDManager.getMultiID(
+				EMappingType.DAVID_2_REFSEQ_MRNA, iDavidId);
 		String sOutput = "";
-		for (String sRefSeqID : sSetRefSeqID) 
+		for (String sRefSeqID : sSetRefSeqID)
 		{
-//			if (sRefSeqID == "")
-//				continue;
-			
+			// if (sRefSeqID == "")
+			// continue;
+
 			sOutput += sRefSeqID;
 			sOutput += " | ";
 		}
-		
+
 		return sOutput;
 	}
 
@@ -342,7 +342,6 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-
 	public synchronized final void handleUpdate(IUniqueObject eventTrigger,
 			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand,
 			EMediatorType eMediatorType)
@@ -561,7 +560,7 @@ public abstract class AStorageBasedView
 		// manager though
 		this.iNumberOfRandomElements = iNumberOfRandomElements;
 	}
-	
+
 	/**
 	 * Set the number of samples which are shown in one texture
 	 * 
@@ -571,7 +570,7 @@ public abstract class AStorageBasedView
 	{
 		this.iNumberOfSamplesPerTexture = iNumberOfSamplesPerTexture;
 	}
-	
+
 	/**
 	 * Set the number of samples which are shown in one heat map
 	 * 

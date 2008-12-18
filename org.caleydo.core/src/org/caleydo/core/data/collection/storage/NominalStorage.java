@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.INominalStorage;
-import org.caleydo.core.data.collection.ccontainer.INumericalCContainer;
 import org.caleydo.core.data.collection.ccontainer.NominalCContainer;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -97,7 +96,7 @@ public class NominalStorage<T>
 	@Override
 	public void setExternalDataRepresentation(EExternalDataRepresentation externalDataRep)
 	{
-		
+
 		if (externalDataRep != EExternalDataRepresentation.NORMAL)
 			throw new IllegalArgumentException(
 					"Nominal storages support only raw representations");

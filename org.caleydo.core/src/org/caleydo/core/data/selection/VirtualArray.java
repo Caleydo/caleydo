@@ -150,7 +150,7 @@ public class VirtualArray
 	{
 		init();
 	}
-	
+
 	@Override
 	public void clear()
 	{

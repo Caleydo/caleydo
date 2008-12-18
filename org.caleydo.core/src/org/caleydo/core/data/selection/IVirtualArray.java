@@ -33,9 +33,9 @@ public interface IVirtualArray
 	 * Adds a element to the end of the list.
 	 * 
 	 * @param iNewElement the index to the collection
-	 * @throws IllegalArgumentException if the value of the new element is larger
-	 *             than allowed. The maximum allowed value is the length of the
-	 *             collection which is managed - 1
+	 * @throws IllegalArgumentException if the value of the new element is
+	 *             larger than allowed. The maximum allowed value is the length
+	 *             of the collection which is managed - 1
 	 */
 	public void add(Integer iNewElement);
 
@@ -47,9 +47,9 @@ public interface IVirtualArray
 	 * @param iIndex the position on which to insert the new element
 	 * @param iNewElement the index to the collection
 	 * 
-	 * @throws IllegalArgumentException if the value of the new element is larger
-	 *             than allowed. The maximum allowed value is the length of the
-	 *             collection which is managed - 1
+	 * @throws IllegalArgumentException if the value of the new element is
+	 *             larger than allowed. The maximum allowed value is the length
+	 *             of the collection which is managed - 1
 	 */
 	public void add(int iIndex, Integer iNewElement);
 
@@ -122,7 +122,7 @@ public interface IVirtualArray
 	 * Reset the virtual array to the indices in the managed data entity
 	 */
 	public void reset();
-	
+
 	/**
 	 * Reset the virtual array to contain no elements
 	 */

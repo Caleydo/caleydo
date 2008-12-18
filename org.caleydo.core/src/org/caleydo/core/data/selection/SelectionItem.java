@@ -45,16 +45,16 @@ public class SelectionItem
 		this.iInternalID = iInternalID;
 		alConnectionID = new ArrayList<Integer>();
 	}
-	
+
 	/**
 	 * Set a connection ID which is meant to be persistent over conversion steps
+	 * 
 	 * @param iConnectionID the new id
 	 */
 	public void setConnectionID(int iConnectionID)
 	{
 		alConnectionID.add(iConnectionID);
 	}
-	
 
 	/**
 	 * Returns the selection ID
@@ -86,18 +86,20 @@ public class SelectionItem
 	{
 		return iInternalID;
 	}
-	
+
 	/**
 	 * Returns the connection ID of the element.
+	 * 
 	 * @return the connection ID
 	 */
 	public Collection<Integer> getConnectionID()
 	{
 		return alConnectionID;
 	}
-	
+
 	/**
 	 * Set the selection type
+	 * 
 	 * @param selectionType the selection type
 	 */
 	public void setSelectionType(ESelectionType selectionType)

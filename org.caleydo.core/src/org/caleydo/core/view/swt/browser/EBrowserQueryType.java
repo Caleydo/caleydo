@@ -21,16 +21,15 @@ public enum EBrowserQueryType
 	BioCarta("BioCarta", "http://cgap.nci.nih.gov/Genes/GeneInfo?ORG=Hs&BCID=", EMappingType.DAVID_2_BIOCARTA_GENE_ID);
 
 	private String sTitle;
-	
+
 	private String sQueryStringPrefix;
 
 	private EMappingType mappingType;
-	
+
 	/**
 	 * Constructor.
 	 */
-	EBrowserQueryType(String sTitle,
-			String sQueryStringPrefix, EMappingType mappingType)
+	EBrowserQueryType(String sTitle, String sQueryStringPrefix, EMappingType mappingType)
 	{
 		this.sQueryStringPrefix = sQueryStringPrefix;
 		this.mappingType = mappingType;
@@ -41,12 +40,12 @@ public enum EBrowserQueryType
 	{
 		return sQueryStringPrefix;
 	}
-	
+
 	public EMappingType getMappingType()
 	{
 		return mappingType;
 	}
-	
+
 	public String getTitle()
 	{
 		return sTitle;

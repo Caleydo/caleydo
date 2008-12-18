@@ -35,5 +35,5 @@ public class ConversionTools
 		}
 		return fArColor;
 	}
-	
+
 }

@@ -82,8 +82,7 @@ public class GLRemoteGlyph
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID,
-			final RemoteLevel layer,
+	public void initRemote(final GL gl, final int iRemoteViewID, final RemoteLevel layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
@@ -225,7 +224,7 @@ public class GLRemoteGlyph
 	{
 
 	}
-	
+
 	@Override
 	public int getNumberOfSelections(ESelectionType eSelectionType)
 	{

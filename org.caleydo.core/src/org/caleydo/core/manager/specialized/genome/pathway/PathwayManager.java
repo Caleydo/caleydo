@@ -107,7 +107,7 @@ public class PathwayManager
 	}
 
 	@Override
-	public int searchPathwayIdByName(final String sPathwayName, 
+	public int searchPathwayIdByName(final String sPathwayName,
 			EPathwayDatabaseType ePathwayDatabaseType)
 	{
 		waitUntilPathwayLoadingIsFinished();
@@ -125,12 +125,13 @@ public class PathwayManager
 			if (regexMatcher.find())
 			{
 				int iPathwayID = hashPathwayTitleToPathwayId.get(sTmpPathwayName);
-				
-				// Ignore the found pathway if it has the same name but is contained
+
+				// Ignore the found pathway if it has the same name but is
+				// contained
 				// in a different database
 				if (getItem(iPathwayID).getType() != ePathwayDatabaseType)
 					continue;
-				
+
 				return iPathwayID;
 			}
 		}
@@ -147,10 +148,10 @@ public class PathwayManager
 	public Collection<PathwayGraph> getAllItems()
 	{
 		waitUntilPathwayLoadingIsFinished();
-		
+
 		return super.getAllItems();
 	}
-	
+
 	@Override
 	public void setPathwayVisibilityStateByID(final int iPathwayID,
 			final boolean bVisibilityState)
@@ -162,15 +163,15 @@ public class PathwayManager
 
 	@Override
 	public void resetPathwayVisiblityState()
-	{		
+	{
 		waitUntilPathwayLoadingIsFinished();
-		
+
 		for (int iPathwayID : hashPathwayIdToVisibilityState.keySet())
 		{
-			hashPathwayIdToVisibilityState.put(iPathwayID, false);			
-		}	
+			hashPathwayIdToVisibilityState.put(iPathwayID, false);
+		}
 	}
-	
+
 	@Override
 	public boolean isPathwayVisible(final int iPathwayID)
 	{

@@ -38,7 +38,6 @@ public enum ECommandType
 	CREATE_GL_CELL("cmd", "type", "-1", "Create Cell Component Localizer"),
 	CREATE_GL_PANEL_SELECTION("cmd", "type", "-1", "Create Selection Panel"),
 
-
 	EXTERNAL_OBJECT_SETTER("cmd", "type", "-1", "External object setter"),
 	EXTERNAL_FLAG_SETTER("cmd", "type", "-1", "External flag setter"),
 	EXTERNAL_ACTION_TRIGGER("cmd", "type", "-1", "External action trigger"),

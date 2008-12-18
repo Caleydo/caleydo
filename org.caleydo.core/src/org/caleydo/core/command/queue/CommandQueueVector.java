@@ -8,6 +8,7 @@ import java.util.ListIterator;
 import java.util.Vector;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.ICommand;
+
 /**
  * Create a queue of command's, that can be executed in a row.
  * 
@@ -84,21 +85,22 @@ public class CommandQueueVector
 		 */
 		bQueueIsExcecuting = true;
 
-//		try
-//		{
-			Iterator<ICommand> iter = vecCommandsInQueue.iterator();
+		// try
+		// {
+		Iterator<ICommand> iter = vecCommandsInQueue.iterator();
 
-			while (iter.hasNext())
-			{
-				iter.next().doCommand();
-			}
+		while (iter.hasNext())
+		{
+			iter.next().doCommand();
+		}
 
-//		}
-//		catch (CaleydoRuntimeException pre)
-//		{
-//			System.err.print("Exception during execution of CommandQueue [" + this.iCmdQueueId
-//					+ "] with exception:[" + pre.toString() + "]");
-//		}
+		// }
+		// catch (CaleydoRuntimeException pre)
+		// {
+		// System.err.print("Exception during execution of CommandQueue [" +
+		// this.iCmdQueueId
+		// + "] with exception:[" + pre.toString() + "]");
+		// }
 
 		bQueueWasExcecuted = true;
 

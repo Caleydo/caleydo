@@ -22,10 +22,10 @@ public enum ESelectionType
 	 * REMOVE are not recoverable.
 	 */
 	REMOVE,
-	
+
 	/**
-	 * Pathway neighborhoods
-	 * TODO: if needed more use the hash map in the selection manager
+	 * Pathway neighborhoods TODO: if needed more use the hash map in the
+	 * selection manager
 	 */
 	NEIGHBORHOOD_1,
 	NEIGHBORHOOD_2,

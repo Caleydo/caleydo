@@ -12,7 +12,6 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 
 /**
  * Loads all pathways of a certain type by providing the XML path.
@@ -64,7 +63,7 @@ public class PathwayLoaderThread
 			if (!tmpGLEventListener.isRenderedRemote())
 				tmpGLEventListener.enableBusyMode(true);
 		}
-		
+
 		Iterator<PathwayDatabase> iterPathwayDatabase = pathwayDatabases.iterator();
 		while (iterPathwayDatabase.hasNext())
 		{
@@ -78,7 +77,7 @@ public class PathwayLoaderThread
 			if (!tmpGLEventListener.isRenderedRemote())
 				tmpGLEventListener.enableBusyMode(false);
 		}
-		
+
 		generalManager.getPathwayManager().notifyPathwayLoadingFinished(true);
 		// notifyViews();
 	}
@@ -120,7 +119,7 @@ public class PathwayLoaderThread
 		try
 		{
 			file = GeneralManager.get().getResourceLoader().getResource(sFileName);
-			
+
 			StringTokenizer tokenizer;
 			String sPathwayName;
 			PathwayGraph tmpPathwayGraph;
@@ -169,8 +168,7 @@ public class PathwayLoaderThread
 		}
 		catch (FileNotFoundException e)
 		{
-			throw new IllegalStateException("Pathway list file: " + sFileName
-					+ " not found.");
+			throw new IllegalStateException("Pathway list file: " + sFileName + " not found.");
 		}
 		catch (IOException e)
 		{
@@ -178,11 +176,10 @@ public class PathwayLoaderThread
 					+ sFileName);
 		}
 
-
-//		 if (tmpGLRemoteRendering3D != null)
-//		 {
-//			 tmpGLRemoteRendering3D.enableBusyMode(false);
-//		 }
+		// if (tmpGLRemoteRendering3D != null)
+		// {
+		// tmpGLRemoteRendering3D.enableBusyMode(false);
+		// }
 
 		generalManager.getLogger().log(Level.INFO,
 				"Finished parsing " + pathwayDatabase.getName() + " pathways.");

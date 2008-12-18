@@ -16,16 +16,18 @@ import org.caleydo.core.data.mapping.EMappingType;
 public interface IIDMappingManager
 {
 	public void createMap(EMappingType type, EMappingDataType dataType);
-	
-	public <SrcType, DestType> void createReverseMap(EMappingType sourceType, EMappingType reverseType);
 
-	public <KeyType, ValueType> void createCodeResolvedMap(EMappingType mappingType, EMappingType destMappingType);
-	
+	public <SrcType, DestType> void createReverseMap(EMappingType sourceType,
+			EMappingType reverseType);
+
+	public <KeyType, ValueType> void createCodeResolvedMap(EMappingType mappingType,
+			EMappingType destMappingType);
+
 	public <KeyType, ValueType> Map<KeyType, ValueType> getMapping(EMappingType type);
-	
+
 	public boolean hasMapping(EMappingType type);
-	
+
 	public <KeyType, ValueType> ValueType getID(EMappingType type, KeyType key);
-	
+
 	public <KeyType, ValueType> Set<ValueType> getMultiID(EMappingType type, KeyType key);
 }

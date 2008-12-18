@@ -128,7 +128,7 @@ public class PickingManager
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			// bIsMouseOverPickingEvent = false;
 			ePickingMode = EPickingMode.CLICKED;
-		}	
+		}
 		else if (pickingTriggerMouseAdapter.wasMouseDragged())
 		{
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
@@ -184,8 +184,8 @@ public class PickingManager
 				5.0, 5.0, viewport, 0); // pick width and height is set to 5
 		// (i.e. picking tolerance)
 
-		float fAspectRatio = (float)(viewport[3] - viewport[1])
-						/ (float)(viewport[2] - viewport[0]);
+		float fAspectRatio = (float) (viewport[3] - viewport[1])
+				/ (float) (viewport[2] - viewport[0]);
 
 		IViewFrustum viewFrustum = canvasUser.getViewFrustum();
 
@@ -358,7 +358,7 @@ public class PickingManager
 				iNearestObjectIndex = iPickingBufferCounter;
 				// third element is max Z Value
 				// fourth element is name of lowest name on stack
-				//iAlPickedObjectId.add(iArPickingBuffer[iPickingBufferCounter+3
+				// iAlPickedObjectId.add(iArPickingBuffer[iPickingBufferCounter+3
 				// ]);
 			}
 			iPickingBufferCounter = iPickingBufferCounter + 3
@@ -401,12 +401,13 @@ public class PickingManager
 					|| iType == EPickingType.BUCKET_MOVE_LEFT_ICON_SELECTION.ordinal()
 					|| iType == EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION.ordinal()
 					|| iType == EPickingType.BUCKET_REMOVE_ICON_SELECTION.ordinal()
-//					|| iType == EPickingType.BUCKET_LOCK_ICON_SELECTION.ordinal()
+					// || iType ==
+					// EPickingType.BUCKET_LOCK_ICON_SELECTION.ordinal()
 					|| iType == EPickingType.VIEW_SELECTION.ordinal()
 					|| iType == EPickingType.HIER_HEAT_MAP_VIEW_SELECTION.ordinal())
 			// || iType == EPickingType.BUCKET_REMOVE_ICON_SELECTION.ordinal()
 			// || iType == EPickingType.BUCKET_SWITCH_ICON_SELECTION.ordinal())
-			{			
+			{
 				iSignature = getSignatureFromPickingID(iPickingID, iViewID);
 
 				iOrigianlPickingID = iPickingID;
@@ -424,8 +425,8 @@ public class PickingManager
 
 					HashMap<Integer, Integer> signatureToPickingID = hashSignatureToPickingIDHashMap
 							.get(iSignature);
-					
-					if(signatureToPickingID == null)
+
+					if (signatureToPickingID == null)
 						continue;
 
 					Integer iViewUnderInteractionID = signatureToPickingID

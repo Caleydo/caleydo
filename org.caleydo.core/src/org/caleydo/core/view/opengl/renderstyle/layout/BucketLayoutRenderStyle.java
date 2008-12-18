@@ -49,12 +49,12 @@ public class BucketLayoutRenderStyle
 
 	@Override
 	public RemoteLevel initUnderInteractionLevel()
-	{		
+	{
 		Transform transform = new Transform();
 		transform.setTranslation(new Vec3f(-2, -2, 4 * fZoomFactor));
-		transform.setScale(new Vec3f(fScalingFactorFocusLevel,
-				fScalingFactorFocusLevel, fScalingFactorFocusLevel));
-	
+		transform.setScale(new Vec3f(fScalingFactorFocusLevel, fScalingFactorFocusLevel,
+				fScalingFactorFocusLevel));
+
 		focusLevel.getElementByPositionIndex(0).setTransform(transform);
 
 		return focusLevel;
@@ -65,23 +65,25 @@ public class BucketLayoutRenderStyle
 	{
 		Transform transform;
 		RemoteLevelElement element;
-		
+
 		if (!bIsZoomedIn)
-		{		
+		{
 			float fTiltAngleRad_Horizontal;
 			float fTiltAngleRad_Vertical;
-		
+
 			fTiltAngleRad_Horizontal = (float) Math
 					.acos(((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2)
-						/ ((float) Math.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
-						+ Math.pow(((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2),
-								2))));
+							/ ((float) Math
+									.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
+											+ Math
+													.pow(
+															((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2),
+															2))));
 			fTiltAngleRad_Vertical = Vec3f.convertGrad2Radiant(90);
-			
+
 			float fScalingCorrection = ((float) Math.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
 					+ Math.pow(((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2), 2))) / 4f;
-		
-		
+
 			// FIXME: handle case when height > width
 			// if (fAspectRatio < 1.0)
 			// {
@@ -93,7 +95,7 @@ public class BucketLayoutRenderStyle
 			// {
 			//	    	
 			// }
-		
+
 			// TOP BUCKET WALL
 			transform = new Transform();
 			transform.setTranslation(new Vec3f(-2, 2 - 4f
@@ -102,75 +104,81 @@ public class BucketLayoutRenderStyle
 			transform.setScale(new Vec3f(fScalingFactorStackLevel, fScalingFactorStackLevel
 					* (1 - fZoomFactor), fScalingFactorStackLevel * (1 - fZoomFactor)));
 			transform.setRotation(new Rotf(new Vec3f(1, 0, 0), fTiltAngleRad_Vertical));
-			
+
 			stackLevel.getElementByPositionIndex(0).setTransform(transform);
-		
+
 			// LEFT BUCKET WALL
 			transform = new Transform();
 			transform.setTranslation(new Vec3f(fPoolLayerWidth - 2 * 1 / fAspectRatio, -2, 4));
 			transform.setScale(new Vec3f(fScalingFactorStackLevel * fScalingCorrection,
 					fScalingFactorStackLevel, fScalingFactorStackLevel * fScalingCorrection));
 			transform.setRotation(new Rotf(new Vec3f(0, 1, 0), fTiltAngleRad_Horizontal));
-			
-			stackLevel.getElementByPositionIndex(1).setTransform(transform);;
-			
+
+			stackLevel.getElementByPositionIndex(1).setTransform(transform);
+			;
+
 			// BOTTOM BUCKET WALL
 			transform = new Transform();
 			transform.setTranslation(new Vec3f(-2, -2, 4));
 			transform.setScale(new Vec3f(fScalingFactorStackLevel, fScalingFactorStackLevel
 					* (1 - fZoomFactor), fScalingFactorStackLevel * (1 - fZoomFactor)));
 			transform.setRotation(new Rotf(new Vec3f(-1, 0, 0), fTiltAngleRad_Vertical));
-			
+
 			stackLevel.getElementByPositionIndex(2).setTransform(transform);
-		
+
 			// RIGHT BUCKET WALL
 			transform = new Transform();
 			transform.setTranslation(new Vec3f(-fPoolLayerWidth + 2 * 1 / fAspectRatio - 4f
-					* (float) Math.cos(fTiltAngleRad_Horizontal) * fScalingCorrection, -2, 4 - 4
-					* (float) Math.sin(fTiltAngleRad_Horizontal) * fScalingCorrection));
+					* (float) Math.cos(fTiltAngleRad_Horizontal) * fScalingCorrection, -2, 4
+					- 4 * (float) Math.sin(fTiltAngleRad_Horizontal) * fScalingCorrection));
 			transform.setScale(new Vec3f(fScalingFactorStackLevel * fScalingCorrection,
 					fScalingFactorStackLevel, fScalingFactorStackLevel * fScalingCorrection));
 			transform.setRotation(new Rotf(new Vec3f(0, -1f, 0), fTiltAngleRad_Horizontal));
-			
+
 			stackLevel.getElementByPositionIndex(3).setTransform(transform);
 		}
 		else
 		{
 			float fScalingFactorZoomedIn = 0.4f;
-						
+
 			// TOP BUCKET WALL
 			transform = new Transform();
 			transform.setTranslation(new Vec3f(-7.25f, 0.8f, -4f));
-			transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn, fScalingFactorZoomedIn));
+			transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn,
+					fScalingFactorZoomedIn));
 			transform.setRotation(new Rotf(new Vec3f(0, 0, 0), 0));
-			
+
 			stackLevel.getElementByPositionIndex(0).setTransform(transform);
 
 			// LEFT BUCKET WALL
 			transform = new Transform();
 			transform.setTranslation(new Vec3f(4.05f, 0.8f, -4f));
-			transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn, fScalingFactorZoomedIn));
+			transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn,
+					fScalingFactorZoomedIn));
 			transform.setRotation(new Rotf(new Vec3f(0, 0, 0), 0));
-			
+
 			stackLevel.getElementByPositionIndex(1).setTransform(transform);
-			
+
 			// BOTTOM BUCKET WALL
 			transform = new Transform();
 			transform.setTranslation(new Vec3f(-7.25f, -4, -4f));
-			transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn, fScalingFactorZoomedIn));
+			transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn,
+					fScalingFactorZoomedIn));
 			transform.setRotation(new Rotf(new Vec3f(0, 0, 0), 0));
-			
+
 			stackLevel.getElementByPositionIndex(2).setTransform(transform);
 
 			// RIGHT BUCKET WALL
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(4.05f, -4, -4f));;
-			transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn, fScalingFactorZoomedIn));
+			transform.setTranslation(new Vec3f(4.05f, -4, -4f));
+			;
+			transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn,
+					fScalingFactorZoomedIn));
 			transform.setRotation(new Rotf(new Vec3f(0, 0, 0), 0));
-			
+
 			stackLevel.getElementByPositionIndex(3).setTransform(transform);
 		}
-		
+
 		// // OLD static bucket implementation
 		//
 		// // TOP BUCKET WALL
@@ -222,13 +230,13 @@ public class BucketLayoutRenderStyle
 	public RemoteLevel initPoolLevel(int iSelectedRemoteLevelElementID)
 	{
 		Transform transform;
-		
+
 		float fSelectedScaling = 1;
 		float fYAdd = 1.9f;
 
 		int iRemoteLevelElementIndex = 0;
 		for (RemoteLevelElement element : poolLevel.getAllElements())
-		{			
+		{
 			if (element.getID() == iSelectedRemoteLevelElementID)
 			{
 				fSelectedScaling = 1.8f;
@@ -246,8 +254,9 @@ public class BucketLayoutRenderStyle
 			transform.setScale(new Vec3f(fScalingFactorPoolLevel * fSelectedScaling,
 					fScalingFactorPoolLevel * fSelectedScaling, fScalingFactorPoolLevel
 							* fSelectedScaling));
-			
-			poolLevel.getElementByPositionIndex(iRemoteLevelElementIndex).setTransform(transform);
+
+			poolLevel.getElementByPositionIndex(iRemoteLevelElementIndex).setTransform(
+					transform);
 			iRemoteLevelElementIndex++;
 		}
 
@@ -259,11 +268,11 @@ public class BucketLayoutRenderStyle
 	{
 		Transform transform = new Transform();
 		transform.setTranslation(new Vec3f(2f / fAspectRatio - fPoolLayerWidth, -2, 4.01f));
-		transform.setScale(new Vec3f(fScalingFactorSelectionLevel, fScalingFactorSelectionLevel,
-					fScalingFactorSelectionLevel));
-		
+		transform.setScale(new Vec3f(fScalingFactorSelectionLevel,
+				fScalingFactorSelectionLevel, fScalingFactorSelectionLevel));
+
 		selectionLevel.getElementByPositionIndex(0).setTransform(transform);
-		
+
 		// Init color bar position
 		fColorBarXPos = 2.01f / fAspectRatio;
 		fColorBarYPos = -1;
@@ -280,7 +289,7 @@ public class BucketLayoutRenderStyle
 		transform.setTranslation(new Vec3f(0, -2f, 0.1f));
 		transform.setScale(new Vec3f(fScalingFactorTransitionLevel,
 				fScalingFactorTransitionLevel, fScalingFactorTransitionLevel));
-		
+
 		transitionLevel.getElementByPositionIndex(0).setTransform(transform);
 
 		return transitionLevel;
@@ -293,7 +302,7 @@ public class BucketLayoutRenderStyle
 		transform.setTranslation(new Vec3f(0, 0, 0));
 		transform.setScale(new Vec3f(fScalingFactorSpawnLevel, fScalingFactorSpawnLevel,
 				fScalingFactorSpawnLevel));
-		
+
 		spawnLevel.getElementByPositionIndex(0).setTransform(transform);
 
 		return spawnLevel;

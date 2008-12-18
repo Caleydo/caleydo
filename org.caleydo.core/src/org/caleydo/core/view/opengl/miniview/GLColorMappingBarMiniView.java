@@ -51,7 +51,7 @@ public class GLColorMappingBarMiniView
 		ISet geneExpressionSet = null;
 		Collection<ISet> sets = GeneralManager.get().getSetManager().getAllItems();
 
-		int iSetCount = 0;		
+		int iSetCount = 0;
 		for (ISet set : sets)
 		{
 			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA)
@@ -60,15 +60,15 @@ public class GLColorMappingBarMiniView
 				geneExpressionSet = set;
 			}
 		}
-		
-		// FIXME: Bad hack: find a better way to ensure that not more 
+
+		// FIXME: Bad hack: find a better way to ensure that not more
 		// than one gene expression set is valid for this view.
 		if (iSetCount > 1)
 			return;
-		
+
 		if (geneExpressionSet == null)
 		{
-			//this is the case when the application is in pathway viewer mode
+			// this is the case when the application is in pathway viewer mode
 			return;
 		}
 
@@ -98,8 +98,8 @@ public class GLColorMappingBarMiniView
 			float fYOffset = (float) tempRectangle.getHeight()
 					* renderStyle.getSmallFontScalingFactor() / 2;
 
-			String infoToRender = GeneralRenderStyle.getDecimalFormat()
-					.format(geneExpressionSet.getRawForNormalized(markerPoint.getValue()));
+			String infoToRender = GeneralRenderStyle.getDecimalFormat().format(
+					geneExpressionSet.getRawForNormalized(markerPoint.getValue()));
 			textRenderer.begin3DRendering();
 			textRenderer.draw3D(infoToRender, fXOrigin + fWidth / 3
 					+ renderStyle.getSmallSpacing(), fYCurrent - fYOffset, fZOrigin + 0.01f,

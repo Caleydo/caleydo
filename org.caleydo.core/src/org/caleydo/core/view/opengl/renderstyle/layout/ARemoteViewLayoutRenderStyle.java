@@ -15,9 +15,9 @@ public abstract class ARemoteViewLayoutRenderStyle
 	extends GeneralRenderStyle
 {
 	public final static float NAVIGATION_OVERLAY_TRANSPARENCY = 1f;
-	
+
 	protected RemoteElementManager remoteElementManager;
-	
+
 	protected float fAspectRatio = 1.0f;
 	protected float fZoomFactor = 0.0f;
 	protected float fPoolLayerWidth = 0.8f;
@@ -63,14 +63,14 @@ public abstract class ARemoteViewLayoutRenderStyle
 	public ARemoteViewLayoutRenderStyle(IViewFrustum viewFrustum)
 	{
 		super(viewFrustum);
-		
+
 		focusLevel = new RemoteLevel(1, "Focus Level", null, stackLevel);
 		stackLevel = new RemoteLevel(4, "Stack Level", focusLevel, poolLevel);
 		poolLevel = new RemoteLevel(100, "Pool Level", stackLevel, null);
 		transitionLevel = new RemoteLevel(1, "Transition Level", null, null);
 		spawnLevel = new RemoteLevel(1, "Spawn Level", null, stackLevel);
 		selectionLevel = new RemoteLevel(1, "Selection Level", null, stackLevel);
-		
+
 		remoteElementManager = RemoteElementManager.get();
 	}
 
@@ -78,7 +78,8 @@ public abstract class ARemoteViewLayoutRenderStyle
 	 * Constructor. Copies layers from previous layer. Used for toggle between
 	 * layouts.
 	 */
-	public ARemoteViewLayoutRenderStyle(IViewFrustum viewFrustum, final ARemoteViewLayoutRenderStyle previousLayoutStyle)
+	public ARemoteViewLayoutRenderStyle(IViewFrustum viewFrustum,
+			final ARemoteViewLayoutRenderStyle previousLayoutStyle)
 	{
 		super(viewFrustum);
 		focusLevel = previousLayoutStyle.getUnderInteractionLayer();
@@ -90,10 +91,15 @@ public abstract class ARemoteViewLayoutRenderStyle
 	}
 
 	public abstract RemoteLevel initUnderInteractionLevel();
+
 	public abstract RemoteLevel initStackLevel(boolean bIsZoomedIn);
+
 	public abstract RemoteLevel initPoolLevel(int iMouseOverViewID);
+
 	public abstract RemoteLevel initMemoLevel();
+
 	public abstract RemoteLevel initTransitionLevel();
+
 	public abstract RemoteLevel initSpawnLevel();
 
 	public RemoteLevel getUnderInteractionLayer()
@@ -175,7 +181,7 @@ public abstract class ARemoteViewLayoutRenderStyle
 	{
 		this.fAspectRatio = fAspectRatio;
 	}
-	
+
 	public float getAspectRatio()
 	{
 		return fAspectRatio;

@@ -26,7 +26,8 @@ public interface IPathwayManager
 
 	public PathwayImageMap getCurrentPathwayImageMap();
 
-	public int searchPathwayIdByName(final String sPathwayName, EPathwayDatabaseType ePathwayDatabaseType);
+	public int searchPathwayIdByName(final String sPathwayName,
+			EPathwayDatabaseType ePathwayDatabaseType);
 
 	public PathwayDatabase getPathwayDatabaseByType(EPathwayDatabaseType type);
 
@@ -34,7 +35,7 @@ public interface IPathwayManager
 			final boolean bVisibilityState);
 
 	public boolean isPathwayVisible(final int iPathwayID);
-	
+
 	public void resetPathwayVisiblityState();
 
 	public void notifyPathwayLoadingFinished(boolean bIsPathwayLoadingFinisched);

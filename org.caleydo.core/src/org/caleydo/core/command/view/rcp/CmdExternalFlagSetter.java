@@ -6,7 +6,6 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.EIconIDs;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
 
@@ -57,9 +56,9 @@ public class CmdExternalFlagSetter
 					((GLPathway) viewObject).enablePathwayTextures(bFlag);
 					return;
 			}
-		
+
 		}
-		
+
 		if (viewObject instanceof AStorageBasedView)
 		{
 			AStorageBasedView sbView = (AStorageBasedView) viewObject;
@@ -78,7 +77,7 @@ public class CmdExternalFlagSetter
 					((GLHierarchicalHeatMap) viewObject).changeFocus(bFlag);
 			}
 		}
-		
+
 		if (viewObject instanceof GLParallelCoordinates)
 		{
 			GLParallelCoordinates parCoords = (GLParallelCoordinates) viewObject;
@@ -87,28 +86,28 @@ public class CmdExternalFlagSetter
 				case PARCOORDS_OCCLUSION_PREVENTION:
 					parCoords.preventOcclusion(bFlag);
 					return;
-//				case STORAGEBASED_CHANGE_ORIENTATION:
-//					parCoords.renderStorageAsPolyline(bFlag);
-//					return;
+					// case STORAGEBASED_CHANGE_ORIENTATION:
+					// parCoords.renderStorageAsPolyline(bFlag);
+					// return;
 			}
 			return;
 		}
-		
-//		if (viewObject instanceof GLHeatMap)
-//		{
-//			GLHeatMap heatMap = (GLHeatMap) viewObject;
-//			switch (externalFlagSetterType)
-//			{
-//				case STORAGEBASED_CHANGE_ORIENTATION:
-//					heatMap.renderHorizontally(bFlag);
-//					return;
-//			}
-//		}
-		
-		if(viewObject instanceof GLGlyph)
+
+		// if (viewObject instanceof GLHeatMap)
+		// {
+		// GLHeatMap heatMap = (GLHeatMap) viewObject;
+		// switch (externalFlagSetterType)
+		// {
+		// case STORAGEBASED_CHANGE_ORIENTATION:
+		// heatMap.renderHorizontally(bFlag);
+		// return;
+		// }
+		// }
+
+		if (viewObject instanceof GLGlyph)
 		{
-			GLGlyph glyphview = (GLGlyph)viewObject;
-			switch(externalFlagSetterType)
+			GLGlyph glyphview = (GLGlyph) viewObject;
+			switch (externalFlagSetterType)
 			{
 				case GLYPH_VIEWMODE_SCATTERLOT:
 					glyphview.setPositionModel(EIconIDs.DISPLAY_SCATTERPLOT);
@@ -123,16 +122,15 @@ public class CmdExternalFlagSetter
 					glyphview.setPositionModel(EIconIDs.DISPLAY_RANDOM);
 					return;
 				case GLYPH_SELECTION:
-					if(!bFlag)
+					if (!bFlag)
 						glyphview.resetSelection();
 					else
 						glyphview.removeUnselected();
-					
+
 					return;
 			}
-			
+
 		}
-		
 
 	}
 

@@ -32,62 +32,64 @@ public class CmdEventMediatorAddObject
 
 		iArSenderIDs = new ArrayList<Integer>();
 		iArReceiverIDs = new ArrayList<Integer>();
-		
+
 		throw new IllegalStateException("Not implemented.");
 	}
 
 	@Override
 	public void doCommand()
 	{
-//		IEventPublisher eventPublisher = generalManager.getEventPublisher();
-//		IMediator mediator = eventPublisher.getItem(iExternalID);
-//
-//		if (mediator == null)
-//		{
-//			assert false : "can not find mediator";
-//			return;
-//		}
-//
-//		eventPublisher.addSendersAndReceiversToMediator(mediator, iArSenderIDs,
-//				iArReceiverIDs, mediatorType, EMediatorUpdateType.MEDIATOR_DEFAULT);
-//
-//		commandManager.runDoCommand(this);
+		// IEventPublisher eventPublisher = generalManager.getEventPublisher();
+		// IMediator mediator = eventPublisher.getItem(iExternalID);
+		//
+		// if (mediator == null)
+		// {
+		// assert false : "can not find mediator";
+		// return;
+		// }
+		//
+		// eventPublisher.addSendersAndReceiversToMediator(mediator,
+		// iArSenderIDs,
+		// iArReceiverIDs, mediatorType, EMediatorUpdateType.MEDIATOR_DEFAULT);
+		//
+		// commandManager.runDoCommand(this);
 	}
 
 	@Override
 	public void setParameterHandler(final IParameterHandler parameterHandler)
 	{
-//		super.setParameterHandler(parameterHandler);
-//
-//		StringTokenizer senderToken = new StringTokenizer(sAttribute1,
-//				IGeneralManager.sDelimiter_Parser_DataItems);
-//
-//		StringTokenizer receiverToken = new StringTokenizer(sAttribute2,
-//				IGeneralManager.sDelimiter_Parser_DataItems);
-//
-//		while (senderToken.hasMoreTokens())
-//		{
-//			iArSenderIDs.add(StringConversionTool.convertStringToInt(senderToken.nextToken(),
-//					-1));
-//		}
-//
-//		while (receiverToken.hasMoreTokens())
-//		{
-//			iArReceiverIDs.add(StringConversionTool.convertStringToInt(receiverToken
-//					.nextToken(), -1));
-//		}
-//
-//		String sMediatorType = parameterHandler.getValueString(ECommandType.TAG_DETAIL
-//				.getXmlKey());
-//
-//		if (sMediatorType.length() < 1)
-//		{
-//			mediatorType = EMediatorType.DATA_MEDIATOR;
-//		}
-//		else
-//		{
-//			mediatorType = EMediatorType.valueOf(sMediatorType);
-//		}
+		// super.setParameterHandler(parameterHandler);
+		//
+		// StringTokenizer senderToken = new StringTokenizer(sAttribute1,
+		// IGeneralManager.sDelimiter_Parser_DataItems);
+		//
+		// StringTokenizer receiverToken = new StringTokenizer(sAttribute2,
+		// IGeneralManager.sDelimiter_Parser_DataItems);
+		//
+		// while (senderToken.hasMoreTokens())
+		// {
+		// iArSenderIDs.add(StringConversionTool.convertStringToInt(senderToken.nextToken(),
+		// -1));
+		// }
+		//
+		// while (receiverToken.hasMoreTokens())
+		// {
+		// iArReceiverIDs.add(StringConversionTool.convertStringToInt(receiverToken
+		// .nextToken(), -1));
+		// }
+		//
+		// String sMediatorType =
+		// parameterHandler.getValueString(ECommandType.TAG_DETAIL
+		// .getXmlKey());
+		//
+		// if (sMediatorType.length() < 1)
+		// {
+		// mediatorType = EMediatorType.DATA_MEDIATOR;
+		// }
+		// else
+		// {
+		// mediatorType = EMediatorType.valueOf(sMediatorType);
+		// }
 	}
 
 	public void setAttributes(int iEventMediatorId, ArrayList<Integer> iArSenderIDs,

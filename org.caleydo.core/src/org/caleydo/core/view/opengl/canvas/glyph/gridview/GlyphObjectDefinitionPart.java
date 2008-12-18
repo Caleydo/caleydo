@@ -13,8 +13,8 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphObjectDefinition.
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
 
 /**
- * Stores the xml definition of a glyph object, matching to the wavefront
- * object group.
+ * Stores the xml definition of a glyph object, matching to the wavefront object
+ * group.
  * 
  * @author Stefan Sauer
  */
@@ -65,7 +65,7 @@ public class GlyphObjectDefinitionPart
 			return new Vec4f(colors.get(index));
 		return null;
 	}
-	
+
 	public void addParameter(String type, String value, String description)
 	{
 		if (type == null)

@@ -393,8 +393,8 @@ public class GenericSelectionManager
 			safeAdd(iElementID);
 			return;
 		}
-		
-		if(!isConnectedType(targetType))
+
+		if (!isConnectedType(targetType))
 		{
 			removeConnectionForElementID(iElementID);
 		}
@@ -431,7 +431,7 @@ public class GenericSelectionManager
 				return;
 			}
 		}
-		System.out.println("Pathways mishandle GenericSelectionManager");
+		// System.out.println("Pathways mishandle GenericSelectionManager");
 		// // TODO: investigate
 		// throw new IllegalArgumentException(
 		// "SelectionManager: element to be removed does not exist");
@@ -612,12 +612,14 @@ public class GenericSelectionManager
 
 		selectionDelta = new SelectionDelta(internalIDType);
 
-//		int iCount = 0;
-//		for (SelectionItem item : returnDelta)
-//		{
-//			System.out.println("Number: " + iCount++ + " ID: " + item.getSelectionID()
-//					+ " Type: " + item.getSelectionType() + " HashCode: " + item.hashCode());
-//		}
+		// int iCount = 0;
+		// for (SelectionItem item : returnDelta)
+		// {
+		// System.out.println("Number: " + iCount++ + " ID: " +
+		// item.getSelectionID()
+		// + " Type: " + item.getSelectionType() + " HashCode: " +
+		// item.hashCode());
+		// }
 		return returnDelta;
 	}
 
@@ -627,26 +629,25 @@ public class GenericSelectionManager
 	 * 
 	 * @return the selection delta with ADD for all not REMOVE types
 	 */
-//	public ISelectionDelta getBroadcastDelta()
-//	{
-//		ISelectionDelta originalDelta = getDelta();
-//		ISelectionDelta newDelta = new SelectionDelta(originalDelta.getIDType());
-//
-//		for (SelectionItem item : originalDelta)
-//		{
-//
-//			if (item.getSelectionType() == ESelectionType.REMOVE)
-//				newDelta.addSelection(item.getSelectionID(), ESelectionType.REMOVE);
-//			else
-//			{
-//				newDelta.addSelection(item.getSelectionID(), ESelectionType.ADD);
-//				newDelta.addSelection(item.getSelectionID(), item.getSelectionType());
-//			}
-//		}
-//
-//		return newDelta;
-//	}
-
+	// public ISelectionDelta getBroadcastDelta()
+	// {
+	// ISelectionDelta originalDelta = getDelta();
+	// ISelectionDelta newDelta = new SelectionDelta(originalDelta.getIDType());
+	//
+	// for (SelectionItem item : originalDelta)
+	// {
+	//
+	// if (item.getSelectionType() == ESelectionType.REMOVE)
+	// newDelta.addSelection(item.getSelectionID(), ESelectionType.REMOVE);
+	// else
+	// {
+	// newDelta.addSelection(item.getSelectionID(), ESelectionType.ADD);
+	// newDelta.addSelection(item.getSelectionID(), item.getSelectionType());
+	// }
+	// }
+	//
+	// return newDelta;
+	// }
 	/**
 	 * Provides a selection delta that contains all elements in the view, with
 	 * the appropriate external and internal selection IDs.
@@ -724,14 +725,14 @@ public class GenericSelectionManager
 	{
 		bIsDeltaWritingEnabled = false;
 		for (SelectionItem item : selectionDelta)
-		{		
+		{
 			if (externalToInternalMapping != null)
 			{
 				Set<Integer> iTmpSetID = convertExternalToInternal(item.getSelectionID());
-				
+
 				if (iTmpSetID == null)
 					continue;
-				
+
 				for (Integer iTmpSelectionID : iTmpSetID)
 				{
 					if (iTmpSelectionID == null || iTmpSelectionID == -1)
@@ -743,22 +744,22 @@ public class GenericSelectionManager
 					}
 
 					addToType(item.getSelectionType(), iTmpSelectionID);
-					
-					if(isConnectedType(item.getSelectionType()))
+
+					if (isConnectedType(item.getSelectionType()))
 					{
-						for(Integer iConnectionID : item.getConnectionID())
+						for (Integer iConnectionID : item.getConnectionID())
 						{
 							addConnectionID(iConnectionID, iTmpSelectionID);
 						}
 					}
-					
+
 				}
 			}
 			else
 			{
 				int iSelectionID = 0;
 				iSelectionID = item.getSelectionID();
-				
+
 				if (iSelectionID == -1)
 				{
 					GeneralManager.get().getLogger().log(Level.WARNING,
@@ -768,17 +769,16 @@ public class GenericSelectionManager
 				}
 
 				addToType(item.getSelectionType(), iSelectionID);
-				
-				if(isConnectedType(item.getSelectionType()))
+
+				if (isConnectedType(item.getSelectionType()))
 				{
-					for(Integer iConnectionID : item.getConnectionID())
+					for (Integer iConnectionID : item.getConnectionID())
 					{
 						addConnectionID(iConnectionID, iSelectionID);
 					}
 				}
 			}
-			
-	
+
 			// if (item.getSelectionType() == ESelectionType.MOUSE_OVER
 			// || item.getSelectionType() == ESelectionType.SELECTION)
 			// {
@@ -808,12 +808,13 @@ public class GenericSelectionManager
 
 		return false;
 	}
-	
+
 	private boolean isConnectedType(ESelectionType selectionType)
 	{
-		if(selectionType == ESelectionType.MOUSE_OVER || selectionType == ESelectionType.SELECTION)
+		if (selectionType == ESelectionType.MOUSE_OVER
+				|| selectionType == ESelectionType.SELECTION)
 			return true;
-		
+
 		return false;
 	}
 
@@ -821,13 +822,13 @@ public class GenericSelectionManager
 	{
 		if (externalToInternalMapping.isMultiMap())
 		{
-			return GeneralManager.get().getIDMappingManager().getMultiID(externalToInternalMapping,
-					iSelectionID);			
+			return GeneralManager.get().getIDMappingManager().getMultiID(
+					externalToInternalMapping, iSelectionID);
 		}
-		
+
 		Set<Integer> iSetID = new HashSet<Integer>();
-		iSetID.add((Integer)GeneralManager.get().getIDMappingManager().getID(externalToInternalMapping,
-				iSelectionID));			
+		iSetID.add((Integer) GeneralManager.get().getIDMappingManager().getID(
+				externalToInternalMapping, iSelectionID));
 		return iSetID;
 
 	}
@@ -892,10 +893,10 @@ public class GenericSelectionManager
 		}
 		return colConnectionIDs;
 	}
-	
+
 	private void removeConnectionForElementID(int iElementID)
 	{
-		for(int iConnectionID :  getConnectionForElementID(iElementID))
+		for (int iConnectionID : getConnectionForElementID(iElementID))
 		{
 			hashConnectionToElementID.remove(iConnectionID);
 		}

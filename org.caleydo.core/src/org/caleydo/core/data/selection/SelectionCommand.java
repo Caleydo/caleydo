@@ -5,7 +5,7 @@ package org.caleydo.core.data.selection;
  * applied. It is used to pass commands between two instances to remotely
  * control the {@link GenericSelectionManager} of the recieving instance.
  * 
- * @author Alexander Lex 
+ * @author Alexander Lex
  */
 public class SelectionCommand
 {

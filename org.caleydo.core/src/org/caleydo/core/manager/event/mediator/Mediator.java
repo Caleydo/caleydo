@@ -2,11 +2,9 @@ package org.caleydo.core.manager.event.mediator;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.logging.Level;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.manager.general.GeneralManager;
 
 /**
  * Attention: Since Mediator is also a IMediatorReceiver care has to be taken
@@ -19,7 +17,7 @@ public class Mediator
 	implements IMediator, IUniqueObject
 {
 	private EMediatorType eType;
-	
+
 	protected ArrayList<IMediatorReceiver> alReceiver;
 	protected ArrayList<IMediatorSender> alSender;
 
@@ -29,7 +27,7 @@ public class Mediator
 	public Mediator(EMediatorType eType)
 	{
 		this.eType = eType;
-		
+
 		alReceiver = new ArrayList<IMediatorReceiver>();
 		alSender = new ArrayList<IMediatorSender>();
 	}
@@ -83,15 +81,16 @@ public class Mediator
 	}
 
 	@Override
-	public void triggerUpdate(IUniqueObject eventTrigger, 
-			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
+	public void triggerUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
+			Collection<SelectionCommand> colSelectionCommand)
 	{
 		for (IMediatorReceiver receiver : alReceiver)
 		{
 			// Prevent circular updates
 			if (!receiver.equals(eventTrigger))
 			{
-				receiver.handleUpdate(eventTrigger, selectionDelta, colSelectionCommand, eType);
+				receiver
+						.handleUpdate(eventTrigger, selectionDelta, colSelectionCommand, eType);
 			}
 		}
 	}

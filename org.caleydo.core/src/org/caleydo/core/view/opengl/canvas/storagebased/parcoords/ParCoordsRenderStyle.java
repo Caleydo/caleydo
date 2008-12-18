@@ -46,8 +46,7 @@ public class ParCoordsRenderStyle
 	public static final float[] CANVAS_COLOR = { 1.0f, 1.0f, 1.0f, 1.0f };
 
 	public static final float[] GATE_TIP_COLOR = { 1f, 0.705f, 0f, 1.0f };
-	public static final float[] GATE_BODY_COLOR = {0.61f, 0.705f, 1.0f, 0.8f};
-	
+	public static final float[] GATE_BODY_COLOR = { 0.61f, 0.705f, 1.0f, 0.8f };
 
 	public static final float[] ANGULAR_COLOR = { 0.17f, 0.45f, 0.84f, 1 };
 	public static final float[] ANGULAR_POLYGON_COLOR = { 0.17f, 0.45f, 0.84f, 0.4f };
@@ -123,9 +122,8 @@ public class ParCoordsRenderStyle
 
 	public float[] getPolylineDeselectedOcclusionPrevColor(int iNumberOfRenderedLines)
 	{
-		 polylineDeselectedColor[3] = (float) (0.2 /
-		 Math.sqrt(iNumberOfRenderedLines));
-		 return polylineDeselectedColor;
+		polylineDeselectedColor[3] = (float) (0.2 / Math.sqrt(iNumberOfRenderedLines));
+		return polylineDeselectedColor;
 	}
 
 	public float getAxisSpacing(final int iNumberOfAxis)

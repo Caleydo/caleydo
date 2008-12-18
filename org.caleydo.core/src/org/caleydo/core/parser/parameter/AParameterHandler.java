@@ -28,31 +28,35 @@ public abstract class AParameterHandler
 	public final void setDefaultValue(final String key, final String value, final String type)
 	{
 
-//		try
-//		{
-			setDefaultValueAnyType(key, value, ParameterHandlerType.valueOf(type));
-//		}
-//		catch (NumberFormatException nfe)
-//		{
-//			new CaleydoRuntimeException("ParameterHandler.setDefaultTypeAsString(" + key + ","
-//					+ type + ") no valid enumeration type!");
-//
-//		}
+		// try
+		// {
+		setDefaultValueAnyType(key, value, ParameterHandlerType.valueOf(type));
+		// }
+		// catch (NumberFormatException nfe)
+		// {
+		// new
+		// CaleydoRuntimeException("ParameterHandler.setDefaultTypeAsString(" +
+		// key + ","
+		// + type + ") no valid enumeration type!");
+		//
+		// }
 	}
 
 	public final void setDefaultTypeAsString(final String key, final String type)
 	{
 
-//		try
-//		{
-			setDefaultType(key, ParameterHandlerType.valueOf(type));
-//		}
-//		catch (NumberFormatException nfe)
-//		{
-//			new CaleydoRuntimeException("ParameterHandler.setDefaultTypeAsString(" + key + ","
-//					+ type + ") no valid enumeration type!");
-//
-//		}
+		// try
+		// {
+		setDefaultType(key, ParameterHandlerType.valueOf(type));
+		// }
+		// catch (NumberFormatException nfe)
+		// {
+		// new
+		// CaleydoRuntimeException("ParameterHandler.setDefaultTypeAsString(" +
+		// key + ","
+		// + type + ") no valid enumeration type!");
+		//
+		// }
 	}
 
 	public final void setDefaultTypeByArray(final String[] keys, final String[] defaultVales,

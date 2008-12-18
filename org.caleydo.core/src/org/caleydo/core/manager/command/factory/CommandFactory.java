@@ -173,7 +173,8 @@ public class CommandFactory
 				createdCommand = new CmdCreateGLPathway(cmdType);
 				break;
 			}
-			// the next entries are all CmdCreateGLEventListener, so we do it only once
+				// the next entries are all CmdCreateGLEventListener, so we do
+				// it only once
 			case CREATE_GL_HEAT_MAP_3D:
 			case CREATE_GL_TEXTURE_HEAT_MAP_3D:
 			case CREATE_GL_GLYPH:

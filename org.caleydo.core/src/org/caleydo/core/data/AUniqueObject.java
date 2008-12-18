@@ -1,6 +1,5 @@
 package org.caleydo.core.data;
 
-
 /**
  * Abstract class providing methods defined in IUniqueObject.
  * 

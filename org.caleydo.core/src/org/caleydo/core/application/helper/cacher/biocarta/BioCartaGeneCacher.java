@@ -82,7 +82,7 @@ public class BioCartaGeneCacher
 
 		dispatcher.processJobs();
 	}
-	
+
 	public static void main(String[] args)
 	{
 		new BioCartaGeneCacher().run();

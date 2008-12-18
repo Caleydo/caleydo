@@ -22,7 +22,7 @@ public class CmdCreateGLRemote
 	public CmdCreateGLRemote(final ECommandType cmdType)
 	{
 		super(cmdType);
-		
+
 		iAlInitialContainedViewIDs = new ArrayList<Integer>();
 	}
 
@@ -36,12 +36,13 @@ public class CmdCreateGLRemote
 	{
 		this.iAlInitialContainedViewIDs = iAlInitialContainedViews;
 	}
-	
+
 	@Override
 	public final void doCommand()
 	{
 		super.doCommand();
 
-		((GLRemoteRendering) createdObject).setInitialContainedViews(iAlInitialContainedViewIDs);
+		((GLRemoteRendering) createdObject)
+				.setInitialContainedViews(iAlInitialContainedViewIDs);
 	}
 }

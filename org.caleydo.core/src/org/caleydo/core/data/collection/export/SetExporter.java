@@ -27,7 +27,7 @@ public class SetExporter
 				}
 				out.println();
 			}
-		
+
 			out.close();
 		}
 		catch (IOException e)

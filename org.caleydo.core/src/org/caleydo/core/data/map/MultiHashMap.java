@@ -36,7 +36,7 @@ public class MultiHashMap<KeyType, ValueType>
 
 	/**
 	 * Behaves similar to a classical hashMap but does not replace the key, it
-	 * adds it instead. 
+	 * adds it instead.
 	 * 
 	 * @return always null
 	 */
@@ -87,7 +87,8 @@ public class MultiHashMap<KeyType, ValueType>
 	@Override
 	public ValueType get(Object arg0)
 	{
-		throw new UnsupportedOperationException("MultiHashMap does not support get(), use getAll()");
+		throw new UnsupportedOperationException(
+				"MultiHashMap does not support get(), use getAll()");
 	}
 
 	public Set<ValueType> getAll(Object arg0)
@@ -110,7 +111,7 @@ public class MultiHashMap<KeyType, ValueType>
 	@Override
 	public void putAll(Map<? extends KeyType, ? extends ValueType> arg0)
 	{
-		for(KeyType key : arg0.keySet())
+		for (KeyType key : arg0.keySet())
 		{
 			put(key, arg0.get(key));
 		}
@@ -130,11 +131,11 @@ public class MultiHashMap<KeyType, ValueType>
 	public int size()
 	{
 		int iSize = 0;
-		for(KeyType key : internalMap.keySet())
+		for (KeyType key : internalMap.keySet())
 		{
 			iSize += internalMap.get(key).size();
 		}
-		
+
 		return iSize;
 	}
 
@@ -142,11 +143,11 @@ public class MultiHashMap<KeyType, ValueType>
 	public Collection<ValueType> values()
 	{
 		Collection<ValueType> values = new ArrayList<ValueType>();
-	
-		for(KeyType key : internalMap.keySet())
+
+		for (KeyType key : internalMap.keySet())
 		{
 			Set<ValueType> tempSet = internalMap.get(key);
-			
+
 			values.addAll(tempSet);
 		}
 		return values;

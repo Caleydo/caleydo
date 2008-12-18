@@ -28,13 +28,13 @@ public abstract class APathwayCacher
 	protected CmdFetchPathwayData triggeringCommand;
 
 	protected int iDownloadCount = 0;
-	
+
 	protected boolean bEnableProxy = false;
 	private String sProxyServer;
 	private int iProxyPort;
-	
+
 	protected int iExpectedDownloads = 0;
-	
+
 	protected void processJobs(Dispatcher dispatcher)
 	{
 		dispatcher.getEventManager().registerObserver(new EventObserver()
@@ -53,13 +53,15 @@ public abstract class APathwayCacher
 						{
 							if (progressBar.isDisposed())
 								return;
-							
-							progressBar.setSelection((int)(iDownloadCount * 100f / iExpectedDownloads));
 
-//							 System.out.println("Download count: "
-//							 +iDownloadCount);
-//							 System.out.println("Percentage: "
-//							 +(int)(iDownloadCount * 100f / EXPECTED_DOWNLOADS));
+							progressBar
+									.setSelection((int) (iDownloadCount * 100f / iExpectedDownloads));
+
+							// System.out.println("Download count: "
+							// +iDownloadCount);
+							// System.out.println("Percentage: "
+							// +(int)(iDownloadCount * 100f /
+							// EXPECTED_DOWNLOADS));
 						}
 					});
 				}
@@ -67,26 +69,27 @@ public abstract class APathwayCacher
 		});
 
 		createProxySettings(dispatcher);
-		
+
 		// start the dispatcher
 		dispatcher.processJobs();
 	}
-	
+
 	protected abstract void triggerPathwayListGeneration();
-	
+
 	public void setProxySettings(String sProxyServer, int iProxyPort)
 	{
 		this.sProxyServer = sProxyServer;
 		this.iProxyPort = iProxyPort;
-		
+
 		bEnableProxy = true;
 	}
 
-	public void createProxySettings(Dispatcher dispatcher) {
+	public void createProxySettings(Dispatcher dispatcher)
+	{
 
 		if (bEnableProxy == false)
 			return;
-		
+
 		// get and create http retriever configuration
 		HttpRetrieverConfiguration httpConfiguration = (HttpRetrieverConfiguration) dispatcher
 				.getContext()
@@ -100,9 +103,9 @@ public abstract class APathwayCacher
 					HttpRetrieverConfiguration.CONTEXT_PARAMETER_HTTP_RETRIEVER_CONFIGURATION,
 					httpConfiguration);
 		}
-		
+
 		httpConfiguration.setProxyEnabled(true);
 		httpConfiguration.setProxyServer(sProxyServer);
-		httpConfiguration.setProxyPort(iProxyPort); 
+		httpConfiguration.setProxyPort(iProxyPort);
 	}
 }

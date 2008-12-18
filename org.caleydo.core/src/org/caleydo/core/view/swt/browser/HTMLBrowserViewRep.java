@@ -39,7 +39,7 @@ public class HTMLBrowserViewRep
 	protected Text textURL;
 
 	protected IDExtractionLocationListener idExtractionLocationListener;
-	
+
 	private ToolItem goButton;
 	private ToolItem homeButton;
 	private ToolItem backButton;
@@ -52,45 +52,45 @@ public class HTMLBrowserViewRep
 	{
 		super(iParentContainerId, sLabel, ViewType.SWT_HTML_BROWSER);
 	}
-	
+
 	@Override
 	protected void initViewSwtComposite(Composite parent)
 	{
 		Composite composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout(1, false);
 		composite.setLayout(layout);
-		composite.setLayoutData(new GridData(GridData.FILL,GridData.FILL,true,true));
-		
+		composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
+
 		Composite browserBarComposite = new Composite(composite, SWT.NONE);
 		browserBarComposite.setLayout(new GridLayout(2, false));
-		
+
 		ToolBar toolbar = new ToolBar(browserBarComposite, SWT.NONE);
 		GridData data = new GridData(GridData.FILL_VERTICAL);
-//		toolbar.setLayoutData(data);
-		
+		// toolbar.setLayoutData(data);
+
 		ResourceLoader resourceLoader = GeneralManager.get().getResourceLoader();
-		
+
 		goButton = new ToolItem(toolbar, SWT.PUSH);
 		goButton.setImage(resourceLoader.getImage(parent.getDisplay(),
-							EIconTextures.BROWSER_REFRESH_IMAGE.getFileName()));
+				EIconTextures.BROWSER_REFRESH_IMAGE.getFileName()));
 
 		backButton = new ToolItem(toolbar, SWT.PUSH);
 		backButton.setImage(resourceLoader.getImage(parent.getDisplay(),
-							EIconTextures.BROWSER_BACK_IMAGE.getFileName()));
+				EIconTextures.BROWSER_BACK_IMAGE.getFileName()));
 
 		stopButton = new ToolItem(toolbar, SWT.PUSH);
 		stopButton.setImage(resourceLoader.getImage(parent.getDisplay(),
-							EIconTextures.BROWSER_STOP_IMAGE.getFileName()));
+				EIconTextures.BROWSER_STOP_IMAGE.getFileName()));
 
 		homeButton = new ToolItem(toolbar, SWT.PUSH);
 		homeButton.setImage(resourceLoader.getImage(parent.getDisplay(),
-							EIconTextures.BROWSER_HOME_IMAGE.getFileName()));
+				EIconTextures.BROWSER_HOME_IMAGE.getFileName()));
 
 		textURL = new Text(browserBarComposite, SWT.BORDER);
-		
+
 		if (checkInternetConnection())
 			textURL.setText(sUrl);
-		
+
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.heightHint = 15;
 		textURL.setLayoutData(data);
@@ -107,7 +107,7 @@ public class HTMLBrowserViewRep
 			{
 				if (!checkInternetConnection())
 					return;
-				
+
 				ToolItem item = (ToolItem) event.widget;
 				if (item.equals(backButton))
 				{
@@ -161,7 +161,7 @@ public class HTMLBrowserViewRep
 		browser.addLocationListener(idExtractionLocationListener);
 
 		data = new GridData();
-		browser.setLayoutData(new GridData(GridData.FILL,GridData.FILL,true,true));
+		browser.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 	}
 
 	public void drawView()
@@ -177,7 +177,7 @@ public class HTMLBrowserViewRep
 				{
 					if (!checkInternetConnection())
 						return;
-					
+
 					textURL.setText(sUrl);
 					browser.setUrl(sUrl);
 					// browser.refresh();
@@ -197,11 +197,10 @@ public class HTMLBrowserViewRep
 		idExtractionLocationListener.updateSkipNextChangeEvent(true);
 		drawView();
 	}
-	
-	
+
 	protected boolean checkInternetConnection()
 	{
-		 // Check internet connection
+		// Check internet connection
 		try
 		{
 			InetAddress.getByName("www.google.at");
@@ -212,7 +211,7 @@ public class HTMLBrowserViewRep
 			textURL.setText("No internet connection available!");
 			return false;
 		}
-		
+
 		return true;
 	}
 }

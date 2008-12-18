@@ -19,26 +19,26 @@ public enum EIconTextures
 	PAR_COORDS_SYMBOL("resources/icons/view/storagebased/parcoords/parcoords128x128.png"),
 	PATHWAY_SYMBOL("resources/icons/view/pathway/pathway128x128.png"),
 	GLYPH_SYMBOL("resources/icons/view/glyph/glyph128x128.png"),
-	        
+
 	GLYPH_SORT_RANDOM("resources/icons/view/glyph/sort_random.png"),
 	GLYPH_SORT_CIRCLE("resources/icons/view/glyph/sort_spirale.png"),
 	GLYPH_SORT_RECTANGLE("resources/icons/view/glyph/sort_zickzack.png"),
-	
+
 	BROWSER_REFRESH_IMAGE("resources/icons/view/browser/refresh.png"),
 	BROWSER_BACK_IMAGE("resources/icons/view/browser/back.png"),
 	BROWSER_STOP_IMAGE("resources/icons/view/browser/stop.png"),
 	BROWSER_HOME_IMAGE("resources/icons/view/browser/home.png"),
-	
+
 	PANEL_SELECTION("resources/panel/selection_background.png"),
 	PANEL_SELECTION_SIDE("resources/panel/selection_background_side.png"),
 	PANEL_SELECTION_CENTER("resources/panel/selection_background_center.png"),
-	
+
 	NAVIGATION_REMOVE_VIEW("resources/icons/general/navigation_remove_view.png"),
 	NAVIGATION_DRAG_VIEW("resources/icons/general/navigation_drag_view.png"),
-	
+
 	LOADING("resources/loading/loading_background.png"),
-	LOADING_CIRCLE("resources/loading/loading_circle.png");	
-	
+	LOADING_CIRCLE("resources/loading/loading_circle.png");
+
 	private String sFileName;
 
 	EIconTextures(String sFileName)

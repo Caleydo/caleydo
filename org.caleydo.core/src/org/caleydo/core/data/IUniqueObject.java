@@ -1,6 +1,5 @@
 package org.caleydo.core.data;
 
-
 /**
  * Interface to all unique objects in Caleydo
  * 

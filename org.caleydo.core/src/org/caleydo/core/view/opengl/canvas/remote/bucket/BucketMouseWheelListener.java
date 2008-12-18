@@ -55,7 +55,7 @@ public class BucketMouseWheelListener
 
 		// CTRL = Change horizontal zoom factor
 		// ALT = Change vertical zoom factor
-		
+
 		if (bZoomActionRunning)
 			return;
 
@@ -95,20 +95,20 @@ public class BucketMouseWheelListener
 			{
 				if (iCurrentBucketZoom == BUCKET_ZOOM_MAX)
 					return;
-				
+
 				bZoomIn = true;
 			}
 			else
 			{
 				if (iCurrentBucketZoom == 0)
 					return;
-				
+
 				bZoomIn = false;
 			}
-		
+
 			bZoomActionRunning = true;
 			bucketLayoutRenderStyle.initStackLevel(bZoomIn);
-			
+
 			// Turn off picking while zoom action is running
 			GeneralManager.get().getViewGLCanvasManager().getPickingManager().enablePicking(
 					false);
@@ -148,8 +148,8 @@ public class BucketMouseWheelListener
 				bBucketBottomReached = true;
 
 				// Update detail level of view in center bucket position
-				int iGLEventListenerID = bucketGLEventListener
-						.getFocusLevel().getElementByPositionIndex(0).getContainedElementID();
+				int iGLEventListenerID = bucketGLEventListener.getFocusLevel()
+						.getElementByPositionIndex(0).getContainedElementID();
 
 				if (iGLEventListenerID != -1)
 				{
@@ -162,8 +162,8 @@ public class BucketMouseWheelListener
 				bBucketBottomReached = false;
 
 				// Update detail level of view in center bucket position
-				int iGLEventListenerID = bucketGLEventListener
-						.getFocusLevel().getElementByPositionIndex(0).getContainedElementID();
+				int iGLEventListenerID = bucketGLEventListener.getFocusLevel()
+						.getElementByPositionIndex(0).getContainedElementID();
 
 				if (iGLEventListenerID != -1)
 				{
@@ -189,12 +189,12 @@ public class BucketMouseWheelListener
 	}
 
 	public void triggerZoom(boolean bZoomIn)
-	{	
+	{
 		bZoomActionRunning = true;
 		this.bZoomIn = bZoomIn;
 		bucketLayoutRenderStyle.initStackLevel(bZoomIn);
 	}
-	
+
 	@Override
 	public void mouseClicked(MouseEvent e)
 	{
@@ -206,20 +206,26 @@ public class BucketMouseWheelListener
 	{
 		if (bucketGLEventListener == null)
 			return;
-		
-		// TODO: investigate which of these calls is really needed to force focus.
-		bucketGLEventListener.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new Runnable()
-		{
-			public void run()
-			{		
-				bucketGLEventListener.getParentGLCanvas().getParentComposite().setFocus();
-				bucketGLEventListener.getParentGLCanvas().getParentComposite().forceFocus();
-				bucketGLEventListener.getParentGLCanvas().getParentComposite().isFocusControl();
-				bucketGLEventListener.getParentGLCanvas().getParentComposite().redraw();
-//				bucketGLEventListener.getParentGLCanvas().getParentComposite().notifyAll();
-			}
-		});
-		
+
+		// TODO: investigate which of these calls is really needed to force
+		// focus.
+		bucketGLEventListener.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(
+				new Runnable()
+				{
+					public void run()
+					{
+						bucketGLEventListener.getParentGLCanvas().getParentComposite()
+								.setFocus();
+						bucketGLEventListener.getParentGLCanvas().getParentComposite()
+								.forceFocus();
+						bucketGLEventListener.getParentGLCanvas().getParentComposite()
+								.isFocusControl();
+						bucketGLEventListener.getParentGLCanvas().getParentComposite()
+								.redraw();
+						// bucketGLEventListener.getParentGLCanvas().getParentComposite().notifyAll();
+					}
+				});
+
 		bucketGLEventListener.getParentGLCanvas().setVisible(true);
 		bucketGLEventListener.getParentGLCanvas().setFocusable(true);
 		bucketGLEventListener.getParentGLCanvas().requestFocusInWindow();
@@ -227,15 +233,16 @@ public class BucketMouseWheelListener
 		bucketGLEventListener.getParentGLCanvas().getParent().setFocusable(true);
 		bucketGLEventListener.getParentGLCanvas().getParent().requestFocus();
 		bucketGLEventListener.getParentGLCanvas().getParent().requestFocusInWindow();
-		
-		SwingUtilities.invokeLater(new Runnable() {
+
+		SwingUtilities.invokeLater(new Runnable()
+		{
 
 			@Override
 			public void run()
 			{
 				bucketGLEventListener.getParentGLCanvas().requestFocusInWindow();
 				bucketGLEventListener.getParentGLCanvas().requestFocus();
-				
+
 			}
 		});
 	}
@@ -243,18 +250,18 @@ public class BucketMouseWheelListener
 	@Override
 	public void mouseExited(MouseEvent e)
 	{
-		// TODO Auto-generated method stub	
+		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void mousePressed(MouseEvent e)
 	{
-		// TODO Auto-generated method stub	
+		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e)
 	{
-		// TODO Auto-generated method stub	
+		// TODO Auto-generated method stub
 	}
 }

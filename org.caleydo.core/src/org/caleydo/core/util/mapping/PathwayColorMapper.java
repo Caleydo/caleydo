@@ -92,7 +92,7 @@ public class PathwayColorMapper
 				{
 					// FIXME, color from render style here
 					arMappingColor.add(new float[] { 0.5f, 0.5f, 0.5f }); // invalid
-																			// color
+					// color
 					return arMappingColor;
 				}
 
@@ -117,7 +117,7 @@ public class PathwayColorMapper
 		{
 
 			arMappingColor.add(new float[] { 0.5f, 0.5f, 0.5f }); // invalid
-																	// color
+			// color
 			return arMappingColor;
 		}
 

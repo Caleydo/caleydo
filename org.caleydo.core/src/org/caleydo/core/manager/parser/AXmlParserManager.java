@@ -222,11 +222,11 @@ public abstract class AXmlParserManager
 	{
 		return this.currentHandler;
 	}
-	
+
 	public boolean parseOnce(final String sFileName)
 	{
 		InputSource inputSource = generalManager.getResourceLoader().getInputSource(sFileName);
-		
+
 		try
 		{
 			XMLReader reader = null;
@@ -258,9 +258,9 @@ public abstract class AXmlParserManager
 			}
 
 			generalManager.getLogger().log(Level.FINE, "Start parsing file " + sFileName);
-			
+
 			reader.parse(inputSource);
-			
+
 			if (inputSource.getByteStream() != null)
 			{
 				inputSource.getByteStream().close();
@@ -275,8 +275,8 @@ public abstract class AXmlParserManager
 		}
 		catch (SAXException saxe)
 		{
-			throw new IllegalStateException(
-					"SAXParser-error during parsing.\n SAX error: " + saxe.toString());
+			throw new IllegalStateException("SAXParser-error during parsing.\n SAX error: "
+					+ saxe.toString());
 		}
 		catch (IOException ioe)
 		{

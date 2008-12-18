@@ -54,9 +54,7 @@ public class GLPathwayTextureManager
 		generalManager.getLogger().log(Level.INFO,
 				"Load pathway texture with ID: " + iPathwayId);
 
-			
 		pathwayTexture = generalManager.getResourceLoader().getTexture(sPathwayTexturePath);
-		
 
 		// pathwayTexture.setTexParameteri(GL.GL_TEXTURE_MIN_FILTER,
 		// GL.GL_LINEAR);
@@ -166,7 +164,7 @@ public class GLPathwayTextureManager
 
 				// generalManager.logMsg(
 				// this.getClass().getSimpleName()
-				//+": unloadUnusedTextures(): Unloading pathway texture with ID "
+				// +": unloadUnusedTextures(): Unloading pathway texture with ID "
 				// + iTmpPathwayId,
 				// LoggerType.VERBOSE);
 			}

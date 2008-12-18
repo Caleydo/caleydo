@@ -210,7 +210,7 @@ public interface IStorage
 	 * @param virtualArray
 	 */
 	public void setVirtualArray(int iUniqueID, IVirtualArray virtualArray);
-	
+
 	/**
 	 * Switch the representation of the data. When this is called the data in
 	 * normalized is replaced with data calculated from the mode specified.

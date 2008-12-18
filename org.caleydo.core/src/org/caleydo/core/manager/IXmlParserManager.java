@@ -3,7 +3,6 @@ package org.caleydo.core.manager;
 import org.caleydo.core.parser.xml.sax.handler.IXmlBaseHandler;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 import org.xml.sax.Attributes;
-import org.xml.sax.InputSource;
 
 /**
  * Forwarded/proxy for several XMLHandlers.

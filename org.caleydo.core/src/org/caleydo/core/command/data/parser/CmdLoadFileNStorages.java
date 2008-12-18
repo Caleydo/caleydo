@@ -94,8 +94,8 @@ public class CmdLoadFileNStorages
 	}
 
 	public void setAttributes(final ArrayList<Integer> iAlStorageId, final String sFileName,
-			final String sTokenPattern, final String sTokenSeparator, final int iStartParseFileAtLine,
-			final int iStopParseFileAtLine)
+			final String sTokenPattern, final String sTokenSeparator,
+			final int iStartParseFileAtLine, final int iStopParseFileAtLine)
 	{
 
 		iAlStorageIDs = iAlStorageId;
@@ -117,29 +117,28 @@ public class CmdLoadFileNStorages
 
 		TabularAsciiDataReader loader = null;
 
-//		try
-//		{
-			loader = new TabularAsciiDataReader(sFileName);
+		// try
+		// {
+		loader = new TabularAsciiDataReader(sFileName);
 
-			loader.setTokenPattern(sTokenPattern);
-			loader.setTargetStorages(iAlStorageIDs);
-			loader.setStartParsingStopParsingAtLine(iStartParseFileAtLine,
-					iStopParseFileAtLine);
-			
-			if (!sTokenSeparator.isEmpty())
-				loader.setTokenSeperator(sTokenSeparator);
-			
-			loader.loadData();
+		loader.setTokenPattern(sTokenPattern);
+		loader.setTargetStorages(iAlStorageIDs);
+		loader.setStartParsingStopParsingAtLine(iStartParseFileAtLine, iStopParseFileAtLine);
 
-			commandManager.runDoCommand(this);
+		if (!sTokenSeparator.isEmpty())
+			loader.setTokenSeperator(sTokenSeparator);
 
-//		} // try
-//		catch (Exception e)
-//		{
-//			generalManager.getLogger().log(Level.SEVERE,
-//					"Error during parsing data file " + sFileName);
-//			e.printStackTrace();
-//		} // catch
+		loader.loadData();
+
+		commandManager.runDoCommand(this);
+
+		// } // try
+		// catch (Exception e)
+		// {
+		// generalManager.getLogger().log(Level.SEVERE,
+		// "Error during parsing data file " + sFileName);
+		// e.printStackTrace();
+		// } // catch
 	}
 
 	@Override

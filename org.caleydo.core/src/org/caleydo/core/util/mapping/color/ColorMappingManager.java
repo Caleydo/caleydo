@@ -66,8 +66,9 @@ public class ColorMappingManager
 	}
 
 	/**
-	 * Initializes a gene expression color mapping from values stored in the preference store.
-	 * Sets all display list to dirty to have immediate effect.
+	 * Initializes a gene expression color mapping from values stored in the
+	 * preference store. Sets all display list to dirty to have immediate
+	 * effect.
 	 */
 	public void initiFromPreferenceStore()
 	{
@@ -88,8 +89,7 @@ public class ColorMappingManager
 		}
 
 		// TODO not generic
-		initColorMapping(EColorMappingType.GENE_EXPRESSION,
-				alMarkerPoints);
+		initColorMapping(EColorMappingType.GENE_EXPRESSION, alMarkerPoints);
 
 		for (AGLEventListener view : GeneralManager.get().getViewGLCanvasManager()
 				.getAllGLEventListeners())

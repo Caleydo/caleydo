@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-import java.util.Map.Entry;
 import java.util.logging.Level;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.IUniqueObject;
@@ -17,7 +16,6 @@ import org.caleydo.core.data.graph.pathway.item.edge.PathwayRelationEdgeGraphIte
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexShape;
 import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
-import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.manager.IGeneralManager;
@@ -104,15 +102,15 @@ public class GLPathwayContentCreator
 
 		hashElementId2MappingColorArray.clear();
 
-//		if (generalManager.getIDMappingManager().hasMapping(
-//				EMappingType.DAVID_2_EXPRESSION_INDEX))
-//		{
-//			bEnableGeneMapping = true;
-//		}
-//		else
-//		{
-//			bEnableGeneMapping = false;
-//		}
+		// if (generalManager.getIDMappingManager().hasMapping(
+		// EMappingType.DAVID_2_EXPRESSION_INDEX))
+		// {
+		// bEnableGeneMapping = true;
+		// }
+		// else
+		// {
+		// bEnableGeneMapping = false;
+		// }
 	}
 
 	public void buildPathwayDisplayList(final GL gl, final IUniqueObject containingView,

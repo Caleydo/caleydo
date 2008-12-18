@@ -130,7 +130,8 @@ public class TabularAsciiDataReader
 					alIntBuffers.add(new int[iStopParsingAtLine - iStartParsingAtLine + 1]);
 					break;
 				case FLOAT:
-					alFloatBuffers.add(new float[iStopParsingAtLine - iStartParsingAtLine + 1]);
+					alFloatBuffers
+							.add(new float[iStopParsingAtLine - iStartParsingAtLine + 1]);
 					break;
 				case STRING:
 					alStringBuffers.add(new ArrayList<String>(iStopParsingAtLine
@@ -216,9 +217,8 @@ public class TabularAsciiDataReader
 							iColumnIndex = alColumnDataTypes.size();
 							break;
 						default:
-							throw new IllegalStateException(
-									"Unknown token pattern detected: "
-											+ columnDataType.toString());
+							throw new IllegalStateException("Unknown token pattern detected: "
+									+ columnDataType.toString());
 					}
 
 					// Check if the line is finished or early aborted
@@ -248,9 +248,9 @@ public class TabularAsciiDataReader
 		int iStorageIndex = 0;
 
 		for (EStorageType storageType : alColumnDataTypes)
-		{	
-//			if(iStorageIndex + 1 == alTargetStorages.size())
-//				break;
+		{
+			// if(iStorageIndex + 1 == alTargetStorages.size())
+			// break;
 			switch (storageType)
 			{
 				case INT:

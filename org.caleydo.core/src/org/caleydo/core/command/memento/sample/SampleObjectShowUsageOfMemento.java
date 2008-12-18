@@ -65,20 +65,21 @@ public class SampleObjectShowUsageOfMemento
 
 		// Test if getMementoState() returns the correct "SampleMementoState"
 		// object...
-//		try
-//		{
-			bufferMementoState = (SampleMementoState) setMemento.getMementoState(this);
+		// try
+		// {
+		bufferMementoState = (SampleMementoState) setMemento.getMementoState(this);
 
-			// Reset parameters...
-			this.iMyData = bufferMementoState.getData();
-			this.fMyData = bufferMementoState.getPostData();
+		// Reset parameters...
+		this.iMyData = bufferMementoState.getData();
+		this.fMyData = bufferMementoState.getPostData();
 
-//		}
-//		catch (Exception e)
-//		{
-//			throw new CaleydoRuntimeException("setMemento() with wrong IMementoState! "
-//					+ e.toString(), CaleydoRuntimeExceptionType.MEMENTO);
-//		}
+		// }
+		// catch (Exception e)
+		// {
+		// throw new
+		// CaleydoRuntimeException("setMemento() with wrong IMementoState! "
+		// + e.toString(), CaleydoRuntimeExceptionType.MEMENTO);
+		// }
 
 	}
 

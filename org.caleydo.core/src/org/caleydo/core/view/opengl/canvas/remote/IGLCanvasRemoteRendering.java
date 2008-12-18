@@ -11,8 +11,8 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 public interface IGLCanvasRemoteRendering
 {
 
-//	public RemoteLevel getHierarchyLayerByGLEventListenerId(
-//			final int iGLEventListenerId);
+	// public RemoteLevel getHierarchyLayerByGLEventListenerId(
+	// final int iGLEventListenerId);
 
 	/**
 	 * Returns the center layer of the bucket.

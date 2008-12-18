@@ -24,7 +24,7 @@ public class BioCartaPathwayImageMapSaxHandler
 {
 	private IPathwayItemManager pathwayItemManager;
 	private IPathwayManager pathwayManager;
-	
+
 	private final static String BIOCARTA_EXTERNAL_URL_PATHWAY = "http://cgap.nci.nih.gov/Pathways/BioCarta/";
 	private final static String BIOCARTA_EXTERNAL_URL_VERTEX = "http://cgap.nci.nih.gov";
 
@@ -44,7 +44,7 @@ public class BioCartaPathwayImageMapSaxHandler
 	public BioCartaPathwayImageMapSaxHandler()
 	{
 		super();
-		
+
 		pathwayItemManager = generalManager.getPathwayItemManager();
 		pathwayManager = generalManager.getPathwayManager();
 
@@ -148,9 +148,8 @@ public class BioCartaPathwayImageMapSaxHandler
 		sImageLink = sImageLink
 				.substring(sImageLink.lastIndexOf('/') + 1, sImageLink.length());
 
-		currentPathway = pathwayManager.createPathway(
-				EPathwayDatabaseType.BIOCARTA, "<name>", sTitle, sImageLink,
-				BIOCARTA_EXTERNAL_URL_PATHWAY + sName);
+		currentPathway = pathwayManager.createPathway(EPathwayDatabaseType.BIOCARTA, "<name>",
+				sTitle, sImageLink, BIOCARTA_EXTERNAL_URL_PATHWAY + sName);
 
 		sTitle = "";
 	}
@@ -196,12 +195,12 @@ public class BioCartaPathwayImageMapSaxHandler
 		// Convert BioCarta ID to DAVID ID
 		IIDMappingManager genomeIdManager = generalManager.getIDMappingManager();
 
-		Set<Integer> iSetDavidID = 
-			(Set<Integer>)genomeIdManager.<String, Integer>getMultiID(EMappingType.BIOCARTA_GENE_ID_2_DAVID, sName);
-		
+		Set<Integer> iSetDavidID = (Set<Integer>) genomeIdManager
+				.<String, Integer> getMultiID(EMappingType.BIOCARTA_GENE_ID_2_DAVID, sName);
+
 		if (iSetDavidID == null)
 			return;
-		
+
 		for (Integer iDavidId : iSetDavidID)
 		{
 			if (iDavidId == null || iDavidId == -1 || iDavidId == 0)
@@ -209,15 +208,15 @@ public class BioCartaPathwayImageMapSaxHandler
 				// TODO: How to handle this case?
 				generalManager.getLogger().log(Level.FINE,
 						"Cannot map BioCarta ID " + sName + " to David ID");
-	
+
 				return;
 			}
-	
-			IGraphItem vertex = pathwayItemManager.createVertexGene(sName,
-					"gene", BIOCARTA_EXTERNAL_URL_VERTEX + sExternalLink, "", iDavidId);
-	
-			generalManager.getPathwayItemManager().createVertexRep(currentPathway, vertex, sName,
-					sShape, sCoords);
+
+			IGraphItem vertex = pathwayItemManager.createVertexGene(sName, "gene",
+					BIOCARTA_EXTERNAL_URL_VERTEX + sExternalLink, "", iDavidId);
+
+			generalManager.getPathwayItemManager().createVertexRep(currentPathway, vertex,
+					sName, sShape, sCoords);
 		}
 	}
 

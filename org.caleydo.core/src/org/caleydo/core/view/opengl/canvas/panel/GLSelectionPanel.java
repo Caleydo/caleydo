@@ -64,8 +64,9 @@ public class GLSelectionPanel
 
 		GeneralManager.get().getEventPublisher().addReceiver(
 				EMediatorType.PROPAGATION_MEDIATOR, (IMediatorReceiver) this);
-//		GeneralManager.get().getEventPublisher().addSender(
-//				EMediatorType.BUCKET_INTERNAL_INCOMING_MEDIATOR, (IMediatorSender) this);
+		// GeneralManager.get().getEventPublisher().addSender(
+		// EMediatorType.BUCKET_INTERNAL_INCOMING_MEDIATOR, (IMediatorSender)
+		// this);
 		GeneralManager.get().getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
 				(IMediatorSender) this);
 		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
@@ -90,8 +91,7 @@ public class GLSelectionPanel
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID,
-			final RemoteLevel layer,
+	public void initRemote(final GL gl, final int iRemoteViewID, final RemoteLevel layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
@@ -176,20 +176,19 @@ public class GLSelectionPanel
 					if (item.getSelectionType() == ESelectionType.MOUSE_OVER)
 					{
 						selectionManager.clearSelection(ESelectionType.MOUSE_OVER);
-						
+
 					}
 					else if (item.getSelectionType() == ESelectionType.SELECTION)
 					{
 						selectionManager.clearSelection(ESelectionType.SELECTION);
-						
+
 					}
-					selectionManager.addToType(item.getSelectionType(), item
-							.getSelectionID());
+					selectionManager.addToType(item.getSelectionType(), item.getSelectionID());
 					for (Integer iConnectionID : item.getConnectionID())
 					{
 						selectionManager.addConnectionID(iConnectionID, item.getSelectionID());
 					}
-					
+
 				}
 			}
 		}

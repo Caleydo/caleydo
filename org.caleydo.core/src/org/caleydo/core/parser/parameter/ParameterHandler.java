@@ -325,8 +325,8 @@ public final class ParameterHandler
 					break;
 
 				default:
-					throw new IllegalStateException("ParameterHandler.setValueAndType("
-							+ key + ") uses unregistered enumeration!");
+					throw new IllegalStateException("ParameterHandler.setValueAndType(" + key
+							+ ") uses unregistered enumeration!");
 			}
 		}
 		catch (NumberFormatException nfe)
@@ -370,9 +370,9 @@ public final class ParameterHandler
 		}
 		catch (NumberFormatException nfe)
 		{
-			new IllegalStateException("ParameterHandler.setValueAndType(" + key + ","
-					+ value + ") value was not valid due to enumeration type="
-					+ type.toString() + " !");
+			new IllegalStateException("ParameterHandler.setValueAndType(" + key + "," + value
+					+ ") value was not valid due to enumeration type=" + type.toString()
+					+ " !");
 
 		}
 

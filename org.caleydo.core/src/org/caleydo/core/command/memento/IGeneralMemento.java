@@ -1,6 +1,5 @@
 package org.caleydo.core.command.memento;
 
-
 /**
  * One base implementation of the IMemento interface. Desing pattern "IMemento"
  * 

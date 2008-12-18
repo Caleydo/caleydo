@@ -49,7 +49,7 @@ public class CmdExternalActionTrigger
 		else if (viewObject instanceof AStorageBasedView)
 		{
 			switch (externalActionType)
-			{			
+			{
 				case STORAGEBASED_PROPAGATE_SELECTIONS:
 					((AStorageBasedView) viewObject).broadcastElements();
 					return;
@@ -70,7 +70,7 @@ public class CmdExternalActionTrigger
 					case PARCOORDS_SAVE_SELECTIONS:
 						((GLParallelCoordinates) viewObject).saveSelection();
 						return;
-						
+
 				}
 			}
 		}
