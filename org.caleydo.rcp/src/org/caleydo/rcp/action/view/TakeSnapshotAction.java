@@ -15,9 +15,8 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
-
 public class TakeSnapshotAction
-extends AToolBarAction
+	extends AToolBarAction
 {
 	public static final String TEXT = "Take snapshot";
 	public static final String ICON = "resources/icons/general/snapshot.png";
@@ -28,22 +27,22 @@ extends AToolBarAction
 	public TakeSnapshotAction(int iViewID)
 	{
 		super(iViewID);
-		
+
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
 				PlatformUI.getWorkbench().getDisplay(), ICON)));
 	}
-	
+
 	@Override
 	public void run()
 	{
 		super.run();
-		
+
 		String sFilePath = "screenshot_" + getDateTime() + ".png";
 
 		Shell shell = PlatformUI.getWorkbench().getDisplay().getActiveShell();
-		
+
 		GC gc = new GC(PlatformUI.getWorkbench().getDisplay());
 		final Image image = new Image(shell.getDisplay(), shell.getBounds());
 		gc.copyArea(image, shell.getBounds().x, shell.getBounds().y);
@@ -63,7 +62,7 @@ extends AToolBarAction
 		// sFilePath);
 		// messageBox.open();
 	}
-	
+
 	private String getDateTime()
 	{
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMdd_HHmm");

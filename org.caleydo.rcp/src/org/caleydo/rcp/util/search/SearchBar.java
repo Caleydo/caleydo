@@ -32,7 +32,7 @@ public class SearchBar
 	private Text geneSearchText;
 
 	private final static int MAX_PATHWAY_TITLE_LENGTH = 65;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -45,14 +45,14 @@ public class SearchBar
 	{
 
 		Composite composite = new Composite(parent, SWT.NONE);
-//		composite.setLayout(new FillLayout());
-//		RowLayout rowLayout = new RowLayout();
-//		rowLayout.fill = true;
-////		// rowLayout.justify = true;
-//		rowLayout.pack = true;
-//		rowLayout.type = SWT.VERTICAL;
-////		// rowLayout.wrap = false;
-//		composite.setLayout(rowLayout);
+		// composite.setLayout(new FillLayout());
+		// RowLayout rowLayout = new RowLayout();
+		// rowLayout.fill = true;
+		// // // rowLayout.justify = true;
+		// rowLayout.pack = true;
+		// rowLayout.type = SWT.VERTICAL;
+		// // // rowLayout.wrap = false;
+		// composite.setLayout(rowLayout);
 
 		composite.setLayout(new GridLayout(4, false));
 		composite.setSize(600, 20);
@@ -71,22 +71,24 @@ public class SearchBar
 		{
 			public void focusGained(FocusEvent e)
 			{
-				Collection<PathwayGraph> allPathways = GeneralManager.get().getPathwayManager().getAllItems();
+				Collection<PathwayGraph> allPathways = GeneralManager.get()
+						.getPathwayManager().getAllItems();
 				String[] sArSearchItems = new String[allPathways.size()];
 				int iIndex = 0;
 				String sPathwayTitle = "";
-				for(PathwayGraph pathway : allPathways)
+				for (PathwayGraph pathway : allPathways)
 				{
 					sPathwayTitle = pathway.getTitle();
-					
-//					if (sPathwayTitle.length() > MAX_PATHWAY_TITLE_LENGTH)
-//						sPathwayTitle = sPathwayTitle.substring(0, MAX_PATHWAY_TITLE_LENGTH) + "... ";
-					
-//					sArSearchItems[iIndex] = pathway.getType().toString() 
-//						+ " - " + sPathwayTitle;
-					
+
+					// if (sPathwayTitle.length() > MAX_PATHWAY_TITLE_LENGTH)
+					// sPathwayTitle = sPathwayTitle.substring(0,
+					// MAX_PATHWAY_TITLE_LENGTH) + "... ";
+
+					// sArSearchItems[iIndex] = pathway.getType().toString()
+					// + " - " + sPathwayTitle;
+
 					sArSearchItems[iIndex] = sPathwayTitle + " ("
-						+ pathway.getType().toString() + ")";
+							+ pathway.getType().toString() + ")";
 					iIndex++;
 				}
 
@@ -94,16 +96,17 @@ public class SearchBar
 				searchBox.removeFocusListener(this);
 			}
 		});
-		
+
 		searchBox.addSelectionListener(new SelectionAdapter()
 		{
 			public void widgetSelected(SelectionEvent e)
 			{
 				String sSearchEntity = searchBox.getItem(searchBox.getSelectionIndex());
-//				sSearchEntity = sSearchEntity.substring(0, sSearchEntity.indexOf(" ("));
+				// sSearchEntity = sSearchEntity.substring(0,
+				// sSearchEntity.indexOf(" ("));
 
 				GeneralManager.get().getViewGLCanvasManager().getDataEntitySearcher()
-						.searchForEntity(sSearchEntity);	
+						.searchForEntity(sSearchEntity);
 			}
 		});
 
@@ -112,7 +115,7 @@ public class SearchBar
 		entitySearchLabel.setText("Gene search:");
 
 		geneSearchText = new Text(composite, SWT.BORDER | SWT.SINGLE);
-//		geneSearchText.setLayoutData(new GridData(GridData.FILL_BOTH));
+		// geneSearchText.setLayoutData(new GridData(GridData.FILL_BOTH));
 		geneSearchText.addFocusListener(new FocusAdapter()
 		{
 			public void focusGained(FocusEvent e)
@@ -121,7 +124,7 @@ public class SearchBar
 				geneSearchText.pack();
 			}
 		});
-		
+
 		geneSearchText.addKeyListener(new KeyAdapter()
 		{
 			public void keyPressed(KeyEvent event)

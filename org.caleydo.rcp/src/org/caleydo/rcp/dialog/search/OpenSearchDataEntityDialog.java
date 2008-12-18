@@ -74,8 +74,8 @@ public class OpenSearchDataEntityDialog
 	protected void okPressed()
 	{
 
-		boolean bFound = GeneralManager.get().getViewGLCanvasManager()
-				.getDataEntitySearcher().searchForEntity(searchText.getText());
+		boolean bFound = GeneralManager.get().getViewGLCanvasManager().getDataEntitySearcher()
+				.searchForEntity(searchText.getText());
 
 		if (bFound)
 			super.okPressed();

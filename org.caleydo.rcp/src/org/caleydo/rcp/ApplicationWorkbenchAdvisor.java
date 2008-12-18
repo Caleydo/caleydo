@@ -16,10 +16,10 @@ public class ApplicationWorkbenchAdvisor
 	@Override
 	public WorkbenchWindowAdvisor createWorkbenchWindowAdvisor(
 			IWorkbenchWindowConfigurer configurer)
-	{	
+	{
 		PlatformUI.getPreferenceStore().setValue(
 				IWorkbenchPreferenceConstants.SHOW_PROGRESS_ON_STARTUP, true);
-		
+
 		return new ApplicationWorkbenchWindowAdvisor(configurer);
 	}
 
@@ -28,12 +28,12 @@ public class ApplicationWorkbenchAdvisor
 	{
 		return PERSPECTIVE_ID;
 	}
-	
+
 	@Override
 	public void initialize(IWorkbenchConfigurer configurer)
 	{
 		super.initialize(configurer);
-		
+
 		configurer.setSaveAndRestore(false);
 	}
 
@@ -41,26 +41,28 @@ public class ApplicationWorkbenchAdvisor
 	public void postStartup()
 	{
 		super.postStartup();
-		
+
 		// Check if an early exit should be performed
 		if (Application.bDoExit)
 		{
 			this.getWorkbenchConfigurer().getWorkbench().close();
 			return;
 		}
-		
+
 		// Filter preference pages
-		PreferenceManager preferenceManager = this.getWorkbenchConfigurer().getWorkbench().getPreferenceManager();
+		PreferenceManager preferenceManager = this.getWorkbenchConfigurer().getWorkbench()
+				.getPreferenceManager();
 		preferenceManager.remove("org.eclipse.ui.preferencePages.Workbench");
-		preferenceManager.remove("org.eclipse.update.internal.ui.preferences.MainPreferencePage");
+		preferenceManager
+				.remove("org.eclipse.update.internal.ui.preferences.MainPreferencePage");
 		preferenceManager.remove("org.eclipse.help.ui.browsersPreferencePage");
 	}
 
 	@Override
 	public boolean preShutdown()
-	{	
+	{
 		super.preShutdown();
-		
+
 		return true;
 	}
 }

@@ -55,16 +55,16 @@ public class CaleydoProjectWizard
 		{
 
 			NewOrExistingProjectPage page = ((NewOrExistingProjectPage) getPage(NewOrExistingProjectPage.PAGE_NAME));
-			
+
 			if (page.getProjectType() == EProjectType.PATHWAY_VIEWER_MODE)
 			{
 				Application.applicationMode = EApplicationMode.PATHWAY_VIEWER;
 			}
-			else if(page.getProjectType() == EProjectType.SAMPLE_DATA_RANDOM)
+			else if (page.getProjectType() == EProjectType.SAMPLE_DATA_RANDOM)
 			{
 				Application.applicationMode = EApplicationMode.SAMPLE_DATA_RANDOM;
 			}
-			else if(page.getProjectType() == EProjectType.SAMPLE_DATA_REAL)
+			else if (page.getProjectType() == EProjectType.SAMPLE_DATA_REAL)
 			{
 				Application.applicationMode = EApplicationMode.SAMPLE_DATA_REAL;
 			}

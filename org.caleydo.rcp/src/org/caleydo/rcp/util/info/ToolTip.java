@@ -134,29 +134,36 @@ public class ToolTip
 
 								if (eIDType == EIDType.DAVID)
 								{
-									Set<String> sSetRefSeqID = GeneralManager.get().getIDMappingManager()
-									.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA, item.getSelectionID());
-								
+									Set<String> sSetRefSeqID = GeneralManager.get()
+											.getIDMappingManager().getMultiID(
+													EMappingType.DAVID_2_REFSEQ_MRNA,
+													item.getSelectionID());
+
 									sDetailText = sDetailText + "<b>Gene symbol: </b>";
-									sDetailText = sDetailText + genomeIDManager.getID(
-											EMappingType.DAVID_2_GENE_SYMBOL, item.getSelectionID());
+									sDetailText = sDetailText
+											+ genomeIDManager.getID(
+													EMappingType.DAVID_2_GENE_SYMBOL, item
+															.getSelectionID());
 									sDetailText = sDetailText + "\n";
 
 									sDetailText = sDetailText + "<b>Gene name: </b>";
-									sDetailText = sDetailText + genomeIDManager.getID(
-											EMappingType.DAVID_2_GENE_NAME, item.getSelectionID());
+									sDetailText = sDetailText
+											+ genomeIDManager.getID(
+													EMappingType.DAVID_2_GENE_NAME, item
+															.getSelectionID());
 									sDetailText = sDetailText + "\n";
-									
+
 									sDetailText = sDetailText + "<b>RefSeq: </b>";
-									
-									for (String sRefSeqID : sSetRefSeqID) 
+
+									for (String sRefSeqID : sSetRefSeqID)
 									{
 										sDetailText = sDetailText + sRefSeqID;
 										sDetailText = sDetailText + ", ";
 									}
-									
+
 									// Remove last comma
-									sDetailText = sDetailText.substring(0, sDetailText.length() -2);
+									sDetailText = sDetailText.substring(0, sDetailText
+											.length() - 2);
 									sDetailText = sDetailText + "\n\n";
 								}
 								else if (eIDType == EIDType.EXPERIMENT_INDEX)
@@ -174,8 +181,6 @@ public class ToolTip
 									continue;
 								}
 
-
-							
 							}
 						}
 

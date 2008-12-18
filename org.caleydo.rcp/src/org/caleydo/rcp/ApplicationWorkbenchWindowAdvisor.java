@@ -29,26 +29,25 @@ public class ApplicationWorkbenchWindowAdvisor
 	public void preWindowOpen()
 	{
 		IWorkbenchWindowConfigurer configurer = getWindowConfigurer();
-//		configurer.setInitialSize(new Point(400, 300));
+		// configurer.setInitialSize(new Point(400, 300));
 		configurer.setShowCoolBar(false);
 		configurer.setShowStatusLine(false);
 		configurer.setShowProgressIndicator(true);
 		configurer.setTitle("Caleydo");
 	}
-	
+
 	@Override
 	public void postWindowCreate()
 	{
 		super.postWindowCreate();
-		
+
 		getWindowConfigurer().getWindow().getShell().setMaximized(true);
-		
+
 		// Set status line in caleydo core
 		GeneralManager.get().getSWTGUIManager().setExternalRCPStatusLine(
-				getWindowConfigurer().getActionBarConfigurer().getStatusLineManager(), 
+				getWindowConfigurer().getActionBarConfigurer().getStatusLineManager(),
 				getWindowConfigurer().getWindow().getShell().getDisplay());
 
-		
 		if (Application.bIsWebstart && !Application.bDoExit)
 		{
 			Application.startCaleydoCore();

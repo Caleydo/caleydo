@@ -17,9 +17,9 @@ public class NewProjectImportDataPage
 {
 
 	public static final String PAGE_NAME = "Import data to new project";
-	
+
 	public FileLoadDataAction fileLoadDataAction;
-	
+
 	private String sInputFile;
 
 	/**
@@ -29,20 +29,19 @@ public class NewProjectImportDataPage
 	{
 		super(PAGE_NAME, PAGE_NAME, null);
 
-		this.setImageDescriptor(ImageDescriptor.createFromURL(
-				this.getClass().getClassLoader().getResource(
-						"resources/wizard/wizard.png")));
-		
+		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader()
+				.getResource("resources/wizard/wizard.png")));
+
 		setPageComplete(true);
 	}
-	
+
 	/**
 	 * Constructor.
 	 */
 	public NewProjectImportDataPage(String sFileName)
 	{
 		this();
-		
+
 		this.sInputFile = sFileName;
 	}
 
@@ -56,13 +55,13 @@ public class NewProjectImportDataPage
 			fileLoadDataAction = new FileLoadDataAction(topLevel, sInputFile);
 		else
 			fileLoadDataAction = new FileLoadDataAction(topLevel);
-		
+
 		fileLoadDataAction.run();
 
 		setControl(topLevel);
-		//setPageComplete(true);
+		// setPageComplete(true);
 	}
-	
+
 	public FileLoadDataAction getFileLoadDataAction()
 	{
 		return fileLoadDataAction;

@@ -17,7 +17,7 @@ public class Activator
 
 	// The shared instance
 	private static Activator plugin;
-	
+
 	public static String sBundleVersion;
 
 	/**

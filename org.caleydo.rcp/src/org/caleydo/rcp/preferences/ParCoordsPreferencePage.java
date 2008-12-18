@@ -59,7 +59,7 @@ public class ParCoordsPreferencePage
 				getFieldEditorParent());
 		limitRemoteToContext.loadDefault();
 		addField(limitRemoteToContext);
-		
+
 		getFieldEditorParent().pack();
 	}
 

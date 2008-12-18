@@ -39,7 +39,8 @@ public class SWTGlyphDataExportView
 	{
 		super.dispose();
 
-		GeneralManager.get().getEventPublisher().removeReceiver(EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver) GDEview);
+		GeneralManager.get().getEventPublisher().removeReceiver(
+				EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver) GDEview);
 
 		GeneralManager.get().getViewGLCanvasManager().unregisterItem(GDEview.getID());
 	}

@@ -28,7 +28,7 @@ public class FirstStartWizard
 	public void addPages()
 	{
 		addPage(new FetchPathwayDataPage());
-		
+
 		setWindowTitle("Caleydo First Start Wizard");
 	}
 
@@ -42,7 +42,7 @@ public class FirstStartWizard
 	public boolean performCancel()
 	{
 		Application.bDoExit = true;
-		
+
 		return true;
 	}
 

@@ -25,7 +25,7 @@ public class ChangeViewModeToCircleAction
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
 				PlatformUI.getWorkbench().getDisplay(), ICON)));
-		//setChecked(false);
+		// setChecked(false);
 	}
 
 	@Override

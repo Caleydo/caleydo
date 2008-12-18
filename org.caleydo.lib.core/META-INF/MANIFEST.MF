@@ -16,7 +16,8 @@ Bundle-ClassPath: lib/jgraph/jgraph.jar,
  lib/webspider/log4j-1.2.14.jar,
  lib/webspider/spring-beans-2.5.jar,
  lib/webspider/spring-context-2.5.jar,
- lib/webspider/spring-core-2.5.jar
+ lib/webspider/spring-core-2.5.jar,
+ lib/weka/weka.jar
 Export-Package: com.sun.cdc.io;uses:="javax.microedition.io",
  com.sun.cdc.io.j2me.btgoep;uses:="com.sun.cdc.io,javax.microedition.io",
  com.sun.cdc.io.j2me.btl2cap;uses:="com.sun.cdc.io,javax.microedition.io",

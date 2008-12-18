@@ -17,8 +17,8 @@ public class OpenParCoordsHandler
 	{
 		try
 		{
-			HandlerUtil.getActiveWorkbenchWindow(event)
-				.getActivePage().showView(GLParCoordsView.ID);
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(
+					GLParCoordsView.ID);
 		}
 		catch (PartInitException e)
 		{

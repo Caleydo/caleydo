@@ -17,14 +17,14 @@ public class OpenHeatMapHandler
 	{
 		try
 		{
-			HandlerUtil.getActiveWorkbenchWindow(event)
-				.getActivePage().showView(GLHeatMapView.ID);
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(
+					GLHeatMapView.ID);
 		}
 		catch (PartInitException e)
 		{
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 

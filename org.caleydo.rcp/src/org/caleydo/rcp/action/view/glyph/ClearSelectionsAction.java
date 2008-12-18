@@ -12,7 +12,7 @@ public class ClearSelectionsAction
 
 	public static final String TEXT = "Clear the selection";
 	public static final String ICON = "resources/icons/view/glyph/selection_clear.png";
-	
+
 	public ClearSelectionsAction(int iViewID)
 	{
 		super(iViewID);

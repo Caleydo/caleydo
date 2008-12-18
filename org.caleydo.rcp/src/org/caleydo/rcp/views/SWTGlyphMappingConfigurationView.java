@@ -41,7 +41,8 @@ public class SWTGlyphMappingConfigurationView
 	{
 		super.dispose();
 
-		GeneralManager.get().getEventPublisher().removeReceiver(EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver) GMCview);
+		GeneralManager.get().getEventPublisher().removeReceiver(
+				EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver) GMCview);
 
 		GeneralManager.get().getViewGLCanvasManager().unregisterItem(GMCview.getID());
 	}

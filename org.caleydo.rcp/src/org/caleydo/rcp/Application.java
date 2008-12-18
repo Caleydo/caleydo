@@ -39,8 +39,9 @@ public class Application
 	private static String BOOTSTRAP_FILE_PATHWAY_VIEWER_MODE = "data/bootstrap/shared/webstart/bootstrap_webstart_pathway_viewer.xml";
 
 	private static String REAL_DATA_SAMPLE_FILE = "data/genome/microarray/sample/HCC_sample_dataset.csv";
-//	private static String REAL_DATA_SAMPLE_FILE = "data/genome/microarray/sample/sample_microarray_dataset.csv";
-	
+	// private static String REAL_DATA_SAMPLE_FILE =
+	// "data/genome/microarray/sample/sample_microarray_dataset.csv";
+
 	public static CaleydoBootloader caleydoCore;
 
 	public static ApplicationWorkbenchAdvisor applicationWorkbenchAdvisor;
@@ -59,7 +60,7 @@ public class Application
 	@SuppressWarnings("unchecked")
 	public Object start(IApplicationContext context) throws Exception
 	{
-//		System.out.println("Start Caleydo...");
+		// System.out.println("Start Caleydo...");
 
 		alStartViews = new ArrayList<EStartViewType>();
 
@@ -115,9 +116,9 @@ public class Application
 			}
 		}
 
-//		 System.setProperty("network.proxy_host", "webproxy.kages.at");
-//		 System.setProperty("network.proxy_port", "80");
-		
+		// System.setProperty("network.proxy_host", "webproxy.kages.at");
+		// System.setProperty("network.proxy_port", "80");
+
 		rcpGuiBridge = new RCPBridge();
 
 		// Create Caleydo core
@@ -205,8 +206,8 @@ public class Application
 		{
 			Display display = PlatformUI.createDisplay();
 			Shell shell = new Shell(display);
-//			shell.setActive();
-//			shell.setFocus();
+			// shell.setActive();
+			// shell.setFocus();
 
 			WizardDialog projectWizardDialog = new WizardDialog(shell,
 					new CaleydoProjectWizard(shell));
@@ -242,10 +243,10 @@ public class Application
 					bDoExit = true;
 				}
 			}
-			else if(applicationMode == EApplicationMode.SAMPLE_DATA_REAL)
+			else if (applicationMode == EApplicationMode.SAMPLE_DATA_REAL)
 			{
-				WizardDialog dataImportWizard = new WizardDialog(shell,
-						new DataImportWizard(shell, REAL_DATA_SAMPLE_FILE));
+				WizardDialog dataImportWizard = new WizardDialog(shell, new DataImportWizard(
+						shell, REAL_DATA_SAMPLE_FILE));
 
 				if (WizardDialog.CANCEL == dataImportWizard.open())
 				{
@@ -271,12 +272,13 @@ public class Application
 			// Trigger pathway loading
 			new PathwayLoadingProgressIndicatorAction().run(null);
 		}
-		
-		// Register the info area to all mediator from type SELECTION and VIEW_SELECTION
-		GeneralManager.get().getEventPublisher().addReceiver(
-				EMediatorType.SELECTION_MEDIATOR, InfoArea.getInfoArea());
-		GeneralManager.get().getEventPublisher().addReceiver(
-				EMediatorType.VIEW_SELECTION, InfoArea.getInfoArea());
+
+		// Register the info area to all mediator from type SELECTION and
+		// VIEW_SELECTION
+		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
+				InfoArea.getInfoArea());
+		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.VIEW_SELECTION,
+				InfoArea.getInfoArea());
 
 		if (GeneralManager.get().isStandalone())
 		{

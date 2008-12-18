@@ -100,7 +100,9 @@ public class InfoArea
 	}
 
 	@Override
-	public void handleUpdate(final IUniqueObject eventTrigger, final ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand, EMediatorType eMediatorType)
+	public void handleUpdate(final IUniqueObject eventTrigger,
+			final ISelectionDelta selectionDelta,
+			Collection<SelectionCommand> colSelectionCommand, EMediatorType eMediatorType)
 	{
 		if (!(eventTrigger instanceof AGLEventListener))
 			return;
@@ -111,7 +113,7 @@ public class InfoArea
 						+ ", received in: " + this.getClass().getSimpleName());
 
 		updateTriggeringView = (AGLEventListener) eventTrigger;
-		
+
 		if (!selectionDelta.getSelectionData().isEmpty())
 			this.selectionDelta = selectionDelta;
 
@@ -126,9 +128,9 @@ public class InfoArea
 				EIDType eIDType = selectionDelta.getIDType();
 
 				String sGeneSymbol = "";
-				
-				Iterator<SelectionItem> iterSelectionItems 
-					= selectionDelta.getSelectionData().iterator();
+
+				Iterator<SelectionItem> iterSelectionItems = selectionDelta.getSelectionData()
+						.iterator();
 
 				SelectionItem item;
 
@@ -144,21 +146,25 @@ public class InfoArea
 						if (eIDType == EIDType.DAVID)
 						{
 
-							Set<String> sSetRefSeqID = GeneralManager.get().getIDMappingManager()
-								.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA, item.getSelectionID());
-							
-							sGeneSymbol = sDetailText + GeneralManager.get().getIDMappingManager().getID(
-									EMappingType.DAVID_2_GENE_SYMBOL, item.getSelectionID());
-	
-							sDetailText = sDetailText + sGeneSymbol + " ("; 
-							for (String sRefSeqID : sSetRefSeqID) 
+							Set<String> sSetRefSeqID = GeneralManager.get()
+									.getIDMappingManager().getMultiID(
+											EMappingType.DAVID_2_REFSEQ_MRNA,
+											item.getSelectionID());
+
+							sGeneSymbol = sDetailText
+									+ GeneralManager.get().getIDMappingManager().getID(
+											EMappingType.DAVID_2_GENE_SYMBOL,
+											item.getSelectionID());
+
+							sDetailText = sDetailText + sGeneSymbol + " (";
+							for (String sRefSeqID : sSetRefSeqID)
 							{
 								sDetailText = sDetailText + sRefSeqID;
 								sDetailText = sDetailText + ", ";
 							}
-							
+
 							// Remove last comma
-							sDetailText = sDetailText.substring(0, sDetailText.length() -2);						
+							sDetailText = sDetailText.substring(0, sDetailText.length() - 2);
 							sDetailText += ")";
 
 						}
@@ -179,12 +185,12 @@ public class InfoArea
 						if (iterSelectionItems.hasNext())
 							sDetailText = sDetailText + ", ";
 					}
-					
+
 					// Remove last comma
 					if (sDetailText.length() > 2)
-						sDetailText = sDetailText.substring(0, sDetailText.length() -1);
+						sDetailText = sDetailText.substring(0, sDetailText.length() - 1);
 				}
-			
+
 				// Prevent to reset info when view info updates
 				// TODO: think about better way!
 				if (!sDetailText.isEmpty())

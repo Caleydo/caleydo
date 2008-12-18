@@ -17,8 +17,8 @@ public class OpenRemoteHandler
 	{
 		try
 		{
-			HandlerUtil.getActiveWorkbenchWindow(event)
-				.getActivePage().showView(GLRemoteRenderingView.ID);
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(
+					GLRemoteRenderingView.ID);
 		}
 		catch (PartInitException e)
 		{

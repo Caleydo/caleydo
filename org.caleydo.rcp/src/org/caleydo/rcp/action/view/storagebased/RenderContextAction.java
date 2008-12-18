@@ -25,14 +25,14 @@ public class RenderContextAction
 		AStorageBasedView storageBasedView = (AStorageBasedView) GeneralManager.get()
 				.getViewGLCanvasManager().getGLEventListener(iViewID);
 		bEnable = storageBasedView.isRenderingOnlyContext();
-	
+
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
 				PlatformUI.getWorkbench().getDisplay(), ICON)));
 
 		setChecked(bEnable);
-//		setEnabled(bEnable);
+		// setEnabled(bEnable);
 	}
 
 	@Override

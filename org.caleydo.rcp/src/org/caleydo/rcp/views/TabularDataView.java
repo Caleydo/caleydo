@@ -13,19 +13,21 @@ public class TabularDataView
 	public static final String ID = "org.caleydo.rcp.views.TabularDataView";
 
 	private TabularDataViewRep tabularDataView;
-		
+
 	@Override
 	public void createPartControl(Composite parent)
-	{	
-		tabularDataView = (TabularDataViewRep) GeneralManager.get().getViewGLCanvasManager().createView(
-				EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER, -1, "Tabular Data Viewer");
+	{
+		tabularDataView = (TabularDataViewRep) GeneralManager.get().getViewGLCanvasManager()
+				.createView(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER, -1,
+						"Tabular Data Viewer");
 
 		tabularDataView.initViewRCP(parent);
 		tabularDataView.drawView();
 
-
-		GeneralManager.get().getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, tabularDataView);
-		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, tabularDataView);
+		GeneralManager.get().getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
+				tabularDataView);
+		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
+				tabularDataView);
 
 		GeneralManager.get().getViewGLCanvasManager().registerItem(tabularDataView);
 	}
@@ -35,13 +37,15 @@ public class TabularDataView
 	{
 
 	}
-	
+
 	@Override
 	public void dispose()
 	{
 		super.dispose();
-	
-		GeneralManager.get().getEventPublisher().removeSender(EMediatorType.SELECTION_MEDIATOR, tabularDataView);
-		GeneralManager.get().getEventPublisher().removeReceiver(EMediatorType.SELECTION_MEDIATOR, tabularDataView);
+
+		GeneralManager.get().getEventPublisher().removeSender(
+				EMediatorType.SELECTION_MEDIATOR, tabularDataView);
+		GeneralManager.get().getEventPublisher().removeReceiver(
+				EMediatorType.SELECTION_MEDIATOR, tabularDataView);
 	}
 }

@@ -18,14 +18,11 @@ import org.caleydo.rcp.views.GLRemoteRenderingView;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
 
-
 public class RCPBridge
-implements IGUIBridge
+	implements IGUIBridge
 {
 	@Override
 	public void closeApplication()
@@ -39,29 +36,31 @@ implements IGUIBridge
 			throw new IllegalStateException("Cannot execute exit command.");
 		}
 	}
-	
+
 	@Override
 	public void setActiveGLSubView(AGLEventListener parentGLEventListener,
 			AGLEventListener subGLEventListener)
-	{	
-		for (IViewReference rcpView : PlatformUI.getWorkbench()
-				.getWorkbenchWindows()[0].getActivePage().getViewReferences())
+	{
+		for (IViewReference rcpView : PlatformUI.getWorkbench().getWorkbenchWindows()[0]
+				.getActivePage().getViewReferences())
 		{
 			if (!rcpView.getId().equals(GLRemoteRenderingView.ID))
 				continue;
-			
-			GLRemoteRenderingView remoteRenderingRCPView = (GLRemoteRenderingView)rcpView.getView(false);
-			
-			final IToolBarManager toolBarManager = remoteRenderingRCPView.getViewSite().getActionBars().getToolBarManager();
+
+			GLRemoteRenderingView remoteRenderingRCPView = (GLRemoteRenderingView) rcpView
+					.getView(false);
+
+			final IToolBarManager toolBarManager = remoteRenderingRCPView.getViewSite()
+					.getActionBars().getToolBarManager();
 			toolBarManager.removeAll();
-					
+
 			GLRemoteRenderingView.createToolBarItems(parentGLEventListener.getID());
 			GLRemoteRenderingView.fillToolBar(toolBarManager);
-		
+
 			toolBarManager.add(new Separator());
-			
+
 			if (parentGLEventListener instanceof GLRemoteRendering)
-			{						
+			{
 				if (subGLEventListener instanceof GLPathway)
 				{
 					GLPathwayView.createToolBarItems(subGLEventListener.getID());
@@ -88,7 +87,7 @@ implements IGUIBridge
 					GLGlyphView.fillToolBar(toolBarManager);
 				}
 			}
-			
+
 			remoteRenderingRCPView.getSWTComposite().getDisplay().asyncExec(new Runnable()
 			{
 				public void run()
@@ -101,7 +100,7 @@ implements IGUIBridge
 
 	@Override
 	public void setShortInfo(String sMessage)
-	{	
+	{
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 	}
 }

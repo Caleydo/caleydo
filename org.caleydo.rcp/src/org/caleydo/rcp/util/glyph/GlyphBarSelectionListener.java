@@ -1,9 +1,5 @@
 package org.caleydo.rcp.util.glyph;
 
-import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.glyph.GlyphManager;
-import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.rcp.EStartViewType;
 import org.caleydo.rcp.action.view.AToolBarAction;
 import org.caleydo.rcp.action.view.glyph.ChangeSelectionBrush;
@@ -11,9 +7,7 @@ import org.caleydo.rcp.action.view.glyph.ChangeViewModeToCircleAction;
 import org.caleydo.rcp.action.view.glyph.ChangeViewModeToRandomAction;
 import org.caleydo.rcp.action.view.glyph.ChangeViewModeToRectangleAction;
 import org.caleydo.rcp.action.view.glyph.ChangeViewModeToScatterplotAction;
-import org.caleydo.rcp.command.handler.view.OpenGlyphSliderViewHandler;
 import org.caleydo.rcp.views.GLGlyphView;
-import org.caleydo.rcp.views.GLRemoteRenderingView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -27,7 +21,6 @@ import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.part.ViewPart;
 
 public class GlyphBarSelectionListener
 	extends SelectionAdapter

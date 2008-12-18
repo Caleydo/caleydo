@@ -82,13 +82,17 @@ public final class SearchBox
 	 * applicable to the class. Style bits are also inherited from superclasses.
 	 * </p>
 	 * 
-	 * @param parent a widget which will be the parent of the new instance
-	 *            (cannot be null)
-	 * @param style the style of widget to construct
-	 * @exception IllegalArgumentException <ul>
+	 * @param parent
+	 *            a widget which will be the parent of the new instance (cannot
+	 *            be null)
+	 * @param style
+	 *            the style of widget to construct
+	 * @exception IllegalArgumentException
+	 *                <ul>
 	 *                <li>ERROR_NULL_ARGUMENT - if the parent is null</li>
 	 *                </ul>
-	 * @exception SWTException <ul>
+	 * @exception SWTException
+	 *                <ul>
 	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
 	 *                thread that created the parent</li>
 	 *                </ul>
@@ -182,11 +186,14 @@ public final class SearchBox
 	/**
 	 * Adds the argument to the end of the receiver's list.
 	 * 
-	 * @param string the new item
-	 * @exception IllegalArgumentException <ul>
+	 * @param string
+	 *            the new item
+	 * @exception IllegalArgumentException
+	 *                <ul>
 	 *                <li>ERROR_NULL_ARGUMENT - if the string is null</li>
 	 *                </ul>
-	 * @exception SWTException <ul>
+	 * @exception SWTException
+	 *                <ul>
 	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
 	 *                disposed</li>
 	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
@@ -209,11 +216,14 @@ public final class SearchBox
 	 * when the receiver's text is modified, by sending it one of the messages
 	 * defined in the <code>ModifyListener</code> interface.
 	 * 
-	 * @param listener the listener which should be notified
-	 * @exception IllegalArgumentException <ul>
+	 * @param listener
+	 *            the listener which should be notified
+	 * @exception IllegalArgumentException
+	 *                <ul>
 	 *                <li>ERROR_NULL_ARGUMENT - if the listener is null</li>
 	 *                </ul>
-	 * @exception SWTException <ul>
+	 * @exception SWTException
+	 *                <ul>
 	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
 	 *                disposed</li>
 	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
@@ -241,11 +251,15 @@ public final class SearchBox
 	 * ENTER is pressed the combo's text area.
 	 * </p>
 	 * <ul>
-	 * @param listener the listener which should be notified
-	 * @exception IllegalArgumentException <ul>
+	 * 
+	 * @param listener
+	 *            the listener which should be notified
+	 * @exception IllegalArgumentException
+	 *                <ul>
 	 *                <li>ERROR_NULL_ARGUMENT - if the listener is null</li>
 	 *                </ul>
-	 * @exception SWTException <ul>
+	 * @exception SWTException
+	 *                <ul>
 	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
 	 *                disposed</li>
 	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
@@ -290,7 +304,8 @@ public final class SearchBox
 	 * <code>deselectAll()</code>.
 	 * </p>
 	 * 
-	 * @exception SWTException <ul>
+	 * @exception SWTException
+	 *                <ul>
 	 *                <li>ERROR_WIDGET_DISPOSED - if the receiver has been
 	 *                disposed</li>
 	 *                <li>ERROR_THREAD_INVALID_ACCESS - if not called from the
@@ -365,10 +380,10 @@ public final class SearchBox
 		Point listSize = list.computeSize(wHint, SWT.DEFAULT, changed);
 		int borderWidth = getBorderWidth();
 
-		height = Math.max(hHint, Math.max(textSize.y, arrowSize.y) + 2 * borderWidth);	
+		height = Math.max(hHint, Math.max(textSize.y, arrowSize.y) + 2 * borderWidth);
 		width = Math.max(wHint, Math.max(textWidth + 2 * spacer + arrowSize.x + 2
 				* borderWidth, listSize.x));
-		
+
 		return new Point(width, height);
 	}
 
@@ -473,7 +488,7 @@ public final class SearchBox
 		Rectangle displayRect = getMonitor().getClientArea();
 		int width = Math.max(comboSize.x, listRect.width + 2);
 		int height = listRect.height + 2;
-		int x = parentRect.x; 
+		int x = parentRect.x;
 		int y = parentRect.y + comboSize.y;
 		if (y + height > displayRect.y + displayRect.height)
 			y = parentRect.y - height;
@@ -650,7 +665,7 @@ public final class SearchBox
 
 				Event e = new Event();
 				notifyListeners(SWT.FocusIn, e);
-						
+
 				break;
 
 			}
@@ -658,12 +673,12 @@ public final class SearchBox
 			{
 				if (!hasFocus)
 					return;
-				
+
 				Control focusControl = getDisplay().getFocusControl();
 
 				if (focusControl == arrow || focusControl == list || focusControl == text)
 					return;
-				
+
 				hasFocus = false;
 				dropDown(false);
 				Shell shell = getShell();
@@ -672,7 +687,7 @@ public final class SearchBox
 				display.removeFilter(SWT.FocusIn, filter);
 				// Event e = new Event();
 				// notifyListeners(SWT.FocusOut, e);
-				
+
 				break;
 			}
 		}
@@ -1245,7 +1260,7 @@ public final class SearchBox
 			case SWT.FocusIn:
 			{
 				handleFocus(SWT.FocusIn);
-		
+
 				break;
 			}
 			case SWT.KeyDown:

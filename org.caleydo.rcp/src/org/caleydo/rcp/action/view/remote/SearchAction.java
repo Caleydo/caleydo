@@ -17,7 +17,6 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.ShellAdapter;
 import org.eclipse.swt.events.ShellEvent;
-import org.eclipse.swt.events.ShellListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Label;
@@ -26,14 +25,13 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * Search bar in an own shell.
- * This is just a workaround for the WinXP classic style layout problem of the toolbar.
- * Currently not in use.
- *
+ * Search bar in an own shell. This is just a workaround for the WinXP classic
+ * style layout problem of the toolbar. Currently not in use.
+ * 
  * @author Marc Streit
  */
 public class SearchAction
-extends AToolBarAction
+	extends AToolBarAction
 {
 	public static final String TEXT = "Search for pathway or gene";
 	public static final String ICON = "resources/icons/view/remote/search.png";
@@ -41,47 +39,48 @@ extends AToolBarAction
 	private SearchBox searchBox;
 	private Text geneSearchText;
 	private final SearchAction searchAction;
-	
-	
+
 	/**
 	 * Constructor.
 	 */
 	public SearchAction(int iViewID)
 	{
 		super(iViewID);
-		
+
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
 				PlatformUI.getWorkbench().getDisplay(), ICON)));
 		setChecked(false);
-		
+
 		this.searchAction = this;
 	}
-	
+
 	@Override
 	public void run()
 	{
 		super.run();
-			
+
 		Shell shell = new Shell(PlatformUI.getWorkbench().getDisplay(), SWT.SHELL_TRIM);
 		shell.setLayout(new GridLayout(2, false));
 		shell.setText(TEXT);
-		shell.setImage(new Image(shell.getDisplay(), 
-				"resources/icons/view/remote/search.png"));
+		shell
+				.setImage(new Image(shell.getDisplay(),
+						"resources/icons/view/remote/search.png"));
 		shell.setActive();
-		
-		shell.addShellListener(new ShellAdapter() {
+
+		shell.addShellListener(new ShellAdapter()
+		{
 			@Override
 			public void shellClosed(ShellEvent e)
 			{
 				super.shellClosed(e);
-				
+
 				searchAction.setEnabled(true);
 				searchAction.setChecked(false);
 			}
 		});
-		
+
 		Label searchInputLabel = new Label(shell, SWT.NULL);
 		searchInputLabel.setText("Pathway search:");
 		searchInputLabel.pack();
@@ -93,13 +92,14 @@ extends AToolBarAction
 		{
 			public void focusGained(FocusEvent e)
 			{
-				Collection<PathwayGraph> allPathways = GeneralManager.get().getPathwayManager().getAllItems();
+				Collection<PathwayGraph> allPathways = GeneralManager.get()
+						.getPathwayManager().getAllItems();
 				String[] sArSearchItems = new String[allPathways.size()];
 				int iIndex = 0;
-				for(PathwayGraph pathway : allPathways)
+				for (PathwayGraph pathway : allPathways)
 				{
 					sArSearchItems[iIndex] = pathway.getTitle() + " ("
-						+ pathway.getType().toString() + ")";
+							+ pathway.getType().toString() + ")";
 					iIndex++;
 				}
 
@@ -107,25 +107,26 @@ extends AToolBarAction
 				searchBox.removeFocusListener(this);
 			}
 		});
-		
+
 		searchBox.addSelectionListener(new SelectionAdapter()
 		{
 			public void widgetSelected(SelectionEvent e)
 			{
 				String sSearchEntity = searchBox.getItem(searchBox.getSelectionIndex());
-//				sSearchEntity = sSearchEntity.substring(0, sSearchEntity.indexOf(" ("));
+				// sSearchEntity = sSearchEntity.substring(0,
+				// sSearchEntity.indexOf(" ("));
 
 				GeneralManager.get().getViewGLCanvasManager().getDataEntitySearcher()
-						.searchForEntity(sSearchEntity);	
+						.searchForEntity(sSearchEntity);
 			}
 		});
-		
+
 		// Gene search
 		Label entitySearchLabel = new Label(shell, SWT.NULL);
 		entitySearchLabel.setText("Gene search:");
 
 		geneSearchText = new Text(shell, SWT.BORDER | SWT.SINGLE);
-//		geneSearchText.setLayoutData(new GridData(GridData.FILL_BOTH));
+		// geneSearchText.setLayoutData(new GridData(GridData.FILL_BOTH));
 		geneSearchText.addFocusListener(new FocusAdapter()
 		{
 			public void focusGained(FocusEvent e)
@@ -134,7 +135,7 @@ extends AToolBarAction
 				geneSearchText.pack();
 			}
 		});
-		
+
 		geneSearchText.addKeyListener(new KeyAdapter()
 		{
 			public void keyPressed(KeyEvent event)
@@ -158,9 +159,9 @@ extends AToolBarAction
 				}
 			}
 		});
-		
+
 		this.setEnabled(false);
-		
+
 		shell.pack();
 		shell.open();
 	}

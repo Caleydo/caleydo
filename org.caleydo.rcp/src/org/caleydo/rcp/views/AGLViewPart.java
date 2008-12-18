@@ -8,9 +8,6 @@ import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.event.mediator.EMediatorType;
-import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
-import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
@@ -109,14 +106,13 @@ public abstract class AGLViewPart
 		setGLData(glCanvas, iViewID);
 		createPartControlGL();
 
-//		generalManager.getEventPublisher().addSender(
-//				EMediatorType.SELECTION_MEDIATOR, (IMediatorSender)glView);
-//		generalManager.getEventPublisher().addReceiver(
-//				EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver)glView);
+		// generalManager.getEventPublisher().addSender(
+		// EMediatorType.SELECTION_MEDIATOR, (IMediatorSender)glView);
+		// generalManager.getEventPublisher().addReceiver(
+		// EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver)glView);
 
 		return iViewID;
 	}
-
 
 	@Override
 	public void createPartControl(Composite parent)

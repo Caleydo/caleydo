@@ -17,8 +17,8 @@ public class OpenClinicalParCoordsHandler
 	{
 		try
 		{
-			HandlerUtil.getActiveWorkbenchWindow(event)
-				.getActivePage().showView(ClinicalGLParCoordsView.ID);
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(
+					ClinicalGLParCoordsView.ID);
 		}
 		catch (PartInitException e)
 		{

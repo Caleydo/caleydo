@@ -50,7 +50,7 @@ public class GLHeatMapView
 		alToolbar.add(resetViewAction);
 		IAction propagateSelectionAction = new PropagateSelectionsAction(iViewID);
 		alToolbar.add(propagateSelectionAction);
-		
+
 		if (heatMap.isRenderedRemote()
 				&& GeneralManager.get().getPreferenceStore().getBoolean(
 						PreferenceConstants.HM_LIMIT_REMOTE_TO_CONTEXT))
@@ -60,7 +60,6 @@ public class GLHeatMapView
 		alToolbar.add(toggleRenderContextAction);
 		IAction useRandomSamplingAction = new UseRandomSamplingAction(iViewID);
 		alToolbar.add(useRandomSamplingAction);
-		
 
 	}
 

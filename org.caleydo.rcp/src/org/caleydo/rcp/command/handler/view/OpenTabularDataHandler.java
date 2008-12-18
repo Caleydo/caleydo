@@ -18,8 +18,8 @@ public class OpenTabularDataHandler
 	{
 		try
 		{
-			HandlerUtil.getActiveWorkbenchWindow(event)
-				.getActivePage().showView(TabularDataView.ID);
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(
+					TabularDataView.ID);
 		}
 		catch (PartInitException e)
 		{

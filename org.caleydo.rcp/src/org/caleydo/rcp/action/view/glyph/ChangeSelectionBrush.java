@@ -2,7 +2,6 @@ package org.caleydo.rcp.action.view.glyph;
 
 import org.caleydo.core.command.view.rcp.EExternalObjectSetterType;
 import org.caleydo.rcp.action.view.AToolBarAction;
-import org.eclipse.jface.resource.ImageDescriptor;
 
 public class ChangeSelectionBrush
 	extends AToolBarAction
@@ -21,9 +20,9 @@ public class ChangeSelectionBrush
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-//		setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader()
-//				.getResource(ICON)));
-		
+		// setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader()
+		// .getResource(ICON)));
+
 		this.iBrushSize = iBrushSize;
 	}
 
@@ -32,6 +31,7 @@ public class ChangeSelectionBrush
 	{
 		super.run();
 
-		triggerCmdExternalObjectSetter(iBrushSize, EExternalObjectSetterType.GLYPH_SELECTIONBRUSH);
+		triggerCmdExternalObjectSetter(iBrushSize,
+				EExternalObjectSetterType.GLYPH_SELECTIONBRUSH);
 	};
 }

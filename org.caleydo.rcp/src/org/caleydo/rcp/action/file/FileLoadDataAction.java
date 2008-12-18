@@ -21,7 +21,6 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
-import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.dialog.file.FileLoadDataDialog;
 import org.caleydo.rcp.image.IImageKeys;
 import org.eclipse.jface.action.Action;
@@ -99,8 +98,8 @@ public class FileLoadDataAction
 	private int iStartParseFileAtLine = 2;
 
 	private String sDataRepMode = "Normal";
-	//private boolean bLogFilter = false;
-	
+	// private boolean bLogFilter = false;
+
 	private int iOldSetID;
 
 	/**
@@ -119,7 +118,7 @@ public class FileLoadDataAction
 		arComboDataClass = new ArrayList<Combo>();
 		arComboDataType = new ArrayList<Combo>();
 	}
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -156,7 +155,7 @@ public class FileLoadDataAction
 
 		txtFileName = new Text(composite, SWT.BORDER);
 		txtFileName.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
-		
+
 		buttonFileChooser.addSelectionListener(new SelectionAdapter()
 		{
 			@Override
@@ -224,10 +223,10 @@ public class FileLoadDataAction
 				buttonDelimiter[3].setSelection(false);
 				buttonDelimiter[4].setSelection(false);
 				buttonDelimiter[5].setSelection(false);
-				
+
 				if (sFileName.isEmpty())
 					return;
-				
+
 				createDataPreviewTable("\t");
 
 				if (sFileName.isEmpty())
@@ -252,7 +251,7 @@ public class FileLoadDataAction
 				buttonDelimiter[3].setSelection(false);
 				buttonDelimiter[4].setSelection(false);
 				buttonDelimiter[5].setSelection(false);
-				
+
 				if (sFileName.isEmpty())
 					return;
 
@@ -280,10 +279,10 @@ public class FileLoadDataAction
 				buttonDelimiter[3].setSelection(false);
 				buttonDelimiter[4].setSelection(false);
 				buttonDelimiter[5].setSelection(false);
-				
+
 				if (sFileName.isEmpty())
 					return;
-				
+
 				createDataPreviewTable(",");
 
 				if (sFileName.isEmpty())
@@ -308,10 +307,10 @@ public class FileLoadDataAction
 				buttonDelimiter[2].setSelection(false);
 				buttonDelimiter[4].setSelection(false);
 				buttonDelimiter[5].setSelection(false);
-				
+
 				if (sFileName.isEmpty())
 					return;
-				
+
 				createDataPreviewTable(".");
 
 				if (sFileName.isEmpty())
@@ -336,10 +335,10 @@ public class FileLoadDataAction
 				buttonDelimiter[2].setSelection(false);
 				buttonDelimiter[3].setSelection(false);
 				buttonDelimiter[5].setSelection(false);
-				
+
 				if (sFileName.isEmpty())
 					return;
-				
+
 				createDataPreviewTable(" ");
 
 				if (sFileName.isEmpty())
@@ -364,10 +363,10 @@ public class FileLoadDataAction
 				buttonDelimiter[2].setSelection(false);
 				buttonDelimiter[3].setSelection(false);
 				buttonDelimiter[4].setSelection(false);
-				
+
 				if (sFileName.isEmpty())
 					return;
-				
+
 				createDataPreviewTable(" ");
 
 				if (sFileName.isEmpty())
@@ -424,7 +423,7 @@ public class FileLoadDataAction
 		// delimiterGroup.setText("Math filter");
 
 		final Combo dataRepCombo = new Combo(mathFiltergGroup, SWT.DROP_DOWN);
-		String[] sArOptions = {"Normal", "Log10", "Log2"};
+		String[] sArOptions = { "Normal", "Log10", "Log2" };
 		dataRepCombo.setItems(sArOptions);
 		dataRepCombo.setEnabled(true);
 		dataRepCombo.select(0);
@@ -434,7 +433,7 @@ public class FileLoadDataAction
 			public void widgetSelected(SelectionEvent e)
 			{
 				sDataRepMode = dataRepCombo.getText();
-			
+
 			}
 		});
 
@@ -521,7 +520,7 @@ public class FileLoadDataAction
 		data.heightHint = 300;
 		data.widthHint = 700;
 		previewTable.setLayoutData(data);
-		
+
 		// Check if an external file name is given to the action
 		if (!sInputFile.isEmpty())
 		{
@@ -529,7 +528,7 @@ public class FileLoadDataAction
 			sFileName = sInputFile;
 			sDataRepMode = "Log10";
 			dataRepCombo.select(1);
-			 
+
 			createDataPreviewTable("\t");
 		}
 	}
@@ -620,7 +619,7 @@ public class FileLoadDataAction
 		BufferedReader brFile;
 		try
 		{
-			brFile =  GeneralManager.get().getResourceLoader().getResource(sFileName);
+			brFile = GeneralManager.get().getResourceLoader().getResource(sFileName);
 
 			String sLine = "";
 
@@ -756,8 +755,7 @@ public class FileLoadDataAction
 				comboTmpDataClass.select(1);
 			else
 				comboTmpDataClass.select(2); // by default set columns to
-												// experiment
-
+			// experiment
 
 			// should be ignored
 			arComboDataClass.add(comboTmpDataClass);
@@ -766,14 +764,12 @@ public class FileLoadDataAction
 			editor.grabHorizontal = true;
 			editor.setEditor(comboTmpDataClass, tmpItem, iColIndex);
 
-
 			// Set corresponding column background color to yellow
 			for (TableItem tmpTableItem : previewTable.getItems())
 			{
 				tmpTableItem.setBackground(arComboDataClass.indexOf(comboTmpDataClass) + 1,
 						Display.getCurrent().getSystemColor(SWT.COLOR_RED));
 			}
-
 
 			comboTmpDataClass.addMouseTrackListener(new MouseTrackAdapter()
 			{
@@ -874,7 +870,7 @@ public class FileLoadDataAction
 				comboTmpDataType.select(0);
 			else
 				comboTmpDataType.select(2); // by default set columns to
-											// experiment
+			// experiment
 
 			// should be ignored
 			arComboDataType.add(comboTmpDataType);
@@ -886,7 +882,7 @@ public class FileLoadDataAction
 	}
 
 	public void execute()
-	{	
+	{
 		for (ISet set : GeneralManager.get().getSetManager().getAllItems())
 		{
 			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA)
@@ -895,7 +891,7 @@ public class FileLoadDataAction
 				break;
 			}
 		}
-		
+
 		createData();
 		setDataInViews();
 		clearOldData();
@@ -975,7 +971,6 @@ public class FileLoadDataAction
 		// GeneralManager.get().getSWTGUIManager();
 		// iSWTGUIManager.setProgressBarVisible(true);
 
-
 		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sInputPattern, sDelimiter,
 				iStartParseFileAtLine - 1, -1);
 		cmdLoadCsv.doCommand();
@@ -1017,18 +1012,18 @@ public class FileLoadDataAction
 				set.setMax(fMax);
 			}
 		}
-	
+
 		if (sDataRepMode.equals("Normal"))
 		{
 			set.setExternalDataRepresentation(EExternalDataRepresentation.NORMAL, true);
 		}
-		else if(sDataRepMode.equals("Log10"))
+		else if (sDataRepMode.equals("Log10"))
 		{
-			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG10, true);	
+			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG10, true);
 		}
-		else if(sDataRepMode.equals("Log2"))
+		else if (sDataRepMode.equals("Log2"))
 		{
-			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG2, true);	
+			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG2, true);
 		}
 		else
 		{
@@ -1051,7 +1046,7 @@ public class FileLoadDataAction
 		}
 	}
 
-	private void clearOldData() 
+	private void clearOldData()
 	{
 		GeneralManager.get().getSetManager().unregisterItem(iOldSetID);
 	}
@@ -1067,7 +1062,7 @@ public class FileLoadDataAction
 		FileLoadDataDialog dialog = new FileLoadDataDialog(new Shell());
 		dialog.open();
 	}
-	
+
 	@Override
 	public void dispose()
 	{

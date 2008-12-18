@@ -12,21 +12,21 @@ public class HTMLBrowserView
 	extends ViewPart
 {
 	public static final String ID = "org.caleydo.rcp.views.HTMLBrowserView";
-	
+
 	private HTMLBrowserViewRep browserView;
 
 	@Override
 	public void createPartControl(Composite parent)
-	{	
-		browserView = (HTMLBrowserViewRep) GeneralManager.get().getViewGLCanvasManager().createView(
-				EManagedObjectType.VIEW_SWT_BROWSER_GENOME, -1, "Browser");
+	{
+		browserView = (HTMLBrowserViewRep) GeneralManager.get().getViewGLCanvasManager()
+				.createView(EManagedObjectType.VIEW_SWT_BROWSER_GENOME, -1, "Browser");
 
 		browserView.initViewRCP(parent);
 		browserView.drawView();
 
-		GeneralManager.get().getEventPublisher().addReceiver(
-				EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver)browserView);
-		
+		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
+				(IMediatorReceiver) browserView);
+
 		GeneralManager.get().getViewGLCanvasManager().registerItem(browserView);
 	}
 
@@ -35,21 +35,18 @@ public class HTMLBrowserView
 	{
 
 	}
-	
+
 	@Override
 	public void dispose()
 	{
 		super.dispose();
-		
-		GeneralManager.get().getEventPublisher().removeReceiver(
-				EMediatorType.SELECTION_MEDIATOR,
-				(IMediatorReceiver)browserView);
 
 		GeneralManager.get().getEventPublisher().removeReceiver(
-				EMediatorType.SELECTION_MEDIATOR,
-				(IMediatorReceiver)browserView);
-		
-		GeneralManager.get().getViewGLCanvasManager()
-			.unregisterItem(browserView.getID());
+				EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver) browserView);
+
+		GeneralManager.get().getEventPublisher().removeReceiver(
+				EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver) browserView);
+
+		GeneralManager.get().getViewGLCanvasManager().unregisterItem(browserView.getID());
 	}
 }

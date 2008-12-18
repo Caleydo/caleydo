@@ -12,7 +12,7 @@ public class InFocusAction
 	extends AToolBarAction
 {
 	public static final String TEXT = "Switch Focus";
-	//TODO: own icon for "Switch Focus"
+	// TODO: own icon for "Switch Focus"
 	public static final String ICON = "resources/icons/view/storagebased/change_orientation.png";
 
 	private boolean bEnable = false;

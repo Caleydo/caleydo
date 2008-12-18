@@ -54,26 +54,26 @@ public class HeatMapPreferencePage
 				getFieldEditorParent());
 		numRandomSamplesFE.loadDefault();
 		addField(numRandomSamplesFE);
-		
+
 		numSamplesPerTexture = new IntegerFieldEditor(
-				PreferenceConstants.HM_NUM_SAMPLES_PER_TEXTURE, "Number of Samples per Texture:",
-				getFieldEditorParent());
+				PreferenceConstants.HM_NUM_SAMPLES_PER_TEXTURE,
+				"Number of Samples per Texture:", getFieldEditorParent());
 		numSamplesPerTexture.loadDefault();
 		addField(numSamplesPerTexture);
-		
+
 		numSamplesPerHeatmap = new IntegerFieldEditor(
-				PreferenceConstants.HM_NUM_SAMPLES_PER_HEATMAP, "Number of Samples per Heatmap:",
-				getFieldEditorParent());
+				PreferenceConstants.HM_NUM_SAMPLES_PER_HEATMAP,
+				"Number of Samples per Heatmap:", getFieldEditorParent());
 		numSamplesPerHeatmap.loadDefault();
 		addField(numSamplesPerHeatmap);
-		
+
 		limitRemoteToContext = new BooleanFieldEditor(
 				PreferenceConstants.HM_LIMIT_REMOTE_TO_CONTEXT,
 				"Limit remote views to show contextual information only",
 				getFieldEditorParent());
 		limitRemoteToContext.loadDefault();
 		addField(limitRemoteToContext);
-		
+
 		getFieldEditorParent().pack();
 	}
 

@@ -17,14 +17,14 @@ public class OpenHierarchicalHeatMapHandler
 	{
 		try
 		{
-			HandlerUtil.getActiveWorkbenchWindow(event)
-				.getActivePage().showView(GLHierarchicalHeatMapView.ID);
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(
+					GLHierarchicalHeatMapView.ID);
 		}
 		catch (PartInitException e)
 		{
 			e.printStackTrace();
 		}
-		
+
 		return null;
 	}
 

@@ -15,9 +15,9 @@ public class ExportHandler
 {
 	public Object execute(ExecutionEvent event) throws ExecutionException
 	{
-		Collection<ISet> colSets =  GeneralManager.get().getSetManager().getAllItems();
-		
-		for(ISet set : colSets)
+		Collection<ISet> colSets = GeneralManager.get().getSetManager().getAllItems();
+
+		for (ISet set : colSets)
 		{
 			set.export();
 		}

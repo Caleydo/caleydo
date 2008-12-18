@@ -23,20 +23,21 @@ public class PathwayLoadingProgressIndicatorAction
 			public IStatus run(IProgressMonitor monitor)
 			{
 				monitor.beginTask("Loading pathways", 100);
-				
+
 				monitor.subTask("KEGG");
-				PathwayLoaderThread.loadAllPathwaysByType(GeneralManager.get(), 
-						GeneralManager.get().getPathwayManager()
-							.getPathwayDatabaseByType(EPathwayDatabaseType.KEGG));
+				PathwayLoaderThread.loadAllPathwaysByType(GeneralManager.get(), GeneralManager
+						.get().getPathwayManager().getPathwayDatabaseByType(
+								EPathwayDatabaseType.KEGG));
 				monitor.worked(50);
-				
+
 				monitor.subTask("BioCarta");
-				PathwayLoaderThread.loadAllPathwaysByType(GeneralManager.get(), 
-						GeneralManager.get().getPathwayManager()
-							.getPathwayDatabaseByType(EPathwayDatabaseType.BIOCARTA));				monitor.worked(50);
-		
+				PathwayLoaderThread.loadAllPathwaysByType(GeneralManager.get(), GeneralManager
+						.get().getPathwayManager().getPathwayDatabaseByType(
+								EPathwayDatabaseType.BIOCARTA));
+				monitor.worked(50);
+
 				GeneralManager.get().getPathwayManager().notifyPathwayLoadingFinished(true);
-							
+
 				monitor.done();
 
 				return Status.OK_STATUS;
@@ -55,7 +56,7 @@ public class PathwayLoadingProgressIndicatorAction
 	{
 		// TODO Auto-generated method stub
 	}
-	
+
 	public void selectionChanged(IAction action, ISelection selection)
 	{
 		// TODO Auto-generated method stub

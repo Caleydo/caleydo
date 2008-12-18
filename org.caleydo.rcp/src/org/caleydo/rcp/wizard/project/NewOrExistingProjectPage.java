@@ -21,14 +21,11 @@ public class NewOrExistingProjectPage
 
 	public static final String PAGE_NAME = "Project Wizard";
 
-	public enum EProjectType {
-		NEW_PROJECT,
-		EXISTING_PROJECT,
-		PATHWAY_VIEWER_MODE,
-		SAMPLE_DATA_RANDOM,
-		SAMPLE_DATA_REAL
+	public enum EProjectType
+	{
+		NEW_PROJECT, EXISTING_PROJECT, PATHWAY_VIEWER_MODE, SAMPLE_DATA_RANDOM, SAMPLE_DATA_REAL
 	}
-	
+
 	private EProjectType projectType;
 
 	/**
@@ -38,12 +35,11 @@ public class NewOrExistingProjectPage
 	{
 		super(PAGE_NAME, PAGE_NAME, null);
 
-		this.setImageDescriptor(ImageDescriptor.createFromURL(
-				this.getClass().getClassLoader().getResource(
-						"resources/wizard/wizard.png")));
-		
+		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader()
+				.getResource("resources/wizard/wizard.png")));
+
 		this.setDescription("Do you want to create a new project or load an existing one?");
-		
+
 		setPageComplete(false);
 	}
 
@@ -60,18 +56,20 @@ public class NewOrExistingProjectPage
 		Button buttonExistingProject = new Button(composite, SWT.RADIO);
 		buttonExistingProject.setText("Open existing project");
 		buttonExistingProject.setEnabled(false);
-		
+
 		Button buttonPathwayViewerMode = new Button(composite, SWT.RADIO);
 		buttonPathwayViewerMode.setText("Pathway viewer mode");
-		
+
 		Button buttonRandomSampleDataMode = new Button(composite, SWT.RADIO);
-		buttonRandomSampleDataMode.setText("Start with random generated sample gene expression data");
-		
+		buttonRandomSampleDataMode
+				.setText("Start with random generated sample gene expression data");
+
 		Button buttonSampleDataMode = new Button(composite, SWT.RADIO);
-		buttonSampleDataMode.setText("Start with sample gene expression data\n(see: http://www.ncbi.nlm.nih.gov/pubmed/17241883)");
-		
-//		Link sampleDataPaperLink = new Link(composite, SWT.BORDER);
-//		sampleDataPaperLink.setText("See: <a>http://www.ncbi.nlm.nih.gov/pubmed/17241883</a>");
+		buttonSampleDataMode
+				.setText("Start with sample gene expression data\n(see: http://www.ncbi.nlm.nih.gov/pubmed/17241883)");
+
+		// Link sampleDataPaperLink = new Link(composite, SWT.BORDER);
+		// sampleDataPaperLink.setText("See: <a>http://www.ncbi.nlm.nih.gov/pubmed/17241883</a>");
 
 		buttonNewProject.addSelectionListener(new SelectionAdapter()
 		{
@@ -90,7 +88,7 @@ public class NewOrExistingProjectPage
 				setPageComplete(true);
 			}
 		});
-		
+
 		buttonPathwayViewerMode.addSelectionListener(new SelectionAdapter()
 		{
 			public void widgetSelected(SelectionEvent e)
@@ -99,7 +97,7 @@ public class NewOrExistingProjectPage
 				setPageComplete(true);
 			}
 		});
-		
+
 		buttonRandomSampleDataMode.addSelectionListener(new SelectionAdapter()
 		{
 			public void widgetSelected(SelectionEvent e)
@@ -108,7 +106,7 @@ public class NewOrExistingProjectPage
 				setPageComplete(true);
 			}
 		});
-		
+
 		buttonSampleDataMode.addSelectionListener(new SelectionAdapter()
 		{
 			public void widgetSelected(SelectionEvent e)
@@ -117,7 +115,7 @@ public class NewOrExistingProjectPage
 				setPageComplete(true);
 			}
 		});
-		
+
 		setControl(composite);
 		composite.pack();
 	}

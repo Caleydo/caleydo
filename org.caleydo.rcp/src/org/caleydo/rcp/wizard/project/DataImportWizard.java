@@ -18,14 +18,14 @@ public class DataImportWizard
 {
 
 	private String sInputFile;
-	
+
 	/**
 	 * Constructor.
 	 */
 	public DataImportWizard(final Shell parentShell)
 	{
 		super();
-		
+
 		parentShell.setText("Open project file");
 		Monitor primary = parentShell.getDisplay().getPrimaryMonitor();
 		Rectangle bounds = primary.getBounds();
@@ -42,10 +42,9 @@ public class DataImportWizard
 	public DataImportWizard(final Shell parentShell, String sInputFile)
 	{
 		this(parentShell);
-		
+
 		this.sInputFile = sInputFile;
 	}
-
 
 	@Override
 	public void addPages()
@@ -64,7 +63,7 @@ public class DataImportWizard
 			Application.applicationMode = EApplicationMode.STANDARD;
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -82,7 +81,7 @@ public class DataImportWizard
 		{
 			return true;
 		}
-		
+
 		return false;
 	}
 
