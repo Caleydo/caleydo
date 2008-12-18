@@ -31,7 +31,7 @@ public class SearchBar
 
 	private Text geneSearchText;
 
-	private final static int MAX_PATHWAY_TITLE_LENGTH = 65;
+//	private final static int MAX_PATHWAY_TITLE_LENGTH = 65;
 
 	/**
 	 * Constructor.

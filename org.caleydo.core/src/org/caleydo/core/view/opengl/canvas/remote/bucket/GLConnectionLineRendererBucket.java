@@ -4,7 +4,6 @@ import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import java.util.ArrayList;
-import java.util.Iterator;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectedElementRep;

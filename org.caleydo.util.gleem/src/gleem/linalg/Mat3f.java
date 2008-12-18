@@ -30,7 +30,6 @@
 
 package gleem.linalg;
 
-import java.io.Serializable;
 
 /**
  * 3x3 matrix class useful for simple linear algebra. Representation is (as
@@ -39,9 +38,7 @@ import java.io.Serializable;
  */
 
 public class Mat3f
-	implements Serializable
 {
-
 	private float[] data;
 
 	/** Creates new matrix initialized to the zero matrix */

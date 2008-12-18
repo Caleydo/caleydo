@@ -99,7 +99,7 @@ public class CmdLoadFileLookupTable
 		sLookupTableDelimiter = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE2
 				.getXmlKey());
 
-		int[] iArrayStartStop = StringConversionTool.convertStringToIntArrayVariableLength(
+		int[] iArrayStartStop = StringConversionTool.convertStringToIntArray(
 				parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey()), " ");
 
 		iStartPareseFileAtLine = iArrayStartStop[0];

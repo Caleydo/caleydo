@@ -30,7 +30,6 @@
 
 package gleem.linalg;
 
-import java.io.Serializable;
 
 /**
  * 2x2 matrix class useful for simple linear algebra. Representation is (as
@@ -39,7 +38,6 @@ import java.io.Serializable;
  */
 
 public class Mat2f
-	implements Serializable
 {
 
 	private float[] data;

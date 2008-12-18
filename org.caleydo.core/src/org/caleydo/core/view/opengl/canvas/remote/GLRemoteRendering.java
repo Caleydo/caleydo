@@ -28,6 +28,7 @@ import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.data.selection.SelectionItem;
+import org.caleydo.core.manager.IViewGLCanvasManager;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
@@ -68,6 +69,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
+import org.eclipse.jface.viewers.IElementComparer;
 import org.eclipse.swt.SWT;
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
@@ -344,6 +346,16 @@ public class GLRemoteRendering
 
 				mouseOverElement.setContainedElementID(iOriginElementID);
 				originElement.setContainedElementID(iMouseOverElementID);
+				
+				IViewGLCanvasManager viewGLCanvasManager = generalManager.getViewGLCanvasManager();
+				
+				AGLEventListener originView = viewGLCanvasManager.getGLEventListener(iOriginElementID);
+				if (originView != null)
+					originView.setRemoteLevelElement(mouseOverElement);
+				
+				AGLEventListener mouseOverView = viewGLCanvasManager.getGLEventListener(iMouseOverElementID);
+				if (mouseOverView != null)
+					mouseOverView.setRemoteLevelElement(originElement);
 			}
 
 			// if (iDraggedObjectId != -1 && iMouseOverObjectID !=
@@ -518,8 +530,22 @@ public class GLRemoteRendering
 		}
 	}
 
-	private void renderBucketWall(final GL gl, boolean bRenderBorder)
+	private void renderBucketWall(final GL gl, boolean bRenderBorder,
+			RemoteLevelElement element)
 	{
+		// Highlight potential view drop destination
+		if (dragAndDrop.isDragActionRunning() && element.getID() == iMouseOverObjectID)
+		{
+			gl.glLineWidth(5);
+			gl.glColor4f(0.2f, 0.2f, 0.2f,1);
+			gl.glBegin(GL.GL_LINE_LOOP);
+			gl.glVertex3f(0, 0, 0.01f);
+			gl.glVertex3f(0, 8, 0.01f);
+			gl.glVertex3f(8, 8, 0.01f);
+			gl.glVertex3f(8, 0, 0.01f);
+			gl.glEnd();			
+		}
+		
 		if (arSlerpActions.isEmpty())
 			gl.glColor4f(1f, 1f, 1f, 1.0f); // normal mode
 		else
@@ -653,9 +679,9 @@ public class GLRemoteRendering
 		if (level != selectionLevel && level != poolLevel)
 		{
 			if (level.equals(focusLevel))
-				renderBucketWall(gl, false);
+				renderBucketWall(gl, false, element);
 			else
-				renderBucketWall(gl, true);
+				renderBucketWall(gl, true, element);
 		}
 
 		if (!bEnableNavigationOverlay || !level.equals(stackLevel))
@@ -706,7 +732,7 @@ public class GLRemoteRendering
 		if (!level.equals(transitionLevel) && !level.equals(spawnLevel)
 				&& !level.equals(poolLevel) && !level.equals(selectionLevel))
 		{
-			renderBucketWall(gl, true);
+			renderBucketWall(gl, true, element);
 		}
 
 		gl.glPopName();
@@ -722,63 +748,83 @@ public class GLRemoteRendering
 		float fBilboardWidth = 0.1f;
 
 		// Bucket stack top
-		gl.glTranslatef(2 - fBilboardWidth, 2 - fBilboardWidth, 4f);
-		renderSingleHandle(gl, stackLevel.getElementByPositionIndex(0).getID(),
-				EPickingType.BUCKET_REMOVE_ICON_SELECTION,
-				EIconTextures.NAVIGATION_REMOVE_VIEW);
-		gl.glTranslatef(-0.17f, 0, 0);
-		renderSingleHandle(gl, stackLevel.getElementByPositionIndex(0).getID(),
-				EPickingType.BUCKET_DRAG_ICON_SELECTION, EIconTextures.NAVIGATION_DRAG_VIEW);
-		gl.glTranslatef(-2 + 0.17f + fBilboardWidth, -2 + fBilboardWidth, -4f);
+		RemoteLevelElement element = stackLevel.getElementByPositionIndex(0);
+		if (element.getContainedElementID() != -1)
+		{
+			gl.glTranslatef(2 - fBilboardWidth, 2 - fBilboardWidth, 4f);
+			renderSingleHandle(gl, element.getID(),
+					EPickingType.BUCKET_REMOVE_ICON_SELECTION,
+					EIconTextures.NAVIGATION_REMOVE_VIEW);
+			gl.glTranslatef(-0.17f, 0, 0);
+			renderSingleHandle(gl, element.getID(),
+					EPickingType.BUCKET_DRAG_ICON_SELECTION, EIconTextures.NAVIGATION_DRAG_VIEW);
+			gl.glTranslatef(-2 + 0.17f + fBilboardWidth, -2 + fBilboardWidth, -4f);
+		}
 
 		// Bucket stack left
-		gl.glTranslatef(-2f / fAspectRatio + 0.8f + 0.1f, 1.9f, 4);
-		gl.glRotatef(90, 0, 0, 1);
-		renderSingleHandle(gl, stackLevel.getElementByPositionIndex(1).getID(),
-				EPickingType.BUCKET_REMOVE_ICON_SELECTION,
-				EIconTextures.NAVIGATION_REMOVE_VIEW);
-		gl.glTranslatef(-0.17f, 0, 0);
-		renderSingleHandle(gl, stackLevel.getElementByPositionIndex(1).getID(),
-				EPickingType.BUCKET_DRAG_ICON_SELECTION, EIconTextures.NAVIGATION_DRAG_VIEW);
-		gl.glRotatef(-90, 0, 0, 1);
-		gl.glTranslatef(2f / fAspectRatio - 0.8f - 0.1f, -1.9f + 0.17f, -4f);
-
+		element = stackLevel.getElementByPositionIndex(1);
+		if (element.getContainedElementID() != -1)
+		{
+			gl.glTranslatef(-2f / fAspectRatio + 0.8f + 0.1f, 1.9f, 4);
+			gl.glRotatef(90, 0, 0, 1);
+			renderSingleHandle(gl, element.getID(),
+					EPickingType.BUCKET_REMOVE_ICON_SELECTION,
+					EIconTextures.NAVIGATION_REMOVE_VIEW);
+			gl.glTranslatef(-0.17f, 0, 0);
+			renderSingleHandle(gl, element.getID(),
+					EPickingType.BUCKET_DRAG_ICON_SELECTION, EIconTextures.NAVIGATION_DRAG_VIEW);
+			gl.glRotatef(-90, 0, 0, 1);
+			gl.glTranslatef(2f / fAspectRatio - 0.8f - 0.1f, -1.9f + 0.17f, -4f);
+		}
+		
 		// Bucket stack bottom
-		gl.glTranslatef(2 - fBilboardWidth, -2 + 0.1f, 4f);
-		gl.glRotatef(180, 1, 0, 0);
-		renderSingleHandle(gl, stackLevel.getElementByPositionIndex(2).getID(),
-				EPickingType.BUCKET_REMOVE_ICON_SELECTION,
-				EIconTextures.NAVIGATION_REMOVE_VIEW);
-		gl.glTranslatef(-0.17f, 0, 0);
-		renderSingleHandle(gl, stackLevel.getElementByPositionIndex(2).getID(),
-				EPickingType.BUCKET_DRAG_ICON_SELECTION, EIconTextures.NAVIGATION_DRAG_VIEW);
-		gl.glRotatef(-180, 1, 0, 0);
-		gl.glTranslatef(-2 + 0.17f + fBilboardWidth, 2 - 0.1f, -4f);
+		element = stackLevel.getElementByPositionIndex(2);
+		if (element.getContainedElementID() != -1)
+		{
+			gl.glTranslatef(2 - fBilboardWidth, -2 + 0.1f, 4f);
+			gl.glRotatef(180, 1, 0, 0);
+			renderSingleHandle(gl,element.getID(),
+					EPickingType.BUCKET_REMOVE_ICON_SELECTION,
+					EIconTextures.NAVIGATION_REMOVE_VIEW);
+			gl.glTranslatef(-0.17f, 0, 0);
+			renderSingleHandle(gl, element.getID(),
+					EPickingType.BUCKET_DRAG_ICON_SELECTION, EIconTextures.NAVIGATION_DRAG_VIEW);
+			gl.glRotatef(-180, 1, 0, 0);
+			gl.glTranslatef(-2 + 0.17f + fBilboardWidth, 2 - 0.1f, -4f);
+		}
 
 		// Bucket stack right
-		gl.glTranslatef(2f / fAspectRatio - fBilboardWidth - 0.8f, 1.55f, 4f);
-		gl.glRotatef(-90, 0, 0, 1);
-		renderSingleHandle(gl, stackLevel.getElementByPositionIndex(3).getID(),
-				EPickingType.BUCKET_DRAG_ICON_SELECTION, EIconTextures.NAVIGATION_DRAG_VIEW);
-		gl.glTranslatef(-0.17f, 0, 0);
-		renderSingleHandle(gl, stackLevel.getElementByPositionIndex(3).getID(),
-				EPickingType.BUCKET_REMOVE_ICON_SELECTION,
-				EIconTextures.NAVIGATION_REMOVE_VIEW);
-		gl.glPopName();
-		gl.glRotatef(90, 0, 0, 1);
-		gl.glTranslatef(-2f / fAspectRatio + fBilboardWidth + 0.8f, -1.55f - 0.17f, -4f);
+		element = stackLevel.getElementByPositionIndex(3);
+		if (element.getContainedElementID() != -1)
+		{
+			gl.glTranslatef(2f / fAspectRatio - fBilboardWidth - 0.8f, 1.55f, 4f);
+			gl.glRotatef(-90, 0, 0, 1);
+			renderSingleHandle(gl, stackLevel.getElementByPositionIndex(3).getID(),
+					EPickingType.BUCKET_DRAG_ICON_SELECTION, EIconTextures.NAVIGATION_DRAG_VIEW);
+			gl.glTranslatef(-0.17f, 0, 0);
+			renderSingleHandle(gl, stackLevel.getElementByPositionIndex(3).getID(),
+					EPickingType.BUCKET_REMOVE_ICON_SELECTION,
+					EIconTextures.NAVIGATION_REMOVE_VIEW);
+			gl.glPopName();
+			gl.glRotatef(90, 0, 0, 1);
+			gl.glTranslatef(-2f / fAspectRatio + fBilboardWidth + 0.8f, -1.55f - 0.17f, -4f);
+		}
 
 		// Bucket center
-		gl.glTranslatef(2 - 2 * fBilboardWidth, 2 - 2 * fBilboardWidth, 0.05f);
-		gl.glScalef(2, 2, 2);
-		renderSingleHandle(gl, focusLevel.getElementByPositionIndex(0).getID(),
-				EPickingType.BUCKET_REMOVE_ICON_SELECTION,
-				EIconTextures.NAVIGATION_REMOVE_VIEW);
-		gl.glTranslatef(-0.17f, 0, 0);
-		renderSingleHandle(gl, focusLevel.getElementByPositionIndex(0).getID(),
-				EPickingType.BUCKET_DRAG_ICON_SELECTION, EIconTextures.NAVIGATION_DRAG_VIEW);
-		gl.glScalef(1 / 2f, 1 / 2f, 1 / 2f);
-		gl.glTranslatef(-2 + 2 * 0.17f + 2 * fBilboardWidth, -2 + 2 * fBilboardWidth, -0.05f);
+		element = focusLevel.getElementByPositionIndex(0);
+		if (element.getContainedElementID() != -1)
+		{
+			gl.glTranslatef(2 - 2 * fBilboardWidth, 2 - 2 * fBilboardWidth, 0.05f);
+			gl.glScalef(2, 2, 2);
+			renderSingleHandle(gl, element.getID(),
+					EPickingType.BUCKET_REMOVE_ICON_SELECTION,
+					EIconTextures.NAVIGATION_REMOVE_VIEW);
+			gl.glTranslatef(-0.17f, 0, 0);
+			renderSingleHandle(gl, element.getID(),
+					EPickingType.BUCKET_DRAG_ICON_SELECTION, EIconTextures.NAVIGATION_DRAG_VIEW);
+			gl.glScalef(1 / 2f, 1 / 2f, 1 / 2f);
+			gl.glTranslatef(-2 + 2 * 0.17f + 2 * fBilboardWidth, -2 + 2 * fBilboardWidth, -0.05f);
+		}
 
 	}
 
@@ -787,8 +833,6 @@ public class GLRemoteRendering
 	{
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, ePickingType,
 				iRemoteLevelElementID));
-
-		// renderRemoveButton(gl, 0, 0, 0.1f);
 
 		Texture tempTexture = iconTextureManager.getIconTexture(gl, eIconTexture);
 		tempTexture.enable();
@@ -1335,27 +1379,24 @@ public class GLRemoteRendering
 		tempTexture.disable();
 
 		gl.glPopName();
+		gl.glPopName();
 
-//		int fHandleScaleFactor = 20;
-//		gl.glTranslatef(fXOrigin + 7, fYOrigin, 1.8f);
-//		gl.glScalef(fHandleScaleFactor, fHandleScaleFactor, fHandleScaleFactor);
-//		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_REMOVE_ICON_SELECTION,
-//				EIconTextures.NAVIGATION_REMOVE_VIEW);
-//		gl.glTranslatef(0, -0.15f, 0);
-//		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_DRAG_ICON_SELECTION,
-//				EIconTextures.NAVIGATION_DRAG_VIEW);
-//		gl.glTranslatef(0, 0.15f, 0);
-//		gl.glScalef(1 / fHandleScaleFactor, 1 / fHandleScaleFactor, 1 / fHandleScaleFactor);
-//		gl.glTranslatef(-fXOrigin - 7, -fYOrigin, -1.8f);
+		int fHandleScaleFactor = 18;
+		gl.glTranslatef(fXOrigin + 7, fYOrigin, 1.8f);
+		gl.glScalef(fHandleScaleFactor, fHandleScaleFactor, fHandleScaleFactor);
+		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_REMOVE_ICON_SELECTION,
+				EIconTextures.NAVIGATION_REMOVE_VIEW);
+		gl.glTranslatef(0, -0.15f, 0);
+		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_DRAG_ICON_SELECTION,
+				EIconTextures.NAVIGATION_DRAG_VIEW);
+		gl.glTranslatef(0, 0.15f, 0);
+		gl.glScalef(1f / fHandleScaleFactor, 1f / fHandleScaleFactor, 1f / fHandleScaleFactor);
+		gl.glTranslatef(-fXOrigin - 7, -fYOrigin, -1.8f);
 
-		// gl.glPushName(pickingManager.getPickingID(iUniqueID,
-		// EPickingType.BUCKET_REMOVE_ICON_SELECTION, iMouseOverObjectID));
-		//
-		// renderRemoveButton(gl, fXOrigin + 2.5f, fYOrigin + 1f, 1.8f);
-		//
-		// gl.glPopName();
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION,
-				iMouseOverObjectID));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID, 
+				EPickingType.VIEW_SELECTION, element.getID()));
 	}
 
 	private void doSlerpActions(final GL gl)
@@ -1394,14 +1435,7 @@ public class GLRemoteRendering
 		{
 			slerpMod.playSlerpSound();
 		}
-
-		// generalManager.getLogger().log(Level.INFO,
-		// "Slerp action running from "
-		// + slerpAction.getOriginHierarchyLevel() + ": " +
-		// slerpAction.getOriginPosIndex()
-		// + " to " + slerpAction.getDestinationHierarchyLevel() + ": " +
-		// slerpAction.getDestinationPosIndex());
-
+		
 		Transform transform = slerpMod.interpolate(slerpAction.getOriginRemoteLevelElement()
 				.getTransform(),
 				slerpAction.getDestinationRemoteLevelElement().getTransform(),
@@ -1514,6 +1548,9 @@ public class GLRemoteRendering
 		arSlerpActions.clear();
 
 		int iViewID = element.getContainedElementID();
+		
+		if (iViewID == -1)
+			return;
 
 		// Only broadcast elements if view is moved from pool to bucket
 		if (poolLevel.containsElement(element))
@@ -1809,6 +1846,10 @@ public class GLRemoteRendering
 						break;
 					case CLICKED:
 
+						// Do not handle click if element is dragged
+						if (dragAndDrop.isDragActionRunning())
+							break;
+						
 						// Check if view is contained in pool level
 						for (RemoteLevelElement element : poolLevel.getAllElements())
 						{

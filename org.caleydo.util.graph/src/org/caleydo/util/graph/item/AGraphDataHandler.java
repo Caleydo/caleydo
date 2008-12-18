@@ -1,6 +1,5 @@
 package org.caleydo.util.graph.item;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
 
@@ -11,10 +10,8 @@ import java.util.HashMap;
  * @author Michael Kalkusch
  */
 public abstract class AGraphDataHandler
-	implements IGraphDataHandler, Serializable
+	implements IGraphDataHandler
 {
-	private static final long serialVersionUID = 1L;
-
 	private static final int iInitialSize = 3;
 
 	protected final HashMap<Integer, Object> key_2_data;

@@ -3,7 +3,6 @@ package org.caleydo.core.data.graph.pathway.item.vertex;
 import java.io.Serializable;
 import java.util.StringTokenizer;
 import org.caleydo.core.data.graph.ACaleydoGraphItem;
-import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 
@@ -85,14 +84,13 @@ public class PathwayVertexGraphItemRep
 
 		while (sToken.hasMoreTokens())
 		{
-			short shXCoord = (short) StringConversionTool.convertStringToInt(sToken
-					.nextToken(), 0);
+			// Filter white spaces
+			short shXCoord = Short.valueOf(sToken.nextToken().replace(" ", "")).shortValue();
 
 			if (!sToken.hasMoreTokens())
 				return;
 
-			short shYCoord = (short) StringConversionTool.convertStringToInt(sToken
-					.nextToken(), 0);
+			short shYCoord = Short.valueOf(sToken.nextToken().replace(" ", "")).shortValue();
 
 			shArCoords[iCount][0] = shXCoord;
 			shArCoords[iCount][1] = shYCoord;

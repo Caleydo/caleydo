@@ -121,8 +121,8 @@ public final class FetchPathwayDataPage
 
 				if (bProxyEnable)
 				{
-					cmdPathwayFetch.setProxySettings(txtProxyServer.getText(), new Integer(
-							txtProxyPort.getText()));
+					cmdPathwayFetch.setProxySettings(txtProxyServer.getText(), 
+							Integer.valueOf(txtProxyPort.getText()));
 				}
 
 				cmdPathwayFetch.doCommand();

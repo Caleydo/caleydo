@@ -30,7 +30,6 @@
 
 package gleem.linalg;
 
-import java.io.Serializable;
 
 /**
  * A (very incomplete) 4x4 matrix class. Representation assumes multiplication
@@ -38,7 +37,6 @@ import java.io.Serializable;
  */
 
 public class Mat4f
-	implements Serializable
 {
 
 	/**

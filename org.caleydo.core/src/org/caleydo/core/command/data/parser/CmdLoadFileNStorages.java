@@ -60,15 +60,14 @@ public class CmdLoadFileNStorages
 
 		while (tokenizer.hasMoreTokens())
 		{
-			iAlStorageIDs.add(StringConversionTool.convertStringToInt(tokenizer.nextToken(),
-					-1));
+			iAlStorageIDs.add(Integer.valueOf(tokenizer.nextToken()).intValue());
 		}
 
 		// Convert external IDs from XML file to internal IDs
 		iAlStorageIDs = GeneralManager.get().getIDManager().convertExternalToInternalIDs(
 				iAlStorageIDs);
 
-		int[] iArrayStartStop = StringConversionTool.convertStringToIntArrayVariableLength(
+		int[] iArrayStartStop = StringConversionTool.convertStringToIntArray(
 				parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey()), " ");
 
 		if (iArrayStartStop.length > 0)

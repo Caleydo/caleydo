@@ -30,7 +30,6 @@
 
 package gleem.linalg;
 
-import java.io.Serializable;
 
 /**
  * Arbitrary-size single-precision matrix class. Currently very simple and only
@@ -38,7 +37,6 @@ import java.io.Serializable;
  */
 
 public class Matf
-	implements Serializable
 {
 
 	private float[] data;

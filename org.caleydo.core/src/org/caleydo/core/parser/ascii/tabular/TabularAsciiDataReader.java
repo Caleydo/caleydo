@@ -12,7 +12,6 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.ascii.AbstractLoader;
 import org.caleydo.core.parser.ascii.IParserObject;
-import org.caleydo.core.util.system.StringConversionTool;
 
 /**
  * Loader for tabular data.
@@ -195,15 +194,13 @@ public class TabularAsciiDataReader
 					switch (columnDataType)
 					{
 						case INT:
-
-							alIntBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] = StringConversionTool
-									.convertStringToInt(strTokenLine.nextToken(), -1);
+							alIntBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] = 
+								Integer.valueOf(strTokenLine.nextToken()).intValue();
 							iColumnIndex++;
-
 							break;
 						case FLOAT:
-							alFloatBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] = StringConversionTool
-									.convertStringToFloat(strTokenLine.nextToken(), -1);
+							alFloatBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] = 
+								Float.valueOf(strTokenLine.nextToken()).floatValue();
 							iColumnIndex++;
 							break;
 						case STRING:

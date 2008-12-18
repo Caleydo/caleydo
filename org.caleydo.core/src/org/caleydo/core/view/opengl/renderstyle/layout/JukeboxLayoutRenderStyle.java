@@ -66,7 +66,6 @@ public class JukeboxLayoutRenderStyle
 	@Override
 	public RemoteLevel initStackLevel(boolean bIsZoomedIn)
 	{
-		RemoteLevelElement element;
 		float fTiltAngleDegree = 57; // degree
 		float fTiltAngleRad = Vec3f.convertGrad2Radiant(fTiltAngleDegree);
 		float fLayerYPos = 0.6f;

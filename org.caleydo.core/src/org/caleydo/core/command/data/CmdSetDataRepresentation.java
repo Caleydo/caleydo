@@ -56,7 +56,7 @@ public class CmdSetDataRepresentation
 
 		while (strToken_DataTypes.hasMoreTokens())
 		{
-			iAlIDs.add(new Integer(strToken_DataTypes.nextToken()));
+			iAlIDs.add(Integer.valueOf(strToken_DataTypes.nextToken()).intValue());
 		}
 
 		// Convert external IDs from XML file to internal IDs

@@ -18,7 +18,6 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
 import org.caleydo.rcp.dialog.file.FileLoadDataDialog;
@@ -190,8 +189,7 @@ public class FileLoadDataAction
 			@Override
 			public void modifyText(ModifyEvent e)
 			{
-				iStartParseFileAtLine = StringConversionTool.convertStringToInt(
-						txtStartParseAtLine.getText(), 0);
+				iStartParseFileAtLine = Integer.valueOf(txtStartParseAtLine.getText()).intValue();
 
 				createDataPreviewTable("\t");
 				composite.pack();

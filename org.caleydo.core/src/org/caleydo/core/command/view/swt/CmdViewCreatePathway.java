@@ -6,7 +6,6 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
-import org.caleydo.core.util.system.StringConversionTool;
 
 /**
  * Class implements the command for creating a pathway view.
@@ -85,7 +84,7 @@ public class CmdViewCreatePathway
 
 		while (setToken.hasMoreTokens())
 		{
-			iArSetIDs.add(StringConversionTool.convertStringToInt(setToken.nextToken(), -1));
+			iArSetIDs.add(Integer.valueOf(setToken.nextToken()).intValue());
 		}
 	}
 

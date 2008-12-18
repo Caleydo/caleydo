@@ -3,7 +3,6 @@ package org.caleydo.core.view.opengl.camera;
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
-import java.io.Serializable;
 import org.caleydo.core.data.IUniqueObject;
 
 /**
@@ -15,7 +14,7 @@ import org.caleydo.core.data.IUniqueObject;
  * @author Marc Streit
  */
 public interface IViewCamera
-	extends IUniqueObject, Serializable
+	extends IUniqueObject
 {
 
 	/**

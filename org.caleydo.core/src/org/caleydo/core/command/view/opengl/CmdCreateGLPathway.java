@@ -3,7 +3,6 @@ package org.caleydo.core.command.view.opengl;
 import java.util.ArrayList;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
-import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 
@@ -31,7 +30,7 @@ public class CmdCreateGLPathway
 	{
 		super.setParameterHandler(parameterHandler);
 
-		iPathwayID = StringConversionTool.convertStringToInt(sAttribute4, -1);
+		iPathwayID = Integer.valueOf(sAttribute4).intValue();
 	}
 
 	public void setAttributes(final int iPathwayID, final ArrayList<Integer> iArSetIDs,

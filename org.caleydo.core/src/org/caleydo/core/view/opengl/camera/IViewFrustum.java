@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.camera;
 
-import java.io.Serializable;
 import javax.media.opengl.GL;
 
 /**
@@ -11,7 +10,6 @@ import javax.media.opengl.GL;
  * @author Alexander Lex
  */
 public interface IViewFrustum
-	extends Serializable
 {
 	public EProjectionMode getProjectionMode();
 

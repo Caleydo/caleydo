@@ -29,7 +29,6 @@ import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewType;
@@ -192,8 +191,7 @@ public class TabularDataViewRep
 			@Override
 			public void modifyText(ModifyEvent e)
 			{
-				iStartParseFileAtLine = StringConversionTool.convertStringToInt(
-						txtStartParseAtLine.getText(), 0);
+				iStartParseFileAtLine = Integer.valueOf(txtStartParseAtLine.getText()).intValue();
 
 				createDataPreviewTable("\t");
 				composite.pack();

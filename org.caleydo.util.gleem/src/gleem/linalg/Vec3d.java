@@ -6,14 +6,11 @@
 
 package gleem.linalg;
 
-import java.io.Serializable;
 
 /** 3-element double-precision vector */
 
 public class Vec3d
-	implements Serializable
 {
-
 	private double x;
 	private double y;
 	private double z;

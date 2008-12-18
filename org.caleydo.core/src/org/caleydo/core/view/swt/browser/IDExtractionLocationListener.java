@@ -6,7 +6,6 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
 import org.eclipse.swt.browser.Browser;
@@ -71,7 +70,7 @@ public class IDExtractionLocationListener
 
 			Integer iDavidId = generalManager.getIDMappingManager().getID(
 					EMappingType.ENTREZ_GENE_ID_2_DAVID,
-					StringConversionTool.convertStringToInt(sExtractedID, -1));
+					Integer.valueOf(sExtractedID));
 
 			if (iDavidId == null || iDavidId == -1)
 				return;
@@ -119,8 +118,8 @@ public class IDExtractionLocationListener
 			else
 				return;
 
-			iPathwayId = StringConversionTool.convertStringToInt(event.location.substring(
-					iPathwayIdIndex, event.location.lastIndexOf('+')), 0);
+			iPathwayId = Integer.valueOf(event.location.substring(
+					iPathwayIdIndex, event.location.lastIndexOf('+'))).intValue();
 
 			// iArSelectionId = new int[0];
 			// iArSelectionDepth = new int[0];

@@ -211,7 +211,7 @@ public class KgmlSaxHandler
 
 			if (sAttributeName.equals("id"))
 			{
-				iEntryId = new Integer(attributes.getValue(iAttributeIndex));
+				iEntryId = Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
 			}
 			else if (sAttributeName.equals("name"))
 			{
@@ -367,9 +367,9 @@ public class KgmlSaxHandler
 			if (sAttributeName.equals("type"))
 				sType = attributes.getValue(iAttributeIndex);
 			else if (sAttributeName.equals("entry1"))
-				iSourceVertexId = new Integer(attributes.getValue(iAttributeIndex));
+				iSourceVertexId = Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
 			else if (sAttributeName.equals("entry2"))
-				iTargetVertexId = new Integer(attributes.getValue(iAttributeIndex));
+				iTargetVertexId = Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
 
 			// System.out.println("Attribute name: " +sAttributeName);
 			// System.out.println("Attribute value: "

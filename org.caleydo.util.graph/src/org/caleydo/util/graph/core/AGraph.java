@@ -1,7 +1,7 @@
 package org.caleydo.util.graph.core;
 
-import java.io.Serializable;
 import java.util.HashMap;
+
 import org.caleydo.util.graph.EGraphProperty;
 import org.caleydo.util.graph.IGraph;
 
@@ -12,7 +12,7 @@ import org.caleydo.util.graph.IGraph;
  * @author Michael Kalkusch
  */
 public abstract class AGraph
-	implements IGraph, Serializable
+	implements IGraph
 {
 
 	private static final long serialVersionUID = 1L;

@@ -11,7 +11,6 @@ import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
-import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.ViewType;
 import org.eclipse.swt.widgets.Composite;
@@ -97,9 +96,9 @@ implements IMediatorSender{;
 	// TODO: make case insensitive
 	private boolean searchForNCBIGeneId(final String sNCBIGeneId) {
 		
-		int iNCBIGeneID = StringConversionTool.convertStringToInt(sNCBIGeneId, -1);
+		Integer iNCBIGeneID = Integer.valueOf(sNCBIGeneId);
 		
-		if (iNCBIGeneID == -1)
+		if (iNCBIGeneID == null || iNCBIGeneID == -1)
 			return false;
 		
 		int iDavidID = generalManager.getIDMappingManager().getID(

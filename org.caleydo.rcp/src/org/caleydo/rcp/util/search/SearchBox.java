@@ -1308,10 +1308,11 @@ public final class SearchBox
 		{
 			return null;
 		}
-		ArrayList filteredList = new ArrayList();
+		ArrayList<String> filteredList = new ArrayList<String>();
 
 		String txt = text.getText();
-		Object listItemsArray[] = listItems.toArray();
+		String[] listItemsArray = new String[0];
+		listItems.toArray(listItemsArray);
 		Arrays.sort(listItemsArray);
 		String itemText;
 

@@ -28,9 +28,9 @@ public class CmdFetchPathwayData
 	extends ACmdExternalAttributes
 {
 	private Display display = null;
-	private ProgressBar progressBarKeggPathwayCacher = null;
-	private ProgressBar progressBarKeggPathwayImageCacher = null;
-	private ProgressBar progressBarBioCartaPathwayCacher = null;
+//	private ProgressBar progressBarKeggPathwayCacher = null;
+//	private ProgressBar progressBarKeggPathwayImageCacher = null;
+//	private ProgressBar progressBarBioCartaPathwayCacher = null;
 	private DialogPage parentPage = null;
 
 	private boolean isKeggCacherFinished = false;
@@ -88,9 +88,9 @@ public class CmdFetchPathwayData
 			final ProgressBar progressBarBioCartaPathwayCacher, final DialogPage parentPage)
 	{
 		this.display = display;
-		this.progressBarKeggPathwayCacher = progressBarKeggPathwayCacher;
-		this.progressBarKeggPathwayImageCacher = progressBarKeggPathwayImageCacher;
-		this.progressBarBioCartaPathwayCacher = progressBarBioCartaPathwayCacher;
+//		this.progressBarKeggPathwayCacher = progressBarKeggPathwayCacher;
+//		this.progressBarKeggPathwayImageCacher = progressBarKeggPathwayImageCacher;
+//		this.progressBarBioCartaPathwayCacher = progressBarBioCartaPathwayCacher;
 		this.parentPage = parentPage;
 
 		bioCartaPathwayCacher = new BioCartaPathwayCacher(display,

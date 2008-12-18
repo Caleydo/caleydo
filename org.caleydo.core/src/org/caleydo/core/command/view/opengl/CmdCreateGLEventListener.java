@@ -12,7 +12,6 @@ import org.caleydo.core.manager.IViewGLCanvasManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
-import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -113,12 +112,12 @@ public class CmdCreateGLEventListener
 		float fNear = -1;
 		float fFar = -1;
 
-		fLeft = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
-		fRight = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
-		fBottom = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
-		fTop = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
-		fNear = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
-		fFar = StringConversionTool.convertStringToFloat(frustumToken.nextToken(), -1);
+		fLeft = new Float(frustumToken.nextToken());
+		fRight = new Float(frustumToken.nextToken());
+		fBottom = new Float(frustumToken.nextToken());
+		fTop = new Float(frustumToken.nextToken());
+		fNear = new Float(frustumToken.nextToken());
+		fFar = new Float(frustumToken.nextToken());
 
 		viewFrustum = new ViewFrustum(EProjectionMode.valueOf(sProjectionMode), fLeft, fRight,
 				fBottom, fTop, fNear, fFar);
@@ -151,8 +150,7 @@ public class CmdCreateGLEventListener
 
 			while (divideIDs.hasMoreTokens())
 			{
-				iAlSetIDs.add(StringConversionTool.convertStringToInt(divideIDs.nextToken(),
-						-1));
+				iAlSetIDs.add(Integer.valueOf(divideIDs.nextToken()).intValue());
 			}
 		}
 

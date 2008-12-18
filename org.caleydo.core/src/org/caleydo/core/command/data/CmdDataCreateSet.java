@@ -11,7 +11,6 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
-import org.caleydo.core.util.system.StringConversionTool;
 
 /**
  * Command, creates a new storage.
@@ -111,8 +110,7 @@ public class CmdDataCreateSet
 
 			while (strToken_StorageId.hasMoreTokens())
 			{
-				iAlStorageIDs.add(StringConversionTool.convertStringToInt(strToken_StorageId
-						.nextToken(), -1));
+				iAlStorageIDs.add(Integer.valueOf(strToken_StorageId.nextToken()).intValue());
 			}
 		}
 

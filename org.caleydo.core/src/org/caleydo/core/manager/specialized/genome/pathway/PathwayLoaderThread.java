@@ -10,7 +10,6 @@ import java.util.logging.Level;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.system.StringConversionTool;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 
 /**
@@ -138,10 +137,8 @@ public class PathwayLoaderThread
 
 				tmpPathwayGraph = ((PathwayManager) generalManager.getPathwayManager())
 						.getCurrenPathwayGraph();
-				tmpPathwayGraph.setWidth(StringConversionTool.convertStringToInt(tokenizer
-						.nextToken(), -1));
-				tmpPathwayGraph.setHeight(StringConversionTool.convertStringToInt(tokenizer
-						.nextToken(), -1));
+				tmpPathwayGraph.setWidth(Integer.valueOf(tokenizer.nextToken()).intValue());
+				tmpPathwayGraph.setHeight(Integer.valueOf(tokenizer.nextToken()).intValue());
 
 				int iImageWidth = tmpPathwayGraph.getWidth();
 				int iImageHeight = tmpPathwayGraph.getHeight();

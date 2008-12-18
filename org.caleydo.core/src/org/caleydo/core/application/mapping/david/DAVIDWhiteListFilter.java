@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
-import org.caleydo.core.util.system.StringConversionTool;
 
 /**
  * @author Marc Streit
@@ -45,7 +44,7 @@ public class DAVIDWhiteListFilter
 
 		while ((sFilter = whitelist.readLine()) != null)
 		{
-			alFilter.add(StringConversionTool.convertStringToInt(sFilter, -1));
+			alFilter.add(Integer.valueOf(sFilter).intValue());
 		}
 		whitelist.close();
 
@@ -54,8 +53,7 @@ public class DAVIDWhiteListFilter
 		{
 			tokenizer = new StringTokenizer(sInputLine, "\t");
 
-			if (alFilter.contains(StringConversionTool.convertStringToInt(tokenizer
-					.nextToken(), -1)))// &&
+			if (alFilter.contains(Integer.valueOf(tokenizer.nextToken()).intValue()))// &&
 			// sInputLine.contains("\tEG"))
 			{
 				writer.println(sInputLine);
