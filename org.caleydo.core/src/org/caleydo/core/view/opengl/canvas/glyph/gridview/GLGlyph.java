@@ -38,7 +38,6 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.JoglMouseListener;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GlyphRenderStyle;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -287,7 +286,6 @@ public class GLGlyph
 
 	@Override
 	public synchronized void initRemote(final GL gl, final int iRemoteViewID,
-			final RemoteLevel layer,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 

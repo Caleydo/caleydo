@@ -28,7 +28,7 @@ import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
 import com.sun.opengl.util.texture.Texture;
@@ -82,6 +82,12 @@ public abstract class AGLEventListener
 	protected float fAspectRatio = 1f;
 
 	protected EDetailLevel detailLevel = EDetailLevel.HIGH;
+	
+	/**
+	 * The remote level element in which the view is placed.
+	 * This variable is only set when the view is rendered remote.
+	 */
+	protected RemoteLevelElement remoteLevelElement;
 
 	protected boolean bIsDisplayListDirtyLocal = true;
 	protected boolean bIsDisplayListDirtyRemote = true;
@@ -302,7 +308,6 @@ public abstract class AGLEventListener
 	 * @param gl
 	 */
 	public abstract void initRemote(final GL gl, final int iRemoteViewID,
-			final RemoteLevel level,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering remoteRenderingGLCanvas);
 
@@ -450,6 +455,16 @@ public abstract class AGLEventListener
 		setDisplayListDirty();
 	}
 
+	public synchronized void setRemoteLevelElement(RemoteLevelElement element)
+	{
+		this.remoteLevelElement = element;
+	}
+	
+	public RemoteLevelElement getRemoteLevelElement()
+	{
+		return remoteLevelElement;
+	}
+	
 	public boolean isRenderedRemote()
 	{
 		if (remoteRenderingGLCanvas == null)

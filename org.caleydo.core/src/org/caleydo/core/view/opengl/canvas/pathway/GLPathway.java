@@ -39,7 +39,6 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.PathwayRenderStyle;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
@@ -141,8 +140,7 @@ public class GLPathway
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID, final RemoteLevel layer,
-			final PickingJoglMouseListener pickingTriggerMouseAdapter,
+	public void initRemote(final GL gl, final int iRemoteViewID, final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;

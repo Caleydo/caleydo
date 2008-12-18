@@ -8,6 +8,8 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.manager.IViewGLCanvasManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
@@ -47,13 +49,15 @@ public class GLConnectionLineRendererBucket
 		matSrc.makeIdent();
 		matDest.makeIdent();
 
-		int iViewID = 0;
+//		int iViewID = 0;
 		RemoteLevel activeLevel = null;
 		RemoteLevelElement remoteLevelElement = null;
 
+		IViewGLCanvasManager viewGLCanvasManager = 
+			GeneralManager.get().getViewGLCanvasManager();
+		
 		for (EIDType idType : connectedElementRepManager.getOccuringIDTypes())
 		{
-
 			ArrayList<ArrayList<Vec3f>> alPointLists = null; 
 
 			for (int iSelectedElementID : connectedElementRepManager.getIDList(
@@ -62,31 +66,12 @@ public class GLConnectionLineRendererBucket
 				for (SelectedElementRep selectedElementRep: connectedElementRepManager
 						.getSelectedElementRepsByElementID(idType, iSelectedElementID))
 				{
-					iViewID = selectedElementRep.getContainingViewID();
-
-					// Check if view is contained in focus level
-					for (RemoteLevelElement element : focusLevel.getAllElements())
-					{
-						if (element.getContainedElementID() == iViewID)
-						{
-							activeLevel = focusLevel;
-							remoteLevelElement = element;
-							break;
-						}
-					}
-
-					// Check if view is contained in stack level
-					for (RemoteLevelElement element : stackLevel.getAllElements())
-					{
-						if (element.getContainedElementID() == iViewID)
-						{
-							activeLevel = stackLevel;
-							remoteLevelElement = element;
-							break;
-						}
-					}
-
-					if (activeLevel != null)
+					remoteLevelElement = viewGLCanvasManager.getGLEventListener(
+							selectedElementRep.getContainingViewID()).getRemoteLevelElement();
+					
+					activeLevel = remoteLevelElement.getRemoteLevel();
+					
+					if (activeLevel == stackLevel || activeLevel == focusLevel)
 					{
 						vecTranslation = remoteLevelElement.getTransform().getTranslation();
 						vecScale = remoteLevelElement.getTransform().getScale();

@@ -39,7 +39,6 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.miniview.GLColorMappingBarMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.spline.Spline3D;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
@@ -182,7 +181,7 @@ public class GLHierarchicalHeatMap
 
 		// FIXME: the two nulls here break the interface, it is not possible to
 		// determine whether a view is rendered remote with this initialization
-		glHeatMapView.initRemote(gl, getID(), null, pickingTriggerMouseAdapter, null);
+		glHeatMapView.initRemote(gl, getID(), pickingTriggerMouseAdapter, null);
 
 		iconTextureManager = new GLIconTextureManager();
 		initData();
@@ -211,8 +210,7 @@ public class GLHierarchicalHeatMap
 	}
 
 	@Override
-	public void initRemote(GL gl, int remoteViewID, RemoteLevel level,
-			PickingJoglMouseListener pickingTriggerMouseAdapter,
+	public void initRemote(GL gl, int remoteViewID, PickingJoglMouseListener pickingTriggerMouseAdapter,
 			IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
 		dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;

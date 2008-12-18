@@ -16,7 +16,6 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphMouseListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 
 /**
  * Rendering glyph views remotely.
@@ -82,8 +81,7 @@ public class GLRemoteGlyph
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID, final RemoteLevel layer,
-			final PickingJoglMouseListener pickingTriggerMouseAdapter,
+	public void initRemote(final GL gl, final int iRemoteViewID, final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
 

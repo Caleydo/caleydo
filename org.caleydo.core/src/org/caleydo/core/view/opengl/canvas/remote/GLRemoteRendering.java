@@ -68,6 +68,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
+import org.eclipse.swt.SWT;
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -252,7 +253,7 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID, final RemoteLevel layer,
+	public void initRemote(final GL gl, final int iRemoteViewID,
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
@@ -280,7 +281,7 @@ public class GLRemoteRendering
 		// selectionLevel.setElementVisibilityById(true,
 		// glSelectionPanel.getID());
 
-		glSelectionPanel.initRemote(gl, getID(), null, pickingTriggerMouseAdapter,
+		glSelectionPanel.initRemote(gl, getID(), pickingTriggerMouseAdapter,
 				remoteRenderingGLCanvas);
 
 		// trashCan.init(gl);
@@ -473,13 +474,14 @@ public class GLRemoteRendering
 
 			if (focusLevel.hasFreePosition())
 			{
-				focusLevel.getNextFree().setContainedElementID(iViewID);
+				RemoteLevelElement element = focusLevel.getNextFree();
+				element.setContainedElementID(iViewID);
 
-				tmpGLEventListener.initRemote(gl, iUniqueID, focusLevel,
-						pickingTriggerMouseAdapter, this);
+				tmpGLEventListener.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this);
 
 				tmpGLEventListener.broadcastElements(ESelectionType.ADD);
 				tmpGLEventListener.setDetailLevel(EDetailLevel.MEDIUM);
+				tmpGLEventListener.setRemoteLevelElement(element);
 
 				generalManager.getGUIBridge().setActiveGLSubView(this, tmpGLEventListener);
 
@@ -487,21 +489,23 @@ public class GLRemoteRendering
 			else if (stackLevel.hasFreePosition()
 					&& !(layoutRenderStyle instanceof ListLayoutRenderStyle))
 			{
-				stackLevel.getNextFree().setContainedElementID(iViewID);
+				RemoteLevelElement element = stackLevel.getNextFree();
+				element.setContainedElementID(iViewID);
 
-				tmpGLEventListener.initRemote(gl, iUniqueID, stackLevel,
-						pickingTriggerMouseAdapter, this);
+				tmpGLEventListener.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this);
 
 				tmpGLEventListener.broadcastElements(ESelectionType.ADD);
 				tmpGLEventListener.setDetailLevel(EDetailLevel.LOW);
+				tmpGLEventListener.setRemoteLevelElement(element);
 			}
 			else if (poolLevel.hasFreePosition())
 			{
-				poolLevel.getNextFree().setContainedElementID(iViewID);
+				RemoteLevelElement element = poolLevel.getNextFree();
+				element.setContainedElementID(iViewID);
 
-				tmpGLEventListener.initRemote(gl, iUniqueID, poolLevel,
-						pickingTriggerMouseAdapter, this);
+				tmpGLEventListener.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this);
 				tmpGLEventListener.setDetailLevel(EDetailLevel.VERY_LOW);
+				tmpGLEventListener.setRemoteLevelElement(element);
 			}
 
 			// pickingTriggerMouseAdapter.addGLCanvas(tmpGLEventListener);
@@ -626,7 +630,7 @@ public class GLRemoteRendering
 				renderPoolSelection(gl, translation.x() + 3f, translation.y() * scale.y()
 						+ 5.3f,
 						(float) textRenderer.getBounds(sRenderText).getWidth() * 0.06f + 23,
-						6f); // 1.8f -> pool focus scaling
+						6f, element); // 1.8f -> pool focus scaling
 
 				gl.glTranslatef(4f, 1.3f, 0);
 
@@ -635,7 +639,7 @@ public class GLRemoteRendering
 
 			textRenderer.begin3DRendering();
 			textRenderer.draw3D(sRenderText, 8.5f, 3, 0, fTextScalingFactor); // scale
-																				// factor
+			// factor
 			textRenderer.end3DRendering();
 		}
 		// Prevent rendering of view textures when simple list view
@@ -806,25 +810,6 @@ public class GLRemoteRendering
 		tempTexture.disable();
 
 		gl.glPopName();
-	}
-
-	private void renderRemoveButton(final GL gl, float fXOrigin, float fYOrigin,
-			float fButtonLength)
-	{
-		gl.glColor4f(1, 1, 1, 1);
-		gl.glLineWidth(2);
-		gl.glBegin(GL.GL_LINE_LOOP);
-		gl.glVertex3f(fXOrigin, fYOrigin, 0f);
-		gl.glVertex3f(fXOrigin, fYOrigin + fButtonLength, 0f);
-		gl.glVertex3f(fXOrigin + fButtonLength, fYOrigin + fButtonLength, 0f);
-		gl.glVertex3f(fXOrigin + fButtonLength, fYOrigin, 0f);
-		gl.glEnd();
-		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(fXOrigin, fYOrigin, 0f);
-		gl.glVertex3f(fXOrigin + fButtonLength, fYOrigin + fButtonLength, 0f);
-		gl.glVertex3f(fXOrigin, fYOrigin + fButtonLength, 0f);
-		gl.glVertex3f(fXOrigin + fButtonLength, fYOrigin, 0f);
-		gl.glEnd();
 	}
 
 	private void renderNavigationOverlay(final GL gl, final int iRemoteLevelElementID)
@@ -1289,7 +1274,7 @@ public class GLRemoteRendering
 	}
 
 	private void renderPoolSelection(final GL gl, float fXOrigin, float fYOrigin,
-			float fWidth, float fHeight)
+			float fWidth, float fHeight, RemoteLevelElement element)
 	{
 		float fPanelSideWidth = 2.5f;
 
@@ -1350,12 +1335,25 @@ public class GLRemoteRendering
 		tempTexture.disable();
 
 		gl.glPopName();
-		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.BUCKET_REMOVE_ICON_SELECTION, iMouseOverObjectID));
 
-		renderRemoveButton(gl, fXOrigin + 2.5f, fYOrigin + 1f, 1.8f);
+//		int fHandleScaleFactor = 20;
+//		gl.glTranslatef(fXOrigin + 7, fYOrigin, 1.8f);
+//		gl.glScalef(fHandleScaleFactor, fHandleScaleFactor, fHandleScaleFactor);
+//		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_REMOVE_ICON_SELECTION,
+//				EIconTextures.NAVIGATION_REMOVE_VIEW);
+//		gl.glTranslatef(0, -0.15f, 0);
+//		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_DRAG_ICON_SELECTION,
+//				EIconTextures.NAVIGATION_DRAG_VIEW);
+//		gl.glTranslatef(0, 0.15f, 0);
+//		gl.glScalef(1 / fHandleScaleFactor, 1 / fHandleScaleFactor, 1 / fHandleScaleFactor);
+//		gl.glTranslatef(-fXOrigin - 7, -fYOrigin, -1.8f);
 
-		gl.glPopName();
+		// gl.glPushName(pickingManager.getPickingID(iUniqueID,
+		// EPickingType.BUCKET_REMOVE_ICON_SELECTION, iMouseOverObjectID));
+		//
+		// renderRemoveButton(gl, fXOrigin + 2.5f, fYOrigin + 1f, 1.8f);
+		//
+		// gl.glPopName();
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION,
 				iMouseOverObjectID));
 	}
@@ -1427,73 +1425,70 @@ public class GLRemoteRendering
 
 			slerpAction.finished();
 
-			// // RemoteElementManager destinationLayer =
-			// slerpAction.getDestinationHierarchyLevel();
-			// // destinationLayer.setElementVisibilityById(true, iViewID);
-			//
-			// AGLEventListener glActiveSubView =
-			// GeneralManager.get().getViewGLCanvasManager()
-			// .getGLEventListener(iViewID);
-			//
-			// // Update detail level of moved view when slerp action is
-			// finished;
-			// if (destinationLayer.equals(focusLevel))
-			// {
-			// if (bucketMouseWheelListener.isZoomedIn() || layoutRenderStyle
-			// instanceof ListLayoutRenderStyle)
-			// glActiveSubView.setDetailLevel(EDetailLevel.HIGH);
-			// else
-			// glActiveSubView.setDetailLevel(EDetailLevel.MEDIUM);
-			//				
-			// if (glActiveSubView instanceof GLPathway)
-			// {
-			// ((GLPathway)glActiveSubView).enableTitleRendering(true);
-			// ((GLPathway)glActiveSubView).setAlignment(SWT.CENTER,
-			// SWT.BOTTOM);
-			// }
-			//
-			// generalManager.getGUIBridge().setActiveGLSubView(this,
-			// glActiveSubView);
-			// }
-			// else if (destinationLayer.equals(stackLevel))
-			// {
-			// glActiveSubView.setDetailLevel(EDetailLevel.LOW);
-			//				
-			// if (glActiveSubView instanceof GLPathway)
-			// {
-			// ((GLPathway)glActiveSubView).enableTitleRendering(true);
-			//					
-			// int iStackPos = stackLevel.getPositionIndexByElementID(iViewID);
-			// switch (iStackPos)
-			// {
-			// case 0:
-			// ((GLPathway)glActiveSubView).setAlignment(SWT.CENTER, SWT.TOP);
-			// break;
-			// case 1:
-			// ((GLPathway)glActiveSubView).setAlignment(SWT.LEFT, SWT.BOTTOM);
-			// break;
-			// case 2:
-			// ((GLPathway)glActiveSubView).setAlignment(SWT.CENTER,
-			// SWT.BOTTOM);
-			// break;
-			// case 3:
-			// ((GLPathway)glActiveSubView).setAlignment(SWT.RIGHT, SWT.BOTTOM);
-			// break;
-			// default:
-			// break;
-			// }
-			// }
-			// }
-			// else if (destinationLayer.equals(poolLevel) ||
-			// destinationLayer.equals(selectionLevel))
-			// {
-			// glActiveSubView.setDetailLevel(EDetailLevel.VERY_LOW);
-			//				
-			// if (glActiveSubView instanceof GLPathway)
-			// {
-			// ((GLPathway)glActiveSubView).enableTitleRendering(false);
-			// }
-			// }
+			RemoteLevelElement destinationElement = slerpAction
+					.getDestinationRemoteLevelElement();
+
+			RemoteLevel destinationLevel = destinationElement.getRemoteLevel();
+
+			AGLEventListener glActiveSubView = GeneralManager.get().getViewGLCanvasManager()
+					.getGLEventListener(iViewID);
+
+			glActiveSubView.setRemoteLevelElement(destinationElement);
+
+			// Update detail level of moved view when slerp action is finished;
+			if (destinationLevel == focusLevel)
+			{
+				if (bucketMouseWheelListener.isZoomedIn()
+						|| layoutRenderStyle instanceof ListLayoutRenderStyle)
+					glActiveSubView.setDetailLevel(EDetailLevel.HIGH);
+				else
+					glActiveSubView.setDetailLevel(EDetailLevel.MEDIUM);
+
+				if (glActiveSubView instanceof GLPathway)
+				{
+					((GLPathway) glActiveSubView).enableTitleRendering(true);
+					((GLPathway) glActiveSubView).setAlignment(SWT.CENTER, SWT.BOTTOM);
+				}
+
+				generalManager.getGUIBridge().setActiveGLSubView(this, glActiveSubView);
+			}
+			else if (destinationLevel == stackLevel)
+			{
+				glActiveSubView.setDetailLevel(EDetailLevel.LOW);
+
+				if (glActiveSubView instanceof GLPathway)
+				{
+					((GLPathway) glActiveSubView).enableTitleRendering(true);
+
+					int iStackPos = stackLevel.getPositionIndexByElementID(destinationElement);
+					switch (iStackPos)
+					{
+						case 0:
+							((GLPathway) glActiveSubView).setAlignment(SWT.CENTER, SWT.TOP);
+							break;
+						case 1:
+							((GLPathway) glActiveSubView).setAlignment(SWT.LEFT, SWT.BOTTOM);
+							break;
+						case 2:
+							((GLPathway) glActiveSubView).setAlignment(SWT.CENTER, SWT.BOTTOM);
+							break;
+						case 3:
+							((GLPathway) glActiveSubView).setAlignment(SWT.RIGHT, SWT.BOTTOM);
+							break;
+						default:
+							break;
+					}
+				}
+			}
+			else if (destinationLevel == poolLevel || destinationLevel == selectionLevel)
+			{
+				glActiveSubView.setDetailLevel(EDetailLevel.VERY_LOW);
+
+				if (glActiveSubView instanceof GLPathway)
+				{
+					((GLPathway) glActiveSubView).enableTitleRendering(false);
+				}
+			}
 		}
 
 		// After last slerp action is done the line connections are turned on
@@ -1765,6 +1760,46 @@ public class GLRemoteRendering
 	{
 		switch (pickingType)
 		{
+			case BUCKET_DRAG_ICON_SELECTION:
+
+				switch (pickingMode)
+				{
+					case CLICKED:
+
+						if (!dragAndDrop.isDragActionRunning())
+						{
+							// System.out.println("Start drag!");
+							dragAndDrop.startDragAction(iExternalID);
+						}
+
+						iMouseOverObjectID = iExternalID;
+
+						break;
+				}
+
+				pickingManager.flushHits(iUniqueID, EPickingType.BUCKET_DRAG_ICON_SELECTION);
+				pickingManager.flushHits(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT);
+
+				break;
+
+			case BUCKET_REMOVE_ICON_SELECTION:
+
+				switch (pickingMode)
+				{
+					case CLICKED:
+
+						RemoteLevelElement element = RemoteElementManager.get().getItem(
+								iExternalID);
+
+						clearView(element.getContainedElementID());
+						element.setContainedElementID(-1);
+						break;
+				}
+
+				pickingManager.flushHits(iUniqueID, EPickingType.BUCKET_REMOVE_ICON_SELECTION);
+
+				break;
+
 			case REMOTE_LEVEL_ELEMENT:
 				switch (pickingMode)
 				{
@@ -1847,45 +1882,6 @@ public class GLRemoteRendering
 			// EPickingType.BUCKET_LOCK_ICON_SELECTION);
 			//
 			// break;
-
-			case BUCKET_DRAG_ICON_SELECTION:
-
-				switch (pickingMode)
-				{
-					case CLICKED:
-
-						if (!dragAndDrop.isDragActionRunning())
-						{
-							// System.out.println("Start drag!");
-							dragAndDrop.startDragAction(iExternalID);
-						}
-
-						iMouseOverObjectID = iExternalID;
-
-						break;
-				}
-
-				pickingManager.flushHits(iUniqueID, EPickingType.BUCKET_DRAG_ICON_SELECTION);
-
-				break;
-
-			case BUCKET_REMOVE_ICON_SELECTION:
-
-				switch (pickingMode)
-				{
-					case CLICKED:
-
-						RemoteLevelElement element = RemoteElementManager.get().getItem(
-								iExternalID);
-
-						clearView(element.getContainedElementID());
-						element.setContainedElementID(-1);
-						break;
-				}
-
-				pickingManager.flushHits(iUniqueID, EPickingType.BUCKET_REMOVE_ICON_SELECTION);
-
-				break;
 
 			case BUCKET_MOVE_IN_ICON_SELECTION:
 				switch (pickingMode)
@@ -2541,8 +2537,7 @@ public class GLRemoteRendering
 							.getElementByPositionIndex(0), focusLevel.getNextFree());
 					arSlerpActions.add(slerpActionTransition);
 
-					glPathway.initRemote(gl, iUniqueID, focusLevel,
-							pickingTriggerMouseAdapter, this);
+					glPathway.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this);
 					glPathway.setDetailLevel(EDetailLevel.MEDIUM);
 
 					// Trigger initial gene propagation
@@ -2557,8 +2552,7 @@ public class GLRemoteRendering
 							.getElementByPositionIndex(0), stackLevel.getNextFree());
 					arSlerpActions.add(slerpActionTransition);
 
-					glPathway.initRemote(gl, iUniqueID, stackLevel,
-							pickingTriggerMouseAdapter, this);
+					glPathway.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this);
 					glPathway.setDetailLevel(EDetailLevel.LOW);
 
 					// Trigger initial gene propagation
@@ -2572,8 +2566,7 @@ public class GLRemoteRendering
 							.getElementByPositionIndex(0), poolLevel.getNextFree());
 					arSlerpActions.add(slerpActionTransition);
 
-					glPathway.initRemote(gl, iUniqueID, poolLevel, pickingTriggerMouseAdapter,
-							this);
+					glPathway.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this);
 					glPathway.setDetailLevel(EDetailLevel.VERY_LOW);
 				}
 				else

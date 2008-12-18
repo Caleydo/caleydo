@@ -28,7 +28,6 @@ import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 
 /**
  * Single OpenGL pathway view
@@ -72,8 +71,7 @@ public class GLCell
 	}
 
 	@Override
-	public void initRemote(GL gl, int remoteViewID, RemoteLevel level,
-			PickingJoglMouseListener pickingTriggerMouseAdapter,
+	public void initRemote(GL gl, int remoteViewID, PickingJoglMouseListener pickingTriggerMouseAdapter,
 			IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
 

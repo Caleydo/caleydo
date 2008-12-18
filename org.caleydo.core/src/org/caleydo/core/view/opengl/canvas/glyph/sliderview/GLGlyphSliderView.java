@@ -36,7 +36,6 @@ import org.caleydo.core.view.opengl.miniview.slider.GLSliderMiniView;
 import org.caleydo.core.view.opengl.mouse.JoglMouseListener;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.border.BorderRenderStyleLineSolid;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
@@ -216,8 +215,7 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID, final RemoteLevel layer,
-			final PickingJoglMouseListener pickingTriggerMouseAdapter,
+	public void initRemote(final GL gl, final int iRemoteViewID, final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 
 	{

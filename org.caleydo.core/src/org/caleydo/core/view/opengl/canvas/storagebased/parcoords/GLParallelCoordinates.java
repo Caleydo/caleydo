@@ -65,7 +65,6 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -227,8 +226,7 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID, final RemoteLevel layer,
-			final PickingJoglMouseListener pickingTriggerMouseAdapter,
+	public void initRemote(final GL gl, final int iRemoteViewID, final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
 		bRenderOnlyContext = true;

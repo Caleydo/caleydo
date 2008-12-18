@@ -37,7 +37,7 @@ public class RemoteLevel
 		// Intialize elements
 		for (int iElementIndex = 0; iElementIndex < iCapacity; iElementIndex++)
 		{
-			addElement(new RemoteLevelElement());
+			addElement(new RemoteLevelElement(this));
 		}
 	}
 

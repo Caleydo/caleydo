@@ -9,18 +9,24 @@ public class RemoteLevelElement
 	extends AUniqueObject
 {
 	private Transform transform;
+	
+	/**
+	 * The remote level in which the element is contained.
+	 */
+	private RemoteLevel remoteLevel;
 
 	/**
 	 * ID of the element that is rendered at this remote level position.
 	 */
 	private int iContainedElementID = -1;
 
-	public RemoteLevelElement()
+	public RemoteLevelElement(RemoteLevel remoteLevel)
 	{
 		super(GeneralManager.get().getIDManager().createID(
 				EManagedObjectType.REMOTE_LEVEL_ELEMENT));
 
 		RemoteElementManager.get().registerItem(this);
+		this.remoteLevel = remoteLevel;
 	}
 
 	public int getContainedElementID()
@@ -33,6 +39,11 @@ public class RemoteLevelElement
 		this.iContainedElementID = iContainedElementID;
 	}
 
+	public RemoteLevel getRemoteLevel()
+	{
+		return remoteLevel;
+	}
+	
 	public Transform getTransform()
 	{
 		return transform;
