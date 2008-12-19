@@ -22,6 +22,7 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionItem;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
+import org.caleydo.core.manager.event.mediator.IMediatorEventSender;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
@@ -37,7 +38,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  */
 public abstract class AStorageBasedView
 	extends AGLEventListener
-	implements IMediatorReceiver, IMediatorSender
+	implements IMediatorReceiver, IMediatorEventSender
 {
 
 	protected ISet set;
@@ -435,6 +436,11 @@ public abstract class AStorageBasedView
 				colSelectionCommand);
 	}
 
+	public void triggerEvent(int iID)
+	{
+		generalManager.getEventPublisher().triggerEvent(this, iID);
+	}
+	
 	/**
 	 * Handles the creation of {@link SelectedElementRep} according to the data
 	 * in a selectionDelta
@@ -605,4 +611,6 @@ public abstract class AStorageBasedView
 	{
 		return contentSelectionManager.getElements(eSelectionType).size();
 	}
+	
+
 }

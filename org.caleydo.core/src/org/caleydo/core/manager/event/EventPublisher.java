@@ -9,11 +9,10 @@ import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IEventPublisher;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediator;
+import org.caleydo.core.manager.event.mediator.IMediatorEventSender;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.event.mediator.Mediator;
-import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 
 /**
  * Implements event mediator pattern.
@@ -119,5 +118,23 @@ public class EventPublisher
 		{
 			mediator.unregister(receiver);
 		}
+	}
+
+	@Override
+	public void triggerEvent(IUniqueObject eventTrigger, int iID)
+	{
+		if(!(eventTrigger instanceof IMediatorEventSender))
+		{
+			throw new IllegalArgumentException("triggerEvent called by an object which does not implement IMediatorEventSender");
+		}
+		for (EMediatorType eTempMediatorType : hashMediatorType2Mediator.keySet())
+		{
+			IMediator tempMediator = hashMediatorType2Mediator.get(eTempMediatorType);
+			if (tempMediator.hasSender(
+					(IMediatorSender) eventTrigger))
+			{
+				tempMediator.triggerEvent(eventTrigger, iID);
+			}
+		}	
 	}
 }

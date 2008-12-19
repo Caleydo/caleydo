@@ -30,6 +30,7 @@ import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.data.selection.SelectionItem;
 import org.caleydo.core.manager.IViewGLCanvasManager;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
+import org.caleydo.core.manager.event.mediator.IMediatorEventReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -83,7 +84,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public class GLRemoteRendering
 	extends AGLEventListener
-	implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering
+	implements IMediatorEventReceiver, IMediatorSender, IGLCanvasRemoteRendering
 {
 	private ARemoteViewLayoutRenderStyle.LayoutMode layoutMode;
 
@@ -2689,5 +2690,15 @@ public class GLRemoteRendering
 	public int getNumberOfSelections(ESelectionType eSelectionType)
 	{
 		return 0;
+	}
+
+	@Override
+	public void handleExternalEvent(IUniqueObject eventTrigger, int iid)
+	{
+		generalManager.getLogger().log(
+				Level.INFO,
+				"External event called by " + eventTrigger.getClass().getSimpleName()
+						+ ", received in: " + this.getClass().getSimpleName());
+	
 	}
 }

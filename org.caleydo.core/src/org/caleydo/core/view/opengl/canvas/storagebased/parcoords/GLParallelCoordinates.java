@@ -216,7 +216,8 @@ public class GLParallelCoordinates
 		}
 
 		generalManager.getEventPublisher().addSender(EMediatorType.PROPAGATION_MEDIATOR, this);
-
+		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
+		
 		bRenderOnlyContext = false;
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
@@ -1530,6 +1531,8 @@ public class GLParallelCoordinates
 
 							triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
 									polylineSelectionManager.getDelta(), colSelectionCommand);
+							
+							triggerEvent(1);
 
 						}
 

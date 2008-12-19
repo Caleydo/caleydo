@@ -44,4 +44,6 @@ public interface IMediator
 
 	public void triggerUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
 			Collection<SelectionCommand> colSelectionCommand);
+	
+	public void triggerEvent(IUniqueObject eventTrigger, int iID);
 }

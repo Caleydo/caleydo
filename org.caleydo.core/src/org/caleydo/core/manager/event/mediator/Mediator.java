@@ -101,4 +101,22 @@ public class Mediator
 		// TODO Auto-generated method stub
 		return 0;
 	}
+
+	@Override
+	public void triggerEvent(IUniqueObject eventTrigger, int iID)
+	{
+		for (IMediatorReceiver receiver : alReceiver)
+		{
+			// Prevent circular updates
+			if (!receiver.equals(eventTrigger))
+			{
+				if (receiver instanceof IMediatorEventReceiver)
+				{
+					IMediatorEventReceiver eventReceiver = (IMediatorEventReceiver) receiver;
+					eventReceiver.handleExternalEvent(eventTrigger, iID);
+				}
+			}
+		}
+
+	}
 }

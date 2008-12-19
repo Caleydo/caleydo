@@ -20,6 +20,8 @@ public interface IEventPublisher
 {
 	public void triggerUpdate(EMediatorType eMediatorType, IUniqueObject eventTrigger,
 			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand);
+	
+	public void triggerEvent(IUniqueObject eventTrigger, int iID);
 
 	public void addSender(EMediatorType eMediatorType, IMediatorSender sender);
 
