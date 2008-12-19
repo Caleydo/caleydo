@@ -5,6 +5,7 @@ import gleem.linalg.Vec3f;
 import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
@@ -19,6 +20,7 @@ import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDelta;
@@ -179,6 +181,7 @@ public class GLHierarchicalHeatMap
 	@Override
 	public void init(GL gl)
 	{
+		bRenderOnlyContext = false;
 		createHeatMap();
 
 		// FIXME: the two nulls here break the interface, it is not possible to
@@ -200,8 +203,6 @@ public class GLHierarchicalHeatMap
 	@Override
 	public void initLocal(GL gl)
 	{
-		dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
-		bRenderOnlyContext = false;
 
 		bRenderStorageHorizontally = false;
 
@@ -216,8 +217,6 @@ public class GLHierarchicalHeatMap
 			PickingJoglMouseListener pickingTriggerMouseAdapter,
 			IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
-		dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
-		bRenderOnlyContext = true;
 
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 
@@ -325,27 +324,36 @@ public class GLHierarchicalHeatMap
 		SelectionQuadruple temp;
 
 		iAlSelection.clear();
-		for (Integer iContentIndex : set.getVA(iContentVAID))
+
+		Set<Integer> setMouseOverElements = contentSelectionManager
+				.getElements(ESelectionType.MOUSE_OVER);
+		for (Integer iSelectedID : setMouseOverElements)
 		{
-			iCount++;
-			if (iCount == iNumberSamples[iTextureCounter])
-			{
-				iTextureCounter++;
-				iCount = 0;
-			}
-			if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex))
-			{
-				temp = new SelectionQuadruple(iTextureCounter, iCount, iContentIndex,
-						ESelectionType.MOUSE_OVER);
-				iAlSelection.add(temp);
-			}
-			if (contentSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex))
-			{
-				temp = new SelectionQuadruple(iTextureCounter, iCount, iContentIndex,
-						ESelectionType.SELECTION);
-				iAlSelection.add(temp);
-			}
+			set.getVA(iContentVAID).indexOf(iSelectedID);
 		}
+		
+		
+//		for (Integer iContentIndex : set.getVA(iContentVAID))
+//		{
+//			iCount++;
+//			if (iCount == iNumberSamples[iTextureCounter])
+//			{
+//				iTextureCounter++;
+//				iCount = 0;
+//			}
+//			if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iContentIndex))
+//			{
+//				temp = new SelectionQuadruple(iTextureCounter, iCount, iContentIndex,
+//						ESelectionType.MOUSE_OVER);
+//				iAlSelection.add(temp);
+//			}
+//			if (contentSelectionManager.checkStatus(ESelectionType.SELECTION, iContentIndex))
+//			{
+//				temp = new SelectionQuadruple(iTextureCounter, iCount, iContentIndex,
+//						ESelectionType.SELECTION);
+//				iAlSelection.add(temp);
+//			}
+//		}
 	}
 
 	private void renderSelectedElementsOverviewBar(GL gl)
@@ -934,6 +942,7 @@ public class GLHierarchicalHeatMap
 		}
 		else
 		{
+			// TODO
 			handleTexturePicking(gl);
 
 			gl.glMatrixMode(GL.GL_MODELVIEW);
@@ -1031,6 +1040,12 @@ public class GLHierarchicalHeatMap
 		float fCntBar = iNumberSamples[iSelectorBar - 1];
 
 		SelectionDelta delta = new SelectionDelta(EIDType.EXPRESSION_INDEX);
+		IVirtualArray currentVirtualArray =  set.getVA(iContentVAID);
+		int iIndex = 0;
+		
+		int iContentIndex2 = currentVirtualArray.get(iIndex);
+		
+		
 		for (Integer iContentIndex : set.getVA(iContentVAID))
 		{
 			iCount++;
@@ -1528,30 +1543,25 @@ public class GLHierarchicalHeatMap
 	@Override
 	public void renderContext(boolean bRenderOnlyContext)
 	{
+		throw new IllegalStateException(
+				"Rendering only context not supported for the hierachical heat map");
+		// this.bRenderOnlyContext = bRenderOnlyContext;
+		//
+		// if (this.bRenderOnlyContext)
+		// iContentVAID = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
+		// else
+		// {
+		// if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION))
+		// initCompleteList();
+		//
+		// iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
+		// }
+		//
+		// contentSelectionManager.setVA(set.getVA(iContentVAID));
+		// renderStyle.setActiveVirtualArray(iContentVAID);
+		//
+		// setDisplayListDirty();
 
-		this.bRenderOnlyContext = bRenderOnlyContext;
-
-		if (this.bRenderOnlyContext)
-			iContentVAID = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
-		else
-		{
-			if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION))
-				initCompleteList();
-
-			iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
-		}
-
-		contentSelectionManager.setVA(set.getVA(iContentVAID));
-		renderStyle.setActiveVirtualArray(iContentVAID);
-
-		setDisplayListDirty();
-
-	}
-
-	@Override
-	protected void checkUnselection()
-	{
-		// TODO
 	}
 
 	@Override

@@ -1439,10 +1439,15 @@ public class GLParallelCoordinates
 
 	}
 
+	@Override
+	protected void reactOnExternalSelection()
+	{
+		checkUnselection();
+	}
+	
 	// TODO: revise this, not very performance friendly, especially the clearing
 	// of the DESELECTED
-	@Override
-	protected void checkUnselection()
+	private void checkUnselection()
 	{
 		if (fArGateTipHeight == null)
 		{

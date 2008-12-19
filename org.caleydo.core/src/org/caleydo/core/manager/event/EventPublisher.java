@@ -12,6 +12,8 @@ import org.caleydo.core.manager.event.mediator.IMediator;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.event.mediator.Mediator;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 
 /**
  * Implements event mediator pattern.
@@ -62,11 +64,27 @@ public class EventPublisher
 	{
 		if (!hashMediatorType2Mediator.containsKey(eMediatorType))
 		{
-			throw new IllegalStateException("Sender " + eventTrigger.getID()
-					+ "is not a sender in the mediator group " + eMediatorType);
+			if (eMediatorType != EMediatorType.ALL_REGISTERED)
+				throw new IllegalStateException("Sender " + eventTrigger.getID()
+						+ " is not a sender in the mediator group " + eMediatorType);
 		}
-		hashMediatorType2Mediator.get(eMediatorType).triggerUpdate(eventTrigger,
-				selectionDelta, colSelectionCommand);
+		if (eMediatorType == EMediatorType.ALL_REGISTERED)
+		{
+			for (EMediatorType eTempMediatorType : hashMediatorType2Mediator.keySet())
+			{
+				if (hashMediatorType2Mediator.get(eTempMediatorType).hasSender(
+						(IMediatorSender) eventTrigger))
+				{
+					hashMediatorType2Mediator.get(eTempMediatorType).triggerUpdate(
+							eventTrigger, selectionDelta, colSelectionCommand);
+				}
+			}
+		}
+		else
+		{
+			hashMediatorType2Mediator.get(eMediatorType).triggerUpdate(eventTrigger,
+					selectionDelta, colSelectionCommand);
+		}
 	}
 
 	@Override

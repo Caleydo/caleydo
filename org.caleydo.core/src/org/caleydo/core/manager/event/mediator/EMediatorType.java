@@ -3,6 +3,7 @@ package org.caleydo.core.manager.event.mediator;
 // TODO, no good solution, we need something dynamical
 public enum EMediatorType
 {
+	ALL_REGISTERED,
 	SELECTION_MEDIATOR,
 	PROPAGATION_MEDIATOR,
 	VIEW_SELECTION,

@@ -490,8 +490,13 @@ public class GLHeatMap
 							Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
 							colSelectionCommand.add(new SelectionCommand(
 									ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER));
-							triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
+							triggerUpdate(EMediatorType.ALL_REGISTERED,
 									contentSelectionManager.getDelta(), colSelectionCommand);
+//							triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
+//									contentSelectionManager.getDelta(), colSelectionCommand);
+//							// TODO: improve mediator system
+//							triggerUpdate(EMediatorType.HIERACHICAL_HEAT_MAP,
+//									contentSelectionManager.getDelta(), colSelectionCommand);
 						}
 
 						break;
@@ -516,8 +521,13 @@ public class GLHeatMap
 							Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
 							colSelectionCommand.add(new SelectionCommand(
 									ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER));
-							triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
+							triggerUpdate(EMediatorType.ALL_REGISTERED,
 									contentSelectionManager.getDelta(), colSelectionCommand);
+//							triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
+//									contentSelectionManager.getDelta(), colSelectionCommand);
+//							// TODO: improve mediator system
+//							triggerUpdate(EMediatorType.HIERACHICAL_HEAT_MAP,
+//									contentSelectionManager.getDelta(), colSelectionCommand);
 						}
 
 						break;
@@ -898,12 +908,6 @@ public class GLHeatMap
 
 		setDisplayListDirty();
 
-	}
-
-	@Override
-	protected void checkUnselection()
-	{
-		// TODO
 	}
 
 	private void renderCaption(GL gl, String sLabel, float fXOrigin, float fYOrigin,

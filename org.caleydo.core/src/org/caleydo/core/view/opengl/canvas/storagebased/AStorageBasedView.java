@@ -368,7 +368,7 @@ public abstract class AStorageBasedView
 			ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
 			initForAddedElements();
 			handleConnectedElementRep(internalDelta);
-			checkUnselection();
+			reactOnExternalSelection();
 			setDisplayListDirty();
 		}
 
@@ -384,6 +384,15 @@ public abstract class AStorageBasedView
 
 	}
 
+	/**
+	 * Is called any time a update is triggered externally. Should be implemented by inheriting views.
+	 */
+	protected void reactOnExternalSelection()
+	{
+		
+	}
+	
+	
 	/**
 	 * This method is called when new elements are added from external - if you
 	 * need to react to it do it here, if not don't do anything.
@@ -506,11 +515,6 @@ public abstract class AStorageBasedView
 	 * @param iElementID the ID of the element that should be in the center
 	 */
 	protected abstract void rePosition(int iElementID);
-
-	/**
-	 * Check wheter an element is selected or not
-	 */
-	protected abstract void checkUnselection();
 
 	/**
 	 * Broadcast all elements independent of their type.
