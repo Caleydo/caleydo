@@ -48,7 +48,7 @@ public class BucketLayoutRenderStyle
 	}
 
 	@Override
-	public RemoteLevel initUnderInteractionLevel()
+	public RemoteLevel initFocusLevel()
 	{
 		Transform transform = new Transform();
 		transform.setTranslation(new Vec3f(-2, -2, 4 * fZoomFactor));
@@ -64,7 +64,6 @@ public class BucketLayoutRenderStyle
 	public RemoteLevel initStackLevel(boolean bIsZoomedIn)
 	{
 		Transform transform;
-		RemoteLevelElement element;
 
 		if (!bIsZoomedIn)
 		{
@@ -227,12 +226,23 @@ public class BucketLayoutRenderStyle
 	}
 
 	@Override
-	public RemoteLevel initPoolLevel(int iSelectedRemoteLevelElementID)
+	public RemoteLevel initPoolLevel(boolean bIsZoomedIn,
+			int iSelectedRemoteLevelElementID)
 	{
 		Transform transform;
 
 		float fSelectedScaling = 1;
 		float fYAdd = 1.9f;
+		float fZ = 0;
+		
+//		if (bIsZoomedIn)
+//		{
+//			fZ = 0f;
+//		}
+//		else
+//		{
+			fZ = 4.1f;
+//		}
 
 		int iRemoteLevelElementIndex = 0;
 		for (RemoteLevelElement element : poolLevel.getAllElements())
@@ -249,7 +259,7 @@ public class BucketLayoutRenderStyle
 			}
 
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(-1.93f * 1 / fAspectRatio, fYAdd, 4.1f));
+			transform.setTranslation(new Vec3f(-1.93f * 1 / fAspectRatio, fYAdd, fZ));
 
 			transform.setScale(new Vec3f(fScalingFactorPoolLevel * fSelectedScaling,
 					fScalingFactorPoolLevel * fSelectedScaling, fScalingFactorPoolLevel

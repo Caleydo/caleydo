@@ -49,7 +49,7 @@ public class ListLayoutRenderStyle
 	}
 
 	@Override
-	public RemoteLevel initUnderInteractionLevel()
+	public RemoteLevel initFocusLevel()
 	{
 
 		fScalingFactorFocusLevel = (4 * 0.045f) / fAspectRatio;
@@ -88,7 +88,7 @@ public class ListLayoutRenderStyle
 	}
 
 	@Override
-	public RemoteLevel initPoolLevel(int iSelectedRemoteLevelElementID)
+	public RemoteLevel initPoolLevel(boolean bIsZoomedIn, int iSelectedRemoteLevelElementID)
 	{
 		Transform transform;
 

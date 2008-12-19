@@ -49,7 +49,7 @@ public class JukeboxLayoutRenderStyle
 	}
 
 	@Override
-	public RemoteLevel initUnderInteractionLevel()
+	public RemoteLevel initFocusLevel()
 	{
 		fScalingFactorFocusLevel = (4 * 0.045f) / fAspectRatio;
 
@@ -96,7 +96,7 @@ public class JukeboxLayoutRenderStyle
 	}
 
 	@Override
-	public RemoteLevel initPoolLevel(int iSelectedRemoteLevelElementID)
+	public RemoteLevel initPoolLevel(boolean bIsZoomedIn, int iSelectedRemoteLevelElementID)
 	{
 		float fSelectedScaling = 1;
 		float fYAdd = -1.4f;

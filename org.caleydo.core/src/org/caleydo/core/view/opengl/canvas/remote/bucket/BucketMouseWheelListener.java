@@ -85,7 +85,8 @@ public class BucketMouseWheelListener
 			}
 
 			bucketLayoutRenderStyle.initStackLevel(false);
-			bucketLayoutRenderStyle.initUnderInteractionLevel();
+			bucketLayoutRenderStyle.initFocusLevel();
+			bucketLayoutRenderStyle.initPoolLevel(false, -1);
 		}
 		else
 		// zoom to bottom of the bucket
@@ -108,6 +109,7 @@ public class BucketMouseWheelListener
 
 			bZoomActionRunning = true;
 			bucketLayoutRenderStyle.initStackLevel(bZoomIn);
+			bucketLayoutRenderStyle.initPoolLevel(bZoomIn, -1);
 
 			// Turn off picking while zoom action is running
 			GeneralManager.get().getViewGLCanvasManager().getPickingManager().enablePicking(
@@ -193,6 +195,7 @@ public class BucketMouseWheelListener
 		bZoomActionRunning = true;
 		this.bZoomIn = bZoomIn;
 		bucketLayoutRenderStyle.initStackLevel(bZoomIn);
+		bucketLayoutRenderStyle.initPoolLevel(bZoomIn, -1);
 	}
 
 	@Override

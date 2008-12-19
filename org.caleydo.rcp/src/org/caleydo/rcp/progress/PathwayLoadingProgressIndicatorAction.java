@@ -3,6 +3,7 @@ package org.caleydo.rcp.progress;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.specialized.genome.pathway.PathwayLoaderThread;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -22,6 +23,14 @@ public class PathwayLoadingProgressIndicatorAction
 			@Override
 			public IStatus run(IProgressMonitor monitor)
 			{
+				// Turn on busy mode
+				for (AGLEventListener tmpGLEventListener : GeneralManager.get()
+						.getViewGLCanvasManager().getAllGLEventListeners())
+				{
+					if (!tmpGLEventListener.isRenderedRemote())
+						tmpGLEventListener.enableBusyMode(true);
+				}
+				
 				monitor.beginTask("Loading pathways", 100);
 
 				monitor.subTask("KEGG");
@@ -39,6 +48,14 @@ public class PathwayLoadingProgressIndicatorAction
 				GeneralManager.get().getPathwayManager().notifyPathwayLoadingFinished(true);
 
 				monitor.done();
+				
+				// Turn off busy mode
+				for (AGLEventListener tmpGLEventListener : GeneralManager.get()
+						.getViewGLCanvasManager().getAllGLEventListeners())
+				{
+					if (!tmpGLEventListener.isRenderedRemote())
+						tmpGLEventListener.enableBusyMode(false);
+				}
 
 				return Status.OK_STATUS;
 			}

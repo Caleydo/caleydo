@@ -151,6 +151,9 @@ public class InfoArea
 											EMappingType.DAVID_2_REFSEQ_MRNA,
 											item.getSelectionID());
 
+							if (sSetRefSeqID == null)
+								continue;
+							
 							sGeneSymbol = sDetailText
 									+ GeneralManager.get().getIDMappingManager().getID(
 											EMappingType.DAVID_2_GENE_SYMBOL,

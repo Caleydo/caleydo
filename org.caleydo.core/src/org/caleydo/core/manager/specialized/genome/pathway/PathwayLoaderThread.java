@@ -36,7 +36,6 @@ public class PathwayLoaderThread
 	/**
 	 * Constructor.
 	 * 
-	 * @param sXMLPath
 	 */
 	public PathwayLoaderThread(final Collection<PathwayDatabase> pathwayDatabases)
 	{
@@ -55,7 +54,7 @@ public class PathwayLoaderThread
 	{
 		super.run();
 
-		// Turn off busy mode
+		// Turn on busy mode
 		for (AGLEventListener tmpGLEventListener : generalManager.getViewGLCanvasManager()
 				.getAllGLEventListeners())
 		{

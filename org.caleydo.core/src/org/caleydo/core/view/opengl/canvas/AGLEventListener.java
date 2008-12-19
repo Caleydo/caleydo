@@ -571,7 +571,7 @@ public abstract class AGLEventListener
 			eBusyModeState = EBusyModeState.OFF;
 		}
 
-		// System.out.println("Busy mode status: " +eBusyModeState);
+//		 System.out.println("Busy mode status: " +eBusyModeState);
 	}
 
 	public void enableBusyMode(final boolean bBusyMode)
@@ -586,7 +586,7 @@ public abstract class AGLEventListener
 			eBusyModeState = EBusyModeState.ON;
 		}
 
-		// System.out.println("Busy mode change: " +eBusyModeState.toString());
+//		 System.out.println("Busy mode change: " +eBusyModeState.toString());
 	}
 
 	/**

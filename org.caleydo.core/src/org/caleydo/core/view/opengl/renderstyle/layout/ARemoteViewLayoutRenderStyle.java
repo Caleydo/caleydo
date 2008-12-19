@@ -90,11 +90,11 @@ public abstract class ARemoteViewLayoutRenderStyle
 		spawnLevel = previousLayoutStyle.getSpawnLayer();
 	}
 
-	public abstract RemoteLevel initUnderInteractionLevel();
+	public abstract RemoteLevel initFocusLevel();
 
 	public abstract RemoteLevel initStackLevel(boolean bIsZoomedIn);
 
-	public abstract RemoteLevel initPoolLevel(int iMouseOverViewID);
+	public abstract RemoteLevel initPoolLevel(boolean bIsZoomedIn, int iMouseOverViewID);
 
 	public abstract RemoteLevel initMemoLevel();
 
