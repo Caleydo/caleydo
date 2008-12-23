@@ -663,7 +663,7 @@ public class GLRemoteRendering
 						(float) textRenderer.getBounds(sRenderText).getWidth() * 0.06f + 23,
 						6f, element); // 1.8f -> pool focus scaling
 
-				gl.glTranslatef(4f, 1.3f, 0);
+				gl.glTranslatef(5f, 1.3f, 0);
 
 				fTextScalingFactor = 0.075f;
 			}
@@ -697,17 +697,6 @@ public class GLRemoteRendering
 		{
 			renderNavigationOverlay(gl, element.getID());
 		}
-
-		// // Render transparent plane for picking views without texture (e.g.
-		// PC)
-		// gl.glColor4f(1, 1, 1, 0);
-		//
-		// gl.glBegin(GL.GL_POLYGON);
-		// gl.glVertex3f(0, 0, -0.01f);
-		// gl.glVertex3f(0, 8, -0.01f);
-		// gl.glVertex3f(8, 8, -0.01f);
-		// gl.glVertex3f(8, 0, -0.01f);
-		// gl.glEnd();
 
 		gl.glPopMatrix();
 

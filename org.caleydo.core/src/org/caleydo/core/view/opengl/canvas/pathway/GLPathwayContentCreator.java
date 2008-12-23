@@ -20,10 +20,8 @@ import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingType;
-import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.util.mapping.PathwayColorMapper;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
-import org.caleydo.core.view.opengl.util.GLTextUtils;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
@@ -37,10 +35,9 @@ import org.caleydo.util.graph.algorithm.GraphVisitorSearchBFS;
  */
 public class GLPathwayContentCreator
 {
-
 	private IGeneralManager generalManager;
 
-	private static final float Z_OFFSET = 0.0001f;
+	private static final float Z_OFFSET = 0.01f;
 
 	private int iEnzymeNodeDisplayListId = -1;
 	private int iCompoundNodeDisplayListId = -1;
@@ -348,60 +345,60 @@ public class GLPathwayContentCreator
 		// Bottom Right Of The Quad (Front)
 		gl.glVertex3f(-fNodeWidth, fNodeHeight, Z_OFFSET);
 
-		// BACK FACE
-		gl.glNormal3f(0.0f, 0.0f, -1.0f);
-		// Bottom Left Of The Quad (Back)
-		gl.glVertex3f(fNodeWidth, -fNodeHeight, -Z_OFFSET);
-		// Bottom Right Of The Quad (Back)
-		gl.glVertex3f(-fNodeWidth, -fNodeHeight, -Z_OFFSET);
-		// Top Right Of The Quad (Back)
-		gl.glVertex3f(-fNodeWidth, fNodeHeight, -Z_OFFSET);
-		// Top Left Of The Quad (Back)
-		gl.glVertex3f(fNodeWidth, fNodeHeight, -Z_OFFSET);
-
-		// TOP FACE
-		gl.glNormal3f(0.0f, 1.0f, 0.0f);
-		// Top Right Of The Quad (Top)
-		gl.glVertex3f(fNodeWidth, fNodeHeight, -Z_OFFSET);
-		// Top Left Of The Quad (Top)
-		gl.glVertex3f(-fNodeWidth, fNodeHeight, -Z_OFFSET);
-		// Bottom Left Of The Quad (Top)
-		gl.glVertex3f(-fNodeWidth, fNodeHeight, Z_OFFSET);
-		// Bottom Right Of The Quad (Top)
-		gl.glVertex3f(fNodeWidth, fNodeHeight, Z_OFFSET);
-
-		// BOTTOM FACE
-		gl.glNormal3f(0.0f, -1.0f, 0.0f);
-		// Top Right Of The Quad (Bottom)
-		gl.glVertex3f(fNodeWidth, -fNodeHeight, Z_OFFSET);
-		// Top Left Of The Quad (Bottom)
-		gl.glVertex3f(-fNodeWidth, -fNodeHeight, Z_OFFSET);
-		// Bottom Left Of The Quad (Bottom)
-		gl.glVertex3f(-fNodeWidth, -fNodeHeight, -Z_OFFSET);
-		// Bottom Right Of The Quad (Bottom)
-		gl.glVertex3f(fNodeWidth, -fNodeHeight, -Z_OFFSET);
-
-		// RIGHT FACE
-		gl.glNormal3f(1.0f, 0.0f, 0.0f);
-		// Top Right Of The Quad (Right)
-		gl.glVertex3f(fNodeWidth, fNodeHeight, -Z_OFFSET);
-		// Top Left Of The Quad (Right)
-		gl.glVertex3f(fNodeWidth, fNodeHeight, Z_OFFSET);
-		// Bottom Left Of The Quad (Right)
-		gl.glVertex3f(fNodeWidth, -fNodeHeight, Z_OFFSET);
-		// Bottom Right Of The Quad (Right)
-		gl.glVertex3f(fNodeWidth, -fNodeHeight, -Z_OFFSET);
-
-		// LEFT FACE
-		gl.glNormal3f(-1.0f, 0.0f, 0.0f);
-		// Top Right Of The Quad (Left)
-		gl.glVertex3f(-fNodeWidth, fNodeHeight, Z_OFFSET);
-		// Top Left Of The Quad (Left)
-		gl.glVertex3f(-fNodeWidth, fNodeHeight, -Z_OFFSET);
-		// Bottom Left Of The Quad (Left)
-		gl.glVertex3f(-fNodeWidth, -fNodeHeight, -Z_OFFSET);
-		// Bottom Right Of The Quad (Left)
-		gl.glVertex3f(-fNodeWidth, -fNodeHeight, Z_OFFSET);
+//		// BACK FACE
+//		gl.glNormal3f(0.0f, 0.0f, -1.0f);
+//		// Bottom Left Of The Quad (Back)
+//		gl.glVertex3f(fNodeWidth, -fNodeHeight, -Z_OFFSET);
+//		// Bottom Right Of The Quad (Back)
+//		gl.glVertex3f(-fNodeWidth, -fNodeHeight, -Z_OFFSET);
+//		// Top Right Of The Quad (Back)
+//		gl.glVertex3f(-fNodeWidth, fNodeHeight, -Z_OFFSET);
+//		// Top Left Of The Quad (Back)
+//		gl.glVertex3f(fNodeWidth, fNodeHeight, -Z_OFFSET);
+//
+//		// TOP FACE
+//		gl.glNormal3f(0.0f, 1.0f, 0.0f);
+//		// Top Right Of The Quad (Top)
+//		gl.glVertex3f(fNodeWidth, fNodeHeight, -Z_OFFSET);
+//		// Top Left Of The Quad (Top)
+//		gl.glVertex3f(-fNodeWidth, fNodeHeight, -Z_OFFSET);
+//		// Bottom Left Of The Quad (Top)
+//		gl.glVertex3f(-fNodeWidth, fNodeHeight, Z_OFFSET);
+//		// Bottom Right Of The Quad (Top)
+//		gl.glVertex3f(fNodeWidth, fNodeHeight, Z_OFFSET);
+//
+//		// BOTTOM FACE
+//		gl.glNormal3f(0.0f, -1.0f, 0.0f);
+//		// Top Right Of The Quad (Bottom)
+//		gl.glVertex3f(fNodeWidth, -fNodeHeight, Z_OFFSET);
+//		// Top Left Of The Quad (Bottom)
+//		gl.glVertex3f(-fNodeWidth, -fNodeHeight, Z_OFFSET);
+//		// Bottom Left Of The Quad (Bottom)
+//		gl.glVertex3f(-fNodeWidth, -fNodeHeight, -Z_OFFSET);
+//		// Bottom Right Of The Quad (Bottom)
+//		gl.glVertex3f(fNodeWidth, -fNodeHeight, -Z_OFFSET);
+//
+//		// RIGHT FACE
+//		gl.glNormal3f(1.0f, 0.0f, 0.0f);
+//		// Top Right Of The Quad (Right)
+//		gl.glVertex3f(fNodeWidth, fNodeHeight, -Z_OFFSET);
+//		// Top Left Of The Quad (Right)
+//		gl.glVertex3f(fNodeWidth, fNodeHeight, Z_OFFSET);
+//		// Bottom Left Of The Quad (Right)
+//		gl.glVertex3f(fNodeWidth, -fNodeHeight, Z_OFFSET);
+//		// Bottom Right Of The Quad (Right)
+//		gl.glVertex3f(fNodeWidth, -fNodeHeight, -Z_OFFSET);
+//
+//		// LEFT FACE
+//		gl.glNormal3f(-1.0f, 0.0f, 0.0f);
+//		// Top Right Of The Quad (Left)
+//		gl.glVertex3f(-fNodeWidth, fNodeHeight, Z_OFFSET);
+//		// Top Left Of The Quad (Left)
+//		gl.glVertex3f(-fNodeWidth, fNodeHeight, -Z_OFFSET);
+//		// Bottom Left Of The Quad (Left)
+//		gl.glVertex3f(-fNodeWidth, -fNodeHeight, -Z_OFFSET);
+//		// Bottom Right Of The Quad (Left)
+//		gl.glVertex3f(-fNodeWidth, -fNodeHeight, Z_OFFSET);
 
 		gl.glEnd();
 	}
@@ -409,8 +406,7 @@ public class GLPathwayContentCreator
 	protected void fillNodeDisplayListFrame(final GL gl, final float fNodeWidth,
 			final float fNodeHeight)
 	{
-
-		gl.glLineWidth(5);
+		gl.glLineWidth(3);
 
 		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(-fNodeWidth, fNodeHeight, 0.02f);
@@ -492,9 +488,12 @@ public class GLPathwayContentCreator
 		EPathwayVertexType vertexType = vertexRep.getType();
 
 		// Pathway link
-		// if (shape.equals(EPathwayVertexShape.roundrectangle))
 		if (vertexType.equals(EPathwayVertexType.map))
 		{
+			// Ignore KEGG title node
+			if (vertexRep.getName().contains("TITLE"))
+				return;
+			
 			float fCanvasXPos = (vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X);
 			float fCanvasYPos = (vertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y);
 			float fNodeWidth = vertexRep.getWidth() / 2.0f
@@ -503,7 +502,12 @@ public class GLPathwayContentCreator
 					* PathwayRenderStyle.SCALING_FACTOR_Y;
 
 			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
-
+			
+			// Render transparent node for picking
+			tmpNodeColor = new float[] {0,0,0,0};
+			gl.glColor4fv(tmpNodeColor, 0);
+			fillNodeDisplayList(gl, fNodeWidth, fNodeHeight);
+			
 			// Handle selection highlighting of element
 			if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, vertexRep.getId()) )
 			{
@@ -518,16 +522,9 @@ public class GLPathwayContentCreator
 				fillNodeDisplayListFrame(gl, fNodeWidth, fNodeHeight);
 			}
 
-			tmpNodeColor = PathwayRenderStyle.PATHWAY_NODE_COLOR;
-
-			gl.glColor4fv(tmpNodeColor, 0);
-
-			fillNodeDisplayList(gl, fNodeWidth, fNodeHeight);
-
 			gl.glTranslatef(-fCanvasXPos, fCanvasYPos, 0);
 		}
 		// Compound
-		// else if (shape.equals(EPathwayVertexShape.circle))
 		else if (vertexType.equals(EPathwayVertexType.compound))
 		{
 			float fCanvasXPos = (vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X);
@@ -575,7 +572,11 @@ public class GLPathwayContentCreator
 						Z_OFFSET);
 			}
 			gl.glEnd();
-
+			
+			tmpNodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
+			gl.glColor4fv(tmpNodeColor, 0);
+			gl.glLineWidth(3);
+			
 			// Handle selection highlighting of element
 			if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, vertexRep.getId()))
 			{
@@ -589,11 +590,6 @@ public class GLPathwayContentCreator
 				gl.glColor4fv(tmpNodeColor, 0);
 				gl.glLineWidth(5);
 			}
-			else
-			{
-				tmpNodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
-				gl.glLineWidth(3);
-			}
 
 			gl.glBegin(GL.GL_LINE_STRIP);
 			for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++)
@@ -605,9 +601,7 @@ public class GLPathwayContentCreator
 			}
 			gl.glEnd();
 		}
-		// Enzyme
-		// else if (shape.equals(EPathwayVertexShape.rectangle)
-		// || shape.equals(EPathwayVertexShape.rect))
+		// Enzyme / Gene
 		else if (vertexType.equals(EPathwayVertexType.gene)
 				|| vertexType.equals(EPathwayVertexType.enzyme)
 				// new kegg data assign enzymes without mapping to "undefined"
@@ -616,15 +610,29 @@ public class GLPathwayContentCreator
 		{
 			float fCanvasXPos = (vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X);
 			float fCanvasYPos = (vertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y);
-			float fNodeWidth = vertexRep.getWidth() / 2.0f
-					* PathwayRenderStyle.SCALING_FACTOR_X;
-			float fNodeHeight = vertexRep.getHeight() / 2.0f
-					* PathwayRenderStyle.SCALING_FACTOR_Y;
+//			float fNodeWidth = vertexRep.getWidth() / 2.0f
+//					* PathwayRenderStyle.SCALING_FACTOR_X;
+//			float fNodeHeight = vertexRep.getHeight() / 2.0f
+//					* PathwayRenderStyle.SCALING_FACTOR_Y;
 
 			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 
 			int iVertexRepID = vertexRep.getId();
 
+//			if (bEnableGeneMapping && vertexType.equals(EPathwayVertexType.gene))
+//			{
+//				mapExpression(gl, vertexRep, fNodeWidth, fNodeHeight);
+//			}
+//			else
+//			{
+			// Draw transparent node for picking purposes
+			gl.glColor4f(0,0,0,0);
+			gl.glCallList(iEnzymeNodeDisplayListId);					
+
+//			gl.glColor4fv(PathwayRenderStyle.ENZYME_NODE_COLOR, 0);
+//			gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
+//			}
+			
 			// Handle selection highlighting of element
 			if (internalSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iVertexRepID)
 					|| internalSelectionManager.checkStatus(ESelectionType.NEIGHBORHOOD_1,
@@ -666,18 +674,6 @@ public class GLPathwayContentCreator
 				gl.glColor4fv(tmpNodeColor, 0);
 				gl.glCallList(iHighlightedEnzymeNodeDisplayListId);
 				gl.glDisable(GL.GL_LINE_STIPPLE);
-			}
-
-			if (bEnableGeneMapping && vertexType.equals(EPathwayVertexType.gene))
-			{
-				mapExpression(gl, vertexRep, fNodeWidth, fNodeHeight);
-			}
-			else
-			{
-				tmpNodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
-				gl.glColor4fv(tmpNodeColor, 0);
-
-				gl.glCallList(iEnzymeNodeDisplayListId);
 			}
 
 			gl.glTranslatef(-fCanvasXPos, fCanvasYPos, 0);
@@ -759,7 +755,6 @@ public class GLPathwayContentCreator
 
 	public void renderPathway(final GL gl, final int iPathwayID, boolean bRenderLabels)
 	{
-
 		if (bEnableEdgeRendering || !iArSelectedEdgeRepId.isEmpty())
 		{
 			int iTmpEdgesDisplayListID = hashPathwayId2EdgesDisplayListId.get(iPathwayID);
@@ -773,200 +768,191 @@ public class GLPathwayContentCreator
 		{
 			gl.glCallList(iTmpVerticesDisplayListID);
 
-			if (bRenderLabels && bEnableAnnotation)
-				renderLabels(gl, iPathwayID);
+//			if (bRenderLabels && bEnableAnnotation)
+//				renderLabels(gl, iPathwayID);
 		}
 	}
 
-	private void renderLabels(final GL gl, final int iPathwayID)
-	{
+//	private void renderLabels(final GL gl, final int iPathwayID)
+//	{
+//		PathwayVertexGraphItemRep vertexRep;
+//		PathwayGraph tmpPathway = generalManager.getPathwayManager().getItem(iPathwayID);
+//
+//		// Don't annotate BioCarta pathways - because of good texture annotation
+//		if (tmpPathway.getType().equals(EPathwayDatabaseType.BIOCARTA))
+//			return;
+//
+//		Iterator<IGraphItem> vertexRepIterator = tmpPathway.getAllItemsByKind(
+//				EGraphItemKind.NODE).iterator();
+//
+//		while (vertexRepIterator.hasNext())
+//		{
+//			vertexRep = (PathwayVertexGraphItemRep) vertexRepIterator.next();
+//
+//			if (vertexRep != null)
+//			{
+//				float fNodeWidth = vertexRep.getWidth() / 2.0f
+//						* PathwayRenderStyle.SCALING_FACTOR_X;
+//				float fNodeHeight = vertexRep.getHeight() / 2.0f
+//						* PathwayRenderStyle.SCALING_FACTOR_Y;
+//				float fCanvasXPos = (vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X);
+//				float fCanvasYPos = (vertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y);
+//
+//				gl.glTranslated(fCanvasXPos - fNodeWidth + 0.01f, -fCanvasYPos - 0.01f, 0);
+//				gl.glColor3f(0, 0, 0);
+//				GLTextUtils.renderTextInRegion(gl, vertexRep.getName(), 10, 0, 0, 0.03f,
+//						fNodeWidth, fNodeHeight);
+//				// GLTextUtils.renderText(gl, vertexRep.getName(), 0, 0,
+//				// -0.03f);
+//				gl.glTranslated(-fCanvasXPos + fNodeWidth - 0.01f, fCanvasYPos + 0.01f, 0);
+//			}
+//		}
+//	}
 
-		PathwayVertexGraphItemRep vertexRep;
-		PathwayGraph tmpPathway = generalManager.getPathwayManager().getItem(iPathwayID);
-
-		// Don't annotate BioCarta pathways - because of good texture annotation
-		if (tmpPathway.getType().equals(EPathwayDatabaseType.BIOCARTA))
-			return;
-
-		Iterator<IGraphItem> vertexRepIterator = tmpPathway.getAllItemsByKind(
-				EGraphItemKind.NODE).iterator();
-
-		while (vertexRepIterator.hasNext())
-		{
-			vertexRep = (PathwayVertexGraphItemRep) vertexRepIterator.next();
-
-			if (vertexRep != null)
-			{
-				float fNodeWidth = vertexRep.getWidth() / 2.0f
-						* PathwayRenderStyle.SCALING_FACTOR_X;
-				float fNodeHeight = vertexRep.getHeight() / 2.0f
-						* PathwayRenderStyle.SCALING_FACTOR_Y;
-				float fCanvasXPos = (vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X);
-				float fCanvasYPos = (vertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y);
-
-				gl.glTranslated(fCanvasXPos - fNodeWidth + 0.01f, -fCanvasYPos - 0.01f, 0);
-				gl.glColor3f(0, 0, 0);
-				GLTextUtils.renderTextInRegion(gl, vertexRep.getName(), 10, 0, 0, 0.03f,
-						fNodeWidth, fNodeHeight);
-				// GLTextUtils.renderText(gl, vertexRep.getName(), 0, 0,
-				// -0.03f);
-				gl.glTranslated(-fCanvasXPos + fNodeWidth - 0.01f, fCanvasYPos + 0.01f, 0);
-			}
-		}
-	}
-
-	public void mapExpression(final GL gl, final PathwayVertexGraphItemRep pathwayVertexRep,
-			final float fNodeWidth, final float fNodeHeight)
-	{
-
-		ArrayList<float[]> alMappingColor;
-
-		// Check if vertex is already mapped
-		if (hashElementId2MappingColorArray.containsKey(pathwayVertexRep.getId()))
-		{
-			// Load existing mapping
-			alMappingColor = hashElementId2MappingColorArray.get(pathwayVertexRep.getId());
-		}
-		else
-		{
-			// Request mapping
-			alMappingColor = genomeMapper.getMappingColorArrayByVertexRep(pathwayVertexRep);
-			hashElementId2MappingColorArray.put(pathwayVertexRep.getId(), alMappingColor);
-		}
-
-		drawMapping(gl, alMappingColor, fNodeWidth, fNodeHeight, false);
-	}
-
-	private void drawMapping(final GL gl, final ArrayList<float[]> alMappingColor,
-			final float fNodeWidth, final float fNodeHeight, final boolean bEnableGrid)
-	{
-
-		int iColumnCount = (int) Math.ceil((float) alMappingColor.size()
-				/ (float) iMappingRowCount);
-
-		float[] tmpNodeColor = null;
-
-		gl.glPushMatrix();
-
-		// If no mapping is available - render whole node in one color
-		if (alMappingColor.size() == 1)
-		{
-			tmpNodeColor = alMappingColor.get(0);
-
-			// Check if the mapping gave back a valid color
-			// if (tmpNodeColor[0] == -1)
-			// tmpNodeColor = renderStyle.getEnzymeNodeColor(true);
-
-			gl.glColor3fv(tmpNodeColor, 0);
-			gl.glCallList(iEnzymeNodeDisplayListId);
-		}
-		else
-		{
-			gl.glTranslatef(-fNodeWidth + fNodeWidth / iColumnCount, -fNodeHeight
-					+ fNodeHeight / iMappingRowCount, 0.0f);
-
-			for (int iRowIndex = 0; iRowIndex < iMappingRowCount; iRowIndex++)
-			{
-				for (int iColumnIndex = 0; iColumnIndex < iColumnCount; iColumnIndex++)
-				{
-					int iCurrentElement = iRowIndex * iMappingRowCount + iColumnIndex;
-
-					if (iCurrentElement < alMappingColor.size())
-						tmpNodeColor = alMappingColor.get(iCurrentElement);// (
-					// iRowIndex
-					// +
-					// 1
-					// )
-					// *
-					// iColumnIndex
-					// )
-					// ;
-					else
-						continue;
-
-					// TODO
-					// Check if the mapping gave back a valid color
-					// if (tmpNodeColor.x() != -1)
-					// {
-					gl.glColor3fv(tmpNodeColor, 0);
-					gl.glScalef(1.0f / iColumnCount, 1.0f / iMappingRowCount, 1.0f);
-					gl.glCallList(iEnzymeNodeDisplayListId);
-					gl.glScalef(iColumnCount, iMappingRowCount, 1.0f);
-					// }
-
-					gl.glTranslatef(fNodeWidth * 2.0f / iColumnCount, 0.0f, 0.0f);
-				}
-
-				gl.glTranslatef(-2.0f * fNodeWidth, 2.0f * fNodeHeight / iMappingRowCount,
-						0.0f);
-			}
-		}
-
-		gl.glPopMatrix();
-
-		// Render grid
-		if (bEnableGrid)
-		{
-			gl.glColor3f(1, 1, 1);
-			gl.glBegin(GL.GL_LINE_LOOP);
-			gl.glVertex3f(-fNodeWidth, -fNodeHeight, Z_OFFSET);
-			gl.glVertex3f(fNodeWidth, -fNodeHeight, Z_OFFSET);
-			gl.glVertex3f(fNodeWidth, fNodeHeight, Z_OFFSET);
-			gl.glVertex3f(-fNodeWidth, fNodeHeight, Z_OFFSET);
-			gl.glEnd();
-
-			gl.glBegin(GL.GL_LINES);
-			for (int iRowIndex = 1; iRowIndex <= iMappingRowCount; iRowIndex++)
-			{
-				gl.glVertex3f(-fNodeWidth, -fNodeHeight + (2 * fNodeHeight / iMappingRowCount)
-						* iRowIndex, Z_OFFSET);
-				gl.glVertex3f(fNodeWidth, -fNodeHeight + (2 * fNodeHeight / iMappingRowCount)
-						* iRowIndex, Z_OFFSET);
-			}
-			for (int iColumnIndex = 1; iColumnIndex <= iColumnCount; iColumnIndex++)
-			{
-				gl.glVertex3f(-fNodeWidth + (2 * fNodeWidth / iColumnCount) * iColumnIndex,
-						fNodeHeight, Z_OFFSET);
-				gl.glVertex3f(-fNodeWidth + (2 * fNodeWidth / iColumnCount) * iColumnIndex,
-						-fNodeHeight, Z_OFFSET);
-			}
-			gl.glEnd();
-		}
-	}
+//	public void mapExpression(final GL gl, final PathwayVertexGraphItemRep pathwayVertexRep,
+//			final float fNodeWidth, final float fNodeHeight)
+//	{
+//		ArrayList<float[]> alMappingColor;
+//
+//		// Check if vertex is already mapped
+//		if (hashElementId2MappingColorArray.containsKey(pathwayVertexRep.getId()))
+//		{
+//			// Load existing mapping
+//			alMappingColor = hashElementId2MappingColorArray.get(pathwayVertexRep.getId());
+//		}
+//		else
+//		{
+//			// Request mapping
+//			alMappingColor = genomeMapper.getMappingColorArrayByVertexRep(pathwayVertexRep);
+//			hashElementId2MappingColorArray.put(pathwayVertexRep.getId(), alMappingColor);
+//		}
+//
+//		drawMapping(gl, alMappingColor, fNodeWidth, fNodeHeight, false);
+//	}
+//
+//	private void drawMapping(final GL gl, final ArrayList<float[]> alMappingColor,
+//			final float fNodeWidth, final float fNodeHeight, final boolean bEnableGrid)
+//	{
+//		int iColumnCount = (int) Math.ceil((float) alMappingColor.size()
+//				/ (float) iMappingRowCount);
+//
+//		float[] tmpNodeColor = null;
+//
+//		gl.glPushMatrix();
+//
+//		// If no mapping is available - render whole node in one color
+//		if (alMappingColor.size() == 1)
+//		{
+//			tmpNodeColor = alMappingColor.get(0);
+//
+//			// Check if the mapping gave back a valid color
+//			// if (tmpNodeColor[0] == -1)
+//			// tmpNodeColor = renderStyle.getEnzymeNodeColor(true);
+//
+//			gl.glColor3fv(tmpNodeColor, 0);
+//			gl.glCallList(iEnzymeNodeDisplayListId);
+//		}
+//		else
+//		{
+//			gl.glTranslatef(-fNodeWidth + fNodeWidth / iColumnCount, -fNodeHeight
+//					+ fNodeHeight / iMappingRowCount, 0.0f);
+//
+//			for (int iRowIndex = 0; iRowIndex < iMappingRowCount; iRowIndex++)
+//			{
+//				for (int iColumnIndex = 0; iColumnIndex < iColumnCount; iColumnIndex++)
+//				{
+//					int iCurrentElement = iRowIndex * iMappingRowCount + iColumnIndex;
+//
+//					if (iCurrentElement < alMappingColor.size())
+//						tmpNodeColor = alMappingColor.get(iCurrentElement);// (
+//					// iRowIndex
+//					// +
+//					// 1
+//					// )
+//					// *
+//					// iColumnIndex
+//					// )
+//					// ;
+//					else
+//						continue;
+//
+//					// TODO
+//					// Check if the mapping gave back a valid color
+//					// if (tmpNodeColor.x() != -1)
+//					// {
+//					gl.glColor3fv(tmpNodeColor, 0);
+//					gl.glScalef(1.0f / iColumnCount, 1.0f / iMappingRowCount, 1.0f);
+//					gl.glCallList(iEnzymeNodeDisplayListId);
+//					gl.glScalef(iColumnCount, iMappingRowCount, 1.0f);
+//					// }
+//
+//					gl.glTranslatef(fNodeWidth * 2.0f / iColumnCount, 0.0f, 0.0f);
+//				}
+//
+//				gl.glTranslatef(-2.0f * fNodeWidth, 2.0f * fNodeHeight / iMappingRowCount,
+//						0.0f);
+//			}
+//		}
+//
+//		gl.glPopMatrix();
+//
+//		// Render grid
+//		if (bEnableGrid)
+//		{
+//			gl.glColor3f(1, 1, 1);
+//			gl.glBegin(GL.GL_LINE_LOOP);
+//			gl.glVertex3f(-fNodeWidth, -fNodeHeight, Z_OFFSET);
+//			gl.glVertex3f(fNodeWidth, -fNodeHeight, Z_OFFSET);
+//			gl.glVertex3f(fNodeWidth, fNodeHeight, Z_OFFSET);
+//			gl.glVertex3f(-fNodeWidth, fNodeHeight, Z_OFFSET);
+//			gl.glEnd();
+//
+//			gl.glBegin(GL.GL_LINES);
+//			for (int iRowIndex = 1; iRowIndex <= iMappingRowCount; iRowIndex++)
+//			{
+//				gl.glVertex3f(-fNodeWidth, -fNodeHeight + (2 * fNodeHeight / iMappingRowCount)
+//						* iRowIndex, Z_OFFSET);
+//				gl.glVertex3f(fNodeWidth, -fNodeHeight + (2 * fNodeHeight / iMappingRowCount)
+//						* iRowIndex, Z_OFFSET);
+//			}
+//			for (int iColumnIndex = 1; iColumnIndex <= iColumnCount; iColumnIndex++)
+//			{
+//				gl.glVertex3f(-fNodeWidth + (2 * fNodeWidth / iColumnCount) * iColumnIndex,
+//						fNodeHeight, Z_OFFSET);
+//				gl.glVertex3f(-fNodeWidth + (2 * fNodeWidth / iColumnCount) * iColumnIndex,
+//						-fNodeHeight, Z_OFFSET);
+//			}
+//			gl.glEnd();
+//		}
+//	}
 
 	public void enableEdgeRendering(final boolean bEnableEdgeRendering)
 	{
-
 		this.bEnableEdgeRendering = bEnableEdgeRendering;
 	}
 
 	public void enableGeneMapping(final boolean bEnableGeneMappging)
 	{
-
 		this.bEnableGeneMapping = bEnableGeneMappging;
 	}
 
 	public void enableIdenticalNodeHighlighting(final boolean bEnableIdenticalNodeHighlighting)
 	{
-
 		this.bEnableIdenticalNodeHighlighting = bEnableIdenticalNodeHighlighting;
 	}
 
 	public void enableNeighborhood(final boolean bEnableNeighborhood)
 	{
-
 		this.bEnableNeighborhood = bEnableNeighborhood;
 	}
 
 	public void enableAnnotation(final boolean bEnableAnnotation)
 	{
-
 		this.bEnableAnnotation = bEnableAnnotation;
 	}
 
 	public void setMappingRowCount(final int iMappingRowCount)
 	{
-
 		this.iMappingRowCount = iMappingRowCount;
 	}
 }

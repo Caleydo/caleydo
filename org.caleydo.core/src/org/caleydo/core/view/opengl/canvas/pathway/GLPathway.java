@@ -11,6 +11,7 @@ import javax.media.opengl.GL;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
+import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EIDType;
@@ -550,7 +551,6 @@ public class GLPathway
 
 	public synchronized void enableAnnotation(final boolean bEnableAnnotation)
 	{
-
 		gLPathwayContentCreator.enableAnnotation(bEnableAnnotation);
 	}
 
@@ -589,6 +589,21 @@ public class GLPathway
 
 				if (pickingMode == EPickingMode.DOUBLE_CLICKED)
 				{
+					// Load embedded pathway
+					if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.map)
+					{
+						int iPathwayID = 
+							generalManager.getPathwayManager().searchPathwayIdByName(
+									tmpVertexGraphItemRep.getName(), EPathwayDatabaseType.KEGG);
+						
+						if(iPathwayID != -1)
+						{
+							ISelectionDelta selectionDelta = new SelectionDelta(EIDType.PATHWAY);
+							selectionDelta.addSelection(iPathwayID, ESelectionType.SELECTION);
+							triggerUpdate(EMediatorType.SELECTION_MEDIATOR, selectionDelta, null);
+						}
+					}
+					
 					selectionManager.clearSelection(ESelectionType.SELECTION);
 					
 					// Add new vertex to internal selection manager
@@ -638,10 +653,10 @@ public class GLPathway
 	private void createConnectionLines(PathwayVertexGraphItemRep vertexGraphItemRep,
 			int iConnectionID)
 	{
-		// PathwayVertexGraphItem tmpVertexGraphItem = null;
-		for (IGraphItem tmpGraphItem : vertexGraphItemRep
-				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT))
-		{
+//		// PathwayVertexGraphItem tmpVertexGraphItem = null;
+//		for (IGraphItem tmpGraphItem : vertexGraphItemRep
+//				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT))
+//		{
 			// else if (pickingMode == EPickingMode.CLICKED)
 			// {
 			// selectionManager.clearSelection(ESelectionType.SELECTION);
@@ -697,7 +712,7 @@ public class GLPathway
 				connectedElementRepresentationManager.addSelection(iConnectionID, elementRep);
 				// }
 			}
-		}
+//		}
 	}
 
 	@Override

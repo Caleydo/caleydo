@@ -193,7 +193,6 @@ public class KgmlSaxHandler
 	 */
 	protected void handleEntryTag()
 	{
-
 		int iEntryId = 0;
 		String sName = "";
 		String sType = "";
