@@ -38,7 +38,6 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
-import org.caleydo.core.view.opengl.renderstyle.PathwayRenderStyle;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
@@ -579,20 +578,19 @@ public class GLPathway
 						&& !pickingMode.equals(EPickingMode.DOUBLE_CLICKED))
 				{
 					pickingManager.flushHits(iUniqueID, ePickingType);
-
 					return;
 				}
 
 				setDisplayListDirty();
 
-				selectionManager.clearSelection(ESelectionType.SELECTION);
-				selectionManager.clearSelection(ESelectionType.MOUSE_OVER);
 				selectionManager.clearSelection(ESelectionType.NEIGHBORHOOD_1);
 				selectionManager.clearSelection(ESelectionType.NEIGHBORHOOD_2);
 				selectionManager.clearSelection(ESelectionType.NEIGHBORHOOD_3);
 
 				if (pickingMode == EPickingMode.DOUBLE_CLICKED)
 				{
+					selectionManager.clearSelection(ESelectionType.SELECTION);
+					
 					// Add new vertex to internal selection manager
 					selectionManager.addToType(ESelectionType.SELECTION, tmpVertexGraphItemRep
 							.getId());
@@ -600,6 +598,8 @@ public class GLPathway
 				else if (pickingMode == EPickingMode.MOUSE_OVER
 						|| pickingMode == EPickingMode.CLICKED)
 				{
+					selectionManager.clearSelection(ESelectionType.MOUSE_OVER);
+					
 					// Add new vertex to internal selection manager
 					selectionManager.addToType(ESelectionType.MOUSE_OVER,
 							tmpVertexGraphItemRep.getId());

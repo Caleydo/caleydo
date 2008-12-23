@@ -2,9 +2,9 @@ package org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels;
 
 import java.util.ArrayList;
 import java.util.Vector;
+import org.caleydo.core.view.opengl.canvas.glyph.GlyphRenderStyle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphGridPosition;
-import org.caleydo.core.view.opengl.renderstyle.GlyphRenderStyle;
 
 public class GlyphGridPositionModelCircle
 	extends GlyphGridPositionModel

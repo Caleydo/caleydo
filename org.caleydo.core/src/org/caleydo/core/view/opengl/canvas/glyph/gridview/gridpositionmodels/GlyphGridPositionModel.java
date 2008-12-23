@@ -8,9 +8,9 @@ import java.util.logging.Level;
 import javax.media.opengl.GL;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.glyph.GlyphRenderStyle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphGridPosition;
-import org.caleydo.core.view.opengl.renderstyle.GlyphRenderStyle;
 
 public class GlyphGridPositionModel
 {

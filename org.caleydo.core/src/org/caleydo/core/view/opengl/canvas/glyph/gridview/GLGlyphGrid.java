@@ -14,6 +14,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
+import org.caleydo.core.view.opengl.canvas.glyph.GlyphRenderStyle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphDataLoader;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModel;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelCircle;
@@ -21,7 +22,6 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.Gly
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelRandom;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelRectangle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels.GlyphGridPositionModelScatterplot;
-import org.caleydo.core.view.opengl.renderstyle.GlyphRenderStyle;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 
 /**

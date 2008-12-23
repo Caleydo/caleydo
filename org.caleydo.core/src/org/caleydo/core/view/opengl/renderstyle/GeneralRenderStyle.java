@@ -7,6 +7,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
  * Render Styles for the whole system
  * 
  * @author Alexander Lex
+ * @author Marc Streit
  */
 public class GeneralRenderStyle
 {
@@ -23,9 +24,9 @@ public class GeneralRenderStyle
 
 	public static final float MINIVEW_Z = 0.02f;
 
-	public static final float[] SELECTED_COLOR = { 1, 1, 0, 1 };
+	public static final float[] SELECTED_COLOR = { 0, 1, 0, 1 };
 
-	public static final float[] MOUSE_OVER_COLOR = { 1, 1, 0, 1 };
+	public static final float[] MOUSE_OVER_COLOR = { 1, 0, 0, 1 };
 
 	private static final float[] BACKGROUND_COLOR = { 0.7f, 0.7f, 0.7f, 1f };
 

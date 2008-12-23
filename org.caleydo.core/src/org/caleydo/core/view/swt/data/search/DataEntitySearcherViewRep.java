@@ -82,7 +82,7 @@ implements IMediatorSender{;
 	private boolean searchForRefSeq(final String sEntity) {
 		
 		Integer iDavidID = generalManager.getIDMappingManager().getID(
-				EMappingType.REFSEQ_MRNA_2_DAVID, sEntity);
+				EMappingType.REFSEQ_MRNA_2_DAVID, sEntity.toUpperCase());
 		
 		if (iDavidID == null || iDavidID == -1)
 			return false;
@@ -93,16 +93,21 @@ implements IMediatorSender{;
 		return true;
 	}
 	
-	// TODO: make case insensitive
 	private boolean searchForNCBIGeneId(final String sNCBIGeneId) {
 		
-		Integer iNCBIGeneID = Integer.valueOf(sNCBIGeneId);
-		
-		if (iNCBIGeneID == null || iNCBIGeneID == -1)
+		Integer iNCBIGeneID = 0;
+		try {	
+			iNCBIGeneID = Integer.valueOf(sNCBIGeneId);
+		}
+		catch (NumberFormatException nfe) {
 			return false;
+		}
 		
-		int iDavidID = generalManager.getIDMappingManager().getID(
+		Integer iDavidID = generalManager.getIDMappingManager().getID(
 				EMappingType.ENTREZ_GENE_ID_2_DAVID, iNCBIGeneID);
+		
+		if (iDavidID == null || iDavidID == -1)
+			return false;
 		
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.DAVID);
 		selectionDelta.addSelection(iDavidID, ESelectionType.SELECTION);

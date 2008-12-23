@@ -1842,8 +1842,13 @@ public class GLRemoteRendering
 						AGLEventListener glEventListener = ((AGLEventListener) generalManager
 								.getViewGLCanvasManager().getGLEventListener(element.getContainedElementID()));
 						
-						clearView(glEventListener);
 						
+						// Unregister all elements of the view that is removed
+						glEventListener.broadcastElements(
+								ESelectionType.REMOVE);
+						
+						clearView(glEventListener);
+							
 						element.setContainedElementID(-1);
 						break;
 				}
@@ -2310,6 +2315,12 @@ public class GLRemoteRendering
 		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
 				.clearAll();
 
+		if (glEventListener instanceof GLPathway)
+		{
+			generalManager.getPathwayManager().setPathwayVisibilityStateByID(
+					((GLPathway)glEventListener).getPathwayID(), false);
+		}
+		
 //		for (AGLEventListener eventListener : generalManager.getViewGLCanvasManager()
 //				.getAllGLEventListeners())
 //		{

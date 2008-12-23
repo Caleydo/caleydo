@@ -1,8 +1,9 @@
-package org.caleydo.core.view.opengl.renderstyle;
+package org.caleydo.core.view.opengl.canvas.glyph;
 
 import gleem.linalg.Vec4f;
 import java.awt.Font;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
