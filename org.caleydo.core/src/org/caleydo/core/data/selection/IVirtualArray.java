@@ -32,6 +32,8 @@ public interface IVirtualArray
 	/**
 	 * Adds a element to the end of the list.
 	 * 
+	 * TODO: rename to append?
+	 * 
 	 * @param iNewElement the index to the collection
 	 * @throws IllegalArgumentException if the value of the new element is
 	 *             larger than allowed. The maximum allowed value is the length
@@ -147,5 +149,12 @@ public interface IVirtualArray
 	 * @return the list containing the storage indices
 	 */
 	public ArrayList<Integer> getIndexList();
+	
+	/**
+	 * Applies the operations specified in the delta to the virtual array
+	 * 
+	 * @param delta
+	 */
+	public void setDelta(VirtualArrayDelta delta);
 
 }

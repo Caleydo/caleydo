@@ -168,6 +168,27 @@ public class VirtualArray
 	{
 		return iAlVirtualArray;
 	}
+	
+	@Override
+	public void setDelta(VirtualArrayDelta delta)
+	{
+		for(VADeltaItem item : delta)
+		{
+			switch(item.getType())
+			{
+				case ADD:
+					add(item.getIndex(), item.getElement());
+					break;
+				case APPEND:
+					add(item.getElement());
+					break;
+				case REMOVE:
+					remove(item.getIndex());
+					break;			
+				
+			}
+		}
+	}
 
 	/**
 	 * Initialize Virtual Array
