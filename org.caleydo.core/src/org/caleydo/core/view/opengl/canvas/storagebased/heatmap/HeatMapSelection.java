@@ -1,13 +1,21 @@
-package org.caleydo.core.data.selection;
+package org.caleydo.core.view.opengl.canvas.storagebased.heatmap;
 
-public class SelectionQuadruple
+import org.caleydo.core.data.selection.ESelectionType;
+
+/**
+ * HeatMapSelection stores selected elements for usage in the hierarchical heat
+ * map
+ * 
+ * @author Bernhard Schlegl
+ */
+public class HeatMapSelection
 {
 	private int iTexture;
 	private int iPos;
 	private int iContentIndex;
 	private ESelectionType selectionType;
 
-	public SelectionQuadruple()
+	public HeatMapSelection()
 	{
 		this.iTexture = 0;
 		this.iPos = 0;
@@ -15,7 +23,7 @@ public class SelectionQuadruple
 		this.selectionType = ESelectionType.NORMAL;
 	}
 
-	public SelectionQuadruple(int iTexture, int iPos, int iContentIndex,
+	public HeatMapSelection(int iTexture, int iPos, int iContentIndex,
 			ESelectionType selectionType)
 	{
 		this.iTexture = iTexture;
