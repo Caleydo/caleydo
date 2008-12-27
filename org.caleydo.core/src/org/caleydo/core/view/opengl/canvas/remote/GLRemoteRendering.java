@@ -440,7 +440,7 @@ public class GLRemoteRendering
 		renderRemoteLevel(gl, stackLevel);
 
 		// If user zooms to the bucket bottom all but the under
-		// interaction layer is _not_ rendered.
+		// focus layer is _not_ rendered.
 		if (bucketMouseWheelListener == null || !bucketMouseWheelListener.isZoomedIn())
 		{
 			// comment here for connection lines

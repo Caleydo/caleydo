@@ -160,7 +160,7 @@ public class PathwayRenderStyle
 	 * @see org.caleydo.core.view.opengl.canvas.pathway.PathwayRenderStyle#neighborhoodNodeColorArraysize
 	 * @see org.caleydo.core.view.opengl.canvas.pathway.PathwayRenderStyle#highlightedNodeColor
 	 * @param depth [0..1.. (neighborhoodNodeColorArraysize-1) ] ; if depth ==0
-	 *            highlightedNodeColor is returened
+	 *            highlightedNodeColor is returned
 	 * @return
 	 */
 	public float[] getNeighborhoodNodeColorByDepth(final int depth)

@@ -636,7 +636,7 @@ public class GLPathway
 				triggerUpdate(EMediatorType.SELECTION_MEDIATOR,// BUCKET_INTERNAL_INCOMING_MEDIATOR,
 						createExternalSelectionDelta(delta), colSelectionCommand);
 
-				pickingManager.flushHits(iUniqueID, ePickingType);
+				pickingManager.flushHits(iUniqueID, EPickingType.PATHWAY_ELEMENT_SELECTION);
 				break;
 			// case PATHWAY_TEXTURE_SELECTION:
 			//				

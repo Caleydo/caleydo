@@ -492,7 +492,10 @@ public class GLPathwayContentCreator
 		{
 			// Ignore KEGG title node
 			if (vertexRep.getName().contains("TITLE"))
+			{
+				gl.glPopName();
 				return;
+			}
 			
 			float fCanvasXPos = (vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X);
 			float fCanvasYPos = (vertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y);
