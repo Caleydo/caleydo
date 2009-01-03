@@ -1,4 +1,4 @@
-package org.caleydo.core.parser.xml.sax.handler.glyph;
+package org.caleydo.core.parser.xml.sax.handler.specialized.glyph;
 
 import gleem.linalg.Vec4f;
 import java.util.Vector;

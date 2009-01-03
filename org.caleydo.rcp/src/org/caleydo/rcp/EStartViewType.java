@@ -1,11 +1,11 @@
 package org.caleydo.rcp;
 
-import org.caleydo.rcp.views.GLGlyphView;
-import org.caleydo.rcp.views.GLHeatMapView;
-import org.caleydo.rcp.views.GLParCoordsView;
-import org.caleydo.rcp.views.GLRemoteRenderingView;
-import org.caleydo.rcp.views.HTMLBrowserView;
-import org.caleydo.rcp.views.TabularDataView;
+import org.caleydo.rcp.views.opengl.GLGlyphView;
+import org.caleydo.rcp.views.opengl.GLHeatMapView;
+import org.caleydo.rcp.views.opengl.GLParCoordsView;
+import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
+import org.caleydo.rcp.views.swt.HTMLBrowserView;
+import org.caleydo.rcp.views.swt.TabularDataView;
 
 /**
  * Enum for triggering view loading in RCP over the command line.

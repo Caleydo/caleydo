@@ -1,4 +1,4 @@
-package org.caleydo.rcp.views;
+package org.caleydo.rcp.views.opengl;
 
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -55,8 +55,8 @@ public class GLRemoteRenderingView
 			// -1));
 			iAlContainedViewIDs.add(createGLEventListener(
 					ECommandType.CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION, -1, true));
-			// iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_CELL,
-			// -1, true));
+			iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_CELL, -1, true));
+			
 			// FIXME: This is just a temporary solution to check if glyph view
 			// should be added to bucket.
 			try

@@ -14,9 +14,6 @@ import org.caleydo.util.graph.IGraph;
 public abstract class AGraph
 	implements IGraph
 {
-
-	private static final long serialVersionUID = 1L;
-
 	/**
 	 * initial size of org.caleydo.util.graph.core.AGraph#hashGraphProperties
 	 * 

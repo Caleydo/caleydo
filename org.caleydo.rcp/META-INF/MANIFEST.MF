@@ -56,7 +56,8 @@ Export-Package: org.caleydo.rcp;
    org.eclipse.swt.events,
    org.eclipse.swt.graphics,
    org.eclipse.swt.widgets",
- org.caleydo.rcp.views;
+   org.caleydo.rcp.views.swt,
+   org.caleydo.rcp.views.opengl;
   uses:="org.eclipse.jface.action,
    org.caleydo.core.view.opengl.canvas,
    org.caleydo.core.command,

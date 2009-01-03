@@ -17,9 +17,6 @@ import org.caleydo.util.graph.item.GraphGenericContainer;
 public class Graph
 	extends AGraph
 {
-
-	private static final long serialVersionUID = 1L;
-
 	private static final int initialSizeItems = 10;
 
 	private static final int initialSizeGraph = 3;

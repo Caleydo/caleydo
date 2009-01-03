@@ -753,7 +753,7 @@ public class GenericSelectionManager
 			}
 			else
 			{
-				// TODO check wheter external id type is ok
+				// TODO check whether external id type is ok
 
 				Set<Integer> iTmpSetID = convertExternalToInternal(item.getSelectionID());
 

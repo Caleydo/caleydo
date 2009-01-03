@@ -1,4 +1,4 @@
-package org.caleydo.rcp.views;
+package org.caleydo.rcp.views.opengl;
 
 import java.util.ArrayList;
 

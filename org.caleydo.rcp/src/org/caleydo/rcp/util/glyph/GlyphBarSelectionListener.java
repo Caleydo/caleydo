@@ -7,7 +7,7 @@ import org.caleydo.rcp.action.view.glyph.ChangeViewModeToCircleAction;
 import org.caleydo.rcp.action.view.glyph.ChangeViewModeToRandomAction;
 import org.caleydo.rcp.action.view.glyph.ChangeViewModeToRectangleAction;
 import org.caleydo.rcp.action.view.glyph.ChangeViewModeToScatterplotAction;
-import org.caleydo.rcp.views.GLGlyphView;
+import org.caleydo.rcp.views.opengl.GLGlyphView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;

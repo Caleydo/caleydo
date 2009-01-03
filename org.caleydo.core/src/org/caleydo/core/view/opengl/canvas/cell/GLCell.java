@@ -21,13 +21,15 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import com.sun.opengl.util.texture.Texture;
+import com.sun.opengl.util.texture.TextureCoords;
 
 /**
  * Single OpenGL pathway view
@@ -38,7 +40,7 @@ public class GLCell
 	extends AGLEventListener
 	implements IMediatorReceiver, IMediatorSender
 {
-	private ConnectedElementRepresentationManager connectedElementRepresentationManager;
+//	private ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
 	private GenericSelectionManager selectionManager;
 
@@ -50,8 +52,8 @@ public class GLCell
 		super(iGLCanvasID, sLabel, viewFrustum, false);
 		viewType = EManagedObjectType.GL_CELL_LOCALIZATION;
 
-		connectedElementRepresentationManager = generalManager.getViewGLCanvasManager()
-				.getConnectedElementRepresentationManager();
+//		connectedElementRepresentationManager = generalManager.getViewGLCanvasManager()
+//				.getConnectedElementRepresentationManager();
 
 		// initialize internal gene selection manager
 		ArrayList<ESelectionType> alSelectionType = new ArrayList<ESelectionType>();
@@ -120,7 +122,26 @@ public class GLCell
 
 	private void renderScene(final GL gl)
 	{
-		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+//		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		
+		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.CELL_MODEL);
+		tempTexture.enable();
+		tempTexture.bind();
+
+		TextureCoords texCoords = tempTexture.getImageTexCoords();
+		gl.glColor3f(1, 1, 1);
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), -0.01f);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop() - viewFrustum.getBottom(), -0.01f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum.getTop() - viewFrustum.getBottom(), -0.01f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum.getBottom(), -0.01f);
+		gl.glEnd();
+
+		tempTexture.disable();
 	}
 
 	@Override
@@ -225,7 +246,7 @@ public class GLCell
 		//		
 		// return pathway.getTitle() + " (" +pathway.getType().getName() + ")";
 
-		return null;
+		return "Cell view";
 	}
 
 	@Override
@@ -244,7 +265,7 @@ public class GLCell
 		//
 		// return sInfoText.toString();
 
-		return null;
+		return "Cell view";
 	}
 
 	@Override

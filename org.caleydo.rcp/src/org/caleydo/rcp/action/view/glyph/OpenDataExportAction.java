@@ -2,7 +2,7 @@ package org.caleydo.rcp.action.view.glyph;
 
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.view.AToolBarAction;
-import org.caleydo.rcp.views.SWTGlyphDataExportView;
+import org.caleydo.rcp.views.swt.SWTGlyphDataExportView;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;

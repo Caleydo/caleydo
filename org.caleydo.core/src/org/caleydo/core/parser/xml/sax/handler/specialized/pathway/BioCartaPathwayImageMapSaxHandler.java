@@ -1,4 +1,4 @@
-package org.caleydo.core.parser.xml.sax.handler.pathway;
+package org.caleydo.core.parser.xml.sax.handler.specialized.pathway;
 
 import java.util.Set;
 import java.util.logging.Level;

@@ -23,7 +23,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.GLHeatMapView"
+            class="org.caleydo.rcp.views.opengl.GLHeatMapView"
             icon="resources/icons/view/heatmap.png"
             id="org.caleydo.rcp.views.GLHeatMapView"
             name="Heat Map">
@@ -32,7 +32,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.GLHierarchicalHeatMapView"
+            class="org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView"
             icon="resources/icons/view/heatmap.png"
             id="org.caleydo.rcp.views.GLHierarchicalHeatMapView"
             name="Hierarchical Heat Map">
@@ -41,7 +41,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.GLParCoordsView"
+            class="org.caleydo.rcp.views.opengl.GLParCoordsView"
             icon="resources/icons/view/parcoords.png"
             id="org.caleydo.rcp.views.GLParCoordsView"
             name="Parallel Coordinates">
@@ -49,7 +49,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.ClinicalGLParCoordsView"
+            class="org.caleydo.rcp.views.opengl.ClinicalGLParCoordsView"
             icon="resources/icons/view/parcoords.png"
             id="org.caleydo.rcp.views.ClinicalGLParCoordsView"
             name="Clinical Parallel Coordinates">
@@ -58,7 +58,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.GLPathwayView"
+            class="org.caleydo.rcp.views.opengl.GLPathwayView"
             icon="resources/icons/view/pathway.png"
             id="org.caleydo.rcp.views.GLPathwayView"
             name="Pathway">
@@ -67,7 +67,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.GLRemoteRenderingView"
+            class="org.caleydo.rcp.views.opengl.GLRemoteRenderingView"
             icon="resources/icons/view/remote.png"
             id="org.caleydo.rcp.views.GLRemoteRenderingView"
             name="Bucket">
@@ -77,13 +77,13 @@
             id="org.caleydo.rcp.views.HTMLBrowserView"
             name="Browser"
             icon="resources/icons/view/browser.png"
-            class="org.caleydo.rcp.views.HTMLBrowserView"
+            class="org.caleydo.rcp.views.swt.HTMLBrowserView"
             category="org.caleydo.rcp.views">
       </view>
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.GLGlyphView"
+            class="org.caleydo.rcp.views.opengl.GLGlyphView"
             icon="resources/icons/view/glyph.png"
             id="org.caleydo.rcp.views.GLGlyphView"
             name="Glyph">
@@ -91,7 +91,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.GLGlyphSliderView"
+            class="org.caleydo.rcp.views.opengl.GLGlyphSliderView"
             icon="resources/icons/view/glyph.png"
             id="org.caleydo.rcp.views.GLGlyphSliderView"
             name="Glyph Slider">
@@ -99,7 +99,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.SWTGlyphMappingConfigurationView"
+            class="org.caleydo.rcp.views.swt.SWTGlyphMappingConfigurationView"
             icon="resources/icons/view/glyph.png"
             id="org.caleydo.rcp.views.SWTGlyphMappingConfigurationView"
             name="Glyph Mapping Configuration">
@@ -107,14 +107,14 @@
       <view
             allowMultiple="true"
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.SWTGlyphDataExportView"
+            class="org.caleydo.rcp.views.swt.SWTGlyphDataExportView"
             icon="resources/icons/view/glyph.png"
             id="org.caleydo.rcp.views.SWTGlyphDataExportView"
             name="Glyph Data Export">
       </view>
       <view
             category="org.caleydo.rcp.views"
-            class="org.caleydo.rcp.views.TabularDataView"
+            class="org.caleydo.rcp.views.swt.TabularDataView"
             icon="resources/icons/view/browser.png"
             id="org.caleydo.rcp.views.TabularDataView"
             name="Tabular Data Viewer">

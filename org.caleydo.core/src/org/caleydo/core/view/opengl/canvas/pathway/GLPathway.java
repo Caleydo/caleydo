@@ -1,7 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.pathway;
 
 import gleem.linalg.Vec3f;
-import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -43,7 +42,6 @@ import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
 import org.eclipse.swt.SWT;
-import com.sun.opengl.util.j2d.TextRenderer;
 
 /**
  * Single OpenGL pathway view
@@ -76,10 +74,10 @@ public class GLPathway
 	private Vec3f vecScaling;
 	private Vec3f vecTranslation;
 
-	private TextRenderer textRenderer;
-	private boolean bEnableTitleRendering = true;
-	private int iHorizontalTextAlignment = SWT.CENTER;
-	private int iVerticalTextAlignment = SWT.BOTTOM;
+//	private TextRenderer textRenderer;
+//	private boolean bEnableTitleRendering = true;
+//	private int iHorizontalTextAlignment = SWT.CENTER;
+//	private int iVerticalTextAlignment = SWT.BOTTOM;
 
 	/**
 	 * Constructor.
@@ -110,7 +108,7 @@ public class GLPathway
 
 		selectionManager = new GenericSelectionManager.Builder(EIDType.PATHWAY_VERTEX).build();
 
-		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 24), false);
+//		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 24), false);
 	}
 
 	public synchronized void setPathwayID(final int iPathwayID)
@@ -291,9 +289,9 @@ public class GLPathway
 	{
 		gLPathwayContentCreator.buildPathwayDisplayList(gl, this, iPathwayID);
 
-		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
-		renderPathwayName(gl);
-		gl.glEndList();
+//		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
+//		renderPathwayName(gl);
+//		gl.glEndList();
 	}
 
 	@Override
@@ -749,6 +747,8 @@ public class GLPathway
 					generalManager.getLogger().log(Level.WARNING, "Invalid David Gene ID.");
 					continue;
 				}
+				
+				
 
 				selectionDelta.addSelection(iDavidId, type);
 			}
@@ -802,55 +802,55 @@ public class GLPathway
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 	}
 
-	public void renderPathwayName(final GL gl)
-	{
-		if (!bEnableTitleRendering)
-			return;
+//	public void renderPathwayName(final GL gl)
+//	{
+//		if (!bEnableTitleRendering)
+//			return;
+//
+//		float fHorizontalPosition = 0;
+//		float fVerticalPosition = 0;
+//
+//		if (iHorizontalTextAlignment == SWT.LEFT)
+//			fHorizontalPosition = 0.2f;
+//		else if (iHorizontalTextAlignment == SWT.RIGHT)
+//			fHorizontalPosition = 3.5f;
+//		else if (iHorizontalTextAlignment == SWT.CENTER)
+//			fHorizontalPosition = 1.8f;
+//
+//		if (iVerticalTextAlignment == SWT.TOP)
+//			fVerticalPosition = 7.8f;
+//		else if (iVerticalTextAlignment == SWT.BOTTOM)
+//			fVerticalPosition = 0.2f;
+//		else if (iVerticalTextAlignment == SWT.CENTER)
+//			fVerticalPosition = 1;
+//
+//		String sPathwayName = generalManager.getPathwayManager().getItem(iPathwayID)
+//				.getTitle();
+//
+//		int iMaxChars = 40;
+//		if (iHorizontalTextAlignment == SWT.RIGHT)
+//			iMaxChars = 30;
+//
+//		if (sPathwayName.length() > iMaxChars)
+//			sPathwayName = sPathwayName.subSequence(0, iMaxChars - 3) + "...";
+//
+//		textRenderer.begin3DRendering();
+//		textRenderer.setColor(0.2f, 0.2f, 0.2f, 1.0f);
+//		textRenderer.draw3D(sPathwayName, fHorizontalPosition, fVerticalPosition, 0.05f,
+//				0.011f);
+//		textRenderer.end3DRendering();
+//	}
 
-		float fHorizontalPosition = 0;
-		float fVerticalPosition = 0;
-
-		if (iHorizontalTextAlignment == SWT.LEFT)
-			fHorizontalPosition = 0.2f;
-		else if (iHorizontalTextAlignment == SWT.RIGHT)
-			fHorizontalPosition = 3.5f;
-		else if (iHorizontalTextAlignment == SWT.CENTER)
-			fHorizontalPosition = 1.8f;
-
-		if (iVerticalTextAlignment == SWT.TOP)
-			fVerticalPosition = 7.8f;
-		else if (iVerticalTextAlignment == SWT.BOTTOM)
-			fVerticalPosition = 0.2f;
-		else if (iVerticalTextAlignment == SWT.CENTER)
-			fVerticalPosition = 1;
-
-		String sPathwayName = generalManager.getPathwayManager().getItem(iPathwayID)
-				.getTitle();
-
-		int iMaxChars = 40;
-		if (iHorizontalTextAlignment == SWT.RIGHT)
-			iMaxChars = 30;
-
-		if (sPathwayName.length() > iMaxChars)
-			sPathwayName = sPathwayName.subSequence(0, iMaxChars - 3) + "...";
-
-		textRenderer.begin3DRendering();
-		textRenderer.setColor(0.2f, 0.2f, 0.2f, 1.0f);
-		textRenderer.draw3D(sPathwayName, fHorizontalPosition, fVerticalPosition, 0.05f,
-				0.011f);
-		textRenderer.end3DRendering();
-	}
-
-	public void enableTitleRendering(boolean bEnable)
-	{
-		bEnableTitleRendering = bEnable;
-	}
-
-	public void setAlignment(int iHorizontalAlignment, int iVerticalAlignment)
-	{
-		this.iHorizontalTextAlignment = iHorizontalAlignment;
-		this.iVerticalTextAlignment = iVerticalAlignment;
-	}
+//	public void enableTitleRendering(boolean bEnable)
+//	{
+//		bEnableTitleRendering = bEnable;
+//	}
+//
+//	public void setAlignment(int iHorizontalAlignment, int iVerticalAlignment)
+//	{
+//		this.iHorizontalTextAlignment = iHorizontalAlignment;
+//		this.iVerticalTextAlignment = iVerticalAlignment;
+//	}
 
 	@Override
 	public int getNumberOfSelections(ESelectionType eSelectionType)

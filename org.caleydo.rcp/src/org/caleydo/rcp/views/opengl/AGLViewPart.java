@@ -1,4 +1,4 @@
-package org.caleydo.rcp.views;
+package org.caleydo.rcp.views.opengl;
 
 import java.awt.Frame;
 import java.util.ArrayList;
@@ -85,7 +85,7 @@ public abstract class AGLViewPart
 
 		if (glViewType == ECommandType.CREATE_GL_BUCKET_3D)
 		{
-			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1.5f, 1.5f, -1.5f, 1.5f, 2.9f,
+			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1.5f, 1.5f, -1.5f, 1.5f, 2.87f,
 					100, iAlSets, iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
 		}
 		else if (glViewType == ECommandType.CREATE_GL_GLYPH)

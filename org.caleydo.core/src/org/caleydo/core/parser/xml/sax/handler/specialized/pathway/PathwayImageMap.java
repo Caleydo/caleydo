@@ -1,8 +1,7 @@
-package org.caleydo.core.parser.xml.sax.handler.pathway;
+package org.caleydo.core.parser.xml.sax.handler.specialized.pathway;
 
 import java.awt.Point;
 import java.awt.Rectangle;
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
@@ -14,11 +13,7 @@ import java.util.ArrayList;
  */
 
 public class PathwayImageMap
-	implements Serializable
 {
-
-	private static final long serialVersionUID = 1L;
-
 	/**
 	 * Path to the image file that is the basis of the image map.
 	 */

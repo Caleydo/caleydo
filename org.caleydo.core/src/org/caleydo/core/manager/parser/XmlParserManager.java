@@ -3,11 +3,11 @@ package org.caleydo.core.manager.parser;
 import java.util.Iterator;
 import org.caleydo.core.parser.xml.sax.handler.IXmlParserHandler;
 import org.caleydo.core.parser.xml.sax.handler.command.CommandSaxHandler;
-import org.caleydo.core.parser.xml.sax.handler.glyph.GlyphDefinitionSaxHandler;
-import org.caleydo.core.parser.xml.sax.handler.pathway.BioCartaPathwayImageMapSaxHandler;
-import org.caleydo.core.parser.xml.sax.handler.pathway.KgmlSaxHandler;
-import org.caleydo.core.parser.xml.sax.handler.pathway.PathwayImageMapSaxHandler;
 import org.caleydo.core.parser.xml.sax.handler.recursion.OpenExternalXmlFileSaxHandler;
+import org.caleydo.core.parser.xml.sax.handler.specialized.glyph.GlyphDefinitionSaxHandler;
+import org.caleydo.core.parser.xml.sax.handler.specialized.pathway.BioCartaPathwayImageMapSaxHandler;
+import org.caleydo.core.parser.xml.sax.handler.specialized.pathway.KgmlSaxHandler;
+import org.caleydo.core.parser.xml.sax.handler.specialized.pathway.PathwayImageMapSaxHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

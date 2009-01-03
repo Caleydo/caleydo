@@ -187,19 +187,17 @@ public class CmdLoadFileLookupTable
 		// genomeIdManager.removeMapByType(EMappingType.valueOf(sLookupTableType));
 
 		EMappingType mappingType = EMappingType.valueOf(sLookupTableType);
-
 		EMappingDataType dataType;
-
 		dataType = mappingType.getDataMapppingType();
 
-		loader = new LookupTableLoader(sFileName, mappingType, dataType);
-
-		loader.setTokenSeperator(sLookupTableDelimiter);
-
-		loader.setStartParsingStopParsingAtLine(iStartPareseFileAtLine, iStopParseFileAtLine);
-
-		loader.loadData();
-
+		if (!sFileName.equals("already_loaded"))
+		{
+			loader = new LookupTableLoader(sFileName, mappingType, dataType);
+			loader.setTokenSeperator(sLookupTableDelimiter);
+			loader.setStartParsingStopParsingAtLine(iStartPareseFileAtLine, iStopParseFileAtLine);
+			loader.loadData();
+		}
+		
 		/* --- Map codes in LUT to IDs --- */
 		if (bResolveCodeMappingUsingCodeToId_LUT_1 || bResolveCodeMappingUsingCodeToId_LUT_2
 				|| bResolveCodeMappingUsingCodeToId_LUT_BOTH)

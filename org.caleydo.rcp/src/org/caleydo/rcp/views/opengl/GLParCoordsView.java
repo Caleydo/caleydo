@@ -1,4 +1,4 @@
-package org.caleydo.rcp.views;
+package org.caleydo.rcp.views.opengl;
 
 import java.util.ArrayList;
 
@@ -24,15 +24,15 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
-public class ClinicalGLParCoordsView
+public class GLParCoordsView
 	extends AGLViewPart
 {
-	public static final String ID = "org.caleydo.rcp.views.ClinicalGLParCoordsView";
+	public static final String ID = "org.caleydo.rcp.views.GLParCoordsView";
 
 	/**
 	 * Constructor.
 	 */
-	public ClinicalGLParCoordsView()
+	public GLParCoordsView()
 	{
 		super();
 	}
@@ -93,8 +93,8 @@ public class ClinicalGLParCoordsView
 		}
 
 		createGLCanvas();
-		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_CLINICAL, glCanvas
-				.getID(), true);
+		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION,
+				glCanvas.getID(), true);
 
 		createToolBarItems(iGLEventListenerID);
 

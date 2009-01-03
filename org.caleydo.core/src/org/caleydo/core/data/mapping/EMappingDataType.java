@@ -10,7 +10,6 @@ package org.caleydo.core.data.mapping;
  */
 public enum EMappingDataType
 {
-
 	INT2INT(false, false),
 	INT2STRING(false, false),
 	STRING2INT(false, false),
@@ -29,7 +28,6 @@ public enum EMappingDataType
 
 	private EMappingDataType(boolean bEnableUseMultiMap, boolean bEnableIsLokupTable)
 	{
-
 		this.bUseMultiMap = bEnableUseMultiMap;
 		this.bIsLokupTable = bEnableIsLokupTable;
 	}
@@ -41,7 +39,6 @@ public enum EMappingDataType
 	 */
 	public boolean isMultiMapUsed()
 	{
-
 		return bUseMultiMap;
 	}
 
@@ -52,7 +49,6 @@ public enum EMappingDataType
 	 */
 	public boolean isLookupTable()
 	{
-
 		return bIsLokupTable;
 	}
 }

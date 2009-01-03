@@ -30,14 +30,20 @@ public enum EIconTextures
 	BROWSER_HOME_IMAGE("resources/icons/view/browser/home.png"),
 
 	PANEL_SELECTION("resources/panel/selection_background.png"),
-	PANEL_SELECTION_SIDE("resources/panel/selection_background_side.png"),
-	PANEL_SELECTION_CENTER("resources/panel/selection_background_center.png"),
 
 	NAVIGATION_REMOVE_VIEW("resources/icons/general/navigation_remove_view.png"),
 	NAVIGATION_DRAG_VIEW("resources/icons/general/navigation_drag_view.png"),
-
+	NAVIGATION_LOCK_VIEW("resources/icons/general/navigation_lock_view.png"),	
+	
+	POOL_REMOVE_VIEW("resources/icons/general/pool_remove_view.png"),
+	POOL_DRAG_VIEW("resources/icons/general/pool_drag_view.png"),
+	POOL_VIEW_BACKGROUND("resources/navigation/pool_view_background.png"),
+	POOL_VIEW_BACKGROUND_SELECTION("resources/navigation/pool_view_background_selection.png"),
+	
 	LOADING("resources/loading/loading_background.png"),
-	LOADING_CIRCLE("resources/loading/loading_circle.png");
+	LOADING_CIRCLE("resources/loading/loading_circle.png"), 
+	
+	CELL_MODEL("resources/models/cell.jpg");
 
 	private String sFileName;
 

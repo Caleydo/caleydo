@@ -1,4 +1,4 @@
-package org.caleydo.rcp.views;
+package org.caleydo.rcp.views.swt;
 
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.general.GeneralManager;
