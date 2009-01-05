@@ -220,7 +220,8 @@ public class GenericSelectionManager
 	}
 
 	/**
-	 * Initialize by adding the elements one by one. No delta writing.
+	 * Initialize by adding the elements one by one. No delta writing. Do this only in the initialization phase.
+	 * Use {@link #safeAdd(int) later.
 	 * 
 	 * @param iElementID
 	 */
@@ -242,6 +243,10 @@ public class GenericSelectionManager
 		}
 	}
 
+	/**
+	 * Use this to add elements at run-time
+	 * @param iElementID
+	 */
 	private void safeAdd(int iElementID)
 	{
 
@@ -786,6 +791,34 @@ public class GenericSelectionManager
 		}
 
 		bIsDeltaWritingEnabled = true;
+
+	}
+
+	public void setVADelta(IVirtualArrayDelta delta)
+	{
+		if (virtualArray == null)
+		{
+			return;
+		}
+		if (delta.getIDType() == internalIDType)
+		{
+
+			for (VADeltaItem item : delta)
+			{
+				// TODO mapping stuff
+				switch (item.getType())
+				{
+					case ADD:
+						addToType(ESelectionType.ADD, item.getElement());
+						break;
+					case REMOVE:
+						addToType(ESelectionType.REMOVE, virtualArray.get(item.getIndex()));
+				}
+			}
+			virtualArray.setDelta(delta);
+		}
+		
+		
 
 	}
 

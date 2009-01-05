@@ -23,8 +23,7 @@ public class VADeltaItem
 	/**
 	 * Constructor. Constructing a VAItem externally is forbidden.
 	 */
-	@SuppressWarnings("unused")
-	private void VAItem()
+	private VADeltaItem()
 	{
 	}
 
@@ -63,6 +62,8 @@ public class VADeltaItem
 	/**
 	 * Static factory for a new delta item that removes an element at a specific
 	 * position of a virtual array
+	 * 
+	 * Take good care to remove items in the correct order, from back to front. Otherwise this can corrupt your data.
 	 * 
 	 * @param iIndex the place where the element is added (see {@link IVirtualArray#remove(int)})
 	 * @return the created object

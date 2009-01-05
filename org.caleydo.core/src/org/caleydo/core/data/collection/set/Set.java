@@ -49,9 +49,7 @@ public class Set
 
 	private HashMap<Integer, IVirtualArray> hashStorageVAs;
 	private HashMap<Integer, IVirtualArray> hashSetVAs;
-
-	private HashMap<Integer, Boolean> hashIsVAEnabled;
-
+	
 	private EExternalDataRepresentation externalDataRep;
 
 	private boolean bIsSetHomogeneous = false;
@@ -65,7 +63,6 @@ public class Set
 		alStorages = new ArrayList<IStorage>();
 		hashStorageVAs = new HashMap<Integer, IVirtualArray>();
 		hashSetVAs = new HashMap<Integer, IVirtualArray>();
-		hashIsVAEnabled = new HashMap<Integer, Boolean>();
 	}
 
 	@Override
@@ -348,7 +345,6 @@ public class Set
 		VirtualArray virtualArray = new VirtualArray(depth());
 		int iUniqueID = virtualArray.getID();
 		hashSetVAs.put(iUniqueID, virtualArray);
-		hashIsVAEnabled.put(iUniqueID, false);
 		return iUniqueID;
 	}
 
@@ -357,48 +353,10 @@ public class Set
 	{
 		VirtualArray virtualArray = new VirtualArray(depth(), iAlSelections);
 		int iUniqueID = virtualArray.getID();
-		if (hashIsVAEnabled.get(iUniqueID) == null)
-		{
-			hashSetVAs.put(iUniqueID, virtualArray);
-			hashIsVAEnabled.put(iUniqueID, false);
-		}
 		return iUniqueID;
 	}
 
-	// TODO obsolete?
-	@Override
-	@Deprecated
-	public void enableVirtualArray(int iUniqueID)
-	{
-		if (hashIsVAEnabled.get(iUniqueID) == null)
-		{
-			throw new IllegalStateException("No such virtual array exists, create it first");
-		}
-		else
-		{
-			hashIsVAEnabled.put(iUniqueID, true);
-			if (hashStorageVAs.containsKey(iUniqueID))
-			{
-				for (IStorage storage : alStorages)
-					storage.enableVirtualArray(iUniqueID);
-			}
-		}
-	}
-
-	@Override
-	public void disableVirtualArray(int iUniqueID)
-	{
-		if (hashStorageVAs.get(iUniqueID) != null && hashSetVAs.get(iUniqueID) != null)
-		{
-			hashIsVAEnabled.put(iUniqueID, false);
-			if (hashStorageVAs.containsKey(iUniqueID))
-			{
-				for (IStorage storage : alStorages)
-					storage.disableVirtualArray(iUniqueID);
-			}
-		}
-	}
-
+	
 	@Override
 	public void resetVirtualArray(int iUniqueID)
 	{
@@ -463,7 +421,6 @@ public class Set
 	{
 		int iUniqueID = virtualArray.getID();
 		hashStorageVAs.put(iUniqueID, virtualArray);
-		hashIsVAEnabled.put(iUniqueID, false);
 		for (IStorage storage : alStorages)
 		{
 			storage.setVirtualArray(iUniqueID, hashStorageVAs.get(iUniqueID));
@@ -523,7 +480,6 @@ public class Set
 					break;
 			}
 		}
-
 	}
 
 	@Override

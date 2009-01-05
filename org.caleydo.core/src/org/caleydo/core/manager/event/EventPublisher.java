@@ -4,6 +4,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IEventPublisher;
@@ -86,6 +87,34 @@ public class EventPublisher
 		}
 	}
 
+	public void triggerVAUpdate(EMediatorType eMediatorType, IUniqueObject eventTrigger,
+			IVirtualArrayDelta delta)
+	{
+		if (!hashMediatorType2Mediator.containsKey(eMediatorType))
+		{
+			if (eMediatorType != EMediatorType.ALL_REGISTERED)
+				throw new IllegalStateException("Sender " + eventTrigger.getID()
+						+ " is not a sender in the mediator group " + eMediatorType);
+		}
+		if (eMediatorType == EMediatorType.ALL_REGISTERED)
+		{
+			for (EMediatorType eTempMediatorType : hashMediatorType2Mediator.keySet())
+			{
+				if (hashMediatorType2Mediator.get(eTempMediatorType).hasSender(
+						(IMediatorSender) eventTrigger))
+				{
+					hashMediatorType2Mediator.get(eTempMediatorType).triggerVAUpdate(
+							eventTrigger, delta);
+				}
+			}
+		}
+		else
+		{
+			hashMediatorType2Mediator.get(eMediatorType).triggerVAUpdate(eventTrigger,
+					delta);
+		}	
+	}
+	
 	@Override
 	public void removeSender(EMediatorType eMediatorType, IMediatorSender sender)
 	{

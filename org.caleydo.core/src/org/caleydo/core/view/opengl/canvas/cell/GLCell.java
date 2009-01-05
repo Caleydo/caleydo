@@ -10,6 +10,7 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.data.selection.SelectionItem;
@@ -173,6 +174,14 @@ public class GLCell
 		setDisplayListDirty();
 	}
 
+	@Override
+	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
+			EMediatorType mediatorType)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+	
 	private ISelectionDelta resolveExternalSelectionDelta(ISelectionDelta selectionDelta)
 	{
 		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.PATHWAY_VERTEX,

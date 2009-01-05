@@ -3,12 +3,12 @@ package org.caleydo.core.manager.event.mediator;
 import java.util.Collection;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 
 /**
  * Object that shall receive an event.
  * 
- * @author Michael Kalkusch
  * @author Marc Streit
  * @author Alexander Lex
  */
@@ -24,5 +24,16 @@ public interface IMediatorReceiver
 	 */
 	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
 			Collection<SelectionCommand> colSelectionCommand, EMediatorType eMediatorType);
+
+	/**
+	 * Update concerning virtual arrays. The details about what to do
+	 * with the update are specified in the delta.
+	 * 
+	 * @param eMediatorType for which mediator
+	 * @param eventTrigger the caller
+	 * @param delta the delta containing all operations to be executed
+	 */
+	public void handleVAUpdate(IUniqueObject eventTrigger,
+			IVirtualArrayDelta delta, EMediatorType eMediatorType);
 
 }

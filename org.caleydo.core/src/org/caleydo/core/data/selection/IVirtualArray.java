@@ -155,6 +155,6 @@ public interface IVirtualArray
 	 * 
 	 * @param delta
 	 */
-	public void setDelta(VirtualArrayDelta delta);
+	public void setDelta(IVirtualArrayDelta delta);
 
 }

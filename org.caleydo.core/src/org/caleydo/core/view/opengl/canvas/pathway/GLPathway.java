@@ -18,6 +18,7 @@ import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDelta;
@@ -856,5 +857,13 @@ public class GLPathway
 	public int getNumberOfSelections(ESelectionType eSelectionType)
 	{
 		return selectionManager.getElements(eSelectionType).size();
+	}
+
+	@Override
+	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
+			EMediatorType mediatorType)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

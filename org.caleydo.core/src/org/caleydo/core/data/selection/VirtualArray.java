@@ -22,6 +22,10 @@ public class VirtualArray
 	ArrayList<Integer> iAlVirtualArray;
 
 	int iLength;
+	/**
+	 * Used to check whether elements to be removed are in descending order
+	 */
+	int iLastRemovedIndex = -1;
 
 	/**
 	 * Constructor. Pass the length of the managed collection
@@ -168,13 +172,13 @@ public class VirtualArray
 	{
 		return iAlVirtualArray;
 	}
-	
+
 	@Override
-	public void setDelta(VirtualArrayDelta delta)
+	public void setDelta(IVirtualArrayDelta delta)
 	{
-		for(VADeltaItem item : delta)
+		for (VADeltaItem item : delta)
 		{
-			switch(item.getType())
+			switch (item.getType())
 			{
 				case ADD:
 					add(item.getIndex(), item.getElement());
@@ -183,11 +187,17 @@ public class VirtualArray
 					add(item.getElement());
 					break;
 				case REMOVE:
+					int iIndex = item.getIndex();
+					if (iIndex < iLastRemovedIndex)
+						throw new IllegalStateException(
+								"Index of remove operation was smaller than previously used index. This is likely not intentional. Take care to remove indices from back to front.");
+					iLastRemovedIndex = iIndex;
 					remove(item.getIndex());
-					break;			
-				
+					break;
+
 			}
 		}
+		iLastRemovedIndex = -1;
 	}
 
 	/**

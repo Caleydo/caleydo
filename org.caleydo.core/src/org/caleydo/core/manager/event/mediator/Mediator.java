@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 
 /**
@@ -91,6 +92,19 @@ public class Mediator
 			{
 				receiver
 						.handleUpdate(eventTrigger, selectionDelta, colSelectionCommand, eType);
+			}
+		}
+	}
+
+	@Override
+	public void triggerVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta)
+	{
+		for (IMediatorReceiver receiver : alReceiver)
+		{
+			// Prevent circular updates
+			if (!receiver.equals(eventTrigger))
+			{
+				receiver.handleVAUpdate(eventTrigger, delta, eType);
 			}
 		}
 	}

@@ -17,6 +17,7 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
@@ -430,6 +431,14 @@ public class GLGlyphSliderView
 			Collection<SelectionCommand> colSelectionCommand, EMediatorType eMediatorType)
 	{
 		// TODO Auto-generated method stub
+	}
+	
+	@Override
+	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
+			EMediatorType mediatorType)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override

@@ -1,7 +1,6 @@
 package org.caleydo.core.data.selection;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import org.caleydo.core.data.mapping.EIDType;
 
@@ -11,7 +10,7 @@ import org.caleydo.core.data.mapping.EIDType;
  *
  */
 public class VirtualArrayDelta
-	implements IVirtualArrayDelta, Iterable<VADeltaItem>
+	implements IVirtualArrayDelta
 {
 	private ArrayList<VADeltaItem> alDeltaItems;
 
@@ -28,13 +27,15 @@ public class VirtualArrayDelta
 		return idType;
 	}
 	
-	public Collection<VADeltaItem> getSelectionData()
-	{
-		return alDeltaItems;
-	}
+//	public Collection<VADeltaItem> getSelectionData()
+//	{
+//		return alDeltaItems;
+//	}
 	
 	public void add(VADeltaItem item)
-	{}
+	{
+		alDeltaItems.add(item);
+	}
 
 	@Override
 	public Iterator<VADeltaItem> iterator()

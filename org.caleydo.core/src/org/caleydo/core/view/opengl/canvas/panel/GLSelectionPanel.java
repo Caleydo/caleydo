@@ -11,6 +11,7 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionItem;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
@@ -196,6 +197,14 @@ public class GLSelectionPanel
 		setDisplayListDirty();
 	}
 
+	@Override
+	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
+			EMediatorType mediatorType)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+	
 	private void rebuildDisplayList(GL gl, int iGLDisplayList)
 	{
 		float fXOrigin = 0.05f;

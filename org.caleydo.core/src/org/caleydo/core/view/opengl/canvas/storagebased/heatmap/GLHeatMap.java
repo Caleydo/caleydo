@@ -361,6 +361,7 @@ public class GLHeatMap
 		storageSelectionManager.resetSelectionManager();
 
 		contentSelectionManager.setVA(set.getVA(iContentVAID));
+		storageSelectionManager.setVA(set.getVA(iStorageVAID));
 
 		if (renderStyle != null)
 		{

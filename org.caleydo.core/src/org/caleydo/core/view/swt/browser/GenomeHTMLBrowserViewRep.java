@@ -8,6 +8,7 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionItem;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
@@ -206,5 +207,13 @@ public class GenomeHTMLBrowserViewRep
 				list.setSelection(0);
 			}
 		});
+	}
+	
+	@Override
+	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
+			EMediatorType mediatorType)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -47,9 +47,12 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionItem;
+import org.caleydo.core.data.selection.VADeltaItem;
+import org.caleydo.core.data.selection.VirtualArrayDelta;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -217,7 +220,7 @@ public class GLParallelCoordinates
 
 		generalManager.getEventPublisher().addSender(EMediatorType.PROPAGATION_MEDIATOR, this);
 		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
-		
+
 		bRenderOnlyContext = false;
 
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
@@ -227,7 +230,8 @@ public class GLParallelCoordinates
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID, final PickingJoglMouseListener pickingTriggerMouseAdapter,
+	public void initRemote(final GL gl, final int iRemoteViewID,
+			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
 		bRenderOnlyContext = true;
@@ -1445,7 +1449,7 @@ public class GLParallelCoordinates
 	{
 		checkUnselection();
 	}
-	
+
 	// TODO: revise this, not very performance friendly, especially the clearing
 	// of the DESELECTED
 	private void checkUnselection()
@@ -1531,7 +1535,7 @@ public class GLParallelCoordinates
 
 							triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
 									polylineSelectionManager.getDelta(), colSelectionCommand);
-							
+
 							triggerEvent(1);
 
 						}
@@ -1735,14 +1739,12 @@ public class GLParallelCoordinates
 				switch (ePickingMode)
 				{
 					case CLICKED:
-						if (bRenderStorageHorizontally)
-						{
-							set.getVA(iContentVAID).remove(iExternalID);
-						}
-						else
-						{
-							set.getVA(iStorageVAID).remove(iExternalID);
-						}
+						set.getVA(iAxisVAID).remove(iExternalID);
+						IVirtualArrayDelta vaDelta = new VirtualArrayDelta(
+								EIDType.EXPERIMENT_INDEX);
+						vaDelta.add(VADeltaItem.remove(iExternalID));
+						generalManager.getEventPublisher().triggerVAUpdate(
+								EMediatorType.SELECTION_MEDIATOR, this, vaDelta);
 						setDisplayListDirty();
 						initGates();
 						break;

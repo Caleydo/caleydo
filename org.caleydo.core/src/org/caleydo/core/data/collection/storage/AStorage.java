@@ -27,7 +27,6 @@ public abstract class AStorage
 {
 	protected EnumMap<EDataRepresentation, ICContainer> hashCContainers;
 	protected HashMap<Integer, IVirtualArray> hashVirtualArrays;
-	protected HashMap<Integer, Boolean> hashIsVirtualArrayEnabled;
 
 	protected String sLabel;
 
@@ -49,7 +48,6 @@ public abstract class AStorage
 		hashCContainers = new EnumMap<EDataRepresentation, ICContainer>(
 				EDataRepresentation.class);
 		hashVirtualArrays = new HashMap<Integer, IVirtualArray>();
-		hashIsVirtualArrayEnabled = new HashMap<Integer, Boolean>();
 		sLabel = new String("Not specified");
 	}
 
@@ -233,36 +231,15 @@ public abstract class AStorage
 	}
 
 	@Override
-	public void enableVirtualArray(int iUniqueID)
-	{
-		if (hashIsVirtualArrayEnabled.get(iUniqueID) == null)
-		{
-			throw new IllegalStateException("Virtual array for ID: " + iUniqueID
-					+ " is not set");
-		}
-		else if (!hashIsVirtualArrayEnabled.get(iUniqueID))
-			hashIsVirtualArrayEnabled.put(iUniqueID, true);
-	}
-
-	@Override
-	public void disableVirtualArray(int iUniqueID)
-	{
-		if (hashIsVirtualArrayEnabled.get(iUniqueID) != null)
-			hashIsVirtualArrayEnabled.put(iUniqueID, false);
-	}
-
-	@Override
 	public void setVirtualArray(int iUniqueID, IVirtualArray virtualArray)
 	{
 		hashVirtualArrays.put(iUniqueID, virtualArray);
-		hashIsVirtualArrayEnabled.put(iUniqueID, false);
 	}
 
 	@Override
 	public void removeVirtualArray(int iUniqueID)
 	{
 		hashVirtualArrays.remove(iUniqueID);
-		hashIsVirtualArrayEnabled.remove(iUniqueID);
 	}
 
 	@Override
