@@ -15,10 +15,11 @@ import org.caleydo.rcp.views.swt.TabularDataView;
 public enum EStartViewType
 {
 
-	GLYPHVIEW("glyphview", GLGlyphView.ID), PARALLEL_COORDINATES("parcoords",
-			GLParCoordsView.ID), HEATMAP("heatmap", GLHeatMapView.ID), REMOTE("remote",
-			GLRemoteRenderingView.ID), BROWSER("browser", HTMLBrowserView.ID), TABULAR(
-			"tabular", TabularDataView.ID);
+	GLYPHVIEW("glyphview", GLGlyphView.ID), 
+	PARALLEL_COORDINATES("parcoords", GLParCoordsView.ID), 
+	HEATMAP("heatmap", GLHeatMapView.ID), REMOTE("remote", GLRemoteRenderingView.ID), 
+	BROWSER("browser", HTMLBrowserView.ID),
+	TABULAR("tabular", TabularDataView.ID);
 
 	private String sCommandLineArgument;
 	private String sRCPViewID;

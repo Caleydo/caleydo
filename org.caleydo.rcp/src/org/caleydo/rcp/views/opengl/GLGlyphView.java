@@ -13,7 +13,6 @@ import org.caleydo.rcp.action.view.glyph.RemoveUnselectedFromViewAction;
 import org.caleydo.rcp.util.glyph.GlyphBar;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.widgets.Composite;
 
 public class GLGlyphView
@@ -37,6 +36,9 @@ public class GLGlyphView
 	public void createPartControl(Composite parent)
 	{
 		super.createPartControl(parent);
+		
+		createGLCanvas();
+		createGLEventListener(ECommandType.CREATE_GL_GLYPH, glCanvas.getID(), true);
 	}
 
 	public static void createToolBarItems(int iViewID)
@@ -66,20 +68,4 @@ public class GLGlyphView
 			return;
 
 	}
-
-	@Override
-	protected final void fillToolBar()
-	{
-		createGLCanvas();
-		createGLEventListener(ECommandType.CREATE_GL_GLYPH, glCanvas.getID(), true);
-
-		createToolBarItems(iGLEventListenerID);
-
-		IToolBarManager toolBarManager = getViewSite().getActionBars().getToolBarManager();
-		fillToolBar(toolBarManager);
-
-		alToolbar = null;
-		alToolbarContributions = null;
-	}
-
 }

@@ -2,6 +2,7 @@ package org.caleydo.core.command.view.rcp;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.EIconIDs;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
@@ -42,19 +43,27 @@ public class CmdExternalFlagSetter
 		Object viewObject = generalManager.getViewGLCanvasManager()
 				.getGLEventListener(iViewId);
 
+		
 		if (viewObject instanceof GLPathway)
 		{
-			switch (externalFlagSetterType)
+			// Pathway settings should apply to all pathways
+			for (AGLEventListener glEventListener : generalManager.getViewGLCanvasManager().getAllGLEventListeners())
 			{
-				case PATHWAY_GENE_MAPPING:
-					((GLPathway) viewObject).enableGeneMapping(bFlag);
-					return;
-				case PATHWAY_NEIGHBORHOOD:
-					((GLPathway) viewObject).enableNeighborhood(bFlag);
-					return;
-				case PATHWAY_TEXTURES:
-					((GLPathway) viewObject).enablePathwayTextures(bFlag);
-					return;
+				if (!(glEventListener instanceof GLPathway))
+					continue;
+				
+				switch (externalFlagSetterType)
+				{
+					case PATHWAY_GENE_MAPPING:
+						((GLPathway) glEventListener).enableGeneMapping(bFlag);
+						break;
+					case PATHWAY_NEIGHBORHOOD:
+						((GLPathway) glEventListener).enableNeighborhood(bFlag);
+						break;
+					case PATHWAY_TEXTURES:
+						((GLPathway) glEventListener).enablePathwayTextures(bFlag);
+						break;
+				}				
 			}
 
 		}

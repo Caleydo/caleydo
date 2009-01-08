@@ -16,9 +16,11 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.part.ViewPart;
 
 /**
@@ -111,6 +113,10 @@ public abstract class AGLViewPart
 		// generalManager.getEventPublisher().addReceiver(
 		// EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver)glView);
 
+//		// Add view specific toolbar to sidebar
+//		((ToolBarView)PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+//				.getActivePage().getViewReferences()[0].getView(false)).addViewSpecificToolBar(iViewID);
+		
 		return iViewID;
 	}
 
@@ -118,7 +124,7 @@ public abstract class AGLViewPart
 	public void createPartControl(Composite parent)
 	{
 		swtComposite = new Composite(parent, SWT.EMBEDDED);
-		fillToolBar();
+//		fillToolBar();
 	}
 
 	public void setGLData(final GLCaleydoCanvas glCanvas, final int iGLEventListenerID)
@@ -151,13 +157,23 @@ public abstract class AGLViewPart
 		return swtComposite;
 	}
 
-	protected abstract void fillToolBar();
+	public int getGLEventListenerID()
+	{
+		return iGLEventListenerID;
+	}
+	
+	public void fillToolBar()
+	{	
+		IToolBarManager toolBarManager = getViewSite().getActionBars().getToolBarManager();
+		ArrayList<IToolBarManager> alToolBarManager = new ArrayList<IToolBarManager>();
+		alToolBarManager.add(toolBarManager);
+		fillToolBar(alToolBarManager);
+	}
 
 	/**
 	 * Method fills the toolbar in a given toolbar manager. Used in case of
-	 * remote rendering.
+	 * a detached view that can put all its toolbar items into one single toolbar (no wrapping needed).
 	 * 
-	 * @param toolBarManager
 	 */
 	public static void fillToolBar(final IToolBarManager toolBarManager)
 	{
@@ -171,14 +187,42 @@ public abstract class AGLViewPart
 
 			alToolbarContributions = null;
 		}
-
-		// add action items
+		
 		for (IAction toolBarAction : alToolbar)
 		{
 			toolBarManager.add(toolBarAction);
 		}
-		alToolbar = null;
+	}
+	
+	/**
+	 * Method fills the toolbar in a given toolbar manager. Used in case of
+	 * remote rendering.
+	 * The array of toolbar managers is needed for simulating toolbar wrap which is not
+	 * supported for linux.
+	 * See bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=46025
+	 * 
+	 */
+	public static void fillToolBar(ArrayList<IToolBarManager> alToolBarManager)
+	{
+		// Add ControlContribution items
+		if (!GeneralManager.get().getPreferenceStore().getBoolean(
+				PreferenceConstants.XP_CLASSIC_STYLE_MODE))
+		{
+			if (alToolbarContributions != null)
+				for (IContributionItem item : alToolbarContributions)
+					alToolBarManager.get(0).add(item);
 
+			alToolbarContributions = null;
+		}
+
+		// add action items
+		int iMaxItemsPerToolBar = 5;
+		for (int iToolBarItemIndex = 0; iToolBarItemIndex < alToolbar.size(); iToolBarItemIndex++)
+		{			
+			alToolBarManager.get((int)(iToolBarItemIndex / iMaxItemsPerToolBar))
+				.add(alToolbar.get(iToolBarItemIndex));
+		}
+		alToolbar = null;
 	}
 
 	@Override

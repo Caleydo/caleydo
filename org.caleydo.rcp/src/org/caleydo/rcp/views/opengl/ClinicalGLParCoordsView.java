@@ -6,8 +6,6 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
-import org.caleydo.rcp.Application;
-import org.caleydo.rcp.EApplicationMode;
 import org.caleydo.rcp.action.view.storagebased.ChangeOrientationAction;
 import org.caleydo.rcp.action.view.storagebased.ClearSelectionsAction;
 import org.caleydo.rcp.action.view.storagebased.PropagateSelectionsAction;
@@ -18,11 +16,7 @@ import org.caleydo.rcp.action.view.storagebased.parcoords.AngularBrushingAction;
 import org.caleydo.rcp.action.view.storagebased.parcoords.OcclusionPreventionAction;
 import org.caleydo.rcp.action.view.storagebased.parcoords.SaveSelectionsAction;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
 
 public class ClinicalGLParCoordsView
 	extends AGLViewPart
@@ -41,6 +35,10 @@ public class ClinicalGLParCoordsView
 	public void createPartControl(Composite parent)
 	{
 		super.createPartControl(parent);
+		
+		createGLCanvas();
+		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_CLINICAL, glCanvas
+				.getID(), true);
 	}
 
 	public static void createToolBarItems(int iViewID)
@@ -77,28 +75,5 @@ public class ClinicalGLParCoordsView
 		IAction useRandomSamplingAction = new UseRandomSamplingAction(iViewID);
 		alToolbar.add(useRandomSamplingAction);
 
-	}
-
-	@Override
-	protected final void fillToolBar()
-	{
-		if (Application.applicationMode == EApplicationMode.PATHWAY_VIEWER)
-		{
-			MessageBox alert = new MessageBox(new Shell(), SWT.OK);
-			alert.setMessage("Cannot create heat map in pathway viewer mode!");
-			alert.open();
-
-			dispose();
-			return;
-		}
-
-		createGLCanvas();
-		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_CLINICAL, glCanvas
-				.getID(), true);
-
-		createToolBarItems(iGLEventListenerID);
-
-		IToolBarManager toolBarManager = getViewSite().getActionBars().getToolBarManager();
-		fillToolBar(toolBarManager);
 	}
 }

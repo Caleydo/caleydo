@@ -24,9 +24,9 @@ public class TakeSnapshotAction
 	/**
 	 * Constructor.
 	 */
-	public TakeSnapshotAction(int iViewID)
+	public TakeSnapshotAction()
 	{
-		super(iViewID);
+		super(-1);
 
 		setText(TEXT);
 		setToolTipText(TEXT);

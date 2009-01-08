@@ -2,12 +2,13 @@ package org.caleydo.rcp.views.opengl;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
+import org.caleydo.rcp.Application;
+import org.caleydo.rcp.EApplicationMode;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 
 public class GLHierarchicalHeatMapView
 	extends AGLViewPart
@@ -20,19 +21,30 @@ public class GLHierarchicalHeatMapView
 	public GLHierarchicalHeatMapView()
 	{
 		super();
-
 	}
 
 	@Override
 	public void createPartControl(Composite parent)
 	{
 		super.createPartControl(parent);
+		
+		if (Application.applicationMode == EApplicationMode.PATHWAY_VIEWER)
+		{
+			MessageBox alert = new MessageBox(new Shell(), SWT.OK);
+			alert.setMessage("Cannot create heat map in pathway viewer mode!");
+			alert.open();
+
+			dispose();
+			return;
+		}
+		
+		createGLCanvas();
 	}
 
 	public static void createToolBarItems(int iViewID)
 	{
-		GLHierarchicalHeatMap hierarchicalHeatMap = (GLHierarchicalHeatMap) GeneralManager
-				.get().getViewGLCanvasManager().getGLEventListener(iViewID);
+//		GLHierarchicalHeatMap hierarchicalHeatMap = (GLHierarchicalHeatMap) GeneralManager
+//				.get().getViewGLCanvasManager().getGLEventListener(iViewID);
 
 		alToolbar = new ArrayList<IAction>();
 
@@ -42,19 +54,5 @@ public class GLHierarchicalHeatMapView
 
 		// IAction switchOrientation = new ChangeOrientationAction(iViewID);
 		// alToolbar.add(switchOrientation);
-	}
-
-	@Override
-	protected final void fillToolBar()
-	{
-
-		createGLCanvas();
-		int iViewID = createGLEventListener(ECommandType.CREATE_GL_TEXTURE_HEAT_MAP_3D,
-				glCanvas.getID(), false);
-
-		createToolBarItems(iGLEventListenerID);
-
-		IToolBarManager toolBarManager = getViewSite().getActionBars().getToolBarManager();
-		fillToolBar(toolBarManager);
 	}
 }

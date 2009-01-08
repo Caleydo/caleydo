@@ -119,6 +119,13 @@
             id="org.caleydo.rcp.views.TabularDataView"
             name="Tabular Data Viewer">
       </view>
+      <view
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.rcp.views.swt.ToolBarView"
+            icon="resources/icons/view/browser.png"
+            id="org.caleydo.rcp.views.ToolBarView"
+            name="Tool Bar">
+      </view>
 
       
    </extension>   
@@ -128,6 +135,7 @@
       <perspective
             name="Genome Perspective"  class="org.caleydo.rcp.perspective.GenomePerspective"
             id="org.caleydo.rcp.perspective">
+            
       </perspective>
    </extension>
    <extension
@@ -241,6 +249,11 @@
             id="org.caleydo.rcp.command.export"
             name="Export">
       </command>
+      <command
+            defaultHandler="org.caleydo.rcp.command.handler.view.OpenToolBarHandler"
+            id="org.caleydo.rcp.command.openviews.toolbar"
+            name="Open Tool Bar">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.menus">
@@ -351,6 +364,12 @@
                      label="Tabular Data Viewer"
                      style="push">
                </command>
+               <command
+                     commandId="org.caleydo.rcp.command.openviews.toolbar"
+                     icon="resources/icons/view/browser.png"
+                     label="Tool Bar"
+                     style="push">
+               </command>
             </menu>
          </menu>
          <menu
@@ -375,16 +394,6 @@
                   style="push">
             </command>
          </menu>
-      </menuContribution>
-      <menuContribution
-            locationURI="toolbar:org.eclipse.ui.trim.status">
-         <toolbar
-               id="org.eclipse.ui.examples.contributions.contributedStatus">
-            <control
-                  class="org.caleydo.rcp.util.info.InfoArea"
-                  id="contributions.controlContrib.info">
-            </control>
-         </toolbar>
       </menuContribution>
    </extension>
    <extension

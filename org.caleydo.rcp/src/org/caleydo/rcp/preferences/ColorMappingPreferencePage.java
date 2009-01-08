@@ -31,6 +31,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Preference page for color mapping settings
@@ -42,7 +43,6 @@ public class ColorMappingPreferencePage
 	extends FieldEditorPreferencePage
 	implements IWorkbenchPreferencePage
 {
-
 	private ArrayList<ColorFieldEditor> alColorFieldEditors;
 	private ArrayList<Spinner> alColorMarkerPointSpinners;
 	private ArrayList<Label> alColorMarkerPointLabels;
@@ -349,7 +349,7 @@ public class ColorMappingPreferencePage
 		int[] iArColorMarkerPoints = new int[iNumberOfMarkerPoints - 1];
 		for (int iCount = 1; iCount <= iNumberOfMarkerPoints; iCount++)
 		{
-			int iColorMarkerPoint = (int) (100 * getPreferenceStore().getFloat(
+			int iColorMarkerPoint = (int) (100 * Activator.getDefault().getPreferenceStore().getFloat(
 					PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount));
 
 			// Gradient label does not need the 0 point
@@ -358,7 +358,7 @@ public class ColorMappingPreferencePage
 				iArColorMarkerPoints[iCount - 2] = iColorMarkerPoint;
 			}
 
-			String color = getPreferenceStore().getString(
+			String color = Activator.getDefault().getPreferenceStore().getString(
 					PreferenceConstants.COLOR_MARKER_POINT_COLOR + iCount);
 
 			int[] iArColor = new int[3];
@@ -386,13 +386,12 @@ public class ColorMappingPreferencePage
 					iInnerCount++;
 				}
 			}
-			alColor[iCount - 1] = new Color(getFieldEditorParent().getDisplay(), iArColor[0],
+			alColor[iCount - 1] = new Color(PlatformUI.getWorkbench().getDisplay(), iArColor[0],
 					iArColor[1], iArColor[2]);
 		}
 
 		colorMappingPreviewLabel.setBackground(alColor, iArColorMarkerPoints);
 		colorMappingPreviewLabel.update();
-
 	}
 
 	private void updateColorMappingPreview()

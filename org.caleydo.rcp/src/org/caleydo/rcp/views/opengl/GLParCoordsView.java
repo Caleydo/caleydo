@@ -18,7 +18,6 @@ import org.caleydo.rcp.action.view.storagebased.parcoords.AngularBrushingAction;
 import org.caleydo.rcp.action.view.storagebased.parcoords.OcclusionPreventionAction;
 import org.caleydo.rcp.action.view.storagebased.parcoords.SaveSelectionsAction;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.MessageBox;
@@ -41,6 +40,20 @@ public class GLParCoordsView
 	public void createPartControl(Composite parent)
 	{
 		super.createPartControl(parent);
+		
+		if (Application.applicationMode == EApplicationMode.PATHWAY_VIEWER)
+		{
+			MessageBox alert = new MessageBox(new Shell(), SWT.OK);
+			alert.setMessage("Cannot create parallel coordinates in pathway viewer mode!");
+			alert.open();
+
+			dispose();
+			return;
+		}
+		
+		createGLCanvas();
+		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION,
+				glCanvas.getID(), true);
 	}
 
 	public static void createToolBarItems(int iViewID)
@@ -65,6 +78,7 @@ public class GLParCoordsView
 		alToolbar.add(resetViewAction);
 		IAction propagateSelectionAction = new PropagateSelectionsAction(iViewID);
 		alToolbar.add(propagateSelectionAction);
+		
 		// only if standalone or explicitly requested
 		if (pcs.isRenderedRemote()
 				&& GeneralManager.get().getPreferenceStore().getBoolean(
@@ -77,28 +91,5 @@ public class GLParCoordsView
 		IAction useRandomSamplingAction = new UseRandomSamplingAction(iViewID);
 		alToolbar.add(useRandomSamplingAction);
 
-	}
-
-	@Override
-	protected final void fillToolBar()
-	{
-		if (Application.applicationMode == EApplicationMode.PATHWAY_VIEWER)
-		{
-			MessageBox alert = new MessageBox(new Shell(), SWT.OK);
-			alert.setMessage("Cannot create heat map in pathway viewer mode!");
-			alert.open();
-
-			dispose();
-			return;
-		}
-
-		createGLCanvas();
-		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION,
-				glCanvas.getID(), true);
-
-		createToolBarItems(iGLEventListenerID);
-
-		IToolBarManager toolBarManager = getViewSite().getActionBars().getToolBarManager();
-		fillToolBar(toolBarManager);
 	}
 }

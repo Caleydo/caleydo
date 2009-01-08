@@ -90,8 +90,7 @@ public class Mediator
 			// Prevent circular updates
 			if (!receiver.equals(eventTrigger))
 			{
-				receiver
-						.handleUpdate(eventTrigger, selectionDelta, colSelectionCommand, eType);
+				receiver.handleUpdate(eventTrigger, selectionDelta, colSelectionCommand, eType);
 			}
 		}
 	}

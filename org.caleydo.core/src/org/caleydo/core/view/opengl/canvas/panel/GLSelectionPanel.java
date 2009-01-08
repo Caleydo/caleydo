@@ -3,7 +3,6 @@ package org.caleydo.core.view.opengl.canvas.panel;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.logging.Level;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.mapping.EIDType;
@@ -13,7 +12,6 @@ import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionItem;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
@@ -152,49 +150,49 @@ public class GLSelectionPanel
 			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand,
 			EMediatorType eMediatorType)
 	{
-		generalManager.getLogger().log(Level.FINE,
-				"Update called by " + eventTrigger.getClass().getSimpleName());
-
-		if (eMediatorType == EMediatorType.PROPAGATION_MEDIATOR)
-		{
-			selectionManager.resetSelectionManager();
-			selectionManager.setDelta(selectionDelta);
-
-			iAlElements.clear();
-			for (SelectionItem item : selectionDelta)
-			{
-				iAlElements.add(item.getSelectionID());
-			}
-		}
-		else if (eMediatorType == EMediatorType.SELECTION_MEDIATOR)
-		{
-			for (SelectionItem item : selectionDelta)
-			{
-				if (iAlElements.contains(item.getSelectionID()))
-				{
-					if (item.getSelectionType() == ESelectionType.MOUSE_OVER)
-					{
-						selectionManager.clearSelection(ESelectionType.MOUSE_OVER);
-
-					}
-					else if (item.getSelectionType() == ESelectionType.SELECTION)
-					{
-						selectionManager.clearSelection(ESelectionType.SELECTION);
-
-					}
-					selectionManager.addToType(item.getSelectionType(), item.getSelectionID());
-					for (Integer iConnectionID : item.getConnectionID())
-					{
-						selectionManager.addConnectionID(iConnectionID, item.getSelectionID());
-					}
-
-				}
-			}
-		}
-		else
-			throw new IllegalStateException("Cannot handle updates of type " + eMediatorType);
-
-		setDisplayListDirty();
+//		generalManager.getLogger().log(Level.FINE,
+//				"Update called by " + eventTrigger.getClass().getSimpleName());
+//
+//		if (eMediatorType == EMediatorType.PROPAGATION_MEDIATOR)
+//		{
+//			selectionManager.resetSelectionManager();
+//			selectionManager.setDelta(selectionDelta);
+//
+//			iAlElements.clear();
+//			for (SelectionItem item : selectionDelta)
+//			{
+//				iAlElements.add(item.getSelectionID());
+//			}
+//		}
+//		else if (eMediatorType == EMediatorType.SELECTION_MEDIATOR)
+//		{
+//			for (SelectionItem item : selectionDelta)
+//			{
+//				if (iAlElements.contains(item.getSelectionID()))
+//				{
+//					if (item.getSelectionType() == ESelectionType.MOUSE_OVER)
+//					{
+//						selectionManager.clearSelection(ESelectionType.MOUSE_OVER);
+//
+//					}
+//					else if (item.getSelectionType() == ESelectionType.SELECTION)
+//					{
+//						selectionManager.clearSelection(ESelectionType.SELECTION);
+//
+//					}
+//					selectionManager.addToType(item.getSelectionType(), item.getSelectionID());
+//					for (Integer iConnectionID : item.getConnectionID())
+//					{
+//						selectionManager.addConnectionID(iConnectionID, item.getSelectionID());
+//					}
+//
+//				}
+//			}
+//		}
+//		else
+//			throw new IllegalStateException("Cannot handle updates of type " + eMediatorType);
+//
+//		setDisplayListDirty();
 	}
 
 	@Override

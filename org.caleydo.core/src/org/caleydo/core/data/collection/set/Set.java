@@ -353,6 +353,10 @@ public class Set
 	{
 		VirtualArray virtualArray = new VirtualArray(depth(), iAlSelections);
 		int iUniqueID = virtualArray.getID();
+		
+		// FIXME: Without the next line nothing works - please check this out Alex!
+		hashSetVAs.put(iUniqueID, virtualArray);
+		
 		return iUniqueID;
 	}
 

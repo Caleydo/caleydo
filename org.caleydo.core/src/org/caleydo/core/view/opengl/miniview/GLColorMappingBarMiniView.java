@@ -33,11 +33,9 @@ public class GLColorMappingBarMiniView
 	 */
 	public GLColorMappingBarMiniView(IViewFrustum viewFrustum)
 	{
-
 		super();
 		textRenderer = new TextRenderer(new Font("Arial", Font.BOLD, 18), false);
 		renderStyle = new GeneralRenderStyle(viewFrustum);
-
 	}
 
 	@Override

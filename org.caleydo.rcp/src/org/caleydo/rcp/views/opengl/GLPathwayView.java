@@ -6,7 +6,6 @@ import org.caleydo.rcp.action.view.pathway.GeneMappingAction;
 import org.caleydo.rcp.action.view.pathway.NeighborhoodAction;
 import org.caleydo.rcp.action.view.pathway.TextureAction;
 import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.action.IToolBarManager;
 
 public class GLPathwayView
 	extends AGLViewPart
@@ -31,17 +30,5 @@ public class GLPathwayView
 		alToolbar.add(neighborhoodAction);
 		IAction geneMappingAction = new GeneMappingAction(iViewID);
 		alToolbar.add(geneMappingAction);
-	}
-
-	@Override
-	protected final void fillToolBar()
-	{
-		if (alToolbar == null)
-		{
-			createToolBarItems(iGLEventListenerID);
-		}
-
-		IToolBarManager toolBarManager = getViewSite().getActionBars().getToolBarManager();
-		fillToolBar(toolBarManager);
 	}
 }

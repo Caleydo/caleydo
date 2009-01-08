@@ -1,9 +1,7 @@
 package org.caleydo.rcp.util.info;
 
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.Set;
-import java.util.logging.Level;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.mapping.EIDType;
@@ -16,21 +14,25 @@ import org.caleydo.core.data.selection.SelectionItem;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
+import org.caleydo.rcp.views.swt.ToolBarView;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.menus.WorkbenchWindowControlContribution;
+import org.eclipse.ui.PlatformUI;
 
 public class InfoArea
-	extends WorkbenchWindowControlContribution
+//	extends WorkbenchWindowControlContribution
 	implements IMediatorReceiver
 {
 	private ToolTip viewInfoToolTip;
@@ -41,6 +43,10 @@ public class InfoArea
 
 	private AGLEventListener updateTriggeringView;
 	private ISelectionDelta selectionDelta;
+	
+	private List selectionList;
+	
+	private Composite parentComposite;
 
 	// TODO: bad hack, but how can I access this class during runtime?
 	private static InfoArea infoArea;
@@ -50,159 +56,254 @@ public class InfoArea
 		infoArea = this;
 	}
 
-	@Override
-	protected Control createControl(final Composite parent)
+//	@Override
+	public Control createControl(final Composite parent)
 	{
 		Font font = new Font(parent.getDisplay(), "Arial", 10, SWT.BOLD);
 
 		Composite composite = new Composite(parent, SWT.NONE);
+		parentComposite = parent;
 
-		RowLayout rowLayout = new RowLayout();
-		rowLayout.fill = false;
-		rowLayout.justify = false;
-		rowLayout.pack = true;
-		rowLayout.type = SWT.HORIZONTAL;
-		rowLayout.wrap = false;
-		composite.setLayout(rowLayout);
-
-		Label lblViewInfo = new Label(composite, SWT.CENTER);
-		lblViewInfo.setText("View Info:");
+		Group group = new Group(composite, SWT.NULL);		
+		group.setLayout(new RowLayout(SWT.VERTICAL));
+		group.setBackground(composite.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		
+		Label lblViewInfo = new Label(group, SWT.NONE);
+		lblViewInfo.setText("View Info");
 		lblViewInfo.setFont(font);
-		lblViewInfo.setLayoutData(new RowData(80, 15));
+		lblViewInfo.setLayoutData(new RowData(200, 15));
+		lblViewInfo.setBackground(composite.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
-		txtViewInfo = new Text(composite, SWT.NONE);
+		txtViewInfo = new Text(group, SWT.WRAP);
 		txtViewInfo.setText("");
 		txtViewInfo.setBackground(parent.getDisplay().getSystemColor(
 				SWT.COLOR_WIDGET_BACKGROUND));
 		txtViewInfo.setEditable(false);
-		txtViewInfo.setLayoutData(new RowData(400, 15));
+		txtViewInfo.setLayoutData(new RowData(200, 30));
+		txtViewInfo.setBackground(composite.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
-		viewInfoToolTip = new ToolTip(txtViewInfo, "No info available!", this,
-				EInfoType.VIEW_INFO);
+//		viewInfoToolTip = new ToolTip(txtViewInfo, "No info available!", this,
+//				EInfoType.VIEW_INFO);
+		
+		new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
 
-		new Label(composite, SWT.SEPARATOR | SWT.VERTICAL);
-
-		Label lblDetailInfo = new Label(composite, SWT.NO_BACKGROUND);
-		lblDetailInfo.setText("Detail Info:");
+		Label lblDetailInfo = new Label(group, SWT.NO_BACKGROUND);
+		lblDetailInfo.setText("Selection Info");
 		lblDetailInfo.setFont(font);
-		lblDetailInfo.setLayoutData(new RowData(80, 15));
+		lblDetailInfo.setLayoutData(new RowData(200, 15));
+		lblDetailInfo.setBackground(composite.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
-		txtDetailedInfo = new Text(composite, SWT.NONE);
-		txtDetailedInfo.setText("");
-		txtDetailedInfo.setBackground(parent.getDisplay().getSystemColor(
-				SWT.COLOR_WIDGET_BACKGROUND));
-		txtDetailedInfo.setEditable(false);
-		txtDetailedInfo.setLayoutData(new RowData(400, 15));
+//		txtDetailedInfo = new Text(group, SWT.NONE);
+//		txtDetailedInfo.setText("");
+//		txtDetailedInfo.setBackground(parent.getDisplay().getSystemColor(
+//				SWT.COLOR_WIDGET_BACKGROUND));
+//		txtDetailedInfo.setEditable(false);
+//		txtDetailedInfo.setLayoutData(new RowData(200, 15));
+//
+//		detailInfoToolTip = new ToolTip(txtDetailedInfo, "No info available!", this,
+//				EInfoType.DETAILED_INFO);
 
-		detailInfoToolTip = new ToolTip(txtDetailedInfo, "No info available!", this,
-				EInfoType.DETAILED_INFO);
+		GridData data = new GridData();
+		data.widthHint = 200;
 
+		selectionList = new List(group, SWT.SINGLE);
+		selectionList.setLayoutData(new RowData(200, 200));
+
+		selectionList.addSelectionListener(new SelectionAdapter()
+		{
+			@Override
+			public void widgetSelected(SelectionEvent e)
+			{
+//				String sURL = urlGenerator.createURL(eBrowserQueryType, iAlDavidID.get(list
+//						.getSelectionIndex()));
+//
+//				browser.setUrl(sURL);
+//				browser.update();
+//				textURL.setText(sURL);
+			}
+		});
+		
+		group.pack();
+		
 		return composite;
 	}
 
 	@Override
-	public void handleUpdate(final IUniqueObject eventTrigger,
-			final ISelectionDelta selectionDelta,
+	public void handleUpdate(final IUniqueObject eventTrigger, final ISelectionDelta selectionDelta,
 			Collection<SelectionCommand> colSelectionCommand, EMediatorType eMediatorType)
 	{
-		if (!(eventTrigger instanceof AGLEventListener))
+		if (selectionDelta.getIDType() != EIDType.DAVID)
 			return;
-
-		GeneralManager.get().getLogger().log(
-				Level.INFO,
-				"Update called by " + eventTrigger.getClass().getSimpleName()
-						+ ", received in: " + this.getClass().getSimpleName());
-
-		updateTriggeringView = (AGLEventListener) eventTrigger;
-
-		if (!selectionDelta.getSelectionData().isEmpty())
-			this.selectionDelta = selectionDelta;
-
-		txtViewInfo.getDisplay().asyncExec(new Runnable()
+		
+		parentComposite.getDisplay().asyncExec(new Runnable()
 		{
 			public void run()
 			{
 				txtViewInfo.setText(((AGLEventListener) eventTrigger).getShortInfo());
-
-				String sDetailText = "";
-
-				EIDType eIDType = selectionDelta.getIDType();
-
-				String sGeneSymbol = "";
-
-				Iterator<SelectionItem> iterSelectionItems = selectionDelta.getSelectionData()
-						.iterator();
-
-				SelectionItem item;
-
-				GlyphManager gman = (GlyphManager) GeneralManager.get().getGlyphManager();
-
-				while (iterSelectionItems.hasNext())
+				
+				((ToolBarView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
+						ToolBarView.ID)).addViewSpecificToolBar(eventTrigger.getID());
+				
+				((ToolBarView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
+						ToolBarView.ID)).highlightViewSpecificToolBar(eventTrigger.getID());
+				
+				int iItemsToLoad = 0;
+				// SelectionItem selectionItem;
+				
+				for (SelectionItem selectionItem : selectionDelta)
 				{
-					item = iterSelectionItems.next();
-
-					if (item.getSelectionType() == ESelectionType.MOUSE_OVER
-							|| item.getSelectionType() == ESelectionType.SELECTION)
+					if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER
+							|| selectionItem.getSelectionType() == ESelectionType.SELECTION)
 					{
-						if (eIDType == EIDType.DAVID)
+				//				Collection<SelectionCommand> iAlDavidID;
+						if (iItemsToLoad == 0)
 						{
-
-							Set<String> sSetRefSeqID = GeneralManager.get()
-									.getIDMappingManager().getMultiID(
-											EMappingType.DAVID_2_REFSEQ_MRNA,
-											item.getSelectionID());
-
-							if (sSetRefSeqID == null)
-								continue;
-							
-							sGeneSymbol = sDetailText
-									+ GeneralManager.get().getIDMappingManager().getID(
-											EMappingType.DAVID_2_GENE_SYMBOL,
-											item.getSelectionID());
-
-							sDetailText = sDetailText + sGeneSymbol + " (";
-							for (String sRefSeqID : sSetRefSeqID)
-							{
-								sDetailText = sDetailText + sRefSeqID;
-								sDetailText = sDetailText + ", ";
-							}
-
-							// Remove last comma
-							sDetailText = sDetailText.substring(0, sDetailText.length() - 2);
-							sDetailText += ")";
-
+				//						String sURL = urlGenerator.createURL(eBrowserQueryType,
+				//								selectionItem.getSelectionID());
+				//
+				//						browser.setUrl(sURL);
+				//						browser.update();
+				//						textURL.setText(sURL);
+				
+				//					iAlDavidID.clear();
+							selectionList.removeAll();
 						}
-						else if (eIDType == EIDType.EXPERIMENT_INDEX)
+				
+						Set<String> sSetRefSeqID = GeneralManager.get().getIDMappingManager()
+								.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA,
+										selectionItem.getSelectionID());
+				
+						String sOutput = "";
+						sOutput = sOutput
+								+ GeneralManager.get().getIDMappingManager().getID(
+										EMappingType.DAVID_2_GENE_SYMBOL,
+										selectionItem.getSelectionID());
+				
+						for (String sRefSeqID : sSetRefSeqID)
 						{
-							GlyphEntry glyph = gman.getGlyphs().get(item.getSelectionID());
-
-							if (glyph != null)
-								sDetailText = glyph.getGlyphDescription("; ");
-							else
-								sDetailText = "glyph not found";
+							sOutput = sOutput + "\n";
+							sOutput = sOutput + sRefSeqID;
 						}
-						else
-						{
-							continue;
-						}
-
-						if (iterSelectionItems.hasNext())
-							sDetailText = sDetailText + ", ";
+				
+				//				if (iAlDavidID.contains(selectionItem.getSelectionID()))
+				//					continue;
+				
+						selectionList.add(sOutput);
+				//					iAlDavidID.add(selectionItem.getSelectionID());
+				
+						iItemsToLoad++;
 					}
-
-					// Remove last comma
-					if (sDetailText.length() > 2)
-						sDetailText = sDetailText.substring(0, sDetailText.length() - 1);
+				
+					selectionList.redraw();
+					selectionList.setSelection(0);
 				}
-
-				// Prevent to reset info when view info updates
-				// TODO: think about better way!
-				if (!sDetailText.isEmpty())
-					txtDetailedInfo.setText(sDetailText);
-			}
+			}			
 		});
 	}
 	
+//	@Override
+//	public void handleUpdate(final IUniqueObject eventTrigger,
+//			final ISelectionDelta selectionDelta,
+//			Collection<SelectionCommand> colSelectionCommand, EMediatorType eMediatorType)
+//	{
+//		if (!(eventTrigger instanceof AGLEventListener))
+//			return;
+//
+//		GeneralManager.get().getLogger().log(
+//				Level.INFO,
+//				"Update called by " + eventTrigger.getClass().getSimpleName()
+//						+ ", received in: " + this.getClass().getSimpleName());
+//
+//		updateTriggeringView = (AGLEventListener) eventTrigger;
+//
+//		if (!selectionDelta.getSelectionData().isEmpty())
+//			this.selectionDelta = selectionDelta;
+//
+//		txtViewInfo.getDisplay().asyncExec(new Runnable()
+//		{
+//			public void run()
+//			{
+//				txtViewInfo.setText(((AGLEventListener) eventTrigger).getShortInfo());
+//
+//				String sDetailText = "";
+//
+//				EIDType eIDType = selectionDelta.getIDType();
+//
+//				String sGeneSymbol = "";
+//
+//				Iterator<SelectionItem> iterSelectionItems = selectionDelta.getSelectionData()
+//						.iterator();
+//
+//				SelectionItem item;
+//
+//				GlyphManager gman = (GlyphManager) GeneralManager.get().getGlyphManager();
+//
+//				while (iterSelectionItems.hasNext())
+//				{
+//					item = iterSelectionItems.next();
+//
+//					if (item.getSelectionType() == ESelectionType.MOUSE_OVER
+//							|| item.getSelectionType() == ESelectionType.SELECTION)
+//					{
+//						if (eIDType == EIDType.DAVID)
+//						{
+//
+//							Set<String> sSetRefSeqID = GeneralManager.get()
+//									.getIDMappingManager().getMultiID(
+//											EMappingType.DAVID_2_REFSEQ_MRNA,
+//											item.getSelectionID());
+//
+//							if (sSetRefSeqID == null)
+//								continue;
+//							
+//							sGeneSymbol = sDetailText
+//									+ GeneralManager.get().getIDMappingManager().getID(
+//											EMappingType.DAVID_2_GENE_SYMBOL,
+//											item.getSelectionID());
+//
+//							sDetailText = sDetailText + sGeneSymbol + " (";
+//							for (String sRefSeqID : sSetRefSeqID)
+//							{
+//								sDetailText = sDetailText + sRefSeqID;
+//								sDetailText = sDetailText + ", ";
+//							}
+//
+//							// Remove last comma
+//							sDetailText = sDetailText.substring(0, sDetailText.length() - 2);
+//							sDetailText += ")";
+//
+//						}
+//						else if (eIDType == EIDType.EXPERIMENT_INDEX)
+//						{
+//							GlyphEntry glyph = gman.getGlyphs().get(item.getSelectionID());
+//
+//							if (glyph != null)
+//								sDetailText = glyph.getGlyphDescription("; ");
+//							else
+//								sDetailText = "glyph not found";
+//						}
+//						else
+//						{
+//							continue;
+//						}
+//
+//						if (iterSelectionItems.hasNext())
+//							sDetailText = sDetailText + ", ";
+//					}
+//
+//					// Remove last comma
+//					if (sDetailText.length() > 2)
+//						sDetailText = sDetailText.substring(0, sDetailText.length() - 1);
+//				}
+//
+//				// Prevent to reset info when view info updates
+//				// TODO: think about better way!
+//				if (!sDetailText.isEmpty())
+//					txtDetailedInfo.setText(sDetailText);
+//			}
+//		});
+//	}
+
 	@Override
 	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
 			EMediatorType mediatorType)

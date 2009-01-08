@@ -31,6 +31,7 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
+import org.eclipse.swt.custom.BusyIndicator;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -471,6 +472,11 @@ public abstract class AGLEventListener
 			return false;
 
 		return true;
+	}
+	
+	public IGLCanvasRemoteRendering getRemoteRenderingGLCanvas()
+	{
+		return remoteRenderingGLCanvas;
 	}
 
 	protected synchronized void renderBusyMode(final GL gl)

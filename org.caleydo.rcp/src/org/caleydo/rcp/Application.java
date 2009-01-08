@@ -15,6 +15,7 @@ import org.caleydo.rcp.core.bridge.RCPBridge;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
 import org.caleydo.rcp.util.info.InfoArea;
 import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
+import org.caleydo.rcp.views.swt.ToolBarView;
 import org.caleydo.rcp.wizard.firststart.FirstStartWizard;
 import org.caleydo.rcp.wizard.project.CaleydoProjectWizard;
 import org.caleydo.rcp.wizard.project.DataImportWizard;
@@ -271,6 +272,9 @@ public class Application
 		{
 			// Trigger pathway loading
 			new PathwayLoadingProgressIndicatorAction().run(null);
+			
+//			((ToolBarView)PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+//					.getActivePage().getViewReferences()[0].getView(false)).addPathwayLoadingProgress();
 		}
 
 		// Register the info area to all mediator from type SELECTION and
@@ -300,7 +304,7 @@ public class Application
 	}
 
 	private static void openViewsInRCP()
-	{
+	{		
 		if (applicationMode == EApplicationMode.PATHWAY_VIEWER)
 		{
 			// Filter all views except remote and browser in case of pathway
@@ -320,10 +324,15 @@ public class Application
 		// Open Views in RCP
 		try
 		{
+			// Open toolbar view
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
+					ToolBarView.ID);
+			
 			if (alStartViews.contains(EStartViewType.REMOTE))
 			{
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
 						GLRemoteRenderingView.ID);
+				
 				alStartViews.remove(EStartViewType.REMOTE);
 			}
 

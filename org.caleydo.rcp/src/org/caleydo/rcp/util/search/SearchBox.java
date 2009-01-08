@@ -473,8 +473,8 @@ public final class SearchBox
 		Point listSize = list.computeSize(SWT.DEFAULT, itemHeight, false);
 
 		// Restrict size of the drop down menu
-		if (listSize.x > 200)
-			listSize.x = 200;
+		if (listSize.x > 500)
+			listSize.x = 500;
 
 		list.setBounds(1, 1, Math.max(size.x - 2, listSize.x), listSize.y);
 
