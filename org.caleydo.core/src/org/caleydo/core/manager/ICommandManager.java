@@ -19,22 +19,22 @@ public interface ICommandManager
 	extends ICommandActionListener, IManager<ICommand>
 {
 
-	/**
-	 * Create a new CommandQueue object.
-	 * 
-	 * @param sCmdType type of command
-	 * @param sProcessType define how to process queue
-	 * @param iCmdId unique CmdId
-	 * @param iCmdQueueId unique commandQueueId, must not be global unique!
-	 * @param sQueueThread define a thread pool, default = -1 means no thread
-	 *            pool
-	 * @param sQueueThreadWait define dependent thread pool, default = -1 means
-	 *            no dependency on other thread to finish
-	 * @return new commandQueue
-	 */
-	public ICommand createCommandQueue(final String sCmdType, final String sProcessType,
-			final int iCmdId, final int iCmdQueueId, final int sQueueThread,
-			final int sQueueThreadWait);
+//	/**
+//	 * Create a new CommandQueue object.
+//	 * 
+//	 * @param sCmdType type of command
+//	 * @param sProcessType define how to process queue
+//	 * @param iCmdId unique CmdId
+//	 * @param iCmdQueueId unique commandQueueId, must not be global unique!
+//	 * @param sQueueThread define a thread pool, default = -1 means no thread
+//	 *            pool
+//	 * @param sQueueThreadWait define dependent thread pool, default = -1 means
+//	 *            no dependency on other thread to finish
+//	 * @return new commandQueue
+//	 */
+//	public ICommand createCommandQueue(final String sCmdType, final String sProcessType,
+//			final int iCmdId, final int iCmdQueueId, final int sQueueThread,
+//			final int sQueueThreadWait);
 
 	/**
 	 * create a new command. Calls createCommandByType(CommandType) internal.

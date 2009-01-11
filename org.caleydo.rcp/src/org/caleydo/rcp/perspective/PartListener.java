@@ -1,6 +1,6 @@
 package org.caleydo.rcp.perspective;
 
-import org.caleydo.core.manager.IViewGLCanvasManager;
+import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
@@ -40,6 +40,9 @@ public class PartListener
 		if (glView == null)
 			return;
 		
+		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() == null)
+			return;
+		
 		// Remove view specific toolbar from general toolbar view
 		ToolBarView toolBarView = ((ToolBarView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(
 				ToolBarView.ID));
@@ -68,7 +71,7 @@ public class PartListener
 		// Check if view is inside the workbench or detached to a separate window
 		if (!partRef.getPage().getActivePart().getSite().getShell().getText().equals("Caleydo"))
 		{			
-			IViewGLCanvasManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
+			IViewManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
 			AGLEventListener glEventListener = viewGLCanvasManager.getGLEventListener(glView.getGLEventListenerID());
 
 			createViewSpecificToolbar(glEventListener, toolBarManager);

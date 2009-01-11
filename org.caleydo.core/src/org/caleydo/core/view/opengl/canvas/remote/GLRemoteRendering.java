@@ -29,7 +29,7 @@ import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.data.selection.SelectionItem;
-import org.caleydo.core.manager.IViewGLCanvasManager;
+import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorEventReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
@@ -365,7 +365,7 @@ public class GLRemoteRendering
 					mouseOverElement.setContainedElementID(iOriginElementID);
 					originElement.setContainedElementID(iMouseOverElementID);
 
-					IViewGLCanvasManager viewGLCanvasManager = generalManager
+					IViewManager viewGLCanvasManager = generalManager
 							.getViewGLCanvasManager();
 
 					AGLEventListener originView = viewGLCanvasManager
@@ -498,7 +498,7 @@ public class GLRemoteRendering
 				tmpGLEventListener.setDetailLevel(EDetailLevel.MEDIUM);
 				tmpGLEventListener.setRemoteLevelElement(element);
 
-				generalManager.getGUIBridge().setActiveGLSubView(this, tmpGLEventListener);
+//				generalManager.getGUIBridge().setActiveGLSubView(this, tmpGLEventListener);
 
 			}
 			else if (stackLevel.hasFreePosition()
@@ -1627,7 +1627,7 @@ public class GLRemoteRendering
 //				((GLPathway) glActiveSubView).setAlignment(SWT.CENTER, SWT.BOTTOM);
 //			}
 
-			generalManager.getGUIBridge().setActiveGLSubView(this, glActiveSubView);
+//			generalManager.getGUIBridge().setActiveGLSubView(this, glActiveSubView);
 		}
 		else if (destinationLevel == stackLevel)
 		{
@@ -2523,7 +2523,7 @@ public class GLRemoteRendering
 	private void clearRemoteLevel(RemoteLevel remoteLevel)
 	{
 		int iViewID;
-		IViewGLCanvasManager viewManager = generalManager.getViewGLCanvasManager();
+		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 		AGLEventListener glEventListener = null;
 		
 		for (RemoteLevelElement element : remoteLevel.getAllElements())

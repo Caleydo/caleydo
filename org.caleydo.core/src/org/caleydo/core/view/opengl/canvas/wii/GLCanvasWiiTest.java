@@ -52,7 +52,6 @@ public class GLCanvasWiiTest
 	extends AGLEventListener
 	implements Runnable, KeyListener
 {
-
 	/** */
 	private static final long serialVersionUID = 1L;
 

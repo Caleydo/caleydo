@@ -1,6 +1,5 @@
 package org.caleydo.core.bridge.gui;
 
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 
 public interface IGUIBridge
 {
@@ -8,9 +7,12 @@ public interface IGUIBridge
 
 	// public void setActiveGLView();
 
-	public void setActiveGLSubView(AGLEventListener parentGLEventListener,
-			AGLEventListener subGLEventListener);
+//	public void setActiveGLSubView(AGLEventListener parentGLEventListener,
+//			AGLEventListener subGLEventListener);
 
 	public void setShortInfo(String sMessage);
-
+	
+	public void setFileNameCurrentDataSet(String sFileName);
+	
+	public String getFileNameCurrentDataSet();
 }

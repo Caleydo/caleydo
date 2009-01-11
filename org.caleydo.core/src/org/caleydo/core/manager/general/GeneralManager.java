@@ -12,7 +12,7 @@ import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.IMementoManager;
 import org.caleydo.core.manager.ISWTGUIManager;
-import org.caleydo.core.manager.IViewGLCanvasManager;
+import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.IXmlParserManager;
 import org.caleydo.core.manager.command.CommandManager;
 import org.caleydo.core.manager.data.ISetManager;
@@ -30,7 +30,7 @@ import org.caleydo.core.manager.specialized.genome.IPathwayManager;
 import org.caleydo.core.manager.specialized.genome.pathway.PathwayItemManager;
 import org.caleydo.core.manager.specialized.genome.pathway.PathwayManager;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
-import org.caleydo.core.manager.view.ViewGLCanvasManager;
+import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.preference.PreferenceStore;
@@ -69,7 +69,7 @@ public class GeneralManager
 	private ISetManager setManager;
 	private ICommandManager commandManager;
 	private ISWTGUIManager sWTGUIManager;
-	private IViewGLCanvasManager viewGLCanvasManager;
+	private IViewManager viewGLCanvasManager;
 	private IPathwayManager pathwayManager;
 	private IPathwayItemManager pathwayItemManager;
 	private IEventPublisher eventPublisher;
@@ -111,7 +111,7 @@ public class GeneralManager
 		// connectedElementRepManager = new SelectionManager();
 		mementoManager = new MementoManager();
 		commandManager = new CommandManager();
-		viewGLCanvasManager = new ViewGLCanvasManager();
+		viewGLCanvasManager = new ViewManager();
 		sWTGUIManager = new SWTGUIManager();
 		eventPublisher = new EventPublisher();
 		genomeIdManager = new IDMappingManager();
@@ -234,7 +234,7 @@ public class GeneralManager
 	}
 
 	@Override
-	public IViewGLCanvasManager getViewGLCanvasManager()
+	public IViewManager getViewGLCanvasManager()
 	{
 		return viewGLCanvasManager;
 	}

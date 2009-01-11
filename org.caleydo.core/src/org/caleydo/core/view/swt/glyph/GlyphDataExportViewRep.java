@@ -7,12 +7,12 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
-import org.caleydo.core.view.AView;
-import org.caleydo.core.view.IView;
-import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
+import org.caleydo.core.view.swt.ASWTView;
+import org.caleydo.core.view.swt.ISWTView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -32,8 +32,8 @@ import org.eclipse.swt.widgets.TableItem;
  */
 // FIXME again bad hack, does not implement IMediator interfaces
 public class GlyphDataExportViewRep
-	extends AView
-	implements IView
+	extends ASWTView
+	implements ISWTView
 {
 
 	private GlyphManager gman = null;
@@ -61,24 +61,18 @@ public class GlyphDataExportViewRep
 	 */
 	public GlyphDataExportViewRep(int iParentContainerId, String sLabel)
 	{
-		super(iParentContainerId, sLabel, ViewType.SWT_GLYPH_DATAEXPORT);
+		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
+				EManagedObjectType.VIEW_SWT_GLYPH_DATAEXPORT));
 
 		gman = generalManager.getGlyphManager();
 
 		myViews = new HashMap<String, GLGlyph>();
-
 	}
 
-	/**
-	 * @see org.caleydo.core.view.AView#retrieveGUIContainer()
-	 * @see org.caleydo.core.view.IView#initView()
-	 */
 	@Override
-	protected void initViewSwtComposite(Composite swtContainer)
+	public void initViewSWTComposite(Composite parentComposite)
 	{
-
 		initComponents();
-
 	}
 
 	public void drawView()
@@ -88,13 +82,13 @@ public class GlyphDataExportViewRep
 
 	private void initComponents()
 	{
-		parent.setBackground(new Color(null, 255, 0, 0));
+		parentComposite.setBackground(new Color(null, 255, 0, 0));
 
 		GridLayout layout = new GridLayout();
 
-		createViewTable(parent);
+		createViewTable(parentComposite);
 
-		Button button = new Button(parent, SWT.PUSH);
+		Button button = new Button(parentComposite, SWT.PUSH);
 		button.setText("OK");
 
 		// button.setImage(bgimg);
@@ -104,7 +98,7 @@ public class GlyphDataExportViewRep
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
-				FileDialog dialog = new FileDialog(parent.getShell(), SWT.SAVE);
+				FileDialog dialog = new FileDialog(parentComposite.getShell(), SWT.SAVE);
 				dialog.setFilterNames(new String[] { "CSV" });
 				dialog.setFilterExtensions(new String[] { "*.csv" });
 				// dialog.setFilterPath("c:\\");
@@ -120,10 +114,10 @@ public class GlyphDataExportViewRep
 			}
 		});
 
-		parent.setLayout(layout);
+		parentComposite.setLayout(layout);
 		layout.numColumns = 1;
 
-		parent.getParent().setSize(600, 300);
+		parentComposite.getParent().setSize(600, 300);
 
 	}
 

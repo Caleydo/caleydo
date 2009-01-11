@@ -3,9 +3,10 @@ package org.caleydo.core.view.swt.undoredo;
 import java.util.Iterator;
 import java.util.Vector;
 import org.caleydo.core.command.ICommand;
-import org.caleydo.core.view.AView;
-import org.caleydo.core.view.IView;
-import org.caleydo.core.view.ViewType;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.view.swt.ASWTView;
+import org.caleydo.core.view.swt.ISWTView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Combo;
@@ -19,8 +20,8 @@ import org.eclipse.swt.widgets.Label;
  * @author Marc Streit
  */
 public class UndoRedoViewRep
-	extends AView
-	implements IView
+	extends ASWTView
+	implements ISWTView
 {
 
 	protected Combo undoRedoCombo;
@@ -30,20 +31,20 @@ public class UndoRedoViewRep
 	 */
 	public UndoRedoViewRep(int iParentContainerId, String sLabel)
 	{
-		super(iParentContainerId, sLabel, ViewType.SWT_IMAGE_VIEWER);
+		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
+				EManagedObjectType.VIEW_SWT_UNDO_REDO));
 	}
 
 	@Override
-	protected void initViewSwtComposite(Composite swtContainer)
+	public void initViewSWTComposite(Composite parentComposite)
 	{
+		parentComposite.setLayout(new RowLayout(SWT.HORIZONTAL));
 
-		swtContainer.setLayout(new RowLayout(SWT.HORIZONTAL));
-
-		Label viewComboLabel = new Label(swtContainer, SWT.LEFT);
+		Label viewComboLabel = new Label(parentComposite, SWT.LEFT);
 		viewComboLabel.setText("Undo/Redo:");
 		viewComboLabel.setSize(300, 30);
 
-		undoRedoCombo = new Combo(swtContainer, SWT.READ_ONLY);
+		undoRedoCombo = new Combo(parentComposite, SWT.READ_ONLY);
 	}
 
 	@Override
@@ -72,7 +73,7 @@ public class UndoRedoViewRep
 	public void addCommand(final ICommand command)
 	{
 
-		parent.getDisplay().asyncExec(new Runnable()
+		parentComposite.getDisplay().asyncExec(new Runnable()
 		{
 
 			public void run()

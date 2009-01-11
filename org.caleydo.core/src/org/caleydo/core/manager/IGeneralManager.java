@@ -46,7 +46,7 @@ public interface IGeneralManager
 
 	public ISWTGUIManager getSWTGUIManager();
 
-	public IViewGLCanvasManager getViewGLCanvasManager();
+	public IViewManager getViewGLCanvasManager();
 
 	public IEventPublisher getEventPublisher();
 

@@ -71,7 +71,7 @@ public class InfoArea
 		Label lblViewInfo = new Label(group, SWT.NONE);
 		lblViewInfo.setText("View Info");
 		lblViewInfo.setFont(font);
-		lblViewInfo.setLayoutData(new RowData(200, 15));
+		lblViewInfo.setLayoutData(new RowData(ToolBarView.TOOLBAR_WIDTH, 15));
 		lblViewInfo.setBackground(composite.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		txtViewInfo = new Text(group, SWT.WRAP);
@@ -79,7 +79,7 @@ public class InfoArea
 		txtViewInfo.setBackground(parent.getDisplay().getSystemColor(
 				SWT.COLOR_WIDGET_BACKGROUND));
 		txtViewInfo.setEditable(false);
-		txtViewInfo.setLayoutData(new RowData(200, 30));
+		txtViewInfo.setLayoutData(new RowData(ToolBarView.TOOLBAR_WIDTH, 30));
 		txtViewInfo.setBackground(composite.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 //		viewInfoToolTip = new ToolTip(txtViewInfo, "No info available!", this,
@@ -90,7 +90,7 @@ public class InfoArea
 		Label lblDetailInfo = new Label(group, SWT.NO_BACKGROUND);
 		lblDetailInfo.setText("Selection Info");
 		lblDetailInfo.setFont(font);
-		lblDetailInfo.setLayoutData(new RowData(200, 15));
+		lblDetailInfo.setLayoutData(new RowData(ToolBarView.TOOLBAR_WIDTH, 15));
 		lblDetailInfo.setBackground(composite.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 //		txtDetailedInfo = new Text(group, SWT.NONE);
@@ -104,10 +104,10 @@ public class InfoArea
 //				EInfoType.DETAILED_INFO);
 
 		GridData data = new GridData();
-		data.widthHint = 200;
+		data.widthHint = ToolBarView.TOOLBAR_WIDTH;
 
 		selectionList = new List(group, SWT.SINGLE);
-		selectionList.setLayoutData(new RowData(200, 200));
+		selectionList.setLayoutData(new RowData(((int)(ToolBarView.TOOLBAR_WIDTH*1.05f)), 150));
 
 		selectionList.addSelectionListener(new SelectionAdapter()
 		{

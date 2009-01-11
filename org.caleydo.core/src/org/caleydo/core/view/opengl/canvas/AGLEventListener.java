@@ -7,11 +7,9 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
-import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
-import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -20,6 +18,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.manager.picking.PickingManager;
 import org.caleydo.core.util.exception.ExceptionHandler;
+import org.caleydo.core.view.AView;
 import org.caleydo.core.view.opengl.camera.IViewCamera;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.camera.ViewCameraBase;
@@ -31,7 +30,6 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
-import org.eclipse.swt.custom.BusyIndicator;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -43,7 +41,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  * @author Alexander Lex
  */
 public abstract class AGLEventListener
-	extends AUniqueObject
+	extends AView
 	implements GLEventListener
 {
 	public enum EBusyModeState
@@ -53,18 +51,10 @@ public abstract class AGLEventListener
 		OFF
 	}
 
-	protected IGeneralManager generalManager;
-
 	protected EManagedObjectType viewType = EManagedObjectType.GL_EVENT_LISTENER;
+	
 	// TODO: should be a list of parent canvas object to be generic
 	protected GLCaleydoCanvas parentGLCanvas;
-
-	/**
-	 * List for all ISet objects providing data for this ViewRep.
-	 */
-	protected ArrayList<ISet> alSets;
-
-	protected transient ISetManager setManager;
 
 	protected PickingManager pickingManager;
 
@@ -116,15 +106,8 @@ public abstract class AGLEventListener
 	protected AGLEventListener(final int iGLCanvasID, final String sLabel,
 			final IViewFrustum viewFrustum, final boolean bRegisterToParentCanvasNow)
 	{
-		super(GeneralManager.get().getIDManager().createID(
+		super(iGLCanvasID, sLabel, GeneralManager.get().getIDManager().createID(
 				EManagedObjectType.GL_EVENT_LISTENER));
-
-		generalManager = GeneralManager.get();
-
-		alSets = new ArrayList<ISet>();
-		// alSelection = new ArrayList<Selection>();
-
-		setManager = generalManager.getSetManager();
 
 		parentGLCanvas = (generalManager.getViewGLCanvasManager().getCanvas(iGLCanvasID));
 

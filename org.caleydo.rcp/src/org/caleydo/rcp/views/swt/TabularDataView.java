@@ -21,6 +21,7 @@ public class TabularDataView
 				.createView(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER, -1,
 						"Tabular Data Viewer");
 
+		tabularDataView.setInputFile(GeneralManager.get().getGUIBridge().getFileNameCurrentDataSet());
 		tabularDataView.initViewRCP(parent);
 		tabularDataView.drawView();
 
@@ -47,5 +48,10 @@ public class TabularDataView
 				EMediatorType.SELECTION_MEDIATOR, tabularDataView);
 		GeneralManager.get().getEventPublisher().removeReceiver(
 				EMediatorType.SELECTION_MEDIATOR, tabularDataView);
+	}
+	
+	public TabularDataViewRep getTabularDataView()
+	{
+		return tabularDataView;
 	}
 }

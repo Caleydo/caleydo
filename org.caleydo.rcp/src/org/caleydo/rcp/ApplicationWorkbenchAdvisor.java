@@ -19,7 +19,7 @@ public class ApplicationWorkbenchAdvisor
 	{
 		PlatformUI.getPreferenceStore().setValue(
 				IWorkbenchPreferenceConstants.SHOW_PROGRESS_ON_STARTUP, true);
-
+		
 		return new ApplicationWorkbenchWindowAdvisor(configurer);
 	}
 

@@ -10,9 +10,10 @@ import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
-import org.caleydo.core.view.AView;
-import org.caleydo.core.view.ViewType;
+import org.caleydo.core.view.swt.ASWTView;
+import org.caleydo.core.view.swt.ISWTView;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -23,9 +24,9 @@ import org.eclipse.swt.widgets.Composite;
  *
  */
 public class DataEntitySearcherViewRep 
-extends AView 
-implements IMediatorSender{;
-
+extends ASWTView 
+implements ISWTView, IMediatorSender {
+	
 	/**
 	 * Constructor.
 	 * 
@@ -33,9 +34,9 @@ implements IMediatorSender{;
 	public DataEntitySearcherViewRep(final int iParentContainerId, 
 			final String sLabel) {
 
-		super(iParentContainerId, 
-				sLabel,
-				ViewType.SWT_DATA_ENTITY_SEARCHER);
+		super(iParentContainerId, sLabel,
+				GeneralManager.get().getIDManager().createID(
+						EManagedObjectType.VIEW_SWT_DATA_ENTITY_SEARCHER));
 		
 		GeneralManager.get().getEventPublisher().addSender(
 				EMediatorType.SELECTION_MEDIATOR, this);
@@ -132,17 +133,13 @@ implements IMediatorSender{;
 	}
 
 	@Override
-	protected void initViewSwtComposite(Composite swtContainer) {
-
-		// TODO Auto-generated method stub
-		
+	public void initViewSWTComposite(Composite parentComposite)
+	{
 	}
 
 	@Override
-	public void drawView() {
-
-		// TODO Auto-generated method stub
-		
+	public void drawView() 
+	{
 	}
 
 	@Override

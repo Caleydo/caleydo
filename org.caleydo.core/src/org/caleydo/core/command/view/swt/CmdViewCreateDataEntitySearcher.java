@@ -1,14 +1,14 @@
 package org.caleydo.core.command.view.swt;
 
 import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.base.ACmdExternalAttributes;
+import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
 
 public class CmdViewCreateDataEntitySearcher
-	extends ACmdExternalAttributes
+	extends ACmdCreational<DataEntitySearcherViewRep>
 {
 	/**
 	 * Constructor.
@@ -28,12 +28,9 @@ public class CmdViewCreateDataEntitySearcher
 	public void doCommand()
 	{
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
-
-		DataEntitySearcherViewRep dataEntitySearcherView = (DataEntitySearcherViewRep) viewManager
-				.createView(EManagedObjectType.VIEW_SWT_DATA_ENTITY_SEARCHER, -1, sLabel);
-
-		viewManager.registerItem(dataEntitySearcherView);
-		viewManager.addViewRep(dataEntitySearcherView);
+		createdObject = (DataEntitySearcherViewRep) viewManager.createView(
+				EManagedObjectType.VIEW_SWT_DATA_ENTITY_SEARCHER, -1, sLabel);
+		viewManager.registerItem(createdObject);
 
 		commandManager.runDoCommand(this);
 	}

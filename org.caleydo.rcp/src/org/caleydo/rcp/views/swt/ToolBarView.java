@@ -3,6 +3,8 @@ package org.caleydo.rcp.views.swt;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import org.caleydo.core.command.ECommandType;
+import org.caleydo.core.command.view.swt.CmdViewCreateDataEntitySearcher;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.selection.ISelectionDelta;
@@ -16,6 +18,7 @@ import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
+import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
 import org.caleydo.rcp.action.view.TakeSnapshotAction;
 import org.caleydo.rcp.util.info.InfoArea;
 import org.caleydo.rcp.util.search.SearchBox;
@@ -61,9 +64,13 @@ public class ToolBarView
 {
 	public static final String ID = "org.caleydo.rcp.views.ToolBarView";
 	
+	public static final int TOOLBAR_WIDTH = 165;
+	
 	private ExpandBar expandBar;
 
 	private Composite parentComposite;
+	
+	private DataEntitySearcherViewRep dataEntitySearcher;
 	
 //	private HTMLBrowserViewRep browserView;
 
@@ -331,6 +338,13 @@ public class ToolBarView
 	
 	private void addSearchBar()
 	{
+		// Trigger gene/pathway search command
+		CmdViewCreateDataEntitySearcher cmd = (CmdViewCreateDataEntitySearcher) GeneralManager
+				.get().getCommandManager().createCommandByType(
+						ECommandType.CREATE_VIEW_DATA_ENTITY_SEARCHER);
+		cmd.doCommand();
+		dataEntitySearcher = cmd.getCreatedObject();
+		
 		final Composite composite = new Composite (expandBar, SWT.NONE);
 		GridLayout layout = new GridLayout ();
 		layout.marginLeft = layout.marginTop = layout.marginRight = layout.marginBottom = 0;
@@ -349,7 +363,7 @@ public class ToolBarView
 
 		String items[] = { "No pathways available!" };
 		GridData data = new GridData();
-		data.widthHint = 200;
+		data.widthHint = TOOLBAR_WIDTH;
 		searchBox.setLayoutData(data);
 		searchBox.setItems(items);
 		searchBox.addFocusListener(new FocusAdapter()
@@ -390,8 +404,7 @@ public class ToolBarView
 				// sSearchEntity = sSearchEntity.substring(0,
 				// sSearchEntity.indexOf(" ("));
 
-				GeneralManager.get().getViewGLCanvasManager().getDataEntitySearcher()
-						.searchForEntity(sSearchEntity);
+				dataEntitySearcher.searchForEntity(sSearchEntity);
 			}
 		});
 
@@ -418,9 +431,8 @@ public class ToolBarView
 				{
 					case SWT.CR:
 					{
-						boolean bFound = GeneralManager.get().getViewGLCanvasManager()
-								.getDataEntitySearcher().searchForEntity(
-										geneSearchText.getText());
+						boolean bFound = dataEntitySearcher.searchForEntity(
+								geneSearchText.getText());
 
 						if (!bFound)
 						{
@@ -519,7 +531,7 @@ public class ToolBarView
 		
 		ExpandItem expandItem = new ExpandItem (expandBar, SWT.NONE, 0);
 		expandItem.setText("Selection Info");
-		expandItem.setHeight(300);
+		expandItem.setHeight(250);
 		expandItem.setControl(composite);
 //		expandItem.setImage(viewIcon);
 		expandItem.setExpanded(true);

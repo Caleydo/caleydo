@@ -30,11 +30,11 @@ import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.view.AView;
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
+import org.caleydo.core.view.swt.ASWTView;
+import org.caleydo.core.view.swt.ISWTView;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.TableEditor;
@@ -72,8 +72,8 @@ import org.eclipse.swt.widgets.Text;
  * @author Marc Streit
  */
 public class TabularDataViewRep
-	extends AView
-	implements IView, IMediatorReceiver, IMediatorSender
+	extends ASWTView
+	implements IView, ISWTView, IMediatorReceiver, IMediatorSender
 {
 	private static int MAX_PREVIEW_TABLE_ROWS = 50;
 
@@ -107,7 +107,8 @@ public class TabularDataViewRep
 	 */
 	public TabularDataViewRep(final int iParentContainerId, final String sLabel)
 	{
-		super(iParentContainerId, sLabel, ViewType.SWT_TABULAR_DATA_VIEWER);
+		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
+				EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
 
 		arComboDataClass = new ArrayList<Combo>();
 		arComboDataType = new ArrayList<Combo>();
@@ -119,9 +120,9 @@ public class TabularDataViewRep
 	}
 
 	@Override
-	protected void initViewSwtComposite(Composite parent)
+	public void initViewSWTComposite(Composite parentComposite)
 	{
-		final Composite highLevelComposite = new Composite(parent, SWT.NONE);
+		final Composite highLevelComposite = new Composite(parentComposite, SWT.NONE);
 		highLevelComposite.setLayout(new GridLayout(1, false));
 
 		GridData gridData = new GridData(GridData.FILL_BOTH);

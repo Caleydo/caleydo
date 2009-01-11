@@ -14,6 +14,7 @@ import org.caleydo.core.data.selection.SelectionItem;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -53,7 +54,8 @@ public class GenomeHTMLBrowserViewRep
 	 */
 	public GenomeHTMLBrowserViewRep(int iParentContainerID, String sLabel)
 	{
-		super(iParentContainerID, sLabel);
+		super(iParentContainerID, sLabel, GeneralManager.get().getIDManager().createID(
+				EManagedObjectType.VIEW_SWT_BROWSER_GENOME));
 
 		urlGenerator = new URLGenerator();
 
@@ -61,9 +63,9 @@ public class GenomeHTMLBrowserViewRep
 	}
 
 	@Override
-	protected void initViewSwtComposite(Composite parent)
+	public void initViewSWTComposite(Composite parentComposite)
 	{
-		Composite composite = new Composite(parent, SWT.NONE);
+		Composite composite = new Composite(parentComposite, SWT.NONE);
 
 		GridLayout layout = new GridLayout(2, false);
 		composite.setLayout(layout);
@@ -139,7 +141,7 @@ public class GenomeHTMLBrowserViewRep
 			}
 		});
 
-		super.initViewSwtComposite(composite);
+		super.initViewSWTComposite(composite);
 	}
 
 	@Override
@@ -149,7 +151,7 @@ public class GenomeHTMLBrowserViewRep
 		if (selectionDelta.getIDType() != EIDType.DAVID)
 			return;
 
-		parent.getDisplay().asyncExec(new Runnable()
+		parentComposite.getDisplay().asyncExec(new Runnable()
 		{
 			public void run()
 			{

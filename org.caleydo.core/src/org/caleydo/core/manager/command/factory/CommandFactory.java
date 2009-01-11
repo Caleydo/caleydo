@@ -10,8 +10,6 @@ import org.caleydo.core.command.data.filter.CmdDataFilterMinMax;
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
 import org.caleydo.core.command.event.CmdEventMediatorAddObject;
-import org.caleydo.core.command.queue.CmdSystemRunCmdQueue;
-import org.caleydo.core.command.queue.CommandQueueVector;
 import org.caleydo.core.command.system.CmdFetchPathwayData;
 import org.caleydo.core.command.system.CmdLoadGlyphDefinition;
 import org.caleydo.core.command.system.CmdLoadPathwayData;
@@ -24,14 +22,11 @@ import org.caleydo.core.command.view.rcp.CmdExternalFlagSetter;
 import org.caleydo.core.command.view.rcp.CmdExternalObjectSetter;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.command.view.swt.CmdViewCreateDataEntitySearcher;
-import org.caleydo.core.command.view.swt.CmdViewCreateDataExchanger;
-import org.caleydo.core.command.view.swt.CmdViewCreateDataExplorer;
 import org.caleydo.core.command.view.swt.CmdViewCreateGlyphConfiguration;
 import org.caleydo.core.command.view.swt.CmdViewCreateHTMLBrowser;
 import org.caleydo.core.command.view.swt.CmdViewCreateImage;
 import org.caleydo.core.command.view.swt.CmdViewCreateMixer;
 import org.caleydo.core.command.view.swt.CmdViewCreatePathway;
-import org.caleydo.core.command.view.swt.CmdViewCreateSetEditor;
 import org.caleydo.core.command.view.swt.CmdViewCreateSwtGLCanvas;
 import org.caleydo.core.command.view.swt.CmdViewCreateUndoRedo;
 import org.caleydo.core.command.window.swt.CmdContainerCreate;
@@ -115,22 +110,6 @@ public class CommandFactory
 			case CREATE_VIEW_RCP_GLCANVAS:
 			{
 				createdCommand = new CmdViewCreateRcpGLCanvas(cmdType);
-				break;
-			}
-			case CREATE_VIEW_DATA_EXPLORER:
-			{
-				createdCommand = new CmdViewCreateDataExplorer(cmdType);
-				break;
-			}
-			case CREATE_VIEW_DATA_EXCHANGER:
-			{
-				createdCommand = new CmdViewCreateDataExchanger(cmdType);
-				break;
-			}
-
-			case CREATE_VIEW_SET_EDITOR:
-			{
-				createdCommand = new CmdViewCreateSetEditor(cmdType);
 				break;
 			}
 			case CREATE_VIEW_PATHWAY:
@@ -259,55 +238,55 @@ public class CommandFactory
 		return createdCommand;
 	}
 
-	@Override
-	public ICommand createCommandQueue(final String sCmdType, final String sProcessType,
-			final int iCmdId, final int iCmdQueueId, final int sQueueThread,
-			final int sQueueThreadWait)
-	{
-
-		ECommandType queueType;
-
-		/**
-		 * Create a new uniqueId if necessary
-		 */
-		int iNewUniqueId = iCmdId;
-		if (iCmdId < 0)
-		{
-			// TODO: review when implementing ID management
-			iNewUniqueId = -1; // commandManager.createId(null);
-		}
-		/**
-		 * End: Create a new uniqueId if necessary
-		 */
-
-		// try
-		// {
-		queueType = ECommandType.valueOf(sCmdType);
-		// }
-		// catch (IllegalArgumentException iae)
-		// {
-		// throw new CaleydoRuntimeException(
-		// "Undefined CommandQueue key= [" + sCmdType + "]",
-		// CaleydoRuntimeExceptionType.SAXPARSER);
-		// }
-
-		switch (queueType)
-		{
-			case COMMAND_QUEUE_OPEN:
-			{
-				ICommand cmdQueue = new CommandQueueVector(queueType, iCmdQueueId);
-				return cmdQueue;
-			}
-
-			case COMMAND_QUEUE_RUN:
-				return new CmdSystemRunCmdQueue(queueType, iCmdQueueId);
-
-			default:
-				throw new IllegalStateException("Unsupported CommandQueue key= [" + sCmdType
-						+ "]");
-		}
-
-	}
+//	@Override
+//	public ICommand createCommandQueue(final String sCmdType, final String sProcessType,
+//			final int iCmdId, final int iCmdQueueId, final int sQueueThread,
+//			final int sQueueThreadWait)
+//	{
+//
+//		ECommandType queueType;
+//
+//		/**
+//		 * Create a new uniqueId if necessary
+//		 */
+//		int iNewUniqueId = iCmdId;
+//		if (iCmdId < 0)
+//		{
+//			// TODO: review when implementing ID management
+//			iNewUniqueId = -1; // commandManager.createId(null);
+//		}
+//		/**
+//		 * End: Create a new uniqueId if necessary
+//		 */
+//
+//		// try
+//		// {
+//		queueType = ECommandType.valueOf(sCmdType);
+//		// }
+//		// catch (IllegalArgumentException iae)
+//		// {
+//		// throw new CaleydoRuntimeException(
+//		// "Undefined CommandQueue key= [" + sCmdType + "]",
+//		// CaleydoRuntimeExceptionType.SAXPARSER);
+//		// }
+//
+//		switch (queueType)
+//		{
+//			case COMMAND_QUEUE_OPEN:
+//			{
+//				ICommand cmdQueue = new CommandQueueVector(queueType, iCmdQueueId);
+//				return cmdQueue;
+//			}
+//
+//			case COMMAND_QUEUE_RUN:
+//				return new CmdSystemRunCmdQueue(queueType, iCmdQueueId);
+//
+//			default:
+//				throw new IllegalStateException("Unsupported CommandQueue key= [" + sCmdType
+//						+ "]");
+//		}
+//
+//	}
 
 	/**
 	 * Since the last created command is stored its reference is returned. Note:

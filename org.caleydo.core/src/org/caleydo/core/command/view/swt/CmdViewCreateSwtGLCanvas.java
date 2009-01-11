@@ -2,7 +2,7 @@ package org.caleydo.core.command.view.swt;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
-import org.caleydo.core.manager.IViewGLCanvasManager;
+import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.swt.jogl.SwtJoglGLCanvasViewRep;
 
@@ -26,7 +26,7 @@ public class CmdViewCreateSwtGLCanvas
 	@Override
 	public void doCommand()
 	{
-		IViewGLCanvasManager viewManager = generalManager.getViewGLCanvasManager();
+		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 
 		if (iExternalID != -1)
 		{
@@ -37,7 +37,7 @@ public class CmdViewCreateSwtGLCanvas
 		SwtJoglGLCanvasViewRep swtGLCanvasView = (SwtJoglGLCanvasViewRep) viewManager
 				.createGLView(EManagedObjectType.VIEW_GL_CANVAS, iParentContainerId, sLabel);
 
-		swtGLCanvasView.initViewSwtComposite(null);
+		swtGLCanvasView.initViewSWTComposite(null);
 		swtGLCanvasView.drawView();
 
 		if (iExternalID != -1)

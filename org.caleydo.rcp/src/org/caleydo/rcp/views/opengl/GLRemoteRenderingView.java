@@ -4,14 +4,11 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 
 import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.view.swt.CmdViewCreateDataEntitySearcher;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
 import org.caleydo.rcp.action.view.remote.CloseOrResetContainedViews;
-import org.caleydo.rcp.action.view.remote.SearchAction;
 import org.caleydo.rcp.action.view.remote.ToggleLayoutAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
@@ -73,12 +70,6 @@ public class GLRemoteRenderingView
 
 		createGLEventListener(ECommandType.CREATE_GL_BUCKET_3D, glCanvas.getID(), true);
 
-		// Trigger gene/pathway search command
-		CmdViewCreateDataEntitySearcher cmd = (CmdViewCreateDataEntitySearcher) GeneralManager
-				.get().getCommandManager().createCommandByType(
-						ECommandType.CREATE_VIEW_DATA_ENTITY_SEARCHER);
-		cmd.doCommand();
-
 		GLRemoteRendering glRemoteRenderedView = ((GLRemoteRendering) GeneralManager.get()
 				.getViewGLCanvasManager().getGLEventListener(iGLEventListenerID));
 
@@ -95,12 +86,6 @@ public class GLRemoteRenderingView
 		alToolbar.add(closeOrResetContainedViews);
 		IAction toggleLayoutAction = new ToggleLayoutAction(iViewID);
 		alToolbar.add(toggleLayoutAction);
-
-		if (GeneralManager.get().getPreferenceStore().getBoolean(
-				PreferenceConstants.XP_CLASSIC_STYLE_MODE))
-		{
-			alToolbar.add(new SearchAction(iViewID));
-		}
 	}
 
 	@Override

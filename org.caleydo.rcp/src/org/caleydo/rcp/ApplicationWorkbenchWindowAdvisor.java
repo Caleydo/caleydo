@@ -42,7 +42,7 @@ public class ApplicationWorkbenchWindowAdvisor
 		super.postWindowCreate();
 
 		getWindowConfigurer().getWindow().getShell().setMaximized(true);
-
+		
 		// Set status line in caleydo core
 		GeneralManager.get().getSWTGUIManager().setExternalRCPStatusLine(
 				getWindowConfigurer().getActionBarConfigurer().getStatusLineManager(),

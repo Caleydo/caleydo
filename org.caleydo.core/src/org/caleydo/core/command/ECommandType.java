@@ -50,13 +50,10 @@ public enum ECommandType
 	CREATE_SWT_CONTAINER("cmd", "type", "-1", "Create SWTContainer"),
 	CREATE_VIEW_PATHWAY("cmd", "type", "-1", "Create Pathway 2D"),
 	CREATE_VIEW_GEARS("cmd", "type", "-1", "Create Gears Demo"),
-	CREATE_VIEW_DATA_EXPLORER("cmd", "type", "-1", "Create Data Explorer"),
-	CREATE_VIEW_DATA_EXCHANGER("cmd", "type", "-1", "Create Data Exchanger"),
 	CREATE_VIEW_MIXER("cmd", "type", "-1", "Create Mixer"),
 	CREATE_VIEW_GLYPHCONFIG("cmd", "type", "-1", "Create Mixer"),
 	CREATE_VIEW_BROWSER("cmd", "type", "-1", "Create Browser"),
 	CREATE_VIEW_IMAGE("cmd", "type", "-1", "Create Image"),
-	CREATE_VIEW_SET_EDITOR("cmd", "type", "-1", "No description available!"),
 	CREATE_VIEW_UNDO_REDO("cmd", "type", "-1", "Create UNDO/REDO"),
 	CREATE_VIEW_DATA_ENTITY_SEARCHER("cmd", "type", null, "Create Data Entity Searcher"),
 

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
-import org.caleydo.core.manager.IViewGLCanvasManager;
+import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
@@ -52,7 +52,7 @@ public class GLConnectionLineRendererBucket
 		RemoteLevel activeLevel = null;
 		RemoteLevelElement remoteLevelElement = null;
 
-		IViewGLCanvasManager viewGLCanvasManager = 
+		IViewManager viewGLCanvasManager = 
 			GeneralManager.get().getViewGLCanvasManager();
 		
 		for (EIDType idType : connectedElementRepManager.getOccuringIDTypes())

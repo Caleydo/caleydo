@@ -4,10 +4,10 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.AView;
-import org.caleydo.core.view.IView;
-import org.caleydo.core.view.ViewType;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.core.view.swt.ASWTView;
+import org.caleydo.core.view.swt.ISWTView;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
@@ -27,8 +27,8 @@ import org.eclipse.swt.widgets.ToolItem;
  * @author Marc Streit
  */
 public class HTMLBrowserViewRep
-	extends AView
-	implements IView
+	extends ASWTView
+	implements ISWTView
 {
 	public final static String CALEYDO_HOME = "http://www.caleydo.org";
 
@@ -50,13 +50,22 @@ public class HTMLBrowserViewRep
 	 */
 	public HTMLBrowserViewRep(final int iParentContainerId, final String sLabel)
 	{
-		super(iParentContainerId, sLabel, ViewType.SWT_HTML_BROWSER);
+		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
+				EManagedObjectType.VIEW_SWT_BROWSER_GENERAL));
+	}
+	
+	/**
+	 * Constructor.
+	 */
+	public HTMLBrowserViewRep(final int iParentContainerId, final String sLabel, int iViewID)
+	{
+		super(iParentContainerId, sLabel, iViewID);
 	}
 
 	@Override
-	protected void initViewSwtComposite(Composite parent)
+	public void initViewSWTComposite(Composite parentComposite)
 	{
-		Composite composite = new Composite(parent, SWT.NONE);
+		Composite composite = new Composite(parentComposite, SWT.NONE);
 		GridLayout layout = new GridLayout(1, false);
 		composite.setLayout(layout);
 		composite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
@@ -71,19 +80,19 @@ public class HTMLBrowserViewRep
 		ResourceLoader resourceLoader = GeneralManager.get().getResourceLoader();
 
 		goButton = new ToolItem(toolbar, SWT.PUSH);
-		goButton.setImage(resourceLoader.getImage(parent.getDisplay(),
+		goButton.setImage(resourceLoader.getImage(parentComposite.getDisplay(),
 				EIconTextures.BROWSER_REFRESH_IMAGE.getFileName()));
 
 		backButton = new ToolItem(toolbar, SWT.PUSH);
-		backButton.setImage(resourceLoader.getImage(parent.getDisplay(),
+		backButton.setImage(resourceLoader.getImage(parentComposite.getDisplay(),
 				EIconTextures.BROWSER_BACK_IMAGE.getFileName()));
 
 		stopButton = new ToolItem(toolbar, SWT.PUSH);
-		stopButton.setImage(resourceLoader.getImage(parent.getDisplay(),
+		stopButton.setImage(resourceLoader.getImage(parentComposite.getDisplay(),
 				EIconTextures.BROWSER_STOP_IMAGE.getFileName()));
 
 		homeButton = new ToolItem(toolbar, SWT.PUSH);
-		homeButton.setImage(resourceLoader.getImage(parent.getDisplay(),
+		homeButton.setImage(resourceLoader.getImage(parentComposite.getDisplay(),
 				EIconTextures.BROWSER_HOME_IMAGE.getFileName()));
 
 		textURL = new Text(browserBarComposite, SWT.BORDER);
@@ -144,7 +153,7 @@ public class HTMLBrowserViewRep
 			}
 		});
 
-		parent.getDisplay().addFilter(SWT.FocusIn, new Listener()
+		parentComposite.getDisplay().addFilter(SWT.FocusIn, new Listener()
 		{
 
 			public void handleEvent(Event event)
@@ -170,7 +179,7 @@ public class HTMLBrowserViewRep
 
 		try
 		{
-			parent.getDisplay().asyncExec(new Runnable()
+			parentComposite.getDisplay().asyncExec(new Runnable()
 			{
 
 				public void run()

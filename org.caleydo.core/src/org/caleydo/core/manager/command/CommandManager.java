@@ -192,21 +192,21 @@ public class CommandManager
 		return hashCommandQueueId.get(iCmdQueueId);
 	}
 
-	@Override
-	public ICommand createCommandQueue(final String sCmdType, final String sProcessType,
-			final int iCmdId, final int iCmdQueueId, final int sQueueThread,
-			final int sQueueThreadWait)
-	{
-		ICommand newCmd = commandFactory.createCommandQueue(sCmdType, sProcessType, iCmdId,
-				iCmdQueueId, sQueueThread, sQueueThreadWait);
-
-		// int iNewCmdId = createId(EManagerObjectType.COMMAND);
-		// newCmd.setId(iNewCmdId);
-		//
-		// registerItem(newCmd, iNewCmdId);
-
-		return newCmd;
-	}
+//	@Override
+//	public ICommand createCommandQueue(final String sCmdType, final String sProcessType,
+//			final int iCmdId, final int iCmdQueueId, final int sQueueThread,
+//			final int sQueueThreadWait)
+//	{
+//		ICommand newCmd = commandFactory.createCommandQueue(sCmdType, sProcessType, iCmdId,
+//				iCmdQueueId, sQueueThread, sQueueThreadWait);
+//
+//		// int iNewCmdId = createId(EManagerObjectType.COMMAND);
+//		// newCmd.setId(iNewCmdId);
+//		//
+//		// registerItem(newCmd, iNewCmdId);
+//
+//		return newCmd;
+//	}
 
 	@Override
 	public synchronized void runDoCommand(ICommand runCmd)

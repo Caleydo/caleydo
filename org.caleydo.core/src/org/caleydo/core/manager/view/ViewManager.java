@@ -9,7 +9,7 @@ import javax.swing.JFrame;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.manager.AManager;
-import org.caleydo.core.manager.IViewGLCanvasManager;
+import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.PickingManager;
@@ -50,9 +50,9 @@ import com.sun.opengl.util.FPSAnimator;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class ViewGLCanvasManager
+public class ViewManager
 	extends AManager<IView>
-	implements IViewGLCanvasManager
+	implements IViewManager
 {
 	protected HashMap<Integer, GLCaleydoCanvas> hashGLCanvasID2GLCanvas;
 
@@ -64,8 +64,6 @@ public class ViewGLCanvasManager
 
 	private Animator fpsAnimator;
 
-	private DataEntitySearcherViewRep dataEntitySearcher;
-
 	private PickingManager pickingManager;
 
 	private ConnectedElementRepresentationManager selectionManager;
@@ -76,7 +74,7 @@ public class ViewGLCanvasManager
 	 * Constructor.
 	 * 
 	 */
-	public ViewGLCanvasManager()
+	public ViewManager()
 	{
 		pickingManager = new PickingManager();
 		selectionManager = new ConnectedElementRepresentationManager();
@@ -94,7 +92,6 @@ public class ViewGLCanvasManager
 	@Override
 	public boolean hasItem(int iItemId)
 	{
-
 		if (hashItems.containsKey(iItemId))
 			return true;
 
@@ -115,22 +112,6 @@ public class ViewGLCanvasManager
 	public AGLEventListener getGLEventListener(int iItemID)
 	{
 		return hashGLEventListenerID2GLEventListener.get(iItemID);
-	}
-
-	@Override
-	public void registerItem(IView view)
-	{
-		super.registerItem(view);
-
-		switch (view.getViewType())
-		{
-			case SWT_DATA_EXPLORER:
-			case SWT_HTML_BROWSER:
-				this.addViewRep(view);
-				break;
-
-			// default: // do nothing
-		}
 	}
 
 	@Override
@@ -370,59 +351,6 @@ public class ViewGLCanvasManager
 		hashGLEventListenerID2GLEventListener.remove(iGLEventListenerID);
 	}
 
-	public void addViewRep(final IView view)
-	{
-
-		try
-		{
-			switch (view.getViewType())
-			{
-				case SWT_DATA_ENTITY_SEARCHER:
-					dataEntitySearcher = (DataEntitySearcherViewRep) view;
-
-				default:
-					assert false : "unsupported ViewType " + view.getViewType();
-			} // switch ( view.getViewType() )
-		}
-		catch (NullPointerException npe)
-		{
-			System.err.println("addViewRep(IView) getViewType() returned unexpected (class)!");
-
-			assert false : "Error,  getViewType() returned unexpected (class)";
-		} // try .. catch ( NullPointerException npe)
-	}
-
-	@Override
-	public void removeViewRep(final IView view)
-	{
-		try
-		{
-			switch (view.getViewType())
-			{
-
-				case SWT_DATA_EXPLORER:
-					// arDataExplorerViewRep.remove( (DataExplorerViewRep)
-					// view);
-					return;
-				case SWT_HTML_BROWSER:
-					// arDataExplorerViewRep.remove( (DataExplorerViewRep)
-					// view);
-					return;
-
-				default:
-					assert false : "unsupported ViewType " + view.getViewType();
-			} // switch ( view.getViewType() )
-
-		}
-		catch (NullPointerException npe)
-		{
-			System.err
-					.println("removedViewRep(IView) getViewType() returned unexpected (class)!");
-
-			assert false : "Error,  getViewType() returned unexpected (class)";
-		} // try .. catch ( NullPointerException npe)
-	}
-
 	@Override
 	public Collection<GLCaleydoCanvas> getAllGLCanvasUsers()
 	{
@@ -435,27 +363,18 @@ public class ViewGLCanvasManager
 		return hashGLEventListenerID2GLEventListener.values();
 	}
 
-	public DataEntitySearcherViewRep getDataEntitySearcher()
-	{
-
-		return dataEntitySearcher;
-	}
-
 	public PickingManager getPickingManager()
 	{
-
 		return pickingManager;
 	}
 
 	public ConnectedElementRepresentationManager getConnectedElementRepresentationManager()
 	{
-
 		return selectionManager;
 	}
 
 	public GLInfoAreaManager getInfoAreaManager()
 	{
-
 		return infoAreaManager;
 	}
 

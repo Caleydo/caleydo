@@ -398,7 +398,6 @@ Export-Package: org.caleydo.core.application.core;uses:="org.caleydo.core.manage
    org.eclipse.swt.widgets,
    org.eclipse.swt.browser,
    org.caleydo.core.data.selection",
- org.caleydo.core.view.swt.data;uses:="org.caleydo.core.view",
  org.caleydo.core.view.swt.data.search;
   uses:="org.caleydo.core.manager.event.mediator,
    org.caleydo.core.view,

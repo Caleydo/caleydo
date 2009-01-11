@@ -3,17 +3,18 @@ package org.caleydo.core.view.swt.glyph;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
-import org.caleydo.core.view.AView;
-import org.caleydo.core.view.IView;
-import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyphGenerator;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphObjectDefinition;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphObjectDefinition.DIRECTION;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
+import org.caleydo.core.view.swt.ASWTView;
+import org.caleydo.core.view.swt.ISWTView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CCombo;
 import org.eclipse.swt.custom.CLabel;
@@ -33,8 +34,8 @@ import org.eclipse.swt.widgets.Composite;
 
 // FIXME: bad hack, should implement IMediatorReciever
 public class GlyphMappingConfigurationViewRep
-	extends AView
-	implements IView
+	extends ASWTView
+	implements ISWTView
 {
 	private class DataPack
 	{
@@ -73,7 +74,8 @@ public class GlyphMappingConfigurationViewRep
 	 */
 	public GlyphMappingConfigurationViewRep(int iParentContainerId, String sLabel)
 	{
-		super(iParentContainerId, sLabel, ViewType.SWT_GLYPH_MAPPINGCONFIGURATION);
+		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
+				EManagedObjectType.VIEW_SWT_GLYPH_MAPPINGCONFIGURATION));
 
 		composites = new HashMap<Integer, Composite>();
 		comboBoxes = new HashMap<CCombo, DataPack>();
@@ -85,14 +87,9 @@ public class GlyphMappingConfigurationViewRep
 		gman = generalManager.getGlyphManager();
 	}
 
-	/**
-	 * @see org.caleydo.core.view.AView#retrieveGUIContainer()
-	 * @see org.caleydo.core.view.IView#initView()
-	 */
 	@Override
-	protected void initViewSwtComposite(Composite swtContainer)
+	public void initViewSWTComposite(Composite parentComposite)
 	{
-
 		// get all combo box entrys
 		Iterator<GlyphAttributeType> it = gman.getGlyphAttributes().iterator();
 		int counter = 0;
@@ -177,10 +174,10 @@ public class GlyphMappingConfigurationViewRep
 		};
 
 		GridLayout layout = new GridLayout();
-		parent.setBackground(new Color(null, 255, 255, 255));
+		parentComposite.setBackground(new Color(null, 255, 255, 255));
 
-		addHeaderScatterplot(parent);
-		addBodyScatterplotAxisDefinition(parent);
+		addHeaderScatterplot(parentComposite);
+		addBodyScatterplotAxisDefinition(parentComposite);
 
 		for (int i = 0; i < 30; ++i)
 		{
@@ -189,12 +186,12 @@ public class GlyphMappingConfigurationViewRep
 			if (model == null)
 				continue;
 
-			addHeaderGlyphDefinition(parent, model);
-			addBodyGlyphDefinition(parent, model);
+			addHeaderGlyphDefinition(parentComposite, model);
+			addBodyGlyphDefinition(parentComposite, model);
 
 		}
 
-		parent.setLayout(layout);
+		parentComposite.setLayout(layout);
 		layout.numColumns = 1;
 
 		// useless in rcp
@@ -231,7 +228,7 @@ public class GlyphMappingConfigurationViewRep
 			data.exclude = false;
 
 			comp.setVisible(true);
-			parent.layout(false);
+			parentComposite.layout(false);
 		}
 		else
 		{
@@ -239,7 +236,7 @@ public class GlyphMappingConfigurationViewRep
 			data.exclude = true;
 
 			comp.setVisible(false);
-			parent.layout(false);
+			parentComposite.layout(false);
 		}
 	}
 

@@ -1,22 +1,67 @@
 package org.caleydo.core.manager;
 
+import java.util.Collection;
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.manager.picking.PickingManager;
+import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.IView;
+import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
 
 /**
- * Manage all canvas, view, ViewRep's and GLCanvas objects.
+ * Make SWT Views and JOGL GLCanvas addressable by ID and provide ground for XML bootstrapping
+ * of GLCanvas.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
- * @author Alexander Lex
  */
 public interface IViewManager
 	extends IManager<IView>
 {
 	public IView createView(final EManagedObjectType useViewType,
 			final int iParentContainerId, final String sLabel);
+	
+	public AGLEventListener createGLEventListener(ECommandType type, final int iGLCanvasID,
+			String sLabel, IViewFrustum viewFrustum);
 
-	public void addViewRep(IView view);
+	public IView createGLView(final EManagedObjectType type, final int iParentContainerID,
+			final String sLabel);
 
-	public void removeViewRep(IView view);
+	public Collection<GLCaleydoCanvas> getAllGLCanvasUsers();
+
+	public Collection<AGLEventListener> getAllGLEventListeners();
+
+	public boolean registerGLCanvas(final GLCaleydoCanvas glCanvas);
+
+	public boolean unregisterGLCanvas(final int iGLCanvasId);
+
+	public void registerGLEventListenerByGLCanvasID(final int iGLCanvasID,
+			final AGLEventListener gLEventListener);
+
+	public void unregisterGLEventListener(final int iGLEventListenerID);
+	
+	/**
+	 * Get the PickingManager which is responsible for system wide picking
+	 * 
+	 * @return the PickingManager
+	 */
+	public PickingManager getPickingManager();
+
+	public ConnectedElementRepresentationManager getConnectedElementRepresentationManager();
+
+	public GLInfoAreaManager getInfoAreaManager();
+
+	public void startAnimator();
+
+	/**
+	 * Removes all views, canvas and GL event listeners
+	 */
+	public void cleanup();
+
+	public GLCaleydoCanvas getCanvas(int iItemID);
+
+	public AGLEventListener getGLEventListener(int iItemID);
 }

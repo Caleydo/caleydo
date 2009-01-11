@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.IViewGLCanvasManager;
+import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 import org.caleydo.core.parser.parameter.IParameterHandler.ParameterHandlerType;
@@ -204,7 +204,7 @@ public class CmdCreateGLEventListener
 	public void doCommand()
 	{
 
-		IViewGLCanvasManager glCanvasManager = generalManager.getViewGLCanvasManager();
+		IViewManager glCanvasManager = generalManager.getViewGLCanvasManager();
 
 		if (iExternalID != -1 && iParentContainerId != -1)
 		{

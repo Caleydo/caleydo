@@ -96,7 +96,6 @@ public class CmdLoadFileNStorages
 			final String sTokenPattern, final String sTokenSeparator,
 			final int iStartParseFileAtLine, final int iStopParseFileAtLine)
 	{
-
 		iAlStorageIDs = iAlStorageId;
 		this.sFileName = sFileName;
 		this.sTokenPattern = sTokenPattern;
@@ -114,12 +113,7 @@ public class CmdLoadFileNStorages
 						+ sTokenPattern + ". Data is stored in Storage with ID "
 						+ iAlStorageIDs.toString());
 
-		TabularAsciiDataReader loader = null;
-
-		// try
-		// {
-		loader = new TabularAsciiDataReader(sFileName);
-
+		TabularAsciiDataReader loader = new TabularAsciiDataReader(sFileName);
 		loader.setTokenPattern(sTokenPattern);
 		loader.setTargetStorages(iAlStorageIDs);
 		loader.setStartParsingStopParsingAtLine(iStartParseFileAtLine, iStopParseFileAtLine);
@@ -129,15 +123,9 @@ public class CmdLoadFileNStorages
 
 		loader.loadData();
 
+		generalManager.getGUIBridge().setFileNameCurrentDataSet(sFileName);
+		
 		commandManager.runDoCommand(this);
-
-		// } // try
-		// catch (Exception e)
-		// {
-		// generalManager.getLogger().log(Level.SEVERE,
-		// "Error during parsing data file " + sFileName);
-		// e.printStackTrace();
-		// } // catch
 	}
 
 	@Override

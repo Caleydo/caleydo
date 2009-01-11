@@ -1,9 +1,10 @@
 package org.caleydo.core.view.swt.mixer;
 
 import java.util.ArrayList;
-import org.caleydo.core.view.AView;
-import org.caleydo.core.view.IView;
-import org.caleydo.core.view.ViewType;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.view.swt.ASWTView;
+import org.caleydo.core.view.swt.ISWTView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -18,8 +19,8 @@ import org.eclipse.swt.widgets.Slider;
  * @author Michael Kalkusch
  */
 public class MixerViewRep
-	extends AView
-	implements IView
+	extends ASWTView
+	implements ISWTView
 {
 	protected ArrayList<Slider> sliderList;
 
@@ -30,7 +31,8 @@ public class MixerViewRep
 	 */
 	public MixerViewRep(int iParentContainerId, String sLabel)
 	{
-		super(iParentContainerId, sLabel, ViewType.SWT_MIXER);
+		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
+				EManagedObjectType.VIEW_SWT_MIXER));
 	}
 
 	/**
@@ -41,16 +43,16 @@ public class MixerViewRep
 	 * @see org.caleydo.core.view.IView#initView()
 	 */
 	@Override
-	protected void initViewSwtComposite(Composite swtContainer)
+	public void initViewSWTComposite(Composite parentComposite)
 	{
 
 		sliderList = new ArrayList<Slider>();
-		swtContainer.setLayout(new FillLayout(SWT.HORIZONTAL));
+		parentComposite.setLayout(new FillLayout(SWT.HORIZONTAL));
 
 		Slider tmpSlider = null;
 		for (int iSliderIndex = 0; iSliderIndex < iNumberOfSliders; iSliderIndex++)
 		{
-			tmpSlider = new Slider(swtContainer, SWT.VERTICAL);
+			tmpSlider = new Slider(parentComposite, SWT.VERTICAL);
 			tmpSlider.setMinimum(0);
 			tmpSlider.setMaximum(100);
 			tmpSlider.setSelection(50);

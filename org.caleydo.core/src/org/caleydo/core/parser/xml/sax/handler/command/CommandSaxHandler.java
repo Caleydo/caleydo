@@ -132,91 +132,91 @@ public class CommandSaxHandler
 		return lastCommand;
 	}
 
-	/**
-	 * Read values of class: iCurrentFrameId
-	 * 
-	 * @param attrs
-	 * @param bIsExternalFrame
-	 */
-	protected void readCommandQueueData(final Attributes attrs, boolean bIsExternalFrame)
-	{
-
-		ICommand lastCommand = null;
-
-		String sData_Queue_process = ECommandType.RUN_QUEUE_ON_DEMAND.toString();
-		String sData_Queue_type = ECommandType.COMMAND_QUEUE_RUN.toString();
-
-		int iData_Queue_CmdId;
-		int iData_Queue_CmdQueueId;
-		int iData_Queue_ThreadPool_Id = -1;
-		int iData_Queue_ThreadPool_Wait_Id = -1;
-
-		try
-		{
-			/* create new Frame */
-			sData_Queue_process = SXmlParserHandler.assignStringValue(attrs,
-					ECommandType.RUN_QUEUE_ON_DEMAND.getXmlKey(),
-					ECommandType.RUN_QUEUE_ON_DEMAND.toString());
-
-			iData_Queue_CmdId = SXmlParserHandler.assignIntValueIfValid(attrs,
-					ECommandType.CMD_ID.getXmlKey(), -1);
-
-			iData_Queue_CmdQueueId = SXmlParserHandler.assignIntValueIfValid(attrs,
-					ECommandType.CMDQUEUE_ID.getXmlKey(), -1);
-
-			sData_Queue_type = SXmlParserHandler.assignStringValue(attrs,
-					ECommandType.COMMAND_QUEUE_RUN.getXmlKey(), ECommandType.COMMAND_QUEUE_RUN
-							.toString());
-
-			iData_Queue_ThreadPool_Id = SXmlParserHandler.assignIntValueIfValid(attrs,
-					ECommandType.CMD_THREAD_POOL_ID.getXmlKey(), -1);
-
-			iData_Queue_ThreadPool_Wait_Id = SXmlParserHandler.assignIntValueIfValid(attrs,
-					ECommandType.CMD_THREAD_POOL_WAIT_ID.getXmlKey(), -1);
-
-			lastCommand = generalManager.getCommandManager().createCommandQueue(
-					sData_Queue_type, sData_Queue_process, iData_Queue_CmdId,
-					iData_Queue_CmdQueueId, iData_Queue_ThreadPool_Id,
-					-iData_Queue_ThreadPool_Wait_Id);
-
-		}
-		catch (Exception e)
-		{
-			System.err
-					.println("CommandSaxHandler::readCommandQueueData() ERROR while parsing "
-							+ e.toString());
-		}
-
-		ECommandType currentType = ECommandType.valueOf(sData_Queue_type);
-
-		switch (currentType)
-		// CommandType
-		{
-
-			case COMMAND_QUEUE_RUN:
-				if (ECommandType.valueOf(sData_Queue_process) == ECommandType.RUN_QUEUE)
-				{
-					lastCommand.doCommand();
-					commandQueueIter = null;
-				}
-				break;
-
-			case COMMAND_QUEUE_OPEN:
-				if (commandQueueIter != null)
-				{
-					assert false : "COMMAND_QUEUE_OPEN: already one queue is beeing processed!";
-				}
-
-				commandQueueIter = (ICommandQueue) lastCommand;
-				break;
-
-			// no default section!
-			// default:
-		} // switch (currentType) {
-
-		// throw new CaleydoRuntimeException( "can not create command from [" +
-		// attrs.toString() + "]");
-	}
+//	/**
+//	 * Read values of class: iCurrentFrameId
+//	 * 
+//	 * @param attrs
+//	 * @param bIsExternalFrame
+//	 */
+//	protected void readCommandQueueData(final Attributes attrs, boolean bIsExternalFrame)
+//	{
+//
+//		ICommand lastCommand = null;
+//
+//		String sData_Queue_process = ECommandType.RUN_QUEUE_ON_DEMAND.toString();
+//		String sData_Queue_type = ECommandType.COMMAND_QUEUE_RUN.toString();
+//
+//		int iData_Queue_CmdId;
+//		int iData_Queue_CmdQueueId;
+//		int iData_Queue_ThreadPool_Id = -1;
+//		int iData_Queue_ThreadPool_Wait_Id = -1;
+//
+//		try
+//		{
+//			/* create new Frame */
+//			sData_Queue_process = SXmlParserHandler.assignStringValue(attrs,
+//					ECommandType.RUN_QUEUE_ON_DEMAND.getXmlKey(),
+//					ECommandType.RUN_QUEUE_ON_DEMAND.toString());
+//
+//			iData_Queue_CmdId = SXmlParserHandler.assignIntValueIfValid(attrs,
+//					ECommandType.CMD_ID.getXmlKey(), -1);
+//
+//			iData_Queue_CmdQueueId = SXmlParserHandler.assignIntValueIfValid(attrs,
+//					ECommandType.CMDQUEUE_ID.getXmlKey(), -1);
+//
+//			sData_Queue_type = SXmlParserHandler.assignStringValue(attrs,
+//					ECommandType.COMMAND_QUEUE_RUN.getXmlKey(), ECommandType.COMMAND_QUEUE_RUN
+//							.toString());
+//
+//			iData_Queue_ThreadPool_Id = SXmlParserHandler.assignIntValueIfValid(attrs,
+//					ECommandType.CMD_THREAD_POOL_ID.getXmlKey(), -1);
+//
+//			iData_Queue_ThreadPool_Wait_Id = SXmlParserHandler.assignIntValueIfValid(attrs,
+//					ECommandType.CMD_THREAD_POOL_WAIT_ID.getXmlKey(), -1);
+//
+//			lastCommand = generalManager.getCommandManager().createCommandQueue(
+//					sData_Queue_type, sData_Queue_process, iData_Queue_CmdId,
+//					iData_Queue_CmdQueueId, iData_Queue_ThreadPool_Id,
+//					-iData_Queue_ThreadPool_Wait_Id);
+//
+//		}
+//		catch (Exception e)
+//		{
+//			System.err
+//					.println("CommandSaxHandler::readCommandQueueData() ERROR while parsing "
+//							+ e.toString());
+//		}
+//
+//		ECommandType currentType = ECommandType.valueOf(sData_Queue_type);
+//
+//		switch (currentType)
+//		// CommandType
+//		{
+//
+//			case COMMAND_QUEUE_RUN:
+//				if (ECommandType.valueOf(sData_Queue_process) == ECommandType.RUN_QUEUE)
+//				{
+//					lastCommand.doCommand();
+//					commandQueueIter = null;
+//				}
+//				break;
+//
+//			case COMMAND_QUEUE_OPEN:
+//				if (commandQueueIter != null)
+//				{
+//					assert false : "COMMAND_QUEUE_OPEN: already one queue is beeing processed!";
+//				}
+//
+//				commandQueueIter = (ICommandQueue) lastCommand;
+//				break;
+//
+//			// no default section!
+//			// default:
+//		} // switch (currentType) {
+//
+//		// throw new CaleydoRuntimeException( "can not create command from [" +
+//		// attrs.toString() + "]");
+//	}
 
 	/**
 	 * @see org.xml.sax.ContentHandler#startElement(Stringt, Stringt, Stringt,
@@ -319,7 +319,7 @@ public class CommandSaxHandler
 
 					bCommandQueue_isActive = true;
 
-					readCommandQueueData(attrs, true);
+//					readCommandQueueData(attrs, true);
 
 				}
 				else

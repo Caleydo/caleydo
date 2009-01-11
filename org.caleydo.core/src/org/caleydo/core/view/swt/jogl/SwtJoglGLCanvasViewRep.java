@@ -1,11 +1,12 @@
 package org.caleydo.core.view.swt.jogl;
 
 import org.caleydo.core.manager.ISWTGUIManager;
-import org.caleydo.core.manager.IViewGLCanvasManager;
+import org.caleydo.core.manager.IViewManager;
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.view.AView;
-import org.caleydo.core.view.ViewType;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.swt.ASWTView;
+import org.caleydo.core.view.swt.ISWTView;
 import org.caleydo.core.view.swt.widget.SWTEmbeddedJoglWidget;
 import org.eclipse.swt.widgets.Composite;
 
@@ -14,7 +15,8 @@ import org.eclipse.swt.widgets.Composite;
  * @author Marc Streit
  */
 public class SwtJoglGLCanvasViewRep
-	extends AView
+	extends ASWTView
+	implements ISWTView
 {
 	protected int iGLCanvasID;
 
@@ -26,27 +28,27 @@ public class SwtJoglGLCanvasViewRep
 	 */
 	public SwtJoglGLCanvasViewRep(int iParentContainerId, String sLabel)
 	{
-		super(iParentContainerId, sLabel, ViewType.SWT_JOGL);
+		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
+				EManagedObjectType.VIEW_SWT_JOGL_CONTAINER));
 	}
 
 	@Override
-	public void initViewSwtComposite(Composite swtContainer)
+	public void initViewSWTComposite(Composite parentComposite)
 	{
-
 		ISWTGUIManager iSWTGUIManager = generalManager.getSWTGUIManager();
 
 		SWTEmbeddedJoglWidget sWTEmbeddedJoglWidget = (SWTEmbeddedJoglWidget) iSWTGUIManager
 				.createWidget(EManagedObjectType.GUI_SWT_EMBEDDED_JOGL_WIDGET,
 						iParentContainerId);
 
-		swtContainer = sWTEmbeddedJoglWidget.getParentComposite();
+		parentComposite = sWTEmbeddedJoglWidget.getParentComposite();
 
 		sWTEmbeddedJoglWidget.createEmbeddedComposite();
 
 		gLCanvas = sWTEmbeddedJoglWidget.getGLCanvas();
 		iGLCanvasID = gLCanvas.getID();
 
-		IViewGLCanvasManager canvasManager = generalManager.getViewGLCanvasManager();
+		IViewManager canvasManager = generalManager.getViewGLCanvasManager();
 
 		// Register GL canvas to view manager
 		canvasManager.registerGLCanvas(gLCanvas);
