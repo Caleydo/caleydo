@@ -34,6 +34,8 @@ public enum EIconTextures
 	NAVIGATION_REMOVE_VIEW("resources/icons/general/navigation_remove_view.png"),
 	NAVIGATION_DRAG_VIEW("resources/icons/general/navigation_drag_view.png"),
 	NAVIGATION_LOCK_VIEW("resources/icons/general/navigation_lock_view.png"),	
+	NAVIGATION_NEXT_BIG("resources/navigation/next_big.png"),
+	NAVIGATION_NEXT_SMALL("resources/navigation/next_small.png"),
 	
 	POOL_REMOVE_VIEW("resources/icons/general/pool_remove_view.png"),
 	POOL_DRAG_VIEW("resources/icons/general/pool_drag_view.png"),

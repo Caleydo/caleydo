@@ -2,6 +2,7 @@ package org.caleydo.rcp.views.opengl;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.command.ECommandType;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
 import org.eclipse.jface.action.IAction;
@@ -39,6 +40,7 @@ public class GLHierarchicalHeatMapView
 		}
 		
 		createGLCanvas();
+		createGLEventListener(ECommandType.CREATE_GL_TEXTURE_HEAT_MAP_3D, glCanvas.getID(), true);
 	}
 
 	public static void createToolBarItems(int iViewID)

@@ -313,6 +313,11 @@ public class GLHierarchicalHeatMap
 		}
 	}
 
+	/**
+	 * Create embedded heatmap, register heatmap as a sender and receiver
+	 * 
+	 * @param 
+	 */
 	private void createHeatMap()
 	{
 		CmdCreateGLEventListener cmdView = (CmdCreateGLEventListener) generalManager
@@ -603,8 +608,6 @@ public class GLHierarchicalHeatMap
 
 		gl.glColor4f(0f, 0f, 0f, 0.4f);
 
-		// gl.glBegin(GL.GL_POLYGON);
-
 		startpoint = new Vec3f(fFieldWith, fStep * (iNrSelBar - iSelectorBar + 1), 0);
 		endpoint = new Vec3f(GAP_LEVEL1_2, fHeight, 0);
 		renderCurvedConnectionLine(gl, startpoint, endpoint);
@@ -612,8 +615,6 @@ public class GLHierarchicalHeatMap
 		startpoint = new Vec3f(fFieldWith, fStep * (iNrSelBar - iSelectorBar), 0);
 		endpoint = new Vec3f(GAP_LEVEL1_2, 0, 0);
 		renderCurvedConnectionLine(gl, endpoint, startpoint);
-
-		// gl.glEnd();
 
 		float foffsetPick = ((fStep * (iNrSelBar - iSelectorBar + 1)) - (fStep * (iNrSelBar - iSelectorBar)))
 				/ iAlNumberSamples.get(iSelectorBar - 1);
@@ -831,78 +832,114 @@ public class GLHierarchicalHeatMap
 		float fHeight = viewFrustum.getHeight();
 		float fWidth = viewFrustum.getWidth() / 4.0f;
 
+		Texture tempTexture = iconTextureManager.getIconTexture(gl,
+				EIconTextures.NAVIGATION_NEXT_BIG);
+		tempTexture.enable();
+		tempTexture.bind();
+
+		TextureCoords texCoords = tempTexture.getImageTexCoords();
+		
+		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		gl.glColor4f(1f, 1, 1, 1f);
+		
 		if (iSelectorBar != 1)
 		{
-			gl.glColor4f(0f, 0f, 0f, 0.7f);
 			// Polygon for selecting previous texture
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.HIER_HEAT_MAP_TEXTURE_CURSOR, 1));
 			gl.glBegin(GL.GL_POLYGON);
+			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 			gl.glVertex3f(0.0f, fHeight, 0);
+			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 			gl.glVertex3f(fWidth, fHeight, 0);
+			gl.glTexCoord2f(texCoords.right(), texCoords.top());
 			gl.glVertex3f(fWidth, fHeight + 0.1f, 0);
+			gl.glTexCoord2f(texCoords.left(), texCoords.top());
 			gl.glVertex3f(0.0f, fHeight + 0.1f, 0);
 			gl.glEnd();
 			gl.glPopName();
+			
 		}
 
 		if (iSelectorBar != iNrSelBar)
 		{
-			gl.glColor4f(0f, 0f, 0f, 0.7f);
 			// Polygon for selecting next texture
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.HIER_HEAT_MAP_TEXTURE_CURSOR, 2));
 			gl.glBegin(GL.GL_POLYGON);
+			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 			gl.glVertex3f(0.0f, 0.0f, 0);
+			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 			gl.glVertex3f(fWidth, 0.0f, 0);
+			gl.glTexCoord2f(texCoords.right(), texCoords.top());
 			gl.glVertex3f(fWidth, -0.1f, 0);
+			gl.glTexCoord2f(texCoords.left(), texCoords.top());
 			gl.glVertex3f(0.0f, -0.1f, 0);
-			gl.glEnd();
-			gl.glPopName();
-		}
-
-		if (bIsHeatmapInFocus == false)
-		{
-			gl.glColor4f(0f, 0f, 0f, 0.7f);
-			// Polygon for iFirstElement
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.HIER_HEAT_MAP_CURSOR, 1));
-			gl.glBegin(GL.GL_QUADS);
-			gl.glVertex3f(0.0f, fPosCursorFirstElement, 0);
-			gl.glVertex3f(-GAP_LEVEL1_2/4, fPosCursorFirstElement, 0);
-			gl.glVertex3f(-GAP_LEVEL1_2/4, fPosCursorFirstElement + 0.1f, 0);
-			gl.glVertex3f(0.0f, fPosCursorFirstElement + 0.1f, 0);
-			gl.glEnd();
-			gl.glPopName();
-
-			// Polygon for iLastElement
-			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.HIER_HEAT_MAP_CURSOR, 2));
-			gl.glBegin(GL.GL_QUADS);
-			gl.glVertex3f(0.0f, fPosCursorLastElement, 0);
-			gl.glVertex3f(-GAP_LEVEL1_2/4, fPosCursorLastElement, 0);
-			gl.glVertex3f(-GAP_LEVEL1_2/4, fPosCursorLastElement - 0.1f, 0);
-			gl.glVertex3f(0.0f, fPosCursorLastElement - 0.1f, 0);
 			gl.glEnd();
 			gl.glPopName();
 		}
 
 		if (set.getVA(iStorageVAID).size() > MAX_NUM_SAMPLES && bIsHeatmapInFocus == false)
 		{
-			gl.glColor4f(0f, 0f, 0f, 0.7f);
-			// Polygon for setting heatmap in focus
+			// Polygon for setting heatMap in focus
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.HIER_HEAT_MAP_INFOCUS_SELECTION, 1));
-
 			gl.glBegin(GL.GL_QUADS);
+			gl.glTexCoord2f(texCoords.left(), texCoords.top());
 			gl.glVertex3f(fWidth, fPosCursorFirstElement, 0);
+			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 			gl.glVertex3f(fWidth + 0.2f, fPosCursorFirstElement, 0);
+			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 			gl.glVertex3f(fWidth + 0.2f, fPosCursorLastElement, 0);
+			gl.glTexCoord2f(texCoords.right(), texCoords.top());
 			gl.glVertex3f(fWidth, fPosCursorLastElement, 0);
 			gl.glEnd();
 
 			gl.glPopName();
+		}		
+		
+		tempTexture = iconTextureManager.getIconTexture(gl,
+				EIconTextures.NAVIGATION_NEXT_SMALL);
+		tempTexture.enable();
+		tempTexture.bind();
+
+		texCoords = tempTexture.getImageTexCoords();
+		
+		if (bIsHeatmapInFocus == false)
+		{
+			// Polygon for iFirstElement-Cursor
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+					EPickingType.HIER_HEAT_MAP_CURSOR, 1));
+			gl.glBegin(GL.GL_POLYGON);
+			gl.glTexCoord2f(texCoords.left(), texCoords.top());
+			gl.glVertex3f(0.0f, fPosCursorFirstElement, 0);
+			gl.glTexCoord2f(texCoords.right(), texCoords.top());
+			gl.glVertex3f(-GAP_LEVEL1_2/4, fPosCursorFirstElement, 0);
+			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+			gl.glVertex3f(-GAP_LEVEL1_2/4, fPosCursorFirstElement + 0.1f, 0);
+			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+			gl.glVertex3f(0.0f, fPosCursorFirstElement + 0.1f, 0);
+			gl.glEnd();
+			gl.glPopName();
+
+			// Polygon for iLastElementt-Cursor
+			gl.glPushName(pickingManager.getPickingID(iUniqueID,
+					EPickingType.HIER_HEAT_MAP_CURSOR, 2));
+			gl.glBegin(GL.GL_POLYGON);
+			gl.glTexCoord2f(texCoords.left(), texCoords.top());
+			gl.glVertex3f(0.0f, fPosCursorLastElement, 0);
+			gl.glTexCoord2f(texCoords.right(), texCoords.top());
+			gl.glVertex3f(-GAP_LEVEL1_2/4, fPosCursorLastElement, 0);
+			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+			gl.glVertex3f(-GAP_LEVEL1_2/4, fPosCursorLastElement - 0.1f, 0);
+			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+			gl.glVertex3f(0.0f, fPosCursorLastElement - 0.1f, 0);
+			gl.glEnd();
+			gl.glPopName();
 		}
+
+		gl.glPopAttrib();
+		tempTexture.disable();
 	}
 
 	@Override
