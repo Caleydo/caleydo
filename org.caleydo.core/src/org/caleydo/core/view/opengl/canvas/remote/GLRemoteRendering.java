@@ -288,9 +288,7 @@ public class GLRemoteRendering
 
 		glSelectionPanel.initRemote(gl, getID(), pickingTriggerMouseAdapter,
 				remoteRenderingGLCanvas);
-
-		// trashCan.init(gl);
-
+		
 		colorMappingBarMiniView.setWidth(layoutRenderStyle.getColorBarWidth());
 		colorMappingBarMiniView.setHeight(layoutRenderStyle.getColorBarHeight());
 	}
@@ -472,6 +470,9 @@ public class GLRemoteRendering
 
 	private void initializeContainedViews(final GL gl)
 	{
+		if (iAlContainedViewIDs == null)
+			return;
+		
 		for (int iContainedViewID : iAlContainedViewIDs)
 		{
 			AGLEventListener tmpGLEventListener = generalManager.getViewGLCanvasManager()
@@ -647,14 +648,14 @@ public class GLRemoteRendering
 			if (glEventListener.getNumberOfSelections(ESelectionType.MOUSE_OVER) > 0)
 			{
 				textRenderer.setColor(1, 0, 0, 1);
-				sRenderText = glEventListener.getNumberOfSelections(ESelectionType.MOUSE_OVER)
-						+ " - " + sRenderText;
+//				sRenderText = glEventListener.getNumberOfSelections(ESelectionType.MOUSE_OVER)
+//						+ " - " + sRenderText;
 			}
 			else if (glEventListener.getNumberOfSelections(ESelectionType.SELECTION) > 0)
 			{
 				textRenderer.setColor(0, 1, 0, 1);
-				sRenderText = glEventListener.getNumberOfSelections(ESelectionType.SELECTION)
-						+ " - " + sRenderText;
+//				sRenderText = glEventListener.getNumberOfSelections(ESelectionType.SELECTION)
+//						+ " - " + sRenderText;
 			}
 			
 

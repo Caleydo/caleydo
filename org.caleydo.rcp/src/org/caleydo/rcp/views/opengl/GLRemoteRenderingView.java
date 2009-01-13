@@ -45,11 +45,9 @@ public class GLRemoteRenderingView
 		{
 			iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D,
 					-1, true));
-			// iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_TEXTURE_HEAT_MAP_3D,
-			// -1));
 			iAlContainedViewIDs.add(createGLEventListener(
 					ECommandType.CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION, -1, true));
-			iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_CELL, -1, true));
+//			iAlContainedViewIDs.add(createGLEventListener(ECommandType.CREATE_GL_CELL, -1, true));
 			
 			// FIXME: This is just a temporary solution to check if glyph view
 			// should be added to bucket.
@@ -67,13 +65,9 @@ public class GLRemoteRenderingView
 						"Cannot add glyph to bucket! No glyph data loaded!");
 			}
 		}
-
-		createGLEventListener(ECommandType.CREATE_GL_BUCKET_3D, glCanvas.getID(), true);
-
-		GLRemoteRendering glRemoteRenderedView = ((GLRemoteRendering) GeneralManager.get()
-				.getViewGLCanvasManager().getGLEventListener(iGLEventListenerID));
-
-		glRemoteRenderedView.setInitialContainedViews(iAlContainedViewIDs);
+			
+		createGLRemoteEventListener(ECommandType.CREATE_GL_BUCKET_3D, 
+				glCanvas.getID(), true, iAlContainedViewIDs);
 	}
 
 	public static void createToolBarItems(int iViewID)
@@ -91,14 +85,21 @@ public class GLRemoteRenderingView
 	@Override
 	public void dispose()
 	{
+		((GLRemoteRendering)GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iGLEventListenerID)).clearAll();
+		
 		super.dispose();
-
+		
 		for (Integer iContainedViewID : iAlContainedViewIDs)
 		{
 			GeneralManager.get().getViewGLCanvasManager().unregisterGLEventListener(
 					iContainedViewID);
 		}
 
+		// FIXME: this is a problem if we have more than one bucket with connection lines
+		GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager().clearAll();
+
+		GeneralManager.get().getPathwayManager().resetPathwayVisiblityState();
+		
 		// TODO: cleanup data entity searcher view
 	}
 }

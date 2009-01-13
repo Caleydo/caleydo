@@ -116,10 +116,10 @@ public class ConnectedElementRepresentationManager
 	/**
 	 * Get a representation of a particular element
 	 * 
-	 * @param idType the type of the object to be connected (eg. gene
+	 * @param idType the type of the object to be connected (e.g. gene
 	 *            expression, clinical)
 	 * @param iElementID the id of the object to be connected
-	 * @return a list of the representations of the poings
+	 * @return a list of the representations of the points
 	 */
 	public ArrayList<SelectedElementRep> getSelectedElementRepsByElementID(EIDType idType,
 			final int iElementID)

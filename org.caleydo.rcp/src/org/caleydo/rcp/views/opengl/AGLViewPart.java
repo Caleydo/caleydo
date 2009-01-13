@@ -13,14 +13,13 @@ import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
+import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.ToolItem;
 import org.eclipse.ui.part.ViewPart;
 
 /**
@@ -39,6 +38,11 @@ public abstract class AGLViewPart
 
 	protected static ArrayList<IAction> alToolbar;
 	protected static ArrayList<IContributionItem> alToolbarContributions;
+	
+	/**
+	 * Contains view IDs for initally contained remote rendered views
+	 */
+	protected ArrayList<Integer> iAlContainedViewIDs;
 
 	/**
 	 * Constructor.
@@ -100,26 +104,30 @@ public abstract class AGLViewPart
 			cmdView.setAttributes(EProjectionMode.ORTHOGRAPHIC, 0, 8, 0, 8, -20, 20, iAlSets,
 					iParentCanvasID);
 		}
-		cmdView.doCommand();
 
+		cmdView.doCommand();
+		
 		AGLEventListener glView = cmdView.getCreatedObject();
 		int iViewID = glView.getID();
-
+		
+		if (iAlContainedViewIDs != null && glViewType == ECommandType.CREATE_GL_BUCKET_3D)
+		{
+			((GLRemoteRendering)glView).setInitialContainedViews(iAlContainedViewIDs);
+		}
+		
 		setGLData(glCanvas, iViewID);
 		createPartControlGL();
-
-		// generalManager.getEventPublisher().addSender(
-		// EMediatorType.SELECTION_MEDIATOR, (IMediatorSender)glView);
-		// generalManager.getEventPublisher().addReceiver(
-		// EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver)glView);
-
-//		// Add view specific toolbar to sidebar
-//		((ToolBarView)PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-//				.getActivePage().getViewReferences()[0].getView(false)).addViewSpecificToolBar(iViewID);
-		
+	
 		return iViewID;
 	}
 
+	protected int createGLRemoteEventListener(ECommandType glViewType, int iParentCanvasID,
+			boolean bRegisterToOverallMediator, ArrayList<Integer> iAlContainedViewIDs)
+	{
+		this.iAlContainedViewIDs = iAlContainedViewIDs;
+		return createGLEventListener(glViewType, iParentCanvasID, bRegisterToOverallMediator);
+	}
+	
 	@Override
 	public void createPartControl(Composite parent)
 	{
