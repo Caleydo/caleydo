@@ -8,7 +8,7 @@ import java.util.StringTokenizer;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
-import org.caleydo.core.data.selection.SelectionItem;
+import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
@@ -115,10 +115,10 @@ public class ToolTip
 
 						String sDetailText = "";
 
-						Iterator<SelectionItem> iterSelectionItems = infoArea
-								.getSelectionDelta().getSelectionData().iterator();
+						Iterator<SelectionDeltaItem> iterSelectionItems = infoArea
+								.getSelectionDelta().getAllItems().iterator();
 						EIDType eIDType = infoArea.getSelectionDelta().getIDType();
-						SelectionItem item;
+						SelectionDeltaItem item;
 						GlyphManager gman = (GlyphManager) GeneralManager.get()
 								.getGlyphManager();
 						IIDMappingManager genomeIDManager = GeneralManager.get()
@@ -137,20 +137,20 @@ public class ToolTip
 									Set<String> sSetRefSeqID = GeneralManager.get()
 											.getIDMappingManager().getMultiID(
 													EMappingType.DAVID_2_REFSEQ_MRNA,
-													item.getSelectionID());
+													item.getPrimaryID());
 
 									sDetailText = sDetailText + "<b>Gene symbol: </b>";
 									sDetailText = sDetailText
 											+ genomeIDManager.getID(
 													EMappingType.DAVID_2_GENE_SYMBOL, item
-															.getSelectionID());
+															.getPrimaryID());
 									sDetailText = sDetailText + "\n";
 
 									sDetailText = sDetailText + "<b>Gene name: </b>";
 									sDetailText = sDetailText
 											+ genomeIDManager.getID(
 													EMappingType.DAVID_2_GENE_NAME, item
-															.getSelectionID());
+															.getPrimaryID());
 									sDetailText = sDetailText + "\n";
 
 									sDetailText = sDetailText + "<b>RefSeq: </b>";
@@ -169,7 +169,7 @@ public class ToolTip
 								else if (eIDType == EIDType.EXPERIMENT_INDEX)
 								{
 									GlyphEntry glyph = gman.getGlyphs().get(
-											item.getSelectionID());
+											item.getPrimaryID());
 
 									if (glyph != null)
 										sDetailText = glyph.getGlyphDescription("\n");

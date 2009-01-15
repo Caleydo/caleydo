@@ -23,6 +23,7 @@ import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
@@ -491,7 +492,7 @@ public class GLHeatMap
 							Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
 							colSelectionCommand.add(new SelectionCommand(
 									ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER));
-							triggerUpdate(EMediatorType.ALL_REGISTERED,
+							triggerSelectionUpdate(EMediatorType.ALL_REGISTERED,
 									contentSelectionManager.getDelta(), colSelectionCommand);
 //							triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
 //									contentSelectionManager.getDelta(), colSelectionCommand);
@@ -522,7 +523,7 @@ public class GLHeatMap
 							Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
 							colSelectionCommand.add(new SelectionCommand(
 									ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER));
-							triggerUpdate(EMediatorType.ALL_REGISTERED,
+							triggerSelectionUpdate(EMediatorType.ALL_REGISTERED,
 									contentSelectionManager.getDelta(), colSelectionCommand);
 //							triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
 //									contentSelectionManager.getDelta(), colSelectionCommand);
@@ -931,7 +932,7 @@ public class GLHeatMap
 	public synchronized void broadcastElements()
 	{
 		ISelectionDelta delta = contentSelectionManager.getCompleteDelta();
-		triggerUpdate(EMediatorType.SELECTION_MEDIATOR, delta, null);
+		triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, delta, null);
 		setDisplayListDirty();
 	}
 
@@ -953,5 +954,13 @@ public class GLHeatMap
 	public boolean isInDefaultOrientation()
 	{
 		return bRenderStorageHorizontally;
+	}
+
+	@Override
+	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
+			Collection<SelectionCommand> colSelectionCommand)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

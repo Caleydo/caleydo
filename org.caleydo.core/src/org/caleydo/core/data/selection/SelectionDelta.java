@@ -6,43 +6,45 @@ import java.util.Iterator;
 import org.caleydo.core.data.mapping.EIDType;
 
 /**
- * HashMap based implementation of ISelectionDelta
+ * HashMap based implementation of ISelectionDelta. Therefore all elements are
+ * unique and no ordering is preserved.
  * 
  * @author Alexander Lex
  * 
  */
 
 public class SelectionDelta
-	implements ISelectionDelta, Iterable<SelectionItem>
+	implements ISelectionDelta, Iterable<SelectionDeltaItem>
 {
-	private HashMap<Integer, SelectionItem> hashSelectionItems = null;
+	private HashMap<Integer, SelectionDeltaItem> hashSelectionItems = null;
 
 	private EIDType idType;
-	private EIDType internalIDType = null;
+	private EIDType secondaryIDType = null;
 
+	
 	public SelectionDelta(EIDType idType)
 	{
-		hashSelectionItems = new HashMap<Integer, SelectionItem>();
+		hashSelectionItems = new HashMap<Integer, SelectionDeltaItem>();
 		this.idType = idType;
 	}
 
 	public SelectionDelta(EIDType idType, EIDType internalIDType)
 	{
 		this(idType);
-		this.internalIDType = internalIDType;
+		this.secondaryIDType = internalIDType;
 	}
 
 	@Override
-	public Collection<SelectionItem> getSelectionData()
+	public Collection<SelectionDeltaItem> getAllItems()
 	{
 		return hashSelectionItems.values();
 	}
 
 	@Override
-	public SelectionItem addSelection(int iSelectionID, ESelectionType selectionType)
+	public SelectionDeltaItem addSelection(int iSelectionID, ESelectionType selectionType)
 	{
 
-		SelectionItem item = new SelectionItem(iSelectionID, selectionType);
+		SelectionDeltaItem item = new SelectionDeltaItem(iSelectionID, selectionType);
 		hashSelectionItems.put(iSelectionID, item);
 		return item;
 		// if (item != null)
@@ -52,16 +54,17 @@ public class SelectionDelta
 	}
 
 	@Override
-	public Iterator<SelectionItem> iterator()
+	public Iterator<SelectionDeltaItem> iterator()
 	{
 		return hashSelectionItems.values().iterator();
 	}
 
 	@Override
-	public SelectionItem addSelection(int selectionID, ESelectionType selectionType,
-			int iInternalID)
+	public SelectionDeltaItem addSelection(int selectionID, ESelectionType selectionType,
+			int iSecondaryID)
 	{
-		SelectionItem item = new SelectionItem(selectionID, selectionType, iInternalID);
+		SelectionDeltaItem item = new SelectionDeltaItem(selectionID, selectionType,
+				iSecondaryID);
 		hashSelectionItems.put(selectionID, item);
 		return item;
 	}
@@ -73,9 +76,9 @@ public class SelectionDelta
 	}
 
 	@Override
-	public EIDType getInternalIDType()
+	public EIDType getSecondaryIDType()
 	{
-		return internalIDType;
+		return secondaryIDType;
 	}
 
 	@Override
@@ -87,11 +90,11 @@ public class SelectionDelta
 	@Override
 	public ISelectionDelta clone()
 	{
-		ISelectionDelta newDelta = new SelectionDelta(idType, internalIDType);
-		for (SelectionItem item : hashSelectionItems.values())
+		ISelectionDelta newDelta = new SelectionDelta(idType, secondaryIDType);
+		for (SelectionDeltaItem item : hashSelectionItems.values())
 		{
-			SelectionItem newItem = newDelta.addSelection(item.getSelectionID(), item
-					.getSelectionType(), item.getInternalID());
+			SelectionDeltaItem newItem = newDelta.addSelection(item.getPrimaryID(), item
+					.getSelectionType(), item.getSecondaryID());
 			for (Integer iConnetionID : item.getConnectionID())
 			{
 				newItem.setConnectionID(iConnetionID);
@@ -103,11 +106,17 @@ public class SelectionDelta
 
 	public void addConnectionID(int iSelectionID, int iConnectionID)
 	{
-		SelectionItem item = hashSelectionItems.get(iSelectionID);
+		SelectionDeltaItem item = hashSelectionItems.get(iSelectionID);
 		if (item == null)
 			throw new IllegalStateException("Supplied selection ID is not in delta.");
 
 		item.setConnectionID(iConnectionID);
+	}
+
+	@Override
+	public void add(SelectionDeltaItem deltaItem)
+	{
+		hashSelectionItems.put(deltaItem.getPrimaryID(), deltaItem);
 	}
 
 }

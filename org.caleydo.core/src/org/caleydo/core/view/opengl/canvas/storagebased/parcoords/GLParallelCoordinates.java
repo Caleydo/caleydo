@@ -50,7 +50,7 @@ import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionItem;
+import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.data.selection.VADeltaItem;
 import org.caleydo.core.data.selection.VirtualArrayDelta;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
@@ -477,18 +477,17 @@ public class GLParallelCoordinates
 	public synchronized void broadcastElements()
 	{
 		saveSelection();
-		ISelectionDelta delta = contentSelectionManager.getCompleteDelta();
-		for (SelectionItem selection : delta)
-		{
-			selection.setSelectionType(ESelectionType.ADD);
-		}
-		triggerUpdate(EMediatorType.PROPAGATION_MEDIATOR, delta, null);
+		
+		IVirtualArrayDelta delta = contentSelectionManager.getBroadcastVADelta();
+		triggerVAUpdate(EMediatorType.PROPAGATION_MEDIATOR, delta, null);
 		setDisplayListDirty();
 	}
 
 	public synchronized void saveSelection()
 	{
-		polylineSelectionManager.moveType(ESelectionType.DESELECTED, ESelectionType.REMOVE);
+	
+		//polylineSelectionManager.moveType(ESelectionType.DESELECTED, ESelectionType.REMOVE);
+		polylineSelectionManager.removeElements(ESelectionType.DESELECTED);
 		resetSelections();
 		setDisplayListDirty();
 	}
@@ -1533,7 +1532,7 @@ public class GLParallelCoordinates
 							colSelectionCommand.add(new SelectionCommand(
 									ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER));
 
-							triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
+							triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
 									polylineSelectionManager.getDelta(), colSelectionCommand);
 
 							triggerEvent(1);
@@ -1560,7 +1559,7 @@ public class GLParallelCoordinates
 							colSelectionCommand.add(new SelectionCommand(
 									ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER));
 
-							triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
+							triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
 									polylineSelectionManager.getDelta(), colSelectionCommand);
 						}
 						setDisplayListDirty();
@@ -1583,7 +1582,7 @@ public class GLParallelCoordinates
 
 						connectedElementRepresentationManager.clear(eAxisDataType);
 
-						triggerUpdate(EMediatorType.SELECTION_MEDIATOR, axisSelectionManager
+						triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, axisSelectionManager
 								.getDelta(), null);
 
 						if (eAxisDataType == EIDType.EXPRESSION_INDEX)
@@ -1591,7 +1590,7 @@ public class GLParallelCoordinates
 							Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
 							colSelectionCommand.add(new SelectionCommand(
 									ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER));
-							triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
+							triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
 									axisSelectionManager.getDelta(), colSelectionCommand);
 						}
 
@@ -1610,7 +1609,7 @@ public class GLParallelCoordinates
 						}
 						if (eAxisDataType == EIDType.EXPRESSION_INDEX)
 						{
-							triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
+							triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
 									axisSelectionManager.getDelta(), null);
 						}
 						setDisplayListDirty();
@@ -1744,7 +1743,7 @@ public class GLParallelCoordinates
 								EIDType.EXPERIMENT_INDEX);
 						vaDelta.add(VADeltaItem.remove(iExternalID));
 						generalManager.getEventPublisher().triggerVAUpdate(
-								EMediatorType.SELECTION_MEDIATOR, this, vaDelta);
+								EMediatorType.SELECTION_MEDIATOR, this, vaDelta, null);
 						setDisplayListDirty();
 						initGates();
 						break;
@@ -2200,4 +2199,6 @@ public class GLParallelCoordinates
 	{
 		return bRenderStorageHorizontally;
 	}
+
+
 }

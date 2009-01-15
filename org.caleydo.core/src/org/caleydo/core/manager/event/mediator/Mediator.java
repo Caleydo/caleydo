@@ -96,14 +96,15 @@ public class Mediator
 	}
 
 	@Override
-	public void triggerVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta)
+	public void triggerVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
+			Collection<SelectionCommand> colSelectionCommand)
 	{
 		for (IMediatorReceiver receiver : alReceiver)
 		{
 			// Prevent circular updates
 			if (!receiver.equals(eventTrigger))
 			{
-				receiver.handleVAUpdate(eventTrigger, delta, eType);
+				receiver.handleVAUpdate(eventTrigger, delta, colSelectionCommand, eType);
 			}
 		}
 	}

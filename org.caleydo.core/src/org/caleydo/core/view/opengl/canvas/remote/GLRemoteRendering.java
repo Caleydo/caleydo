@@ -24,11 +24,12 @@ import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDelta;
-import org.caleydo.core.data.selection.SelectionItem;
+import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorEventReceiver;
@@ -139,7 +140,7 @@ public class GLRemoteRendering
 	 * The current view in which the user is performing actions.
 	 */
 	private int iActiveViewID = -1;
-	
+
 	// private int iGLDisplayList;
 
 	private GLSelectionPanel glSelectionPanel;
@@ -363,8 +364,7 @@ public class GLRemoteRendering
 					mouseOverElement.setContainedElementID(iOriginElementID);
 					originElement.setContainedElementID(iMouseOverElementID);
 
-					IViewManager viewGLCanvasManager = generalManager
-							.getViewGLCanvasManager();
+					IViewManager viewGLCanvasManager = generalManager.getViewGLCanvasManager();
 
 					AGLEventListener originView = viewGLCanvasManager
 							.getGLEventListener(iOriginElementID);
@@ -387,7 +387,7 @@ public class GLRemoteRendering
 						{
 							generalManager.getViewGLCanvasManager().getGLEventListener(
 									mouseOverElement.getContainedElementID())
-									.broadcastElements(ESelectionType.ADD);
+									.broadcastElements(EVAOperation.APPEND_UNIQUE);
 						}
 
 						if (poolLevel.containsElement(mouseOverElement)
@@ -396,7 +396,7 @@ public class GLRemoteRendering
 						{
 							generalManager.getViewGLCanvasManager().getGLEventListener(
 									mouseOverElement.getContainedElementID())
-									.broadcastElements(ESelectionType.REMOVE);
+									.broadcastElements(EVAOperation.REMOVE_ELEMENT);
 						}
 					}
 				}
@@ -424,8 +424,8 @@ public class GLRemoteRendering
 		time.update();
 
 		layoutRenderStyle.initPoolLevel(false, iMouseOverObjectID);
-//		 layoutRenderStyle.initStackLevel(false);
-//		layoutRenderStyle.initMemoLevel();
+		// layoutRenderStyle.initStackLevel(false);
+		// layoutRenderStyle.initMemoLevel();
 
 		doSlerpActions(gl);
 		initializeNewPathways(gl);
@@ -454,8 +454,9 @@ public class GLRemoteRendering
 			bucketMouseWheelListener.render();
 		}
 
-//		colorMappingBarMiniView.render(gl, layoutRenderStyle.getColorBarXPos(),
-//				layoutRenderStyle.getColorBarYPos(), 4);
+		// colorMappingBarMiniView.render(gl,
+		// layoutRenderStyle.getColorBarXPos(),
+		// layoutRenderStyle.getColorBarYPos(), 4);
 
 		renderHandles(gl);
 
@@ -495,11 +496,12 @@ public class GLRemoteRendering
 
 				tmpGLEventListener.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this);
 
-				tmpGLEventListener.broadcastElements(ESelectionType.ADD);
+				tmpGLEventListener.broadcastElements(EVAOperation.APPEND_UNIQUE);
 				tmpGLEventListener.setDetailLevel(EDetailLevel.MEDIUM);
 				tmpGLEventListener.setRemoteLevelElement(element);
 
-//				generalManager.getGUIBridge().setActiveGLSubView(this, tmpGLEventListener);
+				// generalManager.getGUIBridge().setActiveGLSubView(this,
+				// tmpGLEventListener);
 
 			}
 			else if (stackLevel.hasFreePosition()
@@ -510,7 +512,7 @@ public class GLRemoteRendering
 
 				tmpGLEventListener.initRemote(gl, iUniqueID, pickingTriggerMouseAdapter, this);
 
-				tmpGLEventListener.broadcastElements(ESelectionType.ADD);
+				tmpGLEventListener.broadcastElements(EVAOperation.APPEND_UNIQUE);
 				tmpGLEventListener.setDetailLevel(EDetailLevel.LOW);
 				tmpGLEventListener.setRemoteLevelElement(element);
 			}
@@ -571,12 +573,12 @@ public class GLRemoteRendering
 		gl.glColor4f(0.4f, 0.4f, 0.4f, 1f);
 		gl.glLineWidth(1f);
 
-//		gl.glBegin(GL.GL_LINES);
-//		gl.glVertex3f(0, 0, -0.02f);
-//		gl.glVertex3f(0, 8, -0.02f);
-//		gl.glVertex3f(8, 8, -0.02f);
-//		gl.glVertex3f(8, 0, -0.02f);
-//		gl.glEnd();
+		// gl.glBegin(GL.GL_LINES);
+		// gl.glVertex3f(0, 0, -0.02f);
+		// gl.glVertex3f(0, 8, -0.02f);
+		// gl.glVertex3f(8, 8, -0.02f);
+		// gl.glVertex3f(8, 0, -0.02f);
+		// gl.glEnd();
 	}
 
 	private void renderRemoteLevel(final GL gl, final RemoteLevel level)
@@ -657,17 +659,18 @@ public class GLRemoteRendering
 //				sRenderText = glEventListener.getNumberOfSelections(ESelectionType.SELECTION)
 //						+ " - " + sRenderText;
 			}
-			
 
 			float fTextScalingFactor = 0.09f;
 			float fTextXPosition = 0f;
-			
+
 			if (element.getID() == iMouseOverObjectID)
 			{
-				renderPoolSelection(gl, translation.x() - 0.4f/fAspectRatio, translation.y() * scale.y()
-						+ 5.2f,
-						(float) textRenderer.getBounds(sRenderText).getWidth() * 0.06f + 23,
-						6f, element); // 1.8f -> pool focus scaling
+
+				renderPoolSelection(gl, translation.x() - 0.4f / fAspectRatio, translation.y()
+						* scale.y() + 5.2f,
+
+				(float) textRenderer.getBounds(sRenderText).getWidth() * 0.06f + 23, 6f,
+						element); // 1.8f -> pool focus scaling
 
 				gl.glTranslatef(0.8f, 1.3f, 0);
 
@@ -699,7 +702,7 @@ public class GLRemoteRendering
 				gl.glEnd();
 
 				tempTexture.disable();
-				
+
 				fTextXPosition = 9.5f;
 			}
 
@@ -707,7 +710,7 @@ public class GLRemoteRendering
 			textRenderer.draw3D(sRenderText, fTextXPosition, 3, 0, fTextScalingFactor);
 			textRenderer.end3DRendering();
 		}
-		
+
 		// Prevent rendering of view textures when simple list view
 		// if ((layoutRenderStyle instanceof ListLayoutRenderStyle
 		// && (layer == poolLayer || layer == stackLayer)))
@@ -772,7 +775,7 @@ public class GLRemoteRendering
 	private void renderHandles(final GL gl)
 	{
 		float fZoomedInScalingFactor = 0.4f;
-		
+
 		// Bucket stack top
 		RemoteLevelElement element = stackLevel.getElementByPositionIndex(0);
 		if (element.getContainedElementID() != -1)
@@ -781,16 +784,17 @@ public class GLRemoteRendering
 			{
 				gl.glTranslatef(-2, 0, 4.02f);
 				renderNavigationHandleBar(gl, element, 4, 0.075f, false, 1);
-				gl.glTranslatef(2, 0, -4.02f);		
+				gl.glTranslatef(2, 0, -4.02f);
 			}
 			else
 			{
-				gl.glTranslatef(-2 - 4*fZoomedInScalingFactor, 0, 0.02f);
-				renderNavigationHandleBar(gl, element, 4*fZoomedInScalingFactor, 0.075f, false, 1/fZoomedInScalingFactor);
-				gl.glTranslatef(2 + 4*fZoomedInScalingFactor, 0, -0.02f);
-			}	
+				gl.glTranslatef(-2 - 4 * fZoomedInScalingFactor, 0, 0.02f);
+				renderNavigationHandleBar(gl, element, 4 * fZoomedInScalingFactor, 0.075f,
+						false, 1 / fZoomedInScalingFactor);
+				gl.glTranslatef(2 + 4 * fZoomedInScalingFactor, 0, -0.02f);
+			}
 		}
-		
+
 		// Bucket stack bottom
 		element = stackLevel.getElementByPositionIndex(2);
 		if (element.getContainedElementID() != -1)
@@ -801,43 +805,50 @@ public class GLRemoteRendering
 				gl.glRotatef(180, 1, 0, 0);
 				renderNavigationHandleBar(gl, element, 4, 0.075f, true, 1);
 				gl.glRotatef(-180, 1, 0, 0);
-				gl.glTranslatef(2, 0, -4.02f);				
+				gl.glTranslatef(2, 0, -4.02f);
 			}
 			else
 			{
-				gl.glTranslatef(-2 - 4*fZoomedInScalingFactor, -4 + 4*fZoomedInScalingFactor, 0.02f);
-				renderNavigationHandleBar(gl, element, 4*fZoomedInScalingFactor, 0.075f, false, 1/fZoomedInScalingFactor);
-				gl.glTranslatef(2 + 4*fZoomedInScalingFactor, +4 - 4*fZoomedInScalingFactor, -0.02f);
+				gl.glTranslatef(-2 - 4 * fZoomedInScalingFactor, -4 + 4
+						* fZoomedInScalingFactor, 0.02f);
+				renderNavigationHandleBar(gl, element, 4 * fZoomedInScalingFactor, 0.075f,
+						false, 1 / fZoomedInScalingFactor);
+				gl.glTranslatef(2 + 4 * fZoomedInScalingFactor, +4 - 4
+						* fZoomedInScalingFactor, -0.02f);
 			}
-			
-//			gl.glTranslatef(-2, -2 - fBilboardWidth, 4.02f);
-//			gl.glRotatef(180, 1, 0, 0);
-//			renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_DRAG_ICON_SELECTION,
-//					EIconTextures.NAVIGATION_DRAG_VIEW, fBilboardWidth, fBilboardWidth);
-//			gl.glTranslatef(4 - fBilboardWidth, 0, 0);
-//			renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_REMOVE_ICON_SELECTION,
-//					EIconTextures.NAVIGATION_REMOVE_VIEW, fBilboardWidth, fBilboardWidth);
-//			gl.glRotatef(-180, 1, 0, 0);
-//			gl.glTranslatef(-2 + fBilboardWidth, 2 + fBilboardWidth, -4.02f);
+
+			// gl.glTranslatef(-2, -2 - fBilboardWidth, 4.02f);
+			// gl.glRotatef(180, 1, 0, 0);
+			// renderSingleHandle(gl, element.getID(),
+			// EPickingType.BUCKET_DRAG_ICON_SELECTION,
+			// EIconTextures.NAVIGATION_DRAG_VIEW, fBilboardWidth,
+			// fBilboardWidth);
+			// gl.glTranslatef(4 - fBilboardWidth, 0, 0);
+			// renderSingleHandle(gl, element.getID(),
+			// EPickingType.BUCKET_REMOVE_ICON_SELECTION,
+			// EIconTextures.NAVIGATION_REMOVE_VIEW, fBilboardWidth,
+			// fBilboardWidth);
+			// gl.glRotatef(-180, 1, 0, 0);
+			// gl.glTranslatef(-2 + fBilboardWidth, 2 + fBilboardWidth, -4.02f);
 		}
-		
-		
+
 		// Bucket stack left
 		element = stackLevel.getElementByPositionIndex(1);
 		if (element.getContainedElementID() != -1)
-		{	
+		{
 			if (!bucketMouseWheelListener.isZoomedIn())
 			{
 				gl.glTranslatef(-2f / fAspectRatio + 2 + 0.8f, -2, 4.02f);
 				gl.glRotatef(90, 0, 0, 1);
 				renderNavigationHandleBar(gl, element, 4, 0.075f, false, 1);
 				gl.glRotatef(-90, 0, 0, 1);
-				gl.glTranslatef(2f / fAspectRatio - 2 - 0.8f, 2, -4.02f);			
+				gl.glTranslatef(2f / fAspectRatio - 2 - 0.8f, 2, -4.02f);
 			}
 			else
 			{
 				gl.glTranslatef(2, 0, 0.02f);
-				renderNavigationHandleBar(gl, element, 4*fZoomedInScalingFactor, 0.075f, false, 1/fZoomedInScalingFactor);
+				renderNavigationHandleBar(gl, element, 4 * fZoomedInScalingFactor, 0.075f,
+						false, 1 / fZoomedInScalingFactor);
 				gl.glTranslatef(-2, 0, -0.02f);
 			}
 		}
@@ -852,26 +863,33 @@ public class GLRemoteRendering
 				gl.glRotatef(-90, 0, 0, 1);
 				renderNavigationHandleBar(gl, element, 4, 0.075f, false, 1);
 				gl.glRotatef(90, 0, 0, 1);
-				gl.glTranslatef(-2f / fAspectRatio + 0.8f + 2, -2, -4.02f);		
+				gl.glTranslatef(-2f / fAspectRatio + 0.8f + 2, -2, -4.02f);
 			}
 			else
 			{
-				gl.glTranslatef(2, -4 + 4*fZoomedInScalingFactor, 0.02f);
-				renderNavigationHandleBar(gl, element, 4*fZoomedInScalingFactor, 0.075f, false, 1/fZoomedInScalingFactor);
-				gl.glTranslatef(-2, +4 - 4*fZoomedInScalingFactor, -0.02f);
+				gl.glTranslatef(2, -4 + 4 * fZoomedInScalingFactor, 0.02f);
+				renderNavigationHandleBar(gl, element, 4 * fZoomedInScalingFactor, 0.075f,
+						false, 1 / fZoomedInScalingFactor);
+				gl.glTranslatef(-2, +4 - 4 * fZoomedInScalingFactor, -0.02f);
 			}
-			
-//			gl.glTranslatef(2f / fAspectRatio + fBilboardWidth - 0.8f, 2f, 4.015f);
-//			gl.glRotatef(-90, 0, 0, 1);
-//			renderSingleHandle(gl, stackLevel.getElementByPositionIndex(3).getID(),
-//					EPickingType.BUCKET_DRAG_ICON_SELECTION,
-//					EIconTextures.NAVIGATION_DRAG_VIEW, fBilboardWidth, fBilboardWidth);
-//			gl.glTranslatef(4 - fBilboardWidth, 0, 0);
-//			renderSingleHandle(gl, stackLevel.getElementByPositionIndex(3).getID(),
-//					EPickingType.BUCKET_REMOVE_ICON_SELECTION,
-//					EIconTextures.NAVIGATION_REMOVE_VIEW, fBilboardWidth, fBilboardWidth);
-//			gl.glRotatef(90, 0, 0, 1);
-//			gl.glTranslatef(-2f / fAspectRatio - fBilboardWidth + 0.8f, -2f +4f-fBilboardWidth , -4.015f);
+
+			// gl.glTranslatef(2f / fAspectRatio + fBilboardWidth - 0.8f, 2f,
+			// 4.015f);
+			// gl.glRotatef(-90, 0, 0, 1);
+			// renderSingleHandle(gl,
+			// stackLevel.getElementByPositionIndex(3).getID(),
+			// EPickingType.BUCKET_DRAG_ICON_SELECTION,
+			// EIconTextures.NAVIGATION_DRAG_VIEW, fBilboardWidth,
+			// fBilboardWidth);
+			// gl.glTranslatef(4 - fBilboardWidth, 0, 0);
+			// renderSingleHandle(gl,
+			// stackLevel.getElementByPositionIndex(3).getID(),
+			// EPickingType.BUCKET_REMOVE_ICON_SELECTION,
+			// EIconTextures.NAVIGATION_REMOVE_VIEW, fBilboardWidth,
+			// fBilboardWidth);
+			// gl.glRotatef(90, 0, 0, 1);
+			// gl.glTranslatef(-2f / fAspectRatio - fBilboardWidth + 0.8f, -2f
+			// +4f-fBilboardWidth , -4.015f);
 		}
 
 		// Bucket center
@@ -879,39 +897,46 @@ public class GLRemoteRendering
 		if (element.getContainedElementID() != -1)
 		{
 			float fYCorrection = 0f;
-			
+
 			if (!bucketMouseWheelListener.isZoomedIn())
 				fYCorrection = 0f;
 			else
 				fYCorrection = 0.1f;
 
-			gl.glTranslatef(-2, -2 - 2*0.075f + fYCorrection, 0);
+			gl.glTranslatef(-2, -2 - 2 * 0.075f + fYCorrection, 0);
+
 			gl.glScalef(2, 2, 2);
 			renderNavigationHandleBar(gl, element, 2, 0.075f, false, 2);
 			gl.glScalef(1 / 2f, 1 / 2f, 1 / 2f);
-			gl.glTranslatef(2, 2 + 2*0.075f - fYCorrection, 0);
-			
-//			float fBilboardWidth = 0.075f;
-//			gl.glTranslatef(-2 , 2, 0.05f);
-//			gl.glScalef(2, 2, 2);
-//			renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_DRAG_ICON_SELECTION,
-//					EIconTextures.NAVIGATION_DRAG_VIEW, fBilboardWidth, fBilboardWidth);
-//			gl.glTranslatef(2 - fBilboardWidth, 0, 0);
-//			renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_REMOVE_ICON_SELECTION,
-//					EIconTextures.NAVIGATION_REMOVE_VIEW, fBilboardWidth, fBilboardWidth);
-//			gl.glScalef(1 / 2f, 1 / 2f, 1 / 2f);
-//			gl.glTranslatef(-2 + 2*fBilboardWidth, -2, -0.05f);
+
+			gl.glTranslatef(2, 2 + 2 * 0.075f - fYCorrection, 0);
+
+			// float fBilboardWidth = 0.075f;
+			// gl.glTranslatef(-2 , 2, 0.05f);
+			// gl.glScalef(2, 2, 2);
+			// renderSingleHandle(gl, element.getID(),
+			// EPickingType.BUCKET_DRAG_ICON_SELECTION,
+			// EIconTextures.NAVIGATION_DRAG_VIEW, fBilboardWidth,
+			// fBilboardWidth);
+			// gl.glTranslatef(2 - fBilboardWidth, 0, 0);
+			// renderSingleHandle(gl, element.getID(),
+			// EPickingType.BUCKET_REMOVE_ICON_SELECTION,
+			// EIconTextures.NAVIGATION_REMOVE_VIEW, fBilboardWidth,
+			// fBilboardWidth);
+			// gl.glScalef(1 / 2f, 1 / 2f, 1 / 2f);
+			// gl.glTranslatef(-2 + 2*fBilboardWidth, -2, -0.05f);
+
 		}
 	}
 
-	private void renderNavigationHandleBar(final GL gl, RemoteLevelElement element, 
+	private void renderNavigationHandleBar(final GL gl, RemoteLevelElement element,
 			float fHandleWidth, float fHandleHeight, boolean bUpsideDown, float fScalingFactor)
-	{	
+	{
 		// Render icons
 		gl.glTranslatef(0, 2 + fHandleHeight, 0);
 		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_DRAG_ICON_SELECTION,
 				EIconTextures.NAVIGATION_DRAG_VIEW, fHandleHeight, fHandleHeight);
-		gl.glTranslatef(fHandleWidth - 2*fHandleHeight, 0, 0);
+		gl.glTranslatef(fHandleWidth - 2 * fHandleHeight, 0, 0);
 		if (bUpsideDown)
 		{
 			gl.glRotatef(180, 1, 0, 0);
@@ -924,54 +949,56 @@ public class GLRemoteRendering
 			gl.glTranslatef(0, -fHandleHeight, 0);
 			gl.glRotatef(-180, 1, 0, 0);
 		}
-		gl.glTranslatef(fHandleHeight, 0, 0);		
+		gl.glTranslatef(fHandleHeight, 0, 0);
 		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_REMOVE_ICON_SELECTION,
 				EIconTextures.NAVIGATION_REMOVE_VIEW, fHandleHeight, fHandleHeight);
 		gl.glTranslatef(-fHandleWidth + fHandleHeight, -2 - fHandleHeight, 0);
 
 		// Render background (also draggable)
-		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.BUCKET_DRAG_ICON_SELECTION,
-				element.getID()));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.BUCKET_DRAG_ICON_SELECTION, element.getID()));
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(0 + fHandleHeight, 2 + fHandleHeight, 0);
-		gl.glVertex3f(fHandleWidth - 2*fHandleHeight, 2 + fHandleHeight, 0);
-		gl.glVertex3f(fHandleWidth - 2*fHandleHeight, 2, 0);
-		gl.glVertex3f(0 + fHandleHeight, 2, 0);		
+		gl.glVertex3f(fHandleWidth - 2 * fHandleHeight, 2 + fHandleHeight, 0);
+		gl.glVertex3f(fHandleWidth - 2 * fHandleHeight, 2, 0);
+		gl.glVertex3f(0 + fHandleHeight, 2, 0);
 		gl.glEnd();
+
 		gl.glPopName();
-		
+
 		// Render view information
 		String sText = generalManager.getViewGLCanvasManager().getGLEventListener(
 				element.getContainedElementID()).getShortInfo();
-		
+
 		int iMaxChars = 50;
 		if (sText.length() > iMaxChars)
 			sText = sText.subSequence(0, iMaxChars - 3) + "...";
-		
+
 		float fTextScalingFactor = 0.003f;
-		
+
 		if (bUpsideDown)
 		{
 			gl.glRotatef(180, 1, 0, 0);
 			gl.glTranslatef(0, -4 - fHandleHeight, 0);
 		}
-		
+
 		textRenderer.setColor(0.7f, 0.7f, 0.7f, 1);
 		textRenderer.begin3DRendering();
-		textRenderer.draw3D(sText, 2 / fScalingFactor - (float)textRenderer.getBounds(sText).getWidth() / 2f * fTextScalingFactor, 2.01f, 0, fTextScalingFactor);
+		textRenderer.draw3D(sText, 2 / fScalingFactor
+				- (float) textRenderer.getBounds(sText).getWidth() / 2f * fTextScalingFactor,
+				2.01f, 0, fTextScalingFactor);
 		textRenderer.end3DRendering();
-		
+
 		if (bUpsideDown)
 		{
 			gl.glTranslatef(0, 4 + fHandleHeight, 0);
 			gl.glRotatef(-180, 1, 0, 0);
 		}
 	}
-	
+
 	private void renderSingleHandle(final GL gl, int iRemoteLevelElementID,
-			EPickingType ePickingType, EIconTextures eIconTexture,
-			float fWidth, float fHeight)
+			EPickingType ePickingType, EIconTextures eIconTexture, float fWidth, float fHeight)
 	{
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, ePickingType,
 				iRemoteLevelElementID));
@@ -1466,10 +1493,16 @@ public class GLRemoteRendering
 
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glVertex3f(fXOrigin + 1.65f / fAspectRatio + fPanelSideWidth, fYOrigin - fHeight / 2f + fHeight, 0f);
-		gl.glVertex3f(fXOrigin + 1.65f / fAspectRatio + fPanelSideWidth + fWidth, fYOrigin - fHeight / 2f + fHeight, 0f);
-		gl.glVertex3f(fXOrigin + 1.65f / fAspectRatio + fPanelSideWidth + fWidth, fYOrigin- fHeight / 2f , 0f);
-		gl.glVertex3f(fXOrigin + 1.65f / fAspectRatio + fPanelSideWidth, fYOrigin- fHeight / 2f , 0f);		
+
+		gl.glVertex3f(fXOrigin + 1.65f / fAspectRatio + fPanelSideWidth, fYOrigin - fHeight
+				/ 2f + fHeight, 0f);
+		gl.glVertex3f(fXOrigin + 1.65f / fAspectRatio + fPanelSideWidth + fWidth, fYOrigin
+				- fHeight / 2f + fHeight, 0f);
+		gl.glVertex3f(fXOrigin + 1.65f / fAspectRatio + fPanelSideWidth + fWidth, fYOrigin
+				- fHeight / 2f, 0f);
+		gl.glVertex3f(fXOrigin + 1.65f / fAspectRatio + fPanelSideWidth, fYOrigin - fHeight
+				/ 2f, 0f);
+
 		gl.glEnd();
 
 		Texture tempTexture = iconTextureManager.getIconTexture(gl,
@@ -1483,9 +1516,11 @@ public class GLRemoteRendering
 
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(fXOrigin + (2) / fAspectRatio + fPanelSideWidth, fYOrigin - fHeight, -0.01f);
+		gl.glVertex3f(fXOrigin + (2) / fAspectRatio + fPanelSideWidth, fYOrigin - fHeight,
+				-0.01f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(fXOrigin + (2) / fAspectRatio + fPanelSideWidth, fYOrigin + fHeight, -0.01f);
+		gl.glVertex3f(fXOrigin + (2) / fAspectRatio + fPanelSideWidth, fYOrigin + fHeight,
+				-0.01f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
 		gl.glVertex3f(fXOrigin + 2f / fAspectRatio, fYOrigin + fHeight, -0.01f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
@@ -1493,12 +1528,13 @@ public class GLRemoteRendering
 		gl.glEnd();
 
 		tempTexture.disable();
-		
+
 		gl.glPopName();
 		gl.glPopName();
 
 		int fHandleScaleFactor = 18;
-		gl.glTranslatef(fXOrigin + 2.5f/fAspectRatio, fYOrigin - fHeight / 2f + fHeight - 1f, 1.8f);
+		gl.glTranslatef(fXOrigin + 2.5f / fAspectRatio,
+				fYOrigin - fHeight / 2f + fHeight - 1f, 1.8f);
 		gl.glScalef(fHandleScaleFactor, fHandleScaleFactor, fHandleScaleFactor);
 		renderSingleHandle(gl, element.getID(), EPickingType.BUCKET_DRAG_ICON_SELECTION,
 				EIconTextures.POOL_DRAG_VIEW, 0.1f, 0.1f);
@@ -1507,16 +1543,19 @@ public class GLRemoteRendering
 				EIconTextures.POOL_REMOVE_VIEW, 0.1f, 0.1f);
 		gl.glTranslatef(0, 0.2f, 0);
 		gl.glScalef(1f / fHandleScaleFactor, 1f / fHandleScaleFactor, 1f / fHandleScaleFactor);
-		gl.glTranslatef(-fXOrigin - 2.5f/fAspectRatio, -fYOrigin + fHeight / 2f - fHeight + 1f, -1.8f);
-		
-//		gl.glColor3f(0.25f, 0.25f, 0.25f);
-//		gl.glBegin(GL.GL_POLYGON);
-//		gl.glVertex3f(fXOrigin + 3f, fYOrigin - fHeight / 2f + fHeight - 2.5f, 0f);
-//		gl.glVertex3f(fXOrigin + 5.1f, fYOrigin - fHeight / 2f + fHeight - 2.5f, 0f);
-//		gl.glVertex3f(fXOrigin + 5.1f, fYOrigin- fHeight / 2f + 1.5f, 0f);
-//		gl.glVertex3f(fXOrigin + 3f, fYOrigin- fHeight / 2f + 1.5f , 0f);		
-//		gl.glEnd();
-		
+		gl.glTranslatef(-fXOrigin - 2.5f / fAspectRatio, -fYOrigin + fHeight / 2f - fHeight
+				+ 1f, -1.8f);
+
+		// gl.glColor3f(0.25f, 0.25f, 0.25f);
+		// gl.glBegin(GL.GL_POLYGON);
+		// gl.glVertex3f(fXOrigin + 3f, fYOrigin - fHeight / 2f + fHeight -
+		// 2.5f, 0f);
+		// gl.glVertex3f(fXOrigin + 5.1f, fYOrigin - fHeight / 2f + fHeight -
+		// 2.5f, 0f);
+		// gl.glVertex3f(fXOrigin + 5.1f, fYOrigin- fHeight / 2f + 1.5f, 0f);
+		// gl.glVertex3f(fXOrigin + 3f, fYOrigin- fHeight / 2f + 1.5f , 0f);
+		// gl.glEnd();
+
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
 		gl.glPushName(pickingManager.getPickingID(iUniqueID, EPickingType.VIEW_SELECTION,
@@ -1622,52 +1661,56 @@ public class GLRemoteRendering
 			else
 				glActiveSubView.setDetailLevel(EDetailLevel.MEDIUM);
 
-//			if (glActiveSubView instanceof GLPathway)
-//			{
-//				((GLPathway) glActiveSubView).enableTitleRendering(true);
-//				((GLPathway) glActiveSubView).setAlignment(SWT.CENTER, SWT.BOTTOM);
-//			}
+			// if (glActiveSubView instanceof GLPathway)
+			// {
+			// ((GLPathway) glActiveSubView).enableTitleRendering(true);
+			// ((GLPathway) glActiveSubView).setAlignment(SWT.CENTER,
+			// SWT.BOTTOM);
+			// }
 
-//			generalManager.getGUIBridge().setActiveGLSubView(this, glActiveSubView);
+			// generalManager.getGUIBridge().setActiveGLSubView(this,
+			// glActiveSubView);
 		}
 		else if (destinationLevel == stackLevel)
 		{
 			glActiveSubView.setDetailLevel(EDetailLevel.LOW);
 
-//			if (glActiveSubView instanceof GLPathway)
-//			{
-//				((GLPathway) glActiveSubView).enableTitleRendering(true);
-//
-//				int iStackPos = stackLevel.getPositionIndexByElementID(element);
-//				switch (iStackPos)
-//				{
-//					case 0:
-//						((GLPathway) glActiveSubView).setAlignment(SWT.CENTER, SWT.TOP);
-//						break;
-//					case 1:
-//						((GLPathway) glActiveSubView).setAlignment(SWT.LEFT, SWT.BOTTOM);
-//						break;
-//					case 2:
-//						((GLPathway) glActiveSubView).setAlignment(SWT.CENTER, SWT.BOTTOM);
-//						break;
-//					case 3:
-//						((GLPathway) glActiveSubView).setAlignment(SWT.RIGHT, SWT.BOTTOM);
-//						break;
-//					default:
-//						break;
-//				}
-//			}
+			// if (glActiveSubView instanceof GLPathway)
+			// {
+			// ((GLPathway) glActiveSubView).enableTitleRendering(true);
+			//
+			// int iStackPos = stackLevel.getPositionIndexByElementID(element);
+			// switch (iStackPos)
+			// {
+			// case 0:
+			// ((GLPathway) glActiveSubView).setAlignment(SWT.CENTER, SWT.TOP);
+			// break;
+			// case 1:
+			// ((GLPathway) glActiveSubView).setAlignment(SWT.LEFT, SWT.BOTTOM);
+			// break;
+			// case 2:
+			// ((GLPathway) glActiveSubView).setAlignment(SWT.CENTER,
+			// SWT.BOTTOM);
+			// break;
+			// case 3:
+			// ((GLPathway) glActiveSubView).setAlignment(SWT.RIGHT,
+			// SWT.BOTTOM);
+			// break;
+			// default:
+			// break;
+			// }
+			// }
 		}
 		else if (destinationLevel == poolLevel || destinationLevel == selectionLevel)
 		{
 			glActiveSubView.setDetailLevel(EDetailLevel.VERY_LOW);
 
-//			if (glActiveSubView instanceof GLPathway)
-//			{
-//				((GLPathway) glActiveSubView).enableTitleRendering(false);
-//			}
+			// if (glActiveSubView instanceof GLPathway)
+			// {
+			// ((GLPathway) glActiveSubView).enableTitleRendering(false);
+			// }
 		}
-		
+
 		compactPoolLevel();
 	}
 
@@ -1690,7 +1733,7 @@ public class GLRemoteRendering
 		if (poolLevel.containsElement(element))
 		{
 			generalManager.getViewGLCanvasManager().getGLEventListener(iViewID)
-					.broadcastElements(ESelectionType.ADD);
+					.broadcastElements(EVAOperation.APPEND_UNIQUE);
 		}
 
 		// if (layoutRenderStyle instanceof ListLayoutRenderStyle)
@@ -1755,24 +1798,29 @@ public class GLRemoteRendering
 				if (!stackLevel.hasFreePosition())
 				{
 					int iReplacePosition = 1;
-					
-//					// Determine non locked stack position for view movement to pool
-//					for (int iTmpReplacePosition = 0; iTmpReplacePosition < stackLevel.getCapacity(); iTmpReplacePosition++)
-//					{
-//						if (stackLevel.getElementByPositionIndex(iTmpReplacePosition).isLocked())
-//							continue;
-//						
-//						iReplacePosition = iTmpReplacePosition + 1; // +1 to start with left view for outsourcing
-//						
-//						if (iReplacePosition == 4)
-//							iReplacePosition = 0;
-//						
-//						break;
-//					}
-//					
-//					if (iReplacePosition == -1)
-//						throw new IllegalStateException("All views in stack are locked!");
-					
+
+					// // Determine non locked stack position for view movement
+					// to pool
+					// for (int iTmpReplacePosition = 0; iTmpReplacePosition <
+					// stackLevel.getCapacity(); iTmpReplacePosition++)
+					// {
+					// if
+					// (stackLevel.getElementByPositionIndex(iTmpReplacePosition).isLocked())
+					// continue;
+					//						
+					// iReplacePosition = iTmpReplacePosition + 1; // +1 to
+					// start with left view for outsourcing
+					//						
+					// if (iReplacePosition == 4)
+					// iReplacePosition = 0;
+					//						
+					// break;
+					// }
+					//					
+					// if (iReplacePosition == -1)
+					// throw new
+					// IllegalStateException("All views in stack are locked!");
+
 					freeStackElement = stackLevel.getElementByPositionIndex(iReplacePosition);
 
 					// Slerp view from stack to pool
@@ -1783,7 +1831,7 @@ public class GLRemoteRendering
 					// Unregister all elements of the view that is moved out
 					generalManager.getViewGLCanvasManager().getGLEventListener(
 							freeStackElement.getContainedElementID()).broadcastElements(
-							ESelectionType.REMOVE);
+							EVAOperation.REMOVE_ELEMENT);
 				}
 				else
 				{
@@ -1835,13 +1883,13 @@ public class GLRemoteRendering
 			int iGraphItemID = 0;
 			ArrayList<ICaleydoGraphItem> alPathwayVertexGraphItem = new ArrayList<ICaleydoGraphItem>();
 
-			for (SelectionItem item : selectionDelta)
+			for (SelectionDeltaItem item : selectionDelta)
 			{
 				// Only consider items that are selected
 				if (item.getSelectionType() != ESelectionType.SELECTION)
 					continue;
 
-				iDavidID = item.getSelectionID();
+				iDavidID = item.getPrimaryID();
 
 				iGraphItemID = generalManager.getPathwayItemManager()
 						.getPathwayVertexGraphItemIdByDavidId(iDavidID);
@@ -1866,20 +1914,20 @@ public class GLRemoteRendering
 		// Handle incoming pathways
 		else if (selectionDelta.getIDType() == EIDType.PATHWAY)
 		{
-			Iterator<SelectionItem> iterator = selectionDelta.getSelectionData().iterator();
+			Iterator<SelectionDeltaItem> iterator = selectionDelta.getAllItems().iterator();
 			if (iterator.hasNext())
-				addPathwayView(iterator.next().getSelectionID());
+				addPathwayView(iterator.next().getPrimaryID());
 			else
 				throw new IllegalStateException("Illegals selection delta state: no pathways");
 		}
 	}
-	
+
 	@Override
 	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
-			EMediatorType mediatorType)
+			Collection<SelectionCommand> colSelectionCommand, EMediatorType mediatorType)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	/**
@@ -1973,7 +2021,7 @@ public class GLRemoteRendering
 						iMouseOverObjectID = iExternalID;
 
 						compactPoolLevel();
-						
+
 						break;
 				}
 
@@ -1992,20 +2040,19 @@ public class GLRemoteRendering
 								iExternalID);
 
 						AGLEventListener glEventListener = ((AGLEventListener) generalManager
-								.getViewGLCanvasManager().getGLEventListener(element.getContainedElementID()));
-						
-						
+								.getViewGLCanvasManager().getGLEventListener(
+										element.getContainedElementID()));
+
 						// Unregister all elements of the view that is removed
-						glEventListener.broadcastElements(
-								ESelectionType.REMOVE);
-						
+						glEventListener.broadcastElements(EVAOperation.REMOVE_ELEMENT);
+
 						clearView(glEventListener);
-						
+
 						element.setContainedElementID(-1);
-						
+
 						if (element.getRemoteLevel() == poolLevel)
 							compactPoolLevel();
-						
+
 						break;
 				}
 
@@ -2024,14 +2071,14 @@ public class GLRemoteRendering
 
 						// Toggle lock flag
 						element.lock(!element.isLocked());
-						
+
 						break;
 				}
 
 				pickingManager.flushHits(iUniqueID, EPickingType.BUCKET_LOCK_ICON_SELECTION);
 
-				break;				
-				
+				break;
+
 			case REMOTE_LEVEL_ELEMENT:
 				switch (pickingMode)
 				{
@@ -2066,29 +2113,28 @@ public class GLRemoteRendering
 				{
 					case MOUSE_OVER:
 
-//						generalManager.getViewGLCanvasManager().getInfoAreaManager()
-//								.setDataAboutView(iExternalID);
+						// generalManager.getViewGLCanvasManager().getInfoAreaManager()
+						// .setDataAboutView(iExternalID);
 
 						// Prevent update flood when moving mouse over view
 						if (iActiveViewID == iExternalID)
 							break;
-						
+
 						iActiveViewID = iExternalID;
-						
+
 						setDisplayListDirty();
 
 						generalManager.getEventPublisher().triggerUpdate(
 								EMediatorType.VIEW_SELECTION,
-								generalManager.getViewGLCanvasManager()
-										.getGLEventListener(iExternalID),
-								new SelectionDelta(EIDType.DAVID), null);
+								generalManager.getViewGLCanvasManager().getGLEventListener(
+										iExternalID), new SelectionDelta(EIDType.DAVID), null);
 
 						break;
 
 					case CLICKED:
 
-//						generalManager.getViewGLCanvasManager().getInfoAreaManager()
-//								.setDataAboutView(iExternalID);
+						// generalManager.getViewGLCanvasManager().getInfoAreaManager()
+						// .setDataAboutView(iExternalID);
 
 						break;
 				}
@@ -2169,7 +2215,7 @@ public class GLRemoteRendering
 						// Unregister all elements of the view that is moved out
 						generalManager.getViewGLCanvasManager().getGLEventListener(
 								element.getContainedElementID()).broadcastElements(
-								ESelectionType.REMOVE);
+								EVAOperation.REMOVE_ELEMENT);
 
 						break;
 
@@ -2494,17 +2540,19 @@ public class GLRemoteRendering
 		if (glEventListener instanceof GLPathway)
 		{
 			generalManager.getPathwayManager().setPathwayVisibilityStateByID(
-					((GLPathway)glEventListener).getPathwayID(), false);
+					((GLPathway) glEventListener).getPathwayID(), false);
 		}
-		
-//		for (AGLEventListener eventListener : generalManager.getViewGLCanvasManager()
-//				.getAllGLEventListeners())
-//		{
-//			if (!eventListener.isRenderedRemote())
-//				eventListener.enableBusyMode(false);
-//		}
-		
-		generalManager.getViewGLCanvasManager().unregisterGLEventListener(glEventListener.getID());
+
+		// for (AGLEventListener eventListener :
+		// generalManager.getViewGLCanvasManager()
+		// .getAllGLEventListeners())
+		// {
+		// if (!eventListener.isRenderedRemote())
+		// eventListener.enableBusyMode(false);
+		// }
+
+		generalManager.getViewGLCanvasManager().unregisterGLEventListener(
+				glEventListener.getID());
 
 		glEventListener = null;
 	}
@@ -2520,28 +2568,28 @@ public class GLRemoteRendering
 		clearRemoteLevel(stackLevel);
 		clearRemoteLevel(poolLevel);
 	}
-	
+
 	private void clearRemoteLevel(RemoteLevel remoteLevel)
 	{
 		int iViewID;
 		IViewManager viewManager = generalManager.getViewGLCanvasManager();
 		AGLEventListener glEventListener = null;
-		
+
 		for (RemoteLevelElement element : remoteLevel.getAllElements())
 		{
 			iViewID = element.getContainedElementID();
-			
+
 			if (iViewID == -1)
 				continue;
-			
+
 			glEventListener = viewManager.getGLEventListener(iViewID);
-			
+
 			if (glEventListener instanceof GLHeatMap
-				|| glEventListener instanceof GLParallelCoordinates)
+					|| glEventListener instanceof GLParallelCoordinates)
 			{
-				 // Remove all elements from heatmap and parallel coordinates
+				// Remove all elements from heatmap and parallel coordinates
 				((AStorageBasedView) glEventListener).resetView();
-				
+
 				if (!glEventListener.isRenderedRemote())
 					glEventListener.enableBusyMode(false);
 			}
@@ -2552,7 +2600,7 @@ public class GLRemoteRendering
 			}
 		}
 	}
-	
+
 	// @Override
 	// public synchronized RemoteLevel getHierarchyLayerByGLEventListenerId(
 	// final int iGLEventListenerId)
@@ -2620,10 +2668,10 @@ public class GLRemoteRendering
 			gl.glColor4f(0.85f, 0.85f, 0.85f, 1f);
 			gl.glLineWidth(1);
 			gl.glBegin(GL.GL_POLYGON);
-			gl.glVertex3f((-2  - fXCorrection) / fAspectRatio, -2, 4);
-			gl.glVertex3f((-2  - fXCorrection) / fAspectRatio, 2, 4);
-			gl.glVertex3f((-2  - fXCorrection) / fAspectRatio + fWidth, 2, 4);
-			gl.glVertex3f((-2  - fXCorrection) / fAspectRatio + fWidth, -2, 4);
+			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, -2, 4);
+			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, 2, 4);
+			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + fWidth, 2, 4);
+			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + fWidth, -2, 4);
 			gl.glEnd();
 
 			if (dragAndDrop.isDragActionRunning() && iMouseOverObjectID == iPoolLevelCommonID)
@@ -2638,10 +2686,10 @@ public class GLRemoteRendering
 			}
 
 			gl.glBegin(GL.GL_LINE_LOOP);
-			gl.glVertex3f((-2  - fXCorrection) / fAspectRatio, -2, 4);
-			gl.glVertex3f((-2  - fXCorrection) / fAspectRatio, 2, 4);
-			gl.glVertex3f((-2  - fXCorrection) / fAspectRatio + fWidth, 2, 4);
-			gl.glVertex3f((-2  - fXCorrection) / fAspectRatio + fWidth, -2, 4);
+			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, -2, 4);
+			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio, 2, 4);
+			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + fWidth, 2, 4);
+			gl.glVertex3f((-2 - fXCorrection) / fAspectRatio + fWidth, -2, 4);
 			gl.glEnd();
 
 			gl.glPopName();
@@ -2673,7 +2721,8 @@ public class GLRemoteRendering
 		String sTmp = "POOL AREA";
 		textRenderer.begin3DRendering();
 		textRenderer.setColor(0.6f, 0.6f, 0.6f, 1.0f);
-		textRenderer.draw3D(sTmp, (-1.9f - fXCorrection) / fAspectRatio, -1.97f, 4.001f, 0.003f);
+		textRenderer.draw3D(sTmp, (-1.9f - fXCorrection) / fAspectRatio, -1.97f, 4.001f,
+				0.003f);
 		textRenderer.end3DRendering();
 	}
 
@@ -2714,7 +2763,7 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	public synchronized void triggerUpdate(EMediatorType eMediatorType,
+	public synchronized void triggerSelectionUpdate(EMediatorType eMediatorType,
 			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
 	{
 		generalManager.getEventPublisher().triggerUpdate(eMediatorType, this, selectionDelta,
@@ -2722,7 +2771,15 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	public synchronized void broadcastElements(ESelectionType type)
+	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
+			Collection<SelectionCommand> colSelectionCommand)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public synchronized void broadcastElements(EVAOperation type)
 	{
 	}
 
@@ -2765,10 +2822,11 @@ public class GLRemoteRendering
 						EMediatorType.SELECTION_MEDIATOR, (IMediatorReceiver) glPathway);
 
 				iAlContainedViewIDs.add(iGeneratedViewID);
-				
+
 				// Trigger last delta to new pathways
 				if (lastSelectionDelta != null)
-					triggerUpdate(EMediatorType.SELECTION_MEDIATOR, lastSelectionDelta, null);
+					triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
+							lastSelectionDelta, null);
 
 				if (focusLevel.hasFreePosition())
 				{
@@ -2782,7 +2840,7 @@ public class GLRemoteRendering
 					glPathway.setDetailLevel(EDetailLevel.MEDIUM);
 
 					// Trigger initial gene propagation
-					glPathway.broadcastElements(ESelectionType.ADD);
+					glPathway.broadcastElements(EVAOperation.APPEND_UNIQUE);
 				}
 				else if (stackLevel.hasFreePosition()
 						&& !(layoutRenderStyle instanceof ListLayoutRenderStyle))
@@ -2797,7 +2855,7 @@ public class GLRemoteRendering
 					glPathway.setDetailLevel(EDetailLevel.LOW);
 
 					// Trigger initial gene propagation
-					glPathway.broadcastElements(ESelectionType.ADD);
+					glPathway.broadcastElements(EVAOperation.APPEND_UNIQUE);
 				}
 				else if (poolLevel.hasFreePosition())
 				{
@@ -2885,7 +2943,7 @@ public class GLRemoteRendering
 				"External event called by " + eventTrigger.getClass().getSimpleName()
 						+ ", received in: " + this.getClass().getSimpleName());
 	}
-	
+
 	private void compactPoolLevel()
 	{
 		RemoteLevelElement element;
@@ -2896,24 +2954,25 @@ public class GLRemoteRendering
 			if (element.isFree())
 			{
 				// Search for next element to put it in the free position
-				for (int iInnerIndex = iIndex+1; iInnerIndex < poolLevel.getCapacity(); iInnerIndex++)
+				for (int iInnerIndex = iIndex + 1; iInnerIndex < poolLevel.getCapacity(); iInnerIndex++)
 				{
 					elementInner = poolLevel.getElementByPositionIndex(iInnerIndex);
-					
+
 					if (elementInner.isFree())
 						continue;
-					
+
 					element.setContainedElementID(elementInner.getContainedElementID());
 					elementInner.setContainedElementID(-1);
-					
+
 					break;
 				}
 			}
 		}
 	}
-	
+
 	public ArrayList<Integer> getRemoteRenderedViews()
 	{
 		return iAlContainedViewIDs;
 	}
+
 }

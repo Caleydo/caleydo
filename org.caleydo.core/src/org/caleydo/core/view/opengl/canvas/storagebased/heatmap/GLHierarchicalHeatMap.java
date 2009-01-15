@@ -5,6 +5,7 @@ import gleem.linalg.Vec3f;
 import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
@@ -21,9 +22,11 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionDelta;
+import org.caleydo.core.data.selection.VADeltaItem;
+import org.caleydo.core.data.selection.VirtualArrayDelta;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -1067,7 +1070,7 @@ public class GLHierarchicalHeatMap
 		ArrayList<SelectionCommand> alSelectionCommand = new ArrayList<SelectionCommand>();
 		alSelectionCommand.add(new SelectionCommand(ESelectionCommandType.RESET));
 
-		SelectionDelta delta = new SelectionDelta(EIDType.EXPRESSION_INDEX);
+		IVirtualArrayDelta delta = new VirtualArrayDelta(EIDType.EXPRESSION_INDEX);
 
 		IVirtualArray currentVirtualArray = set.getVA(iContentVAID);
 		int iIndex = 0;
@@ -1079,8 +1082,7 @@ public class GLHierarchicalHeatMap
 			iIndex = iCount + index;
 			iContentIndex = currentVirtualArray.get(iIndex);
 
-			delta.addSelection(iContentIndex, ESelectionType.ADD);
-
+			delta.add(VADeltaItem.append(iContentIndex));
 			// //set elements selected in embedded heatMap
 			// for (HeatMapSelection selection : AlSelection)
 			// {
@@ -1094,7 +1096,8 @@ public class GLHierarchicalHeatMap
 			// }
 		}
 
-		triggerUpdate(EMediatorType.HIERACHICAL_HEAT_MAP, delta, alSelectionCommand);
+		generalManager.getEventPublisher().triggerVAUpdate(
+				EMediatorType.HIERACHICAL_HEAT_MAP, this, delta, alSelectionCommand);
 	}
 
 	public synchronized void renderHorizontally(boolean bRenderStorageHorizontally)
@@ -1640,7 +1643,7 @@ public class GLHierarchicalHeatMap
 	public void broadcastElements()
 	{
 		ISelectionDelta delta = contentSelectionManager.getCompleteDelta();
-		triggerUpdate(EMediatorType.HIERACHICAL_HEAT_MAP, delta, null);
+		triggerSelectionUpdate(EMediatorType.HIERACHICAL_HEAT_MAP, delta, null);
 		setDisplayListDirty();
 	}
 
@@ -1674,6 +1677,14 @@ public class GLHierarchicalHeatMap
 	public boolean isInFocus()
 	{
 		return bIsHeatmapInFocus;
+	}
+
+	@Override
+	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
+			Collection<SelectionCommand> colSelectionCommand)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

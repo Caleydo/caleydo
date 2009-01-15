@@ -10,7 +10,7 @@ import javax.media.opengl.GLEventListener;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
-import org.caleydo.core.manager.data.ISetManager;
+import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -431,7 +431,7 @@ public abstract class AGLEventListener
 	/**
 	 * Broadcast elements only with a given type.
 	 */
-	public abstract void broadcastElements(ESelectionType type);
+	public abstract void broadcastElements(EVAOperation type);
 
 	public synchronized void setDetailLevel(EDetailLevel detailLevel)
 	{

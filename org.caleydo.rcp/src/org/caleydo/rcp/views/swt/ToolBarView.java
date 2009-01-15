@@ -547,9 +547,11 @@ public class ToolBarView
 
 	@Override
 	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
-			EMediatorType mediatorType)
+			Collection<SelectionCommand> colSelectionCommand, EMediatorType mediatorType)
 	{
 		// TODO Auto-generated method stub
 		
 	}
+
+
 }

@@ -10,7 +10,7 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionItem;
+import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -159,17 +159,17 @@ public class GenomeHTMLBrowserViewRep
 					return;
 
 				int iItemsToLoad = 0;
-				// SelectionItem selectionItem;
+				// SelectionDeltaItem selectionItem;
 
-				for (SelectionItem selectionItem : selectionDelta)
+				for (SelectionDeltaItem selectionDeltaItem : selectionDelta)
 				{
-					if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER
-							|| selectionItem.getSelectionType() == ESelectionType.SELECTION)
+					if (selectionDeltaItem.getSelectionType() == ESelectionType.MOUSE_OVER
+							|| selectionDeltaItem.getSelectionType() == ESelectionType.SELECTION)
 					{
 						if (iItemsToLoad == 0)
 						{
 							String sURL = urlGenerator.createURL(eBrowserQueryType,
-									selectionItem.getSelectionID());
+									selectionDeltaItem.getPrimaryID());
 
 							browser.setUrl(sURL);
 							browser.update();
@@ -181,13 +181,13 @@ public class GenomeHTMLBrowserViewRep
 
 						Set<String> sSetRefSeqID = GeneralManager.get().getIDMappingManager()
 								.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA,
-										selectionItem.getSelectionID());
+										selectionDeltaItem.getPrimaryID());
 
 						String sOutput = "";
 						sOutput = sOutput
 								+ GeneralManager.get().getIDMappingManager().getID(
 										EMappingType.DAVID_2_GENE_SYMBOL,
-										selectionItem.getSelectionID());
+										selectionDeltaItem.getPrimaryID());
 
 						for (String sRefSeqID : sSetRefSeqID)
 						{
@@ -195,11 +195,11 @@ public class GenomeHTMLBrowserViewRep
 							sOutput = sOutput + sRefSeqID;
 						}
 
-						if (iAlDavidID.contains(selectionItem.getSelectionID()))
+						if (iAlDavidID.contains(selectionDeltaItem.getPrimaryID()))
 							continue;
 
 						list.add(sOutput);
-						iAlDavidID.add(selectionItem.getSelectionID());
+						iAlDavidID.add(selectionDeltaItem.getPrimaryID());
 
 						iItemsToLoad++;
 					}
@@ -210,12 +210,12 @@ public class GenomeHTMLBrowserViewRep
 			}
 		});
 	}
-	
+
 	@Override
 	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
-			EMediatorType mediatorType)
+			Collection<SelectionCommand> colSelectionCommand, EMediatorType mediatorType)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 }

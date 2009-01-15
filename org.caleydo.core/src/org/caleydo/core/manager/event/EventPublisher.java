@@ -88,7 +88,7 @@ public class EventPublisher
 	}
 
 	public void triggerVAUpdate(EMediatorType eMediatorType, IUniqueObject eventTrigger,
-			IVirtualArrayDelta delta)
+			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand)
 	{
 		if (!hashMediatorType2Mediator.containsKey(eMediatorType))
 		{
@@ -104,14 +104,14 @@ public class EventPublisher
 						(IMediatorSender) eventTrigger))
 				{
 					hashMediatorType2Mediator.get(eTempMediatorType).triggerVAUpdate(
-							eventTrigger, delta);
+							eventTrigger, delta, colSelectionCommand);
 				}
 			}
 		}
 		else
 		{
 			hashMediatorType2Mediator.get(eMediatorType).triggerVAUpdate(eventTrigger,
-					delta);
+					delta, colSelectionCommand);
 		}	
 	}
 	

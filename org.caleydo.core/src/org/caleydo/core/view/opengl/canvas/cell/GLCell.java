@@ -8,12 +8,13 @@ import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDelta;
-import org.caleydo.core.data.selection.SelectionItem;
+import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
@@ -22,6 +23,7 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
+import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -40,7 +42,7 @@ public class GLCell
 	extends AGLEventListener
 	implements IMediatorReceiver, IMediatorSender
 {
-//	private ConnectedElementRepresentationManager connectedElementRepresentationManager;
+	private ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
 	private GenericSelectionManager selectionManager;
 
@@ -52,8 +54,8 @@ public class GLCell
 		super(iGLCanvasID, sLabel, viewFrustum, false);
 		viewType = EManagedObjectType.GL_CELL_LOCALIZATION;
 
-//		connectedElementRepresentationManager = generalManager.getViewGLCanvasManager()
-//				.getConnectedElementRepresentationManager();
+		connectedElementRepresentationManager = generalManager.getViewGLCanvasManager()
+				.getConnectedElementRepresentationManager();
 
 		// initialize internal gene selection manager
 		ArrayList<ESelectionType> alSelectionType = new ArrayList<ESelectionType>();
@@ -73,7 +75,8 @@ public class GLCell
 	}
 
 	@Override
-	public void initRemote(GL gl, int remoteViewID, PickingJoglMouseListener pickingTriggerMouseAdapter,
+	public void initRemote(GL gl, int remoteViewID,
+			PickingJoglMouseListener pickingTriggerMouseAdapter,
 			IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
@@ -121,6 +124,7 @@ public class GLCell
 
 	private void renderScene(final GL gl)
 	{
+
 //		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		
 		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.CELL_MODEL);
@@ -141,6 +145,7 @@ public class GLCell
 		gl.glEnd();
 
 		tempTexture.disable();
+
 	}
 
 	@Override
@@ -153,33 +158,35 @@ public class GLCell
 		if (selectionDelta.getIDType() != EIDType.DAVID)
 			return;
 
-		for (SelectionItem item : selectionDelta)
-		{
-			if (item.getSelectionType() == ESelectionType.ADD
-					|| item.getSelectionType() == ESelectionType.REMOVE)
-			{
-				break;
-			}
-			else
-			{
-				selectionManager.clearSelections();
-				break;
-			}
-		}
-
-		resolveExternalSelectionDelta(selectionDelta);
-
-		setDisplayListDirty();
+		// TODO review this, seems not to do anything??? ADD and REMOVE are no
+		// longer supported
+		// for (SelectionDeltaItem item : selectionDelta)
+		// {
+		// if (item.getSelectionType() == ESelectionType.ADD
+		// || item.getSelectionType() == ESelectionType.REMOVE)
+		// {
+		// break;
+		// }
+		// else
+		// {
+		// selectionManager.clearSelections();
+		// break;
+		// }
+		// }
+		//
+		// resolveExternalSelectionDelta(selectionDelta);
+		//
+		// setDisplayListDirty();
 	}
 
 	@Override
 	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
-			EMediatorType mediatorType)
+			Collection<SelectionCommand> colSelectionCommand, EMediatorType mediatorType)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	private ISelectionDelta resolveExternalSelectionDelta(ISelectionDelta selectionDelta)
 	{
 		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.PATHWAY_VERTEX,
@@ -187,7 +194,7 @@ public class GLCell
 
 		int iDavidID = 0;
 
-		for (SelectionItem item : selectionDelta)
+		for (SelectionDeltaItem item : selectionDelta)
 		{
 			if (item.getSelectionType() != ESelectionType.MOUSE_OVER
 					&& item.getSelectionType() != ESelectionType.SELECTION)
@@ -195,7 +202,7 @@ public class GLCell
 				continue;
 			}
 
-			iDavidID = item.getSelectionID();
+			iDavidID = item.getPrimaryID();
 
 			System.out.println("Cell component: "
 					+ GeneralManager.get().getIDMappingManager().getID(
@@ -253,7 +260,7 @@ public class GLCell
 		//		
 		// return pathway.getTitle() + " (" +pathway.getType().getName() + ")";
 
-		return "Cell view";
+		return null;
 	}
 
 	@Override
@@ -272,11 +279,11 @@ public class GLCell
 		//
 		// return sInfoText.toString();
 
-		return "Cell view";
+		return null;
 	}
 
 	@Override
-	public void triggerUpdate(EMediatorType mediatorType, ISelectionDelta selectionDelta,
+	public void triggerSelectionUpdate(EMediatorType mediatorType, ISelectionDelta selectionDelta,
 			Collection<SelectionCommand> colSelectionCommand)
 	{
 		generalManager.getEventPublisher().triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
@@ -284,7 +291,7 @@ public class GLCell
 	}
 
 	@Override
-	public void broadcastElements(ESelectionType type)
+	public void broadcastElements(EVAOperation type)
 	{
 		// TODO Auto-generated method stub
 
@@ -295,6 +302,14 @@ public class GLCell
 	{
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
+			Collection<SelectionCommand> colSelectionCommand)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

@@ -5,6 +5,7 @@ import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
@@ -75,7 +76,7 @@ implements ISWTView, IMediatorSender {
 
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.PATHWAY);
 		selectionDelta.addSelection(iPathwayID, ESelectionType.SELECTION);
-		triggerUpdate(EMediatorType.SELECTION_MEDIATOR, selectionDelta, null);
+		triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, selectionDelta, null);
 		
 		return true;
 	}
@@ -90,7 +91,7 @@ implements ISWTView, IMediatorSender {
 		
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.DAVID);
 		selectionDelta.addSelection(iDavidID, ESelectionType.SELECTION);
-		triggerUpdate(EMediatorType.SELECTION_MEDIATOR, selectionDelta, null);
+		triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, selectionDelta, null);
 		return true;
 	}
 	
@@ -112,7 +113,7 @@ implements ISWTView, IMediatorSender {
 		
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.DAVID);
 		selectionDelta.addSelection(iDavidID, ESelectionType.SELECTION);
-		triggerUpdate(EMediatorType.SELECTION_MEDIATOR, selectionDelta, null);
+		triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, selectionDelta, null);
 		
 		return true;
 	}
@@ -127,7 +128,7 @@ implements ISWTView, IMediatorSender {
 		
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.DAVID);
 		selectionDelta.addSelection(iDavidID, ESelectionType.SELECTION);
-		triggerUpdate(EMediatorType.SELECTION_MEDIATOR, selectionDelta, null);
+		triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, selectionDelta, null);
 
 		return true;
 	}
@@ -143,8 +144,16 @@ implements ISWTView, IMediatorSender {
 	}
 
 	@Override
-	public void triggerUpdate(EMediatorType eMediatorType, ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
+	public void triggerSelectionUpdate(EMediatorType eMediatorType, ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
 	{
 		generalManager.getEventPublisher().triggerUpdate(eMediatorType, this, selectionDelta, null);
+	}
+
+	@Override
+	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
+			Collection<SelectionCommand> colSelectionCommand)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

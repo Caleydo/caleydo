@@ -7,6 +7,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.glu.GLU;
 import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -795,7 +796,7 @@ public class GLCanvasWiiTest
 	}
 
 	@Override
-	public void broadcastElements(ESelectionType type)
+	public void broadcastElements(EVAOperation type)
 	{
 
 	}

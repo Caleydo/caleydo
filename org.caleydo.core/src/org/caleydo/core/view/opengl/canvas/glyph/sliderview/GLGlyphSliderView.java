@@ -15,6 +15,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
@@ -216,7 +217,8 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID, final PickingJoglMouseListener pickingTriggerMouseAdapter,
+	public void initRemote(final GL gl, final int iRemoteViewID,
+			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 
 	{
@@ -372,7 +374,7 @@ public class GLGlyphSliderView
 						.getConnectedElementRepresentationManager().clear(
 								EIDType.EXPERIMENT_INDEX);
 
-				triggerUpdate(EMediatorType.SELECTION_MEDIATOR, selectionManager.getDelta(),
+				triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, selectionManager.getDelta(),
 						null);
 
 			}
@@ -419,7 +421,7 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	public void triggerUpdate(EMediatorType eMediatorType, ISelectionDelta selectionDelta,
+	public void triggerSelectionUpdate(EMediatorType eMediatorType, ISelectionDelta selectionDelta,
 			Collection<SelectionCommand> colSelectionCommand)
 	{
 		generalManager.getEventPublisher().triggerUpdate(eMediatorType, this, selectionDelta,
@@ -432,17 +434,17 @@ public class GLGlyphSliderView
 	{
 		// TODO Auto-generated method stub
 	}
-	
+
 	@Override
 	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
-			EMediatorType mediatorType)
+			Collection<SelectionCommand> colSelectionCommand, EMediatorType mediatorType)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void broadcastElements(ESelectionType type)
+	public void broadcastElements(EVAOperation type)
 	{
 
 	}
@@ -451,5 +453,13 @@ public class GLGlyphSliderView
 	public int getNumberOfSelections(ESelectionType eSelectionType)
 	{
 		throw new IllegalStateException("Not implemented yet. Do this now!");
+	}
+
+	@Override
+	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
+			Collection<SelectionCommand> colSelectionCommand)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

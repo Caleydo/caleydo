@@ -1,12 +1,14 @@
 package org.caleydo.core.data.selection;
 
-import org.caleydo.core.data.mapping.EIDType;
-
+/**
+ * Interface for a virtual array delta
+ * 
+ * @author Alexander Lex
+ * 
+ */
 public interface IVirtualArrayDelta
-extends Iterable<VADeltaItem>
+	extends IDelta<VADeltaItem>
 {
-	public EIDType getIDType();	
-//	public Collection<VADeltaItem> getSelectionData();	
-	public void add(VADeltaItem item);
 
+	
 }

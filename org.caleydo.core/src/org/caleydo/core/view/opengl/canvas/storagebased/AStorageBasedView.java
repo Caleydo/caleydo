@@ -14,18 +14,19 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.selection.DeltaConverter;
 import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionItem;
+import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorEventSender;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
-import org.caleydo.core.manager.event.mediator.IMediatorSender;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
@@ -385,30 +386,39 @@ public abstract class AStorageBasedView
 		}
 
 	}
-	
+
 	@Override
 	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
-			EMediatorType mediatorType)
+			Collection<SelectionCommand> colSelectionCommand, EMediatorType mediatorType)
 	{
+
 		generalManager.getLogger().log(
 				Level.INFO,
 				"VA Update called by " + eventTrigger.getClass().getSimpleName()
 						+ ", received in: " + this.getClass().getSimpleName());
-		
-		
-		storageSelectionManager.setVADelta(delta);
+
+		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX)
+		{
+			storageSelectionManager.setVADelta(delta);
+		}
+		else if (delta.getIDType() == EIDType.DAVID)
+		{
+			IVirtualArrayDelta convertedDelta = DeltaConverter.convertDelta(
+					EIDType.EXPRESSION_INDEX, delta);
+			contentSelectionManager.setVADelta(convertedDelta);
+		}
 		setDisplayListDirty();
 	}
 
 	/**
-	 * Is called any time a update is triggered externally. Should be implemented by inheriting views.
+	 * Is called any time a update is triggered externally. Should be
+	 * implemented by inheriting views.
 	 */
 	protected void reactOnExternalSelection()
 	{
-		
+
 	}
-	
-	
+
 	/**
 	 * This method is called when new elements are added from external - if you
 	 * need to react to it do it here, if not don't do anything.
@@ -442,7 +452,7 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public final synchronized void triggerUpdate(EMediatorType eMediatorType,
+	public final synchronized void triggerSelectionUpdate(EMediatorType eMediatorType,
 			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
 	{
 		// TODO connects to one element only here
@@ -451,11 +461,19 @@ public abstract class AStorageBasedView
 				colSelectionCommand);
 	}
 
+	@Override
+	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
+			Collection<SelectionCommand> colSelectionCommand)
+	{
+		// TODO Auto-generated method stub
+
+	}
+
 	public void triggerEvent(int iID)
 	{
 		generalManager.getEventPublisher().triggerEvent(this, iID);
 	}
-	
+
 	/**
 	 * Handles the creation of {@link SelectedElementRep} according to the data
 	 * in a selectionDelta
@@ -473,7 +491,7 @@ public abstract class AStorageBasedView
 
 			if (selectionDelta.size() > 0)
 			{
-				for (SelectionItem item : selectionDelta)
+				for (SelectionDeltaItem item : selectionDelta)
 				{
 					if (!(item.getSelectionType() == ESelectionType.MOUSE_OVER || item
 							.getSelectionType() == ESelectionType.SELECTION))
@@ -483,22 +501,22 @@ public abstract class AStorageBasedView
 
 					if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX)
 					{
-						iStorageIndex = item.getSelectionID();
+						iStorageIndex = item.getPrimaryID();
 
-						iID = item.getInternalID();
+						iID = item.getSecondaryID();
 						idType = EIDType.EXPRESSION_INDEX;
 
 					}
-					else if (selectionDelta.getInternalIDType() == EIDType.EXPRESSION_INDEX)
+					else if (selectionDelta.getSecondaryIDType() == EIDType.EXPRESSION_INDEX)
 					{
-						iStorageIndex = item.getInternalID();
+						iStorageIndex = item.getSecondaryID();
 
-						iID = item.getSelectionID();
+						iID = item.getPrimaryID();
 						idType = EIDType.EXPRESSION_INDEX;
 					}
 					else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX)
 					{
-						iID = item.getSelectionID();
+						iID = item.getPrimaryID();
 						iStorageIndex = iID;
 						idType = EIDType.EXPERIMENT_INDEX;
 
@@ -543,7 +561,7 @@ public abstract class AStorageBasedView
 	public abstract void broadcastElements();
 
 	@Override
-	public synchronized void broadcastElements(ESelectionType type)
+	public synchronized void broadcastElements(EVAOperation type)
 	{
 		// nothing to do
 	}
@@ -626,6 +644,5 @@ public abstract class AStorageBasedView
 	{
 		return contentSelectionManager.getElements(eSelectionType).size();
 	}
-	
 
 }

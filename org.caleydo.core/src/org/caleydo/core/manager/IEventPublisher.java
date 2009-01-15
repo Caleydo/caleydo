@@ -41,7 +41,7 @@ public interface IEventPublisher
 	 * @param delta the delta containing all operations to be executed
 	 */
 	public void triggerVAUpdate(EMediatorType eMediatorType, IUniqueObject eventTrigger,
-			IVirtualArrayDelta delta);
+			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand);
 
 	/**
 	 * Trigger an event, signaling that something has happened

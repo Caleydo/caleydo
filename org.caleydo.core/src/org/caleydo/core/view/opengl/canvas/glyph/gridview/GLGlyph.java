@@ -16,12 +16,14 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.IDeltaItem;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionItem;
+import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.event.mediator.IMediatorSender;
@@ -176,7 +178,7 @@ public class GLGlyph
 					selectionManager.addToType(ESelectionType.SELECTION, id);
 
 			bDrawConnectionRepLines = false;
-			triggerUpdate(EMediatorType.SELECTION_MEDIATOR, selectionManager.getDelta(), null);
+			triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, selectionManager.getDelta(), null);
 			bDrawConnectionRepLines = true;
 
 			bRedrawDisplayListGlyph = true;
@@ -850,7 +852,7 @@ public class GLGlyph
 							.getConnectedElementRepresentationManager().clear(
 									EIDType.EXPERIMENT_INDEX);
 
-					triggerUpdate(EMediatorType.SELECTION_MEDIATOR, selectionManager
+					triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, selectionManager
 							.getDelta(), null);
 
 					// <<<<<<< .working
@@ -925,9 +927,9 @@ public class GLGlyph
 			return;
 
 		GlyphEntry actualGlyph = null;
-		for (SelectionItem item : selectionDelta)
+		for (SelectionDeltaItem item : selectionDelta)
 		{
-			actualGlyph = grid_.getGlyph(item.getSelectionID());
+			actualGlyph = grid_.getGlyph(item.getPrimaryID());
 
 			if (actualGlyph == null) // not glyph to this id found
 				continue;
@@ -944,12 +946,12 @@ public class GLGlyph
 
 	@Override
 	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
-			EMediatorType mediatorType)
+			Collection<SelectionCommand> colSelectionCommand, EMediatorType mediatorType)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
-	
+
 	/**
 	 * This method forces a rebuild of every display list in this view
 	 */
@@ -960,10 +962,10 @@ public class GLGlyph
 	}
 
 	@Override
-	public void triggerUpdate(EMediatorType eMediatorType, ISelectionDelta selectionDelta,
+	public void triggerSelectionUpdate(EMediatorType eMediatorType, ISelectionDelta selectionDelta,
 			Collection<SelectionCommand> colSelectionCommand)
 	{
-		if (selectionDelta.getSelectionData().size() > 0)
+		if (selectionDelta.getAllItems().size() > 0)
 		{
 			handleConnectedElementRep(selectionDelta);
 
@@ -973,7 +975,7 @@ public class GLGlyph
 	}
 
 	@Override
-	public synchronized void broadcastElements(ESelectionType type)
+	public synchronized void broadcastElements(EVAOperation type)
 	{
 
 	}
@@ -990,10 +992,10 @@ public class GLGlyph
 		Vec3f vecGlyphPos;
 		GlyphEntry actualGlyph = null;
 
-		Collection<SelectionItem> selection = selectionDelta.getSelectionData();
-		for (SelectionItem item : selection)
+		Collection<SelectionDeltaItem> selection = selectionDelta.getAllItems();
+		for (SelectionDeltaItem item : selection)
 		{
-			actualGlyph = grid_.getGlyph(item.getSelectionID());
+			actualGlyph = grid_.getGlyph(item.getPrimaryID());
 
 			if (actualGlyph == null)
 				continue;
@@ -1101,5 +1103,13 @@ public class GLGlyph
 	public int getNumberOfSelections(ESelectionType eSelectionType)
 	{
 		throw new IllegalStateException("Not implemented yet. Do this now!");
+	}
+
+	@Override
+	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
+			Collection<SelectionCommand> colSelectionCommand)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

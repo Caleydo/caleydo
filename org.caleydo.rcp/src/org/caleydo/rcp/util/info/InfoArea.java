@@ -10,7 +10,7 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionItem;
+import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
 import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -150,7 +150,7 @@ public class InfoArea
 				int iItemsToLoad = 0;
 				// SelectionItem selectionItem;
 				
-				for (SelectionItem selectionItem : selectionDelta)
+				for (SelectionDeltaItem selectionItem : selectionDelta)
 				{
 					if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER
 							|| selectionItem.getSelectionType() == ESelectionType.SELECTION)
@@ -171,13 +171,13 @@ public class InfoArea
 				
 						Set<String> sSetRefSeqID = GeneralManager.get().getIDMappingManager()
 								.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA,
-										selectionItem.getSelectionID());
+										selectionItem.getPrimaryID());
 				
 						String sOutput = "";
 						sOutput = sOutput
 								+ GeneralManager.get().getIDMappingManager().getID(
 										EMappingType.DAVID_2_GENE_SYMBOL,
-										selectionItem.getSelectionID());
+										selectionItem.getPrimaryID());
 				
 						for (String sRefSeqID : sSetRefSeqID)
 						{
@@ -304,14 +304,6 @@ public class InfoArea
 //		});
 //	}
 
-	@Override
-	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
-			EMediatorType mediatorType)
-	{
-		// TODO Auto-generated method stub
-		
-	}
-
 	public static InfoArea getInfoArea()
 	{
 		return infoArea;
@@ -325,5 +317,13 @@ public class InfoArea
 	protected AGLEventListener getUpdateTriggeringView()
 	{
 		return updateTriggeringView;
+	}
+
+	@Override
+	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
+			Collection<SelectionCommand> colSelectionCommand, EMediatorType mediatorType)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

@@ -1,45 +1,70 @@
 package org.caleydo.core.data.selection;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Iterator;
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.util.collection.UniqueList;
 
 /**
+ * Implementation of {@link IVirtualArrayDelta}
  * 
  * @author Alexander Lex
- *
+ * 
  */
 public class VirtualArrayDelta
 	implements IVirtualArrayDelta
 {
-	private ArrayList<VADeltaItem> alDeltaItems;
+	private UniqueList<VADeltaItem> ulDeltaItems;
 
 	private EIDType idType;
-	
+	private EIDType secondaryIDType;
+
 	public VirtualArrayDelta(EIDType idType)
 	{
 		this.idType = idType;
-		alDeltaItems = new ArrayList<VADeltaItem>();
+		ulDeltaItems = new UniqueList<VADeltaItem>();
 	}
-	
+
+	public VirtualArrayDelta(EIDType idType, EIDType secondaryIDType)
+	{
+		this(idType);
+		this.secondaryIDType = secondaryIDType;
+	}
+
+	@Override
 	public EIDType getIDType()
 	{
 		return idType;
 	}
-	
-//	public Collection<VADeltaItem> getSelectionData()
-//	{
-//		return alDeltaItems;
-//	}
-	
+
+	@Override
+	public EIDType getSecondaryIDType()
+	{
+		return secondaryIDType;
+	}
+
+	@Override
 	public void add(VADeltaItem item)
 	{
-		alDeltaItems.add(item);
+		ulDeltaItems.add(item);
 	}
 
 	@Override
 	public Iterator<VADeltaItem> iterator()
 	{
-		return alDeltaItems.iterator();
+		return ulDeltaItems.iterator();
+	}
+
+	@Override
+	public Collection<VADeltaItem> getAllItems()
+	{
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int size()
+	{
+		return ulDeltaItems.size();
 	}
 }

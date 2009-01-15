@@ -4,29 +4,30 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 /**
- * A SelectionItem represents one selection in the framework. It holds the id of
- * the selected element, the type of the selection as defined in
+ * A SelectionDeltaItem represents one selection in the framework. It holds the
+ * id of the selected element, the type of the selection as defined in
  * {@link ESelectionType} and optionally an internal selection ID
  * 
  * @author Alexander
  * 
  */
-public class SelectionItem
+public class SelectionDeltaItem
+	implements IDeltaItem
 {
-	private int iSelectionID = -1;
+	private int iPrimaryID = -1;
 	private ESelectionType selectionType;
-	private int iInternalID = -1;
+	private int iSecondaryID = -1;
 	private ArrayList<Integer> alConnectionID;
 
 	/**
 	 * Constructor
 	 * 
-	 * @param iSelectionID the id of the selected element
+	 * @param iPrimaryID the id of the selected element
 	 * @param selectionType the type of the selection
 	 */
-	public SelectionItem(int iSelectionID, ESelectionType selectionType)
+	public SelectionDeltaItem(int iSelectionID, ESelectionType selectionType)
 	{
-		this.iSelectionID = iSelectionID;
+		this.iPrimaryID = iSelectionID;
 		this.selectionType = selectionType;
 		alConnectionID = new ArrayList<Integer>();
 	}
@@ -35,14 +36,14 @@ public class SelectionItem
 	 * Constructor. This constructor allows to specify the optional internal id
 	 * in the selection
 	 * 
-	 * @param iSelectionID the id of the selected element
+	 * @param iPrimaryID the id of the selected element
 	 * @param selectionType the type of the selection
-	 * @param iInternalID the internal id which maps to the selectionID
+	 * @param iSecondaryID the internal id which maps to the selectionID
 	 */
-	public SelectionItem(int iSelectionID, ESelectionType selectionType, int iInternalID)
+	public SelectionDeltaItem(int iSelectionID, ESelectionType selectionType, int iInternalID)
 	{
 		this(iSelectionID, selectionType);
-		this.iInternalID = iInternalID;
+		this.iSecondaryID = iInternalID;
 		alConnectionID = new ArrayList<Integer>();
 	}
 
@@ -56,14 +57,10 @@ public class SelectionItem
 		alConnectionID.add(iConnectionID);
 	}
 
-	/**
-	 * Returns the selection ID
-	 * 
-	 * @return the selection ID
-	 */
-	public int getSelectionID()
+	@Override
+	public int getPrimaryID()
 	{
-		return iSelectionID;
+		return iPrimaryID;
 	}
 
 	/**
@@ -82,9 +79,9 @@ public class SelectionItem
 	 * 
 	 * @return the internal id
 	 */
-	public int getInternalID()
+	public int getSecondaryID()
 	{
-		return iInternalID;
+		return iSecondaryID;
 	}
 
 	/**
@@ -105,5 +102,31 @@ public class SelectionItem
 	public void setSelectionType(ESelectionType selectionType)
 	{
 		this.selectionType = selectionType;
+	}
+
+	@Override
+	public Object clone()
+	{
+		try
+		{
+			return super.clone();
+		}
+		catch (CloneNotSupportedException e)
+		{
+			throw new IllegalStateException(
+					"Something went wrong with the cloning, caught CloneNotSupportedException");
+		}
+	}
+
+	@Override
+	public void setPrimaryID(int iPrimaryID)
+	{
+		this.iPrimaryID = iPrimaryID;
+	}
+
+	@Override
+	public void setSecondaryID(int iSecondaryID)
+	{
+		this.iSecondaryID = iSecondaryID;
 	}
 }

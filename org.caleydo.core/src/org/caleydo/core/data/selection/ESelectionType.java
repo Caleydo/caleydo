@@ -12,16 +12,7 @@ public enum ESelectionType
 	SELECTION,
 	MOUSE_OVER,
 	DESELECTED,
-	/**
-	 * Type that is used only to signal initial addition (should only be in
-	 * {@link SelectionDelta}), do not use this for element associations
-	 */
-	ADD,
-	/**
-	 * Type that is used to signal removal of an element. Elements moved to
-	 * REMOVE are not recoverable.
-	 */
-	REMOVE,
+
 
 	/**
 	 * Pathway neighborhoods TODO: if needed more use the hash map in the

@@ -193,7 +193,8 @@ public class TabularDataViewRep
 			@Override
 			public void modifyText(ModifyEvent e)
 			{
-				iStartParseFileAtLine = Integer.valueOf(txtStartParseAtLine.getText()).intValue();
+				iStartParseFileAtLine = Integer.valueOf(txtStartParseAtLine.getText())
+						.intValue();
 
 				createDataPreviewTable("\t");
 				composite.pack();
@@ -552,7 +553,7 @@ public class TabularDataViewRep
 				colSelectionCommand.add(new SelectionCommand(ESelectionCommandType.CLEAR,
 						ESelectionType.MOUSE_OVER));
 
-				triggerUpdate(EMediatorType.SELECTION_MEDIATOR, tmpDelta, colSelectionCommand);
+				triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, tmpDelta, colSelectionCommand);
 			}
 		});
 
@@ -1060,11 +1061,18 @@ public class TabularDataViewRep
 	}
 
 	@Override
-	public void triggerUpdate(EMediatorType eMediatorType, ISelectionDelta selectionDelta,
+	public void triggerSelectionUpdate(EMediatorType eMediatorType, ISelectionDelta selectionDelta,
 			Collection<SelectionCommand> colSelectionCommand)
 	{
 		GeneralManager.get().getEventPublisher().triggerUpdate(eMediatorType, this,
 				selectionDelta, colSelectionCommand);
+	}
+	
+	@Override
+	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
+			Collection<SelectionCommand> colSelectionCommand)
+	{
+		// TODO Auto-generated method stub		
 	}
 
 	@Override
@@ -1073,12 +1081,14 @@ public class TabularDataViewRep
 	{
 		// TODO Auto-generated method stub
 	}
-	
+
 	@Override
 	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
-			EMediatorType mediatorType)
+			Collection<SelectionCommand> colSelectionCommand, EMediatorType mediatorType)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
+
+
 }

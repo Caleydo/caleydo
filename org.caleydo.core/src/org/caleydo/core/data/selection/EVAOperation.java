@@ -13,11 +13,20 @@ public enum EVAOperation
 	 */
 	APPEND,
 	/**
+	 * Append an element at the end of a virtual array, if the element is not
+	 * yet contained in the list
+	 */
+	APPEND_UNIQUE,
+	/**
 	 * Add an element at a specified index
 	 */
 	ADD,
 	/**
 	 * Remove an element at a specified index
 	 */
-	REMOVE
+	REMOVE,
+	/**
+	 * Remove a specific element
+	 */
+	REMOVE_ELEMENT
 }

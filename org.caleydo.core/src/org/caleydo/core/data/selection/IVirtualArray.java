@@ -30,16 +30,26 @@ public interface IVirtualArray
 	public Integer get(int iIndex);
 
 	/**
-	 * Adds a element to the end of the list.
-	 * 
-	 * TODO: rename to append?
+	 * Adds an element to the end of the list.
 	 * 
 	 * @param iNewElement the index to the collection
-	 * @throws IllegalArgumentException if the value of the new element is
-	 *             larger than allowed. The maximum allowed value is the length
-	 *             of the collection which is managed - 1
+	 * @exception IllegalArgumentException if the value of the new element is
+	 *                larger than allowed. The maximum allowed value is the
+	 *                length of the collection which is managed - 1
 	 */
-	public void add(Integer iNewElement);
+	public void append(Integer iNewElement);
+
+	/**
+	 * Adds an element to the end of the list, if the element is not already
+	 * contained.
+	 * 
+	 * @param iNewElement the index to the collection
+	 * @exception IllegalArgumentException if the value of the new element is
+	 *                larger than allowed. The maximum allowed value is the
+	 *                length of the collection which is managed - 1
+	 * @return true if the array was modified, else false
+	 */
+	public boolean appendUnique(Integer iNewElement);
 
 	/**
 	 * Inserts the specified element at the specified position in this list.
@@ -106,7 +116,8 @@ public interface IVirtualArray
 	 * elements to the left (subtracts one from their indices).
 	 * </p>
 	 * <p>
-	 * Notice that this has a complexity of O(n)
+	 * Notice that this has a complexity of O(n) TODO: probably add a higher
+	 * performance version, with an additional hash map
 	 * </p>
 	 * 
 	 * @param iElement the element to be removed
@@ -149,7 +160,7 @@ public interface IVirtualArray
 	 * @return the list containing the storage indices
 	 */
 	public ArrayList<Integer> getIndexList();
-	
+
 	/**
 	 * Applies the operations specified in the delta to the virtual array
 	 * 

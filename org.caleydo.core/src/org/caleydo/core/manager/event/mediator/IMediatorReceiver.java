@@ -32,8 +32,9 @@ public interface IMediatorReceiver
 	 * @param eMediatorType for which mediator
 	 * @param eventTrigger the caller
 	 * @param delta the delta containing all operations to be executed
+	 * @param colSelectionCommand TODO
 	 */
 	public void handleVAUpdate(IUniqueObject eventTrigger,
-			IVirtualArrayDelta delta, EMediatorType eMediatorType);
+			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand, EMediatorType eMediatorType);
 
 }

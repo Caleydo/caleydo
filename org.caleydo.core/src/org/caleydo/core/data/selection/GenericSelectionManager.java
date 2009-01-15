@@ -200,9 +200,7 @@ public class GenericSelectionManager
 			alSelectionTypes = new ArrayList<ESelectionType>();
 			for (ESelectionType selectionType : ESelectionType.values())
 			{
-				if (selectionType != ESelectionType.ADD
-						&& selectionType != ESelectionType.REMOVE)
-					alSelectionTypes.add(selectionType);
+				alSelectionTypes.add(selectionType);
 			}
 		}
 
@@ -219,9 +217,9 @@ public class GenericSelectionManager
 
 	}
 
-	/**
+   /**
 	 * Initialize by adding the elements one by one. No delta writing. Do this only in the initialization phase.
-	 * Use {@link #safeAdd(int) later.
+	 * Use {@link #add(int) later.
 	 * 
 	 * @param iElementID
 	 */
@@ -245,11 +243,11 @@ public class GenericSelectionManager
 
 	/**
 	 * Use this to add elements at run-time
+	 * 
 	 * @param iElementID
 	 */
-	private void safeAdd(int iElementID)
+	public void add(int iElementID)
 	{
-
 		for (ESelectionType selectionType : alSelectionTypes)
 		{
 			if (checkStatus(selectionType, iElementID))
@@ -260,9 +258,46 @@ public class GenericSelectionManager
 			}
 		}
 		initialAdd(iElementID);
-		if (virtualArray != null)
-			virtualArray.add(iElementID);
+	}
 
+	/**
+	 * Removes a particular element from the selection manager, no matter what
+	 * the type
+	 * 
+	 * @param iElementID the element to be removed
+	 */
+	public void remove(int iElementID)
+	{
+		for (ESelectionType selectionType : alSelectionTypes)
+		{
+			if (checkStatus(selectionType, iElementID))
+			{
+				int iNumTimesAdded = hashSelectionTypes.get(selectionType).get(iElementID) - 1;
+				if (iNumTimesAdded == 0)
+				{
+					hashSelectionTypes.get(selectionType).remove(iElementID);
+					virtualArray.removeByElement(iElementID);
+				}
+				else
+					hashSelectionTypes.get(selectionType).put(iElementID, iNumTimesAdded);
+
+				return;
+			}
+		}
+	}
+
+	/**
+	 * Removes all elements of a particular type from the selection manager
+	 * 
+	 * @param type
+	 */
+	public void removeElements(ESelectionType type)
+	{
+		HashMap<Integer, Integer> elementMap = hashSelectionTypes.get(type);
+		for (Integer element : elementMap.keySet())
+		{
+			remove(element);
+		}
 	}
 
 	/**
@@ -326,9 +361,6 @@ public class GenericSelectionManager
 	 */
 	public void clearSelection(ESelectionType eSelectionType)
 	{
-		if (eSelectionType == ESelectionType.REMOVE)
-			return;
-
 		if (eSelectionType == eNormalType)
 			throw new IllegalArgumentException(
 					"SelectionManager: cannot reset selections of normal selection");
@@ -358,14 +390,26 @@ public class GenericSelectionManager
 	 */
 	public Set<Integer> getElements(ESelectionType eSelectionType)
 	{
-		if (eSelectionType == ESelectionType.REMOVE || eSelectionType == ESelectionType.ADD)
-			throw new IllegalArgumentException(
-					"Can not return removed values, illegal to call with add since added values are stored with normal");
-
 		if (hashSelectionTypes.containsKey(eSelectionType))
 			return hashSelectionTypes.get(eSelectionType).keySet();
 
 		return null;
+	}
+
+	/**
+	 * Returns all elements contained in the selection manager
+	 * 
+	 * @return
+	 */
+	public Set<Integer> getAllElements()
+	{
+		Set<Integer> allElements = new HashSet<Integer>();
+		for (HashMap<Integer, Integer> elementMap : hashSelectionTypes.values())
+		{
+			allElements.addAll(elementMap.keySet());
+		}
+
+		return allElements;
 	}
 
 	/**
@@ -383,22 +427,12 @@ public class GenericSelectionManager
 		// check wheter the type is storable
 		if (!isStorableType(targetType))
 		{
-			// ADD and REMOVE are ok, but other types that are not in the
-			// alSelectionTypes are not, so exception
-			if (!(targetType == ESelectionType.ADD || targetType == ESelectionType.REMOVE))
-				throw new IllegalArgumentException("Illegal selection type: " + targetType);
+			throw new IllegalArgumentException("Illegal selection type: " + targetType);
 		}
 		// return if already in the target type
 		if (isStorableType(targetType)
 				&& hashSelectionTypes.get(targetType).containsKey(iElementID))
 			return;
-
-		if (targetType == ESelectionType.ADD)
-		{
-			// we don't write deltas for adds
-			safeAdd(iElementID);
-			return;
-		}
 
 		if (!isConnectedType(targetType))
 		{
@@ -414,22 +448,9 @@ public class GenericSelectionManager
 			{
 				Integer iNumTimesAdded = hashSelectionTypes.get(currentType)
 						.remove(iElementID);
-				if (targetType == ESelectionType.REMOVE)
-				{
-					iNumTimesAdded--;
-				}
-				if (iNumTimesAdded == 0)
-				{
-					if (virtualArray != null)
-						virtualArray.removeByElement(iElementID);
-				}
-				else
-				{
-					if (targetType != ESelectionType.REMOVE)
-						hashSelectionTypes.get(targetType).put(iElementID, iNumTimesAdded);
-					else
-						hashSelectionTypes.get(currentType).put(iElementID, iNumTimesAdded);
-				}
+
+				hashSelectionTypes.get(targetType).put(iElementID, iNumTimesAdded);
+
 				// not sure whether we should add remove here if iNumTimesAdded
 				// is > 0
 				if (bIsDeltaWritingEnabled)
@@ -493,12 +514,8 @@ public class GenericSelectionManager
 	 */
 	public void moveType(ESelectionType srcType, ESelectionType targetType)
 	{
-
-		if (!isStorableType(srcType))
-			throw new IllegalArgumentException("Can not move from REMOVE or ADD type");
-
 		// storable types and remove are allowed here
-		if (!(isStorableType(targetType) || targetType == ESelectionType.REMOVE))
+		if (!isStorableType(targetType) || !isStorableType(srcType))
 		{
 			throw new IllegalArgumentException("Illegal Type " + targetType + "for targetType");
 		}
@@ -507,11 +524,9 @@ public class GenericSelectionManager
 		for (Integer value : tempHash.keySet())
 		{
 			selectionDelta.addSelection(value, targetType);
-			if (targetType == ESelectionType.REMOVE)
-				virtualArray.removeByElement(value);
 		}
-		if (targetType != ESelectionType.REMOVE)
-			hashSelectionTypes.get(targetType).putAll(tempHash);
+
+		hashSelectionTypes.get(targetType).putAll(tempHash);
 
 		hashSelectionTypes.put(srcType, new HashMap<Integer, Integer>());
 	}
@@ -596,19 +611,19 @@ public class GenericSelectionManager
 		{
 
 			returnDelta = new SelectionDelta(externalIDType, internalIDType);
-			for (SelectionItem item : selectionDelta)
+			for (SelectionDeltaItem item : selectionDelta)
 			{
 				Integer iExternalID = GeneralManager.get().getIDMappingManager().getID(
-						internalToExternalMapping, item.getSelectionID());
+						internalToExternalMapping, item.getPrimaryID());
 				if (iExternalID == null || iExternalID == -1)
 				{
 					GeneralManager.get().getLogger().log(Level.WARNING,
-							"No external ID for " + item.getSelectionID());
+							"No external ID for " + item.getPrimaryID());
 					continue;
 				}
 
-				SelectionItem newItem = returnDelta.addSelection(iExternalID, item
-						.getSelectionType(), item.getSelectionID());
+				SelectionDeltaItem newItem = returnDelta.addSelection(iExternalID, item
+						.getSelectionType(), item.getPrimaryID());
 				for (Integer iConnectionID : item.getConnectionID())
 				{
 					newItem.setConnectionID(iConnectionID);
@@ -619,7 +634,7 @@ public class GenericSelectionManager
 		selectionDelta = new SelectionDelta(internalIDType);
 
 		// int iCount = 0;
-		// for (SelectionItem item : returnDelta)
+		// for (SelectionDeltaItem item : returnDelta)
 		// {
 		// System.out.println("Number: " + iCount++ + " ID: " +
 		// item.getSelectionID()
@@ -640,7 +655,7 @@ public class GenericSelectionManager
 	// ISelectionDelta originalDelta = getDelta();
 	// ISelectionDelta newDelta = new SelectionDelta(originalDelta.getIDType());
 	//
-	// for (SelectionItem item : originalDelta)
+	// for (SelectionDeltaItem item : originalDelta)
 	// {
 	//
 	// if (item.getSelectionType() == ESelectionType.REMOVE)
@@ -663,6 +678,7 @@ public class GenericSelectionManager
 	 * @return the SelectionDelta containing all entries in the selection
 	 *         manager
 	 */
+	@Deprecated
 	public SelectionDelta getCompleteDelta()
 	{
 		SelectionDelta tempDelta = new SelectionDelta(externalIDType, internalIDType);
@@ -706,6 +722,51 @@ public class GenericSelectionManager
 	}
 
 	/**
+	 * Creates a delta for a virtual array containing all element of the manager
+	 * intended for broadcasts. The type of the delta is
+	 * {@link EVAOperation#APPEND_UNIQUE}
+	 * 
+	 * @return the delta containing all elements
+	 */
+	public VirtualArrayDelta getBroadcastVADelta()
+	{
+		EIDType idType = externalIDType;
+		if (idType == null)
+		{
+			idType = internalIDType;
+		}
+		VirtualArrayDelta tempDelta = new VirtualArrayDelta(idType);
+		HashMap<Integer, Integer> tempHash;
+		for (ESelectionType selectionType : alSelectionTypes)
+		{
+			tempHash = hashSelectionTypes.get(selectionType);
+			for (Integer iElement : tempHash.keySet())
+			{
+				Integer iSelectionID = -1;
+				if (externalToInternalMapping != null)
+				{
+					iSelectionID = GeneralManager.get().getIDMappingManager().getID(
+							internalToExternalMapping, iElement);
+					if (iSelectionID == null || iSelectionID == -1)
+					{
+						GeneralManager.get().getLogger().log(Level.WARNING,
+								"No external ID for " + iElement);
+						continue;
+					}
+				}
+				else
+				{
+					iSelectionID = iElement;
+				}
+				tempDelta.add(VADeltaItem.appendUnique(iSelectionID));
+
+			}
+		}
+
+		return tempDelta;
+	}
+
+	/**
 	 * <p>
 	 * Merge an external selection delta into the local selection, and return a
 	 * possibly converted selection
@@ -730,18 +791,18 @@ public class GenericSelectionManager
 	public void setDelta(ISelectionDelta selectionDelta)
 	{
 		bIsDeltaWritingEnabled = false;
-		for (SelectionItem item : selectionDelta)
+		for (SelectionDeltaItem item : selectionDelta)
 		{
 
 			if (selectionDelta.getIDType() == internalIDType)
 			{
 				int iSelectionID = 0;
-				iSelectionID = item.getSelectionID();
+				iSelectionID = item.getPrimaryID();
 
 				if (iSelectionID == -1)
 				{
 					GeneralManager.get().getLogger().log(Level.WARNING,
-							"No internal id for " + item.getSelectionID());
+							"No internal id for " + item.getPrimaryID());
 
 					continue;
 				}
@@ -760,7 +821,7 @@ public class GenericSelectionManager
 			{
 				// TODO check whether external id type is ok
 
-				Set<Integer> iTmpSetID = convertExternalToInternal(item.getSelectionID());
+				Set<Integer> iTmpSetID = convertExternalToInternal(item.getPrimaryID());
 
 				if (iTmpSetID == null)
 					continue;
@@ -770,7 +831,7 @@ public class GenericSelectionManager
 					if (iTmpSelectionID == null || iTmpSelectionID == -1)
 					{
 						GeneralManager.get().getLogger().log(Level.WARNING,
-								"No internal id for " + item.getSelectionID());
+								"No internal id for " + item.getPrimaryID());
 
 						continue;
 					}
@@ -794,6 +855,13 @@ public class GenericSelectionManager
 
 	}
 
+	/**
+	 * Set a virtual array delta to reflect changes to be made due to VA
+	 * operations in the selection manager. When the virtual array is managed by
+	 * the selection manager the delta is also applied to the virtual array.
+	 * 
+	 * @param delta the delta containing the changes
+	 */
 	public void setVADelta(IVirtualArrayDelta delta)
 	{
 		if (virtualArray == null)
@@ -802,23 +870,32 @@ public class GenericSelectionManager
 		}
 		if (delta.getIDType() == internalIDType)
 		{
-
+			virtualArray.setDelta(delta);
 			for (VADeltaItem item : delta)
 			{
 				// TODO mapping stuff
 				switch (item.getType())
 				{
 					case ADD:
-						addToType(ESelectionType.ADD, item.getElement());
+						add(item.getPrimaryID());
+						break;
+					case APPEND:
+					case APPEND_UNIQUE:
+						add(item.getPrimaryID());
+						break;
+					case REMOVE_ELEMENT:
+						remove(item.getPrimaryID());
 						break;
 					case REMOVE:
-						addToType(ESelectionType.REMOVE, virtualArray.get(item.getIndex()));
+						remove(virtualArray.get(item.getIndex()));
+						break;
+
+					default:
+						throw new IllegalStateException("Unhandled condition");
 				}
 			}
-			virtualArray.setDelta(delta);
+
 		}
-		
-		
 
 	}
 
@@ -886,6 +963,15 @@ public class GenericSelectionManager
 		}
 	}
 
+	/**
+	 * Adds a connection id which is used for connection line bundling to a
+	 * particular selection
+	 * 
+	 * @param iConnectionID the connection id used by the connection line
+	 *            manager
+	 * @param iSelectionID the selection id which has to be already stored in
+	 *            the manager
+	 */
 	public void addConnectionID(int iConnectionID, int iSelectionID)
 	{
 		if (!hashConnectionToElementID.containsKey(iConnectionID))
@@ -895,20 +981,31 @@ public class GenericSelectionManager
 
 		hashConnectionToElementID.get(iConnectionID).add(iSelectionID);
 
-		for (SelectionItem item : selectionDelta)
+		for (SelectionDeltaItem item : selectionDelta)
 		{
-			if (item.getSelectionID() == iSelectionID)
+			if (item.getPrimaryID() == iSelectionID)
 			{
 				item.setConnectionID(iConnectionID);
 			}
 		}
 	}
 
+	/**
+	 * Remove a connection ID from the manager
+	 * 
+	 * @param iConnectionID the connection ID
+	 */
 	public void clearConnectionID(int iConnectionID)
 	{
 		hashConnectionToElementID.remove(iConnectionID);
 	}
 
+	/**
+	 * Returns a collection of connection ID for one element.
+	 * 
+	 * @param iElementID
+	 * @return the collection ids
+	 */
 	public Collection<Integer> getConnectionForElementID(int iElementID)
 	{
 		Collection<Integer> colConnectionIDs = new ArrayList<Integer>();

@@ -61,9 +61,10 @@ public interface IMediator
 	 * 
 	 * @param eventTrigger the caller
 	 * @param delta the delta containing all operations to be executed
+	 * @param colSelectionCommand a command to be executed on the manager (can be null if not necessary)
 	 */
 	public void triggerVAUpdate(IUniqueObject eventTrigger,
-			IVirtualArrayDelta delta);
+			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand);
 	
 	/**
 	 * Trigger an event, signaling that something has happened

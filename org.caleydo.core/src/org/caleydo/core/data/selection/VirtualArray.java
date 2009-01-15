@@ -3,6 +3,7 @@ package org.caleydo.core.data.selection;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.logging.Level;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -69,7 +70,7 @@ public class VirtualArray
 	}
 
 	@Override
-	public void add(Integer iNewElement)
+	public void append(Integer iNewElement)
 	{
 		if (iNewElement < iLength)
 			iAlVirtualArray.add(iNewElement);
@@ -78,6 +79,17 @@ public class VirtualArray
 					"Tried to add a element to a virtual array that is not within the "
 							+ "allowed range (which is determined by the length of the collection "
 							+ "on which the virtual array is applied");
+	}
+
+	@Override
+	public boolean appendUnique(Integer iNewElement)
+	{
+		if (indexOf(iNewElement) != -1)
+			return false;
+
+		append(iNewElement);
+		return true;
+
 	}
 
 	@Override
@@ -164,6 +176,7 @@ public class VirtualArray
 	@Override
 	public int indexOf(int iElement)
 	{
+		System.out.println("Costly indexof operation on a va of size: " + size());
 		return iAlVirtualArray.indexOf(iElement);
 	}
 
@@ -181,10 +194,13 @@ public class VirtualArray
 			switch (item.getType())
 			{
 				case ADD:
-					add(item.getIndex(), item.getElement());
+					add(item.getIndex(), item.getPrimaryID());
 					break;
 				case APPEND:
-					add(item.getElement());
+					append(item.getPrimaryID());
+					break;
+				case APPEND_UNIQUE:
+					appendUnique(item.getPrimaryID());
 					break;
 				case REMOVE:
 					int iIndex = item.getIndex();
@@ -194,6 +210,8 @@ public class VirtualArray
 					iLastRemovedIndex = iIndex;
 					remove(item.getIndex());
 					break;
+				case REMOVE_ELEMENT:
+					removeByElement(item.getPrimaryID());
 
 			}
 		}

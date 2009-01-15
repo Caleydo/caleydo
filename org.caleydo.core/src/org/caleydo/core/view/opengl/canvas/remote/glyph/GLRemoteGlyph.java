@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -218,7 +219,7 @@ public class GLRemoteGlyph
 	}
 
 	@Override
-	public void broadcastElements(ESelectionType type)
+	public void broadcastElements(EVAOperation type)
 	{
 
 	}
