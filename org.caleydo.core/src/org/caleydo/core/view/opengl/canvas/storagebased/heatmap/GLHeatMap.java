@@ -260,12 +260,12 @@ public class GLHeatMap
 			else
 				fLeftOffset = 0.15f;
 			// GLHelperFunctions.drawAxis(gl);
-			if (detailLevel == EDetailLevel.HIGH)
-			{
-				colorMappingBar.render(gl, fLeftOffset,
-						(viewFrustum.getHeight() - colorMappingBar.getHeight()) / 2, 0.2f);
-				gl.glTranslatef(fLeftOffset + colorMappingBar.getWidth(), 0, 0);
-			}
+//			if (detailLevel == EDetailLevel.HIGH)
+//			{
+//				colorMappingBar.render(gl, fLeftOffset,
+//						(viewFrustum.getHeight() - colorMappingBar.getHeight()) / 2, 0.2f);
+//				gl.glTranslatef(fLeftOffset + colorMappingBar.getWidth(), 0, 0);
+//			}
 
 			if (!bRenderStorageHorizontally)
 			{

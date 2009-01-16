@@ -403,10 +403,18 @@ public abstract class AStorageBasedView
 		}
 		else if (delta.getIDType() == EIDType.DAVID)
 		{
+			contentSelectionManager.executeSelectionCommands(colSelectionCommand);
+			
 			IVirtualArrayDelta convertedDelta = DeltaConverter.convertDelta(
 					EIDType.EXPRESSION_INDEX, delta);
 			contentSelectionManager.setVADelta(convertedDelta);
 		}
+		else if (delta.getIDType() == EIDType.EXPRESSION_INDEX)
+		{
+			contentSelectionManager.executeSelectionCommands(colSelectionCommand);
+			contentSelectionManager.setVADelta(delta);
+		}
+		reactOnExternalSelection();
 		setDisplayListDirty();
 	}
 
