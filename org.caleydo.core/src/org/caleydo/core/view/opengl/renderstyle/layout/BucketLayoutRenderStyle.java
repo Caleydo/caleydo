@@ -72,8 +72,12 @@ public class BucketLayoutRenderStyle
 
 			fTiltAngleRad_Horizontal = (float) Math
 					.acos(((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2)
-							/ ((float) Math.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
-											+ Math.pow(((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2), 2))));
+							/ ((float) Math
+									.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
+											+ Math
+													.pow(
+															((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2),
+															2))));
 			fTiltAngleRad_Vertical = Vec3f.convertGrad2Radiant(90);
 
 			float fScalingCorrection = ((float) Math.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
@@ -221,23 +225,22 @@ public class BucketLayoutRenderStyle
 	}
 
 	@Override
-	public RemoteLevel initPoolLevel(boolean bIsZoomedIn,
-			int iSelectedRemoteLevelElementID)
+	public RemoteLevel initPoolLevel(boolean bIsZoomedIn, int iSelectedRemoteLevelElementID)
 	{
 		Transform transform;
 
 		float fSelectedScaling = 1;
 		float fYAdd = 1.9f;
 		float fZ = 0;
-		
-//		if (bIsZoomedIn)
-//		{
-//			fZ = 0f;
-//		}
-//		else
-//		{
-			fZ = 4.1f;
-//		}
+
+		// if (bIsZoomedIn)
+		// {
+		// fZ = 0f;
+		// }
+		// else
+		// {
+		fZ = 4.1f;
+		// }
 
 		int iRemoteLevelElementIndex = 0;
 		for (RemoteLevelElement element : poolLevel.getAllElements())
@@ -272,7 +275,8 @@ public class BucketLayoutRenderStyle
 	public RemoteLevel initMemoLevel()
 	{
 		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f(2f / fAspectRatio - fPoolLayerWidth + 0.12f, -2, 4.01f));
+		transform.setTranslation(new Vec3f(2f / fAspectRatio - fPoolLayerWidth + 0.12f, -2,
+				4.01f));
 		transform.setScale(new Vec3f(fScalingFactorSelectionLevel,
 				fScalingFactorSelectionLevel, fScalingFactorSelectionLevel));
 

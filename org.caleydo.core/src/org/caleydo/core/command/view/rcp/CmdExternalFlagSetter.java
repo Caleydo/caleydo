@@ -43,15 +43,15 @@ public class CmdExternalFlagSetter
 		Object viewObject = generalManager.getViewGLCanvasManager()
 				.getGLEventListener(iViewId);
 
-		
 		if (viewObject instanceof GLPathway)
 		{
 			// Pathway settings should apply to all pathways
-			for (AGLEventListener glEventListener : generalManager.getViewGLCanvasManager().getAllGLEventListeners())
+			for (AGLEventListener glEventListener : generalManager.getViewGLCanvasManager()
+					.getAllGLEventListeners())
 			{
 				if (!(glEventListener instanceof GLPathway))
 					continue;
-				
+
 				switch (externalFlagSetterType)
 				{
 					case PATHWAY_GENE_MAPPING:
@@ -63,7 +63,7 @@ public class CmdExternalFlagSetter
 					case PATHWAY_TEXTURES:
 						((GLPathway) glEventListener).enablePathwayTextures(bFlag);
 						break;
-				}				
+				}
 			}
 
 		}

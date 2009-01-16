@@ -10,7 +10,7 @@ import java.util.StringTokenizer;
  * 
  */
 public final class StringConversionTool
-{	
+{
 	/**
 	 * Convert a String sInput into an array of integers. The Int array size is
 	 * asigns dynamically depending on the size of provided integer values

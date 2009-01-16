@@ -238,55 +238,57 @@ public class CommandFactory
 		return createdCommand;
 	}
 
-//	@Override
-//	public ICommand createCommandQueue(final String sCmdType, final String sProcessType,
-//			final int iCmdId, final int iCmdQueueId, final int sQueueThread,
-//			final int sQueueThreadWait)
-//	{
-//
-//		ECommandType queueType;
-//
-//		/**
-//		 * Create a new uniqueId if necessary
-//		 */
-//		int iNewUniqueId = iCmdId;
-//		if (iCmdId < 0)
-//		{
-//			// TODO: review when implementing ID management
-//			iNewUniqueId = -1; // commandManager.createId(null);
-//		}
-//		/**
-//		 * End: Create a new uniqueId if necessary
-//		 */
-//
-//		// try
-//		// {
-//		queueType = ECommandType.valueOf(sCmdType);
-//		// }
-//		// catch (IllegalArgumentException iae)
-//		// {
-//		// throw new CaleydoRuntimeException(
-//		// "Undefined CommandQueue key= [" + sCmdType + "]",
-//		// CaleydoRuntimeExceptionType.SAXPARSER);
-//		// }
-//
-//		switch (queueType)
-//		{
-//			case COMMAND_QUEUE_OPEN:
-//			{
-//				ICommand cmdQueue = new CommandQueueVector(queueType, iCmdQueueId);
-//				return cmdQueue;
-//			}
-//
-//			case COMMAND_QUEUE_RUN:
-//				return new CmdSystemRunCmdQueue(queueType, iCmdQueueId);
-//
-//			default:
-//				throw new IllegalStateException("Unsupported CommandQueue key= [" + sCmdType
-//						+ "]");
-//		}
-//
-//	}
+	// @Override
+	// public ICommand createCommandQueue(final String sCmdType, final String
+	// sProcessType,
+	// final int iCmdId, final int iCmdQueueId, final int sQueueThread,
+	// final int sQueueThreadWait)
+	// {
+	//
+	// ECommandType queueType;
+	//
+	// /**
+	// * Create a new uniqueId if necessary
+	// */
+	// int iNewUniqueId = iCmdId;
+	// if (iCmdId < 0)
+	// {
+	// // TODO: review when implementing ID management
+	// iNewUniqueId = -1; // commandManager.createId(null);
+	// }
+	// /**
+	// * End: Create a new uniqueId if necessary
+	// */
+	//
+	// // try
+	// // {
+	// queueType = ECommandType.valueOf(sCmdType);
+	// // }
+	// // catch (IllegalArgumentException iae)
+	// // {
+	// // throw new CaleydoRuntimeException(
+	// // "Undefined CommandQueue key= [" + sCmdType + "]",
+	// // CaleydoRuntimeExceptionType.SAXPARSER);
+	// // }
+	//
+	// switch (queueType)
+	// {
+	// case COMMAND_QUEUE_OPEN:
+	// {
+	// ICommand cmdQueue = new CommandQueueVector(queueType, iCmdQueueId);
+	// return cmdQueue;
+	// }
+	//
+	// case COMMAND_QUEUE_RUN:
+	// return new CmdSystemRunCmdQueue(queueType, iCmdQueueId);
+	//
+	// default:
+	// throw new IllegalStateException("Unsupported CommandQueue key= [" +
+	// sCmdType
+	// + "]");
+	// }
+	//
+	// }
 
 	/**
 	 * Since the last created command is stored its reference is returned. Note:

@@ -3,7 +3,6 @@ package org.caleydo.core.view.opengl.canvas.panel;
 import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.logging.Level;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.mapping.EIDType;
@@ -14,10 +13,9 @@ import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionDeltaItem;
-import org.caleydo.core.manager.event.mediator.EMediatorType;
-import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
-import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.IMediatorReceiver;
+import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -155,49 +153,51 @@ public class GLSelectionPanel
 			EMediatorType eMediatorType)
 	{
 
-//		generalManager.getLogger().log(Level.FINE,
-//				"Update called by " + eventTrigger.getClass().getSimpleName());
-//
-//		if (eMediatorType == EMediatorType.PROPAGATION_MEDIATOR)
-//		{
-//			selectionManager.resetSelectionManager();
-//			selectionManager.setDelta(selectionDelta);
-//
-//			iAlElements.clear();
-//			for (SelectionDeltaItem item : selectionDelta)
-//			{
-//				iAlElements.add(item.getPrimaryID());
-//			}
-//		}
-//		else if (eMediatorType == EMediatorType.SELECTION_MEDIATOR)
-//		{
-//			for (SelectionDeltaItem item : selectionDelta)
-//			{
-//				if (iAlElements.contains(item.getPrimaryID()))
-//				{
-//					if (item.getSelectionType() == ESelectionType.MOUSE_OVER)
-//					{
-//						selectionManager.clearSelection(ESelectionType.MOUSE_OVER);
-//
-//					}
-//					else if (item.getSelectionType() == ESelectionType.SELECTION)
-//					{
-//						selectionManager.clearSelection(ESelectionType.SELECTION);
-//
-//					}
-//					selectionManager.addToType(item.getSelectionType(), item.getPrimaryID());
-//					for (Integer iConnectionID : item.getConnectionID())
-//					{
-//						selectionManager.addConnectionID(iConnectionID, item.getPrimaryID());
-//					}
-//
-//				}
-//			}
-//		}
-//		else
-//			throw new IllegalStateException("Cannot handle updates of type " + eMediatorType);
-//
-//		setDisplayListDirty();
+		// generalManager.getLogger().log(Level.FINE,
+		// "Update called by " + eventTrigger.getClass().getSimpleName());
+		//
+		// if (eMediatorType == EMediatorType.PROPAGATION_MEDIATOR)
+		// {
+		// selectionManager.resetSelectionManager();
+		// selectionManager.setDelta(selectionDelta);
+		//
+		// iAlElements.clear();
+		// for (SelectionDeltaItem item : selectionDelta)
+		// {
+		// iAlElements.add(item.getPrimaryID());
+		// }
+		// }
+		// else if (eMediatorType == EMediatorType.SELECTION_MEDIATOR)
+		// {
+		// for (SelectionDeltaItem item : selectionDelta)
+		// {
+		// if (iAlElements.contains(item.getPrimaryID()))
+		// {
+		// if (item.getSelectionType() == ESelectionType.MOUSE_OVER)
+		// {
+		// selectionManager.clearSelection(ESelectionType.MOUSE_OVER);
+		//
+		// }
+		// else if (item.getSelectionType() == ESelectionType.SELECTION)
+		// {
+		// selectionManager.clearSelection(ESelectionType.SELECTION);
+		//
+		// }
+		// selectionManager.addToType(item.getSelectionType(),
+		// item.getPrimaryID());
+		// for (Integer iConnectionID : item.getConnectionID())
+		// {
+		// selectionManager.addConnectionID(iConnectionID, item.getPrimaryID());
+		// }
+		//
+		// }
+		// }
+		// }
+		// else
+		// throw new IllegalStateException("Cannot handle updates of type " +
+		// eMediatorType);
+		//
+		// setDisplayListDirty();
 
 	}
 
@@ -287,8 +287,8 @@ public class GLSelectionPanel
 							selectionManager.addToType(ESelectionType.MOUSE_OVER, iExternalID);
 						}
 
-						triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, selectionManager
-								.getDelta(), null);
+						triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
+								selectionManager.getDelta(), null);
 
 						setDisplayListDirty();
 						break;
@@ -297,8 +297,8 @@ public class GLSelectionPanel
 						selectionManager.clearSelection(ESelectionType.SELECTION);
 						selectionManager.addToType(ESelectionType.SELECTION, iExternalID);
 
-						triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, selectionManager
-								.getDelta(), null);
+						triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
+								selectionManager.getDelta(), null);
 
 						setDisplayListDirty();
 						break;
@@ -329,8 +329,8 @@ public class GLSelectionPanel
 	public synchronized void triggerSelectionUpdate(EMediatorType eMediatorType,
 			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
 	{
-		generalManager.getEventPublisher().triggerUpdate(eMediatorType, this, selectionDelta,
-				null);
+		generalManager.getEventPublisher().triggerSelectionUpdate(eMediatorType, this,
+				selectionDelta, null);
 	}
 
 	@Override
@@ -396,6 +396,6 @@ public class GLSelectionPanel
 			Collection<SelectionCommand> colSelectionCommand)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 }

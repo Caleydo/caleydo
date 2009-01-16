@@ -45,15 +45,13 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
-import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.data.selection.VADeltaItem;
 import org.caleydo.core.data.selection.VirtualArrayDelta;
-import org.caleydo.core.manager.event.mediator.EMediatorType;
+import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -220,6 +218,7 @@ public class GLParallelCoordinates
 
 		generalManager.getEventPublisher().addSender(EMediatorType.PROPAGATION_MEDIATOR, this);
 		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
+		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
 
 		bRenderOnlyContext = false;
 
@@ -477,7 +476,7 @@ public class GLParallelCoordinates
 	public synchronized void broadcastElements()
 	{
 		saveSelection();
-		
+
 		IVirtualArrayDelta delta = contentSelectionManager.getBroadcastVADelta();
 		triggerVAUpdate(EMediatorType.PROPAGATION_MEDIATOR, delta, null);
 		setDisplayListDirty();
@@ -485,8 +484,9 @@ public class GLParallelCoordinates
 
 	public synchronized void saveSelection()
 	{
-	
-		//polylineSelectionManager.moveType(ESelectionType.DESELECTED, ESelectionType.REMOVE);
+
+		// polylineSelectionManager.moveType(ESelectionType.DESELECTED,
+		// ESelectionType.REMOVE);
 		polylineSelectionManager.removeElements(ESelectionType.DESELECTED);
 		resetSelections();
 		setDisplayListDirty();
@@ -779,7 +779,7 @@ public class GLParallelCoordinates
 						gl.glEnd();
 
 				}
-
+		
 				if (bRenderingSelection)
 				{
 					String sRawValue;
@@ -791,8 +791,7 @@ public class GLParallelCoordinates
 
 					}
 					else
-					{
-
+					{						
 						sRawValue = ((INominalStorage<String>) currentStorage)
 								.getRaw(iStorageIndex);
 					}
@@ -1582,8 +1581,8 @@ public class GLParallelCoordinates
 
 						connectedElementRepresentationManager.clear(eAxisDataType);
 
-						triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, axisSelectionManager
-								.getDelta(), null);
+						triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
+								axisSelectionManager.getDelta(), null);
 
 						if (eAxisDataType == EIDType.EXPRESSION_INDEX)
 						{
@@ -1906,7 +1905,11 @@ public class GLParallelCoordinates
 		return sInfoText.toString();
 	}
 
-	@Override
+	/**
+	 * Re-position a view centered on a element, specified by the element ID
+	 * 
+	 * @param iElementID the ID of the element that should be in the center
+	 */
 	protected void rePosition(int iElementID)
 	{
 
@@ -2199,6 +2202,5 @@ public class GLParallelCoordinates
 	{
 		return bRenderStorageHorizontally;
 	}
-
 
 }

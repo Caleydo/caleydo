@@ -1,28 +1,8 @@
 package org.caleydo.rcp.core.bridge;
 
-import javax.swing.text.TabableView;
-
 import org.caleydo.core.bridge.gui.IGUIBridge;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
-import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
-import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
-import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
 import org.caleydo.rcp.command.handler.ExitHandler;
-import org.caleydo.rcp.views.opengl.GLGlyphView;
-import org.caleydo.rcp.views.opengl.GLHeatMapView;
-import org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView;
-import org.caleydo.rcp.views.opengl.GLParCoordsView;
-import org.caleydo.rcp.views.opengl.GLPathwayView;
-import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
-import org.caleydo.rcp.views.swt.TabularDataView;
-import org.caleydo.rcp.views.swt.ToolBarView;
 import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.Separator;
-import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.PlatformUI;
 
 public class RCPBridge

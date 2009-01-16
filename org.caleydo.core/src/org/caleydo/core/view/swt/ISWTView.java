@@ -4,7 +4,7 @@ import org.caleydo.core.view.IView;
 import org.eclipse.swt.widgets.Composite;
 
 public interface ISWTView
-extends IView
+	extends IView
 {
 	/**
 	 * Same as initView() but creation of SWT Container via GeneralManager is
@@ -14,7 +14,7 @@ extends IView
 	public void initViewRCP(Composite parentComposite);
 
 	public void initViewSWTComposite(Composite parentComposite);
-	
+
 	/**
 	 * Initialization of the view. All initialization sets must be accomplished
 	 * in this method.

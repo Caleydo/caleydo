@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.event.mediator;
+package org.caleydo.core.manager.event;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -8,9 +8,9 @@ import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 
 /**
- * Attention: Since Mediator is also a IMediatorReceiver care has to be taken
- * when registering a Mediator as Receiver.
+ * Implementation of {@link IMediator}
  * 
+ * @author Alexander Lex
  * @author Michael Kalkusch
  * @author Marc Streit
  */
@@ -25,17 +25,27 @@ public class Mediator
 	/**
 	 * Constructor.
 	 */
-	public Mediator(EMediatorType eType)
+	Mediator()
 	{
-		this.eType = eType;
-
 		alReceiver = new ArrayList<IMediatorReceiver>();
 		alSender = new ArrayList<IMediatorSender>();
 	}
 
-	@Override
-	public final boolean register(IMediatorSender sender)
+	/**
+	 * Constructor.
+	 */
+	Mediator(EMediatorType eType)
 	{
+		this();
+		this.eType = eType;
+	}
+
+	@Override
+	public final boolean addSender(IMediatorSender sender)
+	{
+		if (sender == null)
+			throw new IllegalArgumentException("Sender to be registered was null");
+
 		if (alSender.contains(sender))
 		{
 			return false;
@@ -46,8 +56,11 @@ public class Mediator
 	}
 
 	@Override
-	public final boolean register(IMediatorReceiver receiver)
+	public final boolean addReceiver(IMediatorReceiver receiver)
 	{
+		if (receiver == null)
+			throw new IllegalArgumentException("Receiver to be registered was null");
+
 		if (alReceiver.contains(receiver))
 		{
 			return false;
@@ -58,13 +71,13 @@ public class Mediator
 	}
 
 	@Override
-	public final boolean unregister(IMediatorSender sender)
+	public final boolean removeSender(IMediatorSender sender)
 	{
 		return alSender.remove(sender);
 	}
 
 	@Override
-	public final boolean unregister(IMediatorReceiver receiver)
+	public final boolean removeReceiver(IMediatorReceiver receiver)
 	{
 		return alReceiver.remove(receiver);
 	}
@@ -90,7 +103,8 @@ public class Mediator
 			// Prevent circular updates
 			if (!receiver.equals(eventTrigger))
 			{
-				receiver.handleUpdate(eventTrigger, selectionDelta, colSelectionCommand, eType);
+				receiver
+						.handleUpdate(eventTrigger, selectionDelta, colSelectionCommand, eType);
 			}
 		}
 	}

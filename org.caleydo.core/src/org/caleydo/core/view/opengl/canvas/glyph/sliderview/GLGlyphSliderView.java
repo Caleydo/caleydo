@@ -20,9 +20,9 @@ import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.manager.event.mediator.EMediatorType;
-import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
-import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.IMediatorReceiver;
+import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -374,8 +374,8 @@ public class GLGlyphSliderView
 						.getConnectedElementRepresentationManager().clear(
 								EIDType.EXPERIMENT_INDEX);
 
-				triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, selectionManager.getDelta(),
-						null);
+				triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, selectionManager
+						.getDelta(), null);
 
 			}
 		}
@@ -421,11 +421,11 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	public void triggerSelectionUpdate(EMediatorType eMediatorType, ISelectionDelta selectionDelta,
-			Collection<SelectionCommand> colSelectionCommand)
+	public void triggerSelectionUpdate(EMediatorType eMediatorType,
+			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
 	{
-		generalManager.getEventPublisher().triggerUpdate(eMediatorType, this, selectionDelta,
-				null);
+		generalManager.getEventPublisher().triggerSelectionUpdate(eMediatorType, this,
+				selectionDelta, null);
 	}
 
 	@Override
@@ -460,6 +460,6 @@ public class GLGlyphSliderView
 			Collection<SelectionCommand> colSelectionCommand)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 }

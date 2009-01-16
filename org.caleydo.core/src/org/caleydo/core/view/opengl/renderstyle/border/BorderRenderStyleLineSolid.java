@@ -8,6 +8,7 @@ public class BorderRenderStyleLineSolid
 	private float fHeight = 1.0f;
 	private float fWidth = 1.0f;
 
+	@Override
 	public void init(GL gl)
 	{
 		if (glList >= 0)
@@ -19,6 +20,7 @@ public class BorderRenderStyleLineSolid
 		gl.glEndList();
 	}
 
+	@Override
 	public void display(GL gl)
 	{
 		if (glList < 0)

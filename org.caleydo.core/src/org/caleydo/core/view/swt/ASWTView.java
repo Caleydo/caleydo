@@ -22,7 +22,7 @@ public abstract class ASWTView
 
 	@Override
 	public abstract void initViewSWTComposite(Composite parentComposite);
-	
+
 	@Override
 	public final void initViewRCP(Composite parentComposite)
 	{

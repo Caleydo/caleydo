@@ -976,7 +976,7 @@ public class FileLoadDataAction
 		// Create SET
 		CmdDataCreateSet cmdCreateSet = (CmdDataCreateSet) GeneralManager.get()
 				.getCommandManager().createCommandByType(ECommandType.CREATE_SET_DATA);
-		cmdCreateSet.setAttributes(null, iAlStorageId, ESetType.GENE_EXPRESSION_DATA);
+		cmdCreateSet.setAttributes(iAlStorageId, ESetType.GENE_EXPRESSION_DATA);
 		cmdCreateSet.doCommand();
 		ISet set = cmdCreateSet.getCreatedObject();
 		iCreatedSetID = set.getID();

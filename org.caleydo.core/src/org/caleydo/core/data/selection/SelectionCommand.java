@@ -16,7 +16,7 @@ public class SelectionCommand
 	{
 		this.eSelectionCommandType = eSelectionCommandType;
 	}
-	
+
 	public SelectionCommand(ESelectionCommandType eSelectionCommandType,
 			ESelectionType eSelectionType)
 	{

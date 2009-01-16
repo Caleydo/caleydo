@@ -18,15 +18,14 @@ import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
-import org.caleydo.core.data.selection.IDeltaItem;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
-import org.caleydo.core.manager.event.mediator.EMediatorType;
-import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
-import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.IMediatorReceiver;
+import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -178,7 +177,8 @@ public class GLGlyph
 					selectionManager.addToType(ESelectionType.SELECTION, id);
 
 			bDrawConnectionRepLines = false;
-			triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, selectionManager.getDelta(), null);
+			triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, selectionManager
+					.getDelta(), null);
 			bDrawConnectionRepLines = true;
 
 			bRedrawDisplayListGlyph = true;
@@ -962,14 +962,14 @@ public class GLGlyph
 	}
 
 	@Override
-	public void triggerSelectionUpdate(EMediatorType eMediatorType, ISelectionDelta selectionDelta,
-			Collection<SelectionCommand> colSelectionCommand)
+	public void triggerSelectionUpdate(EMediatorType eMediatorType,
+			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
 	{
 		if (selectionDelta.getAllItems().size() > 0)
 		{
 			handleConnectedElementRep(selectionDelta);
 
-			generalManager.getEventPublisher().triggerUpdate(eMediatorType, this,
+			generalManager.getEventPublisher().triggerSelectionUpdate(eMediatorType, this,
 					selectionDelta, null);
 		}
 	}
@@ -1110,6 +1110,6 @@ public class GLGlyph
 			Collection<SelectionCommand> colSelectionCommand)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 }

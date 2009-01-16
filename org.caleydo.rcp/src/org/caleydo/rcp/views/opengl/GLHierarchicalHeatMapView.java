@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
-import org.caleydo.rcp.action.view.glyph.ClearSelectionsAction;
-import org.caleydo.rcp.action.view.storagebased.ResetViewAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;

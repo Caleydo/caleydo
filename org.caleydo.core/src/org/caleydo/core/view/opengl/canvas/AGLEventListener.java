@@ -52,7 +52,7 @@ public abstract class AGLEventListener
 	}
 
 	protected EManagedObjectType viewType = EManagedObjectType.GL_EVENT_LISTENER;
-	
+
 	// TODO: should be a list of parent canvas object to be generic
 	protected GLCaleydoCanvas parentGLCanvas;
 
@@ -73,10 +73,10 @@ public abstract class AGLEventListener
 	protected float fAspectRatio = 1f;
 
 	protected EDetailLevel detailLevel = EDetailLevel.HIGH;
-	
+
 	/**
-	 * The remote level element in which the view is placed.
-	 * This variable is only set when the view is rendered remote.
+	 * The remote level element in which the view is placed. This variable is
+	 * only set when the view is rendered remote.
 	 */
 	protected RemoteLevelElement remoteLevelElement;
 
@@ -443,12 +443,12 @@ public abstract class AGLEventListener
 	{
 		this.remoteLevelElement = element;
 	}
-	
+
 	public RemoteLevelElement getRemoteLevelElement()
 	{
 		return remoteLevelElement;
 	}
-	
+
 	public boolean isRenderedRemote()
 	{
 		if (remoteRenderingGLCanvas == null)
@@ -456,7 +456,7 @@ public abstract class AGLEventListener
 
 		return true;
 	}
-	
+
 	public IGLCanvasRemoteRendering getRemoteRenderingGLCanvas()
 	{
 		return remoteRenderingGLCanvas;
@@ -560,7 +560,7 @@ public abstract class AGLEventListener
 			eBusyModeState = EBusyModeState.OFF;
 		}
 
-//		 System.out.println("Busy mode status: " +eBusyModeState);
+		// System.out.println("Busy mode status: " +eBusyModeState);
 	}
 
 	public void enableBusyMode(final boolean bBusyMode)
@@ -575,7 +575,7 @@ public abstract class AGLEventListener
 			eBusyModeState = EBusyModeState.ON;
 		}
 
-//		 System.out.println("Busy mode change: " +eBusyModeState.toString());
+		// System.out.println("Busy mode change: " +eBusyModeState.toString());
 	}
 
 	/**

@@ -1,36 +1,35 @@
 package org.caleydo.core.view.opengl.canvas.pathway;
 
-import gleem.linalg.Vec3f;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 public class PathwayRenderStyle
 	extends GeneralRenderStyle
-{	
+{
 	public static final int neighborhoodNodeColorArraysize = 4;
-	
+
 	public static final float SCALING_FACTOR_X = 0.0025f;
 	public static final float SCALING_FACTOR_Y = 0.0025f;
-	
+
 	public static final float ENZYME_NODE_WIDTH = 45 * SCALING_FACTOR_X / 2.0f;
 	public static final float ENZYME_NODE_HEIGHT = 17 * SCALING_FACTOR_X / 2.0f;
 	public static final float COMPOUND_NODE_WIDTH = 8 * SCALING_FACTOR_X / 2.0f;
 	public static final float COMPOUND_NODE_HEIGHT = 8 * SCALING_FACTOR_X / 2.0f;
-	
-	public static final float[] ENZYME_NODE_COLOR = 	new float[] { 0.8f, 0.8f, 0.8f, 1 };
-	public static final float[] COMPOUND_NODE_COLOR = 	new float[] { 0.3f, 0.3f, 0.3f, 1 };
-	public static final float[] PATHWAY_NODE_COLOR = 	new float[] { 0.7f, 0.7f, 1f, 1 };
 
-	public static final float[] RELATION_EDGE_COLOR = 	new float[] { 0, 0, 1, 1 };
-	public static final float[] REACTION_EDGE_COLOR = 	new float[] { 0, 0, 1, 1 };
-	public static final float[] MAPLINK_EDGE_COLOR = 	new float[] { 1, 0, 1, 1 };
-	
+	public static final float[] ENZYME_NODE_COLOR = new float[] { 0.8f, 0.8f, 0.8f, 1 };
+	public static final float[] COMPOUND_NODE_COLOR = new float[] { 0.3f, 0.3f, 0.3f, 1 };
+	public static final float[] PATHWAY_NODE_COLOR = new float[] { 0.7f, 0.7f, 1f, 1 };
+
+	public static final float[] RELATION_EDGE_COLOR = new float[] { 0, 0, 1, 1 };
+	public static final float[] REACTION_EDGE_COLOR = new float[] { 0, 0, 1, 1 };
+	public static final float[] MAPLINK_EDGE_COLOR = new float[] { 1, 0, 1, 1 };
+
 	/**
 	 * The color of the neighborhood node with the distance to the clicked node
 	 * of [1..neighborhoodNodeColorArraysize]
 	 */
 	private float[][] neighborhoodNodeColorArray;
-	
+
 	public enum NodeShape
 	{
 		RECTANGULAR,
@@ -85,7 +84,7 @@ public class PathwayRenderStyle
 		enzymeNodeShape = NodeShape.RECTANGULAR;
 		compoundNodeShape = NodeShape.ROUND;
 		pathwayNodeShape = NodeShape.ROUNDRECTANGULAR;
-		
+
 		neighborhoodNodeColorArray = new float[neighborhoodNodeColorArraysize][4];
 		neighborhoodNodeColorArray[0] = MOUSE_OVER_COLOR;
 		neighborhoodNodeColorArray[1] = new float[] { 0.2f, 0.2f, 1.0f };

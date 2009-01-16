@@ -25,9 +25,9 @@ import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.event.mediator.EMediatorType;
-import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
-import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.IMediatorReceiver;
+import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.IView;
@@ -506,6 +506,7 @@ public class TabularDataViewRep
 		}
 	}
 
+	@Override
 	public void drawView()
 	{
 
@@ -553,7 +554,8 @@ public class TabularDataViewRep
 				colSelectionCommand.add(new SelectionCommand(ESelectionCommandType.CLEAR,
 						ESelectionType.MOUSE_OVER));
 
-				triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, tmpDelta, colSelectionCommand);
+				triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, tmpDelta,
+						colSelectionCommand);
 			}
 		});
 
@@ -786,6 +788,7 @@ public class TabularDataViewRep
 				public Color selectionColor = Display.getCurrent().getSystemColor(
 						SWT.COLOR_RED);
 
+				@Override
 				public void mouseEnter(MouseEvent e)
 				{
 					// Set corresponding column background color to yellow
@@ -800,6 +803,7 @@ public class TabularDataViewRep
 					}
 				}
 
+				@Override
 				public void mouseExit(MouseEvent e)
 				{
 					// Set back to original color
@@ -824,6 +828,7 @@ public class TabularDataViewRep
 			comboTmpDataClass.addSelectionListener(new SelectionAdapter()
 			{
 
+				@Override
 				public void widgetSelected(SelectionEvent e)
 				{
 
@@ -985,7 +990,7 @@ public class TabularDataViewRep
 		// Create SET
 		CmdDataCreateSet cmdCreateSet = (CmdDataCreateSet) GeneralManager.get()
 				.getCommandManager().createCommandByType(ECommandType.CREATE_SET_DATA);
-		cmdCreateSet.setAttributes(null, iAlStorageId, ESetType.GENE_EXPRESSION_DATA);
+		cmdCreateSet.setAttributes(iAlStorageId, ESetType.GENE_EXPRESSION_DATA);
 		cmdCreateSet.doCommand();
 		ISet set = cmdCreateSet.getCreatedObject();
 		iCreatedSetID = set.getID();
@@ -1061,18 +1066,18 @@ public class TabularDataViewRep
 	}
 
 	@Override
-	public void triggerSelectionUpdate(EMediatorType eMediatorType, ISelectionDelta selectionDelta,
-			Collection<SelectionCommand> colSelectionCommand)
+	public void triggerSelectionUpdate(EMediatorType eMediatorType,
+			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
 	{
-		GeneralManager.get().getEventPublisher().triggerUpdate(eMediatorType, this,
+		GeneralManager.get().getEventPublisher().triggerSelectionUpdate(eMediatorType, this,
 				selectionDelta, colSelectionCommand);
 	}
-	
+
 	@Override
 	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
 			Collection<SelectionCommand> colSelectionCommand)
 	{
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -1089,6 +1094,5 @@ public class TabularDataViewRep
 		// TODO Auto-generated method stub
 
 	}
-
 
 }

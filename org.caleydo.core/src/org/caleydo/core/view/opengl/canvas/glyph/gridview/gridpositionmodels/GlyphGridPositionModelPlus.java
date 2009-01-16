@@ -22,6 +22,7 @@ public class GlyphGridPositionModelPlus
 		gman = (GlyphManager) generalManager.getGlyphManager();
 	}
 
+	@Override
 	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap,
 			ArrayList<GlyphEntry> gg)
 	{
@@ -29,6 +30,7 @@ public class GlyphGridPositionModelPlus
 		// (worldLimit.y() - 2) / 2);
 	}
 
+	@Override
 	public void buildGrid(Vector<Vector<GlyphGridPosition>> glyphMap, GL gl)
 	{
 		if (!gman.isActive())

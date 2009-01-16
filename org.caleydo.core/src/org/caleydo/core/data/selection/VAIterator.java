@@ -6,7 +6,7 @@ import java.util.ListIterator;
  * Iterator implementation for virtual arrays.
  * 
  * @author Alexander Lex
- *
+ * 
  */
 public class VAIterator
 	implements ListIterator<Integer>

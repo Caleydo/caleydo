@@ -75,6 +75,7 @@ public class GlyphDataExportViewRep
 		initComponents();
 	}
 
+	@Override
 	public void drawView()
 	{
 

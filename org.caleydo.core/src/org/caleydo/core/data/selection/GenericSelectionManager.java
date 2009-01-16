@@ -217,7 +217,7 @@ public class GenericSelectionManager
 
 	}
 
-   /**
+/**
 	 * Initialize by adding the elements one by one. No delta writing. Do this only in the initialization phase.
 	 * Use {@link #add(int) later.
 	 * 

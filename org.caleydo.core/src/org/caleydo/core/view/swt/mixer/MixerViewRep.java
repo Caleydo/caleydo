@@ -62,6 +62,7 @@ public class MixerViewRep
 		}
 	}
 
+	@Override
 	public void drawView()
 	{
 

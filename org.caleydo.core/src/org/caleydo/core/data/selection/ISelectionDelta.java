@@ -1,6 +1,5 @@
 package org.caleydo.core.data.selection;
 
-
 /**
  * Interface for Selection Deltas as they are being sent between views
  * 
@@ -9,7 +8,6 @@ package org.caleydo.core.data.selection;
 public interface ISelectionDelta
 	extends IDelta<SelectionDeltaItem>
 {
-
 
 	/**
 	 * Add a new selection to the delta
@@ -28,7 +26,6 @@ public interface ISelectionDelta
 	 */
 	public SelectionDeltaItem addSelection(int iSelectionID, ESelectionType selectionType,
 			int iInternalID);
-
 
 	/**
 	 * Returns a deep copy of the selection delta

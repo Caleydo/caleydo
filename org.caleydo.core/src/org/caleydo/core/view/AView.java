@@ -6,8 +6,6 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.ISetManager;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.manager.id.EManagedObjectType;
-import org.caleydo.core.view.swt.widget.SWTNativeWidget;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -24,7 +22,7 @@ public abstract class AView
 	protected IGeneralManager generalManager;
 
 	protected transient ISetManager setManager;
-	
+
 	/**
 	 * List for all ISet objects providing data for this ViewRep.
 	 */
@@ -33,9 +31,9 @@ public abstract class AView
 	protected int iParentContainerId;
 
 	protected Composite parentComposite;
-	
+
 	protected String sLabel;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -45,10 +43,10 @@ public abstract class AView
 
 		generalManager = GeneralManager.get();
 		setManager = generalManager.getSetManager();
-		
+
 		this.iParentContainerId = iParentContainerId;
 		this.sLabel = sLabel;
-		
+
 		alSets = new ArrayList<ISet>();
 	}
 
@@ -63,7 +61,6 @@ public abstract class AView
 	{
 		this.iParentContainerId = iParentContainerId;
 	}
-
 
 	@Override
 	public final String getLabel()

@@ -9,12 +9,12 @@ public class RemoteLevelElement
 	extends AUniqueObject
 {
 	private Transform transform;
-	
+
 	/**
 	 * The remote level in which the element is contained.
 	 */
 	private RemoteLevel remoteLevel;
-	
+
 	private boolean bIsLocked = false;
 
 	/**
@@ -45,7 +45,7 @@ public class RemoteLevelElement
 	{
 		return remoteLevel;
 	}
-	
+
 	public Transform getTransform()
 	{
 		return transform;
@@ -60,12 +60,12 @@ public class RemoteLevelElement
 	{
 		return iContainedElementID == -1 ? true : false;
 	}
-	
+
 	public void lock(boolean bLock)
 	{
 		this.bIsLocked = bLock;
 	}
-	
+
 	public boolean isLocked()
 	{
 		return bIsLocked;

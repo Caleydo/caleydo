@@ -28,6 +28,7 @@ public class GlyphGridPositionModelScatterplot
 		gman = (GlyphManager) generalManager.getGlyphManager();
 	}
 
+	@Override
 	public void buildGrid(Vector<Vector<GlyphGridPosition>> glyphMap, GL gl)
 	{
 		if (!gman.isActive())
@@ -234,6 +235,7 @@ public class GlyphGridPositionModelScatterplot
 
 	}
 
+	@Override
 	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap,
 			ArrayList<GlyphEntry> gg)
 	{

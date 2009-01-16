@@ -15,12 +15,14 @@ public class GlyphGridPositionModelCircle
 		super(renderStyle);
 	}
 
+	@Override
 	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap,
 			ArrayList<GlyphEntry> gg)
 	{
 		setGlyphPositions(glyphMap, gg, (worldLimit.x() - 2) / 2, (worldLimit.y() - 2) / 2);
 	}
 
+	@Override
 	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap_,
 			ArrayList<GlyphEntry> gg, int centerX, int centerY)
 

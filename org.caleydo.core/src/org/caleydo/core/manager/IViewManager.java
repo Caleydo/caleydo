@@ -12,8 +12,8 @@ import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
 
 /**
- * Make SWT Views and JOGL GLCanvas addressable by ID and provide ground for XML bootstrapping
- * of GLCanvas.
+ * Make SWT Views and JOGL GLCanvas addressable by ID and provide ground for XML
+ * bootstrapping of GLCanvas.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -23,7 +23,7 @@ public interface IViewManager
 {
 	public IView createView(final EManagedObjectType useViewType,
 			final int iParentContainerId, final String sLabel);
-	
+
 	public AGLEventListener createGLEventListener(ECommandType type, final int iGLCanvasID,
 			String sLabel, IViewFrustum viewFrustum);
 
@@ -42,7 +42,7 @@ public interface IViewManager
 			final AGLEventListener gLEventListener);
 
 	public void unregisterGLEventListener(final int iGLEventListenerID);
-	
+
 	/**
 	 * Get the PickingManager which is responsible for system wide picking
 	 * 

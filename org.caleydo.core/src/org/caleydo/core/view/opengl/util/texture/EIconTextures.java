@@ -33,23 +33,22 @@ public enum EIconTextures
 
 	NAVIGATION_REMOVE_VIEW("resources/icons/general/navigation_remove_view.png"),
 	NAVIGATION_DRAG_VIEW("resources/icons/general/navigation_drag_view.png"),
-	NAVIGATION_LOCK_VIEW("resources/icons/general/navigation_lock_view.png"),	
+	NAVIGATION_LOCK_VIEW("resources/icons/general/navigation_lock_view.png"),
 	NAVIGATION_NEXT_BIG("resources/navigation/next_big.png"),
 	NAVIGATION_NEXT_BIG_SIDE("resources/navigation/next_big_side.png"),
 	NAVIGATION_NEXT_BIG_MIDDLE("resources/navigation/next_big_middle.png"),
 	NAVIGATION_NEXT_SMALL("resources/navigation/next_small.png"),
 	NAVIGATION_MASK_CURVE("resources/navigation/mask_curve.png"),
 	NAVIGATION_MASK_CURVE_NEG("resources/navigation/mask_curve_neg.png"),
-	
-	
+
 	POOL_REMOVE_VIEW("resources/icons/general/pool_remove_view.png"),
 	POOL_DRAG_VIEW("resources/icons/general/pool_drag_view.png"),
 	POOL_VIEW_BACKGROUND("resources/navigation/pool_view_background.png"),
 	POOL_VIEW_BACKGROUND_SELECTION("resources/navigation/pool_view_background_selection.png"),
-	
+
 	LOADING("resources/loading/loading_background.png"),
-	LOADING_CIRCLE("resources/loading/loading_circle.png"), 
-	
+	LOADING_CIRCLE("resources/loading/loading_circle.png"),
+
 	CELL_MODEL("resources/models/cell.jpg");
 
 	private String sFileName;

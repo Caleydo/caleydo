@@ -53,7 +53,7 @@ public class HTMLBrowserViewRep
 		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
 				EManagedObjectType.VIEW_SWT_BROWSER_GENERAL));
 	}
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -173,6 +173,7 @@ public class HTMLBrowserViewRep
 		browser.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
 	}
 
+	@Override
 	public void drawView()
 	{
 		generalManager.getLogger().log(Level.INFO, "Load " + sUrl);

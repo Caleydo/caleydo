@@ -194,13 +194,13 @@ public class TabularAsciiDataReader
 					switch (columnDataType)
 					{
 						case INT:
-							alIntBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] = 
-								Integer.valueOf(strTokenLine.nextToken()).intValue();
+							alIntBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] = Integer
+									.valueOf(strTokenLine.nextToken()).intValue();
 							iColumnIndex++;
 							break;
 						case FLOAT:
-							alFloatBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] = 
-								Float.valueOf(strTokenLine.nextToken()).floatValue();
+							alFloatBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] = Float
+									.valueOf(strTokenLine.nextToken()).floatValue();
 							iColumnIndex++;
 							break;
 						case STRING:

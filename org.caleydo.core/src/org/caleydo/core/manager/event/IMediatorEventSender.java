@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.event.mediator;
+package org.caleydo.core.manager.event;
 
 public interface IMediatorEventSender
 	extends IMediatorSender

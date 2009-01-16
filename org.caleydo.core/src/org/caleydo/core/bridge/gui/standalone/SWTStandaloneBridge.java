@@ -12,13 +12,13 @@ public class SWTStandaloneBridge
 		// TODO Auto-generated method stub
 	}
 
-//	@Override
-//	public void setActiveGLSubView(AGLEventListener parentGLEventListener,
-//			AGLEventListener subGLEventListener)
-//	{
-//		// TODO Auto-generated method stub
-//
-//	}
+	// @Override
+	// public void setActiveGLSubView(AGLEventListener parentGLEventListener,
+	// AGLEventListener subGLEventListener)
+	// {
+	// // TODO Auto-generated method stub
+	//
+	// }
 
 	@Override
 	public void setShortInfo(String sMessage)
@@ -31,7 +31,7 @@ public class SWTStandaloneBridge
 	public void setFileNameCurrentDataSet(String fileName)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

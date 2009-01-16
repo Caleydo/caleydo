@@ -106,6 +106,7 @@ public class BioCartaPathwayCacher
 			triggeringCommand.setFinishedBioCartaCacher();
 	}
 
+	@Override
 	protected void triggerPathwayListGeneration()
 	{
 		// Trigger pathway list generation

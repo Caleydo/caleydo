@@ -8,7 +8,7 @@ import org.caleydo.core.data.mapping.EIDType;
  * Interface for all deltas that contain information on changes and are used to
  * submit information to other views.
  * 
- * A delta contains a number of {@link IDeltaItem}s. 
+ * A delta contains a number of {@link IDeltaItem}s.
  * 
  * @author Alexander Lex
  * 
@@ -48,6 +48,7 @@ public interface IDelta<T extends IDeltaItem>
 
 	/**
 	 * Add a new item to the delta
+	 * 
 	 * @param deltaItem the delta item
 	 */
 	public void add(T deltaItem);

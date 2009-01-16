@@ -18,6 +18,7 @@ import com.sun.opengl.util.j2d.Overlay;
  * 
  * @deprecated Use status line + tooltip approach
  */
+@Deprecated
 public class GLOverlayInfoRenderer
 {
 

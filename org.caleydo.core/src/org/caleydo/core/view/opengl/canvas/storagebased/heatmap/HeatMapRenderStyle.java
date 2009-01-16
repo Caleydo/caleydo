@@ -163,6 +163,7 @@ public class HeatMapRenderStyle
 		return fFieldHeight;
 	}
 
+	@Override
 	public float getYCenter()
 	{
 
@@ -170,6 +171,7 @@ public class HeatMapRenderStyle
 		return (viewFrustum.getHeight() / 2);
 	}
 
+	@Override
 	public float getXCenter()
 	{
 

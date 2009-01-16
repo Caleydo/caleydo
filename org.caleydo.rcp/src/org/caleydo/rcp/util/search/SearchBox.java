@@ -1308,7 +1308,7 @@ public final class SearchBox
 		{
 			return null;
 		}
-		ArrayList filteredList = new ArrayList();
+		ArrayList<Object> filteredList = new ArrayList<Object>();
 
 		String txt = text.getText();
 		Object listItemsArray[] = listItems.toArray();

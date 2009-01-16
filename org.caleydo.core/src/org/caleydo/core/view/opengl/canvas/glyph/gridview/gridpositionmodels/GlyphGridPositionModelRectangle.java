@@ -15,6 +15,7 @@ public class GlyphGridPositionModelRectangle
 		super(renderStyle);
 	}
 
+	@Override
 	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap,
 			ArrayList<GlyphEntry> gg)
 	{

@@ -10,5 +10,4 @@ public interface IVirtualArrayDelta
 	extends IDelta<VADeltaItem>
 {
 
-	
 }

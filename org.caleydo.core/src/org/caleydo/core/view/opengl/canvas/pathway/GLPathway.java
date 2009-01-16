@@ -26,9 +26,9 @@ import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.data.selection.VADeltaItem;
 import org.caleydo.core.data.selection.VirtualArrayDelta;
-import org.caleydo.core.manager.event.mediator.EMediatorType;
-import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
-import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.IMediatorReceiver;
+import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -314,7 +314,6 @@ public class GLPathway
 
 		selectionManager.executeSelectionCommands(colSelectionCommand);
 
-
 		ISelectionDelta resolvedDelta = resolveExternalSelectionDelta(selectionDelta);
 		selectionManager.setDelta(resolvedDelta);
 
@@ -412,8 +411,8 @@ public class GLPathway
 				if (!pathwayManager.getItem(iPathwayID).containsItem(tmpGraphItemRep))
 					continue;
 
-				SelectionDeltaItem newItem = newSelectionDelta.addSelection(
-						tmpGraphItemRep.getId(), item.getSelectionType(), iDavidID);
+				SelectionDeltaItem newItem = newSelectionDelta.addSelection(tmpGraphItemRep
+						.getId(), item.getSelectionType(), iDavidID);
 				for (int iConnectionID : item.getConnectionID())
 				{
 					newItem.setConnectionID(iConnectionID);
@@ -595,8 +594,8 @@ public class GLPathway
 							ISelectionDelta selectionDelta = new SelectionDelta(
 									EIDType.PATHWAY);
 							selectionDelta.addSelection(iPathwayID, ESelectionType.SELECTION);
-							triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, selectionDelta,
-									null);
+							triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
+									selectionDelta, null);
 						}
 					}
 
@@ -780,16 +779,17 @@ public class GLPathway
 	public synchronized void triggerSelectionUpdate(EMediatorType eMediatorType,
 			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
 	{
-		generalManager.getEventPublisher().triggerUpdate(eMediatorType, this, selectionDelta,
-				colSelectionCommand);
+		generalManager.getEventPublisher().triggerSelectionUpdate(eMediatorType, this,
+				selectionDelta, colSelectionCommand);
 	}
-	
+
 	@Override
 	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
 			Collection<SelectionCommand> colSelectionCommand)
 	{
-		generalManager.getEventPublisher().triggerVAUpdate(mediatorType, this, delta, colSelectionCommand);
-		
+		generalManager.getEventPublisher().triggerVAUpdate(mediatorType, this, delta,
+				colSelectionCommand);
+
 	}
 
 	@Override
@@ -872,6 +872,5 @@ public class GLPathway
 		// TODO Auto-generated method stub
 
 	}
-
 
 }

@@ -6,23 +6,15 @@ import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.IEventPublisher;
-import org.caleydo.core.manager.event.mediator.EMediatorType;
-import org.caleydo.core.manager.event.mediator.IMediator;
-import org.caleydo.core.manager.event.mediator.IMediatorEventSender;
-import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
-import org.caleydo.core.manager.event.mediator.IMediatorSender;
-import org.caleydo.core.manager.event.mediator.Mediator;
 
 /**
- * Implements event mediator pattern.
+ * Implementation of {@link IEventPublisher}
  * 
  * @author Marc Streit
  * @author Alexander Lex
  */
 public class EventPublisher
-	extends AManager<IMediator>
 	implements IEventPublisher
 {
 	private HashMap<EMediatorType, IMediator> hashMediatorType2Mediator;
@@ -36,6 +28,11 @@ public class EventPublisher
 		hashMediatorType2Mediator = new HashMap<EMediatorType, IMediator>();
 	}
 
+	public IMediator getPrivateMediator()
+	{
+		return new Mediator();
+	}
+
 	@Override
 	public void addSender(EMediatorType eMediatorType, IMediatorSender sender)
 	{
@@ -43,7 +40,7 @@ public class EventPublisher
 		if (!hashMediatorType2Mediator.containsKey(eMediatorType))
 			hashMediatorType2Mediator.put(eMediatorType, new Mediator(eMediatorType));
 
-		hashMediatorType2Mediator.get(eMediatorType).register(sender);
+		hashMediatorType2Mediator.get(eMediatorType).addSender(sender);
 
 	}
 
@@ -54,13 +51,14 @@ public class EventPublisher
 		if (!hashMediatorType2Mediator.containsKey(eMediatorType))
 			hashMediatorType2Mediator.put(eMediatorType, new Mediator(eMediatorType));
 
-		hashMediatorType2Mediator.get(eMediatorType).register(receiver);
+		hashMediatorType2Mediator.get(eMediatorType).addReceiver(receiver);
 
 	}
 
 	@Override
-	public void triggerUpdate(EMediatorType eMediatorType, IUniqueObject eventTrigger,
-			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
+	public void triggerSelectionUpdate(EMediatorType eMediatorType,
+			IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
+			Collection<SelectionCommand> colSelectionCommand)
 	{
 		if (!hashMediatorType2Mediator.containsKey(eMediatorType))
 		{
@@ -110,18 +108,18 @@ public class EventPublisher
 		}
 		else
 		{
-			hashMediatorType2Mediator.get(eMediatorType).triggerVAUpdate(eventTrigger,
-					delta, colSelectionCommand);
-		}	
+			hashMediatorType2Mediator.get(eMediatorType).triggerVAUpdate(eventTrigger, delta,
+					colSelectionCommand);
+		}
 	}
-	
+
 	@Override
 	public void removeSender(EMediatorType eMediatorType, IMediatorSender sender)
 	{
 		if (!hashMediatorType2Mediator.containsKey(eMediatorType))
 			return;
 
-		hashMediatorType2Mediator.get(eMediatorType).unregister(sender);
+		hashMediatorType2Mediator.get(eMediatorType).removeSender(sender);
 	}
 
 	@Override
@@ -130,14 +128,14 @@ public class EventPublisher
 		if (!hashMediatorType2Mediator.containsKey(eMediatorType))
 			return;
 
-		hashMediatorType2Mediator.get(eMediatorType).unregister(receiver);
+		hashMediatorType2Mediator.get(eMediatorType).removeReceiver(receiver);
 	}
 
 	public void removeSenderFromAllGroups(IMediatorSender sender)
 	{
 		for (IMediator mediator : hashMediatorType2Mediator.values())
 		{
-			mediator.unregister(sender);
+			mediator.removeSender(sender);
 		}
 	}
 
@@ -145,25 +143,25 @@ public class EventPublisher
 	{
 		for (IMediator mediator : hashMediatorType2Mediator.values())
 		{
-			mediator.unregister(receiver);
+			mediator.removeReceiver(receiver);
 		}
 	}
 
 	@Override
 	public void triggerEvent(IUniqueObject eventTrigger, int iID)
 	{
-		if(!(eventTrigger instanceof IMediatorEventSender))
+		if (!(eventTrigger instanceof IMediatorEventSender))
 		{
-			throw new IllegalArgumentException("triggerEvent called by an object which does not implement IMediatorEventSender");
+			throw new IllegalArgumentException(
+					"triggerEvent called by an object which does not implement IMediatorEventSender");
 		}
 		for (EMediatorType eTempMediatorType : hashMediatorType2Mediator.keySet())
 		{
 			IMediator tempMediator = hashMediatorType2Mediator.get(eTempMediatorType);
-			if (tempMediator.hasSender(
-					(IMediatorSender) eventTrigger))
+			if (tempMediator.hasSender((IMediatorSender) eventTrigger))
 			{
 				tempMediator.triggerEvent(eventTrigger, iID);
 			}
-		}	
+		}
 	}
 }

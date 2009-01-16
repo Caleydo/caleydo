@@ -26,7 +26,7 @@ import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.manager.event.mediator.EMediatorType;
+import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -146,7 +146,8 @@ public class GLHeatMap
 	}
 
 	@Override
-	public void initRemote(final GL gl, final int iRemoteViewID, final PickingJoglMouseListener pickingTriggerMouseAdapter,
+	public void initRemote(final GL gl, final int iRemoteViewID,
+			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
 		dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
@@ -260,12 +261,13 @@ public class GLHeatMap
 			else
 				fLeftOffset = 0.15f;
 			// GLHelperFunctions.drawAxis(gl);
-//			if (detailLevel == EDetailLevel.HIGH)
-//			{
-//				colorMappingBar.render(gl, fLeftOffset,
-//						(viewFrustum.getHeight() - colorMappingBar.getHeight()) / 2, 0.2f);
-//				gl.glTranslatef(fLeftOffset + colorMappingBar.getWidth(), 0, 0);
-//			}
+			// if (detailLevel == EDetailLevel.HIGH)
+			// {
+			// colorMappingBar.render(gl, fLeftOffset,
+			// (viewFrustum.getHeight() - colorMappingBar.getHeight()) / 2,
+			// 0.2f);
+			// gl.glTranslatef(fLeftOffset + colorMappingBar.getWidth(), 0, 0);
+			// }
 
 			if (!bRenderStorageHorizontally)
 			{
@@ -494,11 +496,13 @@ public class GLHeatMap
 									ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER));
 							triggerSelectionUpdate(EMediatorType.ALL_REGISTERED,
 									contentSelectionManager.getDelta(), colSelectionCommand);
-//							triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
-//									contentSelectionManager.getDelta(), colSelectionCommand);
-//							// TODO: improve mediator system
-//							triggerUpdate(EMediatorType.HIERACHICAL_HEAT_MAP,
-//									contentSelectionManager.getDelta(), colSelectionCommand);
+							// triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
+							// contentSelectionManager.getDelta(),
+							// colSelectionCommand);
+							// // TODO: improve mediator system
+							// triggerUpdate(EMediatorType.HIERACHICAL_HEAT_MAP,
+							// contentSelectionManager.getDelta(),
+							// colSelectionCommand);
 						}
 
 						break;
@@ -525,11 +529,13 @@ public class GLHeatMap
 									ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER));
 							triggerSelectionUpdate(EMediatorType.ALL_REGISTERED,
 									contentSelectionManager.getDelta(), colSelectionCommand);
-//							triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
-//									contentSelectionManager.getDelta(), colSelectionCommand);
-//							// TODO: improve mediator system
-//							triggerUpdate(EMediatorType.HIERACHICAL_HEAT_MAP,
-//									contentSelectionManager.getDelta(), colSelectionCommand);
+							// triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
+							// contentSelectionManager.getDelta(),
+							// colSelectionCommand);
+							// // TODO: improve mediator system
+							// triggerUpdate(EMediatorType.HIERACHICAL_HEAT_MAP,
+							// contentSelectionManager.getDelta(),
+							// colSelectionCommand);
 						}
 
 						break;
@@ -813,7 +819,11 @@ public class GLHeatMap
 		return elementRep;
 	}
 
-	@Override
+	/**
+	 * Re-position a view centered on a element, specified by the element ID
+	 * 
+	 * @param iElementID the ID of the element that should be in the center
+	 */
 	protected void rePosition(int iElementID)
 	{
 
@@ -961,6 +971,6 @@ public class GLHeatMap
 			Collection<SelectionCommand> colSelectionCommand)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 }

@@ -7,7 +7,7 @@ import java.util.Map;
 import java.util.logging.Level;
 
 import org.caleydo.core.application.core.CaleydoBootloader;
-import org.caleydo.core.manager.event.mediator.EMediatorType;
+import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;

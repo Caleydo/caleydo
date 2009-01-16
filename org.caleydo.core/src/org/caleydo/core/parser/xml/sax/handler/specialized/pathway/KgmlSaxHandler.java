@@ -366,9 +366,11 @@ public class KgmlSaxHandler
 			if (sAttributeName.equals("type"))
 				sType = attributes.getValue(iAttributeIndex);
 			else if (sAttributeName.equals("entry1"))
-				iSourceVertexId = Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
+				iSourceVertexId = Integer.valueOf(attributes.getValue(iAttributeIndex))
+						.intValue();
 			else if (sAttributeName.equals("entry2"))
-				iTargetVertexId = Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
+				iTargetVertexId = Integer.valueOf(attributes.getValue(iAttributeIndex))
+						.intValue();
 
 			// System.out.println("Attribute name: " +sAttributeName);
 			// System.out.println("Attribute value: "

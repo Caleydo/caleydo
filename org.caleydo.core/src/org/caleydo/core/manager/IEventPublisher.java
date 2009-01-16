@@ -5,20 +5,47 @@ import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.manager.event.mediator.EMediatorType;
-import org.caleydo.core.manager.event.mediator.IMediator;
-import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
-import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.IMediator;
+import org.caleydo.core.manager.event.IMediatorReceiver;
+import org.caleydo.core.manager.event.IMediatorSender;
 
 /**
- * Handle events using Publish subscriber design pattern.
+ * <p>
+ * This class manages mediators. There are two basic types of Mediators: private
+ * and public, system-wide ones.
+ * </p>
+ * <p>
+ * The private mediators are created by calling {@link #getPrivateMediator()}
+ * and are not stored or managed any further by the publisher.
+ * </p>
+ * <p>
+ * The public mediators are unique system-wide. The possible mediators are
+ * listed in {@link EMediatorType}
+ * </p>
+ * <p>
+ * The publisher provides a complete abstraction of the public mediators, so
+ * that no access to the concrete mediators is needed.
+ * </p>
+ * <p>
+ * Object that can receive updates form the mediator have to implement
+ * {@link IMediatorReceiver}, those that want to send updates have to implement
+ * {@link IMediatorSender}
+ * </p>
  * 
  * @author Marc Streit
  * @author Alexander Lex
  */
 public interface IEventPublisher
-	extends IManager<IMediator>
 {
+
+	/**
+	 * Get a mediator that is not stored anywhere, for your private use only.
+	 * 
+	 * @return
+	 */
+	public IMediator getPrivateMediator();
+
 	/**
 	 * Trigger an update concerning selections. The details about what to do
 	 * with the update are specified in the delta.
@@ -29,8 +56,9 @@ public interface IEventPublisher
 	 * @param colSelectionCommand a command to be executed on the selection
 	 *            manager (can be null if not necessary)
 	 */
-	public void triggerUpdate(EMediatorType eMediatorType, IUniqueObject eventTrigger,
-			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand);
+	public void triggerSelectionUpdate(EMediatorType eMediatorType,
+			IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
+			Collection<SelectionCommand> colSelectionCommand);
 
 	/**
 	 * Trigger an update concerning virtual arrays. The details about what to do
@@ -46,22 +74,56 @@ public interface IEventPublisher
 	/**
 	 * Trigger an event, signaling that something has happened
 	 * 
-	 * TODO: interface is only rudimentary 
+	 * TODO: interface is only rudimentary
 	 * 
 	 * @param eventTrigger
 	 * @param iID
 	 */
 	public void triggerEvent(IUniqueObject eventTrigger, int iID);
 
+	/**
+	 * Adds a sender to the mediator specified in eMediatorType
+	 * 
+	 * @param eMediatorType the type
+	 * @param sender the sender to be registered
+	 */
 	public void addSender(EMediatorType eMediatorType, IMediatorSender sender);
 
+	/**
+	 * Adds a receiver to the mediator specified in eMediatorType
+	 * 
+	 * @param eMediatorType the type of the mediator
+	 * @param receiver the receiver to be registered
+	 */
 	public void addReceiver(EMediatorType eMediatorType, IMediatorReceiver receiver);
 
+	/**
+	 * Removes a sender from the mediator specified in eMediatorType
+	 * 
+	 * @param eMediatorType the type of the mediator
+	 * @param sender the sender to be removed
+	 */
 	public void removeSender(EMediatorType eMediatorType, IMediatorSender sender);
 
+	/**
+	 * Removes a receiver from the mediator specified in eMediatorType
+	 * 
+	 * @param eMediatorType the type of the mediator
+	 * @param reveiver the receiver to be removed
+	 */
 	public void removeReceiver(EMediatorType eMediatorType, IMediatorReceiver receiver);
 
+	/**
+	 * Removes a sender from all public mediators
+	 * 
+	 * @param sender the sender to be removed
+	 */
 	public void removeSenderFromAllGroups(IMediatorSender sender);
 
+	/**
+	 * Removes a receiver from all public mediators
+	 * 
+	 * @param receiver the receiver to be removed
+	 */
 	public void removeReceiverFromAllGroups(IMediatorReceiver receiver);
 }

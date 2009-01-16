@@ -31,10 +31,10 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.manager.IViewManager;
-import org.caleydo.core.manager.event.mediator.EMediatorType;
-import org.caleydo.core.manager.event.mediator.IMediatorEventReceiver;
-import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
-import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.IMediatorEventReceiver;
+import org.caleydo.core.manager.event.IMediatorReceiver;
+import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -289,7 +289,7 @@ public class GLRemoteRendering
 
 		glSelectionPanel.initRemote(gl, getID(), pickingTriggerMouseAdapter,
 				remoteRenderingGLCanvas);
-		
+
 		colorMappingBarMiniView.setWidth(layoutRenderStyle.getColorBarWidth());
 		colorMappingBarMiniView.setHeight(layoutRenderStyle.getColorBarHeight());
 	}
@@ -473,7 +473,7 @@ public class GLRemoteRendering
 	{
 		if (iAlContainedViewIDs == null)
 			return;
-		
+
 		for (int iContainedViewID : iAlContainedViewIDs)
 		{
 			AGLEventListener tmpGLEventListener = generalManager.getViewGLCanvasManager()
@@ -650,14 +650,16 @@ public class GLRemoteRendering
 			if (glEventListener.getNumberOfSelections(ESelectionType.MOUSE_OVER) > 0)
 			{
 				textRenderer.setColor(1, 0, 0, 1);
-//				sRenderText = glEventListener.getNumberOfSelections(ESelectionType.MOUSE_OVER)
-//						+ " - " + sRenderText;
+				// sRenderText =
+				// glEventListener.getNumberOfSelections(ESelectionType.MOUSE_OVER)
+				// + " - " + sRenderText;
 			}
 			else if (glEventListener.getNumberOfSelections(ESelectionType.SELECTION) > 0)
 			{
 				textRenderer.setColor(0, 1, 0, 1);
-//				sRenderText = glEventListener.getNumberOfSelections(ESelectionType.SELECTION)
-//						+ " - " + sRenderText;
+				// sRenderText =
+				// glEventListener.getNumberOfSelections(ESelectionType.SELECTION)
+				// + " - " + sRenderText;
 			}
 
 			float fTextScalingFactor = 0.09f;
@@ -2124,7 +2126,7 @@ public class GLRemoteRendering
 
 						setDisplayListDirty();
 
-						generalManager.getEventPublisher().triggerUpdate(
+						generalManager.getEventPublisher().triggerSelectionUpdate(
 								EMediatorType.VIEW_SELECTION,
 								generalManager.getViewGLCanvasManager().getGLEventListener(
 										iExternalID), new SelectionDelta(EIDType.DAVID), null);
@@ -2766,8 +2768,8 @@ public class GLRemoteRendering
 	public synchronized void triggerSelectionUpdate(EMediatorType eMediatorType,
 			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
 	{
-		generalManager.getEventPublisher().triggerUpdate(eMediatorType, this, selectionDelta,
-				colSelectionCommand);
+		generalManager.getEventPublisher().triggerSelectionUpdate(eMediatorType, this,
+				selectionDelta, colSelectionCommand);
 	}
 
 	@Override

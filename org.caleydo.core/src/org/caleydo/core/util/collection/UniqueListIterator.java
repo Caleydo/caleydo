@@ -6,7 +6,7 @@ import java.util.Iterator;
  * Iterator for the {@link UniqueList}.
  * 
  * @author Alexander Lex
- *
+ * 
  * @param <E>
  */
 public class UniqueListIterator<E>
@@ -21,7 +21,7 @@ public class UniqueListIterator<E>
 		this.list = list;
 		this.listIterator = list.alElements.iterator();
 	}
-	
+
 	@Override
 	public boolean hasNext()
 	{

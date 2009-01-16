@@ -59,6 +59,7 @@ public class SwtJoglGLCanvasViewRep
 	{
 	}
 
+	@Override
 	public void drawView()
 	{
 	}

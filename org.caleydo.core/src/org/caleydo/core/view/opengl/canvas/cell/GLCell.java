@@ -15,9 +15,9 @@ import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
-import org.caleydo.core.manager.event.mediator.EMediatorType;
-import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
-import org.caleydo.core.manager.event.mediator.IMediatorSender;
+import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.IMediatorReceiver;
+import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -125,8 +125,8 @@ public class GLCell
 	private void renderScene(final GL gl)
 	{
 
-//		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-		
+		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+
 		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.CELL_MODEL);
 		tempTexture.enable();
 		tempTexture.bind();
@@ -137,11 +137,14 @@ public class GLCell
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), -0.025f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop() - viewFrustum.getBottom(), -0.025f);
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop() - viewFrustum.getBottom(),
+				-0.025f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum.getTop() - viewFrustum.getBottom(), -0.025f);
+		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum.getTop()
+				- viewFrustum.getBottom(), -0.025f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum.getBottom(), -0.025f);
+		gl.glVertex3f(viewFrustum.getRight() - viewFrustum.getLeft(), viewFrustum.getBottom(),
+				-0.025f);
 		gl.glEnd();
 
 		tempTexture.disable();
@@ -283,11 +286,11 @@ public class GLCell
 	}
 
 	@Override
-	public void triggerSelectionUpdate(EMediatorType mediatorType, ISelectionDelta selectionDelta,
-			Collection<SelectionCommand> colSelectionCommand)
+	public void triggerSelectionUpdate(EMediatorType mediatorType,
+			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
 	{
-		generalManager.getEventPublisher().triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
-				this, selectionDelta, null);
+		generalManager.getEventPublisher().triggerSelectionUpdate(
+				EMediatorType.SELECTION_MEDIATOR, this, selectionDelta, null);
 	}
 
 	@Override
@@ -309,7 +312,7 @@ public class GLCell
 			Collection<SelectionCommand> colSelectionCommand)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

@@ -67,7 +67,6 @@ public enum EMappingType
 	public boolean isMultiMap()
 	{
 
-		
 		return bIsMultiMap;
 	}
 

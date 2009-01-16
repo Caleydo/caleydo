@@ -1,6 +1,6 @@
 package org.caleydo.rcp.views.swt;
 
-import org.caleydo.core.manager.event.mediator.EMediatorType;
+import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.view.swt.tabular.TabularDataViewRep;

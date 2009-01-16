@@ -27,8 +27,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 public class DeltaConverter
 {
 	/**
-	 * Convert method. 
-	 * TODO: only DAVID_2_EXPRESSION_INDEX is supported ATM
+	 * Convert method. TODO: only DAVID_2_EXPRESSION_INDEX is supported ATM
 	 * 
 	 * @param <T> the type of the delta, an implementation of {@link IDelta}
 	 * @param targetType the target type of the id conversion

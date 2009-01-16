@@ -99,8 +99,8 @@ public class CmdLoadFileLookupTable
 		sLookupTableDelimiter = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE2
 				.getXmlKey());
 
-		int[] iArrayStartStop = StringConversionTool.convertStringToIntArray(
-				parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey()), " ");
+		int[] iArrayStartStop = StringConversionTool.convertStringToIntArray(parameterHandler
+				.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey()), " ");
 
 		iStartPareseFileAtLine = iArrayStartStop[0];
 		iStopParseFileAtLine = iArrayStartStop[1];
@@ -194,10 +194,11 @@ public class CmdLoadFileLookupTable
 		{
 			loader = new LookupTableLoader(sFileName, mappingType, dataType);
 			loader.setTokenSeperator(sLookupTableDelimiter);
-			loader.setStartParsingStopParsingAtLine(iStartPareseFileAtLine, iStopParseFileAtLine);
+			loader.setStartParsingStopParsingAtLine(iStartPareseFileAtLine,
+					iStopParseFileAtLine);
 			loader.loadData();
 		}
-		
+
 		/* --- Map codes in LUT to IDs --- */
 		if (bResolveCodeMappingUsingCodeToId_LUT_1 || bResolveCodeMappingUsingCodeToId_LUT_2
 				|| bResolveCodeMappingUsingCodeToId_LUT_BOTH)

@@ -17,6 +17,7 @@ import org.caleydo.core.parser.parameter.IParameterHandler;
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public class CmdDataCreateSet
 	extends ACmdCreational<ISet>
@@ -24,8 +25,6 @@ public class CmdDataCreateSet
 	private ESetType setType;
 
 	private ArrayList<Integer> iAlStorageIDs;
-
-	private ArrayList<Integer> iAlVirtualArrayIDs;
 
 	/**
 	 * Constructor.
@@ -35,7 +34,6 @@ public class CmdDataCreateSet
 		super(cmdType);
 
 		iAlStorageIDs = new ArrayList<Integer>();
-		iAlVirtualArrayIDs = new ArrayList<Integer>();
 
 		setType = ESetType.UNSPECIFIED;
 	}
@@ -134,11 +132,9 @@ public class CmdDataCreateSet
 		}
 	}
 
-	public void setAttributes(ArrayList<Integer> iAlVirtualArrayIDs,
-			ArrayList<Integer> iAlStorageIDs, ESetType setType)
+	public void setAttributes(ArrayList<Integer> iAlStorageIDs, ESetType setType)
 	{
 		this.setType = setType;
 		this.iAlStorageIDs = iAlStorageIDs;
-		this.iAlVirtualArrayIDs = iAlVirtualArrayIDs;
 	}
 }

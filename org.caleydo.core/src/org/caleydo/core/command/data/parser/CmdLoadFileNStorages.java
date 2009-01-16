@@ -67,8 +67,8 @@ public class CmdLoadFileNStorages
 		iAlStorageIDs = GeneralManager.get().getIDManager().convertExternalToInternalIDs(
 				iAlStorageIDs);
 
-		int[] iArrayStartStop = StringConversionTool.convertStringToIntArray(
-				parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey()), " ");
+		int[] iArrayStartStop = StringConversionTool.convertStringToIntArray(parameterHandler
+				.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey()), " ");
 
 		if (iArrayStartStop.length > 0)
 		{
@@ -124,7 +124,7 @@ public class CmdLoadFileNStorages
 		loader.loadData();
 
 		generalManager.getGUIBridge().setFileNameCurrentDataSet(sFileName);
-		
+
 		commandManager.runDoCommand(this);
 	}
 

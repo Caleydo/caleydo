@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.event.mediator;
+package org.caleydo.core.manager.event;
 
 import java.util.Collection;
 import org.caleydo.core.data.IUniqueObject;
@@ -9,6 +9,7 @@ import org.caleydo.core.data.selection.SelectionCommand;
 /**
  * @author Michael Kalkusch
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public interface IMediator
 	extends IUniqueObject
@@ -16,31 +17,51 @@ public interface IMediator
 	/**
 	 * Register a new event sender to the mediator.
 	 * 
-	 * @param sender new event sender
-	 * @return TRUE on success
+	 * @param sender new event receiver
+	 * @return true, when the instance was added, false when it was already
+	 *         registered
 	 */
-	public boolean register(IMediatorSender sender);
+	public boolean addSender(IMediatorSender sender);
 
 	/**
 	 * Register a new event receiver to the mediator.
 	 * 
 	 * @param receiver new event receiver
-	 * @return TRUE on success
+	 * @return true, when the instance was added, false when it was already
+	 *         registered
 	 */
-	public boolean register(IMediatorReceiver receiver);
+	public boolean addReceiver(IMediatorReceiver receiver);
 
 	/**
-	 * Unregister sender. If it is last reference to Mediator, it removes the
-	 * mediator from the
+	 * Remove sender from mediator
 	 * 
-	 * @param sender
+	 * @param sender the sender to be removed
+	 * @return true if the mediator contained the instance
 	 */
-	public boolean unregister(IMediatorSender sender);
+	public boolean removeSender(IMediatorSender sender);
 
-	public boolean unregister(IMediatorReceiver receiver);
+	/**
+	 * Remove receiver from mediator
+	 * 
+	 * @param receiver the receiver to be removed
+	 * @return true if the mediator contained the instance
+	 */
+	public boolean removeReceiver(IMediatorReceiver receiver);
 
+	/**
+	 * Checks whether the instance is registered as a receiver
+	 * 
+	 * @param receiver the instance to be checked
+	 * @return true if already registered
+	 */
 	public boolean hasReceiver(IMediatorReceiver receiver);
 
+	/**
+	 * Checks whether the instance is registered as a sender
+	 * 
+	 * @param sender the instance to be checked
+	 * @return true if already registered
+	 */
 	public boolean hasSender(IMediatorSender sender);
 
 	/**
@@ -54,22 +75,23 @@ public interface IMediator
 	 */
 	public void triggerUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
 			Collection<SelectionCommand> colSelectionCommand);
-	
+
 	/**
 	 * Trigger an update concerning virtual arrays. The details about what to do
 	 * with the update are specified in the delta.
 	 * 
 	 * @param eventTrigger the caller
 	 * @param delta the delta containing all operations to be executed
-	 * @param colSelectionCommand a command to be executed on the manager (can be null if not necessary)
+	 * @param colSelectionCommand a command to be executed on the manager (can
+	 *            be null if not necessary)
 	 */
-	public void triggerVAUpdate(IUniqueObject eventTrigger,
-			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand);
-	
+	public void triggerVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
+			Collection<SelectionCommand> colSelectionCommand);
+
 	/**
 	 * Trigger an event, signaling that something has happened
 	 * 
-	 * TODO: interface is only rudimentary 
+	 * TODO: interface is only rudimentary
 	 * 
 	 * @param eventTrigger
 	 * @param iID

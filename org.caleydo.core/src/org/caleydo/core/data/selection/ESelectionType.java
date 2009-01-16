@@ -13,7 +13,6 @@ public enum ESelectionType
 	MOUSE_OVER,
 	DESELECTED,
 
-
 	/**
 	 * Pathway neighborhoods TODO: if needed more use the hash map in the
 	 * selection manager

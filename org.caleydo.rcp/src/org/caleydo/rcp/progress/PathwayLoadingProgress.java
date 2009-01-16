@@ -8,7 +8,6 @@ import org.caleydo.core.manager.specialized.genome.pathway.PathwayLoaderThread;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
-import org.eclipse.ui.PlatformUI;
 
 public class PathwayLoadingProgress
 implements IRunnableWithProgress

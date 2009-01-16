@@ -15,11 +15,21 @@ public class ParCoordsRenderStyle
 
 	public static final float[] POLYLINE_NO_OCCLUSION_PREV_COLOR = { 0.0f, 0.0f, 0.0f, 1.0f };
 
-	public static final float[] POLYLINE_SELECTED_COLOR = SELECTED_COLOR; //{ 0f, 1.0f, 0.0f, 1.0f };
+	public static final float[] POLYLINE_SELECTED_COLOR = SELECTED_COLOR; // {
+																			// 0f,
+																			// 1.0f,
+																			// 0.0f,
+																			// 1.0f
+																			// };
 
 	public static final float SELECTED_POLYLINE_LINE_WIDTH = 4.0f;
 
-	public static final float[] POLYLINE_MOUSE_OVER_COLOR = MOUSE_OVER_COLOR; //{ 1.0f, 0.0f, 0.0f, 1.0f };
+	public static final float[] POLYLINE_MOUSE_OVER_COLOR = MOUSE_OVER_COLOR; // {
+																				// 1.0f,
+																				// 0.0f,
+																				// 0.0f,
+																				// 1.0f
+																				// };
 
 	public static final float MOUSE_OVER_POLYLINE_LINE_WIDTH = 4.0f;
 
@@ -204,6 +214,7 @@ public class ParCoordsRenderStyle
 		return false;
 	}
 
+	@Override
 	public float[] getBackgroundColor()
 	{
 		return BACKGROUND_COLOR;

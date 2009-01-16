@@ -110,6 +110,7 @@ public class GlyphMappingConfigurationViewRep
 
 	}
 
+	@Override
 	public void drawView()
 	{
 

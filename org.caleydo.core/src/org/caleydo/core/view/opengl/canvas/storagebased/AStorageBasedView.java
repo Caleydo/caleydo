@@ -24,9 +24,9 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.manager.IIDMappingManager;
-import org.caleydo.core.manager.event.mediator.EMediatorType;
-import org.caleydo.core.manager.event.mediator.IMediatorEventSender;
-import org.caleydo.core.manager.event.mediator.IMediatorReceiver;
+import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.IMediatorEventSender;
+import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
@@ -404,7 +404,7 @@ public abstract class AStorageBasedView
 		else if (delta.getIDType() == EIDType.DAVID)
 		{
 			contentSelectionManager.executeSelectionCommands(colSelectionCommand);
-			
+
 			IVirtualArrayDelta convertedDelta = DeltaConverter.convertDelta(
 					EIDType.EXPRESSION_INDEX, delta);
 			contentSelectionManager.setVADelta(convertedDelta);
@@ -465,8 +465,8 @@ public abstract class AStorageBasedView
 	{
 		// TODO connects to one element only here
 		handleConnectedElementRep(selectionDelta);
-		generalManager.getEventPublisher().triggerUpdate(eMediatorType, this, selectionDelta,
-				colSelectionCommand);
+		generalManager.getEventPublisher().triggerSelectionUpdate(eMediatorType, this,
+				selectionDelta, colSelectionCommand);
 	}
 
 	@Override
@@ -555,13 +555,6 @@ public abstract class AStorageBasedView
 					"Can not handle data type of update in selectionDelta");
 		}
 	}
-
-	/**
-	 * Re-position a view centered on a element, specified by the element ID
-	 * 
-	 * @param iElementID the ID of the element that should be in the center
-	 */
-	protected abstract void rePosition(int iElementID);
 
 	/**
 	 * Broadcast all elements independent of their type.

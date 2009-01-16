@@ -48,31 +48,29 @@ public class GLConnectionLineRendererBucket
 		matSrc.makeIdent();
 		matDest.makeIdent();
 
-//		int iViewID = 0;
+		// int iViewID = 0;
 		RemoteLevel activeLevel = null;
 		RemoteLevelElement remoteLevelElement = null;
 
-		IViewManager viewGLCanvasManager = 
-			GeneralManager.get().getViewGLCanvasManager();
-		
+		IViewManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
+
 		for (EIDType idType : connectedElementRepManager.getOccuringIDTypes())
 		{
-			ArrayList<ArrayList<Vec3f>> alPointLists = null; 
+			ArrayList<ArrayList<Vec3f>> alPointLists = null;
 
-			for (int iSelectedElementID : connectedElementRepManager.getIDList(
-					idType))
+			for (int iSelectedElementID : connectedElementRepManager.getIDList(idType))
 			{
-				for (SelectedElementRep selectedElementRep: connectedElementRepManager
+				for (SelectedElementRep selectedElementRep : connectedElementRepManager
 						.getSelectedElementRepsByElementID(idType, iSelectedElementID))
 				{
 					remoteLevelElement = viewGLCanvasManager.getGLEventListener(
 							selectedElementRep.getContainingViewID()).getRemoteLevelElement();
 					// views that are not rendered remote
-					if(remoteLevelElement == null)
+					if (remoteLevelElement == null)
 						continue;
-					
+
 					activeLevel = remoteLevelElement.getRemoteLevel();
-										
+
 					if (activeLevel == stackLevel || activeLevel == focusLevel)
 					{
 						vecTranslation = remoteLevelElement.getTransform().getTranslation();

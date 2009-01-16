@@ -21,7 +21,6 @@ public class SelectionDelta
 	private EIDType idType;
 	private EIDType secondaryIDType = null;
 
-	
 	public SelectionDelta(EIDType idType)
 	{
 		hashSelectionItems = new HashMap<Integer, SelectionDeltaItem>();

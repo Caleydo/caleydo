@@ -3,7 +3,7 @@ package org.caleydo.core.command.event;
 import java.util.ArrayList;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
-import org.caleydo.core.manager.event.mediator.EMediatorType;
+import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.parser.parameter.IParameterHandler;
 
 /**
