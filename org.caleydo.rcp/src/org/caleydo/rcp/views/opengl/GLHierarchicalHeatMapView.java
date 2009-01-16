@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
+import org.caleydo.rcp.action.view.glyph.ClearSelectionsAction;
+import org.caleydo.rcp.action.view.storagebased.ResetViewAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -28,7 +30,7 @@ public class GLHierarchicalHeatMapView
 	public void createPartControl(Composite parent)
 	{
 		super.createPartControl(parent);
-		
+
 		if (Application.applicationMode == EApplicationMode.PATHWAY_VIEWER)
 		{
 			MessageBox alert = new MessageBox(new Shell(), SWT.OK);
@@ -38,23 +40,25 @@ public class GLHierarchicalHeatMapView
 			dispose();
 			return;
 		}
-		
+
 		createGLCanvas();
-		createGLEventListener(ECommandType.CREATE_GL_TEXTURE_HEAT_MAP_3D, glCanvas.getID(), true);
+		createGLEventListener(ECommandType.CREATE_GL_TEXTURE_HEAT_MAP_3D, glCanvas.getID(),
+				true);
 	}
 
 	public static void createToolBarItems(int iViewID)
 	{
-//		GLHierarchicalHeatMap hierarchicalHeatMap = (GLHierarchicalHeatMap) GeneralManager
-//				.get().getViewGLCanvasManager().getGLEventListener(iViewID);
+		// GLHierarchicalHeatMap hierarchicalHeatMap = (GLHierarchicalHeatMap)
+		// GeneralManager
+		// .get().getViewGLCanvasManager().getGLEventListener(iViewID);
 
 		alToolbar = new ArrayList<IAction>();
 
-		// TODO: insert icons + action
-		// IAction switchFocus = new InFocusAction(iViewID);
-		// alToolbar.add(switchFocus);
-
-		// IAction switchOrientation = new ChangeOrientationAction(iViewID);
-		// alToolbar.add(switchOrientation);
+//		 IAction switchFocus = new InFocusAction(iViewID);
+//		 alToolbar.add(switchFocus);
+//		 IAction clearSelectionsAction = new ClearSelectionsAction(iViewID);
+//		 alToolbar.add(clearSelectionsAction);
+//		 IAction resetViewAction = new ResetViewAction(iViewID);
+//		 alToolbar.add(resetViewAction);
 	}
 }

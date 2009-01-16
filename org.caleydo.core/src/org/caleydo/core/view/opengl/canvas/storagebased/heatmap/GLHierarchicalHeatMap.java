@@ -25,6 +25,7 @@ import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.data.selection.VADeltaItem;
 import org.caleydo.core.data.selection.VirtualArrayDelta;
 import org.caleydo.core.manager.event.mediator.EMediatorType;
@@ -48,12 +49,17 @@ import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.spline.Spline3D;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
-import org.eclipse.core.runtime.preferences.PreferenceModifyListener;
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 import com.sun.opengl.util.texture.TextureData;
 import com.sun.opengl.util.texture.TextureIO;
+import static org.caleydo.core.view.opengl.canvas.storagebased.heatmap.HeatMapRenderStyle.FIELD_Z;
+import static org.caleydo.core.view.opengl.canvas.storagebased.heatmap.HeatMapRenderStyle.SELECTION_Z;
+import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
+import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_LINE_WIDTH;
+import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
+import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_LINE_WIDTH;
 
 /**
  * Rendering the GLHierarchicalHeatMap with remote rendering support.
@@ -103,7 +109,7 @@ public class GLHierarchicalHeatMap
 	private int iNrSelBar = 0;
 
 	// array of textures for holding the data samples
-	private Texture[] THeatMap;
+	private ArrayList<Texture> AlTextures = new ArrayList<Texture>();
 	private ArrayList<Integer> iAlNumberSamples = new ArrayList<Integer>();
 
 
@@ -193,7 +199,7 @@ public class GLHierarchicalHeatMap
 		if (set == null)
 			return;
 
-		initTextures(gl);
+		initTextures();
 		initPosCursor();
 	}
 
@@ -246,15 +252,15 @@ public class GLHierarchicalHeatMap
 	 * 
 	 * @param gl
 	 */
-	private void initTextures(GL gl)
+	private void initTextures()
 	{
 		fAlXDistances.clear();
 		renderStyle.updateFieldSizes();
 
 		iNrSelBar = (int) Math.ceil(set.getVA(iContentVAID).size() / iSamplesPerTexture);
 
-		THeatMap = new Texture[iNrSelBar];
-
+		Texture tempTextur;
+		
 		int iTextureHeight = set.getVA(iContentVAID).size();
 		int iTextureWidth = set.getVA(iStorageVAID).size();
 
@@ -301,9 +307,10 @@ public class GLHierarchicalHeatMap
 						GL.GL_FLOAT /* pixelType */, false /* mipmap */,
 						false /* dataIsCompressed */, false /* mustFlipVertically */, FbTemp, null);
 
-				THeatMap[iTextureCounter] = TextureIO.newTexture(0);
-				THeatMap[iTextureCounter].updateImage(texData);
-
+				tempTextur = TextureIO.newTexture(0);
+				tempTextur.updateImage(texData);
+				
+				AlTextures.add(tempTextur);
 				iAlNumberSamples.add(iCount);
 
 				iTextureCounter++;
@@ -553,13 +560,13 @@ public class GLHierarchicalHeatMap
 
 		for (int i = 0; i < iNrSelBar; i++)
 		{
-			THeatMap[iNrSelBar - i - 1].enable();
-			THeatMap[iNrSelBar - i - 1].bind();
+			AlTextures.get(iNrSelBar - i - 1).enable();
+			AlTextures.get(iNrSelBar - i - 1).bind();
 			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP);
 			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_CLAMP);
 			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
 			gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
-			TextureCoords texCoords = THeatMap[iNrSelBar - i - 1].getImageTexCoords();
+			TextureCoords texCoords = AlTextures.get(iNrSelBar - i - 1).getImageTexCoords();
 
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.HIER_HEAT_MAP_TEXTURE_SELECTION, iNrSelBar - i));
@@ -576,7 +583,7 @@ public class GLHierarchicalHeatMap
 			gl.glPopName();
 
 			fyOffset += fStep;
-			THeatMap[iNrSelBar - i - 1].disable();
+			AlTextures.get(iNrSelBar - i - 1).disable();
 		}
 	}
 
@@ -591,8 +598,6 @@ public class GLHierarchicalHeatMap
 		float fHeight = viewFrustum.getHeight();
 		float fStep = fHeight / iNrSelBar;
 		float fFieldWith = 0.1f;
-		Vec3f startpoint;
-		Vec3f endpoint;
 
 		gl.glColor4f(1f, 1f, 0f, 1f);
 
@@ -601,25 +606,13 @@ public class GLHierarchicalHeatMap
 		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(0, fStep * (iNrSelBar - iSelectorBar + 1), 0);
 		gl.glVertex3f(fFieldWith, fStep * (iNrSelBar - iSelectorBar + 1), 0);
-		gl.glVertex3f(fFieldWith, fStep * (iNrSelBar - iSelectorBar), 0);
-		gl.glVertex3f(0, fStep * (iNrSelBar - iSelectorBar), 0);
+		gl.glVertex3f(fFieldWith, fStep * (iNrSelBar - iSelectorBar - 1), 0);
+		gl.glVertex3f(0, fStep * (iNrSelBar - iSelectorBar - 1), 0);
 		gl.glEnd();
-
-		gl.glColor4f(0f, 0f, 0f, 0.4f);
-
-		startpoint = new Vec3f(fFieldWith, fStep * (iNrSelBar - iSelectorBar + 1), 0);
-		endpoint = new Vec3f(GAP_LEVEL1_2, fHeight, 0);
-		renderCurvedConnectionLine(gl, startpoint, endpoint);
-
-		startpoint = new Vec3f(fFieldWith, fStep * (iNrSelBar - iSelectorBar), 0);
-		endpoint = new Vec3f(GAP_LEVEL1_2, 0, 0);
-		renderCurvedConnectionLine(gl, endpoint, startpoint);
 
 		float foffsetPick = ((fStep * (iNrSelBar - iSelectorBar + 1)) - (fStep * (iNrSelBar - iSelectorBar)))
 				/ iAlNumberSamples.get(iSelectorBar - 1);
-
-		gl.glColor4f(1f, 1f, 0f, 1f);
-
+		
 		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(0,
 				fStep * (iNrSelBar - iSelectorBar + 1) - (iFirstSample * foffsetPick), 0);
@@ -630,19 +623,31 @@ public class GLHierarchicalHeatMap
 		gl.glVertex3f(0, fStep * (iNrSelBar - iSelectorBar + 1)
 				- ((iLastSample + 1) * foffsetPick), 0);
 		gl.glEnd();
+		
+		gl.glColor4f(0f, 0f, 0f, 0.45f);
+		float fthickness = GAP_LEVEL1_2 / 4;
 
-		gl.glColor4f(0f, 0f, 0f, 0.4f);
+		gl.glBegin(GL.GL_QUADS);
+		gl.glVertex3f(fFieldWith, fStep * (iNrSelBar - iSelectorBar + 1), 0);
+		gl.glVertex3f(fFieldWith + fthickness, fStep * (iNrSelBar - iSelectorBar + 1), 0);
+		gl.glVertex3f(fFieldWith + fthickness, fStep * (iNrSelBar - iSelectorBar - 1), 0);
+		gl.glVertex3f(fFieldWith, fStep * (iNrSelBar - iSelectorBar - 1), 0);
+		gl.glEnd();
 
-		startpoint = new Vec3f(fFieldWith, fStep * (iNrSelBar - iSelectorBar + 1)
-				- iFirstSample * foffsetPick, 0);
-		endpoint = new Vec3f(GAP_LEVEL1_2, fPosCursorFirstElement, 0);
-		renderCurvedConnectionLine(gl, startpoint, endpoint);
+		gl.glBegin(GL.GL_QUADS);
+		gl.glVertex3f(fFieldWith + fthickness, fStep * (iNrSelBar - iSelectorBar + 1), 0);
+		gl.glVertex3f(GAP_LEVEL1_2 - fthickness, fHeight, 0);
+		gl.glVertex3f(GAP_LEVEL1_2 - fthickness, 0, 0);
+		gl.glVertex3f(fFieldWith + fthickness, fStep * (iNrSelBar - iSelectorBar - 1), 0);
+		gl.glEnd();
 
-		startpoint = new Vec3f(fFieldWith, fStep * (iNrSelBar - iSelectorBar + 1)
-				- (iLastSample + 1) * foffsetPick, 0);
-		endpoint = new Vec3f(GAP_LEVEL1_2, fPosCursorLastElement, 0);
-		renderCurvedConnectionLine(gl, startpoint, endpoint);
-
+		gl.glBegin(GL.GL_QUADS);
+		gl.glVertex3f(GAP_LEVEL1_2, 0, 0);
+		gl.glVertex3f(GAP_LEVEL1_2, fHeight, 0);
+		gl.glVertex3f(GAP_LEVEL1_2 - fthickness, fHeight, 0);
+		gl.glVertex3f(GAP_LEVEL1_2 - fthickness, 0, 0);
+		gl.glEnd();
+		
 		gl.glColor4f(1.0f, 1.0f, 0.0f, 1.0f);
 	}
 
@@ -658,25 +663,21 @@ public class GLHierarchicalHeatMap
 		float fStep = fHeight / iNrSelBar;
 		float fBarWidth = 0.1f;
 
-		gl.glColor4f(1f, 0f, 0f, 1f);
+		gl.glColor4f(1f, 1f, 0f, 1f);
 
 		for (HeatMapSelection selection : AlSelection)
 		{
+
 			// elements in overview bar
-			if (iSelectorBar != (selection.getTexture() + 1))
-			{
-				gl.glBegin(GL.GL_QUADS);
-				gl.glVertex3f(fBarWidth, fStep
-						* (iNrSelBar - (selection.getTexture() + 1) + 1), 0);
-				gl.glVertex3f(fBarWidth + 0.05f, fStep
-						* (iNrSelBar - (selection.getTexture() + 1) + 1), 0);
-				gl.glVertex3f(fBarWidth + 0.05f, fStep
-						* (iNrSelBar - (selection.getTexture() + 1)), 0);
-				gl
-						.glVertex3f(fBarWidth, fStep
-								* (iNrSelBar - (selection.getTexture() + 1)), 0);
-				gl.glEnd();
-			}
+			gl.glBegin(GL.GL_QUADS);
+			gl.glVertex3f(fBarWidth, fStep
+					* (iNrSelBar - (selection.getTexture() + 1) + 1), 0.001f);
+			gl.glVertex3f(fBarWidth + 0.1f, fStep
+					* (iNrSelBar - (selection.getTexture() + 1) + 1), 0.001f);
+			gl.glVertex3f(fBarWidth + 0.1f, fStep
+					* (iNrSelBar - (selection.getTexture() + 1)), 0.001f);
+			gl.glVertex3f(fBarWidth, fStep * (iNrSelBar - (selection.getTexture() + 1)), 0.001f);
+			gl.glEnd();
 		}
 		gl.glColor4f(1f, 1f, 0f, 1f);
 	}
@@ -691,41 +692,59 @@ public class GLHierarchicalHeatMap
 		float fHeight;
 		float fWidth;
 
-		THeatMap[iSelectorBar - 1].enable();
-		THeatMap[iSelectorBar - 1].bind();
+		Texture TexTemp1 = AlTextures.get(iSelectorBar - 1);
+		TexTemp1.enable();
+		TexTemp1.bind();
 
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_S, GL.GL_CLAMP);
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_WRAP_T, GL.GL_CLAMP);
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_NEAREST);
 		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_NEAREST);
 
-		TextureCoords texCoords = THeatMap[iSelectorBar - 1].getImageTexCoords();
-
+		TextureCoords texCoords1 = TexTemp1.getImageTexCoords();
+		
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 
 		fHeight = viewFrustum.getHeight();
-		fWidth = viewFrustum.getWidth() / 4.0f;
+		fWidth = viewFrustum.getWidth() / 4.0f * fAnimationScale;
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.HIER_HEAT_MAP_FIELD_SELECTION, 1));
 
 		gl.glBegin(GL.GL_QUADS);
-		gl.glTexCoord2d(texCoords.left(), texCoords.top());
-		gl.glVertex3f(0, 0, 0);
-		gl.glTexCoord2d(texCoords.left(), texCoords.bottom());
+		gl.glTexCoord2d(texCoords1.left(), texCoords1.top());
+		gl.glVertex3f(0, fHeight/2, 0);
+		gl.glTexCoord2d(texCoords1.left(), texCoords1.bottom());
 		gl.glVertex3f(0, fHeight, 0);
-		gl.glTexCoord2d(texCoords.right(), texCoords.bottom());
+		gl.glTexCoord2d(texCoords1.right(), texCoords1.bottom());
 		gl.glVertex3f(fWidth, fHeight, 0);
-		gl.glTexCoord2d(texCoords.right(), texCoords.top());
+		gl.glTexCoord2d(texCoords1.right(), texCoords1.top());
+		gl.glVertex3f(fWidth, fHeight/2, 0);
+		gl.glEnd();
+		
+		Texture TexTemp2 = AlTextures.get(iSelectorBar);
+		TexTemp2.enable();
+		TexTemp2.bind();
+		
+		TextureCoords texCoords2 = TexTemp2.getImageTexCoords();
+		
+		gl.glBegin(GL.GL_QUADS);
+		gl.glTexCoord2d(texCoords2.left(), texCoords2.top());
+		gl.glVertex3f(0, 0, 0);
+		gl.glTexCoord2d(texCoords2.left(), texCoords2.bottom());
+		gl.glVertex3f(0, fHeight/2, 0);
+		gl.glTexCoord2d(texCoords2.right(), texCoords2.bottom());
+		gl.glVertex3f(fWidth, fHeight/2, 0);
+		gl.glTexCoord2d(texCoords2.right(), texCoords2.top());
 		gl.glVertex3f(fWidth, 0, 0);
 		gl.glEnd();
 
 		gl.glPopName();
 
 		gl.glPopAttrib();
-
-		THeatMap[iSelectorBar - 1].disable();
-
+		
+		TexTemp1.disable();
+		TexTemp2.disable();
 	}
 
 	/**
@@ -736,12 +755,24 @@ public class GLHierarchicalHeatMap
 	 */
 	private void renderMarkerTexture(final GL gl)
 	{
-		float fFieldWith = viewFrustum.getWidth() / 4.0f;
-		float fHeightSample = viewFrustum.getHeight() / iAlNumberSamples.get(iSelectorBar - 1);
-		Vec3f startpoint;
-		Vec3f endpoint;
+		float fFieldWith = viewFrustum.getWidth() / 4.0f * fAnimationScale;
+		float fHeightSample = viewFrustum.getHeight() / (iAlNumberSamples.get(iSelectorBar - 1)*2);
 
-		gl.glColor4f(1f, 1f, 0f, 1f);
+//		Texture TextureMask = iconTextureManager.getIconTexture(gl,
+//				EIconTextures.NAVIGATION_MASK_CURVE);
+//		TextureMask.enable();
+//		TextureMask.bind();
+//
+//		TextureCoords texCoordsMask = TextureMask.getImageTexCoords();
+		
+//		Texture TextureMaskNeg = iconTextureManager.getIconTexture(gl,
+//				EIconTextures.NAVIGATION_MASK_CURVE_NEG);
+//		TextureMaskNeg.enable();
+//		TextureMaskNeg.bind();
+//
+//		TextureCoords texCoordsMaskNeg = TextureMaskNeg.getImageTexCoords();
+		
+		gl.glColor4f(1, 1, 0, 1);
 		gl.glLineWidth(2f);
 		gl.glBegin(GL.GL_LINE_LOOP);
 		gl.glVertex3f(0, viewFrustum.getHeight() - (iFirstSample * fHeightSample), 0);
@@ -758,25 +789,36 @@ public class GLHierarchicalHeatMap
 					- ((iLastSample + 1) * fHeightSample);
 		}
 
-		gl.glColor4f(0f, 0f, 0f, 0.4f);
+		gl.glColor4f(0f, 0f, 0f, 0.45f);
 
-		startpoint = new Vec3f(fFieldWith, viewFrustum.getHeight()
+		float fthickness = GAP_LEVEL2_3 / 4;
+
+		gl.glBegin(GL.GL_QUADS);
+		gl.glVertex3f(fFieldWith, viewFrustum.getHeight() - (iFirstSample * fHeightSample), 0);
+		gl.glVertex3f(fFieldWith + 1*fthickness, viewFrustum.getHeight()
 				- (iFirstSample * fHeightSample), 0);
-		if (bIsHeatmapInFocus)
-			endpoint = new Vec3f(fFieldWith + (GAP_LEVEL2_3 + 0.35f) * 5f, viewFrustum
-					.getHeight() - 0.1f, 0);
-		else
-			endpoint = new Vec3f(fFieldWith + GAP_LEVEL2_3 + 0.35f,
-					viewFrustum.getHeight() - 0.1f, 0);
-		renderCurvedConnectionLine(gl, startpoint, endpoint);
-
-		startpoint = new Vec3f(fFieldWith, viewFrustum.getHeight()
+		gl.glVertex3f(fFieldWith + 1*fthickness, viewFrustum.getHeight()
 				- ((iLastSample + 1) * fHeightSample), 0);
-		if (bIsHeatmapInFocus)
-			endpoint = new Vec3f(fFieldWith + (GAP_LEVEL2_3 + 0.35f) * 5f, 0.5f, 0);
-		else
-			endpoint = new Vec3f(fFieldWith + GAP_LEVEL2_3 + 0.35f, 0.5f, 0);
-		renderCurvedConnectionLine(gl, startpoint, endpoint);
+		gl.glVertex3f(fFieldWith, viewFrustum.getHeight()
+				- ((iLastSample + 1) * fHeightSample), 0);
+		gl.glEnd();
+
+		gl.glBegin(GL.GL_QUADS);
+		gl.glVertex3f(fFieldWith + fthickness, viewFrustum.getHeight()
+				- (iFirstSample * fHeightSample), 0);
+		gl.glVertex3f(fFieldWith + GAP_LEVEL2_3 - fthickness, viewFrustum.getHeight(),
+				0);
+		gl.glVertex3f(fFieldWith + GAP_LEVEL2_3 - fthickness, 0, 0);
+		gl.glVertex3f(fFieldWith + fthickness, viewFrustum.getHeight()
+				- ((iLastSample + 1) * fHeightSample), 0);
+		gl.glEnd();
+
+		gl.glBegin(GL.GL_QUADS);
+		gl.glVertex3f(fFieldWith + GAP_LEVEL2_3 - 1 * fthickness, viewFrustum.getHeight(), 0);
+		gl.glVertex3f(fFieldWith + GAP_LEVEL2_3, viewFrustum.getHeight(), 0);
+		gl.glVertex3f(fFieldWith + GAP_LEVEL2_3, 0.0f, 0);
+		gl.glVertex3f(fFieldWith + GAP_LEVEL2_3 - 1 * fthickness, 0.0f, 0);
+		gl.glEnd();
 
 		if (bRenderCaption == true)
 		{
@@ -785,6 +827,8 @@ public class GLHierarchicalHeatMap
 					- (iPickedSample * fHeightSample), 0.01f);
 			bRenderCaption = false;
 		}
+		
+		gl.glColor4f(1f, 1f, 0f, 1f);
 	}
 
 	/**
@@ -795,10 +839,10 @@ public class GLHierarchicalHeatMap
 	 */
 	private void renderSelectedElementsTexture(GL gl)
 	{
-		float fFieldWith = viewFrustum.getWidth() / 4.0f;
-		float fHeightSample = viewFrustum.getHeight() / iAlNumberSamples.get(iSelectorBar - 1);
+		float fFieldWith = viewFrustum.getWidth() / 4.0f * fAnimationScale;
+		float fHeightSample = viewFrustum.getHeight() / (iAlNumberSamples.get(iSelectorBar - 1)*2);
 
-		gl.glColor4f(1f, 0f, 0f, 1f);
+		gl.glColor4f(1,1,0,1);
 
 		for (HeatMapSelection selection : AlSelection)
 		{
@@ -809,12 +853,25 @@ public class GLHierarchicalHeatMap
 				gl.glBegin(GL.GL_LINE_LOOP);
 				gl.glVertex3f(0, viewFrustum.getHeight()
 						- ((selection.getPos() - 1) * fHeightSample), 0);
-				gl.glVertex3f(fFieldWith, viewFrustum.getHeight()
+				gl.glVertex3f(fFieldWith + 0.1f, viewFrustum.getHeight()
 						- ((selection.getPos() - 1) * fHeightSample), 0);
-				gl.glVertex3f(fFieldWith, viewFrustum.getHeight()
+				gl.glVertex3f(fFieldWith + 0.1f, viewFrustum.getHeight()
 						- (selection.getPos() * fHeightSample), 0);
+				gl.glVertex3f(0, viewFrustum.getHeight()- (selection.getPos() * fHeightSample), 0);
+				gl.glEnd();
+			}
+			else if((iSelectorBar + 1) == (selection.getTexture() + 1))
+			{
+				gl.glLineWidth(2f);
+				gl.glBegin(GL.GL_LINE_LOOP);
 				gl.glVertex3f(0, viewFrustum.getHeight()
-						- (selection.getPos() * fHeightSample), 0);
+								- ((selection.getPos() - 1 + iAlNumberSamples.get(iSelectorBar - 1)) * fHeightSample), 0);
+				gl.glVertex3f(fFieldWith + 0.1f, viewFrustum.getHeight()
+								- ((selection.getPos() - 1 + iAlNumberSamples.get(iSelectorBar - 1)) * fHeightSample), 0);
+				gl.glVertex3f(fFieldWith + 0.1f, viewFrustum.getHeight()
+								- ((selection.getPos() + iAlNumberSamples.get(iSelectorBar - 1)) * fHeightSample), 0);
+				gl.glVertex3f(0, viewFrustum.getHeight()
+								- ((selection.getPos() + iAlNumberSamples.get(iSelectorBar - 1)) * fHeightSample), 0);
 				gl.glEnd();
 			}
 		}
@@ -857,6 +914,7 @@ public class GLHierarchicalHeatMap
 			gl.glTexCoord2f(texCoords.left(), texCoords.top());
 			gl.glVertex3f(0.0f, fHeight + 0.1f, 0);
 			gl.glEnd();
+			
 			// right
 			if (bIsHeatmapInFocus)
 			{
@@ -884,45 +942,158 @@ public class GLHierarchicalHeatMap
 				gl.glVertex3f(fWidth - 0.1f, fHeight + 0.1f, 0);
 				gl.glEnd();
 			}
+			
+			tempTexture = iconTextureManager.getIconTexture(gl,
+					EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE);
+			tempTexture.enable();
+			tempTexture.bind();
+
+			texCoords = tempTexture.getImageTexCoords();
+			// middle		
+			if (bIsHeatmapInFocus)
+			{
+				gl.glBegin(GL.GL_POLYGON);
+				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+				gl.glVertex3f(fWidth/10-0.15f, fHeight, 0);
+				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+				gl.glVertex3f(fWidth/10+0.15f, fHeight, 0);
+				gl.glTexCoord2f(texCoords.right(), texCoords.top());
+				gl.glVertex3f(fWidth/10+0.15f, fHeight + 0.1f, 0);
+				gl.glTexCoord2f(texCoords.left(), texCoords.top());
+				gl.glVertex3f(fWidth/10-0.15f, fHeight + 0.1f, 0);
+				gl.glEnd();
+			}
+			else
+			{
+				gl.glBegin(GL.GL_POLYGON);
+				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+				gl.glVertex3f(fWidth/2-0.15f, fHeight, 0.001f);
+				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+				gl.glVertex3f(fWidth/2+0.15f, fHeight, 0.001f);
+				gl.glTexCoord2f(texCoords.right(), texCoords.top());
+				gl.glVertex3f(fWidth/2+0.15f, fHeight + 0.1f, 0.001f);
+				gl.glTexCoord2f(texCoords.left(), texCoords.top());
+				gl.glVertex3f(fWidth/2-0.15f, fHeight + 0.1f, 0.001f);
+				gl.glEnd();
+				
+				// fill gap between middle and side
+				gl.glBegin(GL.GL_QUADS);
+				gl.glVertex3f(0.1f, fHeight, 0);
+				gl.glVertex3f(fWidth/2-0.15f, fHeight, 0);
+				gl.glVertex3f(fWidth/2-0.15f, fHeight + 0.1f, 0);
+				gl.glVertex3f(0.1f, fHeight + 0.1f, 0);
+				gl.glEnd();
+				gl.glBegin(GL.GL_QUADS);
+				gl.glVertex3f(fWidth - 0.1f, fHeight, 0);
+				gl.glVertex3f(fWidth/2+0.15f, fHeight, 0);
+				gl.glVertex3f(fWidth/2+0.15f, fHeight + 0.1f, 0);
+				gl.glVertex3f(fWidth - 0.1f, fHeight + 0.1f, 0);
+				gl.glEnd();
+			}
 			gl.glPopName();
 		}
 
-		if (iSelectorBar != iNrSelBar)
+		tempTexture = iconTextureManager.getIconTexture(gl,
+				EIconTextures.NAVIGATION_NEXT_BIG_SIDE);
+		tempTexture.enable();
+		tempTexture.bind();
+
+		texCoords = tempTexture.getImageTexCoords();
+		
+		if (iSelectorBar != iNrSelBar - 1)
 		{
 			// Polygon for selecting next texture
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.HIER_HEAT_MAP_TEXTURE_CURSOR, 2));
+			// left
 			gl.glBegin(GL.GL_POLYGON);
 			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 			gl.glVertex3f(0.0f, 0.0f, 0);
 			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-			gl.glVertex3f(fWidth, 0.0f, 0);
+			gl.glVertex3f(0.1f, 0.0f, 0);
 			gl.glTexCoord2f(texCoords.right(), texCoords.top());
-			gl.glVertex3f(fWidth, -0.1f, 0);
+			gl.glVertex3f(0.1f, -0.1f, 0);
 			gl.glTexCoord2f(texCoords.left(), texCoords.top());
 			gl.glVertex3f(0.0f, -0.1f, 0);
 			gl.glEnd();
-			gl.glPopName();
-		}
+			
+			// right
+			if (bIsHeatmapInFocus)
+			{
+				gl.glBegin(GL.GL_POLYGON);
+				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+				gl.glVertex3f(fWidth/5 - 0.1f, 0, 0);
+				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+				gl.glVertex3f(fWidth/5, 0, 0);
+				gl.glTexCoord2f(texCoords.left(), texCoords.top());
+				gl.glVertex3f(fWidth/5, - 0.1f, 0);
+				gl.glTexCoord2f(texCoords.right(), texCoords.top());
+				gl.glVertex3f(fWidth/5 - 0.1f, - 0.1f, 0);
+				gl.glEnd();
+			}
+			else
+			{
+				gl.glBegin(GL.GL_POLYGON);
+				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+				gl.glVertex3f(fWidth - 0.1f, 0, 0);
+				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+				gl.glVertex3f(fWidth, 0, 0);
+				gl.glTexCoord2f(texCoords.left(), texCoords.top());
+				gl.glVertex3f(fWidth, - 0.1f, 0);
+				gl.glTexCoord2f(texCoords.right(), texCoords.top());
+				gl.glVertex3f(fWidth - 0.1f, - 0.1f, 0);
+				gl.glEnd();
+			}
+			
+			tempTexture = iconTextureManager.getIconTexture(gl,
+					EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE);
+			tempTexture.enable();
+			tempTexture.bind();
 
-//		if (set.getVA(iStorageVAID).size() > MAX_NUM_SAMPLES && bIsHeatmapInFocus == false)
-//		{
-//			// Polygon for setting heatMap in focus
-//			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-//					EPickingType.HIER_HEAT_MAP_INFOCUS_SELECTION, 1));
-//			gl.glBegin(GL.GL_QUADS);
-//			gl.glTexCoord2f(texCoords.left(), texCoords.top());
-//			gl.glVertex3f(fWidth, fPosCursorFirstElement, 0);
-//			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-//			gl.glVertex3f(fWidth + 0.2f, fPosCursorFirstElement, 0);
-//			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-//			gl.glVertex3f(fWidth + 0.2f, fPosCursorLastElement, 0);
-//			gl.glTexCoord2f(texCoords.right(), texCoords.top());
-//			gl.glVertex3f(fWidth, fPosCursorLastElement, 0);
-//			gl.glEnd();
-//
-//			gl.glPopName();
-//		}		
+			texCoords = tempTexture.getImageTexCoords();
+			// middle		
+			if (bIsHeatmapInFocus)
+			{
+				gl.glBegin(GL.GL_POLYGON);
+				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+				gl.glVertex3f(fWidth/10-0.15f, 0, 0);
+				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+				gl.glVertex3f(fWidth/10+0.15f, 0, 0);
+				gl.glTexCoord2f(texCoords.right(), texCoords.top());
+				gl.glVertex3f(fWidth/10+0.15f, - 0.1f, 0);
+				gl.glTexCoord2f(texCoords.left(), texCoords.top());
+				gl.glVertex3f(fWidth/10-0.15f, - 0.1f, 0);
+				gl.glEnd();
+			}
+			else
+			{
+				gl.glBegin(GL.GL_POLYGON);
+				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+				gl.glVertex3f(fWidth/2-0.15f, 0, 0.001f);
+				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+				gl.glVertex3f(fWidth/2+0.15f, 0, 0.001f);
+				gl.glTexCoord2f(texCoords.right(), texCoords.top());
+				gl.glVertex3f(fWidth/2+0.15f, - 0.1f, 0.001f);
+				gl.glTexCoord2f(texCoords.left(), texCoords.top());
+				gl.glVertex3f(fWidth/2-0.15f, - 0.1f, 0.001f);
+				gl.glEnd();
+				
+				// fill gap between middle and side
+				gl.glBegin(GL.GL_QUADS);
+				gl.glVertex3f(0.1f, 0, 0);
+				gl.glVertex3f(fWidth/2-0.15f, 0, 0);
+				gl.glVertex3f(fWidth/2-0.15f, - 0.1f, 0);
+				gl.glVertex3f(0.1f, - 0.1f, 0);
+				gl.glEnd();
+				gl.glBegin(GL.GL_QUADS);
+				gl.glVertex3f(fWidth - 0.1f, 0, 0);
+				gl.glVertex3f(fWidth/2+0.15f, 0, 0);
+				gl.glVertex3f(fWidth/2+0.15f, - 0.1f, 0);
+				gl.glVertex3f(fWidth - 0.1f, - 0.1f, 0);
+				gl.glEnd();
+			}
+			gl.glPopName();
+		}	
 		
 		tempTexture = iconTextureManager.getIconTexture(gl,
 				EIconTextures.NAVIGATION_NEXT_SMALL);
@@ -933,7 +1104,6 @@ public class GLHierarchicalHeatMap
 		
 		if (bIsHeatmapInFocus == false)
 		{
-			gl.glColor4f(0f, 0f, 0f, 0.7f);
 			// Polygon for iFirstElement-Cursor
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
 					EPickingType.HIER_HEAT_MAP_CURSOR, 1));
@@ -948,13 +1118,6 @@ public class GLHierarchicalHeatMap
 			gl.glVertex3f(0.0f, fPosCursorFirstElement + 0.1f, 0);
 			gl.glEnd();
 			gl.glPopName();
-
-			gl.glBegin(GL.GL_QUADS);
-			gl.glVertex3f(-GAP_LEVEL1_2/4, fPosCursorLastElement, 0);
-			gl.glVertex3f(0.0f, fPosCursorLastElement, 0);
-			gl.glVertex3f(0.0f, fPosCursorFirstElement, 0);
-			gl.glVertex3f(-GAP_LEVEL1_2/4, fPosCursorFirstElement, 0);
-			gl.glEnd();
 			
 			// Polygon for iLastElement-Cursor
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
@@ -970,6 +1133,15 @@ public class GLHierarchicalHeatMap
 			gl.glVertex3f(0.0f, fPosCursorLastElement - 0.1f, 0);
 			gl.glEnd();
 			gl.glPopName();
+			
+			// fill gap between cursor
+			gl.glColor4f(0f, 0f, 0f, 0.45f);
+			gl.glBegin(GL.GL_QUADS);
+			gl.glVertex3f(-GAP_LEVEL1_2/4, fPosCursorLastElement, 0);
+			gl.glVertex3f(0.0f, fPosCursorLastElement, 0);
+			gl.glVertex3f(0.0f, fPosCursorFirstElement, 0);
+			gl.glVertex3f(-GAP_LEVEL1_2/4, fPosCursorFirstElement, 0);
+			gl.glEnd();
 		}
 
 		gl.glPopAttrib();
@@ -992,29 +1164,29 @@ public class GLHierarchicalHeatMap
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 
 		float fright = 0.0f;
-		float ftop = viewFrustum.getTop() - 0.2f;
+		float ftop = viewFrustum.getTop();
 
 		float fleftOffset = 0;
 
 		// render embedded heat map
 		if (bIsHeatmapInFocus)
 		{
-			fright = viewFrustum.getWidth() - 1.3f;
-			fleftOffset = 0.1f + // width level 1
+			fright = viewFrustum.getWidth() - 1.2f;
+			fleftOffset = 0.095f + // width level 1 + boarder
 					GAP_LEVEL1_2 + // width gap between level 1 and 2
 					(viewFrustum.getWidth() / 4f) * 0.2f + // width level 2
-					GAP_LEVEL2_3; // width gap between level 2 and 3
-			gl.glTranslatef(fleftOffset, 0, 0);
+					GAP_LEVEL2_3; // width gap between level 2 and 3	
 		}
 		else
 		{
-			fright = viewFrustum.getWidth() - 3.0f;
-			fleftOffset = 0.1f + // width level 1
+			fright = viewFrustum.getWidth() - 2.75f;
+			fleftOffset = 0.075f + // width level 1
 					GAP_LEVEL1_2 + // width gap between level 1 and 2
 					viewFrustum.getWidth() / 4f + // width level 2
 					GAP_LEVEL2_3;// width gap between level 2 and 3
-			gl.glTranslatef(fleftOffset, 0, 0);
 		}
+		
+		gl.glTranslatef(fleftOffset, -0.2f, 0);
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.HIER_HEAT_MAP_VIEW_SELECTION, glHeatMapView.getID()));
@@ -1024,14 +1196,7 @@ public class GLHierarchicalHeatMap
 		glHeatMapView.displayRemote(gl);
 		gl.glPopName();
 
-		if (bIsHeatmapInFocus)
-		{
-			gl.glTranslatef(-1.0f, 0, 0);
-		}
-		else
-		{
-			gl.glTranslatef(-3.0f, 0, 0);
-		}
+		gl.glTranslatef(-fleftOffset, +0.2f, 0);
 	}
 
 	private void buildDisplayList(final GL gl, int iGLDisplayListIndex)
@@ -1050,14 +1215,25 @@ public class GLHierarchicalHeatMap
 		}
 		else
 		{
-			handleTexturePicking(gl);
-
 			gl.glMatrixMode(GL.GL_MODELVIEW);
 			gl.glLoadIdentity();
 
-			viewFrustum.setTop(viewFrustum.getTop() - 0.2f);
-			gl.glTranslatef(0, 0.1f, 0);
+			// background color
+			gl.glColor4f(0, 0, 0, 0.15f);
+			gl.glBegin(GL.GL_QUADS);
+			gl.glVertex3f(0, 0, -0.1f);
+			gl.glVertex3f(viewFrustum.getRight(), 0, -0.1f);
+			gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getHeight(), -0.1f);
+			gl.glVertex3f(0, viewFrustum.getHeight(), -0.1f);
+			gl.glEnd();
+			
+			// padding along borders
+			viewFrustum.setTop(viewFrustum.getTop() - 0.6f);
+			viewFrustum.setLeft(viewFrustum.getLeft() + 0.1f);
+			gl.glTranslatef(0.1f, 0.4f, 0);
 
+			handleTexturePicking(gl);
+			
 			// all stuff for rendering level 1 (overview bar)
 			renderOverviewBar(gl);
 			renderMarkerOverviewBar(gl);
@@ -1074,19 +1250,15 @@ public class GLHierarchicalHeatMap
 				fAnimationScale = 1.0f;
 			}
 
-			gl.glScalef(fAnimationScale, 1, 1);
-
 			// all stuff for rendering level 2 (textures)
 			renderTextureHeatMap(gl);
 			renderMarkerTexture(gl);
-			renderSelectedElementsTexture(gl);
-			
-			gl.glScalef(1 / fAnimationScale, 1, 1);
-			
+			renderSelectedElementsTexture(gl);			
 			renderCursor(gl);
 
-			viewFrustum.setTop(viewFrustum.getTop() + 0.2f);
-			gl.glTranslatef(0, -0.1f, 0);
+			viewFrustum.setTop(viewFrustum.getTop() + 0.6f);
+			viewFrustum.setLeft(viewFrustum.getLeft() - 0.1f);
+			gl.glTranslatef(-0.1f, -0.4f, 0);
 
 			gl.glTranslatef(-GAP_LEVEL1_2, 0, 0);
 
@@ -1107,9 +1279,10 @@ public class GLHierarchicalHeatMap
 
 		ArrayList<SelectionCommand> alSelectionCommand = new ArrayList<SelectionCommand>();
 		alSelectionCommand.add(new SelectionCommand(ESelectionCommandType.RESET));
-
+		
 		IVirtualArrayDelta delta = new VirtualArrayDelta(EIDType.EXPRESSION_INDEX);
-
+		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.EXPRESSION_INDEX);
+		
 		IVirtualArray currentVirtualArray = set.getVA(iContentVAID);
 		int iIndex = 0;
 
@@ -1121,21 +1294,18 @@ public class GLHierarchicalHeatMap
 			iContentIndex = currentVirtualArray.get(iIndex);
 
 			delta.add(VADeltaItem.append(iContentIndex));
-			// //set elements selected in embedded heatMap
-			// for (HeatMapSelection selection : AlSelection)
-			// {
-			// // System.out.println("selection.getContentIndex(): " +
-			// // selection.getContentIndex());
-			// // System.out.println("iContentIndex: "+ iContentIndex);
-			//						
-			// if (selection.getContentIndex() == iContentIndex)
-			// delta.addSelection(iContentIndex,
-			// ESelectionType.MOUSE_OVER);//selection.getSelectionType());
-			// }
+			// set elements selected in embedded heatMap
+			for (HeatMapSelection selection : AlSelection)
+			{
+				if (selection.getContentIndex() == iContentIndex)
+					selectionDelta.addSelection(iContentIndex, ESelectionType.MOUSE_OVER);
+			}
 		}
 
-		generalManager.getEventPublisher().triggerVAUpdate(
-				EMediatorType.HIERACHICAL_HEAT_MAP, this, delta, alSelectionCommand);
+		generalManager.getEventPublisher().triggerVAUpdate(EMediatorType.HIERACHICAL_HEAT_MAP,
+				this, delta, alSelectionCommand);
+
+		triggerSelectionUpdate(EMediatorType.HIERACHICAL_HEAT_MAP, selectionDelta, null);
 	}
 
 	public synchronized void renderHorizontally(boolean bRenderStorageHorizontally)
@@ -1211,6 +1381,11 @@ public class GLHierarchicalHeatMap
 
 		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
 
+		// Handling action ResetView in hierarchical heatmap
+		iSelectorBar = 1;
+		initPosCursor();
+		glHeatMapView.setDisplayListDirty();
+		
 	}
 
 	@Override
@@ -1269,7 +1444,7 @@ public class GLHierarchicalHeatMap
 	 */
 	private void handleTexturePicking(GL gl)
 	{
-		int iNumberSample = iAlNumberSamples.get(iSelectorBar - 1);
+		int iNumberSample = iAlNumberSamples.get(iSelectorBar - 1)*2;
 		float fOffsety;
 		float fHeightSample = viewFrustum.getHeight() / iNumberSample;
 		float[] fArPickingCoords = new float[3];
@@ -1279,7 +1454,7 @@ public class GLHierarchicalHeatMap
 		{
 			fArPickingCoords = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(
 					gl, PickingPoint.x, PickingPoint.y);
-			fOffsety = viewFrustum.getHeight() - fArPickingCoords[1];
+			fOffsety = viewFrustum.getHeight() - fArPickingCoords[1] + 0.4f;
 			iPickedSample = (int) Math.ceil(fOffsety / fHeightSample);
 			PickingPoint = null;
 
@@ -1308,6 +1483,8 @@ public class GLHierarchicalHeatMap
 				iFirstSample = iNumberSample - iSamplesPerHeatmap;
 			}
 		}
+		setDisplayListDirty();
+		triggerSelectionBlock();
 	}
 
 	/**
@@ -1319,56 +1496,54 @@ public class GLHierarchicalHeatMap
 	{
 		Point currentPoint = pickingTriggerMouseAdapter.getPickedPoint();
 		float[] fArTargetWorldCoordinates = new float[3];
-		float fselElement;
+		int iselElement;
+		int iNrSamples;
 
 		fArTargetWorldCoordinates = GLCoordinateUtils
 				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
 
-		float fHeight = viewFrustum.getHeight() - 0.2f;
-		float fStep = fHeight / iAlNumberSamples.get(0);
-		float fPosCursor;
+		float fTextureHeight = viewFrustum.getHeight() - 0.6f;
+		float fStep = fTextureHeight / (iAlNumberSamples.get(0) * 2);
+		float fYPosMouse = fArTargetWorldCoordinates[1] - 0.4f;
 		
 		// cursor for iFirstElement
 		if (iDraggedCursor == 1)
 		{
-			fPosCursor = fArTargetWorldCoordinates[1] - 0.1f;
-			// =
-			// offset
-			if (fPosCursor > fPosCursorLastElement && iFirstSample >= 0)
+			if (fYPosMouse > fPosCursorLastElement && fYPosMouse <= ( viewFrustum.getHeight() - 0.6f))
 			{
-				fPosCursorFirstElement = fPosCursor;
-				fselElement = (viewFrustum.getHeight() - 0.1f - fArTargetWorldCoordinates[1])
-						/ fStep;
-				if ((int) Math.floor(fselElement) >= 0)
+				iselElement = (int)Math.floor((fTextureHeight - fYPosMouse) / fStep);
+				iNrSamples = iLastSample - iselElement + 1;
+				if (iNrSamples >= MIN_SAMPLES_PER_HEATMAP && iNrSamples < (iAlNumberSamples.get(0) / 3))
 				{
-					iFirstSample = (int) Math.floor(fselElement);
+					fPosCursorFirstElement = fYPosMouse;
+					iFirstSample = iselElement;
 					iSamplesPerHeatmap = iLastSample - iFirstSample + 1;
+					
+					// update Preference store
+					generalManager.getPreferenceStore().setValue(
+							PreferenceConstants.HM_NUM_SAMPLES_PER_HEATMAP, iSamplesPerHeatmap);
 				}
 			}
 		}
 		// cursor for iLastElement
 		if (iDraggedCursor == 2)
 		{
-			fPosCursor = fArTargetWorldCoordinates[1] - 0.1f;
-			// =
-			// offset
-			if (fPosCursorFirstElement > fPosCursor
-					&& iLastSample <= iAlNumberSamples.get(0));
+			if (fYPosMouse < fPosCursorFirstElement && fYPosMouse >= 0.0f)
 			{
-				fPosCursorLastElement = fPosCursor;
-				fselElement = (viewFrustum.getHeight() - 0.1f - fArTargetWorldCoordinates[1])
-						/ fStep;
-				if ((int) Math.ceil(fselElement) < iAlNumberSamples.get(0));
+				iselElement = (int)Math.floor((fTextureHeight - fYPosMouse) / fStep);
+				iNrSamples = iselElement - iFirstSample + 1;
+				if (iNrSamples >= MIN_SAMPLES_PER_HEATMAP && iNrSamples < (iAlNumberSamples.get(0) / 3))
 				{
-					iLastSample = (int) Math.ceil(fselElement);
+					fPosCursorLastElement = fYPosMouse;
+					iLastSample = iselElement;
 					iSamplesPerHeatmap = iLastSample - iFirstSample + 1;
+					
+					// update Preference store
+					generalManager.getPreferenceStore().setValue(
+							PreferenceConstants.HM_NUM_SAMPLES_PER_HEATMAP, iSamplesPerHeatmap);
 				}
 			}
 		}
-
-		// update Preference store
-		generalManager.getPreferenceStore().setValue(
-				PreferenceConstants.HM_NUM_SAMPLES_PER_HEATMAP, iSamplesPerHeatmap);
 		
 		setDisplayListDirty();
 		triggerSelectionBlock();
@@ -1398,23 +1573,17 @@ public class GLHierarchicalHeatMap
 
 						if (iExternalID == 1)
 						{
-							if (iSelectorBar != 1)
-							{
 								iSelectorBar--;
 								initPosCursor();
 								triggerSelectionBlock();
 								setDisplayListDirty();
-							}
 						}
 						if (iExternalID == 2)
 						{
-							if (iSelectorBar != iNrSelBar)
-							{
 								iSelectorBar++;
 								initPosCursor();
 								triggerSelectionBlock();
 								setDisplayListDirty();
-							}
 						}
 
 						setDisplayListDirty();
@@ -1454,27 +1623,14 @@ public class GLHierarchicalHeatMap
 				}
 				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
-//			case HIER_HEAT_MAP_INFOCUS_SELECTION:
-//				switch (pickingMode)
-//				{
-//					case CLICKED:
-//
-//						bIsHeatmapInFocus = true;
-//						glHeatMapView.setDisplayListDirty();
-//						setDisplayListDirty();
-//						break;
-//
-//					case MOUSE_OVER:
-//						break;
-//				}
-//				pickingManager.flushHits(iUniqueID, ePickingType);
-//				break;
 			case HIER_HEAT_MAP_TEXTURE_SELECTION:
 				switch (pickingMode)
 				{
 					case CLICKED:
 
 						iSelectorBar = iExternalID;
+						if(iSelectorBar == iNrSelBar)
+							iSelectorBar--;
 						initPosCursor();
 						triggerSelectionBlock();
 						setDisplayListDirty();
@@ -1483,6 +1639,8 @@ public class GLHierarchicalHeatMap
 					case MOUSE_OVER:
 
 						iSelectorBar = iExternalID;
+						if(iSelectorBar == iNrSelBar)
+							iSelectorBar--;
 						initPosCursor();
 						triggerSelectionBlock();
 						setDisplayListDirty();

@@ -38,6 +38,8 @@ public enum EIconTextures
 	NAVIGATION_NEXT_BIG_SIDE("resources/navigation/next_big_side.png"),
 	NAVIGATION_NEXT_BIG_MIDDLE("resources/navigation/next_big_middle.png"),
 	NAVIGATION_NEXT_SMALL("resources/navigation/next_small.png"),
+	NAVIGATION_MASK_CURVE("resources/navigation/mask_curve.png"),
+	NAVIGATION_MASK_CURVE_NEG("resources/navigation/mask_curve_neg.png"),
 	
 	
 	POOL_REMOVE_VIEW("resources/icons/general/pool_remove_view.png"),

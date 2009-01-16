@@ -17,12 +17,14 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
 import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
 import org.caleydo.rcp.action.view.TakeSnapshotAction;
 import org.caleydo.rcp.util.info.InfoArea;
 import org.caleydo.rcp.util.search.SearchBox;
 import org.caleydo.rcp.views.opengl.GLHeatMapView;
+import org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView;
 import org.caleydo.rcp.views.opengl.GLParCoordsView;
 import org.caleydo.rcp.views.opengl.GLPathwayView;
 import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
@@ -201,6 +203,16 @@ public class ToolBarView
 					PlatformUI.getWorkbench().getDisplay(),
 					"resources/icons/view/storagebased/heatmap/heatmap.png");
 	    }
+	    else if (glView instanceof GLHierarchicalHeatMap)
+		{
+			GLHierarchicalHeatMapView.createToolBarItems(iViewID);
+			GLHierarchicalHeatMapView.fillToolBar(alToolBarManager);
+
+			sViewTitle = "Hierarchical Heat Map";
+			viewIcon = GeneralManager.get().getResourceLoader().getImage(
+					PlatformUI.getWorkbench().getDisplay(),
+					"resources/icons/view/storagebased/heatmap/heatmap.png");
+		}
 	    else if (glView instanceof GLParallelCoordinates)
 	    {
 			GLParCoordsView.createToolBarItems(iViewID);
