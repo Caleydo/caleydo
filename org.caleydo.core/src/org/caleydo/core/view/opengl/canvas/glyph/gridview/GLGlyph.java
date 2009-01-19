@@ -24,6 +24,7 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.IMediatorEventReceiver;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -51,7 +52,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public class GLGlyph
 	extends AGLEventListener
-	implements IMediatorSender, IMediatorReceiver
+	implements IMediatorSender, IMediatorEventReceiver
 {
 
 	private static final long serialVersionUID = -7899479912218913482L;
@@ -216,24 +217,11 @@ public class GLGlyph
 		{ // load ids to the selection manager
 			selectionManager.resetSelectionManager();
 
-			ArrayList<Integer> tmpExtID = new ArrayList<Integer>();
-
-			String sTmpExperiment;
-			int iExperimentID;
-			for (GlyphEntry g : gman.getGlyphs().values())
-			{
-				sTmpExperiment = g.getStringParameter("sid");
-
-				iExperimentID = generalManager.getIDMappingManager().getID(
-						EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX, sTmpExperiment);
-
-				tmpExtID.add(iExperimentID);
-
-			}
-
+			ArrayList<Integer> tmpExtID = new ArrayList<Integer>(gman.getGlyphs().keySet());
 			selectionManager.initialAdd(tmpExtID);
 		}
-
+		
+		grid_.selectAll();
 	}
 
 	@Override
@@ -310,6 +298,7 @@ public class GLGlyph
 		grid_.setGridSize(30, 60);
 		grid_.setGlyphPositions(EIconIDs.DISPLAY_RECTANGLE);
 		// grid_.setGlyphPositions(EIconIDs.DISPLAY_SCATTERPLOT);
+		// grid_.setGlyphPositions(EIconIDs.DISPLAY_PLUS);
 	}
 
 	@Override
@@ -336,6 +325,12 @@ public class GLGlyph
 	public synchronized void display(GL gl)
 	{
 		if (grid_ == null)
+		{
+			renderSymbol(gl);
+			return;
+		}
+
+		if (grid_.getGlyphList() == null)
 		{
 			renderSymbol(gl);
 			return;
@@ -855,44 +850,8 @@ public class GLGlyph
 					triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, selectionManager
 							.getDelta(), null);
 
-					// <<<<<<< .working
 					// only the glyphs need to be redrawn
 					bRedrawDisplayListGlyph = true;
-					// =======
-					// if (grid_.getNumOfSelected() == 0)
-					// {
-					// ArrayList<Integer> select = grid_.selectAll();
-					// ids.addAll(select);
-					// while (selections.size() < ids.size())
-					// selections.add(1);
-					// }
-					//
-					// generalManager.getGlyphManager()
-					// .getGlyphAttributeTypeWithExternalColumnNumber(2)
-					// .printDistribution();
-					// bRedrawDisplayList_ = true;
-					//
-					// // push patient id to other screens
-					// // TODO rewrite this with new selection
-					// // for (Selection sel : alSelection)
-					// // {
-					// // sel.updateSelectionSet(iUniqueID, ids, selections,
-					// null);
-					// // }
-					//
-					// selectionManager.clearSelections();
-					// for (int i = 0; i < ids.size(); ++i)
-					// {
-					// if (selections.get(i) > 0)
-					// selectionManager.addToType(ESelectionType.SELECTION,
-					// ids.get(i));
-					// else
-					// selectionManager.addToType(ESelectionType.DESELECTED,
-					// ids.get(i));
-					// }
-					// triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
-					// selectionManager.getDelta(), null);
-					// >>>>>>> .merge-right.r1683
 
 					break;
 				default:
@@ -904,6 +863,14 @@ public class GLGlyph
 
 		pickingManager.flushHits(iUniqueID, pickingType);
 	}
+	
+	@Override
+	public void handleExternalEvent(IUniqueObject eventTrigger, int iid)
+	{
+		generalManager.getLogger().log(Level.INFO,
+				sLabel + ": Event " + iid + " called by " + eventTrigger.getClass().getSimpleName());
+	}
+
 
 	@Override
 	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
@@ -921,10 +888,12 @@ public class GLGlyph
 		if (selectionDelta.size() > 0)
 			handleConnectedElementRep(selectionDelta);
 
-		bRedrawDisplayListGlyph = true;
+		forceRebuild();
 
 		if (eventTrigger instanceof GLGlyph)
 			return;
+
+		grid_.deSelectAll();
 
 		GlyphEntry actualGlyph = null;
 		for (SelectionDeltaItem item : selectionDelta)
@@ -1102,7 +1071,8 @@ public class GLGlyph
 	@Override
 	public int getNumberOfSelections(ESelectionType eSelectionType)
 	{
-		throw new IllegalStateException("Not implemented yet. Do this now!");
+		return selectionManager.getElements(eSelectionType).size();
+		// throw new IllegalStateException("Not implemented yet. Do this now!");
 	}
 
 	@Override
@@ -1112,4 +1082,5 @@ public class GLGlyph
 		// TODO Auto-generated method stub
 
 	}
+
 }

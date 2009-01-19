@@ -473,6 +473,8 @@ public class GLGlyphGrid
 		else
 			glyphs_ = gman.getGlyphs();
 
+		// setGridSize(glyphs_.size(), glyphs_.size() + 10);
+
 		setGlyphPositions(iPositionType);
 		// setGlyphPositionsRectangle();
 		// setGlyphPositionsCenter();

@@ -110,43 +110,10 @@ public class GLGlyphSliderView
 			}
 		}
 
-		// find dataset
-		ISet glyphData = null;
-
-		for (ISet tmpSet : alSets)
-		{
-			if (tmpSet != null)
-			{
-				if (tmpSet.getLabel().equals("Set for clinical data"))
-					glyphData = tmpSet;
-			}
-		}
-
-		if (glyphData == null)
-		{
-			generalManager.getLogger()
-					.log(Level.SEVERE, "no glyph data found - shutting down");
-			return;
-		}
-
 		{ // load ids to the selection manager
 			selectionManager.resetSelectionManager();
 
-			ArrayList<Integer> tmpExtID = new ArrayList<Integer>();
-
-			String sTmpExperiment;
-			int iExperimentID;
-			for (GlyphEntry g : gman.getGlyphs().values())
-			{
-				sTmpExperiment = g.getStringParameter("sid");
-
-				iExperimentID = generalManager.getIDMappingManager().getID(
-						EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX, sTmpExperiment);
-
-				tmpExtID.add(iExperimentID);
-
-			}
-
+			ArrayList<Integer> tmpExtID = new ArrayList<Integer>(gman.getGlyphs().keySet());
 			selectionManager.initialAdd(tmpExtID);
 		}
 

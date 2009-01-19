@@ -10,6 +10,7 @@ import org.caleydo.core.data.collection.storage.ERawDataType;
 import org.caleydo.core.data.collection.storage.NominalStorage;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
@@ -141,16 +142,29 @@ public class GlyphDataLoader
 			return;
 		}
 
+		IIDMappingManager IdMappingManager = generalManager.getIDMappingManager();
 		// now convert the storages to real glyphs
-
-		// int counter = gman.getGlyphs().size();
-		int iExperimentID;
+		
+		if(!IdMappingManager.hasMapping(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX))
+			this.generalManager.getLogger().log(Level.WARNING,
+			"GlyphDataLoader: No ID Mapping found - using internal ids");
+		
+		int counter = gman.getGlyphs().size();
+		int iExperimentID = 0;
 		for (int i = 0; i < aliStoreMapped.get(0).length; ++i)
 		{
 			// Extract glyph ID from mapping
-			iExperimentID = generalManager.getIDMappingManager().getID(
-					EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX,
-					alsStoreString.get(0).getRaw(i));
+			try
+			{
+				iExperimentID = IdMappingManager.getID(
+						EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX, alsStoreString.get(0)
+								.getRaw(i));
+			}
+			catch (Exception NullPointerException)
+			{
+				iExperimentID = counter;
+				++counter;
+			}
 
 			GlyphEntry g = new GlyphEntry(iExperimentID);
 

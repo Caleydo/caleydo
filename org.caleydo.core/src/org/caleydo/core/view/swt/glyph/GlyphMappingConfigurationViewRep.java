@@ -1,8 +1,14 @@
 package org.caleydo.core.view.swt.glyph;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.IVirtualArrayDelta;
+import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.IMediatorEventSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
@@ -35,7 +41,7 @@ import org.eclipse.swt.widgets.Composite;
 // FIXME: bad hack, should implement IMediatorReciever
 public class GlyphMappingConfigurationViewRep
 	extends ASWTView
-	implements ISWTView
+	implements ISWTView, IMediatorEventSender
 {
 	private class DataPack
 	{
@@ -144,7 +150,7 @@ public class GlyphMappingConfigurationViewRep
 					String selectedCol = String.valueOf(arrayIndexToExtColNum
 							.get(selectedindex));
 
-					System.out.println(selectedCol);
+					// System.out.println(selectedCol);
 
 					generalManager.getGlyphManager().setSetting(EGlyphSettingIDs.SCATTERPLOTY,
 							selectedCol);
@@ -154,21 +160,27 @@ public class GlyphMappingConfigurationViewRep
 
 				// TODO remove if, after removing scatterplot axis definition
 				// from this view
-				if (box.parameterType == EGlyphSettingIDs.SCALE
-						|| box.parameterType == EGlyphSettingIDs.COLOR)
+				if (box != null)
 				{
-					int selectedindex = box.comboBox.getSelectionIndex();
-					int selectedCol = arrayIndexToExtColNum.get(selectedindex);
+					if (box.parameterType == EGlyphSettingIDs.SCALE
+							|| box.parameterType == EGlyphSettingIDs.COLOR)
+					{
+						int selectedindex = box.comboBox.getSelectionIndex();
+						int selectedCol = arrayIndexToExtColNum.get(selectedindex);
 
-					box.model.setPartParameterIndex(box.parameterName, box.parameterType,
-							box.parameterValue, selectedCol);
+						box.model.setPartParameterIndex(box.parameterName, box.parameterType,
+								box.parameterValue, selectedCol);
 
+					}
 				}
 
 				for (AGLEventListener agleventlistener : generalManager
 						.getViewGLCanvasManager().getAllGLEventListeners())
 					if (agleventlistener instanceof GLGlyph)
 						((GLGlyph) agleventlistener).forceRebuild();
+
+				//TODO request assistance for this triggerEvent
+				triggerEvent(1);
 
 			}
 
@@ -466,6 +478,26 @@ public class GlyphMappingConfigurationViewRep
 		combo.addSelectionListener(listener);
 
 		return combo;
+	}
+
+	@Override
+	public void triggerEvent(int iid)
+	{
+		System.out.println("Triggering Event from " + this.getClass().getSimpleName()
+				+ " with value " + Integer.toString(iid));
+		generalManager.getEventPublisher().triggerEvent(this, iid);
+	}
+
+	@Override
+	public void triggerSelectionUpdate(EMediatorType mediatorType,
+			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
+	{
+	}
+
+	@Override
+	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
+			Collection<SelectionCommand> colSelectionCommand)
+	{
 	}
 
 }

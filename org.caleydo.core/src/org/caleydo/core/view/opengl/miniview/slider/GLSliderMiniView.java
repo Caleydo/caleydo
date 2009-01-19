@@ -84,6 +84,9 @@ public class GLSliderMiniView
 	@Override
 	public void setHeight(final float fHeight)
 	{
+		if(Float.isNaN(fHeight))
+			return;
+		
 		float fHeightOld = this.fHeight;
 		this.fHeight = fHeight;
 
