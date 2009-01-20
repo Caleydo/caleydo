@@ -476,7 +476,9 @@ public class ToolBarView
 		expandItem.setText("Search");
 		expandItem.setHeight(100);
 		expandItem.setControl(composite);
-//		expandItem.setImage(viewIcon);
+		expandItem.setImage(GeneralManager.get().getResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(),
+				"resources/icons/general/search.png"));
 		expandItem.setExpanded(true);
 	}
 	
@@ -517,7 +519,9 @@ public class ToolBarView
 		expandItem.setText("Color mapping");
 		expandItem.setHeight(40);
 		expandItem.setControl(composite);
-//		expandItem.setImage(viewIcon);
+		expandItem.setImage(GeneralManager.get().getResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(),
+				"resources/icons/general/color_mapping.png"));
 		expandItem.setExpanded(true);
 	}
 	
@@ -538,7 +542,9 @@ public class ToolBarView
 		expandItem.setText("General");
 		expandItem.setHeight(45);
 		expandItem.setControl(composite);
-//		expandItem.setImage(viewIcon);
+		expandItem.setImage(GeneralManager.get().getResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(),
+				"resources/icons/general/general.png"));
 		expandItem.setExpanded(true);
 	}
 	
@@ -557,7 +563,9 @@ public class ToolBarView
 		expandItem.setText("Selection Info");
 		expandItem.setHeight(250);
 		expandItem.setControl(composite);
-//		expandItem.setImage(viewIcon);
+		expandItem.setImage(GeneralManager.get().getResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(),
+				"resources/icons/general/info.png"));
 		expandItem.setExpanded(true);
 	}
 

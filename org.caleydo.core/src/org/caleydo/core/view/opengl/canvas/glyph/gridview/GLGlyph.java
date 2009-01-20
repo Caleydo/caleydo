@@ -227,7 +227,9 @@ public class GLGlyph
 	@Override
 	public synchronized void initLocal(GL gl)
 	{
-
+		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
+		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
+		
 		bIsLocal = true;
 
 		float fInitZoom = -10f;

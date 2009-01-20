@@ -15,11 +15,11 @@ public class GenomePerspective
 		layout.setEditorAreaVisible(false);
 		layout.getViewLayout("org.caleydo.rcp.views.HTMLBrowserView").setCloseable(false);
 		layout.getViewLayout("org.caleydo.rcp.views.ToolBarView").setCloseable(false);
-		layout.getViewLayout("org.caleydo.rcp.views.ToolBarView").setMoveable(true);
+		layout.getViewLayout("org.caleydo.rcp.views.ToolBarView").setMoveable(false);		
 		
 		float fRatio = (float)ToolBarView.TOOLBAR_WIDTH*1.25f / PlatformUI.getWorkbench().getDisplay().getMonitors()[0].getBounds().width;
 		
-		layout.addStandaloneView("org.caleydo.rcp.views.ToolBarView", true, IPageLayout.LEFT, fRatio, IPageLayout.ID_EDITOR_AREA);		
+		layout.addStandaloneView("org.caleydo.rcp.views.ToolBarView", false, IPageLayout.LEFT, fRatio, IPageLayout.ID_EDITOR_AREA);		
 		layout.createFolder("folderLayoutRight", IPageLayout.RIGHT, 1-fRatio, IPageLayout.ID_EDITOR_AREA);
 		
 		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPartService().addPartListener(

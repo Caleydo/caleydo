@@ -16,6 +16,8 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 public class BucketLayoutRenderStyle
 	extends ARemoteViewLayoutRenderStyle
 {
+	private float fInputDeviceXCorrection = 0;
+	
 	/**
 	 * Constructor.
 	 */
@@ -51,7 +53,7 @@ public class BucketLayoutRenderStyle
 	public RemoteLevel initFocusLevel()
 	{
 		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f(-2, -2, 4 * fZoomFactor));
+		transform.setTranslation(new Vec3f(-2 + fInputDeviceXCorrection, -2, 4 * fZoomFactor));
 		transform.setScale(new Vec3f(fScalingFactorFocusLevel, fScalingFactorFocusLevel,
 				fScalingFactorFocusLevel));
 
@@ -72,12 +74,8 @@ public class BucketLayoutRenderStyle
 
 			fTiltAngleRad_Horizontal = (float) Math
 					.acos(((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2)
-							/ ((float) Math
-									.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
-											+ Math
-													.pow(
-															((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2),
-															2))));
+							/ ((float) Math.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
+											+ Math.pow(((4 * 1 / fAspectRatio - 4 - 2 * fPoolLayerWidth) / 2), 2))));
 			fTiltAngleRad_Vertical = Vec3f.convertGrad2Radiant(90);
 
 			float fScalingCorrection = ((float) Math.sqrt(Math.pow(4 * (1 - fZoomFactor), 2)
@@ -94,10 +92,13 @@ public class BucketLayoutRenderStyle
 			// {
 			//	    	
 			// }
+			
+			fInputDeviceXCorrection = 0;//2 * 1 / fAspectRatio - 4f
+//				* (float) Math.cos(fTiltAngleRad_Horizontal - 0.4f) * fScalingCorrection;
 
 			// TOP BUCKET WALL
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(-2, 2 - 4f
+			transform.setTranslation(new Vec3f(-2 + fInputDeviceXCorrection, 2 - 4f
 					* (float) Math.cos(fTiltAngleRad_Vertical) * fScalingCorrection, 4 - 4
 					* (float) Math.sin(fTiltAngleRad_Vertical) * (1 - fZoomFactor)));
 			transform.setScale(new Vec3f(fScalingFactorStackLevel, fScalingFactorStackLevel
@@ -106,6 +107,8 @@ public class BucketLayoutRenderStyle
 
 			stackLevel.getElementByPositionIndex(0).setTransform(transform);
 
+//			fTiltAngleRad_Horizontal -= 0.4f;
+			
 			// LEFT BUCKET WALL
 			transform = new Transform();
 			transform.setTranslation(new Vec3f(fPoolLayerWidth - 2 * 1 / fAspectRatio, -2, 4));
@@ -117,13 +120,15 @@ public class BucketLayoutRenderStyle
 
 			// BOTTOM BUCKET WALL
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(-2, -2, 4));
+			transform.setTranslation(new Vec3f(-2 + fInputDeviceXCorrection, -2, 4));
 			transform.setScale(new Vec3f(fScalingFactorStackLevel, fScalingFactorStackLevel
 					* (1 - fZoomFactor), fScalingFactorStackLevel * (1 - fZoomFactor)));
 			transform.setRotation(new Rotf(new Vec3f(-1, 0, 0), fTiltAngleRad_Vertical));
 
 			stackLevel.getElementByPositionIndex(2).setTransform(transform);
 
+//			fTiltAngleRad_Horizontal += 0.8f;
+			
 			// RIGHT BUCKET WALL
 			transform = new Transform();
 			transform.setTranslation(new Vec3f(-fPoolLayerWidth + 2 * 1 / fAspectRatio - 4f

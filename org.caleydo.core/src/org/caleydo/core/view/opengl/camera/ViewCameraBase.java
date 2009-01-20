@@ -185,7 +185,7 @@ public class ViewCameraBase
 	{
 
 		/**
-		 * compute Quaternion from input vector assuming vector Vec3f describs 3
+		 * compute Quaternion from input vector assuming vector Vec3f describes 3
 		 * rotations alpha, betha, gamma
 		 */
 		Vec3f helpRot_cos = new Vec3f((float) Math.cos((setRotVec3f.x() * 0.5f)), (float) Math
@@ -211,10 +211,10 @@ public class ViewCameraBase
 	public final void addCameraRotationVec3f(final Vec3f setRotVec3f)
 	{
 
-		assert false : "Not teste yet!";
+		assert false : "Not tested yet!";
 
 		/**
-		 * compute Quaternion from input vector assuming vector Vec3f describs 3
+		 * compute Quaternion from input vector assuming vector Vec3f describes 3
 		 * rotations alpha, betha, gamma
 		 */
 		Vec3f helpRot_cos = new Vec3f((float) Math.cos((setRotVec3f.x() * 0.5f)), (float) Math

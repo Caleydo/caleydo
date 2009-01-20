@@ -494,7 +494,7 @@ public class GLHierarchicalHeatMap
 		else
 			fScalFactor2 = 1;
 
-		gl.glColor4f(0f, 0f, 0f, 0.45f);
+		gl.glColor4f(0.5f, 0.5f, 0.5f, 1f);
 
 		gl.glBegin(GL.GL_QUADS);
 		gl.glVertex3f(startpoint1.x(), startpoint1.y(), startpoint1.z());
@@ -523,7 +523,7 @@ public class GLHierarchicalHeatMap
 		gl.glEnd();
 
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-		gl.glColor4f(1, 1, 1, 0.45f);
+		gl.glColor4f(1, 1, 1, 1);
 
 		Texture TextureMask = iconTextureManager.getIconTexture(gl,
 				EIconTextures.NAVIGATION_MASK_CURVE);
@@ -533,27 +533,25 @@ public class GLHierarchicalHeatMap
 		TextureCoords texCoordsMask = TextureMask.getImageTexCoords();
 
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.top());
-		gl.glVertex3f(startpoint1.x() + 2 * fthickness, startpoint1.y(), startpoint1.z());
-		gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.bottom());
-		gl.glVertex3f(startpoint1.x() + 1 * fthickness, startpoint1.y(), startpoint1.z());
-		gl.glTexCoord2f(texCoordsMask.right(), texCoordsMask.bottom());
-		gl.glVertex3f(startpoint1.x() + 1 * fthickness, startpoint1.y() + 0.1f * fScalFactor1,
-				startpoint1.z());
 		gl.glTexCoord2f(texCoordsMask.right(), texCoordsMask.top());
-		gl.glVertex3f(startpoint1.x() + 2 * fthickness, startpoint1.y() + 0.1f * fScalFactor1,
-				startpoint1.z());
+		gl.glVertex3f(startpoint1.x() + 2 * fthickness, startpoint1.y(), startpoint1.z());
+		gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.top());
+		gl.glVertex3f(startpoint1.x() + 1 * fthickness, startpoint1.y(), startpoint1.z());
+		gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.bottom());
+		gl.glVertex3f(startpoint1.x() + 1 * fthickness, startpoint1.y() + 0.1f * fScalFactor1, startpoint1.z());
+		gl.glTexCoord2f(texCoordsMask.right(), texCoordsMask.bottom());
+		gl.glVertex3f(startpoint1.x() + 2 * fthickness, startpoint1.y() + 0.1f * fScalFactor1, startpoint1.z());
 		gl.glEnd();
 
 		gl.glBegin(GL.GL_POLYGON);
-		gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.top());
+		gl.glTexCoord2f(texCoordsMask.right(), texCoordsMask.top());
 		gl.glVertex3f(startpoint2.x() + 2 * fthickness, startpoint2.y(), startpoint2.z());
-		gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.bottom());
+		gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.top());
 		gl.glVertex3f(startpoint2.x() + 1 * fthickness, startpoint2.y(), startpoint2.z());
-		gl.glTexCoord2f(texCoordsMask.right(), texCoordsMask.bottom());
+		gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.bottom());
 		gl.glVertex3f(startpoint2.x() + 1 * fthickness, startpoint2.y() - 0.1f * fScalFactor2,
 				startpoint2.z());
-		gl.glTexCoord2f(texCoordsMask.right(), texCoordsMask.top());
+		gl.glTexCoord2f(texCoordsMask.right(), texCoordsMask.bottom());
 		gl.glVertex3f(startpoint2.x() + 2 * fthickness, startpoint2.y() - 0.1f * fScalFactor2,
 				startpoint2.z());
 		gl.glEnd();
@@ -1660,13 +1658,13 @@ public class GLHierarchicalHeatMap
 				{
 					case CLICKED:
 
-						bRenderCaption = true;
+//						bRenderCaption = true;
 						setDisplayListDirty();
 						break;
 
 					case DRAGGED:
 
-						bRenderCaption = true;
+//						bRenderCaption = true;
 						bIsDraggingActive = true;
 						iDraggedCursor = iExternalID;
 						setDisplayListDirty();
@@ -1674,7 +1672,7 @@ public class GLHierarchicalHeatMap
 
 					case MOUSE_OVER:
 
-						bRenderCaption = true;
+//						bRenderCaption = true;
 						setDisplayListDirty();
 						break;
 				}

@@ -86,6 +86,9 @@ public class GLCaleydoCanvas
 		// gl.glHint(GL.GL_POINT_SMOOTH_HINT, GL.GL_NICEST);
 		gl.glEnable(GL.GL_LINE_SMOOTH);
 		gl.glHint(GL.GL_LINE_SMOOTH_HINT, GL.GL_NICEST);
+		gl.glEnable(GL.GL_POLYGON_SMOOTH);
+		gl.glHint(GL.GL_POLYGON_SMOOTH_HINT, GL.GL_NICEST);		
+		
 		gl.glHint(GL.GL_PERSPECTIVE_CORRECTION_HINT, GL.GL_NICEST);
 
 		gl.glEnable(GL.GL_COLOR_MATERIAL);

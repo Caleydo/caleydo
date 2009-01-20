@@ -1,7 +1,7 @@
 package org.caleydo.rcp;
 
 import org.caleydo.rcp.views.opengl.GLGlyphView;
-import org.caleydo.rcp.views.opengl.GLHeatMapView;
+import org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView;
 import org.caleydo.rcp.views.opengl.GLParCoordsView;
 import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
 import org.caleydo.rcp.views.swt.HTMLBrowserView;
@@ -17,7 +17,8 @@ public enum EStartViewType
 
 	GLYPHVIEW("glyphview", GLGlyphView.ID), 
 	PARALLEL_COORDINATES("parcoords", GLParCoordsView.ID), 
-	HEATMAP("heatmap", GLHeatMapView.ID), REMOTE("remote", GLRemoteRenderingView.ID), 
+	HEATMAP("heatmap", GLHierarchicalHeatMapView.ID), 
+	REMOTE("remote", GLRemoteRenderingView.ID), 
 	BROWSER("browser", HTMLBrowserView.ID),
 	TABULAR("tabular", TabularDataView.ID);
 
