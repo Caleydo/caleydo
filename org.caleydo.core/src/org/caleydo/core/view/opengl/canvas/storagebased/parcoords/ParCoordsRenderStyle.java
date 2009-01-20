@@ -105,7 +105,7 @@ public class ParCoordsRenderStyle
 
 	private static final float fAxisSpacingLowerLimit = 0.001f;
 
-	private static final float fMinAxisSpacingForText = 0.2f;
+	private static final float fMinAxisSpacingForText = 0.1f;
 
 	private static final float[] BACKGROUND_COLOR = { 1, 1, 1, 1 };
 

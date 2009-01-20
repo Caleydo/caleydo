@@ -157,24 +157,24 @@ public class GLPathwayContentCreator
 		gl.glEndList();
 	}
 
-	public void performIdenticalNodeHighlighting()
+	public void performIdenticalNodeHighlighting(ESelectionType eSelectionType)
 	{
 		if (internalSelectionManager == null)
 			return;
 
 		iArSelectedEdgeRepId.clear();
-
+		
 		ArrayList<Integer> iAlTmpSelectedGraphItemIds = new ArrayList<Integer>();
 		Set<Integer> tmpItemIDs;
-		tmpItemIDs = internalSelectionManager.getElements(ESelectionType.MOUSE_OVER);
+		tmpItemIDs = internalSelectionManager.getElements(eSelectionType);
 
 		if (tmpItemIDs != null)
 			iAlTmpSelectedGraphItemIds.addAll(tmpItemIDs);
 
-		tmpItemIDs = internalSelectionManager.getElements(ESelectionType.SELECTION);
-
-		if (tmpItemIDs != null)
-			iAlTmpSelectedGraphItemIds.addAll(tmpItemIDs);
+//		tmpItemIDs = internalSelectionManager.getElements(ESelectionType.SELECTION);
+//
+//		if (tmpItemIDs != null)
+//			iAlTmpSelectedGraphItemIds.addAll(tmpItemIDs);
 
 		if (iAlTmpSelectedGraphItemIds.size() == 0)
 		{
@@ -199,7 +199,7 @@ public class GLPathwayContentCreator
 				{
 					if (tmpItemIDs.contains(graphItemRep.getId()))
 						continue;
-					internalSelectionManager.addToType(ESelectionType.MOUSE_OVER, graphItemRep
+					internalSelectionManager.addToType(eSelectionType, graphItemRep
 							.getId());
 					for (int iConnectionID : internalSelectionManager
 							.getConnectionForElementID(iAlTmpSelectedGraphItemIds

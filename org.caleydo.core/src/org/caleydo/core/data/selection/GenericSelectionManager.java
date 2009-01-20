@@ -434,10 +434,10 @@ public class GenericSelectionManager
 				&& hashSelectionTypes.get(targetType).containsKey(iElementID))
 			return;
 
-		if (!isConnectedType(targetType))
-		{
+//		if (!isConnectedType(targetType))
+//		{
 			removeConnectionForElementID(iElementID);
-		}
+//		}
 
 		for (ESelectionType currentType : alSelectionTypes)
 		{
@@ -1004,7 +1004,7 @@ public class GenericSelectionManager
 	 * Returns a collection of connection ID for one element.
 	 * 
 	 * @param iElementID
-	 * @return the collection ids
+	 * @return the collection ids. Collection is empty if no connection ids are found.
 	 */
 	public Collection<Integer> getConnectionForElementID(int iElementID)
 	{

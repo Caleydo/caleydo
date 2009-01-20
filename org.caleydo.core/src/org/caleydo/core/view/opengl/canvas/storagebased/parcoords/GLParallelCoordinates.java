@@ -654,6 +654,7 @@ public class GLParallelCoordinates
 	 * @param renderMode the type of selection in the selection manager to
 	 *            render
 	 */
+	@SuppressWarnings("unchecked")
 	private void renderPolylines(GL gl, ESelectionType renderMode)
 	{
 
@@ -790,10 +791,14 @@ public class GLParallelCoordinates
 										.getFloat(EDataRepresentation.RAW, iStorageIndex));
 
 					}
-					else
+					else if (currentStorage instanceof INominalStorage)
 					{						
 						sRawValue = ((INominalStorage<String>) currentStorage)
 								.getRaw(iStorageIndex);
+					}
+					else
+					{
+						throw new IllegalStateException("Unknown Storage Type");
 					}
 
 					renderBoxedYValues(gl, fCurrentXValue, fCurrentYValue

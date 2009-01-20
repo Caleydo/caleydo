@@ -43,6 +43,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.miniview.GLColorMappingBarMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.springframework.util.SystemPropertyUtils;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -69,8 +70,6 @@ public class GLHeatMap
 	private Vec4f vecRotation = new Vec4f(-90, 0, 0, 1);
 
 	private Vec3f vecTranslation;
-
-	private float fAnimationDefaultTranslation = 0;
 
 	private float fAnimationTranslation = 0;
 
@@ -628,12 +627,13 @@ public class GLHeatMap
 
 					if (bRenderShortName)
 					{
-						sContent = getShortNameFromDavid(iContentIndex);
+						sContent = sContent + " | " + getShortNameFromDavid(iContentIndex);
 						if (sContent == null)
 							sContent = "Unknown";
-						renderCaption(gl, sContent, fXPosition + fFieldWith / 6 * 4.5f,
-								fYPosition + 0.1f, fLineDegrees, fFontScaling);
 					}
+
+					renderCaption(gl, sContent, fXPosition + fFieldWith / 6 * 4.5f,
+							fYPosition + 0.1f, fLineDegrees, fFontScaling);
 				}
 
 			}
@@ -925,6 +925,13 @@ public class GLHeatMap
 	private void renderCaption(GL gl, String sLabel, float fXOrigin, float fYOrigin,
 			float fRotation, float fFontScaling)
 	{
+
+		if (sLabel.length() > HeatMapRenderStyle.NUM_CHAR_LIMIT + 1)
+		{
+			sLabel = sLabel.substring(0, HeatMapRenderStyle.NUM_CHAR_LIMIT - 2);
+			sLabel = sLabel + "..";
+		}
+
 		textRenderer.setColor(0, 0, 0, 1);
 		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
 		gl.glTranslatef(fXOrigin, fYOrigin, 0);

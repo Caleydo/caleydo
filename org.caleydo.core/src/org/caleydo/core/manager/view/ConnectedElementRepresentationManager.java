@@ -41,12 +41,15 @@ public class ConnectedElementRepresentationManager
 	}
 
 	/**
-	 * Add a selection
+	 * Add a selection to a specific tree. The data type is determined by the
+	 * selectedElementRep, the connection id has to be specified manually
 	 * 
-	 * @param iElementID
-	 * @param selectedElementRep
+	 * @param iConnectionID the connection ID - one connection id per connection
+	 *            line tree
+	 * @param selectedElementRep the selected element rep associated with the
+	 *            tree specified
 	 */
-	public void addSelection(int iElementID, final SelectedElementRep selectedElementRep)
+	public void addSelection(int iConnectionID, final SelectedElementRep selectedElementRep)
 	{
 		HashMap<Integer, ArrayList<SelectedElementRep>> tmpHash = hashIDTypes
 				.get(selectedElementRep.getIDType());
@@ -55,14 +58,13 @@ public class ConnectedElementRepresentationManager
 			tmpHash = new HashMap<Integer, ArrayList<SelectedElementRep>>();
 			hashIDTypes.put(selectedElementRep.getIDType(), tmpHash);
 		}
-		// FIXME temp hack
-		// iElementID = 0;
-		if (!tmpHash.containsKey(iElementID))
+
+		if (!tmpHash.containsKey(iConnectionID))
 		{
-			tmpHash.put(iElementID, new ArrayList<SelectedElementRep>());
+			tmpHash.put(iConnectionID, new ArrayList<SelectedElementRep>());
 		}
 
-		tmpHash.get(iElementID).add(selectedElementRep);
+		tmpHash.get(iConnectionID).add(selectedElementRep);
 	}
 
 	/**
@@ -151,9 +153,6 @@ public class ConnectedElementRepresentationManager
 
 		HashMap<Integer, ArrayList<SelectedElementRep>> tmp = hashIDTypes.get(eIDType);
 		tmp.clear();
-		// hashIDTypes.remove(eIDType);
-
-		// hashIDTypes.clear();
 	}
 
 	public void clearByView(EIDType idType, int iViewID)
@@ -172,6 +171,11 @@ public class ConnectedElementRepresentationManager
 					iterator.remove();
 			}
 		}
+	}
+	
+	public void clearByConnectionID(EIDType idType, int iConnectionID)
+	{
+		hashIDTypes.get(idType).remove(iConnectionID);
 	}
 
 }

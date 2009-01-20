@@ -323,7 +323,7 @@ public class GLPathway
 				.getHeight();
 		for (SelectionDeltaItem item : resolvedDelta)
 		{
-			if (item.getSelectionType() != ESelectionType.MOUSE_OVER)
+			if (item.getSelectionType() != ESelectionType.MOUSE_OVER && item.getSelectionType() != ESelectionType.SELECTION)
 				continue;
 
 			PathwayVertexGraphItemRep vertexRep = (PathwayVertexGraphItemRep) generalManager
@@ -561,14 +561,23 @@ public class GLPathway
 		{
 			case PATHWAY_ELEMENT_SELECTION:
 
+				ESelectionType eSelectionType;
+
 				PathwayVertexGraphItemRep tmpVertexGraphItemRep = (PathwayVertexGraphItemRep) generalManager
 						.getPathwayItemManager().getItem(iExternalID);
 
 				// Do nothing if new selection is the same as previous selection
-				if (selectionManager.checkStatus(ESelectionType.MOUSE_OVER,
-						tmpVertexGraphItemRep.getId())
-						&& !pickingMode.equals(EPickingMode.CLICKED)
-						&& !pickingMode.equals(EPickingMode.DOUBLE_CLICKED))
+				if ((selectionManager.checkStatus(ESelectionType.MOUSE_OVER,
+						tmpVertexGraphItemRep.getId()) && pickingMode
+						.equals(EPickingMode.MOUSE_OVER))
+						|| (selectionManager.checkStatus(ESelectionType.SELECTION,
+								tmpVertexGraphItemRep.getId()) && pickingMode
+								.equals(EPickingMode.CLICKED))
+						|| (selectionManager.checkStatus(ESelectionType.SELECTION,
+								tmpVertexGraphItemRep.getId()) && pickingMode
+								.equals(EPickingMode.DOUBLE_CLICKED)))
+				// && !pickingMode.equals(EPickingMode.CLICKED)
+				// && !pickingMode.equals(EPickingMode.DOUBLE_CLICKED))
 				{
 					pickingManager.flushHits(iUniqueID, ePickingType);
 					return;
@@ -582,6 +591,7 @@ public class GLPathway
 
 				if (pickingMode == EPickingMode.DOUBLE_CLICKED)
 				{
+					eSelectionType = ESelectionType.SELECTION;
 					// Load embedded pathway
 					if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.map)
 					{
@@ -598,34 +608,36 @@ public class GLPathway
 									selectionDelta, null);
 						}
 					}
-
-					selectionManager.clearSelection(ESelectionType.SELECTION);
-
-					// Add new vertex to internal selection manager
-					selectionManager.addToType(ESelectionType.SELECTION, tmpVertexGraphItemRep
-							.getId());
 				}
 				else if (pickingMode == EPickingMode.MOUSE_OVER
 						|| pickingMode == EPickingMode.CLICKED)
 				{
-					selectionManager.clearSelection(ESelectionType.MOUSE_OVER);
-
-					// Add new vertex to internal selection manager
-					selectionManager.addToType(ESelectionType.MOUSE_OVER,
-							tmpVertexGraphItemRep.getId());
+					
+					eSelectionType = ESelectionType.MOUSE_OVER;
+//					return;
 				}
+				else
+				{
+					// return; ????
+					throw new IllegalStateException("Unhandled picking type");
+				}
+
+				selectionManager.clearSelection(eSelectionType);
+
+				// Add new vertex to internal selection manager
+				selectionManager.addToType(eSelectionType, tmpVertexGraphItemRep.getId());
 
 				int iConnectionID = generalManager.getIDManager().createID(
 						EManagedObjectType.CONNECTION);
 				selectionManager.addConnectionID(iConnectionID, tmpVertexGraphItemRep.getId());
 				connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
-				gLPathwayContentCreator.performIdenticalNodeHighlighting();
+				gLPathwayContentCreator.performIdenticalNodeHighlighting(eSelectionType);
 
-				createConnectionLines(tmpVertexGraphItemRep, iConnectionID);
+				createConnectionLines(eSelectionType, iConnectionID);
 
 				Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
 				colSelectionCommand.add(new SelectionCommand(ESelectionCommandType.CLEAR,
-						ESelectionType.MOUSE_OVER));
+						eSelectionType));
 
 				ISelectionDelta delta = selectionManager.getDelta();
 				triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,// BUCKET_INTERNAL_INCOMING_MEDIATOR,
@@ -645,50 +657,15 @@ public class GLPathway
 		}
 	}
 
-	private void createConnectionLines(PathwayVertexGraphItemRep vertexGraphItemRep,
+	private void createConnectionLines(ESelectionType eSelectionType,
 			int iConnectionID)
 	{
-		// // PathwayVertexGraphItem tmpVertexGraphItem = null;
-		// for (IGraphItem tmpGraphItem : vertexGraphItemRep
-		// .getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT))
-		// {
-		// else if (pickingMode == EPickingMode.CLICKED)
-		// {
-		// selectionManager.clearSelection(ESelectionType.SELECTION);
-		//				
-		// // Add new vertex to internal selection manager
-		// selectionManager.addToType(ESelectionType.SELECTION,
-		// tmpVertexGraphItemRep.getId());
-		// }
-		// else
-		// {
-		// return;
-		// }
-		//		
-		// tmpVertexGraphItem = (PathwayVertexGraphItem) tmpGraphItem;
-		//
-		// int iDavidId = generalManager.getPathwayItemManager()
-		// .getDavidIdByPathwayVertexGraphItemId(tmpVertexGraphItem.getId());
-		//
-		// if (iDavidId == -1 || iDavidId == 0)
-		// {
-		// generalManager.getLogger().log(Level.WARNING,
-		// "Invalid David Gene ID.");
-		// // pickingManager.flushHits(iUniqueID,
-		// // EPickingType.PATHWAY_ELEMENT_SELECTION);
-		// // pickingManager.flushHits(iUniqueID,
-		// // EPickingType.PATHWAY_TEXTURE_SELECTION);
-		//
-		// // connectedElementRepresentationManager.clear();
-		// // gLPathwayContentCreator.performIdenticalNodeHighlighting();
-		// continue;
-		// }
-
+	
 		PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep;
 		int iPathwayHeight = (generalManager.getPathwayManager().getItem(iPathwayID))
 				.getHeight();
 
-		for (int iVertexRepID : selectionManager.getElements(ESelectionType.MOUSE_OVER))
+		for (int iVertexRepID : selectionManager.getElements(eSelectionType))
 		{
 			tmpPathwayVertexGraphItemRep = generalManager.getPathwayItemManager()
 					.getPathwayVertexRep(iVertexRepID);

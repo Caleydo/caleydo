@@ -316,13 +316,18 @@ public abstract class AStorageBasedView
 		Set<String> sSetRefSeqID = genomeIDManager.getMultiID(
 				EMappingType.DAVID_2_REFSEQ_MRNA, iDavidId);
 		String sOutput = "";
+		int iCount = 0;
 		for (String sRefSeqID : sSetRefSeqID)
 		{
 			// if (sRefSeqID == "")
 			// continue;
-
+			if (iCount > 0)
+			{
+				sOutput += " | ";
+			}
+			iCount++;
 			sOutput += sRefSeqID;
-			sOutput += " | ";
+			
 		}
 
 		return sOutput;

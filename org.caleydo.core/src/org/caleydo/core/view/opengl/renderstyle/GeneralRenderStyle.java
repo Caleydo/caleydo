@@ -41,6 +41,8 @@ public class GeneralRenderStyle
 	public static final float SELECTED_LINE_WIDTH = 3;
 
 	public static final float MOUSE_OVER_LINE_WIDTH = 3;
+	
+	public static final int NUM_CHAR_LIMIT = 15;
 
 	// protected float fFrustumHeight = 0;
 	//
@@ -51,6 +53,8 @@ public class GeneralRenderStyle
 	protected static final float BUTTONS_SPACING = 0.005f;
 
 	protected static final float BUTTON_WIDTH = 0.018f;
+	
+	
 
 	protected IViewFrustum viewFrustum;
 
