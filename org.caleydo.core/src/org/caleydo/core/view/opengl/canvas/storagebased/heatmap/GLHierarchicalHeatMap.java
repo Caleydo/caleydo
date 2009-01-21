@@ -254,9 +254,81 @@ public class GLHierarchicalHeatMap
 	 */
 	private void initPosCursor()
 	{
-		iPickedSample = (int) Math.floor(iSamplesPerHeatmap / 2);
-		iFirstSample = 0;
-		iLastSample = iSamplesPerHeatmap - 1;
+		if(AlSelection.size() > 0)
+		{
+			int iNumberSample = iAlNumberSamples.get(iSelectorBar - 1) * 2;
+			
+			for(HeatMapSelection iter : AlSelection)
+			{
+				if (iter.getTexture() == iSelectorBar - 1)
+				{				
+					iPickedSample = iter.getPos();
+
+					if ((iSamplesPerHeatmap % 2) == 0)
+					{
+						iFirstSample = iPickedSample - (int) Math.floor(iSamplesPerHeatmap / 2) + 1;
+						iLastSample = iPickedSample + (int) Math.floor(iSamplesPerHeatmap / 2);
+					}
+					else
+					{
+						iFirstSample = iPickedSample - (int) Math.ceil(iSamplesPerHeatmap / 2);
+						iLastSample = iPickedSample + (int) Math.floor(iSamplesPerHeatmap / 2);
+					}
+
+					if (iPickedSample < iSamplesPerHeatmap / 2)
+					{
+						iPickedSample = (int) Math.floor(iSamplesPerHeatmap / 2);
+						iFirstSample = 0;
+						iLastSample = iSamplesPerHeatmap - 1;
+					}
+					else if (iPickedSample > (iNumberSample - 1 - iSamplesPerHeatmap / 2))
+					{
+						iPickedSample = (int) Math.ceil(iNumberSample - iSamplesPerHeatmap / 2);
+						iLastSample = iNumberSample - 1;
+						iFirstSample = iNumberSample - iSamplesPerHeatmap;
+					}
+					break;
+				}
+				else if(iter.getTexture() == iSelectorBar)
+				{
+					iPickedSample = iter.getPos() + iAlNumberSamples.get(iSelectorBar - 1);
+
+					if ((iSamplesPerHeatmap % 2) == 0)
+					{
+						iFirstSample = iPickedSample - (int) Math.floor(iSamplesPerHeatmap / 2) + 1;
+						iLastSample = iPickedSample + (int) Math.floor(iSamplesPerHeatmap / 2);
+					}
+					else
+					{
+						iFirstSample = iPickedSample - (int) Math.ceil(iSamplesPerHeatmap / 2);
+						iLastSample = iPickedSample + (int) Math.floor(iSamplesPerHeatmap / 2);
+					}
+
+					if (iPickedSample < iSamplesPerHeatmap / 2)
+					{
+						iPickedSample = (int) Math.floor(iSamplesPerHeatmap / 2);
+						iFirstSample = 0;
+						iLastSample = iSamplesPerHeatmap - 1;
+					}
+					else if (iPickedSample > (iNumberSample - 1 - iSamplesPerHeatmap / 2))
+					{
+						iPickedSample = (int) Math.ceil(iNumberSample - iSamplesPerHeatmap / 2);
+						iLastSample = iNumberSample - 1;
+						iFirstSample = iNumberSample - iSamplesPerHeatmap;
+					}
+					break;
+				}
+				iPickedSample = (int) Math.floor(iSamplesPerHeatmap / 2);
+				iFirstSample = 0;
+				iLastSample = iSamplesPerHeatmap - 1;
+			}
+		}
+		else
+		{
+			iPickedSample = (int) Math.floor(iSamplesPerHeatmap / 2);
+			iFirstSample = 0;
+			iLastSample = iSamplesPerHeatmap - 1;
+		}
 	}
 
 	/**
@@ -1434,9 +1506,11 @@ public class GLHierarchicalHeatMap
 		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
 
 		// Handling action ResetView in hierarchical heatmap
-		iSelectorBar = 1;
-		initPosCursor();
-		glHeatMapView.setDisplayListDirty();
+//		iSelectorBar = 1;
+//		initPosCursor();
+//		AlSelection.clear();
+//		triggerSelectionBlock();
+//		glHeatMapView.setDisplayListDirty();
 
 	}
 
@@ -1850,9 +1924,10 @@ public class GLHierarchicalHeatMap
 	@Override
 	public void resetSelections()
 	{
-		contentSelectionManager.clearSelections();
-		storageSelectionManager.clearSelections();
+		AlSelection.clear();
 		setDisplayListDirty();
+		triggerSelectionBlock();
+		glHeatMapView.setDisplayListDirty();
 	}
 
 	@Override
