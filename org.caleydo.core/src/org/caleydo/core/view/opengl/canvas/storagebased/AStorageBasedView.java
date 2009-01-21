@@ -25,8 +25,9 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IMediatorEventSender;
+import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
+import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
@@ -40,7 +41,7 @@ import com.sun.opengl.util.j2d.TextRenderer;
  */
 public abstract class AStorageBasedView
 	extends AGLEventListener
-	implements IMediatorReceiver, IMediatorEventSender
+	implements IMediatorReceiver, IMediatorSender
 {
 
 	protected ISet set;
@@ -284,7 +285,7 @@ public abstract class AStorageBasedView
 	/**
 	 * Create 0:n {@link SelectedElementRep} for the selectionDelta
 	 * 
-	 * @param idType TODO
+	 * @param iDType TODO
 	 * @param selectionDelta the selection delta which should be represented
 	 * 
 	 * @throws InvalidAttributeValueException when the selectionDelta does not
@@ -350,7 +351,7 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public synchronized final void handleUpdate(IUniqueObject eventTrigger,
+	public synchronized final void handleSelectionUpdate(IUniqueObject eventTrigger,
 			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand,
 			EMediatorType eMediatorType)
 
@@ -393,8 +394,8 @@ public abstract class AStorageBasedView
 	}
 
 	@Override
-	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
-			Collection<SelectionCommand> colSelectionCommand, EMediatorType mediatorType)
+	public void handleVAUpdate(EMediatorType mediatorType, IUniqueObject eventTrigger,
+			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand)
 	{
 
 		generalManager.getLogger().log(
@@ -474,17 +475,27 @@ public abstract class AStorageBasedView
 				selectionDelta, colSelectionCommand);
 	}
 
+
+
 	@Override
-	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
+	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
+	{
+		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
+	}
+	
+	@Override
+	public void triggerVAUpdate(EMediatorType eMediatorType, IVirtualArrayDelta delta,
 			Collection<SelectionCommand> colSelectionCommand)
 	{
-		// TODO Auto-generated method stub
+		generalManager.getEventPublisher().triggerVAUpdate(eMediatorType, this, delta, colSelectionCommand);	
 
 	}
 
-	public void triggerEvent(int iID)
+	@Override
+	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
 	{
-		generalManager.getEventPublisher().triggerEvent(this, iID);
+		// TODO Auto-generated method stub
+		
 	}
 
 	/**

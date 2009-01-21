@@ -8,7 +8,8 @@ import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IMediatorEventSender;
+import org.caleydo.core.manager.event.IEventContainer;
+import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.specialized.glyph.EGlyphSettingIDs;
@@ -41,7 +42,7 @@ import org.eclipse.swt.widgets.Composite;
 // FIXME: bad hack, should implement IMediatorReciever
 public class GlyphMappingConfigurationViewRep
 	extends ASWTView
-	implements ISWTView, IMediatorEventSender
+	implements ISWTView, IMediatorSender
 {
 	private class DataPack
 	{
@@ -180,7 +181,7 @@ public class GlyphMappingConfigurationViewRep
 						((GLGlyph) agleventlistener).forceRebuild();
 
 				//TODO request assistance for this triggerEvent
-				triggerEvent(1);
+				// triggerEventHere
 
 			}
 
@@ -481,14 +482,6 @@ public class GlyphMappingConfigurationViewRep
 	}
 
 	@Override
-	public void triggerEvent(int iid)
-	{
-		System.out.println("Triggering Event from " + this.getClass().getSimpleName()
-				+ " with value " + Integer.toString(iid));
-		generalManager.getEventPublisher().triggerEvent(this, iid);
-	}
-
-	@Override
 	public void triggerSelectionUpdate(EMediatorType mediatorType,
 			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
 	{
@@ -498,6 +491,13 @@ public class GlyphMappingConfigurationViewRep
 	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
 			Collection<SelectionCommand> colSelectionCommand)
 	{
+	}
+
+	@Override
+	public void triggerEvent(EMediatorType mediatorType, IEventContainer eventContainer)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

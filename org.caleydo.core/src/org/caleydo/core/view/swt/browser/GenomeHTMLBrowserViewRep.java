@@ -12,6 +12,7 @@ import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -145,7 +146,7 @@ public class GenomeHTMLBrowserViewRep
 	}
 
 	@Override
-	public void handleUpdate(IUniqueObject eventTrigger, final ISelectionDelta selectionDelta,
+	public void handleSelectionUpdate(IUniqueObject eventTrigger, final ISelectionDelta selectionDelta,
 			Collection<SelectionCommand> colSelectionCommand, EMediatorType eMediatorType)
 	{
 		if (selectionDelta.getIDType() != EIDType.DAVID)
@@ -212,10 +213,17 @@ public class GenomeHTMLBrowserViewRep
 	}
 
 	@Override
-	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
-			Collection<SelectionCommand> colSelectionCommand, EMediatorType mediatorType)
+	public void handleVAUpdate(EMediatorType mediatorType, IUniqueObject eventTrigger,
+			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand)
 	{
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

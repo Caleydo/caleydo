@@ -12,6 +12,7 @@ import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
@@ -129,7 +130,7 @@ public class InfoArea
 	}
 
 	@Override
-	public void handleUpdate(final IUniqueObject eventTrigger, final ISelectionDelta selectionDelta,
+	public void handleSelectionUpdate(final IUniqueObject eventTrigger, final ISelectionDelta selectionDelta,
 			Collection<SelectionCommand> colSelectionCommand, EMediatorType eMediatorType)
 	{
 		if (selectionDelta.getIDType() != EIDType.DAVID)
@@ -320,8 +321,15 @@ public class InfoArea
 	}
 
 	@Override
-	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
-			Collection<SelectionCommand> colSelectionCommand, EMediatorType mediatorType)
+	public void handleVAUpdate(EMediatorType mediatorType, IUniqueObject eventTrigger,
+			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
 	{
 		// TODO Auto-generated method stub
 		

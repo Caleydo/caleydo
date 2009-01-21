@@ -5,7 +5,9 @@ import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediator;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
@@ -72,19 +74,21 @@ public interface IEventPublisher
 			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand);
 
 	/**
-	 * Trigger an event, signaling that something has happened
+	 * Triggers an event, signals that something has happened and sends data
+	 * along
 	 * 
-	 * TODO: interface is only rudimentary
-	 * 
-	 * @param eventTrigger
-	 * @param iID
+	 * @param eventTrigger the caller
+	 * @param eventContainer containing the information on the type of the event
+	 *            {@link EEventType} and possibly data associated
 	 */
-	public void triggerEvent(IUniqueObject eventTrigger, int iID);
+	public void triggerEvent(EMediatorType eMediatorType, IUniqueObject eventTrigger,
+			IEventContainer eventContainer);
 
 	/**
 	 * Adds a sender to the mediator specified in eMediatorType
 	 * 
-	 * @param eMediatorType the type
+	 * @param eMediatorType The mediator that is used to pass this type of
+	 *            events
 	 * @param sender the sender to be registered
 	 */
 	public void addSender(EMediatorType eMediatorType, IMediatorSender sender);

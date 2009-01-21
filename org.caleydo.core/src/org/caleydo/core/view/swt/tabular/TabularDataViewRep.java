@@ -26,6 +26,7 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -1081,18 +1082,32 @@ public class TabularDataViewRep
 	}
 
 	@Override
-	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
+	public void handleSelectionUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
 			Collection<SelectionCommand> colSelectionCommand, EMediatorType mediatorType)
 	{
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
-			Collection<SelectionCommand> colSelectionCommand, EMediatorType mediatorType)
+	public void handleVAUpdate(EMediatorType mediatorType, IUniqueObject eventTrigger,
+			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand)
 	{
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void triggerEvent(EMediatorType mediatorType, IEventContainer eventContainer)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 
 }

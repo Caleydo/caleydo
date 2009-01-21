@@ -45,7 +45,7 @@ public class CmdDataCreateSelection
 	 * Set attributes for object to be constructed, see
 	 * {@link SelectionDelta#SelectionDelta(EIDType)}
 	 * 
-	 * @param idType see Constructor
+	 * @param iDType see Constructor
 	 */
 	public void setAttributes(EIDType idType)
 	{
@@ -56,7 +56,7 @@ public class CmdDataCreateSelection
 	 * Set attributes for object to be constructed, see
 	 * {@link SelectionDelta#SelectionDelta(EIDType, EIDType)}
 	 * 
-	 * @param idType see Constructor
+	 * @param iDType see Constructor
 	 * @param internalIDType see Constructor
 	 */
 	public void setAttributes(EIDType idType, EIDType internalIDType)

@@ -104,7 +104,7 @@ public class Mediator
 			if (!receiver.equals(eventTrigger))
 			{
 				receiver
-						.handleUpdate(eventTrigger, selectionDelta, colSelectionCommand, eType);
+						.handleSelectionUpdate(eventTrigger, selectionDelta, colSelectionCommand, eType);
 			}
 		}
 	}
@@ -118,7 +118,7 @@ public class Mediator
 			// Prevent circular updates
 			if (!receiver.equals(eventTrigger))
 			{
-				receiver.handleVAUpdate(eventTrigger, delta, colSelectionCommand, eType);
+				receiver.handleVAUpdate(eType, eventTrigger, delta, colSelectionCommand);
 			}
 		}
 	}
@@ -131,17 +131,17 @@ public class Mediator
 	}
 
 	@Override
-	public void triggerEvent(IUniqueObject eventTrigger, int iID)
+	public void triggerEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
 	{
 		for (IMediatorReceiver receiver : alReceiver)
 		{
 			// Prevent circular updates
 			if (!receiver.equals(eventTrigger))
 			{
-				if (receiver instanceof IMediatorEventReceiver)
+				if (receiver instanceof IMediatorReceiver)
 				{
-					IMediatorEventReceiver eventReceiver = (IMediatorEventReceiver) receiver;
-					eventReceiver.handleExternalEvent(eventTrigger, iID);
+					IMediatorReceiver eventReceiver = (IMediatorReceiver) receiver;
+					eventReceiver.handleExternalEvent(eventTrigger, eventContainer);
 				}
 			}
 		}

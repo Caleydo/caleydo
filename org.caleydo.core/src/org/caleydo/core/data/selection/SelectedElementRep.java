@@ -24,7 +24,7 @@ public class SelectedElementRep
 	/**
 	 * Constructor. Use this constructor for a one point element rep
 	 * 
-	 * @param idType the type of the element to be connected.
+	 * @param iDType the type of the element to be connected.
 	 * @param iContainingViewID the unique id of the view
 	 * @param fXCoord
 	 * @param fYCoord

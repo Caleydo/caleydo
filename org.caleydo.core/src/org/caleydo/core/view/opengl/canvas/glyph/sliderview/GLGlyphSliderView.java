@@ -8,12 +8,9 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.logging.Level;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
@@ -21,6 +18,7 @@ import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -396,15 +394,15 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
+	public void handleSelectionUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
 			Collection<SelectionCommand> colSelectionCommand, EMediatorType eMediatorType)
 	{
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
-			Collection<SelectionCommand> colSelectionCommand, EMediatorType mediatorType)
+	public void handleVAUpdate(EMediatorType mediatorType, IUniqueObject eventTrigger,
+			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand)
 	{
 		// TODO Auto-generated method stub
 
@@ -428,5 +426,19 @@ public class GLGlyphSliderView
 	{
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
+	{
+		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
+		
+	}
+
+	@Override
+	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }

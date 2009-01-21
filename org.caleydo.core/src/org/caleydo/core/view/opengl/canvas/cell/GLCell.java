@@ -16,6 +16,7 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -152,7 +153,7 @@ public class GLCell
 	}
 
 	@Override
-	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
+	public void handleSelectionUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
 			Collection<SelectionCommand> colSelectionCommand, EMediatorType mediatorType)
 	{
 		generalManager.getLogger().log(Level.FINE,
@@ -183,8 +184,8 @@ public class GLCell
 	}
 
 	@Override
-	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
-			Collection<SelectionCommand> colSelectionCommand, EMediatorType mediatorType)
+	public void handleVAUpdate(EMediatorType mediatorType, IUniqueObject eventTrigger,
+			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand)
 	{
 		// TODO Auto-generated method stub
 
@@ -313,6 +314,19 @@ public class GLCell
 	{
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
+	{
+		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);		
 	}
 
 }

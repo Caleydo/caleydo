@@ -29,10 +29,10 @@ import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDelta;
-import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IMediatorEventReceiver;
+import org.caleydo.core.manager.event.IDListEventContainer;
+import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -82,10 +82,11 @@ import com.sun.opengl.util.texture.TextureCoords;
  * the positioning of the views (bucket, jukebox, etc.).
  * 
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public class GLRemoteRendering
 	extends AGLEventListener
-	implements IMediatorEventReceiver, IMediatorSender, IGLCanvasRemoteRendering
+	implements IMediatorReceiver, IMediatorSender, IGLCanvasRemoteRendering
 {
 	private ARemoteViewLayoutRenderStyle.LayoutMode layoutMode;
 
@@ -1860,7 +1861,7 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	public synchronized void handleUpdate(IUniqueObject eventTrigger,
+	public synchronized void handleSelectionUpdate(IUniqueObject eventTrigger,
 			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand,
 			EMediatorType eMediatorType)
 	{
@@ -1870,65 +1871,82 @@ public class GLRemoteRendering
 				"Update called by " + eventTrigger.getClass().getSimpleName()
 						+ ", received in: " + this.getClass().getSimpleName());
 
+		lastSelectionDelta = selectionDelta;
 		// Special case for empty update that pathway sends for updating info
 		// area
-		if (!selectionDelta.iterator().hasNext())
-			return;
+		// if (!selectionDelta.iterator().hasNext())
+		// return;
 
 		// Handle incoming genes
-		if (selectionDelta.getIDType() == EIDType.DAVID)
-		{
-			lastSelectionDelta = selectionDelta;
 
-			// PATHWAY LOADING OF DEPENDENT PATHWAYS
-			int iDavidID = 0;
-			int iGraphItemID = 0;
-			ArrayList<ICaleydoGraphItem> alPathwayVertexGraphItem = new ArrayList<ICaleydoGraphItem>();
-
-			for (SelectionDeltaItem item : selectionDelta)
-			{
-				// Only consider items that are selected
-				if (item.getSelectionType() != ESelectionType.SELECTION)
-					continue;
-
-				iDavidID = item.getPrimaryID();
-
-				iGraphItemID = generalManager.getPathwayItemManager()
-						.getPathwayVertexGraphItemIdByDavidId(iDavidID);
-
-				if (iGraphItemID == -1)
-					continue;
-
-				PathwayVertexGraphItem tmpPathwayVertexGraphItem = ((PathwayVertexGraphItem) generalManager
-						.getPathwayItemManager().getItem(iGraphItemID));
-
-				if (tmpPathwayVertexGraphItem == null)
-					continue;
-
-				alPathwayVertexGraphItem.add(tmpPathwayVertexGraphItem);
-			}
-
-			if (!alPathwayVertexGraphItem.isEmpty())
-			{
-				loadDependentPathways(alPathwayVertexGraphItem);
-			}
-		}
-		// Handle incoming pathways
-		else if (selectionDelta.getIDType() == EIDType.PATHWAY)
-		{
-			Iterator<SelectionDeltaItem> iterator = selectionDelta.getAllItems().iterator();
-			if (iterator.hasNext())
-				addPathwayView(iterator.next().getPrimaryID());
-			else
-				throw new IllegalStateException("Illegals selection delta state: no pathways");
-		}
 	}
 
 	@Override
-	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
-			Collection<SelectionCommand> colSelectionCommand, EMediatorType mediatorType)
+	public void handleVAUpdate(EMediatorType mediatorType, IUniqueObject eventTrigger,
+			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand)
 	{
 		// TODO Auto-generated method stub
+
+	}
+
+	@SuppressWarnings("unchecked")
+	@Override
+	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
+	{
+
+		switch (eventContainer.getEventType())
+		{
+			// pathway loading based on gene id
+			case LOAD_PATHWAY_BY_GENE:
+
+				// take care here, if we ever use non integer ids this has to be
+				// cast to raw type first to determine the actual id data types
+				IDListEventContainer<Integer> idContainer = (IDListEventContainer<Integer>) eventContainer;
+				if (idContainer.getIDType() == EIDType.DAVID)
+				{
+
+					int iGraphItemID = 0;
+					ArrayList<ICaleydoGraphItem> alPathwayVertexGraphItem = new ArrayList<ICaleydoGraphItem>();
+
+					for (Integer iDavidID : idContainer.getIDs())
+					{
+
+						iGraphItemID = generalManager.getPathwayItemManager()
+								.getPathwayVertexGraphItemIdByDavidId(iDavidID);
+
+						if (iGraphItemID == -1)
+							continue;
+
+						PathwayVertexGraphItem tmpPathwayVertexGraphItem = ((PathwayVertexGraphItem) generalManager
+								.getPathwayItemManager().getItem(iGraphItemID));
+
+						if (tmpPathwayVertexGraphItem == null)
+							continue;
+
+						alPathwayVertexGraphItem.add(tmpPathwayVertexGraphItem);
+					}
+
+					if (!alPathwayVertexGraphItem.isEmpty())
+					{
+						loadDependentPathways(alPathwayVertexGraphItem);
+					}
+				}
+				else
+				{
+					throw new IllegalStateException("Not Implemented");
+				}
+				break;
+			// Handle incoming pathways
+			case LOAD_PATHWAY_BY_PATHWAY_ID:
+				IDListEventContainer<Integer> pathwayIDContainer = (IDListEventContainer<Integer>) eventContainer;
+
+				for (Integer iPathwayID : pathwayIDContainer.getIDs())
+				{
+					addPathwayView(iPathwayID);
+				}
+
+				break;
+		}
 
 	}
 
@@ -2776,13 +2794,21 @@ public class GLRemoteRendering
 	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
 			Collection<SelectionCommand> colSelectionCommand)
 	{
-		// TODO Auto-generated method stub
+		throw new IllegalStateException("Not Implemented");
+
+	}
+
+	@Override
+	public void triggerEvent(EMediatorType mediatorType, IEventContainer eventContainer)
+	{
+		throw new IllegalStateException("Not Implemented");
 
 	}
 
 	@Override
 	public synchronized void broadcastElements(EVAOperation type)
 	{
+		throw new IllegalStateException("Not Implemented");
 	}
 
 	private synchronized void initializeNewPathways(final GL gl)
@@ -2935,15 +2961,6 @@ public class GLRemoteRendering
 	public int getNumberOfSelections(ESelectionType eSelectionType)
 	{
 		return 0;
-	}
-
-	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger, int iid)
-	{
-		generalManager.getLogger().log(
-				Level.INFO,
-				"External event called by " + eventTrigger.getClass().getSimpleName()
-						+ ", received in: " + this.getClass().getSimpleName());
 	}
 
 	private void compactPoolLevel()

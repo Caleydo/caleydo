@@ -8,7 +8,10 @@ import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDelta;
+import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.IDListEventContainer;
+import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -73,9 +76,12 @@ public class DataEntitySearcherViewRep
 		if (iPathwayID == -1)
 			return false;
 
-		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.PATHWAY);
-		selectionDelta.addSelection(iPathwayID, ESelectionType.SELECTION);
-		triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, selectionDelta, null);
+		IDListEventContainer<Integer> idListEventContainer = new IDListEventContainer<Integer>(
+				EEventType.LOAD_PATHWAY_BY_PATHWAY_ID, EIDType.PATHWAY);
+		idListEventContainer.addID(iPathwayID);
+
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+				idListEventContainer);
 
 		return true;
 	}
@@ -161,5 +167,11 @@ public class DataEntitySearcherViewRep
 	{
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
+	{
+		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);		
 	}
 }

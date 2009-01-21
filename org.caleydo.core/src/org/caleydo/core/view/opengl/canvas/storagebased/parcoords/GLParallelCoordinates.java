@@ -49,9 +49,13 @@ import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionCommandEventContainer;
+import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.data.selection.VADeltaItem;
 import org.caleydo.core.data.selection.VirtualArrayDelta;
+import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.IDListEventContainer;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -173,25 +177,22 @@ public class GLParallelCoordinates
 	{
 		super(setType, iGLCanvasID, sLabel, viewFrustum);
 		viewType = EManagedObjectType.GL_PARALLEL_COORDINATES;
-		// alDataStorages = new ArrayList<IStorage>();
+
 		renderStyle = new ParCoordsRenderStyle(viewFrustum);
 		super.renderStyle = this.renderStyle;
 
-		// TODO this is only valid for genes
 		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX)
 				.mappingType(EMappingType.EXPRESSION_INDEX_2_DAVID,
 						EMappingType.DAVID_2_EXPRESSION_INDEX).externalIDType(EIDType.DAVID)
 				.build();
 
-		// TODO no mapping
 		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX)
 				.build();
 
 		alIsAngleBlocking = new ArrayList<ArrayList<Integer>>();
 		alIsAngleBlocking.add(new ArrayList<Integer>());
-		// TODO use constant instead
 		iNumberOfRandomElements = generalManager.getPreferenceStore().getInt(
-				"pcNumRandomSamplinPoints");
+				PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT);
 	}
 
 	@Override
@@ -324,8 +325,6 @@ public class GLParallelCoordinates
 	public synchronized void display(final GL gl)
 	{
 		// TODO another display list
-		// GLHelperFunctions.drawAxis(gl);
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		clipToFrustum(gl);
 
 		gl.glTranslatef(fXDefaultTranslation + fXTranslation, fYTranslation, 0.0f);
@@ -355,18 +354,6 @@ public class GLParallelCoordinates
 
 		gl.glTranslatef(-fXDefaultTranslation - fXTranslation, -fYTranslation, 0.0f);
 
-		// if (detailLevel == EDetailLevel.HIGH)
-		// {
-		// gl.glTranslatef(fXDefaultTranslation - renderStyle.getXSpacing(),
-		// fYTranslation
-		// - renderStyle.getBottomSpacing(), 0.0f);
-		//
-		//		
-		// gl.glTranslatef(-fXDefaultTranslation + renderStyle.getXSpacing(),
-		// -fYTranslation
-		// + renderStyle.getBottomSpacing(), 0.0f);
-		// }
-
 		gl.glDisable(GL.GL_STENCIL_TEST);
 	}
 
@@ -393,8 +380,6 @@ public class GLParallelCoordinates
 		resetSelections();
 		initContentVariables();
 
-		// TODO we might not need that here!
-		// initLists();
 		initGates();
 
 		setDisplayListDirty();
@@ -446,7 +431,6 @@ public class GLParallelCoordinates
 	@Override
 	public synchronized void resetSelections()
 	{
-		// TODO clear in other views too
 		for (int iCount = 0; iCount < fArGateTipHeight.length; iCount++)
 		{
 			fArGateTipHeight[iCount] = 0;
@@ -469,6 +453,12 @@ public class GLParallelCoordinates
 		}
 		setDisplayListDirty();
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
+
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
+				EIDType.DAVID, new SelectionCommand(ESelectionCommandType.CLEAR_ALL)));
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
+				EIDType.EXPERIMENT_INDEX,
+				new SelectionCommand(ESelectionCommandType.CLEAR_ALL)));
 
 	}
 
@@ -780,7 +770,7 @@ public class GLParallelCoordinates
 						gl.glEnd();
 
 				}
-		
+
 				if (bRenderingSelection)
 				{
 					String sRawValue;
@@ -792,7 +782,7 @@ public class GLParallelCoordinates
 
 					}
 					else if (currentStorage instanceof INominalStorage)
-					{						
+					{
 						sRawValue = ((INominalStorage<String>) currentStorage)
 								.getRaw(iStorageIndex);
 					}
@@ -1509,9 +1499,14 @@ public class GLParallelCoordinates
 				switch (ePickingMode)
 				{
 					case DOUBLE_CLICKED:
-						// if (bIsAngularBrushingActive)
-						// break;
+						IDListEventContainer<Integer> idListEventContainer = new IDListEventContainer<Integer>(
+								EEventType.LOAD_PATHWAY_BY_GENE, EIDType.DAVID);
+						int iDavidID = getDavidIDFromStorageIndex(iExternalID);
+						idListEventContainer.addID(iDavidID);
+						triggerEvent(EMediatorType.SELECTION_MEDIATOR, idListEventContainer);
+						// intentionally no break
 
+					case CLICKED:
 						if (bAngularBrushingSelectPolyline)
 						{
 							bAngularBrushingSelectPolyline = false;
@@ -1539,13 +1534,10 @@ public class GLParallelCoordinates
 							triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
 									polylineSelectionManager.getDelta(), colSelectionCommand);
 
-							triggerEvent(1);
-
 						}
 
 						setDisplayListDirty();
 						break;
-					case CLICKED:
 					case MOUSE_OVER:
 						// if (bIsAngularBrushingActive)
 						// break;

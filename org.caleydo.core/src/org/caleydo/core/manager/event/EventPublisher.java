@@ -28,6 +28,7 @@ public class EventPublisher
 		hashMediatorType2Mediator = new HashMap<EMediatorType, IMediator>();
 	}
 
+	@Override
 	public IMediator getPrivateMediator()
 	{
 		return new Mediator();
@@ -85,6 +86,7 @@ public class EventPublisher
 		}
 	}
 
+	@Override
 	public void triggerVAUpdate(EMediatorType eMediatorType, IUniqueObject eventTrigger,
 			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand)
 	{
@@ -112,6 +114,24 @@ public class EventPublisher
 					colSelectionCommand);
 		}
 	}
+	
+	@Override
+	public void triggerEvent(EMediatorType eMediatorType, IUniqueObject eventTrigger, IEventContainer eventContainer)
+	{
+		if (!(eventTrigger instanceof IMediatorSender))
+		{
+			throw new IllegalArgumentException(
+					"triggerEvent called by an object which does not implement IMediatorEventSender");
+		}
+		for (EMediatorType eTempMediatorType : hashMediatorType2Mediator.keySet())
+		{
+			IMediator tempMediator = hashMediatorType2Mediator.get(eTempMediatorType);
+			if (tempMediator.hasSender((IMediatorSender) eventTrigger))
+			{
+				tempMediator.triggerEvent(eventTrigger, eventContainer);
+			}
+		}
+	}
 
 	@Override
 	public void removeSender(EMediatorType eMediatorType, IMediatorSender sender)
@@ -131,6 +151,7 @@ public class EventPublisher
 		hashMediatorType2Mediator.get(eMediatorType).removeReceiver(receiver);
 	}
 
+	@Override
 	public void removeSenderFromAllGroups(IMediatorSender sender)
 	{
 		for (IMediator mediator : hashMediatorType2Mediator.values())
@@ -139,6 +160,7 @@ public class EventPublisher
 		}
 	}
 
+	@Override
 	public void removeReceiverFromAllGroups(IMediatorReceiver receiver)
 	{
 		for (IMediator mediator : hashMediatorType2Mediator.values())
@@ -147,21 +169,5 @@ public class EventPublisher
 		}
 	}
 
-	@Override
-	public void triggerEvent(IUniqueObject eventTrigger, int iID)
-	{
-		if (!(eventTrigger instanceof IMediatorEventSender))
-		{
-			throw new IllegalArgumentException(
-					"triggerEvent called by an object which does not implement IMediatorEventSender");
-		}
-		for (EMediatorType eTempMediatorType : hashMediatorType2Mediator.keySet())
-		{
-			IMediator tempMediator = hashMediatorType2Mediator.get(eTempMediatorType);
-			if (tempMediator.hasSender((IMediatorSender) eventTrigger))
-			{
-				tempMediator.triggerEvent(eventTrigger, iID);
-			}
-		}
-	}
+	
 }

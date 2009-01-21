@@ -8,6 +8,8 @@ import org.caleydo.core.data.selection.SelectionCommand;
 /**
  * Interface for a mediator sender
  * 
+ * TODO doku
+ * 
  * @author Michael Kalkusch
  * @author Alexander Lex
  * @author Marc Streit
@@ -15,7 +17,8 @@ import org.caleydo.core.data.selection.SelectionCommand;
 public interface IMediatorSender
 {
 	/**
-	 * Trigger an update with the selection delta specified
+	 * Trigger an update on the selections. The information is contained in the
+	 * selection delta specified
 	 * 
 	 * @param eMediatorType TODO
 	 * @param colSelectionCommand TODO
@@ -25,4 +28,6 @@ public interface IMediatorSender
 
 	public void triggerVAUpdate(EMediatorType eMediatorType, IVirtualArrayDelta delta,
 			Collection<SelectionCommand> colSelectionCommand);
+
+	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer);
 }

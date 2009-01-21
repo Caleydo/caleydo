@@ -24,7 +24,7 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.manager.event.EMediatorType;
-import org.caleydo.core.manager.event.IMediatorEventReceiver;
+import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -52,7 +52,7 @@ import com.sun.opengl.util.texture.TextureCoords;
  */
 public class GLGlyph
 	extends AGLEventListener
-	implements IMediatorSender, IMediatorEventReceiver
+	implements IMediatorSender, IMediatorReceiver
 {
 
 	private static final long serialVersionUID = -7899479912218913482L;
@@ -220,7 +220,7 @@ public class GLGlyph
 			ArrayList<Integer> tmpExtID = new ArrayList<Integer>(gman.getGlyphs().keySet());
 			selectionManager.initialAdd(tmpExtID);
 		}
-		
+
 		grid_.selectAll();
 	}
 
@@ -229,7 +229,7 @@ public class GLGlyph
 	{
 		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
 		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
-		
+
 		bIsLocal = true;
 
 		float fInitZoom = -10f;
@@ -865,18 +865,11 @@ public class GLGlyph
 
 		pickingManager.flushHits(iUniqueID, pickingType);
 	}
-	
-	@Override
-	public void handleExternalEvent(IUniqueObject eventTrigger, int iid)
-	{
-		generalManager.getLogger().log(Level.INFO,
-				sLabel + ": Event " + iid + " called by " + eventTrigger.getClass().getSimpleName());
-	}
-
 
 	@Override
-	public void handleUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
-			Collection<SelectionCommand> colSelectionCommand, EMediatorType eMediatorType)
+	public void handleSelectionUpdate(IUniqueObject eventTrigger,
+			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand,
+			EMediatorType eMediatorType)
 	{
 		if (selectionDelta.getIDType() != EIDType.EXPERIMENT_INDEX)
 			return;
@@ -916,8 +909,31 @@ public class GLGlyph
 	}
 
 	@Override
-	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
-			Collection<SelectionCommand> colSelectionCommand, EMediatorType mediatorType)
+	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
+			Collection<SelectionCommand> colSelectionCommand)
+	{
+		// TODO
+	}
+
+	@Override
+	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
+	{
+		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
+	}
+
+	@Override
+	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
+	{
+		generalManager.getLogger().log(
+				Level.INFO,
+				sLabel + ": Event of type " + eventContainer.getEventType() + " called by "
+						+ eventTrigger.getClass().getSimpleName());
+
+	}
+
+	@Override
+	public void handleVAUpdate(EMediatorType mediatorType, IUniqueObject eventTrigger,
+			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand)
 	{
 		// TODO Auto-generated method stub
 
@@ -1075,14 +1091,6 @@ public class GLGlyph
 	{
 		return selectionManager.getElements(eSelectionType).size();
 		// throw new IllegalStateException("Not implemented yet. Do this now!");
-	}
-
-	@Override
-	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
-			Collection<SelectionCommand> colSelectionCommand)
-	{
-		// TODO Auto-generated method stub
-
 	}
 
 }

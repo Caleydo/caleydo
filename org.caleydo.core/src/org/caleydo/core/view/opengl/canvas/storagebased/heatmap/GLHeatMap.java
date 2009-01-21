@@ -23,10 +23,11 @@ import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
-import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.IDListEventContainer;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -43,7 +44,6 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.miniview.GLColorMappingBarMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.springframework.util.SystemPropertyUtils;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -479,8 +479,14 @@ public class GLHeatMap
 				{
 
 					case DOUBLE_CLICKED:
-						// connectedElementRepresentationManager.clear();
+						IDListEventContainer<Integer> idListEventContainer = new IDListEventContainer<Integer>(
+								EEventType.LOAD_PATHWAY_BY_GENE, EIDType.DAVID);
+						int iDavidID = getDavidIDFromStorageIndex(iExternalID);
+						idListEventContainer.addID(iDavidID);
+						triggerEvent(EMediatorType.SELECTION_MEDIATOR, idListEventContainer);
+						// intentionally no break
 
+					case CLICKED:
 						contentSelectionManager.clearSelection(ESelectionType.SELECTION);
 						contentSelectionManager.addToType(ESelectionType.SELECTION,
 								iExternalID);
@@ -495,17 +501,8 @@ public class GLHeatMap
 									ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER));
 							triggerSelectionUpdate(EMediatorType.ALL_REGISTERED,
 									contentSelectionManager.getDelta(), colSelectionCommand);
-							// triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
-							// contentSelectionManager.getDelta(),
-							// colSelectionCommand);
-							// // TODO: improve mediator system
-							// triggerUpdate(EMediatorType.HIERACHICAL_HEAT_MAP,
-							// contentSelectionManager.getDelta(),
-							// colSelectionCommand);
 						}
-
 						break;
-					case CLICKED:
 					case MOUSE_OVER:
 
 						if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER,
@@ -973,11 +970,4 @@ public class GLHeatMap
 		return bRenderStorageHorizontally;
 	}
 
-	@Override
-	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
-			Collection<SelectionCommand> colSelectionCommand)
-	{
-		// TODO Auto-generated method stub
-
-	}
 }

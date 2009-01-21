@@ -14,6 +14,7 @@ import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -148,7 +149,7 @@ public class GLSelectionPanel
 	}
 
 	@Override
-	public synchronized void handleUpdate(IUniqueObject eventTrigger,
+	public synchronized void handleSelectionUpdate(IUniqueObject eventTrigger,
 			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand,
 			EMediatorType eMediatorType)
 	{
@@ -202,8 +203,8 @@ public class GLSelectionPanel
 	}
 
 	@Override
-	public void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
-			Collection<SelectionCommand> colSelectionCommand, EMediatorType mediatorType)
+	public void handleVAUpdate(EMediatorType mediatorType, IUniqueObject eventTrigger,
+			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand)
 	{
 		// TODO Auto-generated method stub
 
@@ -397,5 +398,19 @@ public class GLSelectionPanel
 	{
 		// TODO Auto-generated method stub
 
+	}
+
+	@Override
+	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void triggerEvent(EMediatorType mediatorType, IEventContainer eventContainer)
+	{
+		// TODO Auto-generated method stub
+		
 	}
 }
