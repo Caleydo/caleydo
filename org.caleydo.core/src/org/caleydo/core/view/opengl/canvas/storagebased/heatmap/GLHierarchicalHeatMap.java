@@ -5,7 +5,6 @@ import gleem.linalg.Vec3f;
 import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
@@ -17,6 +16,7 @@ import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
@@ -25,6 +25,7 @@ import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.data.selection.VADeltaItem;
 import org.caleydo.core.data.selection.VirtualArrayDelta;
@@ -159,7 +160,7 @@ public class GLHierarchicalHeatMap
 
 		if (iNumberOfRandomElements < 2)
 			throw new IllegalStateException("Number of elements not supported!!");
-		
+
 		// default: 500 (PreferenceInitializer)
 		iSamplesPerTexture = generalManager.getPreferenceStore().getInt(
 				"hmNumSamplesPerTexture");
@@ -170,8 +171,8 @@ public class GLHierarchicalHeatMap
 		// default: 30 (PreferenceInitializer)
 		iSamplesPerHeatmap = generalManager.getPreferenceStore().getInt(
 				"hmNumSamplesPerHeatmap");
-		
-		if(iSamplesPerHeatmap < MIN_SAMPLES_PER_HEATMAP)
+
+		if (iSamplesPerHeatmap < MIN_SAMPLES_PER_HEATMAP)
 		{
 			iSamplesPerHeatmap = MIN_SAMPLES_PER_HEATMAP;
 			// update Preference store
@@ -179,7 +180,7 @@ public class GLHierarchicalHeatMap
 					PreferenceConstants.HM_NUM_SAMPLES_PER_HEATMAP, iSamplesPerHeatmap);
 
 		}
-		else if (iSamplesPerHeatmap > iSamplesPerTexture/3)
+		else if (iSamplesPerHeatmap > iSamplesPerTexture / 3)
 		{
 			iSamplesPerHeatmap = (int) Math.floor(iSamplesPerTexture / 3);
 			// update Preference store
@@ -254,19 +255,20 @@ public class GLHierarchicalHeatMap
 	 */
 	private void initPosCursor()
 	{
-		if(AlSelection.size() > 0)
+		if (AlSelection.size() > 0)
 		{
 			int iNumberSample = iAlNumberSamples.get(iSelectorBar - 1) * 2;
-			
-			for(HeatMapSelection iter : AlSelection)
+
+			for (HeatMapSelection iter : AlSelection)
 			{
 				if (iter.getTexture() == iSelectorBar - 1)
-				{				
+				{
 					iPickedSample = iter.getPos();
 
 					if ((iSamplesPerHeatmap % 2) == 0)
 					{
-						iFirstSample = iPickedSample - (int) Math.floor(iSamplesPerHeatmap / 2) + 1;
+						iFirstSample = iPickedSample
+								- (int) Math.floor(iSamplesPerHeatmap / 2) + 1;
 						iLastSample = iPickedSample + (int) Math.floor(iSamplesPerHeatmap / 2);
 					}
 					else
@@ -283,19 +285,21 @@ public class GLHierarchicalHeatMap
 					}
 					else if (iPickedSample > (iNumberSample - 1 - iSamplesPerHeatmap / 2))
 					{
-						iPickedSample = (int) Math.ceil(iNumberSample - iSamplesPerHeatmap / 2);
+						iPickedSample = (int) Math
+								.ceil(iNumberSample - iSamplesPerHeatmap / 2);
 						iLastSample = iNumberSample - 1;
 						iFirstSample = iNumberSample - iSamplesPerHeatmap;
 					}
 					break;
 				}
-				else if(iter.getTexture() == iSelectorBar)
+				else if (iter.getTexture() == iSelectorBar)
 				{
 					iPickedSample = iter.getPos() + iAlNumberSamples.get(iSelectorBar - 1);
 
 					if ((iSamplesPerHeatmap % 2) == 0)
 					{
-						iFirstSample = iPickedSample - (int) Math.floor(iSamplesPerHeatmap / 2) + 1;
+						iFirstSample = iPickedSample
+								- (int) Math.floor(iSamplesPerHeatmap / 2) + 1;
 						iLastSample = iPickedSample + (int) Math.floor(iSamplesPerHeatmap / 2);
 					}
 					else
@@ -312,7 +316,8 @@ public class GLHierarchicalHeatMap
 					}
 					else if (iPickedSample > (iNumberSample - 1 - iSamplesPerHeatmap / 2))
 					{
-						iPickedSample = (int) Math.ceil(iNumberSample - iSamplesPerHeatmap / 2);
+						iPickedSample = (int) Math
+								.ceil(iNumberSample - iSamplesPerHeatmap / 2);
 						iLastSample = iNumberSample - 1;
 						iFirstSample = iNumberSample - iSamplesPerHeatmap;
 					}
@@ -610,9 +615,11 @@ public class GLHierarchicalHeatMap
 		gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.top());
 		gl.glVertex3f(startpoint1.x() + 1 * fthickness, startpoint1.y(), startpoint1.z());
 		gl.glTexCoord2f(texCoordsMask.left(), texCoordsMask.bottom());
-		gl.glVertex3f(startpoint1.x() + 1 * fthickness, startpoint1.y() + 0.1f * fScalFactor1, startpoint1.z());
+		gl.glVertex3f(startpoint1.x() + 1 * fthickness, startpoint1.y() + 0.1f * fScalFactor1,
+				startpoint1.z());
 		gl.glTexCoord2f(texCoordsMask.right(), texCoordsMask.bottom());
-		gl.glVertex3f(startpoint1.x() + 2 * fthickness, startpoint1.y() + 0.1f * fScalFactor1, startpoint1.z());
+		gl.glVertex3f(startpoint1.x() + 2 * fthickness, startpoint1.y() + 0.1f * fScalFactor1,
+				startpoint1.z());
 		gl.glEnd();
 
 		gl.glBegin(GL.GL_POLYGON);
@@ -1400,8 +1407,8 @@ public class GLHierarchicalHeatMap
 	{
 		int iCount = (iAlNumberSamples.get(0) * (iSelectorBar - 1)) + iFirstSample;
 
-		ArrayList<SelectionCommand> alSelectionCommand = new ArrayList<SelectionCommand>();
-		alSelectionCommand.add(new SelectionCommand(ESelectionCommandType.RESET));
+		privateMediator.triggerEvent(this, new SelectionCommandEventContainer(EIDType.DAVID,
+				new SelectionCommand(ESelectionCommandType.RESET)));
 
 		IVirtualArrayDelta delta = new VirtualArrayDelta(EIDType.EXPRESSION_INDEX);
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.EXPRESSION_INDEX);
@@ -1425,12 +1432,14 @@ public class GLHierarchicalHeatMap
 			}
 		}
 
-		privateMediator.triggerVAUpdate(this, delta, alSelectionCommand);
+		privateMediator.triggerEvent(this, new DeltaEventContainer<IVirtualArrayDelta>(delta));
 		if (selectionDelta.size() > 0)
 		{
-			privateMediator.triggerUpdate(this, selectionDelta, null);
+			// TODO: do we need this?
+			privateMediator.triggerEvent(this, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 
-			triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, selectionDelta, null);
+			triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+					new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 		}
 	}
 
@@ -1506,11 +1515,11 @@ public class GLHierarchicalHeatMap
 		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
 
 		// Handling action ResetView in hierarchical heatmap
-//		iSelectorBar = 1;
-//		initPosCursor();
-//		AlSelection.clear();
-//		triggerSelectionBlock();
-//		glHeatMapView.setDisplayListDirty();
+		// iSelectorBar = 1;
+		// initPosCursor();
+		// AlSelection.clear();
+		// triggerSelectionBlock();
+		// glHeatMapView.setDisplayListDirty();
 
 	}
 
@@ -1732,13 +1741,13 @@ public class GLHierarchicalHeatMap
 				{
 					case CLICKED:
 
-//						bRenderCaption = true;
+						// bRenderCaption = true;
 						setDisplayListDirty();
 						break;
 
 					case DRAGGED:
 
-//						bRenderCaption = true;
+						// bRenderCaption = true;
 						bIsDraggingActive = true;
 						iDraggedCursor = iExternalID;
 						setDisplayListDirty();
@@ -1746,7 +1755,7 @@ public class GLHierarchicalHeatMap
 
 					case MOUSE_OVER:
 
-//						bRenderCaption = true;
+						// bRenderCaption = true;
 						setDisplayListDirty();
 						break;
 				}
@@ -1952,13 +1961,5 @@ public class GLHierarchicalHeatMap
 	public boolean isInFocus()
 	{
 		return bIsHeatmapInFocus;
-	}
-
-	@Override
-	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
-			Collection<SelectionCommand> colSelectionCommand)
-	{
-		// TODO Auto-generated method stub
-
 	}
 }

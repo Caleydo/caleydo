@@ -1,17 +1,14 @@
 package org.caleydo.core.view.swt.browser;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Set;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.ISelectionDelta;
-import org.caleydo.core.data.selection.IVirtualArrayDelta;
-import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
-import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -145,9 +142,8 @@ public class GenomeHTMLBrowserViewRep
 		super.initViewSWTComposite(composite);
 	}
 
-	@Override
-	public void handleSelectionUpdate(IUniqueObject eventTrigger, final ISelectionDelta selectionDelta,
-			Collection<SelectionCommand> colSelectionCommand, EMediatorType eMediatorType)
+	private void handleSelectionUpdate(IUniqueObject eventTrigger,
+			final ISelectionDelta selectionDelta)
 	{
 		if (selectionDelta.getIDType() != EIDType.DAVID)
 			return;
@@ -212,18 +208,17 @@ public class GenomeHTMLBrowserViewRep
 		});
 	}
 
-	@Override
-	public void handleVAUpdate(EMediatorType mediatorType, IUniqueObject eventTrigger,
-			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
+	@SuppressWarnings("unchecked")
 	@Override
 	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
 	{
-		// TODO Auto-generated method stub
-		
+		switch (eventContainer.getEventType())
+		{
+			case SELECTION_UPDATE:
+				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer = (DeltaEventContainer<ISelectionDelta>) eventContainer;
+				handleSelectionUpdate(eventTrigger, selectionDeltaEventContainer
+						.getSelectionDelta());
+				break;
+		}
 	}
 }

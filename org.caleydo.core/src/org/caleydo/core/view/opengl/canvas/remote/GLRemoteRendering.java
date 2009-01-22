@@ -6,7 +6,6 @@ import gleem.linalg.Vec4f;
 import gleem.linalg.open.Transform;
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
@@ -23,12 +22,10 @@ import org.caleydo.core.data.graph.ICaleydoGraphItem;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.ISelectionDelta;
-import org.caleydo.core.data.selection.IVirtualArrayDelta;
-import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IDListEventContainer;
@@ -42,7 +39,6 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.system.SystemTime;
 import org.caleydo.core.util.system.Time;
-import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
@@ -72,15 +68,12 @@ import org.caleydo.core.view.opengl.util.slerp.SlerpAction;
 import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLOffScreenTextureRenderer;
-import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
 import com.sun.opengl.util.j2d.TextRenderer;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
-import com.sun.opengl.util.texture.TextureData;
-import com.sun.opengl.util.texture.TextureIO;
 
 /**
  * Abstract class that is able to remotely rendering views. Subclasses implement
@@ -157,7 +150,7 @@ public class GLRemoteRendering
 	 * Used for dragging views to the pool area.
 	 */
 	private int iPoolLevelCommonID = -1;
-	
+
 	private GLOffScreenTextureRenderer glOffScreenRenderer;
 
 	/**
@@ -256,11 +249,11 @@ public class GLRemoteRendering
 
 		iPoolLevelCommonID = generalManager.getIDManager().createID(
 				EManagedObjectType.REMOTE_LEVEL_ELEMENT);
-		
-//		if (generalManager.isWiiModeActive())
-//		{			
-//			glOffScreenRenderer = new GLOffScreenTextureRenderer();
-//		}
+
+		// if (generalManager.isWiiModeActive())
+		// {
+		// glOffScreenRenderer = new GLOffScreenTextureRenderer();
+		// }
 	}
 
 	@Override
@@ -305,11 +298,11 @@ public class GLRemoteRendering
 
 		colorMappingBarMiniView.setWidth(layoutRenderStyle.getColorBarWidth());
 		colorMappingBarMiniView.setHeight(layoutRenderStyle.getColorBarHeight());
-		
-//		if (generalManager.isWiiModeActive())
-//		{
-//			glOffScreenRenderer.init(gl);
-//		}
+
+		// if (generalManager.isWiiModeActive())
+		// {
+		// glOffScreenRenderer.init(gl);
+		// }
 	}
 
 	@Override
@@ -438,45 +431,54 @@ public class GLRemoteRendering
 	@Override
 	public synchronized void display(final GL gl)
 	{
-//		gl.glPushMatrix();
-////		glOffScreenRenderer.renderToTexture(gl);
-//
-//		int iViewWidth = parentGLCanvas.getWidth();
-//		int iViewHeight = parentGLCanvas.getHeight();
-//		
-//		if (focusLevel.getElementByPositionIndex(0).getContainedElementID() != -1)
-//		{
-//			glOffScreenRenderer.renderToTexture(gl, 
-//				focusLevel.getElementByPositionIndex(0).getContainedElementID(), 0, iViewWidth, iViewHeight);
-//		}
-//		
-//		if (stackLevel.getElementByPositionIndex(0).getContainedElementID() != -1)
-//		{
-//			glOffScreenRenderer.renderToTexture(gl, 
-//					stackLevel.getElementByPositionIndex(0).getContainedElementID(), 1, iViewWidth, iViewHeight);			
-//		}
-//
-//		if (stackLevel.getElementByPositionIndex(1).getContainedElementID() != -1)
-//		{
-//			glOffScreenRenderer.renderToTexture(gl, 
-//					stackLevel.getElementByPositionIndex(1).getContainedElementID(), 2, iViewWidth, iViewHeight);
-//		}
-//
-//		if (stackLevel.getElementByPositionIndex(2).getContainedElementID() != -1)
-//		{
-//			glOffScreenRenderer.renderToTexture(gl, 
-//					stackLevel.getElementByPositionIndex(2).getContainedElementID(), 3, iViewWidth, iViewHeight);
-//		}
-//		
-//		if (stackLevel.getElementByPositionIndex(3).getContainedElementID() != -1)
-//		{
-//			glOffScreenRenderer.renderToTexture(gl,
-//					stackLevel.getElementByPositionIndex(3).getContainedElementID(), 4, iViewWidth, iViewHeight);		
-//		}
-//
-//		gl.glPopMatrix();
+		// gl.glPushMatrix();
+		// // glOffScreenRenderer.renderToTexture(gl);
+		//
+		// int iViewWidth = parentGLCanvas.getWidth();
+		// int iViewHeight = parentGLCanvas.getHeight();
+		//		
+		// if (focusLevel.getElementByPositionIndex(0).getContainedElementID()
+		// != -1)
+		// {
+		// glOffScreenRenderer.renderToTexture(gl,
+		// focusLevel.getElementByPositionIndex(0).getContainedElementID(), 0,
+		// iViewWidth, iViewHeight);
+		// }
+		//		
+		// if (stackLevel.getElementByPositionIndex(0).getContainedElementID()
+		// != -1)
+		// {
+		// glOffScreenRenderer.renderToTexture(gl,
+		// stackLevel.getElementByPositionIndex(0).getContainedElementID(), 1,
+		// iViewWidth, iViewHeight);
+		// }
+		//
+		// if (stackLevel.getElementByPositionIndex(1).getContainedElementID()
+		// != -1)
+		// {
+		// glOffScreenRenderer.renderToTexture(gl,
+		// stackLevel.getElementByPositionIndex(1).getContainedElementID(), 2,
+		// iViewWidth, iViewHeight);
+		// }
+		//
+		// if (stackLevel.getElementByPositionIndex(2).getContainedElementID()
+		// != -1)
+		// {
+		// glOffScreenRenderer.renderToTexture(gl,
+		// stackLevel.getElementByPositionIndex(2).getContainedElementID(), 3,
+		// iViewWidth, iViewHeight);
+		// }
+		//		
+		// if (stackLevel.getElementByPositionIndex(3).getContainedElementID()
+		// != -1)
+		// {
+		// glOffScreenRenderer.renderToTexture(gl,
+		// stackLevel.getElementByPositionIndex(3).getContainedElementID(), 4,
+		// iViewWidth, iViewHeight);
+		// }
+		//
+		// gl.glPopMatrix();
 
-		
 		time.update();
 
 		layoutRenderStyle.initPoolLevel(false, iMouseOverObjectID);
@@ -486,18 +488,18 @@ public class GLRemoteRendering
 		doSlerpActions(gl);
 		initializeNewPathways(gl);
 
-//		if (!generalManager.isWiiModeActive())
-//		{
-			renderRemoteLevel(gl, focusLevel);
-			renderRemoteLevel(gl, stackLevel);
-//		}
-//		else
-//		{
-//			glOffScreenRenderer.renderToTexture(gl);
-//			glOffScreenRenderer.renderOffScreenContent(gl);
-//			
-////			renderRubberBucket(gl);
-//		}
+		// if (!generalManager.isWiiModeActive())
+		// {
+		renderRemoteLevel(gl, focusLevel);
+		renderRemoteLevel(gl, stackLevel);
+		// }
+		// else
+		// {
+		// glOffScreenRenderer.renderToTexture(gl);
+		// glOffScreenRenderer.renderOffScreenContent(gl);
+		//			
+		// // renderRubberBucket(gl);
+		// }
 
 		// If user zooms to the bucket bottom all but the under
 		// focus layer is _not_ rendered.
@@ -527,58 +529,68 @@ public class GLRemoteRendering
 		renderHandles(gl);
 
 		// gl.glCallList(iGLDisplayList);
-		
-//		if (!generalManager.isWiiModeActive())
-//		{
-//			renderRemoteLevel(gl, focusLevel);
-//			renderRemoteLevel(gl, stackLevel);
-//		}
-//		else
-//		{
-//			glOffScreenRenderer.renderOffScreenContent(gl);
-//			glOffScreenRenderer.renderRubberBucket(gl, stackLevel, focusLevel);
-//		}
+
+		// if (!generalManager.isWiiModeActive())
+		// {
+		// renderRemoteLevel(gl, focusLevel);
+		// renderRemoteLevel(gl, stackLevel);
+		// }
+		// else
+		// {
+		// glOffScreenRenderer.renderOffScreenContent(gl);
+		// glOffScreenRenderer.renderRubberBucket(gl, stackLevel, focusLevel);
+		// }
 	}
 
 	public synchronized void setInitialContainedViews(
 			ArrayList<Integer> iAlInitialContainedViewIDs)
-	{//		gl.glPushMatrix();
-////	glOffScreenRenderer.renderToTexture(gl);
+	{// gl.glPushMatrix();
+		// // glOffScreenRenderer.renderToTexture(gl);
 		//
-//				int iViewWidth = parentGLCanvas.getWidth();
-//				int iViewHeight = parentGLCanvas.getHeight();
-//				
-//				if (focusLevel.getElementByPositionIndex(0).getContainedElementID() != -1)
-//				{
-//					glOffScreenRenderer.renderToTexture(gl, 
-//						focusLevel.getElementByPositionIndex(0).getContainedElementID(), 0, iViewWidth, iViewHeight);
-//				}
-//				
-//				if (stackLevel.getElementByPositionIndex(0).getContainedElementID() != -1)
-//				{
-//					glOffScreenRenderer.renderToTexture(gl, 
-//							stackLevel.getElementByPositionIndex(0).getContainedElementID(), 1, iViewWidth, iViewHeight);			
-//				}
+		// int iViewWidth = parentGLCanvas.getWidth();
+		// int iViewHeight = parentGLCanvas.getHeight();
+		//				
+		// if (focusLevel.getElementByPositionIndex(0).getContainedElementID()
+		// != -1)
+		// {
+		// glOffScreenRenderer.renderToTexture(gl,
+		// focusLevel.getElementByPositionIndex(0).getContainedElementID(), 0,
+		// iViewWidth, iViewHeight);
+		// }
+		//				
+		// if (stackLevel.getElementByPositionIndex(0).getContainedElementID()
+		// != -1)
+		// {
+		// glOffScreenRenderer.renderToTexture(gl,
+		// stackLevel.getElementByPositionIndex(0).getContainedElementID(), 1,
+		// iViewWidth, iViewHeight);
+		// }
 		//
-//				if (stackLevel.getElementByPositionIndex(1).getContainedElementID() != -1)
-//				{
-//					glOffScreenRenderer.renderToTexture(gl, 
-//							stackLevel.getElementByPositionIndex(1).getContainedElementID(), 2, iViewWidth, iViewHeight);
-//				}
+		// if (stackLevel.getElementByPositionIndex(1).getContainedElementID()
+		// != -1)
+		// {
+		// glOffScreenRenderer.renderToTexture(gl,
+		// stackLevel.getElementByPositionIndex(1).getContainedElementID(), 2,
+		// iViewWidth, iViewHeight);
+		// }
 		//
-//				if (stackLevel.getElementByPositionIndex(2).getContainedElementID() != -1)
-//				{
-//					glOffScreenRenderer.renderToTexture(gl, 
-//							stackLevel.getElementByPositionIndex(2).getContainedElementID(), 3, iViewWidth, iViewHeight);
-//				}
-//				
-//				if (stackLevel.getElementByPositionIndex(3).getContainedElementID() != -1)
-//				{
-//					glOffScreenRenderer.renderToTexture(gl,
-//							stackLevel.getElementByPositionIndex(3).getContainedElementID(), 4, iViewWidth, iViewHeight);		
-//				}
+		// if (stackLevel.getElementByPositionIndex(2).getContainedElementID()
+		// != -1)
+		// {
+		// glOffScreenRenderer.renderToTexture(gl,
+		// stackLevel.getElementByPositionIndex(2).getContainedElementID(), 3,
+		// iViewWidth, iViewHeight);
+		// }
+		//				
+		// if (stackLevel.getElementByPositionIndex(3).getContainedElementID()
+		// != -1)
+		// {
+		// glOffScreenRenderer.renderToTexture(gl,
+		// stackLevel.getElementByPositionIndex(3).getContainedElementID(), 4,
+		// iViewWidth, iViewHeight);
+		// }
 		//
-//				gl.glPopMatrix();
+		// gl.glPopMatrix();
 		iAlContainedViewIDs = iAlInitialContainedViewIDs;
 	}
 
@@ -855,7 +867,7 @@ public class GLRemoteRendering
 		gl.glPopName();
 		gl.glPopName();
 	}
-	
+
 	private void renderEmptyBucketWall(final GL gl, RemoteLevelElement element,
 			RemoteLevel level)
 	{
@@ -1971,35 +1983,6 @@ public class GLRemoteRendering
 		iSlerpFactor = 0;
 	}
 
-	@Override
-	public synchronized void handleSelectionUpdate(IUniqueObject eventTrigger,
-			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand,
-			EMediatorType eMediatorType)
-	{
-
-		generalManager.getLogger().log(
-				Level.INFO,
-				"Update called by " + eventTrigger.getClass().getSimpleName()
-						+ ", received in: " + this.getClass().getSimpleName());
-
-		lastSelectionDelta = selectionDelta;
-		// Special case for empty update that pathway sends for updating info
-		// area
-		// if (!selectionDelta.iterator().hasNext())
-		// return;
-
-		// Handle incoming genes
-
-	}
-
-	@Override
-	public void handleVAUpdate(EMediatorType mediatorType, IUniqueObject eventTrigger,
-			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
@@ -2057,6 +2040,9 @@ public class GLRemoteRendering
 				}
 
 				break;
+			case SELECTION_UPDATE:
+				lastSelectionDelta = ((DeltaEventContainer<ISelectionDelta>) eventContainer)
+						.getSelectionDelta();
 		}
 
 	}
@@ -2255,10 +2241,11 @@ public class GLRemoteRendering
 
 						setDisplayListDirty();
 
-						generalManager.getEventPublisher().triggerSelectionUpdate(
-								EMediatorType.VIEW_SELECTION,
-								generalManager.getViewGLCanvasManager().getGLEventListener(
-										iExternalID), new SelectionDelta(EIDType.DAVID), null);
+						// TODO
+						// generalManager.getEventPublisher().triggerEvent(
+						// EMediatorType.VIEW_SELECTION,
+						// generalManager.getViewGLCanvasManager().getGLEventListener(
+						// iExternalID), );
 
 						break;
 
@@ -2894,25 +2881,9 @@ public class GLRemoteRendering
 	}
 
 	@Override
-	public synchronized void triggerSelectionUpdate(EMediatorType eMediatorType,
-			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
+	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
 	{
-		generalManager.getEventPublisher().triggerSelectionUpdate(eMediatorType, this,
-				selectionDelta, colSelectionCommand);
-	}
-
-	@Override
-	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
-			Collection<SelectionCommand> colSelectionCommand)
-	{
-		throw new IllegalStateException("Not Implemented");
-
-	}
-
-	@Override
-	public void triggerEvent(EMediatorType mediatorType, IEventContainer eventContainer)
-	{
-		throw new IllegalStateException("Not Implemented");
+		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 
 	}
 
@@ -2964,8 +2935,8 @@ public class GLRemoteRendering
 
 				// Trigger last delta to new pathways
 				if (lastSelectionDelta != null)
-					triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
-							lastSelectionDelta, null);
+					triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+							new DeltaEventContainer<ISelectionDelta>(lastSelectionDelta));
 
 				if (focusLevel.hasFreePosition())
 				{

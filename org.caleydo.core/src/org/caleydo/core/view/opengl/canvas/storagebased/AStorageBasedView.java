@@ -2,7 +2,6 @@ package org.caleydo.core.view.opengl.canvas.storagebased;
 
 import java.awt.Font;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.EnumMap;
 import java.util.Set;
@@ -15,13 +14,14 @@ import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.DeltaConverter;
+import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
-import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.EMediatorType;
@@ -328,7 +328,6 @@ public abstract class AStorageBasedView
 			}
 			iCount++;
 			sOutput += sRefSeqID;
-			
 		}
 
 		return sOutput;
@@ -350,10 +349,8 @@ public abstract class AStorageBasedView
 			return sGeneSymbol;
 	}
 
-	@Override
-	public synchronized final void handleSelectionUpdate(IUniqueObject eventTrigger,
-			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand,
-			EMediatorType eMediatorType)
+	private void handleSelectionUpdate(IUniqueObject eventTrigger,
+			ISelectionDelta selectionDelta)
 
 	{
 
@@ -366,8 +363,6 @@ public abstract class AStorageBasedView
 		if (selectionDelta.getIDType() == EIDType.DAVID
 				|| selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX)
 		{
-			contentSelectionManager.executeSelectionCommands(colSelectionCommand);
-
 			generalManager.getLogger().log(
 					Level.INFO,
 					"Update called by " + eventTrigger.getClass().getSimpleName()
@@ -393,9 +388,7 @@ public abstract class AStorageBasedView
 
 	}
 
-	@Override
-	public void handleVAUpdate(EMediatorType mediatorType, IUniqueObject eventTrigger,
-			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand)
+	private void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta)
 	{
 
 		generalManager.getLogger().log(
@@ -409,15 +402,12 @@ public abstract class AStorageBasedView
 		}
 		else if (delta.getIDType() == EIDType.DAVID)
 		{
-			contentSelectionManager.executeSelectionCommands(colSelectionCommand);
-
 			IVirtualArrayDelta convertedDelta = DeltaConverter.convertDelta(
 					EIDType.EXPRESSION_INDEX, delta);
 			contentSelectionManager.setVADelta(convertedDelta);
 		}
 		else if (delta.getIDType() == EIDType.EXPRESSION_INDEX)
 		{
-			contentSelectionManager.executeSelectionCommands(colSelectionCommand);
 			contentSelectionManager.setVADelta(delta);
 		}
 		reactOnExternalSelection();
@@ -465,37 +455,66 @@ public abstract class AStorageBasedView
 		setDisplayListDirty();
 	}
 
-	@Override
-	public final synchronized void triggerSelectionUpdate(EMediatorType eMediatorType,
-			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
-	{
-		// TODO connects to one element only here
-		handleConnectedElementRep(selectionDelta);
-		generalManager.getEventPublisher().triggerSelectionUpdate(eMediatorType, this,
-				selectionDelta, colSelectionCommand);
-	}
-
-
+	// protected final synchronized void triggerSelectionUpdate(EMediatorType
+	// eMediatorType,
+	// ISelectionDelta selectionDelta, Collection<SelectionCommand>
+	// colSelectionCommand)
+	// {
+	// // TODO connects to one element only here
+	// handleConnectedElementRep(selectionDelta);
+	// generalManager.getEventPublisher().triggerSelectionUpdate(eMediatorType,
+	// this,
+	// selectionDelta, colSelectionCommand);
+	// }
 
 	@Override
 	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
 	{
 		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 	}
-	
-	@Override
-	public void triggerVAUpdate(EMediatorType eMediatorType, IVirtualArrayDelta delta,
-			Collection<SelectionCommand> colSelectionCommand)
-	{
-		generalManager.getEventPublisher().triggerVAUpdate(eMediatorType, this, delta, colSelectionCommand);	
 
-	}
+	// @Override
+	// public void triggerVAUpdate(EMediatorType eMediatorType,
+	// IVirtualArrayDelta delta,
+	// Collection<SelectionCommand> colSelectionCommand)
+	// {
+	// generalManager.getEventPublisher().triggerVAUpdate(eMediatorType, this,
+	// delta, colSelectionCommand);
+	//
+	// }
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
 	{
-		// TODO Auto-generated method stub
-		
+		switch (eventContainer.getEventType())
+		{
+			case SELECTION_UPDATE:
+				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer = (DeltaEventContainer<ISelectionDelta>) eventContainer;
+				handleSelectionUpdate(eventTrigger, selectionDeltaEventContainer
+						.getSelectionDelta());
+				break;
+			case VA_UPDATE:
+				DeltaEventContainer<IVirtualArrayDelta> vaDeltaEventContainer = (DeltaEventContainer<IVirtualArrayDelta>) eventContainer;
+				handleVAUpdate(eventTrigger, vaDeltaEventContainer.getSelectionDelta());
+				break;
+			case TRIGGER_SELECTION_COMMAND:
+				SelectionCommandEventContainer commandEventContainer = (SelectionCommandEventContainer) eventContainer;
+				switch (commandEventContainer.getIDType())
+				{
+					case DAVID:
+					case EXPRESSION_INDEX:
+						contentSelectionManager.executeSelectionCommands(commandEventContainer
+								.getSelectionCommands());
+						break;
+					case EXPERIMENT_INDEX:
+						storageSelectionManager.executeSelectionCommands(commandEventContainer
+								.getSelectionCommands());
+						break;
+				}
+
+		}
+
 	}
 
 	/**

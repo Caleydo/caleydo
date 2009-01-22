@@ -15,13 +15,12 @@ import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
-import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
-import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
@@ -178,8 +177,9 @@ public class GLGlyph
 					selectionManager.addToType(ESelectionType.SELECTION, id);
 
 			bDrawConnectionRepLines = false;
-			triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, selectionManager
-					.getDelta(), null);
+
+			triggerSelectionUpdate();
+
 			bDrawConnectionRepLines = true;
 
 			bRedrawDisplayListGlyph = true;
@@ -188,6 +188,18 @@ public class GLGlyph
 		{
 			bEnableSelection = true;
 			iSelectionBrushSize = size;
+		}
+	}
+
+	private void triggerSelectionUpdate()
+	{
+		ISelectionDelta selectionDelta = selectionManager.getDelta();
+		if (selectionDelta.getAllItems().size() > 0)
+		{
+			handleConnectedElementRep(selectionDelta);
+
+			generalManager.getEventPublisher().triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+					this, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 		}
 	}
 
@@ -849,8 +861,7 @@ public class GLGlyph
 							.getConnectedElementRepresentationManager().clear(
 									EIDType.EXPERIMENT_INDEX);
 
-					triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, selectionManager
-							.getDelta(), null);
+					triggerSelectionUpdate();
 
 					// only the glyphs need to be redrawn
 					bRedrawDisplayListGlyph = true;
@@ -866,10 +877,8 @@ public class GLGlyph
 		pickingManager.flushHits(iUniqueID, pickingType);
 	}
 
-	@Override
-	public void handleSelectionUpdate(IUniqueObject eventTrigger,
-			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand,
-			EMediatorType eMediatorType)
+	private void handleSelectionUpdate(IUniqueObject eventTrigger,
+			ISelectionDelta selectionDelta, EMediatorType eMediatorType)
 	{
 		if (selectionDelta.getIDType() != EIDType.EXPERIMENT_INDEX)
 			return;
@@ -909,13 +918,6 @@ public class GLGlyph
 	}
 
 	@Override
-	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
-			Collection<SelectionCommand> colSelectionCommand)
-	{
-		// TODO
-	}
-
-	@Override
 	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
 	{
 		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
@@ -929,13 +931,15 @@ public class GLGlyph
 				sLabel + ": Event of type " + eventContainer.getEventType() + " called by "
 						+ eventTrigger.getClass().getSimpleName());
 
-	}
-
-	@Override
-	public void handleVAUpdate(EMediatorType mediatorType, IUniqueObject eventTrigger,
-			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand)
-	{
-		// TODO Auto-generated method stub
+		switch (eventContainer.getEventType())
+		{
+			case SELECTION_UPDATE:
+				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer = (DeltaEventContainer<ISelectionDelta>) eventContainer;
+				handleSelectionUpdate(eventTrigger, selectionDeltaEventContainer
+						.getSelectionDelta(), EMediatorType.SELECTION_MEDIATOR);
+				// TODO
+				break;
+		}
 
 	}
 
@@ -948,18 +952,13 @@ public class GLGlyph
 		bRedrawDisplayListGlyph = true;
 	}
 
-	@Override
-	public void triggerSelectionUpdate(EMediatorType eMediatorType,
-			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
-	{
-		if (selectionDelta.getAllItems().size() > 0)
-		{
-			handleConnectedElementRep(selectionDelta);
-
-			generalManager.getEventPublisher().triggerSelectionUpdate(eMediatorType, this,
-					selectionDelta, null);
-		}
-	}
+	// @Override
+	// public void triggerSelectionUpdate(EMediatorType eMediatorType,
+	// ISelectionDelta selectionDelta, Collection<SelectionCommand>
+	// colSelectionCommand)
+	// {
+	//		
+	// }
 
 	@Override
 	public synchronized void broadcastElements(EVAOperation type)

@@ -29,7 +29,6 @@ import gleem.linalg.Vec3f;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -42,15 +41,16 @@ import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
-import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.data.selection.VADeltaItem;
 import org.caleydo.core.data.selection.VirtualArrayDelta;
 import org.caleydo.core.manager.event.EEventType;
@@ -468,7 +468,8 @@ public class GLParallelCoordinates
 		saveSelection();
 
 		IVirtualArrayDelta delta = contentSelectionManager.getBroadcastVADelta();
-		triggerVAUpdate(EMediatorType.PROPAGATION_MEDIATOR, delta, null);
+		triggerEvent(EMediatorType.PROPAGATION_MEDIATOR,
+				new DeltaEventContainer<IVirtualArrayDelta>(delta));
 		setDisplayListDirty();
 	}
 
@@ -1406,7 +1407,6 @@ public class GLParallelCoordinates
 	// TODO revise
 	private void handleGateUnselection(int iAxisNumber)
 	{
-
 		ArrayList<Integer> alCurrentGateBlocks = alIsGateBlocking.get(iAxisNumber);
 		alCurrentGateBlocks.clear();
 
@@ -1440,7 +1440,9 @@ public class GLParallelCoordinates
 	@Override
 	protected void reactOnExternalSelection()
 	{
+		// TODO check if necessary to do both
 		checkUnselection();
+		initGates();
 	}
 
 	// TODO: revise this, not very performance friendly, especially the clearing
@@ -1491,11 +1493,10 @@ public class GLParallelCoordinates
 			pickingManager.flushHits(iUniqueID, ePickingType);
 			return;
 		}
-
+		ESelectionType eSelectionType;
 		switch (ePickingType)
 		{
 			case POLYLINE_SELECTION:
-
 				switch (ePickingMode)
 				{
 					case DOUBLE_CLICKED:
@@ -1507,6 +1508,7 @@ public class GLParallelCoordinates
 						// intentionally no break
 
 					case CLICKED:
+						eSelectionType = ESelectionType.SELECTION;
 						if (bAngularBrushingSelectPolyline)
 						{
 							bAngularBrushingSelectPolyline = false;
@@ -1514,53 +1516,40 @@ public class GLParallelCoordinates
 							iSelectedLineID = iExternalID;
 							linePick = pick;
 							bIsAngularBrushingFirstTime = true;
-							break;
-						}
-						connectedElementRepresentationManager.clear(ePolylineDataType);
-						polylineSelectionManager.clearSelection(ESelectionType.SELECTION);
-						polylineSelectionManager.addToType(ESelectionType.SELECTION,
-								iExternalID);
-
-						polylineSelectionManager.addConnectionID(generalManager.getIDManager()
-								.createID(EManagedObjectType.CONNECTION), iExternalID);
-
-						if (ePolylineDataType == EIDType.EXPRESSION_INDEX
-								&& !bAngularBrushingSelectPolyline)
-						{
-							Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
-							colSelectionCommand.add(new SelectionCommand(
-									ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER));
-
-							triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
-									polylineSelectionManager.getDelta(), colSelectionCommand);
-
 						}
 
-						setDisplayListDirty();
 						break;
 					case MOUSE_OVER:
-						// if (bIsAngularBrushingActive)
-						// break;
-
-						connectedElementRepresentationManager.clear(ePolylineDataType);
-
-						polylineSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
-						polylineSelectionManager.addToType(ESelectionType.MOUSE_OVER,
-								iExternalID);
-						polylineSelectionManager.addConnectionID(generalManager.getIDManager()
-								.createID(EManagedObjectType.CONNECTION), iExternalID);
-						if (ePolylineDataType == EIDType.EXPRESSION_INDEX)
-						{
-							Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
-							colSelectionCommand.add(new SelectionCommand(
-									ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER));
-
-							triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
-									polylineSelectionManager.getDelta(), colSelectionCommand);
-						}
-						setDisplayListDirty();
+						eSelectionType = ESelectionType.MOUSE_OVER;
 						break;
+
+					default:
+						pickingManager.flushHits(iUniqueID, ePickingType);
+						return;
+
 				}
+				connectedElementRepresentationManager.clear(ePolylineDataType);
+				polylineSelectionManager.clearSelection(eSelectionType);
+				polylineSelectionManager.addToType(eSelectionType, iExternalID);
+
+				polylineSelectionManager.addConnectionID(generalManager.getIDManager()
+						.createID(EManagedObjectType.CONNECTION), iExternalID);
+
+				if (ePolylineDataType == EIDType.EXPRESSION_INDEX
+						&& !bAngularBrushingSelectPolyline)
+				{
+					triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+							new SelectionCommandEventContainer(EIDType.DAVID,
+									new SelectionCommand(ESelectionCommandType.CLEAR,
+											eSelectionType)));
+					ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+					handleConnectedElementRep(selectionDelta);
+					triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+							new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+
+				}
+
+				setDisplayListDirty();
 				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 
@@ -1568,50 +1557,46 @@ public class GLParallelCoordinates
 				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 			case Y_AXIS_SELECTION:
+
 				switch (ePickingMode)
 				{
 					case CLICKED:
-						if (bIsAngularBrushingActive)
-							break;
-						axisSelectionManager.clearSelection(ESelectionType.SELECTION);
-						axisSelectionManager.addToType(ESelectionType.SELECTION, iExternalID);
-
-						connectedElementRepresentationManager.clear(eAxisDataType);
-
-						triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
-								axisSelectionManager.getDelta(), null);
-
-						if (eAxisDataType == EIDType.EXPRESSION_INDEX)
-						{
-							Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
-							colSelectionCommand.add(new SelectionCommand(
-									ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER));
-							triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
-									axisSelectionManager.getDelta(), colSelectionCommand);
-						}
-
-						rePosition(iExternalID);
-						setDisplayListDirty();
+						eSelectionType = ESelectionType.SELECTION;
 						break;
+							
 					case MOUSE_OVER:
-						if (bIsAngularBrushingActive)
-							break;
-						axisSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
-						axisSelectionManager.addToType(ESelectionType.MOUSE_OVER, iExternalID);
-
-						if (bRenderStorageHorizontally)
-						{
-							connectedElementRepresentationManager.clear(eAxisDataType);
-						}
-						if (eAxisDataType == EIDType.EXPRESSION_INDEX)
-						{
-							triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
-									axisSelectionManager.getDelta(), null);
-						}
-						setDisplayListDirty();
+						eSelectionType = ESelectionType.MOUSE_OVER;
 						break;
+						
+					default:
+						pickingManager.flushHits(iUniqueID, ePickingType);
+						return;
+
 				}
 
+				axisSelectionManager.clearSelection(eSelectionType);
+				axisSelectionManager.addToType(eSelectionType, iExternalID);
+
+				connectedElementRepresentationManager.clear(eAxisDataType);
+
+				// triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
+				// axisSelectionManager
+				// .getDelta(), null);
+
+				// if (eAxisDataType == EIDType.EXPRESSION_INDEX)
+				// {
+				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+						new SelectionCommandEventContainer(eAxisDataType,
+								new SelectionCommand(ESelectionCommandType.CLEAR,
+										eSelectionType)));
+				ISelectionDelta selectionDelta = axisSelectionManager.getDelta();
+				handleConnectedElementRep(selectionDelta);
+				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+						new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+
+
+				rePosition(iExternalID);
+				setDisplayListDirty();
 				pickingManager.flushHits(iUniqueID, ePickingType);
 				break;
 			case LOWER_GATE_TIP_SELECTION:
@@ -1738,8 +1723,9 @@ public class GLParallelCoordinates
 						IVirtualArrayDelta vaDelta = new VirtualArrayDelta(
 								EIDType.EXPERIMENT_INDEX);
 						vaDelta.add(VADeltaItem.remove(iExternalID));
-						generalManager.getEventPublisher().triggerVAUpdate(
-								EMediatorType.SELECTION_MEDIATOR, this, vaDelta, null);
+						generalManager.getEventPublisher().triggerEvent(
+								EMediatorType.SELECTION_MEDIATOR, this,
+								new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
 						setDisplayListDirty();
 						initGates();
 						break;

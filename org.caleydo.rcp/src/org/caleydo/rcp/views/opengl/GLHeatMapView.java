@@ -37,7 +37,7 @@ public class GLHeatMapView
 	public void createPartControl(Composite parent)
 	{
 		super.createPartControl(parent);
-		
+
 		if (Application.applicationMode == EApplicationMode.PATHWAY_VIEWER)
 		{
 			MessageBox alert = new MessageBox(new Shell(), SWT.OK);
@@ -47,7 +47,7 @@ public class GLHeatMapView
 			dispose();
 			return;
 		}
-		
+
 		createGLCanvas();
 		createGLEventListener(ECommandType.CREATE_GL_HEAT_MAP_3D, glCanvas.getID(), true);
 	}

@@ -62,7 +62,7 @@ public class GeneralManager
 	private boolean bIsStandalone = true;
 
 	private boolean bAllManagersInitialized = false;
-	
+
 	private boolean bIsWiiMode = true;
 
 	private IStorageManager storageManager;

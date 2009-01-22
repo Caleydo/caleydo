@@ -36,7 +36,7 @@ public class GLGlyphView
 	public void createPartControl(Composite parent)
 	{
 		super.createPartControl(parent);
-		
+
 		createGLCanvas();
 		createGLEventListener(ECommandType.CREATE_GL_GLYPH, glCanvas.getID(), true);
 	}

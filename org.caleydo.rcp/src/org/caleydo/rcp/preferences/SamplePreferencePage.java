@@ -38,6 +38,7 @@ public class SamplePreferencePage
 	 * GUI blocks needed to manipulate various types of preferences. Each field
 	 * editor knows how to save and restore itself.
 	 */
+	@Override
 	public void createFieldEditors()
 	{
 		addField(new DirectoryFieldEditor(PreferenceConstants.P_PATH,

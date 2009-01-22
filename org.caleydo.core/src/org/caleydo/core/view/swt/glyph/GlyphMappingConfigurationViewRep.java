@@ -1,12 +1,8 @@
 package org.caleydo.core.view.swt.glyph;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import org.caleydo.core.data.selection.ISelectionDelta;
-import org.caleydo.core.data.selection.IVirtualArrayDelta;
-import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorSender;
@@ -180,7 +176,7 @@ public class GlyphMappingConfigurationViewRep
 					if (agleventlistener instanceof GLGlyph)
 						((GLGlyph) agleventlistener).forceRebuild();
 
-				//TODO request assistance for this triggerEvent
+				// TODO request assistance for this triggerEvent
 				// triggerEventHere
 
 			}
@@ -482,22 +478,9 @@ public class GlyphMappingConfigurationViewRep
 	}
 
 	@Override
-	public void triggerSelectionUpdate(EMediatorType mediatorType,
-			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
+	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
 	{
-	}
-
-	@Override
-	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
-			Collection<SelectionCommand> colSelectionCommand)
-	{
-	}
-
-	@Override
-	public void triggerEvent(EMediatorType mediatorType, IEventContainer eventContainer)
-	{
-		// TODO Auto-generated method stub
-		
+		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 	}
 
 }

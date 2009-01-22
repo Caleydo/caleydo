@@ -224,8 +224,9 @@ public class GLGlyphGenerator
 
 						anchorOffsetY = -pyh + cyl - pdim.getScaleOffsetY(false);
 
-//						System.out.println("(" + pyl + ", " + pyh + "),(" + cyl + ", " + cyh
-//								+ ") => " + anchorOffsetY);
+						// System.out.println("(" + pyl + ", " + pyh + "),(" +
+						// cyl + ", " + cyh
+						// + ") => " + anchorOffsetY);
 					}
 				}
 

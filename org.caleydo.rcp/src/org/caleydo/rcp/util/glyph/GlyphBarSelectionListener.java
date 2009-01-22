@@ -60,6 +60,7 @@ public class GlyphBarSelectionListener
 		menuItem.setImage(icon);
 		menuItem.addSelectionListener(new SelectionAdapter()
 		{
+			@Override
 			public void widgetSelected(SelectionEvent event)
 			{
 				selectedItem = (MenuItem) event.widget;
@@ -84,6 +85,7 @@ public class GlyphBarSelectionListener
 	 * @param event
 	 *            the event that trigged this call
 	 */
+	@Override
 	public void widgetSelected(SelectionEvent event)
 	{
 		// If they clicked the arrow, we show the list

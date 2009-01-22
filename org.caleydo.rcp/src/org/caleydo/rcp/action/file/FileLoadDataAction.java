@@ -189,7 +189,8 @@ public class FileLoadDataAction
 			@Override
 			public void modifyText(ModifyEvent e)
 			{
-				iStartParseFileAtLine = Integer.valueOf(txtStartParseAtLine.getText()).intValue();
+				iStartParseFileAtLine = Integer.valueOf(txtStartParseAtLine.getText())
+						.intValue();
 
 				createDataPreviewTable("\t");
 				composite.pack();
@@ -777,6 +778,7 @@ public class FileLoadDataAction
 				public Color selectionColor = Display.getCurrent().getSystemColor(
 						SWT.COLOR_RED);
 
+				@Override
 				public void mouseEnter(MouseEvent e)
 				{
 					// Set corresponding column background color to yellow
@@ -791,6 +793,7 @@ public class FileLoadDataAction
 					}
 				}
 
+				@Override
 				public void mouseExit(MouseEvent e)
 				{
 					// Set back to original color
@@ -815,6 +818,7 @@ public class FileLoadDataAction
 			comboTmpDataClass.addSelectionListener(new SelectionAdapter()
 			{
 
+				@Override
 				public void widgetSelected(SelectionEvent e)
 				{
 

@@ -4,13 +4,13 @@ package org.caleydo.core.manager.event;
  * Basic implementation of {@link IEventContainer}
  * 
  * @author Alexander Lex
- *
+ * 
  */
 public abstract class AEventContainer
-implements IEventContainer
+	implements IEventContainer
 {
 	EEventType eEventType;
-	
+
 	/**
 	 * Constructor
 	 * 
@@ -20,7 +20,7 @@ implements IEventContainer
 	{
 		this.eEventType = eEventType;
 	}
-	
+
 	@Override
 	public EEventType getEventType()
 	{

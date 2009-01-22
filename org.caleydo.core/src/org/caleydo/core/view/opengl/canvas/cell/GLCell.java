@@ -1,8 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.cell;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.logging.Level;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.mapping.EIDType;
@@ -11,8 +9,6 @@ import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
-import org.caleydo.core.data.selection.IVirtualArrayDelta;
-import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.manager.event.EMediatorType;
@@ -152,45 +148,6 @@ public class GLCell
 
 	}
 
-	@Override
-	public void handleSelectionUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
-			Collection<SelectionCommand> colSelectionCommand, EMediatorType mediatorType)
-	{
-		generalManager.getLogger().log(Level.FINE,
-				"Update called by " + eventTrigger.getClass().getSimpleName());
-
-		if (selectionDelta.getIDType() != EIDType.DAVID)
-			return;
-
-		// TODO review this, seems not to do anything??? ADD and REMOVE are no
-		// longer supported
-		// for (SelectionDeltaItem item : selectionDelta)
-		// {
-		// if (item.getSelectionType() == ESelectionType.ADD
-		// || item.getSelectionType() == ESelectionType.REMOVE)
-		// {
-		// break;
-		// }
-		// else
-		// {
-		// selectionManager.clearSelections();
-		// break;
-		// }
-		// }
-		//
-		// resolveExternalSelectionDelta(selectionDelta);
-		//
-		// setDisplayListDirty();
-	}
-
-	@Override
-	public void handleVAUpdate(EMediatorType mediatorType, IUniqueObject eventTrigger,
-			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
 	private ISelectionDelta resolveExternalSelectionDelta(ISelectionDelta selectionDelta)
 	{
 		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.PATHWAY_VERTEX,
@@ -287,14 +244,6 @@ public class GLCell
 	}
 
 	@Override
-	public void triggerSelectionUpdate(EMediatorType mediatorType,
-			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
-	{
-		generalManager.getEventPublisher().triggerSelectionUpdate(
-				EMediatorType.SELECTION_MEDIATOR, this, selectionDelta, null);
-	}
-
-	@Override
 	public void broadcastElements(EVAOperation type)
 	{
 		// TODO Auto-generated method stub
@@ -309,24 +258,40 @@ public class GLCell
 	}
 
 	@Override
-	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
-			Collection<SelectionCommand> colSelectionCommand)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
 	{
-		// TODO Auto-generated method stub
-		
+		// generalManager.getLogger().log(Level.FINE,
+		// "Update called by " + eventTrigger.getClass().getSimpleName());
+		//
+		// if (selectionDelta.getIDType() != EIDType.DAVID)
+		// return;
+
+		// TODO review this, seems not to do anything??? ADD and REMOVE are no
+		// longer supported
+		// for (SelectionDeltaItem item : selectionDelta)
+		// {
+		// if (item.getSelectionType() == ESelectionType.ADD
+		// || item.getSelectionType() == ESelectionType.REMOVE)
+		// {
+		// break;
+		// }
+		// else
+		// {
+		// selectionManager.clearSelections();
+		// break;
+		// }
+		// }
+		//
+		// resolveExternalSelectionDelta(selectionDelta);
+		//
+		// setDisplayListDirty();
+
 	}
 
 	@Override
 	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
 	{
-		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);		
+		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 	}
 
 }

@@ -10,7 +10,6 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Set;
 import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
@@ -19,12 +18,14 @@ import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IDListEventContainer;
@@ -475,6 +476,7 @@ public class GLHeatMap
 		switch (ePickingType)
 		{
 			case HEAT_MAP_FIELD_SELECTION:
+				ESelectionType eSelectionType;
 				switch (pickingMode)
 				{
 
@@ -487,62 +489,84 @@ public class GLHeatMap
 						// intentionally no break
 
 					case CLICKED:
-						contentSelectionManager.clearSelection(ESelectionType.SELECTION);
-						contentSelectionManager.addToType(ESelectionType.SELECTION,
-								iExternalID);
-
-						contentSelectionManager.addConnectionID(generalManager.getIDManager()
-								.createID(EManagedObjectType.CONNECTION), iExternalID);
-
-						if (eFieldDataType == EIDType.EXPRESSION_INDEX)
-						{
-							Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
-							colSelectionCommand.add(new SelectionCommand(
-									ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER));
-							triggerSelectionUpdate(EMediatorType.ALL_REGISTERED,
-									contentSelectionManager.getDelta(), colSelectionCommand);
-						}
+						eSelectionType = ESelectionType.SELECTION;
 						break;
+					// contentSelectionManager.clearSelection(ESelectionType.SELECTION);
+					// contentSelectionManager.addToType(ESelectionType.SELECTION,
+					// iExternalID);
+					//
+					// contentSelectionManager.addConnectionID(generalManager.getIDManager()
+					// .createID(EManagedObjectType.CONNECTION), iExternalID);
+					//
+					// if (eFieldDataType == EIDType.EXPRESSION_INDEX)
+					// {
+					//						
+					// triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+					// new SelectionCommandEventContainer(EIDType.DAVID,
+					// new SelectionCommand(ESelectionCommandType.CLEAR,
+					// ESelectionType.MOUSE_OVER)));
+					// ISelectionDelta selectionDelta = contentSelectionManager
+					// .getDelta();
+					// handleConnectedElementRep(selectionDelta);
+					// triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+					// new
+					// DeltaEventContainer<ISelectionDelta>(selectionDelta));
+					// }
+					// break;
+
 					case MOUSE_OVER:
-
-						if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER,
-								iExternalID))
-							break;
-
-						connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
-
-						contentSelectionManager.clearSelection(ESelectionType.MOUSE_OVER);
-						contentSelectionManager.addToType(ESelectionType.MOUSE_OVER,
-								iExternalID);
-
-						contentSelectionManager.addConnectionID(generalManager.getIDManager()
-								.createID(EManagedObjectType.CONNECTION), iExternalID);
-
-						if (eFieldDataType == EIDType.EXPRESSION_INDEX)
-						{
-							Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
-							colSelectionCommand.add(new SelectionCommand(
-									ESelectionCommandType.CLEAR, ESelectionType.MOUSE_OVER));
-							triggerSelectionUpdate(EMediatorType.ALL_REGISTERED,
-									contentSelectionManager.getDelta(), colSelectionCommand);
-							// triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
-							// contentSelectionManager.getDelta(),
-							// colSelectionCommand);
-							// // TODO: improve mediator system
-							// triggerUpdate(EMediatorType.HIERACHICAL_HEAT_MAP,
-							// contentSelectionManager.getDelta(),
-							// colSelectionCommand);
-						}
-
+						eSelectionType = ESelectionType.MOUSE_OVER;
 						break;
+					default:
+						pickingManager.flushHits(iUniqueID, ePickingType);
+						return;
+
+				}
+
+				if (contentSelectionManager.checkStatus(eSelectionType, iExternalID))
+					break;
+
+				connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
+
+				contentSelectionManager.clearSelection(eSelectionType);
+				contentSelectionManager.addToType(eSelectionType, iExternalID);
+
+				contentSelectionManager.addConnectionID(generalManager.getIDManager()
+						.createID(EManagedObjectType.CONNECTION), iExternalID);
+
+				if (eFieldDataType == EIDType.EXPRESSION_INDEX)
+				{
+
+					triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+							new SelectionCommandEventContainer(EIDType.DAVID,
+									new SelectionCommand(ESelectionCommandType.CLEAR,
+											eSelectionType)));
+					ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+					handleConnectedElementRep(selectionDelta);
+					triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+							new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 				}
 
 				bIsDisplayListDirtyLocal = true;
 				bIsDisplayListDirtyRemote = true;
 
-				pickingManager.flushHits(iUniqueID, ePickingType);
-				break;
+				// Collection<SelectionCommand> colSelectionCommand = new
+				// ArrayList<SelectionCommand>();
+				// colSelectionCommand.add(new
+				// SelectionCommand(ESelectionCommandType.CLEAR,
+				// ESelectionType.MOUSE_OVER));
+				// triggerSelectionUpdate(EMediatorType.ALL_REGISTERED,
+				// contentSelectionManager.getDelta(), colSelectionCommand);
+				// triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
+				// contentSelectionManager.getDelta(),
+				// colSelectionCommand);
+				// // TODO: improve mediator system
+				// triggerUpdate(EMediatorType.HIERACHICAL_HEAT_MAP,
+				// contentSelectionManager.getDelta(),
+				// colSelectionCommand);
 		}
+		pickingManager.flushHits(iUniqueID, ePickingType);
+
 	}
 
 	private void renderHeatMap(final GL gl)
@@ -946,7 +970,8 @@ public class GLHeatMap
 	public synchronized void broadcastElements()
 	{
 		ISelectionDelta delta = contentSelectionManager.getCompleteDelta();
-		triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, delta, null);
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+				new DeltaEventContainer<ISelectionDelta>(delta));
 		setDisplayListDirty();
 	}
 

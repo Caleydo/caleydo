@@ -40,7 +40,7 @@ public class GLParCoordsView
 	public void createPartControl(Composite parent)
 	{
 		super.createPartControl(parent);
-		
+
 		if (Application.applicationMode == EApplicationMode.PATHWAY_VIEWER)
 		{
 			MessageBox alert = new MessageBox(new Shell(), SWT.OK);
@@ -50,7 +50,7 @@ public class GLParCoordsView
 			dispose();
 			return;
 		}
-		
+
 		createGLCanvas();
 		createGLEventListener(ECommandType.CREATE_GL_PARALLEL_COORDINATES_GENE_EXPRESSION,
 				glCanvas.getID(), true);
@@ -78,7 +78,7 @@ public class GLParCoordsView
 		alToolbar.add(resetViewAction);
 		IAction propagateSelectionAction = new PropagateSelectionsAction(iViewID);
 		alToolbar.add(propagateSelectionAction);
-		
+
 		// only if standalone or explicitly requested
 		if (pcs.isRenderedRemote()
 				&& GeneralManager.get().getPreferenceStore().getBoolean(

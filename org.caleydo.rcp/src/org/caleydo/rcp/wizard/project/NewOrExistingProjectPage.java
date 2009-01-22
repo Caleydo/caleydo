@@ -73,6 +73,7 @@ public class NewOrExistingProjectPage
 
 		buttonNewProject.addSelectionListener(new SelectionAdapter()
 		{
+			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
 				projectType = EProjectType.NEW_PROJECT;
@@ -82,6 +83,7 @@ public class NewOrExistingProjectPage
 
 		buttonExistingProject.addSelectionListener(new SelectionAdapter()
 		{
+			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
 				projectType = EProjectType.EXISTING_PROJECT;
@@ -91,6 +93,7 @@ public class NewOrExistingProjectPage
 
 		buttonPathwayViewerMode.addSelectionListener(new SelectionAdapter()
 		{
+			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
 				projectType = EProjectType.PATHWAY_VIEWER_MODE;
@@ -100,6 +103,7 @@ public class NewOrExistingProjectPage
 
 		buttonRandomSampleDataMode.addSelectionListener(new SelectionAdapter()
 		{
+			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
 				projectType = EProjectType.SAMPLE_DATA_RANDOM;
@@ -109,6 +113,7 @@ public class NewOrExistingProjectPage
 
 		buttonSampleDataMode.addSelectionListener(new SelectionAdapter()
 		{
+			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
 				projectType = EProjectType.SAMPLE_DATA_REAL;

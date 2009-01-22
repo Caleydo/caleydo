@@ -1,12 +1,10 @@
 package org.caleydo.core.view.swt.data.search;
 
-import java.util.Collection;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.ISelectionDelta;
-import org.caleydo.core.data.selection.IVirtualArrayDelta;
-import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.EMediatorType;
@@ -80,8 +78,7 @@ public class DataEntitySearcherViewRep
 				EEventType.LOAD_PATHWAY_BY_PATHWAY_ID, EIDType.PATHWAY);
 		idListEventContainer.addID(iPathwayID);
 
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-				idListEventContainer);
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR, idListEventContainer);
 
 		return true;
 	}
@@ -97,7 +94,8 @@ public class DataEntitySearcherViewRep
 
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.DAVID);
 		selectionDelta.addSelection(iDavidID, ESelectionType.SELECTION);
-		triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, selectionDelta, null);
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+				new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 		return true;
 	}
 
@@ -122,7 +120,8 @@ public class DataEntitySearcherViewRep
 
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.DAVID);
 		selectionDelta.addSelection(iDavidID, ESelectionType.SELECTION);
-		triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, selectionDelta, null);
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+				new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 
 		return true;
 	}
@@ -138,7 +137,8 @@ public class DataEntitySearcherViewRep
 
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.DAVID);
 		selectionDelta.addSelection(iDavidID, ESelectionType.SELECTION);
-		triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, selectionDelta, null);
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+				new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 
 		return true;
 	}
@@ -153,25 +153,28 @@ public class DataEntitySearcherViewRep
 	{
 	}
 
-	@Override
-	public void triggerSelectionUpdate(EMediatorType eMediatorType,
-			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
-	{
-		generalManager.getEventPublisher().triggerSelectionUpdate(eMediatorType, this,
-				selectionDelta, null);
-	}
-
-	@Override
-	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
-			Collection<SelectionCommand> colSelectionCommand)
-	{
-		// TODO Auto-generated method stub
-
-	}
+	// @Override
+	// public void triggerSelectionUpdate(EMediatorType eMediatorType,
+	// ISelectionDelta selectionDelta, Collection<SelectionCommand>
+	// colSelectionCommand)
+	// {
+	// generalManager.getEventPublisher().triggerSelectionUpdate(eMediatorType,
+	// this,
+	// selectionDelta, null);
+	// }
+	//
+	// @Override
+	// public void triggerVAUpdate(EMediatorType mediatorType,
+	// IVirtualArrayDelta delta,
+	// Collection<SelectionCommand> colSelectionCommand)
+	// {
+	// // TODO Auto-generated method stub
+	//
+	// }
 
 	@Override
 	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
 	{
-		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);		
+		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 	}
 }

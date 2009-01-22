@@ -272,9 +272,9 @@ public class Application
 		{
 			// Trigger pathway loading
 			new PathwayLoadingProgressIndicatorAction().run(null);
-			
-//			((ToolBarView)PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-//					.getActivePage().getViewReferences()[0].getView(false)).addPathwayLoadingProgress();
+
+			// ((ToolBarView)PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+			// .getActivePage().getViewReferences()[0].getView(false)).addPathwayLoadingProgress();
 		}
 
 		// Register the info area to all mediator from type SELECTION and
@@ -304,7 +304,7 @@ public class Application
 	}
 
 	private static void openViewsInRCP()
-	{		
+	{
 		if (applicationMode == EApplicationMode.PATHWAY_VIEWER)
 		{
 			// Filter all views except remote and browser in case of pathway
@@ -327,12 +327,12 @@ public class Application
 			// Open toolbar view
 			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
 					ToolBarView.ID);
-			
+
 			if (alStartViews.contains(EStartViewType.REMOTE))
 			{
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
 						GLRemoteRenderingView.ID);
-				
+
 				alStartViews.remove(EStartViewType.REMOTE);
 			}
 

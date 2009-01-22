@@ -30,7 +30,7 @@ public class PathwayLoadingProgressIndicatorAction
 					if (!tmpGLEventListener.isRenderedRemote())
 						tmpGLEventListener.enableBusyMode(true);
 				}
-				
+
 				monitor.beginTask("Loading pathways", 100);
 
 				monitor.subTask("KEGG");
@@ -48,7 +48,7 @@ public class PathwayLoadingProgressIndicatorAction
 				GeneralManager.get().getPathwayManager().notifyPathwayLoadingFinished(true);
 
 				monitor.done();
-				
+
 				// Turn off busy mode
 				for (AGLEventListener tmpGLEventListener : GeneralManager.get()
 						.getViewGLCanvasManager().getAllGLEventListeners())

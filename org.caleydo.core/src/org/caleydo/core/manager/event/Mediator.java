@@ -1,11 +1,7 @@
 package org.caleydo.core.manager.event;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.selection.ISelectionDelta;
-import org.caleydo.core.data.selection.IVirtualArrayDelta;
-import org.caleydo.core.data.selection.SelectionCommand;
 
 /**
  * Implementation of {@link IMediator}
@@ -38,6 +34,12 @@ public class Mediator
 	{
 		this();
 		this.eType = eType;
+	}
+
+	@Override
+	public EMediatorType getType()
+	{
+		return eType;
 	}
 
 	@Override
@@ -94,35 +96,38 @@ public class Mediator
 		return alSender.contains(sender);
 	}
 
-	@Override
-	public void triggerUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
-			Collection<SelectionCommand> colSelectionCommand)
-	{
-		for (IMediatorReceiver receiver : alReceiver)
-		{
-			// Prevent circular updates
-			if (!receiver.equals(eventTrigger))
-			{
-				receiver
-						.handleSelectionUpdate(eventTrigger, selectionDelta, colSelectionCommand, eType);
-			}
-		}
-	}
+	// @Override
+	// public void triggerUpdate(IUniqueObject eventTrigger, ISelectionDelta
+	// selectionDelta,
+	// Collection<SelectionCommand> colSelectionCommand)
+	// {
+	// for (IMediatorReceiver receiver : alReceiver)
+	// {
+	// // Prevent circular updates
+	// if (!receiver.equals(eventTrigger))
+	// {
+	// receiver
+	// .handleSelectionUpdate(eventTrigger, selectionDelta, colSelectionCommand,
+	// eType);
+	// }
+	// }
+	// }
 
-	@Override
-	public void triggerVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
-			Collection<SelectionCommand> colSelectionCommand)
-	{
-		for (IMediatorReceiver receiver : alReceiver)
-		{
-			// Prevent circular updates
-			if (!receiver.equals(eventTrigger))
-			{
-				receiver.handleVAUpdate(eType, eventTrigger, delta, colSelectionCommand);
-			}
-		}
-	}
-
+	// @Override
+	// public void triggerVAUpdate(IUniqueObject eventTrigger,
+	// IVirtualArrayDelta delta,
+	// Collection<SelectionCommand> colSelectionCommand)
+	// {
+	// for (IMediatorReceiver receiver : alReceiver)
+	// {
+	// // Prevent circular updates
+	// if (!receiver.equals(eventTrigger))
+	// {
+	// receiver.handleVAUpdate(eType, eventTrigger, delta, colSelectionCommand);
+	// }
+	// }
+	// }
+	//
 	@Override
 	public int getID()
 	{

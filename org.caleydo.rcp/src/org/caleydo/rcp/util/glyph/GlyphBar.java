@@ -112,6 +112,7 @@ public class GlyphBar
 		}
 	}
 
+	@Override
 	protected Control createControl(Composite parent)
 	{
 		Composite composite = new Composite(parent, SWT.NONE);

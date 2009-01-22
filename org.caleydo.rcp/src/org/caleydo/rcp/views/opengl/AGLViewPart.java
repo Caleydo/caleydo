@@ -38,7 +38,7 @@ public abstract class AGLViewPart
 
 	protected static ArrayList<IAction> alToolbar;
 	protected static ArrayList<IContributionItem> alToolbarContributions;
-	
+
 	/**
 	 * Contains view IDs for initally contained remote rendered views
 	 */
@@ -91,8 +91,8 @@ public abstract class AGLViewPart
 
 		if (glViewType == ECommandType.CREATE_GL_BUCKET_3D)
 		{
-			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1.5f, 1.5f, -1.5f, 1.5f, 2.87f,
-					100, iAlSets, iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
+			cmdView.setAttributes(EProjectionMode.PERSPECTIVE, -1.5f, 1.5f, -1.5f, 1.5f,
+					2.87f, 100, iAlSets, iParentCanvasID, 0, 0, -8, 0, 0, 0, 0);
 		}
 		else if (glViewType == ECommandType.CREATE_GL_GLYPH)
 		{
@@ -106,18 +106,18 @@ public abstract class AGLViewPart
 		}
 
 		cmdView.doCommand();
-		
+
 		AGLEventListener glView = cmdView.getCreatedObject();
 		int iViewID = glView.getID();
-		
+
 		if (iAlContainedViewIDs != null && glViewType == ECommandType.CREATE_GL_BUCKET_3D)
 		{
-			((GLRemoteRendering)glView).setInitialContainedViews(iAlContainedViewIDs);
+			((GLRemoteRendering) glView).setInitialContainedViews(iAlContainedViewIDs);
 		}
-		
+
 		setGLData(glCanvas, iViewID);
 		createPartControlGL();
-	
+
 		return iViewID;
 	}
 
@@ -127,12 +127,12 @@ public abstract class AGLViewPart
 		this.iAlContainedViewIDs = iAlContainedViewIDs;
 		return createGLEventListener(glViewType, iParentCanvasID, bRegisterToOverallMediator);
 	}
-	
+
 	@Override
 	public void createPartControl(Composite parent)
 	{
 		swtComposite = new Composite(parent, SWT.EMBEDDED);
-//		fillToolBar();
+		// fillToolBar();
 	}
 
 	public void setGLData(final GLCaleydoCanvas glCanvas, final int iGLEventListenerID)
@@ -169,9 +169,9 @@ public abstract class AGLViewPart
 	{
 		return iGLEventListenerID;
 	}
-	
+
 	public void fillToolBar()
-	{	
+	{
 		IToolBarManager toolBarManager = getViewSite().getActionBars().getToolBarManager();
 		ArrayList<IToolBarManager> alToolBarManager = new ArrayList<IToolBarManager>();
 		alToolBarManager.add(toolBarManager);
@@ -179,9 +179,9 @@ public abstract class AGLViewPart
 	}
 
 	/**
-	 * Method fills the toolbar in a given toolbar manager. Used in case of
-	 * a detached view that can put all its toolbar items into one single toolbar (no wrapping needed).
-	 * 
+	 * Method fills the toolbar in a given toolbar manager. Used in case of a
+	 * detached view that can put all its toolbar items into one single toolbar
+	 * (no wrapping needed).
 	 */
 	public static void fillToolBar(final IToolBarManager toolBarManager)
 	{
@@ -195,20 +195,18 @@ public abstract class AGLViewPart
 
 			alToolbarContributions = null;
 		}
-		
+
 		for (IAction toolBarAction : alToolbar)
 		{
 			toolBarManager.add(toolBarAction);
 		}
 	}
-	
+
 	/**
 	 * Method fills the toolbar in a given toolbar manager. Used in case of
-	 * remote rendering.
-	 * The array of toolbar managers is needed for simulating toolbar wrap which is not
-	 * supported for linux.
-	 * See bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=46025
-	 * 
+	 * remote rendering. The array of toolbar managers is needed for simulating
+	 * toolbar wrap which is not supported for linux. See bug:
+	 * https://bugs.eclipse.org/bugs/show_bug.cgi?id=46025
 	 */
 	public static void fillToolBar(ArrayList<IToolBarManager> alToolBarManager)
 	{
@@ -226,9 +224,9 @@ public abstract class AGLViewPart
 		// add action items
 		int iMaxItemsPerToolBar = 5;
 		for (int iToolBarItemIndex = 0; iToolBarItemIndex < alToolbar.size(); iToolBarItemIndex++)
-		{			
-			alToolBarManager.get((int)(iToolBarItemIndex / iMaxItemsPerToolBar))
-				.add(alToolbar.get(iToolBarItemIndex));
+		{
+			alToolBarManager.get((int) (iToolBarItemIndex / iMaxItemsPerToolBar)).add(
+					alToolbar.get(iToolBarItemIndex));
 		}
 		alToolbar = null;
 	}

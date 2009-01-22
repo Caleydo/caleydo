@@ -302,6 +302,7 @@ public class ColorMappingPreferencePage
 
 	}
 
+	@Override
 	public boolean performOk()
 	{
 		boolean bReturn = super.performOk();
@@ -349,8 +350,8 @@ public class ColorMappingPreferencePage
 		int[] iArColorMarkerPoints = new int[iNumberOfMarkerPoints - 1];
 		for (int iCount = 1; iCount <= iNumberOfMarkerPoints; iCount++)
 		{
-			int iColorMarkerPoint = (int) (100 * Activator.getDefault().getPreferenceStore().getFloat(
-					PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount));
+			int iColorMarkerPoint = (int) (100 * Activator.getDefault().getPreferenceStore()
+					.getFloat(PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount));
 
 			// Gradient label does not need the 0 point
 			if (iColorMarkerPoint != 0)
@@ -386,8 +387,8 @@ public class ColorMappingPreferencePage
 					iInnerCount++;
 				}
 			}
-			alColor[iCount - 1] = new Color(PlatformUI.getWorkbench().getDisplay(), iArColor[0],
-					iArColor[1], iArColor[2]);
+			alColor[iCount - 1] = new Color(PlatformUI.getWorkbench().getDisplay(),
+					iArColor[0], iArColor[1], iArColor[2]);
 		}
 
 		colorMappingPreviewLabel.setBackground(alColor, iArColorMarkerPoints);

@@ -2,7 +2,6 @@ package org.caleydo.core.view.opengl.canvas.pathway;
 
 import gleem.linalg.Vec3f;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -14,6 +13,7 @@ import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -22,6 +22,7 @@ import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.data.selection.VADeltaItem;
@@ -32,12 +33,10 @@ import org.caleydo.core.manager.event.IDListEventContainer;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
-import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
 import org.caleydo.core.manager.specialized.genome.pathway.EPathwayDatabaseType;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
@@ -303,10 +302,8 @@ public class GLPathway
 		// gl.glEndList();
 	}
 
-	@Override
-	public synchronized void handleSelectionUpdate(IUniqueObject eventTrigger,
-			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand,
-			EMediatorType eMediatorType)
+	private void handleSelectionUpdate(IUniqueObject eventTrigger,
+			ISelectionDelta selectionDelta)
 	{
 		generalManager.getLogger().log(
 				Level.INFO,
@@ -315,8 +312,6 @@ public class GLPathway
 
 		if (selectionDelta.getIDType() != EIDType.DAVID)
 			return;
-
-		selectionManager.executeSelectionCommands(colSelectionCommand);
 
 		ISelectionDelta resolvedDelta = resolveExternalSelectionDelta(selectionDelta);
 		selectionManager.setDelta(resolvedDelta);
@@ -681,13 +676,14 @@ public class GLPathway
 
 				createConnectionLines(eSelectionType, iConnectionID);
 
-				Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
-				colSelectionCommand.add(new SelectionCommand(ESelectionCommandType.CLEAR,
-						eSelectionType));
-
-				ISelectionDelta delta = selectionManager.getDelta();
-				triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,// BUCKET_INTERNAL_INCOMING_MEDIATOR,
-						createExternalSelectionDelta(delta), colSelectionCommand);
+				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+						new SelectionCommandEventContainer(EIDType.DAVID,
+								new SelectionCommand(ESelectionCommandType.CLEAR,
+										eSelectionType)));
+				ISelectionDelta selectionDelta = createExternalSelectionDelta(selectionManager
+						.getDelta());
+				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+						new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 
 				pickingManager.flushHits(iUniqueID, EPickingType.PATHWAY_ELEMENT_SELECTION);
 				break;
@@ -762,7 +758,8 @@ public class GLPathway
 			}
 		}
 
-		triggerVAUpdate(EMediatorType.SELECTION_MEDIATOR, delta, null);
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+				new DeltaEventContainer<IVirtualArrayDelta>(delta));
 	}
 
 	@Override
@@ -786,23 +783,6 @@ public class GLPathway
 		// pathway.getType().getName() + " Pathway: " + sPathwayTitle);
 
 		return sInfoText.toString();
-	}
-
-	@Override
-	public synchronized void triggerSelectionUpdate(EMediatorType eMediatorType,
-			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
-	{
-		generalManager.getEventPublisher().triggerSelectionUpdate(eMediatorType, this,
-				selectionDelta, colSelectionCommand);
-	}
-
-	@Override
-	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
-			Collection<SelectionCommand> colSelectionCommand)
-	{
-		generalManager.getEventPublisher().triggerVAUpdate(mediatorType, this, delta,
-				colSelectionCommand);
-
 	}
 
 	@Override
@@ -879,18 +859,16 @@ public class GLPathway
 	}
 
 	@Override
-	public void handleVAUpdate(EMediatorType mediatorType, IUniqueObject eventTrigger,
-			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
 	{
-		// TODO Auto-generated method stub
-
+		switch (eventContainer.getEventType())
+		{
+			case SELECTION_UPDATE:
+				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer = (DeltaEventContainer<ISelectionDelta>) eventContainer;
+				handleSelectionUpdate(eventTrigger, selectionDeltaEventContainer
+						.getSelectionDelta());
+				break;
+		}
 	}
 
 	@Override

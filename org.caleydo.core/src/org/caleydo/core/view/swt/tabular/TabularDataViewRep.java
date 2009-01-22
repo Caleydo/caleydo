@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.StringTokenizer;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateSet;
@@ -18,11 +17,12 @@ import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.ISelectionDelta;
-import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.EMediatorType;
@@ -551,12 +551,14 @@ public class TabularDataViewRep
 				SelectionDelta tmpDelta = new SelectionDelta(EIDType.DAVID);
 				tmpDelta.addSelection(iDavidID, ESelectionType.MOUSE_OVER);
 
-				Collection<SelectionCommand> colSelectionCommand = new ArrayList<SelectionCommand>();
-				colSelectionCommand.add(new SelectionCommand(ESelectionCommandType.CLEAR,
-						ESelectionType.MOUSE_OVER));
+				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+						new SelectionCommandEventContainer(EIDType.DAVID,
+								new SelectionCommand(ESelectionCommandType.CLEAR,
+										ESelectionType.MOUSE_OVER)));
 
-				triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, tmpDelta,
-						colSelectionCommand);
+				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+						new DeltaEventContainer<ISelectionDelta>(tmpDelta));
+
 			}
 		});
 
@@ -1067,47 +1069,17 @@ public class TabularDataViewRep
 	}
 
 	@Override
-	public void triggerSelectionUpdate(EMediatorType eMediatorType,
-			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
-	{
-		GeneralManager.get().getEventPublisher().triggerSelectionUpdate(eMediatorType, this,
-				selectionDelta, colSelectionCommand);
-	}
-
-	@Override
-	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
-			Collection<SelectionCommand> colSelectionCommand)
-	{
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void handleSelectionUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
-			Collection<SelectionCommand> colSelectionCommand, EMediatorType mediatorType)
-	{
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void handleVAUpdate(EMediatorType mediatorType, IUniqueObject eventTrigger,
-			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	public void triggerEvent(EMediatorType mediatorType, IEventContainer eventContainer)
+	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
 	{
-		// TODO Auto-generated method stub
-		
+		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
+
 	}
 
 }

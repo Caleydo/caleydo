@@ -362,6 +362,7 @@ public final class SearchBox
 		}
 	}
 
+	@Override
 	public Point computeSize(int wHint, int hHint, boolean changed)
 	{
 		checkWidget();
@@ -516,6 +517,7 @@ public final class SearchBox
 		return null;
 	}
 
+	@Override
 	public Control[] getChildren()
 	{
 		checkWidget();
@@ -602,6 +604,7 @@ public final class SearchBox
 		return list.getSelectionIndex();
 	}
 
+	@Override
 	public int getStyle()
 	{
 		int style = super.getStyle();
@@ -719,6 +722,7 @@ public final class SearchBox
 	{
 		AccessibleAdapter accessibleAdapter = new AccessibleAdapter()
 		{
+			@Override
 			public void getName(AccessibleEvent e)
 			{
 				String name = null;
@@ -730,6 +734,7 @@ public final class SearchBox
 				e.result = name;
 			}
 
+			@Override
 			public void getKeyboardShortcut(AccessibleEvent e)
 			{
 				String shortcut = null;
@@ -749,6 +754,7 @@ public final class SearchBox
 				e.result = shortcut;
 			}
 
+			@Override
 			public void getHelp(AccessibleEvent e)
 			{
 				e.result = getToolTipText();
@@ -760,16 +766,19 @@ public final class SearchBox
 
 		arrow.getAccessible().addAccessibleListener(new AccessibleAdapter()
 		{
+			@Override
 			public void getName(AccessibleEvent e)
 			{
 				e.result = isDropped() ? SWT.getMessage("SWT_Close") : SWT.getMessage("SWT_Open"); //$NON-NLS-1$ //$NON-NLS-2$
 			}
 
+			@Override
 			public void getKeyboardShortcut(AccessibleEvent e)
 			{
 				e.result = "Alt+Down Arrow"; //$NON-NLS-1$
 			}
 
+			@Override
 			public void getHelp(AccessibleEvent e)
 			{
 				e.result = getToolTipText();
@@ -778,6 +787,7 @@ public final class SearchBox
 
 		getAccessible().addAccessibleTextListener(new AccessibleTextAdapter()
 		{
+			@Override
 			public void getCaretOffset(AccessibleTextEvent e)
 			{
 				e.offset = text.getCaretPosition();
@@ -786,6 +796,7 @@ public final class SearchBox
 
 		getAccessible().addAccessibleControlListener(new AccessibleControlAdapter()
 		{
+			@Override
 			public void getChildAtPoint(AccessibleControlEvent e)
 			{
 				Point testPoint = toControl(e.x, e.y);
@@ -795,6 +806,7 @@ public final class SearchBox
 				}
 			}
 
+			@Override
 			public void getLocation(AccessibleControlEvent e)
 			{
 				Rectangle location = getBounds();
@@ -805,21 +817,25 @@ public final class SearchBox
 				e.height = location.height;
 			}
 
+			@Override
 			public void getChildCount(AccessibleControlEvent e)
 			{
 				e.detail = 0;
 			}
 
+			@Override
 			public void getRole(AccessibleControlEvent e)
 			{
 				e.detail = ACC.ROLE_COMBOBOX;
 			}
 
+			@Override
 			public void getState(AccessibleControlEvent e)
 			{
 				e.detail = ACC.STATE_NORMAL;
 			}
 
+			@Override
 			public void getValue(AccessibleControlEvent e)
 			{
 				e.result = getText();
@@ -828,6 +844,7 @@ public final class SearchBox
 
 		text.getAccessible().addAccessibleControlListener(new AccessibleControlAdapter()
 		{
+			@Override
 			public void getRole(AccessibleControlEvent e)
 			{
 				e.detail = text.getEditable() ? ACC.ROLE_TEXT : ACC.ROLE_LABEL;
@@ -836,6 +853,7 @@ public final class SearchBox
 
 		arrow.getAccessible().addAccessibleControlListener(new AccessibleControlAdapter()
 		{
+			@Override
 			public void getDefaultAction(AccessibleControlEvent e)
 			{
 				e.result = isDropped() ? SWT.getMessage("SWT_Close") : SWT.getMessage("SWT_Open"); //$NON-NLS-1$ //$NON-NLS-2$
@@ -848,6 +866,7 @@ public final class SearchBox
 		return popup.getVisible();
 	}
 
+	@Override
 	public boolean isFocusControl()
 	{
 		checkWidget();
@@ -967,6 +986,7 @@ public final class SearchBox
 		}
 	}
 
+	@Override
 	public void redraw()
 	{
 		super.redraw();
@@ -976,6 +996,7 @@ public final class SearchBox
 			list.redraw();
 	}
 
+	@Override
 	public void redraw(int x, int y, int width, int height, boolean all)
 	{
 		super.redraw(x, y, width, height, true);
@@ -1066,6 +1087,7 @@ public final class SearchBox
 		}
 	}
 
+	@Override
 	public void setBackground(Color color)
 	{
 		super.setBackground(color);
@@ -1087,6 +1109,7 @@ public final class SearchBox
 		text.setEditable(editable);
 	}
 
+	@Override
 	public void setEnabled(boolean enabled)
 	{
 		super.setEnabled(enabled);
@@ -1098,12 +1121,14 @@ public final class SearchBox
 			arrow.setEnabled(enabled);
 	}
 
+	@Override
 	public boolean setFocus()
 	{
 		checkWidget();
 		return text.setFocus();
 	}
 
+	@Override
 	public void setFont(Font font)
 	{
 		super.setFont(font);
@@ -1113,6 +1138,7 @@ public final class SearchBox
 		internalLayout(true);
 	}
 
+	@Override
 	public void setForeground(Color color)
 	{
 		super.setForeground(color);
@@ -1155,6 +1181,7 @@ public final class SearchBox
 	/**
 	 * 
 	 */
+	@Override
 	public void setLayout(Layout layout)
 	{
 		checkWidget();
@@ -1201,6 +1228,7 @@ public final class SearchBox
 		text.setTextLimit(limit);
 	}
 
+	@Override
 	public void setToolTipText(String string)
 	{
 		checkWidget();
@@ -1209,6 +1237,7 @@ public final class SearchBox
 		text.setToolTipText(string);
 	}
 
+	@Override
 	public void setVisible(boolean visible)
 	{
 		super.setVisible(visible);

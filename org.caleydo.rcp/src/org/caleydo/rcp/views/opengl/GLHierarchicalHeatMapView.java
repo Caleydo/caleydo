@@ -6,7 +6,6 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
 import org.caleydo.rcp.action.view.storagebased.ClearSelectionsAction;
-import org.caleydo.rcp.action.view.storagebased.ResetViewAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
@@ -54,11 +53,11 @@ public class GLHierarchicalHeatMapView
 
 		alToolbar = new ArrayList<IAction>();
 
-//		 IAction switchFocus = new InFocusAction(iViewID);
-//		 alToolbar.add(switchFocus);
-		 IAction clearSelectionsAction = new ClearSelectionsAction(iViewID);
-		 alToolbar.add(clearSelectionsAction);
-//		 IAction resetViewAction = new ResetViewAction(iViewID);
-//		 alToolbar.add(resetViewAction);
+		// IAction switchFocus = new InFocusAction(iViewID);
+		// alToolbar.add(switchFocus);
+		IAction clearSelectionsAction = new ClearSelectionsAction(iViewID);
+		alToolbar.add(clearSelectionsAction);
+		// IAction resetViewAction = new ResetViewAction(iViewID);
+		// alToolbar.add(resetViewAction);
 	}
 }

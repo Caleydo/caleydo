@@ -1,10 +1,6 @@
 package org.caleydo.core.manager;
 
-import java.util.Collection;
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.selection.ISelectionDelta;
-import org.caleydo.core.data.selection.IVirtualArrayDelta;
-import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
@@ -58,21 +54,23 @@ public interface IEventPublisher
 	 * @param colSelectionCommand a command to be executed on the selection
 	 *            manager (can be null if not necessary)
 	 */
-	public void triggerSelectionUpdate(EMediatorType eMediatorType,
-			IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
-			Collection<SelectionCommand> colSelectionCommand);
-
-	/**
-	 * Trigger an update concerning virtual arrays. The details about what to do
-	 * with the update are specified in the delta.
-	 * 
-	 * @param eMediatorType for which mediator
-	 * @param eventTrigger the caller
-	 * @param delta the delta containing all operations to be executed
-	 */
-	public void triggerVAUpdate(EMediatorType eMediatorType, IUniqueObject eventTrigger,
-			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand);
-
+	// public void triggerSelectionUpdate(EMediatorType eMediatorType,
+	// IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
+	// Collection<SelectionCommand> colSelectionCommand);
+	//
+	// /**
+	// * Trigger an update concerning virtual arrays. The details about what to
+	// do
+	// * with the update are specified in the delta.
+	// *
+	// * @param eMediatorType for which mediator
+	// * @param eventTrigger the caller
+	// * @param delta the delta containing all operations to be executed
+	// */
+	// public void triggerVAUpdate(EMediatorType eMediatorType, IUniqueObject
+	// eventTrigger,
+	// IVirtualArrayDelta delta, Collection<SelectionCommand>
+	// colSelectionCommand);
 	/**
 	 * Triggers an event, signals that something has happened and sends data
 	 * along

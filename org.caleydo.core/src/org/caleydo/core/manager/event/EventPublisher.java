@@ -1,11 +1,7 @@
 package org.caleydo.core.manager.event;
 
-import java.util.Collection;
 import java.util.HashMap;
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.selection.ISelectionDelta;
-import org.caleydo.core.data.selection.IVirtualArrayDelta;
-import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.IEventPublisher;
 
 /**
@@ -56,72 +52,80 @@ public class EventPublisher
 
 	}
 
-	@Override
-	public void triggerSelectionUpdate(EMediatorType eMediatorType,
-			IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
-			Collection<SelectionCommand> colSelectionCommand)
-	{
-		if (!hashMediatorType2Mediator.containsKey(eMediatorType))
-		{
-			if (eMediatorType != EMediatorType.ALL_REGISTERED)
-				throw new IllegalStateException("Sender " + eventTrigger.getID()
-						+ " is not a sender in the mediator group " + eMediatorType);
-		}
-		if (eMediatorType == EMediatorType.ALL_REGISTERED)
-		{
-			for (EMediatorType eTempMediatorType : hashMediatorType2Mediator.keySet())
-			{
-				if (hashMediatorType2Mediator.get(eTempMediatorType).hasSender(
-						(IMediatorSender) eventTrigger))
-				{
-					hashMediatorType2Mediator.get(eTempMediatorType).triggerUpdate(
-							eventTrigger, selectionDelta, colSelectionCommand);
-				}
-			}
-		}
-		else
-		{
-			hashMediatorType2Mediator.get(eMediatorType).triggerUpdate(eventTrigger,
-					selectionDelta, colSelectionCommand);
-		}
-	}
+	// @Override
+	// public void triggerSelectionUpdate(EMediatorType eMediatorType,
+	// IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
+	// Collection<SelectionCommand> colSelectionCommand)
+	// {
+	// if (!hashMediatorType2Mediator.containsKey(eMediatorType))
+	// {
+	// if (eMediatorType != EMediatorType.ALL_REGISTERED)
+	// throw new IllegalStateException("Sender " + eventTrigger.getID()
+	// + " is not a sender in the mediator group " + eMediatorType);
+	// }
+	// if (eMediatorType == EMediatorType.ALL_REGISTERED)
+	// {
+	// for (EMediatorType eTempMediatorType :
+	// hashMediatorType2Mediator.keySet())
+	// {
+	// if (hashMediatorType2Mediator.get(eTempMediatorType).hasSender(
+	// (IMediatorSender) eventTrigger))
+	// {
+	// hashMediatorType2Mediator.get(eTempMediatorType).triggerUpdate(
+	// eventTrigger, selectionDelta, colSelectionCommand);
+	// }
+	// }
+	// }
+	// else
+	// {
+	// hashMediatorType2Mediator.get(eMediatorType).triggerUpdate(eventTrigger,
+	// selectionDelta, colSelectionCommand);
+	// }
+	// }
+	//
+	// @Override
+	// public void triggerVAUpdate(EMediatorType eMediatorType, IUniqueObject
+	// eventTrigger,
+	// IVirtualArrayDelta delta, Collection<SelectionCommand>
+	// colSelectionCommand)
+	// {
+	// if (!hashMediatorType2Mediator.containsKey(eMediatorType))
+	// {
+	// if (eMediatorType != EMediatorType.ALL_REGISTERED)
+	// throw new IllegalStateException("Sender " + eventTrigger.getID()
+	// + " is not a sender in the mediator group " + eMediatorType);
+	// }
+	// if (eMediatorType == EMediatorType.ALL_REGISTERED)
+	// {
+	// for (EMediatorType eTempMediatorType :
+	// hashMediatorType2Mediator.keySet())
+	// {
+	// if (hashMediatorType2Mediator.get(eTempMediatorType).hasSender(
+	// (IMediatorSender) eventTrigger))
+	// {
+	// hashMediatorType2Mediator.get(eTempMediatorType).triggerVAUpdate(
+	// eventTrigger, delta, colSelectionCommand);
+	// }
+	// }
+	// }
+	// else
+	// {
+	// hashMediatorType2Mediator.get(eMediatorType).triggerVAUpdate(eventTrigger,
+	// delta,
+	// colSelectionCommand);
+	// }
+	// }
 
 	@Override
-	public void triggerVAUpdate(EMediatorType eMediatorType, IUniqueObject eventTrigger,
-			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand)
+	public void triggerEvent(EMediatorType eMediatorType, IUniqueObject eventTrigger,
+			IEventContainer eventContainer)
 	{
-		if (!hashMediatorType2Mediator.containsKey(eMediatorType))
-		{
-			if (eMediatorType != EMediatorType.ALL_REGISTERED)
-				throw new IllegalStateException("Sender " + eventTrigger.getID()
-						+ " is not a sender in the mediator group " + eMediatorType);
-		}
-		if (eMediatorType == EMediatorType.ALL_REGISTERED)
-		{
-			for (EMediatorType eTempMediatorType : hashMediatorType2Mediator.keySet())
-			{
-				if (hashMediatorType2Mediator.get(eTempMediatorType).hasSender(
-						(IMediatorSender) eventTrigger))
-				{
-					hashMediatorType2Mediator.get(eTempMediatorType).triggerVAUpdate(
-							eventTrigger, delta, colSelectionCommand);
-				}
-			}
-		}
-		else
-		{
-			hashMediatorType2Mediator.get(eMediatorType).triggerVAUpdate(eventTrigger, delta,
-					colSelectionCommand);
-		}
-	}
-	
-	@Override
-	public void triggerEvent(EMediatorType eMediatorType, IUniqueObject eventTrigger, IEventContainer eventContainer)
-	{
+		// TODO FIXME add support for ALL etc
+
 		if (!(eventTrigger instanceof IMediatorSender))
 		{
 			throw new IllegalArgumentException(
-					"triggerEvent called by an object which does not implement IMediatorEventSender");
+					"triggerEvent called by an object which does not implement IMediatorSender");
 		}
 		for (EMediatorType eTempMediatorType : hashMediatorType2Mediator.keySet())
 		{
@@ -169,5 +173,4 @@ public class EventPublisher
 		}
 	}
 
-	
 }

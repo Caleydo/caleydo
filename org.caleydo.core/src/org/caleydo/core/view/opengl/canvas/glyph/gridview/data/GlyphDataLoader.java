@@ -144,11 +144,11 @@ public class GlyphDataLoader
 
 		IIDMappingManager IdMappingManager = generalManager.getIDMappingManager();
 		// now convert the storages to real glyphs
-		
-		if(!IdMappingManager.hasMapping(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX))
+
+		if (!IdMappingManager.hasMapping(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX))
 			this.generalManager.getLogger().log(Level.WARNING,
-			"GlyphDataLoader: No ID Mapping found - using internal ids");
-		
+					"GlyphDataLoader: No ID Mapping found - using internal ids");
+
 		int counter = gman.getGlyphs().size();
 		int iExperimentID = 0;
 		for (int i = 0; i < aliStoreMapped.get(0).length; ++i)

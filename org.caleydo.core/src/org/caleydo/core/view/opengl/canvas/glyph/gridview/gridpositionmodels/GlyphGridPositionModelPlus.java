@@ -1,15 +1,12 @@
 package org.caleydo.core.view.opengl.canvas.glyph.gridview.gridpositionmodels;
 
-import gleem.linalg.open.Vec2i;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Vector;
 import javax.media.opengl.GL;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.view.opengl.canvas.glyph.GlyphRenderStyle;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphEntry;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphGridPosition;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.data.GlyphAttributeType;
 
 public class GlyphGridPositionModelPlus
 	extends GlyphGridPositionModel
@@ -37,6 +34,7 @@ public class GlyphGridPositionModelPlus
 
 	}
 
+	@Override
 	public void setGlyphPositions(Vector<Vector<GlyphGridPosition>> glyphMap_,
 			ArrayList<GlyphEntry> gg, int centerX, int centerY)
 	{
@@ -50,9 +48,11 @@ public class GlyphGridPositionModelPlus
 		glyphCenterGrid.setXY(centerX, centerY);
 		glyphCenterWorld.set(glyphMap_.get(centerX).get(centerY).getGridPosition().toVec2f());
 
-		//TODO read this from configuration
-		int yIndex = gman.getGlyphAttributeTypeWithExternalColumnNumber(9).getInternalColumnNumber();
-		int xIndex = gman.getGlyphAttributeTypeWithExternalColumnNumber(6).getInternalColumnNumber();
+		// TODO read this from configuration
+		int yIndex = gman.getGlyphAttributeTypeWithExternalColumnNumber(9)
+				.getInternalColumnNumber();
+		int xIndex = gman.getGlyphAttributeTypeWithExternalColumnNumber(6)
+				.getInternalColumnNumber();
 
 		for (GlyphEntry ge : gg)
 		{

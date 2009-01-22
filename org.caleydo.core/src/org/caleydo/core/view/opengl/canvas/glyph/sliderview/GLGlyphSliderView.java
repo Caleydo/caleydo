@@ -11,12 +11,11 @@ import java.util.Iterator;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
-import org.caleydo.core.data.selection.IVirtualArrayDelta;
-import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
@@ -339,8 +338,8 @@ public class GLGlyphSliderView
 						.getConnectedElementRepresentationManager().clear(
 								EIDType.EXPERIMENT_INDEX);
 
-				triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR, selectionManager
-						.getDelta(), null);
+				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+						new DeltaEventContainer<ISelectionDelta>(selectionManager.getDelta()));
 
 			}
 		}
@@ -386,29 +385,6 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	public void triggerSelectionUpdate(EMediatorType eMediatorType,
-			ISelectionDelta selectionDelta, Collection<SelectionCommand> colSelectionCommand)
-	{
-		generalManager.getEventPublisher().triggerSelectionUpdate(eMediatorType, this,
-				selectionDelta, null);
-	}
-
-	@Override
-	public void handleSelectionUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
-			Collection<SelectionCommand> colSelectionCommand, EMediatorType eMediatorType)
-	{
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void handleVAUpdate(EMediatorType mediatorType, IUniqueObject eventTrigger,
-			IVirtualArrayDelta delta, Collection<SelectionCommand> colSelectionCommand)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void broadcastElements(EVAOperation type)
 	{
 
@@ -421,24 +397,16 @@ public class GLGlyphSliderView
 	}
 
 	@Override
-	public void triggerVAUpdate(EMediatorType mediatorType, IVirtualArrayDelta delta,
-			Collection<SelectionCommand> colSelectionCommand)
-	{
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
 	{
 		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
-		
+
 	}
 
 	@Override
 	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
 	{
 		// TODO Auto-generated method stub
-		
+
 	}
 }

@@ -1,10 +1,6 @@
 package org.caleydo.core.manager.event;
 
-import java.util.Collection;
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.selection.ISelectionDelta;
-import org.caleydo.core.data.selection.IVirtualArrayDelta;
-import org.caleydo.core.data.selection.SelectionCommand;
 
 /**
  * @author Michael Kalkusch
@@ -14,6 +10,15 @@ import org.caleydo.core.data.selection.SelectionCommand;
 public interface IMediator
 	extends IUniqueObject
 {
+
+	/**
+	 * Get the type of the mediator. If mediator is used as a private mediator
+	 * this method returns null
+	 * 
+	 * @return the type of the mediator, of null if private
+	 */
+	public EMediatorType getType();
+
 	/**
 	 * Register a new event sender to the mediator.
 	 * 
@@ -73,21 +78,23 @@ public interface IMediator
 	 * @param colSelectionCommand a command to be executed on the selection
 	 *            manager (can be null if not necessary)
 	 */
-	public void triggerUpdate(IUniqueObject eventTrigger, ISelectionDelta selectionDelta,
-			Collection<SelectionCommand> colSelectionCommand);
-
-	/**
-	 * Trigger an update concerning virtual arrays. The details about what to do
-	 * with the update are specified in the delta.
-	 * 
-	 * @param eventTrigger the caller
-	 * @param delta the delta containing all operations to be executed
-	 * @param colSelectionCommand a command to be executed on the manager (can
-	 *            be null if not necessary)
-	 */
-	public void triggerVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta,
-			Collection<SelectionCommand> colSelectionCommand);
-
+	// public void triggerUpdate(IUniqueObject eventTrigger, ISelectionDelta
+	// selectionDelta,
+	// Collection<SelectionCommand> colSelectionCommand);
+	//
+	// /**
+	// * Trigger an update concerning virtual arrays. The details about what to
+	// do
+	// * with the update are specified in the delta.
+	// *
+	// * @param eventTrigger the caller
+	// * @param delta the delta containing all operations to be executed
+	// * @param colSelectionCommand a command to be executed on the manager (can
+	// * be null if not necessary)
+	// */
+	// public void triggerVAUpdate(IUniqueObject eventTrigger,
+	// IVirtualArrayDelta delta,
+	// Collection<SelectionCommand> colSelectionCommand);
 	/**
 	 * Triggers an event, signals that something has happened and sends data
 	 * along

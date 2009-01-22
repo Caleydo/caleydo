@@ -163,7 +163,7 @@ public class GLPathwayContentCreator
 			return;
 
 		iArSelectedEdgeRepId.clear();
-		
+
 		ArrayList<Integer> iAlTmpSelectedGraphItemIds = new ArrayList<Integer>();
 		Set<Integer> tmpItemIDs;
 		tmpItemIDs = internalSelectionManager.getElements(eSelectionType);
@@ -171,10 +171,11 @@ public class GLPathwayContentCreator
 		if (tmpItemIDs != null)
 			iAlTmpSelectedGraphItemIds.addAll(tmpItemIDs);
 
-//		tmpItemIDs = internalSelectionManager.getElements(ESelectionType.SELECTION);
-//
-//		if (tmpItemIDs != null)
-//			iAlTmpSelectedGraphItemIds.addAll(tmpItemIDs);
+		// tmpItemIDs =
+		// internalSelectionManager.getElements(ESelectionType.SELECTION);
+		//
+		// if (tmpItemIDs != null)
+		// iAlTmpSelectedGraphItemIds.addAll(tmpItemIDs);
 
 		if (iAlTmpSelectedGraphItemIds.size() == 0)
 		{
@@ -199,8 +200,7 @@ public class GLPathwayContentCreator
 				{
 					if (tmpItemIDs.contains(graphItemRep.getId()))
 						continue;
-					internalSelectionManager.addToType(eSelectionType, graphItemRep
-							.getId());
+					internalSelectionManager.addToType(eSelectionType, graphItemRep.getId());
 					for (int iConnectionID : internalSelectionManager
 							.getConnectionForElementID(iAlTmpSelectedGraphItemIds
 									.get(iItemIndex)))

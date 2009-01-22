@@ -23,7 +23,7 @@ public class GLGlyphSliderView
 	public void createPartControl(Composite parent)
 	{
 		super.createPartControl(parent);
-		
+
 		createGLCanvas();
 		createGLEventListener(ECommandType.CREATE_GL_GLYPH_SLIDER, glCanvas.getID(), true);
 	}

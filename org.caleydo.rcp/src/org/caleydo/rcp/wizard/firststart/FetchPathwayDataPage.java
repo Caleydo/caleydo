@@ -109,6 +109,7 @@ public final class FetchPathwayDataPage
 		buttonStartFetch.addSelectionListener(new SelectionAdapter()
 		{
 
+			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
 				CmdFetchPathwayData cmdPathwayFetch = (CmdFetchPathwayData) GeneralManager
@@ -121,8 +122,8 @@ public final class FetchPathwayDataPage
 
 				if (bProxyEnable)
 				{
-					cmdPathwayFetch.setProxySettings(txtProxyServer.getText(), 
-							Integer.valueOf(txtProxyPort.getText()));
+					cmdPathwayFetch.setProxySettings(txtProxyServer.getText(), Integer
+							.valueOf(txtProxyPort.getText()));
 				}
 
 				cmdPathwayFetch.doCommand();

@@ -172,7 +172,7 @@ public class ConnectedElementRepresentationManager
 			}
 		}
 	}
-	
+
 	public void clearByConnectionID(EIDType idType, int iConnectionID)
 	{
 		hashIDTypes.get(idType).remove(iConnectionID);
