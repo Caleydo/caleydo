@@ -90,4 +90,6 @@ public interface IGeneralManager
 	public boolean isStandalone();
 
 	public IGUIBridge getGUIBridge();
+	
+	public boolean isWiiModeActive();
 }

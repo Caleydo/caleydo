@@ -62,6 +62,8 @@ public class GeneralManager
 	private boolean bIsStandalone = true;
 
 	private boolean bAllManagersInitialized = false;
+	
+	private boolean bIsWiiMode = true;
 
 	private IStorageManager storageManager;
 	private IMementoManager mementoManager;
@@ -311,49 +313,9 @@ public class GeneralManager
 		return guiBridge;
 	}
 
-	// public void serializationOutputTest() {
-	//		
-	// try
-	// {
-	// ObjectOutputStream out = new ObjectOutputStream(
-	// new FileOutputStream("data/serialize_test.out"));
-	//			
-	// out.writeObject(pathwayManager);
-	// out.close();
-	//			
-	// } catch (FileNotFoundException e)
-	// {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// } catch (IOException e)
-	// {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// }
-	//	
-	// public void serializationInputTest() {
-	//		
-	// try
-	// {
-	// ObjectInputStream in = new ObjectInputStream(
-	// new FileInputStream("data/serialize_test.out"));
-	//			
-	// pathwayManager = (PathwayManager) in.readObject();
-	// in.close();
-	//			
-	// } catch (FileNotFoundException e)
-	// {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// } catch (IOException e)
-	// {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// } catch (ClassNotFoundException e)
-	// {
-	// // TODO Auto-generated catch block
-	// e.printStackTrace();
-	// }
-	// }
+	@Override
+	public boolean isWiiModeActive()
+	{
+		return bIsWiiMode;
+	}
 }

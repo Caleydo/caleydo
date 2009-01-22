@@ -33,7 +33,6 @@ public enum ECommandType
 	CREATE_GL_PARALLEL_COORDINATES_CLINICAL("cmd", "type", "-1", "Create Parallel Coordinates for clinical data"),
 	CREATE_GL_BUCKET_3D("cmd", "type", "-1", "Create Bucket 3D"),
 	CREATE_GL_JUKEBOX_3D("cmd", "type", "-1", "Create Jukebox 3D"),
-	CREATE_GL_WII_TEST("cmd", "type", "-1", "No description available!"),
 	CREATE_GL_REMOTE_GLYPH("cmd", "type", "-1", "Create Remote Glyph"),
 	CREATE_GL_CELL("cmd", "type", "-1", "Create Cell Component Localizer"),
 	CREATE_GL_PANEL_SELECTION("cmd", "type", "-1", "Create Selection Panel"),

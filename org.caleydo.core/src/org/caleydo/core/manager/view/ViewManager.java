@@ -27,7 +27,6 @@ import org.caleydo.core.view.opengl.canvas.remote.glyph.GLRemoteGlyph;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
-import org.caleydo.core.view.opengl.canvas.wii.GLCanvasWiiTest;
 import org.caleydo.core.view.opengl.renderstyle.layout.ARemoteViewLayoutRenderStyle;
 import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.swt.browser.GenomeHTMLBrowserViewRep;
@@ -243,10 +242,6 @@ public class ViewManager
 			case CREATE_GL_JUKEBOX_3D:
 				glEventListener = new GLRemoteRendering(iGLCanvasID, sLabel, viewFrustum,
 						ARemoteViewLayoutRenderStyle.LayoutMode.JUKEBOX);
-				break;
-
-			case CREATE_GL_WII_TEST:
-				glEventListener = new GLCanvasWiiTest(iGLCanvasID, sLabel, viewFrustum);
 				break;
 
 			case CREATE_GL_REMOTE_GLYPH:
