@@ -266,7 +266,7 @@ public class GenericSelectionManager
 	 * 
 	 * @param iElementID the element to be removed
 	 */
-	public void remove(int iElementID)
+	public void remove(int iElementID, boolean bWriteVA)
 	{
 		for (ESelectionType selectionType : alSelectionTypes)
 		{
@@ -276,7 +276,8 @@ public class GenericSelectionManager
 				if (iNumTimesAdded == 0)
 				{
 					hashSelectionTypes.get(selectionType).remove(iElementID);
-					virtualArray.removeByElement(iElementID);
+					if(bWriteVA)
+						virtualArray.removeByElement(iElementID);
 				}
 				else
 					hashSelectionTypes.get(selectionType).put(iElementID, iNumTimesAdded);
@@ -296,7 +297,7 @@ public class GenericSelectionManager
 		HashMap<Integer, Integer> elementMap = hashSelectionTypes.get(type);
 		for (Integer element : elementMap.keySet())
 		{
-			remove(element);
+			remove(element, true);
 		}
 	}
 
@@ -870,7 +871,7 @@ public class GenericSelectionManager
 		}
 		if (delta.getIDType() == internalIDType)
 		{
-			virtualArray.setDelta(delta);
+			
 			for (VADeltaItem item : delta)
 			{
 				// TODO mapping stuff
@@ -884,16 +885,15 @@ public class GenericSelectionManager
 						add(item.getPrimaryID());
 						break;
 					case REMOVE_ELEMENT:
-						remove(item.getPrimaryID());
+						remove(item.getPrimaryID(), false);
 						break;
 					case REMOVE:
-						remove(virtualArray.get(item.getIndex()));
+						remove(virtualArray.get(item.getIndex()), false);
 						break;
 
-					default:
-						throw new IllegalStateException("Unhandled condition");
 				}
 			}
+			virtualArray.setDelta(delta);
 
 		}
 

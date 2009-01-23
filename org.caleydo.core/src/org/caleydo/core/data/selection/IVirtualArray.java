@@ -95,6 +95,16 @@ public interface IVirtualArray
 	public void moveLeft(int iIndex);
 
 	/**
+	 * Moves the element at the specified src index to the target index. The
+	 * element formerly at iSrcIndex is at iTargetIndex after this operation.
+	 * The rest of the elements can change the index.
+	 * 
+	 * @param iSrcIndex the src index of the element
+	 * @param iTargetIndex the target index of the element
+	 */
+	public void move(int iSrcIndex, int iTargetIndex);
+
+	/**
 	 * Moves the element at iIndex to the right
 	 * 
 	 * @param iIndex the index of the element to be moved
@@ -167,5 +177,14 @@ public interface IVirtualArray
 	 * @param delta
 	 */
 	public void setDelta(IVirtualArrayDelta delta);
+
+	/**
+	 * Checks whether and how often an element is contained in the virtual
+	 * array. Returns the number of occurrences, 0 if it does not occur.
+	 * 
+	 * @param iElement the lement to be checked
+	 * @return the number of occurences
+	 */
+	public int containsElement(int iElement);
 
 }

@@ -122,6 +122,13 @@ public class VirtualArray
 	}
 
 	@Override
+	public void move(int iSrcIndex, int iTargetIndex)
+	{
+		Integer iElement = iAlVirtualArray.remove(iSrcIndex);
+		iAlVirtualArray.add(iTargetIndex, iElement);
+	}
+
+	@Override
 	public void moveLeft(int iIndex)
 	{
 		int iTemp = iAlVirtualArray.get(iIndex - 1);
@@ -211,10 +218,37 @@ public class VirtualArray
 					break;
 				case REMOVE_ELEMENT:
 					removeByElement(item.getPrimaryID());
-
+					break;
+				case COPY:
+					copy(item.getIndex());
+					break;
+				case MOVE:
+					move(item.getIndex(), item.getTargetIndex());
+					break;
+				case MOVE_LEFT:
+					moveLeft(item.getIndex());
+					break;
+				case MOVE_RIGHT:
+					moveRight(item.getIndex());
+					break;
+				default:
+					throw new IllegalStateException("Unhandled EVAOperation: "
+							+ item.getType());
 			}
 		}
 		iLastRemovedIndex = -1;
+	}
+
+	@Override
+	public int containsElement(int iElement)
+	{
+		int iCount = 0;
+		for (Integer iCompareElement : iAlVirtualArray)
+		{
+			if (iCompareElement == iElement)
+				iCount++;
+		}
+		return iCount;
 	}
 
 	/**

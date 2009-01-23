@@ -1,5 +1,7 @@
 package org.caleydo.core.data.selection;
 
+import javax.swing.tree.ExpandVetoException;
+
 /**
  * A VADeltaItem contains all information for the modification of a single item
  * in a virtual array. Typically several items are held in a collection, a delta
@@ -21,6 +23,7 @@ public class VADeltaItem
 	private int iPrimaryID = -1;
 	private int iSecondaryID = -1;
 	private int iIndex = -1;
+	private int iTargetIndex = -1;
 
 	/**
 	 * Constructor. Constructing a VAItem externally is forbidden.
@@ -97,6 +100,14 @@ public class VADeltaItem
 		return newItem;
 	}
 
+	/**
+	 * Static Factory for new delta item that removes all instances of a
+	 * specific element. See {@link IVirtualArray#removeByElement(int)} for
+	 * further details.
+	 * 
+	 * @param iElement the element to be removed
+	 * @return the created object
+	 */
 	public static VADeltaItem removeElement(int iElement)
 	{
 		VADeltaItem newItem = new VADeltaItem();
@@ -106,8 +117,74 @@ public class VADeltaItem
 	}
 
 	/**
+	 * Static Factory for new delta item that moves the element at the specified
+	 * index one to the right See {@link IVirtualArray#moveRight(int)} for
+	 * further details.
+	 * 
+	 * @param iIndex the element to be moved
+	 * @return the created object
+	 */
+	public static VADeltaItem moveRight(int iIndex)
+	{
+		VADeltaItem newItem = new VADeltaItem();
+		newItem.vAOperation = EVAOperation.MOVE_RIGHT;
+		newItem.iIndex = iIndex;
+		return newItem;
+	}
+
+	/**
+	 * Static Factory for new delta item that moves the element at the specified
+	 * index one to the left See {@link IVirtualArray#moveLeft(int)} for further
+	 * details.
+	 * 
+	 * @param iIndex the element to be moved
+	 * @return the created object
+	 */
+	public static VADeltaItem moveLeft(int iIndex)
+	{
+		VADeltaItem newItem = new VADeltaItem();
+		newItem.vAOperation = EVAOperation.MOVE_LEFT;
+		newItem.iIndex = iIndex;
+		return newItem;
+	}
+
+	/**
+	 * Static Factory for new delta item that moves the element at the specified
+	 * src index to the specified target index. See
+	 * {@link IVirtualArray#move(int, int)} for further details.
+	 * 
+	 * @param iSrcIndex the src index
+	 * @param iTragetIndex the target index
+	 * @return the created object
+	 */
+	public static VADeltaItem move(int iSrcIndex, int iTragetIndex)
+	{
+		VADeltaItem newItem = new VADeltaItem();
+		newItem.vAOperation = EVAOperation.MOVE_LEFT;
+		newItem.iIndex = iSrcIndex;
+		newItem.iTargetIndex = iTragetIndex;
+		return newItem;
+	}
+
+	/**
+	 * Static Factory for new delta item that copies the element at the
+	 * specified index and adds the new element at iIndex + 1
+	 * {@link IVirtualArray#copy(int)} for further details.
+	 * 
+	 * @param iIndex the element to be copied
+	 * @return the created object
+	 */
+	public static VADeltaItem copy(int iIndex)
+	{
+		VADeltaItem newItem = new VADeltaItem();
+		newItem.vAOperation = EVAOperation.COPY;
+		newItem.iIndex = iIndex;
+		return newItem;
+	}
+
+	/**
 	 * Create a new VADeltaItem with properties specified in operation. The new
-	 * item may take only one parameter, therefore {@link EVAOperation#ADD} can
+	 * item may take only one parameter, therefore {@link EVAOperation#ADD} and {@link EVAOperation#MOVE} can
 	 * not be passed as an argument here
 	 * 
 	 * @param operation the operation the delta item should carry out
@@ -127,6 +204,12 @@ public class VADeltaItem
 				return remove(iVariable);
 			case REMOVE_ELEMENT:
 				return removeElement(iVariable);
+			case MOVE_LEFT:
+				return moveLeft(iVariable);
+			case MOVE_RIGHT: 
+				return moveRight(iVariable);
+			case COPY:
+				return copy(iVariable);
 			default:
 				throw new IllegalArgumentException(
 						"Illegal number of arguments for operation " + operation + ".");
@@ -157,9 +240,23 @@ public class VADeltaItem
 
 		return iIndex;
 	}
+	
+	/**
+	 * Getter for the target index used by the {@link EVAOperation#MOVE}
+	 * 
+	 * @return the target index
+	 * @throws IllegalStateException if operation does not use a target index
+	 */
+	public int getTargetIndex()
+	{
+		if (iTargetIndex == -1)
+			throw new IllegalStateException("Operation " + vAOperation
+					+ " does not need a target index");
+		return iTargetIndex;
+	}
 
 	/**
-	 * Getter for the element
+	 * Getter for the element (the content of the va)
 	 * 
 	 * @return the element
 	 * @throws IllegalStateException if operation does not use an element
@@ -173,6 +270,8 @@ public class VADeltaItem
 
 		return iPrimaryID;
 	}
+
+
 
 	@Override
 	public int getSecondaryID()

@@ -26,7 +26,24 @@ public enum EVAOperation
 	 */
 	REMOVE,
 	/**
-	 * Remove a specific element
+	 * Remove all occurrences of a specific element
 	 */
-	REMOVE_ELEMENT
+	REMOVE_ELEMENT,
+	/**
+	 * Move an element from a specific index to another index
+	 */
+	MOVE,
+	/**
+	 * Move an element at a specific index one to the right
+	 */
+	MOVE_RIGHT,
+	/**
+	 * Move an element at a specific index one to the left
+	 */
+	MOVE_LEFT,
+	/**
+	 * Copy an element at a specific index. The result will be added at index +
+	 * 1, the rest will be moved one to the right
+	 */
+	COPY
 }

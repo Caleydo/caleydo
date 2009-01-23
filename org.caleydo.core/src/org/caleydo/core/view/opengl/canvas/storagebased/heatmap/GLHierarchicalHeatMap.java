@@ -158,6 +158,8 @@ public class GLHierarchicalHeatMap
 		iNumberOfRandomElements = generalManager.getPreferenceStore().getInt(
 				"hmNumRandomSamplinPoints");
 
+		bUseRandomSampling = false;
+
 		if (iNumberOfRandomElements < 2)
 			throw new IllegalStateException("Number of elements not supported!!");
 
@@ -366,7 +368,10 @@ public class GLHierarchicalHeatMap
 		for (Integer iContentIndex : set.getVA(iContentVAID))
 		{
 			iCount++;
-			for (Integer iStorageIndex : set.getVA(iStorageVAID))
+			// TODO note from alex: here the storage has the right size, but
+			// this is not reflected in the texture
+			IVirtualArray storageVA = set.getVA(iStorageVAID);
+			for (Integer iStorageIndex : storageVA)
 			{
 				if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER,
 						iContentIndex)
@@ -502,6 +507,13 @@ public class GLHierarchicalHeatMap
 	@Override
 	protected void reactOnExternalSelection()
 	{
+		// TODO note from alex: this has not the desired effect here, should
+		// redraw the texture based
+		// on the changed virtual array. Bernhard please investigate. I'll put
+		// it some better place once we get it working in general
+		initTextures();
+		initPosCursor();
+
 		int iIndex = 0;
 		int iTexture = 0;
 		int iPos = 0;
@@ -523,6 +535,13 @@ public class GLHierarchicalHeatMap
 					ESelectionType.MOUSE_OVER);
 			AlSelection.add(temp);
 		}
+	}
+
+	@Override
+	protected void reactOnVAChanges(IVirtualArrayDelta delta)
+	{
+		// initData();
+
 	}
 
 	/**
@@ -1435,8 +1454,8 @@ public class GLHierarchicalHeatMap
 		privateMediator.triggerEvent(this, new DeltaEventContainer<IVirtualArrayDelta>(delta));
 		if (selectionDelta.size() > 0)
 		{
-			// TODO: do we need this?
-			privateMediator.triggerEvent(this, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+			privateMediator.triggerEvent(this, new DeltaEventContainer<ISelectionDelta>(
+					selectionDelta));
 
 			triggerEvent(EMediatorType.SELECTION_MEDIATOR,
 					new DeltaEventContainer<ISelectionDelta>(selectionDelta));
@@ -1477,6 +1496,7 @@ public class GLHierarchicalHeatMap
 		storageSelectionManager.resetSelectionManager();
 
 		contentSelectionManager.setVA(set.getVA(iContentVAID));
+		storageSelectionManager.setVA(set.getVA(iStorageVAID));
 
 		if (renderStyle != null)
 		{

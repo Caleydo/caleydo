@@ -396,20 +396,31 @@ public abstract class AStorageBasedView
 				"VA Update called by " + eventTrigger.getClass().getSimpleName()
 						+ ", received in: " + this.getClass().getSimpleName());
 
+		GenericSelectionManager selectionManager;
 		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX)
 		{
-			storageSelectionManager.setVADelta(delta);
+			selectionManager = storageSelectionManager;
 		}
 		else if (delta.getIDType() == EIDType.DAVID)
 		{
-			IVirtualArrayDelta convertedDelta = DeltaConverter.convertDelta(
+			delta = DeltaConverter.convertDelta(
 					EIDType.EXPRESSION_INDEX, delta);
-			contentSelectionManager.setVADelta(convertedDelta);
+			selectionManager = contentSelectionManager;
 		}
 		else if (delta.getIDType() == EIDType.EXPRESSION_INDEX)
 		{
-			contentSelectionManager.setVADelta(delta);
+			selectionManager = contentSelectionManager;
 		}
+		else
+		{
+			return;
+		}
+		
+		reactOnVAChanges(delta);
+		selectionManager.setVADelta(delta);
+		
+		
+		
 		reactOnExternalSelection();
 		setDisplayListDirty();
 	}
@@ -421,6 +432,15 @@ public abstract class AStorageBasedView
 	protected void reactOnExternalSelection()
 	{
 
+	}
+	
+	/**
+	 * Is called any time a virtual array is changed. Can be implemented by inheriting views if some action is necessary
+	 * @param delta
+	 */
+	protected void reactOnVAChanges(IVirtualArrayDelta delta)
+	{
+		
 	}
 
 	/**
