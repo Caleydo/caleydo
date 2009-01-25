@@ -124,8 +124,8 @@ public class WiiRemote
 							+ (float) (movementScaling
 									* Math.sin(relativeVerticalAngle + cameraVerticaleAngle) * fHeadDistance);
 
-				System.out.println("Head position: " + headX + "/" + headY);
-				System.out.println("Head distance: " + fHeadDistance + "\n");
+//				System.out.println("Head position: " + headX + "/" + headY);
+//				System.out.println("Head distance: " + fHeadDistance + "\n");
 
 				float[] point = new float[2];
 				point[0] = headX;
@@ -203,7 +203,7 @@ public class WiiRemote
 	public float[] getCurrentSmoothHeadPosition()
 	{
 		float[] fArTmpPoint;
-		float[] fArSmoothedPoint = new float[] {-1.2f,0.4f};
+		float[] fArSmoothedPoint = new float[]{-1.5f,0.2f};// {-1.3f,0f};
 		
 		if (!GeneralManager.get().isWiiModeActive())
 		{
@@ -219,13 +219,15 @@ public class WiiRemote
 
 		fArSmoothedPoint[0] /= SMOOTH_RANGE;
 		fArSmoothedPoint[1] /= SMOOTH_RANGE;
+		
+//		System.out.println("Head position: " +fArSmoothedPoint[0] + " / " + fArSmoothedPoint[1]);
 
 		return fArSmoothedPoint;
 	}
 
 	public float getCurrentHeadDistance()
 	{
-		float fSmoothedHeadDistance = 10;
+		float fSmoothedHeadDistance = 8;
 		
 		if (!GeneralManager.get().isWiiModeActive())
 		{

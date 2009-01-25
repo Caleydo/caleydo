@@ -164,38 +164,31 @@ public class GLOffScreenTextureRenderer
         
         if (stackLevel.getElementByPositionIndex(0).getContainedElementID() != -1)
         {
-        	gl.glPushMatrix();
-        	Transform transform = stackLevel.getElementByPositionIndex(0).getTransform();
-        	Vec3f translation = transform.getTranslation();
-        	Vec3f scale = transform.getScale();
-        	Rotf rot = transform.getRotation();
-        	
-    		float fAK = 4 -1*fNormalizedHeadDist;
-    		float fGK = fBucketHeight + fBucketBottomTop;
-//    		float fAngle = (float) Math.atan((fGK/fAK));
-        	
-    		float fPlaneWidth = 5;//(float)Math.sqrt((double)(Math.pow(fAK,2) + Math.pow(fGK,2)));
-    		Vec3f axis = new Vec3f();
-    		
-    		float angle = rot.get(axis);
-//    		System.out.println("Angle: " +Vec3f.convertRadiant2Grad(fAngle));
-    		
-//    		gl.glPushMatrix();
-    		gl.glTranslatef(translation.x(), translation.y(), translation.z());
-    		gl.glRotatef(Vec3f.convertRadiant2Grad(angle), axis.x(),axis.y(),axis.z());
-    		gl.glScalef(scale.x(), scale.y(), scale.z());
-
-    		// Render plane
-//    		gl.glColor3f(1.0f, 0.5f, 0.0f);
-    		gl.glBegin(GL.GL_QUADS);
-    		gl.glVertex3f(0, 0, 0);
-    		gl.glVertex3f(4, 0, 0);
-    		gl.glVertex3f(4, fPlaneWidth, 0);
-    		gl.glVertex3f(0, fPlaneWidth, 0);
-    		gl.glEnd();
-        	
-    		gl.glPopMatrix();
-    		gl.glColor4f(1, 1, 1, 1);
+//        	gl.glPushMatrix();
+//        	Transform transform = stackLevel.getElementByPositionIndex(0).getTransform();
+//        	Vec3f translation = transform.getTranslation();
+//        	Vec3f scale = transform.getScale();
+//        	Rotf rot = transform.getRotation();
+//  
+//    		float fPlaneWidth = 5;//(float)Math.sqrt((double)(Math.pow(fAK,2) + Math.pow(fGK,2)));
+//    		Vec3f axis = new Vec3f();
+//    		
+//    		float angle = rot.get(axis);
+//
+//    		gl.glTranslatef(translation.x(), translation.y(), translation.z());
+//    		gl.glRotatef(Vec3f.convertRadiant2Grad(angle), axis.x(),axis.y(),axis.z());
+//    		gl.glScalef(scale.x(), scale.y(), scale.z());
+//
+//    		// Render plane
+//    		gl.glBegin(GL.GL_QUADS);
+//    		gl.glVertex3f(0, 0, 0);
+//    		gl.glVertex3f(4, 0, 0);
+//    		gl.glVertex3f(4, fPlaneWidth, 0);
+//    		gl.glVertex3f(0, fPlaneWidth, 0);
+//    		gl.glEnd();
+//        	
+//    		gl.glPopMatrix();
+//    		gl.glColor4f(1, 1, 1, 1);
         	
 	        gl.glEnable(GL.GL_TEXTURE_2D);        
 	        gl.glDisable(GL.GL_DEPTH_TEST);  
@@ -279,37 +272,37 @@ public class GLOffScreenTextureRenderer
         
         if (stackLevel.getElementByPositionIndex(2).getContainedElementID() != -1)
         {
-        	gl.glPushMatrix();
-        	Transform transform = stackLevel.getElementByPositionIndex(2).getTransform();
-        	Vec3f translation = transform.getTranslation();
-        	Vec3f scale = transform.getScale();
-        	Rotf rot = transform.getRotation();
-        	
-    		float fAK = 4 -1*fNormalizedHeadDist;
-    		float fGK = fBucketWidth + fBucketBottomLeft;
-    		float fAngle = (float) Math.atan((fGK/fAK));
-        	
-    		float fPlaneWidth = (float)Math.sqrt((double)(Math.pow(fAK,2) + Math.pow(fGK,2)));
-    		Vec3f axis = new Vec3f();
-    		
-    		float angle = rot.get(axis);
-//    		System.out.println("Angle: " +Vec3f.convertRadiant2Grad(fAngle));
-    		
-    		gl.glTranslatef(translation.x(), translation.y(), translation.z());
-    		gl.glRotatef(Vec3f.convertRadiant2Grad(angle), axis.x(),axis.y(),axis.z());
-    		gl.glScalef(scale.x(), scale.y(), scale.z());
-
-    		// Render plane
-//    		gl.glColor3f(1.0f, 0.5f, 0.0f);
-    		gl.glBegin(GL.GL_QUADS);
-    		gl.glVertex3f(0, 0, 0);
-    		gl.glVertex3f(4, 0, 0);
-    		gl.glVertex3f(4, fPlaneWidth, 0);
-    		gl.glVertex3f(0, fPlaneWidth, 0);
-    		gl.glEnd();
-        	
-    		gl.glPopMatrix();
-//    		gl.glColor4f(1, 1, 1, 1);        	
+//        	gl.glPushMatrix();
+//        	Transform transform = stackLevel.getElementByPositionIndex(2).getTransform();
+//        	Vec3f translation = transform.getTranslation();
+//        	Vec3f scale = transform.getScale();
+//        	Rotf rot = transform.getRotation();
+//        	
+//    		float fAK = 4 -1*fNormalizedHeadDist;
+//    		float fGK = fBucketWidth + fBucketBottomLeft;
+//    		float fAngle = (float) Math.atan((fGK/fAK));
+//        	
+//    		float fPlaneWidth = (float)Math.sqrt((double)(Math.pow(fAK,2) + Math.pow(fGK,2)));
+//    		Vec3f axis = new Vec3f();
+//    		
+//    		float angle = rot.get(axis);
+////    		System.out.println("Angle: " +Vec3f.convertRadiant2Grad(fAngle));
+//    		
+//    		gl.glTranslatef(translation.x(), translation.y(), translation.z());
+//    		gl.glRotatef(Vec3f.convertRadiant2Grad(angle), axis.x(),axis.y(),axis.z());
+//    		gl.glScalef(scale.x(), scale.y(), scale.z());
+//
+//    		// Render plane
+////    		gl.glColor3f(1.0f, 0.5f, 0.0f);
+//    		gl.glBegin(GL.GL_QUADS);
+//    		gl.glVertex3f(0, 0, 0);
+//    		gl.glVertex3f(4, 0, 0);
+//    		gl.glVertex3f(4, fPlaneWidth, 0);
+//    		gl.glVertex3f(0, fPlaneWidth, 0);
+//    		gl.glEnd();
+//        	
+//    		gl.glPopMatrix();
+////    		gl.glColor4f(1, 1, 1, 1);        	
         	
 	        gl.glEnable(GL.GL_TEXTURE_2D);        
 	        gl.glDisable(GL.GL_DEPTH_TEST);  

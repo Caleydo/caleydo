@@ -456,15 +456,15 @@ public abstract class AGLConnectionLineRenderer
 			float fAK = fBucketDepth -1*fNormalizedHeadDist;
 			float fGK = fBucketWidth - fBucketBottomTop;
 			float fPlaneWidth = (float)Math.sqrt((double)(Math.pow(fAK,2) + Math.pow(fGK,2)));							
-		
+			
 			float fTransformedX = vecOriginalPoint.x() / 8f * fBucketHeight*2f;
 			float fTransformedY = (vecOriginalPoint.y() / 8f * fPlaneWidth);// * (4 + fYTop - (-4 + fYBottom));
 			
-			float fYScaling = fTransformedY / (fBucketWidth*2f);
-			fTransformedX += fArHeadPosition[0] * fYScaling;
-			
-			vecWiiTransformedPoint = new Vec3f(fTransformedX,
-				fPlaneWidth - fTransformedY, vecOriginalPoint.z()); //  / 4f * fBucketHeight
+			float fYScaling = fTransformedY / fPlaneWidth;
+//			fTransformedX += fArHeadPosition[0] * fYScaling;
+
+			vecWiiTransformedPoint = new Vec3f((fBucketWidth + fBucketBottomLeft) * (1-fYScaling) + fTransformedX,
+				fPlaneWidth - fTransformedY, vecOriginalPoint.z());
 		}
 		else if (stackLevel.getElementByPositionIndex(2) == remoteLevelElement)
 		{
@@ -473,13 +473,13 @@ public abstract class AGLConnectionLineRenderer
 			float fPlaneWidth = (float)Math.sqrt((double)(Math.pow(fAK,2) + Math.pow(fGK,2)));							
 		
 			float fTransformedX = vecOriginalPoint.x() / 8f * fBucketHeight*2f;
-			float fTransformedY = (vecOriginalPoint.y() / 8f * fPlaneWidth);// * (4 + fYTop - (-4 + fYBottom));
+			float fTransformedY = (vecOriginalPoint.y() / 8f * fPlaneWidth);
 			
-			float fYScaling = fTransformedY / (fBucketWidth*2f);
-			fTransformedX += fArHeadPosition[0] * (fYScaling);
+			float fYScaling = fTransformedY / fPlaneWidth;
+//			fTransformedX += fArHeadPosition[1] * (1-fYScaling);
 			
-			vecWiiTransformedPoint = new Vec3f(fTransformedX,
-				fTransformedY, vecOriginalPoint.z()); //  / 4f * fBucketHeight
+			vecWiiTransformedPoint = new Vec3f((fBucketWidth + fBucketBottomLeft) * (fYScaling) + fTransformedX,
+				fTransformedY, vecOriginalPoint.z());
 		}
 
 //		System.out.println("Wii transformed point: " +vecWiiTransformedPoint);

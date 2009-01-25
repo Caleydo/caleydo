@@ -50,6 +50,8 @@ import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
+import org.caleydo.core.view.opengl.util.texture.GLOffScreenTextureRenderer;
+
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -1293,7 +1295,10 @@ public class GLHierarchicalHeatMap
 
 	@Override
 	public synchronized void display(GL gl)
-	{
+	{	
+		if (generalManager.isWiiModeActive())
+			handleWiiInput();
+		
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		// GLHelperFunctions.drawAxis(gl);
 		if (bIsDraggingActive)
@@ -1813,7 +1818,7 @@ public class GLHierarchicalHeatMap
 				{
 					case CLICKED:
 
-						bIsHeatmapInFocus = false;
+						bIsHeatmapInFocus = true;
 						PickingPoint = pick.getPickedPoint();
 						triggerSelectionBlock();
 						setDisplayListDirty();
@@ -1981,5 +1986,17 @@ public class GLHierarchicalHeatMap
 	public boolean isInFocus()
 	{
 		return bIsHeatmapInFocus;
+	}
+	
+	private void handleWiiInput()
+	{
+		float fHeadPositionX = GLOffScreenTextureRenderer.wiiRemote.getCurrentSmoothHeadPosition()[0];	
+
+		if (fHeadPositionX < -3f)
+			bIsHeatmapInFocus = false;
+		else
+			bIsHeatmapInFocus = true;
+		
+		setDisplayListDirty();
 	}
 }

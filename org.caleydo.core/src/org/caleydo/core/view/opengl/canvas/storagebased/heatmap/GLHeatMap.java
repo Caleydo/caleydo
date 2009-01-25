@@ -231,7 +231,7 @@ public class GLHeatMap
 	@Override
 	public synchronized void display(GL gl)
 	{
-		 GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+//		 GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		// GLHelperFunctions.drawAxis(gl);
 		gl.glCallList(iGLDisplayListToCall);
 

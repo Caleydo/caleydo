@@ -79,13 +79,16 @@ public class BucketLayoutRenderStyle
 		float fBucketBottomTop = fArHeadPosition[1] + fBucketHeight;
 		float fBucketBottomBottom = fArHeadPosition[1] - fBucketHeight;		
 		
-		//FIXME: x must take 2.44 as width
 		float fNormalizedHeadDist = -1*wiiRemote.getCurrentHeadDistance() + 7f
 			+ Math.abs(fBucketBottomRight -2)/2 
 			+ Math.abs(fBucketBottomTop - 2) /2;
 		
+//		float fXScaling = (4*2 - Math.abs(fBucketBottomLeft - fBucketBottomRight)) / (4*2);
+//		float fYScaling = (4*2 - Math.abs(fBucketBottomBottom - fBucketBottomTop)) / (4*2);
+		
 		float fXScaling = (4*2 - Math.abs(fBucketBottomLeft) - Math.abs(fBucketBottomRight)) / (4*2);
 		float fYScaling = (4*2 - Math.abs(fBucketBottomBottom) - Math.abs(fBucketBottomTop)) / (4*2);
+
 		
 		Transform transform = new Transform();
 		transform.setTranslation(new Vec3f(fBucketBottomLeft, fBucketBottomBottom, fNormalizedHeadDist));
