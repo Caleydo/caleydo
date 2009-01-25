@@ -63,7 +63,7 @@ public class GeneralManager
 
 	private boolean bAllManagersInitialized = false;
 
-	private boolean bIsWiiMode = true;
+	private boolean bIsWiiMode = false;
 
 	private IStorageManager storageManager;
 	private IMementoManager mementoManager;

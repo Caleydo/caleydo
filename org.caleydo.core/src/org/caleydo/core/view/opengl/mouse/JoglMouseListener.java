@@ -326,8 +326,8 @@ public class JoglMouseListener
 	public void setNavigationModes(boolean bEnablePan, boolean bEnableRotate,
 			boolean bEnableZoom)
 	{
-		this.bEnablePan = bEnablePan;
-		this.bEnableRotate = bEnableRotate;
-		this.bEnableZoom = bEnableZoom;
+		this.bEnablePan = true;//bEnablePan;
+		this.bEnableRotate = true;//bEnableRotate;
+		this.bEnableZoom = true;//bEnableZoom;
 	}
 }

@@ -3,16 +3,22 @@ package org.caleydo.core.view.opengl.canvas.remote;
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
+
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
+
 import javax.media.opengl.GL;
+
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
+import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
+import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
+import org.caleydo.core.view.opengl.util.texture.GLOffScreenTextureRenderer;
 
 /**
  * Class is responsible for rendering and drawing of connection lines (resp.
@@ -365,18 +371,121 @@ public abstract class AGLConnectionLineRenderer
 	}
 
 	protected Vec3f transform(Vec3f vecOriginalPoint, Vec3f vecTranslation, Vec3f vecScale,
-			Rotf rotation)
+			Rotf rotation, RemoteLevelElement remoteLevelElement)
 	{
-
 		Mat4f matSrc = new Mat4f();
 		Vec3f vecTransformedPoint = new Vec3f();
 
 		rotation.toMatrix(matSrc);
 
-		matSrc.xformPt(vecOriginalPoint, vecTransformedPoint);
+		WiiRemote wiiRemote = GLOffScreenTextureRenderer.wiiRemote;
+		
+		float[] fArHeadPosition = wiiRemote.getCurrentSmoothHeadPosition();
+		
+		fArHeadPosition[0] = fArHeadPosition[0] * 4 + 4;
+		fArHeadPosition[1] *= 4;
+		
+		float fBucketWidth = 2f;
+		float fBucketHeight = 2f;
+		float fBucketDepth = 4.0f;
+		float fBucketBottomLeft = -1*fArHeadPosition[0] - fBucketWidth - 1.5f;
+		float fBucketBottomRight = -1*fArHeadPosition[0] + fBucketWidth - 1.5f;
+		float fBucketBottomTop = fArHeadPosition[1] + fBucketHeight;
+		float fBucketBottomBottom = fArHeadPosition[1] - fBucketHeight;			
 
+		float fNormalizedHeadDist = -1*wiiRemote.getCurrentHeadDistance() + 7f 
+			+ Math.abs(fBucketBottomRight -2)/2 
+			+ Math.abs(fBucketBottomTop - 2) /2;
+		
+//		System.out.println("Head dist:" +fNormalizedHeadDist);
+//		System.out.println("bottom left:" +fBucketBottomLeft);
+//		System.out.println("Original point: " +vecOriginalPoint);		
+		
+		Vec3f vecWiiTransformedPoint = new Vec3f(vecOriginalPoint);
+		
+//		if (focusLevel.getElementByPositionIndex(0) == remoteLevelElement)
+//		{
+//			vecWiiTransformedPoint.setZ(he)
+//		}
+		
+		if (stackLevel.getElementByPositionIndex(1) == remoteLevelElement)
+		{
+			float fAK = fBucketDepth -1*fNormalizedHeadDist;
+			float fGK = fBucketWidth + fBucketBottomLeft;
+			float fPlaneWidth = (float)Math.sqrt((double)(Math.pow(fAK,2) + Math.pow(fGK,2)));							
+//			float y1 = fBucketHeight * 2f;
+//			float y2 = fBucketBottomTop;
+//			float x1 = -fBucketWidth;
+//			float x2 = fBucketBottomLeft;
+//			float fKTop = (y2 - y1) / (x2 - x1);
+//			float fYTop = vecOriginalPoint.x() / 8f * fPlaneWidth * fKTop;
+			
+//			y1 = -fBucketHeight;
+//			y2 = fBucketBottomBottom;
+//			x1 = 0;
+//			x2 = fBucketWidth;
+//			float fKBottom = (y2 - y1) / (x2 - x1);
+//			float fYBottom = vecOriginalPoint.x() / 8f * fPlaneWidth * fKBottom;
+		
+			float fTransformedX = vecOriginalPoint.x() / 8f * fPlaneWidth;
+			float fTransformedY = (vecOriginalPoint.y() / 8f * fBucketHeight*2f);// * (4 + fYTop - (-4 + fYBottom));
+			
+			float fXScaling = fTransformedX / fPlaneWidth;
+			fTransformedY += (fArHeadPosition[1] * fXScaling);
+			
+			vecWiiTransformedPoint = new Vec3f(fTransformedX,
+				-fBucketHeight + fTransformedY, vecOriginalPoint.z()); //  / 4f * fBucketHeight
+		}
+		else if (stackLevel.getElementByPositionIndex(3) == remoteLevelElement)
+		{
+			float fAK = fBucketDepth -1*fNormalizedHeadDist;
+			float fGK = fBucketWidth - fBucketBottomRight;
+			float fPlaneWidth = (float)Math.sqrt((double)(Math.pow(fAK,2) + Math.pow(fGK,2)));						
+		
+			float fTransformedX = vecOriginalPoint.x() / 8f * fPlaneWidth;
+			float fTransformedY = (vecOriginalPoint.y() / 8f * fBucketHeight*2f);// * (4 + fYTop - (-4 + fYBottom));
+			
+			float fXScaling = fTransformedX / fPlaneWidth;
+			fTransformedY += (fArHeadPosition[1] * (1-fXScaling));
+			
+			vecWiiTransformedPoint = new Vec3f(fPlaneWidth - fTransformedX,
+				-fBucketHeight + fTransformedY, vecOriginalPoint.z()); //  / 4f * fBucketHeight
+		}
+		else if (stackLevel.getElementByPositionIndex(0) == remoteLevelElement)
+		{
+			float fAK = fBucketDepth -1*fNormalizedHeadDist;
+			float fGK = fBucketWidth - fBucketBottomTop;
+			float fPlaneWidth = (float)Math.sqrt((double)(Math.pow(fAK,2) + Math.pow(fGK,2)));							
+		
+			float fTransformedX = vecOriginalPoint.x() / 8f * fBucketHeight*2f;
+			float fTransformedY = (vecOriginalPoint.y() / 8f * fPlaneWidth);// * (4 + fYTop - (-4 + fYBottom));
+			
+			float fYScaling = fTransformedY / (fBucketWidth*2f);
+			fTransformedX += fArHeadPosition[0] * fYScaling;
+			
+			vecWiiTransformedPoint = new Vec3f(fTransformedX,
+				fPlaneWidth - fTransformedY, vecOriginalPoint.z()); //  / 4f * fBucketHeight
+		}
+		else if (stackLevel.getElementByPositionIndex(2) == remoteLevelElement)
+		{
+			float fAK = fBucketDepth -1*fNormalizedHeadDist;
+			float fGK = fBucketWidth + fBucketBottomBottom;
+			float fPlaneWidth = (float)Math.sqrt((double)(Math.pow(fAK,2) + Math.pow(fGK,2)));							
+		
+			float fTransformedX = vecOriginalPoint.x() / 8f * fBucketHeight*2f;
+			float fTransformedY = (vecOriginalPoint.y() / 8f * fPlaneWidth);// * (4 + fYTop - (-4 + fYBottom));
+			
+			float fYScaling = fTransformedY / (fBucketWidth*2f);
+			fTransformedX += fArHeadPosition[0] * (fYScaling);
+			
+			vecWiiTransformedPoint = new Vec3f(fTransformedX,
+				fTransformedY, vecOriginalPoint.z()); //  / 4f * fBucketHeight
+		}
+
+//		System.out.println("Wii transformed point: " +vecWiiTransformedPoint);
+		
+		matSrc.xformPt(vecWiiTransformedPoint, vecTransformedPoint);
 		vecTransformedPoint.componentMul(vecScale);
-
 		vecTransformedPoint.add(vecTranslation);
 
 		return vecTransformedPoint;

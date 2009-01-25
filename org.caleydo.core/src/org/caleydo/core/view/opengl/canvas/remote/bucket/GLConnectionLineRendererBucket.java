@@ -83,7 +83,7 @@ public class GLConnectionLineRendererBucket
 						for (Vec3f vecCurrentPoint : alPoints)
 						{
 							alPointsTransformed.add(transform(vecCurrentPoint, vecTranslation,
-									vecScale, rotation));
+									vecScale, rotation, remoteLevelElement));
 						}
 						int iKey = selectedElementRep.getContainingViewID();
 

@@ -45,6 +45,7 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
@@ -207,6 +208,8 @@ public class GLPathway
 	public synchronized void display(final GL gl)
 	{
 		checkForHits(gl);
+		
+		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
 		// TODO: also put this in global DL
 		renderPathwayById(gl, iPathwayID);

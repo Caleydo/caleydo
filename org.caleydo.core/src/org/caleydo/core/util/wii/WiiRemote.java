@@ -2,7 +2,10 @@ package org.caleydo.core.util.wii;
 
 import java.util.LinkedList;
 import java.util.Queue;
+
+import org.caleydo.core.manager.general.GeneralManager;
 import org.eclipse.swt.graphics.Point;
+
 import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
 import wiiusej.values.IRSource;
@@ -121,8 +124,8 @@ public class WiiRemote
 							+ (float) (movementScaling
 									* Math.sin(relativeVerticalAngle + cameraVerticaleAngle) * fHeadDistance);
 
-				// System.out.println("Head position: " + headX + "/" + headY);
-				// System.out.println("Head distance: " + fHeadDistance + "\n");
+				System.out.println("Head position: " + headX + "/" + headY);
+				System.out.println("Head distance: " + fHeadDistance + "\n");
 
 				float[] point = new float[2];
 				point[0] = headX;
@@ -130,7 +133,7 @@ public class WiiRemote
 				posInputQueue.add(point);
 				distanceInputQueue.add(fHeadDistance);
 
-				if (posInputQueue.size() > 40)
+				if (posInputQueue.size() > SMOOTH_RANGE)
 				{
 					posInputQueue.remove();
 					distanceInputQueue.remove();
@@ -200,10 +203,13 @@ public class WiiRemote
 	public float[] getCurrentSmoothHeadPosition()
 	{
 		float[] fArTmpPoint;
-		float[] fArSmoothedPoint = new float[2];
-		fArSmoothedPoint[0] = 0;
-		fArSmoothedPoint[1] = 0;
-
+		float[] fArSmoothedPoint = new float[] {-1.2f,0.4f};
+		
+		if (!GeneralManager.get().isWiiModeActive())
+		{
+			return fArSmoothedPoint;
+		}
+		
 		for (int i = 0; i < SMOOTH_RANGE; i++)
 		{
 			fArTmpPoint = ((LinkedList<float[]>) posInputQueue).get(i);
@@ -219,7 +225,12 @@ public class WiiRemote
 
 	public float getCurrentHeadDistance()
 	{
-		float fSmoothedHeadDistance = 0;
+		float fSmoothedHeadDistance = 10;
+		
+		if (!GeneralManager.get().isWiiModeActive())
+		{
+			return fSmoothedHeadDistance;
+		}
 
 		for (int i = 0; i < SMOOTH_RANGE; i++)
 		{
