@@ -41,7 +41,8 @@ public enum EPickingType
 	PATHWAY_TEXTURE_SELECTION(EManagedObjectType.GL_PATHWAY),
 
 	// heat map
-	HEAT_MAP_FIELD_SELECTION(EManagedObjectType.GL_HEAT_MAP),
+	HEAT_MAP_LINE_SELECTION(EManagedObjectType.GL_HEAT_MAP),
+	HEAT_MAP_AXIS_SELECTION(EManagedObjectType.GL_HEAT_MAP),
 
 	// hierarchical heat map
 	HIER_HEAT_MAP_FIELD_SELECTION(EManagedObjectType.GL_HIER_HEAT_MAP),

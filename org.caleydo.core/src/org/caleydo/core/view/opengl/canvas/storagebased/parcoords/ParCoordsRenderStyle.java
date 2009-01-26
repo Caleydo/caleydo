@@ -139,13 +139,18 @@ public class ParCoordsRenderStyle
 	public float getAxisSpacing(final int iNumberOfAxis)
 	{
 
-		fAxisSpacing = (viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * 2 * getScaling())
-				/ (iNumberOfAxis - 1);
+		fAxisSpacing =
+				getRenderWidth() / (iNumberOfAxis - 1);
 
 		if (fAxisSpacing < fAxisSpacingLowerLimit * getScaling())
 			return fAxisSpacingLowerLimit * getScaling();
 
 		return fAxisSpacing;
+	}
+	
+	public float getRenderWidth()
+	{
+		return (viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * 2 * getScaling());
 	}
 
 	public float getAxisHeight()
@@ -219,6 +224,8 @@ public class ParCoordsRenderStyle
 	{
 		return BACKGROUND_COLOR;
 	}
+	
+
 
 	// GATE_WIDTH = 0.015f;
 	// private static final float GATE_NEGATIVE_Y_OFFSET = -0.04f;

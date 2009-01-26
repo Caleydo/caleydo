@@ -207,7 +207,7 @@ public class HeatMapRenderStyle
 		// return viewFrustum.getHeight();
 	}
 
-	private float getRenderHeight()
+	public float getRenderHeight()
 	{
 		// if (!bRenderStorageHorizontally)
 		// {

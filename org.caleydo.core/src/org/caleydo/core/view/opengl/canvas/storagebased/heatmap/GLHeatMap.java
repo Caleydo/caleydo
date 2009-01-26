@@ -23,6 +23,7 @@ import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
@@ -46,6 +47,7 @@ import org.caleydo.core.view.opengl.miniview.GLColorMappingBarMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.omg.CORBA.REBIND;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -281,6 +283,7 @@ public class GLHeatMap
 			gl.glTranslatef(fAnimationTranslation, 0.0f, 0.0f);
 
 			renderHeatMap(gl);
+			renderStorageSelection(gl);
 			renderSelection(gl, ESelectionType.MOUSE_OVER);
 			renderSelection(gl, ESelectionType.SELECTION);
 
@@ -476,7 +479,7 @@ public class GLHeatMap
 
 		switch (ePickingType)
 		{
-			case HEAT_MAP_FIELD_SELECTION:
+			case HEAT_MAP_LINE_SELECTION:
 				ESelectionType eSelectionType;
 				switch (pickingMode)
 				{
@@ -492,29 +495,6 @@ public class GLHeatMap
 					case CLICKED:
 						eSelectionType = ESelectionType.SELECTION;
 						break;
-					// contentSelectionManager.clearSelection(ESelectionType.SELECTION);
-					// contentSelectionManager.addToType(ESelectionType.SELECTION,
-					// iExternalID);
-					//
-					// contentSelectionManager.addConnectionID(generalManager.getIDManager()
-					// .createID(EManagedObjectType.CONNECTION), iExternalID);
-					//
-					// if (eFieldDataType == EIDType.EXPRESSION_INDEX)
-					// {
-					//						
-					// triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-					// new SelectionCommandEventContainer(EIDType.DAVID,
-					// new SelectionCommand(ESelectionCommandType.CLEAR,
-					// ESelectionType.MOUSE_OVER)));
-					// ISelectionDelta selectionDelta = contentSelectionManager
-					// .getDelta();
-					// handleConnectedElementRep(selectionDelta);
-					// triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-					// new
-					// DeltaEventContainer<ISelectionDelta>(selectionDelta));
-					// }
-					// break;
-
 					case MOUSE_OVER:
 						eSelectionType = ESelectionType.MOUSE_OVER;
 						break;
@@ -551,21 +531,11 @@ public class GLHeatMap
 				bIsDisplayListDirtyLocal = true;
 				bIsDisplayListDirtyRemote = true;
 
-				// Collection<SelectionCommand> colSelectionCommand = new
-				// ArrayList<SelectionCommand>();
-				// colSelectionCommand.add(new
-				// SelectionCommand(ESelectionCommandType.CLEAR,
-				// ESelectionType.MOUSE_OVER));
-				// triggerSelectionUpdate(EMediatorType.ALL_REGISTERED,
-				// contentSelectionManager.getDelta(), colSelectionCommand);
-				// triggerUpdate(EMediatorType.SELECTION_MEDIATOR,
-				// contentSelectionManager.getDelta(),
-				// colSelectionCommand);
-				// // TODO: improve mediator system
-				// triggerUpdate(EMediatorType.HIERACHICAL_HEAT_MAP,
-				// contentSelectionManager.getDelta(),
-				// colSelectionCommand);
+			case HEAT_MAP_AXIS_SELECTION:
+				System.out.println("picked");
+
 		}
+
 		pickingManager.flushHits(iUniqueID, ePickingType);
 
 	}
@@ -682,6 +652,31 @@ public class GLHeatMap
 		}
 	}
 
+	private void renderStorageSelection(GL gl)
+	{
+		IVirtualArray storageVA = set.getVA(iStorageVAID);
+		float fYPosition = 0;
+		float color = 0.2f;
+		for (Integer iStorageIndex : storageVA)
+		{
+			pickingManager.getPickingID(iUniqueID, EPickingType.HEAT_MAP_AXIS_SELECTION,
+					iStorageIndex);
+			gl.glColor4f(color, 0, 0, 0.0f);
+			color += 0.2f;
+			gl.glBegin(GL.GL_POLYGON);
+			gl.glVertex3f(0, fYPosition, 0.1f);
+			gl.glVertex3f(renderStyle.getRenderHeight(),
+					fYPosition, 0.1f);
+			gl.glVertex3f(renderStyle.getRenderHeight(),
+					fYPosition + renderStyle.getFieldHeight(), 0.1f);
+			gl.glVertex3f(0, fYPosition + renderStyle.getFieldHeight(), 0.1f);
+			gl.glEnd();
+			fYPosition += renderStyle.getFieldHeight();
+			gl.glPopName();
+		}
+
+	}
+
 	private void renderElement(final GL gl, final int iStorageIndex, final int iContentIndex,
 			final float fXPosition, final float fYPosition, final float fFieldWidth,
 			final float fFieldHeight)
@@ -704,7 +699,7 @@ public class GLHeatMap
 		gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
-				EPickingType.HEAT_MAP_FIELD_SELECTION, iContentIndex));
+				EPickingType.HEAT_MAP_LINE_SELECTION, iContentIndex));
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);
 		gl.glVertex3f(fXPosition + fFieldWidth, fYPosition, FIELD_Z);
