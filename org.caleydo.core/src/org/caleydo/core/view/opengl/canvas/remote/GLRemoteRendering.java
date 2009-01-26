@@ -197,15 +197,14 @@ public class GLRemoteRendering
 
 		focusLevel = layoutRenderStyle.initFocusLevel();
 		
-//		if (GeneralManager.get().isWiiModeActive() && layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
-//		{
-			stackLevel = ((BucketLayoutRenderStyle)layoutRenderStyle)
-				.initStackLevelWii(glOffScreenRenderer.getWiiRemote());
-//		}
-//		else
-//		{
-//			stackLevel = layoutRenderStyle.initStackLevel(bucketMouseWheelListener.isZoomedIn());
-//		}
+		if (GeneralManager.get().isWiiModeActive() && layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
+		{
+			stackLevel = ((BucketLayoutRenderStyle)layoutRenderStyle).initStackLevelWii();
+		}
+		else
+		{
+			stackLevel = layoutRenderStyle.initStackLevel(bucketMouseWheelListener.isZoomedIn());
+		}
 		
 		poolLevel = layoutRenderStyle.initPoolLevel(bucketMouseWheelListener.isZoomedIn(), -1);
 		selectionLevel = layoutRenderStyle.initMemoLevel();
@@ -449,37 +448,32 @@ public class GLRemoteRendering
 		// layoutRenderStyle.initStackLevel(false);
 		// layoutRenderStyle.initMemoLevel();
 		
-//		if (GeneralManager.get().isWiiModeActive() && layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
-//		{
+		if (GeneralManager.get().isWiiModeActive() && layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
+		{
 			((BucketLayoutRenderStyle)layoutRenderStyle)
-				.initFocusLevelWii(glOffScreenRenderer.getWiiRemote());
-			
-//			layoutRenderStyle.initFocusLevel();
-			
+				.initFocusLevelWii();
+						
 			((BucketLayoutRenderStyle)layoutRenderStyle)
-				.initStackLevelWii(glOffScreenRenderer.getWiiRemote());
-//		}
+				.initStackLevelWii();
+		}
 
 		doSlerpActions(gl);
 		initializeNewPathways(gl);
-
-//		if (!generalManager.isWiiModeActive())
-//		{
-//			renderRemoteLevel(gl, stackLevel);
-//		}
-//		else
-//		{
-//			layoutRenderStyle.initStackLevel(false);
-//			renderRemoteLevel(gl, stackLevel);
-			
+		
+		if (!generalManager.isWiiModeActive())
+		{
+			renderRemoteLevel(gl, focusLevel);
+			renderRemoteLevel(gl, stackLevel);
+		}
+		else
+		{
 			if(bUpdateOffScreenTextures)
 				updateOffScreenTextures(gl);
 			
+			renderRemoteLevel(gl, focusLevel);
+			
 			glOffScreenRenderer.renderRubberBucket(gl, stackLevel, focusLevel, iUniqueID);
-//		}
-
-		renderRemoteLevel(gl, focusLevel);
-//		renderRemoteLevel(gl, stackLevel);
+		}
 		
 		// If user zooms to the bucket bottom all but the under
 		// focus layer is _not_ rendered.
@@ -509,18 +503,6 @@ public class GLRemoteRendering
 		renderHandles(gl);
 
 		// gl.glCallList(iGLDisplayList);
-		
-//		if (!generalManager.isWiiModeActive())
-//		{
-//			renderRemoteLevel(gl, focusLevel);
-//			renderRemoteLevel(gl, stackLevel);
-//		}
-//		else		transform.setRotation(new Rotf(new Vec3f(0,0,0), (float) (Vec3f.convertGrad2Radiant(90)-fAngle)));
-
-//		{
-////			glOffScreenRenderer.renderOffScreenContent(gl);
-//			glOffScreenRenderer.renderRubberBucket(gl, stackLevel, focusLevel);
-//		}
 	}
 
 	public synchronized void setInitialContainedViews(
@@ -877,20 +859,6 @@ public class GLRemoteRendering
 				gl.glTranslatef(2 + 4 * fZoomedInScalingFactor, +4 - 4
 						* fZoomedInScalingFactor, -0.02f);
 			}
-
-			// gl.glTranslatef(-2, -2 - fBilboardWidth, 4.02f);
-			// gl.glRotatef(180, 1, 0, 0);
-			// renderSingleHandle(gl, element.getID(),
-			// EPickingType.BUCKET_DRAG_ICON_SELECTION,
-			// EIconTextures.NAVIGATION_DRAG_VIEW, fBilboardWidth,
-			// fBilboardWidth);
-			// gl.glTranslatef(4 - fBilboardWidth, 0, 0);
-			// renderSingleHandle(gl, element.getID(),
-			// EPickingType.BUCKET_REMOVE_ICON_SELECTION,
-			// EIconTextures.NAVIGATION_REMOVE_VIEW, fBilboardWidth,
-			// fBilboardWidth);
-			// gl.glRotatef(-180, 1, 0, 0);
-			// gl.glTranslatef(-2 + fBilboardWidth, 2 + fBilboardWidth, -4.02f);
 		}
 
 		// Bucket stack left
@@ -933,24 +901,6 @@ public class GLRemoteRendering
 						false, 1 / fZoomedInScalingFactor);
 				gl.glTranslatef(-2, +4 - 4 * fZoomedInScalingFactor, -0.02f);
 			}
-
-			// gl.glTranslatef(2f / fAspectRatio + fBilboardWidth - 0.8f, 2f,
-			// 4.015f);
-			// gl.glRotatef(-90, 0, 0, 1);
-			// renderSingleHandle(gl,
-			// stackLevel.getElementByPositionIndex(3).getID(),
-			// EPickingType.BUCKET_DRAG_ICON_SELECTION,
-			// EIconTextures.NAVIGATION_DRAG_VIEW, fBilboardWidth,
-			// fBilboardWidth);
-			// gl.glTranslatef(4 - fBilboardWidth, 0, 0);
-			// renderSingleHandle(gl,
-			// stackLevel.getElementByPositionIndex(3).getID(),
-			// EPickingType.BUCKET_REMOVE_ICON_SELECTION,
-			// EIconTextures.NAVIGATION_REMOVE_VIEW, fBilboardWidth,
-			// fBilboardWidth);
-			// gl.glRotatef(90, 0, 0, 1);
-			// gl.glTranslatef(-2f / fAspectRatio - fBilboardWidth + 0.8f, -2f
-			// +4f-fBilboardWidth , -4.015f);
 		}
 
 		// Bucket center
@@ -971,22 +921,6 @@ public class GLRemoteRendering
 			gl.glScalef(1 / 2f, 1 / 2f, 1 / 2f);
 
 			gl.glTranslatef(2, 2 + 2 * 0.075f - fYCorrection, 0);
-
-			// float fBilboardWidth = 0.075f;
-			// gl.glTranslatef(-2 , 2, 0.05f);
-			// gl.glScalef(2, 2, 2);
-			// renderSingleHandle(gl, element.getID(),
-			// EPickingType.BUCKET_DRAG_ICON_SELECTION,
-			// EIconTextures.NAVIGATION_DRAG_VIEW, fBilboardWidth,
-			// fBilboardWidth);
-			// gl.glTranslatef(2 - fBilboardWidth, 0, 0);
-			// renderSingleHandle(gl, element.getID(),
-			// EPickingType.BUCKET_REMOVE_ICON_SELECTION,
-			// EIconTextures.NAVIGATION_REMOVE_VIEW, fBilboardWidth,
-			// fBilboardWidth);
-			// gl.glScalef(1 / 2f, 1 / 2f, 1 / 2f);
-			// gl.glTranslatef(-2 + 2*fBilboardWidth, -2, -0.05f);
-
 		}
 	}
 
@@ -3025,25 +2959,25 @@ public class GLRemoteRendering
 		if (stackLevel.getElementByPositionIndex(0).getContainedElementID() != -1)
 		{
 			glOffScreenRenderer.renderToTexture(gl, 
-					stackLevel.getElementByPositionIndex(0).getContainedElementID(), 1, iViewWidth, iViewHeight);			
+					stackLevel.getElementByPositionIndex(0).getContainedElementID(), 0, iViewWidth, iViewHeight);			
 		}
 
 		if (stackLevel.getElementByPositionIndex(1).getContainedElementID() != -1)
 		{
 			glOffScreenRenderer.renderToTexture(gl, 
-					stackLevel.getElementByPositionIndex(1).getContainedElementID(), 2, iViewWidth, iViewHeight);
+					stackLevel.getElementByPositionIndex(1).getContainedElementID(), 1, iViewWidth, iViewHeight);
 		}
 
 		if (stackLevel.getElementByPositionIndex(2).getContainedElementID() != -1)
 		{
 			glOffScreenRenderer.renderToTexture(gl, 
-					stackLevel.getElementByPositionIndex(2).getContainedElementID(), 3, iViewWidth, iViewHeight);
+					stackLevel.getElementByPositionIndex(2).getContainedElementID(), 2, iViewWidth, iViewHeight);
 		}
 		
 		if (stackLevel.getElementByPositionIndex(3).getContainedElementID() != -1)
 		{
 			glOffScreenRenderer.renderToTexture(gl,
-					stackLevel.getElementByPositionIndex(3).getContainedElementID(), 4, iViewWidth, iViewHeight);		
+					stackLevel.getElementByPositionIndex(3).getContainedElementID(), 3, iViewWidth, iViewHeight);		
 		}
 
 		gl.glPopMatrix();

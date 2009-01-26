@@ -32,6 +32,7 @@ import org.caleydo.core.manager.specialized.genome.pathway.PathwayManager;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
 import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
+import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.preference.PreferenceStore;
 
@@ -63,8 +64,6 @@ public class GeneralManager
 
 	private boolean bAllManagersInitialized = false;
 
-	private boolean bIsWiiMode = false;
-
 	private IStorageManager storageManager;
 	private IMementoManager mementoManager;
 	// protected IVirtualArrayManager virtualArrayManager;
@@ -85,6 +84,10 @@ public class GeneralManager
 	private IGUIBridge guiBridge;
 
 	private ResourceLoader resourceLoader;
+	
+	private WiiRemote wiiRemote;
+	
+	private boolean bIsWiiMode = false;
 
 	@Override
 	public void init(boolean bIsStandalone, IGUIBridge externalGUIBridge)
@@ -135,6 +138,12 @@ public class GeneralManager
 		if (bIsStandalone)
 		{
 			guiBridge = new SWTStandaloneBridge();
+		}
+		
+		wiiRemote = new WiiRemote();
+		if (GeneralManager.get().isWiiModeActive())
+		{
+			wiiRemote.connect();
 		}
 	}
 
@@ -318,4 +327,10 @@ public class GeneralManager
 	{
 		return bIsWiiMode;
 	}
+	
+	@Override
+	public WiiRemote getWiiRemote()
+	{
+		return wiiRemote;
+	}	
 }

@@ -209,7 +209,7 @@ public class GLPathway
 	{
 		checkForHits(gl);
 		
-		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+//		GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
 		// TODO: also put this in global DL
 		renderPathwayById(gl, iPathwayID);

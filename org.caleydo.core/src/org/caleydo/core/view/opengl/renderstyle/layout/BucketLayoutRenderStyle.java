@@ -4,6 +4,7 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 
+import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
@@ -64,9 +65,9 @@ public class BucketLayoutRenderStyle
 		return focusLevel;
 	}
 	
-	public RemoteLevel initFocusLevelWii(WiiRemote wiiRemote)
+	public RemoteLevel initFocusLevelWii()
 	{
-		float[] fArHeadPosition = wiiRemote.getCurrentSmoothHeadPosition();
+		float[] fArHeadPosition = GeneralManager.get().getWiiRemote().getCurrentSmoothHeadPosition();
 		
 		fArHeadPosition[0] = fArHeadPosition[0] * 4 + 4;
 		fArHeadPosition[1] *= 4;
@@ -79,15 +80,15 @@ public class BucketLayoutRenderStyle
 		float fBucketBottomTop = fArHeadPosition[1] + fBucketHeight;
 		float fBucketBottomBottom = fArHeadPosition[1] - fBucketHeight;		
 		
-		float fNormalizedHeadDist = -1*wiiRemote.getCurrentHeadDistance() + 7f
+		float fNormalizedHeadDist = -1*GeneralManager.get().getWiiRemote().getCurrentHeadDistance() + 7f
 			+ Math.abs(fBucketBottomRight -2)/2 
 			+ Math.abs(fBucketBottomTop - 2) /2;
+	
+		float fXScaling = (4*2 - Math.abs(fBucketBottomLeft - fBucketBottomRight)) / (4*2);
+		float fYScaling = (4*2 - Math.abs(fBucketBottomBottom - fBucketBottomTop)) / (4*2);
 		
-//		float fXScaling = (4*2 - Math.abs(fBucketBottomLeft - fBucketBottomRight)) / (4*2);
-//		float fYScaling = (4*2 - Math.abs(fBucketBottomBottom - fBucketBottomTop)) / (4*2);
-		
-		float fXScaling = (4*2 - Math.abs(fBucketBottomLeft) - Math.abs(fBucketBottomRight)) / (4*2);
-		float fYScaling = (4*2 - Math.abs(fBucketBottomBottom) - Math.abs(fBucketBottomTop)) / (4*2);
+//		float fXScaling = (4*2 - Math.abs(fBucketBottomLeft) - Math.abs(fBucketBottomRight)) / (4*2);
+//		float fYScaling = (4*2 - Math.abs(fBucketBottomBottom) - Math.abs(fBucketBottomTop)) / (4*2);
 
 		
 		Transform transform = new Transform();
@@ -98,9 +99,10 @@ public class BucketLayoutRenderStyle
 		return focusLevel;
 	}
 	
-	public RemoteLevel initStackLevelWii(WiiRemote wiiRemote)
+	public RemoteLevel initStackLevelWii()
 	{
-		float[] fArHeadPosition = wiiRemote.getCurrentSmoothHeadPosition();
+		float[] fArHeadPosition = GeneralManager.get().getWiiRemote()
+			.getCurrentSmoothHeadPosition();
 		
 		fArHeadPosition[0] = fArHeadPosition[0] * 4 + 4;
 		fArHeadPosition[1] *= 4;
@@ -112,9 +114,8 @@ public class BucketLayoutRenderStyle
 		float fBucketBottomRight = -1*fArHeadPosition[0] + fBucketWidth - 1.5f;
 		float fBucketBottomTop = fArHeadPosition[1] + fBucketHeight;
 		float fBucketBottomBottom = fArHeadPosition[1] - fBucketHeight;			
-
-		//FIXME: x must take 2.44 as width
-		float fNormalizedHeadDist = -1*wiiRemote.getCurrentHeadDistance() + 7f 
+		float fNormalizedHeadDist = -1*GeneralManager.get().getWiiRemote()
+			.getCurrentHeadDistance() + 7f 
 			+ Math.abs(fBucketBottomRight -2)/2 
 			+ Math.abs(fBucketBottomTop - 2) /2;
 		
@@ -125,12 +126,12 @@ public class BucketLayoutRenderStyle
 		
 		float fAK = 4 -1*fNormalizedHeadDist;
 		float fGK = fBucketHeight - fBucketBottomTop;
-		float fAngle = (float) Math.atan((fAK/fGK));
+		float fAngle = (float) Math.atan((fGK/fAK));
 		
 		// Top plane
 		transform = new Transform();
 		transform.setTranslation(new Vec3f(-fBucketWidth, fBucketHeight, fBucketDepth));
-		transform.setRotation(new Rotf(new Vec3f(1,0,0), (float) (Vec3f.convertGrad2Radiant(0)+fAngle)));
+		transform.setRotation(new Rotf(new Vec3f(1,0,0), (float) (Vec3f.convertGrad2Radiant(270)-fAngle)));
 		transform.setScale(new Vec3f(1,1,1));
 		stackLevel.getElementByPositionIndex(0).setTransform(transform);
 		

@@ -8,6 +8,7 @@ import org.caleydo.core.manager.id.IDManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayItemManager;
 import org.caleydo.core.manager.specialized.genome.IPathwayManager;
 import org.caleydo.core.manager.specialized.glyph.GlyphManager;
+import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.preference.PreferenceStore;
 
@@ -92,4 +93,6 @@ public interface IGeneralManager
 	public IGUIBridge getGUIBridge();
 
 	public boolean isWiiModeActive();
+	
+	public WiiRemote getWiiRemote();
 }

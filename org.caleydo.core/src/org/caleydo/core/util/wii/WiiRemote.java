@@ -47,12 +47,17 @@ public class WiiRemote
 		}
 	}
 
-	public void init()
+	public void connect()
 	{
 		Wiimote[] wiimotes = WiiUseApiManager.getWiimotes(1, true);
+		
+		// Return if no Wii remote was detected. In this case the input is simulated with fixed values for testing purposes.
+		if (wiimotes.length == 0)
+			return;
+		
+		wiimotes[0].activateIRTRacking();
 		wiimotes[0].addWiiMoteEventListeners(new WiimoteListener()
 		{
-
 			@Override
 			public void onIrEvent(IREvent arg0)
 			{
@@ -67,12 +72,10 @@ public class WiiRemote
 				float headX = 0;
 				float headY = 0;
 
-				float boxdepth = 8;
 				int m_dwWidth = 1680;
 				int m_dwHeight = 1050;
 
-				float dotDistanceInMM = 8.5f * 25.4f;// width of the wii sensor
-				// bar
+				float dotDistanceInMM = 8.5f * 25.4f;// width of the wii sensor bar
 				float radiansPerPixel = (float) (Math.PI / 4) / 1024.0f; // 45
 				// degree
 				// field
@@ -97,12 +100,10 @@ public class WiiRemote
 				float pointDist = (float) Math.sqrt(dx * dx + dy * dy);
 
 				float angle = radiansPerPixel * pointDist / 2;
-				// in units of screen hieght since the box is a unit cube and
+				// in units of screen height since the box is a unit cube and
 				// box height is 1
 				float fHeadDistance = movementScaling
 						* (float) ((dotDistanceInMM / 2) / Math.tan(angle)) / screenHeightinMM;
-
-				// System.out.println("Distance: " + fHeadDistance);
 
 				float avgX = (firstPoint.x + secondPoint.x) / 2.0f;
 				float avgY = (firstPoint.y + secondPoint.y) / 2.0f;
@@ -111,10 +112,6 @@ public class WiiRemote
 						* Math.sin(radiansPerPixel * (avgX - m_dwWidth / 2f)) * fHeadDistance);
 
 				relativeVerticalAngle = (avgY - m_dwHeight / 2f) * radiansPerPixel;// relative
-				// angle
-				// to
-				// camera
-				// axis
 
 				if (cameraIsAboveScreen)
 					headY = .5f + (float) (movementScaling
@@ -124,6 +121,7 @@ public class WiiRemote
 							+ (float) (movementScaling
 									* Math.sin(relativeVerticalAngle + cameraVerticaleAngle) * fHeadDistance);
 
+//				System.out.println("Distance: " + fHeadDistance);
 //				System.out.println("Head position: " + headX + "/" + headY);
 //				System.out.println("Head distance: " + fHeadDistance + "\n");
 
@@ -196,14 +194,12 @@ public class WiiRemote
 			}
 
 		});
-
-		wiimotes[0].activateIRTRacking();
 	}
 
 	public float[] getCurrentSmoothHeadPosition()
 	{
 		float[] fArTmpPoint;
-		float[] fArSmoothedPoint = new float[]{-1.5f,0.2f};// {-1.3f,0f};
+		float[] fArSmoothedPoint = new float[]{-1.3f, 0.1f};
 		
 		if (!GeneralManager.get().isWiiModeActive())
 		{
@@ -212,6 +208,9 @@ public class WiiRemote
 		
 		for (int i = 0; i < SMOOTH_RANGE; i++)
 		{
+			if (posInputQueue.size() < SMOOTH_RANGE)
+				break;
+			
 			fArTmpPoint = ((LinkedList<float[]>) posInputQueue).get(i);
 			fArSmoothedPoint[0] += fArTmpPoint[0];
 			fArSmoothedPoint[1] += fArTmpPoint[1];

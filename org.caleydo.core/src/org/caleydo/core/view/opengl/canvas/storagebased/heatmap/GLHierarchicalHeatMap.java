@@ -2,13 +2,16 @@ package org.caleydo.core.view.opengl.canvas.storagebased.heatmap;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
+
 import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.logging.Level;
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
+
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.data.collection.ESetType;
@@ -50,7 +53,6 @@ import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
-import org.caleydo.core.view.opengl.util.texture.GLOffScreenTextureRenderer;
 
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.texture.Texture;
@@ -1990,9 +1992,9 @@ public class GLHierarchicalHeatMap
 	
 	private void handleWiiInput()
 	{
-		float fHeadPositionX = GLOffScreenTextureRenderer.wiiRemote.getCurrentSmoothHeadPosition()[0];	
+		float fHeadPositionX = generalManager.getWiiRemote().getCurrentSmoothHeadPosition()[0];	
 
-		if (fHeadPositionX < -3f)
+		if (fHeadPositionX < -1.2f)
 			bIsHeatmapInFocus = false;
 		else
 			bIsHeatmapInFocus = true;
