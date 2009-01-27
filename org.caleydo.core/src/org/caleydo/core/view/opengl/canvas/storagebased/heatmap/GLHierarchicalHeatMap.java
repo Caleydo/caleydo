@@ -72,7 +72,7 @@ public class GLHierarchicalHeatMap
 	private final static float GAP_LEVEL1_2 = 0.6f;
 	private final static float GAP_LEVEL2_3 = 0.4f;
 
-	private final static float MAX_NUM_SAMPLES = 8f;
+	//private final static float MAX_NUM_SAMPLES = 8f;
 
 	private final static int MIN_SAMPLES_PER_HEATMAP = 10;
 	// MAX_SAMPLES_PER_HEATMAP = SmaplesPerTexture / 3
@@ -85,7 +85,7 @@ public class GLHierarchicalHeatMap
 
 	private ColorMapping colorMapper;
 
-	private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
+	//private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
 
 	// private boolean bRenderHorizontally = false;
 
@@ -355,6 +355,9 @@ public class GLHierarchicalHeatMap
 
 		iNrSelBar = (int) Math.ceil(set.getVA(iContentVAID).size() / iSamplesPerTexture);
 
+		AlTextures.clear();
+		iAlNumberSamples.clear();
+		
 		Texture tempTextur;
 
 		int iTextureHeight = set.getVA(iContentVAID).size();
@@ -372,8 +375,6 @@ public class GLHierarchicalHeatMap
 		for (Integer iContentIndex : set.getVA(iContentVAID))
 		{
 			iCount++;
-			// TODO note from alex: here the storage has the right size, but
-			// this is not reflected in the texture
 			IVirtualArray storageVA = set.getVA(iStorageVAID);
 			for (Integer iStorageIndex : storageVA)
 			{
@@ -511,10 +512,6 @@ public class GLHierarchicalHeatMap
 	@Override
 	protected void reactOnExternalSelection()
 	{
-		// TODO note from alex: this has not the desired effect here, should
-		// redraw the texture based
-		// on the changed virtual array. Bernhard please investigate. I'll put
-		// it some better place once we get it working in general
 		initTextures();
 		initPosCursor();
 
