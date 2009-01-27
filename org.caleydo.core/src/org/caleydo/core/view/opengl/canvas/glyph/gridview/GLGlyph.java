@@ -5,16 +5,18 @@ import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Vec2i;
 import java.awt.event.MouseListener;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.logging.Level;
 import javax.media.opengl.GL;
+import javax.media.opengl.GLException;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -26,7 +28,6 @@ import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
@@ -41,6 +42,8 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.JoglMouseListener;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import com.sun.opengl.util.BufferUtil;
+import com.sun.opengl.util.Screenshot;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -93,6 +96,10 @@ public class GLGlyph
 	private int iSelectionBrushSize = 2;
 	private ArrayList<Vec2i> alSelectionBrushCornerPoints = null;
 
+	private int iFrameBufferObject = -1;
+
+	// private long ticker = 0;
+
 	/**
 	 * Constructor.
 	 * 
@@ -114,8 +121,8 @@ public class GLGlyph
 
 		gman = generalManager.getGlyphManager();
 
-		selectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX)
-				.build();
+		selectionManager =
+			new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX).build();
 		viewType = EManagedObjectType.GL_GLYPH;
 
 		// TODO change this to real parameter
@@ -138,12 +145,11 @@ public class GLGlyph
 		forceRebuild();
 
 		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
-				.clear(EIDType.EXPERIMENT_INDEX);
+			.clear(EIDType.EXPERIMENT_INDEX);
 	}
 
 	/**
 	 * Gets the used positioning model
-	 * 
 	 */
 	public synchronized EIconIDs getPositionModel()
 	{
@@ -155,8 +161,10 @@ public class GLGlyph
 	/**
 	 * Sets the Selection Brush
 	 * 
-	 * @param enable / disable selection brush
-	 * @param size of the brush
+	 * @param enable
+	 *            / disable selection brush
+	 * @param size
+	 *            of the brush
 	 */
 	public synchronized void setSelectionBrush(int size)
 	{
@@ -199,14 +207,13 @@ public class GLGlyph
 			handleConnectedElementRep(selectionDelta);
 
 			generalManager.getEventPublisher().triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-					this, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+				this, new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 		}
 	}
 
 	@Override
 	public synchronized void init(GL gl)
 	{
-
 		ISet glyphData = null;
 
 		for (ISet tmpSet : alSets)
@@ -249,7 +256,7 @@ public class GLGlyph
 		// position /scale camera
 		Rotf t = new Rotf();
 		t.set(new Vec3f(-1, 0, 0), (float) (Math.PI / 4.0 - 2.0 * Math.PI * (-(fInitZoom + 3))
-				/ 360.0));
+			/ 360.0));
 		this.getViewCamera().setCameraRotation(t);
 		this.getViewCamera().addCameraPosition(new Vec3f(0, 0, fInitZoom));
 
@@ -291,16 +298,16 @@ public class GLGlyph
 
 	@Override
 	public synchronized void initRemote(final GL gl, final int iRemoteViewID,
-			final PickingJoglMouseListener pickingTriggerMouseAdapter,
-			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
+		final PickingJoglMouseListener pickingTriggerMouseAdapter,
+		final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 
 	{
 
 		bIsLocal = false;
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 
-		Collection<GLCaleydoCanvas> cc = generalManager.getViewGLCanvasManager()
-				.getAllGLCanvasUsers();
+		Collection<GLCaleydoCanvas> cc =
+			generalManager.getViewGLCanvasManager().getAllGLCanvasUsers();
 
 		for (GLCaleydoCanvas c : cc)
 		{
@@ -338,6 +345,10 @@ public class GLGlyph
 	@Override
 	public synchronized void display(GL gl)
 	{
+		// disable Polygon smooth for this view, otherwise there are
+		// strange edges at the glyhs
+		gl.glDisable(GL.GL_POLYGON_SMOOTH);
+
 		if (grid_ == null)
 		{
 			renderSymbol(gl);
@@ -368,7 +379,7 @@ public class GLGlyph
 				if (grid_.getGlyphGenerator().getDetailLevel() != GLGlyphGenerator.DETAILLEVEL.LEVEL_MIN)
 				{
 					grid_.getGlyphGenerator().setDetailLevel(
-							GLGlyphGenerator.DETAILLEVEL.LEVEL_MIN);
+						GLGlyphGenerator.DETAILLEVEL.LEVEL_MIN);
 					bRedrawDisplayListGlyph = true;
 				}
 			}
@@ -377,7 +388,7 @@ public class GLGlyph
 				if (grid_.getGlyphGenerator().getDetailLevel() != GLGlyphGenerator.DETAILLEVEL.LEVEL_MAX)
 				{
 					grid_.getGlyphGenerator().setDetailLevel(
-							GLGlyphGenerator.DETAILLEVEL.LEVEL_MAX);
+						GLGlyphGenerator.DETAILLEVEL.LEVEL_MAX);
 					bRedrawDisplayListGlyph = true;
 				}
 			}
@@ -386,7 +397,7 @@ public class GLGlyph
 				if (grid_.getGlyphGenerator().getDetailLevel() != GLGlyphGenerator.DETAILLEVEL.LEVEL_MID)
 				{
 					grid_.getGlyphGenerator().setDetailLevel(
-							GLGlyphGenerator.DETAILLEVEL.LEVEL_MID);
+						GLGlyphGenerator.DETAILLEVEL.LEVEL_MID);
 					bRedrawDisplayListGlyph = true;
 				}
 			}
@@ -434,6 +445,14 @@ public class GLGlyph
 		if (mouseListener_ != null)
 			mouseListener_.render(gl);
 
+		gl.glEnable(GL.GL_POLYGON_SMOOTH);
+
+		// if (System.currentTimeMillis() - ticker > 1000)
+		// {
+		// ticker = System.currentTimeMillis();
+		// renderToImage(gl,new File("d:/" + System.currentTimeMillis() +
+		// ".png"));
+		// }
 	}
 
 	/**
@@ -499,7 +518,7 @@ public class GLGlyph
 
 			gl.glTranslatef(pos.x(), -(float) pos.y(), 0f);
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.GLYPH_FIELD_SELECTION, ge.getID()));
+				EPickingType.GLYPH_FIELD_SELECTION, ge.getID()));
 			gl.glCallList(ge.getGlList(gl));
 			gl.glPopName();
 			gl.glTranslatef(-(float) pos.x(), pos.y(), 0f);
@@ -571,8 +590,8 @@ public class GLGlyph
 	{
 		float fXButtonOrigin = 1.3f * renderStyle.getScaling();
 		float fYButtonOrigin = 1.3f * renderStyle.getScaling();
-		Texture tempTexture = iconTextureManager
-				.getIconTexture(gl, EIconTextures.GLYPH_SYMBOL);
+		Texture tempTexture =
+			iconTextureManager.getIconTexture(gl, EIconTextures.GLYPH_SYMBOL);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -594,6 +613,177 @@ public class GLGlyph
 		gl.glEnd();
 		gl.glPopAttrib();
 		tempTexture.disable();
+	}
+
+	/**
+	 * This method saves either an high resolution screenshot, or the current
+	 * view if no framebuffer is available. You can either give it an resolution
+	 * (no aspect ratio correction!) or use -1 as width & height to use 4096x?
+	 * (aspect ratio of the screen). It uses ImagieIO, so the file extension
+	 * defines the written picture format.
+	 * 
+	 * @param gl
+	 *            context
+	 * @param file
+	 *            to write
+	 * @param width
+	 *            of the picture
+	 * @param height
+	 *            of the picture
+	 */
+	@SuppressWarnings("unused")
+	private void renderToImage(GL gl, File outFile, int width, int height)
+	{
+		int viewport[] = new int[4];
+		gl.glGetIntegerv(GL.GL_VIEWPORT, viewport, 0);
+
+		if (height <= 0 && width <= 0)
+		{
+			width = 4096;
+
+			float aspect = (float) (viewport[3]) / (float) (viewport[2]);
+			height = (int) (width * aspect);
+		}
+
+		if (iFrameBufferObject < 0)
+			iFrameBufferObject = createFrameBufferObject(gl, width, height);
+
+		// we don't have an framebuffer, so we just save the current screen
+		if (iFrameBufferObject < 0)
+		{
+			try
+			{
+				Screenshot.writeToFile(outFile, viewport[2], viewport[3]);
+			}
+			catch (GLException e)
+			{
+				e.printStackTrace();
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+			System.out.println("damn");
+			return;
+		}
+
+		gl.glBindFramebufferEXT(GL.GL_FRAMEBUFFER_EXT, iFrameBufferObject);
+
+		gl.glClearColor(1.0f, 1.0f, 1.0f, 0.5f);
+		gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+
+		// extend viewport to high resolution
+		gl.glViewport(0, 0, width, height);
+
+		display(gl);
+
+		try
+		{
+			Screenshot.writeToFile(outFile, width, height);
+		}
+		catch (GLException e)
+		{
+			e.printStackTrace();
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
+
+		// reset viewport
+		gl.glViewport(viewport[0], viewport[1], viewport[2], viewport[3]);
+
+		gl.glBindFramebufferEXT(GL.GL_FRAMEBUFFER_EXT, 0);
+	}
+
+	/**
+	 * Creates a frame buffer object with the given size. This is from an
+	 * example of Nehe Productions Lession 36 (Radial Blur & Rendering To A
+	 * Texture).
+	 * 
+	 * @return the newly created frame buffer object is or -1 if a frame buffer
+	 *         object could not be created
+	 */
+	private int createFrameBufferObject(GL gl, int width, int height)
+	{
+		// Create the FBO
+		int[] frameBuffer = new int[1];
+		gl.glGenFramebuffersEXT(1, frameBuffer, 0);
+		gl.glBindFramebufferEXT(GL.GL_FRAMEBUFFER_EXT, frameBuffer[0]);
+
+		// Create a TEXTURE_SIZE x TEXTURE_SIZE RGBA texture that will be used
+		// as color attachment for the fbo.
+		int[] colorBuffer = new int[1];
+		gl.glGenTextures(1, colorBuffer, 0); // Create 1 Texture
+		gl.glBindTexture(GL.GL_TEXTURE_2D, colorBuffer[0]); // Bind The Texture
+		gl.glTexImage2D(
+			// Build Texture Using Information In data
+			GL.GL_TEXTURE_2D, 0, GL.GL_RGBA, width, height, 0, GL.GL_RGBA,
+			GL.GL_UNSIGNED_BYTE, BufferUtil.newByteBuffer(width * height * 4));
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MIN_FILTER, GL.GL_LINEAR);
+		gl.glTexParameteri(GL.GL_TEXTURE_2D, GL.GL_TEXTURE_MAG_FILTER, GL.GL_LINEAR);
+
+		// Attach the texture to the frame buffer as the color attachment. This
+		// will cause the results of rendering to the FBO to be written in the
+		// blur texture.
+		gl.glFramebufferTexture2DEXT(GL.GL_FRAMEBUFFER_EXT, GL.GL_COLOR_ATTACHMENT0_EXT,
+			GL.GL_TEXTURE_2D, colorBuffer[0], 0);
+
+		gl.glBindTexture(GL.GL_TEXTURE_2D, 0);
+
+		// Create a 24-bit TEXTURE_SIZE x TEXTURE_SIZE depth buffer for the FBO.
+		// We need this to get correct rendering results.
+		int[] depthBuffer = new int[1];
+		gl.glGenRenderbuffersEXT(1, depthBuffer, 0);
+		gl.glBindRenderbufferEXT(GL.GL_RENDERBUFFER_EXT, depthBuffer[0]);
+		gl.glRenderbufferStorageEXT(GL.GL_RENDERBUFFER_EXT, GL.GL_DEPTH_COMPONENT24, width,
+			height);
+
+		// Attach the newly created depth buffer to the FBO.
+		gl.glFramebufferRenderbufferEXT(GL.GL_FRAMEBUFFER_EXT, GL.GL_DEPTH_ATTACHMENT_EXT,
+			GL.GL_RENDERBUFFER_EXT, depthBuffer[0]);
+
+		// Make sure the framebuffer object is complete (i.e. set up correctly)
+		int status = gl.glCheckFramebufferStatusEXT(GL.GL_FRAMEBUFFER_EXT);
+		if (status == GL.GL_FRAMEBUFFER_COMPLETE_EXT)
+		{
+			return frameBuffer[0];
+		}
+		else
+		{
+			// No matter what goes wrong, we simply delete the frame buffer
+			// object
+			// This switch statement simply serves to list all possible error
+			// codes
+			switch (status)
+			{
+				case GL.GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT_EXT:
+					// One of the attachments is incomplete
+				case GL.GL_FRAMEBUFFER_INCOMPLETE_DIMENSIONS_EXT:
+					// Not all attachments have the same size
+				case GL.GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER_EXT:
+					// The desired read buffer has no attachment
+				case GL.GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER_EXT:
+					// The desired draw buffer has no attachment
+				case GL.GL_FRAMEBUFFER_INCOMPLETE_FORMATS_EXT:
+					// Not all color attachments have the same internal format
+				case GL.GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT_EXT:
+					// No attachments have been attached
+				case GL.GL_FRAMEBUFFER_UNSUPPORTED_EXT:
+					// The combination of internal formats is not supported
+				case GL.GL_FRAMEBUFFER_INCOMPLETE_DUPLICATE_ATTACHMENT_EXT:
+					// This value is no longer in the EXT_framebuffer_object
+					// specification
+				default:
+					// Delete the color buffer texture
+					gl.glDeleteTextures(1, colorBuffer, 0);
+					// Delete the depth buffer
+					gl.glDeleteRenderbuffersEXT(1, depthBuffer, 0);
+					// Delete the FBO
+					gl.glDeleteFramebuffersEXT(1, frameBuffer, 0);
+					return -1;
+			}
+		}
 	}
 
 	private void organizeGlyphsForViewRole()
@@ -631,7 +821,8 @@ public class GLGlyph
 	 * in the grid class.
 	 * 
 	 * @param gl
-	 * @param used scale
+	 * @param used
+	 *            scale
 	 */
 	private void handleMouseListenerRubberband(GL gl, float scale)
 	{
@@ -704,8 +895,10 @@ public class GLGlyph
 	 * This method handles selection per brushing. It selects glyphs around the
 	 * given Glyph, acording to the Brush size (iSelectionBrushSize).
 	 * 
-	 * @param a Glyph Entry (the middle one of the brush)
-	 * @param select (true) or deselect (false) mode?
+	 * @param a
+	 *            Glyph Entry (the middle one of the brush)
+	 * @param select
+	 *            (true) or deselect (false) mode?
 	 */
 	private void brushSelect(GlyphEntry glyph, boolean selectDeselect)
 	{
@@ -825,7 +1018,7 @@ public class GLGlyph
 
 	@Override
 	protected synchronized void handleEvents(EPickingType pickingType,
-			EPickingMode pickingMode, int iExternalID, Pick pick)
+		EPickingMode pickingMode, int iExternalID, Pick pick)
 	{
 
 		if (pickingType == EPickingType.GLYPH_FIELD_SELECTION)
@@ -838,7 +1031,7 @@ public class GLGlyph
 					if (g == null)
 					{
 						generalManager.getLogger().log(Level.WARNING,
-								"Glyph with external ID " + iExternalID + " not found!");
+							"Glyph with external ID " + iExternalID + " not found!");
 						pickingManager.flushHits(iUniqueID, pickingType);
 						return;
 					}
@@ -858,8 +1051,8 @@ public class GLGlyph
 						brushSelect(g, !keyListener_.isControlDown());
 
 					generalManager.getViewGLCanvasManager()
-							.getConnectedElementRepresentationManager().clear(
-									EIDType.EXPERIMENT_INDEX);
+						.getConnectedElementRepresentationManager().clear(
+							EIDType.EXPERIMENT_INDEX);
 
 					triggerSelectionUpdate();
 
@@ -878,13 +1071,13 @@ public class GLGlyph
 	}
 
 	private void handleSelectionUpdate(IUniqueObject eventTrigger,
-			ISelectionDelta selectionDelta, EMediatorType eMediatorType)
+		ISelectionDelta selectionDelta, EMediatorType eMediatorType)
 	{
 		if (selectionDelta.getIDType() != EIDType.EXPERIMENT_INDEX)
 			return;
 
 		generalManager.getLogger().log(Level.INFO,
-				sLabel + ": Update called by " + eventTrigger.getClass().getSimpleName());
+			sLabel + ": Update called by " + eventTrigger.getClass().getSimpleName());
 
 		selectionManager.clearSelections();
 		selectionManager.setDelta(selectionDelta);
@@ -924,21 +1117,24 @@ public class GLGlyph
 	}
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
 	{
 		generalManager.getLogger().log(
-				Level.INFO,
-				sLabel + ": Event of type " + eventContainer.getEventType() + " called by "
-						+ eventTrigger.getClass().getSimpleName());
+			Level.INFO,
+			sLabel + ": Event of type " + eventContainer.getEventType() + " called by "
+				+ eventTrigger.getClass().getSimpleName());
 
 		switch (eventContainer.getEventType())
 		{
 			case SELECTION_UPDATE:
-				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer = (DeltaEventContainer<ISelectionDelta>) eventContainer;
+				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer =
+					(DeltaEventContainer<ISelectionDelta>) eventContainer;
 				handleSelectionUpdate(eventTrigger, selectionDeltaEventContainer
-						.getSelectionDelta(), EMediatorType.SELECTION_MEDIATOR);
+					.getSelectionDelta(), EMediatorType.SELECTION_MEDIATOR);
 				// TODO
 				break;
+
 		}
 
 	}
@@ -952,14 +1148,6 @@ public class GLGlyph
 		bRedrawDisplayListGlyph = true;
 	}
 
-	// @Override
-	// public void triggerSelectionUpdate(EMediatorType eMediatorType,
-	// ISelectionDelta selectionDelta, Collection<SelectionCommand>
-	// colSelectionCommand)
-	// {
-	//		
-	// }
-
 	@Override
 	public synchronized void broadcastElements(EVAOperation type)
 	{
@@ -968,7 +1156,6 @@ public class GLGlyph
 
 	/**
 	 * Handles the creation of {@link SelectedElementRep} uses selection delta
-	 * 
 	 */
 	protected void handleConnectedElementRep(ISelectionDelta selectionDelta)
 	{
@@ -992,10 +1179,10 @@ public class GLGlyph
 			vecGlyphPos = getGlyphPosition(actualGlyph);
 			// TODO, use new ConnectionIDs
 			generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
-					.addSelection(
-							actualGlyph.getID(),
-							new SelectedElementRep(EIDType.EXPERIMENT_INDEX, iUniqueID,
-									vecGlyphPos.x(), vecGlyphPos.y(), vecGlyphPos.z()));
+				.addSelection(
+					actualGlyph.getID(),
+					new SelectedElementRep(EIDType.EXPERIMENT_INDEX, iUniqueID, vecGlyphPos
+						.x(), vecGlyphPos.y(), vecGlyphPos.z()));
 		}
 	}
 
@@ -1027,7 +1214,8 @@ public class GLGlyph
 	/**
 	 * Temporary fix
 	 * 
-	 * @param addHeader you want a header?
+	 * @param addHeader
+	 *            you want a header?
 	 * @param viewName
 	 * @return
 	 */
@@ -1062,15 +1250,15 @@ public class GLGlyph
 
 		for (GlyphEntry ge : list)
 		{
-			String line = viewName + "; ";
-
-			line += GeneralManager.get().getIDMappingManager().getID(
-					EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT, ge.getID());
+			String line = viewName;// + "; ";
+			//
+			// line += GeneralManager.get().getIDMappingManager().getID(
+			// EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT, ge.getID());
 
 			for (int i = 0; i < ge.getNumberOfParameters(); ++i)
 			{
-				GlyphAttributeType type = gman
-						.getGlyphAttributeTypeWithInternalColumnNumber(i);
+				GlyphAttributeType type =
+					gman.getGlyphAttributeTypeWithInternalColumnNumber(i);
 
 				line += "; " + type.getParameterString(ge.getParameter(i));
 			}

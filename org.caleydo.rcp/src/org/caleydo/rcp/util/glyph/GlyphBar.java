@@ -27,13 +27,13 @@ public class GlyphBar
 
 	// Images to use on our tool items
 	public static final String TEXT_POSMODEL_RECTANGLE = "Switch View To rectangle Positioning";
-	public static final String TEXT_POSMODEL_PLUS = "Switch View To ? Positioning";
+	public static final String TEXT_POSMODEL_PLUS = "Switch View To Distribution Positioning";
 	public static final String TEXT_POSMODEL_CIRCLE = "Switch View To spiral Positioning";
 	public static final String TEXT_POSMODEL_RANDOM = "Switch View To random Positioning";
 	public static final String TEXT_POSMODEL_SCATTERPLOT = "Switch View To Scatterplot";
 
 	public static final String ICON_POSMODEL_RECTANGLE = "resources/icons/view/glyph/sort_zickzack.png";
-	public static final String ICON_POSMODEL_PLUS = "resources/icons/view/glyph/sort_spirale.png";
+	public static final String ICON_POSMODEL_PLUS = "resources/icons/view/glyph/sort_plus.png";
 	public static final String ICON_POSMODEL_CIRCLE = "resources/icons/view/glyph/sort_spirale.png";
 	public static final String ICON_POSMODEL_RANDOM = "resources/icons/view/glyph/sort_random.png";
 	public static final String ICON_POSMODEL_SCATTERPLOT = "resources/icons/view/glyph/sort_scatterplot.png";
@@ -86,6 +86,7 @@ public class GlyphBar
 		Display display = PlatformUI.getWorkbench().getDisplay();
 
 		imgPositionModelRectangle = loader.getImage(display, ICON_POSMODEL_RECTANGLE);
+		imgPositionModelPlus = loader.getImage(display, ICON_POSMODEL_PLUS);
 		imgPositionModelCircle = loader.getImage(display, ICON_POSMODEL_CIRCLE);
 		imgPositionModelRandom = loader.getImage(display, ICON_POSMODEL_RANDOM);
 		imgPositionModelScatterplot = loader.getImage(display, ICON_POSMODEL_SCATTERPLOT);
@@ -192,6 +193,7 @@ public class GlyphBar
 			GlyphBarSelectionListener listenerTwo = new GlyphBarSelectionListener(item,
 					iViewID);
 			listenerTwo.add(imgPositionModelRectangle, TEXT_POSMODEL_RECTANGLE);
+			listenerTwo.add(imgPositionModelPlus, TEXT_POSMODEL_PLUS);
 			listenerTwo.add(imgPositionModelCircle, TEXT_POSMODEL_CIRCLE);
 			listenerTwo.add(imgPositionModelRandom, TEXT_POSMODEL_RANDOM);
 			listenerTwo.add(imgPositionModelScatterplot, TEXT_POSMODEL_SCATTERPLOT);

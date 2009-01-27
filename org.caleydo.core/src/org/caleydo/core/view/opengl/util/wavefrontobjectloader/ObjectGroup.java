@@ -88,10 +88,33 @@ public class ObjectGroup
 			else
 				gl.glBegin(GL.GL_POLYGON);
 
+			// calculate normal for this face
+			if (face.size() >= 3)
+			{
+				//we need only 3 points
+				Vec3f p0 = model.getGeometricVertex(face.get(0).get(0));
+				Vec3f p1 = model.getGeometricVertex(face.get(1).get(0));
+				Vec3f p2 = model.getGeometricVertex(face.get(2).get(0));
+				
+				//to get 2 vectors
+				Vec3f v1 = new Vec3f();
+				Vec3f v2 = new Vec3f();
+				v1.sub(p1,p0);
+				v2.sub(p2,p1);
+				
+				//to make the normal vector
+				Vec3f normal = new Vec3f();
+				normal.cross(v1, v2);
+				normal.normalize();
+				
+				gl.glNormal3f(normal.get(0), normal.get(1), normal.get(2));
+			}
+
 			for (Vec3i faceIndices : face)
 			{
 
-				// render normals (if present)
+				// render normals (if present). This might be the wrong way
+				// (normals for every point of the face?)
 				if (faceIndices.get(2) != 0)
 				{
 					Vec3f normal = model.getNormalVertex(faceIndices.get(2));

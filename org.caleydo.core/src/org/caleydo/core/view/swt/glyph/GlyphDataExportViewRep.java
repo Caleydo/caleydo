@@ -36,6 +36,7 @@ public class GlyphDataExportViewRep
 	implements ISWTView
 {
 
+	@SuppressWarnings("unused")
 	private GlyphManager gman = null;
 
 	SelectionListener listener = null;

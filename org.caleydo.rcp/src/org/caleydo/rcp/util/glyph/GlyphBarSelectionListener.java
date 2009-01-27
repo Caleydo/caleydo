@@ -4,6 +4,7 @@ import org.caleydo.rcp.EStartViewType;
 import org.caleydo.rcp.action.view.AToolBarAction;
 import org.caleydo.rcp.action.view.glyph.ChangeSelectionBrush;
 import org.caleydo.rcp.action.view.glyph.ChangeViewModeToCircleAction;
+import org.caleydo.rcp.action.view.glyph.ChangeViewModeToPlusModelAction;
 import org.caleydo.rcp.action.view.glyph.ChangeViewModeToRandomAction;
 import org.caleydo.rcp.action.view.glyph.ChangeViewModeToRectangleAction;
 import org.caleydo.rcp.action.view.glyph.ChangeViewModeToScatterplotAction;
@@ -17,7 +18,6 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.ToolItem;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -113,6 +113,9 @@ public class GlyphBarSelectionListener
 		if (actualItemText.equals(GlyphBar.TEXT_POSMODEL_RECTANGLE))
 			action = new ChangeViewModeToRectangleAction(iViewID);
 
+		if (actualItemText.equals(GlyphBar.TEXT_POSMODEL_PLUS))
+			action = new ChangeViewModeToPlusModelAction(iViewID);
+
 		if (actualItemText.equals(GlyphBar.TEXT_POSMODEL_CIRCLE))
 			action = new ChangeViewModeToCircleAction(iViewID);
 
@@ -160,14 +163,6 @@ public class GlyphBarSelectionListener
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(
 						rcpid, rcpid + Integer.toString(GLGlyphView.viewCount),
 						IWorkbenchPage.VIEW_CREATE);
-
-				IViewPart viewpart = (IViewPart) PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow().getActivePage().findView(rcpid);
-
-				// viewpart.s
-
-				// String t = viewpart.getTitle();
-				// System.out.println(t);
 			}
 
 		}

@@ -13,7 +13,6 @@ import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
-import org.caleydo.core.view.opengl.canvas.glyph.gridview.GlyphMouseListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
@@ -33,7 +32,7 @@ public class GLRemoteGlyph
 
 	private ArrayList<Integer> viewIDs_;
 
-	private GlyphMouseListener mouseWheelListener_;
+//	private GlyphMouseListener mouseWheelListener_;
 
 	/**
 	 * Constructor.
@@ -45,7 +44,7 @@ public class GLRemoteGlyph
 		super(iGLCanvasID, sLabel, viewFrustum, true);
 		viewType = EManagedObjectType.GL_GLYPH;
 		viewIDs_ = new ArrayList<Integer>();
-		mouseWheelListener_ = new GlyphMouseListener(this);
+//		mouseWheelListener_ = new GlyphMouseListener(this);
 
 		// Unregister standard mouse wheel listener
 		// parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);

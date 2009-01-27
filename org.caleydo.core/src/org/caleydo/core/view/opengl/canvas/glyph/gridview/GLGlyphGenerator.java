@@ -176,7 +176,7 @@ public class GLGlyphGenerator
 				}
 			}
 
-			ObjectDimensions og = group.getDimensions();
+//			ObjectDimensions og = group.getDimensions();
 
 			// TODO scale x
 			// TODO scale z
@@ -218,8 +218,8 @@ public class GLGlyphGenerator
 					if (pdim != null)
 					{
 						float pyh = pdim.getHighestY(true);
-						float pyl = pdim.getLowestY(true);
-						float cyh = dim.getHighestY(false);
+						// float pyl = pdim.getLowestY(true);
+						// float cyh = dim.getHighestY(false);
 						float cyl = dim.getLowestY(false);
 
 						anchorOffsetY = -pyh + cyl - pdim.getScaleOffsetY(false);
