@@ -1,12 +1,15 @@
 package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec3f;
+
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Iterator;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
+
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
@@ -30,6 +33,7 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
+
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -245,29 +249,29 @@ public abstract class AGLEventListener
 	 */
 	protected void clipToFrustum(GL gl)
 	{
-//		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
-//		gl.glColorMask(false, false, false, false);
-//		gl.glClearStencil(0); // Clear The Stencil Buffer To 0
-//		gl.glEnable(GL.GL_DEPTH_TEST); // Enables Depth Testing
-//		gl.glDepthFunc(GL.GL_LEQUAL); // The Type Of Depth Testing To Do
-//		gl.glEnable(GL.GL_STENCIL_TEST);
-//		gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);
-//		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
-//		gl.glDisable(GL.GL_DEPTH_TEST);
-//
-//		// Clip region that renders in stencil buffer (in this case the
-//		// frustum)
-//		gl.glBegin(GL.GL_POLYGON);
-//		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), -0.01f);
-//		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(), -0.01f);
-//		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), -0.01f);
-//		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), -0.01f);
-//		gl.glEnd();
-//
-//		gl.glEnable(GL.GL_DEPTH_TEST);
-//		gl.glColorMask(true, true, true, true);
-//		gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
-//		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
+		gl.glClear(GL.GL_STENCIL_BUFFER_BIT);
+		gl.glColorMask(false, false, false, false);
+		gl.glClearStencil(0); // Clear The Stencil Buffer To 0
+		gl.glEnable(GL.GL_DEPTH_TEST); // Enables Depth Testing
+		gl.glDepthFunc(GL.GL_LEQUAL); // The Type Of Depth Testing To Do
+		gl.glEnable(GL.GL_STENCIL_TEST);
+		gl.glStencilFunc(GL.GL_ALWAYS, 1, 1);
+		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_REPLACE);
+		gl.glDisable(GL.GL_DEPTH_TEST);
+
+		// Clip region that renders in stencil buffer (in this case the
+		// frustum)
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getBottom(), -0.01f);
+		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getBottom(), -0.01f);
+		gl.glVertex3f(viewFrustum.getRight(), viewFrustum.getTop(), -0.01f);
+		gl.glVertex3f(viewFrustum.getLeft(), viewFrustum.getTop(), -0.01f);
+		gl.glEnd();
+
+		gl.glEnable(GL.GL_DEPTH_TEST);
+		gl.glColorMask(true, true, true, true);
+		gl.glStencilFunc(GL.GL_EQUAL, 1, 1);
+		gl.glStencilOp(GL.GL_KEEP, GL.GL_KEEP, GL.GL_KEEP);
 	}
 
 	/**
@@ -364,7 +368,7 @@ public abstract class AGLEventListener
 	}
 
 	/**
-	 * This class uses the pickingManager to check if any events have occured it
+	 * This class uses the pickingManager to check if any events have occurred it
 	 * calls the abstract handleEvents method where the events should be handled
 	 * 
 	 * @param gl
@@ -394,8 +398,7 @@ public abstract class AGLEventListener
 					int iPickingID = tempPick.getPickingID();
 					int iExternalID = pickingManager.getExternalIDFromPickingID(iUniqueID,
 							iPickingID);
-
-					// FIXME: Is this ok?
+					
 					if (iExternalID == -1)
 						continue;
 

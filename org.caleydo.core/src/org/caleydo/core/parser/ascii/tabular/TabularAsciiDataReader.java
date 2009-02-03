@@ -41,7 +41,6 @@ public class TabularAsciiDataReader
 
 	/**
 	 * Constructor.
-	 * 
 	 */
 	public TabularAsciiDataReader(final String sFileName)
 	{
@@ -102,7 +101,7 @@ public class TabularAsciiDataReader
 				bAllTokensProper = false;
 
 				GeneralManager.get().getLogger().log(Level.WARNING,
-						"Unknown column data type: " + tokenPattern);
+					"Unknown column data type: " + tokenPattern);
 			}
 
 		} // end of while
@@ -130,11 +129,11 @@ public class TabularAsciiDataReader
 					break;
 				case FLOAT:
 					alFloatBuffers
-							.add(new float[iStopParsingAtLine - iStartParsingAtLine + 1]);
+						.add(new float[iStopParsingAtLine - iStartParsingAtLine + 1]);
 					break;
 				case STRING:
 					alStringBuffers.add(new ArrayList<String>(iStopParsingAtLine
-							- iStartParsingAtLine + 1));
+						- iStartParsingAtLine + 1));
 					break;
 				case SKIP:
 					break;
@@ -142,14 +141,14 @@ public class TabularAsciiDataReader
 					return;
 				default:
 					throw new IllegalStateException("Unknown token pattern detected: "
-							+ storageType.toString());
+						+ storageType.toString());
 			}
 		}
 	}
 
 	@Override
 	protected void loadDataParseFile(BufferedReader brFile, final int iNumberOfLinesInFile)
-			throws IOException
+		throws IOException
 	{
 
 		allocateStorageBufferForTokenPattern();
@@ -194,13 +193,22 @@ public class TabularAsciiDataReader
 					switch (columnDataType)
 					{
 						case INT:
-							alIntBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] = Integer
-									.valueOf(strTokenLine.nextToken()).intValue();
+							alIntBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] =
+								Integer.valueOf(strTokenLine.nextToken()).intValue();
 							iColumnIndex++;
 							break;
 						case FLOAT:
-							alFloatBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] = Float
-									.valueOf(strTokenLine.nextToken()).floatValue();
+							Float fValue;
+							try
+							{
+								fValue = Float.valueOf(strTokenLine.nextToken()).floatValue();
+							}
+							catch (NumberFormatException nfe)
+							{
+								fValue = Float.NaN;
+							}
+							alFloatBuffers.get(iColumnIndex)[iLineInFile - iStartParsingAtLine] =
+								fValue;
 							iColumnIndex++;
 							break;
 						case STRING:
@@ -215,7 +223,7 @@ public class TabularAsciiDataReader
 							break;
 						default:
 							throw new IllegalStateException("Unknown token pattern detected: "
-									+ columnDataType.toString());
+								+ columnDataType.toString());
 					}
 
 					// Check if the line is finished or early aborted
@@ -230,7 +238,7 @@ public class TabularAsciiDataReader
 			if (iLineInFile % 1000 == 0)
 			{
 				swtGuiManager
-						.setProgressBarPercentage((int) (fProgressBarFactor * iLineInFile));
+					.setProgressBarPercentage((int) (fProgressBarFactor * iLineInFile));
 			}
 		}
 	}
@@ -252,21 +260,21 @@ public class TabularAsciiDataReader
 			{
 				case INT:
 					alTargetStorages.get(iStorageIndex).setRawData(
-							alIntBuffers.get(iIntArrayIndex));
+						alIntBuffers.get(iIntArrayIndex));
 					iIntArrayIndex++;
 					iStorageIndex++;
 					break;
 				case FLOAT:
 					alTargetStorages.get(iStorageIndex).setRawData(
-							alFloatBuffers.get(iFloatArrayIndex));
+						alFloatBuffers.get(iFloatArrayIndex));
 					iFloatArrayIndex++;
 					iStorageIndex++;
 					break;
 				case STRING:
 					((INominalStorage<String>) alTargetStorages.get(iStorageIndex))
-							.setRawNominalData(alStringBuffers.get(iStringArrayIndex));
+						.setRawNominalData(alStringBuffers.get(iStringArrayIndex));
 					alStringBuffers.add(new ArrayList<String>(iStopParsingAtLine
-							- iStartParsingAtLine + 1));
+						- iStartParsingAtLine + 1));
 					iStringArrayIndex++;
 					iStorageIndex++;
 					break;
@@ -276,7 +284,7 @@ public class TabularAsciiDataReader
 					return;
 				default:
 					throw new IllegalStateException("Unknown token pattern detected: "
-							+ storageType.toString());
+						+ storageType.toString());
 			}
 		}
 	}

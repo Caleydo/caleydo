@@ -2,16 +2,13 @@ package org.caleydo.core.view.opengl.canvas.storagebased.heatmap;
 
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
-
 import java.awt.Point;
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Set;
 import java.util.logging.Level;
-
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
-
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.data.collection.ESetType;
@@ -53,7 +50,6 @@ import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
-
 import com.sun.opengl.util.BufferUtil;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -72,7 +68,7 @@ public class GLHierarchicalHeatMap
 	private final static float GAP_LEVEL1_2 = 0.6f;
 	private final static float GAP_LEVEL2_3 = 0.4f;
 
-	//private final static float MAX_NUM_SAMPLES = 8f;
+	// private final static float MAX_NUM_SAMPLES = 8f;
 
 	private final static int MIN_SAMPLES_PER_HEATMAP = 10;
 	// MAX_SAMPLES_PER_HEATMAP = SmaplesPerTexture / 3
@@ -85,7 +81,7 @@ public class GLHierarchicalHeatMap
 
 	private ColorMapping colorMapper;
 
-	//private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
+	// private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
 
 	// private boolean bRenderHorizontally = false;
 
@@ -357,7 +353,7 @@ public class GLHierarchicalHeatMap
 
 		AlTextures.clear();
 		iAlNumberSamples.clear();
-		
+
 		Texture tempTextur;
 
 		int iTextureHeight = set.getVA(iContentVAID).size();
@@ -541,7 +537,7 @@ public class GLHierarchicalHeatMap
 	@Override
 	protected void reactOnVAChanges(IVirtualArrayDelta delta)
 	{
-		// initData();
+		privateMediator.triggerEvent(this, new DeltaEventContainer<IVirtualArrayDelta>(delta));
 
 	}
 
@@ -1294,10 +1290,10 @@ public class GLHierarchicalHeatMap
 
 	@Override
 	public synchronized void display(GL gl)
-	{	
+	{
 		if (generalManager.isWiiModeActive())
 			handleWiiInput();
-		
+
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		// GLHelperFunctions.drawAxis(gl);
 		if (bIsDraggingActive)
@@ -1986,16 +1982,16 @@ public class GLHierarchicalHeatMap
 	{
 		return bIsHeatmapInFocus;
 	}
-	
+
 	private void handleWiiInput()
 	{
-		float fHeadPositionX = generalManager.getWiiRemote().getCurrentSmoothHeadPosition()[0];	
+		float fHeadPositionX = generalManager.getWiiRemote().getCurrentSmoothHeadPosition()[0];
 
 		if (fHeadPositionX < -1.2f)
 			bIsHeatmapInFocus = false;
 		else
 			bIsHeatmapInFocus = true;
-		
+
 		setDisplayListDirty();
 	}
 }

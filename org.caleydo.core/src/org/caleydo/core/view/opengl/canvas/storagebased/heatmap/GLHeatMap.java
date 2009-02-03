@@ -68,6 +68,7 @@ public class GLHeatMap
 	private GLColorMappingBarMiniView colorMappingBar;
 
 	private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
+	private EIDType eStorageDataType = EIDType.EXPERIMENT_INDEX;
 
 	// private boolean bRenderHorizontally = false;
 
@@ -233,7 +234,7 @@ public class GLHeatMap
 	@Override
 	public synchronized void display(GL gl)
 	{
-//		 GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 		// GLHelperFunctions.drawAxis(gl);
 		gl.glCallList(iGLDisplayListToCall);
 
@@ -283,7 +284,7 @@ public class GLHeatMap
 			gl.glTranslatef(fAnimationTranslation, 0.0f, 0.0f);
 
 			renderHeatMap(gl);
-			renderStorageSelection(gl);
+
 			renderSelection(gl, ESelectionType.MOUSE_OVER);
 			renderSelection(gl, ESelectionType.SELECTION);
 
@@ -476,11 +477,11 @@ public class GLHeatMap
 			pickingManager.flushHits(iUniqueID, ePickingType);
 			return;
 		}
-
+		ESelectionType eSelectionType;
 		switch (ePickingType)
 		{
 			case HEAT_MAP_LINE_SELECTION:
-				ESelectionType eSelectionType;
+
 				switch (pickingMode)
 				{
 
@@ -528,11 +529,40 @@ public class GLHeatMap
 							new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 				}
 
-				bIsDisplayListDirtyLocal = true;
-				bIsDisplayListDirtyRemote = true;
+				setDisplayListDirty();
+				break;
 
-			case HEAT_MAP_AXIS_SELECTION:
-				System.out.println("picked");
+			case HEAT_MAP_STORAGE_SELECTION:
+
+				switch (pickingMode)
+				{
+					case CLICKED:
+						eSelectionType = ESelectionType.SELECTION;
+						break;
+					case MOUSE_OVER:
+						eSelectionType = ESelectionType.MOUSE_OVER;
+						break;
+					default:
+						pickingManager.flushHits(iUniqueID, ePickingType);
+						return;
+				}
+
+				storageSelectionManager.clearSelection(eSelectionType);
+				storageSelectionManager.addToType(eSelectionType, iExternalID);
+				
+				if (eStorageDataType == EIDType.EXPERIMENT_INDEX)
+				{
+
+					triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+							new SelectionCommandEventContainer(EIDType.EXPERIMENT_INDEX,
+									new SelectionCommand(ESelectionCommandType.CLEAR,
+											eSelectionType)));
+					ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
+					triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+							new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+				}
+				setDisplayListDirty();
+				break;
 
 		}
 
@@ -652,31 +682,6 @@ public class GLHeatMap
 		}
 	}
 
-	private void renderStorageSelection(GL gl)
-	{
-		IVirtualArray storageVA = set.getVA(iStorageVAID);
-		float fYPosition = 0;
-		float color = 0.2f;
-		for (Integer iStorageIndex : storageVA)
-		{
-			pickingManager.getPickingID(iUniqueID, EPickingType.HEAT_MAP_AXIS_SELECTION,
-					iStorageIndex);
-			gl.glColor4f(color, 0, 0, 0.0f);
-			color += 0.2f;
-			gl.glBegin(GL.GL_POLYGON);
-			gl.glVertex3f(0, fYPosition, 0.1f);
-			gl.glVertex3f(renderStyle.getRenderHeight(),
-					fYPosition, 0.1f);
-			gl.glVertex3f(renderStyle.getRenderHeight(),
-					fYPosition + renderStyle.getFieldHeight(), 0.1f);
-			gl.glVertex3f(0, fYPosition + renderStyle.getFieldHeight(), 0.1f);
-			gl.glEnd();
-			fYPosition += renderStyle.getFieldHeight();
-			gl.glPopName();
-		}
-
-	}
-
 	private void renderElement(final GL gl, final int iStorageIndex, final int iContentIndex,
 			final float fXPosition, final float fYPosition, final float fFieldWidth,
 			final float fFieldHeight)
@@ -700,6 +705,8 @@ public class GLHeatMap
 
 		gl.glPushName(pickingManager.getPickingID(iUniqueID,
 				EPickingType.HEAT_MAP_LINE_SELECTION, iContentIndex));
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.HEAT_MAP_STORAGE_SELECTION, iStorageIndex));
 		gl.glBegin(GL.GL_POLYGON);
 		gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);
 		gl.glVertex3f(fXPosition + fFieldWidth, fYPosition, FIELD_Z);
@@ -708,10 +715,13 @@ public class GLHeatMap
 		gl.glEnd();
 
 		gl.glPopName();
+		gl.glPopName();
 	}
 
 	private void renderSelection(final GL gl, ESelectionType eSelectionType)
 	{
+
+		// content selection
 
 		Set<Integer> selectedSet = contentSelectionManager.getElements(eSelectionType);
 		float fHeight = 0;
@@ -732,18 +742,14 @@ public class GLHeatMap
 
 		for (Integer iCurrentColumn : selectedSet)
 		{
+			// TODO we need indices of all elements
 			int iColumnIndex = set.getVA(iContentVAID).indexOf(iCurrentColumn);
 			if (iColumnIndex == -1)
 				continue;
 
-			// Vec2f vecFieldWidthAndHeight =
-			// renderStyle.getFieldWidthAndHeight(iColumnIndex);
-
 			fHeight = set.getVA(iStorageVAID).size() * renderStyle.getFieldHeight();
 			fXPosition = fAlXDistances.get(iColumnIndex);
-			// fYPosition = renderStyle.getYCenter() -
-			// vecFieldWidthAndHeight.y()
-			// * set.getVA(iStorageVAID).size() / 2;
+
 			fYPosition = 0;
 
 			gl.glBegin(GL.GL_LINE_LOOP);
@@ -757,6 +763,25 @@ public class GLHeatMap
 
 			fHeight = 0;
 			fXPosition = 0;
+		}
+
+		// storage selection
+
+		selectedSet = storageSelectionManager.getElements(eSelectionType);
+
+		for (Integer iCurrentLine : selectedSet)
+		{
+			// TODO we need indices of all elements
+			int iLineIndex = set.getVA(iStorageVAID).indexOf(iCurrentLine);
+
+			fYPosition = iLineIndex * renderStyle.getFieldHeight();
+			gl.glBegin(GL.GL_LINE_LOOP);
+			gl.glVertex3f(0, fYPosition, SELECTION_Z);
+			gl.glVertex3f(renderStyle.getRenderHeight(), fYPosition, SELECTION_Z);
+			gl.glVertex3f(renderStyle.getRenderHeight(), fYPosition
+					+ renderStyle.getFieldHeight(), SELECTION_Z);
+			gl.glVertex3f(0, fYPosition + renderStyle.getFieldHeight(), SELECTION_Z);
+			gl.glEnd();
 		}
 	}
 
@@ -773,7 +798,6 @@ public class GLHeatMap
 			if (contentSelectionManager.checkStatus(ESelectionType.MOUSE_OVER, iStorageIndex)
 					|| contentSelectionManager.checkStatus(ESelectionType.SELECTION,
 							iStorageIndex))
-			// if(selectionDelta.)
 			{
 				fDistance += renderStyle.getSelectedFieldWidth();
 			}
@@ -791,32 +815,23 @@ public class GLHeatMap
 			throws InvalidAttributeValueException
 	{
 
-		SelectedElementRep elementRep;// = new SelectedElementRep(iUniqueID,
-		// 0.0f, 0.0f, 0.0f);
+		SelectedElementRep elementRep;
 
 		int iContentIndex = set.getVA(iContentVAID).indexOf(iStorageIndex);
 		if (iContentIndex == -1)
 		{
+			throw new IllegalStateException("No element in virtual array for storage index");
 			// TODO this shouldn't happen
-			generalManager.getLogger().log(Level.SEVERE,
-					"No element in virtual array for storage index");
-
-			return null;
+			// generalManager.getLogger().log(Level.SEVERE,
+			// "No element in virtual array for storage index");
+			//
+			// return null;
 		}
-		// renderStyle.resetFieldWidths();
-		// Vec2f vecFieldWithAndHeight =
-		// renderStyle.getFieldWidthAndHeight(iContentIndex);
-
-		// for (int iCount = 0; iCount <= iContentIndex; iCount++)
-		// {
-		// vecFieldWithAndHeight = renderStyle.getFieldWidthAndHeight(iCount);
-		// }
 
 		float fXValue = fAlXDistances.get(iContentIndex) + renderStyle.getSelectedFieldWidth()
-				/ 2;// + renderStyle.getXSpacing();
+				/ 2;
 
-		float fYValue = renderStyle.getYCenter();// + vecFieldWithAndHeight.y()
-		// * set.getVA(iContentVAID).size() / 2;
+		float fYValue = renderStyle.getYCenter();
 
 		if (bRenderStorageHorizontally)
 		{
