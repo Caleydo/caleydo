@@ -587,4 +587,9 @@ public abstract class AGLEventListener
 	 * 
 	 */
 	public abstract int getNumberOfSelections(ESelectionType eSelectionType);
+	
+	public float getAspectRatio()
+	{
+		return fAspectRatio;
+	}
 }

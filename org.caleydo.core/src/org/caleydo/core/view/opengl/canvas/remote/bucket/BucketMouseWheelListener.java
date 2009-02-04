@@ -21,9 +21,11 @@ public class BucketMouseWheelListener
 {
 	private GLRemoteRendering bucketGLEventListener;
 
-	private static int BUCKET_ZOOM_MAX = 400;
+	private float fBuketZoomMax = 0;
 
-	private static int BUCKET_ZOOM_STEP = 16;
+	private final static int BUCKET_ZOOM_MAX = 400;
+	
+	private final static int BUCKET_ZOOM_STEP = 16;
 
 	private int iCurrentBucketZoom = 0;
 
@@ -58,6 +60,8 @@ public class BucketMouseWheelListener
 
 		if (bZoomActionRunning)
 			return;
+		
+		fBuketZoomMax = BUCKET_ZOOM_MAX;// * bucketGLEventListener.getAspectRatio();
 
 		// Change bucket tilt angle
 		if (event.isControlDown() || event.isAltDown())
@@ -94,7 +98,7 @@ public class BucketMouseWheelListener
 			int notches = event.getWheelRotation();
 			if (notches < 0)
 			{
-				if (iCurrentBucketZoom == BUCKET_ZOOM_MAX)
+				if (iCurrentBucketZoom == (int)fBuketZoomMax)
 					return;
 
 				bZoomIn = true;
@@ -122,7 +126,8 @@ public class BucketMouseWheelListener
 		if (!bZoomActionRunning)
 			return;
 
-		if (iAnimationZoomCounter == 0 || iCurrentBucketZoom % BUCKET_ZOOM_MAX != 0)
+		if (iAnimationZoomCounter == 0 || //iCurrentBucketZoom < fBuketZoomMax)
+			iCurrentBucketZoom % (int)fBuketZoomMax != 0)
 		{
 			if (bZoomIn)
 			{
@@ -145,7 +150,7 @@ public class BucketMouseWheelListener
 				// fBucketTransparency = fCurrentBucketZoom / -BUCKET_ZOOM_MAX;
 			}
 
-			if (iCurrentBucketZoom == BUCKET_ZOOM_MAX)
+			if (iCurrentBucketZoom >= fBuketZoomMax)//iCurrentBucketZoom == (int)fBuketZoomMax)
 			{
 				bBucketBottomReached = true;
 

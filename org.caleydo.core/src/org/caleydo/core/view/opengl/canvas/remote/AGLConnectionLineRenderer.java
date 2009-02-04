@@ -3,22 +3,18 @@ package org.caleydo.core.view.opengl.canvas.remote;
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
-
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
-
 import javax.media.opengl.GL;
-
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
-import org.caleydo.core.view.opengl.util.texture.GLOffScreenTextureRenderer;
 
 /**
  * Class is responsible for rendering and drawing of connection lines (resp.

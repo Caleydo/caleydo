@@ -155,6 +155,7 @@ public class ConnectedElementRepresentationManager
 		tmp.clear();
 	}
 
+	@Deprecated 
 	public void clearByView(EIDType idType, int iViewID)
 	{
 		HashMap<Integer, ArrayList<SelectedElementRep>> hashReps = hashIDTypes.get(idType);

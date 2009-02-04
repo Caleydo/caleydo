@@ -152,8 +152,10 @@ public class GLRemoteRendering
 	private int iPoolLevelCommonID = -1;
 
 	private GLOffScreenTextureRenderer glOffScreenRenderer;
-	
+
 	private boolean bUpdateOffScreenTextures = true;
+
+	private boolean bEnableConnectinLines = true;
 
 	/**
 	 * Constructor.
@@ -166,11 +168,11 @@ public class GLRemoteRendering
 		viewType = EManagedObjectType.GL_REMOTE_RENDERING;
 		this.layoutMode = layoutMode;
 
-//		if (generalManager.isWiiModeActive())
-//		{			
-			glOffScreenRenderer = new GLOffScreenTextureRenderer();
-//		}
-		
+		// if (generalManager.isWiiModeActive())
+		// {
+		glOffScreenRenderer = new GLOffScreenTextureRenderer();
+		// }
+
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
 		{
 			layoutRenderStyle = new BucketLayoutRenderStyle(viewFrustum);
@@ -196,16 +198,18 @@ public class GLRemoteRendering
 		}
 
 		focusLevel = layoutRenderStyle.initFocusLevel();
-		
-		if (GeneralManager.get().isWiiModeActive() && layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
+
+		if (GeneralManager.get().isWiiModeActive()
+				&& layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
 		{
-			stackLevel = ((BucketLayoutRenderStyle)layoutRenderStyle).initStackLevelWii();
+			stackLevel = ((BucketLayoutRenderStyle) layoutRenderStyle).initStackLevelWii();
 		}
 		else
 		{
-			stackLevel = layoutRenderStyle.initStackLevel(bucketMouseWheelListener.isZoomedIn());
+			stackLevel = layoutRenderStyle.initStackLevel(bucketMouseWheelListener
+					.isZoomedIn());
 		}
-		
+
 		poolLevel = layoutRenderStyle.initPoolLevel(bucketMouseWheelListener.isZoomedIn(), -1);
 		selectionLevel = layoutRenderStyle.initMemoLevel();
 		transitionLevel = layoutRenderStyle.initTransitionLevel();
@@ -252,9 +256,6 @@ public class GLRemoteRendering
 				null, -1);
 		cmdCreateGLView.doCommand();
 		glSelectionPanel = (GLSelectionPanel) cmdCreateGLView.getCreatedObject();
-
-		// selectionManager = new
-		// GenericSelectionManager.Builder(EIDType.DAVID).build();
 
 		// Registration to event system
 		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
@@ -309,11 +310,8 @@ public class GLRemoteRendering
 
 		colorMappingBarMiniView.setWidth(layoutRenderStyle.getColorBarWidth());
 		colorMappingBarMiniView.setHeight(layoutRenderStyle.getColorBarHeight());
-		
-//		if (generalManager.isWiiModeActive())
-//		{
-			glOffScreenRenderer.init(gl);
-//		}
+
+		glOffScreenRenderer.init(gl);
 	}
 
 	@Override
@@ -425,6 +423,7 @@ public class GLRemoteRendering
 			}
 
 			dragAndDrop.stopDragAction();
+			bUpdateOffScreenTextures = true;
 		}
 
 		checkForHits(gl);
@@ -441,25 +440,24 @@ public class GLRemoteRendering
 
 	@Override
 	public synchronized void display(final GL gl)
-	{		
+	{
 		time.update();
 
 		layoutRenderStyle.initPoolLevel(false, iMouseOverObjectID);
 		// layoutRenderStyle.initStackLevel(false);
 		// layoutRenderStyle.initMemoLevel();
-		
-		if (GeneralManager.get().isWiiModeActive() && layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
+
+		if (GeneralManager.get().isWiiModeActive()
+				&& layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
 		{
-			((BucketLayoutRenderStyle)layoutRenderStyle)
-				.initFocusLevelWii();
-						
-			((BucketLayoutRenderStyle)layoutRenderStyle)
-				.initStackLevelWii();
+			((BucketLayoutRenderStyle) layoutRenderStyle).initFocusLevelWii();
+
+			((BucketLayoutRenderStyle) layoutRenderStyle).initStackLevelWii();
 		}
 
 		doSlerpActions(gl);
 		initializeNewPathways(gl);
-		
+
 		if (!generalManager.isWiiModeActive())
 		{
 			renderRemoteLevel(gl, focusLevel);
@@ -467,20 +465,21 @@ public class GLRemoteRendering
 		}
 		else
 		{
-			if(bUpdateOffScreenTextures)
+			if (bUpdateOffScreenTextures)
 				updateOffScreenTextures(gl);
-			
+
 			renderRemoteLevel(gl, focusLevel);
-			
-			glOffScreenRenderer.renderRubberBucket(gl, stackLevel, focusLevel, iUniqueID);
+
+			glOffScreenRenderer.renderRubberBucket(gl, stackLevel,
+					(BucketLayoutRenderStyle) layoutRenderStyle, this);
 		}
-		
+
 		// If user zooms to the bucket bottom all but the under
 		// focus layer is _not_ rendered.
 		if (bucketMouseWheelListener == null || !bucketMouseWheelListener.isZoomedIn())
 		{
 			// comment here for connection lines
-			if (glConnectionLineRenderer != null)
+			if (glConnectionLineRenderer != null && bEnableConnectinLines)
 				glConnectionLineRenderer.render(gl);
 
 			renderPoolAndMemoLayerBackground(gl);
@@ -578,8 +577,7 @@ public class GLRemoteRendering
 		}
 	}
 
-	private void renderBucketWall(final GL gl, boolean bRenderBorder,
-			RemoteLevelElement element)
+	public void renderBucketWall(final GL gl, boolean bRenderBorder, RemoteLevelElement element)
 	{
 		// Highlight potential view drop destination
 		if (dragAndDrop.isDragActionRunning() && element.getID() == iMouseOverObjectID)
@@ -914,13 +912,18 @@ public class GLRemoteRendering
 			else
 				fYCorrection = 0.1f;
 
-			gl.glTranslatef(-2, -2 - 2 * 0.075f + fYCorrection, 0);
+			Transform transform = element.getTransform();
+			Vec3f translation = transform.getTranslation();
+
+			gl.glTranslatef(translation.x(), translation.y() - 2 * 0.075f + fYCorrection,
+					translation.z() + 0.001f);
 
 			gl.glScalef(2, 2, 2);
 			renderNavigationHandleBar(gl, element, 2, 0.075f, false, 2);
 			gl.glScalef(1 / 2f, 1 / 2f, 1 / 2f);
 
-			gl.glTranslatef(2, 2 + 2 * 0.075f - fYCorrection, 0);
+			gl.glTranslatef(-translation.x(), -translation.y() + 2 * 0.075f - fYCorrection,
+					-translation.z() - 0.001f);
 		}
 	}
 
@@ -970,7 +973,7 @@ public class GLRemoteRendering
 		if (sText.length() > iMaxChars)
 			sText = sText.subSequence(0, iMaxChars - 3) + "...";
 
-		float fTextScalingFactor = 0.003f;
+		float fTextScalingFactor = 0.0027f;
 
 		if (bUpsideDown)
 		{
@@ -982,7 +985,7 @@ public class GLRemoteRendering
 		textRenderer.begin3DRendering();
 		textRenderer.draw3D(sText, 2 / fScalingFactor
 				- (float) textRenderer.getBounds(sText).getWidth() / 2f * fTextScalingFactor,
-				2.01f, 0, fTextScalingFactor);
+				2.02f, 0, fTextScalingFactor);
 		textRenderer.end3DRendering();
 
 		if (bUpsideDown)
@@ -2505,6 +2508,11 @@ public class GLRemoteRendering
 		parentGLCanvas.setSize(parentGLCanvas.getWidth(), parentGLCanvas.getHeight());
 	}
 
+	public synchronized void toggleConnectionLines()
+	{
+		bEnableConnectinLines = !bEnableConnectinLines;
+	}
+
 	/**
 	 * Unregister view from event system. Remove view from GL render loop.
 	 */
@@ -2523,7 +2531,7 @@ public class GLRemoteRendering
 		}
 
 		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
-				.clearAll();
+				.clearByView(EIDType.DAVID, glEventListener.getID());
 
 		if (glEventListener instanceof GLPathway)
 		{
@@ -2555,6 +2563,8 @@ public class GLRemoteRendering
 		clearRemoteLevel(focusLevel);
 		clearRemoteLevel(stackLevel);
 		clearRemoteLevel(poolLevel);
+		
+		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearAll();
 	}
 
 	private void clearRemoteLevel(RemoteLevel remoteLevel)
@@ -2945,42 +2955,40 @@ public class GLRemoteRendering
 	{
 		return iAlContainedViewIDs;
 	}
-	
+
 	private void updateOffScreenTextures(final GL gl)
 	{
 		bUpdateOffScreenTextures = false;
-		
+
 		gl.glPushMatrix();
-//		glOffScreenRenderer.renderToTexture(gl);
 
 		int iViewWidth = parentGLCanvas.getWidth();
 		int iViewHeight = parentGLCanvas.getHeight();
-		
+
 		if (stackLevel.getElementByPositionIndex(0).getContainedElementID() != -1)
 		{
-			glOffScreenRenderer.renderToTexture(gl, 
-					stackLevel.getElementByPositionIndex(0).getContainedElementID(), 0, iViewWidth, iViewHeight);			
+			glOffScreenRenderer.renderToTexture(gl, stackLevel.getElementByPositionIndex(0)
+					.getContainedElementID(), 0, iViewWidth, iViewHeight);
 		}
 
 		if (stackLevel.getElementByPositionIndex(1).getContainedElementID() != -1)
 		{
-			glOffScreenRenderer.renderToTexture(gl, 
-					stackLevel.getElementByPositionIndex(1).getContainedElementID(), 1, iViewWidth, iViewHeight);
+			glOffScreenRenderer.renderToTexture(gl, stackLevel.getElementByPositionIndex(1)
+					.getContainedElementID(), 1, iViewWidth, iViewHeight);
 		}
 
 		if (stackLevel.getElementByPositionIndex(2).getContainedElementID() != -1)
 		{
-			glOffScreenRenderer.renderToTexture(gl, 
-					stackLevel.getElementByPositionIndex(2).getContainedElementID(), 2, iViewWidth, iViewHeight);
+			glOffScreenRenderer.renderToTexture(gl, stackLevel.getElementByPositionIndex(2)
+					.getContainedElementID(), 2, iViewWidth, iViewHeight);
 		}
-		
+
 		if (stackLevel.getElementByPositionIndex(3).getContainedElementID() != -1)
 		{
-			glOffScreenRenderer.renderToTexture(gl,
-					stackLevel.getElementByPositionIndex(3).getContainedElementID(), 3, iViewWidth, iViewHeight);		
+			glOffScreenRenderer.renderToTexture(gl, stackLevel.getElementByPositionIndex(3)
+					.getContainedElementID(), 3, iViewWidth, iViewHeight);
 		}
 
 		gl.glPopMatrix();
-
 	}
 }

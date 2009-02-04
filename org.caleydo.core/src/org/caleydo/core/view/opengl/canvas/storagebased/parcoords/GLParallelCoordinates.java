@@ -64,6 +64,7 @@ import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.preferences.PreferenceConstants;
+import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
@@ -2242,66 +2243,62 @@ public class GLParallelCoordinates
 
 	private void focusOnArea()
 	{
-		resetAxisSpacing();
-		// if (!generalManager.isWiiModeActive())
-		// return;
-		//
-		// WiiRemote wii = generalManager.getWiiRemote();
-		//
-		// float fXWiiPosition = wii.getCurrentSmoothHeadPosition()[0];
-		//
-		// // we assume that this is far right, and -fMax is far left
-		// float fMaxX = 5;
-		//
-		// if (fXWiiPosition > fMaxX)
-		// fXWiiPosition = fMaxX;
-		// else if (fXWiiPosition < -fMaxX)
-		// fXWiiPosition = -fMaxX;
-		//
-		// // now we normalize to 0 to 1
-		// fXWiiPosition = (fXWiiPosition + fMaxX) / (2 * fMaxX);
-		//
-		// fXWiiPosition *= renderStyle.getRenderWidth();
-		// int iAxisNumber = 0;
-		// for (int iCount = 0; iCount < alAxisSpacing.size() - 1; iCount++)
-		// {
-		// if (alAxisSpacing.get(iCount) < fXWiiPosition
-		// && alAxisSpacing.get(iCount + 1) > fXWiiPosition)
-		// {
-		// if ((fXWiiPosition - alAxisSpacing.get(iCount)) <
-		// (alAxisSpacing.get(iCount) - fXWiiPosition))
-		// iAxisNumber = iCount;
-		// else
-		// iAxisNumber = iCount + 1;
-		//
-		// break;
-		// }
-		// }
+		if (!generalManager.isWiiModeActive())
+			return;
 
-		// int iAxisNumber = 15;
-		//		
-		// int iNumberOfAxis = set.getVA(iAxisVAID).size();
-		//
-		// float fOriginalAxisSpacing =
-		// renderStyle.getAxisSpacing(iNumberOfAxis);
-		//
-		// float fFocusAxisSpacing = 3 * fOriginalAxisSpacing;
-		//
-		// float fReducedSpacing =
-		// (renderStyle.getRenderWidth() - 4 * fFocusAxisSpacing) /
-		// (iNumberOfAxis - 5);
-		//
-		// float fCurrentX = 0;
-		// alAxisSpacing.clear();
-		// for (int iCount = 0; iCount < iNumberOfAxis; iCount++)
-		// {
-		// alAxisSpacing.add(fCurrentX);
-		// if (iCount + 1 == iAxisNumber || iCount == iAxisNumber || iCount + 2
-		// == iAxisNumber || iCount -1 == iAxisNumber)
-		// fCurrentX += fFocusAxisSpacing;
-		// else
-		// fCurrentX += fReducedSpacing;
-		// }
+		WiiRemote wii = generalManager.getWiiRemote();
+
+		float fXWiiPosition = wii.getCurrentSmoothHeadPosition()[0] + 1f;
+
+
+		// we assume that this is far right, and -fMax is far left
+		float fMaxX = 2;
+
+		if (fXWiiPosition > fMaxX)
+			fXWiiPosition = fMaxX;
+		else if (fXWiiPosition < -fMaxX)
+			fXWiiPosition = -fMaxX;
+
+		// now we normalize to 0 to 1
+		fXWiiPosition = (fXWiiPosition + fMaxX) / (2 * fMaxX);
+
+		fXWiiPosition *= renderStyle.getRenderWidth();
+		int iAxisNumber = 0;
+		for (int iCount = 0; iCount < alAxisSpacing.size() - 1; iCount++)
+		{
+			if (alAxisSpacing.get(iCount) < fXWiiPosition
+				&& alAxisSpacing.get(iCount + 1) > fXWiiPosition)
+			{
+				if ((fXWiiPosition - alAxisSpacing.get(iCount)) < (alAxisSpacing.get(iCount) - fXWiiPosition))
+					iAxisNumber = iCount;
+				else
+					iAxisNumber = iCount + 1;
+
+				break;
+			}
+		}
+
+		int iNumberOfAxis = set.getVA(iAxisVAID).size();
+
+		float fOriginalAxisSpacing = renderStyle.getAxisSpacing(iNumberOfAxis);
+
+		float fFocusAxisSpacing = 2 * fOriginalAxisSpacing;
+
+		float fReducedSpacing =
+			(renderStyle.getRenderWidth() - 2 * fFocusAxisSpacing) / (iNumberOfAxis - 3);
+
+		float fCurrentX = 0;
+		alAxisSpacing.clear();
+		for (int iCount = 0; iCount < iNumberOfAxis; iCount++)
+		{
+			alAxisSpacing.add(fCurrentX);
+			if (iCount + 1 == iAxisNumber || iCount == iAxisNumber)
+				fCurrentX += fFocusAxisSpacing;
+			else
+				fCurrentX += fReducedSpacing;
+		}
+		
+		setDisplayListDirty();
 
 	}
 

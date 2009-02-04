@@ -3,12 +3,23 @@
 <details>
 
  		<!-- Data Mapping Import -->
-		   				
+
  		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
 		   		detail="data/genome/mapping/david/HOMO_SAPIENS_DAVID2REFSEQ_MRNA.txt"	
 		   		attrib1="DAVID_2_REFSEQ_MRNA REVERSE" 
 		   		attrib2="\t" 
-		   		attrib3="0 -1" />	 
+		   		attrib3="0 -1" />				   	
+
+ 		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
+		   		detail="generate"	
+		   		attrib1="REFSEQ_MRNA_2_REFSEQ_MRNA_INT REVERSE" />				   	
+
+ 		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
+		   		detail="already_loaded"	
+		   		attrib1="DAVID_2_REFSEQ_MRNA REVERSE LUT" 
+		   		attrib2="\t" 
+		   		attrib3="0 -1"
+		   		attrib4="DAVID_2_REFSEQ_MRNA_INT" />				   			   				
 		   		
  		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
 		   		detail="data/genome/mapping/david/HOMO_SAPIENS_DAVID2ENTREZ_GENE_ID.txt"	
@@ -30,21 +41,14 @@
 		   		
 		    <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
 		   		detail="data/genome/mapping/BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt"	
-		   		attrib1="BIOCARTA_GENE_ID_2_REFSEQ_MRNA REVERSE LUT_2" 
+		   		attrib1="BIOCARTA_GENE_ID_2_REFSEQ_MRNA REVERSE LUT" 
 		   		attrib2=";" 
 		   		attrib3="0 -1"
-		   		attrib4="BIOCARTA_GENE_ID_2_DAVID" />				   	
-		   		
-  		 	<!-- Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
-		   		detail="data/genome/microarray/kashofer/sn_gr_3_in_5_of_probes_filtered.csv"	
-		   		attrib1="REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE" 
-		   		attrib2="\t" 
-		   		attrib3="1 -1"
-		   		attrib4="" / -->			   			
+		   		attrib4="BIOCARTA_GENE_ID_2_DAVID" />				   				   			
 		   	
   		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
 		   		detail="data/genome/microarray/kashofer/sn_gr_3_in_5_of_probes_filtered.csv"	
-		   		attrib1="REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE LUT_1" 
+		   		attrib1="REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE LUT" 
 		   		attrib2="\t" 
 		   		attrib3="1 -1"
 		   		attrib4="DAVID_2_EXPRESSION_INDEX" /> <!-- already_loaded instead of filename -->		   						   			   			   		  		

@@ -72,6 +72,7 @@ public enum EManagedObjectType
 
 	GRAPH(65),
 	GRAPH_ITEM(66),
+	
 	/**
 	 * Type for ids used to connect different elements that have different ids.
 	 */

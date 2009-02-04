@@ -18,6 +18,7 @@ public enum EIDType
 	BIOCARTA_GENE_ID(EStorageType.STRING, "biocarta geneid", "biocarta geneid"),
 	DAVID(EStorageType.INT, "david", "david-id"),
 	REFSEQ_MRNA(EStorageType.STRING, "refseq-mrna", "refseq-mrna-id"),
+	REFSEQ_MRNA_INT(EStorageType.INT, "refseq-mrna int", "refseq-mrna-id int for internal usage in event system"),
 	ENTREZ_GENE_ID(EStorageType.INT, "entrez-gene-id", "entrez-gene-id"),
 	EXPRESSION_INDEX(EStorageType.INT, "expression-index", "The index of a gene expression value"),
 	// EXPRESSION_EXPERIMENT(EStorageType.INT, "expression-experiment",

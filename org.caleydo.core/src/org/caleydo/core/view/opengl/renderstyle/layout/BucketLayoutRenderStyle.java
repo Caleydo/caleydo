@@ -5,7 +5,6 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
 
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
@@ -19,8 +18,17 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 public class BucketLayoutRenderStyle
 	extends ARemoteViewLayoutRenderStyle
 {
-	private float fInputDeviceXCorrection = 0;
-
+	public final static float BUCKET_WIDTH = 2f;
+	public final static float BUCKET_HEIGHT = 2f;
+	public final static float BUCKET_DEPTH = 4f;
+	
+	private float fBucketBottomLeft = 0;
+	private float fBucketBottomRight = 0;
+	private float fBucketBottomTop = 0;
+	private float fBucketBottomBottom = 0;
+	private float fHeadDist = 0;
+	private float[] fArHeadPosition;
+	
 	/**
 	 * Constructor.
 	 */
@@ -56,7 +64,7 @@ public class BucketLayoutRenderStyle
 	public RemoteLevel initFocusLevel()
 	{
 		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f(-2 + fInputDeviceXCorrection, -2, 4 * fZoomFactor));
+		transform.setTranslation(new Vec3f(-2, -2, 4 * fZoomFactor));
 		transform.setScale(new Vec3f(fScalingFactorFocusLevel, fScalingFactorFocusLevel,
 			fScalingFactorFocusLevel));
 
@@ -67,21 +75,17 @@ public class BucketLayoutRenderStyle
 	
 	public RemoteLevel initFocusLevelWii()
 	{
-		float[] fArHeadPosition = GeneralManager.get().getWiiRemote().getCurrentSmoothHeadPosition();
-		
+		fArHeadPosition = GeneralManager.get().getWiiRemote().getCurrentSmoothHeadPosition();	
 		fArHeadPosition[0] = fArHeadPosition[0] * 4 + 4;
 		fArHeadPosition[1] *= 4;
 		
-		float fBucketWidth = 2f;
-		float fBucketHeight = 2f;
-		float fBucketDepth = 4.0f;
-		float fBucketBottomLeft = -1*fArHeadPosition[0] - fBucketWidth - 1.5f;
-		float fBucketBottomRight = -1*fArHeadPosition[0] + fBucketWidth - 1.5f;
-		float fBucketBottomTop = fArHeadPosition[1] + fBucketHeight;
-		float fBucketBottomBottom = fArHeadPosition[1] - fBucketHeight;		
+		fBucketBottomLeft = -1*fArHeadPosition[0] - BUCKET_WIDTH - 1.5f;
+		fBucketBottomRight = -1*fArHeadPosition[0] + BUCKET_WIDTH - 1.5f;
+		fBucketBottomTop = fArHeadPosition[1] + BUCKET_HEIGHT;
+		fBucketBottomBottom = fArHeadPosition[1] - BUCKET_HEIGHT;		
 		
-		float fNormalizedHeadDist = -1*GeneralManager.get().getWiiRemote().getCurrentHeadDistance() + 7f
-			+ Math.abs(fBucketBottomRight -2)/2 
+		fHeadDist = -1*GeneralManager.get().getWiiRemote().getCurrentHeadDistance() + 7f
+			+ Math.abs(fBucketBottomRight - 2)/2 
 			+ Math.abs(fBucketBottomTop - 2) /2;
 	
 		float fXScaling = (4*2 - Math.abs(fBucketBottomLeft - fBucketBottomRight)) / (4*2);
@@ -90,9 +94,8 @@ public class BucketLayoutRenderStyle
 //		float fXScaling = (4*2 - Math.abs(fBucketBottomLeft) - Math.abs(fBucketBottomRight)) / (4*2);
 //		float fYScaling = (4*2 - Math.abs(fBucketBottomBottom) - Math.abs(fBucketBottomTop)) / (4*2);
 
-		
 		Transform transform = new Transform();
-		transform.setTranslation(new Vec3f(fBucketBottomLeft, fBucketBottomBottom, fNormalizedHeadDist));
+		transform.setTranslation(new Vec3f(fBucketBottomLeft, fBucketBottomBottom, fHeadDist));
 		transform.setScale(new Vec3f(fXScaling,fYScaling,1));
 		focusLevel.getElementByPositionIndex(0).setTransform(transform);
 		
@@ -101,69 +104,45 @@ public class BucketLayoutRenderStyle
 	
 	public RemoteLevel initStackLevelWii()
 	{
-		float[] fArHeadPosition = GeneralManager.get().getWiiRemote()
-			.getCurrentSmoothHeadPosition();
-		
-		fArHeadPosition[0] = fArHeadPosition[0] * 4 + 4;
-		fArHeadPosition[1] *= 4;
-		
-		float fBucketWidth = 2;//2.44f;
-		float fBucketHeight = 2f;
-		float fBucketDepth = 4.0f;
-		float fBucketBottomLeft = -1*fArHeadPosition[0] - fBucketWidth - 1.5f;
-		float fBucketBottomRight = -1*fArHeadPosition[0] + fBucketWidth - 1.5f;
-		float fBucketBottomTop = fArHeadPosition[1] + fBucketHeight;
-		float fBucketBottomBottom = fArHeadPosition[1] - fBucketHeight;			
-		float fNormalizedHeadDist = -1*GeneralManager.get().getWiiRemote()
-			.getCurrentHeadDistance() + 7f 
-			+ Math.abs(fBucketBottomRight -2)/2 
-			+ Math.abs(fBucketBottomTop - 2) /2;
-		
-//		System.out.println("Head dist:" +fNormalizedHeadDist);
-//		System.out.println("bottom left:" +fBucketBottomLeft);
-		
 		Transform transform;
 		
-		float fAK = 4 -1*fNormalizedHeadDist;
-		float fGK = fBucketHeight - fBucketBottomTop;
+		float fAK = BUCKET_DEPTH -1*fHeadDist;
+		float fGK = BUCKET_HEIGHT - fBucketBottomTop;
 		float fAngle = (float) Math.atan((fGK/fAK));
 		
 		// Top plane
 		transform = new Transform();
-		transform.setTranslation(new Vec3f(-fBucketWidth, fBucketHeight, fBucketDepth));
+		transform.setTranslation(new Vec3f(-BUCKET_WIDTH, BUCKET_HEIGHT, BUCKET_DEPTH));
 		transform.setRotation(new Rotf(new Vec3f(1,0,0), (float) (Vec3f.convertGrad2Radiant(270)-fAngle)));
 		transform.setScale(new Vec3f(1,1,1));
 		stackLevel.getElementByPositionIndex(0).setTransform(transform);
 		
-		fAK = 4 -1*fNormalizedHeadDist;
-		fGK = fBucketWidth + fBucketBottomLeft;
+		fGK = BUCKET_WIDTH + fBucketBottomLeft;
 		fAngle = (float) Math.atan((fGK/fAK));
 		
 		// Left plane
 		transform = new Transform();
-		transform.setTranslation(new Vec3f(-fBucketWidth, 0, fBucketDepth));
+		transform.setTranslation(new Vec3f(-BUCKET_WIDTH, 0, BUCKET_DEPTH));
 		transform.setRotation(new Rotf(new Vec3f(0,1,0), (float) (Vec3f.convertGrad2Radiant(90)-fAngle)));
 		transform.setScale(new Vec3f(1,1,1));
 		stackLevel.getElementByPositionIndex(1).setTransform(transform);
 		
-		fAK = 4 -1*fNormalizedHeadDist;
-		fGK = fBucketWidth + fBucketBottomBottom;
+		fGK = BUCKET_WIDTH + fBucketBottomBottom;
 		fAngle = (float) Math.atan((fGK/fAK));
 		
 		// Bottom plane
 		transform = new Transform();
-		transform.setTranslation(new Vec3f(-fBucketWidth, -fBucketWidth, fBucketDepth));
+		transform.setTranslation(new Vec3f(-BUCKET_WIDTH, -BUCKET_HEIGHT, BUCKET_DEPTH));
 		transform.setRotation(new Rotf(new Vec3f(-1,0,0), (float) (Vec3f.convertGrad2Radiant(90)-fAngle)));
 		transform.setScale(new Vec3f(1,1,1));
 		stackLevel.getElementByPositionIndex(2).setTransform(transform);
 	
-		fAK = 4 -1*fNormalizedHeadDist;
-		fGK = fBucketWidth - fBucketBottomRight;
+		fGK = BUCKET_WIDTH - fBucketBottomRight;
 		fAngle = (float) Math.atan((fGK/fAK));
 		
 		// Right plane
 		transform = new Transform();
-		transform.setTranslation(new Vec3f(fBucketWidth, 0, fBucketDepth));
+		transform.setTranslation(new Vec3f(BUCKET_WIDTH, 0, BUCKET_DEPTH));
 		transform.setRotation(new Rotf(new Vec3f(0,-1,0), (float) (Vec3f.convertGrad2Radiant(270)-fAngle)));
 		transform.setScale(new Vec3f(1,1,1));
 		stackLevel.getElementByPositionIndex(3).setTransform(transform);
@@ -206,13 +185,9 @@ public class BucketLayoutRenderStyle
 			//	    	
 			// }
 
-			fInputDeviceXCorrection = 0;// 2 * 1 / fAspectRatio - 4f
-			// * (float) Math.cos(fTiltAngleRad_Horizontal - 0.4f) *
-			// fScalingCorrection;
-
 			// TOP BUCKET WALL
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(-2 + fInputDeviceXCorrection, 2 - 4f
+			transform.setTranslation(new Vec3f(-2, 2 - 4f
 				* (float) Math.cos(fTiltAngleRad_Vertical) * fScalingCorrection, 4 - 4
 				* (float) Math.sin(fTiltAngleRad_Vertical) * (1 - fZoomFactor)));
 			transform.setScale(new Vec3f(fScalingFactorStackLevel, fScalingFactorStackLevel
@@ -234,7 +209,7 @@ public class BucketLayoutRenderStyle
 
 			// BOTTOM BUCKET WALL
 			transform = new Transform();
-			transform.setTranslation(new Vec3f(-2 + fInputDeviceXCorrection, -2, 4));
+			transform.setTranslation(new Vec3f(-2, -2, 4));
 			transform.setScale(new Vec3f(fScalingFactorStackLevel, fScalingFactorStackLevel
 				* (1 - fZoomFactor), fScalingFactorStackLevel * (1 - fZoomFactor)));
 			transform.setRotation(new Rotf(new Vec3f(-1, 0, 0), fTiltAngleRad_Vertical));
@@ -389,5 +364,35 @@ public class BucketLayoutRenderStyle
 		spawnLevel.getElementByPositionIndex(0).setTransform(transform);
 
 		return spawnLevel;
+	}
+	
+	public float getBucketBottomLeft()
+	{
+		return fBucketBottomLeft;
+	}
+
+	public float getBucketBottomRight()
+	{
+		return fBucketBottomRight;
+	}
+
+	public float getBucketBottomBottom()
+	{
+		return fBucketBottomBottom;
+	}
+
+	public float getBucketBottomTop()
+	{
+		return fBucketBottomTop;
+	}
+	
+	public float[] getHeadPosition()	
+	{
+		return fArHeadPosition;
+	}
+
+	public float getHeadDistance()
+	{
+		return fHeadDist;
 	}
 }

@@ -178,16 +178,15 @@ public class ToolBarView
 		ArrayList<IToolBarManager> alToolBarManager = new ArrayList<IToolBarManager>();
 
 		final ToolBar toolBar = new ToolBar(composite, SWT.WRAP | SWT.FLAT);
-		toolBar
-				.setBackground(parentComposite.getDisplay()
-						.getSystemColor(SWT.COLOR_DARK_GRAY));
+//		toolBar.setBackground(parentComposite.getDisplay()
+//						.getSystemColor(SWT.COLOR_DARK_GRAY));
 		ToolBarManager toolBarManager = new ToolBarManager(toolBar);
 		alToolBar.add(toolBar);
 		alToolBarManager.add(toolBarManager);
 
 		final ToolBar toolBar2 = new ToolBar(composite, SWT.WRAP | SWT.FLAT);
-		toolBar2.setBackground(parentComposite.getDisplay()
-				.getSystemColor(SWT.COLOR_DARK_GRAY));
+//		toolBar2.setBackground(parentComposite.getDisplay()
+//				.getSystemColor(SWT.COLOR_DARK_GRAY));
 		ToolBarManager toolBarManager2 = new ToolBarManager(toolBar2);
 		alToolBar.add(toolBar2);
 		alToolBarManager.add(toolBarManager2);
@@ -331,6 +330,11 @@ public class ToolBarView
 				// ((ToolBar)item.getData()).setBackground(
 				// parentComposite.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
 
+				AGLEventListener glEventListener = (AGLEventListener) item.getData("view");
+
+//				if(glEventListener.isRenderedRemote())
+//					continue;
+				
 				item.setExpanded(false);
 			}
 		}
@@ -406,6 +410,7 @@ public class ToolBarView
 		data.widthHint = TOOLBAR_WIDTH;
 		searchBox.setLayoutData(data);
 		searchBox.setItems(items);
+		searchBox.setTextLimit(21);
 		searchBox.addFocusListener(new FocusAdapter()
 		{
 			@Override

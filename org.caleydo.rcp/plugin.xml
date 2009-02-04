@@ -115,7 +115,7 @@
       <view
             category="org.caleydo.rcp.views"
             class="org.caleydo.rcp.views.swt.TabularDataView"
-            icon="resources/icons/view/browser.png"
+            icon="resources/icons/view/tabular_data_viewer.png"
             id="org.caleydo.rcp.views.TabularDataView"
             name="Tabular Data Viewer">
       </view>
@@ -305,12 +305,6 @@
             </command>
             <menu label="Open Views">
                <command
-                     commandId="org.caleydo.rcp.command.openviews.heatmap"
-                     icon="resources/icons/view/heatmap.png"
-                     label="Heatmap"
-                     style="push">
-               </command>
-               <command
                      commandId="org.caleydo.rcp.command.openviews.hierarchical_heatmap"
                      icon="resources/icons/view/heatmap.png"
                      label="Hierarchical Heat Map"
@@ -341,35 +335,33 @@
                      style="push">
                </command>
                <command
-                     commandId="org.caleydo.rcp.command.openviews.glyphview"
-                     icon="resources/icons/view/glyph.png"
-                     label="Glyph View"
-                     style="push">
-               </command>
-               <command
-                     commandId="org.caleydo.rcp.command.openviews.glyphsliderview"
-                     icon="resources/icons/view/glyph.png"
-                     label="Glyph Slider View"
-                     style="push">
-               </command>
-               <command
-                     commandId="org.caleydo.rcp.command.openviews.glyphmappingconfigurationview"
-                     icon="resources/icons/view/glyph.png"
-                     label="Glyph Mapping Configuration"
-                     style="push">
-               </command>
-               <command
                      commandId="org.caleydo.rcp.command.openviews.tabulardata"
-                     icon="resources/icons/view/browser.png"
+                     icon="resources/icons/view/tabular_data_viewer.png"
                      label="Tabular Data Viewer"
                      style="push">
                </command>
-               <command
-                     commandId="org.caleydo.rcp.command.openviews.toolbar"
-                     icon="resources/icons/view/browser.png"
-                     label="Tool Bar"
-                     style="push">
-               </command>
+               <menu
+                     icon="resources/icons/view/glyph.png"
+                     label="Glyph">
+                  <command
+                        commandId="org.caleydo.rcp.command.openviews.glyphview"
+                        icon="resources/icons/view/glyph.png"
+                        label="Glyph View"
+                        style="push">
+                  </command>
+                  <command
+                        commandId="org.caleydo.rcp.command.openviews.glyphsliderview"
+                        icon="resources/icons/view/glyph.png"
+                        label="Glyph Slider View"
+                        style="push">
+                  </command>
+                  <command
+                        commandId="org.caleydo.rcp.command.openviews.glyphmappingconfigurationview"
+                        icon="resources/icons/view/glyph.png"
+                        label="Glyph Mapping Configuration"
+                        style="push">
+                  </command>
+               </menu>
             </menu>
          </menu>
          <menu

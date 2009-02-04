@@ -44,6 +44,9 @@ public class CmdExternalActionTrigger
 				case REMOTE_RENDERING_TOGGLE_LAYOUT_MODE:
 					((GLRemoteRendering) viewObject).toggleLayoutMode();
 					return;
+				case REMOTE_RENDERING_TOGGLE_CONNECTION_LINES_MODE:
+					((GLRemoteRendering) viewObject).toggleConnectionLines();
+					return;					
 			}
 		}
 		else if (viewObject instanceof AStorageBasedView)

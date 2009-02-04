@@ -140,6 +140,9 @@ public class InfoArea
 		{
 			public void run()
 			{
+				if (!(eventTrigger instanceof AGLEventListener))
+					return;
+				
 				txtViewInfo.setText(((AGLEventListener) eventTrigger).getShortInfo());
 
 				((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()

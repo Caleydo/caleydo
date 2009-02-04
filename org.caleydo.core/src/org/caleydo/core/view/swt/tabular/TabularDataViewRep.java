@@ -487,7 +487,7 @@ public class TabularDataViewRep
 		lblPreview.setText("Data preview:");
 		lblPreview.setLayoutData(new GridData(GridData.END, GridData.BEGINNING, false, false));
 
-		previewTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
+		previewTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
 		previewTable.setLinesVisible(false);
 		// previewTable.setHeaderVisible(true);
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);

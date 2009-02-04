@@ -331,6 +331,9 @@ public class ViewManager
 		GLEventListener gLEventListenerToRemove = hashGLEventListenerID2GLEventListener
 				.get(iGLEventListenerID);
 
+		if (gLEventListenerToRemove == null)
+			return;
+		
 		GLCaleydoCanvas parentGLCanvas = ((AGLEventListener) gLEventListenerToRemove)
 				.getParentGLCanvas();
 

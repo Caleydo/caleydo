@@ -86,8 +86,7 @@ public class LookupTableLoader
 						// TODO review sLine should be integer?
 						if (mappingType.equals(EMappingType.REFSEQ_MRNA_2_EXPRESSION_INDEX)
 								|| mappingType.equals(EMappingType.OLIGO_2_EXPRESSION_INDEX)
-								|| mappingType
-										.equals(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX))
+								|| mappingType.equals(EMappingType.EXPERIMENT_2_EXPERIMENT_INDEX))
 						{
 							// Remove multiple RefSeqs because all point to the
 							// same gene DAVID ID

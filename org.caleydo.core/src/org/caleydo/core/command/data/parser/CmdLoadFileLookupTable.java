@@ -1,5 +1,6 @@
 package org.caleydo.core.command.data.parser;
 
+import java.util.Map;
 import java.util.StringTokenizer;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.base.ACommand;
@@ -58,15 +59,7 @@ public class CmdLoadFileLookupTable
 	 * Boolean indicates if one column of the mapping needs to be resolved.
 	 * Resolving means replacing codes by internal IDs.
 	 */
-	protected boolean bResolveCodeMappingUsingCodeToId_LUT_1 = false;
-
-	protected boolean bResolveCodeMappingUsingCodeToId_LUT_2 = false;
-
-	/**
-	 * Boolean indicates if both columns of the mapping needs to be resolved.
-	 * Resolving means replacing codes by internal IDs.
-	 */
-	protected boolean bResolveCodeMappingUsingCodeToId_LUT_BOTH = false;
+	protected boolean bResolveCodeMappingUsingCodeToId_LUT = false;
 
 	/**
 	 * Variable contains the lookup table types that are needed to resolve
@@ -74,9 +67,7 @@ public class CmdLoadFileLookupTable
 	 */
 	protected String sCodeResolvingLUTTypes;
 
-	protected String sCodeResolvingLUTMappingType_1;
-
-	protected String sCodeResolvingLUTMappingType_2;
+	protected String sCodeResolvingLUTMappingType;
 
 	/**
 	 * Constructor.
@@ -102,8 +93,11 @@ public class CmdLoadFileLookupTable
 		int[] iArrayStartStop = StringConversionTool.convertStringToIntArray(parameterHandler
 				.getValueString(ECommandType.TAG_ATTRIBUTE3.getXmlKey()), " ");
 
-		iStartPareseFileAtLine = iArrayStartStop[0];
-		iStopParseFileAtLine = iArrayStartStop[1];
+		if (iArrayStartStop.length == 2)
+		{
+			iStartPareseFileAtLine = iArrayStartStop[0];
+			iStopParseFileAtLine = iArrayStartStop[1];
+		}
 
 		sCodeResolvingLUTTypes = parameterHandler.getValueString(ECommandType.TAG_ATTRIBUTE4
 				.getXmlKey());
@@ -115,7 +109,6 @@ public class CmdLoadFileLookupTable
 			final int iStopParseFileAtLine, final String sLookupTableInfo,
 			final String sLookupTableDelimiter, final String sCodeResolvingLUTTypes)
 	{
-
 		this.sFileName = sFileName;
 		this.iStartPareseFileAtLine = iStartParseFileAtLine;
 		this.iStopParseFileAtLine = iStopParseFileAtLine;
@@ -141,32 +134,14 @@ public class CmdLoadFileLookupTable
 			{
 				bCreateReverseMap = true;
 			}
-			else if (sLookupTableOptions.equals("LUT_1")
-					|| sLookupTableOptions.equals("LUT_2")
-					|| sLookupTableOptions.equals("LUT_BOTH"))
+			else if (sLookupTableOptions.equals("LUT"))
 			{
 				tokenizer = new StringTokenizer(sCodeResolvingLUTTypes,
 						IGeneralManager.sDelimiter_Parser_DataItems);
 
-				sCodeResolvingLUTMappingType_1 = tokenizer.nextToken();
-				//				
-				if (sLookupTableOptions.equals("LUT_1"))
-				{
-					// sCodeResolvingLUTMappingType_1 = tokenizer.nextToken();
-					bResolveCodeMappingUsingCodeToId_LUT_1 = true;
-				}
-				else if (sLookupTableOptions.equals("LUT_2"))
-				{
-					// sCodeResolvingLUTMappingType_2 = tokenizer.nextToken();
-					bResolveCodeMappingUsingCodeToId_LUT_2 = true;
-				}
-				else if (sLookupTableOptions.equals("LUT_BOTH"))
-				{
-					// sCodeResolvingLUTMappingType_1 = tokenizer.nextToken();
-					// sCodeResolvingLUTMappingType_2 = tokenizer.nextToken();
-					//
-					bResolveCodeMappingUsingCodeToId_LUT_BOTH = true;
-				}
+				sCodeResolvingLUTMappingType = tokenizer.nextToken();
+
+				bResolveCodeMappingUsingCodeToId_LUT = true;
 			}
 		}
 	}
@@ -190,7 +165,17 @@ public class CmdLoadFileLookupTable
 		EMappingDataType dataType;
 		dataType = mappingType.getDataMapppingType();
 
-		if (!sFileName.equals("already_loaded"))
+		int iIndex = 0;
+		if (sFileName.equals("generate"))
+		{
+			genomeIdManager.createMap(EMappingType.REFSEQ_MRNA_2_REFSEQ_MRNA_INT, EMappingDataType.INT2STRING);
+			Map hashTmp = genomeIdManager.getMapping(EMappingType.REFSEQ_MRNA_2_REFSEQ_MRNA_INT);
+			for (Object sRefSeqID : genomeIdManager.getMapping(EMappingType.DAVID_2_REFSEQ_MRNA).values())
+			{
+				hashTmp.put(sRefSeqID, iIndex++);
+			}
+		}
+		else if (!sFileName.equals("already_loaded"))
 		{
 			loader = new LookupTableLoader(sFileName, mappingType, dataType);
 			loader.setTokenSeperator(sLookupTableDelimiter);
@@ -199,20 +184,18 @@ public class CmdLoadFileLookupTable
 			loader.loadData();
 		}
 
-		/* --- Map codes in LUT to IDs --- */
-		if (bResolveCodeMappingUsingCodeToId_LUT_1 || bResolveCodeMappingUsingCodeToId_LUT_2
-				|| bResolveCodeMappingUsingCodeToId_LUT_BOTH)
+		if (bResolveCodeMappingUsingCodeToId_LUT)
 		{
 			genomeIdManager.createCodeResolvedMap(mappingType, EMappingType
-					.valueOf(sCodeResolvingLUTMappingType_1));
+					.valueOf(sCodeResolvingLUTMappingType));
 		}
 
 		/* --- create reverse Map ... --- */
 		if (bCreateReverseMap)
 		{
-			if (sCodeResolvingLUTMappingType_1 != null)
+			if (sCodeResolvingLUTMappingType != null)
 			{
-				mappingType = EMappingType.valueOf(sCodeResolvingLUTMappingType_1);
+				mappingType = EMappingType.valueOf(sCodeResolvingLUTMappingType);
 			}
 
 			// Concatenate genome id type target and origin type in swapped

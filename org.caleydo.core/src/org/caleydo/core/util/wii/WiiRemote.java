@@ -29,6 +29,8 @@ public class WiiRemote
 
 	private Queue<float[]> posInputQueue = new LinkedList<float[]>();
 	private Queue<Float> distanceInputQueue = new LinkedList<Float>();
+	
+	private boolean bInitOK = false;
 
 	/**
 	 * Constructor.
@@ -54,6 +56,8 @@ public class WiiRemote
 		// Return if no Wii remote was detected. In this case the input is simulated with fixed values for testing purposes.
 		if (wiimotes.length == 0)
 			return;
+		
+		bInitOK = true;
 		
 		wiimotes[0].activateIRTRacking();
 		wiimotes[0].addWiiMoteEventListeners(new WiimoteListener()
@@ -201,7 +205,7 @@ public class WiiRemote
 		float[] fArTmpPoint;
 		float[] fArSmoothedPoint = new float[]{-1.3f, 0.1f};
 		
-		if (!GeneralManager.get().isWiiModeActive())
+		if (!GeneralManager.get().isWiiModeActive() || !bInitOK)
 		{
 			return fArSmoothedPoint;
 		}
@@ -228,7 +232,7 @@ public class WiiRemote
 	{
 		float fSmoothedHeadDistance = 8;
 		
-		if (!GeneralManager.get().isWiiModeActive())
+		if (!GeneralManager.get().isWiiModeActive() || !bInitOK)
 		{
 			return fSmoothedHeadDistance;
 		}

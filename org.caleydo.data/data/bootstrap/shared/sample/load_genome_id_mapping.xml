@@ -30,14 +30,14 @@
 		   		
 		    <Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
 		   		detail="data/genome/mapping/BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt"	
-		   		attrib1="BIOCARTA_GENE_ID_2_REFSEQ_MRNA REVERSE LUT_2" 
+		   		attrib1="BIOCARTA_GENE_ID_2_REFSEQ_MRNA REVERSE LUT" 
 		   		attrib2=";" 
 		   		attrib3="0 -1"
 		   		attrib4="BIOCARTA_GENE_ID_2_DAVID" />		
 		   		
   		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
 		   		detail="data/genome/microarray/sample/sample_microarray_dataset.csv"	
-		   		attrib1="REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE LUT_1" 
+		   		attrib1="REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE LUT" 
 		   		attrib2="\t" 
 		   		attrib3="1 -1"
 		   		attrib4="DAVID_2_EXPRESSION_INDEX" />		   						   			   			   		  		

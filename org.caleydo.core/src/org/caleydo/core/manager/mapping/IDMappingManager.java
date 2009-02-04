@@ -138,9 +138,12 @@ public class IDMappingManager
 		Map<KeyType, ValueType> srcMap = (Map<KeyType, ValueType>) hashType2Mapping
 				.get(mappingType);
 
-		// Remove old unresolved map
-		hashType2Mapping.remove(mappingType);
-
+		if (mappingType != EMappingType.REFSEQ_MRNA_2_DAVID)
+		{
+			// Remove old unresolved map
+			hashType2Mapping.remove(mappingType);
+		}
+			
 		if (originKeyType == destKeyType)
 		{
 			if (originValueType != destValueType)
@@ -149,8 +152,44 @@ public class IDMappingManager
 						&& destValueType.getStorageType() == EStorageType.INT)
 				{
 					codeResolvedMap = new HashMap<Integer, Integer>();
+					EMappingType conversionType = EMappingType.valueOf(originValueType + "_2_"
+							+ destValueType);
 
-					throw new RuntimeException("Not implemented!");
+					if (!mappingType.isMultiMap())
+					{
+						codeResolvedMap = new HashMap<Integer, Integer>();
+
+						for (KeyType key : srcMap.keySet())
+						{
+							codeResolvedMap.put(key, generalManager.getIDMappingManager()
+									.getID(conversionType, srcMap.get(key)));
+						}
+					}
+					else
+					{
+						codeResolvedMap = new MultiHashMap<Integer, Integer>();
+						MultiHashMap<Integer, String> srcMultiMap = (MultiHashMap<Integer, String>) srcMap;
+						Integer iID = 0;
+
+						for (KeyType key : srcMap.keySet())
+						{
+							for (String sID : srcMultiMap.getAll(key))
+							{
+								iID = generalManager.getIDMappingManager().getID(
+										conversionType, sID);
+
+								if (iID == null || iID == -1)
+								{
+									continue;
+									// throw new
+									// IllegalStateException("No DAVID mapping for RefSeq "
+									// +key);
+								}
+
+								codeResolvedMap.put(key, iID);
+							}
+						}
+					}
 				}
 				else if (originKeyType.getStorageType() == EStorageType.INT
 						&& destValueType.getStorageType() == EStorageType.STRING)

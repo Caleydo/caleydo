@@ -368,42 +368,41 @@ public class GLPathway
 		return alDavids;
 	}
 
+//	private ArrayList<Integer> getRefSeqFromPathwayVertexGraphItemRep(
+//			int iPathwayVertexGraphItemRepID)
+//	{
+//		ArrayList<Integer> alRefSeq = new ArrayList<Integer>();
+//
+//		for (IGraphItem pathwayVertexGraphItem : generalManager.getPathwayItemManager()
+//				.getItem(iPathwayVertexGraphItemRepID).getAllItemsByProp(
+//						EGraphItemProperty.ALIAS_PARENT))
+//		{
+//			int iRefSeqID = generalManager.getPathwayItemManager()
+//					.getDavidIdByPathwayVertexGraphItemId(pathwayVertexGraphItem.getId());
+//
+//			if (iDavidID == -1)
+//				continue;
+//
+//			alRefSeq.add(iDavidID);
+//		}
+//
+//		return alRefSeq;
+//	}
+	
 	private ISelectionDelta createExternalSelectionDelta(ISelectionDelta selectionDelta)
 	{
-		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.DAVID);
+		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.REFSEQ_MRNA_INT);
 
-		// IPathwayItemManager pathwayItemManager =
-		// generalManager.getPathwayItemManager();
-		// int iDavidID = 0;
 		for (SelectionDeltaItem item : selectionDelta)
 		{
 			for (int iDavidID : getDavidFromPathwayVertexGraphItemRep(item.getPrimaryID()))
 			{
-
-				// for (IGraphItem pathwayVertexGraphItem :
-				// pathwayItemManager.getItem(
-				// item.getPrimaryID()).getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT))
-				// {
-				// iDavidID = generalManager.getPathwayItemManager()
-				// .getDavidIdByPathwayVertexGraphItemId(pathwayVertexGraphItem.getId());
-				//
-				// if (iDavidID == -1)
-				// continue;
-
-				// // Ignore multiple nodes with same DAVID ID
-				// if (iLastDavidID == iDavidID)
-				// continue;
-
 				newSelectionDelta.addSelection(iDavidID, item.getSelectionType(), item
 						.getPrimaryID());
 				for (Integer iConnectionID : item.getConnectionID())
 				{
 					newSelectionDelta.addConnectionID(iDavidID, iConnectionID);
 				}
-				// System.out.println("ExternalID: " + iDavidID + ", Internal: "
-				// + item.getSelectionID() + ", State: " +
-				// item.getSelectionType());
-
 			}
 		}
 

@@ -85,9 +85,14 @@ public class DataEntitySearcherViewRep
 
 	private boolean searchForRefSeq(final String sEntity)
 	{
-
+		Integer iRefSeqID = generalManager.getIDMappingManager().getID(
+				EMappingType.REFSEQ_MRNA_2_REFSEQ_MRNA_INT, sEntity.toUpperCase());
+		
+		if (iRefSeqID == null || iRefSeqID == -1)
+			return false;
+		
 		Integer iDavidID = generalManager.getIDMappingManager().getID(
-				EMappingType.REFSEQ_MRNA_2_DAVID, sEntity.toUpperCase());
+				EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID);
 
 		if (iDavidID == null || iDavidID == -1)
 			return false;
