@@ -73,6 +73,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
@@ -137,19 +138,22 @@ public class GLParallelCoordinates
 	// private boolean bInfoAreaFirstTime = false;
 
 	private boolean bAngularBrushingSelectPolyline = false;
-
 	private boolean bIsAngularBrushingActive = false;
-
 	private boolean bIsAngularBrushingFirstTime = false;
 
 	private boolean bIsGateDraggingFirstTime = false;
-
 	private boolean bIsAngularDraggingActive = false;
+
+	private boolean bWasAxisMoved = false;
+	private boolean bWasAxisDraggedFirstTime = true;
+	private float fAxisDraggingOffset;
+
+	private int iMovedAxisPosition = -1;
 
 	private float fGateTopSpacing;
 	private float fGateBottomSpacing;
 
-	private Vec3f vecAngularBrusingPoint;
+	private Vec3f vecAngularBrushingPoint;
 
 	private float fDefaultAngle = (float) Math.PI / 6;
 
@@ -345,6 +349,13 @@ public class GLParallelCoordinates
 			handleGateDragging(gl);
 			if (pickingTriggerMouseAdapter.wasMouseReleased())
 				bIsDraggingActive = false;
+		}
+
+		if (bWasAxisMoved)
+		{
+			adjustAxisSpacing(gl);
+			if (pickingTriggerMouseAdapter.wasMouseReleased())
+				bWasAxisMoved = false;
 		}
 
 		// if(bRenderInfoArea)
@@ -824,6 +835,7 @@ public class GLParallelCoordinates
 	 */
 	private void renderCoordinateSystem(GL gl)
 	{
+		IVirtualArray axisVA = set.getVA(iAxisVAID);
 		textRenderer.setColor(0, 0, 0, 1);
 
 		int iNumberAxis = set.getVA(iAxisVAID).size();
@@ -1389,12 +1401,10 @@ public class GLParallelCoordinates
 
 		if (draggedObject == EPickingType.LOWER_GATE_TIP_SELECTION)
 		{
-
 			gate.setSecond(height);
 		}
 		else if (draggedObject == EPickingType.LOWER_GATE_BOTTOM_SELECTION)
 		{
-
 			gate.setFirst(height);
 		}
 		else if (draggedObject == EPickingType.LOWER_GATE_BODY_SELECTION)
@@ -1544,7 +1554,7 @@ public class GLParallelCoordinates
 	protected void handleEvents(final EPickingType ePickingType,
 			final EPickingMode ePickingMode, final int iExternalID, final Pick pick)
 	{
-		if (detailLevel == EDetailLevel.VERY_LOW)
+		if (detailLevel == EDetailLevel.VERY_LOW || bIsDraggingActive || bWasAxisMoved)
 		{
 			pickingManager.flushHits(iUniqueID, ePickingType);
 			return;
@@ -1760,14 +1770,19 @@ public class GLParallelCoordinates
 					case CLICKED:
 						if (iExternalID > 0)
 						{
-							set.getVA(iAxisVAID).moveLeft(iExternalID);
-							IVirtualArrayDelta vaDelta = new VirtualArrayDelta(
-									EIDType.EXPERIMENT_INDEX);
-							vaDelta.add(VADeltaItem.moveLeft(iExternalID));
-							generalManager.getEventPublisher().triggerEvent(
-									EMediatorType.SELECTION_MEDIATOR, this,
-									new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
-
+							bWasAxisMoved = true;
+							bWasAxisDraggedFirstTime = true;
+							iMovedAxisPosition = iExternalID;
+							// set.getVA(iAxisVAID).moveLeft(iExternalID);
+							// IVirtualArrayDelta vaDelta = new
+							// VirtualArrayDelta(
+							// EIDType.EXPERIMENT_INDEX);
+							// vaDelta.add(VADeltaItem.moveLeft(iExternalID));
+							// generalManager.getEventPublisher().triggerEvent(
+							// EMediatorType.SELECTION_MEDIATOR, this,
+							// new
+							// DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
+							//
 							setDisplayListDirty();
 
 							// resetSelections();
@@ -1782,20 +1797,22 @@ public class GLParallelCoordinates
 				switch (ePickingMode)
 				{
 					case CLICKED:
-						if (iExternalID > 0)
-						{
-							set.getVA(iAxisVAID).moveRight(iExternalID);
-							IVirtualArrayDelta vaDelta = new VirtualArrayDelta(
-									EIDType.EXPERIMENT_INDEX);
-							vaDelta.add(VADeltaItem.moveRight(iExternalID));
-							generalManager.getEventPublisher().triggerEvent(
-									EMediatorType.SELECTION_MEDIATOR, this,
-									new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
-
-							setDisplayListDirty();
-							// resetSelections();
-							// initGates();
-						}
+						resetAxisSpacing();
+						setDisplayListDirty();
+//						if (iExternalID > 0)
+//						{
+//							set.getVA(iAxisVAID).moveRight(iExternalID);
+//							IVirtualArrayDelta vaDelta = new VirtualArrayDelta(
+//									EIDType.EXPERIMENT_INDEX);
+//							vaDelta.add(VADeltaItem.moveRight(iExternalID));
+//							generalManager.getEventPublisher().triggerEvent(
+//									EMediatorType.SELECTION_MEDIATOR, this,
+//									new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
+//
+//							setDisplayListDirty();
+//							// resetSelections();
+//							// initGates();
+//						}
 						break;
 				}
 				pickingManager.flushHits(iUniqueID, EPickingType.MOVE_AXIS_RIGHT);
@@ -2016,7 +2033,7 @@ public class GLParallelCoordinates
 			Point currentPoint = linePick.getPickedPoint();
 			float[] fArPoint = GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(
 					gl, currentPoint.x, currentPoint.y);
-			vecAngularBrusingPoint = new Vec3f(fArPoint[0], fArPoint[1], 0.01f);
+			vecAngularBrushingPoint = new Vec3f(fArPoint[0], fArPoint[1], 0.01f);
 			bIsAngularBrushingFirstTime = false;
 
 		}
@@ -2026,8 +2043,8 @@ public class GLParallelCoordinates
 
 		for (int iCount = 0; iCount < alAxisSpacing.size() - 1; iCount++)
 		{
-			if (vecAngularBrusingPoint.x() > alAxisSpacing.get(iCount)
-					&& vecAngularBrusingPoint.x() < alAxisSpacing.get(iCount + 1))
+			if (vecAngularBrushingPoint.x() > alAxisSpacing.get(iCount)
+					&& vecAngularBrushingPoint.x() < alAxisSpacing.get(iCount + 1))
 				iPosition = iCount;
 		}
 
@@ -2241,6 +2258,64 @@ public class GLParallelCoordinates
 		return bRenderStorageHorizontally;
 	}
 
+	private void adjustAxisSpacing(GL gl)
+	{
+
+		IVirtualArray axisVA = set.getVA(iAxisVAID);
+		int iAxisPosition = iMovedAxisPosition;
+		int iAxisID = axisVA.get(iAxisPosition);
+
+		System.out.println("Axis Index: " + iAxisPosition);
+
+		Point currentPoint = pickingTriggerMouseAdapter.getPickedPoint();
+
+		float[] fArTargetWorldCoordinates = GLCoordinateUtils
+				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
+
+		float width = fArTargetWorldCoordinates[0] - fXTranslation - fXDefaultTranslation;
+
+		if (bWasAxisDraggedFirstTime)
+		{
+			fAxisDraggingOffset = width - alAxisSpacing.get(iAxisPosition);
+			bWasAxisDraggedFirstTime = false;
+		}
+
+		width -= fAxisDraggingOffset;
+
+		// GLHelperFunctions.drawPointAt(gl, new Vec3f(width, 0.5f, 0));
+
+		if (iAxisPosition > 0 && width  < alAxisSpacing.get(iAxisPosition - 1))
+		{
+			// switch axis
+			axisVA.moveLeft(iAxisPosition);
+			alAxisSpacing.remove(iAxisPosition);
+			alAxisSpacing.add(iAxisPosition - 1, width );
+			iMovedAxisPosition--;
+			// TODO trigger Event
+		}
+		else if (iAxisPosition < axisVA.size() && width  > alAxisSpacing.get(iAxisPosition + 1))
+		{
+			axisVA.moveRight(iAxisPosition);
+			alAxisSpacing.remove(iAxisPosition);
+			alAxisSpacing.add(iAxisPosition + 1, width );
+			iMovedAxisPosition++;
+		}
+		else
+		{
+			alAxisSpacing.set(iAxisPosition, width);
+		}
+		setDisplayListDirty();
+
+		// set.getVA(iAxisVAID).moveLeft(iExternalID);
+		// IVirtualArrayDelta vaDelta = new VirtualArrayDelta(
+		// EIDType.EXPERIMENT_INDEX);
+		// vaDelta.add(VADeltaItem.moveLeft(iExternalID));
+		// generalManager.getEventPublisher().triggerEvent(
+		// EMediatorType.SELECTION_MEDIATOR, this,
+		// new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
+
+	}
+
 	private void focusOnArea()
 	{
 		if (!generalManager.isWiiModeActive())
@@ -2249,7 +2324,6 @@ public class GLParallelCoordinates
 		WiiRemote wii = generalManager.getWiiRemote();
 
 		float fXWiiPosition = wii.getCurrentSmoothHeadPosition()[0] + 1f;
-
 
 		// we assume that this is far right, and -fMax is far left
 		float fMaxX = 2;
@@ -2267,7 +2341,7 @@ public class GLParallelCoordinates
 		for (int iCount = 0; iCount < alAxisSpacing.size() - 1; iCount++)
 		{
 			if (alAxisSpacing.get(iCount) < fXWiiPosition
-				&& alAxisSpacing.get(iCount + 1) > fXWiiPosition)
+					&& alAxisSpacing.get(iCount + 1) > fXWiiPosition)
 			{
 				if ((fXWiiPosition - alAxisSpacing.get(iCount)) < (alAxisSpacing.get(iCount) - fXWiiPosition))
 					iAxisNumber = iCount;
@@ -2284,8 +2358,8 @@ public class GLParallelCoordinates
 
 		float fFocusAxisSpacing = 2 * fOriginalAxisSpacing;
 
-		float fReducedSpacing =
-			(renderStyle.getRenderWidth() - 2 * fFocusAxisSpacing) / (iNumberOfAxis - 3);
+		float fReducedSpacing = (renderStyle.getRenderWidth() - 2 * fFocusAxisSpacing)
+				/ (iNumberOfAxis - 3);
 
 		float fCurrentX = 0;
 		alAxisSpacing.clear();
@@ -2297,7 +2371,7 @@ public class GLParallelCoordinates
 			else
 				fCurrentX += fReducedSpacing;
 		}
-		
+
 		setDisplayListDirty();
 
 	}
