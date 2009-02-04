@@ -11,7 +11,6 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import java.util.ArrayList;
 import java.util.Set;
-import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ESetType;
@@ -23,7 +22,6 @@ import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
-import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
@@ -45,9 +43,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.miniview.GLColorMappingBarMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.omg.CORBA.REBIND;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -106,9 +102,9 @@ public class GLHeatMap
 		alSelectionTypes.add(ESelectionType.SELECTION);
 
 		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX)
-				.externalIDType(EIDType.DAVID).mappingType(
-						EMappingType.EXPRESSION_INDEX_2_DAVID,
-						EMappingType.DAVID_2_EXPRESSION_INDEX).build();
+				.externalIDType(EIDType.REFSEQ_MRNA_INT).mappingType(
+						EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
+						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX).build();
 		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX)
 				.build();
 
@@ -484,12 +480,10 @@ public class GLHeatMap
 
 				switch (pickingMode)
 				{
-
 					case DOUBLE_CLICKED:
 						IDListEventContainer<Integer> idListEventContainer = new IDListEventContainer<Integer>(
-								EEventType.LOAD_PATHWAY_BY_GENE, EIDType.DAVID);
-						int iDavidID = getDavidIDFromStorageIndex(iExternalID);
-						idListEventContainer.addID(iDavidID);
+								EEventType.LOAD_PATHWAY_BY_GENE, EIDType.REFSEQ_MRNA_INT);
+						idListEventContainer.addID(getRefSeqFromStorageIndex(iExternalID));
 						triggerEvent(EMediatorType.SELECTION_MEDIATOR, idListEventContainer);
 						// intentionally no break
 
@@ -520,7 +514,7 @@ public class GLHeatMap
 				{
 
 					triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-							new SelectionCommandEventContainer(EIDType.DAVID,
+							new SelectionCommandEventContainer(EIDType.REFSEQ_MRNA_INT,
 									new SelectionCommand(ESelectionCommandType.CLEAR,
 											eSelectionType)));
 					ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
@@ -640,7 +634,7 @@ public class GLHeatMap
 				if (detailLevel == EDetailLevel.HIGH)
 				{
 					// Render heat map element name
-					String sContent = getRefSeqFromStorageIndex(iContentIndex);
+					String sContent = Integer.toString(getRefSeqFromStorageIndex(iContentIndex));
 					// if (sContent == null)
 					// sContent = "Unknown";
 					// renderCaption(gl, sContent, fXPosition + fFieldWith / 6 *

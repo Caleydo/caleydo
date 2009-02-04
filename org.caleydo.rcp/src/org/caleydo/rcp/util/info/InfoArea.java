@@ -133,7 +133,7 @@ public class InfoArea
 	private void handleSelectionUpdate(final IUniqueObject eventTrigger,
 			final ISelectionDelta selectionDelta)
 	{
-		if (selectionDelta.getIDType() != EIDType.DAVID)
+		if (selectionDelta.getIDType() != EIDType.REFSEQ_MRNA_INT)
 			return;
 
 		parentComposite.getDisplay().asyncExec(new Runnable()
@@ -161,7 +161,7 @@ public class InfoArea
 					if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER
 							|| selectionItem.getSelectionType() == ESelectionType.SELECTION)
 					{
-						// Collection<SelectionCommand> iAlDavidID;
+						// Collection<Selechttp://orf.at/tionCommand> iAlDavidID;
 						if (iItemsToLoad == 0)
 						{
 							// String sURL =
@@ -176,21 +176,22 @@ public class InfoArea
 							selectionList.removeAll();
 						}
 
-						Set<String> sSetRefSeqID = GeneralManager.get().getIDMappingManager()
-								.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA,
+						String sRefSeqID = GeneralManager.get().getIDMappingManager()
+								.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
 										selectionItem.getPrimaryID());
 
+						Integer iDavidID = GeneralManager.get().getIDMappingManager()
+							.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID,
+								selectionItem.getPrimaryID());
+						
 						String sOutput = "";
 						sOutput = sOutput
 								+ GeneralManager.get().getIDMappingManager().getID(
 										EMappingType.DAVID_2_GENE_SYMBOL,
-										selectionItem.getPrimaryID());
+										iDavidID);
 
-						for (String sRefSeqID : sSetRefSeqID)
-						{
-							sOutput = sOutput + "\n";
-							sOutput = sOutput + sRefSeqID;
-						}
+						sOutput = sOutput + "\n";
+						sOutput = sOutput + sRefSeqID;
 
 						// if
 						// (iAlDavidID.contains(selectionItem.getSelectionID()))

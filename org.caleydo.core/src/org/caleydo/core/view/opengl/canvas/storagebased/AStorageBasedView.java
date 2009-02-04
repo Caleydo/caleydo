@@ -4,7 +4,6 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
-import java.util.Set;
 import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
 import org.caleydo.core.data.IUniqueObject;
@@ -297,7 +296,13 @@ public abstract class AStorageBasedView
 	@Deprecated
 	protected int getDavidIDFromStorageIndex(int index)
 	{
-		Integer iDavidId = genomeIDManager.getID(EMappingType.EXPRESSION_INDEX_2_DAVID, index);
+		Integer iRefSeqID = genomeIDManager.getID(
+				EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, index);
+
+		if (iRefSeqID == null)
+			return -1;
+		
+		Integer iDavidId = genomeIDManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID);
 
 		if (iDavidId == null)
 			return -1;
@@ -306,31 +311,15 @@ public abstract class AStorageBasedView
 	}
 
 	@Deprecated
-	protected String getRefSeqFromStorageIndex(int index)
+	protected int getRefSeqFromStorageIndex(int index)
 	{
-		// Convert expression storage ID to RefSeq
-		Integer iDavidId = getDavidIDFromStorageIndex(index);
+		Integer iRefSeqID = genomeIDManager.getID(
+				EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, index);
 
-		// if (iDavidId == null)
-		// return "Unknown Gene";
-
-		Set<String> sSetRefSeqID = genomeIDManager.getMultiID(
-				EMappingType.DAVID_2_REFSEQ_MRNA, iDavidId);
-		String sOutput = "";
-		int iCount = 0;
-		for (String sRefSeqID : sSetRefSeqID)
-		{
-			// if (sRefSeqID == "")
-			// continue;
-			if (iCount > 0)
-			{
-				sOutput += " | ";
-			}
-			iCount++;
-			sOutput += sRefSeqID;
-		}
-
-		return sOutput;
+		if (iRefSeqID == null)
+			return -1;
+		
+		return iRefSeqID;
 	}
 
 	@Deprecated
@@ -351,16 +340,14 @@ public abstract class AStorageBasedView
 
 	private void handleSelectionUpdate(IUniqueObject eventTrigger,
 			ISelectionDelta selectionDelta)
-
 	{
-
 		generalManager.getLogger().log(
 				Level.INFO,
 				"Update called by " + eventTrigger.getClass().getSimpleName()
 						+ ", received in: " + this.getClass().getSimpleName());
 
 		// Check for type that can be handled
-		if (selectionDelta.getIDType() == EIDType.DAVID
+		if (selectionDelta.getIDType() == EIDType.REFSEQ_MRNA_INT
 				|| selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX)
 		{
 			generalManager.getLogger().log(
@@ -390,7 +377,6 @@ public abstract class AStorageBasedView
 
 	private void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta)
 	{
-
 		generalManager.getLogger().log(
 				Level.INFO,
 				"VA Update called by " + eventTrigger.getClass().getSimpleName()
@@ -401,7 +387,7 @@ public abstract class AStorageBasedView
 		{
 			selectionManager = storageSelectionManager;
 		}
-		else if (delta.getIDType() == EIDType.DAVID)
+		else if (delta.getIDType() == EIDType.REFSEQ_MRNA_INT)
 		{
 			delta = DeltaConverter.convertDelta(
 					EIDType.EXPRESSION_INDEX, delta);
@@ -523,6 +509,7 @@ public abstract class AStorageBasedView
 				switch (commandEventContainer.getIDType())
 				{
 					case DAVID:
+					case REFSEQ_MRNA_INT:
 					case EXPRESSION_INDEX:
 						contentSelectionManager.executeSelectionCommands(commandEventContainer
 								.getSelectionCommands());

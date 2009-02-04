@@ -145,7 +145,7 @@ public class GenomeHTMLBrowserViewRep
 	private void handleSelectionUpdate(IUniqueObject eventTrigger,
 			final ISelectionDelta selectionDelta)
 	{
-		if (selectionDelta.getIDType() != EIDType.DAVID)
+		if (selectionDelta.getIDType() != EIDType.REFSEQ_MRNA_INT)
 			return;
 
 		parentComposite.getDisplay().asyncExec(new Runnable()
@@ -176,27 +176,28 @@ public class GenomeHTMLBrowserViewRep
 							list.removeAll();
 						}
 
-						Set<String> sSetRefSeqID = GeneralManager.get().getIDMappingManager()
-								.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA,
-										selectionDeltaItem.getPrimaryID());
+						String sRefSeqID = GeneralManager.get().getIDMappingManager()
+							.getID(EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
+								selectionDeltaItem.getPrimaryID());
+
+						Integer iDavidID = GeneralManager.get().getIDMappingManager()
+							.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID,
+									selectionDeltaItem.getPrimaryID());
 
 						String sOutput = "";
 						sOutput = sOutput
 								+ GeneralManager.get().getIDMappingManager().getID(
 										EMappingType.DAVID_2_GENE_SYMBOL,
-										selectionDeltaItem.getPrimaryID());
+										iDavidID);
 
-						for (String sRefSeqID : sSetRefSeqID)
-						{
-							sOutput = sOutput + "\n";
-							sOutput = sOutput + sRefSeqID;
-						}
+						sOutput = sOutput + "\n";
+						sOutput = sOutput + sRefSeqID;
 
 						if (iAlDavidID.contains(selectionDeltaItem.getPrimaryID()))
 							continue;
 
 						list.add(sOutput);
-						iAlDavidID.add(selectionDeltaItem.getPrimaryID());
+						iAlDavidID.add(iDavidID);
 
 						iItemsToLoad++;
 					}

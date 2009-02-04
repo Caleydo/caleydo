@@ -75,6 +75,29 @@ public class DeltaConverter
 				}
 			}
 		}
+		else if (delta.getIDType() == EIDType.REFSEQ_MRNA_INT && targetType == EIDType.EXPRESSION_INDEX)
+		{
+			for (Object tempItem : delta)
+			{
+				IDeltaItem item = (IDeltaItem) tempItem;
+				Set<Integer> setExpressionIndices = GeneralManager.get().getIDMappingManager()
+						.<Integer, Integer> getMultiID(EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX,
+								item.getPrimaryID());
+				if (setExpressionIndices == null)
+				{
+					GeneralManager.get().getLogger().log(Level.WARNING,
+							"No mapping found for david to expression index");
+					continue;
+				}
+				for (int iExpressionIndex : setExpressionIndices)
+				{
+					IDeltaItem clonedItem = (IDeltaItem) item.clone();
+					clonedItem.setPrimaryID(iExpressionIndex);
+					clonedItem.setSecondaryID(item.getPrimaryID());
+					newDelta.add(clonedItem);
+				}
+			}
+		}
 
 		return newDelta;
 	}

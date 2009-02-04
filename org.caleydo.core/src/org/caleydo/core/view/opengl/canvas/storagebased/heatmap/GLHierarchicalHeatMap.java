@@ -145,9 +145,9 @@ public class GLHierarchicalHeatMap
 		alSelectionTypes.add(ESelectionType.SELECTION);
 
 		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX)
-				.externalIDType(EIDType.DAVID).mappingType(
-						EMappingType.EXPRESSION_INDEX_2_DAVID,
-						EMappingType.DAVID_2_EXPRESSION_INDEX).build();
+				.externalIDType(EIDType.REFSEQ_MRNA_INT).mappingType(
+						EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
+						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX).build();
 		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX)
 				.build();
 
@@ -1426,7 +1426,7 @@ public class GLHierarchicalHeatMap
 	{
 		int iCount = (iAlNumberSamples.get(0) * (iSelectorBar - 1)) + iFirstSample;
 
-		privateMediator.triggerEvent(this, new SelectionCommandEventContainer(EIDType.DAVID,
+		privateMediator.triggerEvent(this, new SelectionCommandEventContainer(EIDType.REFSEQ_MRNA_INT,
 				new SelectionCommand(ESelectionCommandType.RESET)));
 
 		IVirtualArrayDelta delta = new VirtualArrayDelta(EIDType.EXPRESSION_INDEX);
@@ -1585,8 +1585,7 @@ public class GLHierarchicalHeatMap
 			else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING)
 				sInfoText.append("Showing all genes that have a known DAVID ID mapping\n");
 			else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT)
-				sInfoText
-						.append("Showing all genes that are contained in any of the KEGG or Biocarta pathways\n");
+				sInfoText.append("Showing all genes that are contained in any of the KEGG or Biocarta pathways\n");
 		}
 
 		return sInfoText.toString();

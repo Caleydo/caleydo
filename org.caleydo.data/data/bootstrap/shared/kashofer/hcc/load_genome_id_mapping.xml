@@ -51,7 +51,7 @@
 		   		attrib1="REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE LUT" 
 		   		attrib2="\t" 
 		   		attrib3="1 -1"
-		   		attrib4="DAVID_2_EXPRESSION_INDEX" /> <!-- already_loaded instead of filename -->		   						   			   			   		  		
+		   		attrib4="REFSEQ_MRNA_INT_2_EXPRESSION_INDEX" />	  		
 		   		
  		 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_LOOKUP_TABLE_FILE" cmdId="199010"	uniqueId="-1"	
 		   		detail="data/genome/mapping/david/HOMO_SAPIENS_DAVID2GOTERM_CC_ALL.txt"	

@@ -191,8 +191,8 @@ public class GLParallelCoordinates
 		super.renderStyle = this.renderStyle;
 
 		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX)
-				.mappingType(EMappingType.EXPRESSION_INDEX_2_DAVID,
-						EMappingType.DAVID_2_EXPRESSION_INDEX).externalIDType(EIDType.DAVID)
+				.mappingType(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
+						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX).externalIDType(EIDType.REFSEQ_MRNA_INT)
 				.build();
 
 		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX)
@@ -473,7 +473,7 @@ public class GLParallelCoordinates
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 
 		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-				EIDType.DAVID, new SelectionCommand(ESelectionCommandType.CLEAR_ALL)));
+				EIDType.REFSEQ_MRNA_INT, new SelectionCommand(ESelectionCommandType.CLEAR_ALL)));
 		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
 				EIDType.EXPERIMENT_INDEX,
 				new SelectionCommand(ESelectionCommandType.CLEAR_ALL)));
@@ -944,8 +944,8 @@ public class GLParallelCoordinates
 					// // sAxisLabel = alDataStorages.get(iCount).getLabel();
 
 					case EXPRESSION_INDEX:
-						sAxisLabel = getRefSeqFromStorageIndex(set.getVA(iContentVAID).get(
-								iCount));
+						sAxisLabel = Integer.toString(getRefSeqFromStorageIndex(set.getVA(iContentVAID).get(
+								iCount)));
 						break;
 					default:
 						sAxisLabel = set.getStorageFromVA(iStorageVAID, iCount).getLabel();
@@ -1567,9 +1567,8 @@ public class GLParallelCoordinates
 				{
 					case DOUBLE_CLICKED:
 						IDListEventContainer<Integer> idListEventContainer = new IDListEventContainer<Integer>(
-								EEventType.LOAD_PATHWAY_BY_GENE, EIDType.DAVID);
-						int iDavidID = getDavidIDFromStorageIndex(iExternalID);
-						idListEventContainer.addID(iDavidID);
+								EEventType.LOAD_PATHWAY_BY_GENE, EIDType.REFSEQ_MRNA_INT);
+						idListEventContainer.addID(getRefSeqFromStorageIndex(iExternalID));
 						triggerEvent(EMediatorType.SELECTION_MEDIATOR, idListEventContainer);
 						// intentionally no break
 
@@ -1605,7 +1604,7 @@ public class GLParallelCoordinates
 						&& !bAngularBrushingSelectPolyline)
 				{
 					triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-							new SelectionCommandEventContainer(EIDType.DAVID,
+							new SelectionCommandEventContainer(EIDType.REFSEQ_MRNA_INT,
 									new SelectionCommand(ESelectionCommandType.CLEAR,
 											eSelectionType)));
 					ISelectionDelta selectionDelta = contentSelectionManager.getDelta();

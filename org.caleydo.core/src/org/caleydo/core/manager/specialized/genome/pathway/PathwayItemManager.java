@@ -33,8 +33,8 @@ public class PathwayItemManager
 	private static final long serialVersionUID = 1L;
 
 	// TODO: replace these hash maps by GenomeIDManager
-	private HashMap<Integer, Integer> hashRefSeqIdToPathwayVertexGraphItemId;
-	private HashMap<Integer, Integer> hashPathwayVertexGraphItemIdToRefSeqId;
+	private HashMap<Integer, Integer> hashDavidIdToPathwayVertexGraphItemId;
+	private HashMap<Integer, Integer> hashPathwayVertexGraphItemIdToDavidId;
 
 	private HashMap<Integer, PathwayVertexGraphItemRep> hashIDToPathwayVertexGraphItemRep;
 
@@ -43,8 +43,8 @@ public class PathwayItemManager
 	 */
 	public PathwayItemManager()
 	{
-		hashRefSeqIdToPathwayVertexGraphItemId = new HashMap<Integer, Integer>();
-		hashPathwayVertexGraphItemIdToRefSeqId = new HashMap<Integer, Integer>();
+		hashDavidIdToPathwayVertexGraphItemId = new HashMap<Integer, Integer>();
+		hashPathwayVertexGraphItemIdToDavidId = new HashMap<Integer, Integer>();
 		hashIDToPathwayVertexGraphItemRep = new HashMap<Integer, PathwayVertexGraphItemRep>();
 	}
 
@@ -67,13 +67,13 @@ public class PathwayItemManager
 			final String sExternalLink, final String sReactionId, final int iDavidId)
 	{
 		// Do not create a new vertex if it is already registered
-		if (hashRefSeqIdToPathwayVertexGraphItemId.containsKey(iDavidId))
-			return hashItems.get(hashRefSeqIdToPathwayVertexGraphItemId.get(iDavidId));
+		if (hashDavidIdToPathwayVertexGraphItemId.containsKey(iDavidId))
+			return hashItems.get(hashDavidIdToPathwayVertexGraphItemId.get(iDavidId));
 
 		IGraphItem tmpGraphItem = createVertex(sName, sType, sExternalLink, sReactionId);
 
-		hashRefSeqIdToPathwayVertexGraphItemId.put(iDavidId, tmpGraphItem.getId());
-		hashPathwayVertexGraphItemIdToRefSeqId.put(tmpGraphItem.getId(), iDavidId);
+		hashDavidIdToPathwayVertexGraphItemId.put(iDavidId, tmpGraphItem.getId());
+		hashPathwayVertexGraphItemIdToDavidId.put(tmpGraphItem.getId(), iDavidId);
 
 		return tmpGraphItem;
 	}
@@ -224,8 +224,8 @@ public class PathwayItemManager
 	{
 		generalManager.getPathwayManager().waitUntilPathwayLoadingIsFinished();
 
-		if (hashRefSeqIdToPathwayVertexGraphItemId.containsKey(iDavidId))
-			return hashRefSeqIdToPathwayVertexGraphItemId.get(iDavidId);
+		if (hashDavidIdToPathwayVertexGraphItemId.containsKey(iDavidId))
+			return hashDavidIdToPathwayVertexGraphItemId.get(iDavidId);
 
 		return -1;
 	}
@@ -235,8 +235,8 @@ public class PathwayItemManager
 	{
 		generalManager.getPathwayManager().waitUntilPathwayLoadingIsFinished();
 
-		if (hashPathwayVertexGraphItemIdToRefSeqId.containsKey(iPathwayVertexGraphItemId))
-			return hashPathwayVertexGraphItemIdToRefSeqId.get(iPathwayVertexGraphItemId);
+		if (hashPathwayVertexGraphItemIdToDavidId.containsKey(iPathwayVertexGraphItemId))
+			return hashPathwayVertexGraphItemIdToDavidId.get(iPathwayVertexGraphItemId);
 
 		return -1;
 	}

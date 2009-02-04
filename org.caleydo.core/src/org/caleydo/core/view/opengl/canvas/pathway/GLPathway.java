@@ -13,6 +13,7 @@ import org.caleydo.core.data.graph.pathway.item.vertex.EPathwayVertexType;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
@@ -27,6 +28,7 @@ import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.data.selection.VADeltaItem;
 import org.caleydo.core.data.selection.VirtualArrayDelta;
+import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IDListEventContainer;
@@ -45,7 +47,6 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
@@ -313,7 +314,7 @@ public class GLPathway
 				"Update called by " + eventTrigger.getClass().getSimpleName()
 						+ ", received in: " + this.getClass().getSimpleName());
 
-		if (selectionDelta.getIDType() != EIDType.DAVID)
+		if (selectionDelta.getIDType() != EIDType.REFSEQ_MRNA_INT)
 			return;
 
 		ISelectionDelta resolvedDelta = resolveExternalSelectionDelta(selectionDelta);
@@ -392,16 +393,21 @@ public class GLPathway
 	private ISelectionDelta createExternalSelectionDelta(ISelectionDelta selectionDelta)
 	{
 		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.REFSEQ_MRNA_INT);
-
+		IIDMappingManager idMappingManager = generalManager.getIDMappingManager();
+		
 		for (SelectionDeltaItem item : selectionDelta)
 		{
 			for (int iDavidID : getDavidFromPathwayVertexGraphItemRep(item.getPrimaryID()))
 			{
-				newSelectionDelta.addSelection(iDavidID, item.getSelectionType(), item
-						.getPrimaryID());
-				for (Integer iConnectionID : item.getConnectionID())
+				for (Object iRefSeqID : idMappingManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID))
 				{
-					newSelectionDelta.addConnectionID(iDavidID, iConnectionID);
+					newSelectionDelta.addSelection((Integer)iRefSeqID, item.getSelectionType(), item
+							.getPrimaryID());
+					
+					for (Integer iConnectionID : item.getConnectionID())
+					{
+						newSelectionDelta.addConnectionID((Integer)iRefSeqID, iConnectionID);
+					}
 				}
 			}
 		}
@@ -413,15 +419,23 @@ public class GLPathway
 	private ISelectionDelta resolveExternalSelectionDelta(ISelectionDelta selectionDelta)
 	{
 		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.PATHWAY_VERTEX,
-				EIDType.DAVID);
+				EIDType.REFSEQ_MRNA_INT);
 
-		int iDavidID = 0;
+		int iRefSeqID = 0;
+		Integer iDavidID = 0;
 		int iPathwayVertexGraphItemID = 0;
 
+		IIDMappingManager idMappingManager = generalManager.getIDMappingManager();
+		
 		for (SelectionDeltaItem item : selectionDelta)
 		{
-			iDavidID = item.getPrimaryID();
+			iRefSeqID = item.getPrimaryID();
 
+			iDavidID = idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID);
+			
+			if (iDavidID == null)
+				throw new IllegalStateException("Cannot resolve RefSeq ID to David ID.");
+			
 			iPathwayVertexGraphItemID = generalManager.getPathwayItemManager()
 					.getPathwayVertexGraphItemIdByDavidId(iDavidID);
 
@@ -724,7 +738,7 @@ public class GLPathway
 	@Override
 	public synchronized void broadcastElements(EVAOperation type)
 	{
-		IVirtualArrayDelta delta = new VirtualArrayDelta(EIDType.DAVID);
+		IVirtualArrayDelta delta = new VirtualArrayDelta(EIDType.REFSEQ_MRNA_INT);
 
 		// TODO: Move to own method (outside this class)
 		Iterator<IGraphItem> iterPathwayVertexGraphItemRep = (generalManager
@@ -746,17 +760,21 @@ public class GLPathway
 				tmpPathwayVertexGraphItem = (PathwayVertexGraphItem) iterPathwayVertexGraphItem
 						.next();
 
-				int iDavidId = generalManager.getPathwayItemManager()
+				int iDavidID = generalManager.getPathwayItemManager()
 						.getDavidIdByPathwayVertexGraphItemId(
 								tmpPathwayVertexGraphItem.getId());
 
-				if (iDavidId == -1 || iDavidId == 0)
+				if (iDavidID == -1 || iDavidID == 0)
 				{
 					generalManager.getLogger().log(Level.WARNING, "Invalid David Gene ID.");
 					continue;
 				}
 
-				delta.add(VADeltaItem.create(type, iDavidId));
+				for (Object iRefSeqID : generalManager.getIDMappingManager()
+						.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID))
+				{
+					delta.add(VADeltaItem.create(type, (Integer)iRefSeqID));
+				}				
 			}
 		}
 
