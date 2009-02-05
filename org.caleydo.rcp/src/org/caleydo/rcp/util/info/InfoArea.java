@@ -145,13 +145,13 @@ public class InfoArea
 				
 				txtViewInfo.setText(((AGLEventListener) eventTrigger).getShortInfo());
 
-				((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-						.getActivePage().findView(ToolBarView.ID))
-						.addViewSpecificToolBar(eventTrigger.getID());
+//				((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+//						.getActivePage().findView(ToolBarView.ID))
+//						.addViewSpecificToolBar(eventTrigger.getID());
 
-				((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-						.getActivePage().findView(ToolBarView.ID))
-						.highlightViewSpecificToolBar(eventTrigger.getID());
+//				((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+//						.getActivePage().findView(ToolBarView.ID))
+//						.highlightViewSpecificToolBar(eventTrigger.getID());
 
 				int iItemsToLoad = 0;
 				// SelectionItem selectionItem;

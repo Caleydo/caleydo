@@ -2,6 +2,7 @@ package org.caleydo.rcp.views.opengl;
 
 import java.util.ArrayList;
 import java.util.logging.Level;
+import javax.media.opengl.GLEventListener;
 
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.manager.general.GeneralManager;
@@ -89,21 +90,20 @@ public class GLRemoteRenderingView
 	@Override
 	public void dispose()
 	{
-		((GLRemoteRendering) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
-				iGLEventListenerID)).clearAll();
-
-		super.dispose();
+		GLRemoteRendering glRemoteView = ((GLRemoteRendering) GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
+				iGLEventListenerID));
+		
+//		glRemoteView.clearAll();
 
 		for (Integer iContainedViewID : iAlContainedViewIDs)
 		{
-			GeneralManager.get().getViewGLCanvasManager().unregisterGLEventListener(
-					iContainedViewID);
+			glRemoteView.removeView(GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iContainedViewID));
 		}
 
-		// FIXME: this is a problem if we have more than one bucket with
-		// connection lines
+		super.dispose();
+		
 		GeneralManager.get().getViewGLCanvasManager()
-				.getConnectedElementRepresentationManager().clearAll();
+				.getConnectedElementRepresentationManager().clearByView(iGLEventListenerID);
 
 		GeneralManager.get().getPathwayManager().resetPathwayVisiblityState();
 

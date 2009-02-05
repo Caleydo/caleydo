@@ -319,66 +319,80 @@ public class ToolBarView
 			}
 		}
 	}
-
-	public void highlightViewSpecificToolBar(int iViewID)
+	
+	public void removeAllViewSpecificToolBars()
 	{
-		// Unselect old highlights
 		for (ExpandItem item : expandBar.getItems())
 		{
-			if (item.getData("view") instanceof AGLEventListener)
+			if ((item.getData("view") instanceof AGLEventListener))
 			{
-				// ((ToolBar)item.getData()).setBackground(
-				// parentComposite.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
-
-				AGLEventListener glEventListener = (AGLEventListener) item.getData("view");
-
-//				if(glEventListener.isRenderedRemote())
-//					continue;
-				
 				item.setExpanded(false);
-			}
-		}
-
-		for (ExpandItem item : expandBar.getItems())
-		{
-			AGLEventListener glEventListener = (AGLEventListener) item.getData("view");
-
-			if (!(glEventListener instanceof AGLEventListener))
-				continue;
-
-			// if (!(glEventListener instanceof GLRemoteRendering))
-			// {
-			// item.setExpanded(false);
-			// // continue;
-			// }
-			// }
-
-			if (glEventListener.getID() == iViewID
-					|| (GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
-							iViewID) instanceof GLPathway && glEventListener instanceof GLPathway))
-			{
-				// ((ToolBar)item.getData()).setBackground(
-				// parentComposite.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
-
-				item.setExpanded(true);
-
-				// Highlight also remote rendering parent of the selected sub
-				// view
-				if (glEventListener.isRenderedRemote())
-				{
-					AGLEventListener glRemoteEventListener = (AGLEventListener) glEventListener
-							.getRemoteRenderingGLCanvas();
-					for (ExpandItem remoteItem : expandBar.getItems())
-					{
-						if (remoteItem.getData("view") == glRemoteEventListener)
-						{
-							remoteItem.setExpanded(true);
-						}
-					}
-				}
+				item.dispose();
+				expandBar.update();
+				break;
 			}
 		}
 	}
+
+//	public void highlightViewSpecificToolBar(int iViewID)
+//	{
+//		// Unselect old highlights
+//		for (ExpandItem item : expandBar.getItems())
+//		{
+//			if (item.getData("view") instanceof AGLEventListener)
+//			{
+//				// ((ToolBar)item.getData()).setBackground(
+//				// parentComposite.getDisplay().getSystemColor(SWT.COLOR_WIDGET_BACKGROUND));
+//
+//				AGLEventListener glEventListener = (AGLEventListener) item.getData("view");
+//
+////				if(glEventListener.isRenderedRemote())
+////					continue;
+//				
+//				item.setExpanded(false);
+//			}
+//		}
+//
+//		for (ExpandItem item : expandBar.getItems())
+//		{
+//			AGLEventListener glEventListener = (AGLEventListener) item.getData("view");
+//
+//			if (!(glEventListener instanceof AGLEventListener))
+//				continue;
+//
+//			// if (!(glEventListener instanceof GLRemoteRendering))
+//			// {
+//			// item.setExpanded(false);
+//			// // continue;
+//			// }
+//			// }
+//
+//			if (glEventListener.getID() == iViewID
+//					|| (GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
+//							iViewID) instanceof GLPathway && glEventListener instanceof GLPathway))
+//			{
+//				// ((ToolBar)item.getData()).setBackground(
+//				// parentComposite.getDisplay().getSystemColor(SWT.COLOR_DARK_GRAY));
+//
+//				item.setExpanded(true);
+//
+//				// Highlight also remote rendering parent of the selected sub
+//				// view
+//				if (glEventListener.isRenderedRemote())
+//				{
+//					AGLEventListener glRemoteEventListener = (AGLEventListener) glEventListener
+//							.getRemoteRenderingGLCanvas();
+//					for (ExpandItem remoteItem : expandBar.getItems())
+//					{
+//						if (remoteItem.getData("view") == glRemoteEventListener)
+//						{
+//							remoteItem.setExpanded(true);
+//						}
+//					}
+//				}
+//			}
+//		}
+//	}
 
 	private void addSearchBar()
 	{

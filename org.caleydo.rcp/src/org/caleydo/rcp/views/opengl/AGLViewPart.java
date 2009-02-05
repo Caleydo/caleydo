@@ -7,7 +7,10 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.manager.event.IMediatorReceiver;
+import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
@@ -236,10 +239,6 @@ public abstract class AGLViewPart
 	{
 		super.dispose();
 
-		GeneralManager.get().getViewGLCanvasManager().unregisterGLCanvas(glCanvas.getID());
-		GeneralManager.get().getViewGLCanvasManager().unregisterGLEventListener(
-				iGLEventListenerID);
-
-		// TODO: unregister from all event listeners!!
+		GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iGLEventListenerID).destroy();		
 	}
 }
