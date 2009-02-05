@@ -20,7 +20,6 @@ import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.picking.EPickingType;
-import org.caleydo.core.util.mapping.PathwayColorMapper;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.util.graph.EGraphItemHierarchy;
 import org.caleydo.util.graph.EGraphItemKind;
@@ -56,7 +55,7 @@ public class GLPathwayContentCreator
 	private HashMap<Integer, Integer> hashPathwayId2EdgesDisplayListId;
 	private HashMap<Integer, ArrayList<float[]>> hashElementId2MappingColorArray;
 
-	private PathwayColorMapper genomeMapper;
+//	private PathwayColorMapper genomeMapper;
 
 	private GenericSelectionManager internalSelectionManager;
 
@@ -92,8 +91,8 @@ public class GLPathwayContentCreator
 		// Initialize genome mapper
 		// TODO: move to a manager because more classes use the genome mapper
 		// maybe GenomeIdManager is the right place
-		genomeMapper = new PathwayColorMapper();
-		genomeMapper.setMappingData(alSetData);
+//		genomeMapper = new PathwayColorMapper();
+//		genomeMapper.setMappingData(alSetData);
 
 		hashElementId2MappingColorArray.clear();
 

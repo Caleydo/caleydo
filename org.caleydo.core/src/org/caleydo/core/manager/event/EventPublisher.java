@@ -172,5 +172,4 @@ public class EventPublisher
 			mediator.removeReceiver(receiver);
 		}
 	}
-
 }

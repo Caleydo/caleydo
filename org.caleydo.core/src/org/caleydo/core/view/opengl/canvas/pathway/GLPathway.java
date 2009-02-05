@@ -4,6 +4,7 @@ import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Set;
 import java.util.logging.Level;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.IUniqueObject;
@@ -399,7 +400,16 @@ public class GLPathway
 		{
 			for (int iDavidID : getDavidFromPathwayVertexGraphItemRep(item.getPrimaryID()))
 			{
-				for (Object iRefSeqID : idMappingManager.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID))
+				Set<Integer> iSetRefSeq = idMappingManager.getMultiID(
+						EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
+				
+				if (iSetRefSeq == null)
+				{
+					generalManager.getLogger().log(Level.SEVERE, "No RefSeq IDs found for David: " +iDavidID);
+					continue;
+				}
+				
+				for (Object iRefSeqID : iSetRefSeq)
 				{
 					newSelectionDelta.addSelection((Integer)iRefSeqID, item.getSelectionType(), item
 							.getPrimaryID());
@@ -739,7 +749,8 @@ public class GLPathway
 	public synchronized void broadcastElements(EVAOperation type)
 	{
 		IVirtualArrayDelta delta = new VirtualArrayDelta(EIDType.REFSEQ_MRNA_INT);
-
+		IIDMappingManager idMappingManager = generalManager.getIDMappingManager();
+		
 		// TODO: Move to own method (outside this class)
 		Iterator<IGraphItem> iterPathwayVertexGraphItemRep = (generalManager
 				.getPathwayManager().getItem(iPathwayID)).getAllItemsByKind(
@@ -770,8 +781,16 @@ public class GLPathway
 					continue;
 				}
 
-				for (Object iRefSeqID : generalManager.getIDMappingManager()
-						.getMultiID(EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID))
+				Set<Integer> iSetRefSeq = idMappingManager.getMultiID(
+						EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
+				
+				if (iSetRefSeq == null)
+				{
+					generalManager.getLogger().log(Level.SEVERE, "No RefSeq IDs found for David: " +iDavidID);
+					continue;
+				}
+				
+				for (Object iRefSeqID : iSetRefSeq)
 				{
 					delta.add(VADeltaItem.create(type, (Integer)iRefSeqID));
 				}				
@@ -898,4 +917,9 @@ public class GLPathway
 
 	}
 
+	public void destroy()
+	{
+		generalManager.getPathwayManager().setPathwayVisibilityStateByID(
+					iPathwayID, false);
+	}
 }

@@ -1,19 +1,20 @@
 package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec3f;
-
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
-
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
+import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
+import org.caleydo.core.manager.IIDMappingManager;
+import org.caleydo.core.manager.event.IMediatorReceiver;
+import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.picking.EPickingMode;
@@ -33,7 +34,6 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.GLIconTextureManager;
-
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -103,6 +103,8 @@ public abstract class AGLEventListener
 	private static final int NUMBER_OF_FRAMES = 15;
 
 	protected EBusyModeState eBusyModeState = EBusyModeState.OFF;
+	
+	protected IIDMappingManager idMappingManager;
 
 	/**
 	 * Constructor.
@@ -138,7 +140,7 @@ public abstract class AGLEventListener
 		// for camera
 
 		pickingManager = generalManager.getViewGLCanvasManager().getPickingManager();
-
+		idMappingManager = generalManager.getIDMappingManager();
 		iconTextureManager = new GLIconTextureManager();
 	}
 
@@ -557,7 +559,7 @@ public abstract class AGLEventListener
 
 		circleTexture.disable();
 
-		if (eBusyModeState == EBusyModeState.SWITCH_OFF && iFrameCounter == 0)
+		if (eBusyModeState == EBusyModeState.SWITCH_OFF && iFrameCounter <= 0)
 		{
 			pickingManager.enablePicking(true);
 			eBusyModeState = EBusyModeState.OFF;
@@ -591,5 +593,28 @@ public abstract class AGLEventListener
 	public float getAspectRatio()
 	{
 		return fAspectRatio;
+	}
+	
+	public void destroy()
+	{
+		if (this instanceof IMediatorSender)
+		{
+			generalManager.getEventPublisher().removeSenderFromAllGroups(
+					(IMediatorSender) this);
+		}
+
+		if (this instanceof IMediatorReceiver)
+		{
+			generalManager.getEventPublisher().removeReceiverFromAllGroups(
+					(IMediatorReceiver) this);
+		}
+
+//		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
+//				.clearByView(EIDType.REFSEQ_MRNA_INT, iUniqueID);
+
+		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearAll();
+		
+		generalManager.getViewGLCanvasManager().unregisterGLEventListener(
+				iUniqueID);
 	}
 }

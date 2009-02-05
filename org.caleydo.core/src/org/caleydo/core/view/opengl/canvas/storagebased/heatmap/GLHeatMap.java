@@ -11,6 +11,7 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import java.util.ArrayList;
 import java.util.Set;
+import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ESetType;
@@ -25,6 +26,7 @@ import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
+import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IDListEventContainer;
@@ -505,19 +507,27 @@ public class GLHeatMap
 				connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 
 				contentSelectionManager.clearSelection(eSelectionType);
-				contentSelectionManager.addToType(eSelectionType, iExternalID);
 
+				// Resolve multiple spotting on chip and add all to the selection manager.		
+				Integer iRefSeqID = idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExternalID);	
+				for (Object iExpressionIndex : idMappingManager.getMultiID(
+						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID))
+				{
+					contentSelectionManager.addToType(eSelectionType, (Integer)iExpressionIndex);
+				}
+				
 				contentSelectionManager.addConnectionID(generalManager.getIDManager()
 						.createID(EManagedObjectType.CONNECTION), iExternalID);
 
 				if (eFieldDataType == EIDType.EXPRESSION_INDEX)
 				{
-
+					ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+					
 					triggerEvent(EMediatorType.SELECTION_MEDIATOR,
 							new SelectionCommandEventContainer(EIDType.REFSEQ_MRNA_INT,
 									new SelectionCommand(ESelectionCommandType.CLEAR,
 											eSelectionType)));
-					ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+
 					handleConnectedElementRep(selectionDelta);
 					triggerEvent(EMediatorType.SELECTION_MEDIATOR,
 							new DeltaEventContainer<ISelectionDelta>(selectionDelta));

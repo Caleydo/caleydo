@@ -537,27 +537,27 @@ public class TabularDataViewRep
 			{
 				// TODO Auto-generated method stub
 				super.widgetSelected(e);
-
-				String sSelection = e.item.toString();
-				Integer iSelectedRowIndex = new Integer(sSelection.substring(sSelection
-						.lastIndexOf(' ') + 1, sSelection.lastIndexOf('}')));
-
-				Integer iDavidID = GeneralManager.get().getIDMappingManager().getID(
-						EMappingType.EXPRESSION_INDEX_2_DAVID, iSelectedRowIndex);
-
-				if (iDavidID == null || iDavidID == -1)
-					return;
-
-				SelectionDelta tmpDelta = new SelectionDelta(EIDType.DAVID);
-				tmpDelta.addSelection(iDavidID, ESelectionType.MOUSE_OVER);
-
-				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-						new SelectionCommandEventContainer(EIDType.DAVID,
-								new SelectionCommand(ESelectionCommandType.CLEAR,
-										ESelectionType.MOUSE_OVER)));
-
-				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-						new DeltaEventContainer<ISelectionDelta>(tmpDelta));
+//
+//				String sSelection = e.item.toString();
+//				Integer iSelectedRowIndex = new Integer(sSelection.substring(sSelection
+//						.lastIndexOf(' ') + 1, sSelection.lastIndexOf('}')));
+//
+//				Integer iDavidID = GeneralManager.get().getIDMappingManager().getID(
+//						EMappingType.EXPRESSION_INDEX_2_DAVID, iSelectedRowIndex);
+//
+//				if (iDavidID == null || iDavidID == -1)
+//					return;
+//
+//				SelectionDelta tmpDelta = new SelectionDelta(EIDType.DAVID);
+//				tmpDelta.addSelection(iDavidID, ESelectionType.MOUSE_OVER);
+//
+//				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+//						new SelectionCommandEventContainer(EIDType.DAVID,
+//								new SelectionCommand(ESelectionCommandType.CLEAR,
+//										ESelectionType.MOUSE_OVER)));
+//
+//				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+//						new DeltaEventContainer<ISelectionDelta>(tmpDelta));
 
 			}
 		});

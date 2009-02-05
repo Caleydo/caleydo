@@ -1592,7 +1592,21 @@ public class GLParallelCoordinates
 				}
 				connectedElementRepresentationManager.clear(ePolylineDataType);
 				polylineSelectionManager.clearSelection(eSelectionType);
-				polylineSelectionManager.addToType(eSelectionType, iExternalID);
+
+				if (ePolylineDataType == EIDType.EXPRESSION_INDEX)
+				{
+					// Resolve multiple spotting on chip and add all to the selection manager.		
+					Integer iRefSeqID = idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExternalID);	
+					for (Object iExpressionIndex : idMappingManager.getMultiID(
+							EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID))
+					{
+						contentSelectionManager.addToType(eSelectionType, (Integer)iExpressionIndex);
+					}				
+				}
+				else
+				{
+					polylineSelectionManager.addToType(eSelectionType, iExternalID);					
+				}
 
 				polylineSelectionManager.addConnectionID(generalManager.getIDManager()
 						.createID(EManagedObjectType.CONNECTION), iExternalID);

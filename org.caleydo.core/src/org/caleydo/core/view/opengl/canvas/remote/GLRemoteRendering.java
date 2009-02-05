@@ -2036,7 +2036,7 @@ public class GLRemoteRendering
 						// Unregister all elements of the view that is removed
 						glEventListener.broadcastElements(EVAOperation.REMOVE_ELEMENT);
 
-						clearView(glEventListener);
+						removeView(glEventListener);
 
 						element.setContainedElementID(-1);
 
@@ -2516,45 +2516,16 @@ public class GLRemoteRendering
 	/**
 	 * Unregister view from event system. Remove view from GL render loop.
 	 */
-	private void clearView(AGLEventListener glEventListener)
+	public void removeView(AGLEventListener glEventListener)
 	{
-		if (glEventListener instanceof IMediatorSender)
-		{
-			generalManager.getEventPublisher().removeSenderFromAllGroups(
-					(IMediatorSender) glEventListener);
-		}
-
-		if (glEventListener instanceof IMediatorReceiver)
-		{
-			generalManager.getEventPublisher().removeReceiverFromAllGroups(
-					(IMediatorReceiver) glEventListener);
-		}
-
-		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
-				.clearByViewAndType(EIDType.DAVID, glEventListener.getID());
-
-		if (glEventListener instanceof GLPathway)
-		{
-			generalManager.getPathwayManager().setPathwayVisibilityStateByID(
-					((GLPathway) glEventListener).getPathwayID(), false);
-		}
-
-		// for (AGLEventListener eventListener :
-		// generalManager.getViewGLCanvasManager()
-		// .getAllGLEventListeners())
-		// {
-		// if (!eventListener.isRenderedRemote())
-		// eventListener.enableBusyMode(false);
-		// }
-
-		generalManager.getViewGLCanvasManager().unregisterGLEventListener(
-				glEventListener.getID());
-
-		glEventListener = null;
+		glEventListener.destroy();
 	}
 
 	public synchronized void clearAll()
 	{
+		enableBusyMode(false);
+		pickingManager.enablePicking(true);
+		
 		iAlUninitializedPathwayIDs.clear();
 		arSlerpActions.clear();
 
@@ -2593,7 +2564,7 @@ public class GLRemoteRendering
 			}
 			else
 			{
-				clearView(glEventListener);
+				removeView(glEventListener);
 				element.setContainedElementID(-1);
 			}
 		}
