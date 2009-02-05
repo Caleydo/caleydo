@@ -108,6 +108,8 @@ public class ParCoordsRenderStyle
 	private static final float fMinAxisSpacingForText = 0.1f;
 
 	private static final float[] BACKGROUND_COLOR = { 1, 1, 1, 1 };
+	
+	private static final float fXAxisOverlap = 0.1f;
 
 	/**
 	 * Constructor.
@@ -140,7 +142,7 @@ public class ParCoordsRenderStyle
 	{
 
 		fAxisSpacing =
-				getRenderWidth() / (iNumberOfAxis - 1);
+				getWidthOfCoordinateSystem() / (iNumberOfAxis - 1);
 
 		if (fAxisSpacing < fAxisSpacingLowerLimit * getScaling())
 			return fAxisSpacingLowerLimit * getScaling();
@@ -148,9 +150,19 @@ public class ParCoordsRenderStyle
 		return fAxisSpacing;
 	}
 	
-	public float getRenderWidth()
+	public float getWidthOfCoordinateSystem()
 	{
 		return (viewFrustum.getWidth() - COORDINATE_SIDE_SPACING * 2 * getScaling());
+	}
+	
+	public float getXAxisStart()
+	{
+		return -fXAxisOverlap;
+	}
+	
+	public float getXAxisEnd()
+	{
+		return getWidthOfCoordinateSystem() + fXAxisOverlap;
 	}
 
 	public float getAxisHeight()

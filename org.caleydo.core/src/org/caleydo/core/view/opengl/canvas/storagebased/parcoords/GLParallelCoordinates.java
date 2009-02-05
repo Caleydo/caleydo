@@ -192,8 +192,8 @@ public class GLParallelCoordinates
 
 		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX)
 				.mappingType(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
-						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX).externalIDType(EIDType.REFSEQ_MRNA_INT)
-				.build();
+						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX).externalIDType(
+						EIDType.REFSEQ_MRNA_INT).build();
 
 		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX)
 				.build();
@@ -291,7 +291,7 @@ public class GLParallelCoordinates
 
 		if (bIsDisplayListDirtyLocal)
 		{
-			buildPolyLineDisplayList(gl, iGLDisplayListIndexLocal);
+			buildDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
@@ -324,7 +324,7 @@ public class GLParallelCoordinates
 
 		if (bIsDisplayListDirtyRemote)
 		{
-			buildPolyLineDisplayList(gl, iGLDisplayListIndexRemote);
+			buildDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
 		}
 
@@ -472,8 +472,9 @@ public class GLParallelCoordinates
 		setDisplayListDirty();
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
 
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
-				EIDType.REFSEQ_MRNA_INT, new SelectionCommand(ESelectionCommandType.CLEAR_ALL)));
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+				new SelectionCommandEventContainer(EIDType.REFSEQ_MRNA_INT,
+						new SelectionCommand(ESelectionCommandType.CLEAR_ALL)));
 		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
 				EIDType.EXPERIMENT_INDEX,
 				new SelectionCommand(ESelectionCommandType.CLEAR_ALL)));
@@ -594,7 +595,6 @@ public class GLParallelCoordinates
 			hashGates.put(axisID, selections);
 			hashIsGateBlocking.put(axisID, new ArrayList<Integer>());
 		}
-
 	}
 
 	@Override
@@ -611,7 +611,7 @@ public class GLParallelCoordinates
 	 * @param gl GL context
 	 * @param iGLDisplayListIndex the index of the display list
 	 */
-	private void buildPolyLineDisplayList(final GL gl, int iGLDisplayListIndex)
+	private void buildDisplayList(final GL gl, int iGLDisplayListIndex)
 	{
 		gl.glNewList(iGLDisplayListIndex, GL.GL_COMPILE);
 
@@ -625,9 +625,6 @@ public class GLParallelCoordinates
 		// }
 		// else
 		// {
-
-		// if(bIsDraggingActive)
-		// handleDragging(gl);
 
 		renderCoordinateSystem(gl);
 
@@ -848,9 +845,8 @@ public class GLParallelCoordinates
 						EPickingType.X_AXIS_SELECTION, 1));
 		gl.glBegin(GL.GL_LINES);
 
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-		gl.glVertex3f(-0.1f, 0.0f, 0.0f);
-		gl.glVertex3f((renderStyle.getRenderWidth()) + 0.1f, 0.0f, 0.0f);
+		gl.glVertex3f(renderStyle.getXAxisStart(), 0.0f, 0.0f);
+		gl.glVertex3f(renderStyle.getXAxisEnd(), 0.0f, 0.0f);
 
 		gl.glEnd();
 		gl.glPopName();
@@ -864,12 +860,12 @@ public class GLParallelCoordinates
 		while (iCount < iNumberAxis)
 		{
 			float fXPosition = alAxisSpacing.get(iCount);
-			if (selectedSet.contains(set.getVA(iAxisVAID).get(iCount)))
+			if (selectedSet.contains(axisVA.get(iCount)))
 			{
 				gl.glColor4fv(Y_AXIS_SELECTED_COLOR, 0);
 				gl.glLineWidth(Y_AXIS_SELECTED_LINE_WIDTH);
 			}
-			else if (mouseOverSet.contains(set.getVA(iAxisVAID).get(iCount)))
+			else if (mouseOverSet.contains(axisVA.get(iCount)))
 			{
 				gl.glColor4fv(Y_AXIS_MOUSE_OVER_COLOR, 0);
 				gl.glLineWidth(Y_AXIS_MOUSE_OVER_LINE_WIDTH);
@@ -880,7 +876,7 @@ public class GLParallelCoordinates
 				gl.glLineWidth(Y_AXIS_LINE_WIDTH);
 			}
 			gl.glPushName(pickingManager.getPickingID(iUniqueID,
-					EPickingType.Y_AXIS_SELECTION, set.getVA(iAxisVAID).get(iCount)));
+					EPickingType.Y_AXIS_SELECTION, axisVA.get(iCount)));
 			gl.glBegin(GL.GL_LINES);
 			gl.glVertex3f(fXPosition, Y_AXIS_LOW, AXIS_Z);
 			gl.glVertex3f(fXPosition, renderStyle.getAxisHeight(), AXIS_Z);
@@ -944,8 +940,8 @@ public class GLParallelCoordinates
 					// // sAxisLabel = alDataStorages.get(iCount).getLabel();
 
 					case EXPRESSION_INDEX:
-						sAxisLabel = Integer.toString(getRefSeqFromStorageIndex(set.getVA(iContentVAID).get(
-								iCount)));
+						sAxisLabel = Integer.toString(getRefSeqFromStorageIndex(set.getVA(
+								iContentVAID).get(iCount)));
 						break;
 					default:
 						sAxisLabel = set.getStorageFromVA(iStorageVAID, iCount).getLabel();
@@ -993,8 +989,8 @@ public class GLParallelCoordinates
 				gl.glPopName();
 				// render Buttons
 
-				if (selectedSet.contains(set.getVA(iAxisVAID).get(iCount))
-						|| mouseOverSet.contains(set.getVA(iAxisVAID).get(iCount)))
+				if (selectedSet.contains(axisVA.get(iCount))
+						|| mouseOverSet.contains(axisVA.get(iCount)))
 				{
 					int iNumberOfButtons = 0;
 					if (iCount != 0 || iCount != iNumberAxis - 1)
@@ -1050,16 +1046,6 @@ public class GLParallelCoordinates
 			}
 			iCount++;
 		}
-
-		// float fMarkerSpacing = renderStyle.getAxisHeight() /
-		// (NUMBER_AXIS_MARKERS + 1);
-		// for (int iInnerCount = 1; iInnerCount <=
-		// NUMBER_AXIS_MARKERS; iInnerCount++)
-		// {
-
-		//
-		// }
-
 	}
 
 	/**
@@ -1772,20 +1758,9 @@ public class GLParallelCoordinates
 							bWasAxisMoved = true;
 							bWasAxisDraggedFirstTime = true;
 							iMovedAxisPosition = iExternalID;
-							// set.getVA(iAxisVAID).moveLeft(iExternalID);
-							// IVirtualArrayDelta vaDelta = new
-							// VirtualArrayDelta(
-							// EIDType.EXPERIMENT_INDEX);
-							// vaDelta.add(VADeltaItem.moveLeft(iExternalID));
-							// generalManager.getEventPublisher().triggerEvent(
-							// EMediatorType.SELECTION_MEDIATOR, this,
-							// new
-							// DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
-							//
+
 							setDisplayListDirty();
 
-							// resetSelections();
-							// initGates();
 						}
 						break;
 				}
@@ -1798,20 +1773,7 @@ public class GLParallelCoordinates
 					case CLICKED:
 						resetAxisSpacing();
 						setDisplayListDirty();
-//						if (iExternalID > 0)
-//						{
-//							set.getVA(iAxisVAID).moveRight(iExternalID);
-//							IVirtualArrayDelta vaDelta = new VirtualArrayDelta(
-//									EIDType.EXPERIMENT_INDEX);
-//							vaDelta.add(VADeltaItem.moveRight(iExternalID));
-//							generalManager.getEventPublisher().triggerEvent(
-//									EMediatorType.SELECTION_MEDIATOR, this,
-//									new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
-//
-//							setDisplayListDirty();
-//							// resetSelections();
-//							// initGates();
-//						}
+
 						break;
 				}
 				pickingManager.flushHits(iUniqueID, EPickingType.MOVE_AXIS_RIGHT);
@@ -2232,10 +2194,8 @@ public class GLParallelCoordinates
 
 	}
 
-	// TODO
 	private float getAngle(final Vec3f vecOne, final Vec3f vecTwo)
 	{
-
 		Vec3f vecNewOne = vecOne.copy();
 		Vec3f vecNewTwo = vecTwo.copy();
 
@@ -2259,59 +2219,62 @@ public class GLParallelCoordinates
 
 	private void adjustAxisSpacing(GL gl)
 	{
-
 		IVirtualArray axisVA = set.getVA(iAxisVAID);
-		int iAxisPosition = iMovedAxisPosition;
-		int iAxisID = axisVA.get(iAxisPosition);
-
-		System.out.println("Axis Index: " + iAxisPosition);
 
 		Point currentPoint = pickingTriggerMouseAdapter.getPickedPoint();
 
 		float[] fArTargetWorldCoordinates = GLCoordinateUtils
 				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
 
-		float width = fArTargetWorldCoordinates[0] - fXTranslation - fXDefaultTranslation;
+		float fWidth = fArTargetWorldCoordinates[0] - fXTranslation - fXDefaultTranslation;
 
 		if (bWasAxisDraggedFirstTime)
 		{
-			fAxisDraggingOffset = width - alAxisSpacing.get(iAxisPosition);
+			// adjust from the actually clicked point to the center of the axis
+			fAxisDraggingOffset = fWidth - alAxisSpacing.get(iMovedAxisPosition);
 			bWasAxisDraggedFirstTime = false;
 		}
 
-		width -= fAxisDraggingOffset;
+		fWidth -= fAxisDraggingOffset;
 
-		// GLHelperFunctions.drawPointAt(gl, new Vec3f(width, 0.5f, 0));
+		if (fWidth < renderStyle.getXAxisStart())
+			fWidth = renderStyle.getXAxisStart();
+		if (fWidth > renderStyle.getXAxisEnd())
+			fWidth = renderStyle.getXAxisEnd();
 
-		if (iAxisPosition > 0 && width  < alAxisSpacing.get(iAxisPosition - 1))
+		if (iMovedAxisPosition > 0 && fWidth < alAxisSpacing.get(iMovedAxisPosition - 1))
 		{
-			// switch axis
-			axisVA.moveLeft(iAxisPosition);
-			alAxisSpacing.remove(iAxisPosition);
-			alAxisSpacing.add(iAxisPosition - 1, width );
+			// switch axis to the left
+			axisVA.moveLeft(iMovedAxisPosition);
+			alAxisSpacing.remove(iMovedAxisPosition);
+			alAxisSpacing.add(iMovedAxisPosition - 1, fWidth);
 			iMovedAxisPosition--;
-			// TODO trigger Event
+
+			IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
+			vaDelta.add(VADeltaItem.moveLeft(iMovedAxisPosition));
+			generalManager.getEventPublisher().triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+					this, new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
 		}
-		else if (iAxisPosition < axisVA.size() && width  > alAxisSpacing.get(iAxisPosition + 1))
+		else if (iMovedAxisPosition < axisVA.size() - 1
+				&& fWidth > alAxisSpacing.get(iMovedAxisPosition + 1))
 		{
-			axisVA.moveRight(iAxisPosition);
-			alAxisSpacing.remove(iAxisPosition);
-			alAxisSpacing.add(iAxisPosition + 1, width );
+			// switch axis to the right
+			axisVA.moveRight(iMovedAxisPosition);
+			alAxisSpacing.remove(iMovedAxisPosition);
+			alAxisSpacing.add(iMovedAxisPosition + 1, fWidth);
 			iMovedAxisPosition++;
+
+			IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
+			vaDelta.add(VADeltaItem.moveRight(iMovedAxisPosition));
+			generalManager.getEventPublisher().triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+					this, new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
+
 		}
 		else
 		{
-			alAxisSpacing.set(iAxisPosition, width);
+			alAxisSpacing.set(iMovedAxisPosition, fWidth);
 		}
 		setDisplayListDirty();
-
-		// set.getVA(iAxisVAID).moveLeft(iExternalID);
-		// IVirtualArrayDelta vaDelta = new VirtualArrayDelta(
-		// EIDType.EXPERIMENT_INDEX);
-		// vaDelta.add(VADeltaItem.moveLeft(iExternalID));
-		// generalManager.getEventPublisher().triggerEvent(
-		// EMediatorType.SELECTION_MEDIATOR, this,
-		// new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
 
 	}
 
@@ -2335,7 +2298,7 @@ public class GLParallelCoordinates
 		// now we normalize to 0 to 1
 		fXWiiPosition = (fXWiiPosition + fMaxX) / (2 * fMaxX);
 
-		fXWiiPosition *= renderStyle.getRenderWidth();
+		fXWiiPosition *= renderStyle.getWidthOfCoordinateSystem();
 		int iAxisNumber = 0;
 		for (int iCount = 0; iCount < alAxisSpacing.size() - 1; iCount++)
 		{
@@ -2357,7 +2320,7 @@ public class GLParallelCoordinates
 
 		float fFocusAxisSpacing = 2 * fOriginalAxisSpacing;
 
-		float fReducedSpacing = (renderStyle.getRenderWidth() - 2 * fFocusAxisSpacing)
+		float fReducedSpacing = (renderStyle.getWidthOfCoordinateSystem() - 2 * fFocusAxisSpacing)
 				/ (iNumberOfAxis - 3);
 
 		float fCurrentX = 0;
@@ -2372,7 +2335,6 @@ public class GLParallelCoordinates
 		}
 
 		setDisplayListDirty();
-
 	}
 
 	public void resetAxisSpacing()

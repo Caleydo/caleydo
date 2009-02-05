@@ -543,7 +543,7 @@ public class GLHeatMap
 
 				storageSelectionManager.clearSelection(eSelectionType);
 				storageSelectionManager.addToType(eSelectionType, iExternalID);
-				
+
 				if (eStorageDataType == EIDType.EXPERIMENT_INDEX)
 				{
 
@@ -634,7 +634,8 @@ public class GLHeatMap
 				if (detailLevel == EDetailLevel.HIGH)
 				{
 					// Render heat map element name
-					String sContent = Integer.toString(getRefSeqFromStorageIndex(iContentIndex));
+					String sContent = Integer
+							.toString(getRefSeqFromStorageIndex(iContentIndex));
 					// if (sContent == null)
 					// sContent = "Unknown";
 					// renderCaption(gl, sContent, fXPosition + fFieldWith / 6 *
@@ -734,48 +735,58 @@ public class GLHeatMap
 				break;
 		}
 
-		for (Integer iCurrentColumn : selectedSet)
+		int iColumnIndex = 0;
+		for (int iTempColumn : set.getVA(iContentVAID))
 		{
-			// TODO we need indices of all elements
-			int iColumnIndex = set.getVA(iContentVAID).indexOf(iCurrentColumn);
-			if (iColumnIndex == -1)
-				continue;
+			for (Integer iCurrentColumn : selectedSet)
+			{
 
-			fHeight = set.getVA(iStorageVAID).size() * renderStyle.getFieldHeight();
-			fXPosition = fAlXDistances.get(iColumnIndex);
+				if (iCurrentColumn == iTempColumn)
+				{
+					fHeight = set.getVA(iStorageVAID).size() * renderStyle.getFieldHeight();
+					fXPosition = fAlXDistances.get(iColumnIndex);
 
-			fYPosition = 0;
+					fYPosition = 0;
 
-			gl.glBegin(GL.GL_LINE_LOOP);
-			gl.glVertex3f(fXPosition, fYPosition, SELECTION_Z);
-			gl.glVertex3f(fXPosition + renderStyle.getSelectedFieldWidth(), fYPosition,
-					SELECTION_Z);
-			gl.glVertex3f(fXPosition + renderStyle.getSelectedFieldWidth(), fYPosition
-					+ fHeight, SELECTION_Z);
-			gl.glVertex3f(fXPosition, fYPosition + fHeight, SELECTION_Z);
-			gl.glEnd();
+					gl.glBegin(GL.GL_LINE_LOOP);
+					gl.glVertex3f(fXPosition, fYPosition, SELECTION_Z);
+					gl.glVertex3f(fXPosition + renderStyle.getSelectedFieldWidth(),
+							fYPosition, SELECTION_Z);
+					gl.glVertex3f(fXPosition + renderStyle.getSelectedFieldWidth(), fYPosition
+							+ fHeight, SELECTION_Z);
+					gl.glVertex3f(fXPosition, fYPosition + fHeight, SELECTION_Z);
+					gl.glEnd();
 
-			fHeight = 0;
-			fXPosition = 0;
+					fHeight = 0;
+					fXPosition = 0;
+				}
+			}
+			iColumnIndex++;
 		}
 
 		// storage selection
 
 		selectedSet = storageSelectionManager.getElements(eSelectionType);
-
-		for (Integer iCurrentLine : selectedSet)
+		int iLineIndex = 0;
+		for (int iTempLine : set.getVA(iStorageVAID))
 		{
-			// TODO we need indices of all elements
-			int iLineIndex = set.getVA(iStorageVAID).indexOf(iCurrentLine);
+			for (Integer iCurrentLine : selectedSet)
+			{
+				if (iTempLine == iCurrentLine)
+				{
+					// TODO we need indices of all elements
 
-			fYPosition = iLineIndex * renderStyle.getFieldHeight();
-			gl.glBegin(GL.GL_LINE_LOOP);
-			gl.glVertex3f(0, fYPosition, SELECTION_Z);
-			gl.glVertex3f(renderStyle.getRenderHeight(), fYPosition, SELECTION_Z);
-			gl.glVertex3f(renderStyle.getRenderHeight(), fYPosition
-					+ renderStyle.getFieldHeight(), SELECTION_Z);
-			gl.glVertex3f(0, fYPosition + renderStyle.getFieldHeight(), SELECTION_Z);
-			gl.glEnd();
+					fYPosition = iLineIndex * renderStyle.getFieldHeight();
+					gl.glBegin(GL.GL_LINE_LOOP);
+					gl.glVertex3f(0, fYPosition, SELECTION_Z);
+					gl.glVertex3f(renderStyle.getRenderHeight(), fYPosition, SELECTION_Z);
+					gl.glVertex3f(renderStyle.getRenderHeight(), fYPosition
+							+ renderStyle.getFieldHeight(), SELECTION_Z);
+					gl.glVertex3f(0, fYPosition + renderStyle.getFieldHeight(), SELECTION_Z);
+					gl.glEnd();
+				}
+			}
+			iLineIndex++;
 		}
 	}
 
