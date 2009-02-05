@@ -1,4 +1,4 @@
-package org.caleydo.core.data.map;
+package org.caleydo.core.util.collection;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -117,6 +117,12 @@ public class MultiHashMap<KeyType, ValueType>
 		}
 	}
 
+	
+	/**
+	 * Removes all occurrences of the object and returns the first of the
+	 * removed objects. Implemented for compatibility, use of
+	 * {@link #removeAllOccurences(Object)} is recommended instead
+	 */
 	@Override
 	public ValueType remove(Object arg0)
 	{
@@ -125,6 +131,11 @@ public class MultiHashMap<KeyType, ValueType>
 			return null;
 		else
 			return tempSet.iterator().next();
+	}
+
+	public Set<ValueType> removeAllOccurences(Object arg0)
+	{
+		return internalMap.remove(arg0);
 	}
 
 	@Override

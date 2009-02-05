@@ -5,13 +5,13 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Level;
 import org.caleydo.core.data.collection.EStorageType;
-import org.caleydo.core.data.map.MultiHashMap;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingDataType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.util.collection.MultiHashMap;
 
 /**
  * Manages mapping tables.

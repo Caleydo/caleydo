@@ -2531,7 +2531,7 @@ public class GLRemoteRendering
 		}
 
 		generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
-				.clearByView(EIDType.DAVID, glEventListener.getID());
+				.clearByViewAndType(EIDType.DAVID, glEventListener.getID());
 
 		if (glEventListener instanceof GLPathway)
 		{

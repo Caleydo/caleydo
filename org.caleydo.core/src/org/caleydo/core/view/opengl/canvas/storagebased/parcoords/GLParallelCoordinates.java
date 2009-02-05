@@ -73,8 +73,10 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.swt.widgets.Shell;
 import com.sun.opengl.util.texture.Texture;
 import com.sun.opengl.util.texture.TextureCoords;
 
@@ -389,6 +391,15 @@ public class GLParallelCoordinates
 
 		if (bRenderStorageHorizontally != this.bRenderStorageHorizontally)
 		{
+			if (bRenderStorageHorizontally && set.getVA(iContentVAID).size() > 100)
+			{				
+					MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
+					messageBox
+							.setMessage("Can not show more than 100 axis - reduce polylines to less than 100 first");
+					messageBox.open();
+					return; 
+			}
+
 			EIDType eTempType = eAxisDataType;
 			eAxisDataType = ePolylineDataType;
 			ePolylineDataType = eTempType;
@@ -2248,12 +2259,12 @@ public class GLParallelCoordinates
 			axisVA.moveLeft(iMovedAxisPosition);
 			alAxisSpacing.remove(iMovedAxisPosition);
 			alAxisSpacing.add(iMovedAxisPosition - 1, fWidth);
-			iMovedAxisPosition--;
 
 			IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
 			vaDelta.add(VADeltaItem.moveLeft(iMovedAxisPosition));
 			generalManager.getEventPublisher().triggerEvent(EMediatorType.SELECTION_MEDIATOR,
 					this, new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
+			iMovedAxisPosition--;
 		}
 		else if (iMovedAxisPosition < axisVA.size() - 1
 				&& fWidth > alAxisSpacing.get(iMovedAxisPosition + 1))
@@ -2262,12 +2273,12 @@ public class GLParallelCoordinates
 			axisVA.moveRight(iMovedAxisPosition);
 			alAxisSpacing.remove(iMovedAxisPosition);
 			alAxisSpacing.add(iMovedAxisPosition + 1, fWidth);
-			iMovedAxisPosition++;
 
 			IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
 			vaDelta.add(VADeltaItem.moveRight(iMovedAxisPosition));
 			generalManager.getEventPublisher().triggerEvent(EMediatorType.SELECTION_MEDIATOR,
 					this, new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
+			iMovedAxisPosition++;
 
 		}
 		else

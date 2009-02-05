@@ -155,8 +155,13 @@ public class ConnectedElementRepresentationManager
 		tmp.clear();
 	}
 
-	@Deprecated 
-	public void clearByView(EIDType idType, int iViewID)
+	/**
+	 * Clear all selections of a given type that belong to a certain view
+	 * 
+	 * @param idType the type to be cleared
+	 * @param iViewID the id of the view
+	 */
+	public void clearByViewAndType(EIDType idType, int iViewID)
 	{
 		HashMap<Integer, ArrayList<SelectedElementRep>> hashReps = hashIDTypes.get(idType);
 		if (hashReps == null)
@@ -171,6 +176,19 @@ public class ConnectedElementRepresentationManager
 				if (iterator.next().getContainingViewID() == iViewID)
 					iterator.remove();
 			}
+		}
+	}
+
+	/**
+	 * Clear all elements of a view, regardless of their type.
+	 * 
+	 * @param iViewID the view which id's should be removed
+	 */
+	public void clearByView(int iViewID)
+	{
+		for (EIDType idType : hashIDTypes.keySet())
+		{
+			clearByViewAndType(idType, iViewID);
 		}
 	}
 

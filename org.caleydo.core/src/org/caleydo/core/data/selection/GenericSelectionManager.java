@@ -295,7 +295,9 @@ public class GenericSelectionManager
 	public void removeElements(ESelectionType type)
 	{
 		HashMap<Integer, Integer> elementMap = hashSelectionTypes.get(type);
-		for (Integer element : elementMap.keySet())
+		Integer[] tempAr = new Integer[elementMap.size()];
+		tempAr = elementMap.keySet().toArray(tempAr);
+		for (Integer element : tempAr )
 		{
 			remove(element, true);
 		}

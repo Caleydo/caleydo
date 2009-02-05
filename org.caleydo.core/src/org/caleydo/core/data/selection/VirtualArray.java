@@ -20,6 +20,7 @@ public class VirtualArray
 
 {
 	ArrayList<Integer> iAlVirtualArray;
+	
 
 	int iLength;
 	/**
@@ -131,6 +132,8 @@ public class VirtualArray
 	@Override
 	public void moveLeft(int iIndex)
 	{
+		if (iIndex == 0)
+			return;
 		int iTemp = iAlVirtualArray.get(iIndex - 1);
 		iAlVirtualArray.set(iIndex - 1, iAlVirtualArray.get(iIndex));
 		iAlVirtualArray.set(iIndex, iTemp);
@@ -139,6 +142,8 @@ public class VirtualArray
 	@Override
 	public void moveRight(int iIndex)
 	{
+		if (iIndex == size() - 1)
+			return;
 		int iTemp = iAlVirtualArray.get(iIndex + 1);
 		iAlVirtualArray.set(iIndex + 1, iAlVirtualArray.get(iIndex));
 		iAlVirtualArray.set(iIndex, iTemp);
