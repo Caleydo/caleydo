@@ -1,14 +1,5 @@
 Done since last commit:
 
-Fixed bug in GenericSelectionManager where Type was added to add.
-Simplified ESelectionTypes
-Added render context option to hm and pc preferences
-Per default hm and pcs now only show contextually relevant data and such icons in remote views, can be changed via preferences
-Fixed Icon inconsitencies
-Fixed bug in IDExtractionLocation
-Fixed bug that crashed the programm when adding new genes and genes are shown as axis
-Changed Color of Y Axis to blue.
-Fixed selection bugs when experiments are polylines
 
 
 

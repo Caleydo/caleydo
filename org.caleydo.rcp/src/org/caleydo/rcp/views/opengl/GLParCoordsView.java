@@ -16,6 +16,7 @@ import org.caleydo.rcp.action.view.storagebased.ResetViewAction;
 import org.caleydo.rcp.action.view.storagebased.UseRandomSamplingAction;
 import org.caleydo.rcp.action.view.storagebased.parcoords.AngularBrushingAction;
 import org.caleydo.rcp.action.view.storagebased.parcoords.OcclusionPreventionAction;
+import org.caleydo.rcp.action.view.storagebased.parcoords.ResetAxisSpacingAction;
 import org.caleydo.rcp.action.view.storagebased.parcoords.SaveSelectionsAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
@@ -78,6 +79,8 @@ public class GLParCoordsView
 		alToolbar.add(resetViewAction);
 		IAction propagateSelectionAction = new PropagateSelectionsAction(iViewID);
 		alToolbar.add(propagateSelectionAction);
+		IAction resetAxisSpacing = new ResetAxisSpacingAction(iViewID);
+		alToolbar.add(resetAxisSpacing);
 
 		// only if standalone or explicitly requested
 		if (pcs.isRenderedRemote()

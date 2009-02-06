@@ -4,25 +4,68 @@ import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Collection;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.collection.IStorage;
 import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.manager.IIDMappingManager;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.view.opengl.canvas.AGLEventListener;
+import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
+import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
 
 public class SetExporter
 {
-	private String fileName = "/home/alexsb/Desktop/out.txt";
+	
 
-	public void export(ISet set)
+	public void export(ISet set, String sFileName, boolean bExportBucketInternal)
 	{
+		IVirtualArray contentVA = null;
+		IVirtualArray storageVA = null;
+
+		Collection<AGLEventListener> views = GeneralManager.get().getViewGLCanvasManager()
+				.getAllGLEventListeners();
+		for(AGLEventListener view : views)
+		{
+			if (view instanceof GLParallelCoordinates && view.isRenderedRemote() && bExportBucketInternal)
+			{
+				contentVA = set.getVA(view.getContentVAID());
+				storageVA = set.getVA(view.getSotrageVAID());	
+				break;
+			}
+			if((view instanceof GLParallelCoordinates || view instanceof GLHierarchicalHeatMap) && !bExportBucketInternal)
+			{
+				contentVA = set.getVA(view.getContentVAID());
+				storageVA = set.getVA(view.getSotrageVAID());	
+				break;
+			}
+		}
+
+		if(contentVA == null || storageVA == null)
+			throw new IllegalStateException("Not sure which VA to take.");
+		
 		try
 		{
-			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(fileName)));
-			out.println("Test 2");
-			for (int iCount = 0; iCount < set.depth(); iCount++)
+			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(sFileName)));
+
+			for (Integer iContentIndex : contentVA)
 			{
-				for (IStorage storage : set)
+				IIDMappingManager iDMappingManager = GeneralManager.get()
+						.getIDMappingManager();
+				Integer iRefseqMrnaInt = iDMappingManager.getID(
+						EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iContentIndex);
+				if (iRefseqMrnaInt == null)
+					continue;
+
+				String sRefseqMrna = iDMappingManager.getID(
+						EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA, iRefseqMrnaInt);
+				out.print(sRefseqMrna + "\t");
+				for (Integer iStorageIndex : storageVA)
 				{
-					out.print(storage.getFloat(EDataRepresentation.RAW, iCount));
+					IStorage storage = set.get(iStorageIndex); 
+					out.print(storage.getFloat(EDataRepresentation.RAW, iContentIndex));
 					out.print("\t");
 				}
 				out.println();
@@ -32,7 +75,7 @@ public class SetExporter
 		}
 		catch (IOException e)
 		{
-
+			
 		}
 	}
 }

@@ -83,7 +83,7 @@ public interface ICommandManager
 
 	/**
 	 * Get a command queue by it's commandQueueId, which is only a key for the
-	 * commandQueue and is nopt a uniqueSystem wide Id.
+	 * commandQueue and is not a uniqueSystem wide Id.
 	 * 
 	 * @param iCmdQueueId commandQueueId
 	 * @return command queue

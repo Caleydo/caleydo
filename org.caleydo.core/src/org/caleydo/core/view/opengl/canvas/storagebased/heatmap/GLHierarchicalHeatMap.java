@@ -155,6 +155,9 @@ public class GLHierarchicalHeatMap
 				EColorMappingType.GENE_EXPRESSION);
 
 		// iNumberOfRandomElements = 20000;
+		// number of elements to be rendered
+		// move to init
+		// iNumberOfRandomElements = set.getVA(iContentVAID).size();
 		iNumberOfRandomElements = generalManager.getPreferenceStore().getInt(
 				"hmNumRandomSamplinPoints");
 
@@ -508,8 +511,8 @@ public class GLHierarchicalHeatMap
 	@Override
 	protected void reactOnExternalSelection()
 	{
-		initTextures();
-		initPosCursor();
+
+		// initPosCursor();
 
 		int iIndex = 0;
 		int iTexture = 0;
@@ -537,6 +540,7 @@ public class GLHierarchicalHeatMap
 	@Override
 	protected void reactOnVAChanges(IVirtualArrayDelta delta)
 	{
+		initTextures();
 		privateMediator.triggerEvent(this, new DeltaEventContainer<IVirtualArrayDelta>(delta));
 
 	}
@@ -1426,8 +1430,8 @@ public class GLHierarchicalHeatMap
 	{
 		int iCount = (iAlNumberSamples.get(0) * (iSelectorBar - 1)) + iFirstSample;
 
-		privateMediator.triggerEvent(this, new SelectionCommandEventContainer(EIDType.REFSEQ_MRNA_INT,
-				new SelectionCommand(ESelectionCommandType.RESET)));
+		privateMediator.triggerEvent(this, new SelectionCommandEventContainer(
+				EIDType.REFSEQ_MRNA_INT, new SelectionCommand(ESelectionCommandType.RESET)));
 
 		IVirtualArrayDelta delta = new VirtualArrayDelta(EIDType.EXPRESSION_INDEX);
 		ISelectionDelta selectionDelta = new SelectionDelta(EIDType.EXPRESSION_INDEX);
@@ -1585,7 +1589,8 @@ public class GLHierarchicalHeatMap
 			else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING)
 				sInfoText.append("Showing all genes that have a known DAVID ID mapping\n");
 			else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT)
-				sInfoText.append("Showing all genes that are contained in any of the KEGG or Biocarta pathways\n");
+				sInfoText
+						.append("Showing all genes that are contained in any of the KEGG or Biocarta pathways\n");
 		}
 
 		return sInfoText.toString();

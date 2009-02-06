@@ -110,12 +110,6 @@ public class GLParallelCoordinates
 
 	private EPickingType draggedObject;
 
-	// private int iNumberOfAxis = 0;
-
-	// private ArrayList<Float> fArGateTipHeight;
-	//
-	// private ArrayList<Float> fArGateBottomHeight;
-
 	private HashMap<Integer, ArrayList<Pair<Float, Float>>> hashGates;
 
 	private HashMap<Integer, ArrayList<Integer>> hashIsGateBlocking;
@@ -166,10 +160,6 @@ public class GLParallelCoordinates
 
 	private Pick linePick;
 
-	// private ArrayList<Integer> alPolylineSelection;
-	//
-	// private ArrayList<Integer> alAxisSelection;b
-
 	private SelectedElementRep elementRep;
 
 	private int iPolylineVAID = 0;
@@ -179,6 +169,8 @@ public class GLParallelCoordinates
 	private GenericSelectionManager axisSelectionManager;
 
 	protected ParCoordsRenderStyle renderStyle;
+
+	private int iDisplayEveryNthPolyline = 1;
 
 	/**
 	 * Constructor.
@@ -392,12 +384,12 @@ public class GLParallelCoordinates
 		if (bRenderStorageHorizontally != this.bRenderStorageHorizontally)
 		{
 			if (bRenderStorageHorizontally && set.getVA(iContentVAID).size() > 100)
-			{				
-					MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
-					messageBox
-							.setMessage("Can not show more than 100 axis - reduce polylines to less than 100 first");
-					messageBox.open();
-					return; 
+			{
+				MessageBox messageBox = new MessageBox(new Shell(), SWT.OK);
+				messageBox
+						.setMessage("Can not show more than 100 axis - reduce polylines to less than 100 first");
+				messageBox.open();
+				return;
 			}
 
 			EIDType eTempType = eAxisDataType;
@@ -410,9 +402,9 @@ public class GLParallelCoordinates
 
 		fXTranslation = 0;
 		connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
-		resetSelections();
 		initContentVariables();
 
+		resetAxisSpacing();
 		initGates();
 
 		setDisplayListDirty();
@@ -678,6 +670,14 @@ public class GLParallelCoordinates
 		Set<Integer> setDataToRender = null;
 		float fZDepth = 0f;
 
+		if (renderMode == ESelectionType.DESELECTED || renderMode == ESelectionType.NORMAL)
+		{
+			iDisplayEveryNthPolyline = set.getVA(iContentVAID).size()
+					/ iNumberOfRandomElements;
+			if (iDisplayEveryNthPolyline == 0)
+				iDisplayEveryNthPolyline = 1;
+		}
+
 		switch (renderMode)
 		{
 			case NORMAL:
@@ -685,8 +685,8 @@ public class GLParallelCoordinates
 				if (detailLevel.compareTo(EDetailLevel.LOW) < 1)
 				{
 					gl.glColor4fv(renderStyle
-							.getPolylineDeselectedOcclusionPrevColor(setDataToRender.size()),
-							0);
+							.getPolylineDeselectedOcclusionPrevColor(setDataToRender.size()
+									/ iDisplayEveryNthPolyline), 0);
 					gl.glLineWidth(ParCoordsRenderStyle.DESELECTED_POLYLINE_LINE_WIDTH);
 					fZDepth = -0.001f;
 				}
@@ -694,7 +694,8 @@ public class GLParallelCoordinates
 				{
 					if (bPreventOcclusion)
 						gl.glColor4fv(renderStyle
-								.getPolylineOcclusionPrevColor(setDataToRender.size()), 0);
+								.getPolylineOcclusionPrevColor(setDataToRender.size()
+										/ iDisplayEveryNthPolyline), 0);
 					else
 						gl.glColor4fv(POLYLINE_NO_OCCLUSION_PREV_COLOR, 0);
 
@@ -716,7 +717,8 @@ public class GLParallelCoordinates
 			case DESELECTED:
 				setDataToRender = polylineSelectionManager.getElements(renderMode);
 				gl.glColor4fv(renderStyle
-						.getPolylineDeselectedOcclusionPrevColor(setDataToRender.size()), 0);
+						.getPolylineDeselectedOcclusionPrevColor(setDataToRender.size()
+								/ iDisplayEveryNthPolyline), 0);
 				gl.glLineWidth(DESELECTED_POLYLINE_LINE_WIDTH);
 				break;
 			default:
@@ -734,6 +736,13 @@ public class GLParallelCoordinates
 		while (dataIterator.hasNext())
 		{
 			int iPolyLineID = dataIterator.next();
+			if (bUseRandomSampling && (renderMode == ESelectionType.DESELECTED || renderMode == ESelectionType.NORMAL))
+			{
+				if (iPolyLineID % iDisplayEveryNthPolyline != 0)
+					continue;
+				// if(!alUseInRandomSampling.get(set.getVA(iPolylineVAID).indexOf(iPolyLineID)))
+				// continue;
+			}
 			if (renderMode != ESelectionType.DESELECTED)
 				gl.glPushName(pickingManager.getPickingID(iUniqueID,
 						EPickingType.POLYLINE_SELECTION, iPolyLineID));
@@ -1595,17 +1604,20 @@ public class GLParallelCoordinates
 
 				if (ePolylineDataType == EIDType.EXPRESSION_INDEX)
 				{
-					// Resolve multiple spotting on chip and add all to the selection manager.		
-					Integer iRefSeqID = idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExternalID);	
+					// Resolve multiple spotting on chip and add all to the
+					// selection manager.
+					Integer iRefSeqID = idMappingManager.getID(
+							EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExternalID);
 					for (Object iExpressionIndex : idMappingManager.getMultiID(
 							EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID))
 					{
-						contentSelectionManager.addToType(eSelectionType, (Integer)iExpressionIndex);
-					}				
+						contentSelectionManager.addToType(eSelectionType,
+								(Integer) iExpressionIndex);
+					}
 				}
 				else
 				{
-					polylineSelectionManager.addToType(eSelectionType, iExternalID);					
+					polylineSelectionManager.addToType(eSelectionType, iExternalID);
 				}
 
 				polylineSelectionManager.addConnectionID(generalManager.getIDManager()
@@ -1653,20 +1665,25 @@ public class GLParallelCoordinates
 				axisSelectionManager.clearSelection(eSelectionType);
 				axisSelectionManager.addToType(eSelectionType, iExternalID);
 
+				axisSelectionManager.addConnectionID(generalManager.getIDManager().createID(
+						EManagedObjectType.CONNECTION), iExternalID);
+
 				connectedElementRepresentationManager.clear(eAxisDataType);
 
 				// triggerSelectionUpdate(EMediatorType.SELECTION_MEDIATOR,
 				// axisSelectionManager
 				// .getDelta(), null);
 
-				// if (eAxisDataType == EIDType.EXPRESSION_INDEX)
-				// {
+			
 				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
 						new SelectionCommandEventContainer(eAxisDataType,
 								new SelectionCommand(ESelectionCommandType.CLEAR,
 										eSelectionType)));
 				ISelectionDelta selectionDelta = axisSelectionManager.getDelta();
-				handleConnectedElementRep(selectionDelta);
+				if (eAxisDataType == EIDType.EXPRESSION_INDEX)
+				{
+					handleConnectedElementRep(selectionDelta);
+				}
 				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
 						new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 
@@ -1893,9 +1910,13 @@ public class GLParallelCoordinates
 	@Override
 	public synchronized String getShortInfo()
 	{
-
-		return "Parallel Coordinates (" + set.getVA(iContentVAID).size() + " genes / "
+		int iNumLines = set.getVA(iContentVAID).size();
+		String message = "Parallel Coordinates (" + iNumLines + " genes / "
 				+ set.getVA(iStorageVAID).size() + " experiments)";
+		if (iDisplayEveryNthPolyline != 1)
+			message += ", rendering a sample of " + (int) iNumLines / iDisplayEveryNthPolyline;
+		return message;
+
 	}
 
 	@Override
@@ -2371,6 +2392,7 @@ public class GLParallelCoordinates
 		{
 			alAxisSpacing.add(fInitAxisSpacing * iCount);
 		}
+		setDisplayListDirty();
 	}
 
 }

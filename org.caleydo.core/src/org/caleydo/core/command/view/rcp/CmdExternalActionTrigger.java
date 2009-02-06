@@ -73,6 +73,9 @@ public class CmdExternalActionTrigger
 					case PARCOORDS_SAVE_SELECTIONS:
 						((GLParallelCoordinates) viewObject).saveSelection();
 						return;
+					case PARCOORDS_RESET_AXIS_SPACING:
+						((GLParallelCoordinates) viewObject).resetAxisSpacing();
+						return;
 
 				}
 			}

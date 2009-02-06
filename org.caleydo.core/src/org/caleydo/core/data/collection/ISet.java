@@ -237,6 +237,11 @@ public interface ISet
 	 */
 	public IVirtualArray getVA(int iUniqueID);
 
-	public void export();
+	/**
+	 * Export a manipulated subset of the data to the destination specifiedn in sFileName. Determine whether 
+	 * @param sFileName
+	 * @param bExportBucketInternal
+	 */
+	public void export(String sFileName, boolean bExportBucketInternal);
 
 }

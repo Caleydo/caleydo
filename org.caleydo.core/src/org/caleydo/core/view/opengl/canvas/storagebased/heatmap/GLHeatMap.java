@@ -508,21 +508,24 @@ public class GLHeatMap
 
 				contentSelectionManager.clearSelection(eSelectionType);
 
-				// Resolve multiple spotting on chip and add all to the selection manager.		
-				Integer iRefSeqID = idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExternalID);	
+				// Resolve multiple spotting on chip and add all to the
+				// selection manager.
+				Integer iRefSeqID = idMappingManager.getID(
+						EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExternalID);
 				for (Object iExpressionIndex : idMappingManager.getMultiID(
 						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID))
 				{
-					contentSelectionManager.addToType(eSelectionType, (Integer)iExpressionIndex);
+					contentSelectionManager.addToType(eSelectionType,
+							(Integer) iExpressionIndex);
 				}
-				
+
 				contentSelectionManager.addConnectionID(generalManager.getIDManager()
 						.createID(EManagedObjectType.CONNECTION), iExternalID);
 
 				if (eFieldDataType == EIDType.EXPRESSION_INDEX)
 				{
 					ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
-					
+
 					triggerEvent(EMediatorType.SELECTION_MEDIATOR,
 							new SelectionCommandEventContainer(EIDType.REFSEQ_MRNA_INT,
 									new SelectionCommand(ESelectionCommandType.CLEAR,
@@ -630,34 +633,37 @@ public class GLHeatMap
 			// render line captions
 			if (fFieldWith > 0.1f)
 			{
-				boolean bRenderShortName = false;
+				boolean bRenderRefSeq = false;
 				if (fFieldWith < 0.2f)
 				{
 					fFontScaling = renderStyle.getSmallFontScalingFactor();
 				}
 				else
 				{
-					bRenderShortName = true;
+					bRenderRefSeq = true;
 					fFontScaling = renderStyle.getHeadingFontScalingFactor();
 				}
 
 				if (detailLevel == EDetailLevel.HIGH)
 				{
-					// Render heat map element name
-					String sContent = Integer
-							.toString(getRefSeqFromStorageIndex(iContentIndex));
+					String sContent;
+
+					sContent = getShortNameFromDavid(iContentIndex);
+					if (sContent == null)
+						sContent = "Unknown";
+					
+
+					if (bRenderRefSeq)
+					{
+						sContent += " | ";
+						// Render heat map element name
+						sContent += getRefSeqStringFromStorageIndex(iContentIndex);
+					}
 					// if (sContent == null)
 					// sContent = "Unknown";
 					// renderCaption(gl, sContent, fXPosition + fFieldWith / 6 *
 					// 2.5f,
 					// fYPosition + 0.1f, fLineDegrees, fFontScaling);
-
-					if (bRenderShortName)
-					{
-						sContent = sContent + " | " + getShortNameFromDavid(iContentIndex);
-						if (sContent == null)
-							sContent = "Unknown";
-					}
 
 					renderCaption(gl, sContent, fXPosition + fFieldWith / 6 * 4.5f,
 							fYPosition + 0.1f, fLineDegrees, fFontScaling);

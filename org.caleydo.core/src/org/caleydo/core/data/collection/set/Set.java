@@ -492,10 +492,10 @@ public class Set
 		return bIsSetHomogeneous;
 	}
 
-	public void export()
+	public void export(String sFileName, boolean bExportBucketInternal)
 	{
 		SetExporter exporter = new SetExporter();
-		exporter.export(this);
+		exporter.export(this, sFileName, bExportBucketInternal);
 	}
 
 }

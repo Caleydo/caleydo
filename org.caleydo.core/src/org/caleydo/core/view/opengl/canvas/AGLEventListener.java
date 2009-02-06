@@ -107,6 +107,18 @@ public abstract class AGLEventListener
 	protected IIDMappingManager idMappingManager;
 
 	/**
+	 * The id of the virtual array that manages the contents (the indices) in
+	 * the storages
+	 */
+	protected int iContentVAID = -1;
+
+	/**
+	 * The id of the virtual array that manages the storage references in the
+	 * set
+	 */
+	protected int iStorageVAID = -1;
+	
+	/**
 	 * Constructor.
 	 */
 	protected AGLEventListener(final int iGLCanvasID, final String sLabel,
@@ -593,6 +605,16 @@ public abstract class AGLEventListener
 	public float getAspectRatio()
 	{
 		return fAspectRatio;
+	}
+	
+	public int getContentVAID()
+	{
+		return iContentVAID;
+	}
+	
+	public int getSotrageVAID()
+	{
+		return iStorageVAID;
 	}
 	
 	public void destroy()

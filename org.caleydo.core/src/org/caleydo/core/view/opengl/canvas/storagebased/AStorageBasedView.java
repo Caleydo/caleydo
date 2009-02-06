@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
+import java.util.Random;
 import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
 import org.caleydo.core.data.IUniqueObject;
@@ -51,18 +52,9 @@ public abstract class AStorageBasedView
 	 */
 	protected EnumMap<EStorageBasedVAType, Integer> mapVAIDs;
 
-	/**
-	 * The id of the virtual array that manages the contents (the indices) in
-	 * the storages
-	 */
-	protected int iContentVAID = 0;
-
-	/**
-	 * The id of the virtual array that manages the storage references in the
-	 * set
-	 */
-	protected int iStorageVAID = 0;
-
+	
+	protected ArrayList<Boolean> alUseInRandomSampling;
+	
 	protected IIDMappingManager genomeIDManager;
 
 	protected ConnectedElementRepresentationManager connectedElementRepresentationManager;
@@ -259,13 +251,23 @@ public abstract class AStorageBasedView
 
 		if (bUseRandomSampling)
 		{
-			Collections.shuffle(alTempList);
-			if (alTempList.size() > iNumberOfRandomElements)
+			alUseInRandomSampling = new ArrayList<Boolean>();
+			int iCount = 0;
+			for(; iCount < iNumberOfRandomElements; iCount++)
 			{
-				ArrayList<Integer> alNewList = new ArrayList<Integer>();
-				alNewList.addAll(alTempList.subList(0, iNumberOfRandomElements));
-				alTempList = alNewList;
+				alUseInRandomSampling.add(true);
 			}
+			for(; iCount < alTempList.size(); iCount++)
+			{
+				alUseInRandomSampling.add(false);
+			}
+			Collections.shuffle(alUseInRandomSampling);
+//			if (alTempList.size() > iNumberOfRandomElements)
+//			{
+//				ArrayList<Integer> alNewList = new ArrayList<Integer>();
+//				alNewList.addAll(alTempList.subList(0, iNumberOfRandomElements));
+//				alTempList = alNewList;
+//			}
 
 		}
 
@@ -336,6 +338,14 @@ public abstract class AStorageBasedView
 			return "Unkonwn Gene";
 		else
 			return sGeneSymbol;
+	}
+	
+	@Deprecated
+	protected String getRefSeqStringFromStorageIndex(int iIndex)
+	{
+		int iRefSeqID = getRefSeqFromStorageIndex(iIndex);
+		return genomeIDManager.getID(
+				EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA, iRefSeqID);
 	}
 
 	private void handleSelectionUpdate(IUniqueObject eventTrigger,
