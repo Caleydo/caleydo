@@ -73,6 +73,8 @@ public class GLHierarchicalHeatMap
 	private final static int MIN_SAMPLES_PER_HEATMAP = 10;
 	// MAX_SAMPLES_PER_HEATMAP = SmaplesPerTexture / 3
 
+	private int iNumberOfElements = 0;
+
 	private int iSamplesPerTexture = 0;
 
 	private int iSamplesPerHeatmap = 0;
@@ -154,24 +156,13 @@ public class GLHierarchicalHeatMap
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
 
-		// iNumberOfRandomElements = 20000;
-		// number of elements to be rendered
-		// move to init
-		// iNumberOfRandomElements = set.getVA(iContentVAID).size();
-		iNumberOfRandomElements = generalManager.getPreferenceStore().getInt(
-				"hmNumRandomSamplinPoints");
-
-		bUseRandomSampling = false;
-
-		if (iNumberOfRandomElements < 2)
-			throw new IllegalStateException("Number of elements not supported!!");
-
+		iNumberOfRandomElements = 10;
+		
+		iNumberOfElements = 10;
+		
 		// default: 500 (PreferenceInitializer)
 		iSamplesPerTexture = generalManager.getPreferenceStore().getInt(
 				"hmNumSamplesPerTexture");
-
-		if ((2 * iSamplesPerTexture) > iNumberOfRandomElements)
-			iSamplesPerTexture = (int) Math.floor(iNumberOfRandomElements / 2);
 
 		// default: 30 (PreferenceInitializer)
 		iSamplesPerHeatmap = generalManager.getPreferenceStore().getInt(
@@ -205,6 +196,8 @@ public class GLHierarchicalHeatMap
 	public void init(GL gl)
 	{
 		bRenderOnlyContext = false;
+		//bUseRandomSampling = false;
+
 		createHeatMap();
 
 		glHeatMapView.initRemote(gl, getID(), pickingTriggerMouseAdapter, null);
@@ -215,6 +208,16 @@ public class GLHierarchicalHeatMap
 		if (set == null)
 			return;
 
+		iNumberOfElements = set.getVA(iContentVAID).size();
+		// iNumberOfElements = generalManager.getPreferenceStore().getInt(
+		// "hmNumRandomSamplinPoints");
+		
+		if (iNumberOfElements < 2)
+			throw new IllegalStateException("Number of elements not supported!!");
+		
+		if ((2 * iSamplesPerTexture) > iNumberOfElements)
+			iSamplesPerTexture = (int) Math.floor(iNumberOfElements / 2);
+		
 		initTextures();
 		initPosCursor();
 	}
@@ -511,9 +514,6 @@ public class GLHierarchicalHeatMap
 	@Override
 	protected void reactOnExternalSelection()
 	{
-
-		// initPosCursor();
-
 		int iIndex = 0;
 		int iTexture = 0;
 		int iPos = 0;
@@ -535,12 +535,27 @@ public class GLHierarchicalHeatMap
 					ESelectionType.MOUSE_OVER);
 			AlSelection.add(temp);
 		}
+		
+		Set<Integer> setSelectionElements = contentSelectionManager.getElements(ESelectionType.SELECTION);
+
+		for (Integer iSelectedID : setSelectionElements)
+		{
+			iIndex = set.getVA(iContentVAID).indexOf(iSelectedID.intValue()) + 1;
+		
+			iTexture = (int) Math.floor(iIndex / iAlNumberSamples.get(0));
+			iPos = iIndex - (iTexture * iAlNumberSamples.get(0));
+		
+			temp = new HeatMapSelection(iTexture, iPos, iSelectedID.intValue(),
+					ESelectionType.SELECTION);
+			AlSelection.add(temp);
+		}
 	}
 
 	@Override
 	protected void reactOnVAChanges(IVirtualArrayDelta delta)
 	{
 		initTextures();
+		//initPosCursor();
 		privateMediator.triggerEvent(this, new DeltaEventContainer<IVirtualArrayDelta>(delta));
 
 	}
@@ -1451,7 +1466,7 @@ public class GLHierarchicalHeatMap
 			for (HeatMapSelection selection : AlSelection)
 			{
 				if (selection.getContentIndex() == iContentIndex)
-					selectionDelta.addSelection(iContentIndex, ESelectionType.MOUSE_OVER);
+					selectionDelta.addSelection(iContentIndex, selection.getSelectionType());
 			}
 		}
 
@@ -1574,15 +1589,15 @@ public class GLHierarchicalHeatMap
 		}
 		else
 		{
-			if (bUseRandomSampling)
-			{
-				sInfoText.append("Random sampling active, sample size: "
-						+ iNumberOfRandomElements + "\n");
-			}
-			else
-			{
-				sInfoText.append("Random sampling inactive\n");
-			}
+			// if (bUseRandomSampling)
+			// {
+			// sInfoText.append("Random sampling active, sample size: "
+			// + iNumberOfRandomElements + "\n");
+			// }
+			// else
+			// {
+			// sInfoText.append("Random sampling inactive\n");
+			// }
 
 			if (dataFilterLevel == EDataFilterLevel.COMPLETE)
 				sInfoText.append("Showing all genes in the dataset\n");
