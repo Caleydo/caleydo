@@ -134,7 +134,7 @@ public class CmdLoadFileLookupTable
 			{
 				bCreateReverseMap = true;
 			}
-			else if (sLookupTableOptions.equals("LUT"))
+			else if (sLookupTableOptions.equals("LUT")) 
 			{
 				tokenizer = new StringTokenizer(sCodeResolvingLUTTypes,
 						IGeneralManager.sDelimiter_Parser_DataItems);

@@ -120,7 +120,7 @@ public class EventPublisher
 	public void triggerEvent(EMediatorType eMediatorType, IUniqueObject eventTrigger,
 			IEventContainer eventContainer)
 	{
-		// TODO FIXME add support for ALL etc
+		// TODO FIXME add support for ALL_REGISTERED
 
 		if (!(eventTrigger instanceof IMediatorSender))
 		{

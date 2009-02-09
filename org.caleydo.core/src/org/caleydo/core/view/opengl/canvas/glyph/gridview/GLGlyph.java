@@ -345,10 +345,6 @@ public class GLGlyph
 	@Override
 	public synchronized void display(GL gl)
 	{
-		// disable Polygon smooth for this view, otherwise there are
-		// strange edges at the glyhs
-		gl.glDisable(GL.GL_POLYGON_SMOOTH);
-
 		if (grid_ == null)
 		{
 			renderSymbol(gl);
@@ -444,8 +440,6 @@ public class GLGlyph
 
 		if (mouseListener_ != null)
 			mouseListener_.render(gl);
-
-		gl.glEnable(GL.GL_POLYGON_SMOOTH);
 
 		// if (System.currentTimeMillis() - ticker > 1000)
 		// {
