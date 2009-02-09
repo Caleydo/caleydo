@@ -349,10 +349,10 @@ public class GLPathway
 		}
 	}
 
-	private ArrayList<Integer> getDavidFromPathwayVertexGraphItemRep(
+	private ArrayList<Integer> getRefSeqIDsFromPathwayVertexGraphItemRep(
 			int iPathwayVertexGraphItemRepID)
 	{
-		ArrayList<Integer> alDavids = new ArrayList<Integer>();
+		ArrayList<Integer> alRefSeqID = new ArrayList<Integer>();
 
 		for (IGraphItem pathwayVertexGraphItem : generalManager.getPathwayItemManager()
 				.getItem(iPathwayVertexGraphItemRepID).getAllItemsByProp(
@@ -363,11 +363,23 @@ public class GLPathway
 
 			if (iDavidID == -1)
 				continue;
-
-			alDavids.add(iDavidID);
+			
+			Set<Integer> iSetRefSeq = idMappingManager.getMultiID(
+					EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
+			
+			if (iSetRefSeq == null)
+			{
+				generalManager.getLogger().log(Level.SEVERE, "No RefSeq IDs found for David: " +iDavidID);
+				continue;
+			}
+			
+			for (int iRefSeqID : iSetRefSeq)
+			{
+				alRefSeqID.add(iRefSeqID);				
+			}
 		}
 
-		return alDavids;
+		return alRefSeqID;
 	}
 
 //	private ArrayList<Integer> getRefSeqFromPathwayVertexGraphItemRep(
@@ -394,36 +406,22 @@ public class GLPathway
 	private ISelectionDelta createExternalSelectionDelta(ISelectionDelta selectionDelta)
 	{
 		ISelectionDelta newSelectionDelta = new SelectionDelta(EIDType.REFSEQ_MRNA_INT);
-		IIDMappingManager idMappingManager = generalManager.getIDMappingManager();
-		
+
 		for (SelectionDeltaItem item : selectionDelta)
 		{
-			for (int iDavidID : getDavidFromPathwayVertexGraphItemRep(item.getPrimaryID()))
-			{
-				Set<Integer> iSetRefSeq = idMappingManager.getMultiID(
-						EMappingType.DAVID_2_REFSEQ_MRNA_INT, iDavidID);
-				
-				if (iSetRefSeq == null)
-				{
-					generalManager.getLogger().log(Level.SEVERE, "No RefSeq IDs found for David: " +iDavidID);
-					continue;
-				}
-				
-				for (Object iRefSeqID : iSetRefSeq)
-				{
-					newSelectionDelta.addSelection((Integer)iRefSeqID, item.getSelectionType(), item
-							.getPrimaryID());
+			for (int iRefSeqID : getRefSeqIDsFromPathwayVertexGraphItemRep(item.getPrimaryID()))
+			{	
+				newSelectionDelta.addSelection((Integer)iRefSeqID, item.getSelectionType(), item
+					.getPrimaryID());
 					
-					for (Integer iConnectionID : item.getConnectionID())
-					{
-						newSelectionDelta.addConnectionID((Integer)iRefSeqID, iConnectionID);
-					}
+				for (Integer iConnectionID : item.getConnectionID())
+				{
+					newSelectionDelta.addConnectionID((Integer)iRefSeqID, iConnectionID);
 				}
 			}
 		}
 
 		return newSelectionDelta;
-
 	}
 
 	private ISelectionDelta resolveExternalSelectionDelta(ISelectionDelta selectionDelta)
@@ -663,15 +661,14 @@ public class GLPathway
 										idListEventContainer);
 							}
 						}
-						// Load pathways based on a david ID
 						else
 						{
-
+							// Load pathways based on a david ID
 							IDListEventContainer<Integer> idListEventContainer = new IDListEventContainer<Integer>(
-									EEventType.LOAD_PATHWAY_BY_GENE, EIDType.DAVID);
-							ArrayList<Integer> alDavids = getDavidFromPathwayVertexGraphItemRep(tmpVertexGraphItemRep
+									EEventType.LOAD_PATHWAY_BY_GENE, EIDType.REFSEQ_MRNA_INT);
+							ArrayList<Integer> alRefSeqID = getRefSeqIDsFromPathwayVertexGraphItemRep(tmpVertexGraphItemRep
 									.getID());
-							idListEventContainer.setIDs(alDavids);
+							idListEventContainer.setIDs(alRefSeqID);
 							triggerEvent(EMediatorType.SELECTION_MEDIATOR,
 									idListEventContainer);
 						}
