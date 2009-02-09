@@ -22,6 +22,7 @@ import org.caleydo.core.data.graph.ICaleydoGraphItem;
 import org.caleydo.core.data.graph.pathway.core.PathwayGraph;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
@@ -1868,15 +1869,19 @@ public class GLRemoteRendering
 				// take care here, if we ever use non integer ids this has to be
 				// cast to raw type first to determine the actual id data types
 				IDListEventContainer<Integer> idContainer = (IDListEventContainer<Integer>) eventContainer;
-				if (idContainer.getIDType() == EIDType.DAVID)
+				if (idContainer.getIDType() == EIDType.REFSEQ_MRNA_INT)
 				{
-
 					int iGraphItemID = 0;
+					Integer iDavidID = -1;
 					ArrayList<ICaleydoGraphItem> alPathwayVertexGraphItem = new ArrayList<ICaleydoGraphItem>();
 
-					for (Integer iDavidID : idContainer.getIDs())
+					for (Integer iRefSeqID : idContainer.getIDs())
 					{
-
+						iDavidID = idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID);
+						
+						if (iDavidID == null || iDavidID == -1)
+							throw new IllegalStateException("Cannot resolve RefSeq ID to David ID.");
+						
 						iGraphItemID = generalManager.getPathwayItemManager()
 								.getPathwayVertexGraphItemIdByDavidId(iDavidID);
 
