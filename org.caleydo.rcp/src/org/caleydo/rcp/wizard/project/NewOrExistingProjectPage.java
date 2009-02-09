@@ -8,6 +8,7 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 
 /**
  * 1st wizard page: The user have to choose if she wants to create a new project
@@ -26,7 +27,7 @@ public class NewOrExistingProjectPage
 		NEW_PROJECT, EXISTING_PROJECT, PATHWAY_VIEWER_MODE, SAMPLE_DATA_RANDOM, SAMPLE_DATA_REAL
 	}
 
-	private EProjectType projectType;
+	private EProjectType projectType = EProjectType.SAMPLE_DATA_REAL;
 
 	/**
 	 * Constructor.
@@ -48,26 +49,25 @@ public class NewOrExistingProjectPage
 		Composite composite = new Composite(parent, SWT.NONE);
 		composite.setLayout(new FillLayout(SWT.VERTICAL));
 
+		Button buttonSampleDataMode = new Button(composite, SWT.RADIO);
+		buttonSampleDataMode.setText("Start with sample gene expression data\n(see: http://www.ncbi.nlm.nih.gov/pubmed/17241883)");
+//		buttonSampleDataMode.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_RED));
+		buttonSampleDataMode.setSelection(true);
+		
+		Button buttonRandomSampleDataMode = new Button(composite, SWT.RADIO);
+		buttonRandomSampleDataMode.setText("Start with random generated sample gene expression data");
+		
 		Button buttonNewProject = new Button(composite, SWT.RADIO);
 		buttonNewProject.setText("Load data from file (CSV, TXT)");
-		buttonNewProject.setSelection(true);
 		setPageComplete(true);
-
-		Button buttonExistingProject = new Button(composite, SWT.RADIO);
-		buttonExistingProject.setText("Open existing project");
-		buttonExistingProject.setEnabled(false);
 
 		Button buttonPathwayViewerMode = new Button(composite, SWT.RADIO);
 		buttonPathwayViewerMode.setText("Pathway viewer mode");
 
-		Button buttonRandomSampleDataMode = new Button(composite, SWT.RADIO);
-		buttonRandomSampleDataMode
-				.setText("Start with random generated sample gene expression data");
-
-		Button buttonSampleDataMode = new Button(composite, SWT.RADIO);
-		buttonSampleDataMode
-				.setText("Start with sample gene expression data\n(see: http://www.ncbi.nlm.nih.gov/pubmed/17241883)");
-
+		Button buttonExistingProject = new Button(composite, SWT.RADIO);
+		buttonExistingProject.setText("Open existing project");
+		buttonExistingProject.setEnabled(false);
+		
 		// Link sampleDataPaperLink = new Link(composite, SWT.BORDER);
 		// sampleDataPaperLink.setText("See: <a>http://www.ncbi.nlm.nih.gov/pubmed/17241883</a>");
 

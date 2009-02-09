@@ -17,7 +17,7 @@ public class HTMLBrowserView
 
 	@Override
 	public void createPartControl(Composite parent)
-	{
+	{	
 		browserView = (HTMLBrowserViewRep) GeneralManager.get().getViewGLCanvasManager()
 				.createView(EManagedObjectType.VIEW_SWT_BROWSER_GENOME, -1, "Browser");
 

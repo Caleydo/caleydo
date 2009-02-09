@@ -87,8 +87,8 @@ public class ToolBarView
 		// expandBar.setLayoutData(new
 		// RowData(parentComposite.getBounds().width,
 		// parentComposite.getBounds().height));
-		expandBar.setSpacing(2);
-
+		expandBar.setSpacing(5);
+		
 		addGeneralToolBar();
 		addSearchBar();
 		addColorMappingBar();
@@ -110,7 +110,7 @@ public class ToolBarView
 				// // toolBar.setBounds(0, 0,size.x, size.y);
 				// toolBar.pack();
 
-				expandBar.setLayoutData(new RowData(parentComposite.getBounds().width,
+				expandBar.setLayoutData(new RowData(parentComposite.getBounds().width - 18,
 						parentComposite.getBounds().height));
 				expandBar.pack();
 			}
@@ -178,15 +178,11 @@ public class ToolBarView
 		ArrayList<IToolBarManager> alToolBarManager = new ArrayList<IToolBarManager>();
 
 		final ToolBar toolBar = new ToolBar(composite, SWT.WRAP | SWT.FLAT);
-//		toolBar.setBackground(parentComposite.getDisplay()
-//						.getSystemColor(SWT.COLOR_DARK_GRAY));
 		ToolBarManager toolBarManager = new ToolBarManager(toolBar);
 		alToolBar.add(toolBar);
 		alToolBarManager.add(toolBarManager);
 
 		final ToolBar toolBar2 = new ToolBar(composite, SWT.WRAP | SWT.FLAT);
-//		toolBar2.setBackground(parentComposite.getDisplay()
-//				.getSystemColor(SWT.COLOR_DARK_GRAY));
 		ToolBarManager toolBarManager2 = new ToolBarManager(toolBar2);
 		alToolBar.add(toolBar2);
 		alToolBarManager.add(toolBarManager2);
@@ -259,16 +255,19 @@ public class ToolBarView
 			return;
 		}
 
-		toolBarManager.add(new Separator());
+//		toolBarManager.add(new Separator());
 		toolBarManager.update(true);
 
-		toolBarManager2.add(new Separator());
-		toolBarManager2.update(true);
+//		toolBarManager2.add(new Separator());
+		if (toolBarManager2.isEmpty())
+			toolBarManager2.dispose();
+		else
+			toolBarManager2.update(true);
 
-		Label separator = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.LINE_SOLID);
-		separator.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+//		Label separator = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.LINE_SOLID);
+//		separator.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		ExpandItem expandItem = new ExpandItem(expandBar, SWT.NONE, 0);
+		ExpandItem expandItem = new ExpandItem(expandBar, SWT.NONE);
 		expandItem.setText(sViewTitle);
 		expandItem.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		expandItem.setControl(composite);
@@ -421,7 +420,7 @@ public class ToolBarView
 
 		String items[] = { "No pathways available!" };
 		GridData data = new GridData();
-		data.widthHint = TOOLBAR_WIDTH;
+		data.widthHint = TOOLBAR_WIDTH - 10;
 		searchBox.setLayoutData(data);
 		searchBox.setItems(items);
 		searchBox.setTextLimit(21);
@@ -511,9 +510,9 @@ public class ToolBarView
 
 		// }
 
-		ExpandItem expandItem = new ExpandItem(expandBar, SWT.NONE, 0);
+		ExpandItem expandItem = new ExpandItem(expandBar, SWT.NONE);
 		expandItem.setText("Search");
-		expandItem.setHeight(100);
+		expandItem.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		expandItem.setControl(composite);
 		expandItem.setImage(GeneralManager.get().getResourceLoader().getImage(
 				PlatformUI.getWorkbench().getDisplay(), "resources/icons/general/search.png"));
@@ -555,10 +554,9 @@ public class ToolBarView
 			}
 		});
 
-		ExpandItem expandItem = new ExpandItem(expandBar, SWT.NONE, 0);
+		ExpandItem expandItem = new ExpandItem(expandBar, SWT.NONE);
 		expandItem.setText("Color mapping");
-		expandItem.setHeight(40);
-		expandItem.setControl(composite);
+		expandItem.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);		expandItem.setControl(composite);
 		expandItem.setImage(GeneralManager.get().getResourceLoader().getImage(
 				PlatformUI.getWorkbench().getDisplay(),
 				"resources/icons/general/color_mapping.png"));
@@ -578,12 +576,10 @@ public class ToolBarView
 		toolBarManager.add(new TakeSnapshotAction());
 		toolBarManager.update(true);
 
-		ExpandItem expandItem = new ExpandItem(expandBar, SWT.NONE, 0);
+		ExpandItem expandItem = new ExpandItem(expandBar, SWT.NONE);
 		expandItem.setText("General");
-		expandItem.setHeight(45);
-		expandItem.setControl(composite);
-		expandItem
-				.setImage(GeneralManager.get().getResourceLoader().getImage(
+		expandItem.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);		expandItem.setControl(composite);
+		expandItem.setImage(GeneralManager.get().getResourceLoader().getImage(
 						PlatformUI.getWorkbench().getDisplay(),
 						"resources/icons/general/general.png"));
 		expandItem.setExpanded(true);
@@ -600,9 +596,9 @@ public class ToolBarView
 		InfoArea infoArea = new InfoArea();
 		infoArea.createControl(composite);
 
-		ExpandItem expandItem = new ExpandItem(expandBar, SWT.NONE, 0);
+		ExpandItem expandItem = new ExpandItem(expandBar, SWT.NONE);
 		expandItem.setText("Selection Info");
-		expandItem.setHeight(250);
+		expandItem.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
 		expandItem.setControl(composite);
 		expandItem.setImage(GeneralManager.get().getResourceLoader().getImage(
 				PlatformUI.getWorkbench().getDisplay(), "resources/icons/general/info.png"));
