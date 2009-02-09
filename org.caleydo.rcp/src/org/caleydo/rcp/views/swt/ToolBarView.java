@@ -2,7 +2,6 @@ package org.caleydo.rcp.views.swt;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.swt.CmdViewCreateDataEntitySearcher;
 import org.caleydo.core.data.IUniqueObject;
@@ -28,7 +27,6 @@ import org.caleydo.rcp.views.opengl.GLParCoordsView;
 import org.caleydo.rcp.views.opengl.GLPathwayView;
 import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.swt.SWT;
@@ -43,6 +41,7 @@ import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowData;
@@ -403,25 +402,26 @@ public class ToolBarView
 		dataEntitySearcher = cmd.getCreatedObject();
 
 		final Composite composite = new Composite(expandBar, SWT.NONE);
-		GridLayout layout = new GridLayout();
-		layout.marginLeft = layout.marginTop = layout.marginRight = layout.marginBottom = 0;
-		layout.verticalSpacing = 0;
-		composite.setLayout(layout);
+//		GridLayout layout = new GridLayout();
+//		layout.marginLeft = layout.marginTop = layout.marginRight = layout.marginBottom = 0;
+//		layout.verticalSpacing = 0;
 
+		FillLayout layout = new FillLayout(SWT.VERTICAL);
+		layout.marginHeight = 3;
+		layout.marginWidth = 3;
+		composite.setLayout(layout);
+		
 		// Add search bar
 		// if (!GeneralManager.get().getPreferenceStore().getBoolean(
 		// PreferenceConstants.XP_CLASSIC_STYLE_MODE))
 		// {
 		Label searchInputLabel = new Label(composite, SWT.NULL);
 		searchInputLabel.setText("Pathway search");
-		searchInputLabel.pack();
+//		searchInputLabel.pack();
 
 		final SearchBox searchBox = new SearchBox(composite, SWT.BORDER);
 
 		String items[] = { "No pathways available!" };
-		GridData data = new GridData();
-		data.widthHint = TOOLBAR_WIDTH - 10;
-		searchBox.setLayoutData(data);
 		searchBox.setItems(items);
 		searchBox.setTextLimit(21);
 		searchBox.addFocusListener(new FocusAdapter()
@@ -473,7 +473,6 @@ public class ToolBarView
 		entitySearchLabel.setText("Gene search");
 
 		final Text geneSearchText = new Text(composite, SWT.BORDER | SWT.SINGLE);
-		geneSearchText.setLayoutData(data);
 		geneSearchText.addFocusListener(new FocusAdapter()
 		{
 			@Override
@@ -578,7 +577,8 @@ public class ToolBarView
 
 		ExpandItem expandItem = new ExpandItem(expandBar, SWT.NONE);
 		expandItem.setText("General");
-		expandItem.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);		expandItem.setControl(composite);
+		expandItem.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);		
+		expandItem.setControl(composite);
 		expandItem.setImage(GeneralManager.get().getResourceLoader().getImage(
 						PlatformUI.getWorkbench().getDisplay(),
 						"resources/icons/general/general.png"));
@@ -588,11 +588,14 @@ public class ToolBarView
 	private void addInfoBar()
 	{
 		final Composite composite = new Composite(expandBar, SWT.NONE);
-		GridLayout layout = new GridLayout();
-		layout.marginLeft = layout.marginTop = layout.marginRight = layout.marginBottom = 0;
-		layout.verticalSpacing = 0;
+//		GridLayout layout = new GridLayout();
+//		layout.marginLeft = layout.marginTop = layout.marginRight = layout.marginBottom = 0;
+//		layout.verticalSpacing = 0;
+//		composite.setLayout(layout);
+		
+		GridLayout layout = new GridLayout(1, false);
 		composite.setLayout(layout);
-
+		
 		InfoArea infoArea = new InfoArea();
 		infoArea.createControl(composite);
 

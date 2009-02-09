@@ -1,7 +1,5 @@
 package org.caleydo.rcp.util.info;
 
-import java.util.Set;
-
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
@@ -23,11 +21,9 @@ import org.eclipse.swt.layout.RowData;
 import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PlatformUI;
 
 public class InfoArea
 	// extends WorkbenchWindowControlContribution
@@ -36,7 +32,7 @@ public class InfoArea
 	private ToolTip viewInfoToolTip;
 	private ToolTip detailInfoToolTip;
 
-	private Text txtViewInfo;
+	private Label lblViewInfoContent;
 	private Text txtDetailedInfo;
 
 	private AGLEventListener updateTriggeringView;
@@ -59,56 +55,40 @@ public class InfoArea
 	{
 		Font font = new Font(parent.getDisplay(), "Arial", 10, SWT.BOLD);
 
-		Composite composite = new Composite(parent, SWT.NONE);
 		parentComposite = parent;
 
-		Group group = new Group(composite, SWT.NULL);
-		group.setLayout(new RowLayout(SWT.VERTICAL));
-		group.setBackground(composite.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-
-		Label lblViewInfo = new Label(group, SWT.NONE);
+		Label lblViewInfo = new Label(parent, SWT.NONE);
 		lblViewInfo.setText("View Info");
 		lblViewInfo.setFont(font);
-		lblViewInfo.setLayoutData(new RowData(ToolBarView.TOOLBAR_WIDTH-10, 15));
-		lblViewInfo.setBackground(composite.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-
-		txtViewInfo = new Text(group, SWT.WRAP);
-		txtViewInfo.setText("");
-		txtViewInfo.setBackground(parent.getDisplay().getSystemColor(
-				SWT.COLOR_WIDGET_BACKGROUND));
-		txtViewInfo.setEditable(false);
-		txtViewInfo.setLayoutData(new RowData(ToolBarView.TOOLBAR_WIDTH-10, 30));
-		txtViewInfo.setBackground(composite.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-
-		// viewInfoToolTip = new ToolTip(txtViewInfo, "No info available!",
-		// this,
-		// EInfoType.VIEW_INFO);
-
-		new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL);
-
-		Label lblDetailInfo = new Label(group, SWT.NO_BACKGROUND);
+		
+		GridData data = new GridData();
+		data.heightHint = 15;
+		lblViewInfo.setLayoutData(data);
+		
+		lblViewInfoContent = new Label(parent, SWT.WRAP);
+		lblViewInfoContent.setText("");
+	
+		data = new GridData();
+		data.heightHint = 15;
+		data.grabExcessHorizontalSpace = true;
+		data.horizontalAlignment = SWT.FILL;
+		lblViewInfoContent.setLayoutData(data);
+		
+		Label lblDetailInfo = new Label(parent, SWT.NO_BACKGROUND);
 		lblDetailInfo.setText("Selection Info");
 		lblDetailInfo.setFont(font);
-		lblDetailInfo.setLayoutData(new RowData(ToolBarView.TOOLBAR_WIDTH-10, 15));
-		lblDetailInfo.setBackground(composite.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
-		// txtDetailedInfo = new Text(group, SWT.NONE);
-		// txtDetailedInfo.setText("");
-		// txtDetailedInfo.setBackground(parent.getDisplay().getSystemColor(
-		// SWT.COLOR_WIDGET_BACKGROUND));
-		// txtDetailedInfo.setEditable(false);
-		// txtDetailedInfo.setLayoutData(new RowData(200, 15));
-		//
-		// detailInfoToolTip = new ToolTip(txtDetailedInfo,
-		// "No info available!", this,
-		// EInfoType.DETAILED_INFO);
-
-		GridData data = new GridData();
-		data.widthHint = ToolBarView.TOOLBAR_WIDTH-10;
-
-		selectionList = new List(group, SWT.SINGLE);
-		selectionList.setLayoutData(new RowData(((int) (ToolBarView.TOOLBAR_WIDTH)), 150));
-
+		data = new GridData();
+		data.heightHint = 15;
+		lblDetailInfo.setLayoutData(data);
+		
+		selectionList = new List(parent, SWT.SINGLE);
+		data = new GridData();
+		data.heightHint = 150;
+		data.grabExcessHorizontalSpace = true;
+		data.horizontalAlignment = SWT.FILL;
+		selectionList.setLayoutData(data);
+		
 		selectionList.addSelectionListener(new SelectionAdapter()
 		{
 			@Override
@@ -124,9 +104,7 @@ public class InfoArea
 			}
 		});
 
-		group.pack();
-
-		return composite;
+		return parent;
 	}
 
 	private void handleSelectionUpdate(final IUniqueObject eventTrigger,
@@ -142,7 +120,7 @@ public class InfoArea
 				if (!(eventTrigger instanceof AGLEventListener))
 					return;
 				
-				txtViewInfo.setText(((AGLEventListener) eventTrigger).getShortInfo());
+				lblViewInfoContent.setText(((AGLEventListener) eventTrigger).getShortInfo());
 
 //				((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 //						.getActivePage().findView(ToolBarView.ID))
@@ -189,8 +167,8 @@ public class InfoArea
 										EMappingType.DAVID_2_GENE_SYMBOL,
 										iDavidID);
 
-						sOutput = sOutput + "\n";
-						sOutput = sOutput + sRefSeqID;
+//						sOutput = sOutput + "\n";
+						sOutput = sOutput + " - " +sRefSeqID;
 
 						// if
 						// (iAlDavidID.contains(selectionItem.getSelectionID()))
