@@ -97,7 +97,6 @@ public class GLRemoteGlyph
 
 		display(gl);
 		checkForHits(gl);
-		pickingTriggerMouseAdapter.resetEvents();
 	}
 
 	@Override

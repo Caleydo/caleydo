@@ -429,7 +429,6 @@ public class GLRemoteRendering
 
 		checkForHits(gl);
 
-		pickingTriggerMouseAdapter.resetEvents();
 		// gl.glCallList(iGLDisplayListIndexLocal);
 	}
 
@@ -2464,9 +2463,11 @@ public class GLRemoteRendering
 
 			// Unregister standard mouse wheel listener
 			parentGLCanvas.removeMouseWheelListener(pickingTriggerMouseAdapter);
+			parentGLCanvas.removeMouseListener(pickingTriggerMouseAdapter);
 			// Register specialized bucket mouse wheel listener
 			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
-
+			parentGLCanvas.addMouseListener(bucketMouseWheelListener);
+			
 			glConnectionLineRenderer = new GLConnectionLineRendererBucket(focusLevel,
 					stackLevel, poolLevel);
 		}
@@ -2885,12 +2886,12 @@ public class GLRemoteRendering
 
 		if (eBusyModeState == EBusyModeState.ON)
 		{
-			// parentGLCanvas.removeMouseListener(pickingTriggerMouseAdapter);
+			parentGLCanvas.removeMouseListener(bucketMouseWheelListener);
 			parentGLCanvas.removeMouseWheelListener(bucketMouseWheelListener);
 		}
 		else
 		{
-			// parentGLCanvas.addMouseListener(pickingTriggerMouseAdapter);
+			parentGLCanvas.addMouseListener(bucketMouseWheelListener);
 			parentGLCanvas.addMouseWheelListener(bucketMouseWheelListener);
 		}
 	}

@@ -330,8 +330,6 @@ public class GLGlyph
 		display(gl);
 		checkForHits(gl);
 
-		pickingTriggerMouseAdapter.resetEvents();
-
 	}
 
 	@Override

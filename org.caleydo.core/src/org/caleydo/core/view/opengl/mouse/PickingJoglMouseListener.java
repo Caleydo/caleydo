@@ -41,7 +41,11 @@ public class PickingJoglMouseListener
 	public void mousePressed(MouseEvent mouseEvent)
 	{
 		super.mousePressed(mouseEvent);
-
+		
+		bMouseReleased = false;
+		bLeftMouseButtonPressed = false;
+		bRightMouseButtonPressed = false;
+		
 		if (mouseEvent.getButton() == MouseEvent.BUTTON1)
 		{
 			bLeftMouseButtonPressed = true;
@@ -58,7 +62,10 @@ public class PickingJoglMouseListener
 	public void mouseMoved(MouseEvent mouseEvent)
 	{
 		super.mouseMoved(mouseEvent);
-
+		
+		bLeftMouseButtonPressed = false;
+		bRightMouseButtonPressed = false;
+		
 		bMouseMoved = true;
 		pickedPointCurrent = mouseEvent.getPoint();
 	}
@@ -68,6 +75,10 @@ public class PickingJoglMouseListener
 	{
 		super.mouseReleased(mouseEvent);
 
+		bLeftMouseButtonPressed = false;
+		bRightMouseButtonPressed = false;
+		bMouseDragged = false;
+		
 		if (mouseEvent.getButton() == MouseEvent.BUTTON1)
 		{
 			bMouseReleased = true;
@@ -101,7 +112,9 @@ public class PickingJoglMouseListener
 
 	public final boolean wasMouseMoved()
 	{
-		return bMouseMoved;
+		boolean bTmp = bMouseMoved;
+		bMouseMoved = false;
+		return bTmp;
 	}
 
 	public final boolean wasMouseReleased()
@@ -122,14 +135,5 @@ public class PickingJoglMouseListener
 	public final Point getPickedPointDragStart()
 	{
 		return pickedPointDragStart;
-	}
-
-	public final void resetEvents()
-	{
-		bMouseDragged = false;
-		bMouseReleased = false;
-		bMouseMoved = false;
-		bLeftMouseButtonPressed = false;
-		bRightMouseButtonPressed = false;
 	}
 }

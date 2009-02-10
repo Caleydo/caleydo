@@ -201,8 +201,6 @@ public class GLGlyphSliderView
 
 		display(gl);
 		checkForHits(gl);
-
-		pickingTriggerMouseAdapter.resetEvents();
 	}
 
 	@Override

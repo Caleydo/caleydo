@@ -200,8 +200,6 @@ public class GLHeatMap
 
 		if (eBusyModeState != EBusyModeState.OFF)
 			renderBusyMode(gl);
-
-		pickingTriggerMouseAdapter.resetEvents();
 	}
 
 	@Override

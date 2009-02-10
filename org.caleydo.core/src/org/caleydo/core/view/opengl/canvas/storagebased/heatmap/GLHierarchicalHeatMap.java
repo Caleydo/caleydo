@@ -485,7 +485,6 @@ public class GLHierarchicalHeatMap
 
 		display(gl);
 		checkForHits(gl);
-		pickingTriggerMouseAdapter.resetEvents();
 	}
 
 	@Override

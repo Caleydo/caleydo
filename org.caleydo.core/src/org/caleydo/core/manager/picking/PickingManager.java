@@ -44,7 +44,7 @@ public class PickingManager
 
 	private HashMap<Integer, ArrayList<Pick>> hashSignatureToHitList;
 
-	private HashMap<Integer, Long> hashViewIDToLastMouseMovedTimeStamp;
+//	private HashMap<Integer, Long> hashViewIDToLastMouseMovedTimeStamp;
 
 	private HashMap<Integer, Boolean> hashViewIDToIsMouseOverPickingEvent;
 
@@ -58,7 +58,7 @@ public class PickingManager
 		hashSignatureToHitList = new HashMap<Integer, ArrayList<Pick>>();
 		hashSignatureToPickingIDHashMap = new HashMap<Integer, HashMap<Integer, Integer>>();
 		hashSignatureToExternalIDHashMap = new HashMap<Integer, HashMap<Integer, Integer>>();
-		hashViewIDToLastMouseMovedTimeStamp = new HashMap<Integer, Long>();
+//		hashViewIDToLastMouseMovedTimeStamp = new HashMap<Integer, Long>();
 		hashViewIDToIsMouseOverPickingEvent = new HashMap<Integer, Boolean>();
 	}
 
@@ -150,18 +150,18 @@ public class PickingManager
 		else if (pickingTriggerMouseAdapter.wasMouseMoved())
 		{
 			// Restart timer
-			hashViewIDToLastMouseMovedTimeStamp.put(iViewID, System.nanoTime());
+//			hashViewIDToLastMouseMovedTimeStamp.put(iViewID, System.nanoTime());
 			hashViewIDToIsMouseOverPickingEvent.put(iViewID, true);
 
 		}
 		else if (hashViewIDToIsMouseOverPickingEvent.get(iViewID) != null
-				&& hashViewIDToLastMouseMovedTimeStamp.get(iViewID) != null
-				&& hashViewIDToIsMouseOverPickingEvent.get(iViewID) == true
-				&& System.nanoTime() - hashViewIDToLastMouseMovedTimeStamp.get(iViewID) >= 0)// 1e9
+//				&& hashViewIDToLastMouseMovedTimeStamp.get(iViewID) != null
+				&& hashViewIDToIsMouseOverPickingEvent.get(iViewID) == true)
+//				&& System.nanoTime() - hashViewIDToLastMouseMovedTimeStamp.get(iViewID) >= 0)// 1e9
 		// )
 		{
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
-			hashViewIDToLastMouseMovedTimeStamp.put(iViewID, System.nanoTime());
+//			hashViewIDToLastMouseMovedTimeStamp.put(iViewID, System.nanoTime());
 			ePickingMode = EPickingMode.MOUSE_OVER;
 		}
 

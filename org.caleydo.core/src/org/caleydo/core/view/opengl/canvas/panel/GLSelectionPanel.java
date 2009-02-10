@@ -85,7 +85,6 @@ public class GLSelectionPanel
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		init(gl);
-		pickingTriggerMouseAdapter.resetEvents();
 	}
 
 	@Override
@@ -121,7 +120,6 @@ public class GLSelectionPanel
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		display(gl);
-		pickingTriggerMouseAdapter.resetEvents();
 	}
 
 	@Override

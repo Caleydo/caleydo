@@ -68,7 +68,6 @@ public class GLCell
 	public void initLocal(final GL gl)
 	{
 		init(gl);
-		pickingTriggerMouseAdapter.resetEvents();
 	}
 
 	@Override
@@ -97,7 +96,6 @@ public class GLCell
 			bIsDisplayListDirtyLocal = false;
 		}
 		display(gl);
-		pickingTriggerMouseAdapter.resetEvents();
 	}
 
 	@Override

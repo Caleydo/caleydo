@@ -1,8 +1,8 @@
 package org.caleydo.core.view.opengl.canvas.remote.bucket;
 
 import gleem.linalg.Vec3f;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import javax.swing.SwingUtilities;
@@ -17,8 +17,10 @@ import org.caleydo.core.view.opengl.renderstyle.layout.BucketLayoutRenderStyle;
  * @author Marc Streit
  */
 public class BucketMouseWheelListener
-	implements MouseWheelListener, MouseListener
-{
+	extends MouseAdapter
+	implements MouseWheelListener
+	{
+	
 	private GLRemoteRendering bucketGLEventListener;
 
 	private float fBuketZoomMax = 0;
@@ -123,6 +125,9 @@ public class BucketMouseWheelListener
 
 	public void render()
 	{
+		// FIXME: maybe performance problem.
+		grabFocus();
+		
 		if (!bZoomActionRunning)
 			return;
 
@@ -204,72 +209,17 @@ public class BucketMouseWheelListener
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent e)
-	{
-		// TODO Auto-generated method stub
-	}
-
-	@Override
 	public void mouseEntered(MouseEvent e)
 	{
-		if (bucketGLEventListener == null)
-			return;
+		grabFocus();
+	}
 
-		// TODO: investigate which of these calls is really needed to force
-		// focus.
-		bucketGLEventListener.getParentGLCanvas().getParentComposite().getDisplay().asyncExec(
-				new Runnable()
-				{
-					public void run()
-					{
-						bucketGLEventListener.getParentGLCanvas().getParentComposite()
-								.setFocus();
-						bucketGLEventListener.getParentGLCanvas().getParentComposite()
-								.forceFocus();
-						bucketGLEventListener.getParentGLCanvas().getParentComposite()
-								.isFocusControl();
-						bucketGLEventListener.getParentGLCanvas().getParentComposite()
-								.redraw();
-						// bucketGLEventListener.getParentGLCanvas().getParentComposite().notifyAll();
-					}
-				});
-
-		bucketGLEventListener.getParentGLCanvas().setVisible(true);
-		bucketGLEventListener.getParentGLCanvas().setFocusable(true);
-		bucketGLEventListener.getParentGLCanvas().requestFocusInWindow();
+	/**
+	 * Method forces the current view to be in focus.
+	 * This is needed to get events properly.
+	 */
+	private void grabFocus()
+	{
 		bucketGLEventListener.getParentGLCanvas().requestFocus();
-		bucketGLEventListener.getParentGLCanvas().getParent().setFocusable(true);
-		bucketGLEventListener.getParentGLCanvas().getParent().requestFocus();
-		bucketGLEventListener.getParentGLCanvas().getParent().requestFocusInWindow();
-
-		SwingUtilities.invokeLater(new Runnable()
-		{
-
-			@Override
-			public void run()
-			{
-				bucketGLEventListener.getParentGLCanvas().requestFocusInWindow();
-				bucketGLEventListener.getParentGLCanvas().requestFocus();
-
-			}
-		});
-	}
-
-	@Override
-	public void mouseExited(MouseEvent e)
-	{
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e)
-	{
-		// TODO Auto-generated method stub
-	}
-
-	@Override
-	public void mouseReleased(MouseEvent e)
-	{
-		// TODO Auto-generated method stub
 	}
 }

@@ -282,22 +282,19 @@ public class GLParallelCoordinates
 		}
 
 		pickingManager.handlePicking(iUniqueID, gl, true);
-
+		
 		if (bIsDisplayListDirtyLocal)
 		{
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
+		
 		checkForHits(gl);
 		display(gl);
-
+		
 		if (eBusyModeState != EBusyModeState.OFF)
 			renderBusyMode(gl);
-
-		pickingTriggerMouseAdapter.resetEvents();
-
 	}
 
 	@Override
@@ -341,8 +338,11 @@ public class GLParallelCoordinates
 		if (bIsDraggingActive)
 		{
 			handleGateDragging(gl);
-			if (pickingTriggerMouseAdapter.wasMouseReleased())
-				bIsDraggingActive = false;
+//			if (pickingTriggerMouseAdapter.wasMouseReleased())
+//			{
+//				System.out.println("Mouse released in view");
+//				bIsDraggingActive = false;
+//			}
 		}
 
 		if (bWasAxisMoved)
@@ -1432,9 +1432,12 @@ public class GLParallelCoordinates
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
 
+//		System.out.println("Handle dragging");
+		
 		if (pickingTriggerMouseAdapter.wasMouseReleased())
 		{
 			bIsDraggingActive = false;
+			System.out.println("Mouse released in view");
 		}
 
 	}
@@ -1699,11 +1702,15 @@ public class GLParallelCoordinates
 						iDraggedGateNumber = iExternalID;
 						draggedObject = EPickingType.LOWER_GATE_TIP_SELECTION;
 						setDisplayListDirty();
+						
+//						System.out.println("Lower gate mouse over");
 						break;
 					case CLICKED:
 						bIsDraggingActive = true;
 						draggedObject = EPickingType.LOWER_GATE_TIP_SELECTION;
 						iDraggedGateNumber = iExternalID;
+						
+						System.out.println("Lower gate top click");
 						break;
 					// case DRAGGED:
 					// bIsDraggingActive = true;
@@ -1722,11 +1729,15 @@ public class GLParallelCoordinates
 						iDraggedGateNumber = iExternalID;
 						draggedObject = EPickingType.LOWER_GATE_BOTTOM_SELECTION;
 						setDisplayListDirty();
+						
+						System.out.println("Lower gate mouse over");
 						break;
 					case CLICKED:
 						bIsDraggingActive = true;
 						draggedObject = EPickingType.LOWER_GATE_BOTTOM_SELECTION;
 						iDraggedGateNumber = iExternalID;
+
+						System.out.println("Lower gate clicked");
 						break;
 					// case DRAGGED:
 					// bIsDraggingActive = true;
@@ -2236,6 +2247,8 @@ public class GLParallelCoordinates
 		{
 			bIsAngularDraggingActive = false;
 			// bIsAngularBrushingActive = false;
+			
+			System.out.println("Mouse released in view");
 		}
 
 	}

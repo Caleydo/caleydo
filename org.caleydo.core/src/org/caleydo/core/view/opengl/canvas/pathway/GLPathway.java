@@ -143,7 +143,6 @@ public class GLPathway
 		iGLDisplayListIndexLocal = gl.glGenLists(1);
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
-		pickingTriggerMouseAdapter.resetEvents();
 		// TODO: individual toolboxrenderer
 	}
 
@@ -186,7 +185,6 @@ public class GLPathway
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		display(gl);
-		pickingTriggerMouseAdapter.resetEvents();
 	}
 
 	@Override
