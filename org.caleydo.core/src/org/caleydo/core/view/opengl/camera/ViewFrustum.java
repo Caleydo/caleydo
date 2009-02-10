@@ -178,7 +178,7 @@ public class ViewFrustum
 
 		if (bConsiderAspectRatio)
 		{
-			if (fAspectRatio < 1.0)
+			if (fAspectRatio < 1.0f)
 			{
 				fLeft /= fAspectRatio;
 				fRight /= fAspectRatio;
@@ -188,6 +188,9 @@ public class ViewFrustum
 				fBottom *= fAspectRatio;
 				fTop *= fAspectRatio;
 			}
+			
+//			System.out.println("Aspect ratio:" +fAspectRatio);
+//			System.out.println(fLeft + "," +fRight + "," +fTop + "," +fBottom);
 		}
 
 		if (getProjectionMode().equals(EProjectionMode.ORTHOGRAPHIC))

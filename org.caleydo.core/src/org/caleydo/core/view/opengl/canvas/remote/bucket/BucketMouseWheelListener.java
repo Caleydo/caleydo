@@ -3,9 +3,9 @@ package org.caleydo.core.view.opengl.canvas.remote.bucket;
 import gleem.linalg.Vec3f;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
-import javax.swing.SwingUtilities;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
@@ -18,7 +18,7 @@ import org.caleydo.core.view.opengl.renderstyle.layout.BucketLayoutRenderStyle;
  */
 public class BucketMouseWheelListener
 	extends MouseAdapter
-	implements MouseWheelListener
+	implements MouseWheelListener, MouseMotionListener
 	{
 	
 	private GLRemoteRendering bucketGLEventListener;
@@ -125,9 +125,6 @@ public class BucketMouseWheelListener
 
 	public void render()
 	{
-		// FIXME: maybe performance problem.
-		grabFocus();
-		
 		if (!bZoomActionRunning)
 			return;
 
@@ -213,6 +210,12 @@ public class BucketMouseWheelListener
 	{
 		grabFocus();
 	}
+	
+	@Override
+	public void mouseMoved(MouseEvent e) 
+	{
+		grabFocus();
+	}
 
 	/**
 	 * Method forces the current view to be in focus.
@@ -220,6 +223,7 @@ public class BucketMouseWheelListener
 	 */
 	private void grabFocus()
 	{
+		// Potential performance problem
 		bucketGLEventListener.getParentGLCanvas().requestFocus();
 	}
 }

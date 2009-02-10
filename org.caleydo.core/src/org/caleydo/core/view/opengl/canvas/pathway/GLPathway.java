@@ -684,6 +684,9 @@ public class GLPathway
 
 				}
 
+				if (selectionManager.checkStatus(eSelectionType, iExternalID))
+					break;
+				
 				selectionManager.clearSelection(eSelectionType);
 
 				// Add new vertex to internal selection manager

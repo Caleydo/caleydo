@@ -81,9 +81,10 @@ public class PickingJoglMouseListener
 		
 		if (mouseEvent.getButton() == MouseEvent.BUTTON1)
 		{
-			bMouseReleased = true;
 			pickedPointCurrent = mouseEvent.getPoint();
 		}
+
+		bMouseReleased = true;
 	}
 
 	@Override

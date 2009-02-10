@@ -58,7 +58,6 @@ import com.sun.opengl.util.texture.TextureCoords;
 public class GLHeatMap
 	extends AStorageBasedView
 {
-
 	private HeatMapRenderStyle renderStyle;
 
 	private ColorMapping colorMapper;
@@ -503,7 +502,7 @@ public class GLHeatMap
 					break;
 
 				connectedElementRepresentationManager.clear(EIDType.EXPRESSION_INDEX);
-
+				
 				contentSelectionManager.clearSelection(eSelectionType);
 
 				// Resolve multiple spotting on chip and add all to the
@@ -552,6 +551,9 @@ public class GLHeatMap
 						return;
 				}
 
+				if (storageSelectionManager.checkStatus(eSelectionType, iExternalID))
+					break;
+				
 				storageSelectionManager.clearSelection(eSelectionType);
 				storageSelectionManager.addToType(eSelectionType, iExternalID);
 

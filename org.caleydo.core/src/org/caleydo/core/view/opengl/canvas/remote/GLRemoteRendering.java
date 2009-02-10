@@ -158,6 +158,8 @@ public class GLRemoteRendering
 
 	private boolean bEnableConnectinLines = true;
 
+	private boolean bRightMouseClickEventInvalid = false;
+	
 	/**
 	 * Constructor.
 	 */
@@ -319,15 +321,21 @@ public class GLRemoteRendering
 	public synchronized void displayLocal(final GL gl)
 	{
 		if ((pickingTriggerMouseAdapter.wasRightMouseButtonPressed() && !bucketMouseWheelListener
-				.isZoomedIn())
+				.isZoomedIn()) && !bRightMouseClickEventInvalid
 				&& !(layoutRenderStyle instanceof ListLayoutRenderStyle))
 		{
 			bEnableNavigationOverlay = !bEnableNavigationOverlay;
-
+			
+			bRightMouseClickEventInvalid = true;
+			
 			if (glConnectionLineRenderer != null)
 				glConnectionLineRenderer.enableRendering(!bEnableNavigationOverlay);
 		}
-
+		else if (pickingTriggerMouseAdapter.wasMouseReleased())
+		{
+			bRightMouseClickEventInvalid = false;
+		}
+		
 		pickingManager.handlePicking(iUniqueID, gl, true);
 
 		// if (bIsDisplayListDirtyLocal)
@@ -487,7 +495,7 @@ public class GLRemoteRendering
 			renderRemoteLevel(gl, transitionLevel);
 			renderRemoteLevel(gl, spawnLevel);
 			renderRemoteLevel(gl, poolLevel);
-			renderRemoteLevel(gl, selectionLevel);
+//			renderRemoteLevel(gl, selectionLevel);
 		}
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET))
@@ -2369,57 +2377,6 @@ public class GLRemoteRendering
 						EPickingType.BUCKET_MOVE_RIGHT_ICON_SELECTION);
 
 				break;
-
-			// case MEMO_PAD_SELECTION:
-			// switch (pickingMode)
-			// {
-			// case CLICKED:
-			//
-			// break;
-			//
-			// case DRAGGED:
-			//
-			// int iDraggedObjectId = dragAndDrop.getDraggedObjectedId();
-			//
-			// if (iExternalID == TRASH_CAN_PICKING_ID)
-			// {
-			// if (iDraggedObjectId != -1)
-			// {
-			// // if
-			// // (memoLayer.containsElement(iDraggedObjectId))
-			// // {
-			// memoLayer.removeElement(iDraggedObjectId);
-			// // dragAndDrop.stopDragAction();
-			// // break;
-			// // }
-			//
-			// underInteractionLayer.removeElement(iDraggedObjectId);
-			// stackLayer.removeElement(iDraggedObjectId);
-			// poolLayer.removeElement(iDraggedObjectId);
-			// }
-			// }
-			// else if (iExternalID == MEMO_PAD_PICKING_ID)
-			// {
-			// if (iDraggedObjectId != -1)
-			// {
-			// if (!memoLayer.containsElement(iDraggedObjectId))
-			// {
-			// memoLayer.addElement(iDraggedObjectId);
-			// memoLayer.setElementVisibilityById(true, iDraggedObjectId);
-			// }
-			// }
-			// }
-			//
-			// dragAndDrop.stopDragAction();
-			//
-			// break;
-			// }
-			//
-			// pickingManager.flushHits(iUniqueID,
-			// EPickingType.MEMO_PAD_SELECTION);
-
-			// break;
-
 		}
 	}
 

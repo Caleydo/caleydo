@@ -1603,6 +1603,10 @@ public class GLParallelCoordinates
 
 				}
 				connectedElementRepresentationManager.clear(ePolylineDataType);
+				
+				if (polylineSelectionManager.checkStatus(eSelectionType, iExternalID))
+					break;
+				
 				polylineSelectionManager.clearSelection(eSelectionType);
 
 				if (ePolylineDataType == EIDType.EXPRESSION_INDEX)
