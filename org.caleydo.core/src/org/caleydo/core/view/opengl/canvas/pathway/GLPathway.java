@@ -681,11 +681,12 @@ public class GLPathway
 					default:
 						pickingManager.flushHits(iUniqueID, ePickingType);
 						return;
-
 				}
 
 				if (selectionManager.checkStatus(eSelectionType, iExternalID))
+				{
 					break;
+				}
 				
 				selectionManager.clearSelection(eSelectionType);
 
@@ -709,14 +710,14 @@ public class GLPathway
 				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
 						new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 
-				pickingManager.flushHits(iUniqueID, EPickingType.PATHWAY_ELEMENT_SELECTION);
 				break;
 		}
+		
+		pickingManager.flushHits(iUniqueID, ePickingType);
 	}
 
 	private void createConnectionLines(ESelectionType eSelectionType, int iConnectionID)
 	{
-
 		PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep;
 		int iPathwayHeight = (generalManager.getPathwayManager().getItem(iPathwayID))
 				.getHeight();
@@ -919,5 +920,7 @@ public class GLPathway
 	{
 		generalManager.getPathwayManager().setPathwayVisibilityStateByID(
 					iPathwayID, false);
+
+		super.destroy();
 	}
 }

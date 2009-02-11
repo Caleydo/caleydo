@@ -49,4 +49,9 @@ public class HTMLBrowserView
 
 		GeneralManager.get().getViewGLCanvasManager().unregisterItem(browserView.getID());
 	}
+	
+	public HTMLBrowserViewRep getHTMLBrowserViewRep()
+	{
+		return browserView;
+	}
 }

@@ -426,8 +426,7 @@ public class GenericSelectionManager
 	 */
 	public void addToType(ESelectionType targetType, int iElementID)
 	{
-
-		// check wheter the type is storable
+		// check whether the type is storable
 		if (!isStorableType(targetType))
 		{
 			throw new IllegalArgumentException("Illegal selection type: " + targetType);
@@ -444,8 +443,12 @@ public class GenericSelectionManager
 
 		for (ESelectionType currentType : alSelectionTypes)
 		{
-			if (currentType == targetType)
+			// TODO: Please Alex check if the the second if statement is valid in all cases
+			if (currentType == targetType
+					|| (currentType == ESelectionType.SELECTION && targetType == ESelectionType.MOUSE_OVER))
+			{
 				continue;
+			}
 
 			if (hashSelectionTypes.get(currentType).containsKey(iElementID))
 			{

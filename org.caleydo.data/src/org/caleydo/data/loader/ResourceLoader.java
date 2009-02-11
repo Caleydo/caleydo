@@ -140,7 +140,7 @@ public class ResourceLoader
 		file = this.getClass().getClassLoader().getResourceAsStream(sFileName);
 		// }
 		// catch (IOException e)
-		// {
+		// {Textu
 		// throw new IllegalStateException("Cannot load resource: " +sFileName);
 		// }
 

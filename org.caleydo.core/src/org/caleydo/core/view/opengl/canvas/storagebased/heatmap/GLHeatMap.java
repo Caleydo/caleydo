@@ -574,7 +574,6 @@ public class GLHeatMap
 		}
 
 		pickingManager.flushHits(iUniqueID, ePickingType);
-
 	}
 
 	private void renderHeatMap(final GL gl)

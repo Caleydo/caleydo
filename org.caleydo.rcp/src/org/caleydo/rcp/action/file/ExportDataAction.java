@@ -3,7 +3,9 @@ package org.caleydo.rcp.action.file;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.StringTokenizer;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.data.CmdDataCreateSet;
@@ -144,13 +146,16 @@ public class ExportDataAction
 			@Override
 			public void widgetSelected(SelectionEvent event)
 			{
-
 				FileDialog fileDialog = new FileDialog(parentComposite.getShell(), SWT.SAVE);
 				fileDialog.setText("Save");
 				fileDialog.setFilterPath(sFilePath);
 				String[] filterExt = { "*.csv", "*.txt", "*.*" };
 				fileDialog.setFilterExtensions(filterExt);
-				fileDialog.setFileName("caleydo_export.csv");
+				
+				String sFilePath = "caleydo_export_"
+					+ new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date()) + ".csv";
+				
+				fileDialog.setFileName(sFilePath);
 				sFileName = fileDialog.open();
 
 				txtFileName.setText(sFileName);

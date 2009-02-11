@@ -16,10 +16,14 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
 
+/**
+ * Exports data so a CSV file.
+ * 
+ * @author Alexander Lex
+ *
+ */
 public class SetExporter
 {
-	
-
 	public void export(ISet set, String sFileName, boolean bExportBucketInternal)
 	{
 		IVirtualArray contentVA = null;
@@ -32,13 +36,13 @@ public class SetExporter
 			if (view instanceof GLParallelCoordinates && view.isRenderedRemote() && bExportBucketInternal)
 			{
 				contentVA = set.getVA(view.getContentVAID());
-				storageVA = set.getVA(view.getSotrageVAID());	
+				storageVA = set.getVA(view.getStorageVAID());	
 				break;
 			}
 			if((view instanceof GLParallelCoordinates || view instanceof GLHierarchicalHeatMap) && !bExportBucketInternal)
 			{
 				contentVA = set.getVA(view.getContentVAID());
-				storageVA = set.getVA(view.getSotrageVAID());	
+				storageVA = set.getVA(view.getStorageVAID());	
 				break;
 			}
 		}
@@ -50,6 +54,15 @@ public class SetExporter
 		{
 			PrintWriter out = new PrintWriter(new BufferedWriter(new FileWriter(sFileName)));
 
+			// Writing storage labels
+			out.print("RefSeq ID\t");
+			for (Integer iStorageIndex : storageVA)
+			{
+				out.print(set.get(iStorageIndex).getLabel());
+				out.print("\t");
+			}
+			out.println();
+			
 			for (Integer iContentIndex : contentVA)
 			{
 				IIDMappingManager iDMappingManager = GeneralManager.get()

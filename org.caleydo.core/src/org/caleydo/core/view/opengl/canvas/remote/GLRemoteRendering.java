@@ -2045,8 +2045,8 @@ public class GLRemoteRendering
 								.getViewGLCanvasManager().getGLEventListener(
 										element.getContainedElementID()));
 
-						// Unregister all elements of the view that is removed
-						glEventListener.broadcastElements(EVAOperation.REMOVE_ELEMENT);
+//						// Unregister all elements of the view that is removed
+//						glEventListener.broadcastElements(EVAOperation.REMOVE_ELEMENT);
 
 						removeView(glEventListener);
 
@@ -2106,7 +2106,7 @@ public class GLRemoteRendering
 						break;
 				}
 
-				pickingManager.flushHits(iUniqueID, EPickingType.REMOTE_LEVEL_ELEMENT);
+				pickingManager.flushHits(iUniqueID, pickingType);
 
 				break;
 
@@ -2145,29 +2145,6 @@ public class GLRemoteRendering
 				pickingManager.flushHits(iUniqueID, EPickingType.VIEW_SELECTION);
 
 				break;
-
-			// case BUCKET_LOCK_ICON_SELECTION:
-			// switch (pickingMode)
-			// {
-			// case CLICKED:
-			//
-			// break;
-			//
-			// case MOUSE_OVER:
-			//
-			// iNavigationMouseOverViewID_lock = iExternalID;
-			// iNavigationMouseOverViewID_left = -1;
-			// iNavigationMouseOverViewID_right = -1;
-			// iNavigationMouseOverViewID_out = -1;
-			// iNavigationMouseOverViewID_in = -1;
-			//
-			// break;
-			// }
-			//
-			// pickingManager.flushHits(iUniqueID,
-			// EPickingType.BUCKET_LOCK_ICON_SELECTION);
-			//
-			// break;
 
 			case BUCKET_MOVE_IN_ICON_SELECTION:
 				switch (pickingMode)

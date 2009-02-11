@@ -84,7 +84,7 @@ public abstract class AStorageBasedView
 	/**
 	 * Define what level of filtering on the data should be applied
 	 */
-	protected EDataFilterLevel dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
+	protected EDataFilterLevel dataFilterLevel = EDataFilterLevel.ONLY_MAPPING; //ONLY_CONTEXT - why is this not read from the prefs file?
 
 	protected boolean bUseRandomSampling = true;
 
@@ -414,8 +414,6 @@ public abstract class AStorageBasedView
 		
 		reactOnVAChanges(delta);
 		selectionManager.setVADelta(delta);
-		
-		
 		
 		reactOnExternalSelection();
 		setDisplayListDirty();

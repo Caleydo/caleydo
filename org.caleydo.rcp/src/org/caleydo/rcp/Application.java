@@ -5,15 +5,12 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.logging.Level;
-
 import org.caleydo.core.application.core.CaleydoBootloader;
-import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.rcp.core.bridge.RCPBridge;
 import org.caleydo.rcp.progress.PathwayLoadingProgressIndicatorAction;
-import org.caleydo.rcp.util.info.InfoArea;
 import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
 import org.caleydo.rcp.views.swt.ToolBarView;
 import org.caleydo.rcp.wizard.firststart.FirstStartWizard;
@@ -49,6 +46,7 @@ public class Application
 
 	public static boolean bIsWebstart = false;
 	public static boolean bDoExit = false;
+	public static boolean bNoPathways = false;
 	public static EApplicationMode applicationMode = EApplicationMode.STANDARD;
 
 	public static String sCaleydoXMLfile = "";
@@ -78,6 +76,10 @@ public class Application
 					if (sArParam[iParamIndex].equals("webstart"))
 					{
 						bIsWebstart = true;
+					}
+					else if (sArParam[iParamIndex].equals("no_pathways"))
+					{
+						bNoPathways = true;
 					}
 					else if (sArParam[iParamIndex].equals(EStartViewType.PARALLEL_COORDINATES
 							.getCommandLineArgument()))
@@ -268,7 +270,7 @@ public class Application
 
 		openViewsInRCP();
 
-		if (!bDoExit)
+		if (!bDoExit && !bNoPathways)
 		{
 			// Trigger pathway loading
 			new PathwayLoadingProgressIndicatorAction().run(null);
@@ -276,13 +278,6 @@ public class Application
 			// ((ToolBarView)PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 			// .getActivePage().getViewReferences()[0].getView(false)).addPathwayLoadingProgress();
 		}
-
-		// Register the info area to all mediator from type SELECTION and
-		// VIEW_SELECTION
-		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
-				InfoArea.getInfoArea());
-		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.VIEW_SELECTION,
-				InfoArea.getInfoArea());
 
 		if (GeneralManager.get().isStandalone())
 		{

@@ -612,13 +612,16 @@ public abstract class AGLEventListener
 		return iContentVAID;
 	}
 	
-	public int getSotrageVAID()
+	public int getStorageVAID()
 	{
 		return iStorageVAID;
 	}
 	
 	public void destroy()
 	{
+		// Propagate remove action of elements to other views
+		this.broadcastElements(EVAOperation.REMOVE_ELEMENT);
+		
 		if (this instanceof IMediatorSender)
 		{
 			generalManager.getEventPublisher().removeSenderFromAllGroups(

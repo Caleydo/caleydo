@@ -135,17 +135,17 @@ public class PickingManager
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			ePickingMode = EPickingMode.DOUBLE_CLICKED;
 		}
+		else if (pickingTriggerMouseAdapter.wasMouseDragged())
+		{
+			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
+			ePickingMode = EPickingMode.DRAGGED;
+		}
 		else if (pickingTriggerMouseAdapter.wasLeftMouseButtonPressed())
 		// || bMouseReleased)
 		{
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
 			// bIsMouseOverPickingEvent = false;
 			ePickingMode = EPickingMode.CLICKED;
-		}
-		else if (pickingTriggerMouseAdapter.wasMouseDragged())
-		{
-			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
-			ePickingMode = EPickingMode.DRAGGED;
 		}
 		else if (pickingTriggerMouseAdapter.wasMouseMoved())
 		{

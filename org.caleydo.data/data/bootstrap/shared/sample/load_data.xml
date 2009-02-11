@@ -16,7 +16,7 @@
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_STORAGE"				cmdId="13993"	uniqueId="54301" label="HCC0107_WH"  attrib1="NUMERICAL" attrib2="test data	from file" />
 
 	<!-- Data file loading -->      
-	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/sample/sample_microarray_dataset.csv"	
+	<Cmd mementoId="0" process="RUN_CMD_NOW" type="LOAD_DATA_FILE"				cmdId="99010"	uniqueId="-1"	detail="data/genome/microarray/sample/sample_microarray_dataset_reduced_5000.csv"	
 			attrib1="SKIP;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;FLOAT;ABORT"	attrib2="45301 46301 47301 48301 49301 50301 51301 52301 53301 54301" attrib3="1 -1" />			
 
 	<Cmd mementoId="0" process="RUN_CMD_NOW" type="CREATE_SET_DATA"				cmdId="32991"	uniqueId="85101" label=""  attrib1="35201" attrib2="45301 46301 47301 48301 49301 50301 51301 52301 53301 54301" attrib3="GENE_EXPRESSION_DATA" />

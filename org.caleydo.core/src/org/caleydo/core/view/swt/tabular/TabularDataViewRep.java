@@ -1005,8 +1005,8 @@ public class TabularDataViewRep
 						ECommandType.LOAD_LOOKUP_TABLE_FILE);
 
 		cmdLoadLookupTableFile.setAttributes(sFileName, iStartParseFileAtLine, -1,
-				"REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE LUT_1", sDelimiter,
-				"DAVID_2_EXPRESSION_INDEX");
+				"REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE LUT", sDelimiter,
+				"REFSEQ_MRNA_INT_2_EXPRESSION_INDEX");
 		cmdLoadLookupTableFile.doCommand();
 
 		if (!txtMin.getText().isEmpty())
@@ -1016,7 +1016,6 @@ public class TabularDataViewRep
 			{
 				set.setMin(fMin);
 			}
-
 		}
 
 		if (!txtMax.getText().isEmpty())
