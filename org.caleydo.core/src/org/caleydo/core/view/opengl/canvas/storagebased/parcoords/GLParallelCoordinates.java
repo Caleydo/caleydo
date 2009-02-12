@@ -884,11 +884,15 @@ public class GLParallelCoordinates
 			{
 				gl.glColor4fv(Y_AXIS_SELECTED_COLOR, 0);
 				gl.glLineWidth(Y_AXIS_SELECTED_LINE_WIDTH);
+				gl.glEnable(GL.GL_LINE_STIPPLE);
+				gl.glLineStipple(2, (short) 0xAAAA);
 			}
 			else if (mouseOverSet.contains(axisVA.get(iCount)))
 			{
 				gl.glColor4fv(Y_AXIS_MOUSE_OVER_COLOR, 0);
 				gl.glLineWidth(Y_AXIS_MOUSE_OVER_LINE_WIDTH);
+				gl.glEnable(GL.GL_LINE_STIPPLE);
+				gl.glLineStipple(2, (short) 0xAAAA);
 			}
 			else
 			{
@@ -906,6 +910,7 @@ public class GLParallelCoordinates
 			gl.glVertex3f(fXPosition + AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(), AXIS_Z);
 
 			gl.glEnd();
+			gl.glDisable(GL.GL_LINE_STIPPLE);
 			if (detailLevel != EDetailLevel.HIGH
 					|| !renderStyle.isEnoughSpaceForText(iNumberAxis))
 			{

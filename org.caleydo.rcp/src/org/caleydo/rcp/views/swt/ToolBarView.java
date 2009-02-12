@@ -18,6 +18,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
 import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
 import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
+import org.caleydo.rcp.Application;
 import org.caleydo.rcp.action.view.TakeSnapshotAction;
 import org.caleydo.rcp.util.info.InfoArea;
 import org.caleydo.rcp.util.search.SearchBox;
@@ -215,7 +216,7 @@ public class ToolBarView
 			GLHierarchicalHeatMapView.createToolBarItems(iViewID);
 			GLHierarchicalHeatMapView.fillToolBar(alToolBarManager);
 
-			sViewTitle = "Hierarchical Heat Map";
+			sViewTitle = "Full Heat Map";
 			viewIcon = GeneralManager.get().getResourceLoader().getImage(
 					PlatformUI.getWorkbench().getDisplay(),
 					"resources/icons/view/storagebased/heatmap/heatmap.png");
@@ -424,36 +425,45 @@ public class ToolBarView
 		searchBox.setLayoutData(data);
 		searchBox.setItems(items);
 		searchBox.setTextLimit(21);
-		searchBox.addFocusListener(new FocusAdapter()
+		
+		if (!Application.bNoPathways)
 		{
-			@Override
-			public void focusGained(FocusEvent e)
+			searchBox.addFocusListener(new FocusAdapter()
 			{
-				Collection<PathwayGraph> allPathways = GeneralManager.get()
-						.getPathwayManager().getAllItems();
-				String[] sArSearchItems = new String[allPathways.size()];
-				int iIndex = 0;
-				String sPathwayTitle = "";
-				for (PathwayGraph pathway : allPathways)
+				@Override
+				public void focusGained(FocusEvent e)
 				{
-					sPathwayTitle = pathway.getTitle();
+					Collection<PathwayGraph> allPathways = GeneralManager.get()
+							.getPathwayManager().getAllItems();
+					String[] sArSearchItems = new String[allPathways.size()];
+					int iIndex = 0;
+					String sPathwayTitle = "";
+					for (PathwayGraph pathway : allPathways)
+					{
+						sPathwayTitle = pathway.getTitle();
 
-					// if (sPathwayTitle.length() > MAX_PATHWAY_TITLE_LENGTH)
-					// sPathwayTitle = sPathwayTitle.substring(0,
-					// MAX_PATHWAY_TITLE_LENGTH) + "... ";
+						// if (sPathwayTitle.length() > MAX_PATHWAY_TITLE_LENGTH)
+						// sPathwayTitle = sPathwayTitle.substring(0,
+						// MAX_PATHWAY_TITLE_LENGTH) + "... ";
 
-					// sArSearchItems[iIndex] = pathway.getType().toString()
-					// + " - " + sPathwayTitle;
+						// sArSearchItems[iIndex] = pathway.getType().toString()
+						// + " - " + sPathwayTitle;
 
-					sArSearchItems[iIndex] = sPathwayTitle + " ("
-							+ pathway.getType().toString() + ")";
-					iIndex++;
+						sArSearchItems[iIndex] = sPathwayTitle + " ("
+								+ pathway.getType().toString() + ")";
+						iIndex++;
+					}
+
+					searchBox.setItems(sArSearchItems);
+					searchBox.removeFocusListener(this);
 				}
-
-				searchBox.setItems(sArSearchItems);
-				searchBox.removeFocusListener(this);
-			}
-		});
+			});
+		}
+		else
+		{
+			searchInputLabel.setEnabled(false);
+			searchBox.setEnabled(false);
+		}
 
 		searchBox.addSelectionListener(new SelectionAdapter()
 		{

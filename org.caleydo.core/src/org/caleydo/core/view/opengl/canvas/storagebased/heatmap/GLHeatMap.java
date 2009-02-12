@@ -781,6 +781,9 @@ public class GLHeatMap
 
 		// storage selection
 
+		gl.glEnable(GL.GL_LINE_STIPPLE);
+		gl.glLineStipple(2, (short) 0xAAAA);
+		
 		selectedSet = storageSelectionManager.getElements(eSelectionType);
 		int iLineIndex = 0;
 		for (int iTempLine : set.getVA(iStorageVAID))
@@ -803,6 +806,8 @@ public class GLHeatMap
 			}
 			iLineIndex++;
 		}
+		
+		gl.glDisable(GL.GL_LINE_STIPPLE);
 	}
 
 	@Override

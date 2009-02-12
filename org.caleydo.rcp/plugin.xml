@@ -35,7 +35,7 @@
             class="org.caleydo.rcp.views.opengl.GLHierarchicalHeatMapView"
             icon="resources/icons/view/heatmap.png"
             id="org.caleydo.rcp.views.GLHierarchicalHeatMapView"
-            name="Hierarchical Heat Map">
+            name="Heat Map">
       </view>      
 
       <view
@@ -307,7 +307,7 @@
                <command
                      commandId="org.caleydo.rcp.command.openviews.hierarchical_heatmap"
                      icon="resources/icons/view/heatmap.png"
-                     label="Hierarchical Heat Map"
+                     label="Heat Map"
                      style="push">
                </command>
                <command

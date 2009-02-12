@@ -15,15 +15,6 @@ import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.mapping.EMappingType;
-import org.caleydo.core.data.selection.DeltaEventContainer;
-import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.ESelectionType;
-import org.caleydo.core.data.selection.ISelectionDelta;
-import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionCommandEventContainer;
-import org.caleydo.core.data.selection.SelectionDelta;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
@@ -45,6 +36,8 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseTrackAdapter;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
@@ -489,7 +482,7 @@ public class TabularDataViewRep
 
 		previewTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
 		previewTable.setLinesVisible(false);
-		// previewTable.setHeaderVisible(true);
+		previewTable.setHeaderVisible(true);
 		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		data.heightHint = 300;
 		data.widthHint = 700;
@@ -655,6 +648,7 @@ public class TabularDataViewRep
 
 				item.setText(0, "Label");
 				column = new TableColumn(previewTable, SWT.NONE);
+				column.setText("bla");
 				column.setWidth(100);
 
 				while (tokenizer.hasMoreTokens())
@@ -662,8 +656,11 @@ public class TabularDataViewRep
 					sTmpNextToken = tokenizer.nextToken();
 
 					column = new TableColumn(previewTable, SWT.NONE);
+					column.setText("Bal");
 					column.setWidth(100);
-
+				    column.setMoveable(true);
+//				    column.addListener(SWT.Move, listener);
+					
 					item.setText(iColIndex + 1, sTmpNextToken);
 					// item.setBackground(iColCount, Display.getCurrent()
 					// .getSystemColor(SWT.COLOR_TITLE_BACKGROUND));

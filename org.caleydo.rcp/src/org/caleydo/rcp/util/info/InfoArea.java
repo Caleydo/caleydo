@@ -1,14 +1,11 @@
 package org.caleydo.rcp.util.info;
 
-import java.util.logging.Level;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
-import org.caleydo.core.data.selection.DeltaConverter;
 import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
-import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
@@ -21,10 +18,13 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.rcp.views.swt.HTMLBrowserView;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.PaintEvent;
+import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -139,7 +139,8 @@ public class InfoArea
 						// Flush old items that become deselected/normal
 						for (TreeItem tmpItem : selectionTree.getItems())
 						{
-							if (((Integer)tmpItem.getData()).intValue() == selectionItem.getPrimaryID())
+							if (tmpItem.getData() == null 
+									|| ((Integer)tmpItem.getData()).intValue() == selectionItem.getPrimaryID())
 							{
 								tmpItem.dispose();
 							}
@@ -173,27 +174,26 @@ public class InfoArea
 						boolean bIsExisting = false;
 						for (TreeItem existingItem : selectionTree.getItems())
 						{
-							if (existingItem.getText().equals(sGeneSymbol))
+							if (existingItem.getText().equals(sGeneSymbol) 
+									&& ((Integer)existingItem.getData()).intValue() == selectionItem.getPrimaryID())
 							{
-//								TreeItem item = new TreeItem(existingItem, 0);
-//								item.setText(sRefSeqID);
-								existingItem.setForeground(color);
-								existingItem.getItem(0).setForeground(color);
+								existingItem.setBackground(color);
+								existingItem.getItem(0).setBackground(color);
 								bIsExisting = true;
 								break;
 							}
 						}
-//						
+						
 						if (!bIsExisting)
 						{
 							TreeItem item = new TreeItem(selectionTree, 0);
 							item.setText(sGeneSymbol);
-							item.setForeground(color);
+							item.setBackground(color);
 							item.setData(selectionItem.getPrimaryID());
 							
 							TreeItem subItem = new TreeItem(item, 0);
 							subItem.setText(sRefSeqID);
-							subItem.setForeground(color);
+							subItem.setBackground(color);
 							item.setExpanded(true);
 						}
 					}
