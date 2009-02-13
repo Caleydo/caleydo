@@ -2,15 +2,11 @@ package org.caleydo.rcp.views.opengl;
 
 import java.awt.Frame;
 import java.util.ArrayList;
-
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.opengl.CmdCreateGLEventListener;
 import org.caleydo.core.command.view.rcp.CmdViewCreateRcpGLCanvas;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.manager.IGeneralManager;
-import org.caleydo.core.manager.event.IMediatorReceiver;
-import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.EProjectionMode;
@@ -37,8 +33,9 @@ public abstract class AGLViewPart
 	protected Frame frameGL;
 	protected Composite swtComposite;
 	protected GLCaleydoCanvas glCanvas;
+	protected AGLEventListener glEventListener;
 	protected int iGLEventListenerID;
-
+	
 	protected static ArrayList<IAction> alToolbar;
 	protected static ArrayList<IContributionItem> alToolbarContributions;
 
@@ -118,7 +115,7 @@ public abstract class AGLViewPart
 			((GLRemoteRendering) glView).setInitialContainedViews(iAlContainedViewIDs);
 		}
 
-		setGLData(glCanvas, iViewID);
+		setGLData(glCanvas, glView);
 		createPartControlGL();
 
 		return iViewID;
@@ -138,10 +135,11 @@ public abstract class AGLViewPart
 		// fillToolBar();
 	}
 
-	public void setGLData(final GLCaleydoCanvas glCanvas, final int iGLEventListenerID)
+	public void setGLData(final GLCaleydoCanvas glCanvas, final AGLEventListener glEventListener)
 	{
 		this.glCanvas = glCanvas;
-		this.iGLEventListenerID = iGLEventListenerID;
+		this.glEventListener = glEventListener;
+		this.iGLEventListenerID = glEventListener.getID();
 	}
 
 	public void createPartControlGL()
@@ -166,11 +164,6 @@ public abstract class AGLViewPart
 	public Composite getSWTComposite()
 	{
 		return swtComposite;
-	}
-
-	public int getGLEventListenerID()
-	{
-		return iGLEventListenerID;
 	}
 
 	public void fillToolBar()
@@ -240,5 +233,15 @@ public abstract class AGLViewPart
 		super.dispose();
 
 		GeneralManager.get().getViewGLCanvasManager().getGLEventListener(iGLEventListenerID).destroy();		
+	}
+	
+	public AGLEventListener getGLEventListener()
+	{
+		return glEventListener;
+	}
+	
+	public GLCaleydoCanvas getGLCanvas()
+	{
+		return glCanvas;
 	}
 }

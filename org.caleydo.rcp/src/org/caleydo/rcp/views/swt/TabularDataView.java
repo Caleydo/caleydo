@@ -1,5 +1,6 @@
 package org.caleydo.rcp.views.swt;
 
+import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
@@ -21,15 +22,16 @@ public class TabularDataView
 				.createView(EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER, -1,
 						"Tabular Data Viewer");
 
-		tabularDataView.setInputFile(GeneralManager.get().getGUIBridge()
-				.getFileNameCurrentDataSet());
+//		tabularDataView.setInputFile(GeneralManager.get().getGUIBridge()
+//				.getFileNameCurrentDataSet());
+		
+		for (ISet set : GeneralManager.get().getSetManager().getAllItems())
+		{
+			tabularDataView.addSet(set);
+		}
+		
 		tabularDataView.initViewRCP(parent);
 		tabularDataView.drawView();
-
-		GeneralManager.get().getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
-				tabularDataView);
-		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
-				tabularDataView);
 
 		GeneralManager.get().getViewGLCanvasManager().registerItem(tabularDataView);
 	}
