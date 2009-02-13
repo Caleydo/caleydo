@@ -380,6 +380,7 @@ public abstract class AStorageBasedView
 
 			storageSelectionManager.setDelta(selectionDelta);
 			handleConnectedElementRep(storageSelectionManager.getCompleteDelta());
+			reactOnExternalSelection();
 			setDisplayListDirty();
 		}
 
