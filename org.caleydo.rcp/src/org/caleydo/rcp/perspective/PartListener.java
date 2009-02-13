@@ -1,6 +1,5 @@
 package org.caleydo.rcp.perspective;
 
-import java.util.ArrayList;
 import org.caleydo.core.manager.IViewManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
@@ -25,30 +24,25 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.PlatformUI;
 
+/**
+ * 
+ * Listener for events that are related to view changes (detach, visible, hide, activate, etc.)
+ * 
+ * @author Marc Streit
+ *
+ */
 public class PartListener
 	implements IPartListener2
-{
-//	private ArrayList<IWorkbenchPart> alDetachedWorkbenches;
-//	private IWorkbenchPart lastDetachedWorkbenchPart;
-//	private IWorkbenchPart lastOpenedWorkbenchPart;
-//	private IWorkbenchPart lastHiddenWorkbenchPart;
-	
-	/**
-	 * Constructor.
-	 */
-	public PartListener()
-	{
-//		alDetachedWorkbenches = new ArrayList<IWorkbenchPart>();
-	}
-	
+{	
 	@Override
 	public void partOpened(IWorkbenchPartReference partRef)
 	{
 		IWorkbenchPart activePart = partRef.getPart(false);
-		
-		System.out.println("Opened:" +activePart);
 
 		if (!(activePart instanceof AGLViewPart))
+			return;
+		
+		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() == null)
 			return;
 		
 		AGLViewPart glView = (AGLViewPart) activePart;
@@ -58,16 +52,12 @@ public class PartListener
 		toolBarView.removeAllViewSpecificToolBars();
 		toolBarView.addViewSpecificToolBar(glView
 				.getGLEventListener().getID());
-		
-//		lastOpenedWorkbenchPart = activePart;
 	}
 	
 	@Override
 	public void partClosed(IWorkbenchPartReference partRef)
 	{
 		IWorkbenchPart activePart = partRef.getPart(false);
-
-		System.out.println("Closed:" +activePart);
 		
 		if (!(activePart instanceof AGLViewPart))
 			return;
@@ -94,8 +84,6 @@ public class PartListener
 	public void partVisible(IWorkbenchPartReference partRef)
 	{
 		IWorkbenchPart activePart = partRef.getPart(false);
-
-		System.out.println("Visible:" +activePart);
 		
 		if (!(activePart instanceof AGLViewPart))
 			return;
@@ -104,32 +92,23 @@ public class PartListener
 		
 		GeneralManager.get().getViewGLCanvasManager().registerGLCanvasToAnimator(
 				glView.getGLCanvas().getID());
-
-//		if (lastOpenedWorkbenchPart != null)
-//			return;
-//		
-//		if (lastHiddenWorkbenchPart == activePart)
-//		{
-//			lastHiddenWorkbenchPart = null;
-//			return;
-//		}
+		
+		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() == null)
+			return;
 		
 		final IToolBarManager toolBarManager = glView.getViewSite().getActionBars()
 				.getToolBarManager();
 
 		toolBarManager.removeAll();
-		
+				
 		((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 				.findView(ToolBarView.ID)).removeAllViewSpecificToolBars();
 
 		// Check if view is inside the workbench or detached to a separate
 		// window
-		if (!partRef.getPage().getActivePart().getSite().getShell().getText()
+		if (!activePart.getSite().getShell().getText()
 				.equals("Caleydo"))
 		{
-//			alDetachedWorkbenches.add(activePart);
-//			lastDetachedWorkbenchPart = activePart;
-			
 			IViewManager viewGLCanvasManager = GeneralManager.get().getViewGLCanvasManager();
 			AGLEventListener glEventListener = viewGLCanvasManager.getGLEventListener(glView
 					.getGLEventListener().getID());
@@ -162,9 +141,7 @@ public class PartListener
 		{
 			((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 					.getActivePage().findView(ToolBarView.ID)).addViewSpecificToolBar(glView
-							.getGLEventListener().getID());
-			
-//			alDetachedWorkbenches.remove(activePart);
+							.getGLEventListener().getID());			
 		}
 
 		glView.getSWTComposite().getDisplay().asyncExec(new Runnable()
@@ -179,9 +156,6 @@ public class PartListener
 	@Override
 	public void partDeactivated(IWorkbenchPartReference partRef)
 	{
-		IWorkbenchPart activePart = partRef.getPart(false);
-
-		System.out.println("Deactivate:" +activePart);
 	}
 
 	@Override
@@ -189,31 +163,20 @@ public class PartListener
 	{	
 		IWorkbenchPart activePart = partRef.getPart(false);
 		
-		System.out.println("Hidden:" +activePart);
-		
 		if (!(activePart instanceof AGLViewPart))
 			return;
 
-//		if (alDetachedWorkbenches.contains(activePart))
-//			return;
-//		
-//		if (lastDetachedWorkbenchPart == activePart)
-//		{
-//			lastDetachedWorkbenchPart = null;
-//			return;
-//		}
-//		
-//		lastHiddenWorkbenchPart = activePart;
-		
 		AGLViewPart glViewPart = (AGLViewPart) activePart;
 
 		GeneralManager.get().getViewGLCanvasManager().unregisterGLCanvasFromAnimator(
 				glViewPart.getGLCanvas().getID());
+
+		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() == null)
+			return;
 		
 		// Check if view is inside the workbench or detached to a separate
 		// window
-		if (partRef.getPage().getActivePart().getSite().getShell().getText()
-				.equals("Caleydo"))
+		if (activePart.getSite().getShell().getText().equals("Caleydo") && glViewPart != null)
 		{
 			((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 					.getActivePage().findView(ToolBarView.ID)).removeViewSpecificToolBar(glViewPart
@@ -224,31 +187,29 @@ public class PartListener
 	@Override
 	public void partInputChanged(IWorkbenchPartReference partRef)
 	{
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void partActivated(IWorkbenchPartReference partRef)
 	{
-		IWorkbenchPart activePart = partRef.getPart(false);
-
-		System.out.println("Activated:" +activePart);
-		
-//		lastOpenedWorkbenchPart = null;
-		
-		if (!(activePart instanceof AGLViewPart))
-			return;
-
-		AGLViewPart glView = (AGLViewPart) activePart;
-		
-		((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				.findView(ToolBarView.ID)).removeAllViewSpecificToolBars();
-		
-		((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				.findView(ToolBarView.ID)).addViewSpecificToolBar(glView
-				.getGLEventListener().getID());
-		
+//		IWorkbenchPart activePart = partRef.getPart(false);
+//
+//		System.out.println("Activated:" +activePart);
+//		
+////		lastOpenedWorkbenchPart = null;
+//		
+//		if (!(activePart instanceof AGLViewPart))
+//			return;
+//
+//		AGLViewPart glView = (AGLViewPart) activePart;
+//		
+//		((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+//				.findView(ToolBarView.ID)).removeAllViewSpecificToolBars();
+//		
+//		((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+//				.findView(ToolBarView.ID)).addViewSpecificToolBar(glView
+//				.getGLEventListener().getID());
+//		
 //		((ToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 //				.findView(ToolBarView.ID)).highlightViewSpecificToolBar(glView
 //				.getGLEventListenerID());
@@ -257,7 +218,6 @@ public class PartListener
 	@Override
 	public void partBroughtToTop(IWorkbenchPartReference partRef)
 	{
-		System.out.println("Part brought to top");
 	}
 
 	private void createViewSpecificToolbar(AGLEventListener glEventListener,
