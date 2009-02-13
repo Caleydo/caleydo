@@ -98,8 +98,6 @@ public class GLHierarchicalHeatMap
 	// for external selections of experiments
 	private ArrayList<Integer> AlExpMouseOver = new ArrayList<Integer>();
 	private ArrayList<Integer> AlExpSelected = new ArrayList<Integer>();
-//	private int iExpMouseOver = -1;
-//	private int iExpSelected = -1;
 
 	// selector for texture in overviewBar
 	private int iSelectorBar = 1;
@@ -272,8 +270,10 @@ public class GLHierarchicalHeatMap
 			for (HeatMapSelection selection : AlSelection)
 			{
 
-				if (selection.getTexture() == iSelectorBar + 0
-						|| selection.getTexture() == iSelectorBar - 1)
+				if ((selection.getTexture() == iSelectorBar
+						&& selection.getPos() >= iFirstSample && selection.getPos() <= iLastSample)
+						|| (selection.getTexture() == iSelectorBar - 1
+								&& selection.getPos() >= iFirstSample && selection.getPos() <= iLastSample))
 				{
 					bSetCurrentTexture = false;
 					break;
@@ -1061,7 +1061,7 @@ public class GLHierarchicalHeatMap
 		{
 			gl.glColor4fv(MOUSE_OVER_COLOR, 0);
 
-			for(int selExp : AlExpMouseOver)
+			for (int selExp : AlExpMouseOver)
 			{
 				gl.glBegin(GL.GL_LINE_LOOP);
 				gl.glVertex3f(selExp * fExpWidth, 0, 0);
@@ -1076,7 +1076,7 @@ public class GLHierarchicalHeatMap
 		{
 			gl.glColor4fv(SELECTED_COLOR, 0);
 
-			for(int selExp : AlExpSelected)
+			for (int selExp : AlExpSelected)
 			{
 				gl.glBegin(GL.GL_LINE_LOOP);
 				gl.glVertex3f(selExp * fExpWidth, 0, 0);
