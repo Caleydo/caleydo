@@ -10,6 +10,7 @@ import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.util.infoarea.GLInfoAreaManager;
+import com.sun.opengl.util.Animator;
 
 /**
  * Make SWT Views and JOGL GLCanvas addressable by ID and provide ground for XML
@@ -44,6 +45,16 @@ public interface IViewManager
 	public void unregisterGLEventListener(final int iGLEventListenerID);
 
 	/**
+	 * Remove canvas from animator. Therefore the canvas is not rendered anymore.
+	 */
+	public void registerGLCanvasToAnimator(final int iGLCanvasID);
+	
+	/**
+	 * Add canvas to animator. Therefore the canvas is rendered by the animator loop.
+	 */
+	public void unregisterGLCanvasFromAnimator(final int iGLCanvasID);
+	
+	/**
 	 * Get the PickingManager which is responsible for system wide picking
 	 * 
 	 * @return the PickingManager
@@ -53,8 +64,10 @@ public interface IViewManager
 	public ConnectedElementRepresentationManager getConnectedElementRepresentationManager();
 
 	public GLInfoAreaManager getInfoAreaManager();
-
+	
 	public void startAnimator();
+	
+	public void stopAnimator();
 
 	/**
 	 * Removes all views, canvas and GL event listeners

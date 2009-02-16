@@ -280,7 +280,7 @@ public class ViewManager
 		}
 
 		hashGLCanvasID2GLCanvas.put(iGLCanvasID, glCanvas);
-		fpsAnimator.add(glCanvas);
+//		fpsAnimator.add(glCanvas);
 
 		return true;
 	}
@@ -313,6 +313,7 @@ public class ViewManager
 					.put(iGLCanvasID, new ArrayList<AGLEventListener>());
 
 		hashGLCanvasID2GLEventListeners.get(iGLCanvasID).add(gLEventListener);
+		hashGLCanvasID2GLCanvas.get(iGLCanvasID).addGLEventListener(gLEventListener);
 	}
 
 	@Override
@@ -348,7 +349,7 @@ public class ViewManager
 
 		hashGLEventListenerID2GLEventListener.remove(iGLEventListenerID);
 	}
-
+	
 	@Override
 	public Collection<GLCaleydoCanvas> getAllGLCanvasUsers()
 	{
@@ -388,5 +389,23 @@ public class ViewManager
 		// }
 
 		fpsAnimator.start();
+	}
+	
+	@Override
+	public void stopAnimator()
+	{
+		fpsAnimator.stop();
+	}
+
+	@Override
+	public void registerGLCanvasToAnimator(final int iGLCanvasID)
+	{
+		fpsAnimator.add(hashGLCanvasID2GLCanvas.get(iGLCanvasID));
+	}
+	
+	@Override
+	public void unregisterGLCanvasFromAnimator(final int iGLCanvasID)
+	{
+		fpsAnimator.remove(hashGLCanvasID2GLCanvas.get(iGLCanvasID));
 	}
 }
