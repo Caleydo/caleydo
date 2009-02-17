@@ -182,7 +182,7 @@ public class GLHeatMap
 			doTranslation();
 		}
 
-		pickingManager.handlePicking(iUniqueID, gl, true);
+		pickingManager.handlePicking(iUniqueID, gl);
 
 		if (bIsDisplayListDirtyLocal)
 		{
@@ -872,11 +872,6 @@ public class GLHeatMap
 		if (iContentIndex == -1)
 		{
 			throw new IllegalStateException("No element in virtual array for storage index");
-			// TODO this shouldn't happen
-			// generalManager.getLogger().log(Level.SEVERE,
-			// "No element in virtual array for storage index");
-			//
-			// return null;
 		}
 
 		float fXValue = fAlXDistances.get(iContentIndex) + renderStyle.getSelectedFieldWidth()

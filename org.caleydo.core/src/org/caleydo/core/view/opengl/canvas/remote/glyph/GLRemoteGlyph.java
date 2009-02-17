@@ -93,7 +93,7 @@ public class GLRemoteGlyph
 	public void displayLocal(GL gl)
 	{
 
-		pickingManager.handlePicking(iUniqueID, gl, true);
+		pickingManager.handlePicking(iUniqueID, gl);
 
 		display(gl);
 		checkForHits(gl);

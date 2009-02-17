@@ -109,7 +109,7 @@ public class GLSelectionPanel
 	@Override
 	public synchronized void displayLocal(final GL gl)
 	{
-		pickingManager.handlePicking(iUniqueID, gl, false);
+		pickingManager.handlePicking(iUniqueID, gl);
 
 		if (bIsDisplayListDirtyLocal)
 		{

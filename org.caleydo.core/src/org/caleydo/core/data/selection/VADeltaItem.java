@@ -160,7 +160,7 @@ public class VADeltaItem
 	public static VADeltaItem move(int iSrcIndex, int iTragetIndex)
 	{
 		VADeltaItem newItem = new VADeltaItem();
-		newItem.vAOperation = EVAOperation.MOVE_LEFT;
+		newItem.vAOperation = EVAOperation.MOVE;
 		newItem.iIndex = iSrcIndex;
 		newItem.iTargetIndex = iTragetIndex;
 		return newItem;

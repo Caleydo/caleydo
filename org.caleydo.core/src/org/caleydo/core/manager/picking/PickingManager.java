@@ -27,8 +27,8 @@ import com.sun.opengl.util.BufferUtil;
  * The picking IDs are stored associated with a view
  * </p>
  * <p>
- * The {@link #handlePicking(int, GL, boolean)} method has to be called in every
- * render step and calculates the ray-tracing
+ * The {@link #handlePicking(int, GL)} method has to be called in every render
+ * step and calculates the ray-tracing
  * </p>
  * 
  * @author Alexander Lex
@@ -44,7 +44,7 @@ public class PickingManager
 
 	private HashMap<Integer, ArrayList<Pick>> hashSignatureToHitList;
 
-//	private HashMap<Integer, Long> hashViewIDToLastMouseMovedTimeStamp;
+	// private HashMap<Integer, Long> hashViewIDToLastMouseMovedTimeStamp;
 
 	private HashMap<Integer, Boolean> hashViewIDToIsMouseOverPickingEvent;
 
@@ -58,7 +58,7 @@ public class PickingManager
 		hashSignatureToHitList = new HashMap<Integer, ArrayList<Pick>>();
 		hashSignatureToPickingIDHashMap = new HashMap<Integer, HashMap<Integer, Integer>>();
 		hashSignatureToExternalIDHashMap = new HashMap<Integer, HashMap<Integer, Integer>>();
-//		hashViewIDToLastMouseMovedTimeStamp = new HashMap<Integer, Long>();
+		// hashViewIDToLastMouseMovedTimeStamp = new HashMap<Integer, Long>();
 		hashViewIDToIsMouseOverPickingEvent = new HashMap<Integer, Boolean>();
 	}
 
@@ -107,11 +107,8 @@ public class PickingManager
 	 * 
 	 * @param iViewID the id of the calling view
 	 * @param gl the GL context
-	 * @param bIsMaster TODO remove after some testing - not needed at the
-	 *            moment. remove deprecated when done
 	 */
-	@Deprecated
-	public void handlePicking(final int iViewID, final GL gl, final boolean bIsMaster)
+	public void handlePicking(final int iViewID, final GL gl)
 	{
 
 		if (bEnablePicking == false)
@@ -150,18 +147,21 @@ public class PickingManager
 		else if (pickingTriggerMouseAdapter.wasMouseMoved())
 		{
 			// Restart timer
-//			hashViewIDToLastMouseMovedTimeStamp.put(iViewID, System.nanoTime());
+			// hashViewIDToLastMouseMovedTimeStamp.put(iViewID,
+			// System.nanoTime());
 			hashViewIDToIsMouseOverPickingEvent.put(iViewID, true);
 
 		}
 		else if (hashViewIDToIsMouseOverPickingEvent.get(iViewID) != null
-//				&& hashViewIDToLastMouseMovedTimeStamp.get(iViewID) != null
+		// && hashViewIDToLastMouseMovedTimeStamp.get(iViewID) != null
 				&& hashViewIDToIsMouseOverPickingEvent.get(iViewID) == true)
-//				&& System.nanoTime() - hashViewIDToLastMouseMovedTimeStamp.get(iViewID) >= 0)// 1e9
+		// && System.nanoTime() -
+		// hashViewIDToLastMouseMovedTimeStamp.get(iViewID) >= 0)// 1e9
 		// )
 		{
 			pickPoint = pickingTriggerMouseAdapter.getPickedPoint();
-//			hashViewIDToLastMouseMovedTimeStamp.put(iViewID, System.nanoTime());
+			// hashViewIDToLastMouseMovedTimeStamp.put(iViewID,
+			// System.nanoTime());
 			ePickingMode = EPickingMode.MOUSE_OVER;
 		}
 
@@ -226,7 +226,7 @@ public class PickingManager
 
 		if (iAlPickedObjectId.size() > 0)
 		{
-			processPicks(iAlPickedObjectId, iViewID, ePickingMode, bIsMaster, tmpPickPoint,
+			processPicks(iAlPickedObjectId, iViewID, ePickingMode, tmpPickPoint,
 					pickingTriggerMouseAdapter.getPickedPointDragStart());
 		}
 	}
@@ -396,7 +396,7 @@ public class PickingManager
 	}
 
 	private void processPicks(ArrayList<Integer> alPickingIDs, int iViewID,
-			EPickingMode myMode, boolean bIsMaster, Point pickedPoint, Point dragStartPoint)
+			EPickingMode myMode, Point pickedPoint, Point dragStartPoint)
 	{
 
 		// we here have two cases: a view is rendered remote, than
@@ -449,7 +449,13 @@ public class PickingManager
 							.get(iOrigianlPickingID);
 					if (iViewUnderInteractionID == null)
 						continue;
+					if (GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
+							iViewUnderInteractionID) == null)
+					{
+						iViewUnderInteractionID = iViewID;
+					}
 					iSignature = getSignatureFromPickingID(iPickingID, iViewUnderInteractionID);
+
 				}
 			}
 

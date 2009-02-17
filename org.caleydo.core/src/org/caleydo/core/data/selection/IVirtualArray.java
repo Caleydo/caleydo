@@ -164,6 +164,16 @@ public interface IVirtualArray
 	public int indexOf(int iElement);
 
 	/**
+	 * Returns the indices of all occurrences of the specified element in this
+	 * list, or an empty list if the list does not contain the element. 
+	 * 
+	 * @param iElement element to search for
+	 * @return a list of all the indices of all occurrences of the element or an
+	 *         empty list if no such elements exist
+	 */
+	public ArrayList<Integer> indicesOf(int iElement);
+
+	/**
 	 * Returns the array list which contains the list of storage indices. DO NOT
 	 * EDIT THIS LIST
 	 * 

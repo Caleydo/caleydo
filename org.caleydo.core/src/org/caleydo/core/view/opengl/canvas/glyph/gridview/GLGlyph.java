@@ -325,7 +325,7 @@ public class GLGlyph
 	@Override
 	public synchronized void displayLocal(GL gl)
 	{
-		pickingManager.handlePicking(iUniqueID, gl, true);
+		pickingManager.handlePicking(iUniqueID, gl);
 
 		display(gl);
 		checkForHits(gl);

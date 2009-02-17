@@ -177,7 +177,7 @@ public class GLPathway
 		if (!generalManager.getPathwayManager().hasItem(iPathwayID))
 			return;
 
-		pickingManager.handlePicking(iUniqueID, gl, false);
+		pickingManager.handlePicking(iUniqueID, gl);
 		if (bIsDisplayListDirtyLocal)
 		{
 			rebuildPathwayDisplayList(gl, iGLDisplayListIndexLocal);

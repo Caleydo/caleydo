@@ -63,6 +63,7 @@ import com.sun.opengl.util.texture.TextureIO;
  * 
  * @author Bernhard Schlegl
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public class GLHierarchicalHeatMap
 	extends AStorageBasedView
@@ -508,7 +509,7 @@ public class GLHierarchicalHeatMap
 		if (set == null)
 			return;
 
-		pickingManager.handlePicking(iUniqueID, gl, true);
+		pickingManager.handlePicking(iUniqueID, gl);
 
 		if (bIsDisplayListDirtyLocal)
 		{

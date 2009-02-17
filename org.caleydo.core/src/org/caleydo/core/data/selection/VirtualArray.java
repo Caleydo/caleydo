@@ -190,6 +190,23 @@ public class VirtualArray
 		System.out.println("Costly indexof operation on a va of size: " + size());
 		return iAlVirtualArray.indexOf(iElement);
 	}
+	
+	@Override
+	public ArrayList<Integer> indicesOf(int iElement)
+	{
+		ArrayList<Integer> alIndices = new ArrayList<Integer>();
+		int iCount = 0;
+		for(Integer iCompareElement : iAlVirtualArray)
+		{
+			if(iCompareElement == iElement)
+			{
+				alIndices.add(iCount);
+			}
+			iCount++;
+		}
+				
+		return alIndices;
+	}
 
 	@Override
 	public ArrayList<Integer> getIndexList()
