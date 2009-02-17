@@ -623,8 +623,8 @@ public class GenericSelectionManager
 						internalToExternalMapping, item.getPrimaryID());
 				if (iExternalID == null || iExternalID == -1)
 				{
-					GeneralManager.get().getLogger().log(Level.WARNING,
-							"No external ID for " + item.getPrimaryID());
+//					GeneralManager.get().getLogger().log(Level.WARNING,
+//							"No external ID for " + item.getPrimaryID());
 					continue;
 				}
 
@@ -701,8 +701,8 @@ public class GenericSelectionManager
 							internalToExternalMapping, iElement);
 					if (iSelectionID == null || iSelectionID == -1)
 					{
-						GeneralManager.get().getLogger().log(Level.WARNING,
-								"No external ID for " + iElement);
+//						GeneralManager.get().getLogger().log(Level.WARNING,
+//								"No external ID for " + iElement);
 						continue;
 					}
 				}
@@ -755,8 +755,8 @@ public class GenericSelectionManager
 							internalToExternalMapping, iElement);
 					if (iSelectionID == null || iSelectionID == -1)
 					{
-						GeneralManager.get().getLogger().log(Level.WARNING,
-								"No external ID for " + iElement);
+//						GeneralManager.get().getLogger().log(Level.WARNING,
+//								"No external ID for " + iElement);
 						continue;
 					}
 				}

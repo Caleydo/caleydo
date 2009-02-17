@@ -27,7 +27,7 @@ public class TabularDataView
 		
 		for (ISet set : GeneralManager.get().getSetManager().getAllItems())
 		{
-			tabularDataView.addSet(set);
+//			tabularDataView.addSet(set);
 		}
 		
 		tabularDataView.initViewRCP(parent);

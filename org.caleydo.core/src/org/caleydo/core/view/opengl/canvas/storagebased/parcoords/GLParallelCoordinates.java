@@ -261,17 +261,17 @@ public class GLParallelCoordinates
 		}
 
 		pickingManager.handlePicking(iUniqueID, gl, true);
-		
+
 		if (bIsDisplayListDirtyLocal)
 		{
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
 		}
 		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-		
+
 		checkForHits(gl);
 		display(gl);
-		
+
 		if (eBusyModeState != EBusyModeState.OFF)
 			renderBusyMode(gl);
 	}
@@ -317,11 +317,11 @@ public class GLParallelCoordinates
 		if (bIsDraggingActive)
 		{
 			handleGateDragging(gl);
-//			if (pickingTriggerMouseAdapter.wasMouseReleased())
-//			{
-//				System.out.println("Mouse released in view");
-//				bIsDraggingActive = false;
-//			}
+			// if (pickingTriggerMouseAdapter.wasMouseReleased())
+			// {
+			// System.out.println("Mouse released in view");
+			// bIsDraggingActive = false;
+			// }
 		}
 
 		if (bWasAxisMoved)
@@ -715,7 +715,8 @@ public class GLParallelCoordinates
 		while (dataIterator.hasNext())
 		{
 			int iPolyLineID = dataIterator.next();
-			if (bUseRandomSampling && (renderMode == ESelectionType.DESELECTED || renderMode == ESelectionType.NORMAL))
+			if (bUseRandomSampling
+					&& (renderMode == ESelectionType.DESELECTED || renderMode == ESelectionType.NORMAL))
 			{
 				if (iPolyLineID % iDisplayEveryNthPolyline != 0)
 					continue;
@@ -991,61 +992,113 @@ public class GLParallelCoordinates
 
 				gl.glPopAttrib();
 				gl.glPopName();
+
 				// render Buttons
+
+				float fXButtonOrigin = 0;
+				float fYButtonOrigin = 0;
+				int iPickingID = -1;
+
+				fXButtonOrigin = alAxisSpacing.get(iCount);
+				fYButtonOrigin = -ParCoordsRenderStyle.AXIS_BUTTONS_Y_OFFSET;
 
 				if (selectedSet.contains(axisVA.get(iCount))
 						|| mouseOverSet.contains(axisVA.get(iCount)))
 				{
-					int iNumberOfButtons = 0;
-					if (iCount != 0 || iCount != iNumberAxis - 1)
-						iNumberOfButtons = 4;
-					else
-						iNumberOfButtons = 3;
 
-					float fXButtonOrigin = 0;
-					float fYButtonOrigin = 0;
-					int iPickingID = -1;
+					Texture tempTexture = iconTextureManager.getIconTexture(gl,
+							EIconTextures.MOUSE_OVER_DROP);
+					tempTexture.enable();
+					tempTexture.bind();
 
-					fXButtonOrigin = alAxisSpacing.get(iCount)
-							- (iNumberOfButtons * renderStyle.getButtonWidht() + (iNumberOfButtons - 1)
-									* renderStyle.getSmallSpacing()) / 2;
-					fYButtonOrigin = -renderStyle.getAxisButtonYOffset();
+					TextureCoords texCoords = tempTexture.getImageTexCoords();
 
-					if (iCount != 0)
-					{
-						iPickingID = pickingManager.getPickingID(iUniqueID,
-								EPickingType.MOVE_AXIS_LEFT, iCount);
-						renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID,
-								EIconTextures.ARROW_LEFT);
-					}
+					gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+					gl.glColor4f(1, 1, 1, 1);
 
-					// remove button
-					fXButtonOrigin = fXButtonOrigin + renderStyle.getButtonWidht()
-							+ renderStyle.getSmallSpacing();
+					gl.glBegin(GL.GL_POLYGON);
+					gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+					gl.glVertex3f(fXButtonOrigin - 0.15f, fYButtonOrigin - 0.3f, AXIS_Z);
+					gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+					gl.glVertex3f(fXButtonOrigin + 0.15f, fYButtonOrigin - 0.3f, AXIS_Z);
+					gl.glTexCoord2f(texCoords.right(), texCoords.top());
+					gl.glVertex3f(fXButtonOrigin + 0.15f, fYButtonOrigin, AXIS_Z);
+					gl.glTexCoord2f(texCoords.left(), texCoords.top());
+					gl.glVertex3f(fXButtonOrigin - 0.15f, fYButtonOrigin, AXIS_Z);
+					gl.glEnd();
+
+					gl.glPopAttrib();
+					tempTexture.disable();
+
+					iPickingID = pickingManager.getPickingID(iUniqueID,
+							EPickingType.MOVE_AXIS, iCount);
+					gl.glColor4f(1, 0, 0, 0f);
+					gl.glPushName(iPickingID);
+					gl.glBegin(GL.GL_TRIANGLES);
+					gl.glVertex3f(fXButtonOrigin, fYButtonOrigin, AXIS_Z + 0.01f);
+					gl.glVertex3f(fXButtonOrigin + 0.08f, fYButtonOrigin - 0.3f,
+							AXIS_Z + 0.01f);
+					gl.glVertex3f(fXButtonOrigin - 0.08f, fYButtonOrigin - 0.3f,
+							AXIS_Z + 0.01f);
+					gl.glEnd();
+					gl.glPopName();
+
+					iPickingID = pickingManager.getPickingID(iUniqueID,
+							EPickingType.DUPLICATE_AXIS, iCount);
+					// gl.glColor4f(0, 1, 0, 0.5f);
+					gl.glPushName(iPickingID);
+					gl.glBegin(GL.GL_TRIANGLES);
+					gl.glVertex3f(fXButtonOrigin, fYButtonOrigin, AXIS_Z + 0.01f);
+					gl.glVertex3f(fXButtonOrigin - 0.08f, fYButtonOrigin - 0.21f,
+							AXIS_Z + 0.01f);
+					gl.glVertex3f(fXButtonOrigin - 0.23f, fYButtonOrigin - 0.21f,
+							AXIS_Z + 0.01f);
+					gl.glEnd();
+					gl.glPopName();
 
 					iPickingID = pickingManager.getPickingID(iUniqueID,
 							EPickingType.REMOVE_AXIS, iCount);
-					renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID,
-							EIconTextures.REMOVE);
+					// gl.glColor4f(0, 0, 1, 0.5f);
+					gl.glPushName(iPickingID);
+					gl.glBegin(GL.GL_TRIANGLES);
+					gl.glVertex3f(fXButtonOrigin, fYButtonOrigin, AXIS_Z + 0.01f);
+					gl.glVertex3f(fXButtonOrigin + 0.08f, fYButtonOrigin - 0.21f,
+							AXIS_Z + 0.01f);
+					gl.glVertex3f(fXButtonOrigin + 0.23f, fYButtonOrigin - 0.21f,
+							AXIS_Z + 0.01f);
+					gl.glEnd();
+					gl.glPopName();
 
-					// duplicate axis button
-					fXButtonOrigin = fXButtonOrigin + renderStyle.getButtonWidht()
-							+ renderStyle.getSmallSpacing();
+				}
+				else
+				{
 					iPickingID = pickingManager.getPickingID(iUniqueID,
-							EPickingType.DUPLICATE_AXIS, iCount);
-					renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID,
-							EIconTextures.DUPLICATE);
+							EPickingType.MOVE_AXIS, iCount);
+					Texture tempTexture = iconTextureManager.getIconTexture(gl,
+							EIconTextures.SMALL_DROP);
+					tempTexture.enable();
+					tempTexture.bind();
 
-					if (iCount != iNumberAxis - 1)
-					{
-						// right, move right button
-						fXButtonOrigin = fXButtonOrigin + renderStyle.getButtonWidht()
-								+ renderStyle.getSmallSpacing();
-						iPickingID = pickingManager.getPickingID(iUniqueID,
-								EPickingType.MOVE_AXIS_RIGHT, iCount);
-						renderButton(gl, fXButtonOrigin, fYButtonOrigin, iPickingID,
-								EIconTextures.ARROW_RIGHT);
-					}
+					TextureCoords texCoords = tempTexture.getImageTexCoords();
+
+					gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+					gl.glColor4f(1, 1, 1, 1);
+					gl.glPushName(iPickingID);
+
+					gl.glBegin(GL.GL_POLYGON);
+					gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+					gl.glVertex3f(fXButtonOrigin - 0.05f, fYButtonOrigin - 0.2f, AXIS_Z);
+					gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+					gl.glVertex3f(fXButtonOrigin + 0.05f, fYButtonOrigin - 0.2f, AXIS_Z);
+					gl.glTexCoord2f(texCoords.right(), texCoords.top());
+					gl.glVertex3f(fXButtonOrigin + 0.05f, fYButtonOrigin, AXIS_Z);
+					gl.glTexCoord2f(texCoords.left(), texCoords.top());
+					gl.glVertex3f(fXButtonOrigin - 0.05f, fYButtonOrigin, AXIS_Z);
+					gl.glEnd();
+
+					gl.glPopName();
+					gl.glPopAttrib();
+					tempTexture.disable();
 				}
 			}
 			iCount++;
@@ -1416,8 +1469,8 @@ public class GLParallelCoordinates
 		bIsDisplayListDirtyLocal = true;
 		bIsDisplayListDirtyRemote = true;
 
-//		System.out.println("Handle dragging");
-		
+		// System.out.println("Handle dragging");
+
 		if (pickingTriggerMouseAdapter.wasMouseReleased())
 		{
 			bIsDraggingActive = false;
@@ -1587,10 +1640,10 @@ public class GLParallelCoordinates
 
 				}
 				connectedElementRepresentationManager.clear(ePolylineDataType);
-				
+
 				if (polylineSelectionManager.checkStatus(eSelectionType, iExternalID))
 					break;
-				
+
 				polylineSelectionManager.clearSelection(eSelectionType);
 
 				if (ePolylineDataType == EIDType.EXPRESSION_INDEX)
@@ -1599,6 +1652,11 @@ public class GLParallelCoordinates
 					// selection manager.
 					Integer iRefSeqID = idMappingManager.getID(
 							EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iExternalID);
+					if (iRefSeqID == null)
+					{
+						pickingManager.flushHits(iUniqueID, ePickingType);
+						return;
+					}
 					for (Object iExpressionIndex : idMappingManager.getMultiID(
 							EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID))
 					{
@@ -1665,7 +1723,6 @@ public class GLParallelCoordinates
 				// axisSelectionManager
 				// .getDelta(), null);
 
-			
 				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
 						new SelectionCommandEventContainer(eAxisDataType,
 								new SelectionCommand(ESelectionCommandType.CLEAR,
@@ -1690,14 +1747,14 @@ public class GLParallelCoordinates
 						iDraggedGateNumber = iExternalID;
 						draggedObject = EPickingType.LOWER_GATE_TIP_SELECTION;
 						setDisplayListDirty();
-						
-//						System.out.println("Lower gate mouse over");
+
+						// System.out.println("Lower gate mouse over");
 						break;
 					case CLICKED:
 						bIsDraggingActive = true;
 						draggedObject = EPickingType.LOWER_GATE_TIP_SELECTION;
 						iDraggedGateNumber = iExternalID;
-						
+
 						System.out.println("Lower gate top click");
 						break;
 					// case DRAGGED:
@@ -1717,7 +1774,7 @@ public class GLParallelCoordinates
 						iDraggedGateNumber = iExternalID;
 						draggedObject = EPickingType.LOWER_GATE_BOTTOM_SELECTION;
 						setDisplayListDirty();
-						
+
 						System.out.println("Lower gate mouse over");
 						break;
 					case CLICKED:
@@ -1770,10 +1827,11 @@ public class GLParallelCoordinates
 				pickingManager.flushHits(iUniqueID, EPickingType.PC_ICON_SELECTION);
 				break;
 			case REMOVE_AXIS:
-				IVirtualArray axisVA = set.getVA(iAxisVAID);
+				
 				switch (ePickingMode)
 				{
 					case CLICKED:
+						IVirtualArray axisVA = set.getVA(iAxisVAID);
 						if (axisVA.containsElement(axisVA.get(iExternalID)) == 1)
 							hashGates.remove(axisVA.get(iExternalID));
 						axisVA.remove(iExternalID);
@@ -1790,7 +1848,7 @@ public class GLParallelCoordinates
 				}
 				pickingManager.flushHits(iUniqueID, EPickingType.REMOVE_AXIS);
 				break;
-			case MOVE_AXIS_LEFT:
+			case MOVE_AXIS:
 				switch (ePickingMode)
 				{
 					case CLICKED:
@@ -1805,20 +1863,9 @@ public class GLParallelCoordinates
 						}
 						break;
 				}
-				pickingManager.flushHits(iUniqueID, EPickingType.MOVE_AXIS_LEFT);
+				pickingManager.flushHits(iUniqueID, EPickingType.MOVE_AXIS);
 				break;
-			case MOVE_AXIS_RIGHT:
 
-				switch (ePickingMode)
-				{
-					case CLICKED:
-						resetAxisSpacing();
-						setDisplayListDirty();
-
-						break;
-				}
-				pickingManager.flushHits(iUniqueID, EPickingType.MOVE_AXIS_RIGHT);
-				break;
 			case DUPLICATE_AXIS:
 				switch (ePickingMode)
 				{
@@ -1836,10 +1883,11 @@ public class GLParallelCoordinates
 							// resetSelections();
 							// initGates();
 							resetAxisSpacing();
+							pickingManager.flushHits(iUniqueID, EPickingType.DUPLICATE_AXIS);
 							break;
 						}
 				}
-				pickingManager.flushHits(iUniqueID, EPickingType.DUPLICATE_AXIS);
+//				pickingManager.flushHits(iUniqueID, EPickingType.DUPLICATE_AXIS);
 				break;
 			case ANGULAR_UPPER:
 				switch (ePickingMode)
@@ -2235,7 +2283,7 @@ public class GLParallelCoordinates
 		{
 			bIsAngularDraggingActive = false;
 			// bIsAngularBrushingActive = false;
-			
+
 			System.out.println("Mouse released in view");
 		}
 

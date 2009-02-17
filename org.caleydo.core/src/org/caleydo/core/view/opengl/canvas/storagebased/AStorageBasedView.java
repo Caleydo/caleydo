@@ -426,33 +426,12 @@ public abstract class AStorageBasedView
 		setDisplayListDirty();
 	}
 
-	// protected final synchronized void triggerSelectionUpdate(EMediatorType
-	// eMediatorType,
-	// ISelectionDelta selectionDelta, Collection<SelectionCommand>
-	// colSelectionCommand)
-	// {
-	// // TODO connects to one element only here
-	// handleConnectedElementRep(selectionDelta);
-	// generalManager.getEventPublisher().triggerSelectionUpdate(eMediatorType,
-	// this,
-	// selectionDelta, colSelectionCommand);
-	// }
 
 	@Override
 	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
 	{
 		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 	}
-
-	// @Override
-	// public void triggerVAUpdate(EMediatorType eMediatorType,
-	// IVirtualArrayDelta delta,
-	// Collection<SelectionCommand> colSelectionCommand)
-	// {
-	// generalManager.getEventPublisher().triggerVAUpdate(eMediatorType, this,
-	// delta, colSelectionCommand);
-	//
-	// }
 
 	@SuppressWarnings("unchecked")
 	@Override

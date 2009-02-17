@@ -82,9 +82,9 @@ public class ParCoordsRenderStyle
 
 	private static final float COORDINATE_SIDE_SPACING = 0.05f;
 
-	private static final float COORDINATE_BOTTOM_SPACING = 0.04f;
+	private static final float COORDINATE_BOTTOM_SPACING = 0.06f;
 
-	public static final float Y_AXIS_LOW = -0.1f;
+	public static final float Y_AXIS_LOW = -0.25f;
 
 	public static final float AXIS_MARKER_WIDTH = 0.01f;
 
@@ -96,7 +96,7 @@ public class ParCoordsRenderStyle
 	private static final float GATE_TIP_HEIGHT = 0.015f;
 
 	// buttons below axis
-	private static final float AXIS_BUTTONS_Y_OFFSET = 0.04f;
+	public static final float AXIS_BUTTONS_Y_OFFSET = 0.1f;
 
 	private static final float fAxisSpacingLowerLimit = 0.001f;
 
