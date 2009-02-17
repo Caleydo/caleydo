@@ -57,8 +57,8 @@ import org.caleydo.core.data.selection.VirtualArrayDelta;
 import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IDListEventContainer;
-import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -203,25 +203,6 @@ public class GLParallelCoordinates
 	@Override
 	public void initLocal(final GL gl)
 	{
-		String sLevel = GeneralManager.get().getPreferenceStore().getString(
-				PreferenceConstants.DATA_FILTER_LEVEL);
-		if (sLevel.equals("complete"))
-		{
-			dataFilterLevel = EDataFilterLevel.COMPLETE;
-		}
-		else if (sLevel.equals("only_mapping"))
-		{
-			dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
-		}
-		else if (sLevel.equals("only_context"))
-		{
-			dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
-		}
-		else
-		{
-			throw new IllegalStateException("Unknown data filter level");
-		}
-
 		generalManager.getEventPublisher().addSender(EMediatorType.PROPAGATION_MEDIATOR, this);
 		generalManager.getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR, this);
 		generalManager.getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR, this);
@@ -240,8 +221,6 @@ public class GLParallelCoordinates
 			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
 		bRenderOnlyContext = true;
-		dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
-		// dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
 
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
 
@@ -965,7 +944,7 @@ public class GLParallelCoordinates
 					// // sAxisLabel = alDataStorages.get(iCount).getLabel();
 
 					case EXPRESSION_INDEX:
-						sAxisLabel = Integer.toString(getRefSeqFromStorageIndex(set.getVA(
+						sAxisLabel = Integer.toString(IDMappingHelper.get().getRefSeqFromStorageIndex(set.getVA(
 								iContentVAID).get(iCount)));
 						break;
 					default:
@@ -1582,7 +1561,7 @@ public class GLParallelCoordinates
 					case DOUBLE_CLICKED:
 						IDListEventContainer<Integer> idListEventContainer = new IDListEventContainer<Integer>(
 								EEventType.LOAD_PATHWAY_BY_GENE, EIDType.REFSEQ_MRNA_INT);
-						idListEventContainer.addID(getRefSeqFromStorageIndex(iExternalID));
+						idListEventContainer.addID(IDMappingHelper.get().getRefSeqFromStorageIndex(iExternalID));
 						triggerEvent(EMediatorType.SELECTION_MEDIATOR, idListEventContainer);
 						// intentionally no break
 

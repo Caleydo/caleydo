@@ -1,67 +1,66 @@
 package org.caleydo.core.view.swt.tabular;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.StringTokenizer;
-import org.caleydo.core.command.ECommandType;
-import org.caleydo.core.command.data.CmdDataCreateSet;
-import org.caleydo.core.command.data.CmdDataCreateStorage;
-import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
-import org.caleydo.core.command.data.parser.CmdLoadFileNStorages;
+import java.util.EnumMap;
+import java.util.Iterator;
+import java.util.logging.Level;
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.collection.EExternalDataRepresentation;
 import org.caleydo.core.data.collection.ESetType;
-import org.caleydo.core.data.collection.INumericalStorage;
 import org.caleydo.core.data.collection.ISet;
-import org.caleydo.core.manager.IGeneralManager;
+import org.caleydo.core.data.collection.storage.EDataRepresentation;
+import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.core.data.mapping.EIDType;
+import org.caleydo.core.data.mapping.EMappingType;
+import org.caleydo.core.data.selection.DeltaConverter;
+import org.caleydo.core.data.selection.DeltaEventContainer;
+import org.caleydo.core.data.selection.ESelectionCommandType;
+import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.GenericSelectionManager;
+import org.caleydo.core.data.selection.ISelectionDelta;
+import org.caleydo.core.data.selection.IVirtualArray;
+import org.caleydo.core.data.selection.IVirtualArrayDelta;
+import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionCommandEventContainer;
+import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.manager.mapping.IDMappingHelper;
+import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
+import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
+import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.core.view.swt.ISWTView;
-import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.TableCursor;
 import org.eclipse.swt.custom.TableEditor;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseTrackAdapter;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.GC;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.FileDialog;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
+import org.eclipse.swt.widgets.ScrollBar;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * Simple HTML browser.
+ * View shows data from a set in a tabular format.
  * 
  * @author Marc Streit
  */
@@ -69,32 +68,55 @@ public class TabularDataViewRep
 	extends ASWTView
 	implements IView, ISWTView, IMediatorReceiver, IMediatorSender
 {
-	private static int MAX_PREVIEW_TABLE_ROWS = 50;
+	private static int MAX_PREVIEW_TABLE_ROWS = 20;
+
+	protected ISet set;
+	protected ESetType setType;
+
+	/**
+	 * map selection type to unique id for virtual array
+	 */
+	protected EnumMap<EStorageBasedVAType, Integer> mapVAIDs;
+
+	/**
+	 * This manager is responsible for the content in the storages (the indices)
+	 */
+	protected GenericSelectionManager contentSelectionManager;
+
+	/**
+	 * This manager is responsible for the management of the storages in the set
+	 */
+	protected GenericSelectionManager storageSelectionManager;
+
+	/**
+	 * The id of the virtual array that manages the contents (the indices) in
+	 * the storages
+	 */
+	protected int iContentVAID = -1;
+
+	/**
+	 * The id of the virtual array that manages the storage references in the
+	 * set
+	 */
+	protected int iStorageVAID = -1;
+	
+	/**
+	 * Define what level of filtering on the data should be applied
+	 */
+	protected EDataFilterLevel dataFilterLevel;
+
+	private IIDMappingManager idMappingManager;
 
 	private Composite composite;
-
-	private Text txtFileName;
-	private Text txtStartParseAtLine;
-	private Text txtMin;
-	private Text txtMax;
-
-	private Table previewTable;
-
-	private ArrayList<Combo> arComboDataClass;
-	private ArrayList<Combo> arComboDataType;
-
-	private String sInputFile = "";
-	private String sFileName = "";
-	private String sFilePath = "";
-	private String sInputPattern = "SKIP;ABORT";
-	private String sDelimiter = "";
-	private int iCreatedSetID = -1;
-	private int iStartParseFileAtLine = 2;
-
-	private String sDataRepMode = "Normal";
-	// private boolean bLogFilter = false;
-
-	private int iOldSetID;
+	
+	private Table labelTable;
+	private Table contentTable;
+	
+	private TableViewer contentTableViewer;
+	
+	private TableCursor cursor;
+	
+	private Label lastRemove;
 
 	/**
 	 * Constructor.
@@ -104,400 +126,34 @@ public class TabularDataViewRep
 		super(iParentContainerId, sLabel, GeneralManager.get().getIDManager().createID(
 				EManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER));
 
-		arComboDataClass = new ArrayList<Combo>();
-		arComboDataType = new ArrayList<Combo>();
-	}
+		GeneralManager.get().getEventPublisher().addSender(EMediatorType.SELECTION_MEDIATOR,
+				this);
+		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
+				this);
+		
+		setType = ESetType.GENE_EXPRESSION_DATA;
+		mapVAIDs = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
 
-	public void setInputFile(String sInputFile)
-	{
-		this.sInputFile = sInputFile;
+		contentSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPRESSION_INDEX)
+				.externalIDType(EIDType.REFSEQ_MRNA_INT).mappingType(
+						EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
+						EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX).build();
+		storageSelectionManager = new GenericSelectionManager.Builder(EIDType.EXPERIMENT_INDEX)
+				.build();
+
+		idMappingManager = generalManager.getIDMappingManager();
 	}
 
 	@Override
 	public void initViewSWTComposite(Composite parentComposite)
 	{
-		final Composite highLevelComposite = new Composite(parentComposite, SWT.NONE);
-		highLevelComposite.setLayout(new GridLayout(1, false));
+		composite = new Composite(parentComposite, SWT.NULL);
+	    GridLayout layout = new GridLayout(2, false);
+	    layout.marginWidth = layout.marginHeight = layout.horizontalSpacing = 0;
+	    composite.setLayout(layout);
 
-		GridData gridData = new GridData(GridData.FILL_BOTH);
-
-		Composite upperComposite = new Composite(highLevelComposite, SWT.NONE);
-		upperComposite.setLayout(new FillLayout());
-		upperComposite.setLayoutData(gridData);
-
-		Button applyButton = new Button(highLevelComposite, SWT.PUSH);
-		applyButton.setText("Apply");
-
-		gridData = new GridData(GridData.HORIZONTAL_ALIGN_END);
-		gridData.heightHint = 30;
-		gridData.widthHint = 500;
-
-		applyButton.setLayoutData(gridData);
-		applyButton.addSelectionListener(new SelectionAdapter()
-		{
-
-			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
-				execute();
-			}
-		});
-
-		composite = new Composite(upperComposite, SWT.NONE);
-		GridLayout layout = new GridLayout(2, false);
-		composite.setLayout(layout);
-
-		Button buttonFileChooser = new Button(composite, SWT.PUSH);
-		buttonFileChooser.setText("Choose data file..");
-
-		txtFileName = new Text(composite, SWT.BORDER);
-		txtFileName.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
-
-		buttonFileChooser.addSelectionListener(new SelectionAdapter()
-		{
-			@Override
-			public void widgetSelected(SelectionEvent event)
-			{
-
-				FileDialog fileDialog = new FileDialog(composite.getShell());
-				fileDialog.setText("Open");
-				fileDialog.setFilterPath(sFilePath);
-				String[] filterExt = { "*.csv", "*.txt", "*.*" };
-				fileDialog.setFilterExtensions(filterExt);
-				sFileName = fileDialog.open();
-
-				txtFileName.setText(sFileName);
-
-				createDataPreviewTable("\t");
-			}
-		});
-
-		Label lblStartParseAtLine = new Label(composite, SWT.NONE);
-		lblStartParseAtLine.setText("Ignore lines in header:");
-		lblStartParseAtLine.setLayoutData(new GridData(GridData.END, GridData.BEGINNING,
-				false, false));
-
-		txtStartParseAtLine = new Text(composite, SWT.BORDER);
-		txtStartParseAtLine.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true,
-				false));
-		txtStartParseAtLine.setText("1");
-		txtStartParseAtLine.setTextLimit(2);
-		txtStartParseAtLine.addModifyListener(new ModifyListener()
-		{
-			@Override
-			public void modifyText(ModifyEvent e)
-			{
-				iStartParseFileAtLine = Integer.valueOf(txtStartParseAtLine.getText())
-						.intValue();
-
-				createDataPreviewTable("\t");
-				composite.pack();
-			}
-		});
-
-		Label lblDelimiter = new Label(composite, SWT.NONE);
-		lblDelimiter.setText("Separated by:");
-		lblDelimiter
-				.setLayoutData(new GridData(GridData.END, GridData.BEGINNING, false, false));
-
-		Group delimiterGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		delimiterGroup.setLayout(new FillLayout());
-		// delimiterGroup.setText("Delimiter");
-
-		final Button[] buttonDelimiter = new Button[6];
-
-		buttonDelimiter[0] = new Button(delimiterGroup, SWT.CHECK);
-		buttonDelimiter[0].setSelection(true);
-		buttonDelimiter[0].setText("TAB");
-		buttonDelimiter[0].setBounds(10, 5, 75, 30);
-		buttonDelimiter[0].addSelectionListener(new SelectionAdapter()
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
-				buttonDelimiter[1].setSelection(false);
-				buttonDelimiter[2].setSelection(false);
-				buttonDelimiter[3].setSelection(false);
-				buttonDelimiter[4].setSelection(false);
-				buttonDelimiter[5].setSelection(false);
-
-				if (sFileName.isEmpty())
-					return;
-
-				createDataPreviewTable("\t");
-
-				composite.pack();
-			}
-		});
-
-		buttonDelimiter[1] = new Button(delimiterGroup, SWT.CHECK);
-		buttonDelimiter[1].setText(";");
-		buttonDelimiter[1].setBounds(10, 30, 75, 30);
-		buttonDelimiter[1].addSelectionListener(new SelectionAdapter()
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
-				buttonDelimiter[0].setSelection(false);
-				buttonDelimiter[2].setSelection(false);
-				buttonDelimiter[3].setSelection(false);
-				buttonDelimiter[4].setSelection(false);
-				buttonDelimiter[5].setSelection(false);
-
-				if (sFileName.isEmpty())
-					return;
-
-				createDataPreviewTable(";");
-
-				composite.pack();
-			}
-		});
-
-		buttonDelimiter[2] = new Button(delimiterGroup, SWT.CHECK);
-		buttonDelimiter[2].setText(",");
-		buttonDelimiter[2].setBounds(10, 55, 75, 30);
-		buttonDelimiter[2].addSelectionListener(new SelectionAdapter()
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
-				buttonDelimiter[0].setSelection(false);
-				buttonDelimiter[1].setSelection(false);
-				buttonDelimiter[3].setSelection(false);
-				buttonDelimiter[4].setSelection(false);
-				buttonDelimiter[5].setSelection(false);
-
-				if (sFileName.isEmpty())
-					return;
-
-				createDataPreviewTable(",");
-
-				composite.pack();
-			}
-		});
-
-		buttonDelimiter[3] = new Button(delimiterGroup, SWT.CHECK);
-		buttonDelimiter[3].setText(".");
-		buttonDelimiter[3].setBounds(10, 55, 75, 30);
-		buttonDelimiter[3].addSelectionListener(new SelectionAdapter()
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
-				buttonDelimiter[0].setSelection(false);
-				buttonDelimiter[1].setSelection(false);
-				buttonDelimiter[2].setSelection(false);
-				buttonDelimiter[4].setSelection(false);
-				buttonDelimiter[5].setSelection(false);
-
-				if (sFileName.isEmpty())
-					return;
-
-				createDataPreviewTable(".");
-
-				composite.pack();
-			}
-		});
-
-		buttonDelimiter[4] = new Button(delimiterGroup, SWT.CHECK);
-		buttonDelimiter[4].setText("SPACE");
-		buttonDelimiter[4].setBounds(10, 55, 75, 30);
-		buttonDelimiter[4].addSelectionListener(new SelectionAdapter()
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
-				buttonDelimiter[0].setSelection(false);
-				buttonDelimiter[1].setSelection(false);
-				buttonDelimiter[2].setSelection(false);
-				buttonDelimiter[3].setSelection(false);
-				buttonDelimiter[5].setSelection(false);
-
-				if (sFileName.isEmpty())
-					return;
-
-				createDataPreviewTable(" ");
-
-				composite.pack();
-			}
-		});
-
-		buttonDelimiter[5] = new Button(delimiterGroup, SWT.CHECK);
-		buttonDelimiter[5].setText("Other");
-		buttonDelimiter[5].setBounds(10, 55, 75, 30);
-		buttonDelimiter[5].addSelectionListener(new SelectionAdapter()
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
-				buttonDelimiter[0].setSelection(false);
-				buttonDelimiter[1].setSelection(false);
-				buttonDelimiter[2].setSelection(false);
-				buttonDelimiter[3].setSelection(false);
-				buttonDelimiter[4].setSelection(false);
-
-				if (sFileName.isEmpty())
-					return;
-
-				createDataPreviewTable(" ");
-
-				composite.pack();
-			}
-		});
-
-		final Text txtCustomizedDelimiter = new Text(delimiterGroup, SWT.NONE);
-		txtCustomizedDelimiter.setBounds(0, 0, 75, 30);
-		txtCustomizedDelimiter.setTextLimit(1);
-		txtCustomizedDelimiter.addModifyListener(new ModifyListener()
-		{
-			@Override
-			public void modifyText(ModifyEvent e)
-			{
-
-				createDataPreviewTable(txtCustomizedDelimiter.getText());
-				composite.pack();
-			}
-
-		});
-		txtCustomizedDelimiter.addFocusListener(new FocusListener()
-		{
-			@Override
-			public void focusGained(FocusEvent e)
-			{
-
-				buttonDelimiter[0].setSelection(false);
-				buttonDelimiter[1].setSelection(false);
-				buttonDelimiter[2].setSelection(false);
-				buttonDelimiter[3].setSelection(false);
-				buttonDelimiter[4].setSelection(false);
-				buttonDelimiter[5].setSelection(true);
-			}
-
-			@Override
-			public void focusLost(FocusEvent e)
-			{
-			}
-
-		});
-
-		Label lblMathFilter = new Label(composite, SWT.NONE);
-		lblMathFilter.setText("Apply Filter:");
-		lblMathFilter.setLayoutData(new GridData(GridData.END, GridData.BEGINNING, false,
-				false));
-
-		Group mathFiltergGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		mathFiltergGroup.setLayout(new FillLayout());
-		// delimiterGroup.setText("Math filter");
-
-		final Combo dataRepCombo = new Combo(mathFiltergGroup, SWT.DROP_DOWN);
-		String[] sArOptions = { "Normal", "Log10", "Log2" };
-		dataRepCombo.setItems(sArOptions);
-		dataRepCombo.setEnabled(true);
-		dataRepCombo.select(0);
-		dataRepCombo.addSelectionListener(new SelectionAdapter()
-		{
-			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
-				sDataRepMode = dataRepCombo.getText();
-
-			}
-		});
-
-		final Button buttonMin = new Button(mathFiltergGroup, SWT.CHECK);
-		buttonMin.setText("Min");
-		buttonMin.setEnabled(true);
-		buttonMin.setSelection(false);
-		buttonMin.addSelectionListener(new SelectionAdapter()
-		{
-
-			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
-				txtMin.setEnabled(true);
-			}
-		});
-
-		txtMin = new Text(mathFiltergGroup, SWT.BORDER);
-		txtMin.setEnabled(false);
-		txtMin.addListener(SWT.Verify, new Listener()
-		{
-			public void handleEvent(Event e)
-			{
-				// Only allow digits
-				String string = e.text;
-				char[] chars = new char[string.length()];
-				string.getChars(0, chars.length, chars, 0);
-				for (int i = 0; i < chars.length; i++)
-				{
-					// TODO
-					// if (!('0' <= chars[i] && chars[i] <= '9'))
-					// {
-					// e.doit = false;
-					// return;
-					// }
-				}
-			}
-		});
-
-		final Button buttonMax = new Button(mathFiltergGroup, SWT.CHECK);
-		buttonMax.setText("Max");
-		buttonMax.setEnabled(true);
-		buttonMax.setSelection(false);
-		buttonMax.addSelectionListener(new SelectionAdapter()
-		{
-
-			@Override
-			public void widgetSelected(SelectionEvent e)
-			{
-				txtMax.setEnabled(true);
-			}
-		});
-
-		txtMax = new Text(mathFiltergGroup, SWT.BORDER);
-		txtMax.setEnabled(false);
-		txtMax.addListener(SWT.Verify, new Listener()
-		{
-			public void handleEvent(Event e)
-			{
-				// Only allow digits
-				String string = e.text;
-				char[] chars = new char[string.length()];
-				string.getChars(0, chars.length, chars, 0);
-				for (int i = 0; i < chars.length; i++)
-				{
-					// TODO
-					// if (!('0' <= chars[i] && chars[i] <= '9'))
-					// {
-					// e.doit = false;
-					// return;
-					// }
-				}
-			}
-		});
-
-		Label lblPreview = new Label(composite, SWT.NONE);
-		lblPreview.setText("Data preview:");
-		lblPreview.setLayoutData(new GridData(GridData.END, GridData.BEGINNING, false, false));
-
-		previewTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
-		previewTable.setLinesVisible(false);
-		previewTable.setHeaderVisible(true);
-		GridData data = new GridData(SWT.FILL, SWT.FILL, true, true);
-		data.heightHint = 300;
-		data.widthHint = 700;
-		previewTable.setLayoutData(data);
-
-		// Check if an external file name is given to the action
-		if (!sInputFile.isEmpty())
-		{
-			txtFileName.setText(sInputFile);
-			sFileName = sInputFile;
-			sDataRepMode = "Log10";
-			dataRepCombo.select(1);
-
-			createDataPreviewTable("\t");
-		}
+		initData();
+		createPreviewTable();
 	}
 
 	@Override
@@ -506,73 +162,307 @@ public class TabularDataViewRep
 
 	}
 
-	private void createDataPreviewTable(final String sDelimiter)
+	public void initData()
 	{
+		set = null;
 
-		this.sDelimiter = sDelimiter;
+		for (ISet currentSet : alSets)
+		{
+			if (currentSet.getSetType() == setType)
+				set = currentSet;
+		}
 
+		String sLevel = GeneralManager.get().getPreferenceStore().getString(
+				PreferenceConstants.DATA_FILTER_LEVEL);
+		if (sLevel.equals("complete"))
+		{
+			dataFilterLevel = EDataFilterLevel.COMPLETE;
+		}
+		else if (sLevel.equals("only_mapping"))
+		{
+			dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
+		}
+		else if (sLevel.equals("only_context"))
+		{
+			dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
+		}
+		else
+		{
+			throw new IllegalStateException("Unknown data filter level");
+		}
+		
+		if (!mapVAIDs.isEmpty())
+		{
+
+			// This should be done once we get some thread safety, memory leak,
+			// and a big one
+
+			for (EStorageBasedVAType eSelectionType : EStorageBasedVAType.values())
+			{
+				if (mapVAIDs.containsKey(eSelectionType))
+					set.removeVirtualArray(mapVAIDs.get(eSelectionType));
+			}
+			iContentVAID = -1;
+			iStorageVAID = -1;
+			mapVAIDs.clear();
+		}
+
+		if (set == null)
+		{
+			mapVAIDs.clear();
+			contentSelectionManager.resetSelectionManager();
+			storageSelectionManager.resetSelectionManager();
+			return;
+		}
+
+		ArrayList<Integer> alTempList = new ArrayList<Integer>();
+		// create VA with empty list
+		int iVAID = set.createStorageVA(alTempList);
+		mapVAIDs.put(EStorageBasedVAType.EXTERNAL_SELECTION, iVAID);
+
+		alTempList = new ArrayList<Integer>();
+
+		for (int iCount = 0; iCount < set.size(); iCount++)
+		{
+			alTempList.add(iCount);
+		}
+
+		iVAID = set.createSetVA(alTempList);
+		mapVAIDs.put(EStorageBasedVAType.STORAGE_SELECTION, iVAID);
+
+		
+		// Set<Integer> setMouseOver = storageSelectionManager
+		// .getElements(ESelectionType.MOUSE_OVER);
+
+
+		if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION))
+			initCompleteList();
+		iContentVAID = mapVAIDs.get(EStorageBasedVAType.COMPLETE_SELECTION);
+
+		iStorageVAID = mapVAIDs.get(EStorageBasedVAType.STORAGE_SELECTION);
+
+		contentSelectionManager.resetSelectionManager();
+		storageSelectionManager.resetSelectionManager();
+
+		contentSelectionManager.setVA(set.getVA(iContentVAID));
+		storageSelectionManager.setVA(set.getVA(iStorageVAID));
+
+		int iNumberOfColumns = set.getVA(iContentVAID).size();
+		int iNumberOfRows = set.getVA(iStorageVAID).size();
+
+		for (int iRowCount = 0; iRowCount < iNumberOfRows; iRowCount++)
+		{
+			storageSelectionManager.initialAdd(set.getVA(iStorageVAID).get(iRowCount));
+
+		}
+
+		// this for loop executes one per axis
+		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++)
+		{
+			contentSelectionManager.initialAdd(set.getVA(iContentVAID).get(iColumnCount));
+		}
+	}
+
+	/**
+	 * Initializes a virtual array with all elements, according to the data
+	 * filters, as defined in {@link EDataFilterLevel}.
+	 */
+	protected final void initCompleteList()
+	{
+		// initialize virtual array that contains all (filtered) information
+		ArrayList<Integer> alTempList = new ArrayList<Integer>(set.depth());
+
+		for (int iCount = 0; iCount < set.depth(); iCount++)
+		{
+			if (dataFilterLevel != EDataFilterLevel.COMPLETE)
+			{
+				// Here we get mapping data for all values
+				// FIXME: not general, only for genes
+				int iDavidID = IDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
+
+				if (iDavidID == -1)
+				{
+					generalManager.getLogger().log(Level.FINE,
+							"Cannot resolve gene to DAVID ID!");
+					continue;
+				}
+
+				if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT)
+				{
+					// Here all values are contained within pathways as well
+					int iGraphItemID = generalManager.getPathwayItemManager()
+							.getPathwayVertexGraphItemIdByDavidId(iDavidID);
+
+					if (iGraphItemID == -1)
+						continue;
+
+					PathwayVertexGraphItem tmpPathwayVertexGraphItem = ((PathwayVertexGraphItem) generalManager
+							.getPathwayItemManager().getItem(iGraphItemID));
+
+					if (tmpPathwayVertexGraphItem == null)
+						continue;
+				}
+			}
+			alTempList.add(iCount);
+		}
+
+		// TODO: remove possible old virtual array
+		int iVAID = set.createStorageVA(alTempList);
+		mapVAIDs.put(EStorageBasedVAType.COMPLETE_SELECTION, iVAID);
+
+	}
+
+	private void createPreviewTable()
+	{
+	    Composite labelTableComposite = new Composite(composite, SWT.NULL);
+		GridData data = new GridData();
+	    data.widthHint = 250;
+	    data.verticalAlignment = SWT.FILL;
+	    data.grabExcessHorizontalSpace = false;
+	    data.grabExcessVerticalSpace = true;
+	    labelTableComposite.setLayoutData(data);        
+	    GridLayout layout = new GridLayout(1, false);
+	    layout.marginWidth = layout.marginHeight = layout.horizontalSpacing = 0;
+	    labelTableComposite.setLayout(layout);
+	    
+		labelTable = new Table(labelTableComposite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION| SWT.VIRTUAL);
+		labelTable.setLinesVisible(true);
+		labelTable.setHeaderVisible(true);
+	    
+	    data = new GridData();
+		data.horizontalAlignment = SWT.LEFT;
+	    data.verticalAlignment = SWT.TOP;
+	    data.grabExcessHorizontalSpace = false;
+	    data.grabExcessVerticalSpace = true;
+	    labelTable.setLayoutData(data);
+		
+	    // Create the table viewer to display the players
+//	    contentTableViewer = new TableViewer(composite);
+
+	    // Set the content and label providers
+//	    contentTableViewer.setContentProvider(new PlayerContentProvider());
+//	    contentTableViewer.setLabelProvider(new PlayerLabelProvider());
+//	    contentTableViewer.setSorter(new PlayerViewerSorter());
+
+//		contentTable = contentTableViewer.getTable();
+		contentTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION| SWT.VIRTUAL);
+		contentTable.setLinesVisible(true);
+		contentTable.setHeaderVisible(true);
+		data = new GridData(SWT.FILL, SWT.FILL, true, true);
+		data.heightHint = 300;
+		data.widthHint = 700;
+		contentTable.setLayoutData(data);
+	    
 		// Clear table if not empty
-		previewTable.removeAll();
+		contentTable.removeAll();
+		
+		// Make selection the same in both tables
+		labelTable.addListener(SWT.Selection, new Listener()
+		{
+			public void handleEvent(Event event)
+			{
+				contentTable.setSelection(labelTable.getSelectionIndices());
+			}
+		});
+		contentTable.addListener(SWT.Selection, new Listener()
+		{
+			public void handleEvent(Event event)
+			{
+				labelTable.setSelection(contentTable.getSelectionIndices());
+			}
+		});
+		// On Windows, the selection is gray if the table does not have focus.
+		// To make both tables appear in focus, draw teh selection background
+		// here.
+		// This part only works on version 3.2 or later.
+		Listener eraseListener = new Listener()
+		{
+			public void handleEvent(Event event)
+			{
+				if ((event.detail & SWT.SELECTED) != 0)
+				{
+					GC gc = event.gc;
+					Rectangle rect = event.getBounds();
+					gc.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT));
+					gc.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_LIST_SELECTION));
+					gc.fillRectangle(rect);
+					event.detail &= ~SWT.SELECTED;
+				}
+			}
+		};
 
-		for (TableColumn tmpColumn : previewTable.getColumns())
+		labelTable.addListener(SWT.EraseItem, eraseListener);
+		contentTable.addListener(SWT.EraseItem, eraseListener);
+		// Make vertical scrollbars scroll together
+		ScrollBar vBarLeft = labelTable.getVerticalBar();
+		vBarLeft.addListener(SWT.Selection, new Listener()
+		{
+			public void handleEvent(Event event)
+			{
+				contentTable.setTopIndex(labelTable.getTopIndex());
+			}
+		});
+
+		ScrollBar vBarRight = contentTable.getVerticalBar();
+		vBarRight.addListener(SWT.Selection, new Listener()
+		{
+			public void handleEvent(Event event)
+			{
+				labelTable.setTopIndex(contentTable.getTopIndex());
+			}
+		});
+		// Horizontal bar on second table takes up a little extra space.
+		// To keep vertical scroll bars in sink, force table1 to end above
+		// horizontal scrollbar
+		ScrollBar hBarRight = contentTable.getHorizontalBar();
+		Label spacer = new Label(composite, SWT.NONE);
+		GridData spacerData = new GridData();
+		spacerData.heightHint = hBarRight.getSize().y;
+		spacer.setVisible(false);
+		composite.setBackground(labelTable.getBackground());
+		
+		for (TableColumn tmpColumn : contentTable.getColumns())
 		{
 			tmpColumn.dispose();
 		}
 
-		final TableEditor editor = new TableEditor(previewTable);
+		final TableEditor editor = new TableEditor(contentTable);
 		editor.horizontalAlignment = SWT.LEFT;
 		editor.grabHorizontal = true;
 
-		previewTable.addSelectionListener(new SelectionAdapter()
+		contentTable.addSelectionListener(new SelectionAdapter()
 		{
 			@Override
 			public void widgetSelected(SelectionEvent e)
 			{
-				// TODO Auto-generated method stub
 				super.widgetSelected(e);
-//
-//				String sSelection = e.item.toString();
-//				Integer iSelectedRowIndex = new Integer(sSelection.substring(sSelection
-//						.lastIndexOf(' ') + 1, sSelection.lastIndexOf('}')));
-//
-//				Integer iDavidID = GeneralManager.get().getIDMappingManager().getID(
-//						EMappingType.EXPRESSION_INDEX_2_DAVID, iSelectedRowIndex);
-//
-//				if (iDavidID == null || iDavidID == -1)
-//					return;
-//
-//				SelectionDelta tmpDelta = new SelectionDelta(EIDType.DAVID);
-//				tmpDelta.addSelection(iDavidID, ESelectionType.MOUSE_OVER);
-//
-//				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-//						new SelectionCommandEventContainer(EIDType.DAVID,
-//								new SelectionCommand(ESelectionCommandType.CLEAR,
-//										ESelectionType.MOUSE_OVER)));
-//
-//				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-//						new DeltaEventContainer<ISelectionDelta>(tmpDelta));
+				
+//				TableItem selectedItem = ((TableItem)e.item);
+//				final int iSelectedRowIndex = contentTable.indexOf(selectedItem);
+//				addRemoveIcon(iSelectedRowIndex);
+//				triggerContentSelectionEvent(iSelectedRowIndex, ESelectionType.SELECTION);
 
 			}
 		});
 
-		previewTable.addListener(SWT.MouseDown, new Listener()
+		contentTable.addListener(SWT.MouseDown, new Listener()
 		{
 			public void handleEvent(Event event)
 			{
-				Rectangle clientArea = previewTable.getClientArea();
+				Rectangle clientArea = contentTable.getClientArea();
 				Point pt = new Point(event.x, event.y);
 
 				int index = 0; // only make caption line editable
 
 				boolean visible = false;
-				final TableItem item = previewTable.getItem(index);
-				for (int iColIndex = 1; iColIndex < previewTable.getColumnCount(); iColIndex++)
+				final TableItem item = contentTable.getItem(index);
+				for (int iColIndex = 1; iColIndex < contentTable.getColumnCount(); iColIndex++)
 				{
 					Rectangle rect = item.getBounds(iColIndex);
 					if (rect.contains(pt))
 					{
 						final int column = iColIndex;
-						final Text text = new Text(previewTable, SWT.NONE);
+						final Text text = new Text(contentTable, SWT.NONE);
 						Listener textListener = new Listener()
 						{
 							public void handleEvent(final Event e)
@@ -620,462 +510,323 @@ public class TabularDataViewRep
 			}
 		});
 
-		// Read preview table
-		BufferedReader brFile;
-		try
+		TableColumn column;
+		TableItem item;
+		float fValue;
+
+		column = new TableColumn(labelTable, SWT.NONE);
+		column.setText("#");
+		column.setWidth(50);
+
+		column = new TableColumn(labelTable, SWT.NONE);
+		column.setText("RefSeq ID");
+		column.setWidth(110);
+
+		column = new TableColumn(labelTable, SWT.NONE);
+		column.setText("Gene Symbol");
+		column.setWidth(110);
+
+		for (Integer iStorageIndex : set.getVA(iStorageVAID))
 		{
-			brFile = GeneralManager.get().getResourceLoader().getResource(sFileName);
-
-			String sLine = "";
-
-			// Ignore unwanted header files of file
-			for (int iIgnoreLineIndex = 2; iIgnoreLineIndex < iStartParseFileAtLine; iIgnoreLineIndex++)
-			{
-				brFile.readLine();
-			}
-
-			String sTmpNextToken = "";
-			StringTokenizer tokenizer;
-			TableColumn column;
-			TableItem item;
-			int iColIndex = 0;
-
-			// Read labels
-			if ((sLine = brFile.readLine()) != null)
-			{
-				tokenizer = new StringTokenizer(sLine, sDelimiter, false);
-				item = new TableItem(previewTable, SWT.NONE);
-
-				item.setText(0, "Label");
-				column = new TableColumn(previewTable, SWT.NONE);
-				column.setText("bla");
-				column.setWidth(100);
-
-				while (tokenizer.hasMoreTokens())
-				{
-					sTmpNextToken = tokenizer.nextToken();
-
-					column = new TableColumn(previewTable, SWT.NONE);
-					column.setText("Bal");
-					column.setWidth(100);
-				    column.setMoveable(true);
-//				    column.addListener(SWT.Move, listener);
-					
-					item.setText(iColIndex + 1, sTmpNextToken);
-					// item.setBackground(iColCount, Display.getCurrent()
-					// .getSystemColor(SWT.COLOR_TITLE_BACKGROUND));
-
-					iColIndex++;
-				}
-			}
-
-			int iRowCount = 0;
-			boolean bCellFilled = false;
-
-			while ((sLine = brFile.readLine()) != null && iRowCount < MAX_PREVIEW_TABLE_ROWS)
-			{
-				// last flag triggers return of delimiter itself
-				tokenizer = new StringTokenizer(sLine, sDelimiter, true);
-				item = new TableItem(previewTable, SWT.NONE);
-				iColIndex = 0;
-
-				while (tokenizer.hasMoreTokens())
-				{
-					sTmpNextToken = tokenizer.nextToken();
-
-					// Check for empty cells
-					if (sTmpNextToken.equals(sDelimiter) && !bCellFilled)
-					{
-						item.setText(iColIndex + 1, "");
-						iColIndex++;
-					}
-					else if (sTmpNextToken.equals(sDelimiter) && bCellFilled)
-					{
-						bCellFilled = false; // reset
-					}
-					else
-					{
-						bCellFilled = true;
-						item.setText(iColIndex + 1, sTmpNextToken);
-						iColIndex++;
-					}
-				}
-
-				bCellFilled = false; // reset
-
-				iRowCount++;
-			}
-		}
-		catch (FileNotFoundException e)
-		{
-			throw new IllegalStateException("File not found!");
-		}
-		catch (IOException ioe)
-		{
-			throw new IllegalStateException("Input/output problem!");
+			column = new TableColumn(contentTable, SWT.NONE);
+			column.setText(set.get(iStorageIndex).getLabel());
+			column.setWidth(120);
+			column.setMoveable(true);
+//			column.setImage(generalManager.getResourceLoader().getImage(
+//					column.getDisplay(), "resources/icons/general/remove.png"));
+//			column.addSelectionListener(new SelectionAdapter() {
+//				@Override
+//				public void widgetSelected(SelectionEvent e)
+//				{
+//					System.out.println(e.toString());
+//				}
+//			});
 		}
 
-		createDataClassBar();
-		createDataTypeBar();
+		IVirtualArray storageVA = set.getVA(iStorageVAID);
 
-		TableItem[] arTmpLabelColumnItem = previewTable.getItems();
-
-		// arTmpLabelColumnItem[0].setText(0, "Label");
-		arTmpLabelColumnItem[0].setBackground(0, previewTable.getDisplay().getSystemColor(
-				SWT.COLOR_TITLE_BACKGROUND));
-		arTmpLabelColumnItem[1].setText(0, "Data class");
-		arTmpLabelColumnItem[1].setBackground(0, previewTable.getDisplay().getSystemColor(
-				SWT.COLOR_TITLE_BACKGROUND));
-		arTmpLabelColumnItem[2].setText(0, "Data type");
-		arTmpLabelColumnItem[2].setBackground(0, previewTable.getDisplay().getSystemColor(
-				SWT.COLOR_TITLE_BACKGROUND));
-
-		for (int iItemIndex = 3; iItemIndex < arTmpLabelColumnItem.length; iItemIndex++)
+		int iRefSeqID = 0;
+		String sGeneSymbol = "";
+		for (Integer iContentIndex : set.getVA(iContentVAID))
 		{
-			arTmpLabelColumnItem[iItemIndex].setText(0, "Row " + (iItemIndex - 2));
-			arTmpLabelColumnItem[iItemIndex].setBackground(0, Display.getCurrent()
-					.getSystemColor(SWT.COLOR_TITLE_BACKGROUND));
-		}
-	}
+			// line number
+			item = new TableItem(labelTable, SWT.NONE);
+//			item.setData(iContentIndex);
+			item.setText(0, Integer.toString(iContentIndex));
 
-	private void createDataClassBar()
-	{
+			iRefSeqID = idMappingManager.getID(
+					EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iContentIndex);
 
-		for (Combo tmpComboDataClass : arComboDataClass)
-		{
-			tmpComboDataClass.dispose();
-		}
+			// RefSeq ID
+			item.setText(1, (String) idMappingManager.getID(
+					EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA, iRefSeqID));
 
-		arComboDataClass.clear();
+			// Gene Symbol
+			sGeneSymbol = (String) idMappingManager.getID(EMappingType.DAVID_2_GENE_SYMBOL,
+					idMappingManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID));
 
-		TableItem tmpItem = new TableItem(previewTable, SWT.NONE, 1);
-
-		for (int iColIndex = 1; iColIndex < previewTable.getColumnCount(); iColIndex++)
-		{
-			// previewTable.getColumn (iColIndex).pack();
-
-			// Initialize data type selection combo
-			final Combo comboTmpDataClass = new Combo(previewTable, SWT.READ_ONLY);
-			comboTmpDataClass.setSize(previewTable.getColumn(iColIndex).getWidth(), 35);
-			comboTmpDataClass.setItems(new String[] { "SKIP", "RefSeq ID", "Experiment",
-					"Patient" });
-
-			if (iColIndex == 1)
-				comboTmpDataClass.select(1);
+			if (sGeneSymbol != null)
+				item.setText(2, sGeneSymbol);
 			else
-				comboTmpDataClass.select(2); // by default set columns to
-			// experiment
+				item.setText(2, "Unknown");
 
-			// should be ignored
-			arComboDataClass.add(comboTmpDataClass);
-
-			TableEditor editor = new TableEditor(previewTable);
-			editor.grabHorizontal = true;
-			editor.setEditor(comboTmpDataClass, tmpItem, iColIndex);
-
-			// Set corresponding column background color to yellow
-			for (TableItem tmpTableItem : previewTable.getItems())
+			item = new TableItem(contentTable, SWT.NONE);
+			
+			for (Integer iStorageIndex : storageVA)
 			{
-				tmpTableItem.setBackground(arComboDataClass.indexOf(comboTmpDataClass) + 1,
-						Display.getCurrent().getSystemColor(SWT.COLOR_RED));
+				fValue = set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
+						iContentIndex);
+
+				item.setText(iStorageIndex, Float.toString(fValue));
 			}
-
-			comboTmpDataClass.addMouseTrackListener(new MouseTrackAdapter()
-			{
-				public Color originalColor = txtFileName.getBackground();
-				public Color highlightColor = Display.getCurrent().getSystemColor(
-						SWT.COLOR_YELLOW);
-				public Color selectionColor = Display.getCurrent().getSystemColor(
-						SWT.COLOR_RED);
-
-				@Override
-				public void mouseEnter(MouseEvent e)
-				{
-					// Set corresponding column background color to yellow
-					for (TableItem tmpItem : previewTable.getItems())
-					{
-						if (comboTmpDataClass.getSelectionIndex() == 0)
-						{
-							tmpItem.setBackground(
-									arComboDataClass.indexOf(comboTmpDataClass) + 1,
-									highlightColor);
-						}
-					}
-				}
-
-				@Override
-				public void mouseExit(MouseEvent e)
-				{
-					// Set back to original color
-					for (TableItem tmpItem : previewTable.getItems())
-					{
-						if (comboTmpDataClass.getSelectionIndex() > 0)
-						{
-							tmpItem.setBackground(
-									arComboDataClass.indexOf(comboTmpDataClass) + 1,
-									selectionColor);
-						}
-						else
-						{
-							tmpItem.setBackground(
-									arComboDataClass.indexOf(comboTmpDataClass) + 1,
-									originalColor);
-						}
-					}
-				}
-			});
-
-			comboTmpDataClass.addSelectionListener(new SelectionAdapter()
-			{
-
-				@Override
-				public void widgetSelected(SelectionEvent e)
-				{
-
-					int iColIndex = arComboDataClass.indexOf(comboTmpDataClass);
-
-					if (comboTmpDataClass.getSelectionIndex() == 0
-							|| comboTmpDataClass.getSelectionIndex() == 1)
-					{
-						arComboDataType.get(iColIndex).setEnabled(false);
-						arComboDataType.get(iColIndex).select(0);
-						// arButtonNormalize.get(iColIndex).setSelection(false);
-					}
-					else
-					{
-						arComboDataType.get(iColIndex).setEnabled(true);
-						// arButtonNormalize.get(iColIndex).setSelection(true);
-					}
-
-					if (comboTmpDataClass.getText().equals("RefSeq ID"))
-						arComboDataType.get(iColIndex).select(1);
-					else if (comboTmpDataClass.getText().equals("Experiment"))
-						arComboDataType.get(iColIndex).select(2);
-				}
-			});
+			
+//			if (iContentIndex > 1000)
+//				break;
 		}
+		
+
+		cursor = new TableCursor(contentTable, SWT.NONE);
+		cursor.addSelectionListener(new SelectionAdapter() {
+			// when the TableEditor is over a cell, select the corresponding row in 
+			// the table
+			public void widgetSelected(SelectionEvent e) {
+				
+				int iStorageIndex = cursor.getColumn();
+				contentTable.setSelection(new TableItem[] {cursor.getRow()});
+				
+				int iRowIndex = contentTable.indexOf(cursor.getRow());
+				int iRefSeqID = set.getVA(iContentVAID).get(iRowIndex);
+				
+				triggerStorageSelectionEvent(iStorageIndex, ESelectionType.SELECTION);				
+				triggerContentSelectionEvent(iRefSeqID, ESelectionType.SELECTION);
+				
+				addRemoveIcon(iRowIndex);
+			}
+		});
 	}
 
-	private void createDataTypeBar()
-	{
-
-		for (Combo tmpComboDataType : arComboDataType)
-		{
-			tmpComboDataType.dispose();
-		}
-
-		arComboDataType.clear();
-
-		TableItem tmpItem = new TableItem(previewTable, SWT.NONE, 2);
-
-		for (int iColIndex = 1; iColIndex < previewTable.getColumnCount(); iColIndex++)
-		{
-			// previewTable.getColumn (iColIndex).pack();
-
-			// Initialize data type selection combo
-			final Combo comboTmpDataType = new Combo(previewTable, SWT.READ_ONLY);
-			comboTmpDataType.setSize(previewTable.getColumn(iColIndex).getWidth(), 35);
-			comboTmpDataType.setEnabled(false);
-			comboTmpDataType.setItems(new String[] { "SKIP", "INT", "FLOAT", "STRING" });
-
-			if (iColIndex == 1)
-				comboTmpDataType.select(0);
-			else
-				comboTmpDataType.select(2); // by default set columns to
-			// experiment
-
-			// should be ignored
-			arComboDataType.add(comboTmpDataType);
-
-			TableEditor editor = new TableEditor(previewTable);
-			editor.grabHorizontal = true;
-			editor.setEditor(comboTmpDataType, tmpItem, iColIndex);
-		}
-	}
-
-	public void execute()
-	{
-		for (ISet set : GeneralManager.get().getSetManager().getAllItems())
-		{
-			if (set.getSetType() == ESetType.GENE_EXPRESSION_DATA)
-			{
-				iOldSetID = set.getID();
-				break;
-			}
-		}
-
-		createData();
-		setDataInViews();
-		clearOldData();
-
-		// TODO: review
-		// Application.applicationMode = EApplicationMode.STANDARD;
-	}
-
-	private void createData()
-	{
-		ArrayList<Integer> iAlStorageId = new ArrayList<Integer>();
-		String sStorageIDs = "";
-
-		// Build input pattern from data type combos
-		sInputPattern = "";
-
-		Combo tmpComboDataType;
-		for (int iColIndex = 0; iColIndex < arComboDataType.size(); iColIndex++)
-		{
-			tmpComboDataType = arComboDataType.get(iColIndex);
-
-			if (arComboDataClass.get(iColIndex).getText().equals("RefSeq ID"))
-			{
-				sInputPattern = sInputPattern + "SKIP" + ";";
-				continue;
-			}
-
-			if (tmpComboDataType.getText().equals("FLOAT")
-					|| tmpComboDataType.getText().equals("SKIP"))
-			{
-				sInputPattern = sInputPattern + tmpComboDataType.getText() + ";";
-			}
-
-			if (tmpComboDataType.getText().equals("FLOAT")) // currently we only
-			// allow parsing
-			// float data
-			{
-				// Create data storage
-				CmdDataCreateStorage cmdCreateStorage = (CmdDataCreateStorage) GeneralManager
-						.get().getCommandManager().createCommandByType(
-								ECommandType.CREATE_STORAGE);
-
-				cmdCreateStorage.setAttributes(EManagedObjectType.STORAGE_NUMERICAL);
-				cmdCreateStorage.doCommand();
-
-				INumericalStorage storage = (INumericalStorage) cmdCreateStorage
-						.getCreatedObject();
-
-				storage.setLabel(previewTable.getItem(0).getText(iColIndex + 1));
-
-				iAlStorageId.add(storage.getID());
-
-				if (!sStorageIDs.equals(""))
-					sStorageIDs += IGeneralManager.sDelimiter_Parser_DataItems;
-
-				sStorageIDs = sStorageIDs + storage.getID();
-
-			}
-		}
-
-		sInputPattern += "ABORT;";
-
-		sFileName = txtFileName.getText();
-
-		if (sFileName.equals(""))
-		{
-			MessageDialog.openError(composite.getShell(), "Invalid filename",
-					"Invalid filename");
-			return;
-		}
-
-		// Trigger file loading command
-		CmdLoadFileNStorages cmdLoadCsv = (CmdLoadFileNStorages) GeneralManager.get()
-				.getCommandManager().createCommandByType(ECommandType.LOAD_DATA_FILE);
-
-		// ISWTGUIManager iSWTGUIManager =
-		// GeneralManager.get().getSWTGUIManager();
-		// iSWTGUIManager.setProgressBarVisible(true);
-
-		cmdLoadCsv.setAttributes(iAlStorageId, sFileName, sInputPattern, sDelimiter,
-				iStartParseFileAtLine - 1, -1);
-		cmdLoadCsv.doCommand();
-
-		// Create SET
-		CmdDataCreateSet cmdCreateSet = (CmdDataCreateSet) GeneralManager.get()
-				.getCommandManager().createCommandByType(ECommandType.CREATE_SET_DATA);
-		cmdCreateSet.setAttributes(iAlStorageId, ESetType.GENE_EXPRESSION_DATA);
-		cmdCreateSet.doCommand();
-		ISet set = cmdCreateSet.getCreatedObject();
-		iCreatedSetID = set.getID();
-
-		// iSWTGUIManager.setProgressBarVisible(false);
-
-		CmdLoadFileLookupTable cmdLoadLookupTableFile = (CmdLoadFileLookupTable) GeneralManager
-				.get().getCommandManager().createCommandByType(
-						ECommandType.LOAD_LOOKUP_TABLE_FILE);
-
-		cmdLoadLookupTableFile.setAttributes(sFileName, iStartParseFileAtLine, -1,
-				"REFSEQ_MRNA_2_EXPRESSION_INDEX REVERSE LUT", sDelimiter,
-				"REFSEQ_MRNA_INT_2_EXPRESSION_INDEX");
-		cmdLoadLookupTableFile.doCommand();
-
-		if (!txtMin.getText().isEmpty())
-		{
-			float fMin = Float.parseFloat(txtMin.getText());
-			if (!Float.isNaN(fMin))
-			{
-				set.setMin(fMin);
-			}
-		}
-
-		if (!txtMax.getText().isEmpty())
-		{
-			float fMax = Float.parseFloat(txtMax.getText());
-			if (!Float.isNaN(fMax))
-			{
-				set.setMax(fMax);
-			}
-		}
-
-		// TODO only ok for homogeneous sets (meaning only sets with the same
-		// data type and range)
-		if (sDataRepMode.equals("Normal"))
-		{
-			set.setExternalDataRepresentation(EExternalDataRepresentation.NORMAL, true);
-		}
-		else if (sDataRepMode.equals("Log10"))
-		{
-			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG10, true);
-		}
-		else if (sDataRepMode.equals("Log2"))
-		{
-			set.setExternalDataRepresentation(EExternalDataRepresentation.LOG2, true);
-		}
-		else
-		{
-			throw new IllegalStateException("Unknown data representation type");
-		}
-	}
-
-	private void setDataInViews()
-	{
-		for (AGLEventListener tmpGLEventListener : GeneralManager.get()
-				.getViewGLCanvasManager().getAllGLEventListeners())
-		{
-			tmpGLEventListener.clearSets();
-			tmpGLEventListener.addSet(iCreatedSetID);
-
-			if (tmpGLEventListener.getClass().getSuperclass().equals(AStorageBasedView.class))
-			{
-				((AStorageBasedView) tmpGLEventListener).initData();
-			}
-		}
-	}
-
-	private void clearOldData()
-	{
-		GeneralManager.get().getSetManager().unregisterItem(iOldSetID);
-	}
-
+	@SuppressWarnings("unchecked")
 	@Override
 	public void handleExternalEvent(IUniqueObject eventTrigger, IEventContainer eventContainer)
 	{
-		// TODO Auto-generated method stub
-
+		switch (eventContainer.getEventType())
+		{
+			case SELECTION_UPDATE:
+				DeltaEventContainer<ISelectionDelta> selectionDeltaEventContainer = (DeltaEventContainer<ISelectionDelta>) eventContainer;
+				handleSelectionUpdate(eventTrigger, selectionDeltaEventContainer
+						.getSelectionDelta());
+				break;
+			case VA_UPDATE:
+				DeltaEventContainer<IVirtualArrayDelta> vaDeltaEventContainer = (DeltaEventContainer<IVirtualArrayDelta>) eventContainer;
+				handleVAUpdate(eventTrigger, vaDeltaEventContainer.getSelectionDelta());
+				break;
+			case TRIGGER_SELECTION_COMMAND:
+				SelectionCommandEventContainer commandEventContainer = (SelectionCommandEventContainer) eventContainer;
+				switch (commandEventContainer.getIDType())
+				{
+					case DAVID:
+					case REFSEQ_MRNA_INT:
+					case EXPRESSION_INDEX:
+						contentSelectionManager.executeSelectionCommands(commandEventContainer
+								.getSelectionCommands());
+						break;
+					case EXPERIMENT_INDEX:
+						storageSelectionManager.executeSelectionCommands(commandEventContainer
+								.getSelectionCommands());
+						break;
+				}
+		}
 	}
 
+	private void handleSelectionUpdate(IUniqueObject eventTrigger,
+			ISelectionDelta selectionDelta)
+	{
+		// Check for type that can be handled
+		if (selectionDelta.getIDType() == EIDType.REFSEQ_MRNA_INT
+				|| selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX)
+		{
+			contentSelectionManager.setDelta(selectionDelta);
+//			ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
+			reactOnExternalSelection();
+		}
+
+		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX)
+		{
+			storageSelectionManager.setDelta(selectionDelta);
+		}
+	}
+
+	private void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta)
+	{
+		GenericSelectionManager selectionManager;
+		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX)
+		{
+			selectionManager = storageSelectionManager;
+		}
+		else if (delta.getIDType() == EIDType.REFSEQ_MRNA_INT)
+		{
+			delta = DeltaConverter.convertDelta(
+					EIDType.EXPRESSION_INDEX, delta);
+			selectionManager = contentSelectionManager;
+		}
+		else if (delta.getIDType() == EIDType.EXPRESSION_INDEX)
+		{
+			selectionManager = contentSelectionManager;
+		}
+		else
+		{
+			return;
+		}
+		
+//		reactOnVAChanges(delta);
+		selectionManager.setVADelta(delta);
+		reactOnExternalSelection();
+	}
+	
+	/**
+	 * Highlight the selected cell in the table.
+	 * Only the first element is taken, since we cannot handle multiple selections ATM.
+	 */
+	private void reactOnExternalSelection()
+	{		
+		composite.getDisplay().asyncExec(new Runnable()
+		{
+			public void run()
+			{
+				contentTable.deselectAll();
+				labelTable.deselectAll();
+				
+				Iterator<Integer> iterContentIndex = contentSelectionManager.getElements(ESelectionType.SELECTION).iterator();
+				while (iterContentIndex.hasNext())
+				{
+					int iRowIndex = set.getVA(iContentVAID).indexOf(
+							iterContentIndex.next());
+					cursor.setSelection(iRowIndex, cursor.getColumn());
+					contentTable.select(iRowIndex);
+					labelTable.select(iRowIndex);
+					addRemoveIcon(iRowIndex);
+//					contentTable.setSelection(iRowIndex);
+//					labelTable.setSelection(iRowIndex);
+				}
+				
+				Iterator<Integer> iterStorageIndex = storageSelectionManager.getElements(ESelectionType.SELECTION).iterator();
+				if (iterStorageIndex.hasNext())
+				{
+					cursor.setSelection(cursor.getRow(), iterStorageIndex.next());
+				}		
+			}
+		});		
+	}
+	
+//	@Override
+//	protected void reactOnVAChanges(IVirtualArrayDelta delta)
+//	{
+//		if (delta.getIDType() == eAxisDataType)
+//		{
+//
+//			IVirtualArray axisVA = set.getVA(iAxisVAID);
+//			for (VADeltaItem item : delta)
+//			{
+//				int iElement = axisVA.get(item.getIndex());
+//				if (item.getType() == EVAOperation.REMOVE)
+//				{
+//					resetAxisSpacing();
+//					if (axisVA.containsElement(iElement) == 1)
+//						hashGates.remove(iElement);
+//				}
+//				else if (item.getType() == EVAOperation.REMOVE_ELEMENT)
+//				{
+//					resetAxisSpacing();
+//					hashGates.remove(item.getPrimaryID());
+//				}
+//			}
+//		}
+//	}
+	
+	private void triggerContentSelectionEvent(int iContentIndex, ESelectionType eSelectionType)
+	{
+		if (contentSelectionManager.checkStatus(eSelectionType, iContentIndex))
+			return;
+		
+		contentSelectionManager.clearSelection(eSelectionType);
+
+		// Resolve multiple spotting on chip and add all to the
+		// selection manager.
+		Integer iRefSeqID = idMappingManager.getID(
+				EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, iContentIndex);
+		for (Object iExpressionIndex : idMappingManager.getMultiID(
+				EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID))
+		{
+			contentSelectionManager.addToType(eSelectionType,
+					(Integer) iExpressionIndex);
+		}
+
+		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
+
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+				new SelectionCommandEventContainer(EIDType.REFSEQ_MRNA_INT,
+						new SelectionCommand(ESelectionCommandType.CLEAR,
+								eSelectionType)));
+
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+				new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+	}
+
+	private void triggerStorageSelectionEvent(int iStorageIndex, ESelectionType eSelectionType)
+	{
+		if (storageSelectionManager.checkStatus(eSelectionType, iStorageIndex))
+			return;
+		
+		storageSelectionManager.clearSelection(eSelectionType);
+		storageSelectionManager.addToType(eSelectionType, iStorageIndex);
+		
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+				new SelectionCommandEventContainer(EIDType.EXPERIMENT_INDEX,
+						new SelectionCommand(ESelectionCommandType.CLEAR,
+								eSelectionType)));
+		ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+				new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+	}
+	
 	@Override
 	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
 	{
 		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 
 	}
+	
+	private void addRemoveIcon(int iRowIndex)
+	{
+		Label lblRemove = new Label(labelTable, SWT.CENTER);
+		lblRemove.setBackground(lblRemove.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		lblRemove.setImage(generalManager.getResourceLoader().getImage(
+				lblRemove.getDisplay(), "resources/icons/general/remove.png"));
+		lblRemove.setData(contentTable.getItem(iRowIndex));
+		
+		// Only one remove icon should be shown at a time
+		if (lastRemove != null)
+		{
+			lastRemove.dispose();
+		}
+		
+		lastRemove = lblRemove;
+		
+		final TableEditor editor = new TableEditor(labelTable);
+		editor.grabHorizontal = true;
+		editor.setEditor(lblRemove, contentTable.getItem(iRowIndex), 0);
 
+		lblRemove.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseDown(MouseEvent e)
+			{
+				TableItem item = (TableItem)e.widget.getData();
+				editor.getEditor().dispose();
+				editor.dispose();
+				item.dispose();
+			}
+		});
+
+	}
 }

@@ -2681,7 +2681,7 @@ public class GLRemoteRendering
 	@Override
 	public synchronized void broadcastElements(EVAOperation type)
 	{
-		throw new IllegalStateException("Not Implemented");
+		// do nothing
 	}
 
 	private synchronized void initializeNewPathways(final GL gl)

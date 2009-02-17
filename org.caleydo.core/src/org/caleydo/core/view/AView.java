@@ -1,7 +1,9 @@
 package org.caleydo.core.view;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import org.caleydo.core.data.AUniqueObject;
+import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.manager.IGeneralManager;
 import org.caleydo.core.manager.data.ISetManager;
@@ -77,5 +79,30 @@ public abstract class AView
 		{
 			parentComposite.getShell().setText(label);
 		}
+	}
+	
+	public synchronized void addSet(ISet set)
+	{
+		alSets.add(set);
+	}
+
+	public synchronized void addSet(int iSetID)
+	{
+		alSets.add(generalManager.getSetManager().getItem(iSetID));		
+	}
+
+	public synchronized void removeSets(ESetType setType)
+	{
+		Iterator<ISet> iter = alSets.iterator();
+		while (iter.hasNext())
+		{
+			if (iter.next().getSetType() == setType)
+				iter.remove();
+		}
+	}
+
+	public synchronized void clearSets()
+	{
+		alSets.clear();
 	}
 }

@@ -1577,8 +1577,9 @@ public class GLHierarchicalHeatMap
 			privateMediator.triggerEvent(this, new DeltaEventContainer<ISelectionDelta>(
 					selectionDelta));
 
-			triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-					new DeltaEventContainer<ISelectionDelta>(selectionDelta));
+			// TODO: BERNHARD: why is this here? incoming events are resent.
+//			triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+//					new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 		}
 
 		// // selected experiments

@@ -1,13 +1,13 @@
 package org.caleydo.rcp.util.glyph;
 
 import org.caleydo.rcp.EStartViewType;
-import org.caleydo.rcp.action.view.AToolBarAction;
-import org.caleydo.rcp.action.view.glyph.ChangeSelectionBrush;
-import org.caleydo.rcp.action.view.glyph.ChangeViewModeToCircleAction;
-import org.caleydo.rcp.action.view.glyph.ChangeViewModeToPlusModelAction;
-import org.caleydo.rcp.action.view.glyph.ChangeViewModeToRandomAction;
-import org.caleydo.rcp.action.view.glyph.ChangeViewModeToRectangleAction;
-import org.caleydo.rcp.action.view.glyph.ChangeViewModeToScatterplotAction;
+import org.caleydo.rcp.action.toolbar.AToolBarAction;
+import org.caleydo.rcp.action.toolbar.view.glyph.ChangeSelectionBrush;
+import org.caleydo.rcp.action.toolbar.view.glyph.ChangeViewModeToCircleAction;
+import org.caleydo.rcp.action.toolbar.view.glyph.ChangeViewModeToPlusModelAction;
+import org.caleydo.rcp.action.toolbar.view.glyph.ChangeViewModeToRandomAction;
+import org.caleydo.rcp.action.toolbar.view.glyph.ChangeViewModeToRectangleAction;
+import org.caleydo.rcp.action.toolbar.view.glyph.ChangeViewModeToScatterplotAction;
 import org.caleydo.rcp.views.opengl.GLGlyphView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;

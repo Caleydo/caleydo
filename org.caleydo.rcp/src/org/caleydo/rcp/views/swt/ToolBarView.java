@@ -2,7 +2,6 @@ package org.caleydo.rcp.views.swt;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.command.view.swt.CmdViewCreateDataEntitySearcher;
 import org.caleydo.core.data.IUniqueObject;
@@ -19,7 +18,8 @@ import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHe
 import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
 import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
 import org.caleydo.rcp.Application;
-import org.caleydo.rcp.action.view.TakeSnapshotAction;
+import org.caleydo.rcp.action.toolbar.general.ExportDataAction;
+import org.caleydo.rcp.action.toolbar.view.TakeSnapshotAction;
 import org.caleydo.rcp.util.info.InfoArea;
 import org.caleydo.rcp.util.search.SearchBox;
 import org.caleydo.rcp.views.opengl.GLGlyphView;
@@ -29,7 +29,6 @@ import org.caleydo.rcp.views.opengl.GLParCoordsView;
 import org.caleydo.rcp.views.opengl.GLPathwayView;
 import org.caleydo.rcp.views.opengl.GLRemoteRenderingView;
 import org.eclipse.jface.action.IToolBarManager;
-import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.action.ToolBarManager;
 import org.eclipse.jface.preference.PreferenceDialog;
 import org.eclipse.swt.SWT;
@@ -56,13 +55,14 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
+import org.eclipse.ui.ISizeProvider;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.part.ViewPart;
 
 public class ToolBarView
 	extends ViewPart
-	implements IMediatorReceiver
+	implements IMediatorReceiver, ISizeProvider
 {
 	public static final String ID = "org.caleydo.rcp.views.ToolBarView";
 
@@ -583,6 +583,7 @@ public class ToolBarView
 
 		final ToolBar toolBar = new ToolBar(composite, SWT.WRAP | SWT.FLAT);
 		ToolBarManager toolBarManager = new ToolBarManager(toolBar);
+		toolBarManager.add(new ExportDataAction());
 		toolBarManager.add(new TakeSnapshotAction());
 		toolBarManager.update(true);
 
@@ -620,5 +621,23 @@ public class ToolBarView
 	{
 		// TODO Auto-generated method stub
 
+	}
+	
+
+	@Override
+	public int computePreferredSize(boolean width, int availableParallel,
+			int availablePerpendicular, int preferredResult)
+	{
+		// Set minimum size of the view
+		if (width == true)
+			return (int)(ToolBarView.TOOLBAR_WIDTH * 1.25f);
+		
+		return 1000;
+	}
+
+	@Override
+	public int getSizeFlags(boolean width)
+	{
+		return SWT.MIN;
 	}
 }

@@ -4,10 +4,13 @@ import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.mapping.EIDType;
 import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.DeltaEventContainer;
+import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
+import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
 import org.caleydo.core.data.selection.VADeltaItem;
 import org.caleydo.core.manager.event.EMediatorType;
@@ -18,13 +21,10 @@ import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.rcp.views.swt.HTMLBrowserView;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.PaintEvent;
-import org.eclipse.swt.events.PaintListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Font;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -179,6 +179,7 @@ public class InfoArea
 							{
 								existingItem.setBackground(color);
 								existingItem.getItem(0).setBackground(color);
+								existingItem.setData("selection_type", selectionItem.getSelectionType());
 								bIsExisting = true;
 								break;
 							}
@@ -190,6 +191,7 @@ public class InfoArea
 							item.setText(sGeneSymbol);
 							item.setBackground(color);
 							item.setData(selectionItem.getPrimaryID());
+							item.setData("selection_type", selectionItem.getSelectionType());
 							
 							TreeItem subItem = new TreeItem(item, 0);
 							subItem.setText(sRefSeqID);
@@ -205,6 +207,9 @@ public class InfoArea
 	private void handleVAUpdate(final IUniqueObject eventTrigger, final IVirtualArrayDelta delta)
 	{
 		if (delta.getIDType() != EIDType.REFSEQ_MRNA_INT)
+			return;
+		
+		if (parentComposite.isDisposed())
 			return;
 		
 		parentComposite.getDisplay().asyncExec(new Runnable()
@@ -258,6 +263,50 @@ public class InfoArea
 				DeltaEventContainer<IVirtualArrayDelta> vaDeltaEventContainer = (DeltaEventContainer<IVirtualArrayDelta>) eventContainer;
 				handleVAUpdate(eventTrigger, vaDeltaEventContainer.getSelectionDelta());
 				break;
+			case TRIGGER_SELECTION_COMMAND:
+				final SelectionCommandEventContainer commandEventContainer = (SelectionCommandEventContainer) eventContainer;
+				switch (commandEventContainer.getIDType())
+				{
+					case DAVID:
+					case REFSEQ_MRNA_INT:
+					case EXPRESSION_INDEX:
+						
+						if (parentComposite.isDisposed())
+							return;
+						
+						parentComposite.getDisplay().asyncExec(new Runnable()
+						{
+							public void run()
+							{
+								ESelectionCommandType cmdType;
+								for (SelectionCommand cmd : commandEventContainer.getSelectionCommands())
+								{
+									cmdType = cmd.getSelectionCommandType();
+									if(cmdType == ESelectionCommandType.RESET 
+											|| cmdType == ESelectionCommandType.CLEAR_ALL)
+									{
+										selectionTree.removeAll();
+										break;
+									}	
+									else if (cmdType == ESelectionCommandType.CLEAR)
+									{
+										// Flush old items that become deselected/normal
+										for (TreeItem tmpItem : selectionTree.getItems())
+										{
+											if( tmpItem.getData("selection_type") == cmd.getSelectionType())
+												tmpItem.dispose();
+										}	
+									}
+								}
+							}
+						});
+						
+						break;
+					case EXPERIMENT_INDEX:
+//						storageSelectionManager.executeSelectionCommands(commandEventContainer
+//								.getSelectionCommands());
+//						break;
+				}
 		}
 	}
 }

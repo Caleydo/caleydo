@@ -11,7 +11,6 @@ import gleem.linalg.Vec3f;
 import gleem.linalg.Vec4f;
 import java.util.ArrayList;
 import java.util.Set;
-import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import org.caleydo.core.data.collection.ESetType;
@@ -26,11 +25,11 @@ import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
-import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IDListEventContainer;
 import org.caleydo.core.manager.id.EManagedObjectType;
+import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.manager.picking.EPickingMode;
 import org.caleydo.core.manager.picking.EPickingType;
 import org.caleydo.core.manager.picking.Pick;
@@ -134,7 +133,6 @@ public class GLHeatMap
 	@Override
 	public void initLocal(GL gl)
 	{
-		dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
 		bRenderOnlyContext = false;
 
 		generalManager.getEventPublisher().addSender(EMediatorType.PROPAGATION_MEDIATOR, this);
@@ -151,7 +149,6 @@ public class GLHeatMap
 			final PickingJoglMouseListener pickingTriggerMouseAdapter,
 			final IGLCanvasRemoteRendering remoteRenderingGLCanvas)
 	{
-		dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
 		bRenderOnlyContext = true;
 
 		this.remoteRenderingGLCanvas = remoteRenderingGLCanvas;
@@ -482,7 +479,7 @@ public class GLHeatMap
 					case DOUBLE_CLICKED:
 						IDListEventContainer<Integer> idListEventContainer = new IDListEventContainer<Integer>(
 								EEventType.LOAD_PATHWAY_BY_GENE, EIDType.REFSEQ_MRNA_INT);
-						idListEventContainer.addID(getRefSeqFromStorageIndex(iExternalID));
+						idListEventContainer.addID(IDMappingHelper.get().getRefSeqFromStorageIndex(iExternalID));
 						triggerEvent(EMediatorType.SELECTION_MEDIATOR, idListEventContainer);
 						// intentionally no break
 
@@ -490,7 +487,22 @@ public class GLHeatMap
 						eSelectionType = ESelectionType.SELECTION;
 						break;
 					case MOUSE_OVER:
+						
 						eSelectionType = ESelectionType.MOUSE_OVER;
+						
+						// Check if mouse over element is already selected -> ignore
+						if (contentSelectionManager.checkStatus(ESelectionType.SELECTION, iExternalID))
+						{
+							contentSelectionManager.clearSelection(eSelectionType);
+							triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+									new SelectionCommandEventContainer(EIDType.EXPRESSION_INDEX,
+											new SelectionCommand(ESelectionCommandType.CLEAR,
+													eSelectionType)));
+							pickingManager.flushHits(iUniqueID, ePickingType);
+							setDisplayListDirty();
+							return;
+						}
+				
 						break;
 					default:
 						pickingManager.flushHits(iUniqueID, ePickingType);
@@ -544,7 +556,22 @@ public class GLHeatMap
 						eSelectionType = ESelectionType.SELECTION;
 						break;
 					case MOUSE_OVER:
+						
 						eSelectionType = ESelectionType.MOUSE_OVER;
+						
+						// Check if mouse over element is already selected -> ignore
+						if (storageSelectionManager.checkStatus(ESelectionType.SELECTION, iExternalID))
+						{
+							storageSelectionManager.clearSelection(eSelectionType);
+							triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+									new SelectionCommandEventContainer(EIDType.EXPERIMENT_INDEX,
+											new SelectionCommand(ESelectionCommandType.CLEAR,
+													eSelectionType)));
+							pickingManager.flushHits(iUniqueID, ePickingType);
+							setDisplayListDirty();
+							return;							
+						}
+
 						break;
 					default:
 						pickingManager.flushHits(iUniqueID, ePickingType);
@@ -570,7 +597,6 @@ public class GLHeatMap
 				}
 				setDisplayListDirty();
 				break;
-
 		}
 
 		pickingManager.flushHits(iUniqueID, ePickingType);
@@ -647,7 +673,7 @@ public class GLHeatMap
 				{
 					String sContent;
 
-					sContent = getShortNameFromDavid(iContentIndex);
+					sContent = IDMappingHelper.get().getShortNameFromDavid(iContentIndex);
 					if (sContent == null)
 						sContent = "Unknown";
 					
@@ -656,7 +682,7 @@ public class GLHeatMap
 					{
 						sContent += " | ";
 						// Render heat map element name
-						sContent += getRefSeqStringFromStorageIndex(iContentIndex);
+						sContent += IDMappingHelper.get().getRefSeqStringFromStorageIndex(iContentIndex);
 					}
 					// if (sContent == null)
 					// sContent = "Unknown";

@@ -4,7 +4,6 @@ import java.awt.Font;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumMap;
-import java.util.Random;
 import java.util.logging.Level;
 import javax.management.InvalidAttributeValueException;
 import org.caleydo.core.data.IUniqueObject;
@@ -12,7 +11,6 @@ import org.caleydo.core.data.collection.ESetType;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.graph.pathway.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.core.data.mapping.EIDType;
-import org.caleydo.core.data.mapping.EMappingType;
 import org.caleydo.core.data.selection.DeltaConverter;
 import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionType;
@@ -23,12 +21,14 @@ import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
-import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.EMediatorType;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
+import org.caleydo.core.manager.general.GeneralManager;
+import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
+import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import com.sun.opengl.util.j2d.TextRenderer;
@@ -52,10 +52,7 @@ public abstract class AStorageBasedView
 	 */
 	protected EnumMap<EStorageBasedVAType, Integer> mapVAIDs;
 
-	
 	protected ArrayList<Boolean> alUseInRandomSampling;
-	
-	protected IIDMappingManager genomeIDManager;
 
 	protected ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
@@ -84,7 +81,7 @@ public abstract class AStorageBasedView
 	/**
 	 * Define what level of filtering on the data should be applied
 	 */
-	protected EDataFilterLevel dataFilterLevel = EDataFilterLevel.ONLY_MAPPING; //ONLY_CONTEXT - why is this not read from the prefs file?
+	protected EDataFilterLevel dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
 
 	protected boolean bUseRandomSampling = true;
 
@@ -110,8 +107,6 @@ public abstract class AStorageBasedView
 		this.setType = setType;
 
 		mapVAIDs = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
-
-		genomeIDManager = generalManager.getIDMappingManager();
 
 		connectedElementRepresentationManager = generalManager.getViewGLCanvasManager()
 				.getConnectedElementRepresentationManager();
@@ -162,6 +157,25 @@ public abstract class AStorageBasedView
 				set = currentSet;
 		}
 
+		String sLevel = GeneralManager.get().getPreferenceStore().getString(
+				PreferenceConstants.DATA_FILTER_LEVEL);
+		if (sLevel.equals("complete"))
+		{
+			dataFilterLevel = EDataFilterLevel.COMPLETE;
+		}
+		else if (sLevel.equals("only_mapping"))
+		{
+			dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
+		}
+		else if (sLevel.equals("only_context"))
+		{
+			dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
+		}
+		else
+		{
+			throw new IllegalStateException("Unknown data filter level");
+		}
+		
 		if (!mapVAIDs.isEmpty())
 		{
 
@@ -220,7 +234,7 @@ public abstract class AStorageBasedView
 			{
 				// Here we get mapping data for all values
 				// FIXME: not general, only for genes
-				int iDavidID = getDavidIDFromStorageIndex(iCount);
+				int iDavidID = IDMappingHelper.get().getDavidIDFromStorageIndex(iCount);
 
 				if (iDavidID == -1)
 				{
@@ -295,59 +309,6 @@ public abstract class AStorageBasedView
 	protected abstract SelectedElementRep createElementRep(EIDType idType, int iStorageIndex)
 			throws InvalidAttributeValueException;
 
-	@Deprecated
-	protected int getDavidIDFromStorageIndex(int index)
-	{
-		Integer iRefSeqID = genomeIDManager.getID(
-				EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, index);
-
-		if (iRefSeqID == null)
-			return -1;
-		
-		Integer iDavidId = genomeIDManager.getID(EMappingType.REFSEQ_MRNA_INT_2_DAVID, iRefSeqID);
-
-		if (iDavidId == null)
-			return -1;
-
-		return iDavidId;
-	}
-
-	@Deprecated
-	protected int getRefSeqFromStorageIndex(int index)
-	{
-		Integer iRefSeqID = genomeIDManager.getID(
-				EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT, index);
-
-		if (iRefSeqID == null)
-			return -1;
-		
-		return iRefSeqID;
-	}
-
-	@Deprecated
-	protected String getShortNameFromDavid(int index)
-	{
-		// Convert expression storage ID to RefSeq
-		Integer iDavidID = getDavidIDFromStorageIndex(index);
-
-		if (iDavidID == null)
-			return "Unknown Gene";
-
-		String sGeneSymbol = genomeIDManager.getID(EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
-		if (sGeneSymbol == "")
-			return "Unkonwn Gene";
-		else
-			return sGeneSymbol;
-	}
-	
-	@Deprecated
-	protected String getRefSeqStringFromStorageIndex(int iIndex)
-	{
-		int iRefSeqID = getRefSeqFromStorageIndex(iIndex);
-		return genomeIDManager.getID(
-				EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA, iRefSeqID);
-	}
-
 	private void handleSelectionUpdate(IUniqueObject eventTrigger,
 			ISelectionDelta selectionDelta)
 	{
@@ -360,11 +321,6 @@ public abstract class AStorageBasedView
 		if (selectionDelta.getIDType() == EIDType.REFSEQ_MRNA_INT
 				|| selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX)
 		{
-			generalManager.getLogger().log(
-					Level.INFO,
-					"Update called by " + eventTrigger.getClass().getSimpleName()
-							+ ", received in: " + this.getClass().getSimpleName());
-
 			contentSelectionManager.setDelta(selectionDelta);
 			ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
 			initForAddedElements();
@@ -528,9 +484,7 @@ public abstract class AStorageBasedView
 								.getSelectionCommands());
 						break;
 				}
-
 		}
-
 	}
 
 	/**
@@ -672,17 +626,6 @@ public abstract class AStorageBasedView
 	public synchronized final void setNumberOfSamplesPerHeatmap(int iNumberOfSamplesPerHeatmap)
 	{
 		this.iNumberOfSamplesPerHeatmap = iNumberOfSamplesPerHeatmap;
-	}
-
-	/**
-	 * Set the level of data filtering, according to the parameters defined in
-	 * {@link EDataFilterLevel}
-	 * 
-	 * @param dataFilterLevel the level of filtering
-	 */
-	public synchronized void setDataFilterLevel(EDataFilterLevel dataFilterLevel)
-	{
-		this.dataFilterLevel = dataFilterLevel;
 	}
 
 	public abstract void resetSelections();

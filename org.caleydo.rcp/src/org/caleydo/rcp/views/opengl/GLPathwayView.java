@@ -2,9 +2,9 @@ package org.caleydo.rcp.views.opengl;
 
 import java.util.ArrayList;
 
-import org.caleydo.rcp.action.view.pathway.GeneMappingAction;
-import org.caleydo.rcp.action.view.pathway.NeighborhoodAction;
-import org.caleydo.rcp.action.view.pathway.TextureAction;
+import org.caleydo.rcp.action.toolbar.view.pathway.GeneMappingAction;
+import org.caleydo.rcp.action.toolbar.view.pathway.NeighborhoodAction;
+import org.caleydo.rcp.action.toolbar.view.pathway.TextureAction;
 import org.eclipse.jface.action.IAction;
 
 public class GLPathwayView

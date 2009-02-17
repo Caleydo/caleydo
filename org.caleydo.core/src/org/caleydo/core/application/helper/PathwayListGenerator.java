@@ -68,8 +68,6 @@ public class PathwayListGenerator
 			sOutput = sOutput.substring(sOutput.lastIndexOf(sPathDelimiter) + 1, sOutput
 					.length());
 
-			outputWriter.append(sOutput + " ");
-
 			String sImagePath = "";
 			if (tmpFile.toString().contains(".xml"))
 			{
@@ -115,11 +113,17 @@ public class PathwayListGenerator
 
 			}
 			ImageIcon img = new ImageIcon(sImagePath);
-			outputWriter.append(img.getIconWidth() + " " + img.getIconHeight());
+			int iWidth = img.getIconWidth();
+			int iHeight = img.getIconHeight();
+			
+			if (iWidth != -1 && iHeight != -1)
+			{
+				outputWriter.append(sOutput + " ");
+				outputWriter.append(img.getIconWidth() + " " + img.getIconHeight());				
+				outputWriter.append("\n");
+			}
 
 			img = null;
-
-			outputWriter.append("\n");
 		}
 
 		outputWriter.flush();

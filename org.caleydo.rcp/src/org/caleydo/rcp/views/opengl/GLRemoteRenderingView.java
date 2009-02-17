@@ -9,9 +9,9 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
-import org.caleydo.rcp.action.view.remote.CloseOrResetContainedViews;
-import org.caleydo.rcp.action.view.remote.ToggleConnectionLinesAction;
-import org.caleydo.rcp.action.view.remote.ToggleLayoutAction;
+import org.caleydo.rcp.action.toolbar.view.remote.CloseOrResetContainedViews;
+import org.caleydo.rcp.action.toolbar.view.remote.ToggleConnectionLinesAction;
+import org.caleydo.rcp.action.toolbar.view.remote.ToggleLayoutAction;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.widgets.Composite;
 

@@ -132,7 +132,7 @@ public abstract class AGLEventListener
 		if (bRegisterToParentCanvasNow && parentGLCanvas != null)
 		{
 			// Register GL event listener view to GL canvas
-			parentGLCanvas.addGLEventListener(this);
+//			parentGLCanvas.addGLEventListener(this);
 
 			// generalManager.getViewGLCanvasManager().registerGLEventListenerByGLCanvasID(
 			// parentGLCanvas.getID(), this);
@@ -336,35 +336,6 @@ public abstract class AGLEventListener
 	 * @param gl
 	 */
 	public abstract void displayRemote(final GL gl);
-
-	public synchronized void addSet(ISet set)
-	{
-		alSets.add(set);
-		setDisplayListDirty();
-	}
-
-	public synchronized void addSet(int iSetID)
-	{
-		alSets.add(generalManager.getSetManager().getItem(iSetID));
-		setDisplayListDirty();
-	}
-
-	public synchronized void removeSets(ESetType setType)
-	{
-		Iterator<ISet> iter = alSets.iterator();
-		while (iter.hasNext())
-		{
-			if (iter.next().getSetType() == setType)
-				iter.remove();
-		}
-		setDisplayListDirty();
-	}
-
-	public synchronized void clearSets()
-	{
-		alSets.clear();
-		setDisplayListDirty();
-	}
 
 	public final GLCaleydoCanvas getParentGLCanvas()
 	{
@@ -641,5 +612,33 @@ public abstract class AGLEventListener
 		
 		generalManager.getViewGLCanvasManager().unregisterGLEventListener(
 				iUniqueID);
+	}
+	
+	@Override
+	public synchronized void addSet(ISet set)
+	{
+		super.addSet(set);
+		setDisplayListDirty();
+	}
+
+	@Override
+	public synchronized void addSet(int iSetID)
+	{
+		super.addSet(iSetID);
+		setDisplayListDirty();
+	}
+
+	@Override
+	public synchronized void removeSets(ESetType setType)
+	{
+		super.removeSets(setType);
+		setDisplayListDirty();
+	}
+
+	@Override
+	public synchronized void clearSets()
+	{
+		super.clearSets();
+		setDisplayListDirty();
 	}
 }
