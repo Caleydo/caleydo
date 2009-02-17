@@ -15,22 +15,28 @@ import org.caleydo.core.data.selection.DeltaConverter;
 import org.caleydo.core.data.selection.DeltaEventContainer;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ESelectionType;
+import org.caleydo.core.data.selection.EVAOperation;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.data.selection.ISelectionDelta;
 import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
+import org.caleydo.core.data.selection.VADeltaItem;
+import org.caleydo.core.data.selection.VirtualArrayDelta;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.EViewCommand;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
+import org.caleydo.core.manager.event.ViewCommandEventContainer;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.IView;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.swt.ASWTView;
@@ -48,12 +54,14 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.ScrollBar;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -99,7 +107,7 @@ public class TabularDataViewRep
 	 * set
 	 */
 	protected int iStorageVAID = -1;
-	
+
 	/**
 	 * Define what level of filtering on the data should be applied
 	 */
@@ -108,15 +116,17 @@ public class TabularDataViewRep
 	private IIDMappingManager idMappingManager;
 
 	private Composite composite;
-	
+
 	private Table labelTable;
 	private Table contentTable;
-	
+	private Table storageRemoverTable;
+
 	private TableViewer contentTableViewer;
-	
-	private TableCursor cursor;
-	
-	private Label lastRemove;
+
+	private TableCursor contentTableCursor;
+
+	private Button lastRemoveContent;
+	private Button lastRemoveStorage;
 
 	/**
 	 * Constructor.
@@ -130,7 +140,7 @@ public class TabularDataViewRep
 				this);
 		GeneralManager.get().getEventPublisher().addReceiver(EMediatorType.SELECTION_MEDIATOR,
 				this);
-		
+
 		setType = ESetType.GENE_EXPRESSION_DATA;
 		mapVAIDs = new EnumMap<EStorageBasedVAType, Integer>(EStorageBasedVAType.class);
 
@@ -148,9 +158,9 @@ public class TabularDataViewRep
 	public void initViewSWTComposite(Composite parentComposite)
 	{
 		composite = new Composite(parentComposite, SWT.NULL);
-	    GridLayout layout = new GridLayout(2, false);
-	    layout.marginWidth = layout.marginHeight = layout.horizontalSpacing = 0;
-	    composite.setLayout(layout);
+		GridLayout layout = new GridLayout(2, false);
+		layout.marginWidth = layout.marginHeight = layout.horizontalSpacing = 0;
+		composite.setLayout(layout);
 
 		initData();
 		createPreviewTable();
@@ -190,7 +200,7 @@ public class TabularDataViewRep
 		{
 			throw new IllegalStateException("Unknown data filter level");
 		}
-		
+
 		if (!mapVAIDs.isEmpty())
 		{
 
@@ -230,10 +240,8 @@ public class TabularDataViewRep
 		iVAID = set.createSetVA(alTempList);
 		mapVAIDs.put(EStorageBasedVAType.STORAGE_SELECTION, iVAID);
 
-		
 		// Set<Integer> setMouseOver = storageSelectionManager
 		// .getElements(ESelectionType.MOUSE_OVER);
-
 
 		if (!mapVAIDs.containsKey(EStorageBasedVAType.COMPLETE_SELECTION))
 			initCompleteList();
@@ -314,48 +322,55 @@ public class TabularDataViewRep
 
 	private void createPreviewTable()
 	{
-	    Composite labelTableComposite = new Composite(composite, SWT.NULL);
+		Composite labelTableComposite = new Composite(composite, SWT.NULL);
 		GridData data = new GridData();
-	    data.widthHint = 250;
-	    data.verticalAlignment = SWT.FILL;
-	    data.grabExcessHorizontalSpace = false;
-	    data.grabExcessVerticalSpace = true;
-	    labelTableComposite.setLayoutData(data);        
-	    GridLayout layout = new GridLayout(1, false);
-	    layout.marginWidth = layout.marginHeight = layout.horizontalSpacing = 0;
-	    labelTableComposite.setLayout(layout);
-	    
-		labelTable = new Table(labelTableComposite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION| SWT.VIRTUAL);
+		data.widthHint = 250;
+		data.verticalAlignment = SWT.FILL;
+		data.grabExcessHorizontalSpace = false;
+		data.grabExcessVerticalSpace = true;
+		labelTableComposite.setLayoutData(data);
+		GridLayout layout = new GridLayout(1, false);
+		layout.marginWidth = layout.marginHeight = layout.horizontalSpacing = 0;
+		labelTableComposite.setLayout(layout);
+
+		labelTable = new Table(labelTableComposite, SWT.MULTI | SWT.BORDER
+				| SWT.FULL_SELECTION | SWT.VIRTUAL);
 		labelTable.setLinesVisible(true);
 		labelTable.setHeaderVisible(true);
-	    
-	    data = new GridData();
+
+		data = new GridData();
 		data.horizontalAlignment = SWT.LEFT;
-	    data.verticalAlignment = SWT.TOP;
-	    data.grabExcessHorizontalSpace = false;
-	    data.grabExcessVerticalSpace = true;
-	    labelTable.setLayoutData(data);
-		
-	    // Create the table viewer to display the players
-//	    contentTableViewer = new TableViewer(composite);
+		data.verticalAlignment = SWT.TOP;
+		data.grabExcessHorizontalSpace = false;
+		data.grabExcessVerticalSpace = true;
+		labelTable.setLayoutData(data);
 
-	    // Set the content and label providers
-//	    contentTableViewer.setContentProvider(new PlayerContentProvider());
-//	    contentTableViewer.setLabelProvider(new PlayerLabelProvider());
-//	    contentTableViewer.setSorter(new PlayerViewerSorter());
+		// Create the table viewer to display the players
+		// contentTableViewer = new TableViewer(composite);
 
-//		contentTable = contentTableViewer.getTable();
-		contentTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION| SWT.VIRTUAL);
+		// Set the content and label providers
+		// contentTableViewer.setContentProvider(new PlayerContentProvider());
+		// contentTableViewer.setLabelProvider(new PlayerLabelProvider());
+		// contentTableViewer.setSorter(new PlayerViewerSorter());
+
+		// contentTable = contentTableViewer.getTable();
+
+		// Composite contentComposite = new Composite(composite, SWT.NULL);
+		// data = new GridData(SWT.FILL, SWT.FILL, true, true);
+		// contentComposite.setLayoutData(data);
+
+		contentTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION
+				| SWT.VIRTUAL);
 		contentTable.setLinesVisible(true);
 		contentTable.setHeaderVisible(true);
 		data = new GridData(SWT.FILL, SWT.FILL, true, true);
 		data.heightHint = 300;
 		data.widthHint = 700;
 		contentTable.setLayoutData(data);
-	    
+
 		// Clear table if not empty
 		contentTable.removeAll();
-		
+
 		// Make selection the same in both tables
 		labelTable.addListener(SWT.Selection, new Listener()
 		{
@@ -383,8 +398,10 @@ public class TabularDataViewRep
 				{
 					GC gc = event.gc;
 					Rectangle rect = event.getBounds();
-					gc.setForeground(Display.getCurrent().getSystemColor(SWT.COLOR_LIST_SELECTION_TEXT));
-					gc.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_LIST_SELECTION));
+					gc.setForeground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_LIST_SELECTION_TEXT));
+					gc.setBackground(Display.getCurrent().getSystemColor(
+							SWT.COLOR_LIST_SELECTION));
 					gc.fillRectangle(rect);
 					event.detail &= ~SWT.SELECTED;
 				}
@@ -420,7 +437,7 @@ public class TabularDataViewRep
 		spacerData.heightHint = hBarRight.getSize().y;
 		spacer.setVisible(false);
 		composite.setBackground(labelTable.getBackground());
-		
+
 		for (TableColumn tmpColumn : contentTable.getColumns())
 		{
 			tmpColumn.dispose();
@@ -436,11 +453,13 @@ public class TabularDataViewRep
 			public void widgetSelected(SelectionEvent e)
 			{
 				super.widgetSelected(e);
-				
-//				TableItem selectedItem = ((TableItem)e.item);
-//				final int iSelectedRowIndex = contentTable.indexOf(selectedItem);
-//				addRemoveIcon(iSelectedRowIndex);
-//				triggerContentSelectionEvent(iSelectedRowIndex, ESelectionType.SELECTION);
+
+				// TableItem selectedItem = ((TableItem)e.item);
+				// final int iSelectedRowIndex =
+				// contentTable.indexOf(selectedItem);
+				// addRemoveIcon(iSelectedRowIndex);
+				// triggerContentSelectionEvent(iSelectedRowIndex,
+				// ESelectionType.SELECTION);
 
 			}
 		});
@@ -526,21 +545,33 @@ public class TabularDataViewRep
 		column.setText("Gene Symbol");
 		column.setWidth(110);
 
-		for (Integer iStorageIndex : set.getVA(iStorageVAID))
+		for (final Integer iStorageIndex : set.getVA(iStorageVAID))
 		{
 			column = new TableColumn(contentTable, SWT.NONE);
 			column.setText(set.get(iStorageIndex).getLabel());
 			column.setWidth(120);
 			column.setMoveable(true);
-//			column.setImage(generalManager.getResourceLoader().getImage(
-//					column.getDisplay(), "resources/icons/general/remove.png"));
-//			column.addSelectionListener(new SelectionAdapter() {
-//				@Override
-//				public void widgetSelected(SelectionEvent e)
-//				{
-//					System.out.println(e.toString());
-//				}
-//			});
+			column.addSelectionListener(new SelectionAdapter()
+			{
+				@Override
+				public void widgetSelected(SelectionEvent e)
+				{
+					LabelEditorDialog dialog = new LabelEditorDialog(new Shell());
+					String sLabel = dialog.open(set.get(iStorageIndex).getLabel());
+
+					if (sLabel != null && !sLabel.isEmpty())
+					{
+						set.get(iStorageIndex).setLabel(sLabel);
+						contentTable.getColumn(iStorageIndex).setText(sLabel);
+
+						ViewCommandEventContainer viewCommandEventContainer = new ViewCommandEventContainer(
+								EViewCommand.REDRAW);
+
+						triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+								viewCommandEventContainer);
+					}
+				}
+			});
 		}
 
 		IVirtualArray storageVA = set.getVA(iStorageVAID);
@@ -551,7 +582,7 @@ public class TabularDataViewRep
 		{
 			// line number
 			item = new TableItem(labelTable, SWT.NONE);
-//			item.setData(iContentIndex);
+			// item.setData(iContentIndex);
 			item.setText(0, Integer.toString(iContentIndex));
 
 			iRefSeqID = idMappingManager.getID(
@@ -571,7 +602,7 @@ public class TabularDataViewRep
 				item.setText(2, "Unknown");
 
 			item = new TableItem(contentTable, SWT.NONE);
-			
+
 			for (Integer iStorageIndex : storageVA)
 			{
 				fValue = set.get(iStorageIndex).getFloat(EDataRepresentation.NORMALIZED,
@@ -579,28 +610,62 @@ public class TabularDataViewRep
 
 				item.setText(iStorageIndex, Float.toString(fValue));
 			}
-			
-//			if (iContentIndex > 1000)
-//				break;
-		}
-		
 
-		cursor = new TableCursor(contentTable, SWT.NONE);
-		cursor.addSelectionListener(new SelectionAdapter() {
-			// when the TableEditor is over a cell, select the corresponding row in 
+			// if (iContentIndex > 1000)
+			// break;
+		}
+
+		contentTableCursor = new TableCursor(contentTable, SWT.NONE);
+		contentTableCursor.addSelectionListener(new SelectionAdapter()
+		{
+			// when the TableEditor is over a cell, select the corresponding row
+			// in
 			// the table
-			public void widgetSelected(SelectionEvent e) {
-				
-				int iStorageIndex = cursor.getColumn();
-				contentTable.setSelection(new TableItem[] {cursor.getRow()});
-				
-				int iRowIndex = contentTable.indexOf(cursor.getRow());
+			public void widgetSelected(SelectionEvent e)
+			{
+
+				int iStorageIndex = contentTableCursor.getColumn();
+				contentTable.setSelection(new TableItem[] { contentTableCursor.getRow() });
+
+				int iRowIndex = contentTable.indexOf(contentTableCursor.getRow());
 				int iRefSeqID = set.getVA(iContentVAID).get(iRowIndex);
-				
-				triggerStorageSelectionEvent(iStorageIndex, ESelectionType.SELECTION);				
+
+				triggerStorageSelectionEvent(iStorageIndex, ESelectionType.SELECTION);
 				triggerContentSelectionEvent(iRefSeqID, ESelectionType.SELECTION);
-				
-				addRemoveIcon(iRowIndex);
+
+				addContentRemoveIcon(iRowIndex);
+				addStorageRemoveIcon(iStorageIndex);
+			}
+		});
+
+		storageRemoverTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION
+				| SWT.VIRTUAL);
+		storageRemoverTable.setLinesVisible(false);
+		storageRemoverTable.setHeaderVisible(false);
+		data = new GridData();
+		data.grabExcessHorizontalSpace = true;
+		data.grabExcessVerticalSpace = false;
+		storageRemoverTable.setLayoutData(data);
+
+		for (int iStorageIndex = 0; iStorageIndex < set.getVA(iStorageVAID).size(); iStorageIndex++)
+		{
+			column = new TableColumn(storageRemoverTable, SWT.NONE);
+			column.setWidth(120);
+		}
+		item = new TableItem(storageRemoverTable, SWT.NONE);
+		for (int iStorageIndex = 0; iStorageIndex < set.getVA(iStorageVAID).size(); iStorageIndex++)
+		{
+			item.setText(iStorageIndex, "");
+		}
+
+		// Make horizontal scrollbar of storage remover table scroll together
+		ScrollBar hScroolBar = contentTable.getHorizontalBar();
+		hScroolBar.addListener(SWT.Selection, new Listener()
+		{
+			public void handleEvent(Event event)
+			{
+				storageRemoverTable.getHorizontalBar().setSelection(
+						contentTable.getHorizontalBar().getSelection());
 			}
 		});
 	}
@@ -646,7 +711,8 @@ public class TabularDataViewRep
 				|| selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX)
 		{
 			contentSelectionManager.setDelta(selectionDelta);
-//			ISelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
+			// ISelectionDelta internalDelta =
+			// contentSelectionManager.getCompleteDelta();
 			reactOnExternalSelection();
 		}
 
@@ -662,11 +728,27 @@ public class TabularDataViewRep
 		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX)
 		{
 			selectionManager = storageSelectionManager;
+
+			for (VADeltaItem deltaItem : delta.getAllItems())
+			{
+				final int iVAIndex = deltaItem.getIndex();
+
+				if (deltaItem.getType() == EVAOperation.REMOVE)
+				{
+					composite.getDisplay().asyncExec(new Runnable()
+					{
+						public void run()
+						{
+							contentTable.getColumn(iVAIndex).dispose();
+						}
+					});
+
+				}
+			}
 		}
 		else if (delta.getIDType() == EIDType.REFSEQ_MRNA_INT)
 		{
-			delta = DeltaConverter.convertDelta(
-					EIDType.EXPRESSION_INDEX, delta);
+			delta = DeltaConverter.convertDelta(EIDType.EXPRESSION_INDEX, delta);
 			selectionManager = contentSelectionManager;
 		}
 		else if (delta.getIDType() == EIDType.EXPRESSION_INDEX)
@@ -677,77 +759,94 @@ public class TabularDataViewRep
 		{
 			return;
 		}
-		
-//		reactOnVAChanges(delta);
+
+		// reactOnVAChanges(delta);
 		selectionManager.setVADelta(delta);
 		reactOnExternalSelection();
 	}
-	
+
 	/**
-	 * Highlight the selected cell in the table.
-	 * Only the first element is taken, since we cannot handle multiple selections ATM.
+	 * Highlight the selected cell in the table. Only the first element is
+	 * taken, since we cannot handle multiple selections ATM.
 	 */
 	private void reactOnExternalSelection()
-	{		
+	{
 		composite.getDisplay().asyncExec(new Runnable()
 		{
 			public void run()
 			{
 				contentTable.deselectAll();
 				labelTable.deselectAll();
-				
-				Iterator<Integer> iterContentIndex = contentSelectionManager.getElements(ESelectionType.SELECTION).iterator();
+
+				Iterator<Integer> iterContentIndex = contentSelectionManager.getElements(
+						ESelectionType.SELECTION).iterator();
 				while (iterContentIndex.hasNext())
 				{
-					int iRowIndex = set.getVA(iContentVAID).indexOf(
-							iterContentIndex.next());
-					cursor.setSelection(iRowIndex, cursor.getColumn());
+					int iRowIndex = set.getVA(iContentVAID).indexOf(iterContentIndex.next());
+					int iColIndex = contentTableCursor.getColumn();
+					contentTableCursor.setSelection(iRowIndex, iColIndex);
 					contentTable.select(iRowIndex);
 					labelTable.select(iRowIndex);
-					addRemoveIcon(iRowIndex);
-//					contentTable.setSelection(iRowIndex);
-//					labelTable.setSelection(iRowIndex);
+					addContentRemoveIcon(iRowIndex);
+					addStorageRemoveIcon(iColIndex);
+					// contentTable.setSelection(iRowIndex);
+					// labelTable.setSelection(iRowIndex);
 				}
-				
-				Iterator<Integer> iterStorageIndex = storageSelectionManager.getElements(ESelectionType.SELECTION).iterator();
+
+				Iterator<Integer> iterStorageIndex = storageSelectionManager.getElements(
+						ESelectionType.SELECTION).iterator();
 				if (iterStorageIndex.hasNext())
 				{
-					cursor.setSelection(cursor.getRow(), iterStorageIndex.next());
-				}		
+					int iStorageIndex = iterStorageIndex.next();
+					contentTableCursor
+							.setSelection(contentTableCursor.getRow(), iStorageIndex);
+
+					// storageRemoverTable.removeAll();
+					// TableItem item = new TableItem(storageRemoverTable,
+					// SWT.NONE);
+					// for (int iTmpStorageIndex = 0; iTmpStorageIndex <
+					// set.getVA(iStorageVAID).size(); iTmpStorageIndex++)
+					// {
+					// if (iTmpStorageIndex == iStorageIndex)
+					// item.setText(iTmpStorageIndex, "HA");
+					// else
+					// item.setText(iTmpStorageIndex, "");
+					// }
+				}
 			}
-		});		
+		});
 	}
-	
-//	@Override
-//	protected void reactOnVAChanges(IVirtualArrayDelta delta)
-//	{
-//		if (delta.getIDType() == eAxisDataType)
-//		{
-//
-//			IVirtualArray axisVA = set.getVA(iAxisVAID);
-//			for (VADeltaItem item : delta)
-//			{
-//				int iElement = axisVA.get(item.getIndex());
-//				if (item.getType() == EVAOperation.REMOVE)
-//				{
-//					resetAxisSpacing();
-//					if (axisVA.containsElement(iElement) == 1)
-//						hashGates.remove(iElement);
-//				}
-//				else if (item.getType() == EVAOperation.REMOVE_ELEMENT)
-//				{
-//					resetAxisSpacing();
-//					hashGates.remove(item.getPrimaryID());
-//				}
-//			}
-//		}
-//	}
-	
+
+	// @Override
+	// protected void reactOnVAChanges(IVirtualArrayDelta delta)
+	// {
+	// if (delta.getIDType() == eAxisDataType)
+	// {
+	//
+	// IVirtualArray axisVA = set.getVA(iAxisVAID);
+	// for (VADeltaItem item : delta)
+	// {
+	// int iElement = axisVA.get(item.getIndex());
+	// if (item.getType() == EVAOperation.REMOVE)
+	// {
+	// resetAxisSpacing();
+	// if (axisVA.containsElement(iElement) == 1)
+	// hashGates.remove(iElement);
+	// }
+	// else if (item.getType() == EVAOperation.REMOVE_ELEMENT)
+	// {
+	// resetAxisSpacing();
+	// hashGates.remove(item.getPrimaryID());
+	// }
+	// }
+	// }
+	// }
+
 	private void triggerContentSelectionEvent(int iContentIndex, ESelectionType eSelectionType)
 	{
 		if (contentSelectionManager.checkStatus(eSelectionType, iContentIndex))
 			return;
-		
+
 		contentSelectionManager.clearSelection(eSelectionType);
 
 		// Resolve multiple spotting on chip and add all to the
@@ -757,16 +856,14 @@ public class TabularDataViewRep
 		for (Object iExpressionIndex : idMappingManager.getMultiID(
 				EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID))
 		{
-			contentSelectionManager.addToType(eSelectionType,
-					(Integer) iExpressionIndex);
+			contentSelectionManager.addToType(eSelectionType, (Integer) iExpressionIndex);
 		}
 
 		ISelectionDelta selectionDelta = contentSelectionManager.getDelta();
 
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-				new SelectionCommandEventContainer(EIDType.REFSEQ_MRNA_INT,
-						new SelectionCommand(ESelectionCommandType.CLEAR,
-								eSelectionType)));
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
+				EIDType.REFSEQ_MRNA_INT, new SelectionCommand(ESelectionCommandType.CLEAR,
+						eSelectionType)));
 
 		triggerEvent(EMediatorType.SELECTION_MEDIATOR,
 				new DeltaEventContainer<ISelectionDelta>(selectionDelta));
@@ -776,57 +873,113 @@ public class TabularDataViewRep
 	{
 		if (storageSelectionManager.checkStatus(eSelectionType, iStorageIndex))
 			return;
-		
+
 		storageSelectionManager.clearSelection(eSelectionType);
 		storageSelectionManager.addToType(eSelectionType, iStorageIndex);
-		
-		triggerEvent(EMediatorType.SELECTION_MEDIATOR,
-				new SelectionCommandEventContainer(EIDType.EXPERIMENT_INDEX,
-						new SelectionCommand(ESelectionCommandType.CLEAR,
-								eSelectionType)));
+
+		triggerEvent(EMediatorType.SELECTION_MEDIATOR, new SelectionCommandEventContainer(
+				EIDType.EXPERIMENT_INDEX, new SelectionCommand(ESelectionCommandType.CLEAR,
+						eSelectionType)));
 		ISelectionDelta selectionDelta = storageSelectionManager.getDelta();
 		triggerEvent(EMediatorType.SELECTION_MEDIATOR,
 				new DeltaEventContainer<ISelectionDelta>(selectionDelta));
 	}
-	
+
 	@Override
 	public void triggerEvent(EMediatorType eMediatorType, IEventContainer eventContainer)
 	{
 		generalManager.getEventPublisher().triggerEvent(eMediatorType, this, eventContainer);
 
 	}
-	
-	private void addRemoveIcon(int iRowIndex)
+
+	private void addContentRemoveIcon(int iRowIndex)
 	{
-		Label lblRemove = new Label(labelTable, SWT.CENTER);
-		lblRemove.setBackground(lblRemove.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		lblRemove.setImage(generalManager.getResourceLoader().getImage(
-				lblRemove.getDisplay(), "resources/icons/general/remove.png"));
-		lblRemove.setData(contentTable.getItem(iRowIndex));
-		
+		final Button lblRemove = new Button(labelTable, SWT.CENTER);
+		// lblRemove.setBackground(lblRemove.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		lblRemove.setImage(generalManager.getResourceLoader().getImage(lblRemove.getDisplay(),
+				"resources/icons/general/remove.png"));
+		lblRemove.setData(set.getVA(iContentVAID).get(iRowIndex));
+
 		// Only one remove icon should be shown at a time
-		if (lastRemove != null)
+		if (lastRemoveContent != null)
 		{
-			lastRemove.dispose();
+			lastRemoveContent.dispose();
 		}
-		
-		lastRemove = lblRemove;
-		
+
+		lastRemoveContent = lblRemove;
+
 		final TableEditor editor = new TableEditor(labelTable);
 		editor.grabHorizontal = true;
-		editor.setEditor(lblRemove, contentTable.getItem(iRowIndex), 0);
+		editor.setEditor(lblRemove, labelTable.getItem(iRowIndex), 0);
 
 		lblRemove.addMouseListener(new MouseAdapter()
 		{
 			@Override
 			public void mouseDown(MouseEvent e)
 			{
-				TableItem item = (TableItem)e.widget.getData();
+				Integer iExpressionIndex = (Integer) lblRemove.getData();
+
+				IVirtualArray contentVA = set.getVA(iContentVAID);
+				contentVA.remove(iExpressionIndex);
+
+				IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPRESSION_INDEX);
+				vaDelta.add(VADeltaItem.remove(iExpressionIndex));
+				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+						new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
+
+				// Dispose the removed row
+				TableItem item = (TableItem) e.widget.getData();
 				editor.getEditor().dispose();
 				editor.dispose();
 				item.dispose();
 			}
 		});
-
 	}
+
+	private void addStorageRemoveIcon(int iStorageIndex)
+	{
+		final Button lblRemove = new Button(storageRemoverTable, SWT.CENTER);
+		// lblRemove.setBackground(lblRemove.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		lblRemove.setImage(generalManager.getResourceLoader().getImage(lblRemove.getDisplay(),
+				"resources/icons/general/remove.png"));
+		lblRemove.setData(set.getVA(iStorageVAID).get(iStorageIndex));
+
+		// Only one remove icon should be shown at a time
+		if (lastRemoveStorage != null)
+		{
+			lastRemoveStorage.dispose();
+		}
+
+		lastRemoveStorage = lblRemove;
+
+		final TableEditor editor = new TableEditor(storageRemoverTable);
+		editor.grabHorizontal = true;
+		editor.setEditor(lblRemove, storageRemoverTable.getItem(0), iStorageIndex);
+
+		lblRemove.addMouseListener(new MouseAdapter()
+		{
+			@Override
+			public void mouseDown(MouseEvent e)
+			{
+				Integer iStorageIndex = (Integer) lblRemove.getData();
+
+				IVirtualArray storageVA = set.getVA(iStorageVAID);
+				storageVA.remove(iStorageIndex);
+
+				IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
+				vaDelta.add(VADeltaItem.remove(iStorageIndex));
+				triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+						new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
+
+				// Dispose the removed row
+				editor.getEditor().dispose();
+				editor.dispose();
+				lblRemove.dispose();
+
+				contentTable.getColumn(iStorageIndex).dispose();
+				storageRemoverTable.getColumn(iStorageIndex).dispose();
+			}
+		});
+	}
+
 }

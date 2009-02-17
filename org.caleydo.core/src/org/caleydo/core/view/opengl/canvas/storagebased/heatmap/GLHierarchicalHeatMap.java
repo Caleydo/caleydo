@@ -613,7 +613,9 @@ public class GLHierarchicalHeatMap
 	@Override
 	protected void reactOnVAChanges(IVirtualArrayDelta delta)
 	{
-		initTextures();
+		// FIXME: this does not work - it is not possible to create/update textures without a active gl object!
+//		initTextures();
+		setDisplayListDirty();
 		privateMediator.triggerEvent(this, new DeltaEventContainer<IVirtualArrayDelta>(delta));
 
 	}

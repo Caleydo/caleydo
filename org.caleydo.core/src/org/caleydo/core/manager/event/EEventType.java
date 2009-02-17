@@ -37,5 +37,7 @@ public enum EEventType
 	 * Type for {@link DeltaEventContainer} with {@link IVirtualArrayDelta} as
 	 * type
 	 */
-	VA_UPDATE
+	VA_UPDATE,
+
+	VIEW_COMMAND
 }

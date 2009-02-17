@@ -58,8 +58,7 @@ public class VirtualArrayDelta
 	@Override
 	public Collection<VADeltaItem> getAllItems()
 	{
-		// TODO Auto-generated method stub
-		return null;
+		return ulDeltaItems;
 	}
 
 	@Override

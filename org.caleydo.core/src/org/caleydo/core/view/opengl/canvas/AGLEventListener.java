@@ -556,6 +556,7 @@ public abstract class AGLEventListener
 		if (!bBusyMode && eBusyModeState == EBusyModeState.ON)
 		{
 			eBusyModeState = EBusyModeState.SWITCH_OFF;
+			pickingManager.enablePicking(true);
 		}
 		else if (bBusyMode)
 		{

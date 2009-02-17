@@ -21,10 +21,13 @@ import org.caleydo.core.data.selection.IVirtualArrayDelta;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommandEventContainer;
 import org.caleydo.core.data.selection.SelectionDeltaItem;
+import org.caleydo.core.manager.event.EEventType;
 import org.caleydo.core.manager.event.EMediatorType;
+import org.caleydo.core.manager.event.EViewCommand;
 import org.caleydo.core.manager.event.IEventContainer;
 import org.caleydo.core.manager.event.IMediatorReceiver;
 import org.caleydo.core.manager.event.IMediatorSender;
+import org.caleydo.core.manager.event.ViewCommandEventContainer;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
@@ -463,6 +466,12 @@ public abstract class AStorageBasedView
 								.getSelectionCommands());
 						break;
 				}
+				break;
+			case VIEW_COMMAND:
+				ViewCommandEventContainer viewCommandEventContainer = (ViewCommandEventContainer)eventContainer;
+				if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW)
+					setDisplayListDirty();
+				break;
 		}
 	}
 

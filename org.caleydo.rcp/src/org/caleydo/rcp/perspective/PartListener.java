@@ -85,6 +85,8 @@ public class PartListener
 	{
 		IWorkbenchPart activePart = partRef.getPart(false);
 		
+		System.out.println("Visible: " +partRef.getTitle());
+		
 		if (!(activePart instanceof AGLViewPart))
 			return;
 
@@ -162,6 +164,8 @@ public class PartListener
 	public void partHidden(IWorkbenchPartReference partRef)
 	{	
 		IWorkbenchPart activePart = partRef.getPart(false);
+		
+		System.out.println("Hide: " +partRef.getTitle());
 		
 		if (!(activePart instanceof AGLViewPart))
 			return;
