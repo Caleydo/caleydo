@@ -13,13 +13,15 @@ public class ChangeViewModeToRandomAction
 	public static final String ICON = "resources/icons/view/glyph/sort_random.png";
 
 	private boolean bEnable = false;
+	private ChangeViewModeAction parent;
 
 	/**
 	 * Constructor.
 	 */
-	public ChangeViewModeToRandomAction(int iViewID)
+	public ChangeViewModeToRandomAction(int iViewID, ChangeViewModeAction parent)
 	{
 		super(iViewID);
+		this.parent = parent;
 
 		setText(TEXT);
 		setToolTipText(TEXT);
@@ -31,7 +33,11 @@ public class ChangeViewModeToRandomAction
 	public void run()
 	{
 		super.run();
-		// bEnable = !bEnable;
+
+		if (parent != null)
+			parent.setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
+					.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+
 		triggerCmdExternalFlagSetter(bEnable, EExternalFlagSetterType.GLYPH_VIEWMODE_RANDOM);
 	};
 }

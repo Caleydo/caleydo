@@ -11,7 +11,7 @@ public class RemoveUnselectedFromViewAction
 {
 
 	public static final String TEXT = "remove unselected glyphs from view";
-	public static final String ICON = "resources/icons/view/glyph/selection_remove.png";
+	public static final String ICON = "resources/icons/view/glyph/glyph_remove_unselected.png";
 
 	public RemoveUnselectedFromViewAction(int iViewID)
 	{

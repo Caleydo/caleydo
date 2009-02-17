@@ -13,26 +13,31 @@ public class ChangeViewModeToCircleAction
 	public static final String ICON = "resources/icons/view/glyph/sort_spirale.png";
 
 	private boolean bEnable = false;
+	private ChangeViewModeAction parent;
 
 	/**
 	 * Constructor.
 	 */
-	public ChangeViewModeToCircleAction(int iViewID)
+	public ChangeViewModeToCircleAction(int iViewID, ChangeViewModeAction parent)
 	{
 		super(iViewID);
+		this.parent = parent;
 
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
 				PlatformUI.getWorkbench().getDisplay(), ICON)));
-		// setChecked(false);
 	}
 
 	@Override
 	public void run()
 	{
 		super.run();
-		// bEnable = !bEnable;
+
+		if (parent != null)
+			parent.setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
+					.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+
 		triggerCmdExternalFlagSetter(bEnable, EExternalFlagSetterType.GLYPH_VIEWMODE_CIRCLE);
 	};
 }
