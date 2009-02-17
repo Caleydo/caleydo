@@ -623,11 +623,11 @@ public class TabularDataViewRep
 			// the table
 			public void widgetSelected(SelectionEvent e)
 			{
-
 				int iStorageIndex = contentTableCursor.getColumn();
-				contentTable.setSelection(new TableItem[] { contentTableCursor.getRow() });
-
 				int iRowIndex = contentTable.indexOf(contentTableCursor.getRow());
+				contentTable.setSelection(iRowIndex);
+				labelTable.setSelection(iRowIndex);
+
 				int iRefSeqID = set.getVA(iContentVAID).get(iRowIndex);
 
 				triggerStorageSelectionEvent(iStorageIndex, ESelectionType.SELECTION);
@@ -719,6 +719,8 @@ public class TabularDataViewRep
 		else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX)
 		{
 			storageSelectionManager.setDelta(selectionDelta);
+			
+			reactOnExternalSelection();
 		}
 	}
 
@@ -798,20 +800,12 @@ public class TabularDataViewRep
 				if (iterStorageIndex.hasNext())
 				{
 					int iStorageIndex = iterStorageIndex.next();
-					contentTableCursor
-							.setSelection(contentTableCursor.getRow(), iStorageIndex);
-
-					// storageRemoverTable.removeAll();
-					// TableItem item = new TableItem(storageRemoverTable,
-					// SWT.NONE);
-					// for (int iTmpStorageIndex = 0; iTmpStorageIndex <
-					// set.getVA(iStorageVAID).size(); iTmpStorageIndex++)
-					// {
-					// if (iTmpStorageIndex == iStorageIndex)
-					// item.setText(iTmpStorageIndex, "HA");
-					// else
-					// item.setText(iTmpStorageIndex, "");
-					// }
+					int iRowIndex = contentTable.indexOf(contentTableCursor.getRow());
+					contentTableCursor.setSelection(iRowIndex, iStorageIndex);
+					contentTable.select(iRowIndex);
+					labelTable.select(iRowIndex);
+					addContentRemoveIcon(iRowIndex);
+					addStorageRemoveIcon(iStorageIndex);
 				}
 			}
 		});

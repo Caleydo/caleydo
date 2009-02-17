@@ -126,10 +126,10 @@ public class InfoArea
 		{
 			public void run()
 			{
-				if (!(eventTrigger instanceof AGLEventListener))
-					return;
-
-				lblViewInfoContent.setText(((AGLEventListener) eventTrigger).getShortInfo());
+				if ((eventTrigger instanceof AGLEventListener))
+				{
+					lblViewInfoContent.setText(((AGLEventListener) eventTrigger).getShortInfo());
+				}
 
 				for (SelectionDeltaItem selectionItem : selectionDelta)
 				{
