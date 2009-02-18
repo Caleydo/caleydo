@@ -73,6 +73,7 @@ import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
@@ -120,6 +121,9 @@ public class GLParallelCoordinates
 	 * Hashes how many gates are used on a axis
 	 */
 	private HashMap<Integer, Integer> hashNumberOfGatesPerAxisID;
+
+	private HashMap<Integer, Pair<Float, Float>> hashMasterGates;
+	private int iNumberOfMasterGates;
 
 	private HashMap<Integer, ArrayList<Integer>> hashIsGateBlocking;
 
@@ -286,11 +290,6 @@ public class GLParallelCoordinates
 	{
 		if (set == null)
 			return;
-
-		if (hashGates == null)
-		{
-			initGates();
-		}
 
 		if (bIsTranslationActive)
 		{
@@ -536,8 +535,7 @@ public class GLParallelCoordinates
 		// axisSelectionManager.initialAdd(set.getVA(iAxisVAID).get(iAxisCount));
 		// }
 
-		// initGates();
-		hashGates = null;
+		initGates();
 	}
 
 	/**
@@ -572,6 +570,11 @@ public class GLParallelCoordinates
 		hashGates = new HashMap<Integer, Pair<Float, Float>>();
 		hashNumberOfGatesPerAxisID = new HashMap<Integer, Integer>();
 		hashIsGateBlocking = new HashMap<Integer, ArrayList<Integer>>();
+		if (set.isSetHomogeneous())
+		{
+			hashMasterGates = new HashMap<Integer, Pair<Float, Float>>();
+			iNumberOfMasterGates = 0;
+		}
 	}
 
 	/**
@@ -613,6 +616,11 @@ public class GLParallelCoordinates
 			}
 
 			renderGates(gl);
+
+			if (set.isSetHomogeneous())
+			{
+				renderGlobalBrush(gl);
+			}
 
 		}
 
@@ -1173,8 +1181,7 @@ public class GLParallelCoordinates
 		if (detailLevel != EDetailLevel.HIGH)
 			return;
 		IVirtualArray axisVA = set.getVA(iAxisVAID);
-		final float fGateWidth = renderStyle.getGateWidth();
-		final float fGateTipHeight = renderStyle.getGateTipHeight();
+
 		for (Integer iGateID : hashGates.keySet())
 		{
 			// Gate ID / 1000 is axis ID
@@ -1185,184 +1192,230 @@ public class GLParallelCoordinates
 			ArrayList<Integer> iAlAxisIndex = axisVA.indicesOf(iAxisID);
 			for (int iAxisIndex : iAlAxisIndex)
 			{
-				Float fBottom = gate.getFirst();
-				Float fTop = gate.getSecond();
-
-				float[] fArGateColor;
-
-				if ((bIsGateMouseOver || bIsDraggingActive) && iAxisID == iDraggedGateNumber
-						&& draggedObject == EPickingType.LOWER_GATE_TIP_SELECTION)
-				{
-					fArGateColor = POLYLINE_SELECTED_COLOR;
-					bIsGateMouseOver = false;
-				}
-				else
-				{
-					fArGateColor = GATE_TIP_COLOR;
-				}
-				gl.glColor4fv(fArGateColor, 0);
 				float fCurrentPosition = alAxisSpacing.get(iAxisIndex);
-
-				// The tip of the gate (which is pickable)
-				gl.glPushName(pickingManager.getPickingID(iUniqueID,
-						EPickingType.LOWER_GATE_TIP_SELECTION, iGateID));
-				gl.glBegin(GL.GL_POLYGON);
-				// variable
-				gl.glVertex3f(fCurrentPosition + fGateWidth, fTop - fGateTipHeight, 0.001f);
-				// variable
-				gl.glVertex3f(fCurrentPosition, fTop, 0.001f);
-				// variable
-				gl.glVertex3f(fCurrentPosition - fGateWidth, fTop - fGateTipHeight, 0.001f);
-				gl.glEnd();
-
-				// invisible part, for better picking
-				gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-
-				gl.glBegin(GL.GL_POLYGON);
-				gl.glColor4f(0, 0, 0, 0f);
-				gl
-						.glVertex3f(fCurrentPosition + 3 * fGateWidth, fTop - fGateTipHeight,
-								0.001f);
-				gl
-						.glVertex3f(fCurrentPosition + 3 * fGateWidth, fTop + fGateTipHeight,
-								0.001f);
-				gl
-						.glVertex3f(fCurrentPosition - 3 * fGateWidth, fTop + fGateTipHeight,
-								0.001f);
-				gl
-						.glVertex3f(fCurrentPosition - 3 * fGateWidth, fTop - fGateTipHeight,
-								0.001f);
-				gl.glEnd();
-				gl.glPopAttrib();
-				gl.glPopName();
-
-				if (detailLevel == EDetailLevel.HIGH)
-				{
-					if (set.isSetHomogeneous())
-					{
-						renderBoxedYValues(gl, fCurrentPosition, fTop, getDecimalFormat()
-								.format(
-										set.getRawForNormalized(fTop
-												/ renderStyle.getAxisHeight())),
-								ESelectionType.NORMAL);
-					}
-					else
-					{
-						// TODO storage based acces
-					}
-
-				}
-				gl.glColor4fv(GATE_BODY_COLOR, 0);
-				// The body of the gate
-				gl.glPushName(pickingManager.getPickingID(iUniqueID,
-						EPickingType.LOWER_GATE_BODY_SELECTION,iGateID));
-				gl.glBegin(GL.GL_POLYGON);
-				// bottom
-				gl
-						.glVertex3f(fCurrentPosition - fGateWidth, fBottom + fGateTipHeight,
-								0.0001f);
-				// constant
-				gl
-						.glVertex3f(fCurrentPosition + fGateWidth, fBottom + fGateTipHeight,
-								0.0001f);
-				// top
-				gl.glVertex3f(fCurrentPosition + fGateWidth, fTop - fGateTipHeight, 0.0001f);
-				// top
-				gl.glVertex3f(fCurrentPosition - fGateWidth, fTop - fGateTipHeight, 0.0001f);
-				gl.glEnd();
-				gl.glPopName();
-
-				gl.glPushName(pickingManager.getPickingID(iUniqueID,
-						EPickingType.LOWER_GATE_BOTTOM_SELECTION, iGateID));
-
-				if ((bIsGateMouseOver || bIsDraggingActive) && iGateID == iDraggedGateNumber
-						&& draggedObject == EPickingType.LOWER_GATE_BOTTOM_SELECTION)
-				{
-					fArGateColor = POLYLINE_SELECTED_COLOR;
-					bIsGateMouseOver = false;
-				}
-				else
-				{
-					fArGateColor = GATE_TIP_COLOR;
-				}
-				gl.glColor4fv(fArGateColor, 0);
-				// The bottom of the gate
-				gl.glBegin(GL.GL_POLYGON);
-				// variable
-				gl.glVertex3f(fCurrentPosition + fGateWidth, fBottom + fGateTipHeight, 0.001f);
-				// variable
-				gl.glVertex3f(fCurrentPosition, fBottom, 0.001f);
-				// variable
-				gl.glVertex3f(fCurrentPosition - fGateWidth, fBottom + fGateTipHeight, 0.001f);
-				gl.glEnd();
-
-				// invisible part, for better picking
-				gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-
-				gl.glBegin(GL.GL_POLYGON);
-				gl.glColor4f(0, 0, 0, 0.0f);
-				gl.glVertex3f(fCurrentPosition + 3 * fGateWidth, fBottom, 0.001f);
-				gl.glVertex3f(fCurrentPosition + 3 * fGateWidth, fBottom + fGateTipHeight,
-						0.001f);
-				gl.glVertex3f(fCurrentPosition - 3 * fGateWidth, fBottom + fGateTipHeight,
-						0.001f);
-				gl.glVertex3f(fCurrentPosition - 3 * fGateWidth, fBottom, 0.001f);
-				gl.glEnd();
-				gl.glPopAttrib();
-
-				gl.glPopName();
-
-				// remove button
-				
-				float fXGateRemoveOrigin = fCurrentPosition - 0.15f;
-				float fYGateRemoveOrigin = fTop - 0.1f;
-
-				int iPickingID = pickingManager.getPickingID(iUniqueID,
-						EPickingType.REMOVE_GATE, iGateID);
-				Texture tempTexture = iconTextureManager.getIconTexture(gl,
-						EIconTextures.SMALL_DROP);
-				tempTexture.enable();
-				tempTexture.bind();
-
-				TextureCoords texCoords = tempTexture.getImageTexCoords();
-
-				gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
-				gl.glColor4f(1, 1, 1, 1);
-				gl.glPushName(iPickingID);
-
-				gl.glBegin(GL.GL_POLYGON);
-				gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-				gl.glVertex3f(fXGateRemoveOrigin - 0.05f, fYGateRemoveOrigin + 0.2f, 0.001f);
-				gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-				gl.glVertex3f(fXGateRemoveOrigin + 0.05f, fYGateRemoveOrigin + 0.2f, 0.001f);
-				gl.glTexCoord2f(texCoords.right(), texCoords.top());
-				gl.glVertex3f(fXGateRemoveOrigin + 0.05f, fYGateRemoveOrigin, 0.001f);
-				gl.glTexCoord2f(texCoords.left(), texCoords.top());
-				gl.glVertex3f(fXGateRemoveOrigin - 0.05f, fYGateRemoveOrigin, 0.001f);
-				gl.glEnd();
-
-				gl.glPopName();
-				gl.glPopAttrib();
-				tempTexture.disable();
-
-				if (detailLevel == EDetailLevel.HIGH)
-				{
-					if (set.isSetHomogeneous())
-					{
-						float fValue = (float) set.getRawForNormalized(fBottom
-								/ renderStyle.getAxisHeight());
-						if (fValue > set.getMin())
-							renderBoxedYValues(gl, fCurrentPosition, fBottom,
-									getDecimalFormat().format(fValue), ESelectionType.NORMAL);
-					}
-					else
-					{
-						// TODO storage based access
-					}
-				}
-
+				renderSingleGate(gl, gate, iAxisID, iGateID, fCurrentPosition);
 			}
 		}
+	}
+
+	private void renderSingleGate(GL gl, Pair<Float, Float> gate, int iAxisID, int iGateID,
+			float fCurrentPosition)
+	{
+		final float fGateWidth = renderStyle.getGateWidth();
+		final float fGateTipHeight = renderStyle.getGateTipHeight();
+
+		Float fBottom = gate.getFirst();
+		Float fTop = gate.getSecond();
+
+		float[] fArGateColor;
+
+		if ((bIsGateMouseOver || bIsDraggingActive) && iGateID == iDraggedGateNumber
+				&& draggedObject == EPickingType.LOWER_GATE_TIP_SELECTION)
+		{
+			fArGateColor = POLYLINE_SELECTED_COLOR;
+			bIsGateMouseOver = false;
+		}
+		else
+		{
+			fArGateColor = GATE_TIP_COLOR;
+		}
+		gl.glColor4fv(fArGateColor, 0);
+
+		// The tip of the gate (which is pickable)
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.LOWER_GATE_TIP_SELECTION, iGateID));
+		gl.glBegin(GL.GL_POLYGON);
+		// variable
+		gl.glVertex3f(fCurrentPosition + fGateWidth, fTop - fGateTipHeight, 0.001f);
+		// variable
+		gl.glVertex3f(fCurrentPosition, fTop, 0.001f);
+		// variable
+		gl.glVertex3f(fCurrentPosition - fGateWidth, fTop - fGateTipHeight, 0.001f);
+		gl.glEnd();
+
+		// invisible part, for better picking
+		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glColor4f(0, 0, 0, 0f);
+		gl.glVertex3f(fCurrentPosition + 3 * fGateWidth, fTop - fGateTipHeight, 0.001f);
+		gl.glVertex3f(fCurrentPosition + 3 * fGateWidth, fTop + fGateTipHeight, 0.001f);
+		gl.glVertex3f(fCurrentPosition - 3 * fGateWidth, fTop + fGateTipHeight, 0.001f);
+		gl.glVertex3f(fCurrentPosition - 3 * fGateWidth, fTop - fGateTipHeight, 0.001f);
+		gl.glEnd();
+		gl.glPopAttrib();
+		gl.glPopName();
+
+		if (detailLevel == EDetailLevel.HIGH)
+		{
+			if (set.isSetHomogeneous())
+			{
+				renderBoxedYValues(gl, fCurrentPosition, fTop, getDecimalFormat().format(
+						set.getRawForNormalized(fTop / renderStyle.getAxisHeight())),
+						ESelectionType.NORMAL);
+			}
+			else
+			{
+				// TODO storage based acces
+			}
+
+		}
+		gl.glColor4fv(GATE_BODY_COLOR, 0);
+		// The body of the gate
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.LOWER_GATE_BODY_SELECTION, iGateID));
+		gl.glBegin(GL.GL_POLYGON);
+		// bottom
+		gl.glVertex3f(fCurrentPosition - fGateWidth, fBottom + fGateTipHeight, 0.0001f);
+		// constant
+		gl.glVertex3f(fCurrentPosition + fGateWidth, fBottom + fGateTipHeight, 0.0001f);
+		// top
+		gl.glVertex3f(fCurrentPosition + fGateWidth, fTop - fGateTipHeight, 0.0001f);
+		// top
+		gl.glVertex3f(fCurrentPosition - fGateWidth, fTop - fGateTipHeight, 0.0001f);
+		gl.glEnd();
+		gl.glPopName();
+
+		gl.glPushName(pickingManager.getPickingID(iUniqueID,
+				EPickingType.LOWER_GATE_BOTTOM_SELECTION, iGateID));
+
+		if ((bIsGateMouseOver || bIsDraggingActive) && iGateID == iDraggedGateNumber
+				&& draggedObject == EPickingType.LOWER_GATE_BOTTOM_SELECTION)
+		{
+			fArGateColor = POLYLINE_SELECTED_COLOR;
+			bIsGateMouseOver = false;
+		}
+		else
+		{
+			fArGateColor = GATE_TIP_COLOR;
+		}
+		gl.glColor4fv(fArGateColor, 0);
+		// The bottom of the gate
+		gl.glBegin(GL.GL_POLYGON);
+		// variable
+		gl.glVertex3f(fCurrentPosition + fGateWidth, fBottom + fGateTipHeight, 0.001f);
+		// variable
+		gl.glVertex3f(fCurrentPosition, fBottom, 0.001f);
+		// variable
+		gl.glVertex3f(fCurrentPosition - fGateWidth, fBottom + fGateTipHeight, 0.001f);
+		gl.glEnd();
+
+		// invisible part, for better picking
+		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glColor4f(0, 0, 0, 0.0f);
+		gl.glVertex3f(fCurrentPosition + 3 * fGateWidth, fBottom, 0.001f);
+		gl.glVertex3f(fCurrentPosition + 3 * fGateWidth, fBottom + fGateTipHeight, 0.001f);
+		gl.glVertex3f(fCurrentPosition - 3 * fGateWidth, fBottom + fGateTipHeight, 0.001f);
+		gl.glVertex3f(fCurrentPosition - 3 * fGateWidth, fBottom, 0.001f);
+		gl.glEnd();
+		gl.glPopAttrib();
+
+		gl.glPopName();
+
+		// remove button
+
+		float fXGateRemoveOrigin = fCurrentPosition - 0.15f;
+		float fYGateRemoveOrigin = fTop - 0.1f;
+
+		int iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.REMOVE_GATE,
+				iGateID);
+		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.SMALL_DROP);
+		tempTexture.enable();
+		tempTexture.bind();
+
+		TextureCoords texCoords = tempTexture.getImageTexCoords();
+
+		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		gl.glColor4f(1, 1, 1, 1);
+		gl.glPushName(iPickingID);
+
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(fXGateRemoveOrigin - 0.05f, fYGateRemoveOrigin + 0.2f, 0.001f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(fXGateRemoveOrigin + 0.05f, fYGateRemoveOrigin + 0.2f, 0.001f);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(fXGateRemoveOrigin + 0.05f, fYGateRemoveOrigin, 0.001f);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(fXGateRemoveOrigin - 0.05f, fYGateRemoveOrigin, 0.001f);
+		gl.glEnd();
+
+		gl.glPopName();
+		gl.glPopAttrib();
+		tempTexture.disable();
+
+		if (detailLevel == EDetailLevel.HIGH)
+		{
+			if (set.isSetHomogeneous())
+			{
+				float fValue = (float) set.getRawForNormalized(fBottom
+						/ renderStyle.getAxisHeight());
+				if (fValue > set.getMin())
+					renderBoxedYValues(gl, fCurrentPosition, fBottom, getDecimalFormat()
+							.format(fValue), ESelectionType.NORMAL);
+			}
+			else
+			{
+				// TODO storage based access
+			}
+		}
+	}
+
+	private void renderGlobalBrush(GL gl)
+	{
+		gl.glColor4f(0, 0, 0, 1f);
+		gl.glLineWidth(ParCoordsRenderStyle.Y_AXIS_LINE_WIDTH);
+		// gl.glPushName(iPickingID);
+
+		float fXOrigin = -0.2f;
+
+		gl.glBegin(GL.GL_LINES);
+		gl.glVertex3f(fXOrigin, 0, AXIS_Z);
+		gl.glVertex3f(fXOrigin, renderStyle.getAxisHeight(), AXIS_Z);
+		gl.glVertex3f(fXOrigin - AXIS_MARKER_WIDTH, 0, AXIS_Z);
+		gl.glVertex3f(fXOrigin + AXIS_MARKER_WIDTH, 0, AXIS_Z);
+		gl.glVertex3f(fXOrigin - AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(), AXIS_Z);
+		gl.glVertex3f(fXOrigin + AXIS_MARKER_WIDTH, renderStyle.getAxisHeight(), AXIS_Z);
+		gl.glEnd();
+
+		// the gate add button
+		float fYGateAddOrigin = renderStyle.getAxisHeight();
+		int iPickingID = pickingManager.getPickingID(iUniqueID, EPickingType.ADD_MASTER_GATE,
+				1);
+		Texture tempTexture = iconTextureManager.getIconTexture(gl, EIconTextures.SMALL_DROP);
+		tempTexture.enable();
+		tempTexture.bind();
+
+		TextureCoords texCoords = tempTexture.getImageTexCoords();
+
+		gl.glPushAttrib(GL.GL_CURRENT_BIT | GL.GL_LINE_BIT);
+		gl.glColor4f(1, 1, 1, 1);
+		gl.glPushName(iPickingID);
+
+		gl.glBegin(GL.GL_POLYGON);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(fXOrigin - 0.05f, fYGateAddOrigin + 0.2f, AXIS_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(fXOrigin + 0.05f, fYGateAddOrigin + 0.2f, AXIS_Z);
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(fXOrigin + 0.05f, fYGateAddOrigin, AXIS_Z);
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(fXOrigin - 0.05f, fYGateAddOrigin, AXIS_Z);
+		gl.glEnd();
+
+		gl.glPopName();
+		gl.glPopAttrib();
+		tempTexture.disable();
+
+		for (Integer iGateID : hashMasterGates.keySet())
+		{
+			Pair<Float, Float> gate = hashMasterGates.get(iGateID);
+			renderSingleGate(gl, gate, -1, iGateID, fXOrigin);
+		}
+
+		// gl.glPopName();
 	}
 
 	/**
@@ -1439,8 +1492,17 @@ public class GLParallelCoordinates
 		float height = fArTargetWorldCoordinates[1];
 
 		// todo only valid for one gate
-
-		Pair<Float, Float> gate = hashGates.get(iDraggedGateNumber);
+		Pair<Float, Float> gate;
+		if (iDraggedGateNumber > 999)
+		{
+			gate = hashGates.get(iDraggedGateNumber);
+		}
+		else
+		{
+			gate = hashMasterGates.get(iDraggedGateNumber);
+		}
+		if (gate == null)
+			return;
 
 		float fTop = gate.getSecond();
 		float fBottom = gate.getFirst();
@@ -1537,6 +1599,55 @@ public class GLParallelCoordinates
 		}
 	}
 
+	private void handleMasterGateUnselection()
+	{
+
+		float fCurrentValue = -1;
+		for (Integer iGateID : hashMasterGates.keySet())
+		{
+			ArrayList<Integer> alCurrentGateBlocks = hashIsGateBlocking.get(iGateID);
+			if (alCurrentGateBlocks == null)
+				return;
+			alCurrentGateBlocks.clear();
+			Pair<Float, Float> gate = hashMasterGates.get(iGateID);
+
+			for (int iPolylineIndex : set.getVA(iPolylineVAID))
+			{
+				boolean bIsBlocking = true;
+				for (int iAxisIndex : set.getVA(iAxisVAID))
+				{
+					if (bRenderStorageHorizontally)
+					{
+						fCurrentValue = set.get(iPolylineIndex).getFloat(
+								EDataRepresentation.NORMALIZED, iAxisIndex);
+					}
+					else
+					{
+						fCurrentValue = set.get(iAxisIndex).getFloat(
+								EDataRepresentation.NORMALIZED, iPolylineIndex);
+					}
+
+					if (Float.isNaN(fCurrentValue))
+						fCurrentValue = renderStyle.getNaNYOffset();
+
+					if (fCurrentValue <= (gate.getSecond() - 0.0000000001f)
+							/ renderStyle.getAxisHeight()
+							&& fCurrentValue >= gate.getFirst() / renderStyle.getAxisHeight())
+					{
+						bIsBlocking = true;
+					}
+					else
+					{
+						bIsBlocking = false;
+						break;
+					}
+				}
+				if (bIsBlocking)
+					alCurrentGateBlocks.add(iPolylineIndex);
+			}
+		}
+	}
+
 	@Override
 	protected void reactOnExternalSelection()
 	{
@@ -1576,6 +1687,7 @@ public class GLParallelCoordinates
 	{
 
 		handleGateUnselection();
+		handleMasterGateUnselection();
 
 		HashMap<Integer, Boolean> hashDeselectedPolylines = new HashMap<Integer, Boolean>();
 
@@ -1880,6 +1992,7 @@ public class GLParallelCoordinates
 				switch (ePickingMode)
 				{
 					case CLICKED:
+
 						Integer iGateCount = hashNumberOfGatesPerAxisID.get(iExternalID);
 						if (iGateCount == null)
 							iGateCount = 1;
@@ -1899,14 +2012,35 @@ public class GLParallelCoordinates
 				}
 				pickingManager.flushHits(iUniqueID, EPickingType.ADD_GATE);
 				break;
+			case ADD_MASTER_GATE:
+				switch (ePickingMode)
+				{
+					case CLICKED:
+						hashMasterGates.put(++iNumberOfMasterGates, new Pair<Float, Float>(0f,
+								renderStyle.getAxisHeight() / 2f));
+						hashIsGateBlocking.put(iNumberOfMasterGates, new ArrayList<Integer>());
+						setDisplayListDirty();
+						break;
+				}
+				pickingManager.flushHits(iUniqueID, EPickingType.ADD_MASTER_GATE);
+				break;
+
 			case REMOVE_GATE:
 				switch (ePickingMode)
 				{
 					case CLICKED:
-
-						hashGates.remove(iExternalID);
-						hashIsGateBlocking.remove(iExternalID);
-						setDisplayListDirty();
+						if (iExternalID > 999)
+						{
+							hashGates.remove(iExternalID);
+							hashIsGateBlocking.remove(iExternalID);
+							setDisplayListDirty();
+						}
+						else
+						{
+							hashMasterGates.remove(iExternalID);
+							hashIsGateBlocking.remove(iExternalID);
+							setDisplayListDirty();
+						}
 						break;
 				}
 				pickingManager.flushHits(iUniqueID, EPickingType.REMOVE_GATE);

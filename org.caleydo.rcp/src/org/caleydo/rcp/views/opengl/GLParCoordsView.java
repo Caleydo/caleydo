@@ -81,18 +81,18 @@ public class GLParCoordsView
 		alToolbar.add(propagateSelectionAction);
 		IAction resetAxisSpacing = new ResetAxisSpacingAction(iViewID);
 		alToolbar.add(resetAxisSpacing);
-
-		// only if standalone or explicitly requested
-		if (pcs.isRenderedRemote()
-				&& GeneralManager.get().getPreferenceStore().getBoolean(
-						PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT))
-			return;
-
-		IAction toggleRenderContextAction = new RenderContextAction(iViewID);
-		alToolbar.add(toggleRenderContextAction);
-
-		IAction useRandomSamplingAction = new UseRandomSamplingAction(iViewID);
-		alToolbar.add(useRandomSamplingAction);
+//
+//		// only if standalone or explicitly requested
+//		if (pcs.isRenderedRemote()
+//				&& GeneralManager.get().getPreferenceStore().getBoolean(
+//						PreferenceConstants.PC_LIMIT_REMOTE_TO_CONTEXT))
+//			return;
+//
+//		IAction toggleRenderContextAction = new RenderContextAction(iViewID);
+//		alToolbar.add(toggleRenderContextAction);
+//
+//		IAction useRandomSamplingAction = new UseRandomSamplingAction(iViewID);
+//		alToolbar.add(useRandomSamplingAction);
 
 	}
 }
