@@ -13,6 +13,7 @@ import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.canvas.GLCaleydoCanvas;
 import org.caleydo.core.view.opengl.canvas.remote.GLRemoteRendering;
+import org.caleydo.rcp.views.swt.ToolBarView;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IToolBarManager;
@@ -39,6 +40,8 @@ public abstract class AGLViewPart
 	protected static ArrayList<IAction> alToolbar;
 	protected static ArrayList<IContributionItem> alToolbarContributions;
 
+	private final static int TOOLBAR_WRAP_COUNT = 4;
+	
 	/**
 	 * Contains view IDs for initally contained remote rendered views
 	 */
@@ -218,10 +221,14 @@ public abstract class AGLViewPart
 		}
 
 		// add action items
-		int iMaxItemsPerToolBar = 5;
+		int iToolBarWrapCount = TOOLBAR_WRAP_COUNT;
+		
+		if (alToolbar.size() <= 4 && ToolBarView.bHorizontal)
+			iToolBarWrapCount = 2;
+		
 		for (int iToolBarItemIndex = 0; iToolBarItemIndex < alToolbar.size(); iToolBarItemIndex++)
 		{
-			alToolBarManager.get((int) (iToolBarItemIndex / iMaxItemsPerToolBar)).add(
+			alToolBarManager.get((int) (iToolBarItemIndex / iToolBarWrapCount)).add(
 					alToolbar.get(iToolBarItemIndex));
 		}
 		alToolbar = null;

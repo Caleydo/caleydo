@@ -20,6 +20,7 @@ import org.caleydo.core.view.swt.data.search.DataEntitySearcherViewRep;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.action.toolbar.general.ExportDataAction;
 import org.caleydo.rcp.action.toolbar.view.TakeSnapshotAction;
+import org.caleydo.rcp.perspective.GenomePerspective;
 import org.caleydo.rcp.util.info.InfoArea;
 import org.caleydo.rcp.util.search.SearchBox;
 import org.caleydo.rcp.views.opengl.GLGlyphView;
@@ -45,77 +46,56 @@ import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowData;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Event;
-import org.eclipse.swt.widgets.ExpandBar;
-import org.eclipse.swt.widgets.ExpandItem;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.swt.widgets.ToolBar;
-import org.eclipse.ui.ISizeProvider;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 import org.eclipse.ui.part.ViewPart;
 
 public class ToolBarView
 	extends ViewPart
-	implements IMediatorReceiver, ISizeProvider
+	implements IMediatorReceiver//, ISizeProvider
 {
 	public static final String ID = "org.caleydo.rcp.views.ToolBarView";
 
-	public static final int TOOLBAR_WIDTH = 165;
-
-	private ExpandBar expandBar;
+	public static final int TOOLBAR_WIDTH = 240;
+	public static final int TOOLBAR_HEIGHT = 148;	
 
 	private Composite parentComposite;
 
 	private DataEntitySearcherViewRep dataEntitySearcher;
 
 	// private HTMLBrowserViewRep browserView;
+	
+	private ArrayList<Group> viewSpecificGroups;
 
+	public static boolean bHorizontal = false;
+	
 	@Override
 	public void createPartControl(Composite parent)
 	{
 		final Composite parentComposite = new Composite(parent, SWT.NULL);
-		parentComposite.setLayout(new RowLayout(SWT.VERTICAL));
 
+		if (!GenomePerspective.bIsWideScreen)
+			bHorizontal = true;
+		
+		if (bHorizontal)
+			parentComposite.setLayout(new GridLayout(10, false));
+		else 
+			parentComposite.setLayout(new GridLayout(1, false));			
+		
 		this.parentComposite = parentComposite;
-
-		expandBar = new ExpandBar(parentComposite, SWT.V_SCROLL);
-		// expandBar.setLayoutData(new
-		// RowData(parentComposite.getBounds().width,
-		// parentComposite.getBounds().height));
-		expandBar.setSpacing(5);
+		
+		viewSpecificGroups = new ArrayList<Group>();
 		
 		addGeneralToolBar();
 		addSearchBar();
 		addColorMappingBar();
 		addInfoBar();
-
-		// expandBar.setLayoutData(new
-		// RowData(parentComposite.getBounds().width, 500));
-		// expandBar.pack();
-		// parentComposite.pack();
-		// parentComposite.update();
-
-		parentComposite.addListener(SWT.Resize, new Listener()
-		{
-			public void handleEvent(Event e)
-			{
-				// Rectangle rect = composite.getParent().getClientArea();
-				// Point size = toolBar.computeSize(rect.width, SWT.DEFAULT);
-				// toolBar.setSize(size);
-				// // toolBar.setBounds(0, 0,size.x, size.y);
-				// toolBar.pack();
-
-				expandBar.setLayoutData(new RowData(parentComposite.getBounds().width - 18,
-						parentComposite.getBounds().height));
-				expandBar.pack();
-			}
-		});
 	}
 
 	@Override
@@ -130,60 +110,46 @@ public class ToolBarView
 		super.dispose();
 	}
 
-	// public void addPathwayLoadingProgress()
-	// {
-	// try {
-	// new ProgressMonitorDialog(parentComposite.getShell()).run(true, true,
-	// new PathwayLoadingProgress());
-	// } catch (InvocationTargetException e) {
-	// MessageDialog.openError(parentComposite.getShell(), "Error",
-	// e.getMessage());
-	// } catch (InterruptedException e) {
-	// MessageDialog.openInformation(parentComposite.getShell(), "Cancelled",
-	// e.getMessage());
-	// }
-	//          
-	// // PlatformUI.getWorkbench().getProgressService().
-	// // busyCursorWhile(this);
-	// }
-
 	public void addViewSpecificToolBar(int iViewID)
 	{
-		// Check if toolbar for this view is already present
-		for (ExpandItem item : expandBar.getItems())
-		{
-			// Only one pathway toolbar for all pathways is allowed
-			if (item.getData("view") instanceof GLPathway
-					&& GeneralManager.get().getViewGLCanvasManager().getGLEventListener(
-							iViewID) instanceof GLPathway)
-				return;
-
-			if (item.getData("viewID") != null
-					&& ((Integer) item.getData("viewID")).intValue() == iViewID)
-				return;
-		}
-
+//		// Check if toolbar for this view is already present
+//		for (ExpandItem item : expandBar.getItems())
+//		{
+//			// Only one pathway toolbar for all pathways is allowed
+//			if (item.getData("view") instanceof GLPathway
+//					&& GeneralManager.get().getgroupViewGLCanvasManager().getGLEventListener(
+//							iViewID) instanceof GLPathway)
+//				return;
+//
+//			if (item.getData("viewID") != null
+//					&& ((Integer) item.getData("viewID")).intValue() == iViewID)
+//				return;
+//		}
+		
 		String sViewTitle = "";
 		Image viewIcon = null;
 
-		final Composite composite = new Composite(expandBar, SWT.NONE);
-		GridLayout layout = new GridLayout();
-		layout.marginLeft = layout.marginTop = layout.marginRight = layout.marginBottom = 0;
-		layout.verticalSpacing = 0;
-		composite.setLayout(layout);
-
+	    Group group = new Group(parentComposite, SWT.NULL);
+	    group.setLayout(new GridLayout(1, false));
+	    
+	    if (bHorizontal)
+	    	group.setLayoutData(new GridData(GridData.FILL_VERTICAL));
+	    else
+	    	group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+	    viewSpecificGroups.add(group);
+	    
 		// Needed to simulate toolbar wrapping which is not implemented for
 		// linux
 		// See bug: https://bugs.eclipse.org/bugs/show_bug.cgi?id=46025
 		ArrayList<ToolBar> alToolBar = new ArrayList<ToolBar>();
 		ArrayList<IToolBarManager> alToolBarManager = new ArrayList<IToolBarManager>();
 
-		final ToolBar toolBar = new ToolBar(composite, SWT.WRAP | SWT.FLAT);
+		final ToolBar toolBar = new ToolBar(group, SWT.WRAP | SWT.FLAT);
 		ToolBarManager toolBarManager = new ToolBarManager(toolBar);
 		alToolBar.add(toolBar);
 		alToolBarManager.add(toolBarManager);
 
-		final ToolBar toolBar2 = new ToolBar(composite, SWT.WRAP | SWT.FLAT);
+		final ToolBar toolBar2 = new ToolBar(group, SWT.WRAP | SWT.FLAT);
 		ToolBarManager toolBarManager2 = new ToolBarManager(toolBar2);
 		alToolBar.add(toolBar2);
 		alToolBarManager.add(toolBarManager2);
@@ -256,27 +222,12 @@ public class ToolBarView
 			return;
 		}
 
-//		toolBarManager.add(new Separator());
 		toolBarManager.update(true);
 
-//		toolBarManager2.add(new Separator());
 		if (toolBarManager2.isEmpty())
 			toolBarManager2.dispose();
 		else
 			toolBarManager2.update(true);
-
-//		Label separator = new Label(composite, SWT.SEPARATOR | SWT.HORIZONTAL | SWT.LINE_SOLID);
-//		separator.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		ExpandItem expandItem = new ExpandItem(expandBar, SWT.NONE);
-		expandItem.setText(sViewTitle);
-		expandItem.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-		expandItem.setControl(composite);
-		expandItem.setImage(viewIcon);
-		expandItem.setExpanded(true);
-		expandItem.setData("viewID", glView.getID());
-		expandItem.setData("view", glView);
-		expandItem.setData(toolBar);
 
 		if (glView instanceof GLRemoteRendering)
 		{
@@ -287,25 +238,44 @@ public class ToolBarView
 				addViewSpecificToolBar(iRemoteRenderedGLViewID);
 			}
 		}
+		
+		if (bHorizontal)
+		{
+			Label spacer = new Label(group, SWT.NULL);
+			spacer.setLayoutData(new GridData(GridData.FILL_BOTH));			
+		}
+		
+		Label label = new Label(group, SWT.CENTER);
+		label.setText(sViewTitle);
+    	label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+		
+		group.setData("view", glView);
+		group.setData("viewID", glView.getID());
+		
+		parentComposite.layout();
 	}
 
 	public void removeViewSpecificToolBar(int iViewID)
 	{
-		for (ExpandItem item : expandBar.getItems())
+		Group removedGroup = null;
+		for (Group group : viewSpecificGroups)
 		{
-			if (!(item.getData("view") instanceof AGLEventListener))
+			if (!(group.getData("view") instanceof AGLEventListener))
 				continue;
 
-			if (item.getData("viewID") != null
-					&& ((Integer) item.getData("viewID")).intValue() == iViewID)
+			if (group.getData("viewID") != null
+				&& ((Integer) group.getData("viewID")).intValue() == iViewID)
 			{
-				item.setExpanded(false);
-				item.dispose();
-				expandBar.update();
+				group.dispose();
+				removedGroup = group;
 				break;
 			}
-		}
-
+		}	
+		
+		if (removedGroup != null)
+			viewSpecificGroups.remove(removedGroup);
+		
 		// Remove toolbars of remote rendered views
 		AGLEventListener glView = GeneralManager.get().getViewGLCanvasManager()
 				.getGLEventListener(iViewID);
@@ -322,16 +292,12 @@ public class ToolBarView
 	
 	public void removeAllViewSpecificToolBars()
 	{
-		for (ExpandItem item : expandBar.getItems())
+		for (Group group : viewSpecificGroups)
 		{
-			if ((item.getData("view") instanceof AGLEventListener))
-			{
-				item.setExpanded(false);
-				item.dispose();
-				expandBar.update();
-				break;
-			}
+			group.dispose();
 		}
+		
+		viewSpecificGroups.clear();
 	}
 
 //	public void highlightViewSpecificToolBar(int iViewID)
@@ -396,6 +362,13 @@ public class ToolBarView
 
 	private void addSearchBar()
 	{
+	    Group group = new Group(parentComposite, SWT.NULL);
+	    group.setLayout(new GridLayout(1, false));
+	    if (bHorizontal)
+	    	group.setLayoutData(new GridData(GridData.FILL_VERTICAL));
+	    else
+	    	group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+	    
 		// Trigger gene/pathway search command
 		CmdViewCreateDataEntitySearcher cmd = (CmdViewCreateDataEntitySearcher) GeneralManager
 				.get().getCommandManager().createCommandByType(
@@ -403,28 +376,23 @@ public class ToolBarView
 		cmd.doCommand();
 		dataEntitySearcher = cmd.getCreatedObject();
 
-		final Composite composite = new Composite(expandBar, SWT.NONE);
-		GridLayout layout = new GridLayout();
-		layout.marginLeft = layout.marginTop = layout.marginRight = layout.marginBottom = 0;
-		layout.verticalSpacing = 0;
-		composite.setLayout(layout);
-
-		// Add search bar
-		// if (!GeneralManager.get().getPreferenceStore().getBoolean(
-		// PreferenceConstants.XP_CLASSIC_STYLE_MODE))
-		// {
-		Label searchInputLabel = new Label(composite, SWT.NULL);
+		Composite searchComposite = new Composite(group, SWT.NULL);
+		searchComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+	    if (bHorizontal)
+			searchComposite.setLayout(new GridLayout(2, false));
+	    else
+			searchComposite.setLayout(new GridLayout(1, false));
+		
+		Label searchInputLabel = new Label(searchComposite, SWT.NULL);
 		searchInputLabel.setText("Pathway search");
-		searchInputLabel.pack();
+//		searchInputLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		final SearchBox searchBox = new SearchBox(composite, SWT.BORDER);
+		final SearchBox searchBox = new SearchBox(searchComposite, SWT.BORDER);
 
 		String items[] = { "No pathways available!" };
-		GridData data = new GridData();
-		data.widthHint = TOOLBAR_WIDTH - 10;
-		searchBox.setLayoutData(data);
 		searchBox.setItems(items);
 		searchBox.setTextLimit(21);
+		searchBox.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		
 		if (!Application.bNoPathwayData || Application.bLoadPathwayData)
 		{
@@ -479,11 +447,12 @@ public class ToolBarView
 		});
 
 		// Gene search
-		Label entitySearchLabel = new Label(composite, SWT.NULL);
+		Label entitySearchLabel = new Label(searchComposite, SWT.NULL);
 		entitySearchLabel.setText("Gene search");
+//		entitySearchLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		final Text geneSearchText = new Text(composite, SWT.BORDER | SWT.SINGLE);
-		geneSearchText.setLayoutData(data);
+		final Text geneSearchText = new Text(searchComposite, SWT.BORDER | SWT.SINGLE);
+		geneSearchText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		geneSearchText.addFocusListener(new FocusAdapter()
 		{
 			@Override
@@ -517,36 +486,46 @@ public class ToolBarView
 				}
 			}
 		});
-
-		// }
-
-		ExpandItem expandItem = new ExpandItem(expandBar, SWT.NONE);
-		expandItem.setText("Search");
-		expandItem.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-		expandItem.setControl(composite);
-		expandItem.setImage(GeneralManager.get().getResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), "resources/icons/general/search.png"));
-		expandItem.setExpanded(true);
+		
+		if (bHorizontal)
+		{
+			Label spacer = new Label(group, SWT.NULL);
+			spacer.setLayoutData(new GridData(GridData.FILL_BOTH));			
+		}
+		
+		Label label = new Label(group, SWT.CENTER);
+		label.setText("Search");
+		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 	}
 
 	private void addColorMappingBar()
 	{
-		final Composite composite = new Composite(expandBar, SWT.NONE);
-		GridLayout layout = new GridLayout();
-		layout.marginLeft = layout.marginTop = layout.marginRight = layout.marginBottom = 0;
-		layout.verticalSpacing = 0;
-		composite.setLayout(layout);
+	    Group group = new Group(parentComposite, SWT.NULL);
+	    group.setLayout(new GridLayout(1, false));
 
-		CLabel colorMappingPreviewLabel = new CLabel(composite, SWT.SHADOW_IN);
+	    GridData gridData;
+	    if (bHorizontal)
+	    {
+	    	gridData = new GridData(GridData.FILL_VERTICAL);
+	    	gridData.minimumWidth = 160;
+	    	gridData.widthHint = 160;
+	    }
+	    else
+	    {
+	    	gridData = new GridData(GridData.FILL_HORIZONTAL);
+	    }
+    	group.setLayoutData(gridData);
+	    
+		CLabel colorMappingPreviewLabel = new CLabel(group, SWT.SHADOW_IN);
 		// colorMappingPreviewLabel.setBounds(0, 0, 200, 40);
 		colorMappingPreviewLabel.setText("");
-		// colorMappingPreviewLabel.setLayoutData(new RowData(200, 20));
-
+		
 		// TODO for Alex: Read real color mapping values
 		Color[] alColorMarkerPoints = new Color[3];
-		alColorMarkerPoints[0] = new Color(composite.getDisplay(), 255, 0, 0);
-		alColorMarkerPoints[1] = new Color(composite.getDisplay(), 0, 0, 0);
-		alColorMarkerPoints[2] = new Color(composite.getDisplay(), 0, 255, 0);
+		alColorMarkerPoints[0] = new Color(Display.getCurrent(), 255, 0, 0);
+		alColorMarkerPoints[1] = new Color(Display.getCurrent(), 0, 0, 0);
+		alColorMarkerPoints[2] = new Color(Display.getCurrent(), 0, 255, 0);
 		colorMappingPreviewLabel.setBackground(alColorMarkerPoints, new int[] { 20, 100 });
 		colorMappingPreviewLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
@@ -564,56 +543,80 @@ public class ToolBarView
 			}
 		});
 
-		ExpandItem expandItem = new ExpandItem(expandBar, SWT.NONE);
-		expandItem.setText("Color mapping");
-		expandItem.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);		expandItem.setControl(composite);
-		expandItem.setImage(GeneralManager.get().getResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(),
-				"resources/icons/general/color_mapping.png"));
-		expandItem.setExpanded(true);
+		if (bHorizontal)
+		{
+			Label spacer = new Label(group, SWT.NULL);
+			spacer.setLayoutData(new GridData(GridData.FILL_BOTH));			
+		}
+		
+		Label label = new Label(group, SWT.CENTER);
+		label.setText("Color Mapping");
+		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 	}
 
 	private void addGeneralToolBar()
 	{
-		final Composite composite = new Composite(expandBar, SWT.NONE);
-		GridLayout layout = new GridLayout();
-		layout.marginLeft = layout.marginTop = layout.marginRight = layout.marginBottom = 0;
-		layout.verticalSpacing = 0;
-		composite.setLayout(layout);
-
-		final ToolBar toolBar = new ToolBar(composite, SWT.WRAP | SWT.FLAT);
+	    Group group = new Group(parentComposite, SWT.NULL);
+	    group.setLayout(new GridLayout(1, false));
+	    if (bHorizontal)
+	    	group.setLayoutData(new GridData(GridData.FILL_VERTICAL));
+	    else
+	    	group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+	    
+		final ToolBar toolBar = new ToolBar(group, SWT.WRAP | SWT.FLAT);
 		ToolBarManager toolBarManager = new ToolBarManager(toolBar);
 		toolBarManager.add(new ExportDataAction());
 		toolBarManager.add(new TakeSnapshotAction());
 		toolBarManager.update(true);
 
-		ExpandItem expandItem = new ExpandItem(expandBar, SWT.NONE);
-		expandItem.setText("General");
-		expandItem.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);		expandItem.setControl(composite);
-		expandItem.setImage(GeneralManager.get().getResourceLoader().getImage(
-						PlatformUI.getWorkbench().getDisplay(),
-						"resources/icons/general/general.png"));
-		expandItem.setExpanded(true);
+//		final ToolBar toolBar2 = new ToolBar(group, SWT.WRAP | SWT.FLAT);
+//		ToolBarManager toolBarManager2 = new ToolBarManager(toolBar2);
+//		toolBarManager2.add(new ExportDataAction());
+//		toolBarManager2.add(new TakeSnapshotAction());
+//		toolBarManager2.update(true);
+
+		if (bHorizontal)
+		{
+			Label spacer = new Label(group, SWT.NULL);
+			spacer.setLayoutData(new GridData(GridData.FILL_BOTH));			
+		}
+		
+		Label label = new Label(group, SWT.CENTER);
+		label.setText("General");
+		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 	}
 
 	private void addInfoBar()
 	{
-		final Composite composite = new Composite(expandBar, SWT.NONE);
-		GridLayout layout = new GridLayout();
-		layout.marginLeft = layout.marginTop = layout.marginRight = layout.marginBottom = 0;
-		layout.verticalSpacing = 0;
-		composite.setLayout(layout);
-
+	    Group group = new Group(parentComposite, SWT.NULL);
+	    group.setLayout(new GridLayout(1, false));
+	    if (bHorizontal)
+	    	group.setLayoutData(new GridData(GridData.FILL_VERTICAL));
+	    else
+	    	group.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+	    
+		Composite infoComposite = new Composite(group, SWT.NULL);
+		infoComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+	    if (bHorizontal)
+	    	infoComposite.setLayout(new GridLayout(2, false));
+	    else
+	    	infoComposite.setLayout(new GridLayout(1, false));
+	    
 		InfoArea infoArea = new InfoArea();
-		infoArea.createControl(composite);
-
-		ExpandItem expandItem = new ExpandItem(expandBar, SWT.NONE);
-		expandItem.setText("Selection Info");
-		expandItem.setHeight(composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
-		expandItem.setControl(composite);
-		expandItem.setImage(GeneralManager.get().getResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), "resources/icons/general/info.png"));
-		expandItem.setExpanded(true);
+		infoArea.createControl(infoComposite);
+		
+		if (bHorizontal)
+		{
+			Label spacer = new Label(group, SWT.NULL);
+			spacer.setLayoutData(new GridData(GridData.FILL_BOTH));			
+		}
+		
+		Label label = new Label(group, SWT.CENTER);
+		label.setText("Info");
+		label.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		label.setBackground(Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
 	}
 
 	@Override
@@ -624,20 +627,20 @@ public class ToolBarView
 	}
 	
 
-	@Override
-	public int computePreferredSize(boolean width, int availableParallel,
-			int availablePerpendicular, int preferredResult)
-	{
-		// Set minimum size of the view
-		if (width == true)
-			return (int)(ToolBarView.TOOLBAR_WIDTH * 1.25f);
-		
-		return 1000;
-	}
-
-	@Override
-	public int getSizeFlags(boolean width)
-	{
-		return SWT.MIN;
-	}
+//	@Override
+//	public int computePreferredSize(boolean width, int availableParallel,
+//			int availablePerpendicular, int preferredResult)
+//	{
+//		// Set minimum size of the view
+//		if (width == true)
+//			return (int)(ToolBarView.TOOLBAR_WIDTH * 1.25f);
+//		
+//		return 1000;
+//	}
+//
+//	@Override
+//	public int getSizeFlags(boolean width)
+//	{
+//		return SWT.MIN;
+//	}
 }

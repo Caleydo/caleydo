@@ -20,6 +20,7 @@ import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.rcp.views.swt.HTMLBrowserView;
+import org.caleydo.rcp.views.swt.ToolBarView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -48,6 +49,10 @@ public class InfoArea
 	
 	private Tree selectionTree;
 	
+//	private TreeItem geneTree;
+//	private TreeItem experimentTree;
+//	private TreeItem pathwayTree;
+	
 	private AGLEventListener updateTriggeringView;
 	private Composite parentComposite;
 	
@@ -68,33 +73,43 @@ public class InfoArea
 
 		parentComposite = parent;
 
-		Label lblViewInfo = new Label(parent, SWT.NONE);
-		lblViewInfo.setText("View Info");
-		lblViewInfo.setFont(font);
+//		Label lblViewInfo = null;
+//		Label lblDetailInfo = null;
+		if (ToolBarView.bHorizontal)
+		{
+//			lblViewInfo = new Label(parent, SWT.NONE);
+//			lblDetailInfo = new Label(parent, SWT.NO_BACKGROUND);
+			lblViewInfoContent = new Label(parent, SWT.WRAP);
+			selectionTree = new Tree(parent, SWT.BORDER);			
+		}
+		else
+		{
+//			lblViewInfo = new Label(parent, SWT.NONE);
+			lblViewInfoContent = new Label(parent, SWT.WRAP);
+//			lblDetailInfo = new Label(parent, SWT.NO_BACKGROUND);
+			selectionTree = new Tree(parent, SWT.BORDER);						
+		}
+		
+//		lblViewInfo.setText("View Info");
+//		lblViewInfo.setFont(font);
+//	    lblViewInfo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		GridData data = new GridData();
-		data.heightHint = 15;
-		lblViewInfo.setLayoutData(data);
-
-		lblViewInfoContent = new Label(parent, SWT.WRAP);
 		lblViewInfoContent.setText("");
+		GridData gridData = new GridData(GridData.FILL_BOTH);
+		gridData.minimumWidth = 150;
+		gridData.minimumHeight = 72;
+	    lblViewInfoContent.setLayoutData(gridData);
 
-		data = new GridData();
-		data.heightHint = 55;
-		data.grabExcessHorizontalSpace = true;
-		data.horizontalAlignment = SWT.FILL;
-		lblViewInfoContent.setLayoutData(data);
+//		lblDetailInfo.setText("Selection Info");
+//		lblDetailInfo.setFont(font);
+//	    lblDetailInfo.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		Label lblDetailInfo = new Label(parent, SWT.NO_BACKGROUND);
-		lblDetailInfo.setText("Selection Info");
-		lblDetailInfo.setFont(font);
+		gridData = new GridData(GridData.FILL_BOTH);
+		gridData.minimumWidth = 200;
+		gridData.minimumHeight = 72;
+	    selectionTree.setLayoutData(gridData);
 
-		data = new GridData();
-		data.heightHint = 15;
-		lblDetailInfo.setLayoutData(data);
-
-		selectionTree = new Tree(parent, SWT.BORDER);
-//		selectionTree.setItemCount(2);
+	    //		selectionTree.setItemCount(2);
 		selectionTree.addSelectionListener(new SelectionAdapter() {
 
 			@Override
@@ -102,106 +117,188 @@ public class InfoArea
 			{
 				super.widgetSelected(e);
 
-				((HTMLBrowserView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-						.findView(HTMLBrowserView.ID)).getHTMLBrowserViewRep().setUrl("bla");
+//				((HTMLBrowserView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+//						.findView(HTMLBrowserView.ID)).getHTMLBrowserViewRep().setUrl("bla");
 			}
 		});
-
-		data = new GridData();
-		data.heightHint = 80;
-		data.grabExcessHorizontalSpace = true;
-		data.horizontalAlignment = SWT.FILL;
-		selectionTree.setLayoutData(data);
-
+		
+//		geneTree = new TreeItem(selectionTree, SWT.NONE);
+//		geneTree.setText("Genes");
+//		geneTree.setExpanded(true);
+//		geneTree.setData(-1);
+//		experimentTree = new TreeItem(selectionTree, SWT.NONE);
+//		experimentTree.setText("Experiments");
+//		experimentTree.setExpanded(false);
+//		experimentTree.setData(-1);
+//		pathwayTree = new TreeItem(selectionTree, SWT.NONE);
+//		pathwayTree.setText("Pathways");
+//		pathwayTree.setExpanded(false);
+//		pathwayTree.setData(-1);
+		
 		return parent;
 	}
 
 	private void handleSelectionUpdate(final IUniqueObject eventTrigger,
 			final ISelectionDelta selectionDelta)
 	{
-		if (selectionDelta.getIDType() != EIDType.REFSEQ_MRNA_INT)
-			return;
-
 		parentComposite.getDisplay().asyncExec(new Runnable()
 		{
 			public void run()
 			{
-				if ((eventTrigger instanceof AGLEventListener))
-				{
-					lblViewInfoContent.setText(((AGLEventListener) eventTrigger).getShortInfo());
+				if (selectionDelta.getIDType() == EIDType.REFSEQ_MRNA_INT)
+				{	
+					if ((eventTrigger instanceof AGLEventListener))
+					{
+						lblViewInfoContent.setText(((AGLEventListener) eventTrigger).getShortInfo());
+					}
+	
+					for (SelectionDeltaItem selectionItem : selectionDelta)
+					{
+						if (selectionItem.getSelectionType() == ESelectionType.NORMAL
+								|| selectionItem.getSelectionType() == ESelectionType.DESELECTED)
+						{
+							// Flush old items that become deselected/normal
+							for (TreeItem tmpItem : selectionTree.getItems())
+							{
+								if (tmpItem.getData() == null 
+										|| ((Integer)tmpItem.getData()).intValue() == selectionItem.getPrimaryID())
+								{
+									tmpItem.dispose();
+								}
+							}	
+						}
+						else if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER
+								|| selectionItem.getSelectionType() == ESelectionType.SELECTION)
+						{
+							Color color;
+							float[] fArColor = null;
+							
+							if(selectionItem.getSelectionType() == ESelectionType.SELECTION)
+								fArColor = GeneralRenderStyle.SELECTED_COLOR;
+							else if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER)
+								fArColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+								
+							color = new Color(parentComposite.getDisplay(), (int)(fArColor[0] * 255), 
+									(int)(fArColor[1] * 255), (int)(fArColor[2] * 255));
+							
+							String sRefSeqID = GeneralManager.get().getIDMappingManager().getID(
+									EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
+									selectionItem.getPrimaryID());
+	
+							Integer iDavidID = GeneralManager.get().getIDMappingManager().getID(
+									EMappingType.REFSEQ_MRNA_INT_2_DAVID,
+									selectionItem.getPrimaryID());
+	
+							String sGeneSymbol = GeneralManager.get().getIDMappingManager().getID(
+											EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
+	
+							if (sGeneSymbol == null)
+								sGeneSymbol = "Unknown";
+							
+							boolean bIsExisting = false;
+							for (TreeItem existingItem : selectionTree.getItems())
+							{
+								if (existingItem.getText().equals(sGeneSymbol) 
+										&& ((Integer)existingItem.getData()).intValue() == selectionItem.getPrimaryID())
+								{
+									existingItem.setBackground(color);
+									existingItem.getItem(0).setBackground(color);
+									existingItem.setData("selection_type", selectionItem.getSelectionType());
+									bIsExisting = true;
+									break;
+								}
+							}
+							
+							if (!bIsExisting)
+							{
+								TreeItem item = new TreeItem(selectionTree, SWT.NONE);
+								item.setText(sGeneSymbol + " - " +sRefSeqID);
+								item.setBackground(color);
+								item.setData(selectionItem.getPrimaryID());
+								item.setData("selection_type", selectionItem.getSelectionType());
+								
+//								TreeItem subItem = new TreeItem(item, SWT.NONE);
+//								subItem.setText(sRefSeqID);
+//								subItem.setBackground(color);
+//								item.setExpanded(true);
+							}
+						}
+					}
 				}
-
-				for (SelectionDeltaItem selectionItem : selectionDelta)
+				else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX)
 				{
-					if (selectionItem.getSelectionType() == ESelectionType.NORMAL
-							|| selectionItem.getSelectionType() == ESelectionType.DESELECTED)
-					{
-						// Flush old items that become deselected/normal
-						for (TreeItem tmpItem : selectionTree.getItems())
-						{
-							if (tmpItem.getData() == null 
-									|| ((Integer)tmpItem.getData()).intValue() == selectionItem.getPrimaryID())
-							{
-								tmpItem.dispose();
-							}
-						}	
-					}
-					else if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER
-							|| selectionItem.getSelectionType() == ESelectionType.SELECTION)
-					{
-						Color color;
-						float[] fArColor = null;
-						
-						if(selectionItem.getSelectionType() == ESelectionType.SELECTION)
-							fArColor = GeneralRenderStyle.SELECTED_COLOR;
-						else if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER)
-							fArColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
-							
-						color = new Color(parentComposite.getDisplay(), (int)(fArColor[0] * 255), 
-								(int)(fArColor[1] * 255), (int)(fArColor[2] * 255));
-						
-						String sRefSeqID = GeneralManager.get().getIDMappingManager().getID(
-								EMappingType.REFSEQ_MRNA_INT_2_REFSEQ_MRNA,
-								selectionItem.getPrimaryID());
-
-						Integer iDavidID = GeneralManager.get().getIDMappingManager().getID(
-								EMappingType.REFSEQ_MRNA_INT_2_DAVID,
-								selectionItem.getPrimaryID());
-
-						String sGeneSymbol = GeneralManager.get().getIDMappingManager().getID(
-										EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
-
-						if (sGeneSymbol == null)
-							sGeneSymbol = "Unknown";
-						
-						boolean bIsExisting = false;
-						for (TreeItem existingItem : selectionTree.getItems())
-						{
-							if (existingItem.getText().equals(sGeneSymbol) 
-									&& ((Integer)existingItem.getData()).intValue() == selectionItem.getPrimaryID())
-							{
-								existingItem.setBackground(color);
-								existingItem.getItem(0).setBackground(color);
-								existingItem.setData("selection_type", selectionItem.getSelectionType());
-								bIsExisting = true;
-								break;
-							}
-						}
-						
-						if (!bIsExisting)
-						{
-							TreeItem item = new TreeItem(selectionTree, 0);
-							item.setText(sGeneSymbol);
-							item.setBackground(color);
-							item.setData(selectionItem.getPrimaryID());
-							item.setData("selection_type", selectionItem.getSelectionType());
-							
-							TreeItem subItem = new TreeItem(item, 0);
-							subItem.setText(sRefSeqID);
-							subItem.setBackground(color);
-							item.setExpanded(true);
-						}
-					}
+//					for (SelectionDeltaItem selectionItem : selectionDelta)
+//					{
+//						if (selectionItem.getSelectionType() == ESelectionType.NORMAL
+//								|| selectionItem.getSelectionType() == ESelectionType.DESELECTED)
+//						{
+//							// Flush old items that become deselected/normal
+//							for (TreeItem tmpItem : selectionTree.getItems())
+//							{
+//								if (tmpItem.getData() == null 
+//										|| ((Integer)tmpItem.getData()).intValue() == selectionItem.getPrimaryID())
+//								{
+//									tmpItem.dispose();
+//								}
+//							}	
+//						}
+//						else if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER
+//								|| selectionItem.getSelectionType() == ESelectionType.SELECTION)
+//						{
+//							Color color;
+//							float[] fArColor = null;
+//							
+//							if(selectionItem.getSelectionType() == ESelectionType.SELECTION)
+//								fArColor = GeneralRenderStyle.SELECTED_COLOR;
+//							else if (selectionItem.getSelectionType() == ESelectionType.MOUSE_OVER)
+//								fArColor = GeneralRenderStyle.MOUSE_OVER_COLOR;
+//								
+//							color = new Color(parentComposite.getDisplay(), (int)(fArColor[0] * 255), 
+//									(int)(fArColor[1] * 255), (int)(fArColor[2] * 255));
+//							
+//							String sRefSeqID = GeneralManager.get().getIDMappingManager().getID(
+//									EMappingType.EXPERIMENT_INDEX_2_EXPERIMENT,
+//									selectionItem.getPrimaryID());
+//	
+//							Integer iDavidID = GeneralManager.get().getIDMappingManager().getID(
+//									EMappingType.REFSEQ_MRNA_INT_2_DAVID,
+//									selectionItem.getPrimaryID());
+//	
+//							String sGeneSymbol = GeneralManager.get().getIDMappingManager().getID(
+//											EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
+//	
+//							if (sGeneSymbol == null)
+//								sGeneSymbol = "Unknown";
+//							
+//							boolean bIsExisting = false;
+//							for (TreeItem existingItem : selectionTree.getItems())
+//							{
+//								if (existingItem.getText().equals(sGeneSymbol) 
+//										&& ((Integer)existingItem.getData()).intValue() == selectionItem.getPrimaryID())
+//								{
+//									existingItem.setBackground(color);
+//									existingItem.getItem(0).setBackground(color);
+//									existingItem.setData("selection_type", selectionItem.getSelectionType());
+//									bIsExisting = true;
+//									break;
+//								}
+//							}
+//							
+//							if (!bIsExisting)
+//							{
+//								TreeItem item = new TreeItem(geneTree, SWT.NULL);
+//								item.setText(sGeneSymbol);
+//								item.setBackground(color);
+//								item.setData(selectionItem.getPrimaryID());
+//								item.setData("selection_type", selectionItem.getSelectionType());
+//								
+//								TreeItem subItem = new TreeItem(item, SWT.NULL);
+//								subItem.setText(sRefSeqID);
+//								subItem.setBackground(color);
+//								item.setExpanded(true);
+//							}
+//						}
+//					}
 				}
 			}
 		});
