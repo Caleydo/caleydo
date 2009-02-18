@@ -171,6 +171,9 @@ public class InfoArea
 						String sGeneSymbol = GeneralManager.get().getIDMappingManager().getID(
 										EMappingType.DAVID_2_GENE_SYMBOL, iDavidID);
 
+						if (sGeneSymbol == null)
+							sGeneSymbol = "Unknown";
+						
 						boolean bIsExisting = false;
 						for (TreeItem existingItem : selectionTree.getItems())
 						{

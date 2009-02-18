@@ -527,10 +527,9 @@ public abstract class AStorageBasedView
 						iID = item.getPrimaryID();
 						iStorageIndex = iID;
 						idType = EIDType.EXPERIMENT_INDEX;
-
 					}
 					else
-						throw new InvalidAttributeValueException("Can not handle data type");
+						throw new InvalidAttributeValueException("Can not handle data type: " +selectionDelta.getIDType());
 
 					if (iStorageIndex == -1)
 						throw new IllegalArgumentException("No internal ID in selection delta");
@@ -546,7 +545,6 @@ public abstract class AStorageBasedView
 						connectedElementRepresentationManager.addSelection(iConnectionID, rep);
 					}
 				}
-
 			}
 		}
 		catch (InvalidAttributeValueException e)
