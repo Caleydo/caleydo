@@ -97,6 +97,7 @@ public class InfoArea
 		lblViewInfoContent.setText("");
 		GridData gridData = new GridData(GridData.FILL_BOTH);
 		gridData.minimumWidth = 150;
+		gridData.widthHint = 150;
 		gridData.minimumHeight = 72;
 	    lblViewInfoContent.setLayoutData(gridData);
 

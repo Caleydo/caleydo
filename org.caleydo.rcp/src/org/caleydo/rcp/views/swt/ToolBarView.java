@@ -63,7 +63,7 @@ public class ToolBarView
 	public static final String ID = "org.caleydo.rcp.views.ToolBarView";
 
 	public static final int TOOLBAR_WIDTH = 240;
-	public static final int TOOLBAR_HEIGHT = 148;	
+	public static final int TOOLBAR_HEIGHT = 150;	
 
 	private Composite parentComposite;
 
@@ -112,20 +112,6 @@ public class ToolBarView
 
 	public void addViewSpecificToolBar(int iViewID)
 	{
-//		// Check if toolbar for this view is already present
-//		for (ExpandItem item : expandBar.getItems())
-//		{
-//			// Only one pathway toolbar for all pathways is allowed
-//			if (item.getData("view") instanceof GLPathway
-//					&& GeneralManager.get().getgroupViewGLCanvasManager().getGLEventListener(
-//							iViewID) instanceof GLPathway)
-//				return;
-//
-//			if (item.getData("viewID") != null
-//					&& ((Integer) item.getData("viewID")).intValue() == iViewID)
-//				return;
-//		}
-		
 		String sViewTitle = "";
 		Image viewIcon = null;
 
@@ -253,6 +239,7 @@ public class ToolBarView
 		group.setData("view", glView);
 		group.setData("viewID", glView.getID());
 		
+		group.layout();
 		parentComposite.layout();
 	}
 
@@ -303,7 +290,7 @@ public class ToolBarView
 //	public void highlightViewSpecificToolBar(int iViewID)
 //	{
 //		// Unselect old highlights
-//		for (ExpandItem item : expandBar.getItems())
+//		for (Group group : viewSpecificGroups)
 //		{
 //			if (item.getData("view") instanceof AGLEventListener)
 //			{
@@ -384,7 +371,7 @@ public class ToolBarView
 			searchComposite.setLayout(new GridLayout(1, false));
 		
 		Label searchInputLabel = new Label(searchComposite, SWT.NULL);
-		searchInputLabel.setText("Pathway search");
+		searchInputLabel.setText("Pathway");
 //		searchInputLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		final SearchBox searchBox = new SearchBox(searchComposite, SWT.BORDER);
@@ -448,7 +435,7 @@ public class ToolBarView
 
 		// Gene search
 		Label entitySearchLabel = new Label(searchComposite, SWT.NULL);
-		entitySearchLabel.setText("Gene search");
+		entitySearchLabel.setText("Gene");
 //		entitySearchLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		final Text geneSearchText = new Text(searchComposite, SWT.BORDER | SWT.SINGLE);
@@ -508,8 +495,8 @@ public class ToolBarView
 	    if (bHorizontal)
 	    {
 	    	gridData = new GridData(GridData.FILL_VERTICAL);
-	    	gridData.minimumWidth = 160;
-	    	gridData.widthHint = 160;
+	    	gridData.minimumWidth = 140;
+	    	gridData.widthHint = 140;
 	    }
 	    else
 	    {
