@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.storagebased.heatmap;
+package org.caleydo.core.view.opengl.canvas.storagebased;
 
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
@@ -45,9 +45,6 @@ import org.caleydo.core.view.opengl.camera.EProjectionMode;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
-import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
-import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
-import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -501,7 +498,7 @@ public class GLHierarchicalHeatMap
 	public synchronized void setDetailLevel(EDetailLevel detailLevel)
 	{
 		super.setDetailLevel(detailLevel);
-		renderStyle.setDetailLevel(detailLevel);
+//		renderStyle.setDetailLevel(detailLevel);
 		renderStyle.updateFieldSizes();
 	}
 
@@ -1683,10 +1680,10 @@ public class GLHierarchicalHeatMap
 		contentSelectionManager.setVA(set.getVA(iContentVAID));
 		storageSelectionManager.setVA(set.getVA(iStorageVAID));
 
-		if (renderStyle != null)
-		{
-			renderStyle.setActiveVirtualArray(iContentVAID);
-		}
+//		if (renderStyle != null)
+//		{
+//			renderStyle.setActiveVirtualArray(iContentVAID);
+//		}
 
 		int iNumberOfColumns = set.getVA(iContentVAID).size();
 		int iNumberOfRows = set.getVA(iStorageVAID).size();
@@ -1712,11 +1709,8 @@ public class GLHierarchicalHeatMap
 			// }
 		}
 
-		renderStyle = new HeatMapRenderStyle(viewFrustum, contentSelectionManager, set,
-				iContentVAID, iStorageVAID, set.getVA(iStorageVAID).size(),
-				bRenderStorageHorizontally);
-		renderStyle.setDetailLevel(detailLevel);
-
+		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
+	
 		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
 
 		// Handling action ResetView in hierarchical heatmap

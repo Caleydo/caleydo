@@ -587,6 +587,11 @@ public abstract class AGLEventListener
 		return iStorageVAID;
 	}
 	
+	public EDetailLevel getDetailLevel()
+	{
+		return detailLevel;
+	}
+	
 	public void destroy()
 	{
 		// Propagate remove action of elements to other views

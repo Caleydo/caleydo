@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.storagebased.parcoords;
+package org.caleydo.core.view.opengl.canvas.storagebased;
 
 /**
  * Icon IDs for the parallel coordinates

@@ -2,7 +2,7 @@ package org.caleydo.rcp.action.toolbar.view.storagebased;
 
 import org.caleydo.core.command.view.rcp.EExternalFlagSetterType;
 import org.caleydo.core.manager.general.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.rcp.action.toolbar.AToolBarAction;
 import org.eclipse.jface.resource.ImageDescriptor;

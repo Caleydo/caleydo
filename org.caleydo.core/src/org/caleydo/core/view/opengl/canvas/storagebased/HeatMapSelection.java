@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.storagebased.heatmap;
+package org.caleydo.core.view.opengl.canvas.storagebased;
 
 import org.caleydo.core.data.selection.ESelectionType;
 

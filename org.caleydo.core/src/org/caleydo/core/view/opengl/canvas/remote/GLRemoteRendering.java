@@ -52,8 +52,8 @@ import org.caleydo.core.view.opengl.canvas.remote.bucket.BucketMouseWheelListene
 import org.caleydo.core.view.opengl.canvas.remote.bucket.GLConnectionLineRendererBucket;
 import org.caleydo.core.view.opengl.canvas.remote.jukebox.GLConnectionLineRendererJukebox;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHeatMap;
-import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLHeatMap;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.caleydo.core.view.opengl.miniview.GLColorMappingBarMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.renderstyle.layout.ARemoteViewLayoutRenderStyle;

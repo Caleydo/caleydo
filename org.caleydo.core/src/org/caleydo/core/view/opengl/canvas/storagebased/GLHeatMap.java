@@ -1,7 +1,7 @@
-package org.caleydo.core.view.opengl.canvas.storagebased.heatmap;
+package org.caleydo.core.view.opengl.canvas.storagebased;
 
-import static org.caleydo.core.view.opengl.canvas.storagebased.heatmap.HeatMapRenderStyle.FIELD_Z;
-import static org.caleydo.core.view.opengl.canvas.storagebased.heatmap.HeatMapRenderStyle.SELECTION_Z;
+import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.FIELD_Z;
+import static org.caleydo.core.view.opengl.canvas.storagebased.HeatMapRenderStyle.SELECTION_Z;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_COLOR;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.MOUSE_OVER_LINE_WIDTH;
 import static org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle.SELECTED_COLOR;
@@ -39,9 +39,6 @@ import org.caleydo.core.util.mapping.color.EColorMappingType;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLCanvasRemoteRendering;
-import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
-import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
-import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.opengl.miniview.GLColorMappingBarMiniView;
 import org.caleydo.core.view.opengl.mouse.PickingJoglMouseListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -61,8 +58,6 @@ public class GLHeatMap
 
 	private ColorMapping colorMapper;
 
-	private GLColorMappingBarMiniView colorMappingBar;
-
 	private EIDType eFieldDataType = EIDType.EXPRESSION_INDEX;
 	private EIDType eStorageDataType = EIDType.EXPERIMENT_INDEX;
 
@@ -81,6 +76,8 @@ public class GLHeatMap
 	private SelectedElementRep elementRep;
 
 	private ArrayList<Float> fAlXDistances;
+	
+	boolean bIsInListMode = true;
 
 	/**
 	 * Constructor.
@@ -111,21 +108,14 @@ public class GLHeatMap
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
 
-		colorMappingBar = new GLColorMappingBarMiniView(viewFrustum);
-		// TODO use constant instead
-		iNumberOfRandomElements = generalManager.getPreferenceStore().getInt(
-				"hmNumRandomSamplinPoints");
 		fAlXDistances = new ArrayList<Float>();
 	}
 
 	@Override
 	public void init(GL gl)
 	{
-		// iconTextureManager = new GLIconTextureManager(gl);
 		initData();
 
-		colorMappingBar.setHeight(renderStyle.getColorMappingBarHeight());
-		colorMappingBar.setWidth(renderStyle.getColorMappingBarWidth());
 		if (set == null)
 			return;
 	}
@@ -167,7 +157,7 @@ public class GLHeatMap
 	public synchronized void setDetailLevel(EDetailLevel detailLevel)
 	{
 		super.setDetailLevel(detailLevel);
-		renderStyle.setDetailLevel(detailLevel);
+//		renderStyle.setDetailLevel(detailLevel);
 		renderStyle.updateFieldSizes();
 	}
 
@@ -291,7 +281,7 @@ public class GLHeatMap
 			}
 			if (detailLevel == EDetailLevel.HIGH)
 			{
-				gl.glTranslatef(-fLeftOffset - colorMappingBar.getWidth(), 0, 0);
+				gl.glTranslatef(-fLeftOffset, 0, 0);
 			}
 
 			gl.glDisable(GL.GL_STENCIL_TEST);
@@ -336,17 +326,13 @@ public class GLHeatMap
 	{
 
 		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
-		renderStyle.setBRenderStorageHorizontally(bRenderStorageHorizontally);
+//		renderStyle.setBRenderStorageHorizontally(bRenderStorageHorizontally);
 		setDisplayListDirty();
 	}
 
 	@Override
 	protected void initLists()
 	{
-
-		// Set<Integer> setMouseOver = storageSelectionManager
-		// .getElements(ESelectionType.MOUSE_OVER);
-
 		if (bRenderOnlyContext)
 			iContentVAID = mapVAIDs.get(EStorageBasedVAType.EXTERNAL_SELECTION);
 		else
@@ -363,10 +349,10 @@ public class GLHeatMap
 		contentSelectionManager.setVA(set.getVA(iContentVAID));
 		storageSelectionManager.setVA(set.getVA(iStorageVAID));
 
-		if (renderStyle != null)
-		{
-			renderStyle.setActiveVirtualArray(iContentVAID);
-		}
+//		if (renderStyle != null)
+//		{
+//			renderStyle.setActiveVirtualArray(iContentVAID);
+//		}
 
 		int iNumberOfColumns = set.getVA(iContentVAID).size();
 		int iNumberOfRows = set.getVA(iStorageVAID).size();
@@ -381,25 +367,11 @@ public class GLHeatMap
 		for (int iColumnCount = 0; iColumnCount < iNumberOfColumns; iColumnCount++)
 		{
 			contentSelectionManager.initialAdd(set.getVA(iContentVAID).get(iColumnCount));
-
-			// if
-			// (setMouseOver.contains(set.getVA(iContentVAID).get(iColumnCount
-			// )))
-			// {
-			// storageSelectionManager.addToType(ESelectionType.MOUSE_OVER,
-			// set.getVA(
-			// iContentVAID).get(iColumnCount));
-			// }
 		}
 
-		renderStyle = new HeatMapRenderStyle(viewFrustum, contentSelectionManager, set,
-				iContentVAID, iStorageVAID, set.getVA(iStorageVAID).size(),
-				bRenderStorageHorizontally);
-		renderStyle.setDetailLevel(detailLevel);
+		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
+//		renderStyle.setDetailLevel(detailLevel);
 		super.renderStyle = renderStyle;
-
-		// TODO probably remove this here
-		// renderStyle.initFieldSizes();
 
 		vecTranslation = new Vec3f(0, renderStyle.getYCenter() * 2, 0);
 
@@ -994,7 +966,7 @@ public class GLHeatMap
 		}
 
 		contentSelectionManager.setVA(set.getVA(iContentVAID));
-		renderStyle.setActiveVirtualArray(iContentVAID);
+//		renderStyle.setActiveVirtualArray(iContentVAID);
 
 		setDisplayListDirty();
 

@@ -1,10 +1,11 @@
-package org.caleydo.core.view.opengl.canvas.storagebased.heatmap;
+package org.caleydo.core.view.opengl.canvas.storagebased;
 
 import java.util.HashMap;
 import org.caleydo.core.data.collection.ISet;
 import org.caleydo.core.data.selection.ESelectionType;
 import org.caleydo.core.data.selection.GenericSelectionManager;
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
@@ -40,31 +41,17 @@ public class HeatMapRenderStyle
 
 	private HashMap<Integer, Float> hashLevelToWidth;
 
-	private GenericSelectionManager contentSelectionManager;
 
-	private int iContentVAID;
-	private int iStorageVAID;
+	
+	AStorageBasedView heatMap;
 
-	private ISet set;
-
-	private EDetailLevel detailLevel = EDetailLevel.HIGH;
-
-	private boolean bRenderStorageHorizontally;
-
-	public HeatMapRenderStyle(final IViewFrustum viewFrustum,
-			final GenericSelectionManager contentSelectionManager, ISet set, int iContentVAID,
-			int iStorageVAID, int iNumElements, boolean bRenderStorageHorizontally)
+	public HeatMapRenderStyle(AStorageBasedView heatMap, IViewFrustum viewFrustum)
 	{
 
 		super(viewFrustum);
 
-		this.contentSelectionManager = contentSelectionManager;
-		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
-
-		this.iContentVAID = iContentVAID;
-		this.iStorageVAID = iStorageVAID;
-
-		this.set = set;
+		this.heatMap = heatMap;
+	
 		// alFieldWidths = new ArrayList<FieldWidthElement>();
 
 		// init fish eye
@@ -86,23 +73,23 @@ public class HeatMapRenderStyle
 
 	}
 
-	public void setDetailLevel(EDetailLevel detailLevel)
-	{
-		// make sure that widht and height are completely reiinitialized
+//	public void setDetailLevel(EDetailLevel detailLevel)
+//	{
+//		// make sure that widht and height are completely reiinitialized
+//
+//		this.detailLevel = detailLevel;
+//	}
 
-		this.detailLevel = detailLevel;
-	}
-
-	/**
-	 * Set the active virtual array of the heat map here, when it changed during
-	 * runtime. Needed to calculate the widht and height of an element.
-	 * 
-	 * @param iContentVAID the id of the content virtual array
-	 */
-	public void setActiveVirtualArray(int iContentVAID)
-	{
-		this.iContentVAID = iContentVAID;
-	}
+//	/**
+//	 * Set the active virtual array of the heat map here, when it changed during
+//	 * runtime. Needed to calculate the widht and height of an element.
+//	 * 
+//	 * @param iContentVAID the id of the content virtual array
+//	 */
+//	public void setActiveVirtualArray(int iContentVAID)
+//	{
+//		this.iContentVAID = iContentVAID;
+//	}
 
 	/**
 	 * Initializes or updates field sizes based on selections, virtual arrays
@@ -110,11 +97,12 @@ public class HeatMapRenderStyle
 	 */
 	public void updateFieldSizes()
 	{
-		int iNumberSelected = contentSelectionManager
+		int iNumberSelected = heatMap.contentSelectionManager
 				.getNumberOfElements(ESelectionType.MOUSE_OVER);
-		iNumberSelected += contentSelectionManager
+		iNumberSelected += heatMap.contentSelectionManager
 				.getNumberOfElements(ESelectionType.SELECTION);
-		int iNumberTotal = set.getVA(iContentVAID).size();
+		
+		int iNumberTotal = heatMap.set.getVA(heatMap.getContentVAID()).size();
 
 		float fSelecteFieldWidthPercentage = SELECTED_FIELD_WIDTH_PERCENTAGE;
 		if (iNumberSelected > 0 && SELECTED_FIELD_WIDTH_PERCENTAGE * iNumberSelected > 1)
@@ -122,7 +110,7 @@ public class HeatMapRenderStyle
 			fSelecteFieldWidthPercentage = 1.0f / iNumberSelected;
 		}
 
-		if (bRenderStorageHorizontally)
+		if (heatMap.bRenderStorageHorizontally)
 		{
 
 			fSelectedFieldWidth = getRenderWidth() * MAXIMUM_SELECTED_AREA_PERCENTAGE
@@ -131,7 +119,7 @@ public class HeatMapRenderStyle
 			fNormalFieldWidth = (getRenderWidth() - iNumberSelected * fSelectedFieldWidth)
 					/ (iNumberTotal - iNumberSelected);
 
-			fFieldHeight = getRenderHeight() / set.getVA(iStorageVAID).size();
+			fFieldHeight = getRenderHeight() / heatMap.set.getVA(heatMap.getStorageVAID()).size();
 		}
 		else
 		{
@@ -140,7 +128,7 @@ public class HeatMapRenderStyle
 			fNormalFieldWidth = (getRenderHeight() - iNumberSelected * fSelectedFieldWidth)
 					/ (iNumberTotal - iNumberSelected);
 
-			fFieldHeight = (getRenderWidth() / set.getVA(iStorageVAID).size());
+			fFieldHeight = (getRenderWidth() / heatMap.set.getVA(heatMap.getStorageVAID()).size());
 		}
 
 		fNormalFieldWidth = (fNormalFieldWidth > fMamximumNormalFieldWidth) ? fMamximumNormalFieldWidth
@@ -188,48 +176,23 @@ public class HeatMapRenderStyle
 		return 0.3f;
 	}
 
-	public void setBRenderStorageHorizontally(boolean bRenderStorageHorizontally)
-	{
-		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
-	}
+//	public void setBRenderStorageHorizontally(boolean bRenderStorageHorizontally)
+//	{
+//		this.bRenderStorageHorizontally = bRenderStorageHorizontally;
+//	}
 
 	private float getRenderWidth()
 	{
-		// if (!bRenderStorageHorizontally)
-		// {
-		if (detailLevel == EDetailLevel.HIGH)
-			return viewFrustum.getWidth() - 2.4f * getXSpacing() - getColorMappingBarWidth();
+		if (heatMap.getDetailLevel() == EDetailLevel.HIGH)
+			return viewFrustum.getWidth() - 2.4f * getXSpacing();
 		return viewFrustum.getWidth();
-		// }
-		//
-		// if (detailLevel == EDetailLevel.HIGH)
-		// return viewFrustum.getHeight() - 2 * getYSpacing();
-		// return viewFrustum.getHeight();
 	}
 
 	public float getRenderHeight()
 	{
-		// if (!bRenderStorageHorizontally)
-		// {
-		if (detailLevel == EDetailLevel.HIGH)
+		if (heatMap.getDetailLevel() == EDetailLevel.HIGH)
 			return viewFrustum.getHeight() - 2 * getYSpacing();
 		return viewFrustum.getHeight();
-		// }
-		// if (detailLevel == EDetailLevel.HIGH)
-		// return viewFrustum.getWidth() - 2 * getXSpacing() -
-		// getColorMappingBarWidth();
-		// return viewFrustum.getWidth();
 
 	}
-
-	public float getColorMappingBarWidth()
-	{
-		return viewFrustum.getWidth() / 40;
-	}
-
-	public float getColorMappingBarHeight()
-	{
-		return viewFrustum.getHeight() / 3;
-	}
-
 }

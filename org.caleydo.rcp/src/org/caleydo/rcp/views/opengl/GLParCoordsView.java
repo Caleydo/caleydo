@@ -5,7 +5,7 @@ import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.caleydo.rcp.Application;
 import org.caleydo.rcp.EApplicationMode;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ChangeOrientationAction;

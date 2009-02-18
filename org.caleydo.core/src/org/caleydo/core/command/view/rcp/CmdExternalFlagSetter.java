@@ -7,8 +7,8 @@ import org.caleydo.core.view.opengl.canvas.glyph.gridview.EIconIDs;
 import org.caleydo.core.view.opengl.canvas.glyph.gridview.GLGlyph;
 import org.caleydo.core.view.opengl.canvas.pathway.GLPathway;
 import org.caleydo.core.view.opengl.canvas.storagebased.AStorageBasedView;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
-import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 
 /**
  * Command for setting flags in org.caleydo.core from the RCP interface.

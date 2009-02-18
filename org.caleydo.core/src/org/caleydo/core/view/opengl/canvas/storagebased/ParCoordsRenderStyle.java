@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.storagebased.parcoords;
+package org.caleydo.core.view.opengl.canvas.storagebased;
 
 import org.caleydo.core.view.opengl.camera.IViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;

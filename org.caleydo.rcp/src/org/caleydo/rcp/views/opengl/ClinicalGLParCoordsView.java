@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import org.caleydo.core.command.ECommandType;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.util.preferences.PreferenceConstants;
-import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ChangeOrientationAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.ClearSelectionsAction;
 import org.caleydo.rcp.action.toolbar.view.storagebased.PropagateSelectionsAction;

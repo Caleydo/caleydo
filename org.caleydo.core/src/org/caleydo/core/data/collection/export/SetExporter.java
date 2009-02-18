@@ -13,8 +13,8 @@ import org.caleydo.core.data.selection.IVirtualArray;
 import org.caleydo.core.manager.IIDMappingManager;
 import org.caleydo.core.manager.general.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLEventListener;
-import org.caleydo.core.view.opengl.canvas.storagebased.heatmap.GLHierarchicalHeatMap;
-import org.caleydo.core.view.opengl.canvas.storagebased.parcoords.GLParallelCoordinates;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLHierarchicalHeatMap;
+import org.caleydo.core.view.opengl.canvas.storagebased.GLParallelCoordinates;
 
 /**
  * Exports data so a CSV file.
