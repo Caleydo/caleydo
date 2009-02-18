@@ -172,8 +172,15 @@ public abstract class AStorageBasedView
 		}
 		else if (sLevel.equals("only_context"))
 		{
-			dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
-		}
+			// Only apply only_context when pathways are loaded
+			if (GeneralManager.get().getPathwayManager().size() > 100)
+			{
+				dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;			
+			}
+			else
+			{
+				dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
+			}		}
 		else
 		{
 			throw new IllegalStateException("Unknown data filter level");
@@ -315,10 +322,10 @@ public abstract class AStorageBasedView
 	private void handleSelectionUpdate(IUniqueObject eventTrigger,
 			ISelectionDelta selectionDelta)
 	{
-		generalManager.getLogger().log(
-				Level.INFO,
-				"Update called by " + eventTrigger.getClass().getSimpleName()
-						+ ", received in: " + this.getClass().getSimpleName());
+//		generalManager.getLogger().log(
+//				Level.INFO,
+//				"Update called by " + eventTrigger.getClass().getSimpleName()
+//						+ ", received in: " + this.getClass().getSimpleName());
 
 		// Check for type that can be handled
 		if (selectionDelta.getIDType() == EIDType.REFSEQ_MRNA_INT
@@ -347,10 +354,10 @@ public abstract class AStorageBasedView
 
 	private void handleVAUpdate(IUniqueObject eventTrigger, IVirtualArrayDelta delta)
 	{
-		generalManager.getLogger().log(
-				Level.INFO,
-				"VA Update called by " + eventTrigger.getClass().getSimpleName()
-						+ ", received in: " + this.getClass().getSimpleName());
+//		generalManager.getLogger().log(
+//				Level.INFO,
+//				"VA Update called by " + eventTrigger.getClass().getSimpleName()
+//						+ ", received in: " + this.getClass().getSimpleName());
 
 		GenericSelectionManager selectionManager;
 		if (delta.getIDType() == EIDType.EXPERIMENT_INDEX)

@@ -1,6 +1,8 @@
 package org.caleydo.core.view.swt.tabular;
 
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyAdapter;
+import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -41,6 +43,21 @@ public class LabelEditorDialog
 		text.setLayoutData(data);
 		text.setText(sInitialLabel);
 		text.selectAll();
+
+		text.addKeyListener(new KeyAdapter()
+		{
+			public void keyPressed(KeyEvent event)
+			{
+				switch (event.keyCode)
+				{
+					case SWT.CR:
+						sLabel = text.getText();
+					case SWT.ESC:
+						shell.dispose();
+						break;
+				}
+			}
+		});
 
 		final Button buttonOK = new Button(shell, SWT.PUSH);
 		buttonOK.setText("Ok");

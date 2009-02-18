@@ -426,7 +426,7 @@ public class ToolBarView
 		searchBox.setItems(items);
 		searchBox.setTextLimit(21);
 		
-		if (!Application.bNoPathways)
+		if (!Application.bNoPathwayData || Application.bLoadPathwayData)
 		{
 			searchBox.addFocusListener(new FocusAdapter()
 			{

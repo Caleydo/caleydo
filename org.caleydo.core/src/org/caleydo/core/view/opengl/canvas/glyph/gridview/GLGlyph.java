@@ -1068,8 +1068,8 @@ public class GLGlyph
 		if (selectionDelta.getIDType() != EIDType.EXPERIMENT_INDEX)
 			return;
 
-		generalManager.getLogger().log(Level.INFO,
-			sLabel + ": Update called by " + eventTrigger.getClass().getSimpleName());
+//		generalManager.getLogger().log(Level.INFO,
+//			sLabel + ": Update called by " + eventTrigger.getClass().getSimpleName());
 
 		selectionManager.clearSelections();
 		selectionManager.setDelta(selectionDelta);

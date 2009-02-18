@@ -308,10 +308,10 @@ public class GLPathway
 	private void handleSelectionUpdate(IUniqueObject eventTrigger,
 			ISelectionDelta selectionDelta)
 	{
-		generalManager.getLogger().log(
-				Level.INFO,
-				"Update called by " + eventTrigger.getClass().getSimpleName()
-						+ ", received in: " + this.getClass().getSimpleName());
+//		generalManager.getLogger().log(
+//				Level.INFO,
+//				"Update called by " + eventTrigger.getClass().getSimpleName()
+//						+ ", received in: " + this.getClass().getSimpleName());
 
 		if (selectionDelta.getIDType() != EIDType.REFSEQ_MRNA_INT)
 			return;

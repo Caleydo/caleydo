@@ -36,7 +36,6 @@ import org.caleydo.core.manager.id.EManagedObjectType;
 import org.caleydo.core.manager.mapping.IDMappingHelper;
 import org.caleydo.core.util.preferences.PreferenceConstants;
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EDataFilterLevel;
 import org.caleydo.core.view.opengl.canvas.storagebased.EStorageBasedVAType;
 import org.caleydo.core.view.swt.ASWTView;
@@ -76,8 +75,6 @@ public class TabularDataViewRep
 	extends ASWTView
 	implements IView, ISWTView, IMediatorReceiver, IMediatorSender
 {
-	private static int MAX_PREVIEW_TABLE_ROWS = 20;
-
 	protected ISet set;
 	protected ESetType setType;
 
@@ -122,11 +119,12 @@ public class TabularDataViewRep
 	private Table storageRemoverTable;
 
 	private TableViewer contentTableViewer;
-
 	private TableCursor contentTableCursor;
 
 	private Button lastRemoveContent;
 	private Button lastRemoveStorage;
+	
+	private int[] iArCurrentColumnOrder;
 
 	/**
 	 * Constructor.
@@ -194,7 +192,15 @@ public class TabularDataViewRep
 		}
 		else if (sLevel.equals("only_context"))
 		{
-			dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
+			// Only apply only_context when pathways are loaded
+			if (GeneralManager.get().getPathwayManager().size() > 100)
+			{
+				dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;			
+			}
+			else
+			{
+				dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
+			}
 		}
 		else
 		{
@@ -572,7 +578,49 @@ public class TabularDataViewRep
 					}
 				}
 			});
+			
+//			column.addListener(SWT.Move, new Listener() {
+//
+//				@Override
+//				public void handleEvent(Event event)
+//				{
+//					if (iArCurrentColumnOrder == null)
+//					{
+//						return;
+//					}
+//					
+//					int iLastColumnPos = 0;
+//					int iNewColumnPos = 0;
+//					int[] iArNewColumnOrder = contentTable.getColumnOrder();
+//					for (int iColumnIndex = 0; iColumnIndex < iArCurrentColumnOrder.length; iColumnIndex++)
+//					{
+//						iLastColumnPos = iArCurrentColumnOrder[iColumnIndex];
+//						iNewColumnPos = iArNewColumnOrder[iColumnIndex];
+//						
+//						if (iLastColumnPos != iNewColumnPos)
+//						{
+//							// Move left detected
+//							if (iLastColumnPos == iArNewColumnOrder[iColumnIndex+1])
+//							{
+//								for 
+//								
+//								set.getVA(iStorageVAID).move(iLastColumnPos, iNewColumnPos);
+//							}
+//							
+//							
+//							IVirtualArrayDelta vaDelta = new VirtualArrayDelta(EIDType.EXPERIMENT_INDEX);
+//							vaDelta.add(VADeltaItem.move(iLastColumnPos, iNewColumnPos));
+//							triggerEvent(EMediatorType.SELECTION_MEDIATOR,
+//									new DeltaEventContainer<IVirtualArrayDelta>(vaDelta));
+//						}
+//					}
+//					
+//					iArCurrentColumnOrder = iArNewColumnOrder;
+//				}
+//			});
 		}
+		
+		iArCurrentColumnOrder = contentTable.getColumnOrder();
 
 		IVirtualArray storageVA = set.getVA(iStorageVAID);
 
@@ -623,12 +671,13 @@ public class TabularDataViewRep
 			// the table
 			public void widgetSelected(SelectionEvent e)
 			{
-				int iStorageIndex = contentTableCursor.getColumn();
+				int iColIndex = contentTableCursor.getColumn();
 				int iRowIndex = contentTable.indexOf(contentTableCursor.getRow());
 				contentTable.setSelection(iRowIndex);
 				labelTable.setSelection(iRowIndex);
 
 				int iRefSeqID = set.getVA(iContentVAID).get(iRowIndex);
+				int iStorageIndex = set.getVA(iStorageVAID).get(iColIndex);
 
 				triggerStorageSelectionEvent(iStorageIndex, ESelectionType.SELECTION);
 				triggerContentSelectionEvent(iRefSeqID, ESelectionType.SELECTION);

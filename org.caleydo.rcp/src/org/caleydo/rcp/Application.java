@@ -46,7 +46,13 @@ public class Application
 
 	public static boolean bIsWebstart = false;
 	public static boolean bDoExit = false;
-	public static boolean bNoPathways = false;
+	
+	// When both boolean variables are false the loadPathwayData 
+	// flag from the preference file is taken
+	// The command line arguments overrule the preference store
+	public static boolean bNoPathwayData = false;
+	public static boolean bLoadPathwayData = false;
+	
 	public static EApplicationMode applicationMode = EApplicationMode.STANDARD;
 
 	public static String sCaleydoXMLfile = "";
@@ -79,7 +85,11 @@ public class Application
 					}
 					else if (sArParam[iParamIndex].equals("no_pathways"))
 					{
-						bNoPathways = true;
+						bNoPathwayData = true;
+					}
+					else if (sArParam[iParamIndex].equals("load_pathways"))
+					{
+						bLoadPathwayData = true;
 					}
 					else if (sArParam[iParamIndex].equals(EStartViewType.PARALLEL_COORDINATES
 							.getCommandLineArgument()))
@@ -130,7 +140,6 @@ public class Application
 		Display display = PlatformUI.createDisplay();
 
 		// Check if Caleydo will be started the first time
-
 		if (!caleydoCore.getGeneralManager().getPreferenceStore().getBoolean(
 				PreferenceConstants.PATHWAY_DATA_OK))
 		{
@@ -270,7 +279,7 @@ public class Application
 
 		openViewsInRCP();
 
-		if (!bDoExit && !bNoPathways)
+		if (!bDoExit && (!bNoPathwayData || bLoadPathwayData))
 		{
 			// Trigger pathway loading
 			new PathwayLoadingProgressIndicatorAction().run(null);
